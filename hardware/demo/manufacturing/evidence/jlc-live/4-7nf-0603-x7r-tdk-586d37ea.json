@@ -1,0 +1,3460 @@
+{
+ "endpoint": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
+ "exhausted": false,
+ "fetched_utc": "2026-09-05T01:07:47Z",
+ "keyword": "4.7nF 0603 X7R TDK",
+ "page_size": 25,
+ "pages": 2,
+ "records": [
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "100V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±10%"
+    },
+    {
+     "attribute_name_en": "Capacitance",
+     "attribute_value_name": "4.7nF",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>4.7nF</span>"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "X7R"
+    }
+   ],
+   "componentBrandEn": "TDK",
+   "componentCode": "C342520",
+   "componentLibraryType": "expand",
+   "componentModelEn": "C1608X7R2A472KT000N",
+   "componentPrices": [
+    {
+     "endNumber": 499,
+     "productPrice": 0.0168,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 1499,
+     "productPrice": 0.0131,
+     "startNumber": 500
+    },
+    {
+     "endNumber": 3999,
+     "productPrice": 0.0111,
+     "startNumber": 1500
+    },
+    {
+     "endNumber": 23999,
+     "productPrice": 0.0099,
+     "startNumber": 4000
+    },
+    {
+     "endNumber": 47999,
+     "productPrice": 0.0089,
+     "startNumber": 24000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0084,
+     "startNumber": 48000
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2304140030_TDK-C1608X7R2A472KT000N_C342520.pdf",
+   "describe": "100V 4.7nF X7R ±10% 0603 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+   "erpComponentName": "4.7nF ±10% 100V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/multilayer-ceramic-capacitors-mlcc-smd-smt_tdk-c1608x7r2a472kt000n_C342520.html",
+   "leastPatchNumber": 20,
+   "lossNumber": 8,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 10
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "50V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±10%"
+    },
+    {
+     "attribute_name_en": "Capacitance",
+     "attribute_value_name": "4.7nF",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>4.7nF</span>"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "X7R"
+    }
+   ],
+   "componentBrandEn": "TDK",
+   "componentCode": "C516763",
+   "componentLibraryType": "expand",
+   "componentModelEn": "C1608X7R1H472KT000N",
+   "componentPrices": [
+    {
+     "endNumber": 999,
+     "productPrice": 0.0074,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 3999,
+     "productPrice": 0.0058,
+     "startNumber": 1000
+    },
+    {
+     "endNumber": 7999,
+     "productPrice": 0.0049,
+     "startNumber": 4000
+    },
+    {
+     "endNumber": 47999,
+     "productPrice": 0.0044,
+     "startNumber": 8000
+    },
+    {
+     "endNumber": 99999,
+     "productPrice": 0.0039,
+     "startNumber": 48000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0037,
+     "startNumber": 100000
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2304140030_TDK-C1608X7R1H472KT000N_C516763.pdf",
+   "describe": "4.7nF 50V X7R ±10% 0603 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+   "erpComponentName": "4.7nF ±10% 50V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/multilayer-ceramic-capacitors-mlcc-smd-smt_tdk-c1608x7r1h472kt000n_C516763.html",
+   "leastPatchNumber": 20,
+   "lossNumber": 10,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 51
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "50V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±10%"
+    },
+    {
+     "attribute_name_en": "Capacitance",
+     "attribute_value_name": "4.7nF",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>4.7nF</span>"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "X7R"
+    }
+   ],
+   "componentBrandEn": "TDK",
+   "componentCode": "C156411",
+   "componentLibraryType": "expand",
+   "componentModelEn": "CGA3E2X7R1H472KT0Y0N",
+   "componentPrices": [
+    {
+     "endNumber": 999,
+     "productPrice": 0.0065,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 3999,
+     "productPrice": 0.0052,
+     "startNumber": 1000
+    },
+    {
+     "endNumber": 7999,
+     "productPrice": 0.0044,
+     "startNumber": 4000
+    },
+    {
+     "endNumber": 47999,
+     "productPrice": 0.0039,
+     "startNumber": 8000
+    },
+    {
+     "endNumber": 99999,
+     "productPrice": 0.0036,
+     "startNumber": 48000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0033,
+     "startNumber": 100000
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+   "dataManualUrl": "https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_TDK-CGA3E2X7R1H472KT0Y0N_C156411.pdf",
+   "describe": "4.7nF 50V X7R ±10% 0603 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+   "erpComponentName": "4.7nF ±10% 50V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/multilayer-ceramic-capacitors-mlcc-smd-smt_tdk-cga3e2x7r1h472kt0y0n_C156411.html",
+   "leastPatchNumber": 20,
+   "lossNumber": 10,
+   "minPurchaseNum": 1723,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 12
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "100V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±10%"
+    },
+    {
+     "attribute_name_en": "Capacitance",
+     "attribute_value_name": "4.7nF",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>4.7nF</span>"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "X7R"
+    }
+   ],
+   "componentBrandEn": "TDK",
+   "componentCode": "C342899",
+   "componentLibraryType": "expand",
+   "componentModelEn": "CGA3E2X7R2A472KT0Y0N",
+   "componentPrices": [
+    {
+     "endNumber": 99,
+     "productPrice": 0.0115,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 299,
+     "productPrice": 0.009,
+     "startNumber": 100
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.0077,
+     "startNumber": 300
+    },
+    {
+     "endNumber": 3999,
+     "productPrice": 0.0068,
+     "startNumber": 1000
+    },
+    {
+     "endNumber": 7999,
+     "productPrice": 0.0053,
+     "startNumber": 4000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0049,
+     "startNumber": 8000
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2304140030_TDK-CGA3E2X7R2A472KT0Y0N_C342899.pdf",
+   "describe": "100V 4.7nF X7R ±10% 0603 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+   "erpComponentName": "4.7nF ±10% 100V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/multilayer-ceramic-capacitors-mlcc-smd-smt_tdk-cga3e2x7r2a472kt0y0n_C342899.html",
+   "leastPatchNumber": 20,
+   "lossNumber": 10,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 4766
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "50V"
+    },
+    {
+     "attribute_name_en": "Capacitance",
+     "attribute_value_name": "4.7nF",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>4.7nF</span>"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "X7R"
+    }
+   ],
+   "componentBrandEn": "TDK",
+   "componentCode": "C2991835",
+   "componentLibraryType": "expand",
+   "componentModelEn": "CEU3E2X7R1H472KT0Y0S",
+   "componentPrices": [
+    {
+     "endNumber": 49,
+     "productPrice": 0.0795,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 149,
+     "productPrice": 0.0624,
+     "startNumber": 50
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.0538,
+     "startNumber": 150
+    },
+    {
+     "endNumber": 2499,
+     "productPrice": 0.0473,
+     "startNumber": 500
+    },
+    {
+     "endNumber": 3999,
+     "productPrice": 0.0412,
+     "startNumber": 2500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0386,
+     "startNumber": 4000
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2204151015_TDK-CEU3E2X7R1H472KT0Y0S_C2991835.pdf",
+   "describe": "4.7nF 50V X7R 0603 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+   "erpComponentName": "4.7nF 50V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/multilayer-ceramic-capacitors-mlcc-smd-smt_tdk-ceu3e2x7r1h472kt0y0s_C2991835.html",
+   "leastPatchNumber": 5,
+   "lossNumber": 2,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 1681
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "50V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±10%"
+    },
+    {
+     "attribute_name_en": "Capacitance",
+     "attribute_value_name": "4.7nF",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>4.7nF</span>"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "X7R"
+    }
+   ],
+   "componentBrandEn": "TDK",
+   "componentCode": "C46617732",
+   "componentLibraryType": "expand",
+   "componentModelEn": "CGA3E2X7R1H472KT0Y0S",
+   "componentPrices": [
+    {
+     "endNumber": 99,
+     "productPrice": 0.0476,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 299,
+     "productPrice": 0.0382,
+     "startNumber": 100
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.0334,
+     "startNumber": 300
+    },
+    {
+     "endNumber": 3999,
+     "productPrice": 0.0298,
+     "startNumber": 1000
+    },
+    {
+     "endNumber": 7999,
+     "productPrice": 0.027,
+     "startNumber": 4000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0256,
+     "startNumber": 8000
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+   "dataManualUrl": null,
+   "describe": "0603 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+   "erpComponentName": "4.7nF ±10% 50V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": null,
+   "leastPatchNumber": 5,
+   "lossNumber": 4,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 3396
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "100V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±10%"
+    },
+    {
+     "attribute_name_en": "Capacitance",
+     "attribute_value_name": "4.7nF",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>4.7nF</span>"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "X7R"
+    }
+   ],
+   "componentBrandEn": "TDK",
+   "componentCode": "C19378663",
+   "componentLibraryType": "expand",
+   "componentModelEn": "C1608X7R2A472K/10",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 0.046,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 11,
+     "productPrice": 0.046,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 0.046,
+     "startNumber": 12
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.0184,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.0178,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0174,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+   "dataManualUrl": "https://www.lcsc.com/datasheet/lcsc_datasheet_2312251905_TDK-C1608X7R2A472K-10_C19378663.pdf",
+   "describe": "100V 4.7nF X7R ±10% 0603 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+   "erpComponentName": "4.7nF ±10% 100V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/multilayer-ceramic-capacitors-mlcc-smd-smt_tdk-c1608x7r2a472k-10_C19378663.html",
+   "leastPatchNumber": 5,
+   "lossNumber": 5,
+   "minPurchaseNum": 195,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "50V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±10%"
+    },
+    {
+     "attribute_name_en": "Capacitance",
+     "attribute_value_name": "4.7nF",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>4.7nF</span>"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "X7R"
+    }
+   ],
+   "componentBrandEn": "TDK",
+   "componentCode": "C19412331",
+   "componentLibraryType": "expand",
+   "componentModelEn": "C1608X7R1H472K/10",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 0.0282,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 11,
+     "productPrice": 0.0282,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 0.0282,
+     "startNumber": 12
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.0113,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.0109,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0107,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2312201719_TDK-C1608X7R1H472K-10_C19412331.pdf",
+   "describe": "4.7nF 50V X7R ±10% 0603 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+   "erpComponentName": "4.7nF ±10% 50V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/multilayer-ceramic-capacitors-mlcc-smd-smt_tdk-c1608x7r1h472k-10_C19412331.html",
+   "leastPatchNumber": 5,
+   "lossNumber": 5,
+   "minPurchaseNum": 822,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "100V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±10%"
+    },
+    {
+     "attribute_name_en": "Capacitance",
+     "attribute_value_name": "4.7nF",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>4.7nF</span>"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "X7R"
+    }
+   ],
+   "componentBrandEn": "TDK",
+   "componentCode": "C2169419",
+   "componentLibraryType": "expand",
+   "componentModelEn": "C1608X7R2A472K080AA",
+   "componentPrices": [
+    {
+     "endNumber": 99,
+     "productPrice": 0.0123,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 299,
+     "productPrice": 0.0098,
+     "startNumber": 100
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.0084,
+     "startNumber": 300
+    },
+    {
+     "endNumber": 3999,
+     "productPrice": 0.0075,
+     "startNumber": 1000
+    },
+    {
+     "endNumber": 7999,
+     "productPrice": 0.0065,
+     "startNumber": 4000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0062,
+     "startNumber": 8000
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2304140030_TDK-C1608X7R2A472K080AA_C2169419.pdf",
+   "describe": "100V 4.7nF X7R ±10% 0603 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+   "erpComponentName": "4.7nF ±10% 100V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/multilayer-ceramic-capacitors-mlcc-smd-smt_tdk-c1608x7r2a472k080aa_C2169419.html",
+   "leastPatchNumber": 5,
+   "lossNumber": 4,
+   "minPurchaseNum": 1195,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "50V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±10%"
+    },
+    {
+     "attribute_name_en": "Capacitance",
+     "attribute_value_name": "4.7nF",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>4.7nF</span>"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "X7R"
+    }
+   ],
+   "componentBrandEn": "TDK",
+   "componentCode": "C2170784",
+   "componentLibraryType": "expand",
+   "componentModelEn": "C1608X7R1H472K080AE",
+   "componentPrices": [
+    {
+     "endNumber": 49,
+     "productPrice": 0.0257,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 149,
+     "productPrice": 0.0204,
+     "startNumber": 50
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.0174,
+     "startNumber": 150
+    },
+    {
+     "endNumber": 2499,
+     "productPrice": 0.0157,
+     "startNumber": 500
+    },
+    {
+     "endNumber": 3999,
+     "productPrice": 0.0142,
+     "startNumber": 2500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0134,
+     "startNumber": 4000
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2304140030_TDK-C1608X7R1H472K080AE_C2170784.pdf",
+   "describe": "4.7nF 50V X7R ±10% 0603 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+   "erpComponentName": "4.7nF ±10% 50V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/multilayer-ceramic-capacitors-mlcc-smd-smt_tdk-c1608x7r1h472k080ae_C2170784.html",
+   "leastPatchNumber": 20,
+   "lossNumber": 6,
+   "minPurchaseNum": 571,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "100V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±10%"
+    },
+    {
+     "attribute_name_en": "Capacitance",
+     "attribute_value_name": "4.7nF",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>4.7nF</span>"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "X7R"
+    }
+   ],
+   "componentBrandEn": "TDK",
+   "componentCode": "C2182165",
+   "componentLibraryType": "expand",
+   "componentModelEn": "C1608X7R2A472K080AE",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 0.0205,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 11,
+     "productPrice": 0.0205,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 0.0205,
+     "startNumber": 12
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.008,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.0077,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0076,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2304140030_TDK-C1608X7R2A472K080AE_C2182165.pdf",
+   "describe": "100V 4.7nF X7R ±10% 0603 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+   "erpComponentName": "4.7nF ±10% 100V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/multilayer-ceramic-capacitors-mlcc-smd-smt_tdk-c1608x7r2a472k080ae_C2182165.html",
+   "leastPatchNumber": 10,
+   "lossNumber": 5,
+   "minPurchaseNum": 1179,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "50V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±20%"
+    },
+    {
+     "attribute_name_en": "Capacitance",
+     "attribute_value_name": "4.7nF",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>4.7nF</span>"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "X7R"
+    }
+   ],
+   "componentBrandEn": "TDK",
+   "componentCode": "C3830523",
+   "componentLibraryType": "expand",
+   "componentModelEn": "C1608X7R1H472M080AE",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 0.0169,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 11,
+     "productPrice": 0.0169,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 0.0169,
+     "startNumber": 12
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.0066,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.0064,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0063,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2401221240_TDK-C1608X7R1H472M080AE_C3830523.pdf",
+   "describe": "4.7nF 50V X7R ±20% 0603 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+   "erpComponentName": "4.7nF ±20% 50V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/multilayer-ceramic-capacitors-mlcc-smd-smt_tdk-c1608x7r1h472m080ae_C3830523.html",
+   "leastPatchNumber": 10,
+   "lossNumber": 5,
+   "minPurchaseNum": 1422,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "100V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±20%"
+    },
+    {
+     "attribute_name_en": "Capacitance",
+     "attribute_value_name": "4.7nF",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>4.7nF</span>"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "X7R"
+    }
+   ],
+   "componentBrandEn": "TDK",
+   "componentCode": "C3865225",
+   "componentLibraryType": "expand",
+   "componentModelEn": "C1608X7R2A472M080AA",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 0.0088,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 11,
+     "productPrice": 0.0088,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 0.0088,
+     "startNumber": 12
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.0035,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.0033,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0033,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2401221317_TDK-C1608X7R2A472M080AA_C3865225.pdf",
+   "describe": "100V 4.7nF X7R ±20% 0603 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+   "erpComponentName": "4.7nF ±20% 100V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/multilayer-ceramic-capacitors-mlcc-smd-smt_tdk-c1608x7r2a472m080aa_C3865225.html",
+   "leastPatchNumber": 10,
+   "lossNumber": 5,
+   "minPurchaseNum": 2714,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "100V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±20%"
+    },
+    {
+     "attribute_name_en": "Capacitance",
+     "attribute_value_name": "4.7nF",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>4.7nF</span>"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "X7R"
+    }
+   ],
+   "componentBrandEn": "TDK",
+   "componentCode": "C3908166",
+   "componentLibraryType": "expand",
+   "componentModelEn": "C1608X7R2A472M080AE",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 0.0207,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 11,
+     "productPrice": 0.0207,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 0.0207,
+     "startNumber": 12
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.0081,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.0078,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0076,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2401221708_TDK-C1608X7R2A472M080AE_C3908166.pdf",
+   "describe": "100V 4.7nF X7R ±20% 0603 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+   "erpComponentName": "4.7nF ±20% 100V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/multilayer-ceramic-capacitors-mlcc-smd-smt_tdk-c1608x7r2a472m080ae_C3908166.html",
+   "leastPatchNumber": 10,
+   "lossNumber": 5,
+   "minPurchaseNum": 1179,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "100V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±10%"
+    },
+    {
+     "attribute_name_en": "Capacitance",
+     "attribute_value_name": "4.7nF",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>4.7nF</span>"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "X7R"
+    }
+   ],
+   "componentBrandEn": "TDK",
+   "componentCode": "C2168610",
+   "componentLibraryType": "expand",
+   "componentModelEn": "CGA3E2X7R2A472K080AA",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 0.0103,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 11,
+     "productPrice": 0.0103,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 0.0103,
+     "startNumber": 12
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.004,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.0039,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0038,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2304140030_TDK-CGA3E2X7R2A472K080AA_C2168610.pdf",
+   "describe": "100V 4.7nF X7R ±10% 0603 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+   "erpComponentName": "4.7nF ±10% 100V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/multilayer-ceramic-capacitors-mlcc-smd-smt_tdk-cga3e2x7r2a472k080aa_C2168610.html",
+   "leastPatchNumber": 20,
+   "lossNumber": 6,
+   "minPurchaseNum": 2357,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "100V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±10%"
+    },
+    {
+     "attribute_name_en": "Capacitance",
+     "attribute_value_name": "4.7nF",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>4.7nF</span>"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "X7R"
+    }
+   ],
+   "componentBrandEn": "TDK",
+   "componentCode": "C2171706",
+   "componentLibraryType": "expand",
+   "componentModelEn": "CGA3E2X7R2A472K080AE",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 0.0247,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 11,
+     "productPrice": 0.0247,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 0.0247,
+     "startNumber": 12
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.0096,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.0093,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0091,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2304140030_TDK-CGA3E2X7R2A472K080AE_C2171706.pdf",
+   "describe": "100V 4.7nF X7R ±10% 0603 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+   "erpComponentName": "4.7nF ±10% 100V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/multilayer-ceramic-capacitors-mlcc-smd-smt_tdk-cga3e2x7r2a472k080ae_C2171706.html",
+   "leastPatchNumber": 10,
+   "lossNumber": 5,
+   "minPurchaseNum": 963,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "50V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±10%"
+    },
+    {
+     "attribute_name_en": "Capacitance",
+     "attribute_value_name": "4.7nF",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>4.7nF</span>"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "X7R"
+    }
+   ],
+   "componentBrandEn": "TDK",
+   "componentCode": "C2171859",
+   "componentLibraryType": "expand",
+   "componentModelEn": "CGA3E2X7R1H472K080AE",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 0.0212,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 11,
+     "productPrice": 0.0212,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 0.0212,
+     "startNumber": 12
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.0082,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.0079,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0078,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2304140030_TDK-CGA3E2X7R1H472K080AE_C2171859.pdf",
+   "describe": "4.7nF 50V X7R ±10% 0603 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+   "erpComponentName": "4.7nF ±10% 50V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/multilayer-ceramic-capacitors-mlcc-smd-smt_tdk-cga3e2x7r1h472k080ae_C2171859.html",
+   "leastPatchNumber": 20,
+   "lossNumber": 6,
+   "minPurchaseNum": 1149,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "50V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±20%"
+    },
+    {
+     "attribute_name_en": "Capacitance",
+     "attribute_value_name": "4.7nF",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>4.7nF</span>"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "X7R"
+    }
+   ],
+   "componentBrandEn": "TDK",
+   "componentCode": "C2171864",
+   "componentLibraryType": "expand",
+   "componentModelEn": "CGA3E2X7R1H472M080AE",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 0.0182,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 11,
+     "productPrice": 0.0182,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 0.0182,
+     "startNumber": 12
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.0071,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.0069,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0067,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2304140030_TDK-CGA3E2X7R1H472M080AE_C2171864.pdf",
+   "describe": "4.7nF 50V X7R ±20% 0603 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+   "erpComponentName": "4.7nF ±20% 50V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/multilayer-ceramic-capacitors-mlcc-smd-smt_tdk-cga3e2x7r1h472m080ae_C2171864.html",
+   "leastPatchNumber": 10,
+   "lossNumber": 5,
+   "minPurchaseNum": 1337,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "50V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±20%"
+    },
+    {
+     "attribute_name_en": "Capacitance",
+     "attribute_value_name": "4.7nF",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>4.7nF</span>"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "X7R"
+    }
+   ],
+   "componentBrandEn": "TDK",
+   "componentCode": "C2173298",
+   "componentLibraryType": "expand",
+   "componentModelEn": "CEU3E2X7R1H472M080AE",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 0.0194,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 11,
+     "productPrice": 0.0194,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 0.0194,
+     "startNumber": 12
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.0075,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.0072,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0071,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2304140030_TDK-CEU3E2X7R1H472M080AE_C2173298.pdf",
+   "describe": "4.7nF 50V X7R ±20% 0603 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+   "erpComponentName": "4.7nF ±20% 50V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/multilayer-ceramic-capacitors-mlcc-smd-smt_tdk-ceu3e2x7r1h472m080ae_C2173298.html",
+   "leastPatchNumber": 10,
+   "lossNumber": 5,
+   "minPurchaseNum": 1262,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "50V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±20%"
+    },
+    {
+     "attribute_name_en": "Capacitance",
+     "attribute_value_name": "4.7nF",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>4.7nF</span>"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "X7R"
+    }
+   ],
+   "componentBrandEn": "TDK",
+   "componentCode": "C2180756",
+   "componentLibraryType": "expand",
+   "componentModelEn": "CGA3E2X7R1H472M080AA",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 0.006,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 11,
+     "productPrice": 0.006,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 0.006,
+     "startNumber": 12
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.0023,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.0023,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0022,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2304140030_TDK-CGA3E2X7R1H472M080AA_C2180756.pdf",
+   "describe": "4.7nF 50V X7R ±20% 0603 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+   "erpComponentName": "4.7nF ±20% 50V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/multilayer-ceramic-capacitors-mlcc-smd-smt_tdk-cga3e2x7r1h472m080aa_C2180756.html",
+   "leastPatchNumber": 10,
+   "lossNumber": 5,
+   "minPurchaseNum": 4000,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "100V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±20%"
+    },
+    {
+     "attribute_name_en": "Capacitance",
+     "attribute_value_name": "4.7nF",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>4.7nF</span>"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "X7R"
+    }
+   ],
+   "componentBrandEn": "TDK",
+   "componentCode": "C2182444",
+   "componentLibraryType": "expand",
+   "componentModelEn": "CGA3E2X7R2A472M080AA",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 0.0089,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 11,
+     "productPrice": 0.0089,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 0.0089,
+     "startNumber": 12
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.0035,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.0033,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0033,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2304140030_TDK-CGA3E2X7R2A472M080AA_C2182444.pdf",
+   "describe": "100V 4.7nF X7R ±20% 0603 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+   "erpComponentName": "4.7nF ±20% 100V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/multilayer-ceramic-capacitors-mlcc-smd-smt_tdk-cga3e2x7r2a472m080aa_C2182444.html",
+   "leastPatchNumber": 10,
+   "lossNumber": 5,
+   "minPurchaseNum": 2714,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "100V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±20%"
+    },
+    {
+     "attribute_name_en": "Capacitance",
+     "attribute_value_name": "4.7nF",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>4.7nF</span>"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "X7R"
+    }
+   ],
+   "componentBrandEn": "TDK",
+   "componentCode": "C2208866",
+   "componentLibraryType": "expand",
+   "componentModelEn": "CGA3E2X7R2A472M080AE",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 0.0325,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 11,
+     "productPrice": 0.0325,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 0.0325,
+     "startNumber": 12
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.0126,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.0122,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0119,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2304140030_TDK-CGA3E2X7R2A472M080AE_C2208866.pdf",
+   "describe": "100V 4.7nF X7R ±20% 0603 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+   "erpComponentName": "4.7nF ±20% 100V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/multilayer-ceramic-capacitors-mlcc-smd-smt_tdk-cga3e2x7r2a472m080ae_C2208866.html",
+   "leastPatchNumber": 5,
+   "lossNumber": 4,
+   "minPurchaseNum": 735,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "50V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±10%"
+    },
+    {
+     "attribute_name_en": "Capacitance",
+     "attribute_value_name": "4.7nF",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>4.7nF</span>"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "X7R"
+    }
+   ],
+   "componentBrandEn": "TDK",
+   "componentCode": "C3845212",
+   "componentLibraryType": "expand",
+   "componentModelEn": "CEU3E2X7R1H472K080AE",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 0.0194,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 11,
+     "productPrice": 0.0194,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 0.0194,
+     "startNumber": 12
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.0075,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.0072,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0071,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2401221255_TDK-CEU3E2X7R1H472K080AE_C3845212.pdf",
+   "describe": "4.7nF 50V X7R ±10% 0603 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+   "erpComponentName": "4.7nF ±10% 50V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/multilayer-ceramic-capacitors-mlcc-smd-smt_tdk-ceu3e2x7r1h472k080ae_C3845212.html",
+   "leastPatchNumber": 5,
+   "lossNumber": 0,
+   "minPurchaseNum": 1262,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "100V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±10%"
+    },
+    {
+     "attribute_name_en": "Capacitance",
+     "attribute_value_name": "4.7nF",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>4.7nF</span>"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "X7R"
+    }
+   ],
+   "componentBrandEn": "TDK",
+   "componentCode": "C3885152",
+   "componentLibraryType": "expand",
+   "componentModelEn": "CGJ3E2X7R2A472K080AA",
+   "componentPrices": [
+    {
+     "endNumber": 199,
+     "productPrice": 0.0325,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 239,
+     "productPrice": 0.0325,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 3999,
+     "productPrice": 0.0325,
+     "startNumber": 240
+    },
+    {
+     "endNumber": 9999,
+     "productPrice": 0.0126,
+     "startNumber": 4000
+    },
+    {
+     "endNumber": 19999,
+     "productPrice": 0.0122,
+     "startNumber": 10000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.012,
+     "startNumber": 20000
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2401221518_TDK-CGJ3E2X7R2A472K080AA_C3885152.pdf",
+   "describe": "100V 4.7nF X7R ±10% 0603 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+   "erpComponentName": "4.7nF ±10% 100V",
+   "isBuyComponent": "0",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/multilayer-ceramic-capacitors-mlcc-smd-smt_tdk-cgj3e2x7r2a472k080aa_C3885152.html",
+   "leastPatchNumber": 5,
+   "lossNumber": 4,
+   "minPurchaseNum": 276,
+   "noBuyReason": "This product is no longer manufactured.",
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "50V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±10%"
+    },
+    {
+     "attribute_name_en": "Capacitance",
+     "attribute_value_name": "4.7nF",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>4.7nF</span>"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "X7R"
+    }
+   ],
+   "componentBrandEn": "TDK",
+   "componentCode": "C6881878",
+   "componentLibraryType": "expand",
+   "componentModelEn": "CGA3E2X7R1H472K080AA",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 0.012,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 11,
+     "productPrice": 0.012,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 0.012,
+     "startNumber": 12
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.0048,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.0047,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0046,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2312271237_TDK-CGA3E2X7R1H472K080AA_C6881878.pdf",
+   "describe": "4.7nF 50V X7R ±10% 0603 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+   "erpComponentName": "4.7nF ±10% 50V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/multilayer-ceramic-capacitors-mlcc-smd-smt_tdk-cga3e2x7r1h472k080aa_C6881878.html",
+   "leastPatchNumber": 20,
+   "lossNumber": 6,
+   "minPurchaseNum": 1947,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "16V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±10%"
+    },
+    {
+     "attribute_name_en": "Capacitance",
+     "attribute_value_name": "100nF"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "X7R"
+    }
+   ],
+   "componentBrandEn": "TDK",
+   "componentCode": "C2844757",
+   "componentLibraryType": "expand",
+   "componentModelEn": "C1608X7R1C104K",
+   "componentPrices": [
+    {
+     "endNumber": 999,
+     "productPrice": 0.0007,
+     "startNumber": 1
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0002,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+   "dataManualUrl": null,
+   "describe": "100nF 16V X7R ±10% 0603 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+   "erpComponentName": "100nF ±10% 16V",
+   "isBuyComponent": "0",
+   "lcscGoodsUrl": null,
+   "leastPatchNumber": 20,
+   "lossNumber": 10,
+   "minPurchaseNum": 4000,
+   "noBuyReason": "This product is no longer manufactured.",
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": null,
+   "componentBrandEn": "TDK",
+   "componentCode": "C5331013",
+   "componentLibraryType": "expand",
+   "componentModelEn": "C1608X7R1H104K",
+   "componentPrices": [
+    {
+     "endNumber": 199,
+     "productPrice": 0.0481,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 239,
+     "productPrice": 0.0481,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 3999,
+     "productPrice": 0.0481,
+     "startNumber": 240
+    },
+    {
+     "endNumber": 9999,
+     "productPrice": 0.0187,
+     "startNumber": 4000
+    },
+    {
+     "endNumber": 19999,
+     "productPrice": 0.0181,
+     "startNumber": 10000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0178,
+     "startNumber": 20000
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2212150930_TDK-C1608X7R1H104K_C5331013.pdf",
+   "describe": "0603 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+   "erpComponentName": "C1608X7R1H104K",
+   "isBuyComponent": "0",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/multilayer-ceramic-capacitors-mlcc-smd-smt_tdk-c1608x7r1h104k_C5331013.html",
+   "leastPatchNumber": 5,
+   "lossNumber": 4,
+   "minPurchaseNum": 187,
+   "noBuyReason": "This product is no longer manufactured.",
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "50V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±10%"
+    },
+    {
+     "attribute_name_en": "Capacitance",
+     "attribute_value_name": "47nF"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "X7R"
+    }
+   ],
+   "componentBrandEn": "TDK",
+   "componentCode": "C5331058",
+   "componentLibraryType": "expand",
+   "componentModelEn": "C1608X7R1H473K",
+   "componentPrices": [
+    {
+     "endNumber": 199,
+     "productPrice": 0.0291,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 599,
+     "productPrice": 0.0228,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 1999,
+     "productPrice": 0.0192,
+     "startNumber": 600
+    },
+    {
+     "endNumber": 7999,
+     "productPrice": 0.0171,
+     "startNumber": 2000
+    },
+    {
+     "endNumber": 15999,
+     "productPrice": 0.0145,
+     "startNumber": 8000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0135,
+     "startNumber": 16000
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2212150930_TDK-C1608X7R1H473K_C5331058.pdf",
+   "describe": "47nF 50V X7R ±10% 0603 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+   "erpComponentName": "47nF ±10% 50V",
+   "isBuyComponent": "0",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/multilayer-ceramic-capacitors-mlcc-smd-smt_tdk-c1608x7r1h473k_C5331058.html",
+   "leastPatchNumber": 5,
+   "lossNumber": 5,
+   "minPurchaseNum": 393,
+   "noBuyReason": "This product is no longer manufactured.",
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "16V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±20%"
+    },
+    {
+     "attribute_name_en": "Capacitance",
+     "attribute_value_name": "68nF"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "X7R"
+    }
+   ],
+   "componentBrandEn": "TDK",
+   "componentCode": "C19286232",
+   "componentLibraryType": "expand",
+   "componentModelEn": "C1608X7R1C683M",
+   "componentPrices": [
+    {
+     "endNumber": 499,
+     "productPrice": 0.012,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 599,
+     "productPrice": 0.012,
+     "startNumber": 500
+    },
+    {
+     "endNumber": 9999,
+     "productPrice": 0.012,
+     "startNumber": 600
+    },
+    {
+     "endNumber": 24999,
+     "productPrice": 0.0048,
+     "startNumber": 10000
+    },
+    {
+     "endNumber": 49999,
+     "productPrice": 0.0046,
+     "startNumber": 25000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0046,
+     "startNumber": 50000
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2312191000_TDK-C1608X7R1C683M_C19286232.pdf",
+   "describe": "16V 68nF X7R ±20% 0603 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+   "erpComponentName": "68nF ±20% 16V",
+   "isBuyComponent": "0",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/multilayer-ceramic-capacitors-mlcc-smd-smt_tdk-c1608x7r1c683m_C19286232.html",
+   "leastPatchNumber": 5,
+   "lossNumber": 5,
+   "minPurchaseNum": 747,
+   "noBuyReason": "This product is no longer manufactured.",
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "25V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±20%"
+    },
+    {
+     "attribute_name_en": "Capacitance",
+     "attribute_value_name": "15nF"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "X7R"
+    }
+   ],
+   "componentBrandEn": "TDK",
+   "componentCode": "C19324002",
+   "componentLibraryType": "expand",
+   "componentModelEn": "C1608X7R1E153M",
+   "componentPrices": [
+    {
+     "endNumber": 199,
+     "productPrice": 0.028,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 239,
+     "productPrice": 0.028,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 3999,
+     "productPrice": 0.028,
+     "startNumber": 240
+    },
+    {
+     "endNumber": 9999,
+     "productPrice": 0.0112,
+     "startNumber": 4000
+    },
+    {
+     "endNumber": 19999,
+     "productPrice": 0.0108,
+     "startNumber": 10000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0107,
+     "startNumber": 20000
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2312191644_TDK-C1608X7R1E153M_C19324002.pdf",
+   "describe": "15nF 25V X7R ±20% 0603 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+   "erpComponentName": "15nF ±20% 25V",
+   "isBuyComponent": "0",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/multilayer-ceramic-capacitors-mlcc-smd-smt_tdk-c1608x7r1e153m_C19324002.html",
+   "leastPatchNumber": 5,
+   "lossNumber": 5,
+   "minPurchaseNum": 320,
+   "noBuyReason": "This product is no longer manufactured.",
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "25V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±10%"
+    },
+    {
+     "attribute_name_en": "Capacitance",
+     "attribute_value_name": "15nF"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "X7R"
+    }
+   ],
+   "componentBrandEn": "TDK",
+   "componentCode": "C19476118",
+   "componentLibraryType": "expand",
+   "componentModelEn": "C1608X7R1E153K",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 0.2839,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 11,
+     "productPrice": 0.2839,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 0.2839,
+     "startNumber": 12
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.1133,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.1095,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.1076,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2312251243_TDK-C1608X7R1E153K_C19476118.pdf",
+   "describe": "15nF 25V X7R ±10% 0603 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+   "erpComponentName": "15nF ±10% 25V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/multilayer-ceramic-capacitors-mlcc-smd-smt_tdk-c1608x7r1e153k_C19476118.html",
+   "leastPatchNumber": 5,
+   "lossNumber": 0,
+   "minPurchaseNum": 32,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "16V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±20%"
+    },
+    {
+     "attribute_name_en": "Capacitance",
+     "attribute_value_name": "150nF"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "X7R"
+    }
+   ],
+   "componentBrandEn": "TDK",
+   "componentCode": "C19525963",
+   "componentLibraryType": "expand",
+   "componentModelEn": "C1608X7R1C154M",
+   "componentPrices": [
+    {
+     "endNumber": 99,
+     "productPrice": 0.0621,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 119,
+     "productPrice": 0.0621,
+     "startNumber": 100
+    },
+    {
+     "endNumber": 1999,
+     "productPrice": 0.0621,
+     "startNumber": 120
+    },
+    {
+     "endNumber": 4999,
+     "productPrice": 0.0247,
+     "startNumber": 2000
+    },
+    {
+     "endNumber": 9999,
+     "productPrice": 0.0239,
+     "startNumber": 5000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0236,
+     "startNumber": 10000
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2312211324_TDK-C1608X7R1C154M_C19525963.pdf",
+   "describe": "150nF 16V X7R ±20% 0603 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+   "erpComponentName": "150nF ±20% 16V",
+   "isBuyComponent": "0",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/multilayer-ceramic-capacitors-mlcc-smd-smt_tdk-c1608x7r1c154m_C19525963.html",
+   "leastPatchNumber": 5,
+   "lossNumber": 0,
+   "minPurchaseNum": 145,
+   "noBuyReason": "This product is no longer manufactured.",
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "25V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±10%"
+    },
+    {
+     "attribute_name_en": "Capacitance",
+     "attribute_value_name": "68nF"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "X7R"
+    }
+   ],
+   "componentBrandEn": "TDK",
+   "componentCode": "C19574909",
+   "componentLibraryType": "expand",
+   "componentModelEn": "C1608X7R1E683K",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 0.2839,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 11,
+     "productPrice": 0.2839,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 0.2839,
+     "startNumber": 12
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.1133,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.1095,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.1076,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2312251744_TDK-C1608X7R1E683K_C19574909.pdf",
+   "describe": "25V 68nF X7R ±10% 0603 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+   "erpComponentName": "68nF ±10% 25V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/multilayer-ceramic-capacitors-mlcc-smd-smt_tdk-c1608x7r1e683k_C19574909.html",
+   "leastPatchNumber": 5,
+   "lossNumber": 0,
+   "minPurchaseNum": 32,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "50V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±20%"
+    },
+    {
+     "attribute_name_en": "Capacitance",
+     "attribute_value_name": "470pF"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "X7R"
+    }
+   ],
+   "componentBrandEn": "TDK",
+   "componentCode": "C19597602",
+   "componentLibraryType": "expand",
+   "componentModelEn": "C1608X7R1H471M",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 0.2839,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 11,
+     "productPrice": 0.2839,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 0.2839,
+     "startNumber": 12
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.1133,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.1095,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.1076,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+   "dataManualUrl": "https://www.lcsc.com/datasheet/lcsc_datasheet_2312271459_TDK-C1608X7R1H471M_C19597602.pdf",
+   "describe": "470pF 50V X7R ±20% 0603 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+   "erpComponentName": "470pF ±20% 50V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/multilayer-ceramic-capacitors-mlcc-smd-smt_tdk-c1608x7r1h471m_C19597602.html",
+   "leastPatchNumber": 5,
+   "lossNumber": 5,
+   "minPurchaseNum": 32,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "50V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±20%"
+    },
+    {
+     "attribute_name_en": "Capacitance",
+     "attribute_value_name": "100pF"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "X7R"
+    }
+   ],
+   "componentBrandEn": "TDK",
+   "componentCode": "C20466787",
+   "componentLibraryType": "expand",
+   "componentModelEn": "C1608X7R1H101M",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 0.2847,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 11,
+     "productPrice": 0.2847,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 0.2847,
+     "startNumber": 12
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.1136,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.1099,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.1079,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+   "dataManualUrl": "",
+   "describe": "100pF 50V X7R ±20% 0603 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+   "erpComponentName": "100pF ±20% 50V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/multilayer-ceramic-capacitors-mlcc-smd-smt_tdk-c1608x7r1h101m_C20466787.html",
+   "leastPatchNumber": 5,
+   "lossNumber": 5,
+   "minPurchaseNum": 32,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": null,
+   "componentBrandEn": "TDK",
+   "componentCode": "C41408815",
+   "componentLibraryType": "expand",
+   "componentModelEn": "C1608X7R1E154KT",
+   "componentPrices": [
+    {
+     "endNumber": 99,
+     "productPrice": 0.0395,
+     "startNumber": 1
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0204,
+     "startNumber": 100
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "New Arrivals",
+   "dataManualUrl": null,
+   "describe": "0603 New Arrivals ROHS",
+   "erpComponentName": "C1608X7R1E154KT",
+   "isBuyComponent": "0",
+   "lcscGoodsUrl": null,
+   "leastPatchNumber": 5,
+   "lossNumber": 4,
+   "minPurchaseNum": 439,
+   "noBuyReason": "This product is no longer manufactured.",
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "50V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±10%"
+    },
+    {
+     "attribute_name_en": "Capacitance",
+     "attribute_value_name": "100nF"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "X7R"
+    }
+   ],
+   "componentBrandEn": "TDK",
+   "componentCode": "C56476",
+   "componentLibraryType": "expand",
+   "componentModelEn": "C1608X7R1H104KT000N",
+   "componentPrices": [
+    {
+     "endNumber": 99,
+     "productPrice": 0.0192,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 299,
+     "productPrice": 0.0151,
+     "startNumber": 100
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.0128,
+     "startNumber": 300
+    },
+    {
+     "endNumber": 3999,
+     "productPrice": 0.0114,
+     "startNumber": 1000
+    },
+    {
+     "endNumber": 7999,
+     "productPrice": 0.0089,
+     "startNumber": 4000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0082,
+     "startNumber": 8000
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+   "dataManualUrl": "https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_TDK-C1608X7R1H104KT000N_C56476.pdf",
+   "describe": "100nF 50V X7R ±10% 0603 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+   "erpComponentName": "100nF ±10% 50V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/multilayer-ceramic-capacitors-mlcc-smd-smt_tdk-c1608x7r1h104kt000n_C56476.html",
+   "leastPatchNumber": 20,
+   "lossNumber": 10,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 469655
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "50V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±10%"
+    },
+    {
+     "attribute_name_en": "Capacitance",
+     "attribute_value_name": "10nF"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "X7R"
+    }
+   ],
+   "componentBrandEn": "TDK",
+   "componentCode": "C72452",
+   "componentLibraryType": "expand",
+   "componentModelEn": "C1608X7R1H103KT000N",
+   "componentPrices": [
+    {
+     "endNumber": 99,
+     "productPrice": 0.0131,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 299,
+     "productPrice": 0.0108,
+     "startNumber": 100
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.0094,
+     "startNumber": 300
+    },
+    {
+     "endNumber": 3999,
+     "productPrice": 0.0086,
+     "startNumber": 1000
+    },
+    {
+     "endNumber": 7999,
+     "productPrice": 0.0079,
+     "startNumber": 4000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0076,
+     "startNumber": 8000
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+   "dataManualUrl": "https://datasheet.lcsc.com/lcsc/1912112237_TDK-C1608X7R1H103KT000N_C72452.pdf",
+   "describe": "10nF 50V X7R ±10% 0603 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+   "erpComponentName": "10nF ±10% 50V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://lcsc.comhttps://lcsc.com/product-detail/Multilayer-Ceramic-Capacitors-MLCC-SMD-SMT_TDK-C1608X7R1H103KT000N_C72452.html",
+   "leastPatchNumber": 20,
+   "lossNumber": 10,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 5327
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "10V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±10%"
+    },
+    {
+     "attribute_name_en": "Capacitance",
+     "attribute_value_name": "2.2uF"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "X7R"
+    }
+   ],
+   "componentBrandEn": "TDK",
+   "componentCode": "C76616",
+   "componentLibraryType": "expand",
+   "componentModelEn": "C1608X7R1A225KT000E",
+   "componentPrices": [
+    {
+     "endNumber": 199,
+     "productPrice": 0.0335,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 599,
+     "productPrice": 0.0264,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 3999,
+     "productPrice": 0.0223,
+     "startNumber": 600
+    },
+    {
+     "endNumber": 7999,
+     "productPrice": 0.0199,
+     "startNumber": 4000
+    },
+    {
+     "endNumber": 19999,
+     "productPrice": 0.0178,
+     "startNumber": 8000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0168,
+     "startNumber": 20000
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2304140030_TDK-C1608X7R1A225KT000E_C76616.pdf",
+   "describe": "10V 2.2uF X7R ±10% 0603 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+   "erpComponentName": "2.2uF ±10% 10V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/multilayer-ceramic-capacitors-mlcc-smd-smt_tdk-c1608x7r1a225kt000e_C76616.html",
+   "leastPatchNumber": 5,
+   "lossNumber": 4,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 4
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "16V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±10%"
+    },
+    {
+     "attribute_name_en": "Capacitance",
+     "attribute_value_name": "1uF"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "X7R"
+    }
+   ],
+   "componentBrandEn": "TDK",
+   "componentCode": "C76617",
+   "componentLibraryType": "expand",
+   "componentModelEn": "C1608X7R1C105KT000N",
+   "componentPrices": [
+    {
+     "endNumber": 99,
+     "productPrice": 0.0423,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 299,
+     "productPrice": 0.0343,
+     "startNumber": 100
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.0299,
+     "startNumber": 300
+    },
+    {
+     "endNumber": 3999,
+     "productPrice": 0.0273,
+     "startNumber": 1000
+    },
+    {
+     "endNumber": 7999,
+     "productPrice": 0.0239,
+     "startNumber": 4000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0228,
+     "startNumber": 8000
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2304140030_TDK-C1608X7R1C105KT000N_C76617.pdf",
+   "describe": "16V 1uF X7R ±10% 0603 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+   "erpComponentName": "1uF ±10% 16V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/multilayer-ceramic-capacitors-mlcc-smd-smt_tdk-c1608x7r1c105kt000n_C76617.html",
+   "leastPatchNumber": 20,
+   "lossNumber": 10,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 22930
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "25V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±10%"
+    },
+    {
+     "attribute_name_en": "Capacitance",
+     "attribute_value_name": "1uF"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "X7R"
+    }
+   ],
+   "componentBrandEn": "TDK",
+   "componentCode": "C76619",
+   "componentLibraryType": "expand",
+   "componentModelEn": "C1608X7R1E105KT000N",
+   "componentPrices": [
+    {
+     "endNumber": 99,
+     "productPrice": 0.0314,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 299,
+     "productPrice": 0.0259,
+     "startNumber": 100
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.023,
+     "startNumber": 300
+    },
+    {
+     "endNumber": 3999,
+     "productPrice": 0.0212,
+     "startNumber": 1000
+    },
+    {
+     "endNumber": 7999,
+     "productPrice": 0.0194,
+     "startNumber": 4000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0186,
+     "startNumber": 8000
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2304140030_TDK-C1608X7R1E105KT000N_C76619.pdf",
+   "describe": "1uF 25V X7R ±10% 0603 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+   "erpComponentName": "1uF ±10% 25V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/multilayer-ceramic-capacitors-mlcc-smd-smt_tdk-c1608x7r1e105kt000n_C76619.html",
+   "leastPatchNumber": 20,
+   "lossNumber": 8,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 5983
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "25V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±10%"
+    },
+    {
+     "attribute_name_en": "Capacitance",
+     "attribute_value_name": "330nF"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "X7R"
+    }
+   ],
+   "componentBrandEn": "TDK",
+   "componentCode": "C76620",
+   "componentLibraryType": "expand",
+   "componentModelEn": "C1608X7R1E334KT000N",
+   "componentPrices": [
+    {
+     "endNumber": 99,
+     "productPrice": 0.0527,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 299,
+     "productPrice": 0.0421,
+     "startNumber": 100
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.0368,
+     "startNumber": 300
+    },
+    {
+     "endNumber": 3999,
+     "productPrice": 0.0327,
+     "startNumber": 1000
+    },
+    {
+     "endNumber": 7999,
+     "productPrice": 0.0295,
+     "startNumber": 4000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0278,
+     "startNumber": 8000
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2304140030_TDK-C1608X7R1E334KT000N_C76620.pdf",
+   "describe": "25V 330nF X7R ±10% 0603 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+   "erpComponentName": "330nF ±10% 25V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/multilayer-ceramic-capacitors-mlcc-smd-smt_tdk-c1608x7r1e334kt000n_C76620.html",
+   "leastPatchNumber": 5,
+   "lossNumber": 4,
+   "minPurchaseNum": 213,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 2
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "50V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±10%"
+    },
+    {
+     "attribute_name_en": "Capacitance",
+     "attribute_value_name": "330nF"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "X7R"
+    }
+   ],
+   "componentBrandEn": "TDK",
+   "componentCode": "C76621",
+   "componentLibraryType": "expand",
+   "componentModelEn": "C1608X7R1H334KT000E",
+   "componentPrices": [
+    {
+     "endNumber": 99,
+     "productPrice": 0.0675,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 299,
+     "productPrice": 0.0563,
+     "startNumber": 100
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.0506,
+     "startNumber": 300
+    },
+    {
+     "endNumber": 3999,
+     "productPrice": 0.0463,
+     "startNumber": 1000
+    },
+    {
+     "endNumber": 7999,
+     "productPrice": 0.0382,
+     "startNumber": 4000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0364,
+     "startNumber": 8000
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2304140030_TDK-C1608X7R1H334KT000E_C76621.pdf",
+   "describe": "330nF 50V X7R ±10% 0603 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+   "erpComponentName": "330nF ±10% 50V 停产",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/multilayer-ceramic-capacitors-mlcc-smd-smt_tdk-c1608x7r1h334kt000e_C76621.html",
+   "leastPatchNumber": 5,
+   "lossNumber": 4,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 32
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "16V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±10%"
+    },
+    {
+     "attribute_name_en": "Capacitance",
+     "attribute_value_name": "470nF"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "X7R"
+    }
+   ],
+   "componentBrandEn": "TDK",
+   "componentCode": "C194073",
+   "componentLibraryType": "expand",
+   "componentModelEn": "C1608X7R1C474KT000N",
+   "componentPrices": [
+    {
+     "endNumber": 499,
+     "productPrice": 0.0149,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 1499,
+     "productPrice": 0.0118,
+     "startNumber": 500
+    },
+    {
+     "endNumber": 3999,
+     "productPrice": 0.01,
+     "startNumber": 1500
+    },
+    {
+     "endNumber": 23999,
+     "productPrice": 0.009,
+     "startNumber": 4000
+    },
+    {
+     "endNumber": 47999,
+     "productPrice": 0.0081,
+     "startNumber": 24000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0076,
+     "startNumber": 48000
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+   "dataManualUrl": "",
+   "describe": "16V 470nF X7R ±10% 0603 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+   "erpComponentName": "470nF ±10% 16V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/multilayer-ceramic-capacitors-mlcc-smd-smt_tdk-c1608x7r1c474kt000n_C194073.html",
+   "leastPatchNumber": 20,
+   "lossNumber": 10,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 9
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "50V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±10%"
+    },
+    {
+     "attribute_name_en": "Capacitance",
+     "attribute_value_name": "22nF"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "X7R"
+    }
+   ],
+   "componentBrandEn": "TDK",
+   "componentCode": "C194074",
+   "componentLibraryType": "expand",
+   "componentModelEn": "C1608X7R1H223KT000N",
+   "componentPrices": [
+    {
+     "endNumber": 99,
+     "productPrice": 0.0143,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 299,
+     "productPrice": 0.0118,
+     "startNumber": 100
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.0104,
+     "startNumber": 300
+    },
+    {
+     "endNumber": 3999,
+     "productPrice": 0.0095,
+     "startNumber": 1000
+    },
+    {
+     "endNumber": 7999,
+     "productPrice": 0.0075,
+     "startNumber": 4000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0071,
+     "startNumber": 8000
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+   "dataManualUrl": "",
+   "describe": "22nF 50V X7R ±10% 0603 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+   "erpComponentName": "22nF ±10% 50V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/multilayer-ceramic-capacitors-mlcc-smd-smt_tdk-c1608x7r1h223kt000n_C194074.html",
+   "leastPatchNumber": 20,
+   "lossNumber": 10,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 8216
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "25V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±10%"
+    },
+    {
+     "attribute_name_en": "Capacitance",
+     "attribute_value_name": "100nF"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "X7R"
+    }
+   ],
+   "componentBrandEn": "TDK",
+   "componentCode": "C338036",
+   "componentLibraryType": "expand",
+   "componentModelEn": "C1608X7R1E104KT000N",
+   "componentPrices": [
+    {
+     "endNumber": 499,
+     "productPrice": 0.0085,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 1499,
+     "productPrice": 0.0083,
+     "startNumber": 500
+    },
+    {
+     "endNumber": 3999,
+     "productPrice": 0.0081,
+     "startNumber": 1500
+    },
+    {
+     "endNumber": 4099,
+     "productPrice": 0.008,
+     "startNumber": 4000
+    },
+    {
+     "endNumber": 4199,
+     "productPrice": 0.008,
+     "startNumber": 4100
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.008,
+     "startNumber": 4200
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2304140030_TDK-C1608X7R1E104KT000N_C338036.pdf",
+   "describe": "100nF 25V X7R ±10% 0603 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+   "erpComponentName": "100nF ±10% 25V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/multilayer-ceramic-capacitors-mlcc-smd-smt_tdk-c1608x7r1e104kt000n_C338036.html",
+   "leastPatchNumber": 20,
+   "lossNumber": 10,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 24535
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "100V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±10%"
+    },
+    {
+     "attribute_name_en": "Capacitance",
+     "attribute_value_name": "2.2nF"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "X7R"
+    }
+   ],
+   "componentBrandEn": "TDK",
+   "componentCode": "C342518",
+   "componentLibraryType": "expand",
+   "componentModelEn": "C1608X7R2A222KT000N",
+   "componentPrices": [
+    {
+     "endNumber": 499,
+     "productPrice": 0.0169,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 1499,
+     "productPrice": 0.0135,
+     "startNumber": 500
+    },
+    {
+     "endNumber": 3999,
+     "productPrice": 0.0116,
+     "startNumber": 1500
+    },
+    {
+     "endNumber": 23999,
+     "productPrice": 0.0104,
+     "startNumber": 4000
+    },
+    {
+     "endNumber": 47999,
+     "productPrice": 0.0094,
+     "startNumber": 24000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0088,
+     "startNumber": 48000
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2304140030_TDK-C1608X7R2A222KT000N_C342518.pdf",
+   "describe": "100V 2.2nF X7R ±10% 0603 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+   "erpComponentName": "2.2nF ±10% 100V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/multilayer-ceramic-capacitors-mlcc-smd-smt_tdk-c1608x7r2a222kt000n_C342518.html",
+   "leastPatchNumber": 20,
+   "lossNumber": 8,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 90
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "100V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±10%"
+    },
+    {
+     "attribute_name_en": "Capacitance",
+     "attribute_value_name": "22nF"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "X7R"
+    }
+   ],
+   "componentBrandEn": "TDK",
+   "componentCode": "C342519",
+   "componentLibraryType": "expand",
+   "componentModelEn": "C1608X7R2A223KT000N",
+   "componentPrices": [
+    {
+     "endNumber": 499,
+     "productPrice": 0.016,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 1499,
+     "productPrice": 0.0126,
+     "startNumber": 500
+    },
+    {
+     "endNumber": 3999,
+     "productPrice": 0.0108,
+     "startNumber": 1500
+    },
+    {
+     "endNumber": 23999,
+     "productPrice": 0.0097,
+     "startNumber": 4000
+    },
+    {
+     "endNumber": 47999,
+     "productPrice": 0.0087,
+     "startNumber": 24000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0081,
+     "startNumber": 48000
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/1912111437_TDK-C1608X7R2A223KT000N_C342519.pdf",
+   "describe": "100V 22nF X7R ±10% 0603 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+   "erpComponentName": "22nF ±10% 100V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/multilayer-ceramic-capacitors-mlcc-smd-smt_tdk-c1608x7r2a223kt000n_C342519.html",
+   "leastPatchNumber": 20,
+   "lossNumber": 10,
+   "minPurchaseNum": 711,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 5
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "100V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±10%"
+    },
+    {
+     "attribute_name_en": "Capacitance",
+     "attribute_value_name": "10nF"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "X7R"
+    }
+   ],
+   "componentBrandEn": "TDK",
+   "componentCode": "C342523",
+   "componentLibraryType": "expand",
+   "componentModelEn": "C1608X7R2A103KT000N",
+   "componentPrices": [
+    {
+     "endNumber": 499,
+     "productPrice": 0.0181,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 1499,
+     "productPrice": 0.0143,
+     "startNumber": 500
+    },
+    {
+     "endNumber": 3999,
+     "productPrice": 0.0122,
+     "startNumber": 1500
+    },
+    {
+     "endNumber": 23999,
+     "productPrice": 0.011,
+     "startNumber": 4000
+    },
+    {
+     "endNumber": 47999,
+     "productPrice": 0.0099,
+     "startNumber": 24000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0093,
+     "startNumber": 48000
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2304140030_TDK-C1608X7R2A103KT000N_C342523.pdf",
+   "describe": "100V 10nF X7R ±10% 0603 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+   "erpComponentName": "10nF ±10% 100V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/multilayer-ceramic-capacitors-mlcc-smd-smt_tdk-c1608x7r2a103kt000n_C342523.html",
+   "leastPatchNumber": 20,
+   "lossNumber": 10,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 922
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "100V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±10%"
+    },
+    {
+     "attribute_name_en": "Capacitance",
+     "attribute_value_name": "1nF"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "X7R"
+    }
+   ],
+   "componentBrandEn": "TDK",
+   "componentCode": "C342527",
+   "componentLibraryType": "expand",
+   "componentModelEn": "C1608X7R2A102KT000N",
+   "componentPrices": [
+    {
+     "endNumber": 499,
+     "productPrice": 0.0111,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 1499,
+     "productPrice": 0.0089,
+     "startNumber": 500
+    },
+    {
+     "endNumber": 3999,
+     "productPrice": 0.0077,
+     "startNumber": 1500
+    },
+    {
+     "endNumber": 23999,
+     "productPrice": 0.0063,
+     "startNumber": 4000
+    },
+    {
+     "endNumber": 47999,
+     "productPrice": 0.0057,
+     "startNumber": 24000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0053,
+     "startNumber": 48000
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2304140030_TDK-C1608X7R2A102KT000N_C342527.pdf",
+   "describe": "100V 1nF X7R ±10% 0603 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+   "erpComponentName": "1nF ±10% 100V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/multilayer-ceramic-capacitors-mlcc-smd-smt_tdk-c1608x7r2a102kt000n_C342527.html",
+   "leastPatchNumber": 20,
+   "lossNumber": 8,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 3063
+  }
+ ],
+ "returned": 50,
+ "schema": 1,
+ "total_matches": 7866
+}

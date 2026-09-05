@@ -1,0 +1,3539 @@
+{
+ "endpoint": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
+ "exhausted": false,
+ "fetched_utc": "2026-09-05T01:16:27Z",
+ "keyword": "300pF 0603 capacitor",
+ "page_size": 25,
+ "pages": 2,
+ "records": [
+  {
+   "assemblyComponentFlag": false,
+   "attributes": null,
+   "componentBrandEn": "JLCPCB Assembly",
+   "componentCode": "C9900061628",
+   "componentLibraryType": "expand",
+   "componentModelEn": "Capacitor-22uF±10%-0603-X5R-25V",
+   "componentPrices": [
+    {
+     "endNumber": 99,
+     "productPrice": 0.0395,
+     "startNumber": 1
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0204,
+     "startNumber": 100
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "New Arrivals",
+   "dataManualUrl": null,
+   "describe": "0603 New Arrivals ROHS",
+   "erpComponentName": "电容-22uF±10%-0603-X5R-25V",
+   "isBuyComponent": "0",
+   "lcscGoodsUrl": null,
+   "leastPatchNumber": 5,
+   "lossNumber": 4,
+   "minPurchaseNum": 439,
+   "noBuyReason": "This product is no longer manufactured.",
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "50V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±10%"
+    },
+    {
+     "attribute_name_en": "Capacitance",
+     "attribute_value_name": "300pF",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>300pF</span>"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "X7R"
+    }
+   ],
+   "componentBrandEn": "FH (Guangdong Fenghua Advanced Tech)",
+   "componentCode": "C1610",
+   "componentLibraryType": "expand",
+   "componentModelEn": "0603B301K500NT",
+   "componentPrices": [
+    {
+     "endNumber": 999,
+     "productPrice": 0.0099,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 3999,
+     "productPrice": 0.0081,
+     "startNumber": 1000
+    },
+    {
+     "endNumber": 7999,
+     "productPrice": 0.0065,
+     "startNumber": 4000
+    },
+    {
+     "endNumber": 47999,
+     "productPrice": 0.006,
+     "startNumber": 8000
+    },
+    {
+     "endNumber": 99999,
+     "productPrice": 0.0055,
+     "startNumber": 48000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0052,
+     "startNumber": 100000
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+   "dataManualUrl": "https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_FH--Guangdong-Fenghua-Advanced-Tech-0603B301K500NT_C1610.pdf",
+   "describe": "300pF 50V X7R ±10% 0603 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+   "erpComponentName": "300pF ±10% 50V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/multilayer-ceramic-capacitors-mlcc-smd-smt_fh-guangdong-fenghua-advanced-tech-0603b301k500nt_C1610.html",
+   "leastPatchNumber": 20,
+   "lossNumber": 10,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 13219
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "50V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±5%"
+    },
+    {
+     "attribute_name_en": "Capacitance",
+     "attribute_value_name": "300pF",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>300pF</span>"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "C0G"
+    }
+   ],
+   "componentBrandEn": "FH (Guangdong Fenghua Advanced Tech)",
+   "componentCode": "C52152",
+   "componentLibraryType": "expand",
+   "componentModelEn": "0603CG301J500NT",
+   "componentPrices": [
+    {
+     "endNumber": 499,
+     "productPrice": 0.0144,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 1499,
+     "productPrice": 0.0118,
+     "startNumber": 500
+    },
+    {
+     "endNumber": 3999,
+     "productPrice": 0.0103,
+     "startNumber": 1500
+    },
+    {
+     "endNumber": 23999,
+     "productPrice": 0.0087,
+     "startNumber": 4000
+    },
+    {
+     "endNumber": 47999,
+     "productPrice": 0.008,
+     "startNumber": 24000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0076,
+     "startNumber": 48000
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2304140030_FH--Guangdong-Fenghua-Advanced-Tech-0603CG301J500NT_C52152.pdf",
+   "describe": "300pF 50V C0G ±5% 0603 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+   "erpComponentName": "300pF ±5% 50V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/multilayer-ceramic-capacitors-mlcc-smd-smt_fh-guangdong-fenghua-advanced-tech-0603cg301j500nt_C52152.html",
+   "leastPatchNumber": 20,
+   "lossNumber": 10,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 4680
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "50V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±10%"
+    },
+    {
+     "attribute_name_en": "Capacitance",
+     "attribute_value_name": "300pF",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>300pF</span>"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "X7R"
+    }
+   ],
+   "componentBrandEn": "Walsin Tech Corp",
+   "componentCode": "C237206",
+   "componentLibraryType": "expand",
+   "componentModelEn": "0603B301K500CT",
+   "componentPrices": [
+    {
+     "endNumber": 199,
+     "productPrice": 0.0345,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 599,
+     "productPrice": 0.0277,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 3999,
+     "productPrice": 0.0238,
+     "startNumber": 600
+    },
+    {
+     "endNumber": 7999,
+     "productPrice": 0.0186,
+     "startNumber": 4000
+    },
+    {
+     "endNumber": 19999,
+     "productPrice": 0.0166,
+     "startNumber": 8000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0155,
+     "startNumber": 20000
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+   "dataManualUrl": "https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_Walsin-Tech-Corp-0603B301K500CT_C237206.pdf",
+   "describe": "300pF 50V X7R ±10% 0603 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+   "erpComponentName": "300pF ±10% 50V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/multilayer-ceramic-capacitors-mlcc-smd-smt_walsin-tech-corp-0603b301k500ct_C237206.html",
+   "leastPatchNumber": 5,
+   "lossNumber": 10,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 9
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "50V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±10%"
+    },
+    {
+     "attribute_name_en": "Capacitance",
+     "attribute_value_name": "300pF",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>300pF</span>"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "X7R"
+    }
+   ],
+   "componentBrandEn": "YAGEO",
+   "componentCode": "C282248",
+   "componentLibraryType": "expand",
+   "componentModelEn": "CC0603KRX7R9BB301",
+   "componentPrices": [
+    {
+     "endNumber": 999,
+     "productPrice": 0.009,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 3999,
+     "productPrice": 0.0079,
+     "startNumber": 1000
+    },
+    {
+     "endNumber": 7999,
+     "productPrice": 0.0072,
+     "startNumber": 4000
+    },
+    {
+     "endNumber": 47999,
+     "productPrice": 0.0068,
+     "startNumber": 8000
+    },
+    {
+     "endNumber": 99999,
+     "productPrice": 0.0065,
+     "startNumber": 48000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0063,
+     "startNumber": 100000
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+   "dataManualUrl": "https://www.lcsc.com/datasheet/lcsc_datasheet_2409272231_YAGEO-CC0603KRX7R9BB301_C282248.pdf",
+   "describe": "300pF 50V X7R ±10% 0603 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+   "erpComponentName": "300pF ±10% 50V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/multilayer-ceramic-capacitors-mlcc-smd-smt_yageo-cc0603krx7r9bb301_C282248.html",
+   "leastPatchNumber": 20,
+   "lossNumber": 10,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 68992
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "50V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±5%"
+    },
+    {
+     "attribute_name_en": "Capacitance",
+     "attribute_value_name": "300pF",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>300pF</span>"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "NP0"
+    }
+   ],
+   "componentBrandEn": "Walsin Tech Corp",
+   "componentCode": "C296061",
+   "componentLibraryType": "expand",
+   "componentModelEn": "0603N301J500CT",
+   "componentPrices": [
+    {
+     "endNumber": 499,
+     "productPrice": 0.0096,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 1499,
+     "productPrice": 0.0078,
+     "startNumber": 500
+    },
+    {
+     "endNumber": 3999,
+     "productPrice": 0.0068,
+     "startNumber": 1500
+    },
+    {
+     "endNumber": 23999,
+     "productPrice": 0.0062,
+     "startNumber": 4000
+    },
+    {
+     "endNumber": 47999,
+     "productPrice": 0.0057,
+     "startNumber": 24000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0054,
+     "startNumber": 48000
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2304140030_Walsin-Tech-Corp-0603N301J500CT_C296061.pdf",
+   "describe": "300pF 50V NP0 ±5% 0603 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+   "erpComponentName": "300pF ±5% 50V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/multilayer-ceramic-capacitors-mlcc-smd-smt_walsin-tech-corp-0603n301j500ct_C296061.html",
+   "leastPatchNumber": 20,
+   "lossNumber": 10,
+   "minPurchaseNum": 1149,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 123
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "50V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±10%"
+    },
+    {
+     "attribute_name_en": "Capacitance",
+     "attribute_value_name": "300pF",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>300pF</span>"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "X7R"
+    }
+   ],
+   "componentBrandEn": "CCTC",
+   "componentCode": "C376827",
+   "componentLibraryType": "expand",
+   "componentModelEn": "TCC0603X7R301K500CT",
+   "componentPrices": [
+    {
+     "endNumber": 999,
+     "productPrice": 0.0046,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 3999,
+     "productPrice": 0.0037,
+     "startNumber": 1000
+    },
+    {
+     "endNumber": 7999,
+     "productPrice": 0.0032,
+     "startNumber": 4000
+    },
+    {
+     "endNumber": 47999,
+     "productPrice": 0.0028,
+     "startNumber": 8000
+    },
+    {
+     "endNumber": 99999,
+     "productPrice": 0.0025,
+     "startNumber": 48000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0024,
+     "startNumber": 100000
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2304140030_CCTC-TCC0603X7R301K500CT_C376827.pdf",
+   "describe": "300pF 50V X7R ±10% 0603 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+   "erpComponentName": "300pF ±10% 50V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/multilayer-ceramic-capacitors-mlcc-smd-smt_cctc-tcc0603x7r301k500ct_C376827.html",
+   "leastPatchNumber": 20,
+   "lossNumber": 10,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 13036
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "50V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±5%"
+    },
+    {
+     "attribute_name_en": "Capacitance",
+     "attribute_value_name": "300pF",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>300pF</span>"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "NP0"
+    }
+   ],
+   "componentBrandEn": "YAGEO",
+   "componentCode": "C519401",
+   "componentLibraryType": "expand",
+   "componentModelEn": "CC0603JRNPO9BN301",
+   "componentPrices": [
+    {
+     "endNumber": 499,
+     "productPrice": 0.0138,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 1499,
+     "productPrice": 0.0116,
+     "startNumber": 500
+    },
+    {
+     "endNumber": 3999,
+     "productPrice": 0.0103,
+     "startNumber": 1500
+    },
+    {
+     "endNumber": 23999,
+     "productPrice": 0.0094,
+     "startNumber": 4000
+    },
+    {
+     "endNumber": 47999,
+     "productPrice": 0.0088,
+     "startNumber": 24000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0084,
+     "startNumber": 48000
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2005141203_YAGEO-CC0603JRNPO9BN301_C519401.pdf",
+   "describe": "300pF 50V NP0 ±5% 0603 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+   "erpComponentName": "300pF ±5% 50V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/multilayer-ceramic-capacitors-mlcc-smd-smt_yageo-cc0603jrnpo9bn301_C519401.html",
+   "leastPatchNumber": 20,
+   "lossNumber": 10,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 101157
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "50V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±2%"
+    },
+    {
+     "attribute_name_en": "Capacitance",
+     "attribute_value_name": "300pF",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>300pF</span>"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "NP0"
+    }
+   ],
+   "componentBrandEn": "YAGEO",
+   "componentCode": "C519478",
+   "componentLibraryType": "expand",
+   "componentModelEn": "CC0603GRNPO9BN301",
+   "componentPrices": [
+    {
+     "endNumber": 499,
+     "productPrice": 0.0133,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 1499,
+     "productPrice": 0.0115,
+     "startNumber": 500
+    },
+    {
+     "endNumber": 3999,
+     "productPrice": 0.0105,
+     "startNumber": 1500
+    },
+    {
+     "endNumber": 23999,
+     "productPrice": 0.0099,
+     "startNumber": 4000
+    },
+    {
+     "endNumber": 47999,
+     "productPrice": 0.0093,
+     "startNumber": 24000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.009,
+     "startNumber": 48000
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2008122133_YAGEO-CC0603GRNPO9BN301_C519478.pdf",
+   "describe": "300pF 50V NP0 ±2% 0603 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+   "erpComponentName": "300pF ±2% 50V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/multilayer-ceramic-capacitors-mlcc-smd-smt_yageo-cc0603grnpo9bn301_C519478.html",
+   "leastPatchNumber": 20,
+   "lossNumber": 10,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 1014
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "50V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±5%"
+    },
+    {
+     "attribute_name_en": "Capacitance",
+     "attribute_value_name": "300pF",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>300pF</span>"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "-"
+    }
+   ],
+   "componentBrandEn": "Murata Electronics",
+   "componentCode": "C913766",
+   "componentLibraryType": "expand",
+   "componentModelEn": "GCM1885C1H301JA16D",
+   "componentPrices": [
+    {
+     "endNumber": 199,
+     "productPrice": 0.0325,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 599,
+     "productPrice": 0.0257,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 3999,
+     "productPrice": 0.0218,
+     "startNumber": 600
+    },
+    {
+     "endNumber": 7999,
+     "productPrice": 0.0195,
+     "startNumber": 4000
+    },
+    {
+     "endNumber": 19999,
+     "productPrice": 0.0176,
+     "startNumber": 8000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0165,
+     "startNumber": 20000
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2308111602_Murata-Electronics-GCM1885C1H301JA16D_C913766.pdf",
+   "describe": "300pF 50V ±5% 0603 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+   "erpComponentName": "300pF ±5% 50V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/multilayer-ceramic-capacitors-mlcc-smd-smt_murata-electronics-gcm1885c1h301ja16d_C913766.html",
+   "leastPatchNumber": 5,
+   "lossNumber": 4,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 5870
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "50V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±1%"
+    },
+    {
+     "attribute_name_en": "Capacitance",
+     "attribute_value_name": "300pF",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>300pF</span>"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "NP0"
+    }
+   ],
+   "componentBrandEn": "YAGEO",
+   "componentCode": "C1853096",
+   "componentLibraryType": "expand",
+   "componentModelEn": "CC0603FRNPO9BN301",
+   "componentPrices": [
+    {
+     "endNumber": 499,
+     "productPrice": 0.0238,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 1499,
+     "productPrice": 0.0208,
+     "startNumber": 500
+    },
+    {
+     "endNumber": 3999,
+     "productPrice": 0.0192,
+     "startNumber": 1500
+    },
+    {
+     "endNumber": 23999,
+     "productPrice": 0.0179,
+     "startNumber": 4000
+    },
+    {
+     "endNumber": 47999,
+     "productPrice": 0.0171,
+     "startNumber": 24000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0166,
+     "startNumber": 48000
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2201271030_YAGEO-CC0603FRNPO9BN301_C1853096.pdf",
+   "describe": "300pF 50V NP0 ±1% 0603 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+   "erpComponentName": "300pF ±1% 50V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/multilayer-ceramic-capacitors-mlcc-smd-smt_yageo-cc0603frnpo9bn301_C1853096.html",
+   "leastPatchNumber": 20,
+   "lossNumber": 10,
+   "minPurchaseNum": 377,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 35
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "50V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±5%"
+    },
+    {
+     "attribute_name_en": "Capacitance",
+     "attribute_value_name": "300pF",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>300pF</span>"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "C0G"
+    }
+   ],
+   "componentBrandEn": "KEMET",
+   "componentCode": "C1864804",
+   "componentLibraryType": "expand",
+   "componentModelEn": "C0603C301J5GACAUTO",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 0.2307,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 29,
+     "productPrice": 0.2259,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 99,
+     "productPrice": 0.2226,
+     "startNumber": 30
+    },
+    {
+     "endNumber": 101,
+     "productPrice": 0.2194,
+     "startNumber": 100
+    },
+    {
+     "endNumber": 103,
+     "productPrice": 0.2194,
+     "startNumber": 102
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.2194,
+     "startNumber": 104
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2304140030_KEMET-C0603C301J5GACAUTO_C1864804.pdf",
+   "describe": "300pF 50V C0G ±5% 0603 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+   "erpComponentName": "300pF ±5% 50V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/multilayer-ceramic-capacitors-mlcc-smd-smt_kemet-c0603c301j5gacauto_C1864804.html",
+   "leastPatchNumber": 5,
+   "lossNumber": 0,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 166
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "50V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±10%"
+    },
+    {
+     "attribute_name_en": "Capacitance",
+     "attribute_value_name": "300pF",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>300pF</span>"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "C0G"
+    }
+   ],
+   "componentBrandEn": "Vishay Intertech",
+   "componentCode": "C2169993",
+   "componentLibraryType": "expand",
+   "componentModelEn": "VJ0603D301KXAAJ",
+   "componentPrices": [
+    {
+     "endNumber": 49,
+     "productPrice": 0.2026,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 149,
+     "productPrice": 0.1626,
+     "startNumber": 50
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.1454,
+     "startNumber": 150
+    },
+    {
+     "endNumber": 1999,
+     "productPrice": 0.124,
+     "startNumber": 1000
+    },
+    {
+     "endNumber": 4999,
+     "productPrice": 0.1144,
+     "startNumber": 2000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.1087,
+     "startNumber": 5000
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2304140030_Vishay-Intertech-VJ0603D301KXAAJ_C2169993.pdf",
+   "describe": "300pF 50V C0G ±10% 0603 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+   "erpComponentName": "300pF ±10% 50V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/multilayer-ceramic-capacitors-mlcc-smd-smt_vishay-intertech-vj0603d301kxaaj_C2169993.html",
+   "leastPatchNumber": 5,
+   "lossNumber": 0,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 345
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "100V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±5%"
+    },
+    {
+     "attribute_name_en": "Capacitance",
+     "attribute_value_name": "300pF",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>300pF</span>"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "-"
+    }
+   ],
+   "componentBrandEn": "Murata Electronics",
+   "componentCode": "C2209773",
+   "componentLibraryType": "expand",
+   "componentModelEn": "GCM1885C2A301JA16D",
+   "componentPrices": [
+    {
+     "endNumber": 199,
+     "productPrice": 0.0428,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 599,
+     "productPrice": 0.0345,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 3999,
+     "productPrice": 0.0299,
+     "startNumber": 600
+    },
+    {
+     "endNumber": 7999,
+     "productPrice": 0.0272,
+     "startNumber": 4000
+    },
+    {
+     "endNumber": 19999,
+     "productPrice": 0.0247,
+     "startNumber": 8000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0234,
+     "startNumber": 20000
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2308111604_Murata-Electronics-GCM1885C2A301JA16D_C2209773.pdf",
+   "describe": "100V 300pF ±5% 0603 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+   "erpComponentName": "300pF ±5% 100V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/multilayer-ceramic-capacitors-mlcc-smd-smt_murata-electronics-gcm1885c2a301ja16d_C2209773.html",
+   "leastPatchNumber": 5,
+   "lossNumber": 4,
+   "minPurchaseNum": 260,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 4
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "100V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±1%"
+    },
+    {
+     "attribute_name_en": "Capacitance",
+     "attribute_value_name": "300pF",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>300pF</span>"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "C0G"
+    }
+   ],
+   "componentBrandEn": "Murata Electronics",
+   "componentCode": "C3837533",
+   "componentLibraryType": "expand",
+   "componentModelEn": "GCM1885C2A301FA16J",
+   "componentPrices": [
+    {
+     "endNumber": 49,
+     "productPrice": 0.1542,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 149,
+     "productPrice": 0.1271,
+     "startNumber": 50
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.1134,
+     "startNumber": 150
+    },
+    {
+     "endNumber": 2499,
+     "productPrice": 0.1032,
+     "startNumber": 500
+    },
+    {
+     "endNumber": 4999,
+     "productPrice": 0.0949,
+     "startNumber": 2500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0909,
+     "startNumber": 5000
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+   "dataManualUrl": "https://www.lcsc.com/datasheet/lcsc_datasheet_2411272025_Murata-Electronics-GCM1885C2A301FA16J_C3837533.pdf",
+   "describe": "100V 300pF C0G ±1% 0603 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+   "erpComponentName": "300pF ±1% 100V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://lcsc.com/product-detail/multilayer-ceramic-capacitors-mlcc-smd-smt_murata-electronics-gcm1885c2a301fa16j_C3837533.html",
+   "leastPatchNumber": 20,
+   "lossNumber": 6,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 1315
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "50V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±2%"
+    },
+    {
+     "attribute_name_en": "Capacitance",
+     "attribute_value_name": "300pF",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>300pF</span>"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "C0G"
+    }
+   ],
+   "componentBrandEn": "Murata Electronics",
+   "componentCode": "C3903622",
+   "componentLibraryType": "expand",
+   "componentModelEn": "GRM1885C1H301GA01D",
+   "componentPrices": [
+    {
+     "endNumber": 99,
+     "productPrice": 0.0485,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 299,
+     "productPrice": 0.0394,
+     "startNumber": 100
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.0348,
+     "startNumber": 300
+    },
+    {
+     "endNumber": 3999,
+     "productPrice": 0.0314,
+     "startNumber": 1000
+    },
+    {
+     "endNumber": 7999,
+     "productPrice": 0.0288,
+     "startNumber": 4000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0273,
+     "startNumber": 8000
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2308111806_Murata-Electronics-GRM1885C1H301GA01D_C3903622.pdf",
+   "describe": "300pF 50V C0G ±2% 0603 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+   "erpComponentName": "300pF ±2% 50V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/multilayer-ceramic-capacitors-mlcc-smd-smt_murata-electronics-grm1885c1h301ga01d_C3903622.html",
+   "leastPatchNumber": 20,
+   "lossNumber": 6,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 2868
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "50V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±5%"
+    },
+    {
+     "attribute_name_en": "Capacitance",
+     "attribute_value_name": "300pF",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>300pF</span>"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "C0G"
+    }
+   ],
+   "componentBrandEn": "CCTC",
+   "componentCode": "C5360812",
+   "componentLibraryType": "expand",
+   "componentModelEn": "TCC0603COG301J500CT",
+   "componentPrices": [
+    {
+     "endNumber": 999,
+     "productPrice": 0.004,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 3999,
+     "productPrice": 0.0031,
+     "startNumber": 1000
+    },
+    {
+     "endNumber": 7999,
+     "productPrice": 0.0026,
+     "startNumber": 4000
+    },
+    {
+     "endNumber": 47999,
+     "productPrice": 0.0023,
+     "startNumber": 8000
+    },
+    {
+     "endNumber": 99999,
+     "productPrice": 0.002,
+     "startNumber": 48000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0019,
+     "startNumber": 100000
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2302141837_CCTC-TCC0603COG301J500CT_C5360812.pdf",
+   "describe": "300pF 50V C0G ±5% 0603 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+   "erpComponentName": "300pF ±5% 50V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/multilayer-ceramic-capacitors-mlcc-smd-smt_cctc-tcc0603cog301j500ct_C5360812.html",
+   "leastPatchNumber": 20,
+   "lossNumber": 6,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 19
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "50V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±5%"
+    },
+    {
+     "attribute_name_en": "Capacitance",
+     "attribute_value_name": "300pF",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>300pF</span>"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "C0G"
+    }
+   ],
+   "componentBrandEn": "HRE",
+   "componentCode": "C41361232",
+   "componentLibraryType": "expand",
+   "componentModelEn": "CGA0603C0G301J500JT",
+   "componentPrices": [
+    {
+     "endNumber": 499,
+     "productPrice": 0.0102,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 1499,
+     "productPrice": 0.0083,
+     "startNumber": 500
+    },
+    {
+     "endNumber": 3999,
+     "productPrice": 0.0072,
+     "startNumber": 1500
+    },
+    {
+     "endNumber": 23999,
+     "productPrice": 0.0056,
+     "startNumber": 4000
+    },
+    {
+     "endNumber": 47999,
+     "productPrice": 0.005,
+     "startNumber": 24000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0047,
+     "startNumber": 48000
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+   "dataManualUrl": "https://www.lcsc.com/datasheet/lcsc_datasheet_2408191625_HRE-CGA0603C0G301J500JT_C41361232.pdf",
+   "describe": "300pF 50V C0G ±5% 0603 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+   "erpComponentName": "300pF ±5% 50V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/multilayer-ceramic-capacitors-mlcc-smd-smt_hre-cga0603c0g301j500jt_C41361232.html",
+   "leastPatchNumber": 20,
+   "lossNumber": 6,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 9472
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "50V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±10%"
+    },
+    {
+     "attribute_name_en": "Capacitance",
+     "attribute_value_name": "300pF",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>300pF</span>"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "X7R"
+    }
+   ],
+   "componentBrandEn": "AIDE CAPACITOR",
+   "componentCode": "C49326637",
+   "componentLibraryType": "expand",
+   "componentModelEn": "0603X7R301K500NT",
+   "componentPrices": [
+    {
+     "endNumber": 999,
+     "productPrice": 0.0033,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 3999,
+     "productPrice": 0.0025,
+     "startNumber": 1000
+    },
+    {
+     "endNumber": 7999,
+     "productPrice": 0.0021,
+     "startNumber": 4000
+    },
+    {
+     "endNumber": 47999,
+     "productPrice": 0.0019,
+     "startNumber": 8000
+    },
+    {
+     "endNumber": 48199,
+     "productPrice": 0.0017,
+     "startNumber": 48000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0017,
+     "startNumber": 48200
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+   "dataManualUrl": null,
+   "describe": "300pF 50V X7R ±10% 0603 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+   "erpComponentName": "300pF ±10% 50V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": null,
+   "leastPatchNumber": 20,
+   "lossNumber": 6,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 75
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-55℃~+125℃"
+    },
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "50V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±5%"
+    },
+    {
+     "attribute_name_en": "Capacitance",
+     "attribute_value_name": "300pF",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>300pF</span>"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "C0G"
+    }
+   ],
+   "componentBrandEn": "HRE",
+   "componentCode": "C54824739",
+   "componentLibraryType": "expand",
+   "componentModelEn": "CSA0603C0G301J500JT",
+   "componentPrices": [
+    {
+     "endNumber": 499,
+     "productPrice": 0.0089,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 1499,
+     "productPrice": 0.0069,
+     "startNumber": 500
+    },
+    {
+     "endNumber": 3999,
+     "productPrice": 0.0058,
+     "startNumber": 1500
+    },
+    {
+     "endNumber": 23999,
+     "productPrice": 0.0052,
+     "startNumber": 4000
+    },
+    {
+     "endNumber": 47999,
+     "productPrice": 0.0046,
+     "startNumber": 24000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0043,
+     "startNumber": 48000
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+   "dataManualUrl": null,
+   "describe": "0603 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+   "erpComponentName": "300pF ±5% 50V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": null,
+   "leastPatchNumber": 2,
+   "lossNumber": 0,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 3000
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "50V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±5%"
+    },
+    {
+     "attribute_name_en": "Capacitance",
+     "attribute_value_name": "300pF",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>300pF</span>"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "C0G"
+    }
+   ],
+   "componentBrandEn": "TORCH",
+   "componentCode": "C54916679",
+   "componentLibraryType": "expand",
+   "componentModelEn": "CC0603CG50V301JN",
+   "componentPrices": [
+    {
+     "endNumber": 499,
+     "productPrice": 0.0136,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 1499,
+     "productPrice": 0.0111,
+     "startNumber": 500
+    },
+    {
+     "endNumber": 3999,
+     "productPrice": 0.0097,
+     "startNumber": 1500
+    },
+    {
+     "endNumber": 23999,
+     "productPrice": 0.0088,
+     "startNumber": 4000
+    },
+    {
+     "endNumber": 47999,
+     "productPrice": 0.0081,
+     "startNumber": 24000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0077,
+     "startNumber": 48000
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+   "dataManualUrl": null,
+   "describe": "0603 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+   "erpComponentName": "300pF ±5% 50V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": null,
+   "leastPatchNumber": 2,
+   "lossNumber": 0,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 3950
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "50V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±5%"
+    },
+    {
+     "attribute_name_en": "Capacitance",
+     "attribute_value_name": "300pF",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>300pF</span>"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "C0G"
+    }
+   ],
+   "componentBrandEn": "TDK",
+   "componentCode": "C76603",
+   "componentLibraryType": "expand",
+   "componentModelEn": "C1608C0G1H301JT000N",
+   "componentPrices": [
+    {
+     "endNumber": 499,
+     "productPrice": 0.0158,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 1499,
+     "productPrice": 0.0128,
+     "startNumber": 500
+    },
+    {
+     "endNumber": 3999,
+     "productPrice": 0.0111,
+     "startNumber": 1500
+    },
+    {
+     "endNumber": 23999,
+     "productPrice": 0.01,
+     "startNumber": 4000
+    },
+    {
+     "endNumber": 47999,
+     "productPrice": 0.0092,
+     "startNumber": 24000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0087,
+     "startNumber": 48000
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+   "dataManualUrl": null,
+   "describe": "300pF 50V C0G ±5% 0603 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+   "erpComponentName": "300pF ±5% 50V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": null,
+   "leastPatchNumber": 20,
+   "lossNumber": 10,
+   "minPurchaseNum": 700,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "50V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±5%"
+    },
+    {
+     "attribute_name_en": "Capacitance",
+     "attribute_value_name": "300pF",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>300pF</span>"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "C0G"
+    }
+   ],
+   "componentBrandEn": "Samsung Electro-Mechanics",
+   "componentCode": "C159791",
+   "componentLibraryType": "expand",
+   "componentModelEn": "CL10C301JB8NNNC",
+   "componentPrices": [
+    {
+     "endNumber": 999,
+     "productPrice": 0.0062,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 3999,
+     "productPrice": 0.005,
+     "startNumber": 1000
+    },
+    {
+     "endNumber": 7999,
+     "productPrice": 0.0043,
+     "startNumber": 4000
+    },
+    {
+     "endNumber": 47999,
+     "productPrice": 0.0038,
+     "startNumber": 8000
+    },
+    {
+     "endNumber": 99999,
+     "productPrice": 0.0035,
+     "startNumber": 48000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0033,
+     "startNumber": 100000
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+   "dataManualUrl": "https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_Samsung-Electro-Mechanics-CL10C301JB8NNNC_C159791.pdf",
+   "describe": "300pF 50V C0G ±5% 0603 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+   "erpComponentName": "停产 300pF ±5% 50V",
+   "isBuyComponent": "0",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/multilayer-ceramic-capacitors-mlcc-smd-smt_samsung-electro-mechanics-cl10c301jb8nnnc_C159791.html",
+   "leastPatchNumber": 20,
+   "lossNumber": 10,
+   "minPurchaseNum": 1792,
+   "noBuyReason": "This product is no longer manufactured.",
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "50V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±10%"
+    },
+    {
+     "attribute_name_en": "Capacitance",
+     "attribute_value_name": "300pF",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>300pF</span>"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "X7R"
+    }
+   ],
+   "componentBrandEn": "Samsung Electro-Mechanics",
+   "componentCode": "C159799",
+   "componentLibraryType": "expand",
+   "componentModelEn": "CL10B301KB8NNNC",
+   "componentPrices": [
+    {
+     "endNumber": 499,
+     "productPrice": 0.0049,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 1499,
+     "productPrice": 0.0039,
+     "startNumber": 500
+    },
+    {
+     "endNumber": 3999,
+     "productPrice": 0.0033,
+     "startNumber": 1500
+    },
+    {
+     "endNumber": 23999,
+     "productPrice": 0.0026,
+     "startNumber": 4000
+    },
+    {
+     "endNumber": 47999,
+     "productPrice": 0.0023,
+     "startNumber": 24000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0021,
+     "startNumber": 48000
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+   "dataManualUrl": "https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_Samsung-Electro-Mechanics-CL10B301KB8NNNC_C159799.pdf",
+   "describe": "300pF 50V X7R ±10% 0603 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+   "erpComponentName": "300pF ±10% 50V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/multilayer-ceramic-capacitors-mlcc-smd-smt_samsung-electro-mechanics-cl10b301kb8nnnc_C159799.html",
+   "leastPatchNumber": 20,
+   "lossNumber": 10,
+   "minPurchaseNum": 2714,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "50V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±2%"
+    },
+    {
+     "attribute_name_en": "Capacitance",
+     "attribute_value_name": "300pF",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>300pF</span>"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "-"
+    }
+   ],
+   "componentBrandEn": "Murata Electronics",
+   "componentCode": "C464438",
+   "componentLibraryType": "expand",
+   "componentModelEn": "GRM1882C1H301GA01D",
+   "componentPrices": [
+    {
+     "endNumber": 199,
+     "productPrice": 0.0389,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 599,
+     "productPrice": 0.0311,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 3999,
+     "productPrice": 0.0267,
+     "startNumber": 600
+    },
+    {
+     "endNumber": 7999,
+     "productPrice": 0.0241,
+     "startNumber": 4000
+    },
+    {
+     "endNumber": 19999,
+     "productPrice": 0.0218,
+     "startNumber": 8000
+    },
+    {
+     "endNumber": 39999,
+     "productPrice": 0.0205,
+     "startNumber": 20000
+    },
+    {
+     "endNumber": 79999,
+     "productPrice": 0.0204,
+     "startNumber": 40000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0202,
+     "startNumber": 80000
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2304140030_Murata-Electronics-GRM1882C1H301GA01D_C464438.pdf",
+   "describe": "300pF 50V ±2% 0603 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+   "erpComponentName": "300pF ±2% 50V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/multilayer-ceramic-capacitors-mlcc-smd-smt_murata-electronics-grm1882c1h301ga01d_C464438.html",
+   "leastPatchNumber": 5,
+   "lossNumber": 4,
+   "minPurchaseNum": 288,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "50V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±5%"
+    },
+    {
+     "attribute_name_en": "Capacitance",
+     "attribute_value_name": "300pF",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>300pF</span>"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "C0G"
+    }
+   ],
+   "componentBrandEn": "Murata Electronics",
+   "componentCode": "C701310",
+   "componentLibraryType": "expand",
+   "componentModelEn": "GRM1885C1H301JA01D",
+   "componentPrices": [
+    {
+     "endNumber": 499,
+     "productPrice": 0.0111,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 1499,
+     "productPrice": 0.0089,
+     "startNumber": 500
+    },
+    {
+     "endNumber": 3999,
+     "productPrice": 0.0076,
+     "startNumber": 1500
+    },
+    {
+     "endNumber": 23999,
+     "productPrice": 0.0065,
+     "startNumber": 4000
+    },
+    {
+     "endNumber": 47999,
+     "productPrice": 0.0059,
+     "startNumber": 24000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0055,
+     "startNumber": 48000
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2304140030_Murata-Electronics-GRM1885C1H301JA01D_C701310.pdf",
+   "describe": "300pF 50V C0G ±5% 0603 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+   "erpComponentName": "300pF ±5% 50V 停产",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/multilayer-ceramic-capacitors-mlcc-smd-smt_murata-electronics-grm1885c1h301ja01d_C701310.html",
+   "leastPatchNumber": 20,
+   "lossNumber": 10,
+   "minPurchaseNum": 1007,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "250V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±5%"
+    },
+    {
+     "attribute_name_en": "Capacitance",
+     "attribute_value_name": "300pF",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>300pF</span>"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "C0G"
+    }
+   ],
+   "componentBrandEn": "KEMET",
+   "componentCode": "C1864761",
+   "componentLibraryType": "expand",
+   "componentModelEn": "C0603C301JAGACAUTO",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 0.1047,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 11,
+     "productPrice": 0.1047,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 0.1047,
+     "startNumber": 12
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.0405,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.0392,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0384,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2304140030_KEMET-C0603C301JAGACAUTO_C1864761.pdf",
+   "describe": "250V 300pF C0G ±5% 0603 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+   "erpComponentName": "300pF ±5% 250V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/multilayer-ceramic-capacitors-mlcc-smd-smt_kemet-c0603c301jagacauto_C1864761.html",
+   "leastPatchNumber": 5,
+   "lossNumber": 4,
+   "minPurchaseNum": 86,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "50V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±10%"
+    },
+    {
+     "attribute_name_en": "Capacitance",
+     "attribute_value_name": "300pF",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>300pF</span>"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "C0G"
+    }
+   ],
+   "componentBrandEn": "KEMET",
+   "componentCode": "C1882803",
+   "componentLibraryType": "expand",
+   "componentModelEn": "C0603C301K5GAC7867",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 0.0694,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 11,
+     "productPrice": 0.0694,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 0.0694,
+     "startNumber": 12
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.0269,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.026,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0256,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2304140030_KEMET-C0603C301K5GAC7867_C1882803.pdf",
+   "describe": "300pF 50V C0G ±10% 0603 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+   "erpComponentName": "300pF ±10% 50V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/multilayer-ceramic-capacitors-mlcc-smd-smt_kemet-c0603c301k5gac7867_C1882803.html",
+   "leastPatchNumber": 5,
+   "lossNumber": 4,
+   "minPurchaseNum": 130,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "10V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±5%"
+    },
+    {
+     "attribute_name_en": "Capacitance",
+     "attribute_value_name": "300pF",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>300pF</span>"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "X8R"
+    }
+   ],
+   "componentBrandEn": "KEMET",
+   "componentCode": "C1882951",
+   "componentLibraryType": "expand",
+   "componentModelEn": "C0603C301J8HAC7867",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 0.008,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 11,
+     "productPrice": 0.008,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 0.008,
+     "startNumber": 12
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.0031,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.003,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.003,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2304140030_KEMET-C0603C301J8HAC7867_C1882951.pdf",
+   "describe": "10V 300pF X8R ±5% 0603 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+   "erpComponentName": "300pF ±5% 10V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/multilayer-ceramic-capacitors-mlcc-smd-smt_kemet-c0603c301j8hac7867_C1882951.html",
+   "leastPatchNumber": 10,
+   "lossNumber": 5,
+   "minPurchaseNum": 2986,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "50V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±5%"
+    },
+    {
+     "attribute_name_en": "Capacitance",
+     "attribute_value_name": "300pF",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>300pF</span>"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "C0G"
+    }
+   ],
+   "componentBrandEn": "KEMET",
+   "componentCode": "C2170052",
+   "componentLibraryType": "expand",
+   "componentModelEn": "C0603C301J5GACTU",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 0.0384,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 11,
+     "productPrice": 0.0384,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 0.0384,
+     "startNumber": 12
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.0149,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.0143,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0141,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2304140030_KEMET-C0603C301J5GACTU_C2170052.pdf",
+   "describe": "300pF 50V C0G ±5% 0603 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+   "erpComponentName": "300pF ±5% 50V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/multilayer-ceramic-capacitors-mlcc-smd-smt_kemet-c0603c301j5gactu_C2170052.html",
+   "leastPatchNumber": 5,
+   "lossNumber": 4,
+   "minPurchaseNum": 627,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "100V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±5%"
+    },
+    {
+     "attribute_name_en": "Capacitance",
+     "attribute_value_name": "300pF",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>300pF</span>"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "C0G"
+    }
+   ],
+   "componentBrandEn": "KEMET",
+   "componentCode": "C2170649",
+   "componentLibraryType": "expand",
+   "componentModelEn": "C0603C301J1GAC7867",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 0.1558,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 11,
+     "productPrice": 0.1558,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 0.1558,
+     "startNumber": 12
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.0603,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.0582,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0572,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2304140030_KEMET-C0603C301J1GAC7867_C2170649.pdf",
+   "describe": "100V 300pF C0G ±5% 0603 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+   "erpComponentName": "300pF ±5% 100V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/multilayer-ceramic-capacitors-mlcc-smd-smt_kemet-c0603c301j1gac7867_C2170649.html",
+   "leastPatchNumber": 5,
+   "lossNumber": 2,
+   "minPurchaseNum": 58,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "50V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±10%"
+    },
+    {
+     "attribute_name_en": "Capacitance",
+     "attribute_value_name": "300pF",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>300pF</span>"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "X8R"
+    }
+   ],
+   "componentBrandEn": "KEMET",
+   "componentCode": "C2183796",
+   "componentLibraryType": "expand",
+   "componentModelEn": "C0603C301K5HAC7867",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 0.0054,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 11,
+     "productPrice": 0.0054,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 0.0054,
+     "startNumber": 12
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.0021,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.002,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.002,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2304140030_KEMET-C0603C301K5HAC7867_C2183796.pdf",
+   "describe": "300pF 50V X8R ±10% 0603 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+   "erpComponentName": "300pF ±10% 50V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/multilayer-ceramic-capacitors-mlcc-smd-smt_kemet-c0603c301k5hac7867_C2183796.html",
+   "leastPatchNumber": 10,
+   "lossNumber": 5,
+   "minPurchaseNum": 4000,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "25V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±10%"
+    },
+    {
+     "attribute_name_en": "Capacitance",
+     "attribute_value_name": "300pF",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>300pF</span>"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "X8R"
+    }
+   ],
+   "componentBrandEn": "KEMET",
+   "componentCode": "C2183821",
+   "componentLibraryType": "expand",
+   "componentModelEn": "C0603C301K3HAC7867",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 0.0054,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 11,
+     "productPrice": 0.0054,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 0.0054,
+     "startNumber": 12
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.0021,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.002,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.002,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2304140030_KEMET-C0603C301K3HAC7867_C2183821.pdf",
+   "describe": "25V 300pF X8R ±10% 0603 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+   "erpComponentName": "300pF ±10% 25V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/multilayer-ceramic-capacitors-mlcc-smd-smt_kemet-c0603c301k3hac7867_C2183821.html",
+   "leastPatchNumber": 10,
+   "lossNumber": 5,
+   "minPurchaseNum": 4000,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "25V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±5%"
+    },
+    {
+     "attribute_name_en": "Capacitance",
+     "attribute_value_name": "300pF",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>300pF</span>"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "X8R"
+    }
+   ],
+   "componentBrandEn": "KEMET",
+   "componentCode": "C2184411",
+   "componentLibraryType": "expand",
+   "componentModelEn": "C0603C301J3HAC7867",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 0.0056,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 11,
+     "productPrice": 0.0056,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 0.0056,
+     "startNumber": 12
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.0022,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.0021,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0021,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2304140030_KEMET-C0603C301J3HAC7867_C2184411.pdf",
+   "describe": "25V 300pF X8R ±5% 0603 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+   "erpComponentName": "300pF ±5% 25V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/multilayer-ceramic-capacitors-mlcc-smd-smt_kemet-c0603c301j3hac7867_C2184411.html",
+   "leastPatchNumber": 10,
+   "lossNumber": 5,
+   "minPurchaseNum": 4000,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "100V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±5%"
+    },
+    {
+     "attribute_name_en": "Capacitance",
+     "attribute_value_name": "300pF",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>300pF</span>"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "X8R"
+    }
+   ],
+   "componentBrandEn": "KEMET",
+   "componentCode": "C2184452",
+   "componentLibraryType": "expand",
+   "componentModelEn": "C0603C301J1HAC7867",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 0.0056,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 11,
+     "productPrice": 0.0056,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 0.0056,
+     "startNumber": 12
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.0022,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.0021,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0021,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2304140030_KEMET-C0603C301J1HAC7867_C2184452.pdf",
+   "describe": "100V 300pF X8R ±5% 0603 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+   "erpComponentName": "300pF ±5% 100V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/multilayer-ceramic-capacitors-mlcc-smd-smt_kemet-c0603c301j1hac7867_C2184452.html",
+   "leastPatchNumber": 10,
+   "lossNumber": 5,
+   "minPurchaseNum": 4000,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "50V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±5%"
+    },
+    {
+     "attribute_name_en": "Capacitance",
+     "attribute_value_name": "300pF",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>300pF</span>"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "X8R"
+    }
+   ],
+   "componentBrandEn": "KEMET",
+   "componentCode": "C2184471",
+   "componentLibraryType": "expand",
+   "componentModelEn": "C0603C301J5HAC7867",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 0.0056,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 11,
+     "productPrice": 0.0056,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 0.0056,
+     "startNumber": 12
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.0022,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.0021,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0021,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2304140030_KEMET-C0603C301J5HAC7867_C2184471.pdf",
+   "describe": "300pF 50V X8R ±5% 0603 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+   "erpComponentName": "300pF ±5% 50V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/multilayer-ceramic-capacitors-mlcc-smd-smt_kemet-c0603c301j5hac7867_C2184471.html",
+   "leastPatchNumber": 10,
+   "lossNumber": 5,
+   "minPurchaseNum": 4000,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "16V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±5%"
+    },
+    {
+     "attribute_name_en": "Capacitance",
+     "attribute_value_name": "300pF",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>300pF</span>"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "X8R"
+    }
+   ],
+   "componentBrandEn": "KEMET",
+   "componentCode": "C2184617",
+   "componentLibraryType": "expand",
+   "componentModelEn": "C0603C301J4HAC7867",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 0.0056,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 11,
+     "productPrice": 0.0056,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 0.0056,
+     "startNumber": 12
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.0022,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.0021,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0021,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2304140030_KEMET-C0603C301J4HAC7867_C2184617.pdf",
+   "describe": "16V 300pF X8R ±5% 0603 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+   "erpComponentName": "300pF ±5% 16V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/multilayer-ceramic-capacitors-mlcc-smd-smt_kemet-c0603c301j4hac7867_C2184617.html",
+   "leastPatchNumber": 10,
+   "lossNumber": 5,
+   "minPurchaseNum": 4000,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "10V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±20%"
+    },
+    {
+     "attribute_name_en": "Capacitance",
+     "attribute_value_name": "300pF",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>300pF</span>"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "X8R"
+    }
+   ],
+   "componentBrandEn": "KEMET",
+   "componentCode": "C2184680",
+   "componentLibraryType": "expand",
+   "componentModelEn": "C0603C301M8HAC7867",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 0.0054,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 11,
+     "productPrice": 0.0054,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 0.0054,
+     "startNumber": 12
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.0021,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.002,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.002,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2304140030_KEMET-C0603C301M8HAC7867_C2184680.pdf",
+   "describe": "10V 300pF X8R ±20% 0603 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+   "erpComponentName": "300pF ±20% 10V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/multilayer-ceramic-capacitors-mlcc-smd-smt_kemet-c0603c301m8hac7867_C2184680.html",
+   "leastPatchNumber": 10,
+   "lossNumber": 5,
+   "minPurchaseNum": 4000,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "100V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±20%"
+    },
+    {
+     "attribute_name_en": "Capacitance",
+     "attribute_value_name": "300pF",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>300pF</span>"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "X8R"
+    }
+   ],
+   "componentBrandEn": "KEMET",
+   "componentCode": "C2184791",
+   "componentLibraryType": "expand",
+   "componentModelEn": "C0603C301M1HAC7867",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 0.0054,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 11,
+     "productPrice": 0.0054,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 0.0054,
+     "startNumber": 12
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.0021,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.002,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.002,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2304140030_KEMET-C0603C301M1HAC7867_C2184791.pdf",
+   "describe": "100V 300pF X8R ±20% 0603 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+   "erpComponentName": "300pF ±20% 100V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/multilayer-ceramic-capacitors-mlcc-smd-smt_kemet-c0603c301m1hac7867_C2184791.html",
+   "leastPatchNumber": 10,
+   "lossNumber": 5,
+   "minPurchaseNum": 4000,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "16V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±10%"
+    },
+    {
+     "attribute_name_en": "Capacitance",
+     "attribute_value_name": "300pF",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>300pF</span>"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "X8R"
+    }
+   ],
+   "componentBrandEn": "KEMET",
+   "componentCode": "C2184807",
+   "componentLibraryType": "expand",
+   "componentModelEn": "C0603C301K4HAC7867",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 0.0067,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 11,
+     "productPrice": 0.0067,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 0.0067,
+     "startNumber": 12
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.0026,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.0025,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0025,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2304140030_KEMET-C0603C301K4HAC7867_C2184807.pdf",
+   "describe": "16V 300pF X8R ±10% 0603 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+   "erpComponentName": "300pF ±10% 16V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/multilayer-ceramic-capacitors-mlcc-smd-smt_kemet-c0603c301k4hac7867_C2184807.html",
+   "leastPatchNumber": 10,
+   "lossNumber": 5,
+   "minPurchaseNum": 3583,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "50V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±20%"
+    },
+    {
+     "attribute_name_en": "Capacitance",
+     "attribute_value_name": "300pF",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>300pF</span>"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "X8R"
+    }
+   ],
+   "componentBrandEn": "KEMET",
+   "componentCode": "C2184817",
+   "componentLibraryType": "expand",
+   "componentModelEn": "C0603C301M5HAC7867",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 0.0054,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 11,
+     "productPrice": 0.0054,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 0.0054,
+     "startNumber": 12
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.0021,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.002,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.002,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2304140030_KEMET-C0603C301M5HAC7867_C2184817.pdf",
+   "describe": "300pF 50V X8R ±20% 0603 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+   "erpComponentName": "300pF ±20% 50V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/multilayer-ceramic-capacitors-mlcc-smd-smt_kemet-c0603c301m5hac7867_C2184817.html",
+   "leastPatchNumber": 10,
+   "lossNumber": 5,
+   "minPurchaseNum": 4000,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "25V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±20%"
+    },
+    {
+     "attribute_name_en": "Capacitance",
+     "attribute_value_name": "300pF",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>300pF</span>"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "X8R"
+    }
+   ],
+   "componentBrandEn": "KEMET",
+   "componentCode": "C2184825",
+   "componentLibraryType": "expand",
+   "componentModelEn": "C0603C301M3HAC7867",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 0.0054,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 11,
+     "productPrice": 0.0054,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 0.0054,
+     "startNumber": 12
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.0021,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.002,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.002,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2304140030_KEMET-C0603C301M3HAC7867_C2184825.pdf",
+   "describe": "25V 300pF X8R ±20% 0603 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+   "erpComponentName": "300pF ±20% 25V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/multilayer-ceramic-capacitors-mlcc-smd-smt_kemet-c0603c301m3hac7867_C2184825.html",
+   "leastPatchNumber": 10,
+   "lossNumber": 5,
+   "minPurchaseNum": 4000,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "16V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±20%"
+    },
+    {
+     "attribute_name_en": "Capacitance",
+     "attribute_value_name": "300pF",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>300pF</span>"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "X8R"
+    }
+   ],
+   "componentBrandEn": "KEMET",
+   "componentCode": "C2184910",
+   "componentLibraryType": "expand",
+   "componentModelEn": "C0603C301M4HAC7867",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 0.0054,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 11,
+     "productPrice": 0.0054,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 0.0054,
+     "startNumber": 12
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.0021,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.002,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.002,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2304140030_KEMET-C0603C301M4HAC7867_C2184910.pdf",
+   "describe": "16V 300pF X8R ±20% 0603 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+   "erpComponentName": "300pF ±20% 16V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/multilayer-ceramic-capacitors-mlcc-smd-smt_kemet-c0603c301m4hac7867_C2184910.html",
+   "leastPatchNumber": 10,
+   "lossNumber": 5,
+   "minPurchaseNum": 4000,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "100V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±10%"
+    },
+    {
+     "attribute_name_en": "Capacitance",
+     "attribute_value_name": "300pF",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>300pF</span>"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "X8R"
+    }
+   ],
+   "componentBrandEn": "KEMET",
+   "componentCode": "C2185079",
+   "componentLibraryType": "expand",
+   "componentModelEn": "C0603C301K1HAC7867",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 0.0054,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 11,
+     "productPrice": 0.0054,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 0.0054,
+     "startNumber": 12
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.0021,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.002,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.002,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2304140030_KEMET-C0603C301K1HAC7867_C2185079.pdf",
+   "describe": "100V 300pF X8R ±10% 0603 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+   "erpComponentName": "300pF ±10% 100V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/multilayer-ceramic-capacitors-mlcc-smd-smt_kemet-c0603c301k1hac7867_C2185079.html",
+   "leastPatchNumber": 10,
+   "lossNumber": 5,
+   "minPurchaseNum": 4000,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "10V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±5%"
+    },
+    {
+     "attribute_name_en": "Capacitance",
+     "attribute_value_name": "300pF",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>300pF</span>"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "X8R"
+    }
+   ],
+   "componentBrandEn": "KEMET",
+   "componentCode": "C2186088",
+   "componentLibraryType": "expand",
+   "componentModelEn": "C0603X301J8HAC7867",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 0.01,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 11,
+     "productPrice": 0.01,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 0.01,
+     "startNumber": 12
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.0039,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.0038,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0037,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2304140030_KEMET-C0603X301J8HAC7867_C2186088.pdf",
+   "describe": "10V 300pF X8R ±5% 0603 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+   "erpComponentName": "300pF ±5% 10V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/multilayer-ceramic-capacitors-mlcc-smd-smt_kemet-c0603x301j8hac7867_C2186088.html",
+   "leastPatchNumber": 5,
+   "lossNumber": 5,
+   "minPurchaseNum": 2421,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "16V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±5%"
+    },
+    {
+     "attribute_name_en": "Capacitance",
+     "attribute_value_name": "300pF",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>300pF</span>"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "X8R"
+    }
+   ],
+   "componentBrandEn": "KEMET",
+   "componentCode": "C2186490",
+   "componentLibraryType": "expand",
+   "componentModelEn": "C0603X301J4HAC7867",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 0.01,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 11,
+     "productPrice": 0.01,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 0.01,
+     "startNumber": 12
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.0039,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.0038,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0037,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2304140030_KEMET-C0603X301J4HAC7867_C2186490.pdf",
+   "describe": "16V 300pF X8R ±5% 0603 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+   "erpComponentName": "300pF ±5% 16V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/multilayer-ceramic-capacitors-mlcc-smd-smt_kemet-c0603x301j4hac7867_C2186490.html",
+   "leastPatchNumber": 10,
+   "lossNumber": 5,
+   "minPurchaseNum": 2421,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "50V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±5%"
+    },
+    {
+     "attribute_name_en": "Capacitance",
+     "attribute_value_name": "300pF",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>300pF</span>"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "X8R"
+    }
+   ],
+   "componentBrandEn": "KEMET",
+   "componentCode": "C2186506",
+   "componentLibraryType": "expand",
+   "componentModelEn": "C0603X301J5HAC7867",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 0.01,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 11,
+     "productPrice": 0.01,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 0.01,
+     "startNumber": 12
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.0039,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.0038,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0037,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2304140030_KEMET-C0603X301J5HAC7867_C2186506.pdf",
+   "describe": "300pF 50V X8R ±5% 0603 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+   "erpComponentName": "300pF ±5% 50V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/multilayer-ceramic-capacitors-mlcc-smd-smt_kemet-c0603x301j5hac7867_C2186506.html",
+   "leastPatchNumber": 5,
+   "lossNumber": 5,
+   "minPurchaseNum": 2421,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "25V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±5%"
+    },
+    {
+     "attribute_name_en": "Capacitance",
+     "attribute_value_name": "300pF",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>300pF</span>"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "X8R"
+    }
+   ],
+   "componentBrandEn": "KEMET",
+   "componentCode": "C2186526",
+   "componentLibraryType": "expand",
+   "componentModelEn": "C0603X301J3HAC7867",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 0.01,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 11,
+     "productPrice": 0.01,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 0.01,
+     "startNumber": 12
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.0039,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.0038,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0037,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2304140030_KEMET-C0603X301J3HAC7867_C2186526.pdf",
+   "describe": "25V 300pF X8R ±5% 0603 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+   "erpComponentName": "300pF ±5% 25V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/multilayer-ceramic-capacitors-mlcc-smd-smt_kemet-c0603x301j3hac7867_C2186526.html",
+   "leastPatchNumber": 10,
+   "lossNumber": 5,
+   "minPurchaseNum": 2421,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "50V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±20%"
+    },
+    {
+     "attribute_name_en": "Capacitance",
+     "attribute_value_name": "300pF",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>300pF</span>"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "X8R"
+    }
+   ],
+   "componentBrandEn": "KEMET",
+   "componentCode": "C2186755",
+   "componentLibraryType": "expand",
+   "componentModelEn": "C0603X301M5HAC7867",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 0.0098,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 11,
+     "productPrice": 0.0098,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 0.0098,
+     "startNumber": 12
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.0038,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.0037,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0036,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2304140030_KEMET-C0603X301M5HAC7867_C2186755.pdf",
+   "describe": "300pF 50V X8R ±20% 0603 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+   "erpComponentName": "300pF ±20% 50V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/multilayer-ceramic-capacitors-mlcc-smd-smt_kemet-c0603x301m5hac7867_C2186755.html",
+   "leastPatchNumber": 5,
+   "lossNumber": 5,
+   "minPurchaseNum": 2488,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "10V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±10%"
+    },
+    {
+     "attribute_name_en": "Capacitance",
+     "attribute_value_name": "300pF",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>300pF</span>"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "X8R"
+    }
+   ],
+   "componentBrandEn": "KEMET",
+   "componentCode": "C2186791",
+   "componentLibraryType": "expand",
+   "componentModelEn": "C0603X301K8HAC7867",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 0.0098,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 11,
+     "productPrice": 0.0098,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 0.0098,
+     "startNumber": 12
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.0038,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.0037,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0036,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2304140030_KEMET-C0603X301K8HAC7867_C2186791.pdf",
+   "describe": "10V 300pF X8R ±10% 0603 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+   "erpComponentName": "300pF ±10% 10V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/multilayer-ceramic-capacitors-mlcc-smd-smt_kemet-c0603x301k8hac7867_C2186791.html",
+   "leastPatchNumber": 10,
+   "lossNumber": 5,
+   "minPurchaseNum": 2488,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  }
+ ],
+ "returned": 50,
+ "schema": 1,
+ "total_matches": 256
+}

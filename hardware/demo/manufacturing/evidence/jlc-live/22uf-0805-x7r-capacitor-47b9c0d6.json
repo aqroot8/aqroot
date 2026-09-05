@@ -1,0 +1,2785 @@
+{
+ "endpoint": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
+ "exhausted": false,
+ "fetched_utc": "2026-09-05T00:59:08Z",
+ "keyword": "22uF 0805 X7R capacitor",
+ "page_size": 25,
+ "pages": 2,
+ "records": [
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "10V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±20%"
+    },
+    {
+     "attribute_name_en": "Capacitance",
+     "attribute_value_name": "22uF",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>22uF</span>"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "X7R"
+    }
+   ],
+   "componentBrandEn": "HRE",
+   "componentCode": "C23692981",
+   "componentLibraryType": "expand",
+   "componentModelEn": "CGA0805X7R226M100MT",
+   "componentPrices": [
+    {
+     "endNumber": 49,
+     "productPrice": 0.2816,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 149,
+     "productPrice": 0.228,
+     "startNumber": 50
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.2049,
+     "startNumber": 150
+    },
+    {
+     "endNumber": 2999,
+     "productPrice": 0.1761,
+     "startNumber": 500
+    },
+    {
+     "endNumber": 5999,
+     "productPrice": 0.1367,
+     "startNumber": 3000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.129,
+     "startNumber": 6000
+    }
+   ],
+   "componentSpecificationEn": "0805",
+   "componentTypeEn": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+   "dataManualUrl": "https://www.lcsc.com/datasheet/lcsc_datasheet_2407021626_HRE-CGA0805X7R226M100MT_C23692981.pdf",
+   "describe": "10V 22uF X7R ±20% 0805 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+   "erpComponentName": "22uF ±20% 10V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/multilayer-ceramic-capacitors-mlcc-smd-smt_hre-cga0805x7r226m100mt_C23692981.html",
+   "leastPatchNumber": 5,
+   "lossNumber": 2,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 16877
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "10V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±20%"
+    },
+    {
+     "attribute_name_en": "Capacitance",
+     "attribute_value_name": "22uF",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>22uF</span>"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "X7R"
+    }
+   ],
+   "componentBrandEn": "CCTC",
+   "componentCode": "C53133025",
+   "componentLibraryType": "expand",
+   "componentModelEn": "TCC0805X7R226M100FT",
+   "componentPrices": [
+    {
+     "endNumber": 49,
+     "productPrice": 0.1271,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 149,
+     "productPrice": 0.1017,
+     "startNumber": 50
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.0891,
+     "startNumber": 150
+    },
+    {
+     "endNumber": 2999,
+     "productPrice": 0.0797,
+     "startNumber": 500
+    },
+    {
+     "endNumber": 5999,
+     "productPrice": 0.072,
+     "startNumber": 3000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0683,
+     "startNumber": 6000
+    }
+   ],
+   "componentSpecificationEn": "0805",
+   "componentTypeEn": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+   "dataManualUrl": null,
+   "describe": "0805 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+   "erpComponentName": "22uF ±20% 10V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": null,
+   "leastPatchNumber": 5,
+   "lossNumber": 4,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 6156
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "6.3V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±20%"
+    },
+    {
+     "attribute_name_en": "Capacitance",
+     "attribute_value_name": "22uF",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>22uF</span>"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "X7R"
+    }
+   ],
+   "componentBrandEn": "HRE",
+   "componentCode": "C55079215",
+   "componentLibraryType": "expand",
+   "componentModelEn": "CGA0805X7R226M6R3MT",
+   "componentPrices": [
+    {
+     "endNumber": 49,
+     "productPrice": 0.2999,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 149,
+     "productPrice": 0.2385,
+     "startNumber": 50
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.2122,
+     "startNumber": 150
+    },
+    {
+     "endNumber": 1999,
+     "productPrice": 0.1794,
+     "startNumber": 500
+    },
+    {
+     "endNumber": 3999,
+     "productPrice": 0.1648,
+     "startNumber": 2000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.156,
+     "startNumber": 4000
+    }
+   ],
+   "componentSpecificationEn": "0805",
+   "componentTypeEn": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+   "dataManualUrl": null,
+   "describe": "0805 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+   "erpComponentName": "22uF ±20% 6.3V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": null,
+   "leastPatchNumber": 5,
+   "lossNumber": 0,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 1577
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "10V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±20%"
+    },
+    {
+     "attribute_name_en": "Capacitance",
+     "attribute_value_name": "22uF",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>22uF</span>"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "X7R"
+    }
+   ],
+   "componentBrandEn": "CAL-CHIP ELECTRONICS, INC.",
+   "componentCode": "C3882598",
+   "componentLibraryType": "expand",
+   "componentModelEn": "GMC21X7R226M10NT",
+   "componentPrices": [
+    {
+     "endNumber": 49,
+     "productPrice": 0.2915,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 59,
+     "productPrice": 0.2915,
+     "startNumber": 50
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.2915,
+     "startNumber": 60
+    },
+    {
+     "endNumber": 2999,
+     "productPrice": 0.1128,
+     "startNumber": 1000
+    },
+    {
+     "endNumber": 5999,
+     "productPrice": 0.1089,
+     "startNumber": 3000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.1069,
+     "startNumber": 6000
+    }
+   ],
+   "componentSpecificationEn": "0805",
+   "componentTypeEn": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+   "dataManualUrl": "",
+   "describe": "10V 22uF X7R ±20% 0805 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+   "erpComponentName": "22uF ±20% 10V",
+   "isBuyComponent": "0",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/multilayer-ceramic-capacitors-mlcc-smd-smt_cal-chip-electronics-inc-gmc21x7r226m10nt_C3882598.html",
+   "leastPatchNumber": 5,
+   "lossNumber": 0,
+   "minPurchaseNum": 31,
+   "noBuyReason": "This product is no longer manufactured.",
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "6.3V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±20%"
+    },
+    {
+     "attribute_name_en": "Capacitance",
+     "attribute_value_name": "22uF",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>22uF</span>"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "X7R"
+    }
+   ],
+   "componentBrandEn": "CAL-CHIP ELECTRONICS, INC.",
+   "componentCode": "C3908863",
+   "componentLibraryType": "expand",
+   "componentModelEn": "GMC21X7R226M6R3NT",
+   "componentPrices": [
+    {
+     "endNumber": 49,
+     "productPrice": 0.3903,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 59,
+     "productPrice": 0.3903,
+     "startNumber": 50
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.3903,
+     "startNumber": 60
+    },
+    {
+     "endNumber": 2999,
+     "productPrice": 0.1511,
+     "startNumber": 1000
+    },
+    {
+     "endNumber": 5999,
+     "productPrice": 0.1458,
+     "startNumber": 3000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.1432,
+     "startNumber": 6000
+    }
+   ],
+   "componentSpecificationEn": "0805",
+   "componentTypeEn": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+   "dataManualUrl": "",
+   "describe": "22uF 6.3V X7R ±20% 0805 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+   "erpComponentName": "22uF ±20% 6.3V",
+   "isBuyComponent": "0",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/multilayer-ceramic-capacitors-mlcc-smd-smt_cal-chip-electronics-inc-gmc21x7r226m6r3nt_C3908863.html",
+   "leastPatchNumber": 0,
+   "lossNumber": 0,
+   "minPurchaseNum": 23,
+   "noBuyReason": "This product is no longer manufactured.",
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Resistance",
+     "attribute_value_name": "7.5Ω"
+    },
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-55℃~+155℃"
+    },
+    {
+     "attribute_name_en": "Power(Watts)",
+     "attribute_value_name": "125mW"
+    },
+    {
+     "attribute_name_en": "Type",
+     "attribute_value_name": "Thick Film Resistor"
+    },
+    {
+     "attribute_name_en": "Voltage-Supply(Max)",
+     "attribute_value_name": "150V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±5%"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "-200ppm/℃~+400ppm/℃"
+    }
+   ],
+   "componentBrandEn": "Walsin Tech Corp",
+   "componentCode": "C384062",
+   "componentLibraryType": "expand",
+   "componentModelEn": "WR08X7R5JTL",
+   "componentPrices": [
+    {
+     "endNumber": 999,
+     "productPrice": 0.0028,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 4999,
+     "productPrice": 0.0022,
+     "startNumber": 1000
+    },
+    {
+     "endNumber": 9999,
+     "productPrice": 0.0016,
+     "startNumber": 5000
+    },
+    {
+     "endNumber": 49999,
+     "productPrice": 0.0015,
+     "startNumber": 10000
+    },
+    {
+     "endNumber": 50199,
+     "productPrice": 0.0013,
+     "startNumber": 50000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0013,
+     "startNumber": 50200
+    }
+   ],
+   "componentSpecificationEn": "0805",
+   "componentTypeEn": "Chip Resistor - Surface Mount",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2304140030_Walsin-Tech-Corp-WR08X7R5JTL_C384062.pdf",
+   "describe": "-200ppm/℃~+400ppm/℃ -55℃~+155℃ 125mW 150V 7.5Ω Thick Film Resistor ±5% 0805 Chip Resistor - Surface Mount ROHS",
+   "erpComponentName": "厚膜电阻 7.5Ω ±5% 125mW",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/chip-resistor-surface-mount_walsin-tech-corp-wr08x7r5jtl_C384062.html",
+   "leastPatchNumber": 20,
+   "lossNumber": 10,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 506
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Resistance",
+     "attribute_value_name": "7.5Ω"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±5%"
+    }
+   ],
+   "componentBrandEn": "Walsin Tech Corp",
+   "componentCode": "C6097644",
+   "componentLibraryType": "expand",
+   "componentModelEn": "MR08X7R5 JTL",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 0.0127,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 11,
+     "productPrice": 0.0127,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 0.0127,
+     "startNumber": 12
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.0051,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.0049,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0048,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "0805",
+   "componentTypeEn": "Chip Resistor - Surface Mount",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2309222040_Walsin-Tech-Corp-MR08X7R5-JTL_C6097644.pdf",
+   "describe": "7.5Ω ±5% 0805 Chip Resistor - Surface Mount ROHS",
+   "erpComponentName": "7.5Ω ±5%",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/chip-resistor-surface-mount_walsin-tech-corp-mr08x7r5-jtl_C6097644.html",
+   "leastPatchNumber": 5,
+   "lossNumber": 5,
+   "minPurchaseNum": 1866,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": null,
+   "componentBrandEn": "JLCPCB Assembly",
+   "componentCode": "C9900278037",
+   "componentLibraryType": "expand",
+   "componentModelEn": "106P10V10%X7R",
+   "componentPrices": [
+    {
+     "endNumber": 99,
+     "productPrice": 0.0395,
+     "startNumber": 1
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0204,
+     "startNumber": 100
+    }
+   ],
+   "componentSpecificationEn": "0805",
+   "componentTypeEn": "SMT",
+   "dataManualUrl": null,
+   "describe": "0805 SMT ROHS",
+   "erpComponentName": "【邮寄专用】106P10V10%X7R",
+   "isBuyComponent": "0",
+   "lcscGoodsUrl": null,
+   "leastPatchNumber": 5,
+   "lossNumber": 4,
+   "minPurchaseNum": 439,
+   "noBuyReason": "This product is no longer manufactured.",
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": null,
+   "componentBrandEn": "JLCPCB Assembly",
+   "componentCode": "C9900278039",
+   "componentLibraryType": "expand",
+   "componentModelEn": "104P50V10%X7R",
+   "componentPrices": [
+    {
+     "endNumber": 99,
+     "productPrice": 0.0395,
+     "startNumber": 1
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0204,
+     "startNumber": 100
+    }
+   ],
+   "componentSpecificationEn": "0805",
+   "componentTypeEn": "SMT",
+   "dataManualUrl": null,
+   "describe": "0805 SMT ROHS",
+   "erpComponentName": "【邮寄专用】104P50V10%X7R",
+   "isBuyComponent": "0",
+   "lcscGoodsUrl": null,
+   "leastPatchNumber": 5,
+   "lossNumber": 4,
+   "minPurchaseNum": 439,
+   "noBuyReason": "This product is no longer manufactured.",
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "50V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±10%"
+    },
+    {
+     "attribute_name_en": "Capacitance",
+     "attribute_value_name": "10nF"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "X7R"
+    }
+   ],
+   "componentBrandEn": "CAL-CHIP ELECTRONICS, INC.",
+   "componentCode": "C17342103",
+   "componentLibraryType": "expand",
+   "componentModelEn": "GMC21X7R103K50NT",
+   "componentPrices": [
+    {
+     "endNumber": 499,
+     "productPrice": 0.0176,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 1499,
+     "productPrice": 0.0139,
+     "startNumber": 500
+    },
+    {
+     "endNumber": 3999,
+     "productPrice": 0.0118,
+     "startNumber": 1500
+    },
+    {
+     "endNumber": 23999,
+     "productPrice": 0.0106,
+     "startNumber": 4000
+    },
+    {
+     "endNumber": 47999,
+     "productPrice": 0.0096,
+     "startNumber": 24000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.009,
+     "startNumber": 48000
+    }
+   ],
+   "componentSpecificationEn": "0805",
+   "componentTypeEn": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+   "dataManualUrl": "",
+   "describe": "10nF 50V X7R ±10% 0805 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+   "erpComponentName": "10nF ±10% 50V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/multilayer-ceramic-capacitors-mlcc-smd-smt_cal-chip-electronics-inc-gmc21x7r103k50nt_C17342103.html",
+   "leastPatchNumber": 20,
+   "lossNumber": 6,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 2102
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "50V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±20%"
+    },
+    {
+     "attribute_name_en": "Capacitance",
+     "attribute_value_name": "100nF"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "X7R"
+    }
+   ],
+   "componentBrandEn": "CAL-CHIP ELECTRONICS, INC.",
+   "componentCode": "C17356222",
+   "componentLibraryType": "expand",
+   "componentModelEn": "GMC21X7R104M50NT",
+   "componentPrices": [
+    {
+     "endNumber": 499,
+     "productPrice": 0.0144,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 1499,
+     "productPrice": 0.0115,
+     "startNumber": 500
+    },
+    {
+     "endNumber": 3999,
+     "productPrice": 0.0099,
+     "startNumber": 1500
+    },
+    {
+     "endNumber": 23999,
+     "productPrice": 0.0089,
+     "startNumber": 4000
+    },
+    {
+     "endNumber": 47999,
+     "productPrice": 0.0081,
+     "startNumber": 24000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0076,
+     "startNumber": 48000
+    }
+   ],
+   "componentSpecificationEn": "0805",
+   "componentTypeEn": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+   "dataManualUrl": "",
+   "describe": "100nF 50V X7R ±20% 0805 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+   "erpComponentName": "100nF ±20% 50V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/multilayer-ceramic-capacitors-mlcc-smd-smt_cal-chip-electronics-inc-gmc21x7r104m50nt_C17356222.html",
+   "leastPatchNumber": 20,
+   "lossNumber": 6,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 147
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": null,
+   "componentBrandEn": "AIDE CAPACITOR",
+   "componentCode": "C48579586",
+   "componentLibraryType": "expand",
+   "componentModelEn": "0805X7R101K101NT",
+   "componentPrices": [
+    {
+     "endNumber": 499,
+     "productPrice": 0.0049,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 1499,
+     "productPrice": 0.0048,
+     "startNumber": 500
+    },
+    {
+     "endNumber": 3999,
+     "productPrice": 0.0047,
+     "startNumber": 1500
+    },
+    {
+     "endNumber": 4099,
+     "productPrice": 0.0046,
+     "startNumber": 4000
+    },
+    {
+     "endNumber": 4199,
+     "productPrice": 0.0046,
+     "startNumber": 4100
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0046,
+     "startNumber": 4200
+    }
+   ],
+   "componentSpecificationEn": "0805",
+   "componentTypeEn": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+   "dataManualUrl": "https://www.lcsc.com/datasheet/lcsc_datasheet_2504251720_AIDE-CAPACITOR-0805X7R101K101NT_C48579586.pdf",
+   "describe": "0805 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+   "erpComponentName": "100pF ±10% 100V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/multilayer-ceramic-capacitors-mlcc-smd-smt_aide-capacitor-0805x7r101k101nt_C48579586.html",
+   "leastPatchNumber": 20,
+   "lossNumber": 6,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 2460
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": null,
+   "componentBrandEn": "AIDE CAPACITOR",
+   "componentCode": "C48579587",
+   "componentLibraryType": "expand",
+   "componentModelEn": "0805X7R101K201NT",
+   "componentPrices": [
+    {
+     "endNumber": 999,
+     "productPrice": 0.0042,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 3999,
+     "productPrice": 0.0041,
+     "startNumber": 1000
+    },
+    {
+     "endNumber": 7999,
+     "productPrice": 0.0041,
+     "startNumber": 4000
+    },
+    {
+     "endNumber": 8199,
+     "productPrice": 0.004,
+     "startNumber": 8000
+    },
+    {
+     "endNumber": 8399,
+     "productPrice": 0.004,
+     "startNumber": 8200
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.004,
+     "startNumber": 8400
+    }
+   ],
+   "componentSpecificationEn": "0805",
+   "componentTypeEn": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+   "dataManualUrl": "https://www.lcsc.com/datasheet/lcsc_datasheet_2504251720_AIDE-CAPACITOR-0805X7R101K201NT_C48579587.pdf",
+   "describe": "0805 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+   "erpComponentName": "100pF ±10% 200V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/multilayer-ceramic-capacitors-mlcc-smd-smt_aide-capacitor-0805x7r101k201nt_C48579587.html",
+   "leastPatchNumber": 20,
+   "lossNumber": 6,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 205
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": null,
+   "componentBrandEn": "AIDE CAPACITOR",
+   "componentCode": "C48579588",
+   "componentLibraryType": "expand",
+   "componentModelEn": "0805X7R101K500NT",
+   "componentPrices": [
+    {
+     "endNumber": 999,
+     "productPrice": 0.0061,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 3999,
+     "productPrice": 0.0048,
+     "startNumber": 1000
+    },
+    {
+     "endNumber": 7999,
+     "productPrice": 0.0041,
+     "startNumber": 4000
+    },
+    {
+     "endNumber": 47999,
+     "productPrice": 0.0036,
+     "startNumber": 8000
+    },
+    {
+     "endNumber": 99999,
+     "productPrice": 0.0032,
+     "startNumber": 48000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.003,
+     "startNumber": 100000
+    }
+   ],
+   "componentSpecificationEn": "0805",
+   "componentTypeEn": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+   "dataManualUrl": "https://www.lcsc.com/datasheet/lcsc_datasheet_2504251720_AIDE-CAPACITOR-0805X7R101K500NT_C48579588.pdf",
+   "describe": "0805 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+   "erpComponentName": "100pF ±10% 50V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/multilayer-ceramic-capacitors-mlcc-smd-smt_aide-capacitor-0805x7r101k500nt_C48579588.html",
+   "leastPatchNumber": 20,
+   "lossNumber": 6,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 4456
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": null,
+   "componentBrandEn": "AIDE CAPACITOR",
+   "componentCode": "C48579589",
+   "componentLibraryType": "expand",
+   "componentModelEn": "0805X7R102K101NT",
+   "componentPrices": [
+    {
+     "endNumber": 499,
+     "productPrice": 0.0047,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 1499,
+     "productPrice": 0.0046,
+     "startNumber": 500
+    },
+    {
+     "endNumber": 3999,
+     "productPrice": 0.0045,
+     "startNumber": 1500
+    },
+    {
+     "endNumber": 4099,
+     "productPrice": 0.0045,
+     "startNumber": 4000
+    },
+    {
+     "endNumber": 4199,
+     "productPrice": 0.0045,
+     "startNumber": 4100
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0045,
+     "startNumber": 4200
+    }
+   ],
+   "componentSpecificationEn": "0805",
+   "componentTypeEn": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+   "dataManualUrl": "https://www.lcsc.com/datasheet/lcsc_datasheet_2504251720_AIDE-CAPACITOR-0805X7R102K101NT_C48579589.pdf",
+   "describe": "0805 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+   "erpComponentName": "1nF ±10% 100V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/multilayer-ceramic-capacitors-mlcc-smd-smt_aide-capacitor-0805x7r102k101nt_C48579589.html",
+   "leastPatchNumber": 20,
+   "lossNumber": 6,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 285
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": null,
+   "componentBrandEn": "AIDE CAPACITOR",
+   "componentCode": "C48579590",
+   "componentLibraryType": "expand",
+   "componentModelEn": "0805X7R102K102NT",
+   "componentPrices": [
+    {
+     "endNumber": 499,
+     "productPrice": 0.0107,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 1499,
+     "productPrice": 0.0104,
+     "startNumber": 500
+    },
+    {
+     "endNumber": 3999,
+     "productPrice": 0.0103,
+     "startNumber": 1500
+    },
+    {
+     "endNumber": 4099,
+     "productPrice": 0.0101,
+     "startNumber": 4000
+    },
+    {
+     "endNumber": 4199,
+     "productPrice": 0.0101,
+     "startNumber": 4100
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0101,
+     "startNumber": 4200
+    }
+   ],
+   "componentSpecificationEn": "0805",
+   "componentTypeEn": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+   "dataManualUrl": "https://www.lcsc.com/datasheet/lcsc_datasheet_2504251720_AIDE-CAPACITOR-0805X7R102K102NT_C48579590.pdf",
+   "describe": "0805 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+   "erpComponentName": "1nF ±10% 1kV",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/multilayer-ceramic-capacitors-mlcc-smd-smt_aide-capacitor-0805x7r102k102nt_C48579590.html",
+   "leastPatchNumber": 20,
+   "lossNumber": 6,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 1647
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": null,
+   "componentBrandEn": "AIDE CAPACITOR",
+   "componentCode": "C48579591",
+   "componentLibraryType": "expand",
+   "componentModelEn": "0805X7R102K201NT",
+   "componentPrices": [
+    {
+     "endNumber": 999,
+     "productPrice": 0.0081,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 3999,
+     "productPrice": 0.0065,
+     "startNumber": 1000
+    },
+    {
+     "endNumber": 7999,
+     "productPrice": 0.0055,
+     "startNumber": 4000
+    },
+    {
+     "endNumber": 47999,
+     "productPrice": 0.005,
+     "startNumber": 8000
+    },
+    {
+     "endNumber": 99999,
+     "productPrice": 0.0045,
+     "startNumber": 48000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0042,
+     "startNumber": 100000
+    }
+   ],
+   "componentSpecificationEn": "0805",
+   "componentTypeEn": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+   "dataManualUrl": "https://www.lcsc.com/datasheet/lcsc_datasheet_2504251720_AIDE-CAPACITOR-0805X7R102K201NT_C48579591.pdf",
+   "describe": "0805 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+   "erpComponentName": "1nF ±10% 200V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/multilayer-ceramic-capacitors-mlcc-smd-smt_aide-capacitor-0805x7r102k201nt_C48579591.html",
+   "leastPatchNumber": 20,
+   "lossNumber": 6,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 865
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": null,
+   "componentBrandEn": "AIDE CAPACITOR",
+   "componentCode": "C48579592",
+   "componentLibraryType": "expand",
+   "componentModelEn": "0805X7R102K251NT",
+   "componentPrices": [
+    {
+     "endNumber": 999,
+     "productPrice": 0.0085,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 3999,
+     "productPrice": 0.0068,
+     "startNumber": 1000
+    },
+    {
+     "endNumber": 7999,
+     "productPrice": 0.0058,
+     "startNumber": 4000
+    },
+    {
+     "endNumber": 47999,
+     "productPrice": 0.0052,
+     "startNumber": 8000
+    },
+    {
+     "endNumber": 99999,
+     "productPrice": 0.0047,
+     "startNumber": 48000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0044,
+     "startNumber": 100000
+    }
+   ],
+   "componentSpecificationEn": "0805",
+   "componentTypeEn": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+   "dataManualUrl": "https://www.lcsc.com/datasheet/lcsc_datasheet_2504251720_AIDE-CAPACITOR-0805X7R102K251NT_C48579592.pdf",
+   "describe": "0805 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+   "erpComponentName": "1nF ±10% 250V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/multilayer-ceramic-capacitors-mlcc-smd-smt_aide-capacitor-0805x7r102k251nt_C48579592.html",
+   "leastPatchNumber": 20,
+   "lossNumber": 6,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 2993
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": null,
+   "componentBrandEn": "AIDE CAPACITOR",
+   "componentCode": "C48579593",
+   "componentLibraryType": "expand",
+   "componentModelEn": "0805X7R102K500NT",
+   "componentPrices": [
+    {
+     "endNumber": 999,
+     "productPrice": 0.0035,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 3999,
+     "productPrice": 0.0034,
+     "startNumber": 1000
+    },
+    {
+     "endNumber": 7999,
+     "productPrice": 0.0034,
+     "startNumber": 4000
+    },
+    {
+     "endNumber": 8199,
+     "productPrice": 0.0033,
+     "startNumber": 8000
+    },
+    {
+     "endNumber": 8399,
+     "productPrice": 0.0033,
+     "startNumber": 8200
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0033,
+     "startNumber": 8400
+    }
+   ],
+   "componentSpecificationEn": "0805",
+   "componentTypeEn": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+   "dataManualUrl": "https://www.lcsc.com/datasheet/lcsc_datasheet_2504251720_AIDE-CAPACITOR-0805X7R102K500NT_C48579593.pdf",
+   "describe": "0805 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+   "erpComponentName": "1nF ±10% 50V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/multilayer-ceramic-capacitors-mlcc-smd-smt_aide-capacitor-0805x7r102k500nt_C48579593.html",
+   "leastPatchNumber": 20,
+   "lossNumber": 6,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 582643
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": null,
+   "componentBrandEn": "AIDE CAPACITOR",
+   "componentCode": "C48579594",
+   "componentLibraryType": "expand",
+   "componentModelEn": "0805X7R102K501NT",
+   "componentPrices": [
+    {
+     "endNumber": 999,
+     "productPrice": 0.0077,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 3999,
+     "productPrice": 0.0061,
+     "startNumber": 1000
+    },
+    {
+     "endNumber": 7999,
+     "productPrice": 0.0052,
+     "startNumber": 4000
+    },
+    {
+     "endNumber": 47999,
+     "productPrice": 0.0047,
+     "startNumber": 8000
+    },
+    {
+     "endNumber": 99999,
+     "productPrice": 0.0043,
+     "startNumber": 48000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.004,
+     "startNumber": 100000
+    }
+   ],
+   "componentSpecificationEn": "0805",
+   "componentTypeEn": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+   "dataManualUrl": "https://www.lcsc.com/datasheet/lcsc_datasheet_2504251720_AIDE-CAPACITOR-0805X7R102K501NT_C48579594.pdf",
+   "describe": "0805 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+   "erpComponentName": "1nF ±10% 500V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/multilayer-ceramic-capacitors-mlcc-smd-smt_aide-capacitor-0805x7r102k501nt_C48579594.html",
+   "leastPatchNumber": 20,
+   "lossNumber": 6,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 949
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": null,
+   "componentBrandEn": "AIDE CAPACITOR",
+   "componentCode": "C48579595",
+   "componentLibraryType": "expand",
+   "componentModelEn": "0805X7R103K101NT",
+   "componentPrices": [
+    {
+     "endNumber": 999,
+     "productPrice": 0.0047,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 3999,
+     "productPrice": 0.0046,
+     "startNumber": 1000
+    },
+    {
+     "endNumber": 7999,
+     "productPrice": 0.0045,
+     "startNumber": 4000
+    },
+    {
+     "endNumber": 8199,
+     "productPrice": 0.0044,
+     "startNumber": 8000
+    },
+    {
+     "endNumber": 8399,
+     "productPrice": 0.0044,
+     "startNumber": 8200
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0044,
+     "startNumber": 8400
+    }
+   ],
+   "componentSpecificationEn": "0805",
+   "componentTypeEn": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+   "dataManualUrl": "https://www.lcsc.com/datasheet/lcsc_datasheet_2504251720_AIDE-CAPACITOR-0805X7R103K101NT_C48579595.pdf",
+   "describe": "0805 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+   "erpComponentName": "10nF ±10% 100V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/multilayer-ceramic-capacitors-mlcc-smd-smt_aide-capacitor-0805x7r103k101nt_C48579595.html",
+   "leastPatchNumber": 20,
+   "lossNumber": 6,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 35198
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": null,
+   "componentBrandEn": "AIDE CAPACITOR",
+   "componentCode": "C48579596",
+   "componentLibraryType": "expand",
+   "componentModelEn": "0805X7R103K251NT",
+   "componentPrices": [
+    {
+     "endNumber": 499,
+     "productPrice": 0.0054,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 1499,
+     "productPrice": 0.0052,
+     "startNumber": 500
+    },
+    {
+     "endNumber": 3999,
+     "productPrice": 0.0052,
+     "startNumber": 1500
+    },
+    {
+     "endNumber": 4099,
+     "productPrice": 0.0051,
+     "startNumber": 4000
+    },
+    {
+     "endNumber": 4199,
+     "productPrice": 0.0051,
+     "startNumber": 4100
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0051,
+     "startNumber": 4200
+    }
+   ],
+   "componentSpecificationEn": "0805",
+   "componentTypeEn": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+   "dataManualUrl": "https://www.lcsc.com/datasheet/lcsc_datasheet_2504251720_AIDE-CAPACITOR-0805X7R103K251NT_C48579596.pdf",
+   "describe": "0805 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+   "erpComponentName": "10nF ±10% 250V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/multilayer-ceramic-capacitors-mlcc-smd-smt_aide-capacitor-0805x7r103k251nt_C48579596.html",
+   "leastPatchNumber": 20,
+   "lossNumber": 6,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 2182
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": null,
+   "componentBrandEn": "AIDE CAPACITOR",
+   "componentCode": "C48579597",
+   "componentLibraryType": "expand",
+   "componentModelEn": "0805X7R103K500NT",
+   "componentPrices": [
+    {
+     "endNumber": 999,
+     "productPrice": 0.0065,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 3999,
+     "productPrice": 0.0052,
+     "startNumber": 1000
+    },
+    {
+     "endNumber": 7999,
+     "productPrice": 0.0045,
+     "startNumber": 4000
+    },
+    {
+     "endNumber": 47999,
+     "productPrice": 0.0041,
+     "startNumber": 8000
+    },
+    {
+     "endNumber": 99999,
+     "productPrice": 0.0036,
+     "startNumber": 48000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0033,
+     "startNumber": 100000
+    }
+   ],
+   "componentSpecificationEn": "0805",
+   "componentTypeEn": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+   "dataManualUrl": "https://www.lcsc.com/datasheet/lcsc_datasheet_2504251720_AIDE-CAPACITOR-0805X7R103K500NT_C48579597.pdf",
+   "describe": "0805 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+   "erpComponentName": "10nF ±10% 50V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/multilayer-ceramic-capacitors-mlcc-smd-smt_aide-capacitor-0805x7r103k500nt_C48579597.html",
+   "leastPatchNumber": 20,
+   "lossNumber": 6,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 715301
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": null,
+   "componentBrandEn": "AIDE CAPACITOR",
+   "componentCode": "C48579598",
+   "componentLibraryType": "expand",
+   "componentModelEn": "0805X7R103K501NT",
+   "componentPrices": [
+    {
+     "endNumber": 499,
+     "productPrice": 0.0091,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 2999,
+     "productPrice": 0.0089,
+     "startNumber": 500
+    },
+    {
+     "endNumber": 5999,
+     "productPrice": 0.0087,
+     "startNumber": 3000
+    },
+    {
+     "endNumber": 6099,
+     "productPrice": 0.0086,
+     "startNumber": 6000
+    },
+    {
+     "endNumber": 6199,
+     "productPrice": 0.0086,
+     "startNumber": 6100
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0086,
+     "startNumber": 6200
+    }
+   ],
+   "componentSpecificationEn": "0805",
+   "componentTypeEn": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+   "dataManualUrl": "https://www.lcsc.com/datasheet/lcsc_datasheet_2504251720_AIDE-CAPACITOR-0805X7R103K501NT_C48579598.pdf",
+   "describe": "0805 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+   "erpComponentName": "10nF ±10% 500V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/multilayer-ceramic-capacitors-mlcc-smd-smt_aide-capacitor-0805x7r103k501nt_C48579598.html",
+   "leastPatchNumber": 20,
+   "lossNumber": 6,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 3042
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": null,
+   "componentBrandEn": "AIDE CAPACITOR",
+   "componentCode": "C48579599",
+   "componentLibraryType": "expand",
+   "componentModelEn": "0805X7R104K101NT",
+   "componentPrices": [
+    {
+     "endNumber": 499,
+     "productPrice": 0.0128,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 2999,
+     "productPrice": 0.0101,
+     "startNumber": 500
+    },
+    {
+     "endNumber": 5999,
+     "productPrice": 0.0087,
+     "startNumber": 3000
+    },
+    {
+     "endNumber": 23999,
+     "productPrice": 0.0078,
+     "startNumber": 6000
+    },
+    {
+     "endNumber": 50999,
+     "productPrice": 0.007,
+     "startNumber": 24000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0066,
+     "startNumber": 51000
+    }
+   ],
+   "componentSpecificationEn": "0805",
+   "componentTypeEn": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+   "dataManualUrl": "https://www.lcsc.com/datasheet/lcsc_datasheet_2504251720_AIDE-CAPACITOR-0805X7R104K101NT_C48579599.pdf",
+   "describe": "0805 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+   "erpComponentName": "100nF ±10% 100V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/multilayer-ceramic-capacitors-mlcc-smd-smt_aide-capacitor-0805x7r104k101nt_C48579599.html",
+   "leastPatchNumber": 20,
+   "lossNumber": 6,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 879603
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": null,
+   "componentBrandEn": "AIDE CAPACITOR",
+   "componentCode": "C48579600",
+   "componentLibraryType": "expand",
+   "componentModelEn": "0805X7R104K250NT",
+   "componentPrices": [
+    {
+     "endNumber": 499,
+     "productPrice": 0.0107,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 1499,
+     "productPrice": 0.0085,
+     "startNumber": 500
+    },
+    {
+     "endNumber": 3999,
+     "productPrice": 0.0072,
+     "startNumber": 1500
+    },
+    {
+     "endNumber": 23999,
+     "productPrice": 0.0065,
+     "startNumber": 4000
+    },
+    {
+     "endNumber": 47999,
+     "productPrice": 0.0059,
+     "startNumber": 24000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0055,
+     "startNumber": 48000
+    }
+   ],
+   "componentSpecificationEn": "0805",
+   "componentTypeEn": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+   "dataManualUrl": "https://www.lcsc.com/datasheet/lcsc_datasheet_2504251720_AIDE-CAPACITOR-0805X7R104K250NT_C48579600.pdf",
+   "describe": "0805 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+   "erpComponentName": "100nF ±10% 25V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/multilayer-ceramic-capacitors-mlcc-smd-smt_aide-capacitor-0805x7r104k250nt_C48579600.html",
+   "leastPatchNumber": 20,
+   "lossNumber": 6,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 113942
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": null,
+   "componentBrandEn": "AIDE CAPACITOR",
+   "componentCode": "C48579601",
+   "componentLibraryType": "expand",
+   "componentModelEn": "0805X7R104K500NT",
+   "componentPrices": [
+    {
+     "endNumber": 999,
+     "productPrice": 0.0083,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 3999,
+     "productPrice": 0.0065,
+     "startNumber": 1000
+    },
+    {
+     "endNumber": 7999,
+     "productPrice": 0.0056,
+     "startNumber": 4000
+    },
+    {
+     "endNumber": 47999,
+     "productPrice": 0.005,
+     "startNumber": 8000
+    },
+    {
+     "endNumber": 99999,
+     "productPrice": 0.0045,
+     "startNumber": 48000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0042,
+     "startNumber": 100000
+    }
+   ],
+   "componentSpecificationEn": "0805",
+   "componentTypeEn": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+   "dataManualUrl": "https://www.lcsc.com/datasheet/lcsc_datasheet_2504251720_AIDE-CAPACITOR-0805X7R104K500NT_C48579601.pdf",
+   "describe": "0805 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+   "erpComponentName": "100nF ±10% 50V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/multilayer-ceramic-capacitors-mlcc-smd-smt_aide-capacitor-0805x7r104k500nt_C48579601.html",
+   "leastPatchNumber": 20,
+   "lossNumber": 6,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 1552904
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": null,
+   "componentBrandEn": "AIDE CAPACITOR",
+   "componentCode": "C48579602",
+   "componentLibraryType": "expand",
+   "componentModelEn": "0805X7R105K250NT",
+   "componentPrices": [
+    {
+     "endNumber": 499,
+     "productPrice": 0.0101,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 1499,
+     "productPrice": 0.0079,
+     "startNumber": 500
+    },
+    {
+     "endNumber": 3999,
+     "productPrice": 0.0067,
+     "startNumber": 1500
+    },
+    {
+     "endNumber": 23999,
+     "productPrice": 0.006,
+     "startNumber": 4000
+    },
+    {
+     "endNumber": 47999,
+     "productPrice": 0.0054,
+     "startNumber": 24000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.005,
+     "startNumber": 48000
+    }
+   ],
+   "componentSpecificationEn": "0805",
+   "componentTypeEn": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+   "dataManualUrl": "https://www.lcsc.com/datasheet/lcsc_datasheet_2504251720_AIDE-CAPACITOR-0805X7R105K250NT_C48579602.pdf",
+   "describe": "0805 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+   "erpComponentName": "1uF ±10% 25V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/multilayer-ceramic-capacitors-mlcc-smd-smt_aide-capacitor-0805x7r105k250nt_C48579602.html",
+   "leastPatchNumber": 20,
+   "lossNumber": 6,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 9
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": null,
+   "componentBrandEn": "AIDE CAPACITOR",
+   "componentCode": "C48579603",
+   "componentLibraryType": "expand",
+   "componentModelEn": "0805X7R105K350NT",
+   "componentPrices": [
+    {
+     "endNumber": 99,
+     "productPrice": 0.0447,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 299,
+     "productPrice": 0.0353,
+     "startNumber": 100
+    },
+    {
+     "endNumber": 2999,
+     "productPrice": 0.0308,
+     "startNumber": 300
+    },
+    {
+     "endNumber": 5999,
+     "productPrice": 0.0272,
+     "startNumber": 3000
+    },
+    {
+     "endNumber": 8999,
+     "productPrice": 0.0244,
+     "startNumber": 6000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.023,
+     "startNumber": 9000
+    }
+   ],
+   "componentSpecificationEn": "0805",
+   "componentTypeEn": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+   "dataManualUrl": "https://www.lcsc.com/datasheet/lcsc_datasheet_2504251720_AIDE-CAPACITOR-0805X7R105K350NT_C48579603.pdf",
+   "describe": "0805 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+   "erpComponentName": "1uF ±10% 35V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/multilayer-ceramic-capacitors-mlcc-smd-smt_aide-capacitor-0805x7r105k350nt_C48579603.html",
+   "leastPatchNumber": 20,
+   "lossNumber": 6,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 2995
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": null,
+   "componentBrandEn": "AIDE CAPACITOR",
+   "componentCode": "C48579604",
+   "componentLibraryType": "expand",
+   "componentModelEn": "0805X7R105K500NT",
+   "componentPrices": [
+    {
+     "endNumber": 99,
+     "productPrice": 0.0462,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 299,
+     "productPrice": 0.0368,
+     "startNumber": 100
+    },
+    {
+     "endNumber": 2999,
+     "productPrice": 0.0322,
+     "startNumber": 300
+    },
+    {
+     "endNumber": 5999,
+     "productPrice": 0.0286,
+     "startNumber": 3000
+    },
+    {
+     "endNumber": 8999,
+     "productPrice": 0.0259,
+     "startNumber": 6000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0244,
+     "startNumber": 9000
+    }
+   ],
+   "componentSpecificationEn": "0805",
+   "componentTypeEn": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+   "dataManualUrl": "https://www.lcsc.com/datasheet/lcsc_datasheet_2504251720_AIDE-CAPACITOR-0805X7R105K500NT_C48579604.pdf",
+   "describe": "0805 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+   "erpComponentName": "1uF ±10% 50V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/multilayer-ceramic-capacitors-mlcc-smd-smt_aide-capacitor-0805x7r105k500nt_C48579604.html",
+   "leastPatchNumber": 20,
+   "lossNumber": 6,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 3000
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": null,
+   "componentBrandEn": "AIDE CAPACITOR",
+   "componentCode": "C48579605",
+   "componentLibraryType": "expand",
+   "componentModelEn": "0805X7R106K100NT",
+   "componentPrices": [
+    {
+     "endNumber": 199,
+     "productPrice": 0.0234,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 599,
+     "productPrice": 0.0186,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 1999,
+     "productPrice": 0.0159,
+     "startNumber": 600
+    },
+    {
+     "endNumber": 9999,
+     "productPrice": 0.0143,
+     "startNumber": 2000
+    },
+    {
+     "endNumber": 19999,
+     "productPrice": 0.0129,
+     "startNumber": 10000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0121,
+     "startNumber": 20000
+    }
+   ],
+   "componentSpecificationEn": "0805",
+   "componentTypeEn": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+   "dataManualUrl": "https://www.lcsc.com/datasheet/lcsc_datasheet_2504251720_AIDE-CAPACITOR-0805X7R106K100NT_C48579605.pdf",
+   "describe": "0805 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+   "erpComponentName": "10uF ±10% 10V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/multilayer-ceramic-capacitors-mlcc-smd-smt_aide-capacitor-0805x7r106k100nt_C48579605.html",
+   "leastPatchNumber": 20,
+   "lossNumber": 6,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 15
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": null,
+   "componentBrandEn": "AIDE CAPACITOR",
+   "componentCode": "C48579607",
+   "componentLibraryType": "expand",
+   "componentModelEn": "0805X7R106K250NT",
+   "componentPrices": [
+    {
+     "endNumber": 99,
+     "productPrice": 0.0441,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 299,
+     "productPrice": 0.0356,
+     "startNumber": 100
+    },
+    {
+     "endNumber": 2999,
+     "productPrice": 0.0312,
+     "startNumber": 300
+    },
+    {
+     "endNumber": 5999,
+     "productPrice": 0.028,
+     "startNumber": 3000
+    },
+    {
+     "endNumber": 8999,
+     "productPrice": 0.0256,
+     "startNumber": 6000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0243,
+     "startNumber": 9000
+    }
+   ],
+   "componentSpecificationEn": "0805",
+   "componentTypeEn": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+   "dataManualUrl": "https://www.lcsc.com/datasheet/lcsc_datasheet_2504251720_AIDE-CAPACITOR-0805X7R106K250NT_C48579607.pdf",
+   "describe": "0805 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+   "erpComponentName": "10uF ±10% 25V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/multilayer-ceramic-capacitors-mlcc-smd-smt_aide-capacitor-0805x7r106k250nt_C48579607.html",
+   "leastPatchNumber": 5,
+   "lossNumber": 4,
+   "minPurchaseNum": 252,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 4
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": null,
+   "componentBrandEn": "AIDE CAPACITOR",
+   "componentCode": "C48579608",
+   "componentLibraryType": "expand",
+   "componentModelEn": "0805X7R221K201NT",
+   "componentPrices": [
+    {
+     "endNumber": 999,
+     "productPrice": 0.0064,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 3999,
+     "productPrice": 0.0051,
+     "startNumber": 1000
+    },
+    {
+     "endNumber": 7999,
+     "productPrice": 0.0044,
+     "startNumber": 4000
+    },
+    {
+     "endNumber": 47999,
+     "productPrice": 0.0039,
+     "startNumber": 8000
+    },
+    {
+     "endNumber": 99999,
+     "productPrice": 0.0036,
+     "startNumber": 48000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0033,
+     "startNumber": 100000
+    }
+   ],
+   "componentSpecificationEn": "0805",
+   "componentTypeEn": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+   "dataManualUrl": "https://www.lcsc.com/datasheet/lcsc_datasheet_2504251720_AIDE-CAPACITOR-0805X7R221K201NT_C48579608.pdf",
+   "describe": "0805 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+   "erpComponentName": "220pF ±10% 200V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/multilayer-ceramic-capacitors-mlcc-smd-smt_aide-capacitor-0805x7r221k201nt_C48579608.html",
+   "leastPatchNumber": 20,
+   "lossNumber": 6,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 104
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": null,
+   "componentBrandEn": "AIDE CAPACITOR",
+   "componentCode": "C48579609",
+   "componentLibraryType": "expand",
+   "componentModelEn": "0805X7R221K251NT",
+   "componentPrices": [
+    {
+     "endNumber": 499,
+     "productPrice": 0.01,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 1499,
+     "productPrice": 0.0078,
+     "startNumber": 500
+    },
+    {
+     "endNumber": 3999,
+     "productPrice": 0.0066,
+     "startNumber": 1500
+    },
+    {
+     "endNumber": 23999,
+     "productPrice": 0.0059,
+     "startNumber": 4000
+    },
+    {
+     "endNumber": 47999,
+     "productPrice": 0.0053,
+     "startNumber": 24000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.005,
+     "startNumber": 48000
+    }
+   ],
+   "componentSpecificationEn": "0805",
+   "componentTypeEn": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+   "dataManualUrl": "https://www.lcsc.com/datasheet/lcsc_datasheet_2504251720_AIDE-CAPACITOR-0805X7R221K251NT_C48579609.pdf",
+   "describe": "0805 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+   "erpComponentName": "220pF ±10% 250V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/multilayer-ceramic-capacitors-mlcc-smd-smt_aide-capacitor-0805x7r221k251nt_C48579609.html",
+   "leastPatchNumber": 20,
+   "lossNumber": 6,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 4200
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": null,
+   "componentBrandEn": "AIDE CAPACITOR",
+   "componentCode": "C48579610",
+   "componentLibraryType": "expand",
+   "componentModelEn": "0805X7R221K500NT",
+   "componentPrices": [
+    {
+     "endNumber": 999,
+     "productPrice": 0.0052,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 3999,
+     "productPrice": 0.0041,
+     "startNumber": 1000
+    },
+    {
+     "endNumber": 7999,
+     "productPrice": 0.0035,
+     "startNumber": 4000
+    },
+    {
+     "endNumber": 47999,
+     "productPrice": 0.0032,
+     "startNumber": 8000
+    },
+    {
+     "endNumber": 99999,
+     "productPrice": 0.0029,
+     "startNumber": 48000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0027,
+     "startNumber": 100000
+    }
+   ],
+   "componentSpecificationEn": "0805",
+   "componentTypeEn": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+   "dataManualUrl": "https://www.lcsc.com/datasheet/lcsc_datasheet_2504251720_AIDE-CAPACITOR-0805X7R221K500NT_C48579610.pdf",
+   "describe": "0805 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+   "erpComponentName": "220pF ±10% 50V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/multilayer-ceramic-capacitors-mlcc-smd-smt_aide-capacitor-0805x7r221k500nt_C48579610.html",
+   "leastPatchNumber": 20,
+   "lossNumber": 6,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 64
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": null,
+   "componentBrandEn": "AIDE CAPACITOR",
+   "componentCode": "C48579611",
+   "componentLibraryType": "expand",
+   "componentModelEn": "0805X7R221K501NT",
+   "componentPrices": [
+    {
+     "endNumber": 499,
+     "productPrice": 0.0094,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 1499,
+     "productPrice": 0.0075,
+     "startNumber": 500
+    },
+    {
+     "endNumber": 3999,
+     "productPrice": 0.0064,
+     "startNumber": 1500
+    },
+    {
+     "endNumber": 23999,
+     "productPrice": 0.0057,
+     "startNumber": 4000
+    },
+    {
+     "endNumber": 47999,
+     "productPrice": 0.0052,
+     "startNumber": 24000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0049,
+     "startNumber": 48000
+    }
+   ],
+   "componentSpecificationEn": "0805",
+   "componentTypeEn": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+   "dataManualUrl": "https://www.lcsc.com/datasheet/lcsc_datasheet_2504251720_AIDE-CAPACITOR-0805X7R221K501NT_C48579611.pdf",
+   "describe": "0805 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+   "erpComponentName": "220pF ±10% 500V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/multilayer-ceramic-capacitors-mlcc-smd-smt_aide-capacitor-0805x7r221k501nt_C48579611.html",
+   "leastPatchNumber": 20,
+   "lossNumber": 6,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 2790
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": null,
+   "componentBrandEn": "AIDE CAPACITOR",
+   "componentCode": "C48579612",
+   "componentLibraryType": "expand",
+   "componentModelEn": "0805X7R222K201NT",
+   "componentPrices": [
+    {
+     "endNumber": 999,
+     "productPrice": 0.0085,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 3999,
+     "productPrice": 0.0068,
+     "startNumber": 1000
+    },
+    {
+     "endNumber": 7999,
+     "productPrice": 0.0058,
+     "startNumber": 4000
+    },
+    {
+     "endNumber": 47999,
+     "productPrice": 0.0052,
+     "startNumber": 8000
+    },
+    {
+     "endNumber": 99999,
+     "productPrice": 0.0047,
+     "startNumber": 48000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0044,
+     "startNumber": 100000
+    }
+   ],
+   "componentSpecificationEn": "0805",
+   "componentTypeEn": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+   "dataManualUrl": "https://www.lcsc.com/datasheet/lcsc_datasheet_2504251720_AIDE-CAPACITOR-0805X7R222K201NT_C48579612.pdf",
+   "describe": "0805 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+   "erpComponentName": "2.2nF ±10% 200V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/multilayer-ceramic-capacitors-mlcc-smd-smt_aide-capacitor-0805x7r222k201nt_C48579612.html",
+   "leastPatchNumber": 20,
+   "lossNumber": 6,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 2138
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": null,
+   "componentBrandEn": "AIDE CAPACITOR",
+   "componentCode": "C48579613",
+   "componentLibraryType": "expand",
+   "componentModelEn": "0805X7R222K251NT",
+   "componentPrices": [
+    {
+     "endNumber": 499,
+     "productPrice": 0.0094,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 1499,
+     "productPrice": 0.0075,
+     "startNumber": 500
+    },
+    {
+     "endNumber": 3999,
+     "productPrice": 0.0064,
+     "startNumber": 1500
+    },
+    {
+     "endNumber": 23999,
+     "productPrice": 0.0057,
+     "startNumber": 4000
+    },
+    {
+     "endNumber": 47999,
+     "productPrice": 0.0052,
+     "startNumber": 24000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0049,
+     "startNumber": 48000
+    }
+   ],
+   "componentSpecificationEn": "0805",
+   "componentTypeEn": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+   "dataManualUrl": "https://www.lcsc.com/datasheet/lcsc_datasheet_2504251720_AIDE-CAPACITOR-0805X7R222K251NT_C48579613.pdf",
+   "describe": "0805 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+   "erpComponentName": "2.2nF ±10% 250V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/multilayer-ceramic-capacitors-mlcc-smd-smt_aide-capacitor-0805x7r222k251nt_C48579613.html",
+   "leastPatchNumber": 20,
+   "lossNumber": 6,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 390
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": null,
+   "componentBrandEn": "AIDE CAPACITOR",
+   "componentCode": "C48579614",
+   "componentLibraryType": "expand",
+   "componentModelEn": "0805X7R222K500NT",
+   "componentPrices": [
+    {
+     "endNumber": 999,
+     "productPrice": 0.0087,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 3999,
+     "productPrice": 0.007,
+     "startNumber": 1000
+    },
+    {
+     "endNumber": 7999,
+     "productPrice": 0.006,
+     "startNumber": 4000
+    },
+    {
+     "endNumber": 47999,
+     "productPrice": 0.0054,
+     "startNumber": 8000
+    },
+    {
+     "endNumber": 99999,
+     "productPrice": 0.0047,
+     "startNumber": 48000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0044,
+     "startNumber": 100000
+    }
+   ],
+   "componentSpecificationEn": "0805",
+   "componentTypeEn": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+   "dataManualUrl": "https://www.lcsc.com/datasheet/lcsc_datasheet_2504251720_AIDE-CAPACITOR-0805X7R222K500NT_C48579614.pdf",
+   "describe": "0805 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+   "erpComponentName": "2.2nF ±10% 50V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/multilayer-ceramic-capacitors-mlcc-smd-smt_aide-capacitor-0805x7r222k500nt_C48579614.html",
+   "leastPatchNumber": 20,
+   "lossNumber": 6,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 8035
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": null,
+   "componentBrandEn": "AIDE CAPACITOR",
+   "componentCode": "C48579615",
+   "componentLibraryType": "expand",
+   "componentModelEn": "0805X7R222K501NT",
+   "componentPrices": [
+    {
+     "endNumber": 499,
+     "productPrice": 0.0102,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 1499,
+     "productPrice": 0.0081,
+     "startNumber": 500
+    },
+    {
+     "endNumber": 3999,
+     "productPrice": 0.007,
+     "startNumber": 1500
+    },
+    {
+     "endNumber": 23999,
+     "productPrice": 0.0063,
+     "startNumber": 4000
+    },
+    {
+     "endNumber": 47999,
+     "productPrice": 0.0057,
+     "startNumber": 24000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0053,
+     "startNumber": 48000
+    }
+   ],
+   "componentSpecificationEn": "0805",
+   "componentTypeEn": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+   "dataManualUrl": "https://www.lcsc.com/datasheet/lcsc_datasheet_2504251720_AIDE-CAPACITOR-0805X7R222K501NT_C48579615.pdf",
+   "describe": "0805 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+   "erpComponentName": "2.2nF ±10% 500V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/multilayer-ceramic-capacitors-mlcc-smd-smt_aide-capacitor-0805x7r222k501nt_C48579615.html",
+   "leastPatchNumber": 20,
+   "lossNumber": 6,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 3598
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": null,
+   "componentBrandEn": "AIDE CAPACITOR",
+   "componentCode": "C48579616",
+   "componentLibraryType": "expand",
+   "componentModelEn": "0805X7R222K101NT",
+   "componentPrices": [
+    {
+     "endNumber": 999,
+     "productPrice": 0.0077,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 3999,
+     "productPrice": 0.0061,
+     "startNumber": 1000
+    },
+    {
+     "endNumber": 7999,
+     "productPrice": 0.0052,
+     "startNumber": 4000
+    },
+    {
+     "endNumber": 47999,
+     "productPrice": 0.0047,
+     "startNumber": 8000
+    },
+    {
+     "endNumber": 99999,
+     "productPrice": 0.0043,
+     "startNumber": 48000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.004,
+     "startNumber": 100000
+    }
+   ],
+   "componentSpecificationEn": "0805",
+   "componentTypeEn": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+   "dataManualUrl": "https://www.lcsc.com/datasheet/lcsc_datasheet_2504251720_AIDE-CAPACITOR-0805X7R222K101NT_C48579616.pdf",
+   "describe": "0805 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+   "erpComponentName": "2.2nF ±10% 100V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/multilayer-ceramic-capacitors-mlcc-smd-smt_aide-capacitor-0805x7r222k101nt_C48579616.html",
+   "leastPatchNumber": 20,
+   "lossNumber": 6,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 803
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": null,
+   "componentBrandEn": "AIDE CAPACITOR",
+   "componentCode": "C48579617",
+   "componentLibraryType": "expand",
+   "componentModelEn": "0805X7R223K250NT",
+   "componentPrices": [
+    {
+     "endNumber": 499,
+     "productPrice": 0.0192,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 1499,
+     "productPrice": 0.0152,
+     "startNumber": 500
+    },
+    {
+     "endNumber": 3999,
+     "productPrice": 0.013,
+     "startNumber": 1500
+    },
+    {
+     "endNumber": 23999,
+     "productPrice": 0.0117,
+     "startNumber": 4000
+    },
+    {
+     "endNumber": 47999,
+     "productPrice": 0.0105,
+     "startNumber": 24000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0099,
+     "startNumber": 48000
+    }
+   ],
+   "componentSpecificationEn": "0805",
+   "componentTypeEn": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+   "dataManualUrl": "https://www.lcsc.com/datasheet/lcsc_datasheet_2504251720_AIDE-CAPACITOR-0805X7R223K250NT_C48579617.pdf",
+   "describe": "0805 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+   "erpComponentName": "22nF ±10% 25V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/multilayer-ceramic-capacitors-mlcc-smd-smt_aide-capacitor-0805x7r223k250nt_C48579617.html",
+   "leastPatchNumber": 2,
+   "lossNumber": 0,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 3250
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": null,
+   "componentBrandEn": "AIDE CAPACITOR",
+   "componentCode": "C48579618",
+   "componentLibraryType": "expand",
+   "componentModelEn": "0805X7R223K101NT",
+   "componentPrices": [
+    {
+     "endNumber": 499,
+     "productPrice": 0.0123,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 1499,
+     "productPrice": 0.0098,
+     "startNumber": 500
+    },
+    {
+     "endNumber": 3999,
+     "productPrice": 0.0084,
+     "startNumber": 1500
+    },
+    {
+     "endNumber": 23999,
+     "productPrice": 0.0076,
+     "startNumber": 4000
+    },
+    {
+     "endNumber": 47999,
+     "productPrice": 0.0068,
+     "startNumber": 24000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0064,
+     "startNumber": 48000
+    }
+   ],
+   "componentSpecificationEn": "0805",
+   "componentTypeEn": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+   "dataManualUrl": "https://www.lcsc.com/datasheet/lcsc_datasheet_2504251720_AIDE-CAPACITOR-0805X7R223K101NT_C48579618.pdf",
+   "describe": "0805 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+   "erpComponentName": "22nF ±10% 100V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/multilayer-ceramic-capacitors-mlcc-smd-smt_aide-capacitor-0805x7r223k101nt_C48579618.html",
+   "leastPatchNumber": 20,
+   "lossNumber": 6,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 2485
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": null,
+   "componentBrandEn": "AIDE CAPACITOR",
+   "componentCode": "C48579619",
+   "componentLibraryType": "expand",
+   "componentModelEn": "0805X7R223K500NT",
+   "componentPrices": [
+    {
+     "endNumber": 999,
+     "productPrice": 0.0061,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 3999,
+     "productPrice": 0.0048,
+     "startNumber": 1000
+    },
+    {
+     "endNumber": 7999,
+     "productPrice": 0.0041,
+     "startNumber": 4000
+    },
+    {
+     "endNumber": 47999,
+     "productPrice": 0.0036,
+     "startNumber": 8000
+    },
+    {
+     "endNumber": 99999,
+     "productPrice": 0.0032,
+     "startNumber": 48000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.003,
+     "startNumber": 100000
+    }
+   ],
+   "componentSpecificationEn": "0805",
+   "componentTypeEn": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+   "dataManualUrl": "https://www.lcsc.com/datasheet/lcsc_datasheet_2504251720_AIDE-CAPACITOR-0805X7R223K500NT_C48579619.pdf",
+   "describe": "0805 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+   "erpComponentName": "22nF ±10% 50V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/multilayer-ceramic-capacitors-mlcc-smd-smt_aide-capacitor-0805x7r223k500nt_C48579619.html",
+   "leastPatchNumber": 20,
+   "lossNumber": 6,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 1094
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": null,
+   "componentBrandEn": "AIDE CAPACITOR",
+   "componentCode": "C48579620",
+   "componentLibraryType": "expand",
+   "componentModelEn": "0805X7R224K250NT",
+   "componentPrices": [
+    {
+     "endNumber": 199,
+     "productPrice": 0.0135,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 599,
+     "productPrice": 0.0132,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 2999,
+     "productPrice": 0.013,
+     "startNumber": 600
+    },
+    {
+     "endNumber": 3039,
+     "productPrice": 0.0128,
+     "startNumber": 3000
+    },
+    {
+     "endNumber": 3079,
+     "productPrice": 0.0128,
+     "startNumber": 3040
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0128,
+     "startNumber": 3080
+    }
+   ],
+   "componentSpecificationEn": "0805",
+   "componentTypeEn": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+   "dataManualUrl": "https://www.lcsc.com/datasheet/lcsc_datasheet_2504251720_AIDE-CAPACITOR-0805X7R224K250NT_C48579620.pdf",
+   "describe": "0805 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+   "erpComponentName": "220nF ±10% 25V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/multilayer-ceramic-capacitors-mlcc-smd-smt_aide-capacitor-0805x7r224k250nt_C48579620.html",
+   "leastPatchNumber": 20,
+   "lossNumber": 6,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 2954
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": null,
+   "componentBrandEn": "AIDE CAPACITOR",
+   "componentCode": "C48579621",
+   "componentLibraryType": "expand",
+   "componentModelEn": "0805X7R224K500NT",
+   "componentPrices": [
+    {
+     "endNumber": 499,
+     "productPrice": 0.0213,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 2999,
+     "productPrice": 0.0169,
+     "startNumber": 500
+    },
+    {
+     "endNumber": 5999,
+     "productPrice": 0.0144,
+     "startNumber": 3000
+    },
+    {
+     "endNumber": 23999,
+     "productPrice": 0.013,
+     "startNumber": 6000
+    },
+    {
+     "endNumber": 50999,
+     "productPrice": 0.0117,
+     "startNumber": 24000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.011,
+     "startNumber": 51000
+    }
+   ],
+   "componentSpecificationEn": "0805",
+   "componentTypeEn": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+   "dataManualUrl": "https://www.lcsc.com/datasheet/lcsc_datasheet_2504251720_AIDE-CAPACITOR-0805X7R224K500NT_C48579621.pdf",
+   "describe": "0805 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+   "erpComponentName": "220nF ±10% 50V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/multilayer-ceramic-capacitors-mlcc-smd-smt_aide-capacitor-0805x7r224k500nt_C48579621.html",
+   "leastPatchNumber": 20,
+   "lossNumber": 6,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 6372
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": null,
+   "componentBrandEn": "AIDE CAPACITOR",
+   "componentCode": "C48579622",
+   "componentLibraryType": "expand",
+   "componentModelEn": "0805X7R225K250NT",
+   "componentPrices": [
+    {
+     "endNumber": 199,
+     "productPrice": 0.0381,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 599,
+     "productPrice": 0.0303,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 2999,
+     "productPrice": 0.0264,
+     "startNumber": 600
+    },
+    {
+     "endNumber": 8999,
+     "productPrice": 0.0234,
+     "startNumber": 3000
+    },
+    {
+     "endNumber": 20999,
+     "productPrice": 0.021,
+     "startNumber": 9000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0199,
+     "startNumber": 21000
+    }
+   ],
+   "componentSpecificationEn": "0805",
+   "componentTypeEn": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+   "dataManualUrl": "https://www.lcsc.com/datasheet/lcsc_datasheet_2504251720_AIDE-CAPACITOR-0805X7R225K250NT_C48579622.pdf",
+   "describe": "0805 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+   "erpComponentName": "2.2uF ±10% 25V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/multilayer-ceramic-capacitors-mlcc-smd-smt_aide-capacitor-0805x7r225k250nt_C48579622.html",
+   "leastPatchNumber": 20,
+   "lossNumber": 6,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 2964
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": null,
+   "componentBrandEn": "AIDE CAPACITOR",
+   "componentCode": "C48579623",
+   "componentLibraryType": "expand",
+   "componentModelEn": "0805X7R225K500NT",
+   "componentPrices": [
+    {
+     "endNumber": 199,
+     "productPrice": 0.0319,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 599,
+     "productPrice": 0.0252,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 2999,
+     "productPrice": 0.0217,
+     "startNumber": 600
+    },
+    {
+     "endNumber": 8999,
+     "productPrice": 0.0194,
+     "startNumber": 3000
+    },
+    {
+     "endNumber": 20999,
+     "productPrice": 0.0176,
+     "startNumber": 9000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0165,
+     "startNumber": 21000
+    }
+   ],
+   "componentSpecificationEn": "0805",
+   "componentTypeEn": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+   "dataManualUrl": "https://www.lcsc.com/datasheet/lcsc_datasheet_2504251720_AIDE-CAPACITOR-0805X7R225K500NT_C48579623.pdf",
+   "describe": "0805 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+   "erpComponentName": "2.2uF ±10% 50V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/multilayer-ceramic-capacitors-mlcc-smd-smt_aide-capacitor-0805x7r225k500nt_C48579623.html",
+   "leastPatchNumber": 20,
+   "lossNumber": 6,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 19
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": null,
+   "componentBrandEn": "AIDE CAPACITOR",
+   "componentCode": "C48579624",
+   "componentLibraryType": "expand",
+   "componentModelEn": "0805X7R331K500NT",
+   "componentPrices": [
+    {
+     "endNumber": 999,
+     "productPrice": 0.006,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 3999,
+     "productPrice": 0.0047,
+     "startNumber": 1000
+    },
+    {
+     "endNumber": 7999,
+     "productPrice": 0.004,
+     "startNumber": 4000
+    },
+    {
+     "endNumber": 47999,
+     "productPrice": 0.0035,
+     "startNumber": 8000
+    },
+    {
+     "endNumber": 99999,
+     "productPrice": 0.0032,
+     "startNumber": 48000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0029,
+     "startNumber": 100000
+    }
+   ],
+   "componentSpecificationEn": "0805",
+   "componentTypeEn": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+   "dataManualUrl": "https://www.lcsc.com/datasheet/lcsc_datasheet_2504251720_AIDE-CAPACITOR-0805X7R331K500NT_C48579624.pdf",
+   "describe": "0805 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+   "erpComponentName": "330pF ±10% 50V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/multilayer-ceramic-capacitors-mlcc-smd-smt_aide-capacitor-0805x7r331k500nt_C48579624.html",
+   "leastPatchNumber": 20,
+   "lossNumber": 6,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 3525
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": null,
+   "componentBrandEn": "AIDE CAPACITOR",
+   "componentCode": "C48579625",
+   "componentLibraryType": "expand",
+   "componentModelEn": "0805X7R331K201NT",
+   "componentPrices": [
+    {
+     "endNumber": 499,
+     "productPrice": 0.0213,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 1499,
+     "productPrice": 0.0169,
+     "startNumber": 500
+    },
+    {
+     "endNumber": 3999,
+     "productPrice": 0.0144,
+     "startNumber": 1500
+    },
+    {
+     "endNumber": 23999,
+     "productPrice": 0.013,
+     "startNumber": 4000
+    },
+    {
+     "endNumber": 47999,
+     "productPrice": 0.0117,
+     "startNumber": 24000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.011,
+     "startNumber": 48000
+    }
+   ],
+   "componentSpecificationEn": "0805",
+   "componentTypeEn": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+   "dataManualUrl": "https://www.lcsc.com/datasheet/lcsc_datasheet_2504251720_AIDE-CAPACITOR-0805X7R331K201NT_C48579625.pdf",
+   "describe": "0805 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+   "erpComponentName": "330pF ±10% 200V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/multilayer-ceramic-capacitors-mlcc-smd-smt_aide-capacitor-0805x7r331k201nt_C48579625.html",
+   "leastPatchNumber": 20,
+   "lossNumber": 6,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 2885
+  }
+ ],
+ "returned": 50,
+ "schema": 1,
+ "total_matches": 3516
+}

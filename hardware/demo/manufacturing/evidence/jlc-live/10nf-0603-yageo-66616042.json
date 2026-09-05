@@ -1,0 +1,3563 @@
+{
+ "endpoint": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
+ "exhausted": false,
+ "fetched_utc": "2026-09-05T01:07:34Z",
+ "keyword": "10nF 0603  YAGEO",
+ "page_size": 25,
+ "pages": 2,
+ "records": [
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "50V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±10%"
+    },
+    {
+     "attribute_name_en": "Capacitance",
+     "attribute_value_name": "10nF",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>10nF</span>"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "X7R"
+    }
+   ],
+   "componentBrandEn": "YAGEO",
+   "componentCode": "C100042",
+   "componentLibraryType": "expand",
+   "componentModelEn": "CC0603KRX7R9BB103",
+   "componentPrices": [
+    {
+     "endNumber": 499,
+     "productPrice": 0.0092,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 1499,
+     "productPrice": 0.007,
+     "startNumber": 500
+    },
+    {
+     "endNumber": 3999,
+     "productPrice": 0.006,
+     "startNumber": 1500
+    },
+    {
+     "endNumber": 23999,
+     "productPrice": 0.0051,
+     "startNumber": 4000
+    },
+    {
+     "endNumber": 47999,
+     "productPrice": 0.0048,
+     "startNumber": 24000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0046,
+     "startNumber": 48000
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+   "dataManualUrl": "https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_YAGEO-CC0603KRX7R9BB103_C100042.pdf",
+   "describe": "10nF 50V X7R ±10% 0603 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+   "erpComponentName": "10nF ±10% 50V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/multilayer-ceramic-capacitors-mlcc-smd-smt_yageo-cc0603krx7r9bb103_C100042.html",
+   "leastPatchNumber": 20,
+   "lossNumber": 10,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 3934246
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "100V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±10%"
+    },
+    {
+     "attribute_name_en": "Capacitance",
+     "attribute_value_name": "10nF",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>10nF</span>"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "X7R"
+    }
+   ],
+   "componentBrandEn": "YAGEO",
+   "componentCode": "C107059",
+   "componentLibraryType": "expand",
+   "componentModelEn": "CC0603KRX7R0BB103",
+   "componentPrices": [
+    {
+     "endNumber": 499,
+     "productPrice": 0.0115,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 1499,
+     "productPrice": 0.0093,
+     "startNumber": 500
+    },
+    {
+     "endNumber": 3999,
+     "productPrice": 0.0083,
+     "startNumber": 1500
+    },
+    {
+     "endNumber": 23999,
+     "productPrice": 0.0076,
+     "startNumber": 4000
+    },
+    {
+     "endNumber": 47999,
+     "productPrice": 0.0073,
+     "startNumber": 24000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0071,
+     "startNumber": 48000
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+   "dataManualUrl": "https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_YAGEO-CC0603KRX7R0BB103_C107059.pdf",
+   "describe": "100V 10nF X7R ±10% 0603 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+   "erpComponentName": "10nF ±10% 100V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/multilayer-ceramic-capacitors-mlcc-smd-smt_yageo-cc0603krx7r0bb103_C107059.html",
+   "leastPatchNumber": 20,
+   "lossNumber": 12,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 1878451
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "50V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±5%"
+    },
+    {
+     "attribute_name_en": "Capacitance",
+     "attribute_value_name": "10nF",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>10nF</span>"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "X7R"
+    }
+   ],
+   "componentBrandEn": "YAGEO",
+   "componentCode": "C115056",
+   "componentLibraryType": "expand",
+   "componentModelEn": "CC0603JRX7R9BB103",
+   "componentPrices": [
+    {
+     "endNumber": 499,
+     "productPrice": 0.011,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 1499,
+     "productPrice": 0.0088,
+     "startNumber": 500
+    },
+    {
+     "endNumber": 3999,
+     "productPrice": 0.0079,
+     "startNumber": 1500
+    },
+    {
+     "endNumber": 23999,
+     "productPrice": 0.0069,
+     "startNumber": 4000
+    },
+    {
+     "endNumber": 47999,
+     "productPrice": 0.0066,
+     "startNumber": 24000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0065,
+     "startNumber": 48000
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+   "dataManualUrl": "https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_YAGEO-CC0603JRX7R9BB103_C115056.pdf",
+   "describe": "10nF 50V X7R ±5% 0603 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+   "erpComponentName": "10nF ±5% 50V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/multilayer-ceramic-capacitors-mlcc-smd-smt_yageo-cc0603jrx7r9bb103_C115056.html",
+   "leastPatchNumber": 20,
+   "lossNumber": 10,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 1465771
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "100V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±10%"
+    },
+    {
+     "attribute_name_en": "Capacitance",
+     "attribute_value_name": "10nF",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>10nF</span>"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "X7R"
+    }
+   ],
+   "componentBrandEn": "YAGEO",
+   "componentCode": "C149602",
+   "componentLibraryType": "expand",
+   "componentModelEn": "AC0603KRX7R0BB103",
+   "componentPrices": [
+    {
+     "endNumber": 499,
+     "productPrice": 0.0192,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 1499,
+     "productPrice": 0.0166,
+     "startNumber": 500
+    },
+    {
+     "endNumber": 3999,
+     "productPrice": 0.0152,
+     "startNumber": 1500
+    },
+    {
+     "endNumber": 23999,
+     "productPrice": 0.0139,
+     "startNumber": 4000
+    },
+    {
+     "endNumber": 47999,
+     "productPrice": 0.0132,
+     "startNumber": 24000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0128,
+     "startNumber": 48000
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+   "dataManualUrl": "https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_YAGEO-AC0603KRX7R0BB103_C149602.pdf",
+   "describe": "100V 10nF X7R ±10% 0603 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+   "erpComponentName": "10nF ±10% 100V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/multilayer-ceramic-capacitors-mlcc-smd-smt_yageo-ac0603krx7r0bb103_C149602.html",
+   "leastPatchNumber": 20,
+   "lossNumber": 10,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 56371
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "50V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±10%"
+    },
+    {
+     "attribute_name_en": "Capacitance",
+     "attribute_value_name": "10nF",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>10nF</span>"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "X7R"
+    }
+   ],
+   "componentBrandEn": "YAGEO",
+   "componentCode": "C149618",
+   "componentLibraryType": "expand",
+   "componentModelEn": "AC0603KRX7R9BB103",
+   "componentPrices": [
+    {
+     "endNumber": 999,
+     "productPrice": 0.0135,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 3999,
+     "productPrice": 0.0122,
+     "startNumber": 1000
+    },
+    {
+     "endNumber": 7999,
+     "productPrice": 0.0115,
+     "startNumber": 4000
+    },
+    {
+     "endNumber": 47999,
+     "productPrice": 0.011,
+     "startNumber": 8000
+    },
+    {
+     "endNumber": 99999,
+     "productPrice": 0.0106,
+     "startNumber": 48000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0104,
+     "startNumber": 100000
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+   "dataManualUrl": "https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_YAGEO-AC0603KRX7R9BB103_C149618.pdf",
+   "describe": "10nF 50V X7R ±10% 0603 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+   "erpComponentName": "10nF ±10% 50V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/multilayer-ceramic-capacitors-mlcc-smd-smt_yageo-ac0603krx7r9bb103_C149618.html",
+   "leastPatchNumber": 20,
+   "lossNumber": 10,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 7347
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "16V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±10%"
+    },
+    {
+     "attribute_name_en": "Capacitance",
+     "attribute_value_name": "10nF",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>10nF</span>"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "X7R"
+    }
+   ],
+   "componentBrandEn": "YAGEO",
+   "componentCode": "C149619",
+   "componentLibraryType": "expand",
+   "componentModelEn": "AC0603KRX7R7BB103",
+   "componentPrices": [
+    {
+     "endNumber": 999,
+     "productPrice": 0.0123,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 3999,
+     "productPrice": 0.0107,
+     "startNumber": 1000
+    },
+    {
+     "endNumber": 7999,
+     "productPrice": 0.0098,
+     "startNumber": 4000
+    },
+    {
+     "endNumber": 47999,
+     "productPrice": 0.0093,
+     "startNumber": 8000
+    },
+    {
+     "endNumber": 99999,
+     "productPrice": 0.0089,
+     "startNumber": 48000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0086,
+     "startNumber": 100000
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2311211113_YAGEO-AC0603KRX7R7BB103_C149619.pdf",
+   "describe": "10nF 16V X7R ±10% 0603 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+   "erpComponentName": "10nF ±10% 16V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/multilayer-ceramic-capacitors-mlcc-smd-smt_yageo-ac0603krx7r7bb103_C149619.html",
+   "leastPatchNumber": 20,
+   "lossNumber": 10,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 6941
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "25V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±10%"
+    },
+    {
+     "attribute_name_en": "Capacitance",
+     "attribute_value_name": "10nF",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>10nF</span>"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "X7R"
+    }
+   ],
+   "componentBrandEn": "YAGEO",
+   "componentCode": "C327204",
+   "componentLibraryType": "expand",
+   "componentModelEn": "CC0603KRX7R8BB103",
+   "componentPrices": [
+    {
+     "endNumber": 999,
+     "productPrice": 0.0061,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 3999,
+     "productPrice": 0.0051,
+     "startNumber": 1000
+    },
+    {
+     "endNumber": 7999,
+     "productPrice": 0.0045,
+     "startNumber": 4000
+    },
+    {
+     "endNumber": 47999,
+     "productPrice": 0.0042,
+     "startNumber": 8000
+    },
+    {
+     "endNumber": 99999,
+     "productPrice": 0.0039,
+     "startNumber": 48000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0037,
+     "startNumber": 100000
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+   "dataManualUrl": "https://www.lcsc.com/datasheet/lcsc_datasheet_2409272232_YAGEO-CC0603KRX7R8BB103_C327204.pdf",
+   "describe": "10nF 25V X7R ±10% 0603 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+   "erpComponentName": "10nF ±10% 25V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/multilayer-ceramic-capacitors-mlcc-smd-smt_yageo-cc0603krx7r8bb103_C327204.html",
+   "leastPatchNumber": 20,
+   "lossNumber": 10,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 451544
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "50V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±5%"
+    },
+    {
+     "attribute_name_en": "Capacitance",
+     "attribute_value_name": "10nF",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>10nF</span>"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "NP0"
+    }
+   ],
+   "componentBrandEn": "YAGEO",
+   "componentCode": "C389113",
+   "componentLibraryType": "expand",
+   "componentModelEn": "CC0603JRNPO9BN103",
+   "componentPrices": [
+    {
+     "endNumber": 499,
+     "productPrice": 0.0191,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 1499,
+     "productPrice": 0.016,
+     "startNumber": 500
+    },
+    {
+     "endNumber": 3999,
+     "productPrice": 0.0143,
+     "startNumber": 1500
+    },
+    {
+     "endNumber": 23999,
+     "productPrice": 0.0133,
+     "startNumber": 4000
+    },
+    {
+     "endNumber": 47999,
+     "productPrice": 0.0124,
+     "startNumber": 24000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0119,
+     "startNumber": 48000
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+   "dataManualUrl": "https://www.lcsc.com/datasheet/lcsc_datasheet_1912111437_YAGEO-CC0603JRNPO9BN103_C389113.pdf",
+   "describe": "10nF 50V NP0 ±5% 0603 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+   "erpComponentName": "10nF ±5% 50V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/multilayer-ceramic-capacitors-mlcc-smd-smt_yageo-cc0603jrnpo9bn103_C389113.html",
+   "leastPatchNumber": 20,
+   "lossNumber": 8,
+   "minPurchaseNum": 469,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 14
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "10V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±10%"
+    },
+    {
+     "attribute_name_en": "Capacitance",
+     "attribute_value_name": "10nF",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>10nF</span>"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "X7R"
+    }
+   ],
+   "componentBrandEn": "YAGEO",
+   "componentCode": "C519405",
+   "componentLibraryType": "expand",
+   "componentModelEn": "CC0603KRX7R6BB103",
+   "componentPrices": [
+    {
+     "endNumber": 999,
+     "productPrice": 0.0114,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 3999,
+     "productPrice": 0.0098,
+     "startNumber": 1000
+    },
+    {
+     "endNumber": 7999,
+     "productPrice": 0.0089,
+     "startNumber": 4000
+    },
+    {
+     "endNumber": 47999,
+     "productPrice": 0.0083,
+     "startNumber": 8000
+    },
+    {
+     "endNumber": 99999,
+     "productPrice": 0.0079,
+     "startNumber": 48000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0076,
+     "startNumber": 100000
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2005181834_YAGEO-CC0603KRX7R6BB103_C519405.pdf",
+   "describe": "10V 10nF X7R ±10% 0603 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+   "erpComponentName": "10nF ±10% 10V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/multilayer-ceramic-capacitors-mlcc-smd-smt_yageo-cc0603krx7r6bb103_C519405.html",
+   "leastPatchNumber": 20,
+   "lossNumber": 10,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 4016
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "16V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±10%"
+    },
+    {
+     "attribute_name_en": "Capacitance",
+     "attribute_value_name": "10nF",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>10nF</span>"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "X7R"
+    }
+   ],
+   "componentBrandEn": "YAGEO",
+   "componentCode": "C519406",
+   "componentLibraryType": "expand",
+   "componentModelEn": "CC0603KRX7R7BB103",
+   "componentPrices": [
+    {
+     "endNumber": 499,
+     "productPrice": 0.0092,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 1499,
+     "productPrice": 0.0072,
+     "startNumber": 500
+    },
+    {
+     "endNumber": 3999,
+     "productPrice": 0.0061,
+     "startNumber": 1500
+    },
+    {
+     "endNumber": 23999,
+     "productPrice": 0.0053,
+     "startNumber": 4000
+    },
+    {
+     "endNumber": 47999,
+     "productPrice": 0.0047,
+     "startNumber": 24000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0044,
+     "startNumber": 48000
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2005181834_YAGEO-CC0603KRX7R7BB103_C519406.pdf",
+   "describe": "10nF 16V X7R ±10% 0603 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+   "erpComponentName": "10nF ±10% 16V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/multilayer-ceramic-capacitors-mlcc-smd-smt_yageo-cc0603krx7r7bb103_C519406.html",
+   "leastPatchNumber": 20,
+   "lossNumber": 10,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 200337
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "16V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±5%"
+    },
+    {
+     "attribute_name_en": "Capacitance",
+     "attribute_value_name": "10nF",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>10nF</span>"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "X7R"
+    }
+   ],
+   "componentBrandEn": "YAGEO",
+   "componentCode": "C519509",
+   "componentLibraryType": "expand",
+   "componentModelEn": "CC0603JRX7R7BB103",
+   "componentPrices": [
+    {
+     "endNumber": 999,
+     "productPrice": 0.0213,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 3999,
+     "productPrice": 0.0195,
+     "startNumber": 1000
+    },
+    {
+     "endNumber": 7999,
+     "productPrice": 0.0184,
+     "startNumber": 4000
+    },
+    {
+     "endNumber": 47999,
+     "productPrice": 0.0178,
+     "startNumber": 8000
+    },
+    {
+     "endNumber": 99999,
+     "productPrice": 0.0173,
+     "startNumber": 48000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0171,
+     "startNumber": 100000
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+   "dataManualUrl": "https://www.lcsc.com/datasheet/lcsc_datasheet_2005181835_YAGEO-CC0603JRX7R7BB103_C519509.pdf",
+   "describe": "10nF 16V X7R ±5% 0603 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+   "erpComponentName": "10nF ±5% 16V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/multilayer-ceramic-capacitors-mlcc-smd-smt_yageo-cc0603jrx7r7bb103_C519509.html",
+   "leastPatchNumber": 20,
+   "lossNumber": 10,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 5399
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "100V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±5%"
+    },
+    {
+     "attribute_name_en": "Capacitance",
+     "attribute_value_name": "10nF",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>10nF</span>"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "X7R"
+    }
+   ],
+   "componentBrandEn": "YAGEO",
+   "componentCode": "C576833",
+   "componentLibraryType": "expand",
+   "componentModelEn": "CC0603JRX7R0BB103",
+   "componentPrices": [
+    {
+     "endNumber": 999,
+     "productPrice": 0.0122,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 3999,
+     "productPrice": 0.0107,
+     "startNumber": 1000
+    },
+    {
+     "endNumber": 7999,
+     "productPrice": 0.0099,
+     "startNumber": 4000
+    },
+    {
+     "endNumber": 47999,
+     "productPrice": 0.0094,
+     "startNumber": 8000
+    },
+    {
+     "endNumber": 99999,
+     "productPrice": 0.009,
+     "startNumber": 48000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0088,
+     "startNumber": 100000
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2204021130_YAGEO-CC0603JRX7R0BB103_C576833.pdf",
+   "describe": "100V 10nF X7R ±5% 0603 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+   "erpComponentName": "10nF ±5% 100V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/multilayer-ceramic-capacitors-mlcc-smd-smt_yageo-cc0603jrx7r0bb103_C576833.html",
+   "leastPatchNumber": 20,
+   "lossNumber": 10,
+   "minPurchaseNum": 735,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 35
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "25V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "-20%~+80%"
+    },
+    {
+     "attribute_name_en": "Capacitance",
+     "attribute_value_name": "10nF",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>10nF</span>"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "Y5V"
+    }
+   ],
+   "componentBrandEn": "YAGEO",
+   "componentCode": "C576872",
+   "componentLibraryType": "expand",
+   "componentModelEn": "CC0603ZRY5V8BB103",
+   "componentPrices": [
+    {
+     "endNumber": 999,
+     "productPrice": 0.0055,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 3999,
+     "productPrice": 0.0044,
+     "startNumber": 1000
+    },
+    {
+     "endNumber": 7999,
+     "productPrice": 0.0037,
+     "startNumber": 4000
+    },
+    {
+     "endNumber": 47999,
+     "productPrice": 0.0033,
+     "startNumber": 8000
+    },
+    {
+     "endNumber": 99999,
+     "productPrice": 0.003,
+     "startNumber": 48000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0028,
+     "startNumber": 100000
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2012141237_YAGEO-CC0603ZRY5V8BB103_C576872.pdf",
+   "describe": "-20%~+80% 10nF 25V Y5V 0603 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+   "erpComponentName": "10nF -20%~+80% 25V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/multilayer-ceramic-capacitors-mlcc-smd-smt_yageo-cc0603zry5v8bb103_C576872.html",
+   "leastPatchNumber": 20,
+   "lossNumber": 10,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 882
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "50V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "-20%~+80%"
+    },
+    {
+     "attribute_name_en": "Capacitance",
+     "attribute_value_name": "10nF",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>10nF</span>"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "Y5V"
+    }
+   ],
+   "componentBrandEn": "YAGEO",
+   "componentCode": "C576877",
+   "componentLibraryType": "expand",
+   "componentModelEn": "CC0603ZRY5V9BB103",
+   "componentPrices": [
+    {
+     "endNumber": 499,
+     "productPrice": 0.0079,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 1499,
+     "productPrice": 0.0061,
+     "startNumber": 500
+    },
+    {
+     "endNumber": 3999,
+     "productPrice": 0.0052,
+     "startNumber": 1500
+    },
+    {
+     "endNumber": 23999,
+     "productPrice": 0.0045,
+     "startNumber": 4000
+    },
+    {
+     "endNumber": 47999,
+     "productPrice": 0.004,
+     "startNumber": 24000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0038,
+     "startNumber": 48000
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2011102005_YAGEO-CC0603ZRY5V9BB103_C576877.pdf",
+   "describe": "-20%~+80% 10nF 50V Y5V 0603 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+   "erpComponentName": "10nF -20%~+80% 50V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/multilayer-ceramic-capacitors-mlcc-smd-smt_yageo-cc0603zry5v9bb103_C576877.html",
+   "leastPatchNumber": 20,
+   "lossNumber": 10,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 3
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "50V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±5%"
+    },
+    {
+     "attribute_name_en": "Capacitance",
+     "attribute_value_name": "10nF",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>10nF</span>"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "X7R"
+    }
+   ],
+   "componentBrandEn": "YAGEO",
+   "componentCode": "C605212",
+   "componentLibraryType": "expand",
+   "componentModelEn": "AC0603JRX7R9BB103",
+   "componentPrices": [
+    {
+     "endNumber": 499,
+     "productPrice": 0.0286,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 1499,
+     "productPrice": 0.0246,
+     "startNumber": 500
+    },
+    {
+     "endNumber": 3999,
+     "productPrice": 0.0223,
+     "startNumber": 1500
+    },
+    {
+     "endNumber": 23999,
+     "productPrice": 0.021,
+     "startNumber": 4000
+    },
+    {
+     "endNumber": 47999,
+     "productPrice": 0.0199,
+     "startNumber": 24000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0192,
+     "startNumber": 48000
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2304140030_YAGEO-AC0603JRX7R9BB103_C605212.pdf",
+   "describe": "10nF 50V X7R ±5% 0603 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+   "erpComponentName": "10nF ±5% 50V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/multilayer-ceramic-capacitors-mlcc-smd-smt_yageo-ac0603jrx7r9bb103_C605212.html",
+   "leastPatchNumber": 20,
+   "lossNumber": 10,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 5617
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "25V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±5%"
+    },
+    {
+     "attribute_name_en": "Capacitance",
+     "attribute_value_name": "10nF",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>10nF</span>"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "NP0"
+    }
+   ],
+   "componentBrandEn": "YAGEO",
+   "componentCode": "C723749",
+   "componentLibraryType": "expand",
+   "componentModelEn": "CC0603JRNPO8BN103",
+   "componentPrices": [
+    {
+     "endNumber": 499,
+     "productPrice": 0.0311,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 1499,
+     "productPrice": 0.027,
+     "startNumber": 500
+    },
+    {
+     "endNumber": 3999,
+     "productPrice": 0.0249,
+     "startNumber": 1500
+    },
+    {
+     "endNumber": 23999,
+     "productPrice": 0.0231,
+     "startNumber": 4000
+    },
+    {
+     "endNumber": 47999,
+     "productPrice": 0.022,
+     "startNumber": 24000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0213,
+     "startNumber": 48000
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2203311730_YAGEO-CC0603JRNPO8BN103_C723749.pdf",
+   "describe": "10nF 25V NP0 ±5% 0603 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+   "erpComponentName": "10nF ±5% 25V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/multilayer-ceramic-capacitors-mlcc-smd-smt_yageo-cc0603jrnpo8bn103_C723749.html",
+   "leastPatchNumber": 20,
+   "lossNumber": 10,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 48313
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "25V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±10%"
+    },
+    {
+     "attribute_name_en": "Capacitance",
+     "attribute_value_name": "10nF",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>10nF</span>"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "X7R"
+    }
+   ],
+   "componentBrandEn": "YAGEO",
+   "componentCode": "C726559",
+   "componentLibraryType": "expand",
+   "componentModelEn": "AC0603KRX7R8BB103",
+   "componentPrices": [
+    {
+     "endNumber": 499,
+     "productPrice": 0.0124,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 1499,
+     "productPrice": 0.0102,
+     "startNumber": 500
+    },
+    {
+     "endNumber": 3999,
+     "productPrice": 0.0091,
+     "startNumber": 1500
+    },
+    {
+     "endNumber": 23999,
+     "productPrice": 0.0083,
+     "startNumber": 4000
+    },
+    {
+     "endNumber": 47999,
+     "productPrice": 0.0077,
+     "startNumber": 24000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0074,
+     "startNumber": 48000
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+   "dataManualUrl": "https://www.lcsc.com/datasheet/lcsc_datasheet_2010202005_YAGEO-AC0603KRX7R8BB103_C726559.pdf",
+   "describe": "10nF 25V X7R ±10% 0603 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+   "erpComponentName": "10nF ±10% 25V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/multilayer-ceramic-capacitors-mlcc-smd-smt_yageo-ac0603krx7r8bb103_C726559.html",
+   "leastPatchNumber": 20,
+   "lossNumber": 10,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 25420
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "50V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±20%"
+    },
+    {
+     "attribute_name_en": "Capacitance",
+     "attribute_value_name": "10nF",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>10nF</span>"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "X7R"
+    }
+   ],
+   "componentBrandEn": "YAGEO",
+   "componentCode": "C726619",
+   "componentLibraryType": "expand",
+   "componentModelEn": "CC0603MRX7R9BB103",
+   "componentPrices": [
+    {
+     "endNumber": 999,
+     "productPrice": 0.0067,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 3999,
+     "productPrice": 0.0059,
+     "startNumber": 1000
+    },
+    {
+     "endNumber": 7999,
+     "productPrice": 0.0055,
+     "startNumber": 4000
+    },
+    {
+     "endNumber": 47999,
+     "productPrice": 0.0053,
+     "startNumber": 8000
+    },
+    {
+     "endNumber": 48199,
+     "productPrice": 0.005,
+     "startNumber": 48000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.005,
+     "startNumber": 48200
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2203311630_YAGEO-CC0603MRX7R9BB103_C726619.pdf",
+   "describe": "10nF 50V X7R ±20% 0603 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+   "erpComponentName": "10nF ±20% 50V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/multilayer-ceramic-capacitors-mlcc-smd-smt_yageo-cc0603mrx7r9bb103_C726619.html",
+   "leastPatchNumber": 20,
+   "lossNumber": 10,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 773
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "25V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±5%"
+    },
+    {
+     "attribute_name_en": "Capacitance",
+     "attribute_value_name": "10nF",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>10nF</span>"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "X7R"
+    }
+   ],
+   "componentBrandEn": "YAGEO",
+   "componentCode": "C1853055",
+   "componentLibraryType": "expand",
+   "componentModelEn": "AC0603JRX7R8BB103",
+   "componentPrices": [
+    {
+     "endNumber": 499,
+     "productPrice": 0.0111,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 1499,
+     "productPrice": 0.0109,
+     "startNumber": 500
+    },
+    {
+     "endNumber": 3999,
+     "productPrice": 0.0107,
+     "startNumber": 1500
+    },
+    {
+     "endNumber": 4099,
+     "productPrice": 0.0106,
+     "startNumber": 4000
+    },
+    {
+     "endNumber": 4199,
+     "productPrice": 0.0106,
+     "startNumber": 4100
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0106,
+     "startNumber": 4200
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2202151130_YAGEO-AC0603JRX7R8BB103_C1853055.pdf",
+   "describe": "10nF 25V X7R ±5% 0603 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+   "erpComponentName": "10nF ±5% 25V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/multilayer-ceramic-capacitors-mlcc-smd-smt_yageo-ac0603jrx7r8bb103_C1853055.html",
+   "leastPatchNumber": 20,
+   "lossNumber": 6,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 349
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "100V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±5%"
+    },
+    {
+     "attribute_name_en": "Capacitance",
+     "attribute_value_name": "10nF",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>10nF</span>"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "X7R"
+    }
+   ],
+   "componentBrandEn": "YAGEO",
+   "componentCode": "C1853238",
+   "componentLibraryType": "expand",
+   "componentModelEn": "AC0603JRX7R0BB103",
+   "componentPrices": [
+    {
+     "endNumber": 499,
+     "productPrice": 0.0195,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 1499,
+     "productPrice": 0.0166,
+     "startNumber": 500
+    },
+    {
+     "endNumber": 3999,
+     "productPrice": 0.0151,
+     "startNumber": 1500
+    },
+    {
+     "endNumber": 23999,
+     "productPrice": 0.0142,
+     "startNumber": 4000
+    },
+    {
+     "endNumber": 47999,
+     "productPrice": 0.0133,
+     "startNumber": 24000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0129,
+     "startNumber": 48000
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2202151130_YAGEO-AC0603JRX7R0BB103_C1853238.pdf",
+   "describe": "100V 10nF X7R ±5% 0603 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+   "erpComponentName": "10nF ±5% 100V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/multilayer-ceramic-capacitors-mlcc-smd-smt_yageo-ac0603jrx7r0bb103_C1853238.html",
+   "leastPatchNumber": 20,
+   "lossNumber": 6,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 7385
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "50V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±10%"
+    },
+    {
+     "attribute_name_en": "Capacitance",
+     "attribute_value_name": "10nF",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>10nF</span>"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "X7R"
+    }
+   ],
+   "componentBrandEn": "YAGEO",
+   "componentCode": "C2168415",
+   "componentLibraryType": "expand",
+   "componentModelEn": "CC0603KPX7R9BB103",
+   "componentPrices": [
+    {
+     "endNumber": 499,
+     "productPrice": 0.0141,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 1499,
+     "productPrice": 0.0123,
+     "startNumber": 500
+    },
+    {
+     "endNumber": 14999,
+     "productPrice": 0.0113,
+     "startNumber": 1500
+    },
+    {
+     "endNumber": 29999,
+     "productPrice": 0.0102,
+     "startNumber": 15000
+    },
+    {
+     "endNumber": 44999,
+     "productPrice": 0.0097,
+     "startNumber": 30000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0094,
+     "startNumber": 45000
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2202040300_YAGEO-CC0603KPX7R9BB103_C2168415.pdf",
+   "describe": "10nF 50V X7R ±10% 0603 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+   "erpComponentName": "10nF ±10% 50V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/multilayer-ceramic-capacitors-mlcc-smd-smt_yageo-cc0603kpx7r9bb103_C2168415.html",
+   "leastPatchNumber": 20,
+   "lossNumber": 10,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 29441
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "25V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±20%"
+    },
+    {
+     "attribute_name_en": "Capacitance",
+     "attribute_value_name": "10nF",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>10nF</span>"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "X7R"
+    }
+   ],
+   "componentBrandEn": "YAGEO",
+   "componentCode": "C2181195",
+   "componentLibraryType": "expand",
+   "componentModelEn": "CC0603MRX7R8BB103",
+   "componentPrices": [
+    {
+     "endNumber": 999,
+     "productPrice": 0.0028,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 3999,
+     "productPrice": 0.0021,
+     "startNumber": 1000
+    },
+    {
+     "endNumber": 7999,
+     "productPrice": 0.0018,
+     "startNumber": 4000
+    },
+    {
+     "endNumber": 47999,
+     "productPrice": 0.0016,
+     "startNumber": 8000
+    },
+    {
+     "endNumber": 48199,
+     "productPrice": 0.0014,
+     "startNumber": 48000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0014,
+     "startNumber": 48200
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2202041200_YAGEO-CC0603MRX7R8BB103_C2181195.pdf",
+   "describe": "10nF 25V X7R ±20% 0603 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+   "erpComponentName": "10nF ±20% 25V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/multilayer-ceramic-capacitors-mlcc-smd-smt_yageo-cc0603mrx7r8bb103_C2181195.html",
+   "leastPatchNumber": 20,
+   "lossNumber": 10,
+   "minPurchaseNum": 4000,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 16
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "100V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±10%"
+    },
+    {
+     "attribute_name_en": "Capacitance",
+     "attribute_value_name": "10nF",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>10nF</span>"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "X7R"
+    }
+   ],
+   "componentBrandEn": "YAGEO",
+   "componentCode": "C2188575",
+   "componentLibraryType": "expand",
+   "componentModelEn": "CS0603KRX7R0BB103",
+   "componentPrices": [
+    {
+     "endNumber": 499,
+     "productPrice": 0.0176,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 1499,
+     "productPrice": 0.0139,
+     "startNumber": 500
+    },
+    {
+     "endNumber": 3999,
+     "productPrice": 0.0119,
+     "startNumber": 1500
+    },
+    {
+     "endNumber": 23999,
+     "productPrice": 0.0106,
+     "startNumber": 4000
+    },
+    {
+     "endNumber": 47999,
+     "productPrice": 0.0096,
+     "startNumber": 24000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.009,
+     "startNumber": 48000
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2202041800_YAGEO-CS0603KRX7R0BB103_C2188575.pdf",
+   "describe": "100V 10nF X7R ±10% 0603 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+   "erpComponentName": "10nF ±10% 100V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/multilayer-ceramic-capacitors-mlcc-smd-smt_yageo-cs0603krx7r0bb103_C2188575.html",
+   "leastPatchNumber": 20,
+   "lossNumber": 6,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 58
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "200V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±10%"
+    },
+    {
+     "attribute_name_en": "Capacitance",
+     "attribute_value_name": "10nF",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>10nF</span>"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "X7R"
+    }
+   ],
+   "componentBrandEn": "YAGEO",
+   "componentCode": "C5182426",
+   "componentLibraryType": "expand",
+   "componentModelEn": "CC0603KRX7RABB103",
+   "componentPrices": [
+    {
+     "endNumber": 999,
+     "productPrice": 0.0054,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 3999,
+     "productPrice": 0.0043,
+     "startNumber": 1000
+    },
+    {
+     "endNumber": 7999,
+     "productPrice": 0.0036,
+     "startNumber": 4000
+    },
+    {
+     "endNumber": 47999,
+     "productPrice": 0.0032,
+     "startNumber": 8000
+    },
+    {
+     "endNumber": 99999,
+     "productPrice": 0.0029,
+     "startNumber": 48000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0027,
+     "startNumber": 100000
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2311211121_YAGEO-CC0603KRX7RABB103_C5182426.pdf",
+   "describe": "10nF X7R ±10% 0603 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+   "erpComponentName": "10nF ±10% 200V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/multilayer-ceramic-capacitors-mlcc-smd-smt_yageo-cc0603krx7rabb103_C5182426.html",
+   "leastPatchNumber": 20,
+   "lossNumber": 6,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 5
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "250V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±10%"
+    },
+    {
+     "attribute_name_en": "Capacitance",
+     "attribute_value_name": "10nF",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>10nF</span>"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "X7R"
+    }
+   ],
+   "componentBrandEn": "YAGEO",
+   "componentCode": "C5182427",
+   "componentLibraryType": "expand",
+   "componentModelEn": "CC0603KRX7RYBB103",
+   "componentPrices": [
+    {
+     "endNumber": 499,
+     "productPrice": 0.0161,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 1499,
+     "productPrice": 0.014,
+     "startNumber": 500
+    },
+    {
+     "endNumber": 3999,
+     "productPrice": 0.0129,
+     "startNumber": 1500
+    },
+    {
+     "endNumber": 23999,
+     "productPrice": 0.0121,
+     "startNumber": 4000
+    },
+    {
+     "endNumber": 47999,
+     "productPrice": 0.0115,
+     "startNumber": 24000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0112,
+     "startNumber": 48000
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2211141030_YAGEO-CC0603KRX7RYBB103_C5182427.pdf",
+   "describe": "10nF 250V X7R ±10% 0603 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+   "erpComponentName": "10nF ±10% 250V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/multilayer-ceramic-capacitors-mlcc-smd-smt_yageo-cc0603krx7rybb103_C5182427.html",
+   "leastPatchNumber": 20,
+   "lossNumber": 10,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 18114
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "50V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±1%"
+    },
+    {
+     "attribute_name_en": "Capacitance",
+     "attribute_value_name": "10nF",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>10nF</span>"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "NP0"
+    }
+   ],
+   "componentBrandEn": "YAGEO",
+   "componentCode": "C7500385",
+   "componentLibraryType": "expand",
+   "componentModelEn": "CC0603FRNPO9BN103",
+   "componentPrices": [
+    {
+     "endNumber": 49,
+     "productPrice": 0.1519,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 149,
+     "productPrice": 0.1316,
+     "startNumber": 50
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.1216,
+     "startNumber": 150
+    },
+    {
+     "endNumber": 2499,
+     "productPrice": 0.1139,
+     "startNumber": 500
+    },
+    {
+     "endNumber": 3999,
+     "productPrice": 0.1078,
+     "startNumber": 2500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.1047,
+     "startNumber": 4000
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+   "dataManualUrl": null,
+   "describe": "10nF 50V NP0 ±1% 0603 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+   "erpComponentName": "10nF ±1% 50V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": null,
+   "leastPatchNumber": 5,
+   "lossNumber": 4,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 644
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "50V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±10%"
+    },
+    {
+     "attribute_name_en": "Capacitance",
+     "attribute_value_name": "10nF",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>10nF</span>"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "X7R"
+    }
+   ],
+   "componentBrandEn": "YAGEO",
+   "componentCode": "C41710571",
+   "componentLibraryType": "expand",
+   "componentModelEn": "AS0603KRX7R9BB103",
+   "componentPrices": [
+    {
+     "endNumber": 499,
+     "productPrice": 0.0221,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 1499,
+     "productPrice": 0.0181,
+     "startNumber": 500
+    },
+    {
+     "endNumber": 3999,
+     "productPrice": 0.0157,
+     "startNumber": 1500
+    },
+    {
+     "endNumber": 23999,
+     "productPrice": 0.0144,
+     "startNumber": 4000
+    },
+    {
+     "endNumber": 47999,
+     "productPrice": 0.0132,
+     "startNumber": 24000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0125,
+     "startNumber": 48000
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+   "dataManualUrl": null,
+   "describe": "10nF 50V X7R ±10% 0603 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+   "erpComponentName": "10nF ±10% 50V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": null,
+   "leastPatchNumber": 20,
+   "lossNumber": 6,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 4038
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "50V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±5%"
+    },
+    {
+     "attribute_name_en": "Capacitance",
+     "attribute_value_name": "10nF",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>10nF</span>"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "NP0"
+    }
+   ],
+   "componentBrandEn": "YAGEO",
+   "componentCode": "C45616352",
+   "componentLibraryType": "expand",
+   "componentModelEn": "AC0603JRNPO9BN103",
+   "componentPrices": [
+    {
+     "endNumber": 199,
+     "productPrice": 0.0465,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 599,
+     "productPrice": 0.039,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 3999,
+     "productPrice": 0.0348,
+     "startNumber": 600
+    },
+    {
+     "endNumber": 7999,
+     "productPrice": 0.0324,
+     "startNumber": 4000
+    },
+    {
+     "endNumber": 19999,
+     "productPrice": 0.0301,
+     "startNumber": 8000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.029,
+     "startNumber": 20000
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+   "dataManualUrl": null,
+   "describe": "0603 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+   "erpComponentName": "AC0603JRNPO9BN103",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": null,
+   "leastPatchNumber": 5,
+   "lossNumber": 4,
+   "minPurchaseNum": 193,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 13
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "50V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±10%"
+    },
+    {
+     "attribute_name_en": "Capacitance",
+     "attribute_value_name": "10nF",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>10nF</span>"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "X7R"
+    }
+   ],
+   "componentBrandEn": "Samsung Electro-Mechanics",
+   "componentCode": "C1589",
+   "componentLibraryType": "expand",
+   "componentModelEn": "CL10B103KB8NNNC",
+   "componentPrices": [
+    {
+     "endNumber": 499,
+     "productPrice": 0.0101,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 1499,
+     "productPrice": 0.0078,
+     "startNumber": 500
+    },
+    {
+     "endNumber": 3999,
+     "productPrice": 0.0068,
+     "startNumber": 1500
+    },
+    {
+     "endNumber": 23999,
+     "productPrice": 0.0051,
+     "startNumber": 4000
+    },
+    {
+     "endNumber": 47999,
+     "productPrice": 0.0047,
+     "startNumber": 24000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0045,
+     "startNumber": 48000
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+   "dataManualUrl": "https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_Samsung-Electro-Mechanics-CL10B103KB8NNNC_C1589.pdf",
+   "describe": "10nF 50V X7R ±10% 0603 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+   "erpComponentName": "10nF ±10% 50V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/multilayer-ceramic-capacitors-mlcc-smd-smt_samsung-electro-mechanics-cl10b103kb8nnnc_C1589.html",
+   "leastPatchNumber": 20,
+   "lossNumber": 12,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 3071352
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "100V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±10%"
+    },
+    {
+     "attribute_name_en": "Capacitance",
+     "attribute_value_name": "10nF",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>10nF</span>"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "X7R"
+    }
+   ],
+   "componentBrandEn": "FH (Guangdong Fenghua Advanced Tech)",
+   "componentCode": "C43253",
+   "componentLibraryType": "expand",
+   "componentModelEn": "0603B103K101NT",
+   "componentPrices": [
+    {
+     "endNumber": 499,
+     "productPrice": 0.0145,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 1499,
+     "productPrice": 0.0122,
+     "startNumber": 500
+    },
+    {
+     "endNumber": 3999,
+     "productPrice": 0.011,
+     "startNumber": 1500
+    },
+    {
+     "endNumber": 23999,
+     "productPrice": 0.0096,
+     "startNumber": 4000
+    },
+    {
+     "endNumber": 47999,
+     "productPrice": 0.009,
+     "startNumber": 24000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0086,
+     "startNumber": 48000
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2304140030_FH--Guangdong-Fenghua-Advanced-Tech-0603B103K101NT_C43253.pdf",
+   "describe": "100V 10nF X7R ±10% 0603 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+   "erpComponentName": "10nF ±10% 100V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/multilayer-ceramic-capacitors-mlcc-smd-smt_fh-guangdong-fenghua-advanced-tech-0603b103k101nt_C43253.html",
+   "leastPatchNumber": 20,
+   "lossNumber": 10,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 165879
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "50V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±10%"
+    },
+    {
+     "attribute_name_en": "Capacitance",
+     "attribute_value_name": "10nF",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>10nF</span>"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "X7R"
+    }
+   ],
+   "componentBrandEn": "FH (Guangdong Fenghua Advanced Tech)",
+   "componentCode": "C57112",
+   "componentLibraryType": "base",
+   "componentModelEn": "0603B103K500NT",
+   "componentPrices": [
+    {
+     "endNumber": 499,
+     "productPrice": 0.0108,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 1499,
+     "productPrice": 0.0085,
+     "startNumber": 500
+    },
+    {
+     "endNumber": 3999,
+     "productPrice": 0.0075,
+     "startNumber": 1500
+    },
+    {
+     "endNumber": 23999,
+     "productPrice": 0.0066,
+     "startNumber": 4000
+    },
+    {
+     "endNumber": 47999,
+     "productPrice": 0.0063,
+     "startNumber": 24000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.006,
+     "startNumber": 48000
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+   "dataManualUrl": "https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_FH--Guangdong-Fenghua-Advanced-Tech-0603B103K500NT_C57112.pdf",
+   "describe": "10nF 50V X7R ±10% 0603 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+   "erpComponentName": "10nF ±10% 50V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/multilayer-ceramic-capacitors-mlcc-smd-smt_fh-guangdong-fenghua-advanced-tech-0603b103k500nt_C57112.html",
+   "leastPatchNumber": 20,
+   "lossNumber": 10,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 9273211
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "50V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±10%"
+    },
+    {
+     "attribute_name_en": "Capacitance",
+     "attribute_value_name": "10nF",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>10nF</span>"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "X7R"
+    }
+   ],
+   "componentBrandEn": "TDK",
+   "componentCode": "C72452",
+   "componentLibraryType": "expand",
+   "componentModelEn": "C1608X7R1H103KT000N",
+   "componentPrices": [
+    {
+     "endNumber": 99,
+     "productPrice": 0.0131,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 299,
+     "productPrice": 0.0108,
+     "startNumber": 100
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.0094,
+     "startNumber": 300
+    },
+    {
+     "endNumber": 3999,
+     "productPrice": 0.0086,
+     "startNumber": 1000
+    },
+    {
+     "endNumber": 7999,
+     "productPrice": 0.0079,
+     "startNumber": 4000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0076,
+     "startNumber": 8000
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+   "dataManualUrl": "https://datasheet.lcsc.com/lcsc/1912112237_TDK-C1608X7R1H103KT000N_C72452.pdf",
+   "describe": "10nF 50V X7R ±10% 0603 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+   "erpComponentName": "10nF ±10% 50V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://lcsc.comhttps://lcsc.com/product-detail/Multilayer-Ceramic-Capacitors-MLCC-SMD-SMT_TDK-C1608X7R1H103KT000N_C72452.html",
+   "leastPatchNumber": 20,
+   "lossNumber": 10,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 5327
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "50V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±5%"
+    },
+    {
+     "attribute_name_en": "Capacitance",
+     "attribute_value_name": "10nF",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>10nF</span>"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "C0G"
+    }
+   ],
+   "componentBrandEn": "TDK",
+   "componentCode": "C76599",
+   "componentLibraryType": "expand",
+   "componentModelEn": "C1608C0G1H103JT000N",
+   "componentPrices": [
+    {
+     "endNumber": 199,
+     "productPrice": 0.0447,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 599,
+     "productPrice": 0.0369,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 3999,
+     "productPrice": 0.033,
+     "startNumber": 600
+    },
+    {
+     "endNumber": 7999,
+     "productPrice": 0.0301,
+     "startNumber": 4000
+    },
+    {
+     "endNumber": 19999,
+     "productPrice": 0.0277,
+     "startNumber": 8000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0265,
+     "startNumber": 20000
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2304140030_TDK-C1608C0G1H103JT000N_C76599.pdf",
+   "describe": "10nF 50V C0G ±5% 0603 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+   "erpComponentName": "10nF ±5% 50V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/multilayer-ceramic-capacitors-mlcc-smd-smt_tdk-c1608c0g1h103jt000n_C76599.html",
+   "leastPatchNumber": 5,
+   "lossNumber": 4,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 17444
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "50V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±5%"
+    },
+    {
+     "attribute_name_en": "Capacitance",
+     "attribute_value_name": "10nF",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>10nF</span>"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "C0G"
+    }
+   ],
+   "componentBrandEn": "TDK",
+   "componentCode": "C76710",
+   "componentLibraryType": "expand",
+   "componentModelEn": "CGA3E2C0G1H103JT0Y0N",
+   "componentPrices": [
+    {
+     "endNumber": 199,
+     "productPrice": 0.0384,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 599,
+     "productPrice": 0.0312,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 3999,
+     "productPrice": 0.0273,
+     "startNumber": 600
+    },
+    {
+     "endNumber": 7999,
+     "productPrice": 0.0244,
+     "startNumber": 4000
+    },
+    {
+     "endNumber": 19999,
+     "productPrice": 0.0223,
+     "startNumber": 8000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0212,
+     "startNumber": 20000
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+   "dataManualUrl": "https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_TDK-CGA3E2C0G1H103JT0Y0N_C76710.pdf",
+   "describe": "10nF 50V C0G ±5% 0603 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+   "erpComponentName": "10nF ±5% 50V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/multilayer-ceramic-capacitors-mlcc-smd-smt_tdk-cga3e2c0g1h103jt0y0n_C76710.html",
+   "leastPatchNumber": 5,
+   "lossNumber": 4,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 8678
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "50V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±10%"
+    },
+    {
+     "attribute_name_en": "Capacitance",
+     "attribute_value_name": "10nF",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>10nF</span>"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "X7R"
+    }
+   ],
+   "componentBrandEn": "Murata Electronics",
+   "componentCode": "C77053",
+   "componentLibraryType": "expand",
+   "componentModelEn": "GRM188R71H103KA01D",
+   "componentPrices": [
+    {
+     "endNumber": 499,
+     "productPrice": 0.0178,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 1499,
+     "productPrice": 0.0147,
+     "startNumber": 500
+    },
+    {
+     "endNumber": 3999,
+     "productPrice": 0.013,
+     "startNumber": 1500
+    },
+    {
+     "endNumber": 23999,
+     "productPrice": 0.0105,
+     "startNumber": 4000
+    },
+    {
+     "endNumber": 47999,
+     "productPrice": 0.0097,
+     "startNumber": 24000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0092,
+     "startNumber": 48000
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+   "dataManualUrl": "https://www.lcsc.com/datasheet/lcsc_datasheet_2410010301_Murata-Electronics-GRM188R71H103KA01D_C77053.pdf",
+   "describe": "10nF 50V X7R ±10% 0603 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+   "erpComponentName": "10nF ±10% 50V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/multilayer-ceramic-capacitors-mlcc-smd-smt_murata-electronics-grm188r71h103ka01d_C77053.html",
+   "leastPatchNumber": 20,
+   "lossNumber": 10,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 581719
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "50V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±5%"
+    },
+    {
+     "attribute_name_en": "Capacitance",
+     "attribute_value_name": "10nF",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>10nF</span>"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "C0G"
+    }
+   ],
+   "componentBrandEn": "FH (Guangdong Fenghua Advanced Tech)",
+   "componentCode": "C82282",
+   "componentLibraryType": "expand",
+   "componentModelEn": "0603CG103J500NT",
+   "componentPrices": [
+    {
+     "endNumber": 199,
+     "productPrice": 0.0418,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 599,
+     "productPrice": 0.0351,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 3999,
+     "productPrice": 0.0316,
+     "startNumber": 600
+    },
+    {
+     "endNumber": 7999,
+     "productPrice": 0.0272,
+     "startNumber": 4000
+    },
+    {
+     "endNumber": 19999,
+     "productPrice": 0.0252,
+     "startNumber": 8000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0243,
+     "startNumber": 20000
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2304140030_FH--Guangdong-Fenghua-Advanced-Tech-0603CG103J500NT_C82282.pdf",
+   "describe": "10nF 50V C0G ±5% 0603 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+   "erpComponentName": "10nF ±5% 50V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/multilayer-ceramic-capacitors-mlcc-smd-smt_fh-guangdong-fenghua-advanced-tech-0603cg103j500nt_C82282.html",
+   "leastPatchNumber": 20,
+   "lossNumber": 6,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 5388
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "100V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±10%"
+    },
+    {
+     "attribute_name_en": "Capacitance",
+     "attribute_value_name": "10nF",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>10nF</span>"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "X7R"
+    }
+   ],
+   "componentBrandEn": "Samsung Electro-Mechanics",
+   "componentCode": "C84709",
+   "componentLibraryType": "expand",
+   "componentModelEn": "CL10B103KC8NNNC",
+   "componentPrices": [
+    {
+     "endNumber": 499,
+     "productPrice": 0.0125,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 1499,
+     "productPrice": 0.0099,
+     "startNumber": 500
+    },
+    {
+     "endNumber": 3999,
+     "productPrice": 0.0085,
+     "startNumber": 1500
+    },
+    {
+     "endNumber": 23999,
+     "productPrice": 0.0073,
+     "startNumber": 4000
+    },
+    {
+     "endNumber": 47999,
+     "productPrice": 0.0065,
+     "startNumber": 24000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0061,
+     "startNumber": 48000
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+   "dataManualUrl": "https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_Samsung-Electro-Mechanics-CL10B103KC8NNNC_C84709.pdf",
+   "describe": "100V 10nF X7R ±10% 0603 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+   "erpComponentName": "10nF ±10% 100V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/multilayer-ceramic-capacitors-mlcc-smd-smt_samsung-electro-mechanics-cl10b103kc8nnnc_C84709.html",
+   "leastPatchNumber": 20,
+   "lossNumber": 10,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 223966
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "50V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±10%"
+    },
+    {
+     "attribute_name_en": "Capacitance",
+     "attribute_value_name": "10nF",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>10nF</span>"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "X7R"
+    }
+   ],
+   "componentBrandEn": "Murata Electronics",
+   "componentCode": "C85863",
+   "componentLibraryType": "expand",
+   "componentModelEn": "GCM188R71H103KA37D",
+   "componentPrices": [
+    {
+     "endNumber": 499,
+     "productPrice": 0.0207,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 1499,
+     "productPrice": 0.0174,
+     "startNumber": 500
+    },
+    {
+     "endNumber": 3999,
+     "productPrice": 0.0155,
+     "startNumber": 1500
+    },
+    {
+     "endNumber": 23999,
+     "productPrice": 0.0112,
+     "startNumber": 4000
+    },
+    {
+     "endNumber": 47999,
+     "productPrice": 0.0103,
+     "startNumber": 24000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0098,
+     "startNumber": 48000
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2304140030_Murata-Electronics-GCM188R71H103KA37D_C85863.pdf",
+   "describe": "10nF 50V X7R ±10% 0603 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+   "erpComponentName": "10nF ±10% 50V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/multilayer-ceramic-capacitors-mlcc-smd-smt_murata-electronics-gcm188r71h103ka37d_C85863.html",
+   "leastPatchNumber": 20,
+   "lossNumber": 10,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 210709
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "50V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±5%"
+    },
+    {
+     "attribute_name_en": "Capacitance",
+     "attribute_value_name": "10nF",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>10nF</span>"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "C0G"
+    }
+   ],
+   "componentBrandEn": "Murata Electronics",
+   "componentCode": "C85973",
+   "componentLibraryType": "expand",
+   "componentModelEn": "GRM1885C1H103JA01D",
+   "componentPrices": [
+    {
+     "endNumber": 199,
+     "productPrice": 0.0291,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 599,
+     "productPrice": 0.0234,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 3999,
+     "productPrice": 0.0208,
+     "startNumber": 600
+    },
+    {
+     "endNumber": 7999,
+     "productPrice": 0.0186,
+     "startNumber": 4000
+    },
+    {
+     "endNumber": 19999,
+     "productPrice": 0.0178,
+     "startNumber": 8000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0173,
+     "startNumber": 20000
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+   "dataManualUrl": "https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_Murata-Electronics-GRM1885C1H103JA01D_C85973.pdf",
+   "describe": "10nF 50V C0G ±5% 0603 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+   "erpComponentName": "10nF ±5% 50V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/multilayer-ceramic-capacitors-mlcc-smd-smt_murata-electronics-grm1885c1h103ja01d_C85973.html",
+   "leastPatchNumber": 20,
+   "lossNumber": 8,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 280097
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "50V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±10%"
+    },
+    {
+     "attribute_name_en": "Capacitance",
+     "attribute_value_name": "10nF",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>10nF</span>"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "X7R"
+    }
+   ],
+   "componentBrandEn": "KEMET",
+   "componentCode": "C116378",
+   "componentLibraryType": "expand",
+   "componentModelEn": "C0603C103K5RACTU",
+   "componentPrices": [
+    {
+     "endNumber": 99,
+     "productPrice": 0.0166,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 299,
+     "productPrice": 0.0138,
+     "startNumber": 100
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.0123,
+     "startNumber": 300
+    },
+    {
+     "endNumber": 3999,
+     "productPrice": 0.0113,
+     "startNumber": 1000
+    },
+    {
+     "endNumber": 7999,
+     "productPrice": 0.0105,
+     "startNumber": 4000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0101,
+     "startNumber": 8000
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+   "dataManualUrl": null,
+   "describe": "10nF 50V X7R ±10% 0603 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+   "erpComponentName": "10nF ±10% 50V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": null,
+   "leastPatchNumber": 20,
+   "lossNumber": 10,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 9520
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "50V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±5%"
+    },
+    {
+     "attribute_name_en": "Capacitance",
+     "attribute_value_name": "10nF",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>10nF</span>"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "X7R"
+    }
+   ],
+   "componentBrandEn": "FH (Guangdong Fenghua Advanced Tech)",
+   "componentCode": "C124567",
+   "componentLibraryType": "expand",
+   "componentModelEn": "0603B103J500NT",
+   "componentPrices": [
+    {
+     "endNumber": 499,
+     "productPrice": 0.0179,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 1499,
+     "productPrice": 0.0155,
+     "startNumber": 500
+    },
+    {
+     "endNumber": 3999,
+     "productPrice": 0.0141,
+     "startNumber": 1500
+    },
+    {
+     "endNumber": 23999,
+     "productPrice": 0.0122,
+     "startNumber": 4000
+    },
+    {
+     "endNumber": 47999,
+     "productPrice": 0.0114,
+     "startNumber": 24000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.011,
+     "startNumber": 48000
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+   "dataManualUrl": "https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_FH--Guangdong-Fenghua-Advanced-Tech-0603B103J500NT_C124567.pdf",
+   "describe": "10nF 50V X7R ±5% 0603 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+   "erpComponentName": "10nF ±5% 50V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/multilayer-ceramic-capacitors-mlcc-smd-smt_fh-guangdong-fenghua-advanced-tech-0603b103j500nt_C124567.html",
+   "leastPatchNumber": 20,
+   "lossNumber": 10,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 54775
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "50V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±5%"
+    },
+    {
+     "attribute_name_en": "Capacitance",
+     "attribute_value_name": "10nF",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>10nF</span>"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "X7R"
+    }
+   ],
+   "componentBrandEn": "Walsin Tech Corp",
+   "componentCode": "C128615",
+   "componentLibraryType": "expand",
+   "componentModelEn": "0603B103J500CT",
+   "componentPrices": [
+    {
+     "endNumber": 999,
+     "productPrice": 0.0094,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 3999,
+     "productPrice": 0.0075,
+     "startNumber": 1000
+    },
+    {
+     "endNumber": 7999,
+     "productPrice": 0.0064,
+     "startNumber": 4000
+    },
+    {
+     "endNumber": 47999,
+     "productPrice": 0.0057,
+     "startNumber": 8000
+    },
+    {
+     "endNumber": 99999,
+     "productPrice": 0.0052,
+     "startNumber": 48000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0049,
+     "startNumber": 100000
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+   "dataManualUrl": "https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_Walsin-Tech-Corp-0603B103J500CT_C128615.pdf",
+   "describe": "10nF 50V X7R ±5% 0603 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+   "erpComponentName": "10nF ±5% 50V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/multilayer-ceramic-capacitors-mlcc-smd-smt_walsin-tech-corp-0603b103j500ct_C128615.html",
+   "leastPatchNumber": 20,
+   "lossNumber": 10,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 6351
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "50V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±10%"
+    },
+    {
+     "attribute_name_en": "Capacitance",
+     "attribute_value_name": "10nF",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>10nF</span>"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "X7R"
+    }
+   ],
+   "componentBrandEn": "--",
+   "componentCode": "C128913",
+   "componentLibraryType": "expand",
+   "componentModelEn": "06035C103KAT2A",
+   "componentPrices": [
+    {
+     "endNumber": 199,
+     "productPrice": 0.0195,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 599,
+     "productPrice": 0.0162,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 3999,
+     "productPrice": 0.0144,
+     "startNumber": 600
+    },
+    {
+     "endNumber": 7999,
+     "productPrice": 0.0114,
+     "startNumber": 4000
+    },
+    {
+     "endNumber": 19999,
+     "productPrice": 0.0105,
+     "startNumber": 8000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.01,
+     "startNumber": 20000
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+   "dataManualUrl": "https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_Kyocera-AVX-06035C103KAT2A_C128913.pdf",
+   "describe": "10nF 50V X7R ±10% 0603 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+   "erpComponentName": "10nF ±10% 50V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/multilayer-ceramic-capacitors-mlcc-smd-smt_kyocera-avx-06035c103kat2a_C128913.html",
+   "leastPatchNumber": 20,
+   "lossNumber": 8,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 14858
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "50V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±20%"
+    },
+    {
+     "attribute_name_en": "Capacitance",
+     "attribute_value_name": "10nF",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>10nF</span>"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "Y5V"
+    }
+   ],
+   "componentBrandEn": "FH (Guangdong Fenghua Advanced Tech)",
+   "componentCode": "C129397",
+   "componentLibraryType": "expand",
+   "componentModelEn": "0603F103M500NT",
+   "componentPrices": [
+    {
+     "endNumber": 999,
+     "productPrice": 0.0066,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 3999,
+     "productPrice": 0.0053,
+     "startNumber": 1000
+    },
+    {
+     "endNumber": 7999,
+     "productPrice": 0.0042,
+     "startNumber": 4000
+    },
+    {
+     "endNumber": 47999,
+     "productPrice": 0.0037,
+     "startNumber": 8000
+    },
+    {
+     "endNumber": 99999,
+     "productPrice": 0.0033,
+     "startNumber": 48000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0031,
+     "startNumber": 100000
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+   "dataManualUrl": "https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_FH--Guangdong-Fenghua-Advanced-Tech-0603F103M500NT_C129397.pdf",
+   "describe": "10nF 50V Y5V ±20% 0603 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+   "erpComponentName": "10nF ±20% 50V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/multilayer-ceramic-capacitors-mlcc-smd-smt_fh-guangdong-fenghua-advanced-tech-0603f103m500nt_C129397.html",
+   "leastPatchNumber": 20,
+   "lossNumber": 10,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 14104
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "50V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±10%"
+    },
+    {
+     "attribute_name_en": "Capacitance",
+     "attribute_value_name": "10nF",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>10nF</span>"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "-"
+    }
+   ],
+   "componentBrandEn": "TORCH",
+   "componentCode": "C136131",
+   "componentLibraryType": "expand",
+   "componentModelEn": "CT41G-0603-2X1-50V-0.01uF-K(N)",
+   "componentPrices": [
+    {
+     "endNumber": 499,
+     "productPrice": 0.0147,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 1499,
+     "productPrice": 0.0125,
+     "startNumber": 500
+    },
+    {
+     "endNumber": 3999,
+     "productPrice": 0.0112,
+     "startNumber": 1500
+    },
+    {
+     "endNumber": 23999,
+     "productPrice": 0.0105,
+     "startNumber": 4000
+    },
+    {
+     "endNumber": 47999,
+     "productPrice": 0.0099,
+     "startNumber": 24000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0095,
+     "startNumber": 48000
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+   "dataManualUrl": "https://www.lcsc.com/datasheet/lcsc_datasheet_1809291621_TORCH-CT41G-0603-2X1-50V-0-01-F-K-N_C136131.pdf",
+   "describe": "10nF 50V ±10% 0603 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+   "erpComponentName": "10nF ±10% 50V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/multilayer-ceramic-capacitors-mlcc-smd-smt_torch-ct41g-0603-2x1-50v-0-01-f-k-n_C136131.html",
+   "leastPatchNumber": 20,
+   "lossNumber": 10,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 30631
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "50V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±5%"
+    },
+    {
+     "attribute_name_en": "Capacitance",
+     "attribute_value_name": "10nF",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>10nF</span>"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "X7R"
+    }
+   ],
+   "componentBrandEn": "KEMET",
+   "componentCode": "C141070",
+   "componentLibraryType": "expand",
+   "componentModelEn": "C0603C103J5RAC7867",
+   "componentPrices": [
+    {
+     "endNumber": 99,
+     "productPrice": 0.0137,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 299,
+     "productPrice": 0.0108,
+     "startNumber": 100
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.0092,
+     "startNumber": 300
+    },
+    {
+     "endNumber": 3999,
+     "productPrice": 0.0083,
+     "startNumber": 1000
+    },
+    {
+     "endNumber": 7999,
+     "productPrice": 0.0074,
+     "startNumber": 4000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.007,
+     "startNumber": 8000
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2304140030_KEMET-C0603C103J5RAC7867_C141070.pdf",
+   "describe": "10nF 50V X7R ±5% 0603 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+   "erpComponentName": "10nF ±5% 50V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/multilayer-ceramic-capacitors-mlcc-smd-smt_kemet-c0603c103j5rac7867_C141070.html",
+   "leastPatchNumber": 20,
+   "lossNumber": 10,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 3995
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "100V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±10%"
+    },
+    {
+     "attribute_name_en": "Capacitance",
+     "attribute_value_name": "10nF",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>10nF</span>"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "X7R"
+    }
+   ],
+   "componentBrandEn": "KEMET",
+   "componentCode": "C141072",
+   "componentLibraryType": "expand",
+   "componentModelEn": "C0603C103K1RACAUTO",
+   "componentPrices": [
+    {
+     "endNumber": 499,
+     "productPrice": 0.0118,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 1499,
+     "productPrice": 0.0093,
+     "startNumber": 500
+    },
+    {
+     "endNumber": 3999,
+     "productPrice": 0.0079,
+     "startNumber": 1500
+    },
+    {
+     "endNumber": 23999,
+     "productPrice": 0.0071,
+     "startNumber": 4000
+    },
+    {
+     "endNumber": 47999,
+     "productPrice": 0.0064,
+     "startNumber": 24000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.006,
+     "startNumber": 48000
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+   "dataManualUrl": "https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_KEMET-C0603C103K1RACAUTO_C141072.pdf",
+   "describe": "100V 10nF X7R ±10% 0603 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+   "erpComponentName": "10nF ±10% 100V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/multilayer-ceramic-capacitors-mlcc-smd-smt_kemet-c0603c103k1racauto_C141072.html",
+   "leastPatchNumber": 20,
+   "lossNumber": 10,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 858
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "50V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±10%"
+    },
+    {
+     "attribute_name_en": "Capacitance",
+     "attribute_value_name": "10nF",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>10nF</span>"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "X7R"
+    }
+   ],
+   "componentBrandEn": "KEMET",
+   "componentCode": "C141077",
+   "componentLibraryType": "expand",
+   "componentModelEn": "C0603C103K5RAC7867",
+   "componentPrices": [
+    {
+     "endNumber": 499,
+     "productPrice": 0.0114,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 1499,
+     "productPrice": 0.0092,
+     "startNumber": 500
+    },
+    {
+     "endNumber": 3999,
+     "productPrice": 0.008,
+     "startNumber": 1500
+    },
+    {
+     "endNumber": 23999,
+     "productPrice": 0.0072,
+     "startNumber": 4000
+    },
+    {
+     "endNumber": 47999,
+     "productPrice": 0.0066,
+     "startNumber": 24000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0063,
+     "startNumber": 48000
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+   "dataManualUrl": "https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_KEMET-C0603C103K5RAC7867_C141077.pdf",
+   "describe": "10nF 50V X7R ±10% 0603 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+   "erpComponentName": "10nF ±10% 50V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/multilayer-ceramic-capacitors-mlcc-smd-smt_kemet-c0603c103k5rac7867_C141077.html",
+   "leastPatchNumber": 5,
+   "lossNumber": 10,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 1782
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "50V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±10%"
+    },
+    {
+     "attribute_name_en": "Capacitance",
+     "attribute_value_name": "10nF",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>10nF</span>"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "X7R"
+    }
+   ],
+   "componentBrandEn": "KEMET",
+   "componentCode": "C141078",
+   "componentLibraryType": "expand",
+   "componentModelEn": "C0603C103K5RACAUTO",
+   "componentPrices": [
+    {
+     "endNumber": 199,
+     "productPrice": 0.0325,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 599,
+     "productPrice": 0.0278,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 3999,
+     "productPrice": 0.0252,
+     "startNumber": 600
+    },
+    {
+     "endNumber": 7999,
+     "productPrice": 0.0238,
+     "startNumber": 4000
+    },
+    {
+     "endNumber": 19999,
+     "productPrice": 0.0223,
+     "startNumber": 8000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0217,
+     "startNumber": 20000
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+   "dataManualUrl": "https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_KEMET-C0603C103K5RACAUTO_C141078.pdf",
+   "describe": "10nF 50V X7R ±10% 0603 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+   "erpComponentName": "10nF ±10% 50V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/multilayer-ceramic-capacitors-mlcc-smd-smt_kemet-c0603c103k5racauto_C141078.html",
+   "leastPatchNumber": 20,
+   "lossNumber": 10,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 21369
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "100V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±10%"
+    },
+    {
+     "attribute_name_en": "Capacitance",
+     "attribute_value_name": "10nF",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>10nF</span>"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "X7R"
+    }
+   ],
+   "componentBrandEn": "Murata Electronics",
+   "componentCode": "C161232",
+   "componentLibraryType": "expand",
+   "componentModelEn": "GCM188R72A103KA37D",
+   "componentPrices": [
+    {
+     "endNumber": 199,
+     "productPrice": 0.0288,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 599,
+     "productPrice": 0.0233,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 3999,
+     "productPrice": 0.0204,
+     "startNumber": 600
+    },
+    {
+     "endNumber": 7999,
+     "productPrice": 0.0186,
+     "startNumber": 4000
+    },
+    {
+     "endNumber": 19999,
+     "productPrice": 0.0169,
+     "startNumber": 8000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0161,
+     "startNumber": 20000
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+   "dataManualUrl": "https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_Murata-Electronics-GCM188R72A103KA37D_C161232.pdf",
+   "describe": "100V 10nF X7R ±10% 0603 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+   "erpComponentName": "10nF ±10% 100V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/multilayer-ceramic-capacitors-mlcc-smd-smt_murata-electronics-gcm188r72a103ka37d_C161232.html",
+   "leastPatchNumber": 20,
+   "lossNumber": 10,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 54035
+  }
+ ],
+ "returned": 50,
+ "schema": 1,
+ "total_matches": 18348
+}

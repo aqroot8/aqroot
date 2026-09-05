@@ -4930,7 +4930,7 @@
 					)
 				)
 			)
-			(property "MPN" "LTC4368IDD-1#PBF"
+			(property "MPN" "LTC4368IMS-1#TRPBF"
 				(at 0 0 0)
 				(hide yes)
 				(effects
@@ -4939,7 +4939,7 @@
 					)
 				)
 			)
-			(property "Package" "DD, 10-lead 3 mm x 3 mm plastic DFN, exposed pad (pin 11) PCB ground connection optional"
+			(property "Package" "MS, 10-lead plastic MSOP.  D-099 / FBV2-PWR-002: the safety-critical parts are LEADED AND INSPECTABLE -- the DD (DFN, exposed pad) order code was captured against this MSOP-10 land and is corrected at D-615"
 				(at 0 0 0)
 				(hide yes)
 				(effects
@@ -18845,6 +18845,50 @@
 				(justify left)
 			)
 		)
+		(property "Manufacturer" "BOURNS"
+			(at 84.55 254.25 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "CRA2512-FZ-R015ELF"
+			(at 84.55 254.25 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "LCSC" "C2073490"
+			(at 84.55 254.25 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Note_Sourcing" "SOURCING D-615 LIVE_RECORD. JLCPCB record read 2026-09-05T00:59:59Z: expand library, stock 940, land 2512, Power(Watts) 3W; Resistance 15mΩ; Temperature Coefficient ±50ppm/℃; Tolerance ±1%; Type Current Sense Resistor. Gates: land working voltage vs the highest node; 2x operating and survives single fault."
+			(at 84.55 254.25 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(property "Description" ""
 			(at 84.55 252.75 0)
 			(hide yes)
@@ -19464,6 +19508,50 @@
 				(justify left)
 			)
 		)
+		(property "Manufacturer" "UNI-ROYAL(Uniroyal Elec)"
+			(at 164.56 254.25 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "0603WAF2202T5E"
+			(at 164.56 254.25 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "LCSC" "C31850"
+			(at 164.56 254.25 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Note_Sourcing" "SOURCING D-615 LIVE_RECORD. JLCPCB record read 2026-09-05T00:59:59Z: base library, stock 4428542, land 0603, Operating Temperature -55℃~+155℃; Power(Watts) 100mW; Resistance 22kΩ; Temperature Coefficient ±100ppm/℃; Tolerance ±1%; Type Thick Film Resistor; Voltage-Supply(Max) 75V. Gates: land working voltage vs the highest node; 2x the strict over-bound."
+			(at 164.56 254.25 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(property "Description" ""
 			(at 164.56 252.75 0)
 			(hide yes)
@@ -19588,6 +19676,50 @@
 					(size 1.0 1.0)
 				)
 				(justify left)
+			)
+		)
+		(property "Manufacturer" "FH (Guangdong Fenghua Advanced Tech)"
+			(at 186.15 254.25 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "0603B472K500NT"
+			(at 186.15 254.25 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "LCSC" "C53987"
+			(at 186.15 254.25 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Note_Sourcing" "SOURCING D-615 LIVE_RECORD. JLCPCB record read 2026-09-05T00:59:59Z: base library, stock 1274228, land 0603, Capacitance 4.7nF; Temperature Coefficient X7R; Tolerance ±10%; Voltage Rating 50V. Gates: 2x operating and survives absolute; not a resistor."
+			(at 186.15 254.25 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
 			)
 		)
 		(property "Description" ""
@@ -19786,6 +19918,50 @@
 				(justify left)
 			)
 		)
+		(property "Manufacturer" "YAGEO"
+			(at 210.28 254.25 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "RC0603FR-073M65L"
+			(at 210.28 254.25 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "LCSC" "C482835"
+			(at 210.28 254.25 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Note_Sourcing" "SOURCING D-615 LIVE_RECORD. JLCPCB record read 2026-09-05T00:59:59Z: expand library, stock 2221, land 0603, Operating Temperature -55℃~+155℃; Power(Watts) 100mW; Resistance 3.65MΩ; Temperature Coefficient ±100ppm/℃; Tolerance ±1%; Type Thick Film Resistor; Voltage-Supply(Max) 75V. Gates: land working voltage vs the highest node; 2x the strict over-bound."
+			(at 210.28 254.25 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(property "Description" ""
 			(at 210.28 252.75 0)
 			(hide yes)
@@ -19910,6 +20086,50 @@
 					(size 1.0 1.0)
 				)
 				(justify left)
+			)
+		)
+		(property "Manufacturer" "YAGEO"
+			(at 231.87 254.25 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "RC0603FR-07442KL"
+			(at 231.87 254.25 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "LCSC" "C185327"
+			(at 231.87 254.25 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Note_Sourcing" "SOURCING D-615 LIVE_RECORD. JLCPCB record read 2026-09-05T00:59:59Z: expand library, stock 6324, land 0603, Operating Temperature -55℃~+155℃; Power(Watts) 100mW; Resistance 442kΩ; Temperature Coefficient ±100ppm/℃; Tolerance ±1%; Type Thick Film Resistor; Voltage-Supply(Max) 75V. Gates: land working voltage vs the highest node; 2x the strict over-bound."
+			(at 231.87 254.25 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
 			)
 		)
 		(property "Description" ""
@@ -20106,6 +20326,50 @@
 					(size 1.0 1.0)
 				)
 				(justify left)
+			)
+		)
+		(property "Manufacturer" "UNI-ROYAL(Uniroyal Elec)"
+			(at 253.46 254.25 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "0603WAF5103T5E"
+			(at 253.46 254.25 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "LCSC" "C23192"
+			(at 253.46 254.25 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Note_Sourcing" "SOURCING D-615 LIVE_RECORD. JLCPCB record read 2026-09-05T00:59:59Z: base library, stock 933135, land 0603, Operating Temperature -55℃~+155℃; Power(Watts) 100mW; Resistance 510kΩ; Temperature Coefficient ±100ppm/℃; Tolerance ±1%; Type Thick Film Resistor; Voltage-Supply(Max) 75V. Gates: land working voltage vs the highest node; 2x the strict over-bound."
+			(at 253.46 254.25 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
 			)
 		)
 		(property "Description" ""
@@ -21780,6 +22044,17 @@
 				(justify left)
 			)
 		)
+		(property "Note_Sourcing" "SOURCING D-615 PACKAGE CORRECTION. The board land is Package_SO:MSOP-10_3x3mm_P0.5mm and D-099 locked LTC4368IMS-1#PBF, MSOP-10, under FBV2-PWR-002 -- every safety-critical part leaded and inspectable, NO BOTTOM-TERMINATED PARTS. The schematic carried LTC4368IDD-1#PBF: the DD order code is DFN-10, confirmed live on the JLCPCB catalogue as DFN-10-EP(3x3) at 0.75 mm body height against MSOP-10 at 1.1 mm. LTC4368IMS-1#PBF (C688400) is stock 0; #TRPBF is the TAPE-AND-REEL order code of the same MSOP-10, I-grade (-40..+85 C), -1 device -- an order-code change of the identical part, D-210's precedent exactly, NOT an electrical change. Live record read 2026-09-05, LCSC C688401, stock 3; LTC4368HMS-1#PBF (C688391, MSOP-10, -1, H grade, stock 2) is the same-land alternate. U18 remains a CONSIGNED part per D-206."
+			(at 216.63 293.62 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(property "Description" ""
 			(at 216.63 292.12 0)
 			(hide yes)
@@ -21792,7 +22067,7 @@
 				(justify left)
 			)
 		)
-		(property "Note2" "SOURCING 2026-08-23 (FBV2-S2-002) (B-71) - FIRST-BUILD BLOCKER. LTC4368IDD-1#PBF is LCSC C688397 with STOCK 4 against a need of 5. Consign from a broadline distributor; MSOP-10 at 0.5 mm pitch stays machine-placed. LCSC/JLC library state verified live on 2026-08-23 through the JLCPCB parts API (D-096). Stock is a snapshot, not a guarantee."
+		(property "Note2" "SUPERSEDED BY D-615 -- the part this note prices is the DD order code, which is DFN-10, against an MSOP-10 land; kept as the historical record.  SOURCING 2026-08-23 (FBV2-S2-002) (B-71) - FIRST-BUILD BLOCKER. LTC4368IDD-1#PBF is LCSC C688397 with STOCK 4 against a need of 5. Consign from a broadline distributor; MSOP-10 at 0.5 mm pitch stays machine-placed. LCSC/JLC library state verified live on 2026-08-23 through the JLCPCB parts API (D-096). Stock is a snapshot, not a guarantee."
 			(at 216.63 292.12 0)
 			(hide yes)
 			(show_name no)
@@ -21803,7 +22078,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C688397"
+		(property "LCSC" "C688401"
 			(at 216.63 292.12 0)
 			(hide yes)
 			(show_name no)
@@ -21826,7 +22101,7 @@
 				(justify left)
 			)
 		)
-		(property "MPN" "LTC4368IDD-1#PBF"
+		(property "MPN" "LTC4368IMS-1#TRPBF"
 			(at 216.63 289.12 0)
 			(hide yes)
 			(show_name no)
@@ -24004,6 +24279,50 @@
 				(justify left)
 			)
 		)
+		(property "Manufacturer" "YAGEO"
+			(at 197.58 339.34 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "RC0603FR-072M2L"
+			(at 197.58 339.34 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "LCSC" "C137747"
+			(at 197.58 339.34 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Note_Sourcing" "SOURCING D-615 LIVE_RECORD. JLCPCB record read 2026-09-05T00:59:59Z: expand library, stock 5453, land 0603, Operating Temperature -55℃~+155℃; Power(Watts) 100mW; Resistance 2.2MΩ; Temperature Coefficient ±100ppm/℃; Tolerance ±1%; Type Thick Film Resistor; Voltage-Supply(Max) 75V. Gates: land working voltage vs the highest node; 2x the strict over-bound."
+			(at 197.58 339.34 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(property "Description" ""
 			(at 197.58 337.84 0)
 			(hide yes)
@@ -24128,6 +24447,50 @@
 					(size 1.0 1.0)
 				)
 				(justify left)
+			)
+		)
+		(property "Manufacturer" "YAGEO"
+			(at 220.44 339.34 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "RC0603FR-072M2L"
+			(at 220.44 339.34 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "LCSC" "C137747"
+			(at 220.44 339.34 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Note_Sourcing" "SOURCING D-615 LIVE_RECORD. JLCPCB record read 2026-09-05T00:59:59Z: expand library, stock 5453, land 0603, Operating Temperature -55℃~+155℃; Power(Watts) 100mW; Resistance 2.2MΩ; Temperature Coefficient ±100ppm/℃; Tolerance ±1%; Type Thick Film Resistor; Voltage-Supply(Max) 75V. Gates: land working voltage vs the highest node; 2x the strict over-bound."
+			(at 220.44 339.34 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
 			)
 		)
 		(property "Description" ""
@@ -24256,6 +24619,50 @@
 				(justify left)
 			)
 		)
+		(property "Manufacturer" "YAGEO"
+			(at 242.03 339.34 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "RC0603FR-072M2L"
+			(at 242.03 339.34 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "LCSC" "C137747"
+			(at 242.03 339.34 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Note_Sourcing" "SOURCING D-615 LIVE_RECORD. JLCPCB record read 2026-09-05T00:59:59Z: expand library, stock 5453, land 0603, Operating Temperature -55℃~+155℃; Power(Watts) 100mW; Resistance 2.2MΩ; Temperature Coefficient ±100ppm/℃; Tolerance ±1%; Type Thick Film Resistor; Voltage-Supply(Max) 75V. Gates: land working voltage vs the highest node; 2x the strict over-bound."
+			(at 242.03 339.34 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(property "Description" ""
 			(at 242.03 337.84 0)
 			(hide yes)
@@ -24380,6 +24787,50 @@
 					(size 1.0 1.0)
 				)
 				(justify left)
+			)
+		)
+		(property "Manufacturer" "YAGEO"
+			(at 263.62 339.34 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "RC0603FR-072M2L"
+			(at 263.62 339.34 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "LCSC" "C137747"
+			(at 263.62 339.34 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Note_Sourcing" "SOURCING D-615 LIVE_RECORD. JLCPCB record read 2026-09-05T00:59:59Z: expand library, stock 5453, land 0603, Operating Temperature -55℃~+155℃; Power(Watts) 100mW; Resistance 2.2MΩ; Temperature Coefficient ±100ppm/℃; Tolerance ±1%; Type Thick Film Resistor; Voltage-Supply(Max) 75V. Gates: land working voltage vs the highest node; 2x the strict over-bound."
+			(at 263.62 339.34 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
 			)
 		)
 		(property "Description" ""
@@ -24578,6 +25029,50 @@
 				(justify left)
 			)
 		)
+		(property "Manufacturer" "YAGEO"
+			(at 286.48 339.34 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "RC0603FR-072M2L"
+			(at 286.48 339.34 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "LCSC" "C137747"
+			(at 286.48 339.34 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Note_Sourcing" "SOURCING D-615 LIVE_RECORD. JLCPCB record read 2026-09-05T00:59:59Z: expand library, stock 5453, land 0603, Operating Temperature -55℃~+155℃; Power(Watts) 100mW; Resistance 2.2MΩ; Temperature Coefficient ±100ppm/℃; Tolerance ±1%; Type Thick Film Resistor; Voltage-Supply(Max) 75V. Gates: land working voltage vs the highest node; 2x the strict over-bound."
+			(at 286.48 339.34 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(property "Description" ""
 			(at 286.48 337.84 0)
 			(hide yes)
@@ -24702,6 +25197,50 @@
 					(size 1.0 1.0)
 				)
 				(justify left)
+			)
+		)
+		(property "Manufacturer" "YAGEO"
+			(at 308.07 339.34 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "RC0603FR-072M2L"
+			(at 308.07 339.34 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "LCSC" "C137747"
+			(at 308.07 339.34 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Note_Sourcing" "SOURCING D-615 LIVE_RECORD. JLCPCB record read 2026-09-05T00:59:59Z: expand library, stock 5453, land 0603, Operating Temperature -55℃~+155℃; Power(Watts) 100mW; Resistance 2.2MΩ; Temperature Coefficient ±100ppm/℃; Tolerance ±1%; Type Thick Film Resistor; Voltage-Supply(Max) 75V. Gates: land working voltage vs the highest node; 2x the strict over-bound."
+			(at 308.07 339.34 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
 			)
 		)
 		(property "Description" ""
@@ -25140,6 +25679,50 @@
 				(justify left)
 			)
 		)
+		(property "Manufacturer" "YAGEO"
+			(at 353.79 339.34 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "RC0603FR-073M65L"
+			(at 353.79 339.34 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "LCSC" "C482835"
+			(at 353.79 339.34 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Note_Sourcing" "SOURCING D-615 LIVE_RECORD. JLCPCB record read 2026-09-05T00:59:59Z: expand library, stock 2221, land 0603, Operating Temperature -55℃~+155℃; Power(Watts) 100mW; Resistance 3.65MΩ; Temperature Coefficient ±100ppm/℃; Tolerance ±1%; Type Thick Film Resistor; Voltage-Supply(Max) 75V. Gates: land working voltage vs the highest node; 2x the strict over-bound."
+			(at 353.79 339.34 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(property "Description" ""
 			(at 353.79 337.84 0)
 			(hide yes)
@@ -25264,6 +25847,50 @@
 					(size 1.0 1.0)
 				)
 				(justify left)
+			)
+		)
+		(property "Manufacturer" "Vishay Intertech"
+			(at 375.38 339.34 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "MCT06030C1304FP500"
+			(at 375.38 339.34 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "LCSC" "C2115863"
+			(at 375.38 339.34 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Note_Sourcing" "SOURCING D-615 LIVE_RECORD. JLCPCB record read 2026-09-05T00:59:59Z: expand library, stock 1296, land 0603, Operating Temperature -55℃~+155℃; Power(Watts) 125mW; Resistance 1.3MΩ; Temperature Coefficient ±50ppm/℃; Tolerance ±1%; Type Thin Film Resistor; Voltage-Supply(Max) 75V. Gates: land working voltage vs the highest node; 2x the strict over-bound."
+			(at 375.38 339.34 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
 			)
 		)
 		(property "Description" ""
@@ -25769,6 +26396,50 @@
 					(size 1.0 1.0)
 				)
 				(justify left)
+			)
+		)
+		(property "Manufacturer" "PANASONIC"
+			(at 175.99 378.71 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "ERJ-P08F5600V"
+			(at 175.99 378.71 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "LCSC" "C4220370"
+			(at 175.99 378.71 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Note_Sourcing" "SOURCING D-615 LIVE_RECORD. JLCPCB record read 2026-09-05T00:59:59Z: expand library, stock 4925, land 1206, Operating Temperature -55℃~+155℃; Power(Watts) 660mW; Resistance 560Ω; Temperature Coefficient ±100ppm/℃; Tolerance ±1%; Type Thick Film Resistor. Gates: land working voltage vs the highest node; 2x operating and survives single fault."
+			(at 175.99 378.71 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
 			)
 		)
 		(property "Description" ""
@@ -28612,6 +29283,50 @@
 				(justify left)
 			)
 		)
+		(property "Manufacturer" "UNI-ROYAL(Uniroyal Elec)"
+			(at 422.37 255.52 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "0603WAF1501T5E"
+			(at 422.37 255.52 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "LCSC" "C22843"
+			(at 422.37 255.52 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Note_Sourcing" "SOURCING D-615 LIVE_RECORD. JLCPCB record read 2026-09-05T00:59:59Z: base library, stock 3722075, land 0603, Operating Temperature -55℃~+155℃; Power(Watts) 100mW; Resistance 1.5kΩ; Temperature Coefficient ±100ppm/℃; Tolerance ±1%; Type Thick Film Resistor; Voltage-Supply(Max) 75V. Gates: land working voltage vs the highest node; 2x the strict over-bound."
+			(at 422.37 255.52 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(property "Description" ""
 			(at 422.37 254.02 0)
 			(hide yes)
@@ -31270,6 +31985,50 @@
 				(justify left)
 			)
 		)
+		(property "Manufacturer" "Murata Electronics"
+			(at 526.51 313.94 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "GRM21BZ71A226ME15L"
+			(at 526.51 313.94 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "LCSC" "C907991"
+			(at 526.51 313.94 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Note_Sourcing" "SOURCING D-615 LIVE_RECORD. JLCPCB record read 2026-09-05T00:59:59Z: expand library, stock 65524, land 0805, Capacitance 22uF; Temperature Coefficient X7R; Tolerance ±20%; Voltage Rating 10V. Gates: 2x operating and survives absolute; not a resistor."
+			(at 526.51 313.94 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(property "Description" ""
 			(at 526.51 312.44 0)
 			(hide yes)
@@ -31466,6 +32225,50 @@
 				(justify left)
 			)
 		)
+		(property "Manufacturer" "Murata Electronics"
+			(at 549.37 313.94 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "GRM21BZ71A226ME15L"
+			(at 549.37 313.94 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "LCSC" "C907991"
+			(at 549.37 313.94 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Note_Sourcing" "SOURCING D-615 LIVE_RECORD. JLCPCB record read 2026-09-05T00:59:59Z: expand library, stock 65524, land 0805, Capacitance 22uF; Temperature Coefficient X7R; Tolerance ±20%; Voltage Rating 10V. Gates: 2x operating and survives absolute; not a resistor."
+			(at 549.37 313.94 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(property "Description" ""
 			(at 549.37 312.44 0)
 			(hide yes)
@@ -31660,6 +32463,50 @@
 					(size 1.0 1.0)
 				)
 				(justify left)
+			)
+		)
+		(property "Manufacturer" "Vishay Intertech"
+			(at 461.74 341.88 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "CRCW0603732KFKEA"
+			(at 461.74 341.88 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "LCSC" "C2079739"
+			(at 461.74 341.88 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Note_Sourcing" "SOURCING D-615 LIVE_RECORD. JLCPCB record read 2026-09-05T00:59:59Z: expand library, stock 2865, land 0603, Operating Temperature -55℃~+155℃; Power(Watts) 100mW; Resistance 732kΩ; Temperature Coefficient ±100ppm/℃; Tolerance ±1%; Type Thick Film Resistor; Voltage-Supply(Max) 100V. Gates: land working voltage vs the highest node; 2x the strict over-bound."
+			(at 461.74 341.88 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
 			)
 		)
 		(property "Description" ""
@@ -32038,6 +32885,50 @@
 					(size 1.0 1.0)
 				)
 				(justify left)
+			)
+		)
+		(property "Manufacturer" "PANASONIC"
+			(at 510.0 341.88 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "ERJ-PA3F1651V"
+			(at 510.0 341.88 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "LCSC" "C4088673"
+			(at 510.0 341.88 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Note_Sourcing" "SOURCING D-615 LIVE_RECORD. JLCPCB record read 2026-09-05T00:59:59Z: expand library, stock 2763, land 0603, Operating Temperature -55℃~+155℃; Power(Watts) 250mW; Resistance 1.65kΩ; Temperature Coefficient ±100ppm/℃; Tolerance ±1%; Type Thick Film Resistor. Gates: land working voltage vs the highest node; 2x the strict over-bound."
+			(at 510.0 341.88 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
 			)
 		)
 		(property "Description" ""
@@ -33070,6 +33961,50 @@
 				(justify left)
 			)
 		)
+		(property "Manufacturer" "UNI-ROYAL(Uniroyal Elec)"
+			(at 471.9 373.63 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "0603WAF1503T5E"
+			(at 471.9 373.63 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "LCSC" "C22807"
+			(at 471.9 373.63 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Note_Sourcing" "SOURCING D-615 LIVE_RECORD. JLCPCB record read 2026-09-05T00:59:59Z: base library, stock 935032, land 0603, Operating Temperature -55℃~+155℃; Power(Watts) 100mW; Resistance 150kΩ; Temperature Coefficient ±100ppm/℃; Tolerance ±1%; Type Thick Film Resistor; Voltage-Supply(Max) 75V. Gates: land working voltage vs the highest node; 2x the strict over-bound."
+			(at 471.9 373.63 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(property "Description" ""
 			(at 471.9 372.13 0)
 			(hide yes)
@@ -33194,6 +34129,50 @@
 					(size 1.0 1.0)
 				)
 				(justify left)
+			)
+		)
+		(property "Manufacturer" "UNI-ROYAL(Uniroyal Elec)"
+			(at 496.03 373.63 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "0603WAF2203T5E"
+			(at 496.03 373.63 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "LCSC" "C22961"
+			(at 496.03 373.63 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Note_Sourcing" "SOURCING D-615 LIVE_RECORD. JLCPCB record read 2026-09-05T00:59:59Z: base library, stock 1692476, land 0603, Operating Temperature -55℃~+155℃; Power(Watts) 100mW; Resistance 220kΩ; Temperature Coefficient ±100ppm/℃; Tolerance ±1%; Type Thick Film Resistor; Voltage-Supply(Max) 75V. Gates: land working voltage vs the highest node; 2x the strict over-bound."
+			(at 496.03 373.63 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
 			)
 		)
 		(property "Description" ""

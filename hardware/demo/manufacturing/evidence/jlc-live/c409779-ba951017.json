@@ -1,0 +1,183 @@
+{
+ "endpoint": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
+ "exhausted": true,
+ "fetched_utc": "2026-09-05T01:11:32Z",
+ "keyword": "C409779",
+ "page_size": 25,
+ "pages": 1,
+ "records": [
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Power(Watts) - R",
+     "attribute_value_name": "70mW"
+    },
+    {
+     "attribute_name_en": "Viewing Angle",
+     "attribute_value_name": "120°"
+    },
+    {
+     "attribute_name_en": "Antistatic Capacity",
+     "attribute_value_name": "R:2000V、G:150V、B:150V"
+    },
+    {
+     "attribute_name_en": "Installation Method",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Height",
+     "attribute_value_name": "1.85mm"
+    },
+    {
+     "attribute_name_en": "Width",
+     "attribute_value_name": "2.8mm"
+    },
+    {
+     "attribute_name_en": "Forward Current - R",
+     "attribute_value_name": "20mA"
+    },
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-40℃~+85℃"
+    },
+    {
+     "attribute_name_en": "Luminous Intensity - B",
+     "attribute_value_name": "285mcd~715mcd"
+    },
+    {
+     "attribute_name_en": "Forward Voltage(Vf) - B",
+     "attribute_value_name": "2.7V~3.4V"
+    },
+    {
+     "attribute_name_en": "Peak Wavelength - B",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Forward Voltage(Vf) - G",
+     "attribute_value_name": "2.7V~3.3V"
+    },
+    {
+     "attribute_name_en": "Lamp Holder Type",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Dominant Wavelength - B",
+     "attribute_value_name": "460nm~470nm"
+    },
+    {
+     "attribute_name_en": "Forward Current - G",
+     "attribute_value_name": "20mA"
+    },
+    {
+     "attribute_name_en": "Luminous Intensity - G",
+     "attribute_value_name": "1120mcd~2250mcd"
+    },
+    {
+     "attribute_name_en": "Power(Watts) - G",
+     "attribute_value_name": "95mW"
+    },
+    {
+     "attribute_name_en": "Forward Current - B",
+     "attribute_value_name": "20mA"
+    },
+    {
+     "attribute_name_en": "Luminous Intensity - R",
+     "attribute_value_name": "715mcd~1420mcd"
+    },
+    {
+     "attribute_name_en": "Forward Voltage(Vf) - R",
+     "attribute_value_name": "1.7V~2.3V"
+    },
+    {
+     "attribute_name_en": "Power(Watts) - B",
+     "attribute_value_name": "95mW"
+    },
+    {
+     "attribute_name_en": "Peak Wavelength - R",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Length",
+     "attribute_value_name": "3.5mm"
+    },
+    {
+     "attribute_name_en": "Dominant Wavelength - G",
+     "attribute_value_name": "515nm~530nm"
+    },
+    {
+     "attribute_name_en": "Diode Configuration",
+     "attribute_value_name": "Common Anode"
+    },
+    {
+     "attribute_name_en": "Pitch",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Dominant Wavelength - R",
+     "attribute_value_name": "622nm"
+    },
+    {
+     "attribute_name_en": "Lens Color",
+     "attribute_value_name": "Water Clear"
+    },
+    {
+     "attribute_name_en": "Peak Wavelength - G",
+     "attribute_value_name": "-"
+    }
+   ],
+   "componentBrandEn": "MEIHUA",
+   "componentCode": "C409779",
+   "componentLibraryType": "expand",
+   "componentModelEn": "MHPA3528RGBCT",
+   "componentPrices": [
+    {
+     "endNumber": 49,
+     "productPrice": 0.1615,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 149,
+     "productPrice": 0.1281,
+     "startNumber": 50
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.1136,
+     "startNumber": 150
+    },
+    {
+     "endNumber": 1999,
+     "productPrice": 0.0956,
+     "startNumber": 500
+    },
+    {
+     "endNumber": 3999,
+     "productPrice": 0.0761,
+     "startNumber": 2000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0714,
+     "startNumber": 4000
+    }
+   ],
+   "componentSpecificationEn": "SMD3528-4P",
+   "componentTypeEn": "RGB LEDs",
+   "dataManualUrl": "https://www.lcsc.com/datasheet/lcsc_datasheet_1912111437_MEIHUA-MHPA3528RGBCT_C409779.pdf",
+   "describe": "-40℃~+85℃ 1.85mm 120° 2.8mm 3.5mm Common Anode R:1.7V~2.3V、G:2.7V~3.3V、B:2.7V~3.4V R:2000V、G:150V、B:150V R:20mA、G:20mA、B:20mA R:622nm、B:460nm~470nm、G:515nm~530nm R:70mW、G:95mW、B:95mW R:715mcd~1420mcd、G:1120mcd~2250mcd、B:285mcd~715mcd Water Clear SMD3528-4P RGB LEDs ROHS",
+   "erpComponentName": "RGB三色",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/rgb-leds_meihua-mhpa3528rgbct_C409779.html",
+   "leastPatchNumber": 5,
+   "lossNumber": 2,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 69696
+  }
+ ],
+ "returned": 1,
+ "schema": 1,
+ "total_matches": 1
+}

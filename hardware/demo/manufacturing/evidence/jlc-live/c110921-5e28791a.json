@@ -1,0 +1,91 @@
+{
+ "endpoint": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
+ "exhausted": true,
+ "fetched_utc": "2026-09-05T01:11:34Z",
+ "keyword": "C110921",
+ "page_size": 25,
+ "pages": 1,
+ "records": [
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage - Forward(Vf@If)",
+     "attribute_value_name": "430mV@1A"
+    },
+    {
+     "attribute_name_en": "Non-Repetitive Peak Forward Surge Current",
+     "attribute_value_name": "9A"
+    },
+    {
+     "attribute_name_en": "Voltage - DC Reverse(Vr)",
+     "attribute_value_name": "20V"
+    },
+    {
+     "attribute_name_en": "Diode Configuration",
+     "attribute_value_name": "1 Independent"
+    },
+    {
+     "attribute_name_en": "Current - Rectified",
+     "attribute_value_name": "1A"
+    },
+    {
+     "attribute_name_en": "Reverse Leakage Current (Ir)",
+     "attribute_value_name": "200uA@20V"
+    }
+   ],
+   "componentBrandEn": "Nexperia",
+   "componentCode": "C110921",
+   "componentLibraryType": "expand",
+   "componentModelEn": "PMEG2010AEH,115",
+   "componentPrices": [
+    {
+     "endNumber": 49,
+     "productPrice": 0.1108,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 149,
+     "productPrice": 0.0879,
+     "startNumber": 50
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.0766,
+     "startNumber": 150
+    },
+    {
+     "endNumber": 2999,
+     "productPrice": 0.068,
+     "startNumber": 500
+    },
+    {
+     "endNumber": 5999,
+     "productPrice": 0.0606,
+     "startNumber": 3000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0572,
+     "startNumber": 6000
+    }
+   ],
+   "componentSpecificationEn": "SOD-123F",
+   "componentTypeEn": "Schottky Diodes",
+   "dataManualUrl": "https://www.lcsc.com/datasheet/lcsc_datasheet_1804241925_Nexperia-PMEG2010AEH-115_C110921.pdf",
+   "describe": "1 Independent 1A 200uA@20V 20V 430mV@1A 9A SOD-123F Schottky Diodes ROHS",
+   "erpComponentName": "PMEG2010AEH,115",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/schottky-diodes_nexperia-pmeg2010aeh-115_C110921.html",
+   "leastPatchNumber": 5,
+   "lossNumber": 2,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 30985
+  }
+ ],
+ "returned": 1,
+ "schema": 1,
+ "total_matches": 1
+}

@@ -1,0 +1,64 @@
+{
+ "added": [
+  {
+   "property": "Note_Sourcing",
+   "ref": "U18",
+   "sheet": "01_power_tree.kicad_sch",
+   "value": "SOURCING D-615 PACKAGE CORRECTION. The board land is Package_SO:MSOP-10_3x3mm_P0.5mm and D-099 locked LTC4368IMS-1#PBF, MSOP-10, under FBV2-PWR-002 -- every safety-critical part leaded and inspectable, NO BOTTOM-TERMINATED PARTS. The schematic carried LTC4368IDD-1#PBF: the DD order code is DFN-10, confirmed live on the JLCPCB catalogue as DFN-10-EP(3x3) at 0.75 mm body height against MSOP-10 at 1.1 mm. LTC4368IMS-1#PBF (C688400) is stock 0; #TRPBF is the TAPE-AND-REEL order code of the same MSOP-10, I-grade (-40..+85 C), -1 device -- an order-code change of the identical part, D-210's precedent exactly, NOT an electrical change. Live record read 2026-09-05, LCSC C688401, stock 3; LTC4368HMS-1#PBF (C688391, MSOP-10, -1, H grade, stock 2) is the same-land alternate. U18 remains a CONSIGNED part per D-206."
+  }
+ ],
+ "applied": true,
+ "conflicts": [],
+ "plan": "hardware/demo/manufacturing/evidence/d615-u18-package-plan.json",
+ "properties_added": 1,
+ "properties_already_correct": [
+  "U18.Manufacturer"
+ ],
+ "properties_rewritten": [
+  {
+   "property": "MPN",
+   "ref": "U18",
+   "sheet": "01_power_tree.kicad_sch",
+   "value": "LTC4368IMS-1#TRPBF",
+   "was": "LTC4368IDD-1#PBF"
+  },
+  {
+   "property": "LCSC",
+   "ref": "U18",
+   "sheet": "01_power_tree.kicad_sch",
+   "value": "C688401",
+   "was": "C688397"
+  }
+ ],
+ "references_found": 1,
+ "references_in_plan": 1,
+ "references_not_in_any_sheet": [],
+ "schema": 1,
+ "sha256_after": {
+  "01_power_tree.kicad_sch": "88958754a370a9eb5b57a12a212a9f34db10a116691cbcb25bf76d226e59d482",
+  "02_mcu_core.kicad_sch": "62cbc53b5d165f6dd6946ab5a53fdd51ae5eacb3acbed4814d9be85e30dad4d1",
+  "03_spi_a_display_sd.kicad_sch": "e21e5ce3580851e9d54bd1cf3cc81f38bd3dbbd846b25a9c1f06295548814236",
+  "04_spi_b_radios_nfc.kicad_sch": "c3c74079225e831ed3361fc4ebe7bfb13e66ab8f58a64b3670bf1203be65353d",
+  "05_i2c_devices.kicad_sch": "ab183831cc7b39a606ac1d45641adee8070242a6922cd9ada2a139a27493461a",
+  "06_audio.kicad_sch": "d49ada5071e8498fc74cb09239b8df187859e9fbe6a02377981109cd46a55d61",
+  "07_ir.kicad_sch": "4123770847540d6f1208386159f22bcf820da8c7f0e7f91515a8f2979723bda5",
+  "08_buttons_expanders.kicad_sch": "76dd48bf075c23977a26ac479bd1be690dc928b473ecf73d6d10eca1ed390135",
+  "09_community_header.kicad_sch": "13096e6fef6f1f63526b752a90e1c3d0b7068bd67d16942e04f54b01f9d3378c",
+  "aqroot-Beta-v2.kicad_sch": "195a985ca49cd03d88b006776f31ef6fa929d23d6a9eb3c29e37581307d31603"
+ },
+ "sha256_before": {
+  "01_power_tree.kicad_sch": "b8fa891e4fbd28006fc7cdda642341b1c105b01136101341d31f8fa115fc308f",
+  "02_mcu_core.kicad_sch": "62cbc53b5d165f6dd6946ab5a53fdd51ae5eacb3acbed4814d9be85e30dad4d1",
+  "03_spi_a_display_sd.kicad_sch": "e21e5ce3580851e9d54bd1cf3cc81f38bd3dbbd846b25a9c1f06295548814236",
+  "04_spi_b_radios_nfc.kicad_sch": "c3c74079225e831ed3361fc4ebe7bfb13e66ab8f58a64b3670bf1203be65353d",
+  "05_i2c_devices.kicad_sch": "ab183831cc7b39a606ac1d45641adee8070242a6922cd9ada2a139a27493461a",
+  "06_audio.kicad_sch": "d49ada5071e8498fc74cb09239b8df187859e9fbe6a02377981109cd46a55d61",
+  "07_ir.kicad_sch": "4123770847540d6f1208386159f22bcf820da8c7f0e7f91515a8f2979723bda5",
+  "08_buttons_expanders.kicad_sch": "76dd48bf075c23977a26ac479bd1be690dc928b473ecf73d6d10eca1ed390135",
+  "09_community_header.kicad_sch": "13096e6fef6f1f63526b752a90e1c3d0b7068bd67d16942e04f54b01f9d3378c",
+  "aqroot-Beta-v2.kicad_sch": "195a985ca49cd03d88b006776f31ef6fa929d23d6a9eb3c29e37581307d31603"
+ },
+ "sheets_touched": [
+  "01_power_tree.kicad_sch"
+ ]
+}

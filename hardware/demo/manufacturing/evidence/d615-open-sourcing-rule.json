@@ -1,0 +1,4479 @@
+{
+ "REFUSED": [],
+ "RULED": [
+  {
+   "candidates_examined": 98,
+   "chosen": {
+    "attributes": {
+     "Capacitance": "22uF",
+     "Temperature Coefficient": "X7R",
+     "Tolerance": "\u00b110%",
+     "Voltage Rating": "25V"
+    },
+    "brand": "Samsung Electro-Mechanics",
+    "buyable": "1",
+    "code": "C309062",
+    "datasheet": "https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_Samsung-Electro-Mechanics-CL32B226KAJNNNE_C309062.pdf",
+    "dielectric": "X7R",
+    "kind": "C",
+    "land": "1210",
+    "library": "expand",
+    "magnitude": 2.2e-05,
+    "mpn": "CL32B226KAJNNNE",
+    "no_buy": null,
+    "power": null,
+    "price_1": 0.3527,
+    "rohs": 1,
+    "rtype": null,
+    "stock": 280611,
+    "tempco_ppm": null,
+    "tolerance": 10.0,
+    "voltage": 25.0
+   },
+   "demo_nets": [
+    "+3V3"
+   ],
+   "footprint": "C_1210_3225Metric",
+   "nearest": [
+    {
+     "brand": "Samsung Electro-Mechanics",
+     "lcsc": "C19659",
+     "mpn": "CL32A226KOJNNNE",
+     "refused": [
+      "dielectric X5R does not reach X7R"
+     ]
+    },
+    {
+     "brand": "Murata Electronics",
+     "lcsc": "C21397",
+     "mpn": "GRM32ER71E226KE15L",
+     "refused": []
+    },
+    {
+     "brand": "Samsung Electro-Mechanics",
+     "lcsc": "C52306",
+     "mpn": "CL32A226KAJNNNE",
+     "refused": [
+      "dielectric X5R does not reach X7R"
+     ]
+    },
+    {
+     "brand": "Samsung Electro-Mechanics",
+     "lcsc": "C55530",
+     "mpn": "CL32B226KOJNNNE",
+     "refused": []
+    },
+    {
+     "brand": "Murata Electronics",
+     "lcsc": "C65428",
+     "mpn": "GRM32ER61E226KE15L",
+     "refused": [
+      "dielectric X5R does not reach X7R"
+     ]
+    },
+    {
+     "brand": "Murata Electronics",
+     "lcsc": "C86051",
+     "mpn": "GRM32ER61C226KE20L",
+     "refused": [
+      "dielectric X5R does not reach X7R"
+     ]
+    }
+   ],
+   "net_gate": {
+    "absolute_max_v": 3.6,
+    "kind": "2x operating and survives absolute",
+    "margin_x": 7.58,
+    "nodes": [
+     "+3V3"
+    ],
+    "ok": true,
+    "operating_max_v": 3.3,
+    "rating_v": 25.0
+   },
+   "note_tighter": {
+    "dielectric": "X7R",
+    "voltage": 16.0,
+    "why": "the C12 symbol note is explicit: `the requirement is at least 15 uF EFFECTIVE at 3.3 V DC bias, which is why the part is specified X7R 16 V in 1210 rather than a heavily derated 6.3 V 0805`.  The Value string says only `22uF`."
+   },
+   "power_gate": {
+    "kind": "not a resistor",
+    "ok": true
+   },
+   "qty": 1,
+   "refs": [
+    "C12"
+   ],
+   "runners_up": [
+    {
+     "lcsc": "C21397",
+     "library": "expand",
+     "mpn": "GRM32ER71E226KE15L",
+     "stock": 84316
+    },
+    {
+     "lcsc": "C5341638",
+     "library": "expand",
+     "mpn": "CC1210KKX7R8BB226",
+     "stock": 84208
+    },
+    {
+     "lcsc": "C386098",
+     "library": "expand",
+     "mpn": "TMK325B7226KMHP",
+     "stock": 11492
+    }
+   ],
+   "spec": {
+    "annotations": [],
+    "dielectric": null,
+    "kind": "C",
+    "magnitude": 2.2e-05,
+    "power": null,
+    "raw": "22uF",
+    "tolerance": null,
+    "tune": false,
+    "unparsed": [],
+    "voltage": null
+   },
+   "stock_floor": 500,
+   "thin_stock": false,
+   "value": "22uF"
+  },
+  {
+   "candidates_examined": 117,
+   "chosen": {
+    "attributes": {
+     "Capacitance": "2.2uF",
+     "Temperature Coefficient": "X7R",
+     "Tolerance": "\u00b110%",
+     "Voltage Rating": "50V"
+    },
+    "brand": "YAGEO",
+    "buyable": "1",
+    "code": "C125847",
+    "datasheet": "https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_YAGEO-CC0805KKX7R9BB225_C125847.pdf",
+    "dielectric": "X7R",
+    "kind": "C",
+    "land": "0805",
+    "library": "expand",
+    "magnitude": 2.2e-06,
+    "mpn": "CC0805KKX7R9BB225",
+    "no_buy": null,
+    "power": null,
+    "price_1": 0.1386,
+    "rohs": 1,
+    "rtype": null,
+    "stock": 60957,
+    "tempco_ppm": null,
+    "tolerance": 10.0,
+    "voltage": 50.0
+   },
+   "demo_nets": [
+    "NFC_VDD_A",
+    "NFC_VDD_AM",
+    "NFC_VDD_D",
+    "NFC_VDD_RF"
+   ],
+   "footprint": "C_0805_2012Metric",
+   "nearest": [
+    {
+     "brand": "Samsung Electro-Mechanics",
+     "lcsc": "C1731",
+     "mpn": "CL21A225KOFNNNE",
+     "refused": []
+    },
+    {
+     "brand": "Samsung Electro-Mechanics",
+     "lcsc": "C19110",
+     "mpn": "CL21B225KAFNNNE",
+     "refused": []
+    },
+    {
+     "brand": "Samsung Electro-Mechanics",
+     "lcsc": "C28234",
+     "mpn": "CL21B225KOFNNNE",
+     "refused": []
+    },
+    {
+     "brand": "FH (Guangdong Fenghua Advanced Tech)",
+     "lcsc": "C49217",
+     "mpn": "0805F225M500NT",
+     "refused": [
+      "dielectric Y5V does not reach X5R",
+      "stock 1 under 200 -- 4 parts x 5 boards x 10 liquidity"
+     ]
+    },
+    {
+     "brand": "FH (Guangdong Fenghua Advanced Tech)",
+     "lcsc": "C74690",
+     "mpn": "0805B225K250NT",
+     "refused": []
+    },
+    {
+     "brand": "TDK",
+     "lcsc": "C76638",
+     "mpn": "C2012X5R1E225KT0J5E",
+     "refused": [
+      "stock 13 under 200 -- 4 parts x 5 boards x 10 liquidity"
+     ]
+    }
+   ],
+   "net_gate": {
+    "absolute_max_v": 3.6,
+    "kind": "2x operating and survives absolute",
+    "margin_x": 15.15,
+    "nodes": [
+     "NFC_VDD_A",
+     "NFC_VDD_AM",
+     "NFC_VDD_D",
+     "NFC_VDD_RF"
+    ],
+    "ok": true,
+    "operating_max_v": 3.3,
+    "rating_v": 50.0
+   },
+   "note_tighter": null,
+   "power_gate": {
+    "kind": "not a resistor",
+    "ok": true
+   },
+   "qty": 4,
+   "refs": [
+    "C45",
+    "C47",
+    "C49",
+    "C51"
+   ],
+   "runners_up": [
+    {
+     "lcsc": "C159782",
+     "library": "expand",
+     "mpn": "CL21A225KB9LNNC",
+     "stock": 24730
+    },
+    {
+     "lcsc": "C307528",
+     "library": "expand",
+     "mpn": "CL21A225KBFNNNE",
+     "stock": 18596
+    },
+    {
+     "lcsc": "C342737",
+     "library": "expand",
+     "mpn": "CGA4J3X7R1H225KT000N",
+     "stock": 13289
+    }
+   ],
+   "spec": {
+    "annotations": [],
+    "dielectric": null,
+    "kind": "C",
+    "magnitude": 2.2e-06,
+    "power": null,
+    "raw": "2.2uF",
+    "tolerance": null,
+    "tune": false,
+    "unparsed": [],
+    "voltage": null
+   },
+   "stock_floor": 500,
+   "thin_stock": false,
+   "value": "2.2uF"
+  },
+  {
+   "candidates_examined": 129,
+   "chosen": {
+    "attributes": {
+     "Capacitance": "10nF",
+     "Temperature Coefficient": "X7R",
+     "Tolerance": "\u00b110%",
+     "Voltage Rating": "50V"
+    },
+    "brand": "FH (Guangdong Fenghua Advanced Tech)",
+    "buyable": "1",
+    "code": "C57112",
+    "datasheet": "https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_FH--Guangdong-Fenghua-Advanced-Tech-0603B103K500NT_C57112.pdf",
+    "dielectric": "X7R",
+    "kind": "C",
+    "land": "0603",
+    "library": "base",
+    "magnitude": 1e-08,
+    "mpn": "0603B103K500NT",
+    "no_buy": null,
+    "power": null,
+    "price_1": 0.0108,
+    "rohs": 1,
+    "rtype": null,
+    "stock": 9273211,
+    "tempco_ppm": null,
+    "tolerance": 10.0,
+    "voltage": 50.0
+   },
+   "demo_nets": [
+    "NFC_AGDC",
+    "NFC_VDD_A",
+    "NFC_VDD_D",
+    "NFC_VDD_RF"
+   ],
+   "footprint": "C_0603_1608Metric",
+   "nearest": [
+    {
+     "brand": "Samsung Electro-Mechanics",
+     "lcsc": "C1589",
+     "mpn": "CL10B103KB8NNNC",
+     "refused": []
+    },
+    {
+     "brand": "FH (Guangdong Fenghua Advanced Tech)",
+     "lcsc": "C43253",
+     "mpn": "0603B103K101NT",
+     "refused": []
+    },
+    {
+     "brand": "FH (Guangdong Fenghua Advanced Tech)",
+     "lcsc": "C57112",
+     "mpn": "0603B103K500NT",
+     "refused": []
+    },
+    {
+     "brand": "TDK",
+     "lcsc": "C72452",
+     "mpn": "C1608X7R1H103KT000N",
+     "refused": []
+    },
+    {
+     "brand": "TDK",
+     "lcsc": "C76599",
+     "mpn": "C1608C0G1H103JT000N",
+     "refused": []
+    },
+    {
+     "brand": "TDK",
+     "lcsc": "C76710",
+     "mpn": "CGA3E2C0G1H103JT0Y0N",
+     "refused": []
+    }
+   ],
+   "net_gate": {
+    "absolute_max_v": 3.6,
+    "kind": "2x operating and survives absolute",
+    "margin_x": 15.15,
+    "nodes": [
+     "NFC_AGDC",
+     "NFC_VDD_A",
+     "NFC_VDD_D",
+     "NFC_VDD_RF"
+    ],
+    "ok": true,
+    "operating_max_v": 3.3,
+    "rating_v": 50.0
+   },
+   "note_tighter": null,
+   "power_gate": {
+    "kind": "not a resistor",
+    "ok": true
+   },
+   "qty": 4,
+   "refs": [
+    "C46",
+    "C48",
+    "C50",
+    "C54"
+   ],
+   "runners_up": [
+    {
+     "lcsc": "C5182427",
+     "library": "expand",
+     "mpn": "CC0603KRX7RYBB103",
+     "stock": 18114
+    },
+    {
+     "lcsc": "C107059",
+     "library": "expand",
+     "mpn": "CC0603KRX7R0BB103",
+     "stock": 1878451
+    },
+    {
+     "lcsc": "C84709",
+     "library": "expand",
+     "mpn": "CL10B103KC8NNNC",
+     "stock": 223966
+    }
+   ],
+   "spec": {
+    "annotations": [],
+    "dielectric": null,
+    "kind": "C",
+    "magnitude": 1e-08,
+    "power": null,
+    "raw": "10nF",
+    "tolerance": null,
+    "tune": false,
+    "unparsed": [],
+    "voltage": null
+   },
+   "stock_floor": 500,
+   "thin_stock": false,
+   "value": "10nF"
+  },
+  {
+   "candidates_examined": 125,
+   "chosen": {
+    "attributes": {
+     "Capacitance": "1nF",
+     "Operating Temperature": "-55\u2103~+125\u2103",
+     "Temperature Coefficient": "X7R",
+     "Tolerance": "\u00b110%",
+     "Voltage Rating": "50V"
+    },
+    "brand": "Samsung Electro-Mechanics",
+    "buyable": "1",
+    "code": "C1588",
+    "datasheet": "https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_Samsung-Electro-Mechanics-CL10B102KB8NNNC_C1588.pdf",
+    "dielectric": "X7R",
+    "kind": "C",
+    "land": "0603",
+    "library": "base",
+    "magnitude": 1e-09,
+    "mpn": "CL10B102KB8NNNC",
+    "no_buy": null,
+    "power": null,
+    "price_1": 0.0091,
+    "rohs": 1,
+    "rtype": null,
+    "stock": 10349869,
+    "tempco_ppm": null,
+    "tolerance": 10.0,
+    "voltage": 50.0
+   },
+   "demo_nets": [
+    "NFC_VDD_AM"
+   ],
+   "footprint": "C_0603_1608Metric",
+   "nearest": [
+    {
+     "brand": "Samsung Electro-Mechanics",
+     "lcsc": "C1588",
+     "mpn": "CL10B102KB8NNNC",
+     "refused": []
+    },
+    {
+     "brand": "FH (Guangdong Fenghua Advanced Tech)",
+     "lcsc": "C1636",
+     "mpn": "0603CG102J500NT",
+     "refused": []
+    },
+    {
+     "brand": "FH (Guangdong Fenghua Advanced Tech)",
+     "lcsc": "C8808",
+     "mpn": "0603B102J500NT",
+     "refused": []
+    },
+    {
+     "brand": "FH (Guangdong Fenghua Advanced Tech)",
+     "lcsc": "C43847",
+     "mpn": "0603B102K101NT",
+     "refused": []
+    },
+    {
+     "brand": "FH (Guangdong Fenghua Advanced Tech)",
+     "lcsc": "C44369",
+     "mpn": "0603B102K500NT",
+     "refused": []
+    },
+    {
+     "brand": "Murata Electronics",
+     "lcsc": "C71653",
+     "mpn": "GRM188R71H102KA01D",
+     "refused": []
+    }
+   ],
+   "net_gate": {
+    "absolute_max_v": 3.6,
+    "kind": "2x operating and survives absolute",
+    "margin_x": 15.15,
+    "nodes": [
+     "NFC_VDD_AM"
+    ],
+    "ok": true,
+    "operating_max_v": 3.3,
+    "rating_v": 50.0
+   },
+   "note_tighter": null,
+   "power_gate": {
+    "kind": "not a resistor",
+    "ok": true
+   },
+   "qty": 1,
+   "refs": [
+    "C52"
+   ],
+   "runners_up": [
+    {
+     "lcsc": "C277510",
+     "library": "expand",
+     "mpn": "CC0603KRX7RYBB102",
+     "stock": 193741
+    },
+    {
+     "lcsc": "C282243",
+     "library": "expand",
+     "mpn": "CC0603KRX7RABB102",
+     "stock": 41268
+    },
+    {
+     "lcsc": "C106247",
+     "library": "expand",
+     "mpn": "CC0603KRX7R0BB102",
+     "stock": 1256987
+    }
+   ],
+   "spec": {
+    "annotations": [],
+    "dielectric": null,
+    "kind": "C",
+    "magnitude": 1e-09,
+    "power": null,
+    "raw": "1nF",
+    "tolerance": null,
+    "tune": false,
+    "unparsed": [],
+    "voltage": null
+   },
+   "stock_floor": 500,
+   "thin_stock": false,
+   "value": "1nF"
+  },
+  {
+   "candidates_examined": 107,
+   "chosen": {
+    "attributes": {
+     "Capacitance": "2.2uF",
+     "Temperature Coefficient": "X5R",
+     "Tolerance": "\u00b110%",
+     "Voltage Rating": "16V"
+    },
+    "brand": "Samsung Electro-Mechanics",
+    "buyable": "1",
+    "code": "C23630",
+    "datasheet": "https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_Samsung-Electro-Mechanics-CL10A225KO8NNNC_C23630.pdf",
+    "dielectric": "X5R",
+    "kind": "C",
+    "land": "0603",
+    "library": "base",
+    "magnitude": 2.2e-06,
+    "mpn": "CL10A225KO8NNNC",
+    "no_buy": null,
+    "power": null,
+    "price_1": 0.0192,
+    "rohs": 1,
+    "rtype": null,
+    "stock": 3853018,
+    "tempco_ppm": null,
+    "tolerance": 10.0,
+    "voltage": 16.0
+   },
+   "demo_nets": [
+    "NFC_SUPPLY"
+   ],
+   "footprint": "C_0603_1608Metric",
+   "nearest": [
+    {
+     "brand": "Samsung Electro-Mechanics",
+     "lcsc": "C1607",
+     "mpn": "CL10A225KP8NNNC",
+     "refused": []
+    },
+    {
+     "brand": "Samsung Electro-Mechanics",
+     "lcsc": "C23630",
+     "mpn": "CL10A225KO8NNNC",
+     "refused": []
+    },
+    {
+     "brand": "FH (Guangdong Fenghua Advanced Tech)",
+     "lcsc": "C43922",
+     "mpn": "0603B225K160NT",
+     "refused": []
+    },
+    {
+     "brand": "Samsung Electro-Mechanics",
+     "lcsc": "C57895",
+     "mpn": "CL10A225KA8NNNC",
+     "refused": []
+    },
+    {
+     "brand": "Samsung Electro-Mechanics",
+     "lcsc": "C71000",
+     "mpn": "CL10A225KQ8NNNC",
+     "refused": [
+      "node voltage gate: refused"
+     ]
+    },
+    {
+     "brand": "TDK",
+     "lcsc": "C76612",
+     "mpn": "C1608X5R1C225KT000N",
+     "refused": []
+    }
+   ],
+   "net_gate": {
+    "absolute_max_v": 3.6,
+    "kind": "2x operating and survives absolute",
+    "margin_x": 4.85,
+    "nodes": [
+     "NFC_SUPPLY"
+    ],
+    "ok": true,
+    "operating_max_v": 3.3,
+    "rating_v": 16.0
+   },
+   "note_tighter": null,
+   "power_gate": {
+    "kind": "not a resistor",
+    "ok": true
+   },
+   "qty": 1,
+   "refs": [
+    "C55"
+   ],
+   "runners_up": [
+    {
+     "lcsc": "C162273",
+     "library": "expand",
+     "mpn": "GRM188R61H225KE11D",
+     "stock": 143548
+    },
+    {
+     "lcsc": "C268016",
+     "library": "expand",
+     "mpn": "UMK107BBJ225KA-T",
+     "stock": 128558
+    },
+    {
+     "lcsc": "C668370",
+     "library": "expand",
+     "mpn": "GRT188R61H225KE13D",
+     "stock": 122278
+    }
+   ],
+   "spec": {
+    "annotations": [],
+    "dielectric": null,
+    "kind": "C",
+    "magnitude": 2.2e-06,
+    "power": null,
+    "raw": "2.2uF",
+    "tolerance": null,
+    "tune": false,
+    "unparsed": [],
+    "voltage": null
+   },
+   "stock_floor": 500,
+   "thin_stock": false,
+   "value": "2.2uF"
+  },
+  {
+   "candidates_examined": 146,
+   "chosen": {
+    "attributes": {
+     "Capacitance": "4.7nF",
+     "Temperature Coefficient": "X7R",
+     "Tolerance": "\u00b110%",
+     "Voltage Rating": "50V"
+    },
+    "brand": "FH (Guangdong Fenghua Advanced Tech)",
+    "buyable": "1",
+    "code": "C53987",
+    "datasheet": "https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_FH--Guangdong-Fenghua-Advanced-Tech-0603B472K500NT_C53987.pdf",
+    "dielectric": "X7R",
+    "kind": "C",
+    "land": "0603",
+    "library": "base",
+    "magnitude": 4.700000000000001e-09,
+    "mpn": "0603B472K500NT",
+    "no_buy": null,
+    "power": null,
+    "price_1": 0.0097,
+    "rohs": 1,
+    "rtype": null,
+    "stock": 1274228,
+    "tempco_ppm": null,
+    "tolerance": 10.0,
+    "voltage": 50.0
+   },
+   "demo_nets": [
+    "LTC_GATE_RC"
+   ],
+   "footprint": "C_0603_1608Metric",
+   "nearest": [
+    {
+     "brand": "YAGEO",
+     "lcsc": "C106218",
+     "mpn": "CC0603KRX7R9BB472",
+     "refused": []
+    },
+    {
+     "brand": "YAGEO",
+     "lcsc": "C115052",
+     "mpn": "CC0603KRX7R0BB472",
+     "refused": []
+    },
+    {
+     "brand": "YAGEO",
+     "lcsc": "C115060",
+     "mpn": "CC0603JRX7R9BB472",
+     "refused": []
+    },
+    {
+     "brand": "YAGEO",
+     "lcsc": "C149615",
+     "mpn": "AC0603KRX7R9BB472",
+     "refused": []
+    },
+    {
+     "brand": "YAGEO",
+     "lcsc": "C327158",
+     "mpn": "AC0603KRX7R0BB472",
+     "refused": []
+    },
+    {
+     "brand": "YAGEO",
+     "lcsc": "C505480",
+     "mpn": "CC0603KRX7R8BB472",
+     "refused": [
+      "node voltage gate: refused"
+     ]
+    }
+   ],
+   "net_gate": {
+    "absolute_max_v": 17.5,
+    "kind": "2x operating and survives absolute",
+    "margin_x": 2.86,
+    "nodes": [
+     "LTC_GATE_RC"
+    ],
+    "ok": true,
+    "operating_max_v": 17.5,
+    "rating_v": 50.0
+   },
+   "note_tighter": null,
+   "power_gate": {
+    "kind": "not a resistor",
+    "ok": true
+   },
+   "qty": 1,
+   "refs": [
+    "C57"
+   ],
+   "runners_up": [
+    {
+     "lcsc": "C596328",
+     "library": "expand",
+     "mpn": "CC0603KRX7RABB472",
+     "stock": 8346
+    },
+    {
+     "lcsc": "C115052",
+     "library": "expand",
+     "mpn": "CC0603KRX7R0BB472",
+     "stock": 203595
+    },
+    {
+     "lcsc": "C346200",
+     "library": "expand",
+     "mpn": "CL10B472KC8WPNC",
+     "stock": 26272
+    }
+   ],
+   "spec": {
+    "annotations": [],
+    "dielectric": "X7R",
+    "kind": "C",
+    "magnitude": 4.700000000000001e-09,
+    "power": null,
+    "raw": "4.7nF 50V X7R",
+    "tolerance": null,
+    "tune": false,
+    "unparsed": [],
+    "voltage": 50.0
+   },
+   "stock_floor": 500,
+   "thin_stock": false,
+   "value": "4.7nF 50V X7R"
+  },
+  {
+   "candidates_examined": 94,
+   "chosen": {
+    "attributes": {
+     "Capacitance": "22uF",
+     "Temperature Coefficient": "X7R",
+     "Tolerance": "\u00b120%",
+     "Voltage Rating": "10V"
+    },
+    "brand": "Murata Electronics",
+    "buyable": "1",
+    "code": "C907991",
+    "datasheet": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2201242100_Murata-Electronics-GRM21BZ71A226ME15L_C907991.pdf",
+    "dielectric": "X7R",
+    "kind": "C",
+    "land": "0805",
+    "library": "expand",
+    "magnitude": 2.2e-05,
+    "mpn": "GRM21BZ71A226ME15L",
+    "no_buy": null,
+    "power": null,
+    "price_1": 0.2462,
+    "rohs": 1,
+    "rtype": null,
+    "stock": 65524,
+    "tempco_ppm": null,
+    "tolerance": 20.0,
+    "voltage": 10.0
+   },
+   "demo_nets": [
+    "ACC_5V_RAW"
+   ],
+   "footprint": "C_0805_2012Metric",
+   "nearest": [
+    {
+     "brand": "HRE",
+     "lcsc": "C23692981",
+     "mpn": "CGA0805X7R226M100MT",
+     "refused": [
+      "vendor 'HRE' is not on the accepted list (D-206)"
+     ]
+    },
+    {
+     "brand": "CCTC",
+     "lcsc": "C53133025",
+     "mpn": "TCC0805X7R226M100FT",
+     "refused": []
+    },
+    {
+     "brand": "HRE",
+     "lcsc": "C55079215",
+     "mpn": "CGA0805X7R226M6R3MT",
+     "refused": [
+      "vendor 'HRE' is not on the accepted list (D-206)",
+      "node voltage gate: refused"
+     ]
+    },
+    {
+     "brand": "CAL-CHIP ELECTRONICS, INC.",
+     "lcsc": "C3882598",
+     "mpn": "GMC21X7R226M10NT",
+     "refused": [
+      "vendor 'CAL-CHIP ELECTRONICS, INC.' is not on the accepted list (D-206)",
+      "stock 0 under 100 -- 2 parts x 5 boards x 10 liquidity",
+      "JLCPCB will not sell it: This product is no longer manufactured."
+     ]
+    },
+    {
+     "brand": "CAL-CHIP ELECTRONICS, INC.",
+     "lcsc": "C3908863",
+     "mpn": "GMC21X7R226M6R3NT",
+     "refused": [
+      "vendor 'CAL-CHIP ELECTRONICS, INC.' is not on the accepted list (D-206)",
+      "node voltage gate: refused",
+      "stock 0 under 100 -- 2 parts x 5 boards x 10 liquidity",
+      "JLCPCB will not sell it: This product is no longer manufactured."
+     ]
+    },
+    {
+     "brand": "Samsung Electro-Mechanics",
+     "lcsc": "C5674",
+     "mpn": "CL21A226MQQNNNE",
+     "refused": [
+      "dielectric X5R does not reach X7R",
+      "node voltage gate: refused"
+     ]
+    }
+   ],
+   "net_gate": {
+    "absolute_max_v": 5.5,
+    "kind": "2x operating and survives absolute",
+    "margin_x": 2.0,
+    "nodes": [
+     "ACC_5V_RAW"
+    ],
+    "ok": true,
+    "operating_max_v": 5.0,
+    "rating_v": 10.0
+   },
+   "note_tighter": null,
+   "power_gate": {
+    "kind": "not a resistor",
+    "ok": true
+   },
+   "qty": 2,
+   "refs": [
+    "C65",
+    "C66"
+   ],
+   "runners_up": [
+    {
+     "lcsc": "C53133025",
+     "library": "expand",
+     "mpn": "TCC0805X7R226M100FT",
+     "stock": 6156
+    }
+   ],
+   "spec": {
+    "annotations": [],
+    "dielectric": "X7R",
+    "kind": "C",
+    "magnitude": 2.2e-05,
+    "power": null,
+    "raw": "22uF 10V X7R",
+    "tolerance": null,
+    "tune": false,
+    "unparsed": [],
+    "voltage": 10.0
+   },
+   "stock_floor": 500,
+   "thin_stock": false,
+   "value": "22uF 10V X7R"
+  },
+  {
+   "candidates_examined": 50,
+   "chosen": {
+    "attributes": {
+     "Operating Temperature": "-55\u2103~+155\u2103",
+     "Power(Watts)": "250mW",
+     "Resistance": "1.65k\u03a9",
+     "Temperature Coefficient": "\u00b1100ppm/\u2103",
+     "Tolerance": "\u00b11%",
+     "Type": "Thick Film Resistor"
+    },
+    "brand": "PANASONIC",
+    "buyable": "1",
+    "code": "C4088673",
+    "datasheet": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2404091537_PANASONIC-ERJ-PA3F1651V_C4088673.pdf",
+    "dielectric": null,
+    "kind": "R",
+    "land": "0603",
+    "library": "expand",
+    "magnitude": 1650.0,
+    "mpn": "ERJ-PA3F1651V",
+    "no_buy": null,
+    "power": 0.25,
+    "price_1": 0.0987,
+    "rohs": 1,
+    "rtype": "Thick Film Resistor",
+    "stock": 2763,
+    "tempco_ppm": 100.0,
+    "tolerance": 1.0,
+    "voltage": null,
+    "working_v": null
+   },
+   "demo_nets": [
+    "ACC_5V_ILIM"
+   ],
+   "footprint": "R_0603_1608Metric",
+   "nearest": [
+    {
+     "brand": "HKR(Hong Kong Resistors)",
+     "lcsc": "C22369900",
+     "mpn": "RCA031K65FLF",
+     "refused": [
+      "vendor 'HKR(Hong Kong Resistors)' is not on the accepted list (D-206)"
+     ]
+    },
+    {
+     "brand": "UNI-ROYAL(Uniroyal Elec)",
+     "lcsc": "C22845",
+     "mpn": "0603WAF1651T5E",
+     "refused": []
+    },
+    {
+     "brand": "RALEC",
+     "lcsc": "C103334",
+     "mpn": "RTT031651FTP",
+     "refused": []
+    },
+    {
+     "brand": "YAGEO",
+     "lcsc": "C144687",
+     "mpn": "AC0603FR-071K65L",
+     "refused": [
+      "stock 15 under 50 -- 1 parts x 5 boards x 10 liquidity"
+     ]
+    },
+    {
+     "brand": "Walsin Tech Corp",
+     "lcsc": "C168284",
+     "mpn": "WR06X1651FTL",
+     "refused": [
+      "stock 49 under 50 -- 1 parts x 5 boards x 10 liquidity"
+     ]
+    },
+    {
+     "brand": "YAGEO",
+     "lcsc": "C185357",
+     "mpn": "RC0603FR-071K65L",
+     "refused": []
+    }
+   ],
+   "net_gate": {
+    "bounded_max_v": 5.5,
+    "established_max_v": 5.5,
+    "kind": "land working voltage vs the highest node",
+    "land_working_v": 50.0,
+    "nodes": [
+     "ACC_5V_ILIM"
+    ],
+    "nodes_not_individually_established": [],
+    "ok": true
+   },
+   "note_tighter": null,
+   "power_gate": {
+    "basis": "over-bound: the whole node voltage across the part",
+    "kind": "2x the strict over-bound",
+    "margin_x": 13.64,
+    "ok": true,
+    "over_bound_w": 0.018333,
+    "rating_w": 0.25
+   },
+   "qty": 1,
+   "refs": [
+    "R101"
+   ],
+   "runners_up": [
+    {
+     "lcsc": "C705743",
+     "library": "expand",
+     "mpn": "RT0603BRD071K65L",
+     "stock": 17511
+    },
+    {
+     "lcsc": "C185357",
+     "library": "expand",
+     "mpn": "RC0603FR-071K65L",
+     "stock": 5073
+    },
+    {
+     "lcsc": "C706136",
+     "library": "expand",
+     "mpn": "RT0603FRE071K65L",
+     "stock": 3812
+    }
+   ],
+   "spec": {
+    "annotations": [],
+    "dielectric": null,
+    "kind": "R",
+    "magnitude": 1650.0,
+    "power": null,
+    "raw": "1.65k 1%",
+    "tolerance": 1.0,
+    "tune": false,
+    "unparsed": [],
+    "voltage": null
+   },
+   "stock_floor": 500,
+   "thin_stock": false,
+   "value": "1.65k 1%"
+  },
+  {
+   "candidates_examined": 50,
+   "chosen": {
+    "attributes": {
+     "Operating Temperature": "-55\u2103~+155\u2103",
+     "Power(Watts)": "100mW",
+     "Resistance": "150k\u03a9",
+     "Temperature Coefficient": "\u00b1100ppm/\u2103",
+     "Tolerance": "\u00b11%",
+     "Type": "Thick Film Resistor",
+     "Voltage-Supply(Max)": "75V"
+    },
+    "brand": "UNI-ROYAL(Uniroyal Elec)",
+    "buyable": "1",
+    "code": "C22807",
+    "datasheet": "https://www.lcsc.com/datasheet/lcsc_datasheet_2206010130_UNI-ROYAL-Uniroyal-Elec-0603WAF1503T5E_C22807.pdf",
+    "dielectric": null,
+    "kind": "R",
+    "land": "0603",
+    "library": "base",
+    "magnitude": 150000.0,
+    "mpn": "0603WAF1503T5E",
+    "no_buy": null,
+    "power": 0.1,
+    "price_1": 0.0069,
+    "rohs": 1,
+    "rtype": "Thick Film Resistor",
+    "stock": 935032,
+    "tempco_ppm": 100.0,
+    "tolerance": 1.0,
+    "voltage": null,
+    "working_v": 75.0
+   },
+   "demo_nets": [
+    "USB_VBUS_CHG",
+    "VBUS_PRESENT"
+   ],
+   "footprint": "R_0603_1608Metric",
+   "nearest": [
+    {
+     "brand": "HKR(Hong Kong Resistors)",
+     "lcsc": "C177617",
+     "mpn": "RCT03150KFLF",
+     "refused": [
+      "vendor 'HKR(Hong Kong Resistors)' is not on the accepted list (D-206)"
+     ]
+    },
+    {
+     "brand": "HKR(Hong Kong Resistors)",
+     "lcsc": "C22356479",
+     "mpn": "RCA03150KFLF",
+     "refused": [
+      "vendor 'HKR(Hong Kong Resistors)' is not on the accepted list (D-206)"
+     ]
+    },
+    {
+     "brand": "HKR(Hong Kong Resistors)",
+     "lcsc": "C22369954",
+     "mpn": "RCA03150KJLF",
+     "refused": [
+      "vendor 'HKR(Hong Kong Resistors)' is not on the accepted list (D-206)",
+      "tolerance 5.0 vs the demanded 1.0%"
+     ]
+    },
+    {
+     "brand": "UNI-ROYAL(Uniroyal Elec)",
+     "lcsc": "C22807",
+     "mpn": "0603WAF1503T5E",
+     "refused": []
+    },
+    {
+     "brand": "UNI-ROYAL(Uniroyal Elec)",
+     "lcsc": "C25580",
+     "mpn": "0603WAJ0154T5E",
+     "refused": [
+      "tolerance 5.0 vs the demanded 1.0%"
+     ]
+    },
+    {
+     "brand": "RALEC",
+     "lcsc": "C103305",
+     "mpn": "RTT031503FTP",
+     "refused": [
+      "stock 15 under 50 -- 1 parts x 5 boards x 10 liquidity"
+     ]
+    }
+   ],
+   "net_gate": {
+    "bounded_max_v": 5.5,
+    "established_max_v": 5.5,
+    "kind": "land working voltage vs the highest node",
+    "land_working_v": 50.0,
+    "nodes": [
+     "USB_VBUS_CHG",
+     "VBUS_PRESENT"
+    ],
+    "nodes_not_individually_established": [],
+    "ok": true
+   },
+   "note_tighter": null,
+   "power_gate": {
+    "basis": "over-bound: the whole node voltage across the part",
+    "kind": "2x the strict over-bound",
+    "margin_x": 495.87,
+    "ok": true,
+    "over_bound_w": 0.000202,
+    "rating_w": 0.1
+   },
+   "qty": 1,
+   "refs": [
+    "R104"
+   ],
+   "runners_up": [
+    {
+     "lcsc": "C544102",
+     "library": "expand",
+     "mpn": "ERJUP3F1503V",
+     "stock": 4360
+    },
+    {
+     "lcsc": "C114660",
+     "library": "expand",
+     "mpn": "RC0603FR-07150KL",
+     "stock": 746433
+    },
+    {
+     "lcsc": "C402995",
+     "library": "expand",
+     "mpn": "ERJ3EKF1503V",
+     "stock": 20258
+    }
+   ],
+   "spec": {
+    "annotations": [],
+    "dielectric": null,
+    "kind": "R",
+    "magnitude": 150000.0,
+    "power": null,
+    "raw": "150k 1%",
+    "tolerance": 1.0,
+    "tune": false,
+    "unparsed": [],
+    "voltage": null
+   },
+   "stock_floor": 500,
+   "thin_stock": false,
+   "value": "150k 1%"
+  },
+  {
+   "candidates_examined": 50,
+   "chosen": {
+    "attributes": {
+     "Operating Temperature": "-55\u2103~+155\u2103",
+     "Power(Watts)": "100mW",
+     "Resistance": "220k\u03a9",
+     "Temperature Coefficient": "\u00b1100ppm/\u2103",
+     "Tolerance": "\u00b11%",
+     "Type": "Thick Film Resistor",
+     "Voltage-Supply(Max)": "75V"
+    },
+    "brand": "UNI-ROYAL(Uniroyal Elec)",
+    "buyable": "1",
+    "code": "C22961",
+    "datasheet": "https://www.lcsc.com/datasheet/lcsc_datasheet_2206010130_UNI-ROYAL-Uniroyal-Elec-0603WAF2203T5E_C22961.pdf",
+    "dielectric": null,
+    "kind": "R",
+    "land": "0603",
+    "library": "base",
+    "magnitude": 220000.0,
+    "mpn": "0603WAF2203T5E",
+    "no_buy": null,
+    "power": 0.1,
+    "price_1": 0.0016,
+    "rohs": 1,
+    "rtype": "Thick Film Resistor",
+    "stock": 1692476,
+    "tempco_ppm": 100.0,
+    "tolerance": 1.0,
+    "voltage": null,
+    "working_v": 75.0
+   },
+   "demo_nets": [
+    "VBUS_PRESENT"
+   ],
+   "footprint": "R_0603_1608Metric",
+   "nearest": [
+    {
+     "brand": "HKR(Hong Kong Resistors)",
+     "lcsc": "C177624",
+     "mpn": "RCT03220KFLF",
+     "refused": [
+      "vendor 'HKR(Hong Kong Resistors)' is not on the accepted list (D-206)"
+     ]
+    },
+    {
+     "brand": "HKR(Hong Kong Resistors)",
+     "lcsc": "C22356473",
+     "mpn": "RCA03220KFLF",
+     "refused": [
+      "vendor 'HKR(Hong Kong Resistors)' is not on the accepted list (D-206)"
+     ]
+    },
+    {
+     "brand": "HKR(Hong Kong Resistors)",
+     "lcsc": "C22369944",
+     "mpn": "RCA03220KJLF",
+     "refused": [
+      "vendor 'HKR(Hong Kong Resistors)' is not on the accepted list (D-206)",
+      "tolerance 5.0 vs the demanded 1.0%"
+     ]
+    },
+    {
+     "brand": "UNI-ROYAL(Uniroyal Elec)",
+     "lcsc": "C22961",
+     "mpn": "0603WAF2203T5E",
+     "refused": []
+    },
+    {
+     "brand": "UNI-ROYAL(Uniroyal Elec)",
+     "lcsc": "C25587",
+     "mpn": "0603WAJ0224T5E",
+     "refused": [
+      "tolerance 5.0 vs the demanded 1.0%"
+     ]
+    },
+    {
+     "brand": "LIZ Elec",
+     "lcsc": "C100866",
+     "mpn": "CR0603FA2203G",
+     "refused": [
+      "vendor 'LIZ Elec' is not on the accepted list (D-206)",
+      "stock 1 under 50 -- 1 parts x 5 boards x 10 liquidity"
+     ]
+    }
+   ],
+   "net_gate": {
+    "bounded_max_v": 5.5,
+    "established_max_v": 5.5,
+    "kind": "land working voltage vs the highest node",
+    "land_working_v": 50.0,
+    "nodes": [
+     "VBUS_PRESENT"
+    ],
+    "nodes_not_individually_established": [],
+    "ok": true
+   },
+   "note_tighter": null,
+   "power_gate": {
+    "basis": "over-bound: the whole node voltage across the part",
+    "kind": "2x the strict over-bound",
+    "margin_x": 727.27,
+    "ok": true,
+    "over_bound_w": 0.000138,
+    "rating_w": 0.1
+   },
+   "qty": 1,
+   "refs": [
+    "R105"
+   ],
+   "runners_up": [
+    {
+     "lcsc": "C1870074",
+     "library": "expand",
+     "mpn": "ERJ-UP3F2203V",
+     "stock": 4871
+    },
+    {
+     "lcsc": "C441873",
+     "library": "expand",
+     "mpn": "ERJP03F2203V",
+     "stock": 2015
+    },
+    {
+     "lcsc": "C123420",
+     "library": "expand",
+     "mpn": "RC0603FR-07220KL",
+     "stock": 682759
+    }
+   ],
+   "spec": {
+    "annotations": [],
+    "dielectric": null,
+    "kind": "R",
+    "magnitude": 220000.0,
+    "power": null,
+    "raw": "220k 1%",
+    "tolerance": 1.0,
+    "tune": false,
+    "unparsed": [],
+    "voltage": null
+   },
+   "stock_floor": 500,
+   "thin_stock": false,
+   "value": "220k 1%"
+  },
+  {
+   "candidates_examined": 50,
+   "chosen": {
+    "attributes": {
+     "Operating Temperature": "-55\u2103~+155\u2103",
+     "Power(Watts)": "100mW",
+     "Resistance": "680\u03a9",
+     "Temperature Coefficient": "\u00b1100ppm/\u2103",
+     "Tolerance": "\u00b11%",
+     "Type": "Thick Film Resistor",
+     "Voltage-Supply(Max)": "75V"
+    },
+    "brand": "UNI-ROYAL(Uniroyal Elec)",
+    "buyable": "1",
+    "code": "C23228",
+    "datasheet": "https://www.lcsc.com/datasheet/lcsc_datasheet_2206010100_UNI-ROYAL-Uniroyal-Elec-0603WAF6800T5E_C23228.pdf",
+    "dielectric": null,
+    "kind": "R",
+    "land": "0603",
+    "library": "base",
+    "magnitude": 680.0,
+    "mpn": "0603WAF6800T5E",
+    "no_buy": null,
+    "power": 0.1,
+    "price_1": 0.0021,
+    "rohs": 1,
+    "rtype": "Thick Film Resistor",
+    "stock": 2802834,
+    "tempco_ppm": 100.0,
+    "tolerance": 1.0,
+    "voltage": null,
+    "working_v": 75.0
+   },
+   "demo_nets": [
+    "FRONT_RGB_G_N",
+    "Net-(D13-GK)"
+   ],
+   "footprint": "R_0603_1608Metric",
+   "nearest": [
+    {
+     "brand": "HKR(Hong Kong Resistors)",
+     "lcsc": "C22356475",
+     "mpn": "RCA03680RFLF",
+     "refused": [
+      "vendor 'HKR(Hong Kong Resistors)' is not on the accepted list (D-206)"
+     ]
+    },
+    {
+     "brand": "HKR(Hong Kong Resistors)",
+     "lcsc": "C22369947",
+     "mpn": "RCA03680RJLF",
+     "refused": [
+      "vendor 'HKR(Hong Kong Resistors)' is not on the accepted list (D-206)"
+     ]
+    },
+    {
+     "brand": "UNI-ROYAL(Uniroyal Elec)",
+     "lcsc": "C23228",
+     "mpn": "0603WAF6800T5E",
+     "refused": []
+    },
+    {
+     "brand": "UNI-ROYAL(Uniroyal Elec)",
+     "lcsc": "C25253",
+     "mpn": "0603WAJ0681T5E",
+     "refused": []
+    },
+    {
+     "brand": "FH (Guangdong Fenghua Advanced Tech)",
+     "lcsc": "C88607",
+     "mpn": "RS-03K6800FT",
+     "refused": []
+    },
+    {
+     "brand": "LIZ Elec",
+     "lcsc": "C101379",
+     "mpn": "CR0603JA0681G",
+     "refused": [
+      "vendor 'LIZ Elec' is not on the accepted list (D-206)"
+     ]
+    }
+   ],
+   "net_gate": {
+    "bounded_max_v": 3.6,
+    "established_max_v": 3.6,
+    "kind": "land working voltage vs the highest node",
+    "land_working_v": 50.0,
+    "nodes": [
+     "FRONT_RGB_G_N",
+     "Net-(D13-GK)"
+    ],
+    "nodes_not_individually_established": [],
+    "ok": true
+   },
+   "note_tighter": null,
+   "power_gate": {
+    "basis": "current ruling",
+    "duty": 1.0,
+    "fault_a": 0.00132,
+    "fault_w": 0.001185,
+    "kind": "2x operating and survives single fault",
+    "margin_x": 138.62,
+    "ok": true,
+    "operating_a": 0.00103,
+    "operating_w": 0.000721,
+    "rating_w": 0.1,
+    "ruling": [
+     "D13 green channel current set, FBV2-S1-008: 1.03 mA nominal, 1.32 mA high corner."
+    ]
+   },
+   "qty": 1,
+   "refs": [
+    "R125"
+   ],
+   "runners_up": [
+    {
+     "lcsc": "C2106546",
+     "library": "expand",
+     "mpn": "RCS0603680RFKEA",
+     "stock": 4251
+    },
+    {
+     "lcsc": "C543351",
+     "library": "expand",
+     "mpn": "ERJPA3F6800V",
+     "stock": 3947
+    },
+    {
+     "lcsc": "C445820",
+     "library": "expand",
+     "mpn": "ERJPA3J681V",
+     "stock": 1504
+    }
+   ],
+   "spec": {
+    "annotations": [],
+    "dielectric": null,
+    "kind": "R",
+    "magnitude": 680.0,
+    "power": null,
+    "raw": "680R",
+    "tolerance": null,
+    "tune": false,
+    "unparsed": [],
+    "voltage": null
+   },
+   "stock_floor": 500,
+   "thin_stock": false,
+   "value": "680R"
+  },
+  {
+   "candidates_examined": 50,
+   "chosen": {
+    "attributes": {
+     "Operating Temperature": "-55\u2103~+155\u2103",
+     "Power(Watts)": "100mW",
+     "Resistance": "390\u03a9",
+     "Temperature Coefficient": "\u00b1100ppm/\u2103",
+     "Tolerance": "\u00b11%",
+     "Type": "Thick Film Resistor",
+     "Voltage-Supply(Max)": "75V"
+    },
+    "brand": "UNI-ROYAL(Uniroyal Elec)",
+    "buyable": "1",
+    "code": "C23151",
+    "datasheet": "https://www.lcsc.com/datasheet/lcsc_datasheet_2206010116_UNI-ROYAL-Uniroyal-Elec-0603WAF3900T5E_C23151.pdf",
+    "dielectric": null,
+    "kind": "R",
+    "land": "0603",
+    "library": "base",
+    "magnitude": 390.0,
+    "mpn": "0603WAF3900T5E",
+    "no_buy": null,
+    "power": 0.1,
+    "price_1": 0.0049,
+    "rohs": 1,
+    "rtype": "Thick Film Resistor",
+    "stock": 456712,
+    "tempco_ppm": 100.0,
+    "tolerance": 1.0,
+    "voltage": null,
+    "working_v": 75.0
+   },
+   "demo_nets": [
+    "FRONT_RGB_B_N",
+    "Net-(D13-BK)"
+   ],
+   "footprint": "R_0603_1608Metric",
+   "nearest": [
+    {
+     "brand": "HKR(Hong Kong Resistors)",
+     "lcsc": "C177389",
+     "mpn": "RCT03390RJLF",
+     "refused": [
+      "vendor 'HKR(Hong Kong Resistors)' is not on the accepted list (D-206)",
+      "stock 6 under 50 -- 1 parts x 5 boards x 10 liquidity"
+     ]
+    },
+    {
+     "brand": "HKR(Hong Kong Resistors)",
+     "lcsc": "C22356587",
+     "mpn": "RCA03390RJLF",
+     "refused": [
+      "vendor 'HKR(Hong Kong Resistors)' is not on the accepted list (D-206)"
+     ]
+    },
+    {
+     "brand": "HKR(Hong Kong Resistors)",
+     "lcsc": "C22369784",
+     "mpn": "RCA03390RFLF",
+     "refused": [
+      "vendor 'HKR(Hong Kong Resistors)' is not on the accepted list (D-206)",
+      "stock 45 under 50 -- 1 parts x 5 boards x 10 liquidity"
+     ]
+    },
+    {
+     "brand": "UNI-ROYAL(Uniroyal Elec)",
+     "lcsc": "C23151",
+     "mpn": "0603WAF3900T5E",
+     "refused": []
+    },
+    {
+     "brand": "UNI-ROYAL(Uniroyal Elec)",
+     "lcsc": "C25235",
+     "mpn": "0603WAJ0391T5E",
+     "refused": []
+    },
+    {
+     "brand": "LIZ Elec",
+     "lcsc": "C101011",
+     "mpn": "CR0603FA3900G",
+     "refused": [
+      "vendor 'LIZ Elec' is not on the accepted list (D-206)"
+     ]
+    }
+   ],
+   "net_gate": {
+    "bounded_max_v": 3.6,
+    "established_max_v": 3.6,
+    "kind": "land working voltage vs the highest node",
+    "land_working_v": 50.0,
+    "nodes": [
+     "FRONT_RGB_B_N",
+     "Net-(D13-BK)"
+    ],
+    "nodes_not_individually_established": [],
+    "ok": true
+   },
+   "note_tighter": null,
+   "power_gate": {
+    "basis": "current ruling",
+    "duty": 1.0,
+    "fault_a": 0.00217,
+    "fault_w": 0.001836,
+    "kind": "2x operating and survives single fault",
+    "margin_x": 91.94,
+    "ok": true,
+    "operating_a": 0.00167,
+    "operating_w": 0.001088,
+    "rating_w": 0.1,
+    "ruling": [
+     "D13 blue channel current set, FBV2-S1-008: 1.67 mA nominal, 2.17 mA high corner."
+    ]
+   },
+   "qty": 1,
+   "refs": [
+    "R126"
+   ],
+   "runners_up": [
+    {
+     "lcsc": "C313742",
+     "library": "expand",
+     "mpn": "CRCW0603390RFKEAHP",
+     "stock": 4916
+    },
+    {
+     "lcsc": "C844555",
+     "library": "expand",
+     "mpn": "CRCW0603390RFKEA",
+     "stock": 22618
+    },
+    {
+     "lcsc": "C278623",
+     "library": "expand",
+     "mpn": "ERJ3EKF3900V",
+     "stock": 3864
+    }
+   ],
+   "spec": {
+    "annotations": [],
+    "dielectric": null,
+    "kind": "R",
+    "magnitude": 390.0,
+    "power": null,
+    "raw": "390R",
+    "tolerance": null,
+    "tune": false,
+    "unparsed": [],
+    "voltage": null
+   },
+   "stock_floor": 500,
+   "thin_stock": false,
+   "value": "390R"
+  },
+  {
+   "candidates_examined": 50,
+   "chosen": {
+    "attributes": {
+     "Operating Temperature": "-55\u2103~+155\u2103",
+     "Power(Watts)": "100mW",
+     "Resistance": "2.2k\u03a9",
+     "Temperature Coefficient": "\u00b1100ppm/\u2103",
+     "Tolerance": "\u00b11%",
+     "Type": "Thick Film Resistor",
+     "Voltage-Supply(Max)": "75V"
+    },
+    "brand": "UNI-ROYAL(Uniroyal Elec)",
+    "buyable": "1",
+    "code": "C4190",
+    "datasheet": "https://www.lcsc.com/datasheet/lcsc_datasheet_2206010230_UNI-ROYAL-Uniroyal-Elec-0603WAF2201T5E_C4190.pdf",
+    "dielectric": null,
+    "kind": "R",
+    "land": "0603",
+    "library": "base",
+    "magnitude": 2200.0,
+    "mpn": "0603WAF2201T5E",
+    "no_buy": null,
+    "power": 0.1,
+    "price_1": 0.0022,
+    "rohs": 1,
+    "rtype": "Thick Film Resistor",
+    "stock": 7045544,
+    "tempco_ppm": 100.0,
+    "tolerance": 1.0,
+    "voltage": null,
+    "working_v": 75.0
+   },
+   "demo_nets": [
+    "+3V3",
+    "I2C_SCL_INT",
+    "I2C_SDA_INT"
+   ],
+   "footprint": "R_0603_1608Metric",
+   "nearest": [
+    {
+     "brand": "HKR(Hong Kong Resistors)",
+     "lcsc": "C177332",
+     "mpn": "RCT032K2JLF",
+     "refused": [
+      "vendor 'HKR(Hong Kong Resistors)' is not on the accepted list (D-206)"
+     ]
+    },
+    {
+     "brand": "HKR(Hong Kong Resistors)",
+     "lcsc": "C22356633",
+     "mpn": "RCA032K2JLF",
+     "refused": [
+      "vendor 'HKR(Hong Kong Resistors)' is not on the accepted list (D-206)"
+     ]
+    },
+    {
+     "brand": "HKR(Hong Kong Resistors)",
+     "lcsc": "C22369817",
+     "mpn": "RCA032K2FLF",
+     "refused": [
+      "vendor 'HKR(Hong Kong Resistors)' is not on the accepted list (D-206)"
+     ]
+    },
+    {
+     "brand": "UNI-ROYAL(Uniroyal Elec)",
+     "lcsc": "C4190",
+     "mpn": "0603WAF2201T5E",
+     "refused": []
+    },
+    {
+     "brand": "UNI-ROYAL(Uniroyal Elec)",
+     "lcsc": "C25992",
+     "mpn": "0603WAJ0222T5E",
+     "refused": []
+    },
+    {
+     "brand": "LIZ Elec",
+     "lcsc": "C100864",
+     "mpn": "CR0603FA2201G",
+     "refused": [
+      "vendor 'LIZ Elec' is not on the accepted list (D-206)",
+      "stock 2 under 100 -- 2 parts x 5 boards x 10 liquidity"
+     ]
+    }
+   ],
+   "net_gate": {
+    "bounded_max_v": 3.6,
+    "established_max_v": 3.6,
+    "kind": "land working voltage vs the highest node",
+    "land_working_v": 50.0,
+    "nodes": [
+     "+3V3",
+     "I2C_SCL_INT",
+     "I2C_SDA_INT"
+    ],
+    "nodes_not_individually_established": [],
+    "ok": true
+   },
+   "note_tighter": null,
+   "power_gate": {
+    "basis": "over-bound: the whole node voltage across the part",
+    "kind": "2x the strict over-bound",
+    "margin_x": 16.98,
+    "ok": true,
+    "over_bound_w": 0.005891,
+    "rating_w": 0.1
+   },
+   "qty": 2,
+   "refs": [
+    "R19",
+    "R20"
+   ],
+   "runners_up": [
+    {
+     "lcsc": "C844349",
+     "library": "expand",
+     "mpn": "CRCW06032K20FKEAHP",
+     "stock": 4226
+    },
+    {
+     "lcsc": "C491201",
+     "library": "expand",
+     "mpn": "ERJUP3J222V",
+     "stock": 10205
+    },
+    {
+     "lcsc": "C441923",
+     "library": "expand",
+     "mpn": "ERJPA3F2201V",
+     "stock": 1774
+    }
+   ],
+   "spec": {
+    "annotations": [],
+    "dielectric": null,
+    "kind": "R",
+    "magnitude": 2200.0,
+    "power": null,
+    "raw": "2.2k",
+    "tolerance": null,
+    "tune": false,
+    "unparsed": [],
+    "voltage": null
+   },
+   "stock_floor": 500,
+   "thin_stock": false,
+   "value": "2.2k"
+  },
+  {
+   "candidates_examined": 50,
+   "chosen": {
+    "attributes": {
+     "Operating Temperature": "-55\u2103~+155\u2103",
+     "Power(Watts)": "500mW",
+     "Resistance": "12\u03a9",
+     "Temperature Coefficient": "\u00b1100ppm/\u2103",
+     "Tolerance": "\u00b11%",
+     "Type": "Thick Film Resistor",
+     "Voltage-Supply(Max)": "500V"
+    },
+    "brand": "YAGEO",
+    "buyable": "1",
+    "code": "C26080556",
+    "datasheet": null,
+    "dielectric": null,
+    "kind": "R",
+    "land": "0805",
+    "library": "expand",
+    "magnitude": 12.0,
+    "mpn": "SR0805FR-4712RL",
+    "no_buy": null,
+    "power": 0.5,
+    "price_1": 0.0207,
+    "rohs": 1,
+    "rtype": "Thick Film Resistor",
+    "stock": 1504,
+    "tempco_ppm": 100.0,
+    "tolerance": 1.0,
+    "voltage": null,
+    "working_v": 500.0
+   },
+   "demo_nets": [
+    "+3V3",
+    "IR_LED_A"
+   ],
+   "footprint": "R_0805_2012Metric",
+   "nearest": [
+    {
+     "brand": "HKR(Hong Kong Resistors)",
+     "lcsc": "C48928189",
+     "mpn": "RCA0512RJLF",
+     "refused": [
+      "vendor 'HKR(Hong Kong Resistors)' is not on the accepted list (D-206)",
+      "tolerance 5.0 vs the demanded 1.0%",
+      "dissipation gate: rating 0.125 W against 0.09 W",
+      "stock 20 under 50 -- 1 parts x 5 boards x 10 liquidity"
+     ]
+    },
+    {
+     "brand": "UNI-ROYAL(Uniroyal Elec)",
+     "lcsc": "C17445",
+     "mpn": "0805W8F120JT5E",
+     "refused": [
+      "dissipation gate: rating 0.125 W against 0.09 W"
+     ]
+    },
+    {
+     "brand": "UNI-ROYAL(Uniroyal Elec)",
+     "lcsc": "C25281",
+     "mpn": "0805W8J0120T5E",
+     "refused": [
+      "tolerance 5.0 vs the demanded 1.0%",
+      "dissipation gate: rating 0.125 W against 0.09 W",
+      "stock 8 under 50 -- 1 parts x 5 boards x 10 liquidity"
+     ]
+    },
+    {
+     "brand": "LIZ Elec",
+     "lcsc": "C101454",
+     "mpn": "CR0805F812R0G",
+     "refused": [
+      "vendor 'LIZ Elec' is not on the accepted list (D-206)",
+      "dissipation gate: rating 0.125 W against 0.09 W",
+      "stock 33 under 50 -- 1 parts x 5 boards x 10 liquidity"
+     ]
+    },
+    {
+     "brand": "LIZ Elec",
+     "lcsc": "C101934",
+     "mpn": "CR0805J80120G",
+     "refused": [
+      "vendor 'LIZ Elec' is not on the accepted list (D-206)",
+      "tolerance 5.0 vs the demanded 1.0%",
+      "dissipation gate: rating 0.125 W against 0.09 W",
+      "stock 15 under 50 -- 1 parts x 5 boards x 10 liquidity"
+     ]
+    },
+    {
+     "brand": "RALEC",
+     "lcsc": "C103950",
+     "mpn": "RTT05120JTP",
+     "refused": [
+      "tolerance 5.0 vs the demanded 1.0%",
+      "dissipation gate: rating 0.125 W against 0.09 W"
+     ]
+    }
+   ],
+   "net_gate": {
+    "bounded_max_v": 3.6,
+    "established_max_v": 3.6,
+    "kind": "land working voltage vs the highest node",
+    "land_working_v": 150.0,
+    "nodes": [
+     "+3V3",
+     "IR_LED_A"
+    ],
+    "nodes_not_individually_established": [],
+    "ok": true
+   },
+   "note_tighter": {
+    "tolerance": 1.0,
+    "why": "the R24 symbol note and the sheet-07 text both read `12R 1 percent 0805`, and the 150 mA derivation prices the worst-case-high corner at `R -1 %`.  The Value string says only `12R`, so a 5 % part satisfies the STRING and contradicts the DERIVATION."
+   },
+   "power_gate": {
+    "basis": "current ruling",
+    "duty": 0.3333333333333333,
+    "fault_a": 0.17,
+    "fault_w": 0.1156,
+    "kind": "2x operating and survives single fault",
+    "margin_x": 5.56,
+    "ok": true,
+    "operating_a": 0.15,
+    "operating_w": 0.09,
+    "rating_w": 0.5,
+    "ruling": [
+     "IR LED current limit, FBV2-S1-007 and the R24 symbol note: 150 mA first-build peak, 170 mA worst case high (rail +2 %, VF 1.35 V, R -1 %).  The 38 kHz carrier runs at ONE THIRD duty (the C12 note derives its ripple from D = 0.333), so the dissipation is I^2 R D and not I^2 R."
+    ]
+   },
+   "qty": 1,
+   "refs": [
+    "R24"
+   ],
+   "runners_up": [
+    {
+     "lcsc": "C4197799",
+     "library": "expand",
+     "mpn": "SG73S2ATTD12R0F",
+     "stock": 5000
+    },
+    {
+     "lcsc": "C514988",
+     "library": "expand",
+     "mpn": "SG73P2ATTD12R0F",
+     "stock": 4420
+    },
+    {
+     "lcsc": "C2108369",
+     "library": "expand",
+     "mpn": "ESR10EZPF12R0",
+     "stock": 84
+    }
+   ],
+   "spec": {
+    "annotations": [],
+    "dielectric": null,
+    "kind": "R",
+    "magnitude": 12.0,
+    "power": null,
+    "raw": "12R",
+    "tolerance": null,
+    "tune": false,
+    "unparsed": [],
+    "voltage": null
+   },
+   "stock_floor": 500,
+   "thin_stock": false,
+   "value": "12R"
+  },
+  {
+   "candidates_examined": 50,
+   "chosen": {
+    "attributes": {
+     "Operating Temperature": "-55\u2103~+155\u2103",
+     "Power(Watts)": "100mW",
+     "Resistance": "1.5k\u03a9",
+     "Temperature Coefficient": "\u00b1100ppm/\u2103",
+     "Tolerance": "\u00b11%",
+     "Type": "Thick Film Resistor",
+     "Voltage-Supply(Max)": "75V"
+    },
+    "brand": "UNI-ROYAL(Uniroyal Elec)",
+    "buyable": "1",
+    "code": "C22843",
+    "datasheet": "https://www.lcsc.com/datasheet/lcsc_datasheet_2206010130_UNI-ROYAL-Uniroyal-Elec-0603WAF1501T5E_C22843.pdf",
+    "dielectric": null,
+    "kind": "R",
+    "land": "0603",
+    "library": "base",
+    "magnitude": 1500.0,
+    "mpn": "0603WAF1501T5E",
+    "no_buy": null,
+    "power": 0.1,
+    "price_1": 0.0026,
+    "rohs": 1,
+    "rtype": "Thick Film Resistor",
+    "stock": 3722075,
+    "tempco_ppm": 100.0,
+    "tolerance": 1.0,
+    "voltage": null,
+    "working_v": 75.0
+   },
+   "demo_nets": [
+    "ACC_3V3_ILIM",
+    "ACC_3V3_SW",
+    "EXT_SCL_BUF",
+    "EXT_SDA_BUF"
+   ],
+   "footprint": "R_0603_1608Metric",
+   "nearest": [
+    {
+     "brand": "HKR(Hong Kong Resistors)",
+     "lcsc": "C22369819",
+     "mpn": "RCA031K5FLF",
+     "refused": [
+      "vendor 'HKR(Hong Kong Resistors)' is not on the accepted list (D-206)"
+     ]
+    },
+    {
+     "brand": "HKR(Hong Kong Resistors)",
+     "lcsc": "C22369936",
+     "mpn": "RCA031K5JLF",
+     "refused": [
+      "vendor 'HKR(Hong Kong Resistors)' is not on the accepted list (D-206)",
+      "tolerance 5.0 vs the demanded 1.0%"
+     ]
+    },
+    {
+     "brand": "HKR(Hong Kong Resistors)",
+     "lcsc": "C49330121",
+     "mpn": "AST031K5F",
+     "refused": [
+      "vendor 'HKR(Hong Kong Resistors)' is not on the accepted list (D-206)"
+     ]
+    },
+    {
+     "brand": "UNI-ROYAL(Uniroyal Elec)",
+     "lcsc": "C22843",
+     "mpn": "0603WAF1501T5E",
+     "refused": []
+    },
+    {
+     "brand": "UNI-ROYAL(Uniroyal Elec)",
+     "lcsc": "C25989",
+     "mpn": "0603WAJ0152T5E",
+     "refused": [
+      "tolerance 5.0 vs the demanded 1.0%"
+     ]
+    },
+    {
+     "brand": "LIZ Elec",
+     "lcsc": "C101276",
+     "mpn": "CR0603JA0152G",
+     "refused": [
+      "vendor 'LIZ Elec' is not on the accepted list (D-206)",
+      "tolerance 5.0 vs the demanded 1.0%"
+     ]
+    }
+   ],
+   "net_gate": {
+    "bounded_max_v": 3.6,
+    "established_max_v": 3.6,
+    "kind": "land working voltage vs the highest node",
+    "land_working_v": 50.0,
+    "nodes": [
+     "ACC_3V3_ILIM",
+     "ACC_3V3_SW",
+     "EXT_SCL_BUF",
+     "EXT_SDA_BUF"
+    ],
+    "nodes_not_individually_established": [],
+    "ok": true
+   },
+   "note_tighter": null,
+   "power_gate": {
+    "basis": "over-bound: the whole node voltage across the part",
+    "kind": "2x the strict over-bound",
+    "margin_x": 11.57,
+    "ok": true,
+    "over_bound_w": 0.00864,
+    "rating_w": 0.1
+   },
+   "qty": 3,
+   "refs": [
+    "R49",
+    "R50",
+    "R97"
+   ],
+   "runners_up": [
+    {
+     "lcsc": "C313686",
+     "library": "expand",
+     "mpn": "CRCW06031K50FKEAHP",
+     "stock": 7904
+    },
+    {
+     "lcsc": "C413720",
+     "library": "expand",
+     "mpn": "ERJPB3B1501V",
+     "stock": 549
+    },
+    {
+     "lcsc": "C114668",
+     "library": "expand",
+     "mpn": "RC0603FR-071K5L",
+     "stock": 688049
+    }
+   ],
+   "spec": {
+    "annotations": [],
+    "dielectric": null,
+    "kind": "R",
+    "magnitude": 1500.0,
+    "power": null,
+    "raw": "1.5k 1%",
+    "tolerance": 1.0,
+    "tune": false,
+    "unparsed": [],
+    "voltage": null
+   },
+   "stock_floor": 500,
+   "thin_stock": false,
+   "value": "1.5k 1%"
+  },
+  {
+   "candidates_examined": 29,
+   "chosen": {
+    "attributes": {
+     "Operating Temperature": "-55\u2103~+155\u2103",
+     "Power(Watts)": "100mW",
+     "Resistance": "1.87\u03a9",
+     "Temperature Coefficient": "\u00b1200ppm/\u2103",
+     "Tolerance": "\u00b11%",
+     "Type": "Thick Film Resistor",
+     "Voltage-Supply(Max)": "75V"
+    },
+    "brand": "UNI-ROYAL(Uniroyal Elec)",
+    "buyable": "1",
+    "code": "C422967",
+    "datasheet": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2205312216_UNI-ROYAL-Uniroyal-Elec-0603WAF187KT5E_C422967.pdf",
+    "dielectric": null,
+    "kind": "R",
+    "land": "0603",
+    "library": "expand",
+    "magnitude": 1.87,
+    "mpn": "0603WAF187KT5E",
+    "no_buy": null,
+    "power": 0.1,
+    "price_1": 0.0009,
+    "rohs": 1,
+    "rtype": "Thick Film Resistor",
+    "stock": 91,
+    "tempco_ppm": 200.0,
+    "tolerance": 1.0,
+    "voltage": null,
+    "working_v": 75.0
+   },
+   "demo_nets": [
+    "LED_K"
+   ],
+   "footprint": "R_0603_1608Metric",
+   "nearest": [
+    {
+     "brand": "RALEC",
+     "lcsc": "C166864",
+     "mpn": "RTT031R87FTP",
+     "refused": [
+      "stock 44 under 50 -- 1 parts x 5 boards x 10 liquidity"
+     ]
+    },
+    {
+     "brand": "UNI-ROYAL(Uniroyal Elec)",
+     "lcsc": "C422967",
+     "mpn": "0603WAF187KT5E",
+     "refused": []
+    },
+    {
+     "brand": "YAGEO",
+     "lcsc": "C482760",
+     "mpn": "RC0603FR-071R87L",
+     "refused": []
+    },
+    {
+     "brand": "GiantOhm",
+     "lcsc": "C49656563",
+     "mpn": "GR0603F1R87T5G00",
+     "refused": [
+      "vendor 'GiantOhm' is not on the accepted list (D-206)"
+     ]
+    },
+    {
+     "brand": "YAGEO",
+     "lcsc": "C2100104",
+     "mpn": "AA0603FR-071R87L",
+     "refused": [
+      "stock 0 under 50 -- 1 parts x 5 boards x 10 liquidity"
+     ]
+    },
+    {
+     "brand": "YAGEO",
+     "lcsc": "C2114442",
+     "mpn": "RT0603CRE071R87L",
+     "refused": [
+      "stock 0 under 50 -- 1 parts x 5 boards x 10 liquidity"
+     ]
+    }
+   ],
+   "net_gate": {
+    "bounded_max_v": 38.0,
+    "established_max_v": 38.0,
+    "kind": "land working voltage vs the highest node",
+    "land_working_v": 50.0,
+    "nodes": [
+     "LED_K"
+    ],
+    "nodes_not_individually_established": [],
+    "ok": true
+   },
+   "note_tighter": null,
+   "power_gate": {
+    "basis": "current ruling",
+    "duty": 1.0,
+    "fault_a": 0.109,
+    "fault_w": 0.022217,
+    "kind": "2x operating and survives single fault",
+    "margin_x": 4.5,
+    "ok": true,
+    "operating_a": 0.109,
+    "operating_w": 0.022217,
+    "rating_w": 0.1,
+    "ruling": [
+     "backlight sense.  D-079: the panel is SIX LEDs IN PARALLEL at I_LED 109 mA typ, and R69 1.87R develops the 0.20 V the TPS61169 regulates to.  The current is REGULATED, so a shorted string raises the node voltage and not the current."
+    ]
+   },
+   "qty": 1,
+   "refs": [
+    "R69"
+   ],
+   "runners_up": [
+    {
+     "lcsc": "C482760",
+     "library": "expand",
+     "mpn": "RC0603FR-071R87L",
+     "stock": 51
+    }
+   ],
+   "spec": {
+    "annotations": [],
+    "dielectric": null,
+    "kind": "R",
+    "magnitude": 1.87,
+    "power": null,
+    "raw": "1.87R 1%",
+    "tolerance": 1.0,
+    "tune": false,
+    "unparsed": [],
+    "voltage": null
+   },
+   "stock_floor": 500,
+   "thin_stock": true,
+   "value": "1.87R 1%"
+  },
+  {
+   "candidates_examined": 50,
+   "chosen": {
+    "attributes": {
+     "Operating Temperature": "-55\u2103~+155\u2103",
+     "Power(Watts)": "100mW",
+     "Resistance": "33\u03a9",
+     "Temperature Coefficient": "\u00b1100ppm/\u2103",
+     "Tolerance": "\u00b11%",
+     "Type": "Thick Film Resistor",
+     "Voltage-Supply(Max)": "75V"
+    },
+    "brand": "UNI-ROYAL(Uniroyal Elec)",
+    "buyable": "1",
+    "code": "C23140",
+    "datasheet": "https://www.lcsc.com/datasheet/lcsc_datasheet_2206010116_UNI-ROYAL-Uniroyal-Elec-0603WAF330JT5E_C23140.pdf",
+    "dielectric": null,
+    "kind": "R",
+    "land": "0603",
+    "library": "base",
+    "magnitude": 33.0,
+    "mpn": "0603WAF330JT5E",
+    "no_buy": null,
+    "power": 0.1,
+    "price_1": 0.0028,
+    "rohs": 1,
+    "rtype": "Thick Film Resistor",
+    "stock": 5954981,
+    "tempco_ppm": 100.0,
+    "tolerance": 1.0,
+    "voltage": null,
+    "working_v": 75.0
+   },
+   "demo_nets": [
+    "LED_A",
+    "LED_BOOST"
+   ],
+   "footprint": "R_0603_1608Metric",
+   "nearest": [
+    {
+     "brand": "HKR(Hong Kong Resistors)",
+     "lcsc": "C177281",
+     "mpn": "RCT0333RJLF",
+     "refused": [
+      "vendor 'HKR(Hong Kong Resistors)' is not on the accepted list (D-206)",
+      "tolerance 5.0 vs the demanded 1.0%",
+      "stock 5 under 200 -- 4 parts x 5 boards x 10 liquidity"
+     ]
+    },
+    {
+     "brand": "HKR(Hong Kong Resistors)",
+     "lcsc": "C22356662",
+     "mpn": "RCA0333RJLF",
+     "refused": [
+      "vendor 'HKR(Hong Kong Resistors)' is not on the accepted list (D-206)",
+      "tolerance 5.0 vs the demanded 1.0%"
+     ]
+    },
+    {
+     "brand": "HKR(Hong Kong Resistors)",
+     "lcsc": "C22369788",
+     "mpn": "RCA0333RFLF",
+     "refused": [
+      "vendor 'HKR(Hong Kong Resistors)' is not on the accepted list (D-206)"
+     ]
+    },
+    {
+     "brand": "HKR(Hong Kong Resistors)",
+     "lcsc": "C49330127",
+     "mpn": "AST0333RF",
+     "refused": [
+      "vendor 'HKR(Hong Kong Resistors)' is not on the accepted list (D-206)"
+     ]
+    },
+    {
+     "brand": "UNI-ROYAL(Uniroyal Elec)",
+     "lcsc": "C23140",
+     "mpn": "0603WAF330JT5E",
+     "refused": []
+    },
+    {
+     "brand": "UNI-ROYAL(Uniroyal Elec)",
+     "lcsc": "C25232",
+     "mpn": "0603WAJ0330T5E",
+     "refused": [
+      "tolerance 5.0 vs the demanded 1.0%"
+     ]
+    }
+   ],
+   "net_gate": {
+    "bounded_max_v": 38.0,
+    "established_max_v": 38.0,
+    "kind": "land working voltage vs the highest node",
+    "land_working_v": 50.0,
+    "nodes": [
+     "LED_A",
+     "LED_BOOST"
+    ],
+    "nodes_not_individually_established": [],
+    "ok": true
+   },
+   "note_tighter": null,
+   "power_gate": {
+    "basis": "current ruling",
+    "duty": 1.0,
+    "fault_a": 0.03633,
+    "fault_w": 0.043556,
+    "kind": "2x operating and survives single fault",
+    "margin_x": 4.08,
+    "ok": true,
+    "operating_a": 0.02725,
+    "operating_w": 0.024505,
+    "rating_w": 0.1,
+    "ruling": [
+     "one of FOUR parallel 33R backlight ballasts carrying 109 mA between them (D-079): 27.25 mA each, and 36.33 mA each if ONE of the four is open."
+    ]
+   },
+   "qty": 4,
+   "refs": [
+    "R70",
+    "R71",
+    "R72",
+    "R73"
+   ],
+   "runners_up": [
+    {
+     "lcsc": "C441912",
+     "library": "expand",
+     "mpn": "ERJPA3F33R0V",
+     "stock": 1135
+    },
+    {
+     "lcsc": "C2074308",
+     "library": "expand",
+     "mpn": "MCT06030C3309FP500",
+     "stock": 998
+    },
+    {
+     "lcsc": "C108661",
+     "library": "expand",
+     "mpn": "RC0603FR-0733RL",
+     "stock": 74315
+    }
+   ],
+   "spec": {
+    "annotations": [],
+    "dielectric": null,
+    "kind": "R",
+    "magnitude": 33.0,
+    "power": null,
+    "raw": "33R 1%",
+    "tolerance": 1.0,
+    "tune": false,
+    "unparsed": [],
+    "voltage": null
+   },
+   "stock_floor": 500,
+   "thin_stock": false,
+   "value": "33R 1%"
+  },
+  {
+   "candidates_examined": 50,
+   "chosen": {
+    "attributes": {
+     "Power(Watts)": "3W",
+     "Resistance": "15m\u03a9",
+     "Temperature Coefficient": "\u00b150ppm/\u2103",
+     "Tolerance": "\u00b11%",
+     "Type": "Current Sense Resistor"
+    },
+    "brand": "BOURNS",
+    "buyable": "1",
+    "code": "C2073490",
+    "datasheet": "https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_BOURNS-CRA2512-FZ-R015ELF_C2073490.pdf",
+    "dielectric": null,
+    "kind": "R",
+    "land": "2512",
+    "library": "expand",
+    "magnitude": 0.015,
+    "mpn": "CRA2512-FZ-R015ELF",
+    "no_buy": null,
+    "power": 3.0,
+    "price_1": 0.3115,
+    "rohs": 1,
+    "rtype": "Current Sense Resistor",
+    "stock": 940,
+    "tempco_ppm": 50.0,
+    "tolerance": 1.0,
+    "voltage": null,
+    "working_v": null
+   },
+   "demo_nets": [
+    "BAT_PROTECTED_P",
+    "BAT_SENSE"
+   ],
+   "footprint": "R_2512_6332Metric",
+   "nearest": [
+    {
+     "brand": "UNI-ROYAL(Uniroyal Elec)",
+     "lcsc": "C44883",
+     "mpn": "25121WF150MT4E",
+     "refused": [
+      "tempco 1500.0 ppm/degC against a 100 ppm limit",
+      "part type 'Thick Film Resistor' is not a current-sense class"
+     ]
+    },
+    {
+     "brand": "PSA(Prosperity Dielectrics)",
+     "lcsc": "C105374",
+     "mpn": "FMF25FPHR015-LHL",
+     "refused": [
+      "vendor 'PSA(Prosperity Dielectrics)' is not on the accepted list (D-206)"
+     ]
+    },
+    {
+     "brand": "RALEC",
+     "lcsc": "C154661",
+     "mpn": "LR2512-21R015F4",
+     "refused": []
+    },
+    {
+     "brand": "RALEC",
+     "lcsc": "C154674",
+     "mpn": "LR2512-22R015F4",
+     "refused": []
+    },
+    {
+     "brand": "TA-I Tech",
+     "lcsc": "C163053",
+     "mpn": "RLP25JEER015",
+     "refused": [
+      "tolerance 5.0 vs the demanded 1.0%"
+     ]
+    },
+    {
+     "brand": "TA-I Tech",
+     "lcsc": "C163066",
+     "mpn": "RLP25JEGR015",
+     "refused": [
+      "tolerance 5.0 vs the demanded 1.0%"
+     ]
+    }
+   ],
+   "net_gate": {
+    "bounded_max_v": 4.35,
+    "established_max_v": 4.35,
+    "kind": "land working voltage vs the highest node",
+    "land_working_v": 200.0,
+    "nodes": [
+     "BAT_PROTECTED_P",
+     "BAT_SENSE"
+    ],
+    "nodes_not_individually_established": [],
+    "ok": true
+   },
+   "note_tighter": null,
+   "power_gate": {
+    "basis": "current ruling",
+    "duty": 1.0,
+    "fault_a": 3.33,
+    "fault_w": 0.166333,
+    "kind": "2x operating and survives single fault",
+    "margin_x": 18.04,
+    "ok": true,
+    "operating_a": 3.33,
+    "operating_w": 0.166333,
+    "rating_w": 3.0,
+    "ruling": [
+     "battery current sense.  The R75 symbol note states the design's own ceiling: I_OC,FWD = 50 mV / 15 mR = 3.33 A, the LTC4368-1 forward trip.  Nothing below it is interrupted, so it IS the continuous current the part must survive."
+    ]
+   },
+   "qty": 1,
+   "refs": [
+    "R75"
+   ],
+   "runners_up": [
+    {
+     "lcsc": "C723437",
+     "library": "expand",
+     "mpn": "PA2512FKF7W0R015E",
+     "stock": 4046
+    },
+    {
+     "lcsc": "C844695",
+     "library": "expand",
+     "mpn": "WSL2512R0150FEA",
+     "stock": 13974
+    },
+    {
+     "lcsc": "C2941064",
+     "library": "expand",
+     "mpn": "LR122WF150MT4E",
+     "stock": 3621
+    }
+   ],
+   "spec": {
+    "annotations": [],
+    "dielectric": null,
+    "kind": "R",
+    "magnitude": 0.015,
+    "power": 1.0,
+    "raw": "15mR 1% 1W",
+    "tolerance": 1.0,
+    "tune": false,
+    "unparsed": [],
+    "voltage": null
+   },
+   "stock_floor": 500,
+   "thin_stock": false,
+   "value": "15mR 1% 1W"
+  },
+  {
+   "candidates_examined": 50,
+   "chosen": {
+    "attributes": {
+     "Operating Temperature": "-55\u2103~+155\u2103",
+     "Power(Watts)": "100mW",
+     "Resistance": "22k\u03a9",
+     "Temperature Coefficient": "\u00b1100ppm/\u2103",
+     "Tolerance": "\u00b11%",
+     "Type": "Thick Film Resistor",
+     "Voltage-Supply(Max)": "75V"
+    },
+    "brand": "UNI-ROYAL(Uniroyal Elec)",
+    "buyable": "1",
+    "code": "C31850",
+    "datasheet": "https://www.lcsc.com/datasheet/lcsc_datasheet_2206010030_UNI-ROYAL-Uniroyal-Elec-0603WAF2202T5E_C31850.pdf",
+    "dielectric": null,
+    "kind": "R",
+    "land": "0603",
+    "library": "base",
+    "magnitude": 22000.0,
+    "mpn": "0603WAF2202T5E",
+    "no_buy": null,
+    "power": 0.1,
+    "price_1": 0.0045,
+    "rohs": 1,
+    "rtype": "Thick Film Resistor",
+    "stock": 4428542,
+    "tempco_ppm": 100.0,
+    "tolerance": 1.0,
+    "voltage": null,
+    "working_v": 75.0
+   },
+   "demo_nets": [
+    "LTC_GATE",
+    "LTC_GATE_RC"
+   ],
+   "footprint": "R_0603_1608Metric",
+   "nearest": [
+    {
+     "brand": "HKR(Hong Kong Resistors)",
+     "lcsc": "C177274",
+     "mpn": "RCT0322KJLF",
+     "refused": [
+      "vendor 'HKR(Hong Kong Resistors)' is not on the accepted list (D-206)"
+     ]
+    },
+    {
+     "brand": "HKR(Hong Kong Resistors)",
+     "lcsc": "C177655",
+     "mpn": "RCT0322KFLF",
+     "refused": [
+      "vendor 'HKR(Hong Kong Resistors)' is not on the accepted list (D-206)"
+     ]
+    },
+    {
+     "brand": "HKR(Hong Kong Resistors)",
+     "lcsc": "C22356459",
+     "mpn": "RCA0322KFLF",
+     "refused": [
+      "vendor 'HKR(Hong Kong Resistors)' is not on the accepted list (D-206)"
+     ]
+    },
+    {
+     "brand": "HKR(Hong Kong Resistors)",
+     "lcsc": "C22356667",
+     "mpn": "RCA0322KJLF",
+     "refused": [
+      "vendor 'HKR(Hong Kong Resistors)' is not on the accepted list (D-206)"
+     ]
+    },
+    {
+     "brand": "UNI-ROYAL(Uniroyal Elec)",
+     "lcsc": "C23344",
+     "mpn": "0603WAJ0223T5E",
+     "refused": []
+    },
+    {
+     "brand": "UNI-ROYAL(Uniroyal Elec)",
+     "lcsc": "C31850",
+     "mpn": "0603WAF2202T5E",
+     "refused": []
+    }
+   ],
+   "net_gate": {
+    "bounded_max_v": 17.5,
+    "established_max_v": 17.5,
+    "kind": "land working voltage vs the highest node",
+    "land_working_v": 50.0,
+    "nodes": [
+     "LTC_GATE",
+     "LTC_GATE_RC"
+    ],
+    "nodes_not_individually_established": [],
+    "ok": true
+   },
+   "note_tighter": null,
+   "power_gate": {
+    "basis": "over-bound: the whole node voltage across the part",
+    "kind": "2x the strict over-bound",
+    "margin_x": 7.18,
+    "ok": true,
+    "over_bound_w": 0.01392,
+    "rating_w": 0.1
+   },
+   "qty": 1,
+   "refs": [
+    "R76"
+   ],
+   "runners_up": [
+    {
+     "lcsc": "C441928",
+     "library": "expand",
+     "mpn": "ERJPA3F2202V",
+     "stock": 9034
+    },
+    {
+     "lcsc": "C313708",
+     "library": "expand",
+     "mpn": "CRCW060322K0FKEAHP",
+     "stock": 586
+    },
+    {
+     "lcsc": "C427279",
+     "library": "expand",
+     "mpn": "ERJP03J223V",
+     "stock": 4411
+    }
+   ],
+   "spec": {
+    "annotations": [],
+    "dielectric": null,
+    "kind": "R",
+    "magnitude": 22000.0,
+    "power": null,
+    "raw": "22k",
+    "tolerance": null,
+    "tune": false,
+    "unparsed": [],
+    "voltage": null
+   },
+   "stock_floor": 500,
+   "thin_stock": false,
+   "value": "22k"
+  },
+  {
+   "candidates_examined": 22,
+   "chosen": {
+    "attributes": {
+     "Operating Temperature": "-55\u2103~+155\u2103",
+     "Power(Watts)": "100mW",
+     "Resistance": "3.65M\u03a9",
+     "Temperature Coefficient": "\u00b1100ppm/\u2103",
+     "Tolerance": "\u00b11%",
+     "Type": "Thick Film Resistor",
+     "Voltage-Supply(Max)": "75V"
+    },
+    "brand": "YAGEO",
+    "buyable": "1",
+    "code": "C482835",
+    "datasheet": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2007151219_YAGEO-RC0603FR-073M65L_C482835.pdf",
+    "dielectric": null,
+    "kind": "R",
+    "land": "0603",
+    "library": "expand",
+    "magnitude": 3650000.0,
+    "mpn": "RC0603FR-073M65L",
+    "no_buy": null,
+    "power": 0.1,
+    "price_1": 0.0022,
+    "rohs": 1,
+    "rtype": "Thick Film Resistor",
+    "stock": 2221,
+    "tempco_ppm": 100.0,
+    "tolerance": 1.0,
+    "voltage": null,
+    "working_v": 75.0
+   },
+   "demo_nets": [
+    "BAT_RAW",
+    "LTC_OV",
+    "REF_HO",
+    "USB_VBUS_CHG"
+   ],
+   "footprint": "R_0603_1608Metric",
+   "nearest": [
+    {
+     "brand": "UNI-ROYAL(Uniroyal Elec)",
+     "lcsc": "C407525",
+     "mpn": "0603WAF3654T5E",
+     "refused": []
+    },
+    {
+     "brand": "YAGEO",
+     "lcsc": "C482835",
+     "mpn": "RC0603FR-073M65L",
+     "refused": []
+    },
+    {
+     "brand": "Ever Ohms Tech",
+     "lcsc": "C7418986",
+     "mpn": "CR0603F3M65P05Z",
+     "refused": []
+    },
+    {
+     "brand": "Walsin Tech Corp",
+     "lcsc": "C367749",
+     "mpn": "WR06W3654FTL",
+     "refused": [
+      "stock 0 under 100 -- 2 parts x 5 boards x 10 liquidity"
+     ]
+    },
+    {
+     "brand": "Vishay Intertech",
+     "lcsc": "C2090869",
+     "mpn": "CRCW06033M65FKEA",
+     "refused": [
+      "stock 0 under 100 -- 2 parts x 5 boards x 10 liquidity"
+     ]
+    },
+    {
+     "brand": "SEI(Stackpole Elec)",
+     "lcsc": "C2595414",
+     "mpn": "RMCF0603FT3M65",
+     "refused": [
+      "vendor 'SEI(Stackpole Elec)' is not on the accepted list (D-206)",
+      "stock 0 under 100 -- 2 parts x 5 boards x 10 liquidity"
+     ]
+    }
+   ],
+   "net_gate": {
+    "bounded_max_v": 5.5,
+    "established_max_v": 5.5,
+    "kind": "land working voltage vs the highest node",
+    "land_working_v": 50.0,
+    "nodes": [
+     "BAT_RAW",
+     "LTC_OV",
+     "REF_HO",
+     "USB_VBUS_CHG"
+    ],
+    "nodes_not_individually_established": [],
+    "ok": true
+   },
+   "note_tighter": null,
+   "power_gate": {
+    "basis": "over-bound: the whole node voltage across the part",
+    "kind": "2x the strict over-bound",
+    "margin_x": 12066.12,
+    "ok": true,
+    "over_bound_w": 8e-06,
+    "rating_w": 0.1
+   },
+   "qty": 2,
+   "refs": [
+    "R77",
+    "R91"
+   ],
+   "runners_up": [
+    {
+     "lcsc": "C407525",
+     "library": "expand",
+     "mpn": "0603WAF3654T5E",
+     "stock": 10959
+    },
+    {
+     "lcsc": "C7418986",
+     "library": "expand",
+     "mpn": "CR0603F3M65P05Z",
+     "stock": 4451
+    }
+   ],
+   "spec": {
+    "annotations": [],
+    "dielectric": null,
+    "kind": "R",
+    "magnitude": 3650000.0,
+    "power": null,
+    "raw": "3.65M 1%",
+    "tolerance": 1.0,
+    "tune": false,
+    "unparsed": [],
+    "voltage": null
+   },
+   "stock_floor": 500,
+   "thin_stock": false,
+   "value": "3.65M 1%"
+  },
+  {
+   "candidates_examined": 50,
+   "chosen": {
+    "attributes": {
+     "Operating Temperature": "-55\u2103~+155\u2103",
+     "Power(Watts)": "100mW",
+     "Resistance": "442k\u03a9",
+     "Temperature Coefficient": "\u00b1100ppm/\u2103",
+     "Tolerance": "\u00b11%",
+     "Type": "Thick Film Resistor",
+     "Voltage-Supply(Max)": "75V"
+    },
+    "brand": "YAGEO",
+    "buyable": "1",
+    "code": "C185327",
+    "datasheet": "https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_YAGEO-RC0603FR-07442KL_C185327.pdf",
+    "dielectric": null,
+    "kind": "R",
+    "land": "0603",
+    "library": "expand",
+    "magnitude": 442000.0,
+    "mpn": "RC0603FR-07442KL",
+    "no_buy": null,
+    "power": 0.1,
+    "price_1": 0.0031,
+    "rohs": 1,
+    "rtype": "Thick Film Resistor",
+    "stock": 6324,
+    "tempco_ppm": 100.0,
+    "tolerance": 1.0,
+    "voltage": null,
+    "working_v": 75.0
+   },
+   "demo_nets": [
+    "LTC_OV"
+   ],
+   "footprint": "R_0603_1608Metric",
+   "nearest": [
+    {
+     "brand": "UNI-ROYAL(Uniroyal Elec)",
+     "lcsc": "C23175",
+     "mpn": "0603WAF4423T5E",
+     "refused": []
+    },
+    {
+     "brand": "RALEC",
+     "lcsc": "C103646",
+     "mpn": "RTT034423FTP",
+     "refused": [
+      "stock 8 under 50 -- 1 parts x 5 boards x 10 liquidity"
+     ]
+    },
+    {
+     "brand": "YAGEO",
+     "lcsc": "C138281",
+     "mpn": "AC0603FR-07442KL",
+     "refused": [
+      "stock 6 under 50 -- 1 parts x 5 boards x 10 liquidity"
+     ]
+    },
+    {
+     "brand": "Walsin Tech Corp",
+     "lcsc": "C170605",
+     "mpn": "WR06X4423FTL",
+     "refused": []
+    },
+    {
+     "brand": "YAGEO",
+     "lcsc": "C185327",
+     "mpn": "RC0603FR-07442KL",
+     "refused": []
+    },
+    {
+     "brand": "Viking Tech",
+     "lcsc": "C218033",
+     "mpn": "ARG03FTC4423",
+     "refused": [
+      "stock 10 under 50 -- 1 parts x 5 boards x 10 liquidity"
+     ]
+    }
+   ],
+   "net_gate": {
+    "bounded_max_v": 4.35,
+    "established_max_v": 4.35,
+    "kind": "land working voltage vs the highest node",
+    "land_working_v": 50.0,
+    "nodes": [
+     "LTC_OV"
+    ],
+    "nodes_not_individually_established": [],
+    "ok": true
+   },
+   "note_tighter": null,
+   "power_gate": {
+    "basis": "over-bound: the whole node voltage across the part",
+    "kind": "2x the strict over-bound",
+    "margin_x": 2335.84,
+    "ok": true,
+    "over_bound_w": 4.3e-05,
+    "rating_w": 0.1
+   },
+   "qty": 1,
+   "refs": [
+    "R78"
+   ],
+   "runners_up": [
+    {
+     "lcsc": "C861407",
+     "library": "expand",
+     "mpn": "RT0603BRD07442KL",
+     "stock": 2167
+    },
+    {
+     "lcsc": "C23175",
+     "library": "expand",
+     "mpn": "0603WAF4423T5E",
+     "stock": 66799
+    },
+    {
+     "lcsc": "C304754",
+     "library": "expand",
+     "mpn": "RS-03K4423FT",
+     "stock": 7590
+    }
+   ],
+   "spec": {
+    "annotations": [],
+    "dielectric": null,
+    "kind": "R",
+    "magnitude": 442000.0,
+    "power": null,
+    "raw": "442k 1%",
+    "tolerance": 1.0,
+    "tune": false,
+    "unparsed": [],
+    "voltage": null
+   },
+   "stock_floor": 500,
+   "thin_stock": false,
+   "value": "442k 1%"
+  },
+  {
+   "candidates_examined": 50,
+   "chosen": {
+    "attributes": {
+     "Operating Temperature": "-55\u2103~+155\u2103",
+     "Power(Watts)": "100mW",
+     "Resistance": "510k\u03a9",
+     "Temperature Coefficient": "\u00b1100ppm/\u2103",
+     "Tolerance": "\u00b11%",
+     "Type": "Thick Film Resistor",
+     "Voltage-Supply(Max)": "75V"
+    },
+    "brand": "UNI-ROYAL(Uniroyal Elec)",
+    "buyable": "1",
+    "code": "C23192",
+    "datasheet": "https://www.lcsc.com/datasheet/lcsc_datasheet_2206010116_UNI-ROYAL-Uniroyal-Elec-0603WAF5103T5E_C23192.pdf",
+    "dielectric": null,
+    "kind": "R",
+    "land": "0603",
+    "library": "base",
+    "magnitude": 510000.0,
+    "mpn": "0603WAF5103T5E",
+    "no_buy": null,
+    "power": 0.1,
+    "price_1": 0.0031,
+    "rohs": 1,
+    "rtype": "Thick Film Resistor",
+    "stock": 933135,
+    "tempco_ppm": 100.0,
+    "tolerance": 1.0,
+    "voltage": null,
+    "working_v": 75.0
+   },
+   "demo_nets": [
+    "BAT_RAW",
+    "LTC_UV"
+   ],
+   "footprint": "R_0603_1608Metric",
+   "nearest": [
+    {
+     "brand": "HKR(Hong Kong Resistors)",
+     "lcsc": "C177277",
+     "mpn": "RCT03510KJLF",
+     "refused": [
+      "vendor 'HKR(Hong Kong Resistors)' is not on the accepted list (D-206)",
+      "stock 13 under 50 -- 1 parts x 5 boards x 10 liquidity"
+     ]
+    },
+    {
+     "brand": "HKR(Hong Kong Resistors)",
+     "lcsc": "C22356665",
+     "mpn": "RCA03510KJLF",
+     "refused": [
+      "vendor 'HKR(Hong Kong Resistors)' is not on the accepted list (D-206)"
+     ]
+    },
+    {
+     "brand": "HKR(Hong Kong Resistors)",
+     "lcsc": "C22369787",
+     "mpn": "RCA03510KFLF",
+     "refused": [
+      "vendor 'HKR(Hong Kong Resistors)' is not on the accepted list (D-206)"
+     ]
+    },
+    {
+     "brand": "UNI-ROYAL(Uniroyal Elec)",
+     "lcsc": "C23192",
+     "mpn": "0603WAF5103T5E",
+     "refused": []
+    },
+    {
+     "brand": "UNI-ROYAL(Uniroyal Elec)",
+     "lcsc": "C25601",
+     "mpn": "0603WAJ0514T5E",
+     "refused": []
+    },
+    {
+     "brand": "LIZ Elec",
+     "lcsc": "C101085",
+     "mpn": "CR0603FA5103G",
+     "refused": [
+      "vendor 'LIZ Elec' is not on the accepted list (D-206)"
+     ]
+    }
+   ],
+   "net_gate": {
+    "bounded_max_v": 4.35,
+    "established_max_v": 4.35,
+    "kind": "land working voltage vs the highest node",
+    "land_working_v": 50.0,
+    "nodes": [
+     "BAT_RAW",
+     "LTC_UV"
+    ],
+    "nodes_not_individually_established": [],
+    "ok": true
+   },
+   "note_tighter": null,
+   "power_gate": {
+    "basis": "over-bound: the whole node voltage across the part",
+    "kind": "2x the strict over-bound",
+    "margin_x": 2695.2,
+    "ok": true,
+    "over_bound_w": 3.7e-05,
+    "rating_w": 0.1
+   },
+   "qty": 1,
+   "refs": [
+    "R79"
+   ],
+   "runners_up": [
+    {
+     "lcsc": "C114066",
+     "library": "expand",
+     "mpn": "RC0603FR-07510KL",
+     "stock": 179078
+    },
+    {
+     "lcsc": "C861452",
+     "library": "expand",
+     "mpn": "RT0603BRD07510KL",
+     "stock": 57419
+    },
+    {
+     "lcsc": "C125924",
+     "library": "expand",
+     "mpn": "AC0603FR-07510KL",
+     "stock": 53044
+    }
+   ],
+   "spec": {
+    "annotations": [],
+    "dielectric": null,
+    "kind": "R",
+    "magnitude": 510000.0,
+    "power": null,
+    "raw": "510k",
+    "tolerance": null,
+    "tune": false,
+    "unparsed": [],
+    "voltage": null
+   },
+   "stock_floor": 500,
+   "thin_stock": false,
+   "value": "510k"
+  },
+  {
+   "candidates_examined": 50,
+   "chosen": {
+    "attributes": {
+     "Operating Temperature": "-55\u2103~+155\u2103",
+     "Power(Watts)": "100mW",
+     "Resistance": "2.2M\u03a9",
+     "Temperature Coefficient": "\u00b1100ppm/\u2103",
+     "Tolerance": "\u00b11%",
+     "Type": "Thick Film Resistor",
+     "Voltage-Supply(Max)": "75V"
+    },
+    "brand": "YAGEO",
+    "buyable": "1",
+    "code": "C137747",
+    "datasheet": "https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_YAGEO-RC0603FR-072M2L_C137747.pdf",
+    "dielectric": null,
+    "kind": "R",
+    "land": "0603",
+    "library": "expand",
+    "magnitude": 2200000.0,
+    "mpn": "RC0603FR-072M2L",
+    "no_buy": null,
+    "power": 0.1,
+    "price_1": 0.0029,
+    "rohs": 1,
+    "rtype": "Thick Film Resistor",
+    "stock": 5453,
+    "tempco_ppm": 100.0,
+    "tolerance": 1.0,
+    "voltage": null,
+    "working_v": 75.0
+   },
+   "demo_nets": [
+    "BAT_RAW",
+    "N_BATDIV",
+    "N_POL",
+    "REF_POL",
+    "VBRIDGE_TOP",
+    "VREF_TOP"
+   ],
+   "footprint": "R_0603_1608Metric",
+   "nearest": [
+    {
+     "brand": "HKR(Hong Kong Resistors)",
+     "lcsc": "C177402",
+     "mpn": "RCT032M2JLF",
+     "refused": [
+      "vendor 'HKR(Hong Kong Resistors)' is not on the accepted list (D-206)",
+      "tolerance 5.0 vs the demanded 1.0%",
+      "stock 6 under 300 -- 6 parts x 5 boards x 10 liquidity"
+     ]
+    },
+    {
+     "brand": "HKR(Hong Kong Resistors)",
+     "lcsc": "C22356574",
+     "mpn": "RCA032M2JLF",
+     "refused": [
+      "vendor 'HKR(Hong Kong Resistors)' is not on the accepted list (D-206)",
+      "tolerance 5.0 vs the demanded 1.0%"
+     ]
+    },
+    {
+     "brand": "HKR(Hong Kong Resistors)",
+     "lcsc": "C22369910",
+     "mpn": "RCA032M2FLF",
+     "refused": [
+      "vendor 'HKR(Hong Kong Resistors)' is not on the accepted list (D-206)",
+      "stock 197 under 300 -- 6 parts x 5 boards x 10 liquidity"
+     ]
+    },
+    {
+     "brand": "UNI-ROYAL(Uniroyal Elec)",
+     "lcsc": "C18679",
+     "mpn": "0603WAJ0225T5E",
+     "refused": [
+      "tolerance 5.0 vs the demanded 1.0%"
+     ]
+    },
+    {
+     "brand": "UNI-ROYAL(Uniroyal Elec)",
+     "lcsc": "C22938",
+     "mpn": "0603WAF2204T5E",
+     "refused": []
+    },
+    {
+     "brand": "LIZ Elec",
+     "lcsc": "C100867",
+     "mpn": "CR0603FA2204G",
+     "refused": [
+      "vendor 'LIZ Elec' is not on the accepted list (D-206)"
+     ]
+    }
+   ],
+   "net_gate": {
+    "bounded_max_v": 5.5,
+    "established_max_v": 5.5,
+    "kind": "land working voltage vs the highest node",
+    "land_working_v": 50.0,
+    "nodes": [
+     "BAT_RAW",
+     "N_BATDIV",
+     "N_POL",
+     "REF_POL",
+     "VBRIDGE_TOP",
+     "VREF_TOP"
+    ],
+    "nodes_not_individually_established": [],
+    "ok": true
+   },
+   "note_tighter": null,
+   "power_gate": {
+    "basis": "over-bound: the whole node voltage across the part",
+    "kind": "2x the strict over-bound",
+    "margin_x": 7272.73,
+    "ok": true,
+    "over_bound_w": 1.4e-05,
+    "rating_w": 0.1
+   },
+   "qty": 6,
+   "refs": [
+    "R85",
+    "R86",
+    "R87",
+    "R88",
+    "R89",
+    "R90"
+   ],
+   "runners_up": [
+    {
+     "lcsc": "C3967955",
+     "library": "expand",
+     "mpn": "CRCW06032M20FKEAC",
+     "stock": 793
+    },
+    {
+     "lcsc": "C22938",
+     "library": "expand",
+     "mpn": "0603WAF2204T5E",
+     "stock": 197900
+    },
+    {
+     "lcsc": "C2103911",
+     "library": "expand",
+     "mpn": "ESR03EZPF2204",
+     "stock": 14038
+    }
+   ],
+   "spec": {
+    "annotations": [],
+    "dielectric": null,
+    "kind": "R",
+    "magnitude": 2200000.0,
+    "power": null,
+    "raw": "2.2M 1%",
+    "tolerance": 1.0,
+    "tune": false,
+    "unparsed": [],
+    "voltage": null
+   },
+   "stock_floor": 500,
+   "thin_stock": false,
+   "value": "2.2M 1%"
+  },
+  {
+   "candidates_examined": 50,
+   "chosen": {
+    "attributes": {
+     "Operating Temperature": "-55\u2103~+155\u2103",
+     "Power(Watts)": "125mW",
+     "Resistance": "1.3M\u03a9",
+     "Temperature Coefficient": "\u00b150ppm/\u2103",
+     "Tolerance": "\u00b11%",
+     "Type": "Thin Film Resistor",
+     "Voltage-Supply(Max)": "75V"
+    },
+    "brand": "Vishay Intertech",
+    "buyable": "1",
+    "code": "C2115863",
+    "datasheet": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2304140030_Vishay-Intertech-MCT06030C1304FP500_C2115863.pdf",
+    "dielectric": null,
+    "kind": "R",
+    "land": "0603",
+    "library": "expand",
+    "magnitude": 1300000.0,
+    "mpn": "MCT06030C1304FP500",
+    "no_buy": null,
+    "power": 0.125,
+    "price_1": 0.047,
+    "rohs": 1,
+    "rtype": "Thin Film Resistor",
+    "stock": 1296,
+    "tempco_ppm": 50.0,
+    "tolerance": 1.0,
+    "voltage": null,
+    "working_v": 75.0
+   },
+   "demo_nets": [
+    "REF_HO"
+   ],
+   "footprint": "R_0603_1608Metric",
+   "nearest": [
+    {
+     "brand": "HKR(Hong Kong Resistors)",
+     "lcsc": "C177351",
+     "mpn": "RCT031M3JLF",
+     "refused": [
+      "vendor 'HKR(Hong Kong Resistors)' is not on the accepted list (D-206)",
+      "tolerance 5.0 vs the demanded 1.0%"
+     ]
+    },
+    {
+     "brand": "HKR(Hong Kong Resistors)",
+     "lcsc": "C178109",
+     "mpn": "RCT031M3FLF",
+     "refused": [
+      "vendor 'HKR(Hong Kong Resistors)' is not on the accepted list (D-206)"
+     ]
+    },
+    {
+     "brand": "HKR(Hong Kong Resistors)",
+     "lcsc": "C22356617",
+     "mpn": "RCA031M3JLF",
+     "refused": [
+      "vendor 'HKR(Hong Kong Resistors)' is not on the accepted list (D-206)",
+      "tolerance 5.0 vs the demanded 1.0%"
+     ]
+    },
+    {
+     "brand": "UNI-ROYAL(Uniroyal Elec)",
+     "lcsc": "C12647",
+     "mpn": "0603WAJ0135T5E",
+     "refused": [
+      "tolerance 5.0 vs the demanded 1.0%",
+      "stock 15 under 50 -- 1 parts x 5 boards x 10 liquidity"
+     ]
+    },
+    {
+     "brand": "UNI-ROYAL(Uniroyal Elec)",
+     "lcsc": "C13316",
+     "mpn": "0603WAF1304T5E",
+     "refused": []
+    },
+    {
+     "brand": "RALEC",
+     "lcsc": "C103276",
+     "mpn": "RTT031304FTP",
+     "refused": []
+    }
+   ],
+   "net_gate": {
+    "bounded_max_v": 5.5,
+    "established_max_v": 5.5,
+    "kind": "land working voltage vs the highest node",
+    "land_working_v": 50.0,
+    "nodes": [
+     "REF_HO"
+    ],
+    "nodes_not_individually_established": [],
+    "ok": true
+   },
+   "note_tighter": null,
+   "power_gate": {
+    "basis": "over-bound: the whole node voltage across the part",
+    "kind": "2x the strict over-bound",
+    "margin_x": 5371.9,
+    "ok": true,
+    "over_bound_w": 2.3e-05,
+    "rating_w": 0.125
+   },
+   "qty": 1,
+   "refs": [
+    "R92"
+   ],
+   "runners_up": [
+    {
+     "lcsc": "C5796532",
+     "library": "expand",
+     "mpn": "MCT0603MD1304BP500",
+     "stock": 4270
+    },
+    {
+     "lcsc": "C4104698",
+     "library": "expand",
+     "mpn": "CRCW06031M30FKEA",
+     "stock": 1657
+    },
+    {
+     "lcsc": "C13316",
+     "library": "expand",
+     "mpn": "0603WAF1304T5E",
+     "stock": 3556
+    }
+   ],
+   "spec": {
+    "annotations": [],
+    "dielectric": null,
+    "kind": "R",
+    "magnitude": 1300000.0,
+    "power": null,
+    "raw": "1.30M 1%",
+    "tolerance": 1.0,
+    "tune": false,
+    "unparsed": [],
+    "voltage": null
+   },
+   "stock_floor": 500,
+   "thin_stock": false,
+   "value": "1.30M 1%"
+  },
+  {
+   "candidates_examined": 50,
+   "chosen": {
+    "attributes": {
+     "Operating Temperature": "-55\u2103~+155\u2103",
+     "Power(Watts)": "660mW",
+     "Resistance": "560\u03a9",
+     "Temperature Coefficient": "\u00b1100ppm/\u2103",
+     "Tolerance": "\u00b11%",
+     "Type": "Thick Film Resistor"
+    },
+    "brand": "PANASONIC",
+    "buyable": "1",
+    "code": "C4220370",
+    "datasheet": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2404111159_PANASONIC-ERJ-P08F5600V_C4220370.pdf",
+    "dielectric": null,
+    "kind": "R",
+    "land": "1206",
+    "library": "expand",
+    "magnitude": 560.0,
+    "mpn": "ERJ-P08F5600V",
+    "no_buy": null,
+    "power": 0.66,
+    "price_1": 0.1243,
+    "rohs": 1,
+    "rtype": "Thick Film Resistor",
+    "stock": 4925,
+    "tempco_ppm": 100.0,
+    "tolerance": 1.0,
+    "voltage": null,
+    "working_v": null
+   },
+   "demo_nets": [
+    "REC_DIODE_IN",
+    "REC_LIM_IN"
+   ],
+   "footprint": "R_1206_3216Metric",
+   "nearest": [
+    {
+     "brand": "UNI-ROYAL(Uniroyal Elec)",
+     "lcsc": "C17994",
+     "mpn": "1206W4F5600T5E",
+     "refused": []
+    },
+    {
+     "brand": "UNI-ROYAL(Uniroyal Elec)",
+     "lcsc": "C25388",
+     "mpn": "1206W4J0561T5E",
+     "refused": [
+      "tolerance 5.0 vs the demanded 1.0%"
+     ]
+    },
+    {
+     "brand": "RALEC",
+     "lcsc": "C104852",
+     "mpn": "RTT065600FTP",
+     "refused": [
+      "stock 38 under 50 -- 1 parts x 5 boards x 10 liquidity"
+     ]
+    },
+    {
+     "brand": "RALEC",
+     "lcsc": "C104856",
+     "mpn": "RTT06561JTP",
+     "refused": [
+      "tolerance 5.0 vs the demanded 1.0%"
+     ]
+    },
+    {
+     "brand": "YAGEO",
+     "lcsc": "C163358",
+     "mpn": "RC1206JR-07560RL",
+     "refused": [
+      "tolerance 5.0 vs the demanded 1.0%"
+     ]
+    },
+    {
+     "brand": "Walsin Tech Corp",
+     "lcsc": "C168556",
+     "mpn": "WR12X5600FTL",
+     "refused": []
+    }
+   ],
+   "net_gate": {
+    "bounded_max_v": 5.5,
+    "established_max_v": 5.5,
+    "kind": "land working voltage vs the highest node",
+    "land_working_v": 200.0,
+    "nodes": [
+     "REC_DIODE_IN",
+     "REC_LIM_IN"
+    ],
+    "nodes_not_individually_established": [],
+    "ok": true
+   },
+   "note_tighter": null,
+   "power_gate": {
+    "basis": "current ruling",
+    "duty": 1.0,
+    "fault_a": 0.0166,
+    "fault_w": 0.154314,
+    "kind": "2x operating and survives single fault",
+    "margin_x": 14.88,
+    "ok": true,
+    "operating_a": 0.0089,
+    "operating_w": 0.044358,
+    "rating_w": 0.66,
+    "ruling": [
+     "dead-cell recovery limit, P-20 / D-105 and the sheet-01 block-B text: 8.4 mA nominal at VBUS 5.0 V into a 0 V pack, 7.9-8.9 mA over 4.75-5.25 V, and a SINGLE-FAULT ceiling into a reversed cell of 15.9 mA nominal / 16.6 mA worst case.  NOTE: the R95 SYMBOL note says 13.1 mA where the sheet text says 16.6 mA; the larger number is used."
+    ]
+   },
+   "qty": 1,
+   "refs": [
+    "R95"
+   ],
+   "runners_up": [
+    {
+     "lcsc": "C185262",
+     "library": "expand",
+     "mpn": "RC1206FR-07560RL",
+     "stock": 30885
+    },
+    {
+     "lcsc": "C844436",
+     "library": "expand",
+     "mpn": "CRCW1206560RFKEA",
+     "stock": 5085
+    },
+    {
+     "lcsc": "C872823",
+     "library": "expand",
+     "mpn": "RT1206FRE07560RL",
+     "stock": 4381
+    }
+   ],
+   "spec": {
+    "annotations": [
+     "1206"
+    ],
+    "dielectric": null,
+    "kind": "R",
+    "magnitude": 560.0,
+    "power": null,
+    "raw": "560R 1% 1206",
+    "tolerance": 1.0,
+    "tune": false,
+    "unparsed": [],
+    "voltage": null
+   },
+   "stock_floor": 500,
+   "thin_stock": false,
+   "value": "560R 1% 1206"
+  },
+  {
+   "candidates_examined": 50,
+   "chosen": {
+    "attributes": {
+     "Operating Temperature": "-55\u2103~+155\u2103",
+     "Power(Watts)": "100mW",
+     "Resistance": "732k\u03a9",
+     "Temperature Coefficient": "\u00b1100ppm/\u2103",
+     "Tolerance": "\u00b11%",
+     "Type": "Thick Film Resistor",
+     "Voltage-Supply(Max)": "100V"
+    },
+    "brand": "Vishay Intertech",
+    "buyable": "1",
+    "code": "C2079739",
+    "datasheet": "https://www.lcsc.com/datasheet/lcsc_datasheet_2410121705_Vishay-Intertech-CRCW0603732KFKEA_C2079739.pdf",
+    "dielectric": null,
+    "kind": "R",
+    "land": "0603",
+    "library": "expand",
+    "magnitude": 732000.0,
+    "mpn": "CRCW0603732KFKEA",
+    "no_buy": null,
+    "power": 0.1,
+    "price_1": 0.0047,
+    "rohs": 1,
+    "rtype": "Thick Film Resistor",
+    "stock": 2865,
+    "tempco_ppm": 100.0,
+    "tolerance": 1.0,
+    "voltage": null,
+    "working_v": 100.0
+   },
+   "demo_nets": [
+    "ACC_5V_FB",
+    "ACC_5V_RAW"
+   ],
+   "footprint": "R_0603_1608Metric",
+   "nearest": [
+    {
+     "brand": "RALEC",
+     "lcsc": "C13281",
+     "mpn": "RTT037323FTP",
+     "refused": [
+      "stock 11 under 50 -- 1 parts x 5 boards x 10 liquidity"
+     ]
+    },
+    {
+     "brand": "UNI-ROYAL(Uniroyal Elec)",
+     "lcsc": "C23239",
+     "mpn": "0603WAF7323T5E",
+     "refused": []
+    },
+    {
+     "brand": "LIZ Elec",
+     "lcsc": "C101181",
+     "mpn": "CR0603FA7323G",
+     "refused": [
+      "vendor 'LIZ Elec' is not on the accepted list (D-206)"
+     ]
+    },
+    {
+     "brand": "Viking Tech",
+     "lcsc": "C218135",
+     "mpn": "ARG03FTC7323",
+     "refused": []
+    },
+    {
+     "brand": "YAGEO",
+     "lcsc": "C228042",
+     "mpn": "AC0603FR-07732KL",
+     "refused": []
+    },
+    {
+     "brand": "Ever Ohms Tech",
+     "lcsc": "C245062",
+     "mpn": "CR0603F732KP05Z",
+     "refused": []
+    }
+   ],
+   "net_gate": {
+    "bounded_max_v": 5.5,
+    "established_max_v": 5.5,
+    "kind": "land working voltage vs the highest node",
+    "land_working_v": 50.0,
+    "nodes": [
+     "ACC_5V_FB",
+     "ACC_5V_RAW"
+    ],
+    "nodes_not_individually_established": [],
+    "ok": true
+   },
+   "note_tighter": null,
+   "power_gate": {
+    "basis": "over-bound: the whole node voltage across the part",
+    "kind": "2x the strict over-bound",
+    "margin_x": 2419.83,
+    "ok": true,
+    "over_bound_w": 4.1e-05,
+    "rating_w": 0.1
+   },
+   "qty": 1,
+   "refs": [
+    "R99"
+   ],
+   "runners_up": [
+    {
+     "lcsc": "C403344",
+     "library": "expand",
+     "mpn": "ERJ3EKF7323V",
+     "stock": 1069
+    },
+    {
+     "lcsc": "C7064985",
+     "library": "expand",
+     "mpn": "RT0603BRD07732KL",
+     "stock": 605
+    },
+    {
+     "lcsc": "C23239",
+     "library": "expand",
+     "mpn": "0603WAF7323T5E",
+     "stock": 23795
+    }
+   ],
+   "spec": {
+    "annotations": [],
+    "dielectric": null,
+    "kind": "R",
+    "magnitude": 732000.0,
+    "power": null,
+    "raw": "732k 1%",
+    "tolerance": 1.0,
+    "tune": false,
+    "unparsed": [],
+    "voltage": null
+   },
+   "stock_floor": 500,
+   "thin_stock": false,
+   "value": "732k 1%"
+  }
+ ],
+ "TUNE_PENDING": [
+  {
+   "demo_nets": [
+    "NFC_EMCA",
+    "NFC_EMCB"
+   ],
+   "footprint": "C_0603_1608Metric",
+   "qty": 2,
+   "refs": [
+    "C69",
+    "C70"
+   ],
+   "spec": {
+    "annotations": [],
+    "dielectric": "C0G",
+    "kind": "C",
+    "magnitude": 1e-10,
+    "power": null,
+    "raw": "100pF 50V C0G TUNE",
+    "tolerance": null,
+    "tune": true,
+    "unparsed": [],
+    "voltage": 50.0
+   },
+   "value": "100pF 50V C0G TUNE",
+   "why": "DEVICE_SPEC s.14 -- the VALUE is not final; no part number can close it"
+  },
+  {
+   "demo_nets": [
+    "NFC_EMCA",
+    "NFC_EMCB",
+    "NFC_MATCH_A",
+    "NFC_MATCH_B"
+   ],
+   "footprint": "C_0603_1608Metric",
+   "qty": 2,
+   "refs": [
+    "C71",
+    "C72"
+   ],
+   "spec": {
+    "annotations": [],
+    "dielectric": "C0G",
+    "kind": "C",
+    "magnitude": 3e-10,
+    "power": null,
+    "raw": "300pF 50V C0G TUNE",
+    "tolerance": null,
+    "tune": true,
+    "unparsed": [],
+    "voltage": 50.0
+   },
+   "value": "300pF 50V C0G TUNE",
+   "why": "DEVICE_SPEC s.14 -- the VALUE is not final; no part number can close it"
+  },
+  {
+   "demo_nets": [
+    "NFC_EMCA",
+    "NFC_EMCB"
+   ],
+   "footprint": "C_0603_1608Metric",
+   "qty": 2,
+   "refs": [
+    "C73",
+    "C74"
+   ],
+   "spec": {
+    "annotations": [],
+    "dielectric": "C0G",
+    "kind": "C",
+    "magnitude": 1.5000000000000002e-09,
+    "power": null,
+    "raw": "1.5nF 50V C0G TUNE",
+    "tolerance": null,
+    "tune": true,
+    "unparsed": [],
+    "voltage": 50.0
+   },
+   "value": "1.5nF 50V C0G TUNE",
+   "why": "DEVICE_SPEC s.14 -- the VALUE is not final; no part number can close it"
+  },
+  {
+   "demo_nets": [
+    "NFC_ANT_A",
+    "NFC_ANT_B",
+    "NFC_RXA",
+    "NFC_RXB"
+   ],
+   "footprint": "C_0603_1608Metric",
+   "qty": 2,
+   "refs": [
+    "C75",
+    "C77"
+   ],
+   "spec": {
+    "annotations": [],
+    "dielectric": "C0G",
+    "kind": "C",
+    "magnitude": 2.7e-11,
+    "power": null,
+    "raw": "27pF 50V C0G TUNE",
+    "tolerance": null,
+    "tune": true,
+    "unparsed": [],
+    "voltage": 50.0
+   },
+   "value": "27pF 50V C0G TUNE",
+   "why": "DEVICE_SPEC s.14 -- the VALUE is not final; no part number can close it"
+  },
+  {
+   "demo_nets": [
+    "NFC_RXA",
+    "NFC_RXB"
+   ],
+   "footprint": "C_0603_1608Metric",
+   "qty": 2,
+   "refs": [
+    "C76",
+    "C78"
+   ],
+   "spec": {
+    "annotations": [],
+    "dielectric": "C0G",
+    "kind": "C",
+    "magnitude": 6.2e-10,
+    "power": null,
+    "raw": "620pF 50V C0G TUNE",
+    "tolerance": null,
+    "tune": true,
+    "unparsed": [],
+    "voltage": 50.0
+   },
+   "value": "620pF 50V C0G TUNE",
+   "why": "DEVICE_SPEC s.14 -- the VALUE is not final; no part number can close it"
+  },
+  {
+   "demo_nets": [
+    "NFC_XIN",
+    "NFC_XOUT"
+   ],
+   "footprint": "C_0603_1608Metric",
+   "qty": 2,
+   "refs": [
+    "C79",
+    "C80"
+   ],
+   "spec": {
+    "annotations": [],
+    "dielectric": "C0G",
+    "kind": "C",
+    "magnitude": 1e-11,
+    "power": null,
+    "raw": "10pF 50V C0G TUNE",
+    "tolerance": null,
+    "tune": true,
+    "unparsed": [],
+    "voltage": 50.0
+   },
+   "value": "10pF 50V C0G TUNE",
+   "why": "DEVICE_SPEC s.14 -- the VALUE is not final; no part number can close it"
+  },
+  {
+   "demo_nets": [
+    "NFC_ANT_A",
+    "NFC_ANT_B",
+    "NFC_MATCH_A",
+    "NFC_MATCH_B"
+   ],
+   "footprint": "R_0603_1608Metric",
+   "qty": 2,
+   "refs": [
+    "R114",
+    "R115"
+   ],
+   "spec": {
+    "annotations": [],
+    "dielectric": null,
+    "kind": "R",
+    "magnitude": 1.1,
+    "power": null,
+    "raw": "1R1 1% TUNE",
+    "tolerance": 1.0,
+    "tune": true,
+    "unparsed": [],
+    "voltage": null
+   },
+   "value": "1R1 1% TUNE",
+   "why": "DEVICE_SPEC s.14 -- the VALUE is not final; no part number can close it"
+  },
+  {
+   "demo_nets": [
+    "NFC_RFI1",
+    "NFC_RFI2",
+    "NFC_RXA",
+    "NFC_RXB"
+   ],
+   "footprint": "R_0603_1608Metric",
+   "qty": 2,
+   "refs": [
+    "R116",
+    "R117"
+   ],
+   "spec": {
+    "annotations": [],
+    "dielectric": null,
+    "kind": "R",
+    "magnitude": 1000.0,
+    "power": null,
+    "raw": "1k TUNE",
+    "tolerance": null,
+    "tune": true,
+    "unparsed": [],
+    "voltage": null
+   },
+   "value": "1k TUNE",
+   "why": "DEVICE_SPEC s.14 -- the VALUE is not final; no part number can close it"
+  }
+ ],
+ "board": "/home/aqroot8/aqroot-demo/hardware/demo/kicad/aqroot-demo/aqroot-Beta-v2.kicad_pcb",
+ "brands": {
+  "BOURNS": 1,
+  "FH (Guangdong Fenghua Advanced Tech)": 2,
+  "Murata Electronics": 1,
+  "PANASONIC": 2,
+  "Samsung Electro-Mechanics": 3,
+  "UNI-ROYAL(Uniroyal Elec)": 10,
+  "Vishay Intertech": 2,
+  "YAGEO": 5
+ },
+ "first_five_boards": 5,
+ "jlc_basic": 13,
+ "package": "/home/aqroot8/aqroot-demo/hardware/demo/fab",
+ "queries": [
+  {
+   "fetched_utc": "2026-09-05T00:59:59Z",
+   "keyword": "22uF 1210 capacitor",
+   "line": "22uF | C_1210_3225Metric",
+   "returned": 50
+  },
+  {
+   "fetched_utc": "2026-09-05T01:07:24Z",
+   "keyword": "22uF 1210  Murata",
+   "line": "22uF | C_1210_3225Metric",
+   "returned": 50
+  },
+  {
+   "fetched_utc": "2026-09-05T01:07:25Z",
+   "keyword": "22uF 1210  Samsung",
+   "line": "22uF | C_1210_3225Metric",
+   "returned": 50
+  },
+  {
+   "fetched_utc": "2026-09-05T01:07:26Z",
+   "keyword": "22uF 1210  YAGEO",
+   "line": "22uF | C_1210_3225Metric",
+   "returned": 50
+  },
+  {
+   "fetched_utc": "2026-09-05T01:07:26Z",
+   "keyword": "22uF 1210  TDK",
+   "line": "22uF | C_1210_3225Metric",
+   "returned": 50
+  },
+  {
+   "fetched_utc": "2026-09-05T00:59:58Z",
+   "keyword": "2.2uF 0805 capacitor",
+   "line": "2.2uF | C_0805_2012Metric",
+   "returned": 50
+  },
+  {
+   "fetched_utc": "2026-09-05T01:07:28Z",
+   "keyword": "2.2uF 0805  Murata",
+   "line": "2.2uF | C_0805_2012Metric",
+   "returned": 50
+  },
+  {
+   "fetched_utc": "2026-09-05T01:07:28Z",
+   "keyword": "2.2uF 0805  Samsung",
+   "line": "2.2uF | C_0805_2012Metric",
+   "returned": 50
+  },
+  {
+   "fetched_utc": "2026-09-05T01:07:29Z",
+   "keyword": "2.2uF 0805  YAGEO",
+   "line": "2.2uF | C_0805_2012Metric",
+   "returned": 50
+  },
+  {
+   "fetched_utc": "2026-09-05T01:07:30Z",
+   "keyword": "2.2uF 0805  TDK",
+   "line": "2.2uF | C_0805_2012Metric",
+   "returned": 50
+  },
+  {
+   "fetched_utc": "2026-09-05T01:07:31Z",
+   "keyword": "10nF 0603 capacitor",
+   "line": "10nF | C_0603_1608Metric",
+   "returned": 50
+  },
+  {
+   "fetched_utc": "2026-09-05T01:07:32Z",
+   "keyword": "10nF 0603  Murata",
+   "line": "10nF | C_0603_1608Metric",
+   "returned": 50
+  },
+  {
+   "fetched_utc": "2026-09-05T01:07:33Z",
+   "keyword": "10nF 0603  Samsung",
+   "line": "10nF | C_0603_1608Metric",
+   "returned": 50
+  },
+  {
+   "fetched_utc": "2026-09-05T01:07:34Z",
+   "keyword": "10nF 0603  YAGEO",
+   "line": "10nF | C_0603_1608Metric",
+   "returned": 50
+  },
+  {
+   "fetched_utc": "2026-09-05T01:07:35Z",
+   "keyword": "10nF 0603  TDK",
+   "line": "10nF | C_0603_1608Metric",
+   "returned": 50
+  },
+  {
+   "fetched_utc": "2026-09-05T00:59:56Z",
+   "keyword": "1nF 0603 capacitor",
+   "line": "1nF | C_0603_1608Metric",
+   "returned": 50
+  },
+  {
+   "fetched_utc": "2026-09-05T01:07:36Z",
+   "keyword": "1nF 0603  Murata",
+   "line": "1nF | C_0603_1608Metric",
+   "returned": 50
+  },
+  {
+   "fetched_utc": "2026-09-05T01:07:37Z",
+   "keyword": "1nF 0603  Samsung",
+   "line": "1nF | C_0603_1608Metric",
+   "returned": 50
+  },
+  {
+   "fetched_utc": "2026-09-05T01:07:38Z",
+   "keyword": "1nF 0603  YAGEO",
+   "line": "1nF | C_0603_1608Metric",
+   "returned": 50
+  },
+  {
+   "fetched_utc": "2026-09-05T01:07:38Z",
+   "keyword": "1nF 0603  TDK",
+   "line": "1nF | C_0603_1608Metric",
+   "returned": 50
+  },
+  {
+   "fetched_utc": "2026-09-05T00:59:57Z",
+   "keyword": "2.2uF 0603 capacitor",
+   "line": "2.2uF | C_0603_1608Metric",
+   "returned": 50
+  },
+  {
+   "fetched_utc": "2026-09-05T01:07:40Z",
+   "keyword": "2.2uF 0603  Murata",
+   "line": "2.2uF | C_0603_1608Metric",
+   "returned": 50
+  },
+  {
+   "fetched_utc": "2026-09-05T01:07:41Z",
+   "keyword": "2.2uF 0603  Samsung",
+   "line": "2.2uF | C_0603_1608Metric",
+   "returned": 50
+  },
+  {
+   "fetched_utc": "2026-09-05T01:07:41Z",
+   "keyword": "2.2uF 0603  YAGEO",
+   "line": "2.2uF | C_0603_1608Metric",
+   "returned": 50
+  },
+  {
+   "fetched_utc": "2026-09-05T01:07:42Z",
+   "keyword": "2.2uF 0603  TDK",
+   "line": "2.2uF | C_0603_1608Metric",
+   "returned": 50
+  },
+  {
+   "fetched_utc": "2026-09-05T00:59:55Z",
+   "keyword": "4.7nF 0603 X7R capacitor",
+   "line": "4.7nF 50V X7R | C_0603_1608Metric",
+   "returned": 50
+  },
+  {
+   "fetched_utc": "2026-09-05T01:07:43Z",
+   "keyword": "4.7nF 0603 capacitor",
+   "line": "4.7nF 50V X7R | C_0603_1608Metric",
+   "returned": 50
+  },
+  {
+   "fetched_utc": "2026-09-05T01:07:44Z",
+   "keyword": "4.7nF 0603 X7R Murata",
+   "line": "4.7nF 50V X7R | C_0603_1608Metric",
+   "returned": 50
+  },
+  {
+   "fetched_utc": "2026-09-05T01:07:46Z",
+   "keyword": "4.7nF 0603 X7R Samsung",
+   "line": "4.7nF 50V X7R | C_0603_1608Metric",
+   "returned": 50
+  },
+  {
+   "fetched_utc": "2026-09-05T01:07:47Z",
+   "keyword": "4.7nF 0603 X7R YAGEO",
+   "line": "4.7nF 50V X7R | C_0603_1608Metric",
+   "returned": 50
+  },
+  {
+   "fetched_utc": "2026-09-05T01:07:47Z",
+   "keyword": "4.7nF 0603 X7R TDK",
+   "line": "4.7nF 50V X7R | C_0603_1608Metric",
+   "returned": 50
+  },
+  {
+   "fetched_utc": "2026-09-05T00:59:08Z",
+   "keyword": "22uF 0805 X7R capacitor",
+   "line": "22uF 10V X7R | C_0805_2012Metric",
+   "returned": 50
+  },
+  {
+   "fetched_utc": "2026-09-05T01:07:48Z",
+   "keyword": "22uF 0805 capacitor",
+   "line": "22uF 10V X7R | C_0805_2012Metric",
+   "returned": 50
+  },
+  {
+   "fetched_utc": "2026-09-05T01:07:50Z",
+   "keyword": "22uF 0805 X7R Murata",
+   "line": "22uF 10V X7R | C_0805_2012Metric",
+   "returned": 50
+  },
+  {
+   "fetched_utc": "2026-09-05T01:07:50Z",
+   "keyword": "22uF 0805 X7R Samsung",
+   "line": "22uF 10V X7R | C_0805_2012Metric",
+   "returned": 50
+  },
+  {
+   "fetched_utc": "2026-09-05T01:07:51Z",
+   "keyword": "22uF 0805 X7R YAGEO",
+   "line": "22uF 10V X7R | C_0805_2012Metric",
+   "returned": 50
+  },
+  {
+   "fetched_utc": "2026-09-05T01:07:52Z",
+   "keyword": "22uF 0805 X7R TDK",
+   "line": "22uF 10V X7R | C_0805_2012Metric",
+   "returned": 50
+  },
+  {
+   "fetched_utc": "2026-09-05T01:00:06Z",
+   "keyword": "1.65K 0603 resistor",
+   "line": "1.65k 1% | R_0603_1608Metric",
+   "returned": 50
+  },
+  {
+   "fetched_utc": "2026-09-05T01:00:40Z",
+   "keyword": "0603WAF1651T5E",
+   "line": "1.65k 1% | R_0603_1608Metric",
+   "returned": 1
+  },
+  {
+   "fetched_utc": "2026-09-05T01:00:00Z",
+   "keyword": "150K 0603 resistor",
+   "line": "150k 1% | R_0603_1608Metric",
+   "returned": 50
+  },
+  {
+   "fetched_utc": "2026-09-05T01:00:41Z",
+   "keyword": "0603WAF1503T5E",
+   "line": "150k 1% | R_0603_1608Metric",
+   "returned": 2
+  },
+  {
+   "fetched_utc": "2026-09-05T01:00:02Z",
+   "keyword": "220K 0603 resistor",
+   "line": "220k 1% | R_0603_1608Metric",
+   "returned": 50
+  },
+  {
+   "fetched_utc": "2026-09-05T01:00:41Z",
+   "keyword": "0603WAF2203T5E",
+   "line": "220k 1% | R_0603_1608Metric",
+   "returned": 2
+  },
+  {
+   "fetched_utc": "2026-09-05T01:00:08Z",
+   "keyword": "680R 0603 resistor",
+   "line": "680R | R_0603_1608Metric",
+   "returned": 50
+  },
+  {
+   "fetched_utc": "2026-09-05T01:00:44Z",
+   "keyword": "0603WAF6800T5E",
+   "line": "680R | R_0603_1608Metric",
+   "returned": 2
+  },
+  {
+   "fetched_utc": "2026-09-05T01:00:10Z",
+   "keyword": "390R 0603 resistor",
+   "line": "390R | R_0603_1608Metric",
+   "returned": 50
+  },
+  {
+   "fetched_utc": "2026-09-05T01:00:45Z",
+   "keyword": "0603WAF3900T5E",
+   "line": "390R | R_0603_1608Metric",
+   "returned": 2
+  },
+  {
+   "fetched_utc": "2026-09-05T01:00:11Z",
+   "keyword": "2.2K 0603 resistor",
+   "line": "2.2k | R_0603_1608Metric",
+   "returned": 50
+  },
+  {
+   "fetched_utc": "2026-09-05T01:00:40Z",
+   "keyword": "0603WAF2201T5E",
+   "line": "2.2k | R_0603_1608Metric",
+   "returned": 3
+  },
+  {
+   "fetched_utc": "2026-09-05T00:59:54Z",
+   "keyword": "12R 0805 resistor",
+   "line": "12R | R_0805_2012Metric",
+   "returned": 50
+  },
+  {
+   "fetched_utc": "2026-09-05T01:07:53Z",
+   "keyword": "0805WAF120-1T5E",
+   "line": "12R | R_0805_2012Metric",
+   "returned": 0
+  },
+  {
+   "fetched_utc": "2026-09-05T01:00:07Z",
+   "keyword": "1.5K 0603 resistor",
+   "line": "1.5k 1% | R_0603_1608Metric",
+   "returned": 50
+  },
+  {
+   "fetched_utc": "2026-09-05T01:00:40Z",
+   "keyword": "0603WAF1501T5E",
+   "line": "1.5k 1% | R_0603_1608Metric",
+   "returned": 2
+  },
+  {
+   "fetched_utc": "2026-09-05T00:59:47Z",
+   "keyword": "1.87R 0603 resistor",
+   "line": "1.87R 1% | R_0603_1608Metric",
+   "returned": 50
+  },
+  {
+   "fetched_utc": "2026-09-05T01:07:53Z",
+   "keyword": "0603WAF187-2T5E",
+   "line": "1.87R 1% | R_0603_1608Metric",
+   "returned": 1
+  },
+  {
+   "fetched_utc": "2026-09-05T00:59:53Z",
+   "keyword": "33R 0603 resistor",
+   "line": "33R 1% | R_0603_1608Metric",
+   "returned": 50
+  },
+  {
+   "fetched_utc": "2026-09-05T01:00:44Z",
+   "keyword": "0603WAF330-1T5E",
+   "line": "33R 1% | R_0603_1608Metric",
+   "returned": 2
+  },
+  {
+   "fetched_utc": "2026-09-05T01:00:12Z",
+   "keyword": "0.015R 2512 resistor",
+   "line": "15mR 1% 1W | R_2512_6332Metric",
+   "returned": 50
+  },
+  {
+   "fetched_utc": "2026-09-05T01:00:05Z",
+   "keyword": "22K 0603 resistor",
+   "line": "22k | R_0603_1608Metric",
+   "returned": 50
+  },
+  {
+   "fetched_utc": "2026-09-05T01:00:41Z",
+   "keyword": "0603WAF2202T5E",
+   "line": "22k | R_0603_1608Metric",
+   "returned": 2
+  },
+  {
+   "fetched_utc": "2026-09-05T00:59:48Z",
+   "keyword": "3.65M 0603 resistor",
+   "line": "3.65M 1% | R_0603_1608Metric",
+   "returned": 50
+  },
+  {
+   "fetched_utc": "2026-09-05T01:00:43Z",
+   "keyword": "0603WAF3654T5E",
+   "line": "3.65M 1% | R_0603_1608Metric",
+   "returned": 1
+  },
+  {
+   "fetched_utc": "2026-09-05T00:59:50Z",
+   "keyword": "442K 0603 resistor",
+   "line": "442k 1% | R_0603_1608Metric",
+   "returned": 50
+  },
+  {
+   "fetched_utc": "2026-09-05T01:00:42Z",
+   "keyword": "0603WAF4423T5E",
+   "line": "442k 1% | R_0603_1608Metric",
+   "returned": 1
+  },
+  {
+   "fetched_utc": "2026-09-05T01:00:03Z",
+   "keyword": "510K 0603 resistor",
+   "line": "510k | R_0603_1608Metric",
+   "returned": 50
+  },
+  {
+   "fetched_utc": "2026-09-05T01:00:42Z",
+   "keyword": "0603WAF5103T5E",
+   "line": "510k | R_0603_1608Metric",
+   "returned": 1
+  },
+  {
+   "fetched_utc": "2026-09-05T01:00:04Z",
+   "keyword": "2.2M 0603 resistor",
+   "line": "2.2M 1% | R_0603_1608Metric",
+   "returned": 50
+  },
+  {
+   "fetched_utc": "2026-09-05T01:00:43Z",
+   "keyword": "0603WAF2204T5E",
+   "line": "2.2M 1% | R_0603_1608Metric",
+   "returned": 1
+  },
+  {
+   "fetched_utc": "2026-09-05T00:59:49Z",
+   "keyword": "1.3M 0603 resistor",
+   "line": "1.30M 1% | R_0603_1608Metric",
+   "returned": 50
+  },
+  {
+   "fetched_utc": "2026-09-05T01:00:43Z",
+   "keyword": "0603WAF1304T5E",
+   "line": "1.30M 1% | R_0603_1608Metric",
+   "returned": 1
+  },
+  {
+   "fetched_utc": "2026-09-05T00:59:52Z",
+   "keyword": "560R 1206 resistor",
+   "line": "560R 1% 1206 | R_1206_3216Metric",
+   "returned": 50
+  },
+  {
+   "fetched_utc": "2026-09-05T01:07:53Z",
+   "keyword": "1206WAF5600T5E",
+   "line": "560R 1% 1206 | R_1206_3216Metric",
+   "returned": 0
+  },
+  {
+   "fetched_utc": "2026-09-05T00:59:51Z",
+   "keyword": "732K 0603 resistor",
+   "line": "732k 1% | R_0603_1608Metric",
+   "returned": 50
+  },
+  {
+   "fetched_utc": "2026-09-05T01:00:42Z",
+   "keyword": "0603WAF7323T5E",
+   "line": "732k 1% | R_0603_1608Metric",
+   "returned": 1
+  }
+ ],
+ "schema": 1,
+ "stock_factor": 10,
+ "stock_floor": 500,
+ "summary": {
+  "REFUSED": {
+   "lines": 0,
+   "parts": 0
+  },
+  "RULED": {
+   "lines": 26,
+   "parts": 45
+  },
+  "TUNE_PENDING": {
+   "lines": 8,
+   "parts": 16
+  }
+ },
+ "thin_stock_lines": [
+  "R69"
+ ]
+}

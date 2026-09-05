@@ -1,0 +1,3521 @@
+{
+ "endpoint": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
+ "exhausted": false,
+ "fetched_utc": "2026-09-05T01:16:37Z",
+ "keyword": "27pF 0603 capacitor",
+ "page_size": 25,
+ "pages": 2,
+ "records": [
+  {
+   "assemblyComponentFlag": false,
+   "attributes": null,
+   "componentBrandEn": "JLCPCB Assembly",
+   "componentCode": "C9900061628",
+   "componentLibraryType": "expand",
+   "componentModelEn": "Capacitor-22uF±10%-0603-X5R-25V",
+   "componentPrices": [
+    {
+     "endNumber": 99,
+     "productPrice": 0.0395,
+     "startNumber": 1
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0204,
+     "startNumber": 100
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "New Arrivals",
+   "dataManualUrl": null,
+   "describe": "0603 New Arrivals ROHS",
+   "erpComponentName": "电容-22uF±10%-0603-X5R-25V",
+   "isBuyComponent": "0",
+   "lcscGoodsUrl": null,
+   "leastPatchNumber": 5,
+   "lossNumber": 4,
+   "minPurchaseNum": 439,
+   "noBuyReason": "This product is no longer manufactured.",
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "50V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±5%"
+    },
+    {
+     "attribute_name_en": "Capacitance",
+     "attribute_value_name": "27pF",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>27pF</span>"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "C0G"
+    }
+   ],
+   "componentBrandEn": "Samsung Electro-Mechanics",
+   "componentCode": "C1656",
+   "componentLibraryType": "expand",
+   "componentModelEn": "CL10C270JB8NNNC",
+   "componentPrices": [
+    {
+     "endNumber": 499,
+     "productPrice": 0.0142,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 1499,
+     "productPrice": 0.0117,
+     "startNumber": 500
+    },
+    {
+     "endNumber": 3999,
+     "productPrice": 0.0104,
+     "startNumber": 1500
+    },
+    {
+     "endNumber": 23999,
+     "productPrice": 0.0096,
+     "startNumber": 4000
+    },
+    {
+     "endNumber": 47999,
+     "productPrice": 0.0089,
+     "startNumber": 24000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0085,
+     "startNumber": 48000
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+   "dataManualUrl": "https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_Samsung-Electro-Mechanics-CL10C270JB8NNNC_C1656.pdf",
+   "describe": "27pF 50V C0G ±5% 0603 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+   "erpComponentName": "27pF ±5% 50V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/multilayer-ceramic-capacitors-mlcc-smd-smt_samsung-electro-mechanics-cl10c270jb8nnnc_C1656.html",
+   "leastPatchNumber": 20,
+   "lossNumber": 10,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 47058
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "200V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±5%"
+    },
+    {
+     "attribute_name_en": "Capacitance",
+     "attribute_value_name": "27pF",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>27pF</span>"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "C0G"
+    }
+   ],
+   "componentBrandEn": "FH (Guangdong Fenghua Advanced Tech)",
+   "componentCode": "C63683",
+   "componentLibraryType": "expand",
+   "componentModelEn": "0603CG270J201NT",
+   "componentPrices": [
+    {
+     "endNumber": 199,
+     "productPrice": 0.0252,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 599,
+     "productPrice": 0.02,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 3999,
+     "productPrice": 0.0171,
+     "startNumber": 600
+    },
+    {
+     "endNumber": 7999,
+     "productPrice": 0.013,
+     "startNumber": 4000
+    },
+    {
+     "endNumber": 19999,
+     "productPrice": 0.0115,
+     "startNumber": 8000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0106,
+     "startNumber": 20000
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2304140030_FH--Guangdong-Fenghua-Advanced-Tech-0603CG270J201NT_C63683.pdf",
+   "describe": "200V 27pF C0G ±5% 0603 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+   "erpComponentName": "27pF ±5% 200V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/multilayer-ceramic-capacitors-mlcc-smd-smt_fh-guangdong-fenghua-advanced-tech-0603cg270j201nt_C63683.html",
+   "leastPatchNumber": 20,
+   "lossNumber": 8,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 18
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "50V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±5%"
+    },
+    {
+     "attribute_name_en": "Capacitance",
+     "attribute_value_name": "27pF",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>27pF</span>"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "C0G"
+    }
+   ],
+   "componentBrandEn": "FH (Guangdong Fenghua Advanced Tech)",
+   "componentCode": "C92670",
+   "componentLibraryType": "expand",
+   "componentModelEn": "0603CG270J500NT",
+   "componentPrices": [
+    {
+     "endNumber": 999,
+     "productPrice": 0.0055,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 3999,
+     "productPrice": 0.0045,
+     "startNumber": 1000
+    },
+    {
+     "endNumber": 7999,
+     "productPrice": 0.0038,
+     "startNumber": 4000
+    },
+    {
+     "endNumber": 47999,
+     "productPrice": 0.0035,
+     "startNumber": 8000
+    },
+    {
+     "endNumber": 48199,
+     "productPrice": 0.0032,
+     "startNumber": 48000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0032,
+     "startNumber": 48200
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2304140030_FH--Guangdong-Fenghua-Advanced-Tech-0603CG270J500NT_C92670.pdf",
+   "describe": "27pF 50V C0G ±5% 0603 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+   "erpComponentName": "27pF ±5% 50V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/multilayer-ceramic-capacitors-mlcc-smd-smt_fh-guangdong-fenghua-advanced-tech-0603cg270j500nt_C92670.html",
+   "leastPatchNumber": 20,
+   "lossNumber": 10,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 116918
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "50V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±5%"
+    },
+    {
+     "attribute_name_en": "Capacitance",
+     "attribute_value_name": "27pF",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>27pF</span>"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "NP0"
+    }
+   ],
+   "componentBrandEn": "YAGEO",
+   "componentCode": "C107045",
+   "componentLibraryType": "expand",
+   "componentModelEn": "CC0603JRNPO9BN270",
+   "componentPrices": [
+    {
+     "endNumber": 999,
+     "productPrice": 0.0054,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 3999,
+     "productPrice": 0.0047,
+     "startNumber": 1000
+    },
+    {
+     "endNumber": 7999,
+     "productPrice": 0.0043,
+     "startNumber": 4000
+    },
+    {
+     "endNumber": 47999,
+     "productPrice": 0.0041,
+     "startNumber": 8000
+    },
+    {
+     "endNumber": 48199,
+     "productPrice": 0.0039,
+     "startNumber": 48000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0039,
+     "startNumber": 48200
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+   "dataManualUrl": "https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_YAGEO-CC0603JRNPO9BN270_C107045.pdf",
+   "describe": "27pF 50V NP0 ±5% 0603 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+   "erpComponentName": "27pF ±5% 50V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/multilayer-ceramic-capacitors-mlcc-smd-smt_yageo-cc0603jrnpo9bn270_C107045.html",
+   "leastPatchNumber": 20,
+   "lossNumber": 10,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 1014002
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "50V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±5%"
+    },
+    {
+     "attribute_name_en": "Capacitance",
+     "attribute_value_name": "27pF",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>27pF</span>"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "C0G"
+    }
+   ],
+   "componentBrandEn": "Murata Electronics",
+   "componentCode": "C126558",
+   "componentLibraryType": "expand",
+   "componentModelEn": "GCM1885C1H270JA16D",
+   "componentPrices": [
+    {
+     "endNumber": 49,
+     "productPrice": 0.0722,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 149,
+     "productPrice": 0.0709,
+     "startNumber": 50
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.0701,
+     "startNumber": 150
+    },
+    {
+     "endNumber": 509,
+     "productPrice": 0.0693,
+     "startNumber": 500
+    },
+    {
+     "endNumber": 519,
+     "productPrice": 0.0693,
+     "startNumber": 510
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0693,
+     "startNumber": 520
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+   "dataManualUrl": "https://www.lcsc.com/datasheet/lcsc_datasheet_1810311141_Murata-Electronics-GCM1885C1H270JA16D_C126558.pdf",
+   "describe": "27pF 50V C0G ±5% 0603 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+   "erpComponentName": "27pF ±5% 50V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/multilayer-ceramic-capacitors-mlcc-smd-smt_murata-electronics-gcm1885c1h270ja16d_C126558.html",
+   "leastPatchNumber": 5,
+   "lossNumber": 2,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 1
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "50V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±1%"
+    },
+    {
+     "attribute_name_en": "Capacitance",
+     "attribute_value_name": "27pF",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>27pF</span>"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "C0G"
+    }
+   ],
+   "componentBrandEn": "Murata Electronics",
+   "componentCode": "C162215",
+   "componentLibraryType": "expand",
+   "componentModelEn": "GRM1885C1H270FA01D",
+   "componentPrices": [
+    {
+     "endNumber": 199,
+     "productPrice": 0.0262,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 599,
+     "productPrice": 0.0213,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 3999,
+     "productPrice": 0.0186,
+     "startNumber": 600
+    },
+    {
+     "endNumber": 7999,
+     "productPrice": 0.0166,
+     "startNumber": 4000
+    },
+    {
+     "endNumber": 19999,
+     "productPrice": 0.0152,
+     "startNumber": 8000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0144,
+     "startNumber": 20000
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+   "dataManualUrl": "https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_Murata-Electronics-GRM1885C1H270FA01D_C162215.pdf",
+   "describe": "27pF 50V C0G ±1% 0603 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+   "erpComponentName": "27pF ±1% 50V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/multilayer-ceramic-capacitors-mlcc-smd-smt_murata-electronics-grm1885c1h270fa01d_C162215.html",
+   "leastPatchNumber": 20,
+   "lossNumber": 8,
+   "minPurchaseNum": 421,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 5
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "50V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±2%"
+    },
+    {
+     "attribute_name_en": "Capacitance",
+     "attribute_value_name": "27pF",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>27pF</span>"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "NP0"
+    }
+   ],
+   "componentBrandEn": "Walsin Tech Corp",
+   "componentCode": "C237199",
+   "componentLibraryType": "expand",
+   "componentModelEn": "0603N270G500CT",
+   "componentPrices": [
+    {
+     "endNumber": 999,
+     "productPrice": 0.0069,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 3999,
+     "productPrice": 0.0055,
+     "startNumber": 1000
+    },
+    {
+     "endNumber": 7999,
+     "productPrice": 0.0043,
+     "startNumber": 4000
+    },
+    {
+     "endNumber": 47999,
+     "productPrice": 0.0039,
+     "startNumber": 8000
+    },
+    {
+     "endNumber": 99999,
+     "productPrice": 0.0035,
+     "startNumber": 48000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0033,
+     "startNumber": 100000
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+   "dataManualUrl": "https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_Walsin-Tech-Corp-0603N270G500CT_C237199.pdf",
+   "describe": "27pF 50V NP0 ±2% 0603 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+   "erpComponentName": "27pF ±2% 50V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/multilayer-ceramic-capacitors-mlcc-smd-smt_walsin-tech-corp-0603n270g500ct_C237199.html",
+   "leastPatchNumber": 20,
+   "lossNumber": 10,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 69
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "50V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±5%"
+    },
+    {
+     "attribute_name_en": "Capacitance",
+     "attribute_value_name": "27pF",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>27pF</span>"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "NP0"
+    }
+   ],
+   "componentBrandEn": "Walsin Tech Corp",
+   "componentCode": "C302064",
+   "componentLibraryType": "expand",
+   "componentModelEn": "0603N270J500CT",
+   "componentPrices": [
+    {
+     "endNumber": 99,
+     "productPrice": 0.0037,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 299,
+     "productPrice": 0.0029,
+     "startNumber": 100
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.0025,
+     "startNumber": 300
+    },
+    {
+     "endNumber": 3999,
+     "productPrice": 0.0023,
+     "startNumber": 1000
+    },
+    {
+     "endNumber": 4019,
+     "productPrice": 0.0021,
+     "startNumber": 4000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0021,
+     "startNumber": 4020
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2304140030_Walsin-Tech-Corp-0603N270J500CT_C302064.pdf",
+   "describe": "27pF 50V NP0 ±5% 0603 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+   "erpComponentName": "27pF ±5% 50V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/multilayer-ceramic-capacitors-mlcc-smd-smt_walsin-tech-corp-0603n270j500ct_C302064.html",
+   "leastPatchNumber": 20,
+   "lossNumber": 10,
+   "minPurchaseNum": 3894,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 10
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "100V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±5%"
+    },
+    {
+     "attribute_name_en": "Capacitance",
+     "attribute_value_name": "27pF",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>27pF</span>"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "C0G"
+    }
+   ],
+   "componentBrandEn": "TDK",
+   "componentCode": "C338092",
+   "componentLibraryType": "expand",
+   "componentModelEn": "CGA3E2C0G2A270JT0Y0N",
+   "componentPrices": [
+    {
+     "endNumber": 499,
+     "productPrice": 0.0204,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 1499,
+     "productPrice": 0.016,
+     "startNumber": 500
+    },
+    {
+     "endNumber": 3999,
+     "productPrice": 0.0136,
+     "startNumber": 1500
+    },
+    {
+     "endNumber": 23999,
+     "productPrice": 0.0121,
+     "startNumber": 4000
+    },
+    {
+     "endNumber": 47999,
+     "productPrice": 0.0109,
+     "startNumber": 24000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0102,
+     "startNumber": 48000
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2304140030_TDK-CGA3E2C0G2A270JT0Y0N_C338092.pdf",
+   "describe": "100V 27pF C0G ±5% 0603 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+   "erpComponentName": "27pF ±5% 100V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/multilayer-ceramic-capacitors-mlcc-smd-smt_tdk-cga3e2c0g2a270jt0y0n_C338092.html",
+   "leastPatchNumber": 20,
+   "lossNumber": 8,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 4
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "50V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±5%"
+    },
+    {
+     "attribute_name_en": "Capacitance",
+     "attribute_value_name": "27pF",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>27pF</span>"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "C0G"
+    }
+   ],
+   "componentBrandEn": "TDK",
+   "componentCode": "C342893",
+   "componentLibraryType": "expand",
+   "componentModelEn": "CGA3E2C0G1H270JT0Y0N",
+   "componentPrices": [
+    {
+     "endNumber": 499,
+     "productPrice": 0.0171,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 1499,
+     "productPrice": 0.0135,
+     "startNumber": 500
+    },
+    {
+     "endNumber": 3999,
+     "productPrice": 0.0115,
+     "startNumber": 1500
+    },
+    {
+     "endNumber": 23999,
+     "productPrice": 0.0103,
+     "startNumber": 4000
+    },
+    {
+     "endNumber": 47999,
+     "productPrice": 0.0092,
+     "startNumber": 24000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0086,
+     "startNumber": 48000
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2304140030_TDK-CGA3E2C0G1H270JT0Y0N_C342893.pdf",
+   "describe": "27pF 50V C0G ±5% 0603 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+   "erpComponentName": "27pF ±5% 50V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/multilayer-ceramic-capacitors-mlcc-smd-smt_tdk-cga3e2c0g1h270jt0y0n_C342893.html",
+   "leastPatchNumber": 20,
+   "lossNumber": 8,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 903
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "50V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±5%"
+    },
+    {
+     "attribute_name_en": "Capacitance",
+     "attribute_value_name": "27pF",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>27pF</span>"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "C0G"
+    }
+   ],
+   "componentBrandEn": "Samsung Electro-Mechanics",
+   "componentCode": "C346211",
+   "componentLibraryType": "expand",
+   "componentModelEn": "CL10C270JB81PNC",
+   "componentPrices": [
+    {
+     "endNumber": 199,
+     "productPrice": 0.0303,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 599,
+     "productPrice": 0.0252,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 3999,
+     "productPrice": 0.0225,
+     "startNumber": 600
+    },
+    {
+     "endNumber": 7999,
+     "productPrice": 0.0207,
+     "startNumber": 4000
+    },
+    {
+     "endNumber": 19999,
+     "productPrice": 0.0192,
+     "startNumber": 8000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0184,
+     "startNumber": 20000
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2202140030_Samsung-Electro-Mechanics-CL10C270JB81PNC_C346211.pdf",
+   "describe": "27pF 50V C0G ±5% 0603 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+   "erpComponentName": "27pF ±5% 50V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/multilayer-ceramic-capacitors-mlcc-smd-smt_samsung-electro-mechanics-cl10c270jb81pnc_C346211.html",
+   "leastPatchNumber": 20,
+   "lossNumber": 6,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 11046
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "50V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±5%"
+    },
+    {
+     "attribute_name_en": "Capacitance",
+     "attribute_value_name": "27pF",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>27pF</span>"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "C0G"
+    }
+   ],
+   "componentBrandEn": "TDK",
+   "componentCode": "C361200",
+   "componentLibraryType": "expand",
+   "componentModelEn": "C1608C0G1H270JT000N",
+   "componentPrices": [
+    {
+     "endNumber": 199,
+     "productPrice": 0.0273,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 599,
+     "productPrice": 0.0221,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 3999,
+     "productPrice": 0.0192,
+     "startNumber": 600
+    },
+    {
+     "endNumber": 7999,
+     "productPrice": 0.0156,
+     "startNumber": 4000
+    },
+    {
+     "endNumber": 19999,
+     "productPrice": 0.0141,
+     "startNumber": 8000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0132,
+     "startNumber": 20000
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2304140030_TDK-C1608C0G1H270JT000N_C361200.pdf",
+   "describe": "27pF 50V C0G ±5% 0603 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+   "erpComponentName": "27pF ±5% 50V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/multilayer-ceramic-capacitors-mlcc-smd-smt_tdk-c1608c0g1h270jt000n_C361200.html",
+   "leastPatchNumber": 20,
+   "lossNumber": 8,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 3
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "50V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±5%"
+    },
+    {
+     "attribute_name_en": "Capacitance",
+     "attribute_value_name": "27pF",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>27pF</span>"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "C0G"
+    }
+   ],
+   "componentBrandEn": "CCTC",
+   "componentCode": "C376778",
+   "componentLibraryType": "expand",
+   "componentModelEn": "TCC0603COG270J500CT",
+   "componentPrices": [
+    {
+     "endNumber": 999,
+     "productPrice": 0.0046,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 3999,
+     "productPrice": 0.0037,
+     "startNumber": 1000
+    },
+    {
+     "endNumber": 7999,
+     "productPrice": 0.0032,
+     "startNumber": 4000
+    },
+    {
+     "endNumber": 47999,
+     "productPrice": 0.0029,
+     "startNumber": 8000
+    },
+    {
+     "endNumber": 99999,
+     "productPrice": 0.0026,
+     "startNumber": 48000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0025,
+     "startNumber": 100000
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2304140030_CCTC-TCC0603COG270J500CT_C376778.pdf",
+   "describe": "27pF 50V C0G ±5% 0603 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+   "erpComponentName": "27pF ±5% 50V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/multilayer-ceramic-capacitors-mlcc-smd-smt_cctc-tcc0603cog270j500ct_C376778.html",
+   "leastPatchNumber": 20,
+   "lossNumber": 10,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 38792
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "100V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±5%"
+    },
+    {
+     "attribute_name_en": "Capacitance",
+     "attribute_value_name": "27pF",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>27pF</span>"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "NP0"
+    }
+   ],
+   "componentBrandEn": "Walsin Tech Corp",
+   "componentCode": "C458900",
+   "componentLibraryType": "expand",
+   "componentModelEn": "0603N270J101CT",
+   "componentPrices": [
+    {
+     "endNumber": 499,
+     "productPrice": 0.0134,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 1499,
+     "productPrice": 0.0112,
+     "startNumber": 500
+    },
+    {
+     "endNumber": 3999,
+     "productPrice": 0.0099,
+     "startNumber": 1500
+    },
+    {
+     "endNumber": 23999,
+     "productPrice": 0.0082,
+     "startNumber": 4000
+    },
+    {
+     "endNumber": 47999,
+     "productPrice": 0.0076,
+     "startNumber": 24000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0072,
+     "startNumber": 48000
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2304140030_Walsin-Tech-Corp-0603N270J101CT_C458900.pdf",
+   "describe": "100V 27pF NP0 ±5% 0603 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+   "erpComponentName": "27pF ±5% 100V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/multilayer-ceramic-capacitors-mlcc-smd-smt_walsin-tech-corp-0603n270j101ct_C458900.html",
+   "leastPatchNumber": 20,
+   "lossNumber": 10,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 4
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "50V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±2%"
+    },
+    {
+     "attribute_name_en": "Capacitance",
+     "attribute_value_name": "27pF",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>27pF</span>"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "NP0"
+    }
+   ],
+   "componentBrandEn": "YAGEO",
+   "componentCode": "C519453",
+   "componentLibraryType": "expand",
+   "componentModelEn": "CC0603GRNPO9BN270",
+   "componentPrices": [
+    {
+     "endNumber": 499,
+     "productPrice": 0.0135,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 1499,
+     "productPrice": 0.0116,
+     "startNumber": 500
+    },
+    {
+     "endNumber": 3999,
+     "productPrice": 0.0105,
+     "startNumber": 1500
+    },
+    {
+     "endNumber": 23999,
+     "productPrice": 0.0099,
+     "startNumber": 4000
+    },
+    {
+     "endNumber": 47999,
+     "productPrice": 0.0093,
+     "startNumber": 24000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0091,
+     "startNumber": 48000
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2007161234_YAGEO-CC0603GRNPO9BN270_C519453.pdf",
+   "describe": "27pF 50V NP0 ±2% 0603 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+   "erpComponentName": "27pF ±2% 50V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/multilayer-ceramic-capacitors-mlcc-smd-smt_yageo-cc0603grnpo9bn270_C519453.html",
+   "leastPatchNumber": 20,
+   "lossNumber": 10,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 2783
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "50V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±1%"
+    },
+    {
+     "attribute_name_en": "Capacitance",
+     "attribute_value_name": "27pF",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>27pF</span>"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "NP0"
+    }
+   ],
+   "componentBrandEn": "YAGEO",
+   "componentCode": "C519484",
+   "componentLibraryType": "expand",
+   "componentModelEn": "CC0603FRNPO9BN270",
+   "componentPrices": [
+    {
+     "endNumber": 499,
+     "productPrice": 0.0364,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 1499,
+     "productPrice": 0.033,
+     "startNumber": 500
+    },
+    {
+     "endNumber": 3999,
+     "productPrice": 0.0312,
+     "startNumber": 1500
+    },
+    {
+     "endNumber": 23999,
+     "productPrice": 0.0301,
+     "startNumber": 4000
+    },
+    {
+     "endNumber": 47999,
+     "productPrice": 0.0291,
+     "startNumber": 24000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0286,
+     "startNumber": 48000
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+   "dataManualUrl": "https://www.lcsc.com/datasheet/lcsc_datasheet_2006011835_YAGEO-CC0603FRNPO9BN270_C519484.pdf",
+   "describe": "27pF 50V NP0 ±1% 0603 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+   "erpComponentName": "27pF ±1% 50V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/multilayer-ceramic-capacitors-mlcc-smd-smt_yageo-cc0603frnpo9bn270_C519484.html",
+   "leastPatchNumber": 20,
+   "lossNumber": 10,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 60444
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "100V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±5%"
+    },
+    {
+     "attribute_name_en": "Capacitance",
+     "attribute_value_name": "27pF",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>27pF</span>"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "C0G"
+    }
+   ],
+   "componentBrandEn": "Murata Electronics",
+   "componentCode": "C524622",
+   "componentLibraryType": "expand",
+   "componentModelEn": "GRM1885C2A270JA01D",
+   "componentPrices": [
+    {
+     "endNumber": 499,
+     "productPrice": 0.0133,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 1499,
+     "productPrice": 0.0106,
+     "startNumber": 500
+    },
+    {
+     "endNumber": 3999,
+     "productPrice": 0.0091,
+     "startNumber": 1500
+    },
+    {
+     "endNumber": 23999,
+     "productPrice": 0.0081,
+     "startNumber": 4000
+    },
+    {
+     "endNumber": 47999,
+     "productPrice": 0.0073,
+     "startNumber": 24000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0069,
+     "startNumber": 48000
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2304140030_Murata-Electronics-GRM1885C2A270JA01D_C524622.pdf",
+   "describe": "100V 27pF C0G ±5% 0603 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+   "erpComponentName": "27pF ±5% 100V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/multilayer-ceramic-capacitors-mlcc-smd-smt_murata-electronics-grm1885c2a270ja01d_C524622.html",
+   "leastPatchNumber": 20,
+   "lossNumber": 10,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 9
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "50V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±5%"
+    },
+    {
+     "attribute_name_en": "Capacitance",
+     "attribute_value_name": "27pF",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>27pF</span>"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "C0G"
+    }
+   ],
+   "componentBrandEn": "PSA(Prosperity Dielectrics)",
+   "componentCode": "C525246",
+   "componentLibraryType": "expand",
+   "componentModelEn": "FN18N270J500PSG",
+   "componentPrices": [
+    {
+     "endNumber": 999,
+     "productPrice": 0.0058,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 3999,
+     "productPrice": 0.0046,
+     "startNumber": 1000
+    },
+    {
+     "endNumber": 7999,
+     "productPrice": 0.0039,
+     "startNumber": 4000
+    },
+    {
+     "endNumber": 47999,
+     "productPrice": 0.0035,
+     "startNumber": 8000
+    },
+    {
+     "endNumber": 99999,
+     "productPrice": 0.0031,
+     "startNumber": 48000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0029,
+     "startNumber": 100000
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2304140030_PSA-Prosperity-Dielectrics-FN18N270J500PSG_C525246.pdf",
+   "describe": "27pF 50V C0G ±5% 0603 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+   "erpComponentName": "27pF ±5% 50V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/multilayer-ceramic-capacitors-mlcc-smd-smt_psa-prosperity-dielectrics-fn18n270j500psg_C525246.html",
+   "leastPatchNumber": 20,
+   "lossNumber": 10,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 4000
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "100V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±2%"
+    },
+    {
+     "attribute_name_en": "Capacitance",
+     "attribute_value_name": "27pF",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>27pF</span>"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "NP0"
+    }
+   ],
+   "componentBrandEn": "YAGEO",
+   "componentCode": "C527055",
+   "componentLibraryType": "expand",
+   "componentModelEn": "CC0603GRNPO0BN270",
+   "componentPrices": [
+    {
+     "endNumber": 999,
+     "productPrice": 0.0078,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 3999,
+     "productPrice": 0.0062,
+     "startNumber": 1000
+    },
+    {
+     "endNumber": 7999,
+     "productPrice": 0.0053,
+     "startNumber": 4000
+    },
+    {
+     "endNumber": 47999,
+     "productPrice": 0.0048,
+     "startNumber": 8000
+    },
+    {
+     "endNumber": 99999,
+     "productPrice": 0.0043,
+     "startNumber": 48000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.004,
+     "startNumber": 100000
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2006181535_YAGEO-CC0603GRNPO0BN270_C527055.pdf",
+   "describe": "100V 27pF NP0 ±2% 0603 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+   "erpComponentName": "27pF ±2% 100V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/multilayer-ceramic-capacitors-mlcc-smd-smt_yageo-cc0603grnpo0bn270_C527055.html",
+   "leastPatchNumber": 20,
+   "lossNumber": 10,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 83
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "100V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±1%"
+    },
+    {
+     "attribute_name_en": "Capacitance",
+     "attribute_value_name": "27pF",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>27pF</span>"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "NP0"
+    }
+   ],
+   "componentBrandEn": "YAGEO",
+   "componentCode": "C576772",
+   "componentLibraryType": "expand",
+   "componentModelEn": "CC0603FRNPO0BN270",
+   "componentPrices": [
+    {
+     "endNumber": 499,
+     "productPrice": 0.0202,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 1499,
+     "productPrice": 0.0173,
+     "startNumber": 500
+    },
+    {
+     "endNumber": 3999,
+     "productPrice": 0.0156,
+     "startNumber": 1500
+    },
+    {
+     "endNumber": 23999,
+     "productPrice": 0.0145,
+     "startNumber": 4000
+    },
+    {
+     "endNumber": 47999,
+     "productPrice": 0.0137,
+     "startNumber": 24000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0132,
+     "startNumber": 48000
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2211141030_YAGEO-CC0603FRNPO0BN270_C576772.pdf",
+   "describe": "100V 27pF NP0 ±1% 0603 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+   "erpComponentName": "27pF ±1% 100V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/multilayer-ceramic-capacitors-mlcc-smd-smt_yageo-cc0603frnpo0bn270_C576772.html",
+   "leastPatchNumber": 20,
+   "lossNumber": 8,
+   "minPurchaseNum": 444,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 95
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "100V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±5%"
+    },
+    {
+     "attribute_name_en": "Capacitance",
+     "attribute_value_name": "27pF",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>27pF</span>"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "NP0"
+    }
+   ],
+   "componentBrandEn": "YAGEO",
+   "componentCode": "C576805",
+   "componentLibraryType": "expand",
+   "componentModelEn": "CC0603JRNPO0BN270",
+   "componentPrices": [
+    {
+     "endNumber": 999,
+     "productPrice": 0.0044,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 3999,
+     "productPrice": 0.0034,
+     "startNumber": 1000
+    },
+    {
+     "endNumber": 7999,
+     "productPrice": 0.0029,
+     "startNumber": 4000
+    },
+    {
+     "endNumber": 47999,
+     "productPrice": 0.0026,
+     "startNumber": 8000
+    },
+    {
+     "endNumber": 99999,
+     "productPrice": 0.0023,
+     "startNumber": 48000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0021,
+     "startNumber": 100000
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+   "dataManualUrl": "https://www.lcsc.com/datasheet/lcsc_datasheet_2311211121_YAGEO-CC0603JRNPO0BN270_C576805.pdf",
+   "describe": "100V 27pF NP0 ±5% 0603 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+   "erpComponentName": "27pF ±5% 100V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/multilayer-ceramic-capacitors-mlcc-smd-smt_yageo-cc0603jrnpo0bn270_C576805.html",
+   "leastPatchNumber": 20,
+   "lossNumber": 10,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 17
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "100V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±5%"
+    },
+    {
+     "attribute_name_en": "Capacitance",
+     "attribute_value_name": "27pF",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>27pF</span>"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "C0G"
+    }
+   ],
+   "componentBrandEn": "--",
+   "componentCode": "C597076",
+   "componentLibraryType": "expand",
+   "componentModelEn": "06031A270JAT2A",
+   "componentPrices": [
+    {
+     "endNumber": 199,
+     "productPrice": 0.027,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 599,
+     "productPrice": 0.0215,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 3999,
+     "productPrice": 0.0182,
+     "startNumber": 600
+    },
+    {
+     "endNumber": 7999,
+     "productPrice": 0.0165,
+     "startNumber": 4000
+    },
+    {
+     "endNumber": 19999,
+     "productPrice": 0.0148,
+     "startNumber": 8000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0139,
+     "startNumber": 20000
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2304140030_Kyocera-AVX-06031A270JAT2A_C597076.pdf",
+   "describe": "100V 27pF C0G ±5% 0603 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+   "erpComponentName": "27pF ±5% 100V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/multilayer-ceramic-capacitors-mlcc-smd-smt_kyocera-avx-06031a270jat2a_C597076.html",
+   "leastPatchNumber": 20,
+   "lossNumber": 8,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 441
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "50V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±1%"
+    },
+    {
+     "attribute_name_en": "Capacitance",
+     "attribute_value_name": "27pF",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>27pF</span>"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "C0G"
+    }
+   ],
+   "componentBrandEn": "--",
+   "componentCode": "C597152",
+   "componentLibraryType": "expand",
+   "componentModelEn": "06035A270FAT2A",
+   "componentPrices": [
+    {
+     "endNumber": 199,
+     "productPrice": 0.0351,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 599,
+     "productPrice": 0.0278,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 3999,
+     "productPrice": 0.0238,
+     "startNumber": 600
+    },
+    {
+     "endNumber": 7999,
+     "productPrice": 0.0212,
+     "startNumber": 4000
+    },
+    {
+     "endNumber": 19999,
+     "productPrice": 0.0191,
+     "startNumber": 8000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0179,
+     "startNumber": 20000
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2304140030_Kyocera-AVX-06035A270FAT2A_C597152.pdf",
+   "describe": "27pF 50V C0G ±1% 0603 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+   "erpComponentName": "27pF ±1% 50V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/multilayer-ceramic-capacitors-mlcc-smd-smt_kyocera-avx-06035a270fat2a_C597152.html",
+   "leastPatchNumber": 5,
+   "lossNumber": 4,
+   "minPurchaseNum": 323,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 76
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "50V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±5%"
+    },
+    {
+     "attribute_name_en": "Capacitance",
+     "attribute_value_name": "27pF",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>27pF</span>"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "C0G"
+    }
+   ],
+   "componentBrandEn": "--",
+   "componentCode": "C597154",
+   "componentLibraryType": "expand",
+   "componentModelEn": "06035A270JAT2A",
+   "componentPrices": [
+    {
+     "endNumber": 99,
+     "productPrice": 0.0111,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 299,
+     "productPrice": 0.0088,
+     "startNumber": 100
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.0075,
+     "startNumber": 300
+    },
+    {
+     "endNumber": 3999,
+     "productPrice": 0.0067,
+     "startNumber": 1000
+    },
+    {
+     "endNumber": 7999,
+     "productPrice": 0.006,
+     "startNumber": 4000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0057,
+     "startNumber": 8000
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2304140030_Kyocera-AVX-06035A270JAT2A_C597154.pdf",
+   "describe": "27pF 50V C0G ±5% 0603 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+   "erpComponentName": "27pF ±5% 50V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/multilayer-ceramic-capacitors-mlcc-smd-smt_kyocera-avx-06035a270jat2a_C597154.html",
+   "leastPatchNumber": 20,
+   "lossNumber": 10,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 615
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "50V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±1%"
+    },
+    {
+     "attribute_name_en": "Capacitance",
+     "attribute_value_name": "27pF",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>27pF</span>"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "C0G"
+    }
+   ],
+   "componentBrandEn": "Samsung Electro-Mechanics",
+   "componentCode": "C730449",
+   "componentLibraryType": "expand",
+   "componentModelEn": "CL10C270FB8NNNC",
+   "componentPrices": [
+    {
+     "endNumber": 499,
+     "productPrice": 0.009,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 1499,
+     "productPrice": 0.0072,
+     "startNumber": 500
+    },
+    {
+     "endNumber": 3999,
+     "productPrice": 0.0063,
+     "startNumber": 1500
+    },
+    {
+     "endNumber": 23999,
+     "productPrice": 0.0052,
+     "startNumber": 4000
+    },
+    {
+     "endNumber": 47999,
+     "productPrice": 0.0047,
+     "startNumber": 24000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0044,
+     "startNumber": 48000
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+   "dataManualUrl": "https://www.lcsc.com/datasheet/lcsc_datasheet_2008281234_Samsung-Electro-Mechanics-CL10C270FB8NNNC_C730449.pdf",
+   "describe": "27pF 50V C0G ±1% 0603 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+   "erpComponentName": "27pF ±1% 50V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/multilayer-ceramic-capacitors-mlcc-smd-smt_samsung-electro-mechanics-cl10c270fb8nnnc_C730449.html",
+   "leastPatchNumber": 20,
+   "lossNumber": 10,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 4
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "25V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±5%"
+    },
+    {
+     "attribute_name_en": "Capacitance",
+     "attribute_value_name": "27pF",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>27pF</span>"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "C0G"
+    }
+   ],
+   "componentBrandEn": "FH (Guangdong Fenghua Advanced Tech)",
+   "componentCode": "C880276",
+   "componentLibraryType": "expand",
+   "componentModelEn": "0603CG270J250NT",
+   "componentPrices": [
+    {
+     "endNumber": 999,
+     "productPrice": 0.0033,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 3999,
+     "productPrice": 0.0026,
+     "startNumber": 1000
+    },
+    {
+     "endNumber": 7999,
+     "productPrice": 0.002,
+     "startNumber": 4000
+    },
+    {
+     "endNumber": 47999,
+     "productPrice": 0.0019,
+     "startNumber": 8000
+    },
+    {
+     "endNumber": 48199,
+     "productPrice": 0.0016,
+     "startNumber": 48000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0016,
+     "startNumber": 48200
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2304140030_FH--Guangdong-Fenghua-Advanced-Tech-0603CG270J250NT_C880276.pdf",
+   "describe": "25V 27pF C0G ±5% 0603 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+   "erpComponentName": "27pF ±5% 25V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/multilayer-ceramic-capacitors-mlcc-smd-smt_fh-guangdong-fenghua-advanced-tech-0603cg270j250nt_C880276.html",
+   "leastPatchNumber": 20,
+   "lossNumber": 10,
+   "minPurchaseNum": 3445,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 9
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "100V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±5%"
+    },
+    {
+     "attribute_name_en": "Capacitance",
+     "attribute_value_name": "27pF",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>27pF</span>"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "C0G"
+    }
+   ],
+   "componentBrandEn": "CCTC",
+   "componentCode": "C880634",
+   "componentLibraryType": "expand",
+   "componentModelEn": "TCC0603COG270J101CT",
+   "componentPrices": [
+    {
+     "endNumber": 999,
+     "productPrice": 0.0059,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 3999,
+     "productPrice": 0.0047,
+     "startNumber": 1000
+    },
+    {
+     "endNumber": 7999,
+     "productPrice": 0.0036,
+     "startNumber": 4000
+    },
+    {
+     "endNumber": 47999,
+     "productPrice": 0.0032,
+     "startNumber": 8000
+    },
+    {
+     "endNumber": 99999,
+     "productPrice": 0.0029,
+     "startNumber": 48000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0027,
+     "startNumber": 100000
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2304140030_CCTC-TCC0603COG270J101CT_C880634.pdf",
+   "describe": "100V 27pF C0G ±5% 0603 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+   "erpComponentName": "27pF ±5% 100V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/multilayer-ceramic-capacitors-mlcc-smd-smt_cctc-tcc0603cog270j101ct_C880634.html",
+   "leastPatchNumber": 20,
+   "lossNumber": 10,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 2728
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "100V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±5%"
+    },
+    {
+     "attribute_name_en": "Capacitance",
+     "attribute_value_name": "27pF",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>27pF</span>"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "C0G"
+    }
+   ],
+   "componentBrandEn": "Murata Electronics",
+   "componentCode": "C909846",
+   "componentLibraryType": "expand",
+   "componentModelEn": "GCM1885C2A270JA16D",
+   "componentPrices": [
+    {
+     "endNumber": 199,
+     "productPrice": 0.0257,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 599,
+     "productPrice": 0.0208,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 3999,
+     "productPrice": 0.0182,
+     "startNumber": 600
+    },
+    {
+     "endNumber": 7999,
+     "productPrice": 0.0166,
+     "startNumber": 4000
+    },
+    {
+     "endNumber": 19999,
+     "productPrice": 0.0151,
+     "startNumber": 8000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0144,
+     "startNumber": 20000
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+   "dataManualUrl": "https://www.lcsc.com/datasheet/lcsc_datasheet_2410010232_Murata-Electronics-GCM1885C2A270JA16D_C909846.pdf",
+   "describe": "100V 27pF C0G ±5% 0603 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+   "erpComponentName": "27pF ±5% 100V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/multilayer-ceramic-capacitors-mlcc-smd-smt_murata-electronics-gcm1885c2a270ja16d_C909846.html",
+   "leastPatchNumber": 20,
+   "lossNumber": 8,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 4259
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "50V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±5%"
+    },
+    {
+     "attribute_name_en": "Capacitance",
+     "attribute_value_name": "27pF",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>27pF</span>"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "NP0"
+    }
+   ],
+   "componentBrandEn": "YAGEO",
+   "componentCode": "C1853105",
+   "componentLibraryType": "expand",
+   "componentModelEn": "CC0603JPNPO9BN270",
+   "componentPrices": [
+    {
+     "endNumber": 999,
+     "productPrice": 0.0054,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 2999,
+     "productPrice": 0.0042,
+     "startNumber": 1000
+    },
+    {
+     "endNumber": 14999,
+     "productPrice": 0.0036,
+     "startNumber": 3000
+    },
+    {
+     "endNumber": 44999,
+     "productPrice": 0.0032,
+     "startNumber": 15000
+    },
+    {
+     "endNumber": 104999,
+     "productPrice": 0.0029,
+     "startNumber": 45000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0027,
+     "startNumber": 105000
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2201271030_YAGEO-CC0603JPNPO9BN270_C1853105.pdf",
+   "describe": "27pF 50V NP0 ±5% 0603 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+   "erpComponentName": "27pF ±5% 50V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/multilayer-ceramic-capacitors-mlcc-smd-smt_yageo-cc0603jpnpo9bn270_C1853105.html",
+   "leastPatchNumber": 20,
+   "lossNumber": 6,
+   "minPurchaseNum": 2133,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 2
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "50V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±1%"
+    },
+    {
+     "attribute_name_en": "Capacitance",
+     "attribute_value_name": "27pF",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>27pF</span>"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "C0G"
+    }
+   ],
+   "componentBrandEn": "KEMET",
+   "componentCode": "C2167883",
+   "componentLibraryType": "expand",
+   "componentModelEn": "C0603C270F5GACTU",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 0.5654,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 29,
+     "productPrice": 0.554,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 99,
+     "productPrice": 0.5459,
+     "startNumber": 30
+    },
+    {
+     "endNumber": 101,
+     "productPrice": 0.5378,
+     "startNumber": 100
+    },
+    {
+     "endNumber": 103,
+     "productPrice": 0.5378,
+     "startNumber": 102
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.5378,
+     "startNumber": 104
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2304140030_KEMET-C0603C270F5GACTU_C2167883.pdf",
+   "describe": "27pF 50V C0G ±1% 0603 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+   "erpComponentName": "27pF ±1% 50V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/multilayer-ceramic-capacitors-mlcc-smd-smt_kemet-c0603c270f5gactu_C2167883.html",
+   "leastPatchNumber": 2,
+   "lossNumber": 0,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 32
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "50V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±5%"
+    },
+    {
+     "attribute_name_en": "Capacitance",
+     "attribute_value_name": "27pF",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>27pF</span>"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "C0G"
+    }
+   ],
+   "componentBrandEn": "KEMET",
+   "componentCode": "C2169111",
+   "componentLibraryType": "expand",
+   "componentModelEn": "C0603C270J5GACAUTO",
+   "componentPrices": [
+    {
+     "endNumber": 499,
+     "productPrice": 0.0155,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 1499,
+     "productPrice": 0.0123,
+     "startNumber": 500
+    },
+    {
+     "endNumber": 3999,
+     "productPrice": 0.0105,
+     "startNumber": 1500
+    },
+    {
+     "endNumber": 23999,
+     "productPrice": 0.0095,
+     "startNumber": 4000
+    },
+    {
+     "endNumber": 47999,
+     "productPrice": 0.0086,
+     "startNumber": 24000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0081,
+     "startNumber": 48000
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2304140030_KEMET-C0603C270J5GACAUTO_C2169111.pdf",
+   "describe": "27pF 50V C0G ±5% 0603 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+   "erpComponentName": "27pF ±5% 50V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/multilayer-ceramic-capacitors-mlcc-smd-smt_kemet-c0603c270j5gacauto_C2169111.html",
+   "leastPatchNumber": 20,
+   "lossNumber": 6,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 1276
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "100V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±1%"
+    },
+    {
+     "attribute_name_en": "Capacitance",
+     "attribute_value_name": "27pF",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>27pF</span>"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "C0G"
+    }
+   ],
+   "componentBrandEn": "--",
+   "componentCode": "C2170704",
+   "componentLibraryType": "expand",
+   "componentModelEn": "06031A270FAT2A",
+   "componentPrices": [
+    {
+     "endNumber": 49,
+     "productPrice": 0.1999,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 149,
+     "productPrice": 0.1955,
+     "startNumber": 50
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.1926,
+     "startNumber": 150
+    },
+    {
+     "endNumber": 509,
+     "productPrice": 0.1896,
+     "startNumber": 500
+    },
+    {
+     "endNumber": 519,
+     "productPrice": 0.1896,
+     "startNumber": 510
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.1896,
+     "startNumber": 520
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2304140030_Kyocera-AVX-06031A270FAT2A_C2170704.pdf",
+   "describe": "100V 27pF C0G ±1% 0603 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+   "erpComponentName": "27pF ±1% 100V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/multilayer-ceramic-capacitors-mlcc-smd-smt_kyocera-avx-06031a270fat2a_C2170704.html",
+   "leastPatchNumber": 5,
+   "lossNumber": 0,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 30
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "50V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±10%"
+    },
+    {
+     "attribute_name_en": "Capacitance",
+     "attribute_value_name": "27pF",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>27pF</span>"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "NP0"
+    }
+   ],
+   "componentBrandEn": "YAGEO",
+   "componentCode": "C2172254",
+   "componentLibraryType": "expand",
+   "componentModelEn": "CC0603KRNPO9BN270",
+   "componentPrices": [
+    {
+     "endNumber": 999,
+     "productPrice": 0.0133,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 3999,
+     "productPrice": 0.0122,
+     "startNumber": 1000
+    },
+    {
+     "endNumber": 7999,
+     "productPrice": 0.0115,
+     "startNumber": 4000
+    },
+    {
+     "endNumber": 47999,
+     "productPrice": 0.0112,
+     "startNumber": 8000
+    },
+    {
+     "endNumber": 99999,
+     "productPrice": 0.0108,
+     "startNumber": 48000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0107,
+     "startNumber": 100000
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2202081300_YAGEO-CC0603KRNPO9BN270_C2172254.pdf",
+   "describe": "27pF 50V NP0 ±10% 0603 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+   "erpComponentName": "27pF ±10% 50V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/multilayer-ceramic-capacitors-mlcc-smd-smt_yageo-cc0603krnpo9bn270_C2172254.html",
+   "leastPatchNumber": 20,
+   "lossNumber": 10,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 4043
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "100V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±1%"
+    },
+    {
+     "attribute_name_en": "Capacitance",
+     "attribute_value_name": "27pF",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>27pF</span>"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "-"
+    }
+   ],
+   "componentBrandEn": "Murata Electronics",
+   "componentCode": "C2176861",
+   "componentLibraryType": "expand",
+   "componentModelEn": "GCM1885C2A270FA16D",
+   "componentPrices": [
+    {
+     "endNumber": 99,
+     "productPrice": 0.0691,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 299,
+     "productPrice": 0.0558,
+     "startNumber": 100
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.0491,
+     "startNumber": 300
+    },
+    {
+     "endNumber": 3999,
+     "productPrice": 0.0441,
+     "startNumber": 1000
+    },
+    {
+     "endNumber": 7999,
+     "productPrice": 0.0384,
+     "startNumber": 4000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0363,
+     "startNumber": 8000
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+   "dataManualUrl": "https://www.lcsc.com/datasheet/lcsc_datasheet_2410121857_Murata-Electronics-GCM1885C2A270FA16D_C2176861.pdf",
+   "describe": "100V 27pF ±1% 0603 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+   "erpComponentName": "27pF ±1% 100V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/multilayer-ceramic-capacitors-mlcc-smd-smt_murata-electronics-gcm1885c2a270fa16d_C2176861.html",
+   "leastPatchNumber": 5,
+   "lossNumber": 4,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 7677
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "250V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±1%"
+    },
+    {
+     "attribute_name_en": "Capacitance",
+     "attribute_value_name": "27pF",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>27pF</span>"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "C0G"
+    }
+   ],
+   "componentBrandEn": "KEMET",
+   "componentCode": "C2181403",
+   "componentLibraryType": "expand",
+   "componentModelEn": "CBR06C270FAGAC",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 1.0868,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 29,
+     "productPrice": 0.9098,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 99,
+     "productPrice": 0.8139,
+     "startNumber": 30
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.7035,
+     "startNumber": 100
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.6547,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.6336,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2304140030_KEMET-CBR06C270FAGAC_C2181403.pdf",
+   "describe": "250V 27pF C0G ±1% 0603 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+   "erpComponentName": "27pF ±1% 250V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/multilayer-ceramic-capacitors-mlcc-smd-smt_kemet-cbr06c270fagac_C2181403.html",
+   "leastPatchNumber": 2,
+   "lossNumber": 0,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 51
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "16V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±5%"
+    },
+    {
+     "attribute_name_en": "Capacitance",
+     "attribute_value_name": "27pF",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>27pF</span>"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "NP0"
+    }
+   ],
+   "componentBrandEn": "YAGEO",
+   "componentCode": "C2187529",
+   "componentLibraryType": "expand",
+   "componentModelEn": "CC0603JRNPO7BN270",
+   "componentPrices": [
+    {
+     "endNumber": 999,
+     "productPrice": 0.0035,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 3999,
+     "productPrice": 0.0027,
+     "startNumber": 1000
+    },
+    {
+     "endNumber": 7999,
+     "productPrice": 0.0023,
+     "startNumber": 4000
+    },
+    {
+     "endNumber": 47999,
+     "productPrice": 0.0021,
+     "startNumber": 8000
+    },
+    {
+     "endNumber": 48199,
+     "productPrice": 0.0019,
+     "startNumber": 48000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0019,
+     "startNumber": 48200
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2202041700_YAGEO-CC0603JRNPO7BN270_C2187529.pdf",
+   "describe": "16V 27pF NP0 ±5% 0603 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+   "erpComponentName": "27pF ±5% 16V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/multilayer-ceramic-capacitors-mlcc-smd-smt_yageo-cc0603jrnpo7bn270_C2187529.html",
+   "leastPatchNumber": 20,
+   "lossNumber": 6,
+   "minPurchaseNum": 3317,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 18
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "50V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±5%"
+    },
+    {
+     "attribute_name_en": "Capacitance",
+     "attribute_value_name": "27pF",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>27pF</span>"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "C0G"
+    }
+   ],
+   "componentBrandEn": "Vishay Intertech",
+   "componentCode": "C2191022",
+   "componentLibraryType": "expand",
+   "componentModelEn": "VJ0603A270JXACW1BC",
+   "componentPrices": [
+    {
+     "endNumber": 49,
+     "productPrice": 0.0455,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 149,
+     "productPrice": 0.0446,
+     "startNumber": 50
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.0439,
+     "startNumber": 150
+    },
+    {
+     "endNumber": 509,
+     "productPrice": 0.0433,
+     "startNumber": 500
+    },
+    {
+     "endNumber": 519,
+     "productPrice": 0.0433,
+     "startNumber": 510
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0433,
+     "startNumber": 520
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2304140030_Vishay-Intertech-VJ0603A270JXACW1BC_C2191022.pdf",
+   "describe": "27pF 50V C0G ±5% 0603 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+   "erpComponentName": "27pF ±5% 50V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/multilayer-ceramic-capacitors-mlcc-smd-smt_vishay-intertech-vj0603a270jxacw1bc_C2191022.html",
+   "leastPatchNumber": 5,
+   "lossNumber": 4,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 218
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "50V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±5%"
+    },
+    {
+     "attribute_name_en": "Capacitance",
+     "attribute_value_name": "27pF",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>27pF</span>"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "NP0"
+    }
+   ],
+   "componentBrandEn": "YAGEO",
+   "componentCode": "C2191157",
+   "componentLibraryType": "expand",
+   "componentModelEn": "AC0603JRNPO9BN270",
+   "componentPrices": [
+    {
+     "endNumber": 199,
+     "productPrice": 0.0225,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 599,
+     "productPrice": 0.0173,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 3999,
+     "productPrice": 0.0144,
+     "startNumber": 600
+    },
+    {
+     "endNumber": 7999,
+     "productPrice": 0.0127,
+     "startNumber": 4000
+    },
+    {
+     "endNumber": 19999,
+     "productPrice": 0.0112,
+     "startNumber": 8000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0104,
+     "startNumber": 20000
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2304140030_YAGEO-AC0603JRNPO9BN270_C2191157.pdf",
+   "describe": "27pF 50V NP0 ±5% 0603 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+   "erpComponentName": "27pF ±5% 50V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/multilayer-ceramic-capacitors-mlcc-smd-smt_yageo-ac0603jrnpo9bn270_C2191157.html",
+   "leastPatchNumber": 20,
+   "lossNumber": 10,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 3016
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "50V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±1%"
+    },
+    {
+     "attribute_name_en": "Capacitance",
+     "attribute_value_name": "27pF",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>27pF</span>"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "C0G"
+    }
+   ],
+   "componentBrandEn": "KEMET",
+   "componentCode": "C2265533",
+   "componentLibraryType": "expand",
+   "componentModelEn": "CBR06C270F5GAC",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 0.2746,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 29,
+     "productPrice": 0.2697,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 99,
+     "productPrice": 0.2648,
+     "startNumber": 30
+    },
+    {
+     "endNumber": 101,
+     "productPrice": 0.2616,
+     "startNumber": 100
+    },
+    {
+     "endNumber": 103,
+     "productPrice": 0.2616,
+     "startNumber": 102
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.2616,
+     "startNumber": 104
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2304140030_KEMET-CBR06C270F5GAC_C2265533.pdf",
+   "describe": "27pF 50V C0G ±1% 0603 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+   "erpComponentName": "27pF ±1% 50V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/multilayer-ceramic-capacitors-mlcc-smd-smt_kemet-cbr06c270f5gac_C2265533.html",
+   "leastPatchNumber": 5,
+   "lossNumber": 0,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 63
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "250V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±1%"
+    },
+    {
+     "attribute_name_en": "Capacitance",
+     "attribute_value_name": "27pF",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>27pF</span>"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "C0G"
+    }
+   ],
+   "componentBrandEn": "Murata Electronics",
+   "componentCode": "C2360423",
+   "componentLibraryType": "expand",
+   "componentModelEn": "GQM1875C2E270FB12D",
+   "componentPrices": [
+    {
+     "endNumber": 49,
+     "productPrice": 0.3315,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 149,
+     "productPrice": 0.2709,
+     "startNumber": 50
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.2449,
+     "startNumber": 150
+    },
+    {
+     "endNumber": 2499,
+     "productPrice": 0.2124,
+     "startNumber": 500
+    },
+    {
+     "endNumber": 3999,
+     "productPrice": 0.1979,
+     "startNumber": 2500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.1893,
+     "startNumber": 4000
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2308111618_Murata-Electronics-GQM1875C2E270FB12D_C2360423.pdf",
+   "describe": "250V 27pF C0G ±1% 0603 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+   "erpComponentName": "27pF ±1% 250V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/multilayer-ceramic-capacitors-mlcc-smd-smt_murata-electronics-gqm1875c2e270fb12d_C2360423.html",
+   "leastPatchNumber": 0,
+   "lossNumber": 0,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 12124
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "50V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±1%"
+    },
+    {
+     "attribute_name_en": "Capacitance",
+     "attribute_value_name": "27pF",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>27pF</span>"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "NP0"
+    }
+   ],
+   "componentBrandEn": "Walsin Tech Corp",
+   "componentCode": "C2909446",
+   "componentLibraryType": "expand",
+   "componentModelEn": "RF18N270F500CT",
+   "componentPrices": [
+    {
+     "endNumber": 99,
+     "productPrice": 0.0652,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 299,
+     "productPrice": 0.055,
+     "startNumber": 100
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.0499,
+     "startNumber": 300
+    },
+    {
+     "endNumber": 3999,
+     "productPrice": 0.046,
+     "startNumber": 1000
+    },
+    {
+     "endNumber": 7999,
+     "productPrice": 0.0381,
+     "startNumber": 4000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0366,
+     "startNumber": 8000
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2110281730_Walsin-Tech-Corp-RF18N270F500CT_C2909446.pdf",
+   "describe": "27pF 50V NP0 ±1% 0603 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+   "erpComponentName": "27pF ±1% 50V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/multilayer-ceramic-capacitors-mlcc-smd-smt_walsin-tech-corp-rf18n270f500ct_C2909446.html",
+   "leastPatchNumber": 5,
+   "lossNumber": 4,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 2
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "50V"
+    },
+    {
+     "attribute_name_en": "Capacitance",
+     "attribute_value_name": "27pF",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>27pF</span>"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "NP0"
+    }
+   ],
+   "componentBrandEn": "Johanson Dielectrics",
+   "componentCode": "C2917712",
+   "componentLibraryType": "expand",
+   "componentModelEn": "201R14N270JV4T",
+   "componentPrices": [
+    {
+     "endNumber": 499,
+     "productPrice": 0.015,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 1499,
+     "productPrice": 0.0118,
+     "startNumber": 500
+    },
+    {
+     "endNumber": 3999,
+     "productPrice": 0.0101,
+     "startNumber": 1500
+    },
+    {
+     "endNumber": 23999,
+     "productPrice": 0.009,
+     "startNumber": 4000
+    },
+    {
+     "endNumber": 47999,
+     "productPrice": 0.0081,
+     "startNumber": 24000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0076,
+     "startNumber": 48000
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2203311730_Johanson-Dielectrics-201R14N270JV4T_C2917712.pdf",
+   "describe": "27pF 50V NP0 0603 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+   "erpComponentName": "27pF 50V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/multilayer-ceramic-capacitors-mlcc-smd-smt_johanson-dielectrics-201r14n270jv4t_C2917712.html",
+   "leastPatchNumber": 10,
+   "lossNumber": 5,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 23950
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "50V"
+    },
+    {
+     "attribute_name_en": "Capacitance",
+     "attribute_value_name": "27pF",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>27pF</span>"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "NP0"
+    }
+   ],
+   "componentBrandEn": "Walsin Tech Corp",
+   "componentCode": "C2991416",
+   "componentLibraryType": "expand",
+   "componentModelEn": "0603N270J500CT-C",
+   "componentPrices": [
+    {
+     "endNumber": 999,
+     "productPrice": 0.0048,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 3999,
+     "productPrice": 0.0038,
+     "startNumber": 1000
+    },
+    {
+     "endNumber": 7999,
+     "productPrice": 0.0032,
+     "startNumber": 4000
+    },
+    {
+     "endNumber": 47999,
+     "productPrice": 0.0029,
+     "startNumber": 8000
+    },
+    {
+     "endNumber": 48199,
+     "productPrice": 0.0026,
+     "startNumber": 48000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0026,
+     "startNumber": 48200
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2204131745_Walsin-Tech-Corp-0603N270J500CT-C_C2991416.pdf",
+   "describe": "27pF 50V NP0 0603 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+   "erpComponentName": "27pF 50V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/multilayer-ceramic-capacitors-mlcc-smd-smt_walsin-tech-corp-0603n270j500ct-c_C2991416.html",
+   "leastPatchNumber": 10,
+   "lossNumber": 5,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 1
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "250V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±5%"
+    },
+    {
+     "attribute_name_en": "Capacitance",
+     "attribute_value_name": "27pF",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>27pF</span>"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "C0G"
+    }
+   ],
+   "componentBrandEn": "Murata Electronics",
+   "componentCode": "C3842072",
+   "componentLibraryType": "expand",
+   "componentModelEn": "GQM1875C2E270JB12D",
+   "componentPrices": [
+    {
+     "endNumber": 49,
+     "productPrice": 0.1433,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 149,
+     "productPrice": 0.1138,
+     "startNumber": 50
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.099,
+     "startNumber": 150
+    },
+    {
+     "endNumber": 2499,
+     "productPrice": 0.0878,
+     "startNumber": 500
+    },
+    {
+     "endNumber": 3999,
+     "productPrice": 0.079,
+     "startNumber": 2500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0745,
+     "startNumber": 4000
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+   "dataManualUrl": "https://www.lcsc.com/datasheet/lcsc_datasheet_2411272025_Murata-Electronics-GQM1875C2E270JB12D_C3842072.pdf",
+   "describe": "250V 27pF C0G ±5% 0603 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+   "erpComponentName": "27pF ±5% 250V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/multilayer-ceramic-capacitors-mlcc-smd-smt_murata-electronics-gqm1875c2e270jb12d_C3842072.html",
+   "leastPatchNumber": 5,
+   "lossNumber": 2,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 1510
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "50V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±2%"
+    },
+    {
+     "attribute_name_en": "Capacitance",
+     "attribute_value_name": "27pF",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>27pF</span>"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "C0G"
+    }
+   ],
+   "componentBrandEn": "Murata Electronics",
+   "componentCode": "C3847856",
+   "componentLibraryType": "expand",
+   "componentModelEn": "GRM1885C1H270GA01D",
+   "componentPrices": [
+    {
+     "endNumber": 49,
+     "productPrice": 0.0811,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 149,
+     "productPrice": 0.0795,
+     "startNumber": 50
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.0784,
+     "startNumber": 150
+    },
+    {
+     "endNumber": 509,
+     "productPrice": 0.0772,
+     "startNumber": 500
+    },
+    {
+     "endNumber": 519,
+     "productPrice": 0.0772,
+     "startNumber": 510
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0772,
+     "startNumber": 520
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2401231615_Murata-Electronics-GRM1885C1H270GA01D_C3847856.pdf",
+   "describe": "27pF 50V C0G ±2% 0603 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+   "erpComponentName": "27pF ±2% 50V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/multilayer-ceramic-capacitors-mlcc-smd-smt_murata-electronics-grm1885c1h270ga01d_C3847856.html",
+   "leastPatchNumber": 5,
+   "lossNumber": 4,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 4
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "250V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±2%"
+    },
+    {
+     "attribute_name_en": "Capacitance",
+     "attribute_value_name": "27pF",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>27pF</span>"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "C0G"
+    }
+   ],
+   "componentBrandEn": "Murata Electronics",
+   "componentCode": "C3851893",
+   "componentLibraryType": "expand",
+   "componentModelEn": "GQM1875C2E270GB12D",
+   "componentPrices": [
+    {
+     "endNumber": 49,
+     "productPrice": 0.203,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 149,
+     "productPrice": 0.1648,
+     "startNumber": 50
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.1484,
+     "startNumber": 150
+    },
+    {
+     "endNumber": 2499,
+     "productPrice": 0.1281,
+     "startNumber": 500
+    },
+    {
+     "endNumber": 3999,
+     "productPrice": 0.119,
+     "startNumber": 2500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.1136,
+     "startNumber": 4000
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+   "dataManualUrl": "https://www.lcsc.com/datasheet/lcsc_datasheet_2411272025_Murata-Electronics-GQM1875C2E270GB12D_C3851893.pdf",
+   "describe": "250V 27pF C0G ±2% 0603 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+   "erpComponentName": "27pF ±2% 250V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://lcsc.com/product-detail/multilayer-ceramic-capacitors-mlcc-smd-smt_murata-electronics-gqm1875c2e270gb12d_C3851893.html",
+   "leastPatchNumber": 5,
+   "lossNumber": 2,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 3368
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "50V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±1%"
+    },
+    {
+     "attribute_name_en": "Capacitance",
+     "attribute_value_name": "27pF",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>27pF</span>"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "C0G"
+    }
+   ],
+   "componentBrandEn": "KEMET",
+   "componentCode": "C3866793",
+   "componentLibraryType": "expand",
+   "componentModelEn": "C0603C270F5GACAUTO",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 0.4842,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 29,
+     "productPrice": 0.4728,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 99,
+     "productPrice": 0.4663,
+     "startNumber": 30
+    },
+    {
+     "endNumber": 101,
+     "productPrice": 0.4598,
+     "startNumber": 100
+    },
+    {
+     "endNumber": 103,
+     "productPrice": 0.4598,
+     "startNumber": 102
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.4598,
+     "startNumber": 104
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2401181701_KEMET-C0603C270F5GACAUTO_C3866793.pdf",
+   "describe": "27pF 50V C0G ±1% 0603 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+   "erpComponentName": "27pF ±1% 50V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/multilayer-ceramic-capacitors-mlcc-smd-smt_kemet-c0603c270f5gacauto_C3866793.html",
+   "leastPatchNumber": 5,
+   "lossNumber": 0,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 46
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "50V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±5%"
+    },
+    {
+     "attribute_name_en": "Capacitance",
+     "attribute_value_name": "27pF",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>27pF</span>"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "C0G"
+    }
+   ],
+   "componentBrandEn": "KEMET",
+   "componentCode": "C3896054",
+   "componentLibraryType": "expand",
+   "componentModelEn": "C0603X270J5GACAUTO",
+   "componentPrices": [
+    {
+     "endNumber": 49,
+     "productPrice": 0.1568,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 149,
+     "productPrice": 0.1536,
+     "startNumber": 50
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.1513,
+     "startNumber": 150
+    },
+    {
+     "endNumber": 509,
+     "productPrice": 0.1492,
+     "startNumber": 500
+    },
+    {
+     "endNumber": 519,
+     "productPrice": 0.1492,
+     "startNumber": 510
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.1492,
+     "startNumber": 520
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2401181633_KEMET-C0603X270J5GACAUTO_C3896054.pdf",
+   "describe": "27pF 50V C0G ±5% 0603 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+   "erpComponentName": "27pF ±5% 50V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/multilayer-ceramic-capacitors-mlcc-smd-smt_kemet-c0603x270j5gacauto_C3896054.html",
+   "leastPatchNumber": 5,
+   "lossNumber": 4,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 10
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-55℃~+125℃"
+    },
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "50V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±5%"
+    },
+    {
+     "attribute_name_en": "Capacitance",
+     "attribute_value_name": "27pF",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>27pF</span>"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "C0G"
+    }
+   ],
+   "componentBrandEn": "FOJAN",
+   "componentCode": "C5137568",
+   "componentLibraryType": "expand",
+   "componentModelEn": "FCC0603N270J500CT",
+   "componentPrices": [
+    {
+     "endNumber": 999,
+     "productPrice": 0.0047,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 3999,
+     "productPrice": 0.0039,
+     "startNumber": 1000
+    },
+    {
+     "endNumber": 7999,
+     "productPrice": 0.0033,
+     "startNumber": 4000
+    },
+    {
+     "endNumber": 47999,
+     "productPrice": 0.0031,
+     "startNumber": 8000
+    },
+    {
+     "endNumber": 48199,
+     "productPrice": 0.0029,
+     "startNumber": 48000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0029,
+     "startNumber": 48200
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2208181800_FOJAN-FCC0603N270J500CT_C5137568.pdf",
+   "describe": "27pF 50V C0G ±5% 0603 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+   "erpComponentName": "27pF ±5% 50V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/multilayer-ceramic-capacitors-mlcc-smd-smt_fojan-fcc0603n270j500ct_C5137568.html",
+   "leastPatchNumber": 20,
+   "lossNumber": 6,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 95485
+  }
+ ],
+ "returned": 50,
+ "schema": 1,
+ "total_matches": 967
+}

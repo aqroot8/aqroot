@@ -1,9 +1,13 @@
 # AQROOT Demo — Fabrication Package
 
-Status: **GENERATED AND REVIEWED — NOT RELEASABLE.**
-One contract claim fails, and it is the BOM sourcing claim (FAB7): the BOM is
-**75.3 % orderable** and the residual is 26 lines needing a purchasing decision
-plus 8 lines whose value is not yet final.
+Status: **GENERATED AND REVIEWED — ALL EIGHT CONTRACT CLAIMS PASS (D-615).**
+`FAB7` was the standing blocker and it is closed: the BOM is **100.0 % orderable,
+247 of 247 fitted references**, and `needs_a_sourcing_decision` is **zero lines**.
+The package is not yet declared RELEASABLE, and the reason is now a different
+one: **no contract here proves that a land pattern matches its part's datasheet
+drawing** — 199 `lib_footprint_issues` and 48 `footprint_symbol_mismatch` parity
+warnings are 247 unproven claims of exactly that kind, and D-615's `U18` finding
+is the proof the class is real.
 
 The package lives in `hardware/demo/fab/`.  It is not hand-assembled: it is
 produced in one command by `hardware/demo/manufacturing/export_fab_package.py`
@@ -13,15 +17,41 @@ Do not edit an artifact in place — regenerate.
     python3 hardware/demo/manufacturing/export_fab_package.py
     python3 hardware/demo/manufacturing/checks/fab_package_contract.py
 
-The BOM's part identities are not hand-edited either.  They are decided by
-`screen_bom_sourcing.py` and written by `apply_bom_sourcing.py`, and the pair
-is reproducible: replaying them against the `HEAD` schematic returns all ten
-sheets byte-identical.
+The BOM's part identities are not hand-edited either.  There are two deciders
+and one writer, and the set is reproducible: replaying the committed plans
+against the `HEAD` schematic returns all ten sheets **and the project symbol
+library** byte-identical.
+
+`screen_bom_sourcing.py` asks whether THIS REPOSITORY already holds a reviewed
+answer.  `rule_open_sourcing.py` asks a LIVE DISTRIBUTOR, which is what D-096
+requires, through `jlc_live.py` — which archives every query it makes, with the
+UTC minute it was read, under `evidence/jlc-live/`, and replays the archive
+unless `--refresh` is given.  `apply_bom_sourcing.py` writes.
 
     python3 hardware/demo/manufacturing/screen_bom_sourcing.py \
         --plan PLAN.json --worklist OPEN.csv
+    python3 hardware/demo/manufacturing/rule_open_sourcing.py \
+        [--include-tune] [--refresh] --plan PLAN.json -o REPORT.json
     python3 hardware/demo/manufacturing/apply_bom_sourcing.py \
         --plan PLAN.json --apply
+
+`apply_bom_sourcing.py` ADDS a missing identity freely and CORRECTS an existing
+one only when the plan NAMES the exact string it is overwriting — `replaces` for
+a symbol property, `text_replaces` for the two places that carry a part identity
+and are not instance properties: the cached library symbol inside a sheet and
+the project's own `.kicad_sym`.  Leaving those stale is how a corrected instance
+gets silently un-corrected by *Update Symbols from Library*.
+
+And one screen asks the `C26` question of every sourced line at once, against
+the distributor's own package field:
+
+    python3 hardware/demo/manufacturing/screen_part_land_parity.py \
+        -o REPORT.json --worklist SHORT.csv
+
+It reports MATCH / MISMATCH / **UNCOMPARABLE**, and the third verdict is
+deliberate: a footprint named `MAX17048_T822` names a PART, not a JEDEC body,
+and counting it as a pass would be the D-611 failure again — a check that reads
+TRUE because it was never asked.
 
 ## Authority
 
@@ -115,7 +145,7 @@ close on its own.**
    and the board carries one inherited `solder_mask_bridge` DRC report.  That
    report predates the maze router and is inside the inherited baseline.
 
-## Review — `checks/fab_package_contract.py`
+## Review — `checks/fab_package_contract.py` (ALL EIGHT PASS)
 
     FAB1  PROVENANCE  PASS   manifest names the authoritative board sha256
                              AND all ten schematic sheet sha256; all 28
@@ -131,14 +161,95 @@ close on its own.**
     FAB6  BOM         PASS   the four views partition 310 symbols once each;
                              no reference in two views; no part identity on
                              two footprints
-    FAB7  SOURCING    FAIL   247 assembly references, 186 orderable -- 75.3 %.
-                             The residual is PARTITIONED: 26 lines / 45 parts
-                             need a purchasing decision, 8 lines / 16 parts are
-                             FIRST-ARTICLE TUNE and no part number can close
-                             them.  The PASS condition is unchanged -- one
-                             unquotable line and this fails
+    FAB7  SOURCING    PASS   247 assembly references, 247 orderable --
+                             coverage 1.0000, needs_a_sourcing_decision ZERO.
+                             The PASS condition was never relaxed: one
+                             unquotable line and this still fails (D-615)
     FAB8  OUTLINE     PASS   the Edge.Cuts profile is the board outline to the
                              micron
+
+## Sourcing: 100 % — and the two questions that closed it (D-615)
+
+    FAB7  SOURCING    PASS   247 of 247 fitted references orderable
+                             coverage 1.0000
+                             needs_a_sourcing_decision   0 lines / 0 parts
+                             pending_first_article_tune  0 lines / 0 parts
+
+D-613 opened this at **25.9 %**.  D-614 grafted 122 identities the repository
+had already audited and reached **75.3 %**, then stopped for a stated reason:
+**D-096 binds** — a part number configured from an ordering scheme is a
+hypothesis until a distributor record confirms lifecycle and stock.  D-615 read
+that record 225 times and archived every answer.
+
+**26 lines / 45 parts had no prior anywhere.**  Each candidate is read as a
+PART, off the record's own parametric attributes, and gated on land, magnitude,
+tolerance, ranked dielectric, node voltage (`net_gate`, unchanged), dissipation
+(new, in `net_gate`'s image), vendor and stock.  The single sharpest proof of
+why the record and not the name is the authority:
+
+    R69 is 1.87 ohm       ->  UNI-ROYAL 0603WAF187KT5E   LCSC C422967
+    0603WAF1873T5E        ->  187 kOhm                   LCSC C22896
+
+One character, five orders of magnitude, two separate catalogue records.
+
+**THE DISSIPATION GATE NEEDED NUMBERS THE BOARD DID NOT HAVE.**  `NET_MAX_DC`
+grew from 17 established nodes to **48**, each naming the supply or part limit
+that bounds it.  Three of them are worth reading:
+
+* `LTC_GATE` is bounded at `VOUT` **+ 13.1 V** — from the U18 footprint's own
+  description of the LTC4368 charge pump, corroborated by the NTMD4820N's V_GS
+  abs max.  Nothing was guessed.
+* **`R95`'s node over-bound UNDERSTATES its dissipation.**  V²/R across the
+  node gives 54 mW; the single-fault case puts a reversed cell IN SERIES with
+  VBUS and the real answer is 154 mW.  Ten references therefore carry an
+  explicit current ruling instead.
+* **`R24` and `C12`'s Value strings are looser than their own symbol notes** —
+  `12R` against *"12R 1 percent"*, `22uF` against *"the part is specified X7R
+  16 V in 1210"*.  Both are gated on the note, and both landed better than the
+  note asked.
+
+`R75` is gated on a part CLASS, not a number: `15mR 1% 1W` is satisfied on paper
+by a thick film at ±1500 ppm/°C, which would move the LTC4368's 3.33 A trip by
+19 % over −40…+85 °C.  The gate requires a current-sense / alloy part at
+≤100 ppm/°C.
+
+**THE 16 TUNE PARTS ARE BOUGHT, AND TOLD THEY ARE PROVISIONAL.**  DEVICE_SPEC
+s.14 is right that no part number closes an NFC matching value — and you cannot
+build a first article out of an empty position.  Each now carries a
+FIRST-ARTICLE part number whose own `Note_Sourcing` says, in the schematic, that
+it is expected to change after the VNA.  Two things are refused rather than
+invented: the ST25R3916 tank NODE VOLTAGE (so those lines are gated on the
+sheet's own 50 V C0G ruling) and the tank CURRENT (so `R114`–`R117` took the
+highest-rated part their 0603 land offers, and the dissipation is a
+first-article measurement).
+
+## The safety part was ordered in the wrong package (D-615)
+
+    board land       Package_SO:MSOP-10_3x3mm_P0.5mm
+    BOM order code   LTC4368IDD-1#PBF
+    live record      DFN-10-EP(3x3), body 0.75 mm   (MS variants: MSOP-10, 1.1 mm)
+
+`DD` is DFN.  D-099 locked `LTC4368IMS-1#PBF`, MSOP-10, under FBV2-PWR-002 —
+*"every new safety-critical part is leaded and inspectable … no bottom-terminated
+parts"* — and corrected the FOOTPRINT while the part identity stayed DFN.  The
+cached library symbol and the project `.kicad_sym` both still carried the DD
+code **and** a `Package` field describing a DFN beside a `Footprint` field that
+already read MSOP-10.
+
+Corrected to **`LTC4368IMS-1#TRPBF`, LCSC `C688401`**, MSOP-10, I grade, `-1`
+suffix — the tape-and-reel order code of the identical device, D-210's precedent
+exactly, **not an electrical change**.  `LTC4368IMS-1#PBF` reads stock 0.
+
+## What is still open, and it is purchasing
+
+Nine lines sit under 10× the first-five need on the assembler's own catalogue
+and five read ZERO — `J5`, `L4`, `MK1`, `U19`, `U9`, then `Q2`/`Q3` 0,
+`U2`/`U3` 1, `U18` 3, `D8` 7.  Most are already CONSIGNED classes under D-206
+and are bought from a broadline distributor, so a zero here is a brief to work
+rather than a design defect.  The list, with the UTC minute each was read, is
+`hardware/demo/manufacturing/evidence/d615-purchasing-short.csv`.
+
+<!-- HISTORICAL — superseded by the section above -->
 
 ## Sourcing: 75.3 %, and what the remaining quarter actually is
 

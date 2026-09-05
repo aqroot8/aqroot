@@ -1,0 +1,425 @@
+{
+ "added": [
+  {
+   "property": "Manufacturer",
+   "ref": "C79",
+   "sheet": "04_spi_b_radios_nfc.kicad_sch",
+   "value": "Samsung Electro-Mechanics"
+  },
+  {
+   "property": "MPN",
+   "ref": "C79",
+   "sheet": "04_spi_b_radios_nfc.kicad_sch",
+   "value": "CL10C100JB8NNNC"
+  },
+  {
+   "property": "LCSC",
+   "ref": "C79",
+   "sheet": "04_spi_b_radios_nfc.kicad_sch",
+   "value": "C1634"
+  },
+  {
+   "property": "Note_Sourcing",
+   "ref": "C79",
+   "sheet": "04_spi_b_radios_nfc.kicad_sch",
+   "value": "FIRST-ARTICLE VALUE ONLY -- DEVICE_SPEC s.14 requires this position to be RE-TUNED against a VNA and the ST tool with the board in hand, so this part number buys the first article and is EXPECTED TO CHANGE. SOURCING D-615 LIVE_RECORD. JLCPCB record read 2026-09-05T01:16:20Z: base library, stock 2119581, land 0603, Capacitance 10pF; Temperature Coefficient C0G; Tolerance \u00b15%; Voltage Rating 50V. Gates: the value string's own stated rating; not a resistor."
+  },
+  {
+   "property": "Manufacturer",
+   "ref": "C80",
+   "sheet": "04_spi_b_radios_nfc.kicad_sch",
+   "value": "Samsung Electro-Mechanics"
+  },
+  {
+   "property": "MPN",
+   "ref": "C80",
+   "sheet": "04_spi_b_radios_nfc.kicad_sch",
+   "value": "CL10C100JB8NNNC"
+  },
+  {
+   "property": "LCSC",
+   "ref": "C80",
+   "sheet": "04_spi_b_radios_nfc.kicad_sch",
+   "value": "C1634"
+  },
+  {
+   "property": "Note_Sourcing",
+   "ref": "C80",
+   "sheet": "04_spi_b_radios_nfc.kicad_sch",
+   "value": "FIRST-ARTICLE VALUE ONLY -- DEVICE_SPEC s.14 requires this position to be RE-TUNED against a VNA and the ST tool with the board in hand, so this part number buys the first article and is EXPECTED TO CHANGE. SOURCING D-615 LIVE_RECORD. JLCPCB record read 2026-09-05T01:16:20Z: base library, stock 2119581, land 0603, Capacitance 10pF; Temperature Coefficient C0G; Tolerance \u00b15%; Voltage Rating 50V. Gates: the value string's own stated rating; not a resistor."
+  },
+  {
+   "property": "Manufacturer",
+   "ref": "C69",
+   "sheet": "04_spi_b_radios_nfc.kicad_sch",
+   "value": "Samsung Electro-Mechanics"
+  },
+  {
+   "property": "MPN",
+   "ref": "C69",
+   "sheet": "04_spi_b_radios_nfc.kicad_sch",
+   "value": "CL10C101JB8NNNC"
+  },
+  {
+   "property": "LCSC",
+   "ref": "C69",
+   "sheet": "04_spi_b_radios_nfc.kicad_sch",
+   "value": "C14858"
+  },
+  {
+   "property": "Note_Sourcing",
+   "ref": "C69",
+   "sheet": "04_spi_b_radios_nfc.kicad_sch",
+   "value": "FIRST-ARTICLE VALUE ONLY -- DEVICE_SPEC s.14 requires this position to be RE-TUNED against a VNA and the ST tool with the board in hand, so this part number buys the first article and is EXPECTED TO CHANGE. SOURCING D-615 LIVE_RECORD. JLCPCB record read 2026-09-05T01:16:20Z: base library, stock 4341176, land 0603, Capacitance 100pF; Temperature Coefficient C0G; Tolerance \u00b15%; Voltage Rating 50V. Gates: the value string's own stated rating; not a resistor."
+  },
+  {
+   "property": "Manufacturer",
+   "ref": "C73",
+   "sheet": "04_spi_b_radios_nfc.kicad_sch",
+   "value": "Murata Electronics"
+  },
+  {
+   "property": "MPN",
+   "ref": "C73",
+   "sheet": "04_spi_b_radios_nfc.kicad_sch",
+   "value": "GCM1885C2A152JA16D"
+  },
+  {
+   "property": "LCSC",
+   "ref": "C73",
+   "sheet": "04_spi_b_radios_nfc.kicad_sch",
+   "value": "C388906"
+  },
+  {
+   "property": "Note_Sourcing",
+   "ref": "C73",
+   "sheet": "04_spi_b_radios_nfc.kicad_sch",
+   "value": "FIRST-ARTICLE VALUE ONLY -- DEVICE_SPEC s.14 requires this position to be RE-TUNED against a VNA and the ST tool with the board in hand, so this part number buys the first article and is EXPECTED TO CHANGE. SOURCING D-615 LIVE_RECORD. JLCPCB record read 2026-09-05T01:16:20Z: expand library, stock 5039, land 0603, Capacitance 1.5nF; Temperature Coefficient C0G; Tolerance \u00b15%; Voltage Rating 100V. Gates: the value string's own stated rating; not a resistor."
+  },
+  {
+   "property": "Manufacturer",
+   "ref": "C71",
+   "sheet": "04_spi_b_radios_nfc.kicad_sch",
+   "value": "Murata Electronics"
+  },
+  {
+   "property": "MPN",
+   "ref": "C71",
+   "sheet": "04_spi_b_radios_nfc.kicad_sch",
+   "value": "GCM1885C2A301FA16J"
+  },
+  {
+   "property": "LCSC",
+   "ref": "C71",
+   "sheet": "04_spi_b_radios_nfc.kicad_sch",
+   "value": "C3837533"
+  },
+  {
+   "property": "Note_Sourcing",
+   "ref": "C71",
+   "sheet": "04_spi_b_radios_nfc.kicad_sch",
+   "value": "FIRST-ARTICLE VALUE ONLY -- DEVICE_SPEC s.14 requires this position to be RE-TUNED against a VNA and the ST tool with the board in hand, so this part number buys the first article and is EXPECTED TO CHANGE. SOURCING D-615 LIVE_RECORD. JLCPCB record read 2026-09-05T01:16:20Z: expand library, stock 1315, land 0603, Capacitance 300pF; Temperature Coefficient C0G; Tolerance \u00b11%; Voltage Rating 100V. Gates: the value string's own stated rating; not a resistor."
+  },
+  {
+   "property": "Manufacturer",
+   "ref": "R114",
+   "sheet": "04_spi_b_radios_nfc.kicad_sch",
+   "value": "YAGEO"
+  },
+  {
+   "property": "MPN",
+   "ref": "R114",
+   "sheet": "04_spi_b_radios_nfc.kicad_sch",
+   "value": "RC0603FR-071R1L"
+  },
+  {
+   "property": "LCSC",
+   "ref": "R114",
+   "sheet": "04_spi_b_radios_nfc.kicad_sch",
+   "value": "C309559"
+  },
+  {
+   "property": "Note_Sourcing",
+   "ref": "R114",
+   "sheet": "04_spi_b_radios_nfc.kicad_sch",
+   "value": "FIRST-ARTICLE VALUE ONLY -- DEVICE_SPEC s.14 requires this position to be RE-TUNED against a VNA and the ST tool with the board in hand, so this part number buys the first article and is EXPECTED TO CHANGE. SOURCING D-615 LIVE_RECORD. JLCPCB record read 2026-09-05T01:16:20Z: expand library, stock 3640, land 0603, Operating Temperature -55\u2103~+155\u2103; Power(Watts) 100mW; Resistance 1.1\u03a9; Temperature Coefficient \u00b1200ppm/\u2103; Tolerance \u00b11%; Type Thick Film Resistor; Voltage-Supply(Max) 75V. Gates: the value string's own stated rating; not established -- first-article measurement."
+  },
+  {
+   "property": "Manufacturer",
+   "ref": "C70",
+   "sheet": "04_spi_b_radios_nfc.kicad_sch",
+   "value": "Samsung Electro-Mechanics"
+  },
+  {
+   "property": "MPN",
+   "ref": "C70",
+   "sheet": "04_spi_b_radios_nfc.kicad_sch",
+   "value": "CL10C101JB8NNNC"
+  },
+  {
+   "property": "LCSC",
+   "ref": "C70",
+   "sheet": "04_spi_b_radios_nfc.kicad_sch",
+   "value": "C14858"
+  },
+  {
+   "property": "Note_Sourcing",
+   "ref": "C70",
+   "sheet": "04_spi_b_radios_nfc.kicad_sch",
+   "value": "FIRST-ARTICLE VALUE ONLY -- DEVICE_SPEC s.14 requires this position to be RE-TUNED against a VNA and the ST tool with the board in hand, so this part number buys the first article and is EXPECTED TO CHANGE. SOURCING D-615 LIVE_RECORD. JLCPCB record read 2026-09-05T01:16:20Z: base library, stock 4341176, land 0603, Capacitance 100pF; Temperature Coefficient C0G; Tolerance \u00b15%; Voltage Rating 50V. Gates: the value string's own stated rating; not a resistor."
+  },
+  {
+   "property": "Manufacturer",
+   "ref": "C74",
+   "sheet": "04_spi_b_radios_nfc.kicad_sch",
+   "value": "Murata Electronics"
+  },
+  {
+   "property": "MPN",
+   "ref": "C74",
+   "sheet": "04_spi_b_radios_nfc.kicad_sch",
+   "value": "GCM1885C2A152JA16D"
+  },
+  {
+   "property": "LCSC",
+   "ref": "C74",
+   "sheet": "04_spi_b_radios_nfc.kicad_sch",
+   "value": "C388906"
+  },
+  {
+   "property": "Note_Sourcing",
+   "ref": "C74",
+   "sheet": "04_spi_b_radios_nfc.kicad_sch",
+   "value": "FIRST-ARTICLE VALUE ONLY -- DEVICE_SPEC s.14 requires this position to be RE-TUNED against a VNA and the ST tool with the board in hand, so this part number buys the first article and is EXPECTED TO CHANGE. SOURCING D-615 LIVE_RECORD. JLCPCB record read 2026-09-05T01:16:20Z: expand library, stock 5039, land 0603, Capacitance 1.5nF; Temperature Coefficient C0G; Tolerance \u00b15%; Voltage Rating 100V. Gates: the value string's own stated rating; not a resistor."
+  },
+  {
+   "property": "Manufacturer",
+   "ref": "C72",
+   "sheet": "04_spi_b_radios_nfc.kicad_sch",
+   "value": "Murata Electronics"
+  },
+  {
+   "property": "MPN",
+   "ref": "C72",
+   "sheet": "04_spi_b_radios_nfc.kicad_sch",
+   "value": "GCM1885C2A301FA16J"
+  },
+  {
+   "property": "LCSC",
+   "ref": "C72",
+   "sheet": "04_spi_b_radios_nfc.kicad_sch",
+   "value": "C3837533"
+  },
+  {
+   "property": "Note_Sourcing",
+   "ref": "C72",
+   "sheet": "04_spi_b_radios_nfc.kicad_sch",
+   "value": "FIRST-ARTICLE VALUE ONLY -- DEVICE_SPEC s.14 requires this position to be RE-TUNED against a VNA and the ST tool with the board in hand, so this part number buys the first article and is EXPECTED TO CHANGE. SOURCING D-615 LIVE_RECORD. JLCPCB record read 2026-09-05T01:16:20Z: expand library, stock 1315, land 0603, Capacitance 300pF; Temperature Coefficient C0G; Tolerance \u00b11%; Voltage Rating 100V. Gates: the value string's own stated rating; not a resistor."
+  },
+  {
+   "property": "Manufacturer",
+   "ref": "R115",
+   "sheet": "04_spi_b_radios_nfc.kicad_sch",
+   "value": "YAGEO"
+  },
+  {
+   "property": "MPN",
+   "ref": "R115",
+   "sheet": "04_spi_b_radios_nfc.kicad_sch",
+   "value": "RC0603FR-071R1L"
+  },
+  {
+   "property": "LCSC",
+   "ref": "R115",
+   "sheet": "04_spi_b_radios_nfc.kicad_sch",
+   "value": "C309559"
+  },
+  {
+   "property": "Note_Sourcing",
+   "ref": "R115",
+   "sheet": "04_spi_b_radios_nfc.kicad_sch",
+   "value": "FIRST-ARTICLE VALUE ONLY -- DEVICE_SPEC s.14 requires this position to be RE-TUNED against a VNA and the ST tool with the board in hand, so this part number buys the first article and is EXPECTED TO CHANGE. SOURCING D-615 LIVE_RECORD. JLCPCB record read 2026-09-05T01:16:20Z: expand library, stock 3640, land 0603, Operating Temperature -55\u2103~+155\u2103; Power(Watts) 100mW; Resistance 1.1\u03a9; Temperature Coefficient \u00b1200ppm/\u2103; Tolerance \u00b11%; Type Thick Film Resistor; Voltage-Supply(Max) 75V. Gates: the value string's own stated rating; not established -- first-article measurement."
+  },
+  {
+   "property": "Manufacturer",
+   "ref": "C75",
+   "sheet": "04_spi_b_radios_nfc.kicad_sch",
+   "value": "Murata Electronics"
+  },
+  {
+   "property": "MPN",
+   "ref": "C75",
+   "sheet": "04_spi_b_radios_nfc.kicad_sch",
+   "value": "GQM1875C2E270FB12D"
+  },
+  {
+   "property": "LCSC",
+   "ref": "C75",
+   "sheet": "04_spi_b_radios_nfc.kicad_sch",
+   "value": "C2360423"
+  },
+  {
+   "property": "Note_Sourcing",
+   "ref": "C75",
+   "sheet": "04_spi_b_radios_nfc.kicad_sch",
+   "value": "FIRST-ARTICLE VALUE ONLY -- DEVICE_SPEC s.14 requires this position to be RE-TUNED against a VNA and the ST tool with the board in hand, so this part number buys the first article and is EXPECTED TO CHANGE. SOURCING D-615 LIVE_RECORD. JLCPCB record read 2026-09-05T01:16:20Z: expand library, stock 12124, land 0603, Capacitance 27pF; Temperature Coefficient C0G; Tolerance \u00b11%; Voltage Rating 250V. Gates: the value string's own stated rating; not a resistor."
+  },
+  {
+   "property": "Manufacturer",
+   "ref": "C76",
+   "sheet": "04_spi_b_radios_nfc.kicad_sch",
+   "value": "YAGEO"
+  },
+  {
+   "property": "MPN",
+   "ref": "C76",
+   "sheet": "04_spi_b_radios_nfc.kicad_sch",
+   "value": "CC0603JRNPO9BN621"
+  },
+  {
+   "property": "LCSC",
+   "ref": "C76",
+   "sheet": "04_spi_b_radios_nfc.kicad_sch",
+   "value": "C325470"
+  },
+  {
+   "property": "Note_Sourcing",
+   "ref": "C76",
+   "sheet": "04_spi_b_radios_nfc.kicad_sch",
+   "value": "FIRST-ARTICLE VALUE ONLY -- DEVICE_SPEC s.14 requires this position to be RE-TUNED against a VNA and the ST tool with the board in hand, so this part number buys the first article and is EXPECTED TO CHANGE. SOURCING D-615 LIVE_RECORD. JLCPCB record read 2026-09-05T01:16:20Z: expand library, stock 43162, land 0603, Capacitance 620pF; Temperature Coefficient NP0; Tolerance \u00b15%; Voltage Rating 50V. Gates: the value string's own stated rating; not a resistor."
+  },
+  {
+   "property": "Manufacturer",
+   "ref": "R116",
+   "sheet": "04_spi_b_radios_nfc.kicad_sch",
+   "value": "UNI-ROYAL(Uniroyal Elec)"
+  },
+  {
+   "property": "MPN",
+   "ref": "R116",
+   "sheet": "04_spi_b_radios_nfc.kicad_sch",
+   "value": "0603WAF1001T5E"
+  },
+  {
+   "property": "LCSC",
+   "ref": "R116",
+   "sheet": "04_spi_b_radios_nfc.kicad_sch",
+   "value": "C21190"
+  },
+  {
+   "property": "Note_Sourcing",
+   "ref": "R116",
+   "sheet": "04_spi_b_radios_nfc.kicad_sch",
+   "value": "FIRST-ARTICLE VALUE ONLY -- DEVICE_SPEC s.14 requires this position to be RE-TUNED against a VNA and the ST tool with the board in hand, so this part number buys the first article and is EXPECTED TO CHANGE. SOURCING D-615 LIVE_RECORD. JLCPCB record read 2026-09-05T01:16:20Z: base library, stock 29725158, land 0603, Operating Temperature -55\u2103~+155\u2103; Power(Watts) 100mW; Resistance 1k\u03a9; Temperature Coefficient \u00b1100ppm/\u2103; Tolerance \u00b11%; Type Thick Film Resistor; Voltage-Supply(Max) 75V. Gates: the value string's own stated rating; not established -- first-article measurement."
+  },
+  {
+   "property": "Manufacturer",
+   "ref": "C77",
+   "sheet": "04_spi_b_radios_nfc.kicad_sch",
+   "value": "Murata Electronics"
+  },
+  {
+   "property": "MPN",
+   "ref": "C77",
+   "sheet": "04_spi_b_radios_nfc.kicad_sch",
+   "value": "GQM1875C2E270FB12D"
+  },
+  {
+   "property": "LCSC",
+   "ref": "C77",
+   "sheet": "04_spi_b_radios_nfc.kicad_sch",
+   "value": "C2360423"
+  },
+  {
+   "property": "Note_Sourcing",
+   "ref": "C77",
+   "sheet": "04_spi_b_radios_nfc.kicad_sch",
+   "value": "FIRST-ARTICLE VALUE ONLY -- DEVICE_SPEC s.14 requires this position to be RE-TUNED against a VNA and the ST tool with the board in hand, so this part number buys the first article and is EXPECTED TO CHANGE. SOURCING D-615 LIVE_RECORD. JLCPCB record read 2026-09-05T01:16:20Z: expand library, stock 12124, land 0603, Capacitance 27pF; Temperature Coefficient C0G; Tolerance \u00b11%; Voltage Rating 250V. Gates: the value string's own stated rating; not a resistor."
+  },
+  {
+   "property": "Manufacturer",
+   "ref": "C78",
+   "sheet": "04_spi_b_radios_nfc.kicad_sch",
+   "value": "YAGEO"
+  },
+  {
+   "property": "MPN",
+   "ref": "C78",
+   "sheet": "04_spi_b_radios_nfc.kicad_sch",
+   "value": "CC0603JRNPO9BN621"
+  },
+  {
+   "property": "LCSC",
+   "ref": "C78",
+   "sheet": "04_spi_b_radios_nfc.kicad_sch",
+   "value": "C325470"
+  },
+  {
+   "property": "Note_Sourcing",
+   "ref": "C78",
+   "sheet": "04_spi_b_radios_nfc.kicad_sch",
+   "value": "FIRST-ARTICLE VALUE ONLY -- DEVICE_SPEC s.14 requires this position to be RE-TUNED against a VNA and the ST tool with the board in hand, so this part number buys the first article and is EXPECTED TO CHANGE. SOURCING D-615 LIVE_RECORD. JLCPCB record read 2026-09-05T01:16:20Z: expand library, stock 43162, land 0603, Capacitance 620pF; Temperature Coefficient NP0; Tolerance \u00b15%; Voltage Rating 50V. Gates: the value string's own stated rating; not a resistor."
+  },
+  {
+   "property": "Manufacturer",
+   "ref": "R117",
+   "sheet": "04_spi_b_radios_nfc.kicad_sch",
+   "value": "UNI-ROYAL(Uniroyal Elec)"
+  },
+  {
+   "property": "MPN",
+   "ref": "R117",
+   "sheet": "04_spi_b_radios_nfc.kicad_sch",
+   "value": "0603WAF1001T5E"
+  },
+  {
+   "property": "LCSC",
+   "ref": "R117",
+   "sheet": "04_spi_b_radios_nfc.kicad_sch",
+   "value": "C21190"
+  },
+  {
+   "property": "Note_Sourcing",
+   "ref": "R117",
+   "sheet": "04_spi_b_radios_nfc.kicad_sch",
+   "value": "FIRST-ARTICLE VALUE ONLY -- DEVICE_SPEC s.14 requires this position to be RE-TUNED against a VNA and the ST tool with the board in hand, so this part number buys the first article and is EXPECTED TO CHANGE. SOURCING D-615 LIVE_RECORD. JLCPCB record read 2026-09-05T01:16:20Z: base library, stock 29725158, land 0603, Operating Temperature -55\u2103~+155\u2103; Power(Watts) 100mW; Resistance 1k\u03a9; Temperature Coefficient \u00b1100ppm/\u2103; Tolerance \u00b11%; Type Thick Film Resistor; Voltage-Supply(Max) 75V. Gates: the value string's own stated rating; not established -- first-article measurement."
+  }
+ ],
+ "applied": true,
+ "conflicts": [],
+ "plan": "hardware/demo/manufacturing/evidence/d615-tune-plan.json",
+ "properties_added": 64,
+ "properties_already_correct": [],
+ "properties_rewritten": [],
+ "references_found": 16,
+ "references_in_plan": 16,
+ "references_not_in_any_sheet": [],
+ "schema": 1,
+ "sha256_after": {
+  "01_power_tree.kicad_sch": "410cac99d5775a5330a5c55852bf0d8f0ef4f95c504f18ada4685b9b650f794d",
+  "02_mcu_core.kicad_sch": "62cbc53b5d165f6dd6946ab5a53fdd51ae5eacb3acbed4814d9be85e30dad4d1",
+  "03_spi_a_display_sd.kicad_sch": "e21e5ce3580851e9d54bd1cf3cc81f38bd3dbbd846b25a9c1f06295548814236",
+  "04_spi_b_radios_nfc.kicad_sch": "07b195de8bc9c68bcd8b4416def81a2334a81894c9ccf55762b1861d212c4be8",
+  "05_i2c_devices.kicad_sch": "ab183831cc7b39a606ac1d45641adee8070242a6922cd9ada2a139a27493461a",
+  "06_audio.kicad_sch": "d49ada5071e8498fc74cb09239b8df187859e9fbe6a02377981109cd46a55d61",
+  "07_ir.kicad_sch": "4123770847540d6f1208386159f22bcf820da8c7f0e7f91515a8f2979723bda5",
+  "08_buttons_expanders.kicad_sch": "76dd48bf075c23977a26ac479bd1be690dc928b473ecf73d6d10eca1ed390135",
+  "09_community_header.kicad_sch": "13096e6fef6f1f63526b752a90e1c3d0b7068bd67d16942e04f54b01f9d3378c",
+  "aqroot-Beta-v2.kicad_sch": "195a985ca49cd03d88b006776f31ef6fa929d23d6a9eb3c29e37581307d31603"
+ },
+ "sha256_before": {
+  "01_power_tree.kicad_sch": "410cac99d5775a5330a5c55852bf0d8f0ef4f95c504f18ada4685b9b650f794d",
+  "02_mcu_core.kicad_sch": "62cbc53b5d165f6dd6946ab5a53fdd51ae5eacb3acbed4814d9be85e30dad4d1",
+  "03_spi_a_display_sd.kicad_sch": "e21e5ce3580851e9d54bd1cf3cc81f38bd3dbbd846b25a9c1f06295548814236",
+  "04_spi_b_radios_nfc.kicad_sch": "c3c74079225e831ed3361fc4ebe7bfb13e66ab8f58a64b3670bf1203be65353d",
+  "05_i2c_devices.kicad_sch": "ab183831cc7b39a606ac1d45641adee8070242a6922cd9ada2a139a27493461a",
+  "06_audio.kicad_sch": "d49ada5071e8498fc74cb09239b8df187859e9fbe6a02377981109cd46a55d61",
+  "07_ir.kicad_sch": "4123770847540d6f1208386159f22bcf820da8c7f0e7f91515a8f2979723bda5",
+  "08_buttons_expanders.kicad_sch": "76dd48bf075c23977a26ac479bd1be690dc928b473ecf73d6d10eca1ed390135",
+  "09_community_header.kicad_sch": "13096e6fef6f1f63526b752a90e1c3d0b7068bd67d16942e04f54b01f9d3378c",
+  "aqroot-Beta-v2.kicad_sch": "195a985ca49cd03d88b006776f31ef6fa929d23d6a9eb3c29e37581307d31603"
+ },
+ "sheets_touched": [
+  "04_spi_b_radios_nfc.kicad_sch"
+ ]
+}

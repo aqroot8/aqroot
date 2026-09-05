@@ -1,0 +1,12 @@
+{
+ "endpoint": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
+ "exhausted": true,
+ "fetched_utc": "2026-09-05T01:16:32Z",
+ "keyword": "1.5nF 0603 C0G Murata",
+ "page_size": 25,
+ "pages": 2,
+ "records": [],
+ "returned": 0,
+ "schema": 1,
+ "total_matches": 0
+}

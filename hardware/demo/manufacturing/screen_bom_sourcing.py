@@ -146,6 +146,89 @@ NET_MAX_DC = {
                   " through R70-R73 (4x33R = 8.25R, 0.90 V) + the R69 1.87R sense"
                   " (0.20 V) = 4.3 V.  The FAULT ceiling is the TPS61169 open-LED"
                   " OVP, and D8 NSR0240 is a 40 V catch diode."),
+
+    # ---- established by D-615, so that a POWER gate has a number to work
+    # from.  Every entry below names the supply or the part limit that bounds
+    # the node; none is a guess, and a node whose bound could not be sourced
+    # is deliberately still absent.
+    "I2C_SCL_INT": (3.3, 3.6, "internal I2C, pulled to +3V3 by R19/R20 (D-139)"),
+    "I2C_SDA_INT": (3.3, 3.6, "internal I2C, pulled to +3V3 by R19/R20 (D-139)"),
+    "EXT_SCL_BUF": (3.3, 3.6, "external I2C behind U16 TCA4307, pulled to"
+                              " ACC_3V3_SW by R50 (D-176)"),
+    "EXT_SDA_BUF": (3.3, 3.6, "external I2C behind U16 TCA4307, pulled to"
+                              " ACC_3V3_SW by R49 (D-176)"),
+    "ACC_3V3_ILIM": (3.3, 3.6, "U20 load-switch ILIM programming pin, bounded"
+                               " by its own ACC_3V3_SW supply"),
+    "IR_LED_A": (3.3, 3.6, "D1 TSAL6100 anode, fed from +3V3 through R24"
+                           " (FBV2-S1-007); the note is explicit that the"
+                           " supply is the REGULATED +3V3 and not SYS"),
+    "FRONT_RGB_G_N": (3.3, 3.6, "D13 common-anode RGB green cathode, anode on"
+                                " +3V3, sunk by the PCAL expander (D-167)"),
+    "FRONT_RGB_B_N": (3.3, 3.6, "D13 common-anode RGB blue cathode, anode on"
+                                " +3V3, sunk by the PCAL expander (D-167)"),
+    "Net-(D13-GK)": (3.3, 3.6, "D13 green cathode land, same node family"),
+    "Net-(D13-BK)": (3.3, 3.6, "D13 blue cathode land, same node family"),
+    "NFC_VDD_A": (3.3, 3.6, "ST25R3916 analog regulator pin, supplied from"
+                            " NFC_SUPPLY (DS12484)"),
+    "NFC_VDD_AM": (3.3, 3.6, "ST25R3916 AM-modulation regulator pin, supplied"
+                             " from NFC_SUPPLY (DS12484)"),
+    "NFC_VDD_D": (3.3, 3.6, "ST25R3916 digital regulator pin, supplied from"
+                            " NFC_SUPPLY (DS12484)"),
+    "NFC_VDD_RF": (3.3, 3.6, "ST25R3916 RF regulator pin, supplied from"
+                             " NFC_SUPPLY (DS12484)"),
+    "ACC_5V_RAW": (5.0, 5.5, "U21 TPS61023 boost output, setpoint 4.99 V"
+                             " (D-185 R99 732k / R100 100k); bounded like"
+                             " ACC_5V_SW, the rail it feeds through U22"),
+    "ACC_5V_FB": (0.6, 5.5, "U21 feedback node, VREF 0.595 V (D-185);"
+                            " bounded from above by ACC_5V_RAW"),
+    "ACC_5V_ILIM": (1.0, 5.5, "U22 TPS22950 ILIM programming pin (D-185"
+                              " R101 1.65k -> 0.69 A); bounded by its own"
+                              " ACC_5V_RAW supply"),
+    "BAT_SENSE": (4.2, 4.35, "the cell side of the R75 15 mOhm sense; the"
+                             " LTC4368-1 trips at +/-50 mV, so this node is"
+                             " within 50 mV of BAT_PROTECTED_P"),
+    "LTC_OV": (4.2, 4.35, "LTC4368-1 OV divider node, R77 3.65M / R78 442k off"
+                          " BAT_RAW (P-21, D-104); bounded by its source"),
+    "LTC_UV": (4.2, 4.35, "LTC4368-1 UV pin, R79 510k to VIN per the datasheet"
+                          " (UV unused); bounded by BAT_RAW"),
+    "REF_HO": (5.25, 5.5, "handoff-comparator reference, R91 3.65M / R92 1.30M"
+                          " off USB_VBUS_CHG (D-065 recovery block B);"
+                          " bounded by its source"),
+    "N_POL": (5.25, 5.5, "ratiometric polarity-bridge node, R85/R86 2.2M"
+                         " (D-065/D-211); bounded by the recovery block's own"
+                         " USB-derived supply"),
+    "REF_POL": (5.25, 5.5, "ratiometric polarity-bridge reference node,"
+                           " R87/R88 2.2M (D-065/D-211)"),
+    "VBRIDGE_TOP": (5.25, 5.5, "polarity-bridge top through D10 (D-211);"
+                               " bounded by the USB-derived recovery supply"),
+    "VREF_TOP": (5.25, 5.5, "polarity-bridge reference top through D11"
+                            " (D-211); bounded by the same supply"),
+    "REC_DIODE_IN": (5.25, 5.5, "dead-cell recovery branch, D12 anode side"
+                                " (D-065/D-105); USB-derived"),
+    "REC_LIM_IN": (5.25, 5.5, "dead-cell recovery branch through R95 560R"
+                              " (P-20, D-105).  NOTE: in the SINGLE-FAULT"
+                              " reversed-cell case the cell adds IN SERIES and"
+                              " the voltage ACROSS R95 exceeds this node"
+                              " bound, which is why R95 carries an explicit"
+                              " current ruling instead of a node over-bound"),
+    "LTC_GATE": (17.5, 17.5,
+                 "U18 LTC4368-1 GATE.  The board's own part description states"
+                 " a GATE charge pump with UP TO 13.1 V OF ENHANCEMENT"
+                 " REFERENCED TO VOUT, and VOUT here is the 4.35 V absolute"
+                 " cell node, so 4.35 + 13.1 = 17.45 V bounds it.  Q3"
+                 " NTMD4820N is the load and its own VGS abs max is the"
+                 " independent reason the node cannot go higher."),
+    "LTC_GATE_RC": (17.5, 17.5, "the R76 22k / C57 4.7nF gate slew network"
+                                " sits on LTC_GATE and shares its bound"),
+    "LED_K": (0.25, 38.0,
+              "U17 TPS61169 ISET/feedback node -- R69 1.87R develops the"
+              " 0.20 V sense at I_LED 109 mA (D-079).  Its ABSOLUTE is the"
+              " LED_BOOST OVP ceiling, because a shorted LED string puts the"
+              " boost output on this node; the current, however, stays"
+              " regulated, which is why R69 carries a current ruling."),
+    "LED_A": (4.3, 38.0,
+              "the six-parallel backlight anode below the R70-R73 ballast"
+              " (D-079); ABSOLUTE is the LED_BOOST OVP ceiling"),
 }
 
 # Land -> the working voltage a chip part of that size is rated for.  Used only

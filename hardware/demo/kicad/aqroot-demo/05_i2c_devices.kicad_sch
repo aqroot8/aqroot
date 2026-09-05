@@ -1633,6 +1633,50 @@
 				)
 			)
 		)
+		(property "Manufacturer" "UNI-ROYAL(Uniroyal Elec)"
+			(at 138.43 78.74 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "0603WAF2201T5E"
+			(at 138.43 78.74 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "LCSC" "C4190"
+			(at 138.43 78.74 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Note_Sourcing" "SOURCING D-615 LIVE_RECORD. JLCPCB record read 2026-09-05T00:59:59Z: base library, stock 7045544, land 0603, Operating Temperature -55℃~+155℃; Power(Watts) 100mW; Resistance 2.2kΩ; Temperature Coefficient ±100ppm/℃; Tolerance ±1%; Type Thick Film Resistor; Voltage-Supply(Max) 75V. Gates: land working voltage vs the highest node; 2x the strict over-bound."
+			(at 138.43 78.74 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(property "Description" "Resistor"
 			(at 138.43 78.74 0)
 			(hide yes)
@@ -2662,6 +2706,50 @@
 			)
 		)
 		(property "Datasheet" ""
+			(at 181.61 78.74 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Manufacturer" "UNI-ROYAL(Uniroyal Elec)"
+			(at 181.61 78.74 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "0603WAF2201T5E"
+			(at 181.61 78.74 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "LCSC" "C4190"
+			(at 181.61 78.74 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Note_Sourcing" "SOURCING D-615 LIVE_RECORD. JLCPCB record read 2026-09-05T00:59:59Z: base library, stock 7045544, land 0603, Operating Temperature -55℃~+155℃; Power(Watts) 100mW; Resistance 2.2kΩ; Temperature Coefficient ±100ppm/℃; Tolerance ±1%; Type Thick Film Resistor; Voltage-Supply(Max) 75V. Gates: land working voltage vs the highest node; 2x the strict over-bound."
 			(at 181.61 78.74 0)
 			(hide yes)
 			(show_name no)

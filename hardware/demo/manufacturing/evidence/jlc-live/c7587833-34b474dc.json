@@ -1,0 +1,99 @@
+{
+ "endpoint": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
+ "exhausted": true,
+ "fetched_utc": "2026-09-05T01:11:55Z",
+ "keyword": "C7587833",
+ "page_size": 25,
+ "pages": 1,
+ "records": [
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Type",
+     "attribute_value_name": "Load Switch"
+    },
+    {
+     "attribute_name_en": "Number of Channels",
+     "attribute_value_name": "1"
+    },
+    {
+     "attribute_name_en": "Voltage - Supply",
+     "attribute_value_name": "1.8V~5.5V"
+    },
+    {
+     "attribute_name_en": "Operating Temperature\t-",
+     "attribute_value_name": "-40℃~+125℃"
+    },
+    {
+     "attribute_name_en": "Maximum Continuous Current",
+     "attribute_value_name": "3.2A"
+    },
+    {
+     "attribute_name_en": "Features",
+     "attribute_value_name": "Output discharge function、Soft-start、Overcurrent Protection、Over temperature protection、Latch protection、Short-Circuit  Protection、Reverse current blocking"
+    },
+    {
+     "attribute_name_en": "RDS(on)",
+     "attribute_value_name": "34mΩ"
+    },
+    {
+     "attribute_name_en": "Control Input Logic",
+     "attribute_value_name": "Active High"
+    }
+   ],
+   "componentBrandEn": "Texas Instruments",
+   "componentCode": "C7587833",
+   "componentLibraryType": "expand",
+   "componentModelEn": "TPS22950CDDCR",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 0.7278,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 29,
+     "productPrice": 0.5946,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 99,
+     "productPrice": 0.5264,
+     "startNumber": 30
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.4614,
+     "startNumber": 100
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.4208,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.3997,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "SOT-23-6",
+   "componentTypeEn": "Power Distribution Switches",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2401121844_Texas-Instruments-TPS22950CDDCR_C7587833.pdf",
+   "describe": "-40℃~+125℃ 1 1.8V~5.5V 3.2A 34mΩ Active High Load Switch Overcurrent Protection(OCP)、Over Temperature Protection SOT-23-6 Power Distribution Switches ROHS",
+   "erpComponentName": "5.5-V,3.2-A,34-mΩ可调限流负载开关",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/power-distribution-switches_texas-instruments-tps22950cddcr_C7587833.html",
+   "leastPatchNumber": 2,
+   "lossNumber": 0,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 181
+  }
+ ],
+ "returned": 1,
+ "schema": 1,
+ "total_matches": 1
+}

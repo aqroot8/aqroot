@@ -5806,6 +5806,50 @@
 				)
 			)
 		)
+		(property "Manufacturer" "UNI-ROYAL(Uniroyal Elec)"
+			(at 251.46 45.72 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "0603WAF1501T5E"
+			(at 251.46 45.72 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "LCSC" "C22843"
+			(at 251.46 45.72 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Note_Sourcing" "SOURCING D-615 LIVE_RECORD. JLCPCB record read 2026-09-05T00:59:59Z: base library, stock 3722075, land 0603, Operating Temperature -55℃~+155℃; Power(Watts) 100mW; Resistance 1.5kΩ; Temperature Coefficient ±100ppm/℃; Tolerance ±1%; Type Thick Film Resistor; Voltage-Supply(Max) 75V. Gates: land working voltage vs the highest node; 2x the strict over-bound."
+			(at 251.46 45.72 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(property "Description" ""
 			(at 251.46 45.72 0)
 			(hide yes)
@@ -5951,6 +5995,50 @@
 			)
 		)
 		(property "Datasheet" ""
+			(at 264.16 45.72 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Manufacturer" "UNI-ROYAL(Uniroyal Elec)"
+			(at 264.16 45.72 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "0603WAF1501T5E"
+			(at 264.16 45.72 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "LCSC" "C22843"
+			(at 264.16 45.72 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Note_Sourcing" "SOURCING D-615 LIVE_RECORD. JLCPCB record read 2026-09-05T00:59:59Z: base library, stock 3722075, land 0603, Operating Temperature -55℃~+155℃; Power(Watts) 100mW; Resistance 1.5kΩ; Temperature Coefficient ±100ppm/℃; Tolerance ±1%; Type Thick Film Resistor; Voltage-Supply(Max) 75V. Gates: land working voltage vs the highest node; 2x the strict over-bound."
 			(at 264.16 45.72 0)
 			(hide yes)
 			(show_name no)
@@ -8743,6 +8831,17 @@
 				)
 			)
 		)
+		(property "LCSC" "C160404"
+			(at 176.53 133.35 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(property "Manufacturer" "JST"
 			(at 176.53 133.35 0)
 			(hide yes)
@@ -8765,7 +8864,7 @@
 				)
 			)
 		)
-		(property "Note_Sourcing" "SOURCING D-614. REFERENCE_RULING from the beta-dm audit line 'J8' (SOURCING-LEDGER); manufacturer named with the part in SOURCING_LEDGER; D-238, recorded in docs/full-beta-v2/assembly/SOURCING_LEDGER.md s.2 (JST SH, 1.0 mm, 4 circuit, side entry, SMT, 1.0 A, 50 V) and in DEVICE_SPEC s.10.2, which also lists the absent schematic property as an open item.  The plating-suffixed string is the one D-096 requires: the bare order code resolves to a zero-stock listing."
+		(property "Note_Sourcing" "SOURCING D-615 LIVE_RECORD, SUPERSEDING THE D-614 REFERENCE_RULING. The MPN was grafted at D-614 from D-238 and SOURCING_LEDGER; the LCSC code was the half DEVICE_SPEC s.16 item 8 still listed as OPEN. JLCPCB record read 2026-09-05: JST SM04B-SRSS-TB(LF)(SN), LCSC C160404, stock 69510, SH series, pitch 1 mm, 4P 1x4P, 1 A, 50 V, -25..+85 C, UL94V-0, surface mount right angle, board footprint 6 mm x 4.32 mm -- every field corroborates D-238 and the land Connector_JST:JST_SH_SM04B-SRSS-TB_1x04-1MP_P1.00mm_Horizontal. The bare order code SM04B-SRSS-TB resolves only to ZERO-STOCK JLCPCB Assembly entries, which is why the plating-suffixed string is the one D-096 requires."
 			(at 176.53 133.35 0)
 			(hide yes)
 			(show_name no)

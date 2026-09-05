@@ -1,0 +1,119 @@
+{
+ "endpoint": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
+ "exhausted": true,
+ "fetched_utc": "2026-09-05T01:11:40Z",
+ "keyword": "C3171792",
+ "page_size": 25,
+ "pages": 1,
+ "records": [
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Frequency Range",
+     "attribute_value_name": "20Hz~20kHz"
+    },
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-40℃~+100℃"
+    },
+    {
+     "attribute_name_en": "Sensitivity",
+     "attribute_value_name": "-26dB"
+    },
+    {
+     "attribute_name_en": "S/N Ratio",
+     "attribute_value_name": "64dB"
+    },
+    {
+     "attribute_name_en": "Length",
+     "attribute_value_name": "4mm"
+    },
+    {
+     "attribute_name_en": "Output Type",
+     "attribute_value_name": "I2S"
+    },
+    {
+     "attribute_name_en": "Voltage - Supply",
+     "attribute_value_name": "1.8V"
+    },
+    {
+     "attribute_name_en": "Features",
+     "attribute_value_name": "Omnidirectional pickup"
+    },
+    {
+     "attribute_name_en": "Height",
+     "attribute_value_name": "1mm"
+    },
+    {
+     "attribute_name_en": "Impedance",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Width",
+     "attribute_value_name": "3mm"
+    },
+    {
+     "attribute_name_en": "Direction",
+     "attribute_value_name": "Omnidirectional"
+    },
+    {
+     "attribute_name_en": "Current Consumption",
+     "attribute_value_name": "1mA"
+    }
+   ],
+   "componentBrandEn": "PUI Audio, Inc.",
+   "componentCode": "C3171792",
+   "componentLibraryType": "expand",
+   "componentModelEn": "DMM-4026-B-I2S-R",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 1.8341,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 29,
+     "productPrice": 1.7919,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 99,
+     "productPrice": 1.7643,
+     "startNumber": 30
+    },
+    {
+     "endNumber": 101,
+     "productPrice": 1.735,
+     "startNumber": 100
+    },
+    {
+     "endNumber": 103,
+     "productPrice": 1.735,
+     "startNumber": 102
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 1.735,
+     "startNumber": 104
+    }
+   ],
+   "componentSpecificationEn": "SMD-7P,4x3mm",
+   "componentTypeEn": "MEMS Microphones",
+   "dataManualUrl": "",
+   "describe": "-26dB -40℃~+100℃ 1.8V 1mA 1mm 3mm 4mm 64dB I2S Omnidirectional Omnidirectional pickup SMD-7P,4x3mm MEMS Microphones ROHS",
+   "erpComponentName": "1.8V26dB",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/mems-microphones_pui-audio-inc-dmm-4026-b-i2s-r_C3171792.html",
+   "leastPatchNumber": 0,
+   "lossNumber": 0,
+   "minPurchaseNum": 5,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  }
+ ],
+ "returned": 1,
+ "schema": 1,
+ "total_matches": 1
+}

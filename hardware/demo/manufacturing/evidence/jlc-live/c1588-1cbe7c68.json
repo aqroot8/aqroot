@@ -1,0 +1,938 @@
+{
+ "endpoint": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
+ "exhausted": true,
+ "fetched_utc": "2026-09-05T01:18:46Z",
+ "keyword": "C1588",
+ "page_size": 25,
+ "pages": 1,
+ "records": [
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-55℃~+125℃"
+    },
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "50V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±10%"
+    },
+    {
+     "attribute_name_en": "Capacitance",
+     "attribute_value_name": "1nF"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "X7R"
+    }
+   ],
+   "componentBrandEn": "Samsung Electro-Mechanics",
+   "componentCode": "C1588",
+   "componentLibraryType": "base",
+   "componentModelEn": "CL10B102KB8NNNC",
+   "componentPrices": [
+    {
+     "endNumber": 499,
+     "productPrice": 0.0091,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 1499,
+     "productPrice": 0.0069,
+     "startNumber": 500
+    },
+    {
+     "endNumber": 3999,
+     "productPrice": 0.006,
+     "startNumber": 1500
+    },
+    {
+     "endNumber": 23999,
+     "productPrice": 0.0048,
+     "startNumber": 4000
+    },
+    {
+     "endNumber": 47999,
+     "productPrice": 0.0045,
+     "startNumber": 24000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0043,
+     "startNumber": 48000
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+   "dataManualUrl": "https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_Samsung-Electro-Mechanics-CL10B102KB8NNNC_C1588.pdf",
+   "describe": "1nF 50V X7R ±10% 0603 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+   "erpComponentName": "1nF ±10% 50V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/multilayer-ceramic-capacitors-mlcc-smd-smt_samsung-electro-mechanics-cl10b102kb8nnnc_C1588.html",
+   "leastPatchNumber": 20,
+   "lossNumber": 10,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 10342671
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": null,
+   "componentBrandEn": "Analog Devices",
+   "componentCode": "C22071554",
+   "componentLibraryType": "expand",
+   "componentModelEn": "LTC1588CG",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 36.3096,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 11,
+     "productPrice": 36.3096,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 230,
+     "productPrice": 36.3096,
+     "startNumber": 12
+    },
+    {
+     "endNumber": 461,
+     "productPrice": 14.4891,
+     "startNumber": 231
+    },
+    {
+     "endNumber": 1000,
+     "productPrice": 14.005,
+     "startNumber": 462
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 13.7646,
+     "startNumber": 1001
+    }
+   ],
+   "componentSpecificationEn": "-",
+   "componentTypeEn": "Digital to Analog Converters (DAC)",
+   "dataManualUrl": "",
+   "describe": "- Digital to Analog Converters (DAC)",
+   "erpComponentName": "LTC1588CG",
+   "isBuyComponent": "0",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/digital-to-analog-converters-dac_analog-devices-ltc1588cg_C22071554.html",
+   "leastPatchNumber": 0,
+   "lossNumber": 0,
+   "minPurchaseNum": 1,
+   "noBuyReason": "This product is no longer manufactured.",
+   "rohsFlag": 0,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": null,
+   "componentBrandEn": "TE Connectivity",
+   "componentCode": "C18162955",
+   "componentLibraryType": "expand",
+   "componentModelEn": "EC1588-000",
+   "componentPrices": [
+    {
+     "endNumber": -1,
+     "productPrice": 0.0485,
+     "startNumber": 1
+    }
+   ],
+   "componentSpecificationEn": "-",
+   "componentTypeEn": "Comprehensive Electronic",
+   "dataManualUrl": "",
+   "describe": "- Comprehensive Electronic ROHS",
+   "erpComponentName": "EC1588-000",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/markers_te-connectivity-ec1588-000_C18162955.html",
+   "leastPatchNumber": 5,
+   "lossNumber": 5,
+   "minPurchaseNum": 185,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Integral non - linearity",
+     "attribute_value_name": "1LSB"
+    },
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-40℃~+85℃"
+    },
+    {
+     "attribute_name_en": "Update Rate",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Number of Channels",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Output Type",
+     "attribute_value_name": "Current-Non-buffered"
+    },
+    {
+     "attribute_name_en": "Voltage - Supply",
+     "attribute_value_name": "4.5V~5.5V"
+    },
+    {
+     "attribute_name_en": "Resolution(Bits)",
+     "attribute_value_name": "12"
+    },
+    {
+     "attribute_name_en": "Quiescent Current (Iq)",
+     "attribute_value_name": "10uA"
+    },
+    {
+     "attribute_name_en": "Settling Time",
+     "attribute_value_name": "2us"
+    },
+    {
+     "attribute_name_en": "Interface",
+     "attribute_value_name": "SPI"
+    }
+   ],
+   "componentBrandEn": "Analog Devices",
+   "componentCode": "C675990",
+   "componentLibraryType": "expand",
+   "componentModelEn": "LTC1588CG#PBF",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 6.2853,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 29,
+     "productPrice": 5.4081,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 76,
+     "productPrice": 4.872,
+     "startNumber": 30
+    },
+    {
+     "endNumber": 78,
+     "productPrice": 4.4236,
+     "startNumber": 77
+    },
+    {
+     "endNumber": 80,
+     "productPrice": 4.4236,
+     "startNumber": 79
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 4.4236,
+     "startNumber": 81
+    }
+   ],
+   "componentSpecificationEn": "SSOP-16",
+   "componentTypeEn": "Digital to Analog Converters (DAC)",
+   "dataManualUrl": "https://datasheet.lcsc.com/lcsc/2205191000_Analog-Devices-LTC1588CG-PBF_C675990.pdf",
+   "describe": "-40℃~+85℃ 10uA 12 1LSB 2us 4.5V~5.5V Current-Non-buffered SPI SSOP-16 Digital to Analog Converters (DAC) ROHS",
+   "erpComponentName": "具可编程输出范围的12位SoftSpan DAC",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/digital to analog converters (dacs)_analog devices_ltc1588cg#pbf_C675990.html",
+   "leastPatchNumber": 0,
+   "lossNumber": 0,
+   "minPurchaseNum": 2,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Integral non - linearity",
+     "attribute_value_name": "1LSB"
+    },
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-40℃~+85℃"
+    },
+    {
+     "attribute_name_en": "Update Rate",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Number of Channels",
+     "attribute_value_name": "1"
+    },
+    {
+     "attribute_name_en": "Voltage - Supply",
+     "attribute_value_name": "4.5V~5.5V"
+    },
+    {
+     "attribute_name_en": "Output Type",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Resolution(Bits)",
+     "attribute_value_name": "12"
+    },
+    {
+     "attribute_name_en": "Quiescent Current (Iq)",
+     "attribute_value_name": "10uA"
+    },
+    {
+     "attribute_name_en": "Settling Time",
+     "attribute_value_name": "2us"
+    },
+    {
+     "attribute_name_en": "Interface",
+     "attribute_value_name": "SPI"
+    }
+   ],
+   "componentBrandEn": "Analog Devices",
+   "componentCode": "C675992",
+   "componentLibraryType": "expand",
+   "componentModelEn": "LTC1588IG#PBF",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 8.7789,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 29,
+     "productPrice": 7.5524,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 76,
+     "productPrice": 6.8051,
+     "startNumber": 30
+    },
+    {
+     "endNumber": 78,
+     "productPrice": 6.1781,
+     "startNumber": 77
+    },
+    {
+     "endNumber": 80,
+     "productPrice": 6.1781,
+     "startNumber": 79
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 6.1781,
+     "startNumber": 81
+    }
+   ],
+   "componentSpecificationEn": "SSOP-16",
+   "componentTypeEn": "Digital to Analog Converters (DAC)",
+   "dataManualUrl": "https://datasheet.lcsc.com/lcsc/2205191000_Analog-Devices-LTC1588IG-PBF_C675992.pdf",
+   "describe": "-40℃~+85℃ 1 10uA 12 1LSB 2us 4.5V~5.5V SPI SSOP-16 Digital to Analog Converters (DAC) ROHS",
+   "erpComponentName": "具可编程输出范围的12位SoftSpan DAC",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/digital to analog converters (dacs)_analog devices_ltc1588ig#pbf_C675992.html",
+   "leastPatchNumber": 0,
+   "lossNumber": 0,
+   "minPurchaseNum": 2,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Integral non - linearity",
+     "attribute_value_name": "1LSB"
+    },
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-40℃~+85℃"
+    },
+    {
+     "attribute_name_en": "Update Rate",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Number of Channels",
+     "attribute_value_name": "1"
+    },
+    {
+     "attribute_name_en": "Voltage - Supply",
+     "attribute_value_name": "4.5V~5.5V"
+    },
+    {
+     "attribute_name_en": "Output Type",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Resolution(Bits)",
+     "attribute_value_name": "12"
+    },
+    {
+     "attribute_name_en": "Quiescent Current (Iq)",
+     "attribute_value_name": "10uA"
+    },
+    {
+     "attribute_name_en": "Settling Time",
+     "attribute_value_name": "2us"
+    },
+    {
+     "attribute_name_en": "Interface",
+     "attribute_value_name": "SPI"
+    }
+   ],
+   "componentBrandEn": "Analog Devices",
+   "componentCode": "C675991",
+   "componentLibraryType": "expand",
+   "componentModelEn": "LTC1588CG#TRPBF",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 6.2853,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 29,
+     "productPrice": 5.4081,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 99,
+     "productPrice": 4.872,
+     "startNumber": 30
+    },
+    {
+     "endNumber": 101,
+     "productPrice": 4.4236,
+     "startNumber": 100
+    },
+    {
+     "endNumber": 103,
+     "productPrice": 4.4236,
+     "startNumber": 102
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 4.4236,
+     "startNumber": 104
+    }
+   ],
+   "componentSpecificationEn": "SSOP-16",
+   "componentTypeEn": "Digital to Analog Converters (DAC)",
+   "dataManualUrl": "https://datasheet.lcsc.com/lcsc/2210190630_Analog-Devices-LTC1588CG-TRPBF_C675991.pdf",
+   "describe": "-40℃~+85℃ 1 10uA 12 1LSB 2us 4.5V~5.5V SPI SSOP-16 Digital to Analog Converters (DAC) ROHS",
+   "erpComponentName": "具可编程输出范围的12位SoftSpan DAC",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/digital to analog converters (dacs)_analog devices_ltc1588cg#trpbf_C675991.html",
+   "leastPatchNumber": 0,
+   "lossNumber": 0,
+   "minPurchaseNum": 2,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Integral non - linearity",
+     "attribute_value_name": "1LSB"
+    },
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-40℃~+85℃"
+    },
+    {
+     "attribute_name_en": "Update Rate",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Number of Channels",
+     "attribute_value_name": "1"
+    },
+    {
+     "attribute_name_en": "Voltage - Supply",
+     "attribute_value_name": "4.5V~5.5V"
+    },
+    {
+     "attribute_name_en": "Output Type",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Resolution(Bits)",
+     "attribute_value_name": "12"
+    },
+    {
+     "attribute_name_en": "Quiescent Current (Iq)",
+     "attribute_value_name": "10uA"
+    },
+    {
+     "attribute_name_en": "Settling Time",
+     "attribute_value_name": "2us"
+    },
+    {
+     "attribute_name_en": "Interface",
+     "attribute_value_name": "SPI"
+    }
+   ],
+   "componentBrandEn": "Analog Devices",
+   "componentCode": "C675993",
+   "componentLibraryType": "expand",
+   "componentModelEn": "LTC1588IG#TRPBF",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 7.3867,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 29,
+     "productPrice": 6.3551,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 99,
+     "productPrice": 5.7248,
+     "startNumber": 30
+    },
+    {
+     "endNumber": 101,
+     "productPrice": 5.1985,
+     "startNumber": 100
+    },
+    {
+     "endNumber": 103,
+     "productPrice": 5.1985,
+     "startNumber": 102
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 5.1985,
+     "startNumber": 104
+    }
+   ],
+   "componentSpecificationEn": "SSOP-16",
+   "componentTypeEn": "Digital to Analog Converters (DAC)",
+   "dataManualUrl": "https://datasheet.lcsc.com/lcsc/2210190630_Analog-Devices-LTC1588IG-TRPBF_C675993.pdf",
+   "describe": "-40℃~+85℃ 1 10uA 12 1LSB 2us 4.5V~5.5V SPI SSOP-16 Digital to Analog Converters (DAC) ROHS",
+   "erpComponentName": "具可编程输出范围的12位SoftSpan DAC",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/digital to analog converters (dacs)_analog devices_ltc1588ig#trpbf_C675993.html",
+   "leastPatchNumber": 0,
+   "lossNumber": 0,
+   "minPurchaseNum": 2,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Resistance",
+     "attribute_value_name": "1.58Ω"
+    },
+    {
+     "attribute_name_en": "Power(Watts)",
+     "attribute_value_name": "600mW"
+    },
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-55℃~+155℃"
+    },
+    {
+     "attribute_name_en": "Type",
+     "attribute_value_name": "Metal Film Resistor"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±1%"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "±50ppm/℃"
+    }
+   ],
+   "componentBrandEn": "Vishay Intertech",
+   "componentCode": "C1384158",
+   "componentLibraryType": "expand",
+   "componentModelEn": "MBB02070C1588FCT00",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 0.0423,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 11,
+     "productPrice": 0.0423,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 0.0423,
+     "startNumber": 12
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.0165,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.0158,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0155,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "Plugin,D2.5xL6.5mm",
+   "componentTypeEn": "Through Hole Resistors",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2304140030_Vishay-Intertech-MBB02070C1588FCT00_C1384158.pdf",
+   "describe": "-55℃~+155℃ 1.58Ω 600mW Metal Film Resistor ±1% ±50ppm/℃ 插件,D2.5xL6.5mm Through Hole Resistors ROHS",
+   "erpComponentName": "金属膜电阻 1.58Ω ±1% 600mW",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/through-hole-resistors_vishay-intertech-mbb02070c1588fct00_C1384158.html",
+   "leastPatchNumber": 2,
+   "lossNumber": 4,
+   "minPurchaseNum": 567,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Resistance",
+     "attribute_value_name": "1.58Ω"
+    },
+    {
+     "attribute_name_en": "Power(Watts)",
+     "attribute_value_name": "600mW"
+    },
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-55℃~+155℃"
+    },
+    {
+     "attribute_name_en": "Type",
+     "attribute_value_name": "Metal Film Resistor"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±1%"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "±50ppm/℃"
+    }
+   ],
+   "componentBrandEn": "Vishay Intertech",
+   "componentCode": "C1393433",
+   "componentLibraryType": "expand",
+   "componentModelEn": "MBB02070C1588FC100",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 0.0831,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 11,
+     "productPrice": 0.0831,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 0.0831,
+     "startNumber": 12
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.0322,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.0311,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0306,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "Plugin,D2.5xL6.5mm",
+   "componentTypeEn": "Through Hole Resistors",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2304140030_Vishay-Intertech-MBB02070C1588FC100_C1393433.pdf",
+   "describe": "-55℃~+155℃ 1.58Ω 600mW Metal Film Resistor ±1% ±50ppm/℃ 插件,D2.5xL6.5mm Through Hole Resistors ROHS",
+   "erpComponentName": "金属膜电阻 1.58Ω ±1% 600mW",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/through-hole-resistors_vishay-intertech-mbb02070c1588fc100_C1393433.html",
+   "leastPatchNumber": 2,
+   "lossNumber": 2,
+   "minPurchaseNum": 108,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Resistance",
+     "attribute_value_name": "1.58Ω"
+    },
+    {
+     "attribute_name_en": "Power(Watts)",
+     "attribute_value_name": "600mW"
+    },
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-55℃~+155℃"
+    },
+    {
+     "attribute_name_en": "Type",
+     "attribute_value_name": "Metal Film Resistor"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±1%"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "±50ppm/℃"
+    }
+   ],
+   "componentBrandEn": "Vishay Intertech",
+   "componentCode": "C1759140",
+   "componentLibraryType": "expand",
+   "componentModelEn": "MBB02070C1588FRP00",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 0.0428,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 11,
+     "productPrice": 0.0428,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 0.0428,
+     "startNumber": 12
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.0166,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.016,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0157,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "Plugin,D2.5xL6.5mm",
+   "componentTypeEn": "Through Hole Resistors",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2304140030_Vishay-Intertech-MBB02070C1588FRP00_C1759140.pdf",
+   "describe": "-55℃~+155℃ 1.58Ω 600mW Metal Film Resistor ±1% ±50ppm/℃ 插件,D2.5xL6.5mm Through Hole Resistors ROHS",
+   "erpComponentName": "金属膜电阻 1.58Ω ±1% 600mW",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/through-hole-resistors_vishay-intertech-mbb02070c1588frp00_C1759140.html",
+   "leastPatchNumber": 2,
+   "lossNumber": 0,
+   "minPurchaseNum": 560,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Resistance",
+     "attribute_value_name": "1.58Ω"
+    },
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-55℃~+155℃"
+    },
+    {
+     "attribute_name_en": "Power(Watts)",
+     "attribute_value_name": "400mW"
+    },
+    {
+     "attribute_name_en": "Type",
+     "attribute_value_name": "Thin Film Resistor"
+    },
+    {
+     "attribute_name_en": "Voltage-Supply(Max)",
+     "attribute_value_name": "200V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±1%"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "±50ppm/℃"
+    }
+   ],
+   "componentBrandEn": "Vishay Intertech",
+   "componentCode": "C2127235",
+   "componentLibraryType": "expand",
+   "componentModelEn": "MMA02040C1588FB300",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 0.0429,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 11,
+     "productPrice": 0.0429,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 0.0429,
+     "startNumber": 12
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.0166,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.0161,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0158,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "0204",
+   "componentTypeEn": "Chip Resistor - Surface Mount",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2304140030_Vishay-Intertech-MMA02040C1588FB300_C2127235.pdf",
+   "describe": "-55℃~+155℃ 1.58Ω 200V 400mW Thin Film Resistor ±1% ±50ppm/℃ 0204 Chip Resistor - Surface Mount ROHS",
+   "erpComponentName": "薄膜电阻 1.58Ω ±1% 400mW",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/chip-resistor-surface-mount_vishay-intertech-mma02040c1588fb300_C2127235.html",
+   "leastPatchNumber": 5,
+   "lossNumber": 4,
+   "minPurchaseNum": 557,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Resistance",
+     "attribute_value_name": "1.58Ω"
+    },
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-55℃~+155℃"
+    },
+    {
+     "attribute_name_en": "Power(Watts)",
+     "attribute_value_name": "600mW"
+    },
+    {
+     "attribute_name_en": "Type",
+     "attribute_value_name": "Metal Film Resistor"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±1%"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "±50ppm/℃"
+    }
+   ],
+   "componentBrandEn": "Vishay Intertech",
+   "componentCode": "C3484975",
+   "componentLibraryType": "expand",
+   "componentModelEn": "MRS25000C1588FC100",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 0.0754,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 11,
+     "productPrice": 0.0754,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 0.0754,
+     "startNumber": 12
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.0293,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.0282,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0277,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "Plugin,D2.5xL6.5mm",
+   "componentTypeEn": "Through Hole Resistors",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2312111620_Vishay-Intertech-MRS25000C1588FC100_C3484975.pdf",
+   "describe": "-55℃~+155℃ 1.58Ω 600mW Metal Film Resistor ±1% ±50ppm/℃ 插件,D2.5xL6.5mm Through Hole Resistors ROHS",
+   "erpComponentName": "金属膜电阻 1.58Ω ±1% 600mW",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/through-hole-resistors_vishay-intertech-mrs25000c1588fc100_C3484975.html",
+   "leastPatchNumber": 5,
+   "lossNumber": 4,
+   "minPurchaseNum": 119,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  }
+ ],
+ "returned": 12,
+ "schema": 1,
+ "total_matches": 12
+}

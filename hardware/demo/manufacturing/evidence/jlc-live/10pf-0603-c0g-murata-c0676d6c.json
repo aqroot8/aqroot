@@ -1,0 +1,226 @@
+{
+ "endpoint": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
+ "exhausted": true,
+ "fetched_utc": "2026-09-05T01:16:48Z",
+ "keyword": "10pF 0603 C0G Murata",
+ "page_size": 25,
+ "pages": 2,
+ "records": [
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "50V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±5%"
+    },
+    {
+     "attribute_name_en": "Capacitance",
+     "attribute_value_name": "10pF",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>10pF</span>"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "C0G、NP0"
+    }
+   ],
+   "componentBrandEn": "Murata Electronics",
+   "componentCode": "C19480176",
+   "componentLibraryType": "expand",
+   "componentModelEn": "GQM1885C1H100JB01J",
+   "componentPrices": [
+    {
+     "endNumber": 49,
+     "productPrice": 0.3755,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 59,
+     "productPrice": 0.3755,
+     "startNumber": 50
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.3755,
+     "startNumber": 60
+    },
+    {
+     "endNumber": 2499,
+     "productPrice": 0.1498,
+     "startNumber": 1000
+    },
+    {
+     "endNumber": 4999,
+     "productPrice": 0.1448,
+     "startNumber": 2500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.1424,
+     "startNumber": 5000
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2312251312_Murata-Electronics-GQM1885C1H100JB01J_C19480176.pdf",
+   "describe": "10pF 50V C0G、NP0 ±5% 0603 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+   "erpComponentName": "10pF ±5% 50V",
+   "isBuyComponent": "0",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/multilayer-ceramic-capacitors-mlcc-smd-smt_murata-electronics-gqm1885c1h100jb01j_C19480176.html",
+   "leastPatchNumber": 5,
+   "lossNumber": 0,
+   "minPurchaseNum": 24,
+   "noBuyReason": "This product is no longer manufactured.",
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "50V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±2%"
+    },
+    {
+     "attribute_name_en": "Capacitance",
+     "attribute_value_name": "10pF",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>10pF</span>"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "C0G、NP0"
+    }
+   ],
+   "componentBrandEn": "Murata Electronics",
+   "componentCode": "C19486214",
+   "componentLibraryType": "expand",
+   "componentModelEn": "GQM1885C1H100GB01J",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 0.4864,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 11,
+     "productPrice": 0.4864,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 0.4864,
+     "startNumber": 12
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.1942,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.1877,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.1844,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+   "dataManualUrl": "https://www.lcsc.com/datasheet/lcsc_datasheet_2312251404_Murata-Electronics-GQM1885C1H100GB01J_C19486214.pdf",
+   "describe": "10pF 50V C0G、NP0 ±2% 0603 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+   "erpComponentName": "10pF ±2% 50V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/multilayer-ceramic-capacitors-mlcc-smd-smt_murata-electronics-gqm1885c1h100gb01j_C19486214.html",
+   "leastPatchNumber": 5,
+   "lossNumber": 5,
+   "minPurchaseNum": 19,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "100V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±2%"
+    },
+    {
+     "attribute_name_en": "Capacitance",
+     "attribute_value_name": "10pF",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>10pF</span>"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "NP0、C0G"
+    }
+   ],
+   "componentBrandEn": "Murata Electronics",
+   "componentCode": "C20042139",
+   "componentLibraryType": "expand",
+   "componentModelEn": "GCM1885C2A100GA16J",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 0.058,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 11,
+     "productPrice": 0.058,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 0.058,
+     "startNumber": 12
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.0233,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.0225,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.022,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+   "dataManualUrl": "https://www.lcsc.com/datasheet/lcsc_datasheet_2401221123_Murata-Electronics-GCM1885C2A100GA16J_C20042139.pdf",
+   "describe": "100V 10pF NP0、C0G ±2% 0603 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+   "erpComponentName": "10pF ±2% 100V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/multilayer-ceramic-capacitors-mlcc-smd-smt_murata-electronics-gcm1885c2a100ga16j_C20042139.html",
+   "leastPatchNumber": 5,
+   "lossNumber": 5,
+   "minPurchaseNum": 155,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  }
+ ],
+ "returned": 3,
+ "schema": 1,
+ "total_matches": 3
+}

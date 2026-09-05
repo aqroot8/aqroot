@@ -1,0 +1,295 @@
+{
+ "endpoint": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
+ "exhausted": true,
+ "fetched_utc": "2026-09-05T01:11:41Z",
+ "keyword": "C8545",
+ "page_size": 25,
+ "pages": 1,
+ "records": [
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Vgs",
+     "attribute_value_name": "±20V"
+    },
+    {
+     "attribute_name_en": "Configuration",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Gate Charge(Qg)",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Reverse Transfer Capacitance (Crss@Vds)",
+     "attribute_value_name": "5pF"
+    },
+    {
+     "attribute_name_en": "Current - Continuous Drain(Id)",
+     "attribute_value_name": "115mA"
+    },
+    {
+     "attribute_name_en": "Drain to Source Voltage",
+     "attribute_value_name": "60V"
+    },
+    {
+     "attribute_name_en": "Output Capacitance(Coss)",
+     "attribute_value_name": "25pF"
+    },
+    {
+     "attribute_name_en": "RDS(on)",
+     "attribute_value_name": "5Ω@10V"
+    },
+    {
+     "attribute_name_en": "Type",
+     "attribute_value_name": "N-Channel"
+    },
+    {
+     "attribute_name_en": "Input Capacitance(Ciss)",
+     "attribute_value_name": "50pF"
+    },
+    {
+     "attribute_name_en": "Number",
+     "attribute_value_name": "1 N-channel"
+    },
+    {
+     "attribute_name_en": "Gate Threshold Voltage (Vgs(th))",
+     "attribute_value_name": "2.5V"
+    },
+    {
+     "attribute_name_en": "Pd - Power Dissipation",
+     "attribute_value_name": "225mW"
+    }
+   ],
+   "componentBrandEn": "Jiangsu Changjing Electronics Technology Co., Ltd.",
+   "componentCode": "C8545",
+   "componentLibraryType": "base",
+   "componentModelEn": "2N7002",
+   "componentPrices": [
+    {
+     "endNumber": 499,
+     "productPrice": 0.0176,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 2999,
+     "productPrice": 0.0141,
+     "startNumber": 500
+    },
+    {
+     "endNumber": 5999,
+     "productPrice": 0.0125,
+     "startNumber": 3000
+    },
+    {
+     "endNumber": 23999,
+     "productPrice": 0.0113,
+     "startNumber": 6000
+    },
+    {
+     "endNumber": 50999,
+     "productPrice": 0.0109,
+     "startNumber": 24000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0105,
+     "startNumber": 51000
+    }
+   ],
+   "componentSpecificationEn": "SOT-23",
+   "componentTypeEn": "MOSFETs",
+   "dataManualUrl": "https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_Jiangsu-Changjing-Electronics-Technology-Co---Ltd--2N7002_C8545.pdf",
+   "describe": "1 N-channel 115mA 2.5V 225mW 25pF 50pF 5pF 5Ω@10V 60V N-Channel ±20V SOT-23 MOSFETs ROHS",
+   "erpComponentName": "2N7002",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/mosfets_jiangsu-changjing-electronics-technology-co-ltd-2n7002_C8545.html",
+   "leastPatchNumber": 10,
+   "lossNumber": 5,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 2255867
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "CPU Maximum Speed",
+     "attribute_value_name": "1.2GHz"
+    },
+    {
+     "attribute_name_en": "CPU Core",
+     "attribute_value_name": "Freescale Series"
+    },
+    {
+     "attribute_name_en": "Features",
+     "attribute_value_name": "-"
+    }
+   ],
+   "componentBrandEn": "NXP Semicon",
+   "componentCode": "C1556059",
+   "componentLibraryType": "expand",
+   "componentModelEn": "MPC8545VJATGD",
+   "componentPrices": [
+    {
+     "endNumber": 2,
+     "productPrice": 71.3227,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 4,
+     "productPrice": 71.3227,
+     "startNumber": 3
+    },
+    {
+     "endNumber": 29,
+     "productPrice": 71.3227,
+     "startNumber": 5
+    },
+    {
+     "endNumber": 33,
+     "productPrice": 67.739,
+     "startNumber": 30
+    },
+    {
+     "endNumber": 35,
+     "productPrice": 67.739,
+     "startNumber": 34
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 67.739,
+     "startNumber": 36
+    }
+   ],
+   "componentSpecificationEn": "FCPBGA-783",
+   "componentTypeEn": "Microcontrollers (MCU/MPU/SOC)",
+   "dataManualUrl": "https://datasheet.lcsc.com/lcsc/2201181430_NXP-Semicon-MPC8545VJATGD_C1556059.pdf",
+   "describe": "1.2GHz Freescale Series FCPBGA-783 Microcontrollers (MCU/MPU/SOC) ROHS",
+   "erpComponentName": "MPC8545VJATGD 停产",
+   "isBuyComponent": "0",
+   "lcscGoodsUrl": "https://lcsc.comhttps://lcsc.com/product-detail/Microcontroller-Units-MCUs-MPUs-SOCs_NXP-Semicon-MPC8545VJATGD_C1556059.html",
+   "leastPatchNumber": 0,
+   "lossNumber": 0,
+   "minPurchaseNum": 1,
+   "noBuyReason": "This product is no longer manufactured.",
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": null,
+   "componentBrandEn": "NXP Semicon",
+   "componentCode": "C6675234",
+   "componentLibraryType": "expand",
+   "componentModelEn": "MPC8545PXATGD557",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 2.8381,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 29,
+     "productPrice": 2.8381,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 2.8381,
+     "startNumber": 30
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 1.1323,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 1.095,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 1.0771,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "FCPBGA-783(29x29)",
+   "componentTypeEn": "Microcontrollers (MCU/MPU/SOC)",
+   "dataManualUrl": "",
+   "describe": "FCPBGA-783(29x29) Microcontrollers (MCU/MPU/SOC) ROHS",
+   "erpComponentName": "MPC8545PXATGD557",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/microcontrollers-mcu-mpu-soc_nxp-semicon-mpc8545pxatgd557_C6675234.html",
+   "leastPatchNumber": 0,
+   "lossNumber": 0,
+   "minPurchaseNum": 4,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": null,
+   "componentBrandEn": "NXP Semicon",
+   "componentCode": "C7231804",
+   "componentLibraryType": "expand",
+   "componentModelEn": "MPC8545VTAQGD557",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 2.8381,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 29,
+     "productPrice": 2.8381,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 2.8381,
+     "startNumber": 30
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 1.1323,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 1.095,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 1.0771,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "FCPBGA-783(29x29)",
+   "componentTypeEn": "Microcontrollers (MCU/MPU/SOC)",
+   "dataManualUrl": "",
+   "describe": "FCPBGA-783(29x29) Microcontrollers (MCU/MPU/SOC) ROHS",
+   "erpComponentName": "MPC8545VTAQGD557",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/microcontrollers-mcu-mpu-soc_nxp-semicon-mpc8545vtaqgd557_C7231804.html",
+   "leastPatchNumber": 0,
+   "lossNumber": 0,
+   "minPurchaseNum": 4,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  }
+ ],
+ "returned": 4,
+ "schema": 1,
+ "total_matches": 4
+}

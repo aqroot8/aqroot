@@ -9011,6 +9011,50 @@
 				)
 			)
 		)
+		(property "Manufacturer" "YAGEO"
+			(at 190.5 120.65 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "CC0805KKX7R9BB225"
+			(at 190.5 120.65 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "LCSC" "C125847"
+			(at 190.5 120.65 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Note_Sourcing" "SOURCING D-615 LIVE_RECORD. JLCPCB record read 2026-09-05T00:59:59Z: expand library, stock 60957, land 0805, Capacitance 2.2uF; Temperature Coefficient X7R; Tolerance ±10%; Voltage Rating 50V. Gates: 2x operating and survives absolute; not a resistor."
+			(at 190.5 120.65 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(property "Description" "2.2uF"
 			(at 190.5 120.65 0)
 			(hide yes)
@@ -9196,6 +9240,50 @@
 		(property "Datasheet" ""
 			(at 203.2 120.65 0)
 			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Manufacturer" "FH (Guangdong Fenghua Advanced Tech)"
+			(at 203.2 120.65 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "0603B103K500NT"
+			(at 203.2 120.65 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "LCSC" "C57112"
+			(at 203.2 120.65 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Note_Sourcing" "SOURCING D-615 LIVE_RECORD. JLCPCB record read 2026-09-05T00:59:59Z: base library, stock 9273211, land 0603, Capacitance 10nF; Temperature Coefficient X7R; Tolerance ±10%; Voltage Rating 50V. Gates: 2x operating and survives absolute; not a resistor."
+			(at 203.2 120.65 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -9393,6 +9481,50 @@
 				)
 			)
 		)
+		(property "Manufacturer" "YAGEO"
+			(at 190.5 133.35 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "CC0805KKX7R9BB225"
+			(at 190.5 133.35 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "LCSC" "C125847"
+			(at 190.5 133.35 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Note_Sourcing" "SOURCING D-615 LIVE_RECORD. JLCPCB record read 2026-09-05T00:59:59Z: expand library, stock 60957, land 0805, Capacitance 2.2uF; Temperature Coefficient X7R; Tolerance ±10%; Voltage Rating 50V. Gates: 2x operating and survives absolute; not a resistor."
+			(at 190.5 133.35 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(property "Description" "2.2uF"
 			(at 190.5 133.35 0)
 			(hide yes)
@@ -9578,6 +9710,50 @@
 		(property "Datasheet" ""
 			(at 203.2 133.35 0)
 			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Manufacturer" "FH (Guangdong Fenghua Advanced Tech)"
+			(at 203.2 133.35 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "0603B103K500NT"
+			(at 203.2 133.35 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "LCSC" "C57112"
+			(at 203.2 133.35 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Note_Sourcing" "SOURCING D-615 LIVE_RECORD. JLCPCB record read 2026-09-05T00:59:59Z: base library, stock 9273211, land 0603, Capacitance 10nF; Temperature Coefficient X7R; Tolerance ±10%; Voltage Rating 50V. Gates: 2x operating and survives absolute; not a resistor."
+			(at 203.2 133.35 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -9775,6 +9951,50 @@
 				)
 			)
 		)
+		(property "Manufacturer" "YAGEO"
+			(at 190.5 146.05 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "CC0805KKX7R9BB225"
+			(at 190.5 146.05 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "LCSC" "C125847"
+			(at 190.5 146.05 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Note_Sourcing" "SOURCING D-615 LIVE_RECORD. JLCPCB record read 2026-09-05T00:59:59Z: expand library, stock 60957, land 0805, Capacitance 2.2uF; Temperature Coefficient X7R; Tolerance ±10%; Voltage Rating 50V. Gates: 2x operating and survives absolute; not a resistor."
+			(at 190.5 146.05 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(property "Description" "2.2uF"
 			(at 190.5 146.05 0)
 			(hide yes)
@@ -9960,6 +10180,50 @@
 		(property "Datasheet" ""
 			(at 203.2 146.05 0)
 			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Manufacturer" "FH (Guangdong Fenghua Advanced Tech)"
+			(at 203.2 146.05 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "0603B103K500NT"
+			(at 203.2 146.05 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "LCSC" "C57112"
+			(at 203.2 146.05 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Note_Sourcing" "SOURCING D-615 LIVE_RECORD. JLCPCB record read 2026-09-05T00:59:59Z: base library, stock 9273211, land 0603, Capacitance 10nF; Temperature Coefficient X7R; Tolerance ±10%; Voltage Rating 50V. Gates: 2x operating and survives absolute; not a resistor."
+			(at 203.2 146.05 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -10157,6 +10421,50 @@
 				)
 			)
 		)
+		(property "Manufacturer" "YAGEO"
+			(at 190.5 158.75 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "CC0805KKX7R9BB225"
+			(at 190.5 158.75 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "LCSC" "C125847"
+			(at 190.5 158.75 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Note_Sourcing" "SOURCING D-615 LIVE_RECORD. JLCPCB record read 2026-09-05T00:59:59Z: expand library, stock 60957, land 0805, Capacitance 2.2uF; Temperature Coefficient X7R; Tolerance ±10%; Voltage Rating 50V. Gates: 2x operating and survives absolute; not a resistor."
+			(at 190.5 158.75 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(property "Description" "2.2uF"
 			(at 190.5 158.75 0)
 			(hide yes)
@@ -10342,6 +10650,50 @@
 		(property "Datasheet" ""
 			(at 203.2 158.75 0)
 			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Manufacturer" "Samsung Electro-Mechanics"
+			(at 203.2 158.75 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "CL10B102KB8NNNC"
+			(at 203.2 158.75 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "LCSC" "C1588"
+			(at 203.2 158.75 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Note_Sourcing" "SOURCING D-615 LIVE_RECORD. JLCPCB record read 2026-09-05T00:59:59Z: base library, stock 10349869, land 0603, Capacitance 1nF; Operating Temperature -55℃~+125℃; Temperature Coefficient X7R; Tolerance ±10%; Voltage Rating 50V. Gates: 2x operating and survives absolute; not a resistor."
+			(at 203.2 158.75 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -10774,6 +11126,50 @@
 				)
 			)
 		)
+		(property "Manufacturer" "FH (Guangdong Fenghua Advanced Tech)"
+			(at 203.2 171.45 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "0603B103K500NT"
+			(at 203.2 171.45 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "LCSC" "C57112"
+			(at 203.2 171.45 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Note_Sourcing" "SOURCING D-615 LIVE_RECORD. JLCPCB record read 2026-09-05T00:59:59Z: base library, stock 9273211, land 0603, Capacitance 10nF; Temperature Coefficient X7R; Tolerance ±10%; Voltage Rating 50V. Gates: 2x operating and survives absolute; not a resistor."
+			(at 203.2 171.45 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(property "Description" "10nF"
 			(at 203.2 171.45 0)
 			(hide yes)
@@ -10956,6 +11352,50 @@
 			)
 		)
 		(property "Datasheet" ""
+			(at 157.48 133.35 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Manufacturer" "Samsung Electro-Mechanics"
+			(at 157.48 133.35 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "CL10A225KO8NNNC"
+			(at 157.48 133.35 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "LCSC" "C23630"
+			(at 157.48 133.35 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Note_Sourcing" "SOURCING D-615 LIVE_RECORD. JLCPCB record read 2026-09-05T00:59:59Z: base library, stock 3853018, land 0603, Capacitance 2.2uF; Temperature Coefficient X5R; Tolerance ±10%; Voltage Rating 16V. Gates: 2x operating and survives absolute; not a resistor."
 			(at 157.48 133.35 0)
 			(hide yes)
 			(show_name no)
@@ -11431,6 +11871,50 @@
 				)
 			)
 		)
+		(property "Manufacturer" "Samsung Electro-Mechanics"
+			(at 312.42 74.93 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "CL10C100JB8NNNC"
+			(at 312.42 74.93 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "LCSC" "C1634"
+			(at 312.42 74.93 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Note_Sourcing" "FIRST-ARTICLE VALUE ONLY -- DEVICE_SPEC s.14 requires this position to be RE-TUNED against a VNA and the ST tool with the board in hand, so this part number buys the first article and is EXPECTED TO CHANGE. SOURCING D-615 LIVE_RECORD. JLCPCB record read 2026-09-05T01:16:20Z: base library, stock 2119581, land 0603, Capacitance 10pF; Temperature Coefficient C0G; Tolerance ±5%; Voltage Rating 50V. Gates: the value string's own stated rating; not a resistor."
+			(at 312.42 74.93 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(property "Description" ""
 			(at 312.42 74.93 0)
 			(hide yes)
@@ -11596,6 +12080,50 @@
 			)
 		)
 		(property "Datasheet" ""
+			(at 327.66 74.93 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Manufacturer" "Samsung Electro-Mechanics"
+			(at 327.66 74.93 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "CL10C100JB8NNNC"
+			(at 327.66 74.93 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "LCSC" "C1634"
+			(at 327.66 74.93 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Note_Sourcing" "FIRST-ARTICLE VALUE ONLY -- DEVICE_SPEC s.14 requires this position to be RE-TUNED against a VNA and the ST tool with the board in hand, so this part number buys the first article and is EXPECTED TO CHANGE. SOURCING D-615 LIVE_RECORD. JLCPCB record read 2026-09-05T01:16:20Z: base library, stock 2119581, land 0603, Capacitance 10pF; Temperature Coefficient C0G; Tolerance ±5%; Voltage Rating 50V. Gates: the value string's own stated rating; not a resistor."
 			(at 327.66 74.93 0)
 			(hide yes)
 			(show_name no)
@@ -12024,6 +12552,50 @@
 				)
 			)
 		)
+		(property "Manufacturer" "Samsung Electro-Mechanics"
+			(at 321.31 137.16 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "CL10C101JB8NNNC"
+			(at 321.31 137.16 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "LCSC" "C14858"
+			(at 321.31 137.16 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Note_Sourcing" "FIRST-ARTICLE VALUE ONLY -- DEVICE_SPEC s.14 requires this position to be RE-TUNED against a VNA and the ST tool with the board in hand, so this part number buys the first article and is EXPECTED TO CHANGE. SOURCING D-615 LIVE_RECORD. JLCPCB record read 2026-09-05T01:16:20Z: base library, stock 4341176, land 0603, Capacitance 100pF; Temperature Coefficient C0G; Tolerance ±5%; Voltage Rating 50V. Gates: the value string's own stated rating; not a resistor."
+			(at 321.31 137.16 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(property "Description" ""
 			(at 321.31 137.16 0)
 			(hide yes)
@@ -12199,6 +12771,50 @@
 				)
 			)
 		)
+		(property "Manufacturer" "Murata Electronics"
+			(at 332.74 137.16 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "GCM1885C2A152JA16D"
+			(at 332.74 137.16 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "LCSC" "C388906"
+			(at 332.74 137.16 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Note_Sourcing" "FIRST-ARTICLE VALUE ONLY -- DEVICE_SPEC s.14 requires this position to be RE-TUNED against a VNA and the ST tool with the board in hand, so this part number buys the first article and is EXPECTED TO CHANGE. SOURCING D-615 LIVE_RECORD. JLCPCB record read 2026-09-05T01:16:20Z: expand library, stock 5039, land 0603, Capacitance 1.5nF; Temperature Coefficient C0G; Tolerance ±5%; Voltage Rating 100V. Gates: the value string's own stated rating; not a resistor."
+			(at 332.74 137.16 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(property "Description" ""
 			(at 332.74 137.16 0)
 			(hide yes)
@@ -12358,6 +12974,50 @@
 				)
 			)
 		)
+		(property "Manufacturer" "Murata Electronics"
+			(at 344.17 129.54 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "GCM1885C2A301FA16J"
+			(at 344.17 129.54 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "LCSC" "C3837533"
+			(at 344.17 129.54 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Note_Sourcing" "FIRST-ARTICLE VALUE ONLY -- DEVICE_SPEC s.14 requires this position to be RE-TUNED against a VNA and the ST tool with the board in hand, so this part number buys the first article and is EXPECTED TO CHANGE. SOURCING D-615 LIVE_RECORD. JLCPCB record read 2026-09-05T01:16:20Z: expand library, stock 1315, land 0603, Capacitance 300pF; Temperature Coefficient C0G; Tolerance ±1%; Voltage Rating 100V. Gates: the value string's own stated rating; not a resistor."
+			(at 344.17 129.54 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(property "Description" ""
 			(at 344.17 129.54 0)
 			(hide yes)
@@ -12450,6 +13110,50 @@
 			)
 		)
 		(property "Datasheet" ""
+			(at 359.41 129.54 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Manufacturer" "YAGEO"
+			(at 359.41 129.54 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "RC0603FR-071R1L"
+			(at 359.41 129.54 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "LCSC" "C309559"
+			(at 359.41 129.54 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Note_Sourcing" "FIRST-ARTICLE VALUE ONLY -- DEVICE_SPEC s.14 requires this position to be RE-TUNED against a VNA and the ST tool with the board in hand, so this part number buys the first article and is EXPECTED TO CHANGE. SOURCING D-615 LIVE_RECORD. JLCPCB record read 2026-09-05T01:16:20Z: expand library, stock 3640, land 0603, Operating Temperature -55℃~+155℃; Power(Watts) 100mW; Resistance 1.1Ω; Temperature Coefficient ±200ppm/℃; Tolerance ±1%; Type Thick Film Resistor; Voltage-Supply(Max) 75V. Gates: the value string's own stated rating; not established -- first-article measurement."
 			(at 359.41 129.54 0)
 			(hide yes)
 			(show_name no)
@@ -12833,6 +13537,50 @@
 				)
 			)
 		)
+		(property "Manufacturer" "Samsung Electro-Mechanics"
+			(at 321.31 182.88 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "CL10C101JB8NNNC"
+			(at 321.31 182.88 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "LCSC" "C14858"
+			(at 321.31 182.88 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Note_Sourcing" "FIRST-ARTICLE VALUE ONLY -- DEVICE_SPEC s.14 requires this position to be RE-TUNED against a VNA and the ST tool with the board in hand, so this part number buys the first article and is EXPECTED TO CHANGE. SOURCING D-615 LIVE_RECORD. JLCPCB record read 2026-09-05T01:16:20Z: base library, stock 4341176, land 0603, Capacitance 100pF; Temperature Coefficient C0G; Tolerance ±5%; Voltage Rating 50V. Gates: the value string's own stated rating; not a resistor."
+			(at 321.31 182.88 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(property "Description" ""
 			(at 321.31 182.88 0)
 			(hide yes)
@@ -13008,6 +13756,50 @@
 				)
 			)
 		)
+		(property "Manufacturer" "Murata Electronics"
+			(at 332.74 182.88 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "GCM1885C2A152JA16D"
+			(at 332.74 182.88 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "LCSC" "C388906"
+			(at 332.74 182.88 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Note_Sourcing" "FIRST-ARTICLE VALUE ONLY -- DEVICE_SPEC s.14 requires this position to be RE-TUNED against a VNA and the ST tool with the board in hand, so this part number buys the first article and is EXPECTED TO CHANGE. SOURCING D-615 LIVE_RECORD. JLCPCB record read 2026-09-05T01:16:20Z: expand library, stock 5039, land 0603, Capacitance 1.5nF; Temperature Coefficient C0G; Tolerance ±5%; Voltage Rating 100V. Gates: the value string's own stated rating; not a resistor."
+			(at 332.74 182.88 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(property "Description" ""
 			(at 332.74 182.88 0)
 			(hide yes)
@@ -13167,6 +13959,50 @@
 				)
 			)
 		)
+		(property "Manufacturer" "Murata Electronics"
+			(at 344.17 175.26 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "GCM1885C2A301FA16J"
+			(at 344.17 175.26 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "LCSC" "C3837533"
+			(at 344.17 175.26 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Note_Sourcing" "FIRST-ARTICLE VALUE ONLY -- DEVICE_SPEC s.14 requires this position to be RE-TUNED against a VNA and the ST tool with the board in hand, so this part number buys the first article and is EXPECTED TO CHANGE. SOURCING D-615 LIVE_RECORD. JLCPCB record read 2026-09-05T01:16:20Z: expand library, stock 1315, land 0603, Capacitance 300pF; Temperature Coefficient C0G; Tolerance ±1%; Voltage Rating 100V. Gates: the value string's own stated rating; not a resistor."
+			(at 344.17 175.26 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(property "Description" ""
 			(at 344.17 175.26 0)
 			(hide yes)
@@ -13259,6 +14095,50 @@
 			)
 		)
 		(property "Datasheet" ""
+			(at 359.41 175.26 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Manufacturer" "YAGEO"
+			(at 359.41 175.26 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "RC0603FR-071R1L"
+			(at 359.41 175.26 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "LCSC" "C309559"
+			(at 359.41 175.26 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Note_Sourcing" "FIRST-ARTICLE VALUE ONLY -- DEVICE_SPEC s.14 requires this position to be RE-TUNED against a VNA and the ST tool with the board in hand, so this part number buys the first article and is EXPECTED TO CHANGE. SOURCING D-615 LIVE_RECORD. JLCPCB record read 2026-09-05T01:16:20Z: expand library, stock 3640, land 0603, Operating Temperature -55℃~+155℃; Power(Watts) 100mW; Resistance 1.1Ω; Temperature Coefficient ±200ppm/℃; Tolerance ±1%; Type Thick Film Resistor; Voltage-Supply(Max) 75V. Gates: the value string's own stated rating; not established -- first-article measurement."
 			(at 359.41 175.26 0)
 			(hide yes)
 			(show_name no)
@@ -13480,6 +14360,50 @@
 				)
 			)
 		)
+		(property "Manufacturer" "Murata Electronics"
+			(at 308.61 220.98 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "GQM1875C2E270FB12D"
+			(at 308.61 220.98 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "LCSC" "C2360423"
+			(at 308.61 220.98 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Note_Sourcing" "FIRST-ARTICLE VALUE ONLY -- DEVICE_SPEC s.14 requires this position to be RE-TUNED against a VNA and the ST tool with the board in hand, so this part number buys the first article and is EXPECTED TO CHANGE. SOURCING D-615 LIVE_RECORD. JLCPCB record read 2026-09-05T01:16:20Z: expand library, stock 12124, land 0603, Capacitance 27pF; Temperature Coefficient C0G; Tolerance ±1%; Voltage Rating 250V. Gates: the value string's own stated rating; not a resistor."
+			(at 308.61 220.98 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(property "Description" ""
 			(at 308.61 220.98 0)
 			(hide yes)
@@ -13588,6 +14512,50 @@
 			)
 		)
 		(property "Datasheet" ""
+			(at 321.31 228.6 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Manufacturer" "YAGEO"
+			(at 321.31 228.6 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "CC0603JRNPO9BN621"
+			(at 321.31 228.6 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "LCSC" "C325470"
+			(at 321.31 228.6 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Note_Sourcing" "FIRST-ARTICLE VALUE ONLY -- DEVICE_SPEC s.14 requires this position to be RE-TUNED against a VNA and the ST tool with the board in hand, so this part number buys the first article and is EXPECTED TO CHANGE. SOURCING D-615 LIVE_RECORD. JLCPCB record read 2026-09-05T01:16:20Z: expand library, stock 43162, land 0603, Capacitance 620pF; Temperature Coefficient NP0; Tolerance ±5%; Voltage Rating 50V. Gates: the value string's own stated rating; not a resistor."
 			(at 321.31 228.6 0)
 			(hide yes)
 			(show_name no)
@@ -13757,6 +14725,50 @@
 				)
 			)
 		)
+		(property "Manufacturer" "UNI-ROYAL(Uniroyal Elec)"
+			(at 335.28 220.98 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "0603WAF1001T5E"
+			(at 335.28 220.98 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "LCSC" "C21190"
+			(at 335.28 220.98 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Note_Sourcing" "FIRST-ARTICLE VALUE ONLY -- DEVICE_SPEC s.14 requires this position to be RE-TUNED against a VNA and the ST tool with the board in hand, so this part number buys the first article and is EXPECTED TO CHANGE. SOURCING D-615 LIVE_RECORD. JLCPCB record read 2026-09-05T01:16:20Z: base library, stock 29725158, land 0603, Operating Temperature -55℃~+155℃; Power(Watts) 100mW; Resistance 1kΩ; Temperature Coefficient ±100ppm/℃; Tolerance ±1%; Type Thick Film Resistor; Voltage-Supply(Max) 75V. Gates: the value string's own stated rating; not established -- first-article measurement."
+			(at 335.28 220.98 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(property "Description" ""
 			(at 335.28 220.98 0)
 			(hide yes)
@@ -13879,6 +14891,50 @@
 				)
 			)
 		)
+		(property "Manufacturer" "Murata Electronics"
+			(at 308.61 254.0 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "GQM1875C2E270FB12D"
+			(at 308.61 254.0 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "LCSC" "C2360423"
+			(at 308.61 254.0 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Note_Sourcing" "FIRST-ARTICLE VALUE ONLY -- DEVICE_SPEC s.14 requires this position to be RE-TUNED against a VNA and the ST tool with the board in hand, so this part number buys the first article and is EXPECTED TO CHANGE. SOURCING D-615 LIVE_RECORD. JLCPCB record read 2026-09-05T01:16:20Z: expand library, stock 12124, land 0603, Capacitance 27pF; Temperature Coefficient C0G; Tolerance ±1%; Voltage Rating 250V. Gates: the value string's own stated rating; not a resistor."
+			(at 308.61 254.0 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(property "Description" ""
 			(at 308.61 254.0 0)
 			(hide yes)
@@ -13987,6 +15043,50 @@
 			)
 		)
 		(property "Datasheet" ""
+			(at 321.31 261.62 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Manufacturer" "YAGEO"
+			(at 321.31 261.62 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "CC0603JRNPO9BN621"
+			(at 321.31 261.62 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "LCSC" "C325470"
+			(at 321.31 261.62 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Note_Sourcing" "FIRST-ARTICLE VALUE ONLY -- DEVICE_SPEC s.14 requires this position to be RE-TUNED against a VNA and the ST tool with the board in hand, so this part number buys the first article and is EXPECTED TO CHANGE. SOURCING D-615 LIVE_RECORD. JLCPCB record read 2026-09-05T01:16:20Z: expand library, stock 43162, land 0603, Capacitance 620pF; Temperature Coefficient NP0; Tolerance ±5%; Voltage Rating 50V. Gates: the value string's own stated rating; not a resistor."
 			(at 321.31 261.62 0)
 			(hide yes)
 			(show_name no)
@@ -14146,6 +15246,50 @@
 			)
 		)
 		(property "Datasheet" ""
+			(at 335.28 254.0 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Manufacturer" "UNI-ROYAL(Uniroyal Elec)"
+			(at 335.28 254.0 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "0603WAF1001T5E"
+			(at 335.28 254.0 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "LCSC" "C21190"
+			(at 335.28 254.0 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Note_Sourcing" "FIRST-ARTICLE VALUE ONLY -- DEVICE_SPEC s.14 requires this position to be RE-TUNED against a VNA and the ST tool with the board in hand, so this part number buys the first article and is EXPECTED TO CHANGE. SOURCING D-615 LIVE_RECORD. JLCPCB record read 2026-09-05T01:16:20Z: base library, stock 29725158, land 0603, Operating Temperature -55℃~+155℃; Power(Watts) 100mW; Resistance 1kΩ; Temperature Coefficient ±100ppm/℃; Tolerance ±1%; Type Thick Film Resistor; Voltage-Supply(Max) 75V. Gates: the value string's own stated rating; not established -- first-article measurement."
 			(at 335.28 254.0 0)
 			(hide yes)
 			(show_name no)

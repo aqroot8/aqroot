@@ -1,0 +1,111 @@
+{
+ "endpoint": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
+ "exhausted": true,
+ "fetched_utc": "2026-09-05T01:11:51Z",
+ "keyword": "C7519",
+ "page_size": 25,
+ "pages": 1,
+ "records": [
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-40℃~+125℃"
+    },
+    {
+     "attribute_name_en": "Type",
+     "attribute_value_name": "ESD"
+    },
+    {
+     "attribute_name_en": "Junction Capacitance",
+     "attribute_value_name": "3.5pF"
+    },
+    {
+     "attribute_name_en": "Number of Channels",
+     "attribute_value_name": "2"
+    },
+    {
+     "attribute_name_en": "level of protection",
+     "attribute_value_name": "IEC 61000-4-2"
+    },
+    {
+     "attribute_name_en": "Clamping Voltage",
+     "attribute_value_name": "17V"
+    },
+    {
+     "attribute_name_en": "Polarity",
+     "attribute_value_name": "Unidirectional"
+    },
+    {
+     "attribute_name_en": "Peak Pulse Current (Ipp)",
+     "attribute_value_name": "5A"
+    },
+    {
+     "attribute_name_en": "Voltage - Breakdown",
+     "attribute_value_name": "6V"
+    },
+    {
+     "attribute_name_en": "Reverse Stand-Off Voltage (Vrwm)",
+     "attribute_value_name": "5.25V"
+    },
+    {
+     "attribute_name_en": "Reverse Leakage Current (Ir)",
+     "attribute_value_name": "150nA"
+    }
+   ],
+   "componentBrandEn": "STMicroelectronics",
+   "componentCode": "C7519",
+   "componentLibraryType": "expand",
+   "componentModelEn": "USBLC6-2SC6",
+   "componentPrices": [
+    {
+     "endNumber": 49,
+     "productPrice": 0.1825,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 149,
+     "productPrice": 0.1424,
+     "startNumber": 50
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.1227,
+     "startNumber": 150
+    },
+    {
+     "endNumber": 2999,
+     "productPrice": 0.1052,
+     "startNumber": 500
+    },
+    {
+     "endNumber": 5999,
+     "productPrice": 0.1004,
+     "startNumber": 3000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0975,
+     "startNumber": 6000
+    }
+   ],
+   "componentSpecificationEn": "SOT-23-6L",
+   "componentTypeEn": "ESD and Surge Protection (TVS/ESD)",
+   "dataManualUrl": "https://www.lcsc.com/datasheet/lcsc_datasheet_2410121836_STMicroelectronics-USBLC6-2SC6_C7519.pdf",
+   "describe": "-40℃~+125℃ 150nA 17V 2 3.5pF 5.25V 5A 6V ESD IEC 61000-4-2 Unidirectional SOT-23-6L ESD and Surge Protection (TVS/ESD) ROHS",
+   "erpComponentName": "单向ESD 5.25V截止 峰值脉冲电流：5A",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/esd-and-surge-protection-tvs-esd_stmicroelectronics-usblc6-2sc6_C7519.html",
+   "leastPatchNumber": 5,
+   "lossNumber": 2,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 33408
+  }
+ ],
+ "returned": 1,
+ "schema": 1,
+ "total_matches": 1
+}

@@ -22,6 +22,28 @@ deliberately is how `C26` came to carry `C24`'s LCSC code.  A reference the plan
 names that no sheet holds.  A plan line missing any of the three fields.  Every
 refusal is fatal and nothing is written.
 
+CORRECTING an identity that is already there is a different act from adding
+one, so it is spelled differently.  A plan line may carry
+
+    "replaces": {"MPN": "<the exact string that must be there now>", ...}
+
+and only then is the property rewritten -- and only if the file really does
+hold that exact string.  Anything else is a fatal conflict.  The point is that
+a correction must NAME what it is overwriting, so a plan cannot silently
+clobber a decision it never read.
+
+A plan may also carry a top-level
+
+    "text_replaces": [{"file": "<path relative to the repo root>",
+                       "old": "...", "new": "...", "why": "..."}]
+
+for the two things that are NOT instance properties and still carry a part
+identity: the CACHED library symbol inside a sheet, and the project's own
+`.kicad_sym`.  Leaving those stale is how a corrected instance gets silently
+un-corrected the next time someone updates symbols from the library.  Same
+rule: the old string must occur EXACTLY ONCE in that file or nothing is
+written.
+
     python3 apply_bom_sourcing.py --plan PLAN.json [--apply] [-o OUT]
 
 Without `--apply` it is a DRY RUN: it reports every property it would add and
@@ -109,7 +131,7 @@ def main():
     a = ap.parse_args()
 
     plan = json.loads(a.plan.read_text())
-    want = {}
+    want, replaces = {}, {}
     for line in plan["graft"]:
         if not str(line.get("Manufacturer") or "").strip():
             raise SystemExit("refusing: plan line %r has no Manufacturer"
@@ -120,18 +142,24 @@ def main():
                              "carries neither an MPN nor an LCSC code"
                              % line["value"])
         basis = line["basis"]
-        note = ("SOURCING %s. %s from the beta-dm audit line %r (%s); "
-                "manufacturer %s; %s." % (
-                    plan.get("decision", "D-614"), line["how"],
-                    basis["prior_value"], basis.get("verdict") or basis["source"],
-                    basis["manufacturer_basis"],
-                    "; ".join(basis["ruling"] or [])))
+        # A plan may state its own provenance sentence.  The graft plan
+        # D-614 wrote could not -- every one of its lines came from the same
+        # place -- but D-615's come from a distributor record with a DATE on
+        # it, and that date is the evidence D-096 asks for.
+        note = line.get("note") or (
+            "SOURCING %s. %s from the beta-dm audit line %r (%s); "
+            "manufacturer %s; %s." % (
+                plan.get("decision", "D-614"), line["how"],
+                basis["prior_value"], basis.get("verdict") or basis["source"],
+                basis["manufacturer_basis"],
+                "; ".join(basis["ruling"] or [])))
         for ref in line["refs"]:
             want[ref] = dict(Manufacturer=line["Manufacturer"],
                              MPN=line["MPN"], LCSC=line["LCSC"],
                              Note_Sourcing=note)
+            replaces[ref] = dict(line.get("replaces") or {})
 
-    added, conflicts, already, edited = [], [], [], {}
+    added, conflicts, already, rewrites, edited = [], [], [], [], {}
     seen = set()
     for path in sorted(a.sheets.glob("*.kicad_sch")):
         raw = path.read_bytes().decode("utf-8")
@@ -151,23 +179,74 @@ def main():
                 if not str(value).strip():
                     continue
                 if name in props:
-                    if props[name].strip() != value.strip():
+                    if props[name].strip() == value.strip():
+                        already.append("%s.%s" % (ref, name))
+                    elif name in replaces.get(ref, {}):
+                        expect = replaces[ref][name]
+                        if props[name].strip() != str(expect).strip():
+                            conflicts.append(
+                                "%s.%s is %r; the plan says it is replacing"
+                                " %r" % (ref, name, props[name], expect))
+                        else:
+                            rewrites.append(dict(
+                                ref=ref, sheet=path.name, property=name,
+                                was=props[name], value=value))
+                    else:
                         conflicts.append(
                             "%s already carries %s=%r, the plan says %r"
                             % (ref, name, props[name], value))
-                    else:
-                        already.append("%s.%s" % (ref, name))
                     continue
                 new.append(render(name, value, at))
                 added.append(dict(ref=ref, sheet=path.name, property=name,
                                   value=value))
             if new:
                 inserts.append((ds_end + 1, "".join(new)))
-        if inserts:
+        mine = [r for r in rewrites if r["sheet"] == path.name]
+        if inserts or mine:
             out = lines[:]
             for at_index, text in sorted(inserts, reverse=True):
                 out.insert(at_index, text)
+            for r in mine:
+                old = '\t\t(property "%s" "%s"' % (r["property"], r["was"])
+                new_line = '\t\t(property "%s" "%s"' % (r["property"],
+                                                        r["value"])
+                hits = [i for i, l in enumerate(out)
+                        if l.rstrip("\r\n") == old]
+                if len(hits) != 1:
+                    conflicts.append(
+                        "%s.%s: %d line(s) match the text being replaced,"
+                        " expected exactly one" % (r["ref"], r["property"],
+                                                   len(hits)))
+                    continue
+                eol = out[hits[0]][len(out[hits[0]].rstrip("\r\n")):]
+                out[hits[0]] = new_line + eol
             edited[path.name] = "".join(out).encode("utf-8")
+
+    # The identities that are not instance properties.  These run AFTER the
+    # property edits and against their result, because the same sheet holds
+    # both the instance and its cached library copy -- counting occurrences in
+    # the original file would see the one this run has already corrected.
+    staged = {str(a.sheets / name): data.decode("utf-8")
+              for name, data in edited.items()}
+    text_edits = []
+    for rep in plan.get("text_replaces") or []:
+        target = ROOT / rep["file"]
+        key = str(target)
+        if key not in staged:
+            if not target.exists():
+                conflicts.append("%s does not exist" % rep["file"])
+                continue
+            staged[key] = target.read_bytes().decode("utf-8")
+        n = staged[key].count(rep["old"])
+        if n != 1:
+            conflicts.append(
+                "%s: the text being replaced occurs %d time(s), expected"
+                " exactly one" % (rep["file"], n))
+            continue
+        staged[key] = staged[key].replace(rep["old"], rep["new"], 1)
+        text_edits.append(dict(rep, path=target))
+    for rep in text_edits:
+        edited[str(rep["path"])] = staged[str(rep["path"])].encode("utf-8")
 
     missing = sorted(set(want) - seen)
     doc = dict(schema=1, plan=str(a.plan),
@@ -175,9 +254,12 @@ def main():
                references_found=len(seen),
                references_not_in_any_sheet=missing,
                properties_added=len(added),
+               properties_rewritten=rewrites,
+               text_replaces=[dict(file=r["file"], why=r.get("why"))
+                              for r in text_edits],
                properties_already_correct=sorted(already),
                conflicts=conflicts,
-               sheets_touched=sorted(edited),
+               sheets_touched=sorted(Path(k).name for k in edited),
                sha256_before={p.name: sha256(p)
                               for p in sorted(a.sheets.glob("*.kicad_sch"))},
                added=added, applied=False)
@@ -193,7 +275,8 @@ def main():
 
     if a.apply and edited:
         for name, data in edited.items():
-            (a.sheets / name).write_bytes(data)
+            path = Path(name) if Path(name).is_absolute() else a.sheets / name
+            path.write_bytes(data)
         doc["applied"] = True
         doc["sha256_after"] = {p.name: sha256(p)
                                for p in sorted(a.sheets.glob("*.kicad_sch"))}
@@ -203,7 +286,9 @@ def main():
         a.out.write_text(out)
     print(json.dumps({k: doc[k] for k in
                       ("references_in_plan", "references_found",
-                       "properties_added", "properties_already_correct",
+                       "properties_added", "properties_rewritten",
+                       "text_replaces",
+                       "properties_already_correct",
                        "sheets_touched", "conflicts", "applied")},
                      indent=1, sort_keys=True))
 

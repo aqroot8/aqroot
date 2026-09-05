@@ -1,0 +1,107 @@
+{
+ "endpoint": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
+ "exhausted": true,
+ "fetched_utc": "2026-09-05T01:11:37Z",
+ "keyword": "C5575816",
+ "page_size": 25,
+ "pages": 1,
+ "records": [
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-55℃~+125℃"
+    },
+    {
+     "attribute_name_en": "Number of Rows",
+     "attribute_value_name": "2"
+    },
+    {
+     "attribute_name_en": "Voltage Rating (Max)",
+     "attribute_value_name": "475V"
+    },
+    {
+     "attribute_name_en": "Insulation Height",
+     "attribute_value_name": "5.33mm"
+    },
+    {
+     "attribute_name_en": "Number of Positions",
+     "attribute_value_name": "24P"
+    },
+    {
+     "attribute_name_en": "Contact Plating",
+     "attribute_value_name": "Tin"
+    },
+    {
+     "attribute_name_en": "Pitch",
+     "attribute_value_name": "2.54mm"
+    },
+    {
+     "attribute_name_en": "Current Rating",
+     "attribute_value_name": "4.6A"
+    },
+    {
+     "attribute_name_en": "Row Spacing",
+     "attribute_value_name": "2.54mm"
+    },
+    {
+     "attribute_name_en": "Mounting Type",
+     "attribute_value_name": "Right Angle"
+    }
+   ],
+   "componentBrandEn": "Samtec",
+   "componentCode": "C5575816",
+   "componentLibraryType": "expand",
+   "componentModelEn": "BCS-112-S-D-HE",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 15.5401,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 11,
+     "productPrice": 15.5401,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 197,
+     "productPrice": 15.5401,
+     "startNumber": 12
+    },
+    {
+     "endNumber": 503,
+     "productPrice": 6.2008,
+     "startNumber": 198
+    },
+    {
+     "endNumber": 1007,
+     "productPrice": 5.9945,
+     "startNumber": 504
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 5.8922,
+     "startNumber": 1008
+    }
+   ],
+   "componentSpecificationEn": "Push-Pull,P=2.54mm",
+   "componentTypeEn": "Female Headers",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2311290945_Samtec-BCS-112-S-D-HE_C5575816.pdf",
+   "describe": "-55℃~+125℃ 2 2.54mm 2.54mm 24P 4.6A 475V 5.33mm Right Angle Tin 弯插,P=2.54mm Female Headers ROHS",
+   "erpComponentName": "间距:2.54mm 弯插",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/female-headers_samtec-bcs-112-s-d-he_C5575816.html",
+   "leastPatchNumber": 0,
+   "lossNumber": 0,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  }
+ ],
+ "returned": 1,
+ "schema": 1,
+ "total_matches": 1
+}

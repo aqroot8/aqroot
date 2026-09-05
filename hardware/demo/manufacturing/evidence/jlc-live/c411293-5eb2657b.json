@@ -1,0 +1,107 @@
+{
+ "endpoint": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
+ "exhausted": true,
+ "fetched_utc": "2026-09-05T01:11:59Z",
+ "keyword": "C411293",
+ "page_size": 25,
+ "pages": 1,
+ "records": [
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Antenna Type",
+     "attribute_value_name": "Stamp Hole Antenna、IPEX interface"
+    },
+    {
+     "attribute_name_en": "Sensitivity",
+     "attribute_value_name": "-147dBm"
+    },
+    {
+     "attribute_name_en": "Output Power",
+     "attribute_value_name": "22.3dBm"
+    },
+    {
+     "attribute_name_en": "Modulation System",
+     "attribute_value_name": "FSK、LoRa"
+    },
+    {
+     "attribute_name_en": "Voltage - Supply",
+     "attribute_value_name": "2.5V~3.7V"
+    },
+    {
+     "attribute_name_en": "Features",
+     "attribute_value_name": "Continuous frequency coverage"
+    },
+    {
+     "attribute_name_en": "Communication Distance",
+     "attribute_value_name": "7km"
+    },
+    {
+     "attribute_name_en": "Interface Type",
+     "attribute_value_name": "SPI"
+    },
+    {
+     "attribute_name_en": "Receive  Current",
+     "attribute_value_name": "6.8mA"
+    },
+    {
+     "attribute_name_en": "Send  Current",
+     "attribute_value_name": "119mA"
+    }
+   ],
+   "componentBrandEn": "Chengdu Ebyte Elec Tech",
+   "componentCode": "C411293",
+   "componentLibraryType": "expand",
+   "componentModelEn": "E22-900M22S",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 6.9091,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 29,
+     "productPrice": 5.9344,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 99,
+     "productPrice": 5.3398,
+     "startNumber": 30
+    },
+    {
+     "endNumber": 101,
+     "productPrice": 4.8427,
+     "startNumber": 100
+    },
+    {
+     "endNumber": 103,
+     "productPrice": 4.8427,
+     "startNumber": 102
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 4.8427,
+     "startNumber": 104
+    }
+   ],
+   "componentSpecificationEn": "SMD,20x14mm",
+   "componentTypeEn": "LoRa Modules",
+   "dataManualUrl": "https://www.lcsc.com/datasheet/lcsc_datasheet_1912111437_Chengdu-Ebyte-Elec-Tech-E22-900M22S_C411293.pdf",
+   "describe": "-147dBm 119mA 2.5V~3.7V 22.3dBm 6.8mA 7km Continuous frequency coverage FSK、LoRa SPI Stamp Hole Antenna、IPEX interface SMD,20x14mm LoRa Modules ROHS",
+   "erpComponentName": "868/915MHz贴片型LoRa模块",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/lora-modules_chengdu-ebyte-elec-tech-e22-900m22s_C411293.html",
+   "leastPatchNumber": 0,
+   "lossNumber": 0,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 984
+  }
+ ],
+ "returned": 1,
+ "schema": 1,
+ "total_matches": 1
+}

@@ -1,0 +1,53 @@
+{
+ "decision": "D-615",
+ "graft": [
+  {
+   "LCSC": "C160404",
+   "MPN": "SM04B-SRSS-TB(LF)(SN)",
+   "Manufacturer": "JST",
+   "basis": {
+    "manufacturer_basis": "unchanged -- JST",
+    "prior_value": "QWIIC_STEMMA_QT",
+    "ruling": [
+     "D-238; DEVICE_SPEC s.16 item 8"
+    ],
+    "source": "JLCPCB-LIVE",
+    "verdict": "RULED"
+   },
+   "footprint": "JST_SH_SM04B-SRSS-TB_1x04-1MP_P1.00mm_Horizontal",
+   "how": "LIVE_RECORD",
+   "note": "SOURCING D-615 LIVE_RECORD, SUPERSEDING THE D-614 REFERENCE_RULING. The MPN was grafted at D-614 from D-238 and SOURCING_LEDGER; the LCSC code was the half DEVICE_SPEC s.16 item 8 still listed as OPEN. JLCPCB record read 2026-09-05: JST SM04B-SRSS-TB(LF)(SN), LCSC C160404, stock 69510, SH series, pitch 1 mm, 4P 1x4P, 1 A, 50 V, -25..+85 C, UL94V-0, surface mount right angle, board footprint 6 mm x 4.32 mm -- every field corroborates D-238 and the land Connector_JST:JST_SH_SM04B-SRSS-TB_1x04-1MP_P1.00mm_Horizontal. The bare order code SM04B-SRSS-TB resolves only to ZERO-STOCK JLCPCB Assembly entries, which is why the plating-suffixed string is the one D-096 requires.",
+   "refs": [
+    "J8"
+   ],
+   "replaces": {
+    "Note_Sourcing": "SOURCING D-614. REFERENCE_RULING from the beta-dm audit line 'J8' (SOURCING-LEDGER); manufacturer named with the part in SOURCING_LEDGER; D-238, recorded in docs/full-beta-v2/assembly/SOURCING_LEDGER.md s.2 (JST SH, 1.0 mm, 4 circuit, side entry, SMT, 1.0 A, 50 V) and in DEVICE_SPEC s.10.2, which also lists the absent schematic property as an open item.  The plating-suffixed string is the one D-096 requires: the bare order code resolves to a zero-stock listing."
+   },
+   "value": "QWIIC_STEMMA_QT"
+  },
+  {
+   "LCSC": "C25955556",
+   "MPN": "FH69-50S-0.5SH",
+   "Manufacturer": "Hirose",
+   "basis": {
+    "manufacturer_basis": "unchanged -- Hirose",
+    "prior_value": "FH69-50S-0.5SH",
+    "ruling": [
+     "D-206; DEVICE_SPEC s.16 item 8"
+    ],
+    "source": "JLCPCB-LIVE",
+    "verdict": "RULED"
+   },
+   "footprint": "Hirose_FH69-50S-0.5SH",
+   "how": "LIVE_RECORD",
+   "note": "SOURCING D-615 LIVE_RECORD. The display FPC connector's LCSC code was the other half of DEVICE_SPEC s.16 item 8. JLCPCB record read 2026-09-05: HRS(Hirose) FH69-50S-0.5SH, LCSC C25955556, stock 790 against a first-five need of 5, 50 contacts, 0.5 mm, front insertion / back flip lock, double-sided top-and-bottom entry, 50 V 500 mA, -55..+125 C, surface mount right angle -- the genuine Hirose part D-206 confirmed JLC carries, so J1 stays MACHINE-PLACED. B-47's single-source finding stands.",
+   "refs": [
+    "J1"
+   ],
+   "value": "FH69-50S-0.5SH"
+  }
+ ],
+ "lines": 2,
+ "parts": 2,
+ "schema": 1
+}

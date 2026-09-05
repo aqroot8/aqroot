@@ -1,0 +1,449 @@
+{
+ "endpoint": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
+ "exhausted": true,
+ "fetched_utc": "2026-09-05T01:11:42Z",
+ "keyword": "C15127",
+ "page_size": 25,
+ "pages": 1,
+ "records": [
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Type",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Input Capacitance(Ciss)",
+     "attribute_value_name": "645pF"
+    },
+    {
+     "attribute_name_en": "Number",
+     "attribute_value_name": "1 P-Channel"
+    },
+    {
+     "attribute_name_en": "Gate Threshold Voltage (Vgs(th))",
+     "attribute_value_name": "900mV"
+    },
+    {
+     "attribute_name_en": "Gate Charge(Qg)",
+     "attribute_value_name": "14nC@10V"
+    },
+    {
+     "attribute_name_en": "Reverse Transfer Capacitance (Crss@Vds)",
+     "attribute_value_name": "55pF"
+    },
+    {
+     "attribute_name_en": "Current - Continuous Drain(Id)",
+     "attribute_value_name": "4A"
+    },
+    {
+     "attribute_name_en": "Drain to Source Voltage",
+     "attribute_value_name": "30V"
+    },
+    {
+     "attribute_name_en": "Output Capacitance(Coss)",
+     "attribute_value_name": "80pF"
+    },
+    {
+     "attribute_name_en": "Pd - Power Dissipation",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "RDS(on)",
+     "attribute_value_name": "47mΩ@10V、60mΩ@4.5V、85mΩ@2.5V"
+    }
+   ],
+   "componentBrandEn": "Alpha & Omega Semicon",
+   "componentCode": "C15127",
+   "componentLibraryType": "base",
+   "componentModelEn": "AO3401A",
+   "componentPrices": [
+    {
+     "endNumber": 49,
+     "productPrice": 0.0978,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 149,
+     "productPrice": 0.0793,
+     "startNumber": 50
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.0699,
+     "startNumber": 150
+    },
+    {
+     "endNumber": 2999,
+     "productPrice": 0.0621,
+     "startNumber": 500
+    },
+    {
+     "endNumber": 5999,
+     "productPrice": 0.0593,
+     "startNumber": 3000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0576,
+     "startNumber": 6000
+    }
+   ],
+   "componentSpecificationEn": "SOT-23",
+   "componentTypeEn": "MOSFETs",
+   "dataManualUrl": "https://www.lcsc.com/datasheet/lcsc_datasheet_2412061733_Alpha---Omega-Semicon-AO3401A_C15127.pdf",
+   "describe": "1 P-Channel 14nC@10V 30V 47mΩ@10V、60mΩ@4.5V、85mΩ@2.5V 4A 55pF 645pF 80pF 900mV SOT-23 MOSFETs ROHS",
+   "erpComponentName": "AO3401A",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/mosfets_alpha-omega-semicon-ao3401a_C15127.html",
+   "leastPatchNumber": 5,
+   "lossNumber": 4,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 719496
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-40℃~+85℃"
+    },
+    {
+     "attribute_name_en": "Access Time",
+     "attribute_value_name": "70ns"
+    },
+    {
+     "attribute_name_en": "Memory Size",
+     "attribute_value_name": "512Kbit"
+    },
+    {
+     "attribute_name_en": "Voltage - Supply",
+     "attribute_value_name": "4.5V~5.5V"
+    },
+    {
+     "attribute_name_en": "Features",
+     "attribute_value_name": "Auto power-down function"
+    },
+    {
+     "attribute_name_en": "Standby Current (Iq)",
+     "attribute_value_name": "5mA"
+    },
+    {
+     "attribute_name_en": "Interface",
+     "attribute_value_name": "Parallel Port (Parallel)"
+    },
+    {
+     "attribute_name_en": "Supply Current (Icc)",
+     "attribute_value_name": "110mA"
+    }
+   ],
+   "componentBrandEn": "Infineon/Cypress Semicon",
+   "componentCode": "C2955059",
+   "componentLibraryType": "expand",
+   "componentModelEn": "CY7C1512-70ZI",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 0.5069,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 29,
+     "productPrice": 0.5069,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 0.5069,
+     "startNumber": 30
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.1966,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.1901,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.1869,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "-",
+   "componentTypeEn": "SRAM",
+   "dataManualUrl": "",
+   "describe": "-40℃~+85℃ 110mA 4.5V~5.5V 512Kbit 5mA 70ns Parallel Port (Parallel) - SRAM ROHS",
+   "erpComponentName": "CY7C1512-70ZI",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/sram_infineon-cypress-semicon-cy7c1512-70zi_C2955059.html",
+   "leastPatchNumber": 0,
+   "lossNumber": 0,
+   "minPurchaseNum": 18,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Current Rating",
+     "attribute_value_name": "25A"
+    },
+    {
+     "attribute_name_en": "Rated Functioning Temperature",
+     "attribute_value_name": "72℃"
+    }
+   ],
+   "componentBrandEn": "Littelfuse",
+   "componentCode": "C17466995",
+   "componentLibraryType": "expand",
+   "componentModelEn": "MHP-TAC15-12-72",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 0.3505,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 11,
+     "productPrice": 0.3505,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 0.3505,
+     "startNumber": 12
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.1399,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.1352,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.1329,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "-",
+   "componentTypeEn": "Thermal Fuses (TCO)",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2311150959_Littelfuse-MHP-TAC15-12-72_C17466995.pdf",
+   "describe": "25A 72℃ - Thermal Fuses (TCO) ROHS",
+   "erpComponentName": "MHP-TAC15-12-72",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/thermal-fuses-tco_littelfuse-mhp-tac15-12-72_C17466995.html",
+   "leastPatchNumber": 0,
+   "lossNumber": 0,
+   "minPurchaseNum": 26,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Current Rating",
+     "attribute_value_name": "25A"
+    },
+    {
+     "attribute_name_en": "Rated Functioning Temperature",
+     "attribute_value_name": "77℃"
+    }
+   ],
+   "componentBrandEn": "Littelfuse",
+   "componentCode": "C17684618",
+   "componentLibraryType": "expand",
+   "componentModelEn": "MHP-TAC15-12-77",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 0.3108,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 11,
+     "productPrice": 0.3108,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 0.3108,
+     "startNumber": 12
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.124,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.1199,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.1178,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "-",
+   "componentTypeEn": "Thermal Fuses (TCO)",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2311161711_Littelfuse-MHP-TAC15-12-77_C17684618.pdf",
+   "describe": "25A 77℃ - Thermal Fuses (TCO) ROHS",
+   "erpComponentName": "MHP-TAC15-12-77",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/thermal-fuses-tco_littelfuse-mhp-tac15-12-77_C17684618.html",
+   "leastPatchNumber": 0,
+   "lossNumber": 0,
+   "minPurchaseNum": 29,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Current Rating",
+     "attribute_value_name": "25A"
+    },
+    {
+     "attribute_name_en": "Rated Functioning Temperature",
+     "attribute_value_name": "77℃"
+    }
+   ],
+   "componentBrandEn": "Littelfuse",
+   "componentCode": "C17337122",
+   "componentLibraryType": "expand",
+   "componentModelEn": "MHP-TAC15-12-77N",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 0.3172,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 11,
+     "productPrice": 0.3172,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 0.3172,
+     "startNumber": 12
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.1266,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.1224,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.1203,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "-",
+   "componentTypeEn": "Thermal Fuses (TCO)",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2311141617_Littelfuse-MHP-TAC15-12-77N_C17337122.pdf",
+   "describe": "25A 77℃ - Thermal Fuses (TCO) ROHS",
+   "erpComponentName": "MHP-TAC15-12-77N",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/thermal-fuses-tco_littelfuse-mhp-tac15-12-77n_C17337122.html",
+   "leastPatchNumber": 0,
+   "lossNumber": 0,
+   "minPurchaseNum": 29,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Current Rating",
+     "attribute_value_name": "25A"
+    },
+    {
+     "attribute_name_en": "Rated Functioning Temperature",
+     "attribute_value_name": "72℃"
+    }
+   ],
+   "componentBrandEn": "Littelfuse",
+   "componentCode": "C17646581",
+   "componentLibraryType": "expand",
+   "componentModelEn": "MHP-TAC15-12-72N",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 0.3299,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 11,
+     "productPrice": 0.3299,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 0.3299,
+     "startNumber": 12
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.1316,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.1272,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.1251,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "-",
+   "componentTypeEn": "Thermal Fuses (TCO)",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2311161028_Littelfuse-MHP-TAC15-12-72N_C17646581.pdf",
+   "describe": "25A 72℃ - Thermal Fuses (TCO) ROHS",
+   "erpComponentName": "MHP-TAC15-12-72N",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/thermal-fuses-tco_littelfuse-mhp-tac15-12-72n_C17646581.html",
+   "leastPatchNumber": 0,
+   "lossNumber": 0,
+   "minPurchaseNum": 28,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  }
+ ],
+ "returned": 6,
+ "schema": 1,
+ "total_matches": 6
+}

@@ -1,0 +1,119 @@
+{
+ "endpoint": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
+ "exhausted": true,
+ "fetched_utc": "2026-09-05T01:11:54Z",
+ "keyword": "C71045",
+ "page_size": 25,
+ "pages": 1,
+ "records": [
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Constant Current Accuracy",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Type",
+     "attribute_value_name": "DC-DC"
+    },
+    {
+     "attribute_name_en": "Number of Channels",
+     "attribute_value_name": "1"
+    },
+    {
+     "attribute_name_en": "Frequency - Switching",
+     "attribute_value_name": "1.2MHz"
+    },
+    {
+     "attribute_name_en": "Voltage - Input(DC)",
+     "attribute_value_name": "2.7V~5.5V"
+    },
+    {
+     "attribute_name_en": "Voltage - Input(AC)",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Output Current",
+     "attribute_value_name": "1.8A"
+    },
+    {
+     "attribute_name_en": "Features",
+     "attribute_value_name": "Short Circuit Protection、Over Voltage Protection、Over-Temperature Protection (OTP)、LED open-circuit protection、Built-in soft-start"
+    },
+    {
+     "attribute_name_en": "Dimming",
+     "attribute_value_name": "PWM"
+    },
+    {
+     "attribute_name_en": "Switch Tube (Built-In/External)",
+     "attribute_value_name": "Built-in"
+    },
+    {
+     "attribute_name_en": "Topology",
+     "attribute_value_name": "Boost"
+    },
+    {
+     "attribute_name_en": "Output Voltage",
+     "attribute_value_name": "2.7V~38V"
+    },
+    {
+     "attribute_name_en": "Operating temperature",
+     "attribute_value_name": "-40℃~+125℃"
+    }
+   ],
+   "componentBrandEn": "Texas Instruments",
+   "componentCode": "C71045",
+   "componentLibraryType": "expand",
+   "componentModelEn": "TPS61169DCKR",
+   "componentPrices": [
+    {
+     "endNumber": 49,
+     "productPrice": 0.3204,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 149,
+     "productPrice": 0.2637,
+     "startNumber": 50
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.2393,
+     "startNumber": 150
+    },
+    {
+     "endNumber": 2999,
+     "productPrice": 0.209,
+     "startNumber": 500
+    },
+    {
+     "endNumber": 5999,
+     "productPrice": 0.1955,
+     "startNumber": 3000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.1874,
+     "startNumber": 6000
+    }
+   ],
+   "componentSpecificationEn": "SC-70-5",
+   "componentTypeEn": "LED Drivers",
+   "dataManualUrl": "https://www.lcsc.com/datasheet/lcsc_datasheet_2410121543_Texas-Instruments-TPS61169DCKR_C71045.pdf",
+   "describe": "-40℃~+125℃ 1 1.2MHz 1.8A 2.7V~38V 2.7V~5.5V Boost Built-in DC-DC PWM Short Circuit Protection、Over Voltage Protection、Over-Temperature Protection (OTP)、LED open-circuit protection、Built-in soft-start SC-70-5 LED Drivers ROHS",
+   "erpComponentName": "采用PWM控制的38V高电流升压WLED驱动器",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/led-drivers_texas-instruments-tps61169dckr_C71045.html",
+   "leastPatchNumber": 5,
+   "lossNumber": 0,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 4006
+  }
+ ],
+ "returned": 1,
+ "schema": 1,
+ "total_matches": 1
+}

@@ -1,0 +1,107 @@
+{
+ "endpoint": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
+ "exhausted": true,
+ "fetched_utc": "2026-09-05T01:10:38Z",
+ "keyword": "C905372",
+ "page_size": 25,
+ "pages": 1,
+ "records": [
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-55℃~+150℃"
+    },
+    {
+     "attribute_name_en": "Input Capacitance(Ciss)",
+     "attribute_value_name": "940pF"
+    },
+    {
+     "attribute_name_en": "Number",
+     "attribute_value_name": "1 N-channel"
+    },
+    {
+     "attribute_name_en": "Gate Threshold Voltage (Vgs(th))",
+     "attribute_value_name": "3V"
+    },
+    {
+     "attribute_name_en": "Gate Charge(Qg)",
+     "attribute_value_name": "7.7nC@4.5V"
+    },
+    {
+     "attribute_name_en": "Reverse Transfer Capacitance (Crss@Vds)",
+     "attribute_value_name": "125pF"
+    },
+    {
+     "attribute_name_en": "Current - Continuous Drain(Id)",
+     "attribute_value_name": "6.4A"
+    },
+    {
+     "attribute_name_en": "Drain to Source Voltage",
+     "attribute_value_name": "30V"
+    },
+    {
+     "attribute_name_en": "Pd - Power Dissipation",
+     "attribute_value_name": "1.28W"
+    },
+    {
+     "attribute_name_en": "RDS(on)",
+     "attribute_value_name": "15mΩ@10V"
+    }
+   ],
+   "componentBrandEn": "onsemi",
+   "componentCode": "C905372",
+   "componentLibraryType": "expand",
+   "componentModelEn": "NTMD4820NR2G",
+   "componentPrices": [
+    {
+     "endNumber": 49,
+     "productPrice": 0.2171,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 59,
+     "productPrice": 0.2171,
+     "startNumber": 50
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.2171,
+     "startNumber": 60
+    },
+    {
+     "endNumber": 2499,
+     "productPrice": 0.084,
+     "startNumber": 1000
+    },
+    {
+     "endNumber": 4999,
+     "productPrice": 0.0811,
+     "startNumber": 2500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0797,
+     "startNumber": 5000
+    }
+   ],
+   "componentSpecificationEn": "SOIC-8",
+   "componentTypeEn": "MOSFETs",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2404241614_onsemi-NTMD4820NR2G_C905372.pdf",
+   "describe": "-55℃~+150℃ 1 N-channel 1.28W 125pF 15mΩ@10V 30V 3V 6.4A 7.7nC@4.5V 940pF SOIC-8 MOSFETs ROHS",
+   "erpComponentName": "NTMD4820NR2G",
+   "isBuyComponent": "0",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/mosfets_onsemi-ntmd4820nr2g_C905372.html",
+   "leastPatchNumber": 0,
+   "lossNumber": 0,
+   "minPurchaseNum": 42,
+   "noBuyReason": "This product is no longer manufactured.",
+   "rohsFlag": 1,
+   "stockCount": 0
+  }
+ ],
+ "returned": 1,
+ "schema": 1,
+ "total_matches": 1
+}

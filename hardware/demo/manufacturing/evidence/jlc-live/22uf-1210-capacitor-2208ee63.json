@@ -1,0 +1,3545 @@
+{
+ "endpoint": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
+ "exhausted": false,
+ "fetched_utc": "2026-09-05T00:59:59Z",
+ "keyword": "22uF 1210 capacitor",
+ "page_size": 25,
+ "pages": 2,
+ "records": [
+  {
+   "assemblyComponentFlag": false,
+   "attributes": null,
+   "componentBrandEn": "JLCPCB Assembly",
+   "componentCode": "C9900298028",
+   "componentLibraryType": "expand",
+   "componentModelEn": "47uF/50V,Capacitor1210",
+   "componentPrices": [
+    {
+     "endNumber": 99,
+     "productPrice": 0.0395,
+     "startNumber": 1
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0204,
+     "startNumber": 100
+    }
+   ],
+   "componentSpecificationEn": "1210",
+   "componentTypeEn": "SMT",
+   "dataManualUrl": null,
+   "describe": "1210 SMT ROHS",
+   "erpComponentName": "【邮寄专用】47uF/50V,Capacitor1210",
+   "isBuyComponent": "0",
+   "lcscGoodsUrl": null,
+   "leastPatchNumber": 5,
+   "lossNumber": 4,
+   "minPurchaseNum": 439,
+   "noBuyReason": "This product is no longer manufactured.",
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "16V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±10%"
+    },
+    {
+     "attribute_name_en": "Capacitance",
+     "attribute_value_name": "22uF",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>22uF</span>"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "X5R"
+    }
+   ],
+   "componentBrandEn": "Samsung Electro-Mechanics",
+   "componentCode": "C19659",
+   "componentLibraryType": "expand",
+   "componentModelEn": "CL32A226KOJNNNE",
+   "componentPrices": [
+    {
+     "endNumber": 49,
+     "productPrice": 0.2262,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 149,
+     "productPrice": 0.1849,
+     "startNumber": 50
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.1673,
+     "startNumber": 150
+    },
+    {
+     "endNumber": 1999,
+     "productPrice": 0.1175,
+     "startNumber": 1000
+    },
+    {
+     "endNumber": 4999,
+     "productPrice": 0.1078,
+     "startNumber": 2000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.1019,
+     "startNumber": 5000
+    }
+   ],
+   "componentSpecificationEn": "1210",
+   "componentTypeEn": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+   "dataManualUrl": "https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_Samsung-Electro-Mechanics-CL32A226KOJNNNE_C19659.pdf",
+   "describe": "16V 22uF X5R ±10% 1210 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+   "erpComponentName": "22uF ±10% 16V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/multilayer-ceramic-capacitors-mlcc-smd-smt_samsung-electro-mechanics-cl32a226kojnnne_C19659.html",
+   "leastPatchNumber": 5,
+   "lossNumber": 4,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 45991
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "25V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±10%"
+    },
+    {
+     "attribute_name_en": "Capacitance",
+     "attribute_value_name": "22uF",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>22uF</span>"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "X7R"
+    }
+   ],
+   "componentBrandEn": "Murata Electronics",
+   "componentCode": "C21397",
+   "componentLibraryType": "expand",
+   "componentModelEn": "GRM32ER71E226KE15L",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 0.606,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 29,
+     "productPrice": 0.515,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 99,
+     "productPrice": 0.4712,
+     "startNumber": 30
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.4322,
+     "startNumber": 100
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.4224,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.3899,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "1210",
+   "componentTypeEn": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+   "dataManualUrl": "https://www.lcsc.com/datasheet/lcsc_datasheet_2308111542_Murata-Electronics-GRM32ER71E226KE15L_C21397.pdf",
+   "describe": "22uF 25V X7R ±10% 1210 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+   "erpComponentName": "22uF ±10% 25V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/multilayer-ceramic-capacitors-mlcc-smd-smt_murata-electronics-grm32er71e226ke15l_C21397.html",
+   "leastPatchNumber": 5,
+   "lossNumber": 0,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 84316
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "25V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±10%"
+    },
+    {
+     "attribute_name_en": "Capacitance",
+     "attribute_value_name": "22uF",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>22uF</span>"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "X5R"
+    }
+   ],
+   "componentBrandEn": "Samsung Electro-Mechanics",
+   "componentCode": "C52306",
+   "componentLibraryType": "expand",
+   "componentModelEn": "CL32A226KAJNNNE",
+   "componentPrices": [
+    {
+     "endNumber": 19,
+     "productPrice": 0.305,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 59,
+     "productPrice": 0.2413,
+     "startNumber": 20
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 0.2103,
+     "startNumber": 60
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.1825,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 1999,
+     "productPrice": 0.1427,
+     "startNumber": 1000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.1381,
+     "startNumber": 2000
+    }
+   ],
+   "componentSpecificationEn": "1210",
+   "componentTypeEn": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+   "dataManualUrl": "https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_Samsung-Electro-Mechanics-CL32A226KAJNNNE_C52306.pdf",
+   "describe": "22uF 25V X5R ±10% 1210 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+   "erpComponentName": "22uF ±10% 25V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/multilayer-ceramic-capacitors-mlcc-smd-smt_samsung-electro-mechanics-cl32a226kajnnne_C52306.html",
+   "leastPatchNumber": 5,
+   "lossNumber": 2,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 359794
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "16V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±10%"
+    },
+    {
+     "attribute_name_en": "Capacitance",
+     "attribute_value_name": "22uF",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>22uF</span>"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "X7R"
+    }
+   ],
+   "componentBrandEn": "Samsung Electro-Mechanics",
+   "componentCode": "C55530",
+   "componentLibraryType": "expand",
+   "componentModelEn": "CL32B226KOJNNNE",
+   "componentPrices": [
+    {
+     "endNumber": 49,
+     "productPrice": 0.2288,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 149,
+     "productPrice": 0.1831,
+     "startNumber": 50
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.1609,
+     "startNumber": 150
+    },
+    {
+     "endNumber": 1999,
+     "productPrice": 0.1388,
+     "startNumber": 1000
+    },
+    {
+     "endNumber": 4999,
+     "productPrice": 0.1333,
+     "startNumber": 2000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.13,
+     "startNumber": 5000
+    }
+   ],
+   "componentSpecificationEn": "1210",
+   "componentTypeEn": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+   "dataManualUrl": "https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_Samsung-Electro-Mechanics-CL32B226KOJNNNE_C55530.pdf",
+   "describe": "16V 22uF X7R ±10% 1210 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+   "erpComponentName": "22uF ±10% 16V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/multilayer-ceramic-capacitors-mlcc-smd-smt_samsung-electro-mechanics-cl32b226kojnnne_C55530.html",
+   "leastPatchNumber": 5,
+   "lossNumber": 2,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 40774
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "25V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±10%"
+    },
+    {
+     "attribute_name_en": "Capacitance",
+     "attribute_value_name": "22uF",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>22uF</span>"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "X5R"
+    }
+   ],
+   "componentBrandEn": "Murata Electronics",
+   "componentCode": "C65428",
+   "componentLibraryType": "expand",
+   "componentModelEn": "GRM32ER61E226KE15L",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 0.6499,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 29,
+     "productPrice": 0.5361,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 99,
+     "productPrice": 0.4858,
+     "startNumber": 30
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.4257,
+     "startNumber": 100
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.3981,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.3656,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "1210",
+   "componentTypeEn": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/1810250907_Murata-Electronics-GRM32ER61E226KE15L_C65428.pdf",
+   "describe": "22uF 25V X5R ±10% 1210 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+   "erpComponentName": "22uF ±10% 25V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/multilayer-ceramic-capacitors-mlcc-smd-smt_murata-electronics-grm32er61e226ke15l_C65428.html",
+   "leastPatchNumber": 5,
+   "lossNumber": 0,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 2924
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "16V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±10%"
+    },
+    {
+     "attribute_name_en": "Capacitance",
+     "attribute_value_name": "22uF",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>22uF</span>"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "X5R"
+    }
+   ],
+   "componentBrandEn": "Murata Electronics",
+   "componentCode": "C86051",
+   "componentLibraryType": "expand",
+   "componentModelEn": "GRM32ER61C226KE20L",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 0.9341,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 29,
+     "productPrice": 0.7814,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 99,
+     "productPrice": 0.7051,
+     "startNumber": 30
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.6304,
+     "startNumber": 100
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.5849,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.5605,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "1210",
+   "componentTypeEn": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2304140030_Murata-Electronics-GRM32ER61C226KE20L_C86051.pdf",
+   "describe": "16V 22uF X5R ±10% 1210 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+   "erpComponentName": "22uF ±10% 16V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/multilayer-ceramic-capacitors-mlcc-smd-smt_murata-electronics-grm32er61c226ke20l_C86051.html",
+   "leastPatchNumber": 5,
+   "lossNumber": 0,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 640
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "16V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±10%"
+    },
+    {
+     "attribute_name_en": "Capacitance",
+     "attribute_value_name": "22uF",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>22uF</span>"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "X5R"
+    }
+   ],
+   "componentBrandEn": "Taiyo Yuden",
+   "componentCode": "C89148",
+   "componentLibraryType": "expand",
+   "componentModelEn": "EMK325BJ226KM-T",
+   "componentPrices": [
+    {
+     "endNumber": 49,
+     "productPrice": 0.4059,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 149,
+     "productPrice": 0.3331,
+     "startNumber": 50
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.3019,
+     "startNumber": 150
+    },
+    {
+     "endNumber": 2499,
+     "productPrice": 0.2631,
+     "startNumber": 500
+    },
+    {
+     "endNumber": 4999,
+     "productPrice": 0.2457,
+     "startNumber": 2500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.2353,
+     "startNumber": 5000
+    }
+   ],
+   "componentSpecificationEn": "1210",
+   "componentTypeEn": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2304140030_Taiyo-Yuden-EMK325BJ226KM-T_C89148.pdf",
+   "describe": "16V 22uF X5R ±10% 1210 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+   "erpComponentName": "22uF ±10% 16V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/multilayer-ceramic-capacitors-mlcc-smd-smt_taiyo-yuden-emk325bj226km-t_C89148.html",
+   "leastPatchNumber": 5,
+   "lossNumber": 2,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 501
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "16V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±20%"
+    },
+    {
+     "attribute_name_en": "Capacitance",
+     "attribute_value_name": "22uF",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>22uF</span>"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "X5R"
+    }
+   ],
+   "componentBrandEn": "Taiyo Yuden",
+   "componentCode": "C92771",
+   "componentLibraryType": "expand",
+   "componentModelEn": "EMK325BJ226MD-T",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 0.2431,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 29,
+     "productPrice": 0.1976,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 99,
+     "productPrice": 0.1782,
+     "startNumber": 30
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.1539,
+     "startNumber": 100
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.1432,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.1367,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "1210",
+   "componentTypeEn": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/1810171817_Taiyo-Yuden-EMK325BJ226MD-T_C92771.pdf",
+   "describe": "16V 22uF X5R ±20% 1210 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+   "erpComponentName": "MSASE329JB5226MTNA01 22uF ±20% 16V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/multilayer-ceramic-capacitors-mlcc-smd-smt_taiyo-yuden-emk325bj226md-t_C92771.html",
+   "leastPatchNumber": 5,
+   "lossNumber": 0,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 1
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "16V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±20%"
+    },
+    {
+     "attribute_name_en": "Capacitance",
+     "attribute_value_name": "22uF",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>22uF</span>"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "X5R"
+    }
+   ],
+   "componentBrandEn": "Taiyo Yuden",
+   "componentCode": "C92772",
+   "componentLibraryType": "expand",
+   "componentModelEn": "EMK325BJ226MM-T",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 0.5751,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 29,
+     "productPrice": 0.4614,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 99,
+     "productPrice": 0.4127,
+     "startNumber": 30
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.3509,
+     "startNumber": 100
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.325,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.3087,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "1210",
+   "componentTypeEn": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/1810292010_Taiyo-Yuden-EMK325BJ226MM-T_C92772.pdf",
+   "describe": "16V 22uF X5R ±20% 1210 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+   "erpComponentName": "22uF ±20% 16V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/multilayer-ceramic-capacitors-mlcc-smd-smt_taiyo-yuden-emk325bj226mm-t_C92772.html",
+   "leastPatchNumber": 5,
+   "lossNumber": 2,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 1617
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "25V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±20%"
+    },
+    {
+     "attribute_name_en": "Capacitance",
+     "attribute_value_name": "22uF",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>22uF</span>"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "X5R"
+    }
+   ],
+   "componentBrandEn": "Murata Electronics",
+   "componentCode": "C97971",
+   "componentLibraryType": "expand",
+   "componentModelEn": "GRM32ER61E226ME15L",
+   "componentPrices": [
+    {
+     "endNumber": 49,
+     "productPrice": 0.1903,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 149,
+     "productPrice": 0.1532,
+     "startNumber": 50
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.1375,
+     "startNumber": 150
+    },
+    {
+     "endNumber": 1999,
+     "productPrice": 0.1177,
+     "startNumber": 1000
+    },
+    {
+     "endNumber": 4999,
+     "productPrice": 0.1089,
+     "startNumber": 2000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.1035,
+     "startNumber": 5000
+    }
+   ],
+   "componentSpecificationEn": "1210",
+   "componentTypeEn": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/1810250908_Murata-Electronics-GRM32ER61E226ME15L_C97971.pdf",
+   "describe": "22uF 25V X5R ±20% 1210 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+   "erpComponentName": "22uF ±20% 25V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/multilayer-ceramic-capacitors-mlcc-smd-smt_murata-electronics-grm32er61e226me15l_C97971.html",
+   "leastPatchNumber": 5,
+   "lossNumber": 0,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 4
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "16V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±20%"
+    },
+    {
+     "attribute_name_en": "Capacitance",
+     "attribute_value_name": "22uF",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>22uF</span>"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "X5R"
+    }
+   ],
+   "componentBrandEn": "Samsung Electro-Mechanics",
+   "componentCode": "C100086",
+   "componentLibraryType": "expand",
+   "componentModelEn": "CL32A226MOJNNNE",
+   "componentPrices": [
+    {
+     "endNumber": 49,
+     "productPrice": 0.3137,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 149,
+     "productPrice": 0.2491,
+     "startNumber": 50
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.2213,
+     "startNumber": 150
+    },
+    {
+     "endNumber": 1999,
+     "productPrice": 0.1869,
+     "startNumber": 1000
+    },
+    {
+     "endNumber": 4999,
+     "productPrice": 0.1714,
+     "startNumber": 2000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.1622,
+     "startNumber": 5000
+    }
+   ],
+   "componentSpecificationEn": "1210",
+   "componentTypeEn": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+   "dataManualUrl": "https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_Samsung-Electro-Mechanics-CL32A226MOJNNNE_C100086.pdf",
+   "describe": "16V 22uF X5R ±20% 1210 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+   "erpComponentName": "22uF ±20% 16V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/multilayer-ceramic-capacitors-mlcc-smd-smt_samsung-electro-mechanics-cl32a226mojnnne_C100086.html",
+   "leastPatchNumber": 5,
+   "lossNumber": 0,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 1224
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "16V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±20%"
+    },
+    {
+     "attribute_name_en": "Capacitance",
+     "attribute_value_name": "22uF",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>22uF</span>"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "X7R"
+    }
+   ],
+   "componentBrandEn": "Walsin Tech Corp",
+   "componentCode": "C123667",
+   "componentLibraryType": "expand",
+   "componentModelEn": "1210B226M160",
+   "componentPrices": [
+    {
+     "endNumber": 49,
+     "productPrice": 0.2254,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 149,
+     "productPrice": 0.1766,
+     "startNumber": 50
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.1557,
+     "startNumber": 150
+    },
+    {
+     "endNumber": 1999,
+     "productPrice": 0.1297,
+     "startNumber": 1000
+    },
+    {
+     "endNumber": 4999,
+     "productPrice": 0.1182,
+     "startNumber": 2000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.1112,
+     "startNumber": 5000
+    }
+   ],
+   "componentSpecificationEn": "1210",
+   "componentTypeEn": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+   "dataManualUrl": "https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_Walsin-Tech-Corp-1210B226M160_C123667.pdf",
+   "describe": "16V 22uF X7R ±20% 1210 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+   "erpComponentName": "22uF ±20% 16V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/multilayer-ceramic-capacitors-mlcc-smd-smt_walsin-tech-corp-1210b226m160_C123667.html",
+   "leastPatchNumber": 5,
+   "lossNumber": 0,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 3
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "25V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±20%"
+    },
+    {
+     "attribute_name_en": "Capacitance",
+     "attribute_value_name": "22uF",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>22uF</span>"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "X7S"
+    }
+   ],
+   "componentBrandEn": "Murata Electronics",
+   "componentCode": "C126611",
+   "componentLibraryType": "expand",
+   "componentModelEn": "GCM32EC71E226ME36L",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 1.147,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 29,
+     "productPrice": 0.9471,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 99,
+     "productPrice": 0.8383,
+     "startNumber": 30
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.7148,
+     "startNumber": 100
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.6596,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.6352,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "1210",
+   "componentTypeEn": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2304140030_Murata-Electronics-GCM32EC71E226ME36L_C126611.pdf",
+   "describe": "22uF 25V X7S ±20% 1210 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+   "erpComponentName": "22uF ±20% 25V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/multilayer-ceramic-capacitors-mlcc-smd-smt_murata-electronics-gcm32ec71e226me36l_C126611.html",
+   "leastPatchNumber": 0,
+   "lossNumber": 0,
+   "minPurchaseNum": 8,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 9
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "16V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±10%"
+    },
+    {
+     "attribute_name_en": "Capacitance",
+     "attribute_value_name": "22uF",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>22uF</span>"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "X7R"
+    }
+   ],
+   "componentBrandEn": "Murata Electronics",
+   "componentCode": "C126614",
+   "componentLibraryType": "expand",
+   "componentModelEn": "GCM32ER71C226KE19L",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 0.7116,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 29,
+     "productPrice": 0.5962,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 99,
+     "productPrice": 0.5394,
+     "startNumber": 30
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.4825,
+     "startNumber": 100
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.4484,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.424,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "1210",
+   "componentTypeEn": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+   "dataManualUrl": "https://www.lcsc.com/datasheet/lcsc_datasheet_1912111437_Murata-Electronics-GCM32ER71C226KE19L_C126614.pdf",
+   "describe": "16V 22uF X7R ±10% 1210 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+   "erpComponentName": "22uF ±10% 16V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/multilayer-ceramic-capacitors-mlcc-smd-smt_murata-electronics-gcm32er71c226ke19l_C126614.html",
+   "leastPatchNumber": 5,
+   "lossNumber": 0,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 8254
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "16V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±20%"
+    },
+    {
+     "attribute_name_en": "Capacitance",
+     "attribute_value_name": "22uF",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>22uF</span>"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "X7R"
+    }
+   ],
+   "componentBrandEn": "Murata Electronics",
+   "componentCode": "C126615",
+   "componentLibraryType": "expand",
+   "componentModelEn": "GCM32ER71C226ME19L",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 0.5881,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 29,
+     "productPrice": 0.4728,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 99,
+     "productPrice": 0.424,
+     "startNumber": 30
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.3623,
+     "startNumber": 100
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.3363,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.3201,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "1210",
+   "componentTypeEn": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+   "dataManualUrl": "https://www.lcsc.com/datasheet/lcsc_datasheet_1912111437_Murata-Electronics-GCM32ER71C226ME19L_C126615.pdf",
+   "describe": "16V 22uF X7R ±20% 1210 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+   "erpComponentName": "22uF ±20% 16V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/multilayer-ceramic-capacitors-mlcc-smd-smt_murata-electronics-gcm32er71c226me19l_C126615.html",
+   "leastPatchNumber": 5,
+   "lossNumber": 0,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 2246
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "16V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±10%"
+    },
+    {
+     "attribute_name_en": "Capacitance",
+     "attribute_value_name": "22uF",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>22uF</span>"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "X5R"
+    }
+   ],
+   "componentBrandEn": "KEMET",
+   "componentCode": "C141048",
+   "componentLibraryType": "expand",
+   "componentModelEn": "C1210C226K4PAC7800",
+   "componentPrices": [
+    {
+     "endNumber": 49,
+     "productPrice": 0.3852,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 149,
+     "productPrice": 0.3058,
+     "startNumber": 50
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.2718,
+     "startNumber": 150
+    },
+    {
+     "endNumber": 1999,
+     "productPrice": 0.2293,
+     "startNumber": 1000
+    },
+    {
+     "endNumber": 4999,
+     "productPrice": 0.2104,
+     "startNumber": 2000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.1991,
+     "startNumber": 5000
+    }
+   ],
+   "componentSpecificationEn": "1210",
+   "componentTypeEn": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+   "dataManualUrl": "https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_KEMET-C1210C226K4PAC7800_C141048.pdf",
+   "describe": "16V 22uF X5R ±10% 1210 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+   "erpComponentName": "22uF ±10% 16V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/multilayer-ceramic-capacitors-mlcc-smd-smt_kemet-c1210c226k4pac7800_C141048.html",
+   "leastPatchNumber": 5,
+   "lossNumber": 0,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 440
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "25V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±20%"
+    },
+    {
+     "attribute_name_en": "Capacitance",
+     "attribute_value_name": "22uF",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>22uF</span>"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "X7R"
+    }
+   ],
+   "componentBrandEn": "KEMET",
+   "componentCode": "C141225",
+   "componentLibraryType": "expand",
+   "componentModelEn": "C1210C226M3R2CAUTO",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 4.8395,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 29,
+     "productPrice": 4.7404,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 99,
+     "productPrice": 4.6738,
+     "startNumber": 30
+    },
+    {
+     "endNumber": 101,
+     "productPrice": 4.6072,
+     "startNumber": 100
+    },
+    {
+     "endNumber": 103,
+     "productPrice": 4.6072,
+     "startNumber": 102
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 4.6072,
+     "startNumber": 104
+    }
+   ],
+   "componentSpecificationEn": "1210",
+   "componentTypeEn": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+   "dataManualUrl": null,
+   "describe": "22uF 25V X7R ±20% 1210 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+   "erpComponentName": "22uF ±20% 25V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": null,
+   "leastPatchNumber": 0,
+   "lossNumber": 4,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 5
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "16V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±10%"
+    },
+    {
+     "attribute_name_en": "Capacitance",
+     "attribute_value_name": "22uF",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>22uF</span>"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "X5R"
+    }
+   ],
+   "componentBrandEn": "FH (Guangdong Fenghua Advanced Tech)",
+   "componentCode": "C167328",
+   "componentLibraryType": "expand",
+   "componentModelEn": "1210X226K160NT",
+   "componentPrices": [
+    {
+     "endNumber": 49,
+     "productPrice": 0.2426,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 149,
+     "productPrice": 0.1978,
+     "startNumber": 50
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.1786,
+     "startNumber": 150
+    },
+    {
+     "endNumber": 1999,
+     "productPrice": 0.1547,
+     "startNumber": 1000
+    },
+    {
+     "endNumber": 4999,
+     "productPrice": 0.144,
+     "startNumber": 2000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.1376,
+     "startNumber": 5000
+    }
+   ],
+   "componentSpecificationEn": "1210",
+   "componentTypeEn": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+   "dataManualUrl": "https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_FH--Guangdong-Fenghua-Advanced-Tech-1210X226K160NT_C167328.pdf",
+   "describe": "16V 22uF X5R ±10% 1210 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+   "erpComponentName": "22uF ±10% 16V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/multilayer-ceramic-capacitors-mlcc-smd-smt_fh-guangdong-fenghua-advanced-tech-1210x226k160nt_C167328.html",
+   "leastPatchNumber": 5,
+   "lossNumber": 2,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 13265
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "25V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±10%"
+    },
+    {
+     "attribute_name_en": "Capacitance",
+     "attribute_value_name": "22uF",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>22uF</span>"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "X6S"
+    }
+   ],
+   "componentBrandEn": "Murata Electronics",
+   "componentCode": "C184990",
+   "componentLibraryType": "expand",
+   "componentModelEn": "GRM32EC81E226KE15L",
+   "componentPrices": [
+    {
+     "endNumber": 49,
+     "productPrice": 0.3178,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 149,
+     "productPrice": 0.2523,
+     "startNumber": 50
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.2242,
+     "startNumber": 150
+    },
+    {
+     "endNumber": 1999,
+     "productPrice": 0.1893,
+     "startNumber": 1000
+    },
+    {
+     "endNumber": 4999,
+     "productPrice": 0.1736,
+     "startNumber": 2000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.1643,
+     "startNumber": 5000
+    }
+   ],
+   "componentSpecificationEn": "1210",
+   "componentTypeEn": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+   "dataManualUrl": "https://www.lcsc.com/datasheet/lcsc_datasheet_1810250922_Murata-Electronics-GRM32EC81E226KE15L_C184990.pdf",
+   "describe": "22uF 25V X6S ±10% 1210 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+   "erpComponentName": "22uF ±10% 25V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/multilayer-ceramic-capacitors-mlcc-smd-smt_murata-electronics-grm32ec81e226ke15l_C184990.html",
+   "leastPatchNumber": 2,
+   "lossNumber": 0,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 483
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "25V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±10%"
+    },
+    {
+     "attribute_name_en": "Capacitance",
+     "attribute_value_name": "22uF",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>22uF</span>"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "X5R"
+    }
+   ],
+   "componentBrandEn": "Murata Electronics",
+   "componentCode": "C185655",
+   "componentLibraryType": "expand",
+   "componentModelEn": "GRM32ER61E226KE15K",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 0.3711,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 29,
+     "productPrice": 0.2954,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 99,
+     "productPrice": 0.2631,
+     "startNumber": 30
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.2224,
+     "startNumber": 100
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.2044,
+     "startNumber": 500
+    },
+    {
+     "endNumber": 1999,
+     "productPrice": 0.1937,
+     "startNumber": 1000
+    },
+    {
+     "endNumber": 3999,
+     "productPrice": 0.1914,
+     "startNumber": 2000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.19,
+     "startNumber": 4000
+    }
+   ],
+   "componentSpecificationEn": "1210",
+   "componentTypeEn": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+   "dataManualUrl": "https://www.lcsc.com/datasheet/lcsc_datasheet_2410121856_Murata-Electronics-GRM32ER61E226KE15K_C185655.pdf",
+   "describe": "22uF 25V X5R ±10% 1210 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+   "erpComponentName": "22uF ±10% 25V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/multilayer-ceramic-capacitors-mlcc-smd-smt_murata-electronics-grm32er61e226ke15k_C185655.html",
+   "leastPatchNumber": 5,
+   "lossNumber": 0,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 2
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "16V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±20%"
+    },
+    {
+     "attribute_name_en": "Capacitance",
+     "attribute_value_name": "22uF",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>22uF</span>"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "X5R"
+    }
+   ],
+   "componentBrandEn": "Walsin Tech Corp",
+   "componentCode": "C237196",
+   "componentLibraryType": "expand",
+   "componentModelEn": "1210X226M160CT",
+   "componentPrices": [
+    {
+     "endNumber": 49,
+     "productPrice": 0.1562,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 149,
+     "productPrice": 0.1251,
+     "startNumber": 50
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.1095,
+     "startNumber": 150
+    },
+    {
+     "endNumber": 1999,
+     "productPrice": 0.0939,
+     "startNumber": 1000
+    },
+    {
+     "endNumber": 4999,
+     "productPrice": 0.0847,
+     "startNumber": 2000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.08,
+     "startNumber": 5000
+    }
+   ],
+   "componentSpecificationEn": "1210",
+   "componentTypeEn": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+   "dataManualUrl": "https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_Walsin-Tech-Corp-1210X226M160CT_C237196.pdf",
+   "describe": "16V 22uF X5R ±20% 1210 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+   "erpComponentName": "22uF ±20% 16V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/multilayer-ceramic-capacitors-mlcc-smd-smt_walsin-tech-corp-1210x226m160ct_C237196.html",
+   "leastPatchNumber": 5,
+   "lossNumber": 2,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 10
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "16V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±20%"
+    },
+    {
+     "attribute_name_en": "Capacitance",
+     "attribute_value_name": "22uF",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>22uF</span>"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "X5R"
+    }
+   ],
+   "componentBrandEn": "Taiyo Yuden",
+   "componentCode": "C268013",
+   "componentLibraryType": "expand",
+   "componentModelEn": "EMK325BJ226MM-P",
+   "componentPrices": [
+    {
+     "endNumber": 49,
+     "productPrice": 0.1287,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 149,
+     "productPrice": 0.104,
+     "startNumber": 50
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.0917,
+     "startNumber": 150
+    },
+    {
+     "endNumber": 1999,
+     "productPrice": 0.0824,
+     "startNumber": 1000
+    },
+    {
+     "endNumber": 4999,
+     "productPrice": 0.0751,
+     "startNumber": 2000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0714,
+     "startNumber": 5000
+    }
+   ],
+   "componentSpecificationEn": "1210",
+   "componentTypeEn": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+   "dataManualUrl": "https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_Taiyo-Yuden-EMK325BJ226MM-P_C268013.pdf",
+   "describe": "16V 22uF X5R ±20% 1210 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+   "erpComponentName": "22uF ±20% 16V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/multilayer-ceramic-capacitors-mlcc-smd-smt_taiyo-yuden-emk325bj226mm-p_C268013.html",
+   "leastPatchNumber": 5,
+   "lossNumber": 2,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 4
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "25V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±10%"
+    },
+    {
+     "attribute_name_en": "Capacitance",
+     "attribute_value_name": "22uF",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>22uF</span>"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "X5R"
+    }
+   ],
+   "componentBrandEn": "Taiyo Yuden",
+   "componentCode": "C268020",
+   "componentLibraryType": "expand",
+   "componentModelEn": "TMK325BJ226KM-P",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 0.5361,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 29,
+     "productPrice": 0.4305,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 99,
+     "productPrice": 0.3867,
+     "startNumber": 30
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.3298,
+     "startNumber": 100
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.3055,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.2908,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "1210",
+   "componentTypeEn": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+   "dataManualUrl": "https://www.lcsc.com/datasheet/lcsc_datasheet_2211282230_Taiyo-Yuden-TMK325BJ226KM-P_C268020.pdf",
+   "describe": "22uF 25V X5R ±10% 1210 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+   "erpComponentName": "22uF ±10% 25V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/multilayer-ceramic-capacitors-mlcc-smd-smt_taiyo-yuden-tmk325bj226km-p_C268020.html",
+   "leastPatchNumber": 5,
+   "lossNumber": 2,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 2932
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "25V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±10%"
+    },
+    {
+     "attribute_name_en": "Capacitance",
+     "attribute_value_name": "22uF",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>22uF</span>"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "X7R"
+    }
+   ],
+   "componentBrandEn": "Samsung Electro-Mechanics",
+   "componentCode": "C309062",
+   "componentLibraryType": "expand",
+   "componentModelEn": "CL32B226KAJNNNE",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 0.3527,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 29,
+     "productPrice": 0.2782,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 99,
+     "productPrice": 0.2418,
+     "startNumber": 30
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.2094,
+     "startNumber": 100
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.2005,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.1593,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "1210",
+   "componentTypeEn": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+   "dataManualUrl": "https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_Samsung-Electro-Mechanics-CL32B226KAJNNNE_C309062.pdf",
+   "describe": "22uF 25V X7R ±10% 1210 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+   "erpComponentName": "22uF ±10% 25V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/multilayer-ceramic-capacitors-mlcc-smd-smt_samsung-electro-mechanics-cl32b226kajnnne_C309062.html",
+   "leastPatchNumber": 5,
+   "lossNumber": 2,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 280611
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "10V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±10%"
+    },
+    {
+     "attribute_name_en": "Capacitance",
+     "attribute_value_name": "22uF",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>22uF</span>"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "X5R"
+    }
+   ],
+   "componentBrandEn": "Samsung Electro-Mechanics",
+   "componentCode": "C318780",
+   "componentLibraryType": "expand",
+   "componentModelEn": "CL32A226KPJNNNE",
+   "componentPrices": [
+    {
+     "endNumber": 49,
+     "productPrice": 0.2629,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 149,
+     "productPrice": 0.2194,
+     "startNumber": 50
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.2007,
+     "startNumber": 150
+    },
+    {
+     "endNumber": 1999,
+     "productPrice": 0.1773,
+     "startNumber": 1000
+    },
+    {
+     "endNumber": 4999,
+     "productPrice": 0.167,
+     "startNumber": 2000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.1607,
+     "startNumber": 5000
+    }
+   ],
+   "componentSpecificationEn": "1210",
+   "componentTypeEn": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/1912111437_Samsung-Electro-Mechanics-CL32A226KPJNNNE_C318780.pdf",
+   "describe": "10V 22uF X5R ±10% 1210 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+   "erpComponentName": "22uF ±10% 10V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/multilayer-ceramic-capacitors-mlcc-smd-smt_samsung-electro-mechanics-cl32a226kpjnnne_C318780.html",
+   "leastPatchNumber": 5,
+   "lossNumber": 2,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 4773
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "16V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±10%"
+    },
+    {
+     "attribute_name_en": "Capacitance",
+     "attribute_value_name": "22uF",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>22uF</span>"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "X5R"
+    }
+   ],
+   "componentBrandEn": "TDK",
+   "componentCode": "C329935",
+   "componentLibraryType": "expand",
+   "componentModelEn": "C3225X5R1C226KT000N",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 0.1794,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 29,
+     "productPrice": 0.1756,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 99,
+     "productPrice": 0.173,
+     "startNumber": 30
+    },
+    {
+     "endNumber": 101,
+     "productPrice": 0.1704,
+     "startNumber": 100
+    },
+    {
+     "endNumber": 103,
+     "productPrice": 0.1704,
+     "startNumber": 102
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.1704,
+     "startNumber": 104
+    }
+   ],
+   "componentSpecificationEn": "1210",
+   "componentTypeEn": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2304140030_TDK-C3225X5R1C226KT000N_C329935.pdf",
+   "describe": "16V 22uF X5R ±10% 1210 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+   "erpComponentName": "22uF ±10% 16V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/multilayer-ceramic-capacitors-mlcc-smd-smt_tdk-c3225x5r1c226kt000n_C329935.html",
+   "leastPatchNumber": 5,
+   "lossNumber": 0,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 1
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "25V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±20%"
+    },
+    {
+     "attribute_name_en": "Capacitance",
+     "attribute_value_name": "22uF",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>22uF</span>"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "X5R"
+    }
+   ],
+   "componentBrandEn": "TDK",
+   "componentCode": "C329939",
+   "componentLibraryType": "expand",
+   "componentModelEn": "C3225X5R1E226MT000E",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 0.5296,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 29,
+     "productPrice": 0.4419,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 99,
+     "productPrice": 0.4062,
+     "startNumber": 30
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.3591,
+     "startNumber": 100
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.3315,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.3185,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "1210",
+   "componentTypeEn": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2304140030_TDK-C3225X5R1E226MT000E_C329939.pdf",
+   "describe": "22uF 25V X5R ±20% 1210 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+   "erpComponentName": "22uF ±20% 25V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/multilayer-ceramic-capacitors-mlcc-smd-smt_tdk-c3225x5r1e226mt000e_C329939.html",
+   "leastPatchNumber": 5,
+   "lossNumber": 0,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 801
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "25V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±10%"
+    },
+    {
+     "attribute_name_en": "Capacitance",
+     "attribute_value_name": "22uF",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>22uF</span>"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "X7R"
+    }
+   ],
+   "componentBrandEn": "Taiyo Yuden",
+   "componentCode": "C337451",
+   "componentLibraryType": "expand",
+   "componentModelEn": "TMK325B7226KM-PR",
+   "componentPrices": [
+    {
+     "endNumber": 49,
+     "productPrice": 0.4197,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 149,
+     "productPrice": 0.3508,
+     "startNumber": 50
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.3212,
+     "startNumber": 150
+    },
+    {
+     "endNumber": 1999,
+     "productPrice": 0.2475,
+     "startNumber": 1000
+    },
+    {
+     "endNumber": 4999,
+     "productPrice": 0.2311,
+     "startNumber": 2000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.2213,
+     "startNumber": 5000
+    }
+   ],
+   "componentSpecificationEn": "1210",
+   "componentTypeEn": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+   "dataManualUrl": "https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_Taiyo-Yuden-TMK325B7226KM-PR_C337451.pdf",
+   "describe": "22uF 25V X7R ±10% 1210 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+   "erpComponentName": "MSAST32MSB7226KPNB25 22uF ±10% 25V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/multilayer-ceramic-capacitors-mlcc-smd-smt_taiyo-yuden-tmk325b7226km-pr_C337451.html",
+   "leastPatchNumber": 5,
+   "lossNumber": 2,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 8998
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "25V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±10%"
+    },
+    {
+     "attribute_name_en": "Capacitance",
+     "attribute_value_name": "22uF",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>22uF</span>"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "X7R"
+    }
+   ],
+   "componentBrandEn": "Taiyo Yuden",
+   "componentCode": "C337455",
+   "componentLibraryType": "expand",
+   "componentModelEn": "TMK325B7226KM-TR",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 0.6304,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 29,
+     "productPrice": 0.5231,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 99,
+     "productPrice": 0.4679,
+     "startNumber": 30
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.4159,
+     "startNumber": 100
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.3591,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.3428,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "1210",
+   "componentTypeEn": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2304140030_Taiyo-Yuden-TMK325B7226KM-TR_C337455.pdf",
+   "describe": "22uF 25V X7R ±10% 1210 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+   "erpComponentName": "22uF ±10% 25V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/multilayer-ceramic-capacitors-mlcc-smd-smt_taiyo-yuden-tmk325b7226km-tr_C337455.html",
+   "leastPatchNumber": 5,
+   "lossNumber": 2,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 3408
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "16V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±10%"
+    },
+    {
+     "attribute_name_en": "Capacitance",
+     "attribute_value_name": "22uF",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>22uF</span>"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "X7R"
+    }
+   ],
+   "componentBrandEn": "TDK",
+   "componentCode": "C342660",
+   "componentLibraryType": "expand",
+   "componentModelEn": "C3225X7R1C226KT000N",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 0.4065,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 29,
+     "productPrice": 0.3402,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 99,
+     "productPrice": 0.3118,
+     "startNumber": 30
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.2764,
+     "startNumber": 100
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.2605,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.2484,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "1210",
+   "componentTypeEn": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2304140030_TDK-C3225X7R1C226KT000N_C342660.pdf",
+   "describe": "16V 22uF X7R ±10% 1210 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+   "erpComponentName": "22uF ±10% 16V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/multilayer-ceramic-capacitors-mlcc-smd-smt_tdk-c3225x7r1c226kt000n_C342660.html",
+   "leastPatchNumber": 5,
+   "lossNumber": 0,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 1888
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "16V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±20%"
+    },
+    {
+     "attribute_name_en": "Capacitance",
+     "attribute_value_name": "22uF",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>22uF</span>"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "X7R"
+    }
+   ],
+   "componentBrandEn": "TDK",
+   "componentCode": "C342674",
+   "componentLibraryType": "expand",
+   "componentModelEn": "CGA6P1X7R1C226MTJY0N",
+   "componentPrices": [
+    {
+     "endNumber": 49,
+     "productPrice": 0.2047,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 149,
+     "productPrice": 0.1614,
+     "startNumber": 50
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.1428,
+     "startNumber": 150
+    },
+    {
+     "endNumber": 1999,
+     "productPrice": 0.1196,
+     "startNumber": 1000
+    },
+    {
+     "endNumber": 4999,
+     "productPrice": 0.1092,
+     "startNumber": 2000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.103,
+     "startNumber": 5000
+    }
+   ],
+   "componentSpecificationEn": "1210",
+   "componentTypeEn": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2304140030_TDK-CGA6P1X7R1C226MTJY0N_C342674.pdf",
+   "describe": "16V 22uF X7R ±20% 1210 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+   "erpComponentName": "22uF ±20% 16V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/multilayer-ceramic-capacitors-mlcc-smd-smt_tdk-cga6p1x7r1c226mtjy0n_C342674.html",
+   "leastPatchNumber": 5,
+   "lossNumber": 0,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 11
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "16V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±20%"
+    },
+    {
+     "attribute_name_en": "Capacitance",
+     "attribute_value_name": "22uF",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>22uF</span>"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "X7R"
+    }
+   ],
+   "componentBrandEn": "TDK",
+   "componentCode": "C342699",
+   "componentLibraryType": "expand",
+   "componentModelEn": "C3225X7R1C226MT000N",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 0.2908,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 29,
+     "productPrice": 0.2431,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 99,
+     "productPrice": 0.2224,
+     "startNumber": 30
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.1969,
+     "startNumber": 100
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.1856,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.1787,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "1210",
+   "componentTypeEn": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2304140030_TDK-C3225X7R1C226MT000N_C342699.pdf",
+   "describe": "16V 22uF X7R ±20% 1210 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+   "erpComponentName": "22uF ±20% 16V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/multilayer-ceramic-capacitors-mlcc-smd-smt_tdk-c3225x7r1c226mt000n_C342699.html",
+   "leastPatchNumber": 5,
+   "lossNumber": 0,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 336
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "16V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±10%"
+    },
+    {
+     "attribute_name_en": "Capacitance",
+     "attribute_value_name": "22uF",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>22uF</span>"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "X5R"
+    }
+   ],
+   "componentBrandEn": "Samsung Electro-Mechanics",
+   "componentCode": "C368810",
+   "componentLibraryType": "expand",
+   "componentModelEn": "CL32A226KOJNNWE",
+   "componentPrices": [
+    {
+     "endNumber": 49,
+     "productPrice": 0.2577,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 149,
+     "productPrice": 0.2007,
+     "startNumber": 50
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.1764,
+     "startNumber": 150
+    },
+    {
+     "endNumber": 1999,
+     "productPrice": 0.1459,
+     "startNumber": 1000
+    },
+    {
+     "endNumber": 4999,
+     "productPrice": 0.1324,
+     "startNumber": 2000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.1243,
+     "startNumber": 5000
+    }
+   ],
+   "componentSpecificationEn": "1210",
+   "componentTypeEn": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2304140030_Samsung-Electro-Mechanics-CL32A226KOJNNWE_C368810.pdf",
+   "describe": "16V 22uF X5R ±10% 1210 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+   "erpComponentName": "22uF ±10% 16V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/multilayer-ceramic-capacitors-mlcc-smd-smt_samsung-electro-mechanics-cl32a226kojnnwe_C368810.html",
+   "leastPatchNumber": 5,
+   "lossNumber": 0,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 3
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "16V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±10%"
+    },
+    {
+     "attribute_name_en": "Capacitance",
+     "attribute_value_name": "22uF",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>22uF</span>"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "X7R"
+    }
+   ],
+   "componentBrandEn": "Taiyo Yuden",
+   "componentCode": "C385908",
+   "componentLibraryType": "expand",
+   "componentModelEn": "EMK325B7226KMHP",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 0.4338,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 29,
+     "productPrice": 0.3493,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 99,
+     "productPrice": 0.3136,
+     "startNumber": 30
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.2681,
+     "startNumber": 100
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.2486,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.2356,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "1210",
+   "componentTypeEn": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2304140030_Taiyo-Yuden-EMK325B7226KMHP_C385908.pdf",
+   "describe": "16V 22uF X7R ±10% 1210 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+   "erpComponentName": "MBASE32MSB7226KPNA01 22uF ±10% 16V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/multilayer-ceramic-capacitors-mlcc-smd-smt_taiyo-yuden-emk325b7226kmhp_C385908.html",
+   "leastPatchNumber": 5,
+   "lossNumber": 2,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 6945
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "25V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±10%"
+    },
+    {
+     "attribute_name_en": "Capacitance",
+     "attribute_value_name": "22uF",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>22uF</span>"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "X7R"
+    }
+   ],
+   "componentBrandEn": "Taiyo Yuden",
+   "componentCode": "C386098",
+   "componentLibraryType": "expand",
+   "componentModelEn": "TMK325B7226KMHP",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 0.4744,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 29,
+     "productPrice": 0.3867,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 99,
+     "productPrice": 0.3493,
+     "startNumber": 30
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.3038,
+     "startNumber": 100
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.2827,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.2437,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "1210",
+   "componentTypeEn": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2304140030_Taiyo-Yuden-TMK325B7226KMHP_C386098.pdf",
+   "describe": "22uF 25V X7R ±10% 1210 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+   "erpComponentName": "22uF ±10% 25V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/multilayer-ceramic-capacitors-mlcc-smd-smt_taiyo-yuden-tmk325b7226kmhp_C386098.html",
+   "leastPatchNumber": 5,
+   "lossNumber": 2,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 11492
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "25V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±20%"
+    },
+    {
+     "attribute_name_en": "Capacitance",
+     "attribute_value_name": "22uF",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>22uF</span>"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "X5R"
+    }
+   ],
+   "componentBrandEn": "Taiyo Yuden",
+   "componentCode": "C386102",
+   "componentLibraryType": "expand",
+   "componentModelEn": "TMK325BJ226MM-P",
+   "componentPrices": [
+    {
+     "endNumber": 49,
+     "productPrice": 0.2306,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 149,
+     "productPrice": 0.1929,
+     "startNumber": 50
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.1768,
+     "startNumber": 150
+    },
+    {
+     "endNumber": 1999,
+     "productPrice": 0.1529,
+     "startNumber": 1000
+    },
+    {
+     "endNumber": 4999,
+     "productPrice": 0.144,
+     "startNumber": 2000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.1386,
+     "startNumber": 5000
+    }
+   ],
+   "componentSpecificationEn": "1210",
+   "componentTypeEn": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2211282230_Taiyo-Yuden-TMK325BJ226MM-P_C386102.pdf",
+   "describe": "22uF 25V X5R ±20% 1210 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+   "erpComponentName": "22uF ±20% 25V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/multilayer-ceramic-capacitors-mlcc-smd-smt_taiyo-yuden-tmk325bj226mm-p_C386102.html",
+   "leastPatchNumber": 5,
+   "lossNumber": 0,
+   "minPurchaseNum": 39,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 20
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "16V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±10%"
+    },
+    {
+     "attribute_name_en": "Capacitance",
+     "attribute_value_name": "22uF",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>22uF</span>"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "X7R"
+    }
+   ],
+   "componentBrandEn": "Taiyo Yuden",
+   "componentCode": "C412624",
+   "componentLibraryType": "expand",
+   "componentModelEn": "EMK325B7226KM-PR",
+   "componentPrices": [
+    {
+     "endNumber": 49,
+     "productPrice": 0.3383,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 149,
+     "productPrice": 0.2767,
+     "startNumber": 50
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.2502,
+     "startNumber": 150
+    },
+    {
+     "endNumber": 1999,
+     "productPrice": 0.2172,
+     "startNumber": 1000
+    },
+    {
+     "endNumber": 4999,
+     "productPrice": 0.2026,
+     "startNumber": 2000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.1937,
+     "startNumber": 5000
+    }
+   ],
+   "componentSpecificationEn": "1210",
+   "componentTypeEn": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2304140030_Taiyo-Yuden-EMK325B7226KM-PR_C412624.pdf",
+   "describe": "16V 22uF X7R ±10% 1210 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+   "erpComponentName": "MSASE32MSB7226KPNB25 22uF ±10% 16V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/multilayer-ceramic-capacitors-mlcc-smd-smt_taiyo-yuden-emk325b7226km-pr_C412624.html",
+   "leastPatchNumber": 5,
+   "lossNumber": 2,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 330
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "16V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±20%"
+    },
+    {
+     "attribute_name_en": "Capacitance",
+     "attribute_value_name": "22uF",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>22uF</span>"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "X7R"
+    }
+   ],
+   "componentBrandEn": "Murata Electronics",
+   "componentCode": "C415372",
+   "componentLibraryType": "expand",
+   "componentModelEn": "GRM32ER71C226MEA8L",
+   "componentPrices": [
+    {
+     "endNumber": 49,
+     "productPrice": 0.3651,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 149,
+     "productPrice": 0.291,
+     "startNumber": 50
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.2592,
+     "startNumber": 150
+    },
+    {
+     "endNumber": 1999,
+     "productPrice": 0.2195,
+     "startNumber": 1000
+    },
+    {
+     "endNumber": 4999,
+     "productPrice": 0.2018,
+     "startNumber": 2000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.1913,
+     "startNumber": 5000
+    }
+   ],
+   "componentSpecificationEn": "1210",
+   "componentTypeEn": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2304140030_Murata-Electronics-GRM32ER71C226MEA8L_C415372.pdf",
+   "describe": "16V 22uF X7R ±20% 1210 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+   "erpComponentName": "22uF ±20% 16V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/multilayer-ceramic-capacitors-mlcc-smd-smt_murata-electronics-grm32er71c226mea8l_C415372.html",
+   "leastPatchNumber": 5,
+   "lossNumber": 0,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 84
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "16V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±10%"
+    },
+    {
+     "attribute_name_en": "Capacitance",
+     "attribute_value_name": "22uF",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>22uF</span>"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "X7R"
+    }
+   ],
+   "componentBrandEn": "Murata Electronics",
+   "componentCode": "C417134",
+   "componentLibraryType": "expand",
+   "componentModelEn": "GCJ32ER71C226KE01L",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 0.2616,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 29,
+     "productPrice": 0.2567,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 99,
+     "productPrice": 0.2518,
+     "startNumber": 30
+    },
+    {
+     "endNumber": 101,
+     "productPrice": 0.2486,
+     "startNumber": 100
+    },
+    {
+     "endNumber": 103,
+     "productPrice": 0.2486,
+     "startNumber": 102
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.2486,
+     "startNumber": 104
+    }
+   ],
+   "componentSpecificationEn": "1210",
+   "componentTypeEn": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2201242200_Murata-Electronics-GCJ32ER71C226KE01L_C417134.pdf",
+   "describe": "16V 22uF X7R ±10% 1210 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+   "erpComponentName": "22uF ±10% 16V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/multilayer-ceramic-capacitors-mlcc-smd-smt_murata-electronics-gcj32er71c226ke01l_C417134.html",
+   "leastPatchNumber": 2,
+   "lossNumber": 0,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 9
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "25V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±20%"
+    },
+    {
+     "attribute_name_en": "Capacitance",
+     "attribute_value_name": "22uF",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>22uF</span>"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "X7R"
+    }
+   ],
+   "componentBrandEn": "Murata Electronics",
+   "componentCode": "C424136",
+   "componentLibraryType": "expand",
+   "componentModelEn": "GRM32ER71E226ME15L",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 0.6352,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 29,
+     "productPrice": 0.5231,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 99,
+     "productPrice": 0.4744,
+     "startNumber": 30
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.4143,
+     "startNumber": 100
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.3883,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.3574,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "1210",
+   "componentTypeEn": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+   "dataManualUrl": null,
+   "describe": "22uF 25V X7R ±20% 1210 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+   "erpComponentName": "22uF ±20% 25V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": null,
+   "leastPatchNumber": 5,
+   "lossNumber": 0,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 1230
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "25V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±10%"
+    },
+    {
+     "attribute_name_en": "Capacitance",
+     "attribute_value_name": "22uF",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>22uF</span>"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "X7S"
+    }
+   ],
+   "componentBrandEn": "Murata Electronics",
+   "componentCode": "C426653",
+   "componentLibraryType": "expand",
+   "componentModelEn": "GCM32EC71E226KE36L",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 1.4914,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 29,
+     "productPrice": 1.2785,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 99,
+     "productPrice": 1.16,
+     "startNumber": 30
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 1.0284,
+     "startNumber": 100
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.9683,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.9423,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "1210",
+   "componentTypeEn": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+   "dataManualUrl": "https://www.lcsc.com/datasheet/lcsc_datasheet_2410121857_Murata-Electronics-GCM32EC71E226KE36L_C426653.pdf",
+   "describe": "22uF 25V X7S ±10% 1210 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+   "erpComponentName": "22uF ±10% 25V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/multilayer-ceramic-capacitors-mlcc-smd-smt_murata-electronics-gcm32ec71e226ke36l_C426653.html",
+   "leastPatchNumber": 2,
+   "lossNumber": 0,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 4948
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "10V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±20%"
+    },
+    {
+     "attribute_name_en": "Capacitance",
+     "attribute_value_name": "22uF",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>22uF</span>"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "X5R"
+    }
+   ],
+   "componentBrandEn": "TDK",
+   "componentCode": "C432927",
+   "componentLibraryType": "expand",
+   "componentModelEn": "C3225X5R1A226MT000N",
+   "componentPrices": [
+    {
+     "endNumber": 99,
+     "productPrice": 0.3116,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 299,
+     "productPrice": 0.2473,
+     "startNumber": 100
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.2198,
+     "startNumber": 300
+    },
+    {
+     "endNumber": 4999,
+     "productPrice": 0.1856,
+     "startNumber": 1000
+    },
+    {
+     "endNumber": 9999,
+     "productPrice": 0.1702,
+     "startNumber": 5000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.161,
+     "startNumber": 10000
+    }
+   ],
+   "componentSpecificationEn": "1210",
+   "componentTypeEn": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2304140030_TDK-C3225X5R1A226MT000N_C432927.pdf",
+   "describe": "10V 22uF X5R ±20% 1210 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+   "erpComponentName": "22uF ±20% 10V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/multilayer-ceramic-capacitors-mlcc-smd-smt_tdk-c3225x5r1a226mt000n_C432927.html",
+   "leastPatchNumber": 5,
+   "lossNumber": 0,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 70
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "16V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±20%"
+    },
+    {
+     "attribute_name_en": "Capacitance",
+     "attribute_value_name": "22uF",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>22uF</span>"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "X7R"
+    }
+   ],
+   "componentBrandEn": "TDK",
+   "componentCode": "C432951",
+   "componentLibraryType": "expand",
+   "componentModelEn": "CGA6P1X7R1C226MTJY0S",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 0.7343,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 29,
+     "productPrice": 0.606,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 99,
+     "productPrice": 0.5426,
+     "startNumber": 30
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.4793,
+     "startNumber": 100
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.3542,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.3331,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "1210",
+   "componentTypeEn": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2304140030_TDK-CGA6P1X7R1C226MTJY0S_C432951.pdf",
+   "describe": "16V 22uF X7R ±20% 1210 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+   "erpComponentName": "22uF ±20% 16V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/multilayer-ceramic-capacitors-mlcc-smd-smt_tdk-cga6p1x7r1c226mtjy0s_C432951.html",
+   "leastPatchNumber": 2,
+   "lossNumber": 0,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 1
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "16V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±10%"
+    },
+    {
+     "attribute_name_en": "Capacitance",
+     "attribute_value_name": "22uF",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>22uF</span>"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "X7R"
+    }
+   ],
+   "componentBrandEn": "Samsung Electro-Mechanics",
+   "componentCode": "C472858",
+   "componentLibraryType": "expand",
+   "componentModelEn": "CL32B226KOJVPNE",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 0.4843,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 29,
+     "productPrice": 0.4062,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 99,
+     "productPrice": 0.3726,
+     "startNumber": 30
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.3307,
+     "startNumber": 100
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.3121,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.2892,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "1210",
+   "componentTypeEn": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2304140030_Samsung-Electro-Mechanics-CL32B226KOJVPNE_C472858.pdf",
+   "describe": "16V 22uF X7R ±10% 1210 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+   "erpComponentName": "22uF ±10% 16V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/multilayer-ceramic-capacitors-mlcc-smd-smt_samsung-electro-mechanics-cl32b226kojvpne_C472858.html",
+   "leastPatchNumber": 5,
+   "lossNumber": 2,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 49038
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "16V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±20%"
+    },
+    {
+     "attribute_name_en": "Capacitance",
+     "attribute_value_name": "22uF",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>22uF</span>"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "X7R"
+    }
+   ],
+   "componentBrandEn": "Samsung Electro-Mechanics",
+   "componentCode": "C472859",
+   "componentLibraryType": "expand",
+   "componentModelEn": "CL32B226MOJVPNE",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 0.528,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 29,
+     "productPrice": 0.4192,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 99,
+     "productPrice": 0.3721,
+     "startNumber": 30
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.3136,
+     "startNumber": 100
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.273,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.2583,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "1210",
+   "componentTypeEn": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2304140030_Samsung-Electro-Mechanics-CL32B226MOJVPNE_C472859.pdf",
+   "describe": "16V 22uF X7R ±20% 1210 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+   "erpComponentName": "22uF ±20% 16V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/multilayer-ceramic-capacitors-mlcc-smd-smt_samsung-electro-mechanics-cl32b226mojvpne_C472859.html",
+   "leastPatchNumber": 5,
+   "lossNumber": 0,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 753
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "25V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±20%"
+    },
+    {
+     "attribute_name_en": "Capacitance",
+     "attribute_value_name": "22uF",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>22uF</span>"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "X5R"
+    }
+   ],
+   "componentBrandEn": "--",
+   "componentCode": "C512810",
+   "componentLibraryType": "expand",
+   "componentModelEn": "12103D226MAT2A",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 0.7717,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 29,
+     "productPrice": 0.6141,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 99,
+     "productPrice": 0.5361,
+     "startNumber": 30
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.4582,
+     "startNumber": 100
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.4111,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.3867,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "1210",
+   "componentTypeEn": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2301302030_Kyocera-AVX-12103D226MAT2A_C512810.pdf",
+   "describe": "22uF 25V X5R ±20% 1210 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+   "erpComponentName": "22uF ±20% 25V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/multilayer-ceramic-capacitors-mlcc-smd-smt_kyocera-avx-12103d226mat2a_C512810.html",
+   "leastPatchNumber": 0,
+   "lossNumber": 0,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 276
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "25V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±10%"
+    },
+    {
+     "attribute_name_en": "Capacitance",
+     "attribute_value_name": "22uF",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>22uF</span>"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "X7R"
+    }
+   ],
+   "componentBrandEn": "Walsin Tech Corp",
+   "componentCode": "C515687",
+   "componentLibraryType": "expand",
+   "componentModelEn": "1210B226K250CT",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 0.5459,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 29,
+     "productPrice": 0.4614,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 99,
+     "productPrice": 0.424,
+     "startNumber": 30
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.3786,
+     "startNumber": 100
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.3168,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.3038,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "1210",
+   "componentTypeEn": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2304140030_Walsin-Tech-Corp-1210B226K250CT_C515687.pdf",
+   "describe": "22uF 25V X7R ±10% 1210 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+   "erpComponentName": "22uF ±10% 25V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/multilayer-ceramic-capacitors-mlcc-smd-smt_walsin-tech-corp-1210b226k250ct_C515687.html",
+   "leastPatchNumber": 2,
+   "lossNumber": 0,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 8
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "16V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "-20%~+80%"
+    },
+    {
+     "attribute_name_en": "Capacitance",
+     "attribute_value_name": "22uF",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>22uF</span>"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "Y5V"
+    }
+   ],
+   "componentBrandEn": "YAGEO",
+   "componentCode": "C527383",
+   "componentLibraryType": "expand",
+   "componentModelEn": "CC1210ZKY5V7BB226",
+   "componentPrices": [
+    {
+     "endNumber": 49,
+     "productPrice": 0.1883,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 149,
+     "productPrice": 0.1506,
+     "startNumber": 50
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.1346,
+     "startNumber": 150
+    },
+    {
+     "endNumber": 1999,
+     "productPrice": 0.1144,
+     "startNumber": 500
+    },
+    {
+     "endNumber": 3999,
+     "productPrice": 0.1055,
+     "startNumber": 2000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.1001,
+     "startNumber": 4000
+    }
+   ],
+   "componentSpecificationEn": "1210",
+   "componentTypeEn": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2005261833_YAGEO-CC1210ZKY5V7BB226_C527383.pdf",
+   "describe": "-20%~+80% 16V 22uF Y5V 1210 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+   "erpComponentName": "22uF -20%~+80% 16V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/multilayer-ceramic-capacitors-mlcc-smd-smt_yageo-cc1210zky5v7bb226_C527383.html",
+   "leastPatchNumber": 5,
+   "lossNumber": 0,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 3
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "10V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±20%"
+    },
+    {
+     "attribute_name_en": "Capacitance",
+     "attribute_value_name": "22uF",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>22uF</span>"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "X7R"
+    }
+   ],
+   "componentBrandEn": "Murata Electronics",
+   "componentCode": "C527971",
+   "componentLibraryType": "expand",
+   "componentModelEn": "GRM32ER71A226ME20L",
+   "componentPrices": [
+    {
+     "endNumber": 49,
+     "productPrice": 0.2944,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 149,
+     "productPrice": 0.2358,
+     "startNumber": 50
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.2106,
+     "startNumber": 150
+    },
+    {
+     "endNumber": 1999,
+     "productPrice": 0.1792,
+     "startNumber": 1000
+    },
+    {
+     "endNumber": 4999,
+     "productPrice": 0.1653,
+     "startNumber": 2000
+    },
+    {
+     "endNumber": 9999,
+     "productPrice": 0.157,
+     "startNumber": 5000
+    },
+    {
+     "endNumber": 19999,
+     "productPrice": 0.1552,
+     "startNumber": 10000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.1541,
+     "startNumber": 20000
+    }
+   ],
+   "componentSpecificationEn": "1210",
+   "componentTypeEn": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2304140030_Murata-Electronics-GRM32ER71A226ME20L_C527971.pdf",
+   "describe": "10V 22uF X7R ±20% 1210 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+   "erpComponentName": "22uF ±20% 10V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/multilayer-ceramic-capacitors-mlcc-smd-smt_murata-electronics-grm32er71a226me20l_C527971.html",
+   "leastPatchNumber": 5,
+   "lossNumber": 0,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 2
+  }
+ ],
+ "returned": 50,
+ "schema": 1,
+ "total_matches": 588
+}

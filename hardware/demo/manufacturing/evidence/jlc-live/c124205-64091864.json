@@ -1,0 +1,91 @@
+{
+ "endpoint": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
+ "exhausted": true,
+ "fetched_utc": "2026-09-05T01:11:32Z",
+ "keyword": "C124205",
+ "page_size": 25,
+ "pages": 1,
+ "records": [
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage - Forward(Vf@If)",
+     "attribute_value_name": "1V@100mA"
+    },
+    {
+     "attribute_name_en": "Non-Repetitive Peak Forward Surge Current",
+     "attribute_value_name": "600mA"
+    },
+    {
+     "attribute_name_en": "Voltage - DC Reverse(Vr)",
+     "attribute_value_name": "30V"
+    },
+    {
+     "attribute_name_en": "Diode Configuration",
+     "attribute_value_name": "1 Independent"
+    },
+    {
+     "attribute_name_en": "Current - Rectified",
+     "attribute_value_name": "100mA"
+    },
+    {
+     "attribute_name_en": "Reverse Leakage Current (Ir)",
+     "attribute_value_name": "2uA@25V"
+    }
+   ],
+   "componentBrandEn": "Diodes Incorporated",
+   "componentCode": "C124205",
+   "componentLibraryType": "expand",
+   "componentModelEn": "BAT54WS-7-F",
+   "componentPrices": [
+    {
+     "endNumber": 99,
+     "productPrice": 0.0626,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 299,
+     "productPrice": 0.052,
+     "startNumber": 100
+    },
+    {
+     "endNumber": 2999,
+     "productPrice": 0.0468,
+     "startNumber": 300
+    },
+    {
+     "endNumber": 5999,
+     "productPrice": 0.0392,
+     "startNumber": 3000
+    },
+    {
+     "endNumber": 8999,
+     "productPrice": 0.0361,
+     "startNumber": 6000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0345,
+     "startNumber": 9000
+    }
+   ],
+   "componentSpecificationEn": "SOD-323",
+   "componentTypeEn": "Schottky Diodes",
+   "dataManualUrl": "https://www.lcsc.com/datasheet/lcsc_datasheet_1806121749_Diodes-Incorporated-BAT54WS-7-F_C124205.pdf",
+   "describe": "1 Independent 100mA 1V@100mA 2uA@25V 30V 600mA SOD-323 Schottky Diodes ROHS",
+   "erpComponentName": "BAT54WS-7-F",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/schottky-diodes_diodes-incorporated-bat54ws-7-f_C124205.html",
+   "leastPatchNumber": 20,
+   "lossNumber": 6,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 114464
+  }
+ ],
+ "returned": 1,
+ "schema": 1,
+ "total_matches": 1
+}

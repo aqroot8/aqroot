@@ -13,6 +13,70 @@
 > This file references DEVICE_SPEC rather than duplicating full specs.
 
 ## 1. Authoritative HEAD
+- **Demo D-615 (THE BOM IS 100 % ORDERABLE AND THE SAFETY PART WAS ORDERED IN
+  THE WRONG PACKAGE):** D-614 named this task and named what stopped it --
+  **D-096 binds**, and that session had no distributor record to read.  This one
+  read the JLCPCB catalogue **225 times and KEPT every answer** in
+  `evidence/jlc-live/`, each stamped with the UTC minute.  **NO COPPER CHANGED**
+  -- the authoritative board is byte-identical at
+  **`c8e421aa50144fe396aedb5e226aaabeb815bd69ffaf6e04f549ded43831d103`**.
+  **`FAB7` IS CLOSED: COVERAGE 75.3 % -> 100.0 %, ORDERABLE 186 -> 247 OF 247,
+  `needs_a_sourcing_decision` ZERO LINES, and `fab_package_contract.py` reads
+  FAB1-FAB8 PASS for the first time.**  61 identities ruled: the 26 open
+  purchasing lines / 45 parts, the 8 DEVICE_SPEC s.14 TUNE lines / 16 parts at a
+  FIRST-ARTICLE value that says so in its own schematic note, `J1` and `J8`'s
+  missing LCSC codes (DEVICE_SPEC s.16 item 8 CLOSED), and `U18`.
+  **THE FINDING.**  `screen_part_land_parity.py` asks D-613's `C26` question of
+  every sourced line at once against the catalogue's own package field: 119
+  lines carry a code, 75 are comparable, **74 MATCH and `U18` did not.**  The
+  land is `Package_SO:MSOP-10_3x3mm_P0.5mm`; the BOM ordered
+  `LTC4368IDD-1#PBF`, and **`DD` is DFN-10-EP(3x3)** -- against D-099, which
+  locked `LTC4368IMS-1#PBF` under FBV2-PWR-002's *"no bottom-terminated parts"*
+  on the single most safety-critical component.  D-099 corrected the FOOTPRINT
+  and the part identity stayed DFN; the **cached library symbol AND the project
+  `.kicad_sym` both still carried it, with a `Package` field describing a DFN
+  beside a `Footprint` field already reading MSOP-10**, so *Update Symbols from
+  Library* would have undone any instance-only fix.  Corrected to
+  **`LTC4368IMS-1#TRPBF`, LCSC `C688401`** -- the tape-and-reel order code of the
+  identical MSOP-10 I-grade -1 device, D-210's precedent, not an electrical
+  change (`#PBF` reads stock 0).
+  **THE GATES MEASURE CONSEQUENCES.**  Land / magnitude / tolerance / ranked
+  dielectric, `net_gate` unchanged, plus a NEW power gate in its image (2x
+  operating AND survives single fault).  It needed 31 node voltages that did not
+  exist: **`NET_MAX_DC` 17 -> 48 established nodes**, including `LTC_GATE` at
+  `VOUT` + 13.1 V read off the board's OWN LTC4368 description.  Three things the
+  obvious answer would have got wrong: **`R69` is 1.87 ohm and its part is
+  `0603WAF187KT5E` while `0603WAF1873T5E` is 187 kOhm** -- one character, five
+  orders, two LCSC records; **`R95`'s node over-bound UNDERSTATES its
+  dissipation** because a reversed cell adds IN SERIES (154 mW vs 54 mW); and
+  **`R24`/`C12`'s Value strings are LOOSER than their own symbol notes**
+  (`12R` vs *"12R 1 percent"*, `22uF` vs *"specified X7R 16 V"*), so both are
+  gated on the note.  `R75` got a part CLASS: a current-sense/alloy part at
+  <=100 ppm/degC, because a thick film at +/-1500 ppm/degC moves the LTC4368's
+  3.33 A trip 19 % over temperature.
+  **REPRODUCIBLE.**  The four plans replayed against the `HEAD` schematic in an
+  isolated tree return **all ten sheets AND the project symbol library
+  BYTE-IDENTICAL, 11 of 11**; `apply_bom_sourcing.py` gained `replaces` /
+  `text_replaces`, which force a correction to NAME the exact string it
+  overwrites (negative controls confirm both refuse a wrong name).
+  All contracts re-measured: `verify_promotion.py` **14/14** (0 added, 0 removed,
+  DRC 199/5/1 inherited, ZERO attributable, unconnected 73 unchanged, parity
+  **249 warnings / 0 errors unchanged** across 251 further properties),
+  FAB1-FAB8 PASS, POP1-POP4, P1-P4, N1-N3, `protected_copper.py` 15 nets /
+  393 objects IDENTICAL.  `hardware/beta-v2/`, D-269 / D-186, `ACC_5V_SW_EN`,
+  `ACC_3V3_SW`, RGB and XGPIO4/5 untouched.
+  **STILL OPEN, AND WRITTEN DOWN:** nine BOM lines sit under 10x the first-five
+  need on the assembler's own catalogue, five reading ZERO (`J5`, `L4`, `MK1`,
+  `U19`, `U9`; then `Q2`/`Q3` 0, `U2`/`U3` 1, `U18` 3, `D8` 7) -- most already
+  CONSIGNED classes under D-206, so a brief to work, not a design defect
+  (`evidence/d615-purchasing-short.csv`).
+  **NEXT: THE FABRICATION PACKAGE HAS NO OPEN CONTRACT LEFT, so the next blocker
+  is the one no contract here measures -- the 199 `lib_footprint_issues` and 48
+  `footprint_symbol_mismatch` parity warnings, i.e. 247 unproven claims that each
+  LAND matches its part's datasheet drawing.**  `U18` is the proof the class is
+  real and invisible to the existing checks.  Notes:
+  `docs/full-beta-v2/AQROOT_DEMO_FABRICATION_PACKAGE.md`,
+  `assembly/FOOTPRINT_VERIFICATION_LEDGER.md`.  No owner decision.
 - **Demo D-614 (THE BOM IS THREE QUARTERS ORDERABLE -- 122 part identities
   grafted from prior CTO audits, every one re-read off the PART instead of the
   line, and four gates that had never been run):** D-613 named this task and it

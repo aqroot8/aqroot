@@ -1,0 +1,111 @@
+{
+ "endpoint": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
+ "exhausted": true,
+ "fetched_utc": "2026-09-05T01:10:38Z",
+ "keyword": "C880333",
+ "page_size": 25,
+ "pages": 1,
+ "records": [
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-40℃~+125℃"
+    },
+    {
+     "attribute_name_en": "Type",
+     "attribute_value_name": "Buffer"
+    },
+    {
+     "attribute_name_en": "Input Type",
+     "attribute_value_name": "2-Wire Bus"
+    },
+    {
+     "attribute_name_en": "Data Rate",
+     "attribute_value_name": "400Kbps"
+    },
+    {
+     "attribute_name_en": "Number of Channels",
+     "attribute_value_name": "1"
+    },
+    {
+     "attribute_name_en": "Voltage - Supply",
+     "attribute_value_name": "2.3V~5.5V"
+    },
+    {
+     "attribute_name_en": "Output Type",
+     "attribute_value_name": "2-Wire Bus"
+    },
+    {
+     "attribute_name_en": "Delay Time",
+     "attribute_value_name": "10ns"
+    },
+    {
+     "attribute_name_en": "Features",
+     "attribute_value_name": "Bus capacitance isolation、Hot-swap protection、Power-off isolation"
+    },
+    {
+     "attribute_name_en": "Current - Supply",
+     "attribute_value_name": "4.5mA"
+    },
+    {
+     "attribute_name_en": "Input Capacitance",
+     "attribute_value_name": "5pF"
+    }
+   ],
+   "componentBrandEn": "Texas Instruments",
+   "componentCode": "C880333",
+   "componentLibraryType": "expand",
+   "componentModelEn": "TCA4307DGKR",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 2.5018,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 29,
+     "productPrice": 2.2126,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 99,
+     "productPrice": 2.0079,
+     "startNumber": 30
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 1.8211,
+     "startNumber": 100
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 1.735,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 1.7009,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "MSOP-8",
+   "componentTypeEn": "Signal Buffers, Repeaters, Splitters",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2302221801_Texas-Instruments-TCA4307DGKR_C880333.pdf",
+   "describe": "-40℃~+125℃ 10ns 2-Wire Bus 2-Wire Bus 2.3V~5.5V 400Kbps 5pF Buffer Bus capacitance isolation、Hot-swap protection、Power-off isolation MSOP-8 Signal Buffers, Repeaters, Splitters ROHS",
+   "erpComponentName": "具有阻塞总线恢复功能的热插拔I2C总线和SMBus缓冲器",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/signal-buffers-repeaters-splitters_texas-instruments-tca4307dgkr_C880333.html",
+   "leastPatchNumber": 0,
+   "lossNumber": 0,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 3606
+  }
+ ],
+ "returned": 1,
+ "schema": 1,
+ "total_matches": 1
+}

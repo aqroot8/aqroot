@@ -1,0 +1,317 @@
+{
+ "board": "/home/aqroot8/aqroot-demo/hardware/demo/kicad/aqroot-demo/aqroot-Beta-v2.kicad_pcb",
+ "decision": "D-615",
+ "graft": [
+  {
+   "LCSC": "C14858",
+   "MPN": "CL10C101JB8NNNC",
+   "Manufacturer": "Samsung Electro-Mechanics",
+   "basis": {
+    "library": "base",
+    "manufacturer_basis": "the distributor record's own brand field",
+    "net_gate": {
+     "basis": "DEVICE_SPEC s.14 -- the ST25R3916 tank node voltage is NOT established in this repository; the sheet's own 50 V C0G specification is the ruling this gate enforces",
+     "demanded_v": 50.0,
+     "kind": "the value string's own stated rating",
+     "node_voltage_established": false,
+     "ok": true,
+     "rating_v": 50.0
+    },
+    "part_dielectric": "C0G",
+    "part_power_w": null,
+    "part_rating_v": 50.0,
+    "part_tolerance": 5.0,
+    "power_gate": {
+     "kind": "not a resistor",
+     "ok": true
+    },
+    "prior_value": "100pF 50V C0G TUNE",
+    "ruling": [],
+    "source": "JLCPCB-LIVE",
+    "stock": 4341176,
+    "verdict": "RULED"
+   },
+   "footprint": "C_0603_1608Metric",
+   "how": "FIRST_ARTICLE_VALUE",
+   "note": "FIRST-ARTICLE VALUE ONLY -- DEVICE_SPEC s.14 requires this position to be RE-TUNED against a VNA and the ST tool with the board in hand, so this part number buys the first article and is EXPECTED TO CHANGE. SOURCING D-615 LIVE_RECORD. JLCPCB record read 2026-09-05T01:16:20Z: base library, stock 4341176, land 0603, Capacitance 100pF; Temperature Coefficient C0G; Tolerance \u00b15%; Voltage Rating 50V. Gates: the value string's own stated rating; not a resistor.",
+   "refs": [
+    "C69",
+    "C70"
+   ],
+   "value": "100pF 50V C0G TUNE"
+  },
+  {
+   "LCSC": "C3837533",
+   "MPN": "GCM1885C2A301FA16J",
+   "Manufacturer": "Murata Electronics",
+   "basis": {
+    "library": "expand",
+    "manufacturer_basis": "the distributor record's own brand field",
+    "net_gate": {
+     "basis": "DEVICE_SPEC s.14 -- the ST25R3916 tank node voltage is NOT established in this repository; the sheet's own 50 V C0G specification is the ruling this gate enforces",
+     "demanded_v": 50.0,
+     "kind": "the value string's own stated rating",
+     "node_voltage_established": false,
+     "ok": true,
+     "rating_v": 100.0
+    },
+    "part_dielectric": "C0G",
+    "part_power_w": null,
+    "part_rating_v": 100.0,
+    "part_tolerance": 1.0,
+    "power_gate": {
+     "kind": "not a resistor",
+     "ok": true
+    },
+    "prior_value": "300pF 50V C0G TUNE",
+    "ruling": [],
+    "source": "JLCPCB-LIVE",
+    "stock": 1315,
+    "verdict": "RULED"
+   },
+   "footprint": "C_0603_1608Metric",
+   "how": "FIRST_ARTICLE_VALUE",
+   "note": "FIRST-ARTICLE VALUE ONLY -- DEVICE_SPEC s.14 requires this position to be RE-TUNED against a VNA and the ST tool with the board in hand, so this part number buys the first article and is EXPECTED TO CHANGE. SOURCING D-615 LIVE_RECORD. JLCPCB record read 2026-09-05T01:16:20Z: expand library, stock 1315, land 0603, Capacitance 300pF; Temperature Coefficient C0G; Tolerance \u00b11%; Voltage Rating 100V. Gates: the value string's own stated rating; not a resistor.",
+   "refs": [
+    "C71",
+    "C72"
+   ],
+   "value": "300pF 50V C0G TUNE"
+  },
+  {
+   "LCSC": "C388906",
+   "MPN": "GCM1885C2A152JA16D",
+   "Manufacturer": "Murata Electronics",
+   "basis": {
+    "library": "expand",
+    "manufacturer_basis": "the distributor record's own brand field",
+    "net_gate": {
+     "basis": "DEVICE_SPEC s.14 -- the ST25R3916 tank node voltage is NOT established in this repository; the sheet's own 50 V C0G specification is the ruling this gate enforces",
+     "demanded_v": 50.0,
+     "kind": "the value string's own stated rating",
+     "node_voltage_established": false,
+     "ok": true,
+     "rating_v": 100.0
+    },
+    "part_dielectric": "C0G",
+    "part_power_w": null,
+    "part_rating_v": 100.0,
+    "part_tolerance": 5.0,
+    "power_gate": {
+     "kind": "not a resistor",
+     "ok": true
+    },
+    "prior_value": "1.5nF 50V C0G TUNE",
+    "ruling": [],
+    "source": "JLCPCB-LIVE",
+    "stock": 5039,
+    "verdict": "RULED"
+   },
+   "footprint": "C_0603_1608Metric",
+   "how": "FIRST_ARTICLE_VALUE",
+   "note": "FIRST-ARTICLE VALUE ONLY -- DEVICE_SPEC s.14 requires this position to be RE-TUNED against a VNA and the ST tool with the board in hand, so this part number buys the first article and is EXPECTED TO CHANGE. SOURCING D-615 LIVE_RECORD. JLCPCB record read 2026-09-05T01:16:20Z: expand library, stock 5039, land 0603, Capacitance 1.5nF; Temperature Coefficient C0G; Tolerance \u00b15%; Voltage Rating 100V. Gates: the value string's own stated rating; not a resistor.",
+   "refs": [
+    "C73",
+    "C74"
+   ],
+   "value": "1.5nF 50V C0G TUNE"
+  },
+  {
+   "LCSC": "C2360423",
+   "MPN": "GQM1875C2E270FB12D",
+   "Manufacturer": "Murata Electronics",
+   "basis": {
+    "library": "expand",
+    "manufacturer_basis": "the distributor record's own brand field",
+    "net_gate": {
+     "basis": "DEVICE_SPEC s.14 -- the ST25R3916 tank node voltage is NOT established in this repository; the sheet's own 50 V C0G specification is the ruling this gate enforces",
+     "demanded_v": 50.0,
+     "kind": "the value string's own stated rating",
+     "node_voltage_established": false,
+     "ok": true,
+     "rating_v": 250.0
+    },
+    "part_dielectric": "C0G",
+    "part_power_w": null,
+    "part_rating_v": 250.0,
+    "part_tolerance": 1.0,
+    "power_gate": {
+     "kind": "not a resistor",
+     "ok": true
+    },
+    "prior_value": "27pF 50V C0G TUNE",
+    "ruling": [],
+    "source": "JLCPCB-LIVE",
+    "stock": 12124,
+    "verdict": "RULED"
+   },
+   "footprint": "C_0603_1608Metric",
+   "how": "FIRST_ARTICLE_VALUE",
+   "note": "FIRST-ARTICLE VALUE ONLY -- DEVICE_SPEC s.14 requires this position to be RE-TUNED against a VNA and the ST tool with the board in hand, so this part number buys the first article and is EXPECTED TO CHANGE. SOURCING D-615 LIVE_RECORD. JLCPCB record read 2026-09-05T01:16:20Z: expand library, stock 12124, land 0603, Capacitance 27pF; Temperature Coefficient C0G; Tolerance \u00b11%; Voltage Rating 250V. Gates: the value string's own stated rating; not a resistor.",
+   "refs": [
+    "C75",
+    "C77"
+   ],
+   "value": "27pF 50V C0G TUNE"
+  },
+  {
+   "LCSC": "C325470",
+   "MPN": "CC0603JRNPO9BN621",
+   "Manufacturer": "YAGEO",
+   "basis": {
+    "library": "expand",
+    "manufacturer_basis": "the distributor record's own brand field",
+    "net_gate": {
+     "basis": "DEVICE_SPEC s.14 -- the ST25R3916 tank node voltage is NOT established in this repository; the sheet's own 50 V C0G specification is the ruling this gate enforces",
+     "demanded_v": 50.0,
+     "kind": "the value string's own stated rating",
+     "node_voltage_established": false,
+     "ok": true,
+     "rating_v": 50.0
+    },
+    "part_dielectric": "NP0",
+    "part_power_w": null,
+    "part_rating_v": 50.0,
+    "part_tolerance": 5.0,
+    "power_gate": {
+     "kind": "not a resistor",
+     "ok": true
+    },
+    "prior_value": "620pF 50V C0G TUNE",
+    "ruling": [],
+    "source": "JLCPCB-LIVE",
+    "stock": 43162,
+    "verdict": "RULED"
+   },
+   "footprint": "C_0603_1608Metric",
+   "how": "FIRST_ARTICLE_VALUE",
+   "note": "FIRST-ARTICLE VALUE ONLY -- DEVICE_SPEC s.14 requires this position to be RE-TUNED against a VNA and the ST tool with the board in hand, so this part number buys the first article and is EXPECTED TO CHANGE. SOURCING D-615 LIVE_RECORD. JLCPCB record read 2026-09-05T01:16:20Z: expand library, stock 43162, land 0603, Capacitance 620pF; Temperature Coefficient NP0; Tolerance \u00b15%; Voltage Rating 50V. Gates: the value string's own stated rating; not a resistor.",
+   "refs": [
+    "C76",
+    "C78"
+   ],
+   "value": "620pF 50V C0G TUNE"
+  },
+  {
+   "LCSC": "C1634",
+   "MPN": "CL10C100JB8NNNC",
+   "Manufacturer": "Samsung Electro-Mechanics",
+   "basis": {
+    "library": "base",
+    "manufacturer_basis": "the distributor record's own brand field",
+    "net_gate": {
+     "basis": "DEVICE_SPEC s.14 -- the ST25R3916 tank node voltage is NOT established in this repository; the sheet's own 50 V C0G specification is the ruling this gate enforces",
+     "demanded_v": 50.0,
+     "kind": "the value string's own stated rating",
+     "node_voltage_established": false,
+     "ok": true,
+     "rating_v": 50.0
+    },
+    "part_dielectric": "C0G",
+    "part_power_w": null,
+    "part_rating_v": 50.0,
+    "part_tolerance": 5.0,
+    "power_gate": {
+     "kind": "not a resistor",
+     "ok": true
+    },
+    "prior_value": "10pF 50V C0G TUNE",
+    "ruling": [],
+    "source": "JLCPCB-LIVE",
+    "stock": 2119581,
+    "verdict": "RULED"
+   },
+   "footprint": "C_0603_1608Metric",
+   "how": "FIRST_ARTICLE_VALUE",
+   "note": "FIRST-ARTICLE VALUE ONLY -- DEVICE_SPEC s.14 requires this position to be RE-TUNED against a VNA and the ST tool with the board in hand, so this part number buys the first article and is EXPECTED TO CHANGE. SOURCING D-615 LIVE_RECORD. JLCPCB record read 2026-09-05T01:16:20Z: base library, stock 2119581, land 0603, Capacitance 10pF; Temperature Coefficient C0G; Tolerance \u00b15%; Voltage Rating 50V. Gates: the value string's own stated rating; not a resistor.",
+   "refs": [
+    "C79",
+    "C80"
+   ],
+   "value": "10pF 50V C0G TUNE"
+  },
+  {
+   "LCSC": "C309559",
+   "MPN": "RC0603FR-071R1L",
+   "Manufacturer": "YAGEO",
+   "basis": {
+    "library": "expand",
+    "manufacturer_basis": "the distributor record's own brand field",
+    "net_gate": {
+     "basis": "DEVICE_SPEC s.14 -- the ST25R3916 tank node voltage is NOT established in this repository; the sheet's own 50 V C0G specification is the ruling this gate enforces",
+     "demanded_v": null,
+     "kind": "the value string's own stated rating",
+     "node_voltage_established": false,
+     "ok": true,
+     "rating_v": null
+    },
+    "part_dielectric": null,
+    "part_power_w": 0.1,
+    "part_rating_v": null,
+    "part_tolerance": 1.0,
+    "power_gate": {
+     "basis": "DEVICE_SPEC s.14: the NFC tank current is NOT established here, so this line takes the highest-rated part its land offers and the dissipation is measured on the first article",
+     "kind": "not established -- first-article measurement",
+     "ok": true,
+     "rating_w": 0.1
+    },
+    "prior_value": "1R1 1% TUNE",
+    "ruling": [],
+    "source": "JLCPCB-LIVE",
+    "stock": 3640,
+    "verdict": "RULED"
+   },
+   "footprint": "R_0603_1608Metric",
+   "how": "FIRST_ARTICLE_VALUE",
+   "note": "FIRST-ARTICLE VALUE ONLY -- DEVICE_SPEC s.14 requires this position to be RE-TUNED against a VNA and the ST tool with the board in hand, so this part number buys the first article and is EXPECTED TO CHANGE. SOURCING D-615 LIVE_RECORD. JLCPCB record read 2026-09-05T01:16:20Z: expand library, stock 3640, land 0603, Operating Temperature -55\u2103~+155\u2103; Power(Watts) 100mW; Resistance 1.1\u03a9; Temperature Coefficient \u00b1200ppm/\u2103; Tolerance \u00b11%; Type Thick Film Resistor; Voltage-Supply(Max) 75V. Gates: the value string's own stated rating; not established -- first-article measurement.",
+   "refs": [
+    "R114",
+    "R115"
+   ],
+   "value": "1R1 1% TUNE"
+  },
+  {
+   "LCSC": "C21190",
+   "MPN": "0603WAF1001T5E",
+   "Manufacturer": "UNI-ROYAL(Uniroyal Elec)",
+   "basis": {
+    "library": "base",
+    "manufacturer_basis": "the distributor record's own brand field",
+    "net_gate": {
+     "basis": "DEVICE_SPEC s.14 -- the ST25R3916 tank node voltage is NOT established in this repository; the sheet's own 50 V C0G specification is the ruling this gate enforces",
+     "demanded_v": null,
+     "kind": "the value string's own stated rating",
+     "node_voltage_established": false,
+     "ok": true,
+     "rating_v": null
+    },
+    "part_dielectric": null,
+    "part_power_w": 0.1,
+    "part_rating_v": null,
+    "part_tolerance": 1.0,
+    "power_gate": {
+     "basis": "DEVICE_SPEC s.14: the NFC tank current is NOT established here, so this line takes the highest-rated part its land offers and the dissipation is measured on the first article",
+     "kind": "not established -- first-article measurement",
+     "ok": true,
+     "rating_w": 0.1
+    },
+    "prior_value": "1k TUNE",
+    "ruling": [],
+    "source": "JLCPCB-LIVE",
+    "stock": 29725158,
+    "verdict": "RULED"
+   },
+   "footprint": "R_0603_1608Metric",
+   "how": "FIRST_ARTICLE_VALUE",
+   "note": "FIRST-ARTICLE VALUE ONLY -- DEVICE_SPEC s.14 requires this position to be RE-TUNED against a VNA and the ST tool with the board in hand, so this part number buys the first article and is EXPECTED TO CHANGE. SOURCING D-615 LIVE_RECORD. JLCPCB record read 2026-09-05T01:16:20Z: base library, stock 29725158, land 0603, Operating Temperature -55\u2103~+155\u2103; Power(Watts) 100mW; Resistance 1k\u03a9; Temperature Coefficient \u00b1100ppm/\u2103; Tolerance \u00b11%; Type Thick Film Resistor; Voltage-Supply(Max) 75V. Gates: the value string's own stated rating; not established -- first-article measurement.",
+   "refs": [
+    "R116",
+    "R117"
+   ],
+   "value": "1k TUNE"
+  }
+ ],
+ "lines": 8,
+ "parts": 16,
+ "schema": 1
+}

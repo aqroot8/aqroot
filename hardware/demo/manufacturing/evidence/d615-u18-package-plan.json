@@ -1,0 +1,65 @@
+{
+ "decision": "D-615",
+ "graft": [
+  {
+   "LCSC": "C688401",
+   "MPN": "LTC4368IMS-1#TRPBF",
+   "Manufacturer": "Analog Devices",
+   "basis": {
+    "manufacturer_basis": "unchanged -- Analog Devices",
+    "prior_value": "LTC4368-1",
+    "ruling": [
+     "D-099 locks MSOP-10; screen_part_land_parity.py MISMATCH LEADED -> BOTTOM-TERMINATED"
+    ],
+    "source": "JLCPCB-LIVE",
+    "verdict": "PACKAGE_CORRECTION"
+   },
+   "footprint": "MSOP-10_3x3mm_P0.5mm",
+   "how": "PACKAGE_CORRECTION",
+   "note": "SOURCING D-615 PACKAGE CORRECTION. The board land is Package_SO:MSOP-10_3x3mm_P0.5mm and D-099 locked LTC4368IMS-1#PBF, MSOP-10, under FBV2-PWR-002 -- every safety-critical part leaded and inspectable, NO BOTTOM-TERMINATED PARTS. The schematic carried LTC4368IDD-1#PBF: the DD order code is DFN-10, confirmed live on the JLCPCB catalogue as DFN-10-EP(3x3) at 0.75 mm body height against MSOP-10 at 1.1 mm. LTC4368IMS-1#PBF (C688400) is stock 0; #TRPBF is the TAPE-AND-REEL order code of the same MSOP-10, I-grade (-40..+85 C), -1 device -- an order-code change of the identical part, D-210's precedent exactly, NOT an electrical change. Live record read 2026-09-05, LCSC C688401, stock 3; LTC4368HMS-1#PBF (C688391, MSOP-10, -1, H grade, stock 2) is the same-land alternate. U18 remains a CONSIGNED part per D-206.",
+   "refs": [
+    "U18"
+   ],
+   "replaces": {
+    "LCSC": "C688397",
+    "MPN": "LTC4368IDD-1#PBF"
+   },
+   "value": "LTC4368-1"
+  }
+ ],
+ "lines": 1,
+ "parts": 1,
+ "schema": 1,
+ "text_replaces": [
+  {
+   "file": "hardware/demo/kicad/aqroot-demo/01_power_tree.kicad_sch",
+   "new": "\"LTC4368IMS-1#TRPBF\"",
+   "old": "\"LTC4368IDD-1#PBF\"",
+   "why": "the CACHED library symbol inside the sheet still named the DFN order code; an Update Symbols from Library would have pushed it back into the instance"
+  },
+  {
+   "file": "hardware/demo/kicad/aqroot-demo/01_power_tree.kicad_sch",
+   "new": "\"MS, 10-lead plastic MSOP.  D-099 / FBV2-PWR-002: the safety-critical parts are LEADED AND INSPECTABLE -- the DD (DFN, exposed pad) order code was captured against this MSOP-10 land and is corrected at D-615\"",
+   "old": "\"DD, 10-lead 3 mm x 3 mm plastic DFN, exposed pad (pin 11) PCB ground connection optional\"",
+   "why": "the cached symbol's own Package field DESCRIBED the DFN body while its Footprint field was already the MSOP-10 land"
+  },
+  {
+   "file": "hardware/demo/kicad/aqroot-demo/01_power_tree.kicad_sch",
+   "new": "\"SUPERSEDED BY D-615 -- the part this note prices is the DD order code, which is DFN-10, against an MSOP-10 land; kept as the historical record.  SOURCING 2026-08-23 (FBV2-S2-002) (B-71) - FIRST-BUILD BLOCKER. LTC4368IDD-1#PBF is LCSC C688397",
+   "old": "\"SOURCING 2026-08-23 (FBV2-S2-002) (B-71) - FIRST-BUILD BLOCKER. LTC4368IDD-1#PBF is LCSC C688397",
+   "why": "U18's dated sourcing note prices the superseded DD part; kept as history, marked SUPERSEDED so it cannot be read as current"
+  },
+  {
+   "file": "hardware/demo/kicad/aqroot-demo/libraries/AQROOT_Beta.kicad_sym",
+   "new": "\"LTC4368IMS-1#TRPBF\"",
+   "old": "\"LTC4368IDD-1#PBF\"",
+   "why": "the PROJECT symbol library is the source the cached copy comes from -- correcting only the sheet would regress"
+  },
+  {
+   "file": "hardware/demo/kicad/aqroot-demo/libraries/AQROOT_Beta.kicad_sym",
+   "new": "\"MS, 10-lead plastic MSOP.  D-099 / FBV2-PWR-002: the safety-critical parts are LEADED AND INSPECTABLE -- the DD (DFN, exposed pad) order code was captured against this MSOP-10 land and is corrected at D-615\"",
+   "old": "\"DD, 10-lead 3 mm x 3 mm plastic DFN, exposed pad (pin 11) PCB ground connection optional\"",
+   "why": "same, for the Package description"
+  }
+ ]
+}

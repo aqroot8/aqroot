@@ -1,0 +1,123 @@
+{
+ "endpoint": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
+ "exhausted": true,
+ "fetched_utc": "2026-09-05T01:11:53Z",
+ "keyword": "C2682616",
+ "page_size": 25,
+ "pages": 1,
+ "records": [
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Charging Saturation Voltage",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Supply Current (Iq)",
+     "attribute_value_name": "3uA"
+    },
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-40℃~+85℃"
+    },
+    {
+     "attribute_name_en": "Type of Battery",
+     "attribute_value_name": "Lithium Battery"
+    },
+    {
+     "attribute_name_en": "Charge Current - Max",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Number of Cells",
+     "attribute_value_name": "1"
+    },
+    {
+     "attribute_name_en": "Battery Temperature Detection",
+     "attribute_value_name": "Not supported"
+    },
+    {
+     "attribute_name_en": "The Chip Type",
+     "attribute_value_name": "Monitoring IC"
+    },
+    {
+     "attribute_name_en": "Balance Current",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Voltage - Supply",
+     "attribute_value_name": "2.5V~4.5V"
+    },
+    {
+     "attribute_name_en": "End-Off Voltage",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Features",
+     "attribute_value_name": "Automatic recharge、Programmable charging current、Overcharge protection、Over-discharge protection"
+    },
+    {
+     "attribute_name_en": "Interface",
+     "attribute_value_name": "I2C"
+    },
+    {
+     "attribute_name_en": "0V Battery Charge",
+     "attribute_value_name": "Not supported"
+    }
+   ],
+   "componentBrandEn": "Analog Devices Inc./Maxim Integrated",
+   "componentCode": "C2682616",
+   "componentLibraryType": "expand",
+   "componentModelEn": "MAX17048G+T10",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 2.1672,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 29,
+     "productPrice": 1.9154,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 99,
+     "productPrice": 1.7367,
+     "startNumber": 30
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 1.5758,
+     "startNumber": 100
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 1.3841,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 1.3549,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "DFN-8-EP(2x2)",
+   "componentTypeEn": "Battery Management",
+   "dataManualUrl": "https://www.lcsc.com/datasheet/lcsc_datasheet_2410121738_Analog-Devices-Inc--Maxim-Integrated-MAX17048G-T10_C2682616.pdf",
+   "describe": "-40℃~+85℃ 1 2.5V~4.5V 3uA I2C Lithium Battery Not supported Not supported DFN-8-EP(2x2) Battery Management ROHS",
+   "erpComponentName": "3uA单节/双节电池电量计，带ModelGauge算法",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/battery-management_analog-devices-inc-maxim-integrated-max17048g-t10_C2682616.html",
+   "leastPatchNumber": 0,
+   "lossNumber": 0,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 15380
+  }
+ ],
+ "returned": 1,
+ "schema": 1,
+ "total_matches": 1
+}

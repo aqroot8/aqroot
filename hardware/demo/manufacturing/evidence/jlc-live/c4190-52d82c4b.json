@@ -1,0 +1,362 @@
+{
+ "endpoint": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
+ "exhausted": true,
+ "fetched_utc": "2026-09-05T01:19:03Z",
+ "keyword": "C4190",
+ "page_size": 25,
+ "pages": 1,
+ "records": [
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Resistance",
+     "attribute_value_name": "2.2kΩ"
+    },
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-55℃~+155℃"
+    },
+    {
+     "attribute_name_en": "Power(Watts)",
+     "attribute_value_name": "100mW"
+    },
+    {
+     "attribute_name_en": "Type",
+     "attribute_value_name": "Thick Film Resistor"
+    },
+    {
+     "attribute_name_en": "Voltage-Supply(Max)",
+     "attribute_value_name": "75V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±1%"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "±100ppm/℃"
+    }
+   ],
+   "componentBrandEn": "UNI-ROYAL(Uniroyal Elec)",
+   "componentCode": "C4190",
+   "componentLibraryType": "base",
+   "componentModelEn": "0603WAF2201T5E",
+   "componentPrices": [
+    {
+     "endNumber": 999,
+     "productPrice": 0.0022,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 4999,
+     "productPrice": 0.0017,
+     "startNumber": 1000
+    },
+    {
+     "endNumber": 9999,
+     "productPrice": 0.0015,
+     "startNumber": 5000
+    },
+    {
+     "endNumber": 49999,
+     "productPrice": 0.0013,
+     "startNumber": 10000
+    },
+    {
+     "endNumber": 50199,
+     "productPrice": 0.0012,
+     "startNumber": 50000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0012,
+     "startNumber": 50200
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Chip Resistor - Surface Mount",
+   "dataManualUrl": "https://www.lcsc.com/datasheet/lcsc_datasheet_2206010230_UNI-ROYAL-Uniroyal-Elec-0603WAF2201T5E_C4190.pdf",
+   "describe": "-55℃~+155℃ 100mW 2.2kΩ 75V Thick Film Resistor ±1% ±100ppm/℃ 0603 Chip Resistor - Surface Mount ROHS",
+   "erpComponentName": "厚膜电阻 2.2kΩ ±1% 100mW",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/chip-resistor-surface-mount_uni-royal-uniroyal-elec-0603waf2201t5e_C4190.html",
+   "leastPatchNumber": 20,
+   "lossNumber": 10,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 7045217
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-45℃~+85℃"
+    },
+    {
+     "attribute_name_en": "Type",
+     "attribute_value_name": "Sample Rate Converter"
+    },
+    {
+     "attribute_name_en": "Voltage - Supply",
+     "attribute_value_name": "3.3V"
+    },
+    {
+     "attribute_name_en": "Sampling Rate",
+     "attribute_value_name": "4kHz~212kHz"
+    },
+    {
+     "attribute_name_en": "Features",
+     "attribute_value_name": "Mute control、Asynchronous sample rate conversion"
+    },
+    {
+     "attribute_name_en": "Interface",
+     "attribute_value_name": "I2S、TDM"
+    }
+   ],
+   "componentBrandEn": "Texas Instruments",
+   "componentCode": "C1520004",
+   "componentLibraryType": "expand",
+   "componentModelEn": "SRC4190IDB",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 3.2166,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 29,
+     "productPrice": 2.752,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 99,
+     "productPrice": 2.4774,
+     "startNumber": 30
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 2.198,
+     "startNumber": 100
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 2.0697,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 2.0112,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "SSOP-28",
+   "componentTypeEn": "Audio Interface ICs",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2201180530_Texas-Instruments-SRC4190IDB_C1520004.pdf",
+   "describe": "-45℃~+85℃ 3.3V 4kHz~212kHz I2S、TDM Mute control、Asynchronous sample rate conversion Sample Rate Converter SSOP-28 Audio Interface ICs ROHS",
+   "erpComponentName": "异步采样率转换器，适用于专业和广播音频应用，具有宽输入输出采样比、出色动态范围和低失真，支持多种音频格式和灵活接口",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/audio-interface-ics_texas-instruments-src4190idb_C1520004.html",
+   "leastPatchNumber": 0,
+   "lossNumber": 0,
+   "minPurchaseNum": 3,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": null,
+   "componentBrandEn": "JLCPCB Assembly",
+   "componentCode": "C9900301914",
+   "componentLibraryType": "expand",
+   "componentModelEn": "C41904RHSC",
+   "componentPrices": [
+    {
+     "endNumber": 99,
+     "productPrice": 0.0395,
+     "startNumber": 1
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0204,
+     "startNumber": 100
+    }
+   ],
+   "componentSpecificationEn": "DFN2X2-8",
+   "componentTypeEn": "SMT",
+   "dataManualUrl": null,
+   "describe": "DFN2X2-8 SMT ROHS",
+   "erpComponentName": "【邮寄专用】C41904RHSC",
+   "isBuyComponent": "0",
+   "lcscGoodsUrl": null,
+   "leastPatchNumber": 5,
+   "lossNumber": 4,
+   "minPurchaseNum": 439,
+   "noBuyReason": "This product is no longer manufactured.",
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-45℃~+85℃"
+    },
+    {
+     "attribute_name_en": "Type",
+     "attribute_value_name": "Sample Rate Converter"
+    },
+    {
+     "attribute_name_en": "Voltage - Supply",
+     "attribute_value_name": "3.3V"
+    },
+    {
+     "attribute_name_en": "Sampling Rate",
+     "attribute_value_name": "4kHz~212kHz"
+    },
+    {
+     "attribute_name_en": "Features",
+     "attribute_value_name": "Mute control、Master-slave clock negotiation、Asynchronous sample rate conversion"
+    },
+    {
+     "attribute_name_en": "Interface",
+     "attribute_value_name": "I2S"
+    }
+   ],
+   "componentBrandEn": "Texas Instruments",
+   "componentCode": "C179667",
+   "componentLibraryType": "expand",
+   "componentModelEn": "SRC4190IDBR",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 7.1252,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 29,
+     "productPrice": 6.4364,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 99,
+     "productPrice": 5.9961,
+     "startNumber": 30
+    },
+    {
+     "endNumber": 101,
+     "productPrice": 5.5721,
+     "startNumber": 100
+    },
+    {
+     "endNumber": 103,
+     "productPrice": 5.5721,
+     "startNumber": 102
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 5.5721,
+     "startNumber": 104
+    }
+   ],
+   "componentSpecificationEn": "SSOP-28-208mil",
+   "componentTypeEn": "Audio Interface ICs",
+   "dataManualUrl": "https://www.lcsc.com/datasheet/lcsc_datasheet_1804140119_Texas-Instruments-SRC4190IDBR_C179667.pdf",
+   "describe": "-45℃~+85℃ 3.3V 4kHz~212kHz I2S Sample Rate Converter SSOP-28-208mil Audio Interface ICs ROHS",
+   "erpComponentName": "SRC4190 192-kHz立体声异步采样率转换器",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/audio-interface-ics_texas-instruments-src4190idbr_C179667.html",
+   "leastPatchNumber": 0,
+   "lossNumber": 0,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 993
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-40℃~+85℃"
+    },
+    {
+     "attribute_name_en": "Type",
+     "attribute_value_name": "Sample Rate Converter"
+    },
+    {
+     "attribute_name_en": "Voltage - Supply",
+     "attribute_value_name": "3.3V"
+    },
+    {
+     "attribute_name_en": "Sampling Rate",
+     "attribute_value_name": "4kHz~212kHz"
+    },
+    {
+     "attribute_name_en": "Features",
+     "attribute_value_name": "Mute control、Master-slave clock negotiation、Asynchronous sample rate conversion"
+    },
+    {
+     "attribute_name_en": "Interface",
+     "attribute_value_name": "I2S、TDM"
+    }
+   ],
+   "componentBrandEn": "Texas Instruments",
+   "componentCode": "C2651277",
+   "componentLibraryType": "expand",
+   "componentModelEn": "SRC4190IDBRQ1",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 5.9279,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 29,
+     "productPrice": 5.642,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 99,
+     "productPrice": 5.4665,
+     "startNumber": 30
+    },
+    {
+     "endNumber": 101,
+     "productPrice": 5.3203,
+     "startNumber": 100
+    },
+    {
+     "endNumber": 103,
+     "productPrice": 5.3203,
+     "startNumber": 102
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 5.3203,
+     "startNumber": 104
+    }
+   ],
+   "componentSpecificationEn": "SSOP-28",
+   "componentTypeEn": "Audio Interface ICs",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2303011730_Texas-Instruments-SRC4190IDBRQ1_C2651277.pdf",
+   "describe": "-40℃~+85℃ 3.3V 4kHz~212kHz I2S、TDM Sample Rate Converter SSOP-28 Audio Interface ICs ROHS",
+   "erpComponentName": "192-kHz立体声异步采样率转换器",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/audio-interface-ics_texas-instruments-src4190idbrq1_C2651277.html",
+   "leastPatchNumber": 0,
+   "lossNumber": 0,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 101
+  }
+ ],
+ "returned": 5,
+ "schema": 1,
+ "total_matches": 5
+}

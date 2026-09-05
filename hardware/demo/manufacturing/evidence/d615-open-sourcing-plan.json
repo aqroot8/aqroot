@@ -1,0 +1,1222 @@
+{
+ "board": "/home/aqroot8/aqroot-demo/hardware/demo/kicad/aqroot-demo/aqroot-Beta-v2.kicad_pcb",
+ "decision": "D-615",
+ "graft": [
+  {
+   "LCSC": "C309062",
+   "MPN": "CL32B226KAJNNNE",
+   "Manufacturer": "Samsung Electro-Mechanics",
+   "basis": {
+    "library": "expand",
+    "manufacturer_basis": "the distributor record's own brand field",
+    "net_gate": {
+     "absolute_max_v": 3.6,
+     "kind": "2x operating and survives absolute",
+     "margin_x": 7.58,
+     "nodes": [
+      "+3V3"
+     ],
+     "ok": true,
+     "operating_max_v": 3.3,
+     "rating_v": 25.0
+    },
+    "part_dielectric": "X7R",
+    "part_power_w": null,
+    "part_rating_v": 25.0,
+    "part_tolerance": 10.0,
+    "power_gate": {
+     "kind": "not a resistor",
+     "ok": true
+    },
+    "prior_value": "22uF",
+    "ruling": [],
+    "source": "JLCPCB-LIVE",
+    "stock": 280611,
+    "verdict": "RULED"
+   },
+   "footprint": "C_1210_3225Metric",
+   "how": "LIVE_RECORD",
+   "note": "SOURCING D-615 LIVE_RECORD. JLCPCB record read 2026-09-05T00:59:59Z: expand library, stock 280611, land 1210, Capacitance 22uF; Temperature Coefficient X7R; Tolerance \u00b110%; Voltage Rating 25V. Gates: 2x operating and survives absolute; not a resistor.",
+   "refs": [
+    "C12"
+   ],
+   "value": "22uF"
+  },
+  {
+   "LCSC": "C125847",
+   "MPN": "CC0805KKX7R9BB225",
+   "Manufacturer": "YAGEO",
+   "basis": {
+    "library": "expand",
+    "manufacturer_basis": "the distributor record's own brand field",
+    "net_gate": {
+     "absolute_max_v": 3.6,
+     "kind": "2x operating and survives absolute",
+     "margin_x": 15.15,
+     "nodes": [
+      "NFC_VDD_A",
+      "NFC_VDD_AM",
+      "NFC_VDD_D",
+      "NFC_VDD_RF"
+     ],
+     "ok": true,
+     "operating_max_v": 3.3,
+     "rating_v": 50.0
+    },
+    "part_dielectric": "X7R",
+    "part_power_w": null,
+    "part_rating_v": 50.0,
+    "part_tolerance": 10.0,
+    "power_gate": {
+     "kind": "not a resistor",
+     "ok": true
+    },
+    "prior_value": "2.2uF",
+    "ruling": [],
+    "source": "JLCPCB-LIVE",
+    "stock": 60957,
+    "verdict": "RULED"
+   },
+   "footprint": "C_0805_2012Metric",
+   "how": "LIVE_RECORD",
+   "note": "SOURCING D-615 LIVE_RECORD. JLCPCB record read 2026-09-05T00:59:59Z: expand library, stock 60957, land 0805, Capacitance 2.2uF; Temperature Coefficient X7R; Tolerance \u00b110%; Voltage Rating 50V. Gates: 2x operating and survives absolute; not a resistor.",
+   "refs": [
+    "C45",
+    "C47",
+    "C49",
+    "C51"
+   ],
+   "value": "2.2uF"
+  },
+  {
+   "LCSC": "C57112",
+   "MPN": "0603B103K500NT",
+   "Manufacturer": "FH (Guangdong Fenghua Advanced Tech)",
+   "basis": {
+    "library": "base",
+    "manufacturer_basis": "the distributor record's own brand field",
+    "net_gate": {
+     "absolute_max_v": 3.6,
+     "kind": "2x operating and survives absolute",
+     "margin_x": 15.15,
+     "nodes": [
+      "NFC_AGDC",
+      "NFC_VDD_A",
+      "NFC_VDD_D",
+      "NFC_VDD_RF"
+     ],
+     "ok": true,
+     "operating_max_v": 3.3,
+     "rating_v": 50.0
+    },
+    "part_dielectric": "X7R",
+    "part_power_w": null,
+    "part_rating_v": 50.0,
+    "part_tolerance": 10.0,
+    "power_gate": {
+     "kind": "not a resistor",
+     "ok": true
+    },
+    "prior_value": "10nF",
+    "ruling": [],
+    "source": "JLCPCB-LIVE",
+    "stock": 9273211,
+    "verdict": "RULED"
+   },
+   "footprint": "C_0603_1608Metric",
+   "how": "LIVE_RECORD",
+   "note": "SOURCING D-615 LIVE_RECORD. JLCPCB record read 2026-09-05T00:59:59Z: base library, stock 9273211, land 0603, Capacitance 10nF; Temperature Coefficient X7R; Tolerance \u00b110%; Voltage Rating 50V. Gates: 2x operating and survives absolute; not a resistor.",
+   "refs": [
+    "C46",
+    "C48",
+    "C50",
+    "C54"
+   ],
+   "value": "10nF"
+  },
+  {
+   "LCSC": "C1588",
+   "MPN": "CL10B102KB8NNNC",
+   "Manufacturer": "Samsung Electro-Mechanics",
+   "basis": {
+    "library": "base",
+    "manufacturer_basis": "the distributor record's own brand field",
+    "net_gate": {
+     "absolute_max_v": 3.6,
+     "kind": "2x operating and survives absolute",
+     "margin_x": 15.15,
+     "nodes": [
+      "NFC_VDD_AM"
+     ],
+     "ok": true,
+     "operating_max_v": 3.3,
+     "rating_v": 50.0
+    },
+    "part_dielectric": "X7R",
+    "part_power_w": null,
+    "part_rating_v": 50.0,
+    "part_tolerance": 10.0,
+    "power_gate": {
+     "kind": "not a resistor",
+     "ok": true
+    },
+    "prior_value": "1nF",
+    "ruling": [],
+    "source": "JLCPCB-LIVE",
+    "stock": 10349869,
+    "verdict": "RULED"
+   },
+   "footprint": "C_0603_1608Metric",
+   "how": "LIVE_RECORD",
+   "note": "SOURCING D-615 LIVE_RECORD. JLCPCB record read 2026-09-05T00:59:59Z: base library, stock 10349869, land 0603, Capacitance 1nF; Operating Temperature -55\u2103~+125\u2103; Temperature Coefficient X7R; Tolerance \u00b110%; Voltage Rating 50V. Gates: 2x operating and survives absolute; not a resistor.",
+   "refs": [
+    "C52"
+   ],
+   "value": "1nF"
+  },
+  {
+   "LCSC": "C23630",
+   "MPN": "CL10A225KO8NNNC",
+   "Manufacturer": "Samsung Electro-Mechanics",
+   "basis": {
+    "library": "base",
+    "manufacturer_basis": "the distributor record's own brand field",
+    "net_gate": {
+     "absolute_max_v": 3.6,
+     "kind": "2x operating and survives absolute",
+     "margin_x": 4.85,
+     "nodes": [
+      "NFC_SUPPLY"
+     ],
+     "ok": true,
+     "operating_max_v": 3.3,
+     "rating_v": 16.0
+    },
+    "part_dielectric": "X5R",
+    "part_power_w": null,
+    "part_rating_v": 16.0,
+    "part_tolerance": 10.0,
+    "power_gate": {
+     "kind": "not a resistor",
+     "ok": true
+    },
+    "prior_value": "2.2uF",
+    "ruling": [],
+    "source": "JLCPCB-LIVE",
+    "stock": 3853018,
+    "verdict": "RULED"
+   },
+   "footprint": "C_0603_1608Metric",
+   "how": "LIVE_RECORD",
+   "note": "SOURCING D-615 LIVE_RECORD. JLCPCB record read 2026-09-05T00:59:59Z: base library, stock 3853018, land 0603, Capacitance 2.2uF; Temperature Coefficient X5R; Tolerance \u00b110%; Voltage Rating 16V. Gates: 2x operating and survives absolute; not a resistor.",
+   "refs": [
+    "C55"
+   ],
+   "value": "2.2uF"
+  },
+  {
+   "LCSC": "C53987",
+   "MPN": "0603B472K500NT",
+   "Manufacturer": "FH (Guangdong Fenghua Advanced Tech)",
+   "basis": {
+    "library": "base",
+    "manufacturer_basis": "the distributor record's own brand field",
+    "net_gate": {
+     "absolute_max_v": 17.5,
+     "kind": "2x operating and survives absolute",
+     "margin_x": 2.86,
+     "nodes": [
+      "LTC_GATE_RC"
+     ],
+     "ok": true,
+     "operating_max_v": 17.5,
+     "rating_v": 50.0
+    },
+    "part_dielectric": "X7R",
+    "part_power_w": null,
+    "part_rating_v": 50.0,
+    "part_tolerance": 10.0,
+    "power_gate": {
+     "kind": "not a resistor",
+     "ok": true
+    },
+    "prior_value": "4.7nF 50V X7R",
+    "ruling": [],
+    "source": "JLCPCB-LIVE",
+    "stock": 1274228,
+    "verdict": "RULED"
+   },
+   "footprint": "C_0603_1608Metric",
+   "how": "LIVE_RECORD",
+   "note": "SOURCING D-615 LIVE_RECORD. JLCPCB record read 2026-09-05T00:59:59Z: base library, stock 1274228, land 0603, Capacitance 4.7nF; Temperature Coefficient X7R; Tolerance \u00b110%; Voltage Rating 50V. Gates: 2x operating and survives absolute; not a resistor.",
+   "refs": [
+    "C57"
+   ],
+   "value": "4.7nF 50V X7R"
+  },
+  {
+   "LCSC": "C907991",
+   "MPN": "GRM21BZ71A226ME15L",
+   "Manufacturer": "Murata Electronics",
+   "basis": {
+    "library": "expand",
+    "manufacturer_basis": "the distributor record's own brand field",
+    "net_gate": {
+     "absolute_max_v": 5.5,
+     "kind": "2x operating and survives absolute",
+     "margin_x": 2.0,
+     "nodes": [
+      "ACC_5V_RAW"
+     ],
+     "ok": true,
+     "operating_max_v": 5.0,
+     "rating_v": 10.0
+    },
+    "part_dielectric": "X7R",
+    "part_power_w": null,
+    "part_rating_v": 10.0,
+    "part_tolerance": 20.0,
+    "power_gate": {
+     "kind": "not a resistor",
+     "ok": true
+    },
+    "prior_value": "22uF 10V X7R",
+    "ruling": [],
+    "source": "JLCPCB-LIVE",
+    "stock": 65524,
+    "verdict": "RULED"
+   },
+   "footprint": "C_0805_2012Metric",
+   "how": "LIVE_RECORD",
+   "note": "SOURCING D-615 LIVE_RECORD. JLCPCB record read 2026-09-05T00:59:59Z: expand library, stock 65524, land 0805, Capacitance 22uF; Temperature Coefficient X7R; Tolerance \u00b120%; Voltage Rating 10V. Gates: 2x operating and survives absolute; not a resistor.",
+   "refs": [
+    "C65",
+    "C66"
+   ],
+   "value": "22uF 10V X7R"
+  },
+  {
+   "LCSC": "C4088673",
+   "MPN": "ERJ-PA3F1651V",
+   "Manufacturer": "PANASONIC",
+   "basis": {
+    "library": "expand",
+    "manufacturer_basis": "the distributor record's own brand field",
+    "net_gate": {
+     "bounded_max_v": 5.5,
+     "established_max_v": 5.5,
+     "kind": "land working voltage vs the highest node",
+     "land_working_v": 50.0,
+     "nodes": [
+      "ACC_5V_ILIM"
+     ],
+     "nodes_not_individually_established": [],
+     "ok": true
+    },
+    "part_dielectric": null,
+    "part_power_w": 0.25,
+    "part_rating_v": null,
+    "part_tolerance": 1.0,
+    "power_gate": {
+     "basis": "over-bound: the whole node voltage across the part",
+     "kind": "2x the strict over-bound",
+     "margin_x": 13.64,
+     "ok": true,
+     "over_bound_w": 0.018333,
+     "rating_w": 0.25
+    },
+    "prior_value": "1.65k 1%",
+    "ruling": [],
+    "source": "JLCPCB-LIVE",
+    "stock": 2763,
+    "verdict": "RULED"
+   },
+   "footprint": "R_0603_1608Metric",
+   "how": "LIVE_RECORD",
+   "note": "SOURCING D-615 LIVE_RECORD. JLCPCB record read 2026-09-05T00:59:59Z: expand library, stock 2763, land 0603, Operating Temperature -55\u2103~+155\u2103; Power(Watts) 250mW; Resistance 1.65k\u03a9; Temperature Coefficient \u00b1100ppm/\u2103; Tolerance \u00b11%; Type Thick Film Resistor. Gates: land working voltage vs the highest node; 2x the strict over-bound.",
+   "refs": [
+    "R101"
+   ],
+   "value": "1.65k 1%"
+  },
+  {
+   "LCSC": "C22807",
+   "MPN": "0603WAF1503T5E",
+   "Manufacturer": "UNI-ROYAL(Uniroyal Elec)",
+   "basis": {
+    "library": "base",
+    "manufacturer_basis": "the distributor record's own brand field",
+    "net_gate": {
+     "bounded_max_v": 5.5,
+     "established_max_v": 5.5,
+     "kind": "land working voltage vs the highest node",
+     "land_working_v": 50.0,
+     "nodes": [
+      "USB_VBUS_CHG",
+      "VBUS_PRESENT"
+     ],
+     "nodes_not_individually_established": [],
+     "ok": true
+    },
+    "part_dielectric": null,
+    "part_power_w": 0.1,
+    "part_rating_v": null,
+    "part_tolerance": 1.0,
+    "power_gate": {
+     "basis": "over-bound: the whole node voltage across the part",
+     "kind": "2x the strict over-bound",
+     "margin_x": 495.87,
+     "ok": true,
+     "over_bound_w": 0.000202,
+     "rating_w": 0.1
+    },
+    "prior_value": "150k 1%",
+    "ruling": [],
+    "source": "JLCPCB-LIVE",
+    "stock": 935032,
+    "verdict": "RULED"
+   },
+   "footprint": "R_0603_1608Metric",
+   "how": "LIVE_RECORD",
+   "note": "SOURCING D-615 LIVE_RECORD. JLCPCB record read 2026-09-05T00:59:59Z: base library, stock 935032, land 0603, Operating Temperature -55\u2103~+155\u2103; Power(Watts) 100mW; Resistance 150k\u03a9; Temperature Coefficient \u00b1100ppm/\u2103; Tolerance \u00b11%; Type Thick Film Resistor; Voltage-Supply(Max) 75V. Gates: land working voltage vs the highest node; 2x the strict over-bound.",
+   "refs": [
+    "R104"
+   ],
+   "value": "150k 1%"
+  },
+  {
+   "LCSC": "C22961",
+   "MPN": "0603WAF2203T5E",
+   "Manufacturer": "UNI-ROYAL(Uniroyal Elec)",
+   "basis": {
+    "library": "base",
+    "manufacturer_basis": "the distributor record's own brand field",
+    "net_gate": {
+     "bounded_max_v": 5.5,
+     "established_max_v": 5.5,
+     "kind": "land working voltage vs the highest node",
+     "land_working_v": 50.0,
+     "nodes": [
+      "VBUS_PRESENT"
+     ],
+     "nodes_not_individually_established": [],
+     "ok": true
+    },
+    "part_dielectric": null,
+    "part_power_w": 0.1,
+    "part_rating_v": null,
+    "part_tolerance": 1.0,
+    "power_gate": {
+     "basis": "over-bound: the whole node voltage across the part",
+     "kind": "2x the strict over-bound",
+     "margin_x": 727.27,
+     "ok": true,
+     "over_bound_w": 0.000138,
+     "rating_w": 0.1
+    },
+    "prior_value": "220k 1%",
+    "ruling": [],
+    "source": "JLCPCB-LIVE",
+    "stock": 1692476,
+    "verdict": "RULED"
+   },
+   "footprint": "R_0603_1608Metric",
+   "how": "LIVE_RECORD",
+   "note": "SOURCING D-615 LIVE_RECORD. JLCPCB record read 2026-09-05T00:59:59Z: base library, stock 1692476, land 0603, Operating Temperature -55\u2103~+155\u2103; Power(Watts) 100mW; Resistance 220k\u03a9; Temperature Coefficient \u00b1100ppm/\u2103; Tolerance \u00b11%; Type Thick Film Resistor; Voltage-Supply(Max) 75V. Gates: land working voltage vs the highest node; 2x the strict over-bound.",
+   "refs": [
+    "R105"
+   ],
+   "value": "220k 1%"
+  },
+  {
+   "LCSC": "C23228",
+   "MPN": "0603WAF6800T5E",
+   "Manufacturer": "UNI-ROYAL(Uniroyal Elec)",
+   "basis": {
+    "library": "base",
+    "manufacturer_basis": "the distributor record's own brand field",
+    "net_gate": {
+     "bounded_max_v": 3.6,
+     "established_max_v": 3.6,
+     "kind": "land working voltage vs the highest node",
+     "land_working_v": 50.0,
+     "nodes": [
+      "FRONT_RGB_G_N",
+      "Net-(D13-GK)"
+     ],
+     "nodes_not_individually_established": [],
+     "ok": true
+    },
+    "part_dielectric": null,
+    "part_power_w": 0.1,
+    "part_rating_v": null,
+    "part_tolerance": 1.0,
+    "power_gate": {
+     "basis": "current ruling",
+     "duty": 1.0,
+     "fault_a": 0.00132,
+     "fault_w": 0.001185,
+     "kind": "2x operating and survives single fault",
+     "margin_x": 138.62,
+     "ok": true,
+     "operating_a": 0.00103,
+     "operating_w": 0.000721,
+     "rating_w": 0.1,
+     "ruling": [
+      "D13 green channel current set, FBV2-S1-008: 1.03 mA nominal, 1.32 mA high corner."
+     ]
+    },
+    "prior_value": "680R",
+    "ruling": [],
+    "source": "JLCPCB-LIVE",
+    "stock": 2802834,
+    "verdict": "RULED"
+   },
+   "footprint": "R_0603_1608Metric",
+   "how": "LIVE_RECORD",
+   "note": "SOURCING D-615 LIVE_RECORD. JLCPCB record read 2026-09-05T00:59:59Z: base library, stock 2802834, land 0603, Operating Temperature -55\u2103~+155\u2103; Power(Watts) 100mW; Resistance 680\u03a9; Temperature Coefficient \u00b1100ppm/\u2103; Tolerance \u00b11%; Type Thick Film Resistor; Voltage-Supply(Max) 75V. Gates: land working voltage vs the highest node; 2x operating and survives single fault.",
+   "refs": [
+    "R125"
+   ],
+   "value": "680R"
+  },
+  {
+   "LCSC": "C23151",
+   "MPN": "0603WAF3900T5E",
+   "Manufacturer": "UNI-ROYAL(Uniroyal Elec)",
+   "basis": {
+    "library": "base",
+    "manufacturer_basis": "the distributor record's own brand field",
+    "net_gate": {
+     "bounded_max_v": 3.6,
+     "established_max_v": 3.6,
+     "kind": "land working voltage vs the highest node",
+     "land_working_v": 50.0,
+     "nodes": [
+      "FRONT_RGB_B_N",
+      "Net-(D13-BK)"
+     ],
+     "nodes_not_individually_established": [],
+     "ok": true
+    },
+    "part_dielectric": null,
+    "part_power_w": 0.1,
+    "part_rating_v": null,
+    "part_tolerance": 1.0,
+    "power_gate": {
+     "basis": "current ruling",
+     "duty": 1.0,
+     "fault_a": 0.00217,
+     "fault_w": 0.001836,
+     "kind": "2x operating and survives single fault",
+     "margin_x": 91.94,
+     "ok": true,
+     "operating_a": 0.00167,
+     "operating_w": 0.001088,
+     "rating_w": 0.1,
+     "ruling": [
+      "D13 blue channel current set, FBV2-S1-008: 1.67 mA nominal, 2.17 mA high corner."
+     ]
+    },
+    "prior_value": "390R",
+    "ruling": [],
+    "source": "JLCPCB-LIVE",
+    "stock": 456712,
+    "verdict": "RULED"
+   },
+   "footprint": "R_0603_1608Metric",
+   "how": "LIVE_RECORD",
+   "note": "SOURCING D-615 LIVE_RECORD. JLCPCB record read 2026-09-05T00:59:59Z: base library, stock 456712, land 0603, Operating Temperature -55\u2103~+155\u2103; Power(Watts) 100mW; Resistance 390\u03a9; Temperature Coefficient \u00b1100ppm/\u2103; Tolerance \u00b11%; Type Thick Film Resistor; Voltage-Supply(Max) 75V. Gates: land working voltage vs the highest node; 2x operating and survives single fault.",
+   "refs": [
+    "R126"
+   ],
+   "value": "390R"
+  },
+  {
+   "LCSC": "C4190",
+   "MPN": "0603WAF2201T5E",
+   "Manufacturer": "UNI-ROYAL(Uniroyal Elec)",
+   "basis": {
+    "library": "base",
+    "manufacturer_basis": "the distributor record's own brand field",
+    "net_gate": {
+     "bounded_max_v": 3.6,
+     "established_max_v": 3.6,
+     "kind": "land working voltage vs the highest node",
+     "land_working_v": 50.0,
+     "nodes": [
+      "+3V3",
+      "I2C_SCL_INT",
+      "I2C_SDA_INT"
+     ],
+     "nodes_not_individually_established": [],
+     "ok": true
+    },
+    "part_dielectric": null,
+    "part_power_w": 0.1,
+    "part_rating_v": null,
+    "part_tolerance": 1.0,
+    "power_gate": {
+     "basis": "over-bound: the whole node voltage across the part",
+     "kind": "2x the strict over-bound",
+     "margin_x": 16.98,
+     "ok": true,
+     "over_bound_w": 0.005891,
+     "rating_w": 0.1
+    },
+    "prior_value": "2.2k",
+    "ruling": [],
+    "source": "JLCPCB-LIVE",
+    "stock": 7045544,
+    "verdict": "RULED"
+   },
+   "footprint": "R_0603_1608Metric",
+   "how": "LIVE_RECORD",
+   "note": "SOURCING D-615 LIVE_RECORD. JLCPCB record read 2026-09-05T00:59:59Z: base library, stock 7045544, land 0603, Operating Temperature -55\u2103~+155\u2103; Power(Watts) 100mW; Resistance 2.2k\u03a9; Temperature Coefficient \u00b1100ppm/\u2103; Tolerance \u00b11%; Type Thick Film Resistor; Voltage-Supply(Max) 75V. Gates: land working voltage vs the highest node; 2x the strict over-bound.",
+   "refs": [
+    "R19",
+    "R20"
+   ],
+   "value": "2.2k"
+  },
+  {
+   "LCSC": "C26080556",
+   "MPN": "SR0805FR-4712RL",
+   "Manufacturer": "YAGEO",
+   "basis": {
+    "library": "expand",
+    "manufacturer_basis": "the distributor record's own brand field",
+    "net_gate": {
+     "bounded_max_v": 3.6,
+     "established_max_v": 3.6,
+     "kind": "land working voltage vs the highest node",
+     "land_working_v": 150.0,
+     "nodes": [
+      "+3V3",
+      "IR_LED_A"
+     ],
+     "nodes_not_individually_established": [],
+     "ok": true
+    },
+    "part_dielectric": null,
+    "part_power_w": 0.5,
+    "part_rating_v": null,
+    "part_tolerance": 1.0,
+    "power_gate": {
+     "basis": "current ruling",
+     "duty": 0.3333333333333333,
+     "fault_a": 0.17,
+     "fault_w": 0.1156,
+     "kind": "2x operating and survives single fault",
+     "margin_x": 5.56,
+     "ok": true,
+     "operating_a": 0.15,
+     "operating_w": 0.09,
+     "rating_w": 0.5,
+     "ruling": [
+      "IR LED current limit, FBV2-S1-007 and the R24 symbol note: 150 mA first-build peak, 170 mA worst case high (rail +2 %, VF 1.35 V, R -1 %).  The 38 kHz carrier runs at ONE THIRD duty (the C12 note derives its ripple from D = 0.333), so the dissipation is I^2 R D and not I^2 R."
+     ]
+    },
+    "prior_value": "12R",
+    "ruling": [],
+    "source": "JLCPCB-LIVE",
+    "stock": 1504,
+    "verdict": "RULED"
+   },
+   "footprint": "R_0805_2012Metric",
+   "how": "LIVE_RECORD",
+   "note": "SOURCING D-615 LIVE_RECORD. JLCPCB record read 2026-09-05T00:59:59Z: expand library, stock 1504, land 0805, Operating Temperature -55\u2103~+155\u2103; Power(Watts) 500mW; Resistance 12\u03a9; Temperature Coefficient \u00b1100ppm/\u2103; Tolerance \u00b11%; Type Thick Film Resistor; Voltage-Supply(Max) 500V. Gates: land working voltage vs the highest node; 2x operating and survives single fault.",
+   "refs": [
+    "R24"
+   ],
+   "value": "12R"
+  },
+  {
+   "LCSC": "C22843",
+   "MPN": "0603WAF1501T5E",
+   "Manufacturer": "UNI-ROYAL(Uniroyal Elec)",
+   "basis": {
+    "library": "base",
+    "manufacturer_basis": "the distributor record's own brand field",
+    "net_gate": {
+     "bounded_max_v": 3.6,
+     "established_max_v": 3.6,
+     "kind": "land working voltage vs the highest node",
+     "land_working_v": 50.0,
+     "nodes": [
+      "ACC_3V3_ILIM",
+      "ACC_3V3_SW",
+      "EXT_SCL_BUF",
+      "EXT_SDA_BUF"
+     ],
+     "nodes_not_individually_established": [],
+     "ok": true
+    },
+    "part_dielectric": null,
+    "part_power_w": 0.1,
+    "part_rating_v": null,
+    "part_tolerance": 1.0,
+    "power_gate": {
+     "basis": "over-bound: the whole node voltage across the part",
+     "kind": "2x the strict over-bound",
+     "margin_x": 11.57,
+     "ok": true,
+     "over_bound_w": 0.00864,
+     "rating_w": 0.1
+    },
+    "prior_value": "1.5k 1%",
+    "ruling": [],
+    "source": "JLCPCB-LIVE",
+    "stock": 3722075,
+    "verdict": "RULED"
+   },
+   "footprint": "R_0603_1608Metric",
+   "how": "LIVE_RECORD",
+   "note": "SOURCING D-615 LIVE_RECORD. JLCPCB record read 2026-09-05T00:59:59Z: base library, stock 3722075, land 0603, Operating Temperature -55\u2103~+155\u2103; Power(Watts) 100mW; Resistance 1.5k\u03a9; Temperature Coefficient \u00b1100ppm/\u2103; Tolerance \u00b11%; Type Thick Film Resistor; Voltage-Supply(Max) 75V. Gates: land working voltage vs the highest node; 2x the strict over-bound.",
+   "refs": [
+    "R49",
+    "R50",
+    "R97"
+   ],
+   "value": "1.5k 1%"
+  },
+  {
+   "LCSC": "C422967",
+   "MPN": "0603WAF187KT5E",
+   "Manufacturer": "UNI-ROYAL(Uniroyal Elec)",
+   "basis": {
+    "library": "expand",
+    "manufacturer_basis": "the distributor record's own brand field",
+    "net_gate": {
+     "bounded_max_v": 38.0,
+     "established_max_v": 38.0,
+     "kind": "land working voltage vs the highest node",
+     "land_working_v": 50.0,
+     "nodes": [
+      "LED_K"
+     ],
+     "nodes_not_individually_established": [],
+     "ok": true
+    },
+    "part_dielectric": null,
+    "part_power_w": 0.1,
+    "part_rating_v": null,
+    "part_tolerance": 1.0,
+    "power_gate": {
+     "basis": "current ruling",
+     "duty": 1.0,
+     "fault_a": 0.109,
+     "fault_w": 0.022217,
+     "kind": "2x operating and survives single fault",
+     "margin_x": 4.5,
+     "ok": true,
+     "operating_a": 0.109,
+     "operating_w": 0.022217,
+     "rating_w": 0.1,
+     "ruling": [
+      "backlight sense.  D-079: the panel is SIX LEDs IN PARALLEL at I_LED 109 mA typ, and R69 1.87R develops the 0.20 V the TPS61169 regulates to.  The current is REGULATED, so a shorted string raises the node voltage and not the current."
+     ]
+    },
+    "prior_value": "1.87R 1%",
+    "ruling": [],
+    "source": "JLCPCB-LIVE",
+    "stock": 91,
+    "verdict": "RULED"
+   },
+   "footprint": "R_0603_1608Metric",
+   "how": "LIVE_RECORD",
+   "note": "SOURCING D-615 LIVE_RECORD. JLCPCB record read 2026-09-05T00:59:59Z: expand library, stock 91, land 0603, Operating Temperature -55\u2103~+155\u2103; Power(Watts) 100mW; Resistance 1.87\u03a9; Temperature Coefficient \u00b1200ppm/\u2103; Tolerance \u00b11%; Type Thick Film Resistor; Voltage-Supply(Max) 75V. Gates: land working voltage vs the highest node; 2x operating and survives single fault.",
+   "refs": [
+    "R69"
+   ],
+   "value": "1.87R 1%"
+  },
+  {
+   "LCSC": "C23140",
+   "MPN": "0603WAF330JT5E",
+   "Manufacturer": "UNI-ROYAL(Uniroyal Elec)",
+   "basis": {
+    "library": "base",
+    "manufacturer_basis": "the distributor record's own brand field",
+    "net_gate": {
+     "bounded_max_v": 38.0,
+     "established_max_v": 38.0,
+     "kind": "land working voltage vs the highest node",
+     "land_working_v": 50.0,
+     "nodes": [
+      "LED_A",
+      "LED_BOOST"
+     ],
+     "nodes_not_individually_established": [],
+     "ok": true
+    },
+    "part_dielectric": null,
+    "part_power_w": 0.1,
+    "part_rating_v": null,
+    "part_tolerance": 1.0,
+    "power_gate": {
+     "basis": "current ruling",
+     "duty": 1.0,
+     "fault_a": 0.03633,
+     "fault_w": 0.043556,
+     "kind": "2x operating and survives single fault",
+     "margin_x": 4.08,
+     "ok": true,
+     "operating_a": 0.02725,
+     "operating_w": 0.024505,
+     "rating_w": 0.1,
+     "ruling": [
+      "one of FOUR parallel 33R backlight ballasts carrying 109 mA between them (D-079): 27.25 mA each, and 36.33 mA each if ONE of the four is open."
+     ]
+    },
+    "prior_value": "33R 1%",
+    "ruling": [],
+    "source": "JLCPCB-LIVE",
+    "stock": 5954981,
+    "verdict": "RULED"
+   },
+   "footprint": "R_0603_1608Metric",
+   "how": "LIVE_RECORD",
+   "note": "SOURCING D-615 LIVE_RECORD. JLCPCB record read 2026-09-05T00:59:59Z: base library, stock 5954981, land 0603, Operating Temperature -55\u2103~+155\u2103; Power(Watts) 100mW; Resistance 33\u03a9; Temperature Coefficient \u00b1100ppm/\u2103; Tolerance \u00b11%; Type Thick Film Resistor; Voltage-Supply(Max) 75V. Gates: land working voltage vs the highest node; 2x operating and survives single fault.",
+   "refs": [
+    "R70",
+    "R71",
+    "R72",
+    "R73"
+   ],
+   "value": "33R 1%"
+  },
+  {
+   "LCSC": "C2073490",
+   "MPN": "CRA2512-FZ-R015ELF",
+   "Manufacturer": "BOURNS",
+   "basis": {
+    "library": "expand",
+    "manufacturer_basis": "the distributor record's own brand field",
+    "net_gate": {
+     "bounded_max_v": 4.35,
+     "established_max_v": 4.35,
+     "kind": "land working voltage vs the highest node",
+     "land_working_v": 200.0,
+     "nodes": [
+      "BAT_PROTECTED_P",
+      "BAT_SENSE"
+     ],
+     "nodes_not_individually_established": [],
+     "ok": true
+    },
+    "part_dielectric": null,
+    "part_power_w": 3.0,
+    "part_rating_v": null,
+    "part_tolerance": 1.0,
+    "power_gate": {
+     "basis": "current ruling",
+     "duty": 1.0,
+     "fault_a": 3.33,
+     "fault_w": 0.166333,
+     "kind": "2x operating and survives single fault",
+     "margin_x": 18.04,
+     "ok": true,
+     "operating_a": 3.33,
+     "operating_w": 0.166333,
+     "rating_w": 3.0,
+     "ruling": [
+      "battery current sense.  The R75 symbol note states the design's own ceiling: I_OC,FWD = 50 mV / 15 mR = 3.33 A, the LTC4368-1 forward trip.  Nothing below it is interrupted, so it IS the continuous current the part must survive."
+     ]
+    },
+    "prior_value": "15mR 1% 1W",
+    "ruling": [],
+    "source": "JLCPCB-LIVE",
+    "stock": 940,
+    "verdict": "RULED"
+   },
+   "footprint": "R_2512_6332Metric",
+   "how": "LIVE_RECORD",
+   "note": "SOURCING D-615 LIVE_RECORD. JLCPCB record read 2026-09-05T00:59:59Z: expand library, stock 940, land 2512, Power(Watts) 3W; Resistance 15m\u03a9; Temperature Coefficient \u00b150ppm/\u2103; Tolerance \u00b11%; Type Current Sense Resistor. Gates: land working voltage vs the highest node; 2x operating and survives single fault.",
+   "refs": [
+    "R75"
+   ],
+   "value": "15mR 1% 1W"
+  },
+  {
+   "LCSC": "C31850",
+   "MPN": "0603WAF2202T5E",
+   "Manufacturer": "UNI-ROYAL(Uniroyal Elec)",
+   "basis": {
+    "library": "base",
+    "manufacturer_basis": "the distributor record's own brand field",
+    "net_gate": {
+     "bounded_max_v": 17.5,
+     "established_max_v": 17.5,
+     "kind": "land working voltage vs the highest node",
+     "land_working_v": 50.0,
+     "nodes": [
+      "LTC_GATE",
+      "LTC_GATE_RC"
+     ],
+     "nodes_not_individually_established": [],
+     "ok": true
+    },
+    "part_dielectric": null,
+    "part_power_w": 0.1,
+    "part_rating_v": null,
+    "part_tolerance": 1.0,
+    "power_gate": {
+     "basis": "over-bound: the whole node voltage across the part",
+     "kind": "2x the strict over-bound",
+     "margin_x": 7.18,
+     "ok": true,
+     "over_bound_w": 0.01392,
+     "rating_w": 0.1
+    },
+    "prior_value": "22k",
+    "ruling": [],
+    "source": "JLCPCB-LIVE",
+    "stock": 4428542,
+    "verdict": "RULED"
+   },
+   "footprint": "R_0603_1608Metric",
+   "how": "LIVE_RECORD",
+   "note": "SOURCING D-615 LIVE_RECORD. JLCPCB record read 2026-09-05T00:59:59Z: base library, stock 4428542, land 0603, Operating Temperature -55\u2103~+155\u2103; Power(Watts) 100mW; Resistance 22k\u03a9; Temperature Coefficient \u00b1100ppm/\u2103; Tolerance \u00b11%; Type Thick Film Resistor; Voltage-Supply(Max) 75V. Gates: land working voltage vs the highest node; 2x the strict over-bound.",
+   "refs": [
+    "R76"
+   ],
+   "value": "22k"
+  },
+  {
+   "LCSC": "C482835",
+   "MPN": "RC0603FR-073M65L",
+   "Manufacturer": "YAGEO",
+   "basis": {
+    "library": "expand",
+    "manufacturer_basis": "the distributor record's own brand field",
+    "net_gate": {
+     "bounded_max_v": 5.5,
+     "established_max_v": 5.5,
+     "kind": "land working voltage vs the highest node",
+     "land_working_v": 50.0,
+     "nodes": [
+      "BAT_RAW",
+      "LTC_OV",
+      "REF_HO",
+      "USB_VBUS_CHG"
+     ],
+     "nodes_not_individually_established": [],
+     "ok": true
+    },
+    "part_dielectric": null,
+    "part_power_w": 0.1,
+    "part_rating_v": null,
+    "part_tolerance": 1.0,
+    "power_gate": {
+     "basis": "over-bound: the whole node voltage across the part",
+     "kind": "2x the strict over-bound",
+     "margin_x": 12066.12,
+     "ok": true,
+     "over_bound_w": 8e-06,
+     "rating_w": 0.1
+    },
+    "prior_value": "3.65M 1%",
+    "ruling": [],
+    "source": "JLCPCB-LIVE",
+    "stock": 2221,
+    "verdict": "RULED"
+   },
+   "footprint": "R_0603_1608Metric",
+   "how": "LIVE_RECORD",
+   "note": "SOURCING D-615 LIVE_RECORD. JLCPCB record read 2026-09-05T00:59:59Z: expand library, stock 2221, land 0603, Operating Temperature -55\u2103~+155\u2103; Power(Watts) 100mW; Resistance 3.65M\u03a9; Temperature Coefficient \u00b1100ppm/\u2103; Tolerance \u00b11%; Type Thick Film Resistor; Voltage-Supply(Max) 75V. Gates: land working voltage vs the highest node; 2x the strict over-bound.",
+   "refs": [
+    "R77",
+    "R91"
+   ],
+   "value": "3.65M 1%"
+  },
+  {
+   "LCSC": "C185327",
+   "MPN": "RC0603FR-07442KL",
+   "Manufacturer": "YAGEO",
+   "basis": {
+    "library": "expand",
+    "manufacturer_basis": "the distributor record's own brand field",
+    "net_gate": {
+     "bounded_max_v": 4.35,
+     "established_max_v": 4.35,
+     "kind": "land working voltage vs the highest node",
+     "land_working_v": 50.0,
+     "nodes": [
+      "LTC_OV"
+     ],
+     "nodes_not_individually_established": [],
+     "ok": true
+    },
+    "part_dielectric": null,
+    "part_power_w": 0.1,
+    "part_rating_v": null,
+    "part_tolerance": 1.0,
+    "power_gate": {
+     "basis": "over-bound: the whole node voltage across the part",
+     "kind": "2x the strict over-bound",
+     "margin_x": 2335.84,
+     "ok": true,
+     "over_bound_w": 4.3e-05,
+     "rating_w": 0.1
+    },
+    "prior_value": "442k 1%",
+    "ruling": [],
+    "source": "JLCPCB-LIVE",
+    "stock": 6324,
+    "verdict": "RULED"
+   },
+   "footprint": "R_0603_1608Metric",
+   "how": "LIVE_RECORD",
+   "note": "SOURCING D-615 LIVE_RECORD. JLCPCB record read 2026-09-05T00:59:59Z: expand library, stock 6324, land 0603, Operating Temperature -55\u2103~+155\u2103; Power(Watts) 100mW; Resistance 442k\u03a9; Temperature Coefficient \u00b1100ppm/\u2103; Tolerance \u00b11%; Type Thick Film Resistor; Voltage-Supply(Max) 75V. Gates: land working voltage vs the highest node; 2x the strict over-bound.",
+   "refs": [
+    "R78"
+   ],
+   "value": "442k 1%"
+  },
+  {
+   "LCSC": "C23192",
+   "MPN": "0603WAF5103T5E",
+   "Manufacturer": "UNI-ROYAL(Uniroyal Elec)",
+   "basis": {
+    "library": "base",
+    "manufacturer_basis": "the distributor record's own brand field",
+    "net_gate": {
+     "bounded_max_v": 4.35,
+     "established_max_v": 4.35,
+     "kind": "land working voltage vs the highest node",
+     "land_working_v": 50.0,
+     "nodes": [
+      "BAT_RAW",
+      "LTC_UV"
+     ],
+     "nodes_not_individually_established": [],
+     "ok": true
+    },
+    "part_dielectric": null,
+    "part_power_w": 0.1,
+    "part_rating_v": null,
+    "part_tolerance": 1.0,
+    "power_gate": {
+     "basis": "over-bound: the whole node voltage across the part",
+     "kind": "2x the strict over-bound",
+     "margin_x": 2695.2,
+     "ok": true,
+     "over_bound_w": 3.7e-05,
+     "rating_w": 0.1
+    },
+    "prior_value": "510k",
+    "ruling": [],
+    "source": "JLCPCB-LIVE",
+    "stock": 933135,
+    "verdict": "RULED"
+   },
+   "footprint": "R_0603_1608Metric",
+   "how": "LIVE_RECORD",
+   "note": "SOURCING D-615 LIVE_RECORD. JLCPCB record read 2026-09-05T00:59:59Z: base library, stock 933135, land 0603, Operating Temperature -55\u2103~+155\u2103; Power(Watts) 100mW; Resistance 510k\u03a9; Temperature Coefficient \u00b1100ppm/\u2103; Tolerance \u00b11%; Type Thick Film Resistor; Voltage-Supply(Max) 75V. Gates: land working voltage vs the highest node; 2x the strict over-bound.",
+   "refs": [
+    "R79"
+   ],
+   "value": "510k"
+  },
+  {
+   "LCSC": "C137747",
+   "MPN": "RC0603FR-072M2L",
+   "Manufacturer": "YAGEO",
+   "basis": {
+    "library": "expand",
+    "manufacturer_basis": "the distributor record's own brand field",
+    "net_gate": {
+     "bounded_max_v": 5.5,
+     "established_max_v": 5.5,
+     "kind": "land working voltage vs the highest node",
+     "land_working_v": 50.0,
+     "nodes": [
+      "BAT_RAW",
+      "N_BATDIV",
+      "N_POL",
+      "REF_POL",
+      "VBRIDGE_TOP",
+      "VREF_TOP"
+     ],
+     "nodes_not_individually_established": [],
+     "ok": true
+    },
+    "part_dielectric": null,
+    "part_power_w": 0.1,
+    "part_rating_v": null,
+    "part_tolerance": 1.0,
+    "power_gate": {
+     "basis": "over-bound: the whole node voltage across the part",
+     "kind": "2x the strict over-bound",
+     "margin_x": 7272.73,
+     "ok": true,
+     "over_bound_w": 1.4e-05,
+     "rating_w": 0.1
+    },
+    "prior_value": "2.2M 1%",
+    "ruling": [],
+    "source": "JLCPCB-LIVE",
+    "stock": 5453,
+    "verdict": "RULED"
+   },
+   "footprint": "R_0603_1608Metric",
+   "how": "LIVE_RECORD",
+   "note": "SOURCING D-615 LIVE_RECORD. JLCPCB record read 2026-09-05T00:59:59Z: expand library, stock 5453, land 0603, Operating Temperature -55\u2103~+155\u2103; Power(Watts) 100mW; Resistance 2.2M\u03a9; Temperature Coefficient \u00b1100ppm/\u2103; Tolerance \u00b11%; Type Thick Film Resistor; Voltage-Supply(Max) 75V. Gates: land working voltage vs the highest node; 2x the strict over-bound.",
+   "refs": [
+    "R85",
+    "R86",
+    "R87",
+    "R88",
+    "R89",
+    "R90"
+   ],
+   "value": "2.2M 1%"
+  },
+  {
+   "LCSC": "C2115863",
+   "MPN": "MCT06030C1304FP500",
+   "Manufacturer": "Vishay Intertech",
+   "basis": {
+    "library": "expand",
+    "manufacturer_basis": "the distributor record's own brand field",
+    "net_gate": {
+     "bounded_max_v": 5.5,
+     "established_max_v": 5.5,
+     "kind": "land working voltage vs the highest node",
+     "land_working_v": 50.0,
+     "nodes": [
+      "REF_HO"
+     ],
+     "nodes_not_individually_established": [],
+     "ok": true
+    },
+    "part_dielectric": null,
+    "part_power_w": 0.125,
+    "part_rating_v": null,
+    "part_tolerance": 1.0,
+    "power_gate": {
+     "basis": "over-bound: the whole node voltage across the part",
+     "kind": "2x the strict over-bound",
+     "margin_x": 5371.9,
+     "ok": true,
+     "over_bound_w": 2.3e-05,
+     "rating_w": 0.125
+    },
+    "prior_value": "1.30M 1%",
+    "ruling": [],
+    "source": "JLCPCB-LIVE",
+    "stock": 1296,
+    "verdict": "RULED"
+   },
+   "footprint": "R_0603_1608Metric",
+   "how": "LIVE_RECORD",
+   "note": "SOURCING D-615 LIVE_RECORD. JLCPCB record read 2026-09-05T00:59:59Z: expand library, stock 1296, land 0603, Operating Temperature -55\u2103~+155\u2103; Power(Watts) 125mW; Resistance 1.3M\u03a9; Temperature Coefficient \u00b150ppm/\u2103; Tolerance \u00b11%; Type Thin Film Resistor; Voltage-Supply(Max) 75V. Gates: land working voltage vs the highest node; 2x the strict over-bound.",
+   "refs": [
+    "R92"
+   ],
+   "value": "1.30M 1%"
+  },
+  {
+   "LCSC": "C4220370",
+   "MPN": "ERJ-P08F5600V",
+   "Manufacturer": "PANASONIC",
+   "basis": {
+    "library": "expand",
+    "manufacturer_basis": "the distributor record's own brand field",
+    "net_gate": {
+     "bounded_max_v": 5.5,
+     "established_max_v": 5.5,
+     "kind": "land working voltage vs the highest node",
+     "land_working_v": 200.0,
+     "nodes": [
+      "REC_DIODE_IN",
+      "REC_LIM_IN"
+     ],
+     "nodes_not_individually_established": [],
+     "ok": true
+    },
+    "part_dielectric": null,
+    "part_power_w": 0.66,
+    "part_rating_v": null,
+    "part_tolerance": 1.0,
+    "power_gate": {
+     "basis": "current ruling",
+     "duty": 1.0,
+     "fault_a": 0.0166,
+     "fault_w": 0.154314,
+     "kind": "2x operating and survives single fault",
+     "margin_x": 14.88,
+     "ok": true,
+     "operating_a": 0.0089,
+     "operating_w": 0.044358,
+     "rating_w": 0.66,
+     "ruling": [
+      "dead-cell recovery limit, P-20 / D-105 and the sheet-01 block-B text: 8.4 mA nominal at VBUS 5.0 V into a 0 V pack, 7.9-8.9 mA over 4.75-5.25 V, and a SINGLE-FAULT ceiling into a reversed cell of 15.9 mA nominal / 16.6 mA worst case.  NOTE: the R95 SYMBOL note says 13.1 mA where the sheet text says 16.6 mA; the larger number is used."
+     ]
+    },
+    "prior_value": "560R 1% 1206",
+    "ruling": [],
+    "source": "JLCPCB-LIVE",
+    "stock": 4925,
+    "verdict": "RULED"
+   },
+   "footprint": "R_1206_3216Metric",
+   "how": "LIVE_RECORD",
+   "note": "SOURCING D-615 LIVE_RECORD. JLCPCB record read 2026-09-05T00:59:59Z: expand library, stock 4925, land 1206, Operating Temperature -55\u2103~+155\u2103; Power(Watts) 660mW; Resistance 560\u03a9; Temperature Coefficient \u00b1100ppm/\u2103; Tolerance \u00b11%; Type Thick Film Resistor. Gates: land working voltage vs the highest node; 2x operating and survives single fault.",
+   "refs": [
+    "R95"
+   ],
+   "value": "560R 1% 1206"
+  },
+  {
+   "LCSC": "C2079739",
+   "MPN": "CRCW0603732KFKEA",
+   "Manufacturer": "Vishay Intertech",
+   "basis": {
+    "library": "expand",
+    "manufacturer_basis": "the distributor record's own brand field",
+    "net_gate": {
+     "bounded_max_v": 5.5,
+     "established_max_v": 5.5,
+     "kind": "land working voltage vs the highest node",
+     "land_working_v": 50.0,
+     "nodes": [
+      "ACC_5V_FB",
+      "ACC_5V_RAW"
+     ],
+     "nodes_not_individually_established": [],
+     "ok": true
+    },
+    "part_dielectric": null,
+    "part_power_w": 0.1,
+    "part_rating_v": null,
+    "part_tolerance": 1.0,
+    "power_gate": {
+     "basis": "over-bound: the whole node voltage across the part",
+     "kind": "2x the strict over-bound",
+     "margin_x": 2419.83,
+     "ok": true,
+     "over_bound_w": 4.1e-05,
+     "rating_w": 0.1
+    },
+    "prior_value": "732k 1%",
+    "ruling": [],
+    "source": "JLCPCB-LIVE",
+    "stock": 2865,
+    "verdict": "RULED"
+   },
+   "footprint": "R_0603_1608Metric",
+   "how": "LIVE_RECORD",
+   "note": "SOURCING D-615 LIVE_RECORD. JLCPCB record read 2026-09-05T00:59:59Z: expand library, stock 2865, land 0603, Operating Temperature -55\u2103~+155\u2103; Power(Watts) 100mW; Resistance 732k\u03a9; Temperature Coefficient \u00b1100ppm/\u2103; Tolerance \u00b11%; Type Thick Film Resistor; Voltage-Supply(Max) 100V. Gates: land working voltage vs the highest node; 2x the strict over-bound.",
+   "refs": [
+    "R99"
+   ],
+   "value": "732k 1%"
+  }
+ ],
+ "lines": 26,
+ "parts": 45,
+ "schema": 1
+}

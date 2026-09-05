@@ -1,0 +1,95 @@
+{
+ "endpoint": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
+ "exhausted": true,
+ "fetched_utc": "2026-09-05T01:19:07Z",
+ "keyword": "C2115863",
+ "page_size": 25,
+ "pages": 1,
+ "records": [
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Resistance",
+     "attribute_value_name": "1.3MΩ"
+    },
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-55℃~+155℃"
+    },
+    {
+     "attribute_name_en": "Power(Watts)",
+     "attribute_value_name": "125mW"
+    },
+    {
+     "attribute_name_en": "Type",
+     "attribute_value_name": "Thin Film Resistor"
+    },
+    {
+     "attribute_name_en": "Voltage-Supply(Max)",
+     "attribute_value_name": "75V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±1%"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "±50ppm/℃"
+    }
+   ],
+   "componentBrandEn": "Vishay Intertech",
+   "componentCode": "C2115863",
+   "componentLibraryType": "expand",
+   "componentModelEn": "MCT06030C1304FP500",
+   "componentPrices": [
+    {
+     "endNumber": 49,
+     "productPrice": 0.047,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 149,
+     "productPrice": 0.0459,
+     "startNumber": 50
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.045,
+     "startNumber": 150
+    },
+    {
+     "endNumber": 509,
+     "productPrice": 0.0442,
+     "startNumber": 500
+    },
+    {
+     "endNumber": 519,
+     "productPrice": 0.0442,
+     "startNumber": 510
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0442,
+     "startNumber": 520
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Chip Resistor - Surface Mount",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2304140030_Vishay-Intertech-MCT06030C1304FP500_C2115863.pdf",
+   "describe": "-55℃~+155℃ 1.3MΩ 125mW 75V Thin Film Resistor ±1% ±50ppm/℃ 0603 Chip Resistor - Surface Mount ROHS",
+   "erpComponentName": "薄膜电阻 1.3MΩ ±1% 125mW",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/chip-resistor-surface-mount_vishay-intertech-mct06030c1304fp500_C2115863.html",
+   "leastPatchNumber": 5,
+   "lossNumber": 4,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 1296
+  }
+ ],
+ "returned": 1,
+ "schema": 1,
+ "total_matches": 1
+}

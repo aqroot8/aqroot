@@ -163,9 +163,9 @@ sockets); the only on-board RF network is the 13.56 MHz NFC differential front e
 ### 6.2 Reverse-/over-/under-voltage protection front end
 | Item | Value | Label | Evidence |
 |---|---|---|---|
-| Ideal-diode + OV/UV/reverse-current controller | `U18` **LTC4368IDD-1#PBF** (the "-1", so it does NOT block forward charge) | FITTED · LOCKED (safety) | `01_power_tree.kicad_sch:U18` |
+| Ideal-diode + OV/UV/reverse-current controller | `U18` **LTC4368IMS-1#TRPBF**, LCSC `C688401`, **MSOP-10** (the "-1", so it does NOT block forward charge). **D-615 corrected the order code: the schematic carried `LTC4368IDD-1#PBF`, and `DD` is DFN-10 against an MSOP-10 land — D-099 / FBV2-PWR-002 require this part to be leaded and inspectable.** | FITTED · LOCKED (safety) | `01_power_tree.kicad_sch:U18` |
 | Back-to-back reverse-protection FETs | `Q2`, `Q3` **NTMD4820NR2G** (anti-series pairs) | FITTED · LOCKED (safety) | `01_power_tree.kicad_sch:Q2,Q3` |
-| Current-sense resistor | `R75` **15 mΩ 1 % 1 W** (Kelvin pair to U18.8/U18.9) | FITTED | `01_power_tree.kicad_sch:R75` |
+| Current-sense resistor | `R75` **15 mΩ 1 % 1 W** (Kelvin pair to U18.8/U18.9); D-615 selected Bourns **`CRA2512-FZ-R015ELF`**, LCSC `C2073490`, a **CURRENT-SENSE class part at ±50 ppm/°C, 3 W** — a thick film at ±1500 ppm/°C would move the 3.33 A LTC4368 trip ~19 % over −40…+85 °C | FITTED | `01_power_tree.kicad_sch:R75` |
 | Protected-node Schottky | `D9` **PMEG2010AEH,115** | FITTED | `01_power_tree.kicad_sch:D9` |
 | Recovery / dead-cell comparator | `U19` **TLV7032DDFR** (dual) | FITTED | `01_power_tree.kicad_sch:U19` |
 
@@ -351,7 +351,13 @@ dimension source and supersedes older Enclosure Field Slate v3/v4/v5 dimensions.
 - **0 Ω source-selection links:** `R118`/`R119` (IMU address select), `R106`/`R107`
   (NFC supply select), `R109` (MCU strap link).
 - **TUNE / FIRST-ARTICLE TUNE:** the NFC matching network (`C69`–`C80`, `L5`/`L6`,
-  `R114`–`R117`) — values pending VNA/ST tool.
+  `R114`–`R117`) — values pending VNA/ST tool. **D-615: all 16 TUNE positions now
+  carry a FIRST-ARTICLE part number so the first article can actually be bought and
+  built; every one is expected to change after the VNA measurement, and each carries
+  that sentence in its own `Note_Sourcing`.** The `R114`–`R117` dissipation is
+  explicitly NOT established — the ST25R3916 tank current is not a number this
+  repository holds — so those two lines took the highest-rated part their 0603 land
+  offers and the dissipation is a first-article measurement.
 - **Corrected DNP→FIT (from inherited Beta-DM):** NFC front end (`U9` + decoupling +
   `Y1` + `J7` + matching, D-035/D-055), audio out (`U5`, `J6`, D-144).
 
@@ -378,7 +384,15 @@ Qwiic/STEMMA QT I²C accessory port; RGB status indicator.
 6. **915 antenna doc residue** — stale FXP890 vs locked external TI.92.2113 SMA.
 7. **Mechanical:** BOSS2 X (59 vs 60), BOOT face, power-switch position, 1×24 wall
    aperture, corner radii — CAD-TO-VERIFY.
-8. **`J8` Qwiic LCSC** absent (the **MPN is now in the schematic**, D-614); **`J1`** display FPC LCSC absent.
+8. ~~**`J8` Qwiic LCSC** absent (the **MPN is now in the schematic**, D-614); **`J1`** display FPC LCSC absent.~~
+   **CLOSED at D-615** — both confirmed against a live distributor record (D-096):
+   `J8` = JST `SM04B-SRSS-TB(LF)(SN)`, LCSC **`C160404`**, 69 510 in stock;
+   `J1` = Hirose `FH69-50S-0.5SH`, LCSC **`C25955556`**, 790 in stock.
+9. **First-build purchasing, not design:** nine BOM lines sit under 10x the
+   first-five need on the assembler's own catalogue and five of them read ZERO
+   (`J5`, `L4`, `MK1`, `U19`, `U9`; then `Q2`/`Q3` 0, `U2`/`U3` 1, `U18` 3, `D8` 7).
+   Most are already CONSIGNED classes under D-206, so this is a brief to work
+   rather than a design defect — `hardware/demo/manufacturing/evidence/d615-purchasing-short.csv`.
 
 ---
 

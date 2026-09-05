@@ -6954,7 +6954,7 @@
 				)
 			)
 		)
-		(property "MPN" "LTC4368IDD-1#PBF"
+		(property "MPN" "LTC4368IMS-1#TRPBF"
 			(at 0 0 0)
 			(hide yes)
 			(effects
@@ -6963,7 +6963,7 @@
 				)
 			)
 		)
-		(property "Package" "DD, 10-lead 3 mm x 3 mm plastic DFN, exposed pad (pin 11) PCB ground connection optional"
+		(property "Package" "MS, 10-lead plastic MSOP.  D-099 / FBV2-PWR-002: the safety-critical parts are LEADED AND INSPECTABLE -- the DD (DFN, exposed pad) order code was captured against this MSOP-10 land and is corrected at D-615"
 			(at 0 0 0)
 			(hide yes)
 			(effects

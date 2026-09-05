@@ -1,0 +1,1955 @@
+{
+ "endpoint": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
+ "exhausted": false,
+ "fetched_utc": "2026-09-05T01:18:57Z",
+ "keyword": "C1634",
+ "page_size": 25,
+ "pages": 1,
+ "records": [
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "50V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±5%"
+    },
+    {
+     "attribute_name_en": "Capacitance",
+     "attribute_value_name": "10pF"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "C0G"
+    }
+   ],
+   "componentBrandEn": "Samsung Electro-Mechanics",
+   "componentCode": "C1634",
+   "componentLibraryType": "base",
+   "componentModelEn": "CL10C100JB8NNNC",
+   "componentPrices": [
+    {
+     "endNumber": 999,
+     "productPrice": 0.0076,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 3999,
+     "productPrice": 0.0058,
+     "startNumber": 1000
+    },
+    {
+     "endNumber": 7999,
+     "productPrice": 0.0051,
+     "startNumber": 4000
+    },
+    {
+     "endNumber": 47999,
+     "productPrice": 0.0045,
+     "startNumber": 8000
+    },
+    {
+     "endNumber": 99999,
+     "productPrice": 0.0043,
+     "startNumber": 48000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0041,
+     "startNumber": 100000
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+   "dataManualUrl": "https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_Samsung-Electro-Mechanics-CL10C100JB8NNNC_C1634.pdf",
+   "describe": "10pF 50V C0G ±5% 0603 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+   "erpComponentName": "10pF ±5% 50V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/multilayer-ceramic-capacitors-mlcc-smd-smt_samsung-electro-mechanics-cl10c100jb8nnnc_C1634.html",
+   "leastPatchNumber": 20,
+   "lossNumber": 10,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 2119581
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Resistance",
+     "attribute_value_name": "470Ω"
+    },
+    {
+     "attribute_name_en": "Power(Watts)",
+     "attribute_value_name": "63mW"
+    },
+    {
+     "attribute_name_en": "Number of Resistors",
+     "attribute_value_name": "8"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±5%"
+    },
+    {
+     "attribute_name_en": "Number of Pins",
+     "attribute_value_name": "16"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "±200ppm/℃"
+    }
+   ],
+   "componentBrandEn": "CTS Electronic Components",
+   "componentCode": "C1731074",
+   "componentLibraryType": "expand",
+   "componentModelEn": "742C163471JP",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 0.0964,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 29,
+     "productPrice": 0.0774,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 99,
+     "productPrice": 0.0678,
+     "startNumber": 30
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.0606,
+     "startNumber": 100
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.055,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.052,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "0603x8",
+   "componentTypeEn": "Resistor Networks, Arrays",
+   "dataManualUrl": "https://www.lcsc.com/datasheet/lcsc_datasheet_2410121706_CTS-Electronic-Components-742C163471JP_C1731074.pdf",
+   "describe": "16 470Ω 63mW 8 ±200ppm/℃ ±5% 0603x8 Resistor Networks, Arrays ROHS",
+   "erpComponentName": "470Ω ±5%",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/resistor-networks-arrays_cts-electronic-components-742c163471jp_C1731074.html",
+   "leastPatchNumber": 5,
+   "lossNumber": 2,
+   "minPurchaseNum": 148,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Resistance",
+     "attribute_value_name": "470kΩ"
+    },
+    {
+     "attribute_name_en": "Power(Watts)",
+     "attribute_value_name": "63mW"
+    },
+    {
+     "attribute_name_en": "Number of Resistors",
+     "attribute_value_name": "8"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±5%"
+    },
+    {
+     "attribute_name_en": "Number of Pins",
+     "attribute_value_name": "16"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "±200ppm/℃"
+    }
+   ],
+   "componentBrandEn": "CTS Electronic Components",
+   "componentCode": "C1732049",
+   "componentLibraryType": "expand",
+   "componentModelEn": "742C163474JP",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 0.0896,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 11,
+     "productPrice": 0.0896,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 0.0896,
+     "startNumber": 12
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.0347,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.0335,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0329,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "0603x8",
+   "componentTypeEn": "Resistor Networks, Arrays",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2304140030_CTS-Electronic-Components-742C163474JP_C1732049.pdf",
+   "describe": "16 470kΩ 63mW 8 ±200ppm/℃ ±5% 0603x8 Resistor Networks, Arrays ROHS",
+   "erpComponentName": "470kΩ ±5%",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/resistor-networks-arrays_cts-electronic-components-742c163474jp_C1732049.html",
+   "leastPatchNumber": 0,
+   "lossNumber": 0,
+   "minPurchaseNum": 100,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Resistance",
+     "attribute_value_name": "47Ω"
+    },
+    {
+     "attribute_name_en": "Power(Watts)",
+     "attribute_value_name": "63mW"
+    },
+    {
+     "attribute_name_en": "Number of Resistors",
+     "attribute_value_name": "8"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±5%"
+    },
+    {
+     "attribute_name_en": "Number of Pins",
+     "attribute_value_name": "16"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "±200ppm/℃"
+    }
+   ],
+   "componentBrandEn": "CTS Electronic Components",
+   "componentCode": "C2654037",
+   "componentLibraryType": "expand",
+   "componentModelEn": "742C163470JP",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 0.079,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 11,
+     "productPrice": 0.079,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 0.079,
+     "startNumber": 12
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.0306,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.0296,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.029,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "0603x8",
+   "componentTypeEn": "Resistor Networks, Arrays",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2304140030_CTS-Electronic-Components-742C163470JP_C2654037.pdf",
+   "describe": "16 47Ω 63mW 8 ±200ppm/℃ ±5% 0603x8 Resistor Networks, Arrays ROHS",
+   "erpComponentName": "47Ω ±5%",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/resistor-networks-arrays_cts-electronic-components-742c163470jp_C2654037.html",
+   "leastPatchNumber": 5,
+   "lossNumber": 4,
+   "minPurchaseNum": 114,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Resistance",
+     "attribute_value_name": "4.7kΩ"
+    },
+    {
+     "attribute_name_en": "Power(Watts)",
+     "attribute_value_name": "63mW"
+    },
+    {
+     "attribute_name_en": "Number of Resistors",
+     "attribute_value_name": "8"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±5%"
+    },
+    {
+     "attribute_name_en": "Number of Pins",
+     "attribute_value_name": "16"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "±200ppm/℃"
+    }
+   ],
+   "componentBrandEn": "CTS Electronic Components",
+   "componentCode": "C3012354",
+   "componentLibraryType": "expand",
+   "componentModelEn": "742C163472JP",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 0.2353,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 11,
+     "productPrice": 0.2353,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 0.2353,
+     "startNumber": 12
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.0912,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.0879,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0863,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "2506",
+   "componentTypeEn": "Resistor Networks, Arrays",
+   "dataManualUrl": "https://www.lcsc.com/datasheet/lcsc_datasheet_2411061703_CTS-Electronic-Components-742C163472JP_C3012354.pdf",
+   "describe": "16 4.7kΩ 63mW 8 ±200ppm/℃ ±5% 2506 Resistor Networks, Arrays ROHS",
+   "erpComponentName": "4.7kΩ ±5%",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/resistor-networks-arrays_cts-electronic-components-742c163472jp_C3012354.html",
+   "leastPatchNumber": 0,
+   "lossNumber": 0,
+   "minPurchaseNum": 39,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Resistance",
+     "attribute_value_name": "43Ω"
+    },
+    {
+     "attribute_name_en": "Power(Watts)",
+     "attribute_value_name": "63mW"
+    },
+    {
+     "attribute_name_en": "Number of Resistors",
+     "attribute_value_name": "8"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±2%"
+    },
+    {
+     "attribute_name_en": "Number of Pins",
+     "attribute_value_name": "16"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "±200ppm/℃"
+    }
+   ],
+   "componentBrandEn": "CTS Electronic Components",
+   "componentCode": "C5885641",
+   "componentLibraryType": "expand",
+   "componentModelEn": "S42C163430GP",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 0.515,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 11,
+     "productPrice": 0.515,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 0.515,
+     "startNumber": 12
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.2064,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.1999,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.1966,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "2506",
+   "componentTypeEn": "Resistor Networks, Arrays",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2312031836_CTS-Electronic-Components-S42C163430GP_C5885641.pdf",
+   "describe": "16 43Ω 63mW 8 ±2% ±200ppm/℃ 2506 Resistor Networks, Arrays ROHS",
+   "erpComponentName": "43Ω ±2%",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/resistor-networks-arrays_cts-electronic-components-s42c163430gp_C5885641.html",
+   "leastPatchNumber": 5,
+   "lossNumber": 0,
+   "minPurchaseNum": 18,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Resistance",
+     "attribute_value_name": "430Ω"
+    },
+    {
+     "attribute_name_en": "Power(Watts)",
+     "attribute_value_name": "63mW"
+    },
+    {
+     "attribute_name_en": "Number of Resistors",
+     "attribute_value_name": "8"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±5%"
+    },
+    {
+     "attribute_name_en": "Number of Pins",
+     "attribute_value_name": "16"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "±200ppm/℃"
+    }
+   ],
+   "componentBrandEn": "CTS Electronic Components",
+   "componentCode": "C5885643",
+   "componentLibraryType": "expand",
+   "componentModelEn": "S42C163431JP",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 0.4307,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 11,
+     "productPrice": 0.4307,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 0.4307,
+     "startNumber": 12
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.1719,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.1662,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.1633,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "2506",
+   "componentTypeEn": "Resistor Networks, Arrays",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2312031836_CTS-Electronic-Components-S42C163431JP_C5885643.pdf",
+   "describe": "16 430Ω 63mW 8 ±200ppm/℃ ±5% 2506 Resistor Networks, Arrays ROHS",
+   "erpComponentName": "430Ω ±5%",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/resistor-networks-arrays_cts-electronic-components-s42c163431jp_C5885643.html",
+   "leastPatchNumber": 5,
+   "lossNumber": 0,
+   "minPurchaseNum": 21,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Resistance",
+     "attribute_value_name": "47Ω"
+    },
+    {
+     "attribute_name_en": "Power(Watts)",
+     "attribute_value_name": "63mW"
+    },
+    {
+     "attribute_name_en": "Number of Resistors",
+     "attribute_value_name": "8"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±2%"
+    },
+    {
+     "attribute_name_en": "Number of Pins",
+     "attribute_value_name": "16"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "±200ppm/℃"
+    }
+   ],
+   "componentBrandEn": "CTS Electronic Components",
+   "componentCode": "C5904385",
+   "componentLibraryType": "expand",
+   "componentModelEn": "S42C163470GP",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 0.515,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 11,
+     "productPrice": 0.515,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 0.515,
+     "startNumber": 12
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.2064,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.1999,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.1966,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "2506",
+   "componentTypeEn": "Resistor Networks, Arrays",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2312032314_CTS-Electronic-Components-S42C163470GP_C5904385.pdf",
+   "describe": "16 47Ω 63mW 8 ±2% ±200ppm/℃ 2506 Resistor Networks, Arrays ROHS",
+   "erpComponentName": "47Ω ±2%",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/resistor-networks-arrays_cts-electronic-components-s42c163470gp_C5904385.html",
+   "leastPatchNumber": 5,
+   "lossNumber": 5,
+   "minPurchaseNum": 18,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Resistance",
+     "attribute_value_name": "430Ω"
+    },
+    {
+     "attribute_name_en": "Power(Watts)",
+     "attribute_value_name": "63mW"
+    },
+    {
+     "attribute_name_en": "Number of Resistors",
+     "attribute_value_name": "8"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±2%"
+    },
+    {
+     "attribute_name_en": "Number of Pins",
+     "attribute_value_name": "16"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "±200ppm/℃"
+    }
+   ],
+   "componentBrandEn": "CTS Electronic Components",
+   "componentCode": "C6214758",
+   "componentLibraryType": "expand",
+   "componentModelEn": "S42C163431GP",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 0.515,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 11,
+     "productPrice": 0.515,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 0.515,
+     "startNumber": 12
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.2064,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.1999,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.1966,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "2506",
+   "componentTypeEn": "Resistor Networks, Arrays",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2312090147_CTS-Electronic-Components-S42C163431GP_C6214758.pdf",
+   "describe": "16 430Ω 63mW 8 ±2% ±200ppm/℃ 2506 Resistor Networks, Arrays ROHS",
+   "erpComponentName": "430Ω ±2%",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/resistor-networks-arrays_cts-electronic-components-s42c163431gp_C6214758.html",
+   "leastPatchNumber": 5,
+   "lossNumber": 5,
+   "minPurchaseNum": 18,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Resistance",
+     "attribute_value_name": "4.7kΩ"
+    },
+    {
+     "attribute_name_en": "Power(Watts)",
+     "attribute_value_name": "63mW"
+    },
+    {
+     "attribute_name_en": "Number of Resistors",
+     "attribute_value_name": "8"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±5%"
+    },
+    {
+     "attribute_name_en": "Number of Pins",
+     "attribute_value_name": "16"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "±200ppm/℃"
+    }
+   ],
+   "componentBrandEn": "CTS Electronic Components",
+   "componentCode": "C6214760",
+   "componentLibraryType": "expand",
+   "componentModelEn": "S42C163472JP",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 0.4307,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 11,
+     "productPrice": 0.4307,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 0.4307,
+     "startNumber": 12
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.1719,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.1662,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.1633,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "2506",
+   "componentTypeEn": "Resistor Networks, Arrays",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2312090147_CTS-Electronic-Components-S42C163472JP_C6214760.pdf",
+   "describe": "16 4.7kΩ 63mW 8 ±200ppm/℃ ±5% 2506 Resistor Networks, Arrays ROHS",
+   "erpComponentName": "4.7kΩ ±5%",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/resistor-networks-arrays_cts-electronic-components-s42c163472jp_C6214760.html",
+   "leastPatchNumber": 5,
+   "lossNumber": 0,
+   "minPurchaseNum": 21,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Resistance",
+     "attribute_value_name": "430kΩ"
+    },
+    {
+     "attribute_name_en": "Power(Watts)",
+     "attribute_value_name": "63mW"
+    },
+    {
+     "attribute_name_en": "Number of Resistors",
+     "attribute_value_name": "8"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±5%"
+    },
+    {
+     "attribute_name_en": "Number of Pins",
+     "attribute_value_name": "16"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "±200ppm/℃"
+    }
+   ],
+   "componentBrandEn": "CTS Electronic Components",
+   "componentCode": "C6289270",
+   "componentLibraryType": "expand",
+   "componentModelEn": "S42C163434JP",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 0.4307,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 11,
+     "productPrice": 0.4307,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 0.4307,
+     "startNumber": 12
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.1719,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.1662,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.1633,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "2506",
+   "componentTypeEn": "Resistor Networks, Arrays",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2312100030_CTS-Electronic-Components-S42C163434JP_C6289270.pdf",
+   "describe": "16 430kΩ 63mW 8 ±200ppm/℃ ±5% 2506 Resistor Networks, Arrays ROHS",
+   "erpComponentName": "430kΩ ±5%",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/resistor-networks-arrays_cts-electronic-components-s42c163434jp_C6289270.html",
+   "leastPatchNumber": 5,
+   "lossNumber": 5,
+   "minPurchaseNum": 21,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Resistance",
+     "attribute_value_name": "47Ω"
+    },
+    {
+     "attribute_name_en": "Power(Watts)",
+     "attribute_value_name": "63mW"
+    },
+    {
+     "attribute_name_en": "Number of Resistors",
+     "attribute_value_name": "8"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±5%"
+    },
+    {
+     "attribute_name_en": "Number of Pins",
+     "attribute_value_name": "16"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "±200ppm/℃"
+    }
+   ],
+   "componentBrandEn": "CTS Electronic Components",
+   "componentCode": "C6289272",
+   "componentLibraryType": "expand",
+   "componentModelEn": "S42C163470JP",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 0.4307,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 11,
+     "productPrice": 0.4307,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 0.4307,
+     "startNumber": 12
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.1719,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.1662,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.1633,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "2506",
+   "componentTypeEn": "Resistor Networks, Arrays",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2312100030_CTS-Electronic-Components-S42C163470JP_C6289272.pdf",
+   "describe": "16 47Ω 63mW 8 ±200ppm/℃ ±5% 2506 Resistor Networks, Arrays ROHS",
+   "erpComponentName": "47Ω ±5%",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/resistor-networks-arrays_cts-electronic-components-s42c163470jp_C6289272.html",
+   "leastPatchNumber": 5,
+   "lossNumber": 5,
+   "minPurchaseNum": 21,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Resistance",
+     "attribute_value_name": "47kΩ"
+    },
+    {
+     "attribute_name_en": "Power(Watts)",
+     "attribute_value_name": "63mW"
+    },
+    {
+     "attribute_name_en": "Number of Resistors",
+     "attribute_value_name": "8"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±5%"
+    },
+    {
+     "attribute_name_en": "Number of Pins",
+     "attribute_value_name": "16"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "±200ppm/℃"
+    }
+   ],
+   "componentBrandEn": "CTS Electronic Components",
+   "componentCode": "C6464399",
+   "componentLibraryType": "expand",
+   "componentModelEn": "742C163473JP",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 0.1987,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 11,
+     "productPrice": 0.1987,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 0.1987,
+     "startNumber": 12
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.0793,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.0767,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0754,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "-",
+   "componentTypeEn": "Resistor Networks, Arrays",
+   "dataManualUrl": "",
+   "describe": "16 47kΩ 63mW 8 ±200ppm/℃ ±5% - Resistor Networks, Arrays ROHS",
+   "erpComponentName": "47kΩ ±5%",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/resistor-networks-arrays_cts-electronic-components-742c163473jp_C6464399.html",
+   "leastPatchNumber": 5,
+   "lossNumber": 5,
+   "minPurchaseNum": 46,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Resistance",
+     "attribute_value_name": "43kΩ"
+    },
+    {
+     "attribute_name_en": "Power(Watts)",
+     "attribute_value_name": "63mW"
+    },
+    {
+     "attribute_name_en": "Number of Resistors",
+     "attribute_value_name": "8"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±2%"
+    },
+    {
+     "attribute_name_en": "Number of Pins",
+     "attribute_value_name": "16"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "±200ppm/℃"
+    }
+   ],
+   "componentBrandEn": "CTS Electronic Components",
+   "componentCode": "C6472581",
+   "componentLibraryType": "expand",
+   "componentModelEn": "S42C163433GP",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 0.515,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 11,
+     "productPrice": 0.515,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 0.515,
+     "startNumber": 12
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.2064,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.1999,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.1966,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "2506",
+   "componentTypeEn": "Resistor Networks, Arrays",
+   "dataManualUrl": "https://www.lcsc.com/datasheet/lcsc_datasheet_2312120549_CTS-Electronic-Components-S42C163433GP_C6472581.pdf",
+   "describe": "16 43kΩ 63mW 8 ±2% ±200ppm/℃ 2506 Resistor Networks, Arrays ROHS",
+   "erpComponentName": "43kΩ ±2%",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/resistor-networks-arrays_cts-electronic-components-s42c163433gp_C6472581.html",
+   "leastPatchNumber": 5,
+   "lossNumber": 5,
+   "minPurchaseNum": 18,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Resistance",
+     "attribute_value_name": "430kΩ"
+    },
+    {
+     "attribute_name_en": "Power(Watts)",
+     "attribute_value_name": "63mW"
+    },
+    {
+     "attribute_name_en": "Number of Resistors",
+     "attribute_value_name": "8"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±2%"
+    },
+    {
+     "attribute_name_en": "Number of Pins",
+     "attribute_value_name": "16"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "±200ppm/℃"
+    }
+   ],
+   "componentBrandEn": "CTS Electronic Components",
+   "componentCode": "C6472583",
+   "componentLibraryType": "expand",
+   "componentModelEn": "S42C163434GP",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 0.515,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 11,
+     "productPrice": 0.515,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 0.515,
+     "startNumber": 12
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.2064,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.1999,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.1966,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "2506",
+   "componentTypeEn": "Resistor Networks, Arrays",
+   "dataManualUrl": "https://www.lcsc.com/datasheet/lcsc_datasheet_2312120549_CTS-Electronic-Components-S42C163434GP_C6472583.pdf",
+   "describe": "16 430kΩ 63mW 8 ±2% ±200ppm/℃ 2506 Resistor Networks, Arrays ROHS",
+   "erpComponentName": "430kΩ ±2%",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/resistor-networks-arrays_cts-electronic-components-s42c163434gp_C6472583.html",
+   "leastPatchNumber": 5,
+   "lossNumber": 5,
+   "minPurchaseNum": 18,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Resistance",
+     "attribute_value_name": "470Ω"
+    },
+    {
+     "attribute_name_en": "Power(Watts)",
+     "attribute_value_name": "63mW"
+    },
+    {
+     "attribute_name_en": "Number of Resistors",
+     "attribute_value_name": "8"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±2%"
+    },
+    {
+     "attribute_name_en": "Number of Pins",
+     "attribute_value_name": "16"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "±200ppm/℃"
+    }
+   ],
+   "componentBrandEn": "CTS Electronic Components",
+   "componentCode": "C6472586",
+   "componentLibraryType": "expand",
+   "componentModelEn": "S42C163471GP",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 0.515,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 11,
+     "productPrice": 0.515,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 0.515,
+     "startNumber": 12
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.2064,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.1999,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.1966,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "2506",
+   "componentTypeEn": "Resistor Networks, Arrays",
+   "dataManualUrl": "https://www.lcsc.com/datasheet/lcsc_datasheet_2312120549_CTS-Electronic-Components-S42C163471GP_C6472586.pdf",
+   "describe": "16 470Ω 63mW 8 ±2% ±200ppm/℃ 2506 Resistor Networks, Arrays ROHS",
+   "erpComponentName": "470Ω ±2%",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/resistor-networks-arrays_cts-electronic-components-s42c163471gp_C6472586.html",
+   "leastPatchNumber": 5,
+   "lossNumber": 5,
+   "minPurchaseNum": 18,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Resistance",
+     "attribute_value_name": "470kΩ"
+    },
+    {
+     "attribute_name_en": "Power(Watts)",
+     "attribute_value_name": "63mW"
+    },
+    {
+     "attribute_name_en": "Number of Resistors",
+     "attribute_value_name": "8"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±2%"
+    },
+    {
+     "attribute_name_en": "Number of Pins",
+     "attribute_value_name": "16"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "±200ppm/℃"
+    }
+   ],
+   "componentBrandEn": "CTS Electronic Components",
+   "componentCode": "C6472587",
+   "componentLibraryType": "expand",
+   "componentModelEn": "S42C163474GP",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 0.515,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 11,
+     "productPrice": 0.515,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 0.515,
+     "startNumber": 12
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.2064,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.1999,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.1966,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "2506",
+   "componentTypeEn": "Resistor Networks, Arrays",
+   "dataManualUrl": "https://www.lcsc.com/datasheet/lcsc_datasheet_2312120549_CTS-Electronic-Components-S42C163474GP_C6472587.pdf",
+   "describe": "16 470kΩ 63mW 8 ±2% ±200ppm/℃ 2506 Resistor Networks, Arrays ROHS",
+   "erpComponentName": "470kΩ ±2%",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/resistor-networks-arrays_cts-electronic-components-s42c163474gp_C6472587.html",
+   "leastPatchNumber": 5,
+   "lossNumber": 5,
+   "minPurchaseNum": 18,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Resistance",
+     "attribute_value_name": "43kΩ"
+    },
+    {
+     "attribute_name_en": "Power(Watts)",
+     "attribute_value_name": "63mW"
+    },
+    {
+     "attribute_name_en": "Number of Resistors",
+     "attribute_value_name": "8"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±5%"
+    },
+    {
+     "attribute_name_en": "Number of Pins",
+     "attribute_value_name": "16"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "±200ppm/℃"
+    }
+   ],
+   "componentBrandEn": "CTS Electronic Components",
+   "componentCode": "C6671166",
+   "componentLibraryType": "expand",
+   "componentModelEn": "S42C163433JP",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 0.4307,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 11,
+     "productPrice": 0.4307,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 0.4307,
+     "startNumber": 12
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.1719,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.1662,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.1633,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "2506",
+   "componentTypeEn": "Resistor Networks, Arrays",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2312220423_CTS-Electronic-Components-S42C163433JP_C6671166.pdf",
+   "describe": "16 43kΩ 63mW 8 ±200ppm/℃ ±5% 2506 Resistor Networks, Arrays ROHS",
+   "erpComponentName": "43kΩ ±5%",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/resistor-networks-arrays_cts-electronic-components-s42c163433jp_C6671166.html",
+   "leastPatchNumber": 5,
+   "lossNumber": 5,
+   "minPurchaseNum": 21,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Resistance",
+     "attribute_value_name": "43Ω"
+    },
+    {
+     "attribute_name_en": "Power(Watts)",
+     "attribute_value_name": "63mW"
+    },
+    {
+     "attribute_name_en": "Number of Resistors",
+     "attribute_value_name": "8"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±5%"
+    },
+    {
+     "attribute_name_en": "Number of Pins",
+     "attribute_value_name": "16"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "±200ppm/℃"
+    }
+   ],
+   "componentBrandEn": "CTS Electronic Components",
+   "componentCode": "C7070813",
+   "componentLibraryType": "expand",
+   "componentModelEn": "S42C163430JP",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 0.4307,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 11,
+     "productPrice": 0.4307,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 0.4307,
+     "startNumber": 12
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.1719,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.1662,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.1633,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "2506",
+   "componentTypeEn": "Resistor Networks, Arrays",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2312271442_CTS-Electronic-Components-S42C163430JP_C7070813.pdf",
+   "describe": "16 43Ω 63mW 8 ±200ppm/℃ ±5% 2506 Resistor Networks, Arrays ROHS",
+   "erpComponentName": "43Ω ±5%",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/resistor-networks-arrays_cts-electronic-components-s42c163430jp_C7070813.html",
+   "leastPatchNumber": 5,
+   "lossNumber": 5,
+   "minPurchaseNum": 21,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Resistance",
+     "attribute_value_name": "470kΩ"
+    },
+    {
+     "attribute_name_en": "Power(Watts)",
+     "attribute_value_name": "63mW"
+    },
+    {
+     "attribute_name_en": "Number of Resistors",
+     "attribute_value_name": "8"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±5%"
+    },
+    {
+     "attribute_name_en": "Number of Pins",
+     "attribute_value_name": "16"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "±200ppm/℃"
+    }
+   ],
+   "componentBrandEn": "CTS Electronic Components",
+   "componentCode": "C7070815",
+   "componentLibraryType": "expand",
+   "componentModelEn": "S42C163474JP",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 0.4307,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 11,
+     "productPrice": 0.4307,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 0.4307,
+     "startNumber": 12
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.1719,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.1662,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.1633,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "2506",
+   "componentTypeEn": "Resistor Networks, Arrays",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2312271442_CTS-Electronic-Components-S42C163474JP_C7070815.pdf",
+   "describe": "16 470kΩ 63mW 8 ±200ppm/℃ ±5% 2506 Resistor Networks, Arrays ROHS",
+   "erpComponentName": "470kΩ ±5%",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/resistor-networks-arrays_cts-electronic-components-s42c163474jp_C7070815.html",
+   "leastPatchNumber": 5,
+   "lossNumber": 5,
+   "minPurchaseNum": 21,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Resistance",
+     "attribute_value_name": "4.3kΩ"
+    },
+    {
+     "attribute_name_en": "Power(Watts)",
+     "attribute_value_name": "63mW"
+    },
+    {
+     "attribute_name_en": "Number of Resistors",
+     "attribute_value_name": "8"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±2%"
+    },
+    {
+     "attribute_name_en": "Number of Pins",
+     "attribute_value_name": "16"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "±200ppm/℃"
+    }
+   ],
+   "componentBrandEn": "CTS Electronic Components",
+   "componentCode": "C7308587",
+   "componentLibraryType": "expand",
+   "componentModelEn": "S42C163432GP",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 0.515,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 11,
+     "productPrice": 0.515,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 0.515,
+     "startNumber": 12
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.2064,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.1999,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.1966,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "2506",
+   "componentTypeEn": "Resistor Networks, Arrays",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2312272136_CTS-Electronic-Components-S42C163432GP_C7308587.pdf",
+   "describe": "16 4.3kΩ 63mW 8 ±2% ±200ppm/℃ 2506 Resistor Networks, Arrays ROHS",
+   "erpComponentName": "4.3kΩ ±2%",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/resistor-networks-arrays_cts-electronic-components-s42c163432gp_C7308587.html",
+   "leastPatchNumber": 5,
+   "lossNumber": 5,
+   "minPurchaseNum": 18,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Resistance",
+     "attribute_value_name": "470Ω"
+    },
+    {
+     "attribute_name_en": "Power(Watts)",
+     "attribute_value_name": "63mW"
+    },
+    {
+     "attribute_name_en": "Number of Resistors",
+     "attribute_value_name": "8"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±5%"
+    },
+    {
+     "attribute_name_en": "Number of Pins",
+     "attribute_value_name": "16"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "±200ppm/℃"
+    }
+   ],
+   "componentBrandEn": "CTS Electronic Components",
+   "componentCode": "C7308589",
+   "componentLibraryType": "expand",
+   "componentModelEn": "S42C163471JP",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 0.4307,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 11,
+     "productPrice": 0.4307,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 0.4307,
+     "startNumber": 12
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.1719,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.1662,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.1633,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "2506",
+   "componentTypeEn": "Resistor Networks, Arrays",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2312272136_CTS-Electronic-Components-S42C163471JP_C7308589.pdf",
+   "describe": "16 470Ω 63mW 8 ±200ppm/℃ ±5% 2506 Resistor Networks, Arrays ROHS",
+   "erpComponentName": "470Ω ±5%",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/resistor-networks-arrays_cts-electronic-components-s42c163471jp_C7308589.html",
+   "leastPatchNumber": 5,
+   "lossNumber": 5,
+   "minPurchaseNum": 21,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Resistance",
+     "attribute_value_name": "4.3kΩ"
+    },
+    {
+     "attribute_name_en": "Power(Watts)",
+     "attribute_value_name": "63mW"
+    },
+    {
+     "attribute_name_en": "Number of Resistors",
+     "attribute_value_name": "8"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±5%"
+    },
+    {
+     "attribute_name_en": "Number of Pins",
+     "attribute_value_name": "16"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "±200ppm/℃"
+    }
+   ],
+   "componentBrandEn": "CTS Electronic Components",
+   "componentCode": "C7355368",
+   "componentLibraryType": "expand",
+   "componentModelEn": "S42C163432JP",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 0.4307,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 11,
+     "productPrice": 0.4307,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 0.4307,
+     "startNumber": 12
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.1719,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.1662,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.1633,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "2506",
+   "componentTypeEn": "Resistor Networks, Arrays",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2312272256_CTS-Electronic-Components-S42C163432JP_C7355368.pdf",
+   "describe": "16 4.3kΩ 63mW 8 ±200ppm/℃ ±5% 2506 Resistor Networks, Arrays ROHS",
+   "erpComponentName": "4.3kΩ ±5%",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/resistor-networks-arrays_cts-electronic-components-s42c163432jp_C7355368.html",
+   "leastPatchNumber": 5,
+   "lossNumber": 5,
+   "minPurchaseNum": 21,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Resistance",
+     "attribute_value_name": "4.7kΩ"
+    },
+    {
+     "attribute_name_en": "Power(Watts)",
+     "attribute_value_name": "63mW"
+    },
+    {
+     "attribute_name_en": "Number of Resistors",
+     "attribute_value_name": "8"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±2%"
+    },
+    {
+     "attribute_name_en": "Number of Pins",
+     "attribute_value_name": "16"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "±200ppm/℃"
+    }
+   ],
+   "componentBrandEn": "CTS Electronic Components",
+   "componentCode": "C7355370",
+   "componentLibraryType": "expand",
+   "componentModelEn": "S42C163472GP",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 0.515,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 11,
+     "productPrice": 0.515,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 0.515,
+     "startNumber": 12
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.2064,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.1999,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.1966,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "2506",
+   "componentTypeEn": "Resistor Networks, Arrays",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2312272256_CTS-Electronic-Components-S42C163472GP_C7355370.pdf",
+   "describe": "16 4.7kΩ 63mW 8 ±2% ±200ppm/℃ 2506 Resistor Networks, Arrays ROHS",
+   "erpComponentName": "4.7kΩ ±2%",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/resistor-networks-arrays_cts-electronic-components-s42c163472gp_C7355370.html",
+   "leastPatchNumber": 5,
+   "lossNumber": 5,
+   "minPurchaseNum": 18,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Resistance",
+     "attribute_value_name": "47kΩ"
+    },
+    {
+     "attribute_name_en": "Power(Watts)",
+     "attribute_value_name": "63mW"
+    },
+    {
+     "attribute_name_en": "Number of Resistors",
+     "attribute_value_name": "8"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±5%"
+    },
+    {
+     "attribute_name_en": "Number of Pins",
+     "attribute_value_name": "16"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "±200ppm/℃"
+    }
+   ],
+   "componentBrandEn": "CTS Electronic Components",
+   "componentCode": "C7355372",
+   "componentLibraryType": "expand",
+   "componentModelEn": "S42C163473JP",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 0.4307,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 11,
+     "productPrice": 0.4307,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 0.4307,
+     "startNumber": 12
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.1719,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.1662,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.1633,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "2506",
+   "componentTypeEn": "Resistor Networks, Arrays",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2312272256_CTS-Electronic-Components-S42C163473JP_C7355372.pdf",
+   "describe": "16 47kΩ 63mW 8 ±200ppm/℃ ±5% 2506 Resistor Networks, Arrays ROHS",
+   "erpComponentName": "47kΩ ±5%",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/resistor-networks-arrays_cts-electronic-components-s42c163473jp_C7355372.html",
+   "leastPatchNumber": 5,
+   "lossNumber": 5,
+   "minPurchaseNum": 21,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  }
+ ],
+ "returned": 25,
+ "schema": 1,
+ "total_matches": 32
+}

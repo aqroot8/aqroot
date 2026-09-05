@@ -1,0 +1,1365 @@
+{
+ "REFUSED": [],
+ "RULED": [
+  {
+   "candidates_examined": 64,
+   "chosen": {
+    "attributes": {
+     "Capacitance": "100pF",
+     "Temperature Coefficient": "C0G",
+     "Tolerance": "\u00b15%",
+     "Voltage Rating": "50V"
+    },
+    "brand": "Samsung Electro-Mechanics",
+    "buyable": "1",
+    "code": "C14858",
+    "datasheet": "https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_Samsung-Electro-Mechanics-CL10C101JB8NNNC_C14858.pdf",
+    "dielectric": "C0G",
+    "kind": "C",
+    "land": "0603",
+    "library": "base",
+    "magnitude": 1e-10,
+    "mpn": "CL10C101JB8NNNC",
+    "no_buy": null,
+    "power": null,
+    "price_1": 0.0084,
+    "rohs": 1,
+    "rtype": null,
+    "stock": 4341176,
+    "tempco_ppm": null,
+    "tolerance": 5.0,
+    "voltage": 50.0
+   },
+   "demo_nets": [
+    "NFC_EMCA",
+    "NFC_EMCB"
+   ],
+   "footprint": "C_0603_1608Metric",
+   "nearest": [
+    {
+     "brand": "TDK",
+     "lcsc": "C19327991",
+     "mpn": "C1608C0G1H101J/10",
+     "refused": [
+      "dielectric None does not reach C0G",
+      "stock 0 under 100 -- 2 parts x 5 boards x 10 liquidity",
+      "JLCPCB will not sell it: This product is no longer manufactured."
+     ]
+    },
+    {
+     "brand": "TDK",
+     "lcsc": "C343033",
+     "mpn": "C1608NP01H101JT000N",
+     "refused": []
+    },
+    {
+     "brand": "TDK",
+     "lcsc": "C695384",
+     "mpn": "CGA3E2NP01H101JT0Y0N",
+     "refused": []
+    },
+    {
+     "brand": "YAGEO",
+     "lcsc": "C14665",
+     "mpn": "CC0603JRNPO9BN101",
+     "refused": []
+    },
+    {
+     "brand": "Walsin Tech Corp",
+     "lcsc": "C77445",
+     "mpn": "0603N101J101CT",
+     "refused": []
+    },
+    {
+     "brand": "Walsin Tech Corp",
+     "lcsc": "C77446",
+     "mpn": "0603N101J251CT",
+     "refused": [
+      "stock 4 under 100 -- 2 parts x 5 boards x 10 liquidity"
+     ]
+    }
+   ],
+   "net_gate": {
+    "basis": "DEVICE_SPEC s.14 -- the ST25R3916 tank node voltage is NOT established in this repository; the sheet's own 50 V C0G specification is the ruling this gate enforces",
+    "demanded_v": 50.0,
+    "kind": "the value string's own stated rating",
+    "node_voltage_established": false,
+    "ok": true,
+    "rating_v": 50.0
+   },
+   "note_tighter": null,
+   "power_gate": {
+    "kind": "not a resistor",
+    "ok": true
+   },
+   "qty": 2,
+   "refs": [
+    "C69",
+    "C70"
+   ],
+   "runners_up": [
+    {
+     "lcsc": "C113799",
+     "library": "expand",
+     "mpn": "CC0603JRNPOYBN101",
+     "stock": 7386
+    },
+    {
+     "lcsc": "C76606",
+     "library": "expand",
+     "mpn": "C1608C0G2E101JT000N",
+     "stock": 5960
+    },
+    {
+     "lcsc": "C726550",
+     "library": "expand",
+     "mpn": "AC0603JRNPOYBN101",
+     "stock": 4080
+    }
+   ],
+   "spec": {
+    "annotations": [],
+    "dielectric": "C0G",
+    "kind": "C",
+    "magnitude": 1e-10,
+    "power": null,
+    "raw": "100pF 50V C0G TUNE",
+    "tolerance": null,
+    "tune": true,
+    "unparsed": [],
+    "voltage": 50.0
+   },
+   "stock_floor": 500,
+   "thin_stock": false,
+   "value": "100pF 50V C0G TUNE"
+  },
+  {
+   "candidates_examined": 50,
+   "chosen": {
+    "attributes": {
+     "Capacitance": "300pF",
+     "Temperature Coefficient": "C0G",
+     "Tolerance": "\u00b11%",
+     "Voltage Rating": "100V"
+    },
+    "brand": "Murata Electronics",
+    "buyable": "1",
+    "code": "C3837533",
+    "datasheet": "https://www.lcsc.com/datasheet/lcsc_datasheet_2411272025_Murata-Electronics-GCM1885C2A301FA16J_C3837533.pdf",
+    "dielectric": "C0G",
+    "kind": "C",
+    "land": "0603",
+    "library": "expand",
+    "magnitude": 3e-10,
+    "mpn": "GCM1885C2A301FA16J",
+    "no_buy": null,
+    "power": null,
+    "price_1": 0.1542,
+    "rohs": 1,
+    "rtype": null,
+    "stock": 1315,
+    "tempco_ppm": null,
+    "tolerance": 1.0,
+    "voltage": 100.0
+   },
+   "demo_nets": [
+    "NFC_EMCA",
+    "NFC_EMCB",
+    "NFC_MATCH_A",
+    "NFC_MATCH_B"
+   ],
+   "footprint": "C_0603_1608Metric",
+   "nearest": [
+    {
+     "brand": "Walsin Tech Corp",
+     "lcsc": "C296061",
+     "mpn": "0603N301J500CT",
+     "refused": []
+    },
+    {
+     "brand": "YAGEO",
+     "lcsc": "C519401",
+     "mpn": "CC0603JRNPO9BN301",
+     "refused": []
+    },
+    {
+     "brand": "YAGEO",
+     "lcsc": "C519478",
+     "mpn": "CC0603GRNPO9BN301",
+     "refused": []
+    },
+    {
+     "brand": "YAGEO",
+     "lcsc": "C1853096",
+     "mpn": "CC0603FRNPO9BN301",
+     "refused": [
+      "stock 35 under 100 -- 2 parts x 5 boards x 10 liquidity"
+     ]
+    },
+    {
+     "brand": "Walsin Tech Corp",
+     "lcsc": "C3847437",
+     "mpn": "0603N301F500CT",
+     "refused": [
+      "stock 0 under 100 -- 2 parts x 5 boards x 10 liquidity"
+     ]
+    },
+    {
+     "brand": "FH (Guangdong Fenghua Advanced Tech)",
+     "lcsc": "C1610",
+     "mpn": "0603B301K500NT",
+     "refused": [
+      "dielectric X7R does not reach C0G"
+     ]
+    }
+   ],
+   "net_gate": {
+    "basis": "DEVICE_SPEC s.14 -- the ST25R3916 tank node voltage is NOT established in this repository; the sheet's own 50 V C0G specification is the ruling this gate enforces",
+    "demanded_v": 50.0,
+    "kind": "the value string's own stated rating",
+    "node_voltage_established": false,
+    "ok": true,
+    "rating_v": 100.0
+   },
+   "note_tighter": null,
+   "power_gate": {
+    "kind": "not a resistor",
+    "ok": true
+   },
+   "qty": 2,
+   "refs": [
+    "C71",
+    "C72"
+   ],
+   "runners_up": [
+    {
+     "lcsc": "C519401",
+     "library": "expand",
+     "mpn": "CC0603JRNPO9BN301",
+     "stock": 101157
+    },
+    {
+     "lcsc": "C3903622",
+     "library": "expand",
+     "mpn": "GRM1885C1H301GA01D",
+     "stock": 2868
+    },
+    {
+     "lcsc": "C519478",
+     "library": "expand",
+     "mpn": "CC0603GRNPO9BN301",
+     "stock": 1014
+    }
+   ],
+   "spec": {
+    "annotations": [],
+    "dielectric": "C0G",
+    "kind": "C",
+    "magnitude": 3e-10,
+    "power": null,
+    "raw": "300pF 50V C0G TUNE",
+    "tolerance": null,
+    "tune": true,
+    "unparsed": [],
+    "voltage": 50.0
+   },
+   "stock_floor": 500,
+   "thin_stock": false,
+   "value": "300pF 50V C0G TUNE"
+  },
+  {
+   "candidates_examined": 60,
+   "chosen": {
+    "attributes": {
+     "Capacitance": "1.5nF",
+     "Temperature Coefficient": "C0G",
+     "Tolerance": "\u00b15%",
+     "Voltage Rating": "100V"
+    },
+    "brand": "Murata Electronics",
+    "buyable": "1",
+    "code": "C388906",
+    "datasheet": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2304140030_Murata-Electronics-GCM1885C2A152JA16D_C388906.pdf",
+    "dielectric": "C0G",
+    "kind": "C",
+    "land": "0603",
+    "library": "expand",
+    "magnitude": 1.5000000000000002e-09,
+    "mpn": "GCM1885C2A152JA16D",
+    "no_buy": null,
+    "power": null,
+    "price_1": 0.0296,
+    "rohs": 1,
+    "rtype": null,
+    "stock": 5039,
+    "tempco_ppm": null,
+    "tolerance": 5.0,
+    "voltage": 100.0
+   },
+   "demo_nets": [
+    "NFC_EMCA",
+    "NFC_EMCB"
+   ],
+   "footprint": "C_0603_1608Metric",
+   "nearest": [
+    {
+     "brand": "YAGEO",
+     "lcsc": "C107039",
+     "mpn": "CC0603JRNPO9BN152",
+     "refused": []
+    },
+    {
+     "brand": "Walsin Tech Corp",
+     "lcsc": "C424864",
+     "mpn": "0603N152J500CT",
+     "refused": [
+      "stock 9 under 100 -- 2 parts x 5 boards x 10 liquidity"
+     ]
+    },
+    {
+     "brand": "YAGEO",
+     "lcsc": "C576779",
+     "mpn": "CC0603FRNPO9BN152",
+     "refused": []
+    },
+    {
+     "brand": "YAGEO",
+     "lcsc": "C576795",
+     "mpn": "CC0603GRNPO8BN152",
+     "refused": [
+      "node voltage gate: refused",
+      "stock 7 under 100 -- 2 parts x 5 boards x 10 liquidity"
+     ]
+    },
+    {
+     "brand": "YAGEO",
+     "lcsc": "C576797",
+     "mpn": "CC0603GRNPO9BN152",
+     "refused": []
+    },
+    {
+     "brand": "YAGEO",
+     "lcsc": "C576814",
+     "mpn": "CC0603JRNPO8BN152",
+     "refused": [
+      "node voltage gate: refused",
+      "stock 47 under 100 -- 2 parts x 5 boards x 10 liquidity"
+     ]
+    }
+   ],
+   "net_gate": {
+    "basis": "DEVICE_SPEC s.14 -- the ST25R3916 tank node voltage is NOT established in this repository; the sheet's own 50 V C0G specification is the ruling this gate enforces",
+    "demanded_v": 50.0,
+    "kind": "the value string's own stated rating",
+    "node_voltage_established": false,
+    "ok": true,
+    "rating_v": 100.0
+   },
+   "note_tighter": null,
+   "power_gate": {
+    "kind": "not a resistor",
+    "ok": true
+   },
+   "qty": 2,
+   "refs": [
+    "C73",
+    "C74"
+   ],
+   "runners_up": [
+    {
+     "lcsc": "C107039",
+     "library": "expand",
+     "mpn": "CC0603JRNPO9BN152",
+     "stock": 58504
+    },
+    {
+     "lcsc": "C162204",
+     "library": "expand",
+     "mpn": "GRM1885C1H152JA01D",
+     "stock": 26931
+    },
+    {
+     "lcsc": "C346208",
+     "library": "expand",
+     "mpn": "CL10C152JB8NNNC",
+     "stock": 20716
+    }
+   ],
+   "spec": {
+    "annotations": [],
+    "dielectric": "C0G",
+    "kind": "C",
+    "magnitude": 1.5000000000000002e-09,
+    "power": null,
+    "raw": "1.5nF 50V C0G TUNE",
+    "tolerance": null,
+    "tune": true,
+    "unparsed": [],
+    "voltage": 50.0
+   },
+   "stock_floor": 500,
+   "thin_stock": false,
+   "value": "1.5nF 50V C0G TUNE"
+  },
+  {
+   "candidates_examined": 55,
+   "chosen": {
+    "attributes": {
+     "Capacitance": "27pF",
+     "Temperature Coefficient": "C0G",
+     "Tolerance": "\u00b11%",
+     "Voltage Rating": "250V"
+    },
+    "brand": "Murata Electronics",
+    "buyable": "1",
+    "code": "C2360423",
+    "datasheet": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2308111618_Murata-Electronics-GQM1875C2E270FB12D_C2360423.pdf",
+    "dielectric": "C0G",
+    "kind": "C",
+    "land": "0603",
+    "library": "expand",
+    "magnitude": 2.7e-11,
+    "mpn": "GQM1875C2E270FB12D",
+    "no_buy": null,
+    "power": null,
+    "price_1": 0.3315,
+    "rohs": 1,
+    "rtype": null,
+    "stock": 12124,
+    "tempco_ppm": null,
+    "tolerance": 1.0,
+    "voltage": 250.0
+   },
+   "demo_nets": [
+    "NFC_ANT_A",
+    "NFC_ANT_B",
+    "NFC_RXA",
+    "NFC_RXB"
+   ],
+   "footprint": "C_0603_1608Metric",
+   "nearest": [
+    {
+     "brand": "TDK",
+     "lcsc": "C19604731",
+     "mpn": "C1608C0G1H270J/10",
+     "refused": [
+      "dielectric None does not reach C0G",
+      "stock 0 under 100 -- 2 parts x 5 boards x 10 liquidity",
+      "JLCPCB will not sell it: This product is no longer manufactured."
+     ]
+    },
+    {
+     "brand": "YAGEO",
+     "lcsc": "C107045",
+     "mpn": "CC0603JRNPO9BN270",
+     "refused": []
+    },
+    {
+     "brand": "Walsin Tech Corp",
+     "lcsc": "C237199",
+     "mpn": "0603N270G500CT",
+     "refused": [
+      "stock 69 under 100 -- 2 parts x 5 boards x 10 liquidity"
+     ]
+    },
+    {
+     "brand": "Walsin Tech Corp",
+     "lcsc": "C302064",
+     "mpn": "0603N270J500CT",
+     "refused": [
+      "stock 10 under 100 -- 2 parts x 5 boards x 10 liquidity"
+     ]
+    },
+    {
+     "brand": "Walsin Tech Corp",
+     "lcsc": "C458900",
+     "mpn": "0603N270J101CT",
+     "refused": [
+      "stock 4 under 100 -- 2 parts x 5 boards x 10 liquidity"
+     ]
+    },
+    {
+     "brand": "YAGEO",
+     "lcsc": "C519453",
+     "mpn": "CC0603GRNPO9BN270",
+     "refused": []
+    }
+   ],
+   "net_gate": {
+    "basis": "DEVICE_SPEC s.14 -- the ST25R3916 tank node voltage is NOT established in this repository; the sheet's own 50 V C0G specification is the ruling this gate enforces",
+    "demanded_v": 50.0,
+    "kind": "the value string's own stated rating",
+    "node_voltage_established": false,
+    "ok": true,
+    "rating_v": 250.0
+   },
+   "note_tighter": null,
+   "power_gate": {
+    "kind": "not a resistor",
+    "ok": true
+   },
+   "qty": 2,
+   "refs": [
+    "C75",
+    "C77"
+   ],
+   "runners_up": [
+    {
+     "lcsc": "C3851893",
+     "library": "expand",
+     "mpn": "GQM1875C2E270GB12D",
+     "stock": 3368
+    },
+    {
+     "lcsc": "C3842072",
+     "library": "expand",
+     "mpn": "GQM1875C2E270JB12D",
+     "stock": 1510
+    },
+    {
+     "lcsc": "C909846",
+     "library": "expand",
+     "mpn": "GCM1885C2A270JA16D",
+     "stock": 4259
+    }
+   ],
+   "spec": {
+    "annotations": [],
+    "dielectric": "C0G",
+    "kind": "C",
+    "magnitude": 2.7e-11,
+    "power": null,
+    "raw": "27pF 50V C0G TUNE",
+    "tolerance": null,
+    "tune": true,
+    "unparsed": [],
+    "voltage": 50.0
+   },
+   "stock_floor": 500,
+   "thin_stock": false,
+   "value": "27pF 50V C0G TUNE"
+  },
+  {
+   "candidates_examined": 49,
+   "chosen": {
+    "attributes": {
+     "Capacitance": "620pF",
+     "Temperature Coefficient": "NP0",
+     "Tolerance": "\u00b15%",
+     "Voltage Rating": "50V"
+    },
+    "brand": "YAGEO",
+    "buyable": "1",
+    "code": "C325470",
+    "datasheet": "https://www.lcsc.com/datasheet/lcsc_datasheet_1912111437_YAGEO-CC0603JRNPO9BN621_C325470.pdf",
+    "dielectric": "NP0",
+    "kind": "C",
+    "land": "0603",
+    "library": "expand",
+    "magnitude": 6.2e-10,
+    "mpn": "CC0603JRNPO9BN621",
+    "no_buy": null,
+    "power": null,
+    "price_1": 0.0104,
+    "rohs": 1,
+    "rtype": null,
+    "stock": 43162,
+    "tempco_ppm": null,
+    "tolerance": 5.0,
+    "voltage": 50.0
+   },
+   "demo_nets": [
+    "NFC_RXA",
+    "NFC_RXB"
+   ],
+   "footprint": "C_0603_1608Metric",
+   "nearest": [
+    {
+     "brand": "YAGEO",
+     "lcsc": "C325470",
+     "mpn": "CC0603JRNPO9BN621",
+     "refused": []
+    },
+    {
+     "brand": "YAGEO",
+     "lcsc": "C519479",
+     "mpn": "CC0603GRNPO9BN621",
+     "refused": [
+      "stock 18 under 100 -- 2 parts x 5 boards x 10 liquidity"
+     ]
+    },
+    {
+     "brand": "Walsin Tech Corp",
+     "lcsc": "C3847761",
+     "mpn": "0603N621J500CT",
+     "refused": []
+    },
+    {
+     "brand": "YAGEO",
+     "lcsc": "C5185462",
+     "mpn": "CC0603FRNPO9BN621",
+     "refused": []
+    },
+    {
+     "brand": "YAGEO",
+     "lcsc": "C1853136",
+     "mpn": "CC0603JPNPO9BN621",
+     "refused": [
+      "stock 0 under 100 -- 2 parts x 5 boards x 10 liquidity"
+     ]
+    },
+    {
+     "brand": "KEMET",
+     "lcsc": "C2170608",
+     "mpn": "C0603C621J5GACTU",
+     "refused": [
+      "stock 15 under 100 -- 2 parts x 5 boards x 10 liquidity"
+     ]
+    }
+   ],
+   "net_gate": {
+    "basis": "DEVICE_SPEC s.14 -- the ST25R3916 tank node voltage is NOT established in this repository; the sheet's own 50 V C0G specification is the ruling this gate enforces",
+    "demanded_v": 50.0,
+    "kind": "the value string's own stated rating",
+    "node_voltage_established": false,
+    "ok": true,
+    "rating_v": 50.0
+   },
+   "note_tighter": null,
+   "power_gate": {
+    "kind": "not a resistor",
+    "ok": true
+   },
+   "qty": 2,
+   "refs": [
+    "C76",
+    "C78"
+   ],
+   "runners_up": [
+    {
+     "lcsc": "C5185462",
+     "library": "expand",
+     "mpn": "CC0603FRNPO9BN621",
+     "stock": 7860
+    },
+    {
+     "lcsc": "C3847761",
+     "library": "expand",
+     "mpn": "0603N621J500CT",
+     "stock": 3834
+    }
+   ],
+   "spec": {
+    "annotations": [],
+    "dielectric": "C0G",
+    "kind": "C",
+    "magnitude": 6.2e-10,
+    "power": null,
+    "raw": "620pF 50V C0G TUNE",
+    "tolerance": null,
+    "tune": true,
+    "unparsed": [],
+    "voltage": 50.0
+   },
+   "stock_floor": 500,
+   "thin_stock": false,
+   "value": "620pF 50V C0G TUNE"
+  },
+  {
+   "candidates_examined": 58,
+   "chosen": {
+    "attributes": {
+     "Capacitance": "10pF",
+     "Temperature Coefficient": "C0G",
+     "Tolerance": "\u00b15%",
+     "Voltage Rating": "50V"
+    },
+    "brand": "Samsung Electro-Mechanics",
+    "buyable": "1",
+    "code": "C1634",
+    "datasheet": "https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_Samsung-Electro-Mechanics-CL10C100JB8NNNC_C1634.pdf",
+    "dielectric": "C0G",
+    "kind": "C",
+    "land": "0603",
+    "library": "base",
+    "magnitude": 1e-11,
+    "mpn": "CL10C100JB8NNNC",
+    "no_buy": null,
+    "power": null,
+    "price_1": 0.0076,
+    "rohs": 1,
+    "rtype": null,
+    "stock": 2119581,
+    "tempco_ppm": null,
+    "tolerance": 5.0,
+    "voltage": 50.0
+   },
+   "demo_nets": [
+    "NFC_XIN",
+    "NFC_XOUT"
+   ],
+   "footprint": "C_0603_1608Metric",
+   "nearest": [
+    {
+     "brand": "YAGEO",
+     "lcsc": "C106245",
+     "mpn": "CC0603JRNPO9BN100",
+     "refused": []
+    },
+    {
+     "brand": "Walsin Tech Corp",
+     "lcsc": "C152928",
+     "mpn": "0603N100J500CT",
+     "refused": []
+    },
+    {
+     "brand": "Walsin Tech Corp",
+     "lcsc": "C237161",
+     "mpn": "0603N100G500CT",
+     "refused": [
+      "stock 3 under 100 -- 2 parts x 5 boards x 10 liquidity"
+     ]
+    },
+    {
+     "brand": "YAGEO",
+     "lcsc": "C277527",
+     "mpn": "AC0603JRNPO9BN100",
+     "refused": []
+    },
+    {
+     "brand": "YAGEO",
+     "lcsc": "C281766",
+     "mpn": "CC0603DRNPO9BN100",
+     "refused": []
+    },
+    {
+     "brand": "Walsin Tech Corp",
+     "lcsc": "C296044",
+     "mpn": "0603N100D500CT",
+     "refused": [
+      "stock 9 under 100 -- 2 parts x 5 boards x 10 liquidity"
+     ]
+    }
+   ],
+   "net_gate": {
+    "basis": "DEVICE_SPEC s.14 -- the ST25R3916 tank node voltage is NOT established in this repository; the sheet's own 50 V C0G specification is the ruling this gate enforces",
+    "demanded_v": 50.0,
+    "kind": "the value string's own stated rating",
+    "node_voltage_established": false,
+    "ok": true,
+    "rating_v": 50.0
+   },
+   "note_tighter": null,
+   "power_gate": {
+    "kind": "not a resistor",
+    "ok": true
+   },
+   "qty": 2,
+   "refs": [
+    "C79",
+    "C80"
+   ],
+   "runners_up": [
+    {
+     "lcsc": "C726617",
+     "library": "expand",
+     "mpn": "CC0603JRNPOYBN100",
+     "stock": 2680
+    },
+    {
+     "lcsc": "C2312027",
+     "library": "expand",
+     "mpn": "CQ0603FRNPOYBN100",
+     "stock": 562
+    },
+    {
+     "lcsc": "C576820",
+     "library": "expand",
+     "mpn": "CC0603JRNPOABN100",
+     "stock": 8334
+    }
+   ],
+   "spec": {
+    "annotations": [],
+    "dielectric": "C0G",
+    "kind": "C",
+    "magnitude": 1e-11,
+    "power": null,
+    "raw": "10pF 50V C0G TUNE",
+    "tolerance": null,
+    "tune": true,
+    "unparsed": [],
+    "voltage": 50.0
+   },
+   "stock_floor": 500,
+   "thin_stock": false,
+   "value": "10pF 50V C0G TUNE"
+  },
+  {
+   "candidates_examined": 50,
+   "chosen": {
+    "attributes": {
+     "Operating Temperature": "-55\u2103~+155\u2103",
+     "Power(Watts)": "100mW",
+     "Resistance": "1.1\u03a9",
+     "Temperature Coefficient": "\u00b1200ppm/\u2103",
+     "Tolerance": "\u00b11%",
+     "Type": "Thick Film Resistor",
+     "Voltage-Supply(Max)": "75V"
+    },
+    "brand": "YAGEO",
+    "buyable": "1",
+    "code": "C309559",
+    "datasheet": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2304140030_YAGEO-RC0603FR-071R1L_C309559.pdf",
+    "dielectric": null,
+    "kind": "R",
+    "land": "0603",
+    "library": "expand",
+    "magnitude": 1.1,
+    "mpn": "RC0603FR-071R1L",
+    "no_buy": null,
+    "power": 0.1,
+    "price_1": 0.0106,
+    "rohs": 1,
+    "rtype": "Thick Film Resistor",
+    "stock": 3640,
+    "tempco_ppm": 200.0,
+    "tolerance": 1.0,
+    "voltage": null,
+    "working_v": 75.0
+   },
+   "demo_nets": [
+    "NFC_ANT_A",
+    "NFC_ANT_B",
+    "NFC_MATCH_A",
+    "NFC_MATCH_B"
+   ],
+   "footprint": "R_0603_1608Metric",
+   "nearest": [
+    {
+     "brand": "HKR(Hong Kong Resistors)",
+     "lcsc": "C177315",
+     "mpn": "RCT031R1JLF",
+     "refused": [
+      "vendor 'HKR(Hong Kong Resistors)' is not on the accepted list (D-206)",
+      "tolerance 5.0 vs the demanded 1.0%"
+     ]
+    },
+    {
+     "brand": "HKR(Hong Kong Resistors)",
+     "lcsc": "C178076",
+     "mpn": "RCT031R1FLF",
+     "refused": [
+      "vendor 'HKR(Hong Kong Resistors)' is not on the accepted list (D-206)"
+     ]
+    },
+    {
+     "brand": "HKR(Hong Kong Resistors)",
+     "lcsc": "C22356645",
+     "mpn": "RCA031R1JLF",
+     "refused": [
+      "vendor 'HKR(Hong Kong Resistors)' is not on the accepted list (D-206)",
+      "tolerance 5.0 vs the demanded 1.0%"
+     ]
+    },
+    {
+     "brand": "UNI-ROYAL(Uniroyal Elec)",
+     "lcsc": "C38533",
+     "mpn": "0603WAJ011JT5E",
+     "refused": [
+      "tolerance 5.0 vs the demanded 1.0%",
+      "stock 4 under 100 -- 2 parts x 5 boards x 10 liquidity"
+     ]
+    },
+    {
+     "brand": "UNI-ROYAL(Uniroyal Elec)",
+     "lcsc": "C83906",
+     "mpn": "0603WAF110KT5E",
+     "refused": []
+    },
+    {
+     "brand": "LIZ Elec",
+     "lcsc": "C101290",
+     "mpn": "CR0603JA01R1G",
+     "refused": [
+      "vendor 'LIZ Elec' is not on the accepted list (D-206)",
+      "tolerance 5.0 vs the demanded 1.0%",
+      "stock 8 under 100 -- 2 parts x 5 boards x 10 liquidity"
+     ]
+    }
+   ],
+   "net_gate": {
+    "basis": "DEVICE_SPEC s.14 -- the ST25R3916 tank node voltage is NOT established in this repository; the sheet's own 50 V C0G specification is the ruling this gate enforces",
+    "demanded_v": null,
+    "kind": "the value string's own stated rating",
+    "node_voltage_established": false,
+    "ok": true,
+    "rating_v": null
+   },
+   "note_tighter": null,
+   "power_gate": {
+    "basis": "DEVICE_SPEC s.14: the NFC tank current is NOT established here, so this line takes the highest-rated part its land offers and the dissipation is measured on the first article",
+    "kind": "not established -- first-article measurement",
+    "ok": true,
+    "rating_w": 0.1
+   },
+   "qty": 2,
+   "refs": [
+    "R114",
+    "R115"
+   ],
+   "runners_up": [
+    {
+     "lcsc": "C2077015",
+     "library": "expand",
+     "mpn": "CRCW06031R10FKEA",
+     "stock": 1034
+    },
+    {
+     "lcsc": "C83906",
+     "library": "expand",
+     "mpn": "0603WAF110KT5E",
+     "stock": 53537
+    },
+    {
+     "lcsc": "C322071",
+     "library": "expand",
+     "mpn": "RS-03L1R10FT",
+     "stock": 5082
+    }
+   ],
+   "spec": {
+    "annotations": [],
+    "dielectric": null,
+    "kind": "R",
+    "magnitude": 1.1,
+    "power": null,
+    "raw": "1R1 1% TUNE",
+    "tolerance": 1.0,
+    "tune": true,
+    "unparsed": [],
+    "voltage": null
+   },
+   "stock_floor": 500,
+   "thin_stock": false,
+   "value": "1R1 1% TUNE"
+  },
+  {
+   "candidates_examined": 50,
+   "chosen": {
+    "attributes": {
+     "Operating Temperature": "-55\u2103~+155\u2103",
+     "Power(Watts)": "100mW",
+     "Resistance": "1k\u03a9",
+     "Temperature Coefficient": "\u00b1100ppm/\u2103",
+     "Tolerance": "\u00b11%",
+     "Type": "Thick Film Resistor",
+     "Voltage-Supply(Max)": "75V"
+    },
+    "brand": "UNI-ROYAL(Uniroyal Elec)",
+    "buyable": "1",
+    "code": "C21190",
+    "datasheet": "https://www.lcsc.com/datasheet/lcsc_datasheet_2206010130_UNI-ROYAL-Uniroyal-Elec-0603WAF1001T5E_C21190.pdf",
+    "dielectric": null,
+    "kind": "R",
+    "land": "0603",
+    "library": "base",
+    "magnitude": 1000.0,
+    "mpn": "0603WAF1001T5E",
+    "no_buy": null,
+    "power": 0.1,
+    "price_1": 0.0033,
+    "rohs": 1,
+    "rtype": "Thick Film Resistor",
+    "stock": 29725158,
+    "tempco_ppm": 100.0,
+    "tolerance": 1.0,
+    "voltage": null,
+    "working_v": 75.0
+   },
+   "demo_nets": [
+    "NFC_RFI1",
+    "NFC_RFI2",
+    "NFC_RXA",
+    "NFC_RXB"
+   ],
+   "footprint": "R_0603_1608Metric",
+   "nearest": [
+    {
+     "brand": "HKR(Hong Kong Resistors)",
+     "lcsc": "C177343",
+     "mpn": "RCT031KJLF",
+     "refused": [
+      "vendor 'HKR(Hong Kong Resistors)' is not on the accepted list (D-206)"
+     ]
+    },
+    {
+     "brand": "HKR(Hong Kong Resistors)",
+     "lcsc": "C177649",
+     "mpn": "RCT031KFLF",
+     "refused": [
+      "vendor 'HKR(Hong Kong Resistors)' is not on the accepted list (D-206)"
+     ]
+    },
+    {
+     "brand": "HKR(Hong Kong Resistors)",
+     "lcsc": "C22356461",
+     "mpn": "RCA031KFLF",
+     "refused": [
+      "vendor 'HKR(Hong Kong Resistors)' is not on the accepted list (D-206)"
+     ]
+    },
+    {
+     "brand": "HKR(Hong Kong Resistors)",
+     "lcsc": "C22356624",
+     "mpn": "RCA031KJLF",
+     "refused": [
+      "vendor 'HKR(Hong Kong Resistors)' is not on the accepted list (D-206)"
+     ]
+    },
+    {
+     "brand": "HKR(Hong Kong Resistors)",
+     "lcsc": "C49330120",
+     "mpn": "AST031KF",
+     "refused": [
+      "vendor 'HKR(Hong Kong Resistors)' is not on the accepted list (D-206)"
+     ]
+    },
+    {
+     "brand": "HKR(Hong Kong Resistors)",
+     "lcsc": "C49330139",
+     "mpn": "AST031KJ",
+     "refused": [
+      "vendor 'HKR(Hong Kong Resistors)' is not on the accepted list (D-206)"
+     ]
+    }
+   ],
+   "net_gate": {
+    "basis": "DEVICE_SPEC s.14 -- the ST25R3916 tank node voltage is NOT established in this repository; the sheet's own 50 V C0G specification is the ruling this gate enforces",
+    "demanded_v": null,
+    "kind": "the value string's own stated rating",
+    "node_voltage_established": false,
+    "ok": true,
+    "rating_v": null
+   },
+   "note_tighter": null,
+   "power_gate": {
+    "basis": "DEVICE_SPEC s.14: the NFC tank current is NOT established here, so this line takes the highest-rated part its land offers and the dissipation is measured on the first article",
+    "kind": "not established -- first-article measurement",
+    "ok": true,
+    "rating_w": 0.1
+   },
+   "qty": 2,
+   "refs": [
+    "R116",
+    "R117"
+   ],
+   "runners_up": [
+    {
+     "lcsc": "C193679",
+     "library": "expand",
+     "mpn": "ERJPB3D1001V",
+     "stock": 8346
+    },
+    {
+     "lcsc": "C193680",
+     "library": "expand",
+     "mpn": "ERJPB3B1001V",
+     "stock": 4966
+    },
+    {
+     "lcsc": "C161809",
+     "library": "expand",
+     "mpn": "MCT06030C1001FP500",
+     "stock": 4937
+    }
+   ],
+   "spec": {
+    "annotations": [],
+    "dielectric": null,
+    "kind": "R",
+    "magnitude": 1000.0,
+    "power": null,
+    "raw": "1k TUNE",
+    "tolerance": null,
+    "tune": true,
+    "unparsed": [],
+    "voltage": null
+   },
+   "stock_floor": 500,
+   "thin_stock": false,
+   "value": "1k TUNE"
+  }
+ ],
+ "TUNE_PENDING": [],
+ "board": "/home/aqroot8/aqroot-demo/hardware/demo/kicad/aqroot-demo/aqroot-Beta-v2.kicad_pcb",
+ "brands": {
+  "Murata Electronics": 3,
+  "Samsung Electro-Mechanics": 2,
+  "UNI-ROYAL(Uniroyal Elec)": 1,
+  "YAGEO": 2
+ },
+ "first_five_boards": 5,
+ "jlc_basic": 3,
+ "package": "/home/aqroot8/aqroot-demo/hardware/demo/fab",
+ "queries": [
+  {
+   "fetched_utc": "2026-09-05T01:16:20Z",
+   "keyword": "100pF 0603 C0G capacitor",
+   "line": "100pF 50V C0G TUNE | C_0603_1608Metric",
+   "returned": 50
+  },
+  {
+   "fetched_utc": "2026-09-05T01:16:21Z",
+   "keyword": "100pF 0603 capacitor",
+   "line": "100pF 50V C0G TUNE | C_0603_1608Metric",
+   "returned": 50
+  },
+  {
+   "fetched_utc": "2026-09-05T01:16:22Z",
+   "keyword": "100pF 0603 C0G Murata",
+   "line": "100pF 50V C0G TUNE | C_0603_1608Metric",
+   "returned": 2
+  },
+  {
+   "fetched_utc": "2026-09-05T01:16:23Z",
+   "keyword": "100pF 0603 C0G Samsung",
+   "line": "100pF 50V C0G TUNE | C_0603_1608Metric",
+   "returned": 50
+  },
+  {
+   "fetched_utc": "2026-09-05T01:16:24Z",
+   "keyword": "100pF 0603 C0G YAGEO",
+   "line": "100pF 50V C0G TUNE | C_0603_1608Metric",
+   "returned": 50
+  },
+  {
+   "fetched_utc": "2026-09-05T01:16:25Z",
+   "keyword": "100pF 0603 C0G TDK",
+   "line": "100pF 50V C0G TUNE | C_0603_1608Metric",
+   "returned": 50
+  },
+  {
+   "fetched_utc": "2026-09-05T01:16:26Z",
+   "keyword": "300pF 0603 C0G capacitor",
+   "line": "300pF 50V C0G TUNE | C_0603_1608Metric",
+   "returned": 50
+  },
+  {
+   "fetched_utc": "2026-09-05T01:16:27Z",
+   "keyword": "300pF 0603 capacitor",
+   "line": "300pF 50V C0G TUNE | C_0603_1608Metric",
+   "returned": 50
+  },
+  {
+   "fetched_utc": "2026-09-05T01:16:27Z",
+   "keyword": "300pF 0603 C0G Murata",
+   "line": "300pF 50V C0G TUNE | C_0603_1608Metric",
+   "returned": 0
+  },
+  {
+   "fetched_utc": "2026-09-05T01:16:28Z",
+   "keyword": "300pF 0603 C0G Samsung",
+   "line": "300pF 50V C0G TUNE | C_0603_1608Metric",
+   "returned": 50
+  },
+  {
+   "fetched_utc": "2026-09-05T01:16:29Z",
+   "keyword": "300pF 0603 C0G YAGEO",
+   "line": "300pF 50V C0G TUNE | C_0603_1608Metric",
+   "returned": 50
+  },
+  {
+   "fetched_utc": "2026-09-05T01:16:30Z",
+   "keyword": "300pF 0603 C0G TDK",
+   "line": "300pF 50V C0G TUNE | C_0603_1608Metric",
+   "returned": 50
+  },
+  {
+   "fetched_utc": "2026-09-05T01:16:31Z",
+   "keyword": "1.5nF 0603 C0G capacitor",
+   "line": "1.5nF 50V C0G TUNE | C_0603_1608Metric",
+   "returned": 50
+  },
+  {
+   "fetched_utc": "2026-09-05T01:16:32Z",
+   "keyword": "1.5nF 0603 capacitor",
+   "line": "1.5nF 50V C0G TUNE | C_0603_1608Metric",
+   "returned": 50
+  },
+  {
+   "fetched_utc": "2026-09-05T01:16:32Z",
+   "keyword": "1.5nF 0603 C0G Murata",
+   "line": "1.5nF 50V C0G TUNE | C_0603_1608Metric",
+   "returned": 0
+  },
+  {
+   "fetched_utc": "2026-09-05T01:16:33Z",
+   "keyword": "1.5nF 0603 C0G Samsung",
+   "line": "1.5nF 50V C0G TUNE | C_0603_1608Metric",
+   "returned": 50
+  },
+  {
+   "fetched_utc": "2026-09-05T01:16:34Z",
+   "keyword": "1.5nF 0603 C0G YAGEO",
+   "line": "1.5nF 50V C0G TUNE | C_0603_1608Metric",
+   "returned": 50
+  },
+  {
+   "fetched_utc": "2026-09-05T01:16:35Z",
+   "keyword": "1.5nF 0603 C0G TDK",
+   "line": "1.5nF 50V C0G TUNE | C_0603_1608Metric",
+   "returned": 50
+  },
+  {
+   "fetched_utc": "2026-09-05T01:16:36Z",
+   "keyword": "27pF 0603 C0G capacitor",
+   "line": "27pF 50V C0G TUNE | C_0603_1608Metric",
+   "returned": 50
+  },
+  {
+   "fetched_utc": "2026-09-05T01:16:37Z",
+   "keyword": "27pF 0603 capacitor",
+   "line": "27pF 50V C0G TUNE | C_0603_1608Metric",
+   "returned": 50
+  },
+  {
+   "fetched_utc": "2026-09-05T01:16:38Z",
+   "keyword": "27pF 0603 C0G Murata",
+   "line": "27pF 50V C0G TUNE | C_0603_1608Metric",
+   "returned": 3
+  },
+  {
+   "fetched_utc": "2026-09-05T01:16:39Z",
+   "keyword": "27pF 0603 C0G Samsung",
+   "line": "27pF 50V C0G TUNE | C_0603_1608Metric",
+   "returned": 50
+  },
+  {
+   "fetched_utc": "2026-09-05T01:16:39Z",
+   "keyword": "27pF 0603 C0G YAGEO",
+   "line": "27pF 50V C0G TUNE | C_0603_1608Metric",
+   "returned": 50
+  },
+  {
+   "fetched_utc": "2026-09-05T01:16:40Z",
+   "keyword": "27pF 0603 C0G TDK",
+   "line": "27pF 50V C0G TUNE | C_0603_1608Metric",
+   "returned": 50
+  },
+  {
+   "fetched_utc": "2026-09-05T01:16:41Z",
+   "keyword": "620pF 0603 C0G capacitor",
+   "line": "620pF 50V C0G TUNE | C_0603_1608Metric",
+   "returned": 50
+  },
+  {
+   "fetched_utc": "2026-09-05T01:16:42Z",
+   "keyword": "620pF 0603 capacitor",
+   "line": "620pF 50V C0G TUNE | C_0603_1608Metric",
+   "returned": 50
+  },
+  {
+   "fetched_utc": "2026-09-05T01:16:43Z",
+   "keyword": "620pF 0603 C0G Murata",
+   "line": "620pF 50V C0G TUNE | C_0603_1608Metric",
+   "returned": 0
+  },
+  {
+   "fetched_utc": "2026-09-05T01:16:44Z",
+   "keyword": "620pF 0603 C0G Samsung",
+   "line": "620pF 50V C0G TUNE | C_0603_1608Metric",
+   "returned": 50
+  },
+  {
+   "fetched_utc": "2026-09-05T01:16:45Z",
+   "keyword": "620pF 0603 C0G YAGEO",
+   "line": "620pF 50V C0G TUNE | C_0603_1608Metric",
+   "returned": 50
+  },
+  {
+   "fetched_utc": "2026-09-05T01:16:46Z",
+   "keyword": "620pF 0603 C0G TDK",
+   "line": "620pF 50V C0G TUNE | C_0603_1608Metric",
+   "returned": 50
+  },
+  {
+   "fetched_utc": "2026-09-05T01:16:47Z",
+   "keyword": "10pF 0603 C0G capacitor",
+   "line": "10pF 50V C0G TUNE | C_0603_1608Metric",
+   "returned": 50
+  },
+  {
+   "fetched_utc": "2026-09-05T01:16:48Z",
+   "keyword": "10pF 0603 capacitor",
+   "line": "10pF 50V C0G TUNE | C_0603_1608Metric",
+   "returned": 50
+  },
+  {
+   "fetched_utc": "2026-09-05T01:16:48Z",
+   "keyword": "10pF 0603 C0G Murata",
+   "line": "10pF 50V C0G TUNE | C_0603_1608Metric",
+   "returned": 3
+  },
+  {
+   "fetched_utc": "2026-09-05T01:16:49Z",
+   "keyword": "10pF 0603 C0G Samsung",
+   "line": "10pF 50V C0G TUNE | C_0603_1608Metric",
+   "returned": 50
+  },
+  {
+   "fetched_utc": "2026-09-05T01:16:50Z",
+   "keyword": "10pF 0603 C0G YAGEO",
+   "line": "10pF 50V C0G TUNE | C_0603_1608Metric",
+   "returned": 50
+  },
+  {
+   "fetched_utc": "2026-09-05T01:16:51Z",
+   "keyword": "10pF 0603 C0G TDK",
+   "line": "10pF 50V C0G TUNE | C_0603_1608Metric",
+   "returned": 50
+  },
+  {
+   "fetched_utc": "2026-09-05T01:16:52Z",
+   "keyword": "1.1R 0603 resistor",
+   "line": "1R1 1% TUNE | R_0603_1608Metric",
+   "returned": 50
+  },
+  {
+   "fetched_utc": "2026-09-05T01:16:52Z",
+   "keyword": "0603WAF110-2T5E",
+   "line": "1R1 1% TUNE | R_0603_1608Metric",
+   "returned": 1
+  },
+  {
+   "fetched_utc": "2026-09-05T01:16:53Z",
+   "keyword": "1K 0603 resistor",
+   "line": "1k TUNE | R_0603_1608Metric",
+   "returned": 50
+  },
+  {
+   "fetched_utc": "2026-09-05T01:16:54Z",
+   "keyword": "0603WAF1001T5E",
+   "line": "1k TUNE | R_0603_1608Metric",
+   "returned": 4
+  }
+ ],
+ "schema": 1,
+ "stock_factor": 10,
+ "stock_floor": 500,
+ "summary": {
+  "REFUSED": {
+   "lines": 0,
+   "parts": 0
+  },
+  "RULED": {
+   "lines": 8,
+   "parts": 16
+  },
+  "TUNE_PENDING": {
+   "lines": 0,
+   "parts": 0
+  }
+ },
+ "thin_stock_lines": []
+}

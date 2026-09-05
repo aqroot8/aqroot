@@ -1,0 +1,3877 @@
+{
+ "endpoint": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
+ "exhausted": true,
+ "fetched_utc": "2026-09-05T01:04:07Z",
+ "keyword": "LTC4368",
+ "page_size": 25,
+ "pages": 2,
+ "records": [
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Length",
+     "attribute_value_name": "3mm"
+    },
+    {
+     "attribute_name_en": "Threshold Voltage",
+     "attribute_value_name": "50mV"
+    },
+    {
+     "attribute_name_en": "Number of Lines",
+     "attribute_value_name": "1"
+    },
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "2.5V~60V"
+    },
+    {
+     "attribute_name_en": "FET Type",
+     "attribute_value_name": "External FET"
+    },
+    {
+     "attribute_name_en": "Features",
+     "attribute_value_name": "Overcurrent Protection、Under-voltage lockout、Overvoltage clamping protection"
+    },
+    {
+     "attribute_name_en": "Mounting Type",
+     "attribute_value_name": "Surface Mount"
+    },
+    {
+     "attribute_name_en": "Width",
+     "attribute_value_name": "3mm"
+    },
+    {
+     "attribute_name_en": "Operating temperature",
+     "attribute_value_name": "0℃~+70℃"
+    }
+   ],
+   "componentBrandEn": "Analog Devices",
+   "componentCode": "C580890",
+   "componentLibraryType": "expand",
+   "componentModelEn": "LTC4368CMS-2#PBF",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 9.7504,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 29,
+     "productPrice": 8.4118,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 99,
+     "productPrice": 7.5963,
+     "startNumber": 30
+    },
+    {
+     "endNumber": 101,
+     "productPrice": 6.9124,
+     "startNumber": 100
+    },
+    {
+     "endNumber": 103,
+     "productPrice": 6.9124,
+     "startNumber": 102
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 6.9124,
+     "startNumber": 104
+    }
+   ],
+   "componentSpecificationEn": "MSOP-10",
+   "componentTypeEn": "Surge Protection Devices (SPDs)",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2210192200_Analog-Devices-LTC4368CMS-2-PBF_C580890.pdf",
+   "describe": "1 MSOP-10 Surge Protection Devices (SPDs) ROHS",
+   "erpComponentName": "100V UV/OV和反向保护控制器，带双向断路器",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/surge-protection-devices-spds_analog-devices-ltc4368cms-2-pbf_C580890.html",
+   "leastPatchNumber": 0,
+   "lossNumber": 0,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 36
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Length",
+     "attribute_value_name": "3mm"
+    },
+    {
+     "attribute_name_en": "Threshold Voltage",
+     "attribute_value_name": "50mV"
+    },
+    {
+     "attribute_name_en": "Number of Lines",
+     "attribute_value_name": "1"
+    },
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "2.5V~60V"
+    },
+    {
+     "attribute_name_en": "FET Type",
+     "attribute_value_name": "External FET"
+    },
+    {
+     "attribute_name_en": "Features",
+     "attribute_value_name": "Overcurrent Protection、Under-voltage lockout、Overvoltage clamping protection"
+    },
+    {
+     "attribute_name_en": "Mounting Type",
+     "attribute_value_name": "Surface Mount"
+    },
+    {
+     "attribute_name_en": "Width",
+     "attribute_value_name": "3mm"
+    },
+    {
+     "attribute_name_en": "Operating temperature",
+     "attribute_value_name": "-40℃~+85℃"
+    }
+   ],
+   "componentBrandEn": "Analog Devices",
+   "componentCode": "C580891",
+   "componentLibraryType": "expand",
+   "componentModelEn": "LTC4368IDD-2#PBF",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 6.901,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 29,
+     "productPrice": 6.7499,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 99,
+     "productPrice": 6.6508,
+     "startNumber": 30
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 6.5501,
+     "startNumber": 100
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 6.5501,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 6.5501,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "DFN-10(3x3)",
+   "componentTypeEn": "Surge Protection Devices (SPDs)",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2210192200_Analog-Devices-LTC4368IDD-2-PBF_C580891.pdf",
+   "describe": "1 2.5V~60V External FET Surface Mount DFN-10(3x3) Surge Protection Devices (SPDs) ROHS",
+   "erpComponentName": "100V UV/OV和反向保护控制器，带双向断路器",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/surge-protection-devices-spds_analog-devices-ltc4368idd-2-pbf_C580891.html",
+   "leastPatchNumber": 0,
+   "lossNumber": 0,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 11
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Threshold Voltage",
+     "attribute_value_name": "50mV"
+    },
+    {
+     "attribute_name_en": "Peak Output Current(Sink)",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "2.5V~60V"
+    },
+    {
+     "attribute_name_en": "FET Type",
+     "attribute_value_name": "External FET"
+    },
+    {
+     "attribute_name_en": "Trigger Current",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Mounting Type",
+     "attribute_value_name": "Surface Mount"
+    },
+    {
+     "attribute_name_en": "RDS(on)",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Peak Output Current(Source)",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Length",
+     "attribute_value_name": "3mm"
+    },
+    {
+     "attribute_name_en": "Number of Lines",
+     "attribute_value_name": "1"
+    },
+    {
+     "attribute_name_en": "Features",
+     "attribute_value_name": "Overcurrent Protection、Under-voltage lockout、Overvoltage clamping protection"
+    },
+    {
+     "attribute_name_en": "Height",
+     "attribute_value_name": "0.75mm"
+    },
+    {
+     "attribute_name_en": "Reset Voltage",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Width",
+     "attribute_value_name": "3mm"
+    },
+    {
+     "attribute_name_en": "Operating temperature",
+     "attribute_value_name": "0℃~+70℃"
+    }
+   ],
+   "componentBrandEn": "Analog Devices",
+   "componentCode": "C688380",
+   "componentLibraryType": "expand",
+   "componentModelEn": "LTC4368CDD-1#PBF",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 10.1971,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 29,
+     "productPrice": 9.9681,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 99,
+     "productPrice": 9.817,
+     "startNumber": 30
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 9.6643,
+     "startNumber": 100
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 9.6643,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 9.6643,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "DFN-10-EP(3x3)",
+   "componentTypeEn": "Surge Protection Devices (SPDs)",
+   "dataManualUrl": "https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_Analog-Devices-LTC4368CDD-1-PBF_C688380.pdf",
+   "describe": "1 DFN-10-EP(3x3) Surge Protection Devices (SPDs) ROHS",
+   "erpComponentName": "100V UV/OV和反向保护控制器，带双向断路器",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/surge-protection-devices-spds_analog-devices-ltc4368cdd-1-pbf_C688380.html",
+   "leastPatchNumber": 0,
+   "lossNumber": 0,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 1
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Threshold Voltage",
+     "attribute_value_name": "50mV"
+    },
+    {
+     "attribute_name_en": "Peak Output Current(Sink)",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "2.5V~60V"
+    },
+    {
+     "attribute_name_en": "FET Type",
+     "attribute_value_name": "External FET"
+    },
+    {
+     "attribute_name_en": "Trigger Current",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Mounting Type",
+     "attribute_value_name": "Surface Mount"
+    },
+    {
+     "attribute_name_en": "RDS(on)",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Peak Output Current(Source)",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Length",
+     "attribute_value_name": "3mm"
+    },
+    {
+     "attribute_name_en": "Number of Lines",
+     "attribute_value_name": "1"
+    },
+    {
+     "attribute_name_en": "Features",
+     "attribute_value_name": "Overcurrent Protection、Under-voltage lockout、Overvoltage clamping protection"
+    },
+    {
+     "attribute_name_en": "Height",
+     "attribute_value_name": "0.75mm"
+    },
+    {
+     "attribute_name_en": "Reset Voltage",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Width",
+     "attribute_value_name": "3mm"
+    },
+    {
+     "attribute_name_en": "Operating temperature",
+     "attribute_value_name": "0℃~+70℃"
+    }
+   ],
+   "componentBrandEn": "Analog Devices",
+   "componentCode": "C688382",
+   "componentLibraryType": "expand",
+   "componentModelEn": "LTC4368CDD-2#PBF",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 8.1681,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 29,
+     "productPrice": 7.9634,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 99,
+     "productPrice": 7.827,
+     "startNumber": 30
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 7.6905,
+     "startNumber": 100
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 7.6905,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 7.6905,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "DFN-10-EP(3x3)",
+   "componentTypeEn": "Surge Protection Devices (SPDs)",
+   "dataManualUrl": "https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_Analog-Devices-LTC4368CDD-2-PBF_C688382.pdf",
+   "describe": "1 DFN-10-EP(3x3) Surge Protection Devices (SPDs) ROHS",
+   "erpComponentName": "100V UV/OV和反向保护控制器，带双向断路器",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/surge-protection-devices-spds_analog-devices-ltc4368cdd-2-pbf_C688382.html",
+   "leastPatchNumber": 0,
+   "lossNumber": 0,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 37
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Threshold Voltage",
+     "attribute_value_name": "50mV"
+    },
+    {
+     "attribute_name_en": "Peak Output Current(Sink)",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "2.5V~60V"
+    },
+    {
+     "attribute_name_en": "FET Type",
+     "attribute_value_name": "External FET"
+    },
+    {
+     "attribute_name_en": "Trigger Current",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Mounting Type",
+     "attribute_value_name": "Surface Mount"
+    },
+    {
+     "attribute_name_en": "RDS(on)",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Peak Output Current(Source)",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Length",
+     "attribute_value_name": "3mm"
+    },
+    {
+     "attribute_name_en": "Number of Lines",
+     "attribute_value_name": "1"
+    },
+    {
+     "attribute_name_en": "Features",
+     "attribute_value_name": "Overcurrent Protection、Under-voltage lockout、Overvoltage clamping protection"
+    },
+    {
+     "attribute_name_en": "Height",
+     "attribute_value_name": "0.75mm"
+    },
+    {
+     "attribute_name_en": "Reset Voltage",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Width",
+     "attribute_value_name": "3mm"
+    },
+    {
+     "attribute_name_en": "Operating temperature",
+     "attribute_value_name": "0℃~+70℃"
+    }
+   ],
+   "componentBrandEn": "Analog Devices",
+   "componentCode": "C688384",
+   "componentLibraryType": "expand",
+   "componentModelEn": "LTC4368CMS-1#PBF",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 8.9219,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 29,
+     "productPrice": 8.9219,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 99,
+     "productPrice": 8.9219,
+     "startNumber": 30
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 8.9219,
+     "startNumber": 100
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 8.9219,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 8.9219,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "MSOP-10",
+   "componentTypeEn": "Surge Protection Devices (SPDs)",
+   "dataManualUrl": "https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_Analog-Devices-LTC4368CMS-1-PBF_C688384.pdf",
+   "describe": "1 External FET Surface Mount MSOP-10 Surge Protection Devices (SPDs) ROHS",
+   "erpComponentName": "100V UV/OV和反向保护控制器，带双向断路器",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/surge-protection-devices-spds_analog-devices-ltc4368cms-1-pbf_C688384.html",
+   "leastPatchNumber": 0,
+   "lossNumber": 0,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 5
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Threshold Voltage",
+     "attribute_value_name": "50mV"
+    },
+    {
+     "attribute_name_en": "Peak Output Current(Sink)",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "2.5V~60V"
+    },
+    {
+     "attribute_name_en": "FET Type",
+     "attribute_value_name": "External FET"
+    },
+    {
+     "attribute_name_en": "Trigger Current",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Mounting Type",
+     "attribute_value_name": "Surface Mount"
+    },
+    {
+     "attribute_name_en": "RDS(on)",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Peak Output Current(Source)",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Length",
+     "attribute_value_name": "3mm"
+    },
+    {
+     "attribute_name_en": "Number of Lines",
+     "attribute_value_name": "1"
+    },
+    {
+     "attribute_name_en": "Features",
+     "attribute_value_name": "Overcurrent Protection、Under-voltage lockout、Overvoltage clamping protection"
+    },
+    {
+     "attribute_name_en": "Height",
+     "attribute_value_name": "0.75mm"
+    },
+    {
+     "attribute_name_en": "Reset Voltage",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Width",
+     "attribute_value_name": "3mm"
+    },
+    {
+     "attribute_name_en": "Operating temperature",
+     "attribute_value_name": "-40℃~+125℃"
+    }
+   ],
+   "componentBrandEn": "Analog Devices",
+   "componentCode": "C688387",
+   "componentLibraryType": "expand",
+   "componentModelEn": "LTC4368HDD-1#PBF",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 14.0927,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 29,
+     "productPrice": 13.4413,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 99,
+     "productPrice": 12.3106,
+     "startNumber": 30
+    },
+    {
+     "endNumber": 101,
+     "productPrice": 11.3245,
+     "startNumber": 100
+    },
+    {
+     "endNumber": 103,
+     "productPrice": 11.3245,
+     "startNumber": 102
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 11.3245,
+     "startNumber": 104
+    }
+   ],
+   "componentSpecificationEn": "DFN-10-EP(3x3)",
+   "componentTypeEn": "Surge Protection Devices (SPDs)",
+   "dataManualUrl": "https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_Analog-Devices-LTC4368HDD-1-PBF_C688387.pdf",
+   "describe": "1 DFN-10-EP(3x3) Surge Protection Devices (SPDs) ROHS",
+   "erpComponentName": "100V UV/OV和反向保护控制器，带双向断路器",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/surge-protection-devices-spds_analog-devices-ltc4368hdd-1-pbf_C688387.html",
+   "leastPatchNumber": 0,
+   "lossNumber": 0,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 5
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Threshold Voltage",
+     "attribute_value_name": "50mV"
+    },
+    {
+     "attribute_name_en": "Peak Output Current(Sink)",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "2.5V~60V"
+    },
+    {
+     "attribute_name_en": "FET Type",
+     "attribute_value_name": "External FET"
+    },
+    {
+     "attribute_name_en": "Trigger Current",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Mounting Type",
+     "attribute_value_name": "Surface Mount"
+    },
+    {
+     "attribute_name_en": "RDS(on)",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Peak Output Current(Source)",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Length",
+     "attribute_value_name": "3mm"
+    },
+    {
+     "attribute_name_en": "Number of Lines",
+     "attribute_value_name": "1"
+    },
+    {
+     "attribute_name_en": "Features",
+     "attribute_value_name": "Overcurrent Protection、Under-voltage lockout、Overvoltage clamping protection"
+    },
+    {
+     "attribute_name_en": "Height",
+     "attribute_value_name": "0.75mm"
+    },
+    {
+     "attribute_name_en": "Reset Voltage",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Width",
+     "attribute_value_name": "3mm"
+    },
+    {
+     "attribute_name_en": "Operating temperature",
+     "attribute_value_name": "-40℃~+125℃"
+    }
+   ],
+   "componentBrandEn": "Analog Devices",
+   "componentCode": "C688389",
+   "componentLibraryType": "expand",
+   "componentModelEn": "LTC4368HDD-2#PBF",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 10.7884,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 29,
+     "productPrice": 10.4473,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 99,
+     "productPrice": 10.4473,
+     "startNumber": 30
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 10.4473,
+     "startNumber": 100
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 10.4473,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 10.4473,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "DFN-10-EP(3x3)",
+   "componentTypeEn": "Surge Protection Devices (SPDs)",
+   "dataManualUrl": "https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_Analog-Devices-LTC4368HDD-2-PBF_C688389.pdf",
+   "describe": "1 External FET Surface Mount DFN-10-EP(3x3) Surge Protection Devices (SPDs) ROHS",
+   "erpComponentName": "100V UV/OV和反向保护控制器，带双向断路器",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/surge-protection-devices-spds_analog-devices-ltc4368hdd-2-pbf_C688389.html",
+   "leastPatchNumber": 0,
+   "lossNumber": 0,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 4
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Threshold Voltage",
+     "attribute_value_name": "50mV"
+    },
+    {
+     "attribute_name_en": "Peak Output Current(Sink)",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "2.5V~60V"
+    },
+    {
+     "attribute_name_en": "FET Type",
+     "attribute_value_name": "External FET"
+    },
+    {
+     "attribute_name_en": "Trigger Current",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Mounting Type",
+     "attribute_value_name": "Surface Mount"
+    },
+    {
+     "attribute_name_en": "RDS(on)",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Peak Output Current(Source)",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Length",
+     "attribute_value_name": "3mm"
+    },
+    {
+     "attribute_name_en": "Number of Lines",
+     "attribute_value_name": "1"
+    },
+    {
+     "attribute_name_en": "Features",
+     "attribute_value_name": "Overcurrent Protection、Under-voltage lockout、Overvoltage clamping protection"
+    },
+    {
+     "attribute_name_en": "Height",
+     "attribute_value_name": "0.75mm"
+    },
+    {
+     "attribute_name_en": "Reset Voltage",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Width",
+     "attribute_value_name": "3mm"
+    },
+    {
+     "attribute_name_en": "Operating temperature",
+     "attribute_value_name": "-40℃~+125℃"
+    }
+   ],
+   "componentBrandEn": "Analog Devices",
+   "componentCode": "C688391",
+   "componentLibraryType": "expand",
+   "componentModelEn": "LTC4368HMS-1#PBF",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 16.6481,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 29,
+     "productPrice": 15.9219,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 99,
+     "productPrice": 14.6629,
+     "startNumber": 30
+    },
+    {
+     "endNumber": 101,
+     "productPrice": 13.5664,
+     "startNumber": 100
+    },
+    {
+     "endNumber": 103,
+     "productPrice": 13.5664,
+     "startNumber": 102
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 13.5664,
+     "startNumber": 104
+    }
+   ],
+   "componentSpecificationEn": "MSOP-10",
+   "componentTypeEn": "Surge Protection Devices (SPDs)",
+   "dataManualUrl": "https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_Analog-Devices-LTC4368HMS-1-PBF_C688391.pdf",
+   "describe": "1 MSOP-10 Surge Protection Devices (SPDs) ROHS",
+   "erpComponentName": "100V UV/OV和反向保护控制器，带双向断路器",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/surge-protection-devices-spds_analog-devices-ltc4368hms-1-pbf_C688391.html",
+   "leastPatchNumber": 0,
+   "lossNumber": 0,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 2
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Threshold Voltage",
+     "attribute_value_name": "50mV"
+    },
+    {
+     "attribute_name_en": "Peak Output Current(Sink)",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "2.5V~60V"
+    },
+    {
+     "attribute_name_en": "FET Type",
+     "attribute_value_name": "External FET"
+    },
+    {
+     "attribute_name_en": "Trigger Current",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Mounting Type",
+     "attribute_value_name": "Surface Mount"
+    },
+    {
+     "attribute_name_en": "RDS(on)",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Peak Output Current(Source)",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Length",
+     "attribute_value_name": "3mm"
+    },
+    {
+     "attribute_name_en": "Number of Lines",
+     "attribute_value_name": "1"
+    },
+    {
+     "attribute_name_en": "Features",
+     "attribute_value_name": "Overcurrent Protection、Under-voltage lockout、Overvoltage clamping protection"
+    },
+    {
+     "attribute_name_en": "Height",
+     "attribute_value_name": "0.75mm"
+    },
+    {
+     "attribute_name_en": "Reset Voltage",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Width",
+     "attribute_value_name": "3mm"
+    },
+    {
+     "attribute_name_en": "Operating temperature",
+     "attribute_value_name": "-40℃~+125℃"
+    }
+   ],
+   "componentBrandEn": "Analog Devices",
+   "componentCode": "C688394",
+   "componentLibraryType": "expand",
+   "componentModelEn": "LTC4368HMS-2#PBF",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 8.4963,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 29,
+     "productPrice": 8.3176,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 99,
+     "productPrice": 8.199,
+     "startNumber": 30
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 8.082,
+     "startNumber": 100
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 8.082,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 8.082,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "MSOP-10",
+   "componentTypeEn": "Surge Protection Devices (SPDs)",
+   "dataManualUrl": "https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_Analog-Devices-LTC4368HMS-2-PBF_C688394.pdf",
+   "describe": "1 2.5V~60V External FET Surface Mount MSOP-10 Surge Protection Devices (SPDs) ROHS",
+   "erpComponentName": "100V UV/OV和反向保护控制器，带双向断路器",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/surge-protection-devices-spds_analog-devices-ltc4368hms-2-pbf_C688394.html",
+   "leastPatchNumber": 0,
+   "lossNumber": 0,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 8
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Threshold Voltage",
+     "attribute_value_name": "50mV"
+    },
+    {
+     "attribute_name_en": "Peak Output Current(Sink)",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "2.5V~60V"
+    },
+    {
+     "attribute_name_en": "FET Type",
+     "attribute_value_name": "External FET"
+    },
+    {
+     "attribute_name_en": "Trigger Current",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Mounting Type",
+     "attribute_value_name": "Surface Mount"
+    },
+    {
+     "attribute_name_en": "RDS(on)",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Peak Output Current(Source)",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Length",
+     "attribute_value_name": "3mm"
+    },
+    {
+     "attribute_name_en": "Number of Lines",
+     "attribute_value_name": "1"
+    },
+    {
+     "attribute_name_en": "Features",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Height",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Reset Voltage",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Width",
+     "attribute_value_name": "3mm"
+    },
+    {
+     "attribute_name_en": "Operating temperature",
+     "attribute_value_name": "-40℃~+85℃"
+    }
+   ],
+   "componentBrandEn": "Analog Devices",
+   "componentCode": "C688397",
+   "componentLibraryType": "expand",
+   "componentModelEn": "LTC4368IDD-1#PBF",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 15.1795,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 29,
+     "productPrice": 14.5265,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 99,
+     "productPrice": 13.3925,
+     "startNumber": 30
+    },
+    {
+     "endNumber": 101,
+     "productPrice": 12.4048,
+     "startNumber": 100
+    },
+    {
+     "endNumber": 103,
+     "productPrice": 12.4048,
+     "startNumber": 102
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 12.4048,
+     "startNumber": 104
+    }
+   ],
+   "componentSpecificationEn": "DFN-10-EP(3x3)",
+   "componentTypeEn": "Surge Protection Devices (SPDs)",
+   "dataManualUrl": "",
+   "describe": "1 DFN-10-EP(3x3) Surge Protection Devices (SPDs) ROHS",
+   "erpComponentName": "具双向电路断路器的 100V UV/OV 和反向保护控制器",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/surge-protection-devices-spds_analog-devices-ltc4368idd-1-pbf_C688397.html",
+   "leastPatchNumber": 0,
+   "lossNumber": 0,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 4
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Threshold Voltage",
+     "attribute_value_name": "50mV"
+    },
+    {
+     "attribute_name_en": "Peak Output Current(Sink)",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "2.5V~60V"
+    },
+    {
+     "attribute_name_en": "FET Type",
+     "attribute_value_name": "External FET"
+    },
+    {
+     "attribute_name_en": "Trigger Current",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Mounting Type",
+     "attribute_value_name": "Surface Mount"
+    },
+    {
+     "attribute_name_en": "RDS(on)",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Peak Output Current(Source)",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Length",
+     "attribute_value_name": "3mm"
+    },
+    {
+     "attribute_name_en": "Number of Lines",
+     "attribute_value_name": "1"
+    },
+    {
+     "attribute_name_en": "Features",
+     "attribute_value_name": "Overcurrent Protection、Under-voltage lockout、Overvoltage clamping protection"
+    },
+    {
+     "attribute_name_en": "Height",
+     "attribute_value_name": "0.75mm"
+    },
+    {
+     "attribute_name_en": "Reset Voltage",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Width",
+     "attribute_value_name": "3mm"
+    },
+    {
+     "attribute_name_en": "Operating temperature",
+     "attribute_value_name": "-40℃~+85℃"
+    }
+   ],
+   "componentBrandEn": "Analog Devices",
+   "componentCode": "C688400",
+   "componentLibraryType": "expand",
+   "componentModelEn": "LTC4368IMS-1#PBF",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 13.4413,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 11,
+     "productPrice": 11.5942,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 13,
+     "productPrice": 11.5942,
+     "startNumber": 12
+    },
+    {
+     "endNumber": 15,
+     "productPrice": 11.5942,
+     "startNumber": 14
+    },
+    {
+     "endNumber": 17,
+     "productPrice": 11.5942,
+     "startNumber": 16
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 11.5942,
+     "startNumber": 18
+    }
+   ],
+   "componentSpecificationEn": "MSOP-10",
+   "componentTypeEn": "Surge Protection Devices (SPDs)",
+   "dataManualUrl": "https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_Analog-Devices-LTC4368IMS-1-PBF_C688400.pdf",
+   "describe": "-40℃~+85℃ 0.75mm 1 2.5V~60V 3mm 3mm 50mV External FET Overcurrent Protection、Under-voltage lockout、Overvoltage clamping protection Surface Mount MSOP-10 Surge Protection Devices (SPDs) ROHS",
+   "erpComponentName": "100V UV/OV和反向保护控制器，带双向断路器",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/surge-protection-devices-spds_analog-devices-ltc4368ims-1-pbf_C688400.html",
+   "leastPatchNumber": 0,
+   "lossNumber": 0,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Threshold Voltage",
+     "attribute_value_name": "50mV"
+    },
+    {
+     "attribute_name_en": "Peak Output Current(Sink)",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "2.5V~60V"
+    },
+    {
+     "attribute_name_en": "FET Type",
+     "attribute_value_name": "External FET"
+    },
+    {
+     "attribute_name_en": "Trigger Current",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Mounting Type",
+     "attribute_value_name": "Surface Mount"
+    },
+    {
+     "attribute_name_en": "RDS(on)",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Peak Output Current(Source)",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Length",
+     "attribute_value_name": "3mm"
+    },
+    {
+     "attribute_name_en": "Number of Lines",
+     "attribute_value_name": "1"
+    },
+    {
+     "attribute_name_en": "Features",
+     "attribute_value_name": "Overcurrent Protection、Under-voltage lockout"
+    },
+    {
+     "attribute_name_en": "Height",
+     "attribute_value_name": "0.75mm"
+    },
+    {
+     "attribute_name_en": "Reset Voltage",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Width",
+     "attribute_value_name": "3mm"
+    },
+    {
+     "attribute_name_en": "Operating temperature",
+     "attribute_value_name": "-40℃~+85℃"
+    }
+   ],
+   "componentBrandEn": "Analog Devices",
+   "componentCode": "C688402",
+   "componentLibraryType": "expand",
+   "componentModelEn": "LTC4368IMS-2#PBF",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 10.8599,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 29,
+     "productPrice": 9.5197,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 99,
+     "productPrice": 8.7042,
+     "startNumber": 30
+    },
+    {
+     "endNumber": 101,
+     "productPrice": 8.0186,
+     "startNumber": 100
+    },
+    {
+     "endNumber": 103,
+     "productPrice": 8.0186,
+     "startNumber": 102
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 8.0186,
+     "startNumber": 104
+    }
+   ],
+   "componentSpecificationEn": "MSOP-10",
+   "componentTypeEn": "Surge Protection Devices (SPDs)",
+   "dataManualUrl": "https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_Analog-Devices-LTC4368IMS-2-PBF_C688402.pdf",
+   "describe": "1 2.5V~60V External FET Surface Mount MSOP-10 Surge Protection Devices (SPDs) ROHS",
+   "erpComponentName": "100V UV/OV和反向保护控制器，带双向断路器",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/surge-protection-devices-spds_analog-devices-ltc4368ims-2-pbf_C688402.html",
+   "leastPatchNumber": 0,
+   "lossNumber": 0,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Threshold Voltage",
+     "attribute_value_name": "50mV"
+    },
+    {
+     "attribute_name_en": "Peak Output Current(Sink)",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "2.5V~60V"
+    },
+    {
+     "attribute_name_en": "FET Type",
+     "attribute_value_name": "External FET"
+    },
+    {
+     "attribute_name_en": "Trigger Current",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Mounting Type",
+     "attribute_value_name": "Surface Mount"
+    },
+    {
+     "attribute_name_en": "RDS(on)",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Peak Output Current(Source)",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Length",
+     "attribute_value_name": "3mm"
+    },
+    {
+     "attribute_name_en": "Number of Lines",
+     "attribute_value_name": "1"
+    },
+    {
+     "attribute_name_en": "Features",
+     "attribute_value_name": "Overcurrent Protection、Short-Circuit  Protection、Under-voltage lockout、Overvoltage clamping protection"
+    },
+    {
+     "attribute_name_en": "Height",
+     "attribute_value_name": "1.1mm"
+    },
+    {
+     "attribute_name_en": "Reset Voltage",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Width",
+     "attribute_value_name": "3mm"
+    },
+    {
+     "attribute_name_en": "Operating temperature",
+     "attribute_value_name": "-40℃~+85℃"
+    }
+   ],
+   "componentBrandEn": "Analog Devices",
+   "componentCode": "C688401",
+   "componentLibraryType": "expand",
+   "componentModelEn": "LTC4368IMS-1#TRPBF",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 9.6854,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 29,
+     "productPrice": 8.2038,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 99,
+     "productPrice": 7.3022,
+     "startNumber": 30
+    },
+    {
+     "endNumber": 101,
+     "productPrice": 6.5452,
+     "startNumber": 100
+    },
+    {
+     "endNumber": 103,
+     "productPrice": 6.5452,
+     "startNumber": 102
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 6.5452,
+     "startNumber": 104
+    }
+   ],
+   "componentSpecificationEn": "MSOP-10",
+   "componentTypeEn": "Surge Protection Devices (SPDs)",
+   "dataManualUrl": "https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_Analog-Devices-LTC4368IMS-1-TRPBF_C688401.pdf",
+   "describe": "-40℃~+85℃ 1 1.1mm 2.5V~60V 3mm 3mm 50mV External FET Surface Mount MSOP-10 Surge Protection Devices (SPDs) ROHS",
+   "erpComponentName": "100V UV/OV和反向保护控制器，带双向断路器",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/surge-protection-devices-spds_analog-devices-ltc4368ims-1-trpbf_C688401.html",
+   "leastPatchNumber": 0,
+   "lossNumber": 0,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 3
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Threshold Voltage",
+     "attribute_value_name": "3mV"
+    },
+    {
+     "attribute_name_en": "Peak Output Current(Sink)",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "2.5V~60V"
+    },
+    {
+     "attribute_name_en": "FET Type",
+     "attribute_value_name": "External FET"
+    },
+    {
+     "attribute_name_en": "Trigger Current",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Mounting Type",
+     "attribute_value_name": "Surface Mount"
+    },
+    {
+     "attribute_name_en": "RDS(on)",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Peak Output Current(Source)",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Length",
+     "attribute_value_name": "3mm"
+    },
+    {
+     "attribute_name_en": "Number of Lines",
+     "attribute_value_name": "1"
+    },
+    {
+     "attribute_name_en": "Features",
+     "attribute_value_name": "Overcurrent Protection、Under-voltage lockout、Overvoltage clamping protection"
+    },
+    {
+     "attribute_name_en": "Height",
+     "attribute_value_name": "1.1mm"
+    },
+    {
+     "attribute_name_en": "Reset Voltage",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Width",
+     "attribute_value_name": "3mm"
+    },
+    {
+     "attribute_name_en": "Operating temperature",
+     "attribute_value_name": "-40℃~+85℃"
+    }
+   ],
+   "componentBrandEn": "Analog Devices",
+   "componentCode": "C688403",
+   "componentLibraryType": "expand",
+   "componentModelEn": "LTC4368IMS-2#TRPBF",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 7.9715,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 29,
+     "productPrice": 6.9546,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 99,
+     "productPrice": 6.3357,
+     "startNumber": 30
+    },
+    {
+     "endNumber": 101,
+     "productPrice": 5.8158,
+     "startNumber": 100
+    },
+    {
+     "endNumber": 103,
+     "productPrice": 5.8158,
+     "startNumber": 102
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 5.8158,
+     "startNumber": 104
+    }
+   ],
+   "componentSpecificationEn": "MSOP-10",
+   "componentTypeEn": "Surge Protection Devices (SPDs)",
+   "dataManualUrl": "https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_Analog-Devices-LTC4368IMS-2-TRPBF_C688403.pdf",
+   "describe": "-40℃~+85℃ 1 1.1mm 2.5V~60V 3mV 3mm 3mm External FET Surface Mount MSOP-10 Surge Protection Devices (SPDs) ROHS",
+   "erpComponentName": "100V UV/OV和反向保护控制器，带双向断路器",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/surge-protection-devices-spds_analog-devices-ltc4368ims-2-trpbf_C688403.html",
+   "leastPatchNumber": 0,
+   "lossNumber": 0,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 100
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Threshold Voltage",
+     "attribute_value_name": "50mV"
+    },
+    {
+     "attribute_name_en": "Peak Output Current(Sink)",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "2.5V~60V"
+    },
+    {
+     "attribute_name_en": "FET Type",
+     "attribute_value_name": "External FET"
+    },
+    {
+     "attribute_name_en": "Trigger Current",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Mounting Type",
+     "attribute_value_name": "Surface Mount"
+    },
+    {
+     "attribute_name_en": "RDS(on)",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Peak Output Current(Source)",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Length",
+     "attribute_value_name": "3mm"
+    },
+    {
+     "attribute_name_en": "Number of Lines",
+     "attribute_value_name": "1"
+    },
+    {
+     "attribute_name_en": "Features",
+     "attribute_value_name": "Overcurrent Protection、Under-voltage lockout、Overvoltage clamping protection"
+    },
+    {
+     "attribute_name_en": "Height",
+     "attribute_value_name": "0.75mm"
+    },
+    {
+     "attribute_name_en": "Reset Voltage",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Width",
+     "attribute_value_name": "3mm"
+    },
+    {
+     "attribute_name_en": "Operating temperature",
+     "attribute_value_name": "-40℃~+125℃"
+    }
+   ],
+   "componentBrandEn": "Analog Devices",
+   "componentCode": "C688393",
+   "componentLibraryType": "expand",
+   "componentModelEn": "LTC4368HMS-1#WPBF",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 5.3642,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 29,
+     "productPrice": 5.3642,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 5.3642,
+     "startNumber": 30
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 2.0762,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 2.0031,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 1.9673,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "MSOP-10",
+   "componentTypeEn": "Surge Protection Devices (SPDs)",
+   "dataManualUrl": "https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_Analog-Devices-LTC4368HMS-1-WPBF_C688393.pdf",
+   "describe": "1 2.5V~60V MSOP-10 Surge Protection Devices (SPDs) ROHS",
+   "erpComponentName": "100V UV/OV和反向保护控制器，带双向断路器",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/surge-protection-devices-spds_analog-devices-ltc4368hms-1-wpbf_C688393.html",
+   "leastPatchNumber": 0,
+   "lossNumber": 0,
+   "minPurchaseNum": 2,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Threshold Voltage",
+     "attribute_value_name": "50mV"
+    },
+    {
+     "attribute_name_en": "Peak Output Current(Sink)",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "2.5V~60V"
+    },
+    {
+     "attribute_name_en": "FET Type",
+     "attribute_value_name": "External FET"
+    },
+    {
+     "attribute_name_en": "Trigger Current",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Mounting Type",
+     "attribute_value_name": "Surface Mount"
+    },
+    {
+     "attribute_name_en": "RDS(on)",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Peak Output Current(Source)",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Length",
+     "attribute_value_name": "3mm"
+    },
+    {
+     "attribute_name_en": "Number of Lines",
+     "attribute_value_name": "1"
+    },
+    {
+     "attribute_name_en": "Features",
+     "attribute_value_name": "Overcurrent Protection、Under-voltage lockout、Overvoltage clamping protection"
+    },
+    {
+     "attribute_name_en": "Height",
+     "attribute_value_name": "0.75mm"
+    },
+    {
+     "attribute_name_en": "Reset Voltage",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Width",
+     "attribute_value_name": "3mm"
+    },
+    {
+     "attribute_name_en": "Operating temperature",
+     "attribute_value_name": "-40℃~+125℃"
+    }
+   ],
+   "componentBrandEn": "Analog Devices",
+   "componentCode": "C688396",
+   "componentLibraryType": "expand",
+   "componentModelEn": "LTC4368HMS-2#WPBF",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 3.379,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 29,
+     "productPrice": 2.8998,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 99,
+     "productPrice": 2.6139,
+     "startNumber": 30
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 2.3264,
+     "startNumber": 100
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 2.3264,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 2.3264,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "MSOP-10",
+   "componentTypeEn": "Surge Protection Devices (SPDs)",
+   "dataManualUrl": "https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_Analog-Devices-LTC4368HMS-2-WPBF_C688396.pdf",
+   "describe": "1 2.5V~60V MSOP-10 Surge Protection Devices (SPDs) ROHS",
+   "erpComponentName": "100V UV/OV和反向保护控制器，带双向断路器",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/surge-protection-devices-spds_analog-devices-ltc4368hms-2-wpbf_C688396.html",
+   "leastPatchNumber": 0,
+   "lossNumber": 0,
+   "minPurchaseNum": 3,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Length",
+     "attribute_value_name": "3mm"
+    },
+    {
+     "attribute_name_en": "Threshold Voltage",
+     "attribute_value_name": "50mV"
+    },
+    {
+     "attribute_name_en": "Number of Lines",
+     "attribute_value_name": "1"
+    },
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "2.5V~60V"
+    },
+    {
+     "attribute_name_en": "FET Type",
+     "attribute_value_name": "External FET"
+    },
+    {
+     "attribute_name_en": "Features",
+     "attribute_value_name": "Overcurrent Protection、Under-voltage lockout、Overvoltage clamping protection"
+    },
+    {
+     "attribute_name_en": "Mounting Type",
+     "attribute_value_name": "Surface Mount"
+    },
+    {
+     "attribute_name_en": "Width",
+     "attribute_value_name": "3mm"
+    },
+    {
+     "attribute_name_en": "Operating temperature",
+     "attribute_value_name": "-40℃~+125℃"
+    }
+   ],
+   "componentBrandEn": "Analog Devices",
+   "componentCode": "C3662806",
+   "componentLibraryType": "expand",
+   "componentModelEn": "LTC4368HDD-2#WPBF",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 5.6582,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 29,
+     "productPrice": 5.6582,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 5.6582,
+     "startNumber": 30
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 2.1899,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 2.1135,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 2.0746,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "DFN-10(3x3)",
+   "componentTypeEn": "Surge Protection Devices (SPDs)",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2310091012_Analog-Devices-LTC4368HDD-2-WPBF_C3662806.pdf",
+   "describe": "1 Surface Mount DFN-10(3x3) Surge Protection Devices (SPDs) ROHS",
+   "erpComponentName": "100V UV/OV和反向保护控制器，带双向断路器",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/surge-protection-devices-spds_analog-devices-ltc4368hdd-2-wpbf_C3662806.html",
+   "leastPatchNumber": 0,
+   "lossNumber": 0,
+   "minPurchaseNum": 2,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Length",
+     "attribute_value_name": "3mm"
+    },
+    {
+     "attribute_name_en": "Threshold Voltage",
+     "attribute_value_name": "50mV"
+    },
+    {
+     "attribute_name_en": "Number of Lines",
+     "attribute_value_name": "1"
+    },
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "2.5V~60V"
+    },
+    {
+     "attribute_name_en": "FET Type",
+     "attribute_value_name": "External FET"
+    },
+    {
+     "attribute_name_en": "Features",
+     "attribute_value_name": "Overcurrent Protection、Under-voltage lockout、Overvoltage clamping protection"
+    },
+    {
+     "attribute_name_en": "Mounting Type",
+     "attribute_value_name": "Surface Mount"
+    },
+    {
+     "attribute_name_en": "Width",
+     "attribute_value_name": "3mm"
+    },
+    {
+     "attribute_name_en": "Operating temperature",
+     "attribute_value_name": "-40℃~+125℃"
+    }
+   ],
+   "componentBrandEn": "Analog Devices",
+   "componentCode": "C3662809",
+   "componentLibraryType": "expand",
+   "componentModelEn": "LTC4368HDD-1#WPBF",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 5.6582,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 29,
+     "productPrice": 5.6582,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 5.6582,
+     "startNumber": 30
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 2.1899,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 2.1135,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 2.0746,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "DFN-10(3x3)",
+   "componentTypeEn": "Surge Protection Devices (SPDs)",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2310091012_Analog-Devices-LTC4368HDD-1-WPBF_C3662809.pdf",
+   "describe": "1 Surface Mount DFN-10(3x3) Surge Protection Devices (SPDs) ROHS",
+   "erpComponentName": "100V UV/OV和反向保护控制器，带双向断路器",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/surge-protection-devices-spds_analog-devices-ltc4368hdd-1-wpbf_C3662809.html",
+   "leastPatchNumber": 0,
+   "lossNumber": 0,
+   "minPurchaseNum": 2,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Length",
+     "attribute_value_name": "3mm"
+    },
+    {
+     "attribute_name_en": "Threshold Voltage",
+     "attribute_value_name": "50mV"
+    },
+    {
+     "attribute_name_en": "Number of Lines",
+     "attribute_value_name": "1"
+    },
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "2.5V~60V"
+    },
+    {
+     "attribute_name_en": "FET Type",
+     "attribute_value_name": "External FET"
+    },
+    {
+     "attribute_name_en": "Features",
+     "attribute_value_name": "Overcurrent Protection、Under-voltage lockout、Overvoltage clamping protection"
+    },
+    {
+     "attribute_name_en": "Mounting Type",
+     "attribute_value_name": "Surface Mount"
+    },
+    {
+     "attribute_name_en": "Width",
+     "attribute_value_name": "3mm"
+    },
+    {
+     "attribute_name_en": "Operating temperature",
+     "attribute_value_name": "-40℃~+85℃"
+    }
+   ],
+   "componentBrandEn": "Analog Devices",
+   "componentCode": "C3662877",
+   "componentLibraryType": "expand",
+   "componentModelEn": "LTC4368IDD-2#WPBF",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 5.0068,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 29,
+     "productPrice": 5.0068,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 5.0068,
+     "startNumber": 30
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 1.9381,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 1.8699,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 1.8358,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "DFN-10(3x3)",
+   "componentTypeEn": "Surge Protection Devices (SPDs)",
+   "dataManualUrl": null,
+   "describe": "1 DFN-10(3x3) Surge Protection Devices (SPDs) ROHS",
+   "erpComponentName": "100V UV/OV和反向保护控制器，带双向断路器",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": null,
+   "leastPatchNumber": 2,
+   "lossNumber": 0,
+   "minPurchaseNum": 2,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Length",
+     "attribute_value_name": "3mm"
+    },
+    {
+     "attribute_name_en": "Threshold Voltage",
+     "attribute_value_name": "50mV"
+    },
+    {
+     "attribute_name_en": "Number of Lines",
+     "attribute_value_name": "1"
+    },
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "2.5V~60V"
+    },
+    {
+     "attribute_name_en": "FET Type",
+     "attribute_value_name": "External FET"
+    },
+    {
+     "attribute_name_en": "Features",
+     "attribute_value_name": "Overcurrent Protection、Under-voltage lockout、Overvoltage clamping protection"
+    },
+    {
+     "attribute_name_en": "Mounting Type",
+     "attribute_value_name": "Surface Mount"
+    },
+    {
+     "attribute_name_en": "Width",
+     "attribute_value_name": "3mm"
+    },
+    {
+     "attribute_name_en": "Operating temperature",
+     "attribute_value_name": "-40℃~+85℃"
+    }
+   ],
+   "componentBrandEn": "Analog Devices",
+   "componentCode": "C3662886",
+   "componentLibraryType": "expand",
+   "componentModelEn": "LTC4368IDD-1#WPBF",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 5.0068,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 29,
+     "productPrice": 5.0068,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 5.0068,
+     "startNumber": 30
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 1.9381,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 1.8699,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 1.8358,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "DFN-10(3x3)",
+   "componentTypeEn": "Surge Protection Devices (SPDs)",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2310091012_Analog-Devices-LTC4368IDD-1-WPBF_C3662886.pdf",
+   "describe": "1 DFN-10(3x3) Surge Protection Devices (SPDs) ROHS",
+   "erpComponentName": "100V UV/OV和反向保护控制器，带双向断路器",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/surge-protection-devices-spds_analog-devices-ltc4368idd-1-wpbf_C3662886.html",
+   "leastPatchNumber": 0,
+   "lossNumber": 0,
+   "minPurchaseNum": 2,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Length",
+     "attribute_value_name": "3mm"
+    },
+    {
+     "attribute_name_en": "Threshold Voltage",
+     "attribute_value_name": "50mV"
+    },
+    {
+     "attribute_name_en": "Number of Lines",
+     "attribute_value_name": "1"
+    },
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "2.5V~60V"
+    },
+    {
+     "attribute_name_en": "FET Type",
+     "attribute_value_name": "External FET"
+    },
+    {
+     "attribute_name_en": "Features",
+     "attribute_value_name": "Overcurrent Protection、Under-voltage lockout、Overvoltage clamping protection"
+    },
+    {
+     "attribute_name_en": "Mounting Type",
+     "attribute_value_name": "Surface Mount"
+    },
+    {
+     "attribute_name_en": "Width",
+     "attribute_value_name": "3mm"
+    },
+    {
+     "attribute_name_en": "Operating temperature",
+     "attribute_value_name": "-40℃~+125℃"
+    }
+   ],
+   "componentBrandEn": "Analog Devices",
+   "componentCode": "C3662957",
+   "componentLibraryType": "expand",
+   "componentModelEn": "LTC4368HDD-1#WTRPBF",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 12.2538,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 29,
+     "productPrice": 11.7014,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 99,
+     "productPrice": 10.7446,
+     "startNumber": 30
+    },
+    {
+     "endNumber": 101,
+     "productPrice": 9.9096,
+     "startNumber": 100
+    },
+    {
+     "endNumber": 103,
+     "productPrice": 9.9096,
+     "startNumber": 102
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 9.9096,
+     "startNumber": 104
+    }
+   ],
+   "componentSpecificationEn": "DFN-10(3x3)",
+   "componentTypeEn": "Surge Protection Devices (SPDs)",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2310091012_Analog-Devices-LTC4368HDD-1-WTRPBF_C3662957.pdf",
+   "describe": "1 External FET Surface Mount DFN-10(3x3) Surge Protection Devices (SPDs) ROHS",
+   "erpComponentName": "100V UV/OV和反向保护控制器，带双向断路器",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/surge-protection-devices-spds_analog-devices-ltc4368hdd-1-wtrpbf_C3662957.html",
+   "leastPatchNumber": 0,
+   "lossNumber": 0,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 5
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Threshold Voltage",
+     "attribute_value_name": "50mV"
+    },
+    {
+     "attribute_name_en": "Peak Output Current(Sink)",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "2.5V~60V"
+    },
+    {
+     "attribute_name_en": "FET Type",
+     "attribute_value_name": "External FET"
+    },
+    {
+     "attribute_name_en": "Trigger Current",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Mounting Type",
+     "attribute_value_name": "Surface Mount"
+    },
+    {
+     "attribute_name_en": "RDS(on)",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Peak Output Current(Source)",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Length",
+     "attribute_value_name": "3mm"
+    },
+    {
+     "attribute_name_en": "Number of Lines",
+     "attribute_value_name": "1"
+    },
+    {
+     "attribute_name_en": "Features",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Height",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Reset Voltage",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Width",
+     "attribute_value_name": "3mm"
+    },
+    {
+     "attribute_name_en": "Operating temperature",
+     "attribute_value_name": "0℃~+70℃"
+    }
+   ],
+   "componentBrandEn": "Analog Devices",
+   "componentCode": "C688381",
+   "componentLibraryType": "expand",
+   "componentModelEn": "LTC4368CDD-1#TRPBF",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 3.9103,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 11,
+     "productPrice": 3.9103,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 3.9103,
+     "startNumber": 12
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 1.5141,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 1.4605,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 1.4345,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "DFN-10-EP(3x3)",
+   "componentTypeEn": "Surge Protection Devices (SPDs)",
+   "dataManualUrl": "",
+   "describe": "1 DFN-10-EP(3x3) Surge Protection Devices (SPDs) ROHS",
+   "erpComponentName": "具双向电路断路器的 100V UV/OV 和反向保护控制器",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/surge-protection-devices-spds_analog-devices-ltc4368cdd-1-trpbf_C688381.html",
+   "leastPatchNumber": 0,
+   "lossNumber": 0,
+   "minPurchaseNum": 3,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Threshold Voltage",
+     "attribute_value_name": "50mV"
+    },
+    {
+     "attribute_name_en": "Peak Output Current(Sink)",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "2.5V~60V"
+    },
+    {
+     "attribute_name_en": "FET Type",
+     "attribute_value_name": "External FET"
+    },
+    {
+     "attribute_name_en": "Trigger Current",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Mounting Type",
+     "attribute_value_name": "Surface Mount"
+    },
+    {
+     "attribute_name_en": "RDS(on)",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Peak Output Current(Source)",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Length",
+     "attribute_value_name": "3mm"
+    },
+    {
+     "attribute_name_en": "Number of Lines",
+     "attribute_value_name": "1"
+    },
+    {
+     "attribute_name_en": "Features",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Height",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Reset Voltage",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Width",
+     "attribute_value_name": "3mm"
+    },
+    {
+     "attribute_name_en": "Operating temperature",
+     "attribute_value_name": "0℃~+70℃"
+    }
+   ],
+   "componentBrandEn": "Analog Devices",
+   "componentCode": "C688383",
+   "componentLibraryType": "expand",
+   "componentModelEn": "LTC4368CDD-2#TRPBF",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 3.9103,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 11,
+     "productPrice": 3.9103,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 3.9103,
+     "startNumber": 12
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 1.5141,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 1.4605,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 1.4345,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "DFN-10-EP(3x3)",
+   "componentTypeEn": "Surge Protection Devices (SPDs)",
+   "dataManualUrl": "",
+   "describe": "1 DFN-10-EP(3x3) Surge Protection Devices (SPDs) ROHS",
+   "erpComponentName": "具双向电路断路器的 100V UV/OV 和反向保护控制器",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/surge-protection-devices-spds_analog-devices-ltc4368cdd-2-trpbf_C688383.html",
+   "leastPatchNumber": 0,
+   "lossNumber": 0,
+   "minPurchaseNum": 3,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Threshold Voltage",
+     "attribute_value_name": "50mV"
+    },
+    {
+     "attribute_name_en": "Peak Output Current(Sink)",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "2.5V~60V"
+    },
+    {
+     "attribute_name_en": "FET Type",
+     "attribute_value_name": "External FET"
+    },
+    {
+     "attribute_name_en": "Trigger Current",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Mounting Type",
+     "attribute_value_name": "Surface Mount"
+    },
+    {
+     "attribute_name_en": "RDS(on)",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Peak Output Current(Source)",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Length",
+     "attribute_value_name": "3mm"
+    },
+    {
+     "attribute_name_en": "Number of Lines",
+     "attribute_value_name": "1"
+    },
+    {
+     "attribute_name_en": "Features",
+     "attribute_value_name": "Overcurrent Protection、Under-voltage lockout、Overvoltage clamping protection"
+    },
+    {
+     "attribute_name_en": "Height",
+     "attribute_value_name": "0.75mm"
+    },
+    {
+     "attribute_name_en": "Reset Voltage",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Width",
+     "attribute_value_name": "3mm"
+    },
+    {
+     "attribute_name_en": "Operating temperature",
+     "attribute_value_name": "0℃~+70℃"
+    }
+   ],
+   "componentBrandEn": "Analog Devices",
+   "componentCode": "C688385",
+   "componentLibraryType": "expand",
+   "componentModelEn": "LTC4368CMS-1#TRPBF",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 3.9103,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 11,
+     "productPrice": 3.9103,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 3.9103,
+     "startNumber": 12
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 1.5141,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 1.4605,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 1.4345,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "MSOP-10",
+   "componentTypeEn": "Surge Protection Devices (SPDs)",
+   "dataManualUrl": "https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_Analog-Devices-LTC4368CMS-1-TRPBF_C688385.pdf",
+   "describe": "1 MSOP-10 Surge Protection Devices (SPDs) ROHS",
+   "erpComponentName": "100V UV/OV和反向保护控制器，带双向断路器",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/surge-protection-devices-spds_analog-devices-ltc4368cms-1-trpbf_C688385.html",
+   "leastPatchNumber": 0,
+   "lossNumber": 0,
+   "minPurchaseNum": 3,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Threshold Voltage",
+     "attribute_value_name": "50mV"
+    },
+    {
+     "attribute_name_en": "Peak Output Current(Sink)",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "2.5V~60V"
+    },
+    {
+     "attribute_name_en": "FET Type",
+     "attribute_value_name": "External FET"
+    },
+    {
+     "attribute_name_en": "Trigger Current",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Mounting Type",
+     "attribute_value_name": "Surface Mount"
+    },
+    {
+     "attribute_name_en": "RDS(on)",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Peak Output Current(Source)",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Length",
+     "attribute_value_name": "3mm"
+    },
+    {
+     "attribute_name_en": "Number of Lines",
+     "attribute_value_name": "1"
+    },
+    {
+     "attribute_name_en": "Features",
+     "attribute_value_name": "Overcurrent Protection、Under-voltage lockout、Overvoltage clamping protection"
+    },
+    {
+     "attribute_name_en": "Height",
+     "attribute_value_name": "0.75mm"
+    },
+    {
+     "attribute_name_en": "Reset Voltage",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Width",
+     "attribute_value_name": "3mm"
+    },
+    {
+     "attribute_name_en": "Operating temperature",
+     "attribute_value_name": "0℃~+70℃"
+    }
+   ],
+   "componentBrandEn": "Analog Devices",
+   "componentCode": "C688386",
+   "componentLibraryType": "expand",
+   "componentModelEn": "LTC4368CMS-2#TRPBF",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 3.9103,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 11,
+     "productPrice": 3.9103,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 3.9103,
+     "startNumber": 12
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 1.5141,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 1.4605,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 1.4345,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "MSOP-10",
+   "componentTypeEn": "Surge Protection Devices (SPDs)",
+   "dataManualUrl": "https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_Analog-Devices-LTC4368CMS-2-TRPBF_C688386.pdf",
+   "describe": "1 MSOP-10 Surge Protection Devices (SPDs) ROHS",
+   "erpComponentName": "100V UV/OV和反向保护控制器，带双向断路器",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/surge-protection-devices-spds_analog-devices-ltc4368cms-2-trpbf_C688386.html",
+   "leastPatchNumber": 0,
+   "lossNumber": 0,
+   "minPurchaseNum": 3,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Threshold Voltage",
+     "attribute_value_name": "50mV"
+    },
+    {
+     "attribute_name_en": "Peak Output Current(Sink)",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "2.5V~60V"
+    },
+    {
+     "attribute_name_en": "FET Type",
+     "attribute_value_name": "External FET"
+    },
+    {
+     "attribute_name_en": "Trigger Current",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Mounting Type",
+     "attribute_value_name": "Surface Mount"
+    },
+    {
+     "attribute_name_en": "RDS(on)",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Peak Output Current(Source)",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Length",
+     "attribute_value_name": "3mm"
+    },
+    {
+     "attribute_name_en": "Number of Lines",
+     "attribute_value_name": "1"
+    },
+    {
+     "attribute_name_en": "Features",
+     "attribute_value_name": "Overcurrent Protection、Under-voltage lockout、Overvoltage clamping protection"
+    },
+    {
+     "attribute_name_en": "Height",
+     "attribute_value_name": "0.75mm"
+    },
+    {
+     "attribute_name_en": "Reset Voltage",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Width",
+     "attribute_value_name": "3mm"
+    },
+    {
+     "attribute_name_en": "Operating temperature",
+     "attribute_value_name": "-40℃~+125℃"
+    }
+   ],
+   "componentBrandEn": "Analog Devices",
+   "componentCode": "C688388",
+   "componentLibraryType": "expand",
+   "componentModelEn": "LTC4368HDD-1#TRPBF",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 4.911,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 11,
+     "productPrice": 4.911,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 4.911,
+     "startNumber": 12
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 1.9007,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 1.8341,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 1.8016,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "DFN-10-EP(3x3)",
+   "componentTypeEn": "Surge Protection Devices (SPDs)",
+   "dataManualUrl": "https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_Analog-Devices-LTC4368HDD-1-TRPBF_C688388.pdf",
+   "describe": "1 DFN-10-EP(3x3) Surge Protection Devices (SPDs) ROHS",
+   "erpComponentName": "100V UV/OV和反向保护控制器，带双向断路器",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/surge-protection-devices-spds_analog-devices-ltc4368hdd-1-trpbf_C688388.html",
+   "leastPatchNumber": 0,
+   "lossNumber": 0,
+   "minPurchaseNum": 2,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Threshold Voltage",
+     "attribute_value_name": "50mV"
+    },
+    {
+     "attribute_name_en": "Peak Output Current(Sink)",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "2.5V~60V"
+    },
+    {
+     "attribute_name_en": "FET Type",
+     "attribute_value_name": "External FET"
+    },
+    {
+     "attribute_name_en": "Trigger Current",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Mounting Type",
+     "attribute_value_name": "Surface Mount"
+    },
+    {
+     "attribute_name_en": "RDS(on)",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Peak Output Current(Source)",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Length",
+     "attribute_value_name": "3mm"
+    },
+    {
+     "attribute_name_en": "Number of Lines",
+     "attribute_value_name": "1"
+    },
+    {
+     "attribute_name_en": "Features",
+     "attribute_value_name": "Overcurrent Protection、Under-voltage lockout、Overvoltage clamping protection"
+    },
+    {
+     "attribute_name_en": "Height",
+     "attribute_value_name": "0.75mm"
+    },
+    {
+     "attribute_name_en": "Reset Voltage",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Width",
+     "attribute_value_name": "3mm"
+    },
+    {
+     "attribute_name_en": "Operating temperature",
+     "attribute_value_name": "-40℃~+125℃"
+    }
+   ],
+   "componentBrandEn": "Analog Devices",
+   "componentCode": "C688390",
+   "componentLibraryType": "expand",
+   "componentModelEn": "LTC4368HDD-2#TRPBF",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 4.911,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 11,
+     "productPrice": 4.911,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 4.911,
+     "startNumber": 12
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 1.9007,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 1.8341,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 1.8016,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "DFN-10-EP(3x3)",
+   "componentTypeEn": "Surge Protection Devices (SPDs)",
+   "dataManualUrl": "https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_Analog-Devices-LTC4368HDD-2-TRPBF_C688390.pdf",
+   "describe": "1 DFN-10-EP(3x3) Surge Protection Devices (SPDs) ROHS",
+   "erpComponentName": "100V UV/OV和反向保护控制器，带双向断路器",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/surge-protection-devices-spds_analog-devices-ltc4368hdd-2-trpbf_C688390.html",
+   "leastPatchNumber": 0,
+   "lossNumber": 0,
+   "minPurchaseNum": 2,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Threshold Voltage",
+     "attribute_value_name": "50mV"
+    },
+    {
+     "attribute_name_en": "Peak Output Current(Sink)",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "2.5V~60V"
+    },
+    {
+     "attribute_name_en": "FET Type",
+     "attribute_value_name": "External FET"
+    },
+    {
+     "attribute_name_en": "Trigger Current",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Mounting Type",
+     "attribute_value_name": "Surface Mount"
+    },
+    {
+     "attribute_name_en": "RDS(on)",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Peak Output Current(Source)",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Length",
+     "attribute_value_name": "3mm"
+    },
+    {
+     "attribute_name_en": "Number of Lines",
+     "attribute_value_name": "1"
+    },
+    {
+     "attribute_name_en": "Features",
+     "attribute_value_name": "Overcurrent Protection、Short-Circuit  Protection、Under-voltage lockout、Overvoltage clamping protection"
+    },
+    {
+     "attribute_name_en": "Height",
+     "attribute_value_name": "0.75mm"
+    },
+    {
+     "attribute_name_en": "Reset Voltage",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Width",
+     "attribute_value_name": "3mm"
+    },
+    {
+     "attribute_name_en": "Operating temperature",
+     "attribute_value_name": "-40℃~+125℃"
+    }
+   ],
+   "componentBrandEn": "Analog Devices",
+   "componentCode": "C688392",
+   "componentLibraryType": "expand",
+   "componentModelEn": "LTC4368HMS-1#TRPBF",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 4.911,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 11,
+     "productPrice": 4.911,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 4.911,
+     "startNumber": 12
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 1.9007,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 1.8341,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 1.8016,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "MSOP-10",
+   "componentTypeEn": "Surge Protection Devices (SPDs)",
+   "dataManualUrl": "https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_Analog-Devices-LTC4368HMS-1-TRPBF_C688392.pdf",
+   "describe": "1 MSOP-10 Surge Protection Devices (SPDs) ROHS",
+   "erpComponentName": "100V UV/OV和反向保护控制器，带双向断路器",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/surge-protection-devices-spds_analog-devices-ltc4368hms-1-trpbf_C688392.html",
+   "leastPatchNumber": 0,
+   "lossNumber": 0,
+   "minPurchaseNum": 2,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Threshold Voltage",
+     "attribute_value_name": "50mV"
+    },
+    {
+     "attribute_name_en": "Peak Output Current(Sink)",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "2.5V~60V"
+    },
+    {
+     "attribute_name_en": "FET Type",
+     "attribute_value_name": "External FET"
+    },
+    {
+     "attribute_name_en": "Trigger Current",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Mounting Type",
+     "attribute_value_name": "Surface Mount"
+    },
+    {
+     "attribute_name_en": "RDS(on)",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Peak Output Current(Source)",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Length",
+     "attribute_value_name": "3mm"
+    },
+    {
+     "attribute_name_en": "Number of Lines",
+     "attribute_value_name": "1"
+    },
+    {
+     "attribute_name_en": "Features",
+     "attribute_value_name": "Overcurrent Protection、Under-voltage lockout、Overvoltage clamping protection"
+    },
+    {
+     "attribute_name_en": "Height",
+     "attribute_value_name": "0.75mm"
+    },
+    {
+     "attribute_name_en": "Reset Voltage",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Width",
+     "attribute_value_name": "3mm"
+    },
+    {
+     "attribute_name_en": "Operating temperature",
+     "attribute_value_name": "-40℃~+125℃"
+    }
+   ],
+   "componentBrandEn": "Analog Devices",
+   "componentCode": "C688395",
+   "componentLibraryType": "expand",
+   "componentModelEn": "LTC4368HMS-2#TRPBF",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 4.911,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 11,
+     "productPrice": 4.911,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 4.911,
+     "startNumber": 12
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 1.9007,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 1.8341,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 1.8016,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "MSOP-10",
+   "componentTypeEn": "Surge Protection Devices (SPDs)",
+   "dataManualUrl": "https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_Analog-Devices-LTC4368HMS-2-TRPBF_C688395.pdf",
+   "describe": "1 MSOP-10 Surge Protection Devices (SPDs) ROHS",
+   "erpComponentName": "100V UV/OV和反向保护控制器，带双向断路器",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/surge-protection-devices-spds_analog-devices-ltc4368hms-2-trpbf_C688395.html",
+   "leastPatchNumber": 0,
+   "lossNumber": 0,
+   "minPurchaseNum": 2,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Threshold Voltage",
+     "attribute_value_name": "50mV"
+    },
+    {
+     "attribute_name_en": "Peak Output Current(Sink)",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "2.5V~60V"
+    },
+    {
+     "attribute_name_en": "FET Type",
+     "attribute_value_name": "External FET"
+    },
+    {
+     "attribute_name_en": "Trigger Current",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Mounting Type",
+     "attribute_value_name": "Surface Mount"
+    },
+    {
+     "attribute_name_en": "RDS(on)",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Peak Output Current(Source)",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Length",
+     "attribute_value_name": "3mm"
+    },
+    {
+     "attribute_name_en": "Number of Lines",
+     "attribute_value_name": "1"
+    },
+    {
+     "attribute_name_en": "Features",
+     "attribute_value_name": "Overcurrent Protection、Under-voltage lockout、Overvoltage clamping protection"
+    },
+    {
+     "attribute_name_en": "Height",
+     "attribute_value_name": "0.75mm"
+    },
+    {
+     "attribute_name_en": "Reset Voltage",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Width",
+     "attribute_value_name": "3mm"
+    },
+    {
+     "attribute_name_en": "Operating temperature",
+     "attribute_value_name": "-40℃~+85℃"
+    }
+   ],
+   "componentBrandEn": "Analog Devices",
+   "componentCode": "C688398",
+   "componentLibraryType": "expand",
+   "componentModelEn": "LTC4368IDD-1#TRPBF",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 4.292,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 11,
+     "productPrice": 4.292,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 4.292,
+     "startNumber": 12
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 1.6619,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 1.6034,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 1.5742,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "DFN-10-EP(3x3)",
+   "componentTypeEn": "Surge Protection Devices (SPDs)",
+   "dataManualUrl": "https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_Analog-Devices-LTC4368IDD-1-TRPBF_C688398.pdf",
+   "describe": "1 DFN-10-EP(3x3) Surge Protection Devices (SPDs) ROHS",
+   "erpComponentName": "100V UV/OV和反向保护控制器，带双向断路器",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/surge-protection-devices-spds_analog-devices-ltc4368idd-1-trpbf_C688398.html",
+   "leastPatchNumber": 0,
+   "lossNumber": 0,
+   "minPurchaseNum": 3,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Threshold Voltage",
+     "attribute_value_name": "50mV"
+    },
+    {
+     "attribute_name_en": "Peak Output Current(Sink)",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "2.5V~60V"
+    },
+    {
+     "attribute_name_en": "FET Type",
+     "attribute_value_name": "External FET"
+    },
+    {
+     "attribute_name_en": "Trigger Current",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Mounting Type",
+     "attribute_value_name": "Surface Mount"
+    },
+    {
+     "attribute_name_en": "RDS(on)",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Peak Output Current(Source)",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Length",
+     "attribute_value_name": "3mm"
+    },
+    {
+     "attribute_name_en": "Number of Lines",
+     "attribute_value_name": "1"
+    },
+    {
+     "attribute_name_en": "Features",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Height",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Reset Voltage",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Width",
+     "attribute_value_name": "3mm"
+    },
+    {
+     "attribute_name_en": "Operating temperature",
+     "attribute_value_name": "-40℃~+85℃"
+    }
+   ],
+   "componentBrandEn": "Analog Devices",
+   "componentCode": "C688399",
+   "componentLibraryType": "expand",
+   "componentModelEn": "LTC4368IDD-2#TRPBF",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 4.292,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 11,
+     "productPrice": 4.292,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 4.292,
+     "startNumber": 12
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 1.6619,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 1.6034,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 1.5742,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "DFN-10-EP(3x3)",
+   "componentTypeEn": "Surge Protection Devices (SPDs)",
+   "dataManualUrl": "",
+   "describe": "1 DFN-10-EP(3x3) Surge Protection Devices (SPDs) ROHS",
+   "erpComponentName": "具双向电路断路器的 100V UV/OV 和反向保护控制器",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/surge-protection-devices-spds_analog-devices-ltc4368idd-2-trpbf_C688399.html",
+   "leastPatchNumber": 0,
+   "lossNumber": 0,
+   "minPurchaseNum": 3,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Threshold Voltage",
+     "attribute_value_name": "50mV"
+    },
+    {
+     "attribute_name_en": "Peak Output Current(Sink)",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "2.5V~60V"
+    },
+    {
+     "attribute_name_en": "FET Type",
+     "attribute_value_name": "External FET"
+    },
+    {
+     "attribute_name_en": "Trigger Current",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Mounting Type",
+     "attribute_value_name": "Surface Mount"
+    },
+    {
+     "attribute_name_en": "RDS(on)",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Peak Output Current(Source)",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Length",
+     "attribute_value_name": "3mm"
+    },
+    {
+     "attribute_name_en": "Number of Lines",
+     "attribute_value_name": "1"
+    },
+    {
+     "attribute_name_en": "Features",
+     "attribute_value_name": "Overcurrent Protection、Under-voltage lockout、Overvoltage clamping protection"
+    },
+    {
+     "attribute_name_en": "Height",
+     "attribute_value_name": "0.75mm"
+    },
+    {
+     "attribute_name_en": "Reset Voltage",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Width",
+     "attribute_value_name": "3mm"
+    },
+    {
+     "attribute_name_en": "Operating temperature",
+     "attribute_value_name": "-40℃~+125℃"
+    }
+   ],
+   "componentBrandEn": "Analog Devices",
+   "componentCode": "C1881001",
+   "componentLibraryType": "expand",
+   "componentModelEn": "LTC4368HMS-1#WTRPBF",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 4.9499,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 11,
+     "productPrice": 4.9499,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 4.9499,
+     "startNumber": 12
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 1.917,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 1.8487,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 1.8163,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "MSOP-10",
+   "componentTypeEn": "Surge Protection Devices (SPDs)",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2304140030_Analog-Devices-LTC4368HMS-1-WTRPBF_C1881001.pdf",
+   "describe": "1 MSOP-10 Surge Protection Devices (SPDs) ROHS",
+   "erpComponentName": "100V UV/OV和反向保护控制器，带双向断路器",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/surge-protection-devices-spds_analog-devices-ltc4368hms-1-wtrpbf_C1881001.html",
+   "leastPatchNumber": 0,
+   "lossNumber": 0,
+   "minPurchaseNum": 2,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Threshold Voltage",
+     "attribute_value_name": "50mV"
+    },
+    {
+     "attribute_name_en": "Peak Output Current(Sink)",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "2.5V~60V"
+    },
+    {
+     "attribute_name_en": "FET Type",
+     "attribute_value_name": "External FET"
+    },
+    {
+     "attribute_name_en": "Trigger Current",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Mounting Type",
+     "attribute_value_name": "Surface Mount"
+    },
+    {
+     "attribute_name_en": "RDS(on)",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Peak Output Current(Source)",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Length",
+     "attribute_value_name": "3mm"
+    },
+    {
+     "attribute_name_en": "Number of Lines",
+     "attribute_value_name": "1"
+    },
+    {
+     "attribute_name_en": "Features",
+     "attribute_value_name": "Overcurrent Protection、Short-Circuit  Protection、Under-voltage lockout"
+    },
+    {
+     "attribute_name_en": "Height",
+     "attribute_value_name": "0.75mm"
+    },
+    {
+     "attribute_name_en": "Reset Voltage",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Width",
+     "attribute_value_name": "3mm"
+    },
+    {
+     "attribute_name_en": "Operating temperature",
+     "attribute_value_name": "-40℃~+125℃"
+    }
+   ],
+   "componentBrandEn": "Analog Devices",
+   "componentCode": "C1881002",
+   "componentLibraryType": "expand",
+   "componentModelEn": "LTC4368HMS-2#WTRPBF",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 4.9499,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 11,
+     "productPrice": 4.9499,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 4.9499,
+     "startNumber": 12
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 1.917,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 1.8487,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 1.8163,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "MSOP-10",
+   "componentTypeEn": "Surge Protection Devices (SPDs)",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2201280300_Analog-Devices-LTC4368HMS-2-WTRPBF_C1881002.pdf",
+   "describe": "1 MSOP-10 Surge Protection Devices (SPDs) ROHS",
+   "erpComponentName": "100V UV/OV和反向保护控制器，带双向断路器",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/surge-protection-devices-spds_analog-devices-ltc4368hms-2-wtrpbf_C1881002.html",
+   "leastPatchNumber": 0,
+   "lossNumber": 0,
+   "minPurchaseNum": 2,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Length",
+     "attribute_value_name": "3mm"
+    },
+    {
+     "attribute_name_en": "Threshold Voltage",
+     "attribute_value_name": "50mV"
+    },
+    {
+     "attribute_name_en": "Number of Lines",
+     "attribute_value_name": "1"
+    },
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "2.5V~60V"
+    },
+    {
+     "attribute_name_en": "FET Type",
+     "attribute_value_name": "External FET"
+    },
+    {
+     "attribute_name_en": "Features",
+     "attribute_value_name": "Overcurrent Protection、Under-voltage lockout、Overvoltage clamping protection"
+    },
+    {
+     "attribute_name_en": "Mounting Type",
+     "attribute_value_name": "Surface Mount"
+    },
+    {
+     "attribute_name_en": "Width",
+     "attribute_value_name": "3mm"
+    },
+    {
+     "attribute_name_en": "Operating temperature",
+     "attribute_value_name": "-40℃~+125℃"
+    }
+   ],
+   "componentBrandEn": "Analog Devices",
+   "componentCode": "C3662674",
+   "componentLibraryType": "expand",
+   "componentModelEn": "LTC4368HDD-2#WTRPBF",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 5.6582,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 11,
+     "productPrice": 5.6582,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 5.6582,
+     "startNumber": 12
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 2.1899,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 2.1135,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 2.0746,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "DFN-10(3x3)",
+   "componentTypeEn": "Surge Protection Devices (SPDs)",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2310091012_Analog-Devices-LTC4368HDD-2-WTRPBF_C3662674.pdf",
+   "describe": "1 DFN-10(3x3) Surge Protection Devices (SPDs) ROHS",
+   "erpComponentName": "100V UV/OV和反向保护控制器，带双向断路器",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/surge-protection-devices-spds_analog-devices-ltc4368hdd-2-wtrpbf_C3662674.html",
+   "leastPatchNumber": 0,
+   "lossNumber": 0,
+   "minPurchaseNum": 2,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Length",
+     "attribute_value_name": "3mm"
+    },
+    {
+     "attribute_name_en": "Threshold Voltage",
+     "attribute_value_name": "50mV"
+    },
+    {
+     "attribute_name_en": "Number of Lines",
+     "attribute_value_name": "1"
+    },
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "2.5V~60V"
+    },
+    {
+     "attribute_name_en": "FET Type",
+     "attribute_value_name": "External FET"
+    },
+    {
+     "attribute_name_en": "Features",
+     "attribute_value_name": "Overcurrent Protection、Under-voltage lockout、Overvoltage clamping protection"
+    },
+    {
+     "attribute_name_en": "Mounting Type",
+     "attribute_value_name": "Surface Mount"
+    },
+    {
+     "attribute_name_en": "Width",
+     "attribute_value_name": "3mm"
+    },
+    {
+     "attribute_name_en": "Operating temperature",
+     "attribute_value_name": "-40℃~+85℃"
+    }
+   ],
+   "componentBrandEn": "Analog Devices",
+   "componentCode": "C3662683",
+   "componentLibraryType": "expand",
+   "componentModelEn": "LTC4368IDD-1#WTRPBF",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 5.0068,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 11,
+     "productPrice": 5.0068,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 5.0068,
+     "startNumber": 12
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 1.9381,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 1.8699,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 1.8358,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "DFN-10(3x3)",
+   "componentTypeEn": "Surge Protection Devices (SPDs)",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2310091012_Analog-Devices-LTC4368IDD-1-WTRPBF_C3662683.pdf",
+   "describe": "1 DFN-10(3x3) Surge Protection Devices (SPDs) ROHS",
+   "erpComponentName": "100V UV/OV和反向保护控制器，带双向断路器",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/surge-protection-devices-spds_analog-devices-ltc4368idd-1-wtrpbf_C3662683.html",
+   "leastPatchNumber": 0,
+   "lossNumber": 0,
+   "minPurchaseNum": 2,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Length",
+     "attribute_value_name": "3mm"
+    },
+    {
+     "attribute_name_en": "Threshold Voltage",
+     "attribute_value_name": "50mV"
+    },
+    {
+     "attribute_name_en": "Number of Lines",
+     "attribute_value_name": "1"
+    },
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "2.5V~60V"
+    },
+    {
+     "attribute_name_en": "FET Type",
+     "attribute_value_name": "External FET"
+    },
+    {
+     "attribute_name_en": "Features",
+     "attribute_value_name": "Overcurrent Protection、Under-voltage lockout、Overvoltage clamping protection"
+    },
+    {
+     "attribute_name_en": "Mounting Type",
+     "attribute_value_name": "Surface Mount"
+    },
+    {
+     "attribute_name_en": "Width",
+     "attribute_value_name": "3mm"
+    },
+    {
+     "attribute_name_en": "Operating temperature",
+     "attribute_value_name": "-40℃~+85℃"
+    }
+   ],
+   "componentBrandEn": "Analog Devices",
+   "componentCode": "C3662705",
+   "componentLibraryType": "expand",
+   "componentModelEn": "LTC4368IDD-2#WTRPBF",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 5.0068,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 11,
+     "productPrice": 5.0068,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 5.0068,
+     "startNumber": 12
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 1.9381,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 1.8699,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 1.8358,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "DFN-10(3x3)",
+   "componentTypeEn": "Surge Protection Devices (SPDs)",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2310091012_Analog-Devices-LTC4368IDD-2-WTRPBF_C3662705.pdf",
+   "describe": "1 DFN-10(3x3) Surge Protection Devices (SPDs) ROHS",
+   "erpComponentName": "100V UV/OV和反向保护控制器，带双向断路器",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/surge-protection-devices-spds_analog-devices-ltc4368idd-2-wtrpbf_C3662705.html",
+   "leastPatchNumber": 0,
+   "lossNumber": 0,
+   "minPurchaseNum": 2,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  }
+ ],
+ "returned": 36,
+ "schema": 1,
+ "total_matches": 36
+}

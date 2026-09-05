@@ -1,0 +1,12 @@
+{
+ "endpoint": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
+ "exhausted": true,
+ "fetched_utc": "2026-09-05T01:07:53Z",
+ "keyword": "0805WAF120-1T5E",
+ "page_size": 25,
+ "pages": 2,
+ "records": [],
+ "returned": 0,
+ "schema": 1,
+ "total_matches": 0
+}

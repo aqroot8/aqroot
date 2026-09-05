@@ -6305,6 +6305,181 @@ Evidence, all under `hardware/demo/manufacturing/evidence/`:
 `d585-pour-damage-neck.json` (`c0d293a8...`),
 `d585-neck-contract-rerun.json` (`a3f58da0...`).
 
+# D-615 · 2026-09-05 · Demo THE BOM IS 100 % ORDERABLE AND THE SAFETY PART WAS ORDERED IN THE WRONG PACKAGE: 61 identities ruled against a live distributor record, and a screen that asks the C26 question of every line at once
+
+D-614 named this task and named the reason it could not do it: **D-096 binds** --
+a part number configured from an ordering scheme is a hypothesis until a
+distributor record confirms lifecycle and stock, *"and this session had none to
+read."*  This session read one, 265 times.
+
+**NO COPPER CHANGED.**  The authoritative board is byte-identical at
+`c8e421aa50144fe396aedb5e226aaabeb815bd69ffaf6e04f549ded43831d103` -- the same
+sha D-612 promoted, D-613 reviewed and D-614 left untouched.  `verify_promotion.py`
+**14/14**, 0 objects added, 0 removed, DRC 199/5/1 inherited with **ZERO
+attributable**, unconnected **73 unchanged**, schematic parity **249 warnings /
+0 errors, unchanged** across 251 further symbol properties, all four DRU
+contracts live, `protected_copper.py` **15 nets / 393 objects IDENTICAL**,
+`population_contract.py` POP1-POP4, `pour_bond_contract.py` P1-P4,
+`neck_contract.py` N1-N3.
+
+**`FAB7` IS CLOSED.  COVERAGE 75.3 % -> 100.0 %, ORDERABLE REFERENCES 186 -> 247
+OF 247, AND `needs_a_sourcing_decision` IS ZERO LINES.**  The whole
+`fab_package_contract.py` reads **FAB1-FAB8 PASS** for the first time.
+
+## The instrument: a live record that is KEPT
+
+`jlc_live.py` reads the JLCPCB overseas parts catalogue -- the same catalogue
+D-167, D-176, D-179, D-202, D-206, D-210, D-211 and D-223 were confirmed
+against, and the right one to ask because it is also the assembler.  It writes
+every answer to `evidence/jlc-live/`, **225 archived queries, each with the UTC
+minute it was read**, and replays the archive unless `--refresh` is given.  That
+is what makes a ruling built on it reproducible: **the four plans this decision
+wrote, replayed against the `HEAD` schematic in an isolated tree, return all ten
+sheets AND the project symbol library BYTE-IDENTICAL, 11 of 11.**
+
+## `rule_open_sourcing.py` -- gates that measure the consequence
+
+26 lines / 45 parts had no prior anywhere in this repository.  All 26 are ruled.
+Every candidate is read as a PART, from the record's own parametric attributes,
+never from its name -- and the single sharpest proof of why arrived on the
+thinnest line in the set.  **`R69` is 1.87 Ω and the part chosen for it is
+UNI-ROYAL `0603WAF187KT5E`; `0603WAF1873T5E` is 187 kΩ.  One character, five
+orders of magnitude, two separate LCSC records (`C422967` / `C22896`).**  A
+gate that matched on the ordering scheme would have taken either.
+
+    LAND        the catalogue's own package field must equal the board's land.
+                This is the direct C26 guard (D-613) and it is now asked of
+                EVERY sourced line, not just the new ones.
+    MAGNITUDE   the record's Capacitance / Resistance attribute, parsed.
+    TOLERANCE   at or inside what the value string demands.
+    DIELECTRIC  RANKED, so C0G satisfies an X7R demand and X5R does not; a
+                capacitor whose demand is SILENT must still reach X5R, which is
+                the beta-dm audit's own reasoning made executable.
+    VOLTAGE     `screen_bom_sourcing.net_gate`, unchanged: 2x the node's
+                OPERATING maximum and survival of its ABSOLUTE maximum.
+    POWER       NEW, and built in net_gate's image: 2x the operating
+                dissipation AND survival of the single-fault dissipation.
+    BRAND       D-206 verbatim -- *a loose keyword search returns a plausible
+                WRONG part more often than it returns nothing*.
+    STOCK       two limbs.  The HARD one is whether the first build can be
+                bought at all; the comfort floor is a purchasing judgement and
+                is FLAGGED, never used to refuse a part that already has ten
+                times what the build needs.
+
+**THE POWER GATE NEEDED 31 NODE VOLTAGES THAT DID NOT EXIST.**  `NET_MAX_DC`
+grew from 17 established nodes to 48, every one naming the supply or the part
+limit that bounds it -- and one of them was only findable because the board
+already knew it: `LTC_GATE`'s ceiling is **`VOUT` + 13.1 V**, from the U18
+footprint's own description of the LTC4368 charge pump, so 4.35 + 13.1 =
+17.45 V, corroborated independently by the NTMD4820N's own V_GS abs max.
+
+**AND THE OVER-BOUND IS NOT ALWAYS AN OVER-BOUND.**  V²/R with the whole node
+voltage across the part is honest for a 2.2 MΩ divider leg and nonsense on
+12 Ω.  On **`R95` it UNDERSTATES the answer**, because the single-fault case
+puts a reversed cell IN SERIES with VBUS and the difference across the part
+exceeds either node's bound -- 154 mW against the 54 mW the node bound implies.
+Ten references therefore carry an explicit current ruling taken from this
+repository's own derivations, and **`R24`'s ruling exposed a second thing**: its
+Value string says only `12R`, while its symbol note and the sheet-07 text both
+read *`12R 1 percent`* and price the 150 mA corner at *`R -1 %`*.  A 5 % part
+satisfies the STRING and contradicts the DERIVATION.  `C12` is the same shape --
+Value `22uF`, note *"the part is specified X7R 16 V in 1210"*.  Both are now
+gated on the note, and both landed better than the note asked: `R24` a 500 mW
+1 % anti-surge 0805, `C12` a 25 V X7R.
+
+**`R75` GOT A PART CLASS, NOT A NUMBER.**  `15mR 1% 1W` is satisfied on paper by
+a thick film at **±1500 ppm/°C** -- 19 % of drift over −40…+85 °C, on the shunt
+that sets the LTC4368's 3.33 A trip and everything the gauge reports.  The gate
+now requires a CURRENT-SENSE / ALLOY class part at ≤100 ppm/°C; Bourns
+`CRA2512-FZ-R015ELF`, ±50 ppm/°C, 3 W, LCSC `C2073490`.
+
+## The 16 TUNE parts are bought, and told they are provisional
+
+DEVICE_SPEC s.14 is right that no part number closes an NFC matching value --
+but **you cannot build a first article out of an empty position.**  All eight
+TUNE lines now carry a FIRST-ARTICLE part number whose own `Note_Sourcing`
+says, in the schematic, that it *is expected to change* after the VNA.  Two
+things are refused rather than invented: the ST25R3916 tank node voltage (so
+those lines are gated on the sheet's own 50 V C0G ruling and the unestablished
+node is recorded as an open item) and the tank CURRENT (so `R114`-`R117` took
+the highest-rated part their 0603 land offers and the dissipation is a
+first-article measurement).  `C75`/`C77` landed on Murata's **GQM** high-Q RF
+series; `C79`/`C80` on the 10 pF 50 V C0G D-123 asked for.
+
+## THE FINDING: THE MOST SAFETY-CRITICAL PART WAS ORDERED IN THE WRONG PACKAGE
+
+`screen_part_land_parity.py` asks the `C26` question of every sourced line at
+once, against the catalogue's own package field.  **119 lines carry a code; 75
+are comparable and 74 MATCH.  The one that did not is `U18`.**
+
+    board land       Package_SO:MSOP-10_3x3mm_P0.5mm
+    BOM order code   LTC4368IDD-1#PBF
+    live record      DFN-10-EP(3x3), body height 0.75 mm
+                     (the MS variants read MSOP-10, 1.1 mm)
+
+**`DD` IS DFN.**  D-099 locked `LTC4368IMS-1#PBF`, MSOP-10, under FBV2-PWR-002's
+own words -- *"every new safety-critical part is leaded and inspectable ... no
+bottom-terminated parts"* -- and D-099 corrected the FOOTPRINT while the part
+identity stayed DFN.  Worse, the **CACHED library symbol inside the sheet and
+the project's own `AQROOT_Beta.kicad_sym` both still carried the DD code AND a
+`Package` field reading *"DD, 10-lead 3 mm x 3 mm plastic DFN, exposed pad"*
+beside a `Footprint` field that already said MSOP-10** -- so an *Update Symbols
+from Library* would have silently undone any fix applied to the instance alone.
+
+**CORRECTED to `LTC4368IMS-1#TRPBF`, LCSC `C688401`, MSOP-10, I grade, -1
+suffix, 3 in stock, read live 2026-09-05.**  `LTC4368IMS-1#PBF` (`C688400`) is
+**stock 0**; `#TRPBF` is the tape-and-reel order code of the identical device --
+an order-code change, D-210's precedent exactly, **not an electrical change**.
+`LTC4368HMS-1#PBF` (`C688391`, 2 in stock) is the same-land wider-temp
+alternate.  Instance, cached symbol, project library and the dated Note2 are all
+corrected or marked SUPERSEDED, and `apply_bom_sourcing.py` gained the primitive
+that made it auditable: a correction must **NAME the exact string it is
+overwriting**, in the property (`replaces`) or in the file (`text_replaces`), or
+nothing is written.  Negative controls confirm both refuse a wrong name.
+
+## `J1` and `J8` closed, and the purchasing brief that is left
+
+DEVICE_SPEC s.16 item 8 listed two absent LCSC codes.  Both are now confirmed
+live: `J8` JST `SM04B-SRSS-TB(LF)(SN)` -> **`C160404`, 69 510 in stock**, every
+parametric field corroborating D-238; `J1` Hirose `FH69-50S-0.5SH` ->
+**`C25955556`, 790 in stock**, the genuine Hirose part D-206 confirmed, so `J1`
+stays machine-placed.
+
+**WHAT IS NOT CLOSED IS PURCHASING, AND IT IS WRITTEN DOWN.**  Nine lines sit
+under 10x the first-five need on the assembler's own catalogue and five read
+ZERO: `J5`, `L4`, `MK1`, `U19`, `U9`, then `Q2`/`Q3` 0, `U2`/`U3` 1, `U18` 3,
+`D8` 7.  Most are already CONSIGNED classes under D-206 and are bought from a
+broadline distributor, so **a zero on this catalogue is a brief to work, not a
+design defect** -- `evidence/d615-purchasing-short.csv`, with the UTC minute
+each was read.
+
+## Evidence
+
+All under `hardware/demo/manufacturing/evidence/`: `d615-verify.json` (14/14),
+`d615-fab-package-contract.json` (FAB1-FAB8 PASS, coverage 1.0),
+`d615-open-sourcing-rule.json` / `-plan.json` / `-apply.json`,
+`d615-tune-rule.json` / `-plan.json` / `-apply.json`,
+`d615-u18-package-plan.json` / `-apply.json`,
+`d615-connector-lcsc-plan.json` / `-apply.json`,
+`d615-part-land-parity-before.json` (the MISMATCH) and
+`d615-part-land-parity.json` (PASS), `d615-purchasing-short.csv`,
+`d615-population.json`, `d615-pourbond.json`, `d615-neck.json`,
+`d615-protected-copper.json`, and the 225-file `jlc-live/` archive.
+
+`hardware/beta-v2/` untouched.  D-269 / D-186, `ACC_5V_SW_EN`, `ACC_3V3_SW`,
+RGB and XGPIO4/5 untouched.  **No owner decision.**
+
+**NEXT: THE FABRICATION PACKAGE HAS NO OPEN CONTRACT LEFT, SO THE NEXT BLOCKER
+IS THE ONE NO CONTRACT HERE MEASURES -- the 199 `lib_footprint_issues` and the
+48 `footprint_symbol_mismatch` parity warnings, which are 247 unproven claims
+that each land pattern matches its part's datasheet drawing.**  `U18` is the
+proof that this class is real and that the existing checks cannot see it: the
+land was right and the ORDER CODE was wrong, and nothing in this repository
+noticed until a distributor was asked.  The footprint-verification ledger
+(`docs/full-beta-v2/assembly/FOOTPRINT_VERIFICATION_LEDGER.md`) is where that
+work already lives.
+
+
 # D-614 · 2026-09-05 · Demo THE BOM IS THREE QUARTERS ORDERABLE: 122 part identities grafted from prior CTO audits, every one re-read off the PART instead of the line, and four gates that had never been run
 
 D-613 named the next task: **close the sourcing gap** -- graft the 31

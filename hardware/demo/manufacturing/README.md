@@ -5,6 +5,97 @@ reviewed but is NOT releasable.  The BOM is **75.3 % orderable** and the
 residual is 26 lines needing a purchasing decision plus 8 lines whose value is
 not yet final.
 
+## The BOM is 100 % orderable, and the safety part was ordered in the wrong package (2026-09-05, D-615)
+
+    authority c8e421aa... UNCHANGED -- 0 objects added, 0 removed, no copper
+    FAB7 coverage        75.3 %  ->  100.0 %   (186 -> 247 of 247 references)
+    needs_a_sourcing_decision   26 lines / 45 parts  ->  ZERO
+    fab_package_contract.py     FAB1-FAB8 PASS, for the first time
+    14/14 verify_promotion;  POP1-POP4;  P1-P4;  N1-N3
+    protected copper 15 nets / 393 objects IDENTICAL
+
+D-614 stopped for a stated reason: **D-096 binds** -- a part number configured
+from an ordering scheme is a hypothesis until a distributor record confirms
+lifecycle and stock, and that session had none to read.
+
+**THE INSTRUMENT IS A RECORD THAT IS KEPT.**  `jlc_live.py` reads the JLCPCB
+parts catalogue -- the same one D-167, D-176, D-179, D-202, D-206, D-210, D-211
+and D-223 were confirmed against -- and writes every answer to
+`evidence/jlc-live/` with the UTC minute it was read, **225 archived queries**.
+It replays the archive unless `--refresh` is given, which is what makes a ruling
+built on it reproducible: the four plans D-615 wrote, replayed against the
+`HEAD` schematic in an isolated tree, return **all ten sheets AND the project
+symbol library BYTE-IDENTICAL, 11 of 11**.
+
+**`rule_open_sourcing.py` -- the gates measure the consequence.**  Land (the
+direct `C26` guard), magnitude, tolerance, RANKED dielectric, `net_gate`
+unchanged, a NEW dissipation gate built in `net_gate`'s image (2x operating AND
+survives single fault), vendor (D-206: *a loose keyword search returns a
+plausible WRONG part more often than it returns nothing*) and stock in two
+limbs -- the hard one is whether the first build can be bought, the comfort
+floor is FLAGGED and never used to refuse a part that already has ten times what
+the build needs.
+
+Three things the obvious answer would have got wrong:
+
+    R69 is 1.87 ohm  ->  0603WAF187KT5E  C422967
+    0603WAF1873T5E   ->  187 kOhm        C22896
+        one character, five orders of magnitude, two catalogue records
+
+    R95's node over-bound UNDERSTATES its dissipation: V^2/R across the node
+    gives 54 mW, but the single-fault case puts a reversed cell IN SERIES
+    with VBUS and the answer is 154 mW
+
+    R24 and C12's Value strings are LOOSER than their own symbol notes --
+    `12R` against "12R 1 percent", `22uF` against "specified X7R 16 V in
+    1210".  A 5 % part satisfies the STRING and contradicts the DERIVATION.
+
+The dissipation gate needed 31 node voltages that did not exist, so `NET_MAX_DC`
+grew **17 -> 48** established nodes, each naming the supply or part limit that
+bounds it.  `LTC_GATE` came from the board itself: the U18 footprint's own
+description gives the LTC4368 charge pump **up to 13.1 V above VOUT**.
+
+`R75` is gated on a part CLASS.  `15mR 1% 1W` is satisfied on paper by a thick
+film at +/-1500 ppm/degC -- 19 % of drift over -40..+85 degC, on the shunt that
+sets the LTC4368's 3.33 A trip.  The gate requires a current-sense / alloy part
+at <=100 ppm/degC.
+
+**THE FINDING.**  `screen_part_land_parity.py` asks D-613's `C26` question of
+every sourced line at once, against the catalogue's own package field.  119
+lines carry a code, 75 are comparable, **74 MATCH and `U18` did not**:
+
+    board land       Package_SO:MSOP-10_3x3mm_P0.5mm
+    BOM order code   LTC4368IDD-1#PBF
+    live record      DFN-10-EP(3x3), body 0.75 mm  (MS variants 1.1 mm)
+
+`DD` is DFN.  D-099 locked `LTC4368IMS-1#PBF`, MSOP-10, under FBV2-PWR-002 --
+*"no bottom-terminated parts"* on the most safety-critical component -- and
+corrected the FOOTPRINT while the identity stayed DFN.  The **cached library
+symbol AND the project `.kicad_sym`** both still carried it, with a `Package`
+field describing a DFN beside a `Footprint` field already reading MSOP-10, so
+*Update Symbols from Library* would have undone an instance-only fix.
+Corrected to `LTC4368IMS-1#TRPBF`, LCSC `C688401` -- the tape-and-reel order
+code of the identical device (D-210's precedent), not an electrical change.
+
+`apply_bom_sourcing.py` gained the primitive that made that auditable: a
+correction must NAME the exact string it overwrites -- `replaces` for a symbol
+property, `text_replaces` for a file -- or nothing is written.  The third
+verdict of the parity screen is **UNCOMPARABLE**, stated out loud for 44 lines,
+because a footprint named `MAX17048_T822` names a PART and counting it as a
+pass would be D-611's failure again.
+
+**STILL OPEN, AND IT IS PURCHASING.**  Nine lines sit under 10x the first-five
+need on the assembler's own catalogue, five reading ZERO (`J5`, `L4`, `MK1`,
+`U19`, `U9`; then `Q2`/`Q3` 0, `U2`/`U3` 1, `U18` 3, `D8` 7) -- mostly CONSIGNED
+classes under D-206, so a brief to work.  `evidence/d615-purchasing-short.csv`.
+
+**NEXT: NO FABRICATION CONTRACT HERE IS OPEN, so the next blocker is the one no
+contract MEASURES -- 199 `lib_footprint_issues` and 48
+`footprint_symbol_mismatch` warnings are 247 unproven claims that each LAND
+matches its part's datasheet drawing.**  `U18` is the proof the class is real
+and that these checks cannot see it: the land was right and the ORDER CODE was
+wrong, and nothing here noticed until a distributor was asked.
+
 ## The BOM is three quarters orderable -- 122 identities grafted, four gates that had never been run (2026-09-05)
 
     FAB7 SOURCING   64 -> 186 of 247 orderable    25.9 % -> 75.3 %

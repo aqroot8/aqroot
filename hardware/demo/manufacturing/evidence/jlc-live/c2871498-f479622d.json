@@ -1,0 +1,131 @@
+{
+ "endpoint": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
+ "exhausted": true,
+ "fetched_utc": "2026-09-05T01:11:54Z",
+ "keyword": "C2871498",
+ "page_size": 25,
+ "pages": 1,
+ "records": [
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-40℃~+125℃"
+    },
+    {
+     "attribute_name_en": "Vos - Input Offset Voltage",
+     "attribute_value_name": "100uV"
+    },
+    {
+     "attribute_name_en": "Output Type",
+     "attribute_value_name": "Push-pull"
+    },
+    {
+     "attribute_name_en": "Input Offset Current(Ios)",
+     "attribute_value_name": "1pA"
+    },
+    {
+     "attribute_name_en": "Single Supply",
+     "attribute_value_name": "1.6V~6.5V"
+    },
+    {
+     "attribute_name_en": "Input Hysteresis Voltage (Vhys)",
+     "attribute_value_name": "10mV"
+    },
+    {
+     "attribute_name_en": "Response Time (tr)",
+     "attribute_value_name": "4.5ns"
+    },
+    {
+     "attribute_name_en": "Common Mode Rejection Ratio(CMRR)",
+     "attribute_value_name": "73dB"
+    },
+    {
+     "attribute_name_en": "Rail to Rail",
+     "attribute_value_name": "Rail-to-rail input"
+    },
+    {
+     "attribute_name_en": "Number of Channels",
+     "attribute_value_name": "2"
+    },
+    {
+     "attribute_name_en": "Maximum Power Supply Range (Vdd-Vss)",
+     "attribute_value_name": "7V"
+    },
+    {
+     "attribute_name_en": "Quiescent Current",
+     "attribute_value_name": "315nA"
+    },
+    {
+     "attribute_name_en": "Features",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Ib - Input Bias Current",
+     "attribute_value_name": "2pA"
+    },
+    {
+     "attribute_name_en": "Propagation Delay Time",
+     "attribute_value_name": "3us"
+    },
+    {
+     "attribute_name_en": "Output Mode",
+     "attribute_value_name": "-"
+    }
+   ],
+   "componentBrandEn": "Texas Instruments",
+   "componentCode": "C2871498",
+   "componentLibraryType": "expand",
+   "componentModelEn": "TLV7032DDFR",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 1.2136,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 29,
+     "productPrice": 1.0008,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 99,
+     "productPrice": 0.8838,
+     "startNumber": 30
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.7522,
+     "startNumber": 100
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.6937,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.6677,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "TSOT-23-8",
+   "componentTypeEn": "Comparators",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2303010230_Texas-Instruments-TLV7032DDFR_C2871498.pdf",
+   "describe": "-40℃~+125℃ 1.6V~6.5V 100uV 10mV 1pA 2 2pA 315nA 3us 4.5ns 73dB 7V Push-pull Rail-to-rail input TSOT-23-8 Comparators ROHS",
+   "erpComponentName": "小尺寸、毫微功耗、低电压比较器",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/comparators_texas-instruments-tlv7032ddfr_C2871498.html",
+   "leastPatchNumber": 0,
+   "lossNumber": 0,
+   "minPurchaseNum": 8,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  }
+ ],
+ "returned": 1,
+ "schema": 1,
+ "total_matches": 1
+}

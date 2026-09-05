@@ -1,0 +1,226 @@
+{
+ "endpoint": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
+ "exhausted": true,
+ "fetched_utc": "2026-09-05T01:16:38Z",
+ "keyword": "27pF 0603 C0G Murata",
+ "page_size": 25,
+ "pages": 2,
+ "records": [
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "50V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±2%"
+    },
+    {
+     "attribute_name_en": "Capacitance",
+     "attribute_value_name": "27pF",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>27pF</span>"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "NP0、C0G"
+    }
+   ],
+   "componentBrandEn": "Murata Electronics",
+   "componentCode": "C19455433",
+   "componentLibraryType": "expand",
+   "componentModelEn": "GQM1885C1H270GB01J",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 0.7213,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 11,
+     "productPrice": 0.7213,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 0.7213,
+     "startNumber": 12
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.2876,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.2795,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.2746,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2312271108_Murata-Electronics-GQM1885C1H270GB01J_C19455433.pdf",
+   "describe": "27pF 50V NP0、C0G ±2% 0603 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+   "erpComponentName": "27pF ±2% 50V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/multilayer-ceramic-capacitors-mlcc-smd-smt_murata-electronics-gqm1885c1h270gb01j_C19455433.html",
+   "leastPatchNumber": 5,
+   "lossNumber": 0,
+   "minPurchaseNum": 13,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "100V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±1%"
+    },
+    {
+     "attribute_name_en": "Capacitance",
+     "attribute_value_name": "27pF",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>27pF</span>"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "C0G、NP0"
+    }
+   ],
+   "componentBrandEn": "Murata Electronics",
+   "componentCode": "C20508405",
+   "componentLibraryType": "expand",
+   "componentModelEn": "GRM1885C2A270FA01D",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 0.541,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 11,
+     "productPrice": 0.541,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 0.541,
+     "startNumber": 12
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.2161,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.2096,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.2064,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+   "dataManualUrl": "",
+   "describe": "100V 27pF C0G、NP0 ±1% 0603 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+   "erpComponentName": "27pF ±1% 100V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/multilayer-ceramic-capacitors-mlcc-smd-smt_murata-electronics-grm1885c2a270fa01d_C20508405.html",
+   "leastPatchNumber": 5,
+   "lossNumber": 5,
+   "minPurchaseNum": 17,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "50V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±5%"
+    },
+    {
+     "attribute_name_en": "Capacitance",
+     "attribute_value_name": "27pF",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>27pF</span>"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "C0G、NP0"
+    }
+   ],
+   "componentBrandEn": "Murata Electronics",
+   "componentCode": "C20515537",
+   "componentLibraryType": "expand",
+   "componentModelEn": "GQM1885C1H270JB01D",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 1.878,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 11,
+     "productPrice": 1.878,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 1.878,
+     "startNumber": 12
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.7506,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.7246,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.7132,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+   "dataManualUrl": "",
+   "describe": "27pF 50V C0G、NP0 ±5% 0603 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+   "erpComponentName": "27pF ±5% 50V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/multilayer-ceramic-capacitors-mlcc-smd-smt_murata-electronics-gqm1885c1h270jb01d_C20515537.html",
+   "leastPatchNumber": 0,
+   "lossNumber": 0,
+   "minPurchaseNum": 5,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  }
+ ],
+ "returned": 3,
+ "schema": 1,
+ "total_matches": 3
+}

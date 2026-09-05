@@ -1,0 +1,91 @@
+{
+ "endpoint": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
+ "exhausted": true,
+ "fetched_utc": "2026-09-05T01:11:59Z",
+ "keyword": "C5267441",
+ "page_size": 25,
+ "pages": 1,
+ "records": [
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "agreement",
+     "attribute_value_name": "ISO 14443A、ISO 15693、NFC、ISO 14443B"
+    },
+    {
+     "attribute_name_en": "Voltage - Supply",
+     "attribute_value_name": "2.6V~5.5V"
+    },
+    {
+     "attribute_name_en": "Frequency",
+     "attribute_value_name": "13.56MHz"
+    },
+    {
+     "attribute_name_en": "Features",
+     "attribute_value_name": "Built-in antenna driver、Low power wake-up"
+    },
+    {
+     "attribute_name_en": "transmission rate",
+     "attribute_value_name": "53Kbit/s、424Kbit/s、848Kbit/s"
+    },
+    {
+     "attribute_name_en": "Interface",
+     "attribute_value_name": "I2C,SPI"
+    }
+   ],
+   "componentBrandEn": "STMicroelectronics",
+   "componentCode": "C5267441",
+   "componentLibraryType": "expand",
+   "componentModelEn": "ST25R3916-AQET",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 3.5967,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 29,
+     "productPrice": 3.5139,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 99,
+     "productPrice": 3.457,
+     "startNumber": 30
+    },
+    {
+     "endNumber": 101,
+     "productPrice": 3.4018,
+     "startNumber": 100
+    },
+    {
+     "endNumber": 103,
+     "productPrice": 3.4018,
+     "startNumber": 102
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 3.4018,
+     "startNumber": 104
+    }
+   ],
+   "componentSpecificationEn": "UFQFPN-32(5x5)",
+   "componentTypeEn": "RFID ICs",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2309061517_STMicroelectronics-ST25R3916-AQET_C5267441.pdf",
+   "describe": "13.56MHz 2.6V~5.5V 53Kbit/s、424Kbit/s、848Kbit/s Built-in antenna driver、Low power wake-up I2C,SPI ISO 14443A、ISO 15693、NFC、ISO 14443B UFQFPN-32(5x5) RFID ICs ROHS",
+   "erpComponentName": "高性能NFC通用设备和EMVCo阅读器",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/rfid-ics_stmicroelectronics-st25r3916-aqet_C5267441.html",
+   "leastPatchNumber": 0,
+   "lossNumber": 0,
+   "minPurchaseNum": 3,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  }
+ ],
+ "returned": 1,
+ "schema": 1,
+ "total_matches": 1
+}

@@ -1,0 +1,1127 @@
+{
+ "added": [
+  {
+   "property": "Manufacturer",
+   "ref": "R75",
+   "sheet": "01_power_tree.kicad_sch",
+   "value": "BOURNS"
+  },
+  {
+   "property": "MPN",
+   "ref": "R75",
+   "sheet": "01_power_tree.kicad_sch",
+   "value": "CRA2512-FZ-R015ELF"
+  },
+  {
+   "property": "LCSC",
+   "ref": "R75",
+   "sheet": "01_power_tree.kicad_sch",
+   "value": "C2073490"
+  },
+  {
+   "property": "Note_Sourcing",
+   "ref": "R75",
+   "sheet": "01_power_tree.kicad_sch",
+   "value": "SOURCING D-615 LIVE_RECORD. JLCPCB record read 2026-09-05T00:59:59Z: expand library, stock 940, land 2512, Power(Watts) 3W; Resistance 15m\u03a9; Temperature Coefficient \u00b150ppm/\u2103; Tolerance \u00b11%; Type Current Sense Resistor. Gates: land working voltage vs the highest node; 2x operating and survives single fault."
+  },
+  {
+   "property": "Manufacturer",
+   "ref": "R76",
+   "sheet": "01_power_tree.kicad_sch",
+   "value": "UNI-ROYAL(Uniroyal Elec)"
+  },
+  {
+   "property": "MPN",
+   "ref": "R76",
+   "sheet": "01_power_tree.kicad_sch",
+   "value": "0603WAF2202T5E"
+  },
+  {
+   "property": "LCSC",
+   "ref": "R76",
+   "sheet": "01_power_tree.kicad_sch",
+   "value": "C31850"
+  },
+  {
+   "property": "Note_Sourcing",
+   "ref": "R76",
+   "sheet": "01_power_tree.kicad_sch",
+   "value": "SOURCING D-615 LIVE_RECORD. JLCPCB record read 2026-09-05T00:59:59Z: base library, stock 4428542, land 0603, Operating Temperature -55\u2103~+155\u2103; Power(Watts) 100mW; Resistance 22k\u03a9; Temperature Coefficient \u00b1100ppm/\u2103; Tolerance \u00b11%; Type Thick Film Resistor; Voltage-Supply(Max) 75V. Gates: land working voltage vs the highest node; 2x the strict over-bound."
+  },
+  {
+   "property": "Manufacturer",
+   "ref": "C57",
+   "sheet": "01_power_tree.kicad_sch",
+   "value": "FH (Guangdong Fenghua Advanced Tech)"
+  },
+  {
+   "property": "MPN",
+   "ref": "C57",
+   "sheet": "01_power_tree.kicad_sch",
+   "value": "0603B472K500NT"
+  },
+  {
+   "property": "LCSC",
+   "ref": "C57",
+   "sheet": "01_power_tree.kicad_sch",
+   "value": "C53987"
+  },
+  {
+   "property": "Note_Sourcing",
+   "ref": "C57",
+   "sheet": "01_power_tree.kicad_sch",
+   "value": "SOURCING D-615 LIVE_RECORD. JLCPCB record read 2026-09-05T00:59:59Z: base library, stock 1274228, land 0603, Capacitance 4.7nF; Temperature Coefficient X7R; Tolerance \u00b110%; Voltage Rating 50V. Gates: 2x operating and survives absolute; not a resistor."
+  },
+  {
+   "property": "Manufacturer",
+   "ref": "R77",
+   "sheet": "01_power_tree.kicad_sch",
+   "value": "YAGEO"
+  },
+  {
+   "property": "MPN",
+   "ref": "R77",
+   "sheet": "01_power_tree.kicad_sch",
+   "value": "RC0603FR-073M65L"
+  },
+  {
+   "property": "LCSC",
+   "ref": "R77",
+   "sheet": "01_power_tree.kicad_sch",
+   "value": "C482835"
+  },
+  {
+   "property": "Note_Sourcing",
+   "ref": "R77",
+   "sheet": "01_power_tree.kicad_sch",
+   "value": "SOURCING D-615 LIVE_RECORD. JLCPCB record read 2026-09-05T00:59:59Z: expand library, stock 2221, land 0603, Operating Temperature -55\u2103~+155\u2103; Power(Watts) 100mW; Resistance 3.65M\u03a9; Temperature Coefficient \u00b1100ppm/\u2103; Tolerance \u00b11%; Type Thick Film Resistor; Voltage-Supply(Max) 75V. Gates: land working voltage vs the highest node; 2x the strict over-bound."
+  },
+  {
+   "property": "Manufacturer",
+   "ref": "R78",
+   "sheet": "01_power_tree.kicad_sch",
+   "value": "YAGEO"
+  },
+  {
+   "property": "MPN",
+   "ref": "R78",
+   "sheet": "01_power_tree.kicad_sch",
+   "value": "RC0603FR-07442KL"
+  },
+  {
+   "property": "LCSC",
+   "ref": "R78",
+   "sheet": "01_power_tree.kicad_sch",
+   "value": "C185327"
+  },
+  {
+   "property": "Note_Sourcing",
+   "ref": "R78",
+   "sheet": "01_power_tree.kicad_sch",
+   "value": "SOURCING D-615 LIVE_RECORD. JLCPCB record read 2026-09-05T00:59:59Z: expand library, stock 6324, land 0603, Operating Temperature -55\u2103~+155\u2103; Power(Watts) 100mW; Resistance 442k\u03a9; Temperature Coefficient \u00b1100ppm/\u2103; Tolerance \u00b11%; Type Thick Film Resistor; Voltage-Supply(Max) 75V. Gates: land working voltage vs the highest node; 2x the strict over-bound."
+  },
+  {
+   "property": "Manufacturer",
+   "ref": "R79",
+   "sheet": "01_power_tree.kicad_sch",
+   "value": "UNI-ROYAL(Uniroyal Elec)"
+  },
+  {
+   "property": "MPN",
+   "ref": "R79",
+   "sheet": "01_power_tree.kicad_sch",
+   "value": "0603WAF5103T5E"
+  },
+  {
+   "property": "LCSC",
+   "ref": "R79",
+   "sheet": "01_power_tree.kicad_sch",
+   "value": "C23192"
+  },
+  {
+   "property": "Note_Sourcing",
+   "ref": "R79",
+   "sheet": "01_power_tree.kicad_sch",
+   "value": "SOURCING D-615 LIVE_RECORD. JLCPCB record read 2026-09-05T00:59:59Z: base library, stock 933135, land 0603, Operating Temperature -55\u2103~+155\u2103; Power(Watts) 100mW; Resistance 510k\u03a9; Temperature Coefficient \u00b1100ppm/\u2103; Tolerance \u00b11%; Type Thick Film Resistor; Voltage-Supply(Max) 75V. Gates: land working voltage vs the highest node; 2x the strict over-bound."
+  },
+  {
+   "property": "Manufacturer",
+   "ref": "R85",
+   "sheet": "01_power_tree.kicad_sch",
+   "value": "YAGEO"
+  },
+  {
+   "property": "MPN",
+   "ref": "R85",
+   "sheet": "01_power_tree.kicad_sch",
+   "value": "RC0603FR-072M2L"
+  },
+  {
+   "property": "LCSC",
+   "ref": "R85",
+   "sheet": "01_power_tree.kicad_sch",
+   "value": "C137747"
+  },
+  {
+   "property": "Note_Sourcing",
+   "ref": "R85",
+   "sheet": "01_power_tree.kicad_sch",
+   "value": "SOURCING D-615 LIVE_RECORD. JLCPCB record read 2026-09-05T00:59:59Z: expand library, stock 5453, land 0603, Operating Temperature -55\u2103~+155\u2103; Power(Watts) 100mW; Resistance 2.2M\u03a9; Temperature Coefficient \u00b1100ppm/\u2103; Tolerance \u00b11%; Type Thick Film Resistor; Voltage-Supply(Max) 75V. Gates: land working voltage vs the highest node; 2x the strict over-bound."
+  },
+  {
+   "property": "Manufacturer",
+   "ref": "R86",
+   "sheet": "01_power_tree.kicad_sch",
+   "value": "YAGEO"
+  },
+  {
+   "property": "MPN",
+   "ref": "R86",
+   "sheet": "01_power_tree.kicad_sch",
+   "value": "RC0603FR-072M2L"
+  },
+  {
+   "property": "LCSC",
+   "ref": "R86",
+   "sheet": "01_power_tree.kicad_sch",
+   "value": "C137747"
+  },
+  {
+   "property": "Note_Sourcing",
+   "ref": "R86",
+   "sheet": "01_power_tree.kicad_sch",
+   "value": "SOURCING D-615 LIVE_RECORD. JLCPCB record read 2026-09-05T00:59:59Z: expand library, stock 5453, land 0603, Operating Temperature -55\u2103~+155\u2103; Power(Watts) 100mW; Resistance 2.2M\u03a9; Temperature Coefficient \u00b1100ppm/\u2103; Tolerance \u00b11%; Type Thick Film Resistor; Voltage-Supply(Max) 75V. Gates: land working voltage vs the highest node; 2x the strict over-bound."
+  },
+  {
+   "property": "Manufacturer",
+   "ref": "R87",
+   "sheet": "01_power_tree.kicad_sch",
+   "value": "YAGEO"
+  },
+  {
+   "property": "MPN",
+   "ref": "R87",
+   "sheet": "01_power_tree.kicad_sch",
+   "value": "RC0603FR-072M2L"
+  },
+  {
+   "property": "LCSC",
+   "ref": "R87",
+   "sheet": "01_power_tree.kicad_sch",
+   "value": "C137747"
+  },
+  {
+   "property": "Note_Sourcing",
+   "ref": "R87",
+   "sheet": "01_power_tree.kicad_sch",
+   "value": "SOURCING D-615 LIVE_RECORD. JLCPCB record read 2026-09-05T00:59:59Z: expand library, stock 5453, land 0603, Operating Temperature -55\u2103~+155\u2103; Power(Watts) 100mW; Resistance 2.2M\u03a9; Temperature Coefficient \u00b1100ppm/\u2103; Tolerance \u00b11%; Type Thick Film Resistor; Voltage-Supply(Max) 75V. Gates: land working voltage vs the highest node; 2x the strict over-bound."
+  },
+  {
+   "property": "Manufacturer",
+   "ref": "R88",
+   "sheet": "01_power_tree.kicad_sch",
+   "value": "YAGEO"
+  },
+  {
+   "property": "MPN",
+   "ref": "R88",
+   "sheet": "01_power_tree.kicad_sch",
+   "value": "RC0603FR-072M2L"
+  },
+  {
+   "property": "LCSC",
+   "ref": "R88",
+   "sheet": "01_power_tree.kicad_sch",
+   "value": "C137747"
+  },
+  {
+   "property": "Note_Sourcing",
+   "ref": "R88",
+   "sheet": "01_power_tree.kicad_sch",
+   "value": "SOURCING D-615 LIVE_RECORD. JLCPCB record read 2026-09-05T00:59:59Z: expand library, stock 5453, land 0603, Operating Temperature -55\u2103~+155\u2103; Power(Watts) 100mW; Resistance 2.2M\u03a9; Temperature Coefficient \u00b1100ppm/\u2103; Tolerance \u00b11%; Type Thick Film Resistor; Voltage-Supply(Max) 75V. Gates: land working voltage vs the highest node; 2x the strict over-bound."
+  },
+  {
+   "property": "Manufacturer",
+   "ref": "R89",
+   "sheet": "01_power_tree.kicad_sch",
+   "value": "YAGEO"
+  },
+  {
+   "property": "MPN",
+   "ref": "R89",
+   "sheet": "01_power_tree.kicad_sch",
+   "value": "RC0603FR-072M2L"
+  },
+  {
+   "property": "LCSC",
+   "ref": "R89",
+   "sheet": "01_power_tree.kicad_sch",
+   "value": "C137747"
+  },
+  {
+   "property": "Note_Sourcing",
+   "ref": "R89",
+   "sheet": "01_power_tree.kicad_sch",
+   "value": "SOURCING D-615 LIVE_RECORD. JLCPCB record read 2026-09-05T00:59:59Z: expand library, stock 5453, land 0603, Operating Temperature -55\u2103~+155\u2103; Power(Watts) 100mW; Resistance 2.2M\u03a9; Temperature Coefficient \u00b1100ppm/\u2103; Tolerance \u00b11%; Type Thick Film Resistor; Voltage-Supply(Max) 75V. Gates: land working voltage vs the highest node; 2x the strict over-bound."
+  },
+  {
+   "property": "Manufacturer",
+   "ref": "R90",
+   "sheet": "01_power_tree.kicad_sch",
+   "value": "YAGEO"
+  },
+  {
+   "property": "MPN",
+   "ref": "R90",
+   "sheet": "01_power_tree.kicad_sch",
+   "value": "RC0603FR-072M2L"
+  },
+  {
+   "property": "LCSC",
+   "ref": "R90",
+   "sheet": "01_power_tree.kicad_sch",
+   "value": "C137747"
+  },
+  {
+   "property": "Note_Sourcing",
+   "ref": "R90",
+   "sheet": "01_power_tree.kicad_sch",
+   "value": "SOURCING D-615 LIVE_RECORD. JLCPCB record read 2026-09-05T00:59:59Z: expand library, stock 5453, land 0603, Operating Temperature -55\u2103~+155\u2103; Power(Watts) 100mW; Resistance 2.2M\u03a9; Temperature Coefficient \u00b1100ppm/\u2103; Tolerance \u00b11%; Type Thick Film Resistor; Voltage-Supply(Max) 75V. Gates: land working voltage vs the highest node; 2x the strict over-bound."
+  },
+  {
+   "property": "Manufacturer",
+   "ref": "R91",
+   "sheet": "01_power_tree.kicad_sch",
+   "value": "YAGEO"
+  },
+  {
+   "property": "MPN",
+   "ref": "R91",
+   "sheet": "01_power_tree.kicad_sch",
+   "value": "RC0603FR-073M65L"
+  },
+  {
+   "property": "LCSC",
+   "ref": "R91",
+   "sheet": "01_power_tree.kicad_sch",
+   "value": "C482835"
+  },
+  {
+   "property": "Note_Sourcing",
+   "ref": "R91",
+   "sheet": "01_power_tree.kicad_sch",
+   "value": "SOURCING D-615 LIVE_RECORD. JLCPCB record read 2026-09-05T00:59:59Z: expand library, stock 2221, land 0603, Operating Temperature -55\u2103~+155\u2103; Power(Watts) 100mW; Resistance 3.65M\u03a9; Temperature Coefficient \u00b1100ppm/\u2103; Tolerance \u00b11%; Type Thick Film Resistor; Voltage-Supply(Max) 75V. Gates: land working voltage vs the highest node; 2x the strict over-bound."
+  },
+  {
+   "property": "Manufacturer",
+   "ref": "R92",
+   "sheet": "01_power_tree.kicad_sch",
+   "value": "Vishay Intertech"
+  },
+  {
+   "property": "MPN",
+   "ref": "R92",
+   "sheet": "01_power_tree.kicad_sch",
+   "value": "MCT06030C1304FP500"
+  },
+  {
+   "property": "LCSC",
+   "ref": "R92",
+   "sheet": "01_power_tree.kicad_sch",
+   "value": "C2115863"
+  },
+  {
+   "property": "Note_Sourcing",
+   "ref": "R92",
+   "sheet": "01_power_tree.kicad_sch",
+   "value": "SOURCING D-615 LIVE_RECORD. JLCPCB record read 2026-09-05T00:59:59Z: expand library, stock 1296, land 0603, Operating Temperature -55\u2103~+155\u2103; Power(Watts) 125mW; Resistance 1.3M\u03a9; Temperature Coefficient \u00b150ppm/\u2103; Tolerance \u00b11%; Type Thin Film Resistor; Voltage-Supply(Max) 75V. Gates: land working voltage vs the highest node; 2x the strict over-bound."
+  },
+  {
+   "property": "Manufacturer",
+   "ref": "R95",
+   "sheet": "01_power_tree.kicad_sch",
+   "value": "PANASONIC"
+  },
+  {
+   "property": "MPN",
+   "ref": "R95",
+   "sheet": "01_power_tree.kicad_sch",
+   "value": "ERJ-P08F5600V"
+  },
+  {
+   "property": "LCSC",
+   "ref": "R95",
+   "sheet": "01_power_tree.kicad_sch",
+   "value": "C4220370"
+  },
+  {
+   "property": "Note_Sourcing",
+   "ref": "R95",
+   "sheet": "01_power_tree.kicad_sch",
+   "value": "SOURCING D-615 LIVE_RECORD. JLCPCB record read 2026-09-05T00:59:59Z: expand library, stock 4925, land 1206, Operating Temperature -55\u2103~+155\u2103; Power(Watts) 660mW; Resistance 560\u03a9; Temperature Coefficient \u00b1100ppm/\u2103; Tolerance \u00b11%; Type Thick Film Resistor. Gates: land working voltage vs the highest node; 2x operating and survives single fault."
+  },
+  {
+   "property": "Manufacturer",
+   "ref": "R97",
+   "sheet": "01_power_tree.kicad_sch",
+   "value": "UNI-ROYAL(Uniroyal Elec)"
+  },
+  {
+   "property": "MPN",
+   "ref": "R97",
+   "sheet": "01_power_tree.kicad_sch",
+   "value": "0603WAF1501T5E"
+  },
+  {
+   "property": "LCSC",
+   "ref": "R97",
+   "sheet": "01_power_tree.kicad_sch",
+   "value": "C22843"
+  },
+  {
+   "property": "Note_Sourcing",
+   "ref": "R97",
+   "sheet": "01_power_tree.kicad_sch",
+   "value": "SOURCING D-615 LIVE_RECORD. JLCPCB record read 2026-09-05T00:59:59Z: base library, stock 3722075, land 0603, Operating Temperature -55\u2103~+155\u2103; Power(Watts) 100mW; Resistance 1.5k\u03a9; Temperature Coefficient \u00b1100ppm/\u2103; Tolerance \u00b11%; Type Thick Film Resistor; Voltage-Supply(Max) 75V. Gates: land working voltage vs the highest node; 2x the strict over-bound."
+  },
+  {
+   "property": "Manufacturer",
+   "ref": "C65",
+   "sheet": "01_power_tree.kicad_sch",
+   "value": "Murata Electronics"
+  },
+  {
+   "property": "MPN",
+   "ref": "C65",
+   "sheet": "01_power_tree.kicad_sch",
+   "value": "GRM21BZ71A226ME15L"
+  },
+  {
+   "property": "LCSC",
+   "ref": "C65",
+   "sheet": "01_power_tree.kicad_sch",
+   "value": "C907991"
+  },
+  {
+   "property": "Note_Sourcing",
+   "ref": "C65",
+   "sheet": "01_power_tree.kicad_sch",
+   "value": "SOURCING D-615 LIVE_RECORD. JLCPCB record read 2026-09-05T00:59:59Z: expand library, stock 65524, land 0805, Capacitance 22uF; Temperature Coefficient X7R; Tolerance \u00b120%; Voltage Rating 10V. Gates: 2x operating and survives absolute; not a resistor."
+  },
+  {
+   "property": "Manufacturer",
+   "ref": "C66",
+   "sheet": "01_power_tree.kicad_sch",
+   "value": "Murata Electronics"
+  },
+  {
+   "property": "MPN",
+   "ref": "C66",
+   "sheet": "01_power_tree.kicad_sch",
+   "value": "GRM21BZ71A226ME15L"
+  },
+  {
+   "property": "LCSC",
+   "ref": "C66",
+   "sheet": "01_power_tree.kicad_sch",
+   "value": "C907991"
+  },
+  {
+   "property": "Note_Sourcing",
+   "ref": "C66",
+   "sheet": "01_power_tree.kicad_sch",
+   "value": "SOURCING D-615 LIVE_RECORD. JLCPCB record read 2026-09-05T00:59:59Z: expand library, stock 65524, land 0805, Capacitance 22uF; Temperature Coefficient X7R; Tolerance \u00b120%; Voltage Rating 10V. Gates: 2x operating and survives absolute; not a resistor."
+  },
+  {
+   "property": "Manufacturer",
+   "ref": "R99",
+   "sheet": "01_power_tree.kicad_sch",
+   "value": "Vishay Intertech"
+  },
+  {
+   "property": "MPN",
+   "ref": "R99",
+   "sheet": "01_power_tree.kicad_sch",
+   "value": "CRCW0603732KFKEA"
+  },
+  {
+   "property": "LCSC",
+   "ref": "R99",
+   "sheet": "01_power_tree.kicad_sch",
+   "value": "C2079739"
+  },
+  {
+   "property": "Note_Sourcing",
+   "ref": "R99",
+   "sheet": "01_power_tree.kicad_sch",
+   "value": "SOURCING D-615 LIVE_RECORD. JLCPCB record read 2026-09-05T00:59:59Z: expand library, stock 2865, land 0603, Operating Temperature -55\u2103~+155\u2103; Power(Watts) 100mW; Resistance 732k\u03a9; Temperature Coefficient \u00b1100ppm/\u2103; Tolerance \u00b11%; Type Thick Film Resistor; Voltage-Supply(Max) 100V. Gates: land working voltage vs the highest node; 2x the strict over-bound."
+  },
+  {
+   "property": "Manufacturer",
+   "ref": "R101",
+   "sheet": "01_power_tree.kicad_sch",
+   "value": "PANASONIC"
+  },
+  {
+   "property": "MPN",
+   "ref": "R101",
+   "sheet": "01_power_tree.kicad_sch",
+   "value": "ERJ-PA3F1651V"
+  },
+  {
+   "property": "LCSC",
+   "ref": "R101",
+   "sheet": "01_power_tree.kicad_sch",
+   "value": "C4088673"
+  },
+  {
+   "property": "Note_Sourcing",
+   "ref": "R101",
+   "sheet": "01_power_tree.kicad_sch",
+   "value": "SOURCING D-615 LIVE_RECORD. JLCPCB record read 2026-09-05T00:59:59Z: expand library, stock 2763, land 0603, Operating Temperature -55\u2103~+155\u2103; Power(Watts) 250mW; Resistance 1.65k\u03a9; Temperature Coefficient \u00b1100ppm/\u2103; Tolerance \u00b11%; Type Thick Film Resistor. Gates: land working voltage vs the highest node; 2x the strict over-bound."
+  },
+  {
+   "property": "Manufacturer",
+   "ref": "R104",
+   "sheet": "01_power_tree.kicad_sch",
+   "value": "UNI-ROYAL(Uniroyal Elec)"
+  },
+  {
+   "property": "MPN",
+   "ref": "R104",
+   "sheet": "01_power_tree.kicad_sch",
+   "value": "0603WAF1503T5E"
+  },
+  {
+   "property": "LCSC",
+   "ref": "R104",
+   "sheet": "01_power_tree.kicad_sch",
+   "value": "C22807"
+  },
+  {
+   "property": "Note_Sourcing",
+   "ref": "R104",
+   "sheet": "01_power_tree.kicad_sch",
+   "value": "SOURCING D-615 LIVE_RECORD. JLCPCB record read 2026-09-05T00:59:59Z: base library, stock 935032, land 0603, Operating Temperature -55\u2103~+155\u2103; Power(Watts) 100mW; Resistance 150k\u03a9; Temperature Coefficient \u00b1100ppm/\u2103; Tolerance \u00b11%; Type Thick Film Resistor; Voltage-Supply(Max) 75V. Gates: land working voltage vs the highest node; 2x the strict over-bound."
+  },
+  {
+   "property": "Manufacturer",
+   "ref": "R105",
+   "sheet": "01_power_tree.kicad_sch",
+   "value": "UNI-ROYAL(Uniroyal Elec)"
+  },
+  {
+   "property": "MPN",
+   "ref": "R105",
+   "sheet": "01_power_tree.kicad_sch",
+   "value": "0603WAF2203T5E"
+  },
+  {
+   "property": "LCSC",
+   "ref": "R105",
+   "sheet": "01_power_tree.kicad_sch",
+   "value": "C22961"
+  },
+  {
+   "property": "Note_Sourcing",
+   "ref": "R105",
+   "sheet": "01_power_tree.kicad_sch",
+   "value": "SOURCING D-615 LIVE_RECORD. JLCPCB record read 2026-09-05T00:59:59Z: base library, stock 1692476, land 0603, Operating Temperature -55\u2103~+155\u2103; Power(Watts) 100mW; Resistance 220k\u03a9; Temperature Coefficient \u00b1100ppm/\u2103; Tolerance \u00b11%; Type Thick Film Resistor; Voltage-Supply(Max) 75V. Gates: land working voltage vs the highest node; 2x the strict over-bound."
+  },
+  {
+   "property": "Manufacturer",
+   "ref": "R69",
+   "sheet": "03_spi_a_display_sd.kicad_sch",
+   "value": "UNI-ROYAL(Uniroyal Elec)"
+  },
+  {
+   "property": "MPN",
+   "ref": "R69",
+   "sheet": "03_spi_a_display_sd.kicad_sch",
+   "value": "0603WAF187KT5E"
+  },
+  {
+   "property": "LCSC",
+   "ref": "R69",
+   "sheet": "03_spi_a_display_sd.kicad_sch",
+   "value": "C422967"
+  },
+  {
+   "property": "Note_Sourcing",
+   "ref": "R69",
+   "sheet": "03_spi_a_display_sd.kicad_sch",
+   "value": "SOURCING D-615 LIVE_RECORD. JLCPCB record read 2026-09-05T00:59:59Z: expand library, stock 91, land 0603, Operating Temperature -55\u2103~+155\u2103; Power(Watts) 100mW; Resistance 1.87\u03a9; Temperature Coefficient \u00b1200ppm/\u2103; Tolerance \u00b11%; Type Thick Film Resistor; Voltage-Supply(Max) 75V. Gates: land working voltage vs the highest node; 2x operating and survives single fault."
+  },
+  {
+   "property": "Manufacturer",
+   "ref": "R70",
+   "sheet": "03_spi_a_display_sd.kicad_sch",
+   "value": "UNI-ROYAL(Uniroyal Elec)"
+  },
+  {
+   "property": "MPN",
+   "ref": "R70",
+   "sheet": "03_spi_a_display_sd.kicad_sch",
+   "value": "0603WAF330JT5E"
+  },
+  {
+   "property": "LCSC",
+   "ref": "R70",
+   "sheet": "03_spi_a_display_sd.kicad_sch",
+   "value": "C23140"
+  },
+  {
+   "property": "Note_Sourcing",
+   "ref": "R70",
+   "sheet": "03_spi_a_display_sd.kicad_sch",
+   "value": "SOURCING D-615 LIVE_RECORD. JLCPCB record read 2026-09-05T00:59:59Z: base library, stock 5954981, land 0603, Operating Temperature -55\u2103~+155\u2103; Power(Watts) 100mW; Resistance 33\u03a9; Temperature Coefficient \u00b1100ppm/\u2103; Tolerance \u00b11%; Type Thick Film Resistor; Voltage-Supply(Max) 75V. Gates: land working voltage vs the highest node; 2x operating and survives single fault."
+  },
+  {
+   "property": "Manufacturer",
+   "ref": "R71",
+   "sheet": "03_spi_a_display_sd.kicad_sch",
+   "value": "UNI-ROYAL(Uniroyal Elec)"
+  },
+  {
+   "property": "MPN",
+   "ref": "R71",
+   "sheet": "03_spi_a_display_sd.kicad_sch",
+   "value": "0603WAF330JT5E"
+  },
+  {
+   "property": "LCSC",
+   "ref": "R71",
+   "sheet": "03_spi_a_display_sd.kicad_sch",
+   "value": "C23140"
+  },
+  {
+   "property": "Note_Sourcing",
+   "ref": "R71",
+   "sheet": "03_spi_a_display_sd.kicad_sch",
+   "value": "SOURCING D-615 LIVE_RECORD. JLCPCB record read 2026-09-05T00:59:59Z: base library, stock 5954981, land 0603, Operating Temperature -55\u2103~+155\u2103; Power(Watts) 100mW; Resistance 33\u03a9; Temperature Coefficient \u00b1100ppm/\u2103; Tolerance \u00b11%; Type Thick Film Resistor; Voltage-Supply(Max) 75V. Gates: land working voltage vs the highest node; 2x operating and survives single fault."
+  },
+  {
+   "property": "Manufacturer",
+   "ref": "R72",
+   "sheet": "03_spi_a_display_sd.kicad_sch",
+   "value": "UNI-ROYAL(Uniroyal Elec)"
+  },
+  {
+   "property": "MPN",
+   "ref": "R72",
+   "sheet": "03_spi_a_display_sd.kicad_sch",
+   "value": "0603WAF330JT5E"
+  },
+  {
+   "property": "LCSC",
+   "ref": "R72",
+   "sheet": "03_spi_a_display_sd.kicad_sch",
+   "value": "C23140"
+  },
+  {
+   "property": "Note_Sourcing",
+   "ref": "R72",
+   "sheet": "03_spi_a_display_sd.kicad_sch",
+   "value": "SOURCING D-615 LIVE_RECORD. JLCPCB record read 2026-09-05T00:59:59Z: base library, stock 5954981, land 0603, Operating Temperature -55\u2103~+155\u2103; Power(Watts) 100mW; Resistance 33\u03a9; Temperature Coefficient \u00b1100ppm/\u2103; Tolerance \u00b11%; Type Thick Film Resistor; Voltage-Supply(Max) 75V. Gates: land working voltage vs the highest node; 2x operating and survives single fault."
+  },
+  {
+   "property": "Manufacturer",
+   "ref": "R73",
+   "sheet": "03_spi_a_display_sd.kicad_sch",
+   "value": "UNI-ROYAL(Uniroyal Elec)"
+  },
+  {
+   "property": "MPN",
+   "ref": "R73",
+   "sheet": "03_spi_a_display_sd.kicad_sch",
+   "value": "0603WAF330JT5E"
+  },
+  {
+   "property": "LCSC",
+   "ref": "R73",
+   "sheet": "03_spi_a_display_sd.kicad_sch",
+   "value": "C23140"
+  },
+  {
+   "property": "Note_Sourcing",
+   "ref": "R73",
+   "sheet": "03_spi_a_display_sd.kicad_sch",
+   "value": "SOURCING D-615 LIVE_RECORD. JLCPCB record read 2026-09-05T00:59:59Z: base library, stock 5954981, land 0603, Operating Temperature -55\u2103~+155\u2103; Power(Watts) 100mW; Resistance 33\u03a9; Temperature Coefficient \u00b1100ppm/\u2103; Tolerance \u00b11%; Type Thick Film Resistor; Voltage-Supply(Max) 75V. Gates: land working voltage vs the highest node; 2x operating and survives single fault."
+  },
+  {
+   "property": "Manufacturer",
+   "ref": "C45",
+   "sheet": "04_spi_b_radios_nfc.kicad_sch",
+   "value": "YAGEO"
+  },
+  {
+   "property": "MPN",
+   "ref": "C45",
+   "sheet": "04_spi_b_radios_nfc.kicad_sch",
+   "value": "CC0805KKX7R9BB225"
+  },
+  {
+   "property": "LCSC",
+   "ref": "C45",
+   "sheet": "04_spi_b_radios_nfc.kicad_sch",
+   "value": "C125847"
+  },
+  {
+   "property": "Note_Sourcing",
+   "ref": "C45",
+   "sheet": "04_spi_b_radios_nfc.kicad_sch",
+   "value": "SOURCING D-615 LIVE_RECORD. JLCPCB record read 2026-09-05T00:59:59Z: expand library, stock 60957, land 0805, Capacitance 2.2uF; Temperature Coefficient X7R; Tolerance \u00b110%; Voltage Rating 50V. Gates: 2x operating and survives absolute; not a resistor."
+  },
+  {
+   "property": "Manufacturer",
+   "ref": "C46",
+   "sheet": "04_spi_b_radios_nfc.kicad_sch",
+   "value": "FH (Guangdong Fenghua Advanced Tech)"
+  },
+  {
+   "property": "MPN",
+   "ref": "C46",
+   "sheet": "04_spi_b_radios_nfc.kicad_sch",
+   "value": "0603B103K500NT"
+  },
+  {
+   "property": "LCSC",
+   "ref": "C46",
+   "sheet": "04_spi_b_radios_nfc.kicad_sch",
+   "value": "C57112"
+  },
+  {
+   "property": "Note_Sourcing",
+   "ref": "C46",
+   "sheet": "04_spi_b_radios_nfc.kicad_sch",
+   "value": "SOURCING D-615 LIVE_RECORD. JLCPCB record read 2026-09-05T00:59:59Z: base library, stock 9273211, land 0603, Capacitance 10nF; Temperature Coefficient X7R; Tolerance \u00b110%; Voltage Rating 50V. Gates: 2x operating and survives absolute; not a resistor."
+  },
+  {
+   "property": "Manufacturer",
+   "ref": "C47",
+   "sheet": "04_spi_b_radios_nfc.kicad_sch",
+   "value": "YAGEO"
+  },
+  {
+   "property": "MPN",
+   "ref": "C47",
+   "sheet": "04_spi_b_radios_nfc.kicad_sch",
+   "value": "CC0805KKX7R9BB225"
+  },
+  {
+   "property": "LCSC",
+   "ref": "C47",
+   "sheet": "04_spi_b_radios_nfc.kicad_sch",
+   "value": "C125847"
+  },
+  {
+   "property": "Note_Sourcing",
+   "ref": "C47",
+   "sheet": "04_spi_b_radios_nfc.kicad_sch",
+   "value": "SOURCING D-615 LIVE_RECORD. JLCPCB record read 2026-09-05T00:59:59Z: expand library, stock 60957, land 0805, Capacitance 2.2uF; Temperature Coefficient X7R; Tolerance \u00b110%; Voltage Rating 50V. Gates: 2x operating and survives absolute; not a resistor."
+  },
+  {
+   "property": "Manufacturer",
+   "ref": "C48",
+   "sheet": "04_spi_b_radios_nfc.kicad_sch",
+   "value": "FH (Guangdong Fenghua Advanced Tech)"
+  },
+  {
+   "property": "MPN",
+   "ref": "C48",
+   "sheet": "04_spi_b_radios_nfc.kicad_sch",
+   "value": "0603B103K500NT"
+  },
+  {
+   "property": "LCSC",
+   "ref": "C48",
+   "sheet": "04_spi_b_radios_nfc.kicad_sch",
+   "value": "C57112"
+  },
+  {
+   "property": "Note_Sourcing",
+   "ref": "C48",
+   "sheet": "04_spi_b_radios_nfc.kicad_sch",
+   "value": "SOURCING D-615 LIVE_RECORD. JLCPCB record read 2026-09-05T00:59:59Z: base library, stock 9273211, land 0603, Capacitance 10nF; Temperature Coefficient X7R; Tolerance \u00b110%; Voltage Rating 50V. Gates: 2x operating and survives absolute; not a resistor."
+  },
+  {
+   "property": "Manufacturer",
+   "ref": "C49",
+   "sheet": "04_spi_b_radios_nfc.kicad_sch",
+   "value": "YAGEO"
+  },
+  {
+   "property": "MPN",
+   "ref": "C49",
+   "sheet": "04_spi_b_radios_nfc.kicad_sch",
+   "value": "CC0805KKX7R9BB225"
+  },
+  {
+   "property": "LCSC",
+   "ref": "C49",
+   "sheet": "04_spi_b_radios_nfc.kicad_sch",
+   "value": "C125847"
+  },
+  {
+   "property": "Note_Sourcing",
+   "ref": "C49",
+   "sheet": "04_spi_b_radios_nfc.kicad_sch",
+   "value": "SOURCING D-615 LIVE_RECORD. JLCPCB record read 2026-09-05T00:59:59Z: expand library, stock 60957, land 0805, Capacitance 2.2uF; Temperature Coefficient X7R; Tolerance \u00b110%; Voltage Rating 50V. Gates: 2x operating and survives absolute; not a resistor."
+  },
+  {
+   "property": "Manufacturer",
+   "ref": "C50",
+   "sheet": "04_spi_b_radios_nfc.kicad_sch",
+   "value": "FH (Guangdong Fenghua Advanced Tech)"
+  },
+  {
+   "property": "MPN",
+   "ref": "C50",
+   "sheet": "04_spi_b_radios_nfc.kicad_sch",
+   "value": "0603B103K500NT"
+  },
+  {
+   "property": "LCSC",
+   "ref": "C50",
+   "sheet": "04_spi_b_radios_nfc.kicad_sch",
+   "value": "C57112"
+  },
+  {
+   "property": "Note_Sourcing",
+   "ref": "C50",
+   "sheet": "04_spi_b_radios_nfc.kicad_sch",
+   "value": "SOURCING D-615 LIVE_RECORD. JLCPCB record read 2026-09-05T00:59:59Z: base library, stock 9273211, land 0603, Capacitance 10nF; Temperature Coefficient X7R; Tolerance \u00b110%; Voltage Rating 50V. Gates: 2x operating and survives absolute; not a resistor."
+  },
+  {
+   "property": "Manufacturer",
+   "ref": "C51",
+   "sheet": "04_spi_b_radios_nfc.kicad_sch",
+   "value": "YAGEO"
+  },
+  {
+   "property": "MPN",
+   "ref": "C51",
+   "sheet": "04_spi_b_radios_nfc.kicad_sch",
+   "value": "CC0805KKX7R9BB225"
+  },
+  {
+   "property": "LCSC",
+   "ref": "C51",
+   "sheet": "04_spi_b_radios_nfc.kicad_sch",
+   "value": "C125847"
+  },
+  {
+   "property": "Note_Sourcing",
+   "ref": "C51",
+   "sheet": "04_spi_b_radios_nfc.kicad_sch",
+   "value": "SOURCING D-615 LIVE_RECORD. JLCPCB record read 2026-09-05T00:59:59Z: expand library, stock 60957, land 0805, Capacitance 2.2uF; Temperature Coefficient X7R; Tolerance \u00b110%; Voltage Rating 50V. Gates: 2x operating and survives absolute; not a resistor."
+  },
+  {
+   "property": "Manufacturer",
+   "ref": "C52",
+   "sheet": "04_spi_b_radios_nfc.kicad_sch",
+   "value": "Samsung Electro-Mechanics"
+  },
+  {
+   "property": "MPN",
+   "ref": "C52",
+   "sheet": "04_spi_b_radios_nfc.kicad_sch",
+   "value": "CL10B102KB8NNNC"
+  },
+  {
+   "property": "LCSC",
+   "ref": "C52",
+   "sheet": "04_spi_b_radios_nfc.kicad_sch",
+   "value": "C1588"
+  },
+  {
+   "property": "Note_Sourcing",
+   "ref": "C52",
+   "sheet": "04_spi_b_radios_nfc.kicad_sch",
+   "value": "SOURCING D-615 LIVE_RECORD. JLCPCB record read 2026-09-05T00:59:59Z: base library, stock 10349869, land 0603, Capacitance 1nF; Operating Temperature -55\u2103~+125\u2103; Temperature Coefficient X7R; Tolerance \u00b110%; Voltage Rating 50V. Gates: 2x operating and survives absolute; not a resistor."
+  },
+  {
+   "property": "Manufacturer",
+   "ref": "C54",
+   "sheet": "04_spi_b_radios_nfc.kicad_sch",
+   "value": "FH (Guangdong Fenghua Advanced Tech)"
+  },
+  {
+   "property": "MPN",
+   "ref": "C54",
+   "sheet": "04_spi_b_radios_nfc.kicad_sch",
+   "value": "0603B103K500NT"
+  },
+  {
+   "property": "LCSC",
+   "ref": "C54",
+   "sheet": "04_spi_b_radios_nfc.kicad_sch",
+   "value": "C57112"
+  },
+  {
+   "property": "Note_Sourcing",
+   "ref": "C54",
+   "sheet": "04_spi_b_radios_nfc.kicad_sch",
+   "value": "SOURCING D-615 LIVE_RECORD. JLCPCB record read 2026-09-05T00:59:59Z: base library, stock 9273211, land 0603, Capacitance 10nF; Temperature Coefficient X7R; Tolerance \u00b110%; Voltage Rating 50V. Gates: 2x operating and survives absolute; not a resistor."
+  },
+  {
+   "property": "Manufacturer",
+   "ref": "C55",
+   "sheet": "04_spi_b_radios_nfc.kicad_sch",
+   "value": "Samsung Electro-Mechanics"
+  },
+  {
+   "property": "MPN",
+   "ref": "C55",
+   "sheet": "04_spi_b_radios_nfc.kicad_sch",
+   "value": "CL10A225KO8NNNC"
+  },
+  {
+   "property": "LCSC",
+   "ref": "C55",
+   "sheet": "04_spi_b_radios_nfc.kicad_sch",
+   "value": "C23630"
+  },
+  {
+   "property": "Note_Sourcing",
+   "ref": "C55",
+   "sheet": "04_spi_b_radios_nfc.kicad_sch",
+   "value": "SOURCING D-615 LIVE_RECORD. JLCPCB record read 2026-09-05T00:59:59Z: base library, stock 3853018, land 0603, Capacitance 2.2uF; Temperature Coefficient X5R; Tolerance \u00b110%; Voltage Rating 16V. Gates: 2x operating and survives absolute; not a resistor."
+  },
+  {
+   "property": "Manufacturer",
+   "ref": "R19",
+   "sheet": "05_i2c_devices.kicad_sch",
+   "value": "UNI-ROYAL(Uniroyal Elec)"
+  },
+  {
+   "property": "MPN",
+   "ref": "R19",
+   "sheet": "05_i2c_devices.kicad_sch",
+   "value": "0603WAF2201T5E"
+  },
+  {
+   "property": "LCSC",
+   "ref": "R19",
+   "sheet": "05_i2c_devices.kicad_sch",
+   "value": "C4190"
+  },
+  {
+   "property": "Note_Sourcing",
+   "ref": "R19",
+   "sheet": "05_i2c_devices.kicad_sch",
+   "value": "SOURCING D-615 LIVE_RECORD. JLCPCB record read 2026-09-05T00:59:59Z: base library, stock 7045544, land 0603, Operating Temperature -55\u2103~+155\u2103; Power(Watts) 100mW; Resistance 2.2k\u03a9; Temperature Coefficient \u00b1100ppm/\u2103; Tolerance \u00b11%; Type Thick Film Resistor; Voltage-Supply(Max) 75V. Gates: land working voltage vs the highest node; 2x the strict over-bound."
+  },
+  {
+   "property": "Manufacturer",
+   "ref": "R20",
+   "sheet": "05_i2c_devices.kicad_sch",
+   "value": "UNI-ROYAL(Uniroyal Elec)"
+  },
+  {
+   "property": "MPN",
+   "ref": "R20",
+   "sheet": "05_i2c_devices.kicad_sch",
+   "value": "0603WAF2201T5E"
+  },
+  {
+   "property": "LCSC",
+   "ref": "R20",
+   "sheet": "05_i2c_devices.kicad_sch",
+   "value": "C4190"
+  },
+  {
+   "property": "Note_Sourcing",
+   "ref": "R20",
+   "sheet": "05_i2c_devices.kicad_sch",
+   "value": "SOURCING D-615 LIVE_RECORD. JLCPCB record read 2026-09-05T00:59:59Z: base library, stock 7045544, land 0603, Operating Temperature -55\u2103~+155\u2103; Power(Watts) 100mW; Resistance 2.2k\u03a9; Temperature Coefficient \u00b1100ppm/\u2103; Tolerance \u00b11%; Type Thick Film Resistor; Voltage-Supply(Max) 75V. Gates: land working voltage vs the highest node; 2x the strict over-bound."
+  },
+  {
+   "property": "Manufacturer",
+   "ref": "C12",
+   "sheet": "07_ir.kicad_sch",
+   "value": "Samsung Electro-Mechanics"
+  },
+  {
+   "property": "MPN",
+   "ref": "C12",
+   "sheet": "07_ir.kicad_sch",
+   "value": "CL32B226KAJNNNE"
+  },
+  {
+   "property": "LCSC",
+   "ref": "C12",
+   "sheet": "07_ir.kicad_sch",
+   "value": "C309062"
+  },
+  {
+   "property": "Note_Sourcing",
+   "ref": "C12",
+   "sheet": "07_ir.kicad_sch",
+   "value": "SOURCING D-615 LIVE_RECORD. JLCPCB record read 2026-09-05T00:59:59Z: expand library, stock 280611, land 1210, Capacitance 22uF; Temperature Coefficient X7R; Tolerance \u00b110%; Voltage Rating 25V. Gates: 2x operating and survives absolute; not a resistor."
+  },
+  {
+   "property": "Manufacturer",
+   "ref": "R24",
+   "sheet": "07_ir.kicad_sch",
+   "value": "YAGEO"
+  },
+  {
+   "property": "MPN",
+   "ref": "R24",
+   "sheet": "07_ir.kicad_sch",
+   "value": "SR0805FR-4712RL"
+  },
+  {
+   "property": "LCSC",
+   "ref": "R24",
+   "sheet": "07_ir.kicad_sch",
+   "value": "C26080556"
+  },
+  {
+   "property": "Note_Sourcing",
+   "ref": "R24",
+   "sheet": "07_ir.kicad_sch",
+   "value": "SOURCING D-615 LIVE_RECORD. JLCPCB record read 2026-09-05T00:59:59Z: expand library, stock 1504, land 0805, Operating Temperature -55\u2103~+155\u2103; Power(Watts) 500mW; Resistance 12\u03a9; Temperature Coefficient \u00b1100ppm/\u2103; Tolerance \u00b11%; Type Thick Film Resistor; Voltage-Supply(Max) 500V. Gates: land working voltage vs the highest node; 2x operating and survives single fault."
+  },
+  {
+   "property": "Manufacturer",
+   "ref": "R125",
+   "sheet": "08_buttons_expanders.kicad_sch",
+   "value": "UNI-ROYAL(Uniroyal Elec)"
+  },
+  {
+   "property": "MPN",
+   "ref": "R125",
+   "sheet": "08_buttons_expanders.kicad_sch",
+   "value": "0603WAF6800T5E"
+  },
+  {
+   "property": "LCSC",
+   "ref": "R125",
+   "sheet": "08_buttons_expanders.kicad_sch",
+   "value": "C23228"
+  },
+  {
+   "property": "Note_Sourcing",
+   "ref": "R125",
+   "sheet": "08_buttons_expanders.kicad_sch",
+   "value": "SOURCING D-615 LIVE_RECORD. JLCPCB record read 2026-09-05T00:59:59Z: base library, stock 2802834, land 0603, Operating Temperature -55\u2103~+155\u2103; Power(Watts) 100mW; Resistance 680\u03a9; Temperature Coefficient \u00b1100ppm/\u2103; Tolerance \u00b11%; Type Thick Film Resistor; Voltage-Supply(Max) 75V. Gates: land working voltage vs the highest node; 2x operating and survives single fault."
+  },
+  {
+   "property": "Manufacturer",
+   "ref": "R126",
+   "sheet": "08_buttons_expanders.kicad_sch",
+   "value": "UNI-ROYAL(Uniroyal Elec)"
+  },
+  {
+   "property": "MPN",
+   "ref": "R126",
+   "sheet": "08_buttons_expanders.kicad_sch",
+   "value": "0603WAF3900T5E"
+  },
+  {
+   "property": "LCSC",
+   "ref": "R126",
+   "sheet": "08_buttons_expanders.kicad_sch",
+   "value": "C23151"
+  },
+  {
+   "property": "Note_Sourcing",
+   "ref": "R126",
+   "sheet": "08_buttons_expanders.kicad_sch",
+   "value": "SOURCING D-615 LIVE_RECORD. JLCPCB record read 2026-09-05T00:59:59Z: base library, stock 456712, land 0603, Operating Temperature -55\u2103~+155\u2103; Power(Watts) 100mW; Resistance 390\u03a9; Temperature Coefficient \u00b1100ppm/\u2103; Tolerance \u00b11%; Type Thick Film Resistor; Voltage-Supply(Max) 75V. Gates: land working voltage vs the highest node; 2x operating and survives single fault."
+  },
+  {
+   "property": "Manufacturer",
+   "ref": "R49",
+   "sheet": "09_community_header.kicad_sch",
+   "value": "UNI-ROYAL(Uniroyal Elec)"
+  },
+  {
+   "property": "MPN",
+   "ref": "R49",
+   "sheet": "09_community_header.kicad_sch",
+   "value": "0603WAF1501T5E"
+  },
+  {
+   "property": "LCSC",
+   "ref": "R49",
+   "sheet": "09_community_header.kicad_sch",
+   "value": "C22843"
+  },
+  {
+   "property": "Note_Sourcing",
+   "ref": "R49",
+   "sheet": "09_community_header.kicad_sch",
+   "value": "SOURCING D-615 LIVE_RECORD. JLCPCB record read 2026-09-05T00:59:59Z: base library, stock 3722075, land 0603, Operating Temperature -55\u2103~+155\u2103; Power(Watts) 100mW; Resistance 1.5k\u03a9; Temperature Coefficient \u00b1100ppm/\u2103; Tolerance \u00b11%; Type Thick Film Resistor; Voltage-Supply(Max) 75V. Gates: land working voltage vs the highest node; 2x the strict over-bound."
+  },
+  {
+   "property": "Manufacturer",
+   "ref": "R50",
+   "sheet": "09_community_header.kicad_sch",
+   "value": "UNI-ROYAL(Uniroyal Elec)"
+  },
+  {
+   "property": "MPN",
+   "ref": "R50",
+   "sheet": "09_community_header.kicad_sch",
+   "value": "0603WAF1501T5E"
+  },
+  {
+   "property": "LCSC",
+   "ref": "R50",
+   "sheet": "09_community_header.kicad_sch",
+   "value": "C22843"
+  },
+  {
+   "property": "Note_Sourcing",
+   "ref": "R50",
+   "sheet": "09_community_header.kicad_sch",
+   "value": "SOURCING D-615 LIVE_RECORD. JLCPCB record read 2026-09-05T00:59:59Z: base library, stock 3722075, land 0603, Operating Temperature -55\u2103~+155\u2103; Power(Watts) 100mW; Resistance 1.5k\u03a9; Temperature Coefficient \u00b1100ppm/\u2103; Tolerance \u00b11%; Type Thick Film Resistor; Voltage-Supply(Max) 75V. Gates: land working voltage vs the highest node; 2x the strict over-bound."
+  }
+ ],
+ "applied": true,
+ "conflicts": [],
+ "plan": "hardware/demo/manufacturing/evidence/d615-open-sourcing-plan.json",
+ "properties_added": 180,
+ "properties_already_correct": [],
+ "properties_rewritten": [],
+ "references_found": 45,
+ "references_in_plan": 45,
+ "references_not_in_any_sheet": [],
+ "schema": 1,
+ "sha256_after": {
+  "01_power_tree.kicad_sch": "b8fa891e4fbd28006fc7cdda642341b1c105b01136101341d31f8fa115fc308f",
+  "02_mcu_core.kicad_sch": "62cbc53b5d165f6dd6946ab5a53fdd51ae5eacb3acbed4814d9be85e30dad4d1",
+  "03_spi_a_display_sd.kicad_sch": "e21e5ce3580851e9d54bd1cf3cc81f38bd3dbbd846b25a9c1f06295548814236",
+  "04_spi_b_radios_nfc.kicad_sch": "c3c74079225e831ed3361fc4ebe7bfb13e66ab8f58a64b3670bf1203be65353d",
+  "05_i2c_devices.kicad_sch": "ab183831cc7b39a606ac1d45641adee8070242a6922cd9ada2a139a27493461a",
+  "06_audio.kicad_sch": "d49ada5071e8498fc74cb09239b8df187859e9fbe6a02377981109cd46a55d61",
+  "07_ir.kicad_sch": "4123770847540d6f1208386159f22bcf820da8c7f0e7f91515a8f2979723bda5",
+  "08_buttons_expanders.kicad_sch": "76dd48bf075c23977a26ac479bd1be690dc928b473ecf73d6d10eca1ed390135",
+  "09_community_header.kicad_sch": "13096e6fef6f1f63526b752a90e1c3d0b7068bd67d16942e04f54b01f9d3378c",
+  "aqroot-Beta-v2.kicad_sch": "195a985ca49cd03d88b006776f31ef6fa929d23d6a9eb3c29e37581307d31603"
+ },
+ "sha256_before": {
+  "01_power_tree.kicad_sch": "9c5b40805bd7ca36a68786642fee9e3c78cac57a8cd701bf655e3cbca16781b6",
+  "02_mcu_core.kicad_sch": "62cbc53b5d165f6dd6946ab5a53fdd51ae5eacb3acbed4814d9be85e30dad4d1",
+  "03_spi_a_display_sd.kicad_sch": "95829d32ea77791e67125b53780320bcf2efed53f044a3744b1e8648449bcef6",
+  "04_spi_b_radios_nfc.kicad_sch": "c3738c390e5763c5f3f2fc40ef670d1b844d5bae3d9e65f2f273bd0590e14171",
+  "05_i2c_devices.kicad_sch": "c8da6d3af63fe2c4b6da90a09826235456323ab5622faf2e3f7736681992ed3e",
+  "06_audio.kicad_sch": "d49ada5071e8498fc74cb09239b8df187859e9fbe6a02377981109cd46a55d61",
+  "07_ir.kicad_sch": "76a732bcd4e295517405a39c8e25cb4c6980c1c6633a0712e508aedb63b549c9",
+  "08_buttons_expanders.kicad_sch": "cd0fcda90e8573d2e682f9d83da9b5af12d165d6514ed59bc2ff4fd31716e100",
+  "09_community_header.kicad_sch": "19a841c1eb1d14dc4d40f1b7fb19a88e773f9edce4fa3fa21b7edc3210915031",
+  "aqroot-Beta-v2.kicad_sch": "195a985ca49cd03d88b006776f31ef6fa929d23d6a9eb3c29e37581307d31603"
+ },
+ "sheets_touched": [
+  "01_power_tree.kicad_sch",
+  "03_spi_a_display_sd.kicad_sch",
+  "04_spi_b_radios_nfc.kicad_sch",
+  "05_i2c_devices.kicad_sch",
+  "07_ir.kicad_sch",
+  "08_buttons_expanders.kicad_sch",
+  "09_community_header.kicad_sch"
+ ]
+}

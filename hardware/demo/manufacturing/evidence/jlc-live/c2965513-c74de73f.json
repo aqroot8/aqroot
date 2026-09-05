@@ -1,0 +1,111 @@
+{
+ "endpoint": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
+ "exhausted": true,
+ "fetched_utc": "2026-09-05T01:11:58Z",
+ "keyword": "C2965513",
+ "page_size": 25,
+ "pages": 1,
+ "records": [
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-40℃~+85℃"
+    },
+    {
+     "attribute_name_en": "Sensitivity",
+     "attribute_value_name": "-107dBm"
+    },
+    {
+     "attribute_name_en": "Output Power(Max)",
+     "attribute_value_name": "10dBm"
+    },
+    {
+     "attribute_name_en": "Voltage - Supply",
+     "attribute_value_name": "2.5V~3.6V"
+    },
+    {
+     "attribute_name_en": "Model",
+     "attribute_value_name": "Transceiver"
+    },
+    {
+     "attribute_name_en": "Frequency",
+     "attribute_value_name": "433MHz"
+    },
+    {
+     "attribute_name_en": "Features",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Communication Distance",
+     "attribute_value_name": "1.5km"
+    },
+    {
+     "attribute_name_en": "Interface Type",
+     "attribute_value_name": "SPI"
+    },
+    {
+     "attribute_name_en": "Send  Current",
+     "attribute_value_name": "35mA"
+    },
+    {
+     "attribute_name_en": "Receive  Current",
+     "attribute_value_name": "18mA"
+    }
+   ],
+   "componentBrandEn": "Chengdu Ebyte Elec Tech",
+   "componentCode": "C2965513",
+   "componentLibraryType": "expand",
+   "componentModelEn": "E07-400M10S",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 3.0541,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 29,
+     "productPrice": 2.5749,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 99,
+     "productPrice": 2.276,
+     "startNumber": 30
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 1.8731,
+     "startNumber": 100
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 1.7334,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 1.6733,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "SMD,20x14mm",
+   "componentTypeEn": "RF Modules",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2201201800_Chengdu-Ebyte-Elec-Tech-E07-400M10S_C2965513.pdf",
+   "describe": "-107dBm -40℃~+85℃ 1.5km 10dBm 18mA 2.5V~3.6V 35mA 433MHz SPI Transceiver SMD,20x14mm RF Modules ROHS",
+   "erpComponentName": "CC1101无线模块433M 数传收发工业级射频通讯模块",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/rf-modules_chengdu-ebyte-elec-tech-e07-400m10s_C2965513.html",
+   "leastPatchNumber": 0,
+   "lossNumber": 0,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 722
+  }
+ ],
+ "returned": 1,
+ "schema": 1,
+ "total_matches": 1
+}

@@ -1,0 +1,10 @@
+Refs,Qty,First_five_need,MPN,LCSC,JLC_library,JLC_stock,Read_utc,Note
+J5,1,5,BCS-112-S-D-HE,C5575816,expand,0,2026-09-05T01:11:37Z,under 10x the first-five need on the assembler's own catalogue; D-206 may already class this part CONSIGNED from a broadline distributor
+L4,1,5,74438357010,C5542269,expand,0,2026-09-05T01:11:39Z,under 10x the first-five need on the assembler's own catalogue; D-206 may already class this part CONSIGNED from a broadline distributor
+MK1,1,5,DMM-4026-B-I2S-R,C3171792,expand,0,2026-09-05T01:11:40Z,under 10x the first-five need on the assembler's own catalogue; D-206 may already class this part CONSIGNED from a broadline distributor
+Q2 Q3,2,10,NTMD4820NR2G,C905372,expand,0,2026-09-05T01:10:38Z,under 10x the first-five need on the assembler's own catalogue; D-206 may already class this part CONSIGNED from a broadline distributor
+U19,1,5,TLV7032DDFR,C2871498,expand,0,2026-09-05T01:11:54Z,under 10x the first-five need on the assembler's own catalogue; D-206 may already class this part CONSIGNED from a broadline distributor
+U9,1,5,ST25R3916-AQET,C5267441,expand,0,2026-09-05T01:11:59Z,under 10x the first-five need on the assembler's own catalogue; D-206 may already class this part CONSIGNED from a broadline distributor
+U2 U3,2,10,"PCAL9535APW,118",C2669683,expand,1,2026-09-05T01:11:55Z,under 10x the first-five need on the assembler's own catalogue; D-206 may already class this part CONSIGNED from a broadline distributor
+U18,1,5,LTC4368IMS-1#TRPBF,C688401,expand,3,2026-09-05T01:10:37Z,under 10x the first-five need on the assembler's own catalogue; D-206 may already class this part CONSIGNED from a broadline distributor
+D8,1,5,NSR0240HT1G,C152519,expand,7,2026-09-05T01:11:33Z,under 10x the first-five need on the assembler's own catalogue; D-206 may already class this part CONSIGNED from a broadline distributor

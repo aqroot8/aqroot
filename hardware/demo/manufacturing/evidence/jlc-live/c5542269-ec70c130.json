@@ -1,0 +1,87 @@
+{
+ "endpoint": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
+ "exhausted": true,
+ "fetched_utc": "2026-09-05T01:11:39Z",
+ "keyword": "C5542269",
+ "page_size": 25,
+ "pages": 1,
+ "records": [
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Inductance",
+     "attribute_value_name": "1uH"
+    },
+    {
+     "attribute_name_en": "Current - Saturation(Isat)",
+     "attribute_value_name": "9.6A"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±20%"
+    },
+    {
+     "attribute_name_en": "Current Rating",
+     "attribute_value_name": "7.4A"
+    },
+    {
+     "attribute_name_en": "DC Resistance(DCR)",
+     "attribute_value_name": "13.5mΩ"
+    }
+   ],
+   "componentBrandEn": "Wurth Elektronik",
+   "componentCode": "C5542269",
+   "componentLibraryType": "expand",
+   "componentModelEn": "74438357010",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 1.9706,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 29,
+     "productPrice": 1.9283,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 99,
+     "productPrice": 1.8991,
+     "startNumber": 30
+    },
+    {
+     "endNumber": 101,
+     "productPrice": 1.8715,
+     "startNumber": 100
+    },
+    {
+     "endNumber": 103,
+     "productPrice": 1.8715,
+     "startNumber": 102
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 1.8715,
+     "startNumber": 104
+    }
+   ],
+   "componentSpecificationEn": "SMD,4.1x4.1mm",
+   "componentTypeEn": "Power Inductors",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2311290212_Wurth-Elektronik-74438357010_C5542269.pdf",
+   "describe": "13.5mΩ 1uH 7.4A 9.6A ±20% SMD,4.1x4.1mm Power Inductors ROHS",
+   "erpComponentName": "1uH ±20% 9.6A",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/power-inductors_wurth-elektronik-74438357010_C5542269.html",
+   "leastPatchNumber": 0,
+   "lossNumber": 0,
+   "minPurchaseNum": 5,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  }
+ ],
+ "returned": 1,
+ "schema": 1,
+ "total_matches": 1
+}

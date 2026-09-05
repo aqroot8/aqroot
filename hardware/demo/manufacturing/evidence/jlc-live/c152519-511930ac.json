@@ -1,0 +1,95 @@
+{
+ "endpoint": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
+ "exhausted": true,
+ "fetched_utc": "2026-09-05T01:11:33Z",
+ "keyword": "C152519",
+ "page_size": 25,
+ "pages": 1,
+ "records": [
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage - Forward(Vf@If)",
+     "attribute_value_name": "710mV@200mA"
+    },
+    {
+     "attribute_name_en": "Non-Repetitive Peak Forward Surge Current",
+     "attribute_value_name": "1A"
+    },
+    {
+     "attribute_name_en": "Voltage - DC Reverse(Vr)",
+     "attribute_value_name": "40V"
+    },
+    {
+     "attribute_name_en": "Operating Junction Temperature Range",
+     "attribute_value_name": "-55℃~+150℃"
+    },
+    {
+     "attribute_name_en": "Diode Configuration",
+     "attribute_value_name": "1 Independent"
+    },
+    {
+     "attribute_name_en": "Current - Rectified",
+     "attribute_value_name": "250mA"
+    },
+    {
+     "attribute_name_en": "Reverse Leakage Current (Ir)",
+     "attribute_value_name": "10uA@40V"
+    }
+   ],
+   "componentBrandEn": "onsemi",
+   "componentCode": "C152519",
+   "componentLibraryType": "expand",
+   "componentModelEn": "NSR0240HT1G",
+   "componentPrices": [
+    {
+     "endNumber": 49,
+     "productPrice": 0.0787,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 149,
+     "productPrice": 0.0774,
+     "startNumber": 50
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.0764,
+     "startNumber": 150
+    },
+    {
+     "endNumber": 509,
+     "productPrice": 0.0756,
+     "startNumber": 500
+    },
+    {
+     "endNumber": 519,
+     "productPrice": 0.0756,
+     "startNumber": 510
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0756,
+     "startNumber": 520
+    }
+   ],
+   "componentSpecificationEn": "SOD-323",
+   "componentTypeEn": "Schottky Diodes",
+   "dataManualUrl": "https://www.lcsc.com/datasheet/lcsc_datasheet_1811122024_onsemi-NSR0240HT1G_C152519.pdf",
+   "describe": "-55℃~+150℃ 1 Independent 10uA@40V 1A 250mA 40V 710mV@200mA SOD-323 Schottky Diodes ROHS",
+   "erpComponentName": "NSR0240HT1G",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/schottky-diodes_onsemi-nsr0240ht1g_C152519.html",
+   "leastPatchNumber": 5,
+   "lossNumber": 4,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 7
+  }
+ ],
+ "returned": 1,
+ "schema": 1,
+ "total_matches": 1
+}

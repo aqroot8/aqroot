@@ -1,0 +1,115 @@
+{
+ "endpoint": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
+ "exhausted": true,
+ "fetched_utc": "2026-09-05T01:11:56Z",
+ "keyword": "C2836813",
+ "page_size": 25,
+ "pages": 1,
+ "records": [
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-40℃~+85℃"
+    },
+    {
+     "attribute_name_en": "Gyroscope Measurement Range (MAX)",
+     "attribute_value_name": "±2000dps"
+    },
+    {
+     "attribute_name_en": "Output Bits",
+     "attribute_value_name": "16bit"
+    },
+    {
+     "attribute_name_en": "Standby Current",
+     "attribute_value_name": "3.5uA"
+    },
+    {
+     "attribute_name_en": "Sensor Type",
+     "attribute_value_name": "IMU (accelerometer + gyroscope)"
+    },
+    {
+     "attribute_name_en": "Voltage - Supply",
+     "attribute_value_name": "1.71V~3.6V"
+    },
+    {
+     "attribute_name_en": "Acceleration Measurement Range (MAX)",
+     "attribute_value_name": "±16g"
+    },
+    {
+     "attribute_name_en": "Cache Size",
+     "attribute_value_name": "2KB"
+    },
+    {
+     "attribute_name_en": "Features",
+     "attribute_value_name": "Motion event detection、Synchronization and timestamp"
+    },
+    {
+     "attribute_name_en": "Gyroscope Sensing Axis",
+     "attribute_value_name": "X,Y,Z"
+    },
+    {
+     "attribute_name_en": "Accelerometer Sensing Axis",
+     "attribute_value_name": "X,Y,Z"
+    },
+    {
+     "attribute_name_en": "Interface",
+     "attribute_value_name": "SPI、I2C"
+    }
+   ],
+   "componentBrandEn": "Bosch Sensortec",
+   "componentCode": "C2836813",
+   "componentLibraryType": "expand",
+   "componentModelEn": "BMI270",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 3.228,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 29,
+     "productPrice": 2.9128,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 99,
+     "productPrice": 2.6902,
+     "startNumber": 30
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 1.7025,
+     "startNumber": 100
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 1.6083,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 1.571,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "LGA-14(2.5x3)",
+   "componentTypeEn": "Accelerometers",
+   "dataManualUrl": "https://www.lcsc.com/datasheet/lcsc_datasheet_2410121930_Bosch-Sensortec-BMI270_C2836813.pdf",
+   "describe": "-40℃~+85℃ 1.71V~3.6V 16bit 2KB 3.5uA Accelerometer Gyroscope SPI、I2C X,Y,Z X,Y,Z ±16g ±2000dps LGA-14(2.5x3) Accelerometers ROHS",
+   "erpComponentName": "6轴、智能、低功耗惯性测量单元，适用于高性能应用",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/accelerometers_bosch-sensortec-bmi270_C2836813.html",
+   "leastPatchNumber": 0,
+   "lossNumber": 0,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 6169
+  }
+ ],
+ "returned": 1,
+ "schema": 1,
+ "total_matches": 1
+}

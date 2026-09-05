@@ -1,0 +1,2118 @@
+{
+ "MATCH": [
+  {
+   "board_family": "CHIP-0603",
+   "fetched_utc": "2026-09-05T01:11:24Z",
+   "footprint": "C_0603_1608Metric",
+   "lcsc": "C15849",
+   "library": "base",
+   "mpn": "CL10A105KB8NNNC",
+   "record_family": "CHIP-0603",
+   "record_mpn": "CL10A105KB8NNNC",
+   "record_package": "0603",
+   "refs": [
+    "C1",
+    "C53",
+    "C56"
+   ],
+   "stock": 9281404,
+   "value": "1uF"
+  },
+  {
+   "board_family": "CHIP-0805",
+   "fetched_utc": "2026-09-05T01:11:25Z",
+   "footprint": "C_0805_2012Metric",
+   "lcsc": "C440198",
+   "library": "base",
+   "mpn": "GRM21BR61H106KE43L",
+   "record_family": "CHIP-0805",
+   "record_mpn": "GRM21BR61H106KE43L",
+   "record_package": "0805",
+   "refs": [
+    "C10"
+   ],
+   "stock": 2124840,
+   "value": "10uf"
+  },
+  {
+   "board_family": "CHIP-0805",
+   "fetched_utc": "2026-09-05T01:11:26Z",
+   "footprint": "C_0805_2012Metric",
+   "lcsc": "C1779",
+   "library": "base",
+   "mpn": "CL21A475KAQNNNE",
+   "record_family": "CHIP-0805",
+   "record_mpn": "CL21A475KAQNNNE",
+   "record_package": "0805",
+   "refs": [
+    "C11"
+   ],
+   "stock": 3234125,
+   "value": "4.7uF"
+  },
+  {
+   "board_family": "CHIP-1210",
+   "fetched_utc": "2026-09-05T01:18:43Z",
+   "footprint": "C_1210_3225Metric",
+   "lcsc": "C309062",
+   "library": "expand",
+   "mpn": "CL32B226KAJNNNE",
+   "record_family": "CHIP-1210",
+   "record_mpn": "CL32B226KAJNNNE",
+   "record_package": "1210",
+   "refs": [
+    "C12"
+   ],
+   "stock": 273901,
+   "value": "22uF"
+  },
+  {
+   "board_family": "CHIP-0402",
+   "fetched_utc": "2026-09-05T01:11:26Z",
+   "footprint": "C_0402_1005Metric",
+   "lcsc": "C105883",
+   "library": "expand",
+   "mpn": "CC0402KRX7R8BB104",
+   "record_family": "CHIP-0402",
+   "record_mpn": "CC0402KRX7R8BB104",
+   "record_package": "0402",
+   "refs": [
+    "C18",
+    "C19"
+   ],
+   "stock": 2853202,
+   "value": "100nF"
+  },
+  {
+   "board_family": "CHIP-0603",
+   "fetched_utc": "2026-09-05T01:11:27Z",
+   "footprint": "C_0603_1608Metric",
+   "lcsc": "C14663",
+   "library": "base",
+   "mpn": "CC0603KRX7R9BB104",
+   "record_family": "CHIP-0603",
+   "record_mpn": "CC0603KRX7R9BB104",
+   "record_package": "0603",
+   "refs": [
+    "C2",
+    "C4",
+    "C5",
+    "C6",
+    "C7",
+    "C8",
+    "C9",
+    "C13",
+    "C14",
+    "C16",
+    "C17"
+   ],
+   "stock": 67858030,
+   "value": "100nF"
+  },
+  {
+   "board_family": "CHIP-0805",
+   "fetched_utc": "2026-09-05T01:11:27Z",
+   "footprint": "C_0805_2012Metric",
+   "lcsc": "C354262",
+   "library": "expand",
+   "mpn": "CC0805KKX7R8BB475",
+   "record_family": "CHIP-0805",
+   "record_mpn": "CC0805KKX7R8BB475",
+   "record_package": "0805",
+   "refs": [
+    "C20"
+   ],
+   "stock": 597394,
+   "value": "4.7uF 10V X7R"
+  },
+  {
+   "board_family": "CHIP-0603",
+   "fetched_utc": "2026-09-05T01:11:28Z",
+   "footprint": "C_0603_1608Metric",
+   "lcsc": "C106858",
+   "library": "expand",
+   "mpn": "CC0603KRX7R8BB105",
+   "record_family": "CHIP-0603",
+   "record_mpn": "CC0603KRX7R8BB105",
+   "record_package": "0603",
+   "refs": [
+    "C23",
+    "C58",
+    "C59"
+   ],
+   "stock": 200814,
+   "value": "1uF 25V X7R"
+  },
+  {
+   "board_family": "CHIP-0603",
+   "fetched_utc": "2026-09-05T01:11:28Z",
+   "footprint": "C_0603_1608Metric",
+   "lcsc": "C344022",
+   "library": "expand",
+   "mpn": "GRM188R61E106KA73D",
+   "record_family": "CHIP-0603",
+   "record_mpn": "GRM188R61E106KA73D",
+   "record_package": "0603",
+   "refs": [
+    "C24"
+   ],
+   "stock": 454203,
+   "value": "10uF 25V X5R"
+  },
+  {
+   "board_family": "CHIP-0603",
+   "fetched_utc": "2026-09-05T01:11:28Z",
+   "footprint": "C_0603_1608Metric",
+   "lcsc": "C106858",
+   "library": "expand",
+   "mpn": "CC0603KRX7R8BB105",
+   "record_family": "CHIP-0603",
+   "record_mpn": "CC0603KRX7R8BB105",
+   "record_package": "0603",
+   "refs": [
+    "C25",
+    "C37",
+    "C38",
+    "C62",
+    "C63",
+    "C67"
+   ],
+   "stock": 200814,
+   "value": "1uF 10V X7R"
+  },
+  {
+   "board_family": "CHIP-1206",
+   "fetched_utc": "2026-09-05T01:11:29Z",
+   "footprint": "C_1206_3216Metric",
+   "lcsc": "C77093",
+   "library": "expand",
+   "mpn": "GRM31CR71E106KA12L",
+   "record_family": "CHIP-1206",
+   "record_mpn": "GRM31CR71E106KA12L",
+   "record_package": "1206",
+   "refs": [
+    "C26",
+    "C27"
+   ],
+   "stock": 219841,
+   "value": "10uF 10V X7R"
+  },
+  {
+   "board_family": "CHIP-0603",
+   "fetched_utc": "2026-09-05T01:11:27Z",
+   "footprint": "C_0603_1608Metric",
+   "lcsc": "C14663",
+   "library": "base",
+   "mpn": "CC0603KRX7R9BB104",
+   "record_family": "CHIP-0603",
+   "record_mpn": "CC0603KRX7R9BB104",
+   "record_package": "0603",
+   "refs": [
+    "C28",
+    "C36",
+    "C39",
+    "C60",
+    "C61",
+    "C68"
+   ],
+   "stock": 67858030,
+   "value": "100nF X7R"
+  },
+  {
+   "board_family": "CHIP-1206",
+   "fetched_utc": "2026-09-05T01:11:30Z",
+   "footprint": "C_1206_3216Metric",
+   "lcsc": "C22392398",
+   "library": "expand",
+   "mpn": "TCC1206X7R226K160HT",
+   "record_family": "CHIP-1206",
+   "record_mpn": "TCC1206X7R226K160HT",
+   "record_package": "1206",
+   "refs": [
+    "C29",
+    "C30",
+    "C31",
+    "C32"
+   ],
+   "stock": 55580,
+   "value": "22uF 10V X7R"
+  },
+  {
+   "board_family": "CHIP-0805",
+   "fetched_utc": "2026-09-05T01:11:25Z",
+   "footprint": "C_0805_2012Metric",
+   "lcsc": "C440198",
+   "library": "base",
+   "mpn": "GRM21BR61H106KE43L",
+   "record_family": "CHIP-0805",
+   "record_mpn": "GRM21BR61H106KE43L",
+   "record_package": "0805",
+   "refs": [
+    "C3",
+    "C15"
+   ],
+   "stock": 2124840,
+   "value": "10uF"
+  },
+  {
+   "board_family": "CHIP-0805",
+   "fetched_utc": "2026-09-05T01:11:30Z",
+   "footprint": "C_0805_2012Metric",
+   "lcsc": "C326595",
+   "library": "expand",
+   "mpn": "CC0805KKX7R7BB106",
+   "record_family": "CHIP-0805",
+   "record_mpn": "CC0805KKX7R7BB106",
+   "record_package": "0805",
+   "refs": [
+    "C33",
+    "C64"
+   ],
+   "stock": 267387,
+   "value": "10uF 10V X7R"
+  },
+  {
+   "board_family": "CHIP-0805",
+   "fetched_utc": "2026-09-05T01:11:26Z",
+   "footprint": "C_0805_2012Metric",
+   "lcsc": "C1779",
+   "library": "base",
+   "mpn": "CL21A475KAQNNNE",
+   "record_family": "CHIP-0805",
+   "record_mpn": "CL21A475KAQNNNE",
+   "record_package": "0805",
+   "refs": [
+    "C43"
+   ],
+   "stock": 3234125,
+   "value": "4.7uF 10V X5R"
+  },
+  {
+   "board_family": "CHIP-0805",
+   "fetched_utc": "2026-09-05T01:11:31Z",
+   "footprint": "C_0805_2012Metric",
+   "lcsc": "C28323",
+   "library": "base",
+   "mpn": "CL21B105KBFNNNE",
+   "record_family": "CHIP-0805",
+   "record_mpn": "CL21B105KBFNNNE",
+   "record_package": "0805",
+   "refs": [
+    "C44"
+   ],
+   "stock": 4007041,
+   "value": "1uF"
+  },
+  {
+   "board_family": "CHIP-0805",
+   "fetched_utc": "2026-09-05T01:18:44Z",
+   "footprint": "C_0805_2012Metric",
+   "lcsc": "C125847",
+   "library": "expand",
+   "mpn": "CC0805KKX7R9BB225",
+   "record_family": "CHIP-0805",
+   "record_mpn": "CC0805KKX7R9BB225",
+   "record_package": "0805",
+   "refs": [
+    "C45",
+    "C47",
+    "C49",
+    "C51"
+   ],
+   "stock": 60957,
+   "value": "2.2uF"
+  },
+  {
+   "board_family": "CHIP-0603",
+   "fetched_utc": "2026-09-05T01:18:45Z",
+   "footprint": "C_0603_1608Metric",
+   "lcsc": "C57112",
+   "library": "base",
+   "mpn": "0603B103K500NT",
+   "record_family": "CHIP-0603",
+   "record_mpn": "0603B103K500NT",
+   "record_package": "0603",
+   "refs": [
+    "C46",
+    "C48",
+    "C50",
+    "C54"
+   ],
+   "stock": 9270723,
+   "value": "10nF"
+  },
+  {
+   "board_family": "CHIP-0603",
+   "fetched_utc": "2026-09-05T01:18:46Z",
+   "footprint": "C_0603_1608Metric",
+   "lcsc": "C1588",
+   "library": "base",
+   "mpn": "CL10B102KB8NNNC",
+   "record_family": "CHIP-0603",
+   "record_mpn": "CL10B102KB8NNNC",
+   "record_package": "0603",
+   "refs": [
+    "C52"
+   ],
+   "stock": 10342671,
+   "value": "1nF"
+  },
+  {
+   "board_family": "CHIP-0603",
+   "fetched_utc": "2026-09-05T01:18:47Z",
+   "footprint": "C_0603_1608Metric",
+   "lcsc": "C23630",
+   "library": "base",
+   "mpn": "CL10A225KO8NNNC",
+   "record_family": "CHIP-0603",
+   "record_mpn": "CL10A225KO8NNNC",
+   "record_package": "0603",
+   "refs": [
+    "C55"
+   ],
+   "stock": 3853702,
+   "value": "2.2uF"
+  },
+  {
+   "board_family": "CHIP-0603",
+   "fetched_utc": "2026-09-05T01:18:48Z",
+   "footprint": "C_0603_1608Metric",
+   "lcsc": "C53987",
+   "library": "base",
+   "mpn": "0603B472K500NT",
+   "record_family": "CHIP-0603",
+   "record_mpn": "0603B472K500NT",
+   "record_package": "0603",
+   "refs": [
+    "C57"
+   ],
+   "stock": 1274172,
+   "value": "4.7nF 50V X7R"
+  },
+  {
+   "board_family": "CHIP-0805",
+   "fetched_utc": "2026-09-05T01:18:49Z",
+   "footprint": "C_0805_2012Metric",
+   "lcsc": "C907991",
+   "library": "expand",
+   "mpn": "GRM21BZ71A226ME15L",
+   "record_family": "CHIP-0805",
+   "record_mpn": "GRM21BZ71A226ME15L",
+   "record_package": "0805",
+   "refs": [
+    "C65",
+    "C66"
+   ],
+   "stock": 65524,
+   "value": "22uF 10V X7R"
+  },
+  {
+   "board_family": "CHIP-0603",
+   "fetched_utc": "2026-09-05T01:18:50Z",
+   "footprint": "C_0603_1608Metric",
+   "lcsc": "C14858",
+   "library": "base",
+   "mpn": "CL10C101JB8NNNC",
+   "record_family": "CHIP-0603",
+   "record_mpn": "CL10C101JB8NNNC",
+   "record_package": "0603",
+   "refs": [
+    "C69",
+    "C70"
+   ],
+   "stock": 4341176,
+   "value": "100pF 50V C0G TUNE"
+  },
+  {
+   "board_family": "CHIP-0603",
+   "fetched_utc": "2026-09-05T01:18:52Z",
+   "footprint": "C_0603_1608Metric",
+   "lcsc": "C3837533",
+   "library": "expand",
+   "mpn": "GCM1885C2A301FA16J",
+   "record_family": "CHIP-0603",
+   "record_mpn": "GCM1885C2A301FA16J",
+   "record_package": "0603",
+   "refs": [
+    "C71",
+    "C72"
+   ],
+   "stock": 1315,
+   "value": "300pF 50V C0G TUNE"
+  },
+  {
+   "board_family": "CHIP-0603",
+   "fetched_utc": "2026-09-05T01:18:53Z",
+   "footprint": "C_0603_1608Metric",
+   "lcsc": "C388906",
+   "library": "expand",
+   "mpn": "GCM1885C2A152JA16D",
+   "record_family": "CHIP-0603",
+   "record_mpn": "GCM1885C2A152JA16D",
+   "record_package": "0603",
+   "refs": [
+    "C73",
+    "C74"
+   ],
+   "stock": 5039,
+   "value": "1.5nF 50V C0G TUNE"
+  },
+  {
+   "board_family": "CHIP-0603",
+   "fetched_utc": "2026-09-05T01:18:55Z",
+   "footprint": "C_0603_1608Metric",
+   "lcsc": "C2360423",
+   "library": "expand",
+   "mpn": "GQM1875C2E270FB12D",
+   "record_family": "CHIP-0603",
+   "record_mpn": "GQM1875C2E270FB12D",
+   "record_package": "0603",
+   "refs": [
+    "C75",
+    "C77"
+   ],
+   "stock": 12124,
+   "value": "27pF 50V C0G TUNE"
+  },
+  {
+   "board_family": "CHIP-0603",
+   "fetched_utc": "2026-09-05T01:18:56Z",
+   "footprint": "C_0603_1608Metric",
+   "lcsc": "C325470",
+   "library": "expand",
+   "mpn": "CC0603JRNPO9BN621",
+   "record_family": "CHIP-0603",
+   "record_mpn": "CC0603JRNPO9BN621",
+   "record_package": "0603",
+   "refs": [
+    "C76",
+    "C78"
+   ],
+   "stock": 43162,
+   "value": "620pF 50V C0G TUNE"
+  },
+  {
+   "board_family": "CHIP-0603",
+   "fetched_utc": "2026-09-05T01:18:57Z",
+   "footprint": "C_0603_1608Metric",
+   "lcsc": "C1634",
+   "library": "base",
+   "mpn": "CL10C100JB8NNNC",
+   "record_family": "CHIP-0603",
+   "record_mpn": "CL10C100JB8NNNC",
+   "record_package": "0603",
+   "refs": [
+    "C79",
+    "C80"
+   ],
+   "stock": 2119581,
+   "value": "10pF 50V C0G TUNE"
+  },
+  {
+   "board_family": "CHIP-0603",
+   "fetched_utc": "2026-09-05T01:11:40Z",
+   "footprint": "L_0603_1608Metric",
+   "lcsc": "C2042966",
+   "library": "expand",
+   "mpn": "LQW18AN39NG80D",
+   "record_family": "CHIP-0603",
+   "record_mpn": "LQW18AN39NG80D",
+   "record_package": "0603",
+   "refs": [
+    "L5",
+    "L6"
+   ],
+   "stock": 232,
+   "value": "39nH TUNE"
+  },
+  {
+   "board_family": "SOIC-8",
+   "fetched_utc": "2026-09-05T01:10:38Z",
+   "footprint": "SOIC-8_3.9x4.9mm_P1.27mm",
+   "lcsc": "C905372",
+   "library": "expand",
+   "mpn": "NTMD4820NR2G",
+   "record_family": "SOIC-8",
+   "record_mpn": "NTMD4820NR2G",
+   "record_package": "SOIC-8",
+   "refs": [
+    "Q2",
+    "Q3"
+   ],
+   "stock": 0,
+   "value": "NTMD4820N"
+  },
+  {
+   "board_family": "CHIP-0603",
+   "fetched_utc": "2026-09-05T01:11:43Z",
+   "footprint": "R_0603_1608Metric",
+   "lcsc": "C25804",
+   "library": "base",
+   "mpn": "0603WAF1002T5E",
+   "record_family": "CHIP-0603",
+   "record_mpn": "0603WAF1002T5E",
+   "record_package": "0603",
+   "refs": [
+    "R1",
+    "R2",
+    "R3",
+    "R4",
+    "R5",
+    "R6",
+    "R7",
+    "R8",
+    "R9",
+    "R25",
+    "R26",
+    "R27",
+    "R28",
+    "R29",
+    "R83",
+    "R108",
+    "R110",
+    "R111",
+    "R127",
+    "R128"
+   ],
+   "stock": 27841082,
+   "value": "10k"
+  },
+  {
+   "board_family": "CHIP-0603",
+   "fetched_utc": "2026-09-05T01:11:43Z",
+   "footprint": "R_0603_1608Metric",
+   "lcsc": "C25803",
+   "library": "base",
+   "mpn": "0603WAF1003T5E",
+   "record_family": "CHIP-0603",
+   "record_mpn": "0603WAF1003T5E",
+   "record_package": "0603",
+   "refs": [
+    "R100"
+   ],
+   "stock": 25313065,
+   "value": "100k 1%"
+  },
+  {
+   "board_family": "CHIP-0603",
+   "fetched_utc": "2026-09-05T01:18:58Z",
+   "footprint": "R_0603_1608Metric",
+   "lcsc": "C4088673",
+   "library": "expand",
+   "mpn": "ERJ-PA3F1651V",
+   "record_family": "CHIP-0603",
+   "record_mpn": "ERJ-PA3F1651V",
+   "record_package": "0603",
+   "refs": [
+    "R101"
+   ],
+   "stock": 2763,
+   "value": "1.65k 1%"
+  },
+  {
+   "board_family": "CHIP-0603",
+   "fetched_utc": "2026-09-05T01:19:00Z",
+   "footprint": "R_0603_1608Metric",
+   "lcsc": "C22807",
+   "library": "base",
+   "mpn": "0603WAF1503T5E",
+   "record_family": "CHIP-0603",
+   "record_mpn": "0603WAF1503T5E",
+   "record_package": "0603",
+   "refs": [
+    "R104"
+   ],
+   "stock": 935054,
+   "value": "150k 1%"
+  },
+  {
+   "board_family": "CHIP-0603",
+   "fetched_utc": "2026-09-05T01:19:01Z",
+   "footprint": "R_0603_1608Metric",
+   "lcsc": "C22961",
+   "library": "base",
+   "mpn": "0603WAF2203T5E",
+   "record_family": "CHIP-0603",
+   "record_mpn": "0603WAF2203T5E",
+   "record_package": "0603",
+   "refs": [
+    "R105"
+   ],
+   "stock": 1692238,
+   "value": "220k 1%"
+  },
+  {
+   "board_family": "CHIP-0603",
+   "fetched_utc": "2026-09-05T01:11:44Z",
+   "footprint": "R_0603_1608Metric",
+   "lcsc": "C21189",
+   "library": "base",
+   "mpn": "0603WAF0000T5E",
+   "record_family": "CHIP-0603",
+   "record_mpn": "0603WAF0000T5E",
+   "record_package": "0603",
+   "refs": [
+    "R106",
+    "R109"
+   ],
+   "stock": 20771134,
+   "value": "0R FIT"
+  },
+  {
+   "board_family": "CHIP-0603",
+   "fetched_utc": "2026-09-05T01:19:02Z",
+   "footprint": "R_0603_1608Metric",
+   "lcsc": "C309559",
+   "library": "expand",
+   "mpn": "RC0603FR-071R1L",
+   "record_family": "CHIP-0603",
+   "record_mpn": "RC0603FR-071R1L",
+   "record_package": "0603",
+   "refs": [
+    "R114",
+    "R115"
+   ],
+   "stock": 3640,
+   "value": "1R1 1% TUNE"
+  },
+  {
+   "board_family": "CHIP-0603",
+   "fetched_utc": "2026-09-05T01:11:44Z",
+   "footprint": "R_0603_1608Metric",
+   "lcsc": "C21190",
+   "library": "base",
+   "mpn": "0603WAF1001T5E",
+   "record_family": "CHIP-0603",
+   "record_mpn": "0603WAF1001T5E",
+   "record_package": "0603",
+   "refs": [
+    "R116",
+    "R117"
+   ],
+   "stock": 29725776,
+   "value": "1k TUNE"
+  },
+  {
+   "board_family": "CHIP-0603",
+   "fetched_utc": "2026-09-05T01:11:43Z",
+   "footprint": "R_0603_1608Metric",
+   "lcsc": "C25803",
+   "library": "base",
+   "mpn": "0603WAF1003T5E",
+   "record_family": "CHIP-0603",
+   "record_mpn": "0603WAF1003T5E",
+   "record_package": "0603",
+   "refs": [
+    "R12",
+    "R13",
+    "R14",
+    "R15",
+    "R16",
+    "R17",
+    "R74",
+    "R81",
+    "R98",
+    "R102",
+    "R103",
+    "R113",
+    "R120",
+    "R129",
+    "R131"
+   ],
+   "stock": 25313065,
+   "value": "100k"
+  },
+  {
+   "board_family": "CHIP-0603",
+   "fetched_utc": "2026-09-05T01:11:44Z",
+   "footprint": "R_0603_1608Metric",
+   "lcsc": "C21190",
+   "library": "base",
+   "mpn": "0603WAF1001T5E",
+   "record_family": "CHIP-0603",
+   "record_mpn": "0603WAF1001T5E",
+   "record_package": "0603",
+   "refs": [
+    "R124"
+   ],
+   "stock": 29725776,
+   "value": "1k"
+  },
+  {
+   "board_family": "CHIP-0603",
+   "fetched_utc": "2026-09-05T01:19:02Z",
+   "footprint": "R_0603_1608Metric",
+   "lcsc": "C23228",
+   "library": "base",
+   "mpn": "0603WAF6800T5E",
+   "record_family": "CHIP-0603",
+   "record_mpn": "0603WAF6800T5E",
+   "record_package": "0603",
+   "refs": [
+    "R125"
+   ],
+   "stock": 2802830,
+   "value": "680R"
+  },
+  {
+   "board_family": "CHIP-0603",
+   "fetched_utc": "2026-09-05T01:19:03Z",
+   "footprint": "R_0603_1608Metric",
+   "lcsc": "C23151",
+   "library": "base",
+   "mpn": "0603WAF3900T5E",
+   "record_family": "CHIP-0603",
+   "record_mpn": "0603WAF3900T5E",
+   "record_package": "0603",
+   "refs": [
+    "R126"
+   ],
+   "stock": 456202,
+   "value": "390R"
+  },
+  {
+   "board_family": "CHIP-0603",
+   "fetched_utc": "2026-09-05T01:11:45Z",
+   "footprint": "R_0603_1608Metric",
+   "lcsc": "C22962",
+   "library": "base",
+   "mpn": "0603WAF2200T5E",
+   "record_family": "CHIP-0603",
+   "record_mpn": "0603WAF2200T5E",
+   "record_package": "0603",
+   "refs": [
+    "R18"
+   ],
+   "stock": 2236365,
+   "value": "220R"
+  },
+  {
+   "board_family": "CHIP-0603",
+   "fetched_utc": "2026-09-05T01:19:03Z",
+   "footprint": "R_0603_1608Metric",
+   "lcsc": "C4190",
+   "library": "base",
+   "mpn": "0603WAF2201T5E",
+   "record_family": "CHIP-0603",
+   "record_mpn": "0603WAF2201T5E",
+   "record_package": "0603",
+   "refs": [
+    "R19",
+    "R20"
+   ],
+   "stock": 7045217,
+   "value": "2.2k"
+  },
+  {
+   "board_family": "CHIP-0603",
+   "fetched_utc": "2026-09-05T01:11:45Z",
+   "footprint": "R_0603_1608Metric",
+   "lcsc": "C22775",
+   "library": "base",
+   "mpn": "0603WAF1000T5E",
+   "record_family": "CHIP-0603",
+   "record_mpn": "0603WAF1000T5E",
+   "record_package": "0603",
+   "refs": [
+    "R21",
+    "R22",
+    "R84"
+   ],
+   "stock": 14100861,
+   "value": "100R"
+  },
+  {
+   "board_family": "CHIP-0603",
+   "fetched_utc": "2026-09-05T01:11:43Z",
+   "footprint": "R_0603_1608Metric",
+   "lcsc": "C25803",
+   "library": "base",
+   "mpn": "0603WAF1003T5E",
+   "record_family": "CHIP-0603",
+   "record_mpn": "0603WAF1003T5E",
+   "record_package": "0603",
+   "refs": [
+    "R23",
+    "R43"
+   ],
+   "stock": 25313065,
+   "value": "100K"
+  },
+  {
+   "board_family": "CHIP-0805",
+   "fetched_utc": "2026-09-05T01:19:03Z",
+   "footprint": "R_0805_2012Metric",
+   "lcsc": "C26080556",
+   "library": "expand",
+   "mpn": "SR0805FR-4712RL",
+   "record_family": "CHIP-0805",
+   "record_mpn": "SR0805FR-4712RL",
+   "record_package": "0805",
+   "refs": [
+    "R24"
+   ],
+   "stock": 1504,
+   "value": "12R"
+  },
+  {
+   "board_family": "CHIP-0603",
+   "fetched_utc": "2026-09-05T01:11:46Z",
+   "footprint": "R_0603_1608Metric",
+   "lcsc": "C23186",
+   "library": "base",
+   "mpn": "0603WAF5101T5E",
+   "record_family": "CHIP-0603",
+   "record_mpn": "0603WAF5101T5E",
+   "record_package": "0603",
+   "refs": [
+    "R30",
+    "R31"
+   ],
+   "stock": 24475227,
+   "value": "5.1k"
+  },
+  {
+   "board_family": "CHIP-0603",
+   "fetched_utc": "2026-09-05T01:11:44Z",
+   "footprint": "R_0603_1608Metric",
+   "lcsc": "C21189",
+   "library": "base",
+   "mpn": "0603WAF0000T5E",
+   "record_family": "CHIP-0603",
+   "record_mpn": "0603WAF0000T5E",
+   "record_package": "0603",
+   "refs": [
+    "R32",
+    "R35",
+    "R42",
+    "R118",
+    "R121",
+    "R122"
+   ],
+   "stock": 20771134,
+   "value": "0R"
+  },
+  {
+   "board_family": "CHIP-0603",
+   "fetched_utc": "2026-09-05T01:11:47Z",
+   "footprint": "R_0603_1608Metric",
+   "lcsc": "C23345",
+   "library": "base",
+   "mpn": "0603WAF220JT5E",
+   "record_family": "CHIP-0603",
+   "record_mpn": "0603WAF220JT5E",
+   "record_package": "0603",
+   "refs": [
+    "R33",
+    "R34"
+   ],
+   "stock": 8733048,
+   "value": "22R"
+  },
+  {
+   "board_family": "CHIP-0603",
+   "fetched_utc": "2026-09-05T01:11:47Z",
+   "footprint": "R_0603_1608Metric",
+   "lcsc": "C25810",
+   "library": "base",
+   "mpn": "0603WAF1802T5E",
+   "record_family": "CHIP-0603",
+   "record_mpn": "0603WAF1802T5E",
+   "record_package": "0603",
+   "refs": [
+    "R36"
+   ],
+   "stock": 1075670,
+   "value": "18k 1%"
+  },
+  {
+   "board_family": "CHIP-0603",
+   "fetched_utc": "2026-09-05T01:11:44Z",
+   "footprint": "R_0603_1608Metric",
+   "lcsc": "C21190",
+   "library": "base",
+   "mpn": "0603WAF1001T5E",
+   "record_family": "CHIP-0603",
+   "record_mpn": "0603WAF1001T5E",
+   "record_package": "0603",
+   "refs": [
+    "R37"
+   ],
+   "stock": 29725776,
+   "value": "1k 1%"
+  },
+  {
+   "board_family": "CHIP-0603",
+   "fetched_utc": "2026-09-05T01:11:43Z",
+   "footprint": "R_0603_1608Metric",
+   "lcsc": "C25804",
+   "library": "base",
+   "mpn": "0603WAF1002T5E",
+   "record_family": "CHIP-0603",
+   "record_mpn": "0603WAF1002T5E",
+   "record_package": "0603",
+   "refs": [
+    "R38",
+    "R46",
+    "R63"
+   ],
+   "stock": 27841082,
+   "value": "10k 1%"
+  },
+  {
+   "board_family": "CHIP-0603",
+   "fetched_utc": "2026-09-05T01:11:48Z",
+   "footprint": "R_0603_1608Metric",
+   "lcsc": "C22935",
+   "library": "base",
+   "mpn": "0603WAF1004T5E",
+   "record_family": "CHIP-0603",
+   "record_mpn": "0603WAF1004T5E",
+   "record_package": "0603",
+   "refs": [
+    "R39"
+   ],
+   "stock": 8375047,
+   "value": "1M 1%"
+  },
+  {
+   "board_family": "CHIP-0603",
+   "fetched_utc": "2026-09-05T01:11:48Z",
+   "footprint": "R_0603_1608Metric",
+   "lcsc": "C22827",
+   "library": "expand",
+   "mpn": "0603WAF1803T5E",
+   "record_family": "CHIP-0603",
+   "record_mpn": "0603WAF1803T5E",
+   "record_package": "0603",
+   "refs": [
+    "R40"
+   ],
+   "stock": 413086,
+   "value": "180K 1%"
+  },
+  {
+   "board_family": "CHIP-0603",
+   "fetched_utc": "2026-09-05T01:11:48Z",
+   "footprint": "R_0603_1608Metric",
+   "lcsc": "C22935",
+   "library": "base",
+   "mpn": "0603WAF1004T5E",
+   "record_family": "CHIP-0603",
+   "record_mpn": "0603WAF1004T5E",
+   "record_package": "0603",
+   "refs": [
+    "R41",
+    "R80",
+    "R82",
+    "R94",
+    "R96"
+   ],
+   "stock": 8375047,
+   "value": "1M"
+  },
+  {
+   "board_family": "CHIP-0603",
+   "fetched_utc": "2026-09-05T01:11:47Z",
+   "footprint": "R_0603_1608Metric",
+   "lcsc": "C23345",
+   "library": "base",
+   "mpn": "0603WAF220JT5E",
+   "record_family": "CHIP-0603",
+   "record_mpn": "0603WAF220JT5E",
+   "record_package": "0603",
+   "refs": [
+    "R47",
+    "R48"
+   ],
+   "stock": 8733048,
+   "value": "22R 1%"
+  },
+  {
+   "board_family": "CHIP-0603",
+   "fetched_utc": "2026-09-05T01:19:04Z",
+   "footprint": "R_0603_1608Metric",
+   "lcsc": "C22843",
+   "library": "base",
+   "mpn": "0603WAF1501T5E",
+   "record_family": "CHIP-0603",
+   "record_mpn": "0603WAF1501T5E",
+   "record_package": "0603",
+   "refs": [
+    "R49",
+    "R50",
+    "R97"
+   ],
+   "stock": 3721970,
+   "value": "1.5k 1%"
+  },
+  {
+   "board_family": "CHIP-0603",
+   "fetched_utc": "2026-09-05T01:11:45Z",
+   "footprint": "R_0603_1608Metric",
+   "lcsc": "C22775",
+   "library": "base",
+   "mpn": "0603WAF1000T5E",
+   "record_family": "CHIP-0603",
+   "record_mpn": "0603WAF1000T5E",
+   "record_package": "0603",
+   "refs": [
+    "R55",
+    "R56",
+    "R61",
+    "R62",
+    "R64"
+   ],
+   "stock": 14100861,
+   "value": "100R 1%"
+  },
+  {
+   "board_family": "CHIP-0603",
+   "fetched_utc": "2026-09-05T01:11:49Z",
+   "footprint": "R_0603_1608Metric",
+   "lcsc": "C23138",
+   "library": "base",
+   "mpn": "0603WAF3300T5E",
+   "record_family": "CHIP-0603",
+   "record_mpn": "0603WAF3300T5E",
+   "record_package": "0603",
+   "refs": [
+    "R66"
+   ],
+   "stock": 4514200,
+   "value": "330R 1%"
+  },
+  {
+   "board_family": "CHIP-0603",
+   "fetched_utc": "2026-09-05T01:19:04Z",
+   "footprint": "R_0603_1608Metric",
+   "lcsc": "C422967",
+   "library": "expand",
+   "mpn": "0603WAF187KT5E",
+   "record_family": "CHIP-0603",
+   "record_mpn": "0603WAF187KT5E",
+   "record_package": "0603",
+   "refs": [
+    "R69"
+   ],
+   "stock": 91,
+   "value": "1.87R 1%"
+  },
+  {
+   "board_family": "CHIP-0603",
+   "fetched_utc": "2026-09-05T01:19:04Z",
+   "footprint": "R_0603_1608Metric",
+   "lcsc": "C23140",
+   "library": "base",
+   "mpn": "0603WAF330JT5E",
+   "record_family": "CHIP-0603",
+   "record_mpn": "0603WAF330JT5E",
+   "record_package": "0603",
+   "refs": [
+    "R70",
+    "R71",
+    "R72",
+    "R73"
+   ],
+   "stock": 5954817,
+   "value": "33R 1%"
+  },
+  {
+   "board_family": "CHIP-2512",
+   "fetched_utc": "2026-09-05T01:19:05Z",
+   "footprint": "R_2512_6332Metric",
+   "lcsc": "C2073490",
+   "library": "expand",
+   "mpn": "CRA2512-FZ-R015ELF",
+   "record_family": "CHIP-2512",
+   "record_mpn": "CRA2512-FZ-R015ELF",
+   "record_package": "2512",
+   "refs": [
+    "R75"
+   ],
+   "stock": 940,
+   "value": "15mR 1% 1W"
+  },
+  {
+   "board_family": "CHIP-0603",
+   "fetched_utc": "2026-09-05T01:19:05Z",
+   "footprint": "R_0603_1608Metric",
+   "lcsc": "C31850",
+   "library": "base",
+   "mpn": "0603WAF2202T5E",
+   "record_family": "CHIP-0603",
+   "record_mpn": "0603WAF2202T5E",
+   "record_package": "0603",
+   "refs": [
+    "R76"
+   ],
+   "stock": 4429422,
+   "value": "22k"
+  },
+  {
+   "board_family": "CHIP-0603",
+   "fetched_utc": "2026-09-05T01:19:05Z",
+   "footprint": "R_0603_1608Metric",
+   "lcsc": "C482835",
+   "library": "expand",
+   "mpn": "RC0603FR-073M65L",
+   "record_family": "CHIP-0603",
+   "record_mpn": "RC0603FR-073M65L",
+   "record_package": "0603",
+   "refs": [
+    "R77",
+    "R91"
+   ],
+   "stock": 2221,
+   "value": "3.65M 1%"
+  },
+  {
+   "board_family": "CHIP-0603",
+   "fetched_utc": "2026-09-05T01:19:06Z",
+   "footprint": "R_0603_1608Metric",
+   "lcsc": "C185327",
+   "library": "expand",
+   "mpn": "RC0603FR-07442KL",
+   "record_family": "CHIP-0603",
+   "record_mpn": "RC0603FR-07442KL",
+   "record_package": "0603",
+   "refs": [
+    "R78"
+   ],
+   "stock": 6324,
+   "value": "442k 1%"
+  },
+  {
+   "board_family": "CHIP-0603",
+   "fetched_utc": "2026-09-05T01:19:06Z",
+   "footprint": "R_0603_1608Metric",
+   "lcsc": "C23192",
+   "library": "base",
+   "mpn": "0603WAF5103T5E",
+   "record_family": "CHIP-0603",
+   "record_mpn": "0603WAF5103T5E",
+   "record_package": "0603",
+   "refs": [
+    "R79"
+   ],
+   "stock": 933115,
+   "value": "510k"
+  },
+  {
+   "board_family": "CHIP-0603",
+   "fetched_utc": "2026-09-05T01:19:06Z",
+   "footprint": "R_0603_1608Metric",
+   "lcsc": "C137747",
+   "library": "expand",
+   "mpn": "RC0603FR-072M2L",
+   "record_family": "CHIP-0603",
+   "record_mpn": "RC0603FR-072M2L",
+   "record_package": "0603",
+   "refs": [
+    "R85",
+    "R86",
+    "R87",
+    "R88",
+    "R89",
+    "R90"
+   ],
+   "stock": 5453,
+   "value": "2.2M 1%"
+  },
+  {
+   "board_family": "CHIP-0603",
+   "fetched_utc": "2026-09-05T01:19:07Z",
+   "footprint": "R_0603_1608Metric",
+   "lcsc": "C2115863",
+   "library": "expand",
+   "mpn": "MCT06030C1304FP500",
+   "record_family": "CHIP-0603",
+   "record_mpn": "MCT06030C1304FP500",
+   "record_package": "0603",
+   "refs": [
+    "R92"
+   ],
+   "stock": 1296,
+   "value": "1.30M 1%"
+  },
+  {
+   "board_family": "CHIP-1206",
+   "fetched_utc": "2026-09-05T01:19:07Z",
+   "footprint": "R_1206_3216Metric",
+   "lcsc": "C4220370",
+   "library": "expand",
+   "mpn": "ERJ-P08F5600V",
+   "record_family": "CHIP-1206",
+   "record_mpn": "ERJ-P08F5600V",
+   "record_package": "1206",
+   "refs": [
+    "R95"
+   ],
+   "stock": 4925,
+   "value": "560R 1% 1206"
+  },
+  {
+   "board_family": "CHIP-0603",
+   "fetched_utc": "2026-09-05T01:19:07Z",
+   "footprint": "R_0603_1608Metric",
+   "lcsc": "C2079739",
+   "library": "expand",
+   "mpn": "CRCW0603732KFKEA",
+   "record_family": "CHIP-0603",
+   "record_mpn": "CRCW0603732KFKEA",
+   "record_package": "0603",
+   "refs": [
+    "R99"
+   ],
+   "stock": 2865,
+   "value": "732k 1%"
+  },
+  {
+   "board_family": "MSOP-8",
+   "fetched_utc": "2026-09-05T01:10:38Z",
+   "footprint": "VSSOP-8_3x3mm_P0.65mm",
+   "lcsc": "C880333",
+   "library": "expand",
+   "mpn": "TCA4307DGKR",
+   "record_family": "MSOP-8",
+   "record_mpn": "TCA4307DGKR",
+   "record_package": "MSOP-8",
+   "refs": [
+    "U16"
+   ],
+   "stock": 3606,
+   "value": "TCA4307DGKR"
+  },
+  {
+   "board_family": "MSOP-10",
+   "fetched_utc": "2026-09-05T01:10:37Z",
+   "footprint": "MSOP-10_3x3mm_P0.5mm",
+   "lcsc": "C688401",
+   "library": "expand",
+   "mpn": "LTC4368IMS-1#TRPBF",
+   "record_family": "MSOP-10",
+   "record_mpn": "LTC4368IMS-1#TRPBF",
+   "record_package": "MSOP-10",
+   "refs": [
+    "U18"
+   ],
+   "stock": 3,
+   "value": "LTC4368-1"
+  },
+  {
+   "board_family": "TSSOP-24",
+   "fetched_utc": "2026-09-05T01:11:55Z",
+   "footprint": "TSSOP-24_4.4x7.8mm_P0.65mm",
+   "lcsc": "C2669683",
+   "library": "expand",
+   "mpn": "PCAL9535APW,118",
+   "record_family": "TSSOP-24",
+   "record_mpn": "PCAL9535APW,118",
+   "record_package": "TSSOP-24",
+   "refs": [
+    "U2",
+    "U3"
+   ],
+   "stock": 1,
+   "value": "PCAL9535APW"
+  }
+ ],
+ "MISMATCH": [],
+ "UNCOMPARABLE": [
+  {
+   "fetched_utc": "2026-09-05T01:11:31Z",
+   "footprint": "LED_D5.0mm",
+   "lcsc": "C111836",
+   "library": "expand",
+   "mpn": "TSAL6100",
+   "record_mpn": "TSAL6100",
+   "record_package": "Plugin,D=5mm",
+   "refs": [
+    "D1"
+   ],
+   "stock": 13860,
+   "value": "TSAL6100",
+   "why": "this screen has no comparable reading of the land 'LED_D5.0mm' against the catalogue package 'Plugin,D=5mm'"
+  },
+  {
+   "fetched_utc": "2026-09-05T01:11:32Z",
+   "footprint": "D_SOD-323",
+   "lcsc": "C124205",
+   "library": "expand",
+   "mpn": "BAT54WS-7-F",
+   "record_mpn": "BAT54WS-7-F",
+   "record_package": "SOD-323",
+   "refs": [
+    "D10",
+    "D11",
+    "D12"
+   ],
+   "stock": 114464,
+   "value": "BAT54WS",
+   "why": "this screen has no comparable reading of the land 'D_SOD-323' against the catalogue package 'SOD-323'"
+  },
+  {
+   "fetched_utc": "2026-09-05T01:11:32Z",
+   "footprint": "MEIHUA_MHPA3528RGBCT_PLCC4_3.5x2.8mm",
+   "lcsc": "C409779",
+   "library": "expand",
+   "mpn": "MHPA3528RGBCT",
+   "record_mpn": "MHPA3528RGBCT",
+   "record_package": "SMD3528-4P",
+   "refs": [
+    "D13"
+   ],
+   "stock": 69696,
+   "value": "MHPA3528RGBCT",
+   "why": "this screen has no comparable reading of the land 'MEIHUA_MHPA3528RGBCT_PLCC4_3.5x2.8mm' against the catalogue package 'SMD3528-4P'"
+  },
+  {
+   "fetched_utc": "2026-09-05T01:11:33Z",
+   "footprint": "SOT-563",
+   "lcsc": "C1972953",
+   "library": "expand",
+   "mpn": "TPD4E1B06DRLR",
+   "record_mpn": "TPD4E1B06DRLR",
+   "record_package": "SOT(5x3)",
+   "refs": [
+    "D2",
+    "D4",
+    "D5"
+   ],
+   "stock": 1700,
+   "value": "TPD4E1B06DRLR",
+   "why": "this screen has no comparable reading of the land 'SOT-563' against the catalogue package 'SOT(5x3)'"
+  },
+  {
+   "fetched_utc": "2026-09-05T01:11:33Z",
+   "footprint": "D_SOD-323",
+   "lcsc": "C152519",
+   "library": "expand",
+   "mpn": "NSR0240HT1G",
+   "record_mpn": "NSR0240HT1G",
+   "record_package": "SOD-323",
+   "refs": [
+    "D8"
+   ],
+   "stock": 7,
+   "value": "NSR0240",
+   "why": "this screen has no comparable reading of the land 'D_SOD-323' against the catalogue package 'SOD-323'"
+  },
+  {
+   "fetched_utc": "2026-09-05T01:11:34Z",
+   "footprint": "D_SOD-123",
+   "lcsc": "C110921",
+   "library": "expand",
+   "mpn": "PMEG2010AEH,115",
+   "record_mpn": "PMEG2010AEH,115",
+   "record_package": "SOD-123F",
+   "refs": [
+    "D9"
+   ],
+   "stock": 30985,
+   "value": "PMEG2010AEH",
+   "why": "this screen has no comparable reading of the land 'D_SOD-123' against the catalogue package 'SOD-123F'"
+  },
+  {
+   "fetched_utc": "2026-09-05T01:11:35Z",
+   "footprint": "Fuse_1206_3216Metric",
+   "lcsc": "C57525",
+   "library": "expand",
+   "mpn": "0466005.NRHF",
+   "record_mpn": "0466005.NRHF",
+   "record_package": "1206",
+   "refs": [
+    "F1"
+   ],
+   "stock": 16797,
+   "value": "5A one-shot 1206",
+   "why": "this screen has no comparable reading of the land 'Fuse_1206_3216Metric' against the catalogue package '1206'"
+  },
+  {
+   "fetched_utc": "2026-09-05T01:11:35Z",
+   "footprint": "Molex_5025700893",
+   "lcsc": "C429846",
+   "library": "expand",
+   "mpn": "5025700893",
+   "record_mpn": "5025700893",
+   "record_package": "SMD",
+   "refs": [
+    "J2"
+   ],
+   "stock": 10807,
+   "value": "Molex_5025700893",
+   "why": "this screen has no comparable reading of the land 'Molex_5025700893' against the catalogue package 'SMD'"
+  },
+  {
+   "fetched_utc": "2026-09-05T01:11:36Z",
+   "footprint": "USB_C_Receptacle_GCT_USB4105-xx-A_16P_TopMnt_Horizontal",
+   "lcsc": "C5184243",
+   "library": "expand",
+   "mpn": "USB4105-GF-A-120",
+   "record_mpn": "USB4105-GF-A-120",
+   "record_package": "SMD",
+   "refs": [
+    "J3"
+   ],
+   "stock": 4592,
+   "value": "USB_C_Receptacle_USB2.0_16P",
+   "why": "this screen has no comparable reading of the land 'USB_C_Receptacle_GCT_USB4105-xx-A_16P_TopMnt_Horizontal' against the catalogue package 'SMD'"
+  },
+  {
+   "fetched_utc": "2026-09-05T01:11:36Z",
+   "footprint": "JST_PH_B2B-PH-K_1x02_P2.00mm_Vertical",
+   "lcsc": "C131337",
+   "library": "expand",
+   "mpn": "B2B-PH-K-S(LF)(SN)",
+   "record_mpn": "B2B-PH-K-S(LF)(SN)",
+   "record_package": "Plugin,P=2mm",
+   "refs": [
+    "J4"
+   ],
+   "stock": 331532,
+   "value": "JST-PH-2 BATTERY",
+   "why": "this screen has no comparable reading of the land 'JST_PH_B2B-PH-K_1x02_P2.00mm_Vertical' against the catalogue package 'Plugin,P=2mm'"
+  },
+  {
+   "fetched_utc": "2026-09-05T01:11:37Z",
+   "footprint": "Samtec_SSQ-124-02-G-S-RA",
+   "lcsc": "C5575816",
+   "library": "expand",
+   "mpn": "BCS-112-S-D-HE",
+   "record_mpn": "BCS-112-S-D-HE",
+   "record_package": "Push-Pull,P=2.54mm",
+   "refs": [
+    "J5"
+   ],
+   "stock": 0,
+   "value": "COMMUNITY_PORT_1x24",
+   "why": "this screen has no comparable reading of the land 'Samtec_SSQ-124-02-G-S-RA' against the catalogue package 'Push-Pull,P=2.54mm'"
+  },
+  {
+   "fetched_utc": "2026-09-05T01:11:36Z",
+   "footprint": "JST_PH_B2B-PH-K_1x02_P2.00mm_Vertical",
+   "lcsc": "C131337",
+   "library": "expand",
+   "mpn": "B2B-PH-K-S(LF)(SN)",
+   "record_mpn": "B2B-PH-K-S(LF)(SN)",
+   "record_package": "Plugin,P=2mm",
+   "refs": [
+    "J6"
+   ],
+   "stock": 331532,
+   "value": "JST-PH-2 SPEAKER",
+   "why": "this screen has no comparable reading of the land 'JST_PH_B2B-PH-K_1x02_P2.00mm_Vertical' against the catalogue package 'Plugin,P=2mm'"
+  },
+  {
+   "fetched_utc": "2026-09-05T01:11:38Z",
+   "footprint": "JST_ACH_BM02B-ACHSS-GAN-ETF_1x02-1MP_P1.20mm_Vertical",
+   "lcsc": "C5118738",
+   "library": "expand",
+   "mpn": "BM02B-ACHSS-GAN-ETF(LF)(SN)",
+   "record_mpn": "BM02B-ACHSS-GAN-ETF(LF)(SN)",
+   "record_package": "SMD,P=1.2mm,Surface Mount\uff0cRight Angle",
+   "refs": [
+    "J7"
+   ],
+   "stock": 12475,
+   "value": "BM02B-ACHSS-GAN-ETF",
+   "why": "this screen has no comparable reading of the land 'JST_ACH_BM02B-ACHSS-GAN-ETF_1x02-1MP_P1.20mm_Vertical' against the catalogue package 'SMD,P=1.2mm,Surface Mount\uff0cRight Angle'"
+  },
+  {
+   "fetched_utc": "2026-09-05T01:11:38Z",
+   "footprint": "Coilcraft_XFL4020",
+   "lcsc": "C3033018",
+   "library": "expand",
+   "mpn": "XFL4020-152MEC",
+   "record_mpn": "XFL4020-152MEC",
+   "record_package": "SMD,4x4mm",
+   "refs": [
+    "L1"
+   ],
+   "stock": 18711,
+   "value": "1.5uH",
+   "why": "this screen has no comparable reading of the land 'Coilcraft_XFL4020' against the catalogue package 'SMD,4x4mm'"
+  },
+  {
+   "fetched_utc": "2026-09-05T01:11:39Z",
+   "footprint": "Coilcraft_XFL4020",
+   "lcsc": "C5156236",
+   "library": "expand",
+   "mpn": "XFL4020-472MEC",
+   "record_mpn": "XFL4020-472MEC",
+   "record_package": "SMD,4x4mm",
+   "refs": [
+    "L3"
+   ],
+   "stock": 2005,
+   "value": "4.7uH",
+   "why": "this screen has no comparable reading of the land 'Coilcraft_XFL4020' against the catalogue package 'SMD,4x4mm'"
+  },
+  {
+   "fetched_utc": "2026-09-05T01:11:39Z",
+   "footprint": "Wurth_WE-MAPI_4030_74438357010",
+   "lcsc": "C5542269",
+   "library": "expand",
+   "mpn": "74438357010",
+   "record_mpn": "74438357010",
+   "record_package": "SMD,4.1x4.1mm",
+   "refs": [
+    "L4"
+   ],
+   "stock": 0,
+   "value": "1uH",
+   "why": "this screen has no comparable reading of the land 'Wurth_WE-MAPI_4030_74438357010' against the catalogue package 'SMD,4.1x4.1mm'"
+  },
+  {
+   "fetched_utc": "2026-09-05T01:11:40Z",
+   "footprint": "PUI_DMM-4026-B-I2S_4.0x3.0mm",
+   "lcsc": "C3171792",
+   "library": "expand",
+   "mpn": "DMM-4026-B-I2S-R",
+   "record_mpn": "DMM-4026-B-I2S-R",
+   "record_package": "SMD-7P,4x3mm",
+   "refs": [
+    "MK1"
+   ],
+   "stock": 0,
+   "value": "DMM-4026-B-I2S",
+   "why": "this screen has no comparable reading of the land 'PUI_DMM-4026-B-I2S_4.0x3.0mm' against the catalogue package 'SMD-7P,4x3mm'"
+  },
+  {
+   "fetched_utc": "2026-09-05T01:11:41Z",
+   "footprint": "SOT-23",
+   "lcsc": "C8545",
+   "library": "base",
+   "mpn": "2N7002",
+   "record_mpn": "2N7002",
+   "record_package": "SOT-23",
+   "refs": [
+    "Q10"
+   ],
+   "stock": 2255867,
+   "value": "2N7002",
+   "why": "this screen has no comparable reading of the land 'SOT-23' against the catalogue package 'SOT-23'"
+  },
+  {
+   "fetched_utc": "2026-09-05T01:11:41Z",
+   "footprint": "SOT-23",
+   "lcsc": "C82045",
+   "library": "expand",
+   "mpn": "BSS138LT1G",
+   "record_mpn": "BSS138LT1G",
+   "record_package": "SOT-23",
+   "refs": [
+    "Q4",
+    "Q6",
+    "Q7",
+    "Q8",
+    "Q9"
+   ],
+   "stock": 721410,
+   "value": "BSS138",
+   "why": "this screen has no comparable reading of the land 'SOT-23' against the catalogue package 'SOT-23'"
+  },
+  {
+   "fetched_utc": "2026-09-05T01:11:42Z",
+   "footprint": "SOT-23",
+   "lcsc": "C15127",
+   "library": "base",
+   "mpn": "AO3401A",
+   "record_mpn": "AO3401A",
+   "record_package": "SOT-23",
+   "refs": [
+    "Q5"
+   ],
+   "stock": 719496,
+   "value": "AO3401A",
+   "why": "this screen has no comparable reading of the land 'SOT-23' against the catalogue package 'SOT-23'"
+  },
+  {
+   "fetched_utc": "2026-09-05T01:11:49Z",
+   "footprint": "SW_SPST_PTS645Sx43SMTR92",
+   "lcsc": "C221880",
+   "library": "expand",
+   "mpn": "PTS645SM43SMTR92LFS",
+   "record_mpn": "PTS645SM43SMTR92LFS",
+   "record_package": "SMD-4P,6x6mm",
+   "refs": [
+    "SW1"
+   ],
+   "stock": 3876,
+   "value": "BOOT",
+   "why": "this screen has no comparable reading of the land 'SW_SPST_PTS645Sx43SMTR92' against the catalogue package 'SMD-4P,6x6mm'"
+  },
+  {
+   "fetched_utc": "2026-09-05T01:11:49Z",
+   "footprint": "SW_SPST_PTS645Sx43SMTR92",
+   "lcsc": "C221880",
+   "library": "expand",
+   "mpn": "PTS645SM43SMTR92LFS",
+   "record_mpn": "PTS645SM43SMTR92LFS",
+   "record_package": "SMD-4P,6x6mm",
+   "refs": [
+    "SW2"
+   ],
+   "stock": 3876,
+   "value": "UP",
+   "why": "this screen has no comparable reading of the land 'SW_SPST_PTS645Sx43SMTR92' against the catalogue package 'SMD-4P,6x6mm'"
+  },
+  {
+   "fetched_utc": "2026-09-05T01:11:49Z",
+   "footprint": "SW_SPST_PTS645Sx43SMTR92",
+   "lcsc": "C221880",
+   "library": "expand",
+   "mpn": "PTS645SM43SMTR92LFS",
+   "record_mpn": "PTS645SM43SMTR92LFS",
+   "record_package": "SMD-4P,6x6mm",
+   "refs": [
+    "SW3"
+   ],
+   "stock": 3876,
+   "value": "DOWN",
+   "why": "this screen has no comparable reading of the land 'SW_SPST_PTS645Sx43SMTR92' against the catalogue package 'SMD-4P,6x6mm'"
+  },
+  {
+   "fetched_utc": "2026-09-05T01:11:49Z",
+   "footprint": "SW_SPST_PTS645Sx43SMTR92",
+   "lcsc": "C221880",
+   "library": "expand",
+   "mpn": "PTS645SM43SMTR92LFS",
+   "record_mpn": "PTS645SM43SMTR92LFS",
+   "record_package": "SMD-4P,6x6mm",
+   "refs": [
+    "SW4"
+   ],
+   "stock": 3876,
+   "value": "LEFT",
+   "why": "this screen has no comparable reading of the land 'SW_SPST_PTS645Sx43SMTR92' against the catalogue package 'SMD-4P,6x6mm'"
+  },
+  {
+   "fetched_utc": "2026-09-05T01:11:49Z",
+   "footprint": "SW_SPST_PTS645Sx43SMTR92",
+   "lcsc": "C221880",
+   "library": "expand",
+   "mpn": "PTS645SM43SMTR92LFS",
+   "record_mpn": "PTS645SM43SMTR92LFS",
+   "record_package": "SMD-4P,6x6mm",
+   "refs": [
+    "SW5"
+   ],
+   "stock": 3876,
+   "value": "RIGHT",
+   "why": "this screen has no comparable reading of the land 'SW_SPST_PTS645Sx43SMTR92' against the catalogue package 'SMD-4P,6x6mm'"
+  },
+  {
+   "fetched_utc": "2026-09-05T01:11:49Z",
+   "footprint": "SW_SPST_PTS645Sx43SMTR92",
+   "lcsc": "C221880",
+   "library": "expand",
+   "mpn": "PTS645SM43SMTR92LFS",
+   "record_mpn": "PTS645SM43SMTR92LFS",
+   "record_package": "SMD-4P,6x6mm",
+   "refs": [
+    "SW6"
+   ],
+   "stock": 3876,
+   "value": "A_SELECT",
+   "why": "this screen has no comparable reading of the land 'SW_SPST_PTS645Sx43SMTR92' against the catalogue package 'SMD-4P,6x6mm'"
+  },
+  {
+   "fetched_utc": "2026-09-05T01:11:49Z",
+   "footprint": "SW_SPST_PTS645Sx43SMTR92",
+   "lcsc": "C221880",
+   "library": "expand",
+   "mpn": "PTS645SM43SMTR92LFS",
+   "record_mpn": "PTS645SM43SMTR92LFS",
+   "record_package": "SMD-4P,6x6mm",
+   "refs": [
+    "SW7"
+   ],
+   "stock": 3876,
+   "value": "B_BACK",
+   "why": "this screen has no comparable reading of the land 'SW_SPST_PTS645Sx43SMTR92' against the catalogue package 'SMD-4P,6x6mm'"
+  },
+  {
+   "fetched_utc": "2026-09-05T01:11:50Z",
+   "footprint": "SW_SPDT_CK_JS102011SAQN",
+   "lcsc": "C221660",
+   "library": "expand",
+   "mpn": "JS102011SAQN",
+   "record_mpn": "JS102011SAQN",
+   "record_package": "SMD",
+   "refs": [
+    "SW9"
+   ],
+   "stock": 1514,
+   "value": "SW_SPDT",
+   "why": "this screen has no comparable reading of the land 'SW_SPDT_CK_JS102011SAQN' against the catalogue package 'SMD'"
+  },
+  {
+   "fetched_utc": "2026-09-05T01:11:51Z",
+   "footprint": "ESP32-S3-WROOM-1",
+   "lcsc": "C2913202",
+   "library": "expand",
+   "mpn": "ESP32-S3-WROOM-1-N16R8",
+   "record_mpn": "ESP32-S3-WROOM-1-N16R8",
+   "record_package": "SMD,25.5x18mm",
+   "refs": [
+    "U1"
+   ],
+   "stock": 49184,
+   "value": "ESP32-S3-WROOM-1",
+   "why": "this screen has no comparable reading of the land 'ESP32-S3-WROOM-1' against the catalogue package 'SMD,25.5x18mm'"
+  },
+  {
+   "fetched_utc": "2026-09-05T01:11:51Z",
+   "footprint": "SOT-23-6",
+   "lcsc": "C7519",
+   "library": "expand",
+   "mpn": "USBLC6-2SC6",
+   "record_mpn": "USBLC6-2SC6",
+   "record_package": "SOT-23-6L",
+   "refs": [
+    "U10"
+   ],
+   "stock": 33408,
+   "value": "USBLC6-2SC6",
+   "why": "this screen has no comparable reading of the land 'SOT-23-6' against the catalogue package 'SOT-23-6L'"
+  },
+  {
+   "fetched_utc": "2026-09-05T01:11:52Z",
+   "footprint": "Texas_DLH0010A_WSON-10-1EP_2.2x2mm_P0.4mm_EP0.9x1.5mm",
+   "lcsc": "C19725033",
+   "library": "expand",
+   "mpn": "BQ25185DLHR",
+   "record_mpn": "BQ25185DLHR",
+   "record_package": "WSON-10-EP(2.2x2)",
+   "refs": [
+    "U11"
+   ],
+   "stock": 243,
+   "value": "BQ25185",
+   "why": "this screen has no comparable reading of the land 'Texas_DLH0010A_WSON-10-1EP_2.2x2mm_P0.4mm_EP0.9x1.5mm' against the catalogue package 'WSON-10-EP(2.2x2)'"
+  },
+  {
+   "fetched_utc": "2026-09-05T01:11:52Z",
+   "footprint": "TI_TPS63020_DSJ",
+   "lcsc": "C15483",
+   "library": "expand",
+   "mpn": "TPS63020DSJR",
+   "record_mpn": "TPS63020DSJR",
+   "record_package": "VSON-14-EP(3x4)",
+   "refs": [
+    "U12"
+   ],
+   "stock": 7523,
+   "value": "TPS63020",
+   "why": "this screen has no comparable reading of the land 'TI_TPS63020_DSJ' against the catalogue package 'VSON-14-EP(3x4)'"
+  },
+  {
+   "fetched_utc": "2026-09-05T01:11:53Z",
+   "footprint": "MAX17048_T822",
+   "lcsc": "C2682616",
+   "library": "expand",
+   "mpn": "MAX17048G+T10",
+   "record_mpn": "MAX17048G+T10",
+   "record_package": "DFN-8-EP(2x2)",
+   "refs": [
+    "U14"
+   ],
+   "stock": 15380,
+   "value": "MAX17048",
+   "why": "this screen has no comparable reading of the land 'MAX17048_T822' against the catalogue package 'DFN-8-EP(2x2)'"
+  },
+  {
+   "fetched_utc": "2026-09-05T01:11:54Z",
+   "footprint": "SOT-353_SC-70-5",
+   "lcsc": "C71045",
+   "library": "expand",
+   "mpn": "TPS61169DCKR",
+   "record_mpn": "TPS61169DCKR",
+   "record_package": "SC-70-5",
+   "refs": [
+    "U17"
+   ],
+   "stock": 4006,
+   "value": "TPS61169DCKR",
+   "why": "this screen has no comparable reading of the land 'SOT-353_SC-70-5' against the catalogue package 'SC-70-5'"
+  },
+  {
+   "fetched_utc": "2026-09-05T01:11:54Z",
+   "footprint": "SOT-23-8",
+   "lcsc": "C2871498",
+   "library": "expand",
+   "mpn": "TLV7032DDFR",
+   "record_mpn": "TLV7032DDFR",
+   "record_package": "TSOT-23-8",
+   "refs": [
+    "U19"
+   ],
+   "stock": 0,
+   "value": "TLV7032",
+   "why": "this screen has no comparable reading of the land 'SOT-23-8' against the catalogue package 'TSOT-23-8'"
+  },
+  {
+   "fetched_utc": "2026-09-05T01:11:55Z",
+   "footprint": "SOT-23-6",
+   "lcsc": "C7587833",
+   "library": "expand",
+   "mpn": "TPS22950CDDCR",
+   "record_mpn": "TPS22950CDDCR",
+   "record_package": "SOT-23-6",
+   "refs": [
+    "U20",
+    "U22"
+   ],
+   "stock": 181,
+   "value": "TPS22950C",
+   "why": "this screen has no comparable reading of the land 'SOT-23-6' against the catalogue package 'SOT-23-6'"
+  },
+  {
+   "fetched_utc": "2026-09-05T01:11:56Z",
+   "footprint": "SOT-563",
+   "lcsc": "C919459",
+   "library": "expand",
+   "mpn": "TPS61023DRLR",
+   "record_mpn": "TPS61023DRLR",
+   "record_package": "SOT-563",
+   "refs": [
+    "U21"
+   ],
+   "stock": 2512,
+   "value": "TPS61023",
+   "why": "this screen has no comparable reading of the land 'SOT-563' against the catalogue package 'SOT-563'"
+  },
+  {
+   "fetched_utc": "2026-09-05T01:11:56Z",
+   "footprint": "Bosch_LGA-14_2.5x3.0mm_P0.5mm_BMI270",
+   "lcsc": "C2836813",
+   "library": "expand",
+   "mpn": "BMI270",
+   "record_mpn": "BMI270",
+   "record_package": "LGA-14(2.5x3)",
+   "refs": [
+    "U4"
+   ],
+   "stock": 6169,
+   "value": "BMI270",
+   "why": "this screen has no comparable reading of the land 'Bosch_LGA-14_2.5x3.0mm_P0.5mm_BMI270' against the catalogue package 'LGA-14(2.5x3)'"
+  },
+  {
+   "fetched_utc": "2026-09-05T01:11:57Z",
+   "footprint": "TQFN-16-1EP_3x3mm_P0.5mm_EP1.23x1.23mm",
+   "lcsc": "C910544",
+   "library": "expand",
+   "mpn": "MAX98357AETE+T",
+   "record_mpn": "MAX98357AETE+T",
+   "record_package": "TQFN-16-EP(3x3)",
+   "refs": [
+    "U5"
+   ],
+   "stock": 16647,
+   "value": "MAX98357A",
+   "why": "this screen has no comparable reading of the land 'TQFN-16-1EP_3x3mm_P0.5mm_EP1.23x1.23mm' against the catalogue package 'TQFN-16-EP(3x3)'"
+  },
+  {
+   "fetched_utc": "2026-09-05T01:11:58Z",
+   "footprint": "Vishay_TSOP382xx_Minicast_3Pin_P2.54mm",
+   "lcsc": "C141632",
+   "library": "expand",
+   "mpn": "TSOP38238",
+   "record_mpn": "TSOP38238",
+   "record_package": "SIP-3-2.54mm",
+   "refs": [
+    "U6"
+   ],
+   "stock": 16339,
+   "value": "TSOP38238",
+   "why": "this screen has no comparable reading of the land 'Vishay_TSOP382xx_Minicast_3Pin_P2.54mm' against the catalogue package 'SIP-3-2.54mm'"
+  },
+  {
+   "fetched_utc": "2026-09-05T01:11:58Z",
+   "footprint": "Ebyte_E07-400M10S",
+   "lcsc": "C2965513",
+   "library": "expand",
+   "mpn": "E07-400M10S",
+   "record_mpn": "E07-400M10S",
+   "record_package": "SMD,20x14mm",
+   "refs": [
+    "U7"
+   ],
+   "stock": 722,
+   "value": "E07-400M10S",
+   "why": "this screen has no comparable reading of the land 'Ebyte_E07-400M10S' against the catalogue package 'SMD,20x14mm'"
+  },
+  {
+   "fetched_utc": "2026-09-05T01:11:59Z",
+   "footprint": "Ebyte_E22-900M22S",
+   "lcsc": "C411293",
+   "library": "expand",
+   "mpn": "E22-900M22S",
+   "record_mpn": "E22-900M22S",
+   "record_package": "SMD,20x14mm",
+   "refs": [
+    "U8"
+   ],
+   "stock": 984,
+   "value": "E22-900M22S",
+   "why": "this screen has no comparable reading of the land 'Ebyte_E22-900M22S' against the catalogue package 'SMD,20x14mm'"
+  },
+  {
+   "fetched_utc": "2026-09-05T01:11:59Z",
+   "footprint": "ST25R3916_AQET",
+   "lcsc": "C5267441",
+   "library": "expand",
+   "mpn": "ST25R3916-AQET",
+   "record_mpn": "ST25R3916-AQET",
+   "record_package": "UFQFPN-32(5x5)",
+   "refs": [
+    "U9"
+   ],
+   "stock": 0,
+   "value": "ST25R3916-AQET",
+   "why": "this screen has no comparable reading of the land 'ST25R3916_AQET' against the catalogue package 'UFQFPN-32(5x5)'"
+  },
+  {
+   "fetched_utc": "2026-09-05T01:12:00Z",
+   "footprint": "Crystal_SMD_3225-4Pin_3.2x2.5mm",
+   "lcsc": "C362365",
+   "library": "expand",
+   "mpn": "TXM27.12M0004322DBBDO00T",
+   "record_mpn": "TXM27.12M0004322DBBDO00T",
+   "record_package": "SMD3225-4P",
+   "refs": [
+    "Y1"
+   ],
+   "stock": 3097,
+   "value": "27.12MHz 10pF 3225-4P",
+   "why": "this screen has no comparable reading of the land 'Crystal_SMD_3225-4Pin_3.2x2.5mm' against the catalogue package 'SMD3225-4P'"
+  }
+ ],
+ "UNLISTED": [],
+ "lines_with_a_code": 119,
+ "mpn_differs_from_record": [],
+ "package": "/home/aqroot8/aqroot-demo/hardware/demo/fab",
+ "schema": 1,
+ "short_on_the_assemblers_catalogue": [
+  {
+   "fetched_utc": "2026-09-05T01:11:37Z",
+   "first_five_need": 5,
+   "lcsc": "C5575816",
+   "library": "expand",
+   "mpn": "BCS-112-S-D-HE",
+   "refs": [
+    "J5"
+   ],
+   "stock": 0
+  },
+  {
+   "fetched_utc": "2026-09-05T01:11:39Z",
+   "first_five_need": 5,
+   "lcsc": "C5542269",
+   "library": "expand",
+   "mpn": "74438357010",
+   "refs": [
+    "L4"
+   ],
+   "stock": 0
+  },
+  {
+   "fetched_utc": "2026-09-05T01:11:40Z",
+   "first_five_need": 5,
+   "lcsc": "C3171792",
+   "library": "expand",
+   "mpn": "DMM-4026-B-I2S-R",
+   "refs": [
+    "MK1"
+   ],
+   "stock": 0
+  },
+  {
+   "fetched_utc": "2026-09-05T01:10:38Z",
+   "first_five_need": 10,
+   "lcsc": "C905372",
+   "library": "expand",
+   "mpn": "NTMD4820NR2G",
+   "refs": [
+    "Q2",
+    "Q3"
+   ],
+   "stock": 0
+  },
+  {
+   "fetched_utc": "2026-09-05T01:11:54Z",
+   "first_five_need": 5,
+   "lcsc": "C2871498",
+   "library": "expand",
+   "mpn": "TLV7032DDFR",
+   "refs": [
+    "U19"
+   ],
+   "stock": 0
+  },
+  {
+   "fetched_utc": "2026-09-05T01:11:59Z",
+   "first_five_need": 5,
+   "lcsc": "C5267441",
+   "library": "expand",
+   "mpn": "ST25R3916-AQET",
+   "refs": [
+    "U9"
+   ],
+   "stock": 0
+  },
+  {
+   "fetched_utc": "2026-09-05T01:11:55Z",
+   "first_five_need": 10,
+   "lcsc": "C2669683",
+   "library": "expand",
+   "mpn": "PCAL9535APW,118",
+   "refs": [
+    "U2",
+    "U3"
+   ],
+   "stock": 1
+  },
+  {
+   "fetched_utc": "2026-09-05T01:10:37Z",
+   "first_five_need": 5,
+   "lcsc": "C688401",
+   "library": "expand",
+   "mpn": "LTC4368IMS-1#TRPBF",
+   "refs": [
+    "U18"
+   ],
+   "stock": 3
+  },
+  {
+   "fetched_utc": "2026-09-05T01:11:33Z",
+   "first_five_need": 5,
+   "lcsc": "C152519",
+   "library": "expand",
+   "mpn": "NSR0240HT1G",
+   "refs": [
+    "D8"
+   ],
+   "stock": 7
+  }
+ ],
+ "summary": {
+  "MATCH": 75,
+  "MISMATCH": 0,
+  "UNCOMPARABLE": 44,
+  "UNLISTED": 0
+ },
+ "verdict": "PASS",
+ "zero_stock": [
+  {
+   "lcsc": "C905372",
+   "mpn": "NTMD4820NR2G",
+   "refs": [
+    "Q2",
+    "Q3"
+   ],
+   "stock": 0
+  }
+ ]
+}

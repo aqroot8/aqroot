@@ -1,0 +1,73 @@
+{
+ "added": [
+  {
+   "property": "LCSC",
+   "ref": "J1",
+   "sheet": "03_spi_a_display_sd.kicad_sch",
+   "value": "C25955556"
+  },
+  {
+   "property": "Note_Sourcing",
+   "ref": "J1",
+   "sheet": "03_spi_a_display_sd.kicad_sch",
+   "value": "SOURCING D-615 LIVE_RECORD. The display FPC connector's LCSC code was the other half of DEVICE_SPEC s.16 item 8. JLCPCB record read 2026-09-05: HRS(Hirose) FH69-50S-0.5SH, LCSC C25955556, stock 790 against a first-five need of 5, 50 contacts, 0.5 mm, front insertion / back flip lock, double-sided top-and-bottom entry, 50 V 500 mA, -55..+125 C, surface mount right angle -- the genuine Hirose part D-206 confirmed JLC carries, so J1 stays MACHINE-PLACED. B-47's single-source finding stands."
+  },
+  {
+   "property": "LCSC",
+   "ref": "J8",
+   "sheet": "09_community_header.kicad_sch",
+   "value": "C160404"
+  }
+ ],
+ "applied": true,
+ "conflicts": [],
+ "plan": "hardware/demo/manufacturing/evidence/d615-connector-lcsc-plan.json",
+ "properties_added": 3,
+ "properties_already_correct": [
+  "J1.MPN",
+  "J1.Manufacturer",
+  "J8.MPN",
+  "J8.Manufacturer"
+ ],
+ "properties_rewritten": [
+  {
+   "property": "Note_Sourcing",
+   "ref": "J8",
+   "sheet": "09_community_header.kicad_sch",
+   "value": "SOURCING D-615 LIVE_RECORD, SUPERSEDING THE D-614 REFERENCE_RULING. The MPN was grafted at D-614 from D-238 and SOURCING_LEDGER; the LCSC code was the half DEVICE_SPEC s.16 item 8 still listed as OPEN. JLCPCB record read 2026-09-05: JST SM04B-SRSS-TB(LF)(SN), LCSC C160404, stock 69510, SH series, pitch 1 mm, 4P 1x4P, 1 A, 50 V, -25..+85 C, UL94V-0, surface mount right angle, board footprint 6 mm x 4.32 mm -- every field corroborates D-238 and the land Connector_JST:JST_SH_SM04B-SRSS-TB_1x04-1MP_P1.00mm_Horizontal. The bare order code SM04B-SRSS-TB resolves only to ZERO-STOCK JLCPCB Assembly entries, which is why the plating-suffixed string is the one D-096 requires.",
+   "was": "SOURCING D-614. REFERENCE_RULING from the beta-dm audit line 'J8' (SOURCING-LEDGER); manufacturer named with the part in SOURCING_LEDGER; D-238, recorded in docs/full-beta-v2/assembly/SOURCING_LEDGER.md s.2 (JST SH, 1.0 mm, 4 circuit, side entry, SMT, 1.0 A, 50 V) and in DEVICE_SPEC s.10.2, which also lists the absent schematic property as an open item.  The plating-suffixed string is the one D-096 requires: the bare order code resolves to a zero-stock listing."
+  }
+ ],
+ "references_found": 2,
+ "references_in_plan": 2,
+ "references_not_in_any_sheet": [],
+ "schema": 1,
+ "sha256_after": {
+  "01_power_tree.kicad_sch": "410cac99d5775a5330a5c55852bf0d8f0ef4f95c504f18ada4685b9b650f794d",
+  "02_mcu_core.kicad_sch": "62cbc53b5d165f6dd6946ab5a53fdd51ae5eacb3acbed4814d9be85e30dad4d1",
+  "03_spi_a_display_sd.kicad_sch": "9eb9cafc70a6afcd61c61fcd9111f0bd6c605aa188ea53e6b70293871ba4bfaa",
+  "04_spi_b_radios_nfc.kicad_sch": "07b195de8bc9c68bcd8b4416def81a2334a81894c9ccf55762b1861d212c4be8",
+  "05_i2c_devices.kicad_sch": "ab183831cc7b39a606ac1d45641adee8070242a6922cd9ada2a139a27493461a",
+  "06_audio.kicad_sch": "d49ada5071e8498fc74cb09239b8df187859e9fbe6a02377981109cd46a55d61",
+  "07_ir.kicad_sch": "4123770847540d6f1208386159f22bcf820da8c7f0e7f91515a8f2979723bda5",
+  "08_buttons_expanders.kicad_sch": "76dd48bf075c23977a26ac479bd1be690dc928b473ecf73d6d10eca1ed390135",
+  "09_community_header.kicad_sch": "dcf6b5f3dd7a4df51177c4c11e47427b457f1be41a8b9ebd4ab2cbe216384230",
+  "aqroot-Beta-v2.kicad_sch": "195a985ca49cd03d88b006776f31ef6fa929d23d6a9eb3c29e37581307d31603"
+ },
+ "sha256_before": {
+  "01_power_tree.kicad_sch": "410cac99d5775a5330a5c55852bf0d8f0ef4f95c504f18ada4685b9b650f794d",
+  "02_mcu_core.kicad_sch": "62cbc53b5d165f6dd6946ab5a53fdd51ae5eacb3acbed4814d9be85e30dad4d1",
+  "03_spi_a_display_sd.kicad_sch": "e21e5ce3580851e9d54bd1cf3cc81f38bd3dbbd846b25a9c1f06295548814236",
+  "04_spi_b_radios_nfc.kicad_sch": "07b195de8bc9c68bcd8b4416def81a2334a81894c9ccf55762b1861d212c4be8",
+  "05_i2c_devices.kicad_sch": "ab183831cc7b39a606ac1d45641adee8070242a6922cd9ada2a139a27493461a",
+  "06_audio.kicad_sch": "d49ada5071e8498fc74cb09239b8df187859e9fbe6a02377981109cd46a55d61",
+  "07_ir.kicad_sch": "4123770847540d6f1208386159f22bcf820da8c7f0e7f91515a8f2979723bda5",
+  "08_buttons_expanders.kicad_sch": "76dd48bf075c23977a26ac479bd1be690dc928b473ecf73d6d10eca1ed390135",
+  "09_community_header.kicad_sch": "13096e6fef6f1f63526b752a90e1c3d0b7068bd67d16942e04f54b01f9d3378c",
+  "aqroot-Beta-v2.kicad_sch": "195a985ca49cd03d88b006776f31ef6fa929d23d6a9eb3c29e37581307d31603"
+ },
+ "sheets_touched": [
+  "03_spi_a_display_sd.kicad_sch",
+  "09_community_header.kicad_sch"
+ ]
+}

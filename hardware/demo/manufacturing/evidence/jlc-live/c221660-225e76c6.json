@@ -1,0 +1,115 @@
+{
+ "endpoint": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
+ "exhausted": true,
+ "fetched_utc": "2026-09-05T01:11:50Z",
+ "keyword": "C221660",
+ "page_size": 25,
+ "pages": 1,
+ "records": [
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-40℃~+85℃"
+    },
+    {
+     "attribute_name_en": "Actuator Color",
+     "attribute_value_name": "Black"
+    },
+    {
+     "attribute_name_en": "Length",
+     "attribute_value_name": "9mm"
+    },
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "6V"
+    },
+    {
+     "attribute_name_en": "Termination Style",
+     "attribute_value_name": "SMD(SMT) Tab"
+    },
+    {
+     "attribute_name_en": "Life",
+     "attribute_value_name": "5,000 cycles"
+    },
+    {
+     "attribute_name_en": "Current Rating",
+     "attribute_value_name": "300mA"
+    },
+    {
+     "attribute_name_en": "Actuator Style",
+     "attribute_value_name": "Rectangular Columnar"
+    },
+    {
+     "attribute_name_en": "Circuit",
+     "attribute_value_name": "SPDT"
+    },
+    {
+     "attribute_name_en": "Switch Height",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Mounting Type",
+     "attribute_value_name": "Surface Mount, Right Angle"
+    },
+    {
+     "attribute_name_en": "Width",
+     "attribute_value_name": "3.5mm"
+    }
+   ],
+   "componentBrandEn": "C&K",
+   "componentCode": "C221660",
+   "componentLibraryType": "expand",
+   "componentModelEn": "JS102011SAQN",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 0.8594,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 29,
+     "productPrice": 0.7002,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 99,
+     "productPrice": 0.6206,
+     "startNumber": 30
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.5426,
+     "startNumber": 100
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.4955,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.4712,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "SMD",
+   "componentTypeEn": "Slide Switches",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2304140030_C-K-JS102011SAQN_C221660.pdf",
+   "describe": "-40℃~+85℃ 3.5mm 300mA 5,000 cycles 6V 9mm Black Rectangular Columnar SMD(SMT) Tab SPDT Surface Mount, Right Angle SMD Slide Switches ROHS",
+   "erpComponentName": "微型滑动开关",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/slide-switches_c-k-js102011saqn_C221660.html",
+   "leastPatchNumber": 2,
+   "lossNumber": 0,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 1514
+  }
+ ],
+ "returned": 1,
+ "schema": 1,
+ "total_matches": 1
+}
