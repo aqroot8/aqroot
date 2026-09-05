@@ -1,0 +1,2919 @@
+{
+  "board": "/home/aqroot8/aqroot-demo/hardware/demo/kicad/aqroot-demo/aqroot-Beta-v2.kicad_pcb",
+  "board_sha256": "38d400defefb10b0a39949b48b47aa962b624bdd05f0ebf76d714ef941f66269",
+  "budgets": {
+    "cells": 300000000,
+    "max_gap_mm": 0.0,
+    "seconds": 2400
+  },
+  "escape_floor": true,
+  "guard": "evidence/d619-pour-bond-guard-bonded.json",
+  "guard_sha256": "1d6c36308db000d5fb21316e6adc0cc78d5f93ab25aabe877296c7a9419894ef",
+  "method": "read-only; the same maze3d.route_join join_orphans calls, same contract, same guard, every pair independent and reverted, over a descending pitch ladder with stated cell and second budgets",
+  "neck": false,
+  "nets": [
+    {
+      "body": [
+        "L2.1",
+        "C24.1",
+        "C64.1",
+        "C33.1"
+      ],
+      "census": [
+        {
+          "a": [
+            "SW9.2",
+            "U12.1"
+          ],
+          "b": [
+            "U12.10",
+            "U12.11"
+          ],
+          "both_escape": false,
+          "escapes": [
+            10,
+            0
+          ],
+          "gap_mm": 3.176,
+          "ia": 5,
+          "ib": 7
+        },
+        {
+          "a": [
+            "C27.1"
+          ],
+          "b": [
+            "U11.1"
+          ],
+          "both_escape": false,
+          "escapes": [
+            7,
+            0
+          ],
+          "gap_mm": 3.602,
+          "ia": 1,
+          "ib": 6
+        },
+        {
+          "a": [
+            "C26.2"
+          ],
+          "b": [
+            "U12.10",
+            "U12.11"
+          ],
+          "both_escape": false,
+          "escapes": [
+            8,
+            0
+          ],
+          "gap_mm": 4.322,
+          "ia": 0,
+          "ib": 7
+        },
+        {
+          "a": [
+            "C27.1"
+          ],
+          "b": [
+            "R68.1"
+          ],
+          "both_escape": true,
+          "escapes": [
+            7,
+            6
+          ],
+          "gap_mm": 4.574,
+          "ia": 1,
+          "ib": 4
+        },
+        {
+          "a": [
+            "C26.2"
+          ],
+          "b": [
+            "SW9.2",
+            "U12.1"
+          ],
+          "both_escape": true,
+          "escapes": [
+            8,
+            10
+          ],
+          "gap_mm": 5.811,
+          "ia": 0,
+          "ib": 5
+        },
+        {
+          "a": [
+            "C28.1"
+          ],
+          "b": [
+            "SW9.2",
+            "U12.1"
+          ],
+          "both_escape": true,
+          "escapes": [
+            1,
+            10
+          ],
+          "gap_mm": 7.518,
+          "ia": 2,
+          "ib": 5
+        },
+        {
+          "a": [
+            "R68.1"
+          ],
+          "b": [
+            "U11.1"
+          ],
+          "both_escape": false,
+          "escapes": [
+            6,
+            0
+          ],
+          "gap_mm": 7.587,
+          "ia": 4,
+          "ib": 6
+        },
+        {
+          "a": [
+            "SW9.2",
+            "U12.1"
+          ],
+          "b": [
+            "U11.1"
+          ],
+          "both_escape": false,
+          "escapes": [
+            10,
+            0
+          ],
+          "gap_mm": 8.271,
+          "ia": 5,
+          "ib": 6
+        },
+        {
+          "a": [
+            "C28.1"
+          ],
+          "b": [
+            "U12.10",
+            "U12.11"
+          ],
+          "both_escape": false,
+          "escapes": [
+            1,
+            0
+          ],
+          "gap_mm": 9.643,
+          "ia": 2,
+          "ib": 7
+        },
+        {
+          "a": [
+            "C27.1"
+          ],
+          "b": [
+            "SW9.2",
+            "U12.1"
+          ],
+          "both_escape": true,
+          "escapes": [
+            7,
+            10
+          ],
+          "gap_mm": 11.785,
+          "ia": 1,
+          "ib": 5
+        },
+        {
+          "a": [
+            "C26.2"
+          ],
+          "b": [
+            "C28.1"
+          ],
+          "both_escape": true,
+          "escapes": [
+            8,
+            1
+          ],
+          "gap_mm": 13.303,
+          "ia": 0,
+          "ib": 2
+        },
+        {
+          "a": [
+            "L4.1",
+            "U21.3"
+          ],
+          "b": [
+            "U13.3"
+          ],
+          "both_escape": false,
+          "escapes": [
+            9,
+            0
+          ],
+          "gap_mm": 14.001,
+          "ia": 3,
+          "ib": 8
+        },
+        {
+          "a": [
+            "C28.1"
+          ],
+          "b": [
+            "U11.1"
+          ],
+          "both_escape": false,
+          "escapes": [
+            1,
+            0
+          ],
+          "gap_mm": 14.781,
+          "ia": 2,
+          "ib": 6
+        },
+        {
+          "a": [
+            "R68.1"
+          ],
+          "b": [
+            "SW9.2",
+            "U12.1"
+          ],
+          "both_escape": true,
+          "escapes": [
+            6,
+            10
+          ],
+          "gap_mm": 14.902,
+          "ia": 4,
+          "ib": 5
+        },
+        {
+          "a": [
+            "C27.1"
+          ],
+          "b": [
+            "C28.1"
+          ],
+          "both_escape": true,
+          "escapes": [
+            7,
+            1
+          ],
+          "gap_mm": 18.341,
+          "ia": 1,
+          "ib": 2
+        },
+        {
+          "a": [
+            "C28.1"
+          ],
+          "b": [
+            "R68.1"
+          ],
+          "both_escape": true,
+          "escapes": [
+            1,
+            6
+          ],
+          "gap_mm": 22.196,
+          "ia": 2,
+          "ib": 4
+        },
+        {
+          "a": [
+            "U11.1"
+          ],
+          "b": [
+            "U12.10",
+            "U12.11"
+          ],
+          "both_escape": false,
+          "escapes": [
+            0,
+            0
+          ],
+          "gap_mm": 24.201,
+          "ia": 6,
+          "ib": 7
+        },
+        {
+          "a": [
+            "C26.2"
+          ],
+          "b": [
+            "U11.1"
+          ],
+          "both_escape": false,
+          "escapes": [
+            8,
+            0
+          ],
+          "gap_mm": 27.087,
+          "ia": 0,
+          "ib": 6
+        },
+        {
+          "a": [
+            "C27.1"
+          ],
+          "b": [
+            "U12.10",
+            "U12.11"
+          ],
+          "both_escape": false,
+          "escapes": [
+            7,
+            0
+          ],
+          "gap_mm": 27.8,
+          "ia": 1,
+          "ib": 7
+        },
+        {
+          "a": [
+            "C26.2"
+          ],
+          "b": [
+            "C27.1"
+          ],
+          "both_escape": true,
+          "escapes": [
+            8,
+            7
+          ],
+          "gap_mm": 30.678,
+          "ia": 0,
+          "ib": 1
+        },
+        {
+          "a": [
+            "R68.1"
+          ],
+          "b": [
+            "U12.10",
+            "U12.11"
+          ],
+          "both_escape": false,
+          "escapes": [
+            6,
+            0
+          ],
+          "gap_mm": 31.352,
+          "ia": 4,
+          "ib": 7
+        },
+        {
+          "a": [
+            "L4.1",
+            "U21.3"
+          ],
+          "b": [
+            "R68.1"
+          ],
+          "both_escape": true,
+          "escapes": [
+            9,
+            6
+          ],
+          "gap_mm": 32.83,
+          "ia": 3,
+          "ib": 4
+        },
+        {
+          "a": [
+            "C26.2"
+          ],
+          "b": [
+            "R68.1"
+          ],
+          "both_escape": true,
+          "escapes": [
+            8,
+            6
+          ],
+          "gap_mm": 33.895,
+          "ia": 0,
+          "ib": 4
+        },
+        {
+          "a": [
+            "C27.1"
+          ],
+          "b": [
+            "L4.1",
+            "U21.3"
+          ],
+          "both_escape": true,
+          "escapes": [
+            7,
+            9
+          ],
+          "gap_mm": 36.83,
+          "ia": 1,
+          "ib": 3
+        },
+        {
+          "a": [
+            "L4.1",
+            "U21.3"
+          ],
+          "b": [
+            "U11.1"
+          ],
+          "both_escape": false,
+          "escapes": [
+            9,
+            0
+          ],
+          "gap_mm": 40.291,
+          "ia": 3,
+          "ib": 6
+        },
+        {
+          "a": [
+            "L4.1",
+            "U21.3"
+          ],
+          "b": [
+            "SW9.2",
+            "U12.1"
+          ],
+          "both_escape": true,
+          "escapes": [
+            9,
+            10
+          ],
+          "gap_mm": 47.597,
+          "ia": 3,
+          "ib": 5
+        },
+        {
+          "a": [
+            "R68.1"
+          ],
+          "b": [
+            "U13.3"
+          ],
+          "both_escape": false,
+          "escapes": [
+            6,
+            0
+          ],
+          "gap_mm": 49.754,
+          "ia": 4,
+          "ib": 8
+        },
+        {
+          "a": [
+            "C27.1"
+          ],
+          "b": [
+            "U13.3"
+          ],
+          "both_escape": false,
+          "escapes": [
+            7,
+            0
+          ],
+          "gap_mm": 53.551,
+          "ia": 1,
+          "ib": 8
+        },
+        {
+          "a": [
+            "C28.1"
+          ],
+          "b": [
+            "L4.1",
+            "U21.3"
+          ],
+          "both_escape": true,
+          "escapes": [
+            1,
+            9
+          ],
+          "gap_mm": 55.021,
+          "ia": 2,
+          "ib": 3
+        },
+        {
+          "a": [
+            "U11.1"
+          ],
+          "b": [
+            "U13.3"
+          ],
+          "both_escape": false,
+          "escapes": [
+            0,
+            0
+          ],
+          "gap_mm": 57.084,
+          "ia": 6,
+          "ib": 8
+        },
+        {
+          "a": [
+            "L4.1",
+            "U21.3"
+          ],
+          "b": [
+            "U12.10",
+            "U12.11"
+          ],
+          "both_escape": false,
+          "escapes": [
+            9,
+            0
+          ],
+          "gap_mm": 64.11,
+          "ia": 3,
+          "ib": 7
+        },
+        {
+          "a": [
+            "SW9.2",
+            "U12.1"
+          ],
+          "b": [
+            "U13.3"
+          ],
+          "both_escape": false,
+          "escapes": [
+            10,
+            0
+          ],
+          "gap_mm": 64.614,
+          "ia": 5,
+          "ib": 8
+        },
+        {
+          "a": [
+            "C26.2"
+          ],
+          "b": [
+            "L4.1",
+            "U21.3"
+          ],
+          "both_escape": true,
+          "escapes": [
+            8,
+            9
+          ],
+          "gap_mm": 66.384,
+          "ia": 0,
+          "ib": 3
+        },
+        {
+          "a": [
+            "C28.1"
+          ],
+          "b": [
+            "U13.3"
+          ],
+          "both_escape": false,
+          "escapes": [
+            1,
+            0
+          ],
+          "gap_mm": 71.863,
+          "ia": 2,
+          "ib": 8
+        },
+        {
+          "a": [
+            "U12.10",
+            "U12.11"
+          ],
+          "b": [
+            "U13.3"
+          ],
+          "both_escape": false,
+          "escapes": [
+            0,
+            0
+          ],
+          "gap_mm": 81.102,
+          "ia": 7,
+          "ib": 8
+        },
+        {
+          "a": [
+            "C26.2"
+          ],
+          "b": [
+            "U13.3"
+          ],
+          "both_escape": false,
+          "escapes": [
+            8,
+            0
+          ],
+          "gap_mm": 83.491,
+          "ia": 0,
+          "ib": 8
+        }
+      ],
+      "closed": [],
+      "closed_n": 0,
+      "clusters": [
+        {
+          "escapes": 8,
+          "pads": [
+            "C26.2"
+          ],
+          "why": null
+        },
+        {
+          "escapes": 7,
+          "pads": [
+            "C27.1"
+          ],
+          "why": null
+        },
+        {
+          "escapes": 1,
+          "pads": [
+            "C28.1"
+          ],
+          "why": null
+        },
+        {
+          "escapes": 9,
+          "pads": [
+            "L4.1",
+            "U21.3"
+          ],
+          "why": "U21.3: NO LEGAL ESCAPE at >= 0.500 mm; blocked by U21.2 (x228), U21.1 (x134), TP28.1 (x36), U22.4 (x33)"
+        },
+        {
+          "escapes": 6,
+          "pads": [
+            "R68.1"
+          ],
+          "why": null
+        },
+        {
+          "escapes": 10,
+          "pads": [
+            "SW9.2",
+            "U12.1"
+          ],
+          "why": "U12.1: NO LEGAL ESCAPE at >= 0.500 mm; blocked by U12.2 (x479), C24.2 (x18), TP47.1 (x7)"
+        },
+        {
+          "escapes": 0,
+          "pads": [
+            "U11.1"
+          ],
+          "why": "U11.1: NO LEGAL ESCAPE at >= 0.500 mm; blocked by U11.2 (x360), R36.1 (x53), R37.2 (x27), C36.2 (x22)"
+        },
+        {
+          "escapes": 0,
+          "pads": [
+            "U12.10",
+            "U12.11"
+          ],
+          "why": "U12.10: NO LEGAL ESCAPE at >= 0.500 mm; blocked by U12.9 (x280), U12.8 (x164), U12.4 (x29), C24.2 (x21)"
+        },
+        {
+          "escapes": 0,
+          "pads": [
+            "U13.3"
+          ],
+          "why": "U13.3: NO LEGAL ESCAPE at >= 0.500 mm; blocked by U13.2 (x283), U13.1 (x167), L2.2 (x28), C34.1 (x26)"
+        }
+      ],
+      "contract": {
+        "escape_floor": 500000,
+        "layers": [
+          "F",
+          "B",
+          "I2"
+        ],
+        "via_dia": 650000,
+        "via_drill": 400000,
+        "width": 800000
+      },
+      "net": "/01_POWER_TREE/BQ25185_SYS",
+      "netclass": "SYS_MAIN",
+      "orphan_islands": 9,
+      "pairs_both_escape": 15,
+      "pairs_total": 36,
+      "rungs": [
+        {
+          "cells": 3472443,
+          "grid_nm": 100000,
+          "pairs": [
+            {
+              "a": [
+                "C27.1"
+              ],
+              "b": [
+                "R68.1"
+              ],
+              "gap_mm": 4.574,
+              "mm": null,
+              "ok": false,
+              "reason": "NO_PATH",
+              "seconds": 0.7,
+              "vias": null,
+              "why": "no all-layer corridor at 0.800 mm between the islands"
+            },
+            {
+              "a": [
+                "C26.2"
+              ],
+              "b": [
+                "SW9.2",
+                "U12.1"
+              ],
+              "gap_mm": 5.811,
+              "mm": null,
+              "ok": false,
+              "reason": "NO_PATH",
+              "seconds": 1.8,
+              "vias": null,
+              "why": "no all-layer corridor at 0.800 mm between the islands"
+            },
+            {
+              "a": [
+                "C28.1"
+              ],
+              "b": [
+                "SW9.2",
+                "U12.1"
+              ],
+              "gap_mm": 7.518,
+              "mm": null,
+              "ok": false,
+              "reason": "NO_PATH",
+              "seconds": 2.0,
+              "vias": null,
+              "why": "no all-layer corridor at 0.800 mm between the islands"
+            },
+            {
+              "a": [
+                "C27.1"
+              ],
+              "b": [
+                "SW9.2",
+                "U12.1"
+              ],
+              "gap_mm": 11.785,
+              "mm": null,
+              "ok": false,
+              "reason": "NO_PATH",
+              "seconds": 2.2,
+              "vias": null,
+              "why": "no all-layer corridor at 0.800 mm between the islands"
+            },
+            {
+              "a": [
+                "C26.2"
+              ],
+              "b": [
+                "C28.1"
+              ],
+              "gap_mm": 13.303,
+              "mm": null,
+              "ok": false,
+              "reason": "NO_PATH",
+              "seconds": 0.5,
+              "vias": null,
+              "why": "no all-layer corridor at 0.800 mm between the islands"
+            },
+            {
+              "a": [
+                "R68.1"
+              ],
+              "b": [
+                "SW9.2",
+                "U12.1"
+              ],
+              "gap_mm": 14.902,
+              "mm": null,
+              "ok": false,
+              "reason": "NO_PATH",
+              "seconds": 1.9,
+              "vias": null,
+              "why": "no all-layer corridor at 0.800 mm between the islands"
+            },
+            {
+              "a": [
+                "C27.1"
+              ],
+              "b": [
+                "C28.1"
+              ],
+              "gap_mm": 18.341,
+              "mm": null,
+              "ok": false,
+              "reason": "NO_PATH",
+              "seconds": 0.9,
+              "vias": null,
+              "why": "no all-layer corridor at 0.800 mm between the islands"
+            },
+            {
+              "a": [
+                "C28.1"
+              ],
+              "b": [
+                "R68.1"
+              ],
+              "gap_mm": 22.196,
+              "mm": null,
+              "ok": false,
+              "reason": "NO_PATH",
+              "seconds": 0.5,
+              "vias": null,
+              "why": "no all-layer corridor at 0.800 mm between the islands"
+            },
+            {
+              "a": [
+                "C26.2"
+              ],
+              "b": [
+                "C27.1"
+              ],
+              "gap_mm": 30.678,
+              "mm": null,
+              "ok": false,
+              "reason": "NO_PATH",
+              "seconds": 0.7,
+              "vias": null,
+              "why": "no all-layer corridor at 0.800 mm between the islands"
+            },
+            {
+              "a": [
+                "L4.1",
+                "U21.3"
+              ],
+              "b": [
+                "R68.1"
+              ],
+              "gap_mm": 32.83,
+              "mm": null,
+              "ok": false,
+              "reason": "NO_PATH",
+              "seconds": 0.5,
+              "vias": null,
+              "why": "no all-layer corridor at 0.800 mm between the islands"
+            },
+            {
+              "a": [
+                "C26.2"
+              ],
+              "b": [
+                "R68.1"
+              ],
+              "gap_mm": 33.895,
+              "mm": null,
+              "ok": false,
+              "reason": "NO_PATH",
+              "seconds": 0.2,
+              "vias": null,
+              "why": "no all-layer corridor at 0.800 mm between the islands"
+            },
+            {
+              "a": [
+                "C27.1"
+              ],
+              "b": [
+                "L4.1",
+                "U21.3"
+              ],
+              "gap_mm": 36.83,
+              "mm": null,
+              "ok": false,
+              "reason": "NO_PATH",
+              "seconds": 0.9,
+              "vias": null,
+              "why": "no all-layer corridor at 0.800 mm between the islands"
+            },
+            {
+              "a": [
+                "L4.1",
+                "U21.3"
+              ],
+              "b": [
+                "SW9.2",
+                "U12.1"
+              ],
+              "gap_mm": 47.597,
+              "mm": null,
+              "ok": false,
+              "reason": "NO_PATH",
+              "seconds": 2.1,
+              "vias": null,
+              "why": "no all-layer corridor at 0.800 mm between the islands"
+            },
+            {
+              "a": [
+                "C28.1"
+              ],
+              "b": [
+                "L4.1",
+                "U21.3"
+              ],
+              "gap_mm": 55.021,
+              "mm": null,
+              "ok": false,
+              "reason": "NO_PATH",
+              "seconds": 0.7,
+              "vias": null,
+              "why": "no all-layer corridor at 0.800 mm between the islands"
+            },
+            {
+              "a": [
+                "C26.2"
+              ],
+              "b": [
+                "L4.1",
+                "U21.3"
+              ],
+              "gap_mm": 66.384,
+              "mm": null,
+              "ok": false,
+              "reason": "NO_PATH",
+              "seconds": 0.5,
+              "vias": null,
+              "why": "no all-layer corridor at 0.800 mm between the islands"
+            }
+          ],
+          "seconds": 18.0
+        },
+        {
+          "cells": 7797600,
+          "grid_nm": 66667,
+          "pairs": [
+            {
+              "a": [
+                "C27.1"
+              ],
+              "b": [
+                "R68.1"
+              ],
+              "gap_mm": 4.574,
+              "mm": null,
+              "ok": false,
+              "reason": "NO_PATH",
+              "seconds": 0.4,
+              "vias": null,
+              "why": "no all-layer corridor at 0.800 mm between the islands"
+            },
+            {
+              "a": [
+                "C26.2"
+              ],
+              "b": [
+                "SW9.2",
+                "U12.1"
+              ],
+              "gap_mm": 5.811,
+              "mm": null,
+              "ok": false,
+              "reason": "NO_PATH",
+              "seconds": 7.1,
+              "vias": null,
+              "why": "no all-layer corridor at 0.800 mm between the islands"
+            },
+            {
+              "a": [
+                "C28.1"
+              ],
+              "b": [
+                "SW9.2",
+                "U12.1"
+              ],
+              "gap_mm": 7.518,
+              "mm": null,
+              "ok": false,
+              "reason": "NO_LEGAL_ESCAPE_SRC",
+              "seconds": 0.4,
+              "vias": null,
+              "why": "C28.1: NO LEGAL ESCAPE at >= 0.500 mm; blocked by track (x213), C28.2 (x82), L1.2 (x80), board_edge (x54)"
+            },
+            {
+              "a": [
+                "C27.1"
+              ],
+              "b": [
+                "SW9.2",
+                "U12.1"
+              ],
+              "gap_mm": 11.785,
+              "mm": null,
+              "ok": false,
+              "reason": "NO_PATH",
+              "seconds": 7.2,
+              "vias": null,
+              "why": "no all-layer corridor at 0.800 mm between the islands"
+            },
+            {
+              "a": [
+                "C26.2"
+              ],
+              "b": [
+                "C28.1"
+              ],
+              "gap_mm": 13.303,
+              "mm": null,
+              "ok": false,
+              "reason": "NO_LEGAL_ESCAPE_DST",
+              "seconds": 0.3,
+              "vias": null,
+              "why": "C28.1: NO LEGAL ESCAPE at >= 0.500 mm; blocked by track (x213), C28.2 (x82), L1.2 (x80), board_edge (x54)"
+            },
+            {
+              "a": [
+                "R68.1"
+              ],
+              "b": [
+                "SW9.2",
+                "U12.1"
+              ],
+              "gap_mm": 14.902,
+              "mm": null,
+              "ok": false,
+              "reason": "NO_PATH",
+              "seconds": 6.9,
+              "vias": null,
+              "why": "no all-layer corridor at 0.800 mm between the islands"
+            },
+            {
+              "a": [
+                "C27.1"
+              ],
+              "b": [
+                "C28.1"
+              ],
+              "gap_mm": 18.341,
+              "mm": null,
+              "ok": false,
+              "reason": "NO_LEGAL_ESCAPE_DST",
+              "seconds": 0.4,
+              "vias": null,
+              "why": "C28.1: NO LEGAL ESCAPE at >= 0.500 mm; blocked by track (x213), C28.2 (x82), L1.2 (x80), board_edge (x54)"
+            },
+            {
+              "a": [
+                "C28.1"
+              ],
+              "b": [
+                "R68.1"
+              ],
+              "gap_mm": 22.196,
+              "mm": null,
+              "ok": false,
+              "reason": "NO_LEGAL_ESCAPE_SRC",
+              "seconds": 0.4,
+              "vias": null,
+              "why": "C28.1: NO LEGAL ESCAPE at >= 0.500 mm; blocked by track (x213), C28.2 (x82), L1.2 (x80), board_edge (x54)"
+            },
+            {
+              "a": [
+                "C26.2"
+              ],
+              "b": [
+                "C27.1"
+              ],
+              "gap_mm": 30.678,
+              "mm": null,
+              "ok": false,
+              "reason": "NO_PATH",
+              "seconds": 0.5,
+              "vias": null,
+              "why": "no all-layer corridor at 0.800 mm between the islands"
+            },
+            {
+              "a": [
+                "L4.1",
+                "U21.3"
+              ],
+              "b": [
+                "R68.1"
+              ],
+              "gap_mm": 32.83,
+              "mm": null,
+              "ok": false,
+              "reason": "NO_PATH",
+              "seconds": 0.6,
+              "vias": null,
+              "why": "no all-layer corridor at 0.800 mm between the islands"
+            },
+            {
+              "a": [
+                "C26.2"
+              ],
+              "b": [
+                "R68.1"
+              ],
+              "gap_mm": 33.895,
+              "mm": null,
+              "ok": false,
+              "reason": "NO_PATH",
+              "seconds": 0.4,
+              "vias": null,
+              "why": "no all-layer corridor at 0.800 mm between the islands"
+            },
+            {
+              "a": [
+                "C27.1"
+              ],
+              "b": [
+                "L4.1",
+                "U21.3"
+              ],
+              "gap_mm": 36.83,
+              "mm": null,
+              "ok": false,
+              "reason": "NO_PATH",
+              "seconds": 0.7,
+              "vias": null,
+              "why": "no all-layer corridor at 0.800 mm between the islands"
+            },
+            {
+              "a": [
+                "L4.1",
+                "U21.3"
+              ],
+              "b": [
+                "SW9.2",
+                "U12.1"
+              ],
+              "gap_mm": 47.597,
+              "mm": null,
+              "ok": false,
+              "reason": "NO_PATH",
+              "seconds": 7.1,
+              "vias": null,
+              "why": "no all-layer corridor at 0.800 mm between the islands"
+            },
+            {
+              "a": [
+                "C28.1"
+              ],
+              "b": [
+                "L4.1",
+                "U21.3"
+              ],
+              "gap_mm": 55.021,
+              "mm": null,
+              "ok": false,
+              "reason": "NO_LEGAL_ESCAPE_SRC",
+              "seconds": 0.5,
+              "vias": null,
+              "why": "C28.1: NO LEGAL ESCAPE at >= 0.500 mm; blocked by track (x213), C28.2 (x82), L1.2 (x80), board_edge (x54)"
+            },
+            {
+              "a": [
+                "C26.2"
+              ],
+              "b": [
+                "L4.1",
+                "U21.3"
+              ],
+              "gap_mm": 66.384,
+              "mm": null,
+              "ok": false,
+              "reason": "NO_PATH",
+              "seconds": 0.6,
+              "vias": null,
+              "why": "no all-layer corridor at 0.800 mm between the islands"
+            }
+          ],
+          "seconds": 36.0
+        },
+        {
+          "cells": 13876083,
+          "grid_nm": 50000,
+          "pairs": [
+            {
+              "a": [
+                "C27.1"
+              ],
+              "b": [
+                "R68.1"
+              ],
+              "gap_mm": 4.574,
+              "mm": null,
+              "ok": false,
+              "reason": "NO_PATH",
+              "seconds": 0.8,
+              "vias": null,
+              "why": "no all-layer corridor at 0.800 mm between the islands"
+            },
+            {
+              "a": [
+                "C26.2"
+              ],
+              "b": [
+                "SW9.2",
+                "U12.1"
+              ],
+              "gap_mm": 5.811,
+              "mm": null,
+              "ok": false,
+              "reason": "NO_PATH",
+              "seconds": 16.7,
+              "vias": null,
+              "why": "no all-layer corridor at 0.800 mm between the islands"
+            },
+            {
+              "a": [
+                "C28.1"
+              ],
+              "b": [
+                "SW9.2",
+                "U12.1"
+              ],
+              "gap_mm": 7.518,
+              "mm": null,
+              "ok": false,
+              "reason": "NO_PATH",
+              "seconds": 17.0,
+              "vias": null,
+              "why": "no all-layer corridor at 0.800 mm between the islands"
+            },
+            {
+              "a": [
+                "C27.1"
+              ],
+              "b": [
+                "SW9.2",
+                "U12.1"
+              ],
+              "gap_mm": 11.785,
+              "mm": null,
+              "ok": false,
+              "reason": "NO_PATH",
+              "seconds": 16.4,
+              "vias": null,
+              "why": "no all-layer corridor at 0.800 mm between the islands"
+            },
+            {
+              "a": [
+                "C26.2"
+              ],
+              "b": [
+                "C28.1"
+              ],
+              "gap_mm": 13.303,
+              "mm": null,
+              "ok": false,
+              "reason": "NO_PATH",
+              "seconds": 0.8,
+              "vias": null,
+              "why": "no all-layer corridor at 0.800 mm between the islands"
+            },
+            {
+              "a": [
+                "R68.1"
+              ],
+              "b": [
+                "SW9.2",
+                "U12.1"
+              ],
+              "gap_mm": 14.902,
+              "mm": null,
+              "ok": false,
+              "reason": "NO_PATH",
+              "seconds": 16.7,
+              "vias": null,
+              "why": "no all-layer corridor at 0.800 mm between the islands"
+            },
+            {
+              "a": [
+                "C27.1"
+              ],
+              "b": [
+                "C28.1"
+              ],
+              "gap_mm": 18.341,
+              "mm": null,
+              "ok": false,
+              "reason": "NO_PATH",
+              "seconds": 0.8,
+              "vias": null,
+              "why": "no all-layer corridor at 0.800 mm between the islands"
+            },
+            {
+              "a": [
+                "C28.1"
+              ],
+              "b": [
+                "R68.1"
+              ],
+              "gap_mm": 22.196,
+              "mm": null,
+              "ok": false,
+              "reason": "NO_PATH",
+              "seconds": 1.1,
+              "vias": null,
+              "why": "no all-layer corridor at 0.800 mm between the islands"
+            },
+            {
+              "a": [
+                "C26.2"
+              ],
+              "b": [
+                "C27.1"
+              ],
+              "gap_mm": 30.678,
+              "mm": null,
+              "ok": false,
+              "reason": "NO_PATH",
+              "seconds": 0.7,
+              "vias": null,
+              "why": "no all-layer corridor at 0.800 mm between the islands"
+            },
+            {
+              "a": [
+                "L4.1",
+                "U21.3"
+              ],
+              "b": [
+                "R68.1"
+              ],
+              "gap_mm": 32.83,
+              "mm": null,
+              "ok": false,
+              "reason": "NO_PATH",
+              "seconds": 1.0,
+              "vias": null,
+              "why": "no all-layer corridor at 0.800 mm between the islands"
+            },
+            {
+              "a": [
+                "C26.2"
+              ],
+              "b": [
+                "R68.1"
+              ],
+              "gap_mm": 33.895,
+              "mm": null,
+              "ok": false,
+              "reason": "NO_PATH",
+              "seconds": 0.7,
+              "vias": null,
+              "why": "no all-layer corridor at 0.800 mm between the islands"
+            },
+            {
+              "a": [
+                "C27.1"
+              ],
+              "b": [
+                "L4.1",
+                "U21.3"
+              ],
+              "gap_mm": 36.83,
+              "mm": null,
+              "ok": false,
+              "reason": "NO_PATH",
+              "seconds": 1.2,
+              "vias": null,
+              "why": "no all-layer corridor at 0.800 mm between the islands"
+            },
+            {
+              "a": [
+                "L4.1",
+                "U21.3"
+              ],
+              "b": [
+                "SW9.2",
+                "U12.1"
+              ],
+              "gap_mm": 47.597,
+              "mm": null,
+              "ok": false,
+              "reason": "NO_PATH",
+              "seconds": 16.3,
+              "vias": null,
+              "why": "no all-layer corridor at 0.800 mm between the islands"
+            },
+            {
+              "a": [
+                "C28.1"
+              ],
+              "b": [
+                "L4.1",
+                "U21.3"
+              ],
+              "gap_mm": 55.021,
+              "mm": null,
+              "ok": false,
+              "reason": "NO_PATH",
+              "seconds": 1.5,
+              "vias": null,
+              "why": "no all-layer corridor at 0.800 mm between the islands"
+            },
+            {
+              "a": [
+                "C26.2"
+              ],
+              "b": [
+                "L4.1",
+                "U21.3"
+              ],
+              "gap_mm": 66.384,
+              "mm": null,
+              "ok": false,
+              "reason": "NO_PATH",
+              "seconds": 1.1,
+              "vias": null,
+              "why": "no all-layer corridor at 0.800 mm between the islands"
+            }
+          ],
+          "seconds": 96.0
+        },
+        {
+          "cells": 31210923,
+          "grid_nm": 33333,
+          "pairs": [
+            {
+              "a": [
+                "C27.1"
+              ],
+              "b": [
+                "R68.1"
+              ],
+              "gap_mm": 4.574,
+              "mm": null,
+              "ok": false,
+              "reason": "NO_PATH",
+              "seconds": 3.4,
+              "vias": null,
+              "why": "no all-layer corridor at 0.800 mm between the islands"
+            },
+            {
+              "a": [
+                "C26.2"
+              ],
+              "b": [
+                "SW9.2",
+                "U12.1"
+              ],
+              "gap_mm": 5.811,
+              "mm": null,
+              "ok": false,
+              "reason": "NO_PATH",
+              "seconds": 65.6,
+              "vias": null,
+              "why": "no all-layer corridor at 0.800 mm between the islands"
+            },
+            {
+              "a": [
+                "C28.1"
+              ],
+              "b": [
+                "SW9.2",
+                "U12.1"
+              ],
+              "gap_mm": 7.518,
+              "mm": null,
+              "ok": false,
+              "reason": "NO_LEGAL_ESCAPE_SRC",
+              "seconds": 0.4,
+              "vias": null,
+              "why": "C28.1: NO LEGAL ESCAPE at >= 0.500 mm; blocked by track (x214), L1.2 (x80), C28.2 (x80), board_edge (x53)"
+            },
+            {
+              "a": [
+                "C27.1"
+              ],
+              "b": [
+                "SW9.2",
+                "U12.1"
+              ],
+              "gap_mm": 11.785,
+              "mm": null,
+              "ok": false,
+              "reason": "NO_PATH",
+              "seconds": 64.6,
+              "vias": null,
+              "why": "no all-layer corridor at 0.800 mm between the islands"
+            },
+            {
+              "a": [
+                "C26.2"
+              ],
+              "b": [
+                "C28.1"
+              ],
+              "gap_mm": 13.303,
+              "mm": null,
+              "ok": false,
+              "reason": "NO_LEGAL_ESCAPE_DST",
+              "seconds": 0.3,
+              "vias": null,
+              "why": "C28.1: NO LEGAL ESCAPE at >= 0.500 mm; blocked by track (x214), L1.2 (x80), C28.2 (x80), board_edge (x53)"
+            },
+            {
+              "a": [
+                "R68.1"
+              ],
+              "b": [
+                "SW9.2",
+                "U12.1"
+              ],
+              "gap_mm": 14.902,
+              "mm": null,
+              "ok": false,
+              "reason": "NO_PATH",
+              "seconds": 70.5,
+              "vias": null,
+              "why": "no all-layer corridor at 0.800 mm between the islands"
+            },
+            {
+              "a": [
+                "C27.1"
+              ],
+              "b": [
+                "C28.1"
+              ],
+              "gap_mm": 18.341,
+              "mm": null,
+              "ok": false,
+              "reason": "NO_LEGAL_ESCAPE_DST",
+              "seconds": 0.6,
+              "vias": null,
+              "why": "C28.1: NO LEGAL ESCAPE at >= 0.500 mm; blocked by track (x214), C28.2 (x80), L1.2 (x80), board_edge (x53)"
+            },
+            {
+              "a": [
+                "C28.1"
+              ],
+              "b": [
+                "R68.1"
+              ],
+              "gap_mm": 22.196,
+              "mm": null,
+              "ok": false,
+              "reason": "NO_LEGAL_ESCAPE_SRC",
+              "seconds": 0.4,
+              "vias": null,
+              "why": "C28.1: NO LEGAL ESCAPE at >= 0.500 mm; blocked by track (x214), C28.2 (x80), L1.2 (x80), board_edge (x53)"
+            },
+            {
+              "a": [
+                "C26.2"
+              ],
+              "b": [
+                "C27.1"
+              ],
+              "gap_mm": 30.678,
+              "mm": null,
+              "ok": false,
+              "reason": "NO_PATH",
+              "seconds": 4.9,
+              "vias": null,
+              "why": "no all-layer corridor at 0.800 mm between the islands"
+            },
+            {
+              "a": [
+                "L4.1",
+                "U21.3"
+              ],
+              "b": [
+                "R68.1"
+              ],
+              "gap_mm": 32.83,
+              "mm": null,
+              "ok": false,
+              "reason": "NO_PATH",
+              "seconds": 3.8,
+              "vias": null,
+              "why": "no all-layer corridor at 0.800 mm between the islands"
+            },
+            {
+              "a": [
+                "C26.2"
+              ],
+              "b": [
+                "R68.1"
+              ],
+              "gap_mm": 33.895,
+              "mm": null,
+              "ok": false,
+              "reason": "NO_PATH",
+              "seconds": 3.6,
+              "vias": null,
+              "why": "no all-layer corridor at 0.800 mm between the islands"
+            },
+            {
+              "a": [
+                "C27.1"
+              ],
+              "b": [
+                "L4.1",
+                "U21.3"
+              ],
+              "gap_mm": 36.83,
+              "mm": null,
+              "ok": false,
+              "reason": "NO_PATH",
+              "seconds": 5.1,
+              "vias": null,
+              "why": "no all-layer corridor at 0.800 mm between the islands"
+            },
+            {
+              "a": [
+                "L4.1",
+                "U21.3"
+              ],
+              "b": [
+                "SW9.2",
+                "U12.1"
+              ],
+              "gap_mm": 47.597,
+              "mm": null,
+              "ok": false,
+              "reason": "NO_PATH",
+              "seconds": 80.6,
+              "vias": null,
+              "why": "no all-layer corridor at 0.800 mm between the islands"
+            },
+            {
+              "a": [
+                "C28.1"
+              ],
+              "b": [
+                "L4.1",
+                "U21.3"
+              ],
+              "gap_mm": 55.021,
+              "mm": null,
+              "ok": false,
+              "reason": "NO_LEGAL_ESCAPE_SRC",
+              "seconds": 0.5,
+              "vias": null,
+              "why": "C28.1: NO LEGAL ESCAPE at >= 0.500 mm; blocked by track (x214), C28.2 (x80), L1.2 (x80), board_edge (x53)"
+            },
+            {
+              "a": [
+                "C26.2"
+              ],
+              "b": [
+                "L4.1",
+                "U21.3"
+              ],
+              "gap_mm": 66.384,
+              "mm": null,
+              "ok": false,
+              "reason": "NO_PATH",
+              "seconds": 4.7,
+              "vias": null,
+              "why": "no all-layer corridor at 0.800 mm between the islands"
+            }
+          ],
+          "seconds": 313.9
+        },
+        {
+          "cells": 55476963,
+          "grid_nm": 25000,
+          "pairs": [
+            {
+              "a": [
+                "C27.1"
+              ],
+              "b": [
+                "R68.1"
+              ],
+              "gap_mm": 4.574,
+              "mm": null,
+              "ok": false,
+              "reason": "NO_PATH",
+              "seconds": 6.8,
+              "vias": null,
+              "why": "no all-layer corridor at 0.800 mm between the islands"
+            },
+            {
+              "a": [
+                "C26.2"
+              ],
+              "b": [
+                "SW9.2",
+                "U12.1"
+              ],
+              "gap_mm": 5.811,
+              "mm": null,
+              "ok": false,
+              "reason": "NO_PATH",
+              "seconds": 180.3,
+              "vias": null,
+              "why": "no all-layer corridor at 0.800 mm between the islands"
+            },
+            {
+              "a": [
+                "C28.1"
+              ],
+              "b": [
+                "SW9.2",
+                "U12.1"
+              ],
+              "gap_mm": 7.518,
+              "mm": null,
+              "ok": false,
+              "reason": "NO_PATH",
+              "seconds": 188.0,
+              "vias": null,
+              "why": "no all-layer corridor at 0.800 mm between the islands"
+            },
+            {
+              "a": [
+                "C27.1"
+              ],
+              "b": [
+                "SW9.2",
+                "U12.1"
+              ],
+              "gap_mm": 11.785,
+              "mm": null,
+              "ok": false,
+              "reason": "NO_PATH",
+              "seconds": 189.1,
+              "vias": null,
+              "why": "no all-layer corridor at 0.800 mm between the islands"
+            },
+            {
+              "a": [
+                "C26.2"
+              ],
+              "b": [
+                "C28.1"
+              ],
+              "gap_mm": 13.303,
+              "mm": null,
+              "ok": false,
+              "reason": "NO_PATH",
+              "seconds": 5.2,
+              "vias": null,
+              "why": "no all-layer corridor at 0.800 mm between the islands"
+            },
+            {
+              "a": [
+                "R68.1"
+              ],
+              "b": [
+                "SW9.2",
+                "U12.1"
+              ],
+              "gap_mm": 14.902,
+              "mm": null,
+              "ok": false,
+              "reason": "NO_PATH",
+              "seconds": 193.4,
+              "vias": null,
+              "why": "no all-layer corridor at 0.800 mm between the islands"
+            },
+            {
+              "a": [
+                "C27.1"
+              ],
+              "b": [
+                "C28.1"
+              ],
+              "gap_mm": 18.341,
+              "mm": null,
+              "ok": false,
+              "reason": "NO_PATH",
+              "seconds": 5.2,
+              "vias": null,
+              "why": "no all-layer corridor at 0.800 mm between the islands"
+            },
+            {
+              "a": [
+                "C28.1"
+              ],
+              "b": [
+                "R68.1"
+              ],
+              "gap_mm": 22.196,
+              "mm": null,
+              "ok": false,
+              "reason": "NO_PATH",
+              "seconds": 7.0,
+              "vias": null,
+              "why": "no all-layer corridor at 0.800 mm between the islands"
+            },
+            {
+              "a": [
+                "C26.2"
+              ],
+              "b": [
+                "C27.1"
+              ],
+              "gap_mm": 30.678,
+              "mm": null,
+              "ok": false,
+              "reason": "NO_PATH",
+              "seconds": 5.4,
+              "vias": null,
+              "why": "no all-layer corridor at 0.800 mm between the islands"
+            },
+            {
+              "a": [
+                "L4.1",
+                "U21.3"
+              ],
+              "b": [
+                "R68.1"
+              ],
+              "gap_mm": 32.83,
+              "mm": null,
+              "ok": false,
+              "reason": "NO_PATH",
+              "seconds": 6.2,
+              "vias": null,
+              "why": "no all-layer corridor at 0.800 mm between the islands"
+            },
+            {
+              "a": [
+                "C26.2"
+              ],
+              "b": [
+                "R68.1"
+              ],
+              "gap_mm": 33.895,
+              "mm": null,
+              "ok": false,
+              "reason": "NO_PATH",
+              "seconds": 5.9,
+              "vias": null,
+              "why": "no all-layer corridor at 0.800 mm between the islands"
+            },
+            {
+              "a": [
+                "C27.1"
+              ],
+              "b": [
+                "L4.1",
+                "U21.3"
+              ],
+              "gap_mm": 36.83,
+              "mm": null,
+              "ok": false,
+              "reason": "NO_PATH",
+              "seconds": 6.5,
+              "vias": null,
+              "why": "no all-layer corridor at 0.800 mm between the islands"
+            },
+            {
+              "a": [
+                "L4.1",
+                "U21.3"
+              ],
+              "b": [
+                "SW9.2",
+                "U12.1"
+              ],
+              "gap_mm": 47.597,
+              "mm": null,
+              "ok": false,
+              "reason": "NO_PATH",
+              "seconds": 172.8,
+              "vias": null,
+              "why": "no all-layer corridor at 0.800 mm between the islands"
+            },
+            {
+              "a": [
+                "C28.1"
+              ],
+              "b": [
+                "L4.1",
+                "U21.3"
+              ],
+              "gap_mm": 55.021,
+              "mm": null,
+              "ok": false,
+              "reason": "NO_PATH",
+              "seconds": 7.2,
+              "vias": null,
+              "why": "no all-layer corridor at 0.800 mm between the islands"
+            },
+            {
+              "a": [
+                "C26.2"
+              ],
+              "b": [
+                "L4.1",
+                "U21.3"
+              ],
+              "gap_mm": 66.384,
+              "mm": null,
+              "ok": false,
+              "reason": "NO_PATH",
+              "seconds": 6.8,
+              "vias": null,
+              "why": "no all-layer corridor at 0.800 mm between the islands"
+            }
+          ],
+          "seconds": 993.6
+        },
+        {
+          "cells": 86674203,
+          "grid_nm": 20000,
+          "pairs": [
+            {
+              "a": [
+                "C27.1"
+              ],
+              "b": [
+                "R68.1"
+              ],
+              "gap_mm": 4.574,
+              "mm": null,
+              "ok": false,
+              "reason": "NO_PATH",
+              "seconds": 12.8,
+              "vias": null,
+              "why": "no all-layer corridor at 0.800 mm between the islands"
+            },
+            {
+              "a": [
+                "C26.2"
+              ],
+              "b": [
+                "SW9.2",
+                "U12.1"
+              ],
+              "gap_mm": 5.811,
+              "mm": null,
+              "ok": false,
+              "reason": "NO_PATH",
+              "seconds": 330.1,
+              "vias": null,
+              "why": "no all-layer corridor at 0.800 mm between the islands"
+            },
+            {
+              "a": [
+                "C28.1"
+              ],
+              "b": [
+                "SW9.2",
+                "U12.1"
+              ],
+              "gap_mm": 7.518,
+              "mm": null,
+              "ok": false,
+              "reason": "NO_PATH",
+              "seconds": 323.2,
+              "vias": null,
+              "why": "no all-layer corridor at 0.800 mm between the islands"
+            },
+            {
+              "a": [
+                "C27.1"
+              ],
+              "b": [
+                "SW9.2",
+                "U12.1"
+              ],
+              "gap_mm": 11.785,
+              "mm": null,
+              "ok": false,
+              "reason": "NO_PATH",
+              "seconds": 320.6,
+              "vias": null,
+              "why": "no all-layer corridor at 0.800 mm between the islands"
+            },
+            {
+              "a": [
+                "C26.2"
+              ],
+              "b": [
+                "C28.1"
+              ],
+              "gap_mm": 13.303,
+              "mm": null,
+              "ok": false,
+              "reason": "NO_PATH",
+              "seconds": 8.5,
+              "vias": null,
+              "why": "no all-layer corridor at 0.800 mm between the islands"
+            },
+            {
+              "a": [
+                "R68.1"
+              ],
+              "b": [
+                "SW9.2",
+                "U12.1"
+              ],
+              "gap_mm": 14.902,
+              "mm": null,
+              "ok": false,
+              "reason": "NO_PATH",
+              "seconds": 315.3,
+              "vias": null,
+              "why": "no all-layer corridor at 0.800 mm between the islands"
+            },
+            {
+              "a": [
+                "C27.1"
+              ],
+              "b": [
+                "C28.1"
+              ],
+              "gap_mm": 18.341,
+              "mm": null,
+              "ok": false,
+              "reason": "NO_PATH",
+              "seconds": 9.7,
+              "vias": null,
+              "why": "no all-layer corridor at 0.800 mm between the islands"
+            },
+            {
+              "a": [
+                "C28.1"
+              ],
+              "b": [
+                "R68.1"
+              ],
+              "gap_mm": 22.196,
+              "mm": null,
+              "ok": false,
+              "reason": "NO_PATH",
+              "seconds": 12.8,
+              "vias": null,
+              "why": "no all-layer corridor at 0.800 mm between the islands"
+            },
+            {
+              "a": [
+                "C26.2"
+              ],
+              "b": [
+                "C27.1"
+              ],
+              "gap_mm": 30.678,
+              "mm": null,
+              "ok": false,
+              "reason": "NO_PATH",
+              "seconds": 10.1,
+              "vias": null,
+              "why": "no all-layer corridor at 0.800 mm between the islands"
+            },
+            {
+              "a": [
+                "L4.1",
+                "U21.3"
+              ],
+              "b": [
+                "R68.1"
+              ],
+              "gap_mm": 32.83,
+              "mm": null,
+              "ok": false,
+              "reason": "NO_PATH",
+              "seconds": 12.9,
+              "vias": null,
+              "why": "no all-layer corridor at 0.800 mm between the islands"
+            },
+            {
+              "a": [
+                "C26.2"
+              ],
+              "b": [
+                "R68.1"
+              ],
+              "gap_mm": 33.895,
+              "mm": null,
+              "ok": false,
+              "reason": "NO_PATH",
+              "seconds": 12.1,
+              "vias": null,
+              "why": "no all-layer corridor at 0.800 mm between the islands"
+            },
+            {
+              "a": [
+                "C27.1"
+              ],
+              "b": [
+                "L4.1",
+                "U21.3"
+              ],
+              "gap_mm": 36.83,
+              "mm": null,
+              "ok": false,
+              "reason": "NO_PATH",
+              "seconds": 15.5,
+              "vias": null,
+              "why": "no all-layer corridor at 0.800 mm between the islands"
+            },
+            {
+              "a": [
+                "L4.1",
+                "U21.3"
+              ],
+              "b": [
+                "SW9.2",
+                "U12.1"
+              ],
+              "gap_mm": 47.597,
+              "mm": null,
+              "ok": false,
+              "reason": "NO_PATH",
+              "seconds": 313.7,
+              "vias": null,
+              "why": "no all-layer corridor at 0.800 mm between the islands"
+            },
+            {
+              "a": [
+                "C28.1"
+              ],
+              "b": [
+                "L4.1",
+                "U21.3"
+              ],
+              "gap_mm": 55.021,
+              "mm": null,
+              "ok": false,
+              "reason": "NO_PATH",
+              "seconds": 15.5,
+              "vias": null,
+              "why": "no all-layer corridor at 0.800 mm between the islands"
+            },
+            {
+              "a": [
+                "C26.2"
+              ],
+              "b": [
+                "L4.1",
+                "U21.3"
+              ],
+              "gap_mm": 66.384,
+              "mm": null,
+              "ok": false,
+              "reason": "NO_PATH",
+              "seconds": 15.4,
+              "vias": null,
+              "why": "no all-layer corridor at 0.800 mm between the islands"
+            }
+          ],
+          "seconds": 1740.0
+        }
+      ]
+    },
+    {
+      "body": [
+        "C56.1",
+        "C3.1",
+        "R113.1",
+        "R3.2",
+        "U1.2",
+        "R1.2",
+        "R26.1",
+        "C8.1",
+        "C15.1",
+        "C10.1",
+        "R28.1",
+        "R2.1",
+        "R29.1",
+        "D13.1",
+        "U5.7",
+        "U5.8",
+        "R20.1",
+        "C9.1",
+        "J1.7",
+        "J1.8",
+        "J1.9",
+        "J1.35",
+        "J1.40",
+        "J1.41",
+        "J1.42",
+        "R27.1",
+        "R24.2",
+        "R19.1",
+        "R25.1",
+        "J2.4",
+        "C13.1",
+        "C12.2",
+        "R21.1",
+        "C2.1",
+        "C14.1",
+        "R123.2",
+        "C18.1",
+        "MK1.3",
+        "U9.1",
+        "C6.1",
+        "L3.1",
+        "R119.1",
+        "R106.1",
+        "R5.1",
+        "C32.1",
+        "U2.24",
+        "C17.1",
+        "C29.1",
+        "C62.1",
+        "C31.1",
+        "R127.1",
+        "U7.9",
+        "R6.1",
+        "U12.4",
+        "U12.5",
+        "R103.1",
+        "C5.1",
+        "C7.1",
+        "R8.1",
+        "R41.1",
+        "R81.1",
+        "U20.2",
+        "C16.1",
+        "R9.1",
+        "U8.9",
+        "R4.1",
+        "C43.1",
+        "R128.1",
+        "R7.1",
+        "C4.1",
+        "C30.1",
+        "U17.5",
+        "U3.21",
+        "U3.24"
+      ],
+      "census": [
+        {
+          "a": [
+            "U4.2"
+          ],
+          "b": [
+            "U4.3"
+          ],
+          "both_escape": false,
+          "escapes": [
+            0,
+            0
+          ],
+          "gap_mm": 0.5,
+          "ia": 3,
+          "ib": 4
+        },
+        {
+          "a": [
+            "U4.3"
+          ],
+          "b": [
+            "U4.5"
+          ],
+          "both_escape": false,
+          "escapes": [
+            0,
+            0
+          ],
+          "gap_mm": 0.937,
+          "ia": 4,
+          "ib": 5
+        },
+        {
+          "a": [
+            "U4.2"
+          ],
+          "b": [
+            "U4.5"
+          ],
+          "both_escape": false,
+          "escapes": [
+            0,
+            0
+          ],
+          "gap_mm": 1.338,
+          "ia": 3,
+          "ib": 5
+        },
+        {
+          "a": [
+            "U4.5"
+          ],
+          "b": [
+            "U4.8"
+          ],
+          "both_escape": false,
+          "escapes": [
+            0,
+            0
+          ],
+          "gap_mm": 1.67,
+          "ia": 5,
+          "ib": 6
+        },
+        {
+          "a": [
+            "U4.12"
+          ],
+          "b": [
+            "U4.2"
+          ],
+          "both_escape": false,
+          "escapes": [
+            0,
+            0
+          ],
+          "gap_mm": 1.79,
+          "ia": 2,
+          "ib": 3
+        },
+        {
+          "a": [
+            "U4.12"
+          ],
+          "b": [
+            "U4.8"
+          ],
+          "both_escape": false,
+          "escapes": [
+            0,
+            0
+          ],
+          "gap_mm": 1.79,
+          "ia": 2,
+          "ib": 6
+        },
+        {
+          "a": [
+            "U4.12"
+          ],
+          "b": [
+            "U4.3"
+          ],
+          "both_escape": false,
+          "escapes": [
+            0,
+            0
+          ],
+          "gap_mm": 2.029,
+          "ia": 2,
+          "ib": 4
+        },
+        {
+          "a": [
+            "U4.12"
+          ],
+          "b": [
+            "U4.5"
+          ],
+          "both_escape": false,
+          "escapes": [
+            0,
+            0
+          ],
+          "gap_mm": 2.081,
+          "ia": 2,
+          "ib": 5
+        },
+        {
+          "a": [
+            "U4.3"
+          ],
+          "b": [
+            "U4.8"
+          ],
+          "both_escape": false,
+          "escapes": [
+            0,
+            0
+          ],
+          "gap_mm": 2.378,
+          "ia": 4,
+          "ib": 6
+        },
+        {
+          "a": [
+            "U4.2"
+          ],
+          "b": [
+            "U4.8"
+          ],
+          "both_escape": false,
+          "escapes": [
+            0,
+            0
+          ],
+          "gap_mm": 2.531,
+          "ia": 3,
+          "ib": 6
+        },
+        {
+          "a": [
+            "R39.1"
+          ],
+          "b": [
+            "U4.8"
+          ],
+          "both_escape": false,
+          "escapes": [
+            4,
+            0
+          ],
+          "gap_mm": 7.448,
+          "ia": 1,
+          "ib": 6
+        },
+        {
+          "a": [
+            "R39.1"
+          ],
+          "b": [
+            "U4.5"
+          ],
+          "both_escape": false,
+          "escapes": [
+            4,
+            0
+          ],
+          "gap_mm": 7.603,
+          "ia": 1,
+          "ib": 5
+        },
+        {
+          "a": [
+            "R39.1"
+          ],
+          "b": [
+            "U4.3"
+          ],
+          "both_escape": false,
+          "escapes": [
+            4,
+            0
+          ],
+          "gap_mm": 8.443,
+          "ia": 1,
+          "ib": 4
+        },
+        {
+          "a": [
+            "R39.1"
+          ],
+          "b": [
+            "U4.2"
+          ],
+          "both_escape": false,
+          "escapes": [
+            4,
+            0
+          ],
+          "gap_mm": 8.914,
+          "ia": 1,
+          "ib": 3
+        },
+        {
+          "a": [
+            "R39.1"
+          ],
+          "b": [
+            "U4.12"
+          ],
+          "both_escape": false,
+          "escapes": [
+            4,
+            0
+          ],
+          "gap_mm": 9.173,
+          "ia": 1,
+          "ib": 2
+        },
+        {
+          "a": [
+            "R129.1"
+          ],
+          "b": [
+            "U4.2"
+          ],
+          "both_escape": false,
+          "escapes": [
+            4,
+            0
+          ],
+          "gap_mm": 11.104,
+          "ia": 0,
+          "ib": 3
+        },
+        {
+          "a": [
+            "R129.1"
+          ],
+          "b": [
+            "U4.3"
+          ],
+          "both_escape": false,
+          "escapes": [
+            4,
+            0
+          ],
+          "gap_mm": 11.108,
+          "ia": 0,
+          "ib": 4
+        },
+        {
+          "a": [
+            "R129.1"
+          ],
+          "b": [
+            "U4.5"
+          ],
+          "both_escape": false,
+          "escapes": [
+            4,
+            0
+          ],
+          "gap_mm": 11.808,
+          "ia": 0,
+          "ib": 5
+        },
+        {
+          "a": [
+            "R129.1"
+          ],
+          "b": [
+            "U4.12"
+          ],
+          "both_escape": false,
+          "escapes": [
+            4,
+            0
+          ],
+          "gap_mm": 12.791,
+          "ia": 0,
+          "ib": 2
+        },
+        {
+          "a": [
+            "R129.1"
+          ],
+          "b": [
+            "U4.8"
+          ],
+          "both_escape": false,
+          "escapes": [
+            4,
+            0
+          ],
+          "gap_mm": 13.454,
+          "ia": 0,
+          "ib": 6
+        },
+        {
+          "a": [
+            "R129.1"
+          ],
+          "b": [
+            "R39.1"
+          ],
+          "both_escape": true,
+          "escapes": [
+            4,
+            4
+          ],
+          "gap_mm": 16.276,
+          "ia": 0,
+          "ib": 1
+        },
+        {
+          "a": [
+            "U4.12"
+          ],
+          "b": [
+            "U5.2"
+          ],
+          "both_escape": false,
+          "escapes": [
+            0,
+            0
+          ],
+          "gap_mm": 52.706,
+          "ia": 2,
+          "ib": 7
+        },
+        {
+          "a": [
+            "U4.8"
+          ],
+          "b": [
+            "U5.2"
+          ],
+          "both_escape": false,
+          "escapes": [
+            0,
+            0
+          ],
+          "gap_mm": 53.019,
+          "ia": 6,
+          "ib": 7
+        },
+        {
+          "a": [
+            "U4.2"
+          ],
+          "b": [
+            "U5.2"
+          ],
+          "both_escape": false,
+          "escapes": [
+            0,
+            0
+          ],
+          "gap_mm": 54.474,
+          "ia": 3,
+          "ib": 7
+        },
+        {
+          "a": [
+            "U4.5"
+          ],
+          "b": [
+            "U5.2"
+          ],
+          "both_escape": false,
+          "escapes": [
+            0,
+            0
+          ],
+          "gap_mm": 54.51,
+          "ia": 5,
+          "ib": 7
+        },
+        {
+          "a": [
+            "U4.3"
+          ],
+          "b": [
+            "U5.2"
+          ],
+          "both_escape": false,
+          "escapes": [
+            0,
+            0
+          ],
+          "gap_mm": 54.729,
+          "ia": 4,
+          "ib": 7
+        },
+        {
+          "a": [
+            "R39.1"
+          ],
+          "b": [
+            "U5.2"
+          ],
+          "both_escape": false,
+          "escapes": [
+            4,
+            0
+          ],
+          "gap_mm": 56.922,
+          "ia": 1,
+          "ib": 7
+        },
+        {
+          "a": [
+            "R129.1"
+          ],
+          "b": [
+            "U5.2"
+          ],
+          "both_escape": false,
+          "escapes": [
+            4,
+            0
+          ],
+          "gap_mm": 64.348,
+          "ia": 0,
+          "ib": 7
+        }
+      ],
+      "closed": [],
+      "closed_n": 0,
+      "clusters": [
+        {
+          "escapes": 4,
+          "pads": [
+            "R129.1"
+          ],
+          "why": null
+        },
+        {
+          "escapes": 4,
+          "pads": [
+            "R39.1"
+          ],
+          "why": null
+        },
+        {
+          "escapes": 0,
+          "pads": [
+            "U4.12"
+          ],
+          "why": "U4.12: NO LEGAL ESCAPE at >= 0.400 mm; blocked by U4.11 (x140), U4.9 (x47), U4.13 (x39), U4.1 (x34)"
+        },
+        {
+          "escapes": 0,
+          "pads": [
+            "U4.2"
+          ],
+          "why": "U4.2: NO LEGAL ESCAPE at >= 0.400 mm; blocked by U4.1 (x297), C6.2 (x31), R119.2 (x16), TP27.1 (x10)"
+        },
+        {
+          "escapes": 0,
+          "pads": [
+            "U4.3"
+          ],
+          "why": "U4.3: NO LEGAL ESCAPE at >= 0.400 mm; blocked by U4.4 (x219), U4.1 (x74), C6.2 (x38), R119.2 (x15)"
+        },
+        {
+          "escapes": 0,
+          "pads": [
+            "U4.5"
+          ],
+          "why": "U4.5: NO LEGAL ESCAPE at >= 0.400 mm; blocked by U4.4 (x181), U4.6 (x82), U4.1 (x31), C6.2 (x27)"
+        },
+        {
+          "escapes": 0,
+          "pads": [
+            "U4.8"
+          ],
+          "why": "U4.8: NO LEGAL ESCAPE at >= 0.400 mm; blocked by U4.9 (x217), U4.7 (x43), U4.6 (x42), U4.1 (x20)"
+        },
+        {
+          "escapes": 0,
+          "pads": [
+            "U5.2"
+          ],
+          "why": "U5.2: NO LEGAL ESCAPE at >= 0.400 mm; blocked by U5.1 (x275), R15.2 (x54), R15.1 (x16), C10.2 (x15)"
+        }
+      ],
+      "contract": {
+        "escape_floor": 400000,
+        "layers": [
+          "F",
+          "B",
+          "I2",
+          "I3"
+        ],
+        "via_dia": 650000,
+        "via_drill": 400000,
+        "width": 600000
+      },
+      "net": "+3V3",
+      "netclass": "P3V3",
+      "orphan_islands": 8,
+      "pairs_both_escape": 1,
+      "pairs_total": 28,
+      "rungs": [
+        {
+          "cells": 4629924,
+          "grid_nm": 100000,
+          "pairs": [
+            {
+              "a": [
+                "R129.1"
+              ],
+              "b": [
+                "R39.1"
+              ],
+              "gap_mm": 16.276,
+              "mm": null,
+              "ok": false,
+              "reason": "NO_PATH",
+              "seconds": 0.4,
+              "vias": null,
+              "why": "no all-layer corridor at 0.600 mm between the islands"
+            }
+          ],
+          "seconds": 1.7
+        },
+        {
+          "cells": 10396800,
+          "grid_nm": 66667,
+          "pairs": [
+            {
+              "a": [
+                "R129.1"
+              ],
+              "b": [
+                "R39.1"
+              ],
+              "gap_mm": 16.276,
+              "mm": null,
+              "ok": false,
+              "reason": "NO_PATH",
+              "seconds": 0.6,
+              "vias": null,
+              "why": "no all-layer corridor at 0.600 mm between the islands"
+            }
+          ],
+          "seconds": 2.4
+        },
+        {
+          "cells": 18501444,
+          "grid_nm": 50000,
+          "pairs": [
+            {
+              "a": [
+                "R129.1"
+              ],
+              "b": [
+                "R39.1"
+              ],
+              "gap_mm": 16.276,
+              "mm": null,
+              "ok": false,
+              "reason": "NO_PATH",
+              "seconds": 0.8,
+              "vias": null,
+              "why": "no all-layer corridor at 0.600 mm between the islands"
+            }
+          ],
+          "seconds": 3.3
+        },
+        {
+          "cells": 41614564,
+          "grid_nm": 33333,
+          "pairs": [
+            {
+              "a": [
+                "R129.1"
+              ],
+              "b": [
+                "R39.1"
+              ],
+              "gap_mm": 16.276,
+              "mm": null,
+              "ok": false,
+              "reason": "NO_LEGAL_ESCAPE_SRC",
+              "seconds": 0.2,
+              "vias": null,
+              "why": "R129.1: NO LEGAL ESCAPE at >= 0.400 mm; blocked by track (x109), U16.1 (x36), R46.2 (x33), R46.1 (x28)"
+            }
+          ],
+          "seconds": 4.7
+        },
+        {
+          "cells": 73969284,
+          "grid_nm": 25000,
+          "pairs": [
+            {
+              "a": [
+                "R129.1"
+              ],
+              "b": [
+                "R39.1"
+              ],
+              "gap_mm": 16.276,
+              "mm": null,
+              "ok": false,
+              "reason": "NO_PATH",
+              "seconds": 4.7,
+              "vias": null,
+              "why": "no all-layer corridor at 0.600 mm between the islands"
+            }
+          ],
+          "seconds": 11.8
+        },
+        {
+          "cells": 115565604,
+          "grid_nm": 20000,
+          "pairs": [
+            {
+              "a": [
+                "R129.1"
+              ],
+              "b": [
+                "R39.1"
+              ],
+              "gap_mm": 16.276,
+              "mm": null,
+              "ok": false,
+              "reason": "NO_PATH",
+              "seconds": 9.0,
+              "vias": null,
+              "why": "no all-layer corridor at 0.600 mm between the islands"
+            }
+          ],
+          "seconds": 19.9
+        }
+      ]
+    }
+  ],
+  "pitches": [
+    100000,
+    66667,
+    50000,
+    33333,
+    25000,
+    20000
+  ],
+  "question": "which ORPHAN-ISLAND PAIRS of a pour-served net has join_orphans' 4.0 mm gap bound never asked, and does the D-623 pitch ladder close any of them",
+  "schema": 1,
+  "stitch_via": [
+    500000,
+    250000
+  ]
+}

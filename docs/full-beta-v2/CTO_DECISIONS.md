@@ -1,5 +1,251 @@
 # AQROOT Full Beta v2 — CTO Decisions
 
+# D-631 · 2026-09-05 · Demo — the 8.0 mm stitch window was NOT the pour block's wall, and the edge that closed needed NO ESCAPE AT ALL
+
+D-630 named the next task and ranked it first: *"the 8.0 mm stitch window is the
+pour block's binding constraint, and it is the only one of the three that is a
+CONVENTION rather than a rule or a geometry … worth up to 19 edges, the largest
+single block on the board."* **It is not the wall. It was never the wall on any
+of the seventeen islands, and the number that proves it also names the three
+walls that ARE there.** The edge that closed today closed by a primitive this
+board did not have.
+
+## `+3V3` `U4.2 → U4.3` — PROMOTED. One track, 0.400 mm, no escape, no via
+
+`maze3d.pad_bridge` is the LATERAL twin of `bridge_islands`. A pour bridge is a
+barrel with no escape and no track; a **PAD BRIDGE is a track with no escape and
+no via** — one straight segment between two lands of the same net, **both
+endpoints INSIDE the lands**.
+
+    +3V3   U4.2 -> U4.3    B.Cu   0.400 mm wide   0.400 mm long   0 vias
+                           (57.300, 68.8375) -> (57.700, 68.8375), inset 0.05 mm
+
+`U4` is the BMI270 IMU, an LGA-14 on 0.500 mm pitch; `U4.2` and `U4.3` are two
+of its five `+3V3` supply lands, 0.475 × 0.250 mm with **0.025 mm of gap between
+them** and 0.500 mm to the foreign lands either side. Every router this board
+owns refused it, and all of them refused it the same way:
+
+    qrouter.connect_role  0.600 mm   NO LEGAL ESCAPE  blocked by U4.1 (x58)
+    qrouter.connect_role  0.400 mm   NO LEGAL ESCAPE  blocked by U4.1 (x60)
+    qrouter.connect_role  0.300 mm   OK -- 2.174 mm of DETOUR
+    maze3d.pad_bridge     0.400 mm   OK -- 0.400 mm, zero attributable DRC
+
+**`QBoard.escape` refuses any launch point where the TRUNK width is not legal.**
+A land whose only legal copper is the strip BETWEEN it and its same-net
+neighbour therefore has no launch point at all, and `route_join`, `stitch_pad`,
+`route_net` and `connect_role` all report `NO LEGAL ESCAPE` on a pair that needs
+no escape. `screen_escape_class.py` (D-630) named sixteen such lands
+`LATTICE_EXACT` and concluded `route_local_two_pad` was the only instrument —
+**it is not, it escapes too.** The instrument these lands want has no escape in
+it.
+
+Authority `38d400defefb10b0a39949b48b47aa962b624bdd05f0ebf76d714ef941f66269`
+→ **`c4fee0184f40efc72b9ce968349855060d9602d982892a47c0bcc55f0eb47ecc`**,
+**retained open edges 46 → 45**, `+3V3` **8 → 7**, its copper islands 9 → 8,
+connected retained 152, open retained nets 21, ratsnest **62 → 61**.
+**ONE object added, ZERO removed** — one 0.400 mm `B.Cu` track on `+3V3` — zero
+vias, zero zones, zero rule areas, **zero `.kicad_dru` change**, zero placement
+change.
+
+`verify_promotion.py --ref HEAD --nets +3V3 --track-width 400000` **PASS, 15/15**
+plus all four live DRU contracts including `D-186_bat_main_class` and
+`D-269_bat_main_routed_clearance`. DRC **zero attributable**, inherited only
+(`hole_clearance` 5, `solder_mask_bridge` 1, `lib_footprint_issues` 199), and
+identical on the second pass. Every standing contract PASS: `pour_partition`
+(PP1–PP4), `pour_bond` (47-tube D-619 guard, P1–P4), `neck` (N1–N3),
+`placement`, `population`, `land_parity`, `keepout_stackup`, `rf_symmetry`.
+`protected_copper` **identical**, 15 nets / 393 objects, zero differences —
+`ACC_5V_SW_EN`, `ACC_3V3_SW`, the three `FRONT_RGB_*_N` and `XGPIO4`/`XGPIO5`
+untouched. Fab package re-exported (28 files, 24 deterministic) and
+`fab_package_contract` **FAB1–FAB8 PASS**.
+
+**THE WIDTH IS THE BOARD'S OWN AND NOTHING NARROWER.** `--bridge-pads` offers
+exactly two rungs — the netclass width and `max(board min_track_width,
+DRU_CLASS[class]["width"])` — so `+3V3` was offered 0.600 and 0.400 mm and took
+**0.400 mm, the `.kicad_dru`'s published `P3V3` minimum**. A bridge is ordinary
+rail copper; it is never a licensed neck and this primitive cannot propose one.
+The proof is `maze3d.verify_laid` — exact analytic clearance against real
+obstacle shapes, the DRU overlay and the guard tubes — **never a lattice**,
+because the whole reason the primitive exists is that no lattice can express
+the pairs it serves.
+
+**IT IS A PROVEN NO-OP WHERE IT MUST BE.** The same net, same guard, same pitch,
+flag OFF: the candidate `sha256` **equals the authoritative board's**
+(`38d400de…` both) and `pad_bridges` is `null`
+(`evidence/d631-p3v3-pad-bridge-off-control.json`). Flag ON, it fires.
+
+**AND IT IS NOT A FLOODGATE.** `screen_pad_bridge.py` over every open retained
+net finds **exactly one bridge on the whole board at `--max-mm 3.0` and the same
+one at 8.0** (`evidence/d631-pad-bridge.json`), with 17 of the 18 asked pairs
+refused by `UNPROVED_GEOMETRY` naming the foreign land they hit —
+`U4.3→U4.5` at (57.8207, 68.9082) vs `/05_I2C_DEVICES/BMI270_INT1_RAW`. The
+bound is not what is limiting it; the geometry is.
+
+## THE 8.0 mm WINDOW IS RETIRED, AND THE MEASUREMENT NAMES THREE WALLS
+
+`screen_stitch_window.py` (new, tracked, read-only,
+`evidence/d631-stitch-window.json`) runs `stitch_pad`'s OWN 8-connected
+wavefront over the SAME `Field`, from the SAME escapes, against the SAME
+`via_ok & body_landing` mask — **with the window and the box removed and nothing
+else changed** — and reports the distance in millimetres. Seventeen islands on
+the two pour-owning nets, at the exact D-630 contract (`--escape-floor`,
+`--stitch-via 500000:250000`, 47-tube guard):
+
+    WINDOW / INSIDE_STANDING_WINDOW      0 islands
+    BARREN        6   /01_POWER_TREE/BQ25185_SYS
+    UNREACHABLE   2   +3V3  R129.1, R39.1
+    NO_ESCAPE     9
+
+**Not one island is bounded by 8.0 mm.** The corroboration is the promoter's own
+`stitch_pad` at 8 / 12 / 16 / 24 / 32 / 48 mm: same refusal at every rung.
+
+**`BARREN` IS THE ONE THAT MATTERS AND IT HAD NEVER BEEN SAID.**
+`/01_POWER_TREE/BQ25185_SYS`'s BODY POUR OWNS **ZERO VIA-LEGAL CELLS** —
+`body_landing` returns **325 cells, 3.25 mm², `B.Cu` only**, and not one of them
+can hold the 0.65 mm barrel `SYS_MAIN`'s own `.kicad_dru` drill floor forces
+(0.400 mm drill + 2 × 0.125 mm ring). The net owns 271,504 via-legal cells
+elsewhere. Six islands were being told "no barrel within 8.0 mm" when the true
+sentence was **"no barrel anywhere, at any window, at any pitch."**
+
+**AND THE BODY IS CHOSEN BY PAD COUNT, NOT BY COPPER.** `stitch_net` and
+`body_landing` both take `max(islands, key=len)`. On this net that picks a
+FOUR-PAD cluster owning **3.311 mm²** while the cluster `SW9.2`/`U12.1` owns
+**90.572 mm² — 27× more copper, a 12.50 × 22.43 mm `B.Cu` slab with 564
+via-legal cells** — and classifies the slab as an orphan. The full filled-island
+inventory:
+
+    B  90.572 mm²  8987 cells  SW9.2, U12.1        <- 27x the "body"
+    B  10.813      1082        L4.1, U21.3
+    B   6.553       638        C26.2
+    B   5.521       542        C27.1
+    B   3.311       325        C24.1 C33.1 C64.1 L2.1   <- the "body"
+    B   2.178       226        C28.1
+    B   0.749        73        U12.10, U12.11
+    B   0.449        43        (ownerless)
+
+Retargeting the stitch at the slab **fixes `BARREN` and does not close an
+edge**: the target stops being empty, and every escapable cluster then reads
+`UNREACHABLE at any distance` to its 564 sites. So the body-by-pad-count rule is
+a real defect, it is now named and measured, and it is **not** what is holding
+these six islands.
+
+## SEALED, MEASURED OVER A 4× PITCH RANGE — NOT A RASTERISATION ARTIFACT
+
+`UNREACHABLE` is only worth something with a number beside it, and the number is
+the FREE POCKET the escape opens into. `screen_escape_pocket.py` (new, tracked,
+read-only, `evidence/d631-escape-pocket.json`) floods `~field.blk[layer]` from
+every `pad_escapes` launch point and reports the pocket as an **AREA in mm²**,
+which is pitch-invariant: a real seal keeps its area as the lattice refines, and
+a seal that was a rasterisation artifact grows the moment the lattice can
+express its mouth. Three rungs, 0.100 / 0.050 / 0.025 mm:
+
+    land      0.100 mm    0.050 mm    0.025 mm    growth   via-legal in pocket
+    C28.1      0.190       0.233       0.285      1.50×     0 / 0 / 0
+    L4.1       4.290       4.633       4.821      1.12×     0 / 0 / 0
+    C26.2      1.520       1.742       1.867      1.23×     0 / 0 / 0
+    C27.1      1.660       1.927       2.029      1.22×     0 / 0 / 0
+    R68.1      1.640       1.805       1.919      1.17×     0 / 0 / 0
+    R129.1     0.850       1.023       1.109      1.31×     0 / 0 / 0   (+3V3)
+    R39.1      0.720       0.874       0.941      1.31×     0 / 0 / 0   (+3V3)
+    SW9.2     16.780      17.547      18.096      1.08×   206 / 1014 / 4488
+
+Every growth is boundary discretisation and every one is asymptoting. **Seven
+lands are SEALED across a 4× pitch range**, and `SW9.2` — the 90.572 mm² slab —
+is the one that has sites, which is the same finding from the other side.
+
+The instrument is proved non-vacuous on the same run: `L2.1`'s escape floods a
+**176,085-cell region containing 138,810 via-legal cells**, so the flood
+CAN find open space. `R129.1`'s four escapes all open into **85 cells** and
+`R39.1`'s into **72**, and the promoter's own `stitch_pad` with `land_ok`
+DROPPED agrees exactly — `NO_VIA_SITE` at 8.0 mm and at 48.0 mm.
+
+## `join_orphans` HAD BEEN DECLINING 34 OF 36 PAIRS WITHOUT A WORD
+
+`screen_partial_pairs.py` excludes a pour-served net from the pair census by the
+board's own zones, correctly. The instrument that DOES complete such a net is
+`maze3d.join_orphans`, and it carried `JOIN_ORPHAN_MAX_MM = 4.0` applied to the
+pair GAP with a **bare `continue`** — not asked, not refused, **not reported**.
+
+On `/01_POWER_TREE/BQ25185_SYS`: nine orphan clusters, **36 pairs, TWO asked** —
+and both of those had a zero-escape island on one end. **All fifteen pairs with
+legal escapes at BOTH ends were in the silent set**, the nearest of them
+`C27.1 ↔ R68.1` at **4.574 mm — 0.574 mm past the convention.**
+
+FIXED in `maze3d.join_orphans`: a declined pair is now recorded as `TOO_FAR`
+with its gap, in its own `declined` list kept OUT of `failures` so the 40-row cap
+on real refusals cannot be spent on declines. The bound is unchanged and **no
+copper moves** — the list is report-only.
+
+`screen_orphan_pair_ladder.py` (new, tracked, read-only,
+`evidence/d631-orphan-pair-ladder.json`) then asks all fifteen over the D-623
+pitch ladder with the 47-tube guard, each pair independent and reverted. **Six
+rungs, every rung complete, NOTHING over budget:**
+
+    0.1000 mm     3,472,443 cells      18 s   15 pairs   NO_PATH ×15
+    0.0667 mm     7,797,600            36 s   15         NO_PATH ×10, ESCAPE ×5
+    0.0500 mm    13,876,083            96 s   15         NO_PATH ×15
+    0.0333 mm    31,210,923           314 s   15         NO_PATH ×10, ESCAPE ×5
+    0.0250 mm    55,476,963           994 s   15         NO_PATH ×15
+    0.0200 mm    86,674,203          1740 s   15         NO_PATH ×15
+
+**NINETY ATTEMPTS, ZERO CLOSED.** `+3V3`'s single both-escape pair
+(`R129.1 ↔ R39.1`, 16.276 mm) was asked at the same six pitches and refused six
+times. That is the same verdict the pocket ladder predicts, reached by an
+independent instrument.
+
+PROVENANCE: the ladder loaded the board before the `U4.2 → U4.3` promotion and
+records `38d400de…`. It still holds on `c4fee018…`: the promotion ADDED one
+0.400 mm `B.Cu` track on `+3V3` at `U4` and REMOVED nothing, added no zone, no
+rule area and no `.kicad_dru` change, and both `NO_PATH` and `NO_LEGAL_ESCAPE`
+are monotone under added copper.
+
+## WHAT THE POUR BLOCK ACTUALLY IS, NOW THAT IT HAS NUMBERS
+
+The nineteen pour-served open edges are **not** a window, **not** a barrel
+ladder, **not** a pitch and **not** the body-selection rule. They are:
+
+  * **`/01_POWER_TREE/BQ25185_SYS`** — a pour that never formed. Its largest
+    piece is a 90.572 mm² slab owning ONE cluster, its nominal body is a
+    3.311 mm² puddle with zero legal barrel sites, and its six escapable
+    clusters each open into a **0.19–4.82 mm² SEALED pocket**. This is a
+    PLACEMENT and EVICTION finding.
+  * **`+3V3`** — six of eight islands cannot launch at all (`U4` is a 0.500 mm
+    LGA and `U5.2` a 0.500 mm TQFN), and `R129.1`/`R39.1` open into 0.85 and
+    0.72 mm² sealed pockets on `B.Cu`.
+  * **`GND`** — 4 edges, unmeasured here.
+
+## NEXT, IN ORDER OF LEVERAGE
+
+1. **`--bridge-pads` is now standing and it is precise, not broad** — one pair
+   board-wide today. The lands it CAN serve are made by placement, so it should
+   be re-run after any placement change, and it is the correct instrument the
+   moment two same-net lands come within reach of each other.
+2. **`/01_POWER_TREE/BQ25185_SYS` is a PLACEMENT finding with numbers.** Its
+   pour is a set of puddles; its body has no barrel site at the drill floor its
+   own class publishes; its clusters sit in sealed pockets. Nothing in the
+   router can reach it. The honest moves are EVICTION of the foreign copper
+   sealing those pockets, or a floorplan change — both larger than one bounded
+   iteration and both now justified by measurement rather than by frustration.
+3. **`+3V3` `U4`/`U5` supply lands are a WIDTH question with a published
+   answer.** `connect_role` closes `U4.2↔U4.3` at 0.300 mm and `U4.3↔U4.5` at
+   0.250 mm, and the `.kicad_dru`'s own section-5 table states P3V3's
+   IPC-2221B outer minimum as **0.300 mm at the full 1.0 A design current**
+   (0.162 mm at the 0.64 A measured peak) while the RULE floor is 0.400 mm —
+   *"the floors below sit well above the thermal minimum"*. A package-local
+   0.300 mm licence over `U4`'s courtyard, in the shape of the existing
+   "Pad-escape necking — fine-pitch power packages" rule, is worth **one more
+   edge** and is priced at the board's own published figure, not a derate.
+   Weighed and NOT taken today: one edge does not justify a rule change while
+   an unlicensed primitive was still available, and the unlicensed primitive
+   took it.
+4. `route_local_two_pad` on the remaining `LATTICE_EXACT` lands, `U11.9` /
+   `U11.3` first. Note the correction above: that list's stated instrument
+   escapes, so the pairs where the answer is a bridge are already served.
+
+**The `GND` return-path pricing question remains the one OPEN modelling gap in
+`PP2`.** No owner decision is OPEN; D-618's `J3` question remains RECORDED and
+PM-3 remains an open PLACEMENT finding.
+
 # D-630 · 2026-09-05 · Demo — "UNLAUNCHABLE" is THREE walls wearing one name, the escape width ladder had exactly ONE rung, and EXT_SDA's second edge is CLOSED
 
 D-629 named the next task — the census-then-ladder recipe on `/BQ25185_STAT1`,

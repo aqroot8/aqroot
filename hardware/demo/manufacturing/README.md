@@ -5,8 +5,8 @@ board passes -- package (`FAB1-FAB8`), BOM sourcing (100 % orderable, D-615),
 population (`POP1-POP4`), land patterns (`LAND1-LAND6`, 311/311), keep-out
 stackup (`KO1-KO5`), pour bonds (`P1-P4`), pour partition (`PP1-PP4`, D-622),
 necks (`N1-N3`), placement (`PL1-PL9`), NFC front-end symmetry (`RF1-RF5`,
-D-621) and protected copper -- and the residual is **50 retained open
-edges across 22 nets** (D-625).  Two of them, `USB_D_CONN_P` and the `USB_D_MCU` pair, are
+D-621) and protected copper -- and the residual is **45 retained open
+edges across 21 nets** (D-631).  Two of them, `USB_D_CONN_P` and the `USB_D_MCU` pair, are
 parked on rulings rather than routes (D-618, D-620).
 
 ## BTN_DOWN_N IS CLOSED BY THE GUARD, AT A PITCH THAT HAD NEVER BEEN ASKED (D-625)

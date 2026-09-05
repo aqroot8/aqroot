@@ -1,0 +1,1164 @@
+{
+  "board": "/home/aqroot8/aqroot-demo/hardware/demo/kicad/aqroot-demo/aqroot-Beta-v2.kicad_pcb",
+  "board_sha256": "38d400defefb10b0a39949b48b47aa962b624bdd05f0ebf76d714ef941f66269",
+  "escape_floor": true,
+  "grid": 100000,
+  "guard": "evidence/d619-pour-bond-guard-bonded.json",
+  "guard_sha256": "1d6c36308db000d5fb21316e6adc0cc78d5f93ab25aabe877296c7a9419894ef",
+  "method": "read-only; stitch_pad's own 8-connected wavefront over the same Field, same escapes, same via_ok & body_landing mask, with the window removed; corroborated by the real maze3d.stitch_pad at a ladder of windows, every trial reverted",
+  "nets": [
+    {
+      "any_via_sites": 271504,
+      "body_landing": {
+        "body": [
+          "C24.1",
+          "C33.1",
+          "C64.1",
+          "L2.1"
+        ],
+        "body_pads": 4,
+        "cells": {
+          "B": 325
+        },
+        "erode": 0,
+        "total": 325
+      },
+      "body_via_sites": 0,
+      "contract": {
+        "escape_floor": 500000,
+        "layers": [
+          "F",
+          "B",
+          "I2"
+        ],
+        "via_dia": 650000,
+        "via_drill": 400000,
+        "width": 800000
+      },
+      "islands": [
+        {
+          "any": null,
+          "body": null,
+          "closes_at_mm": null,
+          "escapes": 8,
+          "island": [
+            "C26.2"
+          ],
+          "ladder": [
+            {
+              "mm": null,
+              "ok": false,
+              "pad": "C26.2",
+              "reason": "NO_BODY_VIA_SITE",
+              "via_xy": null,
+              "window_mm": 8.0
+            },
+            {
+              "mm": null,
+              "ok": false,
+              "pad": "C26.2",
+              "reason": "NO_BODY_VIA_SITE",
+              "via_xy": null,
+              "window_mm": 12.0
+            },
+            {
+              "mm": null,
+              "ok": false,
+              "pad": "C26.2",
+              "reason": "NO_BODY_VIA_SITE",
+              "via_xy": null,
+              "window_mm": 16.0
+            },
+            {
+              "mm": null,
+              "ok": false,
+              "pad": "C26.2",
+              "reason": "NO_BODY_VIA_SITE",
+              "via_xy": null,
+              "window_mm": 24.0
+            },
+            {
+              "mm": null,
+              "ok": false,
+              "pad": "C26.2",
+              "reason": "NO_BODY_VIA_SITE",
+              "via_xy": null,
+              "window_mm": 32.0
+            },
+            {
+              "mm": null,
+              "ok": false,
+              "pad": "C26.2",
+              "reason": "NO_BODY_VIA_SITE",
+              "via_xy": null,
+              "window_mm": 48.0
+            }
+          ],
+          "measure_s": 0.8,
+          "verdict": "BARREN",
+          "why": null
+        },
+        {
+          "any": null,
+          "body": null,
+          "closes_at_mm": null,
+          "escapes": 7,
+          "island": [
+            "C27.1"
+          ],
+          "ladder": [
+            {
+              "mm": null,
+              "ok": false,
+              "pad": "C27.1",
+              "reason": "NO_BODY_VIA_SITE",
+              "via_xy": null,
+              "window_mm": 8.0
+            },
+            {
+              "mm": null,
+              "ok": false,
+              "pad": "C27.1",
+              "reason": "NO_BODY_VIA_SITE",
+              "via_xy": null,
+              "window_mm": 12.0
+            },
+            {
+              "mm": null,
+              "ok": false,
+              "pad": "C27.1",
+              "reason": "NO_BODY_VIA_SITE",
+              "via_xy": null,
+              "window_mm": 16.0
+            },
+            {
+              "mm": null,
+              "ok": false,
+              "pad": "C27.1",
+              "reason": "NO_BODY_VIA_SITE",
+              "via_xy": null,
+              "window_mm": 24.0
+            },
+            {
+              "mm": null,
+              "ok": false,
+              "pad": "C27.1",
+              "reason": "NO_BODY_VIA_SITE",
+              "via_xy": null,
+              "window_mm": 32.0
+            },
+            {
+              "mm": null,
+              "ok": false,
+              "pad": "C27.1",
+              "reason": "NO_BODY_VIA_SITE",
+              "via_xy": null,
+              "window_mm": 48.0
+            }
+          ],
+          "measure_s": 1.2,
+          "verdict": "BARREN",
+          "why": null
+        },
+        {
+          "any": null,
+          "body": null,
+          "closes_at_mm": null,
+          "escapes": 1,
+          "island": [
+            "C28.1"
+          ],
+          "ladder": [
+            {
+              "mm": null,
+              "ok": false,
+              "pad": "C28.1",
+              "reason": "NO_BODY_VIA_SITE",
+              "via_xy": null,
+              "window_mm": 8.0
+            },
+            {
+              "mm": null,
+              "ok": false,
+              "pad": "C28.1",
+              "reason": "NO_BODY_VIA_SITE",
+              "via_xy": null,
+              "window_mm": 12.0
+            },
+            {
+              "mm": null,
+              "ok": false,
+              "pad": "C28.1",
+              "reason": "NO_BODY_VIA_SITE",
+              "via_xy": null,
+              "window_mm": 16.0
+            },
+            {
+              "mm": null,
+              "ok": false,
+              "pad": "C28.1",
+              "reason": "NO_BODY_VIA_SITE",
+              "via_xy": null,
+              "window_mm": 24.0
+            },
+            {
+              "mm": null,
+              "ok": false,
+              "pad": "C28.1",
+              "reason": "NO_BODY_VIA_SITE",
+              "via_xy": null,
+              "window_mm": 32.0
+            },
+            {
+              "mm": null,
+              "ok": false,
+              "pad": "C28.1",
+              "reason": "NO_BODY_VIA_SITE",
+              "via_xy": null,
+              "window_mm": 48.0
+            }
+          ],
+          "measure_s": 0.4,
+          "verdict": "BARREN",
+          "why": null
+        },
+        {
+          "any": null,
+          "body": null,
+          "closes_at_mm": null,
+          "escapes": 13,
+          "island": [
+            "L4.1",
+            "U21.3"
+          ],
+          "ladder": [
+            {
+              "mm": null,
+              "ok": false,
+              "pad": "U21.3",
+              "reason": "NO_LEGAL_ESCAPE",
+              "via_xy": null,
+              "window_mm": 8.0
+            },
+            {
+              "mm": null,
+              "ok": false,
+              "pad": "U21.3",
+              "reason": "NO_LEGAL_ESCAPE",
+              "via_xy": null,
+              "window_mm": 12.0
+            },
+            {
+              "mm": null,
+              "ok": false,
+              "pad": "U21.3",
+              "reason": "NO_LEGAL_ESCAPE",
+              "via_xy": null,
+              "window_mm": 16.0
+            },
+            {
+              "mm": null,
+              "ok": false,
+              "pad": "U21.3",
+              "reason": "NO_LEGAL_ESCAPE",
+              "via_xy": null,
+              "window_mm": 24.0
+            },
+            {
+              "mm": null,
+              "ok": false,
+              "pad": "U21.3",
+              "reason": "NO_LEGAL_ESCAPE",
+              "via_xy": null,
+              "window_mm": 32.0
+            },
+            {
+              "mm": null,
+              "ok": false,
+              "pad": "U21.3",
+              "reason": "NO_LEGAL_ESCAPE",
+              "via_xy": null,
+              "window_mm": 48.0
+            }
+          ],
+          "measure_s": 2.4,
+          "verdict": "BARREN",
+          "why": "U21.3: NO LEGAL ESCAPE at >= 0.500 mm; blocked by U21.2 (x228), U21.1 (x134), TP28.1 (x36), U22.4 (x33)"
+        },
+        {
+          "any": null,
+          "body": null,
+          "closes_at_mm": null,
+          "escapes": 6,
+          "island": [
+            "R68.1"
+          ],
+          "ladder": [
+            {
+              "mm": null,
+              "ok": false,
+              "pad": "R68.1",
+              "reason": "NO_BODY_VIA_SITE",
+              "via_xy": null,
+              "window_mm": 8.0
+            },
+            {
+              "mm": null,
+              "ok": false,
+              "pad": "R68.1",
+              "reason": "NO_BODY_VIA_SITE",
+              "via_xy": null,
+              "window_mm": 12.0
+            },
+            {
+              "mm": null,
+              "ok": false,
+              "pad": "R68.1",
+              "reason": "NO_BODY_VIA_SITE",
+              "via_xy": null,
+              "window_mm": 16.0
+            },
+            {
+              "mm": null,
+              "ok": false,
+              "pad": "R68.1",
+              "reason": "NO_BODY_VIA_SITE",
+              "via_xy": null,
+              "window_mm": 24.0
+            },
+            {
+              "mm": null,
+              "ok": false,
+              "pad": "R68.1",
+              "reason": "NO_BODY_VIA_SITE",
+              "via_xy": null,
+              "window_mm": 32.0
+            },
+            {
+              "mm": null,
+              "ok": false,
+              "pad": "R68.1",
+              "reason": "NO_BODY_VIA_SITE",
+              "via_xy": null,
+              "window_mm": 48.0
+            }
+          ],
+          "measure_s": 0.6,
+          "verdict": "BARREN",
+          "why": null
+        },
+        {
+          "any": {
+            "from_pad": "SW9.2",
+            "layer": "F",
+            "mm": 0.2,
+            "xy": [
+              65.6,
+              87.2
+            ]
+          },
+          "body": null,
+          "closes_at_mm": null,
+          "escapes": 13,
+          "island": [
+            "SW9.2",
+            "U12.1"
+          ],
+          "ladder": [
+            {
+              "mm": null,
+              "ok": false,
+              "pad": "U12.1",
+              "reason": "NO_LEGAL_ESCAPE",
+              "via_xy": null,
+              "window_mm": 8.0
+            },
+            {
+              "mm": null,
+              "ok": false,
+              "pad": "U12.1",
+              "reason": "NO_LEGAL_ESCAPE",
+              "via_xy": null,
+              "window_mm": 12.0
+            },
+            {
+              "mm": null,
+              "ok": false,
+              "pad": "U12.1",
+              "reason": "NO_LEGAL_ESCAPE",
+              "via_xy": null,
+              "window_mm": 16.0
+            },
+            {
+              "mm": null,
+              "ok": false,
+              "pad": "U12.1",
+              "reason": "NO_LEGAL_ESCAPE",
+              "via_xy": null,
+              "window_mm": 24.0
+            },
+            {
+              "mm": null,
+              "ok": false,
+              "pad": "U12.1",
+              "reason": "NO_LEGAL_ESCAPE",
+              "via_xy": null,
+              "window_mm": 32.0
+            },
+            {
+              "mm": null,
+              "ok": false,
+              "pad": "U12.1",
+              "reason": "NO_LEGAL_ESCAPE",
+              "via_xy": null,
+              "window_mm": 48.0
+            }
+          ],
+          "measure_s": 2.6,
+          "verdict": "BARREN",
+          "why": "U12.1: NO LEGAL ESCAPE at >= 0.500 mm; blocked by U12.2 (x479), C24.2 (x18), TP47.1 (x7)"
+        },
+        {
+          "any": null,
+          "body": null,
+          "closes_at_mm": null,
+          "escapes": 0,
+          "island": [
+            "U11.1"
+          ],
+          "ladder": [
+            {
+              "mm": null,
+              "ok": false,
+              "pad": "U11.1",
+              "reason": "NO_LEGAL_ESCAPE",
+              "via_xy": null,
+              "window_mm": 8.0
+            },
+            {
+              "mm": null,
+              "ok": false,
+              "pad": "U11.1",
+              "reason": "NO_LEGAL_ESCAPE",
+              "via_xy": null,
+              "window_mm": 12.0
+            },
+            {
+              "mm": null,
+              "ok": false,
+              "pad": "U11.1",
+              "reason": "NO_LEGAL_ESCAPE",
+              "via_xy": null,
+              "window_mm": 16.0
+            },
+            {
+              "mm": null,
+              "ok": false,
+              "pad": "U11.1",
+              "reason": "NO_LEGAL_ESCAPE",
+              "via_xy": null,
+              "window_mm": 24.0
+            },
+            {
+              "mm": null,
+              "ok": false,
+              "pad": "U11.1",
+              "reason": "NO_LEGAL_ESCAPE",
+              "via_xy": null,
+              "window_mm": 32.0
+            },
+            {
+              "mm": null,
+              "ok": false,
+              "pad": "U11.1",
+              "reason": "NO_LEGAL_ESCAPE",
+              "via_xy": null,
+              "window_mm": 48.0
+            }
+          ],
+          "measure_s": 0.2,
+          "verdict": "NO_ESCAPE",
+          "why": "U11.1: NO LEGAL ESCAPE at >= 0.500 mm; blocked by U11.2 (x360), R36.1 (x53), R37.2 (x27), C36.2 (x22)"
+        },
+        {
+          "any": null,
+          "body": null,
+          "closes_at_mm": null,
+          "escapes": 0,
+          "island": [
+            "U12.10",
+            "U12.11"
+          ],
+          "ladder": [
+            {
+              "mm": null,
+              "ok": false,
+              "pad": "U12.11",
+              "reason": "NO_LEGAL_ESCAPE",
+              "via_xy": null,
+              "window_mm": 8.0
+            },
+            {
+              "mm": null,
+              "ok": false,
+              "pad": "U12.11",
+              "reason": "NO_LEGAL_ESCAPE",
+              "via_xy": null,
+              "window_mm": 12.0
+            },
+            {
+              "mm": null,
+              "ok": false,
+              "pad": "U12.11",
+              "reason": "NO_LEGAL_ESCAPE",
+              "via_xy": null,
+              "window_mm": 16.0
+            },
+            {
+              "mm": null,
+              "ok": false,
+              "pad": "U12.11",
+              "reason": "NO_LEGAL_ESCAPE",
+              "via_xy": null,
+              "window_mm": 24.0
+            },
+            {
+              "mm": null,
+              "ok": false,
+              "pad": "U12.11",
+              "reason": "NO_LEGAL_ESCAPE",
+              "via_xy": null,
+              "window_mm": 32.0
+            },
+            {
+              "mm": null,
+              "ok": false,
+              "pad": "U12.11",
+              "reason": "NO_LEGAL_ESCAPE",
+              "via_xy": null,
+              "window_mm": 48.0
+            }
+          ],
+          "measure_s": 0.4,
+          "verdict": "NO_ESCAPE",
+          "why": "U12.10: NO LEGAL ESCAPE at >= 0.500 mm; blocked by U12.9 (x280), U12.8 (x164), U12.4 (x29), C24.2 (x21)"
+        },
+        {
+          "any": null,
+          "body": null,
+          "closes_at_mm": null,
+          "escapes": 0,
+          "island": [
+            "U13.3"
+          ],
+          "ladder": [
+            {
+              "mm": null,
+              "ok": false,
+              "pad": "U13.3",
+              "reason": "NO_LEGAL_ESCAPE",
+              "via_xy": null,
+              "window_mm": 8.0
+            },
+            {
+              "mm": null,
+              "ok": false,
+              "pad": "U13.3",
+              "reason": "NO_LEGAL_ESCAPE",
+              "via_xy": null,
+              "window_mm": 12.0
+            },
+            {
+              "mm": null,
+              "ok": false,
+              "pad": "U13.3",
+              "reason": "NO_LEGAL_ESCAPE",
+              "via_xy": null,
+              "window_mm": 16.0
+            },
+            {
+              "mm": null,
+              "ok": false,
+              "pad": "U13.3",
+              "reason": "NO_LEGAL_ESCAPE",
+              "via_xy": null,
+              "window_mm": 24.0
+            },
+            {
+              "mm": null,
+              "ok": false,
+              "pad": "U13.3",
+              "reason": "NO_LEGAL_ESCAPE",
+              "via_xy": null,
+              "window_mm": 32.0
+            },
+            {
+              "mm": null,
+              "ok": false,
+              "pad": "U13.3",
+              "reason": "NO_LEGAL_ESCAPE",
+              "via_xy": null,
+              "window_mm": 48.0
+            }
+          ],
+          "measure_s": 0.2,
+          "verdict": "NO_ESCAPE",
+          "why": "U13.3: NO LEGAL ESCAPE at >= 0.500 mm; blocked by U13.2 (x283), U13.1 (x167), L2.2 (x28), C34.1 (x26)"
+        }
+      ],
+      "net": "/01_POWER_TREE/BQ25185_SYS",
+      "netclass": "SYS_MAIN",
+      "orphan_islands": 9
+    },
+    {
+      "any_via_sites": 270593,
+      "body_landing": {
+        "body": [
+          "C10.1",
+          "C12.2",
+          "C13.1",
+          "C14.1",
+          "C15.1",
+          "C16.1",
+          "C17.1",
+          "C18.1"
+        ],
+        "body_pads": 74,
+        "cells": {
+          "F": 593846,
+          "I3": 817717
+        },
+        "erode": 0,
+        "total": 848838
+      },
+      "body_via_sites": 269420,
+      "contract": {
+        "escape_floor": 400000,
+        "layers": [
+          "F",
+          "B",
+          "I2",
+          "I3"
+        ],
+        "via_dia": 650000,
+        "via_drill": 400000,
+        "width": 600000
+      },
+      "islands": [
+        {
+          "any": null,
+          "body": null,
+          "closes_at_mm": null,
+          "escapes": 4,
+          "island": [
+            "R129.1"
+          ],
+          "ladder": [
+            {
+              "mm": null,
+              "ok": false,
+              "pad": "R129.1",
+              "reason": "NO_BODY_VIA_SITE",
+              "via_xy": null,
+              "window_mm": 8.0
+            },
+            {
+              "mm": null,
+              "ok": false,
+              "pad": "R129.1",
+              "reason": "NO_BODY_VIA_SITE",
+              "via_xy": null,
+              "window_mm": 12.0
+            },
+            {
+              "mm": null,
+              "ok": false,
+              "pad": "R129.1",
+              "reason": "NO_BODY_VIA_SITE",
+              "via_xy": null,
+              "window_mm": 16.0
+            },
+            {
+              "mm": null,
+              "ok": false,
+              "pad": "R129.1",
+              "reason": "NO_BODY_VIA_SITE",
+              "via_xy": null,
+              "window_mm": 24.0
+            },
+            {
+              "mm": null,
+              "ok": false,
+              "pad": "R129.1",
+              "reason": "NO_BODY_VIA_SITE",
+              "via_xy": null,
+              "window_mm": 32.0
+            },
+            {
+              "mm": null,
+              "ok": false,
+              "pad": "R129.1",
+              "reason": "NO_BODY_VIA_SITE",
+              "via_xy": null,
+              "window_mm": 48.0
+            }
+          ],
+          "measure_s": 0.5,
+          "verdict": "UNREACHABLE",
+          "why": null
+        },
+        {
+          "any": null,
+          "body": null,
+          "closes_at_mm": null,
+          "escapes": 4,
+          "island": [
+            "R39.1"
+          ],
+          "ladder": [
+            {
+              "mm": null,
+              "ok": false,
+              "pad": "R39.1",
+              "reason": "NO_BODY_VIA_SITE",
+              "via_xy": null,
+              "window_mm": 8.0
+            },
+            {
+              "mm": null,
+              "ok": false,
+              "pad": "R39.1",
+              "reason": "NO_BODY_VIA_SITE",
+              "via_xy": null,
+              "window_mm": 12.0
+            },
+            {
+              "mm": null,
+              "ok": false,
+              "pad": "R39.1",
+              "reason": "NO_BODY_VIA_SITE",
+              "via_xy": null,
+              "window_mm": 16.0
+            },
+            {
+              "mm": null,
+              "ok": false,
+              "pad": "R39.1",
+              "reason": "NO_BODY_VIA_SITE",
+              "via_xy": null,
+              "window_mm": 24.0
+            },
+            {
+              "mm": null,
+              "ok": false,
+              "pad": "R39.1",
+              "reason": "NO_BODY_VIA_SITE",
+              "via_xy": null,
+              "window_mm": 32.0
+            },
+            {
+              "mm": null,
+              "ok": false,
+              "pad": "R39.1",
+              "reason": "NO_BODY_VIA_SITE",
+              "via_xy": null,
+              "window_mm": 48.0
+            }
+          ],
+          "measure_s": 0.4,
+          "verdict": "UNREACHABLE",
+          "why": null
+        },
+        {
+          "any": null,
+          "body": null,
+          "closes_at_mm": null,
+          "escapes": 0,
+          "island": [
+            "U4.12"
+          ],
+          "ladder": [
+            {
+              "mm": null,
+              "ok": false,
+              "pad": "U4.12",
+              "reason": "NO_LEGAL_ESCAPE",
+              "via_xy": null,
+              "window_mm": 8.0
+            },
+            {
+              "mm": null,
+              "ok": false,
+              "pad": "U4.12",
+              "reason": "NO_LEGAL_ESCAPE",
+              "via_xy": null,
+              "window_mm": 12.0
+            },
+            {
+              "mm": null,
+              "ok": false,
+              "pad": "U4.12",
+              "reason": "NO_LEGAL_ESCAPE",
+              "via_xy": null,
+              "window_mm": 16.0
+            },
+            {
+              "mm": null,
+              "ok": false,
+              "pad": "U4.12",
+              "reason": "NO_LEGAL_ESCAPE",
+              "via_xy": null,
+              "window_mm": 24.0
+            },
+            {
+              "mm": null,
+              "ok": false,
+              "pad": "U4.12",
+              "reason": "NO_LEGAL_ESCAPE",
+              "via_xy": null,
+              "window_mm": 32.0
+            },
+            {
+              "mm": null,
+              "ok": false,
+              "pad": "U4.12",
+              "reason": "NO_LEGAL_ESCAPE",
+              "via_xy": null,
+              "window_mm": 48.0
+            }
+          ],
+          "measure_s": 0.2,
+          "verdict": "NO_ESCAPE",
+          "why": "U4.12: NO LEGAL ESCAPE at >= 0.400 mm; blocked by U4.11 (x140), U4.9 (x47), U4.13 (x39), U4.1 (x34)"
+        },
+        {
+          "any": null,
+          "body": null,
+          "closes_at_mm": null,
+          "escapes": 0,
+          "island": [
+            "U4.2"
+          ],
+          "ladder": [
+            {
+              "mm": null,
+              "ok": false,
+              "pad": "U4.2",
+              "reason": "NO_LEGAL_ESCAPE",
+              "via_xy": null,
+              "window_mm": 8.0
+            },
+            {
+              "mm": null,
+              "ok": false,
+              "pad": "U4.2",
+              "reason": "NO_LEGAL_ESCAPE",
+              "via_xy": null,
+              "window_mm": 12.0
+            },
+            {
+              "mm": null,
+              "ok": false,
+              "pad": "U4.2",
+              "reason": "NO_LEGAL_ESCAPE",
+              "via_xy": null,
+              "window_mm": 16.0
+            },
+            {
+              "mm": null,
+              "ok": false,
+              "pad": "U4.2",
+              "reason": "NO_LEGAL_ESCAPE",
+              "via_xy": null,
+              "window_mm": 24.0
+            },
+            {
+              "mm": null,
+              "ok": false,
+              "pad": "U4.2",
+              "reason": "NO_LEGAL_ESCAPE",
+              "via_xy": null,
+              "window_mm": 32.0
+            },
+            {
+              "mm": null,
+              "ok": false,
+              "pad": "U4.2",
+              "reason": "NO_LEGAL_ESCAPE",
+              "via_xy": null,
+              "window_mm": 48.0
+            }
+          ],
+          "measure_s": 0.1,
+          "verdict": "NO_ESCAPE",
+          "why": "U4.2: NO LEGAL ESCAPE at >= 0.400 mm; blocked by U4.1 (x297), C6.2 (x31), R119.2 (x16), TP27.1 (x10)"
+        },
+        {
+          "any": null,
+          "body": null,
+          "closes_at_mm": null,
+          "escapes": 0,
+          "island": [
+            "U4.3"
+          ],
+          "ladder": [
+            {
+              "mm": null,
+              "ok": false,
+              "pad": "U4.3",
+              "reason": "NO_LEGAL_ESCAPE",
+              "via_xy": null,
+              "window_mm": 8.0
+            },
+            {
+              "mm": null,
+              "ok": false,
+              "pad": "U4.3",
+              "reason": "NO_LEGAL_ESCAPE",
+              "via_xy": null,
+              "window_mm": 12.0
+            },
+            {
+              "mm": null,
+              "ok": false,
+              "pad": "U4.3",
+              "reason": "NO_LEGAL_ESCAPE",
+              "via_xy": null,
+              "window_mm": 16.0
+            },
+            {
+              "mm": null,
+              "ok": false,
+              "pad": "U4.3",
+              "reason": "NO_LEGAL_ESCAPE",
+              "via_xy": null,
+              "window_mm": 24.0
+            },
+            {
+              "mm": null,
+              "ok": false,
+              "pad": "U4.3",
+              "reason": "NO_LEGAL_ESCAPE",
+              "via_xy": null,
+              "window_mm": 32.0
+            },
+            {
+              "mm": null,
+              "ok": false,
+              "pad": "U4.3",
+              "reason": "NO_LEGAL_ESCAPE",
+              "via_xy": null,
+              "window_mm": 48.0
+            }
+          ],
+          "measure_s": 0.1,
+          "verdict": "NO_ESCAPE",
+          "why": "U4.3: NO LEGAL ESCAPE at >= 0.400 mm; blocked by U4.4 (x219), U4.1 (x74), C6.2 (x38), R119.2 (x15)"
+        },
+        {
+          "any": null,
+          "body": null,
+          "closes_at_mm": null,
+          "escapes": 0,
+          "island": [
+            "U4.5"
+          ],
+          "ladder": [
+            {
+              "mm": null,
+              "ok": false,
+              "pad": "U4.5",
+              "reason": "NO_LEGAL_ESCAPE",
+              "via_xy": null,
+              "window_mm": 8.0
+            },
+            {
+              "mm": null,
+              "ok": false,
+              "pad": "U4.5",
+              "reason": "NO_LEGAL_ESCAPE",
+              "via_xy": null,
+              "window_mm": 12.0
+            },
+            {
+              "mm": null,
+              "ok": false,
+              "pad": "U4.5",
+              "reason": "NO_LEGAL_ESCAPE",
+              "via_xy": null,
+              "window_mm": 16.0
+            },
+            {
+              "mm": null,
+              "ok": false,
+              "pad": "U4.5",
+              "reason": "NO_LEGAL_ESCAPE",
+              "via_xy": null,
+              "window_mm": 24.0
+            },
+            {
+              "mm": null,
+              "ok": false,
+              "pad": "U4.5",
+              "reason": "NO_LEGAL_ESCAPE",
+              "via_xy": null,
+              "window_mm": 32.0
+            },
+            {
+              "mm": null,
+              "ok": false,
+              "pad": "U4.5",
+              "reason": "NO_LEGAL_ESCAPE",
+              "via_xy": null,
+              "window_mm": 48.0
+            }
+          ],
+          "measure_s": 0.1,
+          "verdict": "NO_ESCAPE",
+          "why": "U4.5: NO LEGAL ESCAPE at >= 0.400 mm; blocked by U4.4 (x181), U4.6 (x82), U4.1 (x31), C6.2 (x27)"
+        },
+        {
+          "any": null,
+          "body": null,
+          "closes_at_mm": null,
+          "escapes": 0,
+          "island": [
+            "U4.8"
+          ],
+          "ladder": [
+            {
+              "mm": null,
+              "ok": false,
+              "pad": "U4.8",
+              "reason": "NO_LEGAL_ESCAPE",
+              "via_xy": null,
+              "window_mm": 8.0
+            },
+            {
+              "mm": null,
+              "ok": false,
+              "pad": "U4.8",
+              "reason": "NO_LEGAL_ESCAPE",
+              "via_xy": null,
+              "window_mm": 12.0
+            },
+            {
+              "mm": null,
+              "ok": false,
+              "pad": "U4.8",
+              "reason": "NO_LEGAL_ESCAPE",
+              "via_xy": null,
+              "window_mm": 16.0
+            },
+            {
+              "mm": null,
+              "ok": false,
+              "pad": "U4.8",
+              "reason": "NO_LEGAL_ESCAPE",
+              "via_xy": null,
+              "window_mm": 24.0
+            },
+            {
+              "mm": null,
+              "ok": false,
+              "pad": "U4.8",
+              "reason": "NO_LEGAL_ESCAPE",
+              "via_xy": null,
+              "window_mm": 32.0
+            },
+            {
+              "mm": null,
+              "ok": false,
+              "pad": "U4.8",
+              "reason": "NO_LEGAL_ESCAPE",
+              "via_xy": null,
+              "window_mm": 48.0
+            }
+          ],
+          "measure_s": 0.2,
+          "verdict": "NO_ESCAPE",
+          "why": "U4.8: NO LEGAL ESCAPE at >= 0.400 mm; blocked by U4.9 (x217), U4.7 (x43), U4.6 (x42), U4.1 (x20)"
+        },
+        {
+          "any": null,
+          "body": null,
+          "closes_at_mm": null,
+          "escapes": 0,
+          "island": [
+            "U5.2"
+          ],
+          "ladder": [
+            {
+              "mm": null,
+              "ok": false,
+              "pad": "U5.2",
+              "reason": "NO_LEGAL_ESCAPE",
+              "via_xy": null,
+              "window_mm": 8.0
+            },
+            {
+              "mm": null,
+              "ok": false,
+              "pad": "U5.2",
+              "reason": "NO_LEGAL_ESCAPE",
+              "via_xy": null,
+              "window_mm": 12.0
+            },
+            {
+              "mm": null,
+              "ok": false,
+              "pad": "U5.2",
+              "reason": "NO_LEGAL_ESCAPE",
+              "via_xy": null,
+              "window_mm": 16.0
+            },
+            {
+              "mm": null,
+              "ok": false,
+              "pad": "U5.2",
+              "reason": "NO_LEGAL_ESCAPE",
+              "via_xy": null,
+              "window_mm": 24.0
+            },
+            {
+              "mm": null,
+              "ok": false,
+              "pad": "U5.2",
+              "reason": "NO_LEGAL_ESCAPE",
+              "via_xy": null,
+              "window_mm": 32.0
+            },
+            {
+              "mm": null,
+              "ok": false,
+              "pad": "U5.2",
+              "reason": "NO_LEGAL_ESCAPE",
+              "via_xy": null,
+              "window_mm": 48.0
+            }
+          ],
+          "measure_s": 0.1,
+          "verdict": "NO_ESCAPE",
+          "why": "U5.2: NO LEGAL ESCAPE at >= 0.400 mm; blocked by U5.1 (x275), R15.2 (x54), R15.1 (x16), C10.2 (x15)"
+        }
+      ],
+      "net": "+3V3",
+      "netclass": "P3V3",
+      "orphan_islands": 8
+    }
+  ],
+  "question": "for every island NO_BODY_VIA_SITE refuses, HOW FAR is the nearest via-legal cell inside the net's own body pour -- is the 8.0 mm locality window the wall, or is free space simply not connecting the escape to the pour at any distance",
+  "schema": 1,
+  "stitch_via": [
+    500000,
+    250000
+  ],
+  "windows": [
+    8.0,
+    12.0,
+    16.0,
+    24.0,
+    32.0,
+    48.0
+  ]
+}

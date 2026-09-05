@@ -1,0 +1,603 @@
+{
+  "board": "/home/aqroot8/aqroot-demo/hardware/demo/kicad/aqroot-demo/aqroot-Beta-v2.kicad_pcb",
+  "board_sha256": "38d400defefb10b0a39949b48b47aa962b624bdd05f0ebf76d714ef941f66269",
+  "bridges_found": 1,
+  "chain": false,
+  "grid": 100000,
+  "guard": "evidence/d619-pour-bond-guard-bonded.json",
+  "guard_sha256": "1d6c36308db000d5fb21316e6adc0cc78d5f93ab25aabe877296c7a9419894ef",
+  "max_mm": 3.0,
+  "method": "read-only; maze3d.pad_bridge at the netclass width and the .kicad_dru class floor and no narrower, endpoints inside the lands by the inscribed-diamond test, proved by the promoter's own exact-geometry maze3d.verify_laid, every trial reverted",
+  "nets": [
+    {
+      "bridged": 1,
+      "bridges": [
+        {
+          "a": "U4.2",
+          "a_xy": [
+            57.3,
+            68.8375
+          ],
+          "b": "U4.3",
+          "b_xy": [
+            57.7,
+            68.8375
+          ],
+          "gap_mm": 0.5,
+          "inset_mm": 0.05,
+          "layer": "B",
+          "mm": 0.4,
+          "vias": 0,
+          "width": 400000
+        }
+      ],
+      "chain": false,
+      "failures": [
+        {
+          "a": "C6.1",
+          "b": "U4.2",
+          "gap_mm": 1.651,
+          "inset_mm": 0.2,
+          "layer": "B",
+          "reason": "UNPROVED_GEOMETRY",
+          "why": "track at (57.2649, 67.3867) vs /05_I2C_DEVICES/BMI270_SDO_ADDR",
+          "width": 400000
+        },
+        {
+          "a": "C6.1",
+          "b": "U4.3",
+          "gap_mm": 1.72,
+          "inset_mm": 0.15,
+          "layer": "B",
+          "reason": "UNPROVED_GEOMETRY",
+          "why": "track at (57.309, 67.3307) vs GND",
+          "width": 400000
+        },
+        {
+          "a": "C7.1",
+          "b": "U4.3",
+          "gap_mm": 2.917,
+          "inset_mm": 0.1,
+          "layer": "B",
+          "reason": "UNPROVED_GEOMETRY",
+          "why": "track at (60.3333, 69.9601) vs /05_I2C_DEVICES/BMI270_INT1_RAW",
+          "width": 400000
+        },
+        {
+          "a": "C6.1",
+          "b": "U4.5",
+          "gap_mm": 2.581,
+          "inset_mm": 0.1,
+          "layer": "B",
+          "reason": "UNPROVED_GEOMETRY",
+          "why": "track at (57.3113, 67.2764) vs /05_I2C_DEVICES/BMI270_INT1_RAW",
+          "width": 400000
+        },
+        {
+          "a": "C7.1",
+          "b": "U4.5",
+          "gap_mm": 2.074,
+          "inset_mm": 0.15,
+          "layer": "B",
+          "reason": "UNPROVED_GEOMETRY",
+          "why": "track at (60.2794, 69.9638) vs GND",
+          "width": 400000
+        },
+        {
+          "a": "C7.1",
+          "b": "U4.8",
+          "gap_mm": 2.466,
+          "inset_mm": 0.1,
+          "layer": "B",
+          "reason": "UNPROVED_GEOMETRY",
+          "why": "track at (60.3368, 70.0471) vs GND",
+          "width": 400000
+        },
+        {
+          "a": "U5.7",
+          "b": "U5.2",
+          "gap_mm": 2.386,
+          "inset_mm": 0.1,
+          "layer": "F",
+          "reason": "UNPROVED_GEOMETRY",
+          "why": "track at (31.1793, 117.3668) vs GND",
+          "width": 400000
+        },
+        {
+          "a": "U5.8",
+          "b": "U5.2",
+          "gap_mm": 2.763,
+          "inset_mm": 0.1,
+          "layer": "F",
+          "reason": "UNPROVED_GEOMETRY",
+          "why": "track at (31.6708, 117.3764) vs GND",
+          "width": 400000
+        },
+        {
+          "a": "U4.12",
+          "b": "U4.2",
+          "gap_mm": 1.79,
+          "inset_mm": 0.1,
+          "layer": "B",
+          "reason": "UNPROVED_GEOMETRY",
+          "why": "track at (56.6245, 70.4071) vs /05_I2C_DEVICES/BMI270_SDO_ADDR",
+          "width": 400000
+        },
+        {
+          "a": "U4.12",
+          "b": "U4.3",
+          "gap_mm": 2.029,
+          "inset_mm": 0.1,
+          "layer": "B",
+          "reason": "UNPROVED_GEOMETRY",
+          "why": "track at (56.6448, 70.418) vs /I2C_SCL_INT",
+          "width": 400000
+        },
+        {
+          "a": "U4.12",
+          "b": "U4.5",
+          "gap_mm": 2.081,
+          "inset_mm": 0.1,
+          "layer": "B",
+          "reason": "UNPROVED_GEOMETRY",
+          "why": "track at (56.6752, 70.4519) vs GND",
+          "width": 400000
+        },
+        {
+          "a": "U4.12",
+          "b": "U4.8",
+          "gap_mm": 1.79,
+          "inset_mm": 0.1,
+          "layer": "B",
+          "reason": "UNPROVED_GEOMETRY",
+          "why": "track at (56.6804, 70.537) vs unconnected-(U4-INT2-Pad9)",
+          "width": 400000
+        },
+        {
+          "a": "U4.2",
+          "b": "U4.5",
+          "gap_mm": 1.338,
+          "inset_mm": 0.1,
+          "layer": "B",
+          "reason": "UNPROVED_GEOMETRY",
+          "why": "track at (57.3369, 68.887) vs /05_I2C_DEVICES/BMI270_INT1_RAW",
+          "width": 400000
+        },
+        {
+          "a": "U4.2",
+          "b": "U4.8",
+          "gap_mm": 2.531,
+          "inset_mm": 0.1,
+          "layer": "B",
+          "reason": "UNPROVED_GEOMETRY",
+          "why": "track at (57.2895, 68.9294) vs GND",
+          "width": 400000
+        },
+        {
+          "a": "U4.3",
+          "b": "U4.5",
+          "gap_mm": 0.937,
+          "inset_mm": 0.1,
+          "layer": "B",
+          "reason": "UNPROVED_GEOMETRY",
+          "why": "track at (57.8207, 68.9082) vs /05_I2C_DEVICES/BMI270_INT1_RAW",
+          "width": 400000
+        },
+        {
+          "a": "U4.3",
+          "b": "U4.8",
+          "gap_mm": 2.378,
+          "inset_mm": 0.15,
+          "layer": "B",
+          "reason": "UNPROVED_GEOMETRY",
+          "why": "track at (57.7815, 68.9841) vs /05_I2C_DEVICES/BMI270_INT1_RAW",
+          "width": 400000
+        },
+        {
+          "a": "U4.5",
+          "b": "U4.8",
+          "gap_mm": 1.67,
+          "inset_mm": 0.1,
+          "layer": "B",
+          "reason": "UNPROVED_GEOMETRY",
+          "why": "track at (58.4028, 69.5995) vs GND",
+          "width": 400000
+        }
+      ],
+      "islands": 9,
+      "net": "+3V3",
+      "netclass": "P3V3",
+      "seconds": 0.4,
+      "widths": [
+        600000,
+        400000
+      ]
+    },
+    {
+      "bridged": 0,
+      "bridges": [],
+      "chain": false,
+      "failures": [],
+      "islands": 2,
+      "net": "/01_POWER_TREE/ACC_5V_LX",
+      "netclass": "SWITCH_NODE",
+      "seconds": 0.1,
+      "widths": [
+        600000,
+        400000
+      ]
+    },
+    {
+      "bridged": 0,
+      "bridges": [],
+      "chain": false,
+      "failures": [
+        {
+          "a": "C24.1",
+          "b": "C26.2",
+          "gap_mm": 2.704,
+          "inset_mm": 0.3,
+          "layer": "B",
+          "reason": "UNPROVED_GEOMETRY",
+          "why": "track at (61.8914, 103.4996) vs Net-(U12-PS_SYNC)",
+          "width": 500000
+        }
+      ],
+      "islands": 10,
+      "net": "/01_POWER_TREE/BQ25185_SYS",
+      "netclass": "SYS_MAIN",
+      "seconds": 0.1,
+      "widths": [
+        800000,
+        500000
+      ]
+    },
+    {
+      "bridged": 0,
+      "bridges": [],
+      "chain": false,
+      "failures": [],
+      "islands": 2,
+      "net": "/01_POWER_TREE/USB_D_CONN_P",
+      "netclass": "USB_D",
+      "seconds": 0.1,
+      "widths": [
+        250000,
+        150000
+      ]
+    },
+    {
+      "bridged": 0,
+      "bridges": [],
+      "chain": false,
+      "failures": [
+        {
+          "a": "U9.9",
+          "b": "U9.14",
+          "gap_mm": 2.5,
+          "inset_mm": 0.15,
+          "layer": "B",
+          "reason": "UNPROVED_GEOMETRY",
+          "why": "track at (32.4, 27.725) vs /NFC_SUPPLY",
+          "width": 150000
+        }
+      ],
+      "islands": 2,
+      "net": "/04_SPI_B_RADIOS_NFC/NFC_VDD_RF",
+      "netclass": "Default",
+      "seconds": 0.1,
+      "widths": [
+        200000,
+        150000
+      ]
+    },
+    {
+      "bridged": 0,
+      "bridges": [],
+      "chain": false,
+      "failures": [],
+      "islands": 2,
+      "net": "/08_BUTTONS_EXPANDERS/BTN_LEFT_N",
+      "netclass": "Default",
+      "seconds": 0.1,
+      "widths": [
+        200000,
+        150000
+      ]
+    },
+    {
+      "bridged": 0,
+      "bridges": [],
+      "chain": false,
+      "failures": [],
+      "islands": 2,
+      "net": "/09_COMMUNITY_HEADER/EXT_SDA",
+      "netclass": "I2C",
+      "seconds": 0.1,
+      "widths": [
+        200000,
+        150000
+      ]
+    },
+    {
+      "bridged": 0,
+      "bridges": [],
+      "chain": false,
+      "failures": [],
+      "islands": 2,
+      "net": "/ACC_5V_BOOST_EN",
+      "netclass": "Default",
+      "seconds": 0.1,
+      "widths": [
+        200000,
+        150000
+      ]
+    },
+    {
+      "bridged": 0,
+      "bridges": [],
+      "chain": false,
+      "failures": [],
+      "islands": 2,
+      "net": "/ACC_PWR_EN",
+      "netclass": "Default",
+      "seconds": 0.1,
+      "widths": [
+        200000,
+        150000
+      ]
+    },
+    {
+      "bridged": 0,
+      "bridges": [],
+      "chain": false,
+      "failures": [],
+      "islands": 3,
+      "net": "/BQ25185_STAT1",
+      "netclass": "Default",
+      "seconds": 0.1,
+      "widths": [
+        200000,
+        150000
+      ]
+    },
+    {
+      "bridged": 0,
+      "bridges": [],
+      "chain": false,
+      "failures": [],
+      "islands": 3,
+      "net": "/BQ25185_STAT2",
+      "netclass": "Default",
+      "seconds": 0.1,
+      "widths": [
+        200000,
+        150000
+      ]
+    },
+    {
+      "bridged": 0,
+      "bridges": [],
+      "chain": false,
+      "failures": [],
+      "islands": 6,
+      "net": "/I2C_SCL_INT",
+      "netclass": "I2C",
+      "seconds": 0.1,
+      "widths": [
+        200000,
+        150000
+      ]
+    },
+    {
+      "bridged": 0,
+      "bridges": [],
+      "chain": false,
+      "failures": [],
+      "islands": 3,
+      "net": "/I2C_SDA_INT",
+      "netclass": "I2C",
+      "seconds": 0.1,
+      "widths": [
+        200000,
+        150000
+      ]
+    },
+    {
+      "bridged": 0,
+      "bridges": [],
+      "chain": false,
+      "failures": [],
+      "islands": 2,
+      "net": "/I2S_LRCLK",
+      "netclass": "I2S",
+      "seconds": 0.1,
+      "widths": [
+        200000,
+        150000
+      ]
+    },
+    {
+      "bridged": 0,
+      "bridges": [],
+      "chain": false,
+      "failures": [
+        {
+          "a": "U9.10",
+          "b": "U9.8",
+          "gap_mm": 1.152,
+          "inset_mm": 0.1,
+          "layer": "B",
+          "reason": "UNPROVED_GEOMETRY",
+          "why": "track at (32.661, 27.7706) vs /04_SPI_B_RADIOS_NFC/NFC_VDD_A",
+          "width": 400000
+        }
+      ],
+      "islands": 3,
+      "net": "/NFC_SUPPLY",
+      "netclass": "P3V3",
+      "seconds": 0.1,
+      "widths": [
+        600000,
+        400000
+      ]
+    },
+    {
+      "bridged": 0,
+      "bridges": [],
+      "chain": false,
+      "failures": [],
+      "islands": 2,
+      "net": "/SPI_B_SCK",
+      "netclass": "Default",
+      "seconds": 0.1,
+      "widths": [
+        200000,
+        150000
+      ]
+    },
+    {
+      "bridged": 0,
+      "bridges": [],
+      "chain": false,
+      "failures": [],
+      "islands": 2,
+      "net": "/SX1262_DIO1",
+      "netclass": "Default",
+      "seconds": 0.1,
+      "widths": [
+        200000,
+        150000
+      ]
+    },
+    {
+      "bridged": 0,
+      "bridges": [],
+      "chain": false,
+      "failures": [],
+      "islands": 2,
+      "net": "/USB_D_MCU_N",
+      "netclass": "USB_D",
+      "seconds": 0.1,
+      "widths": [
+        250000,
+        150000
+      ]
+    },
+    {
+      "bridged": 0,
+      "bridges": [],
+      "chain": false,
+      "failures": [],
+      "islands": 2,
+      "net": "/USB_D_MCU_P",
+      "netclass": "USB_D",
+      "seconds": 0.1,
+      "widths": [
+        250000,
+        150000
+      ]
+    },
+    {
+      "bridged": 0,
+      "bridges": [],
+      "chain": false,
+      "failures": [],
+      "islands": 3,
+      "net": "/WAKE_INT_N",
+      "netclass": "Default",
+      "seconds": 0.1,
+      "widths": [
+        200000,
+        150000
+      ]
+    },
+    {
+      "bridged": 0,
+      "bridges": [],
+      "chain": false,
+      "failures": [
+        {
+          "a": "MK1.1",
+          "b": "MK1.4",
+          "gap_mm": 2.795,
+          "inset_mm": 0.15,
+          "layer": "B",
+          "reason": "UNPROVED_GEOMETRY",
+          "why": "track at (2.9827, 99.4415) vs keep-out",
+          "width": 150000
+        },
+        {
+          "a": "MK1.2",
+          "b": "MK1.4",
+          "gap_mm": 2.209,
+          "inset_mm": 0.15,
+          "layer": "B",
+          "reason": "UNPROVED_GEOMETRY",
+          "why": "track at (2.998, 98.799) vs keep-out",
+          "width": 150000
+        },
+        {
+          "a": "U9.12",
+          "b": "U9.16",
+          "gap_mm": 2.0,
+          "inset_mm": 0.15,
+          "layer": "B",
+          "reason": "UNPROVED_GEOMETRY",
+          "why": "track at (33.9, 27.725) vs /04_SPI_B_RADIOS_NFC/NFC_RFO1",
+          "width": 150000
+        },
+        {
+          "a": "U9.20",
+          "b": "U9.16",
+          "gap_mm": 2.092,
+          "inset_mm": 0.1,
+          "layer": "B",
+          "reason": "UNPROVED_GEOMETRY",
+          "why": "track at (36.2499, 29.6532) vs keep-out",
+          "width": 150000
+        },
+        {
+          "a": "U9.21",
+          "b": "U9.16",
+          "gap_mm": 2.579,
+          "inset_mm": 0.1,
+          "layer": "B",
+          "reason": "UNPROVED_GEOMETRY",
+          "why": "track at (36.2546, 30.1521) vs keep-out",
+          "width": 150000
+        },
+        {
+          "a": "U9.33",
+          "b": "U9.16",
+          "gap_mm": 2.87,
+          "inset_mm": 0.15,
+          "layer": "B",
+          "reason": "UNPROVED_GEOMETRY",
+          "why": "track at (34.0915, 29.8811) vs /04_SPI_B_RADIOS_NFC/NFC_RFO2",
+          "width": 150000
+        },
+        {
+          "a": "C47.2",
+          "b": "U9.16",
+          "gap_mm": 2.932,
+          "inset_mm": 0.3,
+          "layer": "B",
+          "reason": "UNPROVED_GEOMETRY",
+          "why": "track at (35.9295, 25.0993) vs /04_SPI_B_RADIOS_NFC/NFC_RFO1",
+          "width": 150000
+        }
+      ],
+      "islands": 5,
+      "net": "GND",
+      "netclass": "GND",
+      "seconds": 0.7,
+      "widths": [
+        300000,
+        150000
+      ]
+    }
+  ],
+  "question": "which open edges close with a STRAIGHT TRACK BETWEEN TWO LANDS and no escape at all -- the case every escape-first router on this board reports as NO LEGAL ESCAPE",
+  "schema": 1
+}

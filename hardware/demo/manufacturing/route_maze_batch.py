@@ -409,6 +409,12 @@ REPAIR_JOIN_MAX_MM = 8.0
 # between two pins the TPS63020's datasheet requires connected anyway -- and a
 # long one is a lateral haul that should have been a barrel.
 JOIN_ORPHAN_MAX_MM = 4.0
+# D-631.  A PAD BRIDGE is a straight track between two lands with no escape and
+# no via, so its length is bounded by the geometry that makes it possible at all
+# -- two lands close enough that the strip between them is the only legal
+# copper.  3.0 mm is that shape; the board-wide screen finds the same single
+# pair at 3.0 mm and at 8.0 mm, so the bound is not what is limiting it.
+BRIDGE_PAD_MAX_MM = 3.0
 
 # --------------------------------------------------------------------------- #
 # BOND REDUNDANCY -- A STITCH FOR A PAD THAT IS ALREADY CONNECTED
@@ -1335,7 +1341,8 @@ def propose(path, nets, grid, via_cost_mm, stitch_width=0, stitch_via=None,
             join_orphan_max_mm=JOIN_ORPHAN_MAX_MM,
             detour_own_layer=False, relief_extra_width=0,
             relief_pads=(), relief_bonds_per_island=1, relief_run_areas=None,
-            escape_floor=False):
+            escape_floor=False, bridge_pads=False,
+            bridge_pad_max_mm=BRIDGE_PAD_MAX_MM):
     import pcbnew
     import qrouter as qr
     import incremental_router as ir
@@ -1543,6 +1550,26 @@ def propose(path, nets, grid, via_cost_mm, stitch_width=0, stitch_via=None,
         # refill will bond.  Off by default: the mask is a CERTIFICATE, not a
         # veto -- `C7.1`'s promoted barrel lay outside every filled `+3V3`
         # island on the board it was proposed on and closed its edge anyway.
+        # PAD BRIDGES RUN NEXT, AND THE ORDER IS THE ARGUMENT.  D-631.  A
+        # `bridge_islands` barrel is copper with no escape and no track; a PAD
+        # BRIDGE is copper with no escape and no via -- one straight track
+        # between two lands, both endpoints inside them.  Both are cheaper than
+        # anything that has to launch, and both merge islands, so every move
+        # below sees fewer of them and a board that already carries their
+        # copper.  The width ladder is the netclass width and the `.kicad_dru`
+        # class floor and NOTHING NARROWER -- a bridge is ordinary rail copper,
+        # never a licensed neck -- and the proof is `maze3d.verify_laid`, which
+        # is exact geometry, because the whole reason this primitive exists is
+        # that no lattice can express the pairs it serves.  Off by default.
+        bridged_pads = None
+        if bridge_pads:
+            w_floor_pb = max(BOARD_TRACK_MIN,
+                             DRU_CLASS.get(c["netclass"], {}).get("width", 0))
+            pb_widths = sorted({c["width"], min(c["width"], w_floor_pb)},
+                               reverse=True)
+            bridged_pads = mz.bridge_net_pads(qb, net, field, pb_widths,
+                                              max_mm=bridge_pad_max_mm)
+            bridged_pads["widths_offered"] = list(pb_widths)
         land_ok, land_info = None, None
         if body_landing and mz.has_plane(qb, net):
             land_ok, land_info = mz.body_landing(qb, net, field)
@@ -1676,6 +1703,10 @@ def propose(path, nets, grid, via_cost_mm, stitch_width=0, stitch_via=None,
             r["bridge"] = bridged
             r["mode"] = "bridge+" + r["mode"]
             r["ok"] = bool(r.get("ok")) or bool(bridged.get("bridged"))
+        if bridged_pads is not None:
+            r["pad_bridge"] = bridged_pads
+            r["mode"] = "padbridge+" + r["mode"]
+            r["ok"] = bool(r.get("ok")) or bool(bridged_pads.get("bridged"))
         r["seconds"] = round(time.time() - t0, 1)
         print("  %-44s %-6s %s %.0fs" % (
             net, r["mode"], "ok" if r.get("ok") else r.get("reason", "FAIL"),
@@ -2136,7 +2167,8 @@ def gate(nets, grid, via_cost_mm, workdir, promote=False, candidate=None,
          join_orphan_max_mm=JOIN_ORPHAN_MAX_MM,
          detour_own_layer=False, relief_extra_width=0,
          relief_pads=(), relief_bonds_per_island=1, relief_run_area=None,
-         promote_soft=False, escape_floor=False):
+         promote_soft=False, escape_floor=False, bridge_pads=False,
+         bridge_pad_max_mm=BRIDGE_PAD_MAX_MM):
     before = sha256_file(BOARD)
     work = Path(workdir)
     work.mkdir(parents=True, exist_ok=True)
@@ -2307,6 +2339,14 @@ def gate(nets, grid, via_cost_mm, workdir, promote=False, candidate=None,
         # severed pad with no stitch at all rather than with a redundant one.
         if body_landing and use_search_levers:
             cmd += ["--body-landing"]
+        # THE PAD BRIDGE IS THE PRIMARY PROPOSAL'S LEVER, NOT THE REPAIR'S --
+        # same reading as `--bridge`.  It merges two islands that were already
+        # apart before the run, which is a second transaction wearing a
+        # repair's name.  D-631.
+        if bridge_pads and use_search_levers:
+            cmd += ["--bridge-pads"]
+            if bridge_pad_max_mm != BRIDGE_PAD_MAX_MM:
+                cmd += ["--bridge-pad-max-mm", str(bridge_pad_max_mm)]
         # THE ORPHAN JOIN IS THE PRIMARY PROPOSAL'S LEVER, NOT THE REPAIR'S --
         # same reading as `--bridge`.  A repair re-bonds copper THIS run
         # severed; tying two islands that were already apart before the run is
@@ -2855,6 +2895,14 @@ def gate(nets, grid, via_cost_mm, workdir, promote=False, candidate=None,
         bridges=dict(requested=bool(bridge), licensed_areas=bridge_areas,
                      ladder=[list(v) for v in BRIDGE_LADDER]) if bridge
         else None,
+        pad_bridges=dict(
+            requested=bool(bridge_pads), max_mm=bridge_pad_max_mm,
+            insets_mm=list(__import__("maze3d").PAD_BRIDGE_INSETS_MM),
+            nets=[dict(net=r["net"], **{k: v for k, v
+                                        in r["pad_bridge"].items()
+                                        if k != "net"})
+                  for r in routed if r.get("pad_bridge")]) if bridge_pads
+        else None,
         candidate_sha256=sha256_file(scratch),
         promotion_candidate=ok,
     )
@@ -3044,6 +3092,20 @@ def main():
                     default=JOIN_ORPHAN_MAX_MM,
                     help="electrical bound on ONE orphan join (default %.1f)"
                          % JOIN_ORPHAN_MAX_MM)
+    ap.add_argument("--bridge-pads", action="store_true",
+                    help="D-631: join two lands of the same net with ONE "
+                         "STRAIGHT TRACK, both endpoints INSIDE the lands -- "
+                         "no escape, no via.  Every other router here escapes "
+                         "to a launch point first and reports NO LEGAL ESCAPE "
+                         "on a pair that needs no launch; this is the lateral "
+                         "twin of --bridge.  The width is the netclass width "
+                         "or the .kicad_dru class floor and NOTHING NARROWER, "
+                         "and the proof is exact geometry, not a lattice. "
+                         "Screen it first with screen_pad_bridge.py")
+    ap.add_argument("--bridge-pad-max-mm", type=float,
+                    default=BRIDGE_PAD_MAX_MM,
+                    help="centre-to-centre bound on ONE pad bridge "
+                         "(default %.1f)" % BRIDGE_PAD_MAX_MM)
     ap.add_argument("--body-landing", action="store_true",
                     help="a stitch barrel may land ONLY inside the net's own "
                          "BODY pour (maze3d.body_landing).  A legal barrel is "
@@ -3184,7 +3246,8 @@ def main():
                 a.body_landing, a.join_orphans, a.join_orphan_max_mm,
                 a.detour_own_layer, a.relief_extra_width,
                 tuple(a.relief_pad), a.relief_bonds_per_island,
-                load_run_areas(a.relief_run_area), a.escape_floor)
+                load_run_areas(a.relief_run_area), a.escape_floor,
+                a.bridge_pads, a.bridge_pad_max_mm)
         return 0
     if a.evict_apply:
         doc = evict_copper(a.evict_apply, a.nets, set(a.evict),
@@ -3240,7 +3303,8 @@ def main():
                  relief_run_area=a.relief_run_area,
                  join_orphans=a.join_orphans,
                  join_orphan_max_mm=a.join_orphan_max_mm,
-                 escape_floor=a.escape_floor)
+                 escape_floor=a.escape_floor, bridge_pads=a.bridge_pads,
+                 bridge_pad_max_mm=a.bridge_pad_max_mm)
     spec = str(a.grid).strip().lower()
     ladder_spec, best_spec = spec in ("ladder", "best"), spec == "best"
     # `best` REFUSES BOTH TRANSACTION OUTPUTS, not just `--promote`.  `gate()`

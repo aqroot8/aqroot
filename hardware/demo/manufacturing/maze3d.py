@@ -2074,6 +2074,189 @@ def join_residual_islands(qb, net, field, escape_limit=8, via_cost_mm=1.5,
                 vias=sum(d['vias'] for d in done))
 
 
+# --------------------------------------------------------------------------- #
+# PAD BRIDGE -- A TRACK BETWEEN TWO LANDS WITH NO LAUNCH POINT AT ALL
+# --------------------------------------------------------------------------- #
+# D-631.  Every instrument on this board -- `route_join`, `stitch_pad`,
+# `route_net`, `qrouter.connect_role` -- begins the same way: ESCAPE the pad to
+# a LAUNCH POINT outside it, then route launch to launch.  `QBoard.escape`
+# refuses any launch point where the trunk width is not legal, so a land whose
+# only legal copper is the strip BETWEEN it and its neighbour has no launch
+# point, and every one of those instruments reports `NO LEGAL ESCAPE` on a pair
+# that needs no escape.
+#
+# `screen_escape_class.py` named sixteen such lands `LATTICE_EXACT` -- margin
+# exactly 0.000 mm, DRC-legal at the contract width and rasterisable at NO
+# pitch -- and concluded that `route_local_two_pad` was the only instrument.  It
+# is not; it escapes too.  The instrument these lands want is the LATERAL twin
+# of `bridge_islands`: a barrel with no escape and no track is what joins two
+# pieces of pour across the stack, and a TRACK WITH NO ESCAPE, BOTH ENDS INSIDE
+# THE LANDS, is what joins two lands across a gap.
+#
+# `+3V3` `U4.2 -> U4.3` is the case that named it.  Two 0.475 x 0.250 mm lands
+# of a BMI270 LGA-14 on 0.500 mm pitch, 0.025 mm of gap between them and
+# 0.500 mm to the foreign lands either side.  `connect_role` refuses at 0.600
+# and at 0.400 mm and takes 2.174 mm of detour at 0.300; the bridge is
+# **0.200 mm of track at the P3V3 published 0.400 mm minimum**, both endpoints
+# inside the lands, and real KiCad DRC reports ZERO attributable violations.
+#
+# THREE THINGS ARE LOAD-BEARING.
+#
+#   (a) THE ENDPOINT MUST BE INSIDE THE LAND, or KiCad does not join them.
+#       Containment is tested against the pad's INSCRIBED DIAMOND in its own
+#       rotated frame -- |lx|/hx + |ly|/hy <= 1 -- which is inside a rectangle,
+#       an oval, a rounded rectangle and a circle alike, so the test is
+#       conservative for every shape this board carries and needs no per-shape
+#       geometry.
+#   (b) THE PROOF IS `verify_laid`, THE PROMOTER'S OWN.  Exact analytic
+#       clearance against real obstacle shapes, the `.kicad_dru` overlay and any
+#       pour-bond guard tube -- not a lattice.  The whole point is that the
+#       lattice cannot express this, so nothing here may consult one.
+#   (c) THE WIDTH LADDER NEVER GOES BELOW WHAT THE BOARD PUBLISHES.  The caller
+#       hands in the widths; `route_maze_batch` hands the netclass width and the
+#       `.kicad_dru` class floor and nothing narrower, exactly as `--stitch-width`
+#       is clamped.  A bridge is ordinary rail copper, not a licensed neck.
+#
+# The INSET ladder is the only search: pulling both endpoints in from their pad
+# centres TOWARD each other shortens the capsule and moves its rounded ends away
+# from the foreign lands on the far sides, which is where the clearance is spent.
+# Inset 0 is tried first, so a pair that needs no search is laid centre to centre.
+
+PAD_BRIDGE_INSETS_MM = (0.0, 0.05, 0.10, 0.15, 0.20, 0.30, 0.40)
+
+
+def _inside_pad(pad, t):
+    """Is the point `t` nm from `pad`'s centre, along `u`, inside the land?
+
+    `t` is a (dx, dy) offset in board nm.  Tested against the pad's INSCRIBED
+    DIAMOND in the pad's own rotated frame, which is conservative for every
+    shape: rect, oval, roundrect and circle all contain it.
+    """
+    hx, hy = float(pad.get('hx') or 0.0), float(pad.get('hy') or 0.0)
+    if hx <= 0 or hy <= 0:
+        return False
+    ang = math.radians(float(pad.get('ang') or 0.0))
+    c, s = math.cos(ang), math.sin(ang)
+    lx = t[0] * c + t[1] * s
+    ly = -t[0] * s + t[1] * c
+    return abs(lx) / hx + abs(ly) / hy <= 1.0
+
+
+def pad_bridge(qb, field, a, b, widths, layer=None,
+               insets_mm=PAD_BRIDGE_INSETS_MM):
+    """ONE straight track joining two lands of the same net, no escape at all.
+
+    Returns dict(ok, ...).  On success the track is on `qb` and the caller's
+    `mark` reverts it.  `widths` is the descending ladder the caller permits and
+    is never widened or narrowed here.
+    """
+    layers = [layer] if layer else [L for L in ('F', 'B')
+                                    if L in field.layers
+                                    and a.get(L) and b.get(L)]
+    dx, dy = b['x'] - a['x'], b['y'] - a['y']
+    span = math.hypot(dx, dy)
+    if span <= 0:
+        return dict(ok=False, reason='SAME_POINT', pads=[a['ref'], b['ref']])
+    ux, uy = dx / span, dy / span
+    last = dict(ok=False, reason='NO_LEGAL_BRIDGE', pads=[a['ref'], b['ref']],
+                why='no width and no inset on the offered ladder is legal')
+    for L in layers:
+        if L not in field.blk:
+            continue
+        for w in widths:
+            for ins_mm in insets_mm:
+                t = ins_mm * qr.MM
+                if 2 * t >= span:
+                    break
+                if t and not (_inside_pad(a, (ux * t, uy * t))
+                              and _inside_pad(b, (-ux * t, -uy * t))):
+                    continue
+                ax, ay = a['x'] + ux * t, a['y'] + uy * t
+                bx, by = b['x'] - ux * t, b['y'] - uy * t
+                m = qb.mark()
+                qb.track(field.net, L, int(round(ax)), int(round(ay)),
+                         int(round(bx)), int(round(by)), int(w))
+                bad = verify_laid(qb, field, m)
+                if bad is None:
+                    return dict(ok=True, pads=[a['ref'], b['ref']], layer=L,
+                                width=int(w), inset_mm=ins_mm,
+                                mm=round((span - 2 * t) / 1e6, 4), vias=0,
+                                a_xy=(round(ax / 1e6, 4), round(ay / 1e6, 4)),
+                                b_xy=(round(bx / 1e6, 4), round(by / 1e6, 4)))
+                qb.revert(m)
+                last = dict(ok=False, reason='UNPROVED_GEOMETRY',
+                            pads=[a['ref'], b['ref']], layer=L, width=int(w),
+                            inset_mm=ins_mm,
+                            why='%s at %s vs %s' % (bad.get('kind'),
+                                                    bad.get('at'),
+                                                    bad.get('against',
+                                                            bad.get('why'))))
+    return last
+
+
+def bridge_net_pads(qb, net, field, widths, max_mm=3.0,
+                    insets_mm=PAD_BRIDGE_INSETS_MM):
+    """Offer `pad_bridge` to every cross-island land pair of `net`, nearest first.
+
+    Same transaction discipline as `join_orphans`: greedy nearest pair with
+    union-find over the net's own islands, each pair independent and reverted on
+    its own, a laid bridge merges its two groups and the next pair sees its
+    copper.  `max_mm` bounds the CENTRE-TO-CENTRE gap a bridge may span -- this
+    primitive exists for lands that are touching-close, and a long straight
+    track between two distant pads is a corridor question, not a bridge.
+    """
+    islands = net_islands(qb, net)
+    if len(islands) < 2:
+        return dict(ok=False, net=net, bridged=0, reason='NOTHING_TO_BRIDGE',
+                    bridges=[], failures=[], declined=[], mm=0.0, vias=0)
+    groups = {k: list(g) for k, g in enumerate(islands)}
+    parent = {k: k for k in groups}
+
+    def find(x):
+        while parent[x] != x:
+            parent[x] = parent[parent[x]]
+            x = parent[x]
+        return x
+
+    pairs = []
+    for ga in groups:
+        for gb in groups:
+            if ga >= gb:
+                continue
+            for p in groups[ga]:
+                for q in groups[gb]:
+                    pairs.append((math.hypot(p['x'] - q['x'], p['y'] - q['y']),
+                                  ga, gb, p, q))
+    pairs.sort(key=lambda t: (t[0], t[3]['ref'], t[4]['ref']))
+    done, failed, declined = [], [], []
+    for (gap, ga, gb, p, q) in pairs:
+        ra, rb = find(ga), find(gb)
+        if ra == rb:
+            continue
+        if max_mm and gap > max_mm * qr.MM:
+            declined.append(dict(a=p['ref'], b=q['ref'],
+                                 gap_mm=round(gap / 1e6, 3), reason='TOO_FAR'))
+            continue
+        m = qb.mark()
+        r = pad_bridge(qb, field, p, q, widths, insets_mm=insets_mm)
+        rec = dict(a=p['ref'], b=q['ref'], gap_mm=round(gap / 1e6, 3))
+        if not r.get('ok'):
+            qb.revert(m)
+            failed.append(dict(rec, **{k: v for k, v in r.items()
+                                       if k not in ('ok', 'pads')}))
+            continue
+        done.append(dict(rec, **{k: v for k, v in r.items()
+                                 if k not in ('ok', 'pads')}))
+        parent[ra] = rb
+        groups[rb] = groups[ra] + groups[rb]
+        field.rebuild_blk()
+    return dict(ok=bool(done), net=net, bridged=len(done), bridges=done,
+                failures=failed[:40], declined=declined[:40],
+                declined_n=len(declined), asked=len(done) + len(failed),
+                max_mm=max_mm,
+                mm=round(sum(d['mm'] for d in done), 4), vias=0)
+
+
 def join_orphans(qb, net, field, escape_limit=8, via_cost_mm=1.5, near=8,
                  max_mm=0.0):
     """Join a plane-served net's ORPHAN islands TO EACH OTHER.
@@ -2120,13 +2303,29 @@ def join_orphans(qb, net, field, escape_limit=8, via_cost_mm=1.5, near=8,
     pairs = sorted(((_pad_gap(groups[a], groups[b]), a, b)
                     for a in groups for b in groups if a < b),
                    key=lambda t: (t[0], t[1], t[2]))
-    done, failed = [], []
+    done, failed, declined = [], [], []
     for (gap, a, b) in pairs:
         ra, rb = find(a), find(b)
         if ra == rb:
             continue
         A, B = groups[ra], groups[rb]
+        # A PAIR THIS BOUND DECLINES IS RECORDED, NOT DROPPED.  D-631.  The
+        # `continue` here used to be bare, so a pair beyond `max_mm` was not
+        # asked, not refused and not reported -- and the caller then read
+        # "joined 0, 2 failures" off a run that had DECLINED thirty-four pairs
+        # without a word.  On `/01_POWER_TREE/BQ25185_SYS` the two it did ask
+        # both had a zero-escape island on one end, so every pair with legal
+        # escapes at BOTH ends was in the silent set, the nearest of them
+        # 0.574 mm past the bound.  The bound itself is unchanged and no copper
+        # moves: this list is report-only, and it is kept OUT of `failures` so
+        # the 40-row cap on real refusals cannot be spent on declines.
         if max_mm and gap > max_mm * qr.MM:
+            declined.append(dict(a=[p['ref'] for p in A][:8],
+                                 b=[p['ref'] for p in B][:8],
+                                 gap_mm=round(gap / 1e6, 3), reason='TOO_FAR',
+                                 why='%.3f mm gap exceeds the %.1f mm '
+                                     'orphan-join bound; NEVER ASKED'
+                                     % (gap / 1e6, max_mm)))
             continue
         m = qb.mark()
         r = route_join(qb, field, A, nearest_pads(A, B, near),
@@ -2154,6 +2353,8 @@ def join_orphans(qb, net, field, escape_limit=8, via_cost_mm=1.5, near=8,
         field.rebuild_blk()
     return dict(ok=bool(done), net=net, joined=len(done),
                 joins=done, failures=failed[:40],
+                declined=declined[:40], declined_n=len(declined),
+                asked=len(done) + len(failed), max_mm=max_mm,
                 mm=round(sum(d.get('mm', 0.0) for d in done), 3),
                 vias=sum(d.get('vias', 0) for d in done))
 
