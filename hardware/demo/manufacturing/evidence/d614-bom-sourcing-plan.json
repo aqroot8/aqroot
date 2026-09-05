@@ -1,0 +1,1730 @@
+{
+ "board": "/tmp/repro/hardware/demo/kicad/aqroot-demo/aqroot-Beta-v2.kicad_pcb",
+ "graft": [
+  {
+   "LCSC": "C15849",
+   "MPN": "CL10A105KB8NNNC",
+   "Manufacturer": "Samsung Electro-Mechanics",
+   "basis": {
+    "current_gate": {
+     "kind": "not a zero-ohm link",
+     "ok": true
+    },
+    "manufacturer_basis": "derived from the Samsung Electro-Mechanics part-number family and corroborated by the audit text",
+    "net_gate": {
+     "absolute_max_v": 3.6,
+     "kind": "2x operating and survives absolute",
+     "margin_x": 15.15,
+     "nodes": [
+      "+3V3",
+      "NFC_AGDC",
+      "Net-(U1-EN)"
+     ],
+     "ok": true,
+     "operating_max_v": 3.3,
+     "rating_v": 50.0
+    },
+    "part_dielectric": "X5R",
+    "part_rating_v": 50.0,
+    "part_tolerance": null,
+    "prior_value": "1uF",
+    "rating_read_from": {
+     "dielectric": "part number, corroborated by the note",
+     "voltage": "part number, corroborated by the note"
+    },
+    "ruling": [
+     "identical specification"
+    ],
+    "source": "BETA-DM",
+    "verdict": "ACCEPTED"
+   },
+   "footprint": "C_0603_1608Metric",
+   "how": "EXACT_PRIOR",
+   "refs": [
+    "C1",
+    "C53",
+    "C56"
+   ],
+   "value": "1uF"
+  },
+  {
+   "LCSC": "C440198",
+   "MPN": "GRM21BR61H106KE43L",
+   "Manufacturer": "Murata Electronics",
+   "basis": {
+    "current_gate": {
+     "kind": "not a zero-ohm link",
+     "ok": true
+    },
+    "manufacturer_basis": "derived from the Murata Electronics part-number family and corroborated by the audit text",
+    "net_gate": {
+     "absolute_max_v": 3.6,
+     "kind": "2x operating and survives absolute",
+     "margin_x": 15.15,
+     "nodes": [
+      "+3V3"
+     ],
+     "ok": true,
+     "operating_max_v": 3.3,
+     "rating_v": 50.0
+    },
+    "part_dielectric": "X5R",
+    "part_rating_v": 50.0,
+    "part_tolerance": null,
+    "prior_value": "10uf",
+    "rating_read_from": {
+     "dielectric": "part number, corroborated by the note",
+     "voltage": "part number, corroborated by the note"
+    },
+    "ruling": [
+     "identical specification"
+    ],
+    "source": "BETA-DM",
+    "verdict": "ACCEPTED"
+   },
+   "footprint": "C_0805_2012Metric",
+   "how": "EXACT_PRIOR",
+   "refs": [
+    "C10"
+   ],
+   "value": "10uf"
+  },
+  {
+   "LCSC": "C1779",
+   "MPN": "CL21A475KAQNNNE",
+   "Manufacturer": "Samsung Electro-Mechanics",
+   "basis": {
+    "current_gate": {
+     "kind": "not a zero-ohm link",
+     "ok": true
+    },
+    "manufacturer_basis": "derived from the Samsung Electro-Mechanics part-number family and corroborated by the audit text",
+    "net_gate": {
+     "absolute_max_v": 3.6,
+     "kind": "2x operating and survives absolute",
+     "margin_x": 7.58,
+     "nodes": [
+      "IR_RX_VS_LOCAL"
+     ],
+     "ok": true,
+     "operating_max_v": 3.3,
+     "rating_v": 25.0
+    },
+    "part_dielectric": "X5R",
+    "part_rating_v": 25.0,
+    "part_tolerance": null,
+    "prior_value": "4.7uF",
+    "rating_read_from": {
+     "dielectric": "part number, corroborated by the note",
+     "voltage": "part number, corroborated by the note"
+    },
+    "ruling": [
+     "identical specification"
+    ],
+    "source": "BETA-DM",
+    "verdict": "ACCEPTED"
+   },
+   "footprint": "C_0805_2012Metric",
+   "how": "EXACT_PRIOR",
+   "refs": [
+    "C11"
+   ],
+   "value": "4.7uF"
+  },
+  {
+   "LCSC": "C105883",
+   "MPN": "CC0402KRX7R8BB104",
+   "Manufacturer": "YAGEO",
+   "basis": {
+    "current_gate": {
+     "kind": "not a zero-ohm link",
+     "ok": true
+    },
+    "manufacturer_basis": "derived from the YAGEO part-number family and corroborated by the audit text",
+    "net_gate": {
+     "absolute_max_v": 3.6,
+     "kind": "2x operating and survives absolute",
+     "margin_x": 7.58,
+     "nodes": [
+      "+3V3",
+      "NFC_SUPPLY"
+     ],
+     "ok": true,
+     "operating_max_v": 3.3,
+     "rating_v": 25.0
+    },
+    "part_dielectric": "X7R",
+    "part_rating_v": 25.0,
+    "part_tolerance": null,
+    "prior_value": "100nF",
+    "rating_read_from": {
+     "dielectric": "part number, corroborated by the note",
+     "voltage": "part number, corroborated by the note"
+    },
+    "ruling": [
+     "identical specification"
+    ],
+    "source": "BETA-DM",
+    "verdict": "REJECTED - JLC match wrong"
+   },
+   "footprint": "C_0402_1005Metric",
+   "how": "EXACT_PRIOR",
+   "refs": [
+    "C18",
+    "C19"
+   ],
+   "value": "100nF"
+  },
+  {
+   "LCSC": "C14663",
+   "MPN": "CC0603KRX7R9BB104",
+   "Manufacturer": "YAGEO",
+   "basis": {
+    "current_gate": {
+     "kind": "not a zero-ohm link",
+     "ok": true
+    },
+    "manufacturer_basis": "derived from the YAGEO part-number family and corroborated by the audit text",
+    "net_gate": {
+     "absolute_max_v": 3.6,
+     "kind": "2x operating and survives absolute",
+     "margin_x": 15.15,
+     "nodes": [
+      "+3V3"
+     ],
+     "ok": true,
+     "operating_max_v": 3.3,
+     "rating_v": 50.0
+    },
+    "part_dielectric": "X7R",
+    "part_rating_v": 50.0,
+    "part_tolerance": null,
+    "prior_value": "100nF",
+    "rating_read_from": {
+     "dielectric": "part number, corroborated by the note",
+     "voltage": "part number, corroborated by the note"
+    },
+    "ruling": [
+     "identical specification"
+    ],
+    "source": "BETA-DM",
+    "verdict": "ACCEPTED"
+   },
+   "footprint": "C_0603_1608Metric",
+   "how": "EXACT_PRIOR",
+   "refs": [
+    "C2",
+    "C4",
+    "C5",
+    "C6",
+    "C7",
+    "C8",
+    "C9",
+    "C13",
+    "C14",
+    "C16",
+    "C17"
+   ],
+   "value": "100nF"
+  },
+  {
+   "LCSC": "C354262",
+   "MPN": "CC0805KKX7R8BB475",
+   "Manufacturer": "YAGEO",
+   "basis": {
+    "current_gate": {
+     "kind": "not a zero-ohm link",
+     "ok": true
+    },
+    "manufacturer_basis": "derived from the YAGEO part-number family and corroborated by the audit text",
+    "net_gate": {
+     "absolute_max_v": 5.5,
+     "kind": "2x operating and survives absolute",
+     "margin_x": 4.76,
+     "nodes": [
+      "USB_VBUS_RAW"
+     ],
+     "ok": true,
+     "operating_max_v": 5.25,
+     "rating_v": 25.0
+    },
+    "part_dielectric": "X7R",
+    "part_rating_v": 25.0,
+    "part_tolerance": null,
+    "prior_value": "4.7uF 10V X7R",
+    "rating_read_from": {
+     "dielectric": "part number, corroborated by the note",
+     "voltage": "part number, corroborated by the note"
+    },
+    "ruling": [
+     "rating 25.0V meets 10.0V",
+     "dielectric X7R meets X7R"
+    ],
+    "source": "BETA-DM",
+    "verdict": "REJECTED - JLC match wrong"
+   },
+   "footprint": "C_0805_2012Metric",
+   "how": "EXACT_PRIOR",
+   "refs": [
+    "C20"
+   ],
+   "value": "4.7uF 10V X7R"
+  },
+  {
+   "LCSC": "C106858",
+   "MPN": "CC0603KRX7R8BB105",
+   "Manufacturer": "YAGEO",
+   "basis": {
+    "current_gate": {
+     "kind": "not a zero-ohm link",
+     "ok": true
+    },
+    "manufacturer_basis": "derived from the YAGEO part-number family and corroborated by the audit text",
+    "net_gate": {
+     "absolute_max_v": 5.5,
+     "kind": "2x operating and survives absolute",
+     "margin_x": 4.76,
+     "nodes": [
+      "BAT_PROTECTED_P",
+      "BAT_RAW",
+      "USB_VBUS_CHG"
+     ],
+     "ok": true,
+     "operating_max_v": 5.25,
+     "rating_v": 25.0
+    },
+    "part_dielectric": "X7R",
+    "part_rating_v": 25.0,
+    "part_tolerance": null,
+    "prior_value": "1uF 25V X7R",
+    "rating_read_from": {
+     "dielectric": "part number, corroborated by the note",
+     "voltage": "part number, corroborated by the note"
+    },
+    "ruling": [
+     "rating 25.0V meets 25.0V",
+     "dielectric X7R meets X7R"
+    ],
+    "source": "BETA-DM",
+    "verdict": "REJECTED - JLC match wrong"
+   },
+   "footprint": "C_0603_1608Metric",
+   "how": "EXACT_PRIOR",
+   "refs": [
+    "C23",
+    "C58",
+    "C59"
+   ],
+   "value": "1uF 25V X7R"
+  },
+  {
+   "LCSC": "C106858",
+   "MPN": "CC0603KRX7R8BB105",
+   "Manufacturer": "YAGEO",
+   "basis": {
+    "current_gate": {
+     "kind": "not a zero-ohm link",
+     "ok": true
+    },
+    "manufacturer_basis": "derived from the YAGEO part-number family and corroborated by the audit text",
+    "net_gate": {
+     "absolute_max_v": 5.5,
+     "kind": "2x operating and survives absolute",
+     "margin_x": 4.55,
+     "nodes": [
+      "+3V3",
+      "ACC_3V3_SW",
+      "ACC_5V_SW",
+      "BAT_PROTECTED_P"
+     ],
+     "ok": true,
+     "operating_max_v": 5.5,
+     "rating_v": 25.0
+    },
+    "part_dielectric": "X7R",
+    "part_rating_v": 25.0,
+    "part_tolerance": null,
+    "prior_value": "1uF 10V X7R",
+    "rating_read_from": {
+     "dielectric": "part number, corroborated by the note",
+     "voltage": "part number, corroborated by the note"
+    },
+    "ruling": [
+     "rating 25.0V meets 10.0V",
+     "dielectric X7R meets X7R"
+    ],
+    "source": "BETA-DM",
+    "verdict": "REJECTED - JLC match wrong"
+   },
+   "footprint": "C_0603_1608Metric",
+   "how": "EXACT_PRIOR",
+   "refs": [
+    "C25",
+    "C37",
+    "C38",
+    "C62",
+    "C63",
+    "C67"
+   ],
+   "value": "1uF 10V X7R"
+  },
+  {
+   "LCSC": "C77093",
+   "MPN": "GRM31CR71E106KA12L",
+   "Manufacturer": "Murata Electronics",
+   "basis": {
+    "current_gate": {
+     "kind": "not a zero-ohm link",
+     "ok": true
+    },
+    "manufacturer_basis": "derived from the Murata Electronics part-number family and corroborated by the audit text",
+    "net_gate": {
+     "absolute_max_v": 5.5,
+     "kind": "2x operating and survives absolute",
+     "margin_x": 5.56,
+     "nodes": [
+      "BQ25185_SYS"
+     ],
+     "ok": true,
+     "operating_max_v": 4.5,
+     "rating_v": 25.0
+    },
+    "part_dielectric": "X7R",
+    "part_rating_v": 25.0,
+    "part_tolerance": null,
+    "prior_value": "10uF 10V X7R",
+    "rating_read_from": {
+     "dielectric": "part number, corroborated by the note",
+     "voltage": "part number, corroborated by the note"
+    },
+    "ruling": [
+     "rating 25.0V meets 10.0V",
+     "dielectric X7R meets X7R"
+    ],
+    "source": "BETA-DM",
+    "verdict": "REJECTED - JLC match wrong"
+   },
+   "footprint": "C_1206_3216Metric",
+   "how": "EXACT_PRIOR",
+   "refs": [
+    "C26",
+    "C27"
+   ],
+   "value": "10uF 10V X7R"
+  },
+  {
+   "LCSC": "C14663",
+   "MPN": "CC0603KRX7R9BB104",
+   "Manufacturer": "YAGEO",
+   "basis": {
+    "current_gate": {
+     "kind": "not a zero-ohm link",
+     "ok": true
+    },
+    "manufacturer_basis": "derived from the YAGEO part-number family and corroborated by the audit text",
+    "net_gate": {
+     "absolute_max_v": 5.5,
+     "kind": "2x operating and survives absolute",
+     "margin_x": 9.52,
+     "nodes": [
+      "ACC_3V3_SW",
+      "BAT_PROTECTED_P",
+      "BQ25185_SYS",
+      "N_BATDIV",
+      "VBUS_PRESENT",
+      "VREC_VCC"
+     ],
+     "ok": true,
+     "operating_max_v": 5.25,
+     "rating_v": 50.0
+    },
+    "part_dielectric": "X7R",
+    "part_rating_v": 50.0,
+    "part_tolerance": null,
+    "prior_value": "100nF X7R",
+    "rating_read_from": {
+     "dielectric": "part number, corroborated by the note",
+     "voltage": "part number, corroborated by the note"
+    },
+    "ruling": [
+     "dielectric X7R meets X7R"
+    ],
+    "source": "BETA-DM",
+    "verdict": "ACCEPTED"
+   },
+   "footprint": "C_0603_1608Metric",
+   "how": "EXACT_PRIOR",
+   "refs": [
+    "C28",
+    "C36",
+    "C39",
+    "C60",
+    "C61",
+    "C68"
+   ],
+   "value": "100nF X7R"
+  },
+  {
+   "LCSC": "C22392398",
+   "MPN": "TCC1206X7R226K160HT",
+   "Manufacturer": "CCTC",
+   "basis": {
+    "current_gate": {
+     "kind": "not a zero-ohm link",
+     "ok": true
+    },
+    "manufacturer_basis": "derived from the CCTC part-number family and corroborated by the audit text",
+    "net_gate": {
+     "absolute_max_v": 3.6,
+     "kind": "2x operating and survives absolute",
+     "margin_x": 4.85,
+     "nodes": [
+      "+3V3"
+     ],
+     "ok": true,
+     "operating_max_v": 3.3,
+     "rating_v": 16
+    },
+    "part_dielectric": "X7R",
+    "part_rating_v": 16,
+    "part_tolerance": null,
+    "prior_value": "22uF 10V X7R",
+    "rating_read_from": {
+     "dielectric": "part number, corroborated by the note",
+     "voltage": "part number, corroborated by the note"
+    },
+    "ruling": [
+     "rating 16V meets 10.0V",
+     "dielectric X7R meets X7R"
+    ],
+    "source": "BETA-DM",
+    "verdict": "REJECTED - JLC match wrong"
+   },
+   "footprint": "C_1206_3216Metric",
+   "how": "EXACT_PRIOR",
+   "refs": [
+    "C29",
+    "C30",
+    "C31",
+    "C32"
+   ],
+   "value": "22uF 10V X7R"
+  },
+  {
+   "LCSC": "C440198",
+   "MPN": "GRM21BR61H106KE43L",
+   "Manufacturer": "Murata Electronics",
+   "basis": {
+    "current_gate": {
+     "kind": "not a zero-ohm link",
+     "ok": true
+    },
+    "manufacturer_basis": "derived from the Murata Electronics part-number family and corroborated by the audit text",
+    "net_gate": {
+     "absolute_max_v": 3.6,
+     "kind": "2x operating and survives absolute",
+     "margin_x": 15.15,
+     "nodes": [
+      "+3V3"
+     ],
+     "ok": true,
+     "operating_max_v": 3.3,
+     "rating_v": 50.0
+    },
+    "part_dielectric": "X5R",
+    "part_rating_v": 50.0,
+    "part_tolerance": null,
+    "prior_value": "10uF",
+    "rating_read_from": {
+     "dielectric": "part number, corroborated by the note",
+     "voltage": "part number, corroborated by the note"
+    },
+    "ruling": [
+     "identical specification"
+    ],
+    "source": "BETA-DM",
+    "verdict": "ACCEPTED"
+   },
+   "footprint": "C_0805_2012Metric",
+   "how": "EXACT_PRIOR",
+   "refs": [
+    "C3",
+    "C15"
+   ],
+   "value": "10uF"
+  },
+  {
+   "LCSC": "C326595",
+   "MPN": "CC0805KKX7R7BB106",
+   "Manufacturer": "YAGEO",
+   "basis": {
+    "current_gate": {
+     "kind": "not a zero-ohm link",
+     "ok": true
+    },
+    "manufacturer_basis": "derived from the YAGEO part-number family and corroborated by the audit text",
+    "net_gate": {
+     "absolute_max_v": 5.5,
+     "kind": "2x operating and survives absolute",
+     "margin_x": 3.56,
+     "nodes": [
+      "BQ25185_SYS"
+     ],
+     "ok": true,
+     "operating_max_v": 4.5,
+     "rating_v": 16.0
+    },
+    "part_dielectric": "X7R",
+    "part_rating_v": 16.0,
+    "part_tolerance": null,
+    "prior_value": "10uF 10V X7R",
+    "rating_read_from": {
+     "dielectric": "part number, corroborated by the note",
+     "voltage": "part number, corroborated by the note"
+    },
+    "ruling": [
+     "rating 16.0V meets 10.0V",
+     "dielectric X7R meets X7R"
+    ],
+    "source": "BETA-DM",
+    "verdict": "REJECTED - JLC match wrong"
+   },
+   "footprint": "C_0805_2012Metric",
+   "how": "EXACT_PRIOR",
+   "refs": [
+    "C33",
+    "C64"
+   ],
+   "value": "10uF 10V X7R"
+  },
+  {
+   "LCSC": "C28323",
+   "MPN": "CL21B105KBFNNNE",
+   "Manufacturer": "Samsung Electro-Mechanics",
+   "basis": {
+    "current_gate": {
+     "kind": "not a zero-ohm link",
+     "ok": true
+    },
+    "manufacturer_basis": "derived from the Samsung Electro-Mechanics part-number family and corroborated by the audit text",
+    "net_gate": {
+     "absolute_max_v": 38.0,
+     "kind": "2x operating and survives absolute",
+     "margin_x": 11.11,
+     "nodes": [
+      "LED_BOOST"
+     ],
+     "ok": true,
+     "operating_max_v": 4.5,
+     "rating_v": 50.0
+    },
+    "part_dielectric": "X7R",
+    "part_rating_v": 50.0,
+    "part_tolerance": null,
+    "prior_value": "1uF",
+    "rating_read_from": {
+     "dielectric": "part number, corroborated by the note",
+     "voltage": "part number, corroborated by the note"
+    },
+    "ruling": [
+     "identical specification"
+    ],
+    "source": "BETA-DM",
+    "verdict": "ACCEPTED"
+   },
+   "footprint": "C_0805_2012Metric",
+   "how": "EXACT_PRIOR",
+   "refs": [
+    "C44"
+   ],
+   "value": "1uF"
+  },
+  {
+   "LCSC": "C25804",
+   "MPN": "0603WAF1002T5E",
+   "Manufacturer": "UNI-ROYAL(Uniroyal Elec)",
+   "basis": {
+    "current_gate": {
+     "kind": "not a zero-ohm link",
+     "ok": true
+    },
+    "manufacturer_basis": "derived from the UNI-ROYAL(Uniroyal Elec) part-number family and corroborated by the audit text",
+    "net_gate": {
+     "bounded_max_v": 38.0,
+     "established_max_v": 3.6,
+     "kind": "land working voltage vs the highest node",
+     "land_working_v": 50.0,
+     "nodes": [
+      "+3V3",
+      "Net-(U1-EN)"
+     ],
+     "nodes_not_individually_established": [
+      "R108 on DISP_BL_CTL_STRAP",
+      "R110 on BMI270_INT1_STRAP",
+      "R111 on GPIO45_VDDSPI_STRAP",
+      "R127 on BQ25185_STAT1",
+      "R128 on BQ25185_STAT2",
+      "R2 on BOOT_N",
+      "R25 on SD_CS_N",
+      "R26 on DISP_CS_N",
+      "R27 on SX1262_CS_N",
+      "R28 on CC1101_CS_N",
+      "R29 on NFC_CS_N",
+      "R3 on WAKE_INT_N",
+      "R4 on BTN_UP_N",
+      "R5 on BTN_DOWN_N",
+      "R6 on BTN_LEFT_N",
+      "R7 on BTN_RIGHT_N",
+      "R8 on BTN_A_N",
+      "R83 on BAT_PROT_SHDN_CTL",
+      "R9 on BTN_B_N"
+     ],
+     "ok": true
+    },
+    "part_dielectric": null,
+    "part_rating_v": null,
+    "part_tolerance": 1.0,
+    "prior_value": "10k",
+    "rating_read_from": {
+     "tolerance": "part number, corroborated by the note"
+    },
+    "ruling": [
+     "identical specification"
+    ],
+    "source": "BETA-DM",
+    "verdict": "ACCEPTED"
+   },
+   "footprint": "R_0603_1608Metric",
+   "how": "EXACT_PRIOR",
+   "refs": [
+    "R1",
+    "R2",
+    "R3",
+    "R4",
+    "R5",
+    "R6",
+    "R7",
+    "R8",
+    "R9",
+    "R25",
+    "R26",
+    "R27",
+    "R28",
+    "R29",
+    "R83",
+    "R108",
+    "R110",
+    "R111",
+    "R127",
+    "R128"
+   ],
+   "value": "10k"
+  },
+  {
+   "LCSC": "C25803",
+   "MPN": "0603WAF1003T5E",
+   "Manufacturer": "UNI-ROYAL(Uniroyal Elec)",
+   "basis": {
+    "current_gate": {
+     "kind": "not a zero-ohm link",
+     "ok": true
+    },
+    "manufacturer_basis": "derived from the UNI-ROYAL(Uniroyal Elec) part-number family and corroborated by the audit text",
+    "net_gate": {
+     "bounded_max_v": 38.0,
+     "established_max_v": 0.0,
+     "kind": "land working voltage vs the highest node",
+     "land_working_v": 50.0,
+     "nodes": [],
+     "nodes_not_individually_established": [
+      "R100 on ACC_5V_FB"
+     ],
+     "ok": true
+    },
+    "part_dielectric": null,
+    "part_rating_v": null,
+    "part_tolerance": 1.0,
+    "prior_value": "100k 1%",
+    "rating_read_from": {
+     "tolerance": "part number, corroborated by the note"
+    },
+    "ruling": [
+     "tolerance 1.0% meets 1.0%"
+    ],
+    "source": "BETA-DM",
+    "verdict": "REJECTED - JLC match wrong"
+   },
+   "footprint": "R_0603_1608Metric",
+   "how": "EXACT_PRIOR",
+   "refs": [
+    "R100"
+   ],
+   "value": "100k 1%"
+  },
+  {
+   "LCSC": "C25803",
+   "MPN": "0603WAF1003T5E",
+   "Manufacturer": "UNI-ROYAL(Uniroyal Elec)",
+   "basis": {
+    "current_gate": {
+     "kind": "not a zero-ohm link",
+     "ok": true
+    },
+    "manufacturer_basis": "derived from the UNI-ROYAL(Uniroyal Elec) part-number family and corroborated by the audit text",
+    "net_gate": {
+     "bounded_max_v": 38.0,
+     "established_max_v": 3.6,
+     "kind": "land working voltage vs the highest node",
+     "land_working_v": 50.0,
+     "nodes": [
+      "+3V3"
+     ],
+     "nodes_not_individually_established": [
+      "R102 on ACC_5V_BOOST_EN",
+      "R103 on ACC_POWER_FAULT_N",
+      "R113 on SD_CARD_DETECT_N",
+      "R12 on TOUCH_RST_N",
+      "R120 on I2S_MIC_DIN",
+      "R129 on ACC_DETECT_N",
+      "R13 on SX1262_RST_N",
+      "R131 on ACC_5V_SW_EN",
+      "R14 on NFC_5V_EN",
+      "R15 on AMP_SD_MODE",
+      "R16 on DISP_RST_N",
+      "R17 on ACC_PWR_EN",
+      "R74 on SX1262_RXEN",
+      "R81 on LTC4368_FAULT_N",
+      "R98 on ACC_3V3_EN"
+     ],
+     "ok": true
+    },
+    "part_dielectric": null,
+    "part_rating_v": null,
+    "part_tolerance": 1.0,
+    "prior_value": "100k",
+    "rating_read_from": {
+     "tolerance": "part number, corroborated by the note"
+    },
+    "ruling": [
+     "identical specification"
+    ],
+    "source": "BETA-DM",
+    "verdict": "ACCEPTED"
+   },
+   "footprint": "R_0603_1608Metric",
+   "how": "EXACT_PRIOR",
+   "refs": [
+    "R12",
+    "R13",
+    "R14",
+    "R15",
+    "R16",
+    "R17",
+    "R74",
+    "R81",
+    "R98",
+    "R102",
+    "R103",
+    "R113",
+    "R120",
+    "R129",
+    "R131"
+   ],
+   "value": "100k"
+  },
+  {
+   "LCSC": "C22962",
+   "MPN": "0603WAF2200T5E",
+   "Manufacturer": "UNI-ROYAL(Uniroyal Elec)",
+   "basis": {
+    "current_gate": {
+     "kind": "not a zero-ohm link",
+     "ok": true
+    },
+    "manufacturer_basis": "derived from the UNI-ROYAL(Uniroyal Elec) part-number family and corroborated by the audit text",
+    "net_gate": {
+     "bounded_max_v": 38.0,
+     "established_max_v": 0.0,
+     "kind": "land working voltage vs the highest node",
+     "land_working_v": 50.0,
+     "nodes": [],
+     "nodes_not_individually_established": [
+      "R18 on BMI270_INT1_RAW",
+      "R18 on BMI270_INT1_STRAP"
+     ],
+     "ok": true
+    },
+    "part_dielectric": null,
+    "part_rating_v": null,
+    "part_tolerance": 1.0,
+    "prior_value": "220R",
+    "rating_read_from": {
+     "tolerance": "part number, corroborated by the note"
+    },
+    "ruling": [
+     "identical specification"
+    ],
+    "source": "BETA-DM",
+    "verdict": "ACCEPTED"
+   },
+   "footprint": "R_0603_1608Metric",
+   "how": "EXACT_PRIOR",
+   "refs": [
+    "R18"
+   ],
+   "value": "220R"
+  },
+  {
+   "LCSC": "C25803",
+   "MPN": "0603WAF1003T5E",
+   "Manufacturer": "UNI-ROYAL(Uniroyal Elec)",
+   "basis": {
+    "current_gate": {
+     "kind": "not a zero-ohm link",
+     "ok": true
+    },
+    "manufacturer_basis": "derived from the UNI-ROYAL(Uniroyal Elec) part-number family and corroborated by the audit text",
+    "net_gate": {
+     "bounded_max_v": 38.0,
+     "established_max_v": 0.0,
+     "kind": "land working voltage vs the highest node",
+     "land_working_v": 50.0,
+     "nodes": [],
+     "nodes_not_individually_established": [
+      "R23 on IR_GATE",
+      "R43 on Net-(SW9-A)"
+     ],
+     "ok": true
+    },
+    "part_dielectric": null,
+    "part_rating_v": null,
+    "part_tolerance": 1.0,
+    "prior_value": "100K",
+    "rating_read_from": {
+     "tolerance": "part number, corroborated by the note"
+    },
+    "ruling": [
+     "identical specification"
+    ],
+    "source": "BETA-DM",
+    "verdict": "ACCEPTED"
+   },
+   "footprint": "R_0603_1608Metric",
+   "how": "EXACT_PRIOR",
+   "refs": [
+    "R23",
+    "R43"
+   ],
+   "value": "100K"
+  },
+  {
+   "LCSC": "C23186",
+   "MPN": "0603WAF5101T5E",
+   "Manufacturer": "UNI-ROYAL(Uniroyal Elec)",
+   "basis": {
+    "current_gate": {
+     "kind": "not a zero-ohm link",
+     "ok": true
+    },
+    "manufacturer_basis": "derived from the UNI-ROYAL(Uniroyal Elec) part-number family and corroborated by the audit text",
+    "net_gate": {
+     "bounded_max_v": 38.0,
+     "established_max_v": 0.0,
+     "kind": "land working voltage vs the highest node",
+     "land_working_v": 50.0,
+     "nodes": [],
+     "nodes_not_individually_established": [
+      "R30 on Net-(J3-CC2)",
+      "R31 on Net-(J3-CC1)"
+     ],
+     "ok": true
+    },
+    "part_dielectric": null,
+    "part_rating_v": null,
+    "part_tolerance": 1.0,
+    "prior_value": "5.1k",
+    "rating_read_from": {
+     "tolerance": "part number, corroborated by the note"
+    },
+    "ruling": [
+     "identical specification"
+    ],
+    "source": "BETA-DM",
+    "verdict": "ACCEPTED"
+   },
+   "footprint": "R_0603_1608Metric",
+   "how": "EXACT_PRIOR",
+   "refs": [
+    "R30",
+    "R31"
+   ],
+   "value": "5.1k"
+  },
+  {
+   "LCSC": "C21189",
+   "MPN": "0603WAF0000T5E",
+   "Manufacturer": "UNI-ROYAL(Uniroyal Elec)",
+   "basis": {
+    "current_gate": {
+     "kind": "zero-ohm link",
+     "margin_x": 2.0,
+     "ok": true,
+     "rating_a": 1.0,
+     "rulings": {
+      "R118": {
+       "amps": 0.001,
+       "basis": "BMI270 SDO address strap to GND, signal level.  NOT in the audited set."
+      },
+      "R121": {
+       "amps": 0.292,
+       "basis": "speaker output SPK_P.  U5 MAX98357A bridge-tied from +3V3: peak differential 3.3 V, 2.33 Vrms into the 8 ohm LS1, 0.68 W, I_rms 0.292 A -- above the speaker's own 0.5 W rating (0.250 A), so the amplifier bounds it.  NOT in the audited set."
+      },
+      "R122": {
+       "amps": 0.292,
+       "basis": "speaker output SPK_N, identical to R121.  NOT in the audited set."
+      },
+      "R32": {
+       "amps": 0.0,
+       "basis": "J3 SHIELD to GND -- a shield bond, no continuous current (beta-dm audit, verbatim)"
+      },
+      "R35": {
+       "amps": 0.5,
+       "basis": "the only power-node jumper: USB_VBUS_RAW to USB_VBUS_CHG.  Worst case is the BQ25185 input current limit, and TI SLUSF65A 8.2.2.1 gives 500 mA for R_ILIM/VSET = 18k -- the Demo's R36 IS 18k and its R37 IS 1k, so the audited number still holds on this board"
+      },
+      "R42": {
+       "amps": 0.0,
+       "basis": "U12 PS/SYNC strap to GND, signal level (beta-dm audit, verbatim)"
+      }
+     },
+     "worst_case_a": 0.5,
+     "worst_case_ref": "R35"
+    },
+    "manufacturer_basis": "derived from the UNI-ROYAL(Uniroyal Elec) part-number family and corroborated by the audit text",
+    "net_gate": {
+     "bounded_max_v": 38.0,
+     "established_max_v": 5.5,
+     "kind": "land working voltage vs the highest node",
+     "land_working_v": 50.0,
+     "nodes": [
+      "USB_VBUS_CHG",
+      "USB_VBUS_RAW"
+     ],
+     "nodes_not_individually_established": [
+      "R118 on BMI270_SDO_ADDR",
+      "R121 on SPK_P",
+      "R121 on SPK_P_CONN",
+      "R122 on SPK_N",
+      "R122 on SPK_N_CONN",
+      "R32 on Net-(J3-SHIELD)",
+      "R42 on Net-(U12-PS_SYNC)"
+     ],
+     "ok": true
+    },
+    "part_dielectric": null,
+    "part_rating_v": null,
+    "part_tolerance": 1.0,
+    "prior_value": "0R",
+    "rating_read_from": {
+     "tolerance": "part number"
+    },
+    "ruling": [
+     "identical specification"
+    ],
+    "source": "BETA-DM",
+    "verdict": "ACCEPTED"
+   },
+   "footprint": "R_0603_1608Metric",
+   "how": "EXACT_PRIOR",
+   "refs": [
+    "R32",
+    "R35",
+    "R42",
+    "R118",
+    "R121",
+    "R122"
+   ],
+   "value": "0R"
+  },
+  {
+   "LCSC": "C23345",
+   "MPN": "0603WAF220JT5E",
+   "Manufacturer": "UNI-ROYAL(Uniroyal Elec)",
+   "basis": {
+    "current_gate": {
+     "kind": "not a zero-ohm link",
+     "ok": true
+    },
+    "manufacturer_basis": "derived from the UNI-ROYAL(Uniroyal Elec) part-number family and corroborated by the audit text",
+    "net_gate": {
+     "bounded_max_v": 38.0,
+     "established_max_v": 0.0,
+     "kind": "land working voltage vs the highest node",
+     "land_working_v": 50.0,
+     "nodes": [],
+     "nodes_not_individually_established": [
+      "R33 on USB_D_ESD_N",
+      "R33 on USB_D_MCU_N",
+      "R34 on USB_D_ESD_P",
+      "R34 on USB_D_MCU_P"
+     ],
+     "ok": true
+    },
+    "part_dielectric": null,
+    "part_rating_v": null,
+    "part_tolerance": 1.0,
+    "prior_value": "22R",
+    "rating_read_from": {
+     "tolerance": "part number, corroborated by the note"
+    },
+    "ruling": [
+     "identical specification"
+    ],
+    "source": "BETA-DM",
+    "verdict": "ACCEPTED"
+   },
+   "footprint": "R_0603_1608Metric",
+   "how": "EXACT_PRIOR",
+   "refs": [
+    "R33",
+    "R34"
+   ],
+   "value": "22R"
+  },
+  {
+   "LCSC": "C25810",
+   "MPN": "0603WAF1802T5E",
+   "Manufacturer": "UNI-ROYAL(Uniroyal Elec)",
+   "basis": {
+    "current_gate": {
+     "kind": "not a zero-ohm link",
+     "ok": true
+    },
+    "manufacturer_basis": "derived from the UNI-ROYAL(Uniroyal Elec) part-number family and corroborated by the audit text",
+    "net_gate": {
+     "bounded_max_v": 38.0,
+     "established_max_v": 0.0,
+     "kind": "land working voltage vs the highest node",
+     "land_working_v": 50.0,
+     "nodes": [],
+     "nodes_not_individually_established": [
+      "R36 on ILIM_VSET"
+     ],
+     "ok": true
+    },
+    "part_dielectric": null,
+    "part_rating_v": null,
+    "part_tolerance": 1.0,
+    "prior_value": "18k 1%",
+    "rating_read_from": {
+     "tolerance": "part number, corroborated by the note"
+    },
+    "ruling": [
+     "tolerance 1.0% meets 1.0%"
+    ],
+    "source": "BETA-DM",
+    "verdict": "REJECTED - JLC match wrong"
+   },
+   "footprint": "R_0603_1608Metric",
+   "how": "EXACT_PRIOR",
+   "refs": [
+    "R36"
+   ],
+   "value": "18k 1%"
+  },
+  {
+   "LCSC": "C21190",
+   "MPN": "0603WAF1001T5E",
+   "Manufacturer": "UNI-ROYAL(Uniroyal Elec)",
+   "basis": {
+    "current_gate": {
+     "kind": "not a zero-ohm link",
+     "ok": true
+    },
+    "manufacturer_basis": "derived from the UNI-ROYAL(Uniroyal Elec) part-number family and corroborated by the audit text",
+    "net_gate": {
+     "bounded_max_v": 38.0,
+     "established_max_v": 0.0,
+     "kind": "land working voltage vs the highest node",
+     "land_working_v": 50.0,
+     "nodes": [],
+     "nodes_not_individually_established": [
+      "R37 on ISET"
+     ],
+     "ok": true
+    },
+    "part_dielectric": null,
+    "part_rating_v": null,
+    "part_tolerance": 1.0,
+    "prior_value": "1k 1%",
+    "rating_read_from": {
+     "tolerance": "part number, corroborated by the note"
+    },
+    "ruling": [
+     "tolerance 1.0% meets 1.0%"
+    ],
+    "source": "BETA-DM",
+    "verdict": "REJECTED - JLC match wrong"
+   },
+   "footprint": "R_0603_1608Metric",
+   "how": "EXACT_PRIOR",
+   "refs": [
+    "R37"
+   ],
+   "value": "1k 1%"
+  },
+  {
+   "LCSC": "C25804",
+   "MPN": "0603WAF1002T5E",
+   "Manufacturer": "UNI-ROYAL(Uniroyal Elec)",
+   "basis": {
+    "current_gate": {
+     "kind": "not a zero-ohm link",
+     "ok": true
+    },
+    "manufacturer_basis": "derived from the UNI-ROYAL(Uniroyal Elec) part-number family and corroborated by the audit text",
+    "net_gate": {
+     "bounded_max_v": 38.0,
+     "established_max_v": 3.6,
+     "kind": "land working voltage vs the highest node",
+     "land_working_v": 50.0,
+     "nodes": [
+      "ACC_3V3_SW"
+     ],
+     "nodes_not_individually_established": [
+      "R38 on Net-(U11-TS_MR)",
+      "R46 on TCA4307_READY",
+      "R63 on WAKE_GATE_S"
+     ],
+     "ok": true
+    },
+    "part_dielectric": null,
+    "part_rating_v": null,
+    "part_tolerance": 1.0,
+    "prior_value": "10k 1%",
+    "rating_read_from": {
+     "tolerance": "part number, corroborated by the note"
+    },
+    "ruling": [
+     "tolerance 1.0% meets 1.0%"
+    ],
+    "source": "BETA-DM",
+    "verdict": "REJECTED - JLC match wrong"
+   },
+   "footprint": "R_0603_1608Metric",
+   "how": "EXACT_PRIOR",
+   "refs": [
+    "R38",
+    "R46",
+    "R63"
+   ],
+   "value": "10k 1%"
+  },
+  {
+   "LCSC": "C22935",
+   "MPN": "0603WAF1004T5E",
+   "Manufacturer": "UNI-ROYAL(Uniroyal Elec)",
+   "basis": {
+    "current_gate": {
+     "kind": "not a zero-ohm link",
+     "ok": true
+    },
+    "manufacturer_basis": "derived from the UNI-ROYAL(Uniroyal Elec) part-number family and corroborated by the audit text",
+    "net_gate": {
+     "bounded_max_v": 38.0,
+     "established_max_v": 3.6,
+     "kind": "land working voltage vs the highest node",
+     "land_working_v": 50.0,
+     "nodes": [
+      "+3V3"
+     ],
+     "nodes_not_individually_established": [
+      "R39 on V3V3_FB"
+     ],
+     "ok": true
+    },
+    "part_dielectric": null,
+    "part_rating_v": null,
+    "part_tolerance": 1.0,
+    "prior_value": "1M 1%",
+    "rating_read_from": {
+     "tolerance": "part number, corroborated by the note"
+    },
+    "ruling": [
+     "tolerance 1.0% meets 1.0%"
+    ],
+    "source": "BETA-DM",
+    "verdict": "REJECTED - JLC match wrong"
+   },
+   "footprint": "R_0603_1608Metric",
+   "how": "EXACT_PRIOR",
+   "refs": [
+    "R39"
+   ],
+   "value": "1M 1%"
+  },
+  {
+   "LCSC": "C22827",
+   "MPN": "0603WAF1803T5E",
+   "Manufacturer": "UNI-ROYAL(Uniroyal Elec)",
+   "basis": {
+    "current_gate": {
+     "kind": "not a zero-ohm link",
+     "ok": true
+    },
+    "manufacturer_basis": "derived from the UNI-ROYAL(Uniroyal Elec) part-number family and corroborated by the audit text",
+    "net_gate": {
+     "bounded_max_v": 38.0,
+     "established_max_v": 0.0,
+     "kind": "land working voltage vs the highest node",
+     "land_working_v": 50.0,
+     "nodes": [],
+     "nodes_not_individually_established": [
+      "R40 on V3V3_FB"
+     ],
+     "ok": true
+    },
+    "part_dielectric": null,
+    "part_rating_v": null,
+    "part_tolerance": 1.0,
+    "prior_value": "180K 1%",
+    "rating_read_from": {
+     "tolerance": "part number, corroborated by the note"
+    },
+    "ruling": [
+     "tolerance 1.0% meets 1.0%"
+    ],
+    "source": "BETA-DM",
+    "verdict": "REJECTED - JLC match wrong"
+   },
+   "footprint": "R_0603_1608Metric",
+   "how": "EXACT_PRIOR",
+   "refs": [
+    "R40"
+   ],
+   "value": "180K 1%"
+  },
+  {
+   "LCSC": "C22935",
+   "MPN": "0603WAF1004T5E",
+   "Manufacturer": "UNI-ROYAL(Uniroyal Elec)",
+   "basis": {
+    "current_gate": {
+     "kind": "not a zero-ohm link",
+     "ok": true
+    },
+    "manufacturer_basis": "derived from the UNI-ROYAL(Uniroyal Elec) part-number family and corroborated by the audit text",
+    "net_gate": {
+     "bounded_max_v": 38.0,
+     "established_max_v": 5.5,
+     "kind": "land working voltage vs the highest node",
+     "land_working_v": 50.0,
+     "nodes": [
+      "+3V3",
+      "BAT_RAW",
+      "USB_VBUS_CHG"
+     ],
+     "nodes_not_individually_established": [
+      "R41 on Net-(U12-PG)",
+      "R80 on LTC_SHDN",
+      "R82 on LTC4368_FAULT_N",
+      "R94 on REC_GATE_N",
+      "R96 on REC_FAULT_B"
+     ],
+     "ok": true
+    },
+    "part_dielectric": null,
+    "part_rating_v": null,
+    "part_tolerance": 1.0,
+    "prior_value": "1M",
+    "rating_read_from": {
+     "tolerance": "part number, corroborated by the note"
+    },
+    "ruling": [
+     "identical specification"
+    ],
+    "source": "BETA-DM",
+    "verdict": "ACCEPTED"
+   },
+   "footprint": "R_0603_1608Metric",
+   "how": "EXACT_PRIOR",
+   "refs": [
+    "R41",
+    "R80",
+    "R82",
+    "R94",
+    "R96"
+   ],
+   "value": "1M"
+  },
+  {
+   "LCSC": "C23345",
+   "MPN": "0603WAF220JT5E",
+   "Manufacturer": "UNI-ROYAL(Uniroyal Elec)",
+   "basis": {
+    "current_gate": {
+     "kind": "not a zero-ohm link",
+     "ok": true
+    },
+    "manufacturer_basis": "derived from the UNI-ROYAL(Uniroyal Elec) part-number family and corroborated by the audit text",
+    "net_gate": {
+     "bounded_max_v": 38.0,
+     "established_max_v": 0.0,
+     "kind": "land working voltage vs the highest node",
+     "land_working_v": 50.0,
+     "nodes": [],
+     "nodes_not_individually_established": [
+      "R47 on EXT_SCL",
+      "R47 on EXT_SCL_BUF",
+      "R48 on EXT_SDA",
+      "R48 on EXT_SDA_BUF"
+     ],
+     "ok": true
+    },
+    "part_dielectric": null,
+    "part_rating_v": null,
+    "part_tolerance": 1.0,
+    "prior_value": "22R 1%",
+    "rating_read_from": {
+     "tolerance": "part number, corroborated by the note"
+    },
+    "ruling": [
+     "tolerance 1.0% meets 1.0%"
+    ],
+    "source": "BETA-DM",
+    "verdict": "REJECTED - JLC match wrong"
+   },
+   "footprint": "R_0603_1608Metric",
+   "how": "EXACT_PRIOR",
+   "refs": [
+    "R47",
+    "R48"
+   ],
+   "value": "22R 1%"
+  },
+  {
+   "LCSC": "C22775",
+   "MPN": "0603WAF1000T5E",
+   "Manufacturer": "UNI-ROYAL(Uniroyal Elec)",
+   "basis": {
+    "current_gate": {
+     "kind": "not a zero-ohm link",
+     "ok": true
+    },
+    "manufacturer_basis": "derived from the UNI-ROYAL(Uniroyal Elec) part-number family and corroborated by the audit text",
+    "net_gate": {
+     "bounded_max_v": 38.0,
+     "established_max_v": 0.0,
+     "kind": "land working voltage vs the highest node",
+     "land_working_v": 50.0,
+     "nodes": [],
+     "nodes_not_individually_established": [
+      "R55 on XGPIO4",
+      "R55 on XGPIO4_HDR",
+      "R56 on XGPIO5",
+      "R56 on XGPIO5_HDR",
+      "R61 on NATIVE_A",
+      "R61 on NATIVE_A_HDR",
+      "R62 on NATIVE_B",
+      "R62 on NATIVE_B_HDR",
+      "R64 on ACC_DETECT_N",
+      "R64 on ACC_DETECT_N_HDR"
+     ],
+     "ok": true
+    },
+    "part_dielectric": null,
+    "part_rating_v": null,
+    "part_tolerance": 1.0,
+    "prior_value": "100R 1%",
+    "rating_read_from": {
+     "tolerance": "part number, corroborated by the note"
+    },
+    "ruling": [
+     "tolerance 1.0% meets 1.0%"
+    ],
+    "source": "BETA-DM",
+    "verdict": "REJECTED - JLC match wrong"
+   },
+   "footprint": "R_0603_1608Metric",
+   "how": "EXACT_PRIOR",
+   "refs": [
+    "R55",
+    "R56",
+    "R61",
+    "R62",
+    "R64"
+   ],
+   "value": "100R 1%"
+  },
+  {
+   "LCSC": "C23138",
+   "MPN": "0603WAF3300T5E",
+   "Manufacturer": "UNI-ROYAL(Uniroyal Elec)",
+   "basis": {
+    "current_gate": {
+     "kind": "not a zero-ohm link",
+     "ok": true
+    },
+    "manufacturer_basis": "derived from the UNI-ROYAL(Uniroyal Elec) part-number family and corroborated by the audit text",
+    "net_gate": {
+     "bounded_max_v": 38.0,
+     "established_max_v": 0.0,
+     "kind": "land working voltage vs the highest node",
+     "land_working_v": 50.0,
+     "nodes": [],
+     "nodes_not_individually_established": [
+      "R66 on WAKE_ATTN_N_HDR",
+      "R66 on WAKE_GATE_S"
+     ],
+     "ok": true
+    },
+    "part_dielectric": null,
+    "part_rating_v": null,
+    "part_tolerance": 1.0,
+    "prior_value": "330R 1%",
+    "rating_read_from": {
+     "tolerance": "part number, corroborated by the note"
+    },
+    "ruling": [
+     "tolerance 1.0% meets 1.0%"
+    ],
+    "source": "BETA-DM",
+    "verdict": "REJECTED - JLC match wrong"
+   },
+   "footprint": "R_0603_1608Metric",
+   "how": "EXACT_PRIOR",
+   "refs": [
+    "R66"
+   ],
+   "value": "330R 1%"
+  },
+  {
+   "LCSC": "C1779",
+   "MPN": "CL21A475KAQNNNE",
+   "Manufacturer": "Samsung Electro-Mechanics",
+   "basis": {
+    "current_gate": {
+     "kind": "not a zero-ohm link",
+     "ok": true
+    },
+    "manufacturer_basis": "derived from the Samsung Electro-Mechanics part-number family and corroborated by the audit text",
+    "net_gate": {
+     "absolute_max_v": 3.6,
+     "kind": "2x operating and survives absolute",
+     "margin_x": 7.58,
+     "nodes": [
+      "+3V3"
+     ],
+     "ok": true,
+     "operating_max_v": 3.3,
+     "rating_v": 25.0
+    },
+    "part_dielectric": "X5R",
+    "part_rating_v": 25.0,
+    "part_tolerance": null,
+    "prior_value": "4.7uF",
+    "rating_read_from": {
+     "dielectric": "part number, corroborated by the note",
+     "voltage": "part number, corroborated by the note"
+    },
+    "ruling": [
+     "rating 25.0V meets 10.0V",
+     "dielectric X5R meets X5R"
+    ],
+    "source": "BETA-DM",
+    "verdict": "ACCEPTED"
+   },
+   "footprint": "C_0805_2012Metric",
+   "how": "CONTAINED_PRIOR",
+   "refs": [
+    "C43"
+   ],
+   "value": "4.7uF 10V X5R"
+  },
+  {
+   "LCSC": "",
+   "MPN": "SM04B-SRSS-TB(LF)(SN)",
+   "Manufacturer": "JST",
+   "basis": {
+    "current_gate": {
+     "kind": "not a zero-ohm link",
+     "ok": true
+    },
+    "manufacturer_basis": "named with the part in SOURCING_LEDGER",
+    "net_gate": {
+     "kind": "not a chip passive",
+     "ok": true
+    },
+    "part_dielectric": null,
+    "part_rating_v": null,
+    "part_tolerance": null,
+    "prior_value": "J8",
+    "rating_read_from": {},
+    "ruling": [
+     "D-238, recorded in docs/full-beta-v2/assembly/SOURCING_LEDGER.md s.2 (JST SH, 1.0 mm, 4 circuit, side entry, SMT, 1.0 A, 50 V) and in DEVICE_SPEC s.10.2, which also lists the absent schematic property as an open item.  The plating-suffixed string is the one D-096 requires: the bare order code resolves to a zero-stock listing"
+    ],
+    "source": "SOURCING-LEDGER",
+    "verdict": null
+   },
+   "footprint": "JST_SH_SM04B-SRSS-TB_1x04-1MP_P1.00mm_Horizontal",
+   "how": "REFERENCE_RULING",
+   "refs": [
+    "J8"
+   ],
+   "value": "QWIIC_STEMMA_QT"
+  },
+  {
+   "LCSC": "C21189",
+   "MPN": "0603WAF0000T5E",
+   "Manufacturer": "UNI-ROYAL(Uniroyal Elec)",
+   "basis": {
+    "current_gate": {
+     "kind": "zero-ohm link",
+     "margin_x": 6.67,
+     "ok": true,
+     "rating_a": 1.0,
+     "rulings": {
+      "R106": {
+       "amps": 0.15,
+       "basis": "NFC supply select link, +3V3 to NFC_SUPPLY, carrying the whole ST25R3916 front end.  D-130 bounds the NFC field current at 150 mA at 3.3 V.  NOT in the audited set."
+      },
+      "R109": {
+       "amps": 0.001,
+       "basis": "DISP_BL_CTL to DISP_BL_CTL_STRAP, an MCU strap link (DEVICE_SPEC s.14), signal level.  NOT in the audited set."
+      }
+     },
+     "worst_case_a": 0.15,
+     "worst_case_ref": "R106"
+    },
+    "manufacturer_basis": "derived from the UNI-ROYAL(Uniroyal Elec) part-number family and corroborated by the audit text",
+    "net_gate": {
+     "bounded_max_v": 38.0,
+     "established_max_v": 3.6,
+     "kind": "land working voltage vs the highest node",
+     "land_working_v": 50.0,
+     "nodes": [
+      "+3V3",
+      "NFC_SUPPLY"
+     ],
+     "nodes_not_individually_established": [
+      "R109 on DISP_BL_CTL",
+      "R109 on DISP_BL_CTL_STRAP"
+     ],
+     "ok": true
+    },
+    "part_dielectric": null,
+    "part_rating_v": null,
+    "part_tolerance": 1.0,
+    "prior_value": "0R",
+    "rating_read_from": {
+     "tolerance": "part number"
+    },
+    "ruling": [
+     "annotation FIT is a stuffing/land note, not a specification"
+    ],
+    "source": "BETA-DM",
+    "verdict": "ACCEPTED"
+   },
+   "footprint": "R_0603_1608Metric",
+   "how": "CONTAINED_PRIOR",
+   "refs": [
+    "R106",
+    "R109"
+   ],
+   "value": "0R FIT"
+  },
+  {
+   "LCSC": "C21190",
+   "MPN": "0603WAF1001T5E",
+   "Manufacturer": "UNI-ROYAL(Uniroyal Elec)",
+   "basis": {
+    "current_gate": {
+     "kind": "not a zero-ohm link",
+     "ok": true
+    },
+    "manufacturer_basis": "derived from the UNI-ROYAL(Uniroyal Elec) part-number family and corroborated by the audit text",
+    "net_gate": {
+     "bounded_max_v": 38.0,
+     "established_max_v": 0.0,
+     "kind": "land working voltage vs the highest node",
+     "land_working_v": 50.0,
+     "nodes": [],
+     "nodes_not_individually_established": [
+      "R124 on FRONT_RGB_R_N",
+      "R124 on Net-(D13-RK)"
+     ],
+     "ok": true
+    },
+    "part_dielectric": null,
+    "part_rating_v": null,
+    "part_tolerance": 1.0,
+    "prior_value": "1k 1%",
+    "rating_read_from": {
+     "tolerance": "part number, corroborated by the note"
+    },
+    "ruling": [
+     "identical specification"
+    ],
+    "source": "BETA-DM",
+    "verdict": "REJECTED - JLC match wrong"
+   },
+   "footprint": "R_0603_1608Metric",
+   "how": "CONTAINED_PRIOR",
+   "refs": [
+    "R124"
+   ],
+   "value": "1k"
+  },
+  {
+   "LCSC": "C22775",
+   "MPN": "0603WAF1000T5E",
+   "Manufacturer": "UNI-ROYAL(Uniroyal Elec)",
+   "basis": {
+    "current_gate": {
+     "kind": "not a zero-ohm link",
+     "ok": true
+    },
+    "manufacturer_basis": "derived from the UNI-ROYAL(Uniroyal Elec) part-number family and corroborated by the audit text",
+    "net_gate": {
+     "bounded_max_v": 38.0,
+     "established_max_v": 5.5,
+     "kind": "land working voltage vs the highest node",
+     "land_working_v": 50.0,
+     "nodes": [
+      "+3V3",
+      "IR_RX_VS_LOCAL",
+      "USB_VBUS_CHG",
+      "VREC_VCC"
+     ],
+     "nodes_not_individually_established": [
+      "R22 on IR_GATE",
+      "R22 on IR_TX_GPIO16"
+     ],
+     "ok": true
+    },
+    "part_dielectric": null,
+    "part_rating_v": null,
+    "part_tolerance": 1.0,
+    "prior_value": "100R 1%",
+    "rating_read_from": {
+     "tolerance": "part number, corroborated by the note"
+    },
+    "ruling": [
+     "identical specification"
+    ],
+    "source": "BETA-DM",
+    "verdict": "REJECTED - JLC match wrong"
+   },
+   "footprint": "R_0603_1608Metric",
+   "how": "CONTAINED_PRIOR",
+   "refs": [
+    "R21",
+    "R22",
+    "R84"
+   ],
+   "value": "100R"
+  }
+ ],
+ "lines": 36,
+ "parts": 122,
+ "schema": 1
+}

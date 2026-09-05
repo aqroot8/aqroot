@@ -288,7 +288,15 @@ def manifest(out, extra):
                            board_sha256=sha256(BOARD),
                            dru_sha256=sha256(DRU),
                            pro_sha256=sha256(PRO),
-                           schematic_sha256=sha256(SCHEMATIC)),
+                           schematic_sha256=sha256(SCHEMATIC),
+                           # The BOM is derived from the WHOLE hierarchy, not
+                           # from the root sheet, so a manifest that hashes
+                           # only the root does not cover its own output: the
+                           # D-614 sourcing graft changed nine child sheets and
+                           # not one byte of the root.
+                           schematic_sheet_sha256={
+                               s.name: sha256(s) for s in
+                               sorted(PROJECT.glob("*.kicad_sch"))}),
                layers=dict(copper=COPPER, non_copper=NON_COPPER),
                files=files)
     doc.update(extra)

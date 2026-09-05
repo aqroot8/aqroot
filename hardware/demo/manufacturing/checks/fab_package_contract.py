@@ -221,13 +221,23 @@ def fab1(pkg, manifest):
                    if p.is_file() and p.name != "MANIFEST.json"
                    and str(p.relative_to(pkg)) not in
                    {e["path"] for e in manifest["files"]})
+    # The BOM views come out of the WHOLE schematic hierarchy, so provenance
+    # that names only the root sheet does not cover the package's own output.
+    sheets = {s.name: sha256(s) for s in sorted(BOARD.parent.glob("*.kicad_sch"))}
+    recorded = manifest["source"].get("schematic_sheet_sha256")
+    sheet_drift = ([] if recorded == sheets else
+                   sorted(set(sheets) ^ set(recorded or {}))
+                   or sorted(k for k in sheets
+                             if (recorded or {}).get(k) != sheets[k]))
     return dict(ok=(manifest["source"]["board_sha256"] == board_sha
-                    and not drift and not stray),
+                    and recorded == sheets and not drift and not stray),
                 authoritative_board_sha256=board_sha,
                 manifest_board_sha256=manifest["source"]["board_sha256"],
                 kicad=manifest["kicad"],
                 artifacts=len(manifest["files"]),
                 deterministic=sum(f["deterministic"] for f in manifest["files"]),
+                schematic_sheets=len(sheets),
+                schematic_sheet_drift=sheet_drift,
                 drift=drift, unmanifested=stray)
 
 
@@ -415,24 +425,48 @@ def fab6(pkg, board, fitted, dnp):
 
 
 def fab7(pkg, board):
+    """Every fitted, purchased, on-board reference must be orderable.
+
+    The PASS condition is unchanged and unweakened -- one unquotable line and
+    this fails.  What is new is that the failure is PARTITIONED, because two
+    very different things were being counted as one number.  A line whose value
+    the schematic itself marks `TUNE` cannot be closed by any part number:
+    DEVICE_SPEC s.14 records the NFC matching network as FIRST-ARTICLE TUNE,
+    values pending VNA and the ST tool, and buying a part for a value that is
+    not yet decided is not sourcing, it is guessing.  Reporting those together
+    with the lines that genuinely await a purchasing decision overstates one
+    and hides the other.
+    """
     bom = read_csv(pkg / "aqroot-Demo-BOM-assembly.csv")
-    orderable, gap = set(), defaultdict(list)
+    orderable, gap, tune = set(), defaultdict(list), defaultdict(list)
     for row in bom:
         refs = expand(row["Refs"])
         if row.get("MPN", "").strip() or row.get("LCSC", "").strip():
             orderable |= refs
+        elif "TUNE" in row["Value"].upper().split():
+            tune[row["Value"] + " | " + row["Footprint"]].extend(sorted(refs))
         else:
             gap[row["Value"] + " | " + row["Footprint"]].extend(sorted(refs))
     unsourced = sorted(r for refs in gap.values() for r in refs)
-    total = len(orderable) + len(unsourced)
-    return dict(ok=not unsourced,
+    pending = sorted(r for refs in tune.values() for r in refs)
+    total = len(orderable) + len(unsourced) + len(pending)
+    return dict(ok=not unsourced and not pending,
                 assembly_refs=total,
-                orderable=len(orderable), unsourced=len(unsourced),
+                orderable=len(orderable),
+                unsourced=len(unsourced) + len(pending),
                 coverage=round(len(orderable) / total, 4) if total else None,
-                unsourced_lines=len(gap),
-                unsourced_by_line={k: v for k, v in sorted(gap.items())},
+                unsourced_lines=len(gap) + len(tune),
+                needs_a_sourcing_decision=dict(
+                    lines=len(gap), parts=len(unsourced),
+                    by_line={k: v for k, v in sorted(gap.items())}),
+                pending_first_article_tune=dict(
+                    lines=len(tune), parts=len(pending),
+                    basis="DEVICE_SPEC s.14 -- the VALUE is not final; no part"
+                          " number can close these lines",
+                    by_line={k: v for k, v in sorted(tune.items())}),
                 unsourced_prefixes=dict(
-                    Counter(r.rstrip("0123456789") for r in unsourced)))
+                    Counter(r.rstrip("0123456789")
+                            for r in unsourced + pending)))
 
 
 def fab8(pkg, board):

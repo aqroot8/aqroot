@@ -1,0 +1,1649 @@
+{
+ "CONTAINED_PRIOR": [],
+ "EXACT_PRIOR": [],
+ "NEAR_MISS": [],
+ "NO_CANDIDATE": [
+  {
+   "footprint": "C_1210_3225Metric",
+   "nearest": [],
+   "other_values_on_this_land": [],
+   "qty": 1,
+   "refs": [
+    "C12"
+   ],
+   "spec": {
+    "annotations": [],
+    "dielectric": null,
+    "kind": "C",
+    "magnitude": 2.2e-05,
+    "power": null,
+    "raw": "22uF",
+    "tolerance": null,
+    "tune": false,
+    "unparsed": [],
+    "voltage": null
+   },
+   "value": "22uF"
+  },
+  {
+   "footprint": "C_0805_2012Metric",
+   "nearest": [
+    {
+     "prior_value": "10uf",
+     "refused": [
+      "magnitude 9.999999999999999e-06 != 2.2e-06"
+     ]
+    },
+    {
+     "prior_value": "10uf",
+     "refused": [
+      "magnitude 9.999999999999999e-06 != 2.2e-06"
+     ]
+    },
+    {
+     "prior_value": "4.7uF",
+     "refused": [
+      "magnitude 4.7e-06 != 2.2e-06"
+     ]
+    },
+    {
+     "prior_value": "4.7uF",
+     "refused": [
+      "magnitude 4.7e-06 != 2.2e-06"
+     ]
+    }
+   ],
+   "other_values_on_this_land": [
+    "10uF",
+    "10uF 10V X7R",
+    "10uf",
+    "1uF",
+    "4.7uF",
+    "4.7uF 10V X5R",
+    "4.7uF 10V X7R"
+   ],
+   "qty": 4,
+   "refs": [
+    "C45",
+    "C47",
+    "C49",
+    "C51"
+   ],
+   "spec": {
+    "annotations": [],
+    "dielectric": null,
+    "kind": "C",
+    "magnitude": 2.2e-06,
+    "power": null,
+    "raw": "2.2uF",
+    "tolerance": null,
+    "tune": false,
+    "unparsed": [],
+    "voltage": null
+   },
+   "value": "2.2uF"
+  },
+  {
+   "footprint": "C_0603_1608Metric",
+   "nearest": [
+    {
+     "prior_value": "1uF",
+     "refused": [
+      "magnitude 1e-06 != 1e-08"
+     ]
+    },
+    {
+     "prior_value": "1uF",
+     "refused": [
+      "magnitude 1e-06 != 1e-08"
+     ]
+    },
+    {
+     "prior_value": "100nF",
+     "refused": [
+      "magnitude 1e-07 != 1e-08"
+     ]
+    },
+    {
+     "prior_value": "100nF",
+     "refused": [
+      "magnitude 1e-07 != 1e-08"
+     ]
+    }
+   ],
+   "other_values_on_this_land": [
+    "100 nF X7R",
+    "100nF",
+    "100nF X7R",
+    "10uF 25V X5R",
+    "1uF",
+    "1uF 10V X7R",
+    "1uF 25V X7R"
+   ],
+   "qty": 4,
+   "refs": [
+    "C46",
+    "C48",
+    "C50",
+    "C54"
+   ],
+   "spec": {
+    "annotations": [],
+    "dielectric": null,
+    "kind": "C",
+    "magnitude": 1e-08,
+    "power": null,
+    "raw": "10nF",
+    "tolerance": null,
+    "tune": false,
+    "unparsed": [],
+    "voltage": null
+   },
+   "value": "10nF"
+  },
+  {
+   "footprint": "C_0603_1608Metric",
+   "nearest": [
+    {
+     "prior_value": "1uF",
+     "refused": [
+      "magnitude 1e-06 != 1e-09"
+     ]
+    },
+    {
+     "prior_value": "1uF",
+     "refused": [
+      "magnitude 1e-06 != 1e-09"
+     ]
+    },
+    {
+     "prior_value": "100nF",
+     "refused": [
+      "magnitude 1e-07 != 1e-09"
+     ]
+    },
+    {
+     "prior_value": "100nF",
+     "refused": [
+      "magnitude 1e-07 != 1e-09"
+     ]
+    }
+   ],
+   "other_values_on_this_land": [
+    "100 nF X7R",
+    "100nF",
+    "100nF X7R",
+    "10uF 25V X5R",
+    "1uF",
+    "1uF 10V X7R",
+    "1uF 25V X7R"
+   ],
+   "qty": 1,
+   "refs": [
+    "C52"
+   ],
+   "spec": {
+    "annotations": [],
+    "dielectric": null,
+    "kind": "C",
+    "magnitude": 1e-09,
+    "power": null,
+    "raw": "1nF",
+    "tolerance": null,
+    "tune": false,
+    "unparsed": [],
+    "voltage": null
+   },
+   "value": "1nF"
+  },
+  {
+   "footprint": "C_0603_1608Metric",
+   "nearest": [
+    {
+     "prior_value": "1uF",
+     "refused": [
+      "magnitude 1e-06 != 2.2e-06"
+     ]
+    },
+    {
+     "prior_value": "1uF",
+     "refused": [
+      "magnitude 1e-06 != 2.2e-06"
+     ]
+    },
+    {
+     "prior_value": "100nF",
+     "refused": [
+      "magnitude 1e-07 != 2.2e-06"
+     ]
+    },
+    {
+     "prior_value": "100nF",
+     "refused": [
+      "magnitude 1e-07 != 2.2e-06"
+     ]
+    }
+   ],
+   "other_values_on_this_land": [
+    "100 nF X7R",
+    "100nF",
+    "100nF X7R",
+    "10uF 25V X5R",
+    "1uF",
+    "1uF 10V X7R",
+    "1uF 25V X7R"
+   ],
+   "qty": 1,
+   "refs": [
+    "C55"
+   ],
+   "spec": {
+    "annotations": [],
+    "dielectric": null,
+    "kind": "C",
+    "magnitude": 2.2e-06,
+    "power": null,
+    "raw": "2.2uF",
+    "tolerance": null,
+    "tune": false,
+    "unparsed": [],
+    "voltage": null
+   },
+   "value": "2.2uF"
+  },
+  {
+   "footprint": "C_0603_1608Metric",
+   "nearest": [
+    {
+     "prior_value": "1uF",
+     "refused": [
+      "magnitude 1e-06 != 4.700000000000001e-09"
+     ]
+    },
+    {
+     "prior_value": "1uF",
+     "refused": [
+      "magnitude 1e-06 != 4.700000000000001e-09"
+     ]
+    },
+    {
+     "prior_value": "100nF",
+     "refused": [
+      "magnitude 1e-07 != 4.700000000000001e-09"
+     ]
+    },
+    {
+     "prior_value": "100nF",
+     "refused": [
+      "magnitude 1e-07 != 4.700000000000001e-09"
+     ]
+    }
+   ],
+   "other_values_on_this_land": [
+    "100 nF X7R",
+    "100nF",
+    "100nF X7R",
+    "10uF 25V X5R",
+    "1uF",
+    "1uF 10V X7R",
+    "1uF 25V X7R"
+   ],
+   "qty": 1,
+   "refs": [
+    "C57"
+   ],
+   "spec": {
+    "annotations": [],
+    "dielectric": "X7R",
+    "kind": "C",
+    "magnitude": 4.700000000000001e-09,
+    "power": null,
+    "raw": "4.7nF 50V X7R",
+    "tolerance": null,
+    "tune": false,
+    "unparsed": [],
+    "voltage": 50.0
+   },
+   "value": "4.7nF 50V X7R"
+  },
+  {
+   "footprint": "C_0805_2012Metric",
+   "nearest": [
+    {
+     "prior_value": "10uf",
+     "refused": [
+      "magnitude 9.999999999999999e-06 != 2.2e-05"
+     ]
+    },
+    {
+     "prior_value": "10uf",
+     "refused": [
+      "magnitude 9.999999999999999e-06 != 2.2e-05"
+     ]
+    },
+    {
+     "prior_value": "4.7uF",
+     "refused": [
+      "magnitude 4.7e-06 != 2.2e-05"
+     ]
+    },
+    {
+     "prior_value": "4.7uF",
+     "refused": [
+      "magnitude 4.7e-06 != 2.2e-05"
+     ]
+    }
+   ],
+   "other_values_on_this_land": [
+    "10uF",
+    "10uF 10V X7R",
+    "10uf",
+    "1uF",
+    "4.7uF",
+    "4.7uF 10V X5R",
+    "4.7uF 10V X7R"
+   ],
+   "qty": 2,
+   "refs": [
+    "C65",
+    "C66"
+   ],
+   "spec": {
+    "annotations": [],
+    "dielectric": "X7R",
+    "kind": "C",
+    "magnitude": 2.2e-05,
+    "power": null,
+    "raw": "22uF 10V X7R",
+    "tolerance": null,
+    "tune": false,
+    "unparsed": [],
+    "voltage": 10.0
+   },
+   "value": "22uF 10V X7R"
+  },
+  {
+   "footprint": "R_0603_1608Metric",
+   "nearest": [
+    {
+     "prior_value": "10k",
+     "refused": [
+      "magnitude 10000 != 1650.0"
+     ]
+    },
+    {
+     "prior_value": "10k",
+     "refused": [
+      "magnitude 10000 != 1650.0"
+     ]
+    },
+    {
+     "prior_value": "100k 1%",
+     "refused": [
+      "magnitude 100000 != 1650.0"
+     ]
+    },
+    {
+     "prior_value": "100k 1%",
+     "refused": [
+      "magnitude 100000 != 1650.0"
+     ]
+    }
+   ],
+   "other_values_on_this_land": [
+    "0R",
+    "0R FIT",
+    "100K",
+    "100R",
+    "100R 1%",
+    "100k",
+    "100k 1%",
+    "10K",
+    "10k",
+    "10k 1%",
+    "180K 1%",
+    "18k 1%"
+   ],
+   "qty": 1,
+   "refs": [
+    "R101"
+   ],
+   "spec": {
+    "annotations": [],
+    "dielectric": null,
+    "kind": "R",
+    "magnitude": 1650.0,
+    "power": null,
+    "raw": "1.65k 1%",
+    "tolerance": 1.0,
+    "tune": false,
+    "unparsed": [],
+    "voltage": null
+   },
+   "value": "1.65k 1%"
+  },
+  {
+   "footprint": "R_0603_1608Metric",
+   "nearest": [
+    {
+     "prior_value": "10k",
+     "refused": [
+      "magnitude 10000 != 150000.0"
+     ]
+    },
+    {
+     "prior_value": "10k",
+     "refused": [
+      "magnitude 10000 != 150000.0"
+     ]
+    },
+    {
+     "prior_value": "100k 1%",
+     "refused": [
+      "magnitude 100000 != 150000.0"
+     ]
+    },
+    {
+     "prior_value": "100k 1%",
+     "refused": [
+      "magnitude 100000 != 150000.0"
+     ]
+    }
+   ],
+   "other_values_on_this_land": [
+    "0R",
+    "0R FIT",
+    "100K",
+    "100R",
+    "100R 1%",
+    "100k",
+    "100k 1%",
+    "10K",
+    "10k",
+    "10k 1%",
+    "180K 1%",
+    "18k 1%"
+   ],
+   "qty": 1,
+   "refs": [
+    "R104"
+   ],
+   "spec": {
+    "annotations": [],
+    "dielectric": null,
+    "kind": "R",
+    "magnitude": 150000.0,
+    "power": null,
+    "raw": "150k 1%",
+    "tolerance": 1.0,
+    "tune": false,
+    "unparsed": [],
+    "voltage": null
+   },
+   "value": "150k 1%"
+  },
+  {
+   "footprint": "R_0603_1608Metric",
+   "nearest": [
+    {
+     "prior_value": "10k",
+     "refused": [
+      "magnitude 10000 != 220000.0"
+     ]
+    },
+    {
+     "prior_value": "10k",
+     "refused": [
+      "magnitude 10000 != 220000.0"
+     ]
+    },
+    {
+     "prior_value": "100k 1%",
+     "refused": [
+      "magnitude 100000 != 220000.0"
+     ]
+    },
+    {
+     "prior_value": "100k 1%",
+     "refused": [
+      "magnitude 100000 != 220000.0"
+     ]
+    }
+   ],
+   "other_values_on_this_land": [
+    "0R",
+    "0R FIT",
+    "100K",
+    "100R",
+    "100R 1%",
+    "100k",
+    "100k 1%",
+    "10K",
+    "10k",
+    "10k 1%",
+    "180K 1%",
+    "18k 1%"
+   ],
+   "qty": 1,
+   "refs": [
+    "R105"
+   ],
+   "spec": {
+    "annotations": [],
+    "dielectric": null,
+    "kind": "R",
+    "magnitude": 220000.0,
+    "power": null,
+    "raw": "220k 1%",
+    "tolerance": 1.0,
+    "tune": false,
+    "unparsed": [],
+    "voltage": null
+   },
+   "value": "220k 1%"
+  },
+  {
+   "footprint": "R_0603_1608Metric",
+   "nearest": [
+    {
+     "prior_value": "10k",
+     "refused": [
+      "magnitude 10000 != 680.0"
+     ]
+    },
+    {
+     "prior_value": "10k",
+     "refused": [
+      "magnitude 10000 != 680.0"
+     ]
+    },
+    {
+     "prior_value": "100k 1%",
+     "refused": [
+      "magnitude 100000 != 680.0"
+     ]
+    },
+    {
+     "prior_value": "100k 1%",
+     "refused": [
+      "magnitude 100000 != 680.0"
+     ]
+    }
+   ],
+   "other_values_on_this_land": [
+    "0R",
+    "0R FIT",
+    "100K",
+    "100R",
+    "100R 1%",
+    "100k",
+    "100k 1%",
+    "10K",
+    "10k",
+    "10k 1%",
+    "180K 1%",
+    "18k 1%"
+   ],
+   "qty": 1,
+   "refs": [
+    "R125"
+   ],
+   "spec": {
+    "annotations": [],
+    "dielectric": null,
+    "kind": "R",
+    "magnitude": 680.0,
+    "power": null,
+    "raw": "680R",
+    "tolerance": null,
+    "tune": false,
+    "unparsed": [],
+    "voltage": null
+   },
+   "value": "680R"
+  },
+  {
+   "footprint": "R_0603_1608Metric",
+   "nearest": [
+    {
+     "prior_value": "10k",
+     "refused": [
+      "magnitude 10000 != 390.0"
+     ]
+    },
+    {
+     "prior_value": "10k",
+     "refused": [
+      "magnitude 10000 != 390.0"
+     ]
+    },
+    {
+     "prior_value": "100k 1%",
+     "refused": [
+      "magnitude 100000 != 390.0"
+     ]
+    },
+    {
+     "prior_value": "100k 1%",
+     "refused": [
+      "magnitude 100000 != 390.0"
+     ]
+    }
+   ],
+   "other_values_on_this_land": [
+    "0R",
+    "0R FIT",
+    "100K",
+    "100R",
+    "100R 1%",
+    "100k",
+    "100k 1%",
+    "10K",
+    "10k",
+    "10k 1%",
+    "180K 1%",
+    "18k 1%"
+   ],
+   "qty": 1,
+   "refs": [
+    "R126"
+   ],
+   "spec": {
+    "annotations": [],
+    "dielectric": null,
+    "kind": "R",
+    "magnitude": 390.0,
+    "power": null,
+    "raw": "390R",
+    "tolerance": null,
+    "tune": false,
+    "unparsed": [],
+    "voltage": null
+   },
+   "value": "390R"
+  },
+  {
+   "footprint": "R_0603_1608Metric",
+   "nearest": [
+    {
+     "prior_value": "10k",
+     "refused": [
+      "magnitude 10000 != 2200.0"
+     ]
+    },
+    {
+     "prior_value": "10k",
+     "refused": [
+      "magnitude 10000 != 2200.0"
+     ]
+    },
+    {
+     "prior_value": "100k 1%",
+     "refused": [
+      "magnitude 100000 != 2200.0"
+     ]
+    },
+    {
+     "prior_value": "100k 1%",
+     "refused": [
+      "magnitude 100000 != 2200.0"
+     ]
+    }
+   ],
+   "other_values_on_this_land": [
+    "0R",
+    "0R FIT",
+    "100K",
+    "100R",
+    "100R 1%",
+    "100k",
+    "100k 1%",
+    "10K",
+    "10k",
+    "10k 1%",
+    "180K 1%",
+    "18k 1%"
+   ],
+   "qty": 2,
+   "refs": [
+    "R19",
+    "R20"
+   ],
+   "spec": {
+    "annotations": [],
+    "dielectric": null,
+    "kind": "R",
+    "magnitude": 2200.0,
+    "power": null,
+    "raw": "2.2k",
+    "tolerance": null,
+    "tune": false,
+    "unparsed": [],
+    "voltage": null
+   },
+   "value": "2.2k"
+  },
+  {
+   "footprint": "R_0805_2012Metric",
+   "nearest": [],
+   "other_values_on_this_land": [],
+   "qty": 1,
+   "refs": [
+    "R24"
+   ],
+   "spec": {
+    "annotations": [],
+    "dielectric": null,
+    "kind": "R",
+    "magnitude": 12.0,
+    "power": null,
+    "raw": "12R",
+    "tolerance": null,
+    "tune": false,
+    "unparsed": [],
+    "voltage": null
+   },
+   "value": "12R"
+  },
+  {
+   "footprint": "R_0603_1608Metric",
+   "nearest": [
+    {
+     "prior_value": "10k",
+     "refused": [
+      "magnitude 10000 != 1500.0"
+     ]
+    },
+    {
+     "prior_value": "10k",
+     "refused": [
+      "magnitude 10000 != 1500.0"
+     ]
+    },
+    {
+     "prior_value": "100k 1%",
+     "refused": [
+      "magnitude 100000 != 1500.0"
+     ]
+    },
+    {
+     "prior_value": "100k 1%",
+     "refused": [
+      "magnitude 100000 != 1500.0"
+     ]
+    }
+   ],
+   "other_values_on_this_land": [
+    "0R",
+    "0R FIT",
+    "100K",
+    "100R",
+    "100R 1%",
+    "100k",
+    "100k 1%",
+    "10K",
+    "10k",
+    "10k 1%",
+    "180K 1%",
+    "18k 1%"
+   ],
+   "qty": 3,
+   "refs": [
+    "R49",
+    "R50",
+    "R97"
+   ],
+   "spec": {
+    "annotations": [],
+    "dielectric": null,
+    "kind": "R",
+    "magnitude": 1500.0,
+    "power": null,
+    "raw": "1.5k 1%",
+    "tolerance": 1.0,
+    "tune": false,
+    "unparsed": [],
+    "voltage": null
+   },
+   "value": "1.5k 1%"
+  },
+  {
+   "footprint": "R_0603_1608Metric",
+   "nearest": [
+    {
+     "prior_value": "10k",
+     "refused": [
+      "magnitude 10000 != 1.87"
+     ]
+    },
+    {
+     "prior_value": "10k",
+     "refused": [
+      "magnitude 10000 != 1.87"
+     ]
+    },
+    {
+     "prior_value": "100k 1%",
+     "refused": [
+      "magnitude 100000 != 1.87"
+     ]
+    },
+    {
+     "prior_value": "100k 1%",
+     "refused": [
+      "magnitude 100000 != 1.87"
+     ]
+    }
+   ],
+   "other_values_on_this_land": [
+    "0R",
+    "0R FIT",
+    "100K",
+    "100R",
+    "100R 1%",
+    "100k",
+    "100k 1%",
+    "10K",
+    "10k",
+    "10k 1%",
+    "180K 1%",
+    "18k 1%"
+   ],
+   "qty": 1,
+   "refs": [
+    "R69"
+   ],
+   "spec": {
+    "annotations": [],
+    "dielectric": null,
+    "kind": "R",
+    "magnitude": 1.87,
+    "power": null,
+    "raw": "1.87R 1%",
+    "tolerance": 1.0,
+    "tune": false,
+    "unparsed": [],
+    "voltage": null
+   },
+   "value": "1.87R 1%"
+  },
+  {
+   "footprint": "R_0603_1608Metric",
+   "nearest": [
+    {
+     "prior_value": "10k",
+     "refused": [
+      "magnitude 10000 != 33.0"
+     ]
+    },
+    {
+     "prior_value": "10k",
+     "refused": [
+      "magnitude 10000 != 33.0"
+     ]
+    },
+    {
+     "prior_value": "100k 1%",
+     "refused": [
+      "magnitude 100000 != 33.0"
+     ]
+    },
+    {
+     "prior_value": "100k 1%",
+     "refused": [
+      "magnitude 100000 != 33.0"
+     ]
+    }
+   ],
+   "other_values_on_this_land": [
+    "0R",
+    "0R FIT",
+    "100K",
+    "100R",
+    "100R 1%",
+    "100k",
+    "100k 1%",
+    "10K",
+    "10k",
+    "10k 1%",
+    "180K 1%",
+    "18k 1%"
+   ],
+   "qty": 4,
+   "refs": [
+    "R70",
+    "R71",
+    "R72",
+    "R73"
+   ],
+   "spec": {
+    "annotations": [],
+    "dielectric": null,
+    "kind": "R",
+    "magnitude": 33.0,
+    "power": null,
+    "raw": "33R 1%",
+    "tolerance": 1.0,
+    "tune": false,
+    "unparsed": [],
+    "voltage": null
+   },
+   "value": "33R 1%"
+  },
+  {
+   "footprint": "R_2512_6332Metric",
+   "nearest": [],
+   "other_values_on_this_land": [],
+   "qty": 1,
+   "refs": [
+    "R75"
+   ],
+   "spec": {
+    "annotations": [],
+    "dielectric": null,
+    "kind": "R",
+    "magnitude": 0.015,
+    "power": 1.0,
+    "raw": "15mR 1% 1W",
+    "tolerance": 1.0,
+    "tune": false,
+    "unparsed": [],
+    "voltage": null
+   },
+   "value": "15mR 1% 1W"
+  },
+  {
+   "footprint": "R_0603_1608Metric",
+   "nearest": [
+    {
+     "prior_value": "10k",
+     "refused": [
+      "magnitude 10000 != 22000.0"
+     ]
+    },
+    {
+     "prior_value": "10k",
+     "refused": [
+      "magnitude 10000 != 22000.0"
+     ]
+    },
+    {
+     "prior_value": "100k 1%",
+     "refused": [
+      "magnitude 100000 != 22000.0"
+     ]
+    },
+    {
+     "prior_value": "100k 1%",
+     "refused": [
+      "magnitude 100000 != 22000.0"
+     ]
+    }
+   ],
+   "other_values_on_this_land": [
+    "0R",
+    "0R FIT",
+    "100K",
+    "100R",
+    "100R 1%",
+    "100k",
+    "100k 1%",
+    "10K",
+    "10k",
+    "10k 1%",
+    "180K 1%",
+    "18k 1%"
+   ],
+   "qty": 1,
+   "refs": [
+    "R76"
+   ],
+   "spec": {
+    "annotations": [],
+    "dielectric": null,
+    "kind": "R",
+    "magnitude": 22000.0,
+    "power": null,
+    "raw": "22k",
+    "tolerance": null,
+    "tune": false,
+    "unparsed": [],
+    "voltage": null
+   },
+   "value": "22k"
+  },
+  {
+   "footprint": "R_0603_1608Metric",
+   "nearest": [
+    {
+     "prior_value": "10k",
+     "refused": [
+      "magnitude 10000 != 3650000.0"
+     ]
+    },
+    {
+     "prior_value": "10k",
+     "refused": [
+      "magnitude 10000 != 3650000.0"
+     ]
+    },
+    {
+     "prior_value": "100k 1%",
+     "refused": [
+      "magnitude 100000 != 3650000.0"
+     ]
+    },
+    {
+     "prior_value": "100k 1%",
+     "refused": [
+      "magnitude 100000 != 3650000.0"
+     ]
+    }
+   ],
+   "other_values_on_this_land": [
+    "0R",
+    "0R FIT",
+    "100K",
+    "100R",
+    "100R 1%",
+    "100k",
+    "100k 1%",
+    "10K",
+    "10k",
+    "10k 1%",
+    "180K 1%",
+    "18k 1%"
+   ],
+   "qty": 2,
+   "refs": [
+    "R77",
+    "R91"
+   ],
+   "spec": {
+    "annotations": [],
+    "dielectric": null,
+    "kind": "R",
+    "magnitude": 3650000.0,
+    "power": null,
+    "raw": "3.65M 1%",
+    "tolerance": 1.0,
+    "tune": false,
+    "unparsed": [],
+    "voltage": null
+   },
+   "value": "3.65M 1%"
+  },
+  {
+   "footprint": "R_0603_1608Metric",
+   "nearest": [
+    {
+     "prior_value": "10k",
+     "refused": [
+      "magnitude 10000 != 442000.0"
+     ]
+    },
+    {
+     "prior_value": "10k",
+     "refused": [
+      "magnitude 10000 != 442000.0"
+     ]
+    },
+    {
+     "prior_value": "100k 1%",
+     "refused": [
+      "magnitude 100000 != 442000.0"
+     ]
+    },
+    {
+     "prior_value": "100k 1%",
+     "refused": [
+      "magnitude 100000 != 442000.0"
+     ]
+    }
+   ],
+   "other_values_on_this_land": [
+    "0R",
+    "0R FIT",
+    "100K",
+    "100R",
+    "100R 1%",
+    "100k",
+    "100k 1%",
+    "10K",
+    "10k",
+    "10k 1%",
+    "180K 1%",
+    "18k 1%"
+   ],
+   "qty": 1,
+   "refs": [
+    "R78"
+   ],
+   "spec": {
+    "annotations": [],
+    "dielectric": null,
+    "kind": "R",
+    "magnitude": 442000.0,
+    "power": null,
+    "raw": "442k 1%",
+    "tolerance": 1.0,
+    "tune": false,
+    "unparsed": [],
+    "voltage": null
+   },
+   "value": "442k 1%"
+  },
+  {
+   "footprint": "R_0603_1608Metric",
+   "nearest": [
+    {
+     "prior_value": "10k",
+     "refused": [
+      "magnitude 10000 != 510000.0"
+     ]
+    },
+    {
+     "prior_value": "10k",
+     "refused": [
+      "magnitude 10000 != 510000.0"
+     ]
+    },
+    {
+     "prior_value": "100k 1%",
+     "refused": [
+      "magnitude 100000 != 510000.0"
+     ]
+    },
+    {
+     "prior_value": "100k 1%",
+     "refused": [
+      "magnitude 100000 != 510000.0"
+     ]
+    }
+   ],
+   "other_values_on_this_land": [
+    "0R",
+    "0R FIT",
+    "100K",
+    "100R",
+    "100R 1%",
+    "100k",
+    "100k 1%",
+    "10K",
+    "10k",
+    "10k 1%",
+    "180K 1%",
+    "18k 1%"
+   ],
+   "qty": 1,
+   "refs": [
+    "R79"
+   ],
+   "spec": {
+    "annotations": [],
+    "dielectric": null,
+    "kind": "R",
+    "magnitude": 510000.0,
+    "power": null,
+    "raw": "510k",
+    "tolerance": null,
+    "tune": false,
+    "unparsed": [],
+    "voltage": null
+   },
+   "value": "510k"
+  },
+  {
+   "footprint": "R_0603_1608Metric",
+   "nearest": [
+    {
+     "prior_value": "10k",
+     "refused": [
+      "magnitude 10000 != 2200000.0"
+     ]
+    },
+    {
+     "prior_value": "10k",
+     "refused": [
+      "magnitude 10000 != 2200000.0"
+     ]
+    },
+    {
+     "prior_value": "100k 1%",
+     "refused": [
+      "magnitude 100000 != 2200000.0"
+     ]
+    },
+    {
+     "prior_value": "100k 1%",
+     "refused": [
+      "magnitude 100000 != 2200000.0"
+     ]
+    }
+   ],
+   "other_values_on_this_land": [
+    "0R",
+    "0R FIT",
+    "100K",
+    "100R",
+    "100R 1%",
+    "100k",
+    "100k 1%",
+    "10K",
+    "10k",
+    "10k 1%",
+    "180K 1%",
+    "18k 1%"
+   ],
+   "qty": 6,
+   "refs": [
+    "R85",
+    "R86",
+    "R87",
+    "R88",
+    "R89",
+    "R90"
+   ],
+   "spec": {
+    "annotations": [],
+    "dielectric": null,
+    "kind": "R",
+    "magnitude": 2200000.0,
+    "power": null,
+    "raw": "2.2M 1%",
+    "tolerance": 1.0,
+    "tune": false,
+    "unparsed": [],
+    "voltage": null
+   },
+   "value": "2.2M 1%"
+  },
+  {
+   "footprint": "R_0603_1608Metric",
+   "nearest": [
+    {
+     "prior_value": "10k",
+     "refused": [
+      "magnitude 10000 != 1300000.0"
+     ]
+    },
+    {
+     "prior_value": "10k",
+     "refused": [
+      "magnitude 10000 != 1300000.0"
+     ]
+    },
+    {
+     "prior_value": "100k 1%",
+     "refused": [
+      "magnitude 100000 != 1300000.0"
+     ]
+    },
+    {
+     "prior_value": "100k 1%",
+     "refused": [
+      "magnitude 100000 != 1300000.0"
+     ]
+    }
+   ],
+   "other_values_on_this_land": [
+    "0R",
+    "0R FIT",
+    "100K",
+    "100R",
+    "100R 1%",
+    "100k",
+    "100k 1%",
+    "10K",
+    "10k",
+    "10k 1%",
+    "180K 1%",
+    "18k 1%"
+   ],
+   "qty": 1,
+   "refs": [
+    "R92"
+   ],
+   "spec": {
+    "annotations": [],
+    "dielectric": null,
+    "kind": "R",
+    "magnitude": 1300000.0,
+    "power": null,
+    "raw": "1.30M 1%",
+    "tolerance": 1.0,
+    "tune": false,
+    "unparsed": [],
+    "voltage": null
+   },
+   "value": "1.30M 1%"
+  },
+  {
+   "footprint": "R_1206_3216Metric",
+   "nearest": [],
+   "other_values_on_this_land": [],
+   "qty": 1,
+   "refs": [
+    "R95"
+   ],
+   "spec": {
+    "annotations": [
+     "1206"
+    ],
+    "dielectric": null,
+    "kind": "R",
+    "magnitude": 560.0,
+    "power": null,
+    "raw": "560R 1% 1206",
+    "tolerance": 1.0,
+    "tune": false,
+    "unparsed": [],
+    "voltage": null
+   },
+   "value": "560R 1% 1206"
+  },
+  {
+   "footprint": "R_0603_1608Metric",
+   "nearest": [
+    {
+     "prior_value": "10k",
+     "refused": [
+      "magnitude 10000 != 732000.0"
+     ]
+    },
+    {
+     "prior_value": "10k",
+     "refused": [
+      "magnitude 10000 != 732000.0"
+     ]
+    },
+    {
+     "prior_value": "100k 1%",
+     "refused": [
+      "magnitude 100000 != 732000.0"
+     ]
+    },
+    {
+     "prior_value": "100k 1%",
+     "refused": [
+      "magnitude 100000 != 732000.0"
+     ]
+    }
+   ],
+   "other_values_on_this_land": [
+    "0R",
+    "0R FIT",
+    "100K",
+    "100R",
+    "100R 1%",
+    "100k",
+    "100k 1%",
+    "10K",
+    "10k",
+    "10k 1%",
+    "180K 1%",
+    "18k 1%"
+   ],
+   "qty": 1,
+   "refs": [
+    "R99"
+   ],
+   "spec": {
+    "annotations": [],
+    "dielectric": null,
+    "kind": "R",
+    "magnitude": 732000.0,
+    "power": null,
+    "raw": "732k 1%",
+    "tolerance": 1.0,
+    "tune": false,
+    "unparsed": [],
+    "voltage": null
+   },
+   "value": "732k 1%"
+  }
+ ],
+ "REFUSED": [],
+ "TUNE_PENDING": [
+  {
+   "footprint": "C_0603_1608Metric",
+   "qty": 2,
+   "refs": [
+    "C69",
+    "C70"
+   ],
+   "spec": {
+    "annotations": [],
+    "dielectric": "C0G",
+    "kind": "C",
+    "magnitude": 1e-10,
+    "power": null,
+    "raw": "100pF 50V C0G TUNE",
+    "tolerance": null,
+    "tune": true,
+    "unparsed": [],
+    "voltage": 50.0
+   },
+   "value": "100pF 50V C0G TUNE",
+   "why": "DEVICE_SPEC s.14 TUNE / FIRST-ARTICLE TUNE -- the VALUE is not final, so no part number can close this line"
+  },
+  {
+   "footprint": "C_0603_1608Metric",
+   "qty": 2,
+   "refs": [
+    "C71",
+    "C72"
+   ],
+   "spec": {
+    "annotations": [],
+    "dielectric": "C0G",
+    "kind": "C",
+    "magnitude": 3e-10,
+    "power": null,
+    "raw": "300pF 50V C0G TUNE",
+    "tolerance": null,
+    "tune": true,
+    "unparsed": [],
+    "voltage": 50.0
+   },
+   "value": "300pF 50V C0G TUNE",
+   "why": "DEVICE_SPEC s.14 TUNE / FIRST-ARTICLE TUNE -- the VALUE is not final, so no part number can close this line"
+  },
+  {
+   "footprint": "C_0603_1608Metric",
+   "qty": 2,
+   "refs": [
+    "C73",
+    "C74"
+   ],
+   "spec": {
+    "annotations": [],
+    "dielectric": "C0G",
+    "kind": "C",
+    "magnitude": 1.5000000000000002e-09,
+    "power": null,
+    "raw": "1.5nF 50V C0G TUNE",
+    "tolerance": null,
+    "tune": true,
+    "unparsed": [],
+    "voltage": 50.0
+   },
+   "value": "1.5nF 50V C0G TUNE",
+   "why": "DEVICE_SPEC s.14 TUNE / FIRST-ARTICLE TUNE -- the VALUE is not final, so no part number can close this line"
+  },
+  {
+   "footprint": "C_0603_1608Metric",
+   "qty": 2,
+   "refs": [
+    "C75",
+    "C77"
+   ],
+   "spec": {
+    "annotations": [],
+    "dielectric": "C0G",
+    "kind": "C",
+    "magnitude": 2.7e-11,
+    "power": null,
+    "raw": "27pF 50V C0G TUNE",
+    "tolerance": null,
+    "tune": true,
+    "unparsed": [],
+    "voltage": 50.0
+   },
+   "value": "27pF 50V C0G TUNE",
+   "why": "DEVICE_SPEC s.14 TUNE / FIRST-ARTICLE TUNE -- the VALUE is not final, so no part number can close this line"
+  },
+  {
+   "footprint": "C_0603_1608Metric",
+   "qty": 2,
+   "refs": [
+    "C76",
+    "C78"
+   ],
+   "spec": {
+    "annotations": [],
+    "dielectric": "C0G",
+    "kind": "C",
+    "magnitude": 6.2e-10,
+    "power": null,
+    "raw": "620pF 50V C0G TUNE",
+    "tolerance": null,
+    "tune": true,
+    "unparsed": [],
+    "voltage": 50.0
+   },
+   "value": "620pF 50V C0G TUNE",
+   "why": "DEVICE_SPEC s.14 TUNE / FIRST-ARTICLE TUNE -- the VALUE is not final, so no part number can close this line"
+  },
+  {
+   "footprint": "C_0603_1608Metric",
+   "qty": 2,
+   "refs": [
+    "C79",
+    "C80"
+   ],
+   "spec": {
+    "annotations": [],
+    "dielectric": "C0G",
+    "kind": "C",
+    "magnitude": 1e-11,
+    "power": null,
+    "raw": "10pF 50V C0G TUNE",
+    "tolerance": null,
+    "tune": true,
+    "unparsed": [],
+    "voltage": 50.0
+   },
+   "value": "10pF 50V C0G TUNE",
+   "why": "DEVICE_SPEC s.14 TUNE / FIRST-ARTICLE TUNE -- the VALUE is not final, so no part number can close this line"
+  },
+  {
+   "footprint": "R_0603_1608Metric",
+   "qty": 2,
+   "refs": [
+    "R114",
+    "R115"
+   ],
+   "spec": {
+    "annotations": [],
+    "dielectric": null,
+    "kind": "R",
+    "magnitude": 1.1,
+    "power": null,
+    "raw": "1R1 1% TUNE",
+    "tolerance": 1.0,
+    "tune": true,
+    "unparsed": [],
+    "voltage": null
+   },
+   "value": "1R1 1% TUNE",
+   "why": "DEVICE_SPEC s.14 TUNE / FIRST-ARTICLE TUNE -- the VALUE is not final, so no part number can close this line"
+  },
+  {
+   "footprint": "R_0603_1608Metric",
+   "qty": 2,
+   "refs": [
+    "R116",
+    "R117"
+   ],
+   "spec": {
+    "annotations": [],
+    "dielectric": null,
+    "kind": "R",
+    "magnitude": 1000.0,
+    "power": null,
+    "raw": "1k TUNE",
+    "tolerance": null,
+    "tune": true,
+    "unparsed": [],
+    "voltage": null
+   },
+   "value": "1k TUNE",
+   "why": "DEVICE_SPEC s.14 TUNE / FIRST-ARTICLE TUNE -- the VALUE is not final, so no part number can close this line"
+  }
+ ],
+ "assembly_lines": 122,
+ "board": "/home/aqroot8/aqroot-demo/hardware/demo/kicad/aqroot-demo/aqroot-Beta-v2.kicad_pcb",
+ "graftable": {
+  "lines": 0,
+  "parts": 0
+ },
+ "no_candidate_prefixes": {
+  "C": 14,
+  "R": 31
+ },
+ "package": "/home/aqroot8/aqroot-demo/hardware/demo/fab",
+ "prior_sources": {
+  "BETA_DM": 66,
+  "DEMO": 88,
+  "LEDGER": 30
+ },
+ "schema": 2,
+ "summary": {
+  "CONTAINED_PRIOR": {
+   "lines": 0,
+   "parts": 0
+  },
+  "EXACT_PRIOR": {
+   "lines": 0,
+   "parts": 0
+  },
+  "NEAR_MISS": {
+   "lines": 0,
+   "parts": 0
+  },
+  "NO_CANDIDATE": {
+   "lines": 26,
+   "parts": 45
+  },
+  "REFUSED": {
+   "lines": 0,
+   "parts": 0
+  },
+  "TUNE_PENDING": {
+   "lines": 8,
+   "parts": 16
+  }
+ },
+ "tune_refs": [
+  "C69",
+  "C70",
+  "C71",
+  "C72",
+  "C73",
+  "C74",
+  "C75",
+  "C76",
+  "C77",
+  "C78",
+  "C79",
+  "C80",
+  "R114",
+  "R115",
+  "R116",
+  "R117"
+ ],
+ "unreadable": [],
+ "unsourced_lines": 34,
+ "unsourced_parts": 61
+}

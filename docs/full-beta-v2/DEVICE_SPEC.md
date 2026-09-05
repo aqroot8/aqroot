@@ -264,7 +264,7 @@ MARKETING-SAFE.
 | Connector | `J8` **JST SM04B-SRSS-TB(LF)(SN)** SH 1.0 mm 4-pin | FITTED · EXTERNAL (right wall) · MARKETING-SAFE (Qwiic/STEMMA QT) | `09_community_header.kicad_sch:J8` |
 | Pinout | 1 GND · 2 ACC_3V3_SW · 3 EXT_SDA · 4 EXT_SCL | LOCKED | audit 2026-08-24 |
 | Power | **ACC_3V3_SW only** (5 V never present on Qwiic) | LOCKED | expansion proposal |
-| MPN/LCSC in schematic | **UNRESOLVED** (part named in text; no MPN/LCSC property) | TBD · ENGINEERING-ONLY | `09_...:J8` |
+| MPN/LCSC in schematic | **MPN WRITTEN** `SM04B-SRSS-TB(LF)(SN)` / Manufacturer `JST` (D-614, the plating-suffixed string D-096 requires); **LCSC still absent** | FITTED · orderable by MPN | `09_...:J8` |
 
 ### 10.3 RootProbe / FAST_IO — RETIRED on beta-v2
 - **RootProbe connector: NOT PRESENT** on the beta-v2 board — the dedicated interface
@@ -378,7 +378,7 @@ Qwiic/STEMMA QT I²C accessory port; RGB status indicator.
 6. **915 antenna doc residue** — stale FXP890 vs locked external TI.92.2113 SMA.
 7. **Mechanical:** BOSS2 X (59 vs 60), BOOT face, power-switch position, 1×24 wall
    aperture, corner radii — CAD-TO-VERIFY.
-8. **`J8` Qwiic MPN/LCSC** absent in schematic; **`J1`** display FPC LCSC absent.
+8. **`J8` Qwiic LCSC** absent (the **MPN is now in the schematic**, D-614); **`J1`** display FPC LCSC absent.
 
 ---
 

@@ -6305,6 +6305,178 @@ Evidence, all under `hardware/demo/manufacturing/evidence/`:
 `d585-pour-damage-neck.json` (`c0d293a8...`),
 `d585-neck-contract-rerun.json` (`a3f58da0...`).
 
+# D-614 · 2026-09-05 · Demo THE BOM IS THREE QUARTERS ORDERABLE: 122 part identities grafted from prior CTO audits, every one re-read off the PART instead of the line, and four gates that had never been run
+
+D-613 named the next task: **close the sourcing gap** -- graft the 31
+`EXACT_PRIOR` lines after re-checking each against the Demo's own nets, then
+rule on the 39 `NO_CANDIDATE` lines. This is that task, and doing it properly
+turned up four separate ways the obvious mechanical answer would have been
+wrong.
+
+**NO COPPER CHANGED.** The authoritative board is byte-identical at
+`c8e421aa50144fe396aedb5e226aaabeb815bd69ffaf6e04f549ded43831d103`, the same
+sha D-612 promoted and D-613 reviewed. **26 of the package's 28 artifacts are
+normalised-sha-identical to D-613's** -- every Gerber, both Excellon files, the
+drill report and maps, both position files, both assembly PDFs. The two that
+changed are the two BOM views, which is exactly what a sourcing decision should
+change and nothing else.
+
+## What moved
+
+**`FAB7` coverage 25.9 % -> 75.3 %; orderable references 64 -> 186 of 247.**
+36 BOM lines / **122 references** gained a `Manufacturer`, an `MPN` and (for
+121 of them) an `LCSC` property -- 487 properties across nine schematic sheets,
+inserted as text, CRLF preserved, and **reproducible**: replaying
+`screen_bom_sourcing.py --plan` then `apply_bom_sourcing.py --apply` against
+the `HEAD` sheets in an isolated tree returns all ten sheets **byte-identical**
+to the committed result.
+
+    EXACT_PRIOR        31 lines  114 parts   value string and land equal
+    CONTAINED_PRIOR     4 lines    7 parts   a ruling, stated and checked
+    REFERENCE_RULING    1 line     1 part    J8, from this project's own D-238
+    TUNE_PENDING        8 lines   16 parts   the VALUE is not final
+    NO_CANDIDATE       26 lines   45 parts   a new purchasing decision
+
+## Four things the mechanical answer would have got wrong
+
+**(1) THE PRIOR'S MANUFACTURER COLUMN DOES NOT DESCRIBE THE APPROVED PART.**
+`JLC-MATCH-AUDIT.csv` carries `JLC Manufacturer` beside `Approved MPN`, and for
+a **REJECTED** row those two describe **different parts** -- the column is the
+match that was thrown out, the MPN is the CTO's replacement. **Sixteen of the
+thirty-one grafts are REJECTED rows.** Copying that column would have stamped
+`Samsung Electro-Mechanics` on Murata's `GRM31CR71E106KA12L`, `Murata` on
+YAGEO's `CC0805KKX7R7BB106`, and `FOJAN`/`Vishay`/`HKR`/`FH` on five
+UNI-ROYALs. That is D-613's `C26` defect -- one identity, two meanings --
+rebuilt by machine. **The manufacturer is now DERIVED from the approved MPN's
+own part-number family and then CORROBORATED against the audit prose**; a
+derivation with no corroboration is `UNRESOLVED` and is not grafted. All 31
+resolve and all 31 corroborate.
+
+**(2) THE RATING BELONGS TO THE PART, NOT TO THE LINE.** The first version of
+this gate derated the SCHEMATIC's value string, and it refused `C20`, `C25`,
+`C37`, `C38`, `C62`, `C63` and `C67` -- because `1uF 10V X7R` on a 5.5 V rail
+is 1.8x, below the project's own 2x rule. But the audit did not approve a 10 V
+part: it approved a **25 V** YAGEO precisely to buy that margin. Reading the
+schematic instead of the part measured the wrong object, which is the same
+failure D-613 recorded four times over. **Every rating, dielectric, tolerance,
+capacitance and LAND is now decoded from the approved part number itself** --
+YAGEO `CC`, Samsung `CL`, Murata `GRM`, CCTC `TCC` and UNI-ROYAL `0603WAF`
+codes, every one of them corroborated by a note in this repository that states
+the same number in words -- and a disagreement between number and prose is a
+refusal, not a tie to be broken. The land decode is the direct guard against
+`C26`: `CL21A475KAQNNNE` offered for an 0603 line is refused as *"part number
+is built for land 0805"*.
+
+**(3) THE DESIGNATOR IS NOT THE IDENTITY.** The beta-dm audit rows are keyed by
+designator and **three of them name a different value than the Demo carries at
+the same designator**: `R70`-`R73` are 39R there and **33R** here, `R69` is
+2.55R there and **1.87R** here, `R19`/`R20` are 4.7k there and **2.2k** here --
+because D-079 re-derived the backlight against the real ER-TFT035IPS-6 panel
+(six LEDs in parallel, 109 mA typ). A designator-keyed graft would have put a
+39 ohm part on a 33 ohm land. **Nothing in `screen_bom_sourcing.py` matches on
+a designator**, with one deliberate exception (finding 5).
+
+**(4) THE 0 OHM CURRENT GATE WAS NEVER RUN ON FIVE OF THE EIGHT LINKS.** The
+beta-dm note reads *"Current gate closed with real numbers"* and closes it for
+`R32`, `R35` and `R42`. **The Demo has eight 0 ohm links.** `R121`/`R122` sit
+in the speaker output and `R106` carries the entire NFC front end -- neither
+existed in the audited set, and adopting the verdict would have adopted a gate
+that was never run on them. Now every grafted 0 ohm reference must carry a
+number or the line is refused:
+
+    R35   0.500 A  BQ25185 input current limit, TI SLUSF65A 8.2.2.1 at
+                   R_ILIM/VSET = 18k -- the Demo's R36 IS 18k, R37 IS 1k,
+                   so the audited number still holds on this board
+    R121  0.292 A  U5 MAX98357A bridge-tied from +3V3 into the 8 ohm 0.5 W
+    R122  0.292 A  LS1: 3.3 V peak differential, 2.33 Vrms, 0.68 W, and the
+                   amplifier bounds it above the speaker's own rating
+    R106  0.150 A  NFC field current ceiling, D-130
+    R32 / R42 / R109 / R118   signal level
+
+against the UNI-ROYAL ZW-series 0603 jumper the audit names -- 1 A continuous,
+2 A overload. Worst case 0.500 A, **2.0x margin**.
+
+## The one place a designator IS the right key
+
+`J8`'s part was chosen at **D-238** and recorded in
+`docs/full-beta-v2/assembly/SOURCING_LEDGER.md` -- JST `SM04B-SRSS-TB(LF)(SN)`,
+the plating-suffixed string D-096 requires because the bare order code resolves
+to a zero-stock listing -- and **DEVICE_SPEC s.16 item 8 listed the missing
+schematic property as a known open item**. The part was never in doubt; only
+the property was never written. That is a per-reference ruling from **this
+project's own decision**, not a value guessed from another board, and it is
+honoured only when the BOARD corroborates it: the footprint name must contain
+`SM04B-SRSS-TB`. It does. **DEVICE_SPEC s.10.2 and s.16 item 8 are updated:
+the MPN is in the schematic; the LCSC code remains absent.**
+
+## The residual is smaller than it looked, and it is two different things
+
+**`FAB7` still FAILS, and its PASS condition is unchanged and unweakened** --
+one unquotable line and it fails. What is new is that the failure is
+**PARTITIONED**, because two very different things were being counted as one
+number. **8 lines / 16 parts are `TUNE`**: DEVICE_SPEC s.14 records the NFC
+matching network (`C69`-`C80`, `R114`-`R117`) as FIRST-ARTICLE TUNE, values
+pending VNA and the ST STSW-ST25R004 tool. **No part number can close a line
+whose value is not decided**, and reporting those together with lines that
+genuinely await a purchasing decision overstates one and hides the other. The
+real open purchasing list is **26 lines / 45 parts**, written out as a brief in
+`evidence/d614-sourcing-open.csv` with the parsed requirement and the Demo nets
+for each.
+
+Two of those 45 carry engineering constraints this repository already recorded
+and which must reach whoever buys them: **`C65`/`C66`** (22 uF 10 V X7R 0805)
+are flagged **S-4 / B-69** -- their DC-BIAS-DERATED value sets the `U21` boost
+start-up time, so nominal capacitance is not the selection criterion -- and
+**`R75`** is the 15 mOhm 1 % 1 W 2512 battery current sense on
+`BAT_PROTECTED_P`/`BAT_SENSE`.
+
+## Two defects found in the instruments themselves
+
+**`R75` had no requirement at all.** The value parser read a single suffix
+letter, so `15mR` -- fifteen MILLIohms -- did not parse, and `R75` came back
+into the work list with an empty magnitude and no power rating: a blank cell
+where a 1 W current-sense specification belonged. Fixed, and the screen now
+REPORTS any value string it cannot read instead of silently emitting a blank.
+
+**The package manifest did not cover its own output.** `MANIFEST.json` recorded
+`schematic_sha256` for the ROOT sheet only, and this decision changed **nine
+child sheets and not one byte of the root** -- so the manifest would have
+certified an unchanged schematic beside a changed BOM. The manifest now carries
+a sha256 for **all ten sheets** and `FAB1` requires every one to match; the
+negative control confirms one altered sheet hash fails it, and a manifest with
+no sheet hashes at all fails it.
+
+## Everything retained, re-measured
+
+`verify_promotion.py` **14/14 PASS** with real KiCad DRC, refill and schematic
+parity: 0 objects added, 0 removed, DRC 199/5/1 inherited, **zero
+attributable**, unconnected items **73** unchanged, parity **249 warnings, 0
+errors**, class counts identical to the recorded `INHERITED_PARITY`
+(199/48/2) -- **adding 487 symbol properties added no parity warning**.
+`checks/fab_package_contract.py` FAB1-FAB6 and FAB8 **PASS** (FAB6's
+"one part identity, one footprint" claim included, **zero collisions**);
+`population_contract.py` **POP1-POP4 PASS**, 263 -> 247; `pour_bond_contract.py`
+**P1-P4**; `neck_contract.py` **N1-N3**; `protected_copper.py` **15 nets / 393
+objects IDENTICAL**. `audit_narrow_copper.py` and `audit_bond_ampacity.py`
+compare authority against candidate and the board is byte-identical to the one
+they last ran on, so D-612's runs stand. `hardware/beta-v2/`, D-269 / D-186,
+`ACC_5V_SW_EN`, `ACC_3V3_SW`, RGB and XGPIO4/5 untouched.
+
+## Next
+
+**Rule the 26 open purchasing lines**, which is the last thing standing between
+this board and a releasable fabrication package, and which needs a live vendor
+record: D-096 binds -- a part number configured from an ordering scheme is a
+hypothesis until a distributor record confirms lifecycle and stock, and this
+session has no such record to read. The 16 `TUNE` parts are **not** part of
+that list; they close at first article, with the board in hand.
+
+Evidence, all under `hardware/demo/manufacturing/evidence/`:
+`d614-bom-sourcing-screen.json`, `d614-bom-sourcing-plan.json`,
+`d614-bom-sourcing-apply.json`, `d614-sourcing-open.csv`,
+`d614-fab-package-contract.json`, `d614-verify.json`,
+`d614-population.json`, `d614-pourbond.json`, `d614-neck.json`.
+
 # D-613 · 2026-09-05 · Demo THE FABRICATION PACKAGE EXISTS, AND THE REVIEW FOUND THREE THINGS THE GATE COULD NOT SEE: a BOM that quoted forty-six test points, one part number on two land patterns, and a parity check that had never been asked
 
 D-612 closed the population trap and named the next task: **generate the Demo

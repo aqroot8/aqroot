@@ -13,6 +13,86 @@
 > This file references DEVICE_SPEC rather than duplicating full specs.
 
 ## 1. Authoritative HEAD
+- **Demo D-614 (THE BOM IS THREE QUARTERS ORDERABLE -- 122 part identities
+  grafted from prior CTO audits, every one re-read off the PART instead of the
+  line, and four gates that had never been run):** D-613 named this task and it
+  is done. **NO COPPER CHANGED** -- the authoritative board is byte-identical at
+  **`c8e421aa50144fe396aedb5e226aaabeb815bd69ffaf6e04f549ded43831d103`**, and
+  **26 of the package's 28 artifacts are normalised-sha-identical to D-613's**:
+  every Gerber, both Excellon files, the drill report and maps, both position
+  files, both assembly PDFs. The two that changed are the two BOM views.
+  **`FAB7` COVERAGE 25.9 % -> 75.3 %, ORDERABLE REFERENCES 64 -> 186 OF 247.**
+  36 BOM lines / **122 references** gained `Manufacturer` / `MPN` / `LCSC` --
+  487 properties across nine schematic sheets, inserted as text with CRLF
+  preserved, and **reproducible**: replaying `screen_bom_sourcing.py --plan`
+  then `apply_bom_sourcing.py --apply` against the `HEAD` sheets in an isolated
+  tree returns all ten sheets **byte-identical**. Split: `EXACT_PRIOR` 31 lines
+  / 114 parts, `CONTAINED_PRIOR` 4 / 7 (a stated, checked specification-
+  containment ruling), `REFERENCE_RULING` 1 / 1 (`J8`).
+  **FOUR THINGS THE MECHANICAL ANSWER WOULD HAVE GOT WRONG.** **(1)** For a
+  **REJECTED** audit row the `JLC Manufacturer` column describes the match that
+  was THROWN OUT, not the approved replacement -- and **16 of the 31 grafts are
+  REJECTED rows**, so copying it would have stamped `Samsung` on Murata's
+  `GRM31CR71E106KA12L`: D-613's `C26` defect rebuilt by machine. The
+  manufacturer is now DERIVED from the approved MPN's own part-number family and
+  CORROBORATED against the audit prose. **(2)** The rating belongs to the PART,
+  not the line: the first gate derated `1uF 10V X7R` and refused `C38`/`C67` on
+  the 5.5 V `ACC_5V_SW` rail at 1.8x -- but the audit approved a **25 V** part
+  for exactly that margin. Every rating, dielectric, tolerance, capacitance and
+  **LAND** is now decoded from the part number (YAGEO `CC`, Samsung `CL`, Murata
+  `GRM`, CCTC `TCC`, UNI-ROYAL `0603WAF`), each code corroborated by a note in
+  this repository, and number-vs-prose disagreement is a refusal. The land
+  decode is the direct `C26` guard. **(3)** The designator is not the identity:
+  three audit rows name a DIFFERENT VALUE at the same designator (`R70`-`R73`
+  39R there / **33R** here, `R69` 2.55R / **1.87R**, `R19`/`R20` 4.7k /
+  **2.2k**, because D-079 re-derived the backlight against the real panel), so
+  nothing matches on a designator. **(4)** The beta-dm 0 ohm note says *"current
+  gate closed with real numbers"* for `R32`/`R35`/`R42`; **the Demo has EIGHT 0
+  ohm links** and `R121`/`R122` (speaker) and `R106` (whole NFC front end) were
+  never in that set. Every grafted 0 ohm reference now carries a number or the
+  line is refused -- `R35` 0.500 A (BQ25185 limit, SLUSF65A 8.2.2.1, and the
+  Demo's `R36` IS 18k), `R121`/`R122` 0.292 A (MAX98357A into the 8 ohm 0.5 W
+  `LS1`), `R106` 0.150 A (D-130) -- against a 1 A jumper, **2.0x worst case**.
+  **THE ONE PLACE A DESIGNATOR IS THE RIGHT KEY:** `J8`'s part was chosen at
+  D-238 and recorded in `assembly/SOURCING_LEDGER.md`, and DEVICE_SPEC s.16
+  item 8 listed the missing schematic property as a KNOWN OPEN ITEM. Grafted,
+  corroborated by the footprint name; DEVICE_SPEC s.10.2 and s.16 updated -- MPN
+  written, **LCSC still absent**.
+  **THE RESIDUAL IS TWO DIFFERENT THINGS.** `FAB7` still FAILS and its PASS
+  condition is UNCHANGED, but the failure is now PARTITIONED: **8 lines / 16
+  parts are `TUNE`** (DEVICE_SPEC s.14 -- the NFC matching network `C69`-`C80`,
+  `R114`-`R117`, values pending VNA + the ST tool), which no part number can
+  close, and the real open purchasing list is **26 lines / 45 parts**, written
+  out with parsed requirement and Demo nets in
+  `evidence/d614-sourcing-open.csv`. Two of them carry recorded engineering
+  constraints: `C65`/`C66` (S-4 / B-69 -- their DC-BIAS-DERATED value sets the
+  `U21` boost start-up time) and `R75` (15 mOhm 1 % 1 W 2512 battery sense).
+  **TWO DEFECTS IN THE INSTRUMENTS.** The value parser read one suffix letter,
+  so `15mR` did not parse and **`R75` came back with an empty magnitude and no
+  power rating**; fixed, and unreadable values are now REPORTED. And
+  `MANIFEST.json` hashed only the ROOT schematic sheet while this decision
+  changed **nine child sheets and not one byte of the root** -- it would have
+  certified an unchanged schematic beside a changed BOM. All ten sheets are now
+  hashed and `FAB1` requires every one to match (negative control confirms one
+  wrong hash fails it).
+  All retained contracts re-measured: `verify_promotion.py` **14/14** (0 added,
+  0 removed, DRC 199/5/1 inherited, ZERO attributable, unconnected 73 unchanged,
+  parity **249 warnings / 0 errors, class counts identical** -- 487 new symbol
+  properties added no parity warning), `fab_package_contract.py` FAB1-FAB6 +
+  FAB8 PASS with **zero part-identity collisions**, `population_contract.py`
+  POP1-POP4 (263 -> 247), `pour_bond_contract.py` P1-P4, `neck_contract.py`
+  N1-N3, `protected_copper.py` 15 nets / 393 objects IDENTICAL. The board is
+  byte-identical to the one `audit_narrow_copper.py` and
+  `audit_bond_ampacity.py` last ran on, so D-612's runs stand.
+  `hardware/beta-v2/`, D-269 / D-186, `ACC_5V_SW_EN`, `ACC_3V3_SW`, RGB and
+  XGPIO4/5 untouched.
+  **NEXT: RULE THE 26 OPEN PURCHASING LINES** -- the last thing between this
+  board and a releasable fabrication package. It needs a live vendor record:
+  **D-096 binds** -- a part number configured from an ordering scheme is a
+  hypothesis until a distributor record confirms lifecycle and stock, and this
+  session had none to read. The 16 `TUNE` parts are NOT part of that list; they
+  close at first article with the board in hand. Notes:
+  `docs/full-beta-v2/AQROOT_DEMO_FABRICATION_PACKAGE.md`. No owner decision.
 - **Demo D-613 (THE FABRICATION PACKAGE EXISTS FOR THE FIRST TIME, AND THE
   REVIEW FOUND THREE THINGS THE GATE COULD NOT SEE):** D-612 named the next
   task and was right about what it would turn up. **NO COPPER CHANGED** -- the

@@ -1,7 +1,74 @@
 # AQROOT Demo manufacturing preflight
 
 Status: **BLOCKED** at BOM sourcing; the fabrication package is generated and
-reviewed but is NOT releasable.
+reviewed but is NOT releasable.  The BOM is **75.3 % orderable** and the
+residual is 26 lines needing a purchasing decision plus 8 lines whose value is
+not yet final.
+
+## The BOM is three quarters orderable -- 122 identities grafted, four gates that had never been run (2026-09-05)
+
+    FAB7 SOURCING   64 -> 186 of 247 orderable    25.9 % -> 75.3 %
+    board       c8e421aa...  UNCHANGED, byte for byte
+    package     26 of 28 artifacts normalised-sha IDENTICAL to D-613's;
+                the two that changed are the two BOM views
+    schematic   487 properties across 9 sheets, inserted as text, CRLF kept
+    reproduce   screen --plan | apply --apply, replayed against HEAD in an
+                isolated tree, returns all ten sheets BYTE-IDENTICAL
+
+    EXACT_PRIOR       31 lines  114 parts   value string and land equal
+    CONTAINED_PRIOR    4 lines    7 parts   a ruling, stated and checked
+    REFERENCE_RULING   1 line     1 part    J8, from this project's D-238
+    TUNE_PENDING       8 lines   16 parts   the VALUE is not final
+    NO_CANDIDATE      26 lines   45 parts   a new purchasing decision
+
+**FOUR THINGS THE MECHANICAL ANSWER WOULD HAVE GOT WRONG.**
+
+*(1) The prior's manufacturer column does not describe the approved part.* For a
+REJECTED audit row `JLC Manufacturer` names the match that was THROWN OUT, and
+**16 of the 31 grafts are REJECTED rows** -- copying it stamps
+`Samsung Electro-Mechanics` on Murata's `GRM31CR71E106KA12L`. That is D-613's
+`C26` defect rebuilt by machine. The manufacturer is now DERIVED from the
+approved MPN's own part-number family and CORROBORATED against the prose.
+
+*(2) The rating belongs to the PART, not to the line.* The first version of this
+gate derated the schematic string and refused `C38`/`C67` -- `1uF 10V X7R` on
+the 5.5 V `ACC_5V_SW` rail is 1.8x -- but the audit approved a **25 V** part for
+exactly that margin. Rating, dielectric, tolerance, capacitance and **land** are
+now decoded from the part number (YAGEO `CC`, Samsung `CL`, Murata `GRM`, CCTC
+`TCC`, UNI-ROYAL `0603WAF`), each code corroborated by a note in this
+repository. The land decode refuses `CL21A475KAQNNNE` on an 0603 line -- the
+`C26` defect caught one step earlier, before it can be written.
+
+*(3) The designator is not the identity.* Three beta-dm audit rows name a
+different VALUE at the same designator -- `R70`-`R73` 39R there / **33R** here,
+`R69` 2.55R / **1.87R**, `R19`/`R20` 4.7k / **2.2k** -- because D-079 re-derived
+the backlight against the real panel. Nothing matches on a designator.
+
+*(4) The 0 ohm current gate was never run on five of the eight links.* The
+beta-dm note closes it for `R32`/`R35`/`R42`; the Demo has **eight**, and
+`R121`/`R122` (speaker) and `R106` (whole NFC front end) were not in that set.
+Every grafted 0 ohm reference now carries a number or the line is refused --
+`R35` 0.500 A, `R121`/`R122` 0.292 A, `R106` 0.150 A -- against a 1 A jumper.
+
+**TWO DEFECTS IN THE INSTRUMENTS.** The value parser read one suffix letter, so
+`15mR` did not parse and **`R75`, the 15 mOhm 1 W battery sense, came back with
+no requirement at all**; unreadable values are now REPORTED. And `MANIFEST.json`
+hashed only the ROOT schematic sheet while this work changed **nine child sheets
+and not one byte of the root** -- all ten are now hashed and FAB1 requires every
+one to match.
+
+**THE RESIDUAL IS TWO DIFFERENT THINGS.** FAB7's PASS condition is unchanged,
+but the failure is PARTITIONED: **16 parts are `TUNE`** (DEVICE_SPEC s.14, the
+NFC matching network, values pending VNA + the ST tool) and no part number can
+close them. The real purchasing list is **26 lines / 45 parts**, written out
+with requirement and nets in `evidence/d614-sourcing-open.csv`. Two carry
+recorded constraints: `C65`/`C66` (S-4/B-69 -- their DC-BIAS-DERATED value sets
+the `U21` boost start-up) and `R75`.
+
+**NEXT: rule the 26 open purchasing lines.** D-096 binds -- a part number
+configured from an ordering scheme is a hypothesis until a live distributor
+record confirms lifecycle and stock. Full notes:
+`docs/full-beta-v2/AQROOT_DEMO_FABRICATION_PACKAGE.md`.
 
 ## The fabrication package exists, and the review found three things (2026-09-05)
 

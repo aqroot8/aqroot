@@ -1,0 +1,2971 @@
+{
+ "added": [
+  {
+   "property": "Manufacturer",
+   "ref": "R42",
+   "sheet": "01_power_tree.kicad_sch",
+   "value": "UNI-ROYAL(Uniroyal Elec)"
+  },
+  {
+   "property": "MPN",
+   "ref": "R42",
+   "sheet": "01_power_tree.kicad_sch",
+   "value": "0603WAF0000T5E"
+  },
+  {
+   "property": "LCSC",
+   "ref": "R42",
+   "sheet": "01_power_tree.kicad_sch",
+   "value": "C21189"
+  },
+  {
+   "property": "Note_Sourcing",
+   "ref": "R42",
+   "sheet": "01_power_tree.kicad_sch",
+   "value": "SOURCING D-614. EXACT_PRIOR from the beta-dm audit line '0R' (ACCEPTED); manufacturer derived from the UNI-ROYAL(Uniroyal Elec) part-number family and corroborated by the audit text; identical specification."
+  },
+  {
+   "property": "Manufacturer",
+   "ref": "C29",
+   "sheet": "01_power_tree.kicad_sch",
+   "value": "CCTC"
+  },
+  {
+   "property": "MPN",
+   "ref": "C29",
+   "sheet": "01_power_tree.kicad_sch",
+   "value": "TCC1206X7R226K160HT"
+  },
+  {
+   "property": "LCSC",
+   "ref": "C29",
+   "sheet": "01_power_tree.kicad_sch",
+   "value": "C22392398"
+  },
+  {
+   "property": "Note_Sourcing",
+   "ref": "C29",
+   "sheet": "01_power_tree.kicad_sch",
+   "value": "SOURCING D-614. EXACT_PRIOR from the beta-dm audit line '22uF 10V X7R' (REJECTED - JLC match wrong); manufacturer derived from the CCTC part-number family and corroborated by the audit text; rating 16V meets 10.0V; dielectric X7R meets X7R."
+  },
+  {
+   "property": "Manufacturer",
+   "ref": "R40",
+   "sheet": "01_power_tree.kicad_sch",
+   "value": "UNI-ROYAL(Uniroyal Elec)"
+  },
+  {
+   "property": "MPN",
+   "ref": "R40",
+   "sheet": "01_power_tree.kicad_sch",
+   "value": "0603WAF1803T5E"
+  },
+  {
+   "property": "LCSC",
+   "ref": "R40",
+   "sheet": "01_power_tree.kicad_sch",
+   "value": "C22827"
+  },
+  {
+   "property": "Note_Sourcing",
+   "ref": "R40",
+   "sheet": "01_power_tree.kicad_sch",
+   "value": "SOURCING D-614. EXACT_PRIOR from the beta-dm audit line '180K 1%' (REJECTED - JLC match wrong); manufacturer derived from the UNI-ROYAL(Uniroyal Elec) part-number family and corroborated by the audit text; tolerance 1.0% meets 1.0%."
+  },
+  {
+   "property": "Manufacturer",
+   "ref": "C36",
+   "sheet": "01_power_tree.kicad_sch",
+   "value": "YAGEO"
+  },
+  {
+   "property": "MPN",
+   "ref": "C36",
+   "sheet": "01_power_tree.kicad_sch",
+   "value": "CC0603KRX7R9BB104"
+  },
+  {
+   "property": "LCSC",
+   "ref": "C36",
+   "sheet": "01_power_tree.kicad_sch",
+   "value": "C14663"
+  },
+  {
+   "property": "Note_Sourcing",
+   "ref": "C36",
+   "sheet": "01_power_tree.kicad_sch",
+   "value": "SOURCING D-614. EXACT_PRIOR from the beta-dm audit line '100nF X7R' (ACCEPTED); manufacturer derived from the YAGEO part-number family and corroborated by the audit text; dielectric X7R meets X7R."
+  },
+  {
+   "property": "Manufacturer",
+   "ref": "C25",
+   "sheet": "01_power_tree.kicad_sch",
+   "value": "YAGEO"
+  },
+  {
+   "property": "MPN",
+   "ref": "C25",
+   "sheet": "01_power_tree.kicad_sch",
+   "value": "CC0603KRX7R8BB105"
+  },
+  {
+   "property": "LCSC",
+   "ref": "C25",
+   "sheet": "01_power_tree.kicad_sch",
+   "value": "C106858"
+  },
+  {
+   "property": "Note_Sourcing",
+   "ref": "C25",
+   "sheet": "01_power_tree.kicad_sch",
+   "value": "SOURCING D-614. EXACT_PRIOR from the beta-dm audit line '1uF 10V X7R' (REJECTED - JLC match wrong); manufacturer derived from the YAGEO part-number family and corroborated by the audit text; rating 25.0V meets 10.0V; dielectric X7R meets X7R."
+  },
+  {
+   "property": "Manufacturer",
+   "ref": "R30",
+   "sheet": "01_power_tree.kicad_sch",
+   "value": "UNI-ROYAL(Uniroyal Elec)"
+  },
+  {
+   "property": "MPN",
+   "ref": "R30",
+   "sheet": "01_power_tree.kicad_sch",
+   "value": "0603WAF5101T5E"
+  },
+  {
+   "property": "LCSC",
+   "ref": "R30",
+   "sheet": "01_power_tree.kicad_sch",
+   "value": "C23186"
+  },
+  {
+   "property": "Note_Sourcing",
+   "ref": "R30",
+   "sheet": "01_power_tree.kicad_sch",
+   "value": "SOURCING D-614. EXACT_PRIOR from the beta-dm audit line '5.1k' (ACCEPTED); manufacturer derived from the UNI-ROYAL(Uniroyal Elec) part-number family and corroborated by the audit text; identical specification."
+  },
+  {
+   "property": "Manufacturer",
+   "ref": "C28",
+   "sheet": "01_power_tree.kicad_sch",
+   "value": "YAGEO"
+  },
+  {
+   "property": "MPN",
+   "ref": "C28",
+   "sheet": "01_power_tree.kicad_sch",
+   "value": "CC0603KRX7R9BB104"
+  },
+  {
+   "property": "LCSC",
+   "ref": "C28",
+   "sheet": "01_power_tree.kicad_sch",
+   "value": "C14663"
+  },
+  {
+   "property": "Note_Sourcing",
+   "ref": "C28",
+   "sheet": "01_power_tree.kicad_sch",
+   "value": "SOURCING D-614. EXACT_PRIOR from the beta-dm audit line '100nF X7R' (ACCEPTED); manufacturer derived from the YAGEO part-number family and corroborated by the audit text; dielectric X7R meets X7R."
+  },
+  {
+   "property": "Manufacturer",
+   "ref": "C27",
+   "sheet": "01_power_tree.kicad_sch",
+   "value": "Murata Electronics"
+  },
+  {
+   "property": "MPN",
+   "ref": "C27",
+   "sheet": "01_power_tree.kicad_sch",
+   "value": "GRM31CR71E106KA12L"
+  },
+  {
+   "property": "LCSC",
+   "ref": "C27",
+   "sheet": "01_power_tree.kicad_sch",
+   "value": "C77093"
+  },
+  {
+   "property": "Note_Sourcing",
+   "ref": "C27",
+   "sheet": "01_power_tree.kicad_sch",
+   "value": "SOURCING D-614. EXACT_PRIOR from the beta-dm audit line '10uF 10V X7R' (REJECTED - JLC match wrong); manufacturer derived from the Murata Electronics part-number family and corroborated by the audit text; rating 25.0V meets 10.0V; dielectric X7R meets X7R."
+  },
+  {
+   "property": "Manufacturer",
+   "ref": "R36",
+   "sheet": "01_power_tree.kicad_sch",
+   "value": "UNI-ROYAL(Uniroyal Elec)"
+  },
+  {
+   "property": "MPN",
+   "ref": "R36",
+   "sheet": "01_power_tree.kicad_sch",
+   "value": "0603WAF1802T5E"
+  },
+  {
+   "property": "LCSC",
+   "ref": "R36",
+   "sheet": "01_power_tree.kicad_sch",
+   "value": "C25810"
+  },
+  {
+   "property": "Note_Sourcing",
+   "ref": "R36",
+   "sheet": "01_power_tree.kicad_sch",
+   "value": "SOURCING D-614. EXACT_PRIOR from the beta-dm audit line '18k 1%' (REJECTED - JLC match wrong); manufacturer derived from the UNI-ROYAL(Uniroyal Elec) part-number family and corroborated by the audit text; tolerance 1.0% meets 1.0%."
+  },
+  {
+   "property": "Manufacturer",
+   "ref": "C33",
+   "sheet": "01_power_tree.kicad_sch",
+   "value": "YAGEO"
+  },
+  {
+   "property": "MPN",
+   "ref": "C33",
+   "sheet": "01_power_tree.kicad_sch",
+   "value": "CC0805KKX7R7BB106"
+  },
+  {
+   "property": "LCSC",
+   "ref": "C33",
+   "sheet": "01_power_tree.kicad_sch",
+   "value": "C326595"
+  },
+  {
+   "property": "Note_Sourcing",
+   "ref": "C33",
+   "sheet": "01_power_tree.kicad_sch",
+   "value": "SOURCING D-614. EXACT_PRIOR from the beta-dm audit line '10uF 10V X7R' (REJECTED - JLC match wrong); manufacturer derived from the YAGEO part-number family and corroborated by the audit text; rating 16.0V meets 10.0V; dielectric X7R meets X7R."
+  },
+  {
+   "property": "Manufacturer",
+   "ref": "C23",
+   "sheet": "01_power_tree.kicad_sch",
+   "value": "YAGEO"
+  },
+  {
+   "property": "MPN",
+   "ref": "C23",
+   "sheet": "01_power_tree.kicad_sch",
+   "value": "CC0603KRX7R8BB105"
+  },
+  {
+   "property": "LCSC",
+   "ref": "C23",
+   "sheet": "01_power_tree.kicad_sch",
+   "value": "C106858"
+  },
+  {
+   "property": "Note_Sourcing",
+   "ref": "C23",
+   "sheet": "01_power_tree.kicad_sch",
+   "value": "SOURCING D-614. EXACT_PRIOR from the beta-dm audit line '1uF 25V X7R' (REJECTED - JLC match wrong); manufacturer derived from the YAGEO part-number family and corroborated by the audit text; rating 25.0V meets 25.0V; dielectric X7R meets X7R."
+  },
+  {
+   "property": "Manufacturer",
+   "ref": "R37",
+   "sheet": "01_power_tree.kicad_sch",
+   "value": "UNI-ROYAL(Uniroyal Elec)"
+  },
+  {
+   "property": "MPN",
+   "ref": "R37",
+   "sheet": "01_power_tree.kicad_sch",
+   "value": "0603WAF1001T5E"
+  },
+  {
+   "property": "LCSC",
+   "ref": "R37",
+   "sheet": "01_power_tree.kicad_sch",
+   "value": "C21190"
+  },
+  {
+   "property": "Note_Sourcing",
+   "ref": "R37",
+   "sheet": "01_power_tree.kicad_sch",
+   "value": "SOURCING D-614. EXACT_PRIOR from the beta-dm audit line '1k 1%' (REJECTED - JLC match wrong); manufacturer derived from the UNI-ROYAL(Uniroyal Elec) part-number family and corroborated by the audit text; tolerance 1.0% meets 1.0%."
+  },
+  {
+   "property": "Manufacturer",
+   "ref": "R31",
+   "sheet": "01_power_tree.kicad_sch",
+   "value": "UNI-ROYAL(Uniroyal Elec)"
+  },
+  {
+   "property": "MPN",
+   "ref": "R31",
+   "sheet": "01_power_tree.kicad_sch",
+   "value": "0603WAF5101T5E"
+  },
+  {
+   "property": "LCSC",
+   "ref": "R31",
+   "sheet": "01_power_tree.kicad_sch",
+   "value": "C23186"
+  },
+  {
+   "property": "Note_Sourcing",
+   "ref": "R31",
+   "sheet": "01_power_tree.kicad_sch",
+   "value": "SOURCING D-614. EXACT_PRIOR from the beta-dm audit line '5.1k' (ACCEPTED); manufacturer derived from the UNI-ROYAL(Uniroyal Elec) part-number family and corroborated by the audit text; identical specification."
+  },
+  {
+   "property": "Manufacturer",
+   "ref": "C31",
+   "sheet": "01_power_tree.kicad_sch",
+   "value": "CCTC"
+  },
+  {
+   "property": "MPN",
+   "ref": "C31",
+   "sheet": "01_power_tree.kicad_sch",
+   "value": "TCC1206X7R226K160HT"
+  },
+  {
+   "property": "LCSC",
+   "ref": "C31",
+   "sheet": "01_power_tree.kicad_sch",
+   "value": "C22392398"
+  },
+  {
+   "property": "Note_Sourcing",
+   "ref": "C31",
+   "sheet": "01_power_tree.kicad_sch",
+   "value": "SOURCING D-614. EXACT_PRIOR from the beta-dm audit line '22uF 10V X7R' (REJECTED - JLC match wrong); manufacturer derived from the CCTC part-number family and corroborated by the audit text; rating 16V meets 10.0V; dielectric X7R meets X7R."
+  },
+  {
+   "property": "Manufacturer",
+   "ref": "R33",
+   "sheet": "01_power_tree.kicad_sch",
+   "value": "UNI-ROYAL(Uniroyal Elec)"
+  },
+  {
+   "property": "MPN",
+   "ref": "R33",
+   "sheet": "01_power_tree.kicad_sch",
+   "value": "0603WAF220JT5E"
+  },
+  {
+   "property": "LCSC",
+   "ref": "R33",
+   "sheet": "01_power_tree.kicad_sch",
+   "value": "C23345"
+  },
+  {
+   "property": "Note_Sourcing",
+   "ref": "R33",
+   "sheet": "01_power_tree.kicad_sch",
+   "value": "SOURCING D-614. EXACT_PRIOR from the beta-dm audit line '22R' (ACCEPTED); manufacturer derived from the UNI-ROYAL(Uniroyal Elec) part-number family and corroborated by the audit text; identical specification."
+  },
+  {
+   "property": "Manufacturer",
+   "ref": "C30",
+   "sheet": "01_power_tree.kicad_sch",
+   "value": "CCTC"
+  },
+  {
+   "property": "MPN",
+   "ref": "C30",
+   "sheet": "01_power_tree.kicad_sch",
+   "value": "TCC1206X7R226K160HT"
+  },
+  {
+   "property": "LCSC",
+   "ref": "C30",
+   "sheet": "01_power_tree.kicad_sch",
+   "value": "C22392398"
+  },
+  {
+   "property": "Note_Sourcing",
+   "ref": "C30",
+   "sheet": "01_power_tree.kicad_sch",
+   "value": "SOURCING D-614. EXACT_PRIOR from the beta-dm audit line '22uF 10V X7R' (REJECTED - JLC match wrong); manufacturer derived from the CCTC part-number family and corroborated by the audit text; rating 16V meets 10.0V; dielectric X7R meets X7R."
+  },
+  {
+   "property": "Manufacturer",
+   "ref": "R32",
+   "sheet": "01_power_tree.kicad_sch",
+   "value": "UNI-ROYAL(Uniroyal Elec)"
+  },
+  {
+   "property": "MPN",
+   "ref": "R32",
+   "sheet": "01_power_tree.kicad_sch",
+   "value": "0603WAF0000T5E"
+  },
+  {
+   "property": "LCSC",
+   "ref": "R32",
+   "sheet": "01_power_tree.kicad_sch",
+   "value": "C21189"
+  },
+  {
+   "property": "Note_Sourcing",
+   "ref": "R32",
+   "sheet": "01_power_tree.kicad_sch",
+   "value": "SOURCING D-614. EXACT_PRIOR from the beta-dm audit line '0R' (ACCEPTED); manufacturer derived from the UNI-ROYAL(Uniroyal Elec) part-number family and corroborated by the audit text; identical specification."
+  },
+  {
+   "property": "Manufacturer",
+   "ref": "R39",
+   "sheet": "01_power_tree.kicad_sch",
+   "value": "UNI-ROYAL(Uniroyal Elec)"
+  },
+  {
+   "property": "MPN",
+   "ref": "R39",
+   "sheet": "01_power_tree.kicad_sch",
+   "value": "0603WAF1004T5E"
+  },
+  {
+   "property": "LCSC",
+   "ref": "R39",
+   "sheet": "01_power_tree.kicad_sch",
+   "value": "C22935"
+  },
+  {
+   "property": "Note_Sourcing",
+   "ref": "R39",
+   "sheet": "01_power_tree.kicad_sch",
+   "value": "SOURCING D-614. EXACT_PRIOR from the beta-dm audit line '1M 1%' (REJECTED - JLC match wrong); manufacturer derived from the UNI-ROYAL(Uniroyal Elec) part-number family and corroborated by the audit text; tolerance 1.0% meets 1.0%."
+  },
+  {
+   "property": "Manufacturer",
+   "ref": "C20",
+   "sheet": "01_power_tree.kicad_sch",
+   "value": "YAGEO"
+  },
+  {
+   "property": "MPN",
+   "ref": "C20",
+   "sheet": "01_power_tree.kicad_sch",
+   "value": "CC0805KKX7R8BB475"
+  },
+  {
+   "property": "LCSC",
+   "ref": "C20",
+   "sheet": "01_power_tree.kicad_sch",
+   "value": "C354262"
+  },
+  {
+   "property": "Note_Sourcing",
+   "ref": "C20",
+   "sheet": "01_power_tree.kicad_sch",
+   "value": "SOURCING D-614. EXACT_PRIOR from the beta-dm audit line '4.7uF 10V X7R' (REJECTED - JLC match wrong); manufacturer derived from the YAGEO part-number family and corroborated by the audit text; rating 25.0V meets 10.0V; dielectric X7R meets X7R."
+  },
+  {
+   "property": "Manufacturer",
+   "ref": "R34",
+   "sheet": "01_power_tree.kicad_sch",
+   "value": "UNI-ROYAL(Uniroyal Elec)"
+  },
+  {
+   "property": "MPN",
+   "ref": "R34",
+   "sheet": "01_power_tree.kicad_sch",
+   "value": "0603WAF220JT5E"
+  },
+  {
+   "property": "LCSC",
+   "ref": "R34",
+   "sheet": "01_power_tree.kicad_sch",
+   "value": "C23345"
+  },
+  {
+   "property": "Note_Sourcing",
+   "ref": "R34",
+   "sheet": "01_power_tree.kicad_sch",
+   "value": "SOURCING D-614. EXACT_PRIOR from the beta-dm audit line '22R' (ACCEPTED); manufacturer derived from the UNI-ROYAL(Uniroyal Elec) part-number family and corroborated by the audit text; identical specification."
+  },
+  {
+   "property": "Manufacturer",
+   "ref": "C26",
+   "sheet": "01_power_tree.kicad_sch",
+   "value": "Murata Electronics"
+  },
+  {
+   "property": "MPN",
+   "ref": "C26",
+   "sheet": "01_power_tree.kicad_sch",
+   "value": "GRM31CR71E106KA12L"
+  },
+  {
+   "property": "LCSC",
+   "ref": "C26",
+   "sheet": "01_power_tree.kicad_sch",
+   "value": "C77093"
+  },
+  {
+   "property": "Note_Sourcing",
+   "ref": "C26",
+   "sheet": "01_power_tree.kicad_sch",
+   "value": "SOURCING D-614. EXACT_PRIOR from the beta-dm audit line '10uF 10V X7R' (REJECTED - JLC match wrong); manufacturer derived from the Murata Electronics part-number family and corroborated by the audit text; rating 25.0V meets 10.0V; dielectric X7R meets X7R."
+  },
+  {
+   "property": "Manufacturer",
+   "ref": "R41",
+   "sheet": "01_power_tree.kicad_sch",
+   "value": "UNI-ROYAL(Uniroyal Elec)"
+  },
+  {
+   "property": "MPN",
+   "ref": "R41",
+   "sheet": "01_power_tree.kicad_sch",
+   "value": "0603WAF1004T5E"
+  },
+  {
+   "property": "LCSC",
+   "ref": "R41",
+   "sheet": "01_power_tree.kicad_sch",
+   "value": "C22935"
+  },
+  {
+   "property": "Note_Sourcing",
+   "ref": "R41",
+   "sheet": "01_power_tree.kicad_sch",
+   "value": "SOURCING D-614. EXACT_PRIOR from the beta-dm audit line '1M' (ACCEPTED); manufacturer derived from the UNI-ROYAL(Uniroyal Elec) part-number family and corroborated by the audit text; identical specification."
+  },
+  {
+   "property": "Manufacturer",
+   "ref": "R38",
+   "sheet": "01_power_tree.kicad_sch",
+   "value": "UNI-ROYAL(Uniroyal Elec)"
+  },
+  {
+   "property": "MPN",
+   "ref": "R38",
+   "sheet": "01_power_tree.kicad_sch",
+   "value": "0603WAF1002T5E"
+  },
+  {
+   "property": "LCSC",
+   "ref": "R38",
+   "sheet": "01_power_tree.kicad_sch",
+   "value": "C25804"
+  },
+  {
+   "property": "Note_Sourcing",
+   "ref": "R38",
+   "sheet": "01_power_tree.kicad_sch",
+   "value": "SOURCING D-614. EXACT_PRIOR from the beta-dm audit line '10k 1%' (REJECTED - JLC match wrong); manufacturer derived from the UNI-ROYAL(Uniroyal Elec) part-number family and corroborated by the audit text; tolerance 1.0% meets 1.0%."
+  },
+  {
+   "property": "Manufacturer",
+   "ref": "R35",
+   "sheet": "01_power_tree.kicad_sch",
+   "value": "UNI-ROYAL(Uniroyal Elec)"
+  },
+  {
+   "property": "MPN",
+   "ref": "R35",
+   "sheet": "01_power_tree.kicad_sch",
+   "value": "0603WAF0000T5E"
+  },
+  {
+   "property": "LCSC",
+   "ref": "R35",
+   "sheet": "01_power_tree.kicad_sch",
+   "value": "C21189"
+  },
+  {
+   "property": "Note_Sourcing",
+   "ref": "R35",
+   "sheet": "01_power_tree.kicad_sch",
+   "value": "SOURCING D-614. EXACT_PRIOR from the beta-dm audit line '0R' (ACCEPTED); manufacturer derived from the UNI-ROYAL(Uniroyal Elec) part-number family and corroborated by the audit text; identical specification."
+  },
+  {
+   "property": "Manufacturer",
+   "ref": "C32",
+   "sheet": "01_power_tree.kicad_sch",
+   "value": "CCTC"
+  },
+  {
+   "property": "MPN",
+   "ref": "C32",
+   "sheet": "01_power_tree.kicad_sch",
+   "value": "TCC1206X7R226K160HT"
+  },
+  {
+   "property": "LCSC",
+   "ref": "C32",
+   "sheet": "01_power_tree.kicad_sch",
+   "value": "C22392398"
+  },
+  {
+   "property": "Note_Sourcing",
+   "ref": "C32",
+   "sheet": "01_power_tree.kicad_sch",
+   "value": "SOURCING D-614. EXACT_PRIOR from the beta-dm audit line '22uF 10V X7R' (REJECTED - JLC match wrong); manufacturer derived from the CCTC part-number family and corroborated by the audit text; rating 16V meets 10.0V; dielectric X7R meets X7R."
+  },
+  {
+   "property": "Manufacturer",
+   "ref": "R43",
+   "sheet": "01_power_tree.kicad_sch",
+   "value": "UNI-ROYAL(Uniroyal Elec)"
+  },
+  {
+   "property": "MPN",
+   "ref": "R43",
+   "sheet": "01_power_tree.kicad_sch",
+   "value": "0603WAF1003T5E"
+  },
+  {
+   "property": "LCSC",
+   "ref": "R43",
+   "sheet": "01_power_tree.kicad_sch",
+   "value": "C25803"
+  },
+  {
+   "property": "Note_Sourcing",
+   "ref": "R43",
+   "sheet": "01_power_tree.kicad_sch",
+   "value": "SOURCING D-614. EXACT_PRIOR from the beta-dm audit line '100K' (ACCEPTED); manufacturer derived from the UNI-ROYAL(Uniroyal Elec) part-number family and corroborated by the audit text; identical specification."
+  },
+  {
+   "property": "Manufacturer",
+   "ref": "C59",
+   "sheet": "01_power_tree.kicad_sch",
+   "value": "YAGEO"
+  },
+  {
+   "property": "MPN",
+   "ref": "C59",
+   "sheet": "01_power_tree.kicad_sch",
+   "value": "CC0603KRX7R8BB105"
+  },
+  {
+   "property": "LCSC",
+   "ref": "C59",
+   "sheet": "01_power_tree.kicad_sch",
+   "value": "C106858"
+  },
+  {
+   "property": "Note_Sourcing",
+   "ref": "C59",
+   "sheet": "01_power_tree.kicad_sch",
+   "value": "SOURCING D-614. EXACT_PRIOR from the beta-dm audit line '1uF 25V X7R' (REJECTED - JLC match wrong); manufacturer derived from the YAGEO part-number family and corroborated by the audit text; rating 25.0V meets 25.0V; dielectric X7R meets X7R."
+  },
+  {
+   "property": "Manufacturer",
+   "ref": "C58",
+   "sheet": "01_power_tree.kicad_sch",
+   "value": "YAGEO"
+  },
+  {
+   "property": "MPN",
+   "ref": "C58",
+   "sheet": "01_power_tree.kicad_sch",
+   "value": "CC0603KRX7R8BB105"
+  },
+  {
+   "property": "LCSC",
+   "ref": "C58",
+   "sheet": "01_power_tree.kicad_sch",
+   "value": "C106858"
+  },
+  {
+   "property": "Note_Sourcing",
+   "ref": "C58",
+   "sheet": "01_power_tree.kicad_sch",
+   "value": "SOURCING D-614. EXACT_PRIOR from the beta-dm audit line '1uF 25V X7R' (REJECTED - JLC match wrong); manufacturer derived from the YAGEO part-number family and corroborated by the audit text; rating 25.0V meets 25.0V; dielectric X7R meets X7R."
+  },
+  {
+   "property": "Manufacturer",
+   "ref": "R80",
+   "sheet": "01_power_tree.kicad_sch",
+   "value": "UNI-ROYAL(Uniroyal Elec)"
+  },
+  {
+   "property": "MPN",
+   "ref": "R80",
+   "sheet": "01_power_tree.kicad_sch",
+   "value": "0603WAF1004T5E"
+  },
+  {
+   "property": "LCSC",
+   "ref": "R80",
+   "sheet": "01_power_tree.kicad_sch",
+   "value": "C22935"
+  },
+  {
+   "property": "Note_Sourcing",
+   "ref": "R80",
+   "sheet": "01_power_tree.kicad_sch",
+   "value": "SOURCING D-614. EXACT_PRIOR from the beta-dm audit line '1M' (ACCEPTED); manufacturer derived from the UNI-ROYAL(Uniroyal Elec) part-number family and corroborated by the audit text; identical specification."
+  },
+  {
+   "property": "Manufacturer",
+   "ref": "R81",
+   "sheet": "01_power_tree.kicad_sch",
+   "value": "UNI-ROYAL(Uniroyal Elec)"
+  },
+  {
+   "property": "MPN",
+   "ref": "R81",
+   "sheet": "01_power_tree.kicad_sch",
+   "value": "0603WAF1003T5E"
+  },
+  {
+   "property": "LCSC",
+   "ref": "R81",
+   "sheet": "01_power_tree.kicad_sch",
+   "value": "C25803"
+  },
+  {
+   "property": "Note_Sourcing",
+   "ref": "R81",
+   "sheet": "01_power_tree.kicad_sch",
+   "value": "SOURCING D-614. EXACT_PRIOR from the beta-dm audit line '100k' (ACCEPTED); manufacturer derived from the UNI-ROYAL(Uniroyal Elec) part-number family and corroborated by the audit text; identical specification."
+  },
+  {
+   "property": "Manufacturer",
+   "ref": "R82",
+   "sheet": "01_power_tree.kicad_sch",
+   "value": "UNI-ROYAL(Uniroyal Elec)"
+  },
+  {
+   "property": "MPN",
+   "ref": "R82",
+   "sheet": "01_power_tree.kicad_sch",
+   "value": "0603WAF1004T5E"
+  },
+  {
+   "property": "LCSC",
+   "ref": "R82",
+   "sheet": "01_power_tree.kicad_sch",
+   "value": "C22935"
+  },
+  {
+   "property": "Note_Sourcing",
+   "ref": "R82",
+   "sheet": "01_power_tree.kicad_sch",
+   "value": "SOURCING D-614. EXACT_PRIOR from the beta-dm audit line '1M' (ACCEPTED); manufacturer derived from the UNI-ROYAL(Uniroyal Elec) part-number family and corroborated by the audit text; identical specification."
+  },
+  {
+   "property": "Manufacturer",
+   "ref": "R83",
+   "sheet": "01_power_tree.kicad_sch",
+   "value": "UNI-ROYAL(Uniroyal Elec)"
+  },
+  {
+   "property": "MPN",
+   "ref": "R83",
+   "sheet": "01_power_tree.kicad_sch",
+   "value": "0603WAF1002T5E"
+  },
+  {
+   "property": "LCSC",
+   "ref": "R83",
+   "sheet": "01_power_tree.kicad_sch",
+   "value": "C25804"
+  },
+  {
+   "property": "Note_Sourcing",
+   "ref": "R83",
+   "sheet": "01_power_tree.kicad_sch",
+   "value": "SOURCING D-614. EXACT_PRIOR from the beta-dm audit line '10k' (ACCEPTED); manufacturer derived from the UNI-ROYAL(Uniroyal Elec) part-number family and corroborated by the audit text; identical specification."
+  },
+  {
+   "property": "Manufacturer",
+   "ref": "R84",
+   "sheet": "01_power_tree.kicad_sch",
+   "value": "UNI-ROYAL(Uniroyal Elec)"
+  },
+  {
+   "property": "MPN",
+   "ref": "R84",
+   "sheet": "01_power_tree.kicad_sch",
+   "value": "0603WAF1000T5E"
+  },
+  {
+   "property": "LCSC",
+   "ref": "R84",
+   "sheet": "01_power_tree.kicad_sch",
+   "value": "C22775"
+  },
+  {
+   "property": "Note_Sourcing",
+   "ref": "R84",
+   "sheet": "01_power_tree.kicad_sch",
+   "value": "SOURCING D-614. CONTAINED_PRIOR from the beta-dm audit line '100R 1%' (REJECTED - JLC match wrong); manufacturer derived from the UNI-ROYAL(Uniroyal Elec) part-number family and corroborated by the audit text; identical specification."
+  },
+  {
+   "property": "Manufacturer",
+   "ref": "C60",
+   "sheet": "01_power_tree.kicad_sch",
+   "value": "YAGEO"
+  },
+  {
+   "property": "MPN",
+   "ref": "C60",
+   "sheet": "01_power_tree.kicad_sch",
+   "value": "CC0603KRX7R9BB104"
+  },
+  {
+   "property": "LCSC",
+   "ref": "C60",
+   "sheet": "01_power_tree.kicad_sch",
+   "value": "C14663"
+  },
+  {
+   "property": "Note_Sourcing",
+   "ref": "C60",
+   "sheet": "01_power_tree.kicad_sch",
+   "value": "SOURCING D-614. EXACT_PRIOR from the beta-dm audit line '100nF X7R' (ACCEPTED); manufacturer derived from the YAGEO part-number family and corroborated by the audit text; dielectric X7R meets X7R."
+  },
+  {
+   "property": "Manufacturer",
+   "ref": "C61",
+   "sheet": "01_power_tree.kicad_sch",
+   "value": "YAGEO"
+  },
+  {
+   "property": "MPN",
+   "ref": "C61",
+   "sheet": "01_power_tree.kicad_sch",
+   "value": "CC0603KRX7R9BB104"
+  },
+  {
+   "property": "LCSC",
+   "ref": "C61",
+   "sheet": "01_power_tree.kicad_sch",
+   "value": "C14663"
+  },
+  {
+   "property": "Note_Sourcing",
+   "ref": "C61",
+   "sheet": "01_power_tree.kicad_sch",
+   "value": "SOURCING D-614. EXACT_PRIOR from the beta-dm audit line '100nF X7R' (ACCEPTED); manufacturer derived from the YAGEO part-number family and corroborated by the audit text; dielectric X7R meets X7R."
+  },
+  {
+   "property": "Manufacturer",
+   "ref": "R94",
+   "sheet": "01_power_tree.kicad_sch",
+   "value": "UNI-ROYAL(Uniroyal Elec)"
+  },
+  {
+   "property": "MPN",
+   "ref": "R94",
+   "sheet": "01_power_tree.kicad_sch",
+   "value": "0603WAF1004T5E"
+  },
+  {
+   "property": "LCSC",
+   "ref": "R94",
+   "sheet": "01_power_tree.kicad_sch",
+   "value": "C22935"
+  },
+  {
+   "property": "Note_Sourcing",
+   "ref": "R94",
+   "sheet": "01_power_tree.kicad_sch",
+   "value": "SOURCING D-614. EXACT_PRIOR from the beta-dm audit line '1M' (ACCEPTED); manufacturer derived from the UNI-ROYAL(Uniroyal Elec) part-number family and corroborated by the audit text; identical specification."
+  },
+  {
+   "property": "Manufacturer",
+   "ref": "R96",
+   "sheet": "01_power_tree.kicad_sch",
+   "value": "UNI-ROYAL(Uniroyal Elec)"
+  },
+  {
+   "property": "MPN",
+   "ref": "R96",
+   "sheet": "01_power_tree.kicad_sch",
+   "value": "0603WAF1004T5E"
+  },
+  {
+   "property": "LCSC",
+   "ref": "R96",
+   "sheet": "01_power_tree.kicad_sch",
+   "value": "C22935"
+  },
+  {
+   "property": "Note_Sourcing",
+   "ref": "R96",
+   "sheet": "01_power_tree.kicad_sch",
+   "value": "SOURCING D-614. EXACT_PRIOR from the beta-dm audit line '1M' (ACCEPTED); manufacturer derived from the UNI-ROYAL(Uniroyal Elec) part-number family and corroborated by the audit text; identical specification."
+  },
+  {
+   "property": "Manufacturer",
+   "ref": "R98",
+   "sheet": "01_power_tree.kicad_sch",
+   "value": "UNI-ROYAL(Uniroyal Elec)"
+  },
+  {
+   "property": "MPN",
+   "ref": "R98",
+   "sheet": "01_power_tree.kicad_sch",
+   "value": "0603WAF1003T5E"
+  },
+  {
+   "property": "LCSC",
+   "ref": "R98",
+   "sheet": "01_power_tree.kicad_sch",
+   "value": "C25803"
+  },
+  {
+   "property": "Note_Sourcing",
+   "ref": "R98",
+   "sheet": "01_power_tree.kicad_sch",
+   "value": "SOURCING D-614. EXACT_PRIOR from the beta-dm audit line '100k' (ACCEPTED); manufacturer derived from the UNI-ROYAL(Uniroyal Elec) part-number family and corroborated by the audit text; identical specification."
+  },
+  {
+   "property": "Manufacturer",
+   "ref": "C62",
+   "sheet": "01_power_tree.kicad_sch",
+   "value": "YAGEO"
+  },
+  {
+   "property": "MPN",
+   "ref": "C62",
+   "sheet": "01_power_tree.kicad_sch",
+   "value": "CC0603KRX7R8BB105"
+  },
+  {
+   "property": "LCSC",
+   "ref": "C62",
+   "sheet": "01_power_tree.kicad_sch",
+   "value": "C106858"
+  },
+  {
+   "property": "Note_Sourcing",
+   "ref": "C62",
+   "sheet": "01_power_tree.kicad_sch",
+   "value": "SOURCING D-614. EXACT_PRIOR from the beta-dm audit line '1uF 10V X7R' (REJECTED - JLC match wrong); manufacturer derived from the YAGEO part-number family and corroborated by the audit text; rating 25.0V meets 10.0V; dielectric X7R meets X7R."
+  },
+  {
+   "property": "Manufacturer",
+   "ref": "C63",
+   "sheet": "01_power_tree.kicad_sch",
+   "value": "YAGEO"
+  },
+  {
+   "property": "MPN",
+   "ref": "C63",
+   "sheet": "01_power_tree.kicad_sch",
+   "value": "CC0603KRX7R8BB105"
+  },
+  {
+   "property": "LCSC",
+   "ref": "C63",
+   "sheet": "01_power_tree.kicad_sch",
+   "value": "C106858"
+  },
+  {
+   "property": "Note_Sourcing",
+   "ref": "C63",
+   "sheet": "01_power_tree.kicad_sch",
+   "value": "SOURCING D-614. EXACT_PRIOR from the beta-dm audit line '1uF 10V X7R' (REJECTED - JLC match wrong); manufacturer derived from the YAGEO part-number family and corroborated by the audit text; rating 25.0V meets 10.0V; dielectric X7R meets X7R."
+  },
+  {
+   "property": "Manufacturer",
+   "ref": "R103",
+   "sheet": "01_power_tree.kicad_sch",
+   "value": "UNI-ROYAL(Uniroyal Elec)"
+  },
+  {
+   "property": "MPN",
+   "ref": "R103",
+   "sheet": "01_power_tree.kicad_sch",
+   "value": "0603WAF1003T5E"
+  },
+  {
+   "property": "LCSC",
+   "ref": "R103",
+   "sheet": "01_power_tree.kicad_sch",
+   "value": "C25803"
+  },
+  {
+   "property": "Note_Sourcing",
+   "ref": "R103",
+   "sheet": "01_power_tree.kicad_sch",
+   "value": "SOURCING D-614. EXACT_PRIOR from the beta-dm audit line '100k' (ACCEPTED); manufacturer derived from the UNI-ROYAL(Uniroyal Elec) part-number family and corroborated by the audit text; identical specification."
+  },
+  {
+   "property": "Manufacturer",
+   "ref": "C64",
+   "sheet": "01_power_tree.kicad_sch",
+   "value": "YAGEO"
+  },
+  {
+   "property": "MPN",
+   "ref": "C64",
+   "sheet": "01_power_tree.kicad_sch",
+   "value": "CC0805KKX7R7BB106"
+  },
+  {
+   "property": "LCSC",
+   "ref": "C64",
+   "sheet": "01_power_tree.kicad_sch",
+   "value": "C326595"
+  },
+  {
+   "property": "Note_Sourcing",
+   "ref": "C64",
+   "sheet": "01_power_tree.kicad_sch",
+   "value": "SOURCING D-614. EXACT_PRIOR from the beta-dm audit line '10uF 10V X7R' (REJECTED - JLC match wrong); manufacturer derived from the YAGEO part-number family and corroborated by the audit text; rating 16.0V meets 10.0V; dielectric X7R meets X7R."
+  },
+  {
+   "property": "Manufacturer",
+   "ref": "R100",
+   "sheet": "01_power_tree.kicad_sch",
+   "value": "UNI-ROYAL(Uniroyal Elec)"
+  },
+  {
+   "property": "MPN",
+   "ref": "R100",
+   "sheet": "01_power_tree.kicad_sch",
+   "value": "0603WAF1003T5E"
+  },
+  {
+   "property": "LCSC",
+   "ref": "R100",
+   "sheet": "01_power_tree.kicad_sch",
+   "value": "C25803"
+  },
+  {
+   "property": "Note_Sourcing",
+   "ref": "R100",
+   "sheet": "01_power_tree.kicad_sch",
+   "value": "SOURCING D-614. EXACT_PRIOR from the beta-dm audit line '100k 1%' (REJECTED - JLC match wrong); manufacturer derived from the UNI-ROYAL(Uniroyal Elec) part-number family and corroborated by the audit text; tolerance 1.0% meets 1.0%."
+  },
+  {
+   "property": "Manufacturer",
+   "ref": "R102",
+   "sheet": "01_power_tree.kicad_sch",
+   "value": "UNI-ROYAL(Uniroyal Elec)"
+  },
+  {
+   "property": "MPN",
+   "ref": "R102",
+   "sheet": "01_power_tree.kicad_sch",
+   "value": "0603WAF1003T5E"
+  },
+  {
+   "property": "LCSC",
+   "ref": "R102",
+   "sheet": "01_power_tree.kicad_sch",
+   "value": "C25803"
+  },
+  {
+   "property": "Note_Sourcing",
+   "ref": "R102",
+   "sheet": "01_power_tree.kicad_sch",
+   "value": "SOURCING D-614. EXACT_PRIOR from the beta-dm audit line '100k' (ACCEPTED); manufacturer derived from the UNI-ROYAL(Uniroyal Elec) part-number family and corroborated by the audit text; identical specification."
+  },
+  {
+   "property": "Manufacturer",
+   "ref": "C67",
+   "sheet": "01_power_tree.kicad_sch",
+   "value": "YAGEO"
+  },
+  {
+   "property": "MPN",
+   "ref": "C67",
+   "sheet": "01_power_tree.kicad_sch",
+   "value": "CC0603KRX7R8BB105"
+  },
+  {
+   "property": "LCSC",
+   "ref": "C67",
+   "sheet": "01_power_tree.kicad_sch",
+   "value": "C106858"
+  },
+  {
+   "property": "Note_Sourcing",
+   "ref": "C67",
+   "sheet": "01_power_tree.kicad_sch",
+   "value": "SOURCING D-614. EXACT_PRIOR from the beta-dm audit line '1uF 10V X7R' (REJECTED - JLC match wrong); manufacturer derived from the YAGEO part-number family and corroborated by the audit text; rating 25.0V meets 10.0V; dielectric X7R meets X7R."
+  },
+  {
+   "property": "Manufacturer",
+   "ref": "C68",
+   "sheet": "01_power_tree.kicad_sch",
+   "value": "YAGEO"
+  },
+  {
+   "property": "MPN",
+   "ref": "C68",
+   "sheet": "01_power_tree.kicad_sch",
+   "value": "CC0603KRX7R9BB104"
+  },
+  {
+   "property": "LCSC",
+   "ref": "C68",
+   "sheet": "01_power_tree.kicad_sch",
+   "value": "C14663"
+  },
+  {
+   "property": "Note_Sourcing",
+   "ref": "C68",
+   "sheet": "01_power_tree.kicad_sch",
+   "value": "SOURCING D-614. EXACT_PRIOR from the beta-dm audit line '100nF X7R' (ACCEPTED); manufacturer derived from the YAGEO part-number family and corroborated by the audit text; dielectric X7R meets X7R."
+  },
+  {
+   "property": "Manufacturer",
+   "ref": "R106",
+   "sheet": "01_power_tree.kicad_sch",
+   "value": "UNI-ROYAL(Uniroyal Elec)"
+  },
+  {
+   "property": "MPN",
+   "ref": "R106",
+   "sheet": "01_power_tree.kicad_sch",
+   "value": "0603WAF0000T5E"
+  },
+  {
+   "property": "LCSC",
+   "ref": "R106",
+   "sheet": "01_power_tree.kicad_sch",
+   "value": "C21189"
+  },
+  {
+   "property": "Note_Sourcing",
+   "ref": "R106",
+   "sheet": "01_power_tree.kicad_sch",
+   "value": "SOURCING D-614. CONTAINED_PRIOR from the beta-dm audit line '0R' (ACCEPTED); manufacturer derived from the UNI-ROYAL(Uniroyal Elec) part-number family and corroborated by the audit text; annotation FIT is a stuffing/land note, not a specification."
+  },
+  {
+   "property": "Manufacturer",
+   "ref": "R131",
+   "sheet": "01_power_tree.kicad_sch",
+   "value": "UNI-ROYAL(Uniroyal Elec)"
+  },
+  {
+   "property": "MPN",
+   "ref": "R131",
+   "sheet": "01_power_tree.kicad_sch",
+   "value": "0603WAF1003T5E"
+  },
+  {
+   "property": "LCSC",
+   "ref": "R131",
+   "sheet": "01_power_tree.kicad_sch",
+   "value": "C25803"
+  },
+  {
+   "property": "Note_Sourcing",
+   "ref": "R131",
+   "sheet": "01_power_tree.kicad_sch",
+   "value": "SOURCING D-614. EXACT_PRIOR from the beta-dm audit line '100k' (ACCEPTED); manufacturer derived from the UNI-ROYAL(Uniroyal Elec) part-number family and corroborated by the audit text; identical specification."
+  },
+  {
+   "property": "Manufacturer",
+   "ref": "R1",
+   "sheet": "02_mcu_core.kicad_sch",
+   "value": "UNI-ROYAL(Uniroyal Elec)"
+  },
+  {
+   "property": "MPN",
+   "ref": "R1",
+   "sheet": "02_mcu_core.kicad_sch",
+   "value": "0603WAF1002T5E"
+  },
+  {
+   "property": "LCSC",
+   "ref": "R1",
+   "sheet": "02_mcu_core.kicad_sch",
+   "value": "C25804"
+  },
+  {
+   "property": "Note_Sourcing",
+   "ref": "R1",
+   "sheet": "02_mcu_core.kicad_sch",
+   "value": "SOURCING D-614. EXACT_PRIOR from the beta-dm audit line '10k' (ACCEPTED); manufacturer derived from the UNI-ROYAL(Uniroyal Elec) part-number family and corroborated by the audit text; identical specification."
+  },
+  {
+   "property": "Manufacturer",
+   "ref": "C1",
+   "sheet": "02_mcu_core.kicad_sch",
+   "value": "Samsung Electro-Mechanics"
+  },
+  {
+   "property": "MPN",
+   "ref": "C1",
+   "sheet": "02_mcu_core.kicad_sch",
+   "value": "CL10A105KB8NNNC"
+  },
+  {
+   "property": "LCSC",
+   "ref": "C1",
+   "sheet": "02_mcu_core.kicad_sch",
+   "value": "C15849"
+  },
+  {
+   "property": "Note_Sourcing",
+   "ref": "C1",
+   "sheet": "02_mcu_core.kicad_sch",
+   "value": "SOURCING D-614. EXACT_PRIOR from the beta-dm audit line '1uF' (ACCEPTED); manufacturer derived from the Samsung Electro-Mechanics part-number family and corroborated by the audit text; identical specification."
+  },
+  {
+   "property": "Manufacturer",
+   "ref": "C2",
+   "sheet": "02_mcu_core.kicad_sch",
+   "value": "YAGEO"
+  },
+  {
+   "property": "MPN",
+   "ref": "C2",
+   "sheet": "02_mcu_core.kicad_sch",
+   "value": "CC0603KRX7R9BB104"
+  },
+  {
+   "property": "LCSC",
+   "ref": "C2",
+   "sheet": "02_mcu_core.kicad_sch",
+   "value": "C14663"
+  },
+  {
+   "property": "Note_Sourcing",
+   "ref": "C2",
+   "sheet": "02_mcu_core.kicad_sch",
+   "value": "SOURCING D-614. EXACT_PRIOR from the beta-dm audit line '100nF' (ACCEPTED); manufacturer derived from the YAGEO part-number family and corroborated by the audit text; identical specification."
+  },
+  {
+   "property": "Manufacturer",
+   "ref": "R2",
+   "sheet": "02_mcu_core.kicad_sch",
+   "value": "UNI-ROYAL(Uniroyal Elec)"
+  },
+  {
+   "property": "MPN",
+   "ref": "R2",
+   "sheet": "02_mcu_core.kicad_sch",
+   "value": "0603WAF1002T5E"
+  },
+  {
+   "property": "LCSC",
+   "ref": "R2",
+   "sheet": "02_mcu_core.kicad_sch",
+   "value": "C25804"
+  },
+  {
+   "property": "Note_Sourcing",
+   "ref": "R2",
+   "sheet": "02_mcu_core.kicad_sch",
+   "value": "SOURCING D-614. EXACT_PRIOR from the beta-dm audit line '10k' (ACCEPTED); manufacturer derived from the UNI-ROYAL(Uniroyal Elec) part-number family and corroborated by the audit text; identical specification."
+  },
+  {
+   "property": "Manufacturer",
+   "ref": "C3",
+   "sheet": "02_mcu_core.kicad_sch",
+   "value": "Murata Electronics"
+  },
+  {
+   "property": "MPN",
+   "ref": "C3",
+   "sheet": "02_mcu_core.kicad_sch",
+   "value": "GRM21BR61H106KE43L"
+  },
+  {
+   "property": "LCSC",
+   "ref": "C3",
+   "sheet": "02_mcu_core.kicad_sch",
+   "value": "C440198"
+  },
+  {
+   "property": "Note_Sourcing",
+   "ref": "C3",
+   "sheet": "02_mcu_core.kicad_sch",
+   "value": "SOURCING D-614. EXACT_PRIOR from the beta-dm audit line '10uF' (ACCEPTED); manufacturer derived from the Murata Electronics part-number family and corroborated by the audit text; identical specification."
+  },
+  {
+   "property": "Manufacturer",
+   "ref": "R108",
+   "sheet": "02_mcu_core.kicad_sch",
+   "value": "UNI-ROYAL(Uniroyal Elec)"
+  },
+  {
+   "property": "MPN",
+   "ref": "R108",
+   "sheet": "02_mcu_core.kicad_sch",
+   "value": "0603WAF1002T5E"
+  },
+  {
+   "property": "LCSC",
+   "ref": "R108",
+   "sheet": "02_mcu_core.kicad_sch",
+   "value": "C25804"
+  },
+  {
+   "property": "Note_Sourcing",
+   "ref": "R108",
+   "sheet": "02_mcu_core.kicad_sch",
+   "value": "SOURCING D-614. EXACT_PRIOR from the beta-dm audit line '10k' (ACCEPTED); manufacturer derived from the UNI-ROYAL(Uniroyal Elec) part-number family and corroborated by the audit text; identical specification."
+  },
+  {
+   "property": "Manufacturer",
+   "ref": "R109",
+   "sheet": "02_mcu_core.kicad_sch",
+   "value": "UNI-ROYAL(Uniroyal Elec)"
+  },
+  {
+   "property": "MPN",
+   "ref": "R109",
+   "sheet": "02_mcu_core.kicad_sch",
+   "value": "0603WAF0000T5E"
+  },
+  {
+   "property": "LCSC",
+   "ref": "R109",
+   "sheet": "02_mcu_core.kicad_sch",
+   "value": "C21189"
+  },
+  {
+   "property": "Note_Sourcing",
+   "ref": "R109",
+   "sheet": "02_mcu_core.kicad_sch",
+   "value": "SOURCING D-614. CONTAINED_PRIOR from the beta-dm audit line '0R' (ACCEPTED); manufacturer derived from the UNI-ROYAL(Uniroyal Elec) part-number family and corroborated by the audit text; annotation FIT is a stuffing/land note, not a specification."
+  },
+  {
+   "property": "Manufacturer",
+   "ref": "R110",
+   "sheet": "02_mcu_core.kicad_sch",
+   "value": "UNI-ROYAL(Uniroyal Elec)"
+  },
+  {
+   "property": "MPN",
+   "ref": "R110",
+   "sheet": "02_mcu_core.kicad_sch",
+   "value": "0603WAF1002T5E"
+  },
+  {
+   "property": "LCSC",
+   "ref": "R110",
+   "sheet": "02_mcu_core.kicad_sch",
+   "value": "C25804"
+  },
+  {
+   "property": "Note_Sourcing",
+   "ref": "R110",
+   "sheet": "02_mcu_core.kicad_sch",
+   "value": "SOURCING D-614. EXACT_PRIOR from the beta-dm audit line '10k' (ACCEPTED); manufacturer derived from the UNI-ROYAL(Uniroyal Elec) part-number family and corroborated by the audit text; identical specification."
+  },
+  {
+   "property": "Manufacturer",
+   "ref": "R111",
+   "sheet": "02_mcu_core.kicad_sch",
+   "value": "UNI-ROYAL(Uniroyal Elec)"
+  },
+  {
+   "property": "MPN",
+   "ref": "R111",
+   "sheet": "02_mcu_core.kicad_sch",
+   "value": "0603WAF1002T5E"
+  },
+  {
+   "property": "LCSC",
+   "ref": "R111",
+   "sheet": "02_mcu_core.kicad_sch",
+   "value": "C25804"
+  },
+  {
+   "property": "Note_Sourcing",
+   "ref": "R111",
+   "sheet": "02_mcu_core.kicad_sch",
+   "value": "SOURCING D-614. EXACT_PRIOR from the beta-dm audit line '10k' (ACCEPTED); manufacturer derived from the UNI-ROYAL(Uniroyal Elec) part-number family and corroborated by the audit text; identical specification."
+  },
+  {
+   "property": "Manufacturer",
+   "ref": "C13",
+   "sheet": "03_spi_a_display_sd.kicad_sch",
+   "value": "YAGEO"
+  },
+  {
+   "property": "MPN",
+   "ref": "C13",
+   "sheet": "03_spi_a_display_sd.kicad_sch",
+   "value": "CC0603KRX7R9BB104"
+  },
+  {
+   "property": "LCSC",
+   "ref": "C13",
+   "sheet": "03_spi_a_display_sd.kicad_sch",
+   "value": "C14663"
+  },
+  {
+   "property": "Note_Sourcing",
+   "ref": "C13",
+   "sheet": "03_spi_a_display_sd.kicad_sch",
+   "value": "SOURCING D-614. EXACT_PRIOR from the beta-dm audit line '100nF' (ACCEPTED); manufacturer derived from the YAGEO part-number family and corroborated by the audit text; identical specification."
+  },
+  {
+   "property": "Manufacturer",
+   "ref": "C15",
+   "sheet": "03_spi_a_display_sd.kicad_sch",
+   "value": "Murata Electronics"
+  },
+  {
+   "property": "MPN",
+   "ref": "C15",
+   "sheet": "03_spi_a_display_sd.kicad_sch",
+   "value": "GRM21BR61H106KE43L"
+  },
+  {
+   "property": "LCSC",
+   "ref": "C15",
+   "sheet": "03_spi_a_display_sd.kicad_sch",
+   "value": "C440198"
+  },
+  {
+   "property": "Note_Sourcing",
+   "ref": "C15",
+   "sheet": "03_spi_a_display_sd.kicad_sch",
+   "value": "SOURCING D-614. EXACT_PRIOR from the beta-dm audit line '10uF' (ACCEPTED); manufacturer derived from the Murata Electronics part-number family and corroborated by the audit text; identical specification."
+  },
+  {
+   "property": "Manufacturer",
+   "ref": "R26",
+   "sheet": "03_spi_a_display_sd.kicad_sch",
+   "value": "UNI-ROYAL(Uniroyal Elec)"
+  },
+  {
+   "property": "MPN",
+   "ref": "R26",
+   "sheet": "03_spi_a_display_sd.kicad_sch",
+   "value": "0603WAF1002T5E"
+  },
+  {
+   "property": "LCSC",
+   "ref": "R26",
+   "sheet": "03_spi_a_display_sd.kicad_sch",
+   "value": "C25804"
+  },
+  {
+   "property": "Note_Sourcing",
+   "ref": "R26",
+   "sheet": "03_spi_a_display_sd.kicad_sch",
+   "value": "SOURCING D-614. EXACT_PRIOR from the beta-dm audit line '10k' (ACCEPTED); manufacturer derived from the UNI-ROYAL(Uniroyal Elec) part-number family and corroborated by the audit text; identical specification."
+  },
+  {
+   "property": "Manufacturer",
+   "ref": "R25",
+   "sheet": "03_spi_a_display_sd.kicad_sch",
+   "value": "UNI-ROYAL(Uniroyal Elec)"
+  },
+  {
+   "property": "MPN",
+   "ref": "R25",
+   "sheet": "03_spi_a_display_sd.kicad_sch",
+   "value": "0603WAF1002T5E"
+  },
+  {
+   "property": "LCSC",
+   "ref": "R25",
+   "sheet": "03_spi_a_display_sd.kicad_sch",
+   "value": "C25804"
+  },
+  {
+   "property": "Note_Sourcing",
+   "ref": "R25",
+   "sheet": "03_spi_a_display_sd.kicad_sch",
+   "value": "SOURCING D-614. EXACT_PRIOR from the beta-dm audit line '10k' (ACCEPTED); manufacturer derived from the UNI-ROYAL(Uniroyal Elec) part-number family and corroborated by the audit text; identical specification."
+  },
+  {
+   "property": "Manufacturer",
+   "ref": "C14",
+   "sheet": "03_spi_a_display_sd.kicad_sch",
+   "value": "YAGEO"
+  },
+  {
+   "property": "MPN",
+   "ref": "C14",
+   "sheet": "03_spi_a_display_sd.kicad_sch",
+   "value": "CC0603KRX7R9BB104"
+  },
+  {
+   "property": "LCSC",
+   "ref": "C14",
+   "sheet": "03_spi_a_display_sd.kicad_sch",
+   "value": "C14663"
+  },
+  {
+   "property": "Note_Sourcing",
+   "ref": "C14",
+   "sheet": "03_spi_a_display_sd.kicad_sch",
+   "value": "SOURCING D-614. EXACT_PRIOR from the beta-dm audit line '100nF' (ACCEPTED); manufacturer derived from the YAGEO part-number family and corroborated by the audit text; identical specification."
+  },
+  {
+   "property": "Manufacturer",
+   "ref": "C43",
+   "sheet": "03_spi_a_display_sd.kicad_sch",
+   "value": "Samsung Electro-Mechanics"
+  },
+  {
+   "property": "MPN",
+   "ref": "C43",
+   "sheet": "03_spi_a_display_sd.kicad_sch",
+   "value": "CL21A475KAQNNNE"
+  },
+  {
+   "property": "LCSC",
+   "ref": "C43",
+   "sheet": "03_spi_a_display_sd.kicad_sch",
+   "value": "C1779"
+  },
+  {
+   "property": "Note_Sourcing",
+   "ref": "C43",
+   "sheet": "03_spi_a_display_sd.kicad_sch",
+   "value": "SOURCING D-614. CONTAINED_PRIOR from the beta-dm audit line '4.7uF' (ACCEPTED); manufacturer derived from the Samsung Electro-Mechanics part-number family and corroborated by the audit text; rating 25.0V meets 10.0V; dielectric X5R meets X5R."
+  },
+  {
+   "property": "Manufacturer",
+   "ref": "C44",
+   "sheet": "03_spi_a_display_sd.kicad_sch",
+   "value": "Samsung Electro-Mechanics"
+  },
+  {
+   "property": "MPN",
+   "ref": "C44",
+   "sheet": "03_spi_a_display_sd.kicad_sch",
+   "value": "CL21B105KBFNNNE"
+  },
+  {
+   "property": "LCSC",
+   "ref": "C44",
+   "sheet": "03_spi_a_display_sd.kicad_sch",
+   "value": "C28323"
+  },
+  {
+   "property": "Note_Sourcing",
+   "ref": "C44",
+   "sheet": "03_spi_a_display_sd.kicad_sch",
+   "value": "SOURCING D-614. EXACT_PRIOR from the beta-dm audit line '1uF' (ACCEPTED); manufacturer derived from the Samsung Electro-Mechanics part-number family and corroborated by the audit text; identical specification."
+  },
+  {
+   "property": "Manufacturer",
+   "ref": "C56",
+   "sheet": "03_spi_a_display_sd.kicad_sch",
+   "value": "Samsung Electro-Mechanics"
+  },
+  {
+   "property": "MPN",
+   "ref": "C56",
+   "sheet": "03_spi_a_display_sd.kicad_sch",
+   "value": "CL10A105KB8NNNC"
+  },
+  {
+   "property": "LCSC",
+   "ref": "C56",
+   "sheet": "03_spi_a_display_sd.kicad_sch",
+   "value": "C15849"
+  },
+  {
+   "property": "Note_Sourcing",
+   "ref": "C56",
+   "sheet": "03_spi_a_display_sd.kicad_sch",
+   "value": "SOURCING D-614. EXACT_PRIOR from the beta-dm audit line '1uF' (ACCEPTED); manufacturer derived from the Samsung Electro-Mechanics part-number family and corroborated by the audit text; identical specification."
+  },
+  {
+   "property": "Manufacturer",
+   "ref": "R113",
+   "sheet": "03_spi_a_display_sd.kicad_sch",
+   "value": "UNI-ROYAL(Uniroyal Elec)"
+  },
+  {
+   "property": "MPN",
+   "ref": "R113",
+   "sheet": "03_spi_a_display_sd.kicad_sch",
+   "value": "0603WAF1003T5E"
+  },
+  {
+   "property": "LCSC",
+   "ref": "R113",
+   "sheet": "03_spi_a_display_sd.kicad_sch",
+   "value": "C25803"
+  },
+  {
+   "property": "Note_Sourcing",
+   "ref": "R113",
+   "sheet": "03_spi_a_display_sd.kicad_sch",
+   "value": "SOURCING D-614. EXACT_PRIOR from the beta-dm audit line '100k' (ACCEPTED); manufacturer derived from the UNI-ROYAL(Uniroyal Elec) part-number family and corroborated by the audit text; identical specification."
+  },
+  {
+   "property": "Manufacturer",
+   "ref": "R27",
+   "sheet": "04_spi_b_radios_nfc.kicad_sch",
+   "value": "UNI-ROYAL(Uniroyal Elec)"
+  },
+  {
+   "property": "MPN",
+   "ref": "R27",
+   "sheet": "04_spi_b_radios_nfc.kicad_sch",
+   "value": "0603WAF1002T5E"
+  },
+  {
+   "property": "LCSC",
+   "ref": "R27",
+   "sheet": "04_spi_b_radios_nfc.kicad_sch",
+   "value": "C25804"
+  },
+  {
+   "property": "Note_Sourcing",
+   "ref": "R27",
+   "sheet": "04_spi_b_radios_nfc.kicad_sch",
+   "value": "SOURCING D-614. EXACT_PRIOR from the beta-dm audit line '10k' (ACCEPTED); manufacturer derived from the UNI-ROYAL(Uniroyal Elec) part-number family and corroborated by the audit text; identical specification."
+  },
+  {
+   "property": "Manufacturer",
+   "ref": "R28",
+   "sheet": "04_spi_b_radios_nfc.kicad_sch",
+   "value": "UNI-ROYAL(Uniroyal Elec)"
+  },
+  {
+   "property": "MPN",
+   "ref": "R28",
+   "sheet": "04_spi_b_radios_nfc.kicad_sch",
+   "value": "0603WAF1002T5E"
+  },
+  {
+   "property": "LCSC",
+   "ref": "R28",
+   "sheet": "04_spi_b_radios_nfc.kicad_sch",
+   "value": "C25804"
+  },
+  {
+   "property": "Note_Sourcing",
+   "ref": "R28",
+   "sheet": "04_spi_b_radios_nfc.kicad_sch",
+   "value": "SOURCING D-614. EXACT_PRIOR from the beta-dm audit line '10k' (ACCEPTED); manufacturer derived from the UNI-ROYAL(Uniroyal Elec) part-number family and corroborated by the audit text; identical specification."
+  },
+  {
+   "property": "Manufacturer",
+   "ref": "C17",
+   "sheet": "04_spi_b_radios_nfc.kicad_sch",
+   "value": "YAGEO"
+  },
+  {
+   "property": "MPN",
+   "ref": "C17",
+   "sheet": "04_spi_b_radios_nfc.kicad_sch",
+   "value": "CC0603KRX7R9BB104"
+  },
+  {
+   "property": "LCSC",
+   "ref": "C17",
+   "sheet": "04_spi_b_radios_nfc.kicad_sch",
+   "value": "C14663"
+  },
+  {
+   "property": "Note_Sourcing",
+   "ref": "C17",
+   "sheet": "04_spi_b_radios_nfc.kicad_sch",
+   "value": "SOURCING D-614. EXACT_PRIOR from the beta-dm audit line '100nF' (ACCEPTED); manufacturer derived from the YAGEO part-number family and corroborated by the audit text; identical specification."
+  },
+  {
+   "property": "Manufacturer",
+   "ref": "C18",
+   "sheet": "04_spi_b_radios_nfc.kicad_sch",
+   "value": "YAGEO"
+  },
+  {
+   "property": "MPN",
+   "ref": "C18",
+   "sheet": "04_spi_b_radios_nfc.kicad_sch",
+   "value": "CC0402KRX7R8BB104"
+  },
+  {
+   "property": "LCSC",
+   "ref": "C18",
+   "sheet": "04_spi_b_radios_nfc.kicad_sch",
+   "value": "C105883"
+  },
+  {
+   "property": "Note_Sourcing",
+   "ref": "C18",
+   "sheet": "04_spi_b_radios_nfc.kicad_sch",
+   "value": "SOURCING D-614. EXACT_PRIOR from the beta-dm audit line '100nF' (REJECTED - JLC match wrong); manufacturer derived from the YAGEO part-number family and corroborated by the audit text; identical specification."
+  },
+  {
+   "property": "Manufacturer",
+   "ref": "C16",
+   "sheet": "04_spi_b_radios_nfc.kicad_sch",
+   "value": "YAGEO"
+  },
+  {
+   "property": "MPN",
+   "ref": "C16",
+   "sheet": "04_spi_b_radios_nfc.kicad_sch",
+   "value": "CC0603KRX7R9BB104"
+  },
+  {
+   "property": "LCSC",
+   "ref": "C16",
+   "sheet": "04_spi_b_radios_nfc.kicad_sch",
+   "value": "C14663"
+  },
+  {
+   "property": "Note_Sourcing",
+   "ref": "C16",
+   "sheet": "04_spi_b_radios_nfc.kicad_sch",
+   "value": "SOURCING D-614. EXACT_PRIOR from the beta-dm audit line '100nF' (ACCEPTED); manufacturer derived from the YAGEO part-number family and corroborated by the audit text; identical specification."
+  },
+  {
+   "property": "Manufacturer",
+   "ref": "C19",
+   "sheet": "04_spi_b_radios_nfc.kicad_sch",
+   "value": "YAGEO"
+  },
+  {
+   "property": "MPN",
+   "ref": "C19",
+   "sheet": "04_spi_b_radios_nfc.kicad_sch",
+   "value": "CC0402KRX7R8BB104"
+  },
+  {
+   "property": "LCSC",
+   "ref": "C19",
+   "sheet": "04_spi_b_radios_nfc.kicad_sch",
+   "value": "C105883"
+  },
+  {
+   "property": "Note_Sourcing",
+   "ref": "C19",
+   "sheet": "04_spi_b_radios_nfc.kicad_sch",
+   "value": "SOURCING D-614. EXACT_PRIOR from the beta-dm audit line '100nF' (REJECTED - JLC match wrong); manufacturer derived from the YAGEO part-number family and corroborated by the audit text; identical specification."
+  },
+  {
+   "property": "Manufacturer",
+   "ref": "R29",
+   "sheet": "04_spi_b_radios_nfc.kicad_sch",
+   "value": "UNI-ROYAL(Uniroyal Elec)"
+  },
+  {
+   "property": "MPN",
+   "ref": "R29",
+   "sheet": "04_spi_b_radios_nfc.kicad_sch",
+   "value": "0603WAF1002T5E"
+  },
+  {
+   "property": "LCSC",
+   "ref": "R29",
+   "sheet": "04_spi_b_radios_nfc.kicad_sch",
+   "value": "C25804"
+  },
+  {
+   "property": "Note_Sourcing",
+   "ref": "R29",
+   "sheet": "04_spi_b_radios_nfc.kicad_sch",
+   "value": "SOURCING D-614. EXACT_PRIOR from the beta-dm audit line '10k' (ACCEPTED); manufacturer derived from the UNI-ROYAL(Uniroyal Elec) part-number family and corroborated by the audit text; identical specification."
+  },
+  {
+   "property": "Manufacturer",
+   "ref": "R74",
+   "sheet": "04_spi_b_radios_nfc.kicad_sch",
+   "value": "UNI-ROYAL(Uniroyal Elec)"
+  },
+  {
+   "property": "MPN",
+   "ref": "R74",
+   "sheet": "04_spi_b_radios_nfc.kicad_sch",
+   "value": "0603WAF1003T5E"
+  },
+  {
+   "property": "LCSC",
+   "ref": "R74",
+   "sheet": "04_spi_b_radios_nfc.kicad_sch",
+   "value": "C25803"
+  },
+  {
+   "property": "Note_Sourcing",
+   "ref": "R74",
+   "sheet": "04_spi_b_radios_nfc.kicad_sch",
+   "value": "SOURCING D-614. EXACT_PRIOR from the beta-dm audit line '100k' (ACCEPTED); manufacturer derived from the UNI-ROYAL(Uniroyal Elec) part-number family and corroborated by the audit text; identical specification."
+  },
+  {
+   "property": "Manufacturer",
+   "ref": "C53",
+   "sheet": "04_spi_b_radios_nfc.kicad_sch",
+   "value": "Samsung Electro-Mechanics"
+  },
+  {
+   "property": "MPN",
+   "ref": "C53",
+   "sheet": "04_spi_b_radios_nfc.kicad_sch",
+   "value": "CL10A105KB8NNNC"
+  },
+  {
+   "property": "LCSC",
+   "ref": "C53",
+   "sheet": "04_spi_b_radios_nfc.kicad_sch",
+   "value": "C15849"
+  },
+  {
+   "property": "Note_Sourcing",
+   "ref": "C53",
+   "sheet": "04_spi_b_radios_nfc.kicad_sch",
+   "value": "SOURCING D-614. EXACT_PRIOR from the beta-dm audit line '1uF' (ACCEPTED); manufacturer derived from the Samsung Electro-Mechanics part-number family and corroborated by the audit text; identical specification."
+  },
+  {
+   "property": "Manufacturer",
+   "ref": "C7",
+   "sheet": "05_i2c_devices.kicad_sch",
+   "value": "YAGEO"
+  },
+  {
+   "property": "MPN",
+   "ref": "C7",
+   "sheet": "05_i2c_devices.kicad_sch",
+   "value": "CC0603KRX7R9BB104"
+  },
+  {
+   "property": "LCSC",
+   "ref": "C7",
+   "sheet": "05_i2c_devices.kicad_sch",
+   "value": "C14663"
+  },
+  {
+   "property": "Note_Sourcing",
+   "ref": "C7",
+   "sheet": "05_i2c_devices.kicad_sch",
+   "value": "SOURCING D-614. EXACT_PRIOR from the beta-dm audit line '100nF' (ACCEPTED); manufacturer derived from the YAGEO part-number family and corroborated by the audit text; identical specification."
+  },
+  {
+   "property": "Manufacturer",
+   "ref": "C6",
+   "sheet": "05_i2c_devices.kicad_sch",
+   "value": "YAGEO"
+  },
+  {
+   "property": "MPN",
+   "ref": "C6",
+   "sheet": "05_i2c_devices.kicad_sch",
+   "value": "CC0603KRX7R9BB104"
+  },
+  {
+   "property": "LCSC",
+   "ref": "C6",
+   "sheet": "05_i2c_devices.kicad_sch",
+   "value": "C14663"
+  },
+  {
+   "property": "Note_Sourcing",
+   "ref": "C6",
+   "sheet": "05_i2c_devices.kicad_sch",
+   "value": "SOURCING D-614. EXACT_PRIOR from the beta-dm audit line '100nF' (ACCEPTED); manufacturer derived from the YAGEO part-number family and corroborated by the audit text; identical specification."
+  },
+  {
+   "property": "Manufacturer",
+   "ref": "R18",
+   "sheet": "05_i2c_devices.kicad_sch",
+   "value": "UNI-ROYAL(Uniroyal Elec)"
+  },
+  {
+   "property": "MPN",
+   "ref": "R18",
+   "sheet": "05_i2c_devices.kicad_sch",
+   "value": "0603WAF2200T5E"
+  },
+  {
+   "property": "LCSC",
+   "ref": "R18",
+   "sheet": "05_i2c_devices.kicad_sch",
+   "value": "C22962"
+  },
+  {
+   "property": "Note_Sourcing",
+   "ref": "R18",
+   "sheet": "05_i2c_devices.kicad_sch",
+   "value": "SOURCING D-614. EXACT_PRIOR from the beta-dm audit line '220R' (ACCEPTED); manufacturer derived from the UNI-ROYAL(Uniroyal Elec) part-number family and corroborated by the audit text; identical specification."
+  },
+  {
+   "property": "Manufacturer",
+   "ref": "R118",
+   "sheet": "05_i2c_devices.kicad_sch",
+   "value": "UNI-ROYAL(Uniroyal Elec)"
+  },
+  {
+   "property": "MPN",
+   "ref": "R118",
+   "sheet": "05_i2c_devices.kicad_sch",
+   "value": "0603WAF0000T5E"
+  },
+  {
+   "property": "LCSC",
+   "ref": "R118",
+   "sheet": "05_i2c_devices.kicad_sch",
+   "value": "C21189"
+  },
+  {
+   "property": "Note_Sourcing",
+   "ref": "R118",
+   "sheet": "05_i2c_devices.kicad_sch",
+   "value": "SOURCING D-614. EXACT_PRIOR from the beta-dm audit line '0R' (ACCEPTED); manufacturer derived from the UNI-ROYAL(Uniroyal Elec) part-number family and corroborated by the audit text; identical specification."
+  },
+  {
+   "property": "Manufacturer",
+   "ref": "C8",
+   "sheet": "06_audio.kicad_sch",
+   "value": "YAGEO"
+  },
+  {
+   "property": "MPN",
+   "ref": "C8",
+   "sheet": "06_audio.kicad_sch",
+   "value": "CC0603KRX7R9BB104"
+  },
+  {
+   "property": "LCSC",
+   "ref": "C8",
+   "sheet": "06_audio.kicad_sch",
+   "value": "C14663"
+  },
+  {
+   "property": "Note_Sourcing",
+   "ref": "C8",
+   "sheet": "06_audio.kicad_sch",
+   "value": "SOURCING D-614. EXACT_PRIOR from the beta-dm audit line '100nF' (ACCEPTED); manufacturer derived from the YAGEO part-number family and corroborated by the audit text; identical specification."
+  },
+  {
+   "property": "Manufacturer",
+   "ref": "C10",
+   "sheet": "06_audio.kicad_sch",
+   "value": "Murata Electronics"
+  },
+  {
+   "property": "MPN",
+   "ref": "C10",
+   "sheet": "06_audio.kicad_sch",
+   "value": "GRM21BR61H106KE43L"
+  },
+  {
+   "property": "LCSC",
+   "ref": "C10",
+   "sheet": "06_audio.kicad_sch",
+   "value": "C440198"
+  },
+  {
+   "property": "Note_Sourcing",
+   "ref": "C10",
+   "sheet": "06_audio.kicad_sch",
+   "value": "SOURCING D-614. EXACT_PRIOR from the beta-dm audit line '10uf' (ACCEPTED); manufacturer derived from the Murata Electronics part-number family and corroborated by the audit text; identical specification."
+  },
+  {
+   "property": "Manufacturer",
+   "ref": "C9",
+   "sheet": "06_audio.kicad_sch",
+   "value": "YAGEO"
+  },
+  {
+   "property": "MPN",
+   "ref": "C9",
+   "sheet": "06_audio.kicad_sch",
+   "value": "CC0603KRX7R9BB104"
+  },
+  {
+   "property": "LCSC",
+   "ref": "C9",
+   "sheet": "06_audio.kicad_sch",
+   "value": "C14663"
+  },
+  {
+   "property": "Note_Sourcing",
+   "ref": "C9",
+   "sheet": "06_audio.kicad_sch",
+   "value": "SOURCING D-614. EXACT_PRIOR from the beta-dm audit line '100nF' (ACCEPTED); manufacturer derived from the YAGEO part-number family and corroborated by the audit text; identical specification."
+  },
+  {
+   "property": "Manufacturer",
+   "ref": "R120",
+   "sheet": "06_audio.kicad_sch",
+   "value": "UNI-ROYAL(Uniroyal Elec)"
+  },
+  {
+   "property": "MPN",
+   "ref": "R120",
+   "sheet": "06_audio.kicad_sch",
+   "value": "0603WAF1003T5E"
+  },
+  {
+   "property": "LCSC",
+   "ref": "R120",
+   "sheet": "06_audio.kicad_sch",
+   "value": "C25803"
+  },
+  {
+   "property": "Note_Sourcing",
+   "ref": "R120",
+   "sheet": "06_audio.kicad_sch",
+   "value": "SOURCING D-614. EXACT_PRIOR from the beta-dm audit line '100k' (ACCEPTED); manufacturer derived from the UNI-ROYAL(Uniroyal Elec) part-number family and corroborated by the audit text; identical specification."
+  },
+  {
+   "property": "Manufacturer",
+   "ref": "R121",
+   "sheet": "06_audio.kicad_sch",
+   "value": "UNI-ROYAL(Uniroyal Elec)"
+  },
+  {
+   "property": "MPN",
+   "ref": "R121",
+   "sheet": "06_audio.kicad_sch",
+   "value": "0603WAF0000T5E"
+  },
+  {
+   "property": "LCSC",
+   "ref": "R121",
+   "sheet": "06_audio.kicad_sch",
+   "value": "C21189"
+  },
+  {
+   "property": "Note_Sourcing",
+   "ref": "R121",
+   "sheet": "06_audio.kicad_sch",
+   "value": "SOURCING D-614. EXACT_PRIOR from the beta-dm audit line '0R' (ACCEPTED); manufacturer derived from the UNI-ROYAL(Uniroyal Elec) part-number family and corroborated by the audit text; identical specification."
+  },
+  {
+   "property": "Manufacturer",
+   "ref": "R122",
+   "sheet": "06_audio.kicad_sch",
+   "value": "UNI-ROYAL(Uniroyal Elec)"
+  },
+  {
+   "property": "MPN",
+   "ref": "R122",
+   "sheet": "06_audio.kicad_sch",
+   "value": "0603WAF0000T5E"
+  },
+  {
+   "property": "LCSC",
+   "ref": "R122",
+   "sheet": "06_audio.kicad_sch",
+   "value": "C21189"
+  },
+  {
+   "property": "Note_Sourcing",
+   "ref": "R122",
+   "sheet": "06_audio.kicad_sch",
+   "value": "SOURCING D-614. EXACT_PRIOR from the beta-dm audit line '0R' (ACCEPTED); manufacturer derived from the UNI-ROYAL(Uniroyal Elec) part-number family and corroborated by the audit text; identical specification."
+  },
+  {
+   "property": "Manufacturer",
+   "ref": "R22",
+   "sheet": "07_ir.kicad_sch",
+   "value": "UNI-ROYAL(Uniroyal Elec)"
+  },
+  {
+   "property": "MPN",
+   "ref": "R22",
+   "sheet": "07_ir.kicad_sch",
+   "value": "0603WAF1000T5E"
+  },
+  {
+   "property": "LCSC",
+   "ref": "R22",
+   "sheet": "07_ir.kicad_sch",
+   "value": "C22775"
+  },
+  {
+   "property": "Note_Sourcing",
+   "ref": "R22",
+   "sheet": "07_ir.kicad_sch",
+   "value": "SOURCING D-614. CONTAINED_PRIOR from the beta-dm audit line '100R 1%' (REJECTED - JLC match wrong); manufacturer derived from the UNI-ROYAL(Uniroyal Elec) part-number family and corroborated by the audit text; identical specification."
+  },
+  {
+   "property": "Manufacturer",
+   "ref": "R23",
+   "sheet": "07_ir.kicad_sch",
+   "value": "UNI-ROYAL(Uniroyal Elec)"
+  },
+  {
+   "property": "MPN",
+   "ref": "R23",
+   "sheet": "07_ir.kicad_sch",
+   "value": "0603WAF1003T5E"
+  },
+  {
+   "property": "LCSC",
+   "ref": "R23",
+   "sheet": "07_ir.kicad_sch",
+   "value": "C25803"
+  },
+  {
+   "property": "Note_Sourcing",
+   "ref": "R23",
+   "sheet": "07_ir.kicad_sch",
+   "value": "SOURCING D-614. EXACT_PRIOR from the beta-dm audit line '100K' (ACCEPTED); manufacturer derived from the UNI-ROYAL(Uniroyal Elec) part-number family and corroborated by the audit text; identical specification."
+  },
+  {
+   "property": "Manufacturer",
+   "ref": "C11",
+   "sheet": "07_ir.kicad_sch",
+   "value": "Samsung Electro-Mechanics"
+  },
+  {
+   "property": "MPN",
+   "ref": "C11",
+   "sheet": "07_ir.kicad_sch",
+   "value": "CL21A475KAQNNNE"
+  },
+  {
+   "property": "LCSC",
+   "ref": "C11",
+   "sheet": "07_ir.kicad_sch",
+   "value": "C1779"
+  },
+  {
+   "property": "Note_Sourcing",
+   "ref": "C11",
+   "sheet": "07_ir.kicad_sch",
+   "value": "SOURCING D-614. EXACT_PRIOR from the beta-dm audit line '4.7uF' (ACCEPTED); manufacturer derived from the Samsung Electro-Mechanics part-number family and corroborated by the audit text; identical specification."
+  },
+  {
+   "property": "Manufacturer",
+   "ref": "R21",
+   "sheet": "07_ir.kicad_sch",
+   "value": "UNI-ROYAL(Uniroyal Elec)"
+  },
+  {
+   "property": "MPN",
+   "ref": "R21",
+   "sheet": "07_ir.kicad_sch",
+   "value": "0603WAF1000T5E"
+  },
+  {
+   "property": "LCSC",
+   "ref": "R21",
+   "sheet": "07_ir.kicad_sch",
+   "value": "C22775"
+  },
+  {
+   "property": "Note_Sourcing",
+   "ref": "R21",
+   "sheet": "07_ir.kicad_sch",
+   "value": "SOURCING D-614. CONTAINED_PRIOR from the beta-dm audit line '100R 1%' (REJECTED - JLC match wrong); manufacturer derived from the UNI-ROYAL(Uniroyal Elec) part-number family and corroborated by the audit text; identical specification."
+  },
+  {
+   "property": "Manufacturer",
+   "ref": "R9",
+   "sheet": "08_buttons_expanders.kicad_sch",
+   "value": "UNI-ROYAL(Uniroyal Elec)"
+  },
+  {
+   "property": "MPN",
+   "ref": "R9",
+   "sheet": "08_buttons_expanders.kicad_sch",
+   "value": "0603WAF1002T5E"
+  },
+  {
+   "property": "LCSC",
+   "ref": "R9",
+   "sheet": "08_buttons_expanders.kicad_sch",
+   "value": "C25804"
+  },
+  {
+   "property": "Note_Sourcing",
+   "ref": "R9",
+   "sheet": "08_buttons_expanders.kicad_sch",
+   "value": "SOURCING D-614. EXACT_PRIOR from the beta-dm audit line '10k' (ACCEPTED); manufacturer derived from the UNI-ROYAL(Uniroyal Elec) part-number family and corroborated by the audit text; identical specification."
+  },
+  {
+   "property": "Manufacturer",
+   "ref": "R8",
+   "sheet": "08_buttons_expanders.kicad_sch",
+   "value": "UNI-ROYAL(Uniroyal Elec)"
+  },
+  {
+   "property": "MPN",
+   "ref": "R8",
+   "sheet": "08_buttons_expanders.kicad_sch",
+   "value": "0603WAF1002T5E"
+  },
+  {
+   "property": "LCSC",
+   "ref": "R8",
+   "sheet": "08_buttons_expanders.kicad_sch",
+   "value": "C25804"
+  },
+  {
+   "property": "Note_Sourcing",
+   "ref": "R8",
+   "sheet": "08_buttons_expanders.kicad_sch",
+   "value": "SOURCING D-614. EXACT_PRIOR from the beta-dm audit line '10k' (ACCEPTED); manufacturer derived from the UNI-ROYAL(Uniroyal Elec) part-number family and corroborated by the audit text; identical specification."
+  },
+  {
+   "property": "Manufacturer",
+   "ref": "C4",
+   "sheet": "08_buttons_expanders.kicad_sch",
+   "value": "YAGEO"
+  },
+  {
+   "property": "MPN",
+   "ref": "C4",
+   "sheet": "08_buttons_expanders.kicad_sch",
+   "value": "CC0603KRX7R9BB104"
+  },
+  {
+   "property": "LCSC",
+   "ref": "C4",
+   "sheet": "08_buttons_expanders.kicad_sch",
+   "value": "C14663"
+  },
+  {
+   "property": "Note_Sourcing",
+   "ref": "C4",
+   "sheet": "08_buttons_expanders.kicad_sch",
+   "value": "SOURCING D-614. EXACT_PRIOR from the beta-dm audit line '100nF' (ACCEPTED); manufacturer derived from the YAGEO part-number family and corroborated by the audit text; identical specification."
+  },
+  {
+   "property": "Manufacturer",
+   "ref": "R6",
+   "sheet": "08_buttons_expanders.kicad_sch",
+   "value": "UNI-ROYAL(Uniroyal Elec)"
+  },
+  {
+   "property": "MPN",
+   "ref": "R6",
+   "sheet": "08_buttons_expanders.kicad_sch",
+   "value": "0603WAF1002T5E"
+  },
+  {
+   "property": "LCSC",
+   "ref": "R6",
+   "sheet": "08_buttons_expanders.kicad_sch",
+   "value": "C25804"
+  },
+  {
+   "property": "Note_Sourcing",
+   "ref": "R6",
+   "sheet": "08_buttons_expanders.kicad_sch",
+   "value": "SOURCING D-614. EXACT_PRIOR from the beta-dm audit line '10k' (ACCEPTED); manufacturer derived from the UNI-ROYAL(Uniroyal Elec) part-number family and corroborated by the audit text; identical specification."
+  },
+  {
+   "property": "Manufacturer",
+   "ref": "C5",
+   "sheet": "08_buttons_expanders.kicad_sch",
+   "value": "YAGEO"
+  },
+  {
+   "property": "MPN",
+   "ref": "C5",
+   "sheet": "08_buttons_expanders.kicad_sch",
+   "value": "CC0603KRX7R9BB104"
+  },
+  {
+   "property": "LCSC",
+   "ref": "C5",
+   "sheet": "08_buttons_expanders.kicad_sch",
+   "value": "C14663"
+  },
+  {
+   "property": "Note_Sourcing",
+   "ref": "C5",
+   "sheet": "08_buttons_expanders.kicad_sch",
+   "value": "SOURCING D-614. EXACT_PRIOR from the beta-dm audit line '100nF' (ACCEPTED); manufacturer derived from the YAGEO part-number family and corroborated by the audit text; identical specification."
+  },
+  {
+   "property": "Manufacturer",
+   "ref": "R3",
+   "sheet": "08_buttons_expanders.kicad_sch",
+   "value": "UNI-ROYAL(Uniroyal Elec)"
+  },
+  {
+   "property": "MPN",
+   "ref": "R3",
+   "sheet": "08_buttons_expanders.kicad_sch",
+   "value": "0603WAF1002T5E"
+  },
+  {
+   "property": "LCSC",
+   "ref": "R3",
+   "sheet": "08_buttons_expanders.kicad_sch",
+   "value": "C25804"
+  },
+  {
+   "property": "Note_Sourcing",
+   "ref": "R3",
+   "sheet": "08_buttons_expanders.kicad_sch",
+   "value": "SOURCING D-614. EXACT_PRIOR from the beta-dm audit line '10k' (ACCEPTED); manufacturer derived from the UNI-ROYAL(Uniroyal Elec) part-number family and corroborated by the audit text; identical specification."
+  },
+  {
+   "property": "Manufacturer",
+   "ref": "R15",
+   "sheet": "08_buttons_expanders.kicad_sch",
+   "value": "UNI-ROYAL(Uniroyal Elec)"
+  },
+  {
+   "property": "MPN",
+   "ref": "R15",
+   "sheet": "08_buttons_expanders.kicad_sch",
+   "value": "0603WAF1003T5E"
+  },
+  {
+   "property": "LCSC",
+   "ref": "R15",
+   "sheet": "08_buttons_expanders.kicad_sch",
+   "value": "C25803"
+  },
+  {
+   "property": "Note_Sourcing",
+   "ref": "R15",
+   "sheet": "08_buttons_expanders.kicad_sch",
+   "value": "SOURCING D-614. EXACT_PRIOR from the beta-dm audit line '100k' (ACCEPTED); manufacturer derived from the UNI-ROYAL(Uniroyal Elec) part-number family and corroborated by the audit text; identical specification."
+  },
+  {
+   "property": "Manufacturer",
+   "ref": "R17",
+   "sheet": "08_buttons_expanders.kicad_sch",
+   "value": "UNI-ROYAL(Uniroyal Elec)"
+  },
+  {
+   "property": "MPN",
+   "ref": "R17",
+   "sheet": "08_buttons_expanders.kicad_sch",
+   "value": "0603WAF1003T5E"
+  },
+  {
+   "property": "LCSC",
+   "ref": "R17",
+   "sheet": "08_buttons_expanders.kicad_sch",
+   "value": "C25803"
+  },
+  {
+   "property": "Note_Sourcing",
+   "ref": "R17",
+   "sheet": "08_buttons_expanders.kicad_sch",
+   "value": "SOURCING D-614. EXACT_PRIOR from the beta-dm audit line '100k' (ACCEPTED); manufacturer derived from the UNI-ROYAL(Uniroyal Elec) part-number family and corroborated by the audit text; identical specification."
+  },
+  {
+   "property": "Manufacturer",
+   "ref": "R5",
+   "sheet": "08_buttons_expanders.kicad_sch",
+   "value": "UNI-ROYAL(Uniroyal Elec)"
+  },
+  {
+   "property": "MPN",
+   "ref": "R5",
+   "sheet": "08_buttons_expanders.kicad_sch",
+   "value": "0603WAF1002T5E"
+  },
+  {
+   "property": "LCSC",
+   "ref": "R5",
+   "sheet": "08_buttons_expanders.kicad_sch",
+   "value": "C25804"
+  },
+  {
+   "property": "Note_Sourcing",
+   "ref": "R5",
+   "sheet": "08_buttons_expanders.kicad_sch",
+   "value": "SOURCING D-614. EXACT_PRIOR from the beta-dm audit line '10k' (ACCEPTED); manufacturer derived from the UNI-ROYAL(Uniroyal Elec) part-number family and corroborated by the audit text; identical specification."
+  },
+  {
+   "property": "Manufacturer",
+   "ref": "R13",
+   "sheet": "08_buttons_expanders.kicad_sch",
+   "value": "UNI-ROYAL(Uniroyal Elec)"
+  },
+  {
+   "property": "MPN",
+   "ref": "R13",
+   "sheet": "08_buttons_expanders.kicad_sch",
+   "value": "0603WAF1003T5E"
+  },
+  {
+   "property": "LCSC",
+   "ref": "R13",
+   "sheet": "08_buttons_expanders.kicad_sch",
+   "value": "C25803"
+  },
+  {
+   "property": "Note_Sourcing",
+   "ref": "R13",
+   "sheet": "08_buttons_expanders.kicad_sch",
+   "value": "SOURCING D-614. EXACT_PRIOR from the beta-dm audit line '100k' (ACCEPTED); manufacturer derived from the UNI-ROYAL(Uniroyal Elec) part-number family and corroborated by the audit text; identical specification."
+  },
+  {
+   "property": "Manufacturer",
+   "ref": "R16",
+   "sheet": "08_buttons_expanders.kicad_sch",
+   "value": "UNI-ROYAL(Uniroyal Elec)"
+  },
+  {
+   "property": "MPN",
+   "ref": "R16",
+   "sheet": "08_buttons_expanders.kicad_sch",
+   "value": "0603WAF1003T5E"
+  },
+  {
+   "property": "LCSC",
+   "ref": "R16",
+   "sheet": "08_buttons_expanders.kicad_sch",
+   "value": "C25803"
+  },
+  {
+   "property": "Note_Sourcing",
+   "ref": "R16",
+   "sheet": "08_buttons_expanders.kicad_sch",
+   "value": "SOURCING D-614. EXACT_PRIOR from the beta-dm audit line '100k' (ACCEPTED); manufacturer derived from the UNI-ROYAL(Uniroyal Elec) part-number family and corroborated by the audit text; identical specification."
+  },
+  {
+   "property": "Manufacturer",
+   "ref": "R14",
+   "sheet": "08_buttons_expanders.kicad_sch",
+   "value": "UNI-ROYAL(Uniroyal Elec)"
+  },
+  {
+   "property": "MPN",
+   "ref": "R14",
+   "sheet": "08_buttons_expanders.kicad_sch",
+   "value": "0603WAF1003T5E"
+  },
+  {
+   "property": "LCSC",
+   "ref": "R14",
+   "sheet": "08_buttons_expanders.kicad_sch",
+   "value": "C25803"
+  },
+  {
+   "property": "Note_Sourcing",
+   "ref": "R14",
+   "sheet": "08_buttons_expanders.kicad_sch",
+   "value": "SOURCING D-614. EXACT_PRIOR from the beta-dm audit line '100k' (ACCEPTED); manufacturer derived from the UNI-ROYAL(Uniroyal Elec) part-number family and corroborated by the audit text; identical specification."
+  },
+  {
+   "property": "Manufacturer",
+   "ref": "R4",
+   "sheet": "08_buttons_expanders.kicad_sch",
+   "value": "UNI-ROYAL(Uniroyal Elec)"
+  },
+  {
+   "property": "MPN",
+   "ref": "R4",
+   "sheet": "08_buttons_expanders.kicad_sch",
+   "value": "0603WAF1002T5E"
+  },
+  {
+   "property": "LCSC",
+   "ref": "R4",
+   "sheet": "08_buttons_expanders.kicad_sch",
+   "value": "C25804"
+  },
+  {
+   "property": "Note_Sourcing",
+   "ref": "R4",
+   "sheet": "08_buttons_expanders.kicad_sch",
+   "value": "SOURCING D-614. EXACT_PRIOR from the beta-dm audit line '10k' (ACCEPTED); manufacturer derived from the UNI-ROYAL(Uniroyal Elec) part-number family and corroborated by the audit text; identical specification."
+  },
+  {
+   "property": "Manufacturer",
+   "ref": "R12",
+   "sheet": "08_buttons_expanders.kicad_sch",
+   "value": "UNI-ROYAL(Uniroyal Elec)"
+  },
+  {
+   "property": "MPN",
+   "ref": "R12",
+   "sheet": "08_buttons_expanders.kicad_sch",
+   "value": "0603WAF1003T5E"
+  },
+  {
+   "property": "LCSC",
+   "ref": "R12",
+   "sheet": "08_buttons_expanders.kicad_sch",
+   "value": "C25803"
+  },
+  {
+   "property": "Note_Sourcing",
+   "ref": "R12",
+   "sheet": "08_buttons_expanders.kicad_sch",
+   "value": "SOURCING D-614. EXACT_PRIOR from the beta-dm audit line '100k' (ACCEPTED); manufacturer derived from the UNI-ROYAL(Uniroyal Elec) part-number family and corroborated by the audit text; identical specification."
+  },
+  {
+   "property": "Manufacturer",
+   "ref": "R7",
+   "sheet": "08_buttons_expanders.kicad_sch",
+   "value": "UNI-ROYAL(Uniroyal Elec)"
+  },
+  {
+   "property": "MPN",
+   "ref": "R7",
+   "sheet": "08_buttons_expanders.kicad_sch",
+   "value": "0603WAF1002T5E"
+  },
+  {
+   "property": "LCSC",
+   "ref": "R7",
+   "sheet": "08_buttons_expanders.kicad_sch",
+   "value": "C25804"
+  },
+  {
+   "property": "Note_Sourcing",
+   "ref": "R7",
+   "sheet": "08_buttons_expanders.kicad_sch",
+   "value": "SOURCING D-614. EXACT_PRIOR from the beta-dm audit line '10k' (ACCEPTED); manufacturer derived from the UNI-ROYAL(Uniroyal Elec) part-number family and corroborated by the audit text; identical specification."
+  },
+  {
+   "property": "Manufacturer",
+   "ref": "R124",
+   "sheet": "08_buttons_expanders.kicad_sch",
+   "value": "UNI-ROYAL(Uniroyal Elec)"
+  },
+  {
+   "property": "MPN",
+   "ref": "R124",
+   "sheet": "08_buttons_expanders.kicad_sch",
+   "value": "0603WAF1001T5E"
+  },
+  {
+   "property": "LCSC",
+   "ref": "R124",
+   "sheet": "08_buttons_expanders.kicad_sch",
+   "value": "C21190"
+  },
+  {
+   "property": "Note_Sourcing",
+   "ref": "R124",
+   "sheet": "08_buttons_expanders.kicad_sch",
+   "value": "SOURCING D-614. CONTAINED_PRIOR from the beta-dm audit line '1k 1%' (REJECTED - JLC match wrong); manufacturer derived from the UNI-ROYAL(Uniroyal Elec) part-number family and corroborated by the audit text; identical specification."
+  },
+  {
+   "property": "Manufacturer",
+   "ref": "R127",
+   "sheet": "08_buttons_expanders.kicad_sch",
+   "value": "UNI-ROYAL(Uniroyal Elec)"
+  },
+  {
+   "property": "MPN",
+   "ref": "R127",
+   "sheet": "08_buttons_expanders.kicad_sch",
+   "value": "0603WAF1002T5E"
+  },
+  {
+   "property": "LCSC",
+   "ref": "R127",
+   "sheet": "08_buttons_expanders.kicad_sch",
+   "value": "C25804"
+  },
+  {
+   "property": "Note_Sourcing",
+   "ref": "R127",
+   "sheet": "08_buttons_expanders.kicad_sch",
+   "value": "SOURCING D-614. EXACT_PRIOR from the beta-dm audit line '10k' (ACCEPTED); manufacturer derived from the UNI-ROYAL(Uniroyal Elec) part-number family and corroborated by the audit text; identical specification."
+  },
+  {
+   "property": "Manufacturer",
+   "ref": "R128",
+   "sheet": "08_buttons_expanders.kicad_sch",
+   "value": "UNI-ROYAL(Uniroyal Elec)"
+  },
+  {
+   "property": "MPN",
+   "ref": "R128",
+   "sheet": "08_buttons_expanders.kicad_sch",
+   "value": "0603WAF1002T5E"
+  },
+  {
+   "property": "LCSC",
+   "ref": "R128",
+   "sheet": "08_buttons_expanders.kicad_sch",
+   "value": "C25804"
+  },
+  {
+   "property": "Note_Sourcing",
+   "ref": "R128",
+   "sheet": "08_buttons_expanders.kicad_sch",
+   "value": "SOURCING D-614. EXACT_PRIOR from the beta-dm audit line '10k' (ACCEPTED); manufacturer derived from the UNI-ROYAL(Uniroyal Elec) part-number family and corroborated by the audit text; identical specification."
+  },
+  {
+   "property": "Manufacturer",
+   "ref": "R129",
+   "sheet": "08_buttons_expanders.kicad_sch",
+   "value": "UNI-ROYAL(Uniroyal Elec)"
+  },
+  {
+   "property": "MPN",
+   "ref": "R129",
+   "sheet": "08_buttons_expanders.kicad_sch",
+   "value": "0603WAF1003T5E"
+  },
+  {
+   "property": "LCSC",
+   "ref": "R129",
+   "sheet": "08_buttons_expanders.kicad_sch",
+   "value": "C25803"
+  },
+  {
+   "property": "Note_Sourcing",
+   "ref": "R129",
+   "sheet": "08_buttons_expanders.kicad_sch",
+   "value": "SOURCING D-614. EXACT_PRIOR from the beta-dm audit line '100k' (ACCEPTED); manufacturer derived from the UNI-ROYAL(Uniroyal Elec) part-number family and corroborated by the audit text; identical specification."
+  },
+  {
+   "property": "Manufacturer",
+   "ref": "R55",
+   "sheet": "09_community_header.kicad_sch",
+   "value": "UNI-ROYAL(Uniroyal Elec)"
+  },
+  {
+   "property": "MPN",
+   "ref": "R55",
+   "sheet": "09_community_header.kicad_sch",
+   "value": "0603WAF1000T5E"
+  },
+  {
+   "property": "LCSC",
+   "ref": "R55",
+   "sheet": "09_community_header.kicad_sch",
+   "value": "C22775"
+  },
+  {
+   "property": "Note_Sourcing",
+   "ref": "R55",
+   "sheet": "09_community_header.kicad_sch",
+   "value": "SOURCING D-614. EXACT_PRIOR from the beta-dm audit line '100R 1%' (REJECTED - JLC match wrong); manufacturer derived from the UNI-ROYAL(Uniroyal Elec) part-number family and corroborated by the audit text; tolerance 1.0% meets 1.0%."
+  },
+  {
+   "property": "Manufacturer",
+   "ref": "R56",
+   "sheet": "09_community_header.kicad_sch",
+   "value": "UNI-ROYAL(Uniroyal Elec)"
+  },
+  {
+   "property": "MPN",
+   "ref": "R56",
+   "sheet": "09_community_header.kicad_sch",
+   "value": "0603WAF1000T5E"
+  },
+  {
+   "property": "LCSC",
+   "ref": "R56",
+   "sheet": "09_community_header.kicad_sch",
+   "value": "C22775"
+  },
+  {
+   "property": "Note_Sourcing",
+   "ref": "R56",
+   "sheet": "09_community_header.kicad_sch",
+   "value": "SOURCING D-614. EXACT_PRIOR from the beta-dm audit line '100R 1%' (REJECTED - JLC match wrong); manufacturer derived from the UNI-ROYAL(Uniroyal Elec) part-number family and corroborated by the audit text; tolerance 1.0% meets 1.0%."
+  },
+  {
+   "property": "Manufacturer",
+   "ref": "R61",
+   "sheet": "09_community_header.kicad_sch",
+   "value": "UNI-ROYAL(Uniroyal Elec)"
+  },
+  {
+   "property": "MPN",
+   "ref": "R61",
+   "sheet": "09_community_header.kicad_sch",
+   "value": "0603WAF1000T5E"
+  },
+  {
+   "property": "LCSC",
+   "ref": "R61",
+   "sheet": "09_community_header.kicad_sch",
+   "value": "C22775"
+  },
+  {
+   "property": "Note_Sourcing",
+   "ref": "R61",
+   "sheet": "09_community_header.kicad_sch",
+   "value": "SOURCING D-614. EXACT_PRIOR from the beta-dm audit line '100R 1%' (REJECTED - JLC match wrong); manufacturer derived from the UNI-ROYAL(Uniroyal Elec) part-number family and corroborated by the audit text; tolerance 1.0% meets 1.0%."
+  },
+  {
+   "property": "Manufacturer",
+   "ref": "R62",
+   "sheet": "09_community_header.kicad_sch",
+   "value": "UNI-ROYAL(Uniroyal Elec)"
+  },
+  {
+   "property": "MPN",
+   "ref": "R62",
+   "sheet": "09_community_header.kicad_sch",
+   "value": "0603WAF1000T5E"
+  },
+  {
+   "property": "LCSC",
+   "ref": "R62",
+   "sheet": "09_community_header.kicad_sch",
+   "value": "C22775"
+  },
+  {
+   "property": "Note_Sourcing",
+   "ref": "R62",
+   "sheet": "09_community_header.kicad_sch",
+   "value": "SOURCING D-614. EXACT_PRIOR from the beta-dm audit line '100R 1%' (REJECTED - JLC match wrong); manufacturer derived from the UNI-ROYAL(Uniroyal Elec) part-number family and corroborated by the audit text; tolerance 1.0% meets 1.0%."
+  },
+  {
+   "property": "Manufacturer",
+   "ref": "R64",
+   "sheet": "09_community_header.kicad_sch",
+   "value": "UNI-ROYAL(Uniroyal Elec)"
+  },
+  {
+   "property": "MPN",
+   "ref": "R64",
+   "sheet": "09_community_header.kicad_sch",
+   "value": "0603WAF1000T5E"
+  },
+  {
+   "property": "LCSC",
+   "ref": "R64",
+   "sheet": "09_community_header.kicad_sch",
+   "value": "C22775"
+  },
+  {
+   "property": "Note_Sourcing",
+   "ref": "R64",
+   "sheet": "09_community_header.kicad_sch",
+   "value": "SOURCING D-614. EXACT_PRIOR from the beta-dm audit line '100R 1%' (REJECTED - JLC match wrong); manufacturer derived from the UNI-ROYAL(Uniroyal Elec) part-number family and corroborated by the audit text; tolerance 1.0% meets 1.0%."
+  },
+  {
+   "property": "Manufacturer",
+   "ref": "R66",
+   "sheet": "09_community_header.kicad_sch",
+   "value": "UNI-ROYAL(Uniroyal Elec)"
+  },
+  {
+   "property": "MPN",
+   "ref": "R66",
+   "sheet": "09_community_header.kicad_sch",
+   "value": "0603WAF3300T5E"
+  },
+  {
+   "property": "LCSC",
+   "ref": "R66",
+   "sheet": "09_community_header.kicad_sch",
+   "value": "C23138"
+  },
+  {
+   "property": "Note_Sourcing",
+   "ref": "R66",
+   "sheet": "09_community_header.kicad_sch",
+   "value": "SOURCING D-614. EXACT_PRIOR from the beta-dm audit line '330R 1%' (REJECTED - JLC match wrong); manufacturer derived from the UNI-ROYAL(Uniroyal Elec) part-number family and corroborated by the audit text; tolerance 1.0% meets 1.0%."
+  },
+  {
+   "property": "Manufacturer",
+   "ref": "R47",
+   "sheet": "09_community_header.kicad_sch",
+   "value": "UNI-ROYAL(Uniroyal Elec)"
+  },
+  {
+   "property": "MPN",
+   "ref": "R47",
+   "sheet": "09_community_header.kicad_sch",
+   "value": "0603WAF220JT5E"
+  },
+  {
+   "property": "LCSC",
+   "ref": "R47",
+   "sheet": "09_community_header.kicad_sch",
+   "value": "C23345"
+  },
+  {
+   "property": "Note_Sourcing",
+   "ref": "R47",
+   "sheet": "09_community_header.kicad_sch",
+   "value": "SOURCING D-614. EXACT_PRIOR from the beta-dm audit line '22R 1%' (REJECTED - JLC match wrong); manufacturer derived from the UNI-ROYAL(Uniroyal Elec) part-number family and corroborated by the audit text; tolerance 1.0% meets 1.0%."
+  },
+  {
+   "property": "Manufacturer",
+   "ref": "R48",
+   "sheet": "09_community_header.kicad_sch",
+   "value": "UNI-ROYAL(Uniroyal Elec)"
+  },
+  {
+   "property": "MPN",
+   "ref": "R48",
+   "sheet": "09_community_header.kicad_sch",
+   "value": "0603WAF220JT5E"
+  },
+  {
+   "property": "LCSC",
+   "ref": "R48",
+   "sheet": "09_community_header.kicad_sch",
+   "value": "C23345"
+  },
+  {
+   "property": "Note_Sourcing",
+   "ref": "R48",
+   "sheet": "09_community_header.kicad_sch",
+   "value": "SOURCING D-614. EXACT_PRIOR from the beta-dm audit line '22R 1%' (REJECTED - JLC match wrong); manufacturer derived from the UNI-ROYAL(Uniroyal Elec) part-number family and corroborated by the audit text; tolerance 1.0% meets 1.0%."
+  },
+  {
+   "property": "Manufacturer",
+   "ref": "C39",
+   "sheet": "09_community_header.kicad_sch",
+   "value": "YAGEO"
+  },
+  {
+   "property": "MPN",
+   "ref": "C39",
+   "sheet": "09_community_header.kicad_sch",
+   "value": "CC0603KRX7R9BB104"
+  },
+  {
+   "property": "LCSC",
+   "ref": "C39",
+   "sheet": "09_community_header.kicad_sch",
+   "value": "C14663"
+  },
+  {
+   "property": "Note_Sourcing",
+   "ref": "C39",
+   "sheet": "09_community_header.kicad_sch",
+   "value": "SOURCING D-614. EXACT_PRIOR from the beta-dm audit line '100nF X7R' (ACCEPTED); manufacturer derived from the YAGEO part-number family and corroborated by the audit text; dielectric X7R meets X7R."
+  },
+  {
+   "property": "Manufacturer",
+   "ref": "R46",
+   "sheet": "09_community_header.kicad_sch",
+   "value": "UNI-ROYAL(Uniroyal Elec)"
+  },
+  {
+   "property": "MPN",
+   "ref": "R46",
+   "sheet": "09_community_header.kicad_sch",
+   "value": "0603WAF1002T5E"
+  },
+  {
+   "property": "LCSC",
+   "ref": "R46",
+   "sheet": "09_community_header.kicad_sch",
+   "value": "C25804"
+  },
+  {
+   "property": "Note_Sourcing",
+   "ref": "R46",
+   "sheet": "09_community_header.kicad_sch",
+   "value": "SOURCING D-614. EXACT_PRIOR from the beta-dm audit line '10k 1%' (REJECTED - JLC match wrong); manufacturer derived from the UNI-ROYAL(Uniroyal Elec) part-number family and corroborated by the audit text; tolerance 1.0% meets 1.0%."
+  },
+  {
+   "property": "Manufacturer",
+   "ref": "R63",
+   "sheet": "09_community_header.kicad_sch",
+   "value": "UNI-ROYAL(Uniroyal Elec)"
+  },
+  {
+   "property": "MPN",
+   "ref": "R63",
+   "sheet": "09_community_header.kicad_sch",
+   "value": "0603WAF1002T5E"
+  },
+  {
+   "property": "LCSC",
+   "ref": "R63",
+   "sheet": "09_community_header.kicad_sch",
+   "value": "C25804"
+  },
+  {
+   "property": "Note_Sourcing",
+   "ref": "R63",
+   "sheet": "09_community_header.kicad_sch",
+   "value": "SOURCING D-614. EXACT_PRIOR from the beta-dm audit line '10k 1%' (REJECTED - JLC match wrong); manufacturer derived from the UNI-ROYAL(Uniroyal Elec) part-number family and corroborated by the audit text; tolerance 1.0% meets 1.0%."
+  },
+  {
+   "property": "Manufacturer",
+   "ref": "C37",
+   "sheet": "09_community_header.kicad_sch",
+   "value": "YAGEO"
+  },
+  {
+   "property": "MPN",
+   "ref": "C37",
+   "sheet": "09_community_header.kicad_sch",
+   "value": "CC0603KRX7R8BB105"
+  },
+  {
+   "property": "LCSC",
+   "ref": "C37",
+   "sheet": "09_community_header.kicad_sch",
+   "value": "C106858"
+  },
+  {
+   "property": "Note_Sourcing",
+   "ref": "C37",
+   "sheet": "09_community_header.kicad_sch",
+   "value": "SOURCING D-614. EXACT_PRIOR from the beta-dm audit line '1uF 10V X7R' (REJECTED - JLC match wrong); manufacturer derived from the YAGEO part-number family and corroborated by the audit text; rating 25.0V meets 10.0V; dielectric X7R meets X7R."
+  },
+  {
+   "property": "Manufacturer",
+   "ref": "C38",
+   "sheet": "09_community_header.kicad_sch",
+   "value": "YAGEO"
+  },
+  {
+   "property": "MPN",
+   "ref": "C38",
+   "sheet": "09_community_header.kicad_sch",
+   "value": "CC0603KRX7R8BB105"
+  },
+  {
+   "property": "LCSC",
+   "ref": "C38",
+   "sheet": "09_community_header.kicad_sch",
+   "value": "C106858"
+  },
+  {
+   "property": "Note_Sourcing",
+   "ref": "C38",
+   "sheet": "09_community_header.kicad_sch",
+   "value": "SOURCING D-614. EXACT_PRIOR from the beta-dm audit line '1uF 10V X7R' (REJECTED - JLC match wrong); manufacturer derived from the YAGEO part-number family and corroborated by the audit text; rating 25.0V meets 10.0V; dielectric X7R meets X7R."
+  },
+  {
+   "property": "Manufacturer",
+   "ref": "J8",
+   "sheet": "09_community_header.kicad_sch",
+   "value": "JST"
+  },
+  {
+   "property": "MPN",
+   "ref": "J8",
+   "sheet": "09_community_header.kicad_sch",
+   "value": "SM04B-SRSS-TB(LF)(SN)"
+  },
+  {
+   "property": "Note_Sourcing",
+   "ref": "J8",
+   "sheet": "09_community_header.kicad_sch",
+   "value": "SOURCING D-614. REFERENCE_RULING from the beta-dm audit line 'J8' (SOURCING-LEDGER); manufacturer named with the part in SOURCING_LEDGER; D-238, recorded in docs/full-beta-v2/assembly/SOURCING_LEDGER.md s.2 (JST SH, 1.0 mm, 4 circuit, side entry, SMT, 1.0 A, 50 V) and in DEVICE_SPEC s.10.2, which also lists the absent schematic property as an open item.  The plating-suffixed string is the one D-096 requires: the bare order code resolves to a zero-stock listing."
+  }
+ ],
+ "applied": true,
+ "conflicts": [],
+ "plan": "/tmp/repro_plan.json",
+ "properties_added": 487,
+ "properties_already_correct": [],
+ "references_found": 122,
+ "references_in_plan": 122,
+ "references_not_in_any_sheet": [],
+ "reproduction_note": "This is the REPRODUCTION run, not the original: `git archive HEAD` into an isolated tree, the D-614 tools copied in, export_fab_package.py -> screen_bom_sourcing.py --plan -> apply_bom_sourcing.py --apply.  Its `sha256_after` values are byte-identical to the ten committed schematic sheets, which is the determinism claim.  `plan` names a temporary path because the run happened outside the worktree; the plan itself is committed as d614-bom-sourcing-plan.json.",
+ "schema": 1,
+ "sha256_after": {
+  "01_power_tree.kicad_sch": "9c5b40805bd7ca36a68786642fee9e3c78cac57a8cd701bf655e3cbca16781b6",
+  "02_mcu_core.kicad_sch": "62cbc53b5d165f6dd6946ab5a53fdd51ae5eacb3acbed4814d9be85e30dad4d1",
+  "03_spi_a_display_sd.kicad_sch": "95829d32ea77791e67125b53780320bcf2efed53f044a3744b1e8648449bcef6",
+  "04_spi_b_radios_nfc.kicad_sch": "c3738c390e5763c5f3f2fc40ef670d1b844d5bae3d9e65f2f273bd0590e14171",
+  "05_i2c_devices.kicad_sch": "c8da6d3af63fe2c4b6da90a09826235456323ab5622faf2e3f7736681992ed3e",
+  "06_audio.kicad_sch": "d49ada5071e8498fc74cb09239b8df187859e9fbe6a02377981109cd46a55d61",
+  "07_ir.kicad_sch": "76a732bcd4e295517405a39c8e25cb4c6980c1c6633a0712e508aedb63b549c9",
+  "08_buttons_expanders.kicad_sch": "cd0fcda90e8573d2e682f9d83da9b5af12d165d6514ed59bc2ff4fd31716e100",
+  "09_community_header.kicad_sch": "19a841c1eb1d14dc4d40f1b7fb19a88e773f9edce4fa3fa21b7edc3210915031",
+  "aqroot-Beta-v2.kicad_sch": "195a985ca49cd03d88b006776f31ef6fa929d23d6a9eb3c29e37581307d31603"
+ },
+ "sha256_before": {
+  "01_power_tree.kicad_sch": "8d88799b57647470d16dadc41047ae83ae61fc2167451379dffa2a94e5914c27",
+  "02_mcu_core.kicad_sch": "c4a04e69f1b18fff1c8664ddc0aec80ee0e7bd0783ceba595ab00715b4f7f2e7",
+  "03_spi_a_display_sd.kicad_sch": "d3f1470f100a1cc4468a5c100e3788000f56d2134a1614fab9259936ecf97886",
+  "04_spi_b_radios_nfc.kicad_sch": "205d0719344053fe5ffc2155049bdaaf1616b6557f9aaa22ff6bbce33c332446",
+  "05_i2c_devices.kicad_sch": "cde9f397d76defa2fbf2ad78073f64afec0b7f00ed2e598e8dc3b9ff3a851086",
+  "06_audio.kicad_sch": "ded0d75f00182f3c6a85488ceb79760b73e095aefc947ba250f6367712d4dcc6",
+  "07_ir.kicad_sch": "6fadc78e449e8d7b40d948f7e38bbd22284b1b9b184a29f0d0cc4a1e1c9cee72",
+  "08_buttons_expanders.kicad_sch": "79ffedf931a315771c86f95c0a0a5b1b504afd4cc1e03503a078c6504adf21a8",
+  "09_community_header.kicad_sch": "986b76ff3cd22bba1a602f28602cd5aa5bcc926584bb94ba915ae606f08a5d8e",
+  "aqroot-Beta-v2.kicad_sch": "195a985ca49cd03d88b006776f31ef6fa929d23d6a9eb3c29e37581307d31603"
+ },
+ "sheets_touched": [
+  "01_power_tree.kicad_sch",
+  "02_mcu_core.kicad_sch",
+  "03_spi_a_display_sd.kicad_sch",
+  "04_spi_b_radios_nfc.kicad_sch",
+  "05_i2c_devices.kicad_sch",
+  "06_audio.kicad_sch",
+  "07_ir.kicad_sch",
+  "08_buttons_expanders.kicad_sch",
+  "09_community_header.kicad_sch"
+ ]
+}

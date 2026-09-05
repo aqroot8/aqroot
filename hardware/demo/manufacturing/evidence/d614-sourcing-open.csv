@@ -1,0 +1,35 @@
+Bucket,Refs,Qty,Value,Footprint,Magnitude,Tolerance_pct,Voltage_V,Dielectric,Power_W,Demo_nets,Note
+TUNE_PENDING,C69 C70,2,100pF 50V C0G TUNE,C_0603_1608Metric,1e-10,,50.0,C0G,,NFC_EMCA NFC_EMCB,value not final -- DEVICE_SPEC s.14 first-article tune
+TUNE_PENDING,C71 C72,2,300pF 50V C0G TUNE,C_0603_1608Metric,3e-10,,50.0,C0G,,NFC_EMCA NFC_EMCB NFC_MATCH_A NFC_MATCH_B,value not final -- DEVICE_SPEC s.14 first-article tune
+TUNE_PENDING,C73 C74,2,1.5nF 50V C0G TUNE,C_0603_1608Metric,1.5e-09,,50.0,C0G,,NFC_EMCA NFC_EMCB,value not final -- DEVICE_SPEC s.14 first-article tune
+TUNE_PENDING,C75 C77,2,27pF 50V C0G TUNE,C_0603_1608Metric,2.7e-11,,50.0,C0G,,NFC_ANT_A NFC_ANT_B NFC_RXA NFC_RXB,value not final -- DEVICE_SPEC s.14 first-article tune
+TUNE_PENDING,C76 C78,2,620pF 50V C0G TUNE,C_0603_1608Metric,6.2e-10,,50.0,C0G,,NFC_RXA NFC_RXB,value not final -- DEVICE_SPEC s.14 first-article tune
+TUNE_PENDING,C79 C80,2,10pF 50V C0G TUNE,C_0603_1608Metric,1e-11,,50.0,C0G,,NFC_XIN NFC_XOUT,value not final -- DEVICE_SPEC s.14 first-article tune
+TUNE_PENDING,R114 R115,2,1R1 1% TUNE,R_0603_1608Metric,1.1,1.0,,,,NFC_ANT_A NFC_ANT_B NFC_MATCH_A NFC_MATCH_B,value not final -- DEVICE_SPEC s.14 first-article tune
+TUNE_PENDING,R116 R117,2,1k TUNE,R_0603_1608Metric,1000,,,,,NFC_RFI1 NFC_RFI2 NFC_RXA NFC_RXB,value not final -- DEVICE_SPEC s.14 first-article tune
+NO_CANDIDATE,C12,1,22uF,C_1210_3225Metric,2.2e-05,,,,,+3V3,no reviewed prior in this repository -- needs a new decision
+NO_CANDIDATE,C45 C47 C49 C51,4,2.2uF,C_0805_2012Metric,2.2e-06,,,,,NFC_VDD_A NFC_VDD_AM NFC_VDD_D NFC_VDD_RF,no reviewed prior in this repository -- needs a new decision
+NO_CANDIDATE,C46 C48 C50 C54,4,10nF,C_0603_1608Metric,1e-08,,,,,NFC_AGDC NFC_VDD_A NFC_VDD_D NFC_VDD_RF,no reviewed prior in this repository -- needs a new decision
+NO_CANDIDATE,C52,1,1nF,C_0603_1608Metric,1e-09,,,,,NFC_VDD_AM,no reviewed prior in this repository -- needs a new decision
+NO_CANDIDATE,C55,1,2.2uF,C_0603_1608Metric,2.2e-06,,,,,NFC_SUPPLY,no reviewed prior in this repository -- needs a new decision
+NO_CANDIDATE,C57,1,4.7nF 50V X7R,C_0603_1608Metric,4.7e-09,,50.0,X7R,,LTC_GATE_RC,no reviewed prior in this repository -- needs a new decision
+NO_CANDIDATE,C65 C66,2,22uF 10V X7R,C_0805_2012Metric,2.2e-05,,10.0,X7R,,ACC_5V_RAW,no reviewed prior in this repository -- needs a new decision
+NO_CANDIDATE,R101,1,1.65k 1%,R_0603_1608Metric,1650,1.0,,,,ACC_5V_ILIM,no reviewed prior in this repository -- needs a new decision
+NO_CANDIDATE,R104,1,150k 1%,R_0603_1608Metric,150000,1.0,,,,USB_VBUS_CHG VBUS_PRESENT,no reviewed prior in this repository -- needs a new decision
+NO_CANDIDATE,R105,1,220k 1%,R_0603_1608Metric,220000,1.0,,,,VBUS_PRESENT,no reviewed prior in this repository -- needs a new decision
+NO_CANDIDATE,R125,1,680R,R_0603_1608Metric,680,,,,,FRONT_RGB_G_N Net-(D13-GK),no reviewed prior in this repository -- needs a new decision
+NO_CANDIDATE,R126,1,390R,R_0603_1608Metric,390,,,,,FRONT_RGB_B_N Net-(D13-BK),no reviewed prior in this repository -- needs a new decision
+NO_CANDIDATE,R19 R20,2,2.2k,R_0603_1608Metric,2200,,,,,+3V3 I2C_SCL_INT I2C_SDA_INT,no reviewed prior in this repository -- needs a new decision
+NO_CANDIDATE,R24,1,12R,R_0805_2012Metric,12,,,,,+3V3 IR_LED_A,no reviewed prior in this repository -- needs a new decision
+NO_CANDIDATE,R49 R50 R97,3,1.5k 1%,R_0603_1608Metric,1500,1.0,,,,ACC_3V3_ILIM ACC_3V3_SW EXT_SCL_BUF EXT_SDA_BUF,no reviewed prior in this repository -- needs a new decision
+NO_CANDIDATE,R69,1,1.87R 1%,R_0603_1608Metric,1.87,1.0,,,,LED_K,no reviewed prior in this repository -- needs a new decision
+NO_CANDIDATE,R70 R71 R72 R73,4,33R 1%,R_0603_1608Metric,33,1.0,,,,LED_A LED_BOOST,no reviewed prior in this repository -- needs a new decision
+NO_CANDIDATE,R75,1,15mR 1% 1W,R_2512_6332Metric,0.015,1.0,,,1.0,BAT_PROTECTED_P BAT_SENSE,no reviewed prior in this repository -- needs a new decision
+NO_CANDIDATE,R76,1,22k,R_0603_1608Metric,22000,,,,,LTC_GATE LTC_GATE_RC,no reviewed prior in this repository -- needs a new decision
+NO_CANDIDATE,R77 R91,2,3.65M 1%,R_0603_1608Metric,3.65e+06,1.0,,,,BAT_RAW LTC_OV REF_HO USB_VBUS_CHG,no reviewed prior in this repository -- needs a new decision
+NO_CANDIDATE,R78,1,442k 1%,R_0603_1608Metric,442000,1.0,,,,LTC_OV,no reviewed prior in this repository -- needs a new decision
+NO_CANDIDATE,R79,1,510k,R_0603_1608Metric,510000,,,,,BAT_RAW LTC_UV,no reviewed prior in this repository -- needs a new decision
+NO_CANDIDATE,R85 R86 R87 R88 R89 R90,6,2.2M 1%,R_0603_1608Metric,2.2e+06,1.0,,,,BAT_RAW N_BATDIV N_POL REF_POL VBRIDGE_TOP VREF_TOP,no reviewed prior in this repository -- needs a new decision
+NO_CANDIDATE,R92,1,1.30M 1%,R_0603_1608Metric,1.3e+06,1.0,,,,REF_HO,no reviewed prior in this repository -- needs a new decision
+NO_CANDIDATE,R95,1,560R 1% 1206,R_1206_3216Metric,560,1.0,,,,REC_DIODE_IN REC_LIM_IN,no reviewed prior in this repository -- needs a new decision
+NO_CANDIDATE,R99,1,732k 1%,R_0603_1608Metric,732000,1.0,,,,ACC_5V_FB ACC_5V_RAW,no reviewed prior in this repository -- needs a new decision
