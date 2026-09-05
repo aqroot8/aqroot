@@ -1,0 +1,550 @@
+{
+ "board": "hardware/demo/kicad/aqroot-demo/aqroot-Beta-v2.kicad_pcb",
+ "board_sha256": "c8e421aa50144fe396aedb5e226aaabeb815bd69ffaf6e04f549ded43831d103",
+ "checks": {
+  "FAB1_provenance": {
+   "artifacts": 28,
+   "authoritative_board_sha256": "c8e421aa50144fe396aedb5e226aaabeb815bd69ffaf6e04f549ded43831d103",
+   "deterministic": 24,
+   "drift": [],
+   "kicad": "10.0.5",
+   "manifest_board_sha256": "c8e421aa50144fe396aedb5e226aaabeb815bd69ffaf6e04f549ded43831d103",
+   "ok": true,
+   "unmanifested": []
+  },
+  "FAB2_fill": {
+   "after": "c8e421aa50144fe396aedb5e226aaabeb815bd69ffaf6e04f549ded43831d103",
+   "before": "c8e421aa50144fe396aedb5e226aaabeb815bd69ffaf6e04f549ded43831d103",
+   "note": "Gerber export does not refill; a stale stored fill would ship copper the gate never inspected",
+   "ok": true
+  },
+  "FAB3_layers": {
+   "board_copper_stackup": [
+    "F.Cu",
+    "In1.Cu",
+    "In2.Cu",
+    "In3.Cu",
+    "In4.Cu",
+    "B.Cu"
+   ],
+   "empty_layer_files": [],
+   "gbrjob_layers": [
+    "B_Cu",
+    "B_Mask",
+    "B_Paste",
+    "B_Silkscreen",
+    "Edge_Cuts",
+    "F_Cu",
+    "F_Mask",
+    "F_Paste",
+    "F_Silkscreen",
+    "In1_Cu",
+    "In2_Cu",
+    "In3_Cu",
+    "In4_Cu"
+   ],
+   "missing_non_copper": [],
+   "ok": true,
+   "shipped_copper": [
+    "F_Cu",
+    "In1_Cu",
+    "In2_Cu",
+    "In3_Cu",
+    "In4_Cu",
+    "B_Cu"
+   ],
+   "shipped_layers": [
+    "B_Cu",
+    "B_Mask",
+    "B_Paste",
+    "B_Silkscreen",
+    "Edge_Cuts",
+    "F_Cu",
+    "F_Mask",
+    "F_Paste",
+    "F_Silkscreen",
+    "In1_Cu",
+    "In2_Cu",
+    "In3_Cu",
+    "In4_Cu"
+   ]
+  },
+  "FAB4_drill": {
+   "board_holes": 802,
+   "displaced_holes": [],
+   "min_drill_mm": 0.2,
+   "ok": true,
+   "plated": 795,
+   "shipped_holes": 802,
+   "slots": 4,
+   "tool_census": {
+    "N 0.650": 2,
+    "N 0.900": 2,
+    "N 1.050": 1,
+    "N 2.200": 2,
+    "P 0.200": 47,
+    "P 0.250": 11,
+    "P 0.300": 566,
+    "P 0.400": 134,
+    "P 0.600x1.400": 2,
+    "P 0.600x1.700": 2,
+    "P 0.750": 4,
+    "P 0.900": 2,
+    "P 1.020": 24,
+    "P 1.100": 3
+   },
+   "tool_count_mismatch": [],
+   "tools": 14,
+   "unplated": 7
+  },
+  "FAB5_cpl": {
+   "board_placeable": 263,
+   "dnp_still_placed": [],
+   "fitted_dropped": [],
+   "misplaced": [],
+   "ok": true,
+   "rows_all": 263,
+   "rows_fitted": 247,
+   "unexpected_rows": []
+  },
+  "FAB6_bom": {
+   "assembly_ref_not_built": [],
+   "board_says_not_purchased": [
+    "BOSS1",
+    "BOSS2",
+    "TP1",
+    "TP10",
+    "TP11",
+    "TP12",
+    "TP13",
+    "TP14",
+    "TP15",
+    "TP16",
+    "TP17",
+    "TP18",
+    "TP19",
+    "TP2",
+    "TP20",
+    "TP21",
+    "TP22",
+    "TP23",
+    "TP24",
+    "TP25",
+    "TP26",
+    "TP27",
+    "TP28",
+    "TP29",
+    "TP3",
+    "TP30",
+    "TP31",
+    "TP32",
+    "TP33",
+    "TP34",
+    "TP35",
+    "TP36",
+    "TP37",
+    "TP38",
+    "TP39",
+    "TP4",
+    "TP40",
+    "TP42",
+    "TP43",
+    "TP44",
+    "TP45",
+    "TP46",
+    "TP47",
+    "TP5",
+    "TP6",
+    "TP7",
+    "TP8",
+    "TP9"
+   ],
+   "built_purchased_ref_without_line": [],
+   "do_not_populate_mismatch": [],
+   "non_purchased_mismatch": [],
+   "ok": true,
+   "part_identity_on_two_footprints": [],
+   "references_in_two_views": [],
+   "schematic_refs_in_no_view": [],
+   "schematic_symbols": 310,
+   "view_lines": {
+    "BOM-assembly": 122,
+    "DO-NOT-POPULATE": 16,
+    "NON-PURCHASED": 46,
+    "OFF-BOARD": 1
+   },
+   "view_refs": {
+    "BOM-assembly": 247,
+    "DO-NOT-POPULATE": 16,
+    "NON-PURCHASED": 46,
+    "OFF-BOARD": 1
+   },
+   "view_refs_not_in_schematic": []
+  },
+  "FAB7_sourcing": {
+   "assembly_refs": 247,
+   "coverage": 0.2591,
+   "ok": false,
+   "orderable": 64,
+   "unsourced": 183,
+   "unsourced_by_line": {
+    "0R FIT | Resistor_SMD:R_0603_1608Metric": [
+     "R106",
+     "R109"
+    ],
+    "0R | Resistor_SMD:R_0603_1608Metric": [
+     "R118",
+     "R121",
+     "R122",
+     "R32",
+     "R35",
+     "R42"
+    ],
+    "1.30M 1% | Resistor_SMD:R_0603_1608Metric": [
+     "R92"
+    ],
+    "1.5k 1% | Resistor_SMD:R_0603_1608Metric": [
+     "R49",
+     "R50",
+     "R97"
+    ],
+    "1.5nF 50V C0G TUNE | Capacitor_SMD:C_0603_1608Metric": [
+     "C73",
+     "C74"
+    ],
+    "1.65k 1% | Resistor_SMD:R_0603_1608Metric": [
+     "R101"
+    ],
+    "1.87R 1% | Resistor_SMD:R_0603_1608Metric": [
+     "R69"
+    ],
+    "100K | Resistor_SMD:R_0603_1608Metric": [
+     "R23",
+     "R43"
+    ],
+    "100R 1% | Resistor_SMD:R_0603_1608Metric": [
+     "R55",
+     "R56",
+     "R61",
+     "R62",
+     "R64"
+    ],
+    "100R | Resistor_SMD:R_0603_1608Metric": [
+     "R21",
+     "R22",
+     "R84"
+    ],
+    "100k 1% | Resistor_SMD:R_0603_1608Metric": [
+     "R100"
+    ],
+    "100k | Resistor_SMD:R_0603_1608Metric": [
+     "R102",
+     "R103",
+     "R113",
+     "R12",
+     "R120",
+     "R129",
+     "R13",
+     "R131",
+     "R14",
+     "R15",
+     "R16",
+     "R17",
+     "R74",
+     "R81",
+     "R98"
+    ],
+    "100nF X7R | Capacitor_SMD:C_0603_1608Metric": [
+     "C28",
+     "C36",
+     "C39",
+     "C60",
+     "C61",
+     "C68"
+    ],
+    "100nF | Capacitor_SMD:C_0402_1005Metric": [
+     "C18",
+     "C19"
+    ],
+    "100nF | Capacitor_SMD:C_0603_1608Metric": [
+     "C13",
+     "C14",
+     "C16",
+     "C17",
+     "C2",
+     "C4",
+     "C5",
+     "C6",
+     "C7",
+     "C8",
+     "C9"
+    ],
+    "100pF 50V C0G TUNE | Capacitor_SMD:C_0603_1608Metric": [
+     "C69",
+     "C70"
+    ],
+    "10k 1% | Resistor_SMD:R_0603_1608Metric": [
+     "R38",
+     "R46",
+     "R63"
+    ],
+    "10k | Resistor_SMD:R_0603_1608Metric": [
+     "R1",
+     "R108",
+     "R110",
+     "R111",
+     "R127",
+     "R128",
+     "R2",
+     "R25",
+     "R26",
+     "R27",
+     "R28",
+     "R29",
+     "R3",
+     "R4",
+     "R5",
+     "R6",
+     "R7",
+     "R8",
+     "R83",
+     "R9"
+    ],
+    "10nF | Capacitor_SMD:C_0603_1608Metric": [
+     "C46",
+     "C48",
+     "C50",
+     "C54"
+    ],
+    "10pF 50V C0G TUNE | Capacitor_SMD:C_0603_1608Metric": [
+     "C79",
+     "C80"
+    ],
+    "10uF 10V X7R | Capacitor_SMD:C_0805_2012Metric": [
+     "C33",
+     "C64"
+    ],
+    "10uF 10V X7R | Capacitor_SMD:C_1206_3216Metric": [
+     "C26",
+     "C27"
+    ],
+    "10uF | Capacitor_SMD:C_0805_2012Metric": [
+     "C15",
+     "C3"
+    ],
+    "10uf | Capacitor_SMD:C_0805_2012Metric": [
+     "C10"
+    ],
+    "12R | Resistor_SMD:R_0805_2012Metric": [
+     "R24"
+    ],
+    "150k 1% | Resistor_SMD:R_0603_1608Metric": [
+     "R104"
+    ],
+    "15mR 1% 1W | Resistor_SMD:R_2512_6332Metric": [
+     "R75"
+    ],
+    "180K 1% | Resistor_SMD:R_0603_1608Metric": [
+     "R40"
+    ],
+    "18k 1% | Resistor_SMD:R_0603_1608Metric": [
+     "R36"
+    ],
+    "1M 1% | Resistor_SMD:R_0603_1608Metric": [
+     "R39"
+    ],
+    "1M | Resistor_SMD:R_0603_1608Metric": [
+     "R41",
+     "R80",
+     "R82",
+     "R94",
+     "R96"
+    ],
+    "1R1 1% TUNE | Resistor_SMD:R_0603_1608Metric": [
+     "R114",
+     "R115"
+    ],
+    "1k 1% | Resistor_SMD:R_0603_1608Metric": [
+     "R37"
+    ],
+    "1k TUNE | Resistor_SMD:R_0603_1608Metric": [
+     "R116",
+     "R117"
+    ],
+    "1k | Resistor_SMD:R_0603_1608Metric": [
+     "R124"
+    ],
+    "1nF | Capacitor_SMD:C_0603_1608Metric": [
+     "C52"
+    ],
+    "1uF 10V X7R | Capacitor_SMD:C_0603_1608Metric": [
+     "C25",
+     "C37",
+     "C38",
+     "C62",
+     "C63",
+     "C67"
+    ],
+    "1uF 25V X7R | Capacitor_SMD:C_0603_1608Metric": [
+     "C23",
+     "C58",
+     "C59"
+    ],
+    "1uF | Capacitor_SMD:C_0603_1608Metric": [
+     "C1",
+     "C53",
+     "C56"
+    ],
+    "1uF | Capacitor_SMD:C_0805_2012Metric": [
+     "C44"
+    ],
+    "2.2M 1% | Resistor_SMD:R_0603_1608Metric": [
+     "R85",
+     "R86",
+     "R87",
+     "R88",
+     "R89",
+     "R90"
+    ],
+    "2.2k | Resistor_SMD:R_0603_1608Metric": [
+     "R19",
+     "R20"
+    ],
+    "2.2uF | Capacitor_SMD:C_0603_1608Metric": [
+     "C55"
+    ],
+    "2.2uF | Capacitor_SMD:C_0805_2012Metric": [
+     "C45",
+     "C47",
+     "C49",
+     "C51"
+    ],
+    "220R | Resistor_SMD:R_0603_1608Metric": [
+     "R18"
+    ],
+    "220k 1% | Resistor_SMD:R_0603_1608Metric": [
+     "R105"
+    ],
+    "22R 1% | Resistor_SMD:R_0603_1608Metric": [
+     "R47",
+     "R48"
+    ],
+    "22R | Resistor_SMD:R_0603_1608Metric": [
+     "R33",
+     "R34"
+    ],
+    "22k | Resistor_SMD:R_0603_1608Metric": [
+     "R76"
+    ],
+    "22uF 10V X7R | Capacitor_SMD:C_0805_2012Metric": [
+     "C65",
+     "C66"
+    ],
+    "22uF 10V X7R | Capacitor_SMD:C_1206_3216Metric": [
+     "C29",
+     "C30",
+     "C31",
+     "C32"
+    ],
+    "22uF | Capacitor_SMD:C_1210_3225Metric": [
+     "C12"
+    ],
+    "27pF 50V C0G TUNE | Capacitor_SMD:C_0603_1608Metric": [
+     "C75",
+     "C77"
+    ],
+    "3.65M 1% | Resistor_SMD:R_0603_1608Metric": [
+     "R77",
+     "R91"
+    ],
+    "300pF 50V C0G TUNE | Capacitor_SMD:C_0603_1608Metric": [
+     "C71",
+     "C72"
+    ],
+    "330R 1% | Resistor_SMD:R_0603_1608Metric": [
+     "R66"
+    ],
+    "33R 1% | Resistor_SMD:R_0603_1608Metric": [
+     "R70",
+     "R71",
+     "R72",
+     "R73"
+    ],
+    "390R | Resistor_SMD:R_0603_1608Metric": [
+     "R126"
+    ],
+    "4.7nF 50V X7R | Capacitor_SMD:C_0603_1608Metric": [
+     "C57"
+    ],
+    "4.7uF 10V X5R | Capacitor_SMD:C_0805_2012Metric": [
+     "C43"
+    ],
+    "4.7uF 10V X7R | Capacitor_SMD:C_0805_2012Metric": [
+     "C20"
+    ],
+    "4.7uF | Capacitor_SMD:C_0805_2012Metric": [
+     "C11"
+    ],
+    "442k 1% | Resistor_SMD:R_0603_1608Metric": [
+     "R78"
+    ],
+    "5.1k | Resistor_SMD:R_0603_1608Metric": [
+     "R30",
+     "R31"
+    ],
+    "510k | Resistor_SMD:R_0603_1608Metric": [
+     "R79"
+    ],
+    "560R 1% 1206 | Resistor_SMD:R_1206_3216Metric": [
+     "R95"
+    ],
+    "620pF 50V C0G TUNE | Capacitor_SMD:C_0603_1608Metric": [
+     "C76",
+     "C78"
+    ],
+    "680R | Resistor_SMD:R_0603_1608Metric": [
+     "R125"
+    ],
+    "732k 1% | Resistor_SMD:R_0603_1608Metric": [
+     "R99"
+    ],
+    "QWIIC_STEMMA_QT | Connector_JST:JST_SH_SM04B-SRSS-TB_1x04-1MP_P1.00mm_Horizontal": [
+     "J8"
+    ]
+   },
+   "unsourced_lines": 70,
+   "unsourced_prefixes": {
+    "C": 72,
+    "J": 1,
+    "R": 110
+   }
+  },
+  "FAB8_outline": {
+   "board_outline_mm": [
+    0.0,
+    0.0,
+    72.0,
+    148.0
+   ],
+   "gerber_extent_mm": [
+    0.0,
+    0.0,
+    72.0,
+    148.0
+   ],
+   "max_delta_nm": 0,
+   "ok": true,
+   "profile_operations": 8,
+   "size_mm": [
+    72.0,
+    148.0
+   ]
+  }
+ },
+ "failing": [
+  "FAB7_sourcing"
+ ],
+ "package": "hardware/demo/fab",
+ "schema": 1,
+ "verdict": "FAIL"
+}

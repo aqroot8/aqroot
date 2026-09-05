@@ -15984,17 +15984,6 @@
 				)
 			)
 		)
-		(property "LCSC" "C344022"
-			(at 266.7 105.41 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
 		(pin "1"
 			(uuid "e1cb6304-0b02-4131-8f8c-e2e8761f3d25")
 		)

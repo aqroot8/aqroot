@@ -13,6 +13,87 @@
 > This file references DEVICE_SPEC rather than duplicating full specs.
 
 ## 1. Authoritative HEAD
+- **Demo D-613 (THE FABRICATION PACKAGE EXISTS FOR THE FIRST TIME, AND THE
+  REVIEW FOUND THREE THINGS THE GATE COULD NOT SEE):** D-612 named the next
+  task and was right about what it would turn up. **NO COPPER CHANGED** -- the
+  authoritative board is byte-identical at
+  **`c8e421aa50144fe396aedb5e226aaabeb815bd69ffaf6e04f549ded43831d103`**,
+  ledger **57 open edges row for row**, ratsnest 73, `protected_copper.py`
+  15 nets / 393 objects IDENTICAL. Two tracked tools are new --
+  `export_fab_package.py` (one command, 28 artifacts, `kicad-cli` does every
+  piece of drawing) and `checks/fab_package_contract.py` (FAB1-FAB8) -- plus
+  read-only `screen_bom_sourcing.py`. The package is at **`hardware/demo/fab/`**
+  and is **REPRODUCIBLE**: KiCad stamps a date into Gerber/Excellon headers, so
+  `MANIFEST.json` also carries a NORMALISED sha256 with those lines removed,
+  stable run to run, 24 of 28 artifacts; the four PDFs embed a date inside the
+  document and are recorded `deterministic: false` rather than quietly excluded.
+  **THE REVIEW MEASURES CONSEQUENCES, NOT FLAGS.** FAB4 is not "a drill file
+  exists": both Excellon files are parsed into board coordinates and matched
+  against `pcbnew`'s vias and pad drills -- **802 holes on the board, 802 in the
+  files, ZERO displaced**, to the micron, which is the resolution the file is
+  written at. FAB2 proves the committed board is BYTE-IDENTICAL after
+  `--refill-zones --save-board`, which matters because **Gerber export does not
+  refill**: a stale stored fill would ship copper no check here has ever seen.
+  FAB5 247 fitted CPL rows = the fitted placeable set, every X/Y/side matching.
+  FAB8 the profile is the outline, 72.000 x 148.000 mm, delta 0 nm. **FAB1-FAB6
+  and FAB8 PASS; FAB7 FAILS and is the blocker.**
+  **FINDING 1 -- THE BOM ASKED A SUPPLIER TO QUOTE FORTY-SIX TEST POINTS.**
+  Straight from `kicad-cli sch export bom` the Demo BOM is 310 symbols, all
+  `(in_bom yes)`; 46 are `TestPoint` -- a pad -- and the BOARD already carried
+  KiCad's exclude-from-BOM attribute on those 46 plus `BOSS1`/`BOSS2`. Nothing
+  was reading it. The package now emits four views that **PARTITION** the
+  schematic once each -- `BOM-assembly` 122 lines / 247 refs, `DO-NOT-POPULATE`
+  16, `NON-PURCHASED` 46, `OFF-BOARD` 1 (`LS1`) -- and FAB6 re-derives the same
+  partition and refuses any divergence the board does not explain.
+  **FINDING 2 -- ONE PART NUMBER ON TWO LAND PATTERNS.** `C26` (10 uF 10 V X7R,
+  1206) carried LCSC `C344022`, which is `C24`'s 10 uF 25 V X5R **0603** part,
+  with no MPN to contradict it. REMOVED -- eleven lines out of
+  `01_power_tree.kicad_sch`, CRLF preserved, nothing else touched -- so the part
+  sits honestly in the sourcing gap instead of carrying a wrong answer.
+  **FINDING 3 -- `schematic_parity_clean` HAD NEVER BEEN ASKED.**
+  `verify_promotion.stage()` staged `.kicad_pcb`/`.kicad_dru`/`.kicad_pro` and
+  left the ten `.kicad_sch` sheets behind, so KiCad had no schematic beside the
+  board, returned an empty list, and the check read TRUE **on every promotion
+  ever gated here** -- D-612's own evidence records `schematic_parity_errors: 0`
+  on a board whose real answer is **249** (`d613-parity-vacuity.json`: 0 without
+  the sheets, 249 with them). **Fourth instance in four decisions of ONE
+  failure: evidence read at a moment it was not yet true, or never taken at
+  all** (D-607 a board without its `.kicad_pro`, D-610 a land never asked,
+  D-611 an unfinished probe, D-613 a check whose subject was not in the room).
+  REPAIRED: every sheet is staged, `drc()` returns parity by type and severity,
+  and the check is now `schematic_parity_within_baseline` against a recorded
+  `INHERITED_PARITY` -- still 14 checks, still 14/14, but the fourteenth means
+  something. **The 249 are ALL WARNINGS, ZERO ERRORS**: 199 symbol/footprint
+  text fields, 48 attribute/nickname (46 of them the very test-point BOM flag
+  Finding 1 found independently; 2 are bare-vs-prefixed library nicknames on
+  `J5`/`J8`, same footprint name), 2 `extra_footprint` for the board-only
+  `BOSS1`/`BOSS2`. No net, no pin, no missing footprint.
+  **THE OPEN BLOCKER, MEASURED AND BOUNDED: 183 of the 247 fitted purchased
+  on-board references -- 70 BOM lines, 110 R / 72 C / 1 J -- carry neither an
+  MPN nor an LCSC code. Coverage 25.9 %.** `screen_bom_sourcing.py` asks
+  whether the repository already holds a reviewed answer (the Demo's own
+  sourced lines, `beta-dm/fab/jlcpcb/JLC-MATCH-AUDIT.csv`, the beta-dm MPN
+  ledger) under a **deliberately brittle** rule -- value string and footprint
+  leaf equal character for character, because `10uF 10V X7R` and `10uF` are not
+  the same specification and the beta-dm audit itself rejected two vendor
+  matches for exactly that: **EXACT_PRIOR 31 lines / 114 parts, NEAR_MISS 0,
+  NO_CANDIDATE 39 lines / 69 parts (27 C, 41 R, 1 J)**. Grafting the 31 takes
+  coverage to about 72 % and is NOT mechanical -- each audit note reasons about
+  the net that part sits on in *that* board.
+  All retained contracts re-measured: `verify_promotion.py` **14/14** with the
+  repaired parity check, `population_contract.py` POP1-POP4 (263 -> 247),
+  `pour_bond_contract.py` P1-P4, `neck_contract.py` N1-N3, `protected_copper.py`
+  IDENTICAL, ledger 57/73 with approved NC exact. `audit_narrow_copper.py` and
+  `audit_bond_ampacity.py` compare authority against candidate; no copper
+  changed, so D-612's runs stand and were not re-executed against themselves.
+  `hardware/beta-v2/`, D-269 / D-186, `ACC_5V_SW_EN`, `ACC_3V3_SW`, RGB and
+  XGPIO4/5 untouched.
+  **NEXT: CLOSE THE SOURCING GAP** -- graft the 31 `EXACT_PRIOR` lines after
+  re-checking each against the Demo's own nets, then rule on the 39
+  `NO_CANDIDATE` lines. It is what stands between this board and a releasable
+  fabrication package. `checks/fab_package_contract.py` joins the standing
+  preflight. Notes: `docs/full-beta-v2/AQROOT_DEMO_FABRICATION_PACKAGE.md`.
+  No owner decision.
 - **Demo D-612 (THE BOARD NOW STATES ITS OWN POPULATION -- sixteen DNP flags
   carried from the schematic; the FIRST fabrication blocker this project has
   CLOSED rather than characterized):** D-611 measured that the Demo board

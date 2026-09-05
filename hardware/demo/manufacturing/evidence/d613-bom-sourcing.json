@@ -1,0 +1,1432 @@
+{
+ "EXACT_PRIOR": [
+  {
+   "candidates": [
+    {
+     "lcsc": "C15849",
+     "manufacturer": "Samsung Electro-Mechanics",
+     "mpn": "CL10A105KB8NNNC",
+     "note": "1uF 50V X5R 0603. Schematic states no dielectric, so X5R is permitted; 50V >> 2x rail.",
+     "source": "BETA-DM",
+     "verdict": "ACCEPTED"
+    }
+   ],
+   "footprint": "C_0603_1608Metric",
+   "qty": 3,
+   "refs": [
+    "C1",
+    "C53",
+    "C56"
+   ],
+   "value": "1uF"
+  },
+  {
+   "candidates": [
+    {
+     "lcsc": "C440198",
+     "manufacturer": "Murata Electronics",
+     "mpn": "GRM21BR61H106KE43L",
+     "note": "10uF 50V X5R 0805 on +3V3; no dielectric specified.",
+     "source": "BETA-DM",
+     "verdict": "ACCEPTED"
+    }
+   ],
+   "footprint": "C_0805_2012Metric",
+   "qty": 1,
+   "refs": [
+    "C10"
+   ],
+   "value": "10uf"
+  },
+  {
+   "candidates": [
+    {
+     "lcsc": "C1779",
+     "manufacturer": "Samsung Electro-Mechanics",
+     "mpn": "CL21A475KAQNNNE",
+     "note": "4.7uF 25V X5R 0805 on +3V3; no dielectric specified.",
+     "source": "BETA-DM",
+     "verdict": "ACCEPTED"
+    }
+   ],
+   "footprint": "C_0805_2012Metric",
+   "qty": 1,
+   "refs": [
+    "C11"
+   ],
+   "value": "4.7uF"
+  },
+  {
+   "candidates": [
+    {
+     "lcsc": "C105883",
+     "manufacturer": "Murata Electronics",
+     "mpn": "CC0402KRX7R8BB104",
+     "note": "JLC chose GRM022R60J104KE15D in an 01005 body at 6.3V - wrong package for the frozen 0402 land and only 1.9x the +3V3 rail. Replaced with YAGEO 100nF 25V X7R 0402, stock 3803076.",
+     "source": "BETA-DM",
+     "verdict": "REJECTED - JLC match wrong"
+    }
+   ],
+   "footprint": "C_0402_1005Metric",
+   "qty": 2,
+   "refs": [
+    "C18",
+    "C19"
+   ],
+   "value": "100nF"
+  },
+  {
+   "candidates": [
+    {
+     "lcsc": "C14663",
+     "manufacturer": "YAGEO",
+     "mpn": "CC0603KRX7R9BB104",
+     "note": "100nF 50V X7R 0603 decoupling.",
+     "source": "BETA-DM",
+     "verdict": "ACCEPTED"
+    }
+   ],
+   "footprint": "C_0603_1608Metric",
+   "qty": 11,
+   "refs": [
+    "C2",
+    "C4",
+    "C5",
+    "C6",
+    "C7",
+    "C8",
+    "C9",
+    "C13",
+    "C14",
+    "C16",
+    "C17"
+   ],
+   "value": "100nF"
+  },
+  {
+   "candidates": [
+    {
+     "lcsc": "C354262",
+     "manufacturer": "Samsung Electro-Mechanics",
+     "mpn": "CC0805KKX7R8BB475",
+     "note": "JLC offered X5R against an X7R specification. C20 sits on USB_VBUS_RAW (5V). YAGEO 4.7uF 25V X7R 0805, stock 391419.",
+     "source": "BETA-DM",
+     "verdict": "REJECTED - JLC match wrong"
+    }
+   ],
+   "footprint": "C_0805_2012Metric",
+   "qty": 1,
+   "refs": [
+    "C20"
+   ],
+   "value": "4.7uF 10V X7R"
+  },
+  {
+   "candidates": [
+    {
+     "lcsc": "C106858",
+     "manufacturer": "Samsung Electro-Mechanics",
+     "mpn": "CC0603KRX7R8BB105",
+     "note": "JLC offered CL10A105KB8NNNC, X5R, but the schematic says X7R. Rule: X7R wherever the schematic says X7R. On USB_VBUS_CHG (5V). Replaced with YAGEO 1uF 25V X7R 0603, stock 180204.",
+     "source": "BETA-DM",
+     "verdict": "REJECTED - JLC match wrong"
+    }
+   ],
+   "footprint": "C_0603_1608Metric",
+   "qty": 3,
+   "refs": [
+    "C23",
+    "C58",
+    "C59"
+   ],
+   "value": "1uF 25V X7R"
+  },
+  {
+   "candidates": [
+    {
+     "lcsc": "C106858",
+     "manufacturer": "Samsung Electro-Mechanics",
+     "mpn": "CC0603KRX7R8BB105",
+     "note": "JLC offered X5R against an X7R specification. Nets are BAT_PROTECTED_P, +3V3 and ACC_3V3_SW; 25V covers all three at >=2x rail. YAGEO 1uF 25V X7R 0603.",
+     "source": "BETA-DM",
+     "verdict": "REJECTED - JLC match wrong"
+    }
+   ],
+   "footprint": "C_0603_1608Metric",
+   "qty": 6,
+   "refs": [
+    "C25",
+    "C37",
+    "C38",
+    "C62",
+    "C63",
+    "C67"
+   ],
+   "value": "1uF 10V X7R"
+  },
+  {
+   "candidates": [
+    {
+     "lcsc": "C77093",
+     "manufacturer": "Samsung Electro-Mechanics",
+     "mpn": "GRM31CR71E106KA12L",
+     "note": "JLC chose CL31A106KBHNNNE, X5R, against an X7R specification. Replaced with Murata GRM31CR71E106KA12L, 10uF 25V X7R 1206, stock 226763; TI SLUSF65A 8.2.2.3 also asks for 25V parts on IN/SYS. DC-bias gate closed on official Murata SimSurfing data (25 degC, AC 1Vrms): 10.923uF at 0V, 9.000uF at 4.5V, change -17.60%. Per capacitor 9.00uF against the >=5uF floor = 1.80x; combined 18.0uF against the >=10uF floor = 1.80x. With -10% tolerance, 8.10uF each / 16.2uF combined = 1.62x both. With X7R -15% temperature on top, 6.885uF each / 13.77uF combined = 1.38x both. PASS. Murata GRM21BR71A106KE51L was not considered - it is the obsolete part the rule bans.",
+     "source": "BETA-DM",
+     "verdict": "REJECTED - JLC match wrong"
+    }
+   ],
+   "footprint": "C_1206_3216Metric",
+   "qty": 2,
+   "refs": [
+    "C26",
+    "C27"
+   ],
+   "value": "10uF 10V X7R"
+  },
+  {
+   "candidates": [
+    {
+     "lcsc": "C14663",
+     "manufacturer": "YAGEO",
+     "mpn": "CC0603KRX7R9BB104",
+     "note": "100nF 50V X7R 0603, dielectric honoured.",
+     "source": "BETA-DM",
+     "verdict": "ACCEPTED"
+    }
+   ],
+   "footprint": "C_0603_1608Metric",
+   "qty": 6,
+   "refs": [
+    "C28",
+    "C36",
+    "C39",
+    "C60",
+    "C61",
+    "C68"
+   ],
+   "value": "100nF X7R"
+  },
+  {
+   "candidates": [
+    {
+     "lcsc": "C22392398",
+     "manufacturer": "Samsung Electro-Mechanics",
+     "mpn": "TCC1206X7R226K160HT",
+     "note": "JLC offered X5R against an X7R specification. On +3V3, where the rule asks for 16V or 25V. CCTC 22uF 16V X7R 1206, stock 62585.",
+     "source": "BETA-DM",
+     "verdict": "REJECTED - JLC match wrong"
+    }
+   ],
+   "footprint": "C_1206_3216Metric",
+   "qty": 4,
+   "refs": [
+    "C29",
+    "C30",
+    "C31",
+    "C32"
+   ],
+   "value": "22uF 10V X7R"
+  },
+  {
+   "candidates": [
+    {
+     "lcsc": "C440198",
+     "manufacturer": "Murata Electronics",
+     "mpn": "GRM21BR61H106KE43L",
+     "note": "10uF 50V X5R 0805 on +3V3; no dielectric specified.",
+     "source": "BETA-DM",
+     "verdict": "ACCEPTED"
+    }
+   ],
+   "footprint": "C_0805_2012Metric",
+   "qty": 2,
+   "refs": [
+    "C3",
+    "C15"
+   ],
+   "value": "10uF"
+  },
+  {
+   "candidates": [
+    {
+     "lcsc": "C326595",
+     "manufacturer": "Murata Electronics",
+     "mpn": "CC0805KKX7R7BB106",
+     "note": "JLC offered X5R against an X7R specification. C33 is SYS bulk on BQ25185_SYS (4.5V). YAGEO 10uF 16V X7R 0805, stock 187459.",
+     "source": "BETA-DM",
+     "verdict": "REJECTED - JLC match wrong"
+    }
+   ],
+   "footprint": "C_0805_2012Metric",
+   "qty": 2,
+   "refs": [
+    "C33",
+    "C64"
+   ],
+   "value": "10uF 10V X7R"
+  },
+  {
+   "candidates": [
+    {
+     "lcsc": "C28323",
+     "manufacturer": "Samsung Electro-Mechanics",
+     "mpn": "CL21B105KBFNNNE",
+     "note": "1uF 50V X7R 0805 on LED_BOOST.",
+     "source": "BETA-DM",
+     "verdict": "ACCEPTED"
+    }
+   ],
+   "footprint": "C_0805_2012Metric",
+   "qty": 1,
+   "refs": [
+    "C44"
+   ],
+   "value": "1uF"
+  },
+  {
+   "candidates": [
+    {
+     "lcsc": "C25804",
+     "manufacturer": "UNI-ROYAL(Uniroyal Elec)",
+     "mpn": "0603WAF1002T5E",
+     "note": "10k +/-1%.",
+     "source": "BETA-DM",
+     "verdict": "ACCEPTED"
+    }
+   ],
+   "footprint": "R_0603_1608Metric",
+   "qty": 20,
+   "refs": [
+    "R1",
+    "R2",
+    "R3",
+    "R4",
+    "R5",
+    "R6",
+    "R7",
+    "R8",
+    "R9",
+    "R25",
+    "R26",
+    "R27",
+    "R28",
+    "R29",
+    "R83",
+    "R108",
+    "R110",
+    "R111",
+    "R127",
+    "R128"
+   ],
+   "value": "10k"
+  },
+  {
+   "candidates": [
+    {
+     "lcsc": "C25803",
+     "manufacturer": "FH (Guangdong Fenghua Advanced Tech)",
+     "mpn": "0603WAF1003T5E",
+     "note": "JLC chose TD03H1003BT, +/-0.1% thin film, stock 13226. The requirement is 1%; the same-family UNI-ROYAL 100k +/-1% already used for the other 100k groups satisfies it with 23M in stock.",
+     "source": "BETA-DM",
+     "verdict": "REJECTED - JLC match wrong"
+    }
+   ],
+   "footprint": "R_0603_1608Metric",
+   "qty": 1,
+   "refs": [
+    "R100"
+   ],
+   "value": "100k 1%"
+  },
+  {
+   "candidates": [
+    {
+     "lcsc": "C25803",
+     "manufacturer": "UNI-ROYAL(Uniroyal Elec)",
+     "mpn": "0603WAF1003T5E",
+     "note": "100k +/-1%.",
+     "source": "BETA-DM",
+     "verdict": "ACCEPTED"
+    }
+   ],
+   "footprint": "R_0603_1608Metric",
+   "qty": 15,
+   "refs": [
+    "R12",
+    "R13",
+    "R14",
+    "R15",
+    "R16",
+    "R17",
+    "R74",
+    "R81",
+    "R98",
+    "R102",
+    "R103",
+    "R113",
+    "R120",
+    "R129",
+    "R131"
+   ],
+   "value": "100k"
+  },
+  {
+   "candidates": [
+    {
+     "lcsc": "C22962",
+     "manufacturer": "UNI-ROYAL(Uniroyal Elec)",
+     "mpn": "0603WAF2200T5E",
+     "note": "220R +/-1%.",
+     "source": "BETA-DM",
+     "verdict": "ACCEPTED"
+    }
+   ],
+   "footprint": "R_0603_1608Metric",
+   "qty": 1,
+   "refs": [
+    "R18"
+   ],
+   "value": "220R"
+  },
+  {
+   "candidates": [
+    {
+     "lcsc": "C25803",
+     "manufacturer": "UNI-ROYAL(Uniroyal Elec)",
+     "mpn": "0603WAF1003T5E",
+     "note": "100k +/-1%.",
+     "source": "BETA-DM",
+     "verdict": "ACCEPTED"
+    }
+   ],
+   "footprint": "R_0603_1608Metric",
+   "qty": 2,
+   "refs": [
+    "R23",
+    "R43"
+   ],
+   "value": "100K"
+  },
+  {
+   "candidates": [
+    {
+     "lcsc": "C23186",
+     "manufacturer": "UNI-ROYAL(Uniroyal Elec)",
+     "mpn": "0603WAF5101T5E",
+     "note": "5.1k +/-1%. USB-C CC pulldown Rd - 1% or better required and met.",
+     "source": "BETA-DM",
+     "verdict": "ACCEPTED"
+    }
+   ],
+   "footprint": "R_0603_1608Metric",
+   "qty": 2,
+   "refs": [
+    "R30",
+    "R31"
+   ],
+   "value": "5.1k"
+  },
+  {
+   "candidates": [
+    {
+     "lcsc": "C21189",
+     "manufacturer": "UNI-ROYAL(Uniroyal Elec)",
+     "mpn": "0603WAF0000T5E",
+     "note": "Current gate closed with real numbers. Netlist: R35 bridges USB_VBUS_RAW to USB_VBUS_CHG and is the only power-node jumper - R32 is J3 SHIELD to GND and R42 a U12 PS/SYNC strap to GND, both signal level. (The rule text names R42 as the power node; the netlist says R35.) Worst-case current through R35 is the BQ25185 input current limit. TI SLUSF65A 8.2.2.1: R_ILIM/VSET = 18k sets VBATREG 4.2V and an input current limit of 500mA - our R36 is 18k. 8.2.2.2: R_ISET = 1k sets ICHG 300mA - our R37 is 1k. So R35 sees at most 500mA. The UNI-ROYAL ZW-series 0603 jumper is rated 1A continuous / 2A overload at <50mOhm - 2x margin. PASS.",
+     "source": "BETA-DM",
+     "verdict": "ACCEPTED"
+    }
+   ],
+   "footprint": "R_0603_1608Metric",
+   "qty": 6,
+   "refs": [
+    "R32",
+    "R35",
+    "R42",
+    "R118",
+    "R121",
+    "R122"
+   ],
+   "value": "0R"
+  },
+  {
+   "candidates": [
+    {
+     "lcsc": "C23345",
+     "manufacturer": "UNI-ROYAL(Uniroyal Elec)",
+     "mpn": "0603WAF220JT5E",
+     "note": "22R +/-1% (UNI-ROYAL part code uses J, the listing is +/-1%).",
+     "source": "BETA-DM",
+     "verdict": "ACCEPTED"
+    }
+   ],
+   "footprint": "R_0603_1608Metric",
+   "qty": 2,
+   "refs": [
+    "R33",
+    "R34"
+   ],
+   "value": "22R"
+  },
+  {
+   "candidates": [
+    {
+     "lcsc": "C25810",
+     "manufacturer": "FOJAN",
+     "mpn": "0603WAF1802T5E",
+     "note": "JLC chose FOJAN FRC0603F1802TS - electrically fine, but the rule prefers one series across all values. Same-family UNI-ROYAL 18k +/-1%, stock 1218964.",
+     "source": "BETA-DM",
+     "verdict": "REJECTED - JLC match wrong"
+    }
+   ],
+   "footprint": "R_0603_1608Metric",
+   "qty": 1,
+   "refs": [
+    "R36"
+   ],
+   "value": "18k 1%"
+  },
+  {
+   "candidates": [
+    {
+     "lcsc": "C21190",
+     "manufacturer": "VO",
+     "mpn": "0603WAF1001T5E",
+     "note": "JLC chose SCR0603F1K from 'VO', an obscure house brand with 3449 in stock. Same-family UNI-ROYAL 1k +/-1%, stock 36216489.",
+     "source": "BETA-DM",
+     "verdict": "REJECTED - JLC match wrong"
+    }
+   ],
+   "footprint": "R_0603_1608Metric",
+   "qty": 1,
+   "refs": [
+    "R37"
+   ],
+   "value": "1k 1%"
+  },
+  {
+   "candidates": [
+    {
+     "lcsc": "C25804",
+     "manufacturer": "FOJAN",
+     "mpn": "0603WAF1002T5E",
+     "note": "JLC chose FOJAN FRQ0603F1002TS with 9 in stock. 10k 1% is satisfied by the same-family UNI-ROYAL 10k +/-1% already used for the other 10k groups, stock 12848220.",
+     "source": "BETA-DM",
+     "verdict": "REJECTED - JLC match wrong"
+    }
+   ],
+   "footprint": "R_0603_1608Metric",
+   "qty": 3,
+   "refs": [
+    "R38",
+    "R46",
+    "R63"
+   ],
+   "value": "10k 1%"
+  },
+  {
+   "candidates": [
+    {
+     "lcsc": "C22935",
+     "manufacturer": "HKR(Hong Kong Resistors)",
+     "mpn": "0603WAF1004T5E",
+     "note": "JLC chose RCA031MFLF from HKR with an incomplete listing (blank category). Same-family UNI-ROYAL 1M +/-1% - and the same part already used for the plain 1M group.",
+     "source": "BETA-DM",
+     "verdict": "REJECTED - JLC match wrong"
+    }
+   ],
+   "footprint": "R_0603_1608Metric",
+   "qty": 1,
+   "refs": [
+    "R39"
+   ],
+   "value": "1M 1%"
+  },
+  {
+   "candidates": [
+    {
+     "lcsc": "C22827",
+     "manufacturer": "FOJAN",
+     "mpn": "0603WAF1803T5E",
+     "note": "JLC chose FOJAN FRC0603F1803TS. Same-family UNI-ROYAL 180k +/-1%, stock 291590.",
+     "source": "BETA-DM",
+     "verdict": "REJECTED - JLC match wrong"
+    }
+   ],
+   "footprint": "R_0603_1608Metric",
+   "qty": 1,
+   "refs": [
+    "R40"
+   ],
+   "value": "180K 1%"
+  },
+  {
+   "candidates": [
+    {
+     "lcsc": "C22935",
+     "manufacturer": "UNI-ROYAL(Uniroyal Elec)",
+     "mpn": "0603WAF1004T5E",
+     "note": "1M +/-1%.",
+     "source": "BETA-DM",
+     "verdict": "ACCEPTED"
+    }
+   ],
+   "footprint": "R_0603_1608Metric",
+   "qty": 5,
+   "refs": [
+    "R41",
+    "R80",
+    "R82",
+    "R94",
+    "R96"
+   ],
+   "value": "1M"
+  },
+  {
+   "candidates": [
+    {
+     "lcsc": "C23345",
+     "manufacturer": "Vishay Intertech",
+     "mpn": "0603WAF220JT5E",
+     "note": "JLC chose Vishay CRCW060322R0FKEAHP. Same-family UNI-ROYAL 22R +/-1% - the same part as the plain 22R group, one line fewer to source.",
+     "source": "BETA-DM",
+     "verdict": "REJECTED - JLC match wrong"
+    }
+   ],
+   "footprint": "R_0603_1608Metric",
+   "qty": 2,
+   "refs": [
+    "R47",
+    "R48"
+   ],
+   "value": "22R 1%"
+  },
+  {
+   "candidates": [
+    {
+     "lcsc": "C22775",
+     "manufacturer": "YAGEO",
+     "mpn": "0603WAF1000T5E",
+     "note": "JLC chose YAGEO RC0603FR-13100RL. Same-family UNI-ROYAL 100R +/-1%, stock 6758592.",
+     "source": "BETA-DM",
+     "verdict": "REJECTED - JLC match wrong"
+    }
+   ],
+   "footprint": "R_0603_1608Metric",
+   "qty": 5,
+   "refs": [
+    "R55",
+    "R56",
+    "R61",
+    "R62",
+    "R64"
+   ],
+   "value": "100R 1%"
+  },
+  {
+   "candidates": [
+    {
+     "lcsc": "C23138",
+     "manufacturer": "YAGEO",
+     "mpn": "0603WAF3300T5E",
+     "note": "JLC chose YAGEO RT0603BRD07330RL, +/-0.1%, stock 2706. Requirement is 1%; same-family UNI-ROYAL 330R +/-1%, stock 5112272.",
+     "source": "BETA-DM",
+     "verdict": "REJECTED - JLC match wrong"
+    }
+   ],
+   "footprint": "R_0603_1608Metric",
+   "qty": 1,
+   "refs": [
+    "R66"
+   ],
+   "value": "330R 1%"
+  }
+ ],
+ "NEAR_MISS": [],
+ "NO_CANDIDATE": [
+  {
+   "footprint": "C_1210_3225Metric",
+   "other_values_on_this_land": [],
+   "qty": 1,
+   "refs": [
+    "C12"
+   ],
+   "value": "22uF"
+  },
+  {
+   "footprint": "C_0805_2012Metric",
+   "other_values_on_this_land": [
+    "10uF",
+    "10uF 10V X7R",
+    "10uf",
+    "1uF",
+    "4.7uF",
+    "4.7uF 10V X7R"
+   ],
+   "qty": 1,
+   "refs": [
+    "C43"
+   ],
+   "value": "4.7uF 10V X5R"
+  },
+  {
+   "footprint": "C_0805_2012Metric",
+   "other_values_on_this_land": [
+    "10uF",
+    "10uF 10V X7R",
+    "10uf",
+    "1uF",
+    "4.7uF",
+    "4.7uF 10V X7R"
+   ],
+   "qty": 4,
+   "refs": [
+    "C45",
+    "C47",
+    "C49",
+    "C51"
+   ],
+   "value": "2.2uF"
+  },
+  {
+   "footprint": "C_0603_1608Metric",
+   "other_values_on_this_land": [
+    "100 nF X7R",
+    "100nF",
+    "100nF X7R",
+    "10uF 25V X5R",
+    "1uF",
+    "1uF 10V X7R",
+    "1uF 25V X7R"
+   ],
+   "qty": 4,
+   "refs": [
+    "C46",
+    "C48",
+    "C50",
+    "C54"
+   ],
+   "value": "10nF"
+  },
+  {
+   "footprint": "C_0603_1608Metric",
+   "other_values_on_this_land": [
+    "100 nF X7R",
+    "100nF",
+    "100nF X7R",
+    "10uF 25V X5R",
+    "1uF",
+    "1uF 10V X7R",
+    "1uF 25V X7R"
+   ],
+   "qty": 1,
+   "refs": [
+    "C52"
+   ],
+   "value": "1nF"
+  },
+  {
+   "footprint": "C_0603_1608Metric",
+   "other_values_on_this_land": [
+    "100 nF X7R",
+    "100nF",
+    "100nF X7R",
+    "10uF 25V X5R",
+    "1uF",
+    "1uF 10V X7R",
+    "1uF 25V X7R"
+   ],
+   "qty": 1,
+   "refs": [
+    "C55"
+   ],
+   "value": "2.2uF"
+  },
+  {
+   "footprint": "C_0603_1608Metric",
+   "other_values_on_this_land": [
+    "100 nF X7R",
+    "100nF",
+    "100nF X7R",
+    "10uF 25V X5R",
+    "1uF",
+    "1uF 10V X7R",
+    "1uF 25V X7R"
+   ],
+   "qty": 1,
+   "refs": [
+    "C57"
+   ],
+   "value": "4.7nF 50V X7R"
+  },
+  {
+   "footprint": "C_0805_2012Metric",
+   "other_values_on_this_land": [
+    "10uF",
+    "10uF 10V X7R",
+    "10uf",
+    "1uF",
+    "4.7uF",
+    "4.7uF 10V X7R"
+   ],
+   "qty": 2,
+   "refs": [
+    "C65",
+    "C66"
+   ],
+   "value": "22uF 10V X7R"
+  },
+  {
+   "footprint": "C_0603_1608Metric",
+   "other_values_on_this_land": [
+    "100 nF X7R",
+    "100nF",
+    "100nF X7R",
+    "10uF 25V X5R",
+    "1uF",
+    "1uF 10V X7R",
+    "1uF 25V X7R"
+   ],
+   "qty": 2,
+   "refs": [
+    "C69",
+    "C70"
+   ],
+   "value": "100pF 50V C0G TUNE"
+  },
+  {
+   "footprint": "C_0603_1608Metric",
+   "other_values_on_this_land": [
+    "100 nF X7R",
+    "100nF",
+    "100nF X7R",
+    "10uF 25V X5R",
+    "1uF",
+    "1uF 10V X7R",
+    "1uF 25V X7R"
+   ],
+   "qty": 2,
+   "refs": [
+    "C71",
+    "C72"
+   ],
+   "value": "300pF 50V C0G TUNE"
+  },
+  {
+   "footprint": "C_0603_1608Metric",
+   "other_values_on_this_land": [
+    "100 nF X7R",
+    "100nF",
+    "100nF X7R",
+    "10uF 25V X5R",
+    "1uF",
+    "1uF 10V X7R",
+    "1uF 25V X7R"
+   ],
+   "qty": 2,
+   "refs": [
+    "C73",
+    "C74"
+   ],
+   "value": "1.5nF 50V C0G TUNE"
+  },
+  {
+   "footprint": "C_0603_1608Metric",
+   "other_values_on_this_land": [
+    "100 nF X7R",
+    "100nF",
+    "100nF X7R",
+    "10uF 25V X5R",
+    "1uF",
+    "1uF 10V X7R",
+    "1uF 25V X7R"
+   ],
+   "qty": 2,
+   "refs": [
+    "C75",
+    "C77"
+   ],
+   "value": "27pF 50V C0G TUNE"
+  },
+  {
+   "footprint": "C_0603_1608Metric",
+   "other_values_on_this_land": [
+    "100 nF X7R",
+    "100nF",
+    "100nF X7R",
+    "10uF 25V X5R",
+    "1uF",
+    "1uF 10V X7R",
+    "1uF 25V X7R"
+   ],
+   "qty": 2,
+   "refs": [
+    "C76",
+    "C78"
+   ],
+   "value": "620pF 50V C0G TUNE"
+  },
+  {
+   "footprint": "C_0603_1608Metric",
+   "other_values_on_this_land": [
+    "100 nF X7R",
+    "100nF",
+    "100nF X7R",
+    "10uF 25V X5R",
+    "1uF",
+    "1uF 10V X7R",
+    "1uF 25V X7R"
+   ],
+   "qty": 2,
+   "refs": [
+    "C79",
+    "C80"
+   ],
+   "value": "10pF 50V C0G TUNE"
+  },
+  {
+   "footprint": "JST_SH_SM04B-SRSS-TB_1x04-1MP_P1.00mm_Horizontal",
+   "other_values_on_this_land": [],
+   "qty": 1,
+   "refs": [
+    "J8"
+   ],
+   "value": "QWIIC_STEMMA_QT"
+  },
+  {
+   "footprint": "R_0603_1608Metric",
+   "other_values_on_this_land": [
+    "0R",
+    "100K",
+    "100R 1%",
+    "100k",
+    "100k 1%",
+    "10K",
+    "10k",
+    "10k 1%",
+    "180K 1%",
+    "18k 1%",
+    "1M",
+    "1M 1%"
+   ],
+   "qty": 1,
+   "refs": [
+    "R101"
+   ],
+   "value": "1.65k 1%"
+  },
+  {
+   "footprint": "R_0603_1608Metric",
+   "other_values_on_this_land": [
+    "0R",
+    "100K",
+    "100R 1%",
+    "100k",
+    "100k 1%",
+    "10K",
+    "10k",
+    "10k 1%",
+    "180K 1%",
+    "18k 1%",
+    "1M",
+    "1M 1%"
+   ],
+   "qty": 1,
+   "refs": [
+    "R104"
+   ],
+   "value": "150k 1%"
+  },
+  {
+   "footprint": "R_0603_1608Metric",
+   "other_values_on_this_land": [
+    "0R",
+    "100K",
+    "100R 1%",
+    "100k",
+    "100k 1%",
+    "10K",
+    "10k",
+    "10k 1%",
+    "180K 1%",
+    "18k 1%",
+    "1M",
+    "1M 1%"
+   ],
+   "qty": 1,
+   "refs": [
+    "R105"
+   ],
+   "value": "220k 1%"
+  },
+  {
+   "footprint": "R_0603_1608Metric",
+   "other_values_on_this_land": [
+    "0R",
+    "100K",
+    "100R 1%",
+    "100k",
+    "100k 1%",
+    "10K",
+    "10k",
+    "10k 1%",
+    "180K 1%",
+    "18k 1%",
+    "1M",
+    "1M 1%"
+   ],
+   "qty": 2,
+   "refs": [
+    "R106",
+    "R109"
+   ],
+   "value": "0R FIT"
+  },
+  {
+   "footprint": "R_0603_1608Metric",
+   "other_values_on_this_land": [
+    "0R",
+    "100K",
+    "100R 1%",
+    "100k",
+    "100k 1%",
+    "10K",
+    "10k",
+    "10k 1%",
+    "180K 1%",
+    "18k 1%",
+    "1M",
+    "1M 1%"
+   ],
+   "qty": 2,
+   "refs": [
+    "R114",
+    "R115"
+   ],
+   "value": "1R1 1% TUNE"
+  },
+  {
+   "footprint": "R_0603_1608Metric",
+   "other_values_on_this_land": [
+    "0R",
+    "100K",
+    "100R 1%",
+    "100k",
+    "100k 1%",
+    "10K",
+    "10k",
+    "10k 1%",
+    "180K 1%",
+    "18k 1%",
+    "1M",
+    "1M 1%"
+   ],
+   "qty": 2,
+   "refs": [
+    "R116",
+    "R117"
+   ],
+   "value": "1k TUNE"
+  },
+  {
+   "footprint": "R_0603_1608Metric",
+   "other_values_on_this_land": [
+    "0R",
+    "100K",
+    "100R 1%",
+    "100k",
+    "100k 1%",
+    "10K",
+    "10k",
+    "10k 1%",
+    "180K 1%",
+    "18k 1%",
+    "1M",
+    "1M 1%"
+   ],
+   "qty": 1,
+   "refs": [
+    "R124"
+   ],
+   "value": "1k"
+  },
+  {
+   "footprint": "R_0603_1608Metric",
+   "other_values_on_this_land": [
+    "0R",
+    "100K",
+    "100R 1%",
+    "100k",
+    "100k 1%",
+    "10K",
+    "10k",
+    "10k 1%",
+    "180K 1%",
+    "18k 1%",
+    "1M",
+    "1M 1%"
+   ],
+   "qty": 1,
+   "refs": [
+    "R125"
+   ],
+   "value": "680R"
+  },
+  {
+   "footprint": "R_0603_1608Metric",
+   "other_values_on_this_land": [
+    "0R",
+    "100K",
+    "100R 1%",
+    "100k",
+    "100k 1%",
+    "10K",
+    "10k",
+    "10k 1%",
+    "180K 1%",
+    "18k 1%",
+    "1M",
+    "1M 1%"
+   ],
+   "qty": 1,
+   "refs": [
+    "R126"
+   ],
+   "value": "390R"
+  },
+  {
+   "footprint": "R_0603_1608Metric",
+   "other_values_on_this_land": [
+    "0R",
+    "100K",
+    "100R 1%",
+    "100k",
+    "100k 1%",
+    "10K",
+    "10k",
+    "10k 1%",
+    "180K 1%",
+    "18k 1%",
+    "1M",
+    "1M 1%"
+   ],
+   "qty": 2,
+   "refs": [
+    "R19",
+    "R20"
+   ],
+   "value": "2.2k"
+  },
+  {
+   "footprint": "R_0603_1608Metric",
+   "other_values_on_this_land": [
+    "0R",
+    "100K",
+    "100R 1%",
+    "100k",
+    "100k 1%",
+    "10K",
+    "10k",
+    "10k 1%",
+    "180K 1%",
+    "18k 1%",
+    "1M",
+    "1M 1%"
+   ],
+   "qty": 3,
+   "refs": [
+    "R21",
+    "R22",
+    "R84"
+   ],
+   "value": "100R"
+  },
+  {
+   "footprint": "R_0805_2012Metric",
+   "other_values_on_this_land": [],
+   "qty": 1,
+   "refs": [
+    "R24"
+   ],
+   "value": "12R"
+  },
+  {
+   "footprint": "R_0603_1608Metric",
+   "other_values_on_this_land": [
+    "0R",
+    "100K",
+    "100R 1%",
+    "100k",
+    "100k 1%",
+    "10K",
+    "10k",
+    "10k 1%",
+    "180K 1%",
+    "18k 1%",
+    "1M",
+    "1M 1%"
+   ],
+   "qty": 3,
+   "refs": [
+    "R49",
+    "R50",
+    "R97"
+   ],
+   "value": "1.5k 1%"
+  },
+  {
+   "footprint": "R_0603_1608Metric",
+   "other_values_on_this_land": [
+    "0R",
+    "100K",
+    "100R 1%",
+    "100k",
+    "100k 1%",
+    "10K",
+    "10k",
+    "10k 1%",
+    "180K 1%",
+    "18k 1%",
+    "1M",
+    "1M 1%"
+   ],
+   "qty": 1,
+   "refs": [
+    "R69"
+   ],
+   "value": "1.87R 1%"
+  },
+  {
+   "footprint": "R_0603_1608Metric",
+   "other_values_on_this_land": [
+    "0R",
+    "100K",
+    "100R 1%",
+    "100k",
+    "100k 1%",
+    "10K",
+    "10k",
+    "10k 1%",
+    "180K 1%",
+    "18k 1%",
+    "1M",
+    "1M 1%"
+   ],
+   "qty": 4,
+   "refs": [
+    "R70",
+    "R71",
+    "R72",
+    "R73"
+   ],
+   "value": "33R 1%"
+  },
+  {
+   "footprint": "R_2512_6332Metric",
+   "other_values_on_this_land": [],
+   "qty": 1,
+   "refs": [
+    "R75"
+   ],
+   "value": "15mR 1% 1W"
+  },
+  {
+   "footprint": "R_0603_1608Metric",
+   "other_values_on_this_land": [
+    "0R",
+    "100K",
+    "100R 1%",
+    "100k",
+    "100k 1%",
+    "10K",
+    "10k",
+    "10k 1%",
+    "180K 1%",
+    "18k 1%",
+    "1M",
+    "1M 1%"
+   ],
+   "qty": 1,
+   "refs": [
+    "R76"
+   ],
+   "value": "22k"
+  },
+  {
+   "footprint": "R_0603_1608Metric",
+   "other_values_on_this_land": [
+    "0R",
+    "100K",
+    "100R 1%",
+    "100k",
+    "100k 1%",
+    "10K",
+    "10k",
+    "10k 1%",
+    "180K 1%",
+    "18k 1%",
+    "1M",
+    "1M 1%"
+   ],
+   "qty": 2,
+   "refs": [
+    "R77",
+    "R91"
+   ],
+   "value": "3.65M 1%"
+  },
+  {
+   "footprint": "R_0603_1608Metric",
+   "other_values_on_this_land": [
+    "0R",
+    "100K",
+    "100R 1%",
+    "100k",
+    "100k 1%",
+    "10K",
+    "10k",
+    "10k 1%",
+    "180K 1%",
+    "18k 1%",
+    "1M",
+    "1M 1%"
+   ],
+   "qty": 1,
+   "refs": [
+    "R78"
+   ],
+   "value": "442k 1%"
+  },
+  {
+   "footprint": "R_0603_1608Metric",
+   "other_values_on_this_land": [
+    "0R",
+    "100K",
+    "100R 1%",
+    "100k",
+    "100k 1%",
+    "10K",
+    "10k",
+    "10k 1%",
+    "180K 1%",
+    "18k 1%",
+    "1M",
+    "1M 1%"
+   ],
+   "qty": 1,
+   "refs": [
+    "R79"
+   ],
+   "value": "510k"
+  },
+  {
+   "footprint": "R_0603_1608Metric",
+   "other_values_on_this_land": [
+    "0R",
+    "100K",
+    "100R 1%",
+    "100k",
+    "100k 1%",
+    "10K",
+    "10k",
+    "10k 1%",
+    "180K 1%",
+    "18k 1%",
+    "1M",
+    "1M 1%"
+   ],
+   "qty": 6,
+   "refs": [
+    "R85",
+    "R86",
+    "R87",
+    "R88",
+    "R89",
+    "R90"
+   ],
+   "value": "2.2M 1%"
+  },
+  {
+   "footprint": "R_0603_1608Metric",
+   "other_values_on_this_land": [
+    "0R",
+    "100K",
+    "100R 1%",
+    "100k",
+    "100k 1%",
+    "10K",
+    "10k",
+    "10k 1%",
+    "180K 1%",
+    "18k 1%",
+    "1M",
+    "1M 1%"
+   ],
+   "qty": 1,
+   "refs": [
+    "R92"
+   ],
+   "value": "1.30M 1%"
+  },
+  {
+   "footprint": "R_1206_3216Metric",
+   "other_values_on_this_land": [],
+   "qty": 1,
+   "refs": [
+    "R95"
+   ],
+   "value": "560R 1% 1206"
+  },
+  {
+   "footprint": "R_0603_1608Metric",
+   "other_values_on_this_land": [
+    "0R",
+    "100K",
+    "100R 1%",
+    "100k",
+    "100k 1%",
+    "10K",
+    "10k",
+    "10k 1%",
+    "180K 1%",
+    "18k 1%",
+    "1M",
+    "1M 1%"
+   ],
+   "qty": 1,
+   "refs": [
+    "R99"
+   ],
+   "value": "732k 1%"
+  }
+ ],
+ "assembly_lines": 122,
+ "no_candidate_prefixes": {
+  "C": 27,
+  "J": 1,
+  "R": 41
+ },
+ "package": "/home/aqroot8/aqroot-demo/hardware/demo/fab",
+ "prior_sources": {
+  "BETA_DM": 66,
+  "DEMO": 52,
+  "LEDGER": 30
+ },
+ "schema": 1,
+ "summary": {
+  "EXACT_PRIOR": {
+   "lines": 31,
+   "parts": 114
+  },
+  "NEAR_MISS": {
+   "lines": 0,
+   "parts": 0
+  },
+  "NO_CANDIDATE": {
+   "lines": 39,
+   "parts": 69
+  }
+ },
+ "unsourced_lines": 70,
+ "unsourced_parts": 183
+}

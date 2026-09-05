@@ -1,6 +1,70 @@
 # AQROOT Demo manufacturing preflight
 
-Status: **BLOCKED** at board completion; no manufacturing candidate is approved.
+Status: **BLOCKED** at BOM sourcing; the fabrication package is generated and
+reviewed but is NOT releasable.
+
+## The fabrication package exists, and the review found three things (2026-09-05)
+
+    package    hardware/demo/fab/            28 artifacts, 24 reproducible
+    generator  export_fab_package.py         one command, kicad-cli does the drawing
+    review     checks/fab_package_contract.py   FAB1-FAB8
+    board      c8e421aa...  UNCHANGED   ledger 57 open edges, row for row
+
+    FAB1 PROVENANCE PASS   FAB5 CPL      PASS   247 rows, every X/Y/side matched
+    FAB2 FILL       PASS   FAB6 BOM      PASS   4 views partition 310 symbols
+    FAB3 LAYERS     PASS   FAB7 SOURCING FAIL   64 of 247 orderable -- 25.9 %
+    FAB4 DRILL      PASS   FAB8 OUTLINE  PASS   72.000 x 148.000 mm, delta 0 nm
+         802 holes on the board, 802 in the Excellon files, ZERO displaced
+
+**FAB2 is not decoration.** Gerber export does NOT refill zones; it plots the
+fill stored in the file. The claim is that the committed board is BYTE-IDENTICAL
+after `--refill-zones --save-board`, so the copper these Gerbers plot is the
+copper the promotion gate ran DRC on. Without it a stale stored fill ships
+copper no check in this repository has ever inspected.
+
+**FINDING 1 -- the BOM asked a supplier to quote forty-six test points.** Every
+one of the schematic's 310 symbols says `(in_bom yes)`; 46 are `TestPoint`, and
+the BOARD already carried KiCad's exclude-from-BOM attribute on those 46 plus
+`BOSS1`/`BOSS2`. Nothing was reading it. The package now emits four views that
+PARTITION the schematic once each -- `BOM-assembly` (122 lines / 247 refs),
+`DO-NOT-POPULATE` (16), `NON-PURCHASED` (46), `OFF-BOARD` (1) -- and FAB6
+refuses any divergence the board does not explain.
+
+**FINDING 2 -- one part number on two land patterns.** `C26` (10 uF 10 V X7R,
+1206) carried `C24`'s LCSC `C344022`, a 10 uF 25 V X5R **0603** part, with no
+MPN to contradict it. Removed from `C26`: a blank forces a decision, a wrong
+code does not.
+
+**FINDING 3 -- `schematic_parity_clean` had never been asked.**
+`verify_promotion.stage()` staged the board, the rules and the project and left
+the ten `.kicad_sch` sheets behind, so KiCad had no schematic to compare and
+returned an empty list. The check read TRUE on every promotion ever gated here.
+
+    staged without the schematics     0 parity entries
+    staged with all ten sheets      249 parity entries, 0 ERRORS
+
+Repaired: every sheet is staged, `drc()` reports parity by type and severity,
+and the check is `schematic_parity_within_baseline` against a recorded
+`INHERITED_PARITY` -- still 14 checks, still 14/14, but the fourteenth means
+something now. The 249 are all warnings: 199 symbol/footprint text fields, 48
+attribute or library-nickname differences (46 of them the same test-point BOM
+flag Finding 1 found independently), 2 board-only mounting bosses. No net, no
+pin, no missing footprint.
+
+**THE OPEN BLOCKER.** 183 of the 247 fitted, purchased, on-board references --
+70 BOM lines, 110 R / 72 C / 1 J -- carry neither an MPN nor an LCSC code.
+`screen_bom_sourcing.py` asks whether this repository already holds a reviewed
+answer, under a deliberately brittle rule (value string and footprint leaf equal
+character for character, because `10uF 10V X7R` and `10uF` are not the same
+specification):
+
+    EXACT_PRIOR    31 lines  114 parts    an audited decision already exists
+    NEAR_MISS       0 lines    0 parts
+    NO_CANDIDATE   39 lines   69 parts    27 C, 41 R, 1 J
+
+**NEXT: graft the 31 after re-checking each against the Demo's own nets, then
+rule on the 39.** Full notes:
+`docs/full-beta-v2/AQROOT_DEMO_FABRICATION_PACKAGE.md`.
 
 ## The board now states its own population -- sixteen DNP flags carried from the schematic (2026-09-04)
 

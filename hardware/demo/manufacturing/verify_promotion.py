@@ -28,12 +28,16 @@ driver's scratch tree, its ledger or its evidence JSON:
     surviving zone's net, layer, outline or fill parameters changed;
   * real KiCad `--refill-zones --save-board --severity-all --schematic-parity`
     DRC on the promoted board reports only the inherited classes, with ZERO
-    attributable violations and ZERO schematic-parity errors;
+    attributable violations;
+  * schematic parity is ACTUALLY ASKED -- the whole `.kicad_sch` hierarchy is
+    staged beside the board, which it was not before D-613 -- and reports no
+    error-severity entry and no warning class or count beyond the recorded
+    `INHERITED_PARITY` baseline;
   * the promoted board is fill-stable -- a second refill changes nothing;
   * the retained safety rules are still live text in the `.kicad_dru`.
 
 It is read-only with respect to `hardware/demo/kicad/aqroot-demo/`: both boards
-it inspects are copies in a temporary directory.
+and every schematic sheet it inspects are copies in a temporary directory.
 """
 
 import argparse
@@ -55,6 +59,21 @@ SUFFIXES = (".kicad_pcb", ".kicad_dru", ".kicad_pro")
 # router existed; they are inherited, not attributable to any promotion.
 INHERITED = {"lib_footprint_issues": 199, "hole_clearance": 5,
              "solder_mask_bridge": 1}
+
+# D-613: `--schematic-parity` was never actually ASKED.  `stage()` copied the
+# board, the rules and the project into a temporary directory and left the nine
+# `.kicad_sch` files behind, so KiCad found no schematic beside the board it was
+# handed and reported an empty parity list -- and `schematic_parity_clean` had
+# read TRUE on every promotion this repository has ever gated.  The schematics
+# are staged now and the answer is 249 entries, EVERY ONE a warning and not one
+# an error: 199 symbol/footprint text-field differences, 48 attribute or
+# library-nickname differences (46 of them the test-point BOM flag the
+# fabrication package review found independently), and BOSS1/BOSS2, which are
+# board-only mounting bosses with no symbol.  This is the baseline that must not
+# GROW; the check is no longer "clean", it is "within baseline and error-free".
+INHERITED_PARITY = {"footprint_symbol_field_mismatch": 199,
+                    "footprint_symbol_mismatch": 48,
+                    "extra_footprint": 2}
 
 # Retained contracts that must still be LIVE RULE TEXT, not merely believed.
 DRU_CONTRACTS = {
@@ -118,8 +137,26 @@ def drc(path, out):
         counts=counts,
         attributable=[v for v in report.get("violations", [])
                       if v["type"] not in INHERITED],
-        schematic_parity_errors=len(report.get("schematic_parity", [])),
+        schematic_parity=parity_summary(report.get("schematic_parity", [])),
         unconnected_items=len(report.get("unconnected_items", [])))
+
+
+def parity_summary(entries):
+    """Schematic-parity entries by type and by severity.
+
+    An `error` is a fabrication blocker -- a footprint with no symbol, a net
+    that does not match.  A `warning` here is a metadata divergence between the
+    symbol and the footprint.  The gate must distinguish them; counting the
+    list was what made the vacuous answer look like a passing one.
+    """
+    counts, severities = {}, {}
+    for entry in entries:
+        counts[entry["type"]] = counts.get(entry["type"], 0) + 1
+        sev = entry.get("severity", "unknown")
+        severities[sev] = severities.get(sev, 0) + 1
+    return dict(total=len(entries), counts=counts, severities=severities,
+                errors=[e for e in entries
+                        if e.get("severity") not in ("warning", "ignore")])
 
 
 def neck_proof(path, tracks, floor):
@@ -433,14 +470,18 @@ def stage(rev, work):
     """A project-faithful copy of the board at `rev` (or of the worktree)."""
     cell = Path(work)
     cell.mkdir(parents=True, exist_ok=True)
-    for suffix in SUFFIXES:
-        target = (cell / BOARD.name).with_suffix(suffix)
+    sources = [BOARD.with_suffix(s) for s in SUFFIXES]
+    # EVERY schematic sheet, not just the root: `--schematic-parity` needs the
+    # whole hierarchy beside the board or it silently has nothing to compare.
+    sources += sorted(BOARD.parent.glob("*.kicad_sch"))
+    for src in sources:
+        target = cell / src.name
         if rev is None:
-            shutil.copyfile(BOARD.with_suffix(suffix), target)
+            shutil.copyfile(src, target)
         else:
-            src = BOARD.with_suffix(suffix).relative_to(ROOT)
+            rel = src.relative_to(ROOT)
             blob = subprocess.run(
-                ["git", "-C", str(ROOT), "show", "%s:%s" % (rev, src)],
+                ["git", "-C", str(ROOT), "show", "%s:%s" % (rev, rel)],
                 capture_output=True, check=True).stdout
             target.write_bytes(blob)
     return cell / BOARD.name
@@ -564,7 +605,12 @@ def main():
         drc_zero_attributable=not first["attributable"],
         drc_inherited_within_baseline=all(
             first["counts"].get(k, 0) <= n for k, n in INHERITED.items()),
-        schematic_parity_clean=first["schematic_parity_errors"] == 0,
+        schematic_parity_within_baseline=(
+            not first["schematic_parity"]["errors"]
+            and all(first["schematic_parity"]["counts"].get(k, 0) <= n
+                    for k, n in INHERITED_PARITY.items())
+            and not (set(first["schematic_parity"]["counts"])
+                     - set(INHERITED_PARITY))),
         fill_stable=fill_stable,
         dru_contracts_live=all(contracts.values()),
         beta_v2_untouched=not subprocess.run(

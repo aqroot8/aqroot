@@ -1,0 +1,21 @@
+{
+ "board": "hardware/demo/kicad/aqroot-demo/aqroot-Beta-v2.kicad_pcb",
+ "claim": "verify_promotion.stage() copied only .kicad_pcb/.kicad_dru/.kicad_pro, so KiCad had no schematic to compare and reported an empty parity list on every promotion this repository gated",
+ "schema": 1,
+ "with_schematics": {
+  "by_type": {
+   "extra_footprint": 2,
+   "footprint_symbol_field_mismatch": 199,
+   "footprint_symbol_mismatch": 48
+  },
+  "errors": 0,
+  "parity_entries": 249,
+  "staged_schematic_sheets": 10
+ },
+ "without_schematics": {
+  "by_type": {},
+  "errors": 0,
+  "parity_entries": 0,
+  "staged_schematic_sheets": 0
+ }
+}

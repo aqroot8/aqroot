@@ -1,0 +1,125 @@
+{
+ "approved_demo_nc": {
+  "expected": [
+   "J5.10",
+   "J5.11",
+   "J5.12",
+   "J5.15",
+   "J5.16",
+   "J5.17",
+   "J5.18",
+   "J5.9"
+  ],
+  "missing": [],
+  "observed": [
+   "J5.10",
+   "J5.11",
+   "J5.12",
+   "J5.15",
+   "J5.16",
+   "J5.17",
+   "J5.18",
+   "J5.9"
+  ],
+  "unexpected": []
+ },
+ "board_sha256": "c8e421aa50144fe396aedb5e226aaabeb815bd69ffaf6e04f549ded43831d103",
+ "connectivity": {
+  "connected_retained_nets": 144,
+  "open_retained_nets": 29,
+  "raw_board_ratsnest": 73,
+  "retained_multi_pad_nets": 173,
+  "retained_open_edges": 57
+ },
+ "population": {
+  "board_references_not_in_schematic_population": [
+   "BOSS1",
+   "BOSS2"
+  ],
+  "fitted_references_missing_from_board": [
+   "LS1"
+  ],
+  "schematic_dnp_references": [
+   "C21",
+   "C22",
+   "C34",
+   "C35",
+   "C81",
+   "C82",
+   "L2",
+   "R107",
+   "R112",
+   "R119",
+   "R123",
+   "R44",
+   "R45",
+   "R68",
+   "R93",
+   "U13"
+  ],
+  "schematic_fitted_references": 294
+ },
+ "schema": 1,
+ "sheet_summary": [
+  {
+   "nets": 46,
+   "open_edges": 10,
+   "open_nets": 4,
+   "sheet": "01_POWER_TREE"
+  },
+  {
+   "nets": 4,
+   "open_edges": 0,
+   "open_nets": 0,
+   "sheet": "02_MCU_CORE"
+  },
+  {
+   "nets": 5,
+   "open_edges": 2,
+   "open_nets": 1,
+   "sheet": "03_SPI_A_DISPLAY_SD"
+  },
+  {
+   "nets": 20,
+   "open_edges": 5,
+   "open_nets": 5,
+   "sheet": "04_SPI_B_RADIOS_NFC"
+  },
+  {
+   "nets": 2,
+   "open_edges": 0,
+   "open_nets": 0,
+   "sheet": "05_I2C_DEVICES"
+  },
+  {
+   "nets": 4,
+   "open_edges": 0,
+   "open_nets": 0,
+   "sheet": "06_AUDIO"
+  },
+  {
+   "nets": 4,
+   "open_edges": 0,
+   "open_nets": 0,
+   "sheet": "07_IR"
+  },
+  {
+   "nets": 9,
+   "open_edges": 2,
+   "open_nets": 2,
+   "sheet": "08_BUTTONS_EXPANDERS"
+  },
+  {
+   "nets": 12,
+   "open_edges": 3,
+   "open_nets": 1,
+   "sheet": "09_COMMUNITY_HEADER"
+  },
+  {
+   "nets": 67,
+   "open_edges": 35,
+   "open_nets": 16,
+   "sheet": "GLOBAL"
+  }
+ ]
+}
