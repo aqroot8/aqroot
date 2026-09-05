@@ -1,5 +1,181 @@
 # AQROOT Full Beta v2 — CTO Decisions
 
+# D-626 · 2026-09-05 · Demo — EXT_SDA is CLOSED by a pair the MST never asked, and the ladder's budget was a TIME bound wearing a memory bound's units
+
+D-625 ended by naming the next lever: *"re-run the D-624 ladder screen over the
+remaining open-edge nets with the 47-tube guard ON, since a guard-on refusal is
+pitch-dependent and the whole screen was run guard-off."* Running it turned up
+something the screen could not have found, because the screen was asking the
+wrong unit: **not every pair of every open net had ever been asked at all.**
+
+**THE ALL-OR-NOTHING MST NEVER ASKED.** A plane-less net is routed as ONE
+transaction over its MST. The first pair that will not close fails the whole
+net, and every REMAINING pair of that net is then never attempted — so "open"
+in `routing_ledger.py` and "refused" in a router report have been the same word
+for two different things, and this board has been reading absences of
+measurement as measurements. `--partial` runs a per-pair transaction instead.
+Over the multi-edge open nets — the shipped run is on the promoted board
+(`evidence/d626-partial-pair-census.json`, new tracked
+`screen_partial_pairs.py`):
+
+    11 nets, 3 of them POUR_SERVED and skipped before any router ran
+    32 pairs asked:  10 the MST would have reached
+                     22 NEVER ASKED BEFORE
+                     24 of the 32 are CORRIDOR (NO_PATH) refusals
+
+The same census on the pre-promotion `74fb57b5…` read 35 pairs / 25 never
+asked; the three the promotion accounts for are `EXT_SDA`'s own closed edge and
+the two rows a `/01_POWER_TREE/BQ25185_SYS` stitch report was mis-read as
+pairs (see below).
+
+Corridor refusals are exactly the class D-625 proved pitch-dependent. A pair
+nobody has asked cannot be laddered, so the census is the work-list that comes
+*before* the ladder.
+
+**AND THE CENSUS HAD TO BE MADE HONEST BEFORE IT COULD BE SHIPPED.** Two
+reporting faults were found in the first pass and are fixed in the tracked
+screen. A pour-served net is excluded by **the board's own zones**, read once
+before any router starts — `+3V3`, `GND` and `/01_POWER_TREE/BQ25185_SYS` are
+the three nets owning a non-rule-area zone on this board, and a hard-coded name
+list would have missed the third and reported its `stitch` failures as though
+they were island pairs. And a CLOSED join and a FAILED one do not name their
+ends the same way: a failure carries `a`/`b`, the two ISLANDS, while a join
+carries `from`/`to`, the two PADS it ran between. Reading `a`/`b` off a join
+yields `None` and prints a closed pair with no ends — a report that looks
+complete and says nothing.
+
+**AND ONE OF THEM CLOSES.** `/09_COMMUNITY_HEADER/EXT_SDA`, `D2.4 → J5.4`,
+**10.258 mm on `F.Cu` + `In2.Cu` with 2 through barrels 0.600/0.300 mm**, every
+track 0.200 mm Default, found at 0.0333 mm under the 47-tube D-619 guard with
+`--partial`. Authority `74fb57b5…` →
+**`35129d6ca4ee68cb2ad86b8de73c134040efc0c4c110825b47c3ccc2550a456b`**.
+Retained open edges **50 → 49**, ratsnest **66 → 65**, open retained nets 22.
+6 objects added (4 tracks + 2 barrels), **ZERO removed**, zero zones, zero rule
+areas, zero `.kicad_dru` change, zero placement change
+(`evidence/d626-ext-sda-guarded-promote.json`).
+
+**THE CONTRAST IS THE FINDING, NOT THE ROUTE.** Unguarded, at the coarsest
+admissible pitch, `--partial` on this same net closed a DIFFERENT pair —
+`TP45.1 → J8.3`, **85.843 mm and 4 barrels** — and `routing_ledger.py` reported
+`GND` REGRESSED with edges flat at 50. Guard and ladder together found
+`D2.4 → J5.4` at **10.258 mm and 2 barrels: 8.4× less copper, half the
+barrels, and no pour injury at all.** A pour-bond guard is not only a veto on
+where copper may lie; by removing the cheap-looking route that cuts a pour it
+changes WHICH PAIR is cheapest, and on a multi-island net that is a different
+edge, not a longer version of the same one.
+
+**THE LADDER'S BUDGET WAS A TIME BOUND WEARING A MEMORY BOUND'S UNITS.** D-624
+ran eight nets down the ladder and EVERY one ended on the 0.020 mm rung marked
+`over_budget` at 80 M cells. Run directly, on the same board and the same
+115,565,604 cells, that rung costs:
+
+    /I2S_LRCLK           NO_PATH                28.7 s
+    /SPI_B_SCK           NO_PATH                21.4 s
+    /01_POWER_TREE/ACC_5V_LX   NO_LEGAL_ESCAPE_DST   26.5 s
+    /04_SPI_B_RADIOS_NFC/NFC_VDD_RF  NO_LEGAL_ESCAPE_DST  32.0 s
+    /08_BUTTONS_EXPANDERS/BTN_LEFT_N NO_PATH           2953.8 s
+    /ACC_5V_BOOST_EN     NO_PATH              3242.5 s
+    /SX1262_DIO1         NO_PATH              3400.6 s
+
+One cell count refuses a 21-second run and a 57-minute run with the SAME
+sentence. What actually grows is not the raster, which is a property of the
+BOARD, but the REACHABLE SET the search must exhaust, which is a property of
+the NET: an escape-bounded refusal never leaves its pocket and is nearly FLAT
+in cells, while a corridor-bounded refusal sweeps an open region and grows
+faster than the raster does.
+
+**SO THE LADDER PREDICTS, FROM THE NET'S OWN RUNGS.** Each rung that runs is a
+`(cells, seconds)` observation; the last two give `k = log(s₂/s₁) / log(c₂/c₁)`
+and the next rung costs `s₂·(c/c₂)^k`. `--grid-seconds` (default 1800) bounds
+that PREDICTION; `k` is clamped to `[0.5, 3.0]` so one noisy pair cannot invent
+a refusal, and with fewer than two observations the ladder does not predict at
+all — it runs.
+
+**AND THE PREDICTOR IS SCORED IN THE REPORT IT STEERS**, because a predictor
+nobody scores is a guess. Every rung carries `predicted_seconds` beside its
+measured `seconds` and a `predicted_ratio`
+(`evidence/d626-finest-rung-and-cost-model.json`): **26 rungs — 19 in-sample,
+ratio 0.73–1.34, median 0.85; 7 out-of-sample, 0.60–1.51 — every one within
+2×.** It refused all three ≥49-minute rungs against an 1800 s budget and ran
+every ≤35-second one. The three long ones came in 1.19–1.51× their prediction
+because six maze workers were sharing eight cores; the error therefore runs
+toward RUNNING rather than refusing, which is the safe direction for a screen.
+
+**AND A CEILING IN CELLS MEANS NOTHING WITHOUT BYTES PER CELL.** The old 80 M
+was never justified against memory either. The new one is MEASURED: three
+concurrent 0.020 mm workers peaked at `VmHWM` **3.00 / 3.01 / 3.04 GB**, which
+is **27.9 – 28.2 bytes per cell**
+(`evidence/d626-cell-bytes-measurement.json`), so `LADDER_CELL_BUDGET` is
+raised to **300 M cells ≈ 7.9 GiB** and is now stated as what it always really
+was: a MEMORY ceiling. **And a constant ceiling does not know what else is
+running** — 7.9 GiB is safe alone and fatal three-up, and this ladder was built
+for a screen that runs several nets at once. `--grid-gb` prices each rung from
+the measured constant and weighs it against `MemAvailable` read once at ladder
+start, refusing with BOTH numbers in the report and recording the derived
+figure so a machine-dependent floor can still be read back off the run.
+`I2C_SCL_INT` is the first net refused by each in turn: `OVER_TIME_BUDGET
+predicted 1701 s > 900 s` at 0.025 mm, `OVER_MEMORY_BUDGET 3.04 GB > 2.00 GB`
+at 0.020 mm.
+
+**THREE "BUDGET-BOUNDED" CORRIDORS ARE NOW MEASURED WALLS.** D-625 listed
+`BTN_LEFT_N`, `ACC_5V_BOOST_EN` and `SX1262_DIO1` as *"budget-bounded at
+0.025 mm, not proved."* All three now return `NO_PATH` at **0.020 mm /
+115,565,604 cells / ~3.0 GB**, after 2953.8 / 3242.5 / 3400.6 s. They were run
+**guard-OFF on purpose**: `maze3d.Field` applies a guard by OR-ing cells into
+`blk` and AND-ing sites out of `via_ok`, so the guarded legal set is a SUBSET
+of the unguarded one and a guard-off `NO_PATH` is the stronger claim.
+
+**THE LADDER'S WORK-LIST, COUNTED IN EDGES AND EXCLUDED PER ISLAND.** New
+read-only `screen_ladder_prefilter.py` (`evidence/d626-ladder-prefilter.json`).
+`lattice_advice`'s `no_lattice_at_any_pitch` separates an escape refusal a
+finer pitch CAN lift from one it provably cannot — a land whose widest legal
+escape is narrower than its own netclass width is refused by WIDTH, and a finer
+pitch cannot manufacture width. The invariant side was tested to **0.0125 mm /
+295,804,164 cells on `/BQ25185_STAT1` — seven rungs, `NO_LEGAL_ESCAPE` on every
+one, the deepest rung this board has ever run.** The filter is SOUND, NOT
+COMPLETE, and it is the exclusion side that has to be sound: every net whose
+wall MOVED with pitch (`I2S_LRCLK`, `SPI_B_SCK`) reads false. **And the unit of
+exclusion is the ISLAND, not the net** — `BQ25185_STAT1` is `U11.9` alone and
+unlaunchable on one island while `{R127.2, TP6.1} ↔ {U2.9}` is an ordinary
+18.517 mm corridor question with twenty source escapes, and excluding that NET
+would have hidden a live edge behind a dead one. On the pre-promotion board
+`74fb57b5…` the 50 open edges resolve to **40 ladderable across 21 nets, 10
+excluded as lattice-invariant**; re-run on the promoted `35129d6c…` the shipped
+evidence reads **49 open edges — 39 ladderable, the SAME 10 excluded**, with 5
+nets needing `--partial` to reach a live edge at all.
+
+**FAB4's MATCHING IS FORCED, NOT CHOSEN.** D-625's `pair_within_tolerance`
+proves that A perfect matching exists; nothing said it was the only one. FAB4
+now reports `widest_candidate_list` — the longest candidate list any hole had
+inside the one-micron bucket index — and it is **1** on this board, so there is
+exactly one bijection to find and the verdict cannot depend on which augmenting
+path an algorithm happened to reach.
+
+**PROOF ON THE PROMOTED BOARD `35129d6c…`.** `verify_promotion.py` **15/15**
+(including `pour_partition_intact`, `nothing_removed`, `beta_v2_untouched`,
+`fill_stable`, `drc_zero_attributable`); `pour_partition_contract.py`
+**PP1–PP4**; `pour_bond_contract.py` **P1–P4** on the 47-tube D-619 guard;
+`placement_contract.py` **PL1–PL9**; `rf_symmetry_contract.py` **RF1–RF5**;
+`land_parity_contract.py` **LAND1–LAND6**; `keepout_stackup_contract.py`
+**KO1–KO5**; `population_contract.py` **POP1–POP4**; `neck_contract.py`
+**N1–N3**; `protected_copper.py` **15 nets / 393 objects IDENTICAL**;
+`fab_package_contract.py` **FAB1–FAB8** on a regenerated package (840 holes,
+840 shipped, **840/840 matched**, widest candidate list 1, max residual 500 nm
+with 819 exact, control fires). DRC 5 `hole_clearance` / 1
+`solder_mask_bridge` inherited with **ZERO attributable**, unconnected
+**66 → 65**, parity 247 warnings / 0 errors, fill-stable on a second pass.
+
+Electrically the join is the community-header external I²C SDA between the
+`D2` ESD array and header pin `J5.4`; 10.258 mm adds ≈1 pF against a 400 pF
+I²C bus budget. `hardware/beta-v2/`, D-269 / D-186, `ACC_5V_SW_EN`,
+`ACC_3V3_SW`, RGB, XGPIO4/5 and the eight approved Demo NC contacts are
+untouched.
+
+**ONE NUMBER, ONE NAME.** The ladder report's D-623 `cell_budget` key is
+superseded by `cell_ceiling`; time and memory now have their own budgets and
+carrying the cell figure twice under two names would have made the report
+argue with itself. Older evidence files keep the old spelling — same number.
+
 # D-625 · 2026-09-05 · Demo — BTN_DOWN_N is CLOSED by the GUARD at a pitch nobody had asked, and D-624's bond was EMPTY
 
 D-624 named `BTN_DOWN_N` the most actionable net on the board and named the

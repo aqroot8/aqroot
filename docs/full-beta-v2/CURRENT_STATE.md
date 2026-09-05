@@ -13,6 +13,108 @@
 > This file references DEVICE_SPEC rather than duplicating full specs.
 
 ## 1. Authoritative HEAD
+- **Demo D-626 (`EXT_SDA` IS CLOSED BY A PAIR THE MST NEVER *ASKED*, AND THE
+  LADDER'S BUDGET WAS A *TIME* BOUND WEARING A MEMORY BOUND'S UNITS):**  D-625
+  named the lever -- re-run the ladder screen with the 47-tube guard ON -- and
+  running it exposed that the screen had been asking the wrong UNIT.
+  **THE ALL-OR-NOTHING MST NEVER ASKED.**  A plane-less net is ONE transaction
+  over its MST: the first pair that will not close fails the whole net and
+  every REMAINING pair goes unattempted, so "open" in `routing_ledger.py` and
+  "refused" in a router report have been the same word for two different
+  things.  New tracked `screen_partial_pairs.py` drives `--partial` per net:
+  **11 nets (3 POUR_SERVED and skipped), 32 pairs -- 10 the MST would have
+  reached, 22 NEVER ASKED BEFORE, 24 of them CORRIDOR (`NO_PATH`) refusals**,
+  the class D-625 proved pitch-dependent
+  (`evidence/d626-partial-pair-census.json`).  A pair nobody has asked cannot
+  be laddered, so the census is the work-list that comes BEFORE the ladder.
+  Two reporting faults were fixed before it shipped: a pour-served net is
+  excluded by **the board's own zones** (`+3V3`, `GND`,
+  `/01_POWER_TREE/BQ25185_SYS` -- a name list would have missed the third and
+  read its `stitch` failures as island pairs), and a CLOSED join names its ends
+  `from`/`to` (PADS) while a FAILURE names them `a`/`b` (ISLANDS), so reading
+  `a`/`b` off a join printed a closed pair with no ends.
+  **PROMOTED.**  `/09_COMMUNITY_HEADER/EXT_SDA` `D2.4 -> J5.4`, **10.258 mm on
+  `F.Cu` + `In2.Cu` with 2 through barrels 0.600/0.300**, all track 0.200 mm
+  Default, found at 0.0333 mm under the 47-tube D-619 guard with `--partial`.
+  Authority `74fb57b5...` ->
+  `35129d6ca4ee68cb2ad86b8de73c134040efc0c4c110825b47c3ccc2550a456b`,
+  **retained open edges 50 -> 49**, ratsnest 66 -> 65, open retained nets 22.
+  6 objects added (4 tracks + 2 barrels), **ZERO removed**, zero zones, zero
+  rule areas, zero `.kicad_dru` change, zero placement change.
+  **THE CONTRAST IS THE FINDING.**  Unguarded, at the coarsest admissible
+  pitch, `--partial` closed a DIFFERENT pair -- `TP45.1 -> J8.3`, **85.843 mm
+  and 4 barrels** -- and the ledger reported `GND` REGRESSED with edges flat at
+  50.  Guard and ladder together found **10.258 mm and 2 barrels: 8.4x less
+  copper, half the barrels, no pour injury.**  A guard is not only a veto on
+  where copper may lie; by removing the cheap-looking route that cuts a pour it
+  changes WHICH PAIR is cheapest, and on a multi-island net that is a different
+  EDGE, not a longer version of the same one.
+  **THE BUDGET WAS A TIME BOUND IN MEMORY'S UNITS.**  D-624's eight nets all
+  ended on the 0.020 mm rung marked `over_budget` at 80 M cells.  Run directly,
+  the SAME 115,565,604 cells cost `/SPI_B_SCK` **21.4 s** and `/SX1262_DIO1`
+  **3400.6 s** -- one cell count refusing a 21-second run and a 57-minute run
+  with the same sentence.  What grows is the REACHABLE SET (a property of the
+  NET), not the raster (a property of the BOARD).  So **`--grid-seconds`**
+  (default 1800) bounds the cost PREDICTED from the net's own rungs
+  (`k = log(s2/s1)/log(c2/c1)`, clamped `[0.5, 3.0]`, no prediction under two
+  observations); **`--grid-cells`** stays the MEMORY ceiling it always really
+  was, raised to **300 M** and JUSTIFIED -- three concurrent 0.020 mm workers
+  peaked at `VmHWM` 3.00/3.01/3.04 GB = **27.9-28.2 bytes per cell**
+  (`evidence/d626-cell-bytes-measurement.json`), so 300 M is ~7.9 GiB; and
+  **`--grid-gb`** prices each rung against `MemAvailable` read once at ladder
+  start, because 7.9 GiB is safe alone and fatal three-up.  `I2C_SCL_INT` is
+  refused by each in turn: `OVER_TIME_BUDGET predicted 1701 s > 900 s` at
+  0.025 mm, `OVER_MEMORY_BUDGET 3.04 GB > 2.00 GB` at 0.020 mm.
+  **THE PREDICTOR IS SCORED IN THE REPORT IT STEERS**: every rung carries
+  `predicted_seconds` and `predicted_ratio` -- **26 rungs, 19 in-sample
+  0.73-1.34 (median 0.85) and 7 out-of-sample 0.60-1.51, every one within 2x**;
+  it refused all three >=49-minute rungs and ran every <=35-second one, and the
+  long ones overran their prediction 1.19-1.51x under six-workers-on-eight-cores
+  contention, so the error runs toward RUNNING rather than refusing
+  (`evidence/d626-finest-rung-and-cost-model.json`).
+  **THREE "BUDGET-BOUNDED" CORRIDORS ARE NOW MEASURED WALLS.**  `BTN_LEFT_N`,
+  `ACC_5V_BOOST_EN` and `SX1262_DIO1` all return `NO_PATH` at **0.020 mm /
+  115,565,604 cells / ~3.0 GB** after 2953.8 / 3242.5 / 3400.6 s -- run
+  guard-OFF on purpose, because the guarded legal set is a SUBSET of the
+  unguarded one and a guard-off `NO_PATH` is the stronger claim.
+  **THE LADDER'S WORK-LIST, COUNTED IN EDGES AND EXCLUDED PER ISLAND.**  New
+  read-only `screen_ladder_prefilter.py`: `no_lattice_at_any_pitch` separates
+  an escape refusal a finer pitch CAN lift from one it provably cannot, tested
+  on the invariant side to **0.0125 mm / 295,804,164 cells on
+  `/BQ25185_STAT1` -- seven rungs, `NO_LEGAL_ESCAPE` every one, the deepest
+  rung this board has ever run.**  SOUND, NOT COMPLETE, and the unit of
+  exclusion is the **ISLAND**: `BQ25185_STAT1` is `U11.9` alone and unlaunchable
+  on one island while `{R127.2,TP6.1} <-> {U2.9}` is an ordinary 18.517 mm
+  corridor question, and excluding that NET would hide a live edge behind a dead
+  one.  On the promoted board: **49 open edges -- 39 ladderable across 21 nets,
+  10 excluded as lattice-invariant**, 5 nets needing `--partial`
+  (`evidence/d626-ladder-prefilter.json`).
+  **FAB4's MATCHING IS FORCED, NOT CHOSEN.**  D-625's `pair_within_tolerance`
+  proves A perfect matching exists; `widest_candidate_list` now reports the
+  longest candidate list any hole had -- **1** -- so there is exactly ONE
+  bijection and the verdict cannot depend on which augmenting path was reached.
+  **PROOF:** `verify_promotion.py` **15/15**; PP1-PP4; P1-P4 on the 47-tube
+  guard; PL1-PL9; RF1-RF5; LAND1-LAND6; KO1-KO5; POP1-POP4; N1-N3;
+  `protected_copper.py` 15 nets / 393 objects IDENTICAL; `FAB1-FAB8` on a
+  regenerated package (**840 holes, 840/840 matched**, max residual 500 nm with
+  819 exact, control fires).  DRC 5 `hole_clearance` / 1 `solder_mask_bridge`
+  inherited with **ZERO attributable**, unconnected 66 -> 65, parity 247
+  warnings / 0 errors, fill-stable.  Electrically the join is the
+  community-header external I2C SDA between the `D2` ESD array and header pin
+  `J5.4`; 10.258 mm adds ~1 pF against a 400 pF bus budget.
+  **NEXT, IN ORDER OF LEVERAGE:** (1) **the recipe that just worked, applied to
+  the other four nets holding never-asked CORRIDOR pairs** -- `I2C_SDA_INT`,
+  `WAKE_INT_N`, `LED_K` and `BQ25185_STAT2`, each `--partial --grid ladder`
+  with the 47-tube guard ON; their unasked pairs are 10-25 mm, the range
+  `EXT_SDA` closed in.  (2) `I2C_SCL_INT` is bounded at 0.0333 mm by the new
+  TIME budget, not by a wall -- `--grid-seconds 2000 --grid-gb 3.5` reaches
+  0.025 and 0.020 mm one net at a time, and it holds 14 unasked pairs, the most
+  on the board.  (3) `ACC_5V_LX` still needs `U21.5` given an escape at all --
+  placement, a land licence or `route_local_two_pad` -- and no ladder will
+  answer it.  MEASURED walls now: `ACC_PWR_EN`, `NFC_VDD_RF`, `BTN_LEFT_N`,
+  `ACC_5V_BOOST_EN`, `SX1262_DIO1` (0.020 mm) and `BQ25185_STAT1`'s `U11.9`
+  island (0.0125 mm).  No owner decision is OPEN; D-618's `J3` question remains
+  RECORDED and PM-3 remains an open PLACEMENT finding.
 - **Demo D-625 (`BTN_DOWN_N` IS CLOSED BY THE *GUARD*, AT A PITCH NOBODY HAD
   ASKED -- AND D-624'S BOND WAS *EMPTY*):**  D-624 called `BTN_DOWN_N` the most
   actionable net on the board and named the lever: *"price a bond for `U3.12`

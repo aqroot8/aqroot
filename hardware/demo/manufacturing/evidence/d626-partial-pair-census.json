@@ -1,0 +1,1135 @@
+{
+ "board": "/home/aqroot8/aqroot-demo/hardware/demo/kicad/aqroot-demo/aqroot-Beta-v2.kicad_pcb",
+ "board_sha256": "35129d6ca4ee68cb2ad86b8de73c134040efc0c4c110825b47c3ccc2550a456b",
+ "corridor_pairs": [
+  {
+   "a": [
+    "R128.2",
+    "TP7.1"
+   ],
+   "b": [
+    "U2.10"
+   ],
+   "dst_escapes": 10,
+   "gap_mm": 15.407,
+   "net": "/BQ25185_STAT2",
+   "never_asked_before": true,
+   "src_escapes": 25
+  },
+  {
+   "a": [
+    "R127.2",
+    "TP6.1"
+   ],
+   "b": [
+    "U2.9"
+   ],
+   "dst_escapes": 10,
+   "gap_mm": 18.517,
+   "net": "/BQ25185_STAT1",
+   "never_asked_before": true,
+   "src_escapes": 20
+  },
+  {
+   "a": [
+    "TP45.1",
+    "J5.4",
+    "D2.4"
+   ],
+   "b": [
+    "R48.2"
+   ],
+   "dst_escapes": 11,
+   "gap_mm": 8.568,
+   "net": "/09_COMMUNITY_HEADER/EXT_SDA",
+   "never_asked_before": false,
+   "src_escapes": 39
+  },
+  {
+   "a": [
+    "J8.3"
+   ],
+   "b": [
+    "R48.2"
+   ],
+   "dst_escapes": 11,
+   "gap_mm": 42.355,
+   "net": "/09_COMMUNITY_HEADER/EXT_SDA",
+   "never_asked_before": true,
+   "src_escapes": 9
+  },
+  {
+   "a": [
+    "U2.1"
+   ],
+   "b": [
+    "U3.1"
+   ],
+   "dst_escapes": 10,
+   "gap_mm": 10.0,
+   "net": "/WAKE_INT_N",
+   "never_asked_before": false,
+   "src_escapes": 7
+  },
+  {
+   "a": [
+    "R3.1",
+    "U1.23",
+    "Q10.3"
+   ],
+   "b": [
+    "U2.1"
+   ],
+   "dst_escapes": 7,
+   "gap_mm": 25.258,
+   "net": "/WAKE_INT_N",
+   "never_asked_before": true,
+   "src_escapes": 34
+  },
+  {
+   "a": [
+    "R3.1",
+    "U1.23",
+    "Q10.3"
+   ],
+   "b": [
+    "U3.1"
+   ],
+   "dst_escapes": 10,
+   "gap_mm": 34.942,
+   "net": "/WAKE_INT_N",
+   "never_asked_before": true,
+   "src_escapes": 34
+  },
+  {
+   "a": [
+    "TP4.1",
+    "U1.39",
+    "J1.45",
+    "R19.2",
+    "U14.8",
+    "U16.6",
+    "U3.23"
+   ],
+   "b": [
+    "U2.23"
+   ],
+   "dst_escapes": 2,
+   "gap_mm": 10.0,
+   "net": "/I2C_SDA_INT",
+   "never_asked_before": false,
+   "src_escapes": 54
+  },
+  {
+   "a": [
+    "TP4.1",
+    "U1.39",
+    "J1.45",
+    "R19.2",
+    "U14.8",
+    "U16.6",
+    "U3.23"
+   ],
+   "b": [
+    "U4.14"
+   ],
+   "dst_escapes": 7,
+   "gap_mm": 11.885,
+   "net": "/I2C_SDA_INT",
+   "never_asked_before": true,
+   "src_escapes": 54
+  },
+  {
+   "a": [
+    "U2.23"
+   ],
+   "b": [
+    "U4.14"
+   ],
+   "dst_escapes": 7,
+   "gap_mm": 21.674,
+   "net": "/I2C_SDA_INT",
+   "never_asked_before": true,
+   "src_escapes": 2
+  },
+  {
+   "a": [
+    "U2.22"
+   ],
+   "b": [
+    "U3.22"
+   ],
+   "dst_escapes": 8,
+   "gap_mm": 10.0,
+   "net": "/I2C_SCL_INT",
+   "never_asked_before": false,
+   "src_escapes": 1
+  },
+  {
+   "a": [
+    "U3.22",
+    "U1.38",
+    "R20.2",
+    "J1.44",
+    "U4.13"
+   ],
+   "b": [
+    "TP5.1"
+   ],
+   "dst_escapes": 7,
+   "gap_mm": 13.286,
+   "net": "/I2C_SCL_INT",
+   "never_asked_before": true,
+   "src_escapes": 35
+  },
+  {
+   "a": [
+    "U3.22",
+    "U1.38",
+    "R20.2",
+    "J1.44",
+    "U4.13"
+   ],
+   "b": [
+    "U16.3"
+   ],
+   "dst_escapes": 2,
+   "gap_mm": 15.585,
+   "net": "/I2C_SCL_INT",
+   "never_asked_before": true,
+   "src_escapes": 35
+  },
+  {
+   "a": [
+    "U3.22",
+    "U1.38",
+    "R20.2",
+    "J1.44",
+    "U4.13"
+   ],
+   "b": [
+    "U2.22"
+   ],
+   "dst_escapes": 1,
+   "gap_mm": 20.538,
+   "net": "/I2C_SCL_INT",
+   "never_asked_before": true,
+   "src_escapes": 35
+  },
+  {
+   "a": [
+    "U3.22",
+    "U1.38",
+    "R20.2",
+    "J1.44",
+    "U4.13"
+   ],
+   "b": [
+    "U14.7"
+   ],
+   "dst_escapes": 1,
+   "gap_mm": 24.137,
+   "net": "/I2C_SCL_INT",
+   "never_asked_before": true,
+   "src_escapes": 35
+  },
+  {
+   "a": [
+    "U16.3"
+   ],
+   "b": [
+    "U3.22",
+    "U1.38",
+    "R20.2",
+    "J1.44",
+    "U4.13"
+   ],
+   "dst_escapes": 35,
+   "gap_mm": 25.993,
+   "net": "/I2C_SCL_INT",
+   "never_asked_before": true,
+   "src_escapes": 2
+  },
+  {
+   "a": [
+    "U16.3"
+   ],
+   "b": [
+    "U2.22"
+   ],
+   "dst_escapes": 1,
+   "gap_mm": 35.953,
+   "net": "/I2C_SCL_INT",
+   "never_asked_before": true,
+   "src_escapes": 2
+  },
+  {
+   "a": [
+    "TP5.1"
+   ],
+   "b": [
+    "U2.22"
+   ],
+   "dst_escapes": 1,
+   "gap_mm": 56.369,
+   "net": "/I2C_SCL_INT",
+   "never_asked_before": true,
+   "src_escapes": 7
+  },
+  {
+   "a": [
+    "U14.7"
+   ],
+   "b": [
+    "U3.22",
+    "U1.38",
+    "R20.2",
+    "J1.44",
+    "U4.13"
+   ],
+   "dst_escapes": 35,
+   "gap_mm": 56.692,
+   "net": "/I2C_SCL_INT",
+   "never_asked_before": true,
+   "src_escapes": 1
+  },
+  {
+   "a": [
+    "U14.7"
+   ],
+   "b": [
+    "U2.22"
+   ],
+   "dst_escapes": 1,
+   "gap_mm": 57.133,
+   "net": "/I2C_SCL_INT",
+   "never_asked_before": true,
+   "src_escapes": 1
+  },
+  {
+   "a": [
+    "U14.7"
+   ],
+   "b": [
+    "U16.3"
+   ],
+   "dst_escapes": 2,
+   "gap_mm": 60.907,
+   "net": "/I2C_SCL_INT",
+   "never_asked_before": true,
+   "src_escapes": 1
+  },
+  {
+   "a": [
+    "TP5.1"
+   ],
+   "b": [
+    "U3.22",
+    "U1.38",
+    "R20.2",
+    "J1.44",
+    "U4.13"
+   ],
+   "dst_escapes": 35,
+   "gap_mm": 66.259,
+   "net": "/I2C_SCL_INT",
+   "never_asked_before": true,
+   "src_escapes": 7
+  },
+  {
+   "a": [
+    "TP5.1"
+   ],
+   "b": [
+    "U14.7"
+   ],
+   "dst_escapes": 1,
+   "gap_mm": 79.102,
+   "net": "/I2C_SCL_INT",
+   "never_asked_before": true,
+   "src_escapes": 7
+  },
+  {
+   "a": [
+    "TP5.1"
+   ],
+   "b": [
+    "U16.3"
+   ],
+   "dst_escapes": 2,
+   "gap_mm": 91.71,
+   "net": "/I2C_SCL_INT",
+   "never_asked_before": true,
+   "src_escapes": 7
+  }
+ ],
+ "grid": "auto",
+ "min_open_edges": 2,
+ "nets": [
+  {
+   "closed": 0,
+   "exit_code": 1,
+   "instrument": "MST_OF_PAIRS",
+   "islands": 3,
+   "mode": "maze+partial",
+   "net": "/BQ25185_STAT2",
+   "ok": false,
+   "open_edges": 2,
+   "pairs": [
+    {
+     "a": [
+      "U11.3"
+     ],
+     "b": [
+      "U2.10"
+     ],
+     "closed": false,
+     "dst_escapes": null,
+     "ends_are": "islands",
+     "gap_mm": 14.6,
+     "kind": "ESCAPE -- pre-filter it",
+     "mst_would_have_asked": true,
+     "reason": "NO_LEGAL_ESCAPE_SRC",
+     "src_escapes": null,
+     "why": "no legal escape on the source island"
+    },
+    {
+     "a": [
+      "R128.2",
+      "TP7.1"
+     ],
+     "b": [
+      "U2.10"
+     ],
+     "closed": false,
+     "dst_escapes": 10,
+     "ends_are": "islands",
+     "gap_mm": 15.407,
+     "kind": "CORRIDOR -- ladder it",
+     "mst_would_have_asked": false,
+     "reason": "NO_PATH",
+     "src_escapes": 25,
+     "why": "no all-layer corridor at 0.200 mm between the islands"
+    }
+   ],
+   "ran": true,
+   "sheet": "GLOBAL",
+   "span_mm": 31.83,
+   "wall_seconds": 26.9
+  },
+  {
+   "closed": 0,
+   "exit_code": 1,
+   "instrument": "MST_OF_PAIRS",
+   "islands": 3,
+   "mode": "maze+partial",
+   "net": "/BQ25185_STAT1",
+   "ok": false,
+   "open_edges": 2,
+   "pairs": [
+    {
+     "a": [
+      "U11.9"
+     ],
+     "b": [
+      "U2.9"
+     ],
+     "closed": false,
+     "dst_escapes": null,
+     "ends_are": "islands",
+     "gap_mm": 16.613,
+     "kind": "ESCAPE -- pre-filter it",
+     "mst_would_have_asked": true,
+     "reason": "NO_LEGAL_ESCAPE_SRC",
+     "src_escapes": null,
+     "why": "no legal escape on the source island"
+    },
+    {
+     "a": [
+      "R127.2",
+      "TP6.1"
+     ],
+     "b": [
+      "U2.9"
+     ],
+     "closed": false,
+     "dst_escapes": 10,
+     "ends_are": "islands",
+     "gap_mm": 18.517,
+     "kind": "CORRIDOR -- ladder it",
+     "mst_would_have_asked": false,
+     "reason": "NO_PATH",
+     "src_escapes": 20,
+     "why": "no all-layer corridor at 0.200 mm between the islands"
+    }
+   ],
+   "ran": true,
+   "sheet": "GLOBAL",
+   "span_mm": 33.657,
+   "wall_seconds": 26.4
+  },
+  {
+   "closed": 0,
+   "exit_code": 1,
+   "instrument": "MST_OF_PAIRS",
+   "islands": 3,
+   "mode": "maze+partial",
+   "net": "/03_SPI_A_DISPLAY_SD/LED_K",
+   "ok": false,
+   "open_edges": 2,
+   "pairs": [
+    {
+     "a": [
+      "J1.2"
+     ],
+     "b": [
+      "J1.3"
+     ],
+     "closed": false,
+     "dst_escapes": null,
+     "ends_are": "islands",
+     "gap_mm": 0.5,
+     "kind": "ESCAPE -- pre-filter it",
+     "mst_would_have_asked": true,
+     "reason": "NO_LEGAL_ESCAPE_SRC",
+     "src_escapes": null,
+     "why": "J1.3: NO LEGAL ESCAPE at >= 0.300 mm; blocked by J1.4 (x45), J1.1 (x25), J1. (x2)"
+    },
+    {
+     "a": [
+      "J1.3"
+     ],
+     "b": [
+      "U17.3",
+      "R69.1"
+     ],
+     "closed": false,
+     "dst_escapes": null,
+     "ends_are": "islands",
+     "gap_mm": 44.325,
+     "kind": "ESCAPE -- pre-filter it",
+     "mst_would_have_asked": false,
+     "reason": "NO_LEGAL_ESCAPE_SRC",
+     "src_escapes": null,
+     "why": "no legal escape on the source island"
+    }
+   ],
+   "ran": true,
+   "sheet": "03_SPI_A_DISPLAY_SD",
+   "span_mm": 50.264,
+   "wall_seconds": 25.6
+  },
+  {
+   "closed": 1,
+   "exit_code": 1,
+   "instrument": "MST_OF_PAIRS",
+   "islands": 3,
+   "mode": "maze+partial",
+   "net": "/09_COMMUNITY_HEADER/EXT_SDA",
+   "ok": true,
+   "open_edges": 2,
+   "pairs": [
+    {
+     "a": "TP45.1",
+     "b": "J8.3",
+     "closed": true,
+     "ends_are": "pads",
+     "layers": [
+      "F",
+      "I2",
+      "F",
+      "I2",
+      "F"
+     ],
+     "mm": 85.84309328919167,
+     "mst_would_have_asked": true,
+     "vias": 4
+    },
+    {
+     "a": [
+      "TP45.1",
+      "J5.4",
+      "D2.4"
+     ],
+     "b": [
+      "R48.2"
+     ],
+     "closed": false,
+     "dst_escapes": 11,
+     "ends_are": "islands",
+     "gap_mm": 8.568,
+     "kind": "CORRIDOR -- ladder it",
+     "mst_would_have_asked": true,
+     "reason": "NO_PATH",
+     "src_escapes": 39,
+     "why": "no all-layer corridor at 0.200 mm between the islands"
+    },
+    {
+     "a": [
+      "J8.3"
+     ],
+     "b": [
+      "R48.2"
+     ],
+     "closed": false,
+     "dst_escapes": 11,
+     "ends_are": "islands",
+     "gap_mm": 42.355,
+     "kind": "CORRIDOR -- ladder it",
+     "mst_would_have_asked": false,
+     "reason": "NO_PATH",
+     "src_escapes": 9,
+     "why": "no all-layer corridor at 0.200 mm between the islands"
+    }
+   ],
+   "ran": true,
+   "sheet": "09_COMMUNITY_HEADER",
+   "span_mm": 60.113,
+   "wall_seconds": 37.0
+  },
+  {
+   "closed": 0,
+   "exit_code": 1,
+   "instrument": "MST_OF_PAIRS",
+   "islands": 3,
+   "mode": "maze+partial",
+   "net": "/WAKE_INT_N",
+   "ok": false,
+   "open_edges": 2,
+   "pairs": [
+    {
+     "a": [
+      "U2.1"
+     ],
+     "b": [
+      "U3.1"
+     ],
+     "closed": false,
+     "dst_escapes": 10,
+     "ends_are": "islands",
+     "gap_mm": 10.0,
+     "kind": "CORRIDOR -- ladder it",
+     "mst_would_have_asked": true,
+     "reason": "NO_PATH",
+     "src_escapes": 7,
+     "why": "no all-layer corridor at 0.200 mm between the islands"
+    },
+    {
+     "a": [
+      "R3.1",
+      "U1.23",
+      "Q10.3"
+     ],
+     "b": [
+      "U2.1"
+     ],
+     "closed": false,
+     "dst_escapes": 7,
+     "ends_are": "islands",
+     "gap_mm": 25.258,
+     "kind": "CORRIDOR -- ladder it",
+     "mst_would_have_asked": false,
+     "reason": "NO_PATH",
+     "src_escapes": 34,
+     "why": "no all-layer corridor at 0.200 mm between the islands"
+    },
+    {
+     "a": [
+      "R3.1",
+      "U1.23",
+      "Q10.3"
+     ],
+     "b": [
+      "U3.1"
+     ],
+     "closed": false,
+     "dst_escapes": 10,
+     "ends_are": "islands",
+     "gap_mm": 34.942,
+     "kind": "CORRIDOR -- ladder it",
+     "mst_would_have_asked": false,
+     "reason": "NO_PATH",
+     "src_escapes": 34,
+     "why": "no all-layer corridor at 0.200 mm between the islands"
+    }
+   ],
+   "ran": true,
+   "sheet": "GLOBAL",
+   "span_mm": 66.101,
+   "wall_seconds": 34.9
+  },
+  {
+   "closed": 0,
+   "exit_code": 1,
+   "instrument": "MST_OF_PAIRS",
+   "islands": 3,
+   "mode": "maze+partial",
+   "net": "/NFC_SUPPLY",
+   "ok": false,
+   "open_edges": 2,
+   "pairs": [
+    {
+     "a": [
+      "U9.10"
+     ],
+     "b": [
+      "U9.8"
+     ],
+     "closed": false,
+     "dst_escapes": null,
+     "ends_are": "islands",
+     "gap_mm": 1.152,
+     "kind": "ESCAPE -- pre-filter it",
+     "mst_would_have_asked": true,
+     "reason": "NO_LEGAL_ESCAPE_SRC",
+     "src_escapes": null,
+     "why": "U9.8: NO LEGAL ESCAPE at >= 0.600 mm; blocked by U9.7 (x45), U9.6 (x19), U9.1 (x3), U9.5 (x2)"
+    },
+    {
+     "a": [
+      "R107.2",
+      "R106.2",
+      "TP32.1",
+      "C55.1",
+      "C19.1"
+     ],
+     "b": [
+      "U9.8"
+     ],
+     "closed": false,
+     "dst_escapes": null,
+     "ends_are": "islands",
+     "gap_mm": 12.375,
+     "kind": "ESCAPE -- pre-filter it",
+     "mst_would_have_asked": false,
+     "reason": "NO_LEGAL_ESCAPE_DST",
+     "src_escapes": null,
+     "why": "U9.8: NO LEGAL ESCAPE at >= 0.600 mm; blocked by U9.7 (x45), U9.6 (x19), U9.1 (x3), U9.5 (x2)"
+    }
+   ],
+   "ran": true,
+   "sheet": "GLOBAL",
+   "span_mm": 100.842,
+   "wall_seconds": 33.4
+  },
+  {
+   "closed": 0,
+   "exit_code": 1,
+   "instrument": "MST_OF_PAIRS",
+   "islands": 3,
+   "mode": "maze+partial",
+   "net": "/I2C_SDA_INT",
+   "ok": false,
+   "open_edges": 2,
+   "pairs": [
+    {
+     "a": [
+      "TP4.1",
+      "U1.39",
+      "J1.45",
+      "R19.2",
+      "U14.8",
+      "U16.6",
+      "U3.23"
+     ],
+     "b": [
+      "U2.23"
+     ],
+     "closed": false,
+     "dst_escapes": 2,
+     "ends_are": "islands",
+     "gap_mm": 10.0,
+     "kind": "CORRIDOR -- ladder it",
+     "mst_would_have_asked": true,
+     "reason": "NO_PATH",
+     "src_escapes": 54,
+     "why": "no all-layer corridor at 0.200 mm between the islands"
+    },
+    {
+     "a": [
+      "TP4.1",
+      "U1.39",
+      "J1.45",
+      "R19.2",
+      "U14.8",
+      "U16.6",
+      "U3.23"
+     ],
+     "b": [
+      "U4.14"
+     ],
+     "closed": false,
+     "dst_escapes": 7,
+     "ends_are": "islands",
+     "gap_mm": 11.885,
+     "kind": "CORRIDOR -- ladder it",
+     "mst_would_have_asked": false,
+     "reason": "NO_PATH",
+     "src_escapes": 54,
+     "why": "no all-layer corridor at 0.200 mm between the islands"
+    },
+    {
+     "a": [
+      "U2.23"
+     ],
+     "b": [
+      "U4.14"
+     ],
+     "closed": false,
+     "dst_escapes": 7,
+     "ends_are": "islands",
+     "gap_mm": 21.674,
+     "kind": "CORRIDOR -- ladder it",
+     "mst_would_have_asked": false,
+     "reason": "NO_PATH",
+     "src_escapes": 2,
+     "why": "no all-layer corridor at 0.200 mm between the islands"
+    }
+   ],
+   "ran": true,
+   "sheet": "GLOBAL",
+   "span_mm": 101.002,
+   "wall_seconds": 34.6
+  },
+  {
+   "instrument": "POUR_SERVED -- this net owns a zone on this board, so it is plane + stitch, not an MST of pairs; --partial is the wrong instrument and the BOARD said so, not a name list",
+   "net": "GND",
+   "open_edges": 4,
+   "pairs": [],
+   "ran": false,
+   "sheet": "GLOBAL",
+   "span_mm": 159.668
+  },
+  {
+   "closed": 1,
+   "exit_code": 1,
+   "instrument": "MST_OF_PAIRS",
+   "islands": 6,
+   "mode": "maze+partial",
+   "net": "/I2C_SCL_INT",
+   "ok": true,
+   "open_edges": 5,
+   "pairs": [
+    {
+     "a": "U1.38",
+     "b": "U3.22",
+     "closed": true,
+     "ends_are": "pads",
+     "layers": [
+      "F",
+      "B",
+      "F",
+      "B",
+      "I2",
+      "B",
+      "I2",
+      "F",
+      "B"
+     ],
+     "mm": 108.08931434688407,
+     "mst_would_have_asked": true,
+     "vias": 8
+    },
+    {
+     "a": [
+      "U2.22"
+     ],
+     "b": [
+      "U3.22"
+     ],
+     "closed": false,
+     "dst_escapes": 8,
+     "ends_are": "islands",
+     "gap_mm": 10.0,
+     "kind": "CORRIDOR -- ladder it",
+     "mst_would_have_asked": true,
+     "reason": "NO_PATH",
+     "src_escapes": 1,
+     "why": "no all-layer corridor at 0.200 mm between the islands"
+    },
+    {
+     "a": [
+      "U3.22",
+      "U1.38",
+      "R20.2",
+      "J1.44",
+      "U4.13"
+     ],
+     "b": [
+      "TP5.1"
+     ],
+     "closed": false,
+     "dst_escapes": 7,
+     "ends_are": "islands",
+     "gap_mm": 13.286,
+     "kind": "CORRIDOR -- ladder it",
+     "mst_would_have_asked": false,
+     "reason": "NO_PATH",
+     "src_escapes": 35,
+     "why": "no all-layer corridor at 0.200 mm between the islands"
+    },
+    {
+     "a": [
+      "U3.22",
+      "U1.38",
+      "R20.2",
+      "J1.44",
+      "U4.13"
+     ],
+     "b": [
+      "U16.3"
+     ],
+     "closed": false,
+     "dst_escapes": 2,
+     "ends_are": "islands",
+     "gap_mm": 15.585,
+     "kind": "CORRIDOR -- ladder it",
+     "mst_would_have_asked": false,
+     "reason": "NO_PATH",
+     "src_escapes": 35,
+     "why": "no all-layer corridor at 0.200 mm between the islands"
+    },
+    {
+     "a": [
+      "U3.22",
+      "U1.38",
+      "R20.2",
+      "J1.44",
+      "U4.13"
+     ],
+     "b": [
+      "U2.22"
+     ],
+     "closed": false,
+     "dst_escapes": 1,
+     "ends_are": "islands",
+     "gap_mm": 20.538,
+     "kind": "CORRIDOR -- ladder it",
+     "mst_would_have_asked": false,
+     "reason": "NO_PATH",
+     "src_escapes": 35,
+     "why": "no all-layer corridor at 0.200 mm between the islands"
+    },
+    {
+     "a": [
+      "U3.22",
+      "U1.38",
+      "R20.2",
+      "J1.44",
+      "U4.13"
+     ],
+     "b": [
+      "U14.7"
+     ],
+     "closed": false,
+     "dst_escapes": 1,
+     "ends_are": "islands",
+     "gap_mm": 24.137,
+     "kind": "CORRIDOR -- ladder it",
+     "mst_would_have_asked": false,
+     "reason": "NO_PATH",
+     "src_escapes": 35,
+     "why": "no all-layer corridor at 0.200 mm between the islands"
+    },
+    {
+     "a": [
+      "U16.3"
+     ],
+     "b": [
+      "U3.22",
+      "U1.38",
+      "R20.2",
+      "J1.44",
+      "U4.13"
+     ],
+     "closed": false,
+     "dst_escapes": 35,
+     "ends_are": "islands",
+     "gap_mm": 25.993,
+     "kind": "CORRIDOR -- ladder it",
+     "mst_would_have_asked": false,
+     "reason": "NO_PATH",
+     "src_escapes": 2,
+     "why": "no all-layer corridor at 0.200 mm between the islands"
+    },
+    {
+     "a": [
+      "U16.3"
+     ],
+     "b": [
+      "U2.22"
+     ],
+     "closed": false,
+     "dst_escapes": 1,
+     "ends_are": "islands",
+     "gap_mm": 35.953,
+     "kind": "CORRIDOR -- ladder it",
+     "mst_would_have_asked": false,
+     "reason": "NO_PATH",
+     "src_escapes": 2,
+     "why": "no all-layer corridor at 0.200 mm between the islands"
+    },
+    {
+     "a": [
+      "TP5.1"
+     ],
+     "b": [
+      "U2.22"
+     ],
+     "closed": false,
+     "dst_escapes": 1,
+     "ends_are": "islands",
+     "gap_mm": 56.369,
+     "kind": "CORRIDOR -- ladder it",
+     "mst_would_have_asked": false,
+     "reason": "NO_PATH",
+     "src_escapes": 7,
+     "why": "no all-layer corridor at 0.200 mm between the islands"
+    },
+    {
+     "a": [
+      "U14.7"
+     ],
+     "b": [
+      "U3.22",
+      "U1.38",
+      "R20.2",
+      "J1.44",
+      "U4.13"
+     ],
+     "closed": false,
+     "dst_escapes": 35,
+     "ends_are": "islands",
+     "gap_mm": 56.692,
+     "kind": "CORRIDOR -- ladder it",
+     "mst_would_have_asked": false,
+     "reason": "NO_PATH",
+     "src_escapes": 1,
+     "why": "no all-layer corridor at 0.200 mm between the islands"
+    },
+    {
+     "a": [
+      "U14.7"
+     ],
+     "b": [
+      "U2.22"
+     ],
+     "closed": false,
+     "dst_escapes": 1,
+     "ends_are": "islands",
+     "gap_mm": 57.133,
+     "kind": "CORRIDOR -- ladder it",
+     "mst_would_have_asked": false,
+     "reason": "NO_PATH",
+     "src_escapes": 1,
+     "why": "no all-layer corridor at 0.200 mm between the islands"
+    },
+    {
+     "a": [
+      "U14.7"
+     ],
+     "b": [
+      "U16.3"
+     ],
+     "closed": false,
+     "dst_escapes": 2,
+     "ends_are": "islands",
+     "gap_mm": 60.907,
+     "kind": "CORRIDOR -- ladder it",
+     "mst_would_have_asked": false,
+     "reason": "NO_PATH",
+     "src_escapes": 1,
+     "why": "no all-layer corridor at 0.200 mm between the islands"
+    },
+    {
+     "a": [
+      "TP5.1"
+     ],
+     "b": [
+      "U3.22",
+      "U1.38",
+      "R20.2",
+      "J1.44",
+      "U4.13"
+     ],
+     "closed": false,
+     "dst_escapes": 35,
+     "ends_are": "islands",
+     "gap_mm": 66.259,
+     "kind": "CORRIDOR -- ladder it",
+     "mst_would_have_asked": false,
+     "reason": "NO_PATH",
+     "src_escapes": 7,
+     "why": "no all-layer corridor at 0.200 mm between the islands"
+    },
+    {
+     "a": [
+      "TP5.1"
+     ],
+     "b": [
+      "U14.7"
+     ],
+     "closed": false,
+     "dst_escapes": 1,
+     "ends_are": "islands",
+     "gap_mm": 79.102,
+     "kind": "CORRIDOR -- ladder it",
+     "mst_would_have_asked": false,
+     "reason": "NO_PATH",
+     "src_escapes": 7,
+     "why": "no all-layer corridor at 0.200 mm between the islands"
+    },
+    {
+     "a": [
+      "TP5.1"
+     ],
+     "b": [
+      "U16.3"
+     ],
+     "closed": false,
+     "dst_escapes": 2,
+     "ends_are": "islands",
+     "gap_mm": 91.71,
+     "kind": "CORRIDOR -- ladder it",
+     "mst_would_have_asked": false,
+     "reason": "NO_PATH",
+     "src_escapes": 7,
+     "why": "no all-layer corridor at 0.200 mm between the islands"
+    }
+   ],
+   "ran": true,
+   "sheet": "GLOBAL",
+   "span_mm": 107.927,
+   "wall_seconds": 352.9
+  },
+  {
+   "instrument": "POUR_SERVED -- this net owns a zone on this board, so it is plane + stitch, not an MST of pairs; --partial is the wrong instrument and the BOARD said so, not a name list",
+   "net": "/01_POWER_TREE/BQ25185_SYS",
+   "open_edges": 7,
+   "pairs": [],
+   "ran": false,
+   "sheet": "01_POWER_TREE",
+   "span_mm": 105.109
+  },
+  {
+   "instrument": "POUR_SERVED -- this net owns a zone on this board, so it is plane + stitch, not an MST of pairs; --partial is the wrong instrument and the BOARD said so, not a name list",
+   "net": "+3V3",
+   "open_edges": 8,
+   "pairs": [],
+   "ran": false,
+   "sheet": "GLOBAL",
+   "span_mm": 157.685
+  }
+ ],
+ "nets_probed": 11,
+ "pairs_never_asked_before": 22,
+ "pairs_the_mst_would_have_asked": 10,
+ "pairs_total": 32,
+ "pour_served": [
+  "GND",
+  "/01_POWER_TREE/BQ25185_SYS",
+  "+3V3"
+ ],
+ "schema": 1,
+ "what": "Which island PAIRS has the all-or-nothing MST never even ASKED? -- D-626\n\nA plane-less net is routed as ONE transaction over its MST.  The FIRST pair\nthat will not close fails the whole net, and every REMAINING pair of that net\nis then never attempted -- so \"open\" in `routing_ledger.py` and \"refused\" in a\nrouter report have been the same word for two different things, and this board\nhas been reading absences of measurement as measurements.  `--partial` runs a\nper-pair transaction instead; this screen drives it over every open net and\nreports what each pair actually said.\n\nWHY IT MATTERS RIGHT NOW.  D-625 proved that a `NO_PATH` corridor refusal on\nthis board is a LADDER question before it is a wall -- `BTN_DOWN_N` refused at\n0.100 / 0.0667 / 0.050 mm under the same 47-tube guard that admitted it at\n0.0333 mm.  A pair nobody has asked cannot be laddered, so the census is the\nwork-list that comes BEFORE the ladder, and it pairs with\n`screen_ladder_prefilter.py`, which answers the other half: an ESCAPE refusal\non a land with no legal escape at ANY pitch is the one refusal a finer lattice\nprovably cannot lift.\n\n    reason NO_PATH            -> CORRIDOR.  Ladder it; D-625's lesson applies.\n    reason NO_LEGAL_ESCAPE_*  -> ESCAPE.  Ask `screen_ladder_prefilter.py`\n                                 whether ANY pitch can launch that land first.\n\nTWO THINGS THIS SCREEN REFUSES TO GUESS.\n\n**A POUR-SERVED NET IS EXCLUDED BY THE BOARD'S OWN ZONES, NOT BY ITS NAME.**\n`+3V3` and `GND` are served by a plane and a stitch, not by an MST of pairs, so\n`--partial` is the wrong instrument on them and running it would report a wall\nthe promotion path would never have hit.  A hard-coded name list would have\nbeen wrong the moment a rail was renamed or another net acquired a pour, so the\nBOARD decides: any net owning a non-rule-area zone is `POUR_SERVED` and is\nskipped before a router ever starts -- which also keeps a 246-pad `GND` off the\nwork queue.  `/01_POWER_TREE/BQ25185_SYS` is exactly that case and a name list\nwould have missed it.  The router's own `routed[0][\"mode\"]` is read back as a\nSECOND, confirming guard: a net that reaches `stitch` mode without owning a\nzone is recorded rather than silently reported as a pair census.\n\n**A CLOSED JOIN AND A FAILED ONE DO NOT NAME THEIR ENDS THE SAME WAY.**  A\nfailure carries `a`/`b` -- the two ISLANDS, as pad lists.  A join carries\n`from`/`to` -- the two PADS it actually ran between, plus the layers and via\nsites it used.  Reading `a`/`b` off a join yields `None` and prints a closed\npair with no ends, which is a report that looks complete and says nothing.\nBoth shapes are read here and `ends_are` names which one each row came from."
+}

@@ -1,0 +1,700 @@
+{
+ "board": "/home/aqroot8/aqroot-demo/hardware/demo/kicad/aqroot-demo/aqroot-Beta-v2.kicad_pcb",
+ "board_sha256": "74fb57b5c34042bd4e27d8b17ac47b9f419820af74933a7f142df8f6c42b1769",
+ "cells": 115565604,
+ "contention": {
+  "cpu_fraction_min": 0.992,
+  "peak_loadavg_1min": 10.37,
+  "verdict": "NOT STARVED -- the workers held >= 0.99 of a core throughout, so these seconds are comparable with D-624's.",
+  "what": "These ran up to five-up on eight cores.  A wall-clock second nobody normalised is not a measurement, so every run declares the share of a core it actually held."
+ },
+ "cost_model": {
+  "cell_ceiling": 300000000,
+  "in_sample": {
+   "ratio_max": 1.34,
+   "ratio_median": 0.85,
+   "ratio_min": 0.73,
+   "rows": [
+    {
+     "cells": 4629924,
+     "grid_mm": 0.1,
+     "measured_s": 20.0,
+     "net": "/01_POWER_TREE/ACC_5V_LX",
+     "predicted_s": null,
+     "ratio": null
+    },
+    {
+     "cells": 10392240,
+     "grid_mm": 0.0667,
+     "measured_s": 20.5,
+     "net": "/01_POWER_TREE/ACC_5V_LX",
+     "predicted_s": null,
+     "ratio": null
+    },
+    {
+     "cells": 18501444,
+     "grid_mm": 0.05,
+     "measured_s": 21.3,
+     "net": "/01_POWER_TREE/ACC_5V_LX",
+     "predicted_s": 27.4,
+     "ratio": 0.78
+    },
+    {
+     "cells": 41687580,
+     "grid_mm": 0.0333,
+     "measured_s": 23.4,
+     "net": "/01_POWER_TREE/ACC_5V_LX",
+     "predicted_s": 32.0,
+     "ratio": 0.73
+    },
+    {
+     "cells": 73969284,
+     "grid_mm": 0.025,
+     "measured_s": 26.1,
+     "net": "/01_POWER_TREE/ACC_5V_LX",
+     "predicted_s": 31.2,
+     "ratio": 0.84
+    },
+    {
+     "cells": 10392240,
+     "grid_mm": 0.0667,
+     "measured_s": 20.1,
+     "net": "/04_SPI_B_RADIOS_NFC/NFC_VDD_RF",
+     "predicted_s": null,
+     "ratio": null
+    },
+    {
+     "cells": 18501444,
+     "grid_mm": 0.05,
+     "measured_s": 20.9,
+     "net": "/04_SPI_B_RADIOS_NFC/NFC_VDD_RF",
+     "predicted_s": null,
+     "ratio": null
+    },
+    {
+     "cells": 41687580,
+     "grid_mm": 0.0333,
+     "measured_s": 23.0,
+     "net": "/04_SPI_B_RADIOS_NFC/NFC_VDD_RF",
+     "predicted_s": 31.4,
+     "ratio": 0.73
+    },
+    {
+     "cells": 73969284,
+     "grid_mm": 0.025,
+     "measured_s": 25.4,
+     "net": "/04_SPI_B_RADIOS_NFC/NFC_VDD_RF",
+     "predicted_s": 30.6,
+     "ratio": 0.83
+    },
+    {
+     "cells": 4629924,
+     "grid_mm": 0.1,
+     "measured_s": 24.7,
+     "net": "/08_BUTTONS_EXPANDERS/BTN_DOWN_N",
+     "predicted_s": null,
+     "ratio": null
+    },
+    {
+     "cells": 10392240,
+     "grid_mm": 0.0667,
+     "measured_s": 36.8,
+     "net": "/08_BUTTONS_EXPANDERS/BTN_DOWN_N",
+     "predicted_s": null,
+     "ratio": null
+    },
+    {
+     "cells": 18501444,
+     "grid_mm": 0.05,
+     "measured_s": 60.7,
+     "net": "/08_BUTTONS_EXPANDERS/BTN_DOWN_N",
+     "predicted_s": 49.1,
+     "ratio": 1.24
+    },
+    {
+     "cells": 41687580,
+     "grid_mm": 0.0333,
+     "measured_s": 164.9,
+     "net": "/08_BUTTONS_EXPANDERS/BTN_DOWN_N",
+     "predicted_s": 122.8,
+     "ratio": 1.34
+    },
+    {
+     "cells": 73969284,
+     "grid_mm": 0.025,
+     "measured_s": 387.4,
+     "net": "/08_BUTTONS_EXPANDERS/BTN_DOWN_N",
+     "predicted_s": 333.9,
+     "ratio": 1.16
+    },
+    {
+     "cells": 4629924,
+     "grid_mm": 0.1,
+     "measured_s": 31.6,
+     "net": "/08_BUTTONS_EXPANDERS/BTN_LEFT_N",
+     "predicted_s": null,
+     "ratio": null
+    },
+    {
+     "cells": 10392240,
+     "grid_mm": 0.0667,
+     "measured_s": 67.0,
+     "net": "/08_BUTTONS_EXPANDERS/BTN_LEFT_N",
+     "predicted_s": null,
+     "ratio": null
+    },
+    {
+     "cells": 18501444,
+     "grid_mm": 0.05,
+     "measured_s": 136.9,
+     "net": "/08_BUTTONS_EXPANDERS/BTN_LEFT_N",
+     "predicted_s": 114.5,
+     "ratio": 1.2
+    },
+    {
+     "cells": 41687580,
+     "grid_mm": 0.0333,
+     "measured_s": 449.5,
+     "net": "/08_BUTTONS_EXPANDERS/BTN_LEFT_N",
+     "predicted_s": 374.5,
+     "ratio": 1.2
+    },
+    {
+     "cells": 73969284,
+     "grid_mm": 0.025,
+     "measured_s": 1172.7,
+     "net": "/08_BUTTONS_EXPANDERS/BTN_LEFT_N",
+     "predicted_s": 1040.4,
+     "ratio": 1.13
+    },
+    {
+     "cells": 41687580,
+     "grid_mm": 0.0333,
+     "measured_s": 404.1,
+     "net": "/ACC_5V_BOOST_EN",
+     "predicted_s": null,
+     "ratio": null
+    },
+    {
+     "cells": 73969284,
+     "grid_mm": 0.025,
+     "measured_s": 1035.7,
+     "net": "/ACC_5V_BOOST_EN",
+     "predicted_s": null,
+     "ratio": null
+    },
+    {
+     "cells": 4629924,
+     "grid_mm": 0.1,
+     "measured_s": 19.4,
+     "net": "/I2S_LRCLK",
+     "predicted_s": null,
+     "ratio": null
+    },
+    {
+     "cells": 10392240,
+     "grid_mm": 0.0667,
+     "measured_s": 20.1,
+     "net": "/I2S_LRCLK",
+     "predicted_s": null,
+     "ratio": null
+    },
+    {
+     "cells": 18501444,
+     "grid_mm": 0.05,
+     "measured_s": 20.8,
+     "net": "/I2S_LRCLK",
+     "predicted_s": 26.8,
+     "ratio": 0.78
+    },
+    {
+     "cells": 41687580,
+     "grid_mm": 0.0333,
+     "measured_s": 23.3,
+     "net": "/I2S_LRCLK",
+     "predicted_s": 31.2,
+     "ratio": 0.75
+    },
+    {
+     "cells": 73969284,
+     "grid_mm": 0.025,
+     "measured_s": 26.5,
+     "net": "/I2S_LRCLK",
+     "predicted_s": 31.0,
+     "ratio": 0.85
+    },
+    {
+     "cells": 10392240,
+     "grid_mm": 0.0667,
+     "measured_s": 20.6,
+     "net": "/SPI_B_SCK",
+     "predicted_s": null,
+     "ratio": null
+    },
+    {
+     "cells": 18501444,
+     "grid_mm": 0.05,
+     "measured_s": 21.6,
+     "net": "/SPI_B_SCK",
+     "predicted_s": null,
+     "ratio": null
+    },
+    {
+     "cells": 41687580,
+     "grid_mm": 0.0333,
+     "measured_s": 24.2,
+     "net": "/SPI_B_SCK",
+     "predicted_s": 32.4,
+     "ratio": 0.75
+    },
+    {
+     "cells": 73969284,
+     "grid_mm": 0.025,
+     "measured_s": 28.7,
+     "net": "/SPI_B_SCK",
+     "predicted_s": 32.2,
+     "ratio": 0.89
+    },
+    {
+     "cells": 4629924,
+     "grid_mm": 0.1,
+     "measured_s": 38.7,
+     "net": "/SX1262_DIO1",
+     "predicted_s": null,
+     "ratio": null
+    },
+    {
+     "cells": 10392240,
+     "grid_mm": 0.0667,
+     "measured_s": 92.3,
+     "net": "/SX1262_DIO1",
+     "predicted_s": null,
+     "ratio": null
+    },
+    {
+     "cells": 18501444,
+     "grid_mm": 0.05,
+     "measured_s": 211.9,
+     "net": "/SX1262_DIO1",
+     "predicted_s": 171.6,
+     "ratio": 1.23
+    },
+    {
+     "cells": 41687580,
+     "grid_mm": 0.0333,
+     "measured_s": 756.7,
+     "net": "/SX1262_DIO1",
+     "predicted_s": 683.1,
+     "ratio": 1.11
+    },
+    {
+     "cells": 73969284,
+     "grid_mm": 0.025,
+     "measured_s": 1538.9,
+     "net": "/SX1262_DIO1",
+     "predicted_s": 1858.4,
+     "ratio": 0.83
+    }
+   ],
+   "rungs": 19,
+   "within_2x": 19
+  },
+  "k_clamp": [
+   0.5,
+   3.0
+  ],
+  "out_of_sample": {
+   "ratio_max": 1.51,
+   "ratio_min": 0.6,
+   "rows": [
+    {
+     "cells": 115565604,
+     "d624_said": "OVER_CELL_BUDGET (80 M), no number",
+     "d626_would": "RUN",
+     "grid_mm": 0.02,
+     "measured_s": 26.5,
+     "net": "/01_POWER_TREE/ACC_5V_LX",
+     "predicted_s": 32.6,
+     "ratio": 0.81
+    },
+    {
+     "cells": 115565604,
+     "d624_said": "OVER_CELL_BUDGET (80 M), no number",
+     "d626_would": "RUN",
+     "grid_mm": 0.02,
+     "measured_s": 32.0,
+     "net": "/04_SPI_B_RADIOS_NFC/NFC_VDD_RF",
+     "predicted_s": 31.7,
+     "ratio": 1.01
+    },
+    {
+     "cells": 115565604,
+     "d624_said": "OVER_CELL_BUDGET (80 M), no number",
+     "d626_would": "RUN",
+     "grid_mm": 0.02,
+     "measured_s": null,
+     "net": "/08_BUTTONS_EXPANDERS/BTN_DOWN_N",
+     "predicted_s": 753.0,
+     "ratio": null
+    },
+    {
+     "cells": 115565604,
+     "d624_said": "OVER_CELL_BUDGET (80 M), no number",
+     "d626_would": "REFUSE, predicted 2473 s > 1800 s",
+     "grid_mm": 0.02,
+     "measured_s": 2953.8,
+     "net": "/08_BUTTONS_EXPANDERS/BTN_LEFT_N",
+     "predicted_s": 2473.0,
+     "ratio": 1.19
+    },
+    {
+     "cells": 115565604,
+     "d624_said": "OVER_CELL_BUDGET (80 M), no number",
+     "d626_would": "REFUSE, predicted 2154 s > 1800 s",
+     "grid_mm": 0.02,
+     "measured_s": 3242.5,
+     "net": "/ACC_5V_BOOST_EN",
+     "predicted_s": 2154.1,
+     "ratio": 1.51
+    },
+    {
+     "cells": 115565604,
+     "d624_said": "OVER_CELL_BUDGET (80 M), no number",
+     "d626_would": "RUN",
+     "grid_mm": 0.02,
+     "measured_s": 28.7,
+     "net": "/I2S_LRCLK",
+     "predicted_s": 33.1,
+     "ratio": 0.87
+    },
+    {
+     "cells": 115565604,
+     "d624_said": "OVER_CELL_BUDGET (80 M), no number",
+     "d626_would": "RUN",
+     "grid_mm": 0.02,
+     "measured_s": 21.4,
+     "net": "/SPI_B_SCK",
+     "predicted_s": 35.9,
+     "ratio": 0.6
+    },
+    {
+     "cells": 115565604,
+     "d624_said": "OVER_CELL_BUDGET (80 M), no number",
+     "d626_would": "REFUSE, predicted 2674 s > 1800 s",
+     "grid_mm": 0.02,
+     "measured_s": 3400.6,
+     "net": "/SX1262_DIO1",
+     "predicted_s": 2673.5,
+     "ratio": 1.27
+    }
+   ],
+   "rungs": 7,
+   "within_2x": 7
+  },
+  "seconds_budget": 1800
+ },
+ "deepest_rung_ever_run": {
+  "every_rung_same_reason": "NO_LEGAL_ESCAPE_DST",
+  "finest_run_cells": 295804164,
+  "finest_run_gb_modelled": 7.77,
+  "finest_run_mm": 0.0125,
+  "lattice": {
+   "binding_pad": "U2.9",
+   "grid_mm": 0.1,
+   "lands": 4,
+   "no_lattice_at_any_pitch": true,
+   "required_lattice_mm": 0.2,
+   "too_coarse": false,
+   "unlaunchable_lands": [
+    "U11.9"
+   ],
+   "verdict": "EXACT"
+  },
+  "net": "/BQ25185_STAT1",
+  "rungs": [
+   {
+    "cells": 4629924,
+    "grid_mm": 0.1,
+    "predicted_seconds": null,
+    "ran": true,
+    "seconds": 47.2,
+    "why": null
+   },
+   {
+    "cells": 10392240,
+    "grid_mm": 0.0667,
+    "predicted_seconds": null,
+    "ran": true,
+    "seconds": 44.4,
+    "why": null
+   },
+   {
+    "cells": 18501444,
+    "grid_mm": 0.05,
+    "predicted_seconds": 59.2,
+    "ran": true,
+    "seconds": 47.9,
+    "why": null
+   },
+   {
+    "cells": 41687580,
+    "grid_mm": 0.0333,
+    "predicted_seconds": 71.9,
+    "ran": true,
+    "seconds": 55.2,
+    "why": null
+   },
+   {
+    "cells": 73969284,
+    "grid_mm": 0.025,
+    "predicted_seconds": 73.5,
+    "ran": true,
+    "seconds": 70.6,
+    "why": null
+   },
+   {
+    "cells": 115565604,
+    "grid_mm": 0.02,
+    "predicted_seconds": 88.2,
+    "ran": true,
+    "seconds": 68.6,
+    "why": null
+   },
+   {
+    "cells": 295804164,
+    "grid_mm": 0.0125,
+    "predicted_seconds": 109.8,
+    "ran": true,
+    "seconds": 83.2,
+    "why": null
+   },
+   {
+    "cells": 462171204,
+    "grid_mm": 0.01,
+    "predicted_seconds": 104.0,
+    "ran": false,
+    "seconds": null,
+    "why": "OVER_CELL_CEILING 462171204 > 300000000"
+   }
+  ],
+  "rungs_run": 7,
+  "why": "U11.9: NO LEGAL ESCAPE at >= 0.200 mm; blocked by U11.10 (x19), U11.7 (x16), U11.6 (x7), track (x6)"
+ },
+ "grid_nm": 20000,
+ "guard_off_is_the_strongest_refusal": "Run guard-OFF on purpose.  `maze3d.Field` applies a pour-bond guard by OR-ing blocked cells into `blk` and AND-ing sites out of `via_ok`, so the guarded legal set is a SUBSET of the unguarded one and a guard-off NO_PATH is the stronger claim.  D-625 demonstrates the same monotonicity empirically on one net: `BTN_DOWN_N` ROUTES guard-off at 0.100 / 0.0667 / 0.050 mm and returns NO_PATH guard-ON at all three.",
+ "memory": {
+  "cell_bytes_measured": 28.2,
+  "cell_ceiling": 300000000,
+  "cell_ceiling_gb_modelled": 7.88,
+  "mem_fraction_default": 0.6,
+  "modelled_vs_measured_at_115565604": {
+   "measured_gb": [
+    3.04,
+    3.01,
+    3.0
+   ],
+   "modelled_gb": 3.04
+  },
+  "peak_rss_gb": {
+   "boost-en": 3.04,
+   "btn-left": 3.01,
+   "sx1262-dio1": 3.0
+  },
+  "what": "A ceiling in CELLS means nothing without bytes per cell, and the old 80 M was never justified against memory at all."
+ },
+ "nets": {
+  "/01_POWER_TREE/ACC_5V_LX": {
+   "cells": 115565604,
+   "cpu_fraction": null,
+   "d624_finest_rung_run_mm": 0.025,
+   "d624_verdict": "NO_LATTICE_AT_ANY_PITCH",
+   "grid_mm": 0.02,
+   "lattice": {
+    "binding_pad": "L4.2",
+    "grid_mm": 0.02,
+    "lands": 2,
+    "no_lattice_at_any_pitch": true,
+    "required_lattice_mm": 2.8933,
+    "too_coarse": false,
+    "unlaunchable_lands": [
+     "U21.5"
+    ],
+    "verdict": "UNLAUNCHABLE"
+   },
+   "mm": null,
+   "no_lattice_at_any_pitch": true,
+   "peak_concurrent_maze_workers": null,
+   "peak_loadavg_1min": null,
+   "peak_rss_gb": null,
+   "ran": true,
+   "reason": "NO_LEGAL_ESCAPE_DST",
+   "routed": false,
+   "seconds": 26.5,
+   "vias": null
+  },
+  "/04_SPI_B_RADIOS_NFC/NFC_VDD_RF": {
+   "cells": 115565604,
+   "cpu_fraction": null,
+   "d624_finest_rung_run_mm": 0.025,
+   "d624_verdict": "ESCAPE_WALL_INVARIANT",
+   "grid_mm": 0.02,
+   "lattice": {
+    "binding_pad": "U9.14",
+    "grid_mm": 0.02,
+    "lands": 4,
+    "no_lattice_at_any_pitch": false,
+    "required_lattice_mm": 0.0667,
+    "too_coarse": false,
+    "unlaunchable_lands": [],
+    "verdict": "CLEAR"
+   },
+   "mm": null,
+   "no_lattice_at_any_pitch": false,
+   "peak_concurrent_maze_workers": null,
+   "peak_loadavg_1min": null,
+   "peak_rss_gb": null,
+   "ran": true,
+   "reason": "NO_LEGAL_ESCAPE_DST",
+   "routed": false,
+   "seconds": 32.0,
+   "vias": null
+  },
+  "/08_BUTTONS_EXPANDERS/BTN_LEFT_N": {
+   "cells": 115565604,
+   "cpu_fraction": 0.992,
+   "d624_finest_rung_run_mm": 0.025,
+   "d624_verdict": "CORRIDOR_WALL",
+   "grid_mm": 0.02,
+   "lattice": {
+    "binding_pad": "U2.15",
+    "grid_mm": 0.02,
+    "lands": 4,
+    "no_lattice_at_any_pitch": false,
+    "required_lattice_mm": 0.2,
+    "too_coarse": false,
+    "unlaunchable_lands": [],
+    "verdict": "CLEAR"
+   },
+   "mm": null,
+   "no_lattice_at_any_pitch": false,
+   "peak_concurrent_maze_workers": 6,
+   "peak_loadavg_1min": 10.37,
+   "peak_rss_gb": 3.01,
+   "ran": true,
+   "reason": "NO_PATH",
+   "routed": false,
+   "seconds": 2953.8,
+   "vias": null
+  },
+  "/ACC_5V_BOOST_EN": {
+   "cells": 115565604,
+   "cpu_fraction": 0.993,
+   "d624_finest_rung_run_mm": 0.025,
+   "d624_verdict": "CORRIDOR_WALL",
+   "grid_mm": 0.02,
+   "lattice": {
+    "binding_pad": "U21.2",
+    "grid_mm": 0.02,
+    "lands": 4,
+    "no_lattice_at_any_pitch": false,
+    "required_lattice_mm": 0.0333,
+    "too_coarse": false,
+    "unlaunchable_lands": [],
+    "verdict": "CLEAR"
+   },
+   "mm": null,
+   "no_lattice_at_any_pitch": false,
+   "peak_concurrent_maze_workers": 6,
+   "peak_loadavg_1min": 10.37,
+   "peak_rss_gb": 3.04,
+   "ran": true,
+   "reason": "NO_PATH",
+   "routed": false,
+   "seconds": 3242.5,
+   "vias": null
+  },
+  "/I2S_LRCLK": {
+   "cells": 115565604,
+   "cpu_fraction": null,
+   "d624_finest_rung_run_mm": 0.025,
+   "d624_verdict": "ESCAPE_UNLOCKED_BY_PITCH_THEN_CORRIDOR_WALL",
+   "grid_mm": 0.02,
+   "lattice": {
+    "binding_pad": "U5.14",
+    "grid_mm": 0.02,
+    "lands": 3,
+    "no_lattice_at_any_pitch": false,
+    "required_lattice_mm": 0.1,
+    "too_coarse": false,
+    "unlaunchable_lands": [],
+    "verdict": "CLEAR"
+   },
+   "mm": null,
+   "no_lattice_at_any_pitch": false,
+   "peak_concurrent_maze_workers": null,
+   "peak_loadavg_1min": null,
+   "peak_rss_gb": null,
+   "ran": true,
+   "reason": "NO_PATH",
+   "routed": false,
+   "seconds": 28.7,
+   "vias": null
+  },
+  "/SPI_B_SCK": {
+   "cells": 115565604,
+   "cpu_fraction": null,
+   "d624_finest_rung_run_mm": 0.025,
+   "d624_verdict": "ESCAPE_UNLOCKED_BY_PITCH_THEN_CORRIDOR_WALL",
+   "grid_mm": 0.02,
+   "lattice": {
+    "binding_pad": "U9.30",
+    "grid_mm": 0.02,
+    "lands": 4,
+    "no_lattice_at_any_pitch": false,
+    "required_lattice_mm": 0.0667,
+    "too_coarse": false,
+    "unlaunchable_lands": [],
+    "verdict": "CLEAR"
+   },
+   "mm": null,
+   "no_lattice_at_any_pitch": false,
+   "peak_concurrent_maze_workers": null,
+   "peak_loadavg_1min": null,
+   "peak_rss_gb": null,
+   "ran": true,
+   "reason": "NO_PATH",
+   "routed": false,
+   "seconds": 21.4,
+   "vias": null
+  },
+  "/SX1262_DIO1": {
+   "cells": 115565604,
+   "cpu_fraction": 0.993,
+   "d624_finest_rung_run_mm": 0.025,
+   "d624_verdict": "CORRIDOR_WALL",
+   "grid_mm": 0.02,
+   "lattice": {
+    "binding_pad": "U2.20",
+    "grid_mm": 0.02,
+    "lands": 2,
+    "no_lattice_at_any_pitch": false,
+    "required_lattice_mm": 0.2,
+    "too_coarse": false,
+    "unlaunchable_lands": [],
+    "verdict": "CLEAR"
+   },
+   "mm": null,
+   "no_lattice_at_any_pitch": false,
+   "peak_concurrent_maze_workers": 6,
+   "peak_loadavg_1min": 10.37,
+   "peak_rss_gb": 3.0,
+   "ran": true,
+   "reason": "NO_PATH",
+   "routed": false,
+   "seconds": 3400.6,
+   "vias": null
+  }
+ },
+ "schema": 1,
+ "what": "THE RUNG THE BUDGET REFUSED, AND THE COST MODEL THAT SHOULD HAVE DECIDED IT.  D-624 ran every standing single-edge candidate down the ladder and EVERY one ended on the 0.020 mm rung marked `over_budget` -- refused down to 0.025 mm and BOUNDED there, not proved.  This is that rung, run directly with `--grid 20000` (a fixed pitch is not subject to `--grid-cells`), one net per run, guard-off, no `--promote`, on the D-625 authority."
+}

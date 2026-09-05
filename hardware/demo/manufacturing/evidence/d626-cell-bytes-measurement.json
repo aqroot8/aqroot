@@ -1,0 +1,41 @@
+{
+ "board": "/home/aqroot8/aqroot-demo/hardware/demo/kicad/aqroot-demo/aqroot-Beta-v2.kicad_pcb",
+ "cell_bytes_measured": 28.2,
+ "gb_at_cell_ceiling": 7.88,
+ "lattice": {
+  "cells": 115565604,
+  "grid_mm": 0.02,
+  "grid_nm": 20000,
+  "layers": 4,
+  "nx": 3801,
+  "ny": 7601
+ },
+ "mem_available_gb_at_measure": 23.14,
+ "note": "Three workers at once: 115,565,604 cells each, ~3.0 GB each, ~9.1 GB together on a 31 GB box.  A constant CELL ceiling does not know what else is running, which is why the ladder prices in GB against MemAvailable read at ladder start.",
+ "schema": 1,
+ "what": "D-626 -- what one maze3d.Field CELL actually costs in RAM, measured on three concurrent 0.020 mm workers rather than assumed.  LADDER_CELL_BUDGET was a TIME bound wearing a memory bound's units; this is the constant that lets --grid-gb price a rung in the unit that kills (gigabytes against THIS box), and lets --grid-seconds carry the time question separately.",
+ "workers": [
+  {
+   "bytes_per_cell": 27.89,
+   "net": "/SX1262_DIO1",
+   "pid": 2372141,
+   "vm_hwm_gb": 3.002,
+   "vm_hwm_kb": 3147376
+  },
+  {
+   "bytes_per_cell": 27.98,
+   "net": "/08_BUTTONS_EXPANDERS/BTN_LEFT_N",
+   "pid": 2372356,
+   "vm_hwm_gb": 3.012,
+   "vm_hwm_kb": 3158152
+  },
+  {
+   "bytes_per_cell": 28.22,
+   "net": "/ACC_5V_BOOST_EN",
+   "pid": 2372382,
+   "vm_hwm_gb": 3.037,
+   "vm_hwm_kb": 3184748
+  }
+ ],
+ "worst_bytes_per_cell": 28.22
+}

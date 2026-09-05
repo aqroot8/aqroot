@@ -1,22 +1,22 @@
 {
  "board": "hardware/demo/kicad/aqroot-demo/aqroot-Beta-v2.kicad_pcb",
- "board_sha256": "74fb57b5c34042bd4e27d8b17ac47b9f419820af74933a7f142df8f6c42b1769",
+ "board_sha256": "35129d6ca4ee68cb2ad86b8de73c134040efc0c4c110825b47c3ccc2550a456b",
  "checks": {
   "FAB1_provenance": {
    "artifacts": 28,
-   "authoritative_board_sha256": "74fb57b5c34042bd4e27d8b17ac47b9f419820af74933a7f142df8f6c42b1769",
+   "authoritative_board_sha256": "35129d6ca4ee68cb2ad86b8de73c134040efc0c4c110825b47c3ccc2550a456b",
    "deterministic": 24,
    "drift": [],
    "kicad": "10.0.5",
-   "manifest_board_sha256": "74fb57b5c34042bd4e27d8b17ac47b9f419820af74933a7f142df8f6c42b1769",
+   "manifest_board_sha256": "35129d6ca4ee68cb2ad86b8de73c134040efc0c4c110825b47c3ccc2550a456b",
    "ok": true,
    "schematic_sheet_drift": [],
    "schematic_sheets": 10,
    "unmanifested": []
   },
   "FAB2_fill": {
-   "after": "74fb57b5c34042bd4e27d8b17ac47b9f419820af74933a7f142df8f6c42b1769",
-   "before": "74fb57b5c34042bd4e27d8b17ac47b9f419820af74933a7f142df8f6c42b1769",
+   "after": "35129d6ca4ee68cb2ad86b8de73c134040efc0c4c110825b47c3ccc2550a456b",
+   "before": "35129d6ca4ee68cb2ad86b8de73c134040efc0c4c110825b47c3ccc2550a456b",
    "note": "Gerber export does not refill; a stale stored fill would ship copper the gate never inspected",
    "ok": true
   },
@@ -72,7 +72,7 @@
    ]
   },
   "FAB4_drill": {
-   "board_holes": 838,
+   "board_holes": 840,
    "control": {
     "count_mismatch": [],
     "displaced_hole": [
@@ -92,18 +92,18 @@
    "max_residual_nm": 500,
    "min_drill_mm": 0.2,
    "ok": true,
-   "plated": 831,
+   "plated": 833,
    "residual_histogram_nm": {
     "0": 819,
     "1": 1,
     "100": 2,
-    "200": 1,
+    "200": 2,
     "300": 6,
     "363": 1,
-    "400": 5,
+    "400": 6,
     "500": 3
    },
-   "shipped_holes": 838,
+   "shipped_holes": 840,
    "slots": 4,
    "tolerance_nm": 1000,
    "tool_census": {
@@ -113,7 +113,7 @@
     "N 2.200": 2,
     "P 0.200": 47,
     "P 0.250": 11,
-    "P 0.300": 602,
+    "P 0.300": 604,
     "P 0.400": 134,
     "P 0.600x1.400": 2,
     "P 0.600x1.700": 2,

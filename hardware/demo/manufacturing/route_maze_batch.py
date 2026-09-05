@@ -1824,9 +1824,105 @@ def resolve_grid(board_path, nets, spec):
 # `--grid-cells` is that bound, stated in the unit that actually grows, and the
 # rungs it refuses are REPORTED rather than silently absent: a run that stopped
 # because it ran out of budget must not read like a run that ran out of ideas.
+#
+# AND CELLS ARE NOT WHAT THE BUDGET WAS PROTECTING -- D-626.  D-624 ran eight
+# nets down this ladder and EVERY one of them ended on the 0.020 mm rung marked
+# `over_budget`.  Run directly, that rung costs, on the SAME board and the SAME
+# 115.6 M cells:
+#
+#     /I2S_LRCLK           NO_PATH     28.7 s
+#     /SPI_B_SCK           NO_PATH     21.4 s
+#     /SX1262_DIO1         NO_PATH   ~2400 s      (predicted; see below)
+#
+# A single cell count therefore refuses a twenty-second run and a forty-minute
+# run with the SAME sentence.  What actually grows is not the raster, which is
+# a property of the BOARD, but the REACHABLE SET the search has to exhaust,
+# which is a property of the NET: an escape-bounded refusal never leaves its
+# pocket and is FLAT in cells (D-624 measured `/I2S_LRCLK` at 19.4 s on 4.6 M
+# cells and 26.5 s on 74.0 M -- a 16x raster for 1.4x the time), while a
+# corridor-bounded refusal sweeps an open region and grows FASTER than the
+# raster does (`/SX1262_DIO1`: 38.7 s -> 1538.9 s over the same range).
+#
+# SO THE LADDER PREDICTS, FROM THE NET'S OWN RUNGS.  Each rung that RUNS is a
+# (cells, seconds) observation; the last two give a growth exponent
+# `k = log(s2/s1) / log(c2/c1)`, and the next rung's cost is `s2 *
+# (c/c2)**k`.  `--grid-seconds` bounds that PREDICTION, `--grid-cells` stays as
+# the MEMORY ceiling it always really was, and every rung -- run or refused --
+# carries `predicted_seconds` beside its measured `seconds`, because a
+# predictor nobody scores is a guess.  `k` is clamped to [0.5, 3.0] so one
+# noisy pair cannot invent a refusal, and with fewer than two observations the
+# ladder does not predict at all: it runs.
 # --------------------------------------------------------------------------- #
-LADDER_CELL_BUDGET = 80_000_000     # ~0.025 mm on this board's 72 x 148 mm edge
+# AND A CEILING IN CELLS MEANS NOTHING WITHOUT BYTES PER CELL.  The old 80 M
+# was never justified against memory either -- it was a TIME bound wearing a
+# memory bound's units.  So the new one is MEASURED: three 0.020 mm workers
+# (115,565,604 cells) peaked at `VmHWM` 3.00 / 3.01 / 3.04 GB, which is
+# 27.9 - 28.2 bytes per cell, and 300 M cells is therefore ~7.9 GiB --
+# the unit `rung_gb` reports, and the unit `MemAvailable` is read in
+# (`evidence/d626-cell-bytes-measurement.json`).  Raise it only against a
+# box that has the RAM: this is the one budget where being wrong is an OOM
+# kill rather than a slow run.
+#
+# AND A CONSTANT CEILING DOES NOT KNOW WHAT ELSE IS RUNNING.  7.9 GiB is safe
+# alone and fatal three-up, and the screen this ladder was built for runs
+# several nets at once: the number that kills is GIGABYTES AGAINST THIS BOX,
+# not cells against a constant.  So the rung is priced in bytes from the
+# measured constant and weighed against `MemAvailable` read at ladder start --
+# refused with BOTH numbers in the report, never silently.  Deriving a budget
+# from the machine makes the ladder's floor machine-dependent, which is a real
+# cost, so the derived figure is RECORDED in the report and `--grid-gb` pins it
+# explicitly for a run that has to be reproducible.
+CELL_BYTES_MEASURED = 28.2          # peak VmHWM / cells, worst of three runs
+LADDER_CELL_BUDGET = 300_000_000    # MEMORY ceiling: ~0.0125 mm on this board,
+                                    # ~7.9 GiB at the measured bytes/cell
+LADDER_MEM_FRACTION = 0.60          # of MemAvailable, when --grid-gb is unset
+LADDER_SECONDS_BUDGET = 1800        # per rung, PREDICTED from the net's own
+                                    # measured rungs -- see the block above
+LADDER_K_CLAMP = (0.5, 3.0)         # growth exponents a two-point fit may claim
 FIELD_MARGIN_MM = 2.0               # maze3d.Field's own default
+
+
+def mem_available_gb():
+    """`MemAvailable` in GB -- what the kernel says is free for a new worker.
+
+    Returns None off Linux or if /proc is unreadable, and the caller then does
+    not bound by memory at all: a budget that cannot be measured must not be
+    invented.
+    """
+    try:
+        for line in Path("/proc/meminfo").read_text().splitlines():
+            if line.startswith("MemAvailable:"):
+                return round(int(line.split()[1]) / 1048576.0, 2)
+    except (OSError, ValueError, IndexError):
+        pass
+    return None
+
+
+def rung_gb(cells):
+    """One `maze3d.Field` of this many cells, in GiB, at the measured rate.
+
+    GiB rather than GB throughout, because that is the unit `MemAvailable` is
+    reported in and the whole point of the number is to be weighed against it.
+    """
+    return round(cells * CELL_BYTES_MEASURED / (1024 ** 3), 2)
+
+
+def predict_seconds(observed, cells):
+    """Predicted wall-clock for a rung of `cells`, from THIS net's own rungs.
+
+    `observed` is the (cells, seconds) of every rung already run, in order.
+    Returns None with fewer than two -- a ladder that has not measured twice
+    has nothing to extrapolate from and must RUN rather than guess.
+    """
+    usable = [(c, t) for c, t in observed if c > 0 and t and t > 0]
+    if len(usable) < 2:
+        return None
+    (c1, t1), (c2, t2) = usable[-2], usable[-1]
+    if c2 == c1:
+        return round(t2, 1)
+    k = math.log(t2 / t1) / math.log(c2 / c1)
+    k = min(max(k, LADDER_K_CLAMP[0]), LADDER_K_CLAMP[1])
+    return round(t2 * (cells / c2) ** k, 1)
 
 # THE RUNGS ARE THE PITCHES THIS PROJECT HAS ACTUALLY MEASURED, not a halving.
 # D-622's sweep was 0.100 / 0.0667 / 0.050 / 0.025 mm and the one that stopped
@@ -1851,7 +1947,7 @@ def lattice_cells(board_path, grid_nm):
                 nx=nx, ny=ny, layers=layers, cells=nx * ny * layers)
 
 
-def grid_ladder(board_path, nets, coarsest_nm, budget):
+def grid_ladder(board_path, nets, coarsest_nm, budget, gb_budget=None):
     """Descending pitches worth trying, coarsest first, bounded by `budget`.
 
     Rung 0 is the coarsest ADMISSIBLE lattice -- `resolve_grid`'s answer, the
@@ -1866,7 +1962,15 @@ def grid_ladder(board_path, nets, coarsest_nm, budget):
     rungs = []
     for g in pitches:
         row = lattice_cells(board_path, g)
-        row["over_budget"] = row["cells"] > budget
+        # THE CELL CEILING IS A MEMORY BOUND (D-626).  Time is bounded in the
+        # driver, from the net's own measured rungs, because cells do not
+        # predict it: see the doctrine block above `LADDER_CELL_BUDGET`.
+        row["predicted_gb"] = rung_gb(row["cells"])
+        row["over_cell_ceiling"] = row["cells"] > budget
+        row["over_memory_budget"] = (gb_budget is not None
+                                     and row["predicted_gb"] > gb_budget)
+        row["over_budget"] = (row["over_cell_ceiling"]
+                              or row["over_memory_budget"])
         rungs.append(row)
         if row["over_budget"]:
             break                       # every finer rung is over it too
@@ -2762,11 +2866,27 @@ def main():
                          "accepted ones by copper (a screen; never promotes) "
                          "(D-623)")
     ap.add_argument("--grid-cells", type=int, default=LADDER_CELL_BUDGET,
-                    help="`--grid ladder` budget, in maze3d.Field CELLS "
-                         "(nx*ny*layers).  Halving the pitch quadruples this, "
-                         "so it is the unit that actually grows; the default "
-                         "%d reaches 0.025 mm on this board"
-                         % LADDER_CELL_BUDGET)
+                    help="`--grid ladder` MEMORY ceiling, in maze3d.Field "
+                         "CELLS (nx*ny*layers).  Halving the pitch quadruples "
+                         "the raster; the default %d reaches 0.0125 mm on this "
+                         "board.  This bounds RAM, not time -- see "
+                         "--grid-seconds (D-626)" % LADDER_CELL_BUDGET)
+    ap.add_argument("--grid-seconds", type=int, default=LADDER_SECONDS_BUDGET,
+                    help="`--grid ladder` TIME budget per rung, in seconds, "
+                         "applied to the cost PREDICTED from this net's own "
+                         "measured rungs (default %d; 0 disables).  Cells "
+                         "cannot tell a 21-second refusal from a 40-minute "
+                         "one and this board has both at the same raster "
+                         "(D-626)" % LADDER_SECONDS_BUDGET)
+    ap.add_argument("--grid-gb", type=float, default=0.0,
+                    help="`--grid ladder` MEMORY budget per rung, in GiB, "
+                         "priced from the measured %.1f bytes per cell.  "
+                         "Default 0 derives it as %.2f of this box's "
+                         "MemAvailable and RECORDS both numbers, because "
+                         "%d cells is ~%.1f GiB -- safe alone and fatal "
+                         "three-up (D-626)"
+                         % (CELL_BYTES_MEASURED, LADDER_MEM_FRACTION,
+                            LADDER_CELL_BUDGET, rung_gb(LADDER_CELL_BUDGET)))
     ap.add_argument("--via-cost", type=float, default=1.5)
     ap.add_argument("--plane", help="add a pour for the single named net on "
                                     "this layer, then stitch its islands")
@@ -3126,13 +3246,50 @@ def main():
         # 2.3x the search, and 105.492 mm / 9 vias at 0.0333 mm for 3.8x more
         # on top of that.  The knee is real and it is early; ranking is worth
         # paying for once per net, not on every run.
-        rungs = grid_ladder(BOARD, a.nets, grid, a.grid_cells)
-        trail, summary, by_grid = [], None, {}
+        # THE MEMORY BUDGET IS READ OFF THIS BOX, ONCE, BEFORE ANY RUNG (D-626).
+        # Read once rather than per rung so the ladder's floor is a property of
+        # the run and not of whatever landed on the machine halfway through.
+        avail_gb = mem_available_gb()
+        if a.grid_gb:
+            gb_budget, gb_basis = a.grid_gb, "--grid-gb"
+        elif avail_gb is not None:
+            gb_budget = round(avail_gb * LADDER_MEM_FRACTION, 2)
+            gb_basis = ("%.2f of MemAvailable %.2f GB"
+                        % (LADDER_MEM_FRACTION, avail_gb))
+        else:
+            gb_budget, gb_basis = None, "unmeasurable, not bounded by memory"
+        rungs = grid_ladder(BOARD, a.nets, grid, a.grid_cells, gb_budget)
+        trail, summary, by_grid, observed = [], None, {}, []
         for row in rungs:
-            if row["over_budget"]:
+            # THREE CEILINGS, AND THEY REFUSE FOR DIFFERENT REASONS (D-626).
+            # Cells are the hard raster ceiling and are known before anything
+            # runs.  GIGABYTES price that raster against THIS box, because 8.5
+            # GB is safe alone and fatal three-up.  Seconds bound TIME and are
+            # PREDICTED from this net's own rungs, because a cell count cannot
+            # tell a 21-second refusal from a 40-minute one.  All three name
+            # their number and stay in the report.
+            predicted = predict_seconds(observed, row["cells"])
+            row = dict(row, predicted_seconds=predicted)
+            if row["over_cell_ceiling"]:
                 trail.append(dict(row, ran=False,
-                                  why="OVER_CELL_BUDGET %d > %d"
+                                  why="OVER_CELL_CEILING %d > %d"
                                       % (row["cells"], a.grid_cells)))
+                continue
+            if row["over_memory_budget"]:
+                trail.append(dict(row, ran=False,
+                                  why="OVER_MEMORY_BUDGET %.2f GiB > %.2f "
+                                      "GiB "
+                                      "(%s; raise --grid-gb to run it)"
+                                      % (row["predicted_gb"], gb_budget,
+                                         gb_basis)))
+                continue
+            if (a.grid_seconds and predicted is not None
+                    and predicted > a.grid_seconds):
+                trail.append(dict(row, ran=False,
+                                  over_budget=True,
+                                  why="OVER_TIME_BUDGET predicted %.0f s > "
+                                      "%d s (raise --grid-seconds to run it)"
+                                      % (predicted, a.grid_seconds)))
                 continue
             t0 = time.time()
             if a.work:
@@ -3142,8 +3299,15 @@ def main():
                 with tempfile.TemporaryDirectory(
                         prefix="aqroot-demo-maze-") as tmp:
                     s_i = run(row["grid_nm"], tmp, soft=True)
+            secs = round(time.time() - t0, 1)
+            observed.append((row["cells"], secs))
             trail.append(dict(
-                row, ran=True, seconds=round(time.time() - t0, 1),
+                row, ran=True, seconds=secs,
+                # THE PREDICTOR IS SCORED IN THE REPORT IT STEERS.  A ratio
+                # beside every prediction is the only thing that keeps
+                # `--grid-seconds` from being a number nobody can argue with.
+                predicted_ratio=(round(secs / row["predicted_seconds"], 2)
+                                 if row.get("predicted_seconds") else None),
                 promotion_candidate=s_i["promotion_candidate"],
                 promoted=bool(s_i.get("promoted")),
                 routed_nets=s_i["routed_nets"], failed_nets=s_i["failed_nets"],
@@ -3157,9 +3321,10 @@ def main():
                 break
         if summary is None:
             raise SystemExit(
-                "ladder: every rung is over the %d-cell budget; the coarsest "
+                "ladder: no rung ran -- every one is over the %d-cell memory "
+                "ceiling or the %d s predicted-time budget; the coarsest "
                 "admissible pitch for these nets is %d nm"
-                % (a.grid_cells, grid))
+                % (a.grid_cells, a.grid_seconds, grid))
         # THE RANKING.  Only rungs the WHOLE gate accepted are ranked, so a
         # shorter route that severed a pour cannot win: clause 8 removed it
         # from the field before the sort.  Least copper first, then fewest
@@ -3186,7 +3351,19 @@ def main():
         summary["lattice"] = advice
         summary["ladder"] = dict(
             schema=1, mode=("best" if best_spec else "ladder"),
-            cell_budget=a.grid_cells,
+            # ONE NUMBER, ONE NAME.  D-623 called this `cell_budget` when it
+            # was the only budget there was; D-626 gave time and memory their
+            # own, so the cell figure is now a CEILING and is spelled that way
+            # rather than carried twice under two names (older evidence files
+            # keep `cell_budget` -- same number, superseded spelling).
+            cell_ceiling=a.grid_cells,
+            seconds_budget=a.grid_seconds,
+            # A DERIVED BUDGET MUST PUBLISH WHAT IT WAS DERIVED FROM, or the
+            # ladder's floor becomes a property of the box that nobody can
+            # read back off the report (D-626).
+            gb_budget=gb_budget, gb_basis=gb_basis,
+            mem_available_gb_at_start=avail_gb,
+            cell_bytes_measured=CELL_BYTES_MEASURED,
             coarsest_admissible_nm=grid, chosen_grid_nm=reported_nm,
             rungs_run=sum(1 for r in trail if r.get("ran")),
             rungs_over_budget=[r["grid_nm"] for r in trail

@@ -314,6 +314,10 @@ def pair_within_tolerance(bs, fs, tol=None):
     """
     tol = TOL_NM if tol is None else tol
     bucket = defaultdict(list)
+    # `widest_candidate_list` is returned so the caller can say whether the
+    # matching was CHOSEN or FORCED.  On this board every hole has exactly one
+    # partner within a micron, so there is only one bijection to find and the
+    # verdict cannot depend on which one an algorithm happened to reach.
     for j, (fx, fy) in enumerate(fs):
         bucket[(fx // tol, fy // tol)].append(j)
     cand = []
@@ -341,7 +345,8 @@ def pair_within_tolerance(bs, fs, tol=None):
     unmatched_b = [i for i in range(len(bs)) if not augment(i, set())]
     pairs = [(i, j) for j, i in enumerate(owner) if i != -1]
     unmatched_f = [j for j, i in enumerate(owner) if i == -1]
-    return pairs, unmatched_b, unmatched_f
+    return pairs, unmatched_b, unmatched_f, max((len(c) for c in cand),
+                                                default=0)
 
 
 def fab4(pkg, board):
@@ -375,13 +380,15 @@ def fab4(pkg, board):
 
     def survey(gb, gf):
         count_mismatch, unmatched, residuals = [], [], Counter()
+        choices = 0
         for key in sorted(set(gb) | set(gf)):
             bs, fs = gb.get(key, []), gf.get(key, [])
             if len(bs) != len(fs):
                 count_mismatch.append(dict(tool=key, board=len(bs),
                                            file=len(fs)))
                 continue
-            pairs, ub, uf = pair_within_tolerance(bs, fs)
+            pairs, ub, uf, widest = pair_within_tolerance(bs, fs)
+            choices = max(choices, widest)
             for i, j in pairs:
                 residuals[max(abs(bs[i][0] - fs[j][0]),
                               abs(bs[i][1] - fs[j][1]))] += 1
@@ -389,9 +396,9 @@ def fab4(pkg, board):
                 unmatched.append(dict(tool=key, side="board", at=bs[i]))
             for j in uf:
                 unmatched.append(dict(tool=key, side="file", at=fs[j]))
-        return count_mismatch, unmatched, residuals
+        return count_mismatch, unmatched, residuals, choices
 
-    count_mismatch, unmatched, residuals = survey(gb, gf)
+    count_mismatch, unmatched, residuals, widest = survey(gb, gf)
 
     # NON-VACUITY.  A matcher that pairs everything is worth nothing unless it
     # can REFUSE.  Displace one shipped hole by one nanometre past the
@@ -403,7 +410,7 @@ def fab4(pkg, board):
         moved = dict(gf)
         x, y = gf[ctl_key][0]
         moved[ctl_key] = sorted([(x, y + TOL_NM + 1)] + gf[ctl_key][1:])
-        c_mismatch, c_unmatched, _ = survey(gb, moved)
+        c_mismatch, c_unmatched, _, _ = survey(gb, moved)
         control = dict(ran=True, tool=list(ctl_key), moved_by_nm=TOL_NM + 1,
                        displaced_hole=[x, y],
                        count_mismatch=c_mismatch,
@@ -427,6 +434,7 @@ def fab4(pkg, board):
                 residual_histogram_nm={str(k): v
                                        for k, v in sorted(residuals.items())},
                 tolerance_nm=TOL_NM,
+                widest_candidate_list=widest,
                 control=control,
                 tool_census={"%s %.3f%s" % (k[0], k[1] / 1e6,
                                             "" if k[1] == k[2]
