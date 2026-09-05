@@ -1,0 +1,63 @@
+{
+ "board": "w/d620nv/aqroot-Beta-v2.kicad_pcb",
+ "pads": [
+  {
+   "best_margin_mm": -0.001,
+   "clr_pad_mm": 0.2,
+   "directions": {
+    "E": {
+     "binding_pad": "U9.16",
+     "centre_mm": 27.35,
+     "margin_mm": -0.2,
+     "max_lattice_mm": null,
+     "reach_mm": 1.5,
+     "widest_mm": null
+    },
+    "N": {
+     "binding_pad": "U9.14",
+     "centre_mm": 35.25,
+     "margin_mm": -0.001,
+     "max_lattice_mm": null,
+     "reach_mm": 0.25,
+     "widest_mm": 0.295
+    },
+    "S": {
+     "binding_pad": "U9.33",
+     "centre_mm": 35.1,
+     "margin_mm": -0.2,
+     "max_lattice_mm": null,
+     "reach_mm": 4.8,
+     "widest_mm": null
+    },
+    "W": {
+     "binding_pad": "U9.10",
+     "centre_mm": 27.35,
+     "margin_mm": -0.2,
+     "max_lattice_mm": null,
+     "reach_mm": 4.0,
+     "widest_mm": null
+    }
+   },
+   "land_mm": [
+    35.1,
+    27.35,
+    35.4,
+    28.1
+   ],
+   "net": "/04_SPI_B_RADIOS_NFC/NFC_RFO2",
+   "netclass": "NFC_RF",
+   "pad": "U9.15",
+   "verdict": "UNLAUNCHABLE",
+   "width_mm": 0.3
+  }
+ ],
+ "reach_mm": 0.25,
+ "schema": 1,
+ "step_nm": 1000,
+ "summary": {
+  "clear": 0,
+  "exact": 0,
+  "pads": 1,
+  "unlaunchable": 1
+ }
+}

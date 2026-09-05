@@ -1,0 +1,192 @@
+{
+ "board": "/home/aqroot8/aqroot-demo/hardware/demo/kicad/aqroot-demo/aqroot-Beta-v2.kicad_pcb",
+ "board_sha256": "ecc5e0e2f6eadfb8a0ec359e37b46d42fd28655ab6f51193aa1fb8640980219d",
+ "family": [
+  "/USB_D_MCU_N",
+  "/USB_D_MCU_P"
+ ],
+ "grid": 100000,
+ "lane": {
+  "keepout_nm": 325000,
+  "label": "USB_CORRIDOR",
+  "mm": 0.0,
+  "points": 0
+ },
+ "nets": [
+  {
+   "clr_mm": 0.2,
+   "edges": [
+    {
+     "all_tracks_cut": {
+      "mm": 0.0,
+      "ok": false,
+      "reason": "NO_PATH"
+     },
+     "baseline": {
+      "dst_escapes": 9,
+      "mm": 0.0,
+      "ok": false,
+      "reason": "NO_PATH",
+      "src_escapes": 9
+     },
+     "crossing_by_net": {
+      "+3V3": 2,
+      "/01_POWER_TREE/USB_D_CONN_N": 4,
+      "/01_POWER_TREE/USB_D_ESD_N": 5,
+      "/01_POWER_TREE/USB_D_ESD_P": 3,
+      "/02_MCU_CORE/BOOT_N": 4,
+      "/02_MCU_CORE/DISP_BL_CTL_STRAP": 4,
+      "/02_MCU_CORE/GPIO45_VDDSPI_STRAP": 1,
+      "/02_MCU_CORE/UART0_TXD_DBG": 2,
+      "/05_I2C_DEVICES/BMI270_INT1_RAW": 2,
+      "/09_COMMUNITY_HEADER/WAKE_GATE_S": 1,
+      "/AMP_SD_MODE": 1,
+      "/BMI270_INT1_STRAP": 7,
+      "/CC1101_CS_N": 2,
+      "/CC1101_GDO0": 3,
+      "/DISP_CS_N": 1,
+      "/DISP_DC": 1,
+      "/I2C_SCL_INT": 1,
+      "/I2S_BCLK": 1,
+      "/I2S_LRCLK": 2,
+      "/I2S_MIC_DIN": 2,
+      "/I2S_SPK_DOUT": 2,
+      "/IR_RX_GPIO44": 1,
+      "/IR_TX_GPIO16": 4,
+      "/NATIVE_A": 4,
+      "/NATIVE_B": 1,
+      "/NFC_CS_N": 3,
+      "/SD_CARD_DETECT_N": 1,
+      "/SD_CS_N": 12,
+      "/SPI_A_MISO": 1,
+      "/SPI_A_MOSI": 1,
+      "/SPI_A_SCK": 2,
+      "/SPI_B_MISO": 5,
+      "/SPI_B_MOSI": 2,
+      "/SPI_B_SCK": 3,
+      "/SX1262_BUSY": 1,
+      "/SX1262_CS_N": 4,
+      "/WAKE_INT_N": 6,
+      "GND": 8,
+      "Net-(J3-SHIELD)": 2,
+      "Net-(U1-EN)": 3
+     },
+     "crossing_tracks": 115,
+     "direct_mm": 21.858,
+     "dst": [
+      "U1.13"
+     ],
+     "src": [
+      "R33.2"
+     ],
+     "verdict": "SEGMENT_WALL",
+     "why": "every crossing track on the permitted layers held out and the corridor is still NO_PATH -- no detour transaction of any size opens it",
+     "window_mm": [
+      44.77,
+      116.25,
+      59.628,
+      142.233
+     ]
+    }
+   ],
+   "islands": 2,
+   "layers": [
+    "F"
+   ],
+   "net": "/USB_D_MCU_N",
+   "netclass": "USB_D",
+   "width_mm": 0.25
+  },
+  {
+   "clr_mm": 0.2,
+   "edges": [
+    {
+     "all_tracks_cut": {
+      "mm": 0.0,
+      "ok": false,
+      "reason": "NO_PATH"
+     },
+     "baseline": {
+      "dst_escapes": 9,
+      "mm": 0.0,
+      "ok": false,
+      "reason": "NO_PATH",
+      "src_escapes": 9
+     },
+     "crossing_by_net": {
+      "+3V3": 8,
+      "/01_POWER_TREE/USB_D_CONN_N": 4,
+      "/01_POWER_TREE/USB_D_ESD_N": 5,
+      "/01_POWER_TREE/USB_D_ESD_P": 3,
+      "/02_MCU_CORE/BOOT_N": 4,
+      "/02_MCU_CORE/DISP_BL_CTL_STRAP": 7,
+      "/02_MCU_CORE/GPIO45_VDDSPI_STRAP": 6,
+      "/02_MCU_CORE/UART0_TXD_DBG": 2,
+      "/05_I2C_DEVICES/BMI270_INT1_RAW": 2,
+      "/09_COMMUNITY_HEADER/WAKE_GATE_S": 1,
+      "/AMP_SD_MODE": 1,
+      "/BMI270_INT1_STRAP": 7,
+      "/CC1101_CS_N": 2,
+      "/CC1101_GDO0": 3,
+      "/DISP_CS_N": 4,
+      "/DISP_DC": 1,
+      "/I2C_SCL_INT": 5,
+      "/I2C_SDA_INT": 3,
+      "/I2S_BCLK": 1,
+      "/I2S_LRCLK": 2,
+      "/I2S_MIC_DIN": 2,
+      "/I2S_SPK_DOUT": 2,
+      "/IR_RX_GPIO44": 1,
+      "/IR_TX_GPIO16": 4,
+      "/NATIVE_A": 4,
+      "/NATIVE_B": 1,
+      "/NFC_CS_N": 3,
+      "/SD_CARD_DETECT_N": 3,
+      "/SD_CS_N": 15,
+      "/SPI_A_MISO": 2,
+      "/SPI_A_MOSI": 2,
+      "/SPI_A_SCK": 6,
+      "/SPI_B_MISO": 5,
+      "/SPI_B_MOSI": 2,
+      "/SPI_B_SCK": 3,
+      "/SX1262_BUSY": 1,
+      "/SX1262_CS_N": 4,
+      "/WAKE_INT_N": 8,
+      "GND": 11,
+      "Net-(J3-SHIELD)": 2,
+      "Net-(U1-EN)": 4
+     },
+     "crossing_tracks": 156,
+     "direct_mm": 24.281,
+     "dst": [
+      "U1.14"
+     ],
+     "src": [
+      "R34.2"
+     ],
+     "verdict": "SEGMENT_WALL",
+     "why": "every crossing track on the permitted layers held out and the corridor is still NO_PATH -- no detour transaction of any size opens it",
+     "window_mm": [
+      43.5,
+      116.25,
+      63.224,
+      142.28
+     ]
+    }
+   ],
+   "islands": 2,
+   "layers": [
+    "F"
+   ],
+   "net": "/USB_D_MCU_P",
+   "netclass": "USB_D",
+   "width_mm": 0.25
+  }
+ ],
+ "relay": {
+  "all_relaid": true,
+  "chains": []
+ },
+ "schema": 1,
+ "verdict": "SEGMENT_WALL"
+}

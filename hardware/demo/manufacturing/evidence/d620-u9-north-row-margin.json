@@ -1,0 +1,161 @@
+{
+ "board": "/home/aqroot8/aqroot-demo/hardware/demo/kicad/aqroot-demo/aqroot-Beta-v2.kicad_pcb",
+ "pads": [
+  {
+   "best_margin_mm": 0.0,
+   "clr_pad_mm": 0.2,
+   "directions": {
+    "E": {
+     "binding_pad": "U9.14",
+     "centre_mm": 27.35,
+     "margin_mm": -0.2,
+     "max_lattice_mm": null,
+     "reach_mm": 2.5,
+     "widest_mm": null
+    },
+    "N": {
+     "binding_pad": "U9.12",
+     "centre_mm": 34.25,
+     "margin_mm": 0.0,
+     "max_lattice_mm": null,
+     "reach_mm": 0.25,
+     "widest_mm": 0.3
+    },
+    "S": {
+     "binding_pad": "U9.33",
+     "centre_mm": 34.1,
+     "margin_mm": -0.2,
+     "max_lattice_mm": null,
+     "reach_mm": 4.8,
+     "widest_mm": null
+    },
+    "W": {
+     "binding_pad": "U9.9",
+     "centre_mm": 27.35,
+     "margin_mm": -0.2,
+     "max_lattice_mm": null,
+     "reach_mm": 3.0,
+     "widest_mm": null
+    }
+   },
+   "land_mm": [
+    34.1,
+    27.35,
+    34.4,
+    28.1
+   ],
+   "net": "/04_SPI_B_RADIOS_NFC/NFC_RFO1",
+   "netclass": "NFC_RF",
+   "pad": "U9.13",
+   "verdict": "EXACT",
+   "width_mm": 0.3
+  },
+  {
+   "best_margin_mm": 0.0,
+   "clr_pad_mm": 0.2,
+   "directions": {
+    "E": {
+     "binding_pad": "U9.16",
+     "centre_mm": 27.35,
+     "margin_mm": -0.2,
+     "max_lattice_mm": null,
+     "reach_mm": 1.5,
+     "widest_mm": null
+    },
+    "N": {
+     "binding_pad": "U9.14",
+     "centre_mm": 35.25,
+     "margin_mm": 0.0,
+     "max_lattice_mm": null,
+     "reach_mm": 0.25,
+     "widest_mm": 0.3
+    },
+    "S": {
+     "binding_pad": "U9.33",
+     "centre_mm": 35.1,
+     "margin_mm": -0.2,
+     "max_lattice_mm": null,
+     "reach_mm": 4.8,
+     "widest_mm": null
+    },
+    "W": {
+     "binding_pad": "U9.10",
+     "centre_mm": 27.35,
+     "margin_mm": -0.2,
+     "max_lattice_mm": null,
+     "reach_mm": 4.0,
+     "widest_mm": null
+    }
+   },
+   "land_mm": [
+    35.1,
+    27.35,
+    35.4,
+    28.1
+   ],
+   "net": "/04_SPI_B_RADIOS_NFC/NFC_RFO2",
+   "netclass": "NFC_RF",
+   "pad": "U9.15",
+   "verdict": "EXACT",
+   "width_mm": 0.3
+  },
+  {
+   "best_margin_mm": 0.05,
+   "clr_pad_mm": 0.2,
+   "directions": {
+    "E": {
+     "binding_pad": "U9.15",
+     "centre_mm": 27.35,
+     "margin_mm": -0.2,
+     "max_lattice_mm": null,
+     "reach_mm": 2.0,
+     "widest_mm": null
+    },
+    "N": {
+     "binding_pad": "U9.13",
+     "centre_mm": 34.75,
+     "margin_mm": 0.05,
+     "max_lattice_mm": 0.0667,
+     "reach_mm": 0.25,
+     "widest_mm": 0.3
+    },
+    "S": {
+     "binding_pad": "U9.33",
+     "centre_mm": 34.6,
+     "margin_mm": -0.2,
+     "max_lattice_mm": null,
+     "reach_mm": 4.8,
+     "widest_mm": null
+    },
+    "W": {
+     "binding_pad": "U9.10",
+     "centre_mm": 27.35,
+     "margin_mm": -0.2,
+     "max_lattice_mm": null,
+     "reach_mm": 3.5,
+     "widest_mm": null
+    }
+   },
+   "land_mm": [
+    34.6,
+    27.35,
+    34.9,
+    28.1
+   ],
+   "net": "/04_SPI_B_RADIOS_NFC/NFC_VDD_RF",
+   "netclass": "Default",
+   "pad": "U9.14",
+   "verdict": "CLEAR",
+   "width_mm": 0.2
+  }
+ ],
+ "reach_mm": 0.25,
+ "schema": 1,
+ "step_nm": 1000,
+ "summary": {
+  "clear": 1,
+  "exact": 2,
+  "pads": 3,
+  "unlaunchable": 0
+ }
+}

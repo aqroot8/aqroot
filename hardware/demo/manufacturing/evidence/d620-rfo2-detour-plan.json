@@ -1,0 +1,99 @@
+{
+ "detours": [
+  {
+   "exact_relay": "NFC_RFO2",
+   "max_mm": 20.0,
+   "net": "/04_SPI_B_RADIOS_NFC/NFC_RFO2",
+   "tracks": [
+    {
+     "a_mm": [
+      35.25,
+      27.725
+     ],
+     "b_mm": [
+      35.25,
+      26.8
+     ],
+     "layer": "B.Cu",
+     "width_mm": 0.3
+    },
+    {
+     "a_mm": [
+      35.25,
+      26.8
+     ],
+     "b_mm": [
+      36.075,
+      27.0
+     ],
+     "layer": "B.Cu",
+     "width_mm": 0.3
+    },
+    {
+     "a_mm": [
+      36.075,
+      27.0
+     ],
+     "b_mm": [
+      37.95,
+      28.925
+     ],
+     "layer": "B.Cu",
+     "width_mm": 0.3
+    },
+    {
+     "a_mm": [
+      37.95,
+      28.925
+     ],
+     "b_mm": [
+      37.025,
+      29.875
+     ],
+     "layer": "B.Cu",
+     "width_mm": 0.3
+    },
+    {
+     "a_mm": [
+      37.025,
+      29.875
+     ],
+     "b_mm": [
+      37.2,
+      30.9
+     ],
+     "layer": "B.Cu",
+     "width_mm": 0.3
+    },
+    {
+     "a_mm": [
+      37.2,
+      30.9
+     ],
+     "b_mm": [
+      37.725,
+      31.425
+     ],
+     "layer": "B.Cu",
+     "width_mm": 0.3
+    },
+    {
+     "a_mm": [
+      37.725,
+      31.425
+     ],
+     "b_mm": [
+      38.5125,
+      32.2
+     ],
+     "layer": "B.Cu",
+     "width_mm": 0.3
+    }
+   ],
+   "why": "the whole NFC_RFO2 transmit arm, relaid between U9.15 and L6.1 so NFC_VDD_RF can reach U9.14"
+  }
+ ],
+ "note": "D-620: NFC_RFO2 is the irreducible blocker of NFC_VDD_RF, NFC_RFI1 and NFC_RFI2 (screen_corridor_detour.py, five verdicts).  Its 3-track minimal cut is NOT_A_CHAIN, but its SEVEN tracks are one simple chain from U9.15 to L6.1, so the whole arm is offered to the relay as one detour.  The maze relay returns NO_PATH at 0.100, 0.050 and 0.025 mm because U9.15's escape margin is EXACTLY ZERO and a lattice adds a 0.75-cell guard band, so the record names the allowlisted exact-geometry route that laid this arm in the first place.",
+ "reserve": [],
+ "schema": 1
+}

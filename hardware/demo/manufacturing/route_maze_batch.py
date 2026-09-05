@@ -58,6 +58,7 @@ ROOT = Path(__file__).resolve().parents[3]
 PROJECT = ROOT / "hardware/demo/kicad/aqroot-demo"
 BOARD = PROJECT / "aqroot-Beta-v2.kicad_pcb"
 LEDGER = ROOT / "hardware/demo/manufacturing/routing_ledger.py"
+LOCAL_TWO_PAD = Path(__file__).with_name("route_local_two_pad.py")
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 sys.path.insert(0, str(ROOT / "hardware/beta-v2/checks"))
@@ -75,6 +76,15 @@ INHERITED = {"lib_footprint_issues": 199, "hole_clearance": 5,
 #   layers   -- routable layers the DRU permits for the class
 #   drill    -- DRU `hole_size` min for a via on the class ("POWER-class vias
 #               use the 0.40 mm drill"); a request may never go under it
+#   width_cap -- the widest track this class's OWN LAND GEOMETRY can launch.
+#               A netclass width is a TARGET; a pad is a fact.  Where the two
+#               disagree the pad wins, because a track that cannot leave the
+#               part it serves is not a route at any width.  This figure is a
+#               MEASUREMENT of the board, it is asserted at import to be no
+#               lower than the same class's DRU `width` floor, and it can
+#               therefore never ask for copper narrower than a rule allows --
+#               it only stops the proposer aiming at a width the package
+#               forbids.  D-620.
 DRU_CLASS = {
     "Default":      dict(clr=200000, layers=None),
     "I2C":          dict(clr=200000, layers=None),
@@ -117,7 +127,23 @@ DRU_CLASS = {
     # ACC rails.  The width floor is the DRU's 0.30 mm; the netclass is already
     # 0.40 mm and `max()` keeps it, so the figure is stated for the record
     # rather than to lower anything.
-    "NFC_RF":       dict(width=300000, clr=250000, layers=("B",)),
+    # WIDTH_CAP, AND IT IS ARITHMETIC RATHER THAN APPETITE.  `U9` is a
+    # UFQFPN-32 at 0.500 mm pitch whose transmit-arm lands are 0.300 mm wide:
+    # `U9.15` (`NFC_RFO2`) sits at x = 35.250 between `U9.14` at 34.750 and
+    # `U9.16` at 35.750, so the neighbouring lands' inner edges are 34.900 and
+    # 35.600 and this class owes a PAD 0.200 mm (the DRU's 0.25 mm figure is a
+    # ROUTED clearance and says `A.Type != 'Pad' && B.Type != 'Pad'` in its own
+    # words).  The widest track whose centre may sit on that land is therefore
+    # 35.600 - 0.200 - 35.250 doubled = 0.300 mm, and it is 0.300 mm in EVERY
+    # direction, because a track leaving the land starts inside the
+    # neighbours' own 0.750 mm y-span.  `U9.13` (`NFC_RFO1`) is the same
+    # arithmetic mirrored.  The netclass asks for 0.400 mm -- the DRU's `opt`
+    # -- so `max()` made this class UNLAUNCHABLE FROM THE PART IT SERVES, and
+    # both promoted arms have always been 0.300 mm.  The cap states what the
+    # board can build; the DRU's 0.30 mm `min` still binds underneath it and
+    # KiCad still judges the result.
+    "NFC_RF":       dict(width=300000, width_cap=300000, clr=250000,
+                         layers=("B",)),
     # USB_D is the one class on this board whose layer set is a SINGLE layer,
     # and the first screen that actually routed it proved why.  Given `F, B`
     # the maze reached every USB pad -- all four nets routed, 126 -> 121 open
@@ -153,6 +179,15 @@ DRU_CLASS = {
     # refloorplan of the MCU fanout.  Neither is smuggled in here.
     "USB_D":        dict(clr=200000, layers=("F",)),
 }
+
+# A `width_cap` may state what a package can LAUNCH; it may never state less
+# than what a rule DEMANDS.  Asserted at import so the day someone tunes a cap
+# below its own class floor the module refuses to load rather than quietly
+# proposing illegal copper.
+for _cls, _over in DRU_CLASS.items():
+    if _over.get("width_cap") is not None:
+        assert _over["width_cap"] >= _over.get("width", 0), _cls
+del _cls, _over
 
 # `(rule "Via annular ring floor") (constraint annular_width (min 0.125mm))`.
 ANNULAR_MIN = 125000
@@ -744,6 +779,46 @@ def evict_copper(path, nets, evict_nets, margin_nm, whole=False):
 # anything it cannot resolve to a single track, and clause 5 licenses the
 # removals by SIGNATURE exactly as it licenses an eviction's.  A detour that
 # will not route is a REFUSAL of the whole run, never a track left out.
+def exact_relay_pads(board_path, key, d, tol_nm=1000):
+    """None when `key` may stand in for detour `d`, else the reason it may not.
+
+    THREE THINGS ARE CHECKED AND ALL THREE MATTER.  The named route must be an
+    entry this module's own allowlist already carries, it must be on the
+    detour's OWN net -- so this can never put somebody else's copper back -- and
+    its two pads must be the chain's own two ends to a micron, so it puts back
+    the track that was taken and not a different one wearing its name.
+    """
+    import importlib.util
+    spec = importlib.util.spec_from_file_location("_rl2p", LOCAL_TWO_PAD)
+    mod = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(mod)
+    rule = mod.ROUTES.get(key)
+    if rule is None:
+        return "no such route_local_two_pad route: %r" % key
+    if rule["net"] != d["net"]:
+        return ("route %r is on %s, the detour is on %s"
+                % (key, rule["net"], d["net"]))
+    import pcbnew
+    board = pcbnew.LoadBoard(str(Path(board_path).resolve()))
+    want = [tuple(int(round(v * 1e6)) for v in d["a_mm"]),
+            tuple(int(round(v * 1e6)) for v in d["b_mm"])]
+    got = []
+    for ref in rule["pads"]:
+        r, num = ref.split(".")
+        fp = board.FindFootprintByReference(r)
+        pad = fp and next((p for p in fp.Pads() if p.GetNumber() == num), None)
+        if pad is None:
+            return "route %r names a pad this board has not got: %s" % (key, ref)
+        pos = pad.GetPosition()
+        got.append((pos.x, pos.y))
+    for w in want:
+        if not any(abs(w[0] - g[0]) <= tol_nm and abs(w[1] - g[1]) <= tol_nm
+                   for g in got):
+            return ("route %r joins %s, which are not the chain's two ends %s"
+                    % (key, rule["pads"], want))
+    return None
+
+
 def load_detours(path):
     """Read a detour spec, or {} when none was asked for."""
     if not path:
@@ -928,7 +1003,12 @@ def detour_apply(path, spec):
             a_nm=a_nm, b_nm=b_nm,
             mm=round(was, 4),
             max_mm=round(float(d.get("max_mm",
-                                     was + 2.0 * math.pi * rmax)), 4)))
+                                     was + 2.0 * math.pi * rmax)), 4),
+            # Carried, never invented: the spec names the allowlisted
+            # exact-geometry route that may stand in when the LATTICE refuses
+            # this relay, and `exact_relay_pads` still has to agree it is the
+            # same net and the same two ends before it is spent.
+            exact_relay=d.get("exact_relay")))
     sigs = []
     for t in doomed:
         sigs.append(ir._track_sig(t))
@@ -1136,9 +1216,13 @@ def net_contract(board, net):
     cls = info.GetNetClassName()
     nc = info.GetNetClassSlow()
     over = DRU_CLASS.get(cls, {})
+    width = max(nc.GetTrackWidth(), over.get("width", 0))
+    cap = over.get("width_cap")
+    if cap is not None:
+        width = min(width, cap)
     return dict(
         net=net, netclass=cls,
-        width=max(nc.GetTrackWidth(), over.get("width", 0)),
+        width=width,
         clr=max(nc.GetClearance(), over.get("clr", 0)),
         clr_pad=max(nc.GetClearance(), PAD_CLR_RETAINED.get(cls, 0)),
         via_dia=nc.GetViaDiameter(), via_drill=nc.GetViaDrill(),
@@ -1306,6 +1390,7 @@ def propose(path, nets, grid, via_cost_mm, stitch_width=0, stitch_via=None,
         r = dict(r)
         r.pop("mark", None)
         r.update(net=net, layer=d["layer"], was_mm=d["mm"],
+                 exact_relay=d.get("exact_relay"),
                  max_mm=d.get("max_mm"), width_nm=d["width_nm"],
                  lkey=d["lkey"], layers_allowed=list(layers), own_layer=own,
                  a_mm=[round(v / 1e6, 4) for v in d["a_nm"]],
@@ -1939,6 +2024,67 @@ def gate(nets, grid, via_cost_mm, workdir, promote=False, candidate=None,
     routed = primary["results"]
     bonded = primary.get("bonds", [])
     detoured = primary.get("detours", [])
+    # ------------------------------------------------------------------ #
+    # THE EXACT-GEOMETRY RELAY, AND WHY A LATTICE CANNOT BE THE ONLY ONE
+    # ------------------------------------------------------------------ #
+    # `maze3d` rasterises, and `QBoard.grid` / `dru_overlay` both add a
+    # 0.75-CELL GUARD BAND on top of the clearance so a lattice can never
+    # propose copper the exact geometry would refuse.  That guard is right, and
+    # it has a consequence nothing here had ever stated: a land whose escape
+    # margin is EXACTLY ZERO is buildable and unreachable at the same time.
+    # KiCad passes it; the maze cannot propose it at ANY pitch, because the
+    # required figure is `clr + 0.75*G` and that strictly exceeds `clr` for
+    # every G > 0.
+    #
+    # D-620 measured the case that forces this.  `U9`'s north row is packed to
+    # the micron: `U9.13`/`U9.15` are 0.300 mm transmit-arm lands whose only
+    # escape is a 0.300 mm stub in their own 0.300 mm of width, and `U9.14`
+    # between them has exactly 0.700 mm of gap for a 0.200 mm track that owes
+    # 0.250 mm to each arm -- 0.200 + 0.250 + 0.250 = 0.700, spent exactly.
+    # `screen_land_escape_margin.py` reads ZERO for all three, and the maze
+    # relay of `NFC_RFO2` returns `NO_PATH` at 0.100 mm, 0.050 mm AND 0.025 mm
+    # while `route_local_two_pad.py` -- which works in exact geometry, at its
+    # own 0.025 mm lattice and with the pad clearance stated separately -- lays
+    # the same arm in 8.674 mm.
+    #
+    # So a detour record may name an ALLOWLISTED `route_local_two_pad` route as
+    # its fallback.  This is not a second router and it is not a weaker one: it
+    # is the SAME primitive that laid the copper being put back, it is used only
+    # after the maze has refused, the entry it names must be for the detour's
+    # OWN net and must join the chain's OWN two ends to the micron, and every
+    # gate below -- real KiCad DRC at `--severity-all`, the whole-board ledger,
+    # and clause 5's preservation -- judges the result exactly as it judges the
+    # maze's.  A relay that comes back illegal is refused here as loudly as one
+    # that never came back at all.
+    exact_relay = []
+    for d in detoured:
+        key = d.get("exact_relay")
+        if d.get("ok") or not key:
+            continue
+        chk = exact_relay_pads(scratch, key, d)
+        if chk is not None:
+            d["reason"], d["why"] = "EXACT_RELAY_REFUSED", chk
+            continue
+        got = subprocess.run(
+            [sys.executable, str(LOCAL_TWO_PAD), key, "--route", str(scratch)],
+            text=True, capture_output=True)
+        if got.returncode != 0:
+            d["reason"] = "EXACT_RELAY_FAILED"
+            d["why"] = (got.stderr or "").strip()[-400:]
+            continue
+        res = json.loads(got.stdout)["result"]
+        exact_relay.append(dict(net=d["net"], route=key, ok=bool(res.get("ok")),
+                                mm=res.get("mm"), grid=res.get("grid"),
+                                was_mm=d.get("was_mm"),
+                                reason=res.get("reason")))
+        if res.get("ok"):
+            d.update(ok=True, mm=res.get("mm"), vias=res.get("vias", 0),
+                     exact_relay_used=key, reason=None,
+                     why="the maze refused this zero-margin relay at every "
+                         "lattice; put back by the exact-geometry primitive "
+                         "that laid it")
+        else:
+            d["reason"] = res.get("reason", "EXACT_RELAY_NO_PATH")
     # EVERY DETOUR MUST HAVE ROUTED.  The applier has already taken the track
     # off the scratch board; a detour that did not go back is a hole in the cut
     # net that no later clause is guaranteed to name, because the two ends may
@@ -2231,6 +2377,7 @@ def gate(nets, grid, via_cost_mm, workdir, promote=False, candidate=None,
                     tubes=len(load_guard(guard).get("guards", ())))
                if guard else None),
         eviction=eviction,
+        exact_relay=exact_relay,
         detour=(dict(requested=str(detour_spec),
                      reserve=detour.get("reserve"),
                      removed_count=detour.get("removed_count"),

@@ -1,0 +1,406 @@
+{
+ "board": "/home/aqroot8/aqroot-demo/hardware/demo/kicad/aqroot-demo/aqroot-Beta-v2.kicad_pcb",
+ "pads": [
+  {
+   "best_margin_mm": -0.125,
+   "clr_pad_mm": 0.2,
+   "directions": {
+    "E": {
+     "binding_pad": "U5.1",
+     "centre_mm": 115.625,
+     "margin_mm": -0.2,
+     "max_lattice_mm": null,
+     "reach_mm": 3.125,
+     "widest_mm": null
+    },
+    "N": {
+     "binding_pad": "U5.1",
+     "centre_mm": 29.15,
+     "margin_mm": -0.2,
+     "max_lattice_mm": null,
+     "reach_mm": 1.725,
+     "widest_mm": null
+    },
+    "S": {
+     "binding_pad": "U5.3",
+     "centre_mm": 29.15,
+     "margin_mm": -0.2,
+     "max_lattice_mm": null,
+     "reach_mm": 2.225,
+     "widest_mm": null
+    },
+    "W": {
+     "binding_pad": "U5.1",
+     "centre_mm": 115.75,
+     "margin_mm": -0.125,
+     "max_lattice_mm": null,
+     "reach_mm": 0.25,
+     "widest_mm": 0.35
+    }
+   },
+   "land_mm": [
+    29.15,
+    115.625,
+    29.975,
+    115.875
+   ],
+   "net": "+3V3",
+   "netclass": "P3V3",
+   "pad": "U5.2",
+   "verdict": "UNLAUNCHABLE",
+   "width_mm": 0.6
+  },
+  {
+   "best_margin_mm": 0.775,
+   "clr_pad_mm": 0.2,
+   "directions": {
+    "E": {
+     "binding_pad": "R129.2",
+     "centre_mm": 57.26,
+     "margin_mm": -0.2,
+     "max_lattice_mm": null,
+     "reach_mm": 1.9,
+     "widest_mm": null
+    },
+    "N": {
+     "binding_pad": "R129.2",
+     "centre_mm": 57.375,
+     "margin_mm": 0.775,
+     "max_lattice_mm": 1.0333,
+     "reach_mm": 0.25,
+     "widest_mm": 1.0
+    },
+    "S": {
+     "binding_pad": "R46.1",
+     "centre_mm": 57.05,
+     "margin_mm": 0.45,
+     "max_lattice_mm": 0.6,
+     "reach_mm": 0.25,
+     "widest_mm": 1.0
+    },
+    "W": {
+     "binding_pad": "R63.2",
+     "centre_mm": 57.26,
+     "margin_mm": 0.45,
+     "max_lattice_mm": 0.6,
+     "reach_mm": 0.25,
+     "widest_mm": 1.0
+    }
+   },
+   "land_mm": [
+    57.0,
+    57.26,
+    57.8,
+    58.21
+   ],
+   "net": "+3V3",
+   "netclass": "P3V3",
+   "pad": "R129.1",
+   "verdict": "CLEAR",
+   "width_mm": 0.6
+  },
+  {
+   "best_margin_mm": 1.45,
+   "clr_pad_mm": 0.2,
+   "directions": {
+    "E": {
+     "binding_pad": "R39.2",
+     "centre_mm": 71.275,
+     "margin_mm": -0.2,
+     "max_lattice_mm": null,
+     "reach_mm": 1.9,
+     "widest_mm": null
+    },
+    "N": {
+     "binding_pad": "R39.2",
+     "centre_mm": 65.275,
+     "margin_mm": 1.15,
+     "max_lattice_mm": 1.5333,
+     "reach_mm": 0.25,
+     "widest_mm": 1.0
+    },
+    "S": {
+     "binding_pad": "R39.2",
+     "centre_mm": 65.275,
+     "margin_mm": 1.15,
+     "max_lattice_mm": 1.5333,
+     "reach_mm": 0.25,
+     "widest_mm": 1.0
+    },
+    "W": {
+     "binding_pad": "R39.2",
+     "centre_mm": 71.275,
+     "margin_mm": 1.45,
+     "max_lattice_mm": 1.9333,
+     "reach_mm": 0.25,
+     "widest_mm": 1.0
+    }
+   },
+   "land_mm": [
+    65.275,
+    71.275,
+    66.075,
+    72.225
+   ],
+   "net": "+3V3",
+   "netclass": "P3V3",
+   "pad": "R39.1",
+   "verdict": "CLEAR",
+   "width_mm": 0.6
+  },
+  {
+   "best_margin_mm": 0.0,
+   "clr_pad_mm": 0.2,
+   "directions": {
+    "E": {
+     "binding_pad": "U4.4",
+     "centre_mm": 68.6,
+     "margin_mm": -0.2,
+     "max_lattice_mm": null,
+     "reach_mm": 1.525,
+     "widest_mm": null
+    },
+    "N": {
+     "binding_pad": "U4.1",
+     "centre_mm": 57.375,
+     "margin_mm": 0.0,
+     "max_lattice_mm": null,
+     "reach_mm": 0.25,
+     "widest_mm": 0.6
+    },
+    "S": {
+     "binding_pad": "U4.1",
+     "centre_mm": 57.125,
+     "margin_mm": -0.2,
+     "max_lattice_mm": null,
+     "reach_mm": 2.575,
+     "widest_mm": null
+    },
+    "W": {
+     "binding_pad": "U4.1",
+     "centre_mm": 68.6,
+     "margin_mm": -0.2,
+     "max_lattice_mm": null,
+     "reach_mm": 1.025,
+     "widest_mm": null
+    }
+   },
+   "land_mm": [
+    57.125,
+    68.6,
+    57.375,
+    69.075
+   ],
+   "net": "+3V3",
+   "netclass": "P3V3",
+   "pad": "U4.2",
+   "verdict": "EXACT",
+   "width_mm": 0.6
+  },
+  {
+   "best_margin_mm": 0.0,
+   "clr_pad_mm": 0.2,
+   "directions": {
+    "E": {
+     "binding_pad": "U4.4",
+     "centre_mm": 68.6,
+     "margin_mm": -0.2,
+     "max_lattice_mm": null,
+     "reach_mm": 1.025,
+     "widest_mm": null
+    },
+    "N": {
+     "binding_pad": "U4.4",
+     "centre_mm": 57.625,
+     "margin_mm": 0.0,
+     "max_lattice_mm": null,
+     "reach_mm": 0.25,
+     "widest_mm": 0.6
+    },
+    "S": {
+     "binding_pad": "U4.9",
+     "centre_mm": 57.625,
+     "margin_mm": -0.2,
+     "max_lattice_mm": null,
+     "reach_mm": 2.575,
+     "widest_mm": null
+    },
+    "W": {
+     "binding_pad": "U4.1",
+     "centre_mm": 68.6,
+     "margin_mm": -0.2,
+     "max_lattice_mm": null,
+     "reach_mm": 1.525,
+     "widest_mm": null
+    }
+   },
+   "land_mm": [
+    57.625,
+    68.6,
+    57.875,
+    69.075
+   ],
+   "net": "+3V3",
+   "netclass": "P3V3",
+   "pad": "U4.3",
+   "verdict": "EXACT",
+   "width_mm": 0.6
+  },
+  {
+   "best_margin_mm": 0.0,
+   "clr_pad_mm": 0.2,
+   "directions": {
+    "E": {
+     "binding_pad": "U4.6",
+     "centre_mm": 69.375,
+     "margin_mm": 0.0,
+     "max_lattice_mm": null,
+     "reach_mm": 0.25,
+     "widest_mm": 0.6
+    },
+    "N": {
+     "binding_pad": "U4.4",
+     "centre_mm": 58.175,
+     "margin_mm": -0.2,
+     "max_lattice_mm": null,
+     "reach_mm": 1.025,
+     "widest_mm": 0.15
+    },
+    "S": {
+     "binding_pad": "U4.6",
+     "centre_mm": 58.175,
+     "margin_mm": -0.2,
+     "max_lattice_mm": null,
+     "reach_mm": 2.025,
+     "widest_mm": null
+    },
+    "W": {
+     "binding_pad": "U4.1",
+     "centre_mm": 69.375,
+     "margin_mm": -0.2,
+     "max_lattice_mm": null,
+     "reach_mm": 2.075,
+     "widest_mm": null
+    }
+   },
+   "land_mm": [
+    58.175,
+    69.375,
+    58.65,
+    69.625
+   ],
+   "net": "+3V3",
+   "netclass": "P3V3",
+   "pad": "U4.5",
+   "verdict": "EXACT",
+   "width_mm": 0.6
+  },
+  {
+   "best_margin_mm": 0.275,
+   "clr_pad_mm": 0.2,
+   "directions": {
+    "E": {
+     "binding_pad": "U4.7",
+     "centre_mm": 71.4,
+     "margin_mm": 0.275,
+     "max_lattice_mm": 0.3667,
+     "reach_mm": 0.525,
+     "widest_mm": 1.0
+    },
+    "N": {
+     "binding_pad": "U4.4",
+     "centre_mm": 58.125,
+     "margin_mm": -0.2,
+     "max_lattice_mm": null,
+     "reach_mm": 2.575,
+     "widest_mm": null
+    },
+    "S": {
+     "binding_pad": "U4.9",
+     "centre_mm": 58.375,
+     "margin_mm": 0.0,
+     "max_lattice_mm": null,
+     "reach_mm": 0.25,
+     "widest_mm": 0.6
+    },
+    "W": {
+     "binding_pad": "U4.9",
+     "centre_mm": 70.925,
+     "margin_mm": -0.2,
+     "max_lattice_mm": null,
+     "reach_mm": 2.025,
+     "widest_mm": null
+    }
+   },
+   "land_mm": [
+    58.125,
+    70.925,
+    58.375,
+    71.4
+   ],
+   "net": "+3V3",
+   "netclass": "P3V3",
+   "pad": "U4.8",
+   "verdict": "CLEAR",
+   "width_mm": 0.6
+  },
+  {
+   "best_margin_mm": 0.0,
+   "clr_pad_mm": 0.2,
+   "directions": {
+    "E": {
+     "binding_pad": "U4.6",
+     "centre_mm": 70.375,
+     "margin_mm": -0.2,
+     "max_lattice_mm": null,
+     "reach_mm": 2.075,
+     "widest_mm": null
+    },
+    "N": {
+     "binding_pad": "U4.1",
+     "centre_mm": 56.35,
+     "margin_mm": -0.2,
+     "max_lattice_mm": null,
+     "reach_mm": 2.025,
+     "widest_mm": null
+    },
+    "S": {
+     "binding_pad": "U4.11",
+     "centre_mm": 56.35,
+     "margin_mm": -0.2,
+     "max_lattice_mm": null,
+     "reach_mm": 1.025,
+     "widest_mm": 0.15
+    },
+    "W": {
+     "binding_pad": "U4.13",
+     "centre_mm": 70.625,
+     "margin_mm": 0.0,
+     "max_lattice_mm": null,
+     "reach_mm": 0.25,
+     "widest_mm": 0.6
+    }
+   },
+   "land_mm": [
+    56.35,
+    70.375,
+    56.825,
+    70.625
+   ],
+   "net": "+3V3",
+   "netclass": "P3V3",
+   "pad": "U4.12",
+   "verdict": "EXACT",
+   "width_mm": 0.6
+  }
+ ],
+ "reach_mm": 0.25,
+ "schema": 1,
+ "step_nm": 1000,
+ "summary": {
+  "clear": 3,
+  "exact": 4,
+  "pads": 8,
+  "unlaunchable": 1
+ }
+}

@@ -1,0 +1,611 @@
+{
+ "board": "/home/aqroot8/aqroot-demo/hardware/demo/kicad/aqroot-demo/aqroot-Beta-v2.kicad_pcb",
+ "board_sha256": "ecc5e0e2f6eadfb8a0ec359e37b46d42fd28655ab6f51193aa1fb8640980219d",
+ "family": [
+  "/04_SPI_B_RADIOS_NFC/NFC_RFI1",
+  "/04_SPI_B_RADIOS_NFC/NFC_RFI2",
+  "/04_SPI_B_RADIOS_NFC/NFC_VDD_RF"
+ ],
+ "grid": 100000,
+ "guard_out": "w/d620-rfi-lane.json",
+ "lane": {
+  "keepout_nm": 300000,
+  "label": "USB_CORRIDOR",
+  "mm": 37.0455,
+  "points": 391
+ },
+ "nets": [
+  {
+   "clr_mm": 0.2,
+   "edges": [
+    {
+     "all_tracks_cut": {
+      "mm": 10.706,
+      "ok": true,
+      "reason": null
+     },
+     "baseline": {
+      "dst_escapes": null,
+      "mm": 0.0,
+      "ok": false,
+      "reason": "NO_LEGAL_ESCAPE_DST",
+      "src_escapes": null
+     },
+     "crossing_by_net": {
+      "+3V3": 1,
+      "/04_SPI_B_RADIOS_NFC/NFC_AGDC": 9,
+      "/04_SPI_B_RADIOS_NFC/NFC_ANT_A": 11,
+      "/04_SPI_B_RADIOS_NFC/NFC_ANT_B": 10,
+      "/04_SPI_B_RADIOS_NFC/NFC_EMCA": 13,
+      "/04_SPI_B_RADIOS_NFC/NFC_EMCB": 6,
+      "/04_SPI_B_RADIOS_NFC/NFC_MATCH_A": 3,
+      "/04_SPI_B_RADIOS_NFC/NFC_MATCH_B": 3,
+      "/04_SPI_B_RADIOS_NFC/NFC_RFO1": 5,
+      "/04_SPI_B_RADIOS_NFC/NFC_RFO2": 7,
+      "/04_SPI_B_RADIOS_NFC/NFC_RXA": 10,
+      "/04_SPI_B_RADIOS_NFC/NFC_RXB": 3,
+      "/04_SPI_B_RADIOS_NFC/NFC_VDD_A": 3,
+      "/04_SPI_B_RADIOS_NFC/NFC_VDD_AM": 10,
+      "/04_SPI_B_RADIOS_NFC/NFC_VDD_RF": 1,
+      "/07_IR/IR_GATE": 1,
+      "/NFC_CS_N": 3,
+      "GND": 16
+     },
+     "crossing_tracks": 115,
+     "direct_mm": 11.787,
+     "dst": [
+      "U9.22"
+     ],
+     "irreducible_nets": [
+      "/04_SPI_B_RADIOS_NFC/NFC_RFO2"
+     ],
+     "lane": {
+      "mm": 14.904,
+      "ok": true,
+      "segments": 10,
+      "vias": 4
+     },
+     "minimal": {
+      "mm": 12.561,
+      "objects": [
+       {
+        "a_mm": [
+         37.025,
+         29.875
+        ],
+        "b_mm": [
+         37.2,
+         30.9
+        ],
+        "lkey": "B",
+        "mm": 1.0398,
+        "net": "/04_SPI_B_RADIOS_NFC/NFC_RFO2",
+        "width_mm": 0.3
+       },
+       {
+        "a_mm": [
+         37.2,
+         30.9
+        ],
+        "b_mm": [
+         37.725,
+         31.425
+        ],
+        "lkey": "B",
+        "mm": 0.7425,
+        "net": "/04_SPI_B_RADIOS_NFC/NFC_RFO2",
+        "width_mm": 0.3
+       },
+       {
+        "a_mm": [
+         38.5125,
+         32.2
+        ],
+        "b_mm": [
+         37.725,
+         31.425
+        ],
+        "lkey": "B",
+        "mm": 1.1049,
+        "net": "/04_SPI_B_RADIOS_NFC/NFC_RFO2",
+        "width_mm": 0.3
+       }
+      ],
+      "ok": true,
+      "tracks": 3
+     },
+     "protected": [],
+     "src": [
+      "R116.2"
+     ],
+     "verdict": "DETOURABLE",
+     "window_mm": [
+      33.275,
+      22.7,
+      49.925,
+      33.75
+     ]
+    }
+   ],
+   "islands": 2,
+   "layers": [
+    "B",
+    "I2"
+   ],
+   "net": "/04_SPI_B_RADIOS_NFC/NFC_RFI1",
+   "netclass": "NFC_RX",
+   "width_mm": 0.2
+  },
+  {
+   "clr_mm": 0.2,
+   "edges": [
+    {
+     "all_tracks_cut": {
+      "mm": 10.343,
+      "ok": true,
+      "reason": null
+     },
+     "baseline": {
+      "dst_escapes": null,
+      "mm": 0.0,
+      "ok": false,
+      "reason": "NO_LEGAL_ESCAPE_DST",
+      "src_escapes": null
+     },
+     "crossing_by_net": {
+      "+3V3": 1,
+      "/01_POWER_TREE/ACC_5V_ILIM": 2,
+      "/04_SPI_B_RADIOS_NFC/NFC_AGDC": 10,
+      "/04_SPI_B_RADIOS_NFC/NFC_ANT_A": 4,
+      "/04_SPI_B_RADIOS_NFC/NFC_ANT_B": 13,
+      "/04_SPI_B_RADIOS_NFC/NFC_EMCB": 13,
+      "/04_SPI_B_RADIOS_NFC/NFC_MATCH_B": 3,
+      "/04_SPI_B_RADIOS_NFC/NFC_RFI1": 8,
+      "/04_SPI_B_RADIOS_NFC/NFC_RFO2": 5,
+      "/04_SPI_B_RADIOS_NFC/NFC_RXB": 10,
+      "/04_SPI_B_RADIOS_NFC/NFC_VDD_A": 3,
+      "/04_SPI_B_RADIOS_NFC/NFC_VDD_RF": 2,
+      "/07_IR/IR_GATE": 1,
+      "/NFC_CS_N": 3,
+      "/NFC_SUPPLY": 1,
+      "GND": 12
+     },
+     "crossing_tracks": 91,
+     "direct_mm": 11.078,
+     "dst": [
+      "U9.23"
+     ],
+     "irreducible_nets": [
+      "/04_SPI_B_RADIOS_NFC/NFC_RFI1",
+      "/04_SPI_B_RADIOS_NFC/NFC_RFO2"
+     ],
+     "lane": {
+      "mm": 13.444,
+      "ok": true,
+      "segments": 10,
+      "vias": 4
+     },
+     "minimal": {
+      "mm": 11.741,
+      "objects": [
+       {
+        "a_mm": [
+         36.875,
+         30.875
+        ],
+        "b_mm": [
+         37.7,
+         31.7
+        ],
+        "lkey": "B",
+        "mm": 1.1667,
+        "net": "/04_SPI_B_RADIOS_NFC/NFC_RFI1",
+        "width_mm": 0.2
+       },
+       {
+        "a_mm": [
+         37.6,
+         31.5
+        ],
+        "b_mm": [
+         37.7,
+         31.7
+        ],
+        "lkey": "B",
+        "mm": 0.2236,
+        "net": "/04_SPI_B_RADIOS_NFC/NFC_RFI1",
+        "width_mm": 0.2
+       },
+       {
+        "a_mm": [
+         38.8,
+         32.7
+        ],
+        "b_mm": [
+         37.6,
+         31.5
+        ],
+        "lkey": "I2",
+        "mm": 1.6971,
+        "net": "/04_SPI_B_RADIOS_NFC/NFC_RFI1",
+        "width_mm": 0.2
+       },
+       {
+        "a_mm": [
+         37.2,
+         30.9
+        ],
+        "b_mm": [
+         37.725,
+         31.425
+        ],
+        "lkey": "B",
+        "mm": 0.7425,
+        "net": "/04_SPI_B_RADIOS_NFC/NFC_RFO2",
+        "width_mm": 0.3
+       },
+       {
+        "a_mm": [
+         38.5125,
+         32.2
+        ],
+        "b_mm": [
+         37.725,
+         31.425
+        ],
+        "lkey": "B",
+        "mm": 1.1049,
+        "net": "/04_SPI_B_RADIOS_NFC/NFC_RFO2",
+        "width_mm": 0.3
+       }
+      ],
+      "ok": true,
+      "tracks": 5
+     },
+     "protected": [],
+     "src": [
+      "R117.2"
+     ],
+     "verdict": "DETOURABLE",
+     "window_mm": [
+      33.275,
+      28.25,
+      49.925,
+      37.3
+     ]
+    }
+   ],
+   "islands": 2,
+   "layers": [
+    "B",
+    "I2"
+   ],
+   "net": "/04_SPI_B_RADIOS_NFC/NFC_RFI2",
+   "netclass": "NFC_RX",
+   "width_mm": 0.2
+  },
+  {
+   "clr_mm": 0.2,
+   "edges": [
+    {
+     "all_tracks_cut": {
+      "mm": 0.721,
+      "ok": true,
+      "reason": null
+     },
+     "baseline": {
+      "dst_escapes": 1,
+      "mm": 0.0,
+      "ok": false,
+      "reason": "NO_PATH",
+      "src_escapes": 36
+     },
+     "crossing_by_net": {
+      "+3V3": 3,
+      "/01_POWER_TREE/ACC_5V_ILIM": 1,
+      "/04_SPI_B_RADIOS_NFC/NFC_AGDC": 15,
+      "/04_SPI_B_RADIOS_NFC/NFC_ANT_A": 3,
+      "/04_SPI_B_RADIOS_NFC/NFC_ANT_B": 2,
+      "/04_SPI_B_RADIOS_NFC/NFC_EMCA": 10,
+      "/04_SPI_B_RADIOS_NFC/NFC_EMCB": 10,
+      "/04_SPI_B_RADIOS_NFC/NFC_RFI1": 6,
+      "/04_SPI_B_RADIOS_NFC/NFC_RFI2": 6,
+      "/04_SPI_B_RADIOS_NFC/NFC_RFO1": 5,
+      "/04_SPI_B_RADIOS_NFC/NFC_RFO2": 7,
+      "/04_SPI_B_RADIOS_NFC/NFC_VDD_A": 5,
+      "/04_SPI_B_RADIOS_NFC/NFC_VDD_AM": 18,
+      "/04_SPI_B_RADIOS_NFC/NFC_VDD_D": 13,
+      "/04_SPI_B_RADIOS_NFC/NFC_XIN": 6,
+      "/04_SPI_B_RADIOS_NFC/NFC_XOUT": 4,
+      "/NFC_CS_N": 7,
+      "/NFC_SUPPLY": 5,
+      "/SPI_B_MISO": 2,
+      "/SPI_B_MOSI": 5,
+      "GND": 24
+     },
+     "crossing_tracks": 157,
+     "direct_mm": 1.992,
+     "dst": [
+      "U9.14"
+     ],
+     "irreducible_nets": [],
+     "lane": {
+      "mm": 8.698,
+      "ok": true,
+      "segments": 9,
+      "vias": 2
+     },
+     "minimal": {
+      "mm": 5.188,
+      "objects": [
+       {
+        "a_mm": [
+         35.25,
+         26.8
+        ],
+        "b_mm": [
+         36.075,
+         27.0
+        ],
+        "lkey": "B",
+        "mm": 0.8489,
+        "net": "/04_SPI_B_RADIOS_NFC/NFC_RFO2",
+        "width_mm": 0.3
+       },
+       {
+        "a_mm": [
+         35.25,
+         27.725
+        ],
+        "b_mm": [
+         35.25,
+         26.8
+        ],
+        "lkey": "B",
+        "mm": 0.925,
+        "net": "/04_SPI_B_RADIOS_NFC/NFC_RFO2",
+        "width_mm": 0.3
+       },
+       {
+        "a_mm": [
+         36.075,
+         27.0
+        ],
+        "b_mm": [
+         37.95,
+         28.925
+        ],
+        "lkey": "B",
+        "mm": 2.6872,
+        "net": "/04_SPI_B_RADIOS_NFC/NFC_RFO2",
+        "width_mm": 0.3
+       }
+      ],
+      "ok": true,
+      "tracks": 3
+     },
+     "protected": [],
+     "src": [
+      "U9.9",
+      "C50.1",
+      "C49.1"
+     ],
+     "verdict": "DETOURABLE",
+     "window_mm": [
+      29.25,
+      18.1,
+      41.025,
+      41.9
+     ]
+    }
+   ],
+   "islands": 2,
+   "layers": [
+    "F",
+    "B",
+    "I2"
+   ],
+   "net": "/04_SPI_B_RADIOS_NFC/NFC_VDD_RF",
+   "netclass": "Default",
+   "width_mm": 0.2
+  }
+ ],
+ "relay": {
+  "all_relaid": false,
+  "chains": [
+   {
+    "geometric_max_mm": 80.9484,
+    "layer": [
+     "B",
+     "I2"
+    ],
+    "max_mm": 80.9484,
+    "net": "/04_SPI_B_RADIOS_NFC/NFC_RFI1",
+    "objects": [
+     {
+      "a_mm": [
+       36.875,
+       30.875
+      ],
+      "b_mm": [
+       37.7,
+       31.7
+      ],
+      "lkey": "B",
+      "mm": 1.1667,
+      "net": "/04_SPI_B_RADIOS_NFC/NFC_RFI1",
+      "width_mm": 0.2
+     },
+     {
+      "a_mm": [
+       37.6,
+       31.5
+      ],
+      "b_mm": [
+       37.7,
+       31.7
+      ],
+      "lkey": "B",
+      "mm": 0.2236,
+      "net": "/04_SPI_B_RADIOS_NFC/NFC_RFI1",
+      "width_mm": 0.2
+     },
+     {
+      "a_mm": [
+       38.8,
+       32.7
+      ],
+      "b_mm": [
+       37.6,
+       31.5
+      ],
+      "lkey": "I2",
+      "mm": 1.6971,
+      "net": "/04_SPI_B_RADIOS_NFC/NFC_RFI1",
+      "width_mm": 0.2
+     }
+    ],
+    "ok": false,
+    "ratio_max_mm": 9.2622,
+    "reason": "NOT_A_CHAIN",
+    "tracks": 3,
+    "was_mm": 3.0874,
+    "why": "a chain must be ONE layer and ONE width"
+   },
+   {
+    "geometric_max_mm": 87.0567,
+    "layer": [
+     "B"
+    ],
+    "layers_allowed": [
+     "B"
+    ],
+    "max_mm": 87.0567,
+    "net": "/04_SPI_B_RADIOS_NFC/NFC_RFO2",
+    "objects": [
+     {
+      "a_mm": [
+       37.025,
+       29.875
+      ],
+      "b_mm": [
+       37.2,
+       30.9
+      ],
+      "lkey": "B",
+      "mm": 1.0398,
+      "net": "/04_SPI_B_RADIOS_NFC/NFC_RFO2",
+      "width_mm": 0.3
+     },
+     {
+      "a_mm": [
+       37.2,
+       30.9
+      ],
+      "b_mm": [
+       37.725,
+       31.425
+      ],
+      "lkey": "B",
+      "mm": 0.7425,
+      "net": "/04_SPI_B_RADIOS_NFC/NFC_RFO2",
+      "width_mm": 0.3
+     },
+     {
+      "a_mm": [
+       38.5125,
+       32.2
+      ],
+      "b_mm": [
+       37.725,
+       31.425
+      ],
+      "lkey": "B",
+      "mm": 1.1049,
+      "net": "/04_SPI_B_RADIOS_NFC/NFC_RFO2",
+      "width_mm": 0.3
+     },
+     {
+      "a_mm": [
+       37.2,
+       30.9
+      ],
+      "b_mm": [
+       37.725,
+       31.425
+      ],
+      "lkey": "B",
+      "mm": 0.7425,
+      "net": "/04_SPI_B_RADIOS_NFC/NFC_RFO2",
+      "width_mm": 0.3
+     },
+     {
+      "a_mm": [
+       38.5125,
+       32.2
+      ],
+      "b_mm": [
+       37.725,
+       31.425
+      ],
+      "lkey": "B",
+      "mm": 1.1049,
+      "net": "/04_SPI_B_RADIOS_NFC/NFC_RFO2",
+      "width_mm": 0.3
+     },
+     {
+      "a_mm": [
+       35.25,
+       26.8
+      ],
+      "b_mm": [
+       36.075,
+       27.0
+      ],
+      "lkey": "B",
+      "mm": 0.8489,
+      "net": "/04_SPI_B_RADIOS_NFC/NFC_RFO2",
+      "width_mm": 0.3
+     },
+     {
+      "a_mm": [
+       35.25,
+       27.725
+      ],
+      "b_mm": [
+       35.25,
+       26.8
+      ],
+      "lkey": "B",
+      "mm": 0.925,
+      "net": "/04_SPI_B_RADIOS_NFC/NFC_RFO2",
+      "width_mm": 0.3
+     },
+     {
+      "a_mm": [
+       36.075,
+       27.0
+      ],
+      "b_mm": [
+       37.95,
+       28.925
+      ],
+      "lkey": "B",
+      "mm": 2.6872,
+      "net": "/04_SPI_B_RADIOS_NFC/NFC_RFO2",
+      "width_mm": 0.3
+     }
+    ],
+    "ok": false,
+    "own_layer": false,
+    "ratio_max_mm": 27.5871,
+    "reason": "NOT_A_CHAIN",
+    "tracks": 8,
+    "was_mm": 9.1957,
+    "why": "the cut tracks of this net do not form a simple chain with exactly two free ends"
+   }
+  ]
+ },
+ "schema": 1,
+ "verdict": "UNRELAYABLE"
+}

@@ -1,0 +1,1 @@
+{"name": "NFC_RFO2", "result": {"grid": 0.025, "minw": 0.3, "mm": 8.674261300069668, "ok": true, "profile": [["U9.15", 0.3, 0.925], ["L6.1", 0.3, 1.1048897003773726]], "trunk_mm": 0.3}, "rule": {"clearance": 250000, "layer": "B", "net": "/04_SPI_B_RADIOS_NFC/NFC_RFO2", "pad_clearance": 200000, "pads": ["U9.15", "L6.1"], "width": 300000}}

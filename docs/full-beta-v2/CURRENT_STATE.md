@@ -13,6 +13,83 @@
 > This file references DEVICE_SPEC rather than duplicating full specs.
 
 ## 1. Authoritative HEAD
+- **Demo D-620 (THE ZERO-MARGIN LAND: EIGHT DECISIONS OF `NO_LEGAL_ESCAPE` WERE
+  ONE NUMBER NOBODY HAD MEASURED):** D-619 named this task -- *"nothing has yet
+  asked whether `NFC_RFO2` can be RE-LAID from scratch"* -- and the answer is
+  the same answer for `U9`, for `+3V3`, for `U21` and for `U11`.
+  **THE MEASUREMENT.**  New read-only `screen_land_escape_margin.py` computes,
+  at ONE MICRON and with no search at all, how much room a LAND has to launch:
+  given a pad, a direction, a track width and the clearance that net owes a
+  PAD, what is left over.  `margin < 0` = **UNLAUNCHABLE**, the netclass width
+  is wider than the land can ever launch.  `margin == 0` = **EXACT**, and this
+  is the finding: **buildable and unreachable at the same time.**  KiCad passes
+  it -- the promoted `NFC_RFO1`/`NFC_RFO2` arms ARE this case -- but
+  `maze3d.dru_overlay` and `qrouter.QBoard.grid` both add a **0.75-CELL GUARD
+  BAND** on top of the clearance, so the required figure is `clr + 0.75*G`,
+  which strictly exceeds `clr` for EVERY G > 0.  No lattice at any pitch can
+  ever propose that copper.  Deterministic (two runs byte-identical) and NOT
+  vacuous: grow `U9.14` by **one micron per side** and `U9.15` flips
+  `EXACT -> UNLAUNCHABLE`, margin `0.0000 -> -0.0010`.
+  **THE `U9` NORTH ROW IS FULL TO THE MICRON.**  `U9.13` (`NFC_RFO1`) and
+  `U9.15` (`NFC_RFO2`) both read margin **+0.0000** -- 0.300 mm lands with
+  0.200 mm of gap each side, precisely the clearance `NFC_RF` owes a pad -- and
+  `U9.14` between them has **0.700 mm** for a 0.200 mm track owing 0.250 mm to
+  each arm: `0.200 + 0.250 + 0.250 = 0.700`, spent exactly.  `NFC_RF` was never
+  launchable at its netclass 0.400 mm either, so `DRU_CLASS` now carries a
+  **`width_cap`** -- a measurement of the package, asserted at import to be no
+  lower than the same class's DRU floor.
+  **THE EXACT-GEOMETRY RELAY, BUILT AND SPENT.**  All three remaining `U9`
+  edges are `DETOURABLE` with `NFC_RFO2` the irreducible net every time; its
+  3-track cut is `NOT_A_CHAIN` but its SEVEN tracks are one chain `U9.15 ->
+  L6.1`, and the maze still relays `NO_PATH` at **0.100, 0.050 AND 0.025 mm**.
+  So a detour record may now name an allowlisted `route_local_two_pad` route as
+  its fallback -- the SAME primitive that laid the copper, used only after the
+  maze refuses, required to be on the detour's own net and to join its own two
+  ends to the micron, and judged by every clause the maze's relay is judged by.
+  **IT MEASURED A 1-FOR-1 TRADE, PRICED IN BOTH DIRECTIONS.**  With `NFC_RFO2`
+  removed and nothing else changed the arm goes back in **8.674 mm**; with
+  `NFC_RFO2` removed **`NFC_VDD_RF` CLOSES** (`C49.1 -> U9.14`, **8.698 mm**,
+  2 barrels, ledger **55 -> 54**, `GND` improves, **ZERO attributable DRC**,
+  nothing regressed) -- and then the arm returns `NO_LEGAL_ESCAPE`.  Either
+  order, one loses.  D-603's *"strict 1-for-1 trade"* is this row having room
+  for the copper already on it **and not one track more**.  Correctly REFUSED.
+  **`USB_D_MCU_N`/`_P` ARE A `SEGMENT_WALL`, AND THAT IS NOW DECIDED.**  D-583
+  called them a *"crossing-copper wall"* -- the words the D-618 corridor unit
+  was built for -- and nobody had pointed it there.  Pointed there: hold out
+  **every** crossing track on the permitted layers (115 and 156, across 41
+  nets) and BOTH are still `NO_PATH`.  *No detour transaction of any size opens
+  it.*  What remains is an `F.Cu` refloorplan of the MCU fanout or a section-6
+  ruling on a via that merely PIERCES `In2`.
+  **THE BOARD-WIDE RANKING.**  All 109 lands of the 25 open non-pour retained
+  nets: **103 CLEAR** (path problems, not package problems), **2 EXACT**
+  (`U11.9`/`U11.3`, the D-307 pocket, now a number), **4 UNLAUNCHABLE** --
+  `U21.5` `ACC_5V_LX` 0.600 vs widest 0.250, `U9.10` `NFC_SUPPLY` 0.600 vs
+  0.300, `U12.10`/`U12.11` `BQ25185_SYS` 0.800 vs 0.600.  `+3V3`'s eight
+  stranded lands: **four EXACT** (`U4.2`/`U4.3`/`U4.5`/`U4.12`, the BMI270 LGA
+  at 0.600 mm), three CLEAR, one UNLAUNCHABLE (`U5.2`).  The two biggest open
+  families on this board are the SAME mechanism, and it is not congestion.
+  `ACC_5V_LX` was retried at `--neck --grid 25000` under `U21`'s own courtyard
+  necking licence and still refuses; D-414's park stands with its number.
+  **NO COPPER WAS PROMOTED AND NONE WAS PROPOSED.**  Authority
+  `ecc5e0e2f6eadfb8a0ec359e37b46d42fd28655ab6f51193aa1fb8640980219d`
+  BYTE-IDENTICAL, ledger unchanged at **55 open edges / 27 nets**, ratsnest 71;
+  no `.kicad_dru`, `.kicad_pro`, zone, rule area or placement change.
+  `hardware/beta-v2/`, D-269 / D-186, `ACC_5V_SW_EN`, `ACC_3V3_SW`, RGB,
+  XGPIO4/5 and the eight approved Demo NC contacts untouched.
+  **NEXT: `U9` IS AN OWNER-FREE PLACEMENT DECISION AND IT IS NOW PRICED.**
+  Three edges sit behind one channel that holds one track.  `C17`, the 100 nF
+  `+3V3` decoupler at `38.750, 30.250` -- internal, no enclosure feature,
+  exactly what `apply_part_shift.py` and `placement_contract.py` PL1-PL7 were
+  built to move -- bounds the receive band, and its move is bounded by three
+  measured things: **PL5 caps it at +0.675 mm** on `C17.1`'s `+3V3` escape
+  endpoint and **+0.450 mm** on `C17.2`'s `GND` escape endpoint, and the `GND`
+  barrel at `40.500, 30.200` becomes **via-in-pad past +0.225 mm**.  So a
+  `C17` east transaction must relay BOTH escapes -- the shape D-619 promoted
+  for `Y1`.  `screen_land_escape_margin.py` joins the standing preflight and
+  should be run BEFORE any further routing attempt: an `EXACT` land needs the
+  exact-geometry primitive and an `UNLAUNCHABLE` one needs a licence or a
+  placement change, and neither is worth a maze run.  No owner decision is
+  OPEN; D-618's `J3` question remains RECORDED.
 - **Demo D-619 (THE `U9` WALL WAS NEVER FIVE WALLS AND IT WAS NEVER A
   CORRIDOR):** D-618 named this task -- *"the four `U9` NFC supply and
   receiver-input edges ... now have an instrument they never had"* -- and the

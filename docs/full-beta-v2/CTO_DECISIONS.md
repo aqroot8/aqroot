@@ -6305,6 +6305,176 @@ Evidence, all under `hardware/demo/manufacturing/evidence/`:
 `d585-pour-damage-neck.json` (`c0d293a8...`),
 `d585-neck-contract-rerun.json` (`a3f58da0...`).
 
+# D-620 · 2026-09-05 · Demo THE ZERO-MARGIN LAND: eight decisions of `NO_LEGAL_ESCAPE` were one number nobody had measured, the `U9` north row is full to the micron, and the USB MCU pair is a segment wall
+
+D-619 named this task — *"`NFC_RFO2` … it cannot relay (`B.Cu` only), but nothing has yet
+asked whether it can be RE-LAID from scratch, the way `NFC_XIN` just was"* — and the
+answer turned out to be the same answer for `U9`, for `+3V3`, for `U21` and for `U11`.
+
+## 1. THE MEASUREMENT THAT WAS MISSING
+
+Every `NO_LEGAL_ESCAPE_SRC` / `NO_LEGAL_ESCAPE_DST` this project has recorded is a
+whole-board search reporting, expensively and after the fact, something that is pure
+arithmetic: **given a land, a direction, a track width and the clearance that net owes a
+PAD, how much room is left over?**
+
+New read-only **`screen_land_escape_margin.py`** computes it — exactly, at one micron,
+against the pads a launch must walk past on its way out of its own package, with each
+net's contract read from `route_maze_batch.net_contract` so it can never measure a rule
+the router does not use. Three verdicts, and the middle one is the finding:
+
+    margin < 0    UNLAUNCHABLE.  The netclass width is wider than the land can ever
+                  launch.  KiCad would refuse it and so should anything else.
+    margin == 0   EXACT.  Buildable and unreachable AT THE SAME TIME.  KiCad's DRC
+                  passes it — the promoted `NFC_RFO1` / `NFC_RFO2` arms ARE this case —
+                  but `maze3d.dru_overlay` and `qrouter.QBoard.grid` both add a
+                  0.75-CELL GUARD BAND on top of the clearance, so the required figure
+                  is `clr + 0.75*G` and that STRICTLY EXCEEDS `clr` for every G > 0.
+                  No lattice, at any pitch, can ever propose this copper.
+    margin > 0    ordinary, and `max_lattice_mm = margin / 0.75` states the coarsest
+                  lattice whose guard band still fits.
+
+It is deterministic (two runs byte-identical, `343f1228…`) and it is not vacuous: grow
+`U9.14` by **one micron per side** and `U9.15` flips `EXACT` → `UNLAUNCHABLE`, margin
+`0.0000` → `-0.0010`, widest `0.300` → `0.295` (`d620-margin-nonvacuity.json`).
+
+## 2. THE `U9` NORTH ROW IS FULL TO THE MICRON
+
+    U9.13  NFC_RFO1   NFC_RF   0.300 mm    margin N  +0.0000    binding U9.12   EXACT
+    U9.15  NFC_RFO2   NFC_RF   0.300 mm    margin N  +0.0000    binding U9.14   EXACT
+    U9.14  NFC_VDD_RF Default  0.200 mm    margin N  +0.0500    binding U9.13   CLEAR
+
+`U9` is a UFQFPN-32 at 0.500 mm pitch whose transmit-arm lands are **0.300 mm wide with
+0.200 mm of gap on each side** — precisely the clearance `NFC_RF` owes a pad — and
+`U9.14` between them has **0.700 mm** for a 0.200 mm track that owes 0.250 mm to each
+arm: `0.200 + 0.250 + 0.250 = 0.700`, spent exactly. Three tracks, three exact fits,
+zero slack anywhere.
+
+**And `NFC_RF` was never launchable at its own netclass width at all.** The netclass
+asks 0.400 mm (the DRU's `opt`); the land caps it at 0.300 mm (the DRU's `min`, and the
+width both promoted arms have always carried). `route_maze_batch.DRU_CLASS` now carries
+a **`width_cap`** — a MEASUREMENT of the package, asserted at import to be no lower than
+the same class's DRU floor, so it can never ask for copper narrower than a rule allows
+and only stops the proposer aiming at a width the part forbids.
+
+## 3. THE EXACT-GEOMETRY RELAY, BUILT AND SPENT
+
+`screen_corridor_detour.py` on the three remaining `U9` edges returns **`DETOURABLE`
+three times, with `NFC_RFO2` the irreducible net every time**:
+
+    NFC_VDD_RF  U9.14   minimal cut 3 tracks / 5.188 mm    all RFO2 (stub + NE diagonal)
+    NFC_RFI1    U9.22   minimal cut 3 tracks / 12.561 mm   all RFO2 (the SE dogleg)
+    NFC_RFI2    U9.23   minimal cut 5 tracks / 11.741 mm   RFO2's dogleg + RFI1's own copper
+
+The 3-track cut is `NOT_A_CHAIN` and cannot be relaid — but **the whole seven-track arm
+IS one simple chain** from `U9.15` to `L6.1`, and offered as one detour the maze still
+returns `NO_PATH` **at 0.100 mm, 0.050 mm AND 0.025 mm**, because §1 says it must.
+
+So `route_maze_batch` gained an **exact-geometry relay**: a detour record may name an
+allowlisted `route_local_two_pad` route as its fallback. It is not a second router and
+not a weaker one — it is the SAME primitive that laid the copper being put back, it runs
+only after the maze has refused, `exact_relay_pads` requires the named entry to be on the
+detour's OWN net and to join the chain's OWN two ends to the micron, and clause 3's real
+KiCad DRC, clause 4's whole-board ledger and clause 5's preservation judge the result
+exactly as they judge the maze's.
+
+## 4. WHAT IT MEASURED: A 1-FOR-1 TRADE, PRICED IN BOTH DIRECTIONS
+
+**Half one.** With `NFC_RFO2` removed and nothing else changed, `route_local_two_pad`
+puts the arm back in **8.674 mm of 0.300 mm `B.Cu`, zero barrels** — the relay works when
+the channel is empty (`d620-rfo2-empty-channel-relay.json`).
+
+**Half two.** With `NFC_RFO2` removed, **`NFC_VDD_RF` CLOSES**: `C49.1 → U9.14`,
+**8.698 mm, `B`/`F`/`B`, two barrels**, ledger **55 → 54 open edges**, `GND` improves
+too, **ZERO attributable DRC**, nothing else regressed. Then the exact relay runs and
+returns **`NO_LEGAL_ESCAPE`** — `NFC_VDD_RF` took the channel and `NFC_RFO2` cannot come
+home (`d620-vdd-rf-one-for-one-run.json`).
+
+**Either order, one of them loses.** D-603 called this *"a strict 1-for-1 trade, in both
+orderings, on the real gate"* and named segment eviction as the missing unit; the unit
+was built (D-607), generalised to corridors (D-618), pointed here (D-619) and now given
+an exact-geometry half — and the trade is 1-for-1 because the row has room for the copper
+already on it **and not one track more**. That is a PLACEMENT wall stated as arithmetic,
+not a search failure. **The run was correctly REFUSED** and no copper was promoted.
+
+## 5. THE USB MCU PAIR IS A SEGMENT WALL, AND THAT IS NOW DECIDED
+
+D-583 recorded `USB_D_MCU_N`/`_P` as a *"crossing-copper wall"* — the exact words the
+D-618 corridor unit was built for — and nobody had pointed it there. Pointed there, it
+answers in one line: **hold out every crossing track on the permitted layers (115 and 156
+of them, across 41 nets) and BOTH are still `NO_PATH`.** Verdict `SEGMENT_WALL`: *no
+detour transaction of any size opens it.* Under the `USB_D` single-layer `F.Cu` contract
+the blockers are pads, vias and pours, which no eviction may take. What remains is an
+`F.Cu` refloorplan of the MCU fanout or a `.kicad_dru` section-6 ruling on a via that
+merely PIERCES `In2` — and neither is smuggled in here.
+
+## 6. THE BOARD-WIDE RANKING, WHICH IS THE POINT OF AN INSTRUMENT
+
+`screen_land_escape_margin.py` over **all 109 lands of the 25 open non-pour retained
+nets**:
+
+    CLEAR         103    the package can launch its netclass width with room to spare —
+                         these open edges are PATH problems, not package problems
+    EXACT           2    U11.9 /BQ25185_STAT1 and U11.3 /BQ25185_STAT2, 0.200 mm,
+                         margin +0.0000 — the U11 pocket D-307 recorded, now a number
+    UNLAUNCHABLE    4    the netclass width is wider than the land can ever launch:
+                           U21.5  ACC_5V_LX   SWITCH_NODE 0.600 mm, widest 0.250 mm
+                           U9.10  NFC_SUPPLY  P3V3        0.600 mm, widest 0.300 mm
+                           U12.10 BQ25185_SYS SYS_MAIN    0.800 mm, widest 0.600 mm
+                           U12.11 BQ25185_SYS SYS_MAIN    0.800 mm, widest 0.600 mm
+
+And `+3V3`'s eight stranded lands, measured separately: **four EXACT** (`U4.2`, `U4.3`,
+`U4.5`, `U4.12` — the BMI270's own LGA arithmetic at the 0.600 mm netclass width), three
+CLEAR (`U4.8` +0.275, `R129.1` +0.775, `R39.1` +1.450) and one UNLAUNCHABLE (`U5.2`,
+−0.125, widest 0.350). So the two biggest open families on this board — the `U9` front
+end and the `+3V3` orphans — are dominated by the SAME mechanism, and it is not
+congestion.
+
+`ACC_5V_LX` was retried on the strength of this — `--neck --grid 25000`, the board's own
+`U21` courtyard necking licence, at the finest lattice — and still refuses. D-414's park
+stands, now with its number: the land is short by **0.350 mm** at the netclass width, the
+licensed neck fires, and the 0.600 mm TRUNK has nowhere to widen into
+(`d620-acc-5v-lx-neck-retry.json`).
+
+## 7. WHAT WAS NOT DONE, AND THE BOARD
+
+**No copper was promoted and none was proposed for promotion.** The authoritative board
+is byte-identical before and after at
+**`ecc5e0e2f6eadfb8a0ec359e37b46d42fd28655ab6f51193aa1fb8640980219d`**, ledger unchanged
+at **55 open edges / 27 open retained nets**, ratsnest 71. `hardware/beta-v2/`,
+D-269 / D-186, `ACC_5V_SW_EN`, `ACC_3V3_SW`, RGB, XGPIO4/5 and the eight approved Demo NC
+contacts are untouched; no `.kicad_dru`, `.kicad_pro`, zone, rule area or placement
+changed. The three tool changes are `route_maze_batch.py` (`width_cap`, the import-time
+assertion that a cap may never sit below its own class floor, and the exact-geometry
+relay — all inert unless a spec asks for them) and one new read-only screen.
+
+## 8. NEXT
+
+**`U9` IS AN OWNER-FREE PLACEMENT DECISION AND IT IS NOW PRICED.** Three edges
+(`NFC_VDD_RF`, `NFC_RFI1`, `NFC_RFI2`) are downstream of one channel that holds one
+track. `C17` — a 100 nF `+3V3` decoupler at `38.750, 30.250`, internal, with no
+enclosure feature, exactly the kind of part D-619's `apply_part_shift.py` and
+`checks/placement_contract.py` PL1–PL7 were built to move — is the piece east of `U9`
+that bounds the receive band, and its own move is bounded by three measured things:
+`PL5` caps it at **+0.675 mm** on `C17.1`'s `+3V3` escape endpoint and **+0.450 mm** on
+`C17.2`'s `GND` escape endpoint, and the `GND` barrel at `40.500, 30.200` becomes
+via-in-pad past **+0.225 mm**. A transaction that moves `C17` east must therefore relay
+BOTH its escapes, which is exactly the shape D-619 promoted for `Y1`. Price it before
+taking it.
+
+`screen_land_escape_margin.py` joins the standing preflight, and it should be run BEFORE
+any further routing attempt on this board: an `EXACT` land needs the exact-geometry
+primitive and an `UNLAUNCHABLE` one needs a licence or a placement change, and neither is
+worth a maze run. No owner decision is OPEN; D-618's `J3` question remains RECORDED.
+
+Evidence, all under `hardware/demo/manufacturing/evidence/`:
+`d620-u9-north-row-margin.json`, `d620-margin-nonvacuity.json`,
+`d620-open-net-land-margins.json`, `d620-3v3-strand-margin.json`,
+`d620-u9-rfi-corridor-survey.json`, `d620-u9-rfi-lane-guard.json`,
+`d620-rfo2-detour-plan.json`, `d620-rfo2-maze-relay-refusal.json`,
+`d620-rfo2-empty-channel-relay.json`, `d620-vdd-rf-one-for-one-run.json`,
+`d620-usb-mcu-segment-wall.json`, `d620-acc-5v-lx-neck-retry.json`.
+
 # D-619 · 2026-09-05 · Demo THE U9 WALL WAS NEVER FIVE WALLS AND IT WAS NEVER A CORRIDOR: one mechanism behind all five NFC edges, a fifty-micron escape band, and the first PLACEMENT change this project has ever promoted
 
 D-618 named this task — *"the four `U9` NFC supply and receiver-input edges … now have

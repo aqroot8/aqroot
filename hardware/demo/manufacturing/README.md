@@ -3,9 +3,100 @@
 Status: **BLOCKED** at board CONNECTIVITY.  Every fabrication CONTRACT on this
 board passes -- package (`FAB1-FAB8`), BOM sourcing (100 % orderable, D-615),
 population (`POP1-POP4`), land patterns (`LAND1-LAND6`, 311/311), keep-out
-stackup (`KO1-KO5`), pour bonds (`P1-P4`), necks (`N1-N3`) and protected copper
--- and the residual is **56 retained open edges across 28 nets**.  One of them,
-`USB_D_CONN_P`, is parked on a MECHANICAL ruling rather than a route (D-618).
+stackup (`KO1-KO5`), pour bonds (`P1-P4`), necks (`N1-N3`), placement
+(`PL1-PL7`) and protected copper -- and the residual is **55 retained open
+edges across 27 nets**.  Two of them, `USB_D_CONN_P` and the `USB_D_MCU` pair,
+are parked on rulings rather than routes (D-618, D-620).
+
+## RUN THIS FIRST: the zero-margin land (2026-09-05, D-620)
+
+    python3 screen_land_escape_margin.py NET [NET ...] [--pad REF.NUM] -o OUT
+
+Before any further routing attempt on this board, ask what a LAND can launch.
+It is arithmetic, it needs no search, and it decides which tool the edge needs:
+
+    margin <  0   UNLAUNCHABLE -- the netclass width is wider than this land can
+                  ever launch.  Needs a licence or a placement change.
+    margin == 0   EXACT -- buildable and unreachable AT THE SAME TIME.  KiCad
+                  passes it (the promoted NFC transmit arms ARE this case) but
+                  `maze3d.dru_overlay` and `qrouter.QBoard.grid` both add a
+                  0.75-CELL guard band, so the required figure is `clr+0.75*G`
+                  and strictly exceeds `clr` for EVERY G > 0.  No lattice at any
+                  pitch can propose it.  Needs `route_local_two_pad`.
+    margin >  0   ordinary; `max_lattice_mm = margin/0.75` is the coarsest
+                  lattice whose guard band still fits.
+
+Deterministic; non-vacuous to ONE MICRON (grow `U9.14` by 1 um per side and
+`U9.15` flips `EXACT -> UNLAUNCHABLE`).  It measures PADS -- the package's own
+arithmetic -- and deliberately not the routed copper around the land, so
+`CLEAR` means "this package can launch this width", not "this net routes today".
+
+**The board-wide reading, 109 lands over the 25 open non-pour retained nets:**
+
+    CLEAR         103   path problems, not package problems
+    EXACT           2   U11.9 /BQ25185_STAT1, U11.3 /BQ25185_STAT2 @ 0.200 mm
+    UNLAUNCHABLE    4   U21.5  ACC_5V_LX    SWITCH_NODE 0.600 vs widest 0.250
+                        U9.10  NFC_SUPPLY   P3V3        0.600 vs        0.300
+                        U12.10 BQ25185_SYS  SYS_MAIN    0.800 vs        0.600
+                        U12.11 BQ25185_SYS  SYS_MAIN    0.800 vs        0.600
+
+`+3V3`'s eight stranded lands read **four EXACT** (`U4.2`/`U4.3`/`U4.5`/`U4.12`,
+the BMI270 LGA at 0.600 mm), three CLEAR, one UNLAUNCHABLE (`U5.2`).  So the two
+biggest open families on this board are one mechanism, and it is not congestion.
+
+## The U9 north row is full to the micron, and the trade is 1-for-1 (D-620)
+
+    U9.13  NFC_RFO1   NFC_RF   0.300 mm   margin N +0.0000   EXACT
+    U9.15  NFC_RFO2   NFC_RF   0.300 mm   margin N +0.0000   EXACT
+    U9.14  NFC_VDD_RF Default  0.200 mm   margin N +0.0500   CLEAR
+                              0.200 + 0.250 + 0.250 = 0.700 mm, spent exactly
+
+All three remaining `U9` edges are `DETOURABLE` with `NFC_RFO2` irreducible
+every time.  Its 3-track cut is `NOT_A_CHAIN`; its SEVEN tracks are one chain
+`U9.15 -> L6.1` and the maze relays `NO_PATH` at 0.100, 0.050 AND 0.025 mm --
+which §1 says it must.  `route_maze_batch.py` therefore gained an
+**exact-geometry relay**: a detour record may name an allowlisted
+`route_local_two_pad` route as its fallback (same primitive that laid the
+copper; only after the maze refuses; `exact_relay_pads` requires the same net
+and the same two ends to the micron; every gate still judges it).
+
+Spent, it priced the trade in both directions:
+
+    RFO2 removed, nothing else      route_local_two_pad relays it   8.674 mm
+    RFO2 removed, VDD_RF routed     C49.1 -> U9.14  8.698 mm, 2 vias, 55 -> 54
+                                    open edges, GND improves, ZERO attributable
+                                    DRC -- and then RFO2: NO_LEGAL_ESCAPE
+
+Either order, one loses.  D-603's *"strict 1-for-1 trade"* is this row having
+room for the copper already on it and not one track more.  **Correctly REFUSED;
+no copper promoted.**  `NFC_RF` also gained a `width_cap`: the netclass asks
+0.400 mm, the land caps it at 0.300 mm, and both promoted arms have always been
+0.300 mm.
+
+## USB_D_MCU_N / _P are a SEGMENT_WALL (D-620)
+
+D-583 called them a *"crossing-copper wall"* -- the exact words the D-618
+corridor unit was built for -- and nobody had pointed it there.  Pointed there:
+hold out EVERY crossing track on the permitted layers (115 and 156, across 41
+nets) and both are still `NO_PATH`.  *No detour transaction of any size opens
+it.*  Under the `USB_D` single-layer `F.Cu` contract the blockers are pads, vias
+and pours, which no eviction may take.  What remains is an `F.Cu` refloorplan of
+the MCU fanout or a `.kicad_dru` section-6 ruling on a via that merely PIERCES
+`In2`.
+
+## NEXT: C17, priced but not taken
+
+Three `U9` edges sit behind one channel that holds one track.  `C17` -- 100 nF
+`+3V3` decoupler at `38.750, 30.250`, internal, no enclosure feature, exactly
+what `apply_part_shift.py` and `placement_contract.py` PL1-PL7 were built to
+move -- bounds the receive band.  Its move is bounded by three measured things:
+
+    PL5   +0.675 mm   C17.1's +3V3 escape endpoint leaves the land past this
+    PL5   +0.450 mm   C17.2's GND  escape endpoint leaves the land past this
+    DFM   +0.225 mm   the GND barrel at 40.500,30.200 becomes via-in-pad past this
+
+so a `C17` east transaction must relay BOTH escapes -- the shape D-619 promoted
+for `Y1`.  Price it before taking it.
 
 ## USB-C data is half real copper, and the other half is a 0.395 mm band (2026-09-05, D-618)
 

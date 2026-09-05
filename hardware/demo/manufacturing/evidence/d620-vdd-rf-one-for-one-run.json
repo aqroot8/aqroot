@@ -1,0 +1,193 @@
+{
+  "attributable_drc": [],
+  "authoritative_board_sha256": "ecc5e0e2f6eadfb8a0ec359e37b46d42fd28655ab6f51193aa1fb8640980219d",
+  "authoritative_unchanged": true,
+  "bonds": null,
+  "bridges": null,
+  "candidate_sha256": "56efbd906e023180c9abbafccdeea6f19f7181a3ca0d41bf0ec9f06ca0a4ca47",
+  "connectivity": {
+    "nets_improved": [
+      "/04_SPI_B_RADIOS_NFC/NFC_VDD_RF",
+      "GND"
+    ],
+    "nets_regressed": [
+      "/04_SPI_B_RADIOS_NFC/NFC_RFO2"
+    ],
+    "open_retained_nets_after": 27,
+    "open_retained_nets_before": 27,
+    "retained_open_edges_after": 54,
+    "retained_open_edges_before": 55
+  },
+  "detour": {
+    "all_relaid": false,
+    "failed": [
+      {
+        "a_mm": [
+          35.25,
+          27.725
+        ],
+        "b_mm": [
+          38.5125,
+          32.2
+        ],
+        "layer": "B.Cu",
+        "net": "/04_SPI_B_RADIOS_NFC/NFC_RFO2",
+        "reason": "NO_LEGAL_ESCAPE",
+        "why": "no all-layer corridor at 0.300 mm between the two ends of this track once the site is reserved, inside the 20.000 mm budget"
+      }
+    ],
+    "guard_spec": "w/d620i/guard-with-detour.json",
+    "nets": [
+      "/04_SPI_B_RADIOS_NFC/NFC_RFO2"
+    ],
+    "own_layer_requested": false,
+    "own_layer_spent": [],
+    "relaid": [
+      {
+        "a_mm": [
+          35.25,
+          27.725
+        ],
+        "b_mm": [
+          38.5125,
+          32.2
+        ],
+        "exact_relay": "NFC_RFO2",
+        "layer": "B.Cu",
+        "layers_allowed": [
+          "B"
+        ],
+        "lkey": "B",
+        "max_mm": 20.0,
+        "net": "/04_SPI_B_RADIOS_NFC/NFC_RFO2",
+        "ok": false,
+        "own_layer": false,
+        "reason": "NO_LEGAL_ESCAPE",
+        "seconds": 1.7,
+        "was_mm": 8.6743,
+        "why": "no all-layer corridor at 0.300 mm between the two ends of this track once the site is reserved, inside the 20.000 mm budget",
+        "width_nm": 300000
+      }
+    ],
+    "removed_count": 7,
+    "removed_mm": 8.6743,
+    "requested": "w/d620-rfo2-detour.json",
+    "reserve": []
+  },
+  "drc_exit": 0,
+  "drc_types": {
+    "hole_clearance": 5,
+    "lib_footprint_issues": 199,
+    "solder_mask_bridge": 1
+  },
+  "escape_relief": null,
+  "eviction": null,
+  "exact_relay": [
+    {
+      "grid": null,
+      "mm": null,
+      "net": "/04_SPI_B_RADIOS_NFC/NFC_RFO2",
+      "ok": false,
+      "reason": "NO_LEGAL_ESCAPE",
+      "route": "NFC_RFO2",
+      "was_mm": 8.6743
+    }
+  ],
+  "failed_nets": [],
+  "guard": null,
+  "inherited_within_baseline": true,
+  "plane": null,
+  "plane_repair": null,
+  "preservation": {
+    "added_object_nets": [
+      "/04_SPI_B_RADIOS_NFC/NFC_VDD_RF"
+    ],
+    "foreign_added_nets": [],
+    "licensed_removals": 7,
+    "removed_objects": [
+      "('T', '/04_SPI_B_RADIOS_NFC/NFC_RFO2', 2, (35250000, 26800000), (35250000, 27725000), 300000)",
+      "('T', '/04_SPI_B_RADIOS_NFC/NFC_RFO2', 2, (35250000, 26800000), (36075000, 27000000), 300000)",
+      "('T', '/04_SPI_B_RADIOS_NFC/NFC_RFO2', 2, (36075000, 27000000), (37950000, 28925000), 300000)",
+      "('T', '/04_SPI_B_RADIOS_NFC/NFC_RFO2', 2, (37025000, 29875000), (37200000, 30900000), 300000)",
+      "('T', '/04_SPI_B_RADIOS_NFC/NFC_RFO2', 2, (37025000, 29875000), (37950000, 28925000), 300000)",
+      "('T', '/04_SPI_B_RADIOS_NFC/NFC_RFO2', 2, (37200000, 30900000), (37725000, 31425000), 300000)",
+      "('T', '/04_SPI_B_RADIOS_NFC/NFC_RFO2', 2, (37725000, 31425000), (38512500, 32200000), 300000)"
+    ],
+    "reverted_failures_clean": true,
+    "rule_area_inventory_ok": true,
+    "rule_areas_added": [],
+    "rule_areas_removed": [],
+    "unlicensed_removals": [],
+    "zone_inventory_ok": true,
+    "zones_added": [],
+    "zones_removed": []
+  },
+  "promotion_candidate": false,
+  "requested_nets": [
+    "/04_SPI_B_RADIOS_NFC/NFC_VDD_RF"
+  ],
+  "routed": [
+    {
+      "contract": {
+        "clr": 200000,
+        "clr_pad": 200000,
+        "guarded_layers": {},
+        "layers": [
+          "F",
+          "B",
+          "I2"
+        ],
+        "netclass": "Default",
+        "reserved_inner_planes": {
+          "I1": [
+            "GND"
+          ],
+          "I3": [
+            "+3V3"
+          ],
+          "I4": [
+            "GND"
+          ]
+        },
+        "via_dia": 600000,
+        "via_drill": 300000,
+        "width": 200000
+      },
+      "islands": 2,
+      "joins": [
+        {
+          "from": "C49.1",
+          "layers": [
+            "B",
+            "F",
+            "B"
+          ],
+          "mm": 8.698101995333646,
+          "ok": true,
+          "to": "U9.14",
+          "via_xy": [
+            [
+              37.5,
+              25.7
+            ],
+            [
+              36.7,
+              27.1
+            ]
+          ],
+          "vias": 2
+        }
+      ],
+      "mm": 8.698,
+      "mode": "maze",
+      "net": "/04_SPI_B_RADIOS_NFC/NFC_VDD_RF",
+      "ok": true,
+      "seconds": 2.7,
+      "vias": 2
+    }
+  ],
+  "routed_nets": [
+    "/04_SPI_B_RADIOS_NFC/NFC_VDD_RF"
+  ],
+  "schema": 1
+}

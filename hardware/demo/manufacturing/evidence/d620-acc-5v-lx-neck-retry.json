@@ -1,0 +1,97 @@
+{
+  "attributable_drc": [],
+  "authoritative_board_sha256": "ecc5e0e2f6eadfb8a0ec359e37b46d42fd28655ab6f51193aa1fb8640980219d",
+  "authoritative_unchanged": true,
+  "bonds": null,
+  "bridges": null,
+  "candidate_sha256": "ecc5e0e2f6eadfb8a0ec359e37b46d42fd28655ab6f51193aa1fb8640980219d",
+  "connectivity": {
+    "nets_improved": [],
+    "nets_regressed": [],
+    "open_retained_nets_after": 27,
+    "open_retained_nets_before": 27,
+    "retained_open_edges_after": 55,
+    "retained_open_edges_before": 55
+  },
+  "detour": null,
+  "drc_exit": 0,
+  "drc_types": {
+    "hole_clearance": 5,
+    "lib_footprint_issues": 199,
+    "solder_mask_bridge": 1
+  },
+  "escape_relief": null,
+  "eviction": null,
+  "exact_relay": [],
+  "failed_nets": [
+    "/01_POWER_TREE/ACC_5V_LX"
+  ],
+  "guard": null,
+  "inherited_within_baseline": true,
+  "plane": null,
+  "plane_repair": null,
+  "preservation": {
+    "added_object_nets": [],
+    "foreign_added_nets": [],
+    "licensed_removals": 0,
+    "removed_objects": [],
+    "reverted_failures_clean": true,
+    "rule_area_inventory_ok": true,
+    "rule_areas_added": [],
+    "rule_areas_removed": [],
+    "unlicensed_removals": [],
+    "zone_inventory_ok": true,
+    "zones_added": [],
+    "zones_removed": []
+  },
+  "promotion_candidate": false,
+  "requested_nets": [
+    "/01_POWER_TREE/ACC_5V_LX"
+  ],
+  "routed": [
+    {
+      "contract": {
+        "clr": 300000,
+        "clr_pad": 200000,
+        "guarded_layers": {},
+        "layers": [
+          "F",
+          "B"
+        ],
+        "netclass": "SWITCH_NODE",
+        "reserved_inner_planes": {
+          "I1": [
+            "GND"
+          ],
+          "I3": [
+            "+3V3"
+          ],
+          "I4": [
+            "GND"
+          ]
+        },
+        "via_dia": 800000,
+        "via_drill": 400000,
+        "width": 600000
+      },
+      "islands": 2,
+      "joins": [
+        {
+          "ok": false,
+          "pads": [
+            "U21.5"
+          ],
+          "reason": "NO_LEGAL_ESCAPE_DST",
+          "why": "U21.5: NO LEGAL ESCAPE at >= 0.600 mm; blocked by U21.4 (x21), C65.1 (x18), U21.1 (x13), L4.1 (x11)"
+        }
+      ],
+      "mode": "maze",
+      "net": "/01_POWER_TREE/ACC_5V_LX",
+      "ok": false,
+      "reason": "NO_LEGAL_ESCAPE_DST",
+      "seconds": 8.0
+    }
+  ],
+  "routed_nets": [],
+  "schema": 1
+}
