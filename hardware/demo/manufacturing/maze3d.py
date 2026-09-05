@@ -2758,6 +2758,670 @@ def offcentre_connect(qb, ctx, pa, pb, layer, width, stub_widths=None,
                 mm=round(r.get('mm', 0.0) + stub_mm, 4))
 
 
+def _via_free_everywhere(qb, ctx, x, y, via_dia, via_drill, G):
+    """May a THROUGH barrel of this geometry sit on this point?
+
+    `QBoard.via_sites` clears the two layers the hop happens to be thinking
+    about; a through barrel is copper on EVERY layer of the stack and a
+    DRILLED HOLE besides.  This is the whole test, and it is deliberately the
+    same one `verify_laid` re-proves afterwards -- `h.r` and not
+    `max(h.hx, h.hy)` -- so the pre-filter and the prover can never disagree
+    about which sites exist.
+    """
+    for L in qb.cu:
+        if not qb.point_free(L, ctx.net, x, y, via_dia,
+                             ctx.clr_pad, ctx.clr_trk, G):
+            return False
+    for h in qb.holes:
+        if math.hypot(h.cx - x, h.cy - y) < via_drill / 2.0 + h.r + HOLE_CLR:
+            return False
+    return True
+
+
+def _hop_near(pad, far, near=None):
+    """The outer layer this end launches from.
+
+    `far` FIRST when the land is already on it, because then the end needs no
+    barrel at all and the hop degenerates -- correctly -- into the flat
+    off-centre connect for that end.  Otherwise the layer the land is on.
+    """
+    if near is not None and pad.get(near):
+        return near
+    if far in ('F', 'B') and pad.get(far):
+        return far
+    for L in ('F', 'B'):
+        if pad.get(L):
+            return L
+    return None
+
+
+def _lattice_leavable(field, layer, span=2):
+    """A landing test: can a WAVEFRONT actually leave this point?
+
+    `point_terminals` opens the landing's OWN cell whether or not the raster
+    calls it free -- rightly, because the 0.75-cell guard band is a
+    rasterisation artefact and `verify_laid` is what decides.  But it opens
+    ONLY that cell.  If every cell within `span` is blocked, the seed set is a
+    single island and the wavefront dies on its first step, which is exactly
+    what this board answered: `/WAKE_INT_N` `U2.1 -> U3.1` returned `NO_PATH`
+    in ZERO seconds.
+
+    So the test that belongs INSIDE the stub's length ladder is not "is the
+    landing legal" -- exact geometry already settles that -- it is "is there a
+    free lattice cell beside it".  Handed to `offcentre_escapes` as `goal_ok`,
+    the ladder walks OUT of the pocket instead of stopping at the first legal
+    landing inside it.  That is the same lesson D-633 learned for
+    `pad_escapes`, applied where it can actually be spent.
+    """
+    blk = field.blk.get(layer)
+    if blk is None:
+        return None
+
+    def ok(x, y):
+        ci, cj = field.cell(x, y)
+        for dj in range(-span, span + 1):
+            for di in range(-span, span + 1):
+                i, j = ci + di, cj + dj
+                if (di or dj) and field.inside(i, j) and not blk[j, i]:
+                    return True
+        return False
+    return ok
+
+
+def _hop_launch(qb, ctx, p, other, layer, width, stub_widths, G, ox, oy,
+                memo, limit, reach_mm, anchor_fracs, dir_step_deg,
+                goal_ok=None):
+    """Candidate launch points for ONE end, CENTRE-ANCHORED ONES FIRST.
+
+    Returns (candidates, stub_width, why).  Each candidate carries `ax`/`ay`
+    (the point on the land the stub starts at) and `x`/`y` (the landing), so
+    the caller lays exactly one segment per end and never has to know which
+    freedom bought it.  The centre-anchored escape is asked first and its
+    answers are taken in ITS OWN ORDER, so an end that launches today launches
+    today by the same ray, and this can only ADD candidates.
+    """
+    prefer = (other['x'] - p['x'], other['y'] - p['y'])
+    e = qb.escape(p, layer, width, width, ctx.clr_pad, ctx.clr_trk,
+                  G, ox, oy, prefer=prefer)
+    if e:
+        keep = [c for c in e[:limit]
+                if goal_ok is None or goal_ok(c['x'], c['y'])]
+        if keep:
+            return ([dict(x=c['x'], y=c['y'], w=c['w'], ln=c['ln'],
+                          ax=p['x'], ay=p['y'], offcentre_mm=0.0,
+                          base_dir=True, centre=True) for c in keep],
+                    int(width), None)
+    why = None
+    for sw in (stub_widths or (int(width),)):
+        key = (p['ref'], layer, int(sw), int(width),
+               (round(prefer[0] / 1000.0), round(prefer[1] / 1000.0)),
+               _state_key(qb))
+        if memo is not None and key in memo:
+            oc, why = memo[key]
+        else:
+            oc = offcentre_escapes(qb, ctx, p, layer, sw, G, ox, oy,
+                                   prefer=prefer, trunk_w=width, limit=limit,
+                                   reach_mm=reach_mm,
+                                   anchor_fracs=anchor_fracs,
+                                   dir_step_deg=dir_step_deg,
+                                   goal_ok=goal_ok)
+            why = offcentre_escapes.why
+            if memo is not None:
+                memo[key] = (oc, why)
+        if oc:
+            return ([dict(c, centre=False) for c in oc], int(sw), None)
+    return ([], int(width), why)
+
+
+def _hop_sites(qb, ctx, nl, far, c, width, ladder, G, span, sites_limit,
+               keep):
+    """Up to `keep` acceptable barrel sites for ONE launch, nearest first.
+
+    Returns a list of (x, y, dia, drill).  The ladder is walked WIDEST FIRST
+    and the FIRST rung that yields any acceptable site wins the whole list, so
+    an end never mixes barrel geometries and never spends a smaller barrel
+    than the pocket actually demands.
+
+    Two things separate this from `QBoard.via_site`, and both were measured:
+
+      * `via_site` -- the SINGULAR -- returns the nearest reachable site that
+        clears the NEAR and FAR layers, which is not the same question as "the
+        nearest reachable site this BOARD will accept".  `TP6.1`
+        (`/BQ25185_STAT1`) has one at (69.600, 95.750): legal on `B`, legal on
+        `I2`, and 0.064 mm from a foreign `Net-(SW9-A)` track on `I3` -- a
+        layer the hop was not thinking about and the drill goes straight
+        through.  Taking that one answer and giving up is how a perfectly
+        reachable end reports `NO_VIA_SITE`.
+      * the reachable cloud is GRID-DENSE.  At 0.025 mm pitch the 256 nearest
+        sites lie inside a 0.2 mm radius, so an unseparated list walks the same
+        square millimetre over and over and never reaches the next opening.
+        `via_sites` compacts by barrel diameter into materially distinct
+        placements, still distance-ordered, so `sites_limit` buys AREA instead
+        of resolution.
+    """
+    for (dia, drill) in ladder:
+        out = []
+        if _via_free_everywhere(qb, ctx, c['x'], c['y'], dia, drill, G):
+            out.append((int(c['x']), int(c['y']), int(dia), int(drill)))
+        for st in qb.via_sites(nl, far, ctx.net, c, width, dia,
+                               ctx.clr_pad, ctx.clr_trk, G, span=span,
+                               via_drill=drill, hole_clr=HOLE_CLR,
+                               limit=sites_limit, separation=dia):
+            if len(out) >= keep:
+                break
+            if (int(st[0]), int(st[1])) == (int(c['x']), int(c['y'])):
+                continue
+            if _via_free_everywhere(qb, ctx, st[0], st[1], dia, drill, G):
+                out.append((int(st[0]), int(st[1]), int(dia), int(drill)))
+        if out:
+            return out
+    return []
+
+
+def _hop_options(qb, ctx, p, other, far, near, width, stub_widths, ladder,
+                 G, ox, oy, memo, limit, span, sites_limit, keep,
+                 reach_mm, anchor_fracs, dir_step_deg):
+    """Every (launch, barrel) this end could take, in preference order.
+
+    Returns (near_layer, options, refusal).  An option is a dict carrying the
+    launch, the barrel site and geometry (or `None` when the land is already
+    on the haul layer and needs no barrel at all), and the stub width.  NO
+    COPPER IS LAID: a `QBoard`'s obstacles never include the net's own copper,
+    so both ends can be planned against the same board before either commits.
+    """
+    nl = _hop_near(p, far, near)
+    if nl is None:
+        return None, [], dict(reason='NO_OUTER_LAYER',
+                              why='%s is on no outer layer' % p['ref'])
+    cands, sw, why = _hop_launch(qb, ctx, p, other, nl, width, stub_widths,
+                                 G, ox, oy, memo, limit, reach_mm,
+                                 anchor_fracs, dir_step_deg)
+    if not cands:
+        return nl, [], dict(reason='NO_LEGAL_ESCAPE', why=why)
+    opts = []
+    for c in cands:
+        if nl == far:
+            opts.append(dict(cand=c, sw=sw, site=None, dia=None, drill=None,
+                             at=(c['x'], c['y'])))
+            continue
+        for (x, y, dia, drill) in _hop_sites(qb, ctx, nl, far, c, width,
+                                             ladder, G, span, sites_limit,
+                                             keep):
+            opts.append(dict(cand=c, sw=sw, site=(x, y), dia=dia, drill=drill,
+                             at=(x, y)))
+    if not opts:
+        return nl, [], dict(
+            reason='NO_VIA_SITE',
+            why='%s: no barrel of %s reachable on %s from any of %d launches '
+                'that clears every layer of the stack'
+                % (p['ref'], '/'.join('%.2f' % (d / 1e6) for d, _ in ladder),
+                   nl, len(cands)))
+    return nl, opts, None
+
+
+def _hop_lay(qb, ctx, p, nl, far, opt, width, G, fine):
+    """Lay ONE end's stub, its walk to the barrel site and the barrel itself.
+
+    Returns (ok, walk_mm, why).  The caller owns the mark and the revert.
+    """
+    c, sw = opt['cand'], opt['sw']
+    qb.track(ctx.net, nl, c['ax'], c['ay'], c['x'], c['y'], int(sw))
+    if opt['site'] is None:
+        return True, 0.0, None
+    vx, vy = opt['site']
+    wmm = 0.0
+    if (vx, vy) != (c['x'], c['y']):
+        w = qr.connect_role(
+            qb, ctx.net,
+            dict(ref=p['ref'] + '~land', net=ctx.net, x=c['x'], y=c['y'],
+                 anchor=True),
+            dict(ref=p['ref'] + '~barrel', net=ctx.net, x=vx, y=vy,
+                 anchor=True),
+            nl, width, ctx.clr_pad, ctx.clr_trk, G=G, fine=fine)
+        if not w.get('ok'):
+            return False, 0.0, ('%s: no %s corridor from the launch to its '
+                                'barrel site' % (p['ref'], nl))
+        wmm = w.get('mm', 0.0)
+    qb.via(ctx.net, vx, vy, opt['dia'], opt['drill'])
+    return True, wmm, None
+
+
+def offcentre_hop(qb, ctx, pa, pb, far, width, near=None, stub_widths=None,
+                  G=50000, fine=25000, memo=None, limit=6, via_ladder=None,
+                  via_dia=600000, via_drill=300000, span=8000000,
+                  sites_limit=96, site_options=6, joint=True,
+                  joint_grid=100000, joint_margin=24000000,
+                  reach_mm=OFFCENTRE_REACH_MM,
+                  anchor_fracs=OFFCENTRE_ANCHOR_FRACS,
+                  dir_step_deg=OFFCENTRE_DIR_STEP_DEG):
+    """Close ONE pad pair with an OFF-CENTRE LAUNCH and a LAYER HOP.
+
+    D-633 measured the off-centre launch and found that it opens twenty-nine
+    lands and then hands every one of them to a CORRIDOR that refuses.  All
+    three corridor instruments this board owns had the same gap.
+    `qrouter.connect_role` is exact at the escape but FLAT -- one layer, no
+    via, so it can only ever offer the lane the pocket is already congested
+    with.  `qrouter.connect_hop` has the barrel but escapes from the pad
+    CENTRE and CANNOT BE GIVEN AN ANCHOR, so it refuses at precisely the lands
+    the off-centre launch opened.  `route_join` has the barrel AND the layer
+    change and reaches neither, because its launch is a LATTICE cell and
+    D-633 proved that what refuses a lattice is the POCKET, not the pad
+    centre.  This is the composition with none of those three gaps, and it is
+    a composition and not a fourth router:
+
+      * the STUB is `offcentre_escapes` -- exact analytic clearance against
+        real obstacle shapes, never a lattice, and its landing is required to
+        hold the TRUNK width so the haul never starts on copper it may not use;
+      * the BARREL is `_hop_sites` over `QBoard.via_sites`, cleared on EVERY
+        layer of the stack and against every drilled hole;
+      * the WALK from the landing to that site, and the HAUL itself on `far`,
+        are both `qrouter.connect_role` between two ANCHORS, which is the case
+        it has always had and which lays no escape of its own.
+
+    THE BARREL IS CHOSEN JOINTLY, AND THAT IS THE PART THE MEASUREMENT
+    FORCED.  Picking each end's barrel independently -- nearest legal site to
+    that end's own launch -- is what `connect_hop` does, and on this board it
+    fails for a reason no near-layer measurement can see: `In2.Cu` is not an
+    empty lane, it is a field of **790 through barrels** that every layer of
+    the stack carries, and it is partitioned into POCKETS.  Measured on
+    `/08_BUTTONS_EXPANDERS/BTN_LEFT_N`: `R6.2`'s nearest legal barrel at
+    (52.800, 88.500) can reach **37.5 mm2** of `In2.Cu` and `U2.15`'s barrel
+    at (56.925, 83.225) -- 4.9 mm away -- is NOT INSIDE IT.  Two perfectly
+    legal barrels, one perfectly empty layer, and no corridor, because the
+    barrels were chosen for their distance from the near-layer launch instead
+    of for the far-layer pocket they land in.  With `joint`, the far layer is
+    FLOODED from each of end A's candidate sites and end B's site is required
+    to lie inside that flood, so the pair is committed only when the haul is
+    reachable BY CONSTRUCTION.  `joint=False` reproduces the independent
+    choice, for the A/B that proves the difference.
+
+    `far` may be a single layer or an ordered list, in which case the first
+    that closes wins and the most informative refusal is carried out.  An end
+    whose land is ALREADY on `far` takes no barrel and no walk, so a pair of
+    such ends is exactly `offcentre_connect` and answers identically.
+
+    `stub_widths` is a DESCENDING ladder spent ONLY on the off-centre stub;
+    the landing, the walk and the haul are all at `width`.  `via_ladder` is a
+    descending list of (diameter, drill) pairs, widest first, per end.  The
+    centre-anchored escape is asked FIRST at every end, so no pair that closes
+    today changes.  On success every object is on `qb` and the caller's own
+    `mark` reverts the whole transaction; on failure this reverts what it laid.
+    """
+    ladder = tuple(via_ladder or ((int(via_dia), int(via_drill)),))
+    if isinstance(far, (list, tuple)):
+        best, tried = None, []
+        for L in far:
+            r = offcentre_hop(qb, ctx, pa, pb, L, width, near=near,
+                              stub_widths=stub_widths, G=G, fine=fine,
+                              memo=memo, limit=limit, via_ladder=ladder,
+                              span=span, sites_limit=sites_limit,
+                              site_options=site_options, joint=joint,
+                              joint_grid=joint_grid,
+                              joint_margin=joint_margin,
+                              reach_mm=reach_mm, anchor_fracs=anchor_fracs,
+                              dir_step_deg=dir_step_deg)
+            tried.append(dict(far=L, reason=r.get('reason'),
+                              pad=r.get('pad'), why=r.get('why')))
+            if r.get('ok'):
+                return dict(r, far_tried=tried)
+            # A land that cannot launch at all says the same thing on every
+            # far layer; a corridor refusal is the layer's own answer.  Keep
+            # the first, most specific reason.
+            if best is None or (best.get('reason') == 'NO_PATH'
+                                and r.get('reason') != 'NO_PATH'):
+                best = r
+        return dict(best or dict(ok=False, reason='NO_LAYER',
+                                 why='no far layer offered'), far_tried=tried)
+
+    ox, oy = qb.ex0 - 2000000, qb.ey0 - 2000000
+    plan = []
+    for p, other in ((pa, pb), (pb, pa)):
+        if p.get('anchor'):
+            plan.append((p, None, [dict(cand=None, sw=int(width), site=None,
+                                        dia=None, drill=None,
+                                        at=(p['x'], p['y']))]))
+            continue
+        nl, opts, bad = _hop_options(qb, ctx, p, other, far, near, width,
+                                     stub_widths, ladder, G, ox, oy, memo,
+                                     limit, span, sites_limit, site_options,
+                                     reach_mm, anchor_fracs, dir_step_deg)
+        if bad is not None:
+            return dict(ok=False, pad=p['ref'], far=far, launches=[], **bad)
+        plan.append((p, nl, opts))
+
+    # JOINT SELECTION.  Flood the haul layer from each of end A's candidate
+    # barrels and take the first of end B's that lies inside it.  The flood is
+    # the SAME `free_region` the site search itself is built on, at the trunk
+    # width, so a pair that survives here has a haul by construction and
+    # `connect_role` below is a formality that draws it rather than a search
+    # that might fail.
+    pairs, unreached, fallback = [], 0, False
+    if joint:
+        # THE FLOOD IS BOUNDED AND IT IS COARSE, AND BOTH ARE DELIBERATE.
+        # `free_region` rasterises its whole window: at 0.025 mm over this
+        # board that is 28 million cells and the pre-filter would cost more
+        # than the search it is meant to save.  The window is the candidate
+        # barrels' bounding box plus `joint_margin`, which is
+        # `connect_role`'s OWN largest expansion, so a haul this cannot see is
+        # a haul that instrument cannot see either.  The pitch is coarser, and
+        # a coarser lattice has a LARGER guard band and therefore a SMALLER
+        # reachable set -- the pre-filter can only ever be pessimistic, never
+        # permissive.  Which is why a `joint` run that finds no shared pocket
+        # still FALLS BACK to the independent nearest pair: the joint test may
+        # only ADD closures, exactly as the off-centre launch may only add
+        # launches.
+        jg = max(int(joint_grid), int(G))
+        x0 = min(o['at'][0] for pl in plan for o in pl[2]) - joint_margin
+        x1 = max(o['at'][0] for pl in plan for o in pl[2]) + joint_margin
+        y0 = min(o['at'][1] for pl in plan for o in pl[2]) - joint_margin
+        y1 = max(o['at'][1] for pl in plan for o in pl[2]) + joint_margin
+        x0, y0 = max(x0, qb.ex0), max(y0, qb.ey0)
+        x1, y1 = min(x1, qb.ex1), min(y1, qb.ey1)
+        for oa in plan[0][2]:
+            reg = qb.free_region(far, ctx.net, width, ctx.clr_pad,
+                                 ctx.clr_trk, jg, oa['at'], x0, y0, x1, y1)
+            if reg is None:
+                continue
+            mask, rox, roy, g = reg
+            for ob in plan[1][2]:
+                i = int((ob['at'][0] - rox) // g)
+                j = int((ob['at'][1] - roy) // g)
+                if 0 <= j < mask.shape[0] and 0 <= i < mask.shape[1] \
+                        and mask[j, i]:
+                    pairs.append((oa, ob))
+                else:
+                    unreached += 1
+        if not pairs:
+            fallback = True
+    if not pairs:
+        pairs = [(plan[0][2][0], plan[1][2][0])]
+
+    fail = None
+    for (oa, ob) in pairs:
+        m0 = qb.mark()
+        ends, launches, barrels = [], [], []
+        stub_mm = walk_mm = 0.0
+        ok = True
+        for (p, nl, _), opt in zip(plan, (oa, ob)):
+            if opt['cand'] is None:
+                ends.append(p)
+                continue
+            good, wmm, why = _hop_lay(qb, ctx, p, nl, far, opt, width, G, fine)
+            if not good:
+                fail = dict(ok=False, reason='NO_NEAR_WALK', pad=p['ref'],
+                            why=why, far=far)
+                ok = False
+                break
+            c = opt['cand']
+            stub_mm += c['ln'] / 1e6
+            walk_mm += wmm
+            launches.append(dict(pad=p['ref'], layer=nl, width=int(opt['sw']),
+                                 trunk_width=int(width),
+                                 necked=bool(opt['sw'] < width),
+                                 centre=bool(c.get('centre')),
+                                 offcentre_mm=c['offcentre_mm'],
+                                 base_dir=c['base_dir'],
+                                 mm=round(c['ln'] / 1e6, 4),
+                                 walk_mm=round(wmm, 4),
+                                 a_xy=(round(c['ax'] / 1e6, 4),
+                                       round(c['ay'] / 1e6, 4)),
+                                 b_xy=(round(c['x'] / 1e6, 4),
+                                       round(c['y'] / 1e6, 4)),
+                                 via_dia=opt['dia'], via_drill=opt['drill'],
+                                 via_xy=(None if opt['site'] is None else
+                                         (round(opt['site'][0] / 1e6, 4),
+                                          round(opt['site'][1] / 1e6, 4)))))
+            if opt['site'] is not None:
+                barrels.append(dict(xy=(round(opt['site'][0] / 1e6, 4),
+                                        round(opt['site'][1] / 1e6, 4)),
+                                    dia=opt['dia'], drill=opt['drill'],
+                                    near=nl, far=far))
+            ends.append(dict(ref=p['ref'], net=p['net'],
+                             x=opt['at'][0], y=opt['at'][1],
+                             F=p.get('F'), B=p.get('B'), anchor=True,
+                             shape=p['shape'], hx=p['hx'], hy=p['hy'],
+                             r=p['r'], ang=p['ang']))
+        if not ok:
+            qb.revert(m0)
+            continue
+        r = qr.connect_role(qb, ctx.net, ends[0], ends[1], far, width,
+                            ctx.clr_pad, ctx.clr_trk, G=G, fine=fine)
+        if not r.get('ok'):
+            qb.revert(m0)
+            fail = dict(r, launches=launches, far=far, vias=len(barrels))
+            continue
+        bad = verify_laid(qb, ctx, m0)
+        if bad is not None:
+            qb.revert(m0)
+            fail = dict(ok=False, reason='UNPROVED_GEOMETRY',
+                        launches=launches, far=far, vias=len(barrels),
+                        why='%s at %s vs %s'
+                            % (bad.get('kind'), bad.get('at'),
+                               bad.get('against', bad.get('why'))))
+            continue
+        return dict(r, launches=launches, far=far, vias=len(barrels),
+                    barrels=barrels, joint=bool(joint),
+                    joint_fallback=bool(fallback), combinations=len(pairs),
+                    joint_rejected=unreached,
+                    stub_mm=round(stub_mm, 4), walk_mm=round(walk_mm, 4),
+                    mm=round(r.get('mm', 0.0) + stub_mm + walk_mm, 4))
+    return fail or dict(ok=False, reason='NO_PATH', far=far, launches=[],
+                        why='no haul on %s from %s to %s' % (far, pa['ref'],
+                                                             pb['ref']))
+
+def offcentre_route(qb, field, pa, pb, width=None, stub_widths=None, G=50000,
+                    memo=None, limit=6, via_cost_mm=1.5, span=2, max_mm=0.0,
+                    reach_mm=OFFCENTRE_REACH_MM,
+                    anchor_fracs=OFFCENTRE_ANCHOR_FRACS,
+                    dir_step_deg=OFFCENTRE_DIR_STEP_DEG):
+    """Close ONE pad pair with an EXACT launch and the FULL 3D corridor.
+
+    This is the composition D-634's own measurement forced, and it is the one
+    combination no instrument on this board has ever had.
+
+    `offcentre_hop` gave the exact launch a barrel and a haul, but the haul is
+    `connect_role` and `connect_role` is FLAT: it picks ONE layer, and the
+    board-wide census found the wall is exactly there.  `In2.Cu` is not a spare
+    lane -- a THROUGH barrel is copper on every layer, this board has 790 of
+    them, and they cut the inner layers into POCKETS.  Measured on
+    `/08_BUTTONS_EXPANDERS/BTN_LEFT_N`: `R6.2`'s barrel reaches 37.5 mm2 of
+    `In2.Cu` and `U2.15`'s barrel, 4.9 mm away, is not inside it.  A flat haul
+    cannot leave a pocket.  A 3D one can -- that is what a via is for -- and
+    `wave3d` has always been able to, which is why `route_join` exists.
+
+    What `route_join` could never do is START.  Its launch is
+    `maze3d.pad_escapes`, whose candidates must be free cells of the WHOLE-BOARD
+    lattice, and D-633 proved that what refuses a lattice is the POCKET the land
+    sits in and not the pad's centre -- so the 29 lands the off-centre launch
+    opened were opened for nothing.  `point_terminals` is the door: it takes an
+    EXACT board coordinate and opens that coordinate's own cell whether or not
+    the raster calls it free, on the stated ground that the 0.75-cell guard band
+    is a rasterisation artefact and `verify_laid` is what decides afterwards.
+    So the exact stub lands where only exact geometry can prove it legal, and
+    the wavefront starts from there.
+
+    Both ends launch on THEIR OWN outer layer, which need not be the same one --
+    `route_points` requires a single terminal layer because a detour must
+    arrive where the track it replaces arrived; a pair of lands has no such
+    obligation, and half this board's open pairs are not coplanar at all.
+
+    `field` is a `Field` of this net at the trunk width and is also its own
+    `EscapeCtx`.  `width` defaults to the field's.  On success the copper is on
+    `qb` and the caller's `mark` reverts it; on failure this reverts what it
+    laid.  Every object -- stub, run and barrel alike -- is re-proved by
+    `verify_laid` before it is kept.
+    """
+    width = int(field.width if width is None else width)
+    ox, oy = qb.ex0 - 2000000, qb.ey0 - 2000000
+    m0 = qb.mark()
+    ends, launches, stub_mm = [], [], 0.0
+    for p, other in ((pa, pb), (pb, pa)):
+        if p.get('anchor'):
+            ends.append((p.get('layer') or ('F' if p.get('F') else 'B'),
+                         int(p['x']), int(p['y'])))
+            continue
+        laid = None
+        for nl in ('F', 'B'):
+            if not p.get(nl) or nl not in field.blk:
+                continue
+            cands, sw, why = _hop_launch(qb, field, p, other, nl, width,
+                                         stub_widths, G, ox, oy, memo, limit,
+                                         reach_mm, anchor_fracs, dir_step_deg,
+                                         goal_ok=_lattice_leavable(field, nl,
+                                                                   span))
+            if not cands:
+                laid = laid or dict(reason='NO_LEGAL_ESCAPE', pad=p['ref'],
+                                    why=why)
+                continue
+            c = cands[0]
+            qb.track(field.net, nl, c['ax'], c['ay'], c['x'], c['y'], int(sw))
+            stub_mm += c['ln'] / 1e6
+            launches.append(dict(pad=p['ref'], layer=nl, width=int(sw),
+                                 trunk_width=width,
+                                 necked=bool(sw < width),
+                                 centre=bool(c.get('centre')),
+                                 offcentre_mm=c['offcentre_mm'],
+                                 base_dir=c['base_dir'],
+                                 mm=round(c['ln'] / 1e6, 4),
+                                 a_xy=(round(c['ax'] / 1e6, 4),
+                                       round(c['ay'] / 1e6, 4)),
+                                 b_xy=(round(c['x'] / 1e6, 4),
+                                       round(c['y'] / 1e6, 4))))
+            ends.append((nl, int(c['x']), int(c['y'])))
+            laid = True
+            break
+        if laid is not True:
+            qb.revert(m0)
+            return dict(ok=False, launches=launches,
+                        **(laid or dict(reason='NO_OUTER_LAYER',
+                                        pad=p['ref'],
+                                        why='%s is on no layer of this net\'s '
+                                            'contract' % p['ref'])))
+
+    (la, ax, ay), (lb, bx, by) = ends
+    seeds = point_terminals(field, bx, by, lb, span)
+    goals = point_terminals(field, ax, ay, la, span)
+    if not seeds or not goals:
+        qb.revert(m0)
+        return dict(ok=False, reason='NO_TERMINAL', launches=launches,
+                    why='%s or %s is not on a layer of this net\'s contract'
+                        % (la, lb))
+    vc = max(1, int(round(via_cost_mm * qr.MM / field.G)))
+    budget = (WAVE_STEPS if not max_mm
+              else max(1, int(round(max_mm * qr.MM / field.G))))
+    dist, hit = wave3d(field, seeds, goals, vc, budget=budget)
+    if dist is None or hit is None:
+        qb.revert(m0)
+        return dict(ok=False, reason='NO_PATH', launches=launches,
+                    why='no all-layer corridor at %.3f mm from %s on %s to %s '
+                        'on %s' % (width / 1e6, pa['ref'], la, pb['ref'], lb))
+    path = descend3d(field, dist, hit, vc)
+    if path is None:
+        qb.revert(m0)
+        return dict(ok=False, reason='NO_DESCENT', launches=launches)
+    if path[0][0] != la or path[-1][0] != lb:
+        qb.revert(m0)
+        return dict(ok=False, reason='WRONG_TERMINAL_LAYER', launches=launches,
+                    why='the corridor arrives on %s/%s, not %s/%s'
+                        % (path[0][0], path[-1][0], la, lb))
+    r = _emit_path(qb, field, path, field.net, head=(ax, ay), tail=(bx, by))
+    if not r.get('ok'):
+        qb.revert(m0)
+        return dict(r, launches=launches)
+    bad = verify_laid(qb, field, m0)
+    if bad is not None:
+        qb.revert(m0)
+        return dict(ok=False, reason='UNPROVED_GEOMETRY', launches=launches,
+                    why='%s at %s vs %s' % (bad.get('kind'), bad.get('at'),
+                                            bad.get('against',
+                                                    bad.get('why'))))
+    return dict(ok=True, launches=launches, layers=r['layers'],
+                mm_by_layer=r['mm_by_layer'], vias=r['vias'],
+                via_xy=r['via_xy'], stub_mm=round(stub_mm, 4),
+                terminals=[la, lb],
+                mm=round(r['mm'] + stub_mm, 4))
+
+def hop_net_pads(qb, net, ctx, far, width, via_ladder, stub_widths=None,
+                 max_mm=0.0, G=50000, fine=25000, span=8000000, limit=6,
+                 sites_limit=96, pairs=1):
+    """Offer `offcentre_hop` to every cross-island land pair of `net`,
+    nearest first.
+
+    Same transaction discipline as `bridge_net_pads`: greedy nearest pair with
+    union-find over the net's own islands, each pair independent and reverted
+    on its own, a closed hop merges its two groups and the next pair is asked
+    on a board that already carries its copper.  `pairs` bounds how many
+    pad-to-pad combinations of one island pair are asked before that island
+    pair is given up, because a hop is expensive and the nearest combination is
+    almost always the only one worth the money.
+
+    `max_mm` bounds the centre-to-centre gap, and unlike a bridge's bound it is
+    OFF by default: a hop's whole purpose is to take a haul off a congested
+    face, and the hauls that need it most are the long ones.
+    """
+    islands = net_islands(qb, net)
+    if len(islands) < 2:
+        return dict(ok=False, net=net, hopped=0, reason='NOTHING_TO_HOP',
+                    hops=[], failures=[], declined=[], mm=0.0, vias=0)
+    groups = {k: list(g) for k, g in enumerate(islands)}
+    parent = {k: k for k in groups}
+
+    def find(x):
+        while parent[x] != x:
+            parent[x] = parent[parent[x]]
+            x = parent[x]
+        return x
+
+    combos = []
+    for ga in groups:
+        for gb in groups:
+            if ga >= gb:
+                continue
+            near = sorted(((math.hypot(p['x'] - q['x'], p['y'] - q['y']),
+                            ga, gb, p, q)
+                           for p in groups[ga] for q in groups[gb]),
+                          key=lambda t: (t[0], t[3]['ref'], t[4]['ref']))
+            combos.extend(near[:max(1, pairs)])
+    combos.sort(key=lambda t: (t[0], t[3]['ref'], t[4]['ref']))
+    done, failed, declined, memo = [], [], [], {}
+    for (gap, ga, gb, p, q) in combos:
+        ra, rb = find(ga), find(gb)
+        if ra == rb:
+            continue
+        if max_mm and gap > max_mm * qr.MM:
+            declined.append(dict(a=p['ref'], b=q['ref'],
+                                 gap_mm=round(gap / 1e6, 3), reason='TOO_FAR'))
+            continue
+        m = qb.mark()
+        r = offcentre_hop(qb, ctx, p, q, far, width, stub_widths=stub_widths,
+                          G=G, fine=fine, memo=memo, limit=limit,
+                          via_ladder=via_ladder, span=span,
+                          sites_limit=sites_limit)
+        rec = dict(a=p['ref'], b=q['ref'], gap_mm=round(gap / 1e6, 3))
+        if not r.get('ok'):
+            qb.revert(m)
+            failed.append(dict(rec, reason=r.get('reason'), why=r.get('why'),
+                               pad=r.get('pad'),
+                               far_tried=r.get('far_tried')))
+            continue
+        done.append(dict(rec, mm=r.get('mm'), far=r.get('far'),
+                         vias=r.get('vias'), barrels=r.get('barrels'),
+                         stub_mm=r.get('stub_mm'), walk_mm=r.get('walk_mm'),
+                         launches=r.get('launches'), profile=r.get('profile')))
+        parent[ra] = rb
+        groups[rb] = groups[ra] + groups[rb]
+        memo.clear()                      # the board moved; the cache did not
+        if hasattr(ctx, 'rebuild_blk'):
+            ctx.rebuild_blk()
+    return dict(ok=bool(done), net=net, hopped=len(done), hops=done,
+                failures=failed[:40], declined=declined[:40],
+                declined_n=len(declined), asked=len(done) + len(failed),
+                max_mm=max_mm, far=list(far) if isinstance(far, (list, tuple))
+                else far,
+                via_ladder=[list(v) for v in via_ladder],
+                mm=round(sum(d['mm'] for d in done), 4),
+                vias=sum(d['vias'] or 0 for d in done))
+
 def join_orphans(qb, net, field, escape_limit=8, via_cost_mm=1.5, near=8,
                  max_mm=0.0):
     """Join a plane-served net's ORPHAN islands TO EACH OTHER.

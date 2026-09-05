@@ -13,6 +13,132 @@
 > This file references DEVICE_SPEC rather than duplicating full specs.
 
 ## 1. Authoritative HEAD
+- **Demo D-634 (THE OFF-CENTRE HOP EXISTS AND IS *PROVED BY A POSITIVE
+  CONTROL*, AND IT MOVES THE WALL OFF THE LAND ONTO THE CORRIDOR ON *EVERY
+  LAYER* -- THE INNER "SPARE LANE" IS A FIELD OF *790 THROUGH BARRELS* CUT INTO
+  HUNDREDS OF POCKETS):**  D-633 ranked an OFF-CENTRE HOP first "in order of
+  leverage" -- *"the exact stub, a barrel at the first via site the STUB can
+  reach, the haul on a far layer"* -- and named up to three edges within reach
+  of it with no width licence at all.  The primitive is built, it is PROVED to
+  work -- six of six on a net whose own copper shows a corridor exists -- and
+  over the whole open board it closes exactly ONE edge, the same edge D-633
+  already had and still below its class floor.  **The reason it closes no more
+  is the finding, and it is a BOARD-LEVEL finding rather than a pad-level
+  one.**
+  **NO COPPER MOVED.**  Authority `5715bf5c...` **unchanged**, retained open
+  edges **44**, open retained nets 21, connected retained 152, raw ratsnest 60.
+  Zero tracks, zero vias, zero zones, zero rule areas, zero `.kicad_dru`
+  change, zero placement change; every screen re-reads the board's `sha256`
+  after its last trial and reports `authoritative_unchanged: true`.
+  **THE NO-OP PROOF IS STRONGER THAN D-633's.**  `git diff --numstat` on
+  `maze3d.py` is **664 insertions and ZERO deletions** -- not one existing line
+  changed, and every new entry point is reachable only from code written this
+  iteration.  On top of that all TEN standing contracts were re-run and
+  compared **FIELD BY FIELD** with D-632's committed artifacts on a board whose
+  `sha256` did not move: **10/10 ran, 10/10 IDENTICAL**
+  (`evidence/d634-contract-regression.json`), by the new tracked
+  `checks/contract_regression.py`, which is deliberately stricter than "still
+  PASS" -- and which caught, on its first run, that `leaf_land_contract` orders
+  its islands by the order the NETS WERE NAMED, so the net order is part of the
+  question.
+  **THE PRIMITIVES -- new `maze3d.offcentre_hop` and `maze3d.offcentre_route`.**
+  All THREE corridor instruments this board owns had the same gap and each had
+  a different one: `connect_role` is exact at the escape and FLAT, `connect_hop`
+  has the barrel but escapes from the pad CENTRE and cannot be given an anchor,
+  and `route_join` has the barrel AND the layer change but launches from a
+  LATTICE cell, which D-633 proved is what the POCKET refuses.  `offcentre_hop`
+  is the composition -- exact stub, whole-stack barrel, `connect_role` between
+  two ANCHORS for the walk and the haul -- and a pair whose ends are both
+  already on the haul layer is exactly `offcentre_connect`, so the hop is the
+  general case and the flat connect its zero-via specialisation.
+  `offcentre_route` replaces the flat haul with `wave3d`, the board's own 3D
+  wavefront: `point_terminals` takes an EXACT coordinate and opens its cell
+  whether or not the raster calls it free, which is the door D-633's off-centre
+  launch could never find into a lattice.  Both ends launch on THEIR OWN outer
+  layer, which need not be the same one -- **29 of this board's 118 open island
+  pairs are not coplanar at all** and no flat instrument could ever ask them.
+  **THREE CORRECTIONS THE MEASUREMENT FORCED, ALL REUSABLE.**  (a)
+  `QBoard.via_site` -- the SINGULAR -- answers "the nearest reachable site that
+  clears the NEAR and FAR layers", which is NOT "the nearest reachable site
+  this BOARD will accept": `TP6.1`'s is legal on `B`, legal on `I2` and
+  **0.064 mm from a foreign `Net-(SW9-A)` track on `I3`**, a layer the hop was
+  not thinking about and the drill goes straight through.  New
+  `_via_free_everywhere` clears the whole stack and uses `h.r`, the same figure
+  `verify_laid` re-proves against.  (b) the reachable site cloud is GRID-DENSE
+  -- at 0.025 mm the **256 nearest sites lie inside a 0.2 mm radius** -- so
+  `via_sites(separation=dia)` buys AREA instead of resolution.  (c) the barrel
+  is chosen **JOINTLY**: `R6.2`'s nearest legal barrel reaches **37.5 mm2** of
+  `In2.Cu` and `U2.15`'s, **4.9 mm away**, is not inside it.
+  **THE POSITIVE CONTROL, AND IT IS WHY EVERY REFUSAL CAN BE BELIEVED**
+  (`evidence/d634-route-positive-control.json`).  New `--split-lands` treats
+  every land of a net as its own island, so an ALREADY-CONNECTED net can be
+  asked to route from scratch -- its copper proves a corridor exists and
+  `QBoard` never sees a net's own copper.  `Net-(U12-PS_SYNC)` and
+  `Net-(U12-PG)`, six pairs, 23.4 to 53.9 mm: **SIX OF SIX CLOSE at the full
+  0.200 mm netclass trunk**, two to SEVEN barrels each, `In2.Cu` carrying every
+  long run.  The instrument is not broken; the board is the wall.
+  **THE HOP-READINESS CENSUS -- new `--lands` mode of `screen_offcentre_hop.py`**
+  (`evidence/d634-hop-lands-{A,B,C,D}.json`).  Every land of every nearest
+  cross-island pair of all 21 open retained nets: **81 lands -- 33 HOP_READY,
+  32 FLAT_ONLY, 10 NO_LAUNCH, 6 LATTICE_TRAPPED and `NO_BARREL` = ZERO.**  Once
+  a land launches at all, the whole-stack search finds it a legal barrel EVERY
+  time: **the barrel is not the wall.**  The pocket is: all 64 legal barrels
+  were measured for the far-layer piece they land in -- **median 63.7 mm2**,
+  29 of 64 under 50 mm2, against layer main bodies of 3400+ mm2.  The six
+  `LATTICE_TRAPPED` lands are named here for the first time (`U14.7`, `U5.14`,
+  `U9.30`, `U9.14`, `U9.16`, `U13.3`): they launch, they have a barrel, and
+  every lattice cell beside every landing is blocked, which is why
+  `/WAKE_INT_N` `U2.1 -> U3.1` returns `NO_PATH` in ZERO seconds.  New
+  `maze3d._lattice_leavable` pushes that test INSIDE the stub's length ladder,
+  so the ladder walks OUT of the pocket instead of stopping inside it.
+  **THE LAYER PARTITION -- new tracked `screen_layer_pockets.py`**
+  (`evidence/d634-layer-pockets.json`).  A THROUGH barrel is copper on EVERY
+  layer, so the inner layers carry the board's ENTIRE via field whether or not
+  anything of theirs uses it, and this board has **790 through vias**.  At
+  0.200 mm track and clearance: **`F.Cu` 6150.4 mm2 free in 291 pieces, largest
+  55.6%; `B.Cu` 5688.3 in 405 pieces, largest 35.1%; `In2.Cu` 6524.6 in 223
+  pieces, largest 52.5%; `In3.Cu` 7840.9 in 78 pieces, largest 93.4%.**  Three
+  readings, all new: `In2.Cu` is NOT a spare lane -- its largest free piece
+  holds the same fraction as the board's most congested signal face; `B.Cu` is
+  the worst-partitioned layer on the board and most open lands are on it; and
+  **the only well-connected layer is `In3.Cu`, the `+3V3` plane, which
+  `reserved_inner_planes` reserves to `+3V3` alone.**
+  **THE PAIR SWEEP** (`evidence/d634-hop-pairs-{A,B,C,D}.json`).  Every open
+  island pair within 40 mm, each over a descending trunk ladder from the
+  netclass width to the board's 0.150 mm `min_track_width`, all permitted far
+  layers offered.  **ONE closes** -- `/NFC_SUPPLY` `C55.1 <-> U9.8`, 12.375 mm,
+  at **0.300 mm with TWO barrels on `B -> In2.Cu -> B`**, and `U9.8`'s end is
+  an OFF-CENTRE launch 0.101 mm off the pad centre on a ray `QBoard.escape`
+  does not walk: the D-633 primitive paying inside a corridor for the first
+  time.  D-633's FLAT `offcentre_connect` closed the same pair only at
+  0.200 mm, so **the 3D corridor buys fifty per cent more copper on the same
+  edge** -- and it is STILL NOT SPENDABLE, because `/NFC_SUPPLY` is `P3V3`,
+  its class floor is 0.400 mm, and a 12 mm haul below the floor is a derating
+  and not a bounded neck.  The PRICE fell; the licence did not change.
+  Everything else refuses as `NO_PATH` at EVERY rung down to 0.150 mm --
+  `/08_BUTTONS_EXPANDERS/BTN_LEFT_N` `R6.2 <-> U2.15`, **8.647 mm with BOTH
+  ends `HOP_READY`**, refuses at 0.200 and at 0.150 -- or as
+  `NO_LEGAL_ESCAPE` on an already-enumerated sealed land.
+  **NEXT, IN ORDER OF LEVERAGE:** (1) **AUDIT THE VIA FIELD** -- 790 through
+  barrels is the CAUSE, a large share exist only to tie the `GND` pours, and
+  the bounded read-only question is how many are load-bearing under D-619's
+  47-tube guard and how much of `In2.Cu`'s partitioning a measured subset
+  costs.  Nothing else on this board moves that number.  (2) **PUT THE BARREL
+  CORRECTIONS INTO THE INSTRUMENTS THAT PROMOTE** -- `relief_stitch`,
+  `stitch_pad` and `bridge_islands` search barrels the older way, and D-633's
+  `--offcentre-launch` A/B reclassified `+3V3` `{U4.2, U4.3}` to exactly the
+  `NO_VIA_SITE` this iteration learned to read differently; that is a change to
+  a PROMOTING instrument and owes its own no-op control.  (3) **`In3.Cu` HAS
+  93.4% OF ITS FREE AREA IN ONE PIECE AND BELONGS TO `+3V3`** -- a `+3V3`
+  orphan needs no haul, only ONE barrel landing inside the filled `In3.Cu`
+  pour, which `body_landing` already computes and the refill already bonds.
+  (4) **BLIND OR BURIED VIAS ARE AN OWNER DECISION** -- a barrel that does not
+  drill the whole stack does not join the field that partitions it; RECORDED,
+  not taken, with sections 3 and 5 of D-634 as the evidence it would be decided
+  against.
+  The `GND` return-path pricing question remains the one OPEN modelling gap in
+  `PP2`.  No owner decision is OPEN; D-618's `J3` question remains RECORDED and
+  PM-3 remains an open PLACEMENT finding.
 - **Demo D-633 (THE OFF-CENTRE LAUNCH EXISTS, IT OPENS *TWENTY-NINE* LANDS,
   AND IT PROVES `LATTICE_EXACT` IS A PROPERTY OF THE *POCKET* AND NOT OF THE
   PAD *CENTRE*):**  D-632 named an OFF-CENTRE LAUNCH first "in order of

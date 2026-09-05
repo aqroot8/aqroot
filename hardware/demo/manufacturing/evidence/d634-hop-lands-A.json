@@ -1,0 +1,932 @@
+{
+ "authoritative_unchanged": true,
+ "board": "/home/aqroot8/aqroot-demo/hardware/demo/kicad/aqroot-demo/aqroot-Beta-v2.kicad_pcb",
+ "board_sha256": "5715bf5cd688a87f686e162b77bbcbff98dc9f9f3e20b4be6424849423e690d2",
+ "grid": 25000,
+ "method": "read-only; every trial laid on the live QBoard, proved by maze3d.verify_laid (exact analytic clearance on every layer plus hole-to-hole, never a lattice) and REVERTED; zones invisible to QBoard, so a closure is a licence question and never copper",
+ "nets": [
+  {
+   "board_track_min": 150000,
+   "contract": 200000,
+   "dru_floor": 150000,
+   "far": [
+    "F",
+    "B",
+    "I2"
+   ],
+   "islands": 3,
+   "lands": [
+    {
+     "layers": "B",
+     "near": [
+      {
+       "barrels": [
+        {
+         "dia": 600000,
+         "drill": 300000,
+         "far": "F",
+         "none_needed": false,
+         "ok": true,
+         "pocket_mm2": 25.23,
+         "walk_mm": 2.3368,
+         "xy": [
+          70.6,
+          98.275
+         ]
+        },
+        {
+         "far": "B",
+         "none_needed": true
+        },
+        {
+         "dia": 600000,
+         "drill": 300000,
+         "far": "I2",
+         "none_needed": false,
+         "ok": true,
+         "pocket_mm2": 20.06,
+         "walk_mm": 2.3368,
+         "xy": [
+          70.6,
+          98.275
+         ]
+        }
+       ],
+       "centre": true,
+       "landing": [
+        69.575,
+        96.175
+       ],
+       "lattice_leavable": true,
+       "launched": true,
+       "layer": "B",
+       "reach_cells": 9589,
+       "reach_mm2": 5.9931,
+       "stub_width": 200000,
+       "why": null
+      }
+     ],
+     "ref": "TP6.1",
+     "verdict": "HOP_READY",
+     "why": "barrel F 0.60 mm at 2.34 mm walk into 25.23 mm2, I2 0.60 mm at 2.34 mm walk into 20.06 mm2",
+     "xy": [
+      70.25,
+      95.5
+     ]
+    },
+    {
+     "layers": "B",
+     "near": [
+      {
+       "barrels": [
+        {
+         "dia": null,
+         "drill": null,
+         "far": "F",
+         "none_needed": false,
+         "ok": false,
+         "pocket_mm2": null,
+         "walk_mm": null,
+         "xy": null
+        },
+        {
+         "far": "B",
+         "none_needed": true
+        },
+        {
+         "dia": null,
+         "drill": null,
+         "far": "I2",
+         "none_needed": false,
+         "ok": false,
+         "pocket_mm2": null,
+         "walk_mm": null,
+         "xy": null
+        }
+       ],
+       "centre": false,
+       "landing": [
+        69.225,
+        78.275
+       ],
+       "lattice_leavable": true,
+       "launched": true,
+       "layer": "B",
+       "reach_cells": 1267,
+       "reach_mm2": 0.7919,
+       "stub_width": 150000,
+       "why": null
+      }
+     ],
+     "ref": "U11.9",
+     "verdict": "FLAT_ONLY",
+     "why": "launches on B, which is itself a haul layer, and no rung of the ladder reaches a barrel to any other",
+     "xy": [
+      68.6,
+      78.2
+     ]
+    },
+    {
+     "layers": "B",
+     "near": [
+      {
+       "barrels": [
+        {
+         "dia": null,
+         "drill": null,
+         "far": "F",
+         "none_needed": false,
+         "ok": false,
+         "pocket_mm2": null,
+         "walk_mm": null,
+         "xy": null
+        },
+        {
+         "far": "B",
+         "none_needed": true
+        },
+        {
+         "dia": 500000,
+         "drill": 250000,
+         "far": "I2",
+         "none_needed": false,
+         "ok": true,
+         "pocket_mm2": 33.85,
+         "walk_mm": 2.8863,
+         "xy": [
+          54.125,
+          83.75
+         ]
+        }
+       ],
+       "centre": true,
+       "landing": [
+        55.325,
+        86.375
+       ],
+       "lattice_leavable": true,
+       "launched": true,
+       "layer": "B",
+       "reach_cells": 11599,
+       "reach_mm2": 7.2494,
+       "stub_width": 200000,
+       "why": null
+      }
+     ],
+     "ref": "U2.9",
+     "verdict": "HOP_READY",
+     "why": "barrel I2 0.50 mm at 2.89 mm walk into 33.85 mm2",
+     "xy": [
+      54.1375,
+      86.375
+     ]
+    }
+   ],
+   "net": "/BQ25185_STAT1",
+   "netclass": "Default",
+   "pairs": [],
+   "stub_floor": 150000,
+   "via_ladder": [
+    [
+     600000,
+     300000
+    ],
+    [
+     550000,
+     250000
+    ],
+    [
+     500000,
+     250000
+    ]
+   ],
+   "widths": [
+    200000,
+    150000
+   ]
+  },
+  {
+   "board_track_min": 150000,
+   "contract": 200000,
+   "dru_floor": 150000,
+   "far": [
+    "F",
+    "B",
+    "I2"
+   ],
+   "islands": 3,
+   "lands": [
+    {
+     "layers": "B",
+     "near": [
+      {
+       "barrels": [
+        {
+         "dia": 600000,
+         "drill": 300000,
+         "far": "F",
+         "none_needed": false,
+         "ok": true,
+         "pocket_mm2": 36.87,
+         "walk_mm": 0.6,
+         "xy": [
+          61.475,
+          99.175
+         ]
+        },
+        {
+         "far": "B",
+         "none_needed": true
+        },
+        {
+         "dia": 600000,
+         "drill": 300000,
+         "far": "I2",
+         "none_needed": false,
+         "ok": true,
+         "pocket_mm2": 18.48,
+         "walk_mm": 0.15,
+         "xy": [
+          61.925,
+          99.175
+         ]
+        }
+       ],
+       "centre": true,
+       "landing": [
+        62.075,
+        99.175
+       ],
+       "lattice_leavable": true,
+       "launched": true,
+       "layer": "B",
+       "reach_cells": 18255,
+       "reach_mm2": 11.4094,
+       "stub_width": 200000,
+       "why": null
+      }
+     ],
+     "ref": "TP7.1",
+     "verdict": "HOP_READY",
+     "why": "barrel F 0.60 mm at 0.60 mm walk into 36.87 mm2, I2 0.60 mm at 0.15 mm walk into 18.48 mm2",
+     "xy": [
+      62.75,
+      98.5
+     ]
+    },
+    {
+     "layers": "B",
+     "near": [
+      {
+       "barrels": [],
+       "centre": null,
+       "launched": false,
+       "layer": "B",
+       "reach_cells": null,
+       "reach_mm2": null,
+       "stub_width": null,
+       "why": "U11.3: NO OFF-CENTRE LAUNCH at 0.150 mm from any of 41 anchors x 24 directions x 17 lengths; blocked by U11.2 (x5762), U11.4 (x5149), U11.1 (x2623), R37.2 (x594)"
+      }
+     ],
+     "ref": "U11.3",
+     "verdict": "NO_LAUNCH",
+     "why": "U11.3: NO OFF-CENTRE LAUNCH at 0.150 mm from any of 41 anchors x 24 directions x 17 lengths; blocked by U11.2 (x5762), U11.4 (x5149), U11.1 (x2623), R37.2 (x594)",
+     "xy": [
+      66.4,
+      77.8
+     ]
+    },
+    {
+     "layers": "B",
+     "near": [
+      {
+       "barrels": [
+        {
+         "dia": 500000,
+         "drill": 250000,
+         "far": "F",
+         "none_needed": false,
+         "ok": true,
+         "pocket_mm2": 5.05,
+         "walk_mm": 2.311,
+         "xy": [
+          54.125,
+          83.75
+         ]
+        },
+        {
+         "far": "B",
+         "none_needed": true
+        },
+        {
+         "dia": 500000,
+         "drill": 250000,
+         "far": "I2",
+         "none_needed": false,
+         "ok": true,
+         "pocket_mm2": 33.85,
+         "walk_mm": 2.311,
+         "xy": [
+          54.125,
+          83.75
+         ]
+        }
+       ],
+       "centre": true,
+       "landing": [
+        55.325,
+        85.725
+       ],
+       "lattice_leavable": true,
+       "launched": true,
+       "layer": "B",
+       "reach_cells": 12650,
+       "reach_mm2": 7.9063,
+       "stub_width": 200000,
+       "why": null
+      }
+     ],
+     "ref": "U2.10",
+     "verdict": "HOP_READY",
+     "why": "barrel F 0.50 mm at 2.31 mm walk into 5.05 mm2, I2 0.50 mm at 2.31 mm walk into 33.85 mm2",
+     "xy": [
+      54.1375,
+      85.725
+     ]
+    }
+   ],
+   "net": "/BQ25185_STAT2",
+   "netclass": "Default",
+   "pairs": [],
+   "stub_floor": 150000,
+   "via_ladder": [
+    [
+     600000,
+     300000
+    ],
+    [
+     550000,
+     250000
+    ],
+    [
+     500000,
+     250000
+    ]
+   ],
+   "widths": [
+    200000,
+    150000
+   ]
+  },
+  {
+   "board_track_min": 150000,
+   "contract": 200000,
+   "dru_floor": 150000,
+   "far": [
+    "F",
+    "B",
+    "I2"
+   ],
+   "islands": 3,
+   "lands": [
+    {
+     "layers": "F",
+     "near": [
+      {
+       "barrels": [
+        {
+         "far": "F",
+         "none_needed": true
+        },
+        {
+         "dia": 600000,
+         "drill": 300000,
+         "far": "B",
+         "none_needed": false,
+         "ok": true,
+         "pocket_mm2": 82.82,
+         "walk_mm": 1.7046,
+         "xy": [
+          62.45,
+          116.4
+         ]
+        },
+        {
+         "dia": 600000,
+         "drill": 300000,
+         "far": "I2",
+         "none_needed": false,
+         "ok": true,
+         "pocket_mm2": 196.33,
+         "walk_mm": 1.6434,
+         "xy": [
+          62.35,
+          116.9
+         ]
+        }
+       ],
+       "centre": true,
+       "landing": [
+        60.75,
+        116.525
+       ],
+       "lattice_leavable": true,
+       "launched": true,
+       "layer": "F",
+       "reach_cells": 26544,
+       "reach_mm2": 16.59,
+       "stub_width": 200000,
+       "why": null
+      }
+     ],
+     "ref": "Q10.3",
+     "verdict": "HOP_READY",
+     "why": "barrel B 0.60 mm at 1.70 mm walk into 82.82 mm2, I2 0.60 mm at 1.64 mm walk into 196.33 mm2",
+     "xy": [
+      61.5333,
+      115.7256
+     ]
+    },
+    {
+     "layers": "B",
+     "near": [
+      {
+       "barrels": [
+        {
+         "dia": null,
+         "drill": null,
+         "far": "F",
+         "none_needed": false,
+         "ok": false,
+         "pocket_mm2": null,
+         "walk_mm": null,
+         "xy": null
+        },
+        {
+         "far": "B",
+         "none_needed": true
+        },
+        {
+         "dia": null,
+         "drill": null,
+         "far": "I2",
+         "none_needed": false,
+         "ok": false,
+         "pocket_mm2": null,
+         "walk_mm": null,
+         "xy": null
+        }
+       ],
+       "centre": true,
+       "landing": [
+        54.15,
+        92.225
+       ],
+       "lattice_leavable": true,
+       "launched": true,
+       "layer": "B",
+       "reach_cells": 3025,
+       "reach_mm2": 1.8906,
+       "stub_width": 200000,
+       "why": null
+      }
+     ],
+     "ref": "U2.1",
+     "verdict": "FLAT_ONLY",
+     "why": "launches on B, which is itself a haul layer, and no rung of the ladder reaches a barrel to any other",
+     "xy": [
+      54.1375,
+      91.575
+     ]
+    },
+    {
+     "layers": "B",
+     "near": [
+      {
+       "barrels": [
+        {
+         "dia": null,
+         "drill": null,
+         "far": "F",
+         "none_needed": false,
+         "ok": false,
+         "pocket_mm2": null,
+         "walk_mm": null,
+         "xy": null
+        },
+        {
+         "far": "B",
+         "none_needed": true
+        },
+        {
+         "dia": 500000,
+         "drill": 250000,
+         "far": "I2",
+         "none_needed": false,
+         "ok": true,
+         "pocket_mm2": 33.85,
+         "walk_mm": 1.5002,
+         "xy": [
+          54.125,
+          83.725
+         ]
+        }
+       ],
+       "centre": true,
+       "landing": [
+        54.15,
+        82.225
+       ],
+       "lattice_leavable": true,
+       "launched": true,
+       "layer": "B",
+       "reach_cells": 10582,
+       "reach_mm2": 6.6138,
+       "stub_width": 200000,
+       "why": null
+      }
+     ],
+     "ref": "U3.1",
+     "verdict": "HOP_READY",
+     "why": "barrel I2 0.50 mm at 1.50 mm walk into 33.85 mm2",
+     "xy": [
+      54.1375,
+      81.575
+     ]
+    }
+   ],
+   "net": "/WAKE_INT_N",
+   "netclass": "Default",
+   "pairs": [],
+   "stub_floor": 150000,
+   "via_ladder": [
+    [
+     600000,
+     300000
+    ],
+    [
+     550000,
+     250000
+    ],
+    [
+     500000,
+     250000
+    ]
+   ],
+   "widths": [
+    200000,
+    150000
+   ]
+  },
+  {
+   "board_track_min": 150000,
+   "contract": 200000,
+   "dru_floor": 150000,
+   "far": [
+    "F",
+    "B",
+    "I2"
+   ],
+   "islands": 3,
+   "lands": [
+    {
+     "layers": "B",
+     "near": [
+      {
+       "barrels": [
+        {
+         "dia": 600000,
+         "drill": 300000,
+         "far": "F",
+         "none_needed": false,
+         "ok": true,
+         "pocket_mm2": 70.89,
+         "walk_mm": 1.8982,
+         "xy": [
+          62.275,
+          82.375
+         ]
+        },
+        {
+         "far": "B",
+         "none_needed": true
+        },
+        {
+         "dia": 600000,
+         "drill": 300000,
+         "far": "I2",
+         "none_needed": false,
+         "ok": true,
+         "pocket_mm2": 21.94,
+         "walk_mm": 1.9769,
+         "xy": [
+          60.6,
+          82.85
+         ]
+        }
+       ],
+       "centre": true,
+       "landing": [
+        61.05,
+        80.925
+       ],
+       "lattice_leavable": true,
+       "launched": true,
+       "layer": "B",
+       "reach_cells": 28177,
+       "reach_mm2": 17.6106,
+       "stub_width": 200000,
+       "why": null
+      }
+     ],
+     "ref": "U3.23",
+     "verdict": "HOP_READY",
+     "why": "barrel F 0.60 mm at 1.90 mm walk into 70.89 mm2, I2 0.60 mm at 1.98 mm walk into 21.94 mm2",
+     "xy": [
+      59.8625,
+      80.925
+     ]
+    },
+    {
+     "layers": "B",
+     "near": [
+      {
+       "barrels": [
+        {
+         "dia": null,
+         "drill": null,
+         "far": "F",
+         "none_needed": false,
+         "ok": false,
+         "pocket_mm2": null,
+         "walk_mm": null,
+         "xy": null
+        },
+        {
+         "far": "B",
+         "none_needed": true
+        },
+        {
+         "dia": null,
+         "drill": null,
+         "far": "I2",
+         "none_needed": false,
+         "ok": false,
+         "pocket_mm2": null,
+         "walk_mm": null,
+         "xy": null
+        }
+       ],
+       "centre": false,
+       "landing": [
+        59.1,
+        90.925
+       ],
+       "lattice_leavable": true,
+       "launched": true,
+       "layer": "B",
+       "reach_cells": 687,
+       "reach_mm2": 0.4294,
+       "stub_width": 200000,
+       "why": null
+      }
+     ],
+     "ref": "U2.23",
+     "verdict": "FLAT_ONLY",
+     "why": "launches on B, which is itself a haul layer, and no rung of the ladder reaches a barrel to any other",
+     "xy": [
+      59.8625,
+      90.925
+     ]
+    },
+    {
+     "layers": "B",
+     "near": [
+      {
+       "barrels": [
+        {
+         "dia": 500000,
+         "drill": 250000,
+         "far": "F",
+         "none_needed": false,
+         "ok": true,
+         "pocket_mm2": 47.37,
+         "walk_mm": 2.951,
+         "xy": [
+          54.325,
+          69.425
+         ]
+        },
+        {
+         "far": "B",
+         "none_needed": true
+        },
+        {
+         "dia": 550000,
+         "drill": 250000,
+         "far": "I2",
+         "none_needed": false,
+         "ok": true,
+         "pocket_mm2": 22.22,
+         "walk_mm": 2.9004,
+         "xy": [
+          54.375,
+          69.45
+         ]
+        }
+       ],
+       "centre": true,
+       "landing": [
+        57.275,
+        69.5
+       ],
+       "lattice_leavable": true,
+       "launched": true,
+       "layer": "B",
+       "reach_cells": 6443,
+       "reach_mm2": 4.0269,
+       "stub_width": 200000,
+       "why": null
+      }
+     ],
+     "ref": "U4.14",
+     "verdict": "HOP_READY",
+     "why": "barrel F 0.50 mm at 2.95 mm walk into 47.37 mm2, I2 0.55 mm at 2.90 mm walk into 22.22 mm2",
+     "xy": [
+      56.5875,
+      69.5
+     ]
+    }
+   ],
+   "net": "/I2C_SDA_INT",
+   "netclass": "I2C",
+   "pairs": [],
+   "stub_floor": 150000,
+   "via_ladder": [
+    [
+     600000,
+     300000
+    ],
+    [
+     550000,
+     250000
+    ],
+    [
+     500000,
+     250000
+    ]
+   ],
+   "widths": [
+    200000,
+    150000
+   ]
+  },
+  {
+   "board_track_min": 150000,
+   "contract": 200000,
+   "dru_floor": 150000,
+   "far": [
+    "F",
+    "B",
+    "I2"
+   ],
+   "islands": 2,
+   "lands": [
+    {
+     "layers": "B",
+     "near": [
+      {
+       "barrels": [
+        {
+         "dia": null,
+         "drill": null,
+         "far": "F",
+         "none_needed": false,
+         "ok": false,
+         "pocket_mm2": null,
+         "walk_mm": null,
+         "xy": null
+        },
+        {
+         "far": "B",
+         "none_needed": true
+        },
+        {
+         "dia": null,
+         "drill": null,
+         "far": "I2",
+         "none_needed": false,
+         "ok": false,
+         "pocket_mm2": null,
+         "walk_mm": null,
+         "xy": null
+        }
+       ],
+       "centre": true,
+       "landing": [
+        54.9,
+        59.575
+       ],
+       "lattice_leavable": true,
+       "launched": true,
+       "layer": "B",
+       "reach_cells": 2115,
+       "reach_mm2": 1.3219,
+       "stub_width": 200000,
+       "why": null
+      }
+     ],
+     "ref": "R17.1",
+     "verdict": "FLAT_ONLY",
+     "why": "launches on B, which is itself a haul layer, and no rung of the ladder reaches a barrel to any other",
+     "xy": [
+      54.05,
+      59.585
+     ]
+    },
+    {
+     "layers": "B",
+     "near": [
+      {
+       "barrels": [
+        {
+         "dia": 550000,
+         "drill": 250000,
+         "far": "F",
+         "none_needed": false,
+         "ok": true,
+         "pocket_mm2": 63.72,
+         "walk_mm": 2.05,
+         "xy": [
+          60.725,
+          78.975
+         ]
+        },
+        {
+         "far": "B",
+         "none_needed": true
+        },
+        {
+         "dia": 550000,
+         "drill": 250000,
+         "far": "I2",
+         "none_needed": false,
+         "ok": true,
+         "pocket_mm2": 39.53,
+         "walk_mm": 2.05,
+         "xy": [
+          60.725,
+          78.975
+         ]
+        }
+       ],
+       "centre": true,
+       "landing": [
+        58.675,
+        78.975
+       ],
+       "lattice_leavable": true,
+       "launched": true,
+       "layer": "B",
+       "reach_cells": 3709,
+       "reach_mm2": 2.3181,
+       "stub_width": 200000,
+       "why": null
+      }
+     ],
+     "ref": "U3.20",
+     "verdict": "HOP_READY",
+     "why": "barrel F 0.55 mm at 2.05 mm walk into 63.72 mm2, I2 0.55 mm at 2.05 mm walk into 39.53 mm2",
+     "xy": [
+      59.8625,
+      78.975
+     ]
+    }
+   ],
+   "net": "/ACC_PWR_EN",
+   "netclass": "Default",
+   "pairs": [],
+   "stub_floor": 150000,
+   "via_ladder": [
+    [
+     600000,
+     300000
+    ],
+    [
+     550000,
+     250000
+    ],
+    [
+     500000,
+     250000
+    ]
+   ],
+   "widths": [
+    200000,
+    150000
+   ]
+  }
+ ],
+ "question": "does an OFF-CENTRE LAUNCH plus a LAYER HOP -- exact stub, barrel at the first via site the stub can reach, haul on a far layer -- close the island pairs the FLAT off-centre connect refuses",
+ "schema": 1
+}

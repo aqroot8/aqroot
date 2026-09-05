@@ -1,5 +1,355 @@
 # AQROOT Full Beta v2 — CTO Decisions
 
+# D-634 · 2026-09-05 · Demo — the OFF-CENTRE HOP exists and is PROVED BY A POSITIVE CONTROL, and it moves the wall off the LAND onto the CORRIDOR on *every layer*: the inner "spare lane" is a field of 790 THROUGH BARRELS cut into hundreds of POCKETS
+
+    authority  5715bf5cd688a87f686e162b77bbcbff98dc9f9f3e20b4be6424849423e690d2
+            -> 5715bf5cd688a87f686e162b77bbcbff98dc9f9f3e20b4be6424849423e690d2
+    NO COPPER MOVED.  Zero tracks, zero vias, zero zones, zero rule areas,
+      zero `.kicad_dru` change, zero placement change.  Every screen re-reads
+      the board's sha256 after its last trial and reports
+      `authoritative_unchanged: true`.
+    retained open edges  44 (unchanged)   open retained nets 21
+      connected retained 152   raw ratsnest 60
+    FRAMEWORK + CHARACTERISATION.  D-633 ranked an OFF-CENTRE HOP first "in
+      order of leverage" -- "the exact stub, a barrel at the first via site the
+      STUB can reach, the haul on a far layer" -- and named up to three edges
+      within reach of it with NO width licence at all.  The primitive is built,
+      it is PROVED to work by a positive control -- six of six on a net whose
+      own copper shows a corridor exists -- and over the whole open board it
+      closes exactly ONE edge, which is the same edge D-633 already had and is
+      still below its class floor.  THE REASON IT CLOSES NO MORE IS THE
+      FINDING, and it is a BOARD-LEVEL finding rather than a pad-level one.
+
+`D-269`/`D-186`, `ACC_5V_SW_EN`, `ACC_3V3_SW`, the three `FRONT_RGB_*_N`,
+`XGPIO4`/`XGPIO5` and `hardware/beta-v2/` are untouched.
+
+## 0. The no-op proof is stronger than D-633's
+
+`maze3d.py` is read by every promoting instrument on this board, so a change
+to it is a change to all of them even when it lays no copper.  D-633 paid that
+debt by re-running ten contracts and comparing them by hand.  This iteration
+pays it twice over:
+
+    git diff --numstat hardware/demo/manufacturing/maze3d.py
+    664     0     hardware/demo/manufacturing/maze3d.py
+
+**664 insertions and ZERO deletions.**  Not one existing line of `maze3d.py`
+changed; every new entry point is reachable only from code written this
+iteration.  And the ten standing contracts were re-run and diffed FIELD BY
+FIELD against the artifacts D-632 committed, on a board whose `sha256` did not
+move -- see section 6.
+
+## 1. `maze3d.offcentre_hop` — the composition D-633 named
+
+All THREE corridor instruments this board owns had the same gap, and each had
+a different one:
+
+    qrouter.connect_role   exact at the escape, FLAT -- one layer, no via, so
+                           it can only offer the lane the pocket is already
+                           congested with
+    qrouter.connect_hop    has the barrel, escapes from the pad CENTRE and
+                           CANNOT BE GIVEN AN ANCHOR -- so it refuses at
+                           exactly the lands D-633's off-centre launch opened
+    maze3d.route_join      has the barrel AND the layer change, and its launch
+                           is a LATTICE cell, which D-633 proved is what the
+                           POCKET refuses
+
+`offcentre_hop` is the composition, not a fourth router:
+
+    the STUB     `offcentre_escapes` -- exact analytic clearance, never a
+                 lattice; the landing must hold the TRUNK width
+    the BARREL   `_hop_sites` over `QBoard.via_sites`, cleared on EVERY layer
+                 of the stack and against every drilled hole
+    the WALK     `connect_role` between two ANCHORS -- landing to barrel site
+    the HAUL     `connect_role` between two ANCHORS on the far layer
+
+An end whose land is already on the haul layer takes no barrel and no walk, so
+a pair of such ends is exactly `offcentre_connect`: **the hop is the general
+case and the flat connect is its zero-via specialisation.**
+
+**TWO CORRECTIONS THE MEASUREMENT FORCED, and both are reusable.**
+
+  * `QBoard.via_site` -- the SINGULAR -- answers "the nearest reachable site
+    that clears the NEAR and FAR layers", which is NOT "the nearest reachable
+    site this BOARD will accept".  `TP6.1` (`/BQ25185_STAT1`) has one at
+    (69.600, 95.750): legal on `B`, legal on `I2`, and **0.064 mm from a
+    foreign `Net-(SW9-A)` track on `I3`** -- a layer the hop was not thinking
+    about and the drill goes straight through.  Taking that one answer and
+    giving up is how a perfectly reachable end reports `NO_VIA_SITE`.
+    `connect_hop` has always had this weakness; `_via_free_everywhere` closes
+    it, and it uses `h.r` and not `max(h.hx, h.hy)` so the pre-filter and
+    `verify_laid` can never disagree about which sites exist.
+  * the reachable site cloud is GRID-DENSE.  At 0.025 mm pitch the **256
+    nearest sites lie inside a 0.2 mm radius**, so an unseparated list walks
+    the same square millimetre over and over and never reaches the next
+    opening.  `via_sites(separation=dia)` compacts it into materially distinct
+    placements, still distance-ordered, so `sites_limit` buys AREA instead of
+    resolution.
+
+**AND THE BARREL IS CHOSEN JOINTLY.**  Picking each end's barrel independently
+-- the nearest legal site to that end's own launch -- is what `connect_hop`
+does, and it fails here for a reason no near-layer measurement can see.
+Measured on `/08_BUTTONS_EXPANDERS/BTN_LEFT_N`: `R6.2`'s nearest legal barrel
+at (52.800, 88.500) reaches **37.5 mm2** of `In2.Cu`, and `U2.15`'s barrel at
+(56.925, 83.225) -- **4.9 mm away** -- is NOT INSIDE IT.  Two legal barrels,
+one nominally empty layer, and no corridor.  With `joint`, the far layer is
+flooded from each of end A's candidate sites and end B's is required to lie
+inside that flood.  The flood is bounded to the ends' bbox plus
+`connect_role`'s OWN largest expansion and run at a COARSER pitch, whose larger
+guard band can only SHRINK the reachable set -- so the pre-filter is
+pessimistic by construction, and a run that finds no shared pocket still falls
+back to the independent nearest pair.  The joint test may only ADD closures.
+
+## 2. `maze3d.offcentre_route` — the exact launch and the FULL 3D corridor
+
+The hop's haul is still flat, and section 3 shows the wall is exactly there.
+`offcentre_route` is the last composition available: the exact off-centre stub,
+and then `wave3d` -- the board's own 3D wavefront, which places its own barrels
+and changes layer mid-haul.
+
+What `route_join` could never do is START.  Its launch is `maze3d.pad_escapes`,
+whose candidates must be free cells of the WHOLE-BOARD lattice, and D-633
+proved that what refuses a lattice is the POCKET the land sits in.
+`point_terminals` is the door: it takes an EXACT board coordinate and opens
+that coordinate's own cell whether or not the raster calls it free, on the
+stated ground that the 0.75-cell guard band is a rasterisation artefact and
+`verify_laid` is what decides afterwards.  Both ends launch on THEIR OWN outer
+layer, which need not be the same one -- `route_points` requires a single
+terminal layer because a detour must arrive where the track it replaces
+arrived, and a pair of lands has no such obligation.  **29 of this board's 118
+open island pairs are not coplanar at all.**
+
+**AND `point_terminals` OPENS ONLY THAT ONE CELL.**  If every cell within
+`span` is blocked the seed set is a single island and the wavefront dies on its
+first step -- measured: `/WAKE_INT_N` `U2.1 -> U3.1` returned `NO_PATH` in
+**ZERO seconds**.  So the test that belongs INSIDE the stub's length ladder is
+not "is the landing legal" -- exact geometry already settles that -- it is "is
+there a free lattice cell beside it".  New `maze3d._lattice_leavable`, handed
+to `offcentre_escapes` as `goal_ok`, makes the ladder walk OUT of the pocket
+instead of stopping at the first legal landing inside it.  It is the same
+lesson D-633 learned for `pad_escapes`, applied where it can be spent.
+
+**THE POSITIVE CONTROL, AND IT IS THE REASON EVERY REFUSAL BELOW CAN BE
+BELIEVED.**
+
+    evidence/d634-route-positive-control.json   read-only, authoritative_unchanged
+
+A refusal is only evidence about the BOARD if the instrument is known to work,
+and nothing in D-629 through D-633 ever established that for a corridor
+instrument -- the refusals were simply believed.  New `--split-lands` makes the
+control possible: it treats every land of a net as its own island, so a net
+that is ALREADY CONNECTED can be asked to route from scratch.  Its existing
+copper proves a corridor exists, and `QBoard` never sees a net's own copper, so
+a refusal here would be an INSTRUMENT failure and a closure is proof.
+
+`Net-(U12-PS_SYNC)` and `Net-(U12-PG)`, six pairs, gaps 23.4 to 53.9 mm:
+**SIX OF SIX CLOSE**, every one at the full 0.200 mm netclass trunk.
+
+    TP14.1 -> U12.13   33.180 mm   2 vias   B -> In2 -> B
+    TP14.1 -> R42.2    23.384 mm   2 vias   B -> In2 -> B
+    U12.13 -> R42.2    51.206 mm   2 vias   B -> In2 -> B
+    TP8.1  -> U12.14   34.717 mm   7 vias   B -> In2 -> B -> F -> B -> F -> In2 -> B
+    TP8.1  -> R41.2    24.221 mm   2 vias   B -> In2 -> B
+    U12.14 -> R41.2    53.892 mm   5 vias   B -> In2 -> F -> B -> F -> B
+
+The instrument lays copper, launches off-centre, places its own barrels,
+changes layer up to SEVEN times in one haul, uses `In2.Cu` for the long runs
+and is proved by `verify_laid` before anything is kept.  **It is not broken.
+The board is the wall**, and every refusal in sections 4 and 5 is a fact about
+this board rather than a limit of the tool that asked.
+
+## 3. The wall, measured — new tracked `screen_layer_pockets.py`
+
+    evidence/d634-layer-pockets.json   read-only, authoritative_unchanged
+
+The six-layer stack-up records `In2.Cu` as a SIGNAL layer, and every capacity
+argument on this board has read that as spare lane.  It is not spare in the way
+the stack-up suggests, and the reason is a fact no per-net measurement can see:
+**a THROUGH barrel is copper on EVERY layer**, so the inner layers carry the
+board's ENTIRE via field whether or not anything of theirs uses it.  This board
+has **790 through vias**.  On `In2.Cu` they are almost the only obstacles there
+are -- 316 track segments against 790 barrels and forty-odd through-hole
+lands -- and what they do is not consume area, it is **CUT THE LAYER UP**.
+
+So the question is not "how much of the layer is free" -- that number is large
+and misleading.  It is "how many PIECES is the free area in", because a haul
+can only use the piece BOTH of its ends land in.  At 0.200 mm track, 0.200 mm
+clearance, 0.150 mm lattice:
+
+    layer   free mm2   pieces   largest mm2   largest share   obstacles
+    F.Cu      6150.4      291        3422.7          55.6%        3031
+    B.Cu      5688.3      405        1995.8          35.1%        3966
+    In2.Cu    6524.6      223        3425.5          52.5%        1972
+    In3.Cu    7840.9       78        7325.9          93.4%        1795
+
+The lattice is coarser than the router's, so `pieces` is an upper bound and
+`largest share` a lower bound.  Three readings, and all three are new:
+
+  1. **`In2.Cu` is not a lane.**  Its largest free piece holds barely half its
+     free area, which is the same fraction as `F.Cu` -- the most congested
+     signal face on the board.  The 790-barrel field is what makes them alike.
+  2. **`B.Cu` is the worst layer on the board by partitioning**, not by area:
+     it has 5688 mm2 free and its largest piece is under 2000 mm2.  Two thirds
+     of `B.Cu`'s free copper is unreachable from the other third.  Most of this
+     board's open lands are on `B.Cu`.
+  3. **`In3.Cu` is the ONLY well-connected layer, at 93.4% -- and it is the
+     `+3V3` plane**, reserved by `reserved_inner_planes` to `+3V3` alone.  The
+     one layer with real headroom is the one only the rail may use.
+
+## 4. The HOP-READINESS CENSUS — new `--lands` mode of `screen_offcentre_hop.py`
+
+    evidence/d634-hop-lands-{A,B,C,D}.json   read-only, authoritative_unchanged
+
+A hop needs THREE things and they fail independently -- a LAUNCH, a BARREL, and
+a lattice cell the wavefront can leave from.  Asking a PAIR answers all three
+at once and reports only the first that failed, per ordered pair, per width
+rung, per far layer, which is both slow and ambiguous.  This asks the LAND.
+Every land of every nearest cross-island pair of all 21 open retained nets --
+**81 lands**, and the classes are the finding:
+
+    HOP_READY         33   launches, and has a legal barrel to a layer it is
+                           NOT on, cleared against the WHOLE stack
+    FLAT_ONLY         32   launches on a layer that is itself a haul layer,
+                           and no rung of the barrel ladder reaches any other
+    NO_LAUNCH         10   no legal stub at any anchor, direction, length or
+                           width down to 0.150 mm
+    LATTICE_TRAPPED    6   launches, has a barrel, and EVERY lattice cell
+                           beside EVERY landing is blocked
+    NO_BARREL          0
+
+**`NO_BARREL` IS ZERO, AND THAT IS THE HEADLINE.**  Once a land launches at
+all, the whole-stack barrel search finds it a legal barrel every single time --
+either to another layer or because it already sits on one.  Every
+`NO_VIA_SITE` this iteration saw before the two corrections in section 1 was an
+artefact of `via_site`'s singular answer and the grid-dense site cloud, not a
+property of the board.  **The barrel is not the wall.**
+
+**AND THE POCKET IS.**  Every one of the 64 legal barrels was measured for the
+FAR-LAYER pocket it lands in -- board-wide, at a coarse pitch whose larger
+guard band makes the figure a LOWER bound:
+
+    barrel pockets   n = 64   min 0.6   median 63.7   max 6850.1 mm2
+                     29 of 64 land in under 50 mm2
+
+Against section 3's largest free pieces -- 3423 mm2 on `F.Cu`, 3426 mm2 on
+`In2.Cu` -- a median barrel lands in **63.7 mm2**, under two per cent of the
+layer's main body.  A legal barrel into a 5 mm2 island of `In2.Cu` is not a
+hop, it is a trap, and until this census nothing on this board measured it.
+
+The ten `NO_LAUNCH` lands are now enumerated board-wide, and they are the same
+class D-632 and D-633 found from two other directions: `U11.3`, `U9.10`,
+`U21.5`, `U4.12`, `U4.8`, `U5.2`, `MK1.4`, `U11.1`, `U12.11`, `U12.10`.
+`U4.12` is on that list and is NOT a contradiction of D-632, which promoted its
+escape: the census asks for a FRESH launch at the class ladder, and `U4.12`'s
+promoted copper is a 0.200 mm run inside the `PAD_ESCAPE_RUN_U4_12` width
+licence, which is a different question with a different answer.  The six
+`LATTICE_TRAPPED` are new and are named here for the first time: `U14.7`,
+`U5.14`, `U9.30`, `U9.14`, `U9.16`, `U13.3`.
+
+## 5. What the pair question then answers
+
+    evidence/d634-hop-pairs-{A,B,C,D}.json   read-only, authoritative_unchanged
+
+`offcentre_route` was asked for the nearest open pair of every island pair of
+all 21 open retained nets within a 40 mm gap, each over a DESCENDING trunk
+ladder from the netclass width in 0.050 mm steps down to the board's 0.150 mm
+`min_track_width`.  For `Default` and `I2C` the `.kicad_dru` names no width at
+all, so their floor IS 0.150 mm and a closure there **would need no licence of
+any kind**.  Every far layer the net is permitted was offered, `In2.Cu`
+included, and the barrels are the net's own netclass geometry.
+
+**ONE PAIR CLOSES, AND IT IS THE ONE D-633 ALREADY KNEW ABOUT.**
+`/NFC_SUPPLY` `C55.1 <-> U9.8`, a 12.375 mm gap, closes at **0.300 mm with TWO
+barrels on `B -> In2.Cu -> B`** -- and `U9.8`'s end is an OFF-CENTRE launch,
+0.101 mm off the pad centre on a ray `QBoard.escape` does not walk.  That is
+the D-633 primitive paying inside a corridor for the first time.  D-633's flat
+`offcentre_connect` closed the same pair only at **0.200 mm**; the 3D corridor
+buys **fifty per cent more copper on the same edge**.
+
+**AND IT IS STILL NOT SPENDABLE, FOR THE REASON D-633 GAVE.**  `/NFC_SUPPLY` is
+`P3V3` and its `.kicad_dru` class floor is 0.400 mm.  0.300 mm is a
+twelve-millimetre haul derated below the class floor, not a bounded neck, and
+this board has never licensed one.  `licensed_unconditionally: false` is
+recorded in the artifact.  The finding is that the PRICE fell, not that the
+licence changed.
+
+**EVERYTHING ELSE REFUSES, AND THE REFUSALS ARE NO LONGER ABOUT LANDS.**  The
+whole sweep is **21 open retained nets, 85 pairs: 1 CLOSED, 64 `NO_PATH`,
+20 `NO_LEGAL_ESCAPE`** -- and every one of the four shards records
+`authoritative_unchanged: true` against the same `5715bf5c...`.  Over
+the pairs asked, the refusals split into `NO_PATH` -- both ends launched, both
+had a barrel, and no all-layer corridor exists at ANY rung down to 0.150 mm --
+and `NO_LEGAL_ESCAPE` on the already-enumerated sealed lands.  A width ladder
+does not move the corridor: `/08_BUTTONS_EXPANDERS/BTN_LEFT_N`
+`R6.2 -> U2.15`, an **8.647 mm** pair with BOTH ends `HOP_READY`, refuses at
+0.200 mm and again at 0.150 mm.  This is the same shape of answer D-629
+recorded for `/I2C_SCL_INT` (15 pairs, 15 `NO_PATH`, a legal escape at both
+ends of every one) -- and it now has a MECHANISM instead of a description, and
+an instrument whose competence has been demonstrated instead of assumed.
+
+## 6. The regression this iteration owes — new tracked `checks/contract_regression.py`
+
+D-633 was the first iteration to owe the framework debt and it paid it by hand.
+Every future framework change owes the same debt, and a debt paid by hand is
+paid differently every time.  This is that driver, and it is deliberately
+stricter than "still PASS": on a board whose `sha256` has not moved, a change
+that lays no copper must leave every contract's REPORT **byte-identical**, not
+merely still-passing.  "Still PASS" is the weaker claim and it is the one that
+hides a moved count.
+
+Path-typed fields (`board`, `schematic`, `guard`, `pre_board`) compare by
+basename because they record the path as typed; everything else compares
+exactly, and the first differing JSON pointer is reported so a failure names
+the FIELD rather than the file.
+
+**IT CAUGHT SOMETHING ON ITS FIRST RUN, and the thing it caught was the
+driver's own invocation.**  `leaf_land_contract` reports its islands in the
+order the nets were NAMED, so asking the same three nets in a different order
+produces a document that differs field by field while every verdict, count and
+class census is identical.  The net order is part of the question and is now
+recorded in the table.  That is exactly the class of silent drift a
+"still PASS" check cannot see.
+
+## 7. Next, in order of leverage
+
+  1. **THE VIA FIELD IS THE WALL, SO AUDIT THE VIA FIELD.**  790 through
+     barrels is the CAUSE of section 3, and a large share of them exist only to
+     tie the `GND` pours together.  Every one of them blocks all six layers,
+     including the two the stack-up calls signal.  The bounded, read-only
+     question is: how many of the 790 are pour-bond / stitch barrels, how many
+     are load-bearing under D-619's 47-tube guard, and how much of `In2.Cu`'s
+     partitioning would disappear if a MEASURED subset were retired or moved?
+     No copper need be touched to answer it, and nothing else on the board
+     moves this number.
+  2. **THE BARREL SEARCH CORRECTION BELONGS IN THE INSTRUMENTS THAT PROMOTE.**
+     `_via_free_everywhere` (clear the WHOLE stack, not the two layers the
+     caller is thinking about) and `via_sites(separation=dia)` (buy area, not
+     resolution) are corrections to a weakness `qrouter.connect_hop` has always
+     had, and `relief_stitch` / `stitch_pad` / `bridge_islands` search their
+     barrels the older way.  D-633's `--offcentre-launch` A/B on the relief
+     instrument reclassified `+3V3` `{U4.2, U4.3}` from `NO_LEGAL_ESCAPE` to
+     **`NO_VIA_SITE`** at 0.025 mm -- which is exactly the refusal this
+     iteration learned to read differently.  That is a change to a PROMOTING
+     instrument, so it owes its own no-op control and its own A/B; it is not
+     additive and must not be smuggled in with one.
+  3. **`In3.Cu` HAS 93.4% OF ITS FREE AREA IN ONE PIECE AND IT BELONGS TO
+     `+3V3`.**  `+3V3` holds six of the 44 open edges and is the only net
+     entitled to the board's one well-connected layer.  A `+3V3` orphan does
+     not need a haul at all -- it needs ONE barrel landing inside the filled
+     `In3.Cu` pour, which `maze3d.body_landing` already computes and the refill
+     already bonds.  Combine (2) with `body_landing` aimed at `I3` and ask the
+     census's `+3V3` `HOP_READY` lands for it.
+  4. **BLIND OR BURIED VIAS ARE AN OWNER DECISION, AND THIS IS THE FIRST
+     MEASUREMENT THAT PRICES THEM.**  A barrel that does not drill the whole
+     stack does not join the field that partitions it.  That is a fabrication
+     PROCESS and COST change, not a routing decision, so it is RECORDED here
+     and not taken: sections 3 and 5 are the evidence a decision would be made
+     against.
+
+The `GND` return-path pricing question remains the one OPEN modelling gap in
+`PP2`.  No owner decision is OPEN; D-618's `J3` question remains RECORDED,
+PM-3 remains an open PLACEMENT finding, and item 4 above is RECORDED, not open.
+
 # D-633 · 2026-09-05 · Demo — the OFF-CENTRE LAUNCH exists, it opens TWENTY-NINE lands, and it proves `LATTICE_EXACT` is a property of the POCKET and not of the pad CENTRE
 
     authority  5715bf5cd688a87f686e162b77bbcbff98dc9f9f3e20b4be6424849423e690d2

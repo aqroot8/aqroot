@@ -1,0 +1,2150 @@
+{
+ "authoritative_unchanged": true,
+ "board": "/home/aqroot8/aqroot-demo/hardware/demo/kicad/aqroot-demo/aqroot-Beta-v2.kicad_pcb",
+ "board_sha256": "5715bf5cd688a87f686e162b77bbcbff98dc9f9f3e20b4be6424849423e690d2",
+ "grid": 25000,
+ "instrument": "offcentre_route",
+ "method": "read-only; every trial laid on the live QBoard, proved by maze3d.verify_laid (exact analytic clearance on every layer plus hole-to-hole, never a lattice) and REVERTED; zones invisible to QBoard, so a closure is a licence question and never copper",
+ "nets": [
+  {
+   "board_track_min": 150000,
+   "contract": 200000,
+   "dru_floor": 150000,
+   "far": [
+    "F",
+    "B",
+    "I2"
+   ],
+   "islands": 3,
+   "lands": [],
+   "net": "/BQ25185_STAT1",
+   "netclass": "Default",
+   "pairs": [
+    {
+     "a": "TP6.1",
+     "b": "U11.9",
+     "closed_at": null,
+     "coplanar": [
+      "B"
+     ],
+     "gap_mm": 17.3785,
+     "hop_layers": null,
+     "instrument": "offcentre_route",
+     "launches": [
+      {
+       "a_xy": [
+        70.25,
+        95.5
+       ],
+       "b_xy": [
+        69.6,
+        96.2
+       ],
+       "base_dir": true,
+       "centre": true,
+       "layer": "B",
+       "mm": 0.9552,
+       "necked": false,
+       "offcentre_mm": 0.0,
+       "pad": "TP6.1",
+       "trunk_width": 150000,
+       "width": 150000
+      }
+     ],
+     "licensed_unconditionally": false,
+     "reason": "NO_LEGAL_ESCAPE",
+     "rungs": [
+      {
+       "hop_layers": null,
+       "launches": [
+        {
+         "a_xy": [
+          70.25,
+          95.5
+         ],
+         "b_xy": [
+          69.6,
+          96.2
+         ],
+         "base_dir": true,
+         "centre": true,
+         "layer": "B",
+         "mm": 0.9552,
+         "necked": false,
+         "offcentre_mm": 0.0,
+         "pad": "TP6.1",
+         "trunk_width": 200000,
+         "width": 200000
+        }
+       ],
+       "mm": 0.0,
+       "mm_by_layer": null,
+       "ok": false,
+       "pad": "U11.9",
+       "reason": "NO_LEGAL_ESCAPE",
+       "seconds": 0.61,
+       "stub_mm": null,
+       "terminals": null,
+       "via_xy": null,
+       "vias": null,
+       "why": "U11.9: NO OFF-CENTRE LAUNCH at 0.200 mm from any of 41 anchors x 24 directions x 17 lengths; blocked by U11.8 (x5488), U11.10 (x3416), landing still on the land (x1502), U11.7 (x1095)",
+       "width": 200000
+      },
+      {
+       "hop_layers": null,
+       "launches": [
+        {
+         "a_xy": [
+          70.25,
+          95.5
+         ],
+         "b_xy": [
+          69.6,
+          96.2
+         ],
+         "base_dir": true,
+         "centre": true,
+         "layer": "B",
+         "mm": 0.9552,
+         "necked": false,
+         "offcentre_mm": 0.0,
+         "pad": "TP6.1",
+         "trunk_width": 150000,
+         "width": 150000
+        }
+       ],
+       "mm": 0.0,
+       "mm_by_layer": null,
+       "ok": false,
+       "pad": "U11.9",
+       "reason": "NO_LEGAL_ESCAPE",
+       "seconds": 0.62,
+       "stub_mm": null,
+       "terminals": null,
+       "via_xy": null,
+       "vias": null,
+       "why": "U11.9: NO OFF-CENTRE LAUNCH at 0.150 mm from any of 41 anchors x 24 directions x 17 lengths; blocked by U11.8 (x4753), U11.10 (x4505), landing still on the land (x1502), U11.7 (x1371)",
+       "width": 150000
+      }
+     ],
+     "vias": null,
+     "why": "U11.9: NO OFF-CENTRE LAUNCH at 0.150 mm from any of 41 anchors x 24 directions x 17 lengths; blocked by U11.8 (x4753), U11.10 (x4505), landing still on the land (x1502), U11.7 (x1371)"
+    },
+    {
+     "a": "TP6.1",
+     "b": "U2.9",
+     "closed_at": null,
+     "coplanar": [
+      "B"
+     ],
+     "gap_mm": 18.517,
+     "hop_layers": null,
+     "instrument": "offcentre_route",
+     "launches": [
+      {
+       "a_xy": [
+        70.25,
+        95.5
+       ],
+       "b_xy": [
+        69.6,
+        96.2
+       ],
+       "base_dir": true,
+       "centre": true,
+       "layer": "B",
+       "mm": 0.9552,
+       "necked": false,
+       "offcentre_mm": 0.0,
+       "pad": "TP6.1",
+       "trunk_width": 150000,
+       "width": 150000
+      },
+      {
+       "a_xy": [
+        54.1375,
+        86.375
+       ],
+       "b_xy": [
+        55.3,
+        86.4
+       ],
+       "base_dir": true,
+       "centre": true,
+       "layer": "B",
+       "mm": 1.1628,
+       "necked": false,
+       "offcentre_mm": 0.0,
+       "pad": "U2.9",
+       "trunk_width": 150000,
+       "width": 150000
+      }
+     ],
+     "licensed_unconditionally": false,
+     "reason": "NO_PATH",
+     "rungs": [
+      {
+       "hop_layers": null,
+       "launches": [
+        {
+         "a_xy": [
+          70.25,
+          95.5
+         ],
+         "b_xy": [
+          69.6,
+          96.2
+         ],
+         "base_dir": true,
+         "centre": true,
+         "layer": "B",
+         "mm": 0.9552,
+         "necked": false,
+         "offcentre_mm": 0.0,
+         "pad": "TP6.1",
+         "trunk_width": 200000,
+         "width": 200000
+        },
+        {
+         "a_xy": [
+          54.1375,
+          86.375
+         ],
+         "b_xy": [
+          55.3,
+          86.4
+         ],
+         "base_dir": true,
+         "centre": true,
+         "layer": "B",
+         "mm": 1.1628,
+         "necked": false,
+         "offcentre_mm": 0.0,
+         "pad": "U2.9",
+         "trunk_width": 200000,
+         "width": 200000
+        }
+       ],
+       "mm": 0.0,
+       "mm_by_layer": null,
+       "ok": false,
+       "pad": null,
+       "reason": "NO_PATH",
+       "seconds": 0.27,
+       "stub_mm": null,
+       "terminals": null,
+       "via_xy": null,
+       "vias": null,
+       "why": "no all-layer corridor at 0.200 mm from TP6.1 on B to U2.9 on B",
+       "width": 200000
+      },
+      {
+       "hop_layers": null,
+       "launches": [
+        {
+         "a_xy": [
+          70.25,
+          95.5
+         ],
+         "b_xy": [
+          69.6,
+          96.2
+         ],
+         "base_dir": true,
+         "centre": true,
+         "layer": "B",
+         "mm": 0.9552,
+         "necked": false,
+         "offcentre_mm": 0.0,
+         "pad": "TP6.1",
+         "trunk_width": 150000,
+         "width": 150000
+        },
+        {
+         "a_xy": [
+          54.1375,
+          86.375
+         ],
+         "b_xy": [
+          55.3,
+          86.4
+         ],
+         "base_dir": true,
+         "centre": true,
+         "layer": "B",
+         "mm": 1.1628,
+         "necked": false,
+         "offcentre_mm": 0.0,
+         "pad": "U2.9",
+         "trunk_width": 150000,
+         "width": 150000
+        }
+       ],
+       "mm": 0.0,
+       "mm_by_layer": null,
+       "ok": false,
+       "pad": null,
+       "reason": "NO_PATH",
+       "seconds": 0.28,
+       "stub_mm": null,
+       "terminals": null,
+       "via_xy": null,
+       "vias": null,
+       "why": "no all-layer corridor at 0.150 mm from TP6.1 on B to U2.9 on B",
+       "width": 150000
+      }
+     ],
+     "vias": null,
+     "why": "no all-layer corridor at 0.150 mm from TP6.1 on B to U2.9 on B"
+    },
+    {
+     "a": "U11.9",
+     "b": "U2.9",
+     "closed_at": null,
+     "coplanar": [
+      "B"
+     ],
+     "gap_mm": 16.6131,
+     "hop_layers": null,
+     "instrument": "offcentre_route",
+     "launches": [],
+     "licensed_unconditionally": false,
+     "reason": "NO_LEGAL_ESCAPE",
+     "rungs": [
+      {
+       "hop_layers": null,
+       "launches": [],
+       "mm": 0.0,
+       "mm_by_layer": null,
+       "ok": false,
+       "pad": "U11.9",
+       "reason": "NO_LEGAL_ESCAPE",
+       "seconds": 0.54,
+       "stub_mm": null,
+       "terminals": null,
+       "via_xy": null,
+       "vias": null,
+       "why": "U11.9: NO OFF-CENTRE LAUNCH at 0.200 mm from any of 41 anchors x 24 directions x 17 lengths; blocked by U11.8 (x5488), U11.10 (x3416), landing still on the land (x1502), U11.7 (x1095)",
+       "width": 200000
+      },
+      {
+       "hop_layers": null,
+       "launches": [],
+       "mm": 0.0,
+       "mm_by_layer": null,
+       "ok": false,
+       "pad": "U11.9",
+       "reason": "NO_LEGAL_ESCAPE",
+       "seconds": 0.58,
+       "stub_mm": null,
+       "terminals": null,
+       "via_xy": null,
+       "vias": null,
+       "why": "U11.9: NO OFF-CENTRE LAUNCH at 0.150 mm from any of 41 anchors x 24 directions x 17 lengths; blocked by U11.8 (x4753), U11.10 (x4505), landing still on the land (x1502), U11.7 (x1371)",
+       "width": 150000
+      }
+     ],
+     "vias": null,
+     "why": "U11.9: NO OFF-CENTRE LAUNCH at 0.150 mm from any of 41 anchors x 24 directions x 17 lengths; blocked by U11.8 (x4753), U11.10 (x4505), landing still on the land (x1502), U11.7 (x1371)"
+    }
+   ],
+   "stub_floor": 150000,
+   "via_ladder": [
+    [
+     600000,
+     300000
+    ],
+    [
+     550000,
+     250000
+    ],
+    [
+     500000,
+     250000
+    ]
+   ],
+   "widths": [
+    200000,
+    150000
+   ]
+  },
+  {
+   "board_track_min": 150000,
+   "contract": 200000,
+   "dru_floor": 150000,
+   "far": [
+    "F",
+    "B",
+    "I2"
+   ],
+   "islands": 3,
+   "lands": [],
+   "net": "/BQ25185_STAT2",
+   "netclass": "Default",
+   "pairs": [
+    {
+     "a": "TP7.1",
+     "b": "U11.3",
+     "closed_at": null,
+     "coplanar": [
+      "B"
+     ],
+     "gap_mm": 21.0193,
+     "hop_layers": null,
+     "instrument": "offcentre_route",
+     "launches": [
+      {
+       "a_xy": [
+        62.75,
+        98.5
+       ],
+       "b_xy": [
+        62.8,
+        97.6
+       ],
+       "base_dir": true,
+       "centre": true,
+       "layer": "B",
+       "mm": 0.9014,
+       "necked": false,
+       "offcentre_mm": 0.0,
+       "pad": "TP7.1",
+       "trunk_width": 150000,
+       "width": 150000
+      }
+     ],
+     "licensed_unconditionally": false,
+     "reason": "NO_LEGAL_ESCAPE",
+     "rungs": [
+      {
+       "hop_layers": null,
+       "launches": [
+        {
+         "a_xy": [
+          62.75,
+          98.5
+         ],
+         "b_xy": [
+          62.8,
+          97.6
+         ],
+         "base_dir": true,
+         "centre": true,
+         "layer": "B",
+         "mm": 0.9014,
+         "necked": false,
+         "offcentre_mm": 0.0,
+         "pad": "TP7.1",
+         "trunk_width": 200000,
+         "width": 200000
+        }
+       ],
+       "mm": 0.0,
+       "mm_by_layer": null,
+       "ok": false,
+       "pad": "U11.3",
+       "reason": "NO_LEGAL_ESCAPE",
+       "seconds": 0.53,
+       "stub_mm": null,
+       "terminals": null,
+       "via_xy": null,
+       "vias": null,
+       "why": "U11.3: NO OFF-CENTRE LAUNCH at 0.200 mm from any of 41 anchors x 24 directions x 17 lengths; blocked by U11.2 (x5763), U11.4 (x3508), U11.1 (x2375), landing still on the land (x1502)",
+       "width": 200000
+      },
+      {
+       "hop_layers": null,
+       "launches": [
+        {
+         "a_xy": [
+          62.75,
+          98.5
+         ],
+         "b_xy": [
+          62.8,
+          97.6
+         ],
+         "base_dir": true,
+         "centre": true,
+         "layer": "B",
+         "mm": 0.9014,
+         "necked": false,
+         "offcentre_mm": 0.0,
+         "pad": "TP7.1",
+         "trunk_width": 150000,
+         "width": 150000
+        }
+       ],
+       "mm": 0.0,
+       "mm_by_layer": null,
+       "ok": false,
+       "pad": "U11.3",
+       "reason": "NO_LEGAL_ESCAPE",
+       "seconds": 0.55,
+       "stub_mm": null,
+       "terminals": null,
+       "via_xy": null,
+       "vias": null,
+       "why": "U11.3: NO OFF-CENTRE LAUNCH at 0.150 mm from any of 41 anchors x 24 directions x 17 lengths; blocked by U11.2 (x5042), U11.4 (x4596), U11.1 (x2566), landing still on the land (x1502)",
+       "width": 150000
+      }
+     ],
+     "vias": null,
+     "why": "U11.3: NO OFF-CENTRE LAUNCH at 0.150 mm from any of 41 anchors x 24 directions x 17 lengths; blocked by U11.2 (x5042), U11.4 (x4596), U11.1 (x2566), landing still on the land (x1502)"
+    },
+    {
+     "a": "TP7.1",
+     "b": "U2.10",
+     "closed_at": null,
+     "coplanar": [
+      "B"
+     ],
+     "gap_mm": 15.407,
+     "hop_layers": null,
+     "instrument": "offcentre_route",
+     "launches": [
+      {
+       "a_xy": [
+        62.75,
+        98.5
+       ],
+       "b_xy": [
+        62.1,
+        97.8
+       ],
+       "base_dir": true,
+       "centre": true,
+       "layer": "B",
+       "mm": 0.9552,
+       "necked": false,
+       "offcentre_mm": 0.0,
+       "pad": "TP7.1",
+       "trunk_width": 150000,
+       "width": 150000
+      },
+      {
+       "a_xy": [
+        54.1375,
+        85.725
+       ],
+       "b_xy": [
+        55.3,
+        85.7
+       ],
+       "base_dir": true,
+       "centre": true,
+       "layer": "B",
+       "mm": 1.1628,
+       "necked": false,
+       "offcentre_mm": 0.0,
+       "pad": "U2.10",
+       "trunk_width": 150000,
+       "width": 150000
+      }
+     ],
+     "licensed_unconditionally": false,
+     "reason": "NO_PATH",
+     "rungs": [
+      {
+       "hop_layers": null,
+       "launches": [
+        {
+         "a_xy": [
+          62.75,
+          98.5
+         ],
+         "b_xy": [
+          62.1,
+          97.8
+         ],
+         "base_dir": true,
+         "centre": true,
+         "layer": "B",
+         "mm": 0.9552,
+         "necked": false,
+         "offcentre_mm": 0.0,
+         "pad": "TP7.1",
+         "trunk_width": 200000,
+         "width": 200000
+        },
+        {
+         "a_xy": [
+          54.1375,
+          85.725
+         ],
+         "b_xy": [
+          55.3,
+          85.7
+         ],
+         "base_dir": true,
+         "centre": true,
+         "layer": "B",
+         "mm": 1.1628,
+         "necked": false,
+         "offcentre_mm": 0.0,
+         "pad": "U2.10",
+         "trunk_width": 200000,
+         "width": 200000
+        }
+       ],
+       "mm": 0.0,
+       "mm_by_layer": null,
+       "ok": false,
+       "pad": null,
+       "reason": "NO_PATH",
+       "seconds": 0.22,
+       "stub_mm": null,
+       "terminals": null,
+       "via_xy": null,
+       "vias": null,
+       "why": "no all-layer corridor at 0.200 mm from TP7.1 on B to U2.10 on B",
+       "width": 200000
+      },
+      {
+       "hop_layers": null,
+       "launches": [
+        {
+         "a_xy": [
+          62.75,
+          98.5
+         ],
+         "b_xy": [
+          62.1,
+          97.8
+         ],
+         "base_dir": true,
+         "centre": true,
+         "layer": "B",
+         "mm": 0.9552,
+         "necked": false,
+         "offcentre_mm": 0.0,
+         "pad": "TP7.1",
+         "trunk_width": 150000,
+         "width": 150000
+        },
+        {
+         "a_xy": [
+          54.1375,
+          85.725
+         ],
+         "b_xy": [
+          55.3,
+          85.7
+         ],
+         "base_dir": true,
+         "centre": true,
+         "layer": "B",
+         "mm": 1.1628,
+         "necked": false,
+         "offcentre_mm": 0.0,
+         "pad": "U2.10",
+         "trunk_width": 150000,
+         "width": 150000
+        }
+       ],
+       "mm": 0.0,
+       "mm_by_layer": null,
+       "ok": false,
+       "pad": null,
+       "reason": "NO_PATH",
+       "seconds": 0.23,
+       "stub_mm": null,
+       "terminals": null,
+       "via_xy": null,
+       "vias": null,
+       "why": "no all-layer corridor at 0.150 mm from TP7.1 on B to U2.10 on B",
+       "width": 150000
+      }
+     ],
+     "vias": null,
+     "why": "no all-layer corridor at 0.150 mm from TP7.1 on B to U2.10 on B"
+    },
+    {
+     "a": "U11.3",
+     "b": "U2.10",
+     "closed_at": null,
+     "coplanar": [
+      "B"
+     ],
+     "gap_mm": 14.6005,
+     "hop_layers": null,
+     "instrument": "offcentre_route",
+     "launches": [],
+     "licensed_unconditionally": false,
+     "reason": "NO_LEGAL_ESCAPE",
+     "rungs": [
+      {
+       "hop_layers": null,
+       "launches": [],
+       "mm": 0.0,
+       "mm_by_layer": null,
+       "ok": false,
+       "pad": "U11.3",
+       "reason": "NO_LEGAL_ESCAPE",
+       "seconds": 0.54,
+       "stub_mm": null,
+       "terminals": null,
+       "via_xy": null,
+       "vias": null,
+       "why": "U11.3: NO OFF-CENTRE LAUNCH at 0.200 mm from any of 41 anchors x 24 directions x 17 lengths; blocked by U11.2 (x5763), U11.4 (x3508), U11.1 (x2375), landing still on the land (x1502)",
+       "width": 200000
+      },
+      {
+       "hop_layers": null,
+       "launches": [],
+       "mm": 0.0,
+       "mm_by_layer": null,
+       "ok": false,
+       "pad": "U11.3",
+       "reason": "NO_LEGAL_ESCAPE",
+       "seconds": 0.96,
+       "stub_mm": null,
+       "terminals": null,
+       "via_xy": null,
+       "vias": null,
+       "why": "U11.3: NO OFF-CENTRE LAUNCH at 0.150 mm from any of 41 anchors x 24 directions x 17 lengths; blocked by U11.2 (x5042), U11.4 (x4596), U11.1 (x2566), landing still on the land (x1502)",
+       "width": 150000
+      }
+     ],
+     "vias": null,
+     "why": "U11.3: NO OFF-CENTRE LAUNCH at 0.150 mm from any of 41 anchors x 24 directions x 17 lengths; blocked by U11.2 (x5042), U11.4 (x4596), U11.1 (x2566), landing still on the land (x1502)"
+    }
+   ],
+   "stub_floor": 150000,
+   "via_ladder": [
+    [
+     600000,
+     300000
+    ],
+    [
+     550000,
+     250000
+    ],
+    [
+     500000,
+     250000
+    ]
+   ],
+   "widths": [
+    200000,
+    150000
+   ]
+  },
+  {
+   "board_track_min": 150000,
+   "contract": 200000,
+   "dru_floor": 150000,
+   "far": [
+    "F",
+    "B",
+    "I2"
+   ],
+   "islands": 3,
+   "lands": [],
+   "net": "/WAKE_INT_N",
+   "netclass": "Default",
+   "pairs": [
+    {
+     "a": "Q10.3",
+     "b": "U2.1",
+     "closed_at": null,
+     "coplanar": null,
+     "gap_mm": 25.2577,
+     "hop_layers": null,
+     "instrument": "offcentre_route",
+     "launches": [
+      {
+       "a_xy": [
+        61.5333,
+        115.7256
+       ],
+       "b_xy": [
+        61.5,
+        115.0
+       ],
+       "base_dir": true,
+       "centre": true,
+       "layer": "F",
+       "mm": 0.7264,
+       "necked": false,
+       "offcentre_mm": 0.0,
+       "pad": "Q10.3",
+       "trunk_width": 150000,
+       "width": 150000
+      },
+      {
+       "a_xy": [
+        54.1375,
+        91.575
+       ],
+       "b_xy": [
+        54.1,
+        92.2
+       ],
+       "base_dir": true,
+       "centre": true,
+       "layer": "B",
+       "mm": 0.6261,
+       "necked": false,
+       "offcentre_mm": 0.0,
+       "pad": "U2.1",
+       "trunk_width": 150000,
+       "width": 150000
+      }
+     ],
+     "licensed_unconditionally": false,
+     "reason": "NO_PATH",
+     "rungs": [
+      {
+       "hop_layers": null,
+       "launches": [
+        {
+         "a_xy": [
+          61.5333,
+          115.7256
+         ],
+         "b_xy": [
+          61.5,
+          115.0
+         ],
+         "base_dir": true,
+         "centre": true,
+         "layer": "F",
+         "mm": 0.7264,
+         "necked": false,
+         "offcentre_mm": 0.0,
+         "pad": "Q10.3",
+         "trunk_width": 200000,
+         "width": 200000
+        },
+        {
+         "a_xy": [
+          54.1375,
+          91.575
+         ],
+         "b_xy": [
+          54.1,
+          92.2
+         ],
+         "base_dir": true,
+         "centre": true,
+         "layer": "B",
+         "mm": 0.6261,
+         "necked": false,
+         "offcentre_mm": 0.0,
+         "pad": "U2.1",
+         "trunk_width": 200000,
+         "width": 200000
+        }
+       ],
+       "mm": 0.0,
+       "mm_by_layer": null,
+       "ok": false,
+       "pad": null,
+       "reason": "NO_PATH",
+       "seconds": 0.21,
+       "stub_mm": null,
+       "terminals": null,
+       "via_xy": null,
+       "vias": null,
+       "why": "no all-layer corridor at 0.200 mm from Q10.3 on F to U2.1 on B",
+       "width": 200000
+      },
+      {
+       "hop_layers": null,
+       "launches": [
+        {
+         "a_xy": [
+          61.5333,
+          115.7256
+         ],
+         "b_xy": [
+          61.5,
+          115.0
+         ],
+         "base_dir": true,
+         "centre": true,
+         "layer": "F",
+         "mm": 0.7264,
+         "necked": false,
+         "offcentre_mm": 0.0,
+         "pad": "Q10.3",
+         "trunk_width": 150000,
+         "width": 150000
+        },
+        {
+         "a_xy": [
+          54.1375,
+          91.575
+         ],
+         "b_xy": [
+          54.1,
+          92.2
+         ],
+         "base_dir": true,
+         "centre": true,
+         "layer": "B",
+         "mm": 0.6261,
+         "necked": false,
+         "offcentre_mm": 0.0,
+         "pad": "U2.1",
+         "trunk_width": 150000,
+         "width": 150000
+        }
+       ],
+       "mm": 0.0,
+       "mm_by_layer": null,
+       "ok": false,
+       "pad": null,
+       "reason": "NO_PATH",
+       "seconds": 0.21,
+       "stub_mm": null,
+       "terminals": null,
+       "via_xy": null,
+       "vias": null,
+       "why": "no all-layer corridor at 0.150 mm from Q10.3 on F to U2.1 on B",
+       "width": 150000
+      }
+     ],
+     "vias": null,
+     "why": "no all-layer corridor at 0.150 mm from Q10.3 on F to U2.1 on B"
+    },
+    {
+     "a": "Q10.3",
+     "b": "U3.1",
+     "closed_at": null,
+     "coplanar": null,
+     "gap_mm": 34.9422,
+     "hop_layers": null,
+     "instrument": "offcentre_route",
+     "launches": [
+      {
+       "a_xy": [
+        61.5333,
+        115.7256
+       ],
+       "b_xy": [
+        61.5,
+        115.0
+       ],
+       "base_dir": true,
+       "centre": true,
+       "layer": "F",
+       "mm": 0.7264,
+       "necked": false,
+       "offcentre_mm": 0.0,
+       "pad": "Q10.3",
+       "trunk_width": 150000,
+       "width": 150000
+      },
+      {
+       "a_xy": [
+        54.1375,
+        81.575
+       ],
+       "b_xy": [
+        54.1,
+        82.2
+       ],
+       "base_dir": true,
+       "centre": true,
+       "layer": "B",
+       "mm": 0.6261,
+       "necked": false,
+       "offcentre_mm": 0.0,
+       "pad": "U3.1",
+       "trunk_width": 150000,
+       "width": 150000
+      }
+     ],
+     "licensed_unconditionally": false,
+     "reason": "NO_PATH",
+     "rungs": [
+      {
+       "hop_layers": null,
+       "launches": [
+        {
+         "a_xy": [
+          61.5333,
+          115.7256
+         ],
+         "b_xy": [
+          61.5,
+          115.0
+         ],
+         "base_dir": true,
+         "centre": true,
+         "layer": "F",
+         "mm": 0.7264,
+         "necked": false,
+         "offcentre_mm": 0.0,
+         "pad": "Q10.3",
+         "trunk_width": 200000,
+         "width": 200000
+        },
+        {
+         "a_xy": [
+          54.1375,
+          81.575
+         ],
+         "b_xy": [
+          54.1,
+          82.2
+         ],
+         "base_dir": true,
+         "centre": true,
+         "layer": "B",
+         "mm": 0.6261,
+         "necked": false,
+         "offcentre_mm": 0.0,
+         "pad": "U3.1",
+         "trunk_width": 200000,
+         "width": 200000
+        }
+       ],
+       "mm": 0.0,
+       "mm_by_layer": null,
+       "ok": false,
+       "pad": null,
+       "reason": "NO_PATH",
+       "seconds": 0.5,
+       "stub_mm": null,
+       "terminals": null,
+       "via_xy": null,
+       "vias": null,
+       "why": "no all-layer corridor at 0.200 mm from Q10.3 on F to U3.1 on B",
+       "width": 200000
+      },
+      {
+       "hop_layers": null,
+       "launches": [
+        {
+         "a_xy": [
+          61.5333,
+          115.7256
+         ],
+         "b_xy": [
+          61.5,
+          115.0
+         ],
+         "base_dir": true,
+         "centre": true,
+         "layer": "F",
+         "mm": 0.7264,
+         "necked": false,
+         "offcentre_mm": 0.0,
+         "pad": "Q10.3",
+         "trunk_width": 150000,
+         "width": 150000
+        },
+        {
+         "a_xy": [
+          54.1375,
+          81.575
+         ],
+         "b_xy": [
+          54.1,
+          82.2
+         ],
+         "base_dir": true,
+         "centre": true,
+         "layer": "B",
+         "mm": 0.6261,
+         "necked": false,
+         "offcentre_mm": 0.0,
+         "pad": "U3.1",
+         "trunk_width": 150000,
+         "width": 150000
+        }
+       ],
+       "mm": 0.0,
+       "mm_by_layer": null,
+       "ok": false,
+       "pad": null,
+       "reason": "NO_PATH",
+       "seconds": 0.51,
+       "stub_mm": null,
+       "terminals": null,
+       "via_xy": null,
+       "vias": null,
+       "why": "no all-layer corridor at 0.150 mm from Q10.3 on F to U3.1 on B",
+       "width": 150000
+      }
+     ],
+     "vias": null,
+     "why": "no all-layer corridor at 0.150 mm from Q10.3 on F to U3.1 on B"
+    },
+    {
+     "a": "U2.1",
+     "b": "U3.1",
+     "closed_at": null,
+     "coplanar": [
+      "B"
+     ],
+     "gap_mm": 10.0,
+     "hop_layers": null,
+     "instrument": "offcentre_route",
+     "launches": [
+      {
+       "a_xy": [
+        54.1375,
+        91.575
+       ],
+       "b_xy": [
+        54.1,
+        92.2
+       ],
+       "base_dir": true,
+       "centre": true,
+       "layer": "B",
+       "mm": 0.6261,
+       "necked": false,
+       "offcentre_mm": 0.0,
+       "pad": "U2.1",
+       "trunk_width": 150000,
+       "width": 150000
+      },
+      {
+       "a_xy": [
+        54.1375,
+        81.575
+       ],
+       "b_xy": [
+        54.1,
+        82.2
+       ],
+       "base_dir": true,
+       "centre": true,
+       "layer": "B",
+       "mm": 0.6261,
+       "necked": false,
+       "offcentre_mm": 0.0,
+       "pad": "U3.1",
+       "trunk_width": 150000,
+       "width": 150000
+      }
+     ],
+     "licensed_unconditionally": false,
+     "reason": "NO_PATH",
+     "rungs": [
+      {
+       "hop_layers": null,
+       "launches": [
+        {
+         "a_xy": [
+          54.1375,
+          91.575
+         ],
+         "b_xy": [
+          54.1,
+          92.2
+         ],
+         "base_dir": true,
+         "centre": true,
+         "layer": "B",
+         "mm": 0.6261,
+         "necked": false,
+         "offcentre_mm": 0.0,
+         "pad": "U2.1",
+         "trunk_width": 200000,
+         "width": 200000
+        },
+        {
+         "a_xy": [
+          54.1375,
+          81.575
+         ],
+         "b_xy": [
+          54.1,
+          82.2
+         ],
+         "base_dir": true,
+         "centre": true,
+         "layer": "B",
+         "mm": 0.6261,
+         "necked": false,
+         "offcentre_mm": 0.0,
+         "pad": "U3.1",
+         "trunk_width": 200000,
+         "width": 200000
+        }
+       ],
+       "mm": 0.0,
+       "mm_by_layer": null,
+       "ok": false,
+       "pad": null,
+       "reason": "NO_PATH",
+       "seconds": 0.56,
+       "stub_mm": null,
+       "terminals": null,
+       "via_xy": null,
+       "vias": null,
+       "why": "no all-layer corridor at 0.200 mm from U2.1 on B to U3.1 on B",
+       "width": 200000
+      },
+      {
+       "hop_layers": null,
+       "launches": [
+        {
+         "a_xy": [
+          54.1375,
+          91.575
+         ],
+         "b_xy": [
+          54.1,
+          92.2
+         ],
+         "base_dir": true,
+         "centre": true,
+         "layer": "B",
+         "mm": 0.6261,
+         "necked": false,
+         "offcentre_mm": 0.0,
+         "pad": "U2.1",
+         "trunk_width": 150000,
+         "width": 150000
+        },
+        {
+         "a_xy": [
+          54.1375,
+          81.575
+         ],
+         "b_xy": [
+          54.1,
+          82.2
+         ],
+         "base_dir": true,
+         "centre": true,
+         "layer": "B",
+         "mm": 0.6261,
+         "necked": false,
+         "offcentre_mm": 0.0,
+         "pad": "U3.1",
+         "trunk_width": 150000,
+         "width": 150000
+        }
+       ],
+       "mm": 0.0,
+       "mm_by_layer": null,
+       "ok": false,
+       "pad": null,
+       "reason": "NO_PATH",
+       "seconds": 0.56,
+       "stub_mm": null,
+       "terminals": null,
+       "via_xy": null,
+       "vias": null,
+       "why": "no all-layer corridor at 0.150 mm from U2.1 on B to U3.1 on B",
+       "width": 150000
+      }
+     ],
+     "vias": null,
+     "why": "no all-layer corridor at 0.150 mm from U2.1 on B to U3.1 on B"
+    }
+   ],
+   "stub_floor": 150000,
+   "via_ladder": [
+    [
+     600000,
+     300000
+    ],
+    [
+     550000,
+     250000
+    ],
+    [
+     500000,
+     250000
+    ]
+   ],
+   "widths": [
+    200000,
+    150000
+   ]
+  },
+  {
+   "board_track_min": 150000,
+   "contract": 200000,
+   "dru_floor": 150000,
+   "far": [
+    "F",
+    "B",
+    "I2"
+   ],
+   "islands": 3,
+   "lands": [],
+   "net": "/I2C_SDA_INT",
+   "netclass": "I2C",
+   "pairs": [
+    {
+     "a": "U3.23",
+     "b": "U2.23",
+     "closed_at": null,
+     "coplanar": [
+      "B"
+     ],
+     "gap_mm": 10.0,
+     "hop_layers": null,
+     "instrument": "offcentre_route",
+     "launches": [
+      {
+       "a_xy": [
+        59.8625,
+        80.925
+       ],
+       "b_xy": [
+        61.0,
+        80.9
+       ],
+       "base_dir": true,
+       "centre": true,
+       "layer": "B",
+       "mm": 1.1378,
+       "necked": false,
+       "offcentre_mm": 0.0,
+       "pad": "U3.23",
+       "trunk_width": 150000,
+       "width": 150000
+      },
+      {
+       "a_xy": [
+        59.8625,
+        90.925
+       ],
+       "b_xy": [
+        59.1,
+        90.9
+       ],
+       "base_dir": true,
+       "centre": false,
+       "layer": "B",
+       "mm": 0.7629,
+       "necked": false,
+       "offcentre_mm": 0.0,
+       "pad": "U2.23",
+       "trunk_width": 150000,
+       "width": 150000
+      }
+     ],
+     "licensed_unconditionally": false,
+     "reason": "NO_PATH",
+     "rungs": [
+      {
+       "hop_layers": null,
+       "launches": [
+        {
+         "a_xy": [
+          59.8625,
+          80.925
+         ],
+         "b_xy": [
+          61.0,
+          80.9
+         ],
+         "base_dir": true,
+         "centre": true,
+         "layer": "B",
+         "mm": 1.1378,
+         "necked": false,
+         "offcentre_mm": 0.0,
+         "pad": "U3.23",
+         "trunk_width": 200000,
+         "width": 200000
+        }
+       ],
+       "mm": 0.0,
+       "mm_by_layer": null,
+       "ok": false,
+       "pad": "U2.23",
+       "reason": "NO_LEGAL_ESCAPE",
+       "seconds": 2.24,
+       "stub_mm": null,
+       "terminals": null,
+       "via_xy": null,
+       "vias": null,
+       "why": "U2.23: NO OFF-CENTRE LAUNCH at 0.200 mm from any of 41 anchors x 24 directions x 17 lengths; blocked by U2.24 (x6146), U2.22 (x4747), track (x2140), U2.21 (x1138)",
+       "width": 200000
+      },
+      {
+       "hop_layers": null,
+       "launches": [
+        {
+         "a_xy": [
+          59.8625,
+          80.925
+         ],
+         "b_xy": [
+          61.0,
+          80.9
+         ],
+         "base_dir": true,
+         "centre": true,
+         "layer": "B",
+         "mm": 1.1378,
+         "necked": false,
+         "offcentre_mm": 0.0,
+         "pad": "U3.23",
+         "trunk_width": 150000,
+         "width": 150000
+        },
+        {
+         "a_xy": [
+          59.8625,
+          90.925
+         ],
+         "b_xy": [
+          59.1,
+          90.9
+         ],
+         "base_dir": true,
+         "centre": false,
+         "layer": "B",
+         "mm": 0.7629,
+         "necked": false,
+         "offcentre_mm": 0.0,
+         "pad": "U2.23",
+         "trunk_width": 150000,
+         "width": 150000
+        }
+       ],
+       "mm": 0.0,
+       "mm_by_layer": null,
+       "ok": false,
+       "pad": null,
+       "reason": "NO_PATH",
+       "seconds": 2.21,
+       "stub_mm": null,
+       "terminals": null,
+       "via_xy": null,
+       "vias": null,
+       "why": "no all-layer corridor at 0.150 mm from U3.23 on B to U2.23 on B",
+       "width": 150000
+      }
+     ],
+     "vias": null,
+     "why": "no all-layer corridor at 0.150 mm from U3.23 on B to U2.23 on B"
+    },
+    {
+     "a": "U3.23",
+     "b": "U4.14",
+     "closed_at": null,
+     "coplanar": [
+      "B"
+     ],
+     "gap_mm": 11.8851,
+     "hop_layers": null,
+     "instrument": "offcentre_route",
+     "launches": [
+      {
+       "a_xy": [
+        59.8625,
+        80.925
+       ],
+       "b_xy": [
+        58.7,
+        80.9
+       ],
+       "base_dir": true,
+       "centre": true,
+       "layer": "B",
+       "mm": 1.1628,
+       "necked": false,
+       "offcentre_mm": 0.0,
+       "pad": "U3.23",
+       "trunk_width": 150000,
+       "width": 150000
+      },
+      {
+       "a_xy": [
+        56.5875,
+        69.5
+       ],
+       "b_xy": [
+        57.2,
+        69.5
+       ],
+       "base_dir": true,
+       "centre": true,
+       "layer": "B",
+       "mm": 0.6125,
+       "necked": false,
+       "offcentre_mm": 0.0,
+       "pad": "U4.14",
+       "trunk_width": 150000,
+       "width": 150000
+      }
+     ],
+     "licensed_unconditionally": false,
+     "reason": "NO_PATH",
+     "rungs": [
+      {
+       "hop_layers": null,
+       "launches": [
+        {
+         "a_xy": [
+          59.8625,
+          80.925
+         ],
+         "b_xy": [
+          58.7,
+          80.9
+         ],
+         "base_dir": true,
+         "centre": true,
+         "layer": "B",
+         "mm": 1.1628,
+         "necked": false,
+         "offcentre_mm": 0.0,
+         "pad": "U3.23",
+         "trunk_width": 200000,
+         "width": 200000
+        },
+        {
+         "a_xy": [
+          56.5875,
+          69.5
+         ],
+         "b_xy": [
+          57.3,
+          69.5
+         ],
+         "base_dir": true,
+         "centre": true,
+         "layer": "B",
+         "mm": 0.7125,
+         "necked": false,
+         "offcentre_mm": 0.0,
+         "pad": "U4.14",
+         "trunk_width": 200000,
+         "width": 200000
+        }
+       ],
+       "mm": 0.0,
+       "mm_by_layer": null,
+       "ok": false,
+       "pad": null,
+       "reason": "NO_PATH",
+       "seconds": 0.2,
+       "stub_mm": null,
+       "terminals": null,
+       "via_xy": null,
+       "vias": null,
+       "why": "no all-layer corridor at 0.200 mm from U3.23 on B to U4.14 on B",
+       "width": 200000
+      },
+      {
+       "hop_layers": null,
+       "launches": [
+        {
+         "a_xy": [
+          59.8625,
+          80.925
+         ],
+         "b_xy": [
+          58.7,
+          80.9
+         ],
+         "base_dir": true,
+         "centre": true,
+         "layer": "B",
+         "mm": 1.1628,
+         "necked": false,
+         "offcentre_mm": 0.0,
+         "pad": "U3.23",
+         "trunk_width": 150000,
+         "width": 150000
+        },
+        {
+         "a_xy": [
+          56.5875,
+          69.5
+         ],
+         "b_xy": [
+          57.2,
+          69.5
+         ],
+         "base_dir": true,
+         "centre": true,
+         "layer": "B",
+         "mm": 0.6125,
+         "necked": false,
+         "offcentre_mm": 0.0,
+         "pad": "U4.14",
+         "trunk_width": 150000,
+         "width": 150000
+        }
+       ],
+       "mm": 0.0,
+       "mm_by_layer": null,
+       "ok": false,
+       "pad": null,
+       "reason": "NO_PATH",
+       "seconds": 0.37,
+       "stub_mm": null,
+       "terminals": null,
+       "via_xy": null,
+       "vias": null,
+       "why": "no all-layer corridor at 0.150 mm from U3.23 on B to U4.14 on B",
+       "width": 150000
+      }
+     ],
+     "vias": null,
+     "why": "no all-layer corridor at 0.150 mm from U3.23 on B to U4.14 on B"
+    },
+    {
+     "a": "U2.23",
+     "b": "U4.14",
+     "closed_at": null,
+     "coplanar": [
+      "B"
+     ],
+     "gap_mm": 21.6739,
+     "hop_layers": null,
+     "instrument": "offcentre_route",
+     "launches": [
+      {
+       "a_xy": [
+        59.8625,
+        90.925
+       ],
+       "b_xy": [
+        59.1,
+        90.9
+       ],
+       "base_dir": true,
+       "centre": false,
+       "layer": "B",
+       "mm": 0.7629,
+       "necked": false,
+       "offcentre_mm": 0.0,
+       "pad": "U2.23",
+       "trunk_width": 150000,
+       "width": 150000
+      },
+      {
+       "a_xy": [
+        56.5875,
+        69.5
+       ],
+       "b_xy": [
+        57.2,
+        69.5
+       ],
+       "base_dir": true,
+       "centre": true,
+       "layer": "B",
+       "mm": 0.6125,
+       "necked": false,
+       "offcentre_mm": 0.0,
+       "pad": "U4.14",
+       "trunk_width": 150000,
+       "width": 150000
+      }
+     ],
+     "licensed_unconditionally": false,
+     "reason": "NO_PATH",
+     "rungs": [
+      {
+       "hop_layers": null,
+       "launches": [],
+       "mm": 0.0,
+       "mm_by_layer": null,
+       "ok": false,
+       "pad": "U2.23",
+       "reason": "NO_LEGAL_ESCAPE",
+       "seconds": 0.91,
+       "stub_mm": null,
+       "terminals": null,
+       "via_xy": null,
+       "vias": null,
+       "why": "U2.23: NO OFF-CENTRE LAUNCH at 0.200 mm from any of 41 anchors x 24 directions x 17 lengths; blocked by U2.24 (x6146), U2.22 (x4747), track (x2140), U2.21 (x1138)",
+       "width": 200000
+      },
+      {
+       "hop_layers": null,
+       "launches": [
+        {
+         "a_xy": [
+          59.8625,
+          90.925
+         ],
+         "b_xy": [
+          59.1,
+          90.9
+         ],
+         "base_dir": true,
+         "centre": false,
+         "layer": "B",
+         "mm": 0.7629,
+         "necked": false,
+         "offcentre_mm": 0.0,
+         "pad": "U2.23",
+         "trunk_width": 150000,
+         "width": 150000
+        },
+        {
+         "a_xy": [
+          56.5875,
+          69.5
+         ],
+         "b_xy": [
+          57.2,
+          69.5
+         ],
+         "base_dir": true,
+         "centre": true,
+         "layer": "B",
+         "mm": 0.6125,
+         "necked": false,
+         "offcentre_mm": 0.0,
+         "pad": "U4.14",
+         "trunk_width": 150000,
+         "width": 150000
+        }
+       ],
+       "mm": 0.0,
+       "mm_by_layer": null,
+       "ok": false,
+       "pad": null,
+       "reason": "NO_PATH",
+       "seconds": 1.18,
+       "stub_mm": null,
+       "terminals": null,
+       "via_xy": null,
+       "vias": null,
+       "why": "no all-layer corridor at 0.150 mm from U2.23 on B to U4.14 on B",
+       "width": 150000
+      }
+     ],
+     "vias": null,
+     "why": "no all-layer corridor at 0.150 mm from U2.23 on B to U4.14 on B"
+    }
+   ],
+   "stub_floor": 150000,
+   "via_ladder": [
+    [
+     600000,
+     300000
+    ],
+    [
+     550000,
+     250000
+    ],
+    [
+     500000,
+     250000
+    ]
+   ],
+   "widths": [
+    200000,
+    150000
+   ]
+  },
+  {
+   "board_track_min": 150000,
+   "contract": 200000,
+   "dru_floor": 150000,
+   "far": [
+    "F",
+    "B",
+    "I2"
+   ],
+   "islands": 2,
+   "lands": [],
+   "net": "/ACC_PWR_EN",
+   "netclass": "Default",
+   "pairs": [
+    {
+     "a": "R17.1",
+     "b": "U3.20",
+     "closed_at": null,
+     "coplanar": [
+      "B"
+     ],
+     "gap_mm": 20.2425,
+     "hop_layers": null,
+     "instrument": "offcentre_route",
+     "launches": [
+      {
+       "a_xy": [
+        54.05,
+        59.585
+       ],
+       "b_xy": [
+        54.9,
+        59.6
+       ],
+       "base_dir": true,
+       "centre": true,
+       "layer": "B",
+       "mm": 0.8501,
+       "necked": false,
+       "offcentre_mm": 0.0,
+       "pad": "R17.1",
+       "trunk_width": 150000,
+       "width": 150000
+      },
+      {
+       "a_xy": [
+        59.8625,
+        78.975
+       ],
+       "b_xy": [
+        61.0,
+        79.0
+       ],
+       "base_dir": true,
+       "centre": true,
+       "layer": "B",
+       "mm": 1.1378,
+       "necked": false,
+       "offcentre_mm": 0.0,
+       "pad": "U3.20",
+       "trunk_width": 150000,
+       "width": 150000
+      }
+     ],
+     "licensed_unconditionally": false,
+     "reason": "NO_PATH",
+     "rungs": [
+      {
+       "hop_layers": null,
+       "launches": [
+        {
+         "a_xy": [
+          54.05,
+          59.585
+         ],
+         "b_xy": [
+          54.9,
+          59.6
+         ],
+         "base_dir": true,
+         "centre": true,
+         "layer": "B",
+         "mm": 0.8501,
+         "necked": false,
+         "offcentre_mm": 0.0,
+         "pad": "R17.1",
+         "trunk_width": 200000,
+         "width": 200000
+        },
+        {
+         "a_xy": [
+          59.8625,
+          78.975
+         ],
+         "b_xy": [
+          61.0,
+          79.0
+         ],
+         "base_dir": true,
+         "centre": true,
+         "layer": "B",
+         "mm": 1.1378,
+         "necked": false,
+         "offcentre_mm": 0.0,
+         "pad": "U3.20",
+         "trunk_width": 200000,
+         "width": 200000
+        }
+       ],
+       "mm": 0.0,
+       "mm_by_layer": null,
+       "ok": false,
+       "pad": null,
+       "reason": "NO_PATH",
+       "seconds": 0.19,
+       "stub_mm": null,
+       "terminals": null,
+       "via_xy": null,
+       "vias": null,
+       "why": "no all-layer corridor at 0.200 mm from R17.1 on B to U3.20 on B",
+       "width": 200000
+      },
+      {
+       "hop_layers": null,
+       "launches": [
+        {
+         "a_xy": [
+          54.05,
+          59.585
+         ],
+         "b_xy": [
+          54.9,
+          59.6
+         ],
+         "base_dir": true,
+         "centre": true,
+         "layer": "B",
+         "mm": 0.8501,
+         "necked": false,
+         "offcentre_mm": 0.0,
+         "pad": "R17.1",
+         "trunk_width": 150000,
+         "width": 150000
+        },
+        {
+         "a_xy": [
+          59.8625,
+          78.975
+         ],
+         "b_xy": [
+          61.0,
+          79.0
+         ],
+         "base_dir": true,
+         "centre": true,
+         "layer": "B",
+         "mm": 1.1378,
+         "necked": false,
+         "offcentre_mm": 0.0,
+         "pad": "U3.20",
+         "trunk_width": 150000,
+         "width": 150000
+        }
+       ],
+       "mm": 0.0,
+       "mm_by_layer": null,
+       "ok": false,
+       "pad": null,
+       "reason": "NO_PATH",
+       "seconds": 0.18,
+       "stub_mm": null,
+       "terminals": null,
+       "via_xy": null,
+       "vias": null,
+       "why": "no all-layer corridor at 0.150 mm from R17.1 on B to U3.20 on B",
+       "width": 150000
+      }
+     ],
+     "vias": null,
+     "why": "no all-layer corridor at 0.150 mm from R17.1 on B to U3.20 on B"
+    }
+   ],
+   "stub_floor": 150000,
+   "via_ladder": [
+    [
+     600000,
+     300000
+    ],
+    [
+     550000,
+     250000
+    ],
+    [
+     500000,
+     250000
+    ]
+   ],
+   "widths": [
+    200000,
+    150000
+   ]
+  },
+  {
+   "board_track_min": 150000,
+   "contract": 200000,
+   "dru_floor": 150000,
+   "far": [
+    "F",
+    "B",
+    "I2"
+   ],
+   "islands": 2,
+   "lands": [],
+   "net": "/08_BUTTONS_EXPANDERS/BTN_LEFT_N",
+   "netclass": "Default",
+   "pairs": [
+    {
+     "a": "R6.2",
+     "b": "U2.15",
+     "closed_at": null,
+     "coplanar": [
+      "B"
+     ],
+     "gap_mm": 8.6471,
+     "hop_layers": null,
+     "instrument": "offcentre_route",
+     "launches": [
+      {
+       "a_xy": [
+        51.9478,
+        89.2078
+       ],
+       "b_xy": [
+        52.6,
+        88.5
+       ],
+       "base_dir": true,
+       "centre": true,
+       "layer": "B",
+       "mm": 0.9624,
+       "necked": false,
+       "offcentre_mm": 0.0,
+       "pad": "R6.2",
+       "trunk_width": 150000,
+       "width": 150000
+      },
+      {
+       "a_xy": [
+        59.8625,
+        85.725
+       ],
+       "b_xy": [
+        58.7,
+        85.7
+       ],
+       "base_dir": true,
+       "centre": true,
+       "layer": "B",
+       "mm": 1.1628,
+       "necked": false,
+       "offcentre_mm": 0.0,
+       "pad": "U2.15",
+       "trunk_width": 150000,
+       "width": 150000
+      }
+     ],
+     "licensed_unconditionally": false,
+     "reason": "NO_PATH",
+     "rungs": [
+      {
+       "hop_layers": null,
+       "launches": [
+        {
+         "a_xy": [
+          51.9478,
+          89.2078
+         ],
+         "b_xy": [
+          52.6,
+          88.5
+         ],
+         "base_dir": true,
+         "centre": true,
+         "layer": "B",
+         "mm": 0.9624,
+         "necked": false,
+         "offcentre_mm": 0.0,
+         "pad": "R6.2",
+         "trunk_width": 200000,
+         "width": 200000
+        },
+        {
+         "a_xy": [
+          59.8625,
+          85.725
+         ],
+         "b_xy": [
+          58.7,
+          85.7
+         ],
+         "base_dir": true,
+         "centre": true,
+         "layer": "B",
+         "mm": 1.1628,
+         "necked": false,
+         "offcentre_mm": 0.0,
+         "pad": "U2.15",
+         "trunk_width": 200000,
+         "width": 200000
+        }
+       ],
+       "mm": 0.0,
+       "mm_by_layer": null,
+       "ok": false,
+       "pad": null,
+       "reason": "NO_PATH",
+       "seconds": 13.16,
+       "stub_mm": null,
+       "terminals": null,
+       "via_xy": null,
+       "vias": null,
+       "why": "no all-layer corridor at 0.200 mm from R6.2 on B to U2.15 on B",
+       "width": 200000
+      },
+      {
+       "hop_layers": null,
+       "launches": [
+        {
+         "a_xy": [
+          51.9478,
+          89.2078
+         ],
+         "b_xy": [
+          52.6,
+          88.5
+         ],
+         "base_dir": true,
+         "centre": true,
+         "layer": "B",
+         "mm": 0.9624,
+         "necked": false,
+         "offcentre_mm": 0.0,
+         "pad": "R6.2",
+         "trunk_width": 150000,
+         "width": 150000
+        },
+        {
+         "a_xy": [
+          59.8625,
+          85.725
+         ],
+         "b_xy": [
+          58.7,
+          85.7
+         ],
+         "base_dir": true,
+         "centre": true,
+         "layer": "B",
+         "mm": 1.1628,
+         "necked": false,
+         "offcentre_mm": 0.0,
+         "pad": "U2.15",
+         "trunk_width": 150000,
+         "width": 150000
+        }
+       ],
+       "mm": 0.0,
+       "mm_by_layer": null,
+       "ok": false,
+       "pad": null,
+       "reason": "NO_PATH",
+       "seconds": 13.05,
+       "stub_mm": null,
+       "terminals": null,
+       "via_xy": null,
+       "vias": null,
+       "why": "no all-layer corridor at 0.150 mm from R6.2 on B to U2.15 on B",
+       "width": 150000
+      }
+     ],
+     "vias": null,
+     "why": "no all-layer corridor at 0.150 mm from R6.2 on B to U2.15 on B"
+    }
+   ],
+   "stub_floor": 150000,
+   "via_ladder": [
+    [
+     600000,
+     300000
+    ],
+    [
+     550000,
+     250000
+    ],
+    [
+     500000,
+     250000
+    ]
+   ],
+   "widths": [
+    200000,
+    150000
+   ]
+  }
+ ],
+ "question": "does an OFF-CENTRE LAUNCH plus a LAYER HOP -- exact stub, barrel at the first via site the stub can reach, haul on a far layer -- close the island pairs the FLAT off-centre connect refuses",
+ "schema": 1
+}
