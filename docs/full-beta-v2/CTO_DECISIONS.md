@@ -1,5 +1,62 @@
 # AQROOT Full Beta v2 — CTO Decisions
 
+# D-629 · 2026-09-05 · Demo — I2C_SCL_INT, the LARGEST open net on the board, is a MEASURED CORRIDOR WALL: 15 pairs asked, 15 NO_PATH, every one with legal escapes at both ends
+
+CHARACTERIZATION ONLY, no copper change; the authoritative board is the D-628
+promotion `8b337e3c…`, untouched.
+
+`/I2C_SCL_INT` — **5 retained open edges, the most of any plane-less net on this
+board**, 9 lands, 6 copper islands — was the last item CURRENT_STATE listed as
+*bounded by the D-626 TIME budget rather than by a wall*, with **14 of its 15
+pairs marked NEVER ASKED** by the D-626 census. It now has a number
+(`evidence/d629-i2c-scl-int-guarded-ladder.json`).
+
+`--partial --grid ladder --grid-gb 3.5 --grid-seconds 4000` with the 47-tube
+D-619 guard ON, five rungs, **3197 s on the finest**:
+
+    0.0667 mm     10,392,240 cells     109.0 s   NO_PATH
+    0.0500 mm     18,501,444 cells     183.4 s   NO_PATH
+    0.0333 mm     41,687,580 cells     672.2 s   NO_PATH   (predicted 381.6, ×1.76)
+    0.0250 mm     73,969,284 cells    1640.3 s   NO_PATH   (predicted 1681.5, ×0.98)
+    0.0200 mm    115,565,604 cells    3215.2 s   NO_PATH   (predicted 3283.8, ×0.98)
+    0.0125 mm                                    over the 4000 s TIME budget
+
+**FIFTEEN PAIRS ASKED, FIFTEEN `NO_PATH`, ZERO CLOSED.** Every refusal is a
+CORRIDOR refusal, and **every pair had at least one LEGAL ESCAPE at BOTH ends**
+(src 1–16, dst 1–5) on gaps from **10.000 mm to 91.710 mm**. That is the part
+that settles it: a finer lattice lifts an ESCAPE refusal, and a land licence
+lifts an escape refusal, and this net has neither kind. There is no all-layer
+corridor at 0.200 mm between these islands, at any pitch this board can afford.
+**`I2C_SCL_INT` needs EVICTION, PLACEMENT or an inner-layer haul — not a finer
+pitch**, and the 0.0125 mm rung would buy nothing.
+
+**PROVENANCE, HONESTLY.** The run was in flight when the D-628 `LED_K` promotion
+landed, so the gate's own board-identity clause correctly read
+`authoritative_unchanged: false` and refused to call it a promotion candidate —
+which is the clause working, since this was never a promotion. The measurement
+is recorded against the board it actually ran on (`35129d6c…`), and it still
+holds on the promoted board: the promotion **ADDED** 18 objects and **REMOVED**
+zero, added no zone, changed no rule area and no `.kicad_dru`. Free space is
+monotone under added copper, so a `NO_PATH` at 0.020 mm cannot become a path.
+
+**WHAT THE 47 REMAINING RETAINED OPEN EDGES NOW LOOK LIKE.** 19 belong to the
+three POUR-SERVED nets (`+3V3` 8, `/01_POWER_TREE/BQ25185_SYS` 7, `GND` 4),
+which are a stitch/bond problem and not an MST problem at all. Of the 28 on
+plane-less nets, **11 are now MEASURED WALLS** — `I2C_SCL_INT` 5 here, plus
+`I2C_SDA_INT` 2, `WAKE_INT_N` 2 and `BQ25185_STAT2` 2 at D-627. **That leaves 17
+live edges**: `EXT_SDA` 2, `BQ25185_STAT1` 2, `NFC_SUPPLY` 2 — none of the three
+put through the census at a fine pitch — and eleven single-edge nets.
+
+**NEXT, IN ORDER OF LEVERAGE:** (1) the census-then-ladder recipe on
+`/BQ25185_STAT1`, `/NFC_SUPPLY` and the two edges `EXT_SDA` still holds — **6
+edges, all with never-asked pairs**, and the recipe that closed `EXT_SDA`
+(D-626) and `LED_K` (D-628) is unchanged. (2) The **19 pour-served edges** are
+now the largest single block on the board and the D-628 clause has just made
+severance a PRICED question rather than a forbidden one — a bond/stitch pass
+under `PP2` is the framework-level move. (3) `ACC_5V_LX` still needs `U21.5`
+given an escape at all. **The `GND` return-path pricing question remains the one
+OPEN modelling gap in `PP2`.** No owner decision is OPEN.
+
 # D-628 · 2026-09-05 · Demo — the PP2 AMPACITY CLAUSE, and LED_K PROMOTED under it: the bond D-627 called 9.244 A is 1.441 A end to end
 
 D-627 left exactly one task and called it the highest-leverage single change on

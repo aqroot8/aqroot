@@ -1,0 +1,207 @@
+{
+ "all_refusals_are_corridor": true,
+ "base_board_sha256": "35129d6ca4ee68cb2ad86b8de73c134040efc0c4c110825b47c3ccc2550a456b",
+ "every_pair_had_legal_escapes_both_ends": true,
+ "failures": [
+  {
+   "dst_escapes": 4,
+   "gap_mm": 10.0,
+   "reason": "NO_PATH",
+   "src_escapes": 3,
+   "why": "no all-layer corridor at 0.200 mm between the islands"
+  },
+  {
+   "dst_escapes": 4,
+   "gap_mm": 10.784,
+   "reason": "NO_PATH",
+   "src_escapes": 16,
+   "why": "no all-layer corridor at 0.200 mm between the islands"
+  },
+  {
+   "dst_escapes": 5,
+   "gap_mm": 13.286,
+   "reason": "NO_PATH",
+   "src_escapes": 16,
+   "why": "no all-layer corridor at 0.200 mm between the islands"
+  },
+  {
+   "dst_escapes": 2,
+   "gap_mm": 15.585,
+   "reason": "NO_PATH",
+   "src_escapes": 16,
+   "why": "no all-layer corridor at 0.200 mm between the islands"
+  },
+  {
+   "dst_escapes": 3,
+   "gap_mm": 20.538,
+   "reason": "NO_PATH",
+   "src_escapes": 16,
+   "why": "no all-layer corridor at 0.200 mm between the islands"
+  },
+  {
+   "dst_escapes": 1,
+   "gap_mm": 24.137,
+   "reason": "NO_PATH",
+   "src_escapes": 16,
+   "why": "no all-layer corridor at 0.200 mm between the islands"
+  },
+  {
+   "dst_escapes": 4,
+   "gap_mm": 25.993,
+   "reason": "NO_PATH",
+   "src_escapes": 2,
+   "why": "no all-layer corridor at 0.200 mm between the islands"
+  },
+  {
+   "dst_escapes": 3,
+   "gap_mm": 35.953,
+   "reason": "NO_PATH",
+   "src_escapes": 2,
+   "why": "no all-layer corridor at 0.200 mm between the islands"
+  },
+  {
+   "dst_escapes": 3,
+   "gap_mm": 56.369,
+   "reason": "NO_PATH",
+   "src_escapes": 5,
+   "why": "no all-layer corridor at 0.200 mm between the islands"
+  },
+  {
+   "dst_escapes": 4,
+   "gap_mm": 56.692,
+   "reason": "NO_PATH",
+   "src_escapes": 1,
+   "why": "no all-layer corridor at 0.200 mm between the islands"
+  },
+  {
+   "dst_escapes": 3,
+   "gap_mm": 57.133,
+   "reason": "NO_PATH",
+   "src_escapes": 1,
+   "why": "no all-layer corridor at 0.200 mm between the islands"
+  },
+  {
+   "dst_escapes": 2,
+   "gap_mm": 60.907,
+   "reason": "NO_PATH",
+   "src_escapes": 1,
+   "why": "no all-layer corridor at 0.200 mm between the islands"
+  },
+  {
+   "dst_escapes": 4,
+   "gap_mm": 66.259,
+   "reason": "NO_PATH",
+   "src_escapes": 5,
+   "why": "no all-layer corridor at 0.200 mm between the islands"
+  },
+  {
+   "dst_escapes": 1,
+   "gap_mm": 79.102,
+   "reason": "NO_PATH",
+   "src_escapes": 5,
+   "why": "no all-layer corridor at 0.200 mm between the islands"
+  },
+  {
+   "dst_escapes": 2,
+   "gap_mm": 91.71,
+   "reason": "NO_PATH",
+   "src_escapes": 5,
+   "why": "no all-layer corridor at 0.200 mm between the islands"
+  }
+ ],
+ "finding": "FIFTEEN PAIRS ASKED, FIFTEEN NO_PATH, ZERO CLOSED, over five rungs from 0.0667 mm down to 0.020 mm / 115,565,604 cells.  The D-626 census had 14 of these 15 pairs marked NEVER ASKED.  Every single refusal is a CORRIDOR refusal and every pair had at least one LEGAL ESCAPE at BOTH ends (src 1-16, dst 1-5), so no finer lattice and no land licence is the missing ingredient -- there is no all-layer corridor at 0.200 mm between these islands, on gaps from 10.000 mm to 91.710 mm.  The D-626 time predictor scored three more out-of-sample rungs at 1.76 / 0.98 / 0.98.",
+ "guard": {
+  "sha256": "1d6c36308db000d5fb21316e6adc0cc78d5f93ab25aabe877296c7a9419894ef",
+  "spec": "evidence/d619-pour-bond-guard-bonded.json",
+  "tubes": 47
+ },
+ "islands": 6,
+ "ladder": {
+  "accepted_grid_nm": [],
+  "chosen_grid_nm": 20000,
+  "coarsest_admissible_nm": 66700,
+  "gb_budget": 3.5,
+  "rungs_over_budget": [
+   12500
+  ],
+  "rungs_run": 5,
+  "seconds_budget": 4000,
+  "trail": [
+   {
+    "cells": 10392240,
+    "grid_mm": 0.0667,
+    "predicted_ratio": null,
+    "predicted_seconds": null,
+    "ran": true,
+    "reason": "NO_PATH",
+    "seconds": 109.0,
+    "why": null
+   },
+   {
+    "cells": 18501444,
+    "grid_mm": 0.05,
+    "predicted_ratio": null,
+    "predicted_seconds": null,
+    "ran": true,
+    "reason": "NO_PATH",
+    "seconds": 183.4,
+    "why": null
+   },
+   {
+    "cells": 41687580,
+    "grid_mm": 0.0333,
+    "predicted_ratio": 1.76,
+    "predicted_seconds": 381.6,
+    "ran": true,
+    "reason": "NO_PATH",
+    "seconds": 672.2,
+    "why": null
+   },
+   {
+    "cells": 73969284,
+    "grid_mm": 0.025,
+    "predicted_ratio": 0.98,
+    "predicted_seconds": 1681.5,
+    "ran": true,
+    "reason": "NO_PATH",
+    "seconds": 1640.3,
+    "why": null
+   },
+   {
+    "cells": 115565604,
+    "grid_mm": 0.02,
+    "predicted_ratio": 0.98,
+    "predicted_seconds": 3283.8,
+    "ran": true,
+    "reason": "NO_PATH",
+    "seconds": 3215.2,
+    "why": null
+   },
+   {
+    "cells": 295804164,
+    "grid_mm": 0.0125,
+    "predicted_ratio": null,
+    "predicted_seconds": 13270.3,
+    "ran": false,
+    "reason": null,
+    "seconds": null,
+    "why": "OVER_MEMORY_BUDGET 7.77 GiB > 3.50 GiB (--grid-gb; raise --grid-gb to run it)"
+   }
+  ]
+ },
+ "net": "/I2C_SCL_INT",
+ "next": "this net needs EVICTION, PLACEMENT or an inner-layer haul, not a finer pitch.  The 0.0125 mm rung is over the 4000 s budget and, on this evidence, would buy nothing.",
+ "pairs_asked": 15,
+ "pairs_closed": 0,
+ "provenance": {
+  "authoritative_unchanged_flag": false,
+  "promoted_board_sha256": "8b337e3c5c1e21bb7e76439b3b85ee1c8bb3d9551fc4c783a98e7f8a2e060c82",
+  "why_false": "the D-628 LED_K promotion landed on the authoritative board WHILE this 3197 s run was in flight, so the gate's own board-identity clause correctly refused to call it a promotion candidate.  This is a MEASUREMENT, not a promotion, and it is recorded against the board it was actually run on.",
+  "why_the_refusals_still_hold": "the promotion ADDED 18 objects and REMOVED zero, added no zones and changed no rule area and no .kicad_dru.  Free space is monotone under added copper, so a NO_PATH at 0.020 mm on the base board cannot become a path on the promoted one."
+ },
+ "recipe": "route_maze_batch.py /I2C_SCL_INT --partial --grid ladder --grid-gb 3.5 --grid-seconds 4000 --guard evidence/d619-pour-bond-guard-bonded.json",
+ "schema": 1,
+ "seconds_finest_rung": 3197.0,
+ "verdict": "MEASURED_WALL",
+ "what": "D-629 -- /I2C_SCL_INT, the LARGEST open net on this board (5 retained open edges, 9 lands, 6 copper islands), is a MEASURED CORRIDOR WALL. It was the last item CURRENT_STATE listed as bounded by the D-626 TIME budget rather than by a wall; it now has a number instead."
+}
