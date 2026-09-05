@@ -1671,6 +1671,107 @@ def propose(path, nets, grid, via_cost_mm, stitch_width=0, stitch_via=None,
 
 
 # --------------------------------------------------------------------------- #
+# THE LATTICE A LAND REQUIRES -- D-622
+#
+# `screen_land_escape_margin.py` (D-620) already publishes, per land and per
+# direction, the COARSEST maze lattice whose 0.75-cell guard band still fits:
+#
+#     max_lattice_mm = margin / 0.75
+#
+# Nothing consumed it.  `--grid` defaulted to 0.100 mm for every run this
+# project has ever made, and D-622 measured what that cost on ONE net.
+# `/04_SPI_B_RADIOS_NFC/NFC_VDD_A`'s `U9.7` has exactly one launchable
+# direction -- WEST, margin 0.050 mm, `max_lattice_mm` **0.0667** -- so at the
+# default 0.100 mm lattice the only escape that land HAS cannot be expressed.
+# The maze does not report that.  It reaches the pad the long way round
+# instead, and the long way round was a 17.66 mm route whose 4.4 mm `B.Cu`
+# wall severed the `GND` pour: the 12.461 mm2 `C45`-pocket fragment D-619
+# refused, and D-619 refused it as a POUR question.  At 0.025 mm the same
+# request routes in **8.352 mm** and severs nothing.
+#
+# So a land's lattice requirement is not a performance knob.  It is part of
+# what the router can EXPRESS, exactly as D-620 said of the guard band, and
+# `--grid auto` is the lever that reads it off the board instead of guessing.
+# `lattice_advice()` runs on every invocation whatever `--grid` says, so a run
+# at too coarse a pitch is named in its own report rather than discovered two
+# decisions later.
+# --------------------------------------------------------------------------- #
+GRID_FLOOR_NM = 10000          # below this the wavefront stops being affordable
+GRID_CEIL_NM = 100000          # `auto` never proposes a lattice COARSER than
+                               # the default, so it can only ever refine
+
+
+def lattice_advice(board_path, nets, grid_nm):
+    """Per requested net: the lattice its tightest LAND can still be launched on.
+
+    The direction reported is the one the maze would actually launch in -- the
+    best-margin direction, which is what `screen_land_escape_margin.py` calls
+    the land's verdict.  A land whose best margin is <= 0 has NO lattice at any
+    pitch (D-620) and is reported as such rather than as a number.
+    """
+    from screen_land_escape_margin import screen
+    doc = screen(board_path, list(nets), set())
+    per_net, worst = {}, None
+    for row in doc["pads"]:
+        best = max(row["directions"].values(), key=lambda d: d["margin_mm"])
+        need = best["max_lattice_mm"]
+        e = per_net.setdefault(row["net"], dict(binding_pad=None,
+                                                required_lattice_mm=None,
+                                                verdict="CLEAR", lands=0))
+        e["lands"] += 1
+        if row["verdict"] != "CLEAR":
+            e["verdict"] = row["verdict"]
+            if e["required_lattice_mm"] is None:
+                e["binding_pad"] = row["pad"]
+            continue
+        if need is not None and (e["required_lattice_mm"] is None
+                                 or need < e["required_lattice_mm"]):
+            e["required_lattice_mm"] = need
+            e["binding_pad"] = row["pad"]
+    for net, e in per_net.items():
+        need = e["required_lattice_mm"]
+        e["grid_mm"] = round(grid_nm / 1e6, 6)
+        e["too_coarse"] = bool(need is not None and grid_nm > need * 1e6)
+        if e["too_coarse"] and (worst is None or need < worst):
+            worst = need
+    return dict(schema=1, grid_nm=grid_nm, nets=per_net,
+                any_too_coarse=any(e["too_coarse"] for e in per_net.values()),
+                tightest_required_mm=worst)
+
+
+def resolve_grid(board_path, nets, spec):
+    """`--grid auto` -> the finest lattice every requested land can launch on.
+
+    Clamped to [GRID_FLOOR_NM, GRID_CEIL_NM] and floored to a whole nanometre;
+    a net with no positive-margin land contributes nothing, because no lattice
+    serves it and the answer there is `route_local_two_pad`, not a finer grid.
+    """
+    if str(spec).strip().lower() != "auto":
+        return int(spec), None
+    probe = lattice_advice(board_path, nets, GRID_CEIL_NM)
+    need = [e["required_lattice_mm"] for e in probe["nets"].values()
+            if e["required_lattice_mm"] is not None]
+    g = GRID_CEIL_NM if not need else max(
+        GRID_FLOOR_NM, min(GRID_CEIL_NM, int(min(need) * 1e6)))
+    # re-read the advice AT THE PITCH ACTUALLY CHOSEN, so the block in the
+    # report describes the run that happened and not the probe that sized it
+    adv = lattice_advice(board_path, nets, g)
+    adv["auto"] = True
+    adv["auto_grid_nm"] = g
+    # `auto` IS NECESSARY AND IT IS NOT SUFFICIENT, AND SAYING SO IS THE POINT.
+    # D-622 swept the same request at four pitches -- 0.100 mm 17.660 mm,
+    # 0.0667 mm 10.723 mm, 0.050 mm 10.384 mm, 0.025 mm 8.352 mm -- and only
+    # the finest one stopped severing the `GND` pour.  The coarsest ADMISSIBLE
+    # lattice is the cheapest search that can express every land's own escape;
+    # it is not a claim that no finer pitch would route better, and the thing
+    # that decides is `checks/pour_partition_contract.py`, not this number.
+    adv["sufficiency"] = ("NECESSARY_NOT_SUFFICIENT: the coarsest lattice every "
+                          "requested land admits.  A finer pitch may still "
+                          "route shorter -- judge the result, not the pitch")
+    return g, adv
+
+
+# --------------------------------------------------------------------------- #
 # authority: gate a scratch candidate
 # --------------------------------------------------------------------------- #
 def ledger(board, out):
@@ -2479,7 +2580,9 @@ def main():
     ap.add_argument("--detour-apply", type=Path, help=argparse.SUPPRESS)
     ap.add_argument("--detour-report", type=Path, help=argparse.SUPPRESS)
     ap.add_argument("--detour-plan", type=Path, help=argparse.SUPPRESS)
-    ap.add_argument("--grid", type=int, default=100000)
+    ap.add_argument("--grid", default="100000",
+                    help="lattice pitch in nm, or `auto` to read it off "
+                         "the requested nets' own land margins (D-622)")
     ap.add_argument("--via-cost", type=float, default=1.5)
     ap.add_argument("--plane", help="add a pour for the single named net on "
                                     "this layer, then stitch its islands")
@@ -2722,7 +2825,8 @@ def main():
                      "with screen_bond_stitch.py --via instead"
                      % (bond_via[0], BOARD_VIA_DIA_MIN))
     if a.propose:
-        propose(a.propose, a.nets, a.grid, a.via_cost, a.stitch_width, via,
+        # the child is always given a RESOLVED pitch by its parent
+        propose(a.propose, a.nets, int(a.grid), a.via_cost, a.stitch_width, via,
                 a.join_residual, a.join_max_mm, a.neck, a.neck_max_mm,
                 a.partial, a.attempt_cap, a.split_islands,
                 load_guard(a.guard), a.bridge,
@@ -2790,13 +2894,19 @@ def main():
                  relief_run_area=a.relief_run_area,
                  join_orphans=a.join_orphans,
                  join_orphan_max_mm=a.join_orphan_max_mm)
+    grid, auto = resolve_grid(BOARD, a.nets, a.grid)
+    advice = auto if auto is not None else lattice_advice(BOARD, a.nets, grid)
     if a.work:
-        summary = gate(a.nets, a.grid, a.via_cost, a.work, a.promote,
+        summary = gate(a.nets, grid, a.via_cost, a.work, a.promote,
                        a.candidate, **extra)
     else:
         with tempfile.TemporaryDirectory(prefix="aqroot-demo-maze-") as tmp:
-            summary = gate(a.nets, a.grid, a.via_cost, tmp, a.promote,
+            summary = gate(a.nets, grid, a.via_cost, tmp, a.promote,
                            a.candidate, **extra)
+    # THE ADVICE RIDES WITH THE RUN, PASS OR FAIL.  A `NO_PATH` taken at a
+    # lattice one of the net's own lands cannot launch on is not a wall; it is
+    # an unasked question, and D-622 is what it costs to leave it unasked.
+    summary["lattice"] = advice
     text = json.dumps(summary, indent=2, sort_keys=True, default=str)
     if a.out:
         a.out.write_text(text + "\n", encoding="utf-8")

@@ -1,0 +1,154 @@
+{
+ "binding_land": {
+  "binding_pad": "U9.6",
+  "default_grid_mm": 0.1,
+  "direction": "W",
+  "land_mm": [
+   31.35,
+   28.6,
+   32.1,
+   28.9
+  ],
+  "margin_mm": 0.05,
+  "max_lattice_mm": 0.0667,
+  "pad": "U9.7",
+  "widest_mm": 0.3
+ },
+ "finding": "D-620's screen_land_escape_margin.py publishes max_lattice_mm = margin/0.75 per land -- the coarsest maze lattice whose 0.75-cell guard band still fits -- and nothing consumed it.  route_maze_batch.py --grid has defaulted to 0.100 mm for every run this project has made.  /04_SPI_B_RADIOS_NFC/NFC_VDD_A's U9.7 has exactly ONE launchable direction (W, margin 0.050 mm, binding pad U9.6) and requires 0.0667 mm.  The sweep is what the default cost.",
+ "schema": 1,
+ "sufficiency": "auto (the coarsest ADMISSIBLE pitch) is NECESSARY and NOT SUFFICIENT: 0.0667 mm routes 10.723 mm and still severs.  Only 0.025 mm both routes and leaves the GND pour whole.  The pitch is not the judge -- checks/pour_partition_contract.py is.",
+ "sweep": [
+  {
+   "from_pad": "C48.1",
+   "gate_promotion_candidate": true,
+   "gnd_b_islands": [
+    56,
+    57
+   ],
+   "grid_mm": 0.1,
+   "grid_nm": 100000,
+   "layers": [
+    "B",
+    "I2",
+    "B"
+   ],
+   "mm": 17.66,
+   "retained_open_edges": [
+    53,
+    52
+   ],
+   "severs_gnd_pour": true,
+   "to_pad": "U9.7",
+   "via_xy_mm": [
+    [
+     34.2,
+     33.3
+    ],
+    [
+     31.2,
+     23.8
+    ]
+   ],
+   "vias": 2
+  },
+  {
+   "from_pad": "C47.1",
+   "gate_promotion_candidate": true,
+   "gnd_b_islands": [
+    56,
+    57
+   ],
+   "grid_mm": 0.0667,
+   "grid_nm": 66700,
+   "layers": [
+    "B",
+    "I2",
+    "B"
+   ],
+   "mm": 10.723,
+   "retained_open_edges": [
+    53,
+    52
+   ],
+   "severs_gnd_pour": true,
+   "to_pad": "U9.7",
+   "via_xy_mm": [
+    [
+     34.8184,
+     25.4137
+    ],
+    [
+     31.2166,
+     23.8796
+    ]
+   ],
+   "vias": 2
+  },
+  {
+   "from_pad": "C47.1",
+   "gate_promotion_candidate": true,
+   "gnd_b_islands": [
+    56,
+    57
+   ],
+   "grid_mm": 0.05,
+   "grid_nm": 50000,
+   "layers": [
+    "B",
+    "I2",
+    "B"
+   ],
+   "mm": 10.384,
+   "retained_open_edges": [
+    53,
+    52
+   ],
+   "severs_gnd_pour": true,
+   "to_pad": "U9.7",
+   "via_xy_mm": [
+    [
+     34.8,
+     25.45
+    ],
+    [
+     31.2,
+     23.95
+    ]
+   ],
+   "vias": 2
+  },
+  {
+   "from_pad": "C47.1",
+   "gate_promotion_candidate": true,
+   "gnd_b_islands": [
+    56,
+    56
+   ],
+   "grid_mm": 0.025,
+   "grid_nm": 25000,
+   "layers": [
+    "B",
+    "I2",
+    "B"
+   ],
+   "mm": 8.352,
+   "retained_open_edges": [
+    53,
+    52
+   ],
+   "severs_gnd_pour": false,
+   "to_pad": "U9.7",
+   "via_xy_mm": [
+    [
+     34.9,
+     25.5
+    ],
+    [
+     30.725,
+     27.95
+    ]
+   ],
+   "vias": 2
+  }
+ ]
+}

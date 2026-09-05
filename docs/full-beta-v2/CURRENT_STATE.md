@@ -13,6 +13,93 @@
 > This file references DEVICE_SPEC rather than duplicating full specs.
 
 ## 1. Authoritative HEAD
+- **Demo D-622 (`NFC_VDD_A` IS CLOSED AND THE WALL WAS THE LATTICE):** D-621
+  named this net as the cheaper second and D-619 had refused it on a pour
+  injury -- a 17.633 mm route whose 4.4 mm `B.Cu` wall up the west side of `U9`
+  split a **12.461 mm2** fragment carrying `C45.2`/`C51.2`/`C53.2` off the main
+  `GND` island.  Reproduced on the D-621 board, the same request severs the same
+  three pads onto the same fragment.  **Nobody had asked why the router went
+  that way.**
+  **THE MEASUREMENT NOTHING CONSUMED.**  D-620's
+  `screen_land_escape_margin.py` publishes, per land, `max_lattice_mm =
+  margin / 0.75` -- the coarsest maze lattice whose 0.75-cell guard band still
+  fits -- and `route_maze_batch.py --grid` has defaulted to **0.100 mm for
+  every run this project has ever made**.  `NFC_VDD_A`'s `U9.7` has exactly
+  ONE launchable direction: **W, margin 0.050 mm, binding pad `U9.6`,
+  `max_lattice_mm` 0.0667.**  The default pitch is coarser than the only escape
+  that land has.  Swept: `0.1000 mm` **17.660 mm** islands 56 -> 57 SEVERS
+  (D-619's route); `0.0667 mm` **10.723 mm** 56 -> 57 SEVERS; `0.0500 mm`
+  **10.384 mm** 56 -> 57 SEVERS; `0.0250 mm` **8.352 mm** 56 -> 56 **CLEAN**.
+  **`--grid auto`** now reads the requirement off the requested nets' own lands
+  and a `lattice` block rides in EVERY run report, pass or fail, naming any land
+  the pitch in force is too coarse for -- stated in the report as **NECESSARY
+  AND NOT SUFFICIENT**, because the coarsest admissible pitch still severed.
+  **`checks/pour_partition_contract.py` PP1-PP4 IS THE JUDGE.**  An outer pour's
+  PAD PARTITION may not get finer unnoticed.  D-619's route closed an edge,
+  regressed nothing and drew zero attributable DRC: `verify_promotion.py` counts
+  OBJECTS, the ledger counts EDGES, KiCad reports UNCONNECTED ITEMS and
+  `pour_bond_guard.py` reserves necks it can FIND -- all four passed it, and a
+  person caught it by hand.  PP1 no NEW unresolved pad (20 are inherited by
+  construction of the bounded pours); PP2 no pad PAIR that shared an island is
+  split -- stronger than an island COUNT, weaker than a copper diff, and exactly
+  the injury; PP3 every new fragment PRICED by resolving each pad's own through
+  barrels into its net's filled zones on the RESERVED INNER planes, `BONDED`
+  states the price and `STRANDED` is the hard refusal; PP4 strip a fragment's
+  barrels and every `BONDED` must flip.  Verified in BOTH directions on this
+  board: the 0.100 mm candidate reads **PP2 FAIL** naming the one split, the
+  promoted board reads **PP1-PP4 PASS**.
+  **A D-619 JUDGEMENT IS REVERSED, ON A MEASUREMENT D-619 DID NOT TAKE.**  The
+  `C45` pocket's `B.Cu` geodesic back to the body is **32.001 mm** the long way
+  round the west of `U9` for a 3.334 mm direct span, while each of its three
+  pads sits within a millimetre of its own through barrel into the **same
+  9450.191 mm2 `In1.Cu` AND `In4.Cu` `GND` reference planes** -- `In4` one
+  prepreg below `B.Cu`.  Severing a 32 mm outer detour off pads that each own a
+  barrel into two solid reference planes is what those barrels are for.  The
+  contract forbids severance that STRANDS and makes every other severance state
+  its price; **it did not have to be spent here, because the promoted route
+  severs nothing at all.**
+  **TWO REFUTATIONS, RECORDED SO THEY ARE NOT REBUILT.**  A third
+  `pour_bond_guard.py` clause `CHOKE` -- erode each island by `(W_min +
+  2*clearance + 2*min_thickness)/2 = 0.525 mm` and tube every lobe that falls
+  off -- **does not DISCRIMINATE**: 47 of 93 anchors on the island that was cut
+  are "choked" and 43 of 72 on the next, because a via land in a pour and a pad
+  on a pour finger both sit behind sub-1.05 mm copper by construction, and the
+  `C45` pocket separates at 0.45-0.50 mm, the same regime as ordinary vias.
+  And reserving the pocket's own bond as a tube makes `NFC_VDD_A` report **`no
+  all-layer corridor at 0.200 mm between the islands`** -- a 32 mm reservation
+  walls off the west region and `U9.7` becomes unreachable.  Severance is a
+  property of the ROUTE, not of the copper.
+  **WHAT WAS PROMOTED:** `/04_SPI_B_RADIOS_NFC/NFC_VDD_A`, `C47.1 -> U9.7`,
+  **8.352 mm on `B.Cu` + `In2.Cu`, 2 barrels 0.600/0.300 mm, every track
+  0.200 mm** -- 11 objects added, **ZERO removed**, zero zones, zero rule areas,
+  zero `.kicad_dru` change, zero placement change.
+  Authority `a82c907a...` ->
+  **`cc627819eeec64c44be0bce3f1d1ed7712eff294192b53969242617a34f0500d`**.
+  `verify_promotion.py` **14/14** (DRC 5 `hole_clearance` / 1
+  `solder_mask_bridge` inherited with **ZERO attributable**, unconnected
+  69 -> 68, parity 247 / 0 errors, fill-stable), `pour_partition_contract.py`
+  **PP1-PP4**, `placement_contract.py` **PL1-PL9**, `rf_symmetry_contract.py`
+  **RF1-RF5**, `protected_copper.py` **15 nets / 393 objects IDENTICAL**,
+  `land_parity_contract.py` **LAND1-LAND6**, `keepout_stackup_contract.py`
+  **KO1-KO5**, `population_contract.py` **POP1-POP4**, `neck_contract.py`
+  **N1-N3**, `pour_bond_contract.py` **P1-P4** (47 tubes / 1536 points, the
+  D-619 spec still in force, zero off copper, zero misplaced ends, two tubes
+  reported RENUMBERED and geometry-resolved), `fab_package_contract.py`
+  **FAB1-FAB8** on a regenerated 28-artifact package.  Ledger **53 -> 52 open
+  edges / 25 -> 24 nets**, ratsnest **69 -> 68**, improved one, regressed none.
+  `hardware/beta-v2/`, D-269 / D-186, `ACC_5V_SW_EN`, `ACC_3V3_SW`, RGB,
+  XGPIO4/5 and the eight approved Demo NC contacts untouched.
+  **NEXT: EVERY OPEN EDGE ON THIS BOARD WAS FOUND AT A LATTICE FOUR TIMES
+  COARSER THAN THE ONE THAT JUST CLOSED ONE.**  The cheapest remaining move is
+  to re-run the standing single-edge candidates at a finer pitch and judge them
+  with `PP1-PP4`: `NFC_VDD_RF` (`U9.14`, blocker isolated by D-621 to
+  `NFC_RFO2`'s north chain), `ACC_PWR_EN`, `ACC_5V_BOOST_EN`, `BTN_DOWN_N`,
+  `BTN_LEFT_N`, `SX1262_DIO1`, `NFC_IRQ`, `I2S_LRCLK`, `SPI_B_SCK` -- nine nets
+  at one open edge each.  A `--grid` LADDER bounded by a cell-count budget,
+  rather than the single coarsest-admissible pitch `auto` computes today, is the
+  framework task this decision names and does not take.  No owner decision is
+  OPEN; D-618's `J3` question remains RECORDED, and PM-3 remains an open
+  PLACEMENT finding.
 - **Demo D-621 (THE `C17` LEVER WAS VACUOUS AND THE REAL ONE WAS THREE TRACKS
   AWAY):** D-620 named this task -- *"a transaction that moves `C17` east must
   relay BOTH its escapes ... Price it before taking it"* -- and the price came

@@ -1,0 +1,111 @@
+{
+ "derivation": {
+  "choke_radius_mm": 0.525,
+  "narrowest_licensed_track_mm": 0.15,
+  "note": "a channel narrower than W_min + 2*clearance + 2*min_thickness is severable by ANY legal foreign track, whatever its width -- the smallest such class, so the least intrusive clause that still covers the injury",
+  "pour_min_thickness_mm": 0.2,
+  "severable_channel_mm": 1.05,
+  "zone_clearance_mm": 0.25
+ },
+ "fragment_price": [
+  {
+   "area_mm2": 12.461,
+   "barrels": 3,
+   "barrels_into_reserved_planes": 3,
+   "detail": [
+    {
+     "planes": [
+      {
+       "area_mm2": 9450.191,
+       "layer": "In1.Cu",
+       "zone": "In1 GND REFERENCE"
+      },
+      {
+       "area_mm2": 9450.191,
+       "layer": "In4.Cu",
+       "zone": "In1 GND REFERENCE_1"
+      }
+     ],
+     "xy_mm": [
+      33.0,
+      21.6
+     ]
+    },
+    {
+     "planes": [
+      {
+       "area_mm2": 9450.191,
+       "layer": "In1.Cu",
+       "zone": "In1 GND REFERENCE"
+      },
+      {
+       "area_mm2": 9450.191,
+       "layer": "In4.Cu",
+       "zone": "In1 GND REFERENCE_1"
+      }
+     ],
+     "xy_mm": [
+      32.2,
+      26.0
+     ]
+    },
+    {
+     "planes": [
+      {
+       "area_mm2": 9450.191,
+       "layer": "In1.Cu",
+       "zone": "In1 GND REFERENCE"
+      },
+      {
+       "area_mm2": 9450.191,
+       "layer": "In4.Cu",
+       "zone": "In1 GND REFERENCE_1"
+      }
+     ],
+     "xy_mm": [
+      35.5,
+      22.2
+     ]
+    }
+   ],
+   "layer": "B.Cu",
+   "net": "GND",
+   "pads": [
+    "C45.2",
+    "C51.2",
+    "C53.2"
+   ],
+   "post_island": 15,
+   "pour": "GND|B|38685722-44ee-566f-b52b-89a56220a9e0",
+   "verdict": "BONDED"
+  }
+ ],
+ "measurement": {
+  "detection_lattice_nm": 50000,
+  "gnd_b_island_0": {
+   "anchors": 72,
+   "area_mm2": 805.842,
+   "body_anchors": 29,
+   "choked_anchors": 43
+  },
+  "gnd_b_island_15": {
+   "anchors": 93,
+   "area_mm2": 2848.395,
+   "body_anchors": 46,
+   "choked_anchors": 47
+  },
+  "islands_reported": 40
+ },
+ "question": "D-619 named the missing unit in one sentence: 'pour_bond_guard.py protects NARROW BONDS it can find; before this cut there was no neck there to find, so no tube guarded it.  A guard that reserves EXISTING necks cannot forbid CREATING one.'  The obvious answer is a third guard clause -- CHOKE -- that erodes each island by the narrowest channel a foreign track can sever and tubes every lobe that falls off.",
+ "schema": 1,
+ "second_refutation": {
+  "direct_mm": 3.334,
+  "result": "NO_PATH -- 'no all-layer corridor at 0.200 mm between the islands'",
+  "tube": "C45.2 -> U9.12, geodesic through island 15's own copper at 0.125 mm radius",
+  "tube_mm": 32.001,
+  "what": "reserve the C45 pocket's own bond as a pour_bond_guard tube and re-run NFC_VDD_A",
+  "why": "the pocket's B.Cu return to the body runs 32.001 mm the long way round the west of U9 for a 3.334 mm direct span, so reserving it walls off the whole west region and NFC_VDD_A cannot reach U9.7 at all.  Reserving a 32 mm detour to protect three pads that each own a through barrel into two solid GND reference planes is the wrong trade, and measuring it is what made that visible."
+ },
+ "verdict": "REFUTED",
+ "why": "The clause does not DISCRIMINATE.  At the derived 0.525 mm radius, 47 of the 93 anchors on the very island that was cut are 'choked', and 43 of 72 on the next -- because a via land in a pour and a pad on a pour finger both sit behind sub-1.05 mm copper by construction.  Tubing them would reserve most of both outer pours and forbid nearly all outer-layer routing.  The C45 pocket separates at an erosion radius of 0.45-0.50 mm, which is the SAME regime as ordinary vias: nothing static distinguishes the injury.  The severance is a property of the route, not of the copper, so the instrument has to be a post-refill MEASUREMENT (checks/pour_partition_contract.py), not a pre-run reservation."
+}

@@ -1,0 +1,55 @@
+{
+  "board_sha256": "cc627819eeec64c44be0bce3f1d1ed7712eff294192b53969242617a34f0500d",
+  "checks": {
+    "LAND1_every_footprint_resolves_a_master": true,
+    "LAND2_board_land_equals_master": true,
+    "LAND3_comparison_not_vacuous": true,
+    "LAND4_kicad_agrees": true,
+    "LAND5_index_covers_the_board": true,
+    "LAND6_every_identity_is_in_the_ledger": true
+  },
+  "control": {
+    "diffs": [
+      {
+        "board": 1226000,
+        "issue": "size_x_nm",
+        "land": 0,
+        "master": 1225000,
+        "pad": "1"
+      }
+    ],
+    "ref": "R75",
+    "verdict": "MISMATCH"
+  },
+  "declared_master_divergences": [],
+  "distinct_identities": 49,
+  "drc_counts": {
+    "hole_clearance": 5,
+    "solder_mask_bridge": 1
+  },
+  "drc_land_violations": [],
+  "footprints": 311,
+  "index_bad_tier": [],
+  "index_dead_rows": [],
+  "index_missing": [],
+  "kicad_mismatch_refs": [],
+  "kicad_share": "/usr/share/kicad",
+  "ledger_unwritten": [],
+  "mismatches": [],
+  "no_master": [],
+  "open_items": [
+    "Connector_JST:JST_SH_SM04B-SRSS-TB_1x04-1MP_P1.00mm_Horizontal"
+  ],
+  "open_not_marked": [],
+  "schema": 1,
+  "tier_census": {
+    "1": 19,
+    "2A": 15,
+    "2_OPEN": 1,
+    "3": 276
+  },
+  "verdict": "PASS",
+  "verdicts": {
+    "MATCH": 311
+  }
+}

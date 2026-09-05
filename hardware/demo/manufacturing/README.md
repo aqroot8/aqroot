@@ -3,11 +3,105 @@
 Status: **BLOCKED** at board CONNECTIVITY.  Every fabrication CONTRACT on this
 board passes -- package (`FAB1-FAB8`), BOM sourcing (100 % orderable, D-615),
 population (`POP1-POP4`), land patterns (`LAND1-LAND6`, 311/311), keep-out
-stackup (`KO1-KO5`), pour bonds (`P1-P4`), necks (`N1-N3`), placement
-(`PL1-PL9`), NFC front-end symmetry (`RF1-RF5`, D-621) and protected copper --
-and the residual is **53 retained open edges across 25 nets**.  Two of them,
-`USB_D_CONN_P` and the `USB_D_MCU` pair, are parked on rulings rather than
-routes (D-618, D-620).
+stackup (`KO1-KO5`), pour bonds (`P1-P4`), pour partition (`PP1-PP4`, D-622),
+necks (`N1-N3`), placement (`PL1-PL9`), NFC front-end symmetry (`RF1-RF5`,
+D-621) and protected copper -- and the residual is **52 retained open edges
+across 24 nets**.  Two of them, `USB_D_CONN_P` and the `USB_D_MCU` pair, are
+parked on rulings rather than routes (D-618, D-620).
+
+## RUN THIS BEFORE THE ROUTER, AND AGAIN AFTER IT: the lattice, and the pour (D-622)
+
+    python3 route_maze_batch.py NET [NET ...] --grid auto ...
+    python3 checks/pour_partition_contract.py --ref HEAD [--board CANDIDATE] -o OUT
+
+**THE LATTICE IS NOT A PERFORMANCE KNOB.**  D-620 built
+`screen_land_escape_margin.py`, which publishes per land
+
+    max_lattice_mm = margin / 0.75
+
+-- the coarsest maze lattice whose 0.75-cell guard band still fits -- and
+**nothing consumed it**.  `--grid` has defaulted to 0.100 mm for every run this
+project has ever made.  `/04_SPI_B_RADIOS_NFC/NFC_VDD_A`'s `U9.7` has exactly
+ONE launchable direction -- **W, margin 0.050 mm, binding pad `U9.6`,
+`max_lattice_mm` 0.0667** -- so the default pitch is coarser than that land
+admits.  What that cost, swept on the one net:
+
+    grid       route      GND B.Cu islands
+    0.1000 mm  17.660 mm  56 -> 57   SEVERS   (this is D-619's refused route)
+    0.0667 mm  10.723 mm  56 -> 57   SEVERS   (`auto`)
+    0.0500 mm  10.384 mm  56 -> 57   SEVERS
+    0.0250 mm   8.352 mm  56 -> 56   CLEAN    <- PROMOTED
+
+`--grid auto` reads the requirement off the requested nets' own lands; a
+`lattice` block now rides in EVERY run report, pass or fail, naming any land the
+pitch in force is too coarse for.  **It is NECESSARY AND NOT SUFFICIENT and the
+report says so**: the coarsest admissible pitch still severed.  A finer pitch may
+always route better, so the pitch is not the judge --
+
+**`checks/pour_partition_contract.py` IS.**  An outer pour's PAD PARTITION may
+not get finer unnoticed.  D-619's refused route closed an edge, regressed
+nothing and drew zero attributable DRC; `verify_promotion.py` counts objects,
+the ledger counts edges, KiCad reports unconnected items and `pour_bond_guard.py`
+reserves necks it can FIND -- all four passed it, and a person reading island
+areas caught it by hand.  Now:
+
+    PP1  no NEW unresolved pad (20 are inherited and always were: a net owning
+         a BOUNDED pour has lands outside it by construction)
+    PP2  no pad PAIR that shared an island before is split after -- stronger
+         than an island COUNT, weaker than a copper diff, and exactly the injury
+    PP3  every new fragment is PRICED: each pad's own through barrels resolved
+         into its net's filled zones on the RESERVED INNER planes.  `BONDED`
+         states the price; `STRANDED` is the hard refusal
+    PP4  non-vacuity: strip a fragment's barrels and every `BONDED` must flip
+
+Verified in both directions on the same board: the 0.100 mm candidate reads
+**PP2 FAIL** naming the one split, the promoted 0.025 mm board reads
+**PP1-PP4 PASS**.
+
+**WHY `BONDED` IS NOT A FAILURE, AND THIS REVERSES A D-619 JUDGEMENT.**  D-619
+refused that route because it split a 12.461 mm2 `C45`-pocket fragment
+(`C45.2`/`C51.2`/`C53.2`) off the main `GND` island.  Nobody had measured the
+two sides.  D-622 did: the pocket's `B.Cu` geodesic back to the body is
+**32.001 mm** the long way round the west of `U9` for a 3.334 mm direct span,
+while each of its three pads sits within a millimetre of its own through barrel
+into the **same 9450.191 mm2 `In1.Cu` AND `In4.Cu` `GND` reference planes** --
+`In4` one prepreg below `B.Cu`.  Severing a 32 mm outer detour off pads that
+each own a barrel into two solid reference planes is what those barrels are for.
+So the contract forbids severance that STRANDS and makes every other severance
+state its price.  (It did not have to be spent here: the promoted route severs
+nothing at all.)
+
+**TWO THINGS THAT WERE TRIED AND REFUTED** -- `evidence/d622-choke-refutation.json`:
+
+  * a third `pour_bond_guard.py` clause, `CHOKE`: erode each island by
+    `(W_min + 2*clearance + 2*min_thickness)/2 = 0.525 mm` and tube every lobe
+    that falls off.  **It does not DISCRIMINATE**: 47 of the 93 anchors on the
+    island that was cut are "choked", and 43 of 72 on the next, because a via
+    land in a pour and a pad on a pour finger both sit behind sub-1.05 mm
+    copper by construction.  The `C45` pocket separates at 0.45-0.50 mm, the
+    same regime as ordinary vias.  Nothing STATIC distinguishes the injury.
+  * reserving the pocket's own bond as a tube: `NFC_VDD_A` then reports
+    `no all-layer corridor at 0.200 mm between the islands` -- reserving a
+    32 mm detour walls off the whole west region and `U9.7` becomes
+    unreachable.
+
+Severance is a property of the ROUTE, not of the copper.  That is why the
+instrument is a post-refill measurement and not a pre-run reservation.
+
+## D-622: NFC_VDD_A closed, and the lattice was the wall (2026-09-05)
+
+    authority a82c907a...  ->  cc627819eeec64c44be0bce3f1d1ed7712eff294192b53969242617a34f0500d
+    retained open edges     53 -> 52      open retained nets   25 -> 24
+    ratsnest / unconnected  69 -> 68
+    11 objects added (9 tracks + 2 barrels), ZERO removed, zero zones, zero
+    rule areas, zero .kicad_dru change, zero placement change
+    /04_SPI_B_RADIOS_NFC/NFC_VDD_A  C47.1 -> U9.7  8.352 mm  B.Cu + In2.Cu
+                                    2 barrels 0.600/0.300, all track 0.200 mm
+    14/14 verify_promotion;  FAB1-FAB8 on a regenerated 28-artifact package;
+    LAND1-LAND6;  KO1-KO5;  POP1-POP4;  P1-P4 (47 tubes / 1536 points, the
+    D-619 spec still in force, zero off copper);  PP1-PP4;  N1-N3;  PL1-PL9;
+    RF1-RF5;  protected copper 15 nets / 393 objects IDENTICAL
+    DRC 5 hole_clearance / 1 solder_mask_bridge inherited, ZERO attributable
 
 ## RUN THIS SECOND: is the transaction about to move an RF arm? (D-621)
 
