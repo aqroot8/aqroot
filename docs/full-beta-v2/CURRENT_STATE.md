@@ -13,6 +13,89 @@
 > This file references DEVICE_SPEC rather than duplicating full specs.
 
 ## 1. Authoritative HEAD
+- **Demo D-623 (`NFC_IRQ` IS CLOSED AT A *RANKED* LATTICE, AND THE POUR JUDGE
+  NOW RIDES IN BOTH GATES):**  D-622 named a framework task and did not take
+  it -- *"a `--grid` LADDER bounded by a cell-count budget, rather than the
+  single coarsest-admissible pitch `auto` computes today."*  This is that
+  ladder, the ranking it makes possible, and the two places the pour-partition
+  judge was still missing.
+  **THE BUDGET IS COUNTED IN CELLS, BECAUSE CELLS ARE WHAT GROWS.**  A
+  `maze3d.Field` rasterises the whole board once per routable layer, so halving
+  the pitch QUADRUPLES it: on this 72 x 148 mm board 0.100 mm = 4.6 M cells,
+  0.0667 mm = 10.4 M, 0.050 mm = 18.5 M, 0.0333 mm = 41.7 M, 0.025 mm = 74.0 M,
+  0.020 mm = 115.6 M.  `--grid-cells` (default 80 M) is that bound and **the
+  first rung over it ENDS the ladder and STAYS IN THE REPORT marked
+  `over_budget`** -- a run that stopped because it ran out of budget must not
+  read like a run that ran out of ideas.  The rungs are the pitches this
+  project has MEASURED, deliberately not a halving, which would step straight
+  over D-622's 0.025 mm answer.
+  **`ladder` STOPS AT THE FIRST RUNG THE WHOLE GATE ACCEPTS -- clause 8
+  included, so it cannot stop on a rung that closes an edge by severing a
+  pour.  `best` RANKS**, and refuses `--promote` AND `--candidate`, because
+  `gate()` writes a candidate on every accepted rung: the file left behind
+  would be the LAST accepted rung while the report names the CHEAPEST.
+  **FIRST IS NOT BEST, AND FINER IS NOT MONOTONE.**  `/NFC_IRQ`,
+  `U1.11 -> U9.27`, 88.356 mm apart, `NO_PATH` at the 0.100 mm default; every
+  rung a FULL gate run and all four accepted: `0.0667 mm` **120.848 mm / 10
+  vias** (`auto`, and what `ladder` would take), `0.0500 mm` **105.709 mm / 9**,
+  `0.0333 mm` **105.492 mm / 9** (the WINNER), `0.0250 mm` **105.510 mm / 9 --
+  0.018 mm LONGER**, `0.0200 mm` over budget and SAID SO.  The knee is real and
+  EARLY; a lattice is not an approximation that converges, it is a different
+  question.  Taking `ladder`'s first accept would have cost **+15.356 mm and
+  one extra barrel**.
+  **CLAUSE 8 AND CLAUSE 15.**  D-622 wrote that PP1-PP4 "IS THE JUDGE" and left
+  it as a thing a person runs by hand.  It is now `route_maze_batch.py gate()`
+  clause 8 (PRE = the authoritative board on disk via the new `--pre-board`,
+  POST = the candidate AFTER `--refill-zones --save-board`, stale report
+  deleted first, `PP_DID_NOT_RUN` rather than silence read as assent) -- AND
+  `verify_promotion.py` check 15, because clause 8 runs inside the process that
+  proposed the copper and **D-619's severed pour passed the independent
+  auditor 14 checks out of 14**: objects, widths, drills, rule areas, zones,
+  DRC, parity and fill-stability are every one of them TRUE of a board whose
+  pour has been cut in half.  Clause 15 is proved in the DISCRIMINATING
+  direction on real router copper: the D-621 authority as PRE and the refilled
+  `NFC_VDD_A --grid 66700` scratch as POST -- 10.723 mm, closes an edge
+  53 -> 52, regresses nothing, removes nothing, **ZERO attributable DRC** --
+  refused by clause 15 ALONE, `PP2`, naming `C45.2`/`C51.2`/`C53.2` on an
+  11.777 mm2 fragment.
+  **THE SAME COUNT DELTA, THE OPPOSITE VERDICT.**  The promoted route takes the
+  `GND` `B.Cu` pour from **56 to 57 islands, exactly what D-619's severing
+  route did**, and PP2 PASSES with no split and no fragment: four of the five
+  "new" signatures are pre-existing islands that merely SHRANK where the
+  clearance void nibbled them, each keeping its whole pad set, and the one
+  genuinely new island is **10.653 mm2, pad-free, and holds one through
+  barrel** into the `GND` planes -- stitched, not floating.
+  **A WALL, MEASURED RATHER THAN ASSUMED.**  `/ACC_PWR_EN` returns `NO_PATH` at
+  EVERY in-budget rung down to 0.025 mm.  Its refusal is not a lattice artefact
+  and it should not be re-asked at a pitch.
+  **WHAT WAS PROMOTED:** `/NFC_IRQ`, `U1.11 -> U9.27`, **105.492 mm on `F.Cu` +
+  `B.Cu` + `In2.Cu`, 9 barrels 0.600/0.300 mm, every track 0.200 mm** -- 30
+  objects added (21 tracks, 9 vias), **ZERO removed**, zero zones, zero rule
+  areas, zero `.kicad_dru` change, zero placement change, no copper on either
+  reserved inner plane.
+  Authority `cc627819...` ->
+  **`2b1260ebd109fe7529cc3cd64c35c86f789a4dfc8caa5aeecd941aeaeb596911`**.
+  `verify_promotion.py` **15/15** (DRC 5 `hole_clearance` / 1
+  `solder_mask_bridge` inherited with **ZERO attributable**, unconnected
+  68 -> 67, parity 247 / 0 errors, fill-stable), `pour_partition_contract.py`
+  **PP1-PP4**, `pour_bond_contract.py` **P1-P4** (47 tubes / 1536 points, zero
+  off copper, zero misplaced ends, 37 tubes RENUMBERED and geometry-resolved),
+  `placement_contract.py` **PL1-PL9**, `rf_symmetry_contract.py` **RF1-RF5**,
+  `protected_copper.py` **15 nets / 393 objects IDENTICAL**,
+  `land_parity_contract.py` **LAND1-LAND6**, `keepout_stackup_contract.py`
+  **KO1-KO5**, `population_contract.py` **POP1-POP4**, `neck_contract.py`
+  **N1-N3**, `fab_package_contract.py` **FAB1-FAB8** on a regenerated package.
+  Ledger **52 -> 51 open edges / 24 -> 23 nets**, ratsnest **68 -> 67**,
+  improved one, regressed none.  `hardware/beta-v2/`, D-269 / D-186,
+  `ACC_5V_SW_EN`, `ACC_3V3_SW`, RGB, XGPIO4/5 and the eight approved Demo NC
+  contacts untouched.
+  **NEXT: THE LADDER IS NOW CHEAP TO POINT AT THE REST.**  Run `--grid ladder`
+  as a SCREEN over the remaining standing single-edge candidates --
+  `NFC_VDD_RF`, `ACC_5V_BOOST_EN`, `BTN_DOWN_N`, `BTN_LEFT_N`, `SX1262_DIO1`,
+  `I2S_LRCLK`, `SPI_B_SCK`, `ACC_5V_LX` -- which separates "wall" from "unasked
+  question" for each at a bounded cost, exactly as it did for `ACC_PWR_EN`.  No
+  owner decision is OPEN; D-618's `J3` question remains RECORDED, and PM-3
+  remains an open PLACEMENT finding.
 - **Demo D-622 (`NFC_VDD_A` IS CLOSED AND THE WALL WAS THE LATTICE):** D-621
   named this net as the cheaper second and D-619 had refused it on a pour
   injury -- a 17.633 mm route whose 4.4 mm `B.Cu` wall up the west side of `U9`

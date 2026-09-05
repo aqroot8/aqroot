@@ -1,0 +1,167 @@
+{
+ "clause15": {
+  "fragments": [
+   {
+    "area_mm2": 11.777,
+    "barrels": 3,
+    "barrels_into_reserved_planes": 3,
+    "detail": [
+     {
+      "planes": [
+       {
+        "area_mm2": 9450.191,
+        "layer": "In1.Cu",
+        "zone": "In1 GND REFERENCE"
+       },
+       {
+        "area_mm2": 9450.191,
+        "layer": "In4.Cu",
+        "zone": "In1 GND REFERENCE_1"
+       }
+      ],
+      "xy_mm": [
+       33.0,
+       21.6
+      ]
+     },
+     {
+      "planes": [
+       {
+        "area_mm2": 9450.191,
+        "layer": "In1.Cu",
+        "zone": "In1 GND REFERENCE"
+       },
+       {
+        "area_mm2": 9450.191,
+        "layer": "In4.Cu",
+        "zone": "In1 GND REFERENCE_1"
+       }
+      ],
+      "xy_mm": [
+       32.2,
+       26.0
+      ]
+     },
+     {
+      "planes": [
+       {
+        "area_mm2": 9450.191,
+        "layer": "In1.Cu",
+        "zone": "In1 GND REFERENCE"
+       },
+       {
+        "area_mm2": 9450.191,
+        "layer": "In4.Cu",
+        "zone": "In1 GND REFERENCE_1"
+       }
+      ],
+      "xy_mm": [
+       35.5,
+       22.2
+      ]
+     }
+    ],
+    "layer": "B.Cu",
+    "net": "GND",
+    "pads": [
+     "C45.2",
+     "C51.2",
+     "C53.2"
+    ],
+    "post_island": 53,
+    "pour": "GND|B|38685722-44ee-566f-b52b-89a56220a9e0",
+    "verdict": "BONDED"
+   }
+  ],
+  "pour_partition_intact": false,
+  "results": {
+   "PP1": true,
+   "PP2": false,
+   "PP3": true,
+   "PP4": true
+  },
+  "splits": [
+   {
+    "layer": "B.Cu",
+    "net": "GND",
+    "parts": [
+     {
+      "area_mm2": 2832.45,
+      "body": true,
+      "pads": [
+       "C16.2",
+       "C17.2",
+       "C18.2",
+       "C19.2",
+       "C27.2",
+       "C28.2",
+       "C34.1",
+       "C35.2",
+       "C46.2",
+       "C47.2",
+       "C48.2",
+       "C49.2",
+       "C50.2",
+       "C52.2",
+       "C54.2",
+       "C55.2",
+       "C58.2",
+       "C66.2",
+       "C69.2",
+       "C78.2",
+       "C79.2",
+       "C80.2",
+       "D9.2",
+       "J5.19",
+       "J5.2",
+       "J5.6",
+       "Q9.2",
+       "R101.2",
+       "R14.2",
+       "R45.2",
+       "R83.2",
+       "R92.2",
+       "U13.4",
+       "U6.2",
+       "U9.12",
+       "U9.20",
+       "U9.21",
+       "U9.26",
+       "U9.33",
+       "U9.6",
+       "Y1.2",
+       "Y1.4"
+      ],
+      "post_island": 15
+     },
+     {
+      "area_mm2": 11.777,
+      "body": false,
+      "pads": [
+       "C45.2",
+       "C51.2",
+       "C53.2"
+      ],
+      "post_island": 53
+     }
+    ],
+    "pour": "GND|B|38685722-44ee-566f-b52b-89a56220a9e0",
+    "pre_area_mm2": 2848.395,
+    "pre_island": 15,
+    "pre_pads": 45
+   }
+  ]
+ },
+ "post_board_sha256": "58f4b5842c082fc1dbbec3058768431baf5506e1076471dbf5f4765db7ef7b1a",
+ "pre_board_sha256": "a82c907a100e33620e4ae591b227c7e1e11d542492e187d78ec5a7bcb723f863",
+ "route": {
+  "attributable_drc": [],
+  "edges_after": 52,
+  "edges_before": 53,
+  "grid_nm": 66700,
+  "mm": 10.722685598942679,
+  "net": "/04_SPI_B_RADIOS_NFC/NFC_VDD_A"
+ },
+ "schema": 1,
+ "what": "CLAUSE 15 NON-VACUITY (D-623).  verify_promotion.py's fifteenth check, exercised in the DISCRIMINATING direction on real router copper.  PRE is the D-621 authority a82c907a; POST is the refilled scratch board route_maze_batch.py built for /04_SPI_B_RADIOS_NFC/NFC_VDD_A --grid 66700 in an isolated tree (git archive af45dc1, D-623's files grafted in, no git state touched).  That route closes an edge (53 -> 52), regresses nothing, removes nothing and draws ZERO attributable DRC -- so it reads PASS on all FOURTEEN pre-D-623 checks.  Clause 15 alone refuses it."
+}

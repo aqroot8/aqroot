@@ -1,0 +1,378 @@
+{
+ "attributable_drc": [],
+ "authoritative_board_sha256": "a82c907a100e33620e4ae591b227c7e1e11d542492e187d78ec5a7bcb723f863",
+ "authoritative_unchanged": true,
+ "bonds": null,
+ "bridges": null,
+ "candidate_sha256": "c46750327e9df7e2f525d836720422421aaeee204caf4f2dafdf9b237e8d6276",
+ "command": "python3 route_maze_batch.py /04_SPI_B_RADIOS_NFC/NFC_VDD_A --grid 66700",
+ "connectivity": {
+  "nets_improved": [
+   "/04_SPI_B_RADIOS_NFC/NFC_VDD_A"
+  ],
+  "nets_regressed": [],
+  "open_retained_nets_after": 24,
+  "open_retained_nets_before": 25,
+  "retained_open_edges_after": 52,
+  "retained_open_edges_before": 53
+ },
+ "detour": null,
+ "drc_exit": 0,
+ "drc_types": {
+  "hole_clearance": 5,
+  "lib_footprint_issues": 199,
+  "solder_mask_bridge": 1
+ },
+ "escape_relief": null,
+ "eviction": null,
+ "exact_relay": [],
+ "failed_nets": [],
+ "guard": null,
+ "inherited_within_baseline": true,
+ "lattice": {
+  "any_too_coarse": false,
+  "grid_nm": 66700,
+  "nets": {
+   "/04_SPI_B_RADIOS_NFC/NFC_VDD_A": {
+    "binding_pad": "U9.7",
+    "grid_mm": 0.0667,
+    "lands": 3,
+    "required_lattice_mm": 0.0667,
+    "too_coarse": false,
+    "verdict": "CLEAR"
+   }
+  },
+  "schema": 1,
+  "tightest_required_mm": null
+ },
+ "plane": null,
+ "plane_repair": null,
+ "pour_partition": {
+  "detail": {
+   "PP1": {
+    "newly_unresolved": [],
+    "ok": true,
+    "pours_post": 4,
+    "pours_pre": 4,
+    "unresolved_inherited": [
+     "/01_POWER_TREE/BQ25185_SYS C24.1",
+     "/01_POWER_TREE/BQ25185_SYS C26.2",
+     "/01_POWER_TREE/BQ25185_SYS C27.1",
+     "/01_POWER_TREE/BQ25185_SYS C28.1",
+     "/01_POWER_TREE/BQ25185_SYS C33.1",
+     "/01_POWER_TREE/BQ25185_SYS C33.1",
+     "/01_POWER_TREE/BQ25185_SYS C64.1",
+     "/01_POWER_TREE/BQ25185_SYS C64.1",
+     "/01_POWER_TREE/BQ25185_SYS L2.1",
+     "/01_POWER_TREE/BQ25185_SYS L2.1",
+     "/01_POWER_TREE/BQ25185_SYS L4.1",
+     "/01_POWER_TREE/BQ25185_SYS U11.1",
+     "/01_POWER_TREE/BQ25185_SYS U11.1",
+     "/01_POWER_TREE/BQ25185_SYS U12.1",
+     "/01_POWER_TREE/BQ25185_SYS U12.10",
+     "/01_POWER_TREE/BQ25185_SYS U12.11",
+     "/01_POWER_TREE/BQ25185_SYS U13.3",
+     "/01_POWER_TREE/BQ25185_SYS U13.3",
+     "/01_POWER_TREE/BQ25185_SYS U21.3",
+     "GND MK1.4"
+    ],
+    "unresolved_post": 20,
+    "unresolved_pre": 20
+   },
+   "PP2": {
+    "islands": {
+     "+3V3|F|8c612136-d173-58bf-87cf-c0b97bedd2e0": [
+      30,
+      30
+     ],
+     "/01_POWER_TREE/BQ25185_SYS|B|4ad6fd49-a7ee-5f03-a8e4-f021f24e1091": [
+      1,
+      1
+     ],
+     "/01_POWER_TREE/BQ25185_SYS|B|da11f1b0-6501-5c41-b2b6-d6199a789ea9": [
+      7,
+      7
+     ],
+     "GND|B|38685722-44ee-566f-b52b-89a56220a9e0": [
+      56,
+      57
+     ]
+    },
+    "ok": false,
+    "splits": [
+     {
+      "layer": "B.Cu",
+      "net": "GND",
+      "parts": [
+       {
+        "area_mm2": 2832.45,
+        "body": true,
+        "pads": [
+         "C16.2",
+         "C17.2",
+         "C18.2",
+         "C19.2",
+         "C27.2",
+         "C28.2",
+         "C34.1",
+         "C35.2",
+         "C46.2",
+         "C47.2",
+         "C48.2",
+         "C49.2",
+         "C50.2",
+         "C52.2",
+         "C54.2",
+         "C55.2",
+         "C58.2",
+         "C66.2",
+         "C69.2",
+         "C78.2",
+         "C79.2",
+         "C80.2",
+         "D9.2",
+         "J5.19",
+         "J5.2",
+         "J5.6",
+         "Q9.2",
+         "R101.2",
+         "R14.2",
+         "R45.2",
+         "R83.2",
+         "R92.2",
+         "U13.4",
+         "U6.2",
+         "U9.12",
+         "U9.20",
+         "U9.21",
+         "U9.26",
+         "U9.33",
+         "U9.6",
+         "Y1.2",
+         "Y1.4"
+        ],
+        "post_island": 15
+       },
+       {
+        "area_mm2": 11.777,
+        "body": false,
+        "pads": [
+         "C45.2",
+         "C51.2",
+         "C53.2"
+        ],
+        "post_island": 53
+       }
+      ],
+      "pour": "GND|B|38685722-44ee-566f-b52b-89a56220a9e0",
+      "pre_area_mm2": 2848.395,
+      "pre_island": 15,
+      "pre_pads": 45
+     }
+    ]
+   },
+   "PP3": {
+    "fragments": [
+     {
+      "area_mm2": 11.777,
+      "barrels": 3,
+      "barrels_into_reserved_planes": 3,
+      "detail": [
+       {
+        "planes": [
+         {
+          "area_mm2": 9450.191,
+          "layer": "In1.Cu",
+          "zone": "In1 GND REFERENCE"
+         },
+         {
+          "area_mm2": 9450.191,
+          "layer": "In4.Cu",
+          "zone": "In1 GND REFERENCE_1"
+         }
+        ],
+        "xy_mm": [
+         33.0,
+         21.6
+        ]
+       },
+       {
+        "planes": [
+         {
+          "area_mm2": 9450.191,
+          "layer": "In1.Cu",
+          "zone": "In1 GND REFERENCE"
+         },
+         {
+          "area_mm2": 9450.191,
+          "layer": "In4.Cu",
+          "zone": "In1 GND REFERENCE_1"
+         }
+        ],
+        "xy_mm": [
+         32.2,
+         26.0
+        ]
+       },
+       {
+        "planes": [
+         {
+          "area_mm2": 9450.191,
+          "layer": "In1.Cu",
+          "zone": "In1 GND REFERENCE"
+         },
+         {
+          "area_mm2": 9450.191,
+          "layer": "In4.Cu",
+          "zone": "In1 GND REFERENCE_1"
+         }
+        ],
+        "xy_mm": [
+         35.5,
+         22.2
+        ]
+       }
+      ],
+      "layer": "B.Cu",
+      "net": "GND",
+      "pads": [
+       "C45.2",
+       "C51.2",
+       "C53.2"
+      ],
+      "post_island": 53,
+      "pour": "GND|B|38685722-44ee-566f-b52b-89a56220a9e0",
+      "verdict": "BONDED"
+     }
+    ],
+    "ok": true,
+    "reserved_inner_planes": {
+     "I1": [
+      "GND"
+     ],
+     "I3": [
+      "+3V3"
+     ],
+     "I4": [
+      "GND"
+     ]
+    }
+   },
+   "PP4": {
+    "ok": true,
+    "probes": [
+     {
+      "flips": true,
+      "pads": [
+       "C45.2",
+       "C51.2",
+       "C53.2"
+      ],
+      "post_island": 53,
+      "pour": "GND|B|38685722-44ee-566f-b52b-89a56220a9e0",
+      "with_barrels": "BONDED",
+      "without_barrels": "STRANDED"
+     }
+    ]
+   }
+  },
+  "failed_clauses": [
+   "PP2"
+  ],
+  "ok": false,
+  "pre_board": "/tmp/d623replay/hardware/demo/kicad/aqroot-demo/aqroot-Beta-v2.kicad_pcb",
+  "report": "/tmp/aqroot-demo-maze-bupwhued/pour-partition.json",
+  "results": {
+   "PP1": true,
+   "PP2": false,
+   "PP3": true,
+   "PP4": true
+  }
+ },
+ "preservation": {
+  "added_object_nets": [
+   "/04_SPI_B_RADIOS_NFC/NFC_VDD_A"
+  ],
+  "foreign_added_nets": [],
+  "licensed_removals": 0,
+  "removed_objects": [],
+  "reverted_failures_clean": true,
+  "rule_area_inventory_ok": true,
+  "rule_areas_added": [],
+  "rule_areas_removed": [],
+  "unlicensed_removals": [],
+  "zone_inventory_ok": true,
+  "zones_added": [],
+  "zones_removed": []
+ },
+ "promotion_candidate": false,
+ "requested_nets": [
+  "/04_SPI_B_RADIOS_NFC/NFC_VDD_A"
+ ],
+ "routed": [
+  {
+   "contract": {
+    "clr": 200000,
+    "clr_pad": 200000,
+    "guarded_layers": {},
+    "layers": [
+     "F",
+     "B",
+     "I2"
+    ],
+    "netclass": "Default",
+    "reserved_inner_planes": {
+     "I1": [
+      "GND"
+     ],
+     "I3": [
+      "+3V3"
+     ],
+     "I4": [
+      "GND"
+     ]
+    },
+    "via_dia": 600000,
+    "via_drill": 300000,
+    "width": 200000
+   },
+   "islands": 2,
+   "joins": [
+    {
+     "from": "C47.1",
+     "layers": [
+      "B",
+      "I2",
+      "B"
+     ],
+     "mm": 10.722685598942679,
+     "ok": true,
+     "to": "U9.7",
+     "via_xy": [
+      [
+       34.8184,
+       25.4137
+      ],
+      [
+       31.2166,
+       23.8796
+      ]
+     ],
+     "vias": 2
+    }
+   ],
+   "mm": 10.723,
+   "mode": "maze",
+   "net": "/04_SPI_B_RADIOS_NFC/NFC_VDD_A",
+   "ok": true,
+   "seconds": 5.9,
+   "vias": 2
+  }
+ ],
+ "routed_nets": [
+  "/04_SPI_B_RADIOS_NFC/NFC_VDD_A"
+ ],
+ "schema": 1,
+ "tree": "git archive af45dc1 -> /tmp/d623replay (isolated; no git state touched)",
+ "what": "D-623 clause 8 non-vacuity, DISCRIMINATING direction.  Replayed on the D-621 authority a82c907a in a tree extracted with `git archive af45dc1`, with D-623's route_maze_batch.py and checks/pour_partition_contract.py grafted in and no git state touched.  Every clause that existed before D-623 passes this run -- it closes an edge 53->52, regresses nothing, removes nothing and draws ZERO attributable DRC.  Clause 8 alone refuses it, PP2, naming C45.2/C51.2/C53.2 on an 11.777 mm2 fragment off the 2832.45 mm2 GND body.  This file is the RAW gate summary, reproduced end to end; it is not a hand-trimmed excerpt."
+}

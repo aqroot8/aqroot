@@ -1,0 +1,109 @@
+{
+ "board": "/home/aqroot8/aqroot-demo/hardware/demo/kicad/aqroot-demo/aqroot-Beta-v2.kicad_pcb",
+ "ok": true,
+ "pre_board": null,
+ "ref": "HEAD",
+ "results": {
+  "PP1": {
+   "newly_unresolved": [],
+   "ok": true,
+   "pours_post": 4,
+   "pours_pre": 4,
+   "unresolved_inherited": [
+    "/01_POWER_TREE/BQ25185_SYS C24.1",
+    "/01_POWER_TREE/BQ25185_SYS C26.2",
+    "/01_POWER_TREE/BQ25185_SYS C27.1",
+    "/01_POWER_TREE/BQ25185_SYS C28.1",
+    "/01_POWER_TREE/BQ25185_SYS C33.1",
+    "/01_POWER_TREE/BQ25185_SYS C33.1",
+    "/01_POWER_TREE/BQ25185_SYS C64.1",
+    "/01_POWER_TREE/BQ25185_SYS C64.1",
+    "/01_POWER_TREE/BQ25185_SYS L2.1",
+    "/01_POWER_TREE/BQ25185_SYS L2.1",
+    "/01_POWER_TREE/BQ25185_SYS L4.1",
+    "/01_POWER_TREE/BQ25185_SYS U11.1",
+    "/01_POWER_TREE/BQ25185_SYS U11.1",
+    "/01_POWER_TREE/BQ25185_SYS U12.1",
+    "/01_POWER_TREE/BQ25185_SYS U12.10",
+    "/01_POWER_TREE/BQ25185_SYS U12.11",
+    "/01_POWER_TREE/BQ25185_SYS U13.3",
+    "/01_POWER_TREE/BQ25185_SYS U13.3",
+    "/01_POWER_TREE/BQ25185_SYS U21.3",
+    "GND MK1.4"
+   ],
+   "unresolved_post": 20,
+   "unresolved_pre": 20
+  },
+  "PP2": {
+   "islands": {
+    "+3V3|F|8c612136-d173-58bf-87cf-c0b97bedd2e0": [
+     30,
+     30
+    ],
+    "/01_POWER_TREE/BQ25185_SYS|B|4ad6fd49-a7ee-5f03-a8e4-f021f24e1091": [
+     1,
+     1
+    ],
+    "/01_POWER_TREE/BQ25185_SYS|B|da11f1b0-6501-5c41-b2b6-d6199a789ea9": [
+     7,
+     7
+    ],
+    "GND|B|38685722-44ee-566f-b52b-89a56220a9e0": [
+     56,
+     57
+    ]
+   },
+   "ok": true,
+   "splits": []
+  },
+  "PP3": {
+   "fragments": [],
+   "ok": true,
+   "reserved_inner_planes": {
+    "I1": [
+     "GND"
+    ],
+    "I3": [
+     "+3V3"
+    ],
+    "I4": [
+     "GND"
+    ]
+   }
+  },
+  "PP4": {
+   "ok": true,
+   "probes": [
+    {
+     "flips": true,
+     "pads": [
+      "C12.2",
+      "R123.2",
+      "R21.1",
+      "R24.2"
+     ],
+     "post_island": 25,
+     "pour": "+3V3|F|8c612136-d173-58bf-87cf-c0b97bedd2e0",
+     "with_barrels": "BONDED",
+     "without_barrels": "STRANDED"
+    },
+    {
+     "flips": true,
+     "pads": [
+      "C16.2",
+      "C17.2",
+      "C18.2",
+      "C19.2",
+      "C27.2",
+      "C28.2"
+     ],
+     "post_island": 16,
+     "pour": "GND|B|38685722-44ee-566f-b52b-89a56220a9e0",
+     "with_barrels": "BONDED",
+     "without_barrels": "STRANDED"
+    }
+   ]
+  }
+ },
+ "schema": 1
+}

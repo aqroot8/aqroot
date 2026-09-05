@@ -1,0 +1,284 @@
+{
+  "attributable_drc": [],
+  "authoritative_board_sha256": "cc627819eeec64c44be0bce3f1d1ed7712eff294192b53969242617a34f0500d",
+  "authoritative_unchanged": true,
+  "bonds": null,
+  "bridges": null,
+  "candidate_sha256": "2b1260ebd109fe7529cc3cd64c35c86f789a4dfc8caa5aeecd941aeaeb596911",
+  "connectivity": {
+    "nets_improved": [
+      "/NFC_IRQ"
+    ],
+    "nets_regressed": [],
+    "open_retained_nets_after": 23,
+    "open_retained_nets_before": 24,
+    "retained_open_edges_after": 51,
+    "retained_open_edges_before": 52
+  },
+  "detour": null,
+  "drc_exit": 0,
+  "drc_types": {
+    "hole_clearance": 5,
+    "lib_footprint_issues": 199,
+    "solder_mask_bridge": 1
+  },
+  "escape_relief": null,
+  "eviction": null,
+  "exact_relay": [],
+  "failed_nets": [],
+  "guard": null,
+  "inherited_within_baseline": true,
+  "lattice": {
+    "any_too_coarse": false,
+    "grid_nm": 33300,
+    "nets": {
+      "/NFC_IRQ": {
+        "binding_pad": "U9.27",
+        "grid_mm": 0.0333,
+        "lands": 2,
+        "required_lattice_mm": 0.0667,
+        "too_coarse": false,
+        "verdict": "CLEAR"
+      }
+    },
+    "schema": 1,
+    "tightest_required_mm": null
+  },
+  "plane": null,
+  "plane_repair": null,
+  "pour_partition": {
+    "detail": {
+      "PP1": {
+        "newly_unresolved": [],
+        "ok": true,
+        "pours_post": 4,
+        "pours_pre": 4,
+        "unresolved_inherited": [
+          "/01_POWER_TREE/BQ25185_SYS C24.1",
+          "/01_POWER_TREE/BQ25185_SYS C26.2",
+          "/01_POWER_TREE/BQ25185_SYS C27.1",
+          "/01_POWER_TREE/BQ25185_SYS C28.1",
+          "/01_POWER_TREE/BQ25185_SYS C33.1",
+          "/01_POWER_TREE/BQ25185_SYS C33.1",
+          "/01_POWER_TREE/BQ25185_SYS C64.1",
+          "/01_POWER_TREE/BQ25185_SYS C64.1",
+          "/01_POWER_TREE/BQ25185_SYS L2.1",
+          "/01_POWER_TREE/BQ25185_SYS L2.1",
+          "/01_POWER_TREE/BQ25185_SYS L4.1",
+          "/01_POWER_TREE/BQ25185_SYS U11.1",
+          "/01_POWER_TREE/BQ25185_SYS U11.1",
+          "/01_POWER_TREE/BQ25185_SYS U12.1",
+          "/01_POWER_TREE/BQ25185_SYS U12.10",
+          "/01_POWER_TREE/BQ25185_SYS U12.11",
+          "/01_POWER_TREE/BQ25185_SYS U13.3",
+          "/01_POWER_TREE/BQ25185_SYS U13.3",
+          "/01_POWER_TREE/BQ25185_SYS U21.3",
+          "GND MK1.4"
+        ],
+        "unresolved_post": 20,
+        "unresolved_pre": 20
+      },
+      "PP2": {
+        "islands": {
+          "+3V3|F|8c612136-d173-58bf-87cf-c0b97bedd2e0": [
+            30,
+            30
+          ],
+          "/01_POWER_TREE/BQ25185_SYS|B|4ad6fd49-a7ee-5f03-a8e4-f021f24e1091": [
+            1,
+            1
+          ],
+          "/01_POWER_TREE/BQ25185_SYS|B|da11f1b0-6501-5c41-b2b6-d6199a789ea9": [
+            7,
+            7
+          ],
+          "GND|B|38685722-44ee-566f-b52b-89a56220a9e0": [
+            56,
+            57
+          ]
+        },
+        "ok": true,
+        "splits": []
+      },
+      "PP3": {
+        "fragments": [],
+        "ok": true,
+        "reserved_inner_planes": {
+          "I1": [
+            "GND"
+          ],
+          "I3": [
+            "+3V3"
+          ],
+          "I4": [
+            "GND"
+          ]
+        }
+      },
+      "PP4": {
+        "ok": true,
+        "probes": [
+          {
+            "flips": true,
+            "pads": [
+              "C12.2",
+              "R123.2",
+              "R21.1",
+              "R24.2"
+            ],
+            "post_island": 25,
+            "pour": "+3V3|F|8c612136-d173-58bf-87cf-c0b97bedd2e0",
+            "with_barrels": "BONDED",
+            "without_barrels": "STRANDED"
+          },
+          {
+            "flips": true,
+            "pads": [
+              "C16.2",
+              "C17.2",
+              "C18.2",
+              "C19.2",
+              "C27.2",
+              "C28.2"
+            ],
+            "post_island": 16,
+            "pour": "GND|B|38685722-44ee-566f-b52b-89a56220a9e0",
+            "with_barrels": "BONDED",
+            "without_barrels": "STRANDED"
+          }
+        ]
+      }
+    },
+    "failed_clauses": [],
+    "ok": true,
+    "pre_board": "/home/aqroot8/aqroot-demo/hardware/demo/kicad/aqroot-demo/aqroot-Beta-v2.kicad_pcb",
+    "report": "/tmp/d623-irq-promote/pour-partition.json",
+    "results": {
+      "PP1": true,
+      "PP2": true,
+      "PP3": true,
+      "PP4": true
+    }
+  },
+  "preservation": {
+    "added_object_nets": [
+      "/NFC_IRQ"
+    ],
+    "foreign_added_nets": [],
+    "licensed_removals": 0,
+    "removed_objects": [],
+    "reverted_failures_clean": true,
+    "rule_area_inventory_ok": true,
+    "rule_areas_added": [],
+    "rule_areas_removed": [],
+    "unlicensed_removals": [],
+    "zone_inventory_ok": true,
+    "zones_added": [],
+    "zones_removed": []
+  },
+  "promoted": true,
+  "promoted_sha256": "2b1260ebd109fe7529cc3cd64c35c86f789a4dfc8caa5aeecd941aeaeb596911",
+  "promotion_candidate": true,
+  "requested_nets": [
+    "/NFC_IRQ"
+  ],
+  "routed": [
+    {
+      "contract": {
+        "clr": 200000,
+        "clr_pad": 200000,
+        "guarded_layers": {},
+        "layers": [
+          "F",
+          "B",
+          "I2"
+        ],
+        "netclass": "Default",
+        "reserved_inner_planes": {
+          "I1": [
+            "GND"
+          ],
+          "I3": [
+            "+3V3"
+          ],
+          "I4": [
+            "GND"
+          ]
+        },
+        "via_dia": 600000,
+        "via_drill": 300000,
+        "width": 200000
+      },
+      "islands": 2,
+      "joins": [
+        {
+          "from": "U1.11",
+          "layers": [
+            "F",
+            "B",
+            "I2",
+            "B",
+            "I2",
+            "B",
+            "I2",
+            "F",
+            "I2",
+            "B"
+          ],
+          "mm": 105.49222558696646,
+          "ok": true,
+          "to": "U9.27",
+          "via_xy": [
+            [
+              50.5807,
+              118.6792
+            ],
+            [
+              54.61,
+              117.3805
+            ],
+            [
+              52.612,
+              113.2513
+            ],
+            [
+              58.7059,
+              107.1574
+            ],
+            [
+              55.2427,
+              104.4601
+            ],
+            [
+              46.3516,
+              96.8677
+            ],
+            [
+              43.8541,
+              55.276
+            ],
+            [
+              31.8994,
+              40.0246
+            ],
+            [
+              33.9973,
+              33.8641
+            ]
+          ],
+          "vias": 9
+        }
+      ],
+      "mm": 105.492,
+      "mode": "maze",
+      "net": "/NFC_IRQ",
+      "ok": true,
+      "seconds": 370.3,
+      "vias": 9
+    }
+  ],
+  "routed_nets": [
+    "/NFC_IRQ"
+  ],
+  "schema": 1
+}

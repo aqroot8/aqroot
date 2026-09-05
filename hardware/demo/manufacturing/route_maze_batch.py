@@ -59,6 +59,8 @@ PROJECT = ROOT / "hardware/demo/kicad/aqroot-demo"
 BOARD = PROJECT / "aqroot-Beta-v2.kicad_pcb"
 LEDGER = ROOT / "hardware/demo/manufacturing/routing_ledger.py"
 LOCAL_TWO_PAD = Path(__file__).with_name("route_local_two_pad.py")
+# CLAUSE 8 (D-623): the pour-partition contract is invoked BY the gate.
+POUR_PARTITION = Path(__file__).with_name("checks") / "pour_partition_contract.py"
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 sys.path.insert(0, str(ROOT / "hardware/beta-v2/checks"))
@@ -1772,6 +1774,87 @@ def resolve_grid(board_path, nets, spec):
 
 
 # --------------------------------------------------------------------------- #
+# THE LADDER -- D-623
+#
+# D-622 ended by naming this and not taking it:
+#
+#     A `--grid` LADDER bounded by a cell-count budget, rather than the single
+#     coarsest-admissible pitch `auto` computes today, is the framework task
+#     this decision names and does not take.
+#
+# `auto` answers the question "what is the coarsest lattice this net's own
+# lands can be LAUNCHED on", and that answer is NECESSARY AND NOT SUFFICIENT in
+# its own words: on `NFC_VDD_A` the coarsest admissible pitch still severed the
+# `GND` pour, and only 0.025 mm -- four times finer than `auto` proposed -- both
+# closed the edge and left the partition alone.  A single pitch cannot express
+# that.  A LADDER can: try the coarsest admissible lattice first, because it is
+# the cheapest search that can express every land's own escape, and refine only
+# while the run is still refused.
+#
+# THE BUDGET IS THE HONEST BOUND, AND IT IS COUNTED IN CELLS.  A `maze3d.Field`
+# rasterises the WHOLE board -- `(ex1 - ex0 + 2*margin) / G` by the same in `y`,
+# once per routable layer -- so halving the pitch quadruples the raster and
+# every mask built over it.  On this board:
+#
+#     0.1000 mm    761 x 1521 x 4 =    4.6 M cells
+#     0.0500 mm   1521 x 3041 x 4 =   18.5 M
+#     0.0250 mm   3041 x 6081 x 4 =   74.0 M
+#     0.0125 mm   6081 x 12161 x 4 =  295.8 M
+#
+# so a ladder with no bound is a ladder that eventually wedges the machine.
+# `--grid-cells` is that bound, stated in the unit that actually grows, and the
+# rungs it refuses are REPORTED rather than silently absent: a run that stopped
+# because it ran out of budget must not read like a run that ran out of ideas.
+# --------------------------------------------------------------------------- #
+LADDER_CELL_BUDGET = 80_000_000     # ~0.025 mm on this board's 72 x 148 mm edge
+FIELD_MARGIN_MM = 2.0               # maze3d.Field's own default
+
+# THE RUNGS ARE THE PITCHES THIS PROJECT HAS ACTUALLY MEASURED, not a halving.
+# D-622's sweep was 0.100 / 0.0667 / 0.050 / 0.025 mm and the one that stopped
+# severing the pour was the LAST; a bare halving from the coarsest admissible
+# pitch (0.0667 -> 0.0334 -> 0.0167) would step straight over it.  0.0667 mm is
+# 2/3 of the default and is where a 0.050 mm land margin lands; 0.0333 mm is
+# where a 0.025 mm margin lands.  Anything finer than 0.010 mm is below
+# `GRID_FLOOR_NM` and is not a rung at any budget.
+LADDER_PITCHES = (100000, 66700, 50000, 33300, 25000, 20000, 12500, 10000)
+
+
+def lattice_cells(board_path, grid_nm):
+    """The raster one `maze3d.Field` costs at this pitch, by ITS own formula."""
+    import maze3d as mz
+    qb = mz.qr.QBoard(str(board_path))
+    m = int(FIELD_MARGIN_MM * mz.qr.MM)
+    ox, oy = qb.ex0 - m, qb.ey0 - m
+    nx = int((qb.ex1 + m - ox) // grid_nm) + 1
+    ny = int((qb.ey1 + m - oy) // grid_nm) + 1
+    layers = len(qb.routable)
+    return dict(grid_nm=int(grid_nm), grid_mm=round(grid_nm / 1e6, 6),
+                nx=nx, ny=ny, layers=layers, cells=nx * ny * layers)
+
+
+def grid_ladder(board_path, nets, coarsest_nm, budget):
+    """Descending pitches worth trying, coarsest first, bounded by `budget`.
+
+    Rung 0 is the coarsest ADMISSIBLE lattice -- `resolve_grid`'s answer, the
+    cheapest search that can express every requested land's own escape.  After
+    it come the `LADDER_PITCHES` strictly finer than it.  The first rung whose
+    raster exceeds the budget ENDS the ladder and is kept in the report marked
+    `over_budget`: the ladder's floor must be a number a reader can see, not a
+    run that quietly did not happen.
+    """
+    pitches = [int(coarsest_nm)] + [p for p in LADDER_PITCHES
+                                    if GRID_FLOOR_NM <= p < int(coarsest_nm)]
+    rungs = []
+    for g in pitches:
+        row = lattice_cells(board_path, g)
+        row["over_budget"] = row["cells"] > budget
+        rungs.append(row)
+        if row["over_budget"]:
+            break                       # every finer rung is over it too
+    return rungs
+
+
+# --------------------------------------------------------------------------- #
 # authority: gate a scratch candidate
 # --------------------------------------------------------------------------- #
 def ledger(board, out):
@@ -1906,7 +1989,8 @@ def gate(nets, grid, via_cost_mm, workdir, promote=False, candidate=None,
          body_landing=False, join_orphans=False,
          join_orphan_max_mm=JOIN_ORPHAN_MAX_MM,
          detour_own_layer=False, relief_extra_width=0,
-         relief_pads=(), relief_bonds_per_island=1, relief_run_area=None):
+         relief_pads=(), relief_bonds_per_island=1, relief_run_area=None,
+         promote_soft=False):
     before = sha256_file(BOARD)
     work = Path(workdir)
     work.mkdir(parents=True, exist_ok=True)
@@ -2461,9 +2545,63 @@ def gate(nets, grid, via_cost_mm, workdir, promote=False, candidate=None,
                                             island=st["island"],
                                             area=st.get("area"),
                                             via_xy=st["via_xy"]))
+    # CLAUSE 8 -- THE POUR PARTITION RIDES WITH THE RUN.  D-623.
+    # D-622 built `checks/pour_partition_contract.py` and said in its own words
+    # that PP1-PP4 IS THE JUDGE of whether a route severed a pour -- and then
+    # left it as a thing a person runs by hand.  That is exactly the shape of
+    # the failure it was written for.  D-619's route closed an edge, regressed
+    # nothing and drew zero attributable DRC: clause 3 (real KiCad DRC), clause
+    # 4 (the ledger's open edges), clause 5 (object preservation) and
+    # `pour_bond_guard.py` ALL passed it, and a person caught the 12.461 mm2
+    # `GND` fragment by reading island areas.  An instrument nothing invokes is
+    # an instrument that catches the next one by luck.
+    #
+    # PRE IS THE AUTHORITATIVE FILE, NOT A COMMIT.  The contract's `--ref` reads
+    # the board out of git, which is the right unit for auditing a promotion
+    # after the fact and the wrong one here: the gate's question is about THIS
+    # transaction, whose two sides are the authoritative board on disk and the
+    # refilled candidate beside it.  `--pre-board` is that unit.
+    #
+    # AND IT IS RUN AFTER THE REFILL, ON THE SAVED CANDIDATE.  `full_drc` runs
+    # `--refill-zones --save-board`, so `scratch` at this point carries the
+    # copper a fabricator would get; a partition read before the refill would
+    # be a partition of copper the router imagined.  THE FALSE-POSITIVE FLOOR
+    # IS A PROPERTY, NOT A TEST: this board is FILL-STABLE -- refilling a fresh
+    # copy of it reproduces it byte for byte, the same fact
+    # `verify_promotion.py` asserts -- so clause 8 cannot manufacture a split
+    # out of refill churn, because there is no refill churn to manufacture it
+    # from.  A refill-only "control" would compare a file to itself and prove
+    # nothing; the discriminating evidence is the D-621 replay in
+    # `evidence/d623-clause8-nonvacuity-replay.json`.
+    #
+    # AND THE REPORT IS DELETED FIRST.  `--work` is reusable and this same gate
+    # can run twice against one directory (a plane repair re-runs the DRC), so
+    # a stale `pour-partition.json` left by an earlier pass would be read as
+    # THIS pass's verdict if the contract died before writing.  The whole point
+    # of the `PP_DID_NOT_RUN` branch is that silence is a refusal; a leftover
+    # file would turn that silence back into assent.
+    pp_report = work / "pour-partition.json"
+    pp_report.unlink(missing_ok=True)
+    pp_run = subprocess.run(
+        [sys.executable, str(POUR_PARTITION), "--pre-board", str(BOARD),
+         "--board", str(scratch), "-o", str(pp_report)],
+        text=True, capture_output=True)
+    if pp_report.exists():
+        partition_doc = json.loads(pp_report.read_text())
+        pp_failed = sorted(k for k in ("PP1", "PP2", "PP3", "PP4")
+                           if not partition_doc["results"][k]["ok"])
+    else:
+        # A clause that could not be ASKED is a refusal, not a pass.  This is
+        # the `aqroot-demo-unmeasured-vs-refused` reading applied to the gate's
+        # own machinery: silence here used to be indistinguishable from assent.
+        partition_doc = dict(ok=False, ran=False, returncode=pp_run.returncode,
+                             stderr=pp_run.stderr[-2000:])
+        pp_failed = ["PP_DID_NOT_RUN"]
+
     ok = (not attributable and inherited_ok and not regressed
           and not unlicensed and not foreign and edges_after < edges_before
           and zone_ok and changed and not relief_open and not detour_failed
+          and not pp_failed
           and before == sha256_file(BOARD))
 
     summary = dict(
@@ -2486,6 +2624,15 @@ def gate(nets, grid, via_cost_mm, workdir, promote=False, candidate=None,
             nets_improved=closed, nets_regressed=regressed),
         plane=plane_zone,
         plane_repair=repair,
+        # CLAUSE 8 -- D-623.  The verdict rides in the report whether it passed
+        # or failed, for the same reason `lattice` does: a clause whose result
+        # is only visible when it refuses cannot be audited afterwards.
+        pour_partition=dict(
+            ok=(not pp_failed), failed_clauses=pp_failed,
+            pre_board=str(BOARD), report=str(pp_report),
+            results={k: v.get("ok") for k, v
+                     in (partition_doc.get("results") or {}).items()},
+            detail=partition_doc.get("results")),
         bonds=(dict(requested=list(bond_pads), max_mm=bond_max_mm,
                     via=(list(bond_via) if bond_via else None),
                     bonded=sum(b.get("bonded", 0) for b in bonded),
@@ -2561,7 +2708,14 @@ def gate(nets, grid, via_cost_mm, workdir, promote=False, candidate=None,
     if candidate and ok:
         Path(candidate).write_bytes(scratch.read_bytes())
     if promote:
+        # `promote_soft` is the LADDER's contract and nothing else's (D-623).
+        # A ladder rung that is refused is not an error -- it is the reason the
+        # next rung exists -- so the ladder asks for a summary back and decides
+        # for itself.  Without it, `--grid ladder --promote` would abort on the
+        # first refusal and never reach the pitch that works.
         if not ok:
+            if promote_soft:
+                return summary
             raise SystemExit("refuse promotion: gate failed")
         if before != sha256_file(BOARD):
             raise SystemExit("refuse promotion: authority changed under the run")
@@ -2581,8 +2735,19 @@ def main():
     ap.add_argument("--detour-report", type=Path, help=argparse.SUPPRESS)
     ap.add_argument("--detour-plan", type=Path, help=argparse.SUPPRESS)
     ap.add_argument("--grid", default="100000",
-                    help="lattice pitch in nm, or `auto` to read it off "
-                         "the requested nets' own land margins (D-622)")
+                    help="lattice pitch in nm, `auto` to read it off the "
+                         "requested nets' own land margins (D-622), or "
+                         "`ladder` to start at `auto` and refine until the "
+                         "gate accepts a rung or the cell budget stops it, or "
+                         "`best` to run every in-budget rung and RANK the "
+                         "accepted ones by copper (a screen; never promotes) "
+                         "(D-623)")
+    ap.add_argument("--grid-cells", type=int, default=LADDER_CELL_BUDGET,
+                    help="`--grid ladder` budget, in maze3d.Field CELLS "
+                         "(nx*ny*layers).  Halving the pitch quadruples this, "
+                         "so it is the unit that actually grows; the default "
+                         "%d reaches 0.025 mm on this board"
+                         % LADDER_CELL_BUDGET)
     ap.add_argument("--via-cost", type=float, default=1.5)
     ap.add_argument("--plane", help="add a pour for the single named net on "
                                     "this layer, then stitch its islands")
@@ -2894,19 +3059,136 @@ def main():
                  relief_run_area=a.relief_run_area,
                  join_orphans=a.join_orphans,
                  join_orphan_max_mm=a.join_orphan_max_mm)
-    grid, auto = resolve_grid(BOARD, a.nets, a.grid)
+    spec = str(a.grid).strip().lower()
+    ladder_spec, best_spec = spec in ("ladder", "best"), spec == "best"
+    # `best` REFUSES BOTH TRANSACTION OUTPUTS, not just `--promote`.  `gate()`
+    # writes `--candidate` on EVERY rung it accepts, so on a net where two
+    # pitches both pass, the candidate file left behind would be the LAST
+    # accepted rung while `ladder.best` names the CHEAPEST -- a report and a
+    # board that disagree about which run they describe.  A screen that ranks
+    # four runs has no single candidate to hand over; ask for the winning pitch
+    # by name.
+    if best_spec and (a.promote or a.candidate):
+        ap.error("--grid best is a SCREEN: it runs EVERY in-budget rung to "
+                 "rank them, so it has no single transaction to emit -- a run "
+                 "that lays copper at four pitches to keep one is not a "
+                 "transaction, and the candidate it left behind would be the "
+                 "LAST rung that passed rather than the best one.  Read the "
+                 "`ladder.best` block, then take that pitch by name with "
+                 "`--grid <nm> --promote` / `--candidate`")
+    grid, auto = resolve_grid(BOARD, a.nets,
+                              "auto" if ladder_spec else a.grid)
     advice = auto if auto is not None else lattice_advice(BOARD, a.nets, grid)
-    if a.work:
-        summary = gate(a.nets, grid, a.via_cost, a.work, a.promote,
-                       a.candidate, **extra)
+
+    def run(g, workdir, soft=False):
+        return gate(a.nets, g, a.via_cost, workdir, a.promote, a.candidate,
+                    promote_soft=soft, **extra)
+
+    if not ladder_spec:
+        if a.work:
+            summary = run(grid, a.work)
+        else:
+            with tempfile.TemporaryDirectory(prefix="aqroot-demo-maze-") as tmp:
+                summary = run(grid, tmp)
+        # THE ADVICE RIDES WITH THE RUN, PASS OR FAIL.  A `NO_PATH` taken at a
+        # lattice one of the net's own lands cannot launch on is not a wall; it
+        # is an unasked question, and D-622 is what it costs to leave it
+        # unasked.
+        summary["lattice"] = advice
     else:
-        with tempfile.TemporaryDirectory(prefix="aqroot-demo-maze-") as tmp:
-            summary = gate(a.nets, grid, a.via_cost, tmp, a.promote,
-                           a.candidate, **extra)
-    # THE ADVICE RIDES WITH THE RUN, PASS OR FAIL.  A `NO_PATH` taken at a
-    # lattice one of the net's own lands cannot launch on is not a wall; it is
-    # an unasked question, and D-622 is what it costs to leave it unasked.
-    summary["lattice"] = advice
+        # --grid ladder / --grid best (D-623).  Coarsest admissible pitch
+        # first, then the measured pitches below it, bounded by the cell
+        # budget.  `ladder` STOPS AT THE FIRST RUNG THE WHOLE GATE ACCEPTS --
+        # and since clause 8 is part of that gate, it cannot stop on a rung
+        # that closes an edge by cutting a pour.  `best` runs every in-budget
+        # rung and ranks them, because FIRST IS NOT BEST and this board has the
+        # number: `/NFC_IRQ` routes at 120.848 mm / 10 vias on the coarsest
+        # admissible 0.0667 mm lattice, 105.709 mm / 9 vias at 0.050 mm for
+        # 2.3x the search, and 105.492 mm / 9 vias at 0.0333 mm for 3.8x more
+        # on top of that.  The knee is real and it is early; ranking is worth
+        # paying for once per net, not on every run.
+        rungs = grid_ladder(BOARD, a.nets, grid, a.grid_cells)
+        trail, summary, by_grid = [], None, {}
+        for row in rungs:
+            if row["over_budget"]:
+                trail.append(dict(row, ran=False,
+                                  why="OVER_CELL_BUDGET %d > %d"
+                                      % (row["cells"], a.grid_cells)))
+                continue
+            t0 = time.time()
+            if a.work:
+                wd = Path(a.work) / ("g%d" % row["grid_nm"])
+                s_i = run(row["grid_nm"], wd, soft=True)
+            else:
+                with tempfile.TemporaryDirectory(
+                        prefix="aqroot-demo-maze-") as tmp:
+                    s_i = run(row["grid_nm"], tmp, soft=True)
+            trail.append(dict(
+                row, ran=True, seconds=round(time.time() - t0, 1),
+                promotion_candidate=s_i["promotion_candidate"],
+                promoted=bool(s_i.get("promoted")),
+                routed_nets=s_i["routed_nets"], failed_nets=s_i["failed_nets"],
+                pour_partition_ok=s_i["pour_partition"]["ok"],
+                pour_partition_failed=s_i["pour_partition"]["failed_clauses"],
+                mm={r["net"]: r.get("mm") for r in s_i["routed"]},
+                vias={r["net"]: r.get("vias") for r in s_i["routed"]},
+                reasons={r["net"]: r.get("reason") for r in s_i["routed"]}))
+            summary = by_grid[row["grid_nm"]] = s_i
+            if s_i["promotion_candidate"] and not best_spec:
+                break
+        if summary is None:
+            raise SystemExit(
+                "ladder: every rung is over the %d-cell budget; the coarsest "
+                "admissible pitch for these nets is %d nm"
+                % (a.grid_cells, grid))
+        # THE RANKING.  Only rungs the WHOLE gate accepted are ranked, so a
+        # shorter route that severed a pour cannot win: clause 8 removed it
+        # from the field before the sort.  Least copper first, then fewest
+        # barrels, then the COARSEST pitch -- because two rungs that lay the
+        # same copper are the same answer, and the cheaper search is the one to
+        # reproduce it with.
+        won = [r for r in trail if r.get("promotion_candidate")]
+        for r in won:
+            r["total_mm"] = round(sum(v or 0 for v in r["mm"].values()), 3)
+            r["total_vias"] = sum(v or 0 for v in r["vias"].values())
+        won.sort(key=lambda r: (r["total_mm"], r["total_vias"], -r["grid_nm"]))
+        best = won[0] if won else None
+        # THE REPORT IS THE BEST RUN, NOT THE LAST ONE.  `best` runs every
+        # in-budget rung, so the final rung is simply the finest -- and on a net
+        # whose knee is early that rung may be a REFUSAL while an earlier one
+        # was accepted.  Flipping `promotion_candidate` on the last rung's
+        # summary would publish a refused run's `NO_PATH` under a passing
+        # verdict, which is the exact confusion this whole decision exists to
+        # remove.  Swap in the winning rung's own summary instead.
+        if best_spec and best is not None:
+            summary = by_grid[best["grid_nm"]]
+        reported_nm = next((g for g, s in by_grid.items() if s is summary),
+                           None)
+        summary["lattice"] = advice
+        summary["ladder"] = dict(
+            schema=1, mode=("best" if best_spec else "ladder"),
+            cell_budget=a.grid_cells,
+            coarsest_admissible_nm=grid, chosen_grid_nm=reported_nm,
+            rungs_run=sum(1 for r in trail if r.get("ran")),
+            rungs_over_budget=[r["grid_nm"] for r in trail
+                               if not r.get("ran")],
+            rungs=trail,
+            accepted_grid_nm=[r["grid_nm"] for r in won],
+            best=(dict(grid_nm=best["grid_nm"], grid_mm=best["grid_mm"],
+                       total_mm=best["total_mm"], total_vias=best["total_vias"],
+                       mm=best["mm"], vias=best["vias"],
+                       seconds=best["seconds"], cells=best["cells"],
+                       promote_with=("--grid %d --promote" % best["grid_nm"]))
+                  if best else None),
+            ranking=[dict(grid_nm=r["grid_nm"], grid_mm=r["grid_mm"],
+                          total_mm=r["total_mm"], total_vias=r["total_vias"],
+                          seconds=r["seconds"]) for r in won],
+            doctrine=("coarsest admissible pitch first, then the measured "
+                      "pitches below it.  `ladder` stops at the first rung the "
+                      "WHOLE gate accepts -- clause 8 included, so a rung that "
+                      "closes an edge by severing a pour is not a stopping "
+                      "point.  `best` runs every in-budget rung and ranks the "
+                      "accepted ones by copper, because FIRST IS NOT BEST"))
     text = json.dumps(summary, indent=2, sort_keys=True, default=str)
     if a.out:
         a.out.write_text(text + "\n", encoding="utf-8")

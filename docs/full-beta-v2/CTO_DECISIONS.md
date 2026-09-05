@@ -1,5 +1,125 @@
 # AQROOT Full Beta v2 — CTO Decisions
 
+# D-623 · 2026-09-05 · Demo NFC_IRQ closed at a RANKED lattice — the ladder, and the pour clause the independent auditor never had
+
+D-622 ended by naming a framework task and not taking it: *"a `--grid` LADDER
+bounded by a cell-count budget, rather than the single coarsest-admissible
+pitch `auto` computes today."* This is that ladder, the ranking it makes
+possible, and the two places the pour-partition judge was still missing.
+
+**THE LADDER, AND WHY THE BUDGET IS COUNTED IN CELLS.** A `maze3d.Field`
+rasterises the whole board once per routable layer, so halving the pitch
+QUADRUPLES it. On this 72 × 148 mm board: 0.100 mm = 4.6 M cells, 0.0667 mm =
+10.4 M, 0.050 mm = 18.5 M, 0.0333 mm = 41.7 M, 0.025 mm = 74.0 M, 0.020 mm =
+115.6 M. `--grid-cells` (default 80 M) is the bound, stated in the unit that
+actually grows, and **the first rung over it ENDS the ladder and STAYS IN THE
+REPORT marked `over_budget`** — a run that stopped because it ran out of budget
+must not read like a run that ran out of ideas. Rung 0 is `auto`; below it come
+`LADDER_PITCHES`, the pitches this project has actually MEASURED, and
+deliberately **not** a halving: D-622's answer was 0.025 mm and halving from
+0.0667 mm steps straight over it.
+
+**`ladder` STOPS AT THE FIRST RUNG THE WHOLE GATE ACCEPTS. `best` RANKS.**
+Clause 8 is part of that gate, so `ladder` cannot stop on a rung that closes an
+edge by severing a pour. `best` runs every in-budget rung and ranks the
+accepted ones by copper, then barrels, then the COARSEST pitch — and it refuses
+`--promote` AND `--candidate` outright, because `gate()` writes a candidate on
+every rung it accepts, so the file left behind would be the LAST accepted rung
+while the report names the CHEAPEST: a board and a report that disagree about
+which run they describe.
+
+**FIRST IS NOT BEST, AND FINER IS NOT MONOTONE.** `/NFC_IRQ`, `U1.11 → U9.27`,
+88.356 mm apart, `NO_PATH` at the 0.100 mm default. Every rung a FULL gate run,
+all four accepted (`evidence/d623-best-nfc-irq.json`):
+
+    0.0667 mm  120.848 mm  10 vias   71 s   ← `auto`; what `ladder` would take
+    0.0500 mm  105.709 mm   9 vias  127 s   ← −15.139 mm, −1 via
+    0.0333 mm  105.492 mm   9 vias  405 s   ← THE WINNER
+    0.0250 mm  105.510 mm   9 vias  992 s   ← +0.018 mm for 2.5× the search
+    0.0200 mm       —        —        —     ← over budget, and SAID SO
+
+The knee is real and EARLY, and **0.025 mm comes back 0.018 mm LONGER than
+0.0333 mm.** A lattice is not an approximation that converges on an answer; it
+is a different question. That is the whole argument for ranking once rather
+than descending forever — and taking `ladder`'s first accept here would have
+cost **+15.356 mm and one extra barrel**.
+
+**CLAUSE 8: the partition rides with every run.** D-622 built
+`checks/pour_partition_contract.py`, wrote that PP1–PP4 "IS THE JUDGE", and
+left it as a thing a person runs by hand — the exact shape of the failure it
+was written for. It is now `route_maze_batch.py gate()` clause 8: PRE is the
+authoritative board on disk (`--pre-board`, new), POST is the candidate AFTER
+`kicad-cli --refill-zones --save-board`, the verdict rides in the report pass or
+fail, the stale report is deleted first, and a contract that could not be ASKED
+returns `PP_DID_NOT_RUN` rather than silence read as assent. Non-vacuity is the
+D-621 replay in `evidence/d623-clause8-nonvacuity-replay.json`.
+
+**CLAUSE 15: and by the gate that does not trust the gate.** Clause 8 runs
+inside the process that proposed the copper. `verify_promotion.py` exists
+because that is not independent — and **D-619's severed pour passed it 14 checks
+out of 14**, because objects, widths, drills, rule areas, zones, DRC, parity and
+fill-stability are every one of them TRUE of a board whose pour has been cut in
+half. A person caught it by reading island areas. `pour_partition_intact` is now
+the fifteenth check, asked of the same two staged cells every other check reads.
+PRE is not refilled and that is exact rather than approximate for one stated
+reason: every accepted promotion must pass `fill_stable`, so the committed
+board's stored fill IS its refilled fill — and if that stops being true,
+`fill_stable` fails in the same report.
+**PROVED IN THE DIRECTION THAT MATTERS**
+(`evidence/d623-clause15-nonvacuity-verify-promotion.json`): D-621 authority
+`a82c907a…` as PRE, and as POST the refilled scratch board the router built for
+`/04_SPI_B_RADIOS_NFC/NFC_VDD_A --grid 66700` — 10.723 mm, closes an edge
+53 → 52, regresses nothing, removes nothing, **ZERO attributable DRC**. Clause 15
+alone refuses it, `PP2`, naming `C45.2`/`C51.2`/`C53.2` on an 11.777 mm² fragment
+off the 2832.45 mm² body. The PASS direction is deliberately NOT quoted from a
+refill-only control, which would compare a file to itself; it is this promotion.
+
+**THE SAME COUNT DELTA, THE OPPOSITE VERDICT.** The promoted route takes the
+`GND` `B.Cu` pour from **56 to 57 islands — exactly what D-619's severing route
+did** — and PP2 PASSES, with no split and no fragment. That is the clearest
+statement available of why this contract refuses to judge on an island COUNT.
+`evidence/d623-nfc-irq-island-delta.json` measures it: four of the five "new"
+island signatures are pre-existing islands that merely SHRANK where the route's
+clearance void nibbled them (2846.850 → 2843.744, 594.970 → 594.013,
+121.708 → 106.368, 66.943 → 59.913 mm²), each keeping its whole pad set; the one
+genuinely new island is **10.653 mm², carries no pads, and holds one through
+barrel** into the `GND` reference planes. Stitched, not floating.
+
+**A WALL, MEASURED RATHER THAN ASSUMED.** `/ACC_PWR_EN` was run down the whole
+ladder — 0.100, 0.0667, 0.050, 0.0333, 0.025 mm — and returns `NO_PATH` at every
+in-budget rung (`evidence/d623-ladder-acc-pwr-en.json`). Its refusal is NOT a
+lattice artefact, and it should not be re-asked at a pitch until something else
+about the board changes.
+
+**WHAT WAS PROMOTED:** `/NFC_IRQ`, `U1.11 → U9.27`, **105.492 mm on `F.Cu` +
+`B.Cu` + `In2.Cu`, 9 barrels 0.600/0.300 mm, every track 0.200 mm** — 30 objects
+added (21 tracks, 9 vias), **ZERO removed**, zero zones, zero rule areas, zero
+`.kicad_dru` change, zero placement change, and no copper on either reserved
+inner plane. Authority `cc627819…` →
+**`2b1260ebd109fe7529cc3cd64c35c86f789a4dfc8caa5aeecd941aeaeb596911`**.
+`verify_promotion.py` **15/15** (DRC 5 `hole_clearance` / 1 `solder_mask_bridge`
+inherited with **ZERO attributable**, unconnected 68 → 67, parity 247 entries /
+0 errors, fill-stable), `pour_partition_contract.py` **PP1–PP4**,
+`pour_bond_contract.py` **P1–P4** (47 tubes / 1536 points, zero off copper, zero
+misplaced ends, 37 tubes reported RENUMBERED and geometry-resolved),
+`placement_contract.py` **PL1–PL9**, `rf_symmetry_contract.py` **RF1–RF5**,
+`protected_copper.py` **15 nets / 393 objects IDENTICAL**,
+`land_parity_contract.py` **LAND1–LAND6**, `keepout_stackup_contract.py`
+**KO1–KO5**, `population_contract.py` **POP1–POP4**, `neck_contract.py`
+**N1–N3**, `fab_package_contract.py` **FAB1–FAB8** on a regenerated package.
+Ledger **52 → 51 open edges / 24 → 23 nets**, improved one, regressed none.
+`hardware/beta-v2/`, D-269 / D-186, `ACC_5V_SW_EN`, `ACC_3V3_SW`, RGB, XGPIO4/5
+and the eight approved Demo NC contacts untouched.
+
+**NEXT:** the ladder is now cheap to point at the remaining standing
+single-edge candidates — `NFC_VDD_RF`, `ACC_5V_BOOST_EN`, `BTN_DOWN_N`,
+`BTN_LEFT_N`, `SX1262_DIO1`, `I2S_LRCLK`, `SPI_B_SCK`, `ACC_5V_LX` — as a
+`--grid ladder` SCREEN, which separates "wall" from "unasked question" for each
+at a bounded cost, exactly as it did for `ACC_PWR_EN`. `ACC_PWR_EN` is now a
+MEASURED wall and should not be re-asked at a pitch. No owner decision is OPEN;
+D-618's `J3` question remains RECORDED, and PM-3 remains an open PLACEMENT
+finding.
+
 # D-622 · 2026-09-05 · Demo NFC_VDD_A closed — the wall was the LATTICE, and the pour injury is now a contract
 
 D-621 named `NFC_VDD_RF` as the next `U9` edge and recorded `NFC_VDD_A` as the

@@ -9,6 +9,129 @@ D-621) and protected copper -- and the residual is **52 retained open edges
 across 24 nets**.  Two of them, `USB_D_CONN_P` and the `USB_D_MCU` pair, are
 parked on rulings rather than routes (D-618, D-620).
 
+## RUN THIS BEFORE THE ROUTER: the LADDER, not a pitch (D-623)
+
+    python3 route_maze_batch.py NET [NET ...] --grid ladder      # route
+    python3 route_maze_batch.py NET [NET ...] --grid best        # rank, never promotes
+    python3 route_maze_batch.py NET [NET ...] --grid auto        # one pitch (D-622)
+
+D-622 proved the lattice is part of what the router can EXPRESS and then ended
+by naming the thing it did not build:
+
+> A `--grid` LADDER bounded by a cell-count budget, rather than the single
+> coarsest-admissible pitch `auto` computes today, is the framework task this
+> decision names and does not take.
+
+This is that ladder.  Rung 0 is `auto` -- the coarsest lattice every requested
+land can still be LAUNCHED on, which is the cheapest search that can express
+each land's own escape.  Below it come the pitches this project has actually
+measured, `LADDER_PITCHES`, and **not** a halving: D-622's answer was 0.025 mm
+and a halving from 0.0667 mm steps straight over it.
+
+**THE BUDGET IS COUNTED IN CELLS, BECAUSE CELLS ARE WHAT GROWS.**  A
+`maze3d.Field` rasterises the whole board once per routable layer, so halving
+the pitch quadruples it.  On this 72 x 148 mm board:
+
+    0.1000 mm    761 x  1521 x 4 =    4.6 M cells
+    0.0667 mm   1140 x  2279 x 4 =   10.4 M
+    0.0500 mm   1521 x  3041 x 4 =   18.5 M
+    0.0333 mm   2283 x  4565 x 4 =   41.7 M
+    0.0250 mm   3041 x  6081 x 4 =   74.0 M     <- the default --grid-cells 80 M
+    0.0200 mm   3801 x  7601 x 4 =  115.6 M     <- refused, and SAID SO
+
+The first rung over budget ENDS the ladder and stays in the report marked
+`over_budget`.  A run that stopped because it ran out of budget must not read
+like a run that ran out of ideas.
+
+**`ladder` STOPS AT THE FIRST RUNG THE WHOLE GATE ACCEPTS -- clause 8
+included**, so it cannot stop on a rung that closes an edge by severing a pour.
+**`best` runs every in-budget rung and RANKS the accepted ones**, because FIRST
+IS NOT BEST and this board has the number.  `/NFC_IRQ`, `U1.11 -> U9.27`,
+88.36 mm apart, NO_PATH at the 0.100 mm default, `auto` 0.0667 mm --
+`evidence/d623-best-nfc-irq.json`, every rung a FULL gate run, clause 8
+included, and every one of the four ACCEPTED:
+
+    grid       route       vias   gate     cells
+    0.0667 mm  120.848 mm   10      71 s    10.4 M   <- `auto`; what `ladder` takes
+    0.0500 mm  105.709 mm    9     127 s    18.5 M   <- -15.139 mm, -1 via
+    0.0333 mm  105.492 mm    9     405 s    41.7 M   <- -0.217 mm; the WINNER
+    0.0250 mm  105.510 mm    9     992 s    74.0 M   <- +0.018 mm for 2.5x
+    0.0200 mm       --       --     --     115.6 M   <- over budget, and SAID SO
+
+The knee is real and it is EARLY.  0.050 mm and everything below it find the
+same nine-barrel topology to within 0.22 mm; the coarsest admissible pitch does
+not.  **AND FINER IS NOT MONOTONE** -- 0.025 mm comes back 0.018 mm LONGER than
+0.0333 mm, which is the whole argument for ranking rather than descending: a
+lattice is not an approximation that converges, it is a different question, and
+the cheapest way to know which pitch answers it best is to ask all of them
+once.  (The `gate` seconds are wall clock on a loaded 8-core worker and are the
+one column here that is not a property of the board.)  So ranking is worth
+paying for ONCE per net and is not worth paying for
+on every run -- which is why `best` is a separate screen that refuses
+`--promote` outright, rather than a mode `ladder` silently becomes.
+
+## CLAUSE 8: the pour partition rides with EVERY run (D-623)
+
+D-622 built `checks/pour_partition_contract.py`, wrote that PP1-PP4 "IS THE
+JUDGE", and left it as a thing a person runs by hand.  That is the exact shape
+of the failure it was written for.  Clause 8 wires it into `route_maze_batch.py
+gate()`: PRE is the AUTHORITATIVE board on disk (`--pre-board`, new), POST is
+the candidate AFTER `kicad-cli --refill-zones --save-board`, and the verdict
+rides in `summary["pour_partition"]` whether it passed or failed.
+
+**NON-VACUITY, MEASURED IN BOTH DIRECTIONS.**
+
+  * **The false-positive floor is not a test, it is a PROPERTY, and saying so is
+    the honest version.**  This board is FILL-STABLE: `kicad-cli pcb drc
+    --refill-zones --save-board` on a fresh copy of the authoritative board
+    reproduces it **byte for byte** (`cc627819...` -> `cc627819...`), which is
+    the same fact `verify_promotion.py` asserts as `fill-stable`.  So a
+    refill-only scratch reads PP1-PP4 PASS by comparing a file to ITSELF --
+    a tautology, not evidence, and it must not be quoted as evidence.  What it
+    does establish is the thing that matters operationally: clause 8 cannot
+    manufacture a split out of refill churn, because on this board there IS no
+    refill churn.  The five ACC_PWR_EN ladder rungs below say the same thing
+    from real gate runs -- every one added no copper and every one read PP1-PP4
+    PASS.
+  * **The DISCRIMINATING direction is the replay.**  On the D-621 authority
+    `a82c907a...` in an isolated tree (`git archive af45dc1`, D-623's two files
+    grafted in, no git state touched),
+    `/04_SPI_B_RADIOS_NFC/NFC_VDD_A --grid 66700` routes in **10.723 mm / 2
+    barrels** -- D-622's own figure -- closes an edge (53 -> 52), regresses
+    nothing, removes nothing, adds nothing foreign and draws **ZERO
+    attributable DRC**.  Every clause that existed before D-623 passes it.
+    **Clause 8 alone refuses it**, `PP2 FAIL`, naming the split: `C45.2`,
+    `C51.2` and `C53.2` onto an 11.777 mm2 fragment off the 2832.45 mm2 body.
+
+That is the injury D-619 refused, D-622 measured and a person caught by hand.
+It is now caught by the gate.
+
+## CLAUSE 15: and by the gate that does not trust the gate (D-623)
+
+Clause 8 runs inside the process that proposed the copper, against a scratch
+tree that process built.  `verify_promotion.py` exists because that is not
+independent -- it re-derives every promotion property a second time from the
+two board files ALONE -- and **D-619's severed pour passed it 14 checks out of
+14**, because objects, widths, drills, rule areas, zones, DRC, parity and
+fill-stability are every one of them true of a board whose pour has been cut in
+half.  Clause 15 asks the partition question there too, of the same two staged
+cells every other check reads.
+
+PRE is not refilled and that is exact rather than approximate for one stated
+reason: every promotion this repository accepts must pass `fill_stable`, so the
+committed board's stored fill IS its refilled fill -- and if that ever stops
+being true, `fill_stable` fails in the same report.
+
+**NON-VACUITY, ON REAL ROUTER COPPER, IN THE DIRECTION THAT MATTERS.**
+`evidence/d623-clause15-nonvacuity-verify-promotion.json`: the D-621 authority
+`a82c907a...` as PRE, and as POST the refilled scratch board the router built
+for `/04_SPI_B_RADIOS_NFC/NFC_VDD_A --grid 66700` -- 10.723 mm, closes an edge
+53 -> 52, regresses nothing, removes nothing, **zero attributable DRC**.
+Clause 15 alone refuses it, `PP2`, naming `C45.2`/`C51.2`/`C53.2` on an
+11.777 mm2 fragment off the 2832.45 mm2 body.  The PASS direction is not
+quoted from a refill-only control, which would compare a file to itself; it is
+whatever the next real promotion reports.
+
 ## RUN THIS BEFORE THE ROUTER, AND AGAIN AFTER IT: the lattice, and the pour (D-622)
 
     python3 route_maze_batch.py NET [NET ...] --grid auto ...

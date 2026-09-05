@@ -45,6 +45,11 @@ driver's scratch tree, its ledger or its evidence JSON:
     error-severity entry and no warning class or count beyond the recorded
     `INHERITED_PARITY` baseline;
   * the promoted board is fill-stable -- a second refill changes nothing;
+  * NO OUTER POUR'S PAD PARTITION GOT FINER -- `checks/pour_partition_contract.py`
+    PP1-PP4 run on the same two staged cells (D-623).  This is the check whose
+    absence let D-619's severed 12.461 mm2 `GND` fragment read 14/14 here: every
+    other property in this list is TRUE of a board whose pour has been cut in
+    half, and it took a person reading island areas by hand to see it;
   * the retained safety rules are still live text in the `.kicad_dru`.
 
 It is read-only with respect to `hardware/demo/kicad/aqroot-demo/`: both boards
@@ -68,6 +73,8 @@ ROOT = Path(__file__).resolve().parents[3]
 PROJECT = ROOT / "hardware/demo/kicad/aqroot-demo"
 BOARD = PROJECT / "aqroot-Beta-v2.kicad_pcb"
 SUFFIXES = (".kicad_pcb", ".kicad_dru", ".kicad_pro")
+# CLAUSE 15 (D-623): the pour-partition contract, re-asked HERE.
+POUR_PARTITION = Path(__file__).with_name("checks") / "pour_partition_contract.py"
 
 # The report classes this board carries that no promotion is answerable for.
 # `lib_footprint_issues` was 199 and is now ZERO -- it was never a property of
@@ -527,6 +534,68 @@ def resolved_fp_lib_table():
     return "(fp_lib_table\n  (version 7)\n%s\n)\n" % rows
 
 
+def pour_partition_proof(pre, post, out):
+    """CLAUSE 15 -- an outer pour's PAD PARTITION, re-asked INDEPENDENTLY.
+
+    D-623 wired `checks/pour_partition_contract.py` into `route_maze_batch.py`
+    as its clause 8, which is the right place for it and is NOT this place.
+    That clause runs inside the process that proposed the copper, against a
+    scratch tree that process built; this module exists precisely because that
+    is not independent.  And the gap is not hypothetical: D-619's route severed
+    a 12.461 mm2 `GND` fragment off three `C45`-pocket pads and THIS FILE
+    RETURNED PASS ON ALL FOURTEEN CHECKS, because every property it measured --
+    objects, widths, drills, rule areas, zones, DRC, parity, fill-stability --
+    is true of a board whose pour has been cut in half.  A person caught it by
+    reading island areas by hand.  The gate that re-proves a promotion from the
+    two board files ALONE must be able to ask the same question of them.
+
+    IT IS ASKED OF THE SAME TWO CELLS EVERY OTHER CLAUSE READS -- `pre` staged
+    from `--ref`, `post` staged from the worktree -- so it inherits their
+    project sidecars, and there is no third copy of the board to disagree with.
+    `post` has been through `drc()` by the time this runs, so its zones carry
+    the copper `--refill-zones --save-board` produced, which is the copper a
+    fabricator gets.  `pre` is the committed board and is NOT refilled here,
+    which is exact rather than approximate for one stated reason: every
+    promotion this repository accepts must pass `fill_stable`, so the committed
+    board's stored fill IS its refilled fill.  If that ever stops being true,
+    `fill_stable` fails in the same report and the verdict is FAIL regardless
+    of what this clause says.
+
+    The `.kicad_prl` is copied in beside each board because the contract's own
+    `board_at()` copies it: nothing here reads design rules out of it, and the
+    point is that a hand run and this run see byte-identical inputs.
+
+    A CLAUSE THAT COULD NOT BE ASKED IS A REFUSAL, NOT A PASS.  If the contract
+    dies before writing its report, this returns False and names the reason,
+    rather than letting silence read as assent.
+    """
+    prl = BOARD.with_suffix(".kicad_prl")
+    if prl.exists():
+        for cell in (pre.parent, post.parent):
+            # A cell may BE the project directory -- `main()` always hands two
+            # temporary cells, but the non-vacuity probe hands the replay
+            # tree's own project dir as PRE, and copying a file onto itself
+            # raises rather than doing nothing.
+            target = Path(cell) / prl.name
+            if target.resolve() != prl.resolve():
+                shutil.copyfile(prl, target)
+    run = subprocess.run(
+        [sys.executable, str(POUR_PARTITION), "--pre-board", str(pre),
+         "--board", str(post), "-o", str(out)],
+        text=True, capture_output=True)
+    if not Path(out).exists():
+        return False, dict(ok=False, ran=False, returncode=run.returncode,
+                           stderr=run.stderr[-2000:])
+    doc = json.loads(Path(out).read_text())
+    clauses = ("PP1", "PP2", "PP3", "PP4")
+    failed = sorted(k for k in clauses if not doc["results"][k]["ok"])
+    return (not failed), dict(
+        ok=(not failed), ran=True, failed_clauses=failed,
+        pre_board=str(pre), post_board=str(post),
+        results={k: doc["results"][k]["ok"] for k in clauses},
+        detail=doc["results"])
+
+
 def stage(rev, work):
     """A project-faithful copy of the board at `rev` (or of the worktree).
 
@@ -660,6 +729,12 @@ def main():
     second = drc(post, tmp / "drc-2.json")
     fill_stable = refilled == sha256_file(post)
 
+    # CLAUSE 15 -- D-623.  Run AFTER both DRC passes, so `post` carries the
+    # refilled copper, and after `fill_stable` is known, because that is the
+    # fact this clause's use of an unrefilled `pre` leans on.
+    pp_ok, pp_detail = pour_partition_proof(pre, post,
+                                            tmp / "pour-partition.json")
+
     dru = (post.with_suffix(".kicad_dru")).read_text(encoding="utf-8")
     contracts = {k: (v in dru) for k, v in DRU_CONTRACTS.items()}
 
@@ -708,6 +783,9 @@ def main():
             and not (set(first["schematic_parity"]["counts"])
                      - set(INHERITED_PARITY))),
         fill_stable=fill_stable,
+        # D-623.  The fifteenth check, and the one D-619's severed pour would
+        # have failed on a report that otherwise read 14/14.
+        pour_partition_intact=pp_ok,
         dru_contracts_live=all(contracts.values()),
         beta_v2_untouched=not subprocess.run(
             ["git", "-C", str(ROOT), "status", "--porcelain", "hardware/beta-v2"],
@@ -734,6 +812,7 @@ def main():
         claimed_widened_rule_areas=sorted(a.rule_area_widened),
         zones_added=zadded, zones_removed=zlost,
         drc=first, drc_second_pass=second, dru_contracts=contracts,
+        pour_partition=pp_detail,
         checks=checks, verdict="PASS" if all(checks.values()) else "FAIL",
     )
     text = json.dumps(report, indent=2, sort_keys=True, default=str)

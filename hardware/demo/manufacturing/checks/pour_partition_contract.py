@@ -66,6 +66,14 @@ severance that STRANDS, and it makes every other severance state its price.
 Read-only.  Nothing here writes a board.
 
     python3 checks/pour_partition_contract.py --ref HEAD [--board B] -o OUT
+    python3 checks/pour_partition_contract.py --pre-board A --board B -o OUT
+
+`--ref` reads PRE out of git, which is the right unit for auditing a promotion
+after the fact.  `--pre-board` (D-623) names a PRE board FILE instead, which is
+the unit `route_maze_batch.py` clause 8 needs: the two sides of a gate run are
+the authoritative board on disk and the refilled candidate beside it, and
+neither of those is a commit.  A board file is read against its own sidecars,
+so it must sit beside them.
 """
 
 import argparse
@@ -321,15 +329,23 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--ref", default="HEAD",
                     help="git revision holding the PRE board")
+    ap.add_argument("--pre-board", type=Path,
+                    help="a PRE board FILE instead of a git revision.  D-623: "
+                         "the gate compares the AUTHORITATIVE board against "
+                         "the refilled candidate, and neither of those is a "
+                         "commit.  The file is read against its own sidecars, "
+                         "so it must sit beside them")
     ap.add_argument("--board", default=str(BOARD),
                     help="the POST board (default: the authoritative one)")
     ap.add_argument("-o", "--out", type=Path)
     a = ap.parse_args()
     with tempfile.TemporaryDirectory(prefix="aqroot-pp-") as tmp:
-        pre = board_at(a.ref, tmp)
+        pre = a.pre_board if a.pre_board else board_at(a.ref, tmp)
         res = compare(pre, Path(a.board))
     ok = all(res[k]["ok"] for k in ("PP1", "PP2", "PP3", "PP4"))
-    doc = dict(schema=1, ref=a.ref, board=str(a.board), ok=ok, results=res)
+    doc = dict(schema=1, ref=(str(a.pre_board) if a.pre_board else a.ref),
+               pre_board=str(a.pre_board) if a.pre_board else None,
+               board=str(a.board), ok=ok, results=res)
     text = json.dumps(doc, indent=1, sort_keys=True, default=str)
     if a.out:
         a.out.write_text(text + "\n", encoding="utf-8")
