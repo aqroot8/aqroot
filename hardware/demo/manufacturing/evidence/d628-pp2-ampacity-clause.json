@@ -1,0 +1,393 @@
+{
+ "clause": "PP2 admits a split when every fragment it creates is BONDED by PP3 AND the conductor replacing the severed copper carries at least the design current this board publishes for that pour's net in .kicad_dru section 5.  The bond is priced at the BOTTLENECK of the whole series chain -- reserved plane -> barrels -> the fragment's OWN copper -> each pad -- because pricing only the barrels prices one link.  A net the table does not price is REFUSED, which is where GND lands.",
+ "controls": {
+  "ok": true,
+  "probes": [
+   {
+    "behaved": true,
+    "control": "min_thickness_sliver_refused",
+    "expected": false,
+    "got": false,
+    "priced_amps": 0.742,
+    "required_amps": 1.0,
+    "verdict": "BONDED",
+    "why": "BOND_UNDER_PRICED"
+   },
+   {
+    "behaved": true,
+    "control": "one_class_width_track_refused",
+    "expected": false,
+    "got": false,
+    "priced_amps": 0.995,
+    "required_amps": 1.0,
+    "verdict": "BONDED",
+    "why": "BOND_UNDER_PRICED"
+   },
+   {
+    "behaved": true,
+    "control": "four_barrel_bond_admitted",
+    "expected": true,
+    "got": true,
+    "priced_amps": 9.244,
+    "required_amps": 1.0,
+    "verdict": "BONDED",
+    "why": "BOND_PRICED_AT_OR_ABOVE_THE_PUBLISHED_RAIL_CURRENT"
+   },
+   {
+    "behaved": true,
+    "control": "stranded_refused_however_priced",
+    "expected": false,
+    "got": false,
+    "priced_amps": 9.244,
+    "required_amps": 1.0,
+    "verdict": "STRANDED",
+    "why": "PP3_NOT_BONDED"
+   },
+   {
+    "behaved": true,
+    "control": "unpriced_net_refused",
+    "expected": false,
+    "got": false,
+    "priced_amps": 9.244,
+    "required_amps": null,
+    "verdict": "BONDED",
+    "why": "NET_CARRIES_NO_PUBLISHED_CURRENT"
+   },
+   {
+    "behaved": true,
+    "control": "bar_located_one_ppm_below",
+    "expected": false,
+    "got": false,
+    "priced_amps": 0.999999,
+    "required_amps": 1.0,
+    "verdict": "BONDED",
+    "why": "BOND_UNDER_PRICED"
+   },
+   {
+    "behaved": true,
+    "control": "bar_located_at_equality",
+    "expected": true,
+    "got": true,
+    "priced_amps": 1.0,
+    "required_amps": 1.0,
+    "verdict": "BONDED",
+    "why": "BOND_PRICED_AT_OR_ABOVE_THE_PUBLISHED_RAIL_CURRENT"
+   }
+  ],
+  "reference_amps": {
+   "four_0p400mm_barrels": 9.244,
+   "outer_track_0p300mm": 0.995,
+   "zone_min_thickness_0p200mm": 0.742
+  }
+ },
+ "decision_not_taken": "NO COPPER IS PROMOTED BY THIS TRANSACTION.  D-627 declined to resolve the doctrine in the same breath as promoting the copper it would admit, and that reasoning binds the clause too: it is committed alone, with its controls, its invariance check and a known-bad refusal, so that the LED_K promotion is judged by a contract that was already standing rather than by one written for it.",
+ "invariance": {
+  "board": "../kicad/aqroot-demo/aqroot-Beta-v2.kicad_pcb",
+  "board_sha256": "35129d6ca4ee68cb2ad86b8de73c134040efc0c4c110825b47c3ccc2550a456b",
+  "clauses": {
+   "PP1": true,
+   "PP2": true,
+   "PP3": true,
+   "PP4": true
+  },
+  "note": "the clause changes NOTHING on a board with no split: PP1/PP3/PP4 come back byte-identical to the committed D-626 evidence and PP2's splits and island counts are identical.  The geometry the price needs is loaded lazily, so a split-free run pays nothing.",
+  "pp1_identical_to_d626": true,
+  "pp2_islands_identical": true,
+  "pp2_splits_identical": true,
+  "pp3_identical_to_d626": true,
+  "pp4_identical_to_d626": true
+ },
+ "known_bad_still_refused": {
+  "candidate": "w/d625/unguarded/aqroot-Beta-v2.kicad_pcb",
+  "candidate_sha256": "c7bf291bceca1aae65a43cad4db6a07da9da32663e040d8e0bcc790dfb0911e6",
+  "pp2_ok": false,
+  "pp3_ok": false,
+  "refused": [
+   {
+    "pour": "GND|B|38685722-44ee-566f-b52b-89a56220a9e0",
+    "why": [
+     "PP3_NOT_BONDED"
+    ]
+   }
+  ],
+  "what": "D-625's unguarded BTN_DOWN_N route -- 41.610 mm / 6 barrels, which cuts the 10.282 mm2 GND B.Cu island 30 in half and leaves U3.12 on a 4.768 mm2 piece with every legal barrel on the other pad's side",
+  "why": "REFUSED TWICE OVER: PP3 reads STRANDED, and GND -- a return plane -- carries no published design current, so no GND split can be admitted by this clause at all"
+ },
+ "limitation": "GND IS OUT OF SCOPE AND SAYS SO.  A return plane has no published design current, so PP2 refuses every GND split exactly as it did before.  Pricing a return-path fragment is not a rail-table question and is left open rather than guessed at.",
+ "out_of_sample": {
+  "candidates": [
+   {
+    "admit": true,
+    "all_four_clauses": {
+     "PP1": true,
+     "PP2": true,
+     "PP3": true,
+     "PP4": true
+    },
+    "barrels_into_plane": 4,
+    "body_area_mm2": 134.298,
+    "bond_amps_parallel": 9.244,
+    "bottleneck": "FRAGMENT_COPPER",
+    "candidate": "w/d627/led-k/g50000/aqroot-Beta-v2.kicad_pcb",
+    "candidate_sha256": "8486383e5f694436640ec24917ea6027e517f7002689b3d0d4543015f5ebc705",
+    "fragment_area_mm2": 120.9,
+    "fragment_internal_amps": 1.441,
+    "fragment_internal_min_width_mm": 0.5,
+    "fragment_pads": [
+     "J1.7",
+     "J1.8",
+     "J1.9"
+    ],
+    "internal_paths": [
+     {
+      "amps": 1.441,
+      "mm": 10.554,
+      "mohm": 10.457,
+      "pad": "J1.7",
+      "width_mm": 0.5
+     },
+     {
+      "amps": 5.282,
+      "mm": 0.0,
+      "mohm": 0.0,
+      "pad": "J1.8",
+      "width_mm": 3.0
+     },
+     {
+      "amps": 1.441,
+      "mm": 10.823,
+      "mohm": 10.723,
+      "pad": "J1.9",
+      "width_mm": 0.5
+     }
+    ],
+    "layer": "F.Cu",
+    "margin_x": 1.441,
+    "net": "+3V3",
+    "netclass": "P3V3",
+    "pour": "+3V3|F|8c612136-d173-58bf-87cf-c0b97bedd2e0",
+    "pp2_ok": true,
+    "pp3_verdict": "BONDED",
+    "pre_area_mm2": 281.527,
+    "priced_amps": 1.441,
+    "required_amps": 1.0,
+    "router_pitch_mm": 0.05,
+    "severed_neck_amps": 2.636,
+    "severed_neck_width_mm": 1.15,
+    "why": "BOND_PRICED_AT_OR_ABOVE_THE_PUBLISHED_RAIL_CURRENT"
+   },
+   {
+    "admit": true,
+    "all_four_clauses": {
+     "PP1": true,
+     "PP2": true,
+     "PP3": true,
+     "PP4": true
+    },
+    "barrels_into_plane": 4,
+    "body_area_mm2": 177.524,
+    "bond_amps_parallel": 9.244,
+    "bottleneck": "FRAGMENT_COPPER",
+    "candidate": "w/d627/led-k/g33300/aqroot-Beta-v2.kicad_pcb",
+    "candidate_sha256": "9d7b39e1c0e6c990ae11ccdc21d23a79093a06014ed25e49c5c8539388219716",
+    "fragment_area_mm2": 79.416,
+    "fragment_internal_amps": 1.441,
+    "fragment_internal_min_width_mm": 0.5,
+    "fragment_pads": [
+     "J1.7",
+     "J1.8",
+     "J1.9"
+    ],
+    "internal_paths": [
+     {
+      "amps": 1.441,
+      "mm": 10.554,
+      "mohm": 10.457,
+      "pad": "J1.7",
+      "width_mm": 0.5
+     },
+     {
+      "amps": 5.282,
+      "mm": 0.0,
+      "mohm": 0.0,
+      "pad": "J1.8",
+      "width_mm": 3.0
+     },
+     {
+      "amps": 1.441,
+      "mm": 10.823,
+      "mohm": 10.723,
+      "pad": "J1.9",
+      "width_mm": 0.5
+     }
+    ],
+    "layer": "F.Cu",
+    "margin_x": 1.441,
+    "net": "+3V3",
+    "netclass": "P3V3",
+    "pour": "+3V3|F|8c612136-d173-58bf-87cf-c0b97bedd2e0",
+    "pp2_ok": true,
+    "pp3_verdict": "BONDED",
+    "pre_area_mm2": 281.527,
+    "priced_amps": 1.441,
+    "required_amps": 1.0,
+    "router_pitch_mm": 0.0333,
+    "severed_neck_amps": 2.636,
+    "severed_neck_width_mm": 1.15,
+    "why": "BOND_PRICED_AT_OR_ABOVE_THE_PUBLISHED_RAIL_CURRENT"
+   },
+   {
+    "admit": true,
+    "all_four_clauses": {
+     "PP1": true,
+     "PP2": true,
+     "PP3": true,
+     "PP4": true
+    },
+    "barrels_into_plane": 4,
+    "body_area_mm2": 133.98,
+    "bond_amps_parallel": 9.244,
+    "bottleneck": "FRAGMENT_COPPER",
+    "candidate": "w/d627/led-k/g25000/aqroot-Beta-v2.kicad_pcb",
+    "candidate_sha256": "2f63091151ff2e4c2bbe6fd357277664ee44ac3186e37643be96c1c718d44a75",
+    "fragment_area_mm2": 119.313,
+    "fragment_internal_amps": 1.441,
+    "fragment_internal_min_width_mm": 0.5,
+    "fragment_pads": [
+     "J1.7",
+     "J1.8",
+     "J1.9"
+    ],
+    "internal_paths": [
+     {
+      "amps": 1.441,
+      "mm": 10.554,
+      "mohm": 10.457,
+      "pad": "J1.7",
+      "width_mm": 0.5
+     },
+     {
+      "amps": 5.282,
+      "mm": 0.0,
+      "mohm": 0.0,
+      "pad": "J1.8",
+      "width_mm": 3.0
+     },
+     {
+      "amps": 1.441,
+      "mm": 10.823,
+      "mohm": 10.723,
+      "pad": "J1.9",
+      "width_mm": 0.5
+     }
+    ],
+    "layer": "F.Cu",
+    "margin_x": 1.441,
+    "net": "+3V3",
+    "netclass": "P3V3",
+    "pour": "+3V3|F|8c612136-d173-58bf-87cf-c0b97bedd2e0",
+    "pp2_ok": true,
+    "pp3_verdict": "BONDED",
+    "pre_area_mm2": 281.527,
+    "priced_amps": 1.441,
+    "required_amps": 1.0,
+    "router_pitch_mm": 0.025,
+    "severed_neck_amps": 2.636,
+    "severed_neck_width_mm": 1.15,
+    "why": "BOND_PRICED_AT_OR_ABOVE_THE_PUBLISHED_RAIL_CURRENT"
+   },
+   {
+    "admit": true,
+    "all_four_clauses": {
+     "PP1": true,
+     "PP2": true,
+     "PP3": true,
+     "PP4": true
+    },
+    "barrels_into_plane": 4,
+    "body_area_mm2": 177.955,
+    "bond_amps_parallel": 9.244,
+    "bottleneck": "FRAGMENT_COPPER",
+    "candidate": "w/d627b/led-k/aqroot-Beta-v2.kicad_pcb",
+    "candidate_sha256": "ba59d8564d740383ad8f3de358b0edf16d5f4a0c9d13a75a553091c30764e365",
+    "fragment_area_mm2": 79.292,
+    "fragment_internal_amps": 1.441,
+    "fragment_internal_min_width_mm": 0.5,
+    "fragment_pads": [
+     "J1.7",
+     "J1.8",
+     "J1.9"
+    ],
+    "internal_paths": [
+     {
+      "amps": 1.441,
+      "mm": 10.554,
+      "mohm": 10.457,
+      "pad": "J1.7",
+      "width_mm": 0.5
+     },
+     {
+      "amps": 5.282,
+      "mm": 0.0,
+      "mohm": 0.0,
+      "pad": "J1.8",
+      "width_mm": 3.0
+     },
+     {
+      "amps": 1.441,
+      "mm": 10.823,
+      "mohm": 10.723,
+      "pad": "J1.9",
+      "width_mm": 0.5
+     }
+    ],
+    "layer": "F.Cu",
+    "margin_x": 1.441,
+    "net": "+3V3",
+    "netclass": "P3V3",
+    "pour": "+3V3|F|8c612136-d173-58bf-87cf-c0b97bedd2e0",
+    "pp2_ok": true,
+    "pp3_verdict": "BONDED",
+    "pre_area_mm2": 281.527,
+    "priced_amps": 1.441,
+    "required_amps": 1.0,
+    "router_pitch_mm": 0.02,
+    "severed_neck_amps": 2.636,
+    "severed_neck_width_mm": 1.15,
+    "why": "BOND_PRICED_AT_OR_ABOVE_THE_PUBLISHED_RAIL_CURRENT"
+   }
+  ],
+  "note": "FOUR candidate boards, four different LED_K routes at four router pitches, all severing the same +3V3 F.Cu pour.  The fragment area moves (120.900 / 79.416 / 119.313 / 79.292 mm2) and the price does NOT: 1.441 A every time, because the binding term is the J1 pocket's own 0.500 mm copper and that is a property of the POUR, not of the route.  The clause is therefore measuring something the router cannot flatter."
+ },
+ "published_rail_currents": {
+  "ACC_3V3": 0.76,
+  "ACC_5V": 0.7,
+  "BAT_MAIN": 3.125,
+  "LED_BOOST": 0.09,
+  "NFC_5V_PA_PENDING": 0.5,
+  "P3V3": 1.0,
+  "SPK_OUT": 0.41,
+  "SYS_MAIN": 2.19,
+  "VBUS_CHG": 0.5
+ },
+ "published_table_doctrine": "the STRICTEST figure in each class's own rows is taken, which deliberately includes BAT_MAIN's 3.125 A fault-trip threshold and SYS_MAIN's 2.19 A local inductor peak -- both excluded by the table itself from its WIDTH floors.  A width floor may be sized on a design current; a bond replacing copper a rail already relies on is charged the largest number anyone has published for it.",
+ "published_table_source": {
+  "classes": [
+   "ACC_3V3",
+   "ACC_5V",
+   "BAT_MAIN",
+   "LED_BOOST",
+   "NFC_5V_PA_PENDING",
+   "P3V3",
+   "SPK_OUT",
+   "SYS_MAIN",
+   "VBUS_CHG"
+  ],
+  "found": true,
+  "sha256": "f5a570fcc2bb54700e68c0c705dc131f0ca69a66e3a10820ead7f7864459c9fa",
+  "source": "../kicad/aqroot-demo/aqroot-Beta-v2.kicad_dru"
+ },
+ "schema": 1,
+ "the_finding": "THE BARRELS WERE NEVER THE BOTTLENECK.  D-627 published the LED_K bond at 9.244 A (four 0.400 mm barrels in parallel) and called it ~9x the whole +3V3 rail's 1.0 A design current.  Measured end to end it is 1.441 A: the fragment's own copper narrows to 0.500 mm on the 10.554 mm run out to J1.7 and the 10.823 mm run out to J1.9, and 0.500 mm of 1 oz outer copper carries 1.441 A.  The bond is 6.4x weaker than the barrel figure and still 1.441x the bar.  The honest margin is 1.44x, not 9.2x -- and it is a margin against the WHOLE rail's design current charged to a fragment holding three of that rail's eighty pads.",
+ "what": "D-628 -- THE PP2 AMPACITY CLAUSE.  D-625 recorded the contradiction between pour_partition_contract.py's prose (severance is forbidden only where it STRANDS; every other severance must state its price) and PP2 as coded (`ok = not splits`).  D-627 put real copper on it: a LED_K route closing TWO open edges, PP1/PP3/PP4 PASS, PP2 alone refusing.  This is the clause that resolves it -- and it is authored and proved on its OWN, against controls, an invariance check and four out-of-sample candidate boards, in a transaction that promotes NO copper."
+}

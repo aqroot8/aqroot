@@ -34,11 +34,20 @@ The claim is then a claim about the partition and not about a count:
        before and resolves nowhere after has had its pour taken away, which is
        the same injury PP2 measures arriving by a different road.
 
-  PP2  NO PAD PAIR IS SPLIT.  Two pads that shared an island BEFORE share one
-       AFTER.  This is strictly stronger than an island COUNT, which moves for
-       harmless reasons -- a pour growing a new sliver, a zone refilled around
-       a via -- and weaker than a copper diff, which moves for every route.
-       It is exactly the injury: copper that used to join two lands does not.
+  PP2  A SPLIT PAD PAIR IS EITHER PRICED OR REFUSED.  Two pads that shared an
+       island BEFORE and do not share one AFTER is exactly the injury: copper
+       that used to join two lands does not.  Detecting it is strictly stronger
+       than an island COUNT, which moves for harmless reasons -- a pour growing
+       a new sliver, a zone refilled around a via -- and weaker than a copper
+       diff, which moves for every route.  D-628 then admits ONE kind of split
+       and only against a number: every fragment it creates must be `BONDED` by
+       PP3, and the conductor replacing the severed copper -- the barrels into
+       the reserved plane AND the fragment's own copper out to each pad, priced
+       at the bottleneck of that series chain -- must carry at least the design
+       current this board publishes for that pour's net in `.kicad_dru`
+       section 5.  A net the table does not price is refused, which is where
+       `GND` lands.  The clause carries its own non-vacuity controls and they
+       run on every board, split or not.  See THE PP2 AMPACITY CLAUSE below.
 
   PP3  A SPLIT IS PRICED, NOT ONLY NAMED.  For every new fragment, what does
        it still have?  Each pad's own through barrels are resolved into the
@@ -83,6 +92,7 @@ so it must sit beside them.
 """
 
 import argparse
+import hashlib
 import json
 import math
 import subprocess
@@ -219,6 +229,321 @@ def price_fragment(path, net, frag, planes, drop_barrels=()):
                 verdict="BONDED" if bonded else "STRANDED")
 
 
+# --------------------------------------------------------------------------- #
+# THE PP2 AMPACITY CLAUSE -- D-628
+# --------------------------------------------------------------------------- #
+# D-627 put a route on the table that closes TWO open edges on the display
+# supply and is refused by `PP2` ALONE: `/03_SPI_A_DISPLAY_SD/LED_K` crosses the
+# `+3V3` `F.Cu` pour and splits its 281.527 mm2 island into a 177.955 mm2 body
+# and a 79.292 mm2 fragment carrying `J1.7` / `J1.8` / `J1.9`.  `PP1`, `PP3` and
+# `PP4` all pass -- `PP3` reads `BONDED` on four through barrels into the
+# 8055.907 mm2 `In3.Cu` `+3V3` plane and `PP4`'s knife flips it -- and the
+# doctrine above says in its own words that this contract "does not forbid
+# severance.  It forbids severance that STRANDS, and it makes every other
+# severance state its price."  `PP2` was nevertheless coded `ok = not splits`,
+# an unconditional refusal of ANY split, and D-625 recorded the disagreement
+# without resolving it.
+#
+# WHAT WAS MISSING IS A PRICE IN THE UNIT A REVIEWER ACTUALLY ASKS ABOUT.
+# `PP3`'s `BONDED` is a TOPOLOGICAL verdict: it would admit a fragment bonded by
+# one hair-thin barrel exactly as readily as by four fat ones, so deferring
+# `PP2` to `PP3` is not the answer either.  This clause is the narrower one:
+#
+#     PP2 admits a split when every fragment it creates is `BONDED` by PP3
+#     AND the conductor that replaces the severed copper carries at least the
+#     current the board itself publishes for that pour's net.
+#
+# THE BOND IS THE WHOLE REPLACEMENT PATH, NOT JUST THE BARRELS.  Current
+# reaching a severed pad goes down the inner plane, up a barrel, and then
+# THROUGH THE FRAGMENT'S OWN COPPER to the pad.  Pricing only the barrels prices
+# one link of a chain.  On the D-627 fragment that distinction is the whole
+# answer: four 0.400 mm barrels carry 2.311 A each and 9.244 A in parallel, but
+# the fragment's own copper from those barrels to `J1.7` and `J1.9` narrows to
+# 0.500 mm, which carries 1.441 A -- 6.4x less.  The bond is priced at the
+# BOTTLENECK of the series chain, so the honest figure for that fragment is
+# 1.441 A and not 9.244 A.  Both are measured here and both are published.
+#
+# THE BAR IS THE BOARD'S OWN PUBLISHED RAIL CURRENT.  `.kicad_dru` section 5 --
+# "POWER RAILS - WIDTH FLOORS FROM IPC-2221B AT THE REAL COPPER" -- carries a
+# per-netclass table of design currents, at the same dT = 10 K and the same
+# copper this pricing uses, written years before this clause existed and used to
+# derive every width floor the board is fabricated to.  It is read from the
+# `.kicad_dru` beside the board under judgement, and the STRICTEST figure in
+# each class's row is taken: that deliberately includes `BAT_MAIN`'s 3.125 A
+# fault-trip threshold and `SYS_MAIN`'s 2.19 A local inductor peak, both of
+# which the table itself excludes from its WIDTH floors.  A width floor may
+# reasonably be sized on the design current; a bond that replaces copper a rail
+# already relies on should be charged the largest number anyone has published
+# for it.
+#
+# THE BAR IS ALSO A DELIBERATE OVER-CHARGE IN A SECOND WAY, STATED PLAINLY: it
+# charges the fragment with the WHOLE rail's current.  The D-627 fragment holds
+# three of the `+3V3` rail's eighty pads and cannot draw 1.0 A; the clause asks
+# it to carry 1.0 A anyway, because apportioning a rail across its pads would be
+# a model, and the whole-rail figure is a MEASUREMENT the board already ships.
+#
+# A NET THE TABLE DOES NOT PRICE IS REFUSED, WHICH IS WHERE `GND` LANDS.  `GND`
+# is a return plane and has no published design current, so no `GND` split can
+# be admitted by this clause and `PP2` behaves on `GND` exactly as it did
+# before.  That is the conservative direction and it is not an accident: the
+# question "how much current does a return plane fragment carry" is not answered
+# by a rail table, and until it is answered `PP2` should keep saying no.  D-625's
+# `BTN_DOWN_N` severance is therefore refused twice over -- `PP3` reads
+# `STRANDED` and the net carries no price.
+#
+# THE CLAUSE CARRIES ITS OWN NON-VACUITY CONTROLS AND THEY RUN ON EVERY BOARD,
+# split or no split.  `decide()` is the only place the admission is decided, so
+# the controls drive the same function the verdict does, on figures read from
+# this board: KiCad's own 0.200 mm `min_thickness` sliver (0.742 A) must be
+# REFUSED against a 1.0 A rail, the four-barrel bond (9.244 A) must be ADMITTED,
+# the same bond must be REFUSED when the verdict is `STRANDED`, it must be
+# REFUSED when the net has no published current, and the bar must be located
+# exactly where it claims -- admitted at equality, refused one part per million
+# below it.  A control that does not behave as stated FAILS `PP2`, because a
+# clause that cannot refuse is not a clause.
+#
+# WHAT WAS CUT IS MEASURED TOO, AS EVIDENCE RATHER THAN AS THE BAR.  The
+# narrowest place on the widest path from the fragment's pads to the body's,
+# inside the PRE island, is the cross-section the route removed --
+# `pour_bond_guard.geodesic` is exactly that measurement and is reused here
+# unchanged.  On the D-627 split it is 1.150 mm of 1 oz outer copper, 2.636 A.
+# It is published because it is the first question a reviewer asks and because
+# it bounds nothing: it is a property of the copper that USED to be there, and a
+# geodesic that runs off its own search window under-states it.  The BAR is the
+# published rail current, which no search can under-state.
+DT_K = 10.0                      # the dT `.kicad_dru` section 5 is derived at
+NECK_GRID = 25000                # `pour_bond_guard`'s own tube lattice, 25 um
+NECK_RADIUS_CAP = 1500000        # up to a 3.0 mm-wide tube; wider is not needed
+NECK_PROBE_BODY_PADS = 2         # body anchors per fragment pad for the neck
+AMP_TOL = 1e-9
+SECTION5 = "# 5. POWER RAILS"
+
+
+def published_rail_currents(dru_path):
+    """The per-netclass design currents THIS BOARD publishes, section 5.
+
+    The table is a comment block, which is exactly why it is parsed rather than
+    transcribed: a figure a reviewer can edit in the `.kicad_dru` and a figure
+    this clause charges a bond against must be the same figure.  A class row
+    starts at column 4 with an upper-case name; its continuation lines are
+    indented further and belong to it.  Every "<n> A" and "<n> pk" figure in a
+    class's own rows is collected and the LARGEST is the bar (see above).
+    """
+    import re
+    try:
+        txt = Path(dru_path).read_text(encoding="utf-8", errors="replace")
+        i = txt.index(SECTION5)
+    except (OSError, ValueError):
+        return {}, dict(source=str(dru_path), found=False)
+    tail = txt[i:]
+    end = tail.find("\n(rule")
+    blk = tail[:end if end > 0 else len(tail)]
+    rows, cur = {}, None
+    for line in blk.splitlines():
+        if not line.startswith("#"):
+            continue
+        body = line[1:]
+        m = re.match(r"^   ([A-Z][A-Z0-9_]+)\s+(\S.*)$", body)
+        if m:
+            cur = m.group(1)
+            rows.setdefault(cur, []).append(m.group(2).strip())
+        elif cur and body.startswith("     ") and body.strip():
+            rows[cur].append(body.strip())
+    table = {}
+    for cls, lines in rows.items():
+        figs = sorted({float(x) for x in re.findall(
+            r"([0-9]*\.?[0-9]+)\s*(?:A\b|pk\b|peak\b)", " ".join(lines))})
+        if figs:
+            table[cls] = dict(amps=max(figs), figures=figs, rows=lines)
+    return table, dict(source=str(dru_path), found=True,
+                       sha256=hashlib.sha256(
+                           Path(dru_path).read_bytes()).hexdigest(),
+                       classes=sorted(table))
+
+
+def decide(verdict, priced_amps, required_amps):
+    """THE ADMISSION, in ONE place -- the verdict and the controls share it.
+
+    Every refusal names itself, so a report says which of the five gates a
+    split fell at rather than only that it fell.
+    """
+    if verdict != "BONDED":
+        return False, "PP3_NOT_BONDED"
+    if required_amps is None:
+        return False, "NET_CARRIES_NO_PUBLISHED_CURRENT"
+    if priced_amps is None:
+        return False, "BOND_NOT_MEASURABLE"
+    if priced_amps + AMP_TOL < required_amps:
+        return False, "BOND_UNDER_PRICED"
+    return True, "BOND_PRICED_AT_OR_ABOVE_THE_PUBLISHED_RAIL_CURRENT"
+
+
+def decision_controls():
+    """PP2's non-vacuity, driven through `decide()` on this board's figures.
+
+    Six probes, each with the outcome it MUST produce.  The reference currents
+    are the board's own: KiCad's 0.200 mm zone `min_thickness`, one P3V3-class
+    0.300 mm outer track, and the four 0.400 mm barrels D-627 priced.  The bar
+    itself is a synthetic 1.0 A so the expectations cannot drift with a table
+    edit -- what the table is read for is the VERDICT, and what these probes
+    prove is that the comparison behaves.
+    """
+    import audit_bond_ampacity as ab
+    hair = round(ab.ampacity(ab.track_area(0.200), DT_K), 3)
+    track = round(ab.ampacity(ab.track_area(0.300), DT_K), 3)
+    # summed the way `bond_price` sums it -- four ROUNDED barrels, so the
+    # control prints the same 9.244 A a fragment report does.
+    four = round(4 * round(ab.ampacity(ab.barrel_area(0.400), DT_K), 3), 3)
+    bar = 1.0
+    cases = [
+        ("min_thickness_sliver_refused", "BONDED", hair, bar, False),
+        ("one_class_width_track_refused", "BONDED", track, bar, False),
+        ("four_barrel_bond_admitted", "BONDED", four, bar, True),
+        ("stranded_refused_however_priced", "STRANDED", four, bar, False),
+        ("unpriced_net_refused", "BONDED", four, None, False),
+        ("bar_located_one_ppm_below", "BONDED", bar * (1 - 1e-6), bar, False),
+        ("bar_located_at_equality", "BONDED", bar, bar, True),
+    ]
+    out = []
+    for name, verdict, priced, req, want in cases:
+        got, why = decide(verdict, priced, req)
+        out.append(dict(control=name, verdict=verdict, priced_amps=priced,
+                        required_amps=req, expected=want, got=got, why=why,
+                        behaved=(got == want)))
+    return dict(ok=all(c["behaved"] for c in out),
+                reference_amps=dict(zone_min_thickness_0p200mm=hair,
+                                    outer_track_0p300mm=track,
+                                    four_0p400mm_barrels=four),
+                probes=out)
+
+
+def pour_geometry(path):
+    """The pours' actual COPPER, keyed exactly as `partition()` keys them.
+
+    `partition()` returns only JSON-able facts on purpose.  The ampacity clause
+    needs polygons, edge soups and via drills, so they are read once -- and
+    only when a split exists to price, because a board with no split pays
+    nothing for this clause.
+    """
+    import pcbnew
+    import pour_bond_guard as pg
+    board = pcbnew.LoadBoard(str(path))
+    pours = pg.read_pours(board)
+    for p in pours:
+        pg.assign(board, p)
+    drills = {}
+    for t in board.GetTracks():
+        if t.GetClass() != "PCB_VIA":
+            continue
+        v = pcbnew.Cast_to_PCB_VIA(t)
+        drills[(int(v.GetPosition().x), int(v.GetPosition().y))] = int(v.GetDrill())
+    out = {}
+    for p in pours:
+        key = "%s|%s|%s" % (p["net"], p["lkey"], p["zone"])
+        out[key] = {i["index"]: i for i in p["islands"]}
+    return out, drills
+
+
+def tube_width_mm(edges, a, b):
+    """The narrowest place on the WIDEST path from `a` to `b` inside `edges`.
+
+    `pour_bond_guard.geodesic` erodes downward from the requested radius and
+    returns the first radius the whole path survives, so `2 * radius` is the
+    bottleneck width of the best path -- the figure a cross-section is priced
+    from.  Reused unchanged: this clause introduces no new geometry primitive.
+    """
+    import pour_bond_guard as pg
+    t = pg.geodesic(edges, (a["x"], a["y"], a["r"]), (b["x"], b["y"], b["r"]),
+                    NECK_RADIUS_CAP, NECK_GRID, win_mm=3.0, grows=5)
+    if not t:
+        return None, None
+    return 2.0 * t["radius"] / 1e6, t["mm"]
+
+
+def bond_price(net, isl, planes, drills):
+    """What the conductor replacing the severed copper carries, in amperes.
+
+    A series chain: the plane -> the barrels that land in it -> the fragment's
+    own copper -> each pad.  Priced at its BOTTLENECK.  A pad whose path cannot
+    be measured makes the whole price `None`, which `decide()` refuses -- an
+    unmeasurable bond is not a priced one.
+    """
+    import pcbnew
+    import audit_bond_ampacity as ab
+    landing = []
+    for b in isl["vias"]:
+        pt = pcbnew.VECTOR2I(int(b["x"]), int(b["y"]))
+        if any(poly.Contains(pt, -1, 0)
+               for (_l, _z, poly, _a) in planes.get(net, [])):
+            landing.append(b)
+    barrels, missing = [], []
+    for b in landing:
+        drill = drills.get((int(b["x"]), int(b["y"])))
+        if drill is None:
+            missing.append([b["x"] / 1e6, b["y"] / 1e6])
+            continue
+        area = ab.barrel_area(drill / 1e6)
+        barrels.append(dict(xy_mm=[round(b["x"] / 1e6, 3), round(b["y"] / 1e6, 3)],
+                            drill_mm=drill / 1e6,
+                            wall_mm2=round(area, 6),
+                            amps=round(ab.ampacity(area, DT_K), 3)))
+    bond = round(sum(b["amps"] for b in barrels), 3) if barrels else 0.0
+    inner = []
+    for q in isl["pads"]:
+        best_w, best_mm = None, None
+        for b in landing:
+            w, mm = tube_width_mm(isl["edges"], q, b)
+            if w is not None and (best_w is None or w > best_w):
+                best_w, best_mm = w, mm
+        row = dict(pad=q["ref"], width_mm=None, mm=None, amps=None, mohm=None)
+        if best_w is not None:
+            area = ab.track_area(best_w)
+            row.update(width_mm=round(best_w, 4), mm=round(best_mm, 3),
+                       amps=round(ab.ampacity(area, DT_K), 3),
+                       mohm=round(ab.resistance_mohm(best_mm, area), 3))
+        inner.append(row)
+    unmeasured = [r["pad"] for r in inner if r["amps"] is None]
+    amps = [r["amps"] for r in inner if r["amps"] is not None]
+    internal = min(amps) if amps else None
+    priced = None
+    if not unmeasured and not missing and barrels and internal is not None:
+        priced = round(min(bond, internal), 3)
+    return dict(priced_amps=priced,
+                bottleneck=("FRAGMENT_COPPER" if priced is not None
+                            and internal <= bond else
+                            ("BARRELS" if priced is not None else None)),
+                barrels_into_plane=len(barrels), bond_amps_parallel=bond,
+                internal_min_amps=internal,
+                internal_min_width_mm=min([r["width_mm"] for r in inner
+                                           if r["width_mm"] is not None],
+                                          default=None),
+                barrels=barrels, internal=inner,
+                unmeasurable_pads=unmeasured, barrels_without_drill=missing,
+                dT_K=DT_K)
+
+
+def severed_neck(pre_isl, frag_pads, body_pads):
+    """The cross-section the route REMOVED -- evidence, never the bar."""
+    import audit_bond_ampacity as ab
+    probes, widest = [], None
+    for q in frag_pads:
+        for r in body_pads[:NECK_PROBE_BODY_PADS]:
+            w, mm = tube_width_mm(pre_isl["edges"], q, r)
+            probes.append(dict(frag_pad=q["ref"], body_pad=r["ref"],
+                               width_mm=(None if w is None else round(w, 4)),
+                               mm=(None if mm is None else round(mm, 3))))
+            if w is not None and (widest is None or w > widest):
+                widest = w
+    return dict(width_mm=(None if widest is None else round(widest, 4)),
+                amps=(None if widest is None else
+                      round(ab.ampacity(ab.track_area(widest), DT_K), 3)),
+                probes=probes,
+                note="the narrowest place on the widest PRE path from the "
+                     "fragment's pads to the body's; under-stated by a "
+                     "geodesic that reaches its own search window, which is "
+                     "why it is published and not charged")
+
+
 def compare(pre_path, post_path):
     pre, pre_bad = partition(pre_path)
     post, post_bad = partition(post_path)
@@ -271,7 +596,97 @@ def compare(pre_path, post_path):
                                       post_island=j,
                                       area_mm2=c["islands"][j]["area_mm2"],
                                       pads=sorted(v), **pr))
-    res["PP2"] = dict(ok=not splits, splits=splits,
+    # -- PP2 ---------------------------------------------------------------- #
+    # THE SPLITS ARE FOUND EXACTLY AS BEFORE; WHAT CHANGED IS THAT ONE MAY NOW
+    # BE PRICED INSTEAD OF ONLY NAMED (D-628).  The controls run on every board,
+    # split or not, so the clause is proved able to refuse on a run that has
+    # nothing to admit.
+    controls = decision_controls()
+    dru = None
+    for cand in (Path(post_path).with_suffix(".kicad_dru"),
+                 Path(pre_path).with_suffix(".kicad_dru"),
+                 PROJECT / "aqroot-Beta-v2.kicad_dru"):
+        if cand.exists():
+            dru = cand
+            break
+    table, table_src = published_rail_currents(dru) if dru else ({}, dict(
+        source=None, found=False))
+    priced_splits, geom, drills = [], None, None
+    for rec in splits:
+        if rec.get("why") == "POUR_DISAPPEARED":
+            priced_splits.append(dict(pour=rec["pour"], admit=False,
+                                      why="POUR_DISAPPEARED"))
+            continue
+        if geom is None:
+            geom, drills = pour_geometry(post_path)
+            pre_geom, _ = pour_geometry(pre_path)
+        import pcbnew
+        board = pcbnew.LoadBoard(str(post_path))
+        net = rec["net"]
+        n = board.FindNet(net)
+        cls = n.GetNetClassName() if n else None
+        row = table.get(cls)
+        required = row["amps"] if row else None
+        body = [p for p in rec["parts"] if p["body"]][0]
+        pre_isl = pre_geom.get(rec["pour"], {}).get(rec["pre_island"])
+        rows, admit = [], True
+        for part in rec["parts"]:
+            if part["body"]:
+                continue
+            isl = geom.get(rec["pour"], {}).get(part["post_island"])
+            frag = next((f for f in fragments
+                         if f["pour"] == rec["pour"]
+                         and f["post_island"] == part["post_island"]), None)
+            verdict = frag["verdict"] if frag else "STRANDED"
+            if isl is None:
+                rows.append(dict(post_island=part["post_island"],
+                                 pads=part["pads"], admit=False,
+                                 why="FRAGMENT_GEOMETRY_UNREADABLE"))
+                admit = False
+                continue
+            price = bond_price(net, isl, planes, drills)
+            ok, why = decide(verdict, price["priced_amps"], required)
+            admit = admit and ok
+            neck = None
+            if pre_isl is not None:
+                body_pads = [q for q in pre_isl["pads"]
+                             if q["ref"] in body["pads"]]
+                frag_pads = [q for q in pre_isl["pads"]
+                             if q["ref"] in part["pads"]]
+                neck = severed_neck(pre_isl, frag_pads, body_pads)
+            rows.append(dict(post_island=part["post_island"],
+                             pads=part["pads"],
+                             area_mm2=part["area_mm2"],
+                             pp3_verdict=verdict, admit=ok, why=why,
+                             required_amps=required,
+                             margin_x=(None if not (required and
+                                                    price["priced_amps"])
+                                       else round(price["priced_amps"]
+                                                  / required, 3)),
+                             price=price, severed_neck=neck))
+        priced_splits.append(dict(
+            pour=rec["pour"], net=net, netclass=cls, layer=rec["layer"],
+            pre_island=rec["pre_island"], pre_area_mm2=rec["pre_area_mm2"],
+            published_amps=required,
+            published_figures=(row["figures"] if row else None),
+            body=dict(post_island=body["post_island"],
+                      area_mm2=body["area_mm2"], pads=body["pads"]),
+            fragments=rows, admit=admit))
+    refused = [s for s in priced_splits if not s["admit"]]
+    res["PP2"] = dict(ok=(not refused) and controls["ok"] and (not splits
+                                                              or bool(table)),
+                      splits=splits,
+                      priced=priced_splits,
+                      admitted=[s["pour"] for s in priced_splits if s["admit"]],
+                      refused=[dict(pour=s["pour"],
+                                    why=sorted({f.get("why")
+                                                for f in s.get("fragments", [])}
+                                               or {s.get("why")}))
+                               for s in refused],
+                      published_rail_currents={
+                          k: v["amps"] for k, v in sorted(table.items())},
+                      published_table_source=table_src,
+                      controls=controls,
                       islands={k: [pre[k]["n_islands"],
                                    post[k]["n_islands"]] for k in sorted(pre)
                                if k in post})
