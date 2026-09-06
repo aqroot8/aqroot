@@ -1,0 +1,695 @@
+{
+  "asked": 2238,
+  "best": {
+    "dia_nm": 350000,
+    "drill_nm": 200000,
+    "licensed": false,
+    "x_mm": 35.8255,
+    "y_mm": 27.5758
+  },
+  "board": "/home/aqroot8/aqroot-demo/hardware/demo/kicad/aqroot-demo/aqroot-Beta-v2.kicad_pcb",
+  "island_bbox_mm": [
+    35.6005,
+    27.2758,
+    36.3188,
+    28.0049
+  ],
+  "ladder": [
+    [
+      650000,
+      400000
+    ],
+    [
+      600000,
+      300000
+    ],
+    [
+      550000,
+      250000
+    ],
+    [
+      500000,
+      250000
+    ],
+    [
+      450000,
+      200000
+    ],
+    [
+      350000,
+      200000
+    ]
+  ],
+  "land": "U9.16",
+  "net": "GND",
+  "ok_count": 92,
+  "question": "can ONE barrel inside U9.16's own severed B.Cu island land in the In1/In4 GND plane body",
+  "rows": [
+    {
+      "dia_nm": 350000,
+      "drill_nm": 200000,
+      "licensed": false,
+      "x_mm": 35.8255,
+      "y_mm": 27.5758
+    },
+    {
+      "dia_nm": 350000,
+      "drill_nm": 200000,
+      "licensed": false,
+      "x_mm": 35.8255,
+      "y_mm": 27.5883
+    },
+    {
+      "dia_nm": 350000,
+      "drill_nm": 200000,
+      "licensed": false,
+      "x_mm": 35.8255,
+      "y_mm": 27.6008
+    },
+    {
+      "dia_nm": 350000,
+      "drill_nm": 200000,
+      "licensed": false,
+      "x_mm": 35.8255,
+      "y_mm": 27.6133
+    },
+    {
+      "dia_nm": 350000,
+      "drill_nm": 200000,
+      "licensed": false,
+      "x_mm": 35.8255,
+      "y_mm": 27.6258
+    },
+    {
+      "dia_nm": 350000,
+      "drill_nm": 200000,
+      "licensed": false,
+      "x_mm": 35.8255,
+      "y_mm": 27.6383
+    },
+    {
+      "dia_nm": 350000,
+      "drill_nm": 200000,
+      "licensed": false,
+      "x_mm": 35.8255,
+      "y_mm": 27.6508
+    },
+    {
+      "dia_nm": 350000,
+      "drill_nm": 200000,
+      "licensed": false,
+      "x_mm": 35.8255,
+      "y_mm": 27.6633
+    },
+    {
+      "dia_nm": 350000,
+      "drill_nm": 200000,
+      "licensed": false,
+      "x_mm": 35.8255,
+      "y_mm": 27.6758
+    },
+    {
+      "dia_nm": 350000,
+      "drill_nm": 200000,
+      "licensed": false,
+      "x_mm": 35.8255,
+      "y_mm": 27.6883
+    },
+    {
+      "dia_nm": 350000,
+      "drill_nm": 200000,
+      "licensed": false,
+      "x_mm": 35.8255,
+      "y_mm": 27.7008
+    },
+    {
+      "dia_nm": 350000,
+      "drill_nm": 200000,
+      "licensed": false,
+      "x_mm": 35.8255,
+      "y_mm": 27.7133
+    },
+    {
+      "dia_nm": 350000,
+      "drill_nm": 200000,
+      "licensed": false,
+      "x_mm": 35.8255,
+      "y_mm": 27.7258
+    },
+    {
+      "dia_nm": 350000,
+      "drill_nm": 200000,
+      "licensed": false,
+      "x_mm": 35.8255,
+      "y_mm": 27.7383
+    },
+    {
+      "dia_nm": 350000,
+      "drill_nm": 200000,
+      "licensed": false,
+      "x_mm": 35.838,
+      "y_mm": 27.5883
+    },
+    {
+      "dia_nm": 350000,
+      "drill_nm": 200000,
+      "licensed": false,
+      "x_mm": 35.838,
+      "y_mm": 27.6008
+    },
+    {
+      "dia_nm": 350000,
+      "drill_nm": 200000,
+      "licensed": false,
+      "x_mm": 35.838,
+      "y_mm": 27.6133
+    },
+    {
+      "dia_nm": 350000,
+      "drill_nm": 200000,
+      "licensed": false,
+      "x_mm": 35.838,
+      "y_mm": 27.6258
+    },
+    {
+      "dia_nm": 350000,
+      "drill_nm": 200000,
+      "licensed": false,
+      "x_mm": 35.838,
+      "y_mm": 27.6383
+    },
+    {
+      "dia_nm": 350000,
+      "drill_nm": 200000,
+      "licensed": false,
+      "x_mm": 35.838,
+      "y_mm": 27.6508
+    },
+    {
+      "dia_nm": 350000,
+      "drill_nm": 200000,
+      "licensed": false,
+      "x_mm": 35.838,
+      "y_mm": 27.6633
+    },
+    {
+      "dia_nm": 350000,
+      "drill_nm": 200000,
+      "licensed": false,
+      "x_mm": 35.838,
+      "y_mm": 27.6758
+    },
+    {
+      "dia_nm": 350000,
+      "drill_nm": 200000,
+      "licensed": false,
+      "x_mm": 35.838,
+      "y_mm": 27.6883
+    },
+    {
+      "dia_nm": 350000,
+      "drill_nm": 200000,
+      "licensed": false,
+      "x_mm": 35.838,
+      "y_mm": 27.7008
+    },
+    {
+      "dia_nm": 350000,
+      "drill_nm": 200000,
+      "licensed": false,
+      "x_mm": 35.838,
+      "y_mm": 27.7133
+    },
+    {
+      "dia_nm": 350000,
+      "drill_nm": 200000,
+      "licensed": false,
+      "x_mm": 35.838,
+      "y_mm": 27.7258
+    },
+    {
+      "dia_nm": 350000,
+      "drill_nm": 200000,
+      "licensed": false,
+      "x_mm": 35.838,
+      "y_mm": 27.7383
+    },
+    {
+      "dia_nm": 350000,
+      "drill_nm": 200000,
+      "licensed": false,
+      "x_mm": 35.8505,
+      "y_mm": 27.6008
+    },
+    {
+      "dia_nm": 350000,
+      "drill_nm": 200000,
+      "licensed": false,
+      "x_mm": 35.8505,
+      "y_mm": 27.6133
+    },
+    {
+      "dia_nm": 350000,
+      "drill_nm": 200000,
+      "licensed": false,
+      "x_mm": 35.8505,
+      "y_mm": 27.6258
+    },
+    {
+      "dia_nm": 350000,
+      "drill_nm": 200000,
+      "licensed": false,
+      "x_mm": 35.8505,
+      "y_mm": 27.6383
+    },
+    {
+      "dia_nm": 350000,
+      "drill_nm": 200000,
+      "licensed": false,
+      "x_mm": 35.8505,
+      "y_mm": 27.6508
+    },
+    {
+      "dia_nm": 350000,
+      "drill_nm": 200000,
+      "licensed": false,
+      "x_mm": 35.8505,
+      "y_mm": 27.6633
+    },
+    {
+      "dia_nm": 350000,
+      "drill_nm": 200000,
+      "licensed": false,
+      "x_mm": 35.8505,
+      "y_mm": 27.6758
+    },
+    {
+      "dia_nm": 350000,
+      "drill_nm": 200000,
+      "licensed": false,
+      "x_mm": 35.8505,
+      "y_mm": 27.6883
+    },
+    {
+      "dia_nm": 350000,
+      "drill_nm": 200000,
+      "licensed": false,
+      "x_mm": 35.8505,
+      "y_mm": 27.7008
+    },
+    {
+      "dia_nm": 350000,
+      "drill_nm": 200000,
+      "licensed": false,
+      "x_mm": 35.8505,
+      "y_mm": 27.7133
+    },
+    {
+      "dia_nm": 350000,
+      "drill_nm": 200000,
+      "licensed": false,
+      "x_mm": 35.8505,
+      "y_mm": 27.7258
+    },
+    {
+      "dia_nm": 350000,
+      "drill_nm": 200000,
+      "licensed": false,
+      "x_mm": 35.8505,
+      "y_mm": 27.7383
+    },
+    {
+      "dia_nm": 350000,
+      "drill_nm": 200000,
+      "licensed": false,
+      "x_mm": 35.863,
+      "y_mm": 27.6133
+    },
+    {
+      "dia_nm": 350000,
+      "drill_nm": 200000,
+      "licensed": false,
+      "x_mm": 35.863,
+      "y_mm": 27.6258
+    },
+    {
+      "dia_nm": 350000,
+      "drill_nm": 200000,
+      "licensed": false,
+      "x_mm": 35.863,
+      "y_mm": 27.6383
+    },
+    {
+      "dia_nm": 350000,
+      "drill_nm": 200000,
+      "licensed": false,
+      "x_mm": 35.863,
+      "y_mm": 27.6508
+    },
+    {
+      "dia_nm": 350000,
+      "drill_nm": 200000,
+      "licensed": false,
+      "x_mm": 35.863,
+      "y_mm": 27.6633
+    },
+    {
+      "dia_nm": 350000,
+      "drill_nm": 200000,
+      "licensed": false,
+      "x_mm": 35.863,
+      "y_mm": 27.6758
+    },
+    {
+      "dia_nm": 350000,
+      "drill_nm": 200000,
+      "licensed": false,
+      "x_mm": 35.863,
+      "y_mm": 27.6883
+    },
+    {
+      "dia_nm": 350000,
+      "drill_nm": 200000,
+      "licensed": false,
+      "x_mm": 35.863,
+      "y_mm": 27.7008
+    },
+    {
+      "dia_nm": 350000,
+      "drill_nm": 200000,
+      "licensed": false,
+      "x_mm": 35.863,
+      "y_mm": 27.7133
+    },
+    {
+      "dia_nm": 350000,
+      "drill_nm": 200000,
+      "licensed": false,
+      "x_mm": 35.863,
+      "y_mm": 27.7258
+    },
+    {
+      "dia_nm": 350000,
+      "drill_nm": 200000,
+      "licensed": false,
+      "x_mm": 35.863,
+      "y_mm": 27.7383
+    },
+    {
+      "dia_nm": 350000,
+      "drill_nm": 200000,
+      "licensed": false,
+      "x_mm": 35.8755,
+      "y_mm": 27.6258
+    },
+    {
+      "dia_nm": 350000,
+      "drill_nm": 200000,
+      "licensed": false,
+      "x_mm": 35.8755,
+      "y_mm": 27.6383
+    },
+    {
+      "dia_nm": 350000,
+      "drill_nm": 200000,
+      "licensed": false,
+      "x_mm": 35.8755,
+      "y_mm": 27.6508
+    },
+    {
+      "dia_nm": 350000,
+      "drill_nm": 200000,
+      "licensed": false,
+      "x_mm": 35.8755,
+      "y_mm": 27.6633
+    },
+    {
+      "dia_nm": 350000,
+      "drill_nm": 200000,
+      "licensed": false,
+      "x_mm": 35.8755,
+      "y_mm": 27.6758
+    },
+    {
+      "dia_nm": 350000,
+      "drill_nm": 200000,
+      "licensed": false,
+      "x_mm": 35.8755,
+      "y_mm": 27.6883
+    },
+    {
+      "dia_nm": 350000,
+      "drill_nm": 200000,
+      "licensed": false,
+      "x_mm": 35.8755,
+      "y_mm": 27.7008
+    },
+    {
+      "dia_nm": 350000,
+      "drill_nm": 200000,
+      "licensed": false,
+      "x_mm": 35.8755,
+      "y_mm": 27.7133
+    },
+    {
+      "dia_nm": 350000,
+      "drill_nm": 200000,
+      "licensed": false,
+      "x_mm": 35.8755,
+      "y_mm": 27.7258
+    },
+    {
+      "dia_nm": 350000,
+      "drill_nm": 200000,
+      "licensed": false,
+      "x_mm": 35.888,
+      "y_mm": 27.6383
+    },
+    {
+      "dia_nm": 350000,
+      "drill_nm": 200000,
+      "licensed": false,
+      "x_mm": 35.888,
+      "y_mm": 27.6508
+    },
+    {
+      "dia_nm": 350000,
+      "drill_nm": 200000,
+      "licensed": false,
+      "x_mm": 35.888,
+      "y_mm": 27.6633
+    },
+    {
+      "dia_nm": 350000,
+      "drill_nm": 200000,
+      "licensed": false,
+      "x_mm": 35.888,
+      "y_mm": 27.6758
+    },
+    {
+      "dia_nm": 350000,
+      "drill_nm": 200000,
+      "licensed": false,
+      "x_mm": 35.888,
+      "y_mm": 27.6883
+    },
+    {
+      "dia_nm": 350000,
+      "drill_nm": 200000,
+      "licensed": false,
+      "x_mm": 35.888,
+      "y_mm": 27.7008
+    },
+    {
+      "dia_nm": 350000,
+      "drill_nm": 200000,
+      "licensed": false,
+      "x_mm": 35.888,
+      "y_mm": 27.7133
+    },
+    {
+      "dia_nm": 350000,
+      "drill_nm": 200000,
+      "licensed": false,
+      "x_mm": 35.888,
+      "y_mm": 27.7258
+    },
+    {
+      "dia_nm": 350000,
+      "drill_nm": 200000,
+      "licensed": false,
+      "x_mm": 35.9005,
+      "y_mm": 27.6508
+    },
+    {
+      "dia_nm": 350000,
+      "drill_nm": 200000,
+      "licensed": false,
+      "x_mm": 35.9005,
+      "y_mm": 27.6633
+    },
+    {
+      "dia_nm": 350000,
+      "drill_nm": 200000,
+      "licensed": false,
+      "x_mm": 35.9005,
+      "y_mm": 27.6758
+    },
+    {
+      "dia_nm": 350000,
+      "drill_nm": 200000,
+      "licensed": false,
+      "x_mm": 35.9005,
+      "y_mm": 27.6883
+    },
+    {
+      "dia_nm": 350000,
+      "drill_nm": 200000,
+      "licensed": false,
+      "x_mm": 35.9005,
+      "y_mm": 27.7008
+    },
+    {
+      "dia_nm": 350000,
+      "drill_nm": 200000,
+      "licensed": false,
+      "x_mm": 35.9005,
+      "y_mm": 27.7133
+    },
+    {
+      "dia_nm": 350000,
+      "drill_nm": 200000,
+      "licensed": false,
+      "x_mm": 35.9005,
+      "y_mm": 27.7258
+    },
+    {
+      "dia_nm": 350000,
+      "drill_nm": 200000,
+      "licensed": false,
+      "x_mm": 35.913,
+      "y_mm": 27.6633
+    },
+    {
+      "dia_nm": 350000,
+      "drill_nm": 200000,
+      "licensed": false,
+      "x_mm": 35.913,
+      "y_mm": 27.6758
+    },
+    {
+      "dia_nm": 350000,
+      "drill_nm": 200000,
+      "licensed": false,
+      "x_mm": 35.913,
+      "y_mm": 27.6883
+    },
+    {
+      "dia_nm": 350000,
+      "drill_nm": 200000,
+      "licensed": false,
+      "x_mm": 35.913,
+      "y_mm": 27.7008
+    },
+    {
+      "dia_nm": 350000,
+      "drill_nm": 200000,
+      "licensed": false,
+      "x_mm": 35.913,
+      "y_mm": 27.7133
+    },
+    {
+      "dia_nm": 350000,
+      "drill_nm": 200000,
+      "licensed": false,
+      "x_mm": 35.913,
+      "y_mm": 27.7258
+    },
+    {
+      "dia_nm": 350000,
+      "drill_nm": 200000,
+      "licensed": false,
+      "x_mm": 35.9255,
+      "y_mm": 27.6758
+    },
+    {
+      "dia_nm": 350000,
+      "drill_nm": 200000,
+      "licensed": false,
+      "x_mm": 35.9255,
+      "y_mm": 27.6883
+    },
+    {
+      "dia_nm": 350000,
+      "drill_nm": 200000,
+      "licensed": false,
+      "x_mm": 35.9255,
+      "y_mm": 27.7008
+    },
+    {
+      "dia_nm": 350000,
+      "drill_nm": 200000,
+      "licensed": false,
+      "x_mm": 35.9255,
+      "y_mm": 27.7133
+    },
+    {
+      "dia_nm": 350000,
+      "drill_nm": 200000,
+      "licensed": false,
+      "x_mm": 35.9255,
+      "y_mm": 27.7258
+    },
+    {
+      "dia_nm": 350000,
+      "drill_nm": 200000,
+      "licensed": false,
+      "x_mm": 35.938,
+      "y_mm": 27.6883
+    },
+    {
+      "dia_nm": 350000,
+      "drill_nm": 200000,
+      "licensed": false,
+      "x_mm": 35.938,
+      "y_mm": 27.7008
+    },
+    {
+      "dia_nm": 350000,
+      "drill_nm": 200000,
+      "licensed": false,
+      "x_mm": 35.938,
+      "y_mm": 27.7133
+    },
+    {
+      "dia_nm": 350000,
+      "drill_nm": 200000,
+      "licensed": false,
+      "x_mm": 35.938,
+      "y_mm": 27.7258
+    },
+    {
+      "dia_nm": 350000,
+      "drill_nm": 200000,
+      "licensed": false,
+      "x_mm": 35.9505,
+      "y_mm": 27.7008
+    },
+    {
+      "dia_nm": 350000,
+      "drill_nm": 200000,
+      "licensed": false,
+      "x_mm": 35.9505,
+      "y_mm": 27.7133
+    },
+    {
+      "dia_nm": 350000,
+      "drill_nm": 200000,
+      "licensed": false,
+      "x_mm": 35.963,
+      "y_mm": 27.7133
+    }
+  ],
+  "schema": 1,
+  "step_nm": 12500
+}

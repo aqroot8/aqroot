@@ -1,0 +1,6408 @@
+{
+ "authoritative_unchanged": true,
+ "board": "/home/aqroot8/aqroot-demo/hardware/demo/kicad/aqroot-demo/aqroot-Beta-v2.kicad_pcb",
+ "board_sha256": "9550e320d6203d237619ca866ff018b2d2e9cd4216bd7cbcbf13b578794e47e6",
+ "cap": 48,
+ "limits": "PB6: an EVICTABLE row is a work-list entry, not a transaction -- the gate's thirteen clauses, every_detour_relaid and inert_removal_priced included, are not asked here.  A PLACEMENT_WALL row is final for the BRIDGE only: the same land may still open by escape.",
+ "max_mm": 6.0,
+ "method": "read-only; maze3d.pad_bridge under maze3d.BridgeCtx at one layer/width/inset per question, the named obstacle held out and the question re-asked to exhaustion, then reverse-greedy minimisation with a drop_refuses certificate per member; every trial reverted, nothing written",
+ "nets": [
+  {
+   "islands": 5,
+   "net": "+3V3",
+   "netclass": "P3V3",
+   "pairs": [
+    {
+     "a": "U4.3",
+     "b": "U4.5",
+     "blockers": [
+      {
+       "cx_mm": 58.25,
+       "cy_mm": 68.8375,
+       "drop_refuses": true,
+       "kind": "PAD",
+       "net": "/05_I2C_DEVICES/BMI270_INT1_RAW",
+       "r_mm": 0.0,
+       "tag": "U4.4"
+      },
+      {
+       "cx_mm": 58.4125,
+       "cy_mm": 70.0,
+       "drop_refuses": true,
+       "kind": "PAD",
+       "net": "GND",
+       "r_mm": 0.0,
+       "tag": "U4.6"
+      },
+      {
+       "drop_refuses": true,
+       "hw_mm": 0.15,
+       "kind": "ROUTED",
+       "net": "GND",
+       "protected": false,
+       "tag": "track",
+       "x0_mm": 58.4,
+       "x1_mm": 58.3,
+       "y0_mm": 70.0,
+       "y1_mm": 70.1
+      },
+      {
+       "drop_refuses": true,
+       "hw_mm": 0.15,
+       "kind": "ROUTED",
+       "net": "GND",
+       "protected": false,
+       "tag": "track",
+       "x0_mm": 58.4125,
+       "x1_mm": 57.7,
+       "y0_mm": 70.0,
+       "y1_mm": 70.0
+      },
+      {
+       "drop_refuses": true,
+       "hw_mm": 0.1,
+       "kind": "ROUTED",
+       "net": "/05_I2C_DEVICES/BMI270_INT1_RAW",
+       "protected": false,
+       "tag": "track",
+       "x0_mm": 58.25,
+       "x1_mm": 58.8,
+       "y0_mm": 68.8375,
+       "y1_mm": 68.85
+      }
+     ],
+     "gap_mm": 0.937,
+     "inset_mm": 0.0,
+     "layer": "B",
+     "mm": 0.9369,
+     "n_fixed": 2,
+     "n_held": 5,
+     "n_routed": 3,
+     "rungs": [
+      {
+       "blockers": 8,
+       "inset_mm": 0.0,
+       "layer": "B",
+       "mm": 0.9369,
+       "n_fixed": 2,
+       "n_held": 8,
+       "n_routed": 6,
+       "verdict": "PLACEMENT_WALL",
+       "width": 600000
+      },
+      {
+       "blockers": 5,
+       "inset_mm": 0.0,
+       "layer": "B",
+       "mm": 0.9369,
+       "n_fixed": 2,
+       "n_held": 5,
+       "n_routed": 3,
+       "verdict": "PLACEMENT_WALL",
+       "width": 400000
+      }
+     ],
+     "verdict": "PLACEMENT_WALL",
+     "width": 400000
+    },
+    {
+     "a": "U4.2",
+     "b": "U4.5",
+     "blockers": [
+      {
+       "cx_mm": 56.75,
+       "cy_mm": 68.8375,
+       "drop_refuses": true,
+       "kind": "PAD",
+       "net": "/05_I2C_DEVICES/BMI270_SDO_ADDR",
+       "r_mm": 0.0,
+       "tag": "U4.1"
+      },
+      {
+       "cx_mm": 58.25,
+       "cy_mm": 68.8375,
+       "drop_refuses": true,
+       "kind": "PAD",
+       "net": "/05_I2C_DEVICES/BMI270_INT1_RAW",
+       "r_mm": 0.0,
+       "tag": "U4.4"
+      },
+      {
+       "cx_mm": 58.4125,
+       "cy_mm": 70.0,
+       "drop_refuses": true,
+       "kind": "PAD",
+       "net": "GND",
+       "r_mm": 0.0,
+       "tag": "U4.6"
+      },
+      {
+       "drop_refuses": true,
+       "hw_mm": 0.15,
+       "kind": "ROUTED",
+       "net": "GND",
+       "protected": false,
+       "tag": "track",
+       "x0_mm": 58.4,
+       "x1_mm": 58.3,
+       "y0_mm": 70.0,
+       "y1_mm": 70.1
+      },
+      {
+       "drop_refuses": true,
+       "hw_mm": 0.15,
+       "kind": "ROUTED",
+       "net": "GND",
+       "protected": false,
+       "tag": "track",
+       "x0_mm": 58.4125,
+       "x1_mm": 57.7,
+       "y0_mm": 70.0,
+       "y1_mm": 70.0
+      },
+      {
+       "drop_refuses": true,
+       "hw_mm": 0.1,
+       "kind": "ROUTED",
+       "net": "/05_I2C_DEVICES/BMI270_INT1_RAW",
+       "protected": false,
+       "tag": "track",
+       "x0_mm": 58.25,
+       "x1_mm": 58.8,
+       "y0_mm": 68.8375,
+       "y1_mm": 68.85
+      }
+     ],
+     "gap_mm": 1.338,
+     "inset_mm": 0.0,
+     "layer": "B",
+     "mm": 1.338,
+     "n_fixed": 3,
+     "n_held": 6,
+     "n_routed": 3,
+     "rungs": [
+      {
+       "blockers": 11,
+       "inset_mm": 0.0,
+       "layer": "B",
+       "mm": 1.338,
+       "n_fixed": 3,
+       "n_held": 11,
+       "n_routed": 8,
+       "verdict": "PLACEMENT_WALL",
+       "width": 600000
+      },
+      {
+       "blockers": 6,
+       "inset_mm": 0.0,
+       "layer": "B",
+       "mm": 1.338,
+       "n_fixed": 3,
+       "n_held": 6,
+       "n_routed": 3,
+       "verdict": "PLACEMENT_WALL",
+       "width": 400000
+      }
+     ],
+     "verdict": "PLACEMENT_WALL",
+     "width": 400000
+    },
+    {
+     "a": "U4.8",
+     "b": "U4.5",
+     "blockers": [
+      {
+       "cx_mm": 58.4125,
+       "cy_mm": 70.0,
+       "drop_refuses": true,
+       "kind": "PAD",
+       "net": "GND",
+       "r_mm": 0.0,
+       "tag": "U4.6"
+      },
+      {
+       "cx_mm": 58.4125,
+       "cy_mm": 70.5,
+       "drop_refuses": true,
+       "kind": "PAD",
+       "net": "GND",
+       "r_mm": 0.0,
+       "tag": "U4.7"
+      },
+      {
+       "cx_mm": 57.75,
+       "cy_mm": 71.1625,
+       "drop_refuses": true,
+       "kind": "PAD",
+       "net": "unconnected-(U4-INT2-Pad9)",
+       "r_mm": 0.0,
+       "tag": "U4.9"
+      },
+      {
+       "drop_refuses": true,
+       "hw_mm": 0.15,
+       "kind": "ROUTED",
+       "net": "GND",
+       "protected": false,
+       "tag": "track",
+       "x0_mm": 58.675,
+       "x1_mm": 58.75,
+       "y0_mm": 70.675,
+       "y1_mm": 70.85
+      },
+      {
+       "drop_refuses": true,
+       "hw_mm": 0.15,
+       "kind": "ROUTED",
+       "net": "GND",
+       "protected": false,
+       "tag": "track",
+       "x0_mm": 58.4,
+       "x1_mm": 58.675,
+       "y0_mm": 70.5,
+       "y1_mm": 70.675
+      },
+      {
+       "drop_refuses": true,
+       "hw_mm": 0.15,
+       "kind": "ROUTED",
+       "net": "GND",
+       "protected": false,
+       "tag": "track",
+       "x0_mm": 58.675,
+       "x1_mm": 58.75,
+       "y0_mm": 70.675,
+       "y1_mm": 70.85
+      },
+      {
+       "drop_refuses": true,
+       "hw_mm": 0.15,
+       "kind": "ROUTED",
+       "net": "GND",
+       "protected": false,
+       "tag": "track",
+       "x0_mm": 58.4,
+       "x1_mm": 58.3,
+       "y0_mm": 70.0,
+       "y1_mm": 70.1
+      },
+      {
+       "drop_refuses": true,
+       "hw_mm": 0.15,
+       "kind": "ROUTED",
+       "net": "GND",
+       "protected": false,
+       "tag": "track",
+       "x0_mm": 58.3,
+       "x1_mm": 58.3,
+       "y0_mm": 70.1,
+       "y1_mm": 70.2
+      },
+      {
+       "drop_refuses": true,
+       "hw_mm": 0.15,
+       "kind": "ROUTED",
+       "net": "GND",
+       "protected": false,
+       "tag": "track",
+       "x0_mm": 58.4125,
+       "x1_mm": 57.7,
+       "y0_mm": 70.0,
+       "y1_mm": 70.0
+      },
+      {
+       "drop_refuses": true,
+       "hw_mm": 0.15,
+       "kind": "ROUTED",
+       "net": "GND",
+       "protected": false,
+       "tag": "track",
+       "x0_mm": 58.4,
+       "x1_mm": 58.675,
+       "y0_mm": 70.5,
+       "y1_mm": 70.675
+      },
+      {
+       "cx_mm": 58.3,
+       "cy_mm": 70.2,
+       "drop_refuses": true,
+       "kind": "ROUTED",
+       "net": "GND",
+       "protected": false,
+       "r_mm": 0.3,
+       "tag": "via"
+      },
+      {
+       "cx_mm": 57.7,
+       "cy_mm": 70.0,
+       "drop_refuses": true,
+       "kind": "ROUTED",
+       "net": "GND",
+       "protected": false,
+       "r_mm": 0.3,
+       "tag": "via"
+      },
+      {
+       "cx_mm": 58.3,
+       "cy_mm": 70.2,
+       "drop_refuses": true,
+       "kind": "ROUTED",
+       "net": "GND",
+       "protected": false,
+       "r_mm": 0.15,
+       "tag": "via/hole"
+      }
+     ],
+     "gap_mm": 1.67,
+     "inset_mm": 0.0,
+     "layer": "B",
+     "mm": 1.6704,
+     "n_fixed": 3,
+     "n_held": 13,
+     "n_routed": 10,
+     "rungs": [
+      {
+       "blockers": 15,
+       "inset_mm": 0.0,
+       "layer": "B",
+       "mm": 1.6704,
+       "n_fixed": 4,
+       "n_held": 15,
+       "n_routed": 11,
+       "verdict": "PLACEMENT_WALL",
+       "width": 600000
+      },
+      {
+       "blockers": 13,
+       "inset_mm": 0.0,
+       "layer": "B",
+       "mm": 1.6704,
+       "n_fixed": 3,
+       "n_held": 13,
+       "n_routed": 10,
+       "verdict": "PLACEMENT_WALL",
+       "width": 400000
+      }
+     ],
+     "verdict": "PLACEMENT_WALL",
+     "width": 400000
+    },
+    {
+     "a": "C7.1",
+     "b": "U4.5",
+     "blockers": [
+      {
+       "cx_mm": 58.4125,
+       "cy_mm": 70.0,
+       "drop_refuses": true,
+       "kind": "PAD",
+       "net": "GND",
+       "r_mm": 0.0,
+       "tag": "U4.6"
+      },
+      {
+       "drop_refuses": true,
+       "hw_mm": 0.15,
+       "kind": "ROUTED",
+       "net": "GND",
+       "protected": false,
+       "tag": "track",
+       "x0_mm": 58.4,
+       "x1_mm": 58.3,
+       "y0_mm": 70.0,
+       "y1_mm": 70.1
+      },
+      {
+       "drop_refuses": true,
+       "hw_mm": 0.15,
+       "kind": "ROUTED",
+       "net": "GND",
+       "protected": false,
+       "tag": "track",
+       "x0_mm": 58.4125,
+       "x1_mm": 57.7,
+       "y0_mm": 70.0,
+       "y1_mm": 70.0
+      },
+      {
+       "drop_refuses": true,
+       "hw_mm": 0.1,
+       "kind": "ROUTED",
+       "net": "/ACC_3V3_EN",
+       "protected": false,
+       "tag": "track",
+       "x0_mm": 59.6,
+       "x1_mm": 59.6,
+       "y0_mm": 69.5,
+       "y1_mm": 71.35
+      },
+      {
+       "drop_refuses": true,
+       "hw_mm": 0.1,
+       "kind": "ROUTED",
+       "net": "/ACC_3V3_EN",
+       "protected": false,
+       "tag": "track",
+       "x0_mm": 60.9,
+       "x1_mm": 59.6,
+       "y0_mm": 68.2,
+       "y1_mm": 69.5
+      }
+     ],
+     "gap_mm": 2.074,
+     "inset_mm": 0.0,
+     "layer": "B",
+     "mm": 2.0737,
+     "n_fixed": 1,
+     "n_held": 5,
+     "n_routed": 4,
+     "rungs": [
+      {
+       "blockers": 9,
+       "inset_mm": 0.0,
+       "layer": "B",
+       "mm": 2.0737,
+       "n_fixed": 2,
+       "n_held": 9,
+       "n_routed": 7,
+       "verdict": "PLACEMENT_WALL",
+       "width": 600000
+      },
+      {
+       "blockers": 5,
+       "inset_mm": 0.0,
+       "layer": "B",
+       "mm": 2.0737,
+       "n_fixed": 1,
+       "n_held": 5,
+       "n_routed": 4,
+       "verdict": "PLACEMENT_WALL",
+       "width": 400000
+      }
+     ],
+     "verdict": "PLACEMENT_WALL",
+     "width": 400000
+    },
+    {
+     "a": "U4.12",
+     "b": "U4.5",
+     "blockers": [
+      {
+       "cx_mm": 58.4125,
+       "cy_mm": 70.0,
+       "drop_refuses": true,
+       "kind": "PAD",
+       "net": "GND",
+       "r_mm": 0.0,
+       "tag": "U4.6"
+      },
+      {
+       "cx_mm": 56.5875,
+       "cy_mm": 70.0,
+       "drop_refuses": true,
+       "kind": "PAD",
+       "net": "/I2C_SCL_INT",
+       "r_mm": 0.0,
+       "tag": "U4.13"
+      },
+      {
+       "drop_refuses": true,
+       "hw_mm": 0.15,
+       "kind": "ROUTED",
+       "net": "GND",
+       "protected": false,
+       "tag": "track",
+       "x0_mm": 58.4,
+       "x1_mm": 58.3,
+       "y0_mm": 70.0,
+       "y1_mm": 70.1
+      },
+      {
+       "drop_refuses": true,
+       "hw_mm": 0.15,
+       "kind": "ROUTED",
+       "net": "GND",
+       "protected": false,
+       "tag": "track",
+       "x0_mm": 58.3,
+       "x1_mm": 58.3,
+       "y0_mm": 70.1,
+       "y1_mm": 70.2
+      },
+      {
+       "drop_refuses": true,
+       "hw_mm": 0.15,
+       "kind": "ROUTED",
+       "net": "GND",
+       "protected": false,
+       "tag": "track",
+       "x0_mm": 58.4125,
+       "x1_mm": 57.7,
+       "y0_mm": 70.0,
+       "y1_mm": 70.0
+      },
+      {
+       "drop_refuses": true,
+       "hw_mm": 0.1,
+       "kind": "ROUTED",
+       "net": "/I2C_SCL_INT",
+       "protected": false,
+       "tag": "track",
+       "x0_mm": 56.45,
+       "x1_mm": 56.225,
+       "y0_mm": 70.025,
+       "y1_mm": 70.05
+      },
+      {
+       "cx_mm": 58.3,
+       "cy_mm": 70.2,
+       "drop_refuses": true,
+       "kind": "ROUTED",
+       "net": "GND",
+       "protected": false,
+       "r_mm": 0.3,
+       "tag": "via"
+      },
+      {
+       "cx_mm": 57.7,
+       "cy_mm": 70.0,
+       "drop_refuses": true,
+       "kind": "ROUTED",
+       "net": "GND",
+       "protected": false,
+       "r_mm": 0.3,
+       "tag": "via"
+      },
+      {
+       "cx_mm": 57.7,
+       "cy_mm": 70.0,
+       "drop_refuses": true,
+       "kind": "ROUTED",
+       "net": "GND",
+       "protected": false,
+       "r_mm": 0.15,
+       "tag": "via/hole"
+      }
+     ],
+     "gap_mm": 2.081,
+     "inset_mm": 0.0,
+     "layer": "B",
+     "mm": 2.081,
+     "n_fixed": 2,
+     "n_held": 9,
+     "n_routed": 7,
+     "rungs": [
+      {
+       "blockers": 15,
+       "inset_mm": 0.0,
+       "layer": "B",
+       "mm": 2.081,
+       "n_fixed": 4,
+       "n_held": 15,
+       "n_routed": 11,
+       "verdict": "PLACEMENT_WALL",
+       "width": 600000
+      },
+      {
+       "blockers": 9,
+       "inset_mm": 0.0,
+       "layer": "B",
+       "mm": 2.081,
+       "n_fixed": 2,
+       "n_held": 9,
+       "n_routed": 7,
+       "verdict": "PLACEMENT_WALL",
+       "width": 400000
+      }
+     ],
+     "verdict": "PLACEMENT_WALL",
+     "width": 400000
+    },
+    {
+     "a": "U5.7",
+     "b": "U5.2",
+     "blockers": [
+      {
+       "cx_mm": 29.5625,
+       "cy_mm": 115.25,
+       "drop_refuses": true,
+       "kind": "PAD",
+       "net": "/I2S_SPK_DOUT",
+       "r_mm": 0.0625,
+       "tag": "U5.1"
+      },
+      {
+       "cx_mm": 29.5625,
+       "cy_mm": 116.25,
+       "drop_refuses": true,
+       "kind": "PAD",
+       "net": "GND",
+       "r_mm": 0.0625,
+       "tag": "U5.3"
+      },
+      {
+       "cx_mm": 29.5625,
+       "cy_mm": 116.75,
+       "drop_refuses": true,
+       "kind": "PAD",
+       "net": "/AMP_SD_MODE",
+       "r_mm": 0.0625,
+       "tag": "U5.4"
+      },
+      {
+       "cx_mm": 30.25,
+       "cy_mm": 117.4375,
+       "drop_refuses": true,
+       "kind": "PAD",
+       "net": "unconnected-(U5-NC-Pad5)",
+       "r_mm": 0.0625,
+       "tag": "U5.5"
+      },
+      {
+       "cx_mm": 30.75,
+       "cy_mm": 117.4375,
+       "drop_refuses": true,
+       "kind": "PAD",
+       "net": "unconnected-(U5-NC-Pad6)",
+       "r_mm": 0.0625,
+       "tag": "U5.6"
+      },
+      {
+       "cx_mm": 31.0,
+       "cy_mm": 116.0,
+       "drop_refuses": true,
+       "kind": "PAD",
+       "net": "GND",
+       "r_mm": 0.0,
+       "tag": "U5.17"
+      },
+      {
+       "drop_refuses": true,
+       "hw_mm": 0.15,
+       "kind": "ROUTED",
+       "net": "GND",
+       "protected": false,
+       "tag": "track",
+       "x0_mm": 30.1,
+       "x1_mm": 29.075,
+       "y0_mm": 116.25,
+       "y1_mm": 116.25
+      },
+      {
+       "drop_refuses": true,
+       "hw_mm": 0.15,
+       "kind": "ROUTED",
+       "net": "GND",
+       "protected": false,
+       "tag": "track",
+       "x0_mm": 30.3,
+       "x1_mm": 30.1,
+       "y0_mm": 116.05,
+       "y1_mm": 116.25
+      },
+      {
+       "drop_refuses": true,
+       "hw_mm": 0.15,
+       "kind": "ROUTED",
+       "net": "GND",
+       "protected": false,
+       "tag": "track",
+       "x0_mm": 30.65,
+       "x1_mm": 30.3,
+       "y0_mm": 115.225,
+       "y1_mm": 116.05
+      },
+      {
+       "drop_refuses": true,
+       "hw_mm": 0.15,
+       "kind": "ROUTED",
+       "net": "GND",
+       "protected": false,
+       "tag": "track",
+       "x0_mm": 30.55,
+       "x1_mm": 29.075,
+       "y0_mm": 116.25,
+       "y1_mm": 116.25
+      },
+      {
+       "drop_refuses": true,
+       "hw_mm": 0.15,
+       "kind": "ROUTED",
+       "net": "GND",
+       "protected": false,
+       "tag": "track",
+       "x0_mm": 29.55,
+       "x1_mm": 29.075,
+       "y0_mm": 116.25,
+       "y1_mm": 116.25
+      },
+      {
+       "cx_mm": 30.7,
+       "cy_mm": 116.1,
+       "drop_refuses": true,
+       "kind": "ROUTED",
+       "net": "GND",
+       "protected": false,
+       "r_mm": 0.3,
+       "tag": "via"
+      }
+     ],
+     "gap_mm": 2.386,
+     "inset_mm": 0.0,
+     "layer": "F",
+     "mm": 2.3865,
+     "n_fixed": 6,
+     "n_held": 12,
+     "n_routed": 6,
+     "rungs": [
+      {
+       "blockers": 15,
+       "inset_mm": 0.0,
+       "layer": "F",
+       "mm": 2.3865,
+       "n_fixed": 6,
+       "n_held": 15,
+       "n_routed": 9,
+       "verdict": "PLACEMENT_WALL",
+       "width": 600000
+      },
+      {
+       "blockers": 12,
+       "inset_mm": 0.0,
+       "layer": "F",
+       "mm": 2.3865,
+       "n_fixed": 6,
+       "n_held": 12,
+       "n_routed": 6,
+       "verdict": "PLACEMENT_WALL",
+       "width": 400000
+      }
+     ],
+     "verdict": "PLACEMENT_WALL",
+     "width": 400000
+    },
+    {
+     "a": "C6.1",
+     "b": "U4.5",
+     "blockers": [
+      {
+       "cx_mm": 58.25,
+       "cy_mm": 68.8375,
+       "drop_refuses": true,
+       "kind": "PAD",
+       "net": "/05_I2C_DEVICES/BMI270_INT1_RAW",
+       "r_mm": 0.0,
+       "tag": "U4.4"
+      },
+      {
+       "cx_mm": 58.4125,
+       "cy_mm": 70.0,
+       "drop_refuses": true,
+       "kind": "PAD",
+       "net": "GND",
+       "r_mm": 0.0,
+       "tag": "U4.6"
+      },
+      {
+       "drop_refuses": true,
+       "hw_mm": 0.15,
+       "kind": "ROUTED",
+       "net": "GND",
+       "protected": false,
+       "tag": "track",
+       "x0_mm": 58.4,
+       "x1_mm": 58.3,
+       "y0_mm": 70.0,
+       "y1_mm": 70.1
+      },
+      {
+       "drop_refuses": true,
+       "hw_mm": 0.15,
+       "kind": "ROUTED",
+       "net": "GND",
+       "protected": false,
+       "tag": "track",
+       "x0_mm": 58.4125,
+       "x1_mm": 57.7,
+       "y0_mm": 70.0,
+       "y1_mm": 70.0
+      },
+      {
+       "drop_refuses": true,
+       "hw_mm": 0.1,
+       "kind": "ROUTED",
+       "net": "/05_I2C_DEVICES/BMI270_INT1_RAW",
+       "protected": false,
+       "tag": "track",
+       "x0_mm": 58.25,
+       "x1_mm": 58.8,
+       "y0_mm": 68.8375,
+       "y1_mm": 68.85
+      },
+      {
+       "cx_mm": 58.8,
+       "cy_mm": 68.85,
+       "drop_refuses": true,
+       "kind": "ROUTED",
+       "net": "/05_I2C_DEVICES/BMI270_INT1_RAW",
+       "protected": false,
+       "r_mm": 0.3,
+       "tag": "via"
+      }
+     ],
+     "gap_mm": 2.581,
+     "inset_mm": 0.0,
+     "layer": "B",
+     "mm": 2.5814,
+     "n_fixed": 2,
+     "n_held": 6,
+     "n_routed": 4,
+     "rungs": [
+      {
+       "blockers": 9,
+       "inset_mm": 0.0,
+       "layer": "B",
+       "mm": 2.5814,
+       "n_fixed": 2,
+       "n_held": 9,
+       "n_routed": 7,
+       "verdict": "PLACEMENT_WALL",
+       "width": 600000
+      },
+      {
+       "blockers": 6,
+       "inset_mm": 0.0,
+       "layer": "B",
+       "mm": 2.5814,
+       "n_fixed": 2,
+       "n_held": 6,
+       "n_routed": 4,
+       "verdict": "PLACEMENT_WALL",
+       "width": 400000
+      }
+     ],
+     "verdict": "PLACEMENT_WALL",
+     "width": 400000
+    },
+    {
+     "a": "U5.8",
+     "b": "U5.2",
+     "blockers": [
+      {
+       "cx_mm": 29.5625,
+       "cy_mm": 115.25,
+       "drop_refuses": true,
+       "kind": "PAD",
+       "net": "/I2S_SPK_DOUT",
+       "r_mm": 0.0625,
+       "tag": "U5.1"
+      },
+      {
+       "cx_mm": 29.5625,
+       "cy_mm": 116.25,
+       "drop_refuses": true,
+       "kind": "PAD",
+       "net": "GND",
+       "r_mm": 0.0625,
+       "tag": "U5.3"
+      },
+      {
+       "cx_mm": 30.75,
+       "cy_mm": 117.4375,
+       "drop_refuses": true,
+       "kind": "PAD",
+       "net": "unconnected-(U5-NC-Pad6)",
+       "r_mm": 0.0625,
+       "tag": "U5.6"
+      },
+      {
+       "cx_mm": 31.0,
+       "cy_mm": 116.0,
+       "drop_refuses": true,
+       "kind": "PAD",
+       "net": "GND",
+       "r_mm": 0.0,
+       "tag": "U5.17"
+      },
+      {
+       "drop_refuses": true,
+       "hw_mm": 0.15,
+       "kind": "ROUTED",
+       "net": "GND",
+       "protected": false,
+       "tag": "track",
+       "x0_mm": 30.1,
+       "x1_mm": 29.075,
+       "y0_mm": 116.25,
+       "y1_mm": 116.25
+      },
+      {
+       "drop_refuses": true,
+       "hw_mm": 0.15,
+       "kind": "ROUTED",
+       "net": "GND",
+       "protected": false,
+       "tag": "track",
+       "x0_mm": 30.3,
+       "x1_mm": 30.1,
+       "y0_mm": 116.05,
+       "y1_mm": 116.25
+      },
+      {
+       "drop_refuses": true,
+       "hw_mm": 0.15,
+       "kind": "ROUTED",
+       "net": "GND",
+       "protected": false,
+       "tag": "track",
+       "x0_mm": 30.8,
+       "x1_mm": 30.7,
+       "y0_mm": 116.0,
+       "y1_mm": 116.1
+      },
+      {
+       "drop_refuses": true,
+       "hw_mm": 0.15,
+       "kind": "ROUTED",
+       "net": "GND",
+       "protected": false,
+       "tag": "track",
+       "x0_mm": 30.65,
+       "x1_mm": 30.3,
+       "y0_mm": 115.225,
+       "y1_mm": 116.05
+      },
+      {
+       "drop_refuses": true,
+       "hw_mm": 0.15,
+       "kind": "ROUTED",
+       "net": "GND",
+       "protected": false,
+       "tag": "track",
+       "x0_mm": 30.55,
+       "x1_mm": 29.075,
+       "y0_mm": 116.25,
+       "y1_mm": 116.25
+      },
+      {
+       "drop_refuses": true,
+       "hw_mm": 0.15,
+       "kind": "ROUTED",
+       "net": "GND",
+       "protected": false,
+       "tag": "track",
+       "x0_mm": 29.55,
+       "x1_mm": 29.075,
+       "y0_mm": 116.25,
+       "y1_mm": 116.25
+      },
+      {
+       "cx_mm": 30.7,
+       "cy_mm": 116.1,
+       "drop_refuses": true,
+       "kind": "ROUTED",
+       "net": "GND",
+       "protected": false,
+       "r_mm": 0.3,
+       "tag": "via"
+      },
+      {
+       "cx_mm": 30.7,
+       "cy_mm": 116.1,
+       "drop_refuses": true,
+       "kind": "ROUTED",
+       "net": "GND",
+       "protected": false,
+       "r_mm": 0.15,
+       "tag": "via/hole"
+      }
+     ],
+     "gap_mm": 2.763,
+     "inset_mm": 0.0,
+     "layer": "F",
+     "mm": 2.7628,
+     "n_fixed": 4,
+     "n_held": 12,
+     "n_routed": 8,
+     "rungs": [
+      {
+       "blockers": 15,
+       "inset_mm": 0.0,
+       "layer": "F",
+       "mm": 2.7628,
+       "n_fixed": 5,
+       "n_held": 15,
+       "n_routed": 10,
+       "verdict": "PLACEMENT_WALL",
+       "width": 600000
+      },
+      {
+       "blockers": 12,
+       "inset_mm": 0.0,
+       "layer": "F",
+       "mm": 2.7628,
+       "n_fixed": 4,
+       "n_held": 12,
+       "n_routed": 8,
+       "verdict": "PLACEMENT_WALL",
+       "width": 400000
+      }
+     ],
+     "verdict": "PLACEMENT_WALL",
+     "width": 400000
+    },
+    {
+     "a": "C10.1",
+     "b": "U5.2",
+     "blockers": [
+      {
+       "cx_mm": 29.5625,
+       "cy_mm": 115.25,
+       "drop_refuses": true,
+       "kind": "PAD",
+       "net": "/I2S_SPK_DOUT",
+       "r_mm": 0.0625,
+       "tag": "U5.1"
+      },
+      {
+       "cx_mm": 29.5625,
+       "cy_mm": 116.25,
+       "drop_refuses": true,
+       "kind": "PAD",
+       "net": "GND",
+       "r_mm": 0.0625,
+       "tag": "U5.3"
+      },
+      {
+       "cx_mm": 30.25,
+       "cy_mm": 114.5625,
+       "drop_refuses": true,
+       "kind": "PAD",
+       "net": "/I2S_BCLK",
+       "r_mm": 0.0625,
+       "tag": "U5.16"
+      },
+      {
+       "drop_refuses": true,
+       "hw_mm": 0.15,
+       "kind": "ROUTED",
+       "net": "GND",
+       "protected": false,
+       "tag": "track",
+       "x0_mm": 30.1,
+       "x1_mm": 29.075,
+       "y0_mm": 116.25,
+       "y1_mm": 116.25
+      },
+      {
+       "drop_refuses": true,
+       "hw_mm": 0.15,
+       "kind": "ROUTED",
+       "net": "GND",
+       "protected": false,
+       "tag": "track",
+       "x0_mm": 30.55,
+       "x1_mm": 29.075,
+       "y0_mm": 116.25,
+       "y1_mm": 116.25
+      },
+      {
+       "drop_refuses": true,
+       "hw_mm": 0.15,
+       "kind": "ROUTED",
+       "net": "GND",
+       "protected": false,
+       "tag": "track",
+       "x0_mm": 29.55,
+       "x1_mm": 29.075,
+       "y0_mm": 116.25,
+       "y1_mm": 116.25
+      },
+      {
+       "drop_refuses": true,
+       "hw_mm": 0.1,
+       "kind": "ROUTED",
+       "net": "/I2S_BCLK",
+       "protected": false,
+       "tag": "track",
+       "x0_mm": 31.0,
+       "x1_mm": 30.2,
+       "y0_mm": 113.5,
+       "y1_mm": 113.7
+      },
+      {
+       "drop_refuses": true,
+       "hw_mm": 0.1,
+       "kind": "ROUTED",
+       "net": "/I2S_BCLK",
+       "protected": false,
+       "tag": "track",
+       "x0_mm": 30.25,
+       "x1_mm": 30.2,
+       "y0_mm": 114.5625,
+       "y1_mm": 113.7
+      },
+      {
+       "drop_refuses": true,
+       "hw_mm": 0.1,
+       "kind": "ROUTED",
+       "net": "/I2S_BCLK",
+       "protected": false,
+       "tag": "track",
+       "x0_mm": 30.2,
+       "x1_mm": 33.4,
+       "y0_mm": 113.7,
+       "y1_mm": 113.7
+      },
+      {
+       "drop_refuses": true,
+       "hw_mm": 0.1,
+       "kind": "ROUTED",
+       "net": "/I2S_BCLK",
+       "protected": false,
+       "tag": "track",
+       "x0_mm": 30.25,
+       "x1_mm": 30.2,
+       "y0_mm": 114.5625,
+       "y1_mm": 113.7
+      },
+      {
+       "drop_refuses": true,
+       "hw_mm": 0.1,
+       "kind": "ROUTED",
+       "net": "/I2S_SPK_DOUT",
+       "protected": false,
+       "tag": "track",
+       "x0_mm": 29.5,
+       "x1_mm": 29.6,
+       "y0_mm": 113.9,
+       "y1_mm": 114.7
+      },
+      {
+       "drop_refuses": true,
+       "hw_mm": 0.1,
+       "kind": "ROUTED",
+       "net": "/I2S_SPK_DOUT",
+       "protected": false,
+       "tag": "track",
+       "x0_mm": 29.5625,
+       "x1_mm": 29.6,
+       "y0_mm": 115.25,
+       "y1_mm": 114.7
+      },
+      {
+       "cx_mm": 29.5,
+       "cy_mm": 113.9,
+       "drop_refuses": true,
+       "kind": "ROUTED",
+       "net": "/I2S_SPK_DOUT",
+       "protected": false,
+       "r_mm": 0.3,
+       "tag": "via"
+      },
+      {
+       "cx_mm": 29.5,
+       "cy_mm": 113.9,
+       "drop_refuses": true,
+       "kind": "ROUTED",
+       "net": "/I2S_SPK_DOUT",
+       "protected": false,
+       "r_mm": 0.15,
+       "tag": "via/hole"
+      }
+     ],
+     "gap_mm": 3.407,
+     "inset_mm": 0.0,
+     "layer": "F",
+     "mm": 3.4075,
+     "n_fixed": 3,
+     "n_held": 14,
+     "n_routed": 11,
+     "rungs": [
+      {
+       "blockers": 14,
+       "inset_mm": 0.0,
+       "layer": "F",
+       "mm": 3.4075,
+       "n_fixed": 3,
+       "n_held": 14,
+       "n_routed": 11,
+       "verdict": "PLACEMENT_WALL",
+       "width": 600000
+      },
+      {
+       "blockers": 14,
+       "inset_mm": 0.0,
+       "layer": "F",
+       "mm": 3.4075,
+       "n_fixed": 3,
+       "n_held": 14,
+       "n_routed": 11,
+       "verdict": "PLACEMENT_WALL",
+       "width": 400000
+      }
+     ],
+     "verdict": "PLACEMENT_WALL",
+     "width": 600000
+    },
+    {
+     "a": "C8.1",
+     "b": "U5.2",
+     "blockers": [
+      {
+       "cx_mm": 29.5625,
+       "cy_mm": 115.25,
+       "drop_refuses": true,
+       "kind": "PAD",
+       "net": "/I2S_SPK_DOUT",
+       "r_mm": 0.0625,
+       "tag": "U5.1"
+      },
+      {
+       "cx_mm": 29.5625,
+       "cy_mm": 116.25,
+       "drop_refuses": true,
+       "kind": "PAD",
+       "net": "GND",
+       "r_mm": 0.0625,
+       "tag": "U5.3"
+      },
+      {
+       "cx_mm": 29.5625,
+       "cy_mm": 116.75,
+       "drop_refuses": true,
+       "kind": "PAD",
+       "net": "/AMP_SD_MODE",
+       "r_mm": 0.0625,
+       "tag": "U5.4"
+      },
+      {
+       "drop_refuses": true,
+       "hw_mm": 0.15,
+       "kind": "ROUTED",
+       "net": "GND",
+       "protected": false,
+       "tag": "track",
+       "x0_mm": 30.1,
+       "x1_mm": 29.075,
+       "y0_mm": 116.25,
+       "y1_mm": 116.25
+      },
+      {
+       "drop_refuses": true,
+       "hw_mm": 0.15,
+       "kind": "ROUTED",
+       "net": "GND",
+       "protected": false,
+       "tag": "track",
+       "x0_mm": 29.075,
+       "x1_mm": 28.875,
+       "y0_mm": 116.25,
+       "y1_mm": 116.125
+      },
+      {
+       "drop_refuses": true,
+       "hw_mm": 0.15,
+       "kind": "ROUTED",
+       "net": "GND",
+       "protected": false,
+       "tag": "track",
+       "x0_mm": 29.075,
+       "x1_mm": 28.875,
+       "y0_mm": 116.25,
+       "y1_mm": 116.125
+      },
+      {
+       "drop_refuses": true,
+       "hw_mm": 0.15,
+       "kind": "ROUTED",
+       "net": "GND",
+       "protected": false,
+       "tag": "track",
+       "x0_mm": 29.075,
+       "x1_mm": 28.875,
+       "y0_mm": 116.25,
+       "y1_mm": 116.125
+      },
+      {
+       "drop_refuses": true,
+       "hw_mm": 0.15,
+       "kind": "ROUTED",
+       "net": "GND",
+       "protected": false,
+       "tag": "track",
+       "x0_mm": 30.55,
+       "x1_mm": 29.075,
+       "y0_mm": 116.25,
+       "y1_mm": 116.25
+      },
+      {
+       "drop_refuses": true,
+       "hw_mm": 0.15,
+       "kind": "ROUTED",
+       "net": "GND",
+       "protected": false,
+       "tag": "track",
+       "x0_mm": 29.55,
+       "x1_mm": 29.075,
+       "y0_mm": 116.25,
+       "y1_mm": 116.25
+      },
+      {
+       "drop_refuses": true,
+       "hw_mm": 0.1,
+       "kind": "ROUTED",
+       "net": "/AMP_SD_MODE",
+       "protected": false,
+       "tag": "track",
+       "x0_mm": 28.7,
+       "x1_mm": 30.2,
+       "y0_mm": 116.75,
+       "y1_mm": 118.45
+      },
+      {
+       "drop_refuses": true,
+       "hw_mm": 0.1,
+       "kind": "ROUTED",
+       "net": "/AMP_SD_MODE",
+       "protected": false,
+       "tag": "track",
+       "x0_mm": 29.5625,
+       "x1_mm": 28.7,
+       "y0_mm": 116.75,
+       "y1_mm": 116.75
+      },
+      {
+       "drop_refuses": true,
+       "hw_mm": 0.1,
+       "kind": "ROUTED",
+       "net": "/AMP_SD_MODE",
+       "protected": false,
+       "tag": "track",
+       "x0_mm": 29.5625,
+       "x1_mm": 28.7,
+       "y0_mm": 116.75,
+       "y1_mm": 116.75
+      }
+     ],
+     "gap_mm": 3.713,
+     "inset_mm": 0.0,
+     "layer": "F",
+     "mm": 3.7129,
+     "n_fixed": 3,
+     "n_held": 12,
+     "n_routed": 9,
+     "rungs": [
+      {
+       "blockers": 17,
+       "inset_mm": 0.0,
+       "layer": "F",
+       "mm": 3.7129,
+       "n_fixed": 3,
+       "n_held": 17,
+       "n_routed": 14,
+       "verdict": "PLACEMENT_WALL",
+       "width": 600000
+      },
+      {
+       "blockers": 12,
+       "inset_mm": 0.0,
+       "layer": "F",
+       "mm": 3.7129,
+       "n_fixed": 3,
+       "n_held": 12,
+       "n_routed": 9,
+       "verdict": "PLACEMENT_WALL",
+       "width": 400000
+      }
+     ],
+     "verdict": "PLACEMENT_WALL",
+     "width": 400000
+    },
+    {
+     "a": "C62.1",
+     "b": "U5.2",
+     "gap_mm": 4.593,
+     "rungs": [],
+     "verdict": "UNRESOLVED",
+     "why": "no rung on the permitted ladder resolved within --cap 48 objects"
+    },
+    {
+     "a": "C9.1",
+     "b": "U5.2",
+     "blockers": [
+      {
+       "cx_mm": 29.5625,
+       "cy_mm": 115.25,
+       "drop_refuses": true,
+       "kind": "PAD",
+       "net": "/I2S_SPK_DOUT",
+       "r_mm": 0.0625,
+       "tag": "U5.1"
+      },
+      {
+       "cx_mm": 29.5625,
+       "cy_mm": 116.25,
+       "drop_refuses": true,
+       "kind": "PAD",
+       "net": "GND",
+       "r_mm": 0.0625,
+       "tag": "U5.3"
+      },
+      {
+       "cx_mm": 32.4375,
+       "cy_mm": 116.25,
+       "drop_refuses": true,
+       "kind": "PAD",
+       "net": "/06_AUDIO/SPK_N",
+       "r_mm": 0.0625,
+       "tag": "U5.10"
+      },
+      {
+       "cx_mm": 32.4375,
+       "cy_mm": 115.75,
+       "drop_refuses": true,
+       "kind": "PAD",
+       "net": "GND",
+       "r_mm": 0.0625,
+       "tag": "U5.11"
+      },
+      {
+       "cx_mm": 31.0,
+       "cy_mm": 116.0,
+       "drop_refuses": true,
+       "kind": "PAD",
+       "net": "GND",
+       "r_mm": 0.0,
+       "tag": "U5.17"
+      },
+      {
+       "drop_refuses": true,
+       "hw_mm": 0.15,
+       "kind": "ROUTED",
+       "net": "GND",
+       "protected": false,
+       "tag": "track",
+       "x0_mm": 31.775,
+       "x1_mm": 30.8,
+       "y0_mm": 115.85,
+       "y1_mm": 116.0
+      },
+      {
+       "drop_refuses": true,
+       "hw_mm": 0.15,
+       "kind": "ROUTED",
+       "net": "GND",
+       "protected": false,
+       "tag": "track",
+       "x0_mm": 30.1,
+       "x1_mm": 29.075,
+       "y0_mm": 116.25,
+       "y1_mm": 116.25
+      },
+      {
+       "drop_refuses": true,
+       "hw_mm": 0.15,
+       "kind": "ROUTED",
+       "net": "GND",
+       "protected": false,
+       "tag": "track",
+       "x0_mm": 31.95,
+       "x1_mm": 31.775,
+       "y0_mm": 115.75,
+       "y1_mm": 115.85
+      },
+      {
+       "drop_refuses": true,
+       "hw_mm": 0.15,
+       "kind": "ROUTED",
+       "net": "GND",
+       "protected": false,
+       "tag": "track",
+       "x0_mm": 30.3,
+       "x1_mm": 30.1,
+       "y0_mm": 116.05,
+       "y1_mm": 116.25
+      },
+      {
+       "drop_refuses": true,
+       "hw_mm": 0.15,
+       "kind": "ROUTED",
+       "net": "GND",
+       "protected": false,
+       "tag": "track",
+       "x0_mm": 30.8,
+       "x1_mm": 30.7,
+       "y0_mm": 116.0,
+       "y1_mm": 116.1
+      },
+      {
+       "drop_refuses": true,
+       "hw_mm": 0.15,
+       "kind": "ROUTED",
+       "net": "GND",
+       "protected": false,
+       "tag": "track",
+       "x0_mm": 30.65,
+       "x1_mm": 30.3,
+       "y0_mm": 115.225,
+       "y1_mm": 116.05
+      },
+      {
+       "drop_refuses": true,
+       "hw_mm": 0.15,
+       "kind": "ROUTED",
+       "net": "GND",
+       "protected": false,
+       "tag": "track",
+       "x0_mm": 30.55,
+       "x1_mm": 29.075,
+       "y0_mm": 116.25,
+       "y1_mm": 116.25
+      },
+      {
+       "drop_refuses": true,
+       "hw_mm": 0.15,
+       "kind": "ROUTED",
+       "net": "GND",
+       "protected": false,
+       "tag": "track",
+       "x0_mm": 32.45,
+       "x1_mm": 31.95,
+       "y0_mm": 115.75,
+       "y1_mm": 115.75
+      },
+      {
+       "drop_refuses": true,
+       "hw_mm": 0.15,
+       "kind": "ROUTED",
+       "net": "GND",
+       "protected": false,
+       "tag": "track",
+       "x0_mm": 29.55,
+       "x1_mm": 29.075,
+       "y0_mm": 116.25,
+       "y1_mm": 116.25
+      },
+      {
+       "drop_refuses": true,
+       "hw_mm": 0.125,
+       "kind": "ROUTED",
+       "net": "/06_AUDIO/SPK_N",
+       "protected": false,
+       "tag": "track",
+       "x0_mm": 33.0,
+       "x1_mm": 33.5,
+       "y0_mm": 116.25,
+       "y1_mm": 115.5
+      },
+      {
+       "drop_refuses": true,
+       "hw_mm": 0.125,
+       "kind": "ROUTED",
+       "net": "/06_AUDIO/SPK_N",
+       "protected": false,
+       "tag": "track",
+       "x0_mm": 32.4375,
+       "x1_mm": 33.0,
+       "y0_mm": 116.25,
+       "y1_mm": 116.25
+      },
+      {
+       "cx_mm": 30.7,
+       "cy_mm": 116.1,
+       "drop_refuses": true,
+       "kind": "ROUTED",
+       "net": "GND",
+       "protected": false,
+       "r_mm": 0.3,
+       "tag": "via"
+      },
+      {
+       "cx_mm": 33.5,
+       "cy_mm": 115.5,
+       "drop_refuses": true,
+       "kind": "ROUTED",
+       "net": "/06_AUDIO/SPK_N",
+       "protected": false,
+       "r_mm": 0.3,
+       "tag": "via"
+      },
+      {
+       "cx_mm": 30.7,
+       "cy_mm": 116.1,
+       "drop_refuses": true,
+       "kind": "ROUTED",
+       "net": "GND",
+       "protected": false,
+       "r_mm": 0.15,
+       "tag": "via/hole"
+      },
+      {
+       "cx_mm": 33.5,
+       "cy_mm": 115.5,
+       "drop_refuses": true,
+       "kind": "ROUTED",
+       "net": "/06_AUDIO/SPK_N",
+       "protected": false,
+       "r_mm": 0.15,
+       "tag": "via/hole"
+      }
+     ],
+     "gap_mm": 4.869,
+     "inset_mm": 0.0,
+     "layer": "F",
+     "mm": 4.8689,
+     "n_fixed": 5,
+     "n_held": 20,
+     "n_routed": 15,
+     "rungs": [
+      {
+       "blockers": 23,
+       "inset_mm": 0.0,
+       "layer": "F",
+       "mm": 4.8689,
+       "n_fixed": 5,
+       "n_held": 23,
+       "n_routed": 18,
+       "verdict": "PLACEMENT_WALL",
+       "width": 600000
+      },
+      {
+       "blockers": 20,
+       "inset_mm": 0.0,
+       "layer": "F",
+       "mm": 4.8689,
+       "n_fixed": 5,
+       "n_held": 20,
+       "n_routed": 15,
+       "verdict": "PLACEMENT_WALL",
+       "width": 400000
+      }
+     ],
+     "verdict": "PLACEMENT_WALL",
+     "width": 400000
+    },
+    {
+     "a": "C7.1",
+     "b": "R39.1",
+     "blockers": [
+      {
+       "cx_mm": 61.975,
+       "cy_mm": 70.0,
+       "drop_refuses": true,
+       "kind": "PAD",
+       "net": "GND",
+       "r_mm": 0.225,
+       "tag": "C7.2"
+      },
+      {
+       "drop_refuses": true,
+       "hw_mm": 0.15,
+       "kind": "ROUTED",
+       "net": "GND",
+       "protected": false,
+       "tag": "track",
+       "x0_mm": 61.1,
+       "x1_mm": 61.5,
+       "y0_mm": 72.7,
+       "y1_mm": 70.1
+      },
+      {
+       "drop_refuses": true,
+       "hw_mm": 0.15,
+       "kind": "ROUTED",
+       "net": "GND",
+       "protected": false,
+       "tag": "track",
+       "x0_mm": 61.975,
+       "x1_mm": 61.2,
+       "y0_mm": 70.0,
+       "y1_mm": 69.2
+      },
+      {
+       "drop_refuses": true,
+       "hw_mm": 0.15,
+       "kind": "ROUTED",
+       "net": "GND",
+       "protected": false,
+       "tag": "track",
+       "x0_mm": 61.7,
+       "x1_mm": 61.7,
+       "y0_mm": 74.1,
+       "y1_mm": 69.5
+      },
+      {
+       "drop_refuses": true,
+       "hw_mm": 0.5,
+       "kind": "ROUTED",
+       "net": "/01_POWER_TREE/BAT_PROTECTED_P",
+       "protected": true,
+       "tag": "track",
+       "x0_mm": 63.3,
+       "x1_mm": 63.3,
+       "y0_mm": 69.4,
+       "y1_mm": 72.95
+      },
+      {
+       "cx_mm": 61.5,
+       "cy_mm": 70.1,
+       "drop_refuses": true,
+       "kind": "ROUTED",
+       "net": "GND",
+       "protected": false,
+       "r_mm": 0.3,
+       "tag": "via"
+      },
+      {
+       "cx_mm": 61.5,
+       "cy_mm": 70.1,
+       "drop_refuses": true,
+       "kind": "ROUTED",
+       "net": "GND",
+       "protected": false,
+       "r_mm": 0.15,
+       "tag": "via/hole"
+      }
+     ],
+     "gap_mm": 5.534,
+     "inset_mm": 0.0,
+     "layer": "B",
+     "mm": 5.534,
+     "n_fixed": 1,
+     "n_held": 7,
+     "n_routed": 6,
+     "rungs": [
+      {
+       "blockers": 7,
+       "inset_mm": 0.0,
+       "layer": "B",
+       "mm": 5.534,
+       "n_fixed": 1,
+       "n_held": 7,
+       "n_routed": 6,
+       "verdict": "PLACEMENT_WALL",
+       "width": 600000
+      },
+      {
+       "blockers": 7,
+       "inset_mm": 0.0,
+       "layer": "B",
+       "mm": 5.534,
+       "n_fixed": 1,
+       "n_held": 7,
+       "n_routed": 6,
+       "verdict": "PLACEMENT_WALL",
+       "width": 400000
+      }
+     ],
+     "verdict": "PLACEMENT_WALL",
+     "width": 600000
+    },
+    {
+     "a": "C5.1",
+     "b": "R39.1",
+     "blockers": [
+      {
+       "cx_mm": 63.75,
+       "cy_mm": 74.325,
+       "drop_refuses": true,
+       "kind": "PAD",
+       "net": "/01_POWER_TREE/BAT_PROTECTED_P",
+       "r_mm": 0.225,
+       "tag": "C36.1"
+      },
+      {
+       "drop_refuses": true,
+       "hw_mm": 0.15,
+       "kind": "ROUTED",
+       "net": "GND",
+       "protected": false,
+       "tag": "track",
+       "x0_mm": 62.7,
+       "x1_mm": 61.7,
+       "y0_mm": 75.1,
+       "y1_mm": 74.1
+      },
+      {
+       "drop_refuses": true,
+       "hw_mm": 0.15,
+       "kind": "ROUTED",
+       "net": "GND",
+       "protected": false,
+       "tag": "track",
+       "x0_mm": 64.375,
+       "x1_mm": 62.8,
+       "y0_mm": 77.225,
+       "y1_mm": 75.3
+      },
+      {
+       "drop_refuses": true,
+       "hw_mm": 0.15,
+       "kind": "ROUTED",
+       "net": "GND",
+       "protected": false,
+       "tag": "track",
+       "x0_mm": 62.8,
+       "x1_mm": 62.7,
+       "y0_mm": 75.3,
+       "y1_mm": 75.1
+      },
+      {
+       "drop_refuses": true,
+       "hw_mm": 0.75,
+       "kind": "ROUTED",
+       "net": "/01_POWER_TREE/BAT_PROTECTED_P",
+       "protected": true,
+       "tag": "track",
+       "x0_mm": 64.95,
+       "x1_mm": 64.95,
+       "y0_mm": 74.85,
+       "y1_mm": 73.15
+      },
+      {
+       "drop_refuses": true,
+       "hw_mm": 0.1,
+       "kind": "ROUTED",
+       "net": "/01_POWER_TREE/BAT_PROTECTED_P",
+       "protected": true,
+       "tag": "track",
+       "x0_mm": 65.5,
+       "x1_mm": 63.75,
+       "y0_mm": 76.05,
+       "y1_mm": 74.3
+      },
+      {
+       "drop_refuses": true,
+       "hw_mm": 0.6,
+       "kind": "ROUTED",
+       "net": "/01_POWER_TREE/BAT_PROTECTED_P",
+       "protected": true,
+       "tag": "track",
+       "x0_mm": 63.3,
+       "x1_mm": 63.75,
+       "y0_mm": 72.975,
+       "y1_mm": 74.325
+      },
+      {
+       "drop_refuses": true,
+       "hw_mm": 0.6,
+       "kind": "ROUTED",
+       "net": "/01_POWER_TREE/BAT_PROTECTED_P",
+       "protected": true,
+       "tag": "track",
+       "x0_mm": 63.3,
+       "x1_mm": 63.75,
+       "y0_mm": 73.875,
+       "y1_mm": 74.325
+      },
+      {
+       "drop_refuses": true,
+       "hw_mm": 0.5,
+       "kind": "ROUTED",
+       "net": "/01_POWER_TREE/BAT_PROTECTED_P",
+       "protected": true,
+       "tag": "track",
+       "x0_mm": 63.3,
+       "x1_mm": 63.3,
+       "y0_mm": 69.4,
+       "y1_mm": 72.95
+      },
+      {
+       "drop_refuses": true,
+       "hw_mm": 0.75,
+       "kind": "ROUTED",
+       "net": "/01_POWER_TREE/BAT_PROTECTED_P",
+       "protected": true,
+       "tag": "track",
+       "x0_mm": 63.75,
+       "x1_mm": 65.0,
+       "y0_mm": 74.325,
+       "y1_mm": 73.1
+      },
+      {
+       "drop_refuses": true,
+       "hw_mm": 0.6,
+       "kind": "ROUTED",
+       "net": "/01_POWER_TREE/BAT_PROTECTED_P",
+       "protected": true,
+       "tag": "track",
+       "x0_mm": 64.2,
+       "x1_mm": 63.75,
+       "y0_mm": 72.975,
+       "y1_mm": 74.325
+      },
+      {
+       "drop_refuses": true,
+       "hw_mm": 0.75,
+       "kind": "ROUTED",
+       "net": "/01_POWER_TREE/BAT_PROTECTED_P",
+       "protected": true,
+       "tag": "track",
+       "x0_mm": 64.95,
+       "x1_mm": 65.0,
+       "y0_mm": 73.15,
+       "y1_mm": 73.1
+      },
+      {
+       "drop_refuses": true,
+       "hw_mm": 0.6,
+       "kind": "ROUTED",
+       "net": "/01_POWER_TREE/BAT_PROTECTED_P",
+       "protected": true,
+       "tag": "track",
+       "x0_mm": 64.2,
+       "x1_mm": 63.75,
+       "y0_mm": 73.875,
+       "y1_mm": 74.325
+      },
+      {
+       "cx_mm": 63.3,
+       "cy_mm": 73.875,
+       "drop_refuses": true,
+       "kind": "ROUTED",
+       "net": "/01_POWER_TREE/BAT_PROTECTED_P",
+       "protected": true,
+       "r_mm": 0.4,
+       "tag": "via"
+      },
+      {
+       "cx_mm": 64.2,
+       "cy_mm": 72.975,
+       "drop_refuses": true,
+       "kind": "ROUTED",
+       "net": "/01_POWER_TREE/BAT_PROTECTED_P",
+       "protected": true,
+       "r_mm": 0.4,
+       "tag": "via"
+      },
+      {
+       "cx_mm": 64.2,
+       "cy_mm": 73.875,
+       "drop_refuses": true,
+       "kind": "ROUTED",
+       "net": "/01_POWER_TREE/BAT_PROTECTED_P",
+       "protected": true,
+       "r_mm": 0.4,
+       "tag": "via"
+      },
+      {
+       "cx_mm": 63.3,
+       "cy_mm": 73.875,
+       "drop_refuses": true,
+       "kind": "ROUTED",
+       "net": "/01_POWER_TREE/BAT_PROTECTED_P",
+       "protected": true,
+       "r_mm": 0.2,
+       "tag": "via/hole"
+      },
+      {
+       "cx_mm": 64.2,
+       "cy_mm": 72.975,
+       "drop_refuses": true,
+       "kind": "ROUTED",
+       "net": "/01_POWER_TREE/BAT_PROTECTED_P",
+       "protected": true,
+       "r_mm": 0.2,
+       "tag": "via/hole"
+      },
+      {
+       "cx_mm": 64.2,
+       "cy_mm": 73.875,
+       "drop_refuses": true,
+       "kind": "ROUTED",
+       "net": "/01_POWER_TREE/BAT_PROTECTED_P",
+       "protected": true,
+       "r_mm": 0.2,
+       "tag": "via/hole"
+      }
+     ],
+     "gap_mm": 5.595,
+     "inset_mm": 0.0,
+     "layer": "B",
+     "mm": 5.5952,
+     "n_fixed": 1,
+     "n_held": 19,
+     "n_routed": 18,
+     "rungs": [
+      {
+       "blockers": 21,
+       "inset_mm": 0.0,
+       "layer": "B",
+       "mm": 5.5952,
+       "n_fixed": 2,
+       "n_held": 21,
+       "n_routed": 19,
+       "verdict": "PLACEMENT_WALL",
+       "width": 600000
+      },
+      {
+       "blockers": 19,
+       "inset_mm": 0.0,
+       "layer": "B",
+       "mm": 5.5952,
+       "n_fixed": 1,
+       "n_held": 19,
+       "n_routed": 18,
+       "verdict": "PLACEMENT_WALL",
+       "width": 400000
+      }
+     ],
+     "verdict": "PLACEMENT_WALL",
+     "width": 400000
+    }
+   ],
+   "pairs_asked": 14,
+   "pairs_within_max": 14,
+   "seconds": 3.0,
+   "verdicts": {
+    "PLACEMENT_WALL": 13,
+    "UNRESOLVED": 1
+   },
+   "widths": [
+    600000,
+    400000
+   ]
+  },
+  {
+   "islands": 2,
+   "net": "/01_POWER_TREE/ACC_5V_LX",
+   "netclass": "SWITCH_NODE",
+   "pairs": [
+    {
+     "a": "L4.2",
+     "b": "U21.5",
+     "blockers": [
+      {
+       "cx_mm": 58.5125,
+       "cy_mm": 39.4,
+       "drop_refuses": true,
+       "kind": "PAD",
+       "net": "GND",
+       "r_mm": 0.0875,
+       "tag": "U21.4"
+      },
+      {
+       "cx_mm": 58.5125,
+       "cy_mm": 40.4,
+       "drop_refuses": true,
+       "kind": "PAD",
+       "net": "/01_POWER_TREE/ACC_5V_RAW",
+       "r_mm": 0.0875,
+       "tag": "U21.6"
+      },
+      {
+       "drop_refuses": true,
+       "hw_mm": 0.15,
+       "kind": "ROUTED",
+       "net": "GND",
+       "protected": false,
+       "tag": "track",
+       "x0_mm": 58.7,
+       "x1_mm": 60.6,
+       "y0_mm": 39.375,
+       "y1_mm": 38.425
+      },
+      {
+       "drop_refuses": true,
+       "hw_mm": 0.15,
+       "kind": "ROUTED",
+       "net": "GND",
+       "protected": false,
+       "tag": "track",
+       "x0_mm": 58.7,
+       "x1_mm": 60.6,
+       "y0_mm": 39.375,
+       "y1_mm": 38.425
+      },
+      {
+       "drop_refuses": true,
+       "hw_mm": 0.125,
+       "kind": "ROUTED",
+       "net": "/01_POWER_TREE/ACC_5V_RAW",
+       "protected": false,
+       "tag": "track",
+       "x0_mm": 58.5125,
+       "x1_mm": 59.0225,
+       "y0_mm": 40.4,
+       "y1_mm": 40.4
+      }
+     ],
+     "gap_mm": 4.02,
+     "inset_mm": 0.0,
+     "layer": "B",
+     "mm": 4.0203,
+     "n_fixed": 2,
+     "n_held": 5,
+     "n_routed": 3,
+     "rungs": [
+      {
+       "blockers": 6,
+       "inset_mm": 0.0,
+       "layer": "B",
+       "mm": 4.0203,
+       "n_fixed": 2,
+       "n_held": 6,
+       "n_routed": 4,
+       "verdict": "PLACEMENT_WALL",
+       "width": 600000
+      },
+      {
+       "blockers": 5,
+       "inset_mm": 0.0,
+       "layer": "B",
+       "mm": 4.0203,
+       "n_fixed": 2,
+       "n_held": 5,
+       "n_routed": 3,
+       "verdict": "PLACEMENT_WALL",
+       "width": 400000
+      }
+     ],
+     "verdict": "PLACEMENT_WALL",
+     "width": 400000
+    }
+   ],
+   "pairs_asked": 1,
+   "pairs_within_max": 1,
+   "seconds": 0.1,
+   "verdicts": {
+    "PLACEMENT_WALL": 1
+   },
+   "widths": [
+    600000,
+    400000
+   ]
+  },
+  {
+   "islands": 10,
+   "net": "/01_POWER_TREE/BQ25185_SYS",
+   "netclass": "SYS_MAIN",
+   "pairs": [
+    {
+     "a": "C24.1",
+     "b": "C26.2",
+     "blockers": [
+      {
+       "drop_refuses": true,
+       "hw_mm": 0.1,
+       "kind": "ROUTED",
+       "net": "Net-(U12-PS_SYNC)",
+       "protected": false,
+       "tag": "track",
+       "x0_mm": 62.325,
+       "x1_mm": 62.9,
+       "y0_mm": 104.575,
+       "y1_mm": 104.05
+      },
+      {
+       "drop_refuses": true,
+       "hw_mm": 0.1,
+       "kind": "ROUTED",
+       "net": "Net-(U12-PS_SYNC)",
+       "protected": false,
+       "tag": "track",
+       "x0_mm": 53.125,
+       "x1_mm": 62.325,
+       "y0_mm": 115.125,
+       "y1_mm": 105.15
+      },
+      {
+       "drop_refuses": true,
+       "hw_mm": 0.1,
+       "kind": "ROUTED",
+       "net": "Net-(U12-PS_SYNC)",
+       "protected": false,
+       "tag": "track",
+       "x0_mm": 62.9,
+       "x1_mm": 64.25,
+       "y0_mm": 104.05,
+       "y1_mm": 104.05
+      },
+      {
+       "drop_refuses": true,
+       "hw_mm": 0.1,
+       "kind": "ROUTED",
+       "net": "Net-(U12-PS_SYNC)",
+       "protected": false,
+       "tag": "track",
+       "x0_mm": 62.325,
+       "x1_mm": 62.325,
+       "y0_mm": 105.15,
+       "y1_mm": 104.575
+      }
+     ],
+     "gap_mm": 2.704,
+     "inset_mm": 0.0,
+     "layer": "B",
+     "mm": 2.7042,
+     "n_fixed": 0,
+     "n_held": 4,
+     "n_routed": 4,
+     "rungs": [
+      {
+       "blockers": 4,
+       "inset_mm": 0.0,
+       "layer": "B",
+       "mm": 2.7042,
+       "n_fixed": 0,
+       "n_held": 4,
+       "n_routed": 4,
+       "verdict": "EVICTABLE",
+       "width": 800000
+      },
+      {
+       "blockers": 4,
+       "inset_mm": 0.0,
+       "layer": "B",
+       "mm": 2.7042,
+       "n_fixed": 0,
+       "n_held": 4,
+       "n_routed": 4,
+       "verdict": "EVICTABLE",
+       "width": 500000
+      }
+     ],
+     "verdict": "EVICTABLE",
+     "width": 800000
+    },
+    {
+     "a": "U12.1",
+     "b": "U12.11",
+     "blockers": [
+      {
+       "cx_mm": 65.6,
+       "cy_mm": 100.0,
+       "drop_refuses": true,
+       "kind": "PAD",
+       "net": "GND",
+       "r_mm": 0.12,
+       "tag": "U12.2"
+      },
+      {
+       "cx_mm": 66.1,
+       "cy_mm": 102.8,
+       "drop_refuses": true,
+       "kind": "PAD",
+       "net": "Net-(SW9-A)",
+       "r_mm": 0.12,
+       "tag": "U12.12"
+      },
+      {
+       "cx_mm": 66.6,
+       "cy_mm": 101.4,
+       "drop_refuses": true,
+       "kind": "PAD",
+       "net": "GND",
+       "r_mm": 0.0,
+       "tag": "U12.15"
+      },
+      {
+       "drop_refuses": true,
+       "hw_mm": 0.15,
+       "kind": "ROUTED",
+       "net": "GND",
+       "protected": false,
+       "tag": "track",
+       "x0_mm": 65.5,
+       "x1_mm": 65.275,
+       "y0_mm": 100.5,
+       "y1_mm": 100.675
+      },
+      {
+       "drop_refuses": true,
+       "hw_mm": 0.15,
+       "kind": "ROUTED",
+       "net": "GND",
+       "protected": false,
+       "tag": "track",
+       "x0_mm": 64.95,
+       "x1_mm": 64.775,
+       "y0_mm": 100.675,
+       "y1_mm": 100.575
+      },
+      {
+       "drop_refuses": true,
+       "hw_mm": 0.15,
+       "kind": "ROUTED",
+       "net": "GND",
+       "protected": false,
+       "tag": "track",
+       "x0_mm": 65.275,
+       "x1_mm": 64.95,
+       "y0_mm": 100.675,
+       "y1_mm": 100.675
+      },
+      {
+       "drop_refuses": true,
+       "hw_mm": 0.15,
+       "kind": "ROUTED",
+       "net": "GND",
+       "protected": false,
+       "tag": "track",
+       "x0_mm": 64.6,
+       "x1_mm": 64.4,
+       "y0_mm": 100.4,
+       "y1_mm": 100.3
+      },
+      {
+       "drop_refuses": true,
+       "hw_mm": 0.15,
+       "kind": "ROUTED",
+       "net": "GND",
+       "protected": false,
+       "tag": "track",
+       "x0_mm": 64.6,
+       "x1_mm": 64.1,
+       "y0_mm": 100.4,
+       "y1_mm": 99.7
+      },
+      {
+       "drop_refuses": true,
+       "hw_mm": 0.15,
+       "kind": "ROUTED",
+       "net": "GND",
+       "protected": false,
+       "tag": "track",
+       "x0_mm": 65.6,
+       "x1_mm": 65.6,
+       "y0_mm": 100.0,
+       "y1_mm": 100.3
+      },
+      {
+       "drop_refuses": true,
+       "hw_mm": 0.15,
+       "kind": "ROUTED",
+       "net": "GND",
+       "protected": false,
+       "tag": "track",
+       "x0_mm": 65.6,
+       "x1_mm": 65.6,
+       "y0_mm": 100.0,
+       "y1_mm": 100.3
+      },
+      {
+       "drop_refuses": true,
+       "hw_mm": 0.15,
+       "kind": "ROUTED",
+       "net": "GND",
+       "protected": false,
+       "tag": "track",
+       "x0_mm": 65.6,
+       "x1_mm": 65.5,
+       "y0_mm": 100.3,
+       "y1_mm": 100.5
+      },
+      {
+       "drop_refuses": true,
+       "hw_mm": 0.15,
+       "kind": "ROUTED",
+       "net": "GND",
+       "protected": false,
+       "tag": "track",
+       "x0_mm": 65.275,
+       "x1_mm": 64.95,
+       "y0_mm": 100.675,
+       "y1_mm": 100.675
+      },
+      {
+       "drop_refuses": true,
+       "hw_mm": 0.15,
+       "kind": "ROUTED",
+       "net": "GND",
+       "protected": false,
+       "tag": "track",
+       "x0_mm": 65.6,
+       "x1_mm": 65.5,
+       "y0_mm": 100.3,
+       "y1_mm": 100.5
+      },
+      {
+       "drop_refuses": true,
+       "hw_mm": 0.15,
+       "kind": "ROUTED",
+       "net": "GND",
+       "protected": false,
+       "tag": "track",
+       "x0_mm": 65.5,
+       "x1_mm": 65.275,
+       "y0_mm": 100.5,
+       "y1_mm": 100.675
+      },
+      {
+       "drop_refuses": true,
+       "hw_mm": 0.15,
+       "kind": "ROUTED",
+       "net": "GND",
+       "protected": false,
+       "tag": "track",
+       "x0_mm": 66.6,
+       "x1_mm": 64.7,
+       "y0_mm": 101.4,
+       "y1_mm": 101.4
+      },
+      {
+       "drop_refuses": true,
+       "hw_mm": 0.15,
+       "kind": "ROUTED",
+       "net": "GND",
+       "protected": false,
+       "tag": "track",
+       "x0_mm": 64.775,
+       "x1_mm": 64.6,
+       "y0_mm": 100.575,
+       "y1_mm": 100.4
+      },
+      {
+       "drop_refuses": true,
+       "hw_mm": 0.15,
+       "kind": "ROUTED",
+       "net": "GND",
+       "protected": false,
+       "tag": "track",
+       "x0_mm": 64.775,
+       "x1_mm": 64.6,
+       "y0_mm": 100.575,
+       "y1_mm": 100.4
+      },
+      {
+       "drop_refuses": true,
+       "hw_mm": 0.15,
+       "kind": "ROUTED",
+       "net": "GND",
+       "protected": false,
+       "tag": "track",
+       "x0_mm": 64.95,
+       "x1_mm": 64.775,
+       "y0_mm": 100.675,
+       "y1_mm": 100.575
+      },
+      {
+       "drop_refuses": true,
+       "hw_mm": 0.1,
+       "kind": "ROUTED",
+       "net": "Net-(SW9-A)",
+       "protected": false,
+       "tag": "track",
+       "x0_mm": 66.1,
+       "x1_mm": 66.1,
+       "y0_mm": 102.8,
+       "y1_mm": 103.65
+      },
+      {
+       "drop_refuses": true,
+       "hw_mm": 0.1,
+       "kind": "ROUTED",
+       "net": "Net-(SW9-A)",
+       "protected": false,
+       "tag": "track",
+       "x0_mm": 66.1,
+       "x1_mm": 66.1,
+       "y0_mm": 102.8,
+       "y1_mm": 103.65
+      },
+      {
+       "cx_mm": 64.4,
+       "cy_mm": 100.3,
+       "drop_refuses": true,
+       "kind": "ROUTED",
+       "net": "GND",
+       "protected": false,
+       "r_mm": 0.3,
+       "tag": "via"
+      }
+     ],
+     "gap_mm": 3.176,
+     "inset_mm": 0.0,
+     "layer": "B",
+     "mm": 3.1765,
+     "n_fixed": 3,
+     "n_held": 21,
+     "n_routed": 18,
+     "rungs": [
+      {
+       "blockers": 23,
+       "inset_mm": 0.0,
+       "layer": "B",
+       "mm": 3.1765,
+       "n_fixed": 3,
+       "n_held": 23,
+       "n_routed": 20,
+       "verdict": "PLACEMENT_WALL",
+       "width": 800000
+      },
+      {
+       "blockers": 21,
+       "inset_mm": 0.0,
+       "layer": "B",
+       "mm": 3.1765,
+       "n_fixed": 3,
+       "n_held": 21,
+       "n_routed": 18,
+       "verdict": "PLACEMENT_WALL",
+       "width": 500000
+      }
+     ],
+     "verdict": "PLACEMENT_WALL",
+     "width": 500000
+    },
+    {
+     "a": "U12.1",
+     "b": "U12.10",
+     "blockers": [
+      {
+       "cx_mm": 65.6,
+       "cy_mm": 100.0,
+       "drop_refuses": true,
+       "kind": "PAD",
+       "net": "GND",
+       "r_mm": 0.12,
+       "tag": "U12.2"
+      },
+      {
+       "cx_mm": 67.6,
+       "cy_mm": 102.8,
+       "drop_refuses": true,
+       "kind": "PAD",
+       "net": "Net-(L1-Pad1)",
+       "r_mm": 0.12,
+       "tag": "U12.9"
+      },
+      {
+       "cx_mm": 66.6,
+       "cy_mm": 101.4,
+       "drop_refuses": true,
+       "kind": "PAD",
+       "net": "GND",
+       "r_mm": 0.0,
+       "tag": "U12.15"
+      },
+      {
+       "drop_refuses": true,
+       "hw_mm": 0.15,
+       "kind": "ROUTED",
+       "net": "GND",
+       "protected": false,
+       "tag": "track",
+       "x0_mm": 65.5,
+       "x1_mm": 65.275,
+       "y0_mm": 100.5,
+       "y1_mm": 100.675
+      },
+      {
+       "drop_refuses": true,
+       "hw_mm": 0.15,
+       "kind": "ROUTED",
+       "net": "GND",
+       "protected": false,
+       "tag": "track",
+       "x0_mm": 64.95,
+       "x1_mm": 64.775,
+       "y0_mm": 100.675,
+       "y1_mm": 100.575
+      },
+      {
+       "drop_refuses": true,
+       "hw_mm": 0.15,
+       "kind": "ROUTED",
+       "net": "GND",
+       "protected": false,
+       "tag": "track",
+       "x0_mm": 65.275,
+       "x1_mm": 64.95,
+       "y0_mm": 100.675,
+       "y1_mm": 100.675
+      },
+      {
+       "drop_refuses": true,
+       "hw_mm": 0.15,
+       "kind": "ROUTED",
+       "net": "GND",
+       "protected": false,
+       "tag": "track",
+       "x0_mm": 64.6,
+       "x1_mm": 64.4,
+       "y0_mm": 100.4,
+       "y1_mm": 100.3
+      },
+      {
+       "drop_refuses": true,
+       "hw_mm": 0.15,
+       "kind": "ROUTED",
+       "net": "GND",
+       "protected": false,
+       "tag": "track",
+       "x0_mm": 64.6,
+       "x1_mm": 64.1,
+       "y0_mm": 100.4,
+       "y1_mm": 99.7
+      },
+      {
+       "drop_refuses": true,
+       "hw_mm": 0.15,
+       "kind": "ROUTED",
+       "net": "GND",
+       "protected": false,
+       "tag": "track",
+       "x0_mm": 65.6,
+       "x1_mm": 65.6,
+       "y0_mm": 100.0,
+       "y1_mm": 100.3
+      },
+      {
+       "drop_refuses": true,
+       "hw_mm": 0.15,
+       "kind": "ROUTED",
+       "net": "GND",
+       "protected": false,
+       "tag": "track",
+       "x0_mm": 65.6,
+       "x1_mm": 65.6,
+       "y0_mm": 100.0,
+       "y1_mm": 100.3
+      },
+      {
+       "drop_refuses": true,
+       "hw_mm": 0.15,
+       "kind": "ROUTED",
+       "net": "GND",
+       "protected": false,
+       "tag": "track",
+       "x0_mm": 65.6,
+       "x1_mm": 65.5,
+       "y0_mm": 100.3,
+       "y1_mm": 100.5
+      },
+      {
+       "drop_refuses": true,
+       "hw_mm": 0.15,
+       "kind": "ROUTED",
+       "net": "GND",
+       "protected": false,
+       "tag": "track",
+       "x0_mm": 65.275,
+       "x1_mm": 64.95,
+       "y0_mm": 100.675,
+       "y1_mm": 100.675
+      },
+      {
+       "drop_refuses": true,
+       "hw_mm": 0.15,
+       "kind": "ROUTED",
+       "net": "GND",
+       "protected": false,
+       "tag": "track",
+       "x0_mm": 65.6,
+       "x1_mm": 65.5,
+       "y0_mm": 100.3,
+       "y1_mm": 100.5
+      },
+      {
+       "drop_refuses": true,
+       "hw_mm": 0.15,
+       "kind": "ROUTED",
+       "net": "GND",
+       "protected": false,
+       "tag": "track",
+       "x0_mm": 65.5,
+       "x1_mm": 65.275,
+       "y0_mm": 100.5,
+       "y1_mm": 100.675
+      },
+      {
+       "drop_refuses": true,
+       "hw_mm": 0.15,
+       "kind": "ROUTED",
+       "net": "GND",
+       "protected": false,
+       "tag": "track",
+       "x0_mm": 66.6,
+       "x1_mm": 64.7,
+       "y0_mm": 101.4,
+       "y1_mm": 101.4
+      },
+      {
+       "drop_refuses": true,
+       "hw_mm": 0.15,
+       "kind": "ROUTED",
+       "net": "GND",
+       "protected": false,
+       "tag": "track",
+       "x0_mm": 64.775,
+       "x1_mm": 64.6,
+       "y0_mm": 100.575,
+       "y1_mm": 100.4
+      },
+      {
+       "drop_refuses": true,
+       "hw_mm": 0.15,
+       "kind": "ROUTED",
+       "net": "GND",
+       "protected": false,
+       "tag": "track",
+       "x0_mm": 64.775,
+       "x1_mm": 64.6,
+       "y0_mm": 100.575,
+       "y1_mm": 100.4
+      },
+      {
+       "drop_refuses": true,
+       "hw_mm": 0.15,
+       "kind": "ROUTED",
+       "net": "GND",
+       "protected": false,
+       "tag": "track",
+       "x0_mm": 64.95,
+       "x1_mm": 64.775,
+       "y0_mm": 100.675,
+       "y1_mm": 100.575
+      },
+      {
+       "drop_refuses": true,
+       "hw_mm": 0.1,
+       "kind": "ROUTED",
+       "net": "Net-(L1-Pad1)",
+       "protected": false,
+       "tag": "track",
+       "x0_mm": 67.6,
+       "x1_mm": 68.1,
+       "y0_mm": 102.8,
+       "y1_mm": 102.8
+      },
+      {
+       "cx_mm": 64.4,
+       "cy_mm": 100.3,
+       "drop_refuses": true,
+       "kind": "ROUTED",
+       "net": "GND",
+       "protected": false,
+       "r_mm": 0.3,
+       "tag": "via"
+      }
+     ],
+     "gap_mm": 3.441,
+     "inset_mm": 0.0,
+     "layer": "B",
+     "mm": 3.4409,
+     "n_fixed": 3,
+     "n_held": 20,
+     "n_routed": 17,
+     "rungs": [
+      {
+       "blockers": 23,
+       "inset_mm": 0.0,
+       "layer": "B",
+       "mm": 3.4409,
+       "n_fixed": 5,
+       "n_held": 23,
+       "n_routed": 18,
+       "verdict": "PLACEMENT_WALL",
+       "width": 800000
+      },
+      {
+       "blockers": 20,
+       "inset_mm": 0.0,
+       "layer": "B",
+       "mm": 3.4409,
+       "n_fixed": 3,
+       "n_held": 20,
+       "n_routed": 17,
+       "verdict": "PLACEMENT_WALL",
+       "width": 500000
+      }
+     ],
+     "verdict": "PLACEMENT_WALL",
+     "width": 500000
+    },
+    {
+     "a": "C27.1",
+     "b": "U11.1",
+     "blockers": [
+      {
+       "cx_mm": 66.4,
+       "cy_mm": 78.2,
+       "drop_refuses": true,
+       "kind": "PAD",
+       "net": "/01_POWER_TREE/BAT_PROTECTED_P",
+       "r_mm": 0.05,
+       "tag": "U11.2"
+      },
+      {
+       "cx_mm": 66.4,
+       "cy_mm": 77.8,
+       "drop_refuses": true,
+       "kind": "PAD",
+       "net": "/BQ25185_STAT2",
+       "r_mm": 0.05,
+       "tag": "U11.3"
+      },
+      {
+       "cx_mm": 66.4,
+       "cy_mm": 77.4,
+       "drop_refuses": true,
+       "kind": "PAD",
+       "net": "GND",
+       "r_mm": 0.05,
+       "tag": "U11.4"
+      },
+      {
+       "cx_mm": 66.4,
+       "cy_mm": 77.0,
+       "drop_refuses": true,
+       "kind": "PAD",
+       "net": "GND",
+       "r_mm": 0.05,
+       "tag": "U11.5"
+      },
+      {
+       "drop_refuses": true,
+       "hw_mm": 0.15,
+       "kind": "ROUTED",
+       "net": "/01_POWER_TREE/BAT_PROTECTED_P",
+       "protected": true,
+       "tag": "track",
+       "x0_mm": 65.825,
+       "x1_mm": 65.725,
+       "y0_mm": 78.2,
+       "y1_mm": 78.2
+      },
+      {
+       "drop_refuses": true,
+       "hw_mm": 0.2,
+       "kind": "ROUTED",
+       "net": "/01_POWER_TREE/BAT_PROTECTED_P",
+       "protected": true,
+       "tag": "track",
+       "x0_mm": 65.725,
+       "x1_mm": 65.625,
+       "y0_mm": 78.2,
+       "y1_mm": 78.2
+      },
+      {
+       "drop_refuses": true,
+       "hw_mm": 0.3,
+       "kind": "ROUTED",
+       "net": "/01_POWER_TREE/BAT_PROTECTED_P",
+       "protected": true,
+       "tag": "track",
+       "x0_mm": 65.6,
+       "x1_mm": 65.5,
+       "y0_mm": 78.2,
+       "y1_mm": 78.1
+      },
+      {
+       "drop_refuses": true,
+       "hw_mm": 0.1,
+       "kind": "ROUTED",
+       "net": "/01_POWER_TREE/BAT_PROTECTED_P",
+       "protected": true,
+       "tag": "track",
+       "x0_mm": 66.4,
+       "x1_mm": 65.95,
+       "y0_mm": 78.2,
+       "y1_mm": 78.2
+      },
+      {
+       "drop_refuses": true,
+       "hw_mm": 0.1,
+       "kind": "ROUTED",
+       "net": "/01_POWER_TREE/BAT_PROTECTED_P",
+       "protected": true,
+       "tag": "track",
+       "x0_mm": 66.4,
+       "x1_mm": 65.5,
+       "y0_mm": 78.2,
+       "y1_mm": 78.2
+      },
+      {
+       "drop_refuses": true,
+       "hw_mm": 0.1,
+       "kind": "ROUTED",
+       "net": "/01_POWER_TREE/BAT_PROTECTED_P",
+       "protected": true,
+       "tag": "track",
+       "x0_mm": 65.95,
+       "x1_mm": 65.825,
+       "y0_mm": 78.2,
+       "y1_mm": 78.2
+      },
+      {
+       "drop_refuses": true,
+       "hw_mm": 0.5,
+       "kind": "ROUTED",
+       "net": "/01_POWER_TREE/BAT_PROTECTED_P",
+       "protected": true,
+       "tag": "track",
+       "x0_mm": 65.425,
+       "x1_mm": 65.325,
+       "y0_mm": 76.525,
+       "y1_mm": 76.425
+      },
+      {
+       "drop_refuses": true,
+       "hw_mm": 0.3,
+       "kind": "ROUTED",
+       "net": "/01_POWER_TREE/BAT_PROTECTED_P",
+       "protected": true,
+       "tag": "track",
+       "x0_mm": 65.625,
+       "x1_mm": 65.6,
+       "y0_mm": 78.2,
+       "y1_mm": 78.2
+      },
+      {
+       "cx_mm": 66.8,
+       "cy_mm": 79.4464,
+       "drop_refuses": true,
+       "kind": "ROUTED",
+       "net": "/01_POWER_TREE/USB_VBUS_CHG",
+       "protected": false,
+       "r_mm": 0.45,
+       "tag": "via"
+      }
+     ],
+     "gap_mm": 3.602,
+     "inset_mm": 0.0,
+     "layer": "B",
+     "mm": 3.6022,
+     "n_fixed": 4,
+     "n_held": 13,
+     "n_routed": 9,
+     "rungs": [
+      {
+       "blockers": 20,
+       "inset_mm": 0.0,
+       "layer": "B",
+       "mm": 3.6022,
+       "n_fixed": 5,
+       "n_held": 20,
+       "n_routed": 15,
+       "verdict": "PLACEMENT_WALL",
+       "width": 800000
+      },
+      {
+       "blockers": 13,
+       "inset_mm": 0.0,
+       "layer": "B",
+       "mm": 3.6022,
+       "n_fixed": 4,
+       "n_held": 13,
+       "n_routed": 9,
+       "verdict": "PLACEMENT_WALL",
+       "width": 500000
+      }
+     ],
+     "verdict": "PLACEMENT_WALL",
+     "width": 500000
+    },
+    {
+     "a": "L2.1",
+     "b": "U13.3",
+     "blockers": [
+      {
+       "cx_mm": 57.5875,
+       "cy_mm": 22.7,
+       "drop_refuses": true,
+       "kind": "PAD",
+       "net": "/NFC_5V_EN",
+       "r_mm": 0.0875,
+       "tag": "U13.2"
+      },
+      {
+       "drop_refuses": true,
+       "hw_mm": 0.1,
+       "kind": "ROUTED",
+       "net": "/NFC_5V_EN",
+       "protected": false,
+       "tag": "track",
+       "x0_mm": 57.5875,
+       "x1_mm": 56.8,
+       "y0_mm": 22.7,
+       "y1_mm": 22.7
+      },
+      {
+       "drop_refuses": true,
+       "hw_mm": 0.1,
+       "kind": "ROUTED",
+       "net": "/NFC_5V_EN",
+       "protected": false,
+       "tag": "track",
+       "x0_mm": 57.5875,
+       "x1_mm": 56.8,
+       "y0_mm": 22.7,
+       "y1_mm": 22.7
+      },
+      {
+       "drop_refuses": true,
+       "hw_mm": 0.1,
+       "kind": "ROUTED",
+       "net": "/NFC_5V_EN",
+       "protected": false,
+       "tag": "track",
+       "x0_mm": 58.6,
+       "x1_mm": 56.6,
+       "y0_mm": 20.5,
+       "y1_mm": 22.0
+      }
+     ],
+     "gap_mm": 3.802,
+     "inset_mm": 0.0,
+     "layer": "B",
+     "mm": 3.8021,
+     "n_fixed": 1,
+     "n_held": 4,
+     "n_routed": 3,
+     "rungs": [
+      {
+       "blockers": 4,
+       "inset_mm": 0.0,
+       "layer": "B",
+       "mm": 3.8021,
+       "n_fixed": 1,
+       "n_held": 4,
+       "n_routed": 3,
+       "verdict": "PLACEMENT_WALL",
+       "width": 800000
+      },
+      {
+       "blockers": 4,
+       "inset_mm": 0.0,
+       "layer": "B",
+       "mm": 3.8021,
+       "n_fixed": 1,
+       "n_held": 4,
+       "n_routed": 3,
+       "verdict": "PLACEMENT_WALL",
+       "width": 500000
+      }
+     ],
+     "verdict": "PLACEMENT_WALL",
+     "width": 800000
+    },
+    {
+     "a": "C26.2",
+     "b": "U12.11",
+     "blockers": [
+      {
+       "cx_mm": 66.1,
+       "cy_mm": 102.8,
+       "drop_refuses": true,
+       "kind": "PAD",
+       "net": "Net-(SW9-A)",
+       "r_mm": 0.12,
+       "tag": "U12.12"
+      },
+      {
+       "cx_mm": 65.6,
+       "cy_mm": 102.8,
+       "drop_refuses": true,
+       "kind": "PAD",
+       "net": "Net-(U12-PS_SYNC)",
+       "r_mm": 0.12,
+       "tag": "U12.13"
+      },
+      {
+       "cx_mm": 75.0,
+       "cy_mm": 128.0,
+       "drop_refuses": true,
+       "kind": "KEEPOUT",
+       "net": null,
+       "r_mm": 0.0,
+       "tag": "KO"
+      },
+      {
+       "cx_mm": 75.0,
+       "cy_mm": 128.0,
+       "drop_refuses": true,
+       "kind": "KEEPOUT",
+       "net": null,
+       "r_mm": 0.0,
+       "tag": "KO"
+      },
+      {
+       "drop_refuses": true,
+       "hw_mm": 0.1,
+       "kind": "ROUTED",
+       "net": "Net-(SW9-A)",
+       "protected": false,
+       "tag": "track",
+       "x0_mm": 66.1,
+       "x1_mm": 69.15,
+       "y0_mm": 103.65,
+       "y1_mm": 103.425
+      },
+      {
+       "drop_refuses": true,
+       "hw_mm": 0.1,
+       "kind": "ROUTED",
+       "net": "Net-(SW9-A)",
+       "protected": false,
+       "tag": "track",
+       "x0_mm": 66.1,
+       "x1_mm": 66.35,
+       "y0_mm": 103.65,
+       "y1_mm": 103.65
+      },
+      {
+       "drop_refuses": true,
+       "hw_mm": 0.1,
+       "kind": "ROUTED",
+       "net": "Net-(SW9-A)",
+       "protected": false,
+       "tag": "track",
+       "x0_mm": 66.1,
+       "x1_mm": 66.1,
+       "y0_mm": 102.8,
+       "y1_mm": 103.65
+      },
+      {
+       "drop_refuses": true,
+       "hw_mm": 0.1,
+       "kind": "ROUTED",
+       "net": "Net-(SW9-A)",
+       "protected": false,
+       "tag": "track",
+       "x0_mm": 66.1,
+       "x1_mm": 66.1,
+       "y0_mm": 102.8,
+       "y1_mm": 103.65
+      },
+      {
+       "drop_refuses": true,
+       "hw_mm": 0.1,
+       "kind": "ROUTED",
+       "net": "Net-(U12-PS_SYNC)",
+       "protected": false,
+       "tag": "track",
+       "x0_mm": 64.25,
+       "x1_mm": 64.95,
+       "y0_mm": 104.05,
+       "y1_mm": 103.425
+      },
+      {
+       "drop_refuses": true,
+       "hw_mm": 0.1,
+       "kind": "ROUTED",
+       "net": "Net-(U12-PS_SYNC)",
+       "protected": false,
+       "tag": "track",
+       "x0_mm": 65.6,
+       "x1_mm": 65.6,
+       "y0_mm": 102.8,
+       "y1_mm": 103.55
+      },
+      {
+       "drop_refuses": true,
+       "hw_mm": 0.1,
+       "kind": "ROUTED",
+       "net": "Net-(U12-PS_SYNC)",
+       "protected": false,
+       "tag": "track",
+       "x0_mm": 64.95,
+       "x1_mm": 65.6,
+       "y0_mm": 103.425,
+       "y1_mm": 103.55
+      },
+      {
+       "drop_refuses": true,
+       "hw_mm": 0.1,
+       "kind": "ROUTED",
+       "net": "Net-(U12-PS_SYNC)",
+       "protected": false,
+       "tag": "track",
+       "x0_mm": 62.9,
+       "x1_mm": 64.25,
+       "y0_mm": 104.05,
+       "y1_mm": 104.05
+      },
+      {
+       "cx_mm": 66.35,
+       "cy_mm": 103.65,
+       "drop_refuses": true,
+       "kind": "ROUTED",
+       "net": "Net-(SW9-A)",
+       "protected": false,
+       "r_mm": 0.3,
+       "tag": "via"
+      },
+      {
+       "cx_mm": 66.35,
+       "cy_mm": 103.65,
+       "drop_refuses": true,
+       "kind": "ROUTED",
+       "net": "Net-(SW9-A)",
+       "protected": false,
+       "r_mm": 0.15,
+       "tag": "via/hole"
+      }
+     ],
+     "gap_mm": 4.322,
+     "inset_mm": 0.0,
+     "layer": "B",
+     "mm": 4.3221,
+     "n_fixed": 4,
+     "n_held": 14,
+     "n_routed": 10,
+     "rungs": [
+      {
+       "blockers": 14,
+       "inset_mm": 0.0,
+       "layer": "B",
+       "mm": 4.3221,
+       "n_fixed": 4,
+       "n_held": 14,
+       "n_routed": 10,
+       "verdict": "PLACEMENT_WALL",
+       "width": 800000
+      },
+      {
+       "blockers": 14,
+       "inset_mm": 0.0,
+       "layer": "B",
+       "mm": 4.3221,
+       "n_fixed": 4,
+       "n_held": 14,
+       "n_routed": 10,
+       "verdict": "PLACEMENT_WALL",
+       "width": 500000
+      }
+     ],
+     "verdict": "PLACEMENT_WALL",
+     "width": 800000
+    },
+    {
+     "a": "C27.1",
+     "b": "R68.1",
+     "gap_mm": 4.574,
+     "rungs": [],
+     "verdict": "UNRESOLVED",
+     "why": "no rung on the permitted ladder resolved within --cap 48 objects"
+    },
+    {
+     "a": "C24.1",
+     "b": "U12.1",
+     "blockers": [
+      {
+       "cx_mm": 65.6,
+       "cy_mm": 100.0,
+       "drop_refuses": true,
+       "kind": "PAD",
+       "net": "GND",
+       "r_mm": 0.12,
+       "tag": "U12.2"
+      },
+      {
+       "drop_refuses": true,
+       "hw_mm": 0.15,
+       "kind": "ROUTED",
+       "net": "GND",
+       "protected": false,
+       "tag": "track",
+       "x0_mm": 65.5,
+       "x1_mm": 65.275,
+       "y0_mm": 100.5,
+       "y1_mm": 100.675
+      },
+      {
+       "drop_refuses": true,
+       "hw_mm": 0.15,
+       "kind": "ROUTED",
+       "net": "GND",
+       "protected": false,
+       "tag": "track",
+       "x0_mm": 64.95,
+       "x1_mm": 64.775,
+       "y0_mm": 100.675,
+       "y1_mm": 100.575
+      },
+      {
+       "drop_refuses": true,
+       "hw_mm": 0.15,
+       "kind": "ROUTED",
+       "net": "GND",
+       "protected": false,
+       "tag": "track",
+       "x0_mm": 65.275,
+       "x1_mm": 64.95,
+       "y0_mm": 100.675,
+       "y1_mm": 100.675
+      },
+      {
+       "drop_refuses": true,
+       "hw_mm": 0.15,
+       "kind": "ROUTED",
+       "net": "GND",
+       "protected": false,
+       "tag": "track",
+       "x0_mm": 64.6,
+       "x1_mm": 64.4,
+       "y0_mm": 100.4,
+       "y1_mm": 100.3
+      },
+      {
+       "drop_refuses": true,
+       "hw_mm": 0.15,
+       "kind": "ROUTED",
+       "net": "GND",
+       "protected": false,
+       "tag": "track",
+       "x0_mm": 64.6,
+       "x1_mm": 64.1,
+       "y0_mm": 100.4,
+       "y1_mm": 99.7
+      },
+      {
+       "drop_refuses": true,
+       "hw_mm": 0.15,
+       "kind": "ROUTED",
+       "net": "GND",
+       "protected": false,
+       "tag": "track",
+       "x0_mm": 65.6,
+       "x1_mm": 65.6,
+       "y0_mm": 100.0,
+       "y1_mm": 100.3
+      },
+      {
+       "drop_refuses": true,
+       "hw_mm": 0.15,
+       "kind": "ROUTED",
+       "net": "GND",
+       "protected": false,
+       "tag": "track",
+       "x0_mm": 64.7,
+       "x1_mm": 64.3,
+       "y0_mm": 101.4,
+       "y1_mm": 101.0
+      },
+      {
+       "drop_refuses": true,
+       "hw_mm": 0.15,
+       "kind": "ROUTED",
+       "net": "GND",
+       "protected": false,
+       "tag": "track",
+       "x0_mm": 65.6,
+       "x1_mm": 65.6,
+       "y0_mm": 100.0,
+       "y1_mm": 100.3
+      },
+      {
+       "drop_refuses": true,
+       "hw_mm": 0.15,
+       "kind": "ROUTED",
+       "net": "GND",
+       "protected": false,
+       "tag": "track",
+       "x0_mm": 65.6,
+       "x1_mm": 65.5,
+       "y0_mm": 100.3,
+       "y1_mm": 100.5
+      },
+      {
+       "drop_refuses": true,
+       "hw_mm": 0.15,
+       "kind": "ROUTED",
+       "net": "GND",
+       "protected": false,
+       "tag": "track",
+       "x0_mm": 60.9,
+       "x1_mm": 63.0,
+       "y0_mm": 102.3,
+       "y1_mm": 102.3
+      },
+      {
+       "drop_refuses": true,
+       "hw_mm": 0.15,
+       "kind": "ROUTED",
+       "net": "GND",
+       "protected": false,
+       "tag": "track",
+       "x0_mm": 65.275,
+       "x1_mm": 64.95,
+       "y0_mm": 100.675,
+       "y1_mm": 100.675
+      },
+      {
+       "drop_refuses": true,
+       "hw_mm": 0.15,
+       "kind": "ROUTED",
+       "net": "GND",
+       "protected": false,
+       "tag": "track",
+       "x0_mm": 65.6,
+       "x1_mm": 65.5,
+       "y0_mm": 100.3,
+       "y1_mm": 100.5
+      },
+      {
+       "drop_refuses": true,
+       "hw_mm": 0.15,
+       "kind": "ROUTED",
+       "net": "GND",
+       "protected": false,
+       "tag": "track",
+       "x0_mm": 65.5,
+       "x1_mm": 65.275,
+       "y0_mm": 100.5,
+       "y1_mm": 100.675
+      },
+      {
+       "drop_refuses": true,
+       "hw_mm": 0.15,
+       "kind": "ROUTED",
+       "net": "GND",
+       "protected": false,
+       "tag": "track",
+       "x0_mm": 64.775,
+       "x1_mm": 64.6,
+       "y0_mm": 100.575,
+       "y1_mm": 100.4
+      },
+      {
+       "drop_refuses": true,
+       "hw_mm": 0.15,
+       "kind": "ROUTED",
+       "net": "GND",
+       "protected": false,
+       "tag": "track",
+       "x0_mm": 64.775,
+       "x1_mm": 64.6,
+       "y0_mm": 100.575,
+       "y1_mm": 100.4
+      },
+      {
+       "drop_refuses": true,
+       "hw_mm": 0.15,
+       "kind": "ROUTED",
+       "net": "GND",
+       "protected": false,
+       "tag": "track",
+       "x0_mm": 64.95,
+       "x1_mm": 64.775,
+       "y0_mm": 100.675,
+       "y1_mm": 100.575
+      },
+      {
+       "drop_refuses": true,
+       "hw_mm": 0.1,
+       "kind": "ROUTED",
+       "net": "Net-(U12-PG)",
+       "protected": false,
+       "tag": "track",
+       "x0_mm": 62.025,
+       "x1_mm": 64.525,
+       "y0_mm": 100.325,
+       "y1_mm": 102.8
+      },
+      {
+       "cx_mm": 63.0,
+       "cy_mm": 102.3,
+       "drop_refuses": true,
+       "kind": "ROUTED",
+       "net": "GND",
+       "protected": false,
+       "r_mm": 0.3,
+       "tag": "via"
+      },
+      {
+       "cx_mm": 63.0,
+       "cy_mm": 103.0,
+       "drop_refuses": true,
+       "kind": "ROUTED",
+       "net": "GND",
+       "protected": false,
+       "r_mm": 0.3,
+       "tag": "via"
+      },
+      {
+       "cx_mm": 64.3,
+       "cy_mm": 101.0,
+       "drop_refuses": true,
+       "kind": "ROUTED",
+       "net": "GND",
+       "protected": false,
+       "r_mm": 0.3,
+       "tag": "via"
+      },
+      {
+       "cx_mm": 64.4,
+       "cy_mm": 100.3,
+       "drop_refuses": true,
+       "kind": "ROUTED",
+       "net": "GND",
+       "protected": false,
+       "r_mm": 0.3,
+       "tag": "via"
+      },
+      {
+       "cx_mm": 63.0,
+       "cy_mm": 102.3,
+       "drop_refuses": true,
+       "kind": "ROUTED",
+       "net": "GND",
+       "protected": false,
+       "r_mm": 0.15,
+       "tag": "via/hole"
+      },
+      {
+       "cx_mm": 64.3,
+       "cy_mm": 101.0,
+       "drop_refuses": true,
+       "kind": "ROUTED",
+       "net": "GND",
+       "protected": false,
+       "r_mm": 0.15,
+       "tag": "via/hole"
+      },
+      {
+       "cx_mm": 64.4,
+       "cy_mm": 100.3,
+       "drop_refuses": true,
+       "kind": "ROUTED",
+       "net": "GND",
+       "protected": false,
+       "r_mm": 0.15,
+       "tag": "via/hole"
+      }
+     ],
+     "gap_mm": 4.685,
+     "inset_mm": 0.0,
+     "layer": "B",
+     "mm": 4.6854,
+     "n_fixed": 1,
+     "n_held": 25,
+     "n_routed": 24,
+     "rungs": [
+      {
+       "blockers": 31,
+       "inset_mm": 0.0,
+       "layer": "B",
+       "mm": 4.6854,
+       "n_fixed": 3,
+       "n_held": 31,
+       "n_routed": 28,
+       "verdict": "PLACEMENT_WALL",
+       "width": 800000
+      },
+      {
+       "blockers": 25,
+       "inset_mm": 0.0,
+       "layer": "B",
+       "mm": 4.6854,
+       "n_fixed": 1,
+       "n_held": 25,
+       "n_routed": 24,
+       "verdict": "PLACEMENT_WALL",
+       "width": 500000
+      }
+     ],
+     "verdict": "PLACEMENT_WALL",
+     "width": 500000
+    },
+    {
+     "a": "C26.2",
+     "b": "U12.10",
+     "blockers": [
+      {
+       "cx_mm": 67.6,
+       "cy_mm": 102.8,
+       "drop_refuses": true,
+       "kind": "PAD",
+       "net": "Net-(L1-Pad1)",
+       "r_mm": 0.12,
+       "tag": "U12.9"
+      },
+      {
+       "cx_mm": 66.1,
+       "cy_mm": 102.8,
+       "drop_refuses": true,
+       "kind": "PAD",
+       "net": "Net-(SW9-A)",
+       "r_mm": 0.12,
+       "tag": "U12.12"
+      },
+      {
+       "cx_mm": 75.0,
+       "cy_mm": 128.0,
+       "drop_refuses": true,
+       "kind": "KEEPOUT",
+       "net": null,
+       "r_mm": 0.0,
+       "tag": "KO"
+      },
+      {
+       "cx_mm": 75.0,
+       "cy_mm": 128.0,
+       "drop_refuses": true,
+       "kind": "KEEPOUT",
+       "net": null,
+       "r_mm": 0.0,
+       "tag": "KO"
+      },
+      {
+       "drop_refuses": true,
+       "hw_mm": 0.1,
+       "kind": "ROUTED",
+       "net": "Net-(SW9-A)",
+       "protected": false,
+       "tag": "track",
+       "x0_mm": 66.1,
+       "x1_mm": 69.15,
+       "y0_mm": 103.65,
+       "y1_mm": 103.425
+      },
+      {
+       "drop_refuses": true,
+       "hw_mm": 0.1,
+       "kind": "ROUTED",
+       "net": "Net-(SW9-A)",
+       "protected": false,
+       "tag": "track",
+       "x0_mm": 66.1,
+       "x1_mm": 66.35,
+       "y0_mm": 103.65,
+       "y1_mm": 103.65
+      },
+      {
+       "drop_refuses": true,
+       "hw_mm": 0.1,
+       "kind": "ROUTED",
+       "net": "Net-(SW9-A)",
+       "protected": false,
+       "tag": "track",
+       "x0_mm": 66.1,
+       "x1_mm": 66.1,
+       "y0_mm": 102.8,
+       "y1_mm": 103.65
+      },
+      {
+       "drop_refuses": true,
+       "hw_mm": 0.1,
+       "kind": "ROUTED",
+       "net": "Net-(SW9-A)",
+       "protected": false,
+       "tag": "track",
+       "x0_mm": 66.1,
+       "x1_mm": 66.1,
+       "y0_mm": 102.8,
+       "y1_mm": 103.65
+      },
+      {
+       "drop_refuses": true,
+       "hw_mm": 0.1,
+       "kind": "ROUTED",
+       "net": "Net-(U12-PS_SYNC)",
+       "protected": false,
+       "tag": "track",
+       "x0_mm": 65.6,
+       "x1_mm": 65.6,
+       "y0_mm": 102.8,
+       "y1_mm": 103.55
+      },
+      {
+       "drop_refuses": true,
+       "hw_mm": 0.1,
+       "kind": "ROUTED",
+       "net": "Net-(U12-PS_SYNC)",
+       "protected": false,
+       "tag": "track",
+       "x0_mm": 64.95,
+       "x1_mm": 65.6,
+       "y0_mm": 103.425,
+       "y1_mm": 103.55
+      },
+      {
+       "drop_refuses": true,
+       "hw_mm": 0.1,
+       "kind": "ROUTED",
+       "net": "Net-(L1-Pad1)",
+       "protected": false,
+       "tag": "track",
+       "x0_mm": 67.6,
+       "x1_mm": 68.1,
+       "y0_mm": 102.8,
+       "y1_mm": 102.8
+      },
+      {
+       "cx_mm": 66.35,
+       "cy_mm": 103.65,
+       "drop_refuses": true,
+       "kind": "ROUTED",
+       "net": "Net-(SW9-A)",
+       "protected": false,
+       "r_mm": 0.3,
+       "tag": "via"
+      },
+      {
+       "cx_mm": 66.35,
+       "cy_mm": 103.65,
+       "drop_refuses": true,
+       "kind": "ROUTED",
+       "net": "Net-(SW9-A)",
+       "protected": false,
+       "r_mm": 0.15,
+       "tag": "via/hole"
+      }
+     ],
+     "gap_mm": 4.723,
+     "inset_mm": 0.0,
+     "layer": "B",
+     "mm": 4.7229,
+     "n_fixed": 4,
+     "n_held": 13,
+     "n_routed": 9,
+     "rungs": [
+      {
+       "blockers": 16,
+       "inset_mm": 0.0,
+       "layer": "B",
+       "mm": 4.7229,
+       "n_fixed": 5,
+       "n_held": 16,
+       "n_routed": 11,
+       "verdict": "PLACEMENT_WALL",
+       "width": 800000
+      },
+      {
+       "blockers": 13,
+       "inset_mm": 0.0,
+       "layer": "B",
+       "mm": 4.7229,
+       "n_fixed": 4,
+       "n_held": 13,
+       "n_routed": 9,
+       "verdict": "PLACEMENT_WALL",
+       "width": 500000
+      }
+     ],
+     "verdict": "PLACEMENT_WALL",
+     "width": 500000
+    },
+    {
+     "a": "C24.1",
+     "b": "U12.11",
+     "blockers": [
+      {
+       "cx_mm": 63.275,
+       "cy_mm": 103.25,
+       "drop_refuses": true,
+       "kind": "PAD",
+       "net": "GND",
+       "r_mm": 0.225,
+       "tag": "C24.2"
+      },
+      {
+       "cx_mm": 66.1,
+       "cy_mm": 102.8,
+       "drop_refuses": true,
+       "kind": "PAD",
+       "net": "Net-(SW9-A)",
+       "r_mm": 0.12,
+       "tag": "U12.12"
+      },
+      {
+       "cx_mm": 65.6,
+       "cy_mm": 102.8,
+       "drop_refuses": true,
+       "kind": "PAD",
+       "net": "Net-(U12-PS_SYNC)",
+       "r_mm": 0.12,
+       "tag": "U12.13"
+      },
+      {
+       "cx_mm": 65.1,
+       "cy_mm": 102.8,
+       "drop_refuses": true,
+       "kind": "PAD",
+       "net": "Net-(U12-PG)",
+       "r_mm": 0.12,
+       "tag": "U12.14"
+      },
+      {
+       "drop_refuses": true,
+       "hw_mm": 0.15,
+       "kind": "ROUTED",
+       "net": "GND",
+       "protected": false,
+       "tag": "track",
+       "x0_mm": 63.05,
+       "x1_mm": 63.0,
+       "y0_mm": 103.0,
+       "y1_mm": 103.0
+      },
+      {
+       "drop_refuses": true,
+       "hw_mm": 0.1,
+       "kind": "ROUTED",
+       "net": "Net-(SW9-A)",
+       "protected": false,
+       "tag": "track",
+       "x0_mm": 66.1,
+       "x1_mm": 66.1,
+       "y0_mm": 102.8,
+       "y1_mm": 103.65
+      },
+      {
+       "drop_refuses": true,
+       "hw_mm": 0.1,
+       "kind": "ROUTED",
+       "net": "Net-(SW9-A)",
+       "protected": false,
+       "tag": "track",
+       "x0_mm": 66.1,
+       "x1_mm": 66.1,
+       "y0_mm": 102.8,
+       "y1_mm": 103.65
+      },
+      {
+       "drop_refuses": true,
+       "hw_mm": 0.1,
+       "kind": "ROUTED",
+       "net": "Net-(U12-PG)",
+       "protected": false,
+       "tag": "track",
+       "x0_mm": 62.025,
+       "x1_mm": 64.525,
+       "y0_mm": 100.325,
+       "y1_mm": 102.8
+      },
+      {
+       "drop_refuses": true,
+       "hw_mm": 0.1,
+       "kind": "ROUTED",
+       "net": "Net-(U12-PG)",
+       "protected": false,
+       "tag": "track",
+       "x0_mm": 65.1,
+       "x1_mm": 64.525,
+       "y0_mm": 102.8,
+       "y1_mm": 102.8
+      },
+      {
+       "drop_refuses": true,
+       "hw_mm": 0.1,
+       "kind": "ROUTED",
+       "net": "Net-(U12-PS_SYNC)",
+       "protected": false,
+       "tag": "track",
+       "x0_mm": 64.25,
+       "x1_mm": 64.95,
+       "y0_mm": 104.05,
+       "y1_mm": 103.425
+      },
+      {
+       "drop_refuses": true,
+       "hw_mm": 0.1,
+       "kind": "ROUTED",
+       "net": "Net-(U12-PS_SYNC)",
+       "protected": false,
+       "tag": "track",
+       "x0_mm": 65.6,
+       "x1_mm": 65.6,
+       "y0_mm": 102.8,
+       "y1_mm": 103.55
+      },
+      {
+       "drop_refuses": true,
+       "hw_mm": 0.1,
+       "kind": "ROUTED",
+       "net": "Net-(U12-PS_SYNC)",
+       "protected": false,
+       "tag": "track",
+       "x0_mm": 64.95,
+       "x1_mm": 65.6,
+       "y0_mm": 103.425,
+       "y1_mm": 103.55
+      },
+      {
+       "cx_mm": 63.0,
+       "cy_mm": 103.0,
+       "drop_refuses": true,
+       "kind": "ROUTED",
+       "net": "GND",
+       "protected": false,
+       "r_mm": 0.3,
+       "tag": "via"
+      },
+      {
+       "cx_mm": 63.0,
+       "cy_mm": 103.0,
+       "drop_refuses": true,
+       "kind": "ROUTED",
+       "net": "GND",
+       "protected": false,
+       "r_mm": 0.15,
+       "tag": "via/hole"
+      }
+     ],
+     "gap_mm": 4.896,
+     "inset_mm": 0.0,
+     "layer": "B",
+     "mm": 4.8957,
+     "n_fixed": 4,
+     "n_held": 14,
+     "n_routed": 10,
+     "rungs": [
+      {
+       "blockers": 16,
+       "inset_mm": 0.0,
+       "layer": "B",
+       "mm": 4.8957,
+       "n_fixed": 4,
+       "n_held": 16,
+       "n_routed": 12,
+       "verdict": "PLACEMENT_WALL",
+       "width": 800000
+      },
+      {
+       "blockers": 14,
+       "inset_mm": 0.0,
+       "layer": "B",
+       "mm": 4.8957,
+       "n_fixed": 4,
+       "n_held": 14,
+       "n_routed": 10,
+       "verdict": "PLACEMENT_WALL",
+       "width": 500000
+      }
+     ],
+     "verdict": "PLACEMENT_WALL",
+     "width": 500000
+    },
+    {
+     "a": "C24.1",
+     "b": "U12.10",
+     "blockers": [
+      {
+       "cx_mm": 63.275,
+       "cy_mm": 103.25,
+       "drop_refuses": true,
+       "kind": "PAD",
+       "net": "GND",
+       "r_mm": 0.225,
+       "tag": "C24.2"
+      },
+      {
+       "cx_mm": 67.6,
+       "cy_mm": 102.8,
+       "drop_refuses": true,
+       "kind": "PAD",
+       "net": "Net-(L1-Pad1)",
+       "r_mm": 0.12,
+       "tag": "U12.9"
+      },
+      {
+       "cx_mm": 66.1,
+       "cy_mm": 102.8,
+       "drop_refuses": true,
+       "kind": "PAD",
+       "net": "Net-(SW9-A)",
+       "r_mm": 0.12,
+       "tag": "U12.12"
+      },
+      {
+       "cx_mm": 65.6,
+       "cy_mm": 102.8,
+       "drop_refuses": true,
+       "kind": "PAD",
+       "net": "Net-(U12-PS_SYNC)",
+       "r_mm": 0.12,
+       "tag": "U12.13"
+      },
+      {
+       "cx_mm": 65.1,
+       "cy_mm": 102.8,
+       "drop_refuses": true,
+       "kind": "PAD",
+       "net": "Net-(U12-PG)",
+       "r_mm": 0.12,
+       "tag": "U12.14"
+      },
+      {
+       "drop_refuses": true,
+       "hw_mm": 0.15,
+       "kind": "ROUTED",
+       "net": "GND",
+       "protected": false,
+       "tag": "track",
+       "x0_mm": 63.05,
+       "x1_mm": 63.0,
+       "y0_mm": 103.0,
+       "y1_mm": 103.0
+      },
+      {
+       "drop_refuses": true,
+       "hw_mm": 0.1,
+       "kind": "ROUTED",
+       "net": "Net-(SW9-A)",
+       "protected": false,
+       "tag": "track",
+       "x0_mm": 66.1,
+       "x1_mm": 66.1,
+       "y0_mm": 102.8,
+       "y1_mm": 103.65
+      },
+      {
+       "drop_refuses": true,
+       "hw_mm": 0.1,
+       "kind": "ROUTED",
+       "net": "Net-(SW9-A)",
+       "protected": false,
+       "tag": "track",
+       "x0_mm": 66.1,
+       "x1_mm": 66.1,
+       "y0_mm": 102.8,
+       "y1_mm": 103.65
+      },
+      {
+       "drop_refuses": true,
+       "hw_mm": 0.1,
+       "kind": "ROUTED",
+       "net": "Net-(U12-PG)",
+       "protected": false,
+       "tag": "track",
+       "x0_mm": 62.025,
+       "x1_mm": 64.525,
+       "y0_mm": 100.325,
+       "y1_mm": 102.8
+      },
+      {
+       "drop_refuses": true,
+       "hw_mm": 0.1,
+       "kind": "ROUTED",
+       "net": "Net-(U12-PG)",
+       "protected": false,
+       "tag": "track",
+       "x0_mm": 65.1,
+       "x1_mm": 64.525,
+       "y0_mm": 102.8,
+       "y1_mm": 102.8
+      },
+      {
+       "drop_refuses": true,
+       "hw_mm": 0.1,
+       "kind": "ROUTED",
+       "net": "Net-(U12-PS_SYNC)",
+       "protected": false,
+       "tag": "track",
+       "x0_mm": 64.25,
+       "x1_mm": 64.95,
+       "y0_mm": 104.05,
+       "y1_mm": 103.425
+      },
+      {
+       "drop_refuses": true,
+       "hw_mm": 0.1,
+       "kind": "ROUTED",
+       "net": "Net-(U12-PS_SYNC)",
+       "protected": false,
+       "tag": "track",
+       "x0_mm": 65.6,
+       "x1_mm": 65.6,
+       "y0_mm": 102.8,
+       "y1_mm": 103.55
+      },
+      {
+       "drop_refuses": true,
+       "hw_mm": 0.1,
+       "kind": "ROUTED",
+       "net": "Net-(U12-PS_SYNC)",
+       "protected": false,
+       "tag": "track",
+       "x0_mm": 64.95,
+       "x1_mm": 65.6,
+       "y0_mm": 103.425,
+       "y1_mm": 103.55
+      },
+      {
+       "drop_refuses": true,
+       "hw_mm": 0.1,
+       "kind": "ROUTED",
+       "net": "Net-(L1-Pad1)",
+       "protected": false,
+       "tag": "track",
+       "x0_mm": 67.6,
+       "x1_mm": 68.1,
+       "y0_mm": 102.8,
+       "y1_mm": 102.8
+      },
+      {
+       "cx_mm": 63.0,
+       "cy_mm": 103.0,
+       "drop_refuses": true,
+       "kind": "ROUTED",
+       "net": "GND",
+       "protected": false,
+       "r_mm": 0.3,
+       "tag": "via"
+      },
+      {
+       "cx_mm": 66.35,
+       "cy_mm": 103.65,
+       "drop_refuses": true,
+       "kind": "ROUTED",
+       "net": "Net-(SW9-A)",
+       "protected": false,
+       "r_mm": 0.3,
+       "tag": "via"
+      },
+      {
+       "cx_mm": 63.0,
+       "cy_mm": 103.0,
+       "drop_refuses": true,
+       "kind": "ROUTED",
+       "net": "GND",
+       "protected": false,
+       "r_mm": 0.15,
+       "tag": "via/hole"
+      }
+     ],
+     "gap_mm": 5.394,
+     "inset_mm": 0.0,
+     "layer": "B",
+     "mm": 5.3938,
+     "n_fixed": 5,
+     "n_held": 17,
+     "n_routed": 12,
+     "rungs": [
+      {
+       "blockers": 19,
+       "inset_mm": 0.0,
+       "layer": "B",
+       "mm": 5.3938,
+       "n_fixed": 5,
+       "n_held": 19,
+       "n_routed": 14,
+       "verdict": "PLACEMENT_WALL",
+       "width": 800000
+      },
+      {
+       "blockers": 17,
+       "inset_mm": 0.0,
+       "layer": "B",
+       "mm": 5.3938,
+       "n_fixed": 5,
+       "n_held": 17,
+       "n_routed": 12,
+       "verdict": "PLACEMENT_WALL",
+       "width": 500000
+      }
+     ],
+     "verdict": "PLACEMENT_WALL",
+     "width": 500000
+    },
+    {
+     "a": "C26.2",
+     "b": "U12.1",
+     "blockers": [
+      {
+       "cx_mm": 63.275,
+       "cy_mm": 103.25,
+       "drop_refuses": true,
+       "kind": "PAD",
+       "net": "GND",
+       "r_mm": 0.225,
+       "tag": "C24.2"
+      },
+      {
+       "cx_mm": 65.6,
+       "cy_mm": 100.0,
+       "drop_refuses": true,
+       "kind": "PAD",
+       "net": "GND",
+       "r_mm": 0.12,
+       "tag": "U12.2"
+      },
+      {
+       "cx_mm": 66.6,
+       "cy_mm": 101.4,
+       "drop_refuses": true,
+       "kind": "PAD",
+       "net": "GND",
+       "r_mm": 0.0,
+       "tag": "U12.15"
+      },
+      {
+       "drop_refuses": true,
+       "hw_mm": 0.15,
+       "kind": "ROUTED",
+       "net": "GND",
+       "protected": false,
+       "tag": "track",
+       "x0_mm": 65.5,
+       "x1_mm": 65.275,
+       "y0_mm": 100.5,
+       "y1_mm": 100.675
+      },
+      {
+       "drop_refuses": true,
+       "hw_mm": 0.15,
+       "kind": "ROUTED",
+       "net": "GND",
+       "protected": false,
+       "tag": "track",
+       "x0_mm": 64.95,
+       "x1_mm": 64.775,
+       "y0_mm": 100.675,
+       "y1_mm": 100.575
+      },
+      {
+       "drop_refuses": true,
+       "hw_mm": 0.15,
+       "kind": "ROUTED",
+       "net": "GND",
+       "protected": false,
+       "tag": "track",
+       "x0_mm": 65.275,
+       "x1_mm": 64.95,
+       "y0_mm": 100.675,
+       "y1_mm": 100.675
+      },
+      {
+       "drop_refuses": true,
+       "hw_mm": 0.15,
+       "kind": "ROUTED",
+       "net": "GND",
+       "protected": false,
+       "tag": "track",
+       "x0_mm": 64.6,
+       "x1_mm": 64.4,
+       "y0_mm": 100.4,
+       "y1_mm": 100.3
+      },
+      {
+       "drop_refuses": true,
+       "hw_mm": 0.15,
+       "kind": "ROUTED",
+       "net": "GND",
+       "protected": false,
+       "tag": "track",
+       "x0_mm": 64.6,
+       "x1_mm": 64.1,
+       "y0_mm": 100.4,
+       "y1_mm": 99.7
+      },
+      {
+       "drop_refuses": true,
+       "hw_mm": 0.15,
+       "kind": "ROUTED",
+       "net": "GND",
+       "protected": false,
+       "tag": "track",
+       "x0_mm": 65.6,
+       "x1_mm": 65.6,
+       "y0_mm": 100.0,
+       "y1_mm": 100.3
+      },
+      {
+       "drop_refuses": true,
+       "hw_mm": 0.15,
+       "kind": "ROUTED",
+       "net": "GND",
+       "protected": false,
+       "tag": "track",
+       "x0_mm": 64.7,
+       "x1_mm": 64.3,
+       "y0_mm": 101.4,
+       "y1_mm": 101.0
+      },
+      {
+       "drop_refuses": true,
+       "hw_mm": 0.15,
+       "kind": "ROUTED",
+       "net": "GND",
+       "protected": false,
+       "tag": "track",
+       "x0_mm": 65.6,
+       "x1_mm": 65.6,
+       "y0_mm": 100.0,
+       "y1_mm": 100.3
+      },
+      {
+       "drop_refuses": true,
+       "hw_mm": 0.15,
+       "kind": "ROUTED",
+       "net": "GND",
+       "protected": false,
+       "tag": "track",
+       "x0_mm": 65.6,
+       "x1_mm": 65.5,
+       "y0_mm": 100.3,
+       "y1_mm": 100.5
+      },
+      {
+       "drop_refuses": true,
+       "hw_mm": 0.15,
+       "kind": "ROUTED",
+       "net": "GND",
+       "protected": false,
+       "tag": "track",
+       "x0_mm": 65.275,
+       "x1_mm": 64.95,
+       "y0_mm": 100.675,
+       "y1_mm": 100.675
+      },
+      {
+       "drop_refuses": true,
+       "hw_mm": 0.15,
+       "kind": "ROUTED",
+       "net": "GND",
+       "protected": false,
+       "tag": "track",
+       "x0_mm": 65.6,
+       "x1_mm": 65.5,
+       "y0_mm": 100.3,
+       "y1_mm": 100.5
+      },
+      {
+       "drop_refuses": true,
+       "hw_mm": 0.15,
+       "kind": "ROUTED",
+       "net": "GND",
+       "protected": false,
+       "tag": "track",
+       "x0_mm": 65.5,
+       "x1_mm": 65.275,
+       "y0_mm": 100.5,
+       "y1_mm": 100.675
+      },
+      {
+       "drop_refuses": true,
+       "hw_mm": 0.15,
+       "kind": "ROUTED",
+       "net": "GND",
+       "protected": false,
+       "tag": "track",
+       "x0_mm": 66.6,
+       "x1_mm": 64.7,
+       "y0_mm": 101.4,
+       "y1_mm": 101.4
+      },
+      {
+       "drop_refuses": true,
+       "hw_mm": 0.15,
+       "kind": "ROUTED",
+       "net": "GND",
+       "protected": false,
+       "tag": "track",
+       "x0_mm": 64.775,
+       "x1_mm": 64.6,
+       "y0_mm": 100.575,
+       "y1_mm": 100.4
+      },
+      {
+       "drop_refuses": true,
+       "hw_mm": 0.15,
+       "kind": "ROUTED",
+       "net": "GND",
+       "protected": false,
+       "tag": "track",
+       "x0_mm": 64.775,
+       "x1_mm": 64.6,
+       "y0_mm": 100.575,
+       "y1_mm": 100.4
+      },
+      {
+       "drop_refuses": true,
+       "hw_mm": 0.15,
+       "kind": "ROUTED",
+       "net": "GND",
+       "protected": false,
+       "tag": "track",
+       "x0_mm": 64.95,
+       "x1_mm": 64.775,
+       "y0_mm": 100.675,
+       "y1_mm": 100.575
+      },
+      {
+       "drop_refuses": true,
+       "hw_mm": 0.1,
+       "kind": "ROUTED",
+       "net": "Net-(U12-PG)",
+       "protected": false,
+       "tag": "track",
+       "x0_mm": 62.025,
+       "x1_mm": 64.525,
+       "y0_mm": 100.325,
+       "y1_mm": 102.8
+      },
+      {
+       "drop_refuses": true,
+       "hw_mm": 0.1,
+       "kind": "ROUTED",
+       "net": "Net-(U12-PG)",
+       "protected": false,
+       "tag": "track",
+       "x0_mm": 65.1,
+       "x1_mm": 64.525,
+       "y0_mm": 102.8,
+       "y1_mm": 102.8
+      },
+      {
+       "drop_refuses": true,
+       "hw_mm": 0.1,
+       "kind": "ROUTED",
+       "net": "Net-(U12-PS_SYNC)",
+       "protected": false,
+       "tag": "track",
+       "x0_mm": 64.25,
+       "x1_mm": 64.95,
+       "y0_mm": 104.05,
+       "y1_mm": 103.425
+      },
+      {
+       "drop_refuses": true,
+       "hw_mm": 0.1,
+       "kind": "ROUTED",
+       "net": "Net-(U12-PS_SYNC)",
+       "protected": false,
+       "tag": "track",
+       "x0_mm": 62.9,
+       "x1_mm": 64.25,
+       "y0_mm": 104.05,
+       "y1_mm": 104.05
+      },
+      {
+       "cx_mm": 64.3,
+       "cy_mm": 101.0,
+       "drop_refuses": true,
+       "kind": "ROUTED",
+       "net": "GND",
+       "protected": false,
+       "r_mm": 0.3,
+       "tag": "via"
+      },
+      {
+       "cx_mm": 64.4,
+       "cy_mm": 100.3,
+       "drop_refuses": true,
+       "kind": "ROUTED",
+       "net": "GND",
+       "protected": false,
+       "r_mm": 0.3,
+       "tag": "via"
+      },
+      {
+       "cx_mm": 64.3,
+       "cy_mm": 101.0,
+       "drop_refuses": true,
+       "kind": "ROUTED",
+       "net": "GND",
+       "protected": false,
+       "r_mm": 0.15,
+       "tag": "via/hole"
+      },
+      {
+       "cx_mm": 64.4,
+       "cy_mm": 100.3,
+       "drop_refuses": true,
+       "kind": "ROUTED",
+       "net": "GND",
+       "protected": false,
+       "r_mm": 0.15,
+       "tag": "via/hole"
+      }
+     ],
+     "gap_mm": 5.811,
+     "inset_mm": 0.0,
+     "layer": "B",
+     "mm": 5.8108,
+     "n_fixed": 3,
+     "n_held": 27,
+     "n_routed": 24,
+     "rungs": [
+      {
+       "blockers": 27,
+       "inset_mm": 0.0,
+       "layer": "B",
+       "mm": 5.8108,
+       "n_fixed": 3,
+       "n_held": 27,
+       "n_routed": 24,
+       "verdict": "PLACEMENT_WALL",
+       "width": 800000
+      },
+      {
+       "blockers": 27,
+       "inset_mm": 0.0,
+       "layer": "B",
+       "mm": 5.8108,
+       "n_fixed": 3,
+       "n_held": 27,
+       "n_routed": 24,
+       "verdict": "PLACEMENT_WALL",
+       "width": 500000
+      }
+     ],
+     "verdict": "PLACEMENT_WALL",
+     "width": 800000
+    }
+   ],
+   "pairs_asked": 12,
+   "pairs_within_max": 12,
+   "seconds": 3.7,
+   "verdicts": {
+    "EVICTABLE": 1,
+    "PLACEMENT_WALL": 10,
+    "UNRESOLVED": 1
+   },
+   "widths": [
+    800000,
+    500000
+   ]
+  },
+  {
+   "islands": 2,
+   "net": "/01_POWER_TREE/USB_D_CONN_P",
+   "netclass": "USB_D",
+   "pairs": [],
+   "pairs_asked": 0,
+   "pairs_within_max": 0,
+   "seconds": 0.0,
+   "verdicts": {},
+   "widths": [
+    250000,
+    150000
+   ]
+  },
+  {
+   "islands": 2,
+   "net": "/04_SPI_B_RADIOS_NFC/NFC_VDD_RF",
+   "netclass": "Default",
+   "pairs": [
+    {
+     "a": "U9.9",
+     "b": "U9.14",
+     "blockers": [
+      {
+       "cx_mm": 32.75,
+       "cy_mm": 27.725,
+       "drop_refuses": true,
+       "kind": "PAD",
+       "net": "/NFC_SUPPLY",
+       "r_mm": 0.075,
+       "tag": "U9.10"
+      },
+      {
+       "cx_mm": 33.25,
+       "cy_mm": 27.725,
+       "drop_refuses": true,
+       "kind": "PAD",
+       "net": "/04_SPI_B_RADIOS_NFC/NFC_VDD_AM",
+       "r_mm": 0.075,
+       "tag": "U9.11"
+      },
+      {
+       "cx_mm": 33.75,
+       "cy_mm": 27.725,
+       "drop_refuses": true,
+       "kind": "PAD",
+       "net": "GND",
+       "r_mm": 0.075,
+       "tag": "U9.12"
+      },
+      {
+       "cx_mm": 34.25,
+       "cy_mm": 27.725,
+       "drop_refuses": true,
+       "kind": "PAD",
+       "net": "/04_SPI_B_RADIOS_NFC/NFC_RFO1",
+       "r_mm": 0.075,
+       "tag": "U9.13"
+      },
+      {
+       "drop_refuses": true,
+       "hw_mm": 0.15,
+       "kind": "ROUTED",
+       "net": "/04_SPI_B_RADIOS_NFC/NFC_VDD_AM",
+       "protected": false,
+       "tag": "track",
+       "x0_mm": 33.25,
+       "x1_mm": 33.25,
+       "y0_mm": 27.725,
+       "y1_mm": 26.85
+      },
+      {
+       "drop_refuses": true,
+       "hw_mm": 0.15,
+       "kind": "ROUTED",
+       "net": "/04_SPI_B_RADIOS_NFC/NFC_VDD_AM",
+       "protected": false,
+       "tag": "track",
+       "x0_mm": 33.25,
+       "x1_mm": 33.25,
+       "y0_mm": 27.725,
+       "y1_mm": 26.85
+      },
+      {
+       "drop_refuses": true,
+       "hw_mm": 0.15,
+       "kind": "ROUTED",
+       "net": "/04_SPI_B_RADIOS_NFC/NFC_RFO1",
+       "protected": false,
+       "tag": "track",
+       "x0_mm": 34.25,
+       "x1_mm": 34.25,
+       "y0_mm": 27.725,
+       "y1_mm": 26.8
+      }
+     ],
+     "gap_mm": 2.5,
+     "inset_mm": 0.0,
+     "layer": "B",
+     "mm": 2.5,
+     "n_fixed": 4,
+     "n_held": 7,
+     "n_routed": 3,
+     "rungs": [
+      {
+       "blockers": 7,
+       "inset_mm": 0.0,
+       "layer": "B",
+       "mm": 2.5,
+       "n_fixed": 4,
+       "n_held": 7,
+       "n_routed": 3,
+       "verdict": "PLACEMENT_WALL",
+       "width": 200000
+      },
+      {
+       "blockers": 7,
+       "inset_mm": 0.0,
+       "layer": "B",
+       "mm": 2.5,
+       "n_fixed": 4,
+       "n_held": 7,
+       "n_routed": 3,
+       "verdict": "PLACEMENT_WALL",
+       "width": 150000
+      }
+     ],
+     "verdict": "PLACEMENT_WALL",
+     "width": 200000
+    }
+   ],
+   "pairs_asked": 1,
+   "pairs_within_max": 1,
+   "seconds": 0.2,
+   "verdicts": {
+    "PLACEMENT_WALL": 1
+   },
+   "widths": [
+    200000,
+    150000
+   ]
+  },
+  {
+   "islands": 2,
+   "net": "/08_BUTTONS_EXPANDERS/BTN_LEFT_N",
+   "netclass": "Default",
+   "pairs": [],
+   "pairs_asked": 0,
+   "pairs_within_max": 0,
+   "seconds": 0.0,
+   "verdicts": {},
+   "widths": [
+    200000,
+    150000
+   ]
+  },
+  {
+   "islands": 2,
+   "net": "/ACC_5V_BOOST_EN",
+   "netclass": "Default",
+   "pairs": [],
+   "pairs_asked": 0,
+   "pairs_within_max": 0,
+   "seconds": 0.0,
+   "verdicts": {},
+   "widths": [
+    200000,
+    150000
+   ]
+  },
+  {
+   "islands": 2,
+   "net": "/ACC_PWR_EN",
+   "netclass": "Default",
+   "pairs": [],
+   "pairs_asked": 0,
+   "pairs_within_max": 0,
+   "seconds": 0.0,
+   "verdicts": {},
+   "widths": [
+    200000,
+    150000
+   ]
+  },
+  {
+   "islands": 3,
+   "net": "/BQ25185_STAT1",
+   "netclass": "Default",
+   "pairs": [],
+   "pairs_asked": 0,
+   "pairs_within_max": 0,
+   "seconds": 0.0,
+   "verdicts": {},
+   "widths": [
+    200000,
+    150000
+   ]
+  },
+  {
+   "islands": 3,
+   "net": "/BQ25185_STAT2",
+   "netclass": "Default",
+   "pairs": [],
+   "pairs_asked": 0,
+   "pairs_within_max": 0,
+   "seconds": 0.0,
+   "verdicts": {},
+   "widths": [
+    200000,
+    150000
+   ]
+  },
+  {
+   "islands": 6,
+   "net": "/I2C_SCL_INT",
+   "netclass": "I2C",
+   "pairs": [],
+   "pairs_asked": 0,
+   "pairs_within_max": 0,
+   "seconds": 0.0,
+   "verdicts": {},
+   "widths": [
+    200000,
+    150000
+   ]
+  },
+  {
+   "islands": 3,
+   "net": "/I2C_SDA_INT",
+   "netclass": "I2C",
+   "pairs": [],
+   "pairs_asked": 0,
+   "pairs_within_max": 0,
+   "seconds": 0.0,
+   "verdicts": {},
+   "widths": [
+    200000,
+    150000
+   ]
+  },
+  {
+   "islands": 2,
+   "net": "/I2S_LRCLK",
+   "netclass": "I2S",
+   "pairs": [],
+   "pairs_asked": 0,
+   "pairs_within_max": 0,
+   "seconds": 0.0,
+   "verdicts": {},
+   "widths": [
+    200000,
+    150000
+   ]
+  },
+  {
+   "islands": 3,
+   "net": "/NFC_SUPPLY",
+   "netclass": "P3V3",
+   "pairs": [
+    {
+     "a": "U9.10",
+     "b": "U9.8",
+     "blockers": [
+      {
+       "cx_mm": 31.725,
+       "cy_mm": 28.75,
+       "drop_refuses": true,
+       "kind": "PAD",
+       "net": "/04_SPI_B_RADIOS_NFC/NFC_VDD_A",
+       "r_mm": 0.075,
+       "tag": "U9.7"
+      },
+      {
+       "cx_mm": 32.25,
+       "cy_mm": 27.725,
+       "drop_refuses": true,
+       "kind": "PAD",
+       "net": "/04_SPI_B_RADIOS_NFC/NFC_VDD_RF",
+       "r_mm": 0.075,
+       "tag": "U9.9"
+      },
+      {
+       "cx_mm": 33.25,
+       "cy_mm": 27.725,
+       "drop_refuses": true,
+       "kind": "PAD",
+       "net": "/04_SPI_B_RADIOS_NFC/NFC_VDD_AM",
+       "r_mm": 0.075,
+       "tag": "U9.11"
+      },
+      {
+       "cx_mm": 34.0,
+       "cy_mm": 30.0,
+       "drop_refuses": true,
+       "kind": "PAD",
+       "net": "GND",
+       "r_mm": 0.0,
+       "tag": "U9.33"
+      },
+      {
+       "drop_refuses": true,
+       "hw_mm": 0.1,
+       "kind": "ROUTED",
+       "net": "/04_SPI_B_RADIOS_NFC/NFC_VDD_RF",
+       "protected": false,
+       "tag": "track",
+       "x0_mm": 32.25,
+       "x1_mm": 32.2,
+       "y0_mm": 27.725,
+       "y1_mm": 26.9
+      },
+      {
+       "drop_refuses": true,
+       "hw_mm": 0.1,
+       "kind": "ROUTED",
+       "net": "/04_SPI_B_RADIOS_NFC/NFC_VDD_RF",
+       "protected": false,
+       "tag": "track",
+       "x0_mm": 32.2,
+       "x1_mm": 32.2,
+       "y0_mm": 27.45,
+       "y1_mm": 27.4
+      },
+      {
+       "drop_refuses": true,
+       "hw_mm": 0.15,
+       "kind": "ROUTED",
+       "net": "/04_SPI_B_RADIOS_NFC/NFC_VDD_AM",
+       "protected": false,
+       "tag": "track",
+       "x0_mm": 33.25,
+       "x1_mm": 33.25,
+       "y0_mm": 27.725,
+       "y1_mm": 26.85
+      },
+      {
+       "drop_refuses": true,
+       "hw_mm": 0.15,
+       "kind": "ROUTED",
+       "net": "/04_SPI_B_RADIOS_NFC/NFC_VDD_AM",
+       "protected": false,
+       "tag": "track",
+       "x0_mm": 33.25,
+       "x1_mm": 33.25,
+       "y0_mm": 27.725,
+       "y1_mm": 26.85
+      },
+      {
+       "cx_mm": 32.0,
+       "cy_mm": 27.5,
+       "drop_refuses": true,
+       "kind": "ROUTED",
+       "net": "/04_SPI_B_RADIOS_NFC/NFC_VDD_RF",
+       "protected": false,
+       "r_mm": 0.3,
+       "tag": "via"
+      },
+      {
+       "cx_mm": 32.0,
+       "cy_mm": 27.5,
+       "drop_refuses": true,
+       "kind": "ROUTED",
+       "net": "/04_SPI_B_RADIOS_NFC/NFC_VDD_RF",
+       "protected": false,
+       "r_mm": 0.15,
+       "tag": "via/hole"
+      }
+     ],
+     "gap_mm": 1.152,
+     "inset_mm": 0.0,
+     "layer": "B",
+     "mm": 1.1516,
+     "n_fixed": 4,
+     "n_held": 10,
+     "n_routed": 6,
+     "rungs": [
+      {
+       "blockers": 13,
+       "inset_mm": 0.0,
+       "layer": "B",
+       "mm": 1.1516,
+       "n_fixed": 4,
+       "n_held": 13,
+       "n_routed": 9,
+       "verdict": "PLACEMENT_WALL",
+       "width": 600000
+      },
+      {
+       "blockers": 10,
+       "inset_mm": 0.0,
+       "layer": "B",
+       "mm": 1.1516,
+       "n_fixed": 4,
+       "n_held": 10,
+       "n_routed": 6,
+       "verdict": "PLACEMENT_WALL",
+       "width": 400000
+      }
+     ],
+     "verdict": "PLACEMENT_WALL",
+     "width": 400000
+    }
+   ],
+   "pairs_asked": 1,
+   "pairs_within_max": 1,
+   "seconds": 0.2,
+   "verdicts": {
+    "PLACEMENT_WALL": 1
+   },
+   "widths": [
+    600000,
+    400000
+   ]
+  },
+  {
+   "islands": 2,
+   "net": "/SPI_B_SCK",
+   "netclass": "Default",
+   "pairs": [],
+   "pairs_asked": 0,
+   "pairs_within_max": 0,
+   "seconds": 0.0,
+   "verdicts": {},
+   "widths": [
+    200000,
+    150000
+   ]
+  },
+  {
+   "islands": 2,
+   "net": "/SX1262_DIO1",
+   "netclass": "Default",
+   "pairs": [],
+   "pairs_asked": 0,
+   "pairs_within_max": 0,
+   "seconds": 0.0,
+   "verdicts": {},
+   "widths": [
+    200000,
+    150000
+   ]
+  },
+  {
+   "islands": 2,
+   "net": "/USB_D_MCU_N",
+   "netclass": "USB_D",
+   "pairs": [],
+   "pairs_asked": 0,
+   "pairs_within_max": 0,
+   "seconds": 0.0,
+   "verdicts": {},
+   "widths": [
+    250000,
+    150000
+   ]
+  },
+  {
+   "islands": 2,
+   "net": "/USB_D_MCU_P",
+   "netclass": "USB_D",
+   "pairs": [],
+   "pairs_asked": 0,
+   "pairs_within_max": 0,
+   "seconds": 0.0,
+   "verdicts": {},
+   "widths": [
+    250000,
+    150000
+   ]
+  },
+  {
+   "islands": 3,
+   "net": "/WAKE_INT_N",
+   "netclass": "Default",
+   "pairs": [],
+   "pairs_asked": 0,
+   "pairs_within_max": 0,
+   "seconds": 0.0,
+   "verdicts": {},
+   "widths": [
+    200000,
+    150000
+   ]
+  },
+  {
+   "islands": 4,
+   "net": "GND",
+   "netclass": "GND",
+   "pairs": [
+    {
+     "a": "U9.12",
+     "b": "U9.16",
+     "blockers": [
+      {
+       "cx_mm": 34.25,
+       "cy_mm": 27.725,
+       "drop_refuses": true,
+       "kind": "PAD",
+       "net": "/04_SPI_B_RADIOS_NFC/NFC_RFO1",
+       "r_mm": 0.075,
+       "tag": "U9.13"
+      },
+      {
+       "cx_mm": 34.75,
+       "cy_mm": 27.725,
+       "drop_refuses": true,
+       "kind": "PAD",
+       "net": "/04_SPI_B_RADIOS_NFC/NFC_VDD_RF",
+       "r_mm": 0.075,
+       "tag": "U9.14"
+      },
+      {
+       "cx_mm": 35.25,
+       "cy_mm": 27.725,
+       "drop_refuses": true,
+       "kind": "PAD",
+       "net": "/04_SPI_B_RADIOS_NFC/NFC_RFO2",
+       "r_mm": 0.075,
+       "tag": "U9.15"
+      },
+      {
+       "drop_refuses": true,
+       "hw_mm": 0.15,
+       "kind": "ROUTED",
+       "net": "/04_SPI_B_RADIOS_NFC/NFC_RFO1",
+       "protected": false,
+       "tag": "track",
+       "x0_mm": 34.25,
+       "x1_mm": 34.25,
+       "y0_mm": 27.725,
+       "y1_mm": 26.8
+      },
+      {
+       "drop_refuses": true,
+       "hw_mm": 0.15,
+       "kind": "ROUTED",
+       "net": "/04_SPI_B_RADIOS_NFC/NFC_RFO2",
+       "protected": false,
+       "tag": "track",
+       "x0_mm": 35.25,
+       "x1_mm": 35.25,
+       "y0_mm": 27.725,
+       "y1_mm": 26.8
+      }
+     ],
+     "gap_mm": 2.0,
+     "inset_mm": 0.0,
+     "layer": "B",
+     "mm": 2.0,
+     "n_fixed": 3,
+     "n_held": 5,
+     "n_routed": 2,
+     "rungs": [
+      {
+       "blockers": 5,
+       "inset_mm": 0.0,
+       "layer": "B",
+       "mm": 2.0,
+       "n_fixed": 3,
+       "n_held": 5,
+       "n_routed": 2,
+       "verdict": "PLACEMENT_WALL",
+       "width": 300000
+      },
+      {
+       "blockers": 5,
+       "inset_mm": 0.0,
+       "layer": "B",
+       "mm": 2.0,
+       "n_fixed": 3,
+       "n_held": 5,
+       "n_routed": 2,
+       "verdict": "PLACEMENT_WALL",
+       "width": 150000
+      }
+     ],
+     "verdict": "PLACEMENT_WALL",
+     "width": 300000
+    },
+    {
+     "a": "U9.20",
+     "b": "U9.16",
+     "blockers": [
+      {
+       "cx_mm": 36.275,
+       "cy_mm": 28.25,
+       "drop_refuses": true,
+       "kind": "PAD",
+       "net": "",
+       "r_mm": 0.075,
+       "tag": "U9.17"
+      },
+      {
+       "cx_mm": 36.275,
+       "cy_mm": 28.75,
+       "drop_refuses": true,
+       "kind": "PAD",
+       "net": "",
+       "r_mm": 0.075,
+       "tag": "U9.18"
+      },
+      {
+       "cx_mm": 36.275,
+       "cy_mm": 29.25,
+       "drop_refuses": true,
+       "kind": "PAD",
+       "net": "",
+       "r_mm": 0.075,
+       "tag": "U9.19"
+      }
+     ],
+     "gap_mm": 2.092,
+     "inset_mm": 0.0,
+     "layer": "B",
+     "mm": 2.0919,
+     "n_fixed": 3,
+     "n_held": 3,
+     "n_routed": 0,
+     "rungs": [
+      {
+       "blockers": 4,
+       "inset_mm": 0.0,
+       "layer": "B",
+       "mm": 2.0919,
+       "n_fixed": 3,
+       "n_held": 4,
+       "n_routed": 1,
+       "verdict": "PLACEMENT_WALL",
+       "width": 300000
+      },
+      {
+       "blockers": 3,
+       "inset_mm": 0.0,
+       "layer": "B",
+       "mm": 2.0919,
+       "n_fixed": 3,
+       "n_held": 3,
+       "n_routed": 0,
+       "verdict": "PLACEMENT_WALL",
+       "width": 150000
+      }
+     ],
+     "verdict": "PLACEMENT_WALL",
+     "width": 150000
+    },
+    {
+     "a": "MK1.2",
+     "b": "MK1.4",
+     "blockers": [
+      {
+       "cx_mm": 4.0,
+       "cy_mm": 97.0,
+       "drop_refuses": true,
+       "kind": "PAD",
+       "net": "",
+       "r_mm": 0.525,
+       "tag": "MK1."
+      },
+      {
+       "cx_mm": 2.925,
+       "cy_mm": 98.28,
+       "drop_refuses": true,
+       "kind": "PAD",
+       "net": "+3V3",
+       "r_mm": 0.0,
+       "tag": "MK1.3"
+      },
+      {
+       "cx_mm": 4.0,
+       "cy_mm": 97.0,
+       "drop_refuses": true,
+       "kind": "KEEPOUT",
+       "net": null,
+       "r_mm": 0.0,
+       "tag": "KO"
+      },
+      {
+       "drop_refuses": true,
+       "hw_mm": 0.2,
+       "kind": "ROUTED",
+       "net": "+3V3",
+       "protected": false,
+       "tag": "track",
+       "x0_mm": 2.925,
+       "x1_mm": 2.5,
+       "y0_mm": 98.275,
+       "y1_mm": 98.3
+      },
+      {
+       "cx_mm": 4.0,
+       "cy_mm": 97.0,
+       "drop_refuses": true,
+       "kind": "PAD",
+       "net": "",
+       "r_mm": 0.525,
+       "tag": "MK1./hole"
+      }
+     ],
+     "gap_mm": 2.209,
+     "inset_mm": 0.0,
+     "layer": "B",
+     "mm": 2.2092,
+     "n_fixed": 4,
+     "n_held": 5,
+     "n_routed": 1,
+     "rungs": [
+      {
+       "blockers": 5,
+       "inset_mm": 0.0,
+       "layer": "B",
+       "mm": 2.2092,
+       "n_fixed": 4,
+       "n_held": 5,
+       "n_routed": 1,
+       "verdict": "PLACEMENT_WALL",
+       "width": 300000
+      },
+      {
+       "blockers": 5,
+       "inset_mm": 0.0,
+       "layer": "B",
+       "mm": 2.2092,
+       "n_fixed": 4,
+       "n_held": 5,
+       "n_routed": 1,
+       "verdict": "PLACEMENT_WALL",
+       "width": 150000
+      }
+     ],
+     "verdict": "PLACEMENT_WALL",
+     "width": 300000
+    },
+    {
+     "a": "U9.21",
+     "b": "U9.16",
+     "blockers": [
+      {
+       "cx_mm": 36.275,
+       "cy_mm": 28.25,
+       "drop_refuses": true,
+       "kind": "PAD",
+       "net": "",
+       "r_mm": 0.075,
+       "tag": "U9.17"
+      },
+      {
+       "cx_mm": 36.275,
+       "cy_mm": 28.75,
+       "drop_refuses": true,
+       "kind": "PAD",
+       "net": "",
+       "r_mm": 0.075,
+       "tag": "U9.18"
+      },
+      {
+       "cx_mm": 36.275,
+       "cy_mm": 29.25,
+       "drop_refuses": true,
+       "kind": "PAD",
+       "net": "",
+       "r_mm": 0.075,
+       "tag": "U9.19"
+      }
+     ],
+     "gap_mm": 2.579,
+     "inset_mm": 0.0,
+     "layer": "B",
+     "mm": 2.579,
+     "n_fixed": 3,
+     "n_held": 3,
+     "n_routed": 0,
+     "rungs": [
+      {
+       "blockers": 4,
+       "inset_mm": 0.0,
+       "layer": "B",
+       "mm": 2.579,
+       "n_fixed": 3,
+       "n_held": 4,
+       "n_routed": 1,
+       "verdict": "PLACEMENT_WALL",
+       "width": 300000
+      },
+      {
+       "blockers": 3,
+       "inset_mm": 0.0,
+       "layer": "B",
+       "mm": 2.579,
+       "n_fixed": 3,
+       "n_held": 3,
+       "n_routed": 0,
+       "verdict": "PLACEMENT_WALL",
+       "width": 150000
+      }
+     ],
+     "verdict": "PLACEMENT_WALL",
+     "width": 150000
+    },
+    {
+     "a": "MK1.1",
+     "b": "MK1.4",
+     "blockers": [
+      {
+       "cx_mm": 4.0,
+       "cy_mm": 97.0,
+       "drop_refuses": true,
+       "kind": "PAD",
+       "net": "",
+       "r_mm": 0.525,
+       "tag": "MK1."
+      },
+      {
+       "cx_mm": 2.925,
+       "cy_mm": 98.28,
+       "drop_refuses": true,
+       "kind": "PAD",
+       "net": "+3V3",
+       "r_mm": 0.0,
+       "tag": "MK1.3"
+      },
+      {
+       "cx_mm": 4.0,
+       "cy_mm": 97.0,
+       "drop_refuses": true,
+       "kind": "KEEPOUT",
+       "net": null,
+       "r_mm": 0.0,
+       "tag": "KO"
+      },
+      {
+       "cx_mm": 4.0,
+       "cy_mm": 97.0,
+       "drop_refuses": true,
+       "kind": "PAD",
+       "net": "",
+       "r_mm": 0.525,
+       "tag": "MK1./hole"
+      }
+     ],
+     "gap_mm": 2.795,
+     "inset_mm": 0.0,
+     "layer": "B",
+     "mm": 2.795,
+     "n_fixed": 4,
+     "n_held": 4,
+     "n_routed": 0,
+     "rungs": [
+      {
+       "blockers": 5,
+       "inset_mm": 0.0,
+       "layer": "B",
+       "mm": 2.795,
+       "n_fixed": 4,
+       "n_held": 5,
+       "n_routed": 1,
+       "verdict": "PLACEMENT_WALL",
+       "width": 300000
+      },
+      {
+       "blockers": 4,
+       "inset_mm": 0.0,
+       "layer": "B",
+       "mm": 2.795,
+       "n_fixed": 4,
+       "n_held": 4,
+       "n_routed": 0,
+       "verdict": "PLACEMENT_WALL",
+       "width": 150000
+      }
+     ],
+     "verdict": "PLACEMENT_WALL",
+     "width": 150000
+    },
+    {
+     "a": "U9.33",
+     "b": "U9.16",
+     "blockers": [
+      {
+       "cx_mm": 35.25,
+       "cy_mm": 27.725,
+       "drop_refuses": true,
+       "kind": "PAD",
+       "net": "/04_SPI_B_RADIOS_NFC/NFC_RFO2",
+       "r_mm": 0.075,
+       "tag": "U9.15"
+      },
+      {
+       "drop_refuses": true,
+       "hw_mm": 0.15,
+       "kind": "ROUTED",
+       "net": "/04_SPI_B_RADIOS_NFC/NFC_RFO2",
+       "protected": false,
+       "tag": "track",
+       "x0_mm": 35.25,
+       "x1_mm": 35.25,
+       "y0_mm": 27.725,
+       "y1_mm": 26.8
+      }
+     ],
+     "gap_mm": 2.87,
+     "inset_mm": 0.0,
+     "layer": "B",
+     "mm": 2.8702,
+     "n_fixed": 1,
+     "n_held": 2,
+     "n_routed": 1,
+     "rungs": [
+      {
+       "blockers": 2,
+       "inset_mm": 0.0,
+       "layer": "B",
+       "mm": 2.8702,
+       "n_fixed": 1,
+       "n_held": 2,
+       "n_routed": 1,
+       "verdict": "PLACEMENT_WALL",
+       "width": 300000
+      },
+      {
+       "blockers": 2,
+       "inset_mm": 0.0,
+       "layer": "B",
+       "mm": 2.8702,
+       "n_fixed": 1,
+       "n_held": 2,
+       "n_routed": 1,
+       "verdict": "PLACEMENT_WALL",
+       "width": 150000
+      }
+     ],
+     "verdict": "PLACEMENT_WALL",
+     "width": 300000
+    },
+    {
+     "a": "C47.2",
+     "b": "U9.16",
+     "blockers": [
+      {
+       "drop_refuses": true,
+       "hw_mm": 0.15,
+       "kind": "ROUTED",
+       "net": "/04_SPI_B_RADIOS_NFC/NFC_RFO1",
+       "protected": false,
+       "tag": "track",
+       "x0_mm": 34.825,
+       "x1_mm": 36.925,
+       "y0_mm": 26.225,
+       "y1_mm": 26.225
+      },
+      {
+       "drop_refuses": true,
+       "hw_mm": 0.15,
+       "kind": "ROUTED",
+       "net": "/04_SPI_B_RADIOS_NFC/NFC_RFO2",
+       "protected": false,
+       "tag": "track",
+       "x0_mm": 36.075,
+       "x1_mm": 37.95,
+       "y0_mm": 27.0,
+       "y1_mm": 28.925
+      },
+      {
+       "drop_refuses": true,
+       "hw_mm": 0.15,
+       "kind": "ROUTED",
+       "net": "/04_SPI_B_RADIOS_NFC/NFC_RFO2",
+       "protected": false,
+       "tag": "track",
+       "x0_mm": 35.25,
+       "x1_mm": 36.075,
+       "y0_mm": 26.8,
+       "y1_mm": 27.0
+      }
+     ],
+     "gap_mm": 2.932,
+     "inset_mm": 0.0,
+     "layer": "B",
+     "mm": 2.9318,
+     "n_fixed": 0,
+     "n_held": 3,
+     "n_routed": 3,
+     "rungs": [
+      {
+       "blockers": 4,
+       "inset_mm": 0.0,
+       "layer": "B",
+       "mm": 2.9318,
+       "n_fixed": 0,
+       "n_held": 4,
+       "n_routed": 4,
+       "verdict": "EVICTABLE",
+       "width": 300000
+      },
+      {
+       "blockers": 3,
+       "inset_mm": 0.0,
+       "layer": "B",
+       "mm": 2.9318,
+       "n_fixed": 0,
+       "n_held": 3,
+       "n_routed": 3,
+       "verdict": "EVICTABLE",
+       "width": 150000
+      }
+     ],
+     "verdict": "EVICTABLE",
+     "width": 150000
+    },
+    {
+     "a": "R31.2",
+     "b": "J3.A12",
+     "blockers": [
+      {
+       "cx_mm": 38.68,
+       "cy_mm": 145.805,
+       "drop_refuses": true,
+       "kind": "PAD",
+       "net": "Net-(J3-SHIELD)",
+       "r_mm": 0.5,
+       "tag": "J3.SH"
+      },
+      {
+       "cx_mm": 38.68,
+       "cy_mm": 145.805,
+       "drop_refuses": true,
+       "kind": "PAD",
+       "net": "Net-(J3-SHIELD)",
+       "r_mm": 0.3,
+       "tag": "J3.SH/hole"
+      }
+     ],
+     "gap_mm": 3.456,
+     "inset_mm": 0.0,
+     "layer": "F",
+     "mm": 3.4562,
+     "n_fixed": 2,
+     "n_held": 2,
+     "n_routed": 0,
+     "rungs": [
+      {
+       "blockers": 2,
+       "inset_mm": 0.0,
+       "layer": "F",
+       "mm": 3.4562,
+       "n_fixed": 2,
+       "n_held": 2,
+       "n_routed": 0,
+       "verdict": "PLACEMENT_WALL",
+       "width": 300000
+      },
+      {
+       "blockers": 2,
+       "inset_mm": 0.0,
+       "layer": "F",
+       "mm": 3.4562,
+       "n_fixed": 2,
+       "n_held": 2,
+       "n_routed": 0,
+       "verdict": "PLACEMENT_WALL",
+       "width": 150000
+      }
+     ],
+     "verdict": "PLACEMENT_WALL",
+     "width": 300000
+    },
+    {
+     "a": "R31.2",
+     "b": "J3.B1",
+     "blockers": [
+      {
+       "cx_mm": 38.68,
+       "cy_mm": 145.805,
+       "drop_refuses": true,
+       "kind": "PAD",
+       "net": "Net-(J3-SHIELD)",
+       "r_mm": 0.5,
+       "tag": "J3.SH"
+      },
+      {
+       "cx_mm": 38.68,
+       "cy_mm": 145.805,
+       "drop_refuses": true,
+       "kind": "PAD",
+       "net": "Net-(J3-SHIELD)",
+       "r_mm": 0.3,
+       "tag": "J3.SH/hole"
+      }
+     ],
+     "gap_mm": 3.456,
+     "inset_mm": 0.0,
+     "layer": "F",
+     "mm": 3.4562,
+     "n_fixed": 2,
+     "n_held": 2,
+     "n_routed": 0,
+     "rungs": [
+      {
+       "blockers": 2,
+       "inset_mm": 0.0,
+       "layer": "F",
+       "mm": 3.4562,
+       "n_fixed": 2,
+       "n_held": 2,
+       "n_routed": 0,
+       "verdict": "PLACEMENT_WALL",
+       "width": 300000
+      },
+      {
+       "blockers": 2,
+       "inset_mm": 0.0,
+       "layer": "F",
+       "mm": 3.4562,
+       "n_fixed": 2,
+       "n_held": 2,
+       "n_routed": 0,
+       "verdict": "PLACEMENT_WALL",
+       "width": 150000
+      }
+     ],
+     "verdict": "PLACEMENT_WALL",
+     "width": 300000
+    },
+    {
+     "a": "U9.6",
+     "b": "U9.16",
+     "blockers": [
+      {
+       "cx_mm": 31.725,
+       "cy_mm": 28.75,
+       "drop_refuses": true,
+       "kind": "PAD",
+       "net": "/04_SPI_B_RADIOS_NFC/NFC_VDD_A",
+       "r_mm": 0.075,
+       "tag": "U9.7"
+      },
+      {
+       "cx_mm": 34.25,
+       "cy_mm": 27.725,
+       "drop_refuses": true,
+       "kind": "PAD",
+       "net": "/04_SPI_B_RADIOS_NFC/NFC_RFO1",
+       "r_mm": 0.075,
+       "tag": "U9.13"
+      },
+      {
+       "cx_mm": 34.75,
+       "cy_mm": 27.725,
+       "drop_refuses": true,
+       "kind": "PAD",
+       "net": "/04_SPI_B_RADIOS_NFC/NFC_VDD_RF",
+       "r_mm": 0.075,
+       "tag": "U9.14"
+      },
+      {
+       "cx_mm": 35.25,
+       "cy_mm": 27.725,
+       "drop_refuses": true,
+       "kind": "PAD",
+       "net": "/04_SPI_B_RADIOS_NFC/NFC_RFO2",
+       "r_mm": 0.075,
+       "tag": "U9.15"
+      },
+      {
+       "drop_refuses": true,
+       "hw_mm": 0.15,
+       "kind": "ROUTED",
+       "net": "/04_SPI_B_RADIOS_NFC/NFC_RFO2",
+       "protected": false,
+       "tag": "track",
+       "x0_mm": 35.25,
+       "x1_mm": 35.25,
+       "y0_mm": 27.725,
+       "y1_mm": 26.8
+      }
+     ],
+     "gap_mm": 4.304,
+     "inset_mm": 0.0,
+     "layer": "B",
+     "mm": 4.3042,
+     "n_fixed": 4,
+     "n_held": 5,
+     "n_routed": 1,
+     "rungs": [
+      {
+       "blockers": 6,
+       "inset_mm": 0.0,
+       "layer": "B",
+       "mm": 4.3042,
+       "n_fixed": 4,
+       "n_held": 6,
+       "n_routed": 2,
+       "verdict": "PLACEMENT_WALL",
+       "width": 300000
+      },
+      {
+       "blockers": 5,
+       "inset_mm": 0.0,
+       "layer": "B",
+       "mm": 4.3042,
+       "n_fixed": 4,
+       "n_held": 5,
+       "n_routed": 1,
+       "verdict": "PLACEMENT_WALL",
+       "width": 150000
+      }
+     ],
+     "verdict": "PLACEMENT_WALL",
+     "width": 150000
+    },
+    {
+     "a": "U9.26",
+     "b": "U9.16",
+     "blockers": [
+      {
+       "cx_mm": 36.275,
+       "cy_mm": 28.25,
+       "drop_refuses": true,
+       "kind": "PAD",
+       "net": "",
+       "r_mm": 0.075,
+       "tag": "U9.17"
+      },
+      {
+       "cx_mm": 36.275,
+       "cy_mm": 28.75,
+       "drop_refuses": true,
+       "kind": "PAD",
+       "net": "",
+       "r_mm": 0.075,
+       "tag": "U9.18"
+      }
+     ],
+     "gap_mm": 4.577,
+     "inset_mm": 0.0,
+     "layer": "B",
+     "mm": 4.5774,
+     "n_fixed": 2,
+     "n_held": 2,
+     "n_routed": 0,
+     "rungs": [
+      {
+       "blockers": 6,
+       "inset_mm": 0.0,
+       "layer": "B",
+       "mm": 4.5774,
+       "n_fixed": 5,
+       "n_held": 6,
+       "n_routed": 1,
+       "verdict": "PLACEMENT_WALL",
+       "width": 300000
+      },
+      {
+       "blockers": 2,
+       "inset_mm": 0.0,
+       "layer": "B",
+       "mm": 4.5774,
+       "n_fixed": 2,
+       "n_held": 2,
+       "n_routed": 0,
+       "verdict": "PLACEMENT_WALL",
+       "width": 150000
+      }
+     ],
+     "verdict": "PLACEMENT_WALL",
+     "width": 150000
+    },
+    {
+     "a": "C45.2",
+     "b": "U9.16",
+     "blockers": [
+      {
+       "cx_mm": 35.25,
+       "cy_mm": 27.725,
+       "drop_refuses": true,
+       "kind": "PAD",
+       "net": "/04_SPI_B_RADIOS_NFC/NFC_RFO2",
+       "r_mm": 0.075,
+       "tag": "U9.15"
+      },
+      {
+       "drop_refuses": true,
+       "hw_mm": 0.15,
+       "kind": "ROUTED",
+       "net": "/04_SPI_B_RADIOS_NFC/NFC_VDD_AM",
+       "protected": false,
+       "tag": "track",
+       "x0_mm": 33.25,
+       "x1_mm": 33.125,
+       "y0_mm": 26.85,
+       "y1_mm": 24.1
+      },
+      {
+       "drop_refuses": true,
+       "hw_mm": 0.15,
+       "kind": "ROUTED",
+       "net": "/04_SPI_B_RADIOS_NFC/NFC_VDD_AM",
+       "protected": false,
+       "tag": "track",
+       "x0_mm": 33.25,
+       "x1_mm": 33.125,
+       "y0_mm": 26.85,
+       "y1_mm": 24.1
+      },
+      {
+       "drop_refuses": true,
+       "hw_mm": 0.15,
+       "kind": "ROUTED",
+       "net": "/04_SPI_B_RADIOS_NFC/NFC_RFO1",
+       "protected": false,
+       "tag": "track",
+       "x0_mm": 34.25,
+       "x1_mm": 34.25,
+       "y0_mm": 27.725,
+       "y1_mm": 26.8
+      },
+      {
+       "drop_refuses": true,
+       "hw_mm": 0.15,
+       "kind": "ROUTED",
+       "net": "/04_SPI_B_RADIOS_NFC/NFC_RFO1",
+       "protected": false,
+       "tag": "track",
+       "x0_mm": 34.25,
+       "x1_mm": 34.825,
+       "y0_mm": 26.8,
+       "y1_mm": 26.225
+      },
+      {
+       "drop_refuses": true,
+       "hw_mm": 0.15,
+       "kind": "ROUTED",
+       "net": "/04_SPI_B_RADIOS_NFC/NFC_RFO2",
+       "protected": false,
+       "tag": "track",
+       "x0_mm": 35.25,
+       "x1_mm": 36.075,
+       "y0_mm": 26.8,
+       "y1_mm": 27.0
+      },
+      {
+       "drop_refuses": true,
+       "hw_mm": 0.15,
+       "kind": "ROUTED",
+       "net": "/04_SPI_B_RADIOS_NFC/NFC_RFO2",
+       "protected": false,
+       "tag": "track",
+       "x0_mm": 35.25,
+       "x1_mm": 35.25,
+       "y0_mm": 27.725,
+       "y1_mm": 26.8
+      }
+     ],
+     "gap_mm": 4.638,
+     "inset_mm": 0.0,
+     "layer": "B",
+     "mm": 4.6385,
+     "n_fixed": 1,
+     "n_held": 7,
+     "n_routed": 6,
+     "rungs": [
+      {
+       "blockers": 8,
+       "inset_mm": 0.0,
+       "layer": "B",
+       "mm": 4.6385,
+       "n_fixed": 2,
+       "n_held": 8,
+       "n_routed": 6,
+       "verdict": "PLACEMENT_WALL",
+       "width": 300000
+      },
+      {
+       "blockers": 7,
+       "inset_mm": 0.0,
+       "layer": "B",
+       "mm": 4.6385,
+       "n_fixed": 1,
+       "n_held": 7,
+       "n_routed": 6,
+       "verdict": "PLACEMENT_WALL",
+       "width": 150000
+      }
+     ],
+     "verdict": "PLACEMENT_WALL",
+     "width": 150000
+    },
+    {
+     "a": "C69.2",
+     "b": "U9.16",
+     "blockers": [
+      {
+       "cx_mm": 38.525,
+       "cy_mm": 25.7,
+       "drop_refuses": true,
+       "kind": "PAD",
+       "net": "/04_SPI_B_RADIOS_NFC/NFC_EMCA",
+       "r_mm": 0.225,
+       "tag": "C69.1"
+      },
+      {
+       "drop_refuses": true,
+       "hw_mm": 0.15,
+       "kind": "ROUTED",
+       "net": "/04_SPI_B_RADIOS_NFC/NFC_RFO1",
+       "protected": false,
+       "tag": "track",
+       "x0_mm": 38.5125,
+       "x1_mm": 37.725,
+       "y0_mm": 27.8,
+       "y1_mm": 27.025
+      },
+      {
+       "drop_refuses": true,
+       "hw_mm": 0.15,
+       "kind": "ROUTED",
+       "net": "/04_SPI_B_RADIOS_NFC/NFC_RFO1",
+       "protected": false,
+       "tag": "track",
+       "x0_mm": 36.925,
+       "x1_mm": 37.725,
+       "y0_mm": 26.225,
+       "y1_mm": 27.025
+      },
+      {
+       "drop_refuses": true,
+       "hw_mm": 0.15,
+       "kind": "ROUTED",
+       "net": "/04_SPI_B_RADIOS_NFC/NFC_RFO2",
+       "protected": false,
+       "tag": "track",
+       "x0_mm": 36.075,
+       "x1_mm": 37.95,
+       "y0_mm": 27.0,
+       "y1_mm": 28.925
+      },
+      {
+       "drop_refuses": true,
+       "hw_mm": 0.15,
+       "kind": "ROUTED",
+       "net": "/04_SPI_B_RADIOS_NFC/NFC_EMCA",
+       "protected": false,
+       "tag": "track",
+       "x0_mm": 39.425,
+       "x1_mm": 39.3,
+       "y0_mm": 26.6,
+       "y1_mm": 26.475
+      },
+      {
+       "drop_refuses": true,
+       "hw_mm": 0.15,
+       "kind": "ROUTED",
+       "net": "/04_SPI_B_RADIOS_NFC/NFC_EMCA",
+       "protected": false,
+       "tag": "track",
+       "x0_mm": 38.525,
+       "x1_mm": 39.3,
+       "y0_mm": 25.7,
+       "y1_mm": 26.475
+      }
+     ],
+     "gap_mm": 4.776,
+     "inset_mm": 0.0,
+     "layer": "B",
+     "mm": 4.7756,
+     "n_fixed": 1,
+     "n_held": 6,
+     "n_routed": 5,
+     "rungs": [
+      {
+       "blockers": 9,
+       "inset_mm": 0.0,
+       "layer": "B",
+       "mm": 4.7756,
+       "n_fixed": 1,
+       "n_held": 9,
+       "n_routed": 8,
+       "verdict": "PLACEMENT_WALL",
+       "width": 300000
+      },
+      {
+       "blockers": 6,
+       "inset_mm": 0.0,
+       "layer": "B",
+       "mm": 4.7756,
+       "n_fixed": 1,
+       "n_held": 6,
+       "n_routed": 5,
+       "verdict": "PLACEMENT_WALL",
+       "width": 150000
+      }
+     ],
+     "verdict": "PLACEMENT_WALL",
+     "width": 150000
+    },
+    {
+     "a": "R30.2",
+     "b": "J3.A12",
+     "blockers": [
+      {
+       "cx_mm": 38.68,
+       "cy_mm": 145.805,
+       "drop_refuses": true,
+       "kind": "PAD",
+       "net": "Net-(J3-SHIELD)",
+       "r_mm": 0.5,
+       "tag": "J3.SH"
+      },
+      {
+       "drop_refuses": true,
+       "hw_mm": 0.1,
+       "kind": "ROUTED",
+       "net": "Net-(J3-CC1)",
+       "protected": false,
+       "tag": "track",
+       "x0_mm": 43.325,
+       "x1_mm": 36.2,
+       "y0_mm": 144.425,
+       "y1_mm": 144.425
+      },
+      {
+       "cx_mm": 38.68,
+       "cy_mm": 145.805,
+       "drop_refuses": true,
+       "kind": "PAD",
+       "net": "Net-(J3-SHIELD)",
+       "r_mm": 0.3,
+       "tag": "J3.SH/hole"
+      }
+     ],
+     "gap_mm": 5.061,
+     "inset_mm": 0.0,
+     "layer": "F",
+     "mm": 5.0611,
+     "n_fixed": 2,
+     "n_held": 3,
+     "n_routed": 1,
+     "rungs": [
+      {
+       "blockers": 3,
+       "inset_mm": 0.0,
+       "layer": "F",
+       "mm": 5.0611,
+       "n_fixed": 2,
+       "n_held": 3,
+       "n_routed": 1,
+       "verdict": "PLACEMENT_WALL",
+       "width": 300000
+      },
+      {
+       "blockers": 3,
+       "inset_mm": 0.0,
+       "layer": "F",
+       "mm": 5.0611,
+       "n_fixed": 2,
+       "n_held": 3,
+       "n_routed": 1,
+       "verdict": "PLACEMENT_WALL",
+       "width": 150000
+      }
+     ],
+     "verdict": "PLACEMENT_WALL",
+     "width": 300000
+    },
+    {
+     "a": "R30.2",
+     "b": "J3.B1",
+     "blockers": [
+      {
+       "cx_mm": 38.68,
+       "cy_mm": 145.805,
+       "drop_refuses": true,
+       "kind": "PAD",
+       "net": "Net-(J3-SHIELD)",
+       "r_mm": 0.5,
+       "tag": "J3.SH"
+      },
+      {
+       "drop_refuses": true,
+       "hw_mm": 0.1,
+       "kind": "ROUTED",
+       "net": "Net-(J3-CC1)",
+       "protected": false,
+       "tag": "track",
+       "x0_mm": 43.325,
+       "x1_mm": 36.2,
+       "y0_mm": 144.425,
+       "y1_mm": 144.425
+      },
+      {
+       "cx_mm": 38.68,
+       "cy_mm": 145.805,
+       "drop_refuses": true,
+       "kind": "PAD",
+       "net": "Net-(J3-SHIELD)",
+       "r_mm": 0.3,
+       "tag": "J3.SH/hole"
+      }
+     ],
+     "gap_mm": 5.061,
+     "inset_mm": 0.0,
+     "layer": "F",
+     "mm": 5.0611,
+     "n_fixed": 2,
+     "n_held": 3,
+     "n_routed": 1,
+     "rungs": [
+      {
+       "blockers": 3,
+       "inset_mm": 0.0,
+       "layer": "F",
+       "mm": 5.0611,
+       "n_fixed": 2,
+       "n_held": 3,
+       "n_routed": 1,
+       "verdict": "PLACEMENT_WALL",
+       "width": 300000
+      },
+      {
+       "blockers": 3,
+       "inset_mm": 0.0,
+       "layer": "F",
+       "mm": 5.0611,
+       "n_fixed": 2,
+       "n_held": 3,
+       "n_routed": 1,
+       "verdict": "PLACEMENT_WALL",
+       "width": 150000
+      }
+     ],
+     "verdict": "PLACEMENT_WALL",
+     "width": 300000
+    },
+    {
+     "a": "C53.2",
+     "b": "U9.16",
+     "blockers": [
+      {
+       "drop_refuses": true,
+       "hw_mm": 0.15,
+       "kind": "ROUTED",
+       "net": "/04_SPI_B_RADIOS_NFC/NFC_VDD_AM",
+       "protected": false,
+       "tag": "track",
+       "x0_mm": 33.925,
+       "x1_mm": 36.275,
+       "y0_mm": 23.35,
+       "y1_mm": 23.35
+      },
+      {
+       "drop_refuses": true,
+       "hw_mm": 0.15,
+       "kind": "ROUTED",
+       "net": "/04_SPI_B_RADIOS_NFC/NFC_VDD_AM",
+       "protected": false,
+       "tag": "track",
+       "x0_mm": 33.925,
+       "x1_mm": 36.275,
+       "y0_mm": 23.35,
+       "y1_mm": 23.35
+      },
+      {
+       "drop_refuses": true,
+       "hw_mm": 0.15,
+       "kind": "ROUTED",
+       "net": "/04_SPI_B_RADIOS_NFC/NFC_RFO1",
+       "protected": false,
+       "tag": "track",
+       "x0_mm": 34.825,
+       "x1_mm": 36.925,
+       "y0_mm": 26.225,
+       "y1_mm": 26.225
+      },
+      {
+       "drop_refuses": true,
+       "hw_mm": 0.15,
+       "kind": "ROUTED",
+       "net": "/04_SPI_B_RADIOS_NFC/NFC_RFO2",
+       "protected": false,
+       "tag": "track",
+       "x0_mm": 36.075,
+       "x1_mm": 37.95,
+       "y0_mm": 27.0,
+       "y1_mm": 28.925
+      },
+      {
+       "drop_refuses": true,
+       "hw_mm": 0.15,
+       "kind": "ROUTED",
+       "net": "/04_SPI_B_RADIOS_NFC/NFC_RFO2",
+       "protected": false,
+       "tag": "track",
+       "x0_mm": 35.25,
+       "x1_mm": 36.075,
+       "y0_mm": 26.8,
+       "y1_mm": 27.0
+      }
+     ],
+     "gap_mm": 5.225,
+     "inset_mm": 0.0,
+     "layer": "B",
+     "mm": 5.2251,
+     "n_fixed": 0,
+     "n_held": 5,
+     "n_routed": 5,
+     "rungs": [
+      {
+       "blockers": 6,
+       "inset_mm": 0.0,
+       "layer": "B",
+       "mm": 5.2251,
+       "n_fixed": 0,
+       "n_held": 6,
+       "n_routed": 6,
+       "verdict": "EVICTABLE",
+       "width": 300000
+      },
+      {
+       "blockers": 5,
+       "inset_mm": 0.0,
+       "layer": "B",
+       "mm": 5.2251,
+       "n_fixed": 0,
+       "n_held": 5,
+       "n_routed": 5,
+       "verdict": "EVICTABLE",
+       "width": 150000
+      }
+     ],
+     "verdict": "EVICTABLE",
+     "width": 150000
+    },
+    {
+     "a": "Q4.2",
+     "b": "MK1.4",
+     "blockers": [
+      {
+       "cx_mm": 4.0,
+       "cy_mm": 97.0,
+       "drop_refuses": true,
+       "kind": "PAD",
+       "net": "",
+       "r_mm": 0.525,
+       "tag": "MK1."
+      },
+      {
+       "cx_mm": 1.6375,
+       "cy_mm": 94.205,
+       "drop_refuses": true,
+       "kind": "PAD",
+       "net": "/01_POWER_TREE/BAT_PROT_SHDN_CTL",
+       "r_mm": 0.15,
+       "tag": "Q4.1"
+      },
+      {
+       "cx_mm": 4.0,
+       "cy_mm": 97.0,
+       "drop_refuses": true,
+       "kind": "KEEPOUT",
+       "net": null,
+       "r_mm": 0.0,
+       "tag": "KO"
+      },
+      {
+       "drop_refuses": true,
+       "hw_mm": 0.125,
+       "kind": "ROUTED",
+       "net": "/01_POWER_TREE/BAT_PROT_SHDN_CTL",
+       "protected": true,
+       "tag": "track",
+       "x0_mm": 1.65,
+       "x1_mm": 2.15,
+       "y0_mm": 93.45,
+       "y1_mm": 93.95
+      },
+      {
+       "drop_refuses": true,
+       "hw_mm": 0.125,
+       "kind": "ROUTED",
+       "net": "/01_POWER_TREE/BAT_PROT_SHDN_CTL",
+       "protected": true,
+       "tag": "track",
+       "x0_mm": 2.15,
+       "x1_mm": 4.35,
+       "y0_mm": 93.95,
+       "y1_mm": 93.95
+      },
+      {
+       "cx_mm": 4.0,
+       "cy_mm": 97.0,
+       "drop_refuses": true,
+       "kind": "PAD",
+       "net": "",
+       "r_mm": 0.525,
+       "tag": "MK1./hole"
+      }
+     ],
+     "gap_mm": 5.256,
+     "inset_mm": 0.0,
+     "layer": "B",
+     "mm": 5.2559,
+     "n_fixed": 4,
+     "n_held": 6,
+     "n_routed": 2,
+     "rungs": [
+      {
+       "blockers": 6,
+       "inset_mm": 0.0,
+       "layer": "B",
+       "mm": 5.2559,
+       "n_fixed": 4,
+       "n_held": 6,
+       "n_routed": 2,
+       "verdict": "PLACEMENT_WALL",
+       "width": 300000
+      },
+      {
+       "blockers": 6,
+       "inset_mm": 0.0,
+       "layer": "B",
+       "mm": 5.2559,
+       "n_fixed": 4,
+       "n_held": 6,
+       "n_routed": 2,
+       "verdict": "PLACEMENT_WALL",
+       "width": 150000
+      }
+     ],
+     "verdict": "PLACEMENT_WALL",
+     "width": 300000
+    }
+   ],
+   "pairs_asked": 17,
+   "pairs_within_max": 17,
+   "seconds": 1.4,
+   "verdicts": {
+    "EVICTABLE": 2,
+    "PLACEMENT_WALL": 15
+   },
+   "widths": [
+    300000,
+    150000
+   ]
+  }
+ ],
+ "pairs_per_net": 24,
+ "question": "for every cross-island land pair a straight bridge could span, WHICH OBJECTS -- all of them, minimal, classified -- stand in the stroke",
+ "schema": 1,
+ "seconds": 11.0,
+ "totals": {
+  "EVICTABLE": 3,
+  "PLACEMENT_WALL": 41,
+  "UNRESOLVED": 2
+ }
+}

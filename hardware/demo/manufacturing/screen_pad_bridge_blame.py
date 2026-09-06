@@ -131,6 +131,21 @@ class Held(object):
         return False
 
 
+# A LAND'S TAG IS `REF.NUM`, AND BOTH HALVES LIE SOMETIMES.  D-649.
+# `QBoard._scan` writes `tag = ref + "." + p.GetNumber()` for every pad and
+# `tag + "/hole"` for its drill.  KiCad gives a MECHANICAL pad an EMPTY number,
+# so `MK1`'s mounting lands are tagged `MK1.` and their drills `MK1./hole` --
+# and the first pattern this file carried required at least one character after
+# the dot and no slash at all, so a mounting land, a mounting DRILL and every
+# through-hole pad's drill on this board all fell through to `UNRESOLVED`.
+# That is not a small blind spot: SEVEN of the NINE pairs this board still
+# could not answer at `--cap 48` were refused by one of them, and a drill is
+# the most immovable object on a board -- a hole through the laminate that no
+# eviction, relay or licence will ever move.  So the number may be empty and
+# the `/hole` suffix names the SAME PHYSICAL OBJECT as the land it hangs off.
+_PAD_TAG = re.compile(r"^[A-Za-z_]+[0-9]+\.\w*$")
+
+
 def classify(obj):
     """PAD / KEEPOUT / ROUTED, from the obstacle's own tag.
 
@@ -144,7 +159,8 @@ def classify(obj):
         return ROUTED
     if tag == "KO" or getattr(obj, "net", None) is None:
         return KEEPOUT
-    if re.match(r"^[A-Za-z_]+[0-9]+\.\w+$", tag):
+    # The drill is the land's own hole and carries the land's own verdict.
+    if _PAD_TAG.match(tag[:-5] if tag.endswith("/hole") else tag):
         return PAD
     return UNRESOLVED
 

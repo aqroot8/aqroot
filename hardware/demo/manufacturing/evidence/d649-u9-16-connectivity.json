@@ -1,0 +1,192 @@
+{
+ "board": "/home/aqroot8/aqroot-demo/hardware/demo/kicad/aqroot-demo/aqroot-Beta-v2.kicad_pcb",
+ "board_sha256": "01d738abd2fbeda5cbecd20a720638f524010c311ee7439ab4322793fedb6b12",
+ "pads": {
+  "C47.2": {
+   "at": [
+    35.95,
+    24.8
+   ],
+   "cluster_pads": 229,
+   "in_body_cluster": true,
+   "net": "GND",
+   "others": [
+    "PCB_TRACK",
+    "PCB_VIA"
+   ],
+   "zones": [
+    "B GND PLANE",
+    "In1 GND REFERENCE",
+    "In1 GND REFERENCE_1"
+   ]
+  },
+  "C53.2": {
+   "at": [
+    35.775,
+    22.5
+   ],
+   "cluster_pads": 229,
+   "in_body_cluster": true,
+   "net": "GND",
+   "others": [
+    "PCB_TRACK",
+    "PCB_VIA"
+   ],
+   "zones": [
+    "B GND PLANE",
+    "In1 GND REFERENCE",
+    "In1 GND REFERENCE_1"
+   ]
+  },
+  "J3.A12": {
+   "at": [
+    39.8,
+    146.38
+   ],
+   "cluster_pads": 2,
+   "in_body_cluster": false,
+   "net": "GND",
+   "others": [],
+   "zones": []
+  },
+  "MK1.4": {
+   "at": [
+    4.0,
+    97.0
+   ],
+   "cluster_pads": 1,
+   "in_body_cluster": false,
+   "net": "GND",
+   "others": [],
+   "zones": []
+  },
+  "U9.12": {
+   "at": [
+    33.75,
+    27.725
+   ],
+   "cluster_pads": 229,
+   "in_body_cluster": true,
+   "net": "GND",
+   "others": [
+    "PCB_TRACK",
+    "PCB_VIA"
+   ],
+   "zones": [
+    "B GND PLANE",
+    "In1 GND REFERENCE",
+    "In1 GND REFERENCE_1"
+   ]
+  },
+  "U9.16": {
+   "at": [
+    35.75,
+    27.725
+   ],
+   "cluster_pads": 229,
+   "in_body_cluster": true,
+   "net": "GND",
+   "others": [
+    "PCB_TRACK",
+    "PCB_VIA"
+   ],
+   "zones": [
+    "B GND PLANE",
+    "In1 GND REFERENCE",
+    "In1 GND REFERENCE_1"
+   ]
+  },
+  "U9.20": {
+   "at": [
+    36.275,
+    29.75
+   ],
+   "cluster_pads": 229,
+   "in_body_cluster": true,
+   "net": "GND",
+   "others": [
+    "PCB_TRACK",
+    "PCB_VIA"
+   ],
+   "zones": [
+    "B GND PLANE",
+    "In1 GND REFERENCE",
+    "In1 GND REFERENCE_1"
+   ]
+  },
+  "U9.21": {
+   "at": [
+    36.275,
+    30.25
+   ],
+   "cluster_pads": 229,
+   "in_body_cluster": true,
+   "net": "GND",
+   "others": [
+    "PCB_TRACK",
+    "PCB_VIA"
+   ],
+   "zones": [
+    "B GND PLANE",
+    "In1 GND REFERENCE",
+    "In1 GND REFERENCE_1"
+   ]
+  },
+  "U9.26": {
+   "at": [
+    35.25,
+    32.275
+   ],
+   "cluster_pads": 229,
+   "in_body_cluster": true,
+   "net": "GND",
+   "others": [
+    "PCB_TRACK",
+    "PCB_VIA"
+   ],
+   "zones": [
+    "B GND PLANE",
+    "In1 GND REFERENCE",
+    "In1 GND REFERENCE_1"
+   ]
+  },
+  "U9.33": {
+   "at": [
+    34.0,
+    30.0
+   ],
+   "cluster_pads": 229,
+   "in_body_cluster": true,
+   "net": "GND",
+   "others": [
+    "PCB_TRACK",
+    "PCB_VIA"
+   ],
+   "zones": [
+    "B GND PLANE",
+    "In1 GND REFERENCE",
+    "In1 GND REFERENCE_1"
+   ]
+  },
+  "U9.6": {
+   "at": [
+    31.725,
+    29.25
+   ],
+   "cluster_pads": 229,
+   "in_body_cluster": true,
+   "net": "GND",
+   "others": [
+    "PCB_TRACK",
+    "PCB_VIA"
+   ],
+   "zones": [
+    "B GND PLANE",
+    "In1 GND REFERENCE",
+    "In1 GND REFERENCE_1"
+   ]
+  }
+ },
+ "question": "which items does KiCad's own connectivity engine put in the same cluster as U9.16 and the other GND orphans",
+ "schema": 1
+}

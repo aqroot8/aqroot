@@ -13,6 +13,131 @@
 > This file references DEVICE_SPEC rather than duplicating full specs.
 
 ## 1. Authoritative HEAD
+- **Demo D-649 (THE `EVICTABLE` ROW D-648 RANKED FIRST IS A SINGLE-FILE GATE;
+  THE BLAME SCREEN COULD NOT CLASSIFY A DRILL; AND THE NFC DRIVER GROUND WAS
+  ONE BARREL AWAY, SMALLER THAN THE LATTICE THAT LOOKED FOR IT):**
+  **COPPER PROMOTED.**  Authority
+  `9550e320d6203d237619ca866ff018b2d2e9cd4216bd7cbcbf13b578794e47e6` ->
+  **`01d738abd2fbeda5cbecd20a720638f524010c311ee7439ab4322793fedb6b12`**;
+  retained open edges **40 -> 39**, `GND` open edges **3 -> 2** and islands
+  **4 -> 3**, raw ratsnest **56 -> 55**, open retained nets 20, connected
+  retained 153.  `hardware/beta-v2` untouched.  **THIRTEEN of thirteen gate
+  clauses PASS**, `refused_clauses` EMPTY; `verify_promotion.py` PASS on all 15
+  checks with `--bridge` (ONE object added, ONE rule area, NOTHING removed).
+  The standing suite is **11/11 RAN, 11/11 PASS**
+  (`evidence/d649-contract-regression.json`, baseline `d632`), and
+  **`rf_symmetry` is IDENTICAL to `d632`**.
+  **(1) D-648's OWN FIRST-RANKED ITEM, REFUTED.**  Its addendum proved the four
+  `Net-(U12-PS_SYNC)` tracks behind `BQ25185_SYS` `C24.1 <-> C26.2` were
+  `namable: true` and left ONE question: can `route_points` put the 16.27 mm
+  chain back inside `was + 2*pi*R`?  **The answer is not about the bound.**
+  With the site NOT reserved the relay retraces its own path to the micron
+  (16.2735 mm, ZERO vias); with it reserved it refuses at 21.6 / 30 / 45 / 70 mm
+  **and with NO bound at all** (`max_mm 0` = `maze3d.WAVE_STEPS`), and at
+  keepout **0.85 / 0.70 / 0.55 / 0.40 / 0.25 AND 0.10 mm** alike.  Per-disc
+  blame: discs 2-6, the MIDDLE of the line, each refuse ALONE; 0, 1, 7 and 8
+  each PERMIT alone.  **The layer hop is not there either** -- sealed on `B.Cu`
+  only, with `F` and `In2` open to this net, it refuses at 0.60/0.30, 0.50/0.25,
+  0.45/0.20 and **0.35/0.20, a barrel below the board's own floor**
+  (`evidence/d649-pssync-relay-refuted.json`).  `C24.1 <-> C26.2` is a
+  **SINGLE-FILE GATE** and `PS_SYNC` owns it: the eviction is legal, the RELAY
+  it owes is not.
+  **(2) A RESERVATION FOR A TRACK IS A PER-LAYER FACT.**  `detour_guard`
+  reserved a detour site on all six layers, which is the literal truth for a
+  BARREL and false for one straight track; a reserve record may now name its own
+  `"layers"`, and ABSENT it is all six, so **every spec written before this
+  reads exactly as it did**.  Without it (1)'s layer-hop arm would be an
+  artifact.
+  **(3) THE BLAME SCREEN COULD NOT CLASSIFY A DRILL.**
+  `screen_pad_bridge_blame.py` read `QBoard._scan`'s tag with a pattern that
+  required a non-empty pad number and forbade a slash -- so a MECHANICAL pad
+  (`MK1.`, KiCad gives it an EMPTY number) and **every through-hole pad's drill**
+  (`<land>/hole`) were `UNRESOLVED`, which REFUSES the pair.  A drill is the
+  most immovable object on a board.  Fixed, and board-wide:
+  `--cap 12` gave `EVICTABLE 3 / PLACEMENT_WALL 24 / UNRESOLVED 19`;
+  `--cap 48` gives `3 / 34 / 9` in the same 11 s; **with the fix, `3 / 41 / 2`**
+  (`evidence/d649-pad-bridge-blame-cap48.json`).  **No new `EVICTABLE` row
+  appeared at four times the cap.**  One row that matters moved on its own:
+  **`+3V3` `U4.8 <-> U4.5`, 1.670 mm, was `UNRESOLVED` and is now
+  `PLACEMENT_WALL` on 13 held objects** -- the BMI270's `VDDIO` cannot be
+  reached from its own `VDD` by a bridge, and that is now FINAL.
+  **(4) `U9.16` IS THE ST25R3916's `GND_DR_16` AND IT HAD NO GROUND AT ALL.**
+  It sits on a **0.3487 mm2 SEVERED sliver** of the `B GND PLANE`, **0.2029 mm**
+  from a 2840.95 mm2 body, and its position lies inside the BODY of both
+  `In1.Cu` and `In4.Cu` (`evidence/d649-gnd-island-map.json`).  **The LATERAL
+  join is refused by 0.0192 mm and the number is exact**: 675 straight `GND`
+  tracks across the hairline, all 675 refused by `U9.15`, the `NFC_RFO2` LAND,
+  the closest at **0.1808 mm against 0.200 mm**; the alley is 0.500 mm and the
+  board's narrowest licensed track, 0.150 mm, needs 0.550 mm
+  (`evidence/d649-u9-16-hairline.json`).
+  **(5) THE VERTICAL JOIN WAS MISSED BECAUSE IT IS SMALLER THAN THE LATTICE.**
+  `.kicad_dru` section 11 records its three pour bridges as *"measured over its
+  whole island on the 0.10 mm lattice"*.  At **0.0125 mm** over 2238 candidate
+  centres, every coarser `BRIDGE_LADDER` rung -- 0.65/0.40, 0.60/0.30,
+  0.55/0.25, 0.50/0.25, 0.45/0.20 -- is refused at EVERY one, and 0.35/0.20 is
+  legal at **92**, forming a region **0.1375 x 0.1625 mm**
+  (`evidence/d649-u9-16-barrel.json`).  `Field._via_grid` erodes by
+  `QBoard.grid`'s 0.75-cell guard band, **0.075 mm a side at a 0.100 mm
+  lattice** -- more than half that region -- so at that pitch there is no
+  via-legal cell.  At 0.025 mm the band is 0.01875 mm and `--bridge` found TEN
+  sites.
+  **(6) THE CLOSURE.**  `python3 route_maze_batch.py GND --grid 25000 --bridge
+  --promote`: ONE through barrel, **0.35/0.20 mm at (35.850, 27.625)**, from the
+  0.35 mm2 `B.Cu` island down to the `In1` plane BODY, rung 5 of six, licensed
+  by three new `POUR_BRIDGE_U9_16` rules authored BEFORE the run and by the
+  pad-sized rule area the transaction drew (35.525..36.175 x 27.300..27.950 mm).
+  The `.kicad_pcb` diff is **ONE `(via)`, ONE rule-area `(zone)` and 89 `(xy)`
+  of `B GND PLANE` re-pour -- zero segments, zero footprints, zero removals**.
+  Real KiCad DRC **exit 0, ZERO attributable**, profile identical to baseline.
+  **NO NEW FAB CAPABILITY**: 0.35/0.20 with a 0.075 mm ring is the process this
+  `.kicad_dru` already licenses by name in seven places (D-257, D-266, D-531,
+  D-595 `POUR_BRIDGE_U11_11`, D-632 `U4.12`).
+  **(7) THE ARMS ARE BYTE-IDENTICAL.**  D-638 priced a different closure for
+  this same land -- a 0.675 mm stitch at a 0.025 mm lattice for **+0.41 mm on
+  `NFC_RFO2`**.  This one spends ZERO on either arm and `rf_symmetry` is
+  IDENTICAL to the `d632` baseline.  KiCad's own connectivity:
+  **`U9.16` is in the 229-pad `GND` cluster** on `B GND PLANE`,
+  `In1 GND REFERENCE` and `In1 GND REFERENCE_1`, beside `U9.6`/`U9.12`/`U9.20`/
+  `U9.21`/`U9.26` and the `U9.33` exposed pad
+  (`evidence/d649-u9-16-connectivity.json`).
+  **(8) WHAT IS STILL OPEN, PLAINLY.**  The two remaining `GND` orphans,
+  `MK1.4` and `J3.A12`/`J3.B1`, **own no filled pour island at all**, so no
+  bridge exists for them at any barrel -- unchanged inherited items.  `U9.16`'s
+  bond is a SINGLE fine barrel where a driver ground would normally carry
+  several, and it is recorded here, exactly as `U11.11` is, as an **OPEN DFM
+  ITEM**: a wider `U9` driver-ground bond needs a local `B.Cu` refloorplan
+  around the `NFC_RFO2` land, not a finer drill.  Re-asked on the promoted
+  board the pad-bridge frontier is **EVICTABLE 1 / PLACEMENT_WALL 33 /
+  UNRESOLVED 2** (`evidence/d649-pad-bridge-blame-post.json`).
+  **(9) `BQ25185_SYS` IS NOW THE LARGEST OPEN NET AND ITS SHAPE IS KNOWN.**
+  8 islands, 7 open edges, and it OWNS a 90.572 mm2 `B.Cu` pour whose body holds
+  only `SW9.2`/`U12.1`: `C24.1` (3.31 mm2, 1.71 mm to body), `C26.2` (6.55,
+  1.90), `C27.1` (5.52, 4.62), `C28.1` (2.18, **0.70**) and `U12.10`/`U12.11`
+  (0.75, 1.44) each sit on a SEVERED island of that same pour
+  (`evidence/d649-sys-island-map.json`), and `join_islands` refuses all nine
+  clusters at BOTH the 0.800 mm netclass and the 0.500 mm `.kicad_dru` floor --
+  five `NO_PATH`, four `NO_ANCHOR` (`evidence/d649-sys-island-join.json`).
+  **NEXT, IN ORDER OF LEVERAGE:** (1) **`BQ25185_SYS`'s FIVE SEVERED POUR
+  ISLANDS ARE THE LARGEST REMAINING FAMILY** -- ask them the D-649 question:
+  each is a POUR island, not a bare land, and `screen_pour_bridges.py` /
+  `--bridge` has never been run on this net at a 0.025 mm lattice.  `C28.1` is
+  **0.701 mm** from the body.  **The instrument owes an analytic form first**:
+  `screen_pour_bridges.py GND --grid 25000` was killed at **74 minutes** because
+  it rebuilds a whole-board via lattice per rung, while the same question for
+  ONE cluster is exact geometry over `QBoard.obstacles` and cost 2 minutes here
+  -- the same `BridgeCtx`-instead-of-`Field` move D-648 made for the pad bridge.
+  (2) `U4.5` (`VDDIO`) still needs the per-part
+  electrical ledger (D-636 item 1, D-648 item 2): its bridge from `U4.8` is now
+  a measured `PLACEMENT_WALL`, so the LEDGER is the only route left, and the
+  BMI270 publishes no MAXIMUM supply current anywhere in this repository -- a
+  `BOUNDED_SUPPLY` class must therefore REFUSE on an unread tier until one is
+  cited.  (3) `R129.1` is a POUR-ISLAND join across 1.7671 mm past `/ACC_3V3_SW`
+  (D-647).  (4) `/ACC_5V_BOOST_EN` is one object from closing and refused four
+  ways (D-647).  (5) Re-ask `screen_pad_bridge_blame.py --cap 48` after every
+  promotion -- 11 seconds, whole board.  (6) CARRIED UNCHANGED: `/I2S_LRCLK`'s
+  edge rate, `/NFC_SUPPLY`'s per-net current, `/SPI_B_SCK` and `/BQ25185_STAT1`
+  as LANDS, `MK1.4` and `J3.A12`/`J3.B1`.
+  No owner decision is OPEN.  D-618's `J3` question remains RECORDED.
 - **Demo D-648 (THE BMI270's `VDD` IS CONNECTED, AND ITS WALL WAS SIX `GND`
   TRACK OBJECTS -- TWO OF THEM A DUPLICATE PAIR NO TRANSACTION COULD NAME):**
   **COPPER PROMOTED.**  Authority

@@ -1,0 +1,104 @@
+{
+ "authoritative_unchanged": true,
+ "board": "/home/aqroot8/aqroot-demo/hardware/demo/kicad/aqroot-demo/aqroot-Beta-v2.kicad_pcb",
+ "board_sha256": "9550e320d6203d237619ca866ff018b2d2e9cd4216bd7cbcbf13b578794e47e6",
+ "board_sha256_at_write": "9550e320d6203d237619ca866ff018b2d2e9cd4216bd7cbcbf13b578794e47e6",
+ "lands": {
+  "MK1.4": {
+   "alone": true,
+   "at": [
+    4.0,
+    97.0
+   ],
+   "joined_pads": 1,
+   "net": "GND",
+   "on": {}
+  },
+  "U9.16": {
+   "alone": true,
+   "at": [
+    35.75,
+    27.725
+   ],
+   "joined_pads": 1,
+   "net": "GND",
+   "on": {
+    "B GND PLANE|B.Cu": {
+     "area_mm2": 0.3487,
+     "body_area_mm2": 2840.9505,
+     "gap_to_body_mm": 0.2029,
+     "is_body": false,
+     "outline": 55
+    },
+    "In1 GND REFERENCE_1|In4.Cu": {
+     "area_mm2": 9421.0232,
+     "body_area_mm2": 9421.0232,
+     "gap_to_body_mm": null,
+     "is_body": true,
+     "outline": 0
+    },
+    "In1 GND REFERENCE|In1.Cu": {
+     "area_mm2": 9421.0232,
+     "body_area_mm2": 9421.0232,
+     "gap_to_body_mm": null,
+     "is_body": true,
+     "outline": 0
+    }
+   }
+  }
+ },
+ "method": "read-only; KiCad's own GetFilledPolysList and GetConnectedItems, pad CENTRE tested by PointInside, gap measured vertex-to-edge between the two chains",
+ "question": "for every land of a pour-owning net: which FILLED OUTLINE holds it, is that outline the zone's BODY, and if not how far is the body",
+ "schema": 1,
+ "zones": [
+  {
+   "body_area_mm2": 3689.8529,
+   "layer": "F.Cu",
+   "net": "+3V3",
+   "outlines": 33,
+   "zone": "F +3V3 PLANE"
+  },
+  {
+   "body_area_mm2": 2840.9505,
+   "layer": "B.Cu",
+   "net": "GND",
+   "outlines": 60,
+   "zone": "B GND PLANE"
+  },
+  {
+   "body_area_mm2": 10.8135,
+   "layer": "B.Cu",
+   "net": "/01_POWER_TREE/BQ25185_SYS",
+   "outlines": 1,
+   "zone": "B /01_POWER_TREE/BQ25185_SYS POUR 2"
+  },
+  {
+   "body_area_mm2": 90.572,
+   "layer": "B.Cu",
+   "net": "/01_POWER_TREE/BQ25185_SYS",
+   "outlines": 7,
+   "zone": "B /01_POWER_TREE/BQ25185_SYS POUR 1"
+  },
+  {
+   "body_area_mm2": 9421.0232,
+   "layer": "In1.Cu",
+   "net": "GND",
+   "outlines": 1,
+   "zone": "In1 GND REFERENCE"
+  },
+  {
+   "body_area_mm2": 8047.8347,
+   "layer": "In3.Cu",
+   "net": "+3V3",
+   "outlines": 6,
+   "zone": "In3 +3V3 PLANE"
+  },
+  {
+   "body_area_mm2": 9421.0232,
+   "layer": "In4.Cu",
+   "net": "GND",
+   "outlines": 1,
+   "zone": "In1 GND REFERENCE_1"
+  }
+ ]
+}

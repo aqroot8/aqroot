@@ -1154,6 +1154,80 @@
 	(constraint hole_size (min 0.20mm) (opt 0.20mm))
 	(condition "A.NetName == 'GND' && A.enclosedByArea('POUR_BRIDGE_U11_11')"))
 
+# ---------------------------------------------------------------------
+# 11b. THE FOURTH POUR BRIDGE - U9.16, THE NFC DRIVER GROUND  (D-649)
+#
+# `U9.16` is the ST25R3916's `GND_DR_16`, the transmit driver's ground
+# return, and TODAY IT HAS NO GROUND CONNECTION OF ANY KIND: KiCad's own
+# connectivity joins it to no other pad of `GND`, and it is one of only
+# three `GND` orphans left on the board.  Its land sits on a 0.3487 mm2
+# SEVERED sliver of the `B GND PLANE`, 0.2029 mm from a 2840.95 mm2
+# body, and that land's position lies inside the BODY of both
+# `In1 GND REFERENCE` and its In4.Cu twin - so the barrel has somewhere
+# to land before it is drilled.
+#
+# THE LATERAL ANSWER IS REFUSED BY 0.0192 mm AND THE NUMBER IS EXACT.
+# `evidence/d649-u9-16-hairline.json` lays ONE straight `GND` track
+# across the hairline at 675 endpoint/width combinations and proves each
+# with `maze3d.verify_laid`: every one is refused by `U9.15`, the
+# `NFC_RFO2` land, and the CLOSEST is 0.1808 mm against the 0.200 mm
+# this board's netclasses require.  The alley between `U9.15` and
+# `U9.17` is 0.500 mm wide; the narrowest track the board licenses,
+# 0.150 mm, needs 0.550 mm.  No width on any ladder crosses it and no
+# clearance rule is weakened to let one.
+#
+# THE VERTICAL ANSWER NEEDS NO ALLEY AT ALL, and it was missed because
+# it is SMALLER THAN THE LATTICE D-595 MEASURED ON.  Section 11's three
+# bridges were each "measured over its whole island on the 0.10 mm
+# lattice".  The legal region inside `U9.16`'s island is
+# 0.1375 x 0.1625 mm - 92 sites on a 0.0125 mm grid, all of them inside
+# a square a 0.10 mm lattice steps over
+# (`evidence/d649-u9-16-barrel.json`).  Every coarser rung of
+# `route_maze_batch.BRIDGE_LADDER` - 0.65/0.40, 0.60/0.30, 0.55/0.25,
+# 0.50/0.25 and 0.45/0.20 - is refused at ALL 2238 candidate centres.
+#
+# NO NEW FAB CAPABILITY.  0.35 mm diameter on a 0.20 mm drill with a
+# 0.075 mm annular ring is the process this file already licenses by
+# name in seven places (D-257 escape vias, D-266 Kelvin reservations,
+# D-531 USB-C VBUS POFV, D-595 `POUR_BRIDGE_U11_11`, D-632 `U4.12`).
+# What is new is only WHERE it is used.
+#
+# CURRENT, MEASURED.  `U9.16` carries the ST25R3916 transmit driver's
+# ground return.  It is NOT the part's only ground: `U9.6`, `U9.12`,
+# `U9.20`, `U9.21`, `U9.26` and the 3.45 x 3.45 mm `U9.33` exposed pad
+# are all already in the 228-pad `GND` cluster, and `U9.33` is what
+# carries the bulk of that return today.  A 0.20 mm plated barrel is
+# approximately 0.0177 mm2 of copper and approximately 1.6 mOhm through
+# a 1.6 mm stack - the same figure section 11 records for the BQ25185
+# charger's whole 1 A return.  It is a STRICT IMPROVEMENT on a pin that
+# is open-circuit today, and it is recorded, exactly as `U11.11` is, as
+# an open DFM item: a wider `U9` driver-ground bond needs a local B.Cu
+# refloorplan around the `NFC_RFO2` land, not a finer drill.
+#
+# THE TRANSMIT ARMS ARE NOT TOUCHED.  This barrel is on `GND`, carries
+# no `NFC_RF` copper, and moves none: `checks/rf_symmetry_contract.py`
+# RF1-RF5 read the arms' own objects, and this transaction leaves both
+# arms byte-identical.  D-638's alternative closure for this same land -
+# a 0.675 mm stitch at a 0.025 mm lattice - cost +0.41 mm on
+# `NFC_RFO2`; this one costs ZERO.
+#
+# Scoped, as every rule in section 11 is, to ONE net and ONE pad-sized
+# rule area drawn by the promoting transaction around the barrel it
+# actually laid, and audited by that transaction's clause 6.
+# ---------------------------------------------------------------------
+
+(rule "D-649 GND U9.16 NFC driver-ground pour bridge - barrel diameter"
+	(constraint via_diameter (min 0.35mm) (opt 0.35mm))
+	(condition "A.NetName == 'GND' && A.enclosedByArea('POUR_BRIDGE_U9_16')"))
+
+(rule "D-649 GND U9.16 NFC driver-ground pour bridge - annular ring"
+	(constraint annular_width (min 0.075mm))
+	(condition "A.NetName == 'GND' && A.enclosedByArea('POUR_BRIDGE_U9_16')"))
+
+(rule "D-649 GND U9.16 NFC driver-ground pour bridge - drill"
+	(constraint hole_size (min 0.20mm) (opt 0.20mm))
+	(condition "A.NetName == 'GND' && A.enclosedByArea('POUR_BRIDGE_U9_16')"))
+
 
 # =====================================================================
 # 12. PAD-ESCAPE RELIEF - D-606

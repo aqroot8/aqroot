@@ -8,10 +8,29 @@ necks (`N1-N3`), placement (`PL1-PL9`), NFC front-end symmetry (`RF1-RF5`,
 D-621), protected copper and leaf-land pricing (`LL1-LL6`, D-632) -- and the
 residual is **44 retained open edges across 21 nets** (D-632).  Two of them, `USB_D_CONN_P` and the `USB_D_MCU` pair, are
 parked on rulings rather than routes (D-618, D-620).  The residual is **40**
-as of D-648: D-644 closed `/09_COMMUNITY_HEADER/EXT_SDA` -> the Qwiic/STEMMA QT
-SDA contact, D-646 the BMI270's `ASDx`/`ASCx` straps, and D-648 the BMI270's
-`VDD` supply pin `U4.8`.  The IMU is still NOT functional: `U4.5`, its `VDDIO`,
-remains an island of one land.
+as of D-648 and **39** as of D-649: D-644 closed
+`/09_COMMUNITY_HEADER/EXT_SDA` -> the Qwiic/STEMMA QT SDA contact, D-646 the
+BMI270's `ASDx`/`ASCx` straps, D-648 the BMI270's `VDD` supply pin `U4.8`, and
+D-649 the ST25R3916's `GND_DR_16` driver ground `U9.16`.  The IMU is still NOT
+functional: `U4.5`, its `VDDIO`, remains an island of one land, and its bridge
+from `U4.8` is now a measured `PLACEMENT_WALL` rather than an unfinished search.
+
+## A POUR BRIDGE CAN BE SMALLER THAN THE LATTICE THAT LOOKS FOR IT (D-649)
+
+`U9.16` -- the ST25R3916's transmit driver ground, with no ground connection of
+any kind since the board was laid -- sits on a 0.3487 mm2 severed sliver of the
+`B GND PLANE`, 0.2029 mm from the body and directly over BOTH inner ground
+planes.  The LATERAL join is refused by **0.0192 mm**: 675 straight `GND` tracks
+across the hairline, every one refused by the `NFC_RFO2` land `U9.15`, the
+closest at 0.1808 mm against a 0.200 mm rule (`screen`-free, exact geometry,
+`evidence/d649-u9-16-hairline.json`).  The VERTICAL join needs no alley, and it
+was missed because the legal region is **0.1375 x 0.1625 mm** while
+`QBoard.grid`'s 0.75-cell guard band at the 0.100 mm lattice `.kicad_dru`
+section 11 measured on is **0.075 mm a side**.  At 0.025 mm `--bridge` finds ten
+sites and takes one 0.35/0.20 mm barrel.  **Before calling a pour orphan
+unbridgeable, check the PITCH the refusal was measured at.**
+
+    python3 route_maze_batch.py GND --grid 25000 --bridge --promote
 
 ## THE PAD BRIDGE NAMES ONE OBJECT.  ASK IT AGAIN. (D-648)
 

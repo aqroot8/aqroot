@@ -838,6 +838,9 @@ def load_detours(path):
     return doc
 
 
+DETOUR_RESERVE_LAYERS = ("F", "I1", "I2", "I3", "I4", "B")
+
+
 def detour_guard(spec):
     """The reserved discs as a `pour_bond_guard.py` guard record per layer.
 
@@ -846,11 +849,31 @@ def detour_guard(spec):
     the detour tunnel under the site it was moved to free.  `net` carries the
     first exempt net so `guard_for`'s own one-net exemption does the work, and
     the rest ride in `exempt`, which D-602 added for exactly this shape.
+
+    A RESERVATION FOR A TRACK IS A PER-LAYER FACT.  D-649.  Every reservation
+    written before this one was made for a BARREL, and a barrel really is
+    copper on all six layers, so "all six" was the only truth the spec could
+    tell.  A reservation made for ONE STRAIGHT TRACK on ONE layer is a
+    different object: copper on `F.Cu` or `In2.Cu` crossing under a `B.Cu`
+    pad bridge threatens nothing, and reserving those layers anyway is not
+    conservative -- it refuses relays for a danger that does not exist.  It
+    cost a gate run to find out: the `Net-(U12-PS_SYNC)` relay this decision
+    needed came back `NO_PATH` at 0.200 mm with `layers_allowed` `F, B, I2`
+    and every one of the three reserved.  So a reserve record may name its own
+    `"layers"`; ABSENT, it is all six and every spec written before this reads
+    exactly as it did.
     """
     guards = []
     for k, d in enumerate(spec.get("reserve", ())):
         ex = list(d.get("exempt", ()))
-        for lkey in ("F", "I1", "I2", "I3", "I4", "B"):
+        lkeys = list(d.get("layers", DETOUR_RESERVE_LAYERS))
+        bad = [L for L in lkeys if L not in DETOUR_RESERVE_LAYERS]
+        if bad:
+            raise SystemExit("--detour-spec: reserve names no such copper "
+                             "layer key %s (want %s)"
+                             % (", ".join(map(repr, bad)),
+                                "/".join(DETOUR_RESERVE_LAYERS)))
+        for lkey in lkeys:
             guards.append(dict(
                 ok=True, net=(ex[0] if ex else ""), exempt=ex[1:],
                 lkey=lkey, keepout_radius=int(round(d["r_mm"] * 1e6)),
