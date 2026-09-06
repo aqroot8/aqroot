@@ -1,5 +1,241 @@
 # AQROOT Full Beta v2 — CTO Decisions
 
+# D-643 · 2026-09-06 · Demo — the board's LARGEST SINGLE BLOCKER was a CONTRACT, and it is now a NUMBER: `PP2` prices a RETURN fragment against the conductor the board publishes for its own ground, raised by Kirchhoff at the part
+
+    authority  f496d2f39c0827248a47ab7d47efa4322f078b68d2da1d91ae6585d97bf8f875
+            -> f496d2f39c0827248a47ab7d47efa4322f078b68d2da1d91ae6585d97bf8f875
+    NO COPPER MOVED.  Zero tracks, zero vias, zero zones, zero rule areas,
+      zero `.kicad_dru` change, zero placement change.  ONE full-board gate
+      run was spent and it was NOT invoked `--promote`
+      (`authoritative_unchanged: true`).
+    `hardware/beta-v2` UNTOUCHED (`git status --short hardware/beta-v2/` empty).
+    Retained open edges **43**, open retained nets 21, connected retained 152,
+      raw ratsnest 59 — all unmoved.
+    THE TEN STANDING CONTRACTS: **10/10 RAN, 10/10 PASS**
+      (`evidence/d643-contract-regression.json`, baseline `d632`), differing
+      from that baseline in exactly the three fields D-639 documented.
+    ONE NEW TRACKED SCREEN: `screen_return_fragment_bar.py`.
+    ONE CONTRACT CHANGED: `checks/pour_partition_contract.py` — `PP2` gains a
+      RETURN-FRAGMENT arm.  On the authoritative board its report gains
+      **FOUR KEYS AND NOTHING ELSE**.
+
+D-642 closed with a ranked list whose first item was not a corridor and not a
+land: *"`PP2`'s `GND` RULE IS THE BOARD'S LARGEST SINGLE BLOCKER ... the
+question the clause defers is 'how much current does a return-plane fragment
+carry?'  Build it, control it the way D-628 controlled its own clause, and run
+it against a board it would admit **before** any such board exists."*  This
+decision is that iteration and nothing else: **no copper was laid beside it, on
+purpose**, which is the discipline D-625 set and D-627 kept.
+
+## 1. WHAT WAS ACTUALLY REFUSED, AND HOW MUCH IT COST
+
+`.kicad_dru` section 5 prices nine RAILS — `ACC_3V3 0.76`, `ACC_5V 0.70`,
+`BAT_MAIN 3.125`, `LED_BOOST 0.09`, `NFC_5V_PA_PENDING 0.50`, `P3V3 1.00`,
+`SPK_OUT 0.41`, `SYS_MAIN 2.19`, `VBUS_CHG 0.50` — and **none of them is
+`GND`**.  D-628's `decide()` therefore returned
+`NET_CARRIES_NO_PUBLISHED_CURRENT` the instant `PP3` stopped saying `STRANDED`,
+so **every split of a multi-pad `GND` island was refused unconditionally,
+whatever the router did**.  That is D-584's family — six nets and ~18 retained
+open edges including the whole internal I²C bus — held by a clause, not by
+geometry.
+
+## 2. THE OBVIOUS BAR IS THE WRONG ONE, AND ITS OWN EVIDENCE SAYS SO
+
+D-642 proposed the strictest figure the table publishes anywhere, `BAT_MAIN`'s
+**3.125 A** fault trip: *"a return fragment carries whatever the rails deliver
+into it."*  It is measured, it needs no model — **and it is not the analogue of
+what D-628 did.**  D-628 charges a `+3V3` fragment the WHOLE `+3V3` rail
+because every pad on that fragment is a pad OF that rail.  The whole-NET
+analogue for a return net is the SUM of every rail on the board, ~9.3 A, which
+no 1 oz outer fragment could ever meet — so the "faithful analogue" is the
+unconditional refusal again, wearing a number.
+
+And 3.125 A does something worse: **it refuses the worked example this
+contract's own doctrine defends.**  The `WHY BONDED IS NOT A FAILURE` paragraph
+argues at length that severing the `C45`/`C51`/`C53` pocket off three barrels
+into two 9425 mm² reference planes *"is not a return-path injury; it is what
+those barrels are for."*  That fragment prices **2.552 A**.  A clause that
+refuses its own defended example is not conservative; it is inconsistent.
+
+## 3. THE BAR THE BOARD ALREADY PUBLISHES — AND KIRCHHOFF AT THE PART
+
+Section 5 is silent about `GND`.  The **netclass table is not**: `GND` carries
+`track_width` **0.300 mm** and `via_drill` 0.300 mm, authored years before this
+clause and used to fabricate every routed ground connection on the board.
+
+> **THE FLOOR.**  A return fragment's replacement conductor must carry at least
+> what ONE track of its own netclass width carries at this board's copper —
+> 0.300 mm of 1 oz outer at dT = 10 K, **0.995 A**.  A fragment bonded better
+> than a track the board would happily route to that same pad has not been
+> given a worse conductor than the board already licenses.
+
+The floor ALONE would be a safety hole: it would admit a cut through the pour
+under the battery front end exactly as readily as one through the NFC
+decoupling pocket, and this board's retained battery safety (D-186, D-269) is
+not something a ground clause may quietly widen.  The closing term needs no
+model either, because **the current into a part's ground pin is bounded by the
+current its other pins carry** — Kirchhoff, and for the two-terminal decoupling
+caps that make up most of these pads, an identity:
+
+> **THE NEIGHBOUR TERM.**  For every pad on the fragment, every OTHER pad of
+> the SAME FOOTPRINT is resolved to its netclass, and any that section 5 prices
+> RAISES the bar to that rail's published current.  The bar is the largest such
+> figure and never less than the floor.
+
+**On this board that term is far from vacuous.**  Of the `GND` pads: **14 sit
+on parts that also touch `BAT_MAIN`** (3.125 A — `J4`, `U11`, `U14`, `U18`,
+`D9`, `C25`, `C36`, `C58`, `C59`), 10 on `SYS_MAIN` parts (2.19 A — `U12`,
+`U13`, `U21` and the `BQ25185_SYS` decoupling), 116 on `P3V3` parts, and 89
+have no priced neighbour and fall to the floor.
+
+**WHICH NET IS THE RETURN NET IS READ, NEVER NAMED.**  `GND` does not appear in
+the clause's logic.  A return net OWNS a filled zone on a RESERVED INNER PLANE
+— the same `route_maze_batch.reserved_inner_planes` the router reserves against
+— and section 5 does not price it.  `+3V3` owns `In3` and IS priced, so it
+keeps its own row and the clause never touches it.  The artifact reports the
+resolution: `GND`, `In1`+`In4`, 18851.692 mm².
+
+## 4. THE CLAUSE'S OWN NON-VACUITY — ELEVEN PROBES, THROUGH THE SAME FUNCTIONS
+
+`return_controls()` runs on EVERY board, split or not, and `PP2.ok` now
+requires it (strictly stronger than before).  All eleven behave
+(`evidence/d643-return-fragment-clause.json` → `unit_controls`):
+
+    unpriced_neighbours_fall_to_the_floor              0.995
+    battery_neighbour_raises_the_bar                   3.125
+    priced_neighbour_below_the_floor_does_not_lower_it 1.000
+    the_largest_neighbour_is_the_one_charged           3.125
+    a_net_with_no_netclass_conductor_has_no_floor      None
+    zone_min_thickness_sliver_refused_at_the_floor     0.742 A  REFUSED
+    the_d619_fragment_is_admitted_at_the_floor         2.552 A  ADMITTED
+    the_same_fragment_is_REFUSED_beside_the_battery    2.552 A  REFUSED
+    floor_located_one_ppm_below                                 REFUSED
+    floor_located_at_equality                                   ADMITTED
+    stranded_refused_however_priced_on_a_return_net              REFUSED
+
+`2.552 A` is not a synthetic figure: it is what D-619's real fragment prices,
+and it appears here crossing the bar in **opposite directions** depending only
+on the neighbour term.  D-628's own seven probes are called with no
+`bar_source` and read byte-identical.
+
+## 5. A BOARD IT ADMITS — D-619's OWN WALL, REPRODUCED ON THE CURRENT AUTHORITY
+
+D-619's refused route is recorded to the segment: *"a 4.4 mm `B.Cu` wall up the
+west side of `U9` (x=31.000 y 26.100→28.400 and x=31.200 y 23.800→25.900)."*
+Laid back onto today's authority and refilled by KiCad, **it reproduces**: the
+`GND` `B.Cu` pour splits 57 → 58 islands and the fragment comes back with the
+same three pads at **12.388 mm²** (D-619 recorded 12.461 on a board that has
+moved a long way since).
+
+    BEFORE this change   pour_partition_contract: FAIL
+                         PP2  NET_CARRIES_NO_PUBLISHED_CURRENT
+    AFTER  this change   pour_partition_contract: PASS
+                         PP2  BOND_PRICED_AT_OR_ABOVE_RETURN_FRAGMENT_BAR
+                         bar 0.995 A (floor)   priced 2.552 A   margin 2.565x
+                         3 barrels 5.706 A parallel; bottleneck is the
+                         fragment's own 1.100 mm of copper
+
+## 6. AND A BOARD IT REFUSES — ONE CUT, TWO FRAGMENTS, OPPOSITE VERDICTS
+
+A closed 0.300 mm `B.Cu` fence on a foreign net around `C58.2` and its own
+0.300 mm barrel 0.903 mm away (a CONTROL board: not DRC-clean, never gated,
+never promoted) severs the same pour into two pad-bearing fragments:
+
+    R83.2   409.126 mm2   bar 0.995 (FLOOR)          priced 2.206  2.217x  ADMIT
+    C58.2     1.555 mm2   bar 3.125 (NEIGHBOUR RAIL) priced 1.902  0.609x  REFUSE
+                          set by C58.1 on /01_POWER_TREE/BAT_PROTECTED_P
+
+**1.902 A is ABOVE the 0.995 A floor**, so the battery fragment would have been
+ADMITTED by the floor alone.  **The neighbour term is the only thing refusing
+it**, on one board, in one run, against a fragment admitted beside it.  That is
+the safety term proved load-bearing rather than asserted.
+
+## 7. THE REAL GATE, ON A REAL CANDIDATE — AND D-641's BLOCKER IS RENAMED
+
+One full-board gate run, `--grid 100000`, **no `--promote`**, on the edge D-641
+found: `/09_COMMUNITY_HEADER/EXT_SDA` → `J8.3`, the Qwiic / STEMMA QT SDA
+contact.  It routes (85.843 mm, 4 barrels, 9.6 s), open retained nets 21 → 20,
+and it severs `GND` island 31 exactly as D-641 measured.  `PP2` now says:
+
+    fragment [U3.12]  4.724 mm2   PP3 STRANDED
+    bar 1.000 A  RETURN_NEIGHBOUR_RAIL  (U3's own +3V3 pads, class P3V3)
+    REFUSED  PP3_NOT_BONDED
+
+**The contract wall is gone; the placement wall remains.**  `EXT_SDA` → the
+Qwiic connector is no longer refused because `GND` has no published current —
+it is refused because `U3.12` has no barrel, which D-642 measured exactly and
+named `NO_BARREL_AT_ANY_DIAMETER_ON_THIS_LADDER`.  The blocker moves from a
+clause to a via site, which is a thing a placement engineer can close.
+
+## 8. AND THE PRICE OF EVERY OTHER CUT, READ BEFORE A ROUTER IS SPENT
+
+New tracked `screen_return_fragment_bar.py` calls the contract's own
+`return_fragment_bar` verbatim, so the two cannot drift, and censuses every
+splittable island of every return pour
+(`evidence/d643-return-bar-census.json`).  **24 islands with two or more pads:**
+
+    3.125 A   7 islands   16 (2841.9 mm2), 44 (J4, the battery connector),
+                          32, 38, 27 (U14, the protection IC), 39, 33
+    2.190 A   4 islands   0 (805.8 mm2), 8, 46, 20
+    1.000 A   8 islands   9, 6, 4, 37, 28, **31 (the EXT_SDA island)**, 34, 26
+    0.995 A   5 islands   40, 51, 42, 41, 54       <- the FLOOR, the cheap cuts
+
+A router aimed at a 0.995 A island is aimed at a cheap cut; one aimed beside
+the battery front end is aimed at a 3.125 A wall.  That is now knowable for
+free.
+
+## 9. WHAT THIS CHANGE CANNOT DO, STATED
+
+**IT IS MONOTONE.**  For every net section 5 prices, `required` is unchanged.
+For a return net it moves from `None` — always refused — to a number.  So the
+change can only ADMIT a split that was refused and can never refuse one that
+was admitted; and `PP2.ok` additionally now requires the new controls, which is
+strictly stronger.  On the authoritative board the report gains **four keys and
+nothing else**: every other field of every clause is byte-identical to the same
+run before the change (`evidence/d643-return-fragment-clause.json` →
+`authority.fields_added_vs_pre_change`).
+
+**LIMITS, NOT HIDDEN:**
+
+  * a neighbour on a class section 5 does not price contributes nothing — 89
+    `GND` pads have no priced neighbour and are charged the floor;
+  * the MAXIMUM neighbour is charged, not the SUM, which under-charges a
+    multi-rail part.  It sits against a much larger over-charge in the other
+    direction, since each rail is charged WHOLE to one ground pad that draws a
+    fraction of it;
+  * the bar is charged to the fragment's REPLACEMENT CONDUCTOR only.  The
+    return-path cost of a slot in a reserved inner PLANE is a different
+    question and remains `checks/plane_return_path.py`'s (D-636).
+
+## NEXT, IN ORDER OF LEVERAGE
+
+  1. **SPEND THE CLAUSE.**  D-584's family can now be re-asked, and the census
+     says where to ask first: the eight 1.000 A and five 0.995 A islands.  Run
+     the corridor/gate on the retained open edges whose only refusal was
+     `NET_CARRIES_NO_PUBLISHED_CURRENT` and promote the first one that closes
+     an edge with a fragment priced above its bar.  **This is the first
+     iteration since D-639 with a plausible route to copper.**
+  2. **RELAY THE `In3.Cu` `/09_COMMUNITY_HEADER/TCA4307_READY` TRACK** —
+     carried unchanged from D-642 item 2.  It alone holds 55 legal
+     0.500/0.200 barrel sites inside `U3.12`'s fragment, and D-643 has now
+     proved that a barrel there is the ONLY thing between `EXT_SDA` and the
+     Qwiic connector.  Price with `screen_segment_evict.py`, relay with
+     `--detour-spec`, re-measure with `screen_bond_site_deficit.py`.
+  3. **`/SPI_B_SCK` AND `/BQ25185_STAT1` ARE LANDS, NOT CORRIDORS** (`U9.30`,
+     `U11.9`) — `screen_escape_class.py` and `screen_pad_escape_relief.py`,
+     carried unchanged from D-642 item 3.
+  4. **TRIAGE THE REMAINING OPEN-EDGE NETS** the seconds-not-hours way —
+     `/01_POWER_TREE/ACC_5V_LX`, `/I2C_SCL_INT`, `/NFC_SUPPLY`, `/I2S_LRCLK`
+     and the parked USB trio — carried unchanged from D-642 item 4.
+  5. **`BQ25185_SYS C26.2`'s STITCH POCKET** and **`GND J3.A12/B1` AT A CHEAPER
+     SETTING**, carried unchanged.
+  6. **`/I2S_LRCLK`'s edge rate and `/NFC_SUPPLY`'s per-net current** remain
+     the per-part electrical ledger's two unlocked edges, carried unchanged.
+
+No owner decision is OPEN.  D-618's `J3` question remains RECORDED.  PM-3 keeps
+`U3.12`, and after this decision its cause is a **single via site** and nothing
+else.
+
 # D-642 · 2026-09-06 · Demo — the QWIIC SDA edge has THREE walls, not one: the guarded corridor survives the whole pitch ladder, `U3.12`'s fragment takes NO barrel at ANY diameter — and even a perfect bond could not pass, because `PP2` refuses every `GND` split unconditionally
 
     authority  f496d2f39c0827248a47ab7d47efa4322f078b68d2da1d91ae6585d97bf8f875

@@ -45,9 +45,16 @@ The claim is then a claim about the partition and not about a count:
        the reserved plane AND the fragment's own copper out to each pad, priced
        at the bottleneck of that series chain -- must carry at least the design
        current this board publishes for that pour's net in `.kicad_dru`
-       section 5.  A net the table does not price is refused, which is where
-       `GND` lands.  The clause carries its own non-vacuity controls and they
-       run on every board, split or not.  See THE PP2 AMPACITY CLAUSE below.
+       section 5.  D-643 then answers the one net the table cannot price: the
+       board's RETURN net, which owns the reserved reference planes and has no
+       rail row.  It is charged one track of its OWN netclass width (`GND`
+       0.300 mm, 0.995 A here), RAISED to any section-5 rail published for a
+       net sharing a FOOTPRINT with one of the fragment's pads -- Kirchhoff at
+       the part, so the battery front end's ground costs 3.125 A and the NFC
+       decoupling pocket costs 0.995 A.  A net that is neither priced nor a
+       return net is still refused.  Both clauses carry their own non-vacuity
+       controls and they run on every board, split or not.  See THE PP2
+       AMPACITY CLAUSE and THE PP2 RETURN-FRAGMENT CLAUSE below.
 
   PP3  A SPLIT IS PRICED, NOT ONLY NAMED.  For every new fragment, what does
        it still have?  Each pad's own through barrels are resolved into the
@@ -187,6 +194,25 @@ def reserved_plane_zones(path):
                 out.setdefault(z.GetNetname(), []).append(
                     (ln, z.GetZoneName(), sub, round(sub.Area() / 1e12, 3)))
     return out, reserved
+
+
+def board_nets_and_pads(path):
+    """`{net: netclass}` and `{REF: {pad number: net}}` for the whole board.
+
+    Both are what the RETURN bar is resolved against: the netclass gives the
+    floor, the footprint map gives the neighbours.  Read once per run.
+    """
+    import pcbnew
+    board = pcbnew.LoadBoard(str(path))
+    ncl = {}
+    for name, net in board.GetNetsByName().items():
+        ncl[str(name)] = net.GetNetClassName()
+    pads = {}
+    for fp in board.GetFootprints():
+        ref = fp.GetReference()
+        for q in fp.Pads():
+            pads.setdefault(ref, {})[q.GetNumber()] = q.GetNetname()
+    return ncl, pads
 
 
 def barrels(path, net):
@@ -361,11 +387,198 @@ def published_rail_currents(dru_path):
                        classes=sorted(table))
 
 
-def decide(verdict, priced_amps, required_amps):
+# --------------------------------------------------------------------------- #
+# THE PP2 RETURN-FRAGMENT CLAUSE -- D-643
+# --------------------------------------------------------------------------- #
+# D-628 closed with a refusal it stated in its own words: "the question 'how
+# much current does a return plane fragment carry' is not answered by a rail
+# table, and until it is answered `PP2` should keep saying no."  D-642 then
+# measured what that costs.  `GND` owns the only outer pour on this board that
+# a route can plausibly cut, and because `.kicad_dru` section 5 prices nine
+# RAILS and none of them is `GND`, `decide()` returns
+# `NET_CARRIES_NO_PUBLISHED_CURRENT` the instant `PP3` stops saying `STRANDED`.
+# EVERY split of a multi-pad `GND` island is therefore refused UNCONDITIONALLY,
+# whatever the router does -- D-584's family of six nets and ~18 retained open
+# edges, including the whole internal I2C bus, cannot be freed by ANY router
+# move.  That is the board's largest single blocker and it is a CONTRACT, not a
+# corridor.
+#
+# WHY THE OBVIOUS ANSWER IS THE WRONG ONE.  The tempting bar is the strictest
+# figure the table publishes anywhere -- `BAT_MAIN`'s 3.125 A fault trip -- on
+# the reasoning that a return fragment carries whatever the rails deliver into
+# it.  It is measured, it needs no model, and it is WRONG, because it is not
+# the analogue of what D-628 did.  D-628 charges a `+3V3` fragment the WHOLE
+# `+3V3` rail: every pad on that fragment is a pad OF that rail, so the whole-
+# rail figure is an upper bound on the fragment's own current.  The whole-net
+# analogue for a return net is the sum of every rail on the board, ~9.3 A,
+# which no outer fragment on any 1 oz board could ever meet -- so the "faithful
+# analogue" is just the unconditional refusal again, wearing a number.  And
+# 3.125 A is not merely strict, it CONTRADICTS THIS CONTRACT'S OWN DOCTRINE:
+# the paragraph above ("WHY `BONDED` IS NOT A FAILURE") argues at length that
+# severing the `C45` / `C51` / `C53` pocket off three barrels into two
+# 9425 mm2 reference planes "is not a return-path injury; it is what those
+# barrels are for" -- and that fragment prices 2.552 A.  A clause that refuses
+# the worked example its own doctrine defends is not conservative; it is
+# inconsistent.
+#
+# WHAT THE BOARD ACTUALLY PUBLISHES ABOUT `GND` COPPER.  Section 5 is silent,
+# but the netclass table is NOT: `GND` carries `track_width` 0.300 mm and
+# `via_drill` 0.300 mm, authored years before this clause and used to fabricate
+# every routed ground connection on the board.  That is the board's own
+# published statement of what an adequate `GND` conductor is.  So:
+#
+#     THE FLOOR.  A return fragment's replacement conductor must carry at
+#     least what ONE `GND`-netclass track carries at this board's copper --
+#     0.300 mm of 1 oz outer at dT = 10 K, 0.995 A.  A fragment bonded better
+#     than a track the board would happily route to that same pad has not been
+#     given a worse conductor than the board already licenses.
+#
+# THE FLOOR ALONE WOULD BE A SAFETY HOLE, AND IT IS CLOSED BY KCL.  A 0.995 A
+# floor would admit a cut through the pour under the battery front end exactly
+# as readily as one through the NFC decoupling pocket, and this board's
+# retained battery safety (D-186, D-269) is not something a ground clause may
+# quietly widen.  The closing term needs no model either, because the current
+# into a part's ground pin is bounded by the current its OTHER pins carry --
+# that is Kirchhoff, not an estimate, and for the two-terminal decoupling caps
+# that make up most of these pads it is an identity.  So:
+#
+#     THE NEIGHBOUR TERM.  For every pad on the fragment, every OTHER pad of
+#     the SAME FOOTPRINT is resolved to its netclass, and any that section 5
+#     prices RAISES the bar to that rail's published current.  The bar is the
+#     largest such figure, and never less than the floor.
+#
+# ON THIS BOARD THAT TERM IS FAR FROM VACUOUS: of 254 `GND` pads, 14 sit on
+# parts that also touch `BAT_MAIN` (3.125 A -- `J4`, `U11`, `U14`, `U18`, `D9`,
+# `C25`, `C36`, `C58`, `C59`), 10 on `SYS_MAIN` parts (2.19 A -- `U12`, `U13`,
+# `U21` and the `BQ25185_SYS` decoupling), 116 on `P3V3` parts, and 89 have no
+# priced neighbour at all and fall to the floor.  Cutting the battery return
+# now costs 3.125 A of replacement conductor; cutting the NFC pocket costs
+# 0.995 A.  That is the discrimination the unconditional refusal could not make.
+#
+# THE TERM RAISES AND NEVER VETOES, AND THE LIMIT IS STATED.  A neighbour on an
+# UNPRICED class contributes nothing -- it cannot, section 5 does not price it
+# -- so a fragment whose neighbours are all signals is charged the floor.  That
+# is this clause's honest boundary: it is a bound on the pads whose current the
+# board publishes, and silence about the rest.  Taking the MAXIMUM neighbour
+# rather than the SUM is likewise an under-charge for a multi-rail part, and it
+# is stated rather than hidden -- it sits against a much larger over-charge in
+# the other direction, since each of those rails is charged WHOLE to a single
+# ground pad that draws a fraction of it.
+#
+# WHICH NET IS THE RETURN NET IS READ, NEVER NAMED.  `GND` does not appear in
+# this clause's logic.  A return net is one that OWNS a filled zone on a
+# RESERVED INNER PLANE -- the same `route_maze_batch.reserved_inner_planes` the
+# router reserves against -- and that section 5 does not price.  `+3V3` owns
+# `In3` and IS priced, so it keeps its own row and this clause never touches
+# it.  Pour one more reference plane tomorrow and the clause finds it with no
+# edit here; retire section 5's `P3V3` row and `+3V3` becomes a return net,
+# loudly, in the artifact.
+NETCLASS_TRACK = "track_width"
+
+
+def netclass_conductors(pro_path):
+    """The per-netclass conductors THIS BOARD publishes -- the `.kicad_pro`.
+
+    Read from the project beside the board under judgement for the same reason
+    the rail table is read from the `.kicad_dru` beside it: a figure a reviewer
+    can edit and a figure this clause charges a bond against must be the same
+    figure.  A scratch board without its `.kicad_pro` has no netclasses at all,
+    which is why `board_at()` copies the sidecars.
+    """
+    try:
+        doc = json.loads(Path(pro_path).read_text(encoding="utf-8"))
+        rows = doc["net_settings"]["classes"]
+    except (OSError, ValueError, KeyError, TypeError):
+        return {}, dict(source=str(pro_path), found=False)
+    out = {}
+    for c in rows:
+        if not isinstance(c, dict) or "name" not in c:
+            continue
+        out[c["name"]] = dict(
+            track_width_mm=c.get(NETCLASS_TRACK),
+            via_drill_mm=c.get("via_drill"),
+            via_diameter_mm=c.get("via_diameter"))
+    return out, dict(source=str(pro_path), found=True,
+                     sha256=hashlib.sha256(
+                         Path(pro_path).read_bytes()).hexdigest(),
+                     classes=sorted(out))
+
+
+def return_nets(planes, reserved, netclass_of, table):
+    """Nets that own a RESERVED inner reference plane and carry NO rail price.
+
+    Both halves are read: `reserved` is the router's own reservation map and
+    `table` is `.kicad_dru` section 5.  The result is a FACT about this board,
+    reported in the artifact, and no net name appears in the logic.
+    """
+    owners = {n for layer, nets in reserved.items() for n in nets}
+    out = {}
+    for net in sorted(owners):
+        if not planes.get(net):
+            continue                      # reserved but not actually filled
+        cls = netclass_of.get(net)
+        if cls in table:
+            continue                      # priced as a RAIL; not a return net
+        out[net] = dict(netclass=cls,
+                        reserved_layers=sorted(l for l, nets in reserved.items()
+                                               if net in nets),
+                        plane_area_mm2=round(
+                            sum(a for (_l, _z, _p, a) in planes[net]), 3))
+    return out
+
+
+def return_fragment_bar(net, cls, frag_pad_refs, pads_by_footprint,
+                        netclass_of, classes, table):
+    """The bar for ONE return fragment: the floor, raised by its neighbours.
+
+    Returns `(amps, provenance)`.  `provenance` names every term, so the bar in
+    a report can be argued with pad by pad instead of being taken on trust.
+    """
+    import audit_bond_ampacity as ab
+    w = (classes.get(cls) or {}).get("track_width_mm")
+    floor = (None if not w else
+             round(ab.ampacity(ab.track_area(float(w)), DT_K), 3))
+    neighbours = []
+    for ref in sorted(frag_pad_refs):
+        fp = ref.rsplit(".", 1)[0]
+        for num, pnet in sorted(pads_by_footprint.get(fp, {}).items()):
+            if pnet == net:
+                continue
+            pcls = netclass_of.get(pnet)
+            row = table.get(pcls)
+            if not row:
+                continue
+            neighbours.append(dict(gnd_pad=ref, part=fp, other_pad=num,
+                                   other_net=pnet, other_netclass=pcls,
+                                   published_amps=row["amps"]))
+    top = max([n["published_amps"] for n in neighbours], default=None)
+    bar = floor if top is None else (
+        top if floor is None else max(floor, top))
+    which = ("RETURN_FLOOR_ONE_NETCLASS_TRACK" if (top is None or
+                                                   (floor is not None
+                                                    and floor >= top))
+             else "RETURN_NEIGHBOUR_RAIL")
+    return bar, dict(
+        bar_amps=bar, bar_from=(None if bar is None else which),
+        floor=dict(netclass=cls, track_width_mm=w, amps=floor,
+                   dT_K=DT_K,
+                   note="one track of the net's OWN netclass width at this "
+                        "board's copper -- what the board publishes as an "
+                        "adequate conductor for this net"),
+        neighbour_rails=neighbours,
+        neighbour_max_amps=top,
+        limits="a neighbour on a class section 5 does not price contributes "
+               "nothing; the MAXIMUM neighbour is charged, not the sum")
+
+
+def decide(verdict, priced_amps, required_amps, bar_source=None):
     """THE ADMISSION, in ONE place -- the verdict and the controls share it.
 
     Every refusal names itself, so a report says which of the five gates a
-    split fell at rather than only that it fell.
+    split fell at rather than only that it fell.  `bar_source` (D-643) names
+    where the bar came from when it is NOT a section-5 rail row; it changes
+    only the ADMISSION string, never a refusal and never the comparison, so
+    D-628's own controls call it unchanged and read unchanged.
     """
     if verdict != "BONDED":
         return False, "PP3_NOT_BONDED"
@@ -375,6 +588,8 @@ def decide(verdict, priced_amps, required_amps):
         return False, "BOND_NOT_MEASURABLE"
     if priced_amps + AMP_TOL < required_amps:
         return False, "BOND_UNDER_PRICED"
+    if bar_source:
+        return True, "BOND_PRICED_AT_OR_ABOVE_" + bar_source
     return True, "BOND_PRICED_AT_OR_ABOVE_THE_PUBLISHED_RAIL_CURRENT"
 
 
@@ -415,6 +630,105 @@ def decision_controls():
                                     outer_track_0p300mm=track,
                                     four_0p400mm_barrels=four),
                 probes=out)
+
+
+def return_controls(classes, table):
+    """THE RETURN CLAUSE'S OWN NON-VACUITY, driven through the same functions.
+
+    Ten probes.  The BAR ones drive `return_fragment_bar` on synthetic pad maps
+    so an expectation cannot drift with a board edit, and the ADMISSION ones
+    drive `decide()` at the bar this board actually publishes -- because a bar
+    that is right and a comparison that is wrong is still a clause that cannot
+    refuse.  `2.552 A` is not a magic number: it is what D-619's real
+    `C45`/`C51`/`C53` fragment prices, and it appears here BOTH as the thing
+    the floor admits AND as the thing the battery neighbour refuses.  That
+    single figure crossing the bar in opposite directions is the whole point of
+    the neighbour term.
+    """
+    import audit_bond_ampacity as ab
+    gnd = dict(classes.get("GND") or {})
+    floor_w = gnd.get("track_width_mm")
+    floor = (None if not floor_w else
+             round(ab.ampacity(ab.track_area(float(floor_w)), DT_K), 3))
+    sliver = round(ab.ampacity(ab.track_area(0.200), DT_K), 3)
+    real = 2.552                      # D-619's own fragment, priced by D-643
+    ncl = {"GND": "GND", "SIG": "Default", "BAT": "BAT_MAIN",
+           "RAIL3V3": "P3V3"}
+    def bar(parts):
+        return return_fragment_bar(
+            "GND", "GND", ["%s.2" % r for r in parts],
+            {r: {"1": n, "2": "GND"} for r, n in parts.items()},
+            ncl, classes, table)
+
+    probes, ok = [], True
+
+    def note(name, got, want, extra=None):
+        nonlocal ok
+        good = (got == want)
+        ok = ok and good
+        row = dict(control=name, got=got, expected=want, behaved=good)
+        if extra:
+            row.update(extra)
+        probes.append(row)
+
+    # A board read without its `.kicad_pro` has NO netclasses and therefore no
+    # floor.  That is not a pass and it is not a crash: every probe below is
+    # reported UNBEHAVED, `ok` goes false and `PP2` FAILS loudly, which is what
+    # a contract judged against the wrong sidecars should do.
+    if floor is None:
+        note("netclass_conductors_were_readable", False, True,
+             dict(why="NO_NETCLASS_TRACK_WIDTH_FOR_THE_RETURN_NET",
+                  source_classes=sorted(classes)))
+        return dict(ok=False, netclass_floor=None,
+                    reference_amps=dict(zone_min_thickness_0p200mm=sliver,
+                                        d619_real_fragment=real),
+                    probes=probes)
+
+    # -- the bar itself ----------------------------------------------------- #
+    b_sig, p_sig = bar({"C45": "SIG", "C51": "SIG"})
+    note("unpriced_neighbours_fall_to_the_floor", b_sig, floor,
+         dict(bar_from=p_sig["bar_from"], floor_amps=floor,
+              track_width_mm=floor_w))
+    b_bat, p_bat = bar({"C45": "SIG", "C25": "BAT"})
+    note("battery_neighbour_raises_the_bar", b_bat,
+         (table.get("BAT_MAIN") or {}).get("amps"),
+         dict(bar_from=p_bat["bar_from"],
+              neighbour=[n["other_netclass"] for n in p_bat["neighbour_rails"]]))
+    b_3v3, _ = bar({"C45": "RAIL3V3"})
+    note("priced_neighbour_below_the_floor_does_not_lower_it",
+         b_3v3, max(floor, (table.get("P3V3") or {}).get("amps")))
+    b_mix, p_mix = bar({"C45": "RAIL3V3", "C25": "BAT"})
+    note("the_largest_neighbour_is_the_one_charged", b_mix,
+         (table.get("BAT_MAIN") or {}).get("amps"),
+         dict(n_neighbours=len(p_mix["neighbour_rails"])))
+    b_none, _ = return_fragment_bar("GND", "NO_SUCH_CLASS", ["C45.2"],
+                                    {"C45": {"1": "SIG", "2": "GND"}},
+                                    ncl, classes, table)
+    note("a_net_with_no_netclass_conductor_has_no_floor", b_none, None)
+
+    # -- the admission at that bar ------------------------------------------ #
+    for name, priced, req, want in (
+            ("zone_min_thickness_sliver_refused_at_the_floor", sliver, floor,
+             False),
+            ("the_d619_fragment_is_admitted_at_the_floor", real, floor, True),
+            ("the_same_fragment_is_REFUSED_beside_the_battery", real, b_bat,
+             False),
+            ("floor_located_one_ppm_below", floor * (1 - 1e-6), floor, False),
+            ("floor_located_at_equality", floor, floor, True)):
+        got, why = decide("BONDED", priced, req,
+                          bar_source="RETURN_FRAGMENT_BAR")
+        note(name, got, want, dict(priced_amps=round(priced, 6),
+                                   required_amps=req, why=why))
+    got, why = decide("STRANDED", real, floor, bar_source="RETURN_FRAGMENT_BAR")
+    note("stranded_refused_however_priced_on_a_return_net", got, False,
+         dict(why=why))
+
+    return dict(ok=ok,
+                netclass_floor=dict(netclass="GND", track_width_mm=floor_w,
+                                    amps=floor, dT_K=DT_K),
+                reference_amps=dict(zone_min_thickness_0p200mm=sliver,
+                                    d619_real_fragment=real),
+                probes=probes)
 
 
 def pour_geometry(path):
@@ -611,6 +925,19 @@ def compare(pre_path, post_path):
             break
     table, table_src = published_rail_currents(dru) if dru else ({}, dict(
         source=None, found=False))
+    # -- D-643: the RETURN-FRAGMENT arm's inputs, read from the same board --- #
+    pro = None
+    for cand in (Path(post_path).with_suffix(".kicad_pro"),
+                 Path(pre_path).with_suffix(".kicad_pro"),
+                 PROJECT / "aqroot-Beta-v2.kicad_pro"):
+        if cand.exists():
+            pro = cand
+            break
+    classes, class_src = (netclass_conductors(pro) if pro else
+                          ({}, dict(source=None, found=False)))
+    netclass_of, pads_by_footprint = board_nets_and_pads(post_path)
+    returns = return_nets(planes, reserved, netclass_of, table)
+    rcontrols = return_controls(classes, table)
     priced_splits, geom, drills = [], None, None
     for rec in splits:
         if rec.get("why") == "POUR_DISAPPEARED":
@@ -645,7 +972,17 @@ def compare(pre_path, post_path):
                 admit = False
                 continue
             price = bond_price(net, isl, planes, drills)
-            ok, why = decide(verdict, price["priced_amps"], required)
+            # D-643: a net section 5 does not price, that OWNS a reserved
+            # reference plane, is a RETURN net and is charged the return bar
+            # instead of nothing at all.  Every other net is untouched.
+            req, prov = required, None
+            if required is None and net in returns:
+                req, prov = return_fragment_bar(
+                    net, cls, part["pads"], pads_by_footprint, netclass_of,
+                    classes, table)
+            ok, why = decide(verdict, price["priced_amps"], req,
+                             bar_source=(None if prov is None else
+                                         "RETURN_FRAGMENT_BAR"))
             admit = admit and ok
             neck = None
             if pre_isl is not None:
@@ -658,11 +995,12 @@ def compare(pre_path, post_path):
                              pads=part["pads"],
                              area_mm2=part["area_mm2"],
                              pp3_verdict=verdict, admit=ok, why=why,
-                             required_amps=required,
-                             margin_x=(None if not (required and
+                             required_amps=req,
+                             return_fragment_bar=prov,
+                             margin_x=(None if not (req and
                                                     price["priced_amps"])
                                        else round(price["priced_amps"]
-                                                  / required, 3)),
+                                                  / req, 3)),
                              price=price, severed_neck=neck))
         priced_splits.append(dict(
             pour=rec["pour"], net=net, netclass=cls, layer=rec["layer"],
@@ -673,8 +1011,8 @@ def compare(pre_path, post_path):
                       area_mm2=body["area_mm2"], pads=body["pads"]),
             fragments=rows, admit=admit))
     refused = [s for s in priced_splits if not s["admit"]]
-    res["PP2"] = dict(ok=(not refused) and controls["ok"] and (not splits
-                                                              or bool(table)),
+    res["PP2"] = dict(ok=(not refused) and controls["ok"]
+                      and rcontrols["ok"] and (not splits or bool(table)),
                       splits=splits,
                       priced=priced_splits,
                       admitted=[s["pour"] for s in priced_splits if s["admit"]],
@@ -687,6 +1025,11 @@ def compare(pre_path, post_path):
                           k: v["amps"] for k, v in sorted(table.items())},
                       published_table_source=table_src,
                       controls=controls,
+                      return_nets=returns,
+                      netclass_conductors={
+                          k: v for k, v in sorted(classes.items())},
+                      netclass_source=class_src,
+                      return_controls=rcontrols,
                       islands={k: [pre[k]["n_islands"],
                                    post[k]["n_islands"]] for k in sorted(pre)
                                if k in post})

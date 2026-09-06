@@ -1,0 +1,1965 @@
+{
+  "board": "/home/aqroot8/aqroot-demo/hardware/demo/kicad/aqroot-demo/aqroot-Beta-v2.kicad_pcb",
+  "board_sha256": "f496d2f39c0827248a47ab7d47efa4322f078b68d2da1d91ae6585d97bf8f875",
+  "islands": [
+    {
+      "area_mm2": 2841.896,
+      "at_the_floor": false,
+      "cheapest_pad_bar_amps": 0.995,
+      "dearest_pad_bar_amps": 3.125,
+      "island": 16,
+      "layer": "B.Cu",
+      "n_vias": 48,
+      "net": "GND",
+      "pads": [
+        "C16.2",
+        "C17.2",
+        "C18.2",
+        "C19.2",
+        "C27.2",
+        "C28.2",
+        "C34.1",
+        "C35.2",
+        "C45.2",
+        "C46.2",
+        "C47.2",
+        "C48.2",
+        "C49.2",
+        "C50.2",
+        "C51.2",
+        "C52.2",
+        "C53.2",
+        "C54.2",
+        "C55.2",
+        "C58.2",
+        "C66.2",
+        "C69.2",
+        "C78.2",
+        "C79.2",
+        "C80.2",
+        "D9.2",
+        "J5.19",
+        "J5.2",
+        "J5.6",
+        "Q9.2",
+        "R101.2",
+        "R14.2",
+        "R45.2",
+        "R83.2",
+        "R92.2",
+        "U13.4",
+        "U6.2",
+        "U9.12",
+        "U9.20",
+        "U9.21",
+        "U9.26",
+        "U9.33",
+        "U9.6",
+        "Y1.2",
+        "Y1.4"
+      ],
+      "pads_priced": [
+        {
+          "bar_amps": 1.0,
+          "bar_from": "RETURN_NEIGHBOUR_RAIL",
+          "pad": "C16.2",
+          "set_by": [
+            [
+              "P3V3",
+              "+3V3"
+            ]
+          ]
+        },
+        {
+          "bar_amps": 1.0,
+          "bar_from": "RETURN_NEIGHBOUR_RAIL",
+          "pad": "C17.2",
+          "set_by": [
+            [
+              "P3V3",
+              "+3V3"
+            ]
+          ]
+        },
+        {
+          "bar_amps": 1.0,
+          "bar_from": "RETURN_NEIGHBOUR_RAIL",
+          "pad": "C18.2",
+          "set_by": [
+            [
+              "P3V3",
+              "+3V3"
+            ]
+          ]
+        },
+        {
+          "bar_amps": 1.0,
+          "bar_from": "RETURN_NEIGHBOUR_RAIL",
+          "pad": "C19.2",
+          "set_by": [
+            [
+              "P3V3",
+              "/NFC_SUPPLY"
+            ]
+          ]
+        },
+        {
+          "bar_amps": 2.19,
+          "bar_from": "RETURN_NEIGHBOUR_RAIL",
+          "pad": "C27.2",
+          "set_by": [
+            [
+              "SYS_MAIN",
+              "/01_POWER_TREE/BQ25185_SYS"
+            ]
+          ]
+        },
+        {
+          "bar_amps": 2.19,
+          "bar_from": "RETURN_NEIGHBOUR_RAIL",
+          "pad": "C28.2",
+          "set_by": [
+            [
+              "SYS_MAIN",
+              "/01_POWER_TREE/BQ25185_SYS"
+            ]
+          ]
+        },
+        {
+          "bar_amps": 0.995,
+          "bar_from": "RETURN_FLOOR_ONE_NETCLASS_TRACK",
+          "pad": "C34.1",
+          "set_by": []
+        },
+        {
+          "bar_amps": 0.995,
+          "bar_from": "RETURN_FLOOR_ONE_NETCLASS_TRACK",
+          "pad": "C35.2",
+          "set_by": []
+        },
+        {
+          "bar_amps": 0.995,
+          "bar_from": "RETURN_FLOOR_ONE_NETCLASS_TRACK",
+          "pad": "C45.2",
+          "set_by": []
+        },
+        {
+          "bar_amps": 0.995,
+          "bar_from": "RETURN_FLOOR_ONE_NETCLASS_TRACK",
+          "pad": "C46.2",
+          "set_by": []
+        },
+        {
+          "bar_amps": 0.995,
+          "bar_from": "RETURN_FLOOR_ONE_NETCLASS_TRACK",
+          "pad": "C47.2",
+          "set_by": []
+        },
+        {
+          "bar_amps": 0.995,
+          "bar_from": "RETURN_FLOOR_ONE_NETCLASS_TRACK",
+          "pad": "C48.2",
+          "set_by": []
+        },
+        {
+          "bar_amps": 0.995,
+          "bar_from": "RETURN_FLOOR_ONE_NETCLASS_TRACK",
+          "pad": "C49.2",
+          "set_by": []
+        },
+        {
+          "bar_amps": 0.995,
+          "bar_from": "RETURN_FLOOR_ONE_NETCLASS_TRACK",
+          "pad": "C50.2",
+          "set_by": []
+        },
+        {
+          "bar_amps": 0.995,
+          "bar_from": "RETURN_FLOOR_ONE_NETCLASS_TRACK",
+          "pad": "C51.2",
+          "set_by": []
+        },
+        {
+          "bar_amps": 0.995,
+          "bar_from": "RETURN_FLOOR_ONE_NETCLASS_TRACK",
+          "pad": "C52.2",
+          "set_by": []
+        },
+        {
+          "bar_amps": 0.995,
+          "bar_from": "RETURN_FLOOR_ONE_NETCLASS_TRACK",
+          "pad": "C53.2",
+          "set_by": []
+        },
+        {
+          "bar_amps": 0.995,
+          "bar_from": "RETURN_FLOOR_ONE_NETCLASS_TRACK",
+          "pad": "C54.2",
+          "set_by": []
+        },
+        {
+          "bar_amps": 1.0,
+          "bar_from": "RETURN_NEIGHBOUR_RAIL",
+          "pad": "C55.2",
+          "set_by": [
+            [
+              "P3V3",
+              "/NFC_SUPPLY"
+            ]
+          ]
+        },
+        {
+          "bar_amps": 3.125,
+          "bar_from": "RETURN_NEIGHBOUR_RAIL",
+          "pad": "C58.2",
+          "set_by": [
+            [
+              "BAT_MAIN",
+              "/01_POWER_TREE/BAT_PROTECTED_P"
+            ]
+          ]
+        },
+        {
+          "bar_amps": 0.995,
+          "bar_from": "RETURN_FLOOR_ONE_NETCLASS_TRACK",
+          "pad": "C66.2",
+          "set_by": []
+        },
+        {
+          "bar_amps": 0.995,
+          "bar_from": "RETURN_FLOOR_ONE_NETCLASS_TRACK",
+          "pad": "C69.2",
+          "set_by": []
+        },
+        {
+          "bar_amps": 0.995,
+          "bar_from": "RETURN_FLOOR_ONE_NETCLASS_TRACK",
+          "pad": "C78.2",
+          "set_by": []
+        },
+        {
+          "bar_amps": 0.995,
+          "bar_from": "RETURN_FLOOR_ONE_NETCLASS_TRACK",
+          "pad": "C79.2",
+          "set_by": []
+        },
+        {
+          "bar_amps": 0.995,
+          "bar_from": "RETURN_FLOOR_ONE_NETCLASS_TRACK",
+          "pad": "C80.2",
+          "set_by": []
+        },
+        {
+          "bar_amps": 3.125,
+          "bar_from": "RETURN_NEIGHBOUR_RAIL",
+          "pad": "D9.2",
+          "set_by": [
+            [
+              "BAT_MAIN",
+              "/01_POWER_TREE/BAT_PROTECTED_P"
+            ]
+          ]
+        },
+        {
+          "bar_amps": 0.995,
+          "bar_from": "RETURN_FLOOR_ONE_NETCLASS_TRACK",
+          "pad": "J5.19",
+          "set_by": []
+        },
+        {
+          "bar_amps": 0.995,
+          "bar_from": "RETURN_FLOOR_ONE_NETCLASS_TRACK",
+          "pad": "J5.2",
+          "set_by": []
+        },
+        {
+          "bar_amps": 0.995,
+          "bar_from": "RETURN_FLOOR_ONE_NETCLASS_TRACK",
+          "pad": "J5.6",
+          "set_by": []
+        },
+        {
+          "bar_amps": 0.995,
+          "bar_from": "RETURN_FLOOR_ONE_NETCLASS_TRACK",
+          "pad": "Q9.2",
+          "set_by": []
+        },
+        {
+          "bar_amps": 0.995,
+          "bar_from": "RETURN_FLOOR_ONE_NETCLASS_TRACK",
+          "pad": "R101.2",
+          "set_by": []
+        },
+        {
+          "bar_amps": 0.995,
+          "bar_from": "RETURN_FLOOR_ONE_NETCLASS_TRACK",
+          "pad": "R14.2",
+          "set_by": []
+        },
+        {
+          "bar_amps": 0.995,
+          "bar_from": "RETURN_FLOOR_ONE_NETCLASS_TRACK",
+          "pad": "R45.2",
+          "set_by": []
+        },
+        {
+          "bar_amps": 0.995,
+          "bar_from": "RETURN_FLOOR_ONE_NETCLASS_TRACK",
+          "pad": "R83.2",
+          "set_by": []
+        },
+        {
+          "bar_amps": 0.995,
+          "bar_from": "RETURN_FLOOR_ONE_NETCLASS_TRACK",
+          "pad": "R92.2",
+          "set_by": []
+        },
+        {
+          "bar_amps": 2.19,
+          "bar_from": "RETURN_NEIGHBOUR_RAIL",
+          "pad": "U13.4",
+          "set_by": [
+            [
+              "SYS_MAIN",
+              "/01_POWER_TREE/BQ25185_SYS"
+            ]
+          ]
+        },
+        {
+          "bar_amps": 0.995,
+          "bar_from": "RETURN_FLOOR_ONE_NETCLASS_TRACK",
+          "pad": "U6.2",
+          "set_by": []
+        },
+        {
+          "bar_amps": 1.0,
+          "bar_from": "RETURN_NEIGHBOUR_RAIL",
+          "pad": "U9.12",
+          "set_by": [
+            [
+              "P3V3",
+              "+3V3"
+            ],
+            [
+              "P3V3",
+              "/NFC_SUPPLY"
+            ]
+          ]
+        },
+        {
+          "bar_amps": 1.0,
+          "bar_from": "RETURN_NEIGHBOUR_RAIL",
+          "pad": "U9.20",
+          "set_by": [
+            [
+              "P3V3",
+              "+3V3"
+            ],
+            [
+              "P3V3",
+              "/NFC_SUPPLY"
+            ]
+          ]
+        },
+        {
+          "bar_amps": 1.0,
+          "bar_from": "RETURN_NEIGHBOUR_RAIL",
+          "pad": "U9.21",
+          "set_by": [
+            [
+              "P3V3",
+              "+3V3"
+            ],
+            [
+              "P3V3",
+              "/NFC_SUPPLY"
+            ]
+          ]
+        },
+        {
+          "bar_amps": 1.0,
+          "bar_from": "RETURN_NEIGHBOUR_RAIL",
+          "pad": "U9.26",
+          "set_by": [
+            [
+              "P3V3",
+              "+3V3"
+            ],
+            [
+              "P3V3",
+              "/NFC_SUPPLY"
+            ]
+          ]
+        },
+        {
+          "bar_amps": 1.0,
+          "bar_from": "RETURN_NEIGHBOUR_RAIL",
+          "pad": "U9.33",
+          "set_by": [
+            [
+              "P3V3",
+              "+3V3"
+            ],
+            [
+              "P3V3",
+              "/NFC_SUPPLY"
+            ]
+          ]
+        },
+        {
+          "bar_amps": 1.0,
+          "bar_from": "RETURN_NEIGHBOUR_RAIL",
+          "pad": "U9.6",
+          "set_by": [
+            [
+              "P3V3",
+              "+3V3"
+            ],
+            [
+              "P3V3",
+              "/NFC_SUPPLY"
+            ]
+          ]
+        },
+        {
+          "bar_amps": 0.995,
+          "bar_from": "RETURN_FLOOR_ONE_NETCLASS_TRACK",
+          "pad": "Y1.2",
+          "set_by": []
+        },
+        {
+          "bar_amps": 0.995,
+          "bar_from": "RETURN_FLOOR_ONE_NETCLASS_TRACK",
+          "pad": "Y1.4",
+          "set_by": []
+        }
+      ],
+      "whole_island_bar_amps": 3.125,
+      "zone": "B GND PLANE"
+    },
+    {
+      "area_mm2": 202.775,
+      "at_the_floor": false,
+      "cheapest_pad_bar_amps": 0.995,
+      "dearest_pad_bar_amps": 3.125,
+      "island": 44,
+      "layer": "B.Cu",
+      "n_vias": 2,
+      "net": "GND",
+      "pads": [
+        "C21.2",
+        "C59.2",
+        "J4.2"
+      ],
+      "pads_priced": [
+        {
+          "bar_amps": 0.995,
+          "bar_from": "RETURN_FLOOR_ONE_NETCLASS_TRACK",
+          "pad": "C21.2",
+          "set_by": []
+        },
+        {
+          "bar_amps": 3.125,
+          "bar_from": "RETURN_NEIGHBOUR_RAIL",
+          "pad": "C59.2",
+          "set_by": [
+            [
+              "BAT_MAIN",
+              "/01_POWER_TREE/BAT_RAW"
+            ]
+          ]
+        },
+        {
+          "bar_amps": 3.125,
+          "bar_from": "RETURN_NEIGHBOUR_RAIL",
+          "pad": "J4.2",
+          "set_by": [
+            [
+              "BAT_MAIN",
+              "/01_POWER_TREE/BAT_CONNECTOR_P"
+            ]
+          ]
+        }
+      ],
+      "whole_island_bar_amps": 3.125,
+      "zone": "B GND PLANE"
+    },
+    {
+      "area_mm2": 22.526,
+      "at_the_floor": false,
+      "cheapest_pad_bar_amps": 0.995,
+      "dearest_pad_bar_amps": 3.125,
+      "island": 32,
+      "layer": "B.Cu",
+      "n_vias": 8,
+      "net": "GND",
+      "pads": [
+        "C23.1",
+        "C36.2",
+        "C5.2",
+        "C7.2",
+        "R36.2",
+        "R37.2",
+        "R40.2"
+      ],
+      "pads_priced": [
+        {
+          "bar_amps": 0.995,
+          "bar_from": "RETURN_FLOOR_ONE_NETCLASS_TRACK",
+          "pad": "C23.1",
+          "set_by": []
+        },
+        {
+          "bar_amps": 3.125,
+          "bar_from": "RETURN_NEIGHBOUR_RAIL",
+          "pad": "C36.2",
+          "set_by": [
+            [
+              "BAT_MAIN",
+              "/01_POWER_TREE/BAT_PROTECTED_P"
+            ]
+          ]
+        },
+        {
+          "bar_amps": 1.0,
+          "bar_from": "RETURN_NEIGHBOUR_RAIL",
+          "pad": "C5.2",
+          "set_by": [
+            [
+              "P3V3",
+              "+3V3"
+            ]
+          ]
+        },
+        {
+          "bar_amps": 1.0,
+          "bar_from": "RETURN_NEIGHBOUR_RAIL",
+          "pad": "C7.2",
+          "set_by": [
+            [
+              "P3V3",
+              "+3V3"
+            ]
+          ]
+        },
+        {
+          "bar_amps": 0.995,
+          "bar_from": "RETURN_FLOOR_ONE_NETCLASS_TRACK",
+          "pad": "R36.2",
+          "set_by": []
+        },
+        {
+          "bar_amps": 0.995,
+          "bar_from": "RETURN_FLOOR_ONE_NETCLASS_TRACK",
+          "pad": "R37.2",
+          "set_by": []
+        },
+        {
+          "bar_amps": 0.995,
+          "bar_from": "RETURN_FLOOR_ONE_NETCLASS_TRACK",
+          "pad": "R40.2",
+          "set_by": []
+        }
+      ],
+      "whole_island_bar_amps": 3.125,
+      "zone": "B GND PLANE"
+    },
+    {
+      "area_mm2": 19.341,
+      "at_the_floor": false,
+      "cheapest_pad_bar_amps": 0.995,
+      "dearest_pad_bar_amps": 3.125,
+      "island": 38,
+      "layer": "B.Cu",
+      "n_vias": 2,
+      "net": "GND",
+      "pads": [
+        "C25.2",
+        "J5.23"
+      ],
+      "pads_priced": [
+        {
+          "bar_amps": 3.125,
+          "bar_from": "RETURN_NEIGHBOUR_RAIL",
+          "pad": "C25.2",
+          "set_by": [
+            [
+              "BAT_MAIN",
+              "/01_POWER_TREE/BAT_PROTECTED_P"
+            ]
+          ]
+        },
+        {
+          "bar_amps": 0.995,
+          "bar_from": "RETURN_FLOOR_ONE_NETCLASS_TRACK",
+          "pad": "J5.23",
+          "set_by": []
+        }
+      ],
+      "whole_island_bar_amps": 3.125,
+      "zone": "B GND PLANE"
+    },
+    {
+      "area_mm2": 15.798,
+      "at_the_floor": false,
+      "cheapest_pad_bar_amps": 0.995,
+      "dearest_pad_bar_amps": 3.125,
+      "island": 27,
+      "layer": "B.Cu",
+      "n_vias": 6,
+      "net": "GND",
+      "pads": [
+        "C68.2",
+        "R105.2",
+        "U14.1",
+        "U14.4",
+        "U14.9"
+      ],
+      "pads_priced": [
+        {
+          "bar_amps": 0.995,
+          "bar_from": "RETURN_FLOOR_ONE_NETCLASS_TRACK",
+          "pad": "C68.2",
+          "set_by": []
+        },
+        {
+          "bar_amps": 0.995,
+          "bar_from": "RETURN_FLOOR_ONE_NETCLASS_TRACK",
+          "pad": "R105.2",
+          "set_by": []
+        },
+        {
+          "bar_amps": 3.125,
+          "bar_from": "RETURN_NEIGHBOUR_RAIL",
+          "pad": "U14.1",
+          "set_by": [
+            [
+              "BAT_MAIN",
+              "/01_POWER_TREE/BAT_PROTECTED_P"
+            ]
+          ]
+        },
+        {
+          "bar_amps": 3.125,
+          "bar_from": "RETURN_NEIGHBOUR_RAIL",
+          "pad": "U14.4",
+          "set_by": [
+            [
+              "BAT_MAIN",
+              "/01_POWER_TREE/BAT_PROTECTED_P"
+            ]
+          ]
+        },
+        {
+          "bar_amps": 3.125,
+          "bar_from": "RETURN_NEIGHBOUR_RAIL",
+          "pad": "U14.9",
+          "set_by": [
+            [
+              "BAT_MAIN",
+              "/01_POWER_TREE/BAT_PROTECTED_P"
+            ]
+          ]
+        }
+      ],
+      "whole_island_bar_amps": 3.125,
+      "zone": "B GND PLANE"
+    },
+    {
+      "area_mm2": 5.248,
+      "at_the_floor": false,
+      "cheapest_pad_bar_amps": 3.125,
+      "dearest_pad_bar_amps": 3.125,
+      "island": 39,
+      "layer": "B.Cu",
+      "n_vias": 4,
+      "net": "GND",
+      "pads": [
+        "U18.4",
+        "U18.5"
+      ],
+      "pads_priced": [
+        {
+          "bar_amps": 3.125,
+          "bar_from": "RETURN_NEIGHBOUR_RAIL",
+          "pad": "U18.4",
+          "set_by": [
+            [
+              "BAT_MAIN",
+              "/01_POWER_TREE/BAT_PROTECTED_P"
+            ],
+            [
+              "BAT_MAIN",
+              "/01_POWER_TREE/BAT_RAW"
+            ],
+            [
+              "BAT_MAIN",
+              "/01_POWER_TREE/BAT_SENSE"
+            ]
+          ]
+        },
+        {
+          "bar_amps": 3.125,
+          "bar_from": "RETURN_NEIGHBOUR_RAIL",
+          "pad": "U18.5",
+          "set_by": [
+            [
+              "BAT_MAIN",
+              "/01_POWER_TREE/BAT_PROTECTED_P"
+            ],
+            [
+              "BAT_MAIN",
+              "/01_POWER_TREE/BAT_RAW"
+            ],
+            [
+              "BAT_MAIN",
+              "/01_POWER_TREE/BAT_SENSE"
+            ]
+          ]
+        }
+      ],
+      "whole_island_bar_amps": 3.125,
+      "zone": "B GND PLANE"
+    },
+    {
+      "area_mm2": 2.307,
+      "at_the_floor": false,
+      "cheapest_pad_bar_amps": 3.125,
+      "dearest_pad_bar_amps": 3.125,
+      "island": 33,
+      "layer": "B.Cu",
+      "n_vias": 1,
+      "net": "GND",
+      "pads": [
+        "U11.11",
+        "U11.4",
+        "U11.5"
+      ],
+      "pads_priced": [
+        {
+          "bar_amps": 3.125,
+          "bar_from": "RETURN_NEIGHBOUR_RAIL",
+          "pad": "U11.11",
+          "set_by": [
+            [
+              "BAT_MAIN",
+              "/01_POWER_TREE/BAT_PROTECTED_P"
+            ]
+          ]
+        },
+        {
+          "bar_amps": 3.125,
+          "bar_from": "RETURN_NEIGHBOUR_RAIL",
+          "pad": "U11.4",
+          "set_by": [
+            [
+              "BAT_MAIN",
+              "/01_POWER_TREE/BAT_PROTECTED_P"
+            ]
+          ]
+        },
+        {
+          "bar_amps": 3.125,
+          "bar_from": "RETURN_NEIGHBOUR_RAIL",
+          "pad": "U11.5",
+          "set_by": [
+            [
+              "BAT_MAIN",
+              "/01_POWER_TREE/BAT_PROTECTED_P"
+            ]
+          ]
+        }
+      ],
+      "whole_island_bar_amps": 3.125,
+      "zone": "B GND PLANE"
+    },
+    {
+      "area_mm2": 805.842,
+      "at_the_floor": false,
+      "cheapest_pad_bar_amps": 0.995,
+      "dearest_pad_bar_amps": 2.19,
+      "island": 0,
+      "layer": "B.Cu",
+      "n_vias": 46,
+      "net": "GND",
+      "pads": [
+        "C29.2",
+        "C30.2",
+        "C31.2",
+        "C32.2",
+        "C33.2",
+        "C62.2",
+        "C64.2",
+        "R42.1",
+        "R43.2",
+        "U7.1",
+        "U7.11",
+        "U7.12",
+        "U7.2",
+        "U7.20",
+        "U7.22",
+        "U7.3",
+        "U8.1",
+        "U8.10",
+        "U8.11",
+        "U8.12",
+        "U8.2",
+        "U8.20",
+        "U8.22",
+        "U8.3",
+        "U8.4",
+        "U8.5"
+      ],
+      "pads_priced": [
+        {
+          "bar_amps": 1.0,
+          "bar_from": "RETURN_NEIGHBOUR_RAIL",
+          "pad": "C29.2",
+          "set_by": [
+            [
+              "P3V3",
+              "+3V3"
+            ]
+          ]
+        },
+        {
+          "bar_amps": 1.0,
+          "bar_from": "RETURN_NEIGHBOUR_RAIL",
+          "pad": "C30.2",
+          "set_by": [
+            [
+              "P3V3",
+              "+3V3"
+            ]
+          ]
+        },
+        {
+          "bar_amps": 1.0,
+          "bar_from": "RETURN_NEIGHBOUR_RAIL",
+          "pad": "C31.2",
+          "set_by": [
+            [
+              "P3V3",
+              "+3V3"
+            ]
+          ]
+        },
+        {
+          "bar_amps": 1.0,
+          "bar_from": "RETURN_NEIGHBOUR_RAIL",
+          "pad": "C32.2",
+          "set_by": [
+            [
+              "P3V3",
+              "+3V3"
+            ]
+          ]
+        },
+        {
+          "bar_amps": 2.19,
+          "bar_from": "RETURN_NEIGHBOUR_RAIL",
+          "pad": "C33.2",
+          "set_by": [
+            [
+              "SYS_MAIN",
+              "/01_POWER_TREE/BQ25185_SYS"
+            ]
+          ]
+        },
+        {
+          "bar_amps": 1.0,
+          "bar_from": "RETURN_NEIGHBOUR_RAIL",
+          "pad": "C62.2",
+          "set_by": [
+            [
+              "P3V3",
+              "+3V3"
+            ]
+          ]
+        },
+        {
+          "bar_amps": 2.19,
+          "bar_from": "RETURN_NEIGHBOUR_RAIL",
+          "pad": "C64.2",
+          "set_by": [
+            [
+              "SYS_MAIN",
+              "/01_POWER_TREE/BQ25185_SYS"
+            ]
+          ]
+        },
+        {
+          "bar_amps": 0.995,
+          "bar_from": "RETURN_FLOOR_ONE_NETCLASS_TRACK",
+          "pad": "R42.1",
+          "set_by": []
+        },
+        {
+          "bar_amps": 0.995,
+          "bar_from": "RETURN_FLOOR_ONE_NETCLASS_TRACK",
+          "pad": "R43.2",
+          "set_by": []
+        },
+        {
+          "bar_amps": 1.0,
+          "bar_from": "RETURN_NEIGHBOUR_RAIL",
+          "pad": "U7.1",
+          "set_by": [
+            [
+              "P3V3",
+              "+3V3"
+            ]
+          ]
+        },
+        {
+          "bar_amps": 1.0,
+          "bar_from": "RETURN_NEIGHBOUR_RAIL",
+          "pad": "U7.11",
+          "set_by": [
+            [
+              "P3V3",
+              "+3V3"
+            ]
+          ]
+        },
+        {
+          "bar_amps": 1.0,
+          "bar_from": "RETURN_NEIGHBOUR_RAIL",
+          "pad": "U7.12",
+          "set_by": [
+            [
+              "P3V3",
+              "+3V3"
+            ]
+          ]
+        },
+        {
+          "bar_amps": 1.0,
+          "bar_from": "RETURN_NEIGHBOUR_RAIL",
+          "pad": "U7.2",
+          "set_by": [
+            [
+              "P3V3",
+              "+3V3"
+            ]
+          ]
+        },
+        {
+          "bar_amps": 1.0,
+          "bar_from": "RETURN_NEIGHBOUR_RAIL",
+          "pad": "U7.20",
+          "set_by": [
+            [
+              "P3V3",
+              "+3V3"
+            ]
+          ]
+        },
+        {
+          "bar_amps": 1.0,
+          "bar_from": "RETURN_NEIGHBOUR_RAIL",
+          "pad": "U7.22",
+          "set_by": [
+            [
+              "P3V3",
+              "+3V3"
+            ]
+          ]
+        },
+        {
+          "bar_amps": 1.0,
+          "bar_from": "RETURN_NEIGHBOUR_RAIL",
+          "pad": "U7.3",
+          "set_by": [
+            [
+              "P3V3",
+              "+3V3"
+            ]
+          ]
+        },
+        {
+          "bar_amps": 1.0,
+          "bar_from": "RETURN_NEIGHBOUR_RAIL",
+          "pad": "U8.1",
+          "set_by": [
+            [
+              "P3V3",
+              "+3V3"
+            ]
+          ]
+        },
+        {
+          "bar_amps": 1.0,
+          "bar_from": "RETURN_NEIGHBOUR_RAIL",
+          "pad": "U8.10",
+          "set_by": [
+            [
+              "P3V3",
+              "+3V3"
+            ]
+          ]
+        },
+        {
+          "bar_amps": 1.0,
+          "bar_from": "RETURN_NEIGHBOUR_RAIL",
+          "pad": "U8.11",
+          "set_by": [
+            [
+              "P3V3",
+              "+3V3"
+            ]
+          ]
+        },
+        {
+          "bar_amps": 1.0,
+          "bar_from": "RETURN_NEIGHBOUR_RAIL",
+          "pad": "U8.12",
+          "set_by": [
+            [
+              "P3V3",
+              "+3V3"
+            ]
+          ]
+        },
+        {
+          "bar_amps": 1.0,
+          "bar_from": "RETURN_NEIGHBOUR_RAIL",
+          "pad": "U8.2",
+          "set_by": [
+            [
+              "P3V3",
+              "+3V3"
+            ]
+          ]
+        },
+        {
+          "bar_amps": 1.0,
+          "bar_from": "RETURN_NEIGHBOUR_RAIL",
+          "pad": "U8.20",
+          "set_by": [
+            [
+              "P3V3",
+              "+3V3"
+            ]
+          ]
+        },
+        {
+          "bar_amps": 1.0,
+          "bar_from": "RETURN_NEIGHBOUR_RAIL",
+          "pad": "U8.22",
+          "set_by": [
+            [
+              "P3V3",
+              "+3V3"
+            ]
+          ]
+        },
+        {
+          "bar_amps": 1.0,
+          "bar_from": "RETURN_NEIGHBOUR_RAIL",
+          "pad": "U8.3",
+          "set_by": [
+            [
+              "P3V3",
+              "+3V3"
+            ]
+          ]
+        },
+        {
+          "bar_amps": 1.0,
+          "bar_from": "RETURN_NEIGHBOUR_RAIL",
+          "pad": "U8.4",
+          "set_by": [
+            [
+              "P3V3",
+              "+3V3"
+            ]
+          ]
+        },
+        {
+          "bar_amps": 1.0,
+          "bar_from": "RETURN_NEIGHBOUR_RAIL",
+          "pad": "U8.5",
+          "set_by": [
+            [
+              "P3V3",
+              "+3V3"
+            ]
+          ]
+        }
+      ],
+      "whole_island_bar_amps": 2.19,
+      "zone": "B GND PLANE"
+    },
+    {
+      "area_mm2": 59.913,
+      "at_the_floor": false,
+      "cheapest_pad_bar_amps": 0.995,
+      "dearest_pad_bar_amps": 2.19,
+      "island": 8,
+      "layer": "B.Cu",
+      "n_vias": 6,
+      "net": "GND",
+      "pads": [
+        "C24.2",
+        "C26.1",
+        "R131.2"
+      ],
+      "pads_priced": [
+        {
+          "bar_amps": 2.19,
+          "bar_from": "RETURN_NEIGHBOUR_RAIL",
+          "pad": "C24.2",
+          "set_by": [
+            [
+              "SYS_MAIN",
+              "/01_POWER_TREE/BQ25185_SYS"
+            ]
+          ]
+        },
+        {
+          "bar_amps": 2.19,
+          "bar_from": "RETURN_NEIGHBOUR_RAIL",
+          "pad": "C26.1",
+          "set_by": [
+            [
+              "SYS_MAIN",
+              "/01_POWER_TREE/BQ25185_SYS"
+            ]
+          ]
+        },
+        {
+          "bar_amps": 0.995,
+          "bar_from": "RETURN_FLOOR_ONE_NETCLASS_TRACK",
+          "pad": "R131.2",
+          "set_by": []
+        }
+      ],
+      "whole_island_bar_amps": 2.19,
+      "zone": "B GND PLANE"
+    },
+    {
+      "area_mm2": 44.27,
+      "at_the_floor": false,
+      "cheapest_pad_bar_amps": 0.995,
+      "dearest_pad_bar_amps": 2.19,
+      "island": 46,
+      "layer": "B.Cu",
+      "n_vias": 6,
+      "net": "GND",
+      "pads": [
+        "C38.2",
+        "C65.2",
+        "U21.4"
+      ],
+      "pads_priced": [
+        {
+          "bar_amps": 0.995,
+          "bar_from": "RETURN_FLOOR_ONE_NETCLASS_TRACK",
+          "pad": "C38.2",
+          "set_by": []
+        },
+        {
+          "bar_amps": 0.995,
+          "bar_from": "RETURN_FLOOR_ONE_NETCLASS_TRACK",
+          "pad": "C65.2",
+          "set_by": []
+        },
+        {
+          "bar_amps": 2.19,
+          "bar_from": "RETURN_NEIGHBOUR_RAIL",
+          "pad": "U21.4",
+          "set_by": [
+            [
+              "SYS_MAIN",
+              "/01_POWER_TREE/BQ25185_SYS"
+            ]
+          ]
+        }
+      ],
+      "whole_island_bar_amps": 2.19,
+      "zone": "B GND PLANE"
+    },
+    {
+      "area_mm2": 7.795,
+      "at_the_floor": false,
+      "cheapest_pad_bar_amps": 2.19,
+      "dearest_pad_bar_amps": 2.19,
+      "island": 20,
+      "layer": "B.Cu",
+      "n_vias": 5,
+      "net": "GND",
+      "pads": [
+        "U12.15",
+        "U12.2"
+      ],
+      "pads_priced": [
+        {
+          "bar_amps": 2.19,
+          "bar_from": "RETURN_NEIGHBOUR_RAIL",
+          "pad": "U12.15",
+          "set_by": [
+            [
+              "SYS_MAIN",
+              "/01_POWER_TREE/BQ25185_SYS"
+            ]
+          ]
+        },
+        {
+          "bar_amps": 2.19,
+          "bar_from": "RETURN_NEIGHBOUR_RAIL",
+          "pad": "U12.2",
+          "set_by": [
+            [
+              "SYS_MAIN",
+              "/01_POWER_TREE/BQ25185_SYS"
+            ]
+          ]
+        }
+      ],
+      "whole_island_bar_amps": 2.19,
+      "zone": "B GND PLANE"
+    },
+    {
+      "area_mm2": 127.286,
+      "at_the_floor": false,
+      "cheapest_pad_bar_amps": 0.995,
+      "dearest_pad_bar_amps": 1.0,
+      "island": 9,
+      "layer": "B.Cu",
+      "n_vias": 5,
+      "net": "GND",
+      "pads": [
+        "C43.2",
+        "C44.2",
+        "MK1.1",
+        "MK1.2",
+        "R69.2",
+        "U17.2"
+      ],
+      "pads_priced": [
+        {
+          "bar_amps": 1.0,
+          "bar_from": "RETURN_NEIGHBOUR_RAIL",
+          "pad": "C43.2",
+          "set_by": [
+            [
+              "P3V3",
+              "+3V3"
+            ]
+          ]
+        },
+        {
+          "bar_amps": 0.995,
+          "bar_from": "RETURN_FLOOR_ONE_NETCLASS_TRACK",
+          "pad": "C44.2",
+          "set_by": []
+        },
+        {
+          "bar_amps": 1.0,
+          "bar_from": "RETURN_NEIGHBOUR_RAIL",
+          "pad": "MK1.1",
+          "set_by": [
+            [
+              "P3V3",
+              "+3V3"
+            ]
+          ]
+        },
+        {
+          "bar_amps": 1.0,
+          "bar_from": "RETURN_NEIGHBOUR_RAIL",
+          "pad": "MK1.2",
+          "set_by": [
+            [
+              "P3V3",
+              "+3V3"
+            ]
+          ]
+        },
+        {
+          "bar_amps": 0.995,
+          "bar_from": "RETURN_FLOOR_ONE_NETCLASS_TRACK",
+          "pad": "R69.2",
+          "set_by": []
+        },
+        {
+          "bar_amps": 1.0,
+          "bar_from": "RETURN_NEIGHBOUR_RAIL",
+          "pad": "U17.2",
+          "set_by": [
+            [
+              "P3V3",
+              "+3V3"
+            ]
+          ]
+        }
+      ],
+      "whole_island_bar_amps": 1.0,
+      "zone": "B GND PLANE"
+    },
+    {
+      "area_mm2": 106.368,
+      "at_the_floor": false,
+      "cheapest_pad_bar_amps": 1.0,
+      "dearest_pad_bar_amps": 1.0,
+      "island": 6,
+      "layer": "B.Cu",
+      "n_vias": 0,
+      "net": "GND",
+      "pads": [
+        "U1.41",
+        "U1.41",
+        "U1.41",
+        "U1.41",
+        "U1.41",
+        "U1.41",
+        "U1.41",
+        "U1.41",
+        "U1.41",
+        "U1.41",
+        "U1.41",
+        "U1.41"
+      ],
+      "pads_priced": [
+        {
+          "bar_amps": 1.0,
+          "bar_from": "RETURN_NEIGHBOUR_RAIL",
+          "pad": "U1.41",
+          "set_by": [
+            [
+              "P3V3",
+              "+3V3"
+            ]
+          ]
+        },
+        {
+          "bar_amps": 1.0,
+          "bar_from": "RETURN_NEIGHBOUR_RAIL",
+          "pad": "U1.41",
+          "set_by": [
+            [
+              "P3V3",
+              "+3V3"
+            ]
+          ]
+        },
+        {
+          "bar_amps": 1.0,
+          "bar_from": "RETURN_NEIGHBOUR_RAIL",
+          "pad": "U1.41",
+          "set_by": [
+            [
+              "P3V3",
+              "+3V3"
+            ]
+          ]
+        },
+        {
+          "bar_amps": 1.0,
+          "bar_from": "RETURN_NEIGHBOUR_RAIL",
+          "pad": "U1.41",
+          "set_by": [
+            [
+              "P3V3",
+              "+3V3"
+            ]
+          ]
+        },
+        {
+          "bar_amps": 1.0,
+          "bar_from": "RETURN_NEIGHBOUR_RAIL",
+          "pad": "U1.41",
+          "set_by": [
+            [
+              "P3V3",
+              "+3V3"
+            ]
+          ]
+        },
+        {
+          "bar_amps": 1.0,
+          "bar_from": "RETURN_NEIGHBOUR_RAIL",
+          "pad": "U1.41",
+          "set_by": [
+            [
+              "P3V3",
+              "+3V3"
+            ]
+          ]
+        },
+        {
+          "bar_amps": 1.0,
+          "bar_from": "RETURN_NEIGHBOUR_RAIL",
+          "pad": "U1.41",
+          "set_by": [
+            [
+              "P3V3",
+              "+3V3"
+            ]
+          ]
+        },
+        {
+          "bar_amps": 1.0,
+          "bar_from": "RETURN_NEIGHBOUR_RAIL",
+          "pad": "U1.41",
+          "set_by": [
+            [
+              "P3V3",
+              "+3V3"
+            ]
+          ]
+        },
+        {
+          "bar_amps": 1.0,
+          "bar_from": "RETURN_NEIGHBOUR_RAIL",
+          "pad": "U1.41",
+          "set_by": [
+            [
+              "P3V3",
+              "+3V3"
+            ]
+          ]
+        },
+        {
+          "bar_amps": 1.0,
+          "bar_from": "RETURN_NEIGHBOUR_RAIL",
+          "pad": "U1.41",
+          "set_by": [
+            [
+              "P3V3",
+              "+3V3"
+            ]
+          ]
+        },
+        {
+          "bar_amps": 1.0,
+          "bar_from": "RETURN_NEIGHBOUR_RAIL",
+          "pad": "U1.41",
+          "set_by": [
+            [
+              "P3V3",
+              "+3V3"
+            ]
+          ]
+        },
+        {
+          "bar_amps": 1.0,
+          "bar_from": "RETURN_NEIGHBOUR_RAIL",
+          "pad": "U1.41",
+          "set_by": [
+            [
+              "P3V3",
+              "+3V3"
+            ]
+          ]
+        }
+      ],
+      "whole_island_bar_amps": 1.0,
+      "zone": "B GND PLANE"
+    },
+    {
+      "area_mm2": 76.464,
+      "at_the_floor": false,
+      "cheapest_pad_bar_amps": 0.995,
+      "dearest_pad_bar_amps": 1.0,
+      "island": 4,
+      "layer": "B.Cu",
+      "n_vias": 5,
+      "net": "GND",
+      "pads": [
+        "R13.2",
+        "U7.4",
+        "U7.5"
+      ],
+      "pads_priced": [
+        {
+          "bar_amps": 0.995,
+          "bar_from": "RETURN_FLOOR_ONE_NETCLASS_TRACK",
+          "pad": "R13.2",
+          "set_by": []
+        },
+        {
+          "bar_amps": 1.0,
+          "bar_from": "RETURN_NEIGHBOUR_RAIL",
+          "pad": "U7.4",
+          "set_by": [
+            [
+              "P3V3",
+              "+3V3"
+            ]
+          ]
+        },
+        {
+          "bar_amps": 1.0,
+          "bar_from": "RETURN_NEIGHBOUR_RAIL",
+          "pad": "U7.5",
+          "set_by": [
+            [
+              "P3V3",
+              "+3V3"
+            ]
+          ]
+        }
+      ],
+      "whole_island_bar_amps": 1.0,
+      "zone": "B GND PLANE"
+    },
+    {
+      "area_mm2": 12.626,
+      "at_the_floor": false,
+      "cheapest_pad_bar_amps": 1.0,
+      "dearest_pad_bar_amps": 1.0,
+      "island": 37,
+      "layer": "B.Cu",
+      "n_vias": 4,
+      "net": "GND",
+      "pads": [
+        "C6.2",
+        "U20.3"
+      ],
+      "pads_priced": [
+        {
+          "bar_amps": 1.0,
+          "bar_from": "RETURN_NEIGHBOUR_RAIL",
+          "pad": "C6.2",
+          "set_by": [
+            [
+              "P3V3",
+              "+3V3"
+            ]
+          ]
+        },
+        {
+          "bar_amps": 1.0,
+          "bar_from": "RETURN_NEIGHBOUR_RAIL",
+          "pad": "U20.3",
+          "set_by": [
+            [
+              "P3V3",
+              "+3V3"
+            ]
+          ]
+        }
+      ],
+      "whole_island_bar_amps": 1.0,
+      "zone": "B GND PLANE"
+    },
+    {
+      "area_mm2": 11.241,
+      "at_the_floor": false,
+      "cheapest_pad_bar_amps": 1.0,
+      "dearest_pad_bar_amps": 1.0,
+      "island": 28,
+      "layer": "B.Cu",
+      "n_vias": 1,
+      "net": "GND",
+      "pads": [
+        "U2.12",
+        "U3.2",
+        "U3.3"
+      ],
+      "pads_priced": [
+        {
+          "bar_amps": 1.0,
+          "bar_from": "RETURN_NEIGHBOUR_RAIL",
+          "pad": "U2.12",
+          "set_by": [
+            [
+              "P3V3",
+              "+3V3"
+            ]
+          ]
+        },
+        {
+          "bar_amps": 1.0,
+          "bar_from": "RETURN_NEIGHBOUR_RAIL",
+          "pad": "U3.2",
+          "set_by": [
+            [
+              "P3V3",
+              "+3V3"
+            ]
+          ]
+        },
+        {
+          "bar_amps": 1.0,
+          "bar_from": "RETURN_NEIGHBOUR_RAIL",
+          "pad": "U3.3",
+          "set_by": [
+            [
+              "P3V3",
+              "+3V3"
+            ]
+          ]
+        }
+      ],
+      "whole_island_bar_amps": 1.0,
+      "zone": "B GND PLANE"
+    },
+    {
+      "area_mm2": 10.282,
+      "at_the_floor": false,
+      "cheapest_pad_bar_amps": 1.0,
+      "dearest_pad_bar_amps": 1.0,
+      "island": 31,
+      "layer": "B.Cu",
+      "n_vias": 2,
+      "net": "GND",
+      "pads": [
+        "C4.2",
+        "U3.12"
+      ],
+      "pads_priced": [
+        {
+          "bar_amps": 1.0,
+          "bar_from": "RETURN_NEIGHBOUR_RAIL",
+          "pad": "C4.2",
+          "set_by": [
+            [
+              "P3V3",
+              "+3V3"
+            ]
+          ]
+        },
+        {
+          "bar_amps": 1.0,
+          "bar_from": "RETURN_NEIGHBOUR_RAIL",
+          "pad": "U3.12",
+          "set_by": [
+            [
+              "P3V3",
+              "+3V3"
+            ]
+          ]
+        }
+      ],
+      "whole_island_bar_amps": 1.0,
+      "zone": "B GND PLANE"
+    },
+    {
+      "area_mm2": 8.695,
+      "at_the_floor": false,
+      "cheapest_pad_bar_amps": 1.0,
+      "dearest_pad_bar_amps": 1.0,
+      "island": 34,
+      "layer": "B.Cu",
+      "n_vias": 4,
+      "net": "GND",
+      "pads": [
+        "U4.6",
+        "U4.7"
+      ],
+      "pads_priced": [
+        {
+          "bar_amps": 1.0,
+          "bar_from": "RETURN_NEIGHBOUR_RAIL",
+          "pad": "U4.6",
+          "set_by": [
+            [
+              "P3V3",
+              "+3V3"
+            ]
+          ]
+        },
+        {
+          "bar_amps": 1.0,
+          "bar_from": "RETURN_NEIGHBOUR_RAIL",
+          "pad": "U4.7",
+          "set_by": [
+            [
+              "P3V3",
+              "+3V3"
+            ]
+          ]
+        }
+      ],
+      "whole_island_bar_amps": 1.0,
+      "zone": "B GND PLANE"
+    },
+    {
+      "area_mm2": 3.029,
+      "at_the_floor": false,
+      "cheapest_pad_bar_amps": 1.0,
+      "dearest_pad_bar_amps": 1.0,
+      "island": 26,
+      "layer": "B.Cu",
+      "n_vias": 1,
+      "net": "GND",
+      "pads": [
+        "U2.2",
+        "U2.3"
+      ],
+      "pads_priced": [
+        {
+          "bar_amps": 1.0,
+          "bar_from": "RETURN_NEIGHBOUR_RAIL",
+          "pad": "U2.2",
+          "set_by": [
+            [
+              "P3V3",
+              "+3V3"
+            ]
+          ]
+        },
+        {
+          "bar_amps": 1.0,
+          "bar_from": "RETURN_NEIGHBOUR_RAIL",
+          "pad": "U2.3",
+          "set_by": [
+            [
+              "P3V3",
+              "+3V3"
+            ]
+          ]
+        }
+      ],
+      "whole_island_bar_amps": 1.0,
+      "zone": "B GND PLANE"
+    },
+    {
+      "area_mm2": 30.408,
+      "at_the_floor": true,
+      "cheapest_pad_bar_amps": 0.995,
+      "dearest_pad_bar_amps": 0.995,
+      "island": 40,
+      "layer": "B.Cu",
+      "n_vias": 6,
+      "net": "GND",
+      "pads": [
+        "C37.2",
+        "R17.2",
+        "R97.2",
+        "R98.2"
+      ],
+      "pads_priced": [
+        {
+          "bar_amps": 0.995,
+          "bar_from": "RETURN_FLOOR_ONE_NETCLASS_TRACK",
+          "pad": "C37.2",
+          "set_by": []
+        },
+        {
+          "bar_amps": 0.995,
+          "bar_from": "RETURN_FLOOR_ONE_NETCLASS_TRACK",
+          "pad": "R17.2",
+          "set_by": []
+        },
+        {
+          "bar_amps": 0.995,
+          "bar_from": "RETURN_FLOOR_ONE_NETCLASS_TRACK",
+          "pad": "R97.2",
+          "set_by": []
+        },
+        {
+          "bar_amps": 0.995,
+          "bar_from": "RETURN_FLOOR_ONE_NETCLASS_TRACK",
+          "pad": "R98.2",
+          "set_by": []
+        }
+      ],
+      "whole_island_bar_amps": 0.995,
+      "zone": "B GND PLANE"
+    },
+    {
+      "area_mm2": 27.547,
+      "at_the_floor": true,
+      "cheapest_pad_bar_amps": 0.995,
+      "dearest_pad_bar_amps": 0.995,
+      "island": 51,
+      "layer": "B.Cu",
+      "n_vias": 4,
+      "net": "GND",
+      "pads": [
+        "C73.2",
+        "C76.2"
+      ],
+      "pads_priced": [
+        {
+          "bar_amps": 0.995,
+          "bar_from": "RETURN_FLOOR_ONE_NETCLASS_TRACK",
+          "pad": "C73.2",
+          "set_by": []
+        },
+        {
+          "bar_amps": 0.995,
+          "bar_from": "RETURN_FLOOR_ONE_NETCLASS_TRACK",
+          "pad": "C76.2",
+          "set_by": []
+        }
+      ],
+      "whole_island_bar_amps": 0.995,
+      "zone": "B GND PLANE"
+    },
+    {
+      "area_mm2": 22.256,
+      "at_the_floor": true,
+      "cheapest_pad_bar_amps": 0.995,
+      "dearest_pad_bar_amps": 0.995,
+      "island": 42,
+      "layer": "B.Cu",
+      "n_vias": 6,
+      "net": "GND",
+      "pads": [
+        "C22.2",
+        "C57.2",
+        "R78.2"
+      ],
+      "pads_priced": [
+        {
+          "bar_amps": 0.995,
+          "bar_from": "RETURN_FLOOR_ONE_NETCLASS_TRACK",
+          "pad": "C22.2",
+          "set_by": []
+        },
+        {
+          "bar_amps": 0.995,
+          "bar_from": "RETURN_FLOOR_ONE_NETCLASS_TRACK",
+          "pad": "C57.2",
+          "set_by": []
+        },
+        {
+          "bar_amps": 0.995,
+          "bar_from": "RETURN_FLOOR_ONE_NETCLASS_TRACK",
+          "pad": "R78.2",
+          "set_by": []
+        }
+      ],
+      "whole_island_bar_amps": 0.995,
+      "zone": "B GND PLANE"
+    },
+    {
+      "area_mm2": 10.937,
+      "at_the_floor": true,
+      "cheapest_pad_bar_amps": 0.995,
+      "dearest_pad_bar_amps": 0.995,
+      "island": 41,
+      "layer": "B.Cu",
+      "n_vias": 4,
+      "net": "GND",
+      "pads": [
+        "C39.2",
+        "R102.2"
+      ],
+      "pads_priced": [
+        {
+          "bar_amps": 0.995,
+          "bar_from": "RETURN_FLOOR_ONE_NETCLASS_TRACK",
+          "pad": "C39.2",
+          "set_by": []
+        },
+        {
+          "bar_amps": 0.995,
+          "bar_from": "RETURN_FLOOR_ONE_NETCLASS_TRACK",
+          "pad": "R102.2",
+          "set_by": []
+        }
+      ],
+      "whole_island_bar_amps": 0.995,
+      "zone": "B GND PLANE"
+    },
+    {
+      "area_mm2": 10.392,
+      "at_the_floor": true,
+      "cheapest_pad_bar_amps": 0.995,
+      "dearest_pad_bar_amps": 0.995,
+      "island": 54,
+      "layer": "B.Cu",
+      "n_vias": 4,
+      "net": "GND",
+      "pads": [
+        "C61.2",
+        "R88.2"
+      ],
+      "pads_priced": [
+        {
+          "bar_amps": 0.995,
+          "bar_from": "RETURN_FLOOR_ONE_NETCLASS_TRACK",
+          "pad": "C61.2",
+          "set_by": []
+        },
+        {
+          "bar_amps": 0.995,
+          "bar_from": "RETURN_FLOOR_ONE_NETCLASS_TRACK",
+          "pad": "R88.2",
+          "set_by": []
+        }
+      ],
+      "whole_island_bar_amps": 0.995,
+      "zone": "B GND PLANE"
+    }
+  ],
+  "min_pads": 2,
+  "netclass_floor": {
+    "GND": 0.3
+  },
+  "netclass_source": {
+    "classes": [
+      "ACC_3V3",
+      "ACC_5V",
+      "BAT_MAIN",
+      "Default",
+      "GND",
+      "I2C",
+      "I2S",
+      "LED_BOOST",
+      "NFC_5V_PA",
+      "NFC_OSC",
+      "NFC_RF",
+      "NFC_RX",
+      "P3V3",
+      "SPK_OUT",
+      "SWITCH_NODE",
+      "SYS_MAIN",
+      "USB_D",
+      "VBUS_CHG"
+    ],
+    "found": true,
+    "sha256": "e5af7cdf0a05f0c0778099c21aea9bb6cbbbe92e89fb5f79e11f0907ad5c52f1",
+    "source": "/home/aqroot8/aqroot-demo/hardware/demo/kicad/aqroot-demo/aqroot-Beta-v2.kicad_pro"
+  },
+  "published_rail_currents": {
+    "ACC_3V3": 0.76,
+    "ACC_5V": 0.7,
+    "BAT_MAIN": 3.125,
+    "LED_BOOST": 0.09,
+    "NFC_5V_PA_PENDING": 0.5,
+    "P3V3": 1.0,
+    "SPK_OUT": 0.41,
+    "SYS_MAIN": 2.19,
+    "VBUS_CHG": 0.5
+  },
+  "published_table_source": {
+    "classes": [
+      "ACC_3V3",
+      "ACC_5V",
+      "BAT_MAIN",
+      "LED_BOOST",
+      "NFC_5V_PA_PENDING",
+      "P3V3",
+      "SPK_OUT",
+      "SYS_MAIN",
+      "VBUS_CHG"
+    ],
+    "found": true,
+    "sha256": "6f0c81e12b31ac488a5b4f7060c7a63673ec58b88cd288334ef3498641648f42",
+    "source": "/home/aqroot8/aqroot-demo/hardware/demo/kicad/aqroot-demo/aqroot-Beta-v2.kicad_dru"
+  },
+  "return_nets": {
+    "GND": {
+      "netclass": "GND",
+      "plane_area_mm2": 18851.692,
+      "reserved_layers": [
+        "I1",
+        "I4"
+      ]
+    }
+  },
+  "schema": 1,
+  "summary": {
+    "above_the_floor": 19,
+    "at_the_floor": 5,
+    "dearest": 3.125,
+    "islands": 24
+  }
+}

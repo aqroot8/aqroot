@@ -1,0 +1,322 @@
+{
+  "answer": "one track of the return net's OWN netclass width at this board's copper (GND 0.300 mm = 0.995 A at dT 10 K), RAISED to any rail current section 5 publishes for a net on the SAME FOOTPRINT as a pad of the fragment (Kirchhoff at the part, not a model of the board).",
+  "authority": {
+    "fields_added_vs_pre_change": [
+      "results.PP2.netclass_conductors",
+      "results.PP2.netclass_source",
+      "results.PP2.return_controls",
+      "results.PP2.return_nets"
+    ],
+    "note": "every other field of every clause is byte-identical to the same run before this change; the diff is FOUR ADDED KEYS and nothing else",
+    "pp2_ok": true,
+    "results": true,
+    "return_nets": {
+      "GND": {
+        "netclass": "GND",
+        "plane_area_mm2": 18851.692,
+        "reserved_layers": [
+          "I1",
+          "I4"
+        ]
+      }
+    },
+    "splits": [],
+    "verdict": true
+  },
+  "authority_sha256": "f496d2f39c0827248a47ab7d47efa4322f078b68d2da1d91ae6585d97bf8f875",
+  "census": {
+    "note": "24 splittable GND islands: 5 at the 0.995 A floor, 8 at 1.000 A, 4 at 2.190 A and 7 at 3.125 A",
+    "report": "evidence/d643-return-bar-census.json",
+    "summary": {
+      "above_the_floor": 19,
+      "at_the_floor": 5,
+      "dearest": 3.125,
+      "islands": 24
+    }
+  },
+  "d628_controls_unchanged": {
+    "note": "D-628's own seven probes are called with no bar_source and read byte-identical to the pre-change run",
+    "ok": true,
+    "probes": [
+      "min_thickness_sliver_refused",
+      "one_class_width_track_refused",
+      "four_barrel_bond_admitted",
+      "stranded_refused_however_priced",
+      "unpriced_net_refused",
+      "bar_located_one_ppm_below",
+      "bar_located_at_equality"
+    ]
+  },
+  "decision": "D-643",
+  "gate": {
+    "authoritative_unchanged": true,
+    "command": "python3 route_maze_batch.py /09_COMMUNITY_HEADER/EXT_SDA --grid 100000   (NO --promote)",
+    "connectivity": {
+      "nets_improved": [
+        "/09_COMMUNITY_HEADER/EXT_SDA"
+      ],
+      "nets_regressed": [
+        "GND"
+      ],
+      "open_retained_nets_after": 20,
+      "open_retained_nets_before": 21,
+      "retained_open_edges_after": 43,
+      "retained_open_edges_before": 43
+    },
+    "finding": "D-641's EXT_SDA -> Qwiic SDA edge is no longer blocked by the CONTRACT.  The U3.12 fragment is charged 1.000 A (RETURN_NEIGHBOUR_RAIL: U3's own +3V3 pads, class P3V3) instead of refused unpriced -- and it still refuses, now as PP3_NOT_BONDED, which is the placement wall D-642 measured as NO_BARREL_AT_ANY_DIAMETER_ON_THIS_LADDER.  The blocker is renamed from a clause to a via site.",
+    "fragments": [
+      {
+        "admit": false,
+        "area_mm2": 4.724,
+        "bar_amps": 1.0,
+        "bar_from": "RETURN_NEIGHBOUR_RAIL",
+        "bond_amps_parallel": 0.0,
+        "bottleneck": null,
+        "floor_amps": 0.995,
+        "internal_min_amps": null,
+        "internal_min_width_mm": null,
+        "margin_x": null,
+        "neighbour_rails": [
+          [
+            "U3.12",
+            "+3V3",
+            "P3V3",
+            1.0
+          ],
+          [
+            "U3.12",
+            "+3V3",
+            "P3V3",
+            1.0
+          ]
+        ],
+        "net": "GND",
+        "netclass": "GND",
+        "pads": [
+          "U3.12"
+        ],
+        "pp3": "STRANDED",
+        "priced_amps": null,
+        "why": "PP3_NOT_BONDED"
+      }
+    ],
+    "pour_partition": {
+      "PP1": true,
+      "PP2": false,
+      "PP3": false,
+      "PP4": true
+    },
+    "refused_clauses": [
+      "board_improved",
+      "no_regression",
+      "pour_partition"
+    ]
+  },
+  "limits": [
+    "a neighbour on a class section 5 does not price contributes nothing -- 89 of the board's GND pads have no priced neighbour and fall to the floor",
+    "the MAXIMUM neighbour is charged, not the sum, which under-charges a multi-rail part; it sits against a much larger over-charge in the other direction, since each rail is charged WHOLE to one ground pad that draws a fraction of it",
+    "the bar is charged to the fragment's replacement conductor only; the RETURN-PATH cost of a slot in a reserved inner PLANE is a different question and remains checks/plane_return_path.py's"
+  ],
+  "monotonicity": "this change can only ADMIT a split that was refused and can never refuse one that was admitted: for every net section 5 prices, `required` is unchanged; for a return net it moves from None (always refused) to a number.  PP2's `ok` additionally now requires the new controls, which is strictly stronger.",
+  "negative_control": {
+    "board": "w/d643/neg-bat2/aqroot-Beta-v2.kicad_pcb",
+    "contract": false,
+    "fragments": [
+      {
+        "admit": true,
+        "area_mm2": 409.126,
+        "bar_amps": 0.995,
+        "bar_from": "RETURN_FLOOR_ONE_NETCLASS_TRACK",
+        "bond_amps_parallel": 3.804,
+        "bottleneck": "FRAGMENT_COPPER",
+        "floor_amps": 0.995,
+        "internal_min_amps": 2.206,
+        "internal_min_width_mm": 0.9,
+        "margin_x": 2.217,
+        "neighbour_rails": [],
+        "net": "GND",
+        "netclass": "GND",
+        "pads": [
+          "R83.2"
+        ],
+        "pp3": "BONDED",
+        "priced_amps": 2.206,
+        "why": "BOND_PRICED_AT_OR_ABOVE_RETURN_FRAGMENT_BAR"
+      },
+      {
+        "admit": false,
+        "area_mm2": 1.555,
+        "bar_amps": 3.125,
+        "bar_from": "RETURN_NEIGHBOUR_RAIL",
+        "bond_amps_parallel": 1.902,
+        "bottleneck": "BARRELS",
+        "floor_amps": 0.995,
+        "internal_min_amps": 2.117,
+        "internal_min_width_mm": 0.85,
+        "margin_x": 0.609,
+        "neighbour_rails": [
+          [
+            "C58.2",
+            "/01_POWER_TREE/BAT_PROTECTED_P",
+            "BAT_MAIN",
+            3.125
+          ]
+        ],
+        "net": "GND",
+        "netclass": "GND",
+        "pads": [
+          "C58.2"
+        ],
+        "pp3": "BONDED",
+        "priced_amps": 1.902,
+        "why": "BOND_UNDER_PRICED"
+      }
+    ],
+    "how": "a closed 0.300 mm B.Cu fence on /09_COMMUNITY_HEADER/EXT_SCL around x 11.9..13.6, y 73.6..76.3 -- C58.2 and its own 0.300 mm GND barrel 0.903 mm away -- then --refill-zones.  A CONTROL board: not DRC-clean, never gated, never promoted",
+    "the_point": "ONE cut, TWO fragments of the SAME island, opposite verdicts.  R83.2 has no priced neighbour, is charged the 0.995 A floor and is ADMITTED at 2.206 A.  C58.2 sits on a part whose other pad is /01_POWER_TREE/BAT_PROTECTED_P (BAT_MAIN, 3.125 A), is charged 3.125 A and is REFUSED at 1.902 A -- 0.609x.  1.902 A is ABOVE the floor, so the neighbour term is the ONLY thing refusing it."
+  },
+  "no_copper_moved": true,
+  "positive_control": {
+    "board": "w/d643/pos/aqroot-Beta-v2.kicad_pcb",
+    "contract_after_the_change": true,
+    "contract_before_the_change": "FAIL (PP2 NET_CARRIES_NO_PUBLISHED_CURRENT)",
+    "fragments": [
+      {
+        "admit": true,
+        "area_mm2": 12.388,
+        "bar_amps": 0.995,
+        "bar_from": "RETURN_FLOOR_ONE_NETCLASS_TRACK",
+        "bond_amps_parallel": 5.706,
+        "bottleneck": "FRAGMENT_COPPER",
+        "floor_amps": 0.995,
+        "internal_min_amps": 2.552,
+        "internal_min_width_mm": 1.1,
+        "margin_x": 2.565,
+        "neighbour_rails": [],
+        "net": "GND",
+        "netclass": "GND",
+        "pads": [
+          "C45.2",
+          "C51.2",
+          "C53.2"
+        ],
+        "pp3": "BONDED",
+        "priced_amps": 2.552,
+        "why": "BOND_PRICED_AT_OR_ABOVE_RETURN_FRAGMENT_BAR"
+      }
+    ],
+    "how": "D-619's own refused route, reproduced verbatim on the CURRENT authority: two B.Cu NFC_VDD_A segments up the west side of U9 (x=31.000 y 26.100->28.400, x=31.200 y 23.800->25.900) plus the join between them, then KiCad's own --refill-zones",
+    "note": "the fragment D-619 recorded at 12.461 mm2 with pads C45.2 / C51.2 / C53.2 comes back at 12.388 mm2 with the same three pads on a board that has moved a long way since"
+  },
+  "question": "PP2 refused EVERY split of the board's return pour with NET_CARRIES_NO_PUBLISHED_CURRENT, because .kicad_dru section 5 prices nine RAILS and none of them is GND.  What does a return fragment actually have to carry?",
+  "rejected": {
+    "bar": "the strictest figure section 5 publishes anywhere (BAT_MAIN 3.125 A)",
+    "why": "it is not the analogue of what D-628 did.  D-628 charges a +3V3 fragment the WHOLE +3V3 rail because every pad on it is a pad OF that rail; the whole-NET analogue for a return net is the sum of every rail on the board (~9.3 A), which no 1 oz outer fragment could meet -- so it is the unconditional refusal again wearing a number.  And 3.125 A REFUSES the C45/C51/C53 pocket at 2.552 A, the very fragment this contract's own doctrine defends in prose as 'not a return-path injury; it is what those barrels are for'."
+  },
+  "schema": 1,
+  "unit_controls": {
+    "netclass_floor": {
+      "amps": 0.995,
+      "dT_K": 10.0,
+      "netclass": "GND",
+      "track_width_mm": 0.3
+    },
+    "ok": true,
+    "probes": [
+      {
+        "bar_from": "RETURN_FLOOR_ONE_NETCLASS_TRACK",
+        "behaved": true,
+        "control": "unpriced_neighbours_fall_to_the_floor",
+        "expected": 0.995,
+        "floor_amps": 0.995,
+        "got": 0.995,
+        "track_width_mm": 0.3
+      },
+      {
+        "bar_from": "RETURN_NEIGHBOUR_RAIL",
+        "behaved": true,
+        "control": "battery_neighbour_raises_the_bar",
+        "expected": 3.125,
+        "got": 3.125,
+        "neighbour": [
+          "BAT_MAIN"
+        ]
+      },
+      {
+        "behaved": true,
+        "control": "priced_neighbour_below_the_floor_does_not_lower_it",
+        "expected": 1.0,
+        "got": 1.0
+      },
+      {
+        "behaved": true,
+        "control": "the_largest_neighbour_is_the_one_charged",
+        "expected": 3.125,
+        "got": 3.125,
+        "n_neighbours": 2
+      },
+      {
+        "behaved": true,
+        "control": "a_net_with_no_netclass_conductor_has_no_floor",
+        "expected": null,
+        "got": null
+      },
+      {
+        "behaved": true,
+        "control": "zone_min_thickness_sliver_refused_at_the_floor",
+        "expected": false,
+        "got": false,
+        "priced_amps": 0.742,
+        "required_amps": 0.995,
+        "why": "BOND_UNDER_PRICED"
+      },
+      {
+        "behaved": true,
+        "control": "the_d619_fragment_is_admitted_at_the_floor",
+        "expected": true,
+        "got": true,
+        "priced_amps": 2.552,
+        "required_amps": 0.995,
+        "why": "BOND_PRICED_AT_OR_ABOVE_RETURN_FRAGMENT_BAR"
+      },
+      {
+        "behaved": true,
+        "control": "the_same_fragment_is_REFUSED_beside_the_battery",
+        "expected": false,
+        "got": false,
+        "priced_amps": 2.552,
+        "required_amps": 3.125,
+        "why": "BOND_UNDER_PRICED"
+      },
+      {
+        "behaved": true,
+        "control": "floor_located_one_ppm_below",
+        "expected": false,
+        "got": false,
+        "priced_amps": 0.994999,
+        "required_amps": 0.995,
+        "why": "BOND_UNDER_PRICED"
+      },
+      {
+        "behaved": true,
+        "control": "floor_located_at_equality",
+        "expected": true,
+        "got": true,
+        "priced_amps": 0.995,
+        "required_amps": 0.995,
+        "why": "BOND_PRICED_AT_OR_ABOVE_RETURN_FRAGMENT_BAR"
+      },
+      {
+        "behaved": true,
+        "control": "stranded_refused_however_priced_on_a_return_net",
+        "expected": false,
+        "got": false,
+        "why": "PP3_NOT_BONDED"
+      }
+    ],
+    "reference_amps": {
+      "d619_real_fragment": 2.552,
+      "zone_min_thickness_0p200mm": 0.742
+    }
+  }
+}

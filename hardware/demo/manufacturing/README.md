@@ -10,6 +10,48 @@ residual is **44 retained open edges across 21 nets** (D-632).  Two of them, `US
 parked on rulings rather than routes (D-618, D-620).  The residual is **43**
 as of D-639.
 
+## WHAT DOES CUTTING THE GROUND POUR COST? -- THE RETURN BAR (D-643)
+
+    python3 screen_return_fragment_bar.py [--board B] [--min-pads N] [-o OUT]
+
+`PP2` used to refuse EVERY split of a multi-pad `GND` island unconditionally,
+because `.kicad_dru` section 5 prices nine RAILS and none of them is `GND` --
+so `decide()` returned `NET_CARRIES_NO_PUBLISHED_CURRENT` the instant `PP3`
+stopped saying `STRANDED`.  That held D-584's family of six nets and ~18
+retained open edges behind a CLAUSE rather than behind geometry.
+
+D-643 replaced the refusal with a price the board already publishes:
+
+  * **THE FLOOR** -- one track of the return net's OWN netclass width at this
+    board's copper.  `GND` carries `track_width` 0.300 mm, so 0.995 A at
+    dT = 10 K.  A fragment bonded better than a track the board would happily
+    route to that pad has not been given a worse conductor than the board
+    already licenses.
+  * **THE NEIGHBOUR TERM** -- raised to any section-5 rail current published
+    for a net on the SAME FOOTPRINT as one of the fragment's pads.  The current
+    into a part's ground pin is bounded by what its other pins carry: that is
+    Kirchhoff, and for a two-terminal decoupling cap it is an identity.  Of 254
+    `GND` pads, 14 sit on `BAT_MAIN` parts (3.125 A), 10 on `SYS_MAIN`
+    (2.19 A), 116 on `P3V3` and 89 on nothing priced.
+
+The return net is READ, never named: it OWNS a filled zone on a RESERVED INNER
+PLANE and section 5 does not price it.  `+3V3` owns `In3` and IS priced, so it
+keeps its own row.
+
+This screen calls the contract's own `return_fragment_bar` verbatim -- the two
+cannot drift -- and censuses every splittable island before a router is spent:
+
+    3.125 A   7 islands   16, 44 (J4, the battery connector), 32, 38,
+                          27 (U14, the protection IC), 39, 33
+    2.190 A   4 islands   0, 8, 46, 20
+    1.000 A   8 islands   9, 6, 4, 37, 28, 31 (the EXT_SDA island), 34, 26
+    0.995 A   5 islands   40, 51, 42, 41, 54          <- the FLOOR
+
+It does NOT price a fragment: a fragment's price is its own barrels and its own
+copper, which do not exist until a cut does.  It says what that price will be
+CHARGED AGAINST.  `pour_partition_contract.py` `PP2` remains the only thing
+that admits or refuses a split.
+
 ## `NO_VIA_SITE` BY HOW MUCH -- THE DEFICIT SCREEN (D-642)
 
     python3 screen_bond_site_deficit.py REF.NUM [REF.NUM ...] \

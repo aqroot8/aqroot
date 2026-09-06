@@ -13,6 +13,70 @@
 > This file references DEVICE_SPEC rather than duplicating full specs.
 
 ## 1. Authoritative HEAD
+- **Demo D-643 (THE BOARD'S LARGEST SINGLE BLOCKER WAS A *CONTRACT*, AND IT IS
+  NOW A NUMBER):**  **NO COPPER MOVED.**  Authority **UNCHANGED** at
+  `f496d2f39c0827248a47ab7d47efa4322f078b68d2da1d91ae6585d97bf8f875`; retained
+  open edges **43**, open retained nets 21, connected retained 152, raw
+  ratsnest 59.  `hardware/beta-v2` untouched.  The ten standing contracts are
+  **10/10 RAN, 10/10 PASS** (`evidence/d643-contract-regression.json`,
+  baseline `d632`), differing in exactly the three fields D-639 documented.
+  ONE full-board gate run, **not** `--promote`.  ONE new tracked screen:
+  `screen_return_fragment_bar.py`.  ONE contract changed:
+  `checks/pour_partition_contract.py` — `PP2` gains a RETURN-FRAGMENT arm.
+  **(1) WHAT WAS REFUSED.**  `.kicad_dru` section 5 prices nine RAILS and none
+  is `GND`, so `decide()` returned `NET_CARRIES_NO_PUBLISHED_CURRENT` and
+  **every split of a multi-pad `GND` island was refused unconditionally** —
+  D-584's six nets / ~18 edges held by a clause, not by geometry.
+  **(2) D-642's PROPOSED BAR IS REFUTED BY ITS OWN EVIDENCE.**  `BAT_MAIN`'s
+  3.125 A is not the analogue of D-628 (whose whole-NET analogue for a return
+  net is ~9.3 A — the unconditional refusal wearing a number) and it REFUSES
+  the `C45`/`C51`/`C53` pocket at 2.552 A, the very fragment this contract's
+  own doctrine defends in prose.
+  **(3) THE BAR THE BOARD ALREADY PUBLISHES.**  The **FLOOR** is one track of
+  the return net's OWN netclass width at this board's copper — `GND` 0.300 mm,
+  **0.995 A** at dT 10 K.  The **NEIGHBOUR TERM** raises it to any section-5
+  rail on a net sharing a FOOTPRINT with a fragment pad — Kirchhoff at the
+  part, an identity for a two-terminal cap.  Of 254 `GND` pads, **14 sit on
+  `BAT_MAIN` parts (3.125 A)**, 10 on `SYS_MAIN` (2.19 A), 116 on `P3V3`, 89
+  on none.  The return net is READ (owns a reserved inner plane, unpriced by
+  section 5 → `GND`, `In1`+`In4`, 18851.692 mm²), never named.
+  **(4) ELEVEN CONTROLS, ALL BEHAVING**, and `PP2.ok` now requires them —
+  strictly stronger.  D-628's own seven probes read byte-identical.
+  **(5) A BOARD IT ADMITS.**  D-619's recorded `B.Cu` wall west of `U9`, laid
+  back onto today's authority and refilled, reproduces the split (57 → 58
+  islands, same three pads, 12.388 mm²): contract **FAIL → PASS**, bar 0.995 A,
+  priced **2.552 A**, margin **2.565×**.
+  **(6) A BOARD IT REFUSES — ONE CUT, TWO FRAGMENTS, OPPOSITE VERDICTS.**
+  `R83.2` (no priced neighbour) ADMITTED at 2.206 A against 0.995; `C58.2`
+  (`C58.1` on `BAT_PROTECTED_P`) REFUSED at 1.902 A against **3.125**, 0.609×.
+  1.902 is ABOVE the floor, so **the neighbour term is the only thing refusing
+  it** — the safety term proved load-bearing, not asserted.
+  **(7) THE REAL GATE RENAMES D-641's BLOCKER.**  `/09_COMMUNITY_HEADER/EXT_SDA`
+  → `J8.3` (Qwiic SDA) routes, severs island 31, and `PP2` now charges the
+  `U3.12` fragment **1.000 A** (`RETURN_NEIGHBOUR_RAIL`, `U3`'s own `+3V3`
+  pads) and refuses it **`PP3_NOT_BONDED`**.  The CONTRACT wall is gone; the
+  PLACEMENT wall (`U3.12` takes no barrel) remains.
+  **(8) EVERY OTHER CUT IS PRICED FOR FREE** (`d643-return-bar-census.json`):
+  24 splittable `GND` islands — **7 at 3.125 A** (incl. `J4` the battery
+  connector and `U14` the protection IC), 4 at 2.190, 8 at 1.000 (incl. island
+  31), **5 at the 0.995 A floor**.
+  **(9) MONOTONE, AND THE DIFF IS FOUR KEYS.**  The change can only ADMIT a
+  split that was refused, never refuse one that was admitted; on the
+  authoritative board every other field of every clause is byte-identical.
+  **NEXT, IN ORDER OF LEVERAGE:** (1) **SPEND THE CLAUSE** — re-ask D-584's
+  family, starting at the thirteen islands priced at or below 1.000 A; the
+  first `GND`-splitting route whose fragment prices above its bar is
+  **promotable copper, the first plausible route to copper since D-639**.
+  (2) **RELAY THE `In3.Cu` `TCA4307_READY` TRACK** — 55 legal 0.500/0.200
+  barrel sites inside `U3.12`'s fragment, and D-643 proves a barrel there is
+  now the ONLY thing between `EXT_SDA` and the Qwiic connector.  (3)
+  `/SPI_B_SCK` and `/BQ25185_STAT1` are LANDS (`U9.30`, `U11.9`) — run
+  `screen_escape_class.py` / `screen_pad_escape_relief.py`.  (4) TRIAGE the
+  remaining open-edge nets the seconds-not-hours way.  (5) `BQ25185_SYS C26.2`
+  and `GND J3.A12/B1`, carried unchanged.  (6) `/I2S_LRCLK`'s edge rate and
+  `/NFC_SUPPLY`'s per-net current, carried unchanged.
+  No owner decision is OPEN.  D-618's `J3` question remains RECORDED; PM-3
+  keeps `U3.12` and its cause is now a **single via site**.
 - **Demo D-642 (THE QWIIC SDA EDGE HAS *THREE* WALLS, NOT ONE -- AND THE THIRD
   IS A CONTRACT):**  **NO COPPER MOVED.**  Authority **UNCHANGED** at
   `f496d2f39c0827248a47ab7d47efa4322f078b68d2da1d91ae6585d97bf8f875`; retained
