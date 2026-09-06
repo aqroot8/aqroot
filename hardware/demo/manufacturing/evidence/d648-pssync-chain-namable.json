@@ -1,0 +1,99 @@
+{
+ "all_unique": true,
+ "board": "/home/aqroot8/aqroot-demo/hardware/demo/kicad/aqroot-demo/aqroot-Beta-v2.kicad_pcb",
+ "free_ends": [
+  [
+   53.125,
+   115.125
+  ],
+  [
+   64.25,
+   104.05
+  ]
+ ],
+ "interior_degrees": [
+  2,
+  2,
+  2
+ ],
+ "interior_junctions": [
+  [
+   62.325,
+   104.575
+  ],
+  [
+   62.325,
+   105.15
+  ],
+  [
+   62.9,
+   104.05
+  ]
+ ],
+ "namable": true,
+ "named": [
+  {
+   "a_mm": [
+    62.325,
+    104.575
+   ],
+   "b_mm": [
+    62.9,
+    104.05
+   ],
+   "hits": 1,
+   "layer": "B.Cu",
+   "mm": 0.7786,
+   "width_mm": 0.2
+  },
+  {
+   "a_mm": [
+    53.125,
+    115.125
+   ],
+   "b_mm": [
+    62.325,
+    105.15
+   ],
+   "hits": 1,
+   "layer": "B.Cu",
+   "mm": 13.5698,
+   "width_mm": 0.2
+  },
+  {
+   "a_mm": [
+    62.9,
+    104.05
+   ],
+   "b_mm": [
+    64.25,
+    104.05
+   ],
+   "hits": 1,
+   "layer": "B.Cu",
+   "mm": 1.35,
+   "width_mm": 0.2
+  },
+  {
+   "a_mm": [
+    62.325,
+    105.15
+   ],
+   "b_mm": [
+    62.325,
+    104.575
+   ],
+   "hits": 1,
+   "layer": "B.Cu",
+   "mm": 0.575,
+   "width_mm": 0.2
+  }
+ ],
+ "net": "Net-(U12-PS_SYNC)",
+ "net_objects": 33,
+ "one_layer_one_width": true,
+ "question": "can --detour-spec name the four Net-(U12-PS_SYNC) tracks the pad-bridge blame screen blames for the BQ25185_SYS C24.1 <-> C26.2 edge, as ONE simple chain",
+ "schema": 1,
+ "simple_chain": true,
+ "tees": []
+}

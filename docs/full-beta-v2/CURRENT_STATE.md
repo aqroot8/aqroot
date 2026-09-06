@@ -114,6 +114,19 @@
   per-net current, `/SPI_B_SCK` and `/BQ25185_STAT1` as LANDS, the three
   inherited `GND` orphans, `BQ25185_SYS C26.2`.
   No owner decision is OPEN.  D-618's `J3` question remains RECORDED.
+  **ADDENDUM, same session — THE NEXT TRANSACTION IS EXPRESSIBLE.**  This
+  decision's own hard lesson is that a blame report is not a transaction, so
+  the ONE `EVICTABLE` row was put through `detour_apply`'s three questions
+  read-only before anything is costed
+  (`evidence/d648-pssync-chain-namable.json`): the FOUR
+  `Net-(U12-PS_SYNC)` tracks behind `BQ25185_SYS` `C24.1 <-> C26.2` are
+  **`all_unique` true, one layer and one width (`B.Cu`, 0.200 mm), a SIMPLE
+  CHAIN with free ends (53.125, 115.125) and (64.250, 104.050), interior
+  degrees 2/2/2 and NO TEES — `namable: true`**, 16.2734 mm total of which one
+  segment is 13.5698 mm.  It is a RELAY, not a `relay: false` removal
+  (`PS_SYNC` owns no pour).  UNASKED: whether `route_points` can put a 16.27 mm
+  `B.Cu` chain back inside the `was + 2*pi*R` bound, and what `TPS63020`
+  `PS_SYNC` — a static mode-select input — owes once moved.
 - **Demo D-647 (THE BMI270 HAS NO SUPPLY CONNECTION OF ANY KIND):**  **NO
   COPPER MOVED.**  Authority **UNCHANGED** at
   `6b7cb0143b2a10e5d4160232f7aba466ccf50a71cdda417e72a680acfcd40dde`; retained

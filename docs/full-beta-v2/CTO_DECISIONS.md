@@ -230,6 +230,36 @@ REFUSES.  That is the next framework unit, and it is not a routing question.
 
 No owner decision is OPEN.  D-618's `J3` question remains RECORDED.
 
+## ADDENDUM, same session — THE NEXT TRANSACTION IS EXPRESSIBLE, AND THAT WAS ASKED BEFORE IT WAS COSTED
+
+This decision's own hard lesson is that a blame report is not a transaction: a
+`--detour-spec` cannot NAME a description the board carries twice, and nothing
+said so until `resolve()` stopped a run.  So the ONE `EVICTABLE` row this
+promotion leaves at the top of the work-list was put through
+`detour_apply`'s own three questions, read-only, before anything is costed
+(`evidence/d648-pssync-chain-namable.json`).
+
+`/01_POWER_TREE/BQ25185_SYS` `C24.1 <-> C26.2`, gap 2.704 mm, bridgeable at the
+**FULL 0.800 mm netclass width** behind FOUR `Net-(U12-PS_SYNC)` tracks — and
+those four are:
+
+    all_unique             true   each description matches EXACTLY ONE track
+    one_layer_one_width    true   B.Cu throughout, 0.200 mm throughout
+    simple_chain           true   free ends (53.125, 115.125) and (64.25, 104.050)
+    interior_degrees       2, 2, 2    at (62.325, 104.575), (62.325, 105.150), (62.900, 104.050)
+    tees                   NONE   no via, no third track and no pad of that net
+                                  meets any interior junction
+    chain total            16.2734 mm, of which ONE segment is 13.5698 mm
+
+**`namable: true`.**  So this is a `--detour-spec` RELAY (not a `relay: false`
+removal — `PS_SYNC` owns no pour and its copper is the connection), of one
+16.27 mm chain whose longest segment is a 13.57 mm haul, against a 2.704 mm
+bridge that needs no licence and no via.  What is NOT yet asked, and is the
+next invocation's first question: whether `route_points` can put a 16.27 mm
+`B.Cu` chain back around a reserved disc inside the `was + 2*pi*R` bound the
+spec derives, and what `TPS63020` `PS_SYNC` — a static mode-select input — owes
+in routing discipline once moved.
+
 # D-647 · 2026-09-06 · Demo — the BMI270's TWO SUPPLY PINS have NO CONNECTION OF ANY KIND, `U4.5` is ONE UNLICENSED BARREL from the `+3V3` plane BODY and ONE CLAUSE from promotable, and the `.kicad_dru`'s 26-decision-old `R129.1` refusal is explained: every relief barrel lands on the land's OWN severed island
 
     authority  6b7cb0143b2a10e5d4160232f7aba466ccf50a71cdda417e72a680acfcd40dde
