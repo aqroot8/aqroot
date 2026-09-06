@@ -5506,23 +5506,33 @@ def route_points(qb, field, a, b, layer, via_cost_mm=1.5, emit=True, span=2,
     # detoured, it has been rerouted, which is a different transaction with a
     # different review.  The caller sets the bound; `route_maze_batch` derives
     # its default from the reserved disc itself.
+    # AND THE BOUND IS ONLY HALF THE VERDICT -- THE LATTICE IS THE OTHER HALF.
+    # D-651: the SAME six-segment `Net-(SW9-A)` detour, the same discs and the
+    # same bound, is `TOO_LONG` at 11.823 mm on a 0.100 mm lattice and legal at
+    # 7.621 mm on a 0.025 mm one, because the shortest way past the reservation
+    # threads gaps a coarse cell cannot represent.  A refusal here is therefore
+    # a statement about a PITCH as much as about a board, and it must say so:
+    # `grid_nm` rides on every refusal so a caller -- and a decision quoting one
+    # -- can tell "there is no detour" from "there is none THIS COARSE".
     budget = (WAVE_STEPS if not max_mm
               else max(1, int(round(max_mm * qr.MM / field.G))))
     dist, hit = wave3d(field, seeds, goals, vc, budget=budget)
     if dist is None:
-        return dict(ok=False, reason='NO_SEED')
+        return dict(ok=False, reason='NO_SEED', grid_nm=field.G)
     if hit is None:
-        return dict(ok=False, reason='NO_PATH',
+        return dict(ok=False, reason='NO_PATH', grid_nm=field.G,
                     why='no all-layer corridor at %.3f mm between the two ends '
-                        'of this track once the site is reserved%s'
+                        'of this track once the site is reserved%s, on a '
+                        '%.4f mm lattice'
                         % (field.width / 1e6,
                            '' if not max_mm else
-                           ', inside the %.3f mm budget' % max_mm))
+                           ', inside the %.3f mm budget' % max_mm,
+                           field.G / 1e6))
     path = descend3d(field, dist, hit, vc)
     if path is None:
-        return dict(ok=False, reason='NO_DESCENT')
+        return dict(ok=False, reason='NO_DESCENT', grid_nm=field.G)
     if path[0][0] != layer or path[-1][0] != layer:
-        return dict(ok=False, reason='WRONG_TERMINAL_LAYER',
+        return dict(ok=False, reason='WRONG_TERMINAL_LAYER', grid_nm=field.G,
                     why='a detour must arrive on %s at both ends' % layer)
     m = qb.mark()
     r = _emit_path(qb, field, path, net, head=a, tail=b)
@@ -5532,9 +5542,11 @@ def route_points(qb, field, a, b, layer, via_cost_mm=1.5, emit=True, span=2,
     if max_mm and r['mm'] > max_mm:
         qb.revert(r['mark'])
         return dict(ok=False, reason='TOO_LONG', mm=r['mm'], max_mm=max_mm,
-                    why='the detour measures %.3f mm against a %.3f mm bound; '
-                        'this is a reroute, not a detour'
-                        % (r['mm'], max_mm))
+                    grid_nm=field.G,
+                    why='the detour measures %.3f mm against a %.3f mm bound '
+                        'on a %.4f mm lattice; this is a reroute, not a detour '
+                        '-- re-ask at a finer pitch before calling it refused'
+                        % (r['mm'], max_mm, field.G / 1e6))
     if not emit:
         qb.revert(r['mark'])
         return dict(ok=True, dry=True, mm=r['mm'], vias=r['vias'],

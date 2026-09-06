@@ -13,6 +13,70 @@
 > This file references DEVICE_SPEC rather than duplicating full specs.
 
 ## 1. Authoritative HEAD
+- **Demo D-651 (THE EVICTION D-650 PRICED IS A CHAIN, NOT AN OBJECT, AND THE
+  REFUSAL THAT HID IT WAS A LATTICE):**  **COPPER PROMOTED.**  Authority
+  `01d738abd2fbeda5cbecd20a720638f524010c311ee7439ab4322793fedb6b12` ->
+  **`abf8b92050e787a01c9003dcd954f8c68100525ea3c073ffa39782e886682c51`**;
+  retained open edges **39 -> 38**, `BQ25185_SYS` open edges **7 -> 6** and
+  islands **8 -> 7**, raw board ratsnest **55 -> 54**, open retained nets 20,
+  connected retained 153.  `hardware/beta-v2` untouched.  **THIRTEEN of
+  thirteen gate clauses PASS**, `refused_clauses` EMPTY
+  (`evidence/d651-gate-promote.json`); `verify_promotion.py` PASS on all 15
+  checks (`evidence/d651-verify-promotion.json`); real KiCad DRC **exit 0,
+  ZERO attributable**, profile identical to baseline; the standing suite is
+  **11/11 RAN, 11/11 PASS** (`evidence/d651-contract-regression.json`,
+  baseline `d632`) with `rf_symmetry`, `placement` and `protected_copper`
+  IDENTICAL to `d632` and the only new difference the `board_sha256`.
+  **(1) MOVE THE ENDS.**  D-650 removed ONE object, the `Net-(SW9-A)` `B.Cu`
+  diagonal 68.175,91.825 -> 66.25,93.75, and its relay put the same cut back
+  one pocket out because a relay is laid between the removed track's OWN two
+  ends and those lie on opposite shores of the pour's neck.
+  `detour_apply.chain_ends` has accepted a multi-track simple chain since
+  D-607: the SIX `B.Cu` segments from `TP13.1` (65.5,93.0) to (69.475,94.05)
+  are one, and naming all six moves the relay's terminals **4.11 mm apart
+  instead of 2.72 mm**.  With all six gone and NOTHING put back, KiCad's own
+  refill merges `C28.1` into the body at 96.279 mm2, islands 8 -> 7
+  (`evidence/d651-swa-chain-refill.json`).
+  **(2) THE REFUSAL THAT HID THE ANSWER WAS A PITCH.**  The SAME spec -- same
+  six tracks, same 17 discs, same 10.345 mm `was + 2*pi*R` bound -- is
+  `TOO_LONG` at **11.823 mm on a 0.100 mm lattice**, `TOO_LONG` at 11.291 mm
+  at 0.050, and **OK at 7.621 mm, ZERO vias, at 0.025**; 0.0125 buys
+  **0.031 mm for 9x the wall clock** (`evidence/d651-lattice-ladder.json`).
+  `maze3d.route_points` now carries `grid_nm` on EVERY refusal and both prose
+  refusals name the lattice and say *"re-ask at a finer pitch before calling
+  it refused"* -- additive, no caller parses those strings, suite unmoved.
+  **This does NOT re-open `C26.2`**: D-649's `PS_SYNC` refutation was already
+  run at 0.025 mm.
+  **(3) WHAT THE BOARD GAINED.**  `C28` is **100 nF X7R on `BQ25185_SYS`** and
+  its land was a cluster of ONE on a 2.1776 mm2 SEVERED piece of the net's own
+  pour -- an HF bypass capacitor with no connection to the rail it bypasses.
+  Now `['C28.1','SW9.2','U12.1']` at 92.0753 mm2, with every other cluster of
+  the net unmoved to four decimals (`evidence/d651-sys-pour-after.json`).  Six
+  0.200 mm `B.Cu` tracks out, six in, **ZERO vias, ZERO rule areas, ZERO
+  foreign copper**; `Net-(SW9-A)` is `SW9`, the hard power switch on the `U12`
+  TPS63020 enable, and the moved arm is **further** from the `Net-(L1-Pad1)`
+  switching node than the copper it replaced (0.3718 vs 0.3500 mm,
+  `evidence/d651-swa-geometry.json`).
+  **(4) THE FRONTIER, RE-ASKED.**  `BQ25185_SYS` clusters 10 -> 9, orphans
+  9 -> 8, `stroke_evictable` **3 -> 1**, `barrel_inexpressible` 6 -> 5
+  (`evidence/d651-island-bridge-post.json`); the pad-bridge frontier is
+  **EVICTABLE 1 / PLACEMENT_WALL 33 / UNRESOLVED 2**, identical to D-649's
+  post board (`evidence/d651-pad-bridge-blame-post.json`).
+  **NEXT, IN ORDER OF LEVERAGE:** (1) the reusable move is a RULE, not a
+  script: **price an eviction as the maximal simple CHAIN through the pocket,
+  at 0.025 mm, before recording the wall** -- every `EVICTABLE` row this board
+  ever produced was priced as ONE object at whatever pitch the caller passed.
+  (2) `+3V3` `R129.1` is the only cluster evictable on BOTH arms and is an
+  OWNER question (all minimal sets are PROTECTED copper).  (3) `BQ25185_SYS`
+  `C26.2` is D-649's single-file gate, chain and pitch both already asked.
+  (4) `U12.10`/`U12.11` is a `PLACEMENT_WALL`; `U11.1`, `R68.1` and `U13.3`
+  own no filled island at all.  (5) `U4.5` (`VDDIO`) still needs the per-part
+  electrical ledger.  (6) Re-ask both frontier screens after every promotion
+  (20 s and 10 s).  (7) CARRIED UNCHANGED: `/I2S_LRCLK`'s edge rate,
+  `/NFC_SUPPLY`'s per-net current, `/SPI_B_SCK` and `/BQ25185_STAT1` as LANDS,
+  `MK1.4` and `J3.A12`/`J3.B1`, `U9.16`'s single-barrel driver ground as an
+  OPEN DFM ITEM.  No owner decision is OPEN.  D-618's `J3` question remains
+  RECORDED.
 - **Demo D-650 (THE POUR-ISLAND FRONTIER, ASKED WITHOUT A LATTICE: THE LARGEST
   OPEN FAMILY HAS NO BARREL ARM AT ALL, AND THE ONE CLEAN EVICTION MOVES THE
   CUT):**  **NO COPPER.**  Authority UNCHANGED at

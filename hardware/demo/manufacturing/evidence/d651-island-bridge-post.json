@@ -1,0 +1,1461 @@
+{
+  "blame_cap": 16,
+  "board": "/home/aqroot8/aqroot-demo/hardware/demo/kicad/aqroot-demo/aqroot-Beta-v2.kicad_pcb",
+  "board_sha256": "abf8b92050e787a01c9003dcd954f8c68100525ea3c073ffa39782e886682c51",
+  "ladder": [
+    [
+      650000,
+      400000
+    ],
+    [
+      600000,
+      300000
+    ],
+    [
+      550000,
+      250000
+    ],
+    [
+      500000,
+      250000
+    ],
+    [
+      450000,
+      200000
+    ],
+    [
+      350000,
+      200000
+    ]
+  ],
+  "method": "read-only; exact polygon overlap and maze3d.verify_laid over QBoard.obstacles, no lattice and no Field; every candidate object is laid, proved and reverted",
+  "nets": [
+    {
+      "barrel_evictable": 1,
+      "barrel_inexpressible": 0,
+      "barrel_ok": 0,
+      "body": [
+        "C10.1",
+        "C12.2",
+        "C13.1",
+        "C14.1",
+        "C15.1",
+        "C16.1",
+        "C17.1",
+        "C18.1",
+        "C2.1",
+        "C29.1",
+        "C3.1",
+        "C30.1",
+        "C31.1",
+        "C32.1",
+        "C4.1",
+        "C43.1",
+        "C5.1",
+        "C56.1",
+        "C6.1",
+        "C62.1",
+        "C7.1",
+        "C8.1",
+        "C9.1",
+        "D13.1",
+        "J1.35",
+        "J1.40",
+        "J1.41",
+        "J1.42",
+        "J1.7",
+        "J1.8",
+        "J1.9",
+        "J2.4",
+        "L3.1",
+        "MK1.3",
+        "R1.2",
+        "R103.1",
+        "R106.1",
+        "R113.1",
+        "R119.1",
+        "R123.2",
+        "R127.1",
+        "R128.1",
+        "R19.1",
+        "R2.1",
+        "R20.1",
+        "R21.1",
+        "R24.2",
+        "R25.1",
+        "R26.1",
+        "R27.1",
+        "R28.1",
+        "R29.1",
+        "R3.2",
+        "R4.1",
+        "R41.1",
+        "R5.1",
+        "R6.1",
+        "R7.1",
+        "R8.1",
+        "R81.1",
+        "R9.1",
+        "U1.2",
+        "U12.4",
+        "U12.5",
+        "U17.5",
+        "U2.24",
+        "U20.2",
+        "U3.21",
+        "U3.24",
+        "U4.12",
+        "U4.2",
+        "U4.3",
+        "U4.8",
+        "U5.7",
+        "U5.8",
+        "U7.9",
+        "U8.9",
+        "U9.1"
+      ],
+      "clusters": 5,
+      "detail": [
+        {
+          "barrel": {
+            "asked": 54,
+            "blame": {
+              "blockers": [
+                {
+                  "drop_refuses": true,
+                  "hw_mm": 0.1,
+                  "kind": "ROUTED",
+                  "net": "Net-(U11-TS_MR)",
+                  "protected": false,
+                  "tag": "track",
+                  "x0_mm": 58.3,
+                  "x1_mm": 64.7,
+                  "y0_mm": 64.3,
+                  "y1_mm": 70.5
+                },
+                {
+                  "drop_refuses": true,
+                  "hw_mm": 0.1,
+                  "kind": "ROUTED",
+                  "net": "/09_COMMUNITY_HEADER/WAKE_GATE_S",
+                  "protected": false,
+                  "tag": "track",
+                  "x0_mm": 64.2,
+                  "x1_mm": 58.6,
+                  "y0_mm": 71.1,
+                  "y1_mm": 64.5
+                },
+                {
+                  "drop_refuses": true,
+                  "hw_mm": 0.5,
+                  "kind": "ROUTED",
+                  "net": "/01_POWER_TREE/BAT_PROTECTED_P",
+                  "protected": true,
+                  "tag": "track",
+                  "x0_mm": 63.3,
+                  "x1_mm": 63.3,
+                  "y0_mm": 69.4,
+                  "y1_mm": 72.95
+                }
+              ],
+              "n_fixed": 0,
+              "n_held": 3,
+              "n_protected": 1,
+              "n_routed": 3,
+              "ok": true,
+              "site_mm": [
+                64.0397,
+                70.3514
+              ],
+              "verdict": "EVICTABLE",
+              "via_dia": 350000,
+              "via_drill": 200000
+            },
+            "candidates": 9,
+            "floor": "0.35/0.20 mm",
+            "from_layer": "I3",
+            "ok": false,
+            "overlap_mm2": 0.001,
+            "overlaps": 1,
+            "reason": "NO_LEGAL_BARREL",
+            "site": [
+              64039654,
+              70351413
+            ],
+            "site_depth_mm": 0.0022,
+            "site_mm": [
+              64.0397,
+              70.3514
+            ],
+            "step_nm": 12500,
+            "to_cluster": [
+              "C10.1",
+              "C12.2",
+              "C13.1",
+              "C14.1"
+            ],
+            "to_is_body": true,
+            "to_layer": "F",
+            "why": {
+              "against": "Net-(U11-TS_MR)",
+              "at": [
+                64.0147,
+                70.3389
+              ],
+              "kind": "via",
+              "layer": "F",
+              "tag": "track"
+            }
+          },
+          "cluster": [
+            "R129.1"
+          ],
+          "islands": [
+            {
+              "layer": "F",
+              "mm2": 7.2601
+            },
+            {
+              "layer": "I3",
+              "mm2": 25.2325
+            }
+          ],
+          "pads": 1,
+          "stroke": {
+            "a": [
+              64309322,
+              69736613
+            ],
+            "a_xy": [
+              64.3093,
+              69.7366
+            ],
+            "anchors": [
+              781,
+              1081
+            ],
+            "b": [
+              67120566,
+              70077821
+            ],
+            "b_xy": [
+              67.1206,
+              70.0778
+            ],
+            "blame": {
+              "a_xy": [
+                64.3093,
+                69.7366
+              ],
+              "b_xy": [
+                67.1206,
+                70.0778
+              ],
+              "blockers": [
+                {
+                  "drop_refuses": true,
+                  "hw_mm": 0.2,
+                  "kind": "ROUTED",
+                  "net": "/ACC_3V3_SW",
+                  "protected": true,
+                  "tag": "track",
+                  "x0_mm": 64.85,
+                  "x1_mm": 65.95,
+                  "y0_mm": 69.2,
+                  "y1_mm": 70.2
+                },
+                {
+                  "drop_refuses": true,
+                  "hw_mm": 0.2,
+                  "kind": "ROUTED",
+                  "net": "/ACC_3V3_SW",
+                  "protected": true,
+                  "tag": "track",
+                  "x0_mm": 65.95,
+                  "x1_mm": 69.325,
+                  "y0_mm": 70.2,
+                  "y1_mm": 66.75
+                },
+                {
+                  "drop_refuses": true,
+                  "hw_mm": 0.2,
+                  "kind": "ROUTED",
+                  "net": "/ACC_3V3_SW",
+                  "protected": true,
+                  "tag": "track",
+                  "x0_mm": 61.5,
+                  "x1_mm": 64.85,
+                  "y0_mm": 62.4,
+                  "y1_mm": 69.2
+                }
+              ],
+              "mm": 2.8319,
+              "n_fixed": 0,
+              "n_held": 3,
+              "n_protected": 3,
+              "n_routed": 3,
+              "ok": true,
+              "verdict": "EVICTABLE",
+              "width": 400000
+            },
+            "gap_mm": 1.7671,
+            "layer": "I3",
+            "mm": 2.8319,
+            "ok": false,
+            "pairs_tried": 24,
+            "reason": "UNPROVED_GEOMETRY",
+            "to_cluster": [
+              "C10.1",
+              "C12.2",
+              "C13.1",
+              "C14.1"
+            ],
+            "to_is_body": true,
+            "why": {
+              "against": "/ACC_3V3_SW",
+              "at": [
+                64.3093,
+                69.7366
+              ],
+              "gap_mm": -0.5,
+              "kind": "track",
+              "layer": "I3",
+              "need_mm": 0.25,
+              "tag": "track",
+              "to": [
+                67.1206,
+                70.0778
+              ]
+            },
+            "width": 600000
+          }
+        },
+        {
+          "barrel": {
+            "ok": false,
+            "reason": "NO_ISLAND",
+            "why": "this cluster owns no filled pour island, so neither arm of this screen is its move"
+          },
+          "cluster": [
+            "R39.1"
+          ],
+          "islands": [],
+          "pads": 1,
+          "stroke": {
+            "ok": false,
+            "reason": "NO_ISLAND"
+          }
+        },
+        {
+          "barrel": {
+            "ok": false,
+            "reason": "NO_ISLAND",
+            "why": "this cluster owns no filled pour island, so neither arm of this screen is its move"
+          },
+          "cluster": [
+            "U4.5"
+          ],
+          "islands": [],
+          "pads": 1,
+          "stroke": {
+            "ok": false,
+            "reason": "NO_ISLAND"
+          }
+        },
+        {
+          "barrel": {
+            "asked": 3024,
+            "blame": {
+              "blockers": [
+                {
+                  "cx_mm": 29.5625,
+                  "cy_mm": 115.25,
+                  "drop_refuses": true,
+                  "kind": "PAD",
+                  "net": "/I2S_SPK_DOUT",
+                  "r_mm": 0.0625,
+                  "tag": "U5.1"
+                },
+                {
+                  "drop_refuses": true,
+                  "hw_mm": 0.15,
+                  "kind": "ROUTED",
+                  "net": "GND",
+                  "protected": false,
+                  "tag": "track",
+                  "x0_mm": 30.1,
+                  "x1_mm": 29.075,
+                  "y0_mm": 116.25,
+                  "y1_mm": 116.25
+                },
+                {
+                  "drop_refuses": true,
+                  "hw_mm": 0.15,
+                  "kind": "ROUTED",
+                  "net": "GND",
+                  "protected": false,
+                  "tag": "track",
+                  "x0_mm": 30.55,
+                  "x1_mm": 29.075,
+                  "y0_mm": 116.25,
+                  "y1_mm": 116.25
+                },
+                {
+                  "drop_refuses": true,
+                  "hw_mm": 0.15,
+                  "kind": "ROUTED",
+                  "net": "GND",
+                  "protected": false,
+                  "tag": "track",
+                  "x0_mm": 29.55,
+                  "x1_mm": 29.075,
+                  "y0_mm": 116.25,
+                  "y1_mm": 116.25
+                }
+              ],
+              "n_fixed": 1,
+              "n_held": 4,
+              "n_protected": 0,
+              "n_routed": 3,
+              "ok": true,
+              "site_mm": [
+                29.2593,
+                115.738
+              ],
+              "verdict": "PLACEMENT_WALL",
+              "via_dia": 350000,
+              "via_drill": 200000
+            },
+            "candidates": 504,
+            "floor": "0.35/0.20 mm",
+            "from_layer": "F",
+            "ok": false,
+            "overlap_mm2": 0.077405,
+            "overlaps": 1,
+            "reason": "NO_LEGAL_BARREL",
+            "site": [
+              29259332,
+              115737999
+            ],
+            "site_depth_mm": 0.1115,
+            "site_mm": [
+              29.2593,
+              115.738
+            ],
+            "step_nm": 12500,
+            "to_cluster": [
+              "C10.1",
+              "C12.2",
+              "C13.1",
+              "C14.1"
+            ],
+            "to_is_body": true,
+            "to_layer": "I3",
+            "why": {
+              "against": "/I2S_SPK_DOUT",
+              "at": [
+                29.6093,
+                115.6255
+              ],
+              "kind": "via",
+              "layer": "F",
+              "tag": "U5.1"
+            }
+          },
+          "cluster": [
+            "U5.2"
+          ],
+          "islands": [
+            {
+              "layer": "F",
+              "mm2": 0.1831
+            }
+          ],
+          "pads": 1,
+          "stroke": {
+            "gap_mm": 0.7282,
+            "layer": "F",
+            "ok": false,
+            "reason": "NO_ANCHOR",
+            "to_cluster": [
+              "C10.1",
+              "C12.2",
+              "C13.1",
+              "C14.1"
+            ],
+            "to_is_body": true,
+            "why": "no point of this island within reach of the cut is 0.200 mm inside its own filled copper",
+            "width": 400000
+          }
+        }
+      ],
+      "islands": 39,
+      "layers": [
+        "F",
+        "B",
+        "I2",
+        "I3"
+      ],
+      "net": "+3V3",
+      "netclass": "P3V3",
+      "orphans": 4,
+      "plane": true,
+      "stroke_evictable": 1,
+      "stroke_ok": 0,
+      "widths_offered": [
+        600000,
+        400000
+      ]
+    },
+    {
+      "barrel_evictable": 0,
+      "barrel_inexpressible": 5,
+      "barrel_ok": 0,
+      "body": [
+        "C24.1",
+        "C33.1",
+        "C64.1",
+        "L2.1"
+      ],
+      "clusters": 9,
+      "detail": [
+        {
+          "barrel": {
+            "ok": false,
+            "overlaps": 0,
+            "reason": "ARM_NOT_EXPRESSIBLE",
+            "why": "no other cluster of this net owns filled copper on another layer over this island, so no through barrel joins anything at ANY drill or lattice"
+          },
+          "cluster": [
+            "C28.1",
+            "SW9.2",
+            "U12.1"
+          ],
+          "islands": [
+            {
+              "layer": "B",
+              "mm2": 92.0753
+            }
+          ],
+          "pads": 3,
+          "stroke": {
+            "a": [
+              63432176,
+              100723065
+            ],
+            "a_xy": [
+              63.4322,
+              100.7231
+            ],
+            "anchors": [
+              16,
+              14
+            ],
+            "b": [
+              66828704,
+              102790500
+            ],
+            "b_xy": [
+              66.8287,
+              102.7905
+            ],
+            "blame": {
+              "a_xy": [
+                63.4322,
+                100.7231
+              ],
+              "b_xy": [
+                66.8287,
+                102.7905
+              ],
+              "blockers": [
+                {
+                  "cx_mm": 66.1,
+                  "cy_mm": 102.8,
+                  "drop_refuses": true,
+                  "kind": "PAD",
+                  "net": "Net-(SW9-A)",
+                  "r_mm": 0.12,
+                  "tag": "U12.12"
+                },
+                {
+                  "cx_mm": 65.6,
+                  "cy_mm": 102.8,
+                  "drop_refuses": true,
+                  "kind": "PAD",
+                  "net": "Net-(U12-PS_SYNC)",
+                  "r_mm": 0.12,
+                  "tag": "U12.13"
+                },
+                {
+                  "cx_mm": 66.6,
+                  "cy_mm": 101.4,
+                  "drop_refuses": true,
+                  "kind": "PAD",
+                  "net": "GND",
+                  "r_mm": 0.0,
+                  "tag": "U12.15"
+                },
+                {
+                  "drop_refuses": true,
+                  "hw_mm": 0.15,
+                  "kind": "ROUTED",
+                  "net": "GND",
+                  "protected": false,
+                  "tag": "track",
+                  "x0_mm": 64.7,
+                  "x1_mm": 64.3,
+                  "y0_mm": 101.4,
+                  "y1_mm": 101.0
+                },
+                {
+                  "drop_refuses": true,
+                  "hw_mm": 0.15,
+                  "kind": "ROUTED",
+                  "net": "GND",
+                  "protected": false,
+                  "tag": "track",
+                  "x0_mm": 66.6,
+                  "x1_mm": 64.7,
+                  "y0_mm": 101.4,
+                  "y1_mm": 101.4
+                },
+                {
+                  "drop_refuses": true,
+                  "hw_mm": 0.1,
+                  "kind": "ROUTED",
+                  "net": "Net-(SW9-A)",
+                  "protected": false,
+                  "tag": "track",
+                  "x0_mm": 66.1,
+                  "x1_mm": 66.1,
+                  "y0_mm": 102.8,
+                  "y1_mm": 103.65
+                },
+                {
+                  "drop_refuses": true,
+                  "hw_mm": 0.1,
+                  "kind": "ROUTED",
+                  "net": "Net-(SW9-A)",
+                  "protected": false,
+                  "tag": "track",
+                  "x0_mm": 66.1,
+                  "x1_mm": 66.1,
+                  "y0_mm": 102.8,
+                  "y1_mm": 103.65
+                },
+                {
+                  "cx_mm": 64.3,
+                  "cy_mm": 101.0,
+                  "drop_refuses": true,
+                  "kind": "ROUTED",
+                  "net": "GND",
+                  "protected": false,
+                  "r_mm": 0.3,
+                  "tag": "via"
+                },
+                {
+                  "cx_mm": 64.3,
+                  "cy_mm": 101.0,
+                  "drop_refuses": true,
+                  "kind": "ROUTED",
+                  "net": "GND",
+                  "protected": false,
+                  "r_mm": 0.15,
+                  "tag": "via/hole"
+                }
+              ],
+              "mm": 3.9763,
+              "n_fixed": 3,
+              "n_held": 9,
+              "n_protected": 0,
+              "n_routed": 6,
+              "ok": true,
+              "verdict": "PLACEMENT_WALL",
+              "width": 500000
+            },
+            "gap_mm": 1.4414,
+            "layer": "B",
+            "mm": 3.9763,
+            "ok": false,
+            "pairs_tried": 16,
+            "reason": "UNPROVED_GEOMETRY",
+            "to_cluster": [
+              "U12.10",
+              "U12.11"
+            ],
+            "to_is_body": false,
+            "why": {
+              "against": "Net-(SW9-A)",
+              "at": [
+                63.4322,
+                100.7231
+              ],
+              "gap_mm": -0.2868,
+              "kind": "track",
+              "layer": "B",
+              "need_mm": 0.2,
+              "tag": "U12.12",
+              "to": [
+                66.8287,
+                102.7905
+              ]
+            },
+            "width": 800000
+          }
+        },
+        {
+          "barrel": {
+            "ok": false,
+            "overlaps": 0,
+            "reason": "ARM_NOT_EXPRESSIBLE",
+            "why": "no other cluster of this net owns filled copper on another layer over this island, so no through barrel joins anything at ANY drill or lattice"
+          },
+          "cluster": [
+            "L4.1",
+            "U21.3"
+          ],
+          "islands": [
+            {
+              "layer": "B",
+              "mm2": 10.8135
+            }
+          ],
+          "pads": 2,
+          "stroke": {
+            "gap_mm": 34.6976,
+            "layer": "B",
+            "max_mm": 3.0,
+            "ok": false,
+            "reason": "TOO_FAR",
+            "to_cluster": [
+              "C27.1"
+            ],
+            "to_is_body": false,
+            "why": "these two islands are 34.698 mm apart; one straight track between them is a corridor, not a bridge"
+          }
+        },
+        {
+          "barrel": {
+            "ok": false,
+            "overlaps": 0,
+            "reason": "ARM_NOT_EXPRESSIBLE",
+            "why": "no other cluster of this net owns filled copper on another layer over this island, so no through barrel joins anything at ANY drill or lattice"
+          },
+          "cluster": [
+            "U12.10",
+            "U12.11"
+          ],
+          "islands": [
+            {
+              "layer": "B",
+              "mm2": 0.7488
+            }
+          ],
+          "pads": 2,
+          "stroke": {
+            "a": [
+              66828704,
+              102790500
+            ],
+            "a_xy": [
+              66.8287,
+              102.7905
+            ],
+            "anchors": [
+              14,
+              16
+            ],
+            "b": [
+              63432176,
+              100723065
+            ],
+            "b_xy": [
+              63.4322,
+              100.7231
+            ],
+            "blame": {
+              "a_xy": [
+                66.8287,
+                102.7905
+              ],
+              "b_xy": [
+                63.4322,
+                100.7231
+              ],
+              "blockers": [
+                {
+                  "cx_mm": 66.1,
+                  "cy_mm": 102.8,
+                  "drop_refuses": true,
+                  "kind": "PAD",
+                  "net": "Net-(SW9-A)",
+                  "r_mm": 0.12,
+                  "tag": "U12.12"
+                },
+                {
+                  "cx_mm": 65.6,
+                  "cy_mm": 102.8,
+                  "drop_refuses": true,
+                  "kind": "PAD",
+                  "net": "Net-(U12-PS_SYNC)",
+                  "r_mm": 0.12,
+                  "tag": "U12.13"
+                },
+                {
+                  "cx_mm": 66.6,
+                  "cy_mm": 101.4,
+                  "drop_refuses": true,
+                  "kind": "PAD",
+                  "net": "GND",
+                  "r_mm": 0.0,
+                  "tag": "U12.15"
+                },
+                {
+                  "drop_refuses": true,
+                  "hw_mm": 0.15,
+                  "kind": "ROUTED",
+                  "net": "GND",
+                  "protected": false,
+                  "tag": "track",
+                  "x0_mm": 64.7,
+                  "x1_mm": 64.3,
+                  "y0_mm": 101.4,
+                  "y1_mm": 101.0
+                },
+                {
+                  "drop_refuses": true,
+                  "hw_mm": 0.15,
+                  "kind": "ROUTED",
+                  "net": "GND",
+                  "protected": false,
+                  "tag": "track",
+                  "x0_mm": 66.6,
+                  "x1_mm": 64.7,
+                  "y0_mm": 101.4,
+                  "y1_mm": 101.4
+                },
+                {
+                  "drop_refuses": true,
+                  "hw_mm": 0.1,
+                  "kind": "ROUTED",
+                  "net": "Net-(SW9-A)",
+                  "protected": false,
+                  "tag": "track",
+                  "x0_mm": 66.1,
+                  "x1_mm": 66.1,
+                  "y0_mm": 102.8,
+                  "y1_mm": 103.65
+                },
+                {
+                  "drop_refuses": true,
+                  "hw_mm": 0.1,
+                  "kind": "ROUTED",
+                  "net": "Net-(SW9-A)",
+                  "protected": false,
+                  "tag": "track",
+                  "x0_mm": 66.1,
+                  "x1_mm": 66.1,
+                  "y0_mm": 102.8,
+                  "y1_mm": 103.65
+                },
+                {
+                  "cx_mm": 64.3,
+                  "cy_mm": 101.0,
+                  "drop_refuses": true,
+                  "kind": "ROUTED",
+                  "net": "GND",
+                  "protected": false,
+                  "r_mm": 0.3,
+                  "tag": "via"
+                },
+                {
+                  "cx_mm": 64.3,
+                  "cy_mm": 101.0,
+                  "drop_refuses": true,
+                  "kind": "ROUTED",
+                  "net": "GND",
+                  "protected": false,
+                  "r_mm": 0.15,
+                  "tag": "via/hole"
+                }
+              ],
+              "mm": 3.9763,
+              "n_fixed": 3,
+              "n_held": 9,
+              "n_protected": 0,
+              "n_routed": 6,
+              "ok": true,
+              "verdict": "PLACEMENT_WALL",
+              "width": 500000
+            },
+            "gap_mm": 1.4414,
+            "layer": "B",
+            "mm": 3.9763,
+            "ok": false,
+            "pairs_tried": 14,
+            "reason": "UNPROVED_GEOMETRY",
+            "to_cluster": [
+              "C28.1",
+              "SW9.2",
+              "U12.1"
+            ],
+            "to_is_body": false,
+            "why": {
+              "against": "Net-(SW9-A)",
+              "at": [
+                66.8287,
+                102.7905
+              ],
+              "gap_mm": -0.2868,
+              "kind": "track",
+              "layer": "B",
+              "need_mm": 0.2,
+              "tag": "U12.12",
+              "to": [
+                63.4322,
+                100.7231
+              ]
+            },
+            "width": 800000
+          }
+        },
+        {
+          "barrel": {
+            "ok": false,
+            "overlaps": 0,
+            "reason": "ARM_NOT_EXPRESSIBLE",
+            "why": "no other cluster of this net owns filled copper on another layer over this island, so no through barrel joins anything at ANY drill or lattice"
+          },
+          "cluster": [
+            "C26.2"
+          ],
+          "islands": [
+            {
+              "layer": "B",
+              "mm2": 6.5525
+            }
+          ],
+          "pads": 1,
+          "stroke": {
+            "a": [
+              63142284,
+              104854269
+            ],
+            "a_xy": [
+              63.1423,
+              104.8543
+            ],
+            "anchors": [
+              526,
+              316
+            ],
+            "b": [
+              62121476,
+              103738000
+            ],
+            "b_xy": [
+              62.1215,
+              103.738
+            ],
+            "blame": {
+              "a_xy": [
+                63.1423,
+                104.8543
+              ],
+              "b_xy": [
+                62.1215,
+                103.738
+              ],
+              "blockers": [
+                {
+                  "drop_refuses": true,
+                  "hw_mm": 0.1,
+                  "kind": "ROUTED",
+                  "net": "Net-(U12-PS_SYNC)",
+                  "protected": false,
+                  "tag": "track",
+                  "x0_mm": 62.325,
+                  "x1_mm": 62.9,
+                  "y0_mm": 104.575,
+                  "y1_mm": 104.05
+                },
+                {
+                  "drop_refuses": true,
+                  "hw_mm": 0.1,
+                  "kind": "ROUTED",
+                  "net": "Net-(U12-PS_SYNC)",
+                  "protected": false,
+                  "tag": "track",
+                  "x0_mm": 62.9,
+                  "x1_mm": 64.25,
+                  "y0_mm": 104.05,
+                  "y1_mm": 104.05
+                },
+                {
+                  "drop_refuses": true,
+                  "hw_mm": 0.1,
+                  "kind": "ROUTED",
+                  "net": "Net-(U12-PS_SYNC)",
+                  "protected": false,
+                  "tag": "track",
+                  "x0_mm": 62.325,
+                  "x1_mm": 62.325,
+                  "y0_mm": 105.15,
+                  "y1_mm": 104.575
+                }
+              ],
+              "mm": 1.5126,
+              "n_fixed": 0,
+              "n_held": 3,
+              "n_protected": 0,
+              "n_routed": 3,
+              "ok": true,
+              "verdict": "EVICTABLE",
+              "width": 800000
+            },
+            "gap_mm": 0.701,
+            "layer": "B",
+            "mm": 1.5126,
+            "ok": false,
+            "pairs_tried": 24,
+            "reason": "UNPROVED_GEOMETRY",
+            "to_cluster": [
+              "C24.1",
+              "C33.1",
+              "C64.1",
+              "L2.1"
+            ],
+            "to_is_body": true,
+            "why": {
+              "against": "Net-(U12-PS_SYNC)",
+              "at": [
+                63.1423,
+                104.8543
+              ],
+              "gap_mm": -0.5,
+              "kind": "track",
+              "layer": "B",
+              "need_mm": 0.25,
+              "tag": "track",
+              "to": [
+                62.1215,
+                103.738
+              ]
+            },
+            "width": 800000
+          }
+        },
+        {
+          "barrel": {
+            "ok": false,
+            "overlaps": 0,
+            "reason": "ARM_NOT_EXPRESSIBLE",
+            "why": "no other cluster of this net owns filled copper on another layer over this island, so no through barrel joins anything at ANY drill or lattice"
+          },
+          "cluster": [
+            "C27.1"
+          ],
+          "islands": [
+            {
+              "layer": "B",
+              "mm2": 5.5205
+            }
+          ],
+          "pads": 1,
+          "stroke": {
+            "gap_mm": 4.6165,
+            "layer": "B",
+            "max_mm": 3.0,
+            "ok": false,
+            "reason": "TOO_FAR",
+            "to_cluster": [
+              "C28.1",
+              "SW9.2",
+              "U12.1"
+            ],
+            "to_is_body": false,
+            "why": "these two islands are 4.616 mm apart; one straight track between them is a corridor, not a bridge"
+          }
+        },
+        {
+          "barrel": {
+            "ok": false,
+            "reason": "NO_ISLAND",
+            "why": "this cluster owns no filled pour island, so neither arm of this screen is its move"
+          },
+          "cluster": [
+            "R68.1"
+          ],
+          "islands": [],
+          "pads": 1,
+          "stroke": {
+            "ok": false,
+            "reason": "NO_ISLAND"
+          }
+        },
+        {
+          "barrel": {
+            "ok": false,
+            "reason": "NO_ISLAND",
+            "why": "this cluster owns no filled pour island, so neither arm of this screen is its move"
+          },
+          "cluster": [
+            "U11.1"
+          ],
+          "islands": [],
+          "pads": 1,
+          "stroke": {
+            "ok": false,
+            "reason": "NO_ISLAND"
+          }
+        },
+        {
+          "barrel": {
+            "ok": false,
+            "reason": "NO_ISLAND",
+            "why": "this cluster owns no filled pour island, so neither arm of this screen is its move"
+          },
+          "cluster": [
+            "U13.3"
+          ],
+          "islands": [],
+          "pads": 1,
+          "stroke": {
+            "ok": false,
+            "reason": "NO_ISLAND"
+          }
+        }
+      ],
+      "islands": 7,
+      "layers": [
+        "F",
+        "B",
+        "I2"
+      ],
+      "net": "/01_POWER_TREE/BQ25185_SYS",
+      "netclass": "SYS_MAIN",
+      "orphans": 8,
+      "plane": true,
+      "stroke_evictable": 1,
+      "stroke_ok": 0,
+      "widths_offered": [
+        800000,
+        500000
+      ]
+    },
+    {
+      "barrel_evictable": 0,
+      "barrel_inexpressible": 0,
+      "barrel_ok": 0,
+      "body": [
+        "C1.1",
+        "C10.2",
+        "C11.2",
+        "C12.1",
+        "C13.2",
+        "C14.2",
+        "C15.2",
+        "C16.2",
+        "C17.2",
+        "C18.2",
+        "C19.2",
+        "C2.2",
+        "C20.2",
+        "C21.2",
+        "C22.2",
+        "C23.1",
+        "C24.2",
+        "C25.2",
+        "C26.1",
+        "C27.2",
+        "C28.2",
+        "C29.2",
+        "C3.2",
+        "C30.2",
+        "C31.2",
+        "C32.2",
+        "C33.2",
+        "C34.1",
+        "C35.2",
+        "C36.2",
+        "C37.2",
+        "C38.2",
+        "C39.2",
+        "C4.2",
+        "C43.2",
+        "C44.2",
+        "C45.2",
+        "C46.2",
+        "C47.2",
+        "C48.2",
+        "C49.2",
+        "C5.2",
+        "C50.2",
+        "C51.2",
+        "C52.2",
+        "C53.2",
+        "C54.2",
+        "C55.2",
+        "C56.2",
+        "C57.2",
+        "C58.2",
+        "C59.2",
+        "C6.2",
+        "C60.2",
+        "C61.2",
+        "C62.2",
+        "C63.2",
+        "C64.2",
+        "C65.2",
+        "C66.2",
+        "C67.2",
+        "C68.2",
+        "C69.2",
+        "C7.2",
+        "C70.2",
+        "C73.2",
+        "C74.2",
+        "C76.2",
+        "C78.2",
+        "C79.2",
+        "C8.2",
+        "C80.2",
+        "C81.2",
+        "C82.2",
+        "C9.2",
+        "D2.2",
+        "D4.2",
+        "D5.2",
+        "D9.2",
+        "J1.11",
+        "J1.12",
+        "J1.13",
+        "J1.14",
+        "J1.15",
+        "J1.16",
+        "J1.17",
+        "J1.18",
+        "J1.19",
+        "J1.20",
+        "J1.21",
+        "J1.22",
+        "J1.23",
+        "J1.24",
+        "J1.25",
+        "J1.26",
+        "J1.27",
+        "J1.28",
+        "J1.29",
+        "J1.30",
+        "J1.31",
+        "J1.32",
+        "J1.43",
+        "J1.48",
+        "J1.49",
+        "J1.50",
+        "J2.11",
+        "J2.6",
+        "J2.9",
+        "J2.9",
+        "J2.9",
+        "J2.9",
+        "J3.A1",
+        "J3.B12",
+        "J4.2",
+        "J5.19",
+        "J5.2",
+        "J5.23",
+        "J5.6",
+        "J8.1",
+        "MK1.1",
+        "MK1.2",
+        "Q1.2",
+        "Q4.2",
+        "Q8.2",
+        "Q9.2",
+        "R100.2",
+        "R101.2",
+        "R102.2",
+        "R105.2",
+        "R108.2",
+        "R110.2",
+        "R111.2",
+        "R118.2",
+        "R12.2",
+        "R120.2",
+        "R13.2",
+        "R131.2",
+        "R14.2",
+        "R15.2",
+        "R16.2",
+        "R17.2",
+        "R23.2",
+        "R30.2",
+        "R31.2",
+        "R32.2",
+        "R36.2",
+        "R37.2",
+        "R38.2",
+        "R40.2",
+        "R42.1",
+        "R43.2",
+        "R45.2",
+        "R69.2",
+        "R74.2",
+        "R78.2",
+        "R82.2",
+        "R83.2",
+        "R88.2",
+        "R90.2",
+        "R92.2",
+        "R97.2",
+        "R98.2",
+        "SW1.2",
+        "SW1.2",
+        "SW2.2",
+        "SW2.2",
+        "SW3.2",
+        "SW3.2",
+        "SW4.2",
+        "SW4.2",
+        "SW5.2",
+        "SW5.2",
+        "SW6.2",
+        "SW6.2",
+        "SW7.2",
+        "SW7.2",
+        "U1.1",
+        "U1.40",
+        "U1.41",
+        "U1.41",
+        "U1.41",
+        "U1.41",
+        "U1.41",
+        "U1.41",
+        "U1.41",
+        "U1.41",
+        "U1.41",
+        "U1.41",
+        "U1.41",
+        "U1.41",
+        "U1.41",
+        "U10.2",
+        "U11.11",
+        "U11.4",
+        "U11.5",
+        "U12.15",
+        "U12.2",
+        "U13.4",
+        "U14.1",
+        "U14.4",
+        "U14.9",
+        "U16.4",
+        "U17.2",
+        "U18.4",
+        "U18.5",
+        "U19.4",
+        "U2.12",
+        "U2.2",
+        "U2.21",
+        "U2.3",
+        "U20.3",
+        "U21.4",
+        "U22.3",
+        "U3.12",
+        "U3.2",
+        "U3.3",
+        "U4.6",
+        "U4.7",
+        "U5.11",
+        "U5.15",
+        "U5.17",
+        "U5.3",
+        "U6.2",
+        "U7.1",
+        "U7.11",
+        "U7.12",
+        "U7.2",
+        "U7.20",
+        "U7.22",
+        "U7.3",
+        "U7.4",
+        "U7.5",
+        "U8.1",
+        "U8.10",
+        "U8.11",
+        "U8.12",
+        "U8.2",
+        "U8.20",
+        "U8.22",
+        "U8.3",
+        "U8.4",
+        "U8.5",
+        "U9.12",
+        "U9.16",
+        "U9.20",
+        "U9.21",
+        "U9.26",
+        "U9.33",
+        "U9.6",
+        "Y1.2",
+        "Y1.4"
+      ],
+      "clusters": 3,
+      "detail": [
+        {
+          "barrel": {
+            "ok": false,
+            "reason": "NO_ISLAND",
+            "why": "this cluster owns no filled pour island, so neither arm of this screen is its move"
+          },
+          "cluster": [
+            "J3.A12",
+            "J3.B1"
+          ],
+          "islands": [],
+          "pads": 2,
+          "stroke": {
+            "ok": false,
+            "reason": "NO_ISLAND"
+          }
+        },
+        {
+          "barrel": {
+            "ok": false,
+            "reason": "NO_ISLAND",
+            "why": "this cluster owns no filled pour island, so neither arm of this screen is its move"
+          },
+          "cluster": [
+            "MK1.4"
+          ],
+          "islands": [],
+          "pads": 1,
+          "stroke": {
+            "ok": false,
+            "reason": "NO_ISLAND"
+          }
+        }
+      ],
+      "islands": 62,
+      "layers": [
+        "F",
+        "B",
+        "I2"
+      ],
+      "net": "GND",
+      "netclass": "GND",
+      "orphans": 2,
+      "plane": true,
+      "stroke_evictable": 0,
+      "stroke_ok": 0,
+      "widths_offered": [
+        300000,
+        150000
+      ]
+    }
+  ],
+  "pairs": 24,
+  "schema": 1,
+  "step_nm": 12500
+}

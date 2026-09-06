@@ -1,0 +1,69 @@
+{
+  "a_nm": [
+    65500000,
+    93000000
+  ],
+  "b_nm": [
+    69475000,
+    94050000
+  ],
+  "board": "/home/aqroot8/aqroot-demo/hardware/demo/kicad/aqroot-demo/aqroot-Beta-v2.kicad_pcb",
+  "layers": [
+    "F",
+    "B",
+    "I2"
+  ],
+  "lkey": "B",
+  "max_mm_default": 10.3452,
+  "net": "Net-(SW9-A)",
+  "netclass_via": [
+    600000,
+    300000
+  ],
+  "question": "with the whole six-segment pocket chain removed, can Net-(SW9-A) be relaid between TP13.1 and 69.475,94.05 with the C28.1 merge diagonal reserved on B.Cu only",
+  "rows": [
+    {
+      "grid": 25000,
+      "label": "control: nothing reserved",
+      "max_mm": 0.0,
+      "mm": 5.3665,
+      "ok": true,
+      "reason": null,
+      "seconds": 32.1,
+      "vias": 0
+    },
+    {
+      "grid": 25000,
+      "label": "reserve B diagonal r=0.60",
+      "max_mm": 0.0,
+      "mm": 7.6213,
+      "ok": true,
+      "reason": null,
+      "seconds": 41.3,
+      "vias": 0
+    },
+    {
+      "grid": 25000,
+      "label": "reserve B diagonal r=0.80",
+      "max_mm": 0.0,
+      "mm": 8.274,
+      "ok": true,
+      "reason": null,
+      "seconds": 42.6,
+      "vias": 0
+    },
+    {
+      "grid": 25000,
+      "label": "reserve B diagonal r=1.00",
+      "max_mm": 0.0,
+      "mm": 8.8392,
+      "ok": true,
+      "reason": null,
+      "seconds": 40.7,
+      "vias": 0
+    }
+  ],
+  "schema": 1,
+  "was_mm": 6.5753,
+  "width_nm": 200000
+}

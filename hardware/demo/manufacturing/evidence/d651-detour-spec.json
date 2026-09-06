@@ -1,0 +1,367 @@
+{
+  "schema": 1,
+  "detours": [
+    {
+      "net": "Net-(SW9-A)",
+      "relay": true,
+      "tracks": [
+        {
+          "layer": "B.Cu",
+          "a_mm": [
+            65.5,
+            93.0
+          ],
+          "b_mm": [
+            66.25,
+            93.75
+          ],
+          "width_mm": 0.2,
+          "count": 1
+        },
+        {
+          "layer": "B.Cu",
+          "a_mm": [
+            68.175,
+            91.825
+          ],
+          "b_mm": [
+            66.25,
+            93.75
+          ],
+          "width_mm": 0.2,
+          "count": 1
+        },
+        {
+          "layer": "B.Cu",
+          "a_mm": [
+            69.175,
+            92.75
+          ],
+          "b_mm": [
+            68.175,
+            91.825
+          ],
+          "width_mm": 0.2,
+          "count": 1
+        },
+        {
+          "layer": "B.Cu",
+          "a_mm": [
+            69.175,
+            93.575
+          ],
+          "b_mm": [
+            69.175,
+            92.75
+          ],
+          "width_mm": 0.2,
+          "count": 1
+        },
+        {
+          "layer": "B.Cu",
+          "a_mm": [
+            69.15,
+            93.7
+          ],
+          "b_mm": [
+            69.175,
+            93.575
+          ],
+          "width_mm": 0.2,
+          "count": 1
+        },
+        {
+          "layer": "B.Cu",
+          "a_mm": [
+            69.475,
+            94.05
+          ],
+          "b_mm": [
+            69.15,
+            93.7
+          ],
+          "width_mm": 0.2,
+          "count": 1
+        }
+      ]
+    }
+  ],
+  "reserve": [
+    {
+      "x_mm": 66.25,
+      "y_mm": 93.75,
+      "r_mm": 0.6,
+      "layers": [
+        "B"
+      ],
+      "exempt": [
+        "/01_POWER_TREE/BQ25185_SYS"
+      ]
+    },
+    {
+      "x_mm": 66.3302,
+      "y_mm": 93.6698,
+      "r_mm": 0.6,
+      "layers": [
+        "B"
+      ],
+      "exempt": [
+        "/01_POWER_TREE/BQ25185_SYS"
+      ]
+    },
+    {
+      "x_mm": 66.4104,
+      "y_mm": 93.5896,
+      "r_mm": 0.6,
+      "layers": [
+        "B"
+      ],
+      "exempt": [
+        "/01_POWER_TREE/BQ25185_SYS"
+      ]
+    },
+    {
+      "x_mm": 66.4906,
+      "y_mm": 93.5094,
+      "r_mm": 0.6,
+      "layers": [
+        "B"
+      ],
+      "exempt": [
+        "/01_POWER_TREE/BQ25185_SYS"
+      ]
+    },
+    {
+      "x_mm": 66.5708,
+      "y_mm": 93.4292,
+      "r_mm": 0.6,
+      "layers": [
+        "B"
+      ],
+      "exempt": [
+        "/01_POWER_TREE/BQ25185_SYS"
+      ]
+    },
+    {
+      "x_mm": 66.651,
+      "y_mm": 93.349,
+      "r_mm": 0.6,
+      "layers": [
+        "B"
+      ],
+      "exempt": [
+        "/01_POWER_TREE/BQ25185_SYS"
+      ]
+    },
+    {
+      "x_mm": 66.7313,
+      "y_mm": 93.2687,
+      "r_mm": 0.6,
+      "layers": [
+        "B"
+      ],
+      "exempt": [
+        "/01_POWER_TREE/BQ25185_SYS"
+      ]
+    },
+    {
+      "x_mm": 66.8115,
+      "y_mm": 93.1885,
+      "r_mm": 0.6,
+      "layers": [
+        "B"
+      ],
+      "exempt": [
+        "/01_POWER_TREE/BQ25185_SYS"
+      ]
+    },
+    {
+      "x_mm": 66.8917,
+      "y_mm": 93.1083,
+      "r_mm": 0.6,
+      "layers": [
+        "B"
+      ],
+      "exempt": [
+        "/01_POWER_TREE/BQ25185_SYS"
+      ]
+    },
+    {
+      "x_mm": 66.9719,
+      "y_mm": 93.0281,
+      "r_mm": 0.6,
+      "layers": [
+        "B"
+      ],
+      "exempt": [
+        "/01_POWER_TREE/BQ25185_SYS"
+      ]
+    },
+    {
+      "x_mm": 67.0521,
+      "y_mm": 92.9479,
+      "r_mm": 0.6,
+      "layers": [
+        "B"
+      ],
+      "exempt": [
+        "/01_POWER_TREE/BQ25185_SYS"
+      ]
+    },
+    {
+      "x_mm": 67.1323,
+      "y_mm": 92.8677,
+      "r_mm": 0.6,
+      "layers": [
+        "B"
+      ],
+      "exempt": [
+        "/01_POWER_TREE/BQ25185_SYS"
+      ]
+    },
+    {
+      "x_mm": 67.2125,
+      "y_mm": 92.7875,
+      "r_mm": 0.6,
+      "layers": [
+        "B"
+      ],
+      "exempt": [
+        "/01_POWER_TREE/BQ25185_SYS"
+      ]
+    },
+    {
+      "x_mm": 67.2927,
+      "y_mm": 92.7073,
+      "r_mm": 0.6,
+      "layers": [
+        "B"
+      ],
+      "exempt": [
+        "/01_POWER_TREE/BQ25185_SYS"
+      ]
+    },
+    {
+      "x_mm": 67.3729,
+      "y_mm": 92.6271,
+      "r_mm": 0.6,
+      "layers": [
+        "B"
+      ],
+      "exempt": [
+        "/01_POWER_TREE/BQ25185_SYS"
+      ]
+    },
+    {
+      "x_mm": 67.4531,
+      "y_mm": 92.5469,
+      "r_mm": 0.6,
+      "layers": [
+        "B"
+      ],
+      "exempt": [
+        "/01_POWER_TREE/BQ25185_SYS"
+      ]
+    },
+    {
+      "x_mm": 67.5333,
+      "y_mm": 92.4667,
+      "r_mm": 0.6,
+      "layers": [
+        "B"
+      ],
+      "exempt": [
+        "/01_POWER_TREE/BQ25185_SYS"
+      ]
+    },
+    {
+      "x_mm": 67.6135,
+      "y_mm": 92.3865,
+      "r_mm": 0.6,
+      "layers": [
+        "B"
+      ],
+      "exempt": [
+        "/01_POWER_TREE/BQ25185_SYS"
+      ]
+    },
+    {
+      "x_mm": 67.6937,
+      "y_mm": 92.3063,
+      "r_mm": 0.6,
+      "layers": [
+        "B"
+      ],
+      "exempt": [
+        "/01_POWER_TREE/BQ25185_SYS"
+      ]
+    },
+    {
+      "x_mm": 67.774,
+      "y_mm": 92.226,
+      "r_mm": 0.6,
+      "layers": [
+        "B"
+      ],
+      "exempt": [
+        "/01_POWER_TREE/BQ25185_SYS"
+      ]
+    },
+    {
+      "x_mm": 67.8542,
+      "y_mm": 92.1458,
+      "r_mm": 0.6,
+      "layers": [
+        "B"
+      ],
+      "exempt": [
+        "/01_POWER_TREE/BQ25185_SYS"
+      ]
+    },
+    {
+      "x_mm": 67.9344,
+      "y_mm": 92.0656,
+      "r_mm": 0.6,
+      "layers": [
+        "B"
+      ],
+      "exempt": [
+        "/01_POWER_TREE/BQ25185_SYS"
+      ]
+    },
+    {
+      "x_mm": 68.0146,
+      "y_mm": 91.9854,
+      "r_mm": 0.6,
+      "layers": [
+        "B"
+      ],
+      "exempt": [
+        "/01_POWER_TREE/BQ25185_SYS"
+      ]
+    },
+    {
+      "x_mm": 68.0948,
+      "y_mm": 91.9052,
+      "r_mm": 0.6,
+      "layers": [
+        "B"
+      ],
+      "exempt": [
+        "/01_POWER_TREE/BQ25185_SYS"
+      ]
+    },
+    {
+      "x_mm": 68.175,
+      "y_mm": 91.825,
+      "r_mm": 0.6,
+      "layers": [
+        "B"
+      ],
+      "exempt": [
+        "/01_POWER_TREE/BQ25185_SYS"
+      ]
+    }
+  ],
+  "note": "D-651 multi-segment C28.1 eviction, merge corridor reserved"
+}

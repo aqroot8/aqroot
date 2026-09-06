@@ -1,0 +1,135 @@
+{
+  "after_removal_and_refill": {
+    "clusters": 9,
+    "detail": [
+      [
+        [
+          "C24.1",
+          "C33.1",
+          "C64.1",
+          "L2.1"
+        ],
+        4,
+        [
+          [
+            "B",
+            3.3115
+          ]
+        ]
+      ],
+      [
+        [
+          "C28.1",
+          "SW9.2",
+          "U12.1"
+        ],
+        3,
+        [
+          [
+            "B",
+            96.279
+          ]
+        ]
+      ],
+      [
+        [
+          "L4.1",
+          "U21.3"
+        ],
+        2,
+        [
+          [
+            "B",
+            10.8135
+          ]
+        ]
+      ],
+      [
+        [
+          "U12.10",
+          "U12.11"
+        ],
+        2,
+        [
+          [
+            "B",
+            0.7488
+          ]
+        ]
+      ],
+      [
+        [
+          "C26.2"
+        ],
+        1,
+        [
+          [
+            "B",
+            6.5525
+          ]
+        ]
+      ],
+      [
+        [
+          "C27.1"
+        ],
+        1,
+        [
+          [
+            "B",
+            5.5205
+          ]
+        ]
+      ]
+    ],
+    "islands": 7
+  },
+  "authoritative_unchanged": true,
+  "board": "/home/aqroot8/aqroot-demo/hardware/demo/kicad/aqroot-demo/aqroot-Beta-v2.kicad_pcb",
+  "board_sha256": "01d738abd2fbeda5cbecd20a720638f524010c311ee7439ab4322793fedb6b12",
+  "ledger_open_edges_total": 39,
+  "method": "read-only; route_maze_batch --detour-apply removed the six tracks on a SCRATCH copy, kicad-cli pcb drc --refill-zones --save-board filled it, and the clusters are KiCad's own GetConnectivity over its own filled polygons",
+  "net": "/01_POWER_TREE/BQ25185_SYS",
+  "question": "with the WHOLE six-segment Net-(SW9-A) B.Cu pocket chain removed and NOTHING put back, what does KiCad's own refill do to BQ25185_SYS",
+  "removed_mm": 6.5753,
+  "schema": 1,
+  "sys_ledger": [
+    {
+      "copper_islands": 7,
+      "groups": [
+        [
+          "C24.1@61.725,103.250",
+          "C33.1@28.755,122.775",
+          "C64.1@8.795,120.085"
+        ],
+        [
+          "C26.2@63.225,105.500"
+        ],
+        [
+          "C27.1@66.525,75.000"
+        ],
+        [
+          "C28.1@68.400,93.245",
+          "SW9.2@63.950,86.500",
+          "U12.1@65.100,100.000"
+        ],
+        [
+          "L4.1@57.715,36.200",
+          "U21.3@57.087,39.400"
+        ],
+        [
+          "U11.1@66.400,78.600"
+        ],
+        [
+          "U12.10@67.100,102.800",
+          "U12.11@66.600,102.800"
+        ]
+      ],
+      "net": "/01_POWER_TREE/BQ25185_SYS",
+      "open_edges": 6,
+      "pads": 13,
+      "sheet": "01_POWER_TREE",
+      "span_mm": 105.109
+    }
+  ]
+}

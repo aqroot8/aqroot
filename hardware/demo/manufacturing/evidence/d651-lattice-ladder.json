@@ -1,0 +1,63 @@
+{
+  "a_mm": [
+    65.5,
+    93.0
+  ],
+  "b_mm": [
+    69.475,
+    94.05
+  ],
+  "board": "/home/aqroot8/aqroot-demo/hardware/demo/kicad/aqroot-demo/aqroot-Beta-v2.kicad_pcb",
+  "max_mm": 10.3452,
+  "net": "Net-(SW9-A)",
+  "question": "the SAME six-segment Net-(SW9-A) detour, the SAME discs and the SAME was + 2*pi*R bound, at four lattice pitches",
+  "reserve_r_mm": 0.6,
+  "rows": [
+    {
+      "grid_mm": 0.1,
+      "grid_nm": 100000,
+      "mm": 11.8233,
+      "ok": false,
+      "reason": "TOO_LONG",
+      "reported_grid_nm": 100000,
+      "seconds": 0.7,
+      "vias": null,
+      "why": "the detour measures 11.823 mm against a 10.345 mm bound on a 0.1000 mm lattice; this is a reroute, not a detour -- re-ask at a finer pitch before calling it refused"
+    },
+    {
+      "grid_mm": 0.05,
+      "grid_nm": 50000,
+      "mm": 11.2908,
+      "ok": false,
+      "reason": "TOO_LONG",
+      "reported_grid_nm": 50000,
+      "seconds": 6.4,
+      "vias": null,
+      "why": "the detour measures 11.291 mm against a 10.345 mm bound on a 0.0500 mm lattice; this is a reroute, not a detour -- re-ask at a finer pitch before calling it refused"
+    },
+    {
+      "grid_mm": 0.025,
+      "grid_nm": 25000,
+      "mm": 7.6213,
+      "ok": true,
+      "reason": null,
+      "reported_grid_nm": null,
+      "seconds": 48.3,
+      "vias": 0,
+      "why": null
+    },
+    {
+      "grid_mm": 0.0125,
+      "grid_nm": 12500,
+      "mm": 7.5899,
+      "ok": true,
+      "reason": null,
+      "reported_grid_nm": null,
+      "seconds": 454.1,
+      "vias": 0,
+      "why": null
+    }
+  ],
+  "schema": 1,
+  "was_mm": 6.5753
+}
