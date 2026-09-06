@@ -13,6 +13,90 @@
 > This file references DEVICE_SPEC rather than duplicating full specs.
 
 ## 1. Authoritative HEAD
+- **Demo D-645 (THE OBSTACLE MODEL WAS NOT THE BOARD -- 799 BARRELS AND 799
+  DRILLS THE PROPOSER COULD NOT SEE):**  **NO COPPER MOVED.**  Authority
+  **UNCHANGED** at
+  `24b85f639cee4cfae797d9372553261ac7591df2626d818c801c8ac53f3f5f9c`; retained
+  open edges **42**, open retained nets 20, connected retained 153, raw
+  ratsnest 58.  `hardware/beta-v2` untouched.  ELEVEN standing contracts now
+  RAN; the ten board contracts are **10/10 PASS** and reproduce D-644's own
+  field-by-field diff against baseline `d632`
+  (`evidence/d645-contract-regression.json`).  ONE new standing contract:
+  `checks/obstacle_model_contract.py` (`OM1-OM4`).  ONE new primitive:
+  `maze3d.ensure_board_vias`, env-gated OFF.  ZERO gate runs invoked
+  `--promote`.
+  **(1) THE QUESTION NOBODY HAD ASKED ABOUT THE INSTRUMENT.**  Every proposer
+  on this board reads its obstacles from `qrouter.QBoard.shapes` and
+  `QBoard.holes` and from nothing else.  `QBoard._scan` keeps a
+  `board.GetTracks()` object only where `GetClass() == 'PCB_TRACK'`, and in
+  this KiCad build a through via is a `PCB_VIA`.  **The model carried 3180 of
+  the board's 7974 copper signatures and 56 of its 855 drilled holes** -- a
+  strict SUBSET, short by exactly `799 x 6` barrels and 799 drills, with ZERO
+  extras either way (`evidence/d645-obstacle-model-gate-off.json`).
+  **(2) WHAT IT DOES NOT INVALIDATE.**  A refusal measured against a model
+  that is a SUBSET of the board is a LOWER BOUND -- the real board can only be
+  harder -- so **not one recorded wall on this board is overturned**, and every
+  escape count ever published is a CEILING.  What it devalues is a PROPOSAL:
+  copper laid against the blind model may be illegal against a barrel it never
+  saw, and the gate's real KiCad DRC has been the only thing that could catch
+  it.  `Field._via_grid` states in its own words that hole-to-hole has no
+  same-net exemption, and then applied it over 56 of 855 drills.
+  **(3) THE DEBT IS LATENT, AND THAT IS MEASURED, NOT HOPED.**  Real KiCad DRC
+  on the authority reports **ZERO `clearance` violations**; all five
+  `hole_clearance` ones are vendor pad-to-NPTH pairs inside `MK1` and `J3`
+  that predate every route (`evidence/d645-drc-authority.json`).
+  **(4) THE REPAIR IS THE EMITTER'S OWN THREE LINES.**
+  `maze3d.ensure_board_vias` appends, per board via, exactly what `QBoard.via`
+  appends for a barrel it lays; idempotent, called at the top of every
+  `Field.__init__`, **env-gated OFF** by `AQROOT_SCAN_BOARD_VIAS`, so every
+  recorded run reproduces byte for byte.  With it set the model reads
+  **7974 / 7974 and 855 / 855**.
+  **(5) THE HONEST MODEL COSTS SECONDS, NOT ANSWERS.**  D-642's EIGHT triaged
+  open-edge nets, `--partial`, never `--promote`: **not one verdict moves** --
+  same reason, same src/dst escape counts, same named blockers -- for
+  **49.3 s -> 55.2 s** (`evidence/d645-obstacle-model-ab-triage.json`), and the
+  gate-off arm reproduces D-642's own published table.  The ten standing
+  contracts read the same verdict and the same identity under both models, and
+  `pour_bond` / `pour_partition` / `leaf_land` are **byte-identical**.
+  **(6) IT IS STILL OFF, AND THE REASON IS NAMED.**  What is NOT measured is a
+  full `--promote` gate run under the honest model.  So `OM1`/`OM2` read
+  **FAIL with the gate off and PASS with it on**, `scan_gate_on` is reported
+  rather than inferred, and the next promoting transaction spends the gate and
+  moves the default with it.
+  **(7) `contract_regression.py`'s BOND GUARD WAS STALE, AND IT MATTERED.**
+  `P2` compares the tubes a guard NAMES against the islands the board CARRIES;
+  the constant still pointed at D-619's guard, D-644 dropped the
+  `C4.2 <-> U3.12` tube and renumbered nine `+3V3` and seven `GND` islands, and
+  `pour_bond` read `FAIL islands_renumbered` on a board whose OWN guard reads
+  `P1-P4 PASS`.  Repointed at `d644-pour-bond-guard-next.json`; every promotion
+  that re-emits the guard must move it again.
+  **(8) `+3V3`'s FOUR BMI270 LANDS: THE FLOOR WAS NEVER THE WALL.**  Three of
+  `+3V3`'s six open lands are **SIGNAL LEAVES** by D-632 -- `R129.1` (100 k),
+  `R39.1` (1 M) and `{U4.2, U4.3}`, the BMI270's `ASDx`/`ASCx` straps -- and
+  that licence had never been spent.  It did not need to be: the WHOLE
+  escalation ladder refuses at the netclass OPT 0.600 mm **and** at the
+  0.400 mm the `.kicad_dru` publishes as P3V3's own minimum, **42 -> 42 in all
+  three arms**.  What moved was D-633's OFF-CENTRE LAUNCH: at 0.400 mm
+  `{U4.2,U4.3}`, `R39.1` and `R129.1` go `NO_LEGAL_ESCAPE` -> `NO_PATH` with
+  **16, 5 and 10** legal escapes -- three LAND refusals turned into CORRIDOR
+  refusals.  `U4.5`, `U4.8` and `U5.2` do not move at any width, off-centre
+  included (`evidence/d645-plus3v3-u4-ladder.json`).
+  **NEXT, IN ORDER OF LEVERAGE:** (1) **SPEND THE GATE ON A PROMOTION** --
+  re-run the D-644 recipe (per-term blame -> relay -> route) on the three lands
+  D-645 moved into the CORRIDOR class, with `AQROOT_SCAN_BOARD_VIAS=1` and
+  `AQROOT_OFFCENTRE_LAUNCH=1`, and flip the default when the gate accepts one.
+  (2) **`{U4.2,U4.3}` IS THE BEST CORRIDOR CANDIDATE ON THE BOARD**: 16 legal
+  escapes, 56 on the body, and its destination -- `U4.12`'s promoted 0.200 mm
+  track and 0.35/0.20 barrel -- is 1.7 mm away inside `U4`'s own package
+  interior.  (3) `/SPI_B_SCK` and `/BQ25185_STAT1` remain LANDS (`U9.30`,
+  `U11.9`).  (4) THE THREE INHERITED `GND` ORPHANS -- `J3.A12`/`J3.B1`,
+  `MK1.4`, `U9.16`.  (5) `BQ25185_SYS C26.2`, carried unchanged.  (6)
+  `/I2S_LRCLK`'s edge rate and `/NFC_SUPPLY`'s per-net current, carried
+  unchanged.  ALSO RECORDED, not acted on: the board carries **93 exactly
+  duplicate track objects** (91 signatures), `GND` 28 of them -- electrically
+  inert, and inert in the Gerber, but they inflate every object count a
+  preservation check compares.
+  No owner decision is OPEN.  D-618's `J3` question remains RECORDED.
 - **Demo D-644 (THE QWIIC SDA EDGE IS *CLOSED*, AND ITS LAST TWO WALLS WERE
   ORDINARY SIGNAL TRACKS):**  **COPPER PROMOTED.**  Authority
   `f496d2f39c0827248a47ab7d47efa4322f078b68d2da1d91ae6585d97bf8f875` ->

@@ -41,7 +41,17 @@ HERE = Path(__file__).resolve().parent
 MFG = HERE.parent
 ROOT = HERE.parents[3]
 EVIDENCE = MFG / "evidence"
-BOND_GUARD = "evidence/d619-pour-bond-guard-bonded.json"
+# THE BOND GUARD IS A PROPERTY OF THE BOARD AND MOVES WITH IT -- D-645.
+# `pour_bond_contract` `P2` compares the tubes a guard NAMES against the
+# islands the board CARRIES, so a guard emitted on an older authority
+# describes a topology that no longer exists.  This constant sat at
+# D-619 through five promotions and was still passing by luck; D-644
+# dropped the `C4.2 <-> U3.12` tube and renumbered nine `+3V3` and
+# seven `GND` islands, and `P2` went `FAIL islands_renumbered` on a
+# board whose own guard reads `P1-P4 PASS`.  The stale question is the
+# defect, not the board.  EVERY promotion that re-emits the guard must
+# move this line to the guard IT emitted.
+BOND_GUARD = "evidence/d644-pour-bond-guard-next.json"
 
 # name -> (script, extra argv, baseline evidence basename WITHOUT the decision
 #          prefix, verdict field).  The verdict field is read only for the
@@ -73,6 +83,16 @@ CONTRACTS = (
       "--net", "GND"), "leaf-land-contract", "ok"),
     ("protected_copper", "protected_copper.py", (), "protected-copper",
      "identical"),
+    # D-645.  THE ELEVENTH, AND THE FIRST THAT IS ABOUT THE INSTRUMENT RATHER
+    # THAN THE BOARD.  Every contract above asks whether the COPPER is sound;
+    # this one asks whether the model the proposer routes against IS the
+    # board's copper.  It belongs in this suite for the same reason the others
+    # do -- `maze3d.ensure_board_vias` is read by every promoting instrument,
+    # so a change to it is a change to all of them -- and it reports its own
+    # `scan_gate_on`, so the suite records WHICH of the model's two states the
+    # run was made in rather than leaving it to be inferred.
+    ("obstacle_model", "checks/obstacle_model_contract.py", (),
+     "obstacle_model-contract", "verdict"),
 )
 BY_BASENAME = ("board", "schematic", "guard", "pre_board")
 

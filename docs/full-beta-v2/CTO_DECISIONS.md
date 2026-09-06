@@ -1,3 +1,221 @@
+# D-645 · 2026-09-06 · Demo — THE OBSTACLE MODEL WAS NOT THE BOARD: the proposer that laid every route here could not see the board's own 799 barrels or 799 drills, the repair is the emitter's own three lines, and the honest model costs SECONDS and not one answer
+
+    authority  24b85f639cee4cfae797d9372553261ac7591df2626d818c801c8ac53f3f5f9c
+            -> UNCHANGED.  NO COPPER MOVED.  ZERO gate runs invoked `--promote`.
+    retained open edges  42          open retained nets  20
+    connected retained  153          raw board ratsnest  58
+    `hardware/beta-v2` UNTOUCHED.
+    ELEVEN standing contracts RAN; the TEN board contracts are 10/10 PASS and
+      reproduce D-644's own field-by-field diff against baseline `d632`.
+    ONE NEW STANDING CONTRACT: `checks/obstacle_model_contract.py` (`OM1-OM4`).
+    ONE NEW PRIMITIVE: `maze3d.ensure_board_vias`, env-gated OFF.
+    ONE HARNESS DEFECT FIXED: `contract_regression.py`'s BOND GUARD was stale.
+
+## 1. THE QUESTION NOBODY HAD ASKED ABOUT THE INSTRUMENT
+
+Six hundred decisions of this project have asked, with great care, whether the
+BOARD is sound.  Every one of them asked it through instruments that read their
+obstacles from exactly two lists — `qrouter.QBoard.shapes` and `QBoard.holes`.
+`QBoard.grid`, `maze3d.Field.rebuild_blk`, `Field._via_grid`, `verify_laid`,
+`obs_clearance` and every `screen_*` in this directory go through
+`QBoard.obstacles`, which is those two lists and nothing else.
+
+**Nobody had ever asked whether those two lists ARE the board.**
+
+They are not.  `QBoard._scan` walks `board.GetTracks()` and keeps an object
+only where `t.GetClass() == 'PCB_TRACK'`.  In this KiCad build a through via is
+a `PCB_VIA` — a DIFFERENT class string — so every via already on the board was
+skipped: its copper on all six layers and its drilled hole alike.  Measured on
+the D-644 authority (`evidence/d645-obstacle-model-gate-off.json`):
+
+    board copper signatures   7974     model  3180     MISSING  4794 = 799 x 6
+    board drilled holes        855     model    56     MISSING   799
+    extra in the model, either direction                             0
+
+The model was a strict SUBSET of the board, short by exactly the barrels.  The
+emitter three hundred lines below the scanner already states what a via IS —
+`QBoard.via` puts an `RR` on every `self.cu` layer plus one `via/hole` — so the
+file has always disagreed with itself about a barrel, in one direction only.
+
+## 2. WHAT THIS DOES AND DOES NOT INVALIDATE
+
+Stated precisely, and not more strongly than the evidence.
+
+  * **A REFUSAL IS A LOWER BOUND.**  A model that is a SUBSET of the board is
+    an EASIER board.  Every `NO_PATH`, `NO_LEGAL_ESCAPE`, `NO_VIA_SITE`,
+    `PLACEMENT_WALL` and corridor verdict this project has recorded was
+    therefore measured against a board no harder than the real one, so **not
+    one recorded wall is overturned** — and every escape count ever published
+    is a CEILING, not a floor.
+  * **A PROPOSAL IS OPTIMISTIC.**  Copper laid against the blind model may be
+    illegal against a barrel it never saw.  The only thing that has ever caught
+    that is the gate's own real KiCad DRC on the refilled candidate — which is
+    to say the gate has been doing a job the proposer was silently delegating.
+  * **HOLE-TO-HOLE HAD NO BACKSTOP INSIDE THE PROPOSER AT ALL.**
+    `Field._via_grid` states in its own words that hole-to-hole is a
+    fabrication rule with NO same-net exemption — "the first whole-board batch
+    collected eleven of them" — and then applies it over `qb.holes`, which
+    carried **56 of this board's 855 drills**.
+
+## 3. THE DEBT IS LATENT, AND THAT IS A MEASUREMENT
+
+Real KiCad DRC on the authority, `--severity-all`
+(`evidence/d645-drc-authority.json`):
+
+    clearance             0
+    hole_clearance        5     all five are vendor pad-to-NPTH pairs INSIDE
+                                `MK1` (mounting hole) and `J3` (USB-C), at
+                                0.000 and 0.1944 mm, predating every route
+    solder_mask_bridge    1     the same `MK1` NPTH
+    lib_footprint_issues  199   inherited library drift
+    unconnected_items     58    the residual this project is working through
+
+Not one violation involves a routed via.  **The backstop held.**  The debt is
+LATENT and this decision exists so that it stays measured instead of assumed.
+
+## 4. THE REPAIR IS THE EMITTER'S OWN THREE LINES, AND IT IS OFF
+
+`maze3d.ensure_board_vias(qb)` appends, for each via the board carries, exactly
+what `QBoard.via` appends for a barrel it lays — one `RR` per copper layer plus
+one `via/hole`.  It is idempotent per `QBoard`, it is called at the top of
+every `Field.__init__`, and it is **env-gated OFF** by
+`AQROOT_SCAN_BOARD_VIAS`, the same discipline `AQROOT_OFFCENTRE_LAUNCH` (D-633)
+and `qrouter`'s `AQROOT_D280` are held to.  Unset, the model is byte-identical
+to the one every recorded run used: `added 0, shapes 4580, holes 56`.  Set, it
+reads `added 799, shapes 9374 (4794 barrels), holes 855` — **7974 / 7974 and
+855 / 855**.
+
+`qrouter.py` lives under `hardware/beta-v2/` and is NOT touched: the repair is
+demo-owned, in `hardware/demo/manufacturing/maze3d.py`, and reaches every
+instrument because it mutates the two lists all of them read.
+
+## 5. THE HONEST MODEL COSTS SECONDS, NOT ANSWERS
+
+Two A/B pairs, same board, same guard, same pitch.
+
+**D-642's EIGHT triaged open-edge nets**, `--partial`, never `--promote`
+(`evidence/d645-obstacle-model-ab-triage.json`):
+
+    net                        gate OFF                 gate ON
+    /BQ25185_STAT1             LAND  U11.9              IDENTICAL
+    /SPI_B_SCK                 LAND  U9.30              IDENTICAL
+    /I2C_SDA_INT               NO_PATH  71 -> 1         IDENTICAL
+    /BQ25185_STAT2             LAND  U11.3 / 25 -> 10   IDENTICAL
+    /ACC_PWR_EN                NO_PATH  19 -> 7         IDENTICAL
+    /WAKE_INT_N                NO_PATH  34 -> 7         IDENTICAL
+    /SX1262_DIO1               NO_PATH   1 -> 10        IDENTICAL
+    /08_BUTTONS/BTN_LEFT_N     NO_PATH   9 -> 37        IDENTICAL
+    router seconds             49.3                     55.2
+
+**Not one verdict moves** — same reason, same src/dst escape counts, same named
+blockers — and the gate-OFF arm reproduces D-642's own published table net for
+net, which is the reproduction proof that this edit changed nothing.
+
+**THE STANDING CONTRACTS** (`evidence/d645-contract-regression{,-gateon}.json`):
+all ten board contracts report the SAME verdict and the SAME field-by-field
+identity against the `d632` baseline under both models, and `pour_bond`,
+`pour_partition` and `leaf_land` — the three that consult board geometry — are
+**byte-identical** between the two arms.
+
+## 6. IT IS STILL OFF, AND THE REASON IS NAMED
+
+What has NOT been measured is a full `--promote` gate run under the honest
+model.  Flipping a default that governs every proposing instrument, on the
+strength of measurements that never promoted anything, is exactly the move this
+project's gate exists to prevent.  So:
+
+  * `checks/obstacle_model_contract.py` reads **FAIL with the gate off** and
+    **PASS with it on**, and reports `scan_gate_on` so the state is RECORDED
+    rather than inferred.  It is the ELEVENTH standing contract and the first
+    that is about the INSTRUMENT rather than the board.
+  * `OM4` is the control: on a throwaway copy one added track and one added via
+    must move the missing count by exactly `(6, 1)` with the gate off and
+    `(0, 0)` with it on.  A control that reports the wrong delta fails the
+    contract, so the clause can refuse.
+  * **THE NEXT PROMOTING TRANSACTION SPENDS THE GATE AND THE DEFAULT MOVES WITH
+    IT.**
+
+## 7. AND THE BOND GUARD IN `contract_regression.py` WAS STALE
+
+`pour_bond_contract` `P2` compares the tubes a guard NAMES against the islands
+the board CARRIES.  The suite's `BOND_GUARD` constant still pointed at D-619's
+guard.  D-644 dropped the `C4.2 <-> U3.12` tube and renumbered nine `+3V3` and
+seven `GND` islands, so `pour_bond` came back **`FAIL islands_renumbered`** on a
+board whose OWN guard reads `P1-P4 PASS` — measured both ways here.  The stale
+question was the defect, not the board.  Repointed at
+`evidence/d644-pour-bond-guard-next.json`, with the rule written into the file:
+**every promotion that re-emits the guard must move that constant to the guard
+it emitted.**
+
+## 8. `+3V3`'s FOUR BMI270 LANDS: THE FLOOR WAS NEVER THE WALL
+
+`+3V3` owns 6 of the board's 42 retained open edges and FOUR of them are lands
+of ONE part, the BMI270 `U4`.  `checks/leaf_land_contract.py` (D-632) classifies
+three of the six as **SIGNAL LEAVES** that owe no rail current at all —
+`R129.1` (100 k, <= 0.055 mA), `R39.1` (1 M, <= 0.005 mA) and `{U4.2, U4.3}`,
+the BMI270's own `ASDx`/`ASCx` mode straps, both declared `bidirectional` by
+the schematic.  **That licence has existed since D-632 and had never been
+spent.**
+
+**IT DID NOT NEED TO BE.**  The WHOLE escalation ladder — pad bridge, body
+landing, stitch, residual join, island join, orphan join — refuses at the
+netclass OPT 0.600 mm AND at the 0.400 mm `.kicad_dru` section 5 publishes as
+P3V3's own outer-layer minimum (`--stitch-width 1 --escape-floor`, which the
+driver clamps UP to the published floor so it can never ask for copper the
+board does not license).  Retained open edges are **42 -> 42 in all three
+arms**; nothing is stitched, bridged or joined.  A width licence would have
+bought nothing, and the evidence says so before one was written.
+
+**WHAT DID MOVE IS D-633's OFF-CENTRE LAUNCH, AND IT MOVED THREE LANDS ACROSS
+THE D-642 LINE** (`evidence/d645-plus3v3-u4-ladder.json`):
+
+    land            0.600 mm            0.400 mm            0.400 + offcentre
+    {U4.2,U4.3}     NO_LEGAL_ESCAPE     NO_LEGAL_ESCAPE     NO_PATH,  16 escapes
+    R39.1           NO_BODY_VIA_SITE    NO_BODY_VIA_SITE    NO_PATH,   5 escapes
+    R129.1          --                  --                  NO_PATH,  10 escapes
+    U4.5 VDDIO      NO_LEGAL_ESCAPE     NO_LEGAL_ESCAPE     NO_LEGAL_ESCAPE
+    U4.8 VDD        NO_LEGAL_ESCAPE     NO_LEGAL_ESCAPE     NO_LEGAL_ESCAPE
+    U5.2            NO_LEGAL_ESCAPE     NO_LEGAL_ESCAPE     NO_LEGAL_ESCAPE
+
+Three LAND refusals became CORRIDOR refusals — the class the corridor
+instruments can address and the land instruments never could.  `U4.5`, `U4.8`
+and `U5.2` do not move at 0.600, 0.400 or 0.200 mm, off-centre included: boxed
+by their own package's adjacent lands, the PM-3 signature.
+
+`{U4.2, U4.3}` is now the best corridor candidate on the board: **16 legal
+escapes against 56 on the body**, and its destination — `U4.12`'s D-610
+promoted 0.200 mm track and its 0.35/0.20 mm barrel at (57.225, 70.525) — is
+**1.7 mm away inside `U4`'s own package interior**.
+
+## 9. ALSO RECORDED, NOT ACTED ON
+
+The board carries **93 exactly-duplicate track objects** across 91 signatures
+(`GND` 28, `LTC_GATE` 7, `BAT_RAW` 7, `Net-(U12-PS_SYNC)` 6, `NFC_VDD_AM` 5).
+Two `segment` records with the same net, layer, endpoints and width are the
+same copper twice: electrically inert, and inert in the Gerber, because they
+flash the same aperture along the same path.  They are NOT inert to a
+preservation check that compares object COUNTS, and they are already inside
+every baseline this project compares against, so nothing is changed here.
+Recorded so the next count that does not add up has somewhere to look.
+
+## 10. NEXT, IN ORDER OF LEVERAGE
+
+  1. **SPEND THE GATE ON A PROMOTION.**  Re-run the D-644 recipe — per-object
+     blame, relay, route — on the three lands this decision moved into the
+     CORRIDOR class, with `AQROOT_SCAN_BOARD_VIAS=1` and
+     `AQROOT_OFFCENTRE_LAUNCH=1`, and flip the default when the full gate
+     accepts one.  That is the one claim `OM1` is still waiting on.
+  2. **`{U4.2, U4.3}` IS THE CANDIDATE** — 16 escapes, a 1.7 mm destination
+     inside its own package, and a `SIGNAL_LEAF` classification already in
+     hand if a width licence ever proves necessary.
+  3. `/SPI_B_SCK` and `/BQ25185_STAT1` remain LANDS (`U9.30`, `U11.9`).
+  4. THE THREE INHERITED `GND` ORPHANS — `J3.A12`/`J3.B1`, `MK1.4`, `U9.16`.
+  5. `BQ25185_SYS C26.2`, carried unchanged.
+  6. `/I2S_LRCLK`'s edge rate and `/NFC_SUPPLY`'s per-net current, carried
+     unchanged.
+
+No owner decision is OPEN.  D-618's `J3` question remains RECORDED.
+
 # D-644 · 2026-09-06 · Demo — the QWIIC SDA EDGE IS CLOSED, and its last two walls were ORDINARY SIGNAL TRACKS: a price CEILING screen refutes D-643's own ranked item, `U3.12`'s ground bond turns out to be a **0.150 mm** pour isthmus, and `PP2` is hardened where it could have said YES to a stranded pad
 
     authority  f496d2f39c0827248a47ab7d47efa4322f078b68d2da1d91ae6585d97bf8f875

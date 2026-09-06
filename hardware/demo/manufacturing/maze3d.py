@@ -430,6 +430,85 @@ def dru_overlay(qb, net, mycls, cls, layer, width, clr_pad, clr_trk,
     return blk
 
 
+# --------------------------------------------------------------------------- #
+# THE OBSTACLE MODEL IS THE BOARD, OR IT IS NOT A MODEL                 D-645
+# --------------------------------------------------------------------------- #
+# `qrouter.QBoard._scan` walks `board.GetTracks()` and keeps an object only
+# when `t.GetClass() == 'PCB_TRACK'`.  In this KiCad build a through via is a
+# `PCB_VIA` -- a DIFFERENT class string -- so every via already on the board is
+# skipped: its copper on all six layers and its drilled hole alike.  On the
+# D-644 authority that is 799 barrels and 799 drills the proposer cannot see,
+# against 3261 tracks and 56 pad holes it can
+# (`checks/obstacle_model_contract.py`, `OM1`/`OM2`).
+#
+# `QBoard.via` -- the emitter, three hundred lines below the scanner -- already
+# states what a via IS: copper on every `self.cu` layer plus one `via/hole`.
+# This is that same statement applied to the vias the board ALREADY carries, so
+# the scanner and the emitter finally agree, and it is deliberately written as
+# the emitter's own three lines rather than as a new model of a barrel.
+#
+# WHY IT IS ENV-GATED AND OFF.  Turning it on can only ADD obstacles, so it can
+# only make the search STRICTER: a route that closes today may stop closing,
+# and every measurement this board has recorded -- every `NO_PATH`, every
+# `NO_VIA_SITE`, every corridor screen -- was taken without it.  Unset
+# reproduces all of them byte for byte, which is the same discipline
+# `AQROOT_OFFCENTRE_LAUNCH` and `qrouter`'s `AQROOT_D280` are held to.
+#
+# WHAT IT DOES NOT CHANGE.  A refusal measured WITHOUT the gate is still a
+# refusal: the real board can only be harder than the model, never easier.  What
+# it changes is the value of a PROPOSAL -- copper laid against the blind model
+# may be illegal against a barrel it never saw, and until now the only thing
+# that has ever caught that is the gate's own real KiCad DRC on the refilled
+# candidate.  On the D-644 board that backstop has held: zero `clearance`
+# violations, and all five `hole_clearance` ones are vendor pad-to-NPTH pairs
+# inside `MK1` and `J3` that predate every route.  The debt is LATENT and this
+# is what stops it being assumed.
+SCAN_BOARD_VIAS = 'AQROOT_SCAN_BOARD_VIAS'
+
+
+def _pcbnew():
+    """`pcbnew` is imported lazily everywhere else in this file; same here."""
+    import pcbnew
+    return pcbnew
+
+
+def ensure_board_vias(qb, force=None):
+    """Put the board's OWN vias into `qb`'s obstacle model.  Idempotent.
+
+    Returns the number of barrels added -- 0 when the gate is unset, when this
+    `QBoard` has already been repaired, or when the scanner one day does it
+    itself.  Never removes anything and never touches copper: `qb.shapes` and
+    `qb.holes` are the two lists every instrument reads, and this appends to
+    them exactly what `QBoard.via` appends for a barrel it lays.
+    """
+    on = bool(os.environ.get(SCAN_BOARD_VIAS)) if force is None else bool(force)
+    if not on or getattr(qb, '_aqroot_board_vias', None) is not None:
+        return 0
+    n = 0
+    for t in qb.b.GetTracks():
+        if t.GetClass() != 'PCB_VIA':
+            continue
+        x, y = int(t.GetStart().x), int(t.GetStart().y)
+        # `PCB_VIA::GetWidth()` asserts without a layer argument in this build;
+        # a THROUGH via is one diameter on every copper layer, so `F.Cu` is the
+        # answer and it is the layer `QBoard.via` sets first.
+        try:
+            dia = float(t.GetWidth(_pcbnew().F_Cu))
+        except TypeError:
+            dia = float(t.GetWidth())
+        drill = float(t.GetDrillValue())
+        net = t.GetNetname()
+        for L in qb.cu:
+            qb.shapes[L].append(qr.RR(x, y, dia / 2.0, dia / 2.0, dia / 2.0,
+                                      0, net, 'via'))
+        qb.holes.append(qr.RR(x, y, drill / 2.0, drill / 2.0, drill / 2.0,
+                              0, net, 'via/hole'))
+        n += 1
+    qb._aqroot_board_vias = n
+    qb._obs_cache = None
+    return n
+
+
 class Field(object):
     """The blocked/via-legal lattice for ONE net at ONE width, whole board.
 
@@ -441,6 +520,11 @@ class Field(object):
     def __init__(self, qb, net, width, clr_pad, clr_trk, via_dia, via_drill,
                  G=100000, layers=None, margin_mm=2.0, neck=None, guard=None,
                  escape_floor=None):
+        # D-645.  The model is the board, or it is not a model.  A no-op
+        # unless `AQROOT_SCAN_BOARD_VIAS` is set, and idempotent per
+        # `QBoard`, so every `Field` this project has ever built is
+        # byte-identical with the gate unset.
+        ensure_board_vias(qb)
         self.qb, self.net, self.G = qb, net, G
         # OFF unless the caller hands in a `Neck`.  Nothing below reads it
         # except `pad_escapes`, and only for a pad that has NO full-width

@@ -11,6 +11,115 @@ parked on rulings rather than routes (D-618, D-620).  The residual is **42**
 as of D-644, which closed `/09_COMMUNITY_HEADER/EXT_SDA` -> the Qwiic/STEMMA QT
 SDA contact.
 
+## THE OBSTACLE MODEL WAS NOT THE BOARD (D-645)
+
+    python3 checks/obstacle_model_contract.py [--drc DRC.json] [-o OUT]
+    AQROOT_SCAN_BOARD_VIAS=1 <any instrument>      # the repair, off by default
+
+Every instrument that has ever proposed copper here reads its obstacles from
+exactly two lists, `qrouter.QBoard.shapes` and `QBoard.holes`.  `QBoard.grid`,
+`maze3d.Field.rebuild_blk` and `Field._via_grid` iterate `QBoard.obstacles`,
+which is those two lists and nothing else.  **Nobody had ever asked whether
+those two lists ARE the board.**
+
+They were not.  `QBoard._scan` walks `board.GetTracks()` and keeps an object
+only where `t.GetClass() == 'PCB_TRACK'`; in this KiCad build a through via is
+a `PCB_VIA`, a DIFFERENT class string, so it was skipped -- its copper on all
+six layers and its drilled hole alike.  Measured on the D-644 authority:
+
+    board copper signatures   7974      model  3180     MISSING  4794  (799 x 6)
+    board drilled holes        855      model    56     MISSING   799
+    extra in the model, either way                                  0
+
+The model was a strict SUBSET of the board, short by exactly the barrels.
+
+**WHAT THAT DOES AND DOES NOT MEAN.**  A REFUSAL measured against it is a LOWER
+BOUND -- the real board can only be harder -- so **not one recorded wall on this
+board is invalidated**.  A PROPOSAL made against it is OPTIMISTIC: copper it
+lays may be illegal against a barrel it never saw, and the only thing that has
+ever caught that is the gate's own real KiCad DRC on the refilled candidate.
+And HOLE-TO-HOLE is the term with no backstop inside the proposer at all --
+`Field._via_grid` states in its own words that hole-to-hole is a fabrication
+rule with no same-net exemption, and then applied it over 56 of this board's
+855 drills.
+
+**THE DEBT IS LATENT, AND THAT IS A MEASUREMENT.**  Real KiCad DRC on the D-644
+authority reports **ZERO `clearance` violations**, and all five
+`hole_clearance` ones are vendor pad-to-NPTH pairs inside `MK1` and `J3` that
+predate every route (`evidence/d645-drc-authority.json`).  The backstop has
+held.
+
+**THE REPAIR IS THE EMITTER'S OWN THREE LINES.**  `maze3d.ensure_board_vias`
+appends, for each via the board carries, exactly what `QBoard.via` appends for
+a barrel it lays -- one `RR` per copper layer plus one `via/hole`.  It is
+idempotent, it is called at the top of every `Field.__init__`, and it is
+**env-gated OFF** by `AQROOT_SCAN_BOARD_VIAS`, so every run this project has
+ever recorded still reproduces byte for byte.
+
+**AND THE HONEST MODEL COSTS SECONDS, NOT ANSWERS.**  Two A/B runs, same board,
+same guard, same pitch:
+
+  * D-642's EIGHT triaged open-edge nets, `--partial`, never `--promote`:
+    **not one verdict moves** -- same reason, same src/dst escape counts,
+    same named blockers -- for **49.3 s -> 55.2 s** of router time
+    (`evidence/d645-obstacle-model-ab-triage.json`).  The gate-off arm also
+    reproduces D-642's own published table.
+  * THE TEN STANDING CONTRACTS: same verdict and the same field-by-field
+    identity against the `d632` baseline under both models, and
+    `pour_bond`, `pour_partition` and `leaf_land` are **byte-identical**
+    (`evidence/d645-contract-regression{,-gateon}.json`).
+
+**IT IS STILL OFF, AND THE REASON IS NAMED.**  What has NOT been measured is a
+full `--promote` gate run under the honest model.  Flipping the default on an
+unmeasured claim is the one move this project's gate exists to prevent, so the
+next promoting transaction spends `AQROOT_SCAN_BOARD_VIAS=1` and the default
+moves with it.  `checks/obstacle_model_contract.py` therefore reads **FAIL with
+the gate off and PASS with it on**, and reports `scan_gate_on` so the state is
+recorded rather than inferred.  It is the ELEVENTH standing contract and the
+first that is about the INSTRUMENT rather than the board.
+
+**AND THE BOND GUARD IN `contract_regression.py` WAS STALE.**  `P2` compares
+the tubes a guard NAMES against the islands the board CARRIES, and the constant
+still pointed at D-619's guard.  D-644 dropped the `C4.2 <-> U3.12` tube and
+renumbered nine `+3V3` and seven `GND` islands, so `pour_bond` read `FAIL
+islands_renumbered` on a board whose own guard reads `P1-P4 PASS`.  The stale
+question was the defect.  **Every promotion that re-emits the guard must move
+that constant to the guard it emitted.**
+
+## +3V3's FOUR BMI270 LANDS: THE FLOOR WAS NEVER THE WALL (D-645)
+
+    python3 route_maze_batch.py +3V3 --guard G --grid 100000 \
+        --stitch-width 1 --escape-floor --bridge-pads --body-landing \
+        --join-residual --join-islands --join-orphans        # never --promote
+
+`--stitch-width 1` is "the width the BOARD publishes": the driver clamps it UP
+to `max(BOARD_TRACK_MIN, DRU_CLASS[class].width)`, so it can never ask for
+copper the `.kicad_dru` does not already license.
+
+`+3V3` owns 6 of the board's 42 retained open edges and FOUR of them are lands
+of ONE part, the BMI270 `U4`.  `checks/leaf_land_contract.py` (D-632) says
+three of the six are **SIGNAL LEAVES** and owe no rail current at all --
+`R129.1` (100 k, <= 0.055 mA), `R39.1` (1 M, <= 0.005 mA) and `{U4.2, U4.3}`,
+the BMI270's own `ASDx`/`ASCx` mode straps, both declared `bidirectional` by
+the schematic.  That licence had never been spent.
+
+**IT DID NOT NEED TO BE.**  The WHOLE escalation ladder -- pad bridge, body
+landing, stitch, residual join, island join, orphan join -- refuses at the
+netclass OPT 0.600 mm AND at the 0.400 mm `.kicad_dru` section 5 publishes as
+P3V3's own outer-layer minimum.  Retained open edges are **42 -> 42 in all
+three arms**, nothing is stitched, bridged or joined, and no licence is owed
+because no licence would have been spent.
+
+**WHAT DID MOVE IS D-633's OFF-CENTRE LAUNCH, AND IT MOVED THREE LANDS ACROSS
+THE D-642 LINE.**  With `AQROOT_OFFCENTRE_LAUNCH=1` at 0.400 mm, `{U4.2,U4.3}`,
+`R39.1` and `R129.1` stop reading `NO_LEGAL_ESCAPE` and start reading `NO_PATH`
+with **16, 5 and 10** legal escapes: LAND refusals turned into CORRIDOR
+refusals, which is the class the corridor instruments can address and the land
+instruments never could.  `U4.5` (`VDDIO`), `U4.8` (`VDD`) and `U5.2` do not
+move at 0.600, at 0.400 or at 0.200 mm, off-centre included -- boxed by their
+own package's adjacent lands, the PM-3 signature
+(`evidence/d645-plus3v3-u4-ladder.json`).
+
 ## WHAT WOULD A BARREL THERE BE WORTH? -- THE PRICE CEILING (D-644)
 
     python3 screen_fragment_price_ceiling.py REF.NUM --fragment-board POST \

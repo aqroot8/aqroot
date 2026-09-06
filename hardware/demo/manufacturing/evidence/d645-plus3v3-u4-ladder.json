@@ -1,0 +1,346 @@
+{
+ "also": "These three arms were all measured on the BLIND obstacle model (D-645): the board's 799 barrels were not in it.  A refusal so measured is a LOWER bound -- the real board can only be harder -- so every wall above stands, and the escape counts are ceilings.",
+ "arms": {
+  "netclass_opt_0600": {
+   "bridged": null,
+   "connectivity": {
+    "nets_improved": [],
+    "nets_regressed": [],
+    "open_retained_nets_after": 20,
+    "open_retained_nets_before": 20,
+    "retained_open_edges_after": 42,
+    "retained_open_edges_before": 42
+   },
+   "escape_floor": 600000,
+   "failures": [
+    {
+     "island": [
+      "R39.1"
+     ],
+     "reason": "NO_BODY_VIA_SITE",
+     "why": "no legal 0.80 mm barrel INSIDE THIS NET'S OWN BODY POUR within 8.0 mm of any escape"
+    },
+    {
+     "island": [
+      "U4.2",
+      "U4.3"
+     ],
+     "reason": "NO_LEGAL_ESCAPE",
+     "why": "U4.2: NO LEGAL ESCAPE at >= 0.600 mm; blocked by U4.1 (x57), C6.2 (x7), R119.2 (x4), TP27.1 (x2)"
+    },
+    {
+     "island": [
+      "U4.5"
+     ],
+     "reason": "NO_LEGAL_ESCAPE",
+     "why": "U4.5: NO LEGAL ESCAPE at >= 0.600 mm; blocked by U4.4 (x47), U4.1 (x11), C6.2 (x6), TP26.1 (x4)"
+    },
+    {
+     "island": [
+      "U4.8"
+     ],
+     "reason": "NO_LEGAL_ESCAPE",
+     "why": "U4.8: NO LEGAL ESCAPE at >= 0.600 mm; blocked by U4.9 (x42), U4.6 (x12), U4.7 (x5), U4.1 (x4)"
+    }
+   ],
+   "island_joined": 0,
+   "mode": "padbridge+stitch+join+islands+orphans",
+   "ok": false,
+   "orphan_joined": 0,
+   "residual_failures": [
+    {
+     "dst": null,
+     "island": [
+      "U4.2",
+      "U4.3"
+     ],
+     "reason": "NO_LEGAL_ESCAPE_SRC",
+     "src": null,
+     "why": "U4.2: NO LEGAL ESCAPE at >= 0.600 mm; blocked by U4.1 (x57), C6.2 (x7), R119.2 (x4), U20.3 (x2)"
+    },
+    {
+     "dst": null,
+     "island": [
+      "U4.8"
+     ],
+     "reason": "NO_LEGAL_ESCAPE_SRC",
+     "src": null,
+     "why": "U4.8: NO LEGAL ESCAPE at >= 0.600 mm; blocked by U4.9 (x42), U4.6 (x12), U4.7 (x5), U4.1 (x4)"
+    },
+    {
+     "dst": null,
+     "island": [
+      "U4.5"
+     ],
+     "reason": "NO_LEGAL_ESCAPE_SRC",
+     "src": null,
+     "why": "U4.5: NO LEGAL ESCAPE at >= 0.600 mm; blocked by U4.4 (x47), U4.1 (x11), C6.2 (x6), TP26.1 (x4)"
+    },
+    {
+     "dst": null,
+     "island": [
+      "U5.2"
+     ],
+     "reason": "NO_LEGAL_ESCAPE_SRC",
+     "src": null,
+     "why": "U5.2: NO LEGAL ESCAPE at >= 0.600 mm; blocked by U5.1 (x54), R15.2 (x11), R15.1 (x4), C10.2 (x3)"
+    },
+    {
+     "dst": 36,
+     "island": [
+      "R39.1"
+     ],
+     "reason": "NO_PATH",
+     "src": 4,
+     "why": "no all-layer corridor at 0.600 mm between the islands"
+    },
+    {
+     "dst": 44,
+     "island": [
+      "R129.1"
+     ],
+     "reason": "NO_PATH",
+     "src": 6,
+     "why": "no all-layer corridor at 0.600 mm between the islands"
+    }
+   ],
+   "residual_joined": 0,
+   "seconds": 182.7,
+   "stitched": 0,
+   "width": 600000
+  },
+  "published_floor_0400": {
+   "bridged": null,
+   "connectivity": {
+    "nets_improved": [],
+    "nets_regressed": [],
+    "open_retained_nets_after": 20,
+    "open_retained_nets_before": 20,
+    "retained_open_edges_after": 42,
+    "retained_open_edges_before": 42
+   },
+   "escape_floor": 400000,
+   "failures": [
+    {
+     "island": [
+      "R39.1"
+     ],
+     "reason": "NO_BODY_VIA_SITE",
+     "why": "no legal 0.80 mm barrel INSIDE THIS NET'S OWN BODY POUR within 8.0 mm of any escape"
+    },
+    {
+     "island": [
+      "U4.2",
+      "U4.3"
+     ],
+     "reason": "NO_LEGAL_ESCAPE",
+     "why": "U4.2: NO LEGAL ESCAPE at >= 0.400 mm; blocked by U4.1 (x60), C6.2 (x6), R119.2 (x3), TP27.1 (x2)"
+    },
+    {
+     "island": [
+      "U4.5"
+     ],
+     "reason": "NO_LEGAL_ESCAPE",
+     "why": "U4.5: NO LEGAL ESCAPE at >= 0.400 mm; blocked by U4.6 (x41), U4.4 (x19), C6.2 (x5), C7.2 (x3)"
+    },
+    {
+     "island": [
+      "U4.8"
+     ],
+     "reason": "NO_LEGAL_ESCAPE",
+     "why": "U4.8: NO LEGAL ESCAPE at >= 0.400 mm; blocked by U4.9 (x44), U4.7 (x13), U4.6 (x4), U4.1 (x4)"
+    }
+   ],
+   "island_joined": 0,
+   "mode": "padbridge+stitch+join+islands+orphans",
+   "ok": false,
+   "orphan_joined": 0,
+   "residual_failures": [
+    {
+     "dst": null,
+     "island": [
+      "U4.2",
+      "U4.3"
+     ],
+     "reason": "NO_LEGAL_ESCAPE_SRC",
+     "src": null,
+     "why": "U4.2: NO LEGAL ESCAPE at >= 0.400 mm; blocked by U4.1 (x60), C6.2 (x6), R119.2 (x3), TP27.1 (x2)"
+    },
+    {
+     "dst": null,
+     "island": [
+      "U4.8"
+     ],
+     "reason": "NO_LEGAL_ESCAPE_SRC",
+     "src": null,
+     "why": "U4.8: NO LEGAL ESCAPE at >= 0.400 mm; blocked by U4.9 (x44), U4.7 (x13), U4.1 (x4), U4.6 (x4)"
+    },
+    {
+     "dst": null,
+     "island": [
+      "U4.5"
+     ],
+     "reason": "NO_LEGAL_ESCAPE_SRC",
+     "src": null,
+     "why": "U4.5: NO LEGAL ESCAPE at >= 0.400 mm; blocked by U4.6 (x41), U4.4 (x19), C6.2 (x5), C7.2 (x3)"
+    },
+    {
+     "dst": null,
+     "island": [
+      "U5.2"
+     ],
+     "reason": "NO_LEGAL_ESCAPE_SRC",
+     "src": null,
+     "why": "U5.2: NO LEGAL ESCAPE at >= 0.400 mm; blocked by U5.1 (x56), R15.2 (x10), C10.2 (x3), R15.1 (x3)"
+    },
+    {
+     "dst": 50,
+     "island": [
+      "R39.1"
+     ],
+     "reason": "NO_PATH",
+     "src": 5,
+     "why": "no all-layer corridor at 0.400 mm between the islands"
+    },
+    {
+     "dst": 51,
+     "island": [
+      "R129.1"
+     ],
+     "reason": "NO_PATH",
+     "src": 10,
+     "why": "no all-layer corridor at 0.400 mm between the islands"
+    }
+   ],
+   "residual_joined": 0,
+   "seconds": 185.6,
+   "stitched": 0,
+   "width": 400000
+  },
+  "published_floor_0400_offcentre": {
+   "bridged": null,
+   "connectivity": {
+    "nets_improved": [],
+    "nets_regressed": [],
+    "open_retained_nets_after": 20,
+    "open_retained_nets_before": 20,
+    "retained_open_edges_after": 42,
+    "retained_open_edges_before": 42
+   },
+   "escape_floor": 400000,
+   "failures": [
+    {
+     "island": [
+      "R39.1"
+     ],
+     "reason": "NO_BODY_VIA_SITE",
+     "why": "no legal 0.80 mm barrel INSIDE THIS NET'S OWN BODY POUR within 8.0 mm of any escape"
+    },
+    {
+     "island": [
+      "U4.2",
+      "U4.3"
+     ],
+     "reason": "NO_BODY_VIA_SITE",
+     "why": "no legal 0.80 mm barrel INSIDE THIS NET'S OWN BODY POUR within 8.0 mm of any escape"
+    },
+    {
+     "island": [
+      "U4.5"
+     ],
+     "reason": "NO_LEGAL_ESCAPE",
+     "why": "U4.5: NO LEGAL ESCAPE at >= 0.400 mm; blocked by U4.6 (x41), U4.4 (x19), C6.2 (x5), C7.2 (x3)"
+    },
+    {
+     "island": [
+      "U4.8"
+     ],
+     "reason": "NO_LEGAL_ESCAPE",
+     "why": "U4.8: NO LEGAL ESCAPE at >= 0.400 mm; blocked by U4.9 (x44), U4.7 (x13), U4.6 (x4), U4.1 (x4)"
+    }
+   ],
+   "island_joined": 0,
+   "mode": "padbridge+stitch+join+islands+orphans",
+   "ok": false,
+   "orphan_joined": 0,
+   "residual_failures": [
+    {
+     "dst": 56,
+     "island": [
+      "U4.2",
+      "U4.3"
+     ],
+     "reason": "NO_PATH",
+     "src": 16,
+     "why": "no all-layer corridor at 0.400 mm between the islands"
+    },
+    {
+     "dst": null,
+     "island": [
+      "U4.8"
+     ],
+     "reason": "NO_LEGAL_ESCAPE_SRC",
+     "src": null,
+     "why": "U4.8: NO LEGAL ESCAPE at >= 0.400 mm; blocked by U4.9 (x44), U4.7 (x13), U4.1 (x4), U4.6 (x4)"
+    },
+    {
+     "dst": null,
+     "island": [
+      "U4.5"
+     ],
+     "reason": "NO_LEGAL_ESCAPE_SRC",
+     "src": null,
+     "why": "U4.5: NO LEGAL ESCAPE at >= 0.400 mm; blocked by U4.6 (x41), U4.4 (x19), C6.2 (x5), C7.2 (x3)"
+    },
+    {
+     "dst": null,
+     "island": [
+      "U5.2"
+     ],
+     "reason": "NO_LEGAL_ESCAPE_SRC",
+     "src": null,
+     "why": "U5.2: NO LEGAL ESCAPE at >= 0.400 mm; blocked by U5.1 (x56), R15.2 (x10), C10.2 (x3), R15.1 (x3)"
+    },
+    {
+     "dst": 50,
+     "island": [
+      "R39.1"
+     ],
+     "reason": "NO_PATH",
+     "src": 5,
+     "why": "no all-layer corridor at 0.400 mm between the islands"
+    },
+    {
+     "dst": 51,
+     "island": [
+      "R129.1"
+     ],
+     "reason": "NO_PATH",
+     "src": 10,
+     "why": "no all-layer corridor at 0.400 mm between the islands"
+    }
+   ],
+   "residual_joined": 0,
+   "seconds": 208.9,
+   "stitched": 0,
+   "width": 400000
+  }
+ },
+ "finding": "(1) THE FLOOR WAS NEVER THE WALL.  Every instrument in the ladder refuses at 0.600 mm AND at the 0.400 mm the .kicad_dru publishes as P3V3's own outer-layer minimum; retained open edges are 42 -> 42 in all three arms and nothing is stitched, bridged or joined.  (2) THE OFF-CENTRE LAUNCH MOVES THREE LANDS ACROSS THE D-642 LINE.  With AQROOT_OFFCENTRE_LAUNCH set at 0.400 mm, {U4.2,U4.3}, R39.1 and R129.1 stop being NO_LEGAL_ESCAPE and become NO_PATH with 16, 5 and 10 legal escapes -- LAND refusals turned into CORRIDOR refusals, which is the class the corridor instruments can address and the land instruments cannot.  (3) U4.5, U4.8 and U5.2 DO NOT MOVE: NO_LEGAL_ESCAPE at 0.600, at 0.400 and at 0.200 mm, off-centre launch included -- boxed by their own package's adjacent lands, the PM-3 signature.",
+ "leaf_land_classification": {
+  "RAIL": [
+   "U4.5 VDDIO power_in",
+   "U4.8 VDD power_in",
+   "U5.2 MAX98357A GAIN slot, unbounded passive"
+  ],
+  "SIGNAL_LEAF": [
+   "R129.1 (100k, <=0.055 mA)",
+   "R39.1 (1M, <=0.005 mA)",
+   "{U4.2,U4.3} BMI270 ASDx/ASCx, both 'bidirectional'"
+  ],
+  "source": "checks/leaf_land_contract.py --net +3V3 (D-632)"
+ },
+ "method": "route_maze_batch.py +3V3 --guard <49-tube> --grid 100000 with the WHOLE escalation ladder -- --bridge-pads --body-landing --join-residual --join-islands --join-orphans -- never --promote.  Three arms: the netclass OPT 0.600 mm; the .kicad_dru PUBLISHED P3V3 floor 0.400 mm via --stitch-width + --escape-floor; and that floor again with D-633's off-centre launch.",
+ "question": "+3V3 owns 6 of the board's 42 retained open edges and FOUR of them are lands of ONE part, the BMI270 (U4).  What actually refuses them -- the netclass OPT width, the published class FLOOR, or the land itself?",
+ "schema": 1
+}

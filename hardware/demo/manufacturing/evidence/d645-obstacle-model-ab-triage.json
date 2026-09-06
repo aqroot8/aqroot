@@ -1,0 +1,295 @@
+{
+ "board_sha256": "24b85f639cee4cfae797d9372553261ac7591df2626d818c801c8ac53f3f5f9c",
+ "finding": "IDENTICAL, net for net: same verdict, same reason, same src/dst escape counts and the same named blockers.  The honest model costs router SECONDS and no answers.  The gate-off arm also reproduces D-642's own published triage table -- LAND for /BQ25185_STAT1 and /SPI_B_SCK, CORRIDOR 71->1, 25->10, 19->7, 34->7, 1->10 and 9->37 for the other six.",
+ "gate_off": {
+  "/08_BUTTONS_EXPANDERS/BTN_LEFT_N": {
+   "failures": [
+    {
+     "dst": 37,
+     "reason": "NO_PATH",
+     "src": 9,
+     "why": "no all-layer corridor at 0.200 mm between the islands"
+    }
+   ],
+   "ok": false,
+   "reason": "NO_PATH",
+   "seconds": 17.0
+  },
+  "/ACC_PWR_EN": {
+   "failures": [
+    {
+     "dst": 7,
+     "reason": "NO_PATH",
+     "src": 19,
+     "why": "no all-layer corridor at 0.200 mm between the islands"
+    }
+   ],
+   "ok": false,
+   "reason": "NO_PATH",
+   "seconds": 1.8
+  },
+  "/BQ25185_STAT1": {
+   "failures": [
+    {
+     "dst": null,
+     "reason": "NO_LEGAL_ESCAPE_SRC",
+     "src": null,
+     "why": "U11.9: NO LEGAL ESCAPE at >= 0.200 mm; blocked by U11.10 (x18), U11.7 (x16), U11.6 (x7), track (x6)"
+    },
+    {
+     "dst": 10,
+     "reason": "NO_PATH",
+     "src": 20,
+     "why": "no all-layer corridor at 0.200 mm between the islands"
+    }
+   ],
+   "ok": false,
+   "reason": "NO_LEGAL_ESCAPE_SRC",
+   "seconds": 2.1
+  },
+  "/BQ25185_STAT2": {
+   "failures": [
+    {
+     "dst": null,
+     "reason": "NO_LEGAL_ESCAPE_SRC",
+     "src": null,
+     "why": "U11.3: NO LEGAL ESCAPE at >= 0.200 mm; blocked by U11.1 (x23), U11.4 (x18), U11.8 (x5), R37.2 (x4)"
+    },
+    {
+     "dst": 10,
+     "reason": "NO_PATH",
+     "src": 25,
+     "why": "no all-layer corridor at 0.200 mm between the islands"
+    }
+   ],
+   "ok": false,
+   "reason": "NO_LEGAL_ESCAPE_SRC",
+   "seconds": 1.9
+  },
+  "/I2C_SDA_INT": {
+   "failures": [
+    {
+     "dst": 1,
+     "reason": "NO_PATH",
+     "src": 71,
+     "why": "no all-layer corridor at 0.200 mm between the islands"
+    },
+    {
+     "dst": 10,
+     "reason": "NO_PATH",
+     "src": 73,
+     "why": "no all-layer corridor at 0.200 mm between the islands"
+    },
+    {
+     "dst": 10,
+     "reason": "NO_PATH",
+     "src": 1,
+     "why": "no all-layer corridor at 0.200 mm between the islands"
+    }
+   ],
+   "ok": false,
+   "reason": "NO_PATH",
+   "seconds": 2.9
+  },
+  "/SPI_B_SCK": {
+   "failures": [
+    {
+     "dst": null,
+     "reason": "NO_LEGAL_ESCAPE_DST",
+     "src": null,
+     "why": "U9.30: NO LEGAL ESCAPE at >= 0.200 mm; blocked by U9.31 (x21), U9.29 (x17), track (x9), U9.33 (x8)"
+    }
+   ],
+   "ok": false,
+   "reason": "NO_LEGAL_ESCAPE_DST",
+   "seconds": 1.7
+  },
+  "/SX1262_DIO1": {
+   "failures": [
+    {
+     "dst": 10,
+     "reason": "NO_PATH",
+     "src": 1,
+     "why": "no all-layer corridor at 0.200 mm between the islands"
+    }
+   ],
+   "ok": false,
+   "reason": "NO_PATH",
+   "seconds": 19.3
+  },
+  "/WAKE_INT_N": {
+   "failures": [
+    {
+     "dst": 11,
+     "reason": "NO_PATH",
+     "src": 7,
+     "why": "no all-layer corridor at 0.200 mm between the islands"
+    },
+    {
+     "dst": 7,
+     "reason": "NO_PATH",
+     "src": 34,
+     "why": "no all-layer corridor at 0.200 mm between the islands"
+    },
+    {
+     "dst": 11,
+     "reason": "NO_PATH",
+     "src": 34,
+     "why": "no all-layer corridor at 0.200 mm between the islands"
+    }
+   ],
+   "ok": false,
+   "reason": "NO_PATH",
+   "seconds": 2.6
+  }
+ },
+ "gate_on": {
+  "/08_BUTTONS_EXPANDERS/BTN_LEFT_N": {
+   "failures": [
+    {
+     "dst": 37,
+     "reason": "NO_PATH",
+     "src": 9,
+     "why": "no all-layer corridor at 0.200 mm between the islands"
+    }
+   ],
+   "ok": false,
+   "reason": "NO_PATH",
+   "seconds": 17.5
+  },
+  "/ACC_PWR_EN": {
+   "failures": [
+    {
+     "dst": 7,
+     "reason": "NO_PATH",
+     "src": 19,
+     "why": "no all-layer corridor at 0.200 mm between the islands"
+    }
+   ],
+   "ok": false,
+   "reason": "NO_PATH",
+   "seconds": 2.4
+  },
+  "/BQ25185_STAT1": {
+   "failures": [
+    {
+     "dst": null,
+     "reason": "NO_LEGAL_ESCAPE_SRC",
+     "src": null,
+     "why": "U11.9: NO LEGAL ESCAPE at >= 0.200 mm; blocked by U11.10 (x18), U11.7 (x16), U11.6 (x7), track (x6)"
+    },
+    {
+     "dst": 10,
+     "reason": "NO_PATH",
+     "src": 20,
+     "why": "no all-layer corridor at 0.200 mm between the islands"
+    }
+   ],
+   "ok": false,
+   "reason": "NO_LEGAL_ESCAPE_SRC",
+   "seconds": 2.7
+  },
+  "/BQ25185_STAT2": {
+   "failures": [
+    {
+     "dst": null,
+     "reason": "NO_LEGAL_ESCAPE_SRC",
+     "src": null,
+     "why": "U11.3: NO LEGAL ESCAPE at >= 0.200 mm; blocked by U11.1 (x23), U11.4 (x18), U11.8 (x5), R37.2 (x4)"
+    },
+    {
+     "dst": 10,
+     "reason": "NO_PATH",
+     "src": 25,
+     "why": "no all-layer corridor at 0.200 mm between the islands"
+    }
+   ],
+   "ok": false,
+   "reason": "NO_LEGAL_ESCAPE_SRC",
+   "seconds": 2.6
+  },
+  "/I2C_SDA_INT": {
+   "failures": [
+    {
+     "dst": 1,
+     "reason": "NO_PATH",
+     "src": 71,
+     "why": "no all-layer corridor at 0.200 mm between the islands"
+    },
+    {
+     "dst": 10,
+     "reason": "NO_PATH",
+     "src": 73,
+     "why": "no all-layer corridor at 0.200 mm between the islands"
+    },
+    {
+     "dst": 10,
+     "reason": "NO_PATH",
+     "src": 1,
+     "why": "no all-layer corridor at 0.200 mm between the islands"
+    }
+   ],
+   "ok": false,
+   "reason": "NO_PATH",
+   "seconds": 3.7
+  },
+  "/SPI_B_SCK": {
+   "failures": [
+    {
+     "dst": null,
+     "reason": "NO_LEGAL_ESCAPE_DST",
+     "src": null,
+     "why": "U9.30: NO LEGAL ESCAPE at >= 0.200 mm; blocked by U9.31 (x21), U9.29 (x17), track (x9), U9.33 (x8)"
+    }
+   ],
+   "ok": false,
+   "reason": "NO_LEGAL_ESCAPE_DST",
+   "seconds": 2.3
+  },
+  "/SX1262_DIO1": {
+   "failures": [
+    {
+     "dst": 10,
+     "reason": "NO_PATH",
+     "src": 1,
+     "why": "no all-layer corridor at 0.200 mm between the islands"
+    }
+   ],
+   "ok": false,
+   "reason": "NO_PATH",
+   "seconds": 20.6
+  },
+  "/WAKE_INT_N": {
+   "failures": [
+    {
+     "dst": 11,
+     "reason": "NO_PATH",
+     "src": 7,
+     "why": "no all-layer corridor at 0.200 mm between the islands"
+    },
+    {
+     "dst": 7,
+     "reason": "NO_PATH",
+     "src": 34,
+     "why": "no all-layer corridor at 0.200 mm between the islands"
+    },
+    {
+     "dst": 11,
+     "reason": "NO_PATH",
+     "src": 34,
+     "why": "no all-layer corridor at 0.200 mm between the islands"
+    }
+   ],
+   "ok": false,
+   "reason": "NO_PATH",
+   "seconds": 3.4
+  }
+ },
+ "method": "route_maze_batch.py NET... --partial --guard <49-tube> --grid 100000, never --promote, the SAME eight nets D-642 triaged, run twice: AQROOT_SCAN_BOARD_VIAS unset and set",
+ "nets": 8,
+ "question": "does an obstacle model that CONTAINS the board's own 799 barrels and 799 drills change a single one of D-642's eight triaged open-edge verdicts?",
+ "schema": 1,
+ "seconds_off": 49.3,
+ "seconds_on": 55.2,
+ "verdicts_moved": []
+}
