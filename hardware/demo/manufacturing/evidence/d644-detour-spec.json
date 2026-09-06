@@ -1,0 +1,24 @@
+{
+  "schema": 1,
+  "note": "D-644: TWO ordinary signal tracks, one on each side of U3.12's ground bond.  (1) /08_BUTTONS_EXPANDERS/BTN_UP_N on B.Cu walls the 0.150 mm pour isthmus that holds U3.12 to its island -- relaying it takes the island 4.724 -> 6.939 mm2 and the internal price 0.602 -> 1.645 A.  (2) /09_COMMUNITY_HEADER/TCA4307_READY on In3.Cu (a legacy slot in the +3V3 reference plane) holds every legal barrel site inside that island -- relaying it takes the site count 0 -> 99, each priced 1.457 A against a 1.000 A return bar.  Both discs are read from measurement: (53.225,74.650) is the isthmus pour_bond_guard.geodesic reports, (49.900,77.950) is the centre of the 99-site cluster.",
+  "detours": [
+    {
+      "net": "/08_BUTTONS_EXPANDERS/BTN_UP_N",
+      "layer": "B.Cu",
+      "a_mm": [48.45, 78.7],
+      "b_mm": [53.75, 73.45],
+      "width_mm": 0.2
+    },
+    {
+      "net": "/09_COMMUNITY_HEADER/TCA4307_READY",
+      "layer": "In3.Cu",
+      "a_mm": [55.8, 72.3],
+      "b_mm": [17.0, 111.2],
+      "width_mm": 0.2
+    }
+  ],
+  "reserve": [
+    {"x_mm": 53.225, "y_mm": 74.65, "r_mm": 0.8, "exempt": ["GND"]},
+    {"x_mm": 49.9,  "y_mm": 77.95, "r_mm": 0.8, "exempt": ["GND"]}
+  ]
+}

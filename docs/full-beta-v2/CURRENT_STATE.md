@@ -13,6 +13,68 @@
 > This file references DEVICE_SPEC rather than duplicating full specs.
 
 ## 1. Authoritative HEAD
+- **Demo D-644 (THE QWIIC SDA EDGE IS *CLOSED*, AND ITS LAST TWO WALLS WERE
+  ORDINARY SIGNAL TRACKS):**  **COPPER PROMOTED.**  Authority
+  `f496d2f39c0827248a47ab7d47efa4322f078b68d2da1d91ae6585d97bf8f875` ->
+  **`24b85f639cee4cfae797d9372553261ac7591df2626d818c801c8ac53f3f5f9c`**;
+  retained open edges **43 -> 42**, open retained nets **21 -> 20**, connected
+  retained **152 -> 153**, raw ratsnest **59 -> 58**.  `hardware/beta-v2`
+  untouched.  TWELVE of twelve gate clauses PASS, `refused_clauses` EMPTY;
+  `verify_promotion.py` PASS on all 15 checks (39 objects added, 2 removed and
+  both licensed detour removals).  The ten standing contracts are **10/10 RAN,
+  10/10 PASS** (`evidence/d644-contract-regression.json`, baseline `d632`),
+  differing in exactly the three fields D-639 documented.  ONE new tracked
+  screen: `screen_fragment_price_ceiling.py`.  ONE contract HARDENED:
+  `checks/pour_partition_contract.py` -- the BODY of a split must now EARN its
+  exemption.
+  **(1) THE THIRD QUESTION NOBODY HAD ASKED.**  `PP2` admits a split when
+  `min(barrels, the FRAGMENT'S OWN COPPER) >= the bar`.  D-642 answered WHERE a
+  barrel may go and D-628/D-643 answered WHAT THE BAR IS; **what a barrel there
+  would be WORTH had never been asked**, and it is bounded by the copper alone,
+  at one geodesic per cell against a gate run per guess.
+  **(2) D-643's SECOND RANKED ITEM WORKS AND BUYS NOTHING.**  Relaying the
+  `In3.Cu` `TCA4307_READY` track turns `NO_BARREL_AT_ANY_DIAMETER` into
+  `BONDABLE` and **0 -> 55** legal 0.500/0.200 sites -- exactly the 55 cells
+  D-642 blamed on it -- and **every one prices the fragment 0.602 A against a
+  1.000 A bar** (`evidence/d644-extsda-price-ceiling.json`).
+  **(3) `U3.12`'s GROUND BOND WAS A 0.150 mm POUR ISTHMUS ALL ALONG.**  The
+  widest path from the pad into its own fragment necks to **0.150 mm /
+  0.602 A at (53.225, 74.650)**, the copper beyond it is **0.350 mm /
+  1.113 A**, and **the pinch is on the AUTHORITATIVE board** -- no route change
+  could ever have widened it.  What stands on its other side is ONE `B.Cu`
+  signal track, `/08_BUTTONS_EXPANDERS/BTN_UP_N` (7.460 mm).
+  **(4) TWO SIGNAL TRACKS, ONE EDGE.**  `BTN_UP_N` relaid on `B.Cu`
+  7.460 -> 7.967 mm and `TCA4307_READY` relaid OWN-LAYER on `In3.Cu`
+  54.942 -> 56.499 mm, both with **no via**, past two 0.8 mm discs read from
+  measurement; `/09_COMMUNITY_HEADER/EXT_SDA` `TP45.1` -> `J8.3` (the Qwiic /
+  STEMMA QT SDA contact) routes **85.700 mm / 4 barrels**; the plane repair
+  stitches `GND` 4.791 mm and ONE barrel at (49.9, 77.5).
+  **(5) `PP2` ADMITS A `GND` SPLIT FOR THE FIRST TIME IN THIS BOARD'S
+  HISTORY.**  `U3.12`'s 8.422 mm2 island is bonded into BOTH 9422.106 mm2
+  reserved `GND` planes, internal copper 0.600 mm, **priced 1.645 A against a
+  1.000 A bar**; `C4.2`'s 4.790 mm2 fragment keeps the island's two original
+  barrels and prices **3.804 A, 3.804x**.
+  **(6) AND `PP2` COULD HAVE SAID YES TO A STRANDED PAD.**  The first attempt
+  read `PP1-PP4` PASS on a board whose ledger recorded `GND` REGRESSED: the
+  LARGEST part of a split was exempt from pricing, and `GND` island 31 is a
+  satellite whose bond sits on the SMALLER half.  The exemption is now EARNED
+  and the change is measured in both directions
+  (`evidence/d644-pp2-body-exemption.json`).
+  **(7) THE DROPPED GUARD TUBE IS THE ONE THE BOARD ITSELF NO LONGER ASKS
+  FOR.**  The run spent D-641's 50-tube guard minus `C4.2 <-> U3.12`;
+  `pour_bond_guard.py` re-run on the promoted board emits **49 tubes, and the
+  same 49**.
+  **NEXT, IN ORDER OF LEVERAGE:** (1) **RE-ASK THE REMAINING OPEN EDGES WITH
+  THE CEILING SCREEN** -- `screen_fragment_price_ceiling.py` plus
+  `screen_bond_site_deficit.py`'s per-term blame is now a repeatable recipe for
+  "which single object stands between this pad and its bond", and it has never
+  been run on any net but this one.  (2) `/SPI_B_SCK` and `/BQ25185_STAT1` are
+  LANDS (`U9.30`, `U11.9`).  (3) THE THREE INHERITED `GND` ORPHANS --
+  `J3.A12`/`J3.B1`, `MK1.4`, `U9.16`.  (4) TRIAGE the remaining open-edge nets.
+  (5) `BQ25185_SYS C26.2`, carried unchanged.  (6) `/I2S_LRCLK`'s edge rate and
+  `/NFC_SUPPLY`'s per-net current, carried unchanged.
+  No owner decision is OPEN.  D-618's `J3` question remains RECORDED.  **PM-3
+  no longer keeps `U3.12`.**
 - **Demo D-643 (THE BOARD'S LARGEST SINGLE BLOCKER WAS A *CONTRACT*, AND IT IS
   NOW A NUMBER):**  **NO COPPER MOVED.**  Authority **UNCHANGED** at
   `f496d2f39c0827248a47ab7d47efa4322f078b68d2da1d91ae6585d97bf8f875`; retained

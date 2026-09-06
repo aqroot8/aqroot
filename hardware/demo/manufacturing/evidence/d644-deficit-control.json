@@ -1,0 +1,255 @@
+{
+ "authoritative_unchanged": null,
+ "board": "/tmp/d644/base/aqroot-Beta-v2.kicad_pcb",
+ "board_floors": {
+  "annular_min_nm": 125000,
+  "min_through_hole_diameter_nm": 200000,
+  "min_via_diameter_nm": 500000
+ },
+ "board_sha256": "f496d2f39c0827248a47ab7d47efa4322f078b68d2da1d91ae6585d97bf8f875",
+ "dia_ladder": [
+  600000,
+  500000,
+  450000,
+  400000,
+  350000,
+  300000,
+  250000,
+  200000,
+  150000,
+  100000
+ ],
+ "drill_rule": "the drill is the project's own min_through_hole_diameter wherever the 0.125 mm annular ring fits around it, because a wider drill would overstate the deficit",
+ "fragment_board": "w/d643/gate-extsda/aqroot-Beta-v2.kicad_pcb",
+ "fragment_board_sha256": "4807bf6fe9353fc2bd96d094abe3793ef24650156b84a8de350b6259a7555b08",
+ "grid": 50000,
+ "guard": null,
+ "lattice": {
+  "cells": 18501444,
+  "grid_mm": 0.05,
+  "grid_nm": 50000,
+  "layers": 4,
+  "nx": 1521,
+  "ny": 3041
+ },
+ "method": "read-only; screen_bond_ladder.island_barrel over a DIAMETER ladder, on the same Field, .kicad_dru overlay and pour-bond guard a gated run builds",
+ "pads": [
+  {
+   "best_site_xy_mm": null,
+   "blame": {
+    "at_dia_nm": 500000,
+    "at_drill_nm": 200000,
+    "fragment": {
+     "binding": "I3",
+     "cells_each_term_admits": {
+      "B": 452,
+      "F": 601,
+      "I1": 1697,
+      "I2": 920,
+      "I3": 111,
+      "I4": 1697,
+      "hole_to_hole": 1885
+     },
+     "cells_refused_by_this_term_alone": {
+      "B": 0,
+      "F": 5,
+      "I1": 0,
+      "I2": 0,
+      "I3": 55,
+      "I4": 0,
+      "hole_to_hole": 0
+     },
+     "fragment_cells": 1885,
+     "sole_blame_objects": {
+      "F": {
+       "bbox_mm": [
+        52.85,
+        76.05,
+        52.95,
+        76.15
+       ],
+       "blockers": [
+        {
+         "cells": 5,
+         "object": "/01_POWER_TREE/BAT_PROTECTED_P|track"
+        }
+       ],
+       "cells": 5
+      },
+      "I3": {
+       "bbox_mm": [
+        49.2,
+        78.0,
+        50.0,
+        78.9
+       ],
+       "blockers": [
+        {
+         "cells": 55,
+         "object": "/09_COMMUNITY_HEADER/TCA4307_READY|track"
+        }
+       ],
+       "cells": 55
+      }
+     }
+    }
+   },
+   "deficit_mm": null,
+   "floor_mm": 0.5,
+   "fragment_mm2": 4.724,
+   "headroom_any_mm": null,
+   "headroom_promotable_mm": null,
+   "island_mm2": 10.282,
+   "ladder_floor": {
+    "dia_nm": 250000,
+    "why": "a 0.250 mm barrel cannot carry a hole and the 0.125 mm annular ring at once"
+   },
+   "net": "GND",
+   "pad": "U3.12",
+   "placement": {
+    "layers": [
+     "B.Cu"
+    ],
+    "lkey": "B",
+    "size_mm": [
+     1.475,
+     0.4
+    ],
+    "xy_mm": [
+     54.1375,
+     74.425
+    ],
+    "xy_nm": [
+     54137500,
+     74425000
+    ]
+   },
+   "rungs": [
+    {
+     "fragment_site_xy_mm": null,
+     "island_sites": 95,
+     "lands_on_reserved_plane": true,
+     "nearest_site_mm": 2.571,
+     "nearest_site_xy_mm": [
+      52.85,
+      76.65
+     ],
+     "promotable": true,
+     "reason": "NO_SITE_ON_THIS_PAD_S_SIDE_OF_THE_CUT",
+     "seconds": 2.1,
+     "sites_in_fragment": 0,
+     "via_dia_nm": 600000,
+     "via_drill_nm": 200000,
+     "via_mm": [
+      0.6,
+      0.2
+     ]
+    },
+    {
+     "fragment_site_xy_mm": null,
+     "island_sites": 166,
+     "lands_on_reserved_plane": true,
+     "nearest_site_mm": 2.459,
+     "nearest_site_xy_mm": [
+      52.9,
+      76.55
+     ],
+     "promotable": true,
+     "reason": "NO_SITE_ON_THIS_PAD_S_SIDE_OF_THE_CUT",
+     "seconds": 3.4,
+     "sites_in_fragment": 0,
+     "via_dia_nm": 500000,
+     "via_drill_nm": 200000,
+     "via_mm": [
+      0.5,
+      0.2
+     ]
+    },
+    {
+     "fragment_site_xy_mm": null,
+     "island_sites": 215,
+     "lands_on_reserved_plane": true,
+     "nearest_site_mm": 2.459,
+     "nearest_site_xy_mm": [
+      52.9,
+      76.55
+     ],
+     "promotable": false,
+     "reason": "NO_SITE_ON_THIS_PAD_S_SIDE_OF_THE_CUT",
+     "seconds": 2.0,
+     "sites_in_fragment": 0,
+     "via_dia_nm": 450000,
+     "via_drill_nm": 200000,
+     "via_mm": [
+      0.45,
+      0.2
+     ]
+    },
+    {
+     "fragment_site_xy_mm": null,
+     "island_sites": 279,
+     "lands_on_reserved_plane": true,
+     "nearest_site_mm": 2.391,
+     "nearest_site_xy_mm": [
+      52.95,
+      76.5
+     ],
+     "promotable": false,
+     "reason": "NO_SITE_ON_THIS_PAD_S_SIDE_OF_THE_CUT",
+     "seconds": 2.0,
+     "sites_in_fragment": 0,
+     "via_dia_nm": 400000,
+     "via_drill_nm": 150000,
+     "via_mm": [
+      0.4,
+      0.15
+     ]
+    },
+    {
+     "fragment_site_xy_mm": null,
+     "island_sites": 390,
+     "lands_on_reserved_plane": true,
+     "nearest_site_mm": 2.391,
+     "nearest_site_xy_mm": [
+      52.95,
+      76.5
+     ],
+     "promotable": false,
+     "reason": "NO_SITE_ON_THIS_PAD_S_SIDE_OF_THE_CUT",
+     "seconds": 2.0,
+     "sites_in_fragment": 0,
+     "via_dia_nm": 350000,
+     "via_drill_nm": 100000,
+     "via_mm": [
+      0.35,
+      0.1
+     ]
+    },
+    {
+     "fragment_site_xy_mm": null,
+     "island_sites": 486,
+     "lands_on_reserved_plane": true,
+     "nearest_site_mm": 2.323,
+     "nearest_site_xy_mm": [
+      53.0,
+      76.45
+     ],
+     "promotable": false,
+     "reason": "NO_SITE_ON_THIS_PAD_S_SIDE_OF_THE_CUT",
+     "seconds": 2.0,
+     "sites_in_fragment": 0,
+     "via_dia_nm": 300000,
+     "via_drill_nm": 50000,
+     "via_mm": [
+      0.3,
+      0.05
+     ]
+    }
+   ],
+   "unit": "fragment",
+   "verdict": "NO_BARREL_AT_ANY_DIAMETER_ON_THIS_LADDER"
+  }
+ ],
+ "reading": "`headroom_promotable_mm` is the largest barrel this board may SHIP that has a legal site in the unit named by `unit`; `headroom_any_mm` continues below every published floor and is a measurement of what a licence -- or a placement change -- would have to buy, NOT promotable copper.  `deficit_mm` is the gap against board setup's own min_via_diameter and is the number a part move has to close.",
+ "schema": 1
+}

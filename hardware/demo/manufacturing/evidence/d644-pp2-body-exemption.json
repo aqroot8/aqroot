@@ -1,0 +1,114 @@
+{
+ "change": "checks/pour_partition_contract.py: the body's exemption is now EARNED by the same price_fragment test every other part is judged with.  A body that carries no barrel into a reserved inner plane is priced as the fragment it is.  Strictly stronger: the change can only ever REFUSE a split that was admitted, never admit one that was refused.",
+ "controls": {
+  "admitting": {
+   "after_the_change": {
+    "PP1": true,
+    "PP2": true,
+    "PP3": true,
+    "PP4": true,
+    "priced": [
+     {
+      "admit": true,
+      "body": {
+       "area_mm2": 8.422,
+       "exempt": true,
+       "pads": [
+        "U3.12"
+       ],
+       "post_island": 33,
+       "why": null
+      },
+      "fragments": [
+       {
+        "admit": true,
+        "margin_x": 3.804,
+        "pads": [
+         "C4.2"
+        ],
+        "pp3": "BONDED",
+        "priced_amps": 3.804,
+        "required_amps": 1.0,
+        "why": "BOND_PRICED_AT_OR_ABOVE_RETURN_FRAGMENT_BAR"
+       }
+      ]
+     }
+    ],
+    "refused": []
+   },
+   "board": "w/d644/gate2/aqroot-Beta-v2.kicad_pcb",
+   "board_sha256": "bdfc48d9b53f3532e6316032a50fd5d73f0e75d9773d6923c43cd99fc21f108f",
+   "what": "the PROMOTED transaction -- both tracks relaid, U3.12 bonded"
+  },
+  "discriminating": {
+   "after_the_change": {
+    "PP1": true,
+    "PP2": false,
+    "PP3": false,
+    "PP4": true,
+    "priced": [
+     {
+      "admit": false,
+      "body": {
+       "area_mm2": 6.939,
+       "exempt": false,
+       "pads": [
+        "U3.12"
+       ],
+       "post_island": 33,
+       "why": "D-644: the largest part of this split carries no barrel into a reserved inner plane, so it is not the pour and is priced as a fragment"
+      },
+      "fragments": [
+       {
+        "admit": true,
+        "margin_x": 3.804,
+        "pads": [
+         "C4.2"
+        ],
+        "pp3": "BONDED",
+        "priced_amps": 3.804,
+        "required_amps": 1.0,
+        "why": "BOND_PRICED_AT_OR_ABOVE_RETURN_FRAGMENT_BAR"
+       },
+       {
+        "admit": false,
+        "margin_x": null,
+        "pads": [
+         "U3.12"
+        ],
+        "pp3": "STRANDED",
+        "priced_amps": null,
+        "required_amps": 1.0,
+        "why": "PP3_NOT_BONDED"
+       }
+      ]
+     }
+    ],
+    "refused": [
+     {
+      "pour": "GND|B|38685722-44ee-566f-b52b-89a56220a9e0",
+      "why": [
+       "BOND_PRICED_AT_OR_ABOVE_RETURN_FRAGMENT_BAR",
+       "PP3_NOT_BONDED"
+      ]
+     }
+    ]
+   },
+   "board": "w/d644/gate1/aqroot-Beta-v2.kicad_pcb",
+   "board_sha256": "67ba3449ab7e2c879ebc4646648bddecf84f7c5f32b8c8eca9ddecb77cf8297e",
+   "what": "the FIRST attempt -- BTN_UP_N relaid, TCA4307_READY left alone.  Before the change this board read PP1-PP4 PASS."
+  },
+  "inert_on_the_authority_board": {
+   "all_ran": true,
+   "contracts_run": 10,
+   "evidence": "evidence/d644-contract-regression.json",
+   "pour_partition_differs_from_d632_in": [
+    "$.results.PP2.islands.GND|B|38685722-44ee-566f-b52b-89a56220a9e0[0]: 57 vs 58 -- the ONE field D-639 documented; no split exists on the authority board, so the new arm is never taken"
+   ],
+   "what": "the standing 10-contract regression, run with the change in force, on the pre-promotion authority board"
+  }
+ },
+ "finding": "NO, and this board proved it: the first attempt at D-644's transaction produced a candidate on which PP1-PP4 ALL READ PASS while the ledger recorded GND REGRESSED.  GND island 31 is a 10.282 mm2 satellite whose only bond to the reserved planes is two barrels on C4.2's side, so the LARGER post part (U3.12, 6.939 mm2, ZERO barrels) was exempted and the bonded one priced.  Clause 4 caught it; PP2 did not, and a clause that cannot refuse is not a clause.",
+ "question": "PP2 exempts the LARGEST part of a split from pricing because the largest piece is the pour.  Is that true when the SEVERED island was itself a small satellite?",
+ "schema": 1
+}

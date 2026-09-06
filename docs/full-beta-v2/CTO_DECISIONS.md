@@ -1,3 +1,200 @@
+# D-644 · 2026-09-06 · Demo — the QWIIC SDA EDGE IS CLOSED, and its last two walls were ORDINARY SIGNAL TRACKS: a price CEILING screen refutes D-643's own ranked item, `U3.12`'s ground bond turns out to be a **0.150 mm** pour isthmus, and `PP2` is hardened where it could have said YES to a stranded pad
+
+    authority  f496d2f39c0827248a47ab7d47efa4322f078b68d2da1d91ae6585d97bf8f875
+            -> 24b85f639cee4cfae797d9372553261ac7591df2626d818c801c8ac53f3f5f9c
+    retained open edges  43 -> 42        open retained nets  21 -> 20
+    connected retained  152 -> 153       raw board ratsnest  59 -> 58
+    `hardware/beta-v2` UNTOUCHED (`git status --short hardware/beta-v2/` empty).
+    TWELVE of twelve gate clauses PASS; `refused_clauses` EMPTY.
+    `PP1-PP4` PASS -- and `PP2` **ADMITS a `GND` split for the first time in
+      this board's history**, at 3.804x its bar.
+    THE TEN STANDING CONTRACTS: 10/10 RAN (`evidence/d644-contract-regression.json`,
+      baseline `d632`).
+    ONE NEW TRACKED SCREEN: `screen_fragment_price_ceiling.py`.
+    ONE CONTRACT HARDENED: `checks/pour_partition_contract.py` -- the BODY of a
+      split must now EARN its exemption.
+
+D-643 closed with a ranked list whose second item was *"RELAY THE `In3.Cu`
+`/09_COMMUNITY_HEADER/TCA4307_READY` TRACK -- it alone holds 55 legal
+0.500/0.200 barrel sites inside `U3.12`'s fragment, and D-643 has now proved
+that a barrel there is the ONLY thing between `EXT_SDA` and the Qwiic
+connector."*  The relay works exactly as predicted.  **The claim around it is
+false**, and finding out why closed the edge.
+
+## 1. THE THIRD QUESTION NOBODY HAD ASKED
+
+`PP2` admits a split when
+
+    min(the barrels in parallel, the FRAGMENT'S OWN COPPER pad -> barrel)
+        >=  the bar the board publishes for that net
+
+`screen_bond_site_deficit.py` (D-642) answers WHERE a barrel may go.  D-628 and
+D-643 answer WHAT THE BAR IS.  **Nobody had ever asked what a barrel there
+would be WORTH**, and the omission is not academic: the internal term is a
+property of the COPPER -- `bond_price` takes the WIDEST path from each pad to a
+landing barrel -- so it is bounded before any router, licence or placement move
+is spent.  Sampling the fragment's cells and pricing a hypothetical barrel at
+each costs ONE GEODESIC PER CELL against ONE GATE RUN PER GUESS.
+
+`screen_fragment_price_ceiling.py` (new, tracked, read-only) is that
+measurement.  It calls `bond_price`, `return_fragment_bar` and `decide` from
+`checks/pour_partition_contract.py` **verbatim**, and reads legality off the
+same `Field.via_ok` lattice `screen_bond_site_deficit.py` counts sites on, so
+neither instrument can drift from the contract or from the other.  It reports
+two numbers:
+
+    ceiling  <  bar                REFUSED_BY_FRAGMENT_COPPER
+                                   -- do not buy a via site; it is worthless
+    best_legal < bar <= ceiling    PRICE_IS_HELD_BY_LEGALITY
+                                   -- an eviction/relay/part shift CAN pay
+    best_legal >= bar              PRICED_ABOVE_THE_BAR
+
+## 2. D-643's SECOND RANKED ITEM WORKS, AND BUYS NOTHING
+
+The `In3.Cu` `TCA4307_READY` relay was measured by CONSTRUCTION rather than
+argued: the track was removed from a scratch copy of the authority board and
+`screen_bond_site_deficit.py` re-run against the same `EXT_SDA` fragment board.
+D-642's prediction is confirmed **to the cell** --
+`NO_BARREL_AT_ANY_DIAMETER_ON_THIS_LADDER` becomes `BONDABLE`, headroom
+0.600 mm, and the 0.500/0.200 rung goes from **0 sites to 55**, exactly the 55
+cells D-642 blamed on that one track.
+
+**And every one of those 55 sites prices the fragment at 0.602 A against its
+1.000 A bar** (`evidence/d644-extsda-price-ceiling.json`).  The bond is
+`min(barrels, fragment copper)`; a 0.500/0.200 barrel carries 1.457 A, and the
+fragment's own copper carries 0.602 A.  A real transaction, a real via site,
+and NOTHING CLOSED.  D-643's ranked item would have spent a detour on a reserved
+inner plane to buy a bond the contract refuses.
+
+## 3. AND THE FRAGMENT IS NOT CONDEMNED -- IT IS PINCHED, ONCE, BY ONE TRACK
+
+The ceiling is **1.457 A**, so the fragment's copper is not the wall; LEGALITY
+is.  263 of the fragment's 1885 cells price at or above the bar and **none of
+them is a legal site**: `F.Cu` refuses all 263 (`/ACC_5V_BOOST_EN`,
+`/01_POWER_TREE/BAT_PROTECTED_P` -- protected battery copper), `In2.Cu` admits
+2 (`NATIVE_A_HDR`, `XGPIO5`), `B.Cu` admits 44 (`BTN_UP_N`, and `U3.11`'s own
+pad).  Following that list is what closed the edge.
+
+`pour_bond_guard.geodesic` puts the whole difference in one place: the widest
+path from `U3.12` into its own fragment necks to **0.150 mm at
+(53.225, 74.650)**, 0.9 mm from the pad, and the copper on the far side of that
+pinch is **0.350 mm / 1.113 A** -- above the bar.  **The pinch is on the
+AUTHORITATIVE board**, not something the route did: `U3.12`'s ground pin has
+been hanging on a 0.150 mm isthmus of pour, 0.602 A, since long before this
+decision, and no route change could ever have widened it.  What stands on its
+other side is ONE ordinary `B.Cu` signal track,
+`/08_BUTTONS_EXPANDERS/BTN_UP_N` (48.45,78.7) -> (53.75,73.45), 7.460 mm.
+
+Remove it on a scratch copy and refill: `U3.12` stops being a 4.724 mm2
+fragment and lands on the **402.855 mm2 main `B.Cu` ground body**.
+
+## 4. THE TRANSACTION -- TWO SIGNAL TRACKS, ONE EDGE
+
+    python3 route_maze_batch.py /09_COMMUNITY_HEADER/EXT_SDA \
+        --detour-spec evidence/d644-detour-spec.json --detour-own-layer \
+        --guard evidence/d644-pour-bond-guard-49.json \
+        --grid 100000 --repair-planes --promote
+
+  * **`BTN_UP_N`**, `B.Cu`, relaid past a 0.8 mm disc centred on the isthmus
+    the geodesic reported: 7.460 -> 7.967 mm, **no via**.
+  * **`TCA4307_READY`**, `In3.Cu`, relaid OWN-LAYER (D-609) past a 0.8 mm disc
+    centred on the 99-site cluster: 54.942 -> 56.499 mm, **no via**.
+  * **`/09_COMMUNITY_HEADER/EXT_SDA`** `TP45.1` -> `J8.3`, the Qwiic / STEMMA QT
+    SDA contact: 85.700 mm, 4 barrels, `F`/`In2`.
+  * **the plane repair** then stitches `GND`: 4.791 mm and ONE barrel at
+    (49.9, 77.5).
+
+`U3.12`'s island comes out **8.422 mm2** with that barrel: bonded into BOTH
+9422.106 mm2 reserved `GND` reference planes, internal copper 0.600 mm,
+**priced 1.645 A against a 1.000 A bar, 1.645x**.  `C4.2`'s 4.790 mm2 fragment
+keeps the island's two original barrels and prices **3.804 A, 3.804x**.
+
+**The dropped guard tube is named, not silent.**  `evidence/d644-pour-bond-guard-49.json`
+is D-641's 50-tube spec with ONE tube removed -- `C4.2 <-> U3.12`, `GND`
+`B.Cu` island 31, 5.513 mm.  That tube's premise is the `SMALL_ISLAND` clause,
+"a LOCAL bond with no redundancy"; this transaction REPLACES that bond with a
+through barrel into the reserved planes, which is the thing the tube was
+protecting a substitute for.  The other **49 are carried unchanged**, and
+`PP1-PP4` plus clause 4 remain the judge.
+
+## 5. `PP2` COULD HAVE SAID YES TO A STRANDED PAD, AND NOW CANNOT
+
+The FIRST attempt at this transaction (`BTN_UP_N` relaid, `TCA4307_READY` left
+alone) produced a board on which **`PP1-PP4` ALL READ PASS while the ledger
+recorded `GND` REGRESSED**.  Clause 4 caught it; `PP2` did not.
+
+The defect is one line of doctrine that was never stated as an assumption.
+`PP2` exempts the LARGEST part of a split from pricing, because the largest
+piece is the pour.  That proxy holds only while the severed island WAS the
+pour.  `GND` island 31 is a 10.282 mm2 SATELLITE whose only bond to the
+reserved planes is two barrels on `C4.2`'s side -- so the larger post part
+(`U3.12`, 6.939 mm2, **zero barrels**) was exempted and the bonded one priced.
+
+The exemption is now **EARNED**, by the same `price_fragment` test every other
+part is judged with: a body that carries no barrel into a reserved inner plane
+is priced as the fragment it is.  The change can only ever REFUSE a split that
+was admitted, never admit one that was refused, and it is measured in both
+directions on real boards:
+
+    the first attempt        PP2 FAIL / PP3 FAIL, `U3.12` STRANDED,
+                             `PP3_NOT_BONDED`, body `exempt: false`
+    the promoted board       PP1-PP4 PASS, body `exempt: true`
+    the authority board      inert -- no split exists; the pour_partition
+                             contract differs from `d632` in the ONE island
+                             count D-639 documented and nothing else
+
+## 6. WHAT THE BOARD PAID
+
+    +3V3  In3.Cu   8222.125 -> 8216.300 mm2   6 islands, unchanged
+    GND   In1.Cu   9425.846 -> 9422.106 mm2   1 island,  unchanged
+    GND   In4.Cu   9425.846 -> 9422.106 mm2   1 island,  unchanged
+
+-0.071 % of the `+3V3` reference plane and -0.040 % of each `GND` reference
+plane, all of it antipad around ordinary new barrels.  Real KiCad DRC on the
+refilled board: **0 attributable violations**; the three inherited types
+(`hole_clearance` 5, `lib_footprint_issues` 199, `solder_mask_bridge` 1) are
+unmoved.  `verify_promotion.py`: PASS, all 15 checks -- 39 objects added (34 tracks + 5 vias), 2 removed and both of them the licensed detour removals, every added track 0.200 or 0.300 mm on `F`/`B`/`In2`/`In3`, every added via 0.600/0.300, `beta_v2_untouched`, `fill_stable`.
+
+**LIMITS, NOT HIDDEN:**
+
+  * the `In3.Cu` relay lengthens an EXISTING slot in the `+3V3` reference plane
+    by 1.557 mm and moves it ~0.8 mm sideways.  It is a legacy slot this
+    board has always carried, `--detour-own-layer` is the D-609 licence for
+    exactly that copper, and no new layer, via or rule area is spent -- but it
+    is a slot getting longer, and `checks/plane_return_path.py` prices a
+    NAMED crossing at a NAMED edge rate, which this decision does not have for
+    `TCA4307_READY`;
+  * `screen_fragment_price_ceiling.py`'s ceiling sweep is a SAMPLE at
+    `--step-mm` (0.25 mm here) unioned with every legal cell priced exactly.  A
+    ceiling is therefore a lower bound on the true ceiling between samples;
+    the legal figure, which is the one that decides, is exact;
+  * three `GND` orphans remain inherited and untouched -- `J3.A12`/`J3.B1`
+    (`NO_VIA_SITE`), `MK1.4` and `U9.16` (`NO_LEGAL_ESCAPE`).
+
+## NEXT, IN ORDER OF LEVERAGE
+
+  1. **RE-ASK THE REMAINING OPEN EDGES WITH THE CEILING SCREEN IN HAND.**  The
+     `EXT_SDA` chain was four walls deep and the LAST two were ordinary signal
+     tracks nobody had named.  `screen_fragment_price_ceiling.py` plus the
+     per-term blame of `screen_bond_site_deficit.py` is now a repeatable recipe
+     for "which single object stands between this pad and its bond", and it has
+     never been run on any net but this one.
+  2. **`/SPI_B_SCK` AND `/BQ25185_STAT1` ARE LANDS, NOT CORRIDORS** (`U9.30`,
+     `U11.9`) -- `screen_escape_class.py` and `screen_pad_escape_relief.py`,
+     carried unchanged from D-642/D-643 item 3.
+  3. **THE THREE INHERITED `GND` ORPHANS** -- `J3.A12`/`J3.B1`, `MK1.4`,
+     `U9.16`.  `MK1.4` and `U9.16` are LAND refusals; `J3.A12` is a via-site
+     one and is now a ceiling question first.
+  4. **TRIAGE THE REMAINING OPEN-EDGE NETS** the seconds-not-hours way,
+     carried unchanged.
+  5. `BQ25185_SYS C26.2`'s stitch pocket, carried unchanged.
+  6. `/I2S_LRCLK`'s edge rate and `/NFC_SUPPLY`'s per-net current remain the
+     per-part electrical ledger's two unlocked edges, carried unchanged.
+
+No owner decision is OPEN.  D-618's `J3` question remains RECORDED.  **PM-3 no
+longer keeps `U3.12`**: its ground pin is bonded by a through barrel into both
+reserved reference planes, priced 1.645 A against a 1.000 A bar.
+
 # AQROOT Full Beta v2 — CTO Decisions
 
 # D-643 · 2026-09-06 · Demo — the board's LARGEST SINGLE BLOCKER was a CONTRACT, and it is now a NUMBER: `PP2` prices a RETURN fragment against the conductor the board publishes for its own ground, raised by Kirchhoff at the part

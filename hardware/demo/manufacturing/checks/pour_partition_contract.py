@@ -55,6 +55,13 @@ The claim is then a claim about the partition and not about a count:
        return net is still refused.  Both clauses carry their own non-vacuity
        controls and they run on every board, split or not.  See THE PP2
        AMPACITY CLAUSE and THE PP2 RETURN-FRAGMENT CLAUSE below.
+       D-644 then closes the hole all three of those clauses shared: the
+       LARGEST part of a split was exempt from pricing on the assumption that
+       the biggest piece is the pour.  When the severed island is itself a
+       small satellite the assumption is false, and `PP1-PP4` read PASS on a
+       board whose ledger recorded `GND` REGRESSED.  The exemption is now
+       EARNED -- a body that carries no barrel into a reserved inner plane is
+       priced as the fragment it is.
 
   PP3  A SPLIT IS PRICED, NOT ONLY NAMED.  For every new fragment, what does
        it still have?  Each pad's own through barrels are resolved into the
@@ -874,7 +881,7 @@ def compare(pre_path, post_path):
                                                   for k, v in sorted(was & now)),
                       pours_pre=len(pre), pours_post=len(post))
 
-    splits, fragments = [], []
+    splits, fragments, body_bonded = [], [], {}
     for key, a in sorted(pre.items()):
         c = post.get(key)
         if c is None:
@@ -902,14 +909,40 @@ def compare(pre_path, post_path):
                                    body=(j == biggest))
                               for j, v in sorted(landed.items())])
             splits.append(rec)
+            # -- D-644: THE BODY IS EXEMPT BECAUSE IT IS THE POUR, NOT BECAUSE
+            # IT IS THE BIGGEST ------------------------------------------------
+            # `biggest` is a proxy for "the part that is still the pour", and
+            # the proxy holds only while the PRE island WAS the pour.  When the
+            # island a route severs is itself a small satellite -- `GND` island
+            # 31, 10.282 mm2, `C4.2` + `U3.12`, whose only bond to the reserved
+            # planes is two barrels on `C4.2`'s side -- the LARGER post part can
+            # be the one with no barrel at all, and this clause would exempt the
+            # stranded half and price the bonded one.  D-644 measured exactly
+            # that: `PP1-PP4` all read PASS on a board whose ledger recorded
+            # `GND` REGRESSED.  Clause 4 caught it; `PP2` did not, and a clause
+            # that cannot refuse is not a clause.
+            #
+            # So the exemption is now EARNED, by the same `price_fragment` test
+            # every other part is judged with: a body that is `BONDED` is
+            # exempt exactly as before, and a body that is not is priced as the
+            # fragment it actually is.  The change can only ever REFUSE a split
+            # that was admitted, never admit one that was refused, and on any
+            # board whose body carries barrels into its reserved plane -- which
+            # is every split this project has recorded -- it is inert.
+            bpr = price_fragment(post_path, a["net"], c["islands"][biggest],
+                                 planes)
+            body_bonded[(key, i)] = (bpr["verdict"] == "BONDED")
             for j, v in sorted(landed.items()):
-                if j == biggest:
+                if j == biggest and body_bonded[(key, i)]:
                     continue
-                pr = price_fragment(post_path, a["net"], c["islands"][j], planes)
+                pr = (bpr if j == biggest
+                      else price_fragment(post_path, a["net"],
+                                          c["islands"][j], planes))
                 fragments.append(dict(pour=key, net=a["net"], layer=a["layer"],
                                       post_island=j,
                                       area_mm2=c["islands"][j]["area_mm2"],
-                                      pads=sorted(v), **pr))
+                                      pads=sorted(v),
+                                      unbonded_body=(j == biggest), **pr))
     # -- PP2 ---------------------------------------------------------------- #
     # THE SPLITS ARE FOUND EXACTLY AS BEFORE; WHAT CHANGED IS THAT ONE MAY NOW
     # BE PRICED INSTEAD OF ONLY NAMED (D-628).  The controls run on every board,
@@ -957,8 +990,9 @@ def compare(pre_path, post_path):
         body = [p for p in rec["parts"] if p["body"]][0]
         pre_isl = pre_geom.get(rec["pour"], {}).get(rec["pre_island"])
         rows, admit = [], True
+        exempt = body_bonded.get((rec["pour"], rec["pre_island"]), True)
         for part in rec["parts"]:
-            if part["body"]:
+            if part["body"] and exempt:
                 continue
             isl = geom.get(rec["pour"], {}).get(part["post_island"])
             frag = next((f for f in fragments
@@ -1008,7 +1042,12 @@ def compare(pre_path, post_path):
             published_amps=required,
             published_figures=(row["figures"] if row else None),
             body=dict(post_island=body["post_island"],
-                      area_mm2=body["area_mm2"], pads=body["pads"]),
+                      area_mm2=body["area_mm2"], pads=body["pads"],
+                      exempt=exempt,
+                      why=(None if exempt else
+                           "D-644: the largest part of this split carries no "
+                           "barrel into a reserved inner plane, so it is not "
+                           "the pour and is priced as a fragment")),
             fragments=rows, admit=admit))
     refused = [s for s in priced_splits if not s["admit"]]
     res["PP2"] = dict(ok=(not refused) and controls["ok"]

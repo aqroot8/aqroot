@@ -7,8 +7,70 @@ stackup (`KO1-KO5`), pour bonds (`P1-P4`), pour partition (`PP1-PP4`, D-622),
 necks (`N1-N3`), placement (`PL1-PL9`), NFC front-end symmetry (`RF1-RF5`,
 D-621), protected copper and leaf-land pricing (`LL1-LL6`, D-632) -- and the
 residual is **44 retained open edges across 21 nets** (D-632).  Two of them, `USB_D_CONN_P` and the `USB_D_MCU` pair, are
-parked on rulings rather than routes (D-618, D-620).  The residual is **43**
-as of D-639.
+parked on rulings rather than routes (D-618, D-620).  The residual is **42**
+as of D-644, which closed `/09_COMMUNITY_HEADER/EXT_SDA` -> the Qwiic/STEMMA QT
+SDA contact.
+
+## WHAT WOULD A BARREL THERE BE WORTH? -- THE PRICE CEILING (D-644)
+
+    python3 screen_fragment_price_ceiling.py REF.NUM --fragment-board POST \
+        [--board LATTICE] [--guard G] [--grid NM] [--step-mm MM] [-o OUT]
+
+`PP2` admits a split when `min(barrels in parallel, the FRAGMENT'S OWN COPPER
+pad -> barrel) >= the bar`.  `screen_bond_site_deficit.py` answers WHERE a
+barrel may go and D-628/D-643 answer WHAT THE BAR IS.  Nobody had ever asked
+the third question -- WHAT A BARREL THERE WOULD BE WORTH -- and on this board
+that omission was worth two decisions.
+
+D-643 ranked "relay the `In3.Cu` `TCA4307_READY` track" its second item, on the
+grounds that a barrel inside `U3.12`'s fragment was **the only thing** between
+`EXT_SDA` and the Qwiic connector.  Move the track and the sites appear exactly
+as predicted -- `NO_BARREL_AT_ANY_DIAMETER` becomes **BONDABLE at 0.600/0.200,
+55 sites at 0.500** -- and **every one of them prices the fragment at 0.602 A
+against its 1.000 A bar**, because the fragment's own copper necks to 0.150 mm
+on the way there.  A real transaction, a real via site, and nothing closed.
+
+The internal term is a property of the COPPER: `bond_price` takes the WIDEST
+path from each pad to a landing barrel, so no finer lattice, no smaller barrel
+and no placement move can raise it.  Sampling the fragment's cells and pricing
+a hypothetical barrel at each therefore bounds what ANY barrel could be worth,
+at one geodesic per cell against a gate run per guess.  Two numbers come back
+and the difference between them is the actionable part:
+
+    ceiling  <  bar                REFUSED_BY_FRAGMENT_COPPER
+                                   -- do not buy a via site; it is worthless
+    best_legal < bar <= ceiling    PRICE_IS_HELD_BY_LEGALITY
+                                   -- an eviction/relay/part shift CAN pay,
+                                      and these are the cells worth buying
+    best_legal >= bar              PRICED_ABOVE_THE_BAR
+
+`bond_price`, `return_fragment_bar` and `decide` are called VERBATIM from
+`checks/pour_partition_contract.py`, so the screen and the contract that judges
+the promotion cannot drift.  The screen never admits anything.
+
+On `U3.12` it read `PRICE_IS_HELD_BY_LEGALITY`, ceiling **1.457 A** -- and the
+263 cells that would pay all sit on `U3.12`'s own pad, refused by `F.Cu`
+(`ACC_5V_BOOST_EN`, `BAT_PROTECTED_P`), `In2.Cu` (`NATIVE_A_HDR`, `XGPIO5`) and
+`B.Cu` (`BTN_UP_N`, `U3.11`'s pad) at once.  Following `BTN_UP_N` is what closed
+the edge -- see below.
+
+## TWO ORDINARY SIGNAL TRACKS CLOSED THE QWIIC SDA EDGE (D-644)
+
+`U3.12`'s ground bond had never been measured, only guarded.  On the
+AUTHORITATIVE board it is a **0.150 mm pour isthmus at (53.225, 74.650)** --
+0.602 A, half the `GND` netclass track width -- and the thing standing on its
+other side is ONE `B.Cu` track, `/08_BUTTONS_EXPANDERS/BTN_UP_N`
+(48.45,78.7) -> (53.75,73.45).  Relay it and `U3.12` stops being a 4.724 mm2
+fragment: it becomes the 8.422 mm2 BODY of the split, priced 1.645 A.  Relay the
+`In3.Cu` `TCA4307_READY` slot as well and that body takes **99 legal
+0.500/0.200 barrel sites, every one priced 1.457 A against a 1.000 A bar**.
+
+    python3 route_maze_batch.py /09_COMMUNITY_HEADER/EXT_SDA \
+        --detour-spec w/d644/detour-both.json --detour-own-layer \
+        --guard w/d644/guard-49.json --grid 100000 --repair-planes --promote
+
+Twelve of twelve gate clauses PASS, `PP1-PP4` PASS -- **the first `GND` split
+this board has ever ADMITTED** -- and retained open edges go **43 -> 42**.
 
 ## WHAT DOES CUTTING THE GROUND POUR COST? -- THE RETURN BAR (D-643)
 

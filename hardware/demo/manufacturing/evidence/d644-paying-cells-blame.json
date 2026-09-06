@@ -1,0 +1,2710 @@
+{
+ "dia_nm": 500000,
+ "drill_nm": 200000,
+ "grid_nm": 50000,
+ "bar_amps": 1.0,
+ "fragment_cells": 1885,
+ "legal_cells": 55,
+ "paying_cells": 263,
+ "paying_legal": 0,
+ "paying_bbox_mm": [
+  53.4,
+  73.95,
+  54.85,
+  74.6
+ ],
+ "paying_cells_each_term_admits": {
+  "F": 0,
+  "I1": 263,
+  "I2": 2,
+  "I3": 263,
+  "I4": 263,
+  "B": 44,
+  "hole_to_hole": 263
+ },
+ "blame": {
+  "F": {
+   "blocks": 263,
+   "blockers": [
+    {
+     "object": "/ACC_5V_BOOST_EN|track",
+     "cells": 303
+    },
+    {
+     "object": "/01_POWER_TREE/BAT_PROTECTED_P|track",
+     "cells": 261
+    }
+   ]
+  },
+  "I1": {
+   "blocks": 0
+  },
+  "I2": {
+   "blocks": 261,
+   "blockers": [
+    {
+     "object": "/09_COMMUNITY_HEADER/NATIVE_A_HDR|track",
+     "cells": 235
+    },
+    {
+     "object": "/XGPIO5|track",
+     "cells": 31
+    }
+   ]
+  },
+  "I3": {
+   "blocks": 0
+  },
+  "I4": {
+   "blocks": 0
+  },
+  "B": {
+   "blocks": 219,
+   "blockers": [
+    {
+     "object": "/08_BUTTONS_EXPANDERS/BTN_UP_N|track",
+     "cells": 153
+    },
+    {
+     "object": "unconnected-(U3-P07-Pad11)|U3.11",
+     "cells": 118
+    }
+   ]
+  },
+  "hole_to_hole": {
+   "blocks": 0
+  }
+ },
+ "paying": [
+  {
+   "xy_mm": [
+    53.85,
+    73.95
+   ],
+   "amps": 1.113,
+   "bottleneck": "FRAGMENT_COPPER",
+   "internal_min_width_mm": 0.35,
+   "legal": false
+  },
+  {
+   "xy_mm": [
+    53.9,
+    73.95
+   ],
+   "amps": 1.113,
+   "bottleneck": "FRAGMENT_COPPER",
+   "internal_min_width_mm": 0.35,
+   "legal": false
+  },
+  {
+   "xy_mm": [
+    53.8,
+    74.0
+   ],
+   "amps": 1.113,
+   "bottleneck": "FRAGMENT_COPPER",
+   "internal_min_width_mm": 0.35,
+   "legal": false
+  },
+  {
+   "xy_mm": [
+    53.85,
+    74.0
+   ],
+   "amps": 1.226,
+   "bottleneck": "FRAGMENT_COPPER",
+   "internal_min_width_mm": 0.4,
+   "legal": false
+  },
+  {
+   "xy_mm": [
+    53.9,
+    74.0
+   ],
+   "amps": 1.226,
+   "bottleneck": "FRAGMENT_COPPER",
+   "internal_min_width_mm": 0.4,
+   "legal": false
+  },
+  {
+   "xy_mm": [
+    53.95,
+    74.0
+   ],
+   "amps": 1.113,
+   "bottleneck": "FRAGMENT_COPPER",
+   "internal_min_width_mm": 0.35,
+   "legal": false
+  },
+  {
+   "xy_mm": [
+    54.0,
+    74.0
+   ],
+   "amps": 1.113,
+   "bottleneck": "FRAGMENT_COPPER",
+   "internal_min_width_mm": 0.35,
+   "legal": false
+  },
+  {
+   "xy_mm": [
+    53.75,
+    74.05
+   ],
+   "amps": 1.113,
+   "bottleneck": "FRAGMENT_COPPER",
+   "internal_min_width_mm": 0.35,
+   "legal": false
+  },
+  {
+   "xy_mm": [
+    53.8,
+    74.05
+   ],
+   "amps": 1.335,
+   "bottleneck": "FRAGMENT_COPPER",
+   "internal_min_width_mm": 0.45,
+   "legal": false
+  },
+  {
+   "xy_mm": [
+    53.85,
+    74.05
+   ],
+   "amps": 1.335,
+   "bottleneck": "FRAGMENT_COPPER",
+   "internal_min_width_mm": 0.45,
+   "legal": false
+  },
+  {
+   "xy_mm": [
+    53.9,
+    74.05
+   ],
+   "amps": 1.335,
+   "bottleneck": "FRAGMENT_COPPER",
+   "internal_min_width_mm": 0.45,
+   "legal": false
+  },
+  {
+   "xy_mm": [
+    53.95,
+    74.05
+   ],
+   "amps": 1.335,
+   "bottleneck": "FRAGMENT_COPPER",
+   "internal_min_width_mm": 0.45,
+   "legal": false
+  },
+  {
+   "xy_mm": [
+    54.0,
+    74.05
+   ],
+   "amps": 1.335,
+   "bottleneck": "FRAGMENT_COPPER",
+   "internal_min_width_mm": 0.45,
+   "legal": false
+  },
+  {
+   "xy_mm": [
+    54.05,
+    74.05
+   ],
+   "amps": 1.226,
+   "bottleneck": "FRAGMENT_COPPER",
+   "internal_min_width_mm": 0.4,
+   "legal": false
+  },
+  {
+   "xy_mm": [
+    54.1,
+    74.05
+   ],
+   "amps": 1.113,
+   "bottleneck": "FRAGMENT_COPPER",
+   "internal_min_width_mm": 0.35,
+   "legal": false
+  },
+  {
+   "xy_mm": [
+    54.15,
+    74.05
+   ],
+   "amps": 1.113,
+   "bottleneck": "FRAGMENT_COPPER",
+   "internal_min_width_mm": 0.35,
+   "legal": false
+  },
+  {
+   "xy_mm": [
+    53.7,
+    74.1
+   ],
+   "amps": 1.113,
+   "bottleneck": "FRAGMENT_COPPER",
+   "internal_min_width_mm": 0.35,
+   "legal": false
+  },
+  {
+   "xy_mm": [
+    53.75,
+    74.1
+   ],
+   "amps": 1.335,
+   "bottleneck": "FRAGMENT_COPPER",
+   "internal_min_width_mm": 0.45,
+   "legal": false
+  },
+  {
+   "xy_mm": [
+    53.8,
+    74.1
+   ],
+   "amps": 1.441,
+   "bottleneck": "FRAGMENT_COPPER",
+   "internal_min_width_mm": 0.5,
+   "legal": false
+  },
+  {
+   "xy_mm": [
+    53.85,
+    74.1
+   ],
+   "amps": 1.457,
+   "bottleneck": "BARRELS",
+   "internal_min_width_mm": 0.55,
+   "legal": false
+  },
+  {
+   "xy_mm": [
+    53.9,
+    74.1
+   ],
+   "amps": 1.457,
+   "bottleneck": "BARRELS",
+   "internal_min_width_mm": 0.55,
+   "legal": false
+  },
+  {
+   "xy_mm": [
+    53.95,
+    74.1
+   ],
+   "amps": 1.457,
+   "bottleneck": "BARRELS",
+   "internal_min_width_mm": 0.55,
+   "legal": false
+  },
+  {
+   "xy_mm": [
+    54.0,
+    74.1
+   ],
+   "amps": 1.441,
+   "bottleneck": "FRAGMENT_COPPER",
+   "internal_min_width_mm": 0.5,
+   "legal": false
+  },
+  {
+   "xy_mm": [
+    54.05,
+    74.1
+   ],
+   "amps": 1.441,
+   "bottleneck": "FRAGMENT_COPPER",
+   "internal_min_width_mm": 0.5,
+   "legal": false
+  },
+  {
+   "xy_mm": [
+    54.1,
+    74.1
+   ],
+   "amps": 1.335,
+   "bottleneck": "FRAGMENT_COPPER",
+   "internal_min_width_mm": 0.45,
+   "legal": false
+  },
+  {
+   "xy_mm": [
+    54.15,
+    74.1
+   ],
+   "amps": 1.226,
+   "bottleneck": "FRAGMENT_COPPER",
+   "internal_min_width_mm": 0.4,
+   "legal": false
+  },
+  {
+   "xy_mm": [
+    54.2,
+    74.1
+   ],
+   "amps": 1.226,
+   "bottleneck": "FRAGMENT_COPPER",
+   "internal_min_width_mm": 0.4,
+   "legal": false
+  },
+  {
+   "xy_mm": [
+    54.25,
+    74.1
+   ],
+   "amps": 1.113,
+   "bottleneck": "FRAGMENT_COPPER",
+   "internal_min_width_mm": 0.35,
+   "legal": false
+  },
+  {
+   "xy_mm": [
+    54.3,
+    74.1
+   ],
+   "amps": 1.113,
+   "bottleneck": "FRAGMENT_COPPER",
+   "internal_min_width_mm": 0.35,
+   "legal": false
+  },
+  {
+   "xy_mm": [
+    53.65,
+    74.15
+   ],
+   "amps": 1.113,
+   "bottleneck": "FRAGMENT_COPPER",
+   "internal_min_width_mm": 0.35,
+   "legal": false
+  },
+  {
+   "xy_mm": [
+    53.7,
+    74.15
+   ],
+   "amps": 1.335,
+   "bottleneck": "FRAGMENT_COPPER",
+   "internal_min_width_mm": 0.45,
+   "legal": false
+  },
+  {
+   "xy_mm": [
+    53.75,
+    74.15
+   ],
+   "amps": 1.441,
+   "bottleneck": "FRAGMENT_COPPER",
+   "internal_min_width_mm": 0.5,
+   "legal": false
+  },
+  {
+   "xy_mm": [
+    53.8,
+    74.15
+   ],
+   "amps": 1.457,
+   "bottleneck": "BARRELS",
+   "internal_min_width_mm": 0.55,
+   "legal": false
+  },
+  {
+   "xy_mm": [
+    53.85,
+    74.15
+   ],
+   "amps": 1.457,
+   "bottleneck": "BARRELS",
+   "internal_min_width_mm": 0.6,
+   "legal": false
+  },
+  {
+   "xy_mm": [
+    53.9,
+    74.15
+   ],
+   "amps": 1.457,
+   "bottleneck": "BARRELS",
+   "internal_min_width_mm": 0.6,
+   "legal": false
+  },
+  {
+   "xy_mm": [
+    53.95,
+    74.15
+   ],
+   "amps": 1.457,
+   "bottleneck": "BARRELS",
+   "internal_min_width_mm": 0.6,
+   "legal": false
+  },
+  {
+   "xy_mm": [
+    54.0,
+    74.15
+   ],
+   "amps": 1.457,
+   "bottleneck": "BARRELS",
+   "internal_min_width_mm": 3.0,
+   "legal": false
+  },
+  {
+   "xy_mm": [
+    54.05,
+    74.15
+   ],
+   "amps": 1.457,
+   "bottleneck": "BARRELS",
+   "internal_min_width_mm": 3.0,
+   "legal": false
+  },
+  {
+   "xy_mm": [
+    54.1,
+    74.15
+   ],
+   "amps": 1.457,
+   "bottleneck": "BARRELS",
+   "internal_min_width_mm": 3.0,
+   "legal": false
+  },
+  {
+   "xy_mm": [
+    54.15,
+    74.15
+   ],
+   "amps": 1.457,
+   "bottleneck": "BARRELS",
+   "internal_min_width_mm": 3.0,
+   "legal": false
+  },
+  {
+   "xy_mm": [
+    54.2,
+    74.15
+   ],
+   "amps": 1.457,
+   "bottleneck": "BARRELS",
+   "internal_min_width_mm": 3.0,
+   "legal": false
+  },
+  {
+   "xy_mm": [
+    54.25,
+    74.15
+   ],
+   "amps": 1.457,
+   "bottleneck": "BARRELS",
+   "internal_min_width_mm": 3.0,
+   "legal": false
+  },
+  {
+   "xy_mm": [
+    54.3,
+    74.15
+   ],
+   "amps": 1.457,
+   "bottleneck": "BARRELS",
+   "internal_min_width_mm": 3.0,
+   "legal": false
+  },
+  {
+   "xy_mm": [
+    54.35,
+    74.15
+   ],
+   "amps": 1.113,
+   "bottleneck": "FRAGMENT_COPPER",
+   "internal_min_width_mm": 0.35,
+   "legal": false
+  },
+  {
+   "xy_mm": [
+    54.4,
+    74.15
+   ],
+   "amps": 1.113,
+   "bottleneck": "FRAGMENT_COPPER",
+   "internal_min_width_mm": 0.35,
+   "legal": false
+  },
+  {
+   "xy_mm": [
+    53.6,
+    74.2
+   ],
+   "amps": 1.113,
+   "bottleneck": "FRAGMENT_COPPER",
+   "internal_min_width_mm": 0.35,
+   "legal": false
+  },
+  {
+   "xy_mm": [
+    53.65,
+    74.2
+   ],
+   "amps": 1.335,
+   "bottleneck": "FRAGMENT_COPPER",
+   "internal_min_width_mm": 0.45,
+   "legal": false
+  },
+  {
+   "xy_mm": [
+    53.7,
+    74.2
+   ],
+   "amps": 1.441,
+   "bottleneck": "FRAGMENT_COPPER",
+   "internal_min_width_mm": 0.5,
+   "legal": false
+  },
+  {
+   "xy_mm": [
+    53.75,
+    74.2
+   ],
+   "amps": 1.457,
+   "bottleneck": "BARRELS",
+   "internal_min_width_mm": 0.55,
+   "legal": false
+  },
+  {
+   "xy_mm": [
+    53.8,
+    74.2
+   ],
+   "amps": 1.457,
+   "bottleneck": "BARRELS",
+   "internal_min_width_mm": 0.6,
+   "legal": false
+  },
+  {
+   "xy_mm": [
+    53.85,
+    74.2
+   ],
+   "amps": 1.457,
+   "bottleneck": "BARRELS",
+   "internal_min_width_mm": 0.6,
+   "legal": false
+  },
+  {
+   "xy_mm": [
+    53.9,
+    74.2
+   ],
+   "amps": 1.457,
+   "bottleneck": "BARRELS",
+   "internal_min_width_mm": 0.6,
+   "legal": false
+  },
+  {
+   "xy_mm": [
+    53.95,
+    74.2
+   ],
+   "amps": 1.457,
+   "bottleneck": "BARRELS",
+   "internal_min_width_mm": 3.0,
+   "legal": false
+  },
+  {
+   "xy_mm": [
+    54.0,
+    74.2
+   ],
+   "amps": 1.457,
+   "bottleneck": "BARRELS",
+   "internal_min_width_mm": 3.0,
+   "legal": false
+  },
+  {
+   "xy_mm": [
+    54.05,
+    74.2
+   ],
+   "amps": 1.457,
+   "bottleneck": "BARRELS",
+   "internal_min_width_mm": 3.0,
+   "legal": false
+  },
+  {
+   "xy_mm": [
+    54.1,
+    74.2
+   ],
+   "amps": 1.457,
+   "bottleneck": "BARRELS",
+   "internal_min_width_mm": 3.0,
+   "legal": false
+  },
+  {
+   "xy_mm": [
+    54.15,
+    74.2
+   ],
+   "amps": 1.457,
+   "bottleneck": "BARRELS",
+   "internal_min_width_mm": 3.0,
+   "legal": false
+  },
+  {
+   "xy_mm": [
+    54.2,
+    74.2
+   ],
+   "amps": 1.457,
+   "bottleneck": "BARRELS",
+   "internal_min_width_mm": 3.0,
+   "legal": false
+  },
+  {
+   "xy_mm": [
+    54.25,
+    74.2
+   ],
+   "amps": 1.457,
+   "bottleneck": "BARRELS",
+   "internal_min_width_mm": 3.0,
+   "legal": false
+  },
+  {
+   "xy_mm": [
+    54.3,
+    74.2
+   ],
+   "amps": 1.457,
+   "bottleneck": "BARRELS",
+   "internal_min_width_mm": 3.0,
+   "legal": false
+  },
+  {
+   "xy_mm": [
+    54.35,
+    74.2
+   ],
+   "amps": 1.457,
+   "bottleneck": "BARRELS",
+   "internal_min_width_mm": 3.0,
+   "legal": false
+  },
+  {
+   "xy_mm": [
+    54.4,
+    74.2
+   ],
+   "amps": 1.335,
+   "bottleneck": "FRAGMENT_COPPER",
+   "internal_min_width_mm": 0.45,
+   "legal": false
+  },
+  {
+   "xy_mm": [
+    54.45,
+    74.2
+   ],
+   "amps": 1.226,
+   "bottleneck": "FRAGMENT_COPPER",
+   "internal_min_width_mm": 0.4,
+   "legal": false
+  },
+  {
+   "xy_mm": [
+    54.5,
+    74.2
+   ],
+   "amps": 1.113,
+   "bottleneck": "FRAGMENT_COPPER",
+   "internal_min_width_mm": 0.35,
+   "legal": false
+  },
+  {
+   "xy_mm": [
+    54.55,
+    74.2
+   ],
+   "amps": 1.113,
+   "bottleneck": "FRAGMENT_COPPER",
+   "internal_min_width_mm": 0.35,
+   "legal": false
+  },
+  {
+   "xy_mm": [
+    53.55,
+    74.25
+   ],
+   "amps": 1.113,
+   "bottleneck": "FRAGMENT_COPPER",
+   "internal_min_width_mm": 0.35,
+   "legal": false
+  },
+  {
+   "xy_mm": [
+    53.6,
+    74.25
+   ],
+   "amps": 1.335,
+   "bottleneck": "FRAGMENT_COPPER",
+   "internal_min_width_mm": 0.45,
+   "legal": false
+  },
+  {
+   "xy_mm": [
+    53.65,
+    74.25
+   ],
+   "amps": 1.441,
+   "bottleneck": "FRAGMENT_COPPER",
+   "internal_min_width_mm": 0.5,
+   "legal": false
+  },
+  {
+   "xy_mm": [
+    53.7,
+    74.25
+   ],
+   "amps": 1.457,
+   "bottleneck": "BARRELS",
+   "internal_min_width_mm": 0.55,
+   "legal": false
+  },
+  {
+   "xy_mm": [
+    53.75,
+    74.25
+   ],
+   "amps": 1.457,
+   "bottleneck": "BARRELS",
+   "internal_min_width_mm": 0.6,
+   "legal": false
+  },
+  {
+   "xy_mm": [
+    53.8,
+    74.25
+   ],
+   "amps": 1.457,
+   "bottleneck": "BARRELS",
+   "internal_min_width_mm": 0.6,
+   "legal": false
+  },
+  {
+   "xy_mm": [
+    53.85,
+    74.25
+   ],
+   "amps": 1.457,
+   "bottleneck": "BARRELS",
+   "internal_min_width_mm": 0.6,
+   "legal": false
+  },
+  {
+   "xy_mm": [
+    53.9,
+    74.25
+   ],
+   "amps": 1.457,
+   "bottleneck": "BARRELS",
+   "internal_min_width_mm": 3.0,
+   "legal": false
+  },
+  {
+   "xy_mm": [
+    53.95,
+    74.25
+   ],
+   "amps": 1.457,
+   "bottleneck": "BARRELS",
+   "internal_min_width_mm": 3.0,
+   "legal": false
+  },
+  {
+   "xy_mm": [
+    54.0,
+    74.25
+   ],
+   "amps": 1.457,
+   "bottleneck": "BARRELS",
+   "internal_min_width_mm": 3.0,
+   "legal": false
+  },
+  {
+   "xy_mm": [
+    54.05,
+    74.25
+   ],
+   "amps": 1.457,
+   "bottleneck": "BARRELS",
+   "internal_min_width_mm": 3.0,
+   "legal": false
+  },
+  {
+   "xy_mm": [
+    54.1,
+    74.25
+   ],
+   "amps": 1.457,
+   "bottleneck": "BARRELS",
+   "internal_min_width_mm": 3.0,
+   "legal": false
+  },
+  {
+   "xy_mm": [
+    54.15,
+    74.25
+   ],
+   "amps": 1.457,
+   "bottleneck": "BARRELS",
+   "internal_min_width_mm": 3.0,
+   "legal": false
+  },
+  {
+   "xy_mm": [
+    54.2,
+    74.25
+   ],
+   "amps": 1.457,
+   "bottleneck": "BARRELS",
+   "internal_min_width_mm": 3.0,
+   "legal": false
+  },
+  {
+   "xy_mm": [
+    54.25,
+    74.25
+   ],
+   "amps": 1.457,
+   "bottleneck": "BARRELS",
+   "internal_min_width_mm": 3.0,
+   "legal": false
+  },
+  {
+   "xy_mm": [
+    54.3,
+    74.25
+   ],
+   "amps": 1.457,
+   "bottleneck": "BARRELS",
+   "internal_min_width_mm": 3.0,
+   "legal": false
+  },
+  {
+   "xy_mm": [
+    54.35,
+    74.25
+   ],
+   "amps": 1.457,
+   "bottleneck": "BARRELS",
+   "internal_min_width_mm": 3.0,
+   "legal": false
+  },
+  {
+   "xy_mm": [
+    54.4,
+    74.25
+   ],
+   "amps": 1.457,
+   "bottleneck": "BARRELS",
+   "internal_min_width_mm": 3.0,
+   "legal": false
+  },
+  {
+   "xy_mm": [
+    54.45,
+    74.25
+   ],
+   "amps": 1.441,
+   "bottleneck": "FRAGMENT_COPPER",
+   "internal_min_width_mm": 0.5,
+   "legal": false
+  },
+  {
+   "xy_mm": [
+    54.5,
+    74.25
+   ],
+   "amps": 1.335,
+   "bottleneck": "FRAGMENT_COPPER",
+   "internal_min_width_mm": 0.45,
+   "legal": false
+  },
+  {
+   "xy_mm": [
+    54.55,
+    74.25
+   ],
+   "amps": 1.335,
+   "bottleneck": "FRAGMENT_COPPER",
+   "internal_min_width_mm": 0.45,
+   "legal": false
+  },
+  {
+   "xy_mm": [
+    54.6,
+    74.25
+   ],
+   "amps": 1.226,
+   "bottleneck": "FRAGMENT_COPPER",
+   "internal_min_width_mm": 0.4,
+   "legal": false
+  },
+  {
+   "xy_mm": [
+    54.65,
+    74.25
+   ],
+   "amps": 1.113,
+   "bottleneck": "FRAGMENT_COPPER",
+   "internal_min_width_mm": 0.35,
+   "legal": false
+  },
+  {
+   "xy_mm": [
+    54.7,
+    74.25
+   ],
+   "amps": 1.113,
+   "bottleneck": "FRAGMENT_COPPER",
+   "internal_min_width_mm": 0.35,
+   "legal": false
+  },
+  {
+   "xy_mm": [
+    53.5,
+    74.3
+   ],
+   "amps": 1.113,
+   "bottleneck": "FRAGMENT_COPPER",
+   "internal_min_width_mm": 0.35,
+   "legal": false
+  },
+  {
+   "xy_mm": [
+    53.55,
+    74.3
+   ],
+   "amps": 1.335,
+   "bottleneck": "FRAGMENT_COPPER",
+   "internal_min_width_mm": 0.45,
+   "legal": false
+  },
+  {
+   "xy_mm": [
+    53.6,
+    74.3
+   ],
+   "amps": 1.335,
+   "bottleneck": "FRAGMENT_COPPER",
+   "internal_min_width_mm": 0.45,
+   "legal": false
+  },
+  {
+   "xy_mm": [
+    53.65,
+    74.3
+   ],
+   "amps": 1.457,
+   "bottleneck": "BARRELS",
+   "internal_min_width_mm": 0.55,
+   "legal": false
+  },
+  {
+   "xy_mm": [
+    53.7,
+    74.3
+   ],
+   "amps": 1.457,
+   "bottleneck": "BARRELS",
+   "internal_min_width_mm": 0.55,
+   "legal": false
+  },
+  {
+   "xy_mm": [
+    53.75,
+    74.3
+   ],
+   "amps": 1.457,
+   "bottleneck": "BARRELS",
+   "internal_min_width_mm": 0.6,
+   "legal": false
+  },
+  {
+   "xy_mm": [
+    53.8,
+    74.3
+   ],
+   "amps": 1.457,
+   "bottleneck": "BARRELS",
+   "internal_min_width_mm": 0.6,
+   "legal": false
+  },
+  {
+   "xy_mm": [
+    53.85,
+    74.3
+   ],
+   "amps": 1.457,
+   "bottleneck": "BARRELS",
+   "internal_min_width_mm": 3.0,
+   "legal": false
+  },
+  {
+   "xy_mm": [
+    53.9,
+    74.3
+   ],
+   "amps": 1.457,
+   "bottleneck": "BARRELS",
+   "internal_min_width_mm": 3.0,
+   "legal": false
+  },
+  {
+   "xy_mm": [
+    53.95,
+    74.3
+   ],
+   "amps": 1.457,
+   "bottleneck": "BARRELS",
+   "internal_min_width_mm": 3.0,
+   "legal": false
+  },
+  {
+   "xy_mm": [
+    54.0,
+    74.3
+   ],
+   "amps": 1.457,
+   "bottleneck": "BARRELS",
+   "internal_min_width_mm": 3.0,
+   "legal": false
+  },
+  {
+   "xy_mm": [
+    54.05,
+    74.3
+   ],
+   "amps": 1.457,
+   "bottleneck": "BARRELS",
+   "internal_min_width_mm": 3.0,
+   "legal": false
+  },
+  {
+   "xy_mm": [
+    54.1,
+    74.3
+   ],
+   "amps": 1.457,
+   "bottleneck": "BARRELS",
+   "internal_min_width_mm": 3.0,
+   "legal": false
+  },
+  {
+   "xy_mm": [
+    54.15,
+    74.3
+   ],
+   "amps": 1.457,
+   "bottleneck": "BARRELS",
+   "internal_min_width_mm": 3.0,
+   "legal": false
+  },
+  {
+   "xy_mm": [
+    54.2,
+    74.3
+   ],
+   "amps": 1.457,
+   "bottleneck": "BARRELS",
+   "internal_min_width_mm": 3.0,
+   "legal": false
+  },
+  {
+   "xy_mm": [
+    54.25,
+    74.3
+   ],
+   "amps": 1.457,
+   "bottleneck": "BARRELS",
+   "internal_min_width_mm": 3.0,
+   "legal": false
+  },
+  {
+   "xy_mm": [
+    54.3,
+    74.3
+   ],
+   "amps": 1.457,
+   "bottleneck": "BARRELS",
+   "internal_min_width_mm": 3.0,
+   "legal": false
+  },
+  {
+   "xy_mm": [
+    54.35,
+    74.3
+   ],
+   "amps": 1.457,
+   "bottleneck": "BARRELS",
+   "internal_min_width_mm": 3.0,
+   "legal": false
+  },
+  {
+   "xy_mm": [
+    54.4,
+    74.3
+   ],
+   "amps": 1.457,
+   "bottleneck": "BARRELS",
+   "internal_min_width_mm": 3.0,
+   "legal": false
+  },
+  {
+   "xy_mm": [
+    54.45,
+    74.3
+   ],
+   "amps": 1.441,
+   "bottleneck": "FRAGMENT_COPPER",
+   "internal_min_width_mm": 0.5,
+   "legal": false
+  },
+  {
+   "xy_mm": [
+    54.5,
+    74.3
+   ],
+   "amps": 1.335,
+   "bottleneck": "FRAGMENT_COPPER",
+   "internal_min_width_mm": 0.45,
+   "legal": false
+  },
+  {
+   "xy_mm": [
+    54.55,
+    74.3
+   ],
+   "amps": 1.335,
+   "bottleneck": "FRAGMENT_COPPER",
+   "internal_min_width_mm": 0.45,
+   "legal": false
+  },
+  {
+   "xy_mm": [
+    54.6,
+    74.3
+   ],
+   "amps": 1.335,
+   "bottleneck": "FRAGMENT_COPPER",
+   "internal_min_width_mm": 0.45,
+   "legal": false
+  },
+  {
+   "xy_mm": [
+    54.65,
+    74.3
+   ],
+   "amps": 1.226,
+   "bottleneck": "FRAGMENT_COPPER",
+   "internal_min_width_mm": 0.4,
+   "legal": false
+  },
+  {
+   "xy_mm": [
+    54.7,
+    74.3
+   ],
+   "amps": 1.226,
+   "bottleneck": "FRAGMENT_COPPER",
+   "internal_min_width_mm": 0.4,
+   "legal": false
+  },
+  {
+   "xy_mm": [
+    54.75,
+    74.3
+   ],
+   "amps": 1.226,
+   "bottleneck": "FRAGMENT_COPPER",
+   "internal_min_width_mm": 0.4,
+   "legal": false
+  },
+  {
+   "xy_mm": [
+    54.8,
+    74.3
+   ],
+   "amps": 1.113,
+   "bottleneck": "FRAGMENT_COPPER",
+   "internal_min_width_mm": 0.35,
+   "legal": false
+  },
+  {
+   "xy_mm": [
+    53.45,
+    74.35
+   ],
+   "amps": 1.113,
+   "bottleneck": "FRAGMENT_COPPER",
+   "internal_min_width_mm": 0.35,
+   "legal": false
+  },
+  {
+   "xy_mm": [
+    53.5,
+    74.35
+   ],
+   "amps": 1.226,
+   "bottleneck": "FRAGMENT_COPPER",
+   "internal_min_width_mm": 0.4,
+   "legal": false
+  },
+  {
+   "xy_mm": [
+    53.55,
+    74.35
+   ],
+   "amps": 1.335,
+   "bottleneck": "FRAGMENT_COPPER",
+   "internal_min_width_mm": 0.45,
+   "legal": false
+  },
+  {
+   "xy_mm": [
+    53.6,
+    74.35
+   ],
+   "amps": 1.441,
+   "bottleneck": "FRAGMENT_COPPER",
+   "internal_min_width_mm": 0.5,
+   "legal": false
+  },
+  {
+   "xy_mm": [
+    53.65,
+    74.35
+   ],
+   "amps": 1.457,
+   "bottleneck": "BARRELS",
+   "internal_min_width_mm": 0.55,
+   "legal": false
+  },
+  {
+   "xy_mm": [
+    53.7,
+    74.35
+   ],
+   "amps": 1.457,
+   "bottleneck": "BARRELS",
+   "internal_min_width_mm": 0.55,
+   "legal": false
+  },
+  {
+   "xy_mm": [
+    53.75,
+    74.35
+   ],
+   "amps": 1.457,
+   "bottleneck": "BARRELS",
+   "internal_min_width_mm": 0.6,
+   "legal": false
+  },
+  {
+   "xy_mm": [
+    53.8,
+    74.35
+   ],
+   "amps": 1.457,
+   "bottleneck": "BARRELS",
+   "internal_min_width_mm": 0.6,
+   "legal": false
+  },
+  {
+   "xy_mm": [
+    53.85,
+    74.35
+   ],
+   "amps": 1.457,
+   "bottleneck": "BARRELS",
+   "internal_min_width_mm": 3.0,
+   "legal": false
+  },
+  {
+   "xy_mm": [
+    53.9,
+    74.35
+   ],
+   "amps": 1.457,
+   "bottleneck": "BARRELS",
+   "internal_min_width_mm": 3.0,
+   "legal": false
+  },
+  {
+   "xy_mm": [
+    53.95,
+    74.35
+   ],
+   "amps": 1.457,
+   "bottleneck": "BARRELS",
+   "internal_min_width_mm": 3.0,
+   "legal": false
+  },
+  {
+   "xy_mm": [
+    54.0,
+    74.35
+   ],
+   "amps": 1.457,
+   "bottleneck": "BARRELS",
+   "internal_min_width_mm": 3.0,
+   "legal": false
+  },
+  {
+   "xy_mm": [
+    54.05,
+    74.35
+   ],
+   "amps": 1.457,
+   "bottleneck": "BARRELS",
+   "internal_min_width_mm": 3.0,
+   "legal": false
+  },
+  {
+   "xy_mm": [
+    54.1,
+    74.35
+   ],
+   "amps": 1.457,
+   "bottleneck": "BARRELS",
+   "internal_min_width_mm": 3.0,
+   "legal": false
+  },
+  {
+   "xy_mm": [
+    54.15,
+    74.35
+   ],
+   "amps": 1.457,
+   "bottleneck": "BARRELS",
+   "internal_min_width_mm": 3.0,
+   "legal": false
+  },
+  {
+   "xy_mm": [
+    54.2,
+    74.35
+   ],
+   "amps": 1.457,
+   "bottleneck": "BARRELS",
+   "internal_min_width_mm": 3.0,
+   "legal": false
+  },
+  {
+   "xy_mm": [
+    54.25,
+    74.35
+   ],
+   "amps": 1.457,
+   "bottleneck": "BARRELS",
+   "internal_min_width_mm": 3.0,
+   "legal": false
+  },
+  {
+   "xy_mm": [
+    54.3,
+    74.35
+   ],
+   "amps": 1.457,
+   "bottleneck": "BARRELS",
+   "internal_min_width_mm": 3.0,
+   "legal": false
+  },
+  {
+   "xy_mm": [
+    54.35,
+    74.35
+   ],
+   "amps": 1.457,
+   "bottleneck": "BARRELS",
+   "internal_min_width_mm": 3.0,
+   "legal": false
+  },
+  {
+   "xy_mm": [
+    54.4,
+    74.35
+   ],
+   "amps": 1.457,
+   "bottleneck": "BARRELS",
+   "internal_min_width_mm": 3.0,
+   "legal": false
+  },
+  {
+   "xy_mm": [
+    54.45,
+    74.35
+   ],
+   "amps": 1.441,
+   "bottleneck": "FRAGMENT_COPPER",
+   "internal_min_width_mm": 0.5,
+   "legal": false
+  },
+  {
+   "xy_mm": [
+    54.5,
+    74.35
+   ],
+   "amps": 1.335,
+   "bottleneck": "FRAGMENT_COPPER",
+   "internal_min_width_mm": 0.45,
+   "legal": false
+  },
+  {
+   "xy_mm": [
+    54.55,
+    74.35
+   ],
+   "amps": 1.335,
+   "bottleneck": "FRAGMENT_COPPER",
+   "internal_min_width_mm": 0.45,
+   "legal": false
+  },
+  {
+   "xy_mm": [
+    54.6,
+    74.35
+   ],
+   "amps": 1.335,
+   "bottleneck": "FRAGMENT_COPPER",
+   "internal_min_width_mm": 0.45,
+   "legal": false
+  },
+  {
+   "xy_mm": [
+    54.65,
+    74.35
+   ],
+   "amps": 1.226,
+   "bottleneck": "FRAGMENT_COPPER",
+   "internal_min_width_mm": 0.4,
+   "legal": false
+  },
+  {
+   "xy_mm": [
+    54.7,
+    74.35
+   ],
+   "amps": 1.226,
+   "bottleneck": "FRAGMENT_COPPER",
+   "internal_min_width_mm": 0.4,
+   "legal": false
+  },
+  {
+   "xy_mm": [
+    54.75,
+    74.35
+   ],
+   "amps": 1.226,
+   "bottleneck": "FRAGMENT_COPPER",
+   "internal_min_width_mm": 0.4,
+   "legal": false
+  },
+  {
+   "xy_mm": [
+    54.8,
+    74.35
+   ],
+   "amps": 1.113,
+   "bottleneck": "FRAGMENT_COPPER",
+   "internal_min_width_mm": 0.35,
+   "legal": false
+  },
+  {
+   "xy_mm": [
+    54.85,
+    74.35
+   ],
+   "amps": 1.113,
+   "bottleneck": "FRAGMENT_COPPER",
+   "internal_min_width_mm": 0.35,
+   "legal": false
+  },
+  {
+   "xy_mm": [
+    53.4,
+    74.4
+   ],
+   "amps": 1.113,
+   "bottleneck": "FRAGMENT_COPPER",
+   "internal_min_width_mm": 0.35,
+   "legal": false
+  },
+  {
+   "xy_mm": [
+    53.45,
+    74.4
+   ],
+   "amps": 1.113,
+   "bottleneck": "FRAGMENT_COPPER",
+   "internal_min_width_mm": 0.35,
+   "legal": false
+  },
+  {
+   "xy_mm": [
+    53.5,
+    74.4
+   ],
+   "amps": 1.226,
+   "bottleneck": "FRAGMENT_COPPER",
+   "internal_min_width_mm": 0.4,
+   "legal": false
+  },
+  {
+   "xy_mm": [
+    53.55,
+    74.4
+   ],
+   "amps": 1.335,
+   "bottleneck": "FRAGMENT_COPPER",
+   "internal_min_width_mm": 0.45,
+   "legal": false
+  },
+  {
+   "xy_mm": [
+    53.6,
+    74.4
+   ],
+   "amps": 1.335,
+   "bottleneck": "FRAGMENT_COPPER",
+   "internal_min_width_mm": 0.45,
+   "legal": false
+  },
+  {
+   "xy_mm": [
+    53.65,
+    74.4
+   ],
+   "amps": 1.441,
+   "bottleneck": "FRAGMENT_COPPER",
+   "internal_min_width_mm": 0.5,
+   "legal": false
+  },
+  {
+   "xy_mm": [
+    53.7,
+    74.4
+   ],
+   "amps": 1.457,
+   "bottleneck": "BARRELS",
+   "internal_min_width_mm": 0.55,
+   "legal": false
+  },
+  {
+   "xy_mm": [
+    53.75,
+    74.4
+   ],
+   "amps": 1.457,
+   "bottleneck": "BARRELS",
+   "internal_min_width_mm": 0.55,
+   "legal": false
+  },
+  {
+   "xy_mm": [
+    53.8,
+    74.4
+   ],
+   "amps": 1.457,
+   "bottleneck": "BARRELS",
+   "internal_min_width_mm": 0.6,
+   "legal": false
+  },
+  {
+   "xy_mm": [
+    53.85,
+    74.4
+   ],
+   "amps": 1.457,
+   "bottleneck": "BARRELS",
+   "internal_min_width_mm": 3.0,
+   "legal": false
+  },
+  {
+   "xy_mm": [
+    53.9,
+    74.4
+   ],
+   "amps": 1.457,
+   "bottleneck": "BARRELS",
+   "internal_min_width_mm": 3.0,
+   "legal": false
+  },
+  {
+   "xy_mm": [
+    53.95,
+    74.4
+   ],
+   "amps": 1.457,
+   "bottleneck": "BARRELS",
+   "internal_min_width_mm": 3.0,
+   "legal": false
+  },
+  {
+   "xy_mm": [
+    54.0,
+    74.4
+   ],
+   "amps": 1.457,
+   "bottleneck": "BARRELS",
+   "internal_min_width_mm": 3.0,
+   "legal": false
+  },
+  {
+   "xy_mm": [
+    54.05,
+    74.4
+   ],
+   "amps": 1.457,
+   "bottleneck": "BARRELS",
+   "internal_min_width_mm": 3.0,
+   "legal": false
+  },
+  {
+   "xy_mm": [
+    54.1,
+    74.4
+   ],
+   "amps": 1.457,
+   "bottleneck": "BARRELS",
+   "internal_min_width_mm": 3.0,
+   "legal": false
+  },
+  {
+   "xy_mm": [
+    54.15,
+    74.4
+   ],
+   "amps": 1.457,
+   "bottleneck": "BARRELS",
+   "internal_min_width_mm": 3.0,
+   "legal": false
+  },
+  {
+   "xy_mm": [
+    54.2,
+    74.4
+   ],
+   "amps": 1.457,
+   "bottleneck": "BARRELS",
+   "internal_min_width_mm": 3.0,
+   "legal": false
+  },
+  {
+   "xy_mm": [
+    54.25,
+    74.4
+   ],
+   "amps": 1.457,
+   "bottleneck": "BARRELS",
+   "internal_min_width_mm": 3.0,
+   "legal": false
+  },
+  {
+   "xy_mm": [
+    54.3,
+    74.4
+   ],
+   "amps": 1.457,
+   "bottleneck": "BARRELS",
+   "internal_min_width_mm": 3.0,
+   "legal": false
+  },
+  {
+   "xy_mm": [
+    54.35,
+    74.4
+   ],
+   "amps": 1.457,
+   "bottleneck": "BARRELS",
+   "internal_min_width_mm": 3.0,
+   "legal": false
+  },
+  {
+   "xy_mm": [
+    54.4,
+    74.4
+   ],
+   "amps": 1.457,
+   "bottleneck": "BARRELS",
+   "internal_min_width_mm": 3.0,
+   "legal": false
+  },
+  {
+   "xy_mm": [
+    54.45,
+    74.4
+   ],
+   "amps": 1.457,
+   "bottleneck": "BARRELS",
+   "internal_min_width_mm": 3.0,
+   "legal": false
+  },
+  {
+   "xy_mm": [
+    54.5,
+    74.4
+   ],
+   "amps": 1.335,
+   "bottleneck": "FRAGMENT_COPPER",
+   "internal_min_width_mm": 0.45,
+   "legal": false
+  },
+  {
+   "xy_mm": [
+    54.55,
+    74.4
+   ],
+   "amps": 1.335,
+   "bottleneck": "FRAGMENT_COPPER",
+   "internal_min_width_mm": 0.45,
+   "legal": false
+  },
+  {
+   "xy_mm": [
+    54.6,
+    74.4
+   ],
+   "amps": 1.335,
+   "bottleneck": "FRAGMENT_COPPER",
+   "internal_min_width_mm": 0.45,
+   "legal": false
+  },
+  {
+   "xy_mm": [
+    54.65,
+    74.4
+   ],
+   "amps": 1.226,
+   "bottleneck": "FRAGMENT_COPPER",
+   "internal_min_width_mm": 0.4,
+   "legal": false
+  },
+  {
+   "xy_mm": [
+    54.7,
+    74.4
+   ],
+   "amps": 1.226,
+   "bottleneck": "FRAGMENT_COPPER",
+   "internal_min_width_mm": 0.4,
+   "legal": false
+  },
+  {
+   "xy_mm": [
+    54.75,
+    74.4
+   ],
+   "amps": 1.226,
+   "bottleneck": "FRAGMENT_COPPER",
+   "internal_min_width_mm": 0.4,
+   "legal": false
+  },
+  {
+   "xy_mm": [
+    54.8,
+    74.4
+   ],
+   "amps": 1.113,
+   "bottleneck": "FRAGMENT_COPPER",
+   "internal_min_width_mm": 0.35,
+   "legal": false
+  },
+  {
+   "xy_mm": [
+    54.85,
+    74.4
+   ],
+   "amps": 1.113,
+   "bottleneck": "FRAGMENT_COPPER",
+   "internal_min_width_mm": 0.35,
+   "legal": false
+  },
+  {
+   "xy_mm": [
+    53.4,
+    74.45
+   ],
+   "amps": 1.113,
+   "bottleneck": "FRAGMENT_COPPER",
+   "internal_min_width_mm": 0.35,
+   "legal": false
+  },
+  {
+   "xy_mm": [
+    53.45,
+    74.45
+   ],
+   "amps": 1.113,
+   "bottleneck": "FRAGMENT_COPPER",
+   "internal_min_width_mm": 0.35,
+   "legal": false
+  },
+  {
+   "xy_mm": [
+    53.5,
+    74.45
+   ],
+   "amps": 1.226,
+   "bottleneck": "FRAGMENT_COPPER",
+   "internal_min_width_mm": 0.4,
+   "legal": false
+  },
+  {
+   "xy_mm": [
+    53.55,
+    74.45
+   ],
+   "amps": 1.335,
+   "bottleneck": "FRAGMENT_COPPER",
+   "internal_min_width_mm": 0.45,
+   "legal": false
+  },
+  {
+   "xy_mm": [
+    53.6,
+    74.45
+   ],
+   "amps": 1.335,
+   "bottleneck": "FRAGMENT_COPPER",
+   "internal_min_width_mm": 0.45,
+   "legal": false
+  },
+  {
+   "xy_mm": [
+    53.65,
+    74.45
+   ],
+   "amps": 1.441,
+   "bottleneck": "FRAGMENT_COPPER",
+   "internal_min_width_mm": 0.5,
+   "legal": false
+  },
+  {
+   "xy_mm": [
+    53.7,
+    74.45
+   ],
+   "amps": 1.441,
+   "bottleneck": "FRAGMENT_COPPER",
+   "internal_min_width_mm": 0.5,
+   "legal": false
+  },
+  {
+   "xy_mm": [
+    53.75,
+    74.45
+   ],
+   "amps": 1.457,
+   "bottleneck": "BARRELS",
+   "internal_min_width_mm": 0.55,
+   "legal": false
+  },
+  {
+   "xy_mm": [
+    53.8,
+    74.45
+   ],
+   "amps": 1.457,
+   "bottleneck": "BARRELS",
+   "internal_min_width_mm": 0.55,
+   "legal": false
+  },
+  {
+   "xy_mm": [
+    53.85,
+    74.45
+   ],
+   "amps": 1.457,
+   "bottleneck": "BARRELS",
+   "internal_min_width_mm": 3.0,
+   "legal": false
+  },
+  {
+   "xy_mm": [
+    53.9,
+    74.45
+   ],
+   "amps": 1.457,
+   "bottleneck": "BARRELS",
+   "internal_min_width_mm": 3.0,
+   "legal": false
+  },
+  {
+   "xy_mm": [
+    53.95,
+    74.45
+   ],
+   "amps": 1.457,
+   "bottleneck": "BARRELS",
+   "internal_min_width_mm": 3.0,
+   "legal": false
+  },
+  {
+   "xy_mm": [
+    54.0,
+    74.45
+   ],
+   "amps": 1.457,
+   "bottleneck": "BARRELS",
+   "internal_min_width_mm": 3.0,
+   "legal": false
+  },
+  {
+   "xy_mm": [
+    54.05,
+    74.45
+   ],
+   "amps": 1.457,
+   "bottleneck": "BARRELS",
+   "internal_min_width_mm": 3.0,
+   "legal": false
+  },
+  {
+   "xy_mm": [
+    54.1,
+    74.45
+   ],
+   "amps": 1.457,
+   "bottleneck": "BARRELS",
+   "internal_min_width_mm": 3.0,
+   "legal": false
+  },
+  {
+   "xy_mm": [
+    54.15,
+    74.45
+   ],
+   "amps": 1.457,
+   "bottleneck": "BARRELS",
+   "internal_min_width_mm": 3.0,
+   "legal": false
+  },
+  {
+   "xy_mm": [
+    54.2,
+    74.45
+   ],
+   "amps": 1.457,
+   "bottleneck": "BARRELS",
+   "internal_min_width_mm": 3.0,
+   "legal": false
+  },
+  {
+   "xy_mm": [
+    54.25,
+    74.45
+   ],
+   "amps": 1.457,
+   "bottleneck": "BARRELS",
+   "internal_min_width_mm": 3.0,
+   "legal": false
+  },
+  {
+   "xy_mm": [
+    54.3,
+    74.45
+   ],
+   "amps": 1.457,
+   "bottleneck": "BARRELS",
+   "internal_min_width_mm": 3.0,
+   "legal": false
+  },
+  {
+   "xy_mm": [
+    54.35,
+    74.45
+   ],
+   "amps": 1.457,
+   "bottleneck": "BARRELS",
+   "internal_min_width_mm": 3.0,
+   "legal": false
+  },
+  {
+   "xy_mm": [
+    54.4,
+    74.45
+   ],
+   "amps": 1.457,
+   "bottleneck": "BARRELS",
+   "internal_min_width_mm": 3.0,
+   "legal": false
+  },
+  {
+   "xy_mm": [
+    54.45,
+    74.45
+   ],
+   "amps": 1.457,
+   "bottleneck": "BARRELS",
+   "internal_min_width_mm": 3.0,
+   "legal": false
+  },
+  {
+   "xy_mm": [
+    54.5,
+    74.45
+   ],
+   "amps": 1.335,
+   "bottleneck": "FRAGMENT_COPPER",
+   "internal_min_width_mm": 0.45,
+   "legal": false
+  },
+  {
+   "xy_mm": [
+    54.55,
+    74.45
+   ],
+   "amps": 1.335,
+   "bottleneck": "FRAGMENT_COPPER",
+   "internal_min_width_mm": 0.45,
+   "legal": false
+  },
+  {
+   "xy_mm": [
+    54.6,
+    74.45
+   ],
+   "amps": 1.335,
+   "bottleneck": "FRAGMENT_COPPER",
+   "internal_min_width_mm": 0.45,
+   "legal": false
+  },
+  {
+   "xy_mm": [
+    54.65,
+    74.45
+   ],
+   "amps": 1.226,
+   "bottleneck": "FRAGMENT_COPPER",
+   "internal_min_width_mm": 0.4,
+   "legal": false
+  },
+  {
+   "xy_mm": [
+    54.7,
+    74.45
+   ],
+   "amps": 1.226,
+   "bottleneck": "FRAGMENT_COPPER",
+   "internal_min_width_mm": 0.4,
+   "legal": false
+  },
+  {
+   "xy_mm": [
+    54.75,
+    74.45
+   ],
+   "amps": 1.226,
+   "bottleneck": "FRAGMENT_COPPER",
+   "internal_min_width_mm": 0.4,
+   "legal": false
+  },
+  {
+   "xy_mm": [
+    54.8,
+    74.45
+   ],
+   "amps": 1.113,
+   "bottleneck": "FRAGMENT_COPPER",
+   "internal_min_width_mm": 0.35,
+   "legal": false
+  },
+  {
+   "xy_mm": [
+    54.85,
+    74.45
+   ],
+   "amps": 1.113,
+   "bottleneck": "FRAGMENT_COPPER",
+   "internal_min_width_mm": 0.35,
+   "legal": false
+  },
+  {
+   "xy_mm": [
+    53.45,
+    74.5
+   ],
+   "amps": 1.113,
+   "bottleneck": "FRAGMENT_COPPER",
+   "internal_min_width_mm": 0.35,
+   "legal": false
+  },
+  {
+   "xy_mm": [
+    53.5,
+    74.5
+   ],
+   "amps": 1.113,
+   "bottleneck": "FRAGMENT_COPPER",
+   "internal_min_width_mm": 0.35,
+   "legal": false
+  },
+  {
+   "xy_mm": [
+    53.55,
+    74.5
+   ],
+   "amps": 1.226,
+   "bottleneck": "FRAGMENT_COPPER",
+   "internal_min_width_mm": 0.4,
+   "legal": false
+  },
+  {
+   "xy_mm": [
+    53.6,
+    74.5
+   ],
+   "amps": 1.226,
+   "bottleneck": "FRAGMENT_COPPER",
+   "internal_min_width_mm": 0.4,
+   "legal": false
+  },
+  {
+   "xy_mm": [
+    53.65,
+    74.5
+   ],
+   "amps": 1.335,
+   "bottleneck": "FRAGMENT_COPPER",
+   "internal_min_width_mm": 0.45,
+   "legal": false
+  },
+  {
+   "xy_mm": [
+    53.7,
+    74.5
+   ],
+   "amps": 1.335,
+   "bottleneck": "FRAGMENT_COPPER",
+   "internal_min_width_mm": 0.45,
+   "legal": false
+  },
+  {
+   "xy_mm": [
+    53.75,
+    74.5
+   ],
+   "amps": 1.335,
+   "bottleneck": "FRAGMENT_COPPER",
+   "internal_min_width_mm": 0.45,
+   "legal": false
+  },
+  {
+   "xy_mm": [
+    53.8,
+    74.5
+   ],
+   "amps": 1.335,
+   "bottleneck": "FRAGMENT_COPPER",
+   "internal_min_width_mm": 0.45,
+   "legal": false
+  },
+  {
+   "xy_mm": [
+    53.85,
+    74.5
+   ],
+   "amps": 1.457,
+   "bottleneck": "BARRELS",
+   "internal_min_width_mm": 3.0,
+   "legal": false
+  },
+  {
+   "xy_mm": [
+    53.9,
+    74.5
+   ],
+   "amps": 1.457,
+   "bottleneck": "BARRELS",
+   "internal_min_width_mm": 3.0,
+   "legal": false
+  },
+  {
+   "xy_mm": [
+    53.95,
+    74.5
+   ],
+   "amps": 1.457,
+   "bottleneck": "BARRELS",
+   "internal_min_width_mm": 3.0,
+   "legal": false
+  },
+  {
+   "xy_mm": [
+    54.0,
+    74.5
+   ],
+   "amps": 1.457,
+   "bottleneck": "BARRELS",
+   "internal_min_width_mm": 3.0,
+   "legal": false
+  },
+  {
+   "xy_mm": [
+    54.05,
+    74.5
+   ],
+   "amps": 1.457,
+   "bottleneck": "BARRELS",
+   "internal_min_width_mm": 3.0,
+   "legal": false
+  },
+  {
+   "xy_mm": [
+    54.1,
+    74.5
+   ],
+   "amps": 1.457,
+   "bottleneck": "BARRELS",
+   "internal_min_width_mm": 3.0,
+   "legal": false
+  },
+  {
+   "xy_mm": [
+    54.15,
+    74.5
+   ],
+   "amps": 1.457,
+   "bottleneck": "BARRELS",
+   "internal_min_width_mm": 3.0,
+   "legal": false
+  },
+  {
+   "xy_mm": [
+    54.2,
+    74.5
+   ],
+   "amps": 1.457,
+   "bottleneck": "BARRELS",
+   "internal_min_width_mm": 3.0,
+   "legal": false
+  },
+  {
+   "xy_mm": [
+    54.25,
+    74.5
+   ],
+   "amps": 1.457,
+   "bottleneck": "BARRELS",
+   "internal_min_width_mm": 3.0,
+   "legal": false
+  },
+  {
+   "xy_mm": [
+    54.3,
+    74.5
+   ],
+   "amps": 1.457,
+   "bottleneck": "BARRELS",
+   "internal_min_width_mm": 3.0,
+   "legal": false
+  },
+  {
+   "xy_mm": [
+    54.35,
+    74.5
+   ],
+   "amps": 1.457,
+   "bottleneck": "BARRELS",
+   "internal_min_width_mm": 3.0,
+   "legal": false
+  },
+  {
+   "xy_mm": [
+    54.4,
+    74.5
+   ],
+   "amps": 1.457,
+   "bottleneck": "BARRELS",
+   "internal_min_width_mm": 3.0,
+   "legal": false
+  },
+  {
+   "xy_mm": [
+    54.45,
+    74.5
+   ],
+   "amps": 1.226,
+   "bottleneck": "FRAGMENT_COPPER",
+   "internal_min_width_mm": 0.4,
+   "legal": false
+  },
+  {
+   "xy_mm": [
+    54.5,
+    74.5
+   ],
+   "amps": 1.226,
+   "bottleneck": "FRAGMENT_COPPER",
+   "internal_min_width_mm": 0.4,
+   "legal": false
+  },
+  {
+   "xy_mm": [
+    54.55,
+    74.5
+   ],
+   "amps": 1.226,
+   "bottleneck": "FRAGMENT_COPPER",
+   "internal_min_width_mm": 0.4,
+   "legal": false
+  },
+  {
+   "xy_mm": [
+    54.6,
+    74.5
+   ],
+   "amps": 1.226,
+   "bottleneck": "FRAGMENT_COPPER",
+   "internal_min_width_mm": 0.4,
+   "legal": false
+  },
+  {
+   "xy_mm": [
+    54.65,
+    74.5
+   ],
+   "amps": 1.226,
+   "bottleneck": "FRAGMENT_COPPER",
+   "internal_min_width_mm": 0.4,
+   "legal": false
+  },
+  {
+   "xy_mm": [
+    54.7,
+    74.5
+   ],
+   "amps": 1.226,
+   "bottleneck": "FRAGMENT_COPPER",
+   "internal_min_width_mm": 0.4,
+   "legal": false
+  },
+  {
+   "xy_mm": [
+    54.75,
+    74.5
+   ],
+   "amps": 1.226,
+   "bottleneck": "FRAGMENT_COPPER",
+   "internal_min_width_mm": 0.4,
+   "legal": false
+  },
+  {
+   "xy_mm": [
+    54.8,
+    74.5
+   ],
+   "amps": 1.113,
+   "bottleneck": "FRAGMENT_COPPER",
+   "internal_min_width_mm": 0.35,
+   "legal": false
+  },
+  {
+   "xy_mm": [
+    53.5,
+    74.55
+   ],
+   "amps": 1.113,
+   "bottleneck": "FRAGMENT_COPPER",
+   "internal_min_width_mm": 0.35,
+   "legal": false
+  },
+  {
+   "xy_mm": [
+    53.55,
+    74.55
+   ],
+   "amps": 1.113,
+   "bottleneck": "FRAGMENT_COPPER",
+   "internal_min_width_mm": 0.35,
+   "legal": false
+  },
+  {
+   "xy_mm": [
+    53.6,
+    74.55
+   ],
+   "amps": 1.113,
+   "bottleneck": "FRAGMENT_COPPER",
+   "internal_min_width_mm": 0.35,
+   "legal": false
+  },
+  {
+   "xy_mm": [
+    53.65,
+    74.55
+   ],
+   "amps": 1.113,
+   "bottleneck": "FRAGMENT_COPPER",
+   "internal_min_width_mm": 0.35,
+   "legal": false
+  },
+  {
+   "xy_mm": [
+    53.7,
+    74.55
+   ],
+   "amps": 1.113,
+   "bottleneck": "FRAGMENT_COPPER",
+   "internal_min_width_mm": 0.35,
+   "legal": false
+  },
+  {
+   "xy_mm": [
+    53.75,
+    74.55
+   ],
+   "amps": 1.113,
+   "bottleneck": "FRAGMENT_COPPER",
+   "internal_min_width_mm": 0.35,
+   "legal": false
+  },
+  {
+   "xy_mm": [
+    53.8,
+    74.55
+   ],
+   "amps": 1.113,
+   "bottleneck": "FRAGMENT_COPPER",
+   "internal_min_width_mm": 0.35,
+   "legal": false
+  },
+  {
+   "xy_mm": [
+    53.85,
+    74.55
+   ],
+   "amps": 1.457,
+   "bottleneck": "BARRELS",
+   "internal_min_width_mm": 3.0,
+   "legal": false
+  },
+  {
+   "xy_mm": [
+    53.9,
+    74.55
+   ],
+   "amps": 1.457,
+   "bottleneck": "BARRELS",
+   "internal_min_width_mm": 3.0,
+   "legal": false
+  },
+  {
+   "xy_mm": [
+    53.95,
+    74.55
+   ],
+   "amps": 1.457,
+   "bottleneck": "BARRELS",
+   "internal_min_width_mm": 3.0,
+   "legal": false
+  },
+  {
+   "xy_mm": [
+    54.0,
+    74.55
+   ],
+   "amps": 1.457,
+   "bottleneck": "BARRELS",
+   "internal_min_width_mm": 3.0,
+   "legal": false
+  },
+  {
+   "xy_mm": [
+    54.05,
+    74.55
+   ],
+   "amps": 1.457,
+   "bottleneck": "BARRELS",
+   "internal_min_width_mm": 3.0,
+   "legal": false
+  },
+  {
+   "xy_mm": [
+    54.1,
+    74.55
+   ],
+   "amps": 1.457,
+   "bottleneck": "BARRELS",
+   "internal_min_width_mm": 3.0,
+   "legal": false
+  },
+  {
+   "xy_mm": [
+    54.15,
+    74.55
+   ],
+   "amps": 1.457,
+   "bottleneck": "BARRELS",
+   "internal_min_width_mm": 3.0,
+   "legal": false
+  },
+  {
+   "xy_mm": [
+    54.2,
+    74.55
+   ],
+   "amps": 1.457,
+   "bottleneck": "BARRELS",
+   "internal_min_width_mm": 3.0,
+   "legal": false
+  },
+  {
+   "xy_mm": [
+    54.25,
+    74.55
+   ],
+   "amps": 1.457,
+   "bottleneck": "BARRELS",
+   "internal_min_width_mm": 3.0,
+   "legal": false
+  },
+  {
+   "xy_mm": [
+    54.3,
+    74.55
+   ],
+   "amps": 1.457,
+   "bottleneck": "BARRELS",
+   "internal_min_width_mm": 3.0,
+   "legal": false
+  },
+  {
+   "xy_mm": [
+    54.35,
+    74.55
+   ],
+   "amps": 1.457,
+   "bottleneck": "BARRELS",
+   "internal_min_width_mm": 3.0,
+   "legal": false
+  },
+  {
+   "xy_mm": [
+    54.4,
+    74.55
+   ],
+   "amps": 1.457,
+   "bottleneck": "BARRELS",
+   "internal_min_width_mm": 3.0,
+   "legal": false
+  },
+  {
+   "xy_mm": [
+    53.9,
+    74.6
+   ],
+   "amps": 1.457,
+   "bottleneck": "BARRELS",
+   "internal_min_width_mm": 3.0,
+   "legal": false
+  },
+  {
+   "xy_mm": [
+    53.95,
+    74.6
+   ],
+   "amps": 1.457,
+   "bottleneck": "BARRELS",
+   "internal_min_width_mm": 3.0,
+   "legal": false
+  },
+  {
+   "xy_mm": [
+    54.0,
+    74.6
+   ],
+   "amps": 1.457,
+   "bottleneck": "BARRELS",
+   "internal_min_width_mm": 3.0,
+   "legal": false
+  },
+  {
+   "xy_mm": [
+    54.05,
+    74.6
+   ],
+   "amps": 1.457,
+   "bottleneck": "BARRELS",
+   "internal_min_width_mm": 3.0,
+   "legal": false
+  },
+  {
+   "xy_mm": [
+    54.1,
+    74.6
+   ],
+   "amps": 1.457,
+   "bottleneck": "BARRELS",
+   "internal_min_width_mm": 3.0,
+   "legal": false
+  },
+  {
+   "xy_mm": [
+    54.15,
+    74.6
+   ],
+   "amps": 1.457,
+   "bottleneck": "BARRELS",
+   "internal_min_width_mm": 3.0,
+   "legal": false
+  },
+  {
+   "xy_mm": [
+    54.2,
+    74.6
+   ],
+   "amps": 1.457,
+   "bottleneck": "BARRELS",
+   "internal_min_width_mm": 3.0,
+   "legal": false
+  },
+  {
+   "xy_mm": [
+    54.25,
+    74.6
+   ],
+   "amps": 1.457,
+   "bottleneck": "BARRELS",
+   "internal_min_width_mm": 3.0,
+   "legal": false
+  },
+  {
+   "xy_mm": [
+    54.3,
+    74.6
+   ],
+   "amps": 1.457,
+   "bottleneck": "BARRELS",
+   "internal_min_width_mm": 3.0,
+   "legal": false
+  },
+  {
+   "xy_mm": [
+    54.35,
+    74.6
+   ],
+   "amps": 1.457,
+   "bottleneck": "BARRELS",
+   "internal_min_width_mm": 3.0,
+   "legal": false
+  },
+  {
+   "xy_mm": [
+    54.4,
+    74.6
+   ],
+   "amps": 1.457,
+   "bottleneck": "BARRELS",
+   "internal_min_width_mm": 3.0,
+   "legal": false
+  }
+ ]
+}

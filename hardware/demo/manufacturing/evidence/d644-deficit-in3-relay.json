@@ -1,0 +1,299 @@
+{
+ "authoritative_unchanged": null,
+ "board": "/tmp/d644/noin3/aqroot-Beta-v2.kicad_pcb",
+ "board_floors": {
+  "annular_min_nm": 125000,
+  "min_through_hole_diameter_nm": 200000,
+  "min_via_diameter_nm": 500000
+ },
+ "board_sha256": "8d2f02f79ddb66bacb629f568ec368bafc3260ecef1aaf335aa38a80c7b44c31",
+ "dia_ladder": [
+  600000,
+  500000,
+  450000,
+  400000,
+  350000,
+  300000,
+  250000,
+  200000,
+  150000,
+  100000
+ ],
+ "drill_rule": "the drill is the project's own min_through_hole_diameter wherever the 0.125 mm annular ring fits around it, because a wider drill would overstate the deficit",
+ "fragment_board": "w/d643/gate-extsda/aqroot-Beta-v2.kicad_pcb",
+ "fragment_board_sha256": "4807bf6fe9353fc2bd96d094abe3793ef24650156b84a8de350b6259a7555b08",
+ "grid": 50000,
+ "guard": null,
+ "lattice": {
+  "cells": 18501444,
+  "grid_mm": 0.05,
+  "grid_nm": 50000,
+  "layers": 4,
+  "nx": 1521,
+  "ny": 3041
+ },
+ "method": "read-only; screen_bond_ladder.island_barrel over a DIAMETER ladder, on the same Field, .kicad_dru overlay and pour-bond guard a gated run builds",
+ "pads": [
+  {
+   "best_site_xy_mm": [
+    49.95,
+    78.15
+   ],
+   "blame": {
+    "at_dia_nm": 500000,
+    "at_drill_nm": 200000,
+    "fragment": {
+     "binding": "B",
+     "cells_each_term_admits": {
+      "B": 452,
+      "F": 601,
+      "I1": 1697,
+      "I2": 920,
+      "I3": 1697,
+      "I4": 1697,
+      "hole_to_hole": 1885
+     },
+     "cells_refused_by_this_term_alone": {
+      "B": 199,
+      "F": 293,
+      "I1": 0,
+      "I2": 59,
+      "I3": 0,
+      "I4": 0,
+      "hole_to_hole": 0
+     },
+     "fragment_cells": 1885,
+     "sole_blame_objects": {
+      "B": {
+       "bbox_mm": [
+        48.9,
+        77.7,
+        50.0,
+        79.1
+       ],
+       "blockers": [
+        {
+         "cells": 172,
+         "object": "/08_BUTTONS_EXPANDERS/BTN_UP_N|track"
+        },
+        {
+         "cells": 50,
+         "object": "+3V3|C4.1"
+        },
+        {
+         "cells": 1,
+         "object": "+3V3|track"
+        }
+       ],
+       "cells": 199
+      },
+      "F": {
+       "bbox_mm": [
+        51.6,
+        75.15,
+        52.95,
+        76.45
+       ],
+       "blockers": [
+        {
+         "cells": 293,
+         "object": "/01_POWER_TREE/BAT_PROTECTED_P|track"
+        }
+       ],
+       "cells": 293
+      },
+      "I2": {
+       "bbox_mm": [
+        50.05,
+        77.3,
+        50.7,
+        78.2
+       ],
+       "blockers": [
+        {
+         "cells": 53,
+         "object": "/ACC_3V3_SW|track"
+        }
+       ],
+       "cells": 59
+      }
+     }
+    }
+   },
+   "deficit_mm": 0.0,
+   "floor_mm": 0.5,
+   "fragment_mm2": 4.724,
+   "headroom_any_mm": 0.6,
+   "headroom_promotable_mm": 0.6,
+   "island_mm2": 10.282,
+   "ladder_floor": {
+    "dia_nm": 250000,
+    "why": "a 0.250 mm barrel cannot carry a hole and the 0.125 mm annular ring at once"
+   },
+   "net": "GND",
+   "pad": "U3.12",
+   "placement": {
+    "layers": [
+     "B.Cu"
+    ],
+    "lkey": "B",
+    "size_mm": [
+     1.475,
+     0.4
+    ],
+    "xy_mm": [
+     54.1375,
+     74.425
+    ],
+    "xy_nm": [
+     54137500,
+     74425000
+    ]
+   },
+   "rungs": [
+    {
+     "fragment_site_xy_mm": [
+      49.95,
+      78.15
+     ],
+     "island_sites": 99,
+     "lands_on_reserved_plane": true,
+     "nearest_site_mm": 2.571,
+     "nearest_site_xy_mm": [
+      52.85,
+      76.65
+     ],
+     "promotable": true,
+     "reason": null,
+     "seconds": 2.0,
+     "sites_in_fragment": 4,
+     "via_dia_nm": 600000,
+     "via_drill_nm": 200000,
+     "via_mm": [
+      0.6,
+      0.2
+     ]
+    },
+    {
+     "fragment_site_xy_mm": [
+      50.0,
+      78.0
+     ],
+     "island_sites": 221,
+     "lands_on_reserved_plane": true,
+     "nearest_site_mm": 2.459,
+     "nearest_site_xy_mm": [
+      52.9,
+      76.55
+     ],
+     "promotable": true,
+     "reason": null,
+     "seconds": 4.2,
+     "sites_in_fragment": 55,
+     "via_dia_nm": 500000,
+     "via_drill_nm": 200000,
+     "via_mm": [
+      0.5,
+      0.2
+     ]
+    },
+    {
+     "fragment_site_xy_mm": [
+      50.0,
+      78.0
+     ],
+     "island_sites": 288,
+     "lands_on_reserved_plane": true,
+     "nearest_site_mm": 2.459,
+     "nearest_site_xy_mm": [
+      52.9,
+      76.55
+     ],
+     "promotable": false,
+     "reason": null,
+     "seconds": 2.0,
+     "sites_in_fragment": 73,
+     "via_dia_nm": 450000,
+     "via_drill_nm": 200000,
+     "via_mm": [
+      0.45,
+      0.2
+     ]
+    },
+    {
+     "fragment_site_xy_mm": [
+      50.05,
+      77.9
+     ],
+     "island_sites": 384,
+     "lands_on_reserved_plane": true,
+     "nearest_site_mm": 2.391,
+     "nearest_site_xy_mm": [
+      52.95,
+      76.5
+     ],
+     "promotable": false,
+     "reason": null,
+     "seconds": 2.0,
+     "sites_in_fragment": 105,
+     "via_dia_nm": 400000,
+     "via_drill_nm": 150000,
+     "via_mm": [
+      0.4,
+      0.15
+     ]
+    },
+    {
+     "fragment_site_xy_mm": [
+      50.05,
+      77.85
+     ],
+     "island_sites": 530,
+     "lands_on_reserved_plane": true,
+     "nearest_site_mm": 2.391,
+     "nearest_site_xy_mm": [
+      52.95,
+      76.5
+     ],
+     "promotable": false,
+     "reason": null,
+     "seconds": 2.0,
+     "sites_in_fragment": 140,
+     "via_dia_nm": 350000,
+     "via_drill_nm": 100000,
+     "via_mm": [
+      0.35,
+      0.1
+     ]
+    },
+    {
+     "fragment_site_xy_mm": [
+      51.45,
+      76.7
+     ],
+     "island_sites": 673,
+     "lands_on_reserved_plane": true,
+     "nearest_site_mm": 2.323,
+     "nearest_site_xy_mm": [
+      53.0,
+      76.45
+     ],
+     "promotable": false,
+     "reason": null,
+     "seconds": 1.9,
+     "sites_in_fragment": 187,
+     "via_dia_nm": 300000,
+     "via_drill_nm": 50000,
+     "via_mm": [
+      0.3,
+      0.05
+     ]
+    }
+   ],
+   "unit": "fragment",
+   "verdict": "BONDABLE"
+  }
+ ],
+ "reading": "`headroom_promotable_mm` is the largest barrel this board may SHIP that has a legal site in the unit named by `unit`; `headroom_any_mm` continues below every published floor and is a measurement of what a licence -- or a placement change -- would have to buy, NOT promotable copper.  `deficit_mm` is the gap against board setup's own min_via_diameter and is the number a part move has to close.",
+ "schema": 1
+}
