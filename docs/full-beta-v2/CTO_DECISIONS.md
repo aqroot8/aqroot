@@ -216,6 +216,40 @@ Recorded so the next count that does not add up has somewhere to look.
 
 No owner decision is OPEN.  D-618's `J3` question remains RECORDED.
 
+## ADDENDUM (same session) — THE A/B HOLDS AT TWICE THE RESOLUTION, AND IT REFUTES THIS DECISION'S OWN HAND GEOMETRY
+
+The eight-net A/B in section 5 is a signal-net measurement at 0.100 mm.  The
+whole pour-land escalation ladder was then run on `+3V3` — the board's densest
+open-edge pocket — at **0.050 mm**, off-centre launch on in both arms, one arm
+with the honest model (`evidence/d645-obstacle-model-ab-plus3v3-g50000.json`):
+
+    residual join       blind (0 vias)        honest (799 vias)
+    {U4.2,U4.3}         NO_PATH  16 -> 38     NO_PATH  16 -> 38
+    R39.1               NO_PATH   5 -> 32     NO_PATH   5 -> 32
+    R129.1              NO_PATH   6 -> 35     NO_PATH   6 -> 35
+    U4.5 / U4.8 / U5.2  NO_LEGAL_ESCAPE_SRC   NO_LEGAL_ESCAPE_SRC
+    router seconds      1588.3                1576.5
+    retained open edges 42 -> 42              42 -> 42
+
+**IDENTICAL AGAIN**, verdict for verdict and escape count for escape count, and
+at this pitch the 4794 extra obstacles are inside the noise.
+
+**AND THE PITCH IS NOT THE WALL EITHER.**  Halving the lattice leaves
+`{U4.2,U4.3}` refused at 0.400 mm; what it changes is the BODY's escape count,
+**56 -> 38**, in both arms alike — a lattice effect, not a model one.
+
+**WHAT THIS REFUTES IS THIS DECISION'S OWN WORKING HYPOTHESIS.**  Section 8's
+investigation named a candidate by hand: `U4.6` carries TWO `GND` bonds, and
+the western one reaches into `U4`'s package interior — a 0.600/0.300 barrel at
+(57.700, 70.000) whose keep-out, on paper, closes the only northward window
+`{U4.2,U4.3}` has.  **It is not the discriminator.**  The corridor is refused
+identically whether that barrel is in the obstacle model or not, so the
+`+3V3` / `U4` wall is neither the class floor, nor the lattice pitch, nor the
+barrels the model was missing.  Hand geometry proposed it; the instrument
+refused it; the instrument is the authority.  The next transaction on this
+pocket owes a per-OBJECT blame run — `WithoutObjects` over every routed object
+in `U4`'s courtyard, re-asking `route_join` — and not another guess.
+
 # D-644 · 2026-09-06 · Demo — the QWIIC SDA EDGE IS CLOSED, and its last two walls were ORDINARY SIGNAL TRACKS: a price CEILING screen refutes D-643's own ranked item, `U3.12`'s ground bond turns out to be a **0.150 mm** pour isthmus, and `PP2` is hardened where it could have said YES to a stranded pad
 
     authority  f496d2f39c0827248a47ab7d47efa4322f078b68d2da1d91ae6585d97bf8f875

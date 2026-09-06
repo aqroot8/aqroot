@@ -96,6 +96,19 @@
   duplicate track objects** (91 signatures), `GND` 28 of them -- electrically
   inert, and inert in the Gerber, but they inflate every object count a
   preservation check compares.
+  **ADDENDUM, same session:** the A/B was re-run on `+3V3` with the WHOLE
+  ladder at **0.050 mm**, off-centre launch on in both arms
+  (`evidence/d645-obstacle-model-ab-plus3v3-g50000.json`): **identical again**,
+  verdict for verdict and escape count for escape count (16->38, 5->32, 6->35),
+  1588.3 s blind against 1576.5 s honest, 42 -> 42 in both.  **The pitch is not
+  the wall either** -- halving the lattice leaves `{U4.2,U4.3}` refused at
+  0.400 mm and only moves the BODY's escape count 56 -> 38, in both arms alike.
+  And it **REFUTES this decision's own hand geometry**: `U4.6`'s second `GND`
+  barrel at (57.700, 70.000), reaching into `U4`'s package interior, is NOT the
+  discriminator -- the corridor is refused identically with and without it in
+  the model.  The next transaction on this pocket owes a per-OBJECT blame run
+  (`WithoutObjects` over every routed object in `U4`'s courtyard, re-asking
+  `route_join`), not another guess.
   No owner decision is OPEN.  D-618's `J3` question remains RECORDED.
 - **Demo D-644 (THE QWIIC SDA EDGE IS *CLOSED*, AND ITS LAST TWO WALLS WERE
   ORDINARY SIGNAL TRACKS):**  **COPPER PROMOTED.**  Authority

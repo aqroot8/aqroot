@@ -1,0 +1,139 @@
+{
+ "and_the_pitch": "THE PITCH IS NOT THE WALL EITHER.  Halving the lattice from 0.100 to 0.050 mm leaves {U4.2,U4.3} refused at 0.400 mm; what it changes is the BODY's escape count, 56 -> 38, in both arms alike -- a lattice effect, not a model one.",
+ "blind": {
+  "connectivity": {
+   "nets_improved": [],
+   "nets_regressed": [],
+   "open_retained_nets_after": 20,
+   "open_retained_nets_before": 20,
+   "retained_open_edges_after": 42,
+   "retained_open_edges_before": 42
+  },
+  "mode": "padbridge+stitch+join+islands+orphans",
+  "ok": false,
+  "residual": [
+   {
+    "dst": 38,
+    "island": [
+     "U4.2",
+     "U4.3"
+    ],
+    "reason": "NO_PATH",
+    "src": 16
+   },
+   {
+    "dst": null,
+    "island": [
+     "U4.8"
+    ],
+    "reason": "NO_LEGAL_ESCAPE_SRC",
+    "src": null
+   },
+   {
+    "dst": null,
+    "island": [
+     "U4.5"
+    ],
+    "reason": "NO_LEGAL_ESCAPE_SRC",
+    "src": null
+   },
+   {
+    "dst": null,
+    "island": [
+     "U5.2"
+    ],
+    "reason": "NO_LEGAL_ESCAPE_SRC",
+    "src": null
+   },
+   {
+    "dst": 32,
+    "island": [
+     "R39.1"
+    ],
+    "reason": "NO_PATH",
+    "src": 5
+   },
+   {
+    "dst": 35,
+    "island": [
+     "R129.1"
+    ],
+    "reason": "NO_PATH",
+    "src": 6
+   }
+  ],
+  "seconds": 1588.3,
+  "width": 400000
+ },
+ "board_sha256": "24b85f639cee4cfae797d9372553261ac7591df2626d818c801c8ac53f3f5f9c",
+ "finding": "IDENTICAL AGAIN.  Every residual verdict, every src escape count and every dst escape count matches between the two models: {U4.2,U4.3} NO_PATH 16 -> 38, R39.1 NO_PATH 5 -> 32, R129.1 NO_PATH 6 -> 35, U4.5 / U4.8 / U5.2 NO_LEGAL_ESCAPE_SRC.  1588.3 s blind against 1576.5 s honest -- at this pitch the 4794 extra obstacles are inside the noise.  42 -> 42 in both arms.",
+ "honest": {
+  "connectivity": {
+   "nets_improved": [],
+   "nets_regressed": [],
+   "open_retained_nets_after": 20,
+   "open_retained_nets_before": 20,
+   "retained_open_edges_after": 42,
+   "retained_open_edges_before": 42
+  },
+  "mode": "padbridge+stitch+join+islands+orphans",
+  "ok": false,
+  "residual": [
+   {
+    "dst": 38,
+    "island": [
+     "U4.2",
+     "U4.3"
+    ],
+    "reason": "NO_PATH",
+    "src": 16
+   },
+   {
+    "dst": null,
+    "island": [
+     "U4.8"
+    ],
+    "reason": "NO_LEGAL_ESCAPE_SRC",
+    "src": null
+   },
+   {
+    "dst": null,
+    "island": [
+     "U4.5"
+    ],
+    "reason": "NO_LEGAL_ESCAPE_SRC",
+    "src": null
+   },
+   {
+    "dst": null,
+    "island": [
+     "U5.2"
+    ],
+    "reason": "NO_LEGAL_ESCAPE_SRC",
+    "src": null
+   },
+   {
+    "dst": 32,
+    "island": [
+     "R39.1"
+    ],
+    "reason": "NO_PATH",
+    "src": 5
+   },
+   {
+    "dst": 35,
+    "island": [
+     "R129.1"
+    ],
+    "reason": "NO_PATH",
+    "src": 6
+   }
+  ],
+  "seconds": 1576.5,
+  "width": 400000
+ },
+ "method": "route_maze_batch.py +3V3 --guard <49-tube> --grid 50000 --stitch-width 1 --escape-floor --bridge-pads --body-landing --join-residual --join-islands --join-orphans, AQROOT_OFFCENTRE_LAUNCH=1 in both arms, AQROOT_SCAN_BOARD_VIAS=1 in one.  Never --promote.",
+ "question": "D-645 measured the honest obstacle model against the blind one on EIGHT signal nets at 0.100 mm.  Does the answer hold for the WHOLE pour-land escalation ladder, on the board's densest open-edge pocket, at TWICE the lattice resolution?",
+ "schema": 1,
+ "what_this_refutes": "The hand-geometry hypothesis that the GND barrel at (57.700, 70.000) -- a SECOND bond on U4.6, reaching into U4's package interior -- is what holds {U4.2,U4.3} off the rail.  It is not the discriminator: the corridor is refused identically whether that barrel is in the obstacle model or not.  The +3V3 / U4 wall is neither the class floor (D-645 sect. 8), nor the lattice pitch, nor the barrels the model was missing."
+}
