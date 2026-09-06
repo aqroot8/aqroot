@@ -1,3 +1,204 @@
+# D-646 · 2026-09-06 · Demo — the `+3V3` / `U4` WALL WAS THREE ORDINARY `GND` TRACKS THAT CONDUCT NOTHING: the per-object blame D-645 ordered names them, the board's own refill proves them INERT, and the closure is ONE straight 0.400 mm pad bridge with no via
+
+**COPPER PROMOTED.**  Authority
+`24b85f639cee4cfae797d9372553261ac7591df2626d818c801c8ac53f3f5f9c` →
+**`6b7cb0143b2a10e5d4160232f7aba466ccf50a71cdda417e72a680acfcd40dde`**;
+retained open edges **42 → 41**, `+3V3` open edges **6 → 5**, raw ratsnest
+**58 → 57**, open retained nets 20, connected retained 153.
+`hardware/beta-v2` untouched.  **THIRTEEN of thirteen gate clauses PASS**,
+`refused_clauses` EMPTY; `verify_promotion.py` PASS on all 15 checks (ONE
+object added, THREE removed and all three licensed).  The ten board contracts
+are **10/10 PASS**, and the eleventh — `obstacle_model` — goes **FAIL → PASS**
+for the first time.  ONE new gate clause, ONE new `--detour-spec` unit, ONE new
+tracked screen, ONE default flipped.
+
+## 1. THE MEASUREMENT D-645's ADDENDUM ORDERED, AND WHAT IT ANSWERED
+
+D-645 named `U4.6`'s second `GND` barrel at (57.700, 70.000) as the
+discriminator by hand, and its own addendum refuted that by A/B.  Its last
+sentence was an instruction: *"The next transaction on this pocket owes a
+per-OBJECT blame run — `WithoutObjects` over every routed object in `U4`'s
+courtyard, re-asking `route_join` — and not another guess."*
+
+That run is `evidence/d646-u4-courtyard-blame.json`.  The window is `U4`'s own
+footprint bounding box plus 2 mm; the candidates are PHYSICAL — a through
+barrel is one candidate (its hole and all six annuli move together), a track is
+one candidate — and the search is reverse-greedy delta debugging from *all of
+them gone*, with barrels offered back FIRST so the answer prefers to evict
+track over plane stitching.
+
+    all 151 routed objects absent          corridor OPEN
+    per NET, contained                     GND alone opens it; SEVEN other nets
+                                           do not, singly or at all
+    all SEVEN GND barrels offered back     ALL SEVEN RETURNED -- including
+                                           (57.700, 70.000)
+    minimal set                            EXACTLY THREE B.Cu GND TRACKS
+
+The three are one chain: `C6.2`'s own `GND` pad at (58.600, 67.425) →
+(57.600, 68.100) → (57.500, 68.100) → the `GND` stitching via at
+(56.000, 68.100).  **2.8065 mm of 0.300 mm track**, lying due north of `U4`'s
+north pad row, and D-645's barrel is cleared for the second time by a second
+instrument.
+
+## 2. AND THREE CHEAPER EXPLANATIONS ARE REFUTED BEFORE A LICENCE IS WRITTEN
+
+D-632 classified `{U4.2, U4.3}` — the BMI270's `ASDx`/`ASCx` mode straps — as a
+`SIGNAL_LEAF`, a standing licence to route them at signal width that had never
+been spent.  `evidence/d646-plus3v3-u4-ladder.json` spends it and two more:
+
+    0.200 mm, G = 0.100 mm                 NO_PATH
+    0.200 mm, G = 0.050 mm                 NO_PATH
+    escape limit 8 -> 64                   only 17 legal escapes exist; NO_PATH
+    aimed at a SYNTHETIC one-pad target
+      (U4.12, 1.7 mm due south, on body)   NO_PATH in 1.0 s
+
+Not the width, not the pitch, not the aim.  **What the 0.200 mm licence DOES
+buy is a reclassification**: `U4.5` moves `NO_LEGAL_ESCAPE` → `NO_PATH` with 6
+escapes, a FOURTH `U4` land into the class the corridor instruments can
+address.  That is carried, not spent.
+
+## 3. THE THREE TRACKS CONDUCT NOTHING, AND THE BOARD SAYS SO IN FOUR VOICES
+
+`evidence/d646-inert-copper-proof.json`.  All three removed on a scratch copy
+carrying its own `.kicad_pro` and `.kicad_dru`, then KiCad's own
+`--refill-zones --save-board` DRC:
+
+    raw ratsnest                    58 -> 58
+    retained open edges             42 -> 42
+    per-net open edges              NO DIFFERENCES, none, any net
+    DRC violation profile           IDENTICAL (5 hole_clearance, 1
+                                    solder_mask_bridge, 199 lib_footprint)
+    pour_bond_guard.py              THE SAME 49 TUBES -- same ends, same nets,
+                                    same islands, same areas, same lengths
+
+The `B.Cu` `GND` pour already carries every connection this copper carries.
+`C6.2` keeps a SHORTER eastern bond to the barrel at (60.100, 68.000), 1.5 mm,
+and the arm that was removed was the 2.8 mm one.
+
+## 4. SO THE UNIT THAT WAS MISSING IS A REMOVAL, AND IT IS NOW PRICED
+
+`--detour-spec` was written for copper that has to be SOMEWHERE ELSE.  A first
+full gate run (`w/d646/gate1.json`) proved the relay here is impossible by
+construction and refused **exactly one clause**: `every_detour_relaid`,
+`NO_PATH ... once the site is reserved`, on a run whose other ELEVEN clauses
+passed at 42 → 41.  The reason is not a search failure — the `+3V3` route this
+removal exists to admit is itself what closes the corridor a relay would need.
+
+So a detour entry may now declare **`"relay": false`**, and because that is the
+largest licence in `route_maze_batch.py` it is not admitted by the spec saying
+so.  **CLAUSE 13, `inert_removal_priced`**, makes the run earn it, on the
+AUTHORITATIVE board — the one the copper was taken from:
+
+  * ONE filled island of that net, on that layer, must contain BOTH ENDS of the
+    chain.  Read off KiCad's own fill, never asserted.
+  * THE WIDEST POUR PATH between those ends must be at least as wide as the
+    copper removed — `pour_bond_guard.geodesic`, the same instrument D-644
+    priced `U3.12`'s 0.150 mm isthmus with.  Below that the removal is a
+    DERATING, which is a decision somebody takes deliberately.
+  * and on the CANDIDATE, the removed net's OWN open-edge count may not grow.
+
+Here: **pour path 2.594 mm, narrowest 0.400 mm, widest 0.800 mm, ratio 1.333×**
+against the 0.300 mm removed.
+
+**AND THE CLAUSE WAS WRONG ONCE, IN A WAY WORTH RECORDING.**  Its first cut
+asked those questions of the CANDIDATE and refused this very run
+`NO_FILLED_ISLAND_HOLDS_BOTH_ENDS` — correctly, as a fact: the new `+3V3` track
+deliberately severs `GND` `B.Cu` island 38 (12.626 mm²) into `C6.2`'s
+4.314 mm² fragment and `U20.3`'s 7.859 mm² body.  But that is a DIFFERENT
+claim, and `pour_partition_contract.py` is the clause that owns it — `PP2`
+prices the fragment **1.902 A against its 1.000 A `RETURN_NEIGHBOUR_RAIL` bar**
+(`C6`'s own `+3V3` pad, P3V3) and ADMITS it, `PP1`–`PP4` PASS.  Two clauses,
+two questions, no overlap.
+
+## 5. THE TRANSACTION
+
+    AQROOT_SCAN_BOARD_VIAS=1 AQROOT_OFFCENTRE_LAUNCH=1 \
+    python3 route_maze_batch.py +3V3 \
+        --detour-spec  evidence/d646-detour-spec.json \
+        --guard        evidence/d646-pour-bond-guard-48.json \
+        --grid 100000 --stitch-width 1 --escape-floor \
+        --split-islands --join-residual --join-islands --join-orphans \
+        --bridge-pads --body-landing --repair-planes --promote
+
+  * **THREE `GND` tracks removed, none relaid**, 2.8065 mm, licensed by
+    signature and priced by clause 13.
+  * **the closure is a PAD BRIDGE**: `C6.1` ↔ `U4.3`, gap 1.720 mm, ONE
+    straight `B.Cu` track 1.520 mm at 0.400 mm, inset 0.100 mm, **ZERO vias,
+    ZERO escapes**.  The whole board gains ONE copper object.
+  * the guard is D-644's 49 minus **one** tube — `C6.2 ↔ U20.3`, `GND`,
+    `B.Cu`, island 38, 5.978 mm.  Its premise is the `SMALL_ISLAND` clause, a
+    local bond with no redundancy; this transaction replaces it with a split
+    both of whose halves `PP2` prices, and `pour_bond_guard.py` re-run on the
+    promoted board emits **48 tubes — the same 48**, every other one identical
+    but for an island renumber the split forces.
+  * real KiCad DRC: **zero attributable**, profile unchanged, unconnected items
+    58 → 57.
+
+## 6. THE DEFAULT D-645 PROMISED TO MOVE HAS MOVED
+
+D-645 built `maze3d.ensure_board_vias` env-gated OFF and stated its own
+condition in one sentence: *"the next promoting transaction spends the gate and
+moves the default with it."*  This is that transaction — proposed, gated and
+promoted with `AQROOT_SCAN_BOARD_VIAS=1`, thirteen of thirteen clauses PASS,
+DRC unchanged — so **the board-via scan is now ON by default**, and
+`AQROOT_SCAN_BOARD_VIAS=0` reproduces every pre-D-646 measurement byte for
+byte.  The model now reads **7972 / 7972 copper signatures and 855 / 855
+drilled holes**.
+
+**AND THE FLIP BROKE THE CONTRACT THAT WATCHES IT, SILENTLY.**  Three call
+sites read the state as `bool(os.environ.get(...))`, which was the same answer
+only while the default was OFF.  With the default moved,
+`obstacle_model_contract` read `OM1`/`OM2` at perfect parity and then failed
+itself on `OM4`, whose delta arm was still predicting the blind model's 6-and-1.
+A default is not a fact about the environment: the state is now read from
+**`maze3d.board_via_scan_on`**, one accessor, and `OM4` gains a SECOND arm —
+one REAL barrel of the board withheld from the model by hand, `OM1`/`OM2`
+required to name exactly it, six copper signatures and one drill — because with
+the scan ON its first arm expects 0 and 0, and a control that can only report
+zero is not a control.  Measured both ways
+(`evidence/d646-obstacle-model-gate-{on,off}.json`): ON is `OM1`–`OM4` PASS;
+OFF is `OM1`/`OM2` FAIL at 3178/7972 and 56/855, with the control still firing.
+
+## 7. AND THE ONE-OFF IS NOW A CENSUS
+
+`screen_inert_copper.py` (read-only, tracked) asks the clause-13 question of
+every track CHAIN of a pour-owning net, at the granularity `--detour-spec` can
+name.  Board-wide on `GND`
+(`evidence/d646-inert-copper-census.json`): **299 chains — 207 on `B.Cu`, ALL
+INERT, carrying 228.523 mm of routed copper the pour already carries**, and 92
+on `F.Cu`, where `GND` owns no pour at all and the screen says so by name
+rather than calling them load-bearing.  In `U4`'s own 8 × 12 mm neighbourhood
+alone: **16 chains, all 16 INERT, 19.377 mm**.
+
+Every millimetre of that is a hard obstacle to every proposer on this board —
+`maze3d` rasterises a track and does not rasterise a zone fill, deliberately,
+because a pour is repairable and a track is not — and a conductor to nothing.
+**The screen states its own limits before its number**: `INERT` means the pour
+joins the chain's two ends at least as wide; it does not price a decoupling
+cap's return-loop AREA, and it does not re-fill the board.  A row is a
+CANDIDATE.  D-646 removed three of them and proved those three the whole way.
+
+## 8. NEXT, IN ORDER OF LEVERAGE
+
+  1. **SPEND THE CENSUS.**  207 `INERT` `GND` chains and 228.5 mm of copper
+     that blocks routers and conducts nothing.  Re-ask the remaining
+     open-edge nets with `screen_corridor_blockers.py`, and wherever the blame
+     lands on a chain the census already calls `INERT`, the transaction is a
+     `relay: false` detour and a gate run — which is now a two-file recipe.
+  2. **`U4.5` IS THE NEXT `+3V3` LAND**, and it is in the corridor class only
+     at 0.200 mm: 6 escapes, `SIGNAL_LEAF` by D-632.  `U4.8` and `U5.2` remain
+     `NO_LEGAL_ESCAPE` at every width tried, off-centre included.
+  3. `/SPI_B_SCK` and `/BQ25185_STAT1` remain LANDS (`U9.30`, `U11.9`).
+  4. THE THREE INHERITED `GND` ORPHANS — `J3.A12`/`J3.B1`, `MK1.4`, `U9.16`.
+  5. `BQ25185_SYS C26.2`, carried unchanged.
+  6. `/I2S_LRCLK`'s edge rate and `/NFC_SUPPLY`'s per-net current, carried
+     unchanged.
+
+No owner decision is OPEN.  D-618's `J3` question remains RECORDED.
+`contract_regression.py`'s bond-guard constant is repointed at
+`evidence/d646-pour-bond-guard-next.json`; the next promotion that re-emits the
+guard must move it again.
+
 # D-645 · 2026-09-06 · Demo — THE OBSTACLE MODEL WAS NOT THE BOARD: the proposer that laid every route here could not see the board's own 799 barrels or 799 drills, the repair is the emitter's own three lines, and the honest model costs SECONDS and not one answer
 
     authority  24b85f639cee4cfae797d9372553261ac7591df2626d818c801c8ac53f3f5f9c

@@ -1,0 +1,128 @@
+{
+ "OM1": {
+  "by_kind": {
+   "via": 4794
+  },
+  "missing": 4794,
+  "ok": false,
+  "what": "every routed copper object the board carries is in the model, on every layer it occupies"
+ },
+ "OM2": {
+  "by_kind": {
+   "via": 799
+  },
+  "missing": 799,
+  "ok": false,
+  "what": "every drilled hole the board carries is in qb.holes"
+ },
+ "OM3": {
+  "drc": null,
+  "ok": true,
+  "verdict": "UNMEASURED",
+  "what": "the cost of any absence is read off real KiCad DRC on the same board, never assumed"
+ },
+ "OM4": {
+  "added": "one B.Cu track + one through via, on a throwaway copy",
+  "delta_missing_copper": 6,
+  "delta_missing_holes": 1,
+  "expect_copper": 6,
+  "expect_holes": 1,
+  "fires": true,
+  "ok": true,
+  "scan_gate_on": false,
+  "why": "with the gate OFF a scanned track adds nothing to the missing set and an unscanned via adds one barrel per copper layer plus its drill; with it ON both are picked up and the delta is zero -- so a SECOND arm withholds one real barrel from the model by hand and requires OM1/OM2 to name exactly it, which fires in either state",
+  "withheld_barrel": {
+   "ran": false,
+   "reason": "scan off: the barrel is not in the model to withhold; the delta arm is the live control in this state"
+  }
+ },
+ "board": "/home/aqroot8/aqroot-demo/hardware/demo/kicad/aqroot-demo/aqroot-Beta-v2.kicad_pcb",
+ "board_sha256": "6b7cb0143b2a10e5d4160232f7aba466ccf50a71cdda417e72a680acfcd40dde",
+ "ok": false,
+ "parity": {
+  "board_copper": 7972,
+  "board_holes": 855,
+  "extra_copper": 0,
+  "extra_holes": 0,
+  "missing_copper": 4794,
+  "missing_copper_by_kind": {
+   "via": 4794
+  },
+  "missing_holes": 799,
+  "missing_holes_by_kind": {
+   "via": 799
+  },
+  "model_copper": 3178,
+  "model_holes": 56,
+  "sample_missing_copper": [
+   [
+    "B",
+    "via",
+    900000,
+    116100000,
+    300000,
+    "/03_SPI_A_DISPLAY_SD/LED_K"
+   ],
+   [
+    "B",
+    "via",
+    1000000,
+    92200000,
+    300000,
+    "GND"
+   ],
+   [
+    "B",
+    "via",
+    1100000,
+    84000000,
+    300000,
+    "GND"
+   ],
+   [
+    "B",
+    "via",
+    1200000,
+    98300000,
+    350000,
+    "+3V3"
+   ]
+  ],
+  "sample_missing_holes": [
+   [
+    "via",
+    900000,
+    116100000,
+    150000,
+    "/03_SPI_A_DISPLAY_SD/LED_K"
+   ],
+   [
+    "via",
+    1000000,
+    92200000,
+    150000,
+    "GND"
+   ],
+   [
+    "via",
+    1100000,
+    84000000,
+    150000,
+    "GND"
+   ],
+   [
+    "via",
+    1200000,
+    98300000,
+    200000,
+    "+3V3"
+   ]
+  ],
+  "scan_gate_on": false
+ },
+ "scan_gate": "AQROOT_SCAN_BOARD_VIAS",
+ "scan_gate_on": false,
+ "schema": 1,
+ "verdict": "FAIL",
+ "what": "does the proposer's obstacle model contain every copper object and every drilled hole the board carries?"
+}

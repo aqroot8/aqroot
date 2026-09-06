@@ -472,6 +472,23 @@ def _pcbnew():
     return pcbnew
 
 
+def board_via_scan_on(force=None):
+    """The EFFECTIVE state of the board-via scan -- the one source of truth.
+
+    D-646.  While the gate was OFF by default, `bool(os.environ.get(...))` was
+    the same answer and three files read it that way.  The moment the default
+    moved, that expression started reporting the OPPOSITE of what the model
+    does, and it did so silently: `obstacle_model_contract`'s OM1/OM2 read
+    7972/7972 and 855/855 -- perfect parity -- while its own OM4 control still
+    expected the blind model's deltas and failed the contract on a board that
+    had just proved it right.  A default is not a fact about the environment.
+    """
+    if force is not None:
+        return bool(force)
+    val = os.environ.get(SCAN_BOARD_VIAS)
+    return True if val is None else val not in ("", "0")
+
+
 def ensure_board_vias(qb, force=None):
     """Put the board's OWN vias into `qb`'s obstacle model.  Idempotent.
 
@@ -481,7 +498,18 @@ def ensure_board_vias(qb, force=None):
     `qb.holes` are the two lists every instrument reads, and this appends to
     them exactly what `QBoard.via` appends for a barrel it lays.
     """
-    on = bool(os.environ.get(SCAN_BOARD_VIAS)) if force is None else bool(force)
+    # D-646.  THE DEFAULT IS NOW ON, AND THE GATE THAT MOVED IT IS NAMED.
+    # D-645 built this repair env-gated OFF and stated its own condition for
+    # flipping it in one sentence: "the next promoting transaction spends the
+    # gate and moves the default with it."  D-646 is that transaction -- the
+    # `+3V3` `{U4.2,U4.3}` closure was proposed, gated and PROMOTED with
+    # `AQROOT_SCAN_BOARD_VIAS=1`, thirteen of thirteen clauses PASS, real
+    # KiCad DRC unchanged (five inherited `hole_clearance`, zero `clearance`)
+    # -- so from here the model IS the board unless a caller says otherwise.
+    # `AQROOT_SCAN_BOARD_VIAS=0` restores the blind model exactly, which is
+    # what every pre-D-646 measurement in `evidence/` was taken against and
+    # what an A/B against one of them must be run with.
+    on = board_via_scan_on(force)
     if not on or getattr(qb, '_aqroot_board_vias', None) is not None:
         return 0
     n = 0
@@ -520,10 +548,10 @@ class Field(object):
     def __init__(self, qb, net, width, clr_pad, clr_trk, via_dia, via_drill,
                  G=100000, layers=None, margin_mm=2.0, neck=None, guard=None,
                  escape_floor=None):
-        # D-645.  The model is the board, or it is not a model.  A no-op
-        # unless `AQROOT_SCAN_BOARD_VIAS` is set, and idempotent per
-        # `QBoard`, so every `Field` this project has ever built is
-        # byte-identical with the gate unset.
+        # D-645.  The model is the board, or it is not a model.  ON by
+        # default since D-646 spent a promoting gate on it; idempotent per
+        # `QBoard`, and `AQROOT_SCAN_BOARD_VIAS=0` reproduces every
+        # pre-D-646 `Field` byte for byte.
         ensure_board_vias(qb)
         self.qb, self.net, self.G = qb, net, G
         # OFF unless the caller hands in a `Neck`.  Nothing below reads it

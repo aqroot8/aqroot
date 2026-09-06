@@ -53,10 +53,15 @@ FOUR CLAUSES.
        DRC's own `clearance` and `hole_clearance` census on the same board, so
        "latent" is a measurement and not a hope.
 
-  OM4  THE CONTROL.  A clause that cannot fail is worth nothing.  One synthetic
-       track is added to a THROWAWAY copy of the board and OM1 is required to
-       name it missing; the same is done to a hole for OM2.  A control that
-       does not fire fails the contract.
+  OM4  THE CONTROL.  A clause that cannot fail is worth nothing.  TWO arms,
+       and D-646 added the second because the first stopped being able to fail
+       when the scan became the default: (a) one synthetic track and one
+       synthetic barrel are added to a THROWAWAY copy and the parity DELTA
+       must be exactly what the model's current state predicts -- 6 copper and
+       1 hole blind, 0 and 0 honest; (b) one REAL barrel of the board is
+       withheld from the model by hand and OM1/OM2 must name exactly it, one
+       copper signature per copper layer plus its drill.  Arm (b) fires in
+       both states.  A control that does not fire fails the contract.
 
 WHAT THIS FILE DOES NOT DO.  It changes no copper, writes no board and repairs
 nothing.  `maze3d.ensure_board_vias` is the repair and it is env-gated OFF, so
@@ -157,10 +162,14 @@ def census(missing, idx):
 def compare(board_path):
     """The BOARD against the model AS AN INSTRUMENT BUILDS IT.
 
-    `maze3d.ensure_board_vias` is what every `Field` calls, and it is a no-op
-    unless `AQROOT_SCAN_BOARD_VIAS` is set -- so this contract measures the
-    model the proposer will actually route against, in whichever of its two
-    states the environment selects, and never a hypothetical one.
+    `maze3d.ensure_board_vias` is what every `Field` calls, and since D-646 it
+    is ON by default (`AQROOT_SCAN_BOARD_VIAS=0` restores the blind model) --
+    so this contract measures the model the proposer will actually route
+    against, in whichever of its two states is in force, and never a
+    hypothetical one.  The state is read from `maze3d.board_via_scan_on`, not
+    from the environment: a default is not a fact about the environment, and
+    reading it that way is precisely how OM4 came to fail a board whose OM1
+    and OM2 it had just passed at 7972/7972 and 855/855.
     """
     pb = pcbnew.LoadBoard(str(board_path))
     qb = qr.QBoard(str(board_path))
@@ -170,7 +179,7 @@ def compare(board_path):
     miss_c = sorted(bc - mc)
     miss_h = sorted(bh - mh)
     return dict(
-        scan_gate_on=bool(os.environ.get(mz.SCAN_BOARD_VIAS)),
+        scan_gate_on=mz.board_via_scan_on(),
         board_copper=len(bc), model_copper=len(mc),
         board_holes=len(bh), model_holes=len(mh),
         missing_copper=len(miss_c), missing_holes=len(miss_h),
@@ -221,20 +230,65 @@ def control(board_path, tmp):
     # the knife has to cut somewhere else: the control then requires the
     # parity to stay EXACT across an object the model had to pick up on its
     # own.  Either way a control that reports the wrong delta fails.
-    gate = bool(os.environ.get(mz.SCAN_BOARD_VIAS))
+    gate = mz.board_via_scan_on()
     exp_c, exp_h = (0, 0) if gate else (6, 1)
     # The TRACK is scanned, so it must NOT go missing; the VIA is not, so its
     # six layers and its hole must.  A scanner that started seeing vias would
     # make this read 0/0 and the control would say so.
+    # AND A SECOND ARM, BECAUSE WITH THE GATE ON THE FIRST ONE EXPECTS ZERO.
+    # D-646.  "A clause that cannot fail is worth nothing" is this contract's
+    # own sentence, and with the scan ON the delta arm asks for 0/0 -- which a
+    # comparator that had stopped comparing would also report.  So the knife is
+    # turned round: one real barrel of the board is WITHHELD from the model by
+    # hand, and OM1/OM2 are required to name exactly it -- six copper
+    # signatures, one per copper layer, and its drill.  That arm fires
+    # identically in both states and it is the one that proves the parity test
+    # can still speak.
+    qb = qr.QBoard(str(board_path))
+    mz.ensure_board_vias(qb)
+    pb2 = pcbnew.LoadBoard(str(board_path))
+    bc2, bh2 = board_objects(pb2)
+    victim = next((t for t in pb2.GetTracks() if t.GetClass() == "PCB_VIA"),
+                  None)
+    # ONLY MEANINGFUL WITH THE SCAN ON, AND IT SAYS SO RATHER THAN PRETENDING.
+    # With the scan OFF the barrel was never in the model, so withholding it
+    # changes nothing -- and it is exactly that state in which the DELTA arm
+    # above can fail, so nothing is left unguarded either way.
+    withheld = dict(ran=False, reason="scan off: the barrel is not in the "
+                                      "model to withhold; the delta arm is "
+                                      "the live control in this state")
+    if victim is not None and gate:
+        vx, vy = int(victim.GetStart().x), int(victim.GetStart().y)
+        for L in list(qb.shapes):
+            qb.shapes[L] = [q for q in qb.shapes[L]
+                            if not (q.tag == "via"
+                                    and int(getattr(q, "cx", 0)) == vx
+                                    and int(getattr(q, "cy", 0)) == vy)]
+        qb.holes = [h for h in qb.holes
+                    if not (h.tag.startswith("via")
+                            and int(getattr(h, "cx", 0)) == vx
+                            and int(getattr(h, "cy", 0)) == vy)]
+        mc2, mh2 = model_objects(qb)
+        withheld = dict(ran=True, at_mm=[vx / 1e6, vy / 1e6],
+                        missing_copper=len(bc2 - mc2),
+                        missing_holes=len(bh2 - mh2),
+                        expect_copper=len(qb.cu), expect_holes=1,
+                        fires=(len(bc2 - mc2) == len(qb.cu)
+                               and len(bh2 - mh2) == 1))
     return dict(
         added="one B.Cu track + one through via, on a throwaway copy",
         scan_gate_on=gate,
         delta_missing_copper=d_copper, delta_missing_holes=d_holes,
         expect_copper=exp_c, expect_holes=exp_h,
-        fires=(d_copper == exp_c and d_holes == exp_h),
+        withheld_barrel=withheld,
+        fires=(d_copper == exp_c and d_holes == exp_h
+               and (bool(withheld.get("fires")) if gate else True)),
         why=("with the gate OFF a scanned track adds nothing to the missing "
              "set and an unscanned via adds one barrel per copper layer plus "
-             "its drill; with it ON both are picked up and the delta is zero"))
+             "its drill; with it ON both are picked up and the delta is zero "
+             "-- so a SECOND arm withholds one real barrel from the model by "
+             "hand and requires OM1/OM2 to name exactly it, which fires in "
+             "either state"))
 
 
 def main():
@@ -281,7 +335,7 @@ def main():
         schema=1, board=str(a.board),
         board_sha256=hashlib.sha256(Path(a.board).read_bytes()).hexdigest(),
         scan_gate=mz.SCAN_BOARD_VIAS,
-        scan_gate_on=bool(os.environ.get(mz.SCAN_BOARD_VIAS)),
+        scan_gate_on=mz.board_via_scan_on(),
         parity=par, OM1=om1, OM2=om2, OM3=om3, OM4=om4,
         ok=bool(om1["ok"] and om2["ok"] and om3["ok"] and om4["ok"]),
         verdict=("PASS" if (om1["ok"] and om2["ok"] and om4["ok"])

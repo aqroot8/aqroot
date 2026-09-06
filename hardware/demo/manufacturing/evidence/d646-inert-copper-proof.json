@@ -1,0 +1,94 @@
+{
+  "authority_board_sha256": "24b85f639cee4cfae797d9372553261ac7591df2626d818c801c8ac53f3f5f9c",
+  "claim": "the three B.Cu GND tracks of the C6.2 west arm are INERT: the B.Cu GND pour already carries every connection they carry, so removing them changes nothing this board measures.",
+  "decision": "D-646",
+  "drc": {
+    "authority": {
+      "unconnected": 58,
+      "violations": {
+        "hole_clearance": 5,
+        "lib_footprint_issues": 199,
+        "solder_mask_bridge": 1
+      }
+    },
+    "identical": true,
+    "scratch_after_refill": {
+      "unconnected": 58,
+      "violations": {
+        "hole_clearance": 5,
+        "lib_footprint_issues": 199,
+        "solder_mask_bridge": 1
+      }
+    }
+  },
+  "ledger": {
+    "authority": {
+      "connected_retained_nets": 153,
+      "open_retained_nets": 20,
+      "raw_board_ratsnest": 58,
+      "retained_multi_pad_nets": 173,
+      "retained_open_edges": 42
+    },
+    "identical": true,
+    "per_net_differences": {},
+    "scratch": {
+      "connected_retained_nets": 153,
+      "open_retained_nets": 20,
+      "raw_board_ratsnest": 58,
+      "retained_multi_pad_nets": 173,
+      "retained_open_edges": 42
+    }
+  },
+  "note": "Measured with KiCad's own --refill-zones --save-board DRC on a scratch copy carrying its .kicad_pro and .kicad_dru, then routing_ledger.py and pour_bond_guard.py on the refilled result.  Nothing was written to the authoritative board.",
+  "pour_bond_guard": {
+    "authority_tubes": 49,
+    "scratch_tubes": 49,
+    "tube_set_identical": true
+  },
+  "removed": [
+    {
+      "a_mm": [
+        58.6,
+        67.425
+      ],
+      "b_mm": [
+        57.6,
+        68.1
+      ],
+      "layer": "B.Cu",
+      "mm": 1.2064,
+      "net": "GND",
+      "width_mm": 0.3
+    },
+    {
+      "a_mm": [
+        57.6,
+        68.1
+      ],
+      "b_mm": [
+        57.5,
+        68.1
+      ],
+      "layer": "B.Cu",
+      "mm": 0.1,
+      "net": "GND",
+      "width_mm": 0.3
+    },
+    {
+      "a_mm": [
+        57.5,
+        68.1
+      ],
+      "b_mm": [
+        56.0,
+        68.1
+      ],
+      "layer": "B.Cu",
+      "mm": 1.5,
+      "net": "GND",
+      "width_mm": 0.3
+    }
+  ],
+  "schema": 1,
+  "scratch_board_sha256": "ef6ae270b9d8bd82a8a4785427f63cc088e0c256a5f45b0530b767d4b4f4fb6b"
+}

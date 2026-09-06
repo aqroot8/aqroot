@@ -55,6 +55,7 @@ from screen_inner_plane import (OUTLINE, insert_zone, parse_outline,
                                 zone_sexpr)
 
 ROOT = Path(__file__).resolve().parents[3]
+HERE = Path(__file__).resolve().parent
 PROJECT = ROOT / "hardware/demo/kicad/aqroot-demo"
 BOARD = PROJECT / "aqroot-Beta-v2.kicad_pcb"
 LEDGER = ROOT / "hardware/demo/manufacturing/routing_ledger.py"
@@ -859,6 +860,108 @@ def detour_guard(spec):
     return dict(guards=guards)
 
 
+INERT_PRICE_GRID = 25000        # nm; `pour_bond_guard.TUBE_GRID`
+INERT_PRICE_CEILING = 400000    # nm of erosion radius: 0.800 mm of conductor
+INERT_SEED_RADIUS = 150000      # nm; the anchor disc `pour_bond_guard` uses
+                                # for a via, so an end that is one is seeded
+                                # exactly as that module already seeds it
+
+
+def inert_removal_price(board_path, entries, grid=INERT_PRICE_GRID):
+    """What the board REPLACED a `relay: false` chain with, as a number.
+
+    D-646.  A relay owes the board the same conductor somewhere else and
+    `route_points` proves it.  A REMOVAL owes the board a conductor it already
+    has, and until this function existed nothing measured that: the run would
+    have rested on the author's assertion that the copper was redundant, which
+    is exactly the `unmeasured-vs-refused` failure this project keeps paying
+    for.
+
+    So the claim is settled with the instrument this board already uses for the
+    same question -- D-644 priced `U3.12`'s ground bond by walking
+    `pour_bond_guard.geodesic` out from the pad and reading the narrowest place
+    at 0.150 mm.  Two things must hold and both are geometry, not opinion:
+
+      * ONE FILLED ISLAND of that net, on that layer, must contain BOTH ENDS
+        of the chain that was removed.  That is the connectivity claim, read
+        off KiCad's own fill rather than asserted -- if the removal severed
+        anything, no island holds both ends and the clause refuses by name.
+
+      * THE WIDEST PATH between those ends, inside that island, must be at
+        least as wide as the copper that was taken.  `geodesic` erodes from
+        the ceiling down and returns the first radius the whole path survives,
+        so `2 * radius` is the narrowest place on the best conductor the pour
+        offers.  Below the removed track's own width the removal is a
+        DERATING, and a derating is a decision somebody has to take
+        deliberately -- not a side effect of a routing run.
+
+    AND IT IS ASKED OF THE BOARD THE COPPER WAS TAKEN FROM, NOT OF THE
+    CANDIDATE.  The claim this clause owns is "that copper was already
+    redundant when this run removed it", and the only board on which that is
+    even a well-posed question is the one it was removed from.  Asking it of
+    the candidate conflates it with a DIFFERENT claim -- "and nothing this run
+    laid afterwards split that pour" -- which is `pour_partition_contract.py`'s
+    entire subject and which it answers with a priced bar rather than a
+    yes/no.  This board proved the difference costs an edge: D-646's `+3V3`
+    route through `U4`'s courtyard deliberately severs `GND` `B.Cu` island 38
+    (12.626 mm2) into `C6.2`'s 4.314 mm2 fragment and `U20.3`'s 7.859 mm2
+    body, `PP2` prices the fragment 1.902 A against its 1.000 A bar and admits
+    it -- and a candidate-side reading of this clause called the same board
+    `NO_FILLED_ISLAND_HOLDS_BOTH_ENDS` and refused the run for a fact `PP2`
+    had already judged.  Two clauses, two questions, no overlap.
+    """
+    import pcbnew
+    sys.path.insert(0, str(HERE))
+    import pour_bond_guard as pbg
+
+    board = pcbnew.LoadBoard(str(board_path))
+    pours = pbg.read_pours(board)
+    out = []
+    for d in entries:
+        a = tuple(int(round(v * 1e6)) for v in d["a_mm"])
+        b = tuple(int(round(v * 1e6)) for v in d["b_mm"])
+        rec = dict(net=d["net"], layer=d["layer"], a_mm=d["a_mm"],
+                   b_mm=d["b_mm"], removed_mm=d.get("was_mm"),
+                   bar_width_mm=round(d["width_nm"] / 1e6, 3))
+        found = None
+        for pour in pours:
+            if pour["net"] != d["net"] or pour["layer"] != d["layer"]:
+                continue
+            for isl in pour["islands"]:
+                if (isl["poly"].Contains(pcbnew.VECTOR2I(a[0], a[1]), -1, 0)
+                        and isl["poly"].Contains(pcbnew.VECTOR2I(b[0], b[1]),
+                                                 -1, 0)):
+                    found = (pour, isl)
+                    break
+            if found:
+                break
+        if found is None:
+            rec.update(ok=False, reason="NO_FILLED_ISLAND_HOLDS_BOTH_ENDS")
+            out.append(rec)
+            continue
+        pour, isl = found
+        rec.update(zone_name=pour["zone_name"], island=isl["index"],
+                   island_area_mm2=round(isl["area_mm2"], 3))
+        g = pbg.geodesic(isl["edges"],
+                         (a[0], a[1], INERT_SEED_RADIUS),
+                         (b[0], b[1], INERT_SEED_RADIUS),
+                         INERT_PRICE_CEILING, grid)
+        if not g:
+            rec.update(ok=False, reason="NO_POUR_PATH_BETWEEN_THE_ENDS")
+            out.append(rec)
+            continue
+        width = 2 * g["radius"]
+        rec.update(pour_path_mm=g["mm"],
+                   pour_path_width_mm=round(width / 1e6, 3),
+                   pour_path_width_max_mm=round(2 * g["radius_max"] / 1e6, 3),
+                   ratio=round(width / float(d["width_nm"]), 3),
+                   ok=bool(width >= d["width_nm"]),
+                   reason=(None if width >= d["width_nm"]
+                           else "POUR_PATH_NARROWER_THAN_THE_COPPER_REMOVED"))
+        out.append(rec)
+    return out
+
+
 def detour_apply(path, spec):
     """Remove every named track IN PLACE and resolve it to exact coordinates.
 
@@ -1007,6 +1110,16 @@ def detour_apply(path, spec):
         rmax = max([r["r_mm"] for r in spec.get("reserve", ())] or [0.0])
         resolved.append(dict(
             net=d["net"], layer=parts[0]["layer"], lkey=lkey,
+            # D-646.  A detour entry may declare `"relay": false`, and then
+            # this chain is REMOVED AND NOT PUT BACK.  That is a strictly
+            # larger claim than a relay -- a relay owes the board the same
+            # conductor somewhere else, a removal owes it a conductor the
+            # board ALREADY HAS -- so it is not admitted by the spec saying
+            # so.  The gate's `inert_removal_priced` clause makes the
+            # CANDIDATE prove it: same net, no new open edge, both ends in one
+            # KiCad cluster, and the pour path that replaces the copper at
+            # least as wide as the copper removed.
+            relay=bool(d.get("relay", True)),
             width_nm=int(t.GetWidth()), tracks=len(items),
             a_nm=a_nm, b_nm=b_nm,
             mm=round(was, 4),
@@ -1406,6 +1519,30 @@ def propose(path, nets, grid, via_cost_mm, stitch_width=0, stitch_via=None,
         net = d["net"]
         c = contracts[net]
         t0 = time.time()
+        # D-646.  A REMOVAL WITH NO REPLACEMENT IS NOT A ROUTING PROBLEM.
+        # `--detour-spec` was written for copper that has to be somewhere
+        # else; this board also carries copper that does not have to be
+        # anywhere -- legacy routed track of a POUR-OWNING net that duplicates
+        # a connection the pour already makes.  Asking `route_points` to put
+        # such a chain back is asking it to solve a problem the run has just
+        # deleted, and on the `+3V3` / `U4` pocket it is unanswerable BY
+        # CONSTRUCTION: the route this removal exists to admit is the very
+        # thing that closes the corridor the relay would need.  So the chain is
+        # removed, the record says so in its own words, and the GATE prices it.
+        if d.get("relay") is False:
+            detours.append(dict(
+                net=net, layer=d["layer"], lkey=d["lkey"], relay=False,
+                removed_only=True, ok=False, reason="REMOVED_NOT_RELAID",
+                why="declared `relay: false`; the gate's inert_removal_priced "
+                    "clause prices the conductor that replaces it",
+                mm=0.0, vias=0, was_mm=d["mm"], width_nm=d["width_nm"],
+                max_mm=d.get("max_mm"), own_layer=False,
+                a_mm=[round(v / 1e6, 4) for v in d["a_nm"]],
+                b_mm=[round(v / 1e6, 4) for v in d["b_nm"]],
+                seconds=0.0))
+            print("  %-44s detour REMOVED_NOT_RELAID %.3f mm %s"
+                  % (net, d["mm"], d["layer"]), file=sys.stderr, flush=True)
+            continue
         g = guard_for(guard_spec, net) if guard_spec else None
         # D-609.  A track being PUT BACK may be put back on the layer it was
         # already lawfully on, and on nothing else -- see `detour_layers`.
@@ -2522,7 +2659,8 @@ def gate(nets, grid, via_cost_mm, workdir, promote=False, candidate=None,
     detour_failed = [dict(net=d["net"], layer=d["layer"],
                           a_mm=d["a_mm"], b_mm=d["b_mm"],
                           reason=d.get("reason"), why=d.get("why"))
-                     for d in detoured if not d.get("ok")]
+                     for d in detoured
+                     if not d.get("ok") and not d.get("removed_only")]
     # D-609.  A detour that spent the OWN-LAYER allowance was handed exactly
     # one layer, so it cannot have left that layer and cannot have drilled a
     # barrel: a single-layer `Field` has nowhere to via to.  That is true by
@@ -2664,6 +2802,29 @@ def gate(nets, grid, via_cost_mm, workdir, promote=False, candidate=None,
     edges_before = base_ledger["connectivity"]["retained_open_edges"]
     edges_after = after_ledger["connectivity"]["retained_open_edges"]
 
+    # CLAUSE 13 -- AN INERT REMOVAL MUST BE PRICED.  D-646.  `--detour-spec`
+    # may now declare `"relay": false`, which removes a named chain and does
+    # NOT put it back, and that is the largest licence in this file: a relay
+    # replaces a conductor, a removal claims the board never needed one.  On
+    # the AUTHORITATIVE board -- the one the copper was taken from, see
+    # `inert_removal_price` -- ONE filled island of that net on that layer must
+    # hold both ends of the chain, and the widest pour path between them must
+    # be at least as wide as the copper that went.  On the CANDIDATE, the
+    # removed net's OWN open-edge count may not grow.  Whether this run's own
+    # new copper then splits that pour is PP1-PP4's question and this clause
+    # does not answer it.
+    inert_entries = [d for d in detoured if d.get("removed_only")]
+    inert_priced = (inert_removal_price(BOARD, inert_entries)
+                    if inert_entries else [])
+    inert_unpriced = [r for r in inert_priced if not r.get("ok")]
+    for d in inert_entries:
+        n = d["net"]
+        if after_open.get(n, 0) > before_open.get(n, 0):
+            inert_unpriced.append(dict(net=n, ok=False,
+                                       reason="REMOVED_NET_OPEN_EDGES_GREW",
+                                       before=before_open.get(n),
+                                       after=after_open.get(n)))
+
     zone_before, zone_after = zones(BOARD), zones(scratch)
     zone_added = [z for z in zone_after if z not in zone_before]
     zone_lost = [z for z in zone_before if z not in zone_after]
@@ -2729,7 +2890,8 @@ def gate(nets, grid, via_cost_mm, workdir, promote=False, candidate=None,
     # for the same reason the repair's and the bonds' do -- otherwise clause 5
     # would call a track this gate itself asked for "foreign".  A detour that
     # failed is reverted inside `maze3d.route_points` and adds nothing.
-    detour_nets = sorted({d["net"] for d in detoured if d.get("ok")})
+    detour_nets = sorted({d["net"] for d in detoured
+                          if d.get("ok") or d.get("removed_only")})
     ok_nets = sorted({r["net"] for r in routed if r.get("ok")}
                      | {r["net"] for r in repaired} | set(bond_nets)
                      | set(detour_nets))
@@ -2851,6 +3013,7 @@ def gate(nets, grid, via_cost_mm, workdir, promote=False, candidate=None,
     ok = (not attributable and inherited_ok and not regressed
           and not unlicensed and not foreign and edges_after < edges_before
           and zone_ok and changed and not relief_open and not detour_failed
+          and not inert_unpriced
           and not pp_failed
           and before == sha256_file(BOARD))
 
@@ -2911,6 +3074,9 @@ def gate(nets, grid, via_cost_mm, workdir, promote=False, candidate=None,
                               vias=d.get("vias"))
                          for d in detoured if d.get("own_layer")],
                      relaid=detoured, failed=detour_failed,
+                     removed_not_relaid=inert_entries,
+                     inert_price=inert_priced,
+                     inert_unpriced=inert_unpriced,
                      all_relaid=(not detour_failed))
                 if detour else None),
         preservation=dict(removed_objects=removed,
@@ -2982,6 +3148,7 @@ def gate(nets, grid, via_cost_mm, workdir, promote=False, candidate=None,
             board_changed=bool(changed),
             no_open_relief_licence=not relief_open,
             every_detour_relaid=not detour_failed,
+            inert_removal_priced=not inert_unpriced,
             pour_partition=not pp_failed,
             authority_unchanged=bool(before == sha256_file(BOARD)),
         ),

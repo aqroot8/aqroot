@@ -1,0 +1,838 @@
+{
+  "all_out": {
+    "mm": 0.0,
+    "ok": true,
+    "reason": null,
+    "secs": 12.3
+  },
+  "answer": "SEVEN GND barrels in the courtyard are ALL returned -- including (57.700, 70.000), the barrel D-645 proposed by hand and its own addendum refuted -- and the minimal set is exactly the THREE B.Cu GND tracks of the C6.2 west arm.  Re-proved open on the real route_join.",
+  "baseline": {
+    "mm": 0.0,
+    "ok": false,
+    "reason": "NO_PATH",
+    "secs": 22.1
+  },
+  "board": "/home/aqroot8/aqroot-demo/hardware/demo/kicad/aqroot-demo/aqroot-Beta-v2.kicad_pcb",
+  "board_sha256": "24b85f639cee4cfae797d9372553261ac7591df2626d818c801c8ac53f3f5f9c",
+  "candidates": [
+    {
+      "at": [
+        54.2,
+        66.5
+      ],
+      "kind": "barrel",
+      "shapes": 14
+    },
+    {
+      "at": [
+        56.0,
+        68.1
+      ],
+      "kind": "barrel",
+      "shapes": 14
+    },
+    {
+      "at": [
+        57.5,
+        72.8
+      ],
+      "kind": "barrel",
+      "shapes": 14
+    },
+    {
+      "at": [
+        57.7,
+        70.0
+      ],
+      "kind": "barrel",
+      "shapes": 14
+    },
+    {
+      "at": [
+        58.0,
+        72.4
+      ],
+      "kind": "barrel",
+      "shapes": 14
+    },
+    {
+      "at": [
+        58.3,
+        70.2
+      ],
+      "kind": "barrel",
+      "shapes": 14
+    },
+    {
+      "at": [
+        60.1,
+        68.0
+      ],
+      "kind": "barrel",
+      "shapes": 14
+    },
+    {
+      "a": [
+        57.5,
+        68.1
+      ],
+      "b": [
+        56.0,
+        68.1
+      ],
+      "kind": "track",
+      "layer": "B",
+      "w_mm": 0.3
+    },
+    {
+      "a": [
+        57.6,
+        68.1
+      ],
+      "b": [
+        57.5,
+        68.1
+      ],
+      "kind": "track",
+      "layer": "B",
+      "w_mm": 0.3
+    },
+    {
+      "a": [
+        58.3,
+        70.1
+      ],
+      "b": [
+        58.3,
+        70.2
+      ],
+      "kind": "track",
+      "layer": "B",
+      "w_mm": 0.3
+    },
+    {
+      "a": [
+        58.4,
+        70.0
+      ],
+      "b": [
+        58.3,
+        70.1
+      ],
+      "kind": "track",
+      "layer": "B",
+      "w_mm": 0.3
+    },
+    {
+      "a": [
+        58.4,
+        70.5
+      ],
+      "b": [
+        58.675,
+        70.675
+      ],
+      "kind": "track",
+      "layer": "B",
+      "w_mm": 0.3
+    },
+    {
+      "a": [
+        58.4,
+        70.5
+      ],
+      "b": [
+        58.675,
+        70.675
+      ],
+      "kind": "track",
+      "layer": "B",
+      "w_mm": 0.3
+    },
+    {
+      "a": [
+        58.413,
+        70.0
+      ],
+      "b": [
+        57.7,
+        70.0
+      ],
+      "kind": "track",
+      "layer": "B",
+      "w_mm": 0.3
+    },
+    {
+      "a": [
+        58.6,
+        67.425
+      ],
+      "b": [
+        57.6,
+        68.1
+      ],
+      "kind": "track",
+      "layer": "B",
+      "w_mm": 0.3
+    },
+    {
+      "a": [
+        58.625,
+        71.7
+      ],
+      "b": [
+        57.5,
+        72.8
+      ],
+      "kind": "track",
+      "layer": "B",
+      "w_mm": 0.3
+    },
+    {
+      "a": [
+        58.625,
+        71.7
+      ],
+      "b": [
+        58.0,
+        72.4
+      ],
+      "kind": "track",
+      "layer": "B",
+      "w_mm": 0.3
+    },
+    {
+      "a": [
+        58.675,
+        70.675
+      ],
+      "b": [
+        58.75,
+        70.85
+      ],
+      "kind": "track",
+      "layer": "B",
+      "w_mm": 0.3
+    },
+    {
+      "a": [
+        58.675,
+        70.675
+      ],
+      "b": [
+        58.75,
+        70.85
+      ],
+      "kind": "track",
+      "layer": "B",
+      "w_mm": 0.3
+    },
+    {
+      "a": [
+        58.75,
+        70.85
+      ],
+      "b": [
+        58.75,
+        71.525
+      ],
+      "kind": "track",
+      "layer": "B",
+      "w_mm": 0.3
+    },
+    {
+      "a": [
+        58.75,
+        70.85
+      ],
+      "b": [
+        58.75,
+        71.525
+      ],
+      "kind": "track",
+      "layer": "B",
+      "w_mm": 0.3
+    },
+    {
+      "a": [
+        58.75,
+        71.525
+      ],
+      "b": [
+        58.625,
+        71.7
+      ],
+      "kind": "track",
+      "layer": "B",
+      "w_mm": 0.3
+    },
+    {
+      "a": [
+        58.75,
+        71.525
+      ],
+      "b": [
+        58.625,
+        71.7
+      ],
+      "kind": "track",
+      "layer": "B",
+      "w_mm": 0.3
+    },
+    {
+      "a": [
+        59.025,
+        67.425
+      ],
+      "b": [
+        60.2,
+        68.1
+      ],
+      "kind": "track",
+      "layer": "B",
+      "w_mm": 0.3
+    },
+    {
+      "a": [
+        60.2,
+        68.1
+      ],
+      "b": [
+        60.1,
+        68.0
+      ],
+      "kind": "track",
+      "layer": "B",
+      "w_mm": 0.3
+    }
+  ],
+  "decision": "D-646",
+  "env": {
+    "offcentre": true,
+    "scan_board_vias": true
+  },
+  "minimal_eviction": [
+    {
+      "a": [
+        57.5,
+        68.1
+      ],
+      "b": [
+        56.0,
+        68.1
+      ],
+      "kind": "track",
+      "layer": "B",
+      "w_mm": 0.3
+    },
+    {
+      "a": [
+        57.6,
+        68.1
+      ],
+      "b": [
+        57.5,
+        68.1
+      ],
+      "kind": "track",
+      "layer": "B",
+      "w_mm": 0.3
+    },
+    {
+      "a": [
+        58.6,
+        67.425
+      ],
+      "b": [
+        57.6,
+        68.1
+      ],
+      "kind": "track",
+      "layer": "B",
+      "w_mm": 0.3
+    }
+  ],
+  "net": "GND",
+  "question": "D-645's addendum ordered this by name: `WithoutObjects` over every routed object in `U4`'s courtyard, re-asking `route_join`, instead of another hand-picked barrel.  Units are PHYSICAL -- a through barrel is one candidate (hole plus all six annuli), a track is one candidate -- and the search is reverse-greedy delta debugging from `all out`, barrels offered back FIRST so the answer prefers to evict track over plane stitching.",
+  "reproof": {
+    "mm": 0.0,
+    "ok": true,
+    "reason": null,
+    "secs": 12.6
+  },
+  "schema": 1,
+  "trace": [
+    {
+      "mm": 0.0,
+      "ok": true,
+      "reason": null,
+      "returned": {
+        "at": [
+          54.2,
+          66.5
+        ],
+        "kind": "barrel",
+        "shapes": 14
+      },
+      "secs": 12.2,
+      "survived": true
+    },
+    {
+      "mm": 0.0,
+      "ok": true,
+      "reason": null,
+      "returned": {
+        "at": [
+          56.0,
+          68.1
+        ],
+        "kind": "barrel",
+        "shapes": 14
+      },
+      "secs": 12.2,
+      "survived": true
+    },
+    {
+      "mm": 0.0,
+      "ok": true,
+      "reason": null,
+      "returned": {
+        "at": [
+          57.5,
+          72.8
+        ],
+        "kind": "barrel",
+        "shapes": 14
+      },
+      "secs": 12.3,
+      "survived": true
+    },
+    {
+      "mm": 0.0,
+      "ok": true,
+      "reason": null,
+      "returned": {
+        "at": [
+          57.7,
+          70.0
+        ],
+        "kind": "barrel",
+        "shapes": 14
+      },
+      "secs": 12.3,
+      "survived": true
+    },
+    {
+      "mm": 0.0,
+      "ok": true,
+      "reason": null,
+      "returned": {
+        "at": [
+          58.0,
+          72.4
+        ],
+        "kind": "barrel",
+        "shapes": 14
+      },
+      "secs": 12.4,
+      "survived": true
+    },
+    {
+      "mm": 0.0,
+      "ok": true,
+      "reason": null,
+      "returned": {
+        "at": [
+          58.3,
+          70.2
+        ],
+        "kind": "barrel",
+        "shapes": 14
+      },
+      "secs": 12.3,
+      "survived": true
+    },
+    {
+      "mm": 0.0,
+      "ok": true,
+      "reason": null,
+      "returned": {
+        "at": [
+          60.1,
+          68.0
+        ],
+        "kind": "barrel",
+        "shapes": 14
+      },
+      "secs": 12.4,
+      "survived": true
+    },
+    {
+      "mm": 0.0,
+      "ok": false,
+      "reason": "NO_PATH",
+      "returned": {
+        "a": [
+          57.5,
+          68.1
+        ],
+        "b": [
+          56.0,
+          68.1
+        ],
+        "kind": "track",
+        "layer": "B",
+        "w_mm": 0.3
+      },
+      "secs": 22.7,
+      "survived": false
+    },
+    {
+      "mm": 0.0,
+      "ok": false,
+      "reason": "NO_PATH",
+      "returned": {
+        "a": [
+          57.6,
+          68.1
+        ],
+        "b": [
+          57.5,
+          68.1
+        ],
+        "kind": "track",
+        "layer": "B",
+        "w_mm": 0.3
+      },
+      "secs": 22.6,
+      "survived": false
+    },
+    {
+      "mm": 0.0,
+      "ok": true,
+      "reason": null,
+      "returned": {
+        "a": [
+          58.3,
+          70.1
+        ],
+        "b": [
+          58.3,
+          70.2
+        ],
+        "kind": "track",
+        "layer": "B",
+        "w_mm": 0.3
+      },
+      "secs": 12.6,
+      "survived": true
+    },
+    {
+      "mm": 0.0,
+      "ok": true,
+      "reason": null,
+      "returned": {
+        "a": [
+          58.4,
+          70.0
+        ],
+        "b": [
+          58.3,
+          70.1
+        ],
+        "kind": "track",
+        "layer": "B",
+        "w_mm": 0.3
+      },
+      "secs": 12.5,
+      "survived": true
+    },
+    {
+      "mm": 0.0,
+      "ok": true,
+      "reason": null,
+      "returned": {
+        "a": [
+          58.4,
+          70.5
+        ],
+        "b": [
+          58.675,
+          70.675
+        ],
+        "kind": "track",
+        "layer": "B",
+        "w_mm": 0.3
+      },
+      "secs": 12.6,
+      "survived": true
+    },
+    {
+      "mm": 0.0,
+      "ok": true,
+      "reason": null,
+      "returned": {
+        "a": [
+          58.4,
+          70.5
+        ],
+        "b": [
+          58.675,
+          70.675
+        ],
+        "kind": "track",
+        "layer": "B",
+        "w_mm": 0.3
+      },
+      "secs": 12.6,
+      "survived": true
+    },
+    {
+      "mm": 0.0,
+      "ok": true,
+      "reason": null,
+      "returned": {
+        "a": [
+          58.413,
+          70.0
+        ],
+        "b": [
+          57.7,
+          70.0
+        ],
+        "kind": "track",
+        "layer": "B",
+        "w_mm": 0.3
+      },
+      "secs": 12.7,
+      "survived": true
+    },
+    {
+      "mm": 0.0,
+      "ok": false,
+      "reason": "NO_PATH",
+      "returned": {
+        "a": [
+          58.6,
+          67.425
+        ],
+        "b": [
+          57.6,
+          68.1
+        ],
+        "kind": "track",
+        "layer": "B",
+        "w_mm": 0.3
+      },
+      "secs": 22.9,
+      "survived": false
+    },
+    {
+      "mm": 0.0,
+      "ok": true,
+      "reason": null,
+      "returned": {
+        "a": [
+          58.625,
+          71.7
+        ],
+        "b": [
+          57.5,
+          72.8
+        ],
+        "kind": "track",
+        "layer": "B",
+        "w_mm": 0.3
+      },
+      "secs": 12.4,
+      "survived": true
+    },
+    {
+      "mm": 0.0,
+      "ok": true,
+      "reason": null,
+      "returned": {
+        "a": [
+          58.625,
+          71.7
+        ],
+        "b": [
+          58.0,
+          72.4
+        ],
+        "kind": "track",
+        "layer": "B",
+        "w_mm": 0.3
+      },
+      "secs": 12.6,
+      "survived": true
+    },
+    {
+      "mm": 0.0,
+      "ok": true,
+      "reason": null,
+      "returned": {
+        "a": [
+          58.675,
+          70.675
+        ],
+        "b": [
+          58.75,
+          70.85
+        ],
+        "kind": "track",
+        "layer": "B",
+        "w_mm": 0.3
+      },
+      "secs": 12.5,
+      "survived": true
+    },
+    {
+      "mm": 0.0,
+      "ok": true,
+      "reason": null,
+      "returned": {
+        "a": [
+          58.675,
+          70.675
+        ],
+        "b": [
+          58.75,
+          70.85
+        ],
+        "kind": "track",
+        "layer": "B",
+        "w_mm": 0.3
+      },
+      "secs": 12.8,
+      "survived": true
+    },
+    {
+      "mm": 0.0,
+      "ok": true,
+      "reason": null,
+      "returned": {
+        "a": [
+          58.75,
+          70.85
+        ],
+        "b": [
+          58.75,
+          71.525
+        ],
+        "kind": "track",
+        "layer": "B",
+        "w_mm": 0.3
+      },
+      "secs": 12.7,
+      "survived": true
+    },
+    {
+      "mm": 0.0,
+      "ok": true,
+      "reason": null,
+      "returned": {
+        "a": [
+          58.75,
+          70.85
+        ],
+        "b": [
+          58.75,
+          71.525
+        ],
+        "kind": "track",
+        "layer": "B",
+        "w_mm": 0.3
+      },
+      "secs": 12.7,
+      "survived": true
+    },
+    {
+      "mm": 0.0,
+      "ok": true,
+      "reason": null,
+      "returned": {
+        "a": [
+          58.75,
+          71.525
+        ],
+        "b": [
+          58.625,
+          71.7
+        ],
+        "kind": "track",
+        "layer": "B",
+        "w_mm": 0.3
+      },
+      "secs": 12.6,
+      "survived": true
+    },
+    {
+      "mm": 0.0,
+      "ok": true,
+      "reason": null,
+      "returned": {
+        "a": [
+          58.75,
+          71.525
+        ],
+        "b": [
+          58.625,
+          71.7
+        ],
+        "kind": "track",
+        "layer": "B",
+        "w_mm": 0.3
+      },
+      "secs": 12.6,
+      "survived": true
+    },
+    {
+      "mm": 0.0,
+      "ok": true,
+      "reason": null,
+      "returned": {
+        "a": [
+          59.025,
+          67.425
+        ],
+        "b": [
+          60.2,
+          68.1
+        ],
+        "kind": "track",
+        "layer": "B",
+        "w_mm": 0.3
+      },
+      "secs": 12.6,
+      "survived": true
+    },
+    {
+      "mm": 0.0,
+      "ok": true,
+      "reason": null,
+      "returned": {
+        "a": [
+          60.2,
+          68.1
+        ],
+        "b": [
+          60.1,
+          68.0
+        ],
+        "kind": "track",
+        "layer": "B",
+        "w_mm": 0.3
+      },
+      "secs": 12.5,
+      "survived": true
+    }
+  ],
+  "width_nm": 400000,
+  "window_mm": [
+    53.975,
+    66.22,
+    61.025,
+    73.775
+  ]
+}

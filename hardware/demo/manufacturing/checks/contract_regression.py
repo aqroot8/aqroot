@@ -51,7 +51,7 @@ EVIDENCE = MFG / "evidence"
 # board whose own guard reads `P1-P4 PASS`.  The stale question is the
 # defect, not the board.  EVERY promotion that re-emits the guard must
 # move this line to the guard IT emitted.
-BOND_GUARD = "evidence/d644-pour-bond-guard-next.json"
+BOND_GUARD = "evidence/d646-pour-bond-guard-next.json"
 
 # name -> (script, extra argv, baseline evidence basename WITHOUT the decision
 #          prefix, verdict field).  The verdict field is read only for the

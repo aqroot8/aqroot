@@ -1,0 +1,352 @@
+{
+  "aim": {
+    "G=100000 w=200000 U4.12 EL=64": {
+      "dst": 2,
+      "mm": 0.0,
+      "ok": false,
+      "reason": "NO_PATH",
+      "secs": 0.3,
+      "src": 12,
+      "vias": null,
+      "why": "no all-layer corridor at 0.200 mm between the islands"
+    },
+    "G=100000 w=200000 body EL=64": {
+      "dst": 2851,
+      "mm": 0.0,
+      "ok": false,
+      "reason": "NO_PATH",
+      "secs": 19.5,
+      "src": 12,
+      "vias": null,
+      "why": "no all-layer corridor at 0.200 mm between the islands"
+    },
+    "G=100000 w=200000 body EL=8": {
+      "dst": 799,
+      "mm": 0.0,
+      "ok": false,
+      "reason": "NO_PATH",
+      "secs": 15.0,
+      "src": 12,
+      "vias": null,
+      "why": "no all-layer corridor at 0.200 mm between the islands"
+    },
+    "G=100000 w=400000 U4.12 EL=64": {
+      "dst": null,
+      "mm": 0.0,
+      "ok": false,
+      "reason": "NO_LEGAL_ESCAPE_DST",
+      "secs": 2.7,
+      "src": null,
+      "vias": null,
+      "why": "U4.12: NO LEGAL ESCAPE at >= 0.400 mm; blocked by U4.13 (x21), U4.11 (x18), U4.9 (x8), U4.1 (x6)"
+    },
+    "G=100000 w=400000 body EL=64": {
+      "dst": 2535,
+      "mm": 0.0,
+      "ok": false,
+      "reason": "NO_PATH",
+      "secs": 29.0,
+      "src": 32,
+      "vias": null,
+      "why": "no all-layer corridor at 0.400 mm between the islands"
+    },
+    "G=100000 w=400000 body EL=8": {
+      "dst": 704,
+      "mm": 0.0,
+      "ok": false,
+      "reason": "NO_PATH",
+      "secs": 19.3,
+      "src": 16,
+      "vias": null,
+      "why": "no all-layer corridor at 0.400 mm between the islands"
+    },
+    "G=50000 w=200000 U4.12 EL=64": {
+      "dst": 3,
+      "mm": 0.0,
+      "ok": false,
+      "reason": "NO_PATH",
+      "secs": 1.0,
+      "src": 17,
+      "vias": null,
+      "why": "no all-layer corridor at 0.200 mm between the islands"
+    },
+    "G=50000 w=200000 body EL=64": {
+      "dst": 1352,
+      "mm": 0.0,
+      "ok": false,
+      "reason": "NO_PATH",
+      "secs": 68.4,
+      "src": 17,
+      "vias": null,
+      "why": "no all-layer corridor at 0.200 mm between the islands"
+    },
+    "G=50000 w=200000 body EL=8": {
+      "dst": 582,
+      "mm": 0.0,
+      "ok": false,
+      "reason": "NO_PATH",
+      "secs": 58.5,
+      "src": 10,
+      "vias": null,
+      "why": "no all-layer corridor at 0.200 mm between the islands"
+    },
+    "G=50000 w=400000 U4.12 EL=64": {
+      "dst": null,
+      "mm": 0.0,
+      "ok": false,
+      "reason": "NO_LEGAL_ESCAPE_DST",
+      "secs": 3.1,
+      "src": null,
+      "vias": null,
+      "why": "U4.12: NO LEGAL ESCAPE at >= 0.400 mm; blocked by U4.13 (x21), U4.11 (x18), U4.9 (x8), U4.1 (x6)"
+    },
+    "G=50000 w=400000 body EL=64": {
+      "dst": 1480,
+      "mm": 0.0,
+      "ok": false,
+      "reason": "NO_PATH",
+      "secs": 84.3,
+      "src": 128,
+      "vias": null,
+      "why": "no all-layer corridor at 0.400 mm between the islands"
+    },
+    "G=50000 w=400000 body EL=8": {
+      "dst": 497,
+      "mm": 0.0,
+      "ok": false,
+      "reason": "NO_PATH",
+      "secs": 71.7,
+      "src": 16,
+      "vias": null,
+      "why": "no all-layer corridor at 0.400 mm between the islands"
+    }
+  },
+  "answer": "None of them is the wall.  0.200 mm refuses at G=0.100 mm and at G=0.050 mm; raising the escape limit 8 -> 64 finds only 17 legal escapes and still refuses; and aiming the join at a SYNTHETIC one-pad destination (U4.12, 1.7 mm due south, on the body) refuses in 1.0 s.  What the 0.200 mm licence DOES buy is a reclassification: U4.5 moves NO_LEGAL_ESCAPE -> NO_PATH, a fourth land into the corridor class.",
+  "decision": "D-646",
+  "env": {
+    "offcentre_launch": true,
+    "scan_board_vias": true
+  },
+  "fine_lattice": {
+    "U4.2/U4.3 G=25000 w=200000 via=350000": {
+      "dst": 519,
+      "field_secs": 7.7,
+      "mm": 0.0,
+      "ok": false,
+      "reason": "NO_PATH",
+      "secs": 564.2,
+      "src": 7,
+      "vias": null,
+      "why": "no all-layer corridor at 0.200 mm between the islands"
+    },
+    "U4.2/U4.3 G=50000 w=200000 via=350000": {
+      "dst": 582,
+      "field_secs": 3.1,
+      "mm": 0.0,
+      "ok": false,
+      "reason": "NO_PATH",
+      "secs": 56.9,
+      "src": 10,
+      "vias": null,
+      "why": "no all-layer corridor at 0.200 mm between the islands"
+    }
+  },
+  "per_net_blame": {
+    "/01_POWER_TREE/V3V3_FB": {
+      "mm": 0.0,
+      "objects": 11,
+      "ok": false,
+      "protected": false,
+      "reason": "NO_PATH",
+      "secs": 22.8,
+      "src_escapes": 16
+    },
+    "/05_I2C_DEVICES/BMI270_INT1_RAW": {
+      "mm": 0.0,
+      "objects": 11,
+      "ok": false,
+      "protected": false,
+      "reason": "NO_PATH",
+      "secs": 22.6,
+      "src_escapes": 16
+    },
+    "/05_I2C_DEVICES/BMI270_SDO_ADDR": {
+      "mm": 0.0,
+      "objects": 3,
+      "ok": false,
+      "protected": false,
+      "reason": "NO_PATH",
+      "secs": 22.7,
+      "src_escapes": 16
+    },
+    "/09_COMMUNITY_HEADER/TCA4307_READY": {
+      "mm": 0.0,
+      "objects": 11,
+      "ok": false,
+      "protected": false,
+      "reason": "NO_PATH",
+      "secs": 22.6,
+      "src_escapes": 16
+    },
+    "/ACC_3V3_EN": {
+      "mm": 0.0,
+      "objects": 5,
+      "ok": false,
+      "protected": false,
+      "reason": "NO_PATH",
+      "secs": 22.4,
+      "src_escapes": 16
+    },
+    "/ACC_5V_BOOST_EN": {
+      "mm": 0.0,
+      "objects": 11,
+      "ok": false,
+      "protected": false,
+      "reason": "NO_PATH",
+      "secs": 22.3,
+      "src_escapes": 16
+    },
+    "/I2C_SCL_INT": {
+      "mm": 0.0,
+      "objects": 19,
+      "ok": false,
+      "protected": false,
+      "reason": "NO_PATH",
+      "secs": 22.0,
+      "src_escapes": 16
+    },
+    "GND": {
+      "mm": 0.0,
+      "objects": 80,
+      "ok": true,
+      "protected": false,
+      "reason": null,
+      "secs": 12.2,
+      "src_escapes": null
+    }
+  },
+  "question": "D-645 recorded {U4.2,U4.3} as NO_PATH at 0.400 mm with off-centre launch and left THREE cheaper explanations untested: a NARROWER conductor (the D-632 SIGNAL_LEAF licence, never spent), a FINER lattice at that narrower width, and the AIM of the escape search.",
+  "schema": 1,
+  "width_ladder": {
+    "R129.1 w=200000 via=350000": {
+      "dst": null,
+      "mm": 9.285,
+      "ok": true,
+      "reason": null,
+      "secs": 8.0,
+      "src": null,
+      "vias": 4,
+      "why": ""
+    },
+    "R129.1 w=200000 via=800000": {
+      "dst": 799,
+      "mm": 0.0,
+      "ok": false,
+      "reason": "NO_PATH",
+      "secs": 15.4,
+      "src": 13,
+      "vias": null,
+      "why": "no all-layer corridor at 0.200 mm between the islands"
+    },
+    "R39.1 w=200000 via=350000": {
+      "dst": 801,
+      "mm": 0.0,
+      "ok": false,
+      "reason": "NO_PATH",
+      "secs": 15.3,
+      "src": 8,
+      "vias": null,
+      "why": "no all-layer corridor at 0.200 mm between the islands"
+    },
+    "R39.1 w=200000 via=800000": {
+      "dst": 801,
+      "mm": 0.0,
+      "ok": false,
+      "reason": "NO_PATH",
+      "secs": 15.2,
+      "src": 8,
+      "vias": null,
+      "why": "no all-layer corridor at 0.200 mm between the islands"
+    },
+    "U4.2/U4.3 w=200000 via=350000": {
+      "dst": 799,
+      "mm": 0.0,
+      "ok": false,
+      "reason": "NO_PATH",
+      "secs": 15.1,
+      "src": 12,
+      "vias": null,
+      "why": "no all-layer corridor at 0.200 mm between the islands"
+    },
+    "U4.2/U4.3 w=200000 via=800000": {
+      "dst": 799,
+      "mm": 0.0,
+      "ok": false,
+      "reason": "NO_PATH",
+      "secs": 15.0,
+      "src": 12,
+      "vias": null,
+      "why": "no all-layer corridor at 0.200 mm between the islands"
+    },
+    "U4.5 w=200000 via=350000": {
+      "dst": 798,
+      "mm": 0.0,
+      "ok": false,
+      "reason": "NO_PATH",
+      "secs": 14.9,
+      "src": 6,
+      "vias": null,
+      "why": "no all-layer corridor at 0.200 mm between the islands"
+    },
+    "U4.5 w=200000 via=800000": {
+      "dst": 798,
+      "mm": 0.0,
+      "ok": false,
+      "reason": "NO_PATH",
+      "secs": 14.9,
+      "src": 6,
+      "vias": null,
+      "why": "no all-layer corridor at 0.200 mm between the islands"
+    },
+    "U4.8 w=200000 via=350000": {
+      "dst": null,
+      "mm": 0.0,
+      "ok": false,
+      "reason": "NO_LEGAL_ESCAPE_SRC",
+      "secs": 6.6,
+      "src": null,
+      "vias": null,
+      "why": "U4.8: NO LEGAL ESCAPE at >= 0.200 mm; blocked by U4.9 (x27), track (x21), U4.7 (x10), R40.1 (x5)"
+    },
+    "U4.8 w=200000 via=800000": {
+      "dst": null,
+      "mm": 0.0,
+      "ok": false,
+      "reason": "NO_LEGAL_ESCAPE_SRC",
+      "secs": 6.6,
+      "src": null,
+      "vias": null,
+      "why": "U4.8: NO LEGAL ESCAPE at >= 0.200 mm; blocked by U4.9 (x27), track (x21), U4.7 (x10), R40.1 (x5)"
+    },
+    "U5.2 w=200000 via=350000": {
+      "dst": null,
+      "mm": 0.0,
+      "ok": false,
+      "reason": "NO_LEGAL_ESCAPE_SRC",
+      "secs": 6.3,
+      "src": null,
+      "vias": null,
+      "why": "U5.2: NO LEGAL ESCAPE at >= 0.200 mm; blocked by U5.3 (x27), U5.1 (x21), R15.2 (x7), U5.17 (x5)"
+    },
+    "U5.2 w=200000 via=800000": {
+      "dst": null,
+      "mm": 0.0,
+      "ok": false,
+      "reason": "NO_LEGAL_ESCAPE_SRC",
+      "secs": 6.3,
+      "src": null,
+      "vias": null,
+      "why": "U5.2: NO LEGAL ESCAPE at >= 0.200 mm; blocked by U5.3 (x27), U5.1 (x21), R15.2 (x7), U5.17 (x5)"
+    }
+  }
+}

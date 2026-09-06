@@ -1,0 +1,58 @@
+{
+  "detours": [
+    {
+      "net": "GND",
+      "relay": false,
+      "tracks": [
+        {
+          "a_mm": [
+            58.6,
+            67.425
+          ],
+          "b_mm": [
+            57.6,
+            68.1
+          ],
+          "layer": "B.Cu",
+          "width_mm": 0.3
+        },
+        {
+          "a_mm": [
+            57.6,
+            68.1
+          ],
+          "b_mm": [
+            57.5,
+            68.1
+          ],
+          "layer": "B.Cu",
+          "width_mm": 0.3
+        },
+        {
+          "a_mm": [
+            57.5,
+            68.1
+          ],
+          "b_mm": [
+            56.0,
+            68.1
+          ],
+          "layer": "B.Cu",
+          "width_mm": 0.3
+        }
+      ]
+    }
+  ],
+  "note": "D-646: the per-OBJECT blame D-645's addendum ordered names THREE ordinary B.Cu GND tracks -- the C6.2 west arm -- as the whole wall between the BMI270's {U4.2,U4.3} mode straps and the +3V3 body, and CLEARS all seven GND barrels in U4's courtyard including (57.700,70.000), the barrel D-645 proposed by hand and its own addendum refuted.  The chain is C6.2's GND pad (58.600,67.425) -> (57.600,68.100) -> (57.500,68.100) -> the GND stitching via at (56.000,68.100).  Measured on a scratch copy with all three removed and KiCad's own refill: raw ratsnest 58 -> 58, retained open edges 42 -> 42, every per-net open-edge count identical, DRC profile identical, and pour_bond_guard emits the SAME 49 tubes with the same ends, islands, areas and lengths -- the B.Cu GND pour already carries every connection this copper carries.  The reserved disc is centred on the corridor the blame named.  The chain is REMOVED AND NOT RELAID (`relay: false`, D-646): its two ends are C6.2's own GND pad and a GND stitching via, the B.Cu GND pour already joins them, and the +3V3 route this removal admits is itself what makes a relay impossible -- gate run w/d646/gate1.json refused exactly one clause, `every_detour_relaid`, with `NO_PATH ... once the site is reserved`, on a run whose other eleven clauses PASSED at 42 -> 41 open edges.  The gate's new `inert_removal_priced` clause prices the replacement conductor on the candidate's own refilled pour.",
+  "reserve": [
+    {
+      "exempt": [
+        "+3V3"
+      ],
+      "r_mm": 0.8,
+      "x_mm": 57.29,
+      "y_mm": 68.05
+    }
+  ],
+  "schema": 1
+}
