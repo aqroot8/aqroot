@@ -54,6 +54,33 @@ only on a BARREL into a reserved inner plane -- a jumper is not a bond -- and
 `GND` does not.  Every split of a multi-pad `GND` island is refused
 unconditionally, whatever the router does (D-642 sect. 7).
 
+## TRIAGE BEFORE YOU SCREEN -- SECONDS, NOT HOURS (D-642)
+
+    python3 route_maze_batch.py NET --guard FULL50.json --grid 100000 \
+        --repair-planes          # never --promote
+
+D-641 gave six open-edge nets to `screen_corridor_detour.py` and **four hit a
+3600 s cap with no output**.  The plain gate answers the same nets in **3.0 to
+27.9 router seconds** and answers a question the corridor screen cannot: is
+this a **LAND** refusal or a **CORRIDOR** one?  Eight nets
+(`evidence/d642-open-edge-triage.json`):
+
+    net                  router s   kind      escapes src -> dst
+    /BQ25185_STAT1           3.7    LAND      U11.9 cannot launch
+    /SPI_B_SCK               1.8    LAND      U9.30 cannot launch
+    /I2C_SDA_INT             3.6    CORRIDOR  71 -> 1
+    /BQ25185_STAT2           3.0    CORRIDOR  25 -> 10
+    /ACC_PWR_EN              2.0    CORRIDOR  19 -> 7
+    /WAKE_INT_N              2.4    CORRIDOR  34 -> 7
+    /SX1262_DIO1            27.9    CORRIDOR   1 -> 10
+    /08_BUTTONS/BTN_LEFT_N  24.9    CORRIDOR   9 -> 37
+
+There is no corridor question until a land launches, so a corridor screen aimed
+at `/SPI_B_SCK` or `/BQ25185_STAT1` can only time out -- and one of them did.
+Both are blocked by their own package's adjacent pins, the PM-3 signature.  The
+three pour-owning nets (`GND`, `+3V3`, `BQ25185_SYS`) are NOT triageable this
+way: routing one as a primary would stitch every island on the board.
+
 ## BTN_DOWN_N IS CLOSED BY THE GUARD, AT A PITCH THAT HAD NEVER BEEN ASKED (D-625)
 
     python3 route_maze_batch.py NET --guard GUARD.json --grid ladder   # route

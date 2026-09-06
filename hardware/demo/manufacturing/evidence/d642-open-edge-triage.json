@@ -1,9 +1,22 @@
 {
  "board": "/home/aqroot8/aqroot-demo/hardware/demo/kicad/aqroot-demo/aqroot-Beta-v2.kicad_pcb",
  "board_sha256": "f496d2f39c0827248a47ab7d47efa4322f078b68d2da1d91ae6585d97bf8f875",
- "finding": "THREE MORE OPEN EDGES ARE NOW MEASURED REFUSALS INSTEAD OF UNASKED QUESTIONS, AND THEY ARE NOT THE SAME REFUSAL.  `/SPI_B_SCK` dies at the DESTINATION LAND -- `U9.30: NO LEGAL ESCAPE at >= 0.200 mm; blocked by U9.31 (x21), U9.29 (x17), track (x9), U9.33 (x8)` -- a fine-pitch pocket refusal on the same package whose `U9.16` D-640 ranked, not a corridor refusal at all.  `/WAKE_INT_N` (src_escapes 34, dst_escapes 7) and `/ACC_PWR_EN` (19, 7) both LAUNCH at both ends and die as `NO_PATH`: those two are corridor questions and belong to the corridor screen; `/SPI_B_SCK` is a LAND question and the corridor screen would have spent an hour learning that.",
- "method": "route_maze_batch.py full-board gate, never --promote; the full 50-tube pour_bond_guard.py spec in force; ~40 s per net against the 3600 s the corridor screen spends",
- "question": "D-641 ranked `finish the corridor sweep` third and left ten nets of D-640's twelve never started.  Before any corridor screen is spent on them, the CHEAPEST question is the one that found EXT_SDA: does the plain full-board gate route this net at all, with every pour-bond tube reserved and the plane repair armed?",
+ "corridor_refusals": [
+  "/WAKE_INT_N",
+  "/ACC_PWR_EN",
+  "/08_BUTTONS_EXPANDERS/BTN_LEFT_N",
+  "/SX1262_DIO1",
+  "/BQ25185_STAT2",
+  "/I2C_SDA_INT"
+ ],
+ "finding": "EIGHT OPEN EDGES ARE NOW MEASURED REFUSALS INSTEAD OF UNASKED QUESTIONS, AND THEY DO NOT REFUSE ALIKE.  Every one of D-641's FOUR 3600 s TIMEOUTS is answered here in 3.0 to 27.9 router seconds.  TWO of the eight are LAND refusals that a corridor screen can never answer, because there is no corridor question until a land launches: `/SPI_B_SCK` at `U9.30` (`blocked by U9.31 x21, U9.29 x17, track x9, U9.33 x8`) and `/BQ25185_STAT1` at `U11.9` (`blocked by U11.10 x18, U11.7 x16, U11.6 x7, track x6`) -- both a package's own adjacent pins, the PM-3 signature D-640 measured on seven other lands.  The other six launch at both ends and die NO_PATH, and their escape counts say how much room the search actually had: `/I2C_SDA_INT` 71 -> 1 and `/SX1262_DIO1` 1 -> 10 are nearly single-threaded at one end, while `/BQ25185_STAT2` 25 -> 10 and `/WAKE_INT_N` 34 -> 7 are not.",
+ "land_refusals": [
+  "/SPI_B_SCK",
+  "/BQ25185_STAT1"
+ ],
+ "method": "route_maze_batch.py full-board gate, never --promote, the full 50-tube pour_bond_guard.py spec in force.  `router_seconds` is maze3d's own figure for the net; the surrounding gate run (board load, refill, real KiCad DRC, two ledgers) is a few minutes on top and is what a corridor screen ALSO pays, many times over",
+ "next": "Run the same triage on the remaining unswept open-edge nets before any of them is given to screen_corridor_detour.py.  The pour-owning nets (GND, +3V3, BQ25185_SYS) are NOT triageable this way: routing them as a primary would stitch every island on the board, which is not a bounded transaction.",
+ "question": "D-641 ranked `finish the corridor sweep` third, left ten of D-640's twelve nets never started, and had FOUR of the six it did start hit a 3600 s cap with no output.  Before another hour is spent on any of them, ask the CHEAPEST question -- the one that found EXT_SDA: does the plain full-board gate route this net at all, with every pour-bond tube reserved and the plane repair armed, and IF NOT, is the refusal a LAND or a CORRIDOR?",
  "runs": [
   {
    "authoritative_unchanged": true,
@@ -17,20 +30,11 @@
     "retained_open_edges_after": 43,
     "retained_open_edges_before": 43
    },
-   "joins": [
-    {
-     "ok": false,
-     "pads": [
-      "U9.30"
-     ],
-     "reason": "NO_LEGAL_ESCAPE_DST",
-     "why": "U9.30: NO LEGAL ESCAPE at >= 0.200 mm; blocked by U9.31 (x21), U9.29 (x17), track (x9), U9.33 (x8)",
-     "why_lands": [
-      "U9.30: NO LEGAL ESCAPE at >= 0.200 mm; blocked by U9.31 (x21), U9.29 (x17), track (x9), U9.33 (x8)"
-     ]
-    }
-   ],
+   "d641_corridor_screen_timed_out": false,
+   "dst_escapes": null,
+   "kind": "LAND",
    "net": "/SPI_B_SCK",
+   "pour_partition_failed": [],
    "promotion_candidate": false,
    "refused_clauses": [
     "board_changed",
@@ -38,7 +42,9 @@
    ],
    "route_ok": false,
    "route_reason": "NO_LEGAL_ESCAPE_DST",
-   "seconds": 1.8
+   "router_seconds": 1.8,
+   "src_escapes": null,
+   "why": "U9.30: NO LEGAL ESCAPE at >= 0.200 mm; blocked by U9.31 (x21), U9.29 (x17), track (x9), U9.33 (x8)"
   },
   {
    "authoritative_unchanged": true,
@@ -52,16 +58,11 @@
     "retained_open_edges_after": 43,
     "retained_open_edges_before": 43
    },
-   "joins": [
-    {
-     "dst_escapes": 7,
-     "ok": false,
-     "reason": "NO_PATH",
-     "src_escapes": 34,
-     "why": "no all-layer corridor at 0.200 mm between the islands"
-    }
-   ],
+   "d641_corridor_screen_timed_out": false,
+   "dst_escapes": 7,
+   "kind": "CORRIDOR",
    "net": "/WAKE_INT_N",
+   "pour_partition_failed": [],
    "promotion_candidate": false,
    "refused_clauses": [
     "board_changed",
@@ -69,7 +70,9 @@
    ],
    "route_ok": false,
    "route_reason": "NO_PATH",
-   "seconds": 2.4
+   "router_seconds": 2.4,
+   "src_escapes": 34,
+   "why": "no all-layer corridor at 0.200 mm between the islands"
   },
   {
    "authoritative_unchanged": true,
@@ -83,16 +86,11 @@
     "retained_open_edges_after": 43,
     "retained_open_edges_before": 43
    },
-   "joins": [
-    {
-     "dst_escapes": 7,
-     "ok": false,
-     "reason": "NO_PATH",
-     "src_escapes": 19,
-     "why": "no all-layer corridor at 0.200 mm between the islands"
-    }
-   ],
+   "d641_corridor_screen_timed_out": false,
+   "dst_escapes": 7,
+   "kind": "CORRIDOR",
    "net": "/ACC_PWR_EN",
+   "pour_partition_failed": [],
    "promotion_candidate": false,
    "refused_clauses": [
     "board_changed",
@@ -100,9 +98,151 @@
    ],
    "route_ok": false,
    "route_reason": "NO_PATH",
-   "seconds": 2.0
+   "router_seconds": 2.0,
+   "src_escapes": 19,
+   "why": "no all-layer corridor at 0.200 mm between the islands"
+  },
+  {
+   "authoritative_unchanged": true,
+   "candidate_sha256": "f496d2f39c0827248a47ab7d47efa4322f078b68d2da1d91ae6585d97bf8f875",
+   "command": "--guard <all 50 pour-bond tubes> --grid 100000 --repair-planes",
+   "connectivity": {
+    "nets_improved": [],
+    "nets_regressed": [],
+    "open_retained_nets_after": 21,
+    "open_retained_nets_before": 21,
+    "retained_open_edges_after": 43,
+    "retained_open_edges_before": 43
+   },
+   "d641_corridor_screen_timed_out": true,
+   "dst_escapes": 37,
+   "kind": "CORRIDOR",
+   "net": "/08_BUTTONS_EXPANDERS/BTN_LEFT_N",
+   "pour_partition_failed": [],
+   "promotion_candidate": false,
+   "refused_clauses": [
+    "board_changed",
+    "board_improved"
+   ],
+   "route_ok": false,
+   "route_reason": "NO_PATH",
+   "router_seconds": 24.9,
+   "src_escapes": 9,
+   "why": "no all-layer corridor at 0.200 mm between the islands"
+  },
+  {
+   "authoritative_unchanged": true,
+   "candidate_sha256": "f496d2f39c0827248a47ab7d47efa4322f078b68d2da1d91ae6585d97bf8f875",
+   "command": "--guard <all 50 pour-bond tubes> --grid 100000 --repair-planes",
+   "connectivity": {
+    "nets_improved": [],
+    "nets_regressed": [],
+    "open_retained_nets_after": 21,
+    "open_retained_nets_before": 21,
+    "retained_open_edges_after": 43,
+    "retained_open_edges_before": 43
+   },
+   "d641_corridor_screen_timed_out": true,
+   "dst_escapes": 10,
+   "kind": "CORRIDOR",
+   "net": "/SX1262_DIO1",
+   "pour_partition_failed": [],
+   "promotion_candidate": false,
+   "refused_clauses": [
+    "board_changed",
+    "board_improved"
+   ],
+   "route_ok": false,
+   "route_reason": "NO_PATH",
+   "router_seconds": 27.9,
+   "src_escapes": 1,
+   "why": "no all-layer corridor at 0.200 mm between the islands"
+  },
+  {
+   "authoritative_unchanged": true,
+   "candidate_sha256": "f496d2f39c0827248a47ab7d47efa4322f078b68d2da1d91ae6585d97bf8f875",
+   "command": "--guard <all 50 pour-bond tubes> --grid 100000 --repair-planes",
+   "connectivity": {
+    "nets_improved": [],
+    "nets_regressed": [],
+    "open_retained_nets_after": 21,
+    "open_retained_nets_before": 21,
+    "retained_open_edges_after": 43,
+    "retained_open_edges_before": 43
+   },
+   "d641_corridor_screen_timed_out": true,
+   "dst_escapes": null,
+   "kind": "LAND",
+   "net": "/BQ25185_STAT1",
+   "pour_partition_failed": [],
+   "promotion_candidate": false,
+   "refused_clauses": [
+    "board_changed",
+    "board_improved"
+   ],
+   "route_ok": false,
+   "route_reason": "NO_LEGAL_ESCAPE_DST",
+   "router_seconds": 3.7,
+   "src_escapes": null,
+   "why": "U11.9: NO LEGAL ESCAPE at >= 0.200 mm; blocked by U11.10 (x18), U11.7 (x16), U11.6 (x7), track (x6)"
+  },
+  {
+   "authoritative_unchanged": true,
+   "candidate_sha256": "f496d2f39c0827248a47ab7d47efa4322f078b68d2da1d91ae6585d97bf8f875",
+   "command": "--guard <all 50 pour-bond tubes> --grid 100000 --repair-planes",
+   "connectivity": {
+    "nets_improved": [],
+    "nets_regressed": [],
+    "open_retained_nets_after": 21,
+    "open_retained_nets_before": 21,
+    "retained_open_edges_after": 43,
+    "retained_open_edges_before": 43
+   },
+   "d641_corridor_screen_timed_out": true,
+   "dst_escapes": 10,
+   "kind": "CORRIDOR",
+   "net": "/BQ25185_STAT2",
+   "pour_partition_failed": [],
+   "promotion_candidate": false,
+   "refused_clauses": [
+    "board_changed",
+    "board_improved"
+   ],
+   "route_ok": false,
+   "route_reason": "NO_PATH",
+   "router_seconds": 3.0,
+   "src_escapes": 25,
+   "why": "no all-layer corridor at 0.200 mm between the islands"
+  },
+  {
+   "authoritative_unchanged": true,
+   "candidate_sha256": "f496d2f39c0827248a47ab7d47efa4322f078b68d2da1d91ae6585d97bf8f875",
+   "command": "--guard <all 50 pour-bond tubes> --grid 100000 --repair-planes",
+   "connectivity": {
+    "nets_improved": [],
+    "nets_regressed": [],
+    "open_retained_nets_after": 21,
+    "open_retained_nets_before": 21,
+    "retained_open_edges_after": 43,
+    "retained_open_edges_before": 43
+   },
+   "d641_corridor_screen_timed_out": false,
+   "dst_escapes": 1,
+   "kind": "CORRIDOR",
+   "net": "/I2C_SDA_INT",
+   "pour_partition_failed": [],
+   "promotion_candidate": false,
+   "refused_clauses": [
+    "board_changed",
+    "board_improved"
+   ],
+   "route_ok": false,
+   "route_reason": "NO_PATH",
+   "router_seconds": 3.6,
+   "src_escapes": 71,
+   "why": "no all-layer corridor at 0.200 mm between the islands"
   }
  ],
  "schema": 1,
- "verdict": "ALL THREE REFUSED, none promotable, board unmoved -- and the sweep now has a 40-second triage that says WHICH screen each net actually needs"
+ "verdict": "ALL EIGHT REFUSED, none promotable, board unmoved -- and the corridor sweep now has a seconds-not-hours triage that says which screen each net actually needs, and disqualifies two of them from the corridor screen outright"
 }

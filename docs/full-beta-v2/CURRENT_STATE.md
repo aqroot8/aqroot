@@ -63,12 +63,15 @@
   multi-pad `GND` island on this board is refused UNCONDITIONALLY, whatever the
   router does** -- so the only promotable `EXT_SDA` route is one that does not
   split island 31 at all, which is (1).
-  **(7) THREE MORE OPEN EDGES TRIAGED IN ~40 s EACH**
-  (`evidence/d642-open-edge-triage.json`), against the 3600 s the corridor
-  screen spends: `/SPI_B_SCK` is **`NO_LEGAL_ESCAPE_DST`** at `U9.30` -- a LAND
-  question in the same fine-pitch pocket as D-640's `U9.16`, **not a corridor
-  question at all** -- while `/WAKE_INT_N` (34/7) and `/ACC_PWR_EN` (19/7)
-  launch at both ends and die `NO_PATH`.
+  **(7) EIGHT OPEN EDGES TRIAGED IN SECONDS, INCLUDING ALL FOUR OF D-641's
+  3600 s TIMEOUTS** (`evidence/d642-open-edge-triage.json`): every one is
+  answered in **3.0-27.9 router seconds**.  **TWO are LAND refusals a corridor
+  screen can never answer** -- `/SPI_B_SCK` at `U9.30` and `/BQ25185_STAT1` at
+  `U11.9`, both blocked by their own package's adjacent pins, the PM-3
+  signature -- and `/BQ25185_STAT1` is one of the four that burned an hour in
+  the corridor screen learning nothing.  The other six launch at both ends and
+  die `NO_PATH`: `/I2C_SDA_INT` 71->1, `/SX1262_DIO1` 1->10, `/BQ25185_STAT2`
+  25->10, `/ACC_PWR_EN` 19->7, `/WAKE_INT_N` 34->7, `BTN_LEFT_N` 9->37.
   **NEXT, IN ORDER OF LEVERAGE:** (1) **`PP2`'s `GND` RULE IS THE BOARD'S
   LARGEST SINGLE BLOCKER** -- D-584's family of six nets / ~18 edges incl. the
   whole internal I2C bus cannot be freed by any router move; the deferred
@@ -79,9 +82,12 @@
   `TCA4307_READY` TRACK** -- one ordinary signal holding 55 legal 0.500/0.200
   barrel sites; price with `screen_segment_evict.py`, relay with
   `--detour-spec`, re-measure with the same deficit screen so the fix is
-  CHECKABLE.  (3) **`/SPI_B_SCK` IS A LAND** -- run `screen_escape_class.py`,
-  not the corridor screen.  (4) **TRIAGE THE OTHER SEVEN UNSWEPT NETS** the
-  same 40-second way first.  (5) `BQ25185_SYS C26.2`'s stitch pocket and
+  CHECKABLE.  (3) **`/SPI_B_SCK` AND `/BQ25185_STAT1` ARE LANDS, NOT
+  CORRIDORS** (`U9.30`, `U11.9`) -- run `screen_escape_class.py` and
+  `screen_pad_escape_relief.py` on them; a corridor screen cannot answer a
+  land, and one of these already burned an hour proving it.  (4) **TRIAGE
+  EVERY REMAINING OPEN-EDGE NET** the same seconds-not-hours way before any of
+  them is given to `screen_corridor_detour.py`.  (5) `BQ25185_SYS C26.2`'s stitch pocket and
   `GND J3.A12/B1` at a cheaper setting, carried unchanged.  (6) `/I2S_LRCLK`'s
   edge rate and `/NFC_SUPPLY`'s per-net current, carried unchanged.
   No owner decision is OPEN; D-618's `J3` question remains RECORDED and PM-3

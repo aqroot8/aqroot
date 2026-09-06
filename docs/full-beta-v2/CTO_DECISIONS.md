@@ -183,25 +183,48 @@ and **never in the same breath as promoting copper it would admit** — which is
 exactly the discipline D-625 applied when it recorded the `PP2`/`PP3` tension
 rather than resolving it.
 
-## 8. THREE MORE OPEN EDGES, TRIAGED IN FORTY SECONDS EACH
+## 8. EIGHT OPEN EDGES, TRIAGED IN SECONDS — INCLUDING ALL FOUR OF D-641'S TIMEOUTS
 
-D-641 ranked *"finish the corridor sweep"* third and left ten nets never
-started; the four it did start cost 3600 s each and timed out.  Before any
-corridor screen is spent, the cheapest question is the one that FOUND
-`EXT_SDA`: does the plain gate route this net at all, with all fifty tubes
-reserved and the repair armed?  Three nets, ~40 s each
-(`evidence/d642-open-edge-triage.json`), and they do not refuse alike:
+D-641 ranked *"finish the corridor sweep"* third, left ten of D-640's twelve
+nets never started, and had **four of the six it did start hit a 3600 s cap
+with no output**.  Before another hour is spent on any of them, ask the
+cheapest question — the one that FOUND `EXT_SDA`: does the plain gate route
+this net at all, with all fifty tubes reserved and the repair armed, and if
+not, is the refusal a **LAND** or a **CORRIDOR**?
 
-  * `/SPI_B_SCK` — **`NO_LEGAL_ESCAPE_DST`**: `U9.30: NO LEGAL ESCAPE at
-    >= 0.200 mm; blocked by U9.31 (x21), U9.29 (x17), track (x9), U9.33 (x8)`.
-    A LAND question on the same package as D-640's `U9.16`, **not a corridor
-    question** — the corridor screen would have spent an hour learning that.
-  * `/WAKE_INT_N` — `NO_PATH`, src_escapes 34, dst_escapes 7.
-  * `/ACC_PWR_EN` — `NO_PATH`, src_escapes 19, dst_escapes 7.
+Eight nets (`evidence/d642-open-edge-triage.json`).  **Every one of D-641's
+four timeouts is answered in 3.0 to 27.9 router seconds**, and they do not
+refuse alike:
 
-Both ends LAUNCH on the latter two, so those are corridor questions and belong
-to the corridor screen.  **The sweep now has a triage that says which screen
-each net actually needs.**
+    net                  router s   kind      escapes src -> dst
+    /BQ25185_STAT1           3.7    LAND      U11.9 cannot launch
+    /SPI_B_SCK               1.8    LAND      U9.30 cannot launch
+    /I2C_SDA_INT             3.6    CORRIDOR  71 -> 1
+    /BQ25185_STAT2           3.0    CORRIDOR  25 -> 10
+    /ACC_PWR_EN              2.0    CORRIDOR  19 -> 7
+    /WAKE_INT_N              2.4    CORRIDOR  34 -> 7
+    /SX1262_DIO1            27.9    CORRIDOR   1 -> 10
+    /08_BUTTONS/BTN_LEFT_N  24.9    CORRIDOR   9 -> 37
+
+**TWO OF THE EIGHT ARE LAND REFUSALS A CORRIDOR SCREEN CAN NEVER ANSWER**,
+because there is no corridor question until a land launches:
+
+  * `/SPI_B_SCK` — `U9.30: NO LEGAL ESCAPE at >= 0.200 mm; blocked by U9.31
+    (x21), U9.29 (x17), track (x9), U9.33 (x8)` — the same package as D-640's
+    `U9.16`;
+  * `/BQ25185_STAT1` — `U11.9: NO LEGAL ESCAPE at >= 0.200 mm; blocked by
+    U11.10 (x18), U11.7 (x16), U11.6 (x7), track (x6)`.
+
+Both are a package's own adjacent pins — the PM-3 signature D-640 measured on
+seven other lands — and `/BQ25185_STAT1` is one of the four that burned an hour
+in the corridor screen learning nothing.  The other six launch at both ends and
+their escape counts say how much room the search actually had: `/I2C_SDA_INT`
+and `/SX1262_DIO1` are nearly single-threaded at one end, the rest are not.
+**The sweep now has a seconds-not-hours triage that says which screen each net
+actually needs, and disqualifies two of them from the corridor screen
+outright.**  (The three pour-owning nets are NOT triageable this way: routing
+`GND`, `+3V3` or `BQ25185_SYS` as a primary would stitch every island on the
+board, which is not a bounded transaction.)
 
 ## NEXT, IN ORDER OF LEVERAGE
 
@@ -221,11 +244,17 @@ each net actually needs.**
      `screen_segment_evict.py`, relay it with `--detour-spec`, and re-run
      `screen_bond_site_deficit.py U3.12 --fragment-board` — the same instrument,
      the same number, so the fix is CHECKABLE.
-  3. **`/SPI_B_SCK` IS A LAND, NOT A CORRIDOR** — `U9.30` in the same
-     fine-pitch pocket as `U9.16`.  Run `screen_escape_class.py` and
-     `screen_pad_escape_relief.py` on it, not the corridor screen.
-  4. **TRIAGE THE REMAINING SEVEN UNSWEPT NETS THE SAME WAY** (~40 s each)
-     before spending another 3600 s corridor screen on any of them.
+  3. **`/SPI_B_SCK` AND `/BQ25185_STAT1` ARE LANDS, NOT CORRIDORS** — `U9.30`
+     in the same fine-pitch pocket as `U9.16`, and `U11.9` beside `U11.2`,
+     which D-640 already measured as a `SEGMENT_WALL` dominated by its own
+     package's pins.  Run `screen_escape_class.py` and
+     `screen_pad_escape_relief.py` on them; the corridor screen cannot answer
+     a land.
+  4. **TRIAGE EVERY REMAINING OPEN-EDGE NET THE SAME WAY** -- seconds, not
+     hours -- before spending another 3600 s corridor screen on any of them.
+     Eight are done; the plane-less remainder is `/01_POWER_TREE/ACC_5V_LX`,
+     `/I2C_SCL_INT`, `/NFC_SUPPLY`, `/I2S_LRCLK` and the parked USB trio.  The
+     three pour-owning nets are not triageable this way.
   5. **`BQ25185_SYS C26.2`'s STITCH POCKET** and **`GND J3.A12/B1` AT A CHEAPER
      SETTING**, carried unchanged from D-641.
   6. **`/I2S_LRCLK`'s edge rate and `/NFC_SUPPLY`'s per-net current** remain the
