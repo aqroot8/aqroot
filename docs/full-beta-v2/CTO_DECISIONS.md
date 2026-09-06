@@ -1,5 +1,284 @@
 # AQROOT Full Beta v2 — CTO Decisions
 
+# D-640 · 2026-09-06 · Demo — the RELAY IS THE WALL: D-639's first ranked item is **REFUSED** by the board's own RF rule (a SOLE cut against a **zero** mismatch budget), `NOT_A_POCKET` is exposed as an ABSENCE OF MEASUREMENT and deleted, and the whole pour-served family — all 18 lands — is censused for the first time
+
+    authority  f496d2f39c0827248a47ab7d47efa4322f078b68d2da1d91ae6585d97bf8f875
+            -> f496d2f39c0827248a47ab7d47efa4322f078b68d2da1d91ae6585d97bf8f875
+    NO COPPER MOVED.  Zero tracks, zero vias, zero zones, zero rule areas,
+      zero `.kicad_dru` change, zero placement change.  Every screen re-reads
+      the board's sha256 after its last trial and reports
+      `authoritative_unchanged: true`.
+    `hardware/beta-v2` UNTOUCHED (`git status --short hardware/beta-v2/` empty).
+    THE TEN STANDING CONTRACTS: **10/10 RAN, 10/10 PASS**
+      (`evidence/d640-contract-regression.json`, baseline `d632`).  They differ
+      from that baseline in exactly the three fields D-639 already documented
+      and in nothing else: `board_sha256`, `In1.Cu` reference-plane area
+      9429.543 -> 9425.846 mm2, and `PP2`'s `GND|B` island count 58 -> 57.
+      This iteration moved nothing.
+
+D-639 closed with a ranked list whose first item was *"re-take
+`screen_segment_evict` on the promoted board and gate `GND U9.16`"*, and called
+that land *"measured, planned and ready ... the cheapest closure this board
+has"*.  **It must not be gated.**  Re-taking it on the promoted board is the
+cheap half; the expensive half is that nobody had asked what the cut COSTS.
+
+## 1. THE CITATION GUARD — distance is not a price
+
+`screen_segment_evict` walks its candidate tracks NEAREST-FIRST and stops at
+the FIRST one whose single cut opens a land (its QUESTION 2).  Every instrument
+downstream — `relay_price`, `screen_relay_transaction`, `--plan-out`, the gate
+— inherits that one choice without ever learning whether there was another, and
+without ever learning whose track it is.  **Distance to the land is not a
+price.  What a cut costs is what the RELAY costs, and that is decided by whose
+track it is.**
+
+New tracked **`screen_cut_choice.py`**.  For a land that opens it enumerates
+EVERY candidate, cuts each ALONE, reports every one that opens the barrel site,
+and greps the citation each cut net carries in this repository's own contracts
+— `checks/*.py`, `verify_promotion.py`, `protected_copper.py` and the board's
+`.kicad_dru`.  **The citations are READ, never listed**: a hand-maintained
+"sensitive nets" table is a second copy of the truth and would be wrong the day
+a rule changed.  A positive control rides along: `screen_segment_evict`'s own
+chosen cut must appear in the opener list (`reproduces_evidence_cut`), or the
+two instruments disagree about the same land and this one is wrong.  It is
+`true` on both lands that open.
+
+Both instruments now measure on ONE lattice: `screen_segment_evict.main`'s
+`Field`/rung/`body_landing` construction is lifted out verbatim as
+`land_field()` so a second instrument cannot drift from it.  That extraction is
+the ONLY change to any existing file in this decision — `git diff --numstat` is
+one file, and its behaviour is unchanged except where section 3 says otherwise.
+
+## 2. `GND U9.16` IS REFUSED, NOT READY — and the reason is the board's own rule
+
+**It is a `SOLE_CUT`.**  Of 20 candidate tracks exactly ONE opens the land; the
+other **19 all refuse `NO_BODY_VIA_SITE`**.  That one is
+`/04_SPI_B_RADIOS_NFC/NFC_RFO2` — the LONGER of the two 13.56 MHz transmit arms
+— and it is the most heavily constrained net the screen could have landed on:
+
+    six .kicad_dru rules   NFC transmit arm minimum width - equal both arms
+                           NFC transmit arm routed clearance
+                           NFC transmit arms are forbidden on In2
+                           NFC transmit arms carry no via - a via is an asymmetry
+                           NFC transmit arms stay on B.Cu
+                           SWITCH_NODE to NFC transmit arms separation
+    two NET-level cites    checks/placement_contract.py
+                           checks/rf_symmetry_contract.py
+    one class cite         checks/plane_return_path.py  (NFC_RF is reference-critical)
+
+**And `RF2`'s budget is ZERO.**  `checks/rf_symmetry_contract.py` run on the
+promoted board reports `arm_mismatch_budget_mm: 0.0`,
+`arm_mismatch_growth_mm: 0.0`, `arm_mismatch_mm_now: 2.8702`.  D-639's own
+accepted relay for this land is **2.6872 -> 3.09974 mm** on the LONGER arm
+(`evidence/d639-relay-joint-u916-g25.json`), so the recorded mismatch would go
+**2.8702 -> 3.2827 mm, a growth of 0.41254 mm against a budget of zero.**
+
+**The transaction D-639 left "ready" would have been refused by a standing
+contract AFTER a full-authority gate run was spent on it.**  That is the third
+gate run this family has nearly cost, and it is the one the citation guard
+exists to prevent.  `GND U9.16` is now **CLOSED as REFUSED** — not carried, not
+open, and not a routing question: closing it means moving an NFC transmit arm,
+which is PM-3.
+
+## 3. `NOT_A_POCKET` WAS AN ABSENCE OF MEASUREMENT, AND IT IS DELETED
+
+`screen_segment_evict` ended any land whose UNCUT escape failed for a reason
+other than `NO_VIA_SITE`/`NO_BODY_VIA_SITE` — in practice `NO_LEGAL_ESCAPE` —
+as `NOT_A_POCKET`, **before offering it a single cut**.  That reads an absence
+of measurement as a measurement, and it had been doing so for every land of
+this kind since the screen was written.
+
+It is wrong on its own terms.  `Cuts` removes FOREIGN ROUTED COPPER and nothing
+else, so it can only **ADD** room; `candidates` needs no escape to build its
+list.  An escape that fails on the uncut board can succeed once the copper
+beside the pad is gone.  **Seven lands were being skipped.**
+
+The verdict is deleted.  Every land now reaches the cut stage and carries the
+reason its uncut escape gave (`uncut_escape`), so a `SEGMENT_WALL` here is a
+refusal and no longer a skip.
+
+**RE-RUN, AND THE ANSWER DID NOT MOVE — WHICH IS THE POINT.**  All seven come
+back `SEGMENT_WALL` with all 20 candidates cut at once and the escape still
+`NO_LEGAL_ESCAPE`.  Nothing was unlocked.  What changed is that seven "never
+asked" became seven **measured refusals**.
+
+## 4. AND THE REFUSAL NAMES ITSELF: NOT ONE BLOCKER IS A TRACK
+
+Every blocker `stitch_pad` names in all seven escapes is a **PAD** or the
+**BOARD EDGE**:
+
+    +3V3  U4.3   >= 0.400 mm   U4.4 (x54), C6.2 (x7), U4.1 (x6), R119.2 (x3)
+    +3V3  U4.5   >= 0.400 mm   U4.6 (x41), U4.4 (x19), C6.2 (x5), C7.2 (x3)
+    +3V3  U4.8   >= 0.400 mm   U4.9 (x44), U4.7 (x13), U4.6 (x4), U4.1 (x4)
+    +3V3  U5.2   >= 0.400 mm   U5.1 (x56), R15.2 (x10), R15.1 (x3), C10.2 (x3)
+    SYS   U12.1  >= 0.500 mm   U12.2 (x69), C24.2 (x2), TP47.1 (x1)
+    SYS   U11.1  >= 0.500 mm   U11.2 (x54), R36.1 (x7), R37.2 (x3), C36.2 (x3)
+    GND   MK1.4  >= 0.150 mm   MK1.* (x67), board_edge (x5)
+
+In every case the dominant blocker is the land's OWN package's ADJACENT PIN.
+**No eviction of any size can move a pad**, and the census now proves that
+directly rather than assuming it.  These seven are a PLACEMENT finding (PM-3)
+for a named, measured reason.
+
+**THIS QUALIFIES A STANDING INSTRUMENT'S PRESCRIPTION.**
+`screen_escape_class.py` classes four of the seven `CLEAR` — *"this package can
+launch the contract width; a router refusal here is ROUTED COPPER, not the
+land"* — with margins **+0.300 mm (`U12.1`), +0.275 (`U4.8`), +0.200 (`U11.1`),
++0.135 (`MK1.4`)** and a 1.000 mm widest launch
+(`evidence/d640-escape-class-pourfamily.json`).  This census then cut every
+unprotected foreign TRACK within 8.0 mm of each and the escape still refused.
+`CLEAR` is a statement about the widest launch in EXACT GEOMETRY; it does NOT
+entail that an eviction will fix the refusal.  What is left in those windows is
+foreign VIAS — 46 at `U12.1`, 38 at `U4.8`, 29 at `U11.1`, 4 at `MK1.4` — which
+a segment cut may not touch because a barrel is a hole through every layer, and
+the pads named above, which nothing may touch.  **`CLEAR` must not be read as
+"an eviction will open it".**
+
+## 5. THE POUR-SERVED FAMILY, CENSUSED — ALL 18 LANDS
+
+`evidence/d640-segment-evict-pourfamily.json`, `+3V3` / `BQ25185_SYS` / `GND`,
+one run, `--cap 20 --body-landing --relay-own-layer`:
+
+    SEGMENT_WALL       14    every unprotected foreign track inside 8.0 mm cut
+                             at once and the site is still refused
+    SEGMENT_OPENS       2    GND U9.16, GND J3.A12/B1     (one cut each)
+    SEGMENT_SET_OPENS   2    +3V3 R39.1 (2 cuts), BQ25185_SYS C26.2 (7 cuts)
+
+**Four lands open, and the citation guard ranks them
+(`evidence/d640-cut-choice-pourfamily.json`):**
+
+    GND U9.16      SOLE_CUT       NFC_RFO2       6 DRU rules, 2 net cites  REFUSED (section 2)
+    GND J3.A12/B1  SOLE_CUT       Net-(J3-CC2)   ZERO rules, ZERO cites    ** UNCITED **
+    +3V3 R39.1     NO_SINGLE_CUT  (2-track set)  D-639: relay splits a GND pour
+    BQ25185_SYS
+        C26.2      NO_SINGLE_CUT  (7-track set)  see section 6
+
+**`Net-(J3-CC2)` IS THE ONLY UNCONSTRAINED CUT ON THIS BOARD.**  Nothing in
+this repository — no `checks/*.py`, no `.kicad_dru` rule, no protected-copper
+pattern — has a net-level opinion about it.  Read beside section 2 this
+INVERTS D-639's ranking: the land it called ready carries the most constrained
+cut on the board, and the land it carried as a wall carries the only free one.
+D-638 already measured why that land had not moved — `Net-(J3-CC2)` would not
+go back *"on a board where NOTHING else changed"*, which D-638 itself named a
+`LATTICE_WALL`, **a refusal of the instrument and not of the board**.
+
+**A DEFECT IN THE NEW INSTRUMENT, FOUND AND FIXED BEFORE IT MISLED ANYTHING.**
+The first run reported `Net-(J3-CC2)` as CITED — three contract files and two
+`.kicad_dru` rules.  Every one of those hits was the literal string `Default`,
+its netclass, matched inside a block about something else.  `Default` is this
+board's catch-all: the word appears in every `argparse` call in those files, and
+a class that constrains nothing may not make a net look constrained.  The class
+is now excluded, class-level and net-level citations are reported separately,
+and `uncited_openers` means **no contract names this NET**.  Had it not been
+caught, the guard would have steered the next iteration AWAY from the best
+candidate it found.
+
+## 6. `BQ25185_SYS C26.2` — the closest this board has come, and ONE net refuses it
+
+Never through D-639's joint arm before.  Run at `--grid 25000 --arm joint`
+(`evidence/d640-relay-joint-c262-g25.json`), round 1 lays a **0.972 mm** stitch
+and gets **TWO of the three cut nets back**:
+
+    /08_BUTTONS_EXPANDERS/BTN_DOWN_N   5.8398 -> 6.5295 mm   ok
+    /BQ25185_STAT2                     2.8607 -> 3.5648 mm   ok
+    Net-(U12-PS_SYNC)                  2.7036 -> NO_PATH     REFUSES THE LAND
+
+Round 2 finds no second barrel site inside the net's own body pour within
+8.0 mm (`NO_BODY_VIA_SITE`), so the arm exhausts after 2 of its 12 tries.
+`BQ25185_SYS C26.2` is refused for exactly ONE named reason, on the net with
+the most open edges on the board (7).
+
+## 7. THE CORRIDOR FAMILY AGREES, AND NAMES THE SAME WALL
+
+`screen_corridor_detour.py` had never been run board-wide, and never on the
+promoted board.  **PARTIAL AND SAID SO** — 4 of 17 nets completed, 1 timed out
+at 1500 s, 12 never started
+(`evidence/d640-corridor-detour-census.json`, `coverage` states it):
+
+    /01_POWER_TREE/USB_D_CONN_P  J3.A6/B6<->U10.3   DETOURABLE, UNRELAYABLE
+                                 48 crossing, minimal 4, lane 9.647 mm
+                                 irreducible_nets: ['GND']
+                                 relay: /I2S_LRCLK NO_PATH, GND NO_PATH
+    /04_SPI_B_RADIOS_NFC/NFC_VDD_RF  <->U9.14       DETOURABLE, UNRELAYABLE
+                                 170 crossing, minimal 3 (ALL NFC_RFO2)
+                                 irreducible_nets: []   <-- see below
+                                 relay: NFC_RFO2 NO_PATH
+    /USB_D_MCU_N  R33.2<->U1.13                     SEGMENT_WALL (117 crossing)
+    /USB_D_MCU_P  R34.2<->U1.14                     SEGMENT_WALL (158 crossing)
+    /ACC_PWR_EN                                     TIMED OUT at 1500 s
+
+`NFC_RFO2` is the wall of a SECOND open edge, by the same nearest-first bias
+section 1 is about — and `irreducible_nets: []` **proves a cut set that spares
+it exists**, because that clause holds out every crossing track EXCEPT one
+net's and re-asks the corridor.  Nothing searches for that set.
+
+## 8. WHAT THIS ITERATION FOUND, IN ONE SENTENCE
+
+**The wall on this board is no longer FINDING a cut — it is PUTTING THE CUT
+COPPER BACK.**  Every transaction now dies at the relay, and every one of them
+names exactly ONE net that will not go back: `NFC_RFO2` (twice),
+`Net-(U12-PS_SYNC)`, `Net-(J3-CC2)`, `/I2S_LRCLK`+`GND`.
+
+## 9. THE PLANE-HAUL FAMILY IS EXHAUSTED, AND ITS SIXTH CLOSURE WAS NEVER PRICED
+
+D-635 swept **87 island pairs** with a reserved plane offered; **6 closed**;
+D-636 priced four and refused all four (`RP3` for `In1`, `RP5`+`RP4` for the
+two USB pairs).  The SIXTH was never examined, and it is not a plane question
+at all: `/NFC_SUPPLY C55.1 <-> U9.8` closes at 0.300 mm on **`B -> I2 -> B`**,
+and **`In2` is not a reserved plane** — `reserved_inner_planes` on this board
+is `{I1: GND, I3: +3V3, I4: GND}` and `In2` is already inside `P3V3`'s
+permitted set `('F','B','I2')`.  It is a WIDTH question, and the board's own
+section-5 IPC-2221B table refuses it twice over: `P3V3` requires **0.300 mm
+outer / 1.563 mm inner at the 1.0 A design current** (0.162 / 0.844 mm at the
+0.64 A measured peak), and the authored floor is **0.400 mm on the outer
+layers**.  A 0.300 mm run with an `In2` leg is below both.  Licensing it needs
+a published per-net current for `U9`'s VDD/VDD_TX rail, which this repository
+does not carry — the SAME KIND OF GAP as `/I2S_LRCLK`'s edge rate, and the
+second thing D-636 item 1's per-part electrical ledger would unlock.
+
+## 10. WHAT IS NOT SHIPPED
+
+An `--avoid-cut-net` preference lever — try a named net's tracks LAST when
+choosing which track to cut — was written in this iteration BEFORE the
+measurement was taken.  The measurement says both opening lands are `SOLE_CUT`:
+there is no choice to make on this board today.  **It is not shipped.**
+Shipping an unexercised action lever into a promoting-adjacent screen is the
+complexity the simplification doctrine names, and `screen_cut_choice` is the
+instrument that would justify one the day a land reports `CHOICE`.
+
+## NEXT, IN ORDER OF LEVERAGE
+
+ 1. **BUILD THE CUT-SET RETRY — one lever, and it is the only thing between
+    this board and its next closures.**  When a relay chain fails it is the CUT
+    SET that is refused, not the transaction, and `screen_corridor_detour`
+    already computes the proof that a better set exists: `irreducible_nets` is
+    EMPTY for `NFC_VDD_RF`, which means holding out every crossing track except
+    `NFC_RFO2`'s DOES open that corridor.  Drop the failing net from the cut
+    pool, re-run `minimal_tracks`, retry — the search is bounded and guaranteed
+    to terminate, because a net that IS irreducible is reported as such and
+    ends it.  Section 8 says every remaining transaction dies at the relay;
+    this is the arm that asks the second question.
+ 2. **`GND J3.A12/B1` IS THE BEST CANDIDATE ON THE BOARD.**  Its sole cut is
+    the only UNCITED opener here, and D-638 already ruled its relay a
+    `LATTICE_WALL` — a refusal of the grid, not of the board.  It has been
+    asked at 0.050 and 0.025 mm and never finer.  A `--grid 10000` joint arm is
+    a bounded, cheap question with copper on the other side of it.
+ 3. **`Net-(U12-PS_SYNC)` IS THE WHOLE OF `BQ25185_SYS C26.2`** — two of three
+    relays already succeed and the land is one net from closing, on the net
+    with the most open edges on the board.
+ 4. **FINISH THE CORRIDOR SWEEP** — 12 nets never started, 1 timed out at
+    1500 s.  `/ACC_PWR_EN` needs a coarser grid or a bounded minimal search;
+    the reverse-greedy is O(crossing tracks) `route_join` calls and
+    `NFC_VDD_RF` had 170 of them.
+ 5. **THE PER-PART ELECTRICAL LEDGER (D-636 item 1) NOW UNLOCKS TWO EDGES, NOT
+    ONE**: `/I2S_LRCLK`'s edge rate for `RP4` and `/NFC_SUPPLY`'s per-net
+    current for the section-9 width question.
+ 6. **CARRIED UNCHANGED**: PM-3 now has SEVEN lands whose escape is blocked by
+    their own package's adjacent pin, each named and measured (section 4);
+    `R129.1`'s absent plane remains a POUR question; D-618's `J3` question
+    remains RECORDED.  No owner decision is OPEN.
+
+
 # D-639 · 2026-09-06 · Demo — **COPPER IS PROMOTED.**  The rip-up-and-relay is a COMPLETE transaction: the plan now carries its own RUNG, the relay is priced against foreign pours before a gate run is spent, and the `GND C37.2` land closed with **ZERO NEW GROUND COPPER** — the pour flowed into the channel the detour vacated
 
     authority  5715bf5cd688a87f686e162b77bbcbff98dc9f9f3e20b4be6424849423e690d2

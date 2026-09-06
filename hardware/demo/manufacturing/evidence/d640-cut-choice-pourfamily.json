@@ -1,0 +1,1799 @@
+{
+  "authoritative_unchanged": true,
+  "board": "/home/aqroot8/aqroot-demo/hardware/demo/kicad/aqroot-demo/aqroot-Beta-v2.kicad_pcb",
+  "board_sha256": "f496d2f39c0827248a47ab7d47efa4322f078b68d2da1d91ae6585d97bf8f875",
+  "body_landing": true,
+  "cap": 20,
+  "contract_files": [
+    "hardware/demo/manufacturing/checks/contract_regression.py",
+    "hardware/demo/manufacturing/checks/fab_package_contract.py",
+    "hardware/demo/manufacturing/checks/keepout_stackup_contract.py",
+    "hardware/demo/manufacturing/checks/land_parity_contract.py",
+    "hardware/demo/manufacturing/checks/leaf_land_contract.py",
+    "hardware/demo/manufacturing/checks/neck_contract.py",
+    "hardware/demo/manufacturing/checks/pair_sweep_diff.py",
+    "hardware/demo/manufacturing/checks/placement_contract.py",
+    "hardware/demo/manufacturing/checks/plane_return_path.py",
+    "hardware/demo/manufacturing/checks/population_contract.py",
+    "hardware/demo/manufacturing/checks/pour_bond_contract.py",
+    "hardware/demo/manufacturing/checks/pour_partition_contract.py",
+    "hardware/demo/manufacturing/checks/rf_symmetry_contract.py",
+    "hardware/demo/manufacturing/protected_copper.py",
+    "hardware/demo/manufacturing/verify_promotion.py"
+  ],
+  "evidence": "evidence/d640-segment-evict-pourfamily.json",
+  "evidence_sha256": "9709544d58f9e0efabeb803cc59a7165c6eccef4708ee292a00fceeb1ed9ad31",
+  "grid": 100000,
+  "lands": [
+    {
+      "candidates": 20,
+      "foreign_vias": 32,
+      "island": [
+        "R39.1"
+      ],
+      "land": "+3V3:R39.1",
+      "net": "+3V3",
+      "netclass": "P3V3",
+      "opener_nets": [],
+      "openers": [],
+      "refused": [
+        {
+          "cut": {
+            "a_mm": [
+              65.25,
+              79.2
+            ],
+            "b_mm": [
+              66.5,
+              72.25
+            ],
+            "layer": "I3",
+            "mm": 7.0615,
+            "net": "/01_POWER_TREE/USB_VBUS_CHG",
+            "width_mm": 0.5
+          },
+          "is_evidence_cut": false,
+          "netclass": "VBUS_CHG",
+          "opens": false,
+          "reason": "NO_BODY_VIA_SITE"
+        },
+        {
+          "cut": {
+            "a_mm": [
+              66.5,
+              72.25
+            ],
+            "b_mm": [
+              67.4,
+              71.5
+            ],
+            "layer": "I3",
+            "mm": 1.1715,
+            "net": "/01_POWER_TREE/USB_VBUS_CHG",
+            "width_mm": 0.5
+          },
+          "is_evidence_cut": false,
+          "netclass": "VBUS_CHG",
+          "opens": false,
+          "reason": "NO_BODY_VIA_SITE"
+        },
+        {
+          "cut": {
+            "a_mm": [
+              66.5,
+              71.6
+            ],
+            "b_mm": [
+              66.6,
+              73.1
+            ],
+            "layer": "B",
+            "mm": 1.5033,
+            "net": "Net-(U11-TS_MR)",
+            "width_mm": 0.2
+          },
+          "is_evidence_cut": true,
+          "netclass": "Default",
+          "opens": false,
+          "reason": "NO_BODY_VIA_SITE"
+        },
+        {
+          "cut": {
+            "a_mm": [
+              66.6,
+              70.9
+            ],
+            "b_mm": [
+              66.5,
+              71.6
+            ],
+            "layer": "B",
+            "mm": 0.7071,
+            "net": "Net-(U11-TS_MR)",
+            "width_mm": 0.2
+          },
+          "is_evidence_cut": false,
+          "netclass": "Default",
+          "opens": false,
+          "reason": "NO_BODY_VIA_SITE"
+        },
+        {
+          "cut": {
+            "a_mm": [
+              65.4,
+              73.3
+            ],
+            "b_mm": [
+              64.2,
+              71.1
+            ],
+            "layer": "I3",
+            "mm": 2.506,
+            "net": "/09_COMMUNITY_HEADER/WAKE_GATE_S",
+            "width_mm": 0.2
+          },
+          "is_evidence_cut": false,
+          "netclass": "Default",
+          "opens": false,
+          "reason": "NO_BODY_VIA_SITE"
+        },
+        {
+          "cut": {
+            "a_mm": [
+              64.7,
+              70.5
+            ],
+            "b_mm": [
+              66.6,
+              70.9
+            ],
+            "layer": "I2",
+            "mm": 1.9416,
+            "net": "Net-(U11-TS_MR)",
+            "width_mm": 0.2
+          },
+          "is_evidence_cut": false,
+          "netclass": "Default",
+          "opens": false,
+          "reason": "NO_BODY_VIA_SITE"
+        },
+        {
+          "cut": {
+            "a_mm": [
+              68.6,
+              70.3
+            ],
+            "b_mm": [
+              66.4,
+              72.6
+            ],
+            "layer": "F",
+            "mm": 3.1828,
+            "net": "/09_COMMUNITY_HEADER/EXT_SCL",
+            "width_mm": 0.2
+          },
+          "is_evidence_cut": false,
+          "netclass": "I2C",
+          "opens": false,
+          "reason": "NO_BODY_VIA_SITE"
+        },
+        {
+          "cut": {
+            "a_mm": [
+              66.4,
+              72.6
+            ],
+            "b_mm": [
+              66.4,
+              74.2
+            ],
+            "layer": "F",
+            "mm": 1.6,
+            "net": "/09_COMMUNITY_HEADER/EXT_SCL",
+            "width_mm": 0.2
+          },
+          "is_evidence_cut": false,
+          "netclass": "I2C",
+          "opens": false,
+          "reason": "NO_BODY_VIA_SITE"
+        },
+        {
+          "cut": {
+            "a_mm": [
+              67.3,
+              71.6
+            ],
+            "b_mm": [
+              65.1,
+              74.2
+            ],
+            "layer": "I2",
+            "mm": 3.4059,
+            "net": "/NFC_5V_EN",
+            "width_mm": 0.2
+          },
+          "is_evidence_cut": false,
+          "netclass": "Default",
+          "opens": false,
+          "reason": "NO_BODY_VIA_SITE"
+        },
+        {
+          "cut": {
+            "a_mm": [
+              63.7,
+              78.3
+            ],
+            "b_mm": [
+              65.4,
+              73.3
+            ],
+            "layer": "I3",
+            "mm": 5.2811,
+            "net": "/09_COMMUNITY_HEADER/WAKE_GATE_S",
+            "width_mm": 0.2
+          },
+          "is_evidence_cut": false,
+          "netclass": "Default",
+          "opens": false,
+          "reason": "NO_BODY_VIA_SITE"
+        },
+        {
+          "cut": {
+            "a_mm": [
+              58.3,
+              64.3
+            ],
+            "b_mm": [
+              64.7,
+              70.5
+            ],
+            "layer": "F",
+            "mm": 8.9107,
+            "net": "Net-(U11-TS_MR)",
+            "width_mm": 0.2
+          },
+          "is_evidence_cut": false,
+          "netclass": "Default",
+          "opens": false,
+          "reason": "NO_BODY_VIA_SITE"
+        },
+        {
+          "cut": {
+            "a_mm": [
+              67.4,
+              71.5
+            ],
+            "b_mm": [
+              71.2,
+              75.6
+            ],
+            "layer": "I3",
+            "mm": 5.5902,
+            "net": "/01_POWER_TREE/USB_VBUS_CHG",
+            "width_mm": 0.5
+          },
+          "is_evidence_cut": false,
+          "netclass": "VBUS_CHG",
+          "opens": false,
+          "reason": "NO_BODY_VIA_SITE"
+        },
+        {
+          "cut": {
+            "a_mm": [
+              64.2,
+              71.1
+            ],
+            "b_mm": [
+              58.6,
+              64.5
+            ],
+            "layer": "I3",
+            "mm": 8.6556,
+            "net": "/09_COMMUNITY_HEADER/WAKE_GATE_S",
+            "width_mm": 0.2
+          },
+          "is_evidence_cut": false,
+          "netclass": "Default",
+          "opens": false,
+          "reason": "NO_BODY_VIA_SITE"
+        },
+        {
+          "cut": {
+            "a_mm": [
+              67.2,
+              52.8
+            ],
+            "b_mm": [
+              67.3,
+              71.6
+            ],
+            "layer": "I2",
+            "mm": 18.8003,
+            "net": "/NFC_5V_EN",
+            "width_mm": 0.2
+          },
+          "is_evidence_cut": false,
+          "netclass": "Default",
+          "opens": false,
+          "reason": "NO_BODY_VIA_SITE"
+        },
+        {
+          "cut": {
+            "a_mm": [
+              66.6,
+              73.1
+            ],
+            "b_mm": [
+              68.5,
+              75.2
+            ],
+            "layer": "B",
+            "mm": 2.832,
+            "net": "Net-(U11-TS_MR)",
+            "width_mm": 0.2
+          },
+          "is_evidence_cut": true,
+          "netclass": "Default",
+          "opens": false,
+          "reason": "NO_BODY_VIA_SITE"
+        },
+        {
+          "cut": {
+            "a_mm": [
+              67.325,
+              71.75
+            ],
+            "b_mm": [
+              67.325,
+              72.675
+            ],
+            "layer": "B",
+            "mm": 0.925,
+            "net": "/01_POWER_TREE/V3V3_FB",
+            "width_mm": 0.2
+          },
+          "is_evidence_cut": false,
+          "netclass": "Default",
+          "opens": false,
+          "reason": "NO_BODY_VIA_SITE"
+        },
+        {
+          "cut": {
+            "a_mm": [
+              70.075,
+              75.425
+            ],
+            "b_mm": [
+              67.325,
+              72.675
+            ],
+            "layer": "I3",
+            "mm": 3.8891,
+            "net": "/01_POWER_TREE/V3V3_FB",
+            "width_mm": 0.2
+          },
+          "is_evidence_cut": false,
+          "netclass": "Default",
+          "opens": false,
+          "reason": "NO_BODY_VIA_SITE"
+        },
+        {
+          "cut": {
+            "a_mm": [
+              67.5,
+              31.9
+            ],
+            "b_mm": [
+              68.0,
+              76.6
+            ],
+            "layer": "I2",
+            "mm": 44.7028,
+            "net": "/09_COMMUNITY_HEADER/NATIVE_B_HDR",
+            "width_mm": 0.2
+          },
+          "is_evidence_cut": false,
+          "netclass": "Default",
+          "opens": false,
+          "reason": "NO_BODY_VIA_SITE"
+        },
+        {
+          "cut": {
+            "a_mm": [
+              65.1,
+              74.2
+            ],
+            "b_mm": [
+              62.0,
+              79.8
+            ],
+            "layer": "I2",
+            "mm": 6.4008,
+            "net": "/NFC_5V_EN",
+            "width_mm": 0.2
+          },
+          "is_evidence_cut": false,
+          "netclass": "Default",
+          "opens": false,
+          "reason": "NO_BODY_VIA_SITE"
+        },
+        {
+          "cut": {
+            "a_mm": [
+              66.4,
+              74.9
+            ],
+            "b_mm": [
+              66.4,
+              74.2
+            ],
+            "layer": "F",
+            "mm": 0.7,
+            "net": "/09_COMMUNITY_HEADER/EXT_SCL",
+            "width_mm": 0.2
+          },
+          "is_evidence_cut": false,
+          "netclass": "I2C",
+          "opens": false,
+          "reason": "NO_BODY_VIA_SITE"
+        }
+      ],
+      "reproduces_evidence_cut": false,
+      "rung": {
+        "clr": 200000,
+        "name": "floor",
+        "needs_licence": false,
+        "via_dia": 650000,
+        "via_drill": 400000,
+        "width": 400000
+      },
+      "uncited_openers": [],
+      "verdict": "NO_SINGLE_CUT"
+    },
+    {
+      "candidates": 20,
+      "foreign_vias": 30,
+      "island": [
+        "C26.2"
+      ],
+      "land": "/01_POWER_TREE/BQ25185_SYS:C26.2",
+      "net": "/01_POWER_TREE/BQ25185_SYS",
+      "netclass": "SYS_MAIN",
+      "opener_nets": [],
+      "openers": [],
+      "refused": [
+        {
+          "cut": {
+            "a_mm": [
+              62.2,
+              108.6
+            ],
+            "b_mm": [
+              64.1,
+              102.8
+            ],
+            "layer": "F",
+            "mm": 6.1033,
+            "net": "/09_COMMUNITY_HEADER/WAKE_GATE_S",
+            "width_mm": 0.2
+          },
+          "is_evidence_cut": false,
+          "netclass": "Default",
+          "opens": false,
+          "reason": "NO_BODY_VIA_SITE"
+        },
+        {
+          "cut": {
+            "a_mm": [
+              60.1,
+              107.8
+            ],
+            "b_mm": [
+              66.0,
+              101.9
+            ],
+            "layer": "I3",
+            "mm": 8.3439,
+            "net": "/01_POWER_TREE/USB_VBUS_CHG",
+            "width_mm": 0.5
+          },
+          "is_evidence_cut": false,
+          "netclass": "VBUS_CHG",
+          "opens": false,
+          "reason": "NO_BODY_VIA_SITE"
+        },
+        {
+          "cut": {
+            "a_mm": [
+              63.5,
+              107.0
+            ],
+            "b_mm": [
+              64.3,
+              103.9
+            ],
+            "layer": "F",
+            "mm": 3.2016,
+            "net": "/BQ25185_STAT1",
+            "width_mm": 0.2
+          },
+          "is_evidence_cut": false,
+          "netclass": "Default",
+          "opens": false,
+          "reason": "NO_BODY_VIA_SITE"
+        },
+        {
+          "cut": {
+            "a_mm": [
+              53.125,
+              115.125
+            ],
+            "b_mm": [
+              62.325,
+              105.15
+            ],
+            "layer": "B",
+            "mm": 13.5698,
+            "net": "Net-(U12-PS_SYNC)",
+            "width_mm": 0.2
+          },
+          "is_evidence_cut": false,
+          "netclass": "Default",
+          "opens": false,
+          "reason": "NO_BODY_VIA_SITE"
+        },
+        {
+          "cut": {
+            "a_mm": [
+              62.325,
+              105.15
+            ],
+            "b_mm": [
+              62.325,
+              104.575
+            ],
+            "layer": "B",
+            "mm": 0.575,
+            "net": "Net-(U12-PS_SYNC)",
+            "width_mm": 0.2
+          },
+          "is_evidence_cut": true,
+          "netclass": "Default",
+          "opens": false,
+          "reason": "NO_BODY_VIA_SITE"
+        },
+        {
+          "cut": {
+            "a_mm": [
+              64.15,
+              108.35
+            ],
+            "b_mm": [
+              64.45,
+              101.9
+            ],
+            "layer": "I2",
+            "mm": 6.457,
+            "net": "/IR_RX_GPIO44",
+            "width_mm": 0.2
+          },
+          "is_evidence_cut": false,
+          "netclass": "Default",
+          "opens": false,
+          "reason": "NO_BODY_VIA_SITE"
+        },
+        {
+          "cut": {
+            "a_mm": [
+              62.325,
+              104.575
+            ],
+            "b_mm": [
+              62.9,
+              104.05
+            ],
+            "layer": "B",
+            "mm": 0.7786,
+            "net": "Net-(U12-PS_SYNC)",
+            "width_mm": 0.2
+          },
+          "is_evidence_cut": true,
+          "netclass": "Default",
+          "opens": false,
+          "reason": "NO_BODY_VIA_SITE"
+        },
+        {
+          "cut": {
+            "a_mm": [
+              61.7,
+              105.2
+            ],
+            "b_mm": [
+              62.7,
+              103.8
+            ],
+            "layer": "F",
+            "mm": 1.7205,
+            "net": "/BQ25185_STAT2",
+            "width_mm": 0.2
+          },
+          "is_evidence_cut": true,
+          "netclass": "Default",
+          "opens": false,
+          "reason": "NO_BODY_VIA_SITE"
+        },
+        {
+          "cut": {
+            "a_mm": [
+              62.9,
+              104.05
+            ],
+            "b_mm": [
+              64.25,
+              104.05
+            ],
+            "layer": "B",
+            "mm": 1.35,
+            "net": "Net-(U12-PS_SYNC)",
+            "width_mm": 0.2
+          },
+          "is_evidence_cut": true,
+          "netclass": "Default",
+          "opens": false,
+          "reason": "NO_BODY_VIA_SITE"
+        },
+        {
+          "cut": {
+            "a_mm": [
+              61.0036,
+              105.9253
+            ],
+            "b_mm": [
+              62.7685,
+              103.6942
+            ],
+            "layer": "I2",
+            "mm": 2.8448,
+            "net": "/08_BUTTONS_EXPANDERS/BTN_DOWN_N",
+            "width_mm": 0.2
+          },
+          "is_evidence_cut": true,
+          "netclass": "Default",
+          "opens": false,
+          "reason": "NO_BODY_VIA_SITE"
+        },
+        {
+          "cut": {
+            "a_mm": [
+              63.7,
+              107.0
+            ],
+            "b_mm": [
+              63.5,
+              107.0
+            ],
+            "layer": "B",
+            "mm": 0.2,
+            "net": "/BQ25185_STAT1",
+            "width_mm": 0.2
+          },
+          "is_evidence_cut": false,
+          "netclass": "Default",
+          "opens": false,
+          "reason": "NO_BODY_VIA_SITE"
+        },
+        {
+          "cut": {
+            "a_mm": [
+              59.3,
+              105.3
+            ],
+            "b_mm": [
+              61.7,
+              105.2
+            ],
+            "layer": "F",
+            "mm": 2.4021,
+            "net": "/BQ25185_STAT2",
+            "width_mm": 0.2
+          },
+          "is_evidence_cut": false,
+          "netclass": "Default",
+          "opens": false,
+          "reason": "NO_BODY_VIA_SITE"
+        },
+        {
+          "cut": {
+            "a_mm": [
+              63.275,
+              107.475
+            ],
+            "b_mm": [
+              63.7,
+              107.0
+            ],
+            "layer": "B",
+            "mm": 0.6374,
+            "net": "/BQ25185_STAT1",
+            "width_mm": 0.2
+          },
+          "is_evidence_cut": false,
+          "netclass": "Default",
+          "opens": false,
+          "reason": "NO_BODY_VIA_SITE"
+        },
+        {
+          "cut": {
+            "a_mm": [
+              64.25,
+              104.05
+            ],
+            "b_mm": [
+              64.95,
+              103.425
+            ],
+            "layer": "B",
+            "mm": 0.9384,
+            "net": "Net-(U12-PS_SYNC)",
+            "width_mm": 0.2
+          },
+          "is_evidence_cut": false,
+          "netclass": "Default",
+          "opens": false,
+          "reason": "NO_BODY_VIA_SITE"
+        },
+        {
+          "cut": {
+            "a_mm": [
+              62.7,
+              103.8
+            ],
+            "b_mm": [
+              62.0,
+              102.9
+            ],
+            "layer": "F",
+            "mm": 1.1402,
+            "net": "/BQ25185_STAT2",
+            "width_mm": 0.2
+          },
+          "is_evidence_cut": true,
+          "netclass": "Default",
+          "opens": false,
+          "reason": "NO_BODY_VIA_SITE"
+        },
+        {
+          "cut": {
+            "a_mm": [
+              62.7685,
+              103.6942
+            ],
+            "b_mm": [
+              60.7705,
+              101.4631
+            ],
+            "layer": "I2",
+            "mm": 2.995,
+            "net": "/08_BUTTONS_EXPANDERS/BTN_DOWN_N",
+            "width_mm": 0.2
+          },
+          "is_evidence_cut": true,
+          "netclass": "Default",
+          "opens": false,
+          "reason": "NO_BODY_VIA_SITE"
+        },
+        {
+          "cut": {
+            "a_mm": [
+              64.1005,
+              109.222
+            ],
+            "b_mm": [
+              61.0036,
+              105.9253
+            ],
+            "layer": "I2",
+            "mm": 4.5232,
+            "net": "/08_BUTTONS_EXPANDERS/BTN_DOWN_N",
+            "width_mm": 0.2
+          },
+          "is_evidence_cut": false,
+          "netclass": "Default",
+          "opens": false,
+          "reason": "NO_BODY_VIA_SITE"
+        },
+        {
+          "cut": {
+            "a_mm": [
+              64.3,
+              103.9
+            ],
+            "b_mm": [
+              64.4,
+              103.8
+            ],
+            "layer": "F",
+            "mm": 0.1414,
+            "net": "/BQ25185_STAT1",
+            "width_mm": 0.2
+          },
+          "is_evidence_cut": false,
+          "netclass": "Default",
+          "opens": false,
+          "reason": "NO_BODY_VIA_SITE"
+        },
+        {
+          "cut": {
+            "a_mm": [
+              64.4,
+              103.8
+            ],
+            "b_mm": [
+              67.2,
+              102.3
+            ],
+            "layer": "F",
+            "mm": 3.1765,
+            "net": "/BQ25185_STAT1",
+            "width_mm": 0.2
+          },
+          "is_evidence_cut": false,
+          "netclass": "Default",
+          "opens": false,
+          "reason": "NO_BODY_VIA_SITE"
+        },
+        {
+          "cut": {
+            "a_mm": [
+              60.275,
+              105.5
+            ],
+            "b_mm": [
+              61.3,
+              104.5
+            ],
+            "layer": "B",
+            "mm": 1.432,
+            "net": "GND",
+            "width_mm": 0.3
+          },
+          "is_evidence_cut": false,
+          "netclass": "GND",
+          "opens": false,
+          "reason": "NO_BODY_VIA_SITE"
+        }
+      ],
+      "reproduces_evidence_cut": false,
+      "rung": {
+        "clr": 250000,
+        "name": "floor",
+        "needs_licence": false,
+        "via_dia": 650000,
+        "via_drill": 400000,
+        "width": 500000
+      },
+      "uncited_openers": [],
+      "verdict": "NO_SINGLE_CUT"
+    },
+    {
+      "candidates": 20,
+      "foreign_vias": 10,
+      "island": [
+        "J3.A12",
+        "J3.B1"
+      ],
+      "land": "GND:J3.A12",
+      "net": "GND",
+      "netclass": "GND",
+      "opener_nets": [
+        "Net-(J3-CC2)"
+      ],
+      "openers": [
+        {
+          "citations": [],
+          "cut": {
+            "a_mm": [
+              40.975,
+              147.275
+            ],
+            "b_mm": [
+              35.5,
+              147.275
+            ],
+            "layer": "F",
+            "mm": 5.475,
+            "net": "Net-(J3-CC2)",
+            "width_mm": 0.2
+          },
+          "dru_rules": [],
+          "is_evidence_cut": true,
+          "net_copper": {
+            "layers": [
+              "F"
+            ],
+            "mm": 14.066,
+            "vias": 0
+          },
+          "netclass": "Default",
+          "opens": true,
+          "stitch_mm": 2.938,
+          "via_xy": [
+            37.2,
+            146.1
+          ]
+        }
+      ],
+      "refused": [
+        {
+          "cut": {
+            "a_mm": [
+              38.675,
+              144.2
+            ],
+            "b_mm": [
+              40.05,
+              146.825
+            ],
+            "layer": "B",
+            "mm": 2.9633,
+            "net": "Net-(J3-SHIELD)",
+            "width_mm": 0.3
+          },
+          "is_evidence_cut": false,
+          "netclass": "Default",
+          "opens": false,
+          "reason": "NO_BODY_VIA_SITE"
+        },
+        {
+          "cut": {
+            "a_mm": [
+              38.68,
+              145.805
+            ],
+            "b_mm": [
+              39.7,
+              146.825
+            ],
+            "layer": "B",
+            "mm": 1.4425,
+            "net": "Net-(J3-SHIELD)",
+            "width_mm": 0.3
+          },
+          "is_evidence_cut": false,
+          "netclass": "Default",
+          "opens": false,
+          "reason": "NO_BODY_VIA_SITE"
+        },
+        {
+          "cut": {
+            "a_mm": [
+              39.925,
+              147.05
+            ],
+            "b_mm": [
+              39.7,
+              146.825
+            ],
+            "layer": "B",
+            "mm": 0.3182,
+            "net": "Net-(J3-SHIELD)",
+            "width_mm": 0.3
+          },
+          "is_evidence_cut": false,
+          "netclass": "Default",
+          "opens": false,
+          "reason": "NO_BODY_VIA_SITE"
+        },
+        {
+          "cut": {
+            "a_mm": [
+              40.05,
+              146.825
+            ],
+            "b_mm": [
+              40.75,
+              147.325
+            ],
+            "layer": "B",
+            "mm": 0.8602,
+            "net": "Net-(J3-SHIELD)",
+            "width_mm": 0.3
+          },
+          "is_evidence_cut": false,
+          "netclass": "Default",
+          "opens": false,
+          "reason": "NO_BODY_VIA_SITE"
+        },
+        {
+          "cut": {
+            "a_mm": [
+              46.075,
+              147.05
+            ],
+            "b_mm": [
+              39.925,
+              147.05
+            ],
+            "layer": "B",
+            "mm": 6.15,
+            "net": "Net-(J3-SHIELD)",
+            "width_mm": 0.3
+          },
+          "is_evidence_cut": false,
+          "netclass": "Default",
+          "opens": false,
+          "reason": "NO_BODY_VIA_SITE"
+        },
+        {
+          "cut": {
+            "a_mm": [
+              40.6,
+              146.38
+            ],
+            "b_mm": [
+              45.4,
+              146.38
+            ],
+            "layer": "B",
+            "mm": 4.8,
+            "net": "/01_POWER_TREE/USB_VBUS_RAW",
+            "width_mm": 0.5
+          },
+          "is_evidence_cut": false,
+          "netclass": "VBUS_CHG",
+          "opens": false,
+          "reason": "NO_BODY_VIA_SITE"
+        },
+        {
+          "cut": {
+            "a_mm": [
+              41.0,
+              146.38
+            ],
+            "b_mm": [
+              40.6,
+              146.38
+            ],
+            "layer": "B",
+            "mm": 0.4,
+            "net": "/01_POWER_TREE/USB_VBUS_RAW",
+            "width_mm": 0.5
+          },
+          "is_evidence_cut": false,
+          "netclass": "VBUS_CHG",
+          "opens": false,
+          "reason": "NO_BODY_VIA_SITE"
+        },
+        {
+          "cut": {
+            "a_mm": [
+              47.5,
+              147.3
+            ],
+            "b_mm": [
+              15.2,
+              147.2
+            ],
+            "layer": "I2",
+            "mm": 32.3002,
+            "net": "/SPI_B_SCK",
+            "width_mm": 0.2
+          },
+          "is_evidence_cut": false,
+          "netclass": "Default",
+          "opens": false,
+          "reason": "NO_BODY_VIA_SITE"
+        },
+        {
+          "cut": {
+            "a_mm": [
+              41.0,
+              143.0
+            ],
+            "b_mm": [
+              41.0,
+              146.38
+            ],
+            "layer": "B",
+            "mm": 3.38,
+            "net": "/01_POWER_TREE/USB_VBUS_RAW",
+            "width_mm": 0.5
+          },
+          "is_evidence_cut": false,
+          "netclass": "VBUS_CHG",
+          "opens": false,
+          "reason": "NO_BODY_VIA_SITE"
+        },
+        {
+          "cut": {
+            "a_mm": [
+              41.0,
+              146.38
+            ],
+            "b_mm": [
+              41.0,
+              143.0
+            ],
+            "layer": "B",
+            "mm": 3.38,
+            "net": "/01_POWER_TREE/USB_VBUS_RAW",
+            "width_mm": 0.5
+          },
+          "is_evidence_cut": false,
+          "netclass": "VBUS_CHG",
+          "opens": false,
+          "reason": "NO_BODY_VIA_SITE"
+        },
+        {
+          "cut": {
+            "a_mm": [
+              45.4,
+              146.38
+            ],
+            "b_mm": [
+              41.0,
+              146.38
+            ],
+            "layer": "B",
+            "mm": 4.4,
+            "net": "/01_POWER_TREE/USB_VBUS_RAW",
+            "width_mm": 0.5
+          },
+          "is_evidence_cut": false,
+          "netclass": "VBUS_CHG",
+          "opens": false,
+          "reason": "NO_BODY_VIA_SITE"
+        },
+        {
+          "cut": {
+            "a_mm": [
+              38.68,
+              145.805
+            ],
+            "b_mm": [
+              38.675,
+              144.2
+            ],
+            "layer": "B",
+            "mm": 1.605,
+            "net": "Net-(J3-SHIELD)",
+            "width_mm": 0.3
+          },
+          "is_evidence_cut": false,
+          "netclass": "Default",
+          "opens": false,
+          "reason": "NO_BODY_VIA_SITE"
+        },
+        {
+          "cut": {
+            "a_mm": [
+              40.75,
+              147.325
+            ],
+            "b_mm": [
+              48.7,
+              146.875
+            ],
+            "layer": "B",
+            "mm": 7.9627,
+            "net": "Net-(J3-SHIELD)",
+            "width_mm": 0.3
+          },
+          "is_evidence_cut": false,
+          "netclass": "Default",
+          "opens": false,
+          "reason": "NO_BODY_VIA_SITE"
+        },
+        {
+          "cut": {
+            "a_mm": [
+              41.25,
+              145.35
+            ],
+            "b_mm": [
+              41.25,
+              147.0
+            ],
+            "layer": "F",
+            "mm": 1.65,
+            "net": "Net-(J3-CC2)",
+            "width_mm": 0.2
+          },
+          "is_evidence_cut": false,
+          "netclass": "Default",
+          "opens": false,
+          "reason": "NO_BODY_VIA_SITE"
+        },
+        {
+          "cut": {
+            "a_mm": [
+              41.25,
+              146.38
+            ],
+            "b_mm": [
+              41.25,
+              145.35
+            ],
+            "layer": "F",
+            "mm": 1.03,
+            "net": "Net-(J3-CC2)",
+            "width_mm": 0.2
+          },
+          "is_evidence_cut": false,
+          "netclass": "Default",
+          "opens": false,
+          "reason": "NO_BODY_VIA_SITE"
+        },
+        {
+          "cut": {
+            "a_mm": [
+              41.25,
+              147.0
+            ],
+            "b_mm": [
+              40.975,
+              147.275
+            ],
+            "layer": "F",
+            "mm": 0.3889,
+            "net": "Net-(J3-CC2)",
+            "width_mm": 0.2
+          },
+          "is_evidence_cut": false,
+          "netclass": "Default",
+          "opens": false,
+          "reason": "NO_BODY_VIA_SITE"
+        },
+        {
+          "cut": {
+            "a_mm": [
+              41.1,
+              144.9
+            ],
+            "b_mm": [
+              40.8,
+              145.0
+            ],
+            "layer": "F",
+            "mm": 0.3162,
+            "net": "/01_POWER_TREE/USB_D_CONN_N",
+            "width_mm": 0.25
+          },
+          "is_evidence_cut": false,
+          "netclass": "USB_D",
+          "opens": false,
+          "reason": "NO_BODY_VIA_SITE"
+        },
+        {
+          "cut": {
+            "a_mm": [
+              41.6,
+              144.9
+            ],
+            "b_mm": [
+              41.1,
+              144.9
+            ],
+            "layer": "F",
+            "mm": 0.5,
+            "net": "/01_POWER_TREE/USB_D_CONN_N",
+            "width_mm": 0.25
+          },
+          "is_evidence_cut": false,
+          "netclass": "USB_D",
+          "opens": false,
+          "reason": "NO_BODY_VIA_SITE"
+        },
+        {
+          "cut": {
+            "a_mm": [
+              42.6,
+              144.9
+            ],
+            "b_mm": [
+              41.1,
+              144.9
+            ],
+            "layer": "F",
+            "mm": 1.5,
+            "net": "/01_POWER_TREE/USB_D_CONN_N",
+            "width_mm": 0.25
+          },
+          "is_evidence_cut": false,
+          "netclass": "USB_D",
+          "opens": false,
+          "reason": "NO_BODY_VIA_SITE"
+        }
+      ],
+      "reproduces_evidence_cut": true,
+      "rung": {
+        "clr": 200000,
+        "name": "floor",
+        "needs_licence": false,
+        "via_dia": 500000,
+        "via_drill": 200000,
+        "width": 150000
+      },
+      "uncited_openers": [
+        "Net-(J3-CC2)"
+      ],
+      "verdict": "SOLE_CUT"
+    },
+    {
+      "candidates": 20,
+      "foreign_vias": 24,
+      "island": [
+        "U9.16"
+      ],
+      "land": "GND:U9.16",
+      "net": "GND",
+      "netclass": "GND",
+      "opener_nets": [
+        "/04_SPI_B_RADIOS_NFC/NFC_RFO2"
+      ],
+      "openers": [
+        {
+          "citations": [
+            {
+              "kind": "net",
+              "matched": [
+                "NFC_RFO2"
+              ],
+              "where": "hardware/demo/manufacturing/checks/placement_contract.py"
+            },
+            {
+              "kind": "net",
+              "matched": [
+                "/04_SPI_B_RADIOS_NFC/NFC_RFO2",
+                "NFC_RFO2"
+              ],
+              "where": "hardware/demo/manufacturing/checks/rf_symmetry_contract.py"
+            },
+            {
+              "kind": "netclass",
+              "matched": [
+                "NFC_RF"
+              ],
+              "where": "hardware/demo/manufacturing/checks/plane_return_path.py"
+            }
+          ],
+          "cut": {
+            "a_mm": [
+              36.075,
+              27.0
+            ],
+            "b_mm": [
+              37.95,
+              28.925
+            ],
+            "layer": "B",
+            "mm": 2.6872,
+            "net": "/04_SPI_B_RADIOS_NFC/NFC_RFO2",
+            "width_mm": 0.3
+          },
+          "dru_rules": [
+            "NFC transmit arm minimum width - equal both arms",
+            "NFC transmit arm routed clearance",
+            "NFC transmit arms are forbidden on In2",
+            "NFC transmit arms carry no via - a via is an asymmetry",
+            "NFC transmit arms stay on B.Cu",
+            "SWITCH_NODE to NFC transmit arms separation"
+          ],
+          "is_evidence_cut": true,
+          "net_copper": {
+            "layers": [
+              "B"
+            ],
+            "mm": 8.9446,
+            "vias": 0
+          },
+          "netclass": "NFC_RF",
+          "opens": true,
+          "stitch_mm": 1.727,
+          "via_xy": [
+            37.3,
+            28.4
+          ]
+        }
+      ],
+      "refused": [
+        {
+          "cut": {
+            "a_mm": [
+              35.25,
+              27.725
+            ],
+            "b_mm": [
+              35.25,
+              26.8
+            ],
+            "layer": "B",
+            "mm": 0.925,
+            "net": "/04_SPI_B_RADIOS_NFC/NFC_RFO2",
+            "width_mm": 0.3
+          },
+          "is_evidence_cut": false,
+          "netclass": "NFC_RF",
+          "opens": false,
+          "reason": "NO_BODY_VIA_SITE"
+        },
+        {
+          "cut": {
+            "a_mm": [
+              35.25,
+              26.8
+            ],
+            "b_mm": [
+              36.075,
+              27.0
+            ],
+            "layer": "B",
+            "mm": 0.8489,
+            "net": "/04_SPI_B_RADIOS_NFC/NFC_RFO2",
+            "width_mm": 0.3
+          },
+          "is_evidence_cut": false,
+          "netclass": "NFC_RF",
+          "opens": false,
+          "reason": "NO_BODY_VIA_SITE"
+        },
+        {
+          "cut": {
+            "a_mm": [
+              34.25,
+              27.725
+            ],
+            "b_mm": [
+              34.25,
+              26.8
+            ],
+            "layer": "B",
+            "mm": 0.925,
+            "net": "/04_SPI_B_RADIOS_NFC/NFC_RFO1",
+            "width_mm": 0.3
+          },
+          "is_evidence_cut": false,
+          "netclass": "NFC_RF",
+          "opens": false,
+          "reason": "NO_BODY_VIA_SITE"
+        },
+        {
+          "cut": {
+            "a_mm": [
+              34.825,
+              26.225
+            ],
+            "b_mm": [
+              36.925,
+              26.225
+            ],
+            "layer": "B",
+            "mm": 2.1,
+            "net": "/04_SPI_B_RADIOS_NFC/NFC_RFO1",
+            "width_mm": 0.3
+          },
+          "is_evidence_cut": false,
+          "netclass": "NFC_RF",
+          "opens": false,
+          "reason": "NO_BODY_VIA_SITE"
+        },
+        {
+          "cut": {
+            "a_mm": [
+              33.9,
+              24.4
+            ],
+            "b_mm": [
+              34.7,
+              34.7
+            ],
+            "layer": "I2",
+            "mm": 10.331,
+            "net": "/04_SPI_B_RADIOS_NFC/NFC_VDD_A",
+            "width_mm": 0.2
+          },
+          "is_evidence_cut": false,
+          "netclass": "Default",
+          "opens": false,
+          "reason": "NO_BODY_VIA_SITE"
+        },
+        {
+          "cut": {
+            "a_mm": [
+              34.25,
+              26.8
+            ],
+            "b_mm": [
+              34.825,
+              26.225
+            ],
+            "layer": "B",
+            "mm": 0.8132,
+            "net": "/04_SPI_B_RADIOS_NFC/NFC_RFO1",
+            "width_mm": 0.3
+          },
+          "is_evidence_cut": false,
+          "netclass": "NFC_RF",
+          "opens": false,
+          "reason": "NO_BODY_VIA_SITE"
+        },
+        {
+          "cut": {
+            "a_mm": [
+              36.925,
+              26.225
+            ],
+            "b_mm": [
+              37.725,
+              27.025
+            ],
+            "layer": "B",
+            "mm": 1.1314,
+            "net": "/04_SPI_B_RADIOS_NFC/NFC_RFO1",
+            "width_mm": 0.3
+          },
+          "is_evidence_cut": false,
+          "netclass": "NFC_RF",
+          "opens": false,
+          "reason": "NO_BODY_VIA_SITE"
+        },
+        {
+          "cut": {
+            "a_mm": [
+              38.5125,
+              27.8
+            ],
+            "b_mm": [
+              37.725,
+              27.025
+            ],
+            "layer": "B",
+            "mm": 1.1049,
+            "net": "/04_SPI_B_RADIOS_NFC/NFC_RFO1",
+            "width_mm": 0.3
+          },
+          "is_evidence_cut": false,
+          "netclass": "NFC_RF",
+          "opens": false,
+          "reason": "NO_BODY_VIA_SITE"
+        },
+        {
+          "cut": {
+            "a_mm": [
+              34.9,
+              25.5
+            ],
+            "b_mm": [
+              31.575,
+              28.8
+            ],
+            "layer": "I2",
+            "mm": 4.6846,
+            "net": "/04_SPI_B_RADIOS_NFC/NFC_VDD_A",
+            "width_mm": 0.2
+          },
+          "is_evidence_cut": false,
+          "netclass": "Default",
+          "opens": false,
+          "reason": "NO_BODY_VIA_SITE"
+        },
+        {
+          "cut": {
+            "a_mm": [
+              34.05,
+              24.8
+            ],
+            "b_mm": [
+              34.9,
+              25.65
+            ],
+            "layer": "B",
+            "mm": 1.2021,
+            "net": "/04_SPI_B_RADIOS_NFC/NFC_VDD_A",
+            "width_mm": 0.2
+          },
+          "is_evidence_cut": false,
+          "netclass": "Default",
+          "opens": false,
+          "reason": "NO_BODY_VIA_SITE"
+        },
+        {
+          "cut": {
+            "a_mm": [
+              34.9,
+              25.65
+            ],
+            "b_mm": [
+              34.9,
+              25.5
+            ],
+            "layer": "B",
+            "mm": 0.15,
+            "net": "/04_SPI_B_RADIOS_NFC/NFC_VDD_A",
+            "width_mm": 0.2
+          },
+          "is_evidence_cut": false,
+          "netclass": "Default",
+          "opens": false,
+          "reason": "NO_BODY_VIA_SITE"
+        },
+        {
+          "cut": {
+            "a_mm": [
+              37.95,
+              28.925
+            ],
+            "b_mm": [
+              37.025,
+              29.875
+            ],
+            "layer": "B",
+            "mm": 1.3259,
+            "net": "/04_SPI_B_RADIOS_NFC/NFC_RFO2",
+            "width_mm": 0.3
+          },
+          "is_evidence_cut": false,
+          "netclass": "NFC_RF",
+          "opens": false,
+          "reason": "NO_BODY_VIA_SITE"
+        },
+        {
+          "cut": {
+            "a_mm": [
+              37.025,
+              29.875
+            ],
+            "b_mm": [
+              37.7,
+              30.15
+            ],
+            "layer": "B",
+            "mm": 0.7289,
+            "net": "/04_SPI_B_RADIOS_NFC/NFC_RFO2",
+            "width_mm": 0.3
+          },
+          "is_evidence_cut": false,
+          "netclass": "NFC_RF",
+          "opens": false,
+          "reason": "NO_BODY_VIA_SITE"
+        },
+        {
+          "cut": {
+            "a_mm": [
+              33.25,
+              27.725
+            ],
+            "b_mm": [
+              33.25,
+              26.85
+            ],
+            "layer": "B",
+            "mm": 0.875,
+            "net": "/04_SPI_B_RADIOS_NFC/NFC_VDD_AM",
+            "width_mm": 0.3
+          },
+          "is_evidence_cut": false,
+          "netclass": "Default",
+          "opens": false,
+          "reason": "NO_BODY_VIA_SITE"
+        },
+        {
+          "cut": {
+            "a_mm": [
+              37.3,
+              32.8
+            ],
+            "b_mm": [
+              32.0,
+              27.5
+            ],
+            "layer": "F",
+            "mm": 7.4953,
+            "net": "/04_SPI_B_RADIOS_NFC/NFC_VDD_RF",
+            "width_mm": 0.2
+          },
+          "is_evidence_cut": false,
+          "netclass": "Default",
+          "opens": false,
+          "reason": "NO_BODY_VIA_SITE"
+        },
+        {
+          "cut": {
+            "a_mm": [
+              33.25,
+              26.85
+            ],
+            "b_mm": [
+              33.125,
+              24.1
+            ],
+            "layer": "B",
+            "mm": 2.7528,
+            "net": "/04_SPI_B_RADIOS_NFC/NFC_VDD_AM",
+            "width_mm": 0.3
+          },
+          "is_evidence_cut": false,
+          "netclass": "Default",
+          "opens": false,
+          "reason": "NO_BODY_VIA_SITE"
+        },
+        {
+          "cut": {
+            "a_mm": [
+              37.5,
+              21.8
+            ],
+            "b_mm": [
+              32.3,
+              27.0
+            ],
+            "layer": "F",
+            "mm": 7.3539,
+            "net": "/04_SPI_B_RADIOS_NFC/NFC_VDD_RF",
+            "width_mm": 0.2
+          },
+          "is_evidence_cut": false,
+          "netclass": "Default",
+          "opens": false,
+          "reason": "NO_BODY_VIA_SITE"
+        },
+        {
+          "cut": {
+            "a_mm": [
+              37.7,
+              30.15
+            ],
+            "b_mm": [
+              38.75,
+              31.95
+            ],
+            "layer": "B",
+            "mm": 2.0839,
+            "net": "/04_SPI_B_RADIOS_NFC/NFC_RFO2",
+            "width_mm": 0.3
+          },
+          "is_evidence_cut": false,
+          "netclass": "NFC_RF",
+          "opens": false,
+          "reason": "NO_BODY_VIA_SITE"
+        },
+        {
+          "cut": {
+            "a_mm": [
+              36.275,
+              30.75
+            ],
+            "b_mm": [
+              37.1,
+              30.75
+            ],
+            "layer": "B",
+            "mm": 0.825,
+            "net": "/04_SPI_B_RADIOS_NFC/NFC_RFI1",
+            "width_mm": 0.2
+          },
+          "is_evidence_cut": false,
+          "netclass": "NFC_RX",
+          "opens": false,
+          "reason": "NO_BODY_VIA_SITE"
+        }
+      ],
+      "reproduces_evidence_cut": true,
+      "rung": {
+        "clr": 200000,
+        "name": "floor",
+        "needs_licence": false,
+        "via_dia": 500000,
+        "via_drill": 200000,
+        "width": 150000
+      },
+      "uncited_openers": [],
+      "verdict": "SOLE_CUT"
+    }
+  ],
+  "max_mm": 8.0,
+  "method": "read-only; screen_segment_evict.land_field builds the lattice, screen_segment_evict.candidates the list, and screen_segment_evict.try_island under Cuts is QUESTION 2's own body -- every trial reverted.  Citations are grepped out of checks/*.py, verify_promotion.py, protected_copper.py and the board's .kicad_dru, never listed here",
+  "question": "screen_segment_evict stops at the FIRST candidate track whose single cut opens a plane land, nearest-first, and every instrument downstream inherits that choice.  Which OTHER single cuts open the same land, and what does this repository's own contracts say about each cut net?",
+  "rung": "floor",
+  "schema": 1
+}

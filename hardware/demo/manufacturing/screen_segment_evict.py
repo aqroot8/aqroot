@@ -366,9 +366,54 @@ def relay_price(qb, grid, reserved, cuts, site, radius, exempt, spec,
                        mm_by_layer=r.get("mm_by_layer"),
                        a_mm=list(ends[0]), b_mm=list(ends[1]))
             ok_all = ok_all and bool(r.get("ok"))
-            out.append(rec)
+        out.append(rec)
         qb.revert(m)
     return dict(all_relaid=ok_all, tracks=out)
+
+
+def land_field(qb, net, grid, rung_name, neck, reserved, spec, body_landing):
+    """The `Field`, the RUNG and the body certificate a plane land is measured on.
+
+    D-640.  This is `main`'s own construction, lifted out unchanged so that a
+    SECOND instrument can ask a question about the same land on the SAME
+    lattice.  Every figure still comes from the board -- `net_contract` for the
+    netclass, `DRU_CLASS` and the three `BOARD_*` floors for the `.kicad_dru`
+    floor rung, `permitted_layers` for the reserved inner planes, `guard_for`
+    for the pour-bond guard -- and nothing here chooses anything: a caller that
+    passes the same arguments gets the same `Field` main would have built.
+
+    `body_landing` is D-608's certificate and is taken ONCE, on the uncut
+    board.  It is valid under every cut a caller then makes: a `Cuts` context
+    touches only the in-memory obstacle model, and the real refill after a
+    detour removes FOREIGN copper, which can only let this net's pour GROW.  A
+    site inside the body today is inside it afterwards.
+    """
+    import maze3d as mz
+    from route_maze_batch import (net_contract, permitted_layers, guard_for,
+                                  DRU_CLASS, ANNULAR_MIN, BOARD_VIA_DIA_MIN,
+                                  BOARD_HOLE_MIN, BOARD_TRACK_MIN)
+    c = net_contract(qb.b, net)
+    layers = permitted_layers(qb.routable, c["layers"], reserved, net)
+    over = DRU_CLASS.get(c["netclass"], {})
+    w_floor = max(BOARD_TRACK_MIN, over.get("width", 0))
+    d_floor = max(BOARD_HOLE_MIN, over.get("drill", 0))
+    v_floor = max(BOARD_VIA_DIA_MIN, d_floor + 2 * ANNULAR_MIN)
+    if rung_name == "floor":
+        w, clr, vd, vdr = w_floor, c["clr"], v_floor, d_floor
+    else:
+        w, clr, vd, vdr = (min(w_floor, RELIEF_WIDTH), RELIEF_CLR,
+                           RELIEF_VIA_DIA, RELIEF_VIA_DRILL)
+    field = mz.Field(qb, net, w, c["clr_pad"], clr, vd, vdr, G=grid,
+                     layers=layers, neck=neck,
+                     guard=guard_for(spec, net) if spec else None)
+    land_ok, land_info = None, None
+    if body_landing:
+        land_ok, land_info = mz.body_landing(qb, net, field)
+    return dict(contract=c, field=field, land_ok=land_ok, land_info=land_info,
+                rung=dict(name=rung_name, width=w, clr=clr, via_dia=vd,
+                          via_drill=vdr,
+                          needs_licence=bool(w < w_floor or clr < c["clr"]
+                                             or vd < v_floor or vdr < d_floor)))
 
 
 def try_island(qb, field, island, max_mm, land_ok=None):
@@ -643,41 +688,27 @@ def main():
     for net in nets:
         if not mz.has_plane(qb, net):
             continue
-        c = net_contract(qb.b, net)
-        layers = permitted_layers(qb.routable, c["layers"], reserved, net)
-        over = DRU_CLASS.get(c["netclass"], {})
-        w_floor = max(BOARD_TRACK_MIN, over.get("width", 0))
-        d_floor = max(BOARD_HOLE_MIN, over.get("drill", 0))
-        v_floor = max(BOARD_VIA_DIA_MIN, d_floor + 2 * ANNULAR_MIN)
-        if a.rung == "floor":
-            w, clr, vd, vdr = w_floor, c["clr"], v_floor, d_floor
-        else:
-            w, clr, vd, vdr = (min(w_floor, RELIEF_WIDTH), RELIEF_CLR,
-                               RELIEF_VIA_DIA, RELIEF_VIA_DRILL)
-        field = mz.Field(qb, net, w, c["clr_pad"], clr, vd, vdr, G=a.grid,
-                         layers=layers, neck=neck,
-                         guard=guard_for(spec, net) if spec else None)
-
-        # D-608.  The body mask is taken ONCE, on the uncut board, and is
-        # valid under every cut this screen makes: a `Cuts` context touches
-        # only the in-memory obstacle model, and the real refill after a
-        # detour removes FOREIGN copper, which can only let this net's pour
-        # GROW.  A site inside the body today is inside it afterwards.
-        land_ok, land_info = None, None
-        if a.body_landing:
-            land_ok, land_info = mz.body_landing(qb, net, field)
+        # D-640: ONE definition of the lattice a plane land is measured on --
+        # `land_field` is this block, lifted out verbatim, so a second
+        # instrument cannot drift from it.  D-608's body certificate is taken
+        # inside it, once, on the uncut board.
+        lf = land_field(qb, net, a.grid, a.rung, neck, reserved, spec,
+                        a.body_landing)
+        c, field = lf["contract"], lf["field"]
+        land_ok, land_info = lf["land_ok"], lf["land_info"]
+        w, clr = lf["rung"]["width"], lf["rung"]["clr"]
+        vd, vdr = lf["rung"]["via_dia"], lf["rung"]["via_drill"]
 
         islands = mz.net_islands(qb, net)
         if len(islands) < 2:
             continue
         body = max(islands, key=len)
-        rec = dict(net=net, netclass=c["netclass"],
-                   rung=dict(name=a.rung, width=w, clr=clr, via_dia=vd,
-                             via_drill=vdr,
-                             needs_licence=bool(w < w_floor or clr < c["clr"]
-                                                or vd < v_floor
-                                                or vdr < d_floor)),
+        rec = dict(net=net, netclass=c["netclass"], rung=lf["rung"],
                    body_landing=land_info, lands=[])
+        # D-640: the uncut-escape reason per land, stamped onto the land
+        # records below so a cut verdict never hides what the board said
+        # before anything was cut.
+        uncut_by_land = {}
         # The cut radius a barrel actually needs: its own copper radius plus the
         # clearance the CUT net owes routed copper.  The ladder walks down from
         # the window through that figure so the report names both the upper
@@ -711,12 +742,28 @@ def main():
                 rec["lands"].append(dict(land=refs, verdict="ALREADY_OPEN",
                                          stitch_mm=base["mm"]))
                 continue
-            if base and base.get("reason") not in ("NO_VIA_SITE",
-                                                  "NO_BODY_VIA_SITE"):
-                rec["lands"].append(dict(land=refs, verdict="NOT_A_POCKET",
-                                         reason=base.get("reason"),
-                                         why=str(base.get("why"))[:160]))
-                continue
+            # D-640.  A LAND WHOSE *UNCUT* ESCAPE FAILS IS NOT A LAND THIS
+            # QUESTION HAS BEEN ASKED OF.  Until now any reason other than
+            # `NO_VIA_SITE`/`NO_BODY_VIA_SITE` -- in practice
+            # `NO_LEGAL_ESCAPE` -- ended the land here as `NOT_A_POCKET`, and
+            # the eviction was never tried.  That reads an ABSENCE OF
+            # MEASUREMENT as a measurement.  `Cuts` removes FOREIGN routed
+            # copper and nothing else, so it can only ADD room: an escape that
+            # fails on the uncut board can succeed once the copper beside the
+            # pad is gone, and `candidates` needs no escape to build its list.
+            # `screen_escape_class.py` is what forced this: of the seven lands
+            # this screen called `NOT_A_POCKET` on the promoted board, FOUR are
+            # `CLEAR` -- the land can launch its own contract width with margin
+            # to spare (`U12.1` +0.300 mm, `U4.8` +0.275 mm, `U11.1`
+            # +0.200 mm, `MK1.4` +0.135 mm, all widest 1.000 mm) -- so the
+            # blocker is ROUTED COPPER, which is exactly what a cut moves.
+            # Every land now reaches the cut stage and carries the reason its
+            # uncut escape gave, so a `SEGMENT_WALL` here is a refusal and no
+            # longer a skip.
+            uncut_by_land[tuple(refs)] = dict(
+                ok=bool(base and base.get("ok")),
+                reason=(base or {}).get("reason"),
+                why=str((base or {}).get("why"))[:160])
             chosen, vias = candidates(qb, field, island, a.max_mm, a.cap)
             if not chosen:
                 rec["lands"].append(dict(
@@ -839,6 +886,10 @@ def main():
                                             for t in land["relay"]["tracks"]
                                             if not t["ok"]})))),
                   file=sys.stderr, flush=True)
+        for l in rec["lands"]:
+            u = uncut_by_land.get(tuple(l["land"]))
+            if u is not None:
+                l["uncut_escape"] = u
         out.append(rec)
 
     # THE PLAN IS THE MEASUREMENT, WRITTEN IN THE WRITER'S OWN GRAMMAR.  A land
