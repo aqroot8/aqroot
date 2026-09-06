@@ -1,0 +1,216 @@
+{
+ "authoritative_unchanged": true,
+ "board": "/home/aqroot8/aqroot-demo/hardware/demo/kicad/aqroot-demo/aqroot-Beta-v2.kicad_pcb",
+ "board_sha256": "abf8b92050e787a01c9003dcd954f8c68100525ea3c073ffa39782e886682c51",
+ "grid": 25000,
+ "instrument": "offcentre_route",
+ "method": "read-only; every trial laid on the live QBoard, proved by maze3d.verify_laid (exact analytic clearance on every layer plus hole-to-hole, never a lattice) and REVERTED; zones invisible to QBoard, so a closure is a licence question and never copper",
+ "nets": [
+  {
+   "board_track_min": 150000,
+   "contract": 200000,
+   "dru_floor": 150000,
+   "far": [
+    "F",
+    "B",
+    "I2",
+    "I3"
+   ],
+   "islands": 6,
+   "lands": [],
+   "net": "/I2C_SCL_INT",
+   "netclass": "I2C",
+   "pairs": [
+    {
+     "a": "U2.22",
+     "b": "U3.22",
+     "closed_at": null,
+     "coplanar": [
+      "B"
+     ],
+     "gap_mm": 10.0,
+     "hop_layers": null,
+     "instrument": "offcentre_route",
+     "launches": [
+      {
+       "a_xy": [
+        59.8625,
+        90.275
+       ],
+       "b_xy": [
+        59.1,
+        90.3
+       ],
+       "base_dir": true,
+       "centre": false,
+       "layer": "B",
+       "mm": 0.7629,
+       "necked": false,
+       "offcentre_mm": 0.0,
+       "pad": "U2.22",
+       "trunk_width": 150000,
+       "width": 150000
+      },
+      {
+       "a_xy": [
+        59.8625,
+        80.275
+       ],
+       "b_xy": [
+        61.0,
+        80.3
+       ],
+       "base_dir": true,
+       "centre": true,
+       "layer": "B",
+       "mm": 1.1378,
+       "necked": false,
+       "offcentre_mm": 0.0,
+       "pad": "U3.22",
+       "trunk_width": 150000,
+       "width": 150000
+      }
+     ],
+     "licensed_unconditionally": false,
+     "reason": "NO_PATH",
+     "rungs": [
+      {
+       "hop_layers": null,
+       "launches": [
+        {
+         "a_xy": [
+          59.8625,
+          90.275
+         ],
+         "b_xy": [
+          59.1,
+          90.3
+         ],
+         "base_dir": true,
+         "centre": false,
+         "layer": "B",
+         "mm": 0.7629,
+         "necked": false,
+         "offcentre_mm": 0.0,
+         "pad": "U2.22",
+         "trunk_width": 200000,
+         "width": 200000
+        },
+        {
+         "a_xy": [
+          59.8625,
+          80.275
+         ],
+         "b_xy": [
+          58.7,
+          80.3
+         ],
+         "base_dir": true,
+         "centre": true,
+         "layer": "B",
+         "mm": 1.1628,
+         "necked": false,
+         "offcentre_mm": 0.0,
+         "pad": "U3.22",
+         "trunk_width": 200000,
+         "width": 200000
+        }
+       ],
+       "mm": 0.0,
+       "mm_by_layer": null,
+       "ok": false,
+       "pad": null,
+       "reason": "NO_PATH",
+       "seconds": 235.99,
+       "stub_mm": null,
+       "terminals": null,
+       "via_xy": null,
+       "vias": null,
+       "why": "no all-layer corridor at 0.200 mm from U2.22 on B to U3.22 on B",
+       "width": 200000
+      },
+      {
+       "hop_layers": null,
+       "launches": [
+        {
+         "a_xy": [
+          59.8625,
+          90.275
+         ],
+         "b_xy": [
+          59.1,
+          90.3
+         ],
+         "base_dir": true,
+         "centre": false,
+         "layer": "B",
+         "mm": 0.7629,
+         "necked": false,
+         "offcentre_mm": 0.0,
+         "pad": "U2.22",
+         "trunk_width": 150000,
+         "width": 150000
+        },
+        {
+         "a_xy": [
+          59.8625,
+          80.275
+         ],
+         "b_xy": [
+          61.0,
+          80.3
+         ],
+         "base_dir": true,
+         "centre": true,
+         "layer": "B",
+         "mm": 1.1378,
+         "necked": false,
+         "offcentre_mm": 0.0,
+         "pad": "U3.22",
+         "trunk_width": 150000,
+         "width": 150000
+        }
+       ],
+       "mm": 0.0,
+       "mm_by_layer": null,
+       "ok": false,
+       "pad": null,
+       "reason": "NO_PATH",
+       "seconds": 230.26,
+       "stub_mm": null,
+       "terminals": null,
+       "via_xy": null,
+       "vias": null,
+       "why": "no all-layer corridor at 0.150 mm from U2.22 on B to U3.22 on B",
+       "width": 150000
+      }
+     ],
+     "vias": null,
+     "why": "no all-layer corridor at 0.150 mm from U2.22 on B to U3.22 on B"
+    }
+   ],
+   "stub_floor": 150000,
+   "via_ladder": [
+    [
+     600000,
+     300000
+    ],
+    [
+     550000,
+     250000
+    ],
+    [
+     500000,
+     250000
+    ]
+   ],
+   "widths": [
+    200000,
+    150000
+   ]
+  }
+ ],
+ "question": "does an OFF-CENTRE LAUNCH plus a LAYER HOP -- exact stub, barrel at the first via site the stub can reach, haul on a far layer -- close the island pairs the FLAT off-centre connect refuses",
+ "schema": 1,
+ "split_lands": false
+}

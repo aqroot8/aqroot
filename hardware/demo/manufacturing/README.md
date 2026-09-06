@@ -11,9 +11,206 @@ parked on rulings rather than routes (D-618, D-620).  The residual is **40**
 as of D-648 and **39** as of D-649: D-644 closed
 `/09_COMMUNITY_HEADER/EXT_SDA` -> the Qwiic/STEMMA QT SDA contact, D-646 the
 BMI270's `ASDx`/`ASCx` straps, D-648 the BMI270's `VDD` supply pin `U4.8`, and
-D-649 the ST25R3916's `GND_DR_16` driver ground `U9.16`.  The IMU is still NOT
-functional: `U4.5`, its `VDDIO`, remains an island of one land, and its bridge
-from `U4.8` is now a measured `PLACEMENT_WALL` rather than an unfinished search.
+D-649 the ST25R3916's `GND_DR_16` driver ground `U9.16`, and **D-652 the
+BMI270's `SDA` data line `U4.14`**.  The residual is **37** as of D-652.  The
+IMU is still NOT functional, but it is now ONE land short, not two: `U4.5`, its
+`VDDIO`, remains an island of one land and its bridge from `U4.8` is a measured
+`PLACEMENT_WALL`.
+
+**D-652 also measured which open edges are worth what** (`screen_open_edge_cost.py`):
+**five of the thirty-seven strand four parts and thirty-seven nets** -- both
+`PCAL9535A` expanders, the `TCA4307` Qwiic buffer and the `MAX17048` fuel gauge
+-- and four of the five are on `/I2C_SCL_INT`, which is therefore this board's
+critical path.
+
+## FIVE OPEN EDGES STRAND THIRTY-SEVEN NETS, AND CHEAPEST-FIRST NEVER ASKED (D-652)
+
+    python3 screen_open_edge_cost.py [--board B] [-o OUT]          # 8 s
+
+`routing_ledger.py` is the authority on HOW MANY edges are open.  Nothing in
+this repository has ever said WHICH ONE MATTERS, and for eighteen decisions the
+work list has been ordered by what is cheapest to route.  Cheapest-first is the
+right order only if every edge buys the same thing.
+
+    4 parts UNREACHABLE by their sole control path, stranding 37 nets
+    (`evidence/d652-open-edge-cost.json`, byte-identical on re-run)
+
+    net              land     part                    carries   sole path
+    /I2C_SCL_INT     U2.22    PCAL9535APW  (U2)            18    YES
+    /I2C_SDA_INT     U2.23    PCAL9535APW  (U2)            18    YES
+    /I2C_SCL_INT     U3.22    PCAL9535APW  (U3)            14    YES
+    /I2C_SCL_INT     U16.3    TCA4307DGKR  (U16)            5    YES
+    /I2C_SCL_INT     U14.7    MAX17048     (U14)            2    YES
+
+An I2C GPIO expander has exactly one control path and it is the bus.  `U2` is
+the expander that carries **all six user buttons** -- `BTN_UP/DOWN/LEFT/RIGHT/
+A/B` -- and both of its bus lands are open.  `U3` carries the **three
+`FRONT_RGB_*` status-indicator nets**, `XGPIO4`, `XGPIO5` and **every accessory
+power control on the board** (`ACC_3V3_EN`, `ACC_5V_BOOST_EN`, `ACC_5V_SW_EN`,
+`ACC_PWR_EN`, `ACC_DETECT_N`, `ACC_POWER_FAULT_N`), and its `SCL` land is open.
+`U16` is the `TCA4307` that buffers the Qwiic/STEMMA QT contacts and `U14` is
+the `MAX17048` fuel gauge; both are `SCL`-open.
+
+So `ACC_5V_SW_EN` is routed, preserved and PROTECTED -- and nothing can drive
+it.  **Five of the open edges gate more retained Demo capability than all the
+others together**, four of the five are on `/I2C_SCL_INT`, and that net had
+never been ranked above `BQ25185_SYS`'s pour islands because an edge is an edge
+to the ledger.
+
+`carries` is mechanical -- every distinct net on the same footprint, minus this
+one, minus `GND`/`+3V3`/`+5V` -- and `sole_path` is a claim about the DEVICE,
+made only for the three values named in `SOLE_PATH`.  Lands on footprints the
+board itself flags DNP are reported `fitted: false` and are in no total, which
+is the D-610 phantom (`U13.3`) caught before it is paid for.
+
+## THE IMU's DATA LINE, AND THE CHEAPER ARM THAT WAS REFUSED (D-652)
+
+    python3 route_maze_batch.py /I2C_SDA_INT --partial \
+        --evict /05_I2C_DEVICES/BMI270_SDO_ADDR --grid 66667 \
+        --repair-planes --promote
+
+`/I2C_SDA_INT` `U4.14` is the `BMI270`'s `SDA` and was an island of one land.
+`screen_corridor_blockers.py` named its minimal containment-bounded eviction --
+three tracks of `/05_I2C_DEVICES/BMI270_SDO_ADDR`, the IMU's own I2C
+address-select strap, `reproved_ok`.
+
+    OUT   8 B.Cu tracks of BMI270_SDO_ADDR, 5.702 mm
+    IN    /I2C_SDA_INT   J1.45 -> U4.14   55.314 mm, 4 barrels, F/I2/F/I2/B
+          BMI270_SDO_ADDR relaid  R118.1 -> R119.2 -> U4.1   7.874 mm, 2 barrels
+
+The strap is a STATIC DC ADDRESS SELECT -- `R118` (0R, fitted) pulls it to
+`GND`, `R119` (0R, **DNP**) is the alternate pull to `+3V3` -- so moving it
+costs nothing electrically, and the relay through `R119.2` is one copper LAND
+of the same net, which leaves the documented DNP option intact: fit `R119`,
+lift `R118`, and the address still changes.
+
+**THE CHEAPER-LOOKING ARM WAS MEASURED AND REFUSED.**  The same corridor screen
+offered a second single-net opening, `/09_COMMUNITY_HEADER/NATIVE_A_HDR`, and
+it gives a SHORTER `SDA` run -- `U3.23 -> U4.14`, 24.625 mm, 3 barrels -- and
+also passes all thirteen clauses with DRC exit 0 (`w/d652/gate2.json`).  It was
+refused on what it does to the net it moves: the Community Port's Native GPIO A
+comes back as **153.708 mm with 8 barrels and nine layer changes.**  Edge
+counting cannot see that; `_partial_join`'s own docstring can -- *"a legal
+route and a bad one"* -- and 178 mm of new copper on a user-facing header to
+save 30 mm on a 400 kHz bus is the wrong trade.  **A `--evict` arm must be
+judged on the evicted net's relay, not only on the requested net's run.**
+
+**AND A NEW OPEN DFM ITEM.**  `/I2C_SDA_INT` carried 253.2 mm of routed copper
+before this and carries **308.5 mm** after, across a 101 mm span, with seven
+fitted devices on it.  The internal bus's total capacitance has never been
+measured against the I2C 400 pF ceiling nor against `R19`'s pull-up value, and
+this promotion adds 22 % to it.  `/I2C_SCL_INT` at 170.7 mm owes the same
+number.
+
+## A NET'S ORPHAN LAND IS OFTEN NEARER ITS OWN TRACK THAN ANY PAD (D-652)
+
+    python3 screen_net_tap.py [NET ...] [--census] [--grid N] [--max-mm F]
+
+`maze3d.net_islands` groups a net's pads by the copper that already joins them
+and `route_join` then closes an island pair PAD TO PAD.  `join_orphans`' own
+docstring makes the shape of the omission explicit -- *"every move this board
+owns aims an orphan at the plane BODY"* -- and the one target nobody ever aimed
+at is the net's OWN ROUTED TRACK.
+
+    11 of 25 measured orphan lands are NEARER their own net's copper than any
+    pad the router may aim at   (`evidence/d652-tap-census.json`,
+    BYTE-IDENTICAL on re-run)
+
+    net                       land      pad mm    tap mm    gain
+    /I2S_LRCLK                U5.14     30.826    14.352   16.474
+    /I2C_SCL_INT              U16.3     15.585     6.048    9.536
+    /I2C_SDA_INT              U2.23     10.000     1.802    8.198
+    /08_BUTTONS/BTN_LEFT_N    R6.2       8.647     4.764    3.883
+    /07_IR/IR_LED_A           R123.1     4.156     1.365    2.791
+    /I2C_SCL_INT              TP5.1     13.286    10.553    2.733
+
+`/I2C_SDA_INT` is the case that names it: the internal bus already runs
+**1.802 mm** from `U2.23`, and for eighteen decisions that edge has been priced
+as the 10.000 mm haul to `U3.23` across the most congested pocket on the board.
+
+**THE MECHANISM ALREADY EXISTED.**  `maze3d.offcentre_route` accepts an END
+carrying `anchor=True` and routes to that exact coordinate without asking it to
+escape -- an anchor is not a pad, it is a point already on copper.  What was
+missing was a caller that builds one out of the target island's OWN CONNECTED
+COPPER, proved by KiCad's `CONNECTIVITY_DATA` and not by distance (`TAP1`).
+The screen adds no clearance arithmetic: the proof is `offcentre_route`'s
+`verify_laid`, every trial laid on the live `QBoard` and reverted, and
+`maze3d.py` is untouched.
+
+`TAP4` refuses five netclasses BY NAME before any search -- `USB_D`, `NFC_RF`,
+`NFC_RX`, `SWITCH_NODE`, `SPK_OUT` -- because a tap is a T-junction and a
+T-junction is a STUB, and those classes govern the SHAPE of their conductor.
+
+**AND ON THIS BOARD, AT 0.100 mm, IT BUYS NOTHING YET.**  Seven lands asked,
+seven `NO_TAP` (`evidence/d652-tap-batch-100.json`): `R6.2`, `TP5.1` and
+`U3.22` on `NO_PATH`, and `U9.10`, `U9.8`, `U5.14`, `U16.3` on
+`NO_LEGAL_ESCAPE`.  The `U2.23` question at 0.050 mm was **KILLED AT ITS 900 s
+CAP AND IS UNANSWERED** -- not refused; the distinction is the whole of D-624's
+`over_budget` discipline and it is recorded here rather than rounded to a wall.
+
+## THE `U2`/`U3` BUS POCKET IS ONE EVICTION, AND IT CANNOT BE EXECUTED (D-652)
+
+    python3 screen_offcentre_hop.py NET --route --far F,B,I2[,I3] --max-gap-mm F
+    python3 screen_pair_corridor_blame.py NET A B [MARGIN] [GRID] [OUT]
+
+Three levers were offered to `/I2C_SCL_INT` `U2.22 <-> U3.22`, 10.000 mm apart
+on the same `x`, and each refuses for a different and now-named reason.
+
+**IT IS NOT A LAND WALL.**  `screen_lattice_exact_route.py` reports `U2.22: NO
+LEGAL ESCAPE at >= 0.150 mm; blocked by U2.23 (x27), U2.21 (x20)` and
+`route_join` finds ONE escape.  `screen_offcentre_hop.py --route` gets `U2.22`
+off its land in **0.7629 mm** and `U3.22` in **1.1378 mm** and then refuses on
+the CORRIDOR (`evidence/d652-hop-route-{ctrl,i3}.json`).  D-633's off-centre
+launch is again the difference between a land that cannot start and a land
+whose pocket the centre-anchored model could not see.
+
+**IT IS NOT AN INNER-LAYER CAPACITY WALL.**  D-634 measured `In3.Cu` -- the
+`+3V3` plane `reserved_inner_planes` gives to `+3V3` alone -- as the only
+well-connected layer on the board, 7840.9 mm2 free with its largest piece at
+93.4 %, which made "license a bounded lane on In3" the obvious next structural
+move.  Offering it to the haul is a one-flag A/B, and the two arms come back
+**identical to the micron**: same launches (0.7629 / 1.1378 mm), same
+`NO_PATH`, at `--field-grid` 0.100 mm and 0.050 mm and at 0.200 mm and
+0.150 mm trunk (`evidence/d652-hop-route-{ctrl,i3}{,-50}.json`).  A whole free
+layer buys nothing because the wavefront never gets far enough to want one.
+**The In3 licence question is REFUTED for this pair and need not be asked
+again.**
+
+**IT IS ONE EVICTION -- AND THE ONE OBJECT LIST IS A BOND.**
+`screen_pair_corridor_blame.py` is `screen_corridor_blockers.py`'s question asked with
+the OFF-CENTRE launch -- its own `Without` context manager imported unchanged,
+so only ROUTED copper is dropped, only copper WHOLLY INSIDE the window,
+restored in `__exit__`, board never written.  Eighteen foreign nets have
+evictable copper in the `U2.22`/`U3.22` window at 3 mm margin
+(`evidence/d652-pair-blame-u222-u322.json`, complete, 180.8 s):
+
+    Q1  drop ALL EIGHTEEN at once  ->  OPENS 12.369 mm, 2 vias
+    Q2  seventeen alone            ->  NO_PATH
+    Q2  GND alone                  ->  OPENS 20.075 mm, 2 vias
+
+`GND`'s evictable copper in that window is exactly:
+
+    B.Cu 0.300 mm  60.450,89.675 -> 60.700,89.725      \
+    B.Cu 0.300 mm  60.700,89.725 -> 60.925,89.900       |  one simple chain
+    B.Cu 0.300 mm  60.925,89.900 -> 61.100,90.525       |  from inside U2.21's
+    B.Cu 0.300 mm  61.100,90.525 -> 61.100,90.900       |  land to a barrel
+    B.Cu 0.300 mm  61.100,90.900 -> 61.200,90.800      /
+    via  0.600/0.300 mm at 61.200,90.800
+
+That is `U2.21`'s ONLY path to ground: `GND` pours on `In1` and `In4` and
+**not** on `B.Cu`.  So clause 13's `inert_removal_priced` cannot admit
+`"relay": false` -- there is no pour path on that layer to price -- and a
+`--detour-spec` relay is laid **between the chain's own two free ends**, one of
+which IS the barrel sitting in the pocket.  **D-650's "the relay moves the cut
+instead of clearing it", a second sighting, and this time it is structural.**
+
+**THE BOARD NEEDS A PRIMITIVE IT DOES NOT HAVE: A RE-BOND.**  Remove a pad's
+plane-bond chain AND its barrel, and give that pad a NEW barrel outside the
+pocket, proved by connectivity into the same plane and priced by `PP1-PP4`.
+Every move this board owns -- `stitch_pad`, `bond_pads`, `join_islands`,
+`join_orphans`, `relief_stitch`, `--detour-spec` -- either ADDS a bond or MOVES
+a track.  **None moves a bond.**  It is worth exactly `U2.22`, the button
+expander's clock.
 
 ## A SEVERED POUR ISLAND HAS EXACTLY TWO ARMS, AND ONE OF THEM IS OFTEN ABSENT (D-650)
 

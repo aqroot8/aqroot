@@ -1,0 +1,473 @@
+{
+ "authoritative_unchanged": true,
+ "board": "/home/aqroot8/aqroot-demo/hardware/demo/kicad/aqroot-demo/aqroot-Beta-v2.kicad_pcb",
+ "board_sha256": "abf8b92050e787a01c9003dcd954f8c68100525ea3c073ffa39782e886682c51",
+ "grid": 25000,
+ "method": "read-only; every trial laid on a scratch QBoard and REVERTED; zones invisible to QBoard, so a closure is a licence question and never copper",
+ "nets": [
+  {
+   "board_track_min": 150000,
+   "contract": 200000,
+   "dru_floor": 150000,
+   "islands": 6,
+   "net": "/I2C_SCL_INT",
+   "netclass": "I2C",
+   "pairs": [
+    {
+     "a": "U1.38",
+     "b": "TP5.1",
+     "closed_at": null,
+     "gap_mm": 13.286,
+     "layer": "F",
+     "licensed_unconditionally": false,
+     "reason": "NO_PATH",
+     "rungs": [
+      {
+       "mm": 0.0,
+       "ok": false,
+       "pad": null,
+       "profile": null,
+       "reason": "NO_PATH",
+       "seconds": 3.35,
+       "why": "no legal corridor at 0.200 mm from U1.38 to TP5.1 at 0.05 or 0.025 mm",
+       "width": 200000
+      },
+      {
+       "mm": 0.0,
+       "ok": false,
+       "pad": null,
+       "profile": null,
+       "reason": "NO_PATH",
+       "seconds": 3.41,
+       "why": "no legal corridor at 0.150 mm from U1.38 to TP5.1 at 0.05 or 0.025 mm",
+       "width": 150000
+      }
+     ],
+     "why": "no legal corridor at 0.150 mm from U1.38 to TP5.1 at 0.05 or 0.025 mm"
+    },
+    {
+     "a": "R20.2",
+     "b": "TP5.1",
+     "closed_at": null,
+     "gap_mm": 15.9671,
+     "layer": "F",
+     "licensed_unconditionally": false,
+     "reason": "NO_PATH",
+     "rungs": [
+      {
+       "mm": 0.0,
+       "ok": false,
+       "pad": null,
+       "profile": null,
+       "reason": "NO_PATH",
+       "seconds": 3.75,
+       "why": "no legal corridor at 0.200 mm from R20.2 to TP5.1 at 0.05 or 0.025 mm",
+       "width": 200000
+      },
+      {
+       "mm": 0.0,
+       "ok": false,
+       "pad": null,
+       "profile": null,
+       "reason": "NO_PATH",
+       "seconds": 3.83,
+       "why": "no legal corridor at 0.150 mm from R20.2 to TP5.1 at 0.05 or 0.025 mm",
+       "width": 150000
+      }
+     ],
+     "why": "no legal corridor at 0.150 mm from R20.2 to TP5.1 at 0.05 or 0.025 mm"
+    },
+    {
+     "a": "J1.44",
+     "b": "U14.7",
+     "closed_at": null,
+     "gap_mm": 24.1371,
+     "layer": null,
+     "reason": "NOT_COPLANAR",
+     "rungs": [],
+     "why": "J1.44 and U14.7 share no outer layer; this instrument lays no via"
+    },
+    {
+     "a": "U4.13",
+     "b": "U14.7",
+     "closed_at": null,
+     "gap_mm": 54.868,
+     "layer": "B",
+     "licensed_unconditionally": false,
+     "reason": "NO_LEGAL_ESCAPE",
+     "rungs": [
+      {
+       "mm": 0.0,
+       "ok": false,
+       "pad": "U14.7",
+       "profile": null,
+       "reason": "NO_LEGAL_ESCAPE",
+       "seconds": 0.06,
+       "why": "U14.7: NO LEGAL ESCAPE at >= 0.200 mm; blocked by U14.8 (x25), U14.6 (x13), track (x9), U14.5 (x9)",
+       "width": 200000
+      },
+      {
+       "mm": 0.0,
+       "ok": false,
+       "pad": "U14.7",
+       "profile": null,
+       "reason": "NO_LEGAL_ESCAPE",
+       "seconds": 0.06,
+       "why": "U14.7: NO LEGAL ESCAPE at >= 0.150 mm; blocked by U14.8 (x25), U14.6 (x14), track (x9), U14.5 (x8)",
+       "width": 150000
+      }
+     ],
+     "why": "U14.7: NO LEGAL ESCAPE at >= 0.150 mm; blocked by U14.8 (x25), U14.6 (x14), track (x9), U14.5 (x8)"
+    },
+    {
+     "a": "U4.13",
+     "b": "U16.3",
+     "closed_at": null,
+     "gap_mm": 15.5847,
+     "layer": "B",
+     "licensed_unconditionally": false,
+     "reason": "NO_LEGAL_ESCAPE",
+     "rungs": [
+      {
+       "mm": 0.0,
+       "ok": false,
+       "pad": "U16.3",
+       "profile": null,
+       "reason": "NO_LEGAL_ESCAPE",
+       "seconds": 0.06,
+       "why": "U16.3: NO LEGAL ESCAPE at >= 0.200 mm; blocked by U16.4 (x27), U16.1 (x23), track (x15), U16.6 (x3)",
+       "width": 200000
+      },
+      {
+       "mm": 0.0,
+       "ok": false,
+       "pad": "U16.3",
+       "profile": null,
+       "reason": "NO_LEGAL_ESCAPE",
+       "seconds": 0.06,
+       "why": "U16.3: NO LEGAL ESCAPE at >= 0.150 mm; blocked by U16.4 (x27), U16.1 (x23), track (x15), U16.6 (x3)",
+       "width": 150000
+      }
+     ],
+     "why": "U16.3: NO LEGAL ESCAPE at >= 0.150 mm; blocked by U16.4 (x27), U16.1 (x23), track (x15), U16.6 (x3)"
+    },
+    {
+     "a": "J1.44",
+     "b": "U16.3",
+     "closed_at": null,
+     "gap_mm": 53.5353,
+     "layer": null,
+     "reason": "NOT_COPLANAR",
+     "rungs": [],
+     "why": "J1.44 and U16.3 share no outer layer; this instrument lays no via"
+    },
+    {
+     "a": "U4.13",
+     "b": "U2.22",
+     "closed_at": null,
+     "gap_mm": 20.5378,
+     "layer": "B",
+     "licensed_unconditionally": false,
+     "reason": "NO_LEGAL_ESCAPE",
+     "rungs": [
+      {
+       "mm": 0.0,
+       "ok": false,
+       "pad": "U2.22",
+       "profile": null,
+       "reason": "NO_LEGAL_ESCAPE",
+       "seconds": 0.05,
+       "why": "U2.22: NO LEGAL ESCAPE at >= 0.200 mm; blocked by U2.23 (x27), track (x17), U2.20 (x12), U2.21 (x10)",
+       "width": 200000
+      },
+      {
+       "mm": 0.0,
+       "ok": false,
+       "pad": "U2.22",
+       "profile": null,
+       "reason": "NO_LEGAL_ESCAPE",
+       "seconds": 0.06,
+       "why": "U2.22: NO LEGAL ESCAPE at >= 0.150 mm; blocked by U2.23 (x27), U2.21 (x20), track (x17), U2.20 (x2)",
+       "width": 150000
+      }
+     ],
+     "why": "U2.22: NO LEGAL ESCAPE at >= 0.150 mm; blocked by U2.23 (x27), U2.21 (x20), track (x17), U2.20 (x2)"
+    },
+    {
+     "a": "J1.44",
+     "b": "U2.22",
+     "closed_at": null,
+     "gap_mm": 36.8993,
+     "layer": null,
+     "reason": "NOT_COPLANAR",
+     "rungs": [],
+     "why": "J1.44 and U2.22 share no outer layer; this instrument lays no via"
+    },
+    {
+     "a": "U4.13",
+     "b": "U3.22",
+     "closed_at": null,
+     "gap_mm": 10.7843,
+     "layer": "B",
+     "licensed_unconditionally": false,
+     "reason": "NO_PATH",
+     "rungs": [
+      {
+       "mm": 0.0,
+       "ok": false,
+       "pad": null,
+       "profile": null,
+       "reason": "NO_PATH",
+       "seconds": 27.58,
+       "why": "no legal corridor at 0.200 mm from U4.13 to U3.22 at 0.05 or 0.025 mm",
+       "width": 200000
+      },
+      {
+       "mm": 0.0,
+       "ok": false,
+       "pad": null,
+       "profile": null,
+       "reason": "NO_PATH",
+       "seconds": 26.36,
+       "why": "no legal corridor at 0.150 mm from U4.13 to U3.22 at 0.05 or 0.025 mm",
+       "width": 150000
+      }
+     ],
+     "why": "no legal corridor at 0.150 mm from U4.13 to U3.22 at 0.05 or 0.025 mm"
+    },
+    {
+     "a": "J1.44",
+     "b": "U3.22",
+     "closed_at": null,
+     "gap_mm": 39.6996,
+     "layer": null,
+     "reason": "NOT_COPLANAR",
+     "rungs": [],
+     "why": "J1.44 and U3.22 share no outer layer; this instrument lays no via"
+    },
+    {
+     "a": "U16.3",
+     "b": "U3.22",
+     "closed_at": null,
+     "gap_mm": 25.9932,
+     "layer": "B",
+     "licensed_unconditionally": false,
+     "reason": "NO_LEGAL_ESCAPE",
+     "rungs": [
+      {
+       "mm": 0.0,
+       "ok": false,
+       "pad": "U16.3",
+       "profile": null,
+       "reason": "NO_LEGAL_ESCAPE",
+       "seconds": 0.03,
+       "why": "U16.3: NO LEGAL ESCAPE at >= 0.200 mm; blocked by U16.4 (x27), U16.1 (x23), track (x15), U16.6 (x3)",
+       "width": 200000
+      },
+      {
+       "mm": 0.0,
+       "ok": false,
+       "pad": "U16.3",
+       "profile": null,
+       "reason": "NO_LEGAL_ESCAPE",
+       "seconds": 0.03,
+       "why": "U16.3: NO LEGAL ESCAPE at >= 0.150 mm; blocked by U16.4 (x27), U16.1 (x23), track (x15), U16.6 (x3)",
+       "width": 150000
+      }
+     ],
+     "why": "U16.3: NO LEGAL ESCAPE at >= 0.150 mm; blocked by U16.4 (x27), U16.1 (x23), track (x15), U16.6 (x3)"
+    },
+    {
+     "a": "U2.22",
+     "b": "U3.22",
+     "closed_at": null,
+     "gap_mm": 10.0,
+     "layer": "B",
+     "licensed_unconditionally": false,
+     "reason": "NO_LEGAL_ESCAPE",
+     "rungs": [
+      {
+       "mm": 0.0,
+       "ok": false,
+       "pad": "U2.22",
+       "profile": null,
+       "reason": "NO_LEGAL_ESCAPE",
+       "seconds": 0.03,
+       "why": "U2.22: NO LEGAL ESCAPE at >= 0.200 mm; blocked by U2.23 (x27), track (x17), U2.20 (x12), U2.21 (x10)",
+       "width": 200000
+      },
+      {
+       "mm": 0.0,
+       "ok": false,
+       "pad": "U2.22",
+       "profile": null,
+       "reason": "NO_LEGAL_ESCAPE",
+       "seconds": 0.03,
+       "why": "U2.22: NO LEGAL ESCAPE at >= 0.150 mm; blocked by U2.23 (x27), U2.21 (x20), track (x17), U2.20 (x2)",
+       "width": 150000
+      }
+     ],
+     "why": "U2.22: NO LEGAL ESCAPE at >= 0.150 mm; blocked by U2.23 (x27), U2.21 (x20), track (x17), U2.20 (x2)"
+    }
+   ],
+   "widths": [
+    200000,
+    150000
+   ]
+  },
+  {
+   "board_track_min": 150000,
+   "contract": 200000,
+   "dru_floor": 150000,
+   "islands": 3,
+   "net": "/I2C_SDA_INT",
+   "netclass": "I2C",
+   "pairs": [
+    {
+     "a": "U3.23",
+     "b": "U2.23",
+     "closed_at": null,
+     "gap_mm": 10.0,
+     "layer": "B",
+     "licensed_unconditionally": false,
+     "reason": "NO_LEGAL_ESCAPE",
+     "rungs": [
+      {
+       "mm": 0.0,
+       "ok": false,
+       "pad": "U2.23",
+       "profile": null,
+       "reason": "NO_LEGAL_ESCAPE",
+       "seconds": 0.06,
+       "why": "U2.23: NO LEGAL ESCAPE at >= 0.200 mm; blocked by U2.24 (x27), track (x17), U2.21 (x12), U2.22 (x10)",
+       "width": 200000
+      },
+      {
+       "mm": 0.0,
+       "ok": false,
+       "pad": "U2.23",
+       "profile": null,
+       "reason": "NO_LEGAL_ESCAPE",
+       "seconds": 0.06,
+       "why": "U2.23: NO LEGAL ESCAPE at >= 0.150 mm; blocked by U2.24 (x27), U2.22 (x20), track (x17), U2.21 (x2)",
+       "width": 150000
+      }
+     ],
+     "why": "U2.23: NO LEGAL ESCAPE at >= 0.150 mm; blocked by U2.24 (x27), U2.22 (x20), track (x17), U2.21 (x2)"
+    },
+    {
+     "a": "TP4.1",
+     "b": "U2.23",
+     "closed_at": null,
+     "gap_mm": 19.6218,
+     "layer": null,
+     "reason": "NOT_COPLANAR",
+     "rungs": [],
+     "why": "TP4.1 and U2.23 share no outer layer; this instrument lays no via"
+    },
+    {
+     "a": "U3.23",
+     "b": "U4.14",
+     "closed_at": null,
+     "gap_mm": 11.8851,
+     "layer": "B",
+     "licensed_unconditionally": false,
+     "reason": "NO_PATH",
+     "rungs": [
+      {
+       "mm": 0.0,
+       "ok": false,
+       "pad": null,
+       "profile": null,
+       "reason": "NO_PATH",
+       "seconds": 7.62,
+       "why": "no legal corridor at 0.200 mm from U3.23 to U4.14 at 0.05 or 0.025 mm",
+       "width": 200000
+      },
+      {
+       "mm": 0.0,
+       "ok": false,
+       "pad": null,
+       "profile": null,
+       "reason": "NO_PATH",
+       "seconds": 7.39,
+       "why": "no legal corridor at 0.150 mm from U3.23 to U4.14 at 0.05 or 0.025 mm",
+       "width": 150000
+      }
+     ],
+     "why": "no legal corridor at 0.150 mm from U3.23 to U4.14 at 0.05 or 0.025 mm"
+    },
+    {
+     "a": "U16.6",
+     "b": "U4.14",
+     "closed_at": null,
+     "gap_mm": 15.8132,
+     "layer": "B",
+     "licensed_unconditionally": false,
+     "reason": "NO_PATH",
+     "rungs": [
+      {
+       "mm": 0.0,
+       "ok": false,
+       "pad": null,
+       "profile": null,
+       "reason": "NO_PATH",
+       "seconds": 8.46,
+       "why": "no legal corridor at 0.200 mm from U16.6 to U4.14 at 0.05 or 0.025 mm",
+       "width": 200000
+      },
+      {
+       "mm": 0.0,
+       "ok": false,
+       "pad": null,
+       "profile": null,
+       "reason": "NO_PATH",
+       "seconds": 8.38,
+       "why": "no legal corridor at 0.150 mm from U16.6 to U4.14 at 0.05 or 0.025 mm",
+       "width": 150000
+      }
+     ],
+     "why": "no legal corridor at 0.150 mm from U16.6 to U4.14 at 0.05 or 0.025 mm"
+    },
+    {
+     "a": "U2.23",
+     "b": "U4.14",
+     "closed_at": null,
+     "gap_mm": 21.6739,
+     "layer": "B",
+     "licensed_unconditionally": false,
+     "reason": "NO_LEGAL_ESCAPE",
+     "rungs": [
+      {
+       "mm": 0.0,
+       "ok": false,
+       "pad": "U2.23",
+       "profile": null,
+       "reason": "NO_LEGAL_ESCAPE",
+       "seconds": 0.03,
+       "why": "U2.23: NO LEGAL ESCAPE at >= 0.200 mm; blocked by U2.24 (x27), track (x17), U2.21 (x12), U2.22 (x10)",
+       "width": 200000
+      },
+      {
+       "mm": 0.0,
+       "ok": false,
+       "pad": "U2.23",
+       "profile": null,
+       "reason": "NO_LEGAL_ESCAPE",
+       "seconds": 0.03,
+       "why": "U2.23: NO LEGAL ESCAPE at >= 0.150 mm; blocked by U2.24 (x27), U2.22 (x20), track (x17), U2.21 (x2)",
+       "width": 150000
+      }
+     ],
+     "why": "U2.23: NO LEGAL ESCAPE at >= 0.150 mm; blocked by U2.24 (x27), U2.22 (x20), track (x17), U2.21 (x2)"
+    }
+   ],
+   "widths": [
+    200000,
+    150000
+   ]
+  }
+ ],
+ "question": "at what WIDTH does each open island pair of this net close, asked with qrouter.connect_role's EXACT escapes -- the only instrument D-630's LATTICE_EXACT class admits",
+ "schema": 1
+}

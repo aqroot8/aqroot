@@ -1,3 +1,246 @@
+# D-652 · 2026-09-06 · Demo — FIVE OPEN EDGES STRAND THIRTY-SEVEN NETS: THE WORK LIST WAS SORTED BY THE WRONG KEY, AND THE BMI270's `SDA` IS BONDED
+
+    authority  abf8b92050e787a01c9003dcd954f8c68100525ea3c073ffa39782e886682c51
+          ->   dc6d162a597ac944457b7d8575fe70270d1f8f1892027449fb8cc73686d8f1e4
+    retained open edges  38 -> 37     open retained nets  20   connected retained  153
+    /I2C_SDA_INT  open edges 2 -> 1   islands 3 -> 2   raw board ratsnest 54 -> 53
+    `hardware/beta-v2` UNTOUCHED.
+
+**COPPER PROMOTED.  THIRTEEN of thirteen gate clauses PASS, `refused_clauses`
+EMPTY** (`evidence/d652-gate-promote.json`); `verify_promotion.py` **PASS on all
+15 checks** (`evidence/d652-verify-promotion.json`); real KiCad DRC **exit 0,
+ZERO attributable**, profile identical to baseline (`hole_clearance` 5,
+`lib_footprint_issues` 199, `solder_mask_bridge` 1); the standing suite is
+**11/11 RAN, 11/11 PASS** (`evidence/d652-contract-regression.json`, baseline
+`d632`) with `placement`, `rf_symmetry`, `pour_partition` and
+**`protected_copper` IDENTICAL to `d632`**, and the only differences anywhere
+against D-651's own report are the `board_sha256` of a board that changed on
+purpose and `In1.Cu`'s reference-plane area, **9421.023 -> 9415.278 mm²** --
+5.745 mm² of antipad for four new barrels, measured rather than assumed.
+
+Two new tracked read-only screens, one probe, one promotion, and a measurement
+that **re-orders the whole remaining fabrication plan and retires a lever.**
+
+## 1. THE WORK LIST WAS SORTED BY THE WRONG KEY
+
+`routing_ledger.py` is the authority on HOW MANY edges are open and nothing in
+this repository has ever said WHICH ONE MATTERS.  Eighteen decisions took the
+cheapest edge next.  Cheapest-first is right only if every edge buys the same
+thing, and **`screen_open_edge_cost.py` (new, tracked, 8 s, byte-identical on
+re-run) measures that it does not**:
+
+    4 parts UNREACHABLE by their sole control path, stranding 37 nets
+    (`evidence/d652-open-edge-cost.json`)
+
+    net              land     part                    carries   sole path
+    /I2C_SCL_INT     U2.22    PCAL9535APW  (U2)            18    YES
+    /I2C_SDA_INT     U2.23    PCAL9535APW  (U2)            18    YES
+    /I2C_SCL_INT     U3.22    PCAL9535APW  (U3)            14    YES
+    /I2C_SCL_INT     U16.3    TCA4307DGKR  (U16)            5    YES
+    /I2C_SCL_INT     U14.7    MAX17048     (U14)            2    YES
+
+An I²C GPIO expander has exactly one control path and it is the bus.  `U2` is
+the expander carrying **all six user buttons** (`BTN_UP/DOWN/LEFT/RIGHT/A/B`)
+and **both** its bus lands are open.  `U3` carries the **three `FRONT_RGB_*`
+status-indicator nets**, **`XGPIO4`/`XGPIO5`** — the only expansion GPIO the
+Demo retains — and **every accessory-power control on the board**
+(`ACC_3V3_EN`, `ACC_5V_BOOST_EN`, `ACC_5V_SW_EN`, `ACC_PWR_EN`,
+`ACC_DETECT_N`, `ACC_POWER_FAULT_N`); its `SCL` land is open.  `U16` is the
+`TCA4307` buffering the Qwiic/STEMMA QT contacts, `U14` the `MAX17048` fuel
+gauge; both `SCL`-open.
+
+**`ACC_5V_SW_EN` is routed, preserved and PROTECTED — and nothing can drive
+it.**  So are the RGB indicator, the D-pad, `XGPIO4`/`XGPIO5`, the display and
+touch resets, the LoRa reset/`DIO1`/`RXEN`, the NFC 5 V enable, the amplifier
+shutdown, the microSD card-detect and both charger status lines.
+
+**FIVE of the thirty-eight open edges gate more retained Demo capability than
+the other thirty-three together, and FOUR of the five are `/I2C_SCL_INT`.**
+That net had never been ranked above `BQ25185_SYS`'s pour islands because to
+the ledger an edge is an edge.  It is now the board's critical path.
+
+`carries` is mechanical — every distinct net on the same footprint, minus this
+one, minus `GND`/`+3V3`/`+5V`.  `sole_path` is a claim about the DEVICE, made
+only for the three values in `SOLE_PATH`.  Lands on footprints the BOARD flags
+DNP are reported `fitted: false` and are in no total — the D-610 phantom caught
+before it is paid for.
+
+## 2. WHAT WAS PROMOTED: THE IMU's DATA LINE
+
+`/I2C_SDA_INT` `U4.14` is the `BMI270`'s `SDA` and it was an island of one
+land.  `screen_corridor_blockers.py` named its minimal containment-bounded
+eviction: **three tracks of `/05_I2C_DEVICES/BMI270_SDO_ADDR`**, the IMU's own
+I²C address-select strap, `reproved_ok`
+(`evidence/d652-corridor-blockers-sda.json`).
+
+    python3 route_maze_batch.py /I2C_SDA_INT --partial \
+        --evict /05_I2C_DEVICES/BMI270_SDO_ADDR --grid 66667 \
+        --repair-planes --promote
+
+    OUT   8 B.Cu tracks of BMI270_SDO_ADDR, 5.702 mm
+    IN    /I2C_SDA_INT   J1.45 -> U4.14   55.314 mm, 4 barrels, F/I2/F/I2/B
+          BMI270_SDO_ADDR relaid  R118.1 -> R119.2 -> U4.1   7.874 mm, 2 barrels
+
+The strap is a **static DC address select** — `R118` (0R, fitted) pulls it to
+`GND` and `R119` (0R, **DNP**) is the alternate pull to `+3V3` — so moving it
+costs nothing electrically, and the relay through `R119.2` is one copper LAND
+of the same net, which leaves the documented DNP option intact: fit `R119`,
+lift `R118`, and the address still changes.  The evicted net ends with **0 open
+edges** and the gate's clause 4 required exactly that.
+
+**AND THE ALTERNATIVE WAS MEASURED AND REJECTED, NOT ASSUMED.**  The same
+corridor screen offered a second single-net opening,
+`/09_COMMUNITY_HEADER/NATIVE_A_HDR`, and it gives a **shorter** `SDA` run --
+`U3.23 -> U4.14`, 24.625 mm, 3 barrels -- and also passes all thirteen clauses
+with DRC exit 0.  It was refused on what it does to the net it moves: the
+Community Port's Native GPIO A comes back as **153.708 mm with 8 barrels and
+nine layer changes** (`w/d652/gate2.json`).  Edge counting cannot see that;
+`_partial_join`'s own docstring can -- *"a legal route and a bad one"* -- and
+178 mm of new copper on a user-facing header to save 30 mm on a 400 kHz bus is
+the wrong trade.  The promoted arm spends **63.2 mm and 6 barrels total.**
+
+**A NEW OPEN DFM ITEM, PRICED NOWHERE.**  `/I2C_SDA_INT` carried **253.2 mm**
+of routed copper before this and carries **308.5 mm** after, across a 101 mm
+span, on a bus with seven fitted devices.  The internal bus's total capacitance
+has never been measured against the I²C 400 pF ceiling nor against `R19`'s
+pull-up value, and this decision adds 22 % to it.  That is recorded as an OPEN
+DFM ITEM in the shape of `/I2S_LRCLK`'s edge rate and `/NFC_SUPPLY`'s per-net
+current -- the copper is promoted, the number is owed.
+
+## 3. THE TARGET NOBODY EVER AIMED AT
+
+`route_join` closes an island pair PAD TO PAD and `join_orphans`' own docstring
+states the omission -- *"every move this board owns aims an orphan at the plane
+BODY"*.  The one target none of them aims at is **the net's OWN ROUTED TRACK**.
+
+**`screen_net_tap.py` (new, tracked) measures what that costs.**  `--census` is
+byte-identical on re-run (`evidence/d652-tap-census.json`):
+
+    11 of 25 measured orphan lands are NEARER their own net's connected copper
+    than any pad the router may aim at
+
+    net                       land      pad mm    tap mm     gain
+    /I2S_LRCLK                U5.14     30.826    14.352    16.474
+    /I2C_SCL_INT              U16.3     15.585     6.048     9.536
+    /I2C_SDA_INT              U2.23     10.000     1.802     8.198
+    /08_BUTTONS/BTN_LEFT_N    R6.2       8.647     4.764     3.883
+    /07_IR/IR_LED_A           R123.1     4.156     1.365     2.791
+    /I2C_SCL_INT              TP5.1     13.286    10.553     2.733
+
+`/I2C_SDA_INT` names it: the internal bus already runs **1.802 mm** from
+`U2.23`, and for eighteen decisions that edge has been priced as the 10.000 mm
+haul to `U3.23` across the most congested pocket on the board.
+
+**THE MECHANISM ALREADY EXISTED AND HAD NO CALLER.**  `maze3d.offcentre_route`
+accepts an END carrying `anchor=True` and routes to that exact coordinate
+without asking it to escape -- an anchor is not a pad, it is a point already on
+copper.  What was missing was a caller that builds one out of the target
+island's OWN CONNECTED COPPER, proved by KiCad's `CONNECTIVITY_DATA` and not by
+distance (`TAP1`).  The screen adds no clearance arithmetic: the proof is
+`offcentre_route`'s `verify_laid`, every trial laid on the live `QBoard` and
+reverted.  **`maze3d.py` is UNTOUCHED by this decision.**
+
+`TAP4` refuses `USB_D`, `NFC_RF`, `NFC_RX`, `SWITCH_NODE` and `SPK_OUT` **BY
+NAME before any search**, because a tap is a T-junction and a T-junction is a
+STUB, and those classes govern the SHAPE of their conductor.
+
+**AND AT 0.100 mm IT BUYS NOTHING YET.**  Seven lands asked, seven `NO_TAP`
+(`evidence/d652-tap-batch-100.json`): `R6.2`, `TP5.1`, `U3.22` on `NO_PATH`;
+`U9.10`, `U9.8`, `U5.14`, `U16.3` on `NO_LEGAL_ESCAPE`.  The `U2.23` question
+at 0.050 mm was **KILLED AT ITS 900 s CAP AND IS UNANSWERED** -- not refused.
+
+## 4. WHAT THE `U2`/`U3` BUS POCKET IS NOT
+
+`/I2C_SCL_INT` `U2.22 <-> U3.22`, 10.000 mm apart on the same `x` at the east
+rows of the two expanders.  Three levers, three different named refusals.
+
+**NOT A LAND WALL.**  `screen_lattice_exact_route.py` reports `U2.22: NO LEGAL
+ESCAPE at >= 0.150 mm; blocked by U2.23 (x27), U2.21 (x20)` and `route_join`
+finds ONE escape.  `screen_offcentre_hop.py --route` gets `U2.22` off its land
+in **0.7629 mm** and `U3.22` in **1.1378 mm**, then refuses on the CORRIDOR.
+
+**NOT AN INNER-LAYER CAPACITY WALL, AND THAT LEVER IS RETIRED.**  D-634
+measured `In3.Cu` -- the `+3V3` plane `reserved_inner_planes` gives to `+3V3`
+alone -- as the only well-connected layer on the board, 7840.9 mm² free with
+its largest piece at 93.4 %, which made "license a bounded lane on In3" the
+obvious next structural move.  Offering it to the haul is a one-flag A/B and
+the two arms come back **identical to the micron**: same launches, same
+`NO_PATH`, at 0.100 **and** 0.050 mm field pitch and 0.200 **and** 0.150 mm
+trunk (`evidence/d652-hop-route-*.json`).  A whole free layer buys nothing
+because the wavefront never gets far enough to want one.  **The In3 licence
+question is REFUTED for this pair and need not be asked again.**
+
+**AND IT IS A SINGLE-NET EVICTION THAT CANNOT BE EXECUTED.**
+`screen_pair_corridor_blame.py` asks `screen_corridor_blockers.py`'s question with the
+OFF-CENTRE launch -- that screen's own `Without` imported unchanged, so only
+ROUTED copper is dropped, only copper WHOLLY INSIDE the window, restored in
+`__exit__`, board never written
+(`evidence/d652-pair-blame-u222-u322.json`, complete, 180.8 s):
+
+    Q1  drop ALL 18 foreign nets in the window  ->  OPENS 12.369 mm, 2 vias
+    Q2  each alone: seventeen NO_PATH, and GND  ->  OPENS 20.075 mm, 2 vias
+
+`GND`'s copper in that window is **exactly one object list**: five 0.300 mm
+`B.Cu` tracks from a point inside `U2.21`'s land (60.45,89.675) to a through
+barrel at (61.20,90.80), plus that barrel.  It is `U2.21`'s ONLY path to
+ground -- `GND` pours on `In1` and `In4`, not on `B.Cu` -- so clause 13's
+`inert_removal_priced` cannot admit `"relay": false`, and a `--detour-spec`
+relay is laid **between the chain's own two free ends**, one of which IS the
+barrel sitting in the pocket.  D-650's lesson, second sighting: **the relay
+moves the cut instead of clearing it.**
+
+**SO THE BOARD NEEDS A PRIMITIVE IT DOES NOT HAVE: A RE-BOND.**  Remove a pad's
+plane-bond chain AND its barrel, and give that pad a NEW barrel outside the
+pocket, proved by connectivity into the same plane.  Every existing move --
+`stitch_pad`, `bond_pads`, `join_islands`, `join_orphans`, `relief_stitch` --
+either ADDS a bond or MOVES a track; none MOVES a bond.  That is the named
+framework task, and it is worth exactly `U2.22`, the button expander's clock.
+
+## 5. WHAT WAS ASKED, AND WHAT WAS NEVER ANSWERED
+
+    /I2C_SCL_INT --partial --grid 100000     all pairs NO_PATH; the lattice
+                                             block says 0.100 mm is TOO COARSE
+                                             (0.0667 required, pad J1.44)
+    /I2C_SCL_INT --partial --grid auto       0.0667 mm, all pairs NO_PATH;
+                                             U14.7 gains its first escape
+    lattice-exact --grid 25000               every I2C pair refused to 0.150 mm
+                                             (a FLAT instrument; it does not
+                                             refute the 3D corridor)
+    screen_net_tap --grid 100000             7 lands, 7 NO_TAP
+    screen_net_tap /I2C_SDA_INT --grid 50000 KILLED AT 900 s -- UNANSWERED
+    pair-corridor-blame --grid 50000         Q1 OPENS 12.418 mm; Q2 seventeen
+                                             of eighteen before the run was
+                                             stopped -- the 0.100 mm arm is the
+                                             complete one
+    route_maze_batch --grid 33333            KILLED -- UNANSWERED
+    screen_corridor_blockers /I2C_SCL_INT    stopped after 48 min with no
+                                             verdict; NOT a refusal
+
+## 6. NEXT, IN ORDER OF LEVERAGE
+
+1. **`/I2C_SCL_INT` is the board's critical path.**  Four of its five open
+   edges each strand a whole device; no other net comes close.  Rank it above
+   every pour-island question until it closes or is proved to need a refloor.
+2. **Build the RE-BOND primitive** (§4) and spend it on `U2.21`, which is the
+   entire measured cost of `U2.22 <-> U3.22`.
+3. `screen_net_tap` at 0.050 and 0.025 mm on the lands whose own copper is
+   materially nearer, with a cap that reports `over_budget` instead of dying.
+   `U2.23` at 1.802 mm has never been answered.
+4. **Price the `/I2C_SDA_INT` bus** (§2): 308.5 mm of copper, seven devices,
+   `R19` pull-up, against the I²C 400 pF ceiling and the intended bit rate.
+   `/I2C_SCL_INT` at 170.7 mm owes the same number.
+5. CARRIED UNCHANGED from D-651: `BQ25185_SYS` `C26.2`'s single-file gate;
+   `+3V3` `R129.1` as an owner question; `U12.10`/`U12.11` `PLACEMENT_WALL`;
+   `U4.5` (`VDDIO`) -- **now the IMU's LAST open land** -- and its per-part
+   electrical ledger; `/I2S_LRCLK`'s edge rate; `/NFC_SUPPLY`'s per-net
+   current; `/SPI_B_SCK` and `/BQ25185_STAT1` as LANDS; `MK1.4` and
+   `J3.A12`/`J3.B1`; `U9.16`'s single-barrel driver ground as an OPEN DFM ITEM.
+   D-618's `J3` question remains RECORDED.
+
+**No owner decision is OPEN.**  `DEMO_READY_FOR_FAB` is NOT declared and is not
+close: 37 retained open edges remain and five of them strand four parts and
+thirty-seven nets.
+
 # D-651 · 2026-09-06 · Demo — THE EVICTION D-650 PRICED IS A CHAIN, NOT AN OBJECT, AND THE REFUSAL THAT HID IT WAS A LATTICE: `C28.1`'s 100 nF BYPASS IS BONDED
 
     authority  01d738abd2fbeda5cbecd20a720638f524010c311ee7439ab4322793fedb6b12
