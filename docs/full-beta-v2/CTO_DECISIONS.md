@@ -1,5 +1,206 @@
 # AQROOT Full Beta v2 — CTO Decisions
 
+# D-638 · 2026-09-06 · Demo — the RIP-UP-AND-RELAY FRONTIER IS *REFUTED*: the relay was refused by a RESERVE DISC that swallowed its own twelve terminals, THREE of the four lands close JOINTLY once the stitch and the relay are searched together, and the real writer HAS NOW DONE ONE — 4.3353 -> 17.2143 mm, `all_relaid: true`
+
+    authority  5715bf5cd688a87f686e162b77bbcbff98dc9f9f3e20b4be6424849423e690d2
+            -> 5715bf5cd688a87f686e162b77bbcbff98dc9f9f3e20b4be6424849423e690d2
+    NO COPPER PROMOTED.  Two full-authority gate runs were spent on the real
+      board; the first was invoked `--promote` and REFUSED ITSELF
+      (`refuse promotion: gate failed`), so the authoritative board was never
+      written.  Zero tracks, zero vias, zero zones, zero rule areas, zero
+      `.kicad_dru` change, zero placement change.  Every screen re-reads the
+      board's sha256 after its last trial: `authoritative_unchanged: true` on
+      all NINE artifacts.
+    ADD-ONLY.  `git diff --numstat` over the whole worktree is
+      `20 0 screen_segment_evict.py` -- twenty insertions, ZERO deletions, and
+      every one of them a comment -- plus one new tracked screen and its
+      evidence.  The ten standing contracts were re-run and compared field by
+      field anyway: **10/10 ran, 10/10 IDENTICAL**
+      (`evidence/d638-contract-regression.json`, baseline `d632`).
+    LEDGER RE-MEASURED, UNMOVED.  retained open edges **44**, open retained
+      nets 21, connected retained 152, raw ratsnest 60.
+
+D-637 ranked *"BUILD THE SIMULTANEOUS RIP-UP-AND-RELAY"* first and called it
+*"the first thing on this board in five decisions whose closure would be
+COPPER"*.  It is built.  What it found is that the frontier D-637 recorded was
+never there.
+
+## 1. The four refusals were an artifact of the reservation, and the arithmetic says so without a run
+
+`screen_segment_evict.relay_price` reserves the stitch site with an all-layer
+KEEP-OUT DISC of the screen's own `cut_radius_mm` and then asks
+`maze3d.route_points` to put the cut track back between its own two ends.  On
+this board `shrink` fails for three of the four lands, so that radius is the
+**8.0 mm SEARCH WINDOW** -- a 16 mm hole through the whole stack -- and:
+
+    land        cut net                 r_mm   d(end A)  d(end B)   inside?
+    R39.1       Net-(U11-TS_MR)         8.00      5.720     6.653   BOTH
+    R39.1       Net-(U11-TS_MR)         8.00      6.653     7.467   BOTH
+    C37.2       /ACC_DETECT_N           8.00      5.527     4.432   BOTH
+    C37.2       Net-(U11-TS_MR)         8.00      6.265     3.265   BOTH
+    J3.A12/B1   Net-(J3-CC2)            8.00      3.954     2.067   BOTH
+    U9.16       NFC_RFO2                2.00      1.860     0.836   BOTH
+
+**ALL TWELVE TERMINALS ARE INSIDE THE RESERVATION.**  `point_terminals` opens a
+terminal's own cell as a rasterisation courtesy and every neighbour of it is
+guarded, so the wavefront cannot take one step.  `NO_PATH` there is not a
+statement about this board's congestion; it is a statement about a disc that
+swallowed the question.
+
+## 2. The positive control, and it is the measurement that decides what the rest means
+
+New tracked `screen_relay_transaction.py` re-asks the same lands with four arms
+on the same board, the same `Field`, the same rung and the same budget, every
+trial reverted (`evidence/d638-relay-transaction-g100.json`):
+
+    arm 0 `bare`    nothing reserved and nothing laid -- the ONLY difference
+                    between this board and the authoritative one is that the
+                    track is not on it
+    arm A `disc`    `relay_price` reproduced verbatim
+    arm B `stitch`  the REAL `maze3d.stitch_pad` laid with the same `land_ok`
+                    body certificate, and no disc at all
+    arm C `joint`   arm B repeated with the barrel of every stitch that
+                    stranded a relay struck out of `land_ok`
+
+**THREE OF THE FOUR TRACKS GO BACK IN ARM 0 AT THEIR OWN LENGTH TO THE
+MICRON** -- `Net-(U11-TS_MR)` **4.3353** mm against 4.3353, `/ACC_DETECT_N`
+**5.4509** against 5.4509, `NFC_RFO2` **2.6872** against 2.6872.  The lattice
+reproduces this board's legacy copper exactly; the pocket is not congested;
+neither the cut nor the board is the wall.
+
+**WHAT REFUSES THE RELAY IS THE STITCH'S OWN COPPER.**  Those same three fail
+in arm B: `stitch_pad` takes the FIRST legal barrel by distance and has no way
+to know it is about to strand a track the same transaction has to put back.
+Arm B is nevertheless already measurably less constraining than arm A -- one of
+the six relays, `Net-(U11-TS_MR)` on `F` for `GND C37.2`, is `NO_PATH` behind
+the disc and goes back at **10.3097 mm** behind the real stitch.
+
+**THE FOURTH IS A DIFFERENT REFUSAL AND IT IS NOW NAMED.**  `GND J3.A12/B1`'s
+`Net-(J3-CC2)` will not go back on a board where NOTHING else changed --
+`LATTICE_WALL`, a refusal of the instrument.  It belongs to the grid and to
+nothing else: at **0.050 mm** and again at **0.025 mm** it goes back at exactly
+**5.475 mm**, its own length (`evidence/d638-relay-bare-j3-g50.json`,
+`...-g25.json`).  The `--grid` ladder D-622/D-623/D-626 already built is the
+whole lever.
+
+## 3. Three of the four lands CLOSE JOINTLY, and each closure is PRICED
+
+Arm C at the finer rungs (`evidence/d638-relay-joint-g50.json`,
+`...-u916-g25.json`).  No foreign pour is severed by any of these barrels
+(`_antipad_severs` over every foreign pour, `[]` in all three):
+
+    land        grid      stitch                       relay          price
+    +3V3 R39.1  0.050  9.687 mm B + 0.65/0.40 barrel   Net-(U11-TS_MR)
+                       at (70.65, 67.55), round 4      4.3353 -> 17.087   +12.75 mm
+    GND C37.2   0.050  3.149 mm B, round 1             /ACC_DETECT_N
+                                                       5.4509 -> 30.124   +24.67 mm
+                                                       Net-(U11-TS_MR)
+                                                       9.5273 -> 9.591    +0.06 mm
+    GND U9.16   0.025  0.675 mm B, round 1             NFC_RFO2
+                                                       2.6872 -> 3.100    +0.41 mm
+    GND J3      0.050  ten distinct barrels tried      Net-(J3-CC2)       NO_PATH at all ten
+
+`+3V3 R39.1` has no cheaper variant: a `--relay-slack-mm` ladder at **2.0** and
+**6.0** mm exhausts all six body-admissible barrels and closes at neither
+(`evidence/d638-relay-slack-r39-s{2,6}.json`).  **12.75 mm is the price, not an
+artefact of taking the first answer.**
+
+**AND R39.1 IS THE ONE WORTH THE MONEY.**  `R39` is `1M 1%` with
+`R39.1 = +3V3` and `R39.2 = /01_POWER_TREE/V3V3_FB`, and `V3V3_FB` is fully
+routed and joins `R39.2`, `R40.1` and `U12.3`.  **The open edge is the TOP LEG
+OF THE 3.3 V REGULATOR'S FEEDBACK DIVIDER, and it is not connected to the
+rail.**  The net that pays for it, `Net-(U11-TS_MR)`, has exactly two pads --
+`R38.1` (`10k 1%`, other end `GND`) and `U11.6` -- so it is a static bias strap
+with no signal and no current on it, and 12.75 mm of `B.Cu` costs it nothing
+that can be measured.  That is a board fact, not a datasheet claim.
+
+## 4. THE WRITER HAS NOW TAKEN THE TRANSACTION, AND THAT IS THE HALF D-637 SAID DID NOT EXIST
+
+`screen_relay_transaction.py --plan-out/--guard-out` emits the transaction in
+the writer's own grammar, and the reservation it emits is **NOT A DISC**: the
+plan's `reserve` list is empty and the guard is the LAID STITCH'S OWN PATH --
+seven `B` tube records at `keepout 0.400 mm` over 34 points, plus its barrel on
+all six layers at `0.525 mm` -- with `+3V3` named as the exempt net
+(`evidence/d638-plan-r39.json`, `d638-guard-r39.json`).
+
+    python3 route_maze_batch.py "+3V3" \
+        --detour-spec evidence/d638-plan-r39.json \
+        --guard evidence/d638-guard-r39.json \
+        --body-landing --grid 50000 --work ... --promote
+
+**THE DETOUR WENT BACK.**  `detour.all_relaid: true`, `failed: []`, one net,
+two tracks removed by licensed signature, **4.3353 -> 17.2143 mm** on `B.Cu`,
+**zero vias**, 10.2 s -- the real applier, on the real board, around the real
+reserved stitch corridor.  A board diff against the authority shows exactly two
+removed segments and six added ones and nothing else.
+
+## 5. AND THE GATE REFUSED IT, TWICE, FOR TWO NAMED AND FIXABLE REASONS
+
+`--promote` refused itself and never wrote; the authoritative sha256 is
+byte-identical.  `evidence/d638-gate-r39-summary.json`:
+
+**(a) THE SCREEN AND THE WRITER WERE GIVEN DIFFERENT RUNGS, AND THE WRITER IS
+RIGHT TO REFUSE.**  The measurement is taken at `screen_segment_evict`'s
+`floor` rung -- `+3V3` at **0.400 mm** track and a **0.65/0.40 mm** barrel,
+`needs_licence: false` -- and the writer was invoked with no rung at all, so
+`net_contract` handed `stitch_net` the **NETCLASS**: `width 0.600`,
+`via_dia 0.800`, `escape_floor 0.600`.  It then reported, correctly,
+`R39.1 NO_BODY_VIA_SITE: no legal 0.80 mm barrel INSIDE THIS NET'S OWN BODY
+POUR`, and `U4.2/U4.5/U4.8 NO_LEGAL_ESCAPE at >= 0.600 mm` where D-637's screen
+records the same lands at `>= 0.400`.  `stitched: 0`.  **The transaction was
+never offered the barrel it was measured with.**  `route_maze_batch.py` already
+has the lever -- `--stitch-width 400000 --stitch-via 650000:400000`, clamped UP
+to the `.kicad_dru` floors -- and the plan emitter must state it, because a
+screen that proves a 0.65 mm barrel and a writer that asks for an 0.80 mm one
+are not measuring the same board.
+
+**(b) THE JOINT SEARCH PRICES THE BARREL AGAINST FOREIGN POURS AND DOES NOT
+PRICE THE RELAY.**  `PP2` FAILED: the 17.2 mm relay is 17 mm of `B.Cu` laid
+through the `GND` `B.Cu` pour and it SPLIT it, `58 -> 59` islands, shearing off
+a **21.765 mm2** fragment holding `C27.2` and `C28.2`.  `PP3` finds that
+fragment still `BONDED` -- two barrels into the plane at 1.902 A each -- and
+`PP2` refuses it anyway because `GND` carries no published rail current to
+price a fragment with (`NET_CARRIES_NO_PUBLISHED_CURRENT`).  That clause is
+D-605's own lesson -- *a through barrel is a slot in every foreign pour it
+passes* -- and a DETOUR TRACK is the same scissors at a different length.
+`screen_relay_transaction.py` runs `maze3d._antipad_severs` over every foreign
+pour for every barrel the transaction plants, and runs nothing at all for the
+track it lays.
+
+## 6. WHAT THIS RETIRES AND WHAT IT LEAVES
+
+**RETIRED.**  "This board has reached a rip-up-and-reroute frontier ... and no
+instrument here can take that transaction" is REFUTED on all three of its
+clauses: the instrument exists, the writer has taken the transaction, and the
+four refusals that motivated the claim were a reservation artefact plus one
+grid rung.  `screen_segment_evict.relay_price` keeps its exact behaviour and
+gains twenty lines of comment saying so, because it is the control the other
+three arms are compared against.
+
+**NEXT, IN ORDER OF LEVERAGE.**
+
+ 1. **CARRY THE RUNG IN THE PLAN.**  `--plan-out` must emit the
+    `--stitch-width` / `--stitch-via` the measurement used, and the gate
+    invocation must spend them.  One line of evidence, and it is the whole
+    difference between `stitched: 0` and the barrel this decision measured.
+ 2. **PRICE THE RELAY AGAINST FOREIGN POURS INSIDE THE JOINT SEARCH.**  Reject
+    a relay path that splits a foreign pour and strike that stitch out, exactly
+    as a barrel that severs one is struck out today.  `GND B.Cu` is the pour
+    that refuses `R39.1`'s 17.2 mm loop, and the search has five more barrels
+    it never tried under that constraint.
+ 3. **`GND U9.16` IS THE CHEAPEST CLOSURE THIS BOARD HAS.**  A 0.675 mm stitch
+    and one barrel bond the `ST25R3916`'s `GND_DR_16` ground pin to the plane
+    for **+0.41 mm** on `NFC_RFO2`, at the 0.025 mm rung, on the FIRST barrel
+    tried.  It is the next transaction to gate once (1) and (2) are in.
+ 4. **THE D-636/D-637 ITEMS ARE CARRIED UNCHANGED**: the `/I2S_LRCLK` edge rate
+    is still a DATA task and still the only thing between `/I2C_SCL_INT` and
+    the board's first plane haul; `U4.5`, `U4.8`, `{U4.2,U4.3}`, `U5.2` and
+    `MK1.4` remain the PLACEMENT finding; `R129.1`'s absent plane remains a
+    POUR question.
+
+No owner decision is OPEN.  D-618's `J3` question remains RECORDED and PM-3
+remains an open PLACEMENT finding.
+
 # D-637 · 2026-09-05 · Demo — the PLANE-ORPHAN family is CLOSED BY MEASUREMENT: D-634's barrel correction, built into a stitch and aimed at all TEN islands over 438 trials, opens ZERO — and SIX OF THE TEN ALREADY SIT AT **0.000 mm** OVER THEIR OWN NET'S PLANE
 
     authority  5715bf5cd688a87f686e162b77bbcbff98dc9f9f3e20b4be6424849423e690d2

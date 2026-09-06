@@ -1,0 +1,102 @@
+{
+  "arm": "bare",
+  "authoritative_unchanged": true,
+  "board": "/home/aqroot8/aqroot-demo/hardware/demo/kicad/aqroot-demo/aqroot-Beta-v2.kicad_pcb",
+  "board_sha256": "5715bf5cd688a87f686e162b77bbcbff98dc9f9f3e20b4be6424849423e690d2",
+  "evidence": "/home/aqroot8/aqroot-demo/hardware/demo/manufacturing/evidence/d637-segment-evict.json",
+  "evidence_sha256": "da87ac6587dc354460aa6f3b57410c6ea95e00a749f8b6ebbd4fe88596625b18",
+  "grid": 25000,
+  "lands": [
+    {
+      "arms": {
+        "bare": {
+          "all_relaid": true,
+          "antipad_severs": null,
+          "note": null,
+          "reservation": "nothing at all -- the positive control",
+          "stitch": null,
+          "tracks": [
+            {
+              "a_mm": [
+                35.5,
+                147.275
+              ],
+              "b_mm": [
+                40.975,
+                147.275
+              ],
+              "layer": [
+                "F"
+              ],
+              "layers_allowed": [
+                "F",
+                "B",
+                "I2"
+              ],
+              "max_mm": 55.7405,
+              "mm": 5.475,
+              "mm_by_layer": {
+                "F": 5.475
+              },
+              "net": "Net-(J3-CC2)",
+              "ok": true,
+              "own_layer": false,
+              "reason": null,
+              "tracks": 1,
+              "via_xy": [],
+              "vias": 0,
+              "was_mm": 5.475,
+              "why": null
+            }
+          ]
+        }
+      },
+      "body_landing": null,
+      "cut_nets": [
+        "Net-(J3-CC2)"
+      ],
+      "cut_radius_mm": 8.0,
+      "cut_tracks": 1,
+      "ends_inside_reserve": [
+        {
+          "d_mm": 3.9536,
+          "inside": true,
+          "net": "Net-(J3-CC2)",
+          "xy_mm": [
+            40.975,
+            147.275
+          ]
+        },
+        {
+          "d_mm": 2.0665,
+          "inside": true,
+          "net": "Net-(J3-CC2)",
+          "xy_mm": [
+            35.5,
+            147.275
+          ]
+        }
+      ],
+      "land": "GND:J3.A12",
+      "net": "GND",
+      "netclass": "GND",
+      "pads": [
+        "J3.A12",
+        "J3.B1"
+      ],
+      "site_mm": [
+        37.2,
+        146.1
+      ],
+      "stitch_pad": "J3.A12",
+      "unmatched": [],
+      "verdict_measured": "SEGMENT_OPENS"
+    }
+  ],
+  "max_mm": 8.0,
+  "method": "read-only; the named tracks are held out of the obstacle model whole, the real maze3d.stitch_pad is laid with the same body certificate the measurement used, and each cut net is put back by maze3d.route_points between its own chain ends at the same budget -- every object proved by verify_laid, the barrel put through _antipad_severs, every trial reverted",
+  "question": "does a cut that opens a plane land go back when the reservation is the STITCH THAT WILL BE THERE instead of an all-layer keep-out disc big enough to swallow the relay's own two terminals",
+  "relay_own_layer": true,
+  "rung": "floor",
+  "schema": 1
+}

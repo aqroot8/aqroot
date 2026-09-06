@@ -1,0 +1,1015 @@
+{
+  "arm": "joint",
+  "authoritative_unchanged": true,
+  "board": "/home/aqroot8/aqroot-demo/hardware/demo/kicad/aqroot-demo/aqroot-Beta-v2.kicad_pcb",
+  "board_sha256": "5715bf5cd688a87f686e162b77bbcbff98dc9f9f3e20b4be6424849423e690d2",
+  "evidence": "/home/aqroot8/aqroot-demo/hardware/demo/manufacturing/evidence/d637-segment-evict.json",
+  "evidence_sha256": "da87ac6587dc354460aa6f3b57410c6ea95e00a749f8b6ebbd4fe88596625b18",
+  "grid": 50000,
+  "lands": [
+    {
+      "arms": {
+        "joint": {
+          "all_relaid": true,
+          "antipad_severs": [],
+          "knockout_mm": 0.4,
+          "note": null,
+          "reservation": "none -- the stitch and the relay are searched TOGETHER, and a stitch that strands a relay is struck out and retried",
+          "rounds": [
+            {
+              "all_relaid": false,
+              "antipad_severs": null,
+              "relays": [
+                {
+                  "mm": null,
+                  "net": "Net-(U11-TS_MR)",
+                  "ok": false,
+                  "reason": "NO_PATH",
+                  "vias": null,
+                  "was_mm": 4.3353
+                }
+              ],
+              "round": 1,
+              "stitch_layer": "B",
+              "stitch_mm": 9.128,
+              "stitch_ok": true,
+              "via_xy": [
+                71.1,
+                68.25
+              ]
+            },
+            {
+              "all_relaid": false,
+              "antipad_severs": null,
+              "relays": [
+                {
+                  "mm": null,
+                  "net": "Net-(U11-TS_MR)",
+                  "ok": false,
+                  "reason": "NO_PATH",
+                  "vias": null,
+                  "was_mm": 4.3353
+                }
+              ],
+              "round": 2,
+              "stitch_layer": "B",
+              "stitch_mm": 9.337,
+              "stitch_ok": true,
+              "via_xy": [
+                70.8,
+                67.95
+              ]
+            },
+            {
+              "all_relaid": false,
+              "antipad_severs": null,
+              "relays": [
+                {
+                  "mm": null,
+                  "net": "Net-(U11-TS_MR)",
+                  "ok": false,
+                  "reason": "NO_PATH",
+                  "vias": null,
+                  "was_mm": 4.3353
+                }
+              ],
+              "round": 3,
+              "stitch_layer": "B",
+              "stitch_mm": 9.728,
+              "stitch_ok": true,
+              "via_xy": [
+                71.1,
+                67.65
+              ]
+            },
+            {
+              "all_relaid": true,
+              "antipad_severs": [],
+              "relays": [
+                {
+                  "mm": 17.087375598685664,
+                  "net": "Net-(U11-TS_MR)",
+                  "ok": true,
+                  "reason": null,
+                  "vias": 0,
+                  "was_mm": 4.3353
+                }
+              ],
+              "round": 4,
+              "stitch_layer": "B",
+              "stitch_mm": 9.687,
+              "stitch_ok": true,
+              "via_xy": [
+                70.65,
+                67.55
+              ]
+            }
+          ],
+          "stitch": {
+            "layer": "B",
+            "mm": 9.687,
+            "ok": true,
+            "reason": null,
+            "via_xy": [
+              70.65,
+              67.55
+            ],
+            "via_xy_nm": [
+              70650000,
+              67550000
+            ],
+            "why": null
+          },
+          "tracks": [
+            {
+              "a_mm": [
+                66.5,
+                71.6
+              ],
+              "b_mm": [
+                68.5,
+                75.2
+              ],
+              "layer": [
+                "B"
+              ],
+              "layers_allowed": [
+                "F",
+                "B",
+                "I2"
+              ],
+              "max_mm": 54.6008,
+              "mm": 17.087375598685664,
+              "mm_by_layer": {
+                "B": 17.0874
+              },
+              "net": "Net-(U11-TS_MR)",
+              "ok": true,
+              "own_layer": false,
+              "reason": null,
+              "tracks": 2,
+              "via_xy": [],
+              "vias": 0,
+              "was_mm": 4.3353,
+              "why": null
+            }
+          ],
+          "tries": 10
+        }
+      },
+      "body_landing": {
+        "body": [
+          "C10.1",
+          "C12.2",
+          "C13.1",
+          "C14.1",
+          "C15.1",
+          "C16.1",
+          "C17.1",
+          "C18.1"
+        ],
+        "body_pads": 75,
+        "cells": {
+          "F": 2378527,
+          "I3": 3274941
+        },
+        "erode": 0,
+        "total": 3399939
+      },
+      "cut_nets": [
+        "Net-(U11-TS_MR)"
+      ],
+      "cut_radius_mm": 8.0,
+      "cut_tracks": 2,
+      "ends_inside_reserve": [
+        {
+          "d_mm": 5.7201,
+          "inside": true,
+          "net": "Net-(U11-TS_MR)",
+          "xy_mm": [
+            66.5,
+            71.6
+          ]
+        },
+        {
+          "d_mm": 6.6528,
+          "inside": true,
+          "net": "Net-(U11-TS_MR)",
+          "xy_mm": [
+            66.6,
+            73.1
+          ]
+        },
+        {
+          "d_mm": 6.6528,
+          "inside": true,
+          "net": "Net-(U11-TS_MR)",
+          "xy_mm": [
+            66.6,
+            73.1
+          ]
+        },
+        {
+          "d_mm": 7.4673,
+          "inside": true,
+          "net": "Net-(U11-TS_MR)",
+          "xy_mm": [
+            68.5,
+            75.2
+          ]
+        }
+      ],
+      "land": "+3V3:R39.1",
+      "net": "+3V3",
+      "netclass": "P3V3",
+      "pads": [
+        "R39.1"
+      ],
+      "site_mm": [
+        71.1,
+        68.2
+      ],
+      "stitch_pad": "R39.1",
+      "unmatched": [],
+      "verdict_measured": "SEGMENT_SET_OPENS"
+    },
+    {
+      "arms": {
+        "joint": {
+          "all_relaid": true,
+          "antipad_severs": [],
+          "knockout_mm": 0.4,
+          "note": null,
+          "reservation": "none -- the stitch and the relay are searched TOGETHER, and a stitch that strands a relay is struck out and retried",
+          "rounds": [
+            {
+              "all_relaid": true,
+              "antipad_severs": [],
+              "relays": [
+                {
+                  "mm": 30.12404023423279,
+                  "net": "/ACC_DETECT_N",
+                  "ok": true,
+                  "reason": null,
+                  "vias": 4,
+                  "was_mm": 5.4509
+                },
+                {
+                  "mm": 9.590612858898057,
+                  "net": "Net-(U11-TS_MR)",
+                  "ok": true,
+                  "reason": null,
+                  "vias": 0,
+                  "was_mm": 9.5273
+                }
+              ],
+              "round": 1,
+              "stitch_layer": "B",
+              "stitch_mm": 3.149,
+              "stitch_ok": true,
+              "via_xy": [
+                58.45,
+                58.6
+              ]
+            }
+          ],
+          "stitch": {
+            "layer": "B",
+            "mm": 3.149,
+            "ok": true,
+            "reason": null,
+            "via_xy": [
+              58.45,
+              58.6
+            ],
+            "via_xy_nm": [
+              58450000,
+              58600000
+            ],
+            "why": null
+          },
+          "tracks": [
+            {
+              "a_mm": [
+                53.6,
+                58.75
+              ],
+              "b_mm": [
+                59.05,
+                58.65
+              ],
+              "layer": [
+                "B"
+              ],
+              "layers_allowed": [
+                "F",
+                "B",
+                "I2"
+              ],
+              "max_mm": 55.7164,
+              "mm": 30.12404023423279,
+              "mm_by_layer": {
+                "B": 8.0649,
+                "F": 4.2437,
+                "I2": 17.8154
+              },
+              "net": "/ACC_DETECT_N",
+              "ok": true,
+              "own_layer": false,
+              "reason": null,
+              "tracks": 1,
+              "via_xy": [
+                [
+                  49.55,
+                  61.05
+                ],
+                [
+                  52.25,
+                  51.95
+                ],
+                [
+                  55.3,
+                  51.8
+                ],
+                [
+                  59.35,
+                  56.05
+                ]
+              ],
+              "vias": 4,
+              "was_mm": 5.4509,
+              "why": null
+            },
+            {
+              "a_mm": [
+                49.7,
+                60.2
+              ],
+              "b_mm": [
+                58.3,
+                64.3
+              ],
+              "layer": [
+                "F"
+              ],
+              "layers_allowed": [
+                "F",
+                "B",
+                "I2"
+              ],
+              "max_mm": 59.7928,
+              "mm": 9.590612858898057,
+              "mm_by_layer": {
+                "F": 9.5906
+              },
+              "net": "Net-(U11-TS_MR)",
+              "ok": true,
+              "own_layer": false,
+              "reason": null,
+              "tracks": 1,
+              "via_xy": [],
+              "vias": 0,
+              "was_mm": 9.5273,
+              "why": null
+            }
+          ],
+          "tries": 10
+        }
+      },
+      "body_landing": {
+        "body": [
+          "C1.1",
+          "C10.2",
+          "C11.2",
+          "C12.1",
+          "C13.2",
+          "C14.2",
+          "C15.2",
+          "C16.2"
+        ],
+        "body_pads": 249,
+        "cells": {
+          "B": 2572313,
+          "I1": 3766742,
+          "I4": 3766742
+        },
+        "erode": 0,
+        "total": 3766742
+      },
+      "cut_nets": [
+        "/ACC_DETECT_N",
+        "Net-(U11-TS_MR)"
+      ],
+      "cut_radius_mm": 8.0,
+      "cut_tracks": 2,
+      "ends_inside_reserve": [
+        {
+          "d_mm": 5.5268,
+          "inside": true,
+          "net": "/ACC_DETECT_N",
+          "xy_mm": [
+            59.05,
+            58.65
+          ]
+        },
+        {
+          "d_mm": 4.432,
+          "inside": true,
+          "net": "/ACC_DETECT_N",
+          "xy_mm": [
+            53.6,
+            58.75
+          ]
+        },
+        {
+          "d_mm": 6.265,
+          "inside": true,
+          "net": "Net-(U11-TS_MR)",
+          "xy_mm": [
+            49.7,
+            60.2
+          ]
+        },
+        {
+          "d_mm": 3.265,
+          "inside": true,
+          "net": "Net-(U11-TS_MR)",
+          "xy_mm": [
+            58.3,
+            64.3
+          ]
+        }
+      ],
+      "land": "GND:C37.2",
+      "net": "GND",
+      "netclass": "GND",
+      "pads": [
+        "C37.2"
+      ],
+      "site_mm": [
+        55.4,
+        62.8
+      ],
+      "stitch_pad": "C37.2",
+      "unmatched": [],
+      "verdict_measured": "SEGMENT_SET_OPENS"
+    },
+    {
+      "arms": {
+        "joint": {
+          "all_relaid": false,
+          "antipad_severs": null,
+          "knockout_mm": 0.4,
+          "note": "no barrel in 10 tries left every cut net a corridor",
+          "reservation": "none -- the stitch and the relay are searched TOGETHER, and a stitch that strands a relay is struck out and retried",
+          "rounds": [
+            {
+              "all_relaid": false,
+              "antipad_severs": null,
+              "relays": [
+                {
+                  "mm": null,
+                  "net": "Net-(J3-CC2)",
+                  "ok": false,
+                  "reason": "NO_PATH",
+                  "vias": null,
+                  "was_mm": 5.475
+                }
+              ],
+              "round": 1,
+              "stitch_layer": "F",
+              "stitch_mm": 2.662,
+              "stitch_ok": true,
+              "via_xy": [
+                37.7,
+                146.6
+              ]
+            },
+            {
+              "all_relaid": false,
+              "antipad_severs": null,
+              "relays": [
+                {
+                  "mm": null,
+                  "net": "Net-(J3-CC2)",
+                  "ok": false,
+                  "reason": "NO_PATH",
+                  "vias": null,
+                  "was_mm": 5.475
+                }
+              ],
+              "round": 2,
+              "stitch_layer": "F",
+              "stitch_mm": 3.086,
+              "stitch_ok": true,
+              "via_xy": [
+                37.4,
+                146.3
+              ]
+            },
+            {
+              "all_relaid": false,
+              "antipad_severs": null,
+              "relays": [
+                {
+                  "mm": null,
+                  "net": "Net-(J3-CC2)",
+                  "ok": false,
+                  "reason": "NO_PATH",
+                  "vias": null,
+                  "was_mm": 5.475
+                }
+              ],
+              "round": 3,
+              "stitch_layer": "F",
+              "stitch_mm": 3.062,
+              "stitch_ok": true,
+              "via_xy": [
+                37.2,
+                146.65
+              ]
+            },
+            {
+              "all_relaid": false,
+              "antipad_severs": null,
+              "relays": [
+                {
+                  "mm": null,
+                  "net": "Net-(J3-CC2)",
+                  "ok": false,
+                  "reason": "NO_PATH",
+                  "vias": null,
+                  "was_mm": 5.475
+                }
+              ],
+              "round": 4,
+              "stitch_layer": "F",
+              "stitch_mm": 3.511,
+              "stitch_ok": true,
+              "via_xy": [
+                37.1,
+                146.0
+              ]
+            },
+            {
+              "all_relaid": false,
+              "antipad_severs": null,
+              "relays": [
+                {
+                  "mm": null,
+                  "net": "Net-(J3-CC2)",
+                  "ok": false,
+                  "reason": "NO_PATH",
+                  "vias": null,
+                  "was_mm": 5.475
+                }
+              ],
+              "round": 5,
+              "stitch_layer": "F",
+              "stitch_mm": 3.298,
+              "stitch_ok": true,
+              "via_xy": [
+                37.6,
+                145.95
+              ]
+            },
+            {
+              "all_relaid": false,
+              "antipad_severs": null,
+              "relays": [
+                {
+                  "mm": null,
+                  "net": "Net-(J3-CC2)",
+                  "ok": false,
+                  "reason": "NO_PATH",
+                  "vias": null,
+                  "was_mm": 5.475
+                }
+              ],
+              "round": 6,
+              "stitch_layer": "F",
+              "stitch_mm": 3.461,
+              "stitch_ok": true,
+              "via_xy": [
+                36.9,
+                146.35
+              ]
+            },
+            {
+              "all_relaid": false,
+              "antipad_severs": null,
+              "relays": [
+                {
+                  "mm": null,
+                  "net": "Net-(J3-CC2)",
+                  "ok": false,
+                  "reason": "NO_PATH",
+                  "vias": null,
+                  "was_mm": 5.475
+                }
+              ],
+              "round": 7,
+              "stitch_layer": "F",
+              "stitch_mm": 3.935,
+              "stitch_ok": true,
+              "via_xy": [
+                36.8,
+                145.7
+              ]
+            },
+            {
+              "all_relaid": false,
+              "antipad_severs": null,
+              "relays": [
+                {
+                  "mm": null,
+                  "net": "Net-(J3-CC2)",
+                  "ok": false,
+                  "reason": "NO_PATH",
+                  "vias": null,
+                  "was_mm": 5.475
+                }
+              ],
+              "round": 8,
+              "stitch_layer": "F",
+              "stitch_mm": 3.872,
+              "stitch_ok": true,
+              "via_xy": [
+                36.6,
+                146.05
+              ]
+            },
+            {
+              "all_relaid": false,
+              "antipad_severs": null,
+              "relays": [
+                {
+                  "mm": null,
+                  "net": "Net-(J3-CC2)",
+                  "ok": false,
+                  "reason": "NO_PATH",
+                  "vias": null,
+                  "was_mm": 5.475
+                }
+              ],
+              "round": 9,
+              "stitch_layer": "F",
+              "stitch_mm": 3.637,
+              "stitch_ok": true,
+              "via_xy": [
+                36.6,
+                146.65
+              ]
+            },
+            {
+              "all_relaid": false,
+              "antipad_severs": null,
+              "relays": [
+                {
+                  "mm": null,
+                  "net": "Net-(J3-CC2)",
+                  "ok": false,
+                  "reason": "NO_PATH",
+                  "vias": null,
+                  "was_mm": 5.475
+                }
+              ],
+              "round": 10,
+              "stitch_layer": "F",
+              "stitch_mm": 4.359,
+              "stitch_ok": true,
+              "via_xy": [
+                36.5,
+                145.4
+              ]
+            }
+          ],
+          "stitch": null,
+          "tracks": [],
+          "tries": 10
+        }
+      },
+      "body_landing": {
+        "body": [
+          "C1.1",
+          "C10.2",
+          "C11.2",
+          "C12.1",
+          "C13.2",
+          "C14.2",
+          "C15.2",
+          "C16.2"
+        ],
+        "body_pads": 249,
+        "cells": {
+          "B": 2572313,
+          "I1": 3766742,
+          "I4": 3766742
+        },
+        "erode": 0,
+        "total": 3766742
+      },
+      "cut_nets": [
+        "Net-(J3-CC2)"
+      ],
+      "cut_radius_mm": 8.0,
+      "cut_tracks": 1,
+      "ends_inside_reserve": [
+        {
+          "d_mm": 3.9536,
+          "inside": true,
+          "net": "Net-(J3-CC2)",
+          "xy_mm": [
+            40.975,
+            147.275
+          ]
+        },
+        {
+          "d_mm": 2.0665,
+          "inside": true,
+          "net": "Net-(J3-CC2)",
+          "xy_mm": [
+            35.5,
+            147.275
+          ]
+        }
+      ],
+      "land": "GND:J3.A12",
+      "net": "GND",
+      "netclass": "GND",
+      "pads": [
+        "J3.A12",
+        "J3.B1"
+      ],
+      "site_mm": [
+        37.2,
+        146.1
+      ],
+      "stitch_pad": "J3.A12",
+      "unmatched": [],
+      "verdict_measured": "SEGMENT_OPENS"
+    },
+    {
+      "arms": {
+        "joint": {
+          "all_relaid": false,
+          "antipad_severs": null,
+          "knockout_mm": 0.4,
+          "note": "no barrel in 9 tries left every cut net a corridor",
+          "reservation": "none -- the stitch and the relay are searched TOGETHER, and a stitch that strands a relay is struck out and retried",
+          "rounds": [
+            {
+              "all_relaid": false,
+              "antipad_severs": null,
+              "relays": [
+                {
+                  "mm": null,
+                  "net": "/04_SPI_B_RADIOS_NFC/NFC_RFO2",
+                  "ok": false,
+                  "reason": "NO_PATH",
+                  "vias": null,
+                  "was_mm": 2.6872
+                }
+              ],
+              "round": 1,
+              "stitch_layer": "B",
+              "stitch_mm": 0.731,
+              "stitch_ok": true,
+              "via_xy": [
+                36.45,
+                27.6
+              ]
+            },
+            {
+              "all_relaid": false,
+              "antipad_severs": null,
+              "relays": [
+                {
+                  "mm": null,
+                  "net": "/04_SPI_B_RADIOS_NFC/NFC_RFO2",
+                  "ok": false,
+                  "reason": "NO_PATH",
+                  "vias": null,
+                  "was_mm": 2.6872
+                }
+              ],
+              "round": 2,
+              "stitch_layer": "B",
+              "stitch_mm": 1.055,
+              "stitch_ok": true,
+              "via_xy": [
+                36.75,
+                27.15
+              ]
+            },
+            {
+              "all_relaid": false,
+              "antipad_severs": null,
+              "relays": [
+                {
+                  "mm": null,
+                  "net": "/04_SPI_B_RADIOS_NFC/NFC_RFO2",
+                  "ok": false,
+                  "reason": "NO_PATH",
+                  "vias": null,
+                  "was_mm": 2.6872
+                }
+              ],
+              "round": 3,
+              "stitch_layer": "B",
+              "stitch_mm": 1.363,
+              "stitch_ok": true,
+              "via_xy": [
+                37.05,
+                27.85
+              ]
+            },
+            {
+              "all_relaid": false,
+              "antipad_severs": null,
+              "relays": [
+                {
+                  "mm": null,
+                  "net": "/04_SPI_B_RADIOS_NFC/NFC_RFO2",
+                  "ok": false,
+                  "reason": "NO_PATH",
+                  "vias": null,
+                  "was_mm": 2.6872
+                }
+              ],
+              "round": 4,
+              "stitch_layer": "B",
+              "stitch_mm": 1.503,
+              "stitch_ok": true,
+              "via_xy": [
+                37.15,
+                28.25
+              ]
+            },
+            {
+              "all_relaid": false,
+              "antipad_severs": null,
+              "relays": [
+                {
+                  "mm": null,
+                  "net": "/04_SPI_B_RADIOS_NFC/NFC_RFO2",
+                  "ok": false,
+                  "reason": "NO_PATH",
+                  "vias": null,
+                  "was_mm": 2.6872
+                }
+              ],
+              "round": 5,
+              "stitch_layer": "B",
+              "stitch_mm": 1.464,
+              "stitch_ok": true,
+              "via_xy": [
+                37.1,
+                27.4
+              ]
+            },
+            {
+              "all_relaid": false,
+              "antipad_severs": null,
+              "relays": [
+                {
+                  "mm": null,
+                  "net": "/04_SPI_B_RADIOS_NFC/NFC_RFO2",
+                  "ok": false,
+                  "reason": "NO_PATH",
+                  "vias": null,
+                  "was_mm": 2.6872
+                }
+              ],
+              "round": 6,
+              "stitch_layer": "B",
+              "stitch_mm": 1.742,
+              "stitch_ok": true,
+              "via_xy": [
+                37.45,
+                27.75
+              ]
+            },
+            {
+              "all_relaid": false,
+              "antipad_severs": null,
+              "relays": [
+                {
+                  "mm": null,
+                  "net": "/04_SPI_B_RADIOS_NFC/NFC_RFO2",
+                  "ok": false,
+                  "reason": "NO_PATH",
+                  "vias": null,
+                  "was_mm": 2.6872
+                }
+              ],
+              "round": 7,
+              "stitch_layer": "B",
+              "stitch_mm": 1.802,
+              "stitch_ok": true,
+              "via_xy": [
+                37.55,
+                28.15
+              ]
+            },
+            {
+              "all_relaid": false,
+              "antipad_severs": null,
+              "relays": [
+                {
+                  "mm": null,
+                  "net": "/04_SPI_B_RADIOS_NFC/NFC_RFO2",
+                  "ok": false,
+                  "reason": "NO_PATH",
+                  "vias": null,
+                  "was_mm": 2.6872
+                }
+              ],
+              "round": 8,
+              "stitch_layer": "B",
+              "stitch_mm": 1.88,
+              "stitch_ok": true,
+              "via_xy": [
+                37.2,
+                28.65
+              ]
+            },
+            {
+              "reason": "NO_BODY_VIA_SITE",
+              "round": 9,
+              "stitch_ok": false,
+              "why": "no legal 0.50 mm barrel INSIDE THIS NET'S OWN BODY POUR within 8.0 mm of any escape"
+            }
+          ],
+          "stitch": null,
+          "tracks": [],
+          "tries": 10
+        }
+      },
+      "body_landing": {
+        "body": [
+          "C1.1",
+          "C10.2",
+          "C11.2",
+          "C12.1",
+          "C13.2",
+          "C14.2",
+          "C15.2",
+          "C16.2"
+        ],
+        "body_pads": 249,
+        "cells": {
+          "B": 2572313,
+          "I1": 3766742,
+          "I4": 3766742
+        },
+        "erode": 0,
+        "total": 3766742
+      },
+      "cut_nets": [
+        "/04_SPI_B_RADIOS_NFC/NFC_RFO2"
+      ],
+      "cut_radius_mm": 2.0,
+      "cut_tracks": 1,
+      "ends_inside_reserve": [
+        {
+          "d_mm": 1.8603,
+          "inside": true,
+          "net": "/04_SPI_B_RADIOS_NFC/NFC_RFO2",
+          "xy_mm": [
+            36.075,
+            27.0
+          ]
+        },
+        {
+          "d_mm": 0.8355,
+          "inside": true,
+          "net": "/04_SPI_B_RADIOS_NFC/NFC_RFO2",
+          "xy_mm": [
+            37.95,
+            28.925
+          ]
+        }
+      ],
+      "land": "GND:U9.16",
+      "net": "GND",
+      "netclass": "GND",
+      "pads": [
+        "U9.16"
+      ],
+      "site_mm": [
+        37.3,
+        28.4
+      ],
+      "stitch_pad": "U9.16",
+      "unmatched": [],
+      "verdict_measured": "SEGMENT_OPENS"
+    }
+  ],
+  "max_mm": 8.0,
+  "method": "read-only; the named tracks are held out of the obstacle model whole, the real maze3d.stitch_pad is laid with the same body certificate the measurement used, and each cut net is put back by maze3d.route_points between its own chain ends at the same budget -- every object proved by verify_laid, the barrel put through _antipad_severs, every trial reverted",
+  "question": "does a cut that opens a plane land go back when the reservation is the STITCH THAT WILL BE THERE instead of an all-layer keep-out disc big enough to swallow the relay's own two terminals",
+  "relay_own_layer": true,
+  "rung": "floor",
+  "schema": 1
+}

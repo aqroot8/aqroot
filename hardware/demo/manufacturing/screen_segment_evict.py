@@ -265,6 +265,26 @@ def relay_price(qb, grid, reserved, cuts, site, radius, exempt, spec,
     for the reservation, and `was + 2*pi*R` for the bound.  `emit=True` in spec
     order and one revert at the end, because the applier lays each detour on a
     board that already carries the previous one.
+
+    D-638 -- READ THIS BEFORE BELIEVING A `RELAY-FAIL` FROM HERE.  The
+    reservation above is a STAND-IN for copper that has not been laid yet, and
+    on the four lands this board actually reports it is not a conservative
+    stand-in, it is a wrong one.  `shrink` fails on three of them, so `radius`
+    is the 8.0 mm SEARCH WINDOW rather than an executable disc -- a 16 mm hole
+    through the whole stack -- and ALL TWELVE of the relay terminals those
+    lands offer lie INSIDE it.  `point_terminals` opens a terminal's own cell
+    as a rasterisation courtesy and every neighbour of it is guarded, so the
+    wavefront cannot take one step and `NO_PATH` is forced by construction.
+    D-637 read those four refusals as a "rip-up-and-relay frontier"; they are
+    not.  `screen_relay_transaction.py` re-asks the question with three further
+    arms -- nothing reserved (the positive control), the REAL stitch laid
+    instead of the disc, and the stitch and the relay searched TOGETHER -- and
+    measured that on three of the four lands the track goes back at its own
+    length to the micron with nothing reserved, that what actually refuses the
+    relay is the stitch's own copper, and that two of the lands close jointly
+    at the 0.050 mm grid rung.  Nothing here is changed: this function is the
+    control those arms are compared against, and it has to stay exactly as it
+    was for that comparison to mean anything.
     """
     import qrouter as qr
     import maze3d as mz

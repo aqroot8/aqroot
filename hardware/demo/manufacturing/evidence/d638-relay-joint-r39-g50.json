@@ -1,0 +1,382 @@
+{
+  "arm": "joint",
+  "authoritative_unchanged": true,
+  "board": "/home/aqroot8/aqroot-demo/hardware/demo/kicad/aqroot-demo/aqroot-Beta-v2.kicad_pcb",
+  "board_sha256": "5715bf5cd688a87f686e162b77bbcbff98dc9f9f3e20b4be6424849423e690d2",
+  "evidence": "/home/aqroot8/aqroot-demo/hardware/demo/manufacturing/evidence/d637-segment-evict.json",
+  "evidence_sha256": "da87ac6587dc354460aa6f3b57410c6ea95e00a749f8b6ebbd4fe88596625b18",
+  "grid": 50000,
+  "lands": [
+    {
+      "arms": {
+        "joint": {
+          "all_relaid": true,
+          "antipad_severs": [],
+          "knockout_mm": 0.4,
+          "note": null,
+          "reservation": "none -- the stitch and the relay are searched TOGETHER, and a stitch that strands a relay is struck out and retried",
+          "rounds": [
+            {
+              "all_relaid": false,
+              "antipad_severs": null,
+              "relays": [
+                {
+                  "mm": null,
+                  "net": "Net-(U11-TS_MR)",
+                  "ok": false,
+                  "reason": "NO_PATH",
+                  "vias": null,
+                  "was_mm": 4.3353
+                }
+              ],
+              "round": 1,
+              "stitch_layer": "B",
+              "stitch_mm": 9.128,
+              "stitch_ok": true,
+              "via_xy": [
+                71.1,
+                68.25
+              ]
+            },
+            {
+              "all_relaid": false,
+              "antipad_severs": null,
+              "relays": [
+                {
+                  "mm": null,
+                  "net": "Net-(U11-TS_MR)",
+                  "ok": false,
+                  "reason": "NO_PATH",
+                  "vias": null,
+                  "was_mm": 4.3353
+                }
+              ],
+              "round": 2,
+              "stitch_layer": "B",
+              "stitch_mm": 9.337,
+              "stitch_ok": true,
+              "via_xy": [
+                70.8,
+                67.95
+              ]
+            },
+            {
+              "all_relaid": false,
+              "antipad_severs": null,
+              "relays": [
+                {
+                  "mm": null,
+                  "net": "Net-(U11-TS_MR)",
+                  "ok": false,
+                  "reason": "NO_PATH",
+                  "vias": null,
+                  "was_mm": 4.3353
+                }
+              ],
+              "round": 3,
+              "stitch_layer": "B",
+              "stitch_mm": 9.728,
+              "stitch_ok": true,
+              "via_xy": [
+                71.1,
+                67.65
+              ]
+            },
+            {
+              "all_relaid": true,
+              "antipad_severs": [],
+              "relays": [
+                {
+                  "mm": 17.087375598685664,
+                  "net": "Net-(U11-TS_MR)",
+                  "ok": true,
+                  "reason": null,
+                  "vias": 0,
+                  "was_mm": 4.3353
+                }
+              ],
+              "round": 4,
+              "stitch_layer": "B",
+              "stitch_mm": 9.687,
+              "stitch_ok": true,
+              "via_xy": [
+                70.65,
+                67.55
+              ]
+            }
+          ],
+          "slack_mm": null,
+          "stitch": {
+            "layer": "B",
+            "mm": 9.687,
+            "ok": true,
+            "reason": null,
+            "via_xy": [
+              70.65,
+              67.55
+            ],
+            "via_xy_nm": [
+              70650000,
+              67550000
+            ],
+            "why": null
+          },
+          "stitch_geometry": {
+            "tracks": [
+              {
+                "a_nm": [
+                  65675000,
+                  71750000
+                ],
+                "b_nm": [
+                  66450000,
+                  72500000
+                ],
+                "lkey": "B",
+                "width_nm": 400000
+              },
+              {
+                "a_nm": [
+                  66450000,
+                  72500000
+                ],
+                "b_nm": [
+                  66650000,
+                  73100000
+                ],
+                "lkey": "B",
+                "width_nm": 400000
+              },
+              {
+                "a_nm": [
+                  66650000,
+                  73100000
+                ],
+                "b_nm": [
+                  67100000,
+                  73450000
+                ],
+                "lkey": "B",
+                "width_nm": 400000
+              },
+              {
+                "a_nm": [
+                  67100000,
+                  73450000
+                ],
+                "b_nm": [
+                  67500000,
+                  73450000
+                ],
+                "lkey": "B",
+                "width_nm": 400000
+              },
+              {
+                "a_nm": [
+                  67500000,
+                  73450000
+                ],
+                "b_nm": [
+                  67800000,
+                  73300000
+                ],
+                "lkey": "B",
+                "width_nm": 400000
+              },
+              {
+                "a_nm": [
+                  67800000,
+                  73300000
+                ],
+                "b_nm": [
+                  70650000,
+                  69350000
+                ],
+                "lkey": "B",
+                "width_nm": 400000
+              },
+              {
+                "a_nm": [
+                  70650000,
+                  69350000
+                ],
+                "b_nm": [
+                  70650000,
+                  67550000
+                ],
+                "lkey": "B",
+                "width_nm": 400000
+              }
+            ],
+            "vias": [
+              {
+                "dia_nm": 650000,
+                "drill_nm": 400000,
+                "xy_nm": [
+                  70650000,
+                  67550000
+                ]
+              }
+            ]
+          },
+          "tracks": [
+            {
+              "a_mm": [
+                66.5,
+                71.6
+              ],
+              "b_mm": [
+                68.5,
+                75.2
+              ],
+              "layer": [
+                "B"
+              ],
+              "layers_allowed": [
+                "F",
+                "B",
+                "I2"
+              ],
+              "max_mm": 54.6008,
+              "mm": 17.087375598685664,
+              "mm_by_layer": {
+                "B": 17.0874
+              },
+              "net": "Net-(U11-TS_MR)",
+              "ok": true,
+              "own_layer": false,
+              "reason": null,
+              "slack_mm": null,
+              "tracks": 2,
+              "via_xy": [],
+              "vias": 0,
+              "was_mm": 4.3353,
+              "why": null
+            }
+          ],
+          "tries": 10
+        }
+      },
+      "body_landing": {
+        "body": [
+          "C10.1",
+          "C12.2",
+          "C13.1",
+          "C14.1",
+          "C15.1",
+          "C16.1",
+          "C17.1",
+          "C18.1"
+        ],
+        "body_pads": 75,
+        "cells": {
+          "F": 2378527,
+          "I3": 3274941
+        },
+        "erode": 0,
+        "total": 3399939
+      },
+      "cut_nets": [
+        "Net-(U11-TS_MR)"
+      ],
+      "cut_radius_mm": 8.0,
+      "cut_records": [
+        {
+          "a_mm": [
+            66.5,
+            71.6
+          ],
+          "b_mm": [
+            66.6,
+            73.1
+          ],
+          "layer": "B",
+          "mm": 1.5033,
+          "net": "Net-(U11-TS_MR)",
+          "removed_mm": 1.5033,
+          "stubs_mm": [],
+          "whole_track": true,
+          "width_mm": 0.2
+        },
+        {
+          "a_mm": [
+            66.6,
+            73.1
+          ],
+          "b_mm": [
+            68.5,
+            75.2
+          ],
+          "layer": "B",
+          "mm": 2.832,
+          "net": "Net-(U11-TS_MR)",
+          "removed_mm": 2.832,
+          "stubs_mm": [],
+          "whole_track": true,
+          "width_mm": 0.2
+        }
+      ],
+      "cut_tracks": 2,
+      "ends_inside_reserve": [
+        {
+          "d_mm": 5.7201,
+          "inside": true,
+          "net": "Net-(U11-TS_MR)",
+          "xy_mm": [
+            66.5,
+            71.6
+          ]
+        },
+        {
+          "d_mm": 6.6528,
+          "inside": true,
+          "net": "Net-(U11-TS_MR)",
+          "xy_mm": [
+            66.6,
+            73.1
+          ]
+        },
+        {
+          "d_mm": 6.6528,
+          "inside": true,
+          "net": "Net-(U11-TS_MR)",
+          "xy_mm": [
+            66.6,
+            73.1
+          ]
+        },
+        {
+          "d_mm": 7.4673,
+          "inside": true,
+          "net": "Net-(U11-TS_MR)",
+          "xy_mm": [
+            68.5,
+            75.2
+          ]
+        }
+      ],
+      "land": "+3V3:R39.1",
+      "net": "+3V3",
+      "netclass": "P3V3",
+      "pads": [
+        "R39.1"
+      ],
+      "reserve_clr_nm": 200000,
+      "site_mm": [
+        71.1,
+        68.2
+      ],
+      "stitch_pad": "R39.1",
+      "stitch_via_dia_nm": 650000,
+      "unmatched": [],
+      "verdict_measured": "SEGMENT_SET_OPENS"
+    }
+  ],
+  "max_mm": 8.0,
+  "method": "read-only; the named tracks are held out of the obstacle model whole, the real maze3d.stitch_pad is laid with the same body certificate the measurement used, and each cut net is put back by maze3d.route_points between its own chain ends at the same budget -- every object proved by verify_laid, the barrel put through _antipad_severs, every trial reverted",
+  "question": "does a cut that opens a plane land go back when the reservation is the STITCH THAT WILL BE THERE instead of an all-layer keep-out disc big enough to swallow the relay's own two terminals",
+  "relay_own_layer": true,
+  "relay_slack_mm": null,
+  "rung": "floor",
+  "schema": 1
+}

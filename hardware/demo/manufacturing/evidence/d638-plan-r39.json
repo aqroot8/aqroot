@@ -1,0 +1,37 @@
+{
+  "detours": [
+    {
+      "max_mm": 54.6008,
+      "net": "Net-(U11-TS_MR)",
+      "tracks": [
+        {
+          "a_mm": [
+            66.5,
+            71.6
+          ],
+          "b_mm": [
+            66.6,
+            73.1
+          ],
+          "layer": "B.Cu",
+          "width_mm": 0.2
+        },
+        {
+          "a_mm": [
+            66.6,
+            73.1
+          ],
+          "b_mm": [
+            68.5,
+            75.2
+          ],
+          "layer": "B.Cu",
+          "width_mm": 0.2
+        }
+      ]
+    }
+  ],
+  "note": "emitted by screen_relay_transaction.py from board 5715bf5cd688a87f; the reservation is NOT a disc -- see the guard file that goes with this plan",
+  "reserve": [],
+  "schema": 1
+}
