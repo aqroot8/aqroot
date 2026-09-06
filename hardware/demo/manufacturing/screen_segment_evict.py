@@ -439,8 +439,19 @@ def try_island(qb, field, island, max_mm, land_ok=None):
     return last
 
 
-def candidates(qb, field, island, max_mm, cap):
+def candidates(qb, field, island, max_mm, cap, ban=()):
     """Unprotected foreign routed TRACKS whose copper enters the stitch window.
+
+    `ban` is D-641's CUT-SET RETRY, in the instrument that CHOOSES the cut.
+    `screen_relay_transaction.py --joint` consumes this screen's artifact, so
+    when its relay refuses a net it is refusing THIS SET, and neither question
+    2 (one track alone) nor question 3 (reverse-greedy) prefers a net that can
+    go back -- they take whichever set they land on first.  Naming the refusing
+    net here removes it from the candidate pool ONLY: the copper stays on the
+    board and remains an obstacle to everything, so a set found without it is
+    a set that never has to move it.  If holding it back closes the window the
+    upper bound reports `SEGMENT_WALL` and the ban has proved the net
+    irreducible for this land -- a real answer either way.
 
     Every copper layer, not just the routable ones: `Field._via_grid` ANDs the
     barrel test over the whole stack, so a legacy track on an inner layer denies
@@ -460,6 +471,8 @@ def candidates(qb, field, island, max_mm, cap):
                 continue
             if isinstance(s, qr.SEG):
                 if s.tag != 'track' or PROTECTED.search(s.net):
+                    continue
+                if s.net in ban:
                     continue
                 d = min(s.dist(cx, cy) for (cx, cy, _) in discs)
                 near = min((s.dist(cx, cy) - R) for (cx, cy, R) in discs)
@@ -580,9 +593,21 @@ def connectivity_price(board_path, cuts, tmpdir):
     before = {n: clusters(board, n) for n in nets}
 
     removed, added = 0, 0
+    # D-641.  THE TRACK LIST IS SNAPSHOT ONCE, BEFORE THE FIRST REMOVAL.
+    # `BOARD.Remove()` disowns the item, and every LATER `GetTracks()` yields
+    # it back as an unwrapped `SwigPyObject` -- `GetStart()` on it raises
+    # `AttributeError: 'SwigPyObject' object has no attribute 'x'`.  With one
+    # cut the loop never scans again and never sees it; with two or more it
+    # depends on whether the next cut's own track happens to come FIRST in the
+    # list, which is luck and not a contract.  Measured on D-641's nine-track
+    # `USB_D_CONN_P` corridor cut: it raises on the second cut.  Matching
+    # against the snapshot, and never re-matching an object already taken,
+    # removes the ordering dependence entirely.
+    live = [t for t in board.GetTracks() if t.GetClass() == 'PCB_TRACK']
+    taken = set()
     for c in cuts:
-        for t in list(board.GetTracks()):
-            if t.GetClass() != 'PCB_TRACK' or t.GetNetname() != c["net"]:
+        for t in live:
+            if id(t) in taken or t.GetNetname() != c["net"]:
                 continue
             a = (round(t.GetStart().x / 1e6, 4), round(t.GetStart().y / 1e6, 4))
             b = (round(t.GetEnd().x / 1e6, 4), round(t.GetEnd().y / 1e6, 4))
@@ -592,6 +617,7 @@ def connectivity_price(board_path, cuts, tmpdir):
             width = t.GetWidth()
             netcode = t.GetNetCode()
             board.Remove(t)
+            taken.add(id(t))
             removed += 1
             for piece in c["stubs_mm"]:
                 nt = pcbnew.PCB_TRACK(board)
@@ -624,6 +650,13 @@ def main():
     ap.add_argument("--rung", choices=("floor", "relief"), default="floor")
     ap.add_argument("--cap", type=int, default=14,
                     help="most candidate tracks per land (nearest first)")
+    ap.add_argument("--ban-net", action="append", default=[],
+                    metavar="NET",
+                    help="D-641 CUT-SET RETRY: keep this net out of the "
+                         "candidate cut pool for every land.  Repeatable.  "
+                         "Use it when the RELAY refused the net -- the set "
+                         "was refused, not the transaction, and this asks for "
+                         "another one.  Default empty reproduces D-640")
     ap.add_argument("--guard", type=Path)
     ap.add_argument("--body-landing", action="store_true",
                     help="D-608: a barrel counts only if it lands INSIDE this "
@@ -671,6 +704,7 @@ def main():
                                   BOARD_HOLE_MIN, BOARD_TRACK_MIN)
 
     board_sha = hashlib.sha256(a.board.read_bytes()).hexdigest()
+    ban = set(a.ban_net or ())
     spec = load_guard(a.guard)
     qb = qr.QBoard(str(a.board))
     ir.inject_existing_via_obstacles(qb)
@@ -764,7 +798,8 @@ def main():
                 ok=bool(base and base.get("ok")),
                 reason=(base or {}).get("reason"),
                 why=str((base or {}).get("why"))[:160])
-            chosen, vias = candidates(qb, field, island, a.max_mm, a.cap)
+            chosen, vias = candidates(qb, field, island, a.max_mm, a.cap,
+                                      ban=ban)
             if not chosen:
                 rec["lands"].append(dict(
                     land=refs, verdict="SEGMENT_WALL", candidates=0,
@@ -934,6 +969,7 @@ def main():
         body_landing=bool(a.body_landing),
         relay_own_layer=bool(a.relay_own_layer),
         pads=list(a.pad),
+        ban_nets=sorted(ban),
         guard=str(a.guard) if a.guard else None,
         guard_sha256=(hashlib.sha256(a.guard.read_bytes()).hexdigest()
                       if a.guard else None),

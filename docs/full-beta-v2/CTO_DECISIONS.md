@@ -1,5 +1,217 @@
 # AQROOT Full Beta v2 — CTO Decisions
 
+# D-641 · 2026-09-06 · Demo — the CUT SET is the thing that gets refused: the retry is BUILT, spent on four transactions, and every one of them now refuses for a NAMED and MEASURED reason instead of an unasked question
+
+    authority  f496d2f39c0827248a47ab7d47efa4322f078b68d2da1d91ae6585d97bf8f875
+            -> f496d2f39c0827248a47ab7d47efa4322f078b68d2da1d91ae6585d97bf8f875
+    NO COPPER MOVED.  Zero tracks, zero vias, zero zones, zero rule areas,
+      zero `.kicad_dru` change, zero placement change.  Every screen re-reads
+      the board's sha256 after its last trial and reports
+      `authoritative_unchanged: true`.
+    `hardware/beta-v2` UNTOUCHED (`git status --short hardware/beta-v2/` empty).
+    THE TEN STANDING CONTRACTS: **10/10 RAN, 10/10 PASS**
+      (`evidence/d641-contract-regression.json`, baseline `d632`), differing
+      from that baseline in exactly the three fields D-639 already documented
+      and in nothing else: `board_sha256`, `In1.Cu` reference-plane area
+      9429.543 -> 9425.846 mm2, and `PP2`'s `GND|B` island count 58 -> 57.
+      No framework change here moves a contract.
+
+D-640 closed by naming the wall: *"the wall is no longer FINDING a cut, it is
+PUTTING THE CUT COPPER BACK.  Every remaining transaction dies at the relay and
+each names exactly ONE net."*  Its first ranked item was to **build the cut-set
+retry**, and it gave the argument: `irreducible_nets: []` on
+`/04_SPI_B_RADIOS_NFC/NFC_VDD_RF` PROVES a cut set sparing `NFC_RFO2` exists,
+and nothing searched for one.
+
+## 1. A REFUSED RELAY REFUSES THE **SET**, NOT THE TRANSACTION
+
+`minimal` is minimal with respect to single-object ADDITION and nothing more.
+Reverse-greedy takes whichever set it lands on first and **nothing in it
+prefers a net that can go back**; `screen_segment_evict`'s question 2 is worse
+still -- it stops at the NEAREST single track whose cut opens the land.  So
+`UNRELAYABLE` was never a statement about a corridor.  It was a statement about
+ONE set, and D-640's own `irreducible_nets` already held the test for whether
+another exists: a net ABSENT from it is one the corridor was proved to open
+WITHOUT.
+
+Two levers, one idea, in the two instruments that CHOOSE a cut:
+
+    screen_corridor_detour.py --cut-set-retries N   (default 2)
+    screen_segment_evict.py   --ban-net NET         (repeatable)
+
+The ban removes a net from the CANDIDATE POOL and never from the board: the
+copper stays, stays an obstacle to everything, and a set found without it is a
+set that never has to move it.  Only a refusing net absent from
+`irreducible_nets` is ever banned.  The loop terminates because the ban only
+grows, and it stops with its reason recorded -- `not UNRELAYABLE`, `every
+refusing net is irreducible`, or `retry budget spent`.
+
+**THE REFACTOR IS PROVED, TWICE.**  `screen_corridor_detour.main`'s questions
+1-4 became a closure `attempt(banned)`; a line-by-line diff of the extracted
+block against `HEAD` is **character-identical apart from the two intended
+edits** (the pool filter and the `banned_nets` field).  And
+`--cut-set-retries 0` on `NFC_VDD_RF` reproduces the pre-change screen
+**byte-for-byte apart from the new `cut_set_retry` key**
+(`evidence/d641-cut-set-retry-control-nfcvddrf.json`), which in turn matches
+D-640's census record for that net field by field.
+
+## 2. IT WAS SPENT ON BOTH `UNRELAYABLE` CORRIDORS AND BOTH ARE STILL REFUSED — FOR NEW REASONS
+
+**`/01_POWER_TREE/USB_D_CONN_P`, `J3.A6/B6 -> U10.3`**
+(`evidence/d641-cut-set-retry-usbconnp.json`).  Round 0 cuts
+`{/I2S_LRCLK x1, GND x3}` and both chains refuse `NO_PATH`; `GND` is
+irreducible, `/I2S_LRCLK` is not, so it is banned.  Round 1 finds a genuinely
+different nine-track set `{/01_POWER_TREE/USB_D_CONN_N x7, GND x2}` -- and
+`USB_D_CONN_N`, **the edge's own differential partner**, comes back
+IRREDUCIBLE *and* `NOT_A_CHAIN` (seven tracks that are a tee, not a chain, so a
+detour cannot move them between two free ends).  Both refusing nets are now
+irreducible and the loop stops itself.
+
+**`/04_SPI_B_RADIOS_NFC/NFC_VDD_RF`, `U9.9/C50.1/C49.1 -> U9.14`**
+(`evidence/d641-cut-set-retry-nfcvddrf.json`).  THREE distinct cut sets in three
+rounds: `{NFC_RFO2 x3}`, then `{NFC_RFO1 x2, NFC_VDD_AM}`, then
+`{NFC_RFO1 x2, NFC_VDD_A x2}` (`NOT_A_CHAIN`, both on `In2`).  `NFC_RFO1` is
+irreducible from round 1 onward.  **Every set that opens this corridor names
+`NFC_RFO1` or `NFC_RFO2`** -- the NFC front end's own two RF outputs, the same
+family whose six `.kicad_dru` rules and zero-millimetre `RF2`
+`arm_mismatch_budget_mm` refused D-640's `GND U9.16` gate run.  The corridor is
+inside the NFC matching network and the matching network is what it would have
+to cut.
+
+## 3. AND `GND`'S CUT IS **NOT FREE** — MEASURED, NOT ASSUMED
+
+D-639 measured `GND C37.2` closing with NO stitch at all, because KiCad's real
+refill flowed the `B.Cu` pour into the channel a detour had vacated.  That
+lesson makes a demand of every later `GND` relay refusal: **prove the cut costs
+something before calling the relay a wall.**
+
+New tracked **`screen_cut_price.py`** asks it, in KiCad's own connectivity
+engine, on a scratch copy, against the fill that is really on the board:
+`screen_segment_evict.connectivity_price` with `stubs_mm: []` -- the whole
+track gone, nothing put back, no relay.  On `USB_D_CONN_P`'s round-1 cut
+(`evidence/d641-cut-price-usbconnp.json`): `GND` **4 -> 5 pad clusters**,
+`USB_D_CONN_N` **1 -> 3**, `free: false` per net and for the union.  The pour
+does not hold those two ends together.  **The `GND` relay refusal on this
+corridor is real**, and D-639's cure does not generalise to it.
+
+**A LATENT CRASH WAS IN THE WAY AND IS FIXED.**  `BOARD.Remove()` disowns the
+item, and every later `GetTracks()` hands it back as an unwrapped
+`SwigPyObject` whose `GetStart()` raises `AttributeError`.  With ONE cut the
+loop never scans again and never sees it; with two or more it survived only if
+the next cut's own track happened to come FIRST in the list -- luck, not a
+contract.  It raises on the second cut of D-641's nine-track corridor set.
+The list is now snapshot ONCE before the first removal and no object is matched
+twice.  **All four prices D-640 published come back IDENTICAL**
+(`evidence/d641-connectivity-price-regression.json`, `all_identical: true`).
+
+## 4. `Net-(U12-PS_SYNC)` IS IRREDUCIBLE FOR `BQ25185_SYS C26.2`, AND THE WALL IS THE STITCH **SITE**
+
+D-640 ranked this land third and called `Net-(U12-PS_SYNC)` "the whole of" it.
+Three measurements close it:
+
+  * **THE BAN.**  `screen_segment_evict --pad C26.2 --ban-net Net-(U12-PS_SYNC)`
+    -- all 20 remaining candidates cut AT ONCE and the barrel site is still
+    `NO_BODY_VIA_SITE` (`evidence/d641-segevict-c262-ban-pssync.json`).  **No
+    cut set of any shape that spares `PS_SYNC` opens this land.**
+  * **THE BARE ARM.**  With nothing reserved, **all three cut nets go back**,
+    and `PS_SYNC` goes back at **2.7036 mm having been 2.7036 mm -- its own
+    length to the micron** (`evidence/d641-relay-bare-c262-g25.json`), the same
+    signature D-638 read on three of its four lands.  Neither the cut nor the
+    board is the wall.
+  * **THE SITE POCKET.**  `--arm joint --joint-tries 24 --joint-knockout-mm
+    0.35` finds FOUR barrel sites -- stitches of 0.972, 1.326 and 1.199 mm at
+    `(62.225,104.15)`, `(61.975,103.9)` and `(62.325,103.8)` -- and **every one
+    of them strands `PS_SYNC` `NO_PATH`**; the fourth round has no site left at
+    all.  At `--grid 12500` the body pour offers ONE site and the same refusal
+    (`evidence/d641-relay-joint-c262-k035.json`,
+    `d641-relay-joint-c262-g12.json`).  The three sites are one pocket, and the
+    pocket is the only place this net's own body pour will take a barrel.
+
+**`BQ25185_SYS C26.2` is therefore a PLACEMENT finding**, not a routing one:
+the cut is irreducible, the relay is free, and what refuses it is where the
+board will let the stitch land.
+
+## 5. AND THE SWEEP FOUND AN EDGE NOBODY HAD EVER ASKED: `EXT_SDA` -> THE QWIIC CONNECTOR IS **ROUTABLE**, AND ITS WHOLE PRICE IS ONE NAMED OBJECT
+
+D-640 ranked *"finish the corridor sweep"* fourth and left twelve nets never
+started.  Six were asked here with the retry in force
+(`evidence/d641-corridor-census-batch2.json`); **it is partial and says so** --
+2 completed, 4 hit the 3600 s cap.  `/ACC_5V_BOOST_EN` returns
+`PROTECTED_COPPER`: its minimal cut names copper `protected_copper.py` forbids
+touching, and it is refused correctly and for free.
+
+**`/09_COMMUNITY_HEADER/EXT_SDA` came back `OPEN` -- the baseline route_join
+succeeds with NO cut at all.**  That edge is `{TP45.1, J5.4, R48.2, D2.4} ->
+`J8.3`: **the Qwiic / STEMMA QT connector's SDA contact**, a Demo-REQUIRED
+feature, and nothing had ever asked it since the board moved.  Eleven
+full-board gate runs later (`evidence/d641-extsda-qwiic-price.json`, none
+`--promote`, `authoritative_unchanged: true` on every one):
+
+  * **IT ROUTES.**  85.843 mm / 4 barrels at `--grid 100000` in 10.5 s;
+    86.317 mm at 50000; identical at `--via-cost 6.0`.  Open retained NETS
+    **21 -> 20**, `nets_improved: ["/09_COMMUNITY_HEADER/EXT_SDA"]`, and real
+    KiCad DRC **zero attributable** on every run.
+  * **AND IT COSTS EXACTLY ONE ISLAND.**  Retained open edges **43 -> 43**,
+    because `nets_regressed: ["GND"]`.  `PP2` names it: the `GND` `B.Cu`
+    island of **10.282 mm2 bonding exactly `C4.2` and `U3.12`** is severed
+    into 4.790 + 4.724 mm2 across a **0.150 mm** neck priced at 0.602 A.  One
+    island, two pads, nothing else -- at all three router settings.
+  * **THAT NECK IS THE ONLY CORRIDOR.**  Reserve the C4.2<->U3.12 tube **AND
+    NOTHING ELSE** (`evidence/d641-guard-extsda-island31.json`, 1 of the 50
+    tubes `pour_bond_guard.py` emits on this board) and `EXT_SDA` is
+    **`NO_PATH` at 100000, 50000 AND 25000 nm.**  The full 50-tube guard
+    refuses at all three too.  The route does not merely happen to cross the
+    neck; there is no other way to `J8.3`.
+  * **AND THE CURE IS REFUSED BY GEOMETRY, NOT BY POLICY.**  `--bond-pad
+    U3.12` -- the primitive built for exactly this ("a pad whose only bond is
+    pour copper is a SINGLE-POINT bond and every route that crosses the neck
+    cuts it") -- returns **`NO_VIA_SITE` at the 0.600 mm netclass barrel, at
+    the 0.500 mm DRU FLOOR barrel, and at 14.0 mm of locality**, and the
+    automatic `--repair-planes` pass fails on the same pad.  **`U3.12` takes
+    no barrel this board's rules allow.**  It is why D-585 guards this island
+    at all.
+
+**`EXT_SDA`'s last edge is therefore a PLACEMENT finding with a one-line
+statement of what would fix it: give `U3.12` a via site.**  It joins `U4.5`,
+`U4.8`, `{U4.2,U4.3}`, `U5.2`, `MK1.4` and now `BQ25185_SYS C26.2` in PM-3.
+
+## 6. COVERAGE, STATED
+
+  * The corridor sweep is **2 of 6 completed, 4 timed out at 3600 s**
+    (`/08_BUTTONS_EXPANDERS/BTN_LEFT_N`, `/SX1262_DIO1`, `/BQ25185_STAT1`,
+    `/BQ25185_STAT2`).  Ten of D-640's twelve unswept nets remain.
+  * `GND J3.A12/B1`'s joint arm at `--joint-tries 24 --joint-knockout-mm 0.35
+    --grid 25000` **hit its 5400 s cap with no output**.  D-640's ranked item
+    (2) is NOT answered here; it is measured as too expensive at that setting
+    and needs a cheaper one.
+  * `NFC_VDD_RF`'s retry stopped on `retry budget spent` with
+    `would_ban: [NFC_VDD_A]`.  A fourth set may exist; every set found so far
+    names `NFC_RFO1` or `NFC_RFO2`, and that pair is already proved to be in
+    every set (round 0's `irreducible_nets: []` shows a set sparing `RFO2`
+    exists, and rounds 1-2 show none spares `RFO1` once `RFO2` is spared).
+
+## NEXT, IN ORDER OF LEVERAGE
+
+  1. **`U3.12`'s VIA SITE IS NOW THE WHOLE OF THE QWIIC SDA EDGE** and it is a
+     PLACEMENT question with a 14 mm proof behind it: what has to move for a
+     0.500 mm barrel to fit near `U3.12`, and is `U3` itself the thing that
+     moves.  This is the cheapest named blocker on the board and it belongs to
+     a Demo-REQUIRED connector.
+  2. **`BQ25185_SYS C26.2`'s STITCH POCKET.**  The cut is irreducible, the
+     relay is free at its own length, and four barrel sites in one pocket all
+     strand it.  Ask whether a SMALLER `cut_radius_mm` (the stitch is what
+     blocks the relay, and the radius is what sizes it) or the `relief` rung
+     opens a fifth.
+  3. **FINISH THE SWEEP** -- ten nets from D-640 plus the four that timed out
+     here.  Run them one at a time with a longer cap, or lower
+     `--escape-limit`; six at once on eight cores is what cost the four.
+  4. **`GND J3.A12/B1` AT A CHEAPER SETTING** -- `--joint-tries 6`
+     `--joint-knockout-mm 0.35`, or `--grid 50000`.  It is still the only
+     UNCITED opener on the board.
+  5. **`/I2S_LRCLK`'s edge rate and `/NFC_SUPPLY`'s per-net current** remain
+     the per-part electrical ledger's two unlocked edges (D-636 item 1),
+     carried unchanged.
+
 # D-640 · 2026-09-06 · Demo — the RELAY IS THE WALL: D-639's first ranked item is **REFUSED** by the board's own RF rule (a SOLE cut against a **zero** mismatch budget), `NOT_A_POCKET` is exposed as an ABSENCE OF MEASUREMENT and deleted, and the whole pour-served family — all 18 lands — is censused for the first time
 
     authority  f496d2f39c0827248a47ab7d47efa4322f078b68d2da1d91ae6585d97bf8f875

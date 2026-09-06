@@ -1,0 +1,505 @@
+{
+  "arm": "joint",
+  "authoritative_unchanged": true,
+  "board": "/home/aqroot8/aqroot-demo/hardware/demo/kicad/aqroot-demo/aqroot-Beta-v2.kicad_pcb",
+  "board_sha256": "f496d2f39c0827248a47ab7d47efa4322f078b68d2da1d91ae6585d97bf8f875",
+  "evidence": "evidence/d640-segment-evict-pourfamily.json",
+  "evidence_sha256": "9709544d58f9e0efabeb803cc59a7165c6eccef4708ee292a00fceeb1ed9ad31",
+  "grid": 25000,
+  "lands": [
+    {
+      "arms": {
+        "joint": {
+          "all_relaid": false,
+          "antipad_severs": null,
+          "knockout_mm": 0.35,
+          "note": "no barrel in 4 tries left every cut net a corridor it could take without splitting a foreign pour",
+          "pour_severs": null,
+          "priced_against_foreign_pours": true,
+          "reservation": "none -- the stitch and the relay are searched TOGETHER, and a stitch that strands a relay is struck out and retried",
+          "rounds": [
+            {
+              "accepted": false,
+              "all_relaid": false,
+              "antipad_severs": null,
+              "pour_severs": null,
+              "relays": [
+                {
+                  "mm": 6.529469848920039,
+                  "net": "/08_BUTTONS_EXPANDERS/BTN_DOWN_N",
+                  "ok": true,
+                  "reason": null,
+                  "vias": 0,
+                  "was_mm": 5.8398
+                },
+                {
+                  "mm": 3.5647508479436607,
+                  "net": "/BQ25185_STAT2",
+                  "ok": true,
+                  "reason": null,
+                  "vias": 0,
+                  "was_mm": 2.8607
+                },
+                {
+                  "mm": null,
+                  "net": "Net-(U12-PS_SYNC)",
+                  "ok": false,
+                  "reason": "NO_PATH",
+                  "vias": null,
+                  "was_mm": 2.7036
+                }
+              ],
+              "round": 1,
+              "stitch_layer": "B",
+              "stitch_mm": 0.972,
+              "stitch_ok": true,
+              "via_xy": [
+                62.225,
+                104.15
+              ]
+            },
+            {
+              "accepted": false,
+              "all_relaid": false,
+              "antipad_severs": null,
+              "pour_severs": null,
+              "relays": [
+                {
+                  "mm": 6.147483561832474,
+                  "net": "/08_BUTTONS_EXPANDERS/BTN_DOWN_N",
+                  "ok": true,
+                  "reason": null,
+                  "vias": 0,
+                  "was_mm": 5.8398
+                },
+                {
+                  "mm": 3.2526911934581184,
+                  "net": "/BQ25185_STAT2",
+                  "ok": true,
+                  "reason": null,
+                  "vias": 0,
+                  "was_mm": 2.8607
+                },
+                {
+                  "mm": null,
+                  "net": "Net-(U12-PS_SYNC)",
+                  "ok": false,
+                  "reason": "NO_PATH",
+                  "vias": null,
+                  "was_mm": 2.7036
+                }
+              ],
+              "round": 2,
+              "stitch_layer": "B",
+              "stitch_mm": 1.326,
+              "stitch_ok": true,
+              "via_xy": [
+                61.975,
+                103.9
+              ]
+            },
+            {
+              "accepted": false,
+              "all_relaid": false,
+              "antipad_severs": null,
+              "pour_severs": null,
+              "relays": [
+                {
+                  "mm": 8.225049261245507,
+                  "net": "/08_BUTTONS_EXPANDERS/BTN_DOWN_N",
+                  "ok": true,
+                  "reason": null,
+                  "vias": 0,
+                  "was_mm": 5.8398
+                },
+                {
+                  "mm": null,
+                  "net": "/BQ25185_STAT2",
+                  "ok": false,
+                  "reason": "NO_PATH",
+                  "vias": null,
+                  "was_mm": 2.8607
+                },
+                {
+                  "mm": null,
+                  "net": "Net-(U12-PS_SYNC)",
+                  "ok": false,
+                  "reason": "NO_PATH",
+                  "vias": null,
+                  "was_mm": 2.7036
+                }
+              ],
+              "round": 3,
+              "stitch_layer": "B",
+              "stitch_mm": 1.199,
+              "stitch_ok": true,
+              "via_xy": [
+                62.325,
+                103.8
+              ]
+            },
+            {
+              "reason": "NO_BODY_VIA_SITE",
+              "round": 4,
+              "stitch_ok": false,
+              "why": "no legal 0.65 mm barrel INSIDE THIS NET'S OWN BODY POUR within 8.0 mm of any escape"
+            }
+          ],
+          "slack_mm": null,
+          "stitch": null,
+          "tracks": [],
+          "tries": 24
+        }
+      },
+      "body_landing": {
+        "body": [
+          "C24.1",
+          "C33.1",
+          "C64.1",
+          "L2.1"
+        ],
+        "body_pads": 4,
+        "cells": {
+          "B": 5256
+        },
+        "erode": 0,
+        "total": 5256
+      },
+      "cut_nets": [
+        "/08_BUTTONS_EXPANDERS/BTN_DOWN_N",
+        "/BQ25185_STAT2",
+        "Net-(U12-PS_SYNC)"
+      ],
+      "cut_radius_mm": 1.2,
+      "cut_records": [
+        {
+          "a_mm": [
+            62.325,
+            105.15
+          ],
+          "b_mm": [
+            62.325,
+            104.575
+          ],
+          "layer": "B",
+          "mm": 0.575,
+          "net": "Net-(U12-PS_SYNC)",
+          "removed_mm": 0.4837,
+          "stubs_mm": [
+            [
+              [
+                62.325,
+                105.15
+              ],
+              [
+                62.325,
+                105.0587
+              ]
+            ]
+          ],
+          "whole_track": false,
+          "width_mm": 0.2
+        },
+        {
+          "a_mm": [
+            62.325,
+            104.575
+          ],
+          "b_mm": [
+            62.9,
+            104.05
+          ],
+          "layer": "B",
+          "mm": 0.7786,
+          "net": "Net-(U12-PS_SYNC)",
+          "removed_mm": 0.7786,
+          "stubs_mm": [],
+          "whole_track": true,
+          "width_mm": 0.2
+        },
+        {
+          "a_mm": [
+            61.7,
+            105.2
+          ],
+          "b_mm": [
+            62.7,
+            103.8
+          ],
+          "layer": "F",
+          "mm": 1.7205,
+          "net": "/BQ25185_STAT2",
+          "removed_mm": 1.5754,
+          "stubs_mm": [
+            [
+              [
+                61.7,
+                105.2
+              ],
+              [
+                61.7843,
+                105.082
+              ]
+            ]
+          ],
+          "whole_track": false,
+          "width_mm": 0.2
+        },
+        {
+          "a_mm": [
+            62.9,
+            104.05
+          ],
+          "b_mm": [
+            64.25,
+            104.05
+          ],
+          "layer": "B",
+          "mm": 1.35,
+          "net": "Net-(U12-PS_SYNC)",
+          "removed_mm": 0.3757,
+          "stubs_mm": [
+            [
+              [
+                63.2757,
+                104.05
+              ],
+              [
+                64.25,
+                104.05
+              ]
+            ]
+          ],
+          "whole_track": false,
+          "width_mm": 0.2
+        },
+        {
+          "a_mm": [
+            61.0036,
+            105.9253
+          ],
+          "b_mm": [
+            62.7685,
+            103.6942
+          ],
+          "layer": "I2",
+          "mm": 2.8448,
+          "net": "/08_BUTTONS_EXPANDERS/BTN_DOWN_N",
+          "removed_mm": 1.7436,
+          "stubs_mm": [
+            [
+              [
+                61.0036,
+                105.9253
+              ],
+              [
+                61.6868,
+                105.0617
+              ]
+            ]
+          ],
+          "whole_track": false,
+          "width_mm": 0.2
+        },
+        {
+          "a_mm": [
+            62.7,
+            103.8
+          ],
+          "b_mm": [
+            62.0,
+            102.9
+          ],
+          "layer": "F",
+          "mm": 1.1402,
+          "net": "/BQ25185_STAT2",
+          "removed_mm": 1.1402,
+          "stubs_mm": [],
+          "whole_track": true,
+          "width_mm": 0.2
+        },
+        {
+          "a_mm": [
+            62.7685,
+            103.6942
+          ],
+          "b_mm": [
+            60.7705,
+            101.4631
+          ],
+          "layer": "I2",
+          "mm": 2.995,
+          "net": "/08_BUTTONS_EXPANDERS/BTN_DOWN_N",
+          "removed_mm": 1.5637,
+          "stubs_mm": [
+            [
+              [
+                61.7253,
+                102.5293
+              ],
+              [
+                60.7705,
+                101.4631
+              ]
+            ]
+          ],
+          "whole_track": false,
+          "width_mm": 0.2
+        }
+      ],
+      "cut_tracks": 7,
+      "ends_inside_reserve": [
+        {
+          "d_mm": 1.2701,
+          "inside": false,
+          "net": "Net-(U12-PS_SYNC)",
+          "xy_mm": [
+            62.325,
+            105.15
+          ]
+        },
+        {
+          "d_mm": 0.7115,
+          "inside": true,
+          "net": "Net-(U12-PS_SYNC)",
+          "xy_mm": [
+            62.325,
+            104.575
+          ]
+        },
+        {
+          "d_mm": 0.7115,
+          "inside": true,
+          "net": "Net-(U12-PS_SYNC)",
+          "xy_mm": [
+            62.325,
+            104.575
+          ]
+        },
+        {
+          "d_mm": 0.8139,
+          "inside": true,
+          "net": "Net-(U12-PS_SYNC)",
+          "xy_mm": [
+            62.9,
+            104.05
+          ]
+        },
+        {
+          "d_mm": 1.3601,
+          "inside": false,
+          "net": "/BQ25185_STAT2",
+          "xy_mm": [
+            61.7,
+            105.2
+          ]
+        },
+        {
+          "d_mm": 0.6083,
+          "inside": true,
+          "net": "/BQ25185_STAT2",
+          "xy_mm": [
+            62.7,
+            103.8
+          ]
+        },
+        {
+          "d_mm": 0.8139,
+          "inside": true,
+          "net": "Net-(U12-PS_SYNC)",
+          "xy_mm": [
+            62.9,
+            104.05
+          ]
+        },
+        {
+          "d_mm": 2.1552,
+          "inside": false,
+          "net": "Net-(U12-PS_SYNC)",
+          "xy_mm": [
+            64.25,
+            104.05
+          ]
+        },
+        {
+          "d_mm": 2.303,
+          "inside": false,
+          "net": "/08_BUTTONS_EXPANDERS/BTN_DOWN_N",
+          "xy_mm": [
+            61.0036,
+            105.9253
+          ]
+        },
+        {
+          "d_mm": 0.6995,
+          "inside": true,
+          "net": "/08_BUTTONS_EXPANDERS/BTN_DOWN_N",
+          "xy_mm": [
+            62.7685,
+            103.6942
+          ]
+        },
+        {
+          "d_mm": 0.6083,
+          "inside": true,
+          "net": "/BQ25185_STAT2",
+          "xy_mm": [
+            62.7,
+            103.8
+          ]
+        },
+        {
+          "d_mm": 1.005,
+          "inside": true,
+          "net": "/BQ25185_STAT2",
+          "xy_mm": [
+            62.0,
+            102.9
+          ]
+        },
+        {
+          "d_mm": 0.6995,
+          "inside": true,
+          "net": "/08_BUTTONS_EXPANDERS/BTN_DOWN_N",
+          "xy_mm": [
+            62.7685,
+            103.6942
+          ]
+        },
+        {
+          "d_mm": 2.776,
+          "inside": false,
+          "net": "/08_BUTTONS_EXPANDERS/BTN_DOWN_N",
+          "xy_mm": [
+            60.7705,
+            101.4631
+          ]
+        }
+      ],
+      "land": "/01_POWER_TREE/BQ25185_SYS:C26.2",
+      "net": "/01_POWER_TREE/BQ25185_SYS",
+      "netclass": "SYS_MAIN",
+      "pads": [
+        "C26.2"
+      ],
+      "reserve_clr_nm": 250000,
+      "site_mm": [
+        62.1,
+        103.9
+      ],
+      "stitch_pad": "C26.2",
+      "stitch_via_dia_nm": 650000,
+      "stitch_via_drill_nm": 400000,
+      "stitch_width_nm": 500000,
+      "unmatched": [],
+      "verdict_measured": "SEGMENT_SET_OPENS"
+    }
+  ],
+  "max_mm": 8.0,
+  "method": "read-only; the named tracks are held out of the obstacle model whole, the real maze3d.stitch_pad is laid with the same body certificate the measurement used, and each cut net is put back by maze3d.route_points between its own chain ends at the same budget -- every object proved by verify_laid, the barrel put through _antipad_severs, every trial reverted",
+  "question": "does a cut that opens a plane land go back when the reservation is the STITCH THAT WILL BE THERE instead of an all-layer keep-out disc big enough to swallow the relay's own two terminals",
+  "relay_own_layer": true,
+  "relay_slack_mm": null,
+  "rung": "floor",
+  "schema": 1
+}

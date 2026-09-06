@@ -1,0 +1,681 @@
+{
+ "board": "/home/aqroot8/aqroot-demo/hardware/demo/kicad/aqroot-demo/aqroot-Beta-v2.kicad_pcb",
+ "board_sha256": "f496d2f39c0827248a47ab7d47efa4322f078b68d2da1d91ae6585d97bf8f875",
+ "edge": {
+  "dst": [
+   "J8.3"
+  ],
+  "note": "the Qwiic / STEMMA QT connector's SDA contact",
+  "src": [
+   "TP45.1",
+   "J5.4",
+   "R48.2",
+   "D2.4"
+  ]
+ },
+ "finding": "THE EDGE IS ROUTABLE AND ITS WHOLE PRICE IS ONE NAMED OBJECT: the GND B.Cu island-31 bond neck, 10.282 mm2 bonding exactly C4.2 and U3.12, severed 4.790 + 4.724 mm2 across a 0.150 mm neck.  Every unguarded route -- 85.843 mm / 4 barrels at --grid 100000, 86.317 mm at 50000, identical at --via-cost 6 -- splits that same island and nothing else, and closes the edge (open retained NETS 21 -> 20) at exactly zero net edge gain (43 -> 43) because GND takes one back.  Reserve that ONE tube and the net is NO_PATH at 100000, 50000 AND 25000 nm: the only corridor this board offers to J8.3 runs through the neck.  And the cure is refused by geometry, not by policy -- U3.12 takes NO barrel: NO_VIA_SITE at the 0.600 mm netclass via, at the 0.500 mm DRU floor via, and at 14.0 mm of locality, and the automatic --repair-planes pass fails on the same pad.  U3.12 is why pour_bond_guard.py guards this island in the first place (D-585).",
+ "method": "route_maze_batch.py full-board gate runs, never --promote; every run reports authoritative_unchanged: true and the authoritative board sha256 is unmoved",
+ "net": "/09_COMMUNITY_HEADER/EXT_SDA",
+ "price": {
+  "island_index": 31,
+  "parts_mm2": [
+   4.79,
+   4.724
+  ],
+  "pre_area_mm2": 10.282,
+  "pre_pads": [
+   "C4.2",
+   "U3.12"
+  ],
+  "severed_island": "GND|B|38685722-44ee-566f-b52b-89a56220a9e0",
+  "severed_neck_amps": 0.602,
+  "severed_neck_width_mm": 0.15
+ },
+ "question": "D-641's corridor census found this edge OPEN with NO cut at all -- the first time anything asked.  What does routing it actually cost, and can that price be paid",
+ "runs": [
+  {
+   "arm": "unguarded g100000",
+   "attributable_drc": [],
+   "authoritative_unchanged": true,
+   "bond_failures": null,
+   "candidate_sha256": "a712438a669d3ad118bdb5870482e2940f57805bdb42137b7e22394d69a80729",
+   "command": "--grid 100000",
+   "connectivity": {
+    "nets_improved": [
+     "/09_COMMUNITY_HEADER/EXT_SDA"
+    ],
+    "nets_regressed": [
+     "GND"
+    ],
+    "open_retained_nets_after": 20,
+    "open_retained_nets_before": 21,
+    "retained_open_edges_after": 43,
+    "retained_open_edges_before": 43
+   },
+   "drc_types": {
+    "hole_clearance": 5,
+    "lib_footprint_issues": 199,
+    "solder_mask_bridge": 1
+   },
+   "mm": 85.843,
+   "plane_repair_failures": null,
+   "pour_partition_ok": false,
+   "promotion_candidate": false,
+   "refused_clauses": [
+    "board_improved",
+    "no_regression",
+    "pour_partition"
+   ],
+   "route_ok": true,
+   "route_reason": null,
+   "splits": [
+    {
+     "layer": "B.Cu",
+     "net": "GND",
+     "parts": [
+      {
+       "area_mm2": 4.79,
+       "body": true,
+       "pads": [
+        "C4.2"
+       ],
+       "post_island": 31
+      },
+      {
+       "area_mm2": 4.724,
+       "body": false,
+       "pads": [
+        "U3.12"
+       ],
+       "post_island": 33
+      }
+     ],
+     "pour": "GND|B|38685722-44ee-566f-b52b-89a56220a9e0",
+     "pre_area_mm2": 10.282,
+     "pre_island": 31,
+     "pre_pads": 2
+    }
+   ],
+   "vias": 4
+  },
+  {
+   "arm": "unguarded g50000",
+   "attributable_drc": [],
+   "authoritative_unchanged": true,
+   "bond_failures": null,
+   "candidate_sha256": "58bcfd7d9fa63ce550f041c936b4447394dc995b6ee1cb52be69a3ec4fe03afe",
+   "command": "--grid 50000",
+   "connectivity": {
+    "nets_improved": [
+     "/09_COMMUNITY_HEADER/EXT_SDA"
+    ],
+    "nets_regressed": [
+     "GND"
+    ],
+    "open_retained_nets_after": 20,
+    "open_retained_nets_before": 21,
+    "retained_open_edges_after": 43,
+    "retained_open_edges_before": 43
+   },
+   "drc_types": {
+    "hole_clearance": 5,
+    "lib_footprint_issues": 199,
+    "solder_mask_bridge": 1
+   },
+   "mm": 86.317,
+   "plane_repair_failures": null,
+   "pour_partition_ok": false,
+   "promotion_candidate": false,
+   "refused_clauses": [
+    "board_improved",
+    "no_regression",
+    "pour_partition"
+   ],
+   "route_ok": true,
+   "route_reason": null,
+   "splits": [
+    {
+     "layer": "B.Cu",
+     "net": "GND",
+     "parts": [
+      {
+       "area_mm2": 4.787,
+       "body": true,
+       "pads": [
+        "C4.2"
+       ],
+       "post_island": 31
+      },
+      {
+       "area_mm2": 4.768,
+       "body": false,
+       "pads": [
+        "U3.12"
+       ],
+       "post_island": 33
+      }
+     ],
+     "pour": "GND|B|38685722-44ee-566f-b52b-89a56220a9e0",
+     "pre_area_mm2": 10.282,
+     "pre_island": 31,
+     "pre_pads": 2
+    }
+   ],
+   "vias": 4
+  },
+  {
+   "arm": "unguarded g100000 via-cost 6",
+   "attributable_drc": [],
+   "authoritative_unchanged": true,
+   "bond_failures": null,
+   "candidate_sha256": "d85c19bbb5c2db4dcf22ee6de5c01a417b92b0d41955b70be4aee860a2835c45",
+   "command": "--grid 100000 --via-cost 6.0",
+   "connectivity": {
+    "nets_improved": [
+     "/09_COMMUNITY_HEADER/EXT_SDA"
+    ],
+    "nets_regressed": [
+     "GND"
+    ],
+    "open_retained_nets_after": 20,
+    "open_retained_nets_before": 21,
+    "retained_open_edges_after": 43,
+    "retained_open_edges_before": 43
+   },
+   "drc_types": {
+    "hole_clearance": 5,
+    "lib_footprint_issues": 199,
+    "solder_mask_bridge": 1
+   },
+   "mm": 85.843,
+   "plane_repair_failures": null,
+   "pour_partition_ok": false,
+   "promotion_candidate": false,
+   "refused_clauses": [
+    "board_improved",
+    "no_regression",
+    "pour_partition"
+   ],
+   "route_ok": true,
+   "route_reason": null,
+   "splits": [
+    {
+     "layer": "B.Cu",
+     "net": "GND",
+     "parts": [
+      {
+       "area_mm2": 4.79,
+       "body": true,
+       "pads": [
+        "C4.2"
+       ],
+       "post_island": 31
+      },
+      {
+       "area_mm2": 4.724,
+       "body": false,
+       "pads": [
+        "U3.12"
+       ],
+       "post_island": 33
+      }
+     ],
+     "pour": "GND|B|38685722-44ee-566f-b52b-89a56220a9e0",
+     "pre_area_mm2": 10.282,
+     "pre_island": 31,
+     "pre_pads": 2
+    }
+   ],
+   "vias": 4
+  },
+  {
+   "arm": "guarded ALL 50 tubes g100000",
+   "attributable_drc": [],
+   "authoritative_unchanged": true,
+   "bond_failures": null,
+   "candidate_sha256": "f496d2f39c0827248a47ab7d47efa4322f078b68d2da1d91ae6585d97bf8f875",
+   "command": "--grid 100000 --guard <50-tube pour-bond guard>",
+   "connectivity": {
+    "nets_improved": [],
+    "nets_regressed": [],
+    "open_retained_nets_after": 21,
+    "open_retained_nets_before": 21,
+    "retained_open_edges_after": 43,
+    "retained_open_edges_before": 43
+   },
+   "drc_types": {
+    "hole_clearance": 5,
+    "lib_footprint_issues": 199,
+    "solder_mask_bridge": 1
+   },
+   "mm": null,
+   "plane_repair_failures": null,
+   "pour_partition_ok": true,
+   "promotion_candidate": false,
+   "refused_clauses": [
+    "board_changed",
+    "board_improved"
+   ],
+   "route_ok": false,
+   "route_reason": "NO_PATH",
+   "splits": [],
+   "vias": null
+  },
+  {
+   "arm": "guarded ALL 50 tubes g50000",
+   "attributable_drc": [],
+   "authoritative_unchanged": true,
+   "bond_failures": null,
+   "candidate_sha256": "f496d2f39c0827248a47ab7d47efa4322f078b68d2da1d91ae6585d97bf8f875",
+   "command": "--grid 50000 --guard <50-tube pour-bond guard>",
+   "connectivity": {
+    "nets_improved": [],
+    "nets_regressed": [],
+    "open_retained_nets_after": 21,
+    "open_retained_nets_before": 21,
+    "retained_open_edges_after": 43,
+    "retained_open_edges_before": 43
+   },
+   "drc_types": {
+    "hole_clearance": 5,
+    "lib_footprint_issues": 199,
+    "solder_mask_bridge": 1
+   },
+   "mm": null,
+   "plane_repair_failures": null,
+   "pour_partition_ok": true,
+   "promotion_candidate": false,
+   "refused_clauses": [
+    "board_changed",
+    "board_improved"
+   ],
+   "route_ok": false,
+   "route_reason": "NO_PATH",
+   "splits": [],
+   "vias": null
+  },
+  {
+   "arm": "guarded ALL 50 tubes g25000",
+   "attributable_drc": [],
+   "authoritative_unchanged": true,
+   "bond_failures": null,
+   "candidate_sha256": "f496d2f39c0827248a47ab7d47efa4322f078b68d2da1d91ae6585d97bf8f875",
+   "command": "--grid 25000 --guard <50-tube pour-bond guard>",
+   "connectivity": {
+    "nets_improved": [],
+    "nets_regressed": [],
+    "open_retained_nets_after": 21,
+    "open_retained_nets_before": 21,
+    "retained_open_edges_after": 43,
+    "retained_open_edges_before": 43
+   },
+   "drc_types": {
+    "hole_clearance": 5,
+    "lib_footprint_issues": 199,
+    "solder_mask_bridge": 1
+   },
+   "mm": null,
+   "plane_repair_failures": null,
+   "pour_partition_ok": true,
+   "promotion_candidate": false,
+   "refused_clauses": [
+    "board_changed",
+    "board_improved"
+   ],
+   "route_ok": false,
+   "route_reason": "NO_PATH",
+   "splits": [],
+   "vias": null
+  },
+  {
+   "arm": "guarded ONLY island 31 g100000",
+   "attributable_drc": [],
+   "authoritative_unchanged": true,
+   "bond_failures": null,
+   "candidate_sha256": "f496d2f39c0827248a47ab7d47efa4322f078b68d2da1d91ae6585d97bf8f875",
+   "command": "--grid 100000 --guard <C4.2<->U3.12 tube ALONE>",
+   "connectivity": {
+    "nets_improved": [],
+    "nets_regressed": [],
+    "open_retained_nets_after": 21,
+    "open_retained_nets_before": 21,
+    "retained_open_edges_after": 43,
+    "retained_open_edges_before": 43
+   },
+   "drc_types": {
+    "hole_clearance": 5,
+    "lib_footprint_issues": 199,
+    "solder_mask_bridge": 1
+   },
+   "mm": null,
+   "plane_repair_failures": null,
+   "pour_partition_ok": true,
+   "promotion_candidate": false,
+   "refused_clauses": [
+    "board_changed",
+    "board_improved"
+   ],
+   "route_ok": false,
+   "route_reason": "NO_PATH",
+   "splits": [],
+   "vias": null
+  },
+  {
+   "arm": "bond U3.12 netclass barrel 0.60/0.30",
+   "attributable_drc": [],
+   "authoritative_unchanged": true,
+   "bond_failures": [
+    {
+     "ok": false,
+     "pad": "U3.12",
+     "reason": "NO_VIA_SITE",
+     "why": "no legal 0.60 mm barrel within 8.0 mm of any escape"
+    }
+   ],
+   "candidate_sha256": "8ebbd111c7c70a8ee5a82dc39149f15b4fd248249ad872ce7f497761fe7e95c4",
+   "command": "--grid 100000 --bond-pad U3.12",
+   "connectivity": {
+    "nets_improved": [
+     "/09_COMMUNITY_HEADER/EXT_SDA"
+    ],
+    "nets_regressed": [
+     "GND"
+    ],
+    "open_retained_nets_after": 20,
+    "open_retained_nets_before": 21,
+    "retained_open_edges_after": 43,
+    "retained_open_edges_before": 43
+   },
+   "drc_types": {
+    "hole_clearance": 5,
+    "lib_footprint_issues": 199,
+    "solder_mask_bridge": 1
+   },
+   "mm": 85.843,
+   "plane_repair_failures": null,
+   "pour_partition_ok": false,
+   "promotion_candidate": false,
+   "refused_clauses": [
+    "board_improved",
+    "no_regression",
+    "pour_partition"
+   ],
+   "route_ok": true,
+   "route_reason": null,
+   "splits": [
+    {
+     "layer": "B.Cu",
+     "net": "GND",
+     "parts": [
+      {
+       "area_mm2": 4.79,
+       "body": true,
+       "pads": [
+        "C4.2"
+       ],
+       "post_island": 31
+      },
+      {
+       "area_mm2": 4.724,
+       "body": false,
+       "pads": [
+        "U3.12"
+       ],
+       "post_island": 33
+      }
+     ],
+     "pour": "GND|B|38685722-44ee-566f-b52b-89a56220a9e0",
+     "pre_area_mm2": 10.282,
+     "pre_island": 31,
+     "pre_pads": 2
+    }
+   ],
+   "vias": 4
+  },
+  {
+   "arm": "bond U3.12 DRU floor barrel 0.50/0.20",
+   "attributable_drc": [],
+   "authoritative_unchanged": true,
+   "bond_failures": [
+    {
+     "ok": false,
+     "pad": "U3.12",
+     "reason": "NO_VIA_SITE",
+     "why": "no legal 0.50 mm barrel within 8.0 mm of any escape"
+    }
+   ],
+   "candidate_sha256": "134fa4f366ba141cf8f8e847a78fdd95e85bb96615d0aeccbbea394d124137b0",
+   "command": "--grid 100000 --bond-pad U3.12 --bond-via 500000:200000",
+   "connectivity": {
+    "nets_improved": [
+     "/09_COMMUNITY_HEADER/EXT_SDA"
+    ],
+    "nets_regressed": [
+     "GND"
+    ],
+    "open_retained_nets_after": 20,
+    "open_retained_nets_before": 21,
+    "retained_open_edges_after": 43,
+    "retained_open_edges_before": 43
+   },
+   "drc_types": {
+    "hole_clearance": 5,
+    "lib_footprint_issues": 199,
+    "solder_mask_bridge": 1
+   },
+   "mm": 85.843,
+   "plane_repair_failures": null,
+   "pour_partition_ok": false,
+   "promotion_candidate": false,
+   "refused_clauses": [
+    "board_improved",
+    "no_regression",
+    "pour_partition"
+   ],
+   "route_ok": true,
+   "route_reason": null,
+   "splits": [
+    {
+     "layer": "B.Cu",
+     "net": "GND",
+     "parts": [
+      {
+       "area_mm2": 4.79,
+       "body": true,
+       "pads": [
+        "C4.2"
+       ],
+       "post_island": 31
+      },
+      {
+       "area_mm2": 4.724,
+       "body": false,
+       "pads": [
+        "U3.12"
+       ],
+       "post_island": 33
+      }
+     ],
+     "pour": "GND|B|38685722-44ee-566f-b52b-89a56220a9e0",
+     "pre_area_mm2": 10.282,
+     "pre_island": 31,
+     "pre_pads": 2
+    }
+   ],
+   "vias": 4
+  },
+  {
+   "arm": "bond U3.12 floor barrel, 14 mm locality",
+   "attributable_drc": [],
+   "authoritative_unchanged": true,
+   "bond_failures": [
+    {
+     "ok": false,
+     "pad": "U3.12",
+     "reason": "NO_VIA_SITE",
+     "why": "no legal 0.50 mm barrel within 14.0 mm of any escape"
+    }
+   ],
+   "candidate_sha256": "ef9437cd56a83246dabdda9c6c8bb91136239212855d7c668ccafe6da003823a",
+   "command": "--grid 100000 --bond-pad U3.12 --bond-via 500000:200000 --bond-max-mm 14",
+   "connectivity": {
+    "nets_improved": [
+     "/09_COMMUNITY_HEADER/EXT_SDA"
+    ],
+    "nets_regressed": [
+     "GND"
+    ],
+    "open_retained_nets_after": 20,
+    "open_retained_nets_before": 21,
+    "retained_open_edges_after": 43,
+    "retained_open_edges_before": 43
+   },
+   "drc_types": {
+    "hole_clearance": 5,
+    "lib_footprint_issues": 199,
+    "solder_mask_bridge": 1
+   },
+   "mm": 85.843,
+   "plane_repair_failures": null,
+   "pour_partition_ok": false,
+   "promotion_candidate": false,
+   "refused_clauses": [
+    "board_improved",
+    "no_regression",
+    "pour_partition"
+   ],
+   "route_ok": true,
+   "route_reason": null,
+   "splits": [
+    {
+     "layer": "B.Cu",
+     "net": "GND",
+     "parts": [
+      {
+       "area_mm2": 4.79,
+       "body": true,
+       "pads": [
+        "C4.2"
+       ],
+       "post_island": 31
+      },
+      {
+       "area_mm2": 4.724,
+       "body": false,
+       "pads": [
+        "U3.12"
+       ],
+       "post_island": 33
+      }
+     ],
+     "pour": "GND|B|38685722-44ee-566f-b52b-89a56220a9e0",
+     "pre_area_mm2": 10.282,
+     "pre_island": 31,
+     "pre_pads": 2
+    }
+   ],
+   "vias": 4
+  },
+  {
+   "arm": "plane repair",
+   "attributable_drc": [],
+   "authoritative_unchanged": true,
+   "bond_failures": null,
+   "candidate_sha256": "42cd94d328e9a8d410a015a85981ca82e6426e90fccb9aa4acefb19239e49ac5",
+   "command": "--grid 100000 --repair-planes",
+   "connectivity": {
+    "nets_improved": [
+     "/09_COMMUNITY_HEADER/EXT_SDA"
+    ],
+    "nets_regressed": [
+     "GND"
+    ],
+    "open_retained_nets_after": 20,
+    "open_retained_nets_before": 21,
+    "retained_open_edges_after": 43,
+    "retained_open_edges_before": 43
+   },
+   "drc_types": {
+    "hole_clearance": 5,
+    "lib_footprint_issues": 199,
+    "solder_mask_bridge": 1
+   },
+   "mm": 85.843,
+   "plane_repair_failures": [
+    {
+     "island": [
+      "J3.A12",
+      "J3.B1"
+     ],
+     "pad": "J3.A12",
+     "reason": "NO_VIA_SITE",
+     "why": "no legal 0.60 mm barrel within 8.0 mm of any escape"
+    },
+    {
+     "island": [
+      "MK1.4"
+     ],
+     "pad": "MK1.4",
+     "reason": "NO_LEGAL_ESCAPE",
+     "why": "MK1.4: NO LEGAL ESCAPE at >= 0.300 mm; blocked by MK1. (x67), board_edge (x5)"
+    },
+    {
+     "island": [
+      "U3.12"
+     ],
+     "pad": "U3.12",
+     "reason": "NO_VIA_SITE",
+     "why": "no legal 0.60 mm barrel within 8.0 mm of any escape"
+    },
+    {
+     "island": [
+      "U9.16"
+     ],
+     "pad": "U9.16",
+     "reason": "NO_LEGAL_ESCAPE",
+     "why": "U9.16: NO LEGAL ESCAPE at >= 0.300 mm; blocked by track (x20), U9.17 (x18), U9.15 (x16), L5.1 (x4)"
+    }
+   ],
+   "pour_partition_ok": false,
+   "promotion_candidate": false,
+   "refused_clauses": [
+    "board_improved",
+    "no_regression",
+    "pour_partition"
+   ],
+   "route_ok": true,
+   "route_reason": null,
+   "splits": [
+    {
+     "layer": "B.Cu",
+     "net": "GND",
+     "parts": [
+      {
+       "area_mm2": 4.79,
+       "body": true,
+       "pads": [
+        "C4.2"
+       ],
+       "post_island": 31
+      },
+      {
+       "area_mm2": 4.724,
+       "body": false,
+       "pads": [
+        "U3.12"
+       ],
+       "post_island": 33
+      }
+     ],
+     "pour": "GND|B|38685722-44ee-566f-b52b-89a56220a9e0",
+     "pre_area_mm2": 10.282,
+     "pre_island": 31,
+     "pre_pads": 2
+    }
+   ],
+   "vias": 4
+  }
+ ],
+ "schema": 1,
+ "verdict": "REFUSED -- PLACEMENT: U3.12 has no legal barrel within 14 mm"
+}

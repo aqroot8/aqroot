@@ -605,6 +605,46 @@ run:
     4   THE RELAY             put every cut chain back between its own two ends
                               with the lane in force, in spec order, on a board
                               carrying the previous detour -- D-608's half
+    5   THE CUT-SET RETRY     a refused RELAY refuses the SET, not the
+                              transaction: ban the refusing net from the
+                              candidate POOL (never from the board) and ask
+                              question 1 again.  Only a net absent from 2b's
+                              `irreducible_nets` is ever banned, and for that
+                              net a sparing set is PROVED to exist -- D-641
+
+**QUESTION 5 IS D-641 AND IT IS WHY 2B EXISTS.**  `minimal` is minimal with
+respect to single-object ADDITION and nothing more: it takes whichever set
+reverse-greedy lands on first, and nothing in it prefers a net that can go
+back.  So `UNRELAYABLE` was never a statement about the corridor -- it was a
+statement about ONE set.  `irreducible_nets` already held the answer: a net
+absent from it is one the corridor was proved to open WITHOUT, so another set
+exists and until D-641 nothing looked for it.  `--cut-set-retries N` (default
+2) bans every refusing, non-irreducible net and re-runs questions 1-4 against
+the smaller pool; the banned copper stays on the board and stays an obstacle,
+so a set found without it is a set that never has to move it.  The loop
+terminates because the ban only grows, and `--cut-set-retries 0` reproduces the
+D-640 census exactly.  Its first spend REFUSED a corridor for a NEW reason:
+`/01_POWER_TREE/USB_D_CONN_P` round 0 cut `{/I2S_LRCLK, GND}` and round 1, with
+`/I2S_LRCLK` spared, cut `{USB_D_CONN_N x7, GND x2}` -- and `USB_D_CONN_N`, the
+edge's OWN DIFFERENTIAL PARTNER, came back IRREDUCIBLE and `NOT_A_CHAIN`.
+`screen_segment_evict.py --ban-net NET` is the same lever in the instrument
+that chooses a POUR LAND's cut, for `screen_relay_transaction.py --joint` to
+consume.  Its first spend CLOSED a ranked item: with `Net-(U12-PS_SYNC)`
+banned, all 20 remaining candidates for `BQ25185_SYS C26.2` cut AT ONCE and the
+barrel site is still `NO_BODY_VIA_SITE` -- **no cut set of any shape spares
+that net**, so the land's hope was never the cut.
+
+**AND BEFORE CALLING A RELAY A WALL, PRICE THE CUT.**
+`screen_cut_price.py SURVEY.json OUT.json` asks
+`screen_segment_evict.connectivity_price` with `stubs_mm: []` -- the whole
+track gone, nothing put back, no relay -- so a POUR net's cut is judged by
+KiCad's own `BuildConnectivity` on a scratch copy instead of by whether a
+detour happens to go back.  D-639's `GND C37.2` closed with no stitch at all
+because the refill flowed into the vacated channel; **that does not
+generalise**, and on `USB_D_CONN_P`'s corridor cut the price is `GND` 4 -> 5
+pad clusters and `USB_D_CONN_N` 1 -> 3.  One net per child process:
+`pcbnew.LoadBoard` twice in one interpreter returns an unwrapped
+`SwigPyObject`.
 
     python3 screen_corridor_detour.py NET [NET ...] \
         --plan-out PLAN.json --guard-out LANE.json -o SURVEY.json

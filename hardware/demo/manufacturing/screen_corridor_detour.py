@@ -200,6 +200,13 @@ def main():
                          "of the lane, round an end and back -- is reported "
                          "beside it and the SMALLER of the two binds.  0 "
                          "disables the ratio and leaves only the geometry")
+    ap.add_argument("--cut-set-retries", type=int, default=2,
+                    help="when the RELAY refuses, ban the refusing nets from "
+                         "the candidate cut pool and search for another cut "
+                         "set this many times.  Only a net absent from "
+                         "`irreducible_nets` is ever banned -- for that net a "
+                         "sparing set is PROVED to exist.  0 disables the "
+                         "retry and reproduces the D-640 census exactly")
     ap.add_argument("--guard", type=Path,
                     help="an existing pour_bond_guard.py spec the relay must "
                          "also honour; its records are carried into --guard-out")
@@ -237,282 +244,356 @@ def main():
     base_guard.setdefault("guards", [])
 
     family = list(dict.fromkeys(a.nets))
-    lane_pts, lane_mm, lane_keepout = [], 0.0, 0
-    cut_objs, plan_nets, out_nets = [], [], []
-    verdict_all = "OPEN"
+    def attempt(banned):
+        """One whole DETOUR TRANSACTION with `banned` nets kept out of the pool.
 
-    # THE LANE IS WON BEFORE ANYTHING IS PUT BACK, and it is kept, because the
-    # applier routes every requested net on one board: the second net of a pair
-    # must see the first net's copper or the reservation is a fiction.
-    mark = qb.mark()
-    for net in family:
-        c = net_contract(qb.b, net)
-        layers = permitted_layers(qb.routable, c["layers"], reserved, net)
-        qb._obs_cache = None
-        field = mz.Field(qb, net, c["width"], c["clr_pad"], c["clr"],
-                         c["via_dia"], c["via_drill"], G=a.grid, layers=layers)
-        islands = mz.net_islands(qb, net)
-        rec = dict(net=net, netclass=c["netclass"], layers=list(layers),
-                   width_mm=round(c["width"] / 1e6, 3),
-                   clr_mm=round(c["clr"] / 1e6, 3),
-                   islands=len(islands), edges=[])
-        keep = (c["width"] / 2.0
-                + (a.lane_clearance_mm * 1e6 if a.lane_clearance_mm
-                   else c["clr"]))
-        lane_keepout = max(lane_keepout, int(round(keep)))
-        for (i, j) in mz.island_mst(islands):
-            src, dst = islands[i], islands[j]
-            base = mz.route_join(qb, field, src, dst, a.escape_limit,
-                                 a.via_cost, emit=False)
-            edge = dict(src=[p["ref"] for p in src],
-                        dst=[p["ref"] for p in dst],
-                        direct_mm=round(math.hypot(
-                            *[u - v for u, v in zip(centre(src), centre(dst))])
-                            / 1e6, 3),
-                        baseline=dict(ok=bool(base.get("ok")),
-                                      reason=base.get("reason"),
-                                      mm=round(base.get("mm") or 0.0, 3),
-                                      src_escapes=base.get("src_escapes"),
-                                      dst_escapes=base.get("dst_escapes")))
-            if base.get("ok"):
-                edge["verdict"] = "OPEN"
-                rec["edges"].append(edge)
-                continue
+        Steps 1-4 -- upper bound, minimal set, lane, relay -- for the whole
+        family on one board, every trial reverted.  `banned` is empty on the
+        first attempt, so an attempt with no ban is byte-for-byte the screen
+        D-640 ran; every later round differs only in which nets the CUT SET
+        may name.
+        """
+        lane_pts, lane_mm, lane_keepout = [], 0.0, 0
+        cut_objs, plan_nets, out_nets = [], [], []
+        verdict_all = "OPEN"
 
-            box = bbox([src, dst])
-            objs = crossing_tracks(qb, layers, box, net)
-            edge["window_mm"] = [round(v / 1e6, 3) for v in box]
-            edge["crossing_tracks"] = len(objs)
-            by = {}
-            for (L, s) in objs:
-                by[s.net] = by.get(s.net, 0) + 1
-            edge["crossing_by_net"] = dict(sorted(by.items()))
-
-            # ---- 1. SEGMENT upper bound ------------------------------- #
-            with WithoutObjects(qb, field, {id(s) for (_L, s) in objs}):
-                top = mz.route_join(qb, field, src, dst, a.escape_limit,
-                                    a.via_cost, emit=False)
-            edge["all_tracks_cut"] = dict(ok=bool(top.get("ok")),
-                                          reason=top.get("reason"),
-                                          mm=round(top.get("mm") or 0.0, 3))
-            if not top.get("ok"):
-                edge["verdict"] = "SEGMENT_WALL"
-                edge["why"] = ("every crossing track on the permitted layers "
-                               "held out and the corridor is still NO_PATH -- "
-                               "no detour transaction of any size opens it")
-                rec["edges"].append(edge)
-                verdict_all = "SEGMENT_WALL"
-                continue
-
-            # ---- 2. MINIMAL ------------------------------------------- #
-            cut, proof = minimal_tracks(qb, field, src, dst, objs,
-                                        a.escape_limit, a.via_cost)
-            edge["minimal"] = dict(
-                tracks=len(cut), ok=bool(proof.get("ok")),
-                mm=round(proof.get("mm") or 0.0, 3),
-                objects=[seg_record(L, s) for (L, s) in cut])
-            # ---- 2b. IRREDUCIBLE ------------------------------------- #
-            # A minimal set is minimal with respect to single-object addition
-            # and no more: it says nothing about whether some OTHER set of a
-            # different shape would spare a net this one names.  For each net
-            # in the cut, hold out every crossing track EXCEPT that net's and
-            # ask the corridor again.  Still `NO_PATH` => no cut set of ANY
-            # size that spares that net opens this corridor, which is a
-            # materially stronger statement than "the minimal set includes it"
-            # and it is the one a placement argument needs.
-            irreducible = []
-            for n2 in sorted({s.net for (_L, s) in cut}):
-                spare = {id(s) for (_L, s) in objs if s.net != n2}
-                with WithoutObjects(qb, field, spare):
-                    r2 = mz.route_join(qb, field, src, dst, a.escape_limit,
-                                       a.via_cost, emit=False)
-                if not r2.get("ok"):
-                    irreducible.append(n2)
-            edge["irreducible_nets"] = irreducible
-            edge["protected"] = sorted({s.net for (_L, s) in cut
-                                        if PROTECTED.search(s.net or "")})
-            if edge["protected"]:
-                edge["verdict"] = "PROTECTED_COPPER"
-                edge["why"] = ("the minimal cut set names copper "
-                               "protected_copper.py forbids touching")
-                rec["edges"].append(edge)
-                verdict_all = "PROTECTED_COPPER"
-                continue
-
-            # ---- 3. THE LANE ------------------------------------------ #
-            with WithoutObjects(qb, field, {id(s) for (_L, s) in cut}):
-                before = {L: len(qb.shapes[L]) for L in qb.shapes}
-                won = mz.route_join(qb, field, src, dst, a.escape_limit,
-                                    a.via_cost, emit=True)
-                laid, geo = [], []
-                for L in qb.shapes:
-                    for s in qb.shapes[L][before[L]:]:
-                        if s.tag != "track":
-                            continue
-                        laid.append((L, s))
-                        geo.append((s.x0, s.y0, s.x1, s.y1))
-            # `WithoutObjects.__exit__` restores the shape lists it saved on
-            # entry, so copper emitted inside it would vanish with them.  The
-            # lane is therefore carried out by VALUE and re-laid on the outer
-            # board, which is also what makes the second net of a pair see it.
-            for (L, s) in laid:
-                qb.shapes[L].append(s)
-            qb._obs_cache = None
-            edge["lane"] = dict(ok=bool(won.get("ok")),
-                                mm=round(won.get("mm") or 0.0, 3),
-                                vias=won.get("vias"),
-                                segments=len(geo))
-            if not won.get("ok"):
-                edge["verdict"] = "LANE_LOST"
-                rec["edges"].append(edge)
-                verdict_all = "LANE_LOST"
-                continue
-            lane_mm += won.get("mm") or 0.0
-            lane_pts += sample_lane(geo, a.step_mm)
-            cut_objs += cut
-            edge["verdict"] = "DETOURABLE"
-            rec["edges"].append(edge)
-        out_nets.append(rec)
-    qb.revert(mark)
-    qb._obs_cache = None
-
-    # ---- 4. THE RELAY ------------------------------------------------- #
-    lane_pts = sorted(set(lane_pts))
-    lane_guard = {"F": [], "I1": [], "I2": [], "I3": [], "I4": [], "B": []}
-    relay = dict(all_relaid=True, chains=[])
-    if cut_objs:
-        # The lane is reserved on the layers the FAMILY may route on and on no
-        # others.  Reserving the whole stack would be a different, larger claim
-        # -- `detour_guard`'s disc has to, because a barrel is copper on every
-        # layer, but a lane is a track and a foreign net is free to pass under
-        # it on a layer the family may not use.  A barrel dropped in the lane
-        # is still refused, because its own via mask is taken on every layer it
-        # spans and the reserved one is among them.
-        famlayers = set()
+        # THE LANE IS WON BEFORE ANYTHING IS PUT BACK, and it is kept, because the
+        # applier routes every requested net on one board: the second net of a pair
+        # must see the first net's copper or the reservation is a fiction.
+        mark = qb.mark()
         for net in family:
             c = net_contract(qb.b, net)
-            famlayers |= set(permitted_layers(qb.routable, c["layers"],
-                                              reserved, net))
-        guards = list(base_guard["guards"])
-        for lk in sorted(famlayers):
-            guards.append(dict(ok=True, net=family[0], exempt=family[1:],
-                               lkey=lk, keepout_radius=int(lane_keepout),
-                               points=[[x, y] for (x, y) in lane_pts],
-                               tube=LANE_LABEL))
-        lane_guard = dict(base_guard)
-        lane_guard["guards"] = guards
-        lane_guard["schema"] = base_guard.get("schema", 1)
+            layers = permitted_layers(qb.routable, c["layers"], reserved, net)
+            qb._obs_cache = None
+            field = mz.Field(qb, net, c["width"], c["clr_pad"], c["clr"],
+                             c["via_dia"], c["via_drill"], G=a.grid, layers=layers)
+            islands = mz.net_islands(qb, net)
+            rec = dict(net=net, netclass=c["netclass"], layers=list(layers),
+                       width_mm=round(c["width"] / 1e6, 3),
+                       clr_mm=round(c["clr"] / 1e6, 3),
+                       islands=len(islands), edges=[])
+            keep = (c["width"] / 2.0
+                    + (a.lane_clearance_mm * 1e6 if a.lane_clearance_mm
+                       else c["clr"]))
+            lane_keepout = max(lane_keepout, int(round(keep)))
+            for (i, j) in mz.island_mst(islands):
+                src, dst = islands[i], islands[j]
+                base = mz.route_join(qb, field, src, dst, a.escape_limit,
+                                     a.via_cost, emit=False)
+                edge = dict(src=[p["ref"] for p in src],
+                            dst=[p["ref"] for p in dst],
+                            direct_mm=round(math.hypot(
+                                *[u - v for u, v in zip(centre(src), centre(dst))])
+                                / 1e6, 3),
+                            baseline=dict(ok=bool(base.get("ok")),
+                                          reason=base.get("reason"),
+                                          mm=round(base.get("mm") or 0.0, 3),
+                                          src_escapes=base.get("src_escapes"),
+                                          dst_escapes=base.get("dst_escapes")))
+                if base.get("ok"):
+                    edge["verdict"] = "OPEN"
+                    rec["edges"].append(edge)
+                    continue
 
-        by_net = {}
-        for (L, s) in cut_objs:
-            by_net.setdefault(s.net, []).append(seg_record(L, s))
-        # A LANE IS NOT A DISC.  D-607 bounds a pocket detour by the
-        # circumference of the disc it walks around; the longest a genuine
-        # detour past a LANE can be is down one side, around an end and back.
-        rmax = lane_keepout / 1e6
-        perim = 2.0 * (lane_mm + 2.0 * math.pi * rmax)
-        from screen_segment_evict import Held
-        with Held(qb, None, cut_objs):
-            m = qb.mark()
-            for net in sorted(by_net):
-                recs = by_net[net]
-                lkeys = {r["lkey"] for r in recs}
-                widths = {r["width_mm"] for r in recs}
-                con = net_contract(qb.b, net)
-                permitted = permitted_layers(qb.routable, con["layers"],
-                                             reserved, net)
-                was = sum(r["mm"] for r in recs)
-                geo_max = was + perim
-                eng_max = (was * a.max_detour_ratio if a.max_detour_ratio
-                           else geo_max)
-                ch = dict(net=net, tracks=len(recs), was_mm=round(was, 4),
-                          geometric_max_mm=round(geo_max, 4),
-                          ratio_max_mm=round(eng_max, 4),
-                          max_mm=round(geo_max, 4),
-                          layer=sorted(lkeys),
-                          objects=recs)
-                if len(lkeys) != 1 or len(widths) != 1:
-                    ch.update(ok=False, reason="NOT_A_CHAIN",
-                              why="a chain must be ONE layer and ONE width")
-                    relay["chains"].append(ch)
-                    relay["all_relaid"] = False
+                box = bbox([src, dst])
+                # THE BANNED POOL.  A retry round hands this attempt the nets whose
+                # RELAY refused, and they are removed from the candidate pool -- not
+                # from the board.  The corridor is then asked whether some OTHER cut
+                # set, of any shape, opens it without touching them.  `all_tracks_cut`
+                # below re-proves the upper bound against the SMALLER pool, so a ban
+                # that closes the corridor reports SEGMENT_WALL and says so.
+                objs = [t for t in crossing_tracks(qb, layers, box, net)
+                        if t[1].net not in banned]
+                edge["window_mm"] = [round(v / 1e6, 3) for v in box]
+                edge["crossing_tracks"] = len(objs)
+                if banned:
+                    edge["banned_nets"] = sorted(banned)
+                by = {}
+                for (L, s) in objs:
+                    by[s.net] = by.get(s.net, 0) + 1
+                edge["crossing_by_net"] = dict(sorted(by.items()))
+
+                # ---- 1. SEGMENT upper bound ------------------------------- #
+                with WithoutObjects(qb, field, {id(s) for (_L, s) in objs}):
+                    top = mz.route_join(qb, field, src, dst, a.escape_limit,
+                                        a.via_cost, emit=False)
+                edge["all_tracks_cut"] = dict(ok=bool(top.get("ok")),
+                                              reason=top.get("reason"),
+                                              mm=round(top.get("mm") or 0.0, 3))
+                if not top.get("ok"):
+                    edge["verdict"] = "SEGMENT_WALL"
+                    edge["why"] = ("every crossing track on the permitted layers "
+                                   "held out and the corridor is still NO_PATH -- "
+                                   "no detour transaction of any size opens it")
+                    rec["edges"].append(edge)
+                    verdict_all = "SEGMENT_WALL"
                     continue
-                lkey = sorted(lkeys)[0]
-                layers, spent = detour_layers(permitted, lkey, False)
-                ch.update(layers_allowed=list(layers), own_layer=spent)
-                if lkey not in layers:
-                    ch.update(ok=False, reason="UNDETOURABLE_LAYER",
-                              why="layer %s is not in this net's contract %s "
-                                  "-- the track can be cut and can never be "
-                                  "put back" % (lkey, list(layers)))
-                    relay["chains"].append(ch)
-                    relay["all_relaid"] = False
+
+                # ---- 2. MINIMAL ------------------------------------------- #
+                cut, proof = minimal_tracks(qb, field, src, dst, objs,
+                                            a.escape_limit, a.via_cost)
+                edge["minimal"] = dict(
+                    tracks=len(cut), ok=bool(proof.get("ok")),
+                    mm=round(proof.get("mm") or 0.0, 3),
+                    objects=[seg_record(L, s) for (L, s) in cut])
+                # ---- 2b. IRREDUCIBLE ------------------------------------- #
+                # A minimal set is minimal with respect to single-object addition
+                # and no more: it says nothing about whether some OTHER set of a
+                # different shape would spare a net this one names.  For each net
+                # in the cut, hold out every crossing track EXCEPT that net's and
+                # ask the corridor again.  Still `NO_PATH` => no cut set of ANY
+                # size that spares that net opens this corridor, which is a
+                # materially stronger statement than "the minimal set includes it"
+                # and it is the one a placement argument needs.
+                irreducible = []
+                for n2 in sorted({s.net for (_L, s) in cut}):
+                    spare = {id(s) for (_L, s) in objs if s.net != n2}
+                    with WithoutObjects(qb, field, spare):
+                        r2 = mz.route_join(qb, field, src, dst, a.escape_limit,
+                                           a.via_cost, emit=False)
+                    if not r2.get("ok"):
+                        irreducible.append(n2)
+                edge["irreducible_nets"] = irreducible
+                edge["protected"] = sorted({s.net for (_L, s) in cut
+                                            if PROTECTED.search(s.net or "")})
+                if edge["protected"]:
+                    edge["verdict"] = "PROTECTED_COPPER"
+                    edge["why"] = ("the minimal cut set names copper "
+                                   "protected_copper.py forbids touching")
+                    rec["edges"].append(edge)
+                    verdict_all = "PROTECTED_COPPER"
                     continue
-                ends = chain_of(recs)
-                if ends is None:
-                    ch.update(ok=False, reason="NOT_A_CHAIN",
-                              why="the cut tracks of this net do not form a "
-                                  "simple chain with exactly two free ends")
-                    relay["chains"].append(ch)
-                    relay["all_relaid"] = False
-                    continue
-                g = guard_for(lane_guard, net)
+
+                # ---- 3. THE LANE ------------------------------------------ #
+                with WithoutObjects(qb, field, {id(s) for (_L, s) in cut}):
+                    before = {L: len(qb.shapes[L]) for L in qb.shapes}
+                    won = mz.route_join(qb, field, src, dst, a.escape_limit,
+                                        a.via_cost, emit=True)
+                    laid, geo = [], []
+                    for L in qb.shapes:
+                        for s in qb.shapes[L][before[L]:]:
+                            if s.tag != "track":
+                                continue
+                            laid.append((L, s))
+                            geo.append((s.x0, s.y0, s.x1, s.y1))
+                # `WithoutObjects.__exit__` restores the shape lists it saved on
+                # entry, so copper emitted inside it would vanish with them.  The
+                # lane is therefore carried out by VALUE and re-laid on the outer
+                # board, which is also what makes the second net of a pair see it.
+                for (L, s) in laid:
+                    qb.shapes[L].append(s)
                 qb._obs_cache = None
-                field = mz.Field(qb, net, int(round(sorted(widths)[0] * 1e6)),
-                                 con["clr_pad"], con["clr"], con["via_dia"],
-                                 con["via_drill"], G=a.grid, layers=layers,
-                                 guard=g)
-                a_nm = tuple(int(round(v * 1e6)) for v in ends[0])
-                b_nm = tuple(int(round(v * 1e6)) for v in ends[1])
-                # A REJECTED RELAY LEAVES NO COPPER BEHIND.  `route_points`
-                # emits before this loop can judge it, and the applier lays
-                # each detour on a board that already carries the previous
-                # one -- so a 42 mm reroute this screen is about to refuse must
-                # not be an obstacle to the chain measured after it.  Measured:
-                # `/SD_CS_N` reads 13.211 mm / 0 vias without the refused
-                # `/I2S_LRCLK` copper in the way and 16.012 mm / 2 vias with it.
-                cmark = qb.mark()
-                # SEARCH AT THE GEOMETRY, JUDGE AT THE RATIO.  D-617 measured
-                # that `max_mm` is ALSO the wavefront budget -- a chain that
-                # refused `NO_PATH` at 62 mm routed at 49.505 mm once the
-                # budget was opened -- and a via costs `via_cost_mm` of that
-                # budget before it buys any distance.  Strangling the search
-                # with the engineering bound therefore reports NO_PATH for
-                # routes that exist: `Net-(J3-CC1)` relays in 2.359 mm with two
-                # barrels and refuses inside a 3.924 mm budget.  Bound the
-                # length, not the search.
-                r = mz.route_points(qb, field, a_nm, b_nm, lkey,
-                                    via_cost_mm=a.via_cost, emit=True,
-                                    max_mm=ch["max_mm"])
-                if r.get("ok") and eng_max and (r.get("mm") or 0.0) > eng_max:
-                    r = dict(ok=False, reason="REROUTE_NOT_DETOUR",
-                             why="relaid %.4f mm against %.4f mm of its own "
-                                 "copper -- past the %.2fx bound; that is a "
-                                 "reroute, not a detour"
-                                 % (r.get("mm"), was, a.max_detour_ratio),
-                             mm=r.get("mm"), vias=r.get("vias"),
-                             mm_by_layer=r.get("mm_by_layer"))
-                if not r.get("ok"):
-                    qb.revert(cmark)
+                edge["lane"] = dict(ok=bool(won.get("ok")),
+                                    mm=round(won.get("mm") or 0.0, 3),
+                                    vias=won.get("vias"),
+                                    segments=len(geo))
+                if not won.get("ok"):
+                    edge["verdict"] = "LANE_LOST"
+                    rec["edges"].append(edge)
+                    verdict_all = "LANE_LOST"
+                    continue
+                lane_mm += won.get("mm") or 0.0
+                lane_pts += sample_lane(geo, a.step_mm)
+                cut_objs += cut
+                edge["verdict"] = "DETOURABLE"
+                rec["edges"].append(edge)
+            out_nets.append(rec)
+        qb.revert(mark)
+        qb._obs_cache = None
+
+        # ---- 4. THE RELAY ------------------------------------------------- #
+        lane_pts = sorted(set(lane_pts))
+        lane_guard = {"F": [], "I1": [], "I2": [], "I3": [], "I4": [], "B": []}
+        relay = dict(all_relaid=True, chains=[])
+        if cut_objs:
+            # The lane is reserved on the layers the FAMILY may route on and on no
+            # others.  Reserving the whole stack would be a different, larger claim
+            # -- `detour_guard`'s disc has to, because a barrel is copper on every
+            # layer, but a lane is a track and a foreign net is free to pass under
+            # it on a layer the family may not use.  A barrel dropped in the lane
+            # is still refused, because its own via mask is taken on every layer it
+            # spans and the reserved one is among them.
+            famlayers = set()
+            for net in family:
+                c = net_contract(qb.b, net)
+                famlayers |= set(permitted_layers(qb.routable, c["layers"],
+                                                  reserved, net))
+            guards = list(base_guard["guards"])
+            for lk in sorted(famlayers):
+                guards.append(dict(ok=True, net=family[0], exempt=family[1:],
+                                   lkey=lk, keepout_radius=int(lane_keepout),
+                                   points=[[x, y] for (x, y) in lane_pts],
+                                   tube=LANE_LABEL))
+            lane_guard = dict(base_guard)
+            lane_guard["guards"] = guards
+            lane_guard["schema"] = base_guard.get("schema", 1)
+
+            by_net = {}
+            for (L, s) in cut_objs:
+                by_net.setdefault(s.net, []).append(seg_record(L, s))
+            # A LANE IS NOT A DISC.  D-607 bounds a pocket detour by the
+            # circumference of the disc it walks around; the longest a genuine
+            # detour past a LANE can be is down one side, around an end and back.
+            rmax = lane_keepout / 1e6
+            perim = 2.0 * (lane_mm + 2.0 * math.pi * rmax)
+            from screen_segment_evict import Held
+            with Held(qb, None, cut_objs):
+                m = qb.mark()
+                for net in sorted(by_net):
+                    recs = by_net[net]
+                    lkeys = {r["lkey"] for r in recs}
+                    widths = {r["width_mm"] for r in recs}
+                    con = net_contract(qb.b, net)
+                    permitted = permitted_layers(qb.routable, con["layers"],
+                                                 reserved, net)
+                    was = sum(r["mm"] for r in recs)
+                    geo_max = was + perim
+                    eng_max = (was * a.max_detour_ratio if a.max_detour_ratio
+                               else geo_max)
+                    ch = dict(net=net, tracks=len(recs), was_mm=round(was, 4),
+                              geometric_max_mm=round(geo_max, 4),
+                              ratio_max_mm=round(eng_max, 4),
+                              max_mm=round(geo_max, 4),
+                              layer=sorted(lkeys),
+                              objects=recs)
+                    if len(lkeys) != 1 or len(widths) != 1:
+                        ch.update(ok=False, reason="NOT_A_CHAIN",
+                                  why="a chain must be ONE layer and ONE width")
+                        relay["chains"].append(ch)
+                        relay["all_relaid"] = False
+                        continue
+                    lkey = sorted(lkeys)[0]
+                    layers, spent = detour_layers(permitted, lkey, False)
+                    ch.update(layers_allowed=list(layers), own_layer=spent)
+                    if lkey not in layers:
+                        ch.update(ok=False, reason="UNDETOURABLE_LAYER",
+                                  why="layer %s is not in this net's contract %s "
+                                      "-- the track can be cut and can never be "
+                                      "put back" % (lkey, list(layers)))
+                        relay["chains"].append(ch)
+                        relay["all_relaid"] = False
+                        continue
+                    ends = chain_of(recs)
+                    if ends is None:
+                        ch.update(ok=False, reason="NOT_A_CHAIN",
+                                  why="the cut tracks of this net do not form a "
+                                      "simple chain with exactly two free ends")
+                        relay["chains"].append(ch)
+                        relay["all_relaid"] = False
+                        continue
+                    g = guard_for(lane_guard, net)
                     qb._obs_cache = None
-                ch.update(ok=bool(r.get("ok")), reason=r.get("reason"),
-                          why=str(r.get("why"))[:220] if r.get("why") else None,
-                          mm=r.get("mm"), vias=r.get("vias"),
-                          mm_by_layer=r.get("mm_by_layer"),
-                          a_mm=list(ends[0]), b_mm=list(ends[1]))
-                relay["all_relaid"] = relay["all_relaid"] and bool(r.get("ok"))
-                relay["chains"].append(ch)
-            qb.revert(m)
-        if not relay["all_relaid"]:
-            verdict_all = "UNRELAYABLE"
-        elif verdict_all == "OPEN":
-            verdict_all = "DETOURABLE"
+                    field = mz.Field(qb, net, int(round(sorted(widths)[0] * 1e6)),
+                                     con["clr_pad"], con["clr"], con["via_dia"],
+                                     con["via_drill"], G=a.grid, layers=layers,
+                                     guard=g)
+                    a_nm = tuple(int(round(v * 1e6)) for v in ends[0])
+                    b_nm = tuple(int(round(v * 1e6)) for v in ends[1])
+                    # A REJECTED RELAY LEAVES NO COPPER BEHIND.  `route_points`
+                    # emits before this loop can judge it, and the applier lays
+                    # each detour on a board that already carries the previous
+                    # one -- so a 42 mm reroute this screen is about to refuse must
+                    # not be an obstacle to the chain measured after it.  Measured:
+                    # `/SD_CS_N` reads 13.211 mm / 0 vias without the refused
+                    # `/I2S_LRCLK` copper in the way and 16.012 mm / 2 vias with it.
+                    cmark = qb.mark()
+                    # SEARCH AT THE GEOMETRY, JUDGE AT THE RATIO.  D-617 measured
+                    # that `max_mm` is ALSO the wavefront budget -- a chain that
+                    # refused `NO_PATH` at 62 mm routed at 49.505 mm once the
+                    # budget was opened -- and a via costs `via_cost_mm` of that
+                    # budget before it buys any distance.  Strangling the search
+                    # with the engineering bound therefore reports NO_PATH for
+                    # routes that exist: `Net-(J3-CC1)` relays in 2.359 mm with two
+                    # barrels and refuses inside a 3.924 mm budget.  Bound the
+                    # length, not the search.
+                    r = mz.route_points(qb, field, a_nm, b_nm, lkey,
+                                        via_cost_mm=a.via_cost, emit=True,
+                                        max_mm=ch["max_mm"])
+                    if r.get("ok") and eng_max and (r.get("mm") or 0.0) > eng_max:
+                        r = dict(ok=False, reason="REROUTE_NOT_DETOUR",
+                                 why="relaid %.4f mm against %.4f mm of its own "
+                                     "copper -- past the %.2fx bound; that is a "
+                                     "reroute, not a detour"
+                                     % (r.get("mm"), was, a.max_detour_ratio),
+                                 mm=r.get("mm"), vias=r.get("vias"),
+                                 mm_by_layer=r.get("mm_by_layer"))
+                    if not r.get("ok"):
+                        qb.revert(cmark)
+                        qb._obs_cache = None
+                    ch.update(ok=bool(r.get("ok")), reason=r.get("reason"),
+                              why=str(r.get("why"))[:220] if r.get("why") else None,
+                              mm=r.get("mm"), vias=r.get("vias"),
+                              mm_by_layer=r.get("mm_by_layer"),
+                              a_mm=list(ends[0]), b_mm=list(ends[1]))
+                    relay["all_relaid"] = relay["all_relaid"] and bool(r.get("ok"))
+                    relay["chains"].append(ch)
+                qb.revert(m)
+            if not relay["all_relaid"]:
+                verdict_all = "UNRELAYABLE"
+            elif verdict_all == "OPEN":
+                verdict_all = "DETOURABLE"
+
+        return dict(nets=out_nets, cut_objs=cut_objs, lane_pts=lane_pts,
+                    lane_mm=lane_mm, lane_keepout=lane_keepout,
+                    lane_guard=lane_guard, relay=relay, verdict=verdict_all,
+                    banned=sorted(banned))
+
+    # ---- 5. THE CUT-SET RETRY ----------------------------------------- #
+    # A FAILED RELAY REFUSES THE CUT SET, NOT THE TRANSACTION.  `minimal` is
+    # minimal with respect to single-object ADDITION and picks whichever set
+    # reverse-greedy lands on first; nothing in it prefers a net that can go
+    # back.  `irreducible_nets` already answers the only question that matters
+    # here -- for a net NOT in it, holding out every crossing track except that
+    # net's still opened the corridor, so a cut set sparing it PROVABLY EXISTS
+    # -- and until now nothing searched for one.  So: ban the nets whose relay
+    # refused, keep the ones no cut set can spare, and ask again.  The loop
+    # terminates because `banned` only grows and the pool is finite; `--cut-set-
+    # retries 0` reproduces D-640 exactly.
+    banned, rounds, res = set(), [], None
+    for k in range(max(0, a.cut_set_retries) + 1):
+        res = attempt(banned)
+        # A net no cut set can spare, on ANY edge of the family: banning it
+        # would make that edge a SEGMENT_WALL by construction, which is a
+        # worse answer and not a search.
+        keep = set()
+        for rec in res["nets"]:
+            for e in rec["edges"]:
+                keep |= set(e.get("irreducible_nets") or [])
+        failing = sorted({ch["net"] for ch in res["relay"]["chains"]
+                          if not ch.get("ok")})
+        rounds.append(dict(round=k, banned=sorted(banned),
+                           verdict=res["verdict"], failing_nets=failing,
+                           irreducible_nets=sorted(keep),
+                           all_relaid=bool(res["relay"]["all_relaid"])))
+        if res["verdict"] != "UNRELAYABLE":
+            rounds[-1]["stop"] = "not UNRELAYABLE -- nothing to retry"
+            break
+        drop = sorted(set(failing) - keep - banned)
+        rounds[-1]["would_ban"] = drop
+        if not drop:
+            rounds[-1]["stop"] = (
+                "every refusing net is irreducible -- no cut set of any shape "
+                "spares it, so no retry can exist")
+            break
+        if k == max(0, a.cut_set_retries):
+            rounds[-1]["stop"] = "retry budget spent"
+            break
+        banned |= set(drop)
+    out_nets = res["nets"]
+    cut_objs = res["cut_objs"]
+    lane_pts, lane_mm = res["lane_pts"], res["lane_mm"]
+    lane_keepout, lane_guard = res["lane_keepout"], res["lane_guard"]
+    relay, verdict_all = res["relay"], res["verdict"]
+    cut_set_retry = dict(retries_allowed=int(max(0, a.cut_set_retries)),
+                         rounds_run=len(rounds), banned=sorted(banned),
+                         rounds=rounds)
 
     doc = dict(schema=1, board=str(a.board), board_sha256=board_sha,
                grid=a.grid, family=family,
                lane=dict(mm=round(lane_mm, 4), points=len(lane_pts),
                          keepout_nm=lane_keepout, label=LANE_LABEL),
-               verdict=verdict_all, nets=out_nets, relay=relay)
+               verdict=verdict_all, nets=out_nets, relay=relay,
+               cut_set_retry=cut_set_retry)
 
     if a.plan_out and relay["chains"] and relay["all_relaid"]:
         plan = dict(schema=1,

@@ -1,0 +1,447 @@
+{
+ "board": "/home/aqroot8/aqroot-demo/hardware/demo/kicad/aqroot-demo/aqroot-Beta-v2.kicad_pcb",
+ "board_sha256": "f496d2f39c0827248a47ab7d47efa4322f078b68d2da1d91ae6585d97bf8f875",
+ "cut_set_retry": {
+  "banned": [
+   "/I2S_LRCLK"
+  ],
+  "retries_allowed": 2,
+  "rounds": [
+   {
+    "all_relaid": false,
+    "banned": [],
+    "failing_nets": [
+     "/I2S_LRCLK",
+     "GND"
+    ],
+    "irreducible_nets": [
+     "GND"
+    ],
+    "round": 0,
+    "verdict": "UNRELAYABLE",
+    "would_ban": [
+     "/I2S_LRCLK"
+    ]
+   },
+   {
+    "all_relaid": false,
+    "banned": [
+     "/I2S_LRCLK"
+    ],
+    "failing_nets": [
+     "/01_POWER_TREE/USB_D_CONN_N",
+     "GND"
+    ],
+    "irreducible_nets": [
+     "/01_POWER_TREE/USB_D_CONN_N",
+     "GND"
+    ],
+    "round": 1,
+    "stop": "every refusing net is irreducible -- no cut set of any shape spares it, so no retry can exist",
+    "verdict": "UNRELAYABLE",
+    "would_ban": []
+   }
+  ],
+  "rounds_run": 2
+ },
+ "family": [
+  "/01_POWER_TREE/USB_D_CONN_P"
+ ],
+ "grid": 100000,
+ "guard_out": "w/d641/guard-usbconnp.json",
+ "lane": {
+  "keepout_nm": 325000,
+  "label": "USB_CORRIDOR",
+  "mm": 13.1108,
+  "points": 139
+ },
+ "nets": [
+  {
+   "clr_mm": 0.2,
+   "edges": [
+    {
+     "all_tracks_cut": {
+      "mm": 10.405,
+      "ok": true,
+      "reason": null
+     },
+     "banned_nets": [
+      "/I2S_LRCLK"
+     ],
+     "baseline": {
+      "dst_escapes": 11,
+      "mm": 0.0,
+      "ok": false,
+      "reason": "NO_PATH",
+      "src_escapes": 6
+     },
+     "crossing_by_net": {
+      "/01_POWER_TREE/USB_D_CONN_N": 17,
+      "/01_POWER_TREE/USB_D_ESD_N": 1,
+      "/01_POWER_TREE/USB_D_ESD_P": 3,
+      "/01_POWER_TREE/USB_VBUS_RAW": 2,
+      "/I2C_SDA_INT": 2,
+      "/WAKE_INT_N": 2,
+      "GND": 8,
+      "Net-(J3-CC1)": 4,
+      "Net-(J3-CC2)": 4,
+      "Net-(J3-SHIELD)": 1
+     },
+     "crossing_tracks": 44,
+     "direct_mm": 7.993,
+     "dst": [
+      "U10.3"
+     ],
+     "irreducible_nets": [
+      "/01_POWER_TREE/USB_D_CONN_N",
+      "GND"
+     ],
+     "lane": {
+      "mm": 13.111,
+      "ok": true,
+      "segments": 12,
+      "vias": 0
+     },
+     "minimal": {
+      "mm": 9.674,
+      "objects": [
+       {
+        "a_mm": [
+         42.75,
+         145.75
+        ],
+        "b_mm": [
+         42.85,
+         145.575
+        ],
+        "lkey": "F",
+        "mm": 0.2016,
+        "net": "/01_POWER_TREE/USB_D_CONN_N",
+        "width_mm": 0.25
+       },
+       {
+        "a_mm": [
+         42.85,
+         145.575
+        ],
+        "b_mm": [
+         44.7,
+         143.8
+        ],
+        "lkey": "F",
+        "mm": 2.5638,
+        "net": "/01_POWER_TREE/USB_D_CONN_N",
+        "width_mm": 0.25
+       },
+       {
+        "a_mm": [
+         43.65,
+         145.575
+        ],
+        "b_mm": [
+         42.6,
+         144.9
+        ],
+        "lkey": "F",
+        "mm": 1.2482,
+        "net": "/01_POWER_TREE/USB_D_CONN_N",
+        "width_mm": 0.25
+       },
+       {
+        "a_mm": [
+         43.75,
+         145.75
+        ],
+        "b_mm": [
+         43.65,
+         145.575
+        ],
+        "lkey": "F",
+        "mm": 0.2016,
+        "net": "/01_POWER_TREE/USB_D_CONN_N",
+        "width_mm": 0.25
+       },
+       {
+        "a_mm": [
+         44.9,
+         141.7
+        ],
+        "b_mm": [
+         47.8,
+         139.7
+        ],
+        "lkey": "F",
+        "mm": 3.5228,
+        "net": "/01_POWER_TREE/USB_D_CONN_N",
+        "width_mm": 0.25
+       },
+       {
+        "a_mm": [
+         47.8,
+         139.7
+        ],
+        "b_mm": [
+         49.5,
+         141.3
+        ],
+        "lkey": "F",
+        "mm": 2.3345,
+        "net": "/01_POWER_TREE/USB_D_CONN_N",
+        "width_mm": 0.25
+       },
+       {
+        "a_mm": [
+         49.75,
+         141.6
+        ],
+        "b_mm": [
+         49.5,
+         141.3
+        ],
+        "lkey": "F",
+        "mm": 0.3905,
+        "net": "/01_POWER_TREE/USB_D_CONN_N",
+        "width_mm": 0.25
+       },
+       {
+        "a_mm": [
+         49.325,
+         143.15
+        ],
+        "b_mm": [
+         49.1,
+         143.625
+        ],
+        "lkey": "F",
+        "mm": 0.5256,
+        "net": "GND",
+        "width_mm": 0.3
+       },
+       {
+        "a_mm": [
+         49.75,
+         142.85
+        ],
+        "b_mm": [
+         49.325,
+         143.15
+        ],
+        "lkey": "F",
+        "mm": 0.5202,
+        "net": "GND",
+        "width_mm": 0.3
+       }
+      ],
+      "ok": true,
+      "tracks": 9
+     },
+     "protected": [],
+     "src": [
+      "J3.A6",
+      "J3.B6"
+     ],
+     "verdict": "DETOURABLE",
+     "window_mm": [
+      39.25,
+      140.65,
+      53.263,
+      149.38
+     ]
+    }
+   ],
+   "islands": 2,
+   "layers": [
+    "F"
+   ],
+   "net": "/01_POWER_TREE/USB_D_CONN_P",
+   "netclass": "USB_D",
+   "width_mm": 0.25
+  }
+ ],
+ "relay": {
+  "all_relaid": false,
+  "chains": [
+   {
+    "geometric_max_mm": 40.7686,
+    "layer": [
+     "F"
+    ],
+    "layers_allowed": [
+     "F"
+    ],
+    "max_mm": 40.7686,
+    "net": "/01_POWER_TREE/USB_D_CONN_N",
+    "objects": [
+     {
+      "a_mm": [
+       42.75,
+       145.75
+      ],
+      "b_mm": [
+       42.85,
+       145.575
+      ],
+      "lkey": "F",
+      "mm": 0.2016,
+      "net": "/01_POWER_TREE/USB_D_CONN_N",
+      "width_mm": 0.25
+     },
+     {
+      "a_mm": [
+       42.85,
+       145.575
+      ],
+      "b_mm": [
+       44.7,
+       143.8
+      ],
+      "lkey": "F",
+      "mm": 2.5638,
+      "net": "/01_POWER_TREE/USB_D_CONN_N",
+      "width_mm": 0.25
+     },
+     {
+      "a_mm": [
+       43.65,
+       145.575
+      ],
+      "b_mm": [
+       42.6,
+       144.9
+      ],
+      "lkey": "F",
+      "mm": 1.2482,
+      "net": "/01_POWER_TREE/USB_D_CONN_N",
+      "width_mm": 0.25
+     },
+     {
+      "a_mm": [
+       43.75,
+       145.75
+      ],
+      "b_mm": [
+       43.65,
+       145.575
+      ],
+      "lkey": "F",
+      "mm": 0.2016,
+      "net": "/01_POWER_TREE/USB_D_CONN_N",
+      "width_mm": 0.25
+     },
+     {
+      "a_mm": [
+       44.9,
+       141.7
+      ],
+      "b_mm": [
+       47.8,
+       139.7
+      ],
+      "lkey": "F",
+      "mm": 3.5228,
+      "net": "/01_POWER_TREE/USB_D_CONN_N",
+      "width_mm": 0.25
+     },
+     {
+      "a_mm": [
+       47.8,
+       139.7
+      ],
+      "b_mm": [
+       49.5,
+       141.3
+      ],
+      "lkey": "F",
+      "mm": 2.3345,
+      "net": "/01_POWER_TREE/USB_D_CONN_N",
+      "width_mm": 0.25
+     },
+     {
+      "a_mm": [
+       49.75,
+       141.6
+      ],
+      "b_mm": [
+       49.5,
+       141.3
+      ],
+      "lkey": "F",
+      "mm": 0.3905,
+      "net": "/01_POWER_TREE/USB_D_CONN_N",
+      "width_mm": 0.25
+     }
+    ],
+    "ok": false,
+    "own_layer": false,
+    "ratio_max_mm": 31.389,
+    "reason": "NOT_A_CHAIN",
+    "tracks": 7,
+    "was_mm": 10.463,
+    "why": "the cut tracks of this net do not form a simple chain with exactly two free ends"
+   },
+   {
+    "a_mm": [
+     49.1,
+     143.625
+    ],
+    "b_mm": [
+     49.75,
+     142.85
+    ],
+    "geometric_max_mm": 31.3514,
+    "layer": [
+     "F"
+    ],
+    "layers_allowed": [
+     "F",
+     "B",
+     "I2"
+    ],
+    "max_mm": 31.3514,
+    "mm": null,
+    "mm_by_layer": null,
+    "net": "GND",
+    "objects": [
+     {
+      "a_mm": [
+       49.325,
+       143.15
+      ],
+      "b_mm": [
+       49.1,
+       143.625
+      ],
+      "lkey": "F",
+      "mm": 0.5256,
+      "net": "GND",
+      "width_mm": 0.3
+     },
+     {
+      "a_mm": [
+       49.75,
+       142.85
+      ],
+      "b_mm": [
+       49.325,
+       143.15
+      ],
+      "lkey": "F",
+      "mm": 0.5202,
+      "net": "GND",
+      "width_mm": 0.3
+     }
+    ],
+    "ok": false,
+    "own_layer": false,
+    "ratio_max_mm": 3.1374,
+    "reason": "NO_PATH",
+    "tracks": 2,
+    "vias": null,
+    "was_mm": 1.0458,
+    "why": "no all-layer corridor at 0.300 mm between the two ends of this track once the site is reserved, inside the 31.351 mm budget"
+   }
+  ]
+ },
+ "schema": 1,
+ "verdict": "UNRELAYABLE"
+}

@@ -1,0 +1,217 @@
+{
+ "authoritative_unchanged": true,
+ "board": "/home/aqroot8/aqroot-demo/hardware/demo/kicad/aqroot-demo/aqroot-Beta-v2.kicad_pcb",
+ "board_sha256": "f496d2f39c0827248a47ab7d47efa4322f078b68d2da1d91ae6585d97bf8f875",
+ "coverage": "PARTIAL AND SAYS SO: 2 of 6 nets completed, 4 hit the 3600 s cap with no output.  A verdict is claimed for the completed nets ONLY.",
+ "instrument": "screen_corridor_detour.py, one invocation per net, --cut-set-retries 2 (D-641's new question 5), default --grid 100000 --escape-limit 8 --via-cost 1.5, 3600 s cap each",
+ "method": "read-only; every deletion lives in the in-memory obstacle model and is restored, the corridor is re-asked with maze3d.route_join at the net's own contract in emit=False mode, and no board is written",
+ "nets": [
+  {
+   "clr_mm": 0.2,
+   "cut_set_retry": {
+    "banned": [],
+    "retries_allowed": 2,
+    "rounds": [
+     {
+      "all_relaid": true,
+      "banned": [],
+      "failing_nets": [],
+      "irreducible_nets": [],
+      "round": 0,
+      "stop": "not UNRELAYABLE -- nothing to retry",
+      "verdict": "OPEN"
+     }
+    ],
+    "rounds_run": 1
+   },
+   "edges": [
+    {
+     "baseline": {
+      "dst_escapes": null,
+      "mm": 83.556,
+      "ok": true,
+      "reason": null,
+      "src_escapes": null
+     },
+     "direct_mm": 52.778,
+     "dst": [
+      "J8.3"
+     ],
+     "src": [
+      "TP45.1",
+      "J5.4",
+      "R48.2",
+      "D2.4"
+     ],
+     "verdict": "OPEN"
+    }
+   ],
+   "family_verdict": "OPEN",
+   "islands": 2,
+   "layers": [
+    "F",
+    "B",
+    "I2"
+   ],
+   "net": "/09_COMMUNITY_HEADER/EXT_SDA",
+   "netclass": "I2C",
+   "relay": {
+    "all_relaid": true,
+    "chains": []
+   },
+   "width_mm": 0.2
+  },
+  {
+   "clr_mm": 0.2,
+   "cut_set_retry": {
+    "banned": [],
+    "retries_allowed": 2,
+    "rounds": [
+     {
+      "all_relaid": true,
+      "banned": [],
+      "failing_nets": [],
+      "irreducible_nets": [],
+      "round": 0,
+      "stop": "not UNRELAYABLE -- nothing to retry",
+      "verdict": "PROTECTED_COPPER"
+     }
+    ],
+    "rounds_run": 1
+   },
+   "edges": [
+    {
+     "all_tracks_cut": {
+      "mm": 6.921,
+      "ok": true,
+      "reason": null
+     },
+     "baseline": {
+      "dst_escapes": 22,
+      "mm": 0.0,
+      "ok": false,
+      "reason": "NO_PATH",
+      "src_escapes": 11
+     },
+     "crossing_by_net": {
+      "+3V3": 12,
+      "/01_POWER_TREE/ACC_5V_FB": 9,
+      "/01_POWER_TREE/ACC_5V_ILIM": 3,
+      "/01_POWER_TREE/ACC_5V_RAW": 6,
+      "/01_POWER_TREE/BAT_PROTECTED_P": 36,
+      "/01_POWER_TREE/ISET": 2,
+      "/01_POWER_TREE/USB_VBUS_CHG": 4,
+      "/01_POWER_TREE/V3V3_FB": 4,
+      "/05_I2C_DEVICES/BMI270_INT1_RAW": 1,
+      "/05_I2C_DEVICES/BMI270_SDO_ADDR": 4,
+      "/08_BUTTONS_EXPANDERS/BTN_UP_N": 3,
+      "/08_BUTTONS_EXPANDERS/FRONT_RGB_B_N": 2,
+      "/08_BUTTONS_EXPANDERS/FRONT_RGB_G_N": 2,
+      "/09_COMMUNITY_HEADER/ACC_DETECT_N_HDR": 9,
+      "/09_COMMUNITY_HEADER/EXT_SCL": 12,
+      "/09_COMMUNITY_HEADER/EXT_SCL_BUF": 17,
+      "/09_COMMUNITY_HEADER/EXT_SDA_BUF": 9,
+      "/09_COMMUNITY_HEADER/NATIVE_A_HDR": 6,
+      "/09_COMMUNITY_HEADER/TCA4307_READY": 8,
+      "/09_COMMUNITY_HEADER/WAKE_ATTN_N_HDR": 4,
+      "/09_COMMUNITY_HEADER/WAKE_GATE_S": 9,
+      "/09_COMMUNITY_HEADER/XGPIO4_HDR": 2,
+      "/09_COMMUNITY_HEADER/XGPIO5_HDR": 5,
+      "/ACC_3V3_EN": 16,
+      "/ACC_3V3_SW": 36,
+      "/ACC_5V_SW": 5,
+      "/ACC_5V_SW_EN": 11,
+      "/ACC_DETECT_N": 19,
+      "/ACC_POWER_FAULT_N": 6,
+      "/ACC_PWR_EN": 4,
+      "/I2C_SCL_INT": 20,
+      "/I2C_SDA_INT": 9,
+      "/NFC_5V_EN": 11,
+      "/SX1262_RXEN": 1,
+      "/XGPIO4": 6,
+      "/XGPIO5": 3,
+      "GND": 87,
+      "Net-(U11-TS_MR)": 8
+     },
+     "crossing_tracks": 411,
+     "direct_mm": 1.907,
+     "dst": [
+      "U21.2",
+      "TP30.1",
+      "U3.16"
+     ],
+     "irreducible_nets": [],
+     "minimal": {
+      "mm": 6.967,
+      "objects": [
+       {
+        "a_mm": [
+         59.975,
+         60.425
+        ],
+        "b_mm": [
+         61.325,
+         56.05
+        ],
+        "lkey": "I2",
+        "mm": 4.5786,
+        "net": "/ACC_3V3_SW",
+        "width_mm": 0.4
+       }
+      ],
+      "ok": true,
+      "tracks": 1
+     },
+     "protected": [
+      "/ACC_3V3_SW"
+     ],
+     "src": [
+      "R102.1"
+     ],
+     "verdict": "PROTECTED_COPPER",
+     "why": "the minimal cut set names copper protected_copper.py forbids touching",
+     "window_mm": [
+      54.087,
+      36.9,
+      66.5,
+      79.375
+     ]
+    }
+   ],
+   "family_verdict": "PROTECTED_COPPER",
+   "islands": 2,
+   "layers": [
+    "F",
+    "B",
+    "I2"
+   ],
+   "net": "/ACC_5V_BOOST_EN",
+   "netclass": "Default",
+   "relay": {
+    "all_relaid": true,
+    "chains": []
+   },
+   "width_mm": 0.2
+  }
+ ],
+ "nets_asked": [
+  "/08_BUTTONS_EXPANDERS/BTN_LEFT_N",
+  "/SX1262_DIO1",
+  "/ACC_5V_BOOST_EN",
+  "/BQ25185_STAT1",
+  "/BQ25185_STAT2",
+  "/09_COMMUNITY_HEADER/EXT_SDA"
+ ],
+ "nets_completed": [
+  "/09_COMMUNITY_HEADER/EXT_SDA",
+  "/ACC_5V_BOOST_EN"
+ ],
+ "nets_timed_out": [
+  "/08_BUTTONS_EXPANDERS/BTN_LEFT_N",
+  "/SX1262_DIO1",
+  "/BQ25185_STAT1",
+  "/BQ25185_STAT2"
+ ],
+ "question": "D-640 ranked FINISH THE CORRIDOR SWEEP fourth and left 12 nets never started.  Six of them are asked here, with the cut-set retry in force",
+ "schema": 1
+}

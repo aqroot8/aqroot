@@ -13,6 +13,82 @@
 > This file references DEVICE_SPEC rather than duplicating full specs.
 
 ## 1. Authoritative HEAD
+- **Demo D-641 (THE *CUT SET* IS THE THING THAT GETS REFUSED -- THE RETRY IS
+  BUILT AND SPENT, AND `EXT_SDA` -> THE QWIIC CONNECTOR TURNS OUT TO BE
+  ROUTABLE FOR THE PRICE OF ONE NAMED `GND` BOND NECK):**  **NO COPPER MOVED.**
+  Authority **UNCHANGED** at
+  `f496d2f39c0827248a47ab7d47efa4322f078b68d2da1d91ae6585d97bf8f875`; retained
+  open edges **43**, open retained nets 21, connected retained 152, raw
+  ratsnest 59.  `hardware/beta-v2` untouched.  The ten standing contracts are
+  **10/10 RAN, 10/10 PASS** (`evidence/d641-contract-regression.json`,
+  baseline `d632`), differing from that baseline in exactly the three fields
+  D-639 documented and nothing else.  Eleven full-board gate runs were spent
+  and **not one was invoked `--promote`**; every artifact reports
+  `authoritative_unchanged: true`.
+  **(1) THE CUT-SET RETRY IS BUILT** -- `screen_corridor_detour.py
+  --cut-set-retries N` (default 2) and `screen_segment_evict.py --ban-net NET`.
+  A refused RELAY refuses the SET, not the transaction: `minimal` takes
+  whichever set reverse-greedy lands on first and nothing in it prefers a net
+  that can go back, while `irreducible_nets` already proved which nets a
+  sparing set EXISTS for.  The ban removes a net from the candidate POOL and
+  never from the board.  **The refactor is proved twice**: the extracted block
+  is character-identical to `HEAD` apart from two intended edits, and
+  `--cut-set-retries 0` reproduces the pre-change screen byte-for-byte apart
+  from the new `cut_set_retry` key
+  (`evidence/d641-cut-set-retry-control-nfcvddrf.json`), which matches D-640's
+  census field by field.
+  **(2) BOTH `UNRELAYABLE` CORRIDORS ARE STILL REFUSED, FOR NEW REASONS.**
+  `/01_POWER_TREE/USB_D_CONN_P`: round 1, with `/I2S_LRCLK` spared, cuts
+  `{USB_D_CONN_N x7, GND x2}` and **`USB_D_CONN_N` -- the edge's own
+  differential partner -- comes back IRREDUCIBLE and `NOT_A_CHAIN`**.
+  `/04_SPI_B_RADIOS_NFC/NFC_VDD_RF`: three distinct sets in three rounds, and
+  **every one names `NFC_RFO1` or `NFC_RFO2`** -- the NFC front end's own RF
+  outputs, the family D-640's RF rule already refused.
+  **(3) `GND`'s CORRIDOR CUT IS *NOT* FREE, MEASURED NOT ASSUMED.**  New
+  tracked `screen_cut_price.py` prices a whole-track cut in KiCad's own
+  connectivity engine: `GND` **4 -> 5 pad clusters**, `USB_D_CONN_N` 1 -> 3
+  (`evidence/d641-cut-price-usbconnp.json`).  D-639's `C37.2` pour-served cure
+  does not generalise.  Getting there fixed a **latent crash** in
+  `connectivity_price` (`BOARD.Remove()` disowns the item and the next
+  `GetTracks()` hands it back unwrapped; it raised on the second of two cuts
+  depending only on list order) -- the list is now snapshot once, and all four
+  prices D-640 published come back IDENTICAL
+  (`evidence/d641-connectivity-price-regression.json`).
+  **(4) `Net-(U12-PS_SYNC)` IS IRREDUCIBLE FOR `BQ25185_SYS C26.2`, AND THE
+  WALL IS THE STITCH *SITE*.**  With it banned all 20 remaining candidates cut
+  at once and the site is still `NO_BODY_VIA_SITE`; the BARE arm puts all
+  three cut nets back and `PS_SYNC` goes back at **2.7036 mm having been
+  2.7036 mm**; and the joint arm at `--joint-tries 24 --joint-knockout-mm
+  0.35` finds FOUR barrel sites in one pocket and **every one strands it**
+  (0.972 / 1.326 / 1.199 mm stitches).  A PLACEMENT finding.
+  **(5) AND THE SWEEP FOUND AN EDGE NOBODY HAD ASKED.**
+  `/09_COMMUNITY_HEADER/EXT_SDA` -> **`J8.3`, the Qwiic / STEMMA QT SDA
+  contact** -- a Demo-REQUIRED feature -- **ROUTES**: 85.843 mm / 4 barrels at
+  `--grid 100000`, open retained NETS 21 -> 20, zero attributable DRC.  Its
+  whole price is **one object**: the `GND` `B.Cu` island of 10.282 mm2 bonding
+  exactly `C4.2` and `U3.12`, severed 4.790 + 4.724 mm2 across a 0.150 mm neck,
+  which takes retained edges 43 -> 43 and refuses clause 4.  **That neck is the
+  ONLY corridor**: reserve that ONE tube and the net is `NO_PATH` at 100000,
+  50000 and 25000 nm.  **And the cure is refused by geometry** -- `--bond-pad
+  U3.12` returns `NO_VIA_SITE` at the 0.600 mm netclass barrel, at the 0.500 mm
+  DRU FLOOR barrel and at 14.0 mm of locality, and `--repair-planes` fails on
+  the same pad (`evidence/d641-extsda-qwiic-price.json`, 11 arms).
+  **(6) COVERAGE IS STATED, NOT IMPLIED.**  The sweep is **2 of 6 completed, 4
+  timed out at 3600 s**; `GND J3.A12/B1`'s joint arm hit its 5400 s cap with no
+  output and D-640's ranked item (2) is NOT answered here.
+  **NEXT, IN ORDER OF LEVERAGE:** (1) **`U3.12`'s VIA SITE IS THE WHOLE OF THE
+  QWIIC SDA EDGE** -- the cheapest named blocker on the board, on a
+  Demo-required connector, with a 14 mm proof behind it.  (2) **`BQ25185_SYS
+  C26.2`'s STITCH POCKET** -- try a smaller `cut_radius_mm` or the `relief`
+  rung for a fifth barrel site.  (3) **FINISH THE SWEEP** -- ten nets from
+  D-640 plus the four that timed out; one at a time with a longer cap.  (4)
+  **`GND J3.A12/B1` AT A CHEAPER SETTING** (`--joint-tries 6`, or
+  `--grid 50000`); still the only UNCITED opener on the board.  (5)
+  **`/I2S_LRCLK`'s edge rate and `/NFC_SUPPLY`'s per-net current** remain the
+  ledger's two unlocked edges, carried unchanged.
+  No owner decision is OPEN; D-618's `J3` question remains RECORDED and PM-3
+  remains an open PLACEMENT finding, now naming `U3.12` and `BQ25185_SYS
+  C26.2` as well.
 - **Demo D-640 (THE *RELAY* IS THE WALL -- D-639's FIRST RANKED ITEM IS
   **REFUSED** BY THE BOARD'S OWN RF RULE, `NOT_A_POCKET` IS EXPOSED AS AN
   ABSENCE OF MEASUREMENT AND DELETED, AND THE POUR-SERVED FAMILY IS CENSUSED):**

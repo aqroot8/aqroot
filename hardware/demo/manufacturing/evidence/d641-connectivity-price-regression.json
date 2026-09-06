@@ -1,0 +1,198 @@
+{
+ "all_identical": true,
+ "board": "/home/aqroot8/aqroot-demo/hardware/demo/kicad/aqroot-demo/aqroot-Beta-v2.kicad_pcb",
+ "evidence": "/home/aqroot8/aqroot-demo/hardware/demo/manufacturing/evidence/d640-segment-evict-pourfamily.json",
+ "lands": [
+  {
+   "d640": {
+    "clusters_after": {
+     "Net-(U11-TS_MR)": 2
+    },
+    "clusters_before": {
+     "Net-(U11-TS_MR)": 1
+    },
+    "free": false,
+    "stubs_left": 0,
+    "tracks_split": 2,
+    "worse": {
+     "Net-(U11-TS_MR)": [
+      1,
+      2
+     ]
+    }
+   },
+   "identical": true,
+   "land": [
+    "R39.1"
+   ],
+   "net": "+3V3",
+   "now": {
+    "clusters_after": {
+     "Net-(U11-TS_MR)": 2
+    },
+    "clusters_before": {
+     "Net-(U11-TS_MR)": 1
+    },
+    "free": false,
+    "stubs_left": 0,
+    "tracks_split": 2,
+    "worse": {
+     "Net-(U11-TS_MR)": [
+      1,
+      2
+     ]
+    }
+   }
+  },
+  {
+   "d640": {
+    "clusters_after": {
+     "/08_BUTTONS_EXPANDERS/BTN_DOWN_N": 2,
+     "/BQ25185_STAT2": 4,
+     "Net-(U12-PS_SYNC)": 2
+    },
+    "clusters_before": {
+     "/08_BUTTONS_EXPANDERS/BTN_DOWN_N": 1,
+     "/BQ25185_STAT2": 3,
+     "Net-(U12-PS_SYNC)": 1
+    },
+    "free": false,
+    "stubs_left": 5,
+    "tracks_split": 7,
+    "worse": {
+     "/08_BUTTONS_EXPANDERS/BTN_DOWN_N": [
+      1,
+      2
+     ],
+     "/BQ25185_STAT2": [
+      3,
+      4
+     ],
+     "Net-(U12-PS_SYNC)": [
+      1,
+      2
+     ]
+    }
+   },
+   "identical": true,
+   "land": [
+    "C26.2"
+   ],
+   "net": "/01_POWER_TREE/BQ25185_SYS",
+   "now": {
+    "clusters_after": {
+     "/08_BUTTONS_EXPANDERS/BTN_DOWN_N": 2,
+     "/BQ25185_STAT2": 4,
+     "Net-(U12-PS_SYNC)": 2
+    },
+    "clusters_before": {
+     "/08_BUTTONS_EXPANDERS/BTN_DOWN_N": 1,
+     "/BQ25185_STAT2": 3,
+     "Net-(U12-PS_SYNC)": 1
+    },
+    "free": false,
+    "stubs_left": 5,
+    "tracks_split": 7,
+    "worse": {
+     "/08_BUTTONS_EXPANDERS/BTN_DOWN_N": [
+      1,
+      2
+     ],
+     "/BQ25185_STAT2": [
+      3,
+      4
+     ],
+     "Net-(U12-PS_SYNC)": [
+      1,
+      2
+     ]
+    }
+   }
+  },
+  {
+   "d640": {
+    "clusters_after": {
+     "Net-(J3-CC2)": 2
+    },
+    "clusters_before": {
+     "Net-(J3-CC2)": 1
+    },
+    "free": false,
+    "stubs_left": 0,
+    "tracks_split": 1,
+    "worse": {
+     "Net-(J3-CC2)": [
+      1,
+      2
+     ]
+    }
+   },
+   "identical": true,
+   "land": [
+    "J3.A12",
+    "J3.B1"
+   ],
+   "net": "GND",
+   "now": {
+    "clusters_after": {
+     "Net-(J3-CC2)": 2
+    },
+    "clusters_before": {
+     "Net-(J3-CC2)": 1
+    },
+    "free": false,
+    "stubs_left": 0,
+    "tracks_split": 1,
+    "worse": {
+     "Net-(J3-CC2)": [
+      1,
+      2
+     ]
+    }
+   }
+  },
+  {
+   "d640": {
+    "clusters_after": {
+     "/04_SPI_B_RADIOS_NFC/NFC_RFO2": 2
+    },
+    "clusters_before": {
+     "/04_SPI_B_RADIOS_NFC/NFC_RFO2": 1
+    },
+    "free": false,
+    "stubs_left": 0,
+    "tracks_split": 1,
+    "worse": {
+     "/04_SPI_B_RADIOS_NFC/NFC_RFO2": [
+      1,
+      2
+     ]
+    }
+   },
+   "identical": true,
+   "land": [
+    "U9.16"
+   ],
+   "net": "GND",
+   "now": {
+    "clusters_after": {
+     "/04_SPI_B_RADIOS_NFC/NFC_RFO2": 2
+    },
+    "clusters_before": {
+     "/04_SPI_B_RADIOS_NFC/NFC_RFO2": 1
+    },
+    "free": false,
+    "stubs_left": 0,
+    "tracks_split": 1,
+    "worse": {
+     "/04_SPI_B_RADIOS_NFC/NFC_RFO2": [
+      1,
+      2
+     ]
+    }
+   }
+  }
+ ],
+ "question": "does D-641's snapshot fix to connectivity_price reproduce every price D-640 published, to the number",
+ "schema": 1
+}

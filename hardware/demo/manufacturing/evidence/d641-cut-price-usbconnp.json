@@ -1,0 +1,68 @@
+{
+ "board": "/home/aqroot8/aqroot-demo/hardware/demo/kicad/aqroot-demo/aqroot-Beta-v2.kicad_pcb",
+ "cut_tracks": 9,
+ "method": "screen_segment_evict.connectivity_price with stubs_mm: [] -- the whole track goes, nothing is put back, no relay; one net per child process",
+ "per_net": {
+  "/01_POWER_TREE/USB_D_CONN_N": {
+   "clusters_after": {
+    "/01_POWER_TREE/USB_D_CONN_N": 3
+   },
+   "clusters_before": {
+    "/01_POWER_TREE/USB_D_CONN_N": 1
+   },
+   "free": false,
+   "stubs_left": 0,
+   "tracks_split": 7,
+   "worse": {
+    "/01_POWER_TREE/USB_D_CONN_N": [
+     1,
+     3
+    ]
+   }
+  },
+  "GND": {
+   "clusters_after": {
+    "GND": 5
+   },
+   "clusters_before": {
+    "GND": 4
+   },
+   "free": false,
+   "stubs_left": 0,
+   "tracks_split": 2,
+   "worse": {
+    "GND": [
+     4,
+     5
+    ]
+   }
+  }
+ },
+ "question": "does removing this corridor cut cost the CUT NET any connectivity at all -- counted by KiCad's own BuildConnectivity over that net's pads, on a scratch copy, against the fill that is really on the board",
+ "schema": 1,
+ "survey": "w/d641/retry-usbconnp.json",
+ "survey_board_sha256": "f496d2f39c0827248a47ab7d47efa4322f078b68d2da1d91ae6585d97bf8f875",
+ "whole_cut": {
+  "clusters_after": {
+   "/01_POWER_TREE/USB_D_CONN_N": 3,
+   "GND": 5
+  },
+  "clusters_before": {
+   "/01_POWER_TREE/USB_D_CONN_N": 1,
+   "GND": 4
+  },
+  "free": false,
+  "stubs_left": 0,
+  "tracks_split": 9,
+  "worse": {
+   "/01_POWER_TREE/USB_D_CONN_N": [
+    1,
+    3
+   ],
+   "GND": [
+    4,
+    5
+   ]
+  }
+ }
+}
