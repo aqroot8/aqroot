@@ -1,0 +1,834 @@
+{
+ "all_out": {
+  "mm": 0.653,
+  "ok": true,
+  "reason": null,
+  "secs": 16.9,
+  "via_xy": [
+   58.475,
+   71.725
+  ],
+  "why": "None"
+ },
+ "baseline": {
+  "mm": null,
+  "ok": false,
+  "reason": "NO_LEGAL_ESCAPE",
+  "secs": 17.1,
+  "via_xy": null,
+  "why": "U4.8: NO LEGAL ESCAPE at >= 0.400 mm; blocked by U4.9 (x44), U4.7 (x13), U4.6 (x4), U4.1 (x4)"
+ },
+ "board": "/home/aqroot8/aqroot-demo/hardware/demo/kicad/aqroot-demo/aqroot-Beta-v2.kicad_pcb",
+ "board_sha256": "6b7cb0143b2a10e5d4160232f7aba466ccf50a71cdda417e72a680acfcd40dde",
+ "candidates": [
+  {
+   "at_mm": [
+    56.0,
+    68.1
+   ],
+   "kind": "barrel",
+   "shapes": 14
+  },
+  {
+   "at_mm": [
+    57.5,
+    72.8
+   ],
+   "kind": "barrel",
+   "shapes": 14
+  },
+  {
+   "at_mm": [
+    57.7,
+    70.0
+   ],
+   "kind": "barrel",
+   "shapes": 14
+  },
+  {
+   "at_mm": [
+    58.0,
+    72.4
+   ],
+   "kind": "barrel",
+   "shapes": 14
+  },
+  {
+   "at_mm": [
+    58.3,
+    70.2
+   ],
+   "kind": "barrel",
+   "shapes": 14
+  },
+  {
+   "at_mm": [
+    60.1,
+    68.0
+   ],
+   "kind": "barrel",
+   "shapes": 14
+  },
+  {
+   "a_mm": [
+    58.3,
+    70.1
+   ],
+   "b_mm": [
+    58.3,
+    70.2
+   ],
+   "kind": "track",
+   "layer": "B",
+   "width_mm": 0.3
+  },
+  {
+   "a_mm": [
+    58.4,
+    70.0
+   ],
+   "b_mm": [
+    58.3,
+    70.1
+   ],
+   "kind": "track",
+   "layer": "B",
+   "width_mm": 0.3
+  },
+  {
+   "a_mm": [
+    58.4,
+    70.5
+   ],
+   "b_mm": [
+    58.675,
+    70.675
+   ],
+   "kind": "track",
+   "layer": "B",
+   "width_mm": 0.3
+  },
+  {
+   "a_mm": [
+    58.4,
+    70.5
+   ],
+   "b_mm": [
+    58.675,
+    70.675
+   ],
+   "kind": "track",
+   "layer": "B",
+   "width_mm": 0.3
+  },
+  {
+   "a_mm": [
+    58.4125,
+    70.0
+   ],
+   "b_mm": [
+    57.7,
+    70.0
+   ],
+   "kind": "track",
+   "layer": "B",
+   "width_mm": 0.3
+  },
+  {
+   "a_mm": [
+    58.625,
+    71.7
+   ],
+   "b_mm": [
+    57.5,
+    72.8
+   ],
+   "kind": "track",
+   "layer": "B",
+   "width_mm": 0.3
+  },
+  {
+   "a_mm": [
+    58.625,
+    71.7
+   ],
+   "b_mm": [
+    58.0,
+    72.4
+   ],
+   "kind": "track",
+   "layer": "B",
+   "width_mm": 0.3
+  },
+  {
+   "a_mm": [
+    58.675,
+    70.675
+   ],
+   "b_mm": [
+    58.75,
+    70.85
+   ],
+   "kind": "track",
+   "layer": "B",
+   "width_mm": 0.3
+  },
+  {
+   "a_mm": [
+    58.675,
+    70.675
+   ],
+   "b_mm": [
+    58.75,
+    70.85
+   ],
+   "kind": "track",
+   "layer": "B",
+   "width_mm": 0.3
+  },
+  {
+   "a_mm": [
+    58.75,
+    70.85
+   ],
+   "b_mm": [
+    58.75,
+    71.525
+   ],
+   "kind": "track",
+   "layer": "B",
+   "width_mm": 0.3
+  },
+  {
+   "a_mm": [
+    58.75,
+    70.85
+   ],
+   "b_mm": [
+    58.75,
+    71.525
+   ],
+   "kind": "track",
+   "layer": "B",
+   "width_mm": 0.3
+  },
+  {
+   "a_mm": [
+    58.75,
+    71.525
+   ],
+   "b_mm": [
+    58.625,
+    71.7
+   ],
+   "kind": "track",
+   "layer": "B",
+   "width_mm": 0.3
+  },
+  {
+   "a_mm": [
+    58.75,
+    71.525
+   ],
+   "b_mm": [
+    58.625,
+    71.7
+   ],
+   "kind": "track",
+   "layer": "B",
+   "width_mm": 0.3
+  },
+  {
+   "a_mm": [
+    59.025,
+    67.425
+   ],
+   "b_mm": [
+    60.2,
+    68.1
+   ],
+   "kind": "track",
+   "layer": "B",
+   "width_mm": 0.3
+  },
+  {
+   "a_mm": [
+    60.2,
+    68.1
+   ],
+   "b_mm": [
+    60.1,
+    68.0
+   ],
+   "kind": "track",
+   "layer": "B",
+   "width_mm": 0.3
+  }
+ ],
+ "final": {
+  "mm": 0.58,
+  "ok": true,
+  "reason": null,
+  "secs": 16.8,
+  "via_xy": [
+   58.725,
+   71.575
+  ],
+  "why": "None"
+ },
+ "minimal": [
+  {
+   "a_mm": [
+    58.625,
+    71.7
+   ],
+   "b_mm": [
+    57.5,
+    72.8
+   ],
+   "kind": "track",
+   "layer": "B",
+   "width_mm": 0.3
+  },
+  {
+   "a_mm": [
+    58.625,
+    71.7
+   ],
+   "b_mm": [
+    58.0,
+    72.4
+   ],
+   "kind": "track",
+   "layer": "B",
+   "width_mm": 0.3
+  },
+  {
+   "a_mm": [
+    58.75,
+    70.85
+   ],
+   "b_mm": [
+    58.75,
+    71.525
+   ],
+   "kind": "track",
+   "layer": "B",
+   "width_mm": 0.3
+  },
+  {
+   "a_mm": [
+    58.75,
+    70.85
+   ],
+   "b_mm": [
+    58.75,
+    71.525
+   ],
+   "kind": "track",
+   "layer": "B",
+   "width_mm": 0.3
+  },
+  {
+   "a_mm": [
+    58.75,
+    71.525
+   ],
+   "b_mm": [
+    58.625,
+    71.7
+   ],
+   "kind": "track",
+   "layer": "B",
+   "width_mm": 0.3
+  },
+  {
+   "a_mm": [
+    58.75,
+    71.525
+   ],
+   "b_mm": [
+    58.625,
+    71.7
+   ],
+   "kind": "track",
+   "layer": "B",
+   "width_mm": 0.3
+  }
+ ],
+ "net": "+3V3",
+ "pad": "U4.8",
+ "removed_net": "GND",
+ "rung": {
+  "clr": 200000,
+  "needs_licence": false,
+  "via_dia": 650000,
+  "via_drill": 400000,
+  "width": 400000
+ },
+ "schema": 1,
+ "trace": [
+  {
+   "mm": 0.653,
+   "offered_back": {
+    "at_mm": [
+     56.0,
+     68.1
+    ],
+    "kind": "barrel",
+    "shapes": 14
+   },
+   "ok": true,
+   "reason": null,
+   "secs": 16.8,
+   "via_xy": [
+    58.475,
+    71.725
+   ],
+   "why": "None"
+  },
+  {
+   "mm": 0.653,
+   "offered_back": {
+    "at_mm": [
+     57.5,
+     72.8
+    ],
+    "kind": "barrel",
+    "shapes": 14
+   },
+   "ok": true,
+   "reason": null,
+   "secs": 16.9,
+   "via_xy": [
+    58.475,
+    71.725
+   ],
+   "why": "None"
+  },
+  {
+   "mm": 0.653,
+   "offered_back": {
+    "at_mm": [
+     57.7,
+     70.0
+    ],
+    "kind": "barrel",
+    "shapes": 14
+   },
+   "ok": true,
+   "reason": null,
+   "secs": 16.9,
+   "via_xy": [
+    58.475,
+    71.725
+   ],
+   "why": "None"
+  },
+  {
+   "mm": 0.679,
+   "offered_back": {
+    "at_mm": [
+     58.0,
+     72.4
+    ],
+    "kind": "barrel",
+    "shapes": 14
+   },
+   "ok": true,
+   "reason": null,
+   "secs": 16.9,
+   "via_xy": [
+    58.525,
+    71.7
+   ],
+   "why": "None"
+  },
+  {
+   "mm": 0.679,
+   "offered_back": {
+    "at_mm": [
+     58.3,
+     70.2
+    ],
+    "kind": "barrel",
+    "shapes": 14
+   },
+   "ok": true,
+   "reason": null,
+   "secs": 17.0,
+   "via_xy": [
+    58.525,
+    71.7
+   ],
+   "why": "None"
+  },
+  {
+   "mm": 0.679,
+   "offered_back": {
+    "at_mm": [
+     60.1,
+     68.0
+    ],
+    "kind": "barrel",
+    "shapes": 14
+   },
+   "ok": true,
+   "reason": null,
+   "secs": 16.9,
+   "via_xy": [
+    58.525,
+    71.7
+   ],
+   "why": "None"
+  },
+  {
+   "mm": 0.679,
+   "offered_back": {
+    "a_mm": [
+     58.3,
+     70.1
+    ],
+    "b_mm": [
+     58.3,
+     70.2
+    ],
+    "kind": "track",
+    "layer": "B",
+    "width_mm": 0.3
+   },
+   "ok": true,
+   "reason": null,
+   "secs": 17.0,
+   "via_xy": [
+    58.525,
+    71.7
+   ],
+   "why": "None"
+  },
+  {
+   "mm": 0.679,
+   "offered_back": {
+    "a_mm": [
+     58.4,
+     70.0
+    ],
+    "b_mm": [
+     58.3,
+     70.1
+    ],
+    "kind": "track",
+    "layer": "B",
+    "width_mm": 0.3
+   },
+   "ok": true,
+   "reason": null,
+   "secs": 16.9,
+   "via_xy": [
+    58.525,
+    71.7
+   ],
+   "why": "None"
+  },
+  {
+   "mm": 0.588,
+   "offered_back": {
+    "a_mm": [
+     58.4,
+     70.5
+    ],
+    "b_mm": [
+     58.675,
+     70.675
+    ],
+    "kind": "track",
+    "layer": "B",
+    "width_mm": 0.3
+   },
+   "ok": true,
+   "reason": null,
+   "secs": 16.7,
+   "via_xy": [
+    58.6,
+    71.65
+   ],
+   "why": "None"
+  },
+  {
+   "mm": 0.588,
+   "offered_back": {
+    "a_mm": [
+     58.4,
+     70.5
+    ],
+    "b_mm": [
+     58.675,
+     70.675
+    ],
+    "kind": "track",
+    "layer": "B",
+    "width_mm": 0.3
+   },
+   "ok": true,
+   "reason": null,
+   "secs": 16.6,
+   "via_xy": [
+    58.6,
+    71.65
+   ],
+   "why": "None"
+  },
+  {
+   "mm": 0.588,
+   "offered_back": {
+    "a_mm": [
+     58.4125,
+     70.0
+    ],
+    "b_mm": [
+     57.7,
+     70.0
+    ],
+    "kind": "track",
+    "layer": "B",
+    "width_mm": 0.3
+   },
+   "ok": true,
+   "reason": null,
+   "secs": 16.9,
+   "via_xy": [
+    58.6,
+    71.65
+   ],
+   "why": "None"
+  },
+  {
+   "mm": null,
+   "offered_back": {
+    "a_mm": [
+     58.625,
+     71.7
+    ],
+    "b_mm": [
+     57.5,
+     72.8
+    ],
+    "kind": "track",
+    "layer": "B",
+    "width_mm": 0.3
+   },
+   "ok": false,
+   "reason": "NO_VIA_SITE",
+   "secs": 17.1,
+   "via_xy": null,
+   "why": "no legal 0.65 mm barrel within 8.0 mm of any escape"
+  },
+  {
+   "mm": null,
+   "offered_back": {
+    "a_mm": [
+     58.625,
+     71.7
+    ],
+    "b_mm": [
+     58.0,
+     72.4
+    ],
+    "kind": "track",
+    "layer": "B",
+    "width_mm": 0.3
+   },
+   "ok": false,
+   "reason": "NO_VIA_SITE",
+   "secs": 17.0,
+   "via_xy": null,
+   "why": "no legal 0.65 mm barrel within 8.0 mm of any escape"
+  },
+  {
+   "mm": 0.58,
+   "offered_back": {
+    "a_mm": [
+     58.675,
+     70.675
+    ],
+    "b_mm": [
+     58.75,
+     70.85
+    ],
+    "kind": "track",
+    "layer": "B",
+    "width_mm": 0.3
+   },
+   "ok": true,
+   "reason": null,
+   "secs": 16.8,
+   "via_xy": [
+    58.725,
+    71.575
+   ],
+   "why": "None"
+  },
+  {
+   "mm": 0.58,
+   "offered_back": {
+    "a_mm": [
+     58.675,
+     70.675
+    ],
+    "b_mm": [
+     58.75,
+     70.85
+    ],
+    "kind": "track",
+    "layer": "B",
+    "width_mm": 0.3
+   },
+   "ok": true,
+   "reason": null,
+   "secs": 16.9,
+   "via_xy": [
+    58.725,
+    71.575
+   ],
+   "why": "None"
+  },
+  {
+   "mm": null,
+   "offered_back": {
+    "a_mm": [
+     58.75,
+     70.85
+    ],
+    "b_mm": [
+     58.75,
+     71.525
+    ],
+    "kind": "track",
+    "layer": "B",
+    "width_mm": 0.3
+   },
+   "ok": false,
+   "reason": "NO_LEGAL_ESCAPE",
+   "secs": 17.2,
+   "via_xy": null,
+   "why": "U4.8: NO LEGAL ESCAPE at >= 0.400 mm; blocked by U4.9 (x44), U4.7 (x13), U4.6 (x4), U4.1 (x4)"
+  },
+  {
+   "mm": null,
+   "offered_back": {
+    "a_mm": [
+     58.75,
+     70.85
+    ],
+    "b_mm": [
+     58.75,
+     71.525
+    ],
+    "kind": "track",
+    "layer": "B",
+    "width_mm": 0.3
+   },
+   "ok": false,
+   "reason": "NO_LEGAL_ESCAPE",
+   "secs": 17.2,
+   "via_xy": null,
+   "why": "U4.8: NO LEGAL ESCAPE at >= 0.400 mm; blocked by U4.9 (x44), U4.7 (x13), U4.6 (x4), U4.1 (x4)"
+  },
+  {
+   "mm": null,
+   "offered_back": {
+    "a_mm": [
+     58.75,
+     71.525
+    ],
+    "b_mm": [
+     58.625,
+     71.7
+    ],
+    "kind": "track",
+    "layer": "B",
+    "width_mm": 0.3
+   },
+   "ok": false,
+   "reason": "NO_LEGAL_ESCAPE",
+   "secs": 17.1,
+   "via_xy": null,
+   "why": "U4.8: NO LEGAL ESCAPE at >= 0.400 mm; blocked by U4.9 (x44), U4.7 (x13), U4.6 (x4), U4.1 (x4)"
+  },
+  {
+   "mm": null,
+   "offered_back": {
+    "a_mm": [
+     58.75,
+     71.525
+    ],
+    "b_mm": [
+     58.625,
+     71.7
+    ],
+    "kind": "track",
+    "layer": "B",
+    "width_mm": 0.3
+   },
+   "ok": false,
+   "reason": "NO_LEGAL_ESCAPE",
+   "secs": 17.2,
+   "via_xy": null,
+   "why": "U4.8: NO LEGAL ESCAPE at >= 0.400 mm; blocked by U4.9 (x44), U4.7 (x13), U4.6 (x4), U4.1 (x4)"
+  },
+  {
+   "mm": 0.58,
+   "offered_back": {
+    "a_mm": [
+     59.025,
+     67.425
+    ],
+    "b_mm": [
+     60.2,
+     68.1
+    ],
+    "kind": "track",
+    "layer": "B",
+    "width_mm": 0.3
+   },
+   "ok": true,
+   "reason": null,
+   "secs": 17.0,
+   "via_xy": [
+    58.725,
+    71.575
+   ],
+   "why": "None"
+  },
+  {
+   "mm": 0.58,
+   "offered_back": {
+    "a_mm": [
+     60.2,
+     68.1
+    ],
+    "b_mm": [
+     60.1,
+     68.0
+    ],
+    "kind": "track",
+    "layer": "B",
+    "width_mm": 0.3
+   },
+   "ok": true,
+   "reason": null,
+   "secs": 16.8,
+   "via_xy": [
+    58.725,
+    71.575
+   ],
+   "why": "None"
+  }
+ ],
+ "window_mm": [
+  55.0,
+  66.0,
+  61.0,
+  73.0
+ ]
+}

@@ -990,12 +990,26 @@ def detour_apply(path, spec):
     def key(pt):
         return (round(pt.x / 1e6, 4), round(pt.y / 1e6, 4))
 
-    def resolve(net, layer, a_mm, b_mm, width_mm):
-        """The ONE track this description names, or a hard stop.
+    def resolve(net, layer, a_mm, b_mm, width_mm, count=1):
+        """The tracks this description names, or a hard stop.
 
-        Resolution must be EXACT and UNIQUE: a description that matches no
-        track, or more than one, is a description of a board that is not this
-        one, and the run stops rather than guessing.
+        Resolution must be EXACT and COMPLETE: a description that matches a
+        number of tracks OTHER than the number it declares is a description of
+        a board that is not this one, and the run stops rather than guessing.
+
+        `count` DEFAULTS TO 1 AND EVERY EXISTING SPEC IS UNCHANGED.  D-648.
+        D-645 recorded that this board carries 93 EXACTLY DUPLICATE track
+        objects, 28 of them on `GND`, and filed them as harmless -- "inert in
+        the Gerber, but they inflate every object count a preservation check
+        compares".  They are not harmless to a transaction: a description of a
+        duplicated track matched two objects, `len(hits) != 1` stopped the run,
+        and REMOVING ONE COPY WOULD LEAVE THE OTHER standing in exactly the
+        corridor the removal was for.  Two coincident copies are ONE conductor
+        and one obstacle; the physical unit is the pair, exactly as a barrel's
+        physical unit is its hole and all six annuli.  So the spec may DECLARE
+        the multiplicity, and declaring it is the only way to take it -- a
+        silent "remove them all" would let a spec written against a
+        de-duplicated board quietly take copper its author never saw.
         """
         if layer not in lname:
             raise SystemExit("--detour: no such copper layer %r" % layer)
@@ -1008,12 +1022,13 @@ def detour_apply(path, spec):
                 and t.GetNetname() == net and t.GetLayer() == lid
                 and t.GetWidth() == want_w
                 and sorted([key(t.GetStart()), key(t.GetEnd())]) == want_pts]
-        if len(hits) != 1:
+        if len(hits) != int(count):
             raise SystemExit(
                 "--detour: %s on %s %s..%s at %.3f mm matches %d tracks, "
-                "not exactly one" % (net, layer, a_mm, b_mm, width_mm,
-                                     len(hits)))
-        return lkey, lid, hits[0]
+                "not the %d this spec declares" % (net, layer, a_mm, b_mm,
+                                                   width_mm, len(hits),
+                                                   int(count)))
+        return lkey, lid, hits
 
     # A CHAIN IS ONE TRACK THAT THE EDITOR HAPPENED TO SPLIT, AND THE BOARD SAYS
     # SO OR IT IS NOT A CHAIN.  `/ACC_DETECT_N` reaches the `+3V3` `R129.1`
@@ -1030,7 +1045,16 @@ def detour_apply(path, spec):
     # every track, via and pad of the net on the board, and a chain that fails
     # that test stops the run by name.  One layer and one width throughout, too:
     # "lay it again as one run" cannot mean "and change its width halfway".
-    def chain_ends(net, items, lid):
+    def chain_ends(net, items, lid, mine=None):
+        """The two free ends of a simple chain.
+
+        `items` is ONE representative per DESCRIPTION and `mine` is every
+        object those descriptions resolved to.  The distinction is D-648's:
+        a duplicated track contributes ONE edge to the topology -- two
+        coincident copies are one conductor -- but BOTH copies must be in
+        `mine`, or the second copy is found standing on the chain's own
+        interior junction and the run stops calling it a tee.
+        """
         deg = {}
         for t in items:
             for pt in (key(t.GetStart()), key(t.GetEnd())):
@@ -1047,7 +1071,7 @@ def detour_apply(path, spec):
         # and every chain would report itself as a tee -- which is exactly what
         # the first run of this check did.  `evict_closure` learned the same
         # lesson and says so in the same words.
-        mine = {uid(t) for t in items}
+        mine = {uid(t) for t in (mine if mine is not None else items)}
         for pt in inner:
             P = pcbnew.VECTOR2I(int(round(pt[0] * 1e6)),
                                 int(round(pt[1] * 1e6)))
@@ -1080,25 +1104,30 @@ def detour_apply(path, spec):
     for d in spec.get("detours", ()):
         parts = list(d.get("tracks") or [d])
         got = [resolve(d["net"], q["layer"], q["a_mm"], q["b_mm"],
-                       q["width_mm"]) for q in parts]
-        if len({(g[0], g[2].GetWidth()) for g in got}) != 1:
+                       q["width_mm"], q.get("count", 1)) for q in parts]
+        if len({(g[0], g[2][0].GetWidth()) for g in got}) != 1:
             raise SystemExit("--detour: a chain must be ONE layer and ONE "
                              "width throughout (%s)" % d["net"])
         lkey, lid = got[0][0], got[0][1]
-        items = [g[2] for g in got]
-        if len(items) == 1:
-            t = items[0]
+        # ONE REPRESENTATIVE PER DESCRIPTION carries the TOPOLOGY and the
+        # LENGTH; every copy carries the REMOVAL.  D-648.  Coincident
+        # duplicates are one conductor, so counting their millimetres twice
+        # would charge `inert_removal_price` a bar this copper never was.
+        reps = [g[2][0] for g in got]
+        items = [t for g in got for t in g[2]]
+        if len(reps) == 1:
+            t = reps[0]
             a_nm = [int(t.GetStart().x), int(t.GetStart().y)]
             b_nm = [int(t.GetEnd().x), int(t.GetEnd().y)]
         else:
-            ends = chain_ends(d["net"], items, lid)
+            ends = chain_ends(d["net"], reps, lid, mine=items)
             a_nm = [int(round(v * 1e6)) for v in ends[0]]
             b_nm = [int(round(v * 1e6)) for v in ends[1]]
-        t = items[0]
+        t = reps[0]
         doomed += items
         was = sum(math.hypot(q.GetEnd().x - q.GetStart().x,
                              q.GetEnd().y - q.GetStart().y)
-                  for q in items) / 1e6
+                  for q in reps) / 1e6
         # THE BOUND IS MEASURED OFF THE RESERVATION, NOT CHOSEN.  Walking the
         # whole way round a reserved circle of radius R adds at most its
         # circumference, so `was + 2*pi*R_max` is the longest a genuine detour
@@ -1120,7 +1149,8 @@ def detour_apply(path, spec):
             # KiCad cluster, and the pour path that replaces the copper at
             # least as wide as the copper removed.
             relay=bool(d.get("relay", True)),
-            width_nm=int(t.GetWidth()), tracks=len(items),
+            width_nm=int(t.GetWidth()), tracks=len(reps),
+            objects=len(items),
             a_nm=a_nm, b_nm=b_nm,
             mm=round(was, 4),
             max_mm=round(float(d.get("max_mm",
@@ -3451,8 +3481,17 @@ def main():
                          "reserved site, so nothing is stranded and the cut "
                          "net's cluster count cannot move.  Clause 5 licenses "
                          "the removals by signature and a detour that will not "
-                         "route refuses the whole run.  Screen it first with "
-                         "screen_segment_evict.py --plan-out")
+                         "route refuses the whole run.  D-646: an entry may "
+                         "declare `\"relay\": false` and be REMOVED and not put "
+                         "back, which the gate's inert_removal_priced clause "
+                         "then prices.  D-648: a track description may declare "
+                         "`\"count\": N` when this board carries that exact "
+                         "description N times -- two coincident duplicates are "
+                         "ONE conductor and ONE obstacle, and taking only one "
+                         "of them leaves the other in the corridor.  `count` "
+                         "defaults to 1, so every earlier spec is unchanged.  "
+                         "Screen it first with screen_segment_evict.py "
+                         "--plan-out")
     ap.add_argument("--detour-own-layer", action="store_true",
                     help="D-609: let a detour re-lay its track on the layer it "
                          "ALREADY lawfully occupies, even when that layer is a "

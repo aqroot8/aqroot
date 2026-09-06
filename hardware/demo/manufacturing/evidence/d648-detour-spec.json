@@ -1,0 +1,31 @@
+{
+  "schema": 1,
+  "detours": [
+    {
+      "net": "GND",
+      "relay": false,
+      "tracks": [
+        {"layer": "B.Cu", "a_mm": [58.625, 71.7], "b_mm": [57.5, 72.8], "width_mm": 0.3, "count": 1}
+      ]
+    },
+    {
+      "net": "GND",
+      "relay": false,
+      "tracks": [
+        {"layer": "B.Cu", "a_mm": [58.625, 71.7], "b_mm": [58.0, 72.4], "width_mm": 0.3, "count": 1}
+      ]
+    },
+    {
+      "net": "GND",
+      "relay": false,
+      "tracks": [
+        {"layer": "B.Cu", "a_mm": [58.75, 70.85], "b_mm": [58.75, 71.525], "width_mm": 0.3, "count": 2},
+        {"layer": "B.Cu", "a_mm": [58.75, 71.525], "b_mm": [58.625, 71.7], "width_mm": 0.3, "count": 2}
+      ]
+    }
+  ],
+  "reserve": [
+    {"x_mm": 58.725, "y_mm": 71.575, "r_mm": 0.6, "exempt": ["+3V3"]}
+  ],
+  "note": "D-648: the BMI270's VDD pin U4.8 has no supply connection at all.  Its escape refuses at every width the board licenses UNTIL six B.Cu GND track objects -- four distinct descriptions, two of them carried TWICE by this board's duplicate-object debt (D-645) -- come out of the pocket north-east of U4.  With them gone and D-633's off-centre launch on, relief_stitch drops U4.8 onto the +3V3 plane in 0.580 mm of 0.400 mm B.Cu and ONE ORDINARY 0.65/0.40 mm barrel at (58.725, 71.575): the .kicad_dru's own P3V3 floor, needs_licence FALSE.  All six objects are in D-646's own INERT census for this window (evidence/d647-inert-copper-u4.json, 12 chains, 12 INERT, 7.775 mm); the set is MINIMAL by reverse-greedy, barrels offered back first, and ALL SIX GND BARRELS in the window RETURNED (w/d648/probe_u4_minimal.json).  relay: false because the B.Cu GND pour already joins every end -- the gate's inert_removal_priced clause re-earns that on the authoritative board."
+}

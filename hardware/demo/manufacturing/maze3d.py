@@ -840,11 +840,21 @@ def _lname(qb, lid):
     return None
 
 
-def verify_laid(qb, field, mark):
+def verify_laid(qb, field, mark, blame=None):
     """Re-prove every object laid since `mark`.  None when clean.
 
     Returns dict(kind, ...) naming the first object that fails, so the caller
     can report WHY it reverted rather than merely that it did.
+
+    `blame`, when a list is handed in, additionally receives the OBSTACLE
+    OBJECT that failed -- the `RR`/hole this proof measured against, not a
+    description of it.  D-647 published a board-wide one-object blame report
+    built out of the `why` string above and stated its own limit in the same
+    breath: it names the FIRST object the stroke meets, not the only one.  A
+    caller that wants the WHOLE set has to hold the named object out and ask
+    again, and to do that it needs the object rather than its coordinates.
+    Opt-in and additive: the return value is unchanged, so every existing
+    caller and every recorded artifact reads exactly as before.
 
     NOTHING IS EXEMPT.  A track segment that lies wholly inside the pad it
     leaves looks like copper the board already carries, and it was briefly
@@ -890,6 +900,8 @@ def verify_laid(qb, field, mark):
                 continue
             d = qr.seg_shape_dist(a.x, a.y, b.x, b.y, s)
             if d < need:
+                if blame is not None:
+                    blame.append(s)
                 return dict(kind='track', layer=L,
                             at=(round(a.x / 1e6, 4), round(a.y / 1e6, 4)),
                             to=(round(b.x / 1e6, 4), round(b.y / 1e6, 4)),
@@ -906,6 +918,8 @@ def verify_laid(qb, field, mark):
                            + 500000):
                 need = obs_clearance(qb, field, s, dia)
                 if s.dist(pos.x, pos.y) < need:
+                    if blame is not None:
+                        blame.append(s)
                     return dict(kind='via', layer=L,
                                 at=(round(pos.x / 1e6, 4),
                                     round(pos.y / 1e6, 4)),
@@ -916,6 +930,8 @@ def verify_laid(qb, field, mark):
                 continue                  # this barrel's own hole
             need = drill / 2.0 + h.r + HOLE_CLR
             if math.hypot(h.cx - pos.x, h.cy - pos.y) < need:
+                if blame is not None:
+                    blame.append(h)
                 return dict(kind='via', why='hole-to-hole',
                             at=(round(pos.x / 1e6, 4), round(pos.y / 1e6, 4)),
                             against=(h.net or '?'), tag=h.tag)
@@ -2298,12 +2314,18 @@ def _inside_pad(pad, t):
 
 
 def pad_bridge(qb, field, a, b, widths, layer=None,
-               insets_mm=PAD_BRIDGE_INSETS_MM):
+               insets_mm=PAD_BRIDGE_INSETS_MM, blame=None):
     """ONE straight track joining two lands of the same net, no escape at all.
 
     Returns dict(ok, ...).  On success the track is on `qb` and the caller's
     `mark` reverts it.  `widths` is the descending ladder the caller permits and
     is never widened or narrowed here.
+
+    `blame`, when a list is handed in, is kept in step with the refusal this
+    call REPORTS: after an `UNPROVED_GEOMETRY` return it holds exactly the one
+    obstacle object that rung measured against, so a caller can hold that
+    object out and ask again.  It is emptied on a successful bridge, because a
+    bridge that proved has no blocker.  Opt-in and additive.
     """
     layers = [layer] if layer else [L for L in ('F', 'B')
                                     if L in field.layers
@@ -2331,14 +2353,19 @@ def pad_bridge(qb, field, a, b, widths, layer=None,
                 m = qb.mark()
                 qb.track(field.net, L, int(round(ax)), int(round(ay)),
                          int(round(bx)), int(round(by)), int(w))
-                bad = verify_laid(qb, field, m)
+                rung = [] if blame is not None else None
+                bad = verify_laid(qb, field, m, blame=rung)
                 if bad is None:
+                    if blame is not None:
+                        del blame[:]
                     return dict(ok=True, pads=[a['ref'], b['ref']], layer=L,
                                 width=int(w), inset_mm=ins_mm,
                                 mm=round((span - 2 * t) / 1e6, 4), vias=0,
                                 a_xy=(round(ax / 1e6, 4), round(ay / 1e6, 4)),
                                 b_xy=(round(bx / 1e6, 4), round(by / 1e6, 4)))
                 qb.revert(m)
+                if blame is not None:
+                    blame[:] = rung
                 last = dict(ok=False, reason='UNPROVED_GEOMETRY',
                             pads=[a['ref'], b['ref']], layer=L, width=int(w),
                             inset_mm=ins_mm,
@@ -2499,6 +2526,30 @@ class EscapeCtx(object):
         self.clr_pad, self.clr_trk = clr_pad, clr_trk
         self.cls = net_classes(qb) if cls is None else cls
         self.mycls = self.cls.get(net, 'Default')
+
+
+class BridgeCtx(EscapeCtx):
+    """`EscapeCtx` plus the two attributes `pad_bridge` reads, and NO RASTER.
+
+    `pad_bridge` proves its one straight track with `verify_laid`, which is
+    exact analytic geometry over `QBoard.obstacles`.  It touches a `Field` for
+    exactly two things -- `field.layers`, to know which layers to offer, and
+    `field.blk`, only ever as `if L not in field.blk`.  Neither needs a cell.
+
+    That matters when the caller wants to ask the bridge question REPEATEDLY
+    with different objects held out (D-648): a `Field` rebuild costs a full
+    raster and a via grid per question, which is minutes over a board-wide
+    sweep, and every cell of it would be discarded unread.  This context is the
+    same five clearance facts `verify_laid` reads and a layer list, so the
+    proof is bit-for-bit the proof a `Field` would have produced -- a `Field`
+    remains a valid `BridgeCtx`, and nothing here may be used to propose copper
+    a lattice router would then have to route around.
+    """
+
+    def __init__(self, qb, net, clr_pad, clr_trk, layers, cls=None):
+        EscapeCtx.__init__(self, qb, net, clr_pad, clr_trk, cls=cls)
+        self.layers = list(layers)
+        self.blk = {L: None for L in self.layers}
 
 
 def _on_pad(pad, x, y):

@@ -7,9 +7,50 @@ stackup (`KO1-KO5`), pour bonds (`P1-P4`), pour partition (`PP1-PP4`, D-622),
 necks (`N1-N3`), placement (`PL1-PL9`), NFC front-end symmetry (`RF1-RF5`,
 D-621), protected copper and leaf-land pricing (`LL1-LL6`, D-632) -- and the
 residual is **44 retained open edges across 21 nets** (D-632).  Two of them, `USB_D_CONN_P` and the `USB_D_MCU` pair, are
-parked on rulings rather than routes (D-618, D-620).  The residual is **42**
-as of D-644, which closed `/09_COMMUNITY_HEADER/EXT_SDA` -> the Qwiic/STEMMA QT
-SDA contact.
+parked on rulings rather than routes (D-618, D-620).  The residual is **40**
+as of D-648: D-644 closed `/09_COMMUNITY_HEADER/EXT_SDA` -> the Qwiic/STEMMA QT
+SDA contact, D-646 the BMI270's `ASDx`/`ASCx` straps, and D-648 the BMI270's
+`VDD` supply pin `U4.8`.  The IMU is still NOT functional: `U4.5`, its `VDDIO`,
+remains an island of one land.
+
+## THE PAD BRIDGE NAMES ONE OBJECT.  ASK IT AGAIN. (D-648)
+
+    python3 screen_pad_bridge_blame.py [NET ...] [--max-mm 6] [--cap 12] -o OUT
+
+D-647 spent `maze3d.pad_bridge`'s `why` field as a free board-wide blame report
+-- "19 refused with a REASON, every one `UNPROVED_GEOMETRY` naming the
+coordinate and NET of a SINGLE blocking track" -- and stated its own limit in
+the same breath: **it names the FIRST object the stroke meets, not the only
+one.**  That limit is the difference between a hint and a transaction.  A pair
+whose first blocker is an ordinary signal track reads like a one-relay closure;
+if the SECOND object behind it is the part's own neighbouring land, there is no
+transaction at all and the relay is wasted.
+
+This screen holds the named object out, asks `pad_bridge` again, and keeps
+going until the stroke proves -- then MINIMISES the accumulated set by offering
+each member back, so every reported blocker carries `drop_refuses: true`.  Each
+one is CLASSIFIED: `PAD` (a part is soldered there -- `PLACEMENT_WALL`, and no
+eviction, relay or licence will ever do), `KEEPOUT`, or `ROUTED` (a track or a
+barrel -- an executable unit, reported with its net and with whether
+`protected_copper`'s own pattern forbids touching it).
+
+It is affordable because `pad_bridge` never reads a cell: `verify_laid` is
+analytic, and the only things it wanted a `Field` for are `field.layers` and
+`if L not in field.blk`.  `maze3d.BridgeCtx` is those two facts plus the five
+clearance numbers `verify_laid` reads, so a question costs a bbox sweep instead
+of a raster and a via grid.  **Board-wide -- 20 open nets, 51 pairs, every rung,
+every blame iteration -- 11.5 seconds** (`evidence/d648-pad-bridge-blame.json`).
+
+The first answer it gave is a refutation.  `+3V3`'s 19 candidate pairs are
+**12 `PLACEMENT_WALL` and 7 `UNRESOLVED`, ZERO evictable**: every straight
+stroke between two `+3V3` lands of the BMI270 `U4` runs into `U4.4`, `U4.6`,
+`U4.1`, `U4.7`, `U4.9` or `U4.13` -- the part's OWN lands.  D-647's named blocker for
+`U4.3 <-> U4.5` was an ordinary `BMI270_INT1_RAW` track; the full minimal set
+is FIVE objects and that track is the LAST of them, behind `U4.4` and `U4.6` --
+so relaying it would have bought nothing.  Board-wide the screen finds **3
+EVICTABLE pairs** nobody had: `BQ25185_SYS C24.1 <-> C26.2` at the FULL 0.800 mm
+netclass width behind four `Net-(U12-PS_SYNC)` tracks, and two `GND` pairs into
+`U9.16` behind the promoted NFC transmit arms.
 
 ## THE OBSTACLE MODEL WAS NOT THE BOARD (D-645)
 

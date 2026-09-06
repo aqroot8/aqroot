@@ -1,0 +1,801 @@
+{
+ "board": "/home/aqroot8/aqroot-demo/hardware/demo/kicad/aqroot-demo/aqroot-Beta-v2.kicad_pcb",
+ "board_sha256": "6b7cb0143b2a10e5d4160232f7aba466ccf50a71cdda417e72a680acfcd40dde",
+ "held": [
+  {
+   "a": [
+    60.1,
+    68.0
+   ],
+   "b": [
+    60.1,
+    68.0
+   ],
+   "layer": "F",
+   "net": "GND",
+   "tag": "via"
+  },
+  {
+   "a": [
+    58.0,
+    72.4
+   ],
+   "b": [
+    58.0,
+    72.4
+   ],
+   "layer": "F",
+   "net": "GND",
+   "tag": "via"
+  },
+  {
+   "a": [
+    56.0,
+    68.1
+   ],
+   "b": [
+    56.0,
+    68.1
+   ],
+   "layer": "F",
+   "net": "GND",
+   "tag": "via"
+  },
+  {
+   "a": [
+    58.3,
+    70.2
+   ],
+   "b": [
+    58.3,
+    70.2
+   ],
+   "layer": "F",
+   "net": "GND",
+   "tag": "via"
+  },
+  {
+   "a": [
+    57.7,
+    70.0
+   ],
+   "b": [
+    57.7,
+    70.0
+   ],
+   "layer": "F",
+   "net": "GND",
+   "tag": "via"
+  },
+  {
+   "a": [
+    60.1,
+    68.0
+   ],
+   "b": [
+    60.1,
+    68.0
+   ],
+   "layer": "I1",
+   "net": "GND",
+   "tag": "via"
+  },
+  {
+   "a": [
+    58.0,
+    72.4
+   ],
+   "b": [
+    58.0,
+    72.4
+   ],
+   "layer": "I1",
+   "net": "GND",
+   "tag": "via"
+  },
+  {
+   "a": [
+    56.0,
+    68.1
+   ],
+   "b": [
+    56.0,
+    68.1
+   ],
+   "layer": "I1",
+   "net": "GND",
+   "tag": "via"
+  },
+  {
+   "a": [
+    58.3,
+    70.2
+   ],
+   "b": [
+    58.3,
+    70.2
+   ],
+   "layer": "I1",
+   "net": "GND",
+   "tag": "via"
+  },
+  {
+   "a": [
+    57.7,
+    70.0
+   ],
+   "b": [
+    57.7,
+    70.0
+   ],
+   "layer": "I1",
+   "net": "GND",
+   "tag": "via"
+  },
+  {
+   "a": [
+    60.1,
+    68.0
+   ],
+   "b": [
+    60.1,
+    68.0
+   ],
+   "layer": "I2",
+   "net": "GND",
+   "tag": "via"
+  },
+  {
+   "a": [
+    58.0,
+    72.4
+   ],
+   "b": [
+    58.0,
+    72.4
+   ],
+   "layer": "I2",
+   "net": "GND",
+   "tag": "via"
+  },
+  {
+   "a": [
+    56.0,
+    68.1
+   ],
+   "b": [
+    56.0,
+    68.1
+   ],
+   "layer": "I2",
+   "net": "GND",
+   "tag": "via"
+  },
+  {
+   "a": [
+    58.3,
+    70.2
+   ],
+   "b": [
+    58.3,
+    70.2
+   ],
+   "layer": "I2",
+   "net": "GND",
+   "tag": "via"
+  },
+  {
+   "a": [
+    57.7,
+    70.0
+   ],
+   "b": [
+    57.7,
+    70.0
+   ],
+   "layer": "I2",
+   "net": "GND",
+   "tag": "via"
+  },
+  {
+   "a": [
+    60.1,
+    68.0
+   ],
+   "b": [
+    60.1,
+    68.0
+   ],
+   "layer": "I3",
+   "net": "GND",
+   "tag": "via"
+  },
+  {
+   "a": [
+    58.0,
+    72.4
+   ],
+   "b": [
+    58.0,
+    72.4
+   ],
+   "layer": "I3",
+   "net": "GND",
+   "tag": "via"
+  },
+  {
+   "a": [
+    56.0,
+    68.1
+   ],
+   "b": [
+    56.0,
+    68.1
+   ],
+   "layer": "I3",
+   "net": "GND",
+   "tag": "via"
+  },
+  {
+   "a": [
+    58.3,
+    70.2
+   ],
+   "b": [
+    58.3,
+    70.2
+   ],
+   "layer": "I3",
+   "net": "GND",
+   "tag": "via"
+  },
+  {
+   "a": [
+    57.7,
+    70.0
+   ],
+   "b": [
+    57.7,
+    70.0
+   ],
+   "layer": "I3",
+   "net": "GND",
+   "tag": "via"
+  },
+  {
+   "a": [
+    60.1,
+    68.0
+   ],
+   "b": [
+    60.1,
+    68.0
+   ],
+   "layer": "I4",
+   "net": "GND",
+   "tag": "via"
+  },
+  {
+   "a": [
+    58.0,
+    72.4
+   ],
+   "b": [
+    58.0,
+    72.4
+   ],
+   "layer": "I4",
+   "net": "GND",
+   "tag": "via"
+  },
+  {
+   "a": [
+    56.0,
+    68.1
+   ],
+   "b": [
+    56.0,
+    68.1
+   ],
+   "layer": "I4",
+   "net": "GND",
+   "tag": "via"
+  },
+  {
+   "a": [
+    58.3,
+    70.2
+   ],
+   "b": [
+    58.3,
+    70.2
+   ],
+   "layer": "I4",
+   "net": "GND",
+   "tag": "via"
+  },
+  {
+   "a": [
+    57.7,
+    70.0
+   ],
+   "b": [
+    57.7,
+    70.0
+   ],
+   "layer": "I4",
+   "net": "GND",
+   "tag": "via"
+  },
+  {
+   "a": [
+    58.625,
+    71.7
+   ],
+   "b": [
+    58.0,
+    72.4
+   ],
+   "layer": "B",
+   "net": "GND",
+   "tag": "track"
+  },
+  {
+   "a": [
+    58.75,
+    71.525
+   ],
+   "b": [
+    58.625,
+    71.7
+   ],
+   "layer": "B",
+   "net": "GND",
+   "tag": "track"
+  },
+  {
+   "a": [
+    58.625,
+    71.7
+   ],
+   "b": [
+    57.5,
+    72.8
+   ],
+   "layer": "B",
+   "net": "GND",
+   "tag": "track"
+  },
+  {
+   "a": [
+    60.2,
+    68.1
+   ],
+   "b": [
+    60.1,
+    68.0
+   ],
+   "layer": "B",
+   "net": "GND",
+   "tag": "track"
+  },
+  {
+   "a": [
+    58.75,
+    71.525
+   ],
+   "b": [
+    58.625,
+    71.7
+   ],
+   "layer": "B",
+   "net": "GND",
+   "tag": "track"
+  },
+  {
+   "a": [
+    58.675,
+    70.675
+   ],
+   "b": [
+    58.75,
+    70.85
+   ],
+   "layer": "B",
+   "net": "GND",
+   "tag": "track"
+  },
+  {
+   "a": [
+    58.75,
+    70.85
+   ],
+   "b": [
+    58.75,
+    71.525
+   ],
+   "layer": "B",
+   "net": "GND",
+   "tag": "track"
+  },
+  {
+   "a": [
+    58.4,
+    70.5
+   ],
+   "b": [
+    58.675,
+    70.675
+   ],
+   "layer": "B",
+   "net": "GND",
+   "tag": "track"
+  },
+  {
+   "a": [
+    58.675,
+    70.675
+   ],
+   "b": [
+    58.75,
+    70.85
+   ],
+   "layer": "B",
+   "net": "GND",
+   "tag": "track"
+  },
+  {
+   "a": [
+    58.75,
+    70.85
+   ],
+   "b": [
+    58.75,
+    71.525
+   ],
+   "layer": "B",
+   "net": "GND",
+   "tag": "track"
+  },
+  {
+   "a": [
+    59.025,
+    67.425
+   ],
+   "b": [
+    60.2,
+    68.1
+   ],
+   "layer": "B",
+   "net": "GND",
+   "tag": "track"
+  },
+  {
+   "a": [
+    58.4,
+    70.0
+   ],
+   "b": [
+    58.3,
+    70.1
+   ],
+   "layer": "B",
+   "net": "GND",
+   "tag": "track"
+  },
+  {
+   "a": [
+    58.3,
+    70.1
+   ],
+   "b": [
+    58.3,
+    70.2
+   ],
+   "layer": "B",
+   "net": "GND",
+   "tag": "track"
+  },
+  {
+   "a": [
+    58.4125,
+    70.0
+   ],
+   "b": [
+    57.7,
+    70.0
+   ],
+   "layer": "B",
+   "net": "GND",
+   "tag": "track"
+  },
+  {
+   "a": [
+    58.4,
+    70.5
+   ],
+   "b": [
+    58.675,
+    70.675
+   ],
+   "layer": "B",
+   "net": "GND",
+   "tag": "track"
+  },
+  {
+   "a": [
+    60.1,
+    68.0
+   ],
+   "b": [
+    60.1,
+    68.0
+   ],
+   "layer": "B",
+   "net": "GND",
+   "tag": "via"
+  },
+  {
+   "a": [
+    58.0,
+    72.4
+   ],
+   "b": [
+    58.0,
+    72.4
+   ],
+   "layer": "B",
+   "net": "GND",
+   "tag": "via"
+  },
+  {
+   "a": [
+    56.0,
+    68.1
+   ],
+   "b": [
+    56.0,
+    68.1
+   ],
+   "layer": "B",
+   "net": "GND",
+   "tag": "via"
+  },
+  {
+   "a": [
+    58.3,
+    70.2
+   ],
+   "b": [
+    58.3,
+    70.2
+   ],
+   "layer": "B",
+   "net": "GND",
+   "tag": "via"
+  },
+  {
+   "a": [
+    57.7,
+    70.0
+   ],
+   "b": [
+    57.7,
+    70.0
+   ],
+   "layer": "B",
+   "net": "GND",
+   "tag": "via"
+  }
+ ],
+ "held_out": 51,
+ "rows": [
+  {
+   "arm": "base",
+   "mm": null,
+   "ok": false,
+   "pad": "U4.5",
+   "reason": "NO_LEGAL_ESCAPE",
+   "rung": "0 dru floor",
+   "secs": 0.9,
+   "via_xy": null,
+   "why": "U4.5: NO LEGAL ESCAPE at >= 0.400 mm; blocked by U4.6 (x41), U4.4 (x19), C6.2 (x5), C7.2 (x3)"
+  },
+  {
+   "arm": "base",
+   "mm": null,
+   "ok": false,
+   "pad": "U4.8",
+   "reason": "NO_LEGAL_ESCAPE",
+   "rung": "0 dru floor",
+   "secs": 0.9,
+   "via_xy": null,
+   "why": "U4.8: NO LEGAL ESCAPE at >= 0.400 mm; blocked by U4.9 (x44), U4.7 (x13), U4.6 (x4), U4.1 (x4)"
+  },
+  {
+   "arm": "gnd_out",
+   "mm": null,
+   "ok": false,
+   "pad": "U4.5",
+   "reason": "NO_LEGAL_ESCAPE",
+   "rung": "0 dru floor",
+   "secs": 0.9,
+   "via_xy": null,
+   "why": "U4.5: NO LEGAL ESCAPE at >= 0.400 mm; blocked by U4.6 (x41), U4.4 (x19), C6.2 (x5), C7.2 (x3)"
+  },
+  {
+   "arm": "gnd_out",
+   "mm": 0.679,
+   "ok": true,
+   "pad": "U4.8",
+   "reason": null,
+   "rung": "0 dru floor",
+   "secs": 0.5,
+   "via_xy": [
+    58.525,
+    71.7
+   ],
+   "why": "None"
+  },
+  {
+   "arm": "base",
+   "mm": 3.759,
+   "ok": true,
+   "pad": "U4.5",
+   "reason": null,
+   "rung": "1 relief WIDTH",
+   "secs": 1.0,
+   "via_xy": [
+    55.65,
+    66.975
+   ],
+   "why": "None"
+  },
+  {
+   "arm": "base",
+   "mm": null,
+   "ok": false,
+   "pad": "U4.8",
+   "reason": "NO_VIA_SITE",
+   "rung": "1 relief WIDTH",
+   "secs": 0.4,
+   "via_xy": null,
+   "why": "no legal 0.65 mm barrel within 8.0 mm of any escape"
+  },
+  {
+   "arm": "gnd_out",
+   "mm": 2.806,
+   "ok": true,
+   "pad": "U4.5",
+   "reason": null,
+   "rung": "1 relief WIDTH",
+   "secs": 0.8,
+   "via_xy": [
+    58.725,
+    71.575
+   ],
+   "why": "None"
+  },
+  {
+   "arm": "gnd_out",
+   "mm": 6.56,
+   "ok": true,
+   "pad": "U4.8",
+   "reason": null,
+   "rung": "1 relief WIDTH",
+   "secs": 1.1,
+   "via_xy": [
+    55.65,
+    66.975
+   ],
+   "why": "None"
+  },
+  {
+   "arm": "base",
+   "mm": null,
+   "ok": false,
+   "pad": "U4.5",
+   "reason": "NO_LEGAL_ESCAPE",
+   "rung": "2 relief BARREL",
+   "secs": 0.9,
+   "via_xy": null,
+   "why": "U4.5: NO LEGAL ESCAPE at >= 0.400 mm; blocked by U4.6 (x41), U4.4 (x19), C6.2 (x5), C7.2 (x3)"
+  },
+  {
+   "arm": "base",
+   "mm": null,
+   "ok": false,
+   "pad": "U4.8",
+   "reason": "NO_LEGAL_ESCAPE",
+   "rung": "2 relief BARREL",
+   "secs": 0.9,
+   "via_xy": null,
+   "why": "U4.8: NO LEGAL ESCAPE at >= 0.400 mm; blocked by U4.9 (x44), U4.7 (x13), U4.6 (x4), U4.1 (x4)"
+  },
+  {
+   "arm": "gnd_out",
+   "mm": null,
+   "ok": false,
+   "pad": "U4.5",
+   "reason": "NO_LEGAL_ESCAPE",
+   "rung": "2 relief BARREL",
+   "secs": 0.9,
+   "via_xy": null,
+   "why": "U4.5: NO LEGAL ESCAPE at >= 0.400 mm; blocked by U4.6 (x41), U4.4 (x19), C6.2 (x5), C7.2 (x3)"
+  },
+  {
+   "arm": "gnd_out",
+   "mm": 0.513,
+   "ok": true,
+   "pad": "U4.8",
+   "reason": null,
+   "rung": "2 relief BARREL",
+   "secs": 0.5,
+   "via_xy": [
+    58.375,
+    71.625
+   ],
+   "why": "None"
+  },
+  {
+   "arm": "base",
+   "mm": 1.383,
+   "ok": true,
+   "pad": "U4.5",
+   "reason": null,
+   "rung": "3 relief WIDTH+BARREL",
+   "secs": 0.8,
+   "via_xy": [
+    57.275,
+    68.625
+   ],
+   "why": "None"
+  },
+  {
+   "arm": "base",
+   "mm": null,
+   "ok": false,
+   "pad": "U4.8",
+   "reason": "NO_VIA_SITE",
+   "rung": "3 relief WIDTH+BARREL",
+   "secs": 0.4,
+   "via_xy": null,
+   "why": "no legal 0.35 mm barrel within 8.0 mm of any escape"
+  },
+  {
+   "arm": "gnd_out",
+   "mm": 0.006,
+   "ok": true,
+   "pad": "U4.5",
+   "reason": null,
+   "rung": "3 relief WIDTH+BARREL",
+   "secs": 0.6,
+   "via_xy": [
+    58.275,
+    69.475
+   ],
+   "why": "None"
+  },
+  {
+   "arm": "gnd_out",
+   "mm": 0.698,
+   "ok": true,
+   "pad": "U4.8",
+   "reason": null,
+   "rung": "3 relief WIDTH+BARREL",
+   "secs": 0.4,
+   "via_xy": [
+    58.75,
+    71.65
+   ],
+   "why": "None"
+  }
+ ],
+ "schema": 1,
+ "window_mm": [
+  55.0,
+  66.0,
+  61.0,
+  73.0
+ ]
+}

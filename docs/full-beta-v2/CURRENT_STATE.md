@@ -13,6 +13,107 @@
 > This file references DEVICE_SPEC rather than duplicating full specs.
 
 ## 1. Authoritative HEAD
+- **Demo D-648 (THE BMI270's `VDD` IS CONNECTED, AND ITS WALL WAS SIX `GND`
+  TRACK OBJECTS -- TWO OF THEM A DUPLICATE PAIR NO TRANSACTION COULD NAME):**
+  **COPPER PROMOTED.**  Authority
+  `6b7cb0143b2a10e5d4160232f7aba466ccf50a71cdda417e72a680acfcd40dde` ->
+  **`9550e320d6203d237619ca866ff018b2d2e9cd4216bd7cbcbf13b578794e47e6`**;
+  retained open edges **41 -> 40**, `+3V3` open edges **5 -> 4**, raw ratsnest
+  **57 -> 56**, open retained nets 20, connected retained 153.
+  `hardware/beta-v2` untouched.  **THIRTEEN of thirteen gate clauses PASS**,
+  `refused_clauses` EMPTY; `verify_promotion.py` PASS on all 15 checks (THREE
+  objects added, all `+3V3`; FOUR removed signatures, all licensed).  The
+  standing suite is **11/11 RAN, 11/11 PASS**
+  (`evidence/d648-contract-regression.json`, baseline `d632`).  ONE new tracked
+  screen, ONE new `maze3d` context, TWO opt-in blame parameters, ONE
+  `--detour-spec` field.
+  **(1) D-647's OWN STATED LIMIT, CLOSED.**  `maze3d.pad_bridge` "names the
+  FIRST object the stroke meets, not the only one", and that is the difference
+  between a hint and a transaction.  New **`screen_pad_bridge_blame.py`** holds
+  the named object out, re-asks to exhaustion, MINIMISES the set (every blocker
+  carries `drop_refuses: true`) and CLASSIFIES each as `PAD` / `KEEPOUT` /
+  `ROUTED`.  D-647's headline row `U4.3 <-> U4.5` -- "one ordinary
+  `BMI270_INT1_RAW` track" -- has a FIVE-object minimal set whose first two
+  members are the part's OWN LANDS `U4.4` and `U4.6`; that track is the LAST of
+  the five.  Board-wide, 20 open nets, 51 pairs: **26 `PLACEMENT_WALL`, 22
+  `UNRESOLVED`, 3 `EVICTABLE`**, `+3V3` ZERO evictable
+  (`evidence/d648-pad-bridge-blame.json`).
+  **(2) IT COSTS 11.5 SECONDS BECAUSE THE PAD BRIDGE NEVER NEEDED A RASTER.**
+  `verify_laid` is analytic; a `Field` was only ever consulted for
+  `field.layers` and `if L not in field.blk`.  **`maze3d.BridgeCtx`** is those
+  two facts plus the five clearance numbers, so a question costs a bbox sweep
+  instead of a raster and a via grid.  `screen_pad_bridge.py` on `+3V3` still
+  reads D-647's own numbers to the row (19 asked, 0 bridged, 376 declined).
+  **(3) SO THE BRIDGE IS CLOSED FOR `U4` AND THE ESCAPE IS THE INSTRUMENT.**
+  Upper bound first: every routed `GND` object in D-647's census window held
+  out, and `U4.8` opens at **RUNG 0 -- the `.kicad_dru`'s own class floor,
+  0.400 mm and an ordinary 0.65/0.40 mm barrel** (`evidence/d648-u4-inert-upper-bound.json`).
+  Minimal set, physical units, barrels offered back first: **ALL SIX `GND`
+  BARRELS RETURNED**; the answer is **SIX `B.Cu` `GND` TRACK OBJECTS, FOUR
+  distinct descriptions, 3.4019 mm** (`evidence/d648-u4-minimal-removal.json`),
+  every one already in D-646's `INERT` census for that window.
+  **(4) TWO OF THE SIX ARE A DUPLICATE PAIR, AND THAT IS WHY NOTHING COULD
+  TAKE THEM.**  D-645 filed this board's 93 duplicate track objects as
+  harmless; they are not harmless to a TRANSACTION.  `--detour-spec`'s
+  `resolve()` demanded `len(hits) == 1` and stopped the run; removing one copy
+  leaves the other in the corridor; naming one copy makes the other a "third
+  track on the chain's interior junction".  A track description now takes an
+  optional **`"count"`**, defaulting to 1, so **every existing spec is
+  unchanged** and declaring the multiplicity is the only way to take it.
+  **(5) THE CLOSURE.**  `U4.8`, `B.Cu`, **0.580 mm at 0.400 mm** and ONE
+  0.65/0.40 mm barrel at **(58.725, 71.575)**, `needs_licence: FALSE`, no rule
+  area authored or widened.  The gate's contract is NOT the screen's, and that
+  cost a measurement: at the netclass 0.600 mm `U4.8` refuses in **all eight
+  variants** -- with and without `--escape-floor`, off-centre launch and the
+  removal (`evidence/d648-u4-gate-contract.json`).  `--escape-relief` is the
+  one pass whose ladder descends to the class floor for the TRUNK, and
+  `--relief-via 650000:400000` sends it there with an ORDINARY barrel, so the
+  relief pass spends no relief.
+  **(6) THE SECOND LEVER IS STILL ENV-GATED.**  `AQROOT_OFFCENTRE_LAUNCH=1` is
+  required: unset, the same removal and the same ladder refuse `U4.8`
+  identically to the untouched board (`evidence/d648-u4-relief-offcentre.json`
+  records both arms).  It is **NOT flipped to default here** -- D-646 flipped
+  `AQROOT_SCAN_BOARD_VIAS` on one gate run and silently broke the contract that
+  watches it.  The next transaction that needs it owes the same A/B.
+  **(7) THE REMOVAL IS PRICED AND IT TOOK NO GROUND FROM THE IMU.**  Clause 13
+  on the AUTHORITATIVE board: all three entries `ok`, one filled island
+  (`B GND PLANE` 35, 8.695 mm2) holding both ends of each, pour path
+  **0.550 mm narrowest against the 0.300 mm bar, ratio 1.833**.  Real KiCad DRC
+  **exit 0, ZERO attributable**, profile identical to baseline.  KiCad's own
+  connectivity: **`U4.8` is in the 78-pad `+3V3` cluster on `F` and `In3`**,
+  and `U4.6`/`U4.7` are still in the 228-pad `GND` cluster on `B GND PLANE` and
+  both `In1` references (`evidence/d648-u4-connectivity.json`).  Against
+  D-647's own contract run the ONLY non-sha difference is
+  `keepout_stackup`'s `In1.Cu` area, **9422.1056 -> 9421.0232 mm2** -- the
+  1.0823 mm2 antipad this barrel punches -- and `KO1`-`KO5` still PASS.
+  **(8) WHAT IS STILL OPEN, PLAINLY.**  **`U4.5` (`VDDIO`) IS STILL AN ISLAND
+  OF ONE LAND, so the IMU is NOT yet functional** -- a smaller fabrication
+  blocker, not a closed one.  It is fully characterised: `PLACEMENT_WALL` for
+  every bridge, refused at 0.400 mm against four PADS with or without the
+  removal, and the one thing that opens it (0.200 mm `B.Cu`) is below the class
+  floor and refused by `leaf_land_contract` LL4.
+  **NEXT, IN ORDER OF LEVERAGE:** (1) **SPEND THE BLAME SCREEN'S THREE
+  `EVICTABLE` ROWS** -- `/01_POWER_TREE/BQ25185_SYS` `C24.1 <-> C26.2`, gap
+  2.704 mm, closes with ONE straight `B.Cu` track at the **FULL 0.800 mm
+  netclass width** behind four `Net-(U12-PS_SYNC)` tracks, and that net is the
+  largest open one on the board (7 of 40); the two `GND` rows into `U9.16` sit
+  behind the promoted NFC transmit arms and owe `rf_symmetry_contract` first
+  (`evidence/d648-pad-bridge-blame-post.json`, on the promoted board).
+  (2) **`U4.5` NEEDS THE PER-PART ELECTRICAL LEDGER** (D-636 item 1): LL1 stops
+  at `power_in` because nothing here publishes a per-part supply current a
+  clause may read.  The BMI270's schematic `Note` publishes low-power and
+  suspend figures (4 uA + 3 uA, 3.5 uA) against `BST-BMI270-DS000-08 Rev 1.6`
+  -- **NOT a maximum, and it must not be used as one**.  A `BOUNDED_SUPPLY`
+  class needs a tracked, TIERED, citable ledger shaped like
+  `land_citations.json`, where an unread tier is an OPEN item that REFUSES.
+  (3) `R129.1` is a POUR-ISLAND join across 1.7671 mm past `/ACC_3V3_SW`
+  (D-647), not another escape relief.  (4) `/ACC_5V_BOOST_EN` is one object
+  from closing and refused four ways (D-647).  (5) Re-ask
+  `screen_pad_bridge_blame.py` after every promotion -- 11 seconds, whole
+  board.  (6) CARRIED UNCHANGED: `/I2S_LRCLK`'s edge rate, `/NFC_SUPPLY`'s
+  per-net current, `/SPI_B_SCK` and `/BQ25185_STAT1` as LANDS, the three
+  inherited `GND` orphans, `BQ25185_SYS C26.2`.
+  No owner decision is OPEN.  D-618's `J3` question remains RECORDED.
 - **Demo D-647 (THE BMI270 HAS NO SUPPLY CONNECTION OF ANY KIND):**  **NO
   COPPER MOVED.**  Authority **UNCHANGED** at
   `6b7cb0143b2a10e5d4160232f7aba466ccf50a71cdda417e72a680acfcd40dde`; retained

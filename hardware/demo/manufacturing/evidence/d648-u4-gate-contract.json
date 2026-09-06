@@ -1,0 +1,297 @@
+{
+ "board": "/home/aqroot8/aqroot-demo/hardware/demo/kicad/aqroot-demo/aqroot-Beta-v2.kicad_pcb",
+ "board_sha256": "6b7cb0143b2a10e5d4160232f7aba466ccf50a71cdda417e72a680acfcd40dde",
+ "dru_floor": 400000,
+ "minimal": [
+  {
+   "a_mm": [
+    58.625,
+    71.7
+   ],
+   "b_mm": [
+    57.5,
+    72.8
+   ],
+   "kind": "track",
+   "layer": "B",
+   "width_mm": 0.3
+  },
+  {
+   "a_mm": [
+    58.625,
+    71.7
+   ],
+   "b_mm": [
+    58.0,
+    72.4
+   ],
+   "kind": "track",
+   "layer": "B",
+   "width_mm": 0.3
+  },
+  {
+   "a_mm": [
+    58.75,
+    70.85
+   ],
+   "b_mm": [
+    58.75,
+    71.525
+   ],
+   "kind": "track",
+   "layer": "B",
+   "width_mm": 0.3
+  },
+  {
+   "a_mm": [
+    58.75,
+    70.85
+   ],
+   "b_mm": [
+    58.75,
+    71.525
+   ],
+   "kind": "track",
+   "layer": "B",
+   "width_mm": 0.3
+  },
+  {
+   "a_mm": [
+    58.75,
+    71.525
+   ],
+   "b_mm": [
+    58.625,
+    71.7
+   ],
+   "kind": "track",
+   "layer": "B",
+   "width_mm": 0.3
+  },
+  {
+   "a_mm": [
+    58.75,
+    71.525
+   ],
+   "b_mm": [
+    58.625,
+    71.7
+   ],
+   "kind": "track",
+   "layer": "B",
+   "width_mm": 0.3
+  }
+ ],
+ "netclass_width": 600000,
+ "rows": [
+  {
+   "arm": "base",
+   "escape_floor": null,
+   "mm": null,
+   "offcentre": false,
+   "ok": false,
+   "pad": "U4.8",
+   "reason": "NO_LEGAL_ESCAPE",
+   "secs": 17.8,
+   "variant": "netclass width, no escape-floor",
+   "via_xy": null,
+   "why": "U4.8: NO LEGAL ESCAPE at >= 0.600 mm; blocked by U4.9 (x42), U4.6 (x12), U4.7 (x5), U4.1 (x4)"
+  },
+  {
+   "arm": "base",
+   "escape_floor": null,
+   "mm": null,
+   "offcentre": false,
+   "ok": false,
+   "pad": "U4.5",
+   "reason": "NO_LEGAL_ESCAPE",
+   "secs": 17.8,
+   "variant": "netclass width, no escape-floor",
+   "via_xy": null,
+   "why": "U4.5: NO LEGAL ESCAPE at >= 0.600 mm; blocked by U4.4 (x47), U4.1 (x11), C6.2 (x6), TP26.1 (x4)"
+  },
+  {
+   "arm": "gnd_min_out",
+   "escape_floor": null,
+   "mm": null,
+   "offcentre": false,
+   "ok": false,
+   "pad": "U4.8",
+   "reason": "NO_LEGAL_ESCAPE",
+   "secs": 17.8,
+   "variant": "netclass width, no escape-floor",
+   "via_xy": null,
+   "why": "U4.8: NO LEGAL ESCAPE at >= 0.600 mm; blocked by U4.9 (x42), U4.6 (x12), U4.7 (x5), U4.1 (x4)"
+  },
+  {
+   "arm": "gnd_min_out",
+   "escape_floor": null,
+   "mm": null,
+   "offcentre": false,
+   "ok": false,
+   "pad": "U4.5",
+   "reason": "NO_LEGAL_ESCAPE",
+   "secs": 17.8,
+   "variant": "netclass width, no escape-floor",
+   "via_xy": null,
+   "why": "U4.5: NO LEGAL ESCAPE at >= 0.600 mm; blocked by U4.4 (x47), U4.1 (x11), C6.2 (x6), TP26.1 (x4)"
+  },
+  {
+   "arm": "base",
+   "escape_floor": null,
+   "mm": null,
+   "offcentre": true,
+   "ok": false,
+   "pad": "U4.8",
+   "reason": "NO_LEGAL_ESCAPE",
+   "secs": 18.5,
+   "variant": "netclass width, no escape-floor",
+   "via_xy": null,
+   "why": "U4.8: NO LEGAL ESCAPE at >= 0.600 mm; blocked by U4.9 (x42), U4.6 (x12), U4.7 (x5), U4.1 (x4)"
+  },
+  {
+   "arm": "base",
+   "escape_floor": null,
+   "mm": null,
+   "offcentre": true,
+   "ok": false,
+   "pad": "U4.5",
+   "reason": "NO_LEGAL_ESCAPE",
+   "secs": 18.4,
+   "variant": "netclass width, no escape-floor",
+   "via_xy": null,
+   "why": "U4.5: NO LEGAL ESCAPE at >= 0.600 mm; blocked by U4.4 (x47), U4.1 (x11), C6.2 (x6), TP26.1 (x4)"
+  },
+  {
+   "arm": "gnd_min_out",
+   "escape_floor": null,
+   "mm": null,
+   "offcentre": true,
+   "ok": false,
+   "pad": "U4.8",
+   "reason": "NO_LEGAL_ESCAPE",
+   "secs": 18.3,
+   "variant": "netclass width, no escape-floor",
+   "via_xy": null,
+   "why": "U4.8: NO LEGAL ESCAPE at >= 0.600 mm; blocked by U4.9 (x42), U4.6 (x12), U4.7 (x5), U4.1 (x4)"
+  },
+  {
+   "arm": "gnd_min_out",
+   "escape_floor": null,
+   "mm": null,
+   "offcentre": true,
+   "ok": false,
+   "pad": "U4.5",
+   "reason": "NO_LEGAL_ESCAPE",
+   "secs": 18.2,
+   "variant": "netclass width, no escape-floor",
+   "via_xy": null,
+   "why": "U4.5: NO LEGAL ESCAPE at >= 0.600 mm; blocked by U4.4 (x47), U4.1 (x11), C6.2 (x6), TP26.1 (x4)"
+  },
+  {
+   "arm": "base",
+   "escape_floor": 400000,
+   "mm": null,
+   "offcentre": false,
+   "ok": false,
+   "pad": "U4.8",
+   "reason": "NO_LEGAL_ESCAPE",
+   "secs": 17.7,
+   "variant": "netclass width, --escape-floor",
+   "via_xy": null,
+   "why": "U4.8: NO LEGAL ESCAPE at >= 0.400 mm; blocked by U4.9 (x216), U4.7 (x47), U4.6 (x38), U4.1 (x20)"
+  },
+  {
+   "arm": "base",
+   "escape_floor": 400000,
+   "mm": null,
+   "offcentre": false,
+   "ok": false,
+   "pad": "U4.5",
+   "reason": "NO_LEGAL_ESCAPE",
+   "secs": 17.7,
+   "variant": "netclass width, --escape-floor",
+   "via_xy": null,
+   "why": "U4.5: NO LEGAL ESCAPE at >= 0.400 mm; blocked by U4.4 (x186), U4.6 (x82), U4.1 (x28), C6.2 (x27)"
+  },
+  {
+   "arm": "gnd_min_out",
+   "escape_floor": 400000,
+   "mm": null,
+   "offcentre": false,
+   "ok": false,
+   "pad": "U4.8",
+   "reason": "NO_LEGAL_ESCAPE",
+   "secs": 17.7,
+   "variant": "netclass width, --escape-floor",
+   "via_xy": null,
+   "why": "U4.8: NO LEGAL ESCAPE at >= 0.400 mm; blocked by U4.9 (x216), U4.7 (x47), U4.6 (x38), U4.1 (x20)"
+  },
+  {
+   "arm": "gnd_min_out",
+   "escape_floor": 400000,
+   "mm": null,
+   "offcentre": false,
+   "ok": false,
+   "pad": "U4.5",
+   "reason": "NO_LEGAL_ESCAPE",
+   "secs": 17.8,
+   "variant": "netclass width, --escape-floor",
+   "via_xy": null,
+   "why": "U4.5: NO LEGAL ESCAPE at >= 0.400 mm; blocked by U4.4 (x186), U4.6 (x82), U4.1 (x28), C6.2 (x27)"
+  },
+  {
+   "arm": "base",
+   "escape_floor": 400000,
+   "mm": null,
+   "offcentre": true,
+   "ok": false,
+   "pad": "U4.8",
+   "reason": "NO_LEGAL_ESCAPE",
+   "secs": 18.6,
+   "variant": "netclass width, --escape-floor",
+   "via_xy": null,
+   "why": "U4.8: NO LEGAL ESCAPE at >= 0.400 mm; blocked by U4.9 (x216), U4.7 (x47), U4.6 (x38), U4.1 (x20)"
+  },
+  {
+   "arm": "base",
+   "escape_floor": 400000,
+   "mm": null,
+   "offcentre": true,
+   "ok": false,
+   "pad": "U4.5",
+   "reason": "NO_LEGAL_ESCAPE",
+   "secs": 18.6,
+   "variant": "netclass width, --escape-floor",
+   "via_xy": null,
+   "why": "U4.5: NO LEGAL ESCAPE at >= 0.400 mm; blocked by U4.4 (x186), U4.6 (x82), U4.1 (x28), C6.2 (x27)"
+  },
+  {
+   "arm": "gnd_min_out",
+   "escape_floor": 400000,
+   "mm": null,
+   "offcentre": true,
+   "ok": false,
+   "pad": "U4.8",
+   "reason": "NO_LEGAL_ESCAPE",
+   "secs": 18.4,
+   "variant": "netclass width, --escape-floor",
+   "via_xy": null,
+   "why": "U4.8: NO LEGAL ESCAPE at >= 0.400 mm; blocked by U4.9 (x216), U4.7 (x47), U4.6 (x38), U4.1 (x20)"
+  },
+  {
+   "arm": "gnd_min_out",
+   "escape_floor": 400000,
+   "mm": null,
+   "offcentre": true,
+   "ok": false,
+   "pad": "U4.5",
+   "reason": "NO_LEGAL_ESCAPE",
+   "secs": 18.3,
+   "variant": "netclass width, --escape-floor",
+   "via_xy": null,
+   "why": "U4.5: NO LEGAL ESCAPE at >= 0.400 mm; blocked by U4.4 (x186), U4.6 (x82), U4.1 (x28), C6.2 (x27)"
+  }
+ ],
+ "schema": 1
+}

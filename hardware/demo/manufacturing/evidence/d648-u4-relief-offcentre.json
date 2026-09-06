@@ -1,0 +1,237 @@
+{
+ "arms": [
+  {
+   "arm": "base",
+   "failures": [
+    {
+     "island": [
+      "R129.1"
+     ],
+     "not_offered": [
+      "R129.1"
+     ],
+     "reason": "NOT_OFFERED"
+    },
+    {
+     "island": [
+      "R39.1"
+     ],
+     "not_offered": [
+      "R39.1"
+     ],
+     "reason": "NOT_OFFERED"
+    },
+    {
+     "island": [
+      "U4.5"
+     ],
+     "not_offered": [
+      "U4.5"
+     ],
+     "reason": "NOT_OFFERED"
+    },
+    {
+     "island": [
+      "U4.8"
+     ],
+     "pad": "U4.8",
+     "reason": "NO_LEGAL_ESCAPE",
+     "why": "U4.8: NO LEGAL ESCAPE at >= 0.400 mm; blocked by U4.9 (x44), U4.7 (x13), U4.6 (x4), U4.1 (x4)"
+    },
+    {
+     "island": [
+      "U5.2"
+     ],
+     "not_offered": [
+      "U5.2"
+     ],
+     "reason": "NOT_OFFERED"
+    }
+   ],
+   "mm": 0,
+   "net": "+3V3",
+   "ok": false,
+   "secs": 35.9,
+   "stitched": 0,
+   "stitches": [],
+   "unstitched": 5,
+   "via_dia": 650000,
+   "via_drill": 400000,
+   "vias": 0,
+   "widths": [
+    600000,
+    400000
+   ]
+  },
+  {
+   "arm": "gnd_min_out",
+   "failures": [
+    {
+     "island": [
+      "R129.1"
+     ],
+     "not_offered": [
+      "R129.1"
+     ],
+     "reason": "NOT_OFFERED"
+    },
+    {
+     "island": [
+      "R39.1"
+     ],
+     "not_offered": [
+      "R39.1"
+     ],
+     "reason": "NOT_OFFERED"
+    },
+    {
+     "island": [
+      "U4.5"
+     ],
+     "not_offered": [
+      "U4.5"
+     ],
+     "reason": "NOT_OFFERED"
+    },
+    {
+     "island": [
+      "U5.2"
+     ],
+     "not_offered": [
+      "U5.2"
+     ],
+     "reason": "NOT_OFFERED"
+    }
+   ],
+   "mm": 0.58,
+   "net": "+3V3",
+   "ok": true,
+   "secs": 35.9,
+   "stitched": 1,
+   "stitches": [
+    {
+     "area": null,
+     "island": [
+      "U4.8"
+     ],
+     "layer": "B",
+     "licence": null,
+     "mm": 0.58,
+     "needs_licence": false,
+     "pad": "U4.8",
+     "rung": 1,
+     "via_dia": 650000,
+     "via_drill": 400000,
+     "via_xy": [
+      58.725,
+      71.575
+     ],
+     "width": 400000,
+     "xy": [
+      58725000,
+      71575000
+     ]
+    }
+   ],
+   "unstitched": 4,
+   "via_dia": 650000,
+   "via_drill": 400000,
+   "vias": 1,
+   "widths": [
+    600000,
+    400000
+   ]
+  }
+ ],
+ "board": "/home/aqroot8/aqroot-demo/hardware/demo/kicad/aqroot-demo/aqroot-Beta-v2.kicad_pcb",
+ "board_sha256": "6b7cb0143b2a10e5d4160232f7aba466ccf50a71cdda417e72a680acfcd40dde",
+ "minimal": [
+  {
+   "a_mm": [
+    58.625,
+    71.7
+   ],
+   "b_mm": [
+    57.5,
+    72.8
+   ],
+   "kind": "track",
+   "layer": "B",
+   "width_mm": 0.3
+  },
+  {
+   "a_mm": [
+    58.625,
+    71.7
+   ],
+   "b_mm": [
+    58.0,
+    72.4
+   ],
+   "kind": "track",
+   "layer": "B",
+   "width_mm": 0.3
+  },
+  {
+   "a_mm": [
+    58.75,
+    70.85
+   ],
+   "b_mm": [
+    58.75,
+    71.525
+   ],
+   "kind": "track",
+   "layer": "B",
+   "width_mm": 0.3
+  },
+  {
+   "a_mm": [
+    58.75,
+    70.85
+   ],
+   "b_mm": [
+    58.75,
+    71.525
+   ],
+   "kind": "track",
+   "layer": "B",
+   "width_mm": 0.3
+  },
+  {
+   "a_mm": [
+    58.75,
+    71.525
+   ],
+   "b_mm": [
+    58.625,
+    71.7
+   ],
+   "kind": "track",
+   "layer": "B",
+   "width_mm": 0.3
+  },
+  {
+   "a_mm": [
+    58.75,
+    71.525
+   ],
+   "b_mm": [
+    58.625,
+    71.7
+   ],
+   "kind": "track",
+   "layer": "B",
+   "width_mm": 0.3
+  }
+ ],
+ "relief_via": [
+  650000,
+  400000
+ ],
+ "schema": 1,
+ "widths": [
+  600000,
+  400000
+ ]
+}
