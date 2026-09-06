@@ -1,0 +1,311 @@
+{
+ "board": "/home/aqroot8/aqroot-demo/hardware/demo/kicad/aqroot-demo/aqroot-Beta-v2.kicad_pcb",
+ "board_sha256": "6b7cb0143b2a10e5d4160232f7aba466ccf50a71cdda417e72a680acfcd40dde",
+ "board_sha256_at_write": "6b7cb0143b2a10e5d4160232f7aba466ccf50a71cdda417e72a680acfcd40dde",
+ "pads": {
+  "R129.1": {
+   "at": [
+    57.4,
+    57.735
+   ],
+   "connected_items": [
+    "PAD:R129.1",
+    "PCB_TRACK",
+    "PCB_VIA",
+    "ZONE:F +3V3 PLANE",
+    "ZONE:In3 +3V3 PLANE"
+   ],
+   "layers": [
+    "B.Cu"
+   ],
+   "local_clearance": null,
+   "net": "+3V3",
+   "size": [
+    0.8,
+    0.95
+   ],
+   "zone_connection": "UNKNOWN",
+   "zone_gaps": {
+    "F +3V3 PLANE|F.Cu": {
+     "centre_mm": 0.1581,
+     "pad_overlaps": false
+    },
+    "In3 +3V3 PLANE|In3.Cu": {
+     "centre_mm": 0.0,
+     "pad_overlaps": true
+    }
+   },
+   "zone_overlaps": [
+    "In3 +3V3 PLANE|In3.Cu"
+   ]
+  },
+  "R129.2": {
+   "at": [
+    59.05,
+    57.735
+   ],
+   "connected_items": [
+    "PAD:R129.2",
+    "PAD:R64.1",
+    "PAD:U3.17",
+    "PCB_TRACK",
+    "PCB_VIA"
+   ],
+   "layers": [
+    "B.Cu"
+   ],
+   "local_clearance": null,
+   "net": "/ACC_DETECT_N",
+   "size": [
+    0.8,
+    0.95
+   ],
+   "zone_connection": "UNKNOWN",
+   "zone_gaps": {},
+   "zone_overlaps": []
+  },
+  "R39.1": {
+   "at": [
+    65.675,
+    71.75
+   ],
+   "connected_items": [
+    "PAD:R39.1"
+   ],
+   "layers": [
+    "B.Cu"
+   ],
+   "local_clearance": null,
+   "net": "+3V3",
+   "size": [
+    0.8,
+    0.95
+   ],
+   "zone_connection": "UNKNOWN",
+   "zone_gaps": {
+    "F +3V3 PLANE|F.Cu": {
+     "centre_mm": 1.216,
+     "pad_overlaps": false
+    },
+    "In3 +3V3 PLANE|In3.Cu": {
+     "centre_mm": 1.682,
+     "pad_overlaps": false
+    }
+   },
+   "zone_overlaps": []
+  },
+  "U4.12": {
+   "at": [
+    56.5875,
+    70.5
+   ],
+   "connected_items": [
+    "PAD:C10.1",
+    "PAD:C12.2",
+    "PAD:C13.1",
+    "PAD:C14.1",
+    "PAD:C15.1",
+    "PAD:C16.1",
+    "PAD:C17.1",
+    "PAD:C18.1",
+    "PAD:C2.1",
+    "PAD:C29.1",
+    "PAD:C3.1",
+    "PAD:C30.1",
+    "PAD:C31.1",
+    "PAD:C32.1",
+    "PAD:C4.1",
+    "PAD:C43.1",
+    "PAD:C5.1",
+    "PAD:C56.1",
+    "PAD:C6.1",
+    "PAD:C62.1",
+    "PAD:C7.1",
+    "PAD:C8.1",
+    "PAD:C9.1",
+    "PAD:D13.1",
+    "PAD:J1.35",
+    "PAD:J1.40",
+    "PAD:J1.41",
+    "PAD:J1.42",
+    "PAD:J1.7",
+    "PAD:J1.8",
+    "PAD:J1.9",
+    "PAD:J2.4",
+    "PAD:L3.1",
+    "PAD:MK1.3",
+    "PAD:R1.2",
+    "PAD:R103.1",
+    "PAD:R106.1",
+    "PAD:R113.1",
+    "PAD:R119.1",
+    "PAD:R123.2",
+    "PAD:R127.1",
+    "PAD:R128.1",
+    "PAD:R19.1",
+    "PAD:R2.1",
+    "PAD:R20.1",
+    "PAD:R21.1",
+    "PAD:R24.2",
+    "PAD:R25.1",
+    "PAD:R26.1",
+    "PAD:R27.1",
+    "PAD:R28.1",
+    "PAD:R29.1",
+    "PAD:R3.2",
+    "PAD:R4.1",
+    "PAD:R41.1",
+    "PAD:R5.1",
+    "PAD:R6.1",
+    "PAD:R7.1",
+    "PAD:R8.1",
+    "PAD:R81.1",
+    "PAD:R9.1",
+    "PAD:U1.2",
+    "PAD:U12.4",
+    "PAD:U12.5",
+    "PAD:U17.5",
+    "PAD:U2.24",
+    "PAD:U20.2",
+    "PAD:U3.21",
+    "PAD:U3.24",
+    "PAD:U4.12",
+    "PAD:U4.2",
+    "PAD:U4.3",
+    "PAD:U5.7",
+    "PAD:U5.8",
+    "PAD:U7.9",
+    "PAD:U8.9",
+    "PAD:U9.1",
+    "PCB_TRACK",
+    "PCB_VIA",
+    "ZONE:F +3V3 PLANE",
+    "ZONE:In3 +3V3 PLANE"
+   ],
+   "layers": [
+    "B.Cu"
+   ],
+   "local_clearance": null,
+   "net": "+3V3",
+   "size": [
+    0.25,
+    0.475
+   ],
+   "zone_connection": "UNKNOWN",
+   "zone_gaps": {
+    "F +3V3 PLANE|F.Cu": {
+     "centre_mm": 0.0,
+     "pad_overlaps": true
+    },
+    "In3 +3V3 PLANE|In3.Cu": {
+     "centre_mm": 0.0,
+     "pad_overlaps": true
+    }
+   },
+   "zone_overlaps": [
+    "F +3V3 PLANE|F.Cu",
+    "In3 +3V3 PLANE|In3.Cu"
+   ]
+  },
+  "U4.5": {
+   "at": [
+    58.4125,
+    69.5
+   ],
+   "connected_items": [
+    "PAD:U4.5"
+   ],
+   "layers": [
+    "B.Cu"
+   ],
+   "local_clearance": null,
+   "net": "+3V3",
+   "size": [
+    0.25,
+    0.475
+   ],
+   "zone_connection": "UNKNOWN",
+   "zone_gaps": {
+    "F +3V3 PLANE|F.Cu": {
+     "centre_mm": 0.0,
+     "pad_overlaps": true
+    },
+    "In3 +3V3 PLANE|In3.Cu": {
+     "centre_mm": 0.0,
+     "pad_overlaps": true
+    }
+   },
+   "zone_overlaps": [
+    "F +3V3 PLANE|F.Cu",
+    "In3 +3V3 PLANE|In3.Cu"
+   ]
+  },
+  "U4.8": {
+   "at": [
+    58.25,
+    71.1625
+   ],
+   "connected_items": [
+    "PAD:U4.8"
+   ],
+   "layers": [
+    "B.Cu"
+   ],
+   "local_clearance": null,
+   "net": "+3V3",
+   "size": [
+    0.475,
+    0.25
+   ],
+   "zone_connection": "UNKNOWN",
+   "zone_gaps": {
+    "F +3V3 PLANE|F.Cu": {
+     "centre_mm": 0.0,
+     "pad_overlaps": true
+    },
+    "In3 +3V3 PLANE|In3.Cu": {
+     "centre_mm": 0.0,
+     "pad_overlaps": true
+    }
+   },
+   "zone_overlaps": [
+    "F +3V3 PLANE|F.Cu",
+    "In3 +3V3 PLANE|In3.Cu"
+   ]
+  },
+  "U5.2": {
+   "at": [
+    29.5625,
+    115.75
+   ],
+   "connected_items": [
+    "PAD:U5.2",
+    "ZONE:F +3V3 PLANE"
+   ],
+   "layers": [
+    "F.Cu"
+   ],
+   "local_clearance": null,
+   "net": "+3V3",
+   "size": [
+    0.825,
+    0.25
+   ],
+   "zone_connection": "UNKNOWN",
+   "zone_gaps": {
+    "F +3V3 PLANE|F.Cu": {
+     "centre_mm": 0.0,
+     "pad_overlaps": true
+    },
+    "In3 +3V3 PLANE|In3.Cu": {
+     "centre_mm": 0.0553,
+     "pad_overlaps": false
+    }
+   },
+   "zone_overlaps": [
+    "F +3V3 PLANE|F.Cu"
+   ]
+  }
+ },
+ "schema": 1
+}

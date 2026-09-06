@@ -1,0 +1,29 @@
+{
+  "schema": 1,
+  "detours": [
+    {
+      "net": "/09_COMMUNITY_HEADER/TCA4307_READY",
+      "layer": "B.Cu",
+      "a_mm": [
+        59.9,
+        57.9
+      ],
+      "b_mm": [
+        60.1,
+        53.8
+      ],
+      "width_mm": 0.2
+    }
+  ],
+  "reserve": [
+    {
+      "x_mm": 59.997,
+      "y_mm": 55.921,
+      "r_mm": 0.8,
+      "exempt": [
+        "/ACC_5V_BOOST_EN"
+      ]
+    }
+  ],
+  "note": "D-647: ONE ordinary 0.200 mm signal track is the WHOLE wall between /ACC_5V_BOOST_EN's two islands.  screen_corridor_blockers.py on the D-646 authority reports the net RIPUP_SINGLE and its per-OBJECT minimal eviction is a SINGLE object -- /09_COMMUNITY_HEADER/TCA4307_READY on B.Cu, (59.900,57.900) -> (60.100,53.800), 4.1049 mm -- out of 32 candidates, reproved open on the real route_join (evidence/d647-corridor-blame-acc5ven.json).  With it absent /ACC_5V_BOOST_EN closes R102.1 -> {U21.2,TP30.1,U3.16} in 8.760 mm of B.Cu at its OWN netclass width and ZERO vias (evidence/d647-acc5ven-route.json); with it present the join is NO_PATH at 11 src / 22 dst escapes.  The reserved disc is the exact crossing point of the removed track and the copper the closure needs -- solve (59.900,57.900)->(60.100,53.800) against (60.700,56.800)->(59.900,55.800) and the lines meet at (59.9966, 55.9205) -- so the relay is refused exactly the cells the new route occupies and nothing else.  TCA4307_READY is the net D-644 already relaid once, on its In3.Cu leg, and it is a low-current I2C-buffer READY output.  The track is REMOVED AND RELAID between its own two ends (the D-607 unit), so nothing is stranded and the cut net's cluster count cannot move; clause `every_detour_relaid` refuses the whole run if it will not go back."
+}

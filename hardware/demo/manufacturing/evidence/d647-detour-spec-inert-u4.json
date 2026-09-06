@@ -1,0 +1,44 @@
+{
+  "schema": 1,
+  "detours": [
+    {
+      "net": "GND",
+      "relay": false,
+      "tracks": [
+        {
+          "layer": "B.Cu",
+          "a_mm": [58.4125, 70.0],
+          "b_mm": [57.7, 70.0],
+          "width_mm": 0.3
+        }
+      ]
+    },
+    {
+      "net": "GND",
+      "relay": false,
+      "tracks": [
+        {
+          "layer": "B.Cu",
+          "a_mm": [58.4, 70.0],
+          "b_mm": [58.3, 70.1],
+          "width_mm": 0.3
+        },
+        {
+          "layer": "B.Cu",
+          "a_mm": [58.3, 70.1],
+          "b_mm": [58.3, 70.2],
+          "width_mm": 0.3
+        }
+      ]
+    }
+  ],
+  "reserve": [
+    {
+      "x_mm": 58.4028,
+      "y_mm": 69.5995,
+      "r_mm": 0.4,
+      "exempt": ["+3V3"]
+    }
+  ],
+  "note": "D-647: the BMI270's two SUPPLY pads are 1.670 mm apart and TWO INERT GND chains stand between them -- TIED, at the same 0.2505 mm, which is why removing one alone changed nothing.  screen_pad_bridge.py names the collision at (58.4028, 69.5995) for the U4.5 <-> U4.8 pair; the objects whose clearance envelope contains that point are GND B.Cu (58.4125,70.000)->(57.700,70.000), 0.7125 mm, and the two-segment chain (58.400,70.000)->(58.300,70.100)->(58.300,70.200), 0.2414 mm, both 0.300 mm and both on GND B.Cu island 35.  screen_inert_copper.py answers D-646 clause 13's question of BOTH: the B.Cu GND pour already joins each chain's two ends, ratio 1.667 and 2.667 against the 0.300 mm bar; in U4's 6 x 7 mm neighbourhood ALL TWELVE chains are INERT, 7.775 mm.  Gate run w/d647/gate5.json removed the FIRST alone and passed TWELVE of thirteen clauses -- inert_removal_priced, pour_partition PP1-PP4, DRC identical, nothing regressed -- and was refused by `board_improved` alone, because the second chain refuses the same bridge at the same point.  U4.5 is VDDIO and U4.8 is VDD; both are OPEN +3V3 islands today, so the IMU has no supply connection of any kind."
+}

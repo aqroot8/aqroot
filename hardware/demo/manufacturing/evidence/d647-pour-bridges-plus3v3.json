@@ -1,0 +1,121 @@
+{
+  "board": "/home/aqroot8/aqroot-demo/hardware/demo/kicad/aqroot-demo/aqroot-Beta-v2.kicad_pcb",
+  "board_sha256": "6b7cb0143b2a10e5d4160232f7aba466ccf50a71cdda417e72a680acfcd40dde",
+  "grid_nm": 100000,
+  "guard": null,
+  "guard_sha256": null,
+  "ladder": [
+    [
+      650000,
+      400000
+    ],
+    [
+      600000,
+      300000
+    ],
+    [
+      550000,
+      250000
+    ],
+    [
+      500000,
+      250000
+    ],
+    [
+      450000,
+      200000
+    ],
+    [
+      350000,
+      200000
+    ]
+  ],
+  "nets": [
+    {
+      "bridgeable": 0,
+      "contract": {
+        "clr": 200000,
+        "clr_pad": 200000,
+        "known_class": true,
+        "layers": null,
+        "net": "+3V3",
+        "netclass": "P3V3",
+        "via_dia": 800000,
+        "via_drill": 400000,
+        "width": 600000
+      },
+      "detail": [
+        {
+          "best": null,
+          "cluster": [
+            "R129.1"
+          ],
+          "islands": [
+            {
+              "layer": "F",
+              "mm2": 7.26
+            },
+            {
+              "layer": "I3",
+              "mm2": 25.23
+            }
+          ],
+          "pads": 1,
+          "rungs": [],
+          "why": "no legal barrel inside this island over any other cluster, down to 0.35/0.20 mm"
+        },
+        {
+          "best": null,
+          "cluster": [
+            "R39.1"
+          ],
+          "islands": [],
+          "pads": 1,
+          "rungs": [],
+          "why": "cluster owns no filled pour island"
+        },
+        {
+          "best": null,
+          "cluster": [
+            "U4.5"
+          ],
+          "islands": [],
+          "pads": 1,
+          "rungs": [],
+          "why": "cluster owns no filled pour island"
+        },
+        {
+          "best": null,
+          "cluster": [
+            "U4.8"
+          ],
+          "islands": [],
+          "pads": 1,
+          "rungs": [],
+          "why": "cluster owns no filled pour island"
+        },
+        {
+          "best": null,
+          "cluster": [
+            "U5.2"
+          ],
+          "islands": [
+            {
+              "layer": "F",
+              "mm2": 0.18
+            }
+          ],
+          "pads": 1,
+          "rungs": [],
+          "why": "no legal barrel inside this island over any other cluster, down to 0.35/0.20 mm"
+        }
+      ],
+      "needing_licence": 0,
+      "net": "+3V3",
+      "orphans": 5,
+      "plane": true,
+      "unlicensed": []
+    }
+  ],
+  "schema": 2
+}

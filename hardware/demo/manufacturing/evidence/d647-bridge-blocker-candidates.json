@@ -1,0 +1,598 @@
+{
+ "board": "/home/aqroot8/aqroot-demo/hardware/demo/kicad/aqroot-demo/aqroot-Beta-v2.kicad_pcb",
+ "board_sha256": "6b7cb0143b2a10e5d4160232f7aba466ccf50a71cdda417e72a680acfcd40dde",
+ "board_sha256_at_write": "6b7cb0143b2a10e5d4160232f7aba466ccf50a71cdda417e72a680acfcd40dde",
+ "points": {
+  "C7.1<->U4.5": [
+   {
+    "a_mm": [
+     56.55,
+     64.25
+    ],
+    "b_mm": [
+     62.25,
+     72.975
+    ],
+    "kind": "track",
+    "layer": "In3.Cu",
+    "mm": 10.4219,
+    "net": "/ACC_POWER_FAULT_N",
+    "surface_gap_mm": -0.0972,
+    "width_mm": 0.2
+   },
+   {
+    "a_mm": [
+     60.3,
+     70.175
+    ],
+    "b_mm": [
+     60.3,
+     71.0
+    ],
+    "kind": "track",
+    "layer": "B.Cu",
+    "mm": 0.825,
+    "net": "+3V3",
+    "surface_gap_mm": -0.0878,
+    "width_mm": 0.6
+   },
+   {
+    "a_mm": [
+     59.6,
+     69.5
+    ],
+    "b_mm": [
+     59.6,
+     71.35
+    ],
+    "kind": "track",
+    "layer": "B.Cu",
+    "mm": 1.85,
+    "net": "/ACC_3V3_EN",
+    "surface_gap_mm": 0.5794,
+    "width_mm": 0.2
+   },
+   {
+    "a_mm": [
+     62.4,
+     66.8
+    ],
+    "b_mm": [
+     59.0,
+     70.3
+    ],
+    "kind": "track",
+    "layer": "In2.Cu",
+    "mm": 4.8795,
+    "net": "/I2C_SCL_INT",
+    "surface_gap_mm": 0.5834,
+    "width_mm": 0.2
+   },
+   {
+    "a_mm": [
+     60.9,
+     68.2
+    ],
+    "b_mm": [
+     59.6,
+     69.5
+    ],
+    "kind": "track",
+    "layer": "B.Cu",
+    "mm": 1.8385,
+    "net": "/ACC_3V3_EN",
+    "surface_gap_mm": 0.7084,
+    "width_mm": 0.2
+   }
+  ],
+  "U4.12<->U4.5": [
+   {
+    "a_mm": [
+     56.5875,
+     70.5
+    ],
+    "b_mm": [
+     57.275,
+     70.5
+    ],
+    "kind": "track",
+    "layer": "B.Cu",
+    "mm": 0.6875,
+    "net": "+3V3",
+    "surface_gap_mm": -0.0519,
+    "width_mm": 0.2
+   },
+   {
+    "a_mm": [
+     60.8,
+     65.7
+    ],
+    "b_mm": [
+     55.6,
+     71.1
+    ],
+    "kind": "track",
+    "layer": "In2.Cu",
+    "mm": 7.4967,
+    "net": "/09_COMMUNITY_HEADER/TCA4307_READY",
+    "surface_gap_mm": 0.2249,
+    "width_mm": 0.2
+   },
+   {
+    "a_mm": [
+     56.45,
+     70.025
+    ],
+    "b_mm": [
+     56.225,
+     70.05
+    ],
+    "kind": "track",
+    "layer": "B.Cu",
+    "mm": 0.2264,
+    "net": "/I2C_SCL_INT",
+    "surface_gap_mm": 0.3827,
+    "width_mm": 0.2
+   },
+   {
+    "at": [
+     57.225,
+     70.525
+    ],
+    "drill_mm": 0.2,
+    "kind": "via",
+    "net": "+3V3",
+    "surface_gap_mm": 0.4546
+   },
+   {
+    "a_mm": [
+     57.275,
+     70.5
+    ],
+    "b_mm": [
+     57.225,
+     70.525
+    ],
+    "kind": "track",
+    "layer": "B.Cu",
+    "mm": 0.0559,
+    "net": "+3V3",
+    "surface_gap_mm": 0.4546,
+    "width_mm": 0.2
+   },
+   {
+    "a_mm": [
+     56.225,
+     70.05
+    ],
+    "b_mm": [
+     56.025,
+     70.2
+    ],
+    "kind": "track",
+    "layer": "B.Cu",
+    "mm": 0.25,
+    "net": "/I2C_SCL_INT",
+    "surface_gap_mm": 0.5035,
+    "width_mm": 0.2
+   },
+   {
+    "a_mm": [
+     56.025,
+     70.2
+    ],
+    "b_mm": [
+     56.025,
+     70.75
+    ],
+    "kind": "track",
+    "layer": "B.Cu",
+    "mm": 0.55,
+    "net": "/I2C_SCL_INT",
+    "surface_gap_mm": 0.5502,
+    "width_mm": 0.2
+   },
+   {
+    "a_mm": [
+     56.025,
+     70.75
+    ],
+    "b_mm": [
+     56.2,
+     71.0
+    ],
+    "kind": "track",
+    "layer": "B.Cu",
+    "mm": 0.3052,
+    "net": "/I2C_SCL_INT",
+    "surface_gap_mm": 0.6036,
+    "width_mm": 0.2
+   },
+   {
+    "a_mm": [
+     55.9,
+     71.3
+    ],
+    "b_mm": [
+     56.2,
+     71.0
+    ],
+    "kind": "track",
+    "layer": "B.Cu",
+    "mm": 0.4243,
+    "net": "/I2C_SCL_INT",
+    "surface_gap_mm": 0.6254,
+    "width_mm": 0.2
+   }
+  ],
+  "U4.12<->U4.8": [
+   {
+    "a_mm": [
+     56.5875,
+     70.5
+    ],
+    "b_mm": [
+     57.275,
+     70.5
+    ],
+    "kind": "track",
+    "layer": "B.Cu",
+    "mm": 0.6875,
+    "net": "+3V3",
+    "surface_gap_mm": -0.063,
+    "width_mm": 0.2
+   },
+   {
+    "a_mm": [
+     60.8,
+     65.7
+    ],
+    "b_mm": [
+     55.6,
+     71.1
+    ],
+    "kind": "track",
+    "layer": "In2.Cu",
+    "mm": 7.4967,
+    "net": "/09_COMMUNITY_HEADER/TCA4307_READY",
+    "surface_gap_mm": 0.2877,
+    "width_mm": 0.2
+   },
+   {
+    "at": [
+     57.225,
+     70.525
+    ],
+    "drill_mm": 0.2,
+    "kind": "via",
+    "net": "+3V3",
+    "surface_gap_mm": 0.4447
+   },
+   {
+    "a_mm": [
+     57.275,
+     70.5
+    ],
+    "b_mm": [
+     57.225,
+     70.525
+    ],
+    "kind": "track",
+    "layer": "B.Cu",
+    "mm": 0.0559,
+    "net": "+3V3",
+    "surface_gap_mm": 0.4447,
+    "width_mm": 0.2
+   },
+   {
+    "a_mm": [
+     56.45,
+     70.025
+    ],
+    "b_mm": [
+     56.225,
+     70.05
+    ],
+    "kind": "track",
+    "layer": "B.Cu",
+    "mm": 0.2264,
+    "net": "/I2C_SCL_INT",
+    "surface_gap_mm": 0.4615,
+    "width_mm": 0.2
+   },
+   {
+    "a_mm": [
+     56.025,
+     70.2
+    ],
+    "b_mm": [
+     56.025,
+     70.75
+    ],
+    "kind": "track",
+    "layer": "B.Cu",
+    "mm": 0.55,
+    "net": "/I2C_SCL_INT",
+    "surface_gap_mm": 0.5554,
+    "width_mm": 0.2
+   },
+   {
+    "a_mm": [
+     56.025,
+     70.75
+    ],
+    "b_mm": [
+     56.2,
+     71.0
+    ],
+    "kind": "track",
+    "layer": "B.Cu",
+    "mm": 0.3052,
+    "net": "/I2C_SCL_INT",
+    "surface_gap_mm": 0.5591,
+    "width_mm": 0.2
+   },
+   {
+    "a_mm": [
+     56.225,
+     70.05
+    ],
+    "b_mm": [
+     56.025,
+     70.2
+    ],
+    "kind": "track",
+    "layer": "B.Cu",
+    "mm": 0.25,
+    "net": "/I2C_SCL_INT",
+    "surface_gap_mm": 0.5668,
+    "width_mm": 0.2
+   },
+   {
+    "a_mm": [
+     55.9,
+     71.3
+    ],
+    "b_mm": [
+     56.2,
+     71.0
+    ],
+    "kind": "track",
+    "layer": "B.Cu",
+    "mm": 0.4243,
+    "net": "/I2C_SCL_INT",
+    "surface_gap_mm": 0.5672,
+    "width_mm": 0.2
+   }
+  ],
+  "U4.3<->U4.5": [
+   {
+    "a_mm": [
+     57.3,
+     68.8375
+    ],
+    "b_mm": [
+     57.7,
+     68.8375
+    ],
+    "kind": "track",
+    "layer": "B.Cu",
+    "mm": 0.4,
+    "net": "+3V3",
+    "surface_gap_mm": -0.0601,
+    "width_mm": 0.4
+   },
+   {
+    "a_mm": [
+     60.8,
+     65.7
+    ],
+    "b_mm": [
+     55.6,
+     71.1
+    ],
+    "kind": "track",
+    "layer": "In2.Cu",
+    "mm": 7.4967,
+    "net": "/09_COMMUNITY_HEADER/TCA4307_READY",
+    "surface_gap_mm": -0.0207,
+    "width_mm": 0.2
+   },
+   {
+    "a_mm": [
+     57.295,
+     67.2827
+    ],
+    "b_mm": [
+     57.7219,
+     68.7415
+    ],
+    "kind": "track",
+    "layer": "B.Cu",
+    "mm": 1.52,
+    "net": "+3V3",
+    "surface_gap_mm": -0.0062,
+    "width_mm": 0.4
+   },
+   {
+    "a_mm": [
+     58.25,
+     68.8375
+    ],
+    "b_mm": [
+     58.8,
+     68.85
+    ],
+    "kind": "track",
+    "layer": "B.Cu",
+    "mm": 0.5501,
+    "net": "/05_I2C_DEVICES/BMI270_INT1_RAW",
+    "surface_gap_mm": 0.3351,
+    "width_mm": 0.2
+   }
+  ],
+  "U4.5<->U4.8": [
+   {
+    "a_mm": [
+     58.4,
+     70.0
+    ],
+    "b_mm": [
+     58.3,
+     70.1
+    ],
+    "kind": "track",
+    "layer": "B.Cu",
+    "mm": 0.1414,
+    "net": "GND",
+    "surface_gap_mm": 0.2505,
+    "width_mm": 0.3
+   },
+   {
+    "a_mm": [
+     58.4125,
+     70.0
+    ],
+    "b_mm": [
+     57.7,
+     70.0
+    ],
+    "kind": "track",
+    "layer": "B.Cu",
+    "mm": 0.7125,
+    "net": "GND",
+    "surface_gap_mm": 0.2505,
+    "width_mm": 0.3
+   },
+   {
+    "a_mm": [
+     58.3,
+     70.1
+    ],
+    "b_mm": [
+     58.3,
+     70.2
+    ],
+    "kind": "track",
+    "layer": "B.Cu",
+    "mm": 0.1,
+    "net": "GND",
+    "surface_gap_mm": 0.3609,
+    "width_mm": 0.3
+   },
+   {
+    "a_mm": [
+     60.2,
+     75.2
+    ],
+    "b_mm": [
+     58.8,
+     68.85
+    ],
+    "kind": "track",
+    "layer": "In3.Cu",
+    "mm": 6.5025,
+    "net": "/05_I2C_DEVICES/BMI270_INT1_RAW",
+    "surface_gap_mm": 0.4493,
+    "width_mm": 0.2
+   },
+   {
+    "at": [
+     58.3,
+     70.2
+    ],
+    "drill_mm": 0.3,
+    "kind": "via",
+    "net": "GND",
+    "surface_gap_mm": 0.4592
+   },
+   {
+    "a_mm": [
+     58.25,
+     68.8375
+    ],
+    "b_mm": [
+     58.8,
+     68.85
+    ],
+    "kind": "track",
+    "layer": "B.Cu",
+    "mm": 0.5501,
+    "net": "/05_I2C_DEVICES/BMI270_INT1_RAW",
+    "surface_gap_mm": 0.6583,
+    "width_mm": 0.2
+   },
+   {
+    "at": [
+     57.7,
+     70.0
+    ],
+    "drill_mm": 0.3,
+    "kind": "via",
+    "net": "GND",
+    "surface_gap_mm": 0.6589
+   },
+   {
+    "at": [
+     58.8,
+     68.85
+    ],
+    "drill_mm": 0.3,
+    "kind": "via",
+    "net": "/05_I2C_DEVICES/BMI270_INT1_RAW",
+    "surface_gap_mm": 0.6982
+   }
+  ],
+  "U5.7<->U5.2": [
+   {
+    "a_mm": [
+     52.75,
+     114.6
+    ],
+    "b_mm": [
+     4.0,
+     121.95
+    ],
+    "kind": "track",
+    "layer": "In3.Cu",
+    "mm": 49.301,
+    "net": "/DISP_BL_CTL",
+    "surface_gap_mm": 0.38,
+    "width_mm": 0.2
+   },
+   {
+    "a_mm": [
+     31.7,
+     118.0
+    ],
+    "b_mm": [
+     31.7,
+     128.6
+    ],
+    "kind": "track",
+    "layer": "B.Cu",
+    "mm": 10.6,
+    "net": "/06_AUDIO/SPK_P",
+    "surface_gap_mm": 0.6948,
+    "width_mm": 0.25
+   },
+   {
+    "a_mm": [
+     33.5,
+     116.75
+    ],
+    "b_mm": [
+     31.7,
+     118.0
+    ],
+    "kind": "track",
+    "layer": "B.Cu",
+    "mm": 2.1915,
+    "net": "/06_AUDIO/SPK_P",
+    "surface_gap_mm": 0.6948,
+    "width_mm": 0.25
+   }
+  ]
+ },
+ "schema": 1
+}

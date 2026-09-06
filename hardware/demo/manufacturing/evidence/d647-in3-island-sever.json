@@ -1,0 +1,419 @@
+{
+ "board": "/home/aqroot8/aqroot-demo/hardware/demo/kicad/aqroot-demo/aqroot-Beta-v2.kicad_pcb",
+ "board_sha256": "6b7cb0143b2a10e5d4160232f7aba466ccf50a71cdda417e72a680acfcd40dde",
+ "board_sha256_at_write": "6b7cb0143b2a10e5d4160232f7aba466ccf50a71cdda417e72a680acfcd40dde",
+ "closest": {
+  "a_mm": [
+   64.8389,
+   69.8912
+  ],
+  "b_mm": [
+   66.5752,
+   70.2199
+  ],
+  "gap_mm": 1.7671,
+  "mid_mm": [
+   65.707,
+   70.0556
+  ]
+ },
+ "near_foreign_barrels": [
+  {
+   "at": [
+    64.7,
+    70.5
+   ],
+   "d_mm": 1.1007,
+   "dia_mm": 0.6,
+   "net": "Net-(U11-TS_MR)"
+  },
+  {
+   "at": [
+    66.6,
+    70.9
+   ],
+   "d_mm": 1.229,
+   "dia_mm": 0.6,
+   "net": "Net-(U11-TS_MR)"
+  },
+  {
+   "at": [
+    67.325,
+    72.675
+   ],
+   "d_mm": 3.0789,
+   "dia_mm": 0.6,
+   "net": "/01_POWER_TREE/V3V3_FB"
+  },
+  {
+   "at": [
+    64.2,
+    72.975
+   ],
+   "d_mm": 3.2855,
+   "dia_mm": 0.8,
+   "net": "/01_POWER_TREE/BAT_PROTECTED_P"
+  },
+  {
+   "at": [
+    66.6,
+    66.6
+   ],
+   "d_mm": 3.5691,
+   "dia_mm": 0.5,
+   "net": "GND"
+  },
+  {
+   "at": [
+    63.3,
+    72.975
+   ],
+   "d_mm": 3.7838,
+   "dia_mm": 0.8,
+   "net": "/01_POWER_TREE/BAT_PROTECTED_P"
+  },
+  {
+   "at": [
+    62.1,
+    71.6
+   ],
+   "d_mm": 3.9238,
+   "dia_mm": 0.5,
+   "net": "GND"
+  }
+ ],
+ "near_foreign_on_In3": [
+  {
+   "a": [
+    64.85,
+    69.2
+   ],
+   "b": [
+    65.95,
+    70.2
+   ],
+   "d_mm": 0.0,
+   "kind": "track",
+   "mm": 1.4866,
+   "net": "/ACC_3V3_SW",
+   "w_mm": 0.4
+  },
+  {
+   "a": [
+    65.95,
+    70.2
+   ],
+   "b": [
+    69.325,
+    66.75
+   ],
+   "d_mm": 0.043,
+   "kind": "track",
+   "mm": 4.8263,
+   "net": "/ACC_3V3_SW",
+   "w_mm": 0.4
+  },
+  {
+   "at": [
+    64.7,
+    70.5
+   ],
+   "d_mm": 0.7216,
+   "dia_mm": 0.6,
+   "drill_mm": 0.3,
+   "kind": "via",
+   "net": "Net-(U11-TS_MR)"
+  },
+  {
+   "at": [
+    66.6,
+    70.9
+   ],
+   "d_mm": 0.805,
+   "dia_mm": 0.6,
+   "drill_mm": 0.3,
+   "kind": "via",
+   "net": "Net-(U11-TS_MR)"
+  },
+  {
+   "a": [
+    61.5,
+    62.4
+   ],
+   "b": [
+    64.85,
+    69.2
+   ],
+   "d_mm": 0.9281,
+   "kind": "track",
+   "mm": 7.5804,
+   "net": "/ACC_3V3_SW",
+   "w_mm": 0.4
+  },
+  {
+   "a": [
+    65.4,
+    73.3
+   ],
+   "b": [
+    64.2,
+    71.1
+   ],
+   "d_mm": 0.9669,
+   "kind": "track",
+   "mm": 2.506,
+   "net": "/09_COMMUNITY_HEADER/WAKE_GATE_S",
+   "w_mm": 0.2
+  },
+  {
+   "a": [
+    66.5,
+    72.25
+   ],
+   "b": [
+    67.4,
+    71.5
+   ],
+   "d_mm": 1.3121,
+   "kind": "track",
+   "mm": 1.1715,
+   "net": "/01_POWER_TREE/USB_VBUS_CHG",
+   "w_mm": 0.5
+  },
+  {
+   "a": [
+    64.2,
+    71.1
+   ],
+   "b": [
+    58.6,
+    64.5
+   ],
+   "d_mm": 1.407,
+   "kind": "track",
+   "mm": 8.6556,
+   "net": "/09_COMMUNITY_HEADER/WAKE_GATE_S",
+   "w_mm": 0.2
+  },
+  {
+   "a": [
+    64.8,
+    67.3
+   ],
+   "b": [
+    65.9,
+    68.4
+   ],
+   "d_mm": 1.4556,
+   "kind": "track",
+   "mm": 1.5556,
+   "net": "/ACC_5V_SW",
+   "w_mm": 0.4
+  },
+  {
+   "a": [
+    67.4,
+    71.5
+   ],
+   "b": [
+    71.2,
+    75.6
+   ],
+   "d_mm": 1.8732,
+   "kind": "track",
+   "mm": 5.5902,
+   "net": "/01_POWER_TREE/USB_VBUS_CHG",
+   "w_mm": 0.5
+  },
+  {
+   "a": [
+    65.25,
+    79.2
+   ],
+   "b": [
+    66.5,
+    72.25
+   ],
+   "d_mm": 1.9444,
+   "kind": "track",
+   "mm": 7.0615,
+   "net": "/01_POWER_TREE/USB_VBUS_CHG",
+   "w_mm": 0.5
+  },
+  {
+   "a": [
+    62.225,
+    48.675
+   ],
+   "b": [
+    64.8,
+    67.3
+   ],
+   "d_mm": 2.6516,
+   "kind": "track",
+   "mm": 18.8022,
+   "net": "/ACC_5V_SW",
+   "w_mm": 0.4
+  },
+  {
+   "at": [
+    67.325,
+    72.675
+   ],
+   "d_mm": 2.6677,
+   "dia_mm": 0.6,
+   "drill_mm": 0.3,
+   "kind": "via",
+   "net": "/01_POWER_TREE/V3V3_FB"
+  },
+  {
+   "at": [
+    64.2,
+    72.975
+   ],
+   "d_mm": 2.7519,
+   "dia_mm": 0.8,
+   "drill_mm": 0.4,
+   "kind": "via",
+   "net": "/01_POWER_TREE/BAT_PROTECTED_P"
+  },
+  {
+   "a": [
+    70.075,
+    75.425
+   ],
+   "b": [
+    67.325,
+    72.675
+   ],
+   "d_mm": 2.9414,
+   "kind": "track",
+   "mm": 3.8891,
+   "net": "/01_POWER_TREE/V3V3_FB",
+   "w_mm": 0.2
+  },
+  {
+   "a": [
+    69.325,
+    66.75
+   ],
+   "b": [
+    65.9,
+    63.325
+   ],
+   "d_mm": 3.1056,
+   "kind": "track",
+   "mm": 4.8437,
+   "net": "/ACC_3V3_SW",
+   "w_mm": 0.4
+  },
+  {
+   "a": [
+    63.7,
+    78.3
+   ],
+   "b": [
+    65.4,
+    73.3
+   ],
+   "d_mm": 3.1513,
+   "kind": "track",
+   "mm": 5.2811,
+   "net": "/09_COMMUNITY_HEADER/WAKE_GATE_S",
+   "w_mm": 0.2
+  },
+  {
+   "at": [
+    63.3,
+    72.975
+   ],
+   "d_mm": 3.2211,
+   "dia_mm": 0.8,
+   "drill_mm": 0.4,
+   "kind": "via",
+   "net": "/01_POWER_TREE/BAT_PROTECTED_P"
+  },
+  {
+   "at": [
+    66.6,
+    66.6
+   ],
+   "d_mm": 3.2694,
+   "dia_mm": 0.5,
+   "drill_mm": 0.25,
+   "kind": "via",
+   "net": "GND"
+  },
+  {
+   "a": [
+    56.55,
+    64.25
+   ],
+   "b": [
+    62.25,
+    72.975
+   ],
+   "d_mm": 3.357,
+   "kind": "track",
+   "mm": 10.4219,
+   "net": "/ACC_POWER_FAULT_N",
+   "w_mm": 0.2
+  },
+  {
+   "at": [
+    64.2,
+    73.875
+   ],
+   "d_mm": 3.5942,
+   "dia_mm": 0.8,
+   "drill_mm": 0.4,
+   "kind": "via",
+   "net": "/01_POWER_TREE/BAT_PROTECTED_P"
+  },
+  {
+   "at": [
+    62.1,
+    71.6
+   ],
+   "d_mm": 3.5979,
+   "dia_mm": 0.5,
+   "drill_mm": 0.25,
+   "kind": "via",
+   "net": "GND"
+  },
+  {
+   "at": [
+    61.7,
+    69.5
+   ],
+   "d_mm": 3.7158,
+   "dia_mm": 0.6,
+   "drill_mm": 0.3,
+   "kind": "via",
+   "net": "GND"
+  },
+  {
+   "at": [
+    61.5,
+    70.1
+   ],
+   "d_mm": 3.907,
+   "dia_mm": 0.6,
+   "drill_mm": 0.3,
+   "kind": "via",
+   "net": "GND"
+  },
+  {
+   "at": [
+    63.3,
+    73.875
+   ],
+   "d_mm": 3.9649,
+   "dia_mm": 0.8,
+   "drill_mm": 0.4,
+   "kind": "via",
+   "net": "/01_POWER_TREE/BAT_PROTECTED_P"
+  }
+ ],
+ "schema": 1
+}

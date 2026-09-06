@@ -1,3 +1,246 @@
+# D-647 · 2026-09-06 · Demo — the BMI270's TWO SUPPLY PINS have NO CONNECTION OF ANY KIND, `U4.5` is ONE UNLICENSED BARREL from the `+3V3` plane BODY and ONE CLAUSE from promotable, and the `.kicad_dru`'s 26-decision-old `R129.1` refusal is explained: every relief barrel lands on the land's OWN severed island
+
+    authority  6b7cb0143b2a10e5d4160232f7aba466ccf50a71cdda417e72a680acfcd40dde
+    retained open edges  41      open retained nets  20
+    connected retained  153      raw board ratsnest  57
+    `hardware/beta-v2` UNTOUCHED.
+
+## 1. THE PAD BRIDGE IS EXHAUSTED — AND ITS REFUSALS ARE A BLAME REPORT
+
+`screen_pad_bridge.py --max-mm 6.0 --chain`, board-wide, at TWICE D-631's
+3.0 mm cap, over all 20 open-edge nets: **0 bridges found, 376 pairs declined,
+19 refused with a REASON** (`evidence/d647-pad-bridge-census.json`).  D-646 took
+the last unconditional one.
+
+That is the headline the screen was written to report and it is not the useful
+half.  Every one of the nineteen `+3V3` refusals reads `UNPROVED_GEOMETRY` and
+**names the coordinate and the NET of a SINGLE blocking track** — not
+`TOO_FAR`, not `NO_LEGAL_ESCAPE`, not `NO_LEGAL_BRIDGE`.  The screen has been
+emitting a one-object blame report for every land pair on this board and nobody
+had read the `why` field:
+
+    U4.3  <-> U4.5   0.937 mm   /05_I2C_DEVICES/BMI270_INT1_RAW  (57.8207, 68.9082)
+    U4.2  <-> U4.5   1.338 mm   /05_I2C_DEVICES/BMI270_INT1_RAW  (57.3369, 68.8870)
+    U4.5  <-> U4.8   1.670 mm   GND                              (58.4028, 69.5995)
+    U4.12 <-> U4.8   1.790 mm   unconnected-(U4-INT2-Pad9)       (56.6804, 70.5370)
+    C7.1  <-> U4.5   2.074 mm   GND                              (60.2794, 69.9638)
+    U4.12 <-> U4.5   2.081 mm   GND                              (56.6752, 70.4519)
+    U4.3  <-> U4.8   2.378 mm   /05_I2C_DEVICES/BMI270_INT1_RAW  (57.7815, 68.9841)
+    U5.7  <-> U5.2   2.386 mm   GND                              (31.1793, 117.3668)
+    ... 11 more, every one a single named track
+
+## 2. AND WHAT THOSE PAIRS ARE IS A FABRICATION BLOCKER NOBODY HAD NAMED
+
+`+3V3` carries 80 pads and FIVE open islands, each of ONE land: `R129.1`,
+`R39.1`, `U4.5`, `U4.8`, `U5.2`.  **`U4.5` is the BMI270's `VDDIO` and `U4.8`
+its `VDD`.**  KiCad's own connectivity joins each of them to NOTHING but
+itself (`evidence/d647-plus3v3-land-connectivity.json`).
+
+**The 6-axis IMU — a Demo MUST-REMAIN-FUNCTIONAL feature in
+`AQROOT_DEMO_SCOPE.md` — has no supply connection of any kind.**  D-632
+promoted its `CSB` strap and D-646 its `ASDx`/`ASCx` straps; its two power pins
+were never named, because every instrument on this board counts OPEN EDGES and
+one open edge on an 80-pad rail looks like every other.
+
+## 3. THE `+3V3` OPEN LANDS ARE NOT LANDS — THREE OF THE FIVE ARE POUR ISLANDS
+
+`maze3d.net_islands` unions PADS.  KiCad's connectivity joins `R129.1` to
+`ZONE:F +3V3 PLANE`, to `ZONE:In3 +3V3 PLANE`, to a `PCB_TRACK` and to a
+`PCB_VIA` — and to no other PAD.  Nothing in this repository could say which
+OUTLINE a land sits on, so **ONE new tracked read-only screen,
+`screen_pour_island_map.py`**, asks exactly that: which filled outline of which
+zone holds each land, on every layer, whether that outline is the zone's BODY,
+and if not how far the body is.  It states its own limits before its numbers —
+`PointInside` is asked of the pad CENTRE, and a land over the plane is not
+thereby CONNECTED to it.  Measured, `--open-only`
+(`evidence/d647-pour-island-map.json`, `evidence/d647-plus3v3-pour-islands.json`):
+
+    R129.1   In3 outline  5   25.2325 mm2   1.7671 mm from the 8047.8347 mm2 body
+             F   outline 31    7.2601 mm2
+    U5.2     F   outline 13    0.1831 mm2  36.6203 mm from the 3689.8529 mm2 body
+    U4.5     the In3 BODY passes DIRECTLY UNDER the land (outline 0)
+    U4.8     the same
+    R39.1    on no filled outline at all
+
+## 4. AND IT EXPLAINS A REFUSAL THE `.kicad_dru` HAS CARRIED SINCE D-606
+
+Section 12b of this board's own `.kicad_dru` records that every `R129.1`
+escape relief has been REVERTED by `relief_stitch`'s connectivity retake —
+*"the same refusal, to the same 0.547 mm figure, twenty-six decisions later"*.
+The reason has never been stated.  It is this
+(`evidence/d647-barrel-landing.json`):
+
+    rung 2  barrel (58.225, 58.425)   lands in In3 outline 5 and F outline 31
+    rung 3  barrel (58.175, 58.350)   lands in In3 outline 5 and F outline 31
+    rung 4  barrel (58.300, 58.525)   lands in In3 outline 5 and F outline 31
+
+**Every relief barrel this board can find for `R129.1` lands on the SAME
+severed islands the land is ALREADY bonded to.**  The barrel connects the land
+to itself.  By contrast `U4.5`'s rung-1 and rung-3 barrels land in In3
+outline **0** — the plane BODY — exactly as `U4.12`'s promoted D-632 barrel
+does.
+
+What severs `R129.1`'s island is named too
+(`evidence/d647-in3-island-sever.json`): at the 1.7671 mm narrowest point,
+between (64.8389, 69.8912) and (66.5752, 70.2199), lies `/ACC_3V3_SW` — a
+0.400 mm `In3.Cu` track, (64.850, 69.200) -> (65.950, 70.200) ->
+(69.325, 66.750), at 0.000 mm and 0.043 mm — plus two `Net-(U11-TS_MR)`
+barrels at (64.700, 70.500) and (66.600, 70.900).
+
+**`R129.1` IS THEREFORE NOT A LAND QUESTION AND NEVER WAS.**  Its width ladder
+(`evidence/d647-plus3v3-r129-width-ladder.json`) closes at 0.200-0.400 mm with
+a 0.35/0.20 barrel and refuses at the netclass 0.800 barrel at EVERY width —
+but none of those closures is worth buying while the island the barrel lands on
+is the wrong one.
+
+## 5. `screen_island_join` AND `screen_pour_bridges` AGREE, AND ARE EXHAUSTED
+
+`screen_island_join.py +3V3 --floors` (`evidence/d647-island-join-plus3v3.json`):
+0 of 5 at the netclass contract AND at the board's own floors (0.400 mm,
+0.65/0.40 barrel).  `R129.1` `NO_PATH` at both; the other four `NO_ANCHOR`.
+`screen_pour_bridges.py +3V3` (`evidence/d647-pour-bridges-plus3v3.json`):
+0 bridgeable, 0 needing a licence, down to 0.35/0.20 mm.
+
+## 6. `/ACC_5V_BOOST_EN` IS BLAMED TO ONE OBJECT AND REFUSED FOUR WAYS
+
+`screen_corridor_blockers.py` on the D-646 authority
+(`evidence/d647-corridor-blame-acc5ven.json`): **`RIPUP_SINGLE`**, and the
+per-OBJECT minimal eviction is a **SINGLE object out of 32 candidates** --
+`/09_COMMUNITY_HEADER/TCA4307_READY` on `B.Cu`, (59.900, 57.900) ->
+(60.100, 53.800), 4.1049 mm, `reproved_ok: true`.  With it absent the net closes
+`R102.1` -> `TP30.1` in **8.760 mm of `B.Cu` at its own netclass width and ZERO
+vias** (`evidence/d647-acc5ven-route.json`); with it present, `NO_PATH` at 11
+src / 22 dst escapes.  `/ACC_5V_BOOST_EN` enables the switched 5 V accessory
+output, which `AQROOT_DEMO_SCOPE.md` lists as a Demo requirement.
+
+**And every executable unit refuses, in ascending size:**
+
+    unit                                    budget      verdict
+    ONE track,     derived  was + 2*pi*R     9.131 mm   relay NO_PATH
+    ONE track,     STATED                   12.500 mm   relay NO_PATH
+    THREE-track CHAIN, derived              11.414 mm   relay NO_PATH
+      (and this one FIXES the dangling DRC: `attributable_drc` PASSES and the
+       refusal narrows to `every_detour_relaid` alone)
+    `--evict-whole`, all 24 objects, net RE-REQUESTED   re-proposal NO_PATH,
+                                                        41 -> 42 open edges
+
+`evidence/d647-gate-{onetrack-refused,onetrack-budget12,chain-refused,evictwhole-refused}.json`.
+The reason is geometric and is now stated: **the copper `/ACC_5V_BOOST_EN` needs
+CROSSES the copper that blocks it.**  Whichever of the two is laid first owns
+the lane, and a relay that has to change layer between two ends 4.1 mm apart
+inside that pocket has nowhere to put its barrels.  This is D-637 section 6's
+frontier -- *"the remaining edges open only by evicting copper that cannot be
+re-proposed at today's congestion"* -- measured on a new net with four arms
+instead of one.
+
+## 7. THE REST OF THE BLAME SWEEP
+
+    /04_SPI_B_RADIOS_NFC/NFC_VDD_RF   RIPUP_SINGLE  minimal 3 objects of
+                                      NFC_RFO1, 3.563 mm, reproved -- and
+                                      D-640's citation guard already REFUSES
+                                      the NFC transmit arms (6 DRU rules)
+    /08_BUTTONS_EXPANDERS/BTN_LEFT_N  RIPUP_SINGLE  minimal ONE object of
+                                      /08_BUTTONS_EXPANDERS/FRONT_RGB_R_N out
+                                      of 21 candidates, 19.794 mm, reproved.
+                                      Two cheaper single openers exist:
+                                      /TOUCH_RST_N (10.151 mm) and
+                                      /AMP_SD_MODE (12.713 mm)
+    /ACC_PWR_EN                       RIPUP_SET
+
+## 8. THE `U4.5 <-> U4.8` BRIDGE IS REFUSED BY PLACEMENT, AND THE SCREEN'S
+## `why` FIELD NAMES THE FIRST BLOCKER, NOT THE ONLY ONE
+
+The screen names `GND` at (58.4028, 69.5995) for that pair.  The objects whose
+clearance envelope contains that point are TWO `GND` `B.Cu` chains, TIED at
+0.2505 mm -- (58.4125, 70.000) -> (57.700, 70.000), 0.7125 mm, and the
+two-segment (58.400, 70.000) -> (58.300, 70.100) -> (58.300, 70.200),
+0.2414 mm.  `screen_inert_copper.py` calls BOTH `INERT`, ratio 1.667 and 2.667
+against the 0.300 mm bar; in `U4`'s 6 x 7 mm neighbourhood **all TWELVE `GND`
+`B.Cu` chains are INERT, 7.775 mm** (`evidence/d647-inert-copper-u4.json`).
+
+**A full gate run removed the first alone and passed TWELVE of thirteen
+clauses** (`evidence/d647-gate-inert-single-refused.json`): `inert_removal_priced`
+priced it on the CANDIDATE's own refilled pour (island 35, pour path 0.566 mm
+at a narrowest 0.500 mm, ratio 1.667), `pour_partition` `PP1`-`PP4` PASS, real
+KiCad DRC IDENTICAL to the authority, `no_regression` PASS, one licensed
+removal and zero unlicensed ones.  It was refused by **`board_improved`
+ALONE** -- the second chain refuses the same bridge at the same point, so
+nothing was bought, and clause 4 is exactly right to say so.
+
+**AND THE SECOND REMOVAL WOULD NOT HAVE BOUGHT IT EITHER.**  The two-segment
+chain is not a chain: `U4.6`'s own `GND` LAND covers its interior junction at
+(58.300, 70.100), and `--detour` refuses it by name -- *"that is a tee, not a
+chain"*.  Behind that pad is the reason the pair can never bridge:
+
+    straight line U4.5 (58.4125, 69.500) -> U4.8 (58.250, 71.1625)
+      U4.6's GND through barrel (58.300, 70.200), 0.600 mm    0.0439 mm from
+                                                              the line -- 0.2561 mm
+                                                              INSIDE its annulus
+      U4.6's GND land          (58.300, 70.100)               0.0536 mm
+
+**`U4.6` SITS ON THE STRAIGHT LINE BETWEEN THE BMI270's TWO SUPPLY PADS.**  No
+removal of any routed copper opens that bridge; it is a PLACEMENT refusal and
+belongs in PM-3 with the other seven.  The lesson about the instrument is worth
+as much as the answer: `screen_pad_bridge`'s `why` names the FIRST object the
+stroke meets, and a transaction built on it must enumerate everything inside
+the envelope before it spends a gate run.
+
+## 9. WHAT DID NOT MOVE, AND WHAT DID
+
+    ELEVEN standing contracts RAN; 11/11 PASS
+      (`evidence/d647-contract-regression.json`, baseline `d632`).  The only
+      differences from that baseline are the ones D-645/D-646 already
+      documented -- `board_sha256`, `In1.Cu` 9429.543 -> 9422.106 mm2, and
+      `PP2`'s `+3V3|F` island count 31 -> 33.  `placement`, `rf_symmetry` and
+      `protected_copper` are IDENTICAL to `d632`.
+    SIX gate runs, ZERO invoked `--promote`.  The authority board's sha256 is
+      unchanged before and after every one of them.
+    `hardware/beta-v2` UNTOUCHED.
+
+## 10. NEXT, IN ORDER OF LEVERAGE
+
+  1. **THE BMI270 HAS NO SUPPLY AND `U4.5` IS ONE BARREL FROM THE PLANE BODY.**
+     `screen_pad_escape_relief.py --grid 25000 --offcentre-launch` rung 1
+     (`evidence/d647-relief-plus3v3-g25.json`) opens `U4.5` with **3.759 mm of
+     0.200 mm `B.Cu` and ONE 0.65/0.40 mm barrel at (55.650, 66.975)** -- the
+     board's own UNLICENSED `.kicad_dru` floor, no barrel exception of any kind
+     -- and rung 3 does it in **1.383 mm** with the D-257 0.35/0.20 barrel at
+     (57.275, 68.625).  **Both land in `In3` outline 0, the PLANE BODY**
+     (`evidence/d647-barrel-landing.json`), exactly as `U4.12`'s promoted D-632
+     barrel does.  ONE clause refuses it: `leaf_land_contract` LL4.  KiCad's
+     netlist calls `U4.5` `power_in`, so `PP2`'s 1.0 A rail bar binds and
+     0.200 mm carries 0.742 A at dT = 10 K.
+     **AND THE DATUM THAT SETTLES IT IS ALREADY IN THIS REPOSITORY**, quoted
+     verbatim in this board's own `.kicad_dru` section 12b from the schematic
+     note: the BMI270 draws *"4 uA plus 3 uA in accel low-power mode and 3.5 uA
+     in suspend, and those microamps arrive through `VDD` and `VDDIO`"*.  That
+     is D-636 item 1's per-part electrical ledger, and it now unlocks THREE
+     things and not two -- and one of them is the only thing between this Demo
+     and a working IMU.
+  2. **`R129.1` IS A POUR-ISLAND QUESTION AND NOT A LAND QUESTION.**  Join
+     `In3` outline 5 (25.2325 mm2) to the body across 1.7671 mm, past
+     `/ACC_3V3_SW`'s 0.400 mm `In3.Cu` track and the two `Net-(U11-TS_MR)`
+     barrels.  Do NOT spend another escape-relief licence on it: every barrel
+     it can find lands back on its own island.
+  3. **`/ACC_5V_BOOST_EN` IS ONE OBJECT FROM CLOSING AND FOUR UNITS FROM
+     EXECUTABLE.**  Its other single opener is `/ACC_3V3_SW` (27 tracks,
+     42 vias, 6.180 mm route) -- a bigger cut, but one whose copper does not
+     cross the closure.
+  4. **`/08_BUTTONS_EXPANDERS/BTN_LEFT_N`** -- `RIPUP_SINGLE` with THREE single
+     openers; the cheapest is `/TOUCH_RST_N` at 10.151 mm, then `/AMP_SD_MODE`
+     at 12.713 mm, then the minimal ONE object of `FRONT_RGB_R_N`.
+  5. **THE PAD-BRIDGE `why` FIELD IS A FREE BOARD-WIDE BLAME REPORT.**  It
+     costs one cheap read-only screen and it names a single object per land
+     pair; read it before spending an hour of `screen_corridor_blockers`.  Its
+     limit is stated in section 8: it names the FIRST blocker, not the only one.
+  6. **CARRIED UNCHANGED**: `/I2S_LRCLK`'s edge rate and `/NFC_SUPPLY`'s
+     per-net current (the same per-part ledger as item 1), `/SPI_B_SCK` and
+     `/BQ25185_STAT1` as LANDS, the three inherited `GND` orphans, and
+     `BQ25185_SYS C26.2`.
+
+No owner decision is OPEN.  D-618's `J3` question remains RECORDED.
+
+
 # D-646 · 2026-09-06 · Demo — the `+3V3` / `U4` WALL WAS THREE ORDINARY `GND` TRACKS THAT CONDUCT NOTHING: the per-object blame D-645 ordered names them, the board's own refill proves them INERT, and the closure is ONE straight 0.400 mm pad bridge with no via
 
 **COPPER PROMOTED.**  Authority

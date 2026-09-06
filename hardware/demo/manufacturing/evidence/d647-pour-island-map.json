@@ -1,0 +1,158 @@
+{
+ "authoritative_unchanged": true,
+ "board": "/home/aqroot8/aqroot-demo/hardware/demo/kicad/aqroot-demo/aqroot-Beta-v2.kicad_pcb",
+ "board_sha256": "6b7cb0143b2a10e5d4160232f7aba466ccf50a71cdda417e72a680acfcd40dde",
+ "board_sha256_at_write": "6b7cb0143b2a10e5d4160232f7aba466ccf50a71cdda417e72a680acfcd40dde",
+ "lands": {
+  "R129.1": {
+   "alone": true,
+   "at": [
+    57.4,
+    57.735
+   ],
+   "joined_pads": 1,
+   "net": "+3V3",
+   "on": {
+    "In3 +3V3 PLANE|In3.Cu": {
+     "area_mm2": 25.2325,
+     "body_area_mm2": 8047.8347,
+     "gap_to_body_mm": 1.7671,
+     "is_body": false,
+     "outline": 5
+    }
+   }
+  },
+  "R39.1": {
+   "alone": true,
+   "at": [
+    65.675,
+    71.75
+   ],
+   "joined_pads": 1,
+   "net": "+3V3",
+   "on": {}
+  },
+  "U4.5": {
+   "alone": true,
+   "at": [
+    58.4125,
+    69.5
+   ],
+   "joined_pads": 1,
+   "net": "+3V3",
+   "on": {
+    "F +3V3 PLANE|F.Cu": {
+     "area_mm2": 31.1713,
+     "body_area_mm2": 3689.8529,
+     "gap_to_body_mm": 0.701,
+     "is_body": false,
+     "outline": 29
+    },
+    "In3 +3V3 PLANE|In3.Cu": {
+     "area_mm2": 8047.8347,
+     "body_area_mm2": 8047.8347,
+     "gap_to_body_mm": null,
+     "is_body": true,
+     "outline": 0
+    }
+   }
+  },
+  "U4.8": {
+   "alone": true,
+   "at": [
+    58.25,
+    71.1625
+   ],
+   "joined_pads": 1,
+   "net": "+3V3",
+   "on": {
+    "F +3V3 PLANE|F.Cu": {
+     "area_mm2": 31.1713,
+     "body_area_mm2": 3689.8529,
+     "gap_to_body_mm": 0.701,
+     "is_body": false,
+     "outline": 29
+    },
+    "In3 +3V3 PLANE|In3.Cu": {
+     "area_mm2": 8047.8347,
+     "body_area_mm2": 8047.8347,
+     "gap_to_body_mm": null,
+     "is_body": true,
+     "outline": 0
+    }
+   }
+  },
+  "U5.2": {
+   "alone": true,
+   "at": [
+    29.5625,
+    115.75
+   ],
+   "joined_pads": 1,
+   "net": "+3V3",
+   "on": {
+    "F +3V3 PLANE|F.Cu": {
+     "area_mm2": 0.1831,
+     "body_area_mm2": 3689.8529,
+     "gap_to_body_mm": 36.6203,
+     "is_body": false,
+     "outline": 13
+    }
+   }
+  }
+ },
+ "method": "read-only; KiCad's own GetFilledPolysList and GetConnectedItems, pad CENTRE tested by PointInside, gap measured vertex-to-edge between the two chains",
+ "question": "for every land of a pour-owning net: which FILLED OUTLINE holds it, is that outline the zone's BODY, and if not how far is the body",
+ "schema": 1,
+ "zones": [
+  {
+   "body_area_mm2": 3689.8529,
+   "layer": "F.Cu",
+   "net": "+3V3",
+   "outlines": 33,
+   "zone": "F +3V3 PLANE"
+  },
+  {
+   "body_area_mm2": 2840.9505,
+   "layer": "B.Cu",
+   "net": "GND",
+   "outlines": 59,
+   "zone": "B GND PLANE"
+  },
+  {
+   "body_area_mm2": 10.8135,
+   "layer": "B.Cu",
+   "net": "/01_POWER_TREE/BQ25185_SYS",
+   "outlines": 1,
+   "zone": "B /01_POWER_TREE/BQ25185_SYS POUR 2"
+  },
+  {
+   "body_area_mm2": 90.572,
+   "layer": "B.Cu",
+   "net": "/01_POWER_TREE/BQ25185_SYS",
+   "outlines": 7,
+   "zone": "B /01_POWER_TREE/BQ25185_SYS POUR 1"
+  },
+  {
+   "body_area_mm2": 9422.1056,
+   "layer": "In1.Cu",
+   "net": "GND",
+   "outlines": 1,
+   "zone": "In1 GND REFERENCE"
+  },
+  {
+   "body_area_mm2": 8047.8347,
+   "layer": "In3.Cu",
+   "net": "+3V3",
+   "outlines": 6,
+   "zone": "In3 +3V3 PLANE"
+  },
+  {
+   "body_area_mm2": 9422.1056,
+   "layer": "In4.Cu",
+   "net": "GND",
+   "outlines": 1,
+   "zone": "In1 GND REFERENCE_1"
+  }
+ ]
+}

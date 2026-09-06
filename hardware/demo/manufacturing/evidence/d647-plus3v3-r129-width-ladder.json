@@ -1,0 +1,1024 @@
+{
+ "board": "/home/aqroot8/aqroot-demo/hardware/demo/kicad/aqroot-demo/aqroot-Beta-v2.kicad_pcb",
+ "board_sha256": "6b7cb0143b2a10e5d4160232f7aba466ccf50a71cdda417e72a680acfcd40dde",
+ "board_sha256_at_write": "6b7cb0143b2a10e5d4160232f7aba466ccf50a71cdda417e72a680acfcd40dde",
+ "body": 0,
+ "env": {
+  "offcentre": true,
+  "scan_board_vias": true
+ },
+ "islands": {
+  "0": "C10.1/C12.2/C13.1/C14.1/C15.1/C16.1/C17.1/C18.1/C2.1/C29.1/C3.1/C30.1/C31.1/C32.1/C4.1/C43.1/C5.1/C56.1/C6.1/C62.1/C7.1/C8.1/C9.1/D13.1/J1.35/J1.40/J1.41/J1.42/J1.7/J1.8/J1.9/J2.4/L3.1/MK1.3/R1.2/R103.1/R106.1/R113.1/R119.1/R123.2/R127.1/R128.1/R19.1/R2.1/R20.1/R21.1/R24.2/R25.1/R26.1/R27.1/R28.1/R29.1/R3.2/R4.1/R41.1/R5.1/R6.1/R7.1/R8.1/R81.1/R9.1/U1.2/U12.4/U12.5/U17.5/U2.24/U20.2/U3.21/U3.24/U4.12/U4.2/U4.3/U5.7/U5.8/U7.9/U8.9/U9.1",
+  "1": "R129.1",
+  "2": "R39.1",
+  "3": "U4.5",
+  "4": "U4.8",
+  "5": "U5.2"
+ },
+ "net": "+3V3",
+ "netclass": {
+  "clr": 200000,
+  "clr_pad": 200000,
+  "layers": [
+   "F",
+   "B",
+   "I2",
+   "I3"
+  ],
+  "via_dia": 800000,
+  "via_drill": 400000,
+  "width": 600000
+ },
+ "schema": 1,
+ "target": "R129.1",
+ "trials": {
+  "w=200000 via=350000": {
+   "dst": null,
+   "geometry": {
+    "tracks": [
+     {
+      "layer": "B.Cu",
+      "mm": 0.9655,
+      "width_nm": 200000,
+      "x0_mm": 57.4,
+      "x1_mm": 58.1,
+      "y0_mm": 57.735,
+      "y1_mm": 58.4
+     },
+     {
+      "layer": "B.Cu",
+      "mm": 0.1414,
+      "width_nm": 200000,
+      "x0_mm": 58.1,
+      "x1_mm": 58.2,
+      "y0_mm": 58.4,
+      "y1_mm": 58.3
+     },
+     {
+      "layer": "In2.Cu",
+      "mm": 2.3431,
+      "width_nm": 200000,
+      "x0_mm": 58.2,
+      "x1_mm": 56.4,
+      "y0_mm": 58.3,
+      "y1_mm": 56.8
+     },
+     {
+      "layer": "In2.Cu",
+      "mm": 0.8246,
+      "width_nm": 200000,
+      "x0_mm": 56.4,
+      "x1_mm": 56.2,
+      "y0_mm": 56.8,
+      "y1_mm": 56.0
+     },
+     {
+      "layer": "In2.Cu",
+      "mm": 1.063,
+      "width_nm": 200000,
+      "x0_mm": 56.2,
+      "x1_mm": 55.4,
+      "y0_mm": 56.0,
+      "y1_mm": 55.3
+     },
+     {
+      "layer": "In2.Cu",
+      "mm": 0.4243,
+      "width_nm": 200000,
+      "x0_mm": 55.4,
+      "x1_mm": 55.1,
+      "y0_mm": 55.3,
+      "y1_mm": 55.6
+     },
+     {
+      "layer": "F.Cu",
+      "mm": 1.9235,
+      "width_nm": 200000,
+      "x0_mm": 55.1,
+      "x1_mm": 53.2,
+      "y0_mm": 55.6,
+      "y1_mm": 55.3
+     },
+     {
+      "layer": "In3.Cu",
+      "mm": 2.2825,
+      "width_nm": 200000,
+      "x0_mm": 53.2,
+      "x1_mm": 51.2,
+      "y0_mm": 55.3,
+      "y1_mm": 56.4
+     },
+     {
+      "layer": "B.Cu",
+      "mm": 0.2828,
+      "width_nm": 200000,
+      "x0_mm": 51.2,
+      "x1_mm": 51.4,
+      "y0_mm": 56.4,
+      "y1_mm": 56.6
+     },
+     {
+      "layer": "B.Cu",
+      "mm": 1.0006,
+      "width_nm": 200000,
+      "x0_mm": 50.7,
+      "x1_mm": 51.4,
+      "y0_mm": 55.885,
+      "y1_mm": 56.6
+     }
+    ],
+    "vias": [
+     {
+      "dia_nm": 350000,
+      "drill_nm": 200000,
+      "x_mm": 58.2,
+      "y_mm": 58.3
+     },
+     {
+      "dia_nm": 350000,
+      "drill_nm": 200000,
+      "x_mm": 55.1,
+      "y_mm": 55.6
+     },
+     {
+      "dia_nm": 350000,
+      "drill_nm": 200000,
+      "x_mm": 53.2,
+      "y_mm": 55.3
+     },
+     {
+      "dia_nm": 350000,
+      "drill_nm": 200000,
+      "x_mm": 51.2,
+      "y_mm": 56.4
+     }
+    ]
+   },
+   "mm": 11.251,
+   "ok": true,
+   "reason": null,
+   "secs": 8.6,
+   "src": null,
+   "vias": 4,
+   "why": ""
+  },
+  "w=200000 via=800000": {
+   "dst": 822,
+   "geometry": {
+    "tracks": [],
+    "vias": []
+   },
+   "mm": 0.0,
+   "ok": false,
+   "reason": "NO_PATH",
+   "secs": 16.8,
+   "src": 13,
+   "vias": null,
+   "why": "no all-layer corridor at 0.200 mm between the islands"
+  },
+  "w=250000 via=350000": {
+   "dst": null,
+   "geometry": {
+    "tracks": [
+     {
+      "layer": "B.Cu",
+      "mm": 0.9655,
+      "width_nm": 250000,
+      "x0_mm": 57.4,
+      "x1_mm": 58.1,
+      "y0_mm": 57.735,
+      "y1_mm": 58.4
+     },
+     {
+      "layer": "B.Cu",
+      "mm": 0.1414,
+      "width_nm": 250000,
+      "x0_mm": 58.1,
+      "x1_mm": 58.2,
+      "y0_mm": 58.4,
+      "y1_mm": 58.3
+     },
+     {
+      "layer": "In2.Cu",
+      "mm": 2.3431,
+      "width_nm": 250000,
+      "x0_mm": 58.2,
+      "x1_mm": 56.4,
+      "y0_mm": 58.3,
+      "y1_mm": 56.8
+     },
+     {
+      "layer": "In2.Cu",
+      "mm": 0.8246,
+      "width_nm": 250000,
+      "x0_mm": 56.4,
+      "x1_mm": 56.2,
+      "y0_mm": 56.8,
+      "y1_mm": 56.0
+     },
+     {
+      "layer": "In2.Cu",
+      "mm": 1.063,
+      "width_nm": 250000,
+      "x0_mm": 56.2,
+      "x1_mm": 55.4,
+      "y0_mm": 56.0,
+      "y1_mm": 55.3
+     },
+     {
+      "layer": "In2.Cu",
+      "mm": 0.4243,
+      "width_nm": 250000,
+      "x0_mm": 55.4,
+      "x1_mm": 55.1,
+      "y0_mm": 55.3,
+      "y1_mm": 55.6
+     },
+     {
+      "layer": "F.Cu",
+      "mm": 1.9235,
+      "width_nm": 250000,
+      "x0_mm": 55.1,
+      "x1_mm": 53.2,
+      "y0_mm": 55.6,
+      "y1_mm": 55.3
+     },
+     {
+      "layer": "In3.Cu",
+      "mm": 2.2825,
+      "width_nm": 250000,
+      "x0_mm": 53.2,
+      "x1_mm": 51.2,
+      "y0_mm": 55.3,
+      "y1_mm": 56.4
+     },
+     {
+      "layer": "B.Cu",
+      "mm": 0.2828,
+      "width_nm": 250000,
+      "x0_mm": 51.2,
+      "x1_mm": 51.4,
+      "y0_mm": 56.4,
+      "y1_mm": 56.6
+     },
+     {
+      "layer": "B.Cu",
+      "mm": 1.0006,
+      "width_nm": 250000,
+      "x0_mm": 50.7,
+      "x1_mm": 51.4,
+      "y0_mm": 55.885,
+      "y1_mm": 56.6
+     }
+    ],
+    "vias": [
+     {
+      "dia_nm": 350000,
+      "drill_nm": 200000,
+      "x_mm": 58.2,
+      "y_mm": 58.3
+     },
+     {
+      "dia_nm": 350000,
+      "drill_nm": 200000,
+      "x_mm": 55.1,
+      "y_mm": 55.6
+     },
+     {
+      "dia_nm": 350000,
+      "drill_nm": 200000,
+      "x_mm": 53.2,
+      "y_mm": 55.3
+     },
+     {
+      "dia_nm": 350000,
+      "drill_nm": 200000,
+      "x_mm": 51.2,
+      "y_mm": 56.4
+     }
+    ]
+   },
+   "mm": 11.251,
+   "ok": true,
+   "reason": null,
+   "secs": 8.6,
+   "src": null,
+   "vias": 4,
+   "why": ""
+  },
+  "w=250000 via=800000": {
+   "dst": 811,
+   "geometry": {
+    "tracks": [],
+    "vias": []
+   },
+   "mm": 0.0,
+   "ok": false,
+   "reason": "NO_PATH",
+   "secs": 16.3,
+   "src": 13,
+   "vias": null,
+   "why": "no all-layer corridor at 0.250 mm between the islands"
+  },
+  "w=300000 via=350000": {
+   "dst": null,
+   "geometry": {
+    "tracks": [
+     {
+      "layer": "B.Cu",
+      "mm": 1.0369,
+      "width_nm": 300000,
+      "x0_mm": 57.4,
+      "x1_mm": 58.1,
+      "y0_mm": 57.735,
+      "y1_mm": 58.5
+     },
+     {
+      "layer": "B.Cu",
+      "mm": 0.2236,
+      "width_nm": 300000,
+      "x0_mm": 58.1,
+      "x1_mm": 58.2,
+      "y0_mm": 58.5,
+      "y1_mm": 58.3
+     },
+     {
+      "layer": "In2.Cu",
+      "mm": 2.4207,
+      "width_nm": 300000,
+      "x0_mm": 58.2,
+      "x1_mm": 56.3,
+      "y0_mm": 58.3,
+      "y1_mm": 56.8
+     },
+     {
+      "layer": "In2.Cu",
+      "mm": 0.8,
+      "width_nm": 300000,
+      "x0_mm": 56.3,
+      "x1_mm": 56.3,
+      "y0_mm": 56.8,
+      "y1_mm": 56.0
+     },
+     {
+      "layer": "In2.Cu",
+      "mm": 1.1662,
+      "width_nm": 300000,
+      "x0_mm": 56.3,
+      "x1_mm": 55.3,
+      "y0_mm": 56.0,
+      "y1_mm": 55.4
+     },
+     {
+      "layer": "In2.Cu",
+      "mm": 0.2828,
+      "width_nm": 300000,
+      "x0_mm": 55.3,
+      "x1_mm": 55.1,
+      "y0_mm": 55.4,
+      "y1_mm": 55.6
+     },
+     {
+      "layer": "F.Cu",
+      "mm": 1.9235,
+      "width_nm": 300000,
+      "x0_mm": 55.1,
+      "x1_mm": 53.2,
+      "y0_mm": 55.6,
+      "y1_mm": 55.3
+     },
+     {
+      "layer": "In3.Cu",
+      "mm": 2.2825,
+      "width_nm": 300000,
+      "x0_mm": 53.2,
+      "x1_mm": 51.2,
+      "y0_mm": 55.3,
+      "y1_mm": 56.4
+     },
+     {
+      "layer": "B.Cu",
+      "mm": 0.2828,
+      "width_nm": 300000,
+      "x0_mm": 51.2,
+      "x1_mm": 51.4,
+      "y0_mm": 56.4,
+      "y1_mm": 56.6
+     },
+     {
+      "layer": "B.Cu",
+      "mm": 1.0006,
+      "width_nm": 300000,
+      "x0_mm": 50.7,
+      "x1_mm": 51.4,
+      "y0_mm": 55.885,
+      "y1_mm": 56.6
+     }
+    ],
+    "vias": [
+     {
+      "dia_nm": 350000,
+      "drill_nm": 200000,
+      "x_mm": 58.2,
+      "y_mm": 58.3
+     },
+     {
+      "dia_nm": 350000,
+      "drill_nm": 200000,
+      "x_mm": 55.1,
+      "y_mm": 55.6
+     },
+     {
+      "dia_nm": 350000,
+      "drill_nm": 200000,
+      "x_mm": 53.2,
+      "y_mm": 55.3
+     },
+     {
+      "dia_nm": 350000,
+      "drill_nm": 200000,
+      "x_mm": 51.2,
+      "y_mm": 56.4
+     }
+    ]
+   },
+   "mm": 11.42,
+   "ok": true,
+   "reason": null,
+   "secs": 9.3,
+   "src": null,
+   "vias": 4,
+   "why": ""
+  },
+  "w=300000 via=800000": {
+   "dst": 764,
+   "geometry": {
+    "tracks": [],
+    "vias": []
+   },
+   "mm": 0.0,
+   "ok": false,
+   "reason": "NO_PATH",
+   "secs": 17.1,
+   "src": 12,
+   "vias": null,
+   "why": "no all-layer corridor at 0.300 mm between the islands"
+  },
+  "w=350000 via=350000": {
+   "dst": null,
+   "geometry": {
+    "tracks": [
+     {
+      "layer": "B.Cu",
+      "mm": 1.1069,
+      "width_nm": 350000,
+      "x0_mm": 57.4,
+      "x1_mm": 58.2,
+      "y0_mm": 57.735,
+      "y1_mm": 58.5
+     },
+     {
+      "layer": "B.Cu",
+      "mm": 0.2,
+      "width_nm": 350000,
+      "x0_mm": 58.2,
+      "x1_mm": 58.2,
+      "y0_mm": 58.5,
+      "y1_mm": 58.3
+     },
+     {
+      "layer": "In2.Cu",
+      "mm": 2.4207,
+      "width_nm": 350000,
+      "x0_mm": 58.2,
+      "x1_mm": 56.3,
+      "y0_mm": 58.3,
+      "y1_mm": 56.8
+     },
+     {
+      "layer": "In2.Cu",
+      "mm": 0.8,
+      "width_nm": 350000,
+      "x0_mm": 56.3,
+      "x1_mm": 56.3,
+      "y0_mm": 56.8,
+      "y1_mm": 56.0
+     },
+     {
+      "layer": "In2.Cu",
+      "mm": 1.1402,
+      "width_nm": 350000,
+      "x0_mm": 56.3,
+      "x1_mm": 55.4,
+      "y0_mm": 56.0,
+      "y1_mm": 55.3
+     },
+     {
+      "layer": "In2.Cu",
+      "mm": 0.4243,
+      "width_nm": 350000,
+      "x0_mm": 55.4,
+      "x1_mm": 55.1,
+      "y0_mm": 55.3,
+      "y1_mm": 55.6
+     },
+     {
+      "layer": "F.Cu",
+      "mm": 1.9235,
+      "width_nm": 350000,
+      "x0_mm": 55.1,
+      "x1_mm": 53.2,
+      "y0_mm": 55.6,
+      "y1_mm": 55.3
+     },
+     {
+      "layer": "In3.Cu",
+      "mm": 2.1024,
+      "width_nm": 350000,
+      "x0_mm": 53.2,
+      "x1_mm": 51.3,
+      "y0_mm": 55.3,
+      "y1_mm": 56.2
+     },
+     {
+      "layer": "B.Cu",
+      "mm": 0.2828,
+      "width_nm": 350000,
+      "x0_mm": 51.3,
+      "x1_mm": 51.5,
+      "y0_mm": 56.2,
+      "y1_mm": 56.0
+     },
+     {
+      "layer": "B.Cu",
+      "mm": 0.6,
+      "width_nm": 350000,
+      "x0_mm": 50.9,
+      "x1_mm": 51.5,
+      "y0_mm": 56.0,
+      "y1_mm": 56.0
+     }
+    ],
+    "vias": [
+     {
+      "dia_nm": 350000,
+      "drill_nm": 200000,
+      "x_mm": 58.2,
+      "y_mm": 58.3
+     },
+     {
+      "dia_nm": 350000,
+      "drill_nm": 200000,
+      "x_mm": 55.1,
+      "y_mm": 55.6
+     },
+     {
+      "dia_nm": 350000,
+      "drill_nm": 200000,
+      "x_mm": 53.2,
+      "y_mm": 55.3
+     },
+     {
+      "dia_nm": 350000,
+      "drill_nm": 200000,
+      "x_mm": 51.3,
+      "y_mm": 56.2
+     }
+    ]
+   },
+   "mm": 11.001,
+   "ok": true,
+   "reason": null,
+   "secs": 10.8,
+   "src": null,
+   "vias": 4,
+   "why": ""
+  },
+  "w=350000 via=800000": {
+   "dst": 744,
+   "geometry": {
+    "tracks": [],
+    "vias": []
+   },
+   "mm": 0.0,
+   "ok": false,
+   "reason": "NO_PATH",
+   "secs": 29.4,
+   "src": 12,
+   "vias": null,
+   "why": "no all-layer corridor at 0.350 mm between the islands"
+  },
+  "w=400000 via=350000": {
+   "dst": null,
+   "geometry": {
+    "tracks": [
+     {
+      "layer": "B.Cu",
+      "mm": 1.1069,
+      "width_nm": 400000,
+      "x0_mm": 57.4,
+      "x1_mm": 58.2,
+      "y0_mm": 57.735,
+      "y1_mm": 58.5
+     },
+     {
+      "layer": "B.Cu",
+      "mm": 0.2,
+      "width_nm": 400000,
+      "x0_mm": 58.2,
+      "x1_mm": 58.2,
+      "y0_mm": 58.5,
+      "y1_mm": 58.3
+     },
+     {
+      "layer": "In2.Cu",
+      "mm": 2.0,
+      "width_nm": 400000,
+      "x0_mm": 58.2,
+      "x1_mm": 56.6,
+      "y0_mm": 58.3,
+      "y1_mm": 57.1
+     },
+     {
+      "layer": "In2.Cu",
+      "mm": 0.728,
+      "width_nm": 400000,
+      "x0_mm": 56.6,
+      "x1_mm": 56.4,
+      "y0_mm": 57.1,
+      "y1_mm": 56.4
+     },
+     {
+      "layer": "In2.Cu",
+      "mm": 0.5385,
+      "width_nm": 400000,
+      "x0_mm": 56.4,
+      "x1_mm": 56.2,
+      "y0_mm": 56.4,
+      "y1_mm": 55.9
+     },
+     {
+      "layer": "In2.Cu",
+      "mm": 1.063,
+      "width_nm": 400000,
+      "x0_mm": 56.2,
+      "x1_mm": 55.4,
+      "y0_mm": 55.9,
+      "y1_mm": 55.2
+     },
+     {
+      "layer": "In2.Cu",
+      "mm": 0.5,
+      "width_nm": 400000,
+      "x0_mm": 55.4,
+      "x1_mm": 55.1,
+      "y0_mm": 55.2,
+      "y1_mm": 55.6
+     },
+     {
+      "layer": "B.Cu",
+      "mm": 1.9235,
+      "width_nm": 400000,
+      "x0_mm": 55.1,
+      "x1_mm": 53.2,
+      "y0_mm": 55.6,
+      "y1_mm": 55.3
+     },
+     {
+      "layer": "F.Cu",
+      "mm": 1.2166,
+      "width_nm": 400000,
+      "x0_mm": 53.2,
+      "x1_mm": 53.4,
+      "y0_mm": 55.3,
+      "y1_mm": 54.1
+     },
+     {
+      "layer": "In3.Cu",
+      "mm": 3.1828,
+      "width_nm": 400000,
+      "x0_mm": 53.4,
+      "x1_mm": 51.2,
+      "y0_mm": 54.1,
+      "y1_mm": 56.4
+     },
+     {
+      "layer": "B.Cu",
+      "mm": 0.2828,
+      "width_nm": 400000,
+      "x0_mm": 51.2,
+      "x1_mm": 51.4,
+      "y0_mm": 56.4,
+      "y1_mm": 56.6
+     },
+     {
+      "layer": "B.Cu",
+      "mm": 0.6727,
+      "width_nm": 400000,
+      "x0_mm": 50.9,
+      "x1_mm": 51.4,
+      "y0_mm": 56.15,
+      "y1_mm": 56.6
+     }
+    ],
+    "vias": [
+     {
+      "dia_nm": 350000,
+      "drill_nm": 200000,
+      "x_mm": 58.2,
+      "y_mm": 58.3
+     },
+     {
+      "dia_nm": 350000,
+      "drill_nm": 200000,
+      "x_mm": 55.1,
+      "y_mm": 55.6
+     },
+     {
+      "dia_nm": 350000,
+      "drill_nm": 200000,
+      "x_mm": 53.2,
+      "y_mm": 55.3
+     },
+     {
+      "dia_nm": 350000,
+      "drill_nm": 200000,
+      "x_mm": 53.4,
+      "y_mm": 54.1
+     },
+     {
+      "dia_nm": 350000,
+      "drill_nm": 200000,
+      "x_mm": 51.2,
+      "y_mm": 56.4
+     }
+    ]
+   },
+   "mm": 13.415,
+   "ok": true,
+   "reason": null,
+   "secs": 24.1,
+   "src": null,
+   "vias": 5,
+   "why": ""
+  },
+  "w=400000 via=800000": {
+   "dst": 718,
+   "geometry": {
+    "tracks": [],
+    "vias": []
+   },
+   "mm": 0.0,
+   "ok": false,
+   "reason": "NO_PATH",
+   "secs": 27.3,
+   "src": 10,
+   "vias": null,
+   "why": "no all-layer corridor at 0.400 mm between the islands"
+  },
+  "w=500000 via=350000": {
+   "dst": null,
+   "geometry": {
+    "tracks": [
+     {
+      "layer": "B.Cu",
+      "mm": 0.3536,
+      "width_nm": 500000,
+      "x0_mm": 57.55,
+      "x1_mm": 57.8,
+      "y0_mm": 57.95,
+      "y1_mm": 58.2
+     },
+     {
+      "layer": "B.Cu",
+      "mm": 0.3162,
+      "width_nm": 500000,
+      "x0_mm": 57.8,
+      "x1_mm": 58.1,
+      "y0_mm": 58.2,
+      "y1_mm": 58.1
+     },
+     {
+      "layer": "In2.Cu",
+      "mm": 3.1113,
+      "width_nm": 500000,
+      "x0_mm": 58.1,
+      "x1_mm": 60.3,
+      "y0_mm": 58.1,
+      "y1_mm": 55.9
+     },
+     {
+      "layer": "In2.Cu",
+      "mm": 7.7897,
+      "width_nm": 500000,
+      "x0_mm": 60.3,
+      "x1_mm": 56.5,
+      "y0_mm": 55.9,
+      "y1_mm": 49.1
+     },
+     {
+      "layer": "In2.Cu",
+      "mm": 0.1414,
+      "width_nm": 500000,
+      "x0_mm": 56.5,
+      "x1_mm": 56.6,
+      "y0_mm": 49.1,
+      "y1_mm": 49.0
+     },
+     {
+      "layer": "In3.Cu",
+      "mm": 2.4042,
+      "width_nm": 500000,
+      "x0_mm": 56.6,
+      "x1_mm": 58.3,
+      "y0_mm": 49.0,
+      "y1_mm": 47.3
+     },
+     {
+      "layer": "B.Cu",
+      "mm": 2.3259,
+      "width_nm": 500000,
+      "x0_mm": 58.3,
+      "x1_mm": 59.3,
+      "y0_mm": 47.3,
+      "y1_mm": 45.2
+     },
+     {
+      "layer": "In3.Cu",
+      "mm": 5.6436,
+      "width_nm": 500000,
+      "x0_mm": 59.3,
+      "x1_mm": 64.2,
+      "y0_mm": 45.2,
+      "y1_mm": 42.4
+     },
+     {
+      "layer": "In3.Cu",
+      "mm": 1.2083,
+      "width_nm": 500000,
+      "x0_mm": 64.2,
+      "x1_mm": 64.7,
+      "y0_mm": 42.4,
+      "y1_mm": 41.3
+     },
+     {
+      "layer": "In3.Cu",
+      "mm": 4.0262,
+      "width_nm": 500000,
+      "x0_mm": 64.7,
+      "x1_mm": 63.7,
+      "y0_mm": 41.3,
+      "y1_mm": 37.4
+     },
+     {
+      "layer": "In3.Cu",
+      "mm": 10.0245,
+      "width_nm": 500000,
+      "x0_mm": 63.7,
+      "x1_mm": 63.0,
+      "y0_mm": 37.4,
+      "y1_mm": 27.4
+     },
+     {
+      "layer": "In3.Cu",
+      "mm": 4.653,
+      "width_nm": 500000,
+      "x0_mm": 63.0,
+      "x1_mm": 63.7,
+      "y0_mm": 27.4,
+      "y1_mm": 22.8
+     },
+     {
+      "layer": "B.Cu",
+      "mm": 3.1113,
+      "width_nm": 500000,
+      "x0_mm": 63.7,
+      "x1_mm": 61.5,
+      "y0_mm": 22.8,
+      "y1_mm": 20.6
+     },
+     {
+      "layer": "In3.Cu",
+      "mm": 12.3762,
+      "width_nm": 500000,
+      "x0_mm": 61.5,
+      "x1_mm": 52.6,
+      "y0_mm": 20.6,
+      "y1_mm": 12.0
+     },
+     {
+      "layer": "In3.Cu",
+      "mm": 0.2236,
+      "width_nm": 500000,
+      "x0_mm": 52.6,
+      "x1_mm": 52.7,
+      "y0_mm": 12.0,
+      "y1_mm": 11.8
+     },
+     {
+      "layer": "F.Cu",
+      "mm": 1.3234,
+      "width_nm": 500000,
+      "x0_mm": 51.7635,
+      "x1_mm": 52.7,
+      "y0_mm": 10.865,
+      "y1_mm": 11.8
+     }
+    ],
+    "vias": [
+     {
+      "dia_nm": 350000,
+      "drill_nm": 200000,
+      "x_mm": 58.1,
+      "y_mm": 58.1
+     },
+     {
+      "dia_nm": 350000,
+      "drill_nm": 200000,
+      "x_mm": 56.6,
+      "y_mm": 49.0
+     },
+     {
+      "dia_nm": 350000,
+      "drill_nm": 200000,
+      "x_mm": 58.3,
+      "y_mm": 47.3
+     },
+     {
+      "dia_nm": 350000,
+      "drill_nm": 200000,
+      "x_mm": 59.3,
+      "y_mm": 45.2
+     },
+     {
+      "dia_nm": 350000,
+      "drill_nm": 200000,
+      "x_mm": 63.7,
+      "y_mm": 22.8
+     },
+     {
+      "dia_nm": 350000,
+      "drill_nm": 200000,
+      "x_mm": 61.5,
+      "y_mm": 20.6
+     },
+     {
+      "dia_nm": 350000,
+      "drill_nm": 200000,
+      "x_mm": 52.7,
+      "y_mm": 11.8
+     }
+    ]
+   },
+   "mm": 59.032,
+   "ok": true,
+   "reason": null,
+   "secs": 20.1,
+   "src": null,
+   "vias": 7,
+   "why": ""
+  },
+  "w=500000 via=800000": {
+   "dst": 650,
+   "geometry": {
+    "tracks": [],
+    "vias": []
+   },
+   "mm": 0.0,
+   "ok": false,
+   "reason": "NO_PATH",
+   "secs": 22.0,
+   "src": 11,
+   "vias": null,
+   "why": "no all-layer corridor at 0.500 mm between the islands"
+  },
+  "w=600000 via=350000": {
+   "dst": 567,
+   "geometry": {
+    "tracks": [],
+    "vias": []
+   },
+   "mm": 0.0,
+   "ok": false,
+   "reason": "NO_PATH",
+   "secs": 25.1,
+   "src": 9,
+   "vias": null,
+   "why": "no all-layer corridor at 0.600 mm between the islands"
+  },
+  "w=600000 via=800000": {
+   "dst": 567,
+   "geometry": {
+    "tracks": [],
+    "vias": []
+   },
+   "mm": 0.0,
+   "ok": false,
+   "reason": "NO_PATH",
+   "secs": 24.8,
+   "src": 9,
+   "vias": null,
+   "why": "no all-layer corridor at 0.600 mm between the islands"
+  }
+ }
+}

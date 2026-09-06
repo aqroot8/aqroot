@@ -1,0 +1,87 @@
+{
+ "board": "/home/aqroot8/aqroot-demo/hardware/demo/kicad/aqroot-demo/aqroot-Beta-v2.kicad_pcb",
+ "board_sha256": "6b7cb0143b2a10e5d4160232f7aba466ccf50a71cdda417e72a680acfcd40dde",
+ "board_sha256_at_write": "6b7cb0143b2a10e5d4160232f7aba466ccf50a71cdda417e72a680acfcd40dde",
+ "schema": 1,
+ "sites": {
+  "R129.1_pad": {
+   "In3 +3V3 PLANE|In3.Cu": {
+    "area_mm2": 25.2325,
+    "is_body": false,
+    "outline": 5
+   }
+  },
+  "U4.12_promoted_via": {
+   "F +3V3 PLANE|F.Cu": {
+    "area_mm2": 31.1713,
+    "is_body": false,
+    "outline": 29
+   },
+   "In3 +3V3 PLANE|In3.Cu": {
+    "area_mm2": 8047.8347,
+    "is_body": true,
+    "outline": 0
+   }
+  },
+  "rung1_U4.5_via": {
+   "F +3V3 PLANE|F.Cu": {
+    "area_mm2": 59.6346,
+    "is_body": false,
+    "outline": 30
+   },
+   "In3 +3V3 PLANE|In3.Cu": {
+    "area_mm2": 8047.8347,
+    "is_body": true,
+    "outline": 0
+   }
+  },
+  "rung2_R129.1_via": {
+   "F +3V3 PLANE|F.Cu": {
+    "area_mm2": 7.2601,
+    "is_body": false,
+    "outline": 31
+   },
+   "In3 +3V3 PLANE|In3.Cu": {
+    "area_mm2": 25.2325,
+    "is_body": false,
+    "outline": 5
+   }
+  },
+  "rung3_R129.1_via": {
+   "F +3V3 PLANE|F.Cu": {
+    "area_mm2": 7.2601,
+    "is_body": false,
+    "outline": 31
+   },
+   "In3 +3V3 PLANE|In3.Cu": {
+    "area_mm2": 25.2325,
+    "is_body": false,
+    "outline": 5
+   }
+  },
+  "rung3_U4.5_via": {
+   "F +3V3 PLANE|F.Cu": {
+    "area_mm2": 31.1713,
+    "is_body": false,
+    "outline": 29
+   },
+   "In3 +3V3 PLANE|In3.Cu": {
+    "area_mm2": 8047.8347,
+    "is_body": true,
+    "outline": 0
+   }
+  },
+  "rung4_R129.1_via": {
+   "F +3V3 PLANE|F.Cu": {
+    "area_mm2": 7.2601,
+    "is_body": false,
+    "outline": 31
+   },
+   "In3 +3V3 PLANE|In3.Cu": {
+    "area_mm2": 25.2325,
+    "is_body": false,
+    "outline": 5
+   }
+  }
+ }
+}

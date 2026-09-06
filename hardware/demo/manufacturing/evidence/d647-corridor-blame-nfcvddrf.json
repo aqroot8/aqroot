@@ -1,0 +1,271 @@
+{
+  "board": "/home/aqroot8/aqroot-demo/hardware/demo/kicad/aqroot-demo/aqroot-Beta-v2.kicad_pcb",
+  "board_changed_during_run": false,
+  "board_sha256": "6b7cb0143b2a10e5d4160232f7aba466ccf50a71cdda417e72a680acfcd40dde",
+  "board_sha256_at_write": "6b7cb0143b2a10e5d4160232f7aba466ccf50a71cdda417e72a680acfcd40dde",
+  "grid": 100000,
+  "nets": [
+    {
+      "clr_mm": 0.2,
+      "edges": [
+        {
+          "all_removed": {
+            "mm": 0.721,
+            "nets_removed": 21,
+            "ok": true,
+            "reason": null
+          },
+          "baseline": {
+            "dst_escapes": 1,
+            "mm": 0.0,
+            "ok": false,
+            "reason": "NO_PATH",
+            "src_escapes": 35
+          },
+          "corridor_nets": {
+            "+3V3": {
+              "layers": [
+                "B",
+                "F",
+                "I2"
+              ],
+              "tracks": 3,
+              "vias": 12
+            },
+            "/04_SPI_B_RADIOS_NFC/NFC_AGDC": {
+              "layers": [
+                "B",
+                "F",
+                "I2"
+              ],
+              "tracks": 15,
+              "vias": 24
+            },
+            "/04_SPI_B_RADIOS_NFC/NFC_ANT_A": {
+              "layers": [
+                "B"
+              ],
+              "tracks": 1,
+              "vias": 0
+            },
+            "/04_SPI_B_RADIOS_NFC/NFC_ANT_B": {
+              "layers": [
+                "B"
+              ],
+              "tracks": 1,
+              "vias": 0
+            },
+            "/04_SPI_B_RADIOS_NFC/NFC_EMCA": {
+              "layers": [
+                "B"
+              ],
+              "tracks": 3,
+              "vias": 0
+            },
+            "/04_SPI_B_RADIOS_NFC/NFC_EMCB": {
+              "layers": [
+                "B"
+              ],
+              "tracks": 3,
+              "vias": 0
+            },
+            "/04_SPI_B_RADIOS_NFC/NFC_RFI1": {
+              "layers": [
+                "B",
+                "F",
+                "I2"
+              ],
+              "tracks": 2,
+              "vias": 12
+            },
+            "/04_SPI_B_RADIOS_NFC/NFC_RFI2": {
+              "layers": [
+                "B",
+                "F",
+                "I2"
+              ],
+              "tracks": 5,
+              "vias": 6
+            },
+            "/04_SPI_B_RADIOS_NFC/NFC_RFO1": {
+              "layers": [
+                "B"
+              ],
+              "tracks": 5,
+              "vias": 0
+            },
+            "/04_SPI_B_RADIOS_NFC/NFC_RFO2": {
+              "layers": [
+                "B"
+              ],
+              "tracks": 7,
+              "vias": 0
+            },
+            "/04_SPI_B_RADIOS_NFC/NFC_VDD_A": {
+              "layers": [
+                "B",
+                "F",
+                "I2"
+              ],
+              "tracks": 14,
+              "vias": 24
+            },
+            "/04_SPI_B_RADIOS_NFC/NFC_VDD_AM": {
+              "layers": [
+                "B"
+              ],
+              "tracks": 16,
+              "vias": 0
+            },
+            "/04_SPI_B_RADIOS_NFC/NFC_VDD_D": {
+              "layers": [
+                "B",
+                "F",
+                "I2"
+              ],
+              "tracks": 9,
+              "vias": 18
+            },
+            "/04_SPI_B_RADIOS_NFC/NFC_XIN": {
+              "layers": [
+                "B"
+              ],
+              "tracks": 5,
+              "vias": 0
+            },
+            "/04_SPI_B_RADIOS_NFC/NFC_XOUT": {
+              "layers": [
+                "B"
+              ],
+              "tracks": 3,
+              "vias": 0
+            },
+            "/NFC_CS_N": {
+              "layers": [
+                "B",
+                "F",
+                "I2"
+              ],
+              "tracks": 6,
+              "vias": 6
+            },
+            "/NFC_IRQ": {
+              "layers": [
+                "B",
+                "F",
+                "I2"
+              ],
+              "tracks": 6,
+              "vias": 12
+            },
+            "/NFC_SUPPLY": {
+              "layers": [
+                "F"
+              ],
+              "tracks": 1,
+              "vias": 0
+            },
+            "/SPI_B_MISO": {
+              "layers": [
+                "B",
+                "F",
+                "I2"
+              ],
+              "tracks": 1,
+              "vias": 6
+            },
+            "/SPI_B_MOSI": {
+              "layers": [
+                "B",
+                "F",
+                "I2"
+              ],
+              "tracks": 4,
+              "vias": 6
+            },
+            "GND": {
+              "layers": [
+                "B",
+                "F",
+                "I2"
+              ],
+              "tracks": 22,
+              "vias": 120
+            }
+          },
+          "direct_mm": 1.992,
+          "dst": [
+            "U9.14"
+          ],
+          "minimal_eviction": {
+            "bbox_mm": [
+              [
+                34.1,
+                26.65,
+                34.4,
+                27.875
+              ],
+              [
+                34.1,
+                26.075,
+                34.975,
+                26.95
+              ],
+              [
+                34.675,
+                26.075,
+                37.075,
+                26.375
+              ]
+            ],
+            "candidates": 5,
+            "mm": 3.563,
+            "net": "/04_SPI_B_RADIOS_NFC/NFC_RFO1",
+            "objects": 3,
+            "reproved_ok": true,
+            "tags": [
+              "track",
+              "track",
+              "track"
+            ]
+          },
+          "single_openers": [
+            {
+              "mm": 4.262,
+              "rip_up_net": "/04_SPI_B_RADIOS_NFC/NFC_RFO1",
+              "tracks": 5,
+              "vias": 0
+            },
+            {
+              "mm": 5.188,
+              "rip_up_net": "/04_SPI_B_RADIOS_NFC/NFC_RFO2",
+              "tracks": 7,
+              "vias": 0
+            }
+          ],
+          "src": [
+            "U9.9",
+            "C50.1",
+            "C49.1"
+          ],
+          "verdict": "RIPUP_SINGLE"
+        }
+      ],
+      "islands": 2,
+      "layers": [
+        "F",
+        "B",
+        "I2"
+      ],
+      "net": "/04_SPI_B_RADIOS_NFC/NFC_VDD_RF",
+      "netclass": "Default",
+      "width_mm": 0.2
+    }
+  ],
+  "schema": 1,
+  "summary": {
+    "verdicts": {
+      "RIPUP_SINGLE": 1
+    }
+  }
+}

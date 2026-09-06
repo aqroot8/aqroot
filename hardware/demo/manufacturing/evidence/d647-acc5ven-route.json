@@ -1,0 +1,131 @@
+{
+ "baseline": {
+  "dst": 22,
+  "ok": false,
+  "reason": "NO_PATH",
+  "secs": 20.2,
+  "src": 11
+ },
+ "board": "/home/aqroot8/aqroot-demo/hardware/demo/kicad/aqroot-demo/aqroot-Beta-v2.kicad_pcb",
+ "board_sha256": "6b7cb0143b2a10e5d4160232f7aba466ccf50a71cdda417e72a680acfcd40dde",
+ "board_sha256_at_write": "6b7cb0143b2a10e5d4160232f7aba466ccf50a71cdda417e72a680acfcd40dde",
+ "contract": {
+  "clr": 200000,
+  "clr_pad": 200000,
+  "netclass": "Default",
+  "via_dia": 600000,
+  "via_drill": 300000,
+  "width": 200000
+ },
+ "cut": {
+  "a": [
+   59.9,
+   57.9
+  ],
+  "b": [
+   60.1,
+   53.8
+  ],
+  "layer": "B",
+  "net": "/09_COMMUNITY_HEADER/TCA4307_READY"
+ },
+ "cut_out": {
+  "mm": 8.76,
+  "ok": true,
+  "reason": null,
+  "secs": 4.9,
+  "tracks": [
+   {
+    "a_mm": [
+     60.7,
+     57.475
+    ],
+    "b_mm": [
+     60.7,
+     56.8
+    ],
+    "layer": "B.Cu",
+    "mm": 0.675,
+    "width_mm": 0.2
+   },
+   {
+    "a_mm": [
+     60.7,
+     56.8
+    ],
+    "b_mm": [
+     59.9,
+     55.8
+    ],
+    "layer": "B.Cu",
+    "mm": 1.2806,
+    "width_mm": 0.2
+   },
+   {
+    "a_mm": [
+     59.9,
+     55.8
+    ],
+    "b_mm": [
+     59.6,
+     53.7
+    ],
+    "layer": "B.Cu",
+    "mm": 2.1213,
+    "width_mm": 0.2
+   },
+   {
+    "a_mm": [
+     59.6,
+     53.7
+    ],
+    "b_mm": [
+     59.7,
+     53.4
+    ],
+    "layer": "B.Cu",
+    "mm": 0.3162,
+    "width_mm": 0.2
+   },
+   {
+    "a_mm": [
+     59.7,
+     53.4
+    ],
+    "b_mm": [
+     62.6,
+     51.5
+    ],
+    "layer": "B.Cu",
+    "mm": 3.467,
+    "width_mm": 0.2
+   },
+   {
+    "a_mm": [
+     63.5,
+     51.5
+    ],
+    "b_mm": [
+     62.6,
+     51.5
+    ],
+    "layer": "B.Cu",
+    "mm": 0.9,
+    "width_mm": 0.2
+   }
+  ],
+  "via_list": [],
+  "vias": 0
+ },
+ "env": {
+  "offcentre": false,
+  "scan_board_vias": true
+ },
+ "layers": [
+  "F",
+  "B",
+  "I2"
+ ],
+ "net": "/ACC_5V_BOOST_EN",
+ "schema": 1
+}
