@@ -1,0 +1,75 @@
+{
+  "a_nm": [
+    68175000,
+    91825000
+  ],
+  "b_nm": [
+    66250000,
+    93750000
+  ],
+  "board": "/home/aqroot8/aqroot-demo/hardware/demo/kicad/aqroot-demo/aqroot-Beta-v2.kicad_pcb",
+  "max_mm": 6.8064,
+  "net": "Net-(SW9-A)",
+  "question": "can the Net-(SW9-A) relay leave B.Cu when the pour neck is sealed on B.Cu alone",
+  "rows": [
+    {
+      "label": "B-only disc r=1.00 netclass via",
+      "layers": [
+        "B"
+      ],
+      "mm": 4.4876,
+      "ok": true,
+      "reason": null,
+      "seconds": 21.8,
+      "via": [
+        600000,
+        300000
+      ],
+      "vias": 0
+    },
+    {
+      "label": "B-only disc r=1.20 netclass via",
+      "layers": [
+        "B"
+      ],
+      "mm": 5.2442,
+      "ok": true,
+      "reason": null,
+      "seconds": 24.5,
+      "via": [
+        600000,
+        300000
+      ],
+      "vias": 0
+    },
+    {
+      "label": "B-only disc r=1.30 netclass via",
+      "layers": null,
+      "mm": null,
+      "ok": false,
+      "reason": "NO_PATH",
+      "seconds": 0.2,
+      "via": [
+        600000,
+        300000
+      ],
+      "vias": null
+    },
+    {
+      "label": "B-only disc r=1.20 via 500/250",
+      "layers": [
+        "B"
+      ],
+      "mm": 5.2442,
+      "ok": true,
+      "reason": null,
+      "seconds": 25.2,
+      "via": [
+        500000,
+        250000
+      ],
+      "vias": 0
+    }
+  ],
+  "schema": 1
+}

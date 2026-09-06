@@ -13,6 +13,81 @@
 > This file references DEVICE_SPEC rather than duplicating full specs.
 
 ## 1. Authoritative HEAD
+- **Demo D-650 (THE POUR-ISLAND FRONTIER, ASKED WITHOUT A LATTICE: THE LARGEST
+  OPEN FAMILY HAS NO BARREL ARM AT ALL, AND THE ONE CLEAN EVICTION MOVES THE
+  CUT):**  **NO COPPER.**  Authority UNCHANGED at
+  `01d738abd2fbeda5cbecd20a720638f524010c311ee7439ab4322793fedb6b12`; retained
+  open edges **39**, open retained nets 20, connected retained 153.
+  `hardware/beta-v2` untouched.  `maze3d.py` grows by **435 lines and removes
+  none**, and the standing suite is **11/11 RAN, 11/11 PASS with the report
+  FIELD-FOR-FIELD IDENTICAL to D-649's** (`evidence/d650-contract-regression.json`,
+  baseline `d632`) — not "still passes", the SAME DOCUMENT.
+  **(1) THE INSTRUMENT D-649 SAID WAS OWED.**  `screen_island_bridge.py` asks
+  the pour-island question with NO `Field` and NO lattice: the candidate set is
+  the EXACT intersection of two filled polygons (KiCad's own clipper over its
+  own fill) and the proof is `maze3d.verify_laid` over `QBoard.obstacles`, every
+  candidate laid, proved and reverted.  `GND`, `+3V3` and `BQ25185_SYS`, all 15
+  orphan clusters, BOTH arms, with minimised and classified blame on every
+  refusal: **20 seconds** (`evidence/d650-island-bridge-frontier.json`), against
+  the **74 minutes** `screen_pour_bridges.py GND --grid 25000` was killed at.
+  The blame loop and the `PAD`/`KEEPOUT`/`ROUTED` classifier are IMPORTED from
+  `screen_pad_bridge_blame.py`, so the barrel, the stroke and the pad bridge are
+  graded by ONE classifier.
+  **(2) D-649's FIRST-RANKED NEXT ITEM, REFUTED BY SHAPE.**  `BQ25185_SYS`'s
+  islands are ALL on `B.Cu` (`POUR 1` 90.572 mm2, `POUR 2` 10.813 mm2) and no
+  other cluster of the net owns copper on any other layer over any of them —
+  `overlaps: 0`.  A barrel does work only ACROSS layers, so **no through barrel
+  joins anything on this net at any drill or any lattice pitch**: all six
+  island-owning clusters are `ARM_NOT_EXPRESSIBLE`, in four seconds.
+  **(3) THE WHOLE FRONTIER.**  `+3V3` `R129.1` is the board's only cluster
+  `EVICTABLE` on BOTH arms and **every member of both minimal sets is PROTECTED
+  copper** (`BAT_PROTECTED_P` on the barrel over its only cross-layer overlap, a
+  0.001 mm2 shard; three `/ACC_3V3_SW` tracks on the 1.7671 mm stroke) — an
+  OWNER question, not an eviction.  `+3V3` `U5.2` is FINAL: 504 candidates over
+  the whole ladder and the minimal set holds `U5.1`, an `/I2S_SPK_DOUT` LAND.
+  Seven clusters own no filled island at all and are not a pour question.
+  **(4) THE ONE CLEAN ROW, AND THE WALL CLASS IT FOUND.**  `BQ25185_SYS`
+  `C28.1`, 2.178 mm2 and 0.701 mm from the body, closes with ONE straight `B.Cu`
+  track at the FULL 0.800 mm netclass width over 1.5132 mm behind a minimal
+  blame set of **ONE unprotected `Net-(SW9-A)` 0.200 mm track**
+  (`n_routed 1`, `n_fixed 0`).  With that ONE object removed and NOTHING put
+  back, **KiCad's own refill merges the island into the body with no new copper
+  at all** — islands 8 -> 7, a 94.246 mm2 body
+  (`evidence/d650-swa-refill.json`) — and the relay routes, 5.1136 mm, ZERO
+  vias, inside its 6.8064 mm bound (`evidence/d650-swa-relay.json`).
+  **THE GATE REFUSED ON ONE CLAUSE.**  Twelve of thirteen PASS, real KiCad DRC
+  **exit 0 and ZERO attributable**, and `board_improved` FALSE at 39 -> 39
+  (`evidence/d650-gate-dryrun.json`): the relay went back at 5.424 mm and **PUT
+  THE SAME CUT BACK ONE POCKET FURTHER OUT** — `C28.1` 2.178 -> 4.802 mm2, body
+  90.572 -> 87.783 mm2, still two clusters.  Both ends of the removed track lie
+  on OPPOSITE SIDES of the pour's neck and the rest of the chain closes the
+  pocket, so ANY continuous `B.Cu` path between them is a barrier.  This is a
+  wall class DISTINCT from D-649's, where the relay would not route.
+  **(5) A RESERVATION FOR THE COPPER YOU LAY IS NOT ONE FOR THE COPPER THE POUR
+  NEEDS,** and the per-layer seal cannot force the hop: `B`-only discs at
+  **r 1.00 and 1.20 both relay ON `B.Cu` with ZERO vias** (4.4876 / 5.2442 mm,
+  unchanged when the smaller 0.50/0.25 barrel is offered) and **r 1.30 is
+  `NO_PATH` in 0.2 s** because `_guard_masks` reserves 1.425 mm while the
+  terminals are 1.3612 mm from the midpoint — D-637's disc
+  (`evidence/d650-swa-hop.json`).  The window is 0.10 mm wide and CLOSED.
+  **NEXT, IN ORDER OF LEVERAGE:** (1) **`C28.1` IS A MULTI-SEGMENT DETOUR, NOT A
+  ONE-OBJECT EVICTION** — rip the `Net-(SW9-A)` arm back PAST the pocket
+  (`TP13.1` 65.5,93.0 west; 69.475,94.05 east; the NINE `B.Cu` pocket segments
+  are enumerated in `evidence/d650-swa-chain.json`) and re-route it whole, or push the relay to the
+  pocket's SOUTH side; both are expressible in ONE `--detour-spec` today, and
+  the merge, the DRC and twelve clauses are already measured.  (2) Ask the same
+  question of `C26.2` (`EVICTABLE` at 0.701 mm behind three unprotected
+  `Net-(U12-PS_SYNC)` tracks at 0.800 mm) — but that is the net D-649 proved
+  owns a single-file gate elsewhere, so ask §3's question BEFORE spending a gate
+  run.  `U12.10/U12.11` is a `PLACEMENT_WALL`.  (3) `U4.5` (`VDDIO`) still needs
+  the per-part electrical ledger and is UNCHANGED here: it owns no pour island,
+  so neither arm is its move.  (4) `R129.1` is an OWNER question.  (5) Re-ask
+  `screen_island_bridge.py --blame 16` (20 s) and
+  `screen_pad_bridge_blame.py --cap 48` (11 s) after every promotion.
+  (6) CARRIED UNCHANGED: `/I2S_LRCLK`'s edge rate, `/NFC_SUPPLY`'s per-net
+  current, `/SPI_B_SCK` and `/BQ25185_STAT1` as LANDS, `MK1.4` and
+  `J3.A12`/`J3.B1`, `U9.16`'s single-barrel driver ground as an OPEN DFM ITEM.
+  No owner decision is OPEN.  D-618's `J3` question remains RECORDED.
 - **Demo D-649 (THE `EVICTABLE` ROW D-648 RANKED FIRST IS A SINGLE-FILE GATE;
   THE BLAME SCREEN COULD NOT CLASSIFY A DRILL; AND THE NFC DRIVER GROUND WAS
   ONE BARREL AWAY, SMALLER THAN THE LATTICE THAT LOOKED FOR IT):**

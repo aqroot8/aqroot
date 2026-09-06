@@ -1,0 +1,57 @@
+{
+  "a_nm": [
+    68175000,
+    91825000
+  ],
+  "b_nm": [
+    66250000,
+    93750000
+  ],
+  "board": "/home/aqroot8/aqroot-demo/hardware/demo/kicad/aqroot-demo/aqroot-Beta-v2.kicad_pcb",
+  "layers": [
+    "F",
+    "B",
+    "I2"
+  ],
+  "lkey": "B",
+  "net": "Net-(SW9-A)",
+  "netclass_via": [
+    600000,
+    300000
+  ],
+  "question": "can Net-(SW9-A) be relaid between its own two ends with the C28.1 island bridge's tube reserved",
+  "rows": [
+    {
+      "grid": 25000,
+      "label": "control: nothing reserved",
+      "max_mm": 0.0,
+      "mm": 2.7224,
+      "ok": true,
+      "reason": null,
+      "seconds": 8.0,
+      "vias": 0
+    },
+    {
+      "grid": 25000,
+      "label": "reserve B tube r=0.65",
+      "max_mm": 0.0,
+      "mm": 5.1136,
+      "ok": true,
+      "reason": null,
+      "seconds": 27.2,
+      "vias": 0
+    },
+    {
+      "grid": 25000,
+      "label": "reserve B tube r=0.60",
+      "max_mm": 0.0,
+      "mm": 4.9743,
+      "ok": true,
+      "reason": null,
+      "seconds": 27.0,
+      "vias": 0
+    }
+  ],
+  "schema": 1,
+  "width_nm": 200000
+}

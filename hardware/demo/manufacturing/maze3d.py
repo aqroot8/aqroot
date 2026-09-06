@@ -4488,6 +4488,441 @@ def bridge_islands(qb, net, width, clr_pad, clr_trk, ladder, floors,
 
 
 # --------------------------------------------------------------------------- #
+# EXACT POUR BRIDGES -- THE SAME QUESTION, WITHOUT A BOARD-WIDE LATTICE
+# --------------------------------------------------------------------------- #
+# D-650.  `bridge_sites` answers "is there a legal barrel inside this island
+# over another cluster's copper" by rasterising the WHOLE BOARD: a `Field` per
+# net and, for every rung of the ladder, a fresh six-layer `_via_grid` over it.
+# That is the right shape when the answer is wanted for every net at once at
+# the routing pitch.  It is the wrong shape when the answer is wanted for ONE
+# cluster at a pitch fine enough to see the site: `screen_pour_bridges.py GND
+# --grid 25000` was killed at SEVENTY-FOUR MINUTES, and the ad-hoc probe that
+# finally found `U9.16`'s barrel asked the same question over the same geometry
+# in two, because a cluster's own island is a fraction of a square millimetre
+# and everything outside it is discarded unread.
+#
+# Worse, the raster does not merely cost time -- IT LOSES ANSWERS.  `_via_grid`
+# inherits `QBoard.grid`'s 0.75-cell guard band, which at the 0.100 mm routing
+# pitch erodes every candidate region by 0.075 mm a side.  `U9.16`'s legal
+# region is 0.1375 x 0.1625 mm.  At that pitch there is no via-legal cell in it
+# at all, so the board-wide screen reported NO BRIDGE for a land that was one
+# ordinary licensed barrel from its own plane.  A screen whose refusals are
+# lattice artefacts cannot be used to close a family.
+#
+# So the three primitives below ask it the way `pad_bridge` asks its question,
+# and for the same reason D-648 gave: EXACT GEOMETRY OVER `QBoard.obstacles`,
+# proved by `verify_laid`, with a `BridgeCtx` in place of a `Field` and no cell
+# anywhere.  The candidate set is not a board -- it is the exact intersection of
+# two filled polygons, which KiCad's own clipper computes, sampled at a step the
+# caller names.  The proof is bit-for-bit the proof the gate runs, because it is
+# literally `verify_laid`; what changes is only how the candidates were found.
+#
+# NOTHING HERE MAY PROPOSE COPPER A GATED RUN WOULD NOT ALSO LAY.  `via_ok` is
+# strictly conservative relative to `verify_laid` (it adds a guard band and
+# never removes a rule), so a site these functions admit and the raster refuses
+# is a site the raster lost, never one the fabricator was not told about.
+
+
+# The furthest two pieces of pour may be apart and still be a BRIDGE question.
+# `bridge_net_pads` uses 3.0 mm between two LANDS for the same reason; a pour
+# cut by a foreign track is normally a fraction of that.
+ISLAND_STROKE_MAX_MM = 3.0
+
+
+def poly_overlap(a, b):
+    """The exact intersection of two filled islands, or None when disjoint.
+
+    KiCad's own clipper over KiCad's own filled polygons, holes included, so
+    the region returned is the copper a fabricator gets on both layers and not
+    a re-derivation of it.
+    """
+    import pcbnew
+    out = pcbnew.SHAPE_POLY_SET(a)
+    out.BooleanIntersection(b)
+    if out.OutlineCount() == 0 or out.Area() <= 0:
+        return None
+    return out
+
+
+def poly_depth(poly, x, y):
+    """Distance from (x, y) to the nearest boundary of `poly`, or -1 outside.
+
+    The ANCHOR CONTRACT stated for `join_islands` is a DEPTH: an endpoint must
+    lie at least `width / 2` inside its own filled copper, so that the track
+    centred there lies wholly within copper that is already on the board and
+    the connection survives KiCad moving a pour edge by microns on refill.
+    This is that depth, exactly, with no lattice and no erosion.
+    """
+    import pcbnew
+    if not poly.Contains(pcbnew.VECTOR2I(int(round(x)), int(round(y)))):
+        return -1.0
+    best = None
+    for xs, ys in poly_rings(poly):
+        x2, y2 = np.roll(xs, -1), np.roll(ys, -1)
+        dx, dy = x2 - xs, y2 - ys
+        L2 = dx * dx + dy * dy
+        L2[L2 == 0] = 1.0
+        t = np.clip(((x - xs) * dx + (y - ys) * dy) / L2, 0.0, 1.0)
+        d = np.hypot(x - (xs + t * dx), y - (ys + t * dy))
+        m = float(d.min())
+        best = m if best is None else min(best, m)
+    return 0.0 if best is None else best
+
+
+def poly_lattice(poly, step, depth=0.0, window=None, cap=200000):
+    """Points on a `step` lattice inside `poly`, DEEPEST FIRST.
+
+    The lattice is the polygon's own bounding box INTERSECTED WITH `window`,
+    and nothing else, so its size is a property of the island -- or of the
+    neighbourhood a caller cares about -- rather than of the board.  `depth`
+    keeps only points at least that far inside the copper, which is the anchor
+    contract `join_islands` states in its own preamble, and the ordering is by
+    depth so a caller that tries a handful tries the ones most likely to
+    survive a refill, ties broken by (y, x) so the choice is deterministic.
+
+    `window` matters and is not an optimisation.  A pour BODY is tens of square
+    millimetres: at a 0.0125 mm step its own bounding box holds millions of
+    points, and a `cap` applied to a raster scan silently returns the top-left
+    corner of the body rather than the copper nearest the island being joined.
+    A caller that already knows WHERE the two pieces face each other hands that
+    neighbourhood in, and the candidate set is then both bounded and the right
+    one.
+
+    Containment is the SAME even-odd crossing test `poly_mask` runs, vectorised
+    over the window, and the depth is the exact point-to-segment minimum over
+    the same rings.  A per-point `SHAPE_POLY_SET.Contains` is the obvious
+    implementation and is the whole cost of this primitive at a fine step --
+    which is precisely the note `poly_mask` already carries.
+    """
+    bb = poly.BBox()
+    x0, y0 = float(bb.GetLeft()), float(bb.GetTop())
+    x1, y1 = float(bb.GetRight()), float(bb.GetBottom())
+    if window is not None:
+        wx0, wy0, wx1, wy1 = window
+        x0, y0 = max(x0, float(wx0)), max(y0, float(wy0))
+        x1, y1 = min(x1, float(wx1)), min(y1, float(wy1))
+    if x1 < x0 or y1 < y0:
+        return []
+    XS = np.arange(x0, x1 + 1.0, float(step))
+    YS = np.arange(y0, y1 + 1.0, float(step))
+    if XS.size == 0 or YS.size == 0:
+        return []
+    X, Y = np.meshgrid(XS, YS)
+    rings = poly_rings(poly)
+    hit = np.zeros(X.shape, dtype=bool)
+    for xs, ys in rings:
+        x2, y2 = np.roll(xs, -1), np.roll(ys, -1)
+        for a in range(len(xs)):
+            xa, ya, xb, yb = xs[a], ys[a], x2[a], y2[a]
+            if ya == yb:
+                continue
+            span = (ya > Y) != (yb > Y)
+            if not span.any():
+                continue
+            xint = xa + (Y - ya) * (xb - xa) / (yb - ya)
+            hit ^= span & (X < xint)
+    if not hit.any():
+        return []
+    px, py = X[hit], Y[hit]
+    if px.size > cap:
+        # Thin UNIFORMLY rather than truncate: a truncation returns one corner
+        # of the region and calls it the candidate set, which is the bias this
+        # primitive exists to avoid.
+        keep = np.linspace(0, px.size - 1, cap).astype(int)
+        px, py = px[keep], py[keep]
+    best = None
+    for xs, ys in rings:
+        x2, y2 = np.roll(xs, -1), np.roll(ys, -1)
+        dx, dy = x2 - xs, y2 - ys
+        L2 = dx * dx + dy * dy
+        L2[L2 == 0] = 1.0
+        blk = max(1, int(4e6 // max(1, len(xs))))
+        parts = []
+        for i0 in range(0, px.size, blk):
+            i1 = min(px.size, i0 + blk)
+            t = np.clip(((px[i0:i1, None] - xs[None, :]) * dx[None, :] +
+                         (py[i0:i1, None] - ys[None, :]) * dy[None, :])
+                        / L2[None, :], 0.0, 1.0)
+            d = np.hypot(px[i0:i1, None] - (xs[None, :] + t * dx[None, :]),
+                         py[i0:i1, None] - (ys[None, :] + t * dy[None, :]))
+            parts.append(d.min(axis=1))
+        m = np.concatenate(parts) if parts else np.zeros(0)
+        best = m if best is None else np.minimum(best, m)
+    keep = best >= depth
+    px, py, bd = px[keep], py[keep], best[keep]
+    order = np.lexsort((px, py, -bd))
+    return [(float(px[i]), float(py[i]), float(bd[i])) for i in order]
+
+
+def poly_gap(a, b, step):
+    """The closest facing boundary points of two polygons, and their distance.
+
+    Returns (mm_nm, (ax, ay), (bx, by)) over both polygons' rings densified at
+    `step`, holes included -- which is the whole point, because on this board a
+    severed island usually sits INSIDE a hole of the very body it was cut from
+    and an outline-only measurement reports the far side of the board.
+    """
+    A, B = _ring_samples(a, step), _ring_samples(b, step)
+    if not A or not B:
+        return None
+    # Vectorised in blocks: a plane body's rings run to tens of thousands of
+    # samples and the pure-Python double loop is minutes per pair.
+    ax = np.fromiter((p[0] for p in A), dtype=float, count=len(A))
+    ay = np.fromiter((p[1] for p in A), dtype=float, count=len(A))
+    bx = np.fromiter((p[0] for p in B), dtype=float, count=len(B))
+    by = np.fromiter((p[1] for p in B), dtype=float, count=len(B))
+    best = None
+    blk = max(1, int(4e6 // max(1, len(B))))
+    for i0 in range(0, len(A), blk):
+        i1 = min(len(A), i0 + blk)
+        d = np.hypot(ax[i0:i1, None] - bx[None, :], ay[i0:i1, None] - by[None, :])
+        k = int(np.argmin(d))
+        ia, ib = divmod(k, len(B))
+        v = float(d[ia, ib])
+        if best is None or v < best[0]:
+            best = (v, (float(ax[i0 + ia]), float(ay[i0 + ia])),
+                    (float(bx[ib]), float(by[ib])))
+    return best
+
+
+def _ring_samples(poly, step):
+    """Every ring of `poly` densified at `step`, holes included."""
+    out = []
+    for xs, ys in poly_rings(poly):
+        n = len(xs)
+        for i in range(n):
+            x0, y0 = float(xs[i]), float(ys[i])
+            x1, y1 = float(xs[(i + 1) % n]), float(ys[(i + 1) % n])
+            d = math.hypot(x1 - x0, y1 - y0)
+            m = max(1, int(d // step))
+            for s in range(m):
+                out.append((x0 + (x1 - x0) * s / m, y0 + (y1 - y0) * s / m))
+    return out
+
+
+def exact_barrel(qb, ctx, net, region, ladder, step, cap=4000):
+    """The COARSEST rung of `ladder` legal at a centre inside `region`.
+
+    Returns dict(ok, ...).  On success the via is NOT left on `qb` -- every
+    candidate is laid, proved by `verify_laid` and reverted, so this is a screen
+    primitive an emitter may call to choose a site and then lay it itself.
+
+    Candidates are tried deepest-inside-the-region first, which is `_deepest`'s
+    rule stated as a distance rather than as an erosion: the barrel has to
+    survive KiCad's refill, and a site one step inside the overlap is the one
+    that will not.
+    """
+    # A `cap` applied to a raster scan is a BIAS, not a bound: it returns the
+    # top-left corner of the region and calls it the candidate set.  So the
+    # STEP is what gives way when a region is large, and the step actually used
+    # is reported -- a large overlap needs no fine step to find a barrel, and a
+    # small one, which is the case this primitive exists for, keeps the step it
+    # was asked for.
+    bb = region.BBox()
+    span = max(1.0, float(bb.GetWidth())) * max(1.0, float(bb.GetHeight()))
+    used = max(step, int(math.ceil(math.sqrt(span / max(1, cap)))))
+    pts = poly_lattice(region, used, cap=cap)
+    if not pts:
+        return dict(ok=False, reason='NO_CANDIDATE_CENTRE', step_nm=used,
+                    why='the overlap is smaller than the %.4f mm step it was '
+                        'sampled at' % (used / 1e6))
+    tried, blame = 0, None
+    for (dia, drill) in ladder:
+        for (x, y, d) in pts:
+            tried += 1
+            m = qb.mark()
+            qb.via(net, int(x), int(y), dia, drill)
+            bad = verify_laid(qb, ctx, m)
+            qb.revert(m)
+            if bad is None:
+                return dict(ok=True, via_dia=dia, via_drill=drill,
+                            xy=[int(x), int(y)],
+                            xy_mm=[round(x / 1e6, 4), round(y / 1e6, 4)],
+                            depth_mm=round(d / 1e6, 4), asked=tried,
+                            step_nm=used, candidates=len(pts))
+            blame = bad
+    # THE DEEPEST CANDIDATE RIDES WITH THE REFUSAL.  A region that admits no
+    # barrel is the start of a blame question, not the end of one, and the site
+    # that question must be asked at is the one furthest inside the overlap --
+    # the same choice `_deepest` makes and for the same reason.
+    return dict(ok=False, reason='NO_LEGAL_BARREL', asked=tried,
+                candidates=len(pts), step_nm=used, why=blame,
+                site=[int(pts[0][0]), int(pts[0][1])],
+                site_mm=[round(pts[0][0] / 1e6, 4), round(pts[0][1] / 1e6, 4)],
+                site_depth_mm=round(pts[0][2] / 1e6, 4),
+                floor='%.2f/%.2f mm' % (ladder[-1][0] / 1e6,
+                                        ladder[-1][1] / 1e6))
+
+
+def exact_barrel_at(qb, ctx, net, x, y, ladder, blame=None):
+    """The COARSEST rung of `ladder` legal at ONE named centre.  Nothing stays.
+
+    `exact_barrel` answers "is there a site"; this answers "what refuses THIS
+    site", which is the question a blame loop has to ask.  A blame set
+    accumulated over a whole candidate region is the union of everything that
+    blocks anything and is not a transaction; a set accumulated at ONE site is
+    the list of objects whose absence would put a barrel there.
+
+    `blame`, when a list is handed in, is kept in step with the refusal this
+    call REPORTS -- exactly as `pad_bridge` keeps it -- so a caller can hold
+    that object out and ask again.  It is emptied on success.
+    """
+    last = None
+    for (dia, drill) in ladder:
+        rung = [] if blame is not None else None
+        m = qb.mark()
+        qb.via(net, int(round(x)), int(round(y)), dia, drill)
+        bad = verify_laid(qb, ctx, m, blame=rung)
+        qb.revert(m)
+        if bad is None:
+            if blame is not None:
+                del blame[:]
+            return dict(ok=True, via_dia=dia, via_drill=drill,
+                        xy=[int(round(x)), int(round(y))],
+                        xy_mm=[round(x / 1e6, 4), round(y / 1e6, 4)])
+        last = bad
+        if blame is not None:
+            blame[:] = rung
+    return dict(ok=False, reason='NO_LEGAL_BARREL', why=last,
+                xy_mm=[round(x / 1e6, 4), round(y / 1e6, 4)],
+                floor='%.2f/%.2f mm' % (ladder[-1][0] / 1e6,
+                                        ladder[-1][1] / 1e6))
+
+
+def exact_stroke_at(qb, ctx, net, layer, ax, ay, bx, by, widths, blame=None):
+    """The WIDEST of `widths` legal on ONE named straight stroke.  Nothing stays.
+
+    `exact_island_stroke` answers "is there a pair"; this answers "what refuses
+    THIS pair", which is the question a blame loop has to ask -- and for the
+    same reason `exact_barrel_at` exists beside `exact_barrel`: a set
+    accumulated over a whole candidate set is the union of everything that
+    blocks anything, and only a set accumulated at ONE stroke is a transaction.
+    """
+    last = None
+    for w in widths:
+        rung = [] if blame is not None else None
+        m = qb.mark()
+        qb.track(net, layer, int(round(ax)), int(round(ay)),
+                 int(round(bx)), int(round(by)), int(w))
+        bad = verify_laid(qb, ctx, m, blame=rung)
+        qb.revert(m)
+        if bad is None:
+            if blame is not None:
+                del blame[:]
+            return dict(ok=True, layer=layer, width=int(w),
+                        mm=round(math.hypot(bx - ax, by - ay) / 1e6, 4),
+                        a_xy=[round(ax / 1e6, 4), round(ay / 1e6, 4)],
+                        b_xy=[round(bx / 1e6, 4), round(by / 1e6, 4)])
+        last = bad
+        if blame is not None:
+            blame[:] = rung
+    return dict(ok=False, reason='NO_LEGAL_STROKE', layer=layer, why=last,
+                a_xy=[round(ax / 1e6, 4), round(ay / 1e6, 4)],
+                b_xy=[round(bx / 1e6, 4), round(by / 1e6, 4)])
+
+
+def exact_island_stroke(qb, ctx, net, layer, poly_a, poly_b, widths, step,
+                        pairs=24, cap=1500, max_mm=ISLAND_STROKE_MAX_MM):
+    """ONE straight track joining two filled islands of the same net.
+
+    The same move `pad_bridge` makes between two LANDS, made between two pieces
+    of POUR, and under the same two contracts:
+
+      * each endpoint owes the ANCHOR DEPTH -- at least `width / 2` inside its
+        own filled copper -- so the track lies wholly within copper the board
+        already carries at both ends and the join is a geometric fact rather
+        than a fill artefact;
+      * the stroke owes `verify_laid` against FOREIGN copper, which is exact
+        geometry over `QBoard.obstacles` and the `.kicad_dru` overlay.
+
+    Nearest anchor pairs first, `pairs` of them per width, widest width first.
+    Nothing is left on `qb`.
+    """
+    if layer not in ctx.layers:
+        return dict(ok=False, reason='LAYER_NOT_PERMITTED', layer=layer)
+    last = dict(ok=False, reason='NO_LEGAL_STROKE', layer=layer)
+    gap = poly_gap(poly_a, poly_b, step * 4)
+    if gap is None:
+        return dict(ok=False, reason='NO_GEOMETRY', layer=layer)
+    span, (gax, gay), (gbx, gby) = gap
+    # A STRAIGHT track between two pieces of pour tens of cells apart is a
+    # CORRIDOR question, not a bridge, and `bridge_net_pads` caps its own span
+    # for exactly that reason and in exactly this shape.  Refusing here rather
+    # than after a lattice keeps the refusal honest -- the pair was never a
+    # candidate for this primitive -- and keeps the screen affordable.
+    if max_mm and span > max_mm * qr.MM:
+        return dict(ok=False, reason='TOO_FAR', layer=layer,
+                    gap_mm=round(span / 1e6, 4), max_mm=max_mm,
+                    why='these two islands are %.3f mm apart; one straight '
+                        'track between them is a corridor, not a bridge'
+                        % (span / 1e6))
+    for w in widths:
+        # The window is the FACING NEIGHBOURHOOD and nothing more: an anchor
+        # useful to a STRAIGHT stroke lies against the cut, and a window drawn
+        # around a pour BODY instead holds millions of points of copper that
+        # cannot serve this pair.
+        reach = span + 2.0 * w
+        def win(cx, cy):
+            return (cx - reach, cy - reach, cx + reach, cy + reach)
+        A = poly_lattice(poly_a, step, depth=w / 2.0, window=win(gax, gay),
+                         cap=cap)
+        B = poly_lattice(poly_b, step, depth=w / 2.0, window=win(gbx, gby),
+                         cap=cap)
+        if not A or not B:
+            last = dict(ok=False, reason='NO_ANCHOR', layer=layer, width=int(w),
+                        gap_mm=round(span / 1e6, 4),
+                        why='no point of %s within reach of the cut is '
+                            '%.3f mm inside its own filled copper'
+                            % ('this island' if not A else 'the target',
+                               w / 2e6))
+            continue
+        # Nearest target anchor per source anchor, vectorised: the anchor sets
+        # run to thousands and the pure-Python double loop is the whole cost of
+        # this primitive.
+        axs = np.fromiter((p[0] for p in A), dtype=float, count=len(A))
+        ays = np.fromiter((p[1] for p in A), dtype=float, count=len(A))
+        bxs = np.fromiter((p[0] for p in B), dtype=float, count=len(B))
+        bys = np.fromiter((p[1] for p in B), dtype=float, count=len(B))
+        cand = []
+        blk = max(1, int(4e6 // max(1, len(B))))
+        for i0 in range(0, len(A), blk):
+            i1 = min(len(A), i0 + blk)
+            dm = np.hypot(axs[i0:i1, None] - bxs[None, :],
+                          ays[i0:i1, None] - bys[None, :])
+            jj = np.argmin(dm, axis=1)
+            for k in range(i1 - i0):
+                j = int(jj[k])
+                cand.append((float(dm[k, j]), axs[i0 + k], ays[i0 + k],
+                             bxs[j], bys[j]))
+        cand.sort(key=lambda r: (r[0], r[2], r[1]))
+        for (d, ax, ay, bx, by) in cand[:pairs]:
+            m = qb.mark()
+            qb.track(net, layer, int(ax), int(ay), int(bx), int(by), int(w))
+            bad = verify_laid(qb, ctx, m)
+            qb.revert(m)
+            if bad is None:
+                return dict(ok=True, layer=layer, width=int(w),
+                            mm=round(d / 1e6, 4),
+                            a_xy=[round(ax / 1e6, 4), round(ay / 1e6, 4)],
+                            b_xy=[round(bx / 1e6, 4), round(by / 1e6, 4)])
+            if last is None or last.get('reason') != 'UNPROVED_GEOMETRY':
+                # THE PAIR RIDES WITH THE REFUSAL, and it is the FIRST pair of
+                # the WIDEST width that had anchors -- the nearest stroke this
+                # board would actually want -- so a blame loop asks about the
+                # stroke the emitter would lay rather than about whichever one
+                # happened to be tried last.
+                last = dict(ok=False, reason='UNPROVED_GEOMETRY', layer=layer,
+                            width=int(w), mm=round(d / 1e6, 4),
+                            gap_mm=round(span / 1e6, 4), why=bad,
+                            a=[int(ax), int(ay)], b=[int(bx), int(by)],
+                            a_xy=[round(ax / 1e6, 4), round(ay / 1e6, 4)],
+                            b_xy=[round(bx / 1e6, 4), round(by / 1e6, 4)],
+                            anchors=[len(A), len(B)],
+                            pairs_tried=min(pairs, len(cand)))
+    return last
+
+
+# --------------------------------------------------------------------------- #
 # POUR-ISLAND JOINS -- A JUMPER BETWEEN TWO PIECES OF THE SAME POUR
 # --------------------------------------------------------------------------- #
 # D-605.  `bridge_islands` is the ZERO-LENGTH case of a more general move, and
