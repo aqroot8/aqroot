@@ -1,0 +1,56 @@
+{
+  "detours": [
+    {
+      "a_mm": [
+        59.05,
+        58.65
+      ],
+      "b_mm": [
+        53.6,
+        58.75
+      ],
+      "layer": "B.Cu",
+      "max_mm": 55.7164,
+      "net": "/ACC_DETECT_N",
+      "width_mm": 0.2
+    },
+    {
+      "a_mm": [
+        49.7,
+        60.2
+      ],
+      "b_mm": [
+        58.3,
+        64.3
+      ],
+      "layer": "F.Cu",
+      "max_mm": 59.7928,
+      "net": "Net-(U11-TS_MR)",
+      "width_mm": 0.2
+    }
+  ],
+  "note": "emitted by screen_relay_transaction.py from board 5715bf5cd688a87f; the reservation is NOT a disc -- see the guard file that goes with this plan",
+  "reserve": [],
+  "rung": {
+    "argv": [
+      "--stitch-width",
+      "150000",
+      "--stitch-via",
+      "500000:200000"
+    ],
+    "name": "floor",
+    "per_net": {
+      "GND": {
+        "netclass": "GND",
+        "stitch_via_dia_nm": 500000,
+        "stitch_via_drill_nm": 200000,
+        "stitch_width_nm": 150000
+      }
+    },
+    "stitch_via_dia_nm": 500000,
+    "stitch_via_drill_nm": 200000,
+    "stitch_width_nm": 150000,
+    "why": null
+  },
+  "schema": 1
+}

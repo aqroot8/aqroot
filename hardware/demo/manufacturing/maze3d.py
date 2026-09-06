@@ -5432,3 +5432,136 @@ def offcentre_stitch(qb, ctx, pad, far, width, toward, polys=None,
     return fail or dict(ok=False, pad=pad['ref'], far=far, offered=offered,
                         reason='NO_VIA_SITE',
                         why='%s: no barrel reachable on %s' % (pad['ref'], nl))
+
+
+# ---------------------------------------------------------------------------
+# D-639: A TRACK IS A SLOT IN A FOREIGN POUR EXACTLY AS A BARREL IS.
+#
+# `_antipad_severs` above answers "which of this foreign net's filled islands
+# would a BARREL cut in two", and it is calibrated by two D-605 gate runs.  It
+# is also the ONLY pour-damage question any screen on this board asks before
+# spending a gate run, and D-638 paid for the gap: the joint rip-up-and-relay
+# measured `antipad_severs: []` for `+3V3 R39.1`, the writer laid the very
+# transaction it emitted, and clause `PP2` refused the run because the 17.2 mm
+# RELAY TRACK -- not the barrel -- split `GND`'s `B.Cu` pour 58 -> 59 and
+# sheared off a 21.765 mm2 fragment holding `C27.2`/`C28.2`.
+#
+# The physics is the same and so is the calibration.  KiCad's fill holds a pour
+# `clearance` away from foreign copper and then deletes whatever neck is left
+# thinner than the zone's `min_thickness`, so a track of width `w` deletes pour
+# copper out to `w/2 + clearance + min_thickness` along its whole length -- the
+# same third row of the D-605 table, with `dia/2` replaced by `w/2`.  The only
+# difference is REACH: a through barrel is copper on every layer, a track is
+# copper on exactly one.
+#
+# This is a NEW function and `_antipad_severs` is untouched, so every standing
+# contract that calls it is byte-identical.
+def _capsule(ax, ay, bx, by, r, seg=16):
+    """A `SHAPE_LINE_CHAIN` capsule of radius `r` around segment a->b."""
+    import pcbnew
+    dx, dy = float(bx - ax), float(by - ay)
+    L = math.hypot(dx, dy)
+    if L <= 1.0:
+        return pcbnew.SHAPE_LINE_CHAIN(
+            [pcbnew.VECTOR2I(int(ax + r * math.cos(t * 2 * math.pi / (2 * seg))),
+                             int(ay + r * math.sin(t * 2 * math.pi / (2 * seg))))
+             for t in range(2 * seg)], True)
+    ux, uy = dx / L, dy / L
+    nx, ny = -uy, ux
+    pts = []
+    # cap at b, swinging from +n to -n through +u
+    base = math.atan2(ny, nx)
+    for t in range(seg + 1):
+        a = base - t * math.pi / seg
+        pts.append(pcbnew.VECTOR2I(int(bx + r * math.cos(a)),
+                                   int(by + r * math.sin(a))))
+    # cap at a, swinging from -n to +n through -u
+    base = math.atan2(-ny, -nx)
+    for t in range(seg + 1):
+        a = base - t * math.pi / seg
+        pts.append(pcbnew.VECTOR2I(int(ax + r * math.cos(a)),
+                                   int(ay + r * math.sin(a))))
+    return pcbnew.SHAPE_LINE_CHAIN(pts, True)
+
+
+def copper_severs(qb, net, shapes):
+    """Which of `net`'s filled islands would this NEW copper cut in two?
+
+    `net` is the FOREIGN pour-owning net being examined -- iterate
+    `_foreign_pours(qb, own_net)` over it exactly as `_antipad_severs` is
+    iterated.  `shapes` is a list of dicts, in nm:
+
+        {'kind': 'via', 'xy': (x, y), 'dia': nm}                  whole stack
+        {'kind': 'seg', 'a': (x, y), 'b': (x, y), 'width': nm,
+         'lkey': 'B'}                                             one layer
+
+    A shape whose `lkey` is absent or None reaches every layer, which is what a
+    through barrel does.  Returns [(layer, index, poly, area_mm2, why)] in the
+    same shape `_antipad_severs` returns, so a caller can concatenate the two.
+
+    THE LAND CONVENTION IS `_antipad_severs`'s AND IS DELIBERATE.  The lands an
+    island is re-located by are every pad and via of the net, tested by plain
+    containment without a per-layer filter.  That can over-count -- an `F`-only
+    pad sitting above a `B` island counts as one of its lands -- and the error
+    is in the CONSERVATIVE direction for a pre-filter whose whole job is to
+    refuse a transaction before a gate run is spent on it.  Keeping the
+    convention identical also keeps this function and the calibrated one
+    answering the same question about the same board.
+    """
+    import pcbnew
+    if not shapes:
+        return []
+    clr, mt = _pour_geometry(qb, net)
+    lands = [(m['x'], m['y']) for m in
+             (pour_clusters(qb, net)[1]).values()]
+    cut = []
+    for lname, idx, poly, area in filled_islands(qb, net):
+        holes, hit = pcbnew.SHAPE_POLY_SET(), 0
+        for s in shapes:
+            lk = s.get('lkey')
+            if lk and lk != lname:
+                continue
+            if s['kind'] == 'via':
+                x, y = int(s['xy'][0]), int(s['xy'][1])
+                r = s['dia'] / 2.0 + clr + mt
+                if not (poly.Contains(pcbnew.VECTOR2I(x, y))
+                        or poly.Collide(pcbnew.VECTOR2I(x, y), int(r))):
+                    continue
+                holes.AddOutline(_capsule(x, y, x, y, r))
+                hit += 1
+            else:
+                ax, ay = int(s['a'][0]), int(s['a'][1])
+                bx, by = int(s['b'][0]), int(s['b'][1])
+                r = s['width'] / 2.0 + clr + mt
+                if not (poly.Contains(pcbnew.VECTOR2I(ax, ay))
+                        or poly.Contains(pcbnew.VECTOR2I(bx, by))
+                        or poly.Collide(pcbnew.SEG(pcbnew.VECTOR2I(ax, ay),
+                                                   pcbnew.VECTOR2I(bx, by)),
+                                        int(r))):
+                    continue
+                holes.AddOutline(_capsule(ax, ay, bx, by, r))
+                hit += 1
+        if not hit:
+            continue
+        mine = [(x, y) for (x, y) in lands
+                if poly.Contains(pcbnew.VECTOR2I(int(x), int(y)))]
+        if len(mine) < 2:
+            continue
+        rest = pcbnew.SHAPE_POLY_SET(poly)
+        rest.BooleanSubtract(holes)
+        where = set()
+        for (x, y) in mine:
+            for k in range(rest.OutlineCount()):
+                piece = pcbnew.SHAPE_POLY_SET()
+                piece.AddOutline(rest.Outline(k))
+                if piece.Contains(pcbnew.VECTOR2I(int(x), int(y))):
+                    where.add(k)
+                    break
+        if len(where) > 1:
+            cut.append((lname, idx, poly, area,
+                        '%d land(s) of %s on this %s island end in %d separate '
+                        'pieces once %d piece(s) of new copper are subtracted '
+                        'at clearance %.2f + min_thickness %.2f mm'
+                        % (len(mine), net, lname, len(where), hit,
+                           clr / 1e6, mt / 1e6)))
+    return cut

@@ -1,0 +1,184 @@
+{
+  "guards": [
+    {
+      "exempt": [],
+      "keepout_radius": 275000,
+      "lkey": "B",
+      "net": "GND",
+      "ok": true,
+      "points": [
+        [
+          59000000,
+          61435000
+        ],
+        [
+          58825000,
+          61263750
+        ],
+        [
+          58650000,
+          61092500
+        ],
+        [
+          58475000,
+          60921250
+        ],
+        [
+          58300000,
+          60750000
+        ]
+      ],
+      "tube": "D638_STITCH_RUN_GND:C37.2"
+    },
+    {
+      "exempt": [],
+      "keepout_radius": 275000,
+      "lkey": "B",
+      "net": "GND",
+      "ok": true,
+      "points": [
+        [
+          58300000,
+          60750000
+        ],
+        [
+          58300000,
+          60483333
+        ],
+        [
+          58300000,
+          60216667
+        ],
+        [
+          58300000,
+          59950000
+        ],
+        [
+          58300000,
+          59683333
+        ],
+        [
+          58300000,
+          59416667
+        ],
+        [
+          58300000,
+          59150000
+        ]
+      ],
+      "tube": "D638_STITCH_RUN_GND:C37.2"
+    },
+    {
+      "exempt": [],
+      "keepout_radius": 275000,
+      "lkey": "B",
+      "net": "GND",
+      "ok": true,
+      "points": [
+        [
+          58300000,
+          59150000
+        ],
+        [
+          58350000,
+          58966667
+        ],
+        [
+          58400000,
+          58783333
+        ],
+        [
+          58450000,
+          58600000
+        ]
+      ],
+      "tube": "D638_STITCH_RUN_GND:C37.2"
+    },
+    {
+      "exempt": [],
+      "keepout_radius": 450000,
+      "lkey": "F",
+      "net": "GND",
+      "ok": true,
+      "points": [
+        [
+          58450000,
+          58600000
+        ]
+      ],
+      "tube": "D638_STITCH_BARREL_GND:C37.2"
+    },
+    {
+      "exempt": [],
+      "keepout_radius": 450000,
+      "lkey": "I1",
+      "net": "GND",
+      "ok": true,
+      "points": [
+        [
+          58450000,
+          58600000
+        ]
+      ],
+      "tube": "D638_STITCH_BARREL_GND:C37.2"
+    },
+    {
+      "exempt": [],
+      "keepout_radius": 450000,
+      "lkey": "I2",
+      "net": "GND",
+      "ok": true,
+      "points": [
+        [
+          58450000,
+          58600000
+        ]
+      ],
+      "tube": "D638_STITCH_BARREL_GND:C37.2"
+    },
+    {
+      "exempt": [],
+      "keepout_radius": 450000,
+      "lkey": "I3",
+      "net": "GND",
+      "ok": true,
+      "points": [
+        [
+          58450000,
+          58600000
+        ]
+      ],
+      "tube": "D638_STITCH_BARREL_GND:C37.2"
+    },
+    {
+      "exempt": [],
+      "keepout_radius": 450000,
+      "lkey": "I4",
+      "net": "GND",
+      "ok": true,
+      "points": [
+        [
+          58450000,
+          58600000
+        ]
+      ],
+      "tube": "D638_STITCH_BARREL_GND:C37.2"
+    },
+    {
+      "exempt": [],
+      "keepout_radius": 450000,
+      "lkey": "B",
+      "net": "GND",
+      "ok": true,
+      "points": [
+        [
+          58450000,
+          58600000
+        ]
+      ],
+      "tube": "D638_STITCH_BARREL_GND:C37.2"
+    }
+  ],
+  "note": "the reservation a joint rip-up-and-relay owes: the stitch's own path, per layer, plus its barrel on the whole stack",
+  "schema": 1
+}

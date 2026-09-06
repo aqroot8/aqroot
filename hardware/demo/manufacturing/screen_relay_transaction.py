@@ -249,6 +249,97 @@ def stitch_geometry(qb, mark):
     return dict(tracks=tracks, vias=vias)
 
 
+def sever_shapes(*tagged):
+    """(net, `stitch_geometry` record) pairs -> `maze3d.copper_severs` shapes.
+
+    A barrel is copper on every layer and carries no `lkey`; a track is copper
+    on exactly one and carries its own.  EVERY SHAPE CARRIES ITS OWN NET,
+    because which pours a piece of copper can cut is decided by whose copper it
+    is: the stitch belongs to the plane net and is invisible to that net's own
+    pour, and the RELAY belongs to the cut net and is not.  D-639.
+    """
+    shapes = []
+    for (snet, g) in tagged:
+        if not g:
+            continue
+        for v in g.get("vias", ()):
+            shapes.append(dict(kind="via", net=snet, xy=tuple(v["xy_nm"]),
+                               dia=int(v.get("dia_nm") or 0)))
+        for t in g.get("tracks", ()):
+            shapes.append(dict(kind="seg", net=snet, a=tuple(t["a_nm"]),
+                               b=tuple(t["b_nm"]), width=int(t["width_nm"]),
+                               lkey=t.get("lkey")))
+    return shapes
+
+
+def laid_shapes(qb, mark):
+    """Everything emitted since `mark`, as net-tagged `copper_severs` shapes.
+
+    The relay can lay more than one net in one pass -- `GND C37.2` is two --
+    so the net is read off each object rather than assumed from the caller.
+    """
+    import pcbnew
+    lkey = {}
+    for k, v in (("F", pcbnew.F_Cu), ("I1", pcbnew.In1_Cu),
+                 ("I2", pcbnew.In2_Cu), ("I3", pcbnew.In3_Cu),
+                 ("I4", pcbnew.In4_Cu), ("B", pcbnew.B_Cu)):
+        lkey[v] = k
+    shapes = []
+    for t in qb.laid[mark[0]:]:
+        if t.GetClass() == "PCB_VIA":
+            pos = t.GetPosition()
+            shapes.append(dict(kind="via", net=t.GetNetname(),
+                               xy=(int(pos.x), int(pos.y)),
+                               dia=int(t.GetWidth(pcbnew.F_Cu))))
+        elif t.GetClass() == "PCB_TRACK":
+            shapes.append(dict(kind="seg", net=t.GetNetname(),
+                               a=(int(t.GetStart().x), int(t.GetStart().y)),
+                               b=(int(t.GetEnd().x), int(t.GetEnd().y)),
+                               width=int(t.GetWidth()),
+                               lkey=lkey.get(t.GetLayer(), "?")))
+    return shapes
+
+
+def pour_nets(qb):
+    """Every net that owns filled copper, in a deterministic order."""
+    return sorted({z.GetNetname() for z in qb.b.Zones()
+                   if not z.GetIsRuleArea() and z.IsFilled()
+                   and z.GetNetname()})
+
+
+def pour_severs(qb, mz, net, shapes, via_dia):
+    """Every filled island this transaction's copper would cut in two.
+
+    D-638 spent a full-authority gate run learning that the barrel is not the
+    only pair of scissors: the 17.2 mm RELAY TRACK it emitted split `GND`'s
+    `B.Cu` pour 58 -> 59 and clause `PP2` refused the run.  So the price is
+    taken over the WHOLE transaction -- the stitch's stub, its run, its barrel,
+    and every segment and barrel the relay itself laid -- and a barrel's own
+    dia is defaulted from the field when `stitch_geometry` could not read one.
+
+    AND IT IS TAKEN OVER EVERY POUR ON THE BOARD, NOT MERELY THE FOREIGN ONES.
+    `mz._foreign_pours(qb, net)` is the right list for a BARREL the stitch
+    plants, which is the plane net's own copper; it is the wrong list for the
+    transaction, because the relay is the CUT net's copper and the cut net is
+    not the plane net.  `GND U9.16` is exactly that shape -- a `GND` stitch
+    whose relay is `NFC_RFO2`, which can slot the `GND` pour the stitch is
+    aiming at.  So each pour is priced against every shape that is not its own
+    net's, and a pour with nothing foreign in it is skipped for free.
+    """
+    shapes = [dict(s, dia=(s["dia"] or int(via_dia)))
+              if s["kind"] == "via" else s for s in shapes]
+    out = []
+    for n in pour_nets(qb):
+        mine = [s for s in shapes if s.get("net") != n]
+        if not mine:
+            continue
+        out += [dict(pour=n, own_net=(n == net), layer=lname,
+                     mm2=round(area, 2), why=why)
+                for (lname, _idx, _poly, area, why)
+                in mz.copper_severs(qb, n, mine)]
+    return out
+
+
 def joint_search(qb, field, held, by_net, pad, land_ok, max_mm, grid,
                  reserved, spec, own_layer, via_dia, net, mz, radius,
                  tries=12, knock_mm=1.0, slack_mm=0.0):
@@ -295,9 +386,15 @@ def joint_search(qb, field, held, by_net, pad, land_ok, max_mm, grid,
             # THE SAME BUDGET AS EVERY OTHER ARM.  Nothing is reserved here,
             # but the bound a detour is judged by must not move between arms
             # or the comparison stops being one.
+            # THE RELAY'S OWN GEOMETRY, READ THE SAME WAY THE STITCH'S IS.
+            # D-639: the relay is copper this transaction lays, so it owes the
+            # same price to every foreign pour it crosses, and the only way to
+            # charge it is to read the objects `_emit_path` actually emitted.
+            m2 = qb.mark()
             ok_all, tracks = relay_nets(qb, grid, reserved, by_net, spec,
                                         None, radius, own_layer,
                                         slack_mm=slack_mm)
+            rgeom = stitch_geometry(qb, m2) if ok_all else None
             sev = None
             if ok_all:
                 sites = [(int(st["via_xy_nm"][0]), int(st["via_xy_nm"][1]))]
@@ -309,16 +406,28 @@ def joint_search(qb, field, held, by_net, pad, land_ok, max_mm, grid,
                        for n in mz._foreign_pours(qb, net)
                        for (lname, _idx, _poly, area, why)
                        in mz._antipad_severs(qb, n, sites, via_dia)]
+                psev = pour_severs(
+                    qb, mz, net,
+                    sever_shapes((net, geom)) + laid_shapes(qb, m2),
+                    via_dia)
+            else:
+                psev = None
+            # A STITCH WHOSE TRANSACTION SPLITS A FOREIGN POUR IS STRUCK OUT
+            # EXACTLY AS ONE THAT STRANDS A RELAY IS.  D-638's gate run refused
+            # the whole transaction for this and nothing else; a screen that
+            # reports it and accepts anyway is a screen that spends gate runs.
+            good = bool(ok_all and not psev)
             rounds.append(dict(
                 round=k + 1, stitch_ok=True, stitch_mm=st.get("mm"),
                 stitch_layer=st.get("layer"),
                 via_xy=list(st.get("via_xy")), all_relaid=bool(ok_all),
-                antipad_severs=sev,
+                accepted=good,
+                antipad_severs=sev, pour_severs=psev,
                 relays=[dict(net=t["net"], ok=t["ok"], reason=t.get("reason"),
                              mm=t.get("mm"), vias=t.get("vias"),
                              was_mm=t.get("was_mm"))
                         for t in tracks]))
-            if ok_all:
+            if good:
                 # THE GEOMETRY THE TRANSACTION HAS TO RESERVE.  The relay was
                 # refused by the stitch's own copper, so what the writer must
                 # hold clear is that copper's PATH, layer by layer -- not a
@@ -332,8 +441,9 @@ def joint_search(qb, field, held, by_net, pad, land_ok, max_mm, grid,
                                         via_xy=list(st.get("via_xy")),
                                         via_xy_nm=list(st["via_xy_nm"]),
                                         why=None),
-                            stitch_geometry=geom,
-                            antipad_severs=sev, tracks=tracks)
+                            stitch_geometry=geom, relay_geometry=rgeom,
+                            antipad_severs=sev, pour_severs=psev,
+                            tracks=tracks)
             qb.revert(m)
         if best is not None:
             break
@@ -353,12 +463,21 @@ def joint_search(qb, field, held, by_net, pad, land_ok, max_mm, grid,
                tries=tries, knockout_mm=knock_mm, slack_mm=slack_mm or None,
                rounds=rounds,
                all_relaid=best is not None,
+               priced_against_foreign_pours=True,
                note=None if best is not None else
-                    "no barrel in %d tries left every cut net a corridor" % len(rounds))
+                    "no barrel in %d tries left every cut net a corridor it "
+                    "could take without splitting a foreign pour"
+                    % len(rounds))
     if best is not None:
         out.update(best)
     else:
-        out.update(stitch=None, antipad_severs=None, tracks=[])
+        # A REFUSAL MUST CARRY ITS REASON.  When no round was accepted the
+        # verdict block below still reads `pour_severs`, and a `None` there
+        # would read as "nothing was cut" when the truth may be "every round
+        # was cut".  So the refusal carries the union of what the rounds saw.
+        out.update(stitch=None, antipad_severs=None, tracks=[],
+                   pour_severs=[x for r in rounds
+                                for x in (r.get("pour_severs") or ())] or None)
     return out
 
 
@@ -589,7 +708,15 @@ def main():
                     antipad_severs=sev, tracks=tracks)
                 qb.revert(m)
         rep["cut_records"] = list(l["cuts"])
+        # THE RUNG THE MEASUREMENT WAS TAKEN AT, CARRIED IN THE REPORT SO THE
+        # PLAN CAN CARRY IT TO THE WRITER.  D-638's gate run failed on exactly
+        # this gap: the screen measured `+3V3 R39.1` at the `floor` rung
+        # (0.400 mm track, 0.65/0.40 barrel) and the writer, given no rung, was
+        # handed the NETCLASS by `net_contract` (0.600 / 0.800) and reported
+        # `NO_BODY_VIA_SITE: no legal 0.80 mm barrel`, `stitched: 0`.
+        rep["stitch_width_nm"] = int(w)
         rep["stitch_via_dia_nm"] = int(vd)
+        rep["stitch_via_drill_nm"] = int(vdr)
         rep["reserve_clr_nm"] = int(max(
             [clr] + [net_contract(qb.b, n)["clr"] for n in by_net]))
         rep["arms"] = arms
@@ -598,8 +725,9 @@ def main():
             A = arms["disc"]["all_relaid"]
             B = arms["stitch"]["all_relaid"]
             C = arms["joint"]["all_relaid"]
-            sev = arms["joint"].get("antipad_severs") or \
-                arms["stitch"].get("antipad_severs")
+            sev = (arms["joint"].get("antipad_severs")
+                   or arms["joint"].get("pour_severs")
+                   or arms["stitch"].get("antipad_severs"))
             rep["verdict"] = ("TRANSACTION_CLOSES" if ((B or C) and not sev)
                               else "POUR_SEVERED" if ((B or C) and sev)
                               else "LATTICE_WALL" if not Z
@@ -639,12 +767,25 @@ def main():
                     note="emitted by screen_relay_transaction.py from board "
                          "%s; the reservation is NOT a disc -- see the guard "
                          "file that goes with this plan" % board_sha[:16])
+        # THE RUNG TRAVELS WITH THE PLAN.  D-639.  A plan that names the
+        # geometry but not the WIDTH it was measured at is half a plan, and the
+        # missing half cost D-638 a full-authority gate run: `route_maze_batch`
+        # took the netclass, asked for an 0.80 mm barrel where the screen had
+        # proved an 0.65 mm one, and stitched nothing.  `--stitch-width` and
+        # `--stitch-via` already exist and already clamp UP to the `.kicad_dru`
+        # floors, so this states them and can license nothing.
+        rung = dict(name=ev["rung"], per_net={}, argv=None, why=None)
         guards = []
         for rep in out:
             j = (rep.get("arms") or {}).get("joint") or {}
             if not j.get("all_relaid") or not j.get("stitch_geometry"):
                 continue
             pnet = rep["net"]
+            rung["per_net"][pnet] = dict(
+                stitch_width_nm=int(rep["stitch_width_nm"]),
+                stitch_via_dia_nm=int(rep["stitch_via_dia_nm"]),
+                stitch_via_drill_nm=int(rep["stitch_via_drill_nm"]),
+                netclass=rep["netclass"])
             clr = int(rep["reserve_clr_nm"])
             geom = j["stitch_geometry"]
             for t in geom["tracks"]:
@@ -678,6 +819,25 @@ def main():
                 entry.update(parts[0] if len(parts) == 1
                              else dict(tracks=parts))
                 plan["detours"].append(entry)
+        # ONE RUNG OR NONE.  `--stitch-width` is a RUN-WIDE lever, so a plan
+        # that closed two lands of two different classes at two different rungs
+        # cannot state one; it says so instead of picking, and the writer then
+        # refuses rather than guessing.
+        rungs = {(v["stitch_width_nm"], v["stitch_via_dia_nm"],
+                  v["stitch_via_drill_nm"]) for v in rung["per_net"].values()}
+        if len(rungs) == 1:
+            w_nm, vd_nm, vdr_nm = rungs.pop()
+            rung.update(stitch_width_nm=w_nm, stitch_via_dia_nm=vd_nm,
+                        stitch_via_drill_nm=vdr_nm,
+                        argv=["--stitch-width", str(w_nm),
+                              "--stitch-via", "%d:%d" % (vd_nm, vdr_nm)])
+        elif len(rungs) > 1:
+            rung["why"] = ("this plan closes lands measured at %d DIFFERENT "
+                           "rungs; --stitch-width is run-wide, so emit one "
+                           "plan per rung" % len(rungs))
+        else:
+            rung["why"] = "no land closed, so no rung was measured"
+        plan["rung"] = rung
         if a.plan_out:
             a.plan_out.write_text(
                 json.dumps(plan, indent=2, sort_keys=True) + "\n",

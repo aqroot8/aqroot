@@ -2191,8 +2191,40 @@ def gate(nets, grid, via_cost_mm, workdir, promote=False, candidate=None,
     # it -- and in its own child, because it mutates the board.
     detour = None
     detour_guard_file = None
+    detour_rung = None
     if detour_spec:
         plan = load_detours(detour_spec)
+        # D-639: THE RUNG TRAVELS WITH THE PLAN.  A rip-up-and-relay plan is a
+        # measurement, and a measurement is taken at a WIDTH.  D-638 emitted
+        # the geometry and not the width, this run was invoked without
+        # `--stitch-width`, `net_contract` handed the stitch the netclass
+        # (0.600 mm track, 0.800 mm barrel) where the screen had proved the
+        # `.kicad_dru` floor (0.400 / 0.65:0.40), and the transaction reported
+        # `NO_BODY_VIA_SITE: no legal 0.80 mm barrel` and `stitched: 0` --
+        # every other clause of that gate run measured half a transaction.
+        # So the plan states its rung and this adopts it when, and only when,
+        # the caller named none.  An explicit CLI rung always wins and the
+        # disagreement is RECORDED rather than silently resolved; the adopted
+        # figures still go through the same clamp UP to BOARD_TRACK_MIN and the
+        # `.kicad_dru` class floors, so a plan can license nothing.
+        rg = plan.get("rung") or {}
+        detour_rung = dict(
+            plan_rung=rg.get("name"), plan_argv=rg.get("argv"),
+            plan_why=rg.get("why"),
+            cli_stitch_width=stitch_width or None,
+            cli_stitch_via=list(stitch_via) if stitch_via else None,
+            adopted=False, conflict=False)
+        if rg.get("stitch_width_nm") and not stitch_width and not stitch_via:
+            stitch_width = int(rg["stitch_width_nm"])
+            stitch_via = (int(rg["stitch_via_dia_nm"]),
+                          int(rg["stitch_via_drill_nm"]))
+            detour_rung.update(adopted=True, stitch_width=stitch_width,
+                               stitch_via=list(stitch_via))
+        elif rg.get("stitch_width_nm"):
+            detour_rung["conflict"] = (
+                int(rg["stitch_width_nm"]) != int(stitch_width or 0)
+                or (int(rg["stitch_via_dia_nm"]),
+                    int(rg["stitch_via_drill_nm"])) != tuple(stitch_via or ()))
         report = work / "detour.json"
         subprocess.run(
             [sys.executable, __file__, "--detour-apply", str(scratch),
@@ -2711,10 +2743,35 @@ def gate(nets, grid, via_cost_mm, workdir, promote=False, candidate=None,
     # and `edges_after < edges_before` above is the honest proof that it did.
     # Requiring a stitch as well would refuse a promotion whose whole value is
     # the plane -- which is exactly what a plane is for.
+    #
+    # AND A DETOUR IS THE FOURTH MECHANISM, FOR THE SAME REASON.  D-639.
+    # `ok_nets` twenty lines above already says it in its own words -- "A
+    # DETOURED NET LAYS COPPER TOO, so its successes join the promotion set for
+    # the same reason the repair's and the bonds' do" -- and this clause was
+    # never told.  The gap is not hypothetical: the `GND C37.2` transaction
+    # removed two crossing tracks under this run's own licence, put both back
+    # (`all_relaid: true`, 19 tracks and 4 barrels on `/ACC_DETECT_N` and
+    # `Net-(U11-TS_MR)`), and the REFILLED `GND` `B.Cu` pour then flowed into
+    # the vacated channel and swallowed the `C37.2` land whole -- retained open
+    # edges 44 -> 43, `nets_improved: ["GND"]`, `PP2` islands 58 -> 57 MERGED,
+    # zero attributable DRC -- with `stitched: 0` and therefore no "routed"
+    # net at all.  That is the `--plane` argument arriving by a different road:
+    # the copper that closed the edge was the pour, and what let the pour reach
+    # was the detour.
+    #
+    # THIS CANNOT ADMIT A NO-OP, AND THE REASON IS NOT THIS CLAUSE.
+    # `detour_nets` is non-empty only where this run's own applier removed a
+    # track by signature and `maze3d.route_points` proved it back, so the board
+    # always differs; and clause 4 (`edges_after < edges_before`) still demands
+    # the board IMPROVE, which is what refused D-638's own detour run at
+    # 44 -> 44 with `all_relaid: true`.  The clause also still fails in its own
+    # right: a run with no plane, nothing routed, nothing repaired, no bond and
+    # no detour is exactly the vacuous promotion it was written to refuse.
     changed = (bool(plane)
                or any(r.get("ok") and not r.get("already") for r in routed)
                or any(not r.get("already") for r in repaired)
-               or bool(bond_nets))
+               or bool(bond_nets)
+               or bool(detour_nets))
     # CLAUSE 7 -- A LICENCE MAY NOT BE SPENT ON COPPER THAT CONNECTS NOTHING.
     # D-606.  `--escape-relief` is the only lever on this board that lays a
     # barrel the ordinary floors forbid, and it pays for it with a permanent
@@ -2839,6 +2896,7 @@ def gate(nets, grid, via_cost_mm, workdir, promote=False, candidate=None,
         eviction=eviction,
         exact_relay=exact_relay,
         detour=(dict(requested=str(detour_spec),
+                     rung=detour_rung,
                      reserve=detour.get("reserve"),
                      removed_count=detour.get("removed_count"),
                      removed_mm=detour.get("removed_mm"),
@@ -2904,8 +2962,42 @@ def gate(nets, grid, via_cost_mm, workdir, promote=False, candidate=None,
                   for r in routed if r.get("pad_bridge")]) if bridge_pads
         else None,
         candidate_sha256=sha256_file(scratch),
+        # A REFUSAL MUST NAME ITSELF.  D-639.  `ok` is a conjunction of eleven
+        # clauses and the summary reported the EVIDENCE for each without ever
+        # reporting the VERDICT, so a refused run said only "refuse promotion:
+        # gate failed" -- and under `--promote` it said it by raising, before
+        # `--out` was ever written.  Two full-authority gate runs were then
+        # spent on this board (D-638's, and D-639's first) working out which
+        # clause had spoken.  This block is derived from the same locals `ok`
+        # is, so it cannot drift from it, and `refused_clauses` is exactly the
+        # set whose repair would flip the run.
+        gate_clauses=dict(
+            attributable_drc=not attributable,
+            inherited_within_baseline=bool(inherited_ok),
+            no_regression=not regressed,
+            no_unlicensed_removal=not unlicensed,
+            no_foreign_copper=not foreign,
+            board_improved=bool(edges_after < edges_before),
+            zones_and_rule_areas=bool(zone_ok),
+            board_changed=bool(changed),
+            no_open_relief_licence=not relief_open,
+            every_detour_relaid=not detour_failed,
+            pour_partition=not pp_failed,
+            authority_unchanged=bool(before == sha256_file(BOARD)),
+        ),
         promotion_candidate=ok,
     )
+    summary["refused_clauses"] = sorted(k for k, v
+                                        in summary["gate_clauses"].items()
+                                        if not v)
+    # AND IT MUST BE READABLE AFTER THE RAISE.  `--out` is written by `main`
+    # AFTER `gate` returns, which a refused `--promote` never does, so the one
+    # artifact that explains the refusal was the one the refusal destroyed.
+    # The work directory is this run's own and is already the home of
+    # `detour.json`, `drc.json`, `pour-partition.json` and both ledgers.
+    (work / "gate-summary.json").write_text(
+        json.dumps(summary, indent=2, sort_keys=True, default=str) + "\n",
+        encoding="utf-8")
     if candidate and ok:
         Path(candidate).write_bytes(scratch.read_bytes())
     if promote:

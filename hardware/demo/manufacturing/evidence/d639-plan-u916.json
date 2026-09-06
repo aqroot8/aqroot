@@ -1,0 +1,42 @@
+{
+  "detours": [
+    {
+      "a_mm": [
+        36.075,
+        27.0
+      ],
+      "b_mm": [
+        37.95,
+        28.925
+      ],
+      "layer": "B.Cu",
+      "max_mm": 15.2536,
+      "net": "/04_SPI_B_RADIOS_NFC/NFC_RFO2",
+      "width_mm": 0.3
+    }
+  ],
+  "note": "emitted by screen_relay_transaction.py from board 5715bf5cd688a87f; the reservation is NOT a disc -- see the guard file that goes with this plan",
+  "reserve": [],
+  "rung": {
+    "argv": [
+      "--stitch-width",
+      "150000",
+      "--stitch-via",
+      "500000:200000"
+    ],
+    "name": "floor",
+    "per_net": {
+      "GND": {
+        "netclass": "GND",
+        "stitch_via_dia_nm": 500000,
+        "stitch_via_drill_nm": 200000,
+        "stitch_width_nm": 150000
+      }
+    },
+    "stitch_via_dia_nm": 500000,
+    "stitch_via_drill_nm": 200000,
+    "stitch_width_nm": 150000,
+    "why": null
+  },
+  "schema": 1
+}

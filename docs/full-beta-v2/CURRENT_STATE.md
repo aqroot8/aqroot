@@ -13,6 +13,78 @@
 > This file references DEVICE_SPEC rather than duplicating full specs.
 
 ## 1. Authoritative HEAD
+- **Demo D-639 (COPPER IS PROMOTED -- THE RIP-UP-AND-RELAY IS A *COMPLETE*
+  TRANSACTION, AND THE LAND THAT CLOSED NEEDED **NO STITCH AT ALL**):**
+  D-638's three ranked items are all measured and the first two are BUILT.
+  **AUTHORITY MOVED**: `5715bf5c...` -> **`f496d2f39c0827248a47ab7d47efa4322f078b68d2da1d91ae6585d97bf8f875`**.
+  Retained open edges **44 -> 43**, `GND` **4 -> 3**, open retained nets 21,
+  connected retained 152, raw ratsnest **60 -> 59**, unconnected items 60 -> 59.
+  **19 tracks + 4 barrels ADDED**, 2 tracks REMOVED under this run's own
+  licence -- and **every added object is on `/ACC_DETECT_N` or
+  `Net-(U11-TS_MR)`: not one millimetre of new `GND` copper.**
+  **THE GATE PASSED ALL TWELVE CLAUSES** (`evidence/d639-gate-c372-promoted.json`,
+  `refused_clauses: []`); real KiCad DRC is unmoved (`hole_clearance` 5,
+  `solder_mask_bridge` 1 before and after, **zero attributable**);
+  `verify_promotion.py` is **PASS** on fifteen checks including
+  `beta_v2_untouched`, `fill_stable`, `D-186_bat_main_class` and
+  `D-269_bat_main_routed_clearance` (`evidence/d639-verify-promotion.json`);
+  the ten standing contracts are **10/10 RAN, 10/10 PASS**
+  (`evidence/d639-contract-regression.json` -- they DIFFER from the `d632`
+  baseline only in `board_sha256`, in `In1.Cu` reference-plane area
+  9429.543 -> 9425.846 mm2, and in `PP2`'s `GND|B` island count **58 -> 57
+  MERGED**).
+  **(1) THE RUNG TRAVELS WITH THE PLAN.**  `--plan-out` now emits the width the
+  measurement was taken at (`floor`: 0.150 mm track, 0.500/0.200 barrel) and
+  the gate ADOPTS it when the caller named none -- `detour.rung.adopted: true`,
+  `conflict: false` -- still clamped UP to `BOARD_TRACK_MIN` and the
+  `.kicad_dru` floors, so a plan can license nothing.  Given the right rung the
+  `GND` stitch pass has exactly TWO unreachable islands left: `J3.A12/B1`
+  (`NO_BODY_VIA_SITE`) and `MK1.4` (`NO_LEGAL_ESCAPE at >= 0.150 mm`, blocked
+  67x by its own mounting pad).
+  **(2) A TRACK IS A SLOT IN A FOREIGN POUR EXACTLY AS A BARREL IS.**  New
+  `maze3d.copper_severs` (a capsule of `w/2 + clr + min_thickness` on ONE
+  layer; `_antipad_severs` UNTOUCHED and its D-605 calibration intact) plus
+  `screen_relay_transaction.pour_severs` price the WHOLE transaction against
+  EVERY filled pour.  It **reproduces D-638's `PP2` gate refusal without
+  spending a gate run**: `+3V3 R39.1`'s round-2 relay (17.378 mm) is STRUCK OUT
+  for splitting `GND`'s 2841.9 mm2 `B.Cu` island, and round 3 finds no further
+  body site -- so **`+3V3 R39.1` is REFUSED, not open**, and 12.75 mm was never
+  its price.
+  **(3) AND THE LAND CLOSED WITH NO STITCH.**  `GND C37.2` was ACCEPTED on
+  round 1 and the gate did better than the plan: the applier removed the two
+  crossing tracks, the propose child put both back, the `GND` stitch laid
+  **NOTHING** (`stitched: 0`), and KiCad's real refill flowed the `GND` `B.Cu`
+  pour into the channel `/ACC_DETECT_N` had vacated and swallowed the `C37.2`
+  land whole.  `C37.2` is a singleton cluster before and a member of the 249-pad
+  `GND` body after.  **On this board a plane land's wall can be ONE CROSSING
+  TRACK, and the whole cure is to move it.**
+  **(4) ONE GATE CLAUSE WAS TOLD ABOUT DETOURS.**  The first run of this exact
+  transaction was refused by clause `changed` alone -- it counted `--plane`,
+  `routed`, `repaired` and `bond_nets` and not `detour_nets`, though `ok_nets`
+  twenty lines above already admits detours for the same reason.  Nothing is
+  weakened: clause 4 (`edges_after < edges_before`) still demands the board
+  IMPROVE and is what refused D-638's own detour run at 44 -> 44.
+  **(5) A REFUSAL NOW NAMES ITSELF.**  The summary carries `gate_clauses` (all
+  twelve, derived from the same locals `ok` is) and `refused_clauses`, and
+  `gate()` writes `<work>/gate-summary.json` BEFORE `--promote` raises -- the
+  gap that cost two full-authority runs.
+  **NEXT, IN ORDER OF LEVERAGE:** (1) **RE-TAKE `screen_segment_evict` ON THE
+  PROMOTED BOARD AND GATE `GND U9.16`** -- measured, planned and ready
+  (0.675 mm `B` stitch + one barrel at (36.325, 27.625), `NFC_RFO2`
+  2.6872 -> 3.0997 mm, no pour severed; `evidence/d639-plan-u916.json`,
+  `d639-guard-u916.json`), blocked only because the screen keys itself to
+  `d637-segment-evict.json`, taken on the PRE-promotion board.  (2) **ASK THE
+  `C37.2` QUESTION OF THE OTHER OPEN LANDS** -- add a NO-STITCH arm that asks
+  whether the relay ALONE closes the land; aimed at `BQ25185_SYS` (7), `+3V3`
+  (6) and `/I2C_SCL_INT` (5).  (3) **`+3V3 R39.1` needs a relay search that is
+  pour-aware from the first wavefront**, not a post-hoc reject.  (4)
+  **D-636/D-637/D-638's ITEMS ARE CARRIED UNCHANGED**: `/I2S_LRCLK`'s edge rate
+  is still a DATA task and still the only thing between `/I2C_SCL_INT` and the
+  first plane haul; `U4.5`/`U4.8`/`{U4.2,U4.3}`/`U5.2`/`MK1.4` remain the
+  PLACEMENT finding; `R129.1`'s absent plane remains a POUR question; `GND
+  J3.A12/B1` remains a `LATTICE_WALL` plus a `NO_BODY_VIA_SITE`.
+  No owner decision is OPEN; D-618's `J3` question remains RECORDED and PM-3
+  remains an open PLACEMENT finding.
 - **Demo D-638 (THE RIP-UP-AND-RELAY FRONTIER IS *REFUTED* -- THE RELAY WAS
   REFUSED BY A RESERVE DISC THAT SWALLOWED ITS OWN TWELVE TERMINALS, THREE OF
   THE FOUR LANDS CLOSE **JOINTLY**, AND THE REAL WRITER HAS NOW TAKEN THE
