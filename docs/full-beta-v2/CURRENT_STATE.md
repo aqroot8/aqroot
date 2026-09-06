@@ -13,6 +13,27 @@
 > This file references DEVICE_SPEC rather than duplicating full specs.
 
 ## 1. Authoritative HEAD
+- **Demo D-652A (ADDENDUM — THE SAME SIX OBJECTS OPEN BOTH OF `U2`'s BUS
+  LANDS):**  **NO COPPER.**  Authority UNCHANGED at
+  `dc6d162a597ac944457b7d8575fe70270d1f8f1892027449fb8cc73686d8f1e4`; retained
+  open edges **37**.  `hardware/beta-v2` untouched.  One read-only
+  `screen_pair_corridor_blame.py` run, 88.8 s, on `/I2C_SDA_INT`
+  `U3.23 <-> U2.23` (`evidence/d652-pair-blame-u323-u223.json`): `U2.23` has
+  **NO OFF-CENTRE LAUNCH** at 0.200 mm from any of 41 anchors x 24 directions
+  x 17 lengths, blocked by `U2.24` (x6146), `U2.22` (x4747), a track (x2140)
+  and `U2.21` (x1138); Q1 dropping all seventeen foreign nets OPENS it
+  (12.381 mm, 2 vias); and Q2 finds **TWO** single-net openings —
+  `/ACC_5V_SW_EN` (19.092 mm, 3 vias, **PROTECTED**) and **`GND`
+  (17.801 mm, 2 vias)** — where `GND`'s evictable copper in this window is the
+  **IDENTICAL object list** the `/I2C_SCL_INT` `U2.22 <-> U3.22` blame named:
+  the same five 0.300 mm `B.Cu` tracks from inside `U2.21`'s land to the same
+  0.600/0.300 mm barrel at 61.200,90.800.  **SO THE RE-BOND OF `U2.21` IS
+  WORTH BOTH `U2.22` (`SCL`) AND `U2.23` (`SDA`)** — the entire I2C connection
+  of the expander carrying all six user buttons — and the `/ACC_5V_SW_EN`
+  opener is a PROTECTED alternative that is not needed, so **no owner question
+  arises.**  **NEXT:** build the RE-BOND primitive (D-652 §4) and spend it on
+  `U2.21`; it is a two-edge, one-primitive transaction and the board's
+  highest-value remaining move.
 - **Demo D-652 (FIVE OPEN EDGES STRAND THIRTY-SEVEN NETS: THE WORK LIST WAS
   SORTED BY THE WRONG KEY, AND THE BMI270's `SDA` IS BONDED):**  **COPPER
   PROMOTED.**  Authority

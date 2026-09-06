@@ -1,3 +1,42 @@
+# D-652A · 2026-09-06 · Demo — ADDENDUM: THE SAME SIX OBJECTS OPEN BOTH OF `U2`'s BUS LANDS
+
+    authority  dc6d162a597ac944457b7d8575fe70270d1f8f1892027449fb8cc73686d8f1e4
+    UNCHANGED.  NO COPPER.  One read-only run, 88.8 s.
+
+D-652 §4 measured that `/I2C_SCL_INT` `U2.22 <-> U3.22` is opened by ONE
+containment-bounded eviction -- `GND`'s five 0.300 mm `B.Cu` tracks from inside
+`U2.21`'s land to a 0.600/0.300 mm barrel at 61.200,90.800 -- and that no
+detour can execute it, because the relay's own far end IS that barrel.
+
+Asked the same question for the OTHER bus land of the SAME part
+(`evidence/d652-pair-blame-u323-u223.json`, complete):
+
+    /I2C_SDA_INT  U3.23 <-> U2.23   17 foreign nets in the window
+
+    BASE   U2.23: NO OFF-CENTRE LAUNCH at 0.200 mm from any of 41 anchors x 24
+           directions x 17 lengths; blocked by U2.24 (x6146), U2.22 (x4747),
+           track (x2140), U2.21 (x1138)
+    Q1     drop all seventeen        ->  OPENS 12.381 mm, 2 vias
+    Q2     /ACC_5V_SW_EN alone       ->  OPENS 19.092 mm, 3 vias   PROTECTED
+    Q2     GND alone                 ->  OPENS 17.801 mm, 2 vias
+
+`GND`'s evictable copper in this window is **the identical object list** -- the
+same five tracks and the same barrel, enumerated off the board and compared
+bbox for bbox.
+
+**THE RE-BOND IS WORTH THE WHOLE EXPANDER.**  One move -- lift `U2.21`'s chain
+and barrel, plant a new barrel outside the pocket, prove it into the same plane
+-- is the measured cost of BOTH `U2.22` (`SCL`) and `U2.23` (`SDA`), which are
+the entire I2C connection of the part carrying all six user buttons.  D-652
+priced that pair at 18 stranded nets; it is now a two-edge, one-primitive
+transaction and it is the board's highest-value remaining move.
+
+The `/ACC_5V_SW_EN` opener is the PROTECTED alternative, is not needed, and is
+NOT an owner question any more: an unprotected opening exists for the same two
+edges.
+
+**NEXT:** build the RE-BOND primitive (D-652 §4) and spend it on `U2.21`.
+
 # D-652 · 2026-09-06 · Demo — FIVE OPEN EDGES STRAND THIRTY-SEVEN NETS: THE WORK LIST WAS SORTED BY THE WRONG KEY, AND THE BMI270's `SDA` IS BONDED
 
     authority  abf8b92050e787a01c9003dcd954f8c68100525ea3c073ffa39782e886682c51

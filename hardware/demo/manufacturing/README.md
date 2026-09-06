@@ -212,6 +212,33 @@ Every move this board owns -- `stitch_pad`, `bond_pads`, `join_islands`,
 a track.  **None moves a bond.**  It is worth exactly `U2.22`, the button
 expander's clock.
 
+## THE SAME SIX OBJECTS OPEN BOTH OF `U2`'s BUS LANDS (D-652 ADDENDUM)
+
+    python3 screen_pair_corridor_blame.py /I2C_SDA_INT U3.23 U2.23 3.0 100000 OUT
+
+`U2.21`'s ground bond was found by the `/I2C_SCL_INT` `U2.22 <-> U3.22` blame.
+Asked again for the SDA pair -- `/I2C_SDA_INT` `U3.23 <-> U2.23`, the OTHER bus
+land of the SAME expander -- the answer is the SAME OBJECT LIST
+(`evidence/d652-pair-blame-u323-u223.json`, complete, 88.8 s):
+
+    BASE   U2.23: NO OFF-CENTRE LAUNCH at 0.200 mm from any of 41 anchors x 24
+           directions x 17 lengths; blocked by U2.24 (x6146), U2.22 (x4747),
+           track (x2140), U2.21 (x1138)
+    Q1     drop all 17 foreign nets   ->  OPENS 12.381 mm, 2 vias
+    Q2     /ACC_5V_SW_EN alone        ->  OPENS 19.092 mm, 3 vias   PROTECTED
+    Q2     GND alone                  ->  OPENS 17.801 mm, 2 vias
+
+and `GND`'s evictable copper inside this window is **byte-for-byte the same
+five 0.300 mm `B.Cu` tracks and the same 0.600/0.300 mm barrel** that the SCL
+pair named -- `U2.21`'s only path to ground.
+
+**SO THE RE-BOND IS WORTH THE WHOLE EXPANDER, NOT ONE EDGE.**  One move --
+lift `U2.21`'s five-track chain and its barrel, plant a new barrel outside the
+pocket -- is the measured cost of BOTH `U2.22` (`SCL`) and `U2.23` (`SDA`), and
+those two lands are the entire I2C connection of the part that carries
+`BTN_UP`, `BTN_DOWN`, `BTN_LEFT`, `BTN_RIGHT`, `BTN_A` and `BTN_B`.  The
+`/ACC_5V_SW_EN` opener is the PROTECTED alternative and is not needed.
+
 ## A SEVERED POUR ISLAND HAS EXACTLY TWO ARMS, AND ONE OF THEM IS OFTEN ABSENT (D-650)
 
     python3 screen_island_bridge.py [NET ...] [--step 12500] [--blame CAP] -o OUT
