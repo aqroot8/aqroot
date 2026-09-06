@@ -13,6 +13,80 @@
 > This file references DEVICE_SPEC rather than duplicating full specs.
 
 ## 1. Authoritative HEAD
+- **Demo D-642 (THE QWIIC SDA EDGE HAS *THREE* WALLS, NOT ONE -- AND THE THIRD
+  IS A CONTRACT):**  **NO COPPER MOVED.**  Authority **UNCHANGED** at
+  `f496d2f39c0827248a47ab7d47efa4322f078b68d2da1d91ae6585d97bf8f875`; retained
+  open edges **43**, open retained nets 21, connected retained 152, raw
+  ratsnest 59.  `hardware/beta-v2` untouched.  The ten standing contracts are
+  **10/10 RAN, 10/10 PASS** (`evidence/d642-contract-regression.json`,
+  baseline `d632`), differing in exactly the three fields D-639 documented.
+  TEN full-board gate runs were spent and **not one was invoked
+  `--promote`**.  ONE new tracked screen: `screen_bond_site_deficit.py`.
+  **(1) THE GUARDED LADDER IS COMPLETE AND THE CLAIM IS NOW MEASURED.**
+  D-641's prose said the `C4.2 <-> U3.12` tube ALONE refuses `EXT_SDA` at
+  100000/50000/25000 nm; its evidence records that arm at **100000 only** (the
+  other two carry the FIFTY-tube guard).  All four rungs are now taken with
+  the tube alone -- 100000, 50000, 33333, 25000 -- and every one is
+  **`NO_PATH`**.  **0.0333 mm is exactly the rung at which D-625's
+  `BTN_DOWN_N` flipped to ROUTES under the SAME tube**, so "a refusal under a
+  reservation is a refusal at a pitch" is TRUE for one net and FALSE for the
+  other, and only the ladder tells them apart.
+  **(2) `NO_VIA_SITE` IS NOW A NUMBER.**  New tracked
+  `screen_bond_site_deficit.py` sweeps the barrel DIAMETER past every floor the
+  board publishes, calls `screen_bond_ladder.island_barrel` verbatim (so a site
+  it counts is one `PP3` would call a bond), and blames the refusal per TERM of
+  `Field._via_grid` -- six copper layers and hole-to-hole, each rebuilt alone.
+  **(3) `U3.12`'s FRAGMENT TAKES NO BARREL AT ANY DIAMETER.**  On the fragment
+  `EXT_SDA` itself creates: 0.600/0.200, 0.500/0.200, 0.450/0.200,
+  0.400/0.150, 0.350/0.100 and 0.300/0.050 all return **ZERO** sites in the
+  fragment while the same rungs hold 95/166/215/279/390/486 in the ISLAND.
+  `NO_BARREL_AT_ANY_DIAMETER_ON_THIS_LADDER` -- there is no deficit to buy.
+  **(4) AND THE WHOLE OF IT IS TWO NAMED TRACKS.**  Of 1885 fragment cells at
+  0.050 mm: `In1`/`In4` admit 1697 each, hole-to-hole 1885, `In2` 920, `F` 601,
+  `B` 452 -- and **`In3` just 111**.  `In3` ALONE refuses **55** cells every
+  other term admits, `F` alone 5, and the objects are **ONE
+  `/09_COMMUNITY_HEADER/TCA4307_READY` track on `In3.Cu`** (49.2-50.0 x
+  78.0-78.9 mm) and one `/01_POWER_TREE/BAT_PROTECTED_P` track on `F.Cu`.
+  **D-641 asked whether `U3` is the thing that moves; it is not.**
+  **(5) THE RE-BOND IS A CORRIDOR REFUSAL, NOT A VIA-SITE ONE.**  The plane
+  repair's `--join-residual` DOES run and returns `NO_PATH` -- src/dst escapes
+  2/77 at 0.300 mm, 8/92 at 0.200 mm, 5/55 at 0.200 mm and grid 50000.  The pad
+  escapes; the board offers nowhere to take it.  And `join_islands` -- the
+  lateral jumper `route_maze_batch` withholds from the repair -- finds
+  `U3.12`'s the ONLY one of four orphan `GND` clusters with an ANCHOR at all
+  (the other three are `NO_ANCHOR`).
+  **(6) AND NONE OF IT COULD HAVE PASSED.**  `PP3` prices a fragment `BONDED`
+  only on a **BARREL** into a reserved inner plane, so a jumper is not a bond;
+  and `PP2` admits a split only for a net with a published rail current, which
+  `GND` has not (`.kicad_dru` section 5 prices nine classes, none of them
+  `GND`; the candidate reads `published_amps: null`).  **Every split of a
+  multi-pad `GND` island on this board is refused UNCONDITIONALLY, whatever the
+  router does** -- so the only promotable `EXT_SDA` route is one that does not
+  split island 31 at all, which is (1).
+  **(7) THREE MORE OPEN EDGES TRIAGED IN ~40 s EACH**
+  (`evidence/d642-open-edge-triage.json`), against the 3600 s the corridor
+  screen spends: `/SPI_B_SCK` is **`NO_LEGAL_ESCAPE_DST`** at `U9.30` -- a LAND
+  question in the same fine-pitch pocket as D-640's `U9.16`, **not a corridor
+  question at all** -- while `/WAKE_INT_N` (34/7) and `/ACC_PWR_EN` (19/7)
+  launch at both ends and die `NO_PATH`.
+  **NEXT, IN ORDER OF LEVERAGE:** (1) **`PP2`'s `GND` RULE IS THE BOARD'S
+  LARGEST SINGLE BLOCKER** -- D-584's family of six nets / ~18 edges incl. the
+  whole internal I2C bus cannot be freed by any router move; the deferred
+  question is "how much current does a return-plane fragment carry", and the
+  conservative answer needing no model is the board's own worst published rail
+  current (`BAT_MAIN` 3.125 A).  Build and control it in its OWN iteration,
+  never beside copper it would admit.  (2) **RELAY THE `In3.Cu`
+  `TCA4307_READY` TRACK** -- one ordinary signal holding 55 legal 0.500/0.200
+  barrel sites; price with `screen_segment_evict.py`, relay with
+  `--detour-spec`, re-measure with the same deficit screen so the fix is
+  CHECKABLE.  (3) **`/SPI_B_SCK` IS A LAND** -- run `screen_escape_class.py`,
+  not the corridor screen.  (4) **TRIAGE THE OTHER SEVEN UNSWEPT NETS** the
+  same 40-second way first.  (5) `BQ25185_SYS C26.2`'s stitch pocket and
+  `GND J3.A12/B1` at a cheaper setting, carried unchanged.  (6) `/I2S_LRCLK`'s
+  edge rate and `/NFC_SUPPLY`'s per-net current, carried unchanged.
+  No owner decision is OPEN; D-618's `J3` question remains RECORDED and PM-3
+  keeps `U3.12` -- but **its cause is renamed**: not a package that must move,
+  but one inner-layer signal track and one contract clause.
 - **Demo D-641 (THE *CUT SET* IS THE THING THAT GETS REFUSED -- THE RETRY IS
   BUILT AND SPENT, AND `EXT_SDA` -> THE QWIIC CONNECTOR TURNS OUT TO BE
   ROUTABLE FOR THE PRICE OF ONE NAMED `GND` BOND NECK):**  **NO COPPER MOVED.**

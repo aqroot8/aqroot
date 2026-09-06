@@ -1,5 +1,241 @@
 # AQROOT Full Beta v2 — CTO Decisions
 
+# D-642 · 2026-09-06 · Demo — the QWIIC SDA edge has THREE walls, not one: the guarded corridor survives the whole pitch ladder, `U3.12`'s fragment takes NO barrel at ANY diameter — and even a perfect bond could not pass, because `PP2` refuses every `GND` split unconditionally
+
+    authority  f496d2f39c0827248a47ab7d47efa4322f078b68d2da1d91ae6585d97bf8f875
+            -> f496d2f39c0827248a47ab7d47efa4322f078b68d2da1d91ae6585d97bf8f875
+    NO COPPER MOVED.  Zero tracks, zero vias, zero zones, zero rule areas,
+      zero `.kicad_dru` change, zero placement change.  TEN full-board gate
+      runs were spent and **not one was invoked `--promote`**; every artifact
+      reports `authoritative_unchanged: true`.
+    `hardware/beta-v2` UNTOUCHED (`git status --short hardware/beta-v2/` empty).
+    Retained open edges **43**, open retained nets **21**, connected retained
+      **152**, raw ratsnest **59** — all unmoved.
+    THE TEN STANDING CONTRACTS: **10/10 RAN, 10/10 PASS**
+      (`evidence/d642-contract-regression.json`, baseline `d632`), differing
+      from that baseline in exactly the three fields D-639 documented and in
+      nothing else.
+    ONE NEW TRACKED SCREEN: `screen_bond_site_deficit.py`.
+
+D-641 closed with a ranked list whose first item was *"`U3.12`'s VIA SITE IS
+NOW THE WHOLE OF THE QWIIC SDA EDGE ... what has to move for a 0.500 mm barrel
+to fit near `U3.12`, and is `U3` itself the thing that moves."*  That question
+had three unasked questions inside it, and all three are answered here.  **The
+ranked blocker is renamed by its own evidence.**
+
+## 1. A GUARDED `NO_PATH` IS A LADDER QUESTION — AND THIS TIME THE LADDER SAYS WALL
+
+D-625's finding is one of this board's sharpest: *"A REFUSAL UNDER A
+RESERVATION IS A REFUSAL AT A PITCH."*  `BTN_DOWN_N`, guarded by **this exact
+tube**, reads `NO_PATH` at 0.1000, 0.0667 and 0.0500 mm and **ROUTES at
+0.0333 mm**, and three decisions had read the coarse refusal as a property of
+the corridor.
+
+D-641 stated that `EXT_SDA` with the `C4.2 <-> U3.12` tube reserved **and
+nothing else** is `NO_PATH` "at 100000, 50000 AND 25000 nm".  **Its own
+evidence file records that arm at 100000 ONLY** — the 50000 and 25000 arms in
+`evidence/d641-extsda-qwiic-price.json` carry the FIFTY-tube guard, which is a
+strictly stronger reservation and cannot stand in for the single-tube one.  The
+sentence was true of a different experiment.
+
+All four rungs are now taken with the tube ALONE
+(`evidence/d642-extsda-u312-three-walls.json`):
+
+    grid        island-31 tube ALONE
+    0.1000      NO_PATH   (D-641, reproduced there)
+    0.0500      NO_PATH   src_escapes 34, dst_escapes 4     29.6 s
+    0.0333      NO_PATH   src_escapes 26, dst_escapes 1    107.4 s
+    0.0250      NO_PATH   src_escapes 33, dst_escapes 3    296.6 s
+
+**0.0333 mm is exactly the rung at which `BTN_DOWN_N` flipped.**  So the same
+tube is a pitch artefact for one net and a wall for the other, and *only the
+ladder tells them apart*.  The 0.0667 rung is deliberately not taken and the
+reason is stated: 0.0500 already refuses and a COARSER lattice carries a LARGER
+guard band, so it could only refuse too.
+
+## 2. `NO_VIA_SITE` BY HOW MUCH — A NEW SCREEN, BECAUSE A BOOLEAN IS NOT A TASK
+
+`NO_VIA_SITE` cannot be handed to a placement engineer and cannot be CHECKED
+after a part moves, because there is no number to compare.
+`screen_bond_site_deficit.py` turns it into a specification:
+
+    for a named pad, on its own filled island -- or on the post-cut FRAGMENT a
+    proposed route leaves it on -- what is the LARGEST through barrel that has
+    a legal site there, what is the DEFICIT against board setup's own
+    `min_via_diameter`, and WHICH TERM of the via lattice refuses?
+
+It calls `screen_bond_ladder.island_barrel` **verbatim**, so a site it counts
+is a site `bridge_islands` would plant and `pour_partition_contract.py` `PP3`
+would call a bond — three instruments, one measurement, no drift.  It spends
+the project's own `min_through_hole_diameter` at every rung rather than the
+widest drill the annular floor allows, because a wider drill refuses sites for
+a hole the barrel never had to have and would OVERSTATE the deficit.  Its
+ladder continues **past every floor the board publishes**, marks every rung
+`promotable` from the project's own figures, and ENDS at 0.250 mm — below which
+a barrel cannot carry a hole and the 0.125 mm annular ring at once — naming
+that floor instead of printing a zero-drill rung as a measurement.
+
+## 3. THE BARREL ROAD IS NOT NARROW.  IT IS EMPTY.
+
+D-641 ran `--bond-pad U3.12`, which asks the pad to LAUNCH, and got
+`NO_VIA_SITE` at 0.600, at 0.500 and at 14.0 mm of locality.  It never asked
+the OTHER question D-625 built — a barrel anywhere inside the pad's own
+post-cut fragment, no escape and no run — **on this route's own cut**.
+
+Asked now, on the fragment `EXT_SDA` itself creates: `sites_in_fragment` is
+**0 in all fifteen (pitch x barrel) cells** of `screen_bond_ladder`, and the
+diameter ladder carries it further:
+
+    barrel        island sites   sites in U3.12's fragment
+    0.600/0.200        95                0
+    0.500/0.200       166                0      <- the finest PROMOTABLE barrel
+    0.450/0.200       215                0
+    0.400/0.150       279                0
+    0.350/0.100       390                0
+    0.300/0.050       486                0      <- under every floor; no licence
+                                                   could authorise it anyway
+
+`NO_BARREL_AT_ANY_DIAMETER_ON_THIS_LADDER`.  There is no deficit to buy,
+because there is no diameter at which the site exists.
+
+## 4. AND THE WHOLE OF IT IS **TWO NAMED TRACKS ON TWO LAYERS**
+
+The new blame is per TERM of `Field._via_grid` — six copper layers and the
+hole-to-hole rule, each rebuilt alone over the fragment's own cells.  Of
+**1885** cells at 0.050 mm:
+
+    In1.Cu 1697    In4.Cu 1697    hole-to-hole 1885    In2.Cu 920
+    F.Cu    601    B.Cu    452    **In3.Cu 111**
+
+`In3.Cu` ALONE refuses **55** cells that every other term admits; `F.Cu` ALONE
+refuses 5.  Named:
+
+  * **`/09_COMMUNITY_HEADER/TCA4307_READY`, ONE track on `In3.Cu`** — all 55
+    cells, bounding box 49.2-50.0 x 78.0-78.9 mm;
+  * `/01_POWER_TREE/BAT_PROTECTED_P`, one track on `F.Cu` — the other 5.
+
+**D-641 asked whether `U3` is the thing that moves.  It is not.**  Sixty legal
+0.500/0.200 barrel sites inside `U3.12`'s own fragment are held by two tracks,
+and one of them is on the I2C buffer's own READY net — an ordinary signal, on a
+routable inner layer, that the rip-up-and-relay machinery D-638/D-639 built
+already knows how to move.  `BAT_PROTECTED_P` is protected copper and is not
+offered.
+
+## 5. THE RE-BOND IS REFUSED AS A **CORRIDOR**, NOT AS A VIA SITE
+
+`maze3d`'s own doctrine names this pad: *"a pad it reports `NO_VIA_SITE` for —
+`U3.12` on the expander, 4.213 mm from the nearest ground pad still on the
+plane — has no barrel to plant and the whole run is refused for a bond a couple
+of millimetres of track would restore"*, and `--join-residual` exists for it.
+It had never been read.  It **does** run, and it refuses differently:
+
+    repair rung                       U3.12 src / dst escapes   verdict
+    0.300 mm, grid 0.100 mm                   2 / 77            NO_PATH
+    0.200 mm, grid 0.100 mm                   8 / 92            NO_PATH
+    0.200 mm, grid 0.050 mm                   5 / 55            NO_PATH
+
+The pad ESCAPES — at three width/pitch rungs, and more widely as the width
+drops.  The board offers nowhere to take it.  (The 0.200 mm rung is licensed:
+`BOARD_TRACK_MIN` is 0.150 mm and `GND` carries no `.kicad_dru` `track_width`
+floor, and 0.200 mm of outer copper carries 0.742 A against the 0.150 mm /
+0.602 A pour neck it would replace.)  In passing, `U9.16` — D-640's ranked
+land — changes verdict with the width: `NO_LEGAL_ESCAPE` at 0.300 mm becomes
+`NO_VIA_SITE` at 0.200 mm.
+
+## 6. THE LATERAL JUMPER IS WITHHELD FROM THE REPAIR, AND THIS FRAGMENT IS THE ONLY ONE THAT COULD TAKE ONE
+
+`route_maze_batch.child(..., use_search_levers=False)` withholds
+`--join-islands` from the plane repair, on the stated ground that *"a lateral
+jumper across a pour cut somewhere else on the board is a second transaction
+wearing a repair's name."*  That reading is RIGHT for a pre-existing orphan and
+WRONG for the fragment the run itself just made — the two cases are not
+distinguished today.
+
+Asked directly on the post-route board, `join_islands` reports:
+
+    J3.A12/B1   NO_ANCHOR   no cell of this cluster's filled copper admits a
+    MK1.4       NO_ANCHOR     0.300 mm track centred 0.250 mm inside it
+    U9.16       NO_ANCHOR
+    U3.12       NO_PATH     <- the ONE cluster whose copper could hold a jumper
+
+## 7. AND NONE OF IT WOULD HAVE BEEN ENOUGH — THE THIRD WALL IS A **CONTRACT**
+
+`PP3` prices a fragment `BONDED` only where a **BARREL** of its own net lands
+inside a filled zone on a RESERVED INNER PLANE (`price_fragment` iterates
+`frag["vias"]` and nothing else), so **a jumper is not a bond however well it
+routes**.  And `PP2`'s D-628 ampacity clause admits a split only when the net
+carries a published rail current.  `.kicad_dru` section 5 prices nine classes —
+`ACC_3V3 0.76`, `ACC_5V 0.70`, `BAT_MAIN 3.125`, `LED_BOOST 0.09`,
+`NFC_5V_PA_PENDING 0.50`, `P3V3 1.00`, `SPK_OUT 0.41`, `SYS_MAIN 2.19`,
+`VBUS_CHG 0.50` — and **none of them is `GND`**.  The candidate reports
+`published_amps: null`; `decide()` returns `NET_CARRIES_NO_PUBLISHED_CURRENT`
+the moment `PP3` stops saying `STRANDED`.  The clause says so in its own words:
+*"no `GND` split can be admitted by this clause ... until it is answered `PP2`
+should keep saying no."*
+
+**So every split of a multi-pad `GND` island on this board is refused
+UNCONDITIONALLY, whatever the router does, and the only promotable `EXT_SDA`
+route is one that does not split island 31 at all — which is section 1.**
+
+That is not a criticism of the clause; it is the clause working.  It IS the
+board's largest single blocker, and it should be answered in its own iteration
+and **never in the same breath as promoting copper it would admit** — which is
+exactly the discipline D-625 applied when it recorded the `PP2`/`PP3` tension
+rather than resolving it.
+
+## 8. THREE MORE OPEN EDGES, TRIAGED IN FORTY SECONDS EACH
+
+D-641 ranked *"finish the corridor sweep"* third and left ten nets never
+started; the four it did start cost 3600 s each and timed out.  Before any
+corridor screen is spent, the cheapest question is the one that FOUND
+`EXT_SDA`: does the plain gate route this net at all, with all fifty tubes
+reserved and the repair armed?  Three nets, ~40 s each
+(`evidence/d642-open-edge-triage.json`), and they do not refuse alike:
+
+  * `/SPI_B_SCK` — **`NO_LEGAL_ESCAPE_DST`**: `U9.30: NO LEGAL ESCAPE at
+    >= 0.200 mm; blocked by U9.31 (x21), U9.29 (x17), track (x9), U9.33 (x8)`.
+    A LAND question on the same package as D-640's `U9.16`, **not a corridor
+    question** — the corridor screen would have spent an hour learning that.
+  * `/WAKE_INT_N` — `NO_PATH`, src_escapes 34, dst_escapes 7.
+  * `/ACC_PWR_EN` — `NO_PATH`, src_escapes 19, dst_escapes 7.
+
+Both ends LAUNCH on the latter two, so those are corridor questions and belong
+to the corridor screen.  **The sweep now has a triage that says which screen
+each net actually needs.**
+
+## NEXT, IN ORDER OF LEVERAGE
+
+  1. **`PP2`'s `GND` RULE IS THE BOARD'S LARGEST SINGLE BLOCKER.**  D-584 named
+     the family it holds — six nets and ~18 retained edges including the whole
+     internal I2C bus — and this decision proves the family cannot be freed by
+     any router move.  The question the clause defers is *"how much current
+     does a return-plane fragment carry?"*  The conservative answer that needs
+     no model and no new table is the board's own **worst published rail
+     current** (`BAT_MAIN` 3.125 A): a return fragment carries whatever the
+     rails deliver into it.  Build it, control it the way D-628 controlled its
+     own clause, and run it against a board it would admit **before** any such
+     board exists.
+  2. **RELAY THE `In3.Cu` `/09_COMMUNITY_HEADER/TCA4307_READY` TRACK.**  It is
+     one ordinary signal on a routable inner layer, and it alone holds 55 legal
+     0.500/0.200 barrel sites inside `U3.12`'s fragment.  Price it with
+     `screen_segment_evict.py`, relay it with `--detour-spec`, and re-run
+     `screen_bond_site_deficit.py U3.12 --fragment-board` — the same instrument,
+     the same number, so the fix is CHECKABLE.
+  3. **`/SPI_B_SCK` IS A LAND, NOT A CORRIDOR** — `U9.30` in the same
+     fine-pitch pocket as `U9.16`.  Run `screen_escape_class.py` and
+     `screen_pad_escape_relief.py` on it, not the corridor screen.
+  4. **TRIAGE THE REMAINING SEVEN UNSWEPT NETS THE SAME WAY** (~40 s each)
+     before spending another 3600 s corridor screen on any of them.
+  5. **`BQ25185_SYS C26.2`'s STITCH POCKET** and **`GND J3.A12/B1` AT A CHEAPER
+     SETTING**, carried unchanged from D-641.
+  6. **`/I2S_LRCLK`'s edge rate and `/NFC_SUPPLY`'s per-net current** remain the
+     per-part electrical ledger's two unlocked edges, carried unchanged.
+
+No owner decision is OPEN.  D-618's `J3` question remains RECORDED.  PM-3 keeps
+`U3.12` as an open finding but **its cause is renamed**: not a package that
+must move, but one inner-layer signal track and one contract clause.
+
+
 # D-641 · 2026-09-06 · Demo — the CUT SET is the thing that gets refused: the retry is BUILT, spent on four transactions, and every one of them now refuses for a NAMED and MEASURED reason instead of an unasked question
 
     authority  f496d2f39c0827248a47ab7d47efa4322f078b68d2da1d91ae6585d97bf8f875

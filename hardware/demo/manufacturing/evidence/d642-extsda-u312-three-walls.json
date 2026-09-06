@@ -1,0 +1,1375 @@
+{
+ "barrel_on_this_routes_own_fragment": {
+  "screen_bond_ladder": {
+   "cells": [
+    {
+     "grid_mm": 0.1,
+     "island_sites": 5,
+     "nearest_island_site_mm": 2.639,
+     "promotable": true,
+     "reason": "NO_SITE_ON_THIS_PAD_S_SIDE_OF_THE_CUT",
+     "sites_in_fragment": 0,
+     "via_mm": [
+      0.6,
+      0.3
+     ]
+    },
+    {
+     "grid_mm": 0.1,
+     "island_sites": 20,
+     "nearest_island_site_mm": 2.59,
+     "promotable": true,
+     "reason": "NO_SITE_ON_THIS_PAD_S_SIDE_OF_THE_CUT",
+     "sites_in_fragment": 0,
+     "via_mm": [
+      0.5,
+      0.25
+     ]
+    },
+    {
+     "grid_mm": 0.1,
+     "island_sites": 34,
+     "nearest_island_site_mm": 2.502,
+     "promotable": false,
+     "reason": "NO_SITE_ON_THIS_PAD_S_SIDE_OF_THE_CUT",
+     "sites_in_fragment": 0,
+     "via_mm": [
+      0.45,
+      0.2
+     ]
+    },
+    {
+     "grid_mm": 0.0667,
+     "island_sites": 29,
+     "nearest_island_site_mm": 2.573,
+     "promotable": true,
+     "reason": "NO_SITE_ON_THIS_PAD_S_SIDE_OF_THE_CUT",
+     "sites_in_fragment": 0,
+     "via_mm": [
+      0.6,
+      0.3
+     ]
+    },
+    {
+     "grid_mm": 0.0667,
+     "island_sites": 66,
+     "nearest_island_site_mm": 2.482,
+     "promotable": true,
+     "reason": "NO_SITE_ON_THIS_PAD_S_SIDE_OF_THE_CUT",
+     "sites_in_fragment": 0,
+     "via_mm": [
+      0.5,
+      0.25
+     ]
+    },
+    {
+     "grid_mm": 0.0667,
+     "island_sites": 98,
+     "nearest_island_site_mm": 2.482,
+     "promotable": false,
+     "reason": "NO_SITE_ON_THIS_PAD_S_SIDE_OF_THE_CUT",
+     "sites_in_fragment": 0,
+     "via_mm": [
+      0.45,
+      0.2
+     ]
+    },
+    {
+     "grid_mm": 0.05,
+     "island_sites": 62,
+     "nearest_island_site_mm": 2.571,
+     "promotable": true,
+     "reason": "NO_SITE_ON_THIS_PAD_S_SIDE_OF_THE_CUT",
+     "sites_in_fragment": 0,
+     "via_mm": [
+      0.6,
+      0.3
+     ]
+    },
+    {
+     "grid_mm": 0.05,
+     "island_sites": 138,
+     "nearest_island_site_mm": 2.459,
+     "promotable": true,
+     "reason": "NO_SITE_ON_THIS_PAD_S_SIDE_OF_THE_CUT",
+     "sites_in_fragment": 0,
+     "via_mm": [
+      0.5,
+      0.25
+     ]
+    },
+    {
+     "grid_mm": 0.05,
+     "island_sites": 215,
+     "nearest_island_site_mm": 2.459,
+     "promotable": false,
+     "reason": "NO_SITE_ON_THIS_PAD_S_SIDE_OF_THE_CUT",
+     "sites_in_fragment": 0,
+     "via_mm": [
+      0.45,
+      0.2
+     ]
+    },
+    {
+     "grid_mm": 0.0333,
+     "island_sites": 183,
+     "nearest_island_site_mm": 2.532,
+     "promotable": true,
+     "reason": "NO_SITE_ON_THIS_PAD_S_SIDE_OF_THE_CUT",
+     "sites_in_fragment": 0,
+     "via_mm": [
+      0.6,
+      0.3
+     ]
+    },
+    {
+     "grid_mm": 0.0333,
+     "island_sites": 389,
+     "nearest_island_site_mm": 2.457,
+     "promotable": true,
+     "reason": "NO_SITE_ON_THIS_PAD_S_SIDE_OF_THE_CUT",
+     "sites_in_fragment": 0,
+     "via_mm": [
+      0.5,
+      0.25
+     ]
+    },
+    {
+     "grid_mm": 0.0333,
+     "island_sites": 550,
+     "nearest_island_site_mm": 2.412,
+     "promotable": false,
+     "reason": "NO_SITE_ON_THIS_PAD_S_SIDE_OF_THE_CUT",
+     "sites_in_fragment": 0,
+     "via_mm": [
+      0.45,
+      0.2
+     ]
+    },
+    {
+     "grid_mm": 0.025,
+     "island_sites": 387,
+     "nearest_island_site_mm": 2.515,
+     "promotable": true,
+     "reason": "NO_SITE_ON_THIS_PAD_S_SIDE_OF_THE_CUT",
+     "sites_in_fragment": 0,
+     "via_mm": [
+      0.6,
+      0.3
+     ]
+    },
+    {
+     "grid_mm": 0.025,
+     "island_sites": 772,
+     "nearest_island_site_mm": 2.425,
+     "promotable": true,
+     "reason": "NO_SITE_ON_THIS_PAD_S_SIDE_OF_THE_CUT",
+     "sites_in_fragment": 0,
+     "via_mm": [
+      0.5,
+      0.25
+     ]
+    },
+    {
+     "grid_mm": 0.025,
+     "island_sites": 1071,
+     "nearest_island_site_mm": 2.391,
+     "promotable": false,
+     "reason": "NO_SITE_ON_THIS_PAD_S_SIDE_OF_THE_CUT",
+     "sites_in_fragment": 0,
+     "via_mm": [
+      0.45,
+      0.2
+     ]
+    },
+    {
+     "grid_mm": 0.02,
+     "ran": false,
+     "reason": "OVER_CELL_BUDGET"
+    }
+   ],
+   "verdict": "NO_BOND_IN_BUDGET"
+  },
+  "screen_bond_site_deficit": {
+   "blame": {
+    "at_dia_nm": 500000,
+    "at_drill_nm": 200000,
+    "fragment": {
+     "binding": "I3",
+     "cells_each_term_admits": {
+      "B": 452,
+      "F": 601,
+      "I1": 1697,
+      "I2": 920,
+      "I3": 111,
+      "I4": 1697,
+      "hole_to_hole": 1885
+     },
+     "cells_refused_by_this_term_alone": {
+      "B": 0,
+      "F": 5,
+      "I1": 0,
+      "I2": 0,
+      "I3": 55,
+      "I4": 0,
+      "hole_to_hole": 0
+     },
+     "fragment_cells": 1885,
+     "sole_blame_objects": {
+      "F": {
+       "bbox_mm": [
+        52.85,
+        76.05,
+        52.95,
+        76.15
+       ],
+       "blockers": [
+        {
+         "cells": 5,
+         "object": "/01_POWER_TREE/BAT_PROTECTED_P|track"
+        }
+       ],
+       "cells": 5
+      },
+      "I3": {
+       "bbox_mm": [
+        49.2,
+        78.0,
+        50.0,
+        78.9
+       ],
+       "blockers": [
+        {
+         "cells": 55,
+         "object": "/09_COMMUNITY_HEADER/TCA4307_READY|track"
+        }
+       ],
+       "cells": 55
+      }
+     }
+    }
+   },
+   "floor_mm": 0.5,
+   "fragment_mm2": 4.724,
+   "headroom_any_mm": null,
+   "headroom_promotable_mm": null,
+   "island_mm2": 10.282,
+   "ladder_floor": {
+    "dia_nm": 250000,
+    "why": "a 0.250 mm barrel cannot carry a hole and the 0.125 mm annular ring at once"
+   },
+   "rungs": [
+    {
+     "fragment_site_xy_mm": null,
+     "island_sites": 95,
+     "lands_on_reserved_plane": true,
+     "nearest_site_mm": 2.571,
+     "nearest_site_xy_mm": [
+      52.85,
+      76.65
+     ],
+     "promotable": true,
+     "reason": "NO_SITE_ON_THIS_PAD_S_SIDE_OF_THE_CUT",
+     "seconds": 3.4,
+     "sites_in_fragment": 0,
+     "via_dia_nm": 600000,
+     "via_drill_nm": 200000,
+     "via_mm": [
+      0.6,
+      0.2
+     ]
+    },
+    {
+     "fragment_site_xy_mm": null,
+     "island_sites": 166,
+     "lands_on_reserved_plane": true,
+     "nearest_site_mm": 2.459,
+     "nearest_site_xy_mm": [
+      52.9,
+      76.55
+     ],
+     "promotable": true,
+     "reason": "NO_SITE_ON_THIS_PAD_S_SIDE_OF_THE_CUT",
+     "seconds": 4.1,
+     "sites_in_fragment": 0,
+     "via_dia_nm": 500000,
+     "via_drill_nm": 200000,
+     "via_mm": [
+      0.5,
+      0.2
+     ]
+    },
+    {
+     "fragment_site_xy_mm": null,
+     "island_sites": 215,
+     "lands_on_reserved_plane": true,
+     "nearest_site_mm": 2.459,
+     "nearest_site_xy_mm": [
+      52.9,
+      76.55
+     ],
+     "promotable": false,
+     "reason": "NO_SITE_ON_THIS_PAD_S_SIDE_OF_THE_CUT",
+     "seconds": 2.7,
+     "sites_in_fragment": 0,
+     "via_dia_nm": 450000,
+     "via_drill_nm": 200000,
+     "via_mm": [
+      0.45,
+      0.2
+     ]
+    },
+    {
+     "fragment_site_xy_mm": null,
+     "island_sites": 279,
+     "lands_on_reserved_plane": true,
+     "nearest_site_mm": 2.391,
+     "nearest_site_xy_mm": [
+      52.95,
+      76.5
+     ],
+     "promotable": false,
+     "reason": "NO_SITE_ON_THIS_PAD_S_SIDE_OF_THE_CUT",
+     "seconds": 2.4,
+     "sites_in_fragment": 0,
+     "via_dia_nm": 400000,
+     "via_drill_nm": 150000,
+     "via_mm": [
+      0.4,
+      0.15
+     ]
+    },
+    {
+     "fragment_site_xy_mm": null,
+     "island_sites": 390,
+     "lands_on_reserved_plane": true,
+     "nearest_site_mm": 2.391,
+     "nearest_site_xy_mm": [
+      52.95,
+      76.5
+     ],
+     "promotable": false,
+     "reason": "NO_SITE_ON_THIS_PAD_S_SIDE_OF_THE_CUT",
+     "seconds": 2.2,
+     "sites_in_fragment": 0,
+     "via_dia_nm": 350000,
+     "via_drill_nm": 100000,
+     "via_mm": [
+      0.35,
+      0.1
+     ]
+    },
+    {
+     "fragment_site_xy_mm": null,
+     "island_sites": 486,
+     "lands_on_reserved_plane": true,
+     "nearest_site_mm": 2.323,
+     "nearest_site_xy_mm": [
+      53.0,
+      76.45
+     ],
+     "promotable": false,
+     "reason": "NO_SITE_ON_THIS_PAD_S_SIDE_OF_THE_CUT",
+     "seconds": 2.1,
+     "sites_in_fragment": 0,
+     "via_dia_nm": 300000,
+     "via_drill_nm": 50000,
+     "via_mm": [
+      0.3,
+      0.05
+     ]
+    }
+   ],
+   "unit": "fragment",
+   "verdict": "NO_BARREL_AT_ANY_DIAMETER_ON_THIS_LADDER"
+  }
+ },
+ "board": "/home/aqroot8/aqroot-demo/hardware/demo/kicad/aqroot-demo/aqroot-Beta-v2.kicad_pcb",
+ "board_sha256": "f496d2f39c0827248a47ab7d47efa4322f078b68d2da1d91ae6585d97bf8f875",
+ "coverage": [
+  "The 66667 nm rung of the guarded ladder is NOT taken: 50000 already refuses and a COARSER lattice carries a LARGER guard band, so it could only refuse too.  Every FINER rung IS taken.",
+  "screen_bond_site_deficit's ladder ends at 0.250 mm: below that a barrel cannot carry a hole and the 0.125 mm annular ring at once, and the report names that floor rather than printing a zero-drill rung as a measurement.",
+  "The lateral jumper is measured at the netclass 0.300 mm rung on the post-route board.  A --floors rung at 0.200 mm / 50000 nm was started and is NOT included; nothing in finding 6 depends on it, because PP3 does not price a jumper as a bond at any width."
+ ],
+ "edge": {
+  "dst": [
+   "J8.3"
+  ],
+  "note": "the Qwiic / STEMMA QT connector SDA contact -- a Demo-REQUIRED feature (AQROOT_DEMO_SCOPE.md)",
+  "src": [
+   "TP45.1",
+   "J5.4",
+   "R48.2",
+   "D2.4"
+  ]
+ },
+ "findings": [
+  "1. THE GUARDED CORRIDOR IS A WALL AT EVERY PITCH, AND NOW IT IS MEASURED.  D-641's prose says the single-tube guard refuses at 100000, 50000 and 25000 nm; its evidence file records that arm at 100000 ONLY -- the 50000 and 25000 arms in it carry the FIFTY-tube guard.  All four rungs are now taken with the C4.2<->U3.12 tube ALONE -- 100000 (D-641), 50000, 33333, 25000 -- and every one is NO_PATH.  33333 nm is exactly the rung at which D-625's BTN_DOWN_N flipped from NO_PATH to ROUTES under the SAME tube, so `a refusal under a reservation is a refusal at a pitch` is TRUE for one net and FALSE for the other, and only the ladder tells them apart.",
+  "2. THE BARREL ROAD IS NOT NARROW, IT IS EMPTY.  On the fragment THIS route creates, screen_bond_ladder's sites_in_fragment is 0 in all fifteen (pitch x barrel) cells, and the new screen_bond_site_deficit.py continues the DIAMETER ladder past every floor this board publishes: 0.600/0.200, 0.500/0.200, 0.450/0.200, 0.400/0.150, 0.350/0.100 and 0.300/0.050 all return ZERO sites in the fragment while the same rungs hold 95, 166, 215, 279, 390 and 486 in the ISLAND.  The verdict is NO_BARREL_AT_ANY_DIAMETER_ON_THIS_LADDER: no licence can buy this, because there is no diameter at which it exists.",
+  "3. AND THE WHOLE OF IT IS TWO NAMED TRACKS ON TWO LAYERS.  Of the fragment's 1885 lattice cells at 0.050 mm, In1.Cu and In4.Cu admit 1697 each, hole-to-hole admits all 1885, In2.Cu 920, F.Cu 601, B.Cu 452 -- and In3.Cu just 111.  In3.Cu ALONE refuses 55 cells every other term admits and F.Cu ALONE refuses 5, and the objects are ONE /09_COMMUNITY_HEADER/TCA4307_READY track on In3.Cu (55 cells, 49.2-50.0 x 78.0-78.9 mm) and ONE /01_POWER_TREE/BAT_PROTECTED_P track on F.Cu (5 cells).  D-641 asked whether U3 is the thing that moves.  It is not: SIXTY legal 0.500/0.200 barrel sites in U3.12's own fragment are held by two tracks, one of them on the I2C buffer's own READY net.",
+  "4. THE RE-BOND IS REFUSED AS A CORRIDOR, NOT AS A VIA SITE.  The plane repair's residual join -- the fallback maze3d's own doctrine names U3.12 for by name -- DOES run, and reports NO_PATH rather than NO_VIA_SITE: src_escapes 2 at 0.300 mm / 100000 nm, 8 at 0.200 mm / 100000 nm and 5 at 0.200 mm / 50000 nm, against 77, 92 and 55 destinations.  The pad escapes; the board offers nowhere to take it.",
+  "5. THE LATERAL JUMPER WAS NEVER OFFERED TO THE REPAIR, AND U3.12'S FRAGMENT IS THE ONLY ONE OF THE FOUR ORPHAN GND CLUSTERS THAT COULD TAKE ONE.  route_maze_batch withholds --join-islands from the repair child (`a lateral jumper across a pour cut somewhere else on the board is a second transaction wearing a repair's name`) -- a reading that is right for a PRE-EXISTING orphan and wrong for the fragment the run itself made.  Asked directly on the post-route board, join_islands reports J3.A12/B1, MK1.4 and U9.16 NO_ANCHOR (`no cell of this cluster's filled copper admits a 0.300 mm track centred 0.250 mm inside it`) and U3.12 NO_PATH -- it is the one cluster whose copper could hold a jumper at all.",
+  "6. AND NONE OF IT WOULD HAVE BEEN ENOUGH.  PP3 prices a fragment BONDED only where a BARREL of its own net lands inside a filled zone on a RESERVED INNER PLANE, so a jumper is not a bond however well it routes; and PP2 admits a split only when the net carries a published rail current, which GND -- a return plane -- does not (published_amps: null; .kicad_dru section 5 prices nine classes and none of them is GND).  EVERY split of a multi-pad GND island on this board is therefore refused UNCONDITIONALLY, whatever the router does.  The Qwiic SDA edge has THREE independent walls and the third is a CONTRACT.  The only promotable EXT_SDA route is one that does not split island 31 at all -- which is finding 1."
+ ],
+ "guarded_pitch_ladder": [
+  {
+   "arm": "island-31 tube ALONE, g100000",
+   "command": "--grid 100000 --guard <C4.2<->U3.12 tube ALONE>",
+   "route_ok": false,
+   "route_reason": "NO_PATH",
+   "source": "D-641 evidence/d641-extsda-qwiic-price.json, not re-run here"
+  },
+  {
+   "arm": "island-31 tube ALONE, g50000",
+   "authoritative_unchanged": true,
+   "candidate_sha256": "f496d2f39c0827248a47ab7d47efa4322f078b68d2da1d91ae6585d97bf8f875",
+   "command": "--grid 50000 --guard <C4.2<->U3.12 tube ALONE>",
+   "connectivity": {
+    "nets_improved": [],
+    "nets_regressed": [],
+    "open_retained_nets_after": 21,
+    "open_retained_nets_before": 21,
+    "retained_open_edges_after": 43,
+    "retained_open_edges_before": 43
+   },
+   "failed_nets": [
+    "/09_COMMUNITY_HEADER/EXT_SDA"
+   ],
+   "joins": [
+    {
+     "dst_escapes": 4,
+     "ok": false,
+     "reason": "NO_PATH",
+     "src_escapes": 34,
+     "why": "no all-layer corridor at 0.200 mm between the islands"
+    }
+   ],
+   "mm": null,
+   "promotion_candidate": false,
+   "refused_clauses": [
+    "board_changed",
+    "board_improved"
+   ],
+   "route_ok": false,
+   "route_reason": "NO_PATH",
+   "routed_nets": [],
+   "vias": null
+  },
+  {
+   "arm": "island-31 tube ALONE, g33333",
+   "authoritative_unchanged": true,
+   "candidate_sha256": "f496d2f39c0827248a47ab7d47efa4322f078b68d2da1d91ae6585d97bf8f875",
+   "command": "--grid 33333 --guard <C4.2<->U3.12 tube ALONE>",
+   "connectivity": {
+    "nets_improved": [],
+    "nets_regressed": [],
+    "open_retained_nets_after": 21,
+    "open_retained_nets_before": 21,
+    "retained_open_edges_after": 43,
+    "retained_open_edges_before": 43
+   },
+   "failed_nets": [
+    "/09_COMMUNITY_HEADER/EXT_SDA"
+   ],
+   "joins": [
+    {
+     "dst_escapes": 1,
+     "ok": false,
+     "reason": "NO_PATH",
+     "src_escapes": 26,
+     "why": "no all-layer corridor at 0.200 mm between the islands"
+    }
+   ],
+   "mm": null,
+   "promotion_candidate": false,
+   "refused_clauses": [
+    "board_changed",
+    "board_improved"
+   ],
+   "route_ok": false,
+   "route_reason": "NO_PATH",
+   "routed_nets": [],
+   "vias": null
+  },
+  {
+   "arm": "island-31 tube ALONE, g25000",
+   "authoritative_unchanged": true,
+   "candidate_sha256": "f496d2f39c0827248a47ab7d47efa4322f078b68d2da1d91ae6585d97bf8f875",
+   "command": "--grid 25000 --guard <C4.2<->U3.12 tube ALONE>",
+   "connectivity": {
+    "nets_improved": [],
+    "nets_regressed": [],
+    "open_retained_nets_after": 21,
+    "open_retained_nets_before": 21,
+    "retained_open_edges_after": 43,
+    "retained_open_edges_before": 43
+   },
+   "failed_nets": [
+    "/09_COMMUNITY_HEADER/EXT_SDA"
+   ],
+   "joins": [
+    {
+     "dst_escapes": 3,
+     "ok": false,
+     "reason": "NO_PATH",
+     "src_escapes": 33,
+     "why": "no all-layer corridor at 0.200 mm between the islands"
+    }
+   ],
+   "mm": null,
+   "promotion_candidate": false,
+   "refused_clauses": [
+    "board_changed",
+    "board_improved"
+   ],
+   "route_ok": false,
+   "route_reason": "NO_PATH",
+   "routed_nets": [],
+   "vias": null
+  }
+ ],
+ "lateral_jumper": {
+  "board": "/tmp/d642/wk-unguarded/aqroot-Beta-v2.kicad_pcb",
+  "board_sha256": "8c66f90d3fcfe973a12fe0b23ab790a9e889a350d9ae9ab162bbd7020e8e39f5",
+  "grid": 100000,
+  "method": "read-only; maze3d.join_islands with emit=False, the same Field, .kicad_dru overlay and pour-bond guard a gated run builds",
+  "rungs": [
+   {
+    "body": [
+     "C1.1",
+     "C10.2",
+     "C11.2",
+     "C12.1"
+    ],
+    "clusters": 5,
+    "contract": {
+     "via_dia": 600000,
+     "via_drill": 300000,
+     "width": 300000
+    },
+    "failures": [
+     {
+      "cluster": [
+       "J3.A12",
+       "J3.B1"
+      ],
+      "pads": 2,
+      "reason": "NO_ANCHOR",
+      "why": "no cell of this cluster's filled copper admits a 0.300 mm track centred 0.250 mm inside it"
+     },
+     {
+      "cluster": [
+       "MK1.4"
+      ],
+      "pads": 1,
+      "reason": "NO_ANCHOR",
+      "why": "no cell of this cluster's filled copper admits a 0.300 mm track centred 0.250 mm inside it"
+     },
+     {
+      "cluster": [
+       "U3.12"
+      ],
+      "pads": 1,
+      "reason": "NO_PATH",
+      "tries": 1,
+      "why": "no all-layer corridor at 0.300 mm from this island to any other cluster of the net"
+     },
+     {
+      "cluster": [
+       "U9.16"
+      ],
+      "pads": 1,
+      "reason": "NO_ANCHOR",
+      "why": "no cell of this cluster's filled copper admits a 0.300 mm track centred 0.250 mm inside it"
+     }
+    ],
+    "joined": 0,
+    "joins": [],
+    "mm": 0,
+    "net": "GND",
+    "ok": false,
+    "rung": "netclass contract",
+    "seconds": 163.7,
+    "unjoined": 4,
+    "vias": 0
+   }
+  ]
+ },
+ "method": "route_maze_batch.py full-board gate runs, never --promote, plus read-only screens; every gate artifact reports authoritative_unchanged: true and the authoritative board sha256 is unmoved",
+ "net": "/09_COMMUNITY_HEADER/EXT_SDA",
+ "pour_partition_on_the_unguarded_candidate": {
+  "admitted": [],
+  "controls": {
+   "ok": true,
+   "probes": [
+    {
+     "behaved": true,
+     "control": "min_thickness_sliver_refused",
+     "expected": false,
+     "got": false,
+     "priced_amps": 0.742,
+     "required_amps": 1.0,
+     "verdict": "BONDED",
+     "why": "BOND_UNDER_PRICED"
+    },
+    {
+     "behaved": true,
+     "control": "one_class_width_track_refused",
+     "expected": false,
+     "got": false,
+     "priced_amps": 0.995,
+     "required_amps": 1.0,
+     "verdict": "BONDED",
+     "why": "BOND_UNDER_PRICED"
+    },
+    {
+     "behaved": true,
+     "control": "four_barrel_bond_admitted",
+     "expected": true,
+     "got": true,
+     "priced_amps": 9.244,
+     "required_amps": 1.0,
+     "verdict": "BONDED",
+     "why": "BOND_PRICED_AT_OR_ABOVE_THE_PUBLISHED_RAIL_CURRENT"
+    },
+    {
+     "behaved": true,
+     "control": "stranded_refused_however_priced",
+     "expected": false,
+     "got": false,
+     "priced_amps": 9.244,
+     "required_amps": 1.0,
+     "verdict": "STRANDED",
+     "why": "PP3_NOT_BONDED"
+    },
+    {
+     "behaved": true,
+     "control": "unpriced_net_refused",
+     "expected": false,
+     "got": false,
+     "priced_amps": 9.244,
+     "required_amps": null,
+     "verdict": "BONDED",
+     "why": "NET_CARRIES_NO_PUBLISHED_CURRENT"
+    },
+    {
+     "behaved": true,
+     "control": "bar_located_one_ppm_below",
+     "expected": false,
+     "got": false,
+     "priced_amps": 0.999999,
+     "required_amps": 1.0,
+     "verdict": "BONDED",
+     "why": "BOND_UNDER_PRICED"
+    },
+    {
+     "behaved": true,
+     "control": "bar_located_at_equality",
+     "expected": true,
+     "got": true,
+     "priced_amps": 1.0,
+     "required_amps": 1.0,
+     "verdict": "BONDED",
+     "why": "BOND_PRICED_AT_OR_ABOVE_THE_PUBLISHED_RAIL_CURRENT"
+    }
+   ],
+   "reference_amps": {
+    "four_0p400mm_barrels": 9.244,
+    "outer_track_0p300mm": 0.995,
+    "zone_min_thickness_0p200mm": 0.742
+   }
+  },
+  "islands": {
+   "+3V3|F|8c612136-d173-58bf-87cf-c0b97bedd2e0": [
+    31,
+    33
+   ],
+   "/01_POWER_TREE/BQ25185_SYS|B|4ad6fd49-a7ee-5f03-a8e4-f021f24e1091": [
+    1,
+    1
+   ],
+   "/01_POWER_TREE/BQ25185_SYS|B|da11f1b0-6501-5c41-b2b6-d6199a789ea9": [
+    7,
+    7
+   ],
+   "GND|B|38685722-44ee-566f-b52b-89a56220a9e0": [
+    57,
+    58
+   ]
+  },
+  "ok": false,
+  "priced": [
+   {
+    "admit": false,
+    "body": {
+     "area_mm2": 4.79,
+     "pads": [
+      "C4.2"
+     ],
+     "post_island": 31
+    },
+    "fragments": [
+     {
+      "admit": false,
+      "area_mm2": 4.724,
+      "margin_x": null,
+      "pads": [
+       "U3.12"
+      ],
+      "post_island": 33,
+      "pp3_verdict": "STRANDED",
+      "price": {
+       "barrels": [],
+       "barrels_into_plane": 0,
+       "barrels_without_drill": [],
+       "bond_amps_parallel": 0.0,
+       "bottleneck": null,
+       "dT_K": 10.0,
+       "internal": [
+        {
+         "amps": null,
+         "mm": null,
+         "mohm": null,
+         "pad": "U3.12",
+         "width_mm": null
+        }
+       ],
+       "internal_min_amps": null,
+       "internal_min_width_mm": null,
+       "priced_amps": null,
+       "unmeasurable_pads": [
+        "U3.12"
+       ]
+      },
+      "required_amps": null,
+      "severed_neck": {
+       "amps": 0.602,
+       "note": "the narrowest place on the widest PRE path from the fragment's pads to the body's; under-stated by a geodesic that reaches its own search window, which is why it is published and not charged",
+       "probes": [
+        {
+         "body_pad": "C4.2",
+         "frag_pad": "U3.12",
+         "mm": 5.471,
+         "width_mm": 0.15
+        }
+       ],
+       "width_mm": 0.15
+      },
+      "why": "PP3_NOT_BONDED"
+     }
+    ],
+    "layer": "B.Cu",
+    "net": "GND",
+    "netclass": "GND",
+    "pour": "GND|B|38685722-44ee-566f-b52b-89a56220a9e0",
+    "pre_area_mm2": 10.282,
+    "pre_island": 31,
+    "published_amps": null,
+    "published_figures": null
+   }
+  ],
+  "published_rail_currents": {
+   "ACC_3V3": 0.76,
+   "ACC_5V": 0.7,
+   "BAT_MAIN": 3.125,
+   "LED_BOOST": 0.09,
+   "NFC_5V_PA_PENDING": 0.5,
+   "P3V3": 1.0,
+   "SPK_OUT": 0.41,
+   "SYS_MAIN": 2.19,
+   "VBUS_CHG": 0.5
+  },
+  "published_table_source": {
+   "classes": [
+    "ACC_3V3",
+    "ACC_5V",
+    "BAT_MAIN",
+    "LED_BOOST",
+    "NFC_5V_PA_PENDING",
+    "P3V3",
+    "SPK_OUT",
+    "SYS_MAIN",
+    "VBUS_CHG"
+   ],
+   "found": true,
+   "sha256": "6f0c81e12b31ac488a5b4f7060c7a63673ec58b88cd288334ef3498641648f42",
+   "source": "/tmp/d642/wk-unguarded/aqroot-Beta-v2.kicad_dru"
+  },
+  "refused": [
+   {
+    "pour": "GND|B|38685722-44ee-566f-b52b-89a56220a9e0",
+    "why": [
+     "PP3_NOT_BONDED"
+    ]
+   }
+  ],
+  "splits": [
+   {
+    "layer": "B.Cu",
+    "net": "GND",
+    "parts": [
+     {
+      "area_mm2": 4.79,
+      "body": true,
+      "pads": [
+       "C4.2"
+      ],
+      "post_island": 31
+     },
+     {
+      "area_mm2": 4.724,
+      "body": false,
+      "pads": [
+       "U3.12"
+      ],
+      "post_island": 33
+     }
+    ],
+    "pour": "GND|B|38685722-44ee-566f-b52b-89a56220a9e0",
+    "pre_area_mm2": 10.282,
+    "pre_island": 31,
+    "pre_pads": 2
+   }
+  ]
+ },
+ "question": "D-641 ranked U3.12's via site the cheapest named blocker on the board and asked what has to move.  Three questions it did not ask: does the SINGLE-tube guard survive a PITCH LADDER (D-625 says a guarded NO_PATH is a ladder question before it is a wall); does a barrel exist anywhere on THIS route's own fragment at ANY diameter; and could the transaction pass even if one did",
+ "schema": 1,
+ "unguarded_transaction_and_repair": [
+  {
+   "arm": "unguarded, no repair",
+   "authoritative_unchanged": true,
+   "candidate_sha256": "8c66f90d3fcfe973a12fe0b23ab790a9e889a350d9ae9ab162bbd7020e8e39f5",
+   "command": "--grid 100000",
+   "connectivity": {
+    "nets_improved": [
+     "/09_COMMUNITY_HEADER/EXT_SDA"
+    ],
+    "nets_regressed": [
+     "GND"
+    ],
+    "open_retained_nets_after": 20,
+    "open_retained_nets_before": 21,
+    "retained_open_edges_after": 43,
+    "retained_open_edges_before": 43
+   },
+   "failed_nets": [],
+   "joins": [
+    {
+     "from": "TP45.1",
+     "layers": [
+      "F",
+      "I2",
+      "F",
+      "I2",
+      "F"
+     ],
+     "mm": 85.84309328919167,
+     "ok": true,
+     "to": "J8.3",
+     "via_xy": [
+      [
+       52.0,
+       25.1
+      ],
+      [
+       46.0,
+       61.6
+      ],
+      [
+       51.8,
+       74.1
+      ],
+      [
+       52.8,
+       76.7
+      ]
+     ],
+     "vias": 4
+    }
+   ],
+   "mm": 85.843,
+   "promotion_candidate": false,
+   "refused_clauses": [
+    "board_improved",
+    "no_regression",
+    "pour_partition"
+   ],
+   "route_ok": true,
+   "route_reason": null,
+   "routed_nets": [
+    "/09_COMMUNITY_HEADER/EXT_SDA"
+   ],
+   "vias": 4
+  },
+  {
+   "arm": "plane repair, netclass 0.300 mm, 12 mm join",
+   "authoritative_unchanged": true,
+   "candidate_sha256": "8fb4154b19b2c397d630da0d7439eee56ef63593f87323b35d9a668c76b89492",
+   "command": "--grid 100000 --repair-planes --repair-join-max-mm 12",
+   "connectivity": {
+    "nets_improved": [
+     "/09_COMMUNITY_HEADER/EXT_SDA"
+    ],
+    "nets_regressed": [
+     "GND"
+    ],
+    "open_retained_nets_after": 20,
+    "open_retained_nets_before": 21,
+    "retained_open_edges_after": 43,
+    "retained_open_edges_before": 43
+   },
+   "failed_nets": [],
+   "joins": [
+    {
+     "from": "TP45.1",
+     "layers": [
+      "F",
+      "I2",
+      "F",
+      "I2",
+      "F"
+     ],
+     "mm": 85.84309328919167,
+     "ok": true,
+     "to": "J8.3",
+     "via_xy": [
+      [
+       52.0,
+       25.1
+      ],
+      [
+       46.0,
+       61.6
+      ],
+      [
+       51.8,
+       74.1
+      ],
+      [
+       52.8,
+       76.7
+      ]
+     ],
+     "vias": 4
+    }
+   ],
+   "mm": 85.843,
+   "promotion_candidate": false,
+   "refused_clauses": [
+    "board_improved",
+    "no_regression",
+    "pour_partition"
+   ],
+   "repair_residual_join": {
+    "failures": [
+     {
+      "island": [
+       "U9.16"
+      ],
+      "pads": [
+       "U9.16"
+      ],
+      "reason": "NO_LEGAL_ESCAPE_SRC",
+      "why": "U9.16: NO LEGAL ESCAPE at >= 0.300 mm; blocked by track (x20), U9.17 (x18), U9.15 (x16), U9.14 (x4)",
+      "why_lands": [
+       "U9.16: NO LEGAL ESCAPE at >= 0.300 mm; blocked by track (x20), U9.17 (x18), U9.15 (x16), U9.14 (x4)"
+      ]
+     },
+     {
+      "island": [
+       "MK1.4"
+      ],
+      "pads": [
+       "MK1.4"
+      ],
+      "reason": "NO_LEGAL_ESCAPE_SRC",
+      "why": "MK1.4: NO LEGAL ESCAPE at >= 0.300 mm; blocked by MK1. (x67), board_edge (x5)",
+      "why_lands": [
+       "MK1.4: NO LEGAL ESCAPE at >= 0.300 mm; blocked by MK1. (x67), board_edge (x5)"
+      ]
+     },
+     {
+      "dst_escapes": 87,
+      "island": [
+       "J3.A12",
+       "J3.B1"
+      ],
+      "reason": "NO_PATH",
+      "src_escapes": 2,
+      "why": "no all-layer corridor at 0.300 mm between the islands"
+     },
+     {
+      "dst_escapes": 77,
+      "island": [
+       "U3.12"
+      ],
+      "reason": "NO_PATH",
+      "src_escapes": 2,
+      "why": "no all-layer corridor at 0.300 mm between the islands"
+     }
+    ],
+    "joined": 0,
+    "joins": [],
+    "mm": 0,
+    "net": "GND",
+    "ok": false,
+    "unreachable": 4,
+    "vias": 0
+   },
+   "repair_stitch_failures": [
+    {
+     "island": [
+      "J3.A12",
+      "J3.B1"
+     ],
+     "pad": "J3.A12",
+     "reason": "NO_VIA_SITE",
+     "why": "no legal 0.60 mm barrel within 8.0 mm of any escape"
+    },
+    {
+     "island": [
+      "MK1.4"
+     ],
+     "pad": "MK1.4",
+     "reason": "NO_LEGAL_ESCAPE",
+     "why": "MK1.4: NO LEGAL ESCAPE at >= 0.300 mm; blocked by MK1. (x67), board_edge (x5)"
+    },
+    {
+     "island": [
+      "U3.12"
+     ],
+     "pad": "U3.12",
+     "reason": "NO_VIA_SITE",
+     "why": "no legal 0.60 mm barrel within 8.0 mm of any escape"
+    },
+    {
+     "island": [
+      "U9.16"
+     ],
+     "pad": "U9.16",
+     "reason": "NO_LEGAL_ESCAPE",
+     "why": "U9.16: NO LEGAL ESCAPE at >= 0.300 mm; blocked by track (x20), U9.17 (x18), U9.15 (x16), L5.1 (x4)"
+    }
+   ],
+   "repair_stitched": 0,
+   "repair_width_nm": 300000,
+   "route_ok": true,
+   "route_reason": null,
+   "routed_nets": [
+    "/09_COMMUNITY_HEADER/EXT_SDA"
+   ],
+   "vias": 4
+  },
+  {
+   "arm": "plane repair, 0.200 mm stitch width",
+   "authoritative_unchanged": true,
+   "candidate_sha256": "26c2ab3ebd45daf719c33f795a559abf5e32e4718f2d87d23293cf50c011f20e",
+   "command": "--grid 100000 --repair-planes --stitch-width 200000 --repair-join-max-mm 12",
+   "connectivity": {
+    "nets_improved": [
+     "/09_COMMUNITY_HEADER/EXT_SDA"
+    ],
+    "nets_regressed": [
+     "GND"
+    ],
+    "open_retained_nets_after": 20,
+    "open_retained_nets_before": 21,
+    "retained_open_edges_after": 43,
+    "retained_open_edges_before": 43
+   },
+   "failed_nets": [],
+   "joins": [
+    {
+     "from": "TP45.1",
+     "layers": [
+      "F",
+      "I2",
+      "F",
+      "I2",
+      "F"
+     ],
+     "mm": 85.84309328919167,
+     "ok": true,
+     "to": "J8.3",
+     "via_xy": [
+      [
+       52.0,
+       25.1
+      ],
+      [
+       46.0,
+       61.6
+      ],
+      [
+       51.8,
+       74.1
+      ],
+      [
+       52.8,
+       76.7
+      ]
+     ],
+     "vias": 4
+    }
+   ],
+   "mm": 85.843,
+   "promotion_candidate": false,
+   "refused_clauses": [
+    "board_improved",
+    "no_regression",
+    "pour_partition"
+   ],
+   "repair_residual_join": {
+    "failures": [
+     {
+      "dst_escapes": 76,
+      "island": [
+       "U9.16"
+      ],
+      "reason": "NO_PATH",
+      "src_escapes": 1,
+      "why": "no all-layer corridor at 0.200 mm between the islands"
+     },
+     {
+      "island": [
+       "MK1.4"
+      ],
+      "pads": [
+       "MK1.4"
+      ],
+      "reason": "NO_LEGAL_ESCAPE_SRC",
+      "why": "MK1.4: NO LEGAL ESCAPE at >= 0.200 mm; blocked by MK1. (x67), board_edge (x5)",
+      "why_lands": [
+       "MK1.4: NO LEGAL ESCAPE at >= 0.200 mm; blocked by MK1. (x67), board_edge (x5)"
+      ]
+     },
+     {
+      "dst_escapes": 86,
+      "island": [
+       "J3.A12",
+       "J3.B1"
+      ],
+      "reason": "NO_PATH",
+      "src_escapes": 4,
+      "why": "no all-layer corridor at 0.200 mm between the islands"
+     },
+     {
+      "dst_escapes": 92,
+      "island": [
+       "U3.12"
+      ],
+      "reason": "NO_PATH",
+      "src_escapes": 8,
+      "why": "no all-layer corridor at 0.200 mm between the islands"
+     }
+    ],
+    "joined": 0,
+    "joins": [],
+    "mm": 0,
+    "net": "GND",
+    "ok": false,
+    "unreachable": 4,
+    "vias": 0
+   },
+   "repair_stitch_failures": [
+    {
+     "island": [
+      "J3.A12",
+      "J3.B1"
+     ],
+     "pad": "J3.A12",
+     "reason": "NO_VIA_SITE",
+     "why": "no legal 0.60 mm barrel within 8.0 mm of any escape"
+    },
+    {
+     "island": [
+      "MK1.4"
+     ],
+     "pad": "MK1.4",
+     "reason": "NO_LEGAL_ESCAPE",
+     "why": "MK1.4: NO LEGAL ESCAPE at >= 0.200 mm; blocked by MK1. (x67), board_edge (x5)"
+    },
+    {
+     "island": [
+      "U3.12"
+     ],
+     "pad": "U3.12",
+     "reason": "NO_VIA_SITE",
+     "why": "no legal 0.60 mm barrel within 8.0 mm of any escape"
+    },
+    {
+     "island": [
+      "U9.16"
+     ],
+     "pad": "U9.16",
+     "reason": "NO_VIA_SITE",
+     "why": "no legal 0.60 mm barrel within 8.0 mm of any escape"
+    }
+   ],
+   "repair_stitched": 0,
+   "repair_width_nm": 200000,
+   "route_ok": true,
+   "route_reason": null,
+   "routed_nets": [
+    "/09_COMMUNITY_HEADER/EXT_SDA"
+   ],
+   "vias": 4
+  },
+  {
+   "arm": "plane repair, 0.200 mm at g50000",
+   "authoritative_unchanged": true,
+   "candidate_sha256": "1e204e58df577ef3cd89875495bb689457c0e06e9814998443f4b63362ccb6f5",
+   "command": "--grid 50000 --repair-planes --stitch-width 200000 --repair-join-max-mm 12",
+   "connectivity": {
+    "nets_improved": [
+     "/09_COMMUNITY_HEADER/EXT_SDA"
+    ],
+    "nets_regressed": [
+     "GND"
+    ],
+    "open_retained_nets_after": 20,
+    "open_retained_nets_before": 21,
+    "retained_open_edges_after": 43,
+    "retained_open_edges_before": 43
+   },
+   "failed_nets": [],
+   "joins": [
+    {
+     "from": "TP45.1",
+     "layers": [
+      "F",
+      "I2",
+      "F",
+      "I2",
+      "F"
+     ],
+     "mm": 86.3173410301009,
+     "ok": true,
+     "to": "J8.3",
+     "via_xy": [
+      [
+       51.9,
+       25.3
+      ],
+      [
+       46.0,
+       61.75
+      ],
+      [
+       51.7,
+       74.15
+      ],
+      [
+       52.9,
+       76.7
+      ]
+     ],
+     "vias": 4
+    }
+   ],
+   "mm": 86.317,
+   "promotion_candidate": false,
+   "refused_clauses": [
+    "board_improved",
+    "no_regression",
+    "pour_partition"
+   ],
+   "repair_residual_join": {
+    "failures": [
+     {
+      "dst_escapes": 51,
+      "island": [
+       "U9.16"
+      ],
+      "reason": "NO_PATH",
+      "src_escapes": 1,
+      "why": "no all-layer corridor at 0.200 mm between the islands"
+     },
+     {
+      "island": [
+       "MK1.4"
+      ],
+      "pads": [
+       "MK1.4"
+      ],
+      "reason": "NO_LEGAL_ESCAPE_SRC",
+      "why": "MK1.4: NO LEGAL ESCAPE at >= 0.200 mm; blocked by MK1. (x67), board_edge (x5)",
+      "why_lands": [
+       "MK1.4: NO LEGAL ESCAPE at >= 0.200 mm; blocked by MK1. (x67), board_edge (x5)"
+      ]
+     },
+     {
+      "dst_escapes": 63,
+      "island": [
+       "J3.A12",
+       "J3.B1"
+      ],
+      "reason": "NO_PATH",
+      "src_escapes": 4,
+      "why": "no all-layer corridor at 0.200 mm between the islands"
+     },
+     {
+      "dst_escapes": 55,
+      "island": [
+       "U3.12"
+      ],
+      "reason": "NO_PATH",
+      "src_escapes": 5,
+      "why": "no all-layer corridor at 0.200 mm between the islands"
+     }
+    ],
+    "joined": 0,
+    "joins": [],
+    "mm": 0,
+    "net": "GND",
+    "ok": false,
+    "unreachable": 4,
+    "vias": 0
+   },
+   "repair_stitch_failures": [
+    {
+     "island": [
+      "J3.A12",
+      "J3.B1"
+     ],
+     "pad": "J3.A12",
+     "reason": "NO_VIA_SITE",
+     "why": "no legal 0.60 mm barrel within 8.0 mm of any escape"
+    },
+    {
+     "island": [
+      "MK1.4"
+     ],
+     "pad": "MK1.4",
+     "reason": "NO_LEGAL_ESCAPE",
+     "why": "MK1.4: NO LEGAL ESCAPE at >= 0.200 mm; blocked by MK1. (x67), board_edge (x5)"
+    },
+    {
+     "island": [
+      "U3.12"
+     ],
+     "pad": "U3.12",
+     "reason": "NO_VIA_SITE",
+     "why": "no legal 0.60 mm barrel within 8.0 mm of any escape"
+    },
+    {
+     "island": [
+      "U9.16"
+     ],
+     "pad": "U9.16",
+     "reason": "NO_VIA_SITE",
+     "why": "no legal 0.60 mm barrel within 8.0 mm of any escape"
+    }
+   ],
+   "repair_stitched": 0,
+   "repair_width_nm": 200000,
+   "route_ok": true,
+   "route_reason": null,
+   "routed_nets": [
+    "/09_COMMUNITY_HEADER/EXT_SDA"
+   ],
+   "vias": 4
+  }
+ ],
+ "verdict": "REFUSED, THREE TIMES OVER -- and the ranked blocker is RENAMED: not `U3.12 has no via site` but (a) PP2's unconditional refusal of every GND pour split, and (b) ONE In3.Cu /09_COMMUNITY_HEADER/TCA4307_READY track standing between U3.12 and 55 legal barrel sites"
+}

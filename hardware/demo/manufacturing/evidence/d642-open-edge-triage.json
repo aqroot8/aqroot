@@ -1,0 +1,108 @@
+{
+ "board": "/home/aqroot8/aqroot-demo/hardware/demo/kicad/aqroot-demo/aqroot-Beta-v2.kicad_pcb",
+ "board_sha256": "f496d2f39c0827248a47ab7d47efa4322f078b68d2da1d91ae6585d97bf8f875",
+ "finding": "THREE MORE OPEN EDGES ARE NOW MEASURED REFUSALS INSTEAD OF UNASKED QUESTIONS, AND THEY ARE NOT THE SAME REFUSAL.  `/SPI_B_SCK` dies at the DESTINATION LAND -- `U9.30: NO LEGAL ESCAPE at >= 0.200 mm; blocked by U9.31 (x21), U9.29 (x17), track (x9), U9.33 (x8)` -- a fine-pitch pocket refusal on the same package whose `U9.16` D-640 ranked, not a corridor refusal at all.  `/WAKE_INT_N` (src_escapes 34, dst_escapes 7) and `/ACC_PWR_EN` (19, 7) both LAUNCH at both ends and die as `NO_PATH`: those two are corridor questions and belong to the corridor screen; `/SPI_B_SCK` is a LAND question and the corridor screen would have spent an hour learning that.",
+ "method": "route_maze_batch.py full-board gate, never --promote; the full 50-tube pour_bond_guard.py spec in force; ~40 s per net against the 3600 s the corridor screen spends",
+ "question": "D-641 ranked `finish the corridor sweep` third and left ten nets of D-640's twelve never started.  Before any corridor screen is spent on them, the CHEAPEST question is the one that found EXT_SDA: does the plain full-board gate route this net at all, with every pour-bond tube reserved and the plane repair armed?",
+ "runs": [
+  {
+   "authoritative_unchanged": true,
+   "candidate_sha256": "f496d2f39c0827248a47ab7d47efa4322f078b68d2da1d91ae6585d97bf8f875",
+   "command": "--guard <all 50 pour-bond tubes> --grid 100000 --repair-planes",
+   "connectivity": {
+    "nets_improved": [],
+    "nets_regressed": [],
+    "open_retained_nets_after": 21,
+    "open_retained_nets_before": 21,
+    "retained_open_edges_after": 43,
+    "retained_open_edges_before": 43
+   },
+   "joins": [
+    {
+     "ok": false,
+     "pads": [
+      "U9.30"
+     ],
+     "reason": "NO_LEGAL_ESCAPE_DST",
+     "why": "U9.30: NO LEGAL ESCAPE at >= 0.200 mm; blocked by U9.31 (x21), U9.29 (x17), track (x9), U9.33 (x8)",
+     "why_lands": [
+      "U9.30: NO LEGAL ESCAPE at >= 0.200 mm; blocked by U9.31 (x21), U9.29 (x17), track (x9), U9.33 (x8)"
+     ]
+    }
+   ],
+   "net": "/SPI_B_SCK",
+   "promotion_candidate": false,
+   "refused_clauses": [
+    "board_changed",
+    "board_improved"
+   ],
+   "route_ok": false,
+   "route_reason": "NO_LEGAL_ESCAPE_DST",
+   "seconds": 1.8
+  },
+  {
+   "authoritative_unchanged": true,
+   "candidate_sha256": "f496d2f39c0827248a47ab7d47efa4322f078b68d2da1d91ae6585d97bf8f875",
+   "command": "--guard <all 50 pour-bond tubes> --grid 100000 --repair-planes",
+   "connectivity": {
+    "nets_improved": [],
+    "nets_regressed": [],
+    "open_retained_nets_after": 21,
+    "open_retained_nets_before": 21,
+    "retained_open_edges_after": 43,
+    "retained_open_edges_before": 43
+   },
+   "joins": [
+    {
+     "dst_escapes": 7,
+     "ok": false,
+     "reason": "NO_PATH",
+     "src_escapes": 34,
+     "why": "no all-layer corridor at 0.200 mm between the islands"
+    }
+   ],
+   "net": "/WAKE_INT_N",
+   "promotion_candidate": false,
+   "refused_clauses": [
+    "board_changed",
+    "board_improved"
+   ],
+   "route_ok": false,
+   "route_reason": "NO_PATH",
+   "seconds": 2.4
+  },
+  {
+   "authoritative_unchanged": true,
+   "candidate_sha256": "f496d2f39c0827248a47ab7d47efa4322f078b68d2da1d91ae6585d97bf8f875",
+   "command": "--guard <all 50 pour-bond tubes> --grid 100000 --repair-planes",
+   "connectivity": {
+    "nets_improved": [],
+    "nets_regressed": [],
+    "open_retained_nets_after": 21,
+    "open_retained_nets_before": 21,
+    "retained_open_edges_after": 43,
+    "retained_open_edges_before": 43
+   },
+   "joins": [
+    {
+     "dst_escapes": 7,
+     "ok": false,
+     "reason": "NO_PATH",
+     "src_escapes": 19,
+     "why": "no all-layer corridor at 0.200 mm between the islands"
+    }
+   ],
+   "net": "/ACC_PWR_EN",
+   "promotion_candidate": false,
+   "refused_clauses": [
+    "board_changed",
+    "board_improved"
+   ],
+   "route_ok": false,
+   "route_reason": "NO_PATH",
+   "seconds": 2.0
+  }
+ ],
+ "schema": 1,
+ "verdict": "ALL THREE REFUSED, none promotable, board unmoved -- and the sweep now has a 40-second triage that says WHICH screen each net actually needs"
+}

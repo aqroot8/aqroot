@@ -7,7 +7,52 @@ stackup (`KO1-KO5`), pour bonds (`P1-P4`), pour partition (`PP1-PP4`, D-622),
 necks (`N1-N3`), placement (`PL1-PL9`), NFC front-end symmetry (`RF1-RF5`,
 D-621), protected copper and leaf-land pricing (`LL1-LL6`, D-632) -- and the
 residual is **44 retained open edges across 21 nets** (D-632).  Two of them, `USB_D_CONN_P` and the `USB_D_MCU` pair, are
-parked on rulings rather than routes (D-618, D-620).
+parked on rulings rather than routes (D-618, D-620).  The residual is **43**
+as of D-639.
+
+## `NO_VIA_SITE` BY HOW MUCH -- THE DEFICIT SCREEN (D-642)
+
+    python3 screen_bond_site_deficit.py REF.NUM [REF.NUM ...] \
+        [--fragment-board POST.kicad_pcb] [--guard G.json] [--grid NM]
+
+`NO_VIA_SITE` is a boolean, and a boolean cannot be handed to a placement
+engineer or CHECKED after a part moves.  This screen sweeps the barrel
+DIAMETER past every floor the board publishes, calls
+`screen_bond_ladder.island_barrel` **verbatim** (so a site it counts is a site
+`bridge_islands` would plant and `pour_partition_contract.py` `PP3` would call
+a bond), and blames the refusal per TERM of `maze3d.Field._via_grid` -- six
+copper layers and hole-to-hole, each rebuilt alone over the fragment's own
+cells -- then NAMES the obstacles behind each term's sole-blamed cells.
+
+On `/GND` `U3.12`, on the fragment `/09_COMMUNITY_HEADER/EXT_SDA`'s own route
+creates, at `--grid 50000`:
+
+    barrel        island sites   sites in U3.12's fragment
+    0.600/0.200        95                0
+    0.500/0.200       166                0   <- finest PROMOTABLE barrel
+    0.450/0.200       215                0
+    0.400/0.150       279                0
+    0.350/0.100       390                0
+    0.300/0.050       486                0   <- under every published floor
+
+`NO_BARREL_AT_ANY_DIAMETER_ON_THIS_LADDER`.  **There is no deficit to buy,
+because there is no diameter at which the site exists** -- and the per-term
+blame says why in one line.  Of the fragment's 1885 cells, `In1`/`In4` admit
+1697 each, hole-to-hole 1885, `In2` 920, `F` 601, `B` 452 and **`In3` 111**;
+`In3` ALONE refuses **55** cells every other term admits, and every one of them
+is held by **ONE `/09_COMMUNITY_HEADER/TCA4307_READY` track on `In3.Cu`**
+(49.2-50.0 x 78.0-78.9 mm).  Five more are held by one
+`/01_POWER_TREE/BAT_PROTECTED_P` track on `F.Cu`, which is protected copper.
+
+D-641 asked whether `U3` is the thing that moves.  **It is not**: sixty legal
+0.500/0.200 barrel sites inside `U3.12`'s own fragment are held by two tracks,
+one of them an ordinary signal on a routable inner layer.
+
+**AND IT STILL WOULD NOT HAVE BEEN ENOUGH.**  `PP3` prices a fragment `BONDED`
+only on a BARREL into a reserved inner plane -- a jumper is not a bond -- and
+`PP2` admits a split only for a net carrying a published rail current, which
+`GND` does not.  Every split of a multi-pad `GND` island is refused
+unconditionally, whatever the router does (D-642 sect. 7).
 
 ## BTN_DOWN_N IS CLOSED BY THE GUARD, AT A PITCH THAT HAD NEVER BEEN ASKED (D-625)
 
