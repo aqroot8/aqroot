@@ -176,6 +176,30 @@ re-run under the new code differs from the recorded one in `seconds` alone):
 6. `copper_sliver` localisation remains an OPEN INSTRUMENT GAP.
 7. `hardware/demo/fab` is STALE against `c1029d47`.
 
+## 10. AND NO OTHER OPEN EDGE IS CHEAPER TODAY
+
+Ten of the eleven remaining open retained nets were re-asked on the promoted
+board at 0.050 mm, `--partial`, dry (`evidence/d659-open-edge-sweep-g50.json`):
+
+    /01_POWER_TREE/ACC_5V_LX            NO_LEGAL_ESCAPE_DST
+    /04_SPI_B_RADIOS_NFC/NFC_VDD_RF     NO_LEGAL_ESCAPE_DST
+    /ACC_PWR_EN                         NO_PATH
+    /I2S_LRCLK                          NO_PATH
+    /08_BUTTONS_EXPANDERS/BTN_LEFT_N    NO_PATH
+    /SX1262_DIO1                        NO_PATH
+    /BQ25185_STAT1                      NO_LEGAL_ESCAPE_SRC
+    /BQ25185_STAT2                      NO_LEGAL_ESCAPE_SRC
+    /NFC_SUPPLY                         NO_LEGAL_ESCAPE_SRC
+    /WAKE_INT_N                         NO_PATH
+
+**Not one routes.**  So there is no cheap promotion standing beside this
+decision's characterization: every residual on this board is now a
+characterized wall, and the three `NO_LEGAL_ESCAPE_SRC` rows want
+`screen_escape_class.py` next (it distinguishes four different walls, and D-657
+§3 records that its `CLEAR` verdict is PACKAGE-LOCAL and must not be read as
+"the land is open").  `/BQ25185_STAT1` and `/BQ25185_STAT2` are `U11.9` and
+`U11.3` — the same package this decision spent its measurement on.
+
 # D-658 · 2026-09-07 · Demo — THE PRODUCT OF TWO REFUTED LEVERS: `R129.1`'s TWENTY-SIX-DECISION WALL FALLS TO A 0.200 mm BARREL MOVE AT 0.450/0.200 mm, AND THE COMMUNITY PORT'S ACCESSORY-DETECT PULL-UP HAS A SUPPLY
 
     authority  0eb2a4e653fded22d1f455122045812205edf72a5a1a3ae27c6189f617807489

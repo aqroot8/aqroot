@@ -101,6 +101,16 @@
   and reported the UNBANNED partitions AS IF the ban had been honoured.  Found
   before it was spent.  Re-run determinism confirmed: the WEST window under the
   new code differs from the recorded run in `seconds` alone.
+  **(9) AND NO OTHER OPEN EDGE IS CHEAPER TODAY.**  Ten of the eleven remaining
+  open retained nets, re-asked on the promoted board at 0.050 mm `--partial`,
+  dry (`evidence/d659-open-edge-sweep-g50.json`): `ACC_5V_LX` and `NFC_VDD_RF`
+  `NO_LEGAL_ESCAPE_DST`; `BQ25185_STAT1`, `BQ25185_STAT2` and `NFC_SUPPLY`
+  `NO_LEGAL_ESCAPE_SRC`; `ACC_PWR_EN`, `I2S_LRCLK`, `BTN_LEFT_N`, `SX1262_DIO1`
+  and `WAKE_INT_N` `NO_PATH`.  **NOT ONE ROUTES** -- every residual on this board
+  is a characterized wall, and the three `NO_LEGAL_ESCAPE_SRC` rows want
+  `screen_escape_class.py` next (four different walls; D-657 §3 records that its
+  `CLEAR` verdict is PACKAGE-LOCAL).  `BQ25185_STAT1`/`STAT2` are `U11.9` and
+  `U11.3` -- the same package.
   **NEXT, IN ORDER OF LEVERAGE:** (1) **`BQ25185_SYS` `U11.1` is still the #1
   FABRICATION BLOCKER and it is now priced at THREE OBJECTS** -- the open
   question is not what to remove but **where `U11.10`'s `USB_VBUS_CHG` escape
