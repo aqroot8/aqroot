@@ -1,3 +1,77 @@
+# D-654 · 2026-09-07 · Demo — ADDENDUM: `SDA`'s OPENER IS NOW `SCL` ITSELF, AND IT IS UNPROTECTED
+
+    authority  9eaeacfca71fea2dcfdff71eb7e65c9566851cf8babbf07762285250ae2f829e
+    UNCHANGED.  NO COPPER.  Two read-only runs, 95.5 s + 195.1 s.
+
+D-653's `NEXT` said the `/I2C_SDA_INT` `U3.23 <-> U2.23` question had to be
+re-asked because the pocket D-652A measured it in no longer exists.  It does not,
+and the answer changed completely (`evidence/d654-blame-sda-post.json`):
+
+    BASE   U2.23: NO OFF-CENTRE LAUNCH at 0.200 mm from any of 41 anchors x 24
+           directions x 17 lengths; blocked by U2.24 (x6146), U2.22 (x4747),
+           track (x2109), U2.21 (x1138)
+    Q1     drop all EIGHTEEN foreign nets    ->  OPENS 12.381 mm, 2 vias
+    Q2     GND alone                         ->  NO_LEGAL_ESCAPE   (was 17.801 mm)
+    Q2     /I2C_SCL_INT alone                ->  NO_PATH
+    Q2     /ACC_5V_SW_EN alone               ->  OPENS 20.687 mm, 3 vias  PROTECTED
+
+**`GND` HAS STOPPED BEING THE OPENER** -- its chain and barrel are no longer in
+that pocket, so dropping it buys nothing -- and the only remaining single-net
+opener is PROTECTED copper the Demo scope requires be preserved.  That is
+exactly the shape D-652A said had stopped being an owner question, arriving back.
+
+## THE SCREEN COULD NOT ASK THE QUESTION, SO IT CAN NOW
+
+`screen_pair_corridor_blame.py` runs Q3 -- the reverse-greedy minimal SET --
+only when NO single net opens the corridor, and here one did: the protected one.
+So the run reported a protected opener and stopped, which is precisely the case
+where the minimal set decides whether a human has to be asked.
+
+**`--ban NET`, repeatable, is D-641's CUT-SET RETRY brought to this screen.**  A
+banned net is kept out of the pool entirely -- never dropped by Q1, never asked
+in Q2, never offered to Q3 -- so every answer the run gives is one that DOES NOT
+TOUCH IT.  Absent, the run is byte-identical to every one before it; the flag is
+lifted out of `argv` before the positional read, so every existing invocation
+parses as it did.
+
+## THE ANSWER: TWO NETS, NEITHER PROTECTED, AND ONE OF THEM IS MINE
+
+`--ban /ACC_5V_SW_EN`, 17 nets in the pool, 195.1 s
+(`evidence/d654-blame-sda-ban.json`, complete):
+
+    Q1     drop all SEVENTEEN                ->  OPENS 12.381 mm, 2 vias
+    Q2     every one of the seventeen        ->  NO_LEGAL_ESCAPE / NO_PATH
+    Q3     fifteen dropped as NOT NEEDED; /I2C_SCL_INT REQUIRED; GND REQUIRED
+    Q3     MINIMAL SET {/I2C_SCL_INT, GND}   ->  OPENS 24.954 mm, 4 vias,
+                                                 B / F / I2 / F / B
+
+**NO OWNER QUESTION ARISES.**  `/ACC_5V_SW_EN` stays where it is.
+
+And the two members are, object for object, the smallest possible set
+(`w/d654/enum_window.py` on the promoted board):
+
+    GND            1 barrel   (60.900, 89.650) 0.600/0.300  -- the one D-653 MOVED
+    /I2C_SCL_INT   7 tracks + 1 barrel  -- U2.22's escape, U3.22's escape, and
+                                          the first leg, all laid by D-653
+
+**`U2.22` AND `U2.23` ARE ONE TRANSACTION, NOT TWO.**  D-653 closed `SCL`
+greedily and took the whole pocket; the measurement says the pocket holds both
+only if they are proposed together.  `U2.21`'s bond barrel has to move a THIRD
+time, and D-653's own rule governs where: the site must be legal on the board
+the run ENDS with, which means `screen_rebond_site.py U2.21 --fragment-board`
+against a candidate of the JOINT run, not of this one.
+
+## NEXT
+
+1. **The joint transaction.**  Request `/I2C_SCL_INT` and `/I2C_SDA_INT`
+   together; `--evict /I2C_SCL_INT` so its own pocket copper is re-proposed
+   rather than defended; `--detour-spec` naming the `GND` barrel at
+   (60.900, 89.650) with a `to_mm` chosen from `screen_rebond_site.py
+   --fragment-board` run against the joint candidate.  Every primitive it needs
+   now exists.
+2. `/I2C_SCL_INT` `{U3.22, U2.22}` -> the bus, 10.784 mm, still `NO_PATH`.
+3. Everything D-653 carried is carried unchanged.  **No owner decision is OPEN.**
+
 # D-653 · 2026-09-07 · Demo — THE RE-BOND EXISTS, AND THE BOARD'S CRITICAL PATH IS OPEN: `U2.21`'s CHAIN WAS INERT ALL ALONG, THE ONE OBJECT THAT COST THE RE-BOND ITS LANDING WAS A CARD-DETECT STRAP
 
     authority  dc6d162a597ac944457b7d8575fe70270d1f8f1892027449fb8cc73686d8f1e4

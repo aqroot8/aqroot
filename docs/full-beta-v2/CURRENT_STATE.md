@@ -13,6 +13,44 @@
 > This file references DEVICE_SPEC rather than duplicating full specs.
 
 ## 1. Authoritative HEAD
+- **Demo D-654 (ADDENDUM — `SDA`'s OPENER IS NOW `SCL` ITSELF, AND IT IS
+  UNPROTECTED):**  **NO COPPER.**  Authority UNCHANGED at
+  `9eaeacfca71fea2dcfdff71eb7e65c9566851cf8babbf07762285250ae2f829e`; retained
+  open edges **36**.  `hardware/beta-v2` untouched.  Two read-only
+  `screen_pair_corridor_blame.py` runs on the PROMOTED board, 95.5 s + 195.1 s.
+  D-653 said the `/I2C_SDA_INT` `U3.23 <-> U2.23` question had to be re-asked
+  because the pocket D-652A measured it in no longer exists.  It does not:
+  **`GND` has STOPPED being the opener** (`NO_LEGAL_ESCAPE`, was 17.801 mm) --
+  its chain and barrel are out of that pocket -- and the only remaining
+  single-net opener is **`/ACC_5V_SW_EN`, 20.687 mm, PROTECTED**
+  (`evidence/d654-blame-sda-post.json`).  The screen runs its Q3 minimal-set
+  search only when NO single net opens the corridor, so it reported a protected
+  opener and stopped -- which is exactly the case where the minimal SET decides
+  whether a human has to be asked.  **`--ban NET` (repeatable) is D-641's
+  CUT-SET RETRY brought to this screen**: a banned net is never dropped by Q1,
+  never asked in Q2 and never offered to Q3, so every answer DOES NOT TOUCH IT;
+  absent, the run is byte-identical to every one before it, and the flag is
+  lifted out of `argv` before the positional read so every existing invocation
+  parses as it did.  With `/ACC_5V_SW_EN` banned, 17 nets in the pool: fifteen
+  dropped as NOT NEEDED and the **MINIMAL SET is TWO nets,
+  `{/I2C_SCL_INT, GND}`, OPENING at 24.954 mm with 4 vias on `B/F/I2/F/B`**
+  (`evidence/d654-blame-sda-ban.json`, complete).  **NO OWNER QUESTION ARISES**
+  -- `/ACC_5V_SW_EN` stays where it is.  Object for object the set is the
+  smallest possible: `GND` contributes **ONE barrel, (60.900, 89.650), the one
+  D-653 MOVED**, and `/I2C_SCL_INT` contributes **7 tracks and 1 barrel, all
+  laid by D-653**.  **`U2.22` AND `U2.23` ARE ONE TRANSACTION, NOT TWO** -- D-653
+  closed `SCL` greedily and took the whole pocket, and the measurement says the
+  pocket holds both only if they are proposed together.  `U2.21`'s bond barrel
+  must move a THIRD time, and D-653's own rule governs where: the site must be
+  legal on the board the run ENDS with, so `screen_rebond_site.py U2.21
+  --fragment-board` must be run against a candidate of the JOINT run.
+  **NEXT:** the joint transaction -- request `/I2C_SCL_INT` and `/I2C_SDA_INT`
+  together, `--evict /I2C_SCL_INT` so its own pocket copper is re-proposed
+  rather than defended, and a `--detour-spec` naming the `GND` barrel with a
+  `to_mm` chosen from `screen_rebond_site.py --fragment-board`.  Every primitive
+  it needs now exists.  Then `/I2C_SCL_INT` `{U3.22, U2.22}` -> the bus,
+  10.784 mm.  Everything D-653 carried is carried unchanged; no owner decision
+  is OPEN.
 - **Demo D-653 (THE RE-BOND EXISTS, AND THE BOARD'S CRITICAL PATH IS OPEN):**
   **COPPER PROMOTED.**  Authority
   `dc6d162a597ac944457b7d8575fe70270d1f8f1892027449fb8cc73686d8f1e4` ->

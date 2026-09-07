@@ -24,12 +24,26 @@ written -- for ONE pair with `maze3d.offcentre_route`.
       discipline and also the only affordable shape -- forward greedy asks
       O(n^2) whole-board wavefronts and this board charges minutes for each.
 
+`--ban NET` (repeatable) is D-641's CUT-SET RETRY brought to this screen.  A
+banned net is kept out of the pool entirely: it is never dropped by Q1, never
+asked in Q2 and never offered to Q3, so every answer the run gives is an answer
+that DOES NOT TOUCH IT.  The question it exists for is the one this board keeps
+arriving at -- `/ACC_5V_SW_EN` is PROTECTED copper and opening a corridor by
+evicting it is an OWNER decision, so "does an opening exist that leaves it
+alone?" has to be askable without a human reading a net list.  Without `--ban`
+the run is byte-identical to every one before it.
+
+AND Q3 RUNS WHENEVER NO *ADMISSIBLE* NET OPENS THE CORRIDOR ALONE.  Before
+`--ban` that was the same test; with it, a corridor whose only single-net opener
+is banned is exactly the corridor whose minimal SET is worth searching for, and
+skipping Q3 there would report "no unprotected opening" without having looked.
+
 THE REPORT IS WRITTEN AFTER EVERY STEP.  A probe that writes only at exit loses
 a two-hour measurement to one impatient kill, and `complete` says whether the
 run reached its own end.
 
     python3 screen_pair_corridor_blame.py NET A_REF B_REF \
-        [MARGIN_MM] [GRID_NM] [OUT]
+        [MARGIN_MM] [GRID_NM] [OUT] [--ban NET]...
 """
 import json
 import sys
@@ -49,6 +63,20 @@ from route_maze_batch import (net_contract, reserved_inner_planes,  # noqa: E402
 from screen_corridor_blockers import Without, corridor_nets  # noqa: E402
 
 BOARD = ROOT / "hardware/demo/kicad/aqroot-demo/aqroot-Beta-v2.kicad_pcb"
+
+# `--ban NET` is lifted out of `argv` BEFORE the positional read, so every
+# existing invocation -- all of which are positional -- parses exactly as it
+# did and the flag may sit anywhere on the line.
+BANNED = []
+_argv = []
+_it = iter(sys.argv)
+for _a in _it:
+    if _a == "--ban":
+        BANNED.append(next(_it))
+    else:
+        _argv.append(_a)
+sys.argv = _argv
+
 NET = sys.argv[1]
 A_REF, B_REF = sys.argv[2], sys.argv[3]
 MARGIN = float(sys.argv[4]) if len(sys.argv) > 4 else 3.0
@@ -87,6 +115,7 @@ def ask():
 def flush(complete=False):
     out = dict(schema=1, net=NET, a=A_REF, b=B_REF, margin_mm=MARGIN,
                grid_nm=GRID, layers=far, window_nets=list(cand),
+               banned_nets=list(BANNED),
                instrument="maze3d.offcentre_route under "
                           "screen_corridor_blockers.Without",
                board=str(BOARD), seconds=round(time.time() - t0, 1),
@@ -102,7 +131,7 @@ rows.append(dict(step="BASE", ok=bool(base.get("ok")),
                  reason=base.get("reason"), why=base.get("why")))
 print("BASE %s" % base.get("reason"), file=sys.stderr, flush=True)
 
-cand = sorted(corridor_nets(qb, far, box, NET))
+cand = sorted(set(corridor_nets(qb, far, box, NET)) - set(BANNED))
 flush()
 
 with Without(qb, field, cand, box):
@@ -133,6 +162,12 @@ if upper.get("ok"):
               % (net, ("OPENS %.3f mm" % r["mm"]) if r.get("ok")
                  else r.get("reason")), file=sys.stderr, flush=True)
 
+    # Q3 is owed whenever no ADMISSIBLE net opens the corridor alone.  With
+    # `--ban` the banned nets are not in `cand` at all, so `opened` already
+    # means "opened by copper this run may take" and this test needs no change
+    # -- but it is worth saying, because the corridor whose only single-net
+    # opener is PROTECTED is precisely the one whose minimal SET decides
+    # whether an owner question exists.
     if not opened:
         keep = list(cand)
         for net in list(cand):
