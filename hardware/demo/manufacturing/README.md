@@ -15,13 +15,75 @@ D-649 the ST25R3916's `GND_DR_16` driver ground `U9.16`, and **D-652 the
 BMI270's `SDA` data line `U4.14`**.  The residual is **37** as of D-652.  The
 IMU is still NOT functional, but it is now ONE land short, not two: `U4.5`, its
 `VDDIO`, remains an island of one land and its bridge from `U4.8` is a measured
-`PLACEMENT_WALL`.
+`PLACEMENT_WALL`.  The residual is **36** as of D-653, **35** as of D-655 and
+**34** as of D-656, which put `SCL` and then `SDA` on both `PCAL9535A`
+expanders; the largest single remaining net is `/01_POWER_TREE/BQ25185_SYS` with
+**six** open edges on the system power rail.
 
 **D-652 also measured which open edges are worth what** (`screen_open_edge_cost.py`):
 **five of the thirty-seven strand four parts and thirty-seven nets** -- both
 `PCAL9535A` expanders, the `TCA4307` Qwiic buffer and the `MAX17048` fuel gauge
 -- and four of the five are on `/I2C_SCL_INT`, which is therefore this board's
 critical path.
+
+## THE PITCH IS PART OF THE TRANSACTION, AND A FINER LATTICE IS NOT A BETTER ONE (D-656)
+
+    python3 route_maze_batch.py /I2C_SDA_INT --grid 50000 --promote      # 20 s
+
+`/I2C_SDA_INT` `U3.23 <-> U2.23` was the last land of this board's critical path
+still open: `U2` is the `PCAL9535APW` that carries **all six user buttons**, and
+D-655 put its `SCL` on the bus and left its `SDA` open.
+
+    request        pitch       length      clauses  verdict
+    /I2C_SDA_INT   0.025 mm    20.246 mm   13/14    REFUSED copper_sliver (B.Cu)
+    /I2C_SDA_INT   0.025 mm    20.173 mm   12/14    REFUSED + inherited_within_baseline
+      + D-655's reserve band                        (hole_clearance 5 -> 11)
+    /I2C_SDA_INT   0.0333 mm   --          --       NO_LEGAL_ESCAPE_DST at U2.23
+    /I2C_SDA_INT   0.050 mm    19.294 mm   14/14    PROMOTED
+
+D-655 §6's pocket-capacity table measured TWO nets in ONE pocket and proved it
+holds both only at 0.025 mm.  With `SCL` promoted the question is a ONE-net
+question and it has a different answer -- **0.95 mm SHORTER copper, the same two
+barrels, the same `B/F/B`, and the baseline DRC profile exactly.**  Re-asking at
+the pitch a previous decision proved is not the same as re-asking that
+decision's question.  The residual is **34** as of D-656, and
+`sole_path_net_count` is **26 -> 8**: both expanders are on the bus.
+
+**A `copper_sliver` BISECT IS PER OBJECT, AND ITS SUBJECT IS NOT THE POUR.**
+
+    python3 evidence/d656-sliver-bisect.py AUTH.kicad_pcb CAND.kicad_pcb NET OUT.json
+
+D-655 reverted a NET's whole copper and then read the location off an erosion of
+the ZONE FILLS.  D-656 cut that crumb out of the pour with a notch in the zone
+outline and KiCad still reported the sliver; the object bisect then named
+exactly ONE of the run's fourteen objects, a 6.705 mm `B.Cu` track, and the
+zone-fill erosion sees **zero** difference between the sliver-free and
+sliver-bearing boards.  The geometry is still unlocalised; the OBJECT is not.
+
+## A POUR IS A CONDUCTOR AND KiCad DRC NEVER CHECKS ITS WIDTH (D-656)
+
+    python3 screen_pour_neck_fragility.py --net BQ25185_SYS --layer B.Cu \
+        --bisect --floor-mm 0.5 [--json OUT]                            # 1 s
+
+    zone / island                     area       holds             bottleneck  floor
+    B BQ25185_SYS POUR 1  island 3    79.48 mm2  U12.1 C28.1 via    0.197 mm   0.500
+    B BQ25185_SYS POUR 2  island 0    10.81 mm2  L4.1  U21.3        0.300 mm   0.500
+
+`.kicad_dru` section 5 publishes `SYS_MAIN` at 1.0 A, a 0.300 mm outer thermal
+minimum and a **0.500 mm `track_width` rule floor**, and says `SYS_MAIN` is
+OUTER-LAYER BY POLICY.  `BQ25185_SYS` owns no reserved inner plane, so that
+`B.Cu` pour IS the whole conductor -- the screen makes that distinction itself
+and reports `+3V3`'s own 0.113 mm `F.Cu` neck as `UNDER_FLOOR_PLANE_PARALLEL`,
+advisory, because `In3` carries it.  `U12.1` is the `TPS63020` buck-boost's
+`SYS` input; `L4.1`/`U21.3` is the `TPS61023` accessory 5 V boost that D-185
+prices at **2.19 A peak**.  Confirmed by KiCad's own filler: raise `POUR 1`'s
+`min_thickness` and refill, and `C28.1` falls off the net at 0.205 mm and
+`U12.1` falls off `SW9.2` at 0.250 mm.
+
+**`BQ25185_SYS` is now the board's largest residual** -- 6 of the 34 open edges,
+9 raw clusters, `U11.1` (the charger's own `SYS` output) a cluster of ONE -- and
+`--join-islands` refuses all eight at BOTH the netclass 0.800 mm and the
+`.kicad_dru` floor 0.500 mm: 4 `NO_ANCHOR`, 4 `NO_PATH`.
 
 ## FIVE OPEN EDGES STRAND THIRTY-SEVEN NETS, AND CHEAPEST-FIRST NEVER ASKED (D-652)
 

@@ -1,0 +1,111 @@
+{
+ "added": [
+  "(False, '/I2C_SDA_INT', 0, 61925000, 93725000, 61250000, 93075000)",
+  "(False, '/I2C_SDA_INT', 0, 65225000, 90400000, 61925000, 93725000)",
+  "(False, '/I2C_SDA_INT', 2, 59862500, 80925000, 61050000, 80925000)",
+  "(False, '/I2C_SDA_INT', 2, 60450000, 91025000, 60450000, 91050000)",
+  "(False, '/I2C_SDA_INT', 2, 60550000, 90950000, 60450000, 91050000)",
+  "(False, '/I2C_SDA_INT', 2, 60850000, 91200000, 60550000, 90950000)",
+  "(False, '/I2C_SDA_INT', 2, 61050000, 80925000, 65125000, 86250000)",
+  "(False, '/I2C_SDA_INT', 2, 61250000, 92000000, 60850000, 91200000)",
+  "(False, '/I2C_SDA_INT', 2, 61250000, 93075000, 61400000, 92425000)",
+  "(False, '/I2C_SDA_INT', 2, 61375000, 92200000, 61250000, 92000000)",
+  "(False, '/I2C_SDA_INT', 2, 61400000, 92425000, 61375000, 92200000)",
+  "(False, '/I2C_SDA_INT', 2, 65125000, 86250000, 65225000, 90400000)",
+  "(True, '/I2C_SDA_INT', 0, 61250000, 93075000, 61250000, 93075000)",
+  "(True, '/I2C_SDA_INT', 0, 65225000, 90400000, 65225000, 90400000)"
+ ],
+ "and_it_is_not_in_a_pour": "`evidence/d655-sliver-locate.py` run between the sliver-FREE board (that one track dropped) and the sliver-BEARING board reports 1332 zone-fill residues on each and ZERO new.  The violation is not in any filled zone, so the D-655 crumb of `/01_POWER_TREE/BQ25185_SYS` was a bystander and the zone-fill erosion model cannot localise this class of sliver at all.",
+ "answer": "EXACTLY ONE.  Dropping the 0.200 mm `B.Cu` track (61.050, 80.925) -> (65.125, 86.250) -- 6.705 mm, the run's longest single segment -- clears the violation; dropping any of the other thirteen, including BOTH barrels and including the segment that passes 0.668 mm from the crumb D-655 blamed, leaves it standing.  With all fourteen in, `copper_sliver` is 1; with none, 0.",
+ "authority": "w/d656/gate1/base-authority.kicad_pcb",
+ "candidate": "w/d656/gate1/aqroot-Beta-v2.kicad_pcb",
+ "method": "delta debugging under the REAL engine: copy the gate's own candidate, delete ONE added object, `kicad-cli pcb drc --refill-zones --save-board`, count `copper_sliver`.  ONE PROBE PER PROCESS -- `pcbnew.LoadBoard` called too many times in one interpreter segfaults, the limit `screen_cut_price.py` records.",
+ "necessary": [
+  "(False, '/I2C_SDA_INT', 2, 61050000, 80925000, 65125000, 86250000)"
+ ],
+ "net": "/I2C_SDA_INT",
+ "probes": [
+  {
+   "kept": 14,
+   "sliver": 1,
+   "tag": "all"
+  },
+  {
+   "kept": 0,
+   "sliver": 0,
+   "tag": "none"
+  },
+  {
+   "object": "(False, '/I2C_SDA_INT', 0, 61925000, 93725000, 61250000, 93075000)",
+   "sliver": 1,
+   "tag": "drop00"
+  },
+  {
+   "object": "(False, '/I2C_SDA_INT', 0, 65225000, 90400000, 61925000, 93725000)",
+   "sliver": 1,
+   "tag": "drop01"
+  },
+  {
+   "object": "(False, '/I2C_SDA_INT', 2, 59862500, 80925000, 61050000, 80925000)",
+   "sliver": 1,
+   "tag": "drop02"
+  },
+  {
+   "object": "(False, '/I2C_SDA_INT', 2, 60450000, 91025000, 60450000, 91050000)",
+   "sliver": 1,
+   "tag": "drop03"
+  },
+  {
+   "object": "(False, '/I2C_SDA_INT', 2, 60550000, 90950000, 60450000, 91050000)",
+   "sliver": 1,
+   "tag": "drop04"
+  },
+  {
+   "object": "(False, '/I2C_SDA_INT', 2, 60850000, 91200000, 60550000, 90950000)",
+   "sliver": 1,
+   "tag": "drop05"
+  },
+  {
+   "object": "(False, '/I2C_SDA_INT', 2, 61050000, 80925000, 65125000, 86250000)",
+   "sliver": 0,
+   "tag": "drop06"
+  },
+  {
+   "object": "(False, '/I2C_SDA_INT', 2, 61250000, 92000000, 60850000, 91200000)",
+   "sliver": 1,
+   "tag": "drop07"
+  },
+  {
+   "object": "(False, '/I2C_SDA_INT', 2, 61250000, 93075000, 61400000, 92425000)",
+   "sliver": 1,
+   "tag": "drop08"
+  },
+  {
+   "object": "(False, '/I2C_SDA_INT', 2, 61375000, 92200000, 61250000, 92000000)",
+   "sliver": 1,
+   "tag": "drop09"
+  },
+  {
+   "object": "(False, '/I2C_SDA_INT', 2, 61400000, 92425000, 61375000, 92200000)",
+   "sliver": 1,
+   "tag": "drop10"
+  },
+  {
+   "object": "(False, '/I2C_SDA_INT', 2, 65125000, 86250000, 65225000, 90400000)",
+   "sliver": 1,
+   "tag": "drop11"
+  },
+  {
+   "object": "(True, '/I2C_SDA_INT', 0, 61250000, 93075000, 61250000, 93075000)",
+   "sliver": 1,
+   "tag": "drop12"
+  },
+  {
+   "object": "(True, '/I2C_SDA_INT', 0, 65225000, 90400000, 65225000, 90400000)",
+   "sliver": 1,
+   "tag": "drop13"
+  }
+ ],
+ "question": "KiCad names `copper_sliver (B.Cu)` with an EMPTY item list.  WHICH of the fourteen objects /I2C_SDA_INT added at 0.025 mm is necessary to it?",
+ "schema": 1
+}

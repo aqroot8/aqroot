@@ -1,0 +1,130 @@
+{
+ "all_identical": false,
+ "all_ran": true,
+ "baseline": "d632",
+ "contracts": [
+  {
+   "baseline": "d632-neck-contract.json",
+   "baseline_verdict": true,
+   "board_sha256": "b6dfc5db7ec8cc80eb12a4ca47fc3449799886d45852eab130fe3e3eb7ed45c7",
+   "contract": "neck",
+   "difference": "$.board_sha256: 'b6dfc5db7ec8cc80eb12a4ca47fc3449799886d45852eab130fe3e3eb7ed45c7' vs '5715bf5cd688a87f686e162b77bbcbff98dc9f9f3e20b4be6424849423e690d2'",
+   "identical": false,
+   "ran": true,
+   "returncode": 0,
+   "verdict": true
+  },
+  {
+   "baseline": "d632-placement-contract.json",
+   "baseline_verdict": "PASS",
+   "board_sha256": null,
+   "contract": "placement",
+   "difference": null,
+   "identical": true,
+   "ran": true,
+   "returncode": 0,
+   "verdict": "PASS"
+  },
+  {
+   "baseline": "d632-population-contract.json",
+   "baseline_verdict": "PASS",
+   "board_sha256": "b6dfc5db7ec8cc80eb12a4ca47fc3449799886d45852eab130fe3e3eb7ed45c7",
+   "contract": "population",
+   "difference": "$.board_sha256: 'b6dfc5db7ec8cc80eb12a4ca47fc3449799886d45852eab130fe3e3eb7ed45c7' vs '5715bf5cd688a87f686e162b77bbcbff98dc9f9f3e20b4be6424849423e690d2'",
+   "identical": false,
+   "ran": true,
+   "returncode": 0,
+   "verdict": "PASS"
+  },
+  {
+   "baseline": "d632-land_parity-contract.json",
+   "baseline_verdict": "PASS",
+   "board_sha256": "b6dfc5db7ec8cc80eb12a4ca47fc3449799886d45852eab130fe3e3eb7ed45c7",
+   "contract": "land_parity",
+   "difference": "$.board_sha256: 'b6dfc5db7ec8cc80eb12a4ca47fc3449799886d45852eab130fe3e3eb7ed45c7' vs '5715bf5cd688a87f686e162b77bbcbff98dc9f9f3e20b4be6424849423e690d2'",
+   "identical": false,
+   "ran": true,
+   "returncode": 0,
+   "verdict": "PASS"
+  },
+  {
+   "baseline": "d632-keepout_stackup-contract.json",
+   "baseline_verdict": true,
+   "board_sha256": null,
+   "contract": "keepout_stackup",
+   "difference": "$.reference_planes.In1.Cu.area_mm2: 9407.301088 vs 9429.543319",
+   "identical": false,
+   "ran": true,
+   "returncode": 0,
+   "verdict": true
+  },
+  {
+   "baseline": "d632-rf_symmetry-contract.json",
+   "baseline_verdict": "PASS",
+   "board_sha256": null,
+   "contract": "rf_symmetry",
+   "difference": null,
+   "identical": true,
+   "ran": true,
+   "returncode": 0,
+   "verdict": "PASS"
+  },
+  {
+   "baseline": "d632-pour_partition-contract.json",
+   "baseline_verdict": true,
+   "board_sha256": null,
+   "contract": "pour_partition",
+   "difference": "$.results.PP2.islands.+3V3|F|8c612136-d173-58bf-87cf-c0b97bedd2e0[0]: 33 vs 31",
+   "identical": false,
+   "ran": true,
+   "returncode": 0,
+   "verdict": true
+  },
+  {
+   "baseline": "d632-pour_bond-contract.json",
+   "baseline_verdict": true,
+   "board_sha256": "b6dfc5db7ec8cc80eb12a4ca47fc3449799886d45852eab130fe3e3eb7ed45c7",
+   "contract": "pour_bond",
+   "difference": "$.board_sha256: 'b6dfc5db7ec8cc80eb12a4ca47fc3449799886d45852eab130fe3e3eb7ed45c7' vs '5715bf5cd688a87f686e162b77bbcbff98dc9f9f3e20b4be6424849423e690d2'",
+   "identical": false,
+   "ran": true,
+   "returncode": 0,
+   "verdict": true
+  },
+  {
+   "baseline": "d632-leaf-land-contract.json",
+   "baseline_verdict": true,
+   "board_sha256": "b6dfc5db7ec8cc80eb12a4ca47fc3449799886d45852eab130fe3e3eb7ed45c7",
+   "contract": "leaf_land",
+   "difference": "$.board_sha256: 'b6dfc5db7ec8cc80eb12a4ca47fc3449799886d45852eab130fe3e3eb7ed45c7' vs '5715bf5cd688a87f686e162b77bbcbff98dc9f9f3e20b4be6424849423e690d2'",
+   "identical": false,
+   "ran": true,
+   "returncode": 0,
+   "verdict": true
+  },
+  {
+   "baseline": "d632-protected-copper.json",
+   "baseline_verdict": true,
+   "board_sha256": null,
+   "contract": "protected_copper",
+   "difference": null,
+   "identical": true,
+   "ran": true,
+   "returncode": 0,
+   "verdict": true
+  },
+  {
+   "baseline": null,
+   "board_sha256": "b6dfc5db7ec8cc80eb12a4ca47fc3449799886d45852eab130fe3e3eb7ed45c7",
+   "contract": "obstacle_model",
+   "identical": null,
+   "ran": true,
+   "returncode": 0,
+   "verdict": "PASS"
+  }
+ ],
+ "contracts_run": 11,
+ "method": "each contract re-run now and compared FIELD BY FIELD with the artifact the baseline decision committed; path-typed fields (board, schematic, guard, pre_board) compare by basename because they record the path as typed",
+ "question": "does this framework change move ANY standing contract, on a board whose sha256 did not change",
+ "schema": 1
+}

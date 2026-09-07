@@ -1,0 +1,219 @@
+{
+ "all_pass": false,
+ "board": "/home/aqroot8/aqroot-demo/hardware/demo/kicad/aqroot-demo/aqroot-Beta-v2.kicad_pcb",
+ "board_sha256": "0eb2a4e653fded22d1f455122045812205edf72a5a1a3ae27c6189f617807489",
+ "checks": {
+  "P1": {
+   "base_rev": "919ebe4",
+   "diffs": [],
+   "nets_compared": 8,
+   "ok": true
+  },
+  "P2": {
+   "islands_renumbered": [
+    {
+     "ends": [
+      "U2.2",
+      "U2.3"
+     ],
+     "layer": "B",
+     "net": "GND",
+     "now": 25,
+     "was": 26
+    },
+    {
+     "ends": [
+      "U4.6",
+      "U4.7"
+     ],
+     "layer": "B",
+     "net": "GND",
+     "now": 38,
+     "was": 35
+    },
+    {
+     "ends": [
+      "J5.23",
+      "C25.2"
+     ],
+     "layer": "B",
+     "net": "GND",
+     "now": 41,
+     "was": 40
+    },
+    {
+     "ends": [
+      "U18.4",
+      "U18.5"
+     ],
+     "layer": "B",
+     "net": "GND",
+     "now": 42,
+     "was": 41
+    },
+    {
+     "ends": [
+      "C37.2",
+      "R98.2"
+     ],
+     "layer": "B",
+     "net": "GND",
+     "now": 43,
+     "was": 42
+    },
+    {
+     "ends": [
+      "R98.2",
+      "R17.2"
+     ],
+     "layer": "B",
+     "net": "GND",
+     "now": 43,
+     "was": 42
+    },
+    {
+     "ends": [
+      "R98.2",
+      "R97.2"
+     ],
+     "layer": "B",
+     "net": "GND",
+     "now": 43,
+     "was": 42
+    },
+    {
+     "ends": [
+      "R102.2",
+      "C39.2"
+     ],
+     "layer": "B",
+     "net": "GND",
+     "now": 44,
+     "was": 43
+    },
+    {
+     "ends": [
+      "R78.2",
+      "C22.2"
+     ],
+     "layer": "B",
+     "net": "GND",
+     "now": 45,
+     "was": 44
+    },
+    {
+     "ends": [
+      "C22.2",
+      "C57.2"
+     ],
+     "layer": "B",
+     "net": "GND",
+     "now": 45,
+     "was": 44
+    },
+    {
+     "ends": [
+      "C65.2",
+      "U21.4"
+     ],
+     "layer": "B",
+     "net": "GND",
+     "now": 49,
+     "was": 48
+    },
+    {
+     "ends": [
+      "U21.4",
+      "C38.2"
+     ],
+     "layer": "B",
+     "net": "GND",
+     "now": 49,
+     "was": 48
+    },
+    {
+     "ends": [
+      "C76.2",
+      "C73.2"
+     ],
+     "layer": "B",
+     "net": "GND",
+     "now": 54,
+     "was": 53
+    },
+    {
+     "ends": [
+      "R88.2",
+      "C61.2"
+     ],
+     "layer": "B",
+     "net": "GND",
+     "now": 57,
+     "was": 56
+    }
+   ],
+   "misplaced_ends": [],
+   "off_copper": [
+    {
+     "ends": [
+      "U12.1",
+      "via"
+     ],
+     "island": 3,
+     "layer": "B",
+     "net": "/01_POWER_TREE/BQ25185_SYS",
+     "points": 147,
+     "points_off_copper": 10,
+     "spec_island": 3
+    }
+   ],
+   "ok": false,
+   "points": 1554,
+   "tubes": 48
+  },
+  "P3": {
+   "cells_outside_keepout": [],
+   "guarded_layers": {
+    "B": 1244,
+    "F": 310
+   },
+   "ok": true,
+   "probe_net": "/I2C_SDA_INT",
+   "tube_cells_not_blocked": []
+  },
+  "P4": {
+   "detail": {
+    "+3V3": {
+     "foreign_tubes": [
+      "/01_POWER_TREE/BQ25185_SYS",
+      "GND"
+     ],
+     "own_tubes_seen": 0
+    },
+    "/01_POWER_TREE/BQ25185_SYS": {
+     "foreign_tubes": [
+      "+3V3",
+      "GND"
+     ],
+     "own_tubes_seen": 0
+    },
+    "GND": {
+     "foreign_tubes": [
+      "+3V3",
+      "/01_POWER_TREE/BQ25185_SYS"
+     ],
+     "own_tubes_seen": 0
+    }
+   },
+   "ok": true,
+   "pour_nets": [
+    "+3V3",
+    "/01_POWER_TREE/BQ25185_SYS",
+    "GND"
+   ]
+  }
+ },
+ "guard": "evidence/d646-pour-bond-guard-next.json",
+ "guard_sha256": "0986bc59d5c104efb51dc08b370d0f8ccdb6cdbda2151cc0a275662cc774e657",
+ "schema": 1
+}

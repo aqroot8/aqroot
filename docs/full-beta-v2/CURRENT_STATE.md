@@ -13,6 +13,108 @@
 > This file references DEVICE_SPEC rather than duplicating full specs.
 
 ## 1. Authoritative HEAD
+- **Demo D-656 (THE PITCH IS PART OF THE TRANSACTION AND A FINER LATTICE IS NOT
+  A BETTER ONE; AND THE `BQ25185` SYSTEM RAIL IS DELIVERED THROUGH A 0.197 mm
+  POUR NECK):**  **COPPER PROMOTED.**  Authority
+  `b6dfc5db7ec8cc80eb12a4ca47fc3449799886d45852eab130fe3e3eb7ed45c7` ->
+  **`0eb2a4e653fded22d1f455122045812205edf72a5a1a3ae27c6189f617807489`**;
+  retained open edges **35 -> 34**, open retained nets **20 -> 19**, connected
+  retained **153 -> 154**, raw board ratsnest **51 -> 50**, `/I2C_SDA_INT` open
+  edges **1 -> 0** and islands **2 -> 1** -- FULLY CONNECTED -- and
+  **`sole_path_net_count` 26 -> 8** with the sole-path rows 3 -> 2 and `U2`
+  gone from them.  `hardware/beta-v2` untouched.  **FOURTEEN of fourteen gate
+  clauses PASS, `refused_clauses` EMPTY** (`evidence/d656-gate-promote.json`,
+  dry run `evidence/d656-gate-dryrun.json`); `verify_promotion.py` PASS on all
+  15 checks (`evidence/d656-verify-promotion.json`); real KiCad DRC **exit 0,
+  ZERO attributable**, profile identical to baseline; the standing suite is
+  **11/11 RAN, 11/11 PASS** before (`evidence/d656-contract-regression-pre.json`,
+  byte-for-byte D-655's own report) and after
+  (`evidence/d656-contract-regression.json`), baseline `d632`.
+  **`U3.23 -> U2.23` IS ROUTED** -- 19.294 mm, two 0.600/0.300 barrels at
+  (65.250, 90.400) and (61.150, 93.200), `B/F/B`, 16 tracks + 2 vias added,
+  NOTHING removed -- so **BOTH `PCAL9535APW` EXPANDERS ARE NOW FULLY ON THE I2C
+  BUS** and all six user buttons, the three `FRONT_RGB_*` nets, `XGPIO4`/
+  `XGPIO5` and every accessory-power control are reachable by the MCU.  What is
+  left of the critical path is `U16` (`TCA4307` Qwiic buffer, carries 6) and
+  `U14` (`MAX17048` fuel gauge, carries 3), both on `/I2C_SCL_INT`.
+  **(1) THE PITCH TRAVELS WITH THE QUESTION, NOT WITH THE POCKET.**  D-655 §6
+  proved this pocket holds BOTH bus lines only at 0.025 mm and its `NEXT` said
+  to re-ask `SDA` there.  At 0.025 mm the edge routes in 20.246 mm, improves the
+  board, passes 13/14 and is REFUSED by `attributable_drc` (`copper_sliver
+  (B.Cu)`).  At **0.050 mm the same edge routes in 19.294 mm -- SHORTER -- with
+  the same two barrels on the same `B/F/B` and the baseline DRC profile
+  exactly.**  0.0333 mm is the control: `NO_LEGAL_ESCAPE_DST` at `U2.23`.  A
+  two-net pocket-capacity table does not answer a one-net question.
+  **(2) TWO RECORDED LEVERS REFUTED.**  D-655's `evidence/d655-reserve-sliver-band.json`
+  -- its named untried lever -- moves `SDA`'s barrel to (66.175, 89.075) exactly
+  as its probe predicted and the gate refuses TWO clauses: the sliver stands AND
+  `hole_clearance` goes 5 -> 11.  And **D-655's identification of the sliver was
+  wrong**: cutting its 0.031 x 0.060 mm `BQ25185_SYS` crumb out with a notch in
+  the zone outline, refilled by the real engine, leaves `copper_sliver (B.Cu)`
+  standing (`evidence/d656-pour-notch.json`).  **The object bisect is the
+  answer** (`evidence/d656-sliver-bisect.py/.json`): of the fourteen objects the
+  0.025 mm run added, EXACTLY ONE is necessary -- the 0.200 mm `B.Cu` track
+  (61.050, 80.925) -> (65.125, 86.250), 6.705 mm -- and dropping either barrel,
+  or the segment passing 0.668 mm from D-655's crumb, leaves it.  **And it is
+  not in a pour at all**: the zone-fill erosion reports 1332 residues on the
+  sliver-free board and 1332 on the sliver-bearing one, ZERO new.  Zone
+  `min_thickness` is not the lever either (`evidence/d656-min-thickness-ladder.json`).
+  **`copper_sliver` GEOMETRY REMAINS UNLOCALISED**; the authoritative localiser
+  is object-level bisection under the real DRC, and a sliver refusal is answered
+  by changing the ROUTE.
+  **(3) NEW TRACKED READ-ONLY SCREEN `screen_pour_neck_fragility.py`** (byte-
+  identical on re-run) asks what nothing on this board could: **a pour is a
+  CONDUCTOR and KiCad DRC never checks its WIDTH.**  It bisects the erosion
+  radius for the largest `r` at which every land an island holds is still ONE
+  component, so `bottleneck_mm = 2r` is the narrowest place on the widest path.
+  **`/01_POWER_TREE/BQ25185_SYS` `B.Cu` `POUR 1` island 3 bottlenecks at
+  0.197 mm and `POUR 2` island 0 at 0.300 mm, against a `.kicad_dru` section-5
+  `SYS_MAIN` floor of 0.500 mm and a 0.300 mm thermal minimum**
+  (`evidence/d656-sys-neck-ampacity.json`).  `SYS_MAIN` is OUTER-LAYER BY POLICY
+  and owns no reserved inner plane, so that pour IS the whole conductor -- the
+  screen distinguishes this itself and reports `+3V3`'s own 0.113 mm `F.Cu` neck
+  as `UNDER_FLOOR_PLANE_PARALLEL`, advisory, because `In3` carries it.  `U12.1`
+  is the `TPS63020` buck-boost's `SYS` input; `L4.1`/`U21.3` is the `TPS61023`
+  accessory 5 V boost that D-185 prices at **2.19 A PEAK**, fed through 0.300 mm
+  of pour.  **CONFIRMED BY KiCad's OWN FILLER:** raise `POUR 1`'s
+  `min_thickness`, refill, ask `GetConnectivity` -- at 0.205 mm `C28.1` falls off
+  the net and at 0.250 mm `U12.1` falls off `SW9.2`.  The necks are NAMED:
+  `U12.1 <-> C28.1` at (65.5, 93.85) between `TP13.1`'s pad and
+  `Net-(L1-Pad1)`'s 0.400 mm track; `L4.1 <-> U21.3` at (59.2, 34.4) between
+  `R48`'s Qwiic series-resistor lands and `R100.2`.
+  **(4) `BQ25185_SYS` IS ALSO IN PIECES AND IT IS NOW THE BOARD'S LARGEST
+  RESIDUAL** -- 6 of the 34 retained open edges, 9 raw clusters, and `U11.1`
+  (the charger's own `SYS` output) is a cluster of ONE.  Its pour islands are
+  0.701 to 2.925 mm apart and `--join-islands` refuses every one at BOTH the
+  netclass 0.800 mm and the `.kicad_dru` floor 0.500 mm: **4 `NO_ANCHOR`**
+  (`U12.10/11`, `R68.1`, `U11.1`, `U13.3`) and **4 `NO_PATH`**.  D-605's "0 of
+  32" is the same refusal, now separated into its two causes.
+  `screen_open_edge_cost.py` ranks by the OTHER nets a part carries, and for a
+  POWER net that is the wrong key: an open `SYS` edge strands no signal net and
+  disables the board.
+  **(5) THE BOND GUARD WENT STALE A SECOND WAY.**  `pour_bond` `P2` failed after
+  the promotion with **`off_copper: 1`** -- ten of 147 sampled points of the
+  `BQ25185_SYS` `U12.1 <-> via` tube fall outside island 3, because the new
+  copper took 9.76 mm2 out of that pour and KiCad re-poured a different SHAPE.
+  A tube is a POLYLINE frozen at emission; the conductor is not.  Measured, not
+  asserted: **every pairwise bottleneck inside island 3 is IDENTICAL before and
+  after to 0.1 um** (0.1969 / 0.2203 / 0.1969 mm), KiCad's connectivity reports
+  the same nine `BQ25185_SYS` clusters at every rung either side,
+  `misplaced_ends` is EMPTY, `PP1-PP4` and `pour_partition_intact` PASS, and the
+  guard re-emitted on the promoted board reads **`P1-P4 PASS`, 49 tubes, ZERO
+  renumbered, ZERO off copper**.  `BOND_GUARD` moved to
+  `evidence/d656-pour-bond-guard-next.json`; the stale guard still FAILS on the
+  same board, which is the bump's non-vacuity control.
+  **NEXT:** (1) `/01_POWER_TREE/BQ25185_SYS` -- 6 open edges on the system rail;
+  point `screen_pair_corridor_blame.py --per-object --max-mm` at the four
+  `NO_PATH` clusters and `screen_pad_escape_relief.py` at the four `NO_ANCHOR`
+  ones.  (2) The two sub-floor `SYS` necks -- not a routing problem: widen by
+  moving `TP13.1` or `L1`'s track, or lay a 0.500 mm `SYS_MAIN` track in
+  parallel, riding one of the six edges so gate clause 4 is satisfied.
+  (3) `copper_sliver` localisation is an OPEN INSTRUMENT GAP.  (4)
+  `/I2C_SCL_INT` `U16.3 <-> U4.13`.  (5) `/I2C_SCL_INT` `U14.7 <-> J1.44`
+  remains the one OPEN OWNER DECISION (D-655 §7), RECORDED NOT TAKEN.
+  Everything D-655 carried is carried unchanged.
 - **Demo D-655 (THE ANSWER WAS TWO TRACKS, NOT TWO NETS; AND `U2`'s POCKET
   HOLDS BOTH BUS LINES ONLY AT 0.025 mm AND ONLY IN ONE ORDER):**  **COPPER
   PROMOTED.**  Authority

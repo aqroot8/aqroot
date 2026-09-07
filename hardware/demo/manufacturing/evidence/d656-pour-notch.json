@@ -1,0 +1,55 @@
+{
+ "board": "w/d656/notch_a/aqroot-Beta-v2.kicad_pcb",
+ "drc_exit": 0,
+ "drc_types": {
+  "copper_sliver": 1,
+  "hole_clearance": 5,
+  "lib_footprint_issues": 199,
+  "solder_mask_bridge": 1
+ },
+ "new_outline": "(xy 58.5 72) (xy 71 72) (xy 71 108.5) (xy 58.5 108.5) (xy 58.5 90.4) (xy 66.6 90.4) (xy 66.6 89.3) (xy 58.5 89.3)",
+ "notch_mm": {
+  "x_to": 66.6,
+  "y0": 89.3,
+  "y1": 90.4
+ },
+ "partition": [
+  [
+   "C24.1",
+   "C33.1",
+   "C64.1",
+   "L2.1"
+  ],
+  [
+   "C26.2"
+  ],
+  [
+   "C27.1"
+  ],
+  [
+   "C28.1",
+   "SW9.2",
+   "U12.1"
+  ],
+  [
+   "L4.1",
+   "U21.3"
+  ],
+  [
+   "R68.1"
+  ],
+  [
+   "U11.1"
+  ],
+  [
+   "U12.10",
+   "U12.11"
+  ],
+  [
+   "U13.3"
+  ]
+ ],
+ "schema": 1,
+ "source": "w/d656/gate1/aqroot-Beta-v2.kicad_pcb",
+ "zone": "B /01_POWER_TREE/BQ25185_SYS POUR 1"
+}

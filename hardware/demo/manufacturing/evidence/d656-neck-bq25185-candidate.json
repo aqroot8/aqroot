@@ -1,0 +1,586 @@
+{
+ "board": "w/d656/gate1/aqroot-Beta-v2.kicad_pcb",
+ "board_sha256": "a4a655395eca96c9bfd543666116c3b5eb9c1b4a9469c9c65c9d9f579bd0965e",
+ "radii_mm": [
+  0.03,
+  0.062
+ ],
+ "schema": 1,
+ "zones": [
+  {
+   "island_removal_mode": 0,
+   "islands": [
+    {
+     "area_mm2": 10.8135,
+     "bbox_mm": [
+      56.361,
+      33.639,
+      59.64,
+      39.621
+     ],
+     "bottleneck_mm": 0.3,
+     "floor_mm": 0.5,
+     "floor_verdict": "UNDER_FLOOR",
+     "held_objects": 2,
+     "island": 0,
+     "ladder": [
+      {
+       "components": 1,
+       "dead_area_mm2": 0,
+       "dead_components": 0,
+       "detail": [
+        {
+         "area_mm2": 10.813,
+         "bbox_mm": [
+          56.361,
+          33.639,
+          59.638,
+          39.618
+         ],
+         "pads": [
+          "L4.1",
+          "U21.3"
+         ],
+         "tracks": 0,
+         "verdict": "LOAD_BEARING",
+         "vias": 0
+        }
+       ],
+       "neck_width_mm": 0.06,
+       "r_mm": 0.03,
+       "thin_material": []
+      },
+      {
+       "components": 1,
+       "dead_area_mm2": 0,
+       "dead_components": 0,
+       "detail": [
+        {
+         "area_mm2": 10.8113,
+         "bbox_mm": [
+          56.361,
+          33.639,
+          59.636,
+          39.615
+         ],
+         "pads": [
+          "L4.1",
+          "U21.3"
+         ],
+         "tracks": 0,
+         "verdict": "LOAD_BEARING",
+         "vias": 0
+        }
+       ],
+       "neck_width_mm": 0.124,
+       "r_mm": 0.062,
+       "thin_material": []
+      }
+     ],
+     "pads": [
+      "L4.1",
+      "U21.3"
+     ],
+     "plane_parallel": [],
+     "tracks": 0,
+     "vias": 0
+    }
+   ],
+   "layer": "B.Cu",
+   "min_thickness_mm": 0.2,
+   "net": "/01_POWER_TREE/BQ25185_SYS",
+   "zone": "B /01_POWER_TREE/BQ25185_SYS POUR 2"
+  },
+  {
+   "island_removal_mode": 0,
+   "islands": [
+    {
+     "area_mm2": 83.0131,
+     "bbox_mm": [
+      60.223,
+      80.071,
+      71.0,
+      102.499
+     ],
+     "bottleneck_mm": 0.1969,
+     "floor_mm": 0.5,
+     "floor_verdict": "UNDER_FLOOR",
+     "held_objects": 3,
+     "island": 3,
+     "ladder": [
+      {
+       "components": 1,
+       "dead_area_mm2": 0,
+       "dead_components": 0,
+       "detail": [
+        {
+         "area_mm2": 83.0096,
+         "bbox_mm": [
+          60.223,
+          80.072,
+          71.0,
+          102.499
+         ],
+         "pads": [
+          "U12.1",
+          "C28.1"
+         ],
+         "tracks": 0,
+         "verdict": "LOAD_BEARING",
+         "vias": 1
+        }
+       ],
+       "neck_width_mm": 0.06,
+       "r_mm": 0.03,
+       "thin_material": [
+        {
+         "area_mm2": 0.00052,
+         "bbox_mm": [
+          65.561,
+          89.802,
+          65.593,
+          89.862
+         ],
+         "centre_mm": [
+          65.577,
+          89.832
+         ],
+         "size_mm": [
+          0.031,
+          0.06
+         ]
+        }
+       ]
+      },
+      {
+       "components": 1,
+       "dead_area_mm2": 0,
+       "dead_components": 0,
+       "detail": [
+        {
+         "area_mm2": 82.9983,
+         "bbox_mm": [
+          60.223,
+          80.072,
+          71.0,
+          102.499
+         ],
+         "pads": [
+          "U12.1",
+          "C28.1"
+         ],
+         "tracks": 0,
+         "verdict": "LOAD_BEARING",
+         "vias": 1
+        }
+       ],
+       "neck_width_mm": 0.124,
+       "r_mm": 0.062,
+       "thin_material": [
+        {
+         "area_mm2": 0.00224,
+         "bbox_mm": [
+          65.56,
+          89.77,
+          65.625,
+          89.894
+         ],
+         "centre_mm": [
+          65.593,
+          89.832
+         ],
+         "size_mm": [
+          0.065,
+          0.124
+         ]
+        },
+        {
+         "area_mm2": 0.00185,
+         "bbox_mm": [
+          65.938,
+          89.781,
+          66.009,
+          89.893
+         ],
+         "centre_mm": [
+          65.973,
+          89.837
+         ],
+         "size_mm": [
+          0.072,
+          0.112
+         ]
+        }
+       ]
+      }
+     ],
+     "pads": [
+      "U12.1",
+      "C28.1"
+     ],
+     "plane_parallel": [],
+     "tracks": 0,
+     "vias": 1
+    },
+    {
+     "area_mm2": 6.5525,
+     "bbox_mm": [
+      61.205,
+      104.379,
+      64.5,
+      108.057
+     ],
+     "bottleneck_mm": null,
+     "held_objects": 1,
+     "island": 0,
+     "ladder": [
+      {
+       "components": 1,
+       "dead_area_mm2": 0,
+       "dead_components": 0,
+       "detail": [
+        {
+         "area_mm2": 6.552,
+         "bbox_mm": [
+          61.205,
+          104.38,
+          64.5,
+          108.057
+         ],
+         "pads": [
+          "C26.2"
+         ],
+         "tracks": 0,
+         "verdict": "LOAD_BEARING",
+         "vias": 0
+        }
+       ],
+       "neck_width_mm": 0.06,
+       "r_mm": 0.03,
+       "thin_material": []
+      },
+      {
+       "components": 1,
+       "dead_area_mm2": 0,
+       "dead_components": 0,
+       "detail": [
+        {
+         "area_mm2": 6.5505,
+         "bbox_mm": [
+          61.205,
+          104.38,
+          64.5,
+          108.057
+         ],
+         "pads": [
+          "C26.2"
+         ],
+         "tracks": 0,
+         "verdict": "LOAD_BEARING",
+         "vias": 0
+        }
+       ],
+       "neck_width_mm": 0.124,
+       "r_mm": 0.062,
+       "thin_material": []
+      }
+     ],
+     "pads": [
+      "C26.2"
+     ],
+     "tracks": 0,
+     "vias": 0
+    },
+    {
+     "area_mm2": 5.5205,
+     "bbox_mm": [
+      65.951,
+      73.049,
+      68.215,
+      76.85
+     ],
+     "bottleneck_mm": null,
+     "held_objects": 1,
+     "island": 5,
+     "ladder": [
+      {
+       "components": 1,
+       "dead_area_mm2": 0,
+       "dead_components": 0,
+       "detail": [
+        {
+         "area_mm2": 5.5203,
+         "bbox_mm": [
+          65.951,
+          73.049,
+          68.213,
+          76.85
+         ],
+         "pads": [
+          "C27.1"
+         ],
+         "tracks": 0,
+         "verdict": "LOAD_BEARING",
+         "vias": 0
+        }
+       ],
+       "neck_width_mm": 0.06,
+       "r_mm": 0.03,
+       "thin_material": []
+      },
+      {
+       "components": 1,
+       "dead_area_mm2": 0,
+       "dead_components": 0,
+       "detail": [
+        {
+         "area_mm2": 5.5194,
+         "bbox_mm": [
+          65.951,
+          73.049,
+          68.211,
+          76.85
+         ],
+         "pads": [
+          "C27.1"
+         ],
+         "tracks": 0,
+         "verdict": "LOAD_BEARING",
+         "vias": 0
+        }
+       ],
+       "neck_width_mm": 0.124,
+       "r_mm": 0.062,
+       "thin_material": []
+      }
+     ],
+     "pads": [
+      "C27.1"
+     ],
+     "tracks": 0,
+     "vias": 0
+    },
+    {
+     "area_mm2": 3.3115,
+     "bbox_mm": [
+      59.672,
+      102.701,
+      62.636,
+      104.449
+     ],
+     "bottleneck_mm": 1.1953,
+     "floor_mm": 0.5,
+     "floor_verdict": "OK",
+     "held_objects": 4,
+     "island": 1,
+     "ladder": [
+      {
+       "components": 1,
+       "dead_area_mm2": 0,
+       "dead_components": 0,
+       "detail": [
+        {
+         "area_mm2": 3.3112,
+         "bbox_mm": [
+          59.675,
+          102.701,
+          62.635,
+          104.449
+         ],
+         "pads": [
+          "C24.1"
+         ],
+         "tracks": 2,
+         "verdict": "LOAD_BEARING",
+         "vias": 1
+        }
+       ],
+       "neck_width_mm": 0.06,
+       "r_mm": 0.03,
+       "thin_material": []
+      },
+      {
+       "components": 1,
+       "dead_area_mm2": 0,
+       "dead_components": 0,
+       "detail": [
+        {
+         "area_mm2": 3.3101,
+         "bbox_mm": [
+          59.678,
+          102.701,
+          62.633,
+          104.448
+         ],
+         "pads": [
+          "C24.1"
+         ],
+         "tracks": 2,
+         "verdict": "LOAD_BEARING",
+         "vias": 1
+        }
+       ],
+       "neck_width_mm": 0.124,
+       "r_mm": 0.062,
+       "thin_material": []
+      }
+     ],
+     "pads": [
+      "C24.1"
+     ],
+     "plane_parallel": [],
+     "tracks": 2,
+     "vias": 1
+    },
+    {
+     "area_mm2": 0.7488,
+     "bbox_mm": [
+      66.404,
+      102.391,
+      67.322,
+      103.3
+     ],
+     "bottleneck_mm": 0.8484,
+     "floor_mm": 0.5,
+     "floor_verdict": "OK",
+     "held_objects": 2,
+     "island": 2,
+     "ladder": [
+      {
+       "components": 1,
+       "dead_area_mm2": 0,
+       "dead_components": 0,
+       "detail": [
+        {
+         "area_mm2": 0.7486,
+         "bbox_mm": [
+          66.404,
+          102.391,
+          67.32,
+          103.3
+         ],
+         "pads": [
+          "U12.10",
+          "U12.11"
+         ],
+         "tracks": 0,
+         "verdict": "LOAD_BEARING",
+         "vias": 0
+        }
+       ],
+       "neck_width_mm": 0.06,
+       "r_mm": 0.03,
+       "thin_material": []
+      },
+      {
+       "components": 1,
+       "dead_area_mm2": 0,
+       "dead_components": 0,
+       "detail": [
+        {
+         "area_mm2": 0.7478,
+         "bbox_mm": [
+          66.404,
+          102.391,
+          67.318,
+          103.3
+         ],
+         "pads": [
+          "U12.10",
+          "U12.11"
+         ],
+         "tracks": 0,
+         "verdict": "LOAD_BEARING",
+         "vias": 0
+        }
+       ],
+       "neck_width_mm": 0.124,
+       "r_mm": 0.062,
+       "thin_material": []
+      }
+     ],
+     "pads": [
+      "U12.10",
+      "U12.11"
+     ],
+     "plane_parallel": [],
+     "tracks": 0,
+     "vias": 0
+    },
+    {
+     "area_mm2": 0.4492,
+     "bbox_mm": [
+      65.857,
+      78.501,
+      66.887,
+      79.525
+     ],
+     "bottleneck_mm": null,
+     "held_objects": 1,
+     "island": 4,
+     "ladder": [
+      {
+       "components": 1,
+       "dead_area_mm2": 0,
+       "dead_components": 0,
+       "detail": [
+        {
+         "area_mm2": 0.449,
+         "bbox_mm": [
+          65.859,
+          78.501,
+          66.884,
+          79.525
+         ],
+         "pads": [
+          "U11.1"
+         ],
+         "tracks": 0,
+         "verdict": "LOAD_BEARING",
+         "vias": 0
+        }
+       ],
+       "neck_width_mm": 0.06,
+       "r_mm": 0.03,
+       "thin_material": []
+      },
+      {
+       "components": 1,
+       "dead_area_mm2": 0,
+       "dead_components": 0,
+       "detail": [
+        {
+         "area_mm2": 0.4481,
+         "bbox_mm": [
+          65.862,
+          78.501,
+          66.881,
+          79.524
+         ],
+         "pads": [
+          "U11.1"
+         ],
+         "tracks": 0,
+         "verdict": "LOAD_BEARING",
+         "vias": 0
+        }
+       ],
+       "neck_width_mm": 0.124,
+       "r_mm": 0.062,
+       "thin_material": []
+      }
+     ],
+     "pads": [
+      "U11.1"
+     ],
+     "tracks": 0,
+     "vias": 0
+    }
+   ],
+   "layer": "B.Cu",
+   "min_thickness_mm": 0.2,
+   "net": "/01_POWER_TREE/BQ25185_SYS",
+   "zone": "B /01_POWER_TREE/BQ25185_SYS POUR 1"
+  }
+ ]
+}

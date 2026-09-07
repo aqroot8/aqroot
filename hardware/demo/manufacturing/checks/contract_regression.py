@@ -51,7 +51,24 @@ EVIDENCE = MFG / "evidence"
 # board whose own guard reads `P1-P4 PASS`.  The stale question is the
 # defect, not the board.  EVERY promotion that re-emits the guard must
 # move this line to the guard IT emitted.
-BOND_GUARD = "evidence/d646-pour-bond-guard-next.json"
+#
+# D-656 FOUND THE SECOND STALENESS MODE, AND IT IS NOT RENUMBERING.  The
+# `d646` guard survived D-651 through D-655 and went `FAIL` on D-656's
+# board with `off_copper: 1` -- ten of the 147 sampled points of the
+# `/01_POWER_TREE/BQ25185_SYS` `U12.1 <-> via` tube fall outside island 3,
+# because `/I2C_SDA_INT`'s copper took 9.76 mm2 out of that pour and KiCad
+# re-poured a different SHAPE.  A tube is a POLYLINE frozen at emission;
+# the conductor is not.  That it is the QUESTION and not the board was
+# measured three ways and recorded in D-656 section 5: every pairwise
+# bottleneck inside island 3 is IDENTICAL before and after to 0.1 um
+# (0.1969 / 0.2203 / 0.1969 mm), KiCad's own connectivity reports the same
+# nine `BQ25185_SYS` clusters at every `min_thickness` rung either side of
+# the promotion, `misplaced_ends` is EMPTY, and `PP1-PP4` and
+# `verify_promotion.py`'s `pour_partition_intact` both PASS.  The guard
+# re-emitted on the promoted board reads `P1-P4 PASS`, 49 tubes, ZERO
+# renumbered, ZERO off copper.  The STALE guard still FAILS on that same
+# board, which is this bump's own non-vacuity control.
+BOND_GUARD = "evidence/d656-pour-bond-guard-next.json"
 
 # name -> (script, extra argv, baseline evidence basename WITHOUT the decision
 #          prefix, verdict field).  The verdict field is read only for the

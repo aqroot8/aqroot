@@ -1,0 +1,200 @@
+{
+ "answer": "NO.  0.200 -> 0.210 -> 0.225 -> 0.250 mm, each refilled by the real engine and re-DRC'd on the 0.025 mm /I2C_SDA_INT candidate, leaves `copper_sliver` at 1 -- and fragments the pour further (6 filled outlines -> 8) while breaking C28.1 and then U12.1 off the SYS net.  `min_thickness` is not the lever.",
+ "question": "does raising `B /01_POWER_TREE/BQ25185_SYS POUR 1`'s own `min_thickness` make KiCad's filler prune the crumb D-655 blamed for the `copper_sliver`?",
+ "schema": 1,
+ "source": "the 0.025 mm /I2C_SDA_INT gate candidate (w/d656/gate1)",
+ "trials": [
+  {
+   "drc_exit": 0,
+   "drc_types": {
+    "copper_sliver": 1,
+    "hole_clearance": 5,
+    "lib_footprint_issues": 199,
+    "solder_mask_bridge": 1
+   },
+   "min_thickness_mm": 0.2,
+   "partition": [
+    [
+     "C24.1",
+     "C33.1",
+     "C64.1",
+     "L2.1"
+    ],
+    [
+     "C26.2"
+    ],
+    [
+     "C27.1"
+    ],
+    [
+     "C28.1",
+     "SW9.2",
+     "U12.1"
+    ],
+    [
+     "L4.1",
+     "U21.3"
+    ],
+    [
+     "R68.1"
+    ],
+    [
+     "U11.1"
+    ],
+    [
+     "U12.10",
+     "U12.11"
+    ],
+    [
+     "U13.3"
+    ]
+   ]
+  },
+  {
+   "drc_exit": 0,
+   "drc_types": {
+    "copper_sliver": 1,
+    "hole_clearance": 5,
+    "lib_footprint_issues": 199,
+    "solder_mask_bridge": 1
+   },
+   "min_thickness_mm": 0.21,
+   "partition": [
+    [
+     "C24.1",
+     "C33.1",
+     "C64.1",
+     "L2.1"
+    ],
+    [
+     "C26.2"
+    ],
+    [
+     "C27.1"
+    ],
+    [
+     "C28.1"
+    ],
+    [
+     "L4.1",
+     "U21.3"
+    ],
+    [
+     "R68.1"
+    ],
+    [
+     "SW9.2",
+     "U12.1"
+    ],
+    [
+     "U11.1"
+    ],
+    [
+     "U12.10",
+     "U12.11"
+    ],
+    [
+     "U13.3"
+    ]
+   ]
+  },
+  {
+   "drc_exit": 0,
+   "drc_types": {
+    "copper_sliver": 1,
+    "hole_clearance": 5,
+    "lib_footprint_issues": 199,
+    "solder_mask_bridge": 1
+   },
+   "min_thickness_mm": 0.225,
+   "partition": [
+    [
+     "C24.1",
+     "C33.1",
+     "C64.1",
+     "L2.1"
+    ],
+    [
+     "C26.2"
+    ],
+    [
+     "C27.1"
+    ],
+    [
+     "C28.1"
+    ],
+    [
+     "L4.1",
+     "U21.3"
+    ],
+    [
+     "R68.1"
+    ],
+    [
+     "SW9.2",
+     "U12.1"
+    ],
+    [
+     "U11.1"
+    ],
+    [
+     "U12.10",
+     "U12.11"
+    ],
+    [
+     "U13.3"
+    ]
+   ]
+  },
+  {
+   "drc_exit": 0,
+   "drc_types": {
+    "copper_sliver": 1,
+    "hole_clearance": 5,
+    "lib_footprint_issues": 199,
+    "solder_mask_bridge": 1
+   },
+   "min_thickness_mm": 0.25,
+   "partition": [
+    [
+     "C24.1",
+     "C33.1",
+     "C64.1",
+     "L2.1"
+    ],
+    [
+     "C26.2"
+    ],
+    [
+     "C27.1"
+    ],
+    [
+     "C28.1"
+    ],
+    [
+     "L4.1",
+     "U21.3"
+    ],
+    [
+     "R68.1"
+    ],
+    [
+     "SW9.2"
+    ],
+    [
+     "U11.1"
+    ],
+    [
+     "U12.1"
+    ],
+    [
+     "U12.10",
+     "U12.11"
+    ],
+    [
+     "U13.3"
+    ]
+   ]
+  }
+ ]
+}

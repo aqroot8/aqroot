@@ -1,3 +1,258 @@
+# D-656 · 2026-09-07 · Demo — THE PITCH IS PART OF THE TRANSACTION AND A FINER LATTICE IS NOT A BETTER ONE: `U2`'s `SDA` IS ON THE BUS, AND THE `BQ25185` SYSTEM RAIL IS DELIVERED THROUGH A 0.197 mm POUR NECK
+
+    authority  b6dfc5db7ec8cc80eb12a4ca47fc3449799886d45852eab130fe3e3eb7ed45c7
+          ->   0eb2a4e653fded22d1f455122045812205edf72a5a1a3ae27c6189f617807489
+    retained open edges  35 -> 34     open retained nets  20 -> 19
+    connected retained nets 153 -> 154            raw board ratsnest 51 -> 50
+    /I2C_SDA_INT  open edges 1 -> 0, islands 2 -> 1   FULLY CONNECTED
+    sole_path_net_count  26 -> 8      sole-path rows 3 -> 2   `U2` GONE
+    `hardware/beta-v2` UNTOUCHED.
+
+**COPPER PROMOTED.  FOURTEEN of fourteen gate clauses PASS, `refused_clauses`
+EMPTY** (`evidence/d656-gate-promote.json`, dry run at
+`evidence/d656-gate-dryrun.json`); `verify_promotion.py` **PASS on all 15
+checks** including `beta_v2_untouched`, `nothing_removed`, `fill_stable` and
+`pour_partition_intact` (`evidence/d656-verify-promotion.json`); real KiCad DRC
+**exit 0, ZERO attributable**, profile identical to baseline
+(`hole_clearance` 5, `lib_footprint_issues` 199, `solder_mask_bridge` 1); the
+standing suite is **11/11 RAN, 11/11 PASS** BEFORE the change
+(`evidence/d656-contract-regression-pre.json`, byte-for-byte the report D-655
+committed, which is the proof that this decision's new READ-ONLY screen
+moved nothing) and **11/11 RAN, 11/11 PASS** after
+(`evidence/d656-contract-regression.json`), baseline `d632` -- the second run
+once the bond guard was re-emitted on the board it now describes, which is
+section 4 and is a change to the QUESTION, measured as such.
+
+**`U3.23 -> U2.23` IS ROUTED** -- 19.294 mm, two 0.600/0.300 barrels at
+(65.250, 90.400) and (61.150, 93.200), `B/F/B`, 16 tracks and 2 vias added and
+**NOTHING REMOVED**.  `/I2C_SDA_INT` is now nine lands on ONE island: `J1.45`,
+`R19.2`, `TP4.1`, `U1.39`, `U14.8`, `U16.6`, `U2.23`, `U3.23`, `U4.14`.
+
+**BOTH `PCAL9535APW` EXPANDERS ARE NOW FULLY ON THE I2C BUS.**  D-655 put `SCL`
+on `U2` and `U3`; this decision puts `SDA` on `U2`, which was the last land of
+the pair still open.  `screen_open_edge_cost.py` on the promoted board
+(`evidence/d656-open-edge-cost-post.json`): **`sole_path_net_count` 26 -> 8**,
+`U2` no longer appears, and what is left of the board's critical path is `U16`
+(`TCA4307` Qwiic buffer, carries 6) and `U14` (`MAX17048` fuel gauge, carries 3),
+both on `/I2C_SCL_INT`.  **All six user buttons, the three `FRONT_RGB_*` nets,
+`XGPIO4`/`XGPIO5` and every accessory-power control on this board are now
+reachable by the MCU.**
+
+## 1. THE PITCH IS PART OF THE TRANSACTION, AND FINER IS NOT BETTER
+
+D-655 §6 measured this pocket and proved it holds BOTH bus lines only at
+0.025 mm and only in one order.  Its `NEXT` said to re-ask `SDA` there.  Asked
+there, the edge routes, improves the board, passes THIRTEEN of fourteen clauses
+and is refused by `attributable_drc` -- a `copper_sliver (B.Cu)` KiCad names
+with an empty item list.
+
+    request        pitch       length      clauses  verdict
+    /I2C_SDA_INT   0.025 mm    20.246 mm   13/14    REFUSED copper_sliver (B.Cu)
+    /I2C_SDA_INT   0.025 mm    20.173 mm   12/14    REFUSED copper_sliver
+      + D-655's reserve band                        + inherited_within_baseline
+    /I2C_SDA_INT   0.0333 mm   --          --       NO_LEGAL_ESCAPE_DST at U2.23
+    /I2C_SDA_INT   0.050 mm    19.294 mm   14/14    PROMOTED
+
+**The 0.050 mm route is 0.95 mm SHORTER than the 0.025 mm one**, takes the same
+two barrels on the same `B/F/B`, and draws the baseline DRC profile exactly.
+
+The pocket-capacity table was a measurement of TWO nets in ONE pocket.  With
+`SCL` already promoted the question is a ONE-net question, and it has a
+different answer.  **Re-asking at the pitch a previous decision proved is not
+the same as re-asking that decision's question** -- the pitch travels with the
+QUESTION, not with the pocket, and this board has now paid two gate runs to
+learn it.  0.0333 mm is the control: it is not "between" the two, it cannot
+launch `U2.23` at all.
+
+## 2. TWO RECORDED LEVERS, BOTH REFUTED
+
+**(a) D-655's reserve band was the named untried lever.  It is worse.**
+`evidence/d655-reserve-sliver-band.json` -- three `B.Cu`-only discs over the
+pour-neck band -- moves `SDA`'s barrel out to (66.175, 89.075) exactly as its
+probe predicted, and the gate then refuses TWO clauses: the sliver is still
+there AND `hole_clearance` goes **5 -> 11**.  A probe is not a refill and a
+refill is not a DRC.
+
+**(b) D-655's identification of the sliver was WRONG, and so was the METHOD that
+produced it.**  D-655 §8 named a 0.031 x 0.060 mm crumb of the
+`/01_POWER_TREE/BQ25185_SYS` `B.Cu` pour at (65.577, 89.832).  Three
+independent measurements refute it:
+
+  * **THE NOTCH.**  Cut that crumb out at the source -- a notch in `POUR 1`'s
+    own zone outline, from the pour's west edge to x = 66.6 over
+    y = 89.3 .. 90.4 -- refill with the real engine, confirm by erosion that the
+    crumb is GONE, and KiCad **still reports `copper_sliver (B.Cu)`**, with the
+    `BQ25185_SYS` pad partition unchanged at 9 clusters
+    (`evidence/d656-pour-notch.json`).
+  * **THE OBJECT BISECT, WHICH IS THE ANSWER.**  `evidence/d656-sliver-bisect.py`
+    deletes ONE of the run's fourteen added objects at a time from the gate's own
+    candidate, refills with the real engine and re-runs the real DRC.  **EXACTLY
+    ONE OBJECT IS NECESSARY**: the 0.200 mm `B.Cu` track
+    **(61.050, 80.925) -> (65.125, 86.250)**, 6.705 mm, the run's longest single
+    segment.  Drop it and the violation is gone; drop any of the other thirteen
+    -- including BOTH barrels, and including the segment that passes 0.668 mm
+    from D-655's crumb -- and it stands (`evidence/d656-sliver-bisect.json`).
+  * **AND IT IS NOT IN A POUR AT ALL.**  `d655-sliver-locate.py` run between the
+    sliver-FREE board and the sliver-BEARING board -- one track apart -- reports
+    **1332 zone-fill residues on each and ZERO new**.
+
+**A NET-LEVEL BISECT CANNOT LOCATE ANYTHING.**  D-655 reverted `/I2C_SDA_INT`'s
+WHOLE copper, which removes every residue on the board at once, then read the
+location off an erosion of the ZONE FILLS.  The attribution was sound and the
+LOCATION was an inference laid on top of it, in a model that cannot see this
+class of sliver.  The unit of a sliver bisect is the OBJECT, and the subject is
+not the pour.
+
+**(c) Zone `min_thickness` is not the lever either**
+(`evidence/d656-min-thickness-ladder.json`).  `POUR 1` refilled by the real
+engine at 0.210 / 0.225 / 0.250 mm leaves `copper_sliver` at 1, fragments the
+pour further (6 filled outlines -> 8), and breaks `C28.1` and then `U12.1` off
+the SYS net -- which is §3's finding arriving by a different road.
+
+**WHAT IS STILL OPEN:** the object is NAMED but the GEOMETRY is not.  A
+whole-layer union of every copper item -- KiCad's own subject, not the zone
+fills -- eroded at 0.030 mm reproduced nothing either.  Until an instrument can
+point at the shape, **the authoritative localiser for a `copper_sliver` on this
+board is object-level bisection under the real DRC**, and a sliver refusal is
+answered by changing the ROUTE, not the pour.
+
+## 3. THE SYSTEM RAIL IS DELIVERED THROUGH A 0.197 mm POUR NECK
+
+**NEW TRACKED READ-ONLY SCREEN `screen_pour_neck_fragility.py`** (byte-identical
+on re-run) asks the question no instrument on this board could:
+
+    a pour is a CONDUCTOR, and KiCad DRC never checks its WIDTH.
+
+It erodes each filled island, splits it into components, dilates each component
+back on its own so a land at the very edge is still attributed, and BISECTS the
+erosion radius for the largest `r` at which every object the island holds is
+still in ONE component.  `bottleneck_mm = 2r` is the narrowest place on the
+widest path joining that island's own lands.
+
+    zone / island                       area      holds              bottleneck  floor
+    B BQ25185_SYS POUR 1  island 3     79.48 mm2  U12.1 C28.1 +via    0.197 mm   0.500
+    B BQ25185_SYS POUR 2  island 0     10.81 mm2  L4.1 U21.3          0.300 mm   0.500
+
+`.kicad_dru` section 5 publishes `SYS_MAIN` at **1.0 A design current, 0.300 mm
+outer thermal minimum and a 0.500 mm `track_width` rule floor**, and says in its
+own words that `SYS_MAIN` is **OUTER-LAYER BY POLICY**.  `BQ25185_SYS` owns no
+reserved inner plane, so **that `B.Cu` pour IS the whole conductor** -- there is
+no In1/In4 in parallel the way there is for `GND`, and no In3 the way there is
+for `+3V3`.  The screen makes that distinction itself and reports `+3V3`'s own
+0.113 mm `F.Cu` neck as `UNDER_FLOOR_PLANE_PARALLEL`, advisory, because `In3`
+carries it.  `BQ25185_SYS`'s two are `UNDER_FLOOR`, full stop.
+
+**U12 is the `TPS63020` buck-boost and `U12.1` is its `SYS` input.  U21 is the
+`TPS61023` accessory 5 V boost that D-185 prices at 2.19 A PEAK inductor
+current, and `.kicad_dru` says in that same section that the SYS segment feeding
+`U21` must be sized from that peak.  It is fed through 0.300 mm of pour.**
+
+**CONFIRMED BY KiCad'S OWN FILLER, NOT ONLY BY THE MODEL.**  Raise `POUR 1`'s
+`min_thickness`, refill with `kicad-cli pcb drc --refill-zones --save-board`,
+and ask `GetConnectivity` which pads still share a cluster
+(`evidence/d656-sys-neck-ampacity.json`):
+
+    min_thickness   clusters   what changed
+    0.200 mm  (today)     9    {C28.1, SW9.2, U12.1} are ONE cluster
+    0.205 mm             10    C28.1 FALLS OFF
+    0.250 mm             11    U12.1 falls off SW9.2 as well
+
+The rung at which a pad falls off IS the width of the copper that was holding
+it.  The bisect said 0.197 mm.  The two methods agree to a rung and neither is
+the other's assumption.
+
+The necks are NAMED, not just numbered: `U12.1 <-> C28.1` is pinched at
+(65.5, 93.85) between `TP13.1`'s pad and `Net-(L1-Pad1)`'s 0.400 mm `B.Cu`
+track; `L4.1 <-> U21.3` at (59.2, 34.4) between `R48`'s Qwiic series-resistor
+lands with their 0.600 mm barrels and `R100.2`.
+
+**AND THE NET IS ALSO IN PIECES.**  `BQ25185_SYS` carries **6 of the board's 34
+retained open edges -- the largest single net** -- in 9 raw clusters, and
+`U11.1`, the `BQ25185`'s own `SYS` output, is a cluster of ONE.  Its pour
+islands are 0.701 to 2.925 mm apart, and `--join-islands` refuses every one of
+them at BOTH widths: at the netclass 0.800 mm and at the `.kicad_dru` `SYS_MAIN`
+floor of 0.500 mm, **4 clusters are `NO_ANCHOR`** (`U12.10/11`, `R68.1`,
+`U11.1`, `U13.3` -- their own pour lobe admits no track centred inside it) and
+**4 are `NO_PATH`**.  D-605 recorded "0 of 32" for this lever; this is the same
+refusal, separated into its two causes.
+
+**`screen_open_edge_cost.py` ranks by the OTHER NETS A PART CARRIES, and for a
+POWER net that is the wrong key twice over** -- an open `SYS` edge strands no
+signal net and disables the board.  D-652 re-sorted the work list once; this is
+the same lesson one level up.
+
+## 4. THE BOND GUARD WENT STALE A SECOND WAY, AND IT IS NOT RENUMBERING
+
+The standing suite's `pour_bond` contract FAILED after the promotion, and the
+failure is worth its own section because the failure MODE is new.
+
+`checks/contract_regression.py` pins `BOND_GUARD` to a `pour_bond_guard.py`
+artifact, and its own header records why: a guard emitted on an older authority
+describes a topology that no longer exists.  The mode it names is
+`islands_renumbered`.  D-656's failure is **`off_copper: 1`** -- ten of the 147
+sampled points of the `/01_POWER_TREE/BQ25185_SYS` `U12.1 <-> via` tube fall
+outside island 3, because `/I2C_SDA_INT`'s copper took **9.76 mm2** out of that
+pour (89.24 -> 79.48 mm2) and KiCad re-poured a different SHAPE.  **A tube is a
+POLYLINE frozen at emission; the conductor is not.**
+
+That it is the QUESTION and not the board was measured, not asserted:
+
+  * **Every pairwise bottleneck inside island 3 is IDENTICAL before and after,
+    to 0.1 um** -- `U12.1 <-> C28.1` 0.1969 mm, `U12.1 <-> via` 0.2203 mm,
+    `C28.1 <-> via` 0.1969 mm.  Nine and three quarter square millimetres of
+    pour came out and not one conduction path got narrower.
+  * KiCad's own connectivity reports the **same nine `BQ25185_SYS` clusters**
+    at every `min_thickness` rung either side of the promotion.
+  * `misplaced_ends` is EMPTY: every tube still starts and ends on its island.
+  * `PP1-PP4` PASS on the candidate and `verify_promotion.py`'s
+    `pour_partition_intact` PASSES on the promoted board.
+  * The guard **re-emitted on the promoted board reads `P1-P4 PASS`, 49 tubes,
+    1511 points, ZERO renumbered, ZERO off copper**
+    (`evidence/d656-pour-bond-guard-next.json`).
+
+`BOND_GUARD` is moved to that guard, exactly as the file's own doctrine
+requires, and the **STALE guard still FAILS on the same board** -- which is this
+bump's non-vacuity control: the clause did not stop biting, it started asking a
+question the board had outgrown.
+
+## 5. NEXT, IN ORDER OF LEVERAGE
+
+1. **`/01_POWER_TREE/BQ25185_SYS` IS NOW THE BOARD'S LARGEST AND MOST
+   CONSEQUENTIAL RESIDUAL** -- 6 open edges, the system rail, `U11.1` connecting
+   to nothing, and two sub-floor necks on the copper that IS connected.  The
+   four `NO_PATH` clusters are the ones `screen_pair_corridor_blame.py
+   --per-object --max-mm` was built for and it has never been pointed at them.
+   The four `NO_ANCHOR` clusters are a different question -- a lobe too small to
+   launch from -- and `screen_pad_escape_relief.py` is the instrument that
+   separates escape from barrel.
+2. **THE SUB-FLOOR NECKS ARE THEIR OWN ITEM AND THEY ARE NOT A ROUTING
+   PROBLEM.**  A 0.197 mm neck cannot be widened by routing; it is widened by
+   moving `TP13.1` or `L1`'s track, or by laying a 0.500 mm `SYS_MAIN` track in
+   parallel with the neck.  The second rides a gate clause: robustness-only
+   copper must travel with an edge-closing route, and `BQ25185_SYS` has six
+   edges to close.
+3. **`copper_sliver` IS UNLOCALISED.**  Neither the zone-fill erosion nor a
+   whole-layer copper union reproduces KiCad's verdict.  The authoritative
+   method is object-level bisection under the real DRC
+   (`evidence/d656-sliver-bisect.json`).  Until an instrument can point at the
+   geometry, a sliver refusal is answered by changing the ROUTE, not the pour.
+4. **`/I2C_SCL_INT` `U16.3 <-> U4.13`** -- 15 units / 16 objects,
+   `{WAKE_GATE_S, GND}`, 34.046 mm, eleven `GND` and four bond barrels, so it
+   owes `rebond_priced` four times.
+5. **`/I2C_SCL_INT` `U14.7 <-> J1.44` REMAINS THE ONE OPEN OWNER DECISION**
+   (D-655 §7): its only containment-bounded opening moves PROTECTED
+   `/01_POWER_TREE/BAT_PROT_SHDN_CTL` copper, and the alternative was asked
+   three ways and refused every time.  **RECORDED, NOT TAKEN.**
+6. **CARRIED UNCHANGED:** the `BQ25185_SYS` `B.Cu` pour is DFM-fragile by its own
+   geometry (D-655 NEW OPEN DFM ITEM, and §3 above is now the measurement behind
+   it); `/I2C_SDA_INT` and `/I2C_SCL_INT` against the UNPRICED I2C 400 pF
+   ceiling; `BQ25185_SYS` `C26.2`'s single-file gate; `+3V3` `R129.1`;
+   `U12.10`/`U12.11` `PLACEMENT_WALL`; `U4.5` (`VDDIO`); `/I2S_LRCLK`'s edge
+   rate; `/NFC_SUPPLY`'s per-net current; `/SPI_B_SCK` and `/BQ25185_STAT1` as
+   LANDS; `MK1.4` and `J3.A12`/`J3.B1`; `U9.16`'s single-barrel driver ground;
+   `QBoard.smooth`'s pour-bond guard as an OPEN GAP.  D-618's `J3` question
+   remains RECORDED.
+
 # D-655 · 2026-09-07 · Demo — THE ANSWER WAS TWO TRACKS, NOT TWO NETS: THE BLAME SCREEN NOW SPEAKS THE UNIT A TRANSACTION IS WRITTEN IN, AND `U2`'s POCKET HOLDS BOTH BUS LINES ONLY AT 0.025 mm AND ONLY IN ONE ORDER
 
     authority  9eaeacfca71fea2dcfdff71eb7e65c9566851cf8babbf07762285250ae2f829e

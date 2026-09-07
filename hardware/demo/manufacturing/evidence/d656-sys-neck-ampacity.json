@@ -1,0 +1,365 @@
+{
+ "board": "hardware/demo/kicad/aqroot-demo/aqroot-Beta-v2.kicad_pcb",
+ "board_sha256": "0eb2a4e653fded22d1f455122045812205edf72a5a1a3ae27c6189f617807489",
+ "decision": "D-656",
+ "instrument": "screen_pour_neck_fragility.py (D-656, tracked, read-only, byte-identical on re-run)",
+ "kicad_native_confirmation": {
+  "ladder": [
+   {
+    "clusters": 9,
+    "drc_types": {
+     "hole_clearance": 5,
+     "lib_footprint_issues": 199,
+     "solder_mask_bridge": 1
+    },
+    "min_thickness_mm": 0.2,
+    "partition": [
+     [
+      "C24.1",
+      "C33.1",
+      "C64.1",
+      "L2.1"
+     ],
+     [
+      "C26.2"
+     ],
+     [
+      "C27.1"
+     ],
+     [
+      "C28.1",
+      "SW9.2",
+      "U12.1"
+     ],
+     [
+      "L4.1",
+      "U21.3"
+     ],
+     [
+      "R68.1"
+     ],
+     [
+      "U11.1"
+     ],
+     [
+      "U12.10",
+      "U12.11"
+     ],
+     [
+      "U13.3"
+     ]
+    ]
+   },
+   {
+    "clusters": 10,
+    "drc_types": {
+     "hole_clearance": 5,
+     "lib_footprint_issues": 199,
+     "solder_mask_bridge": 1
+    },
+    "min_thickness_mm": 0.205,
+    "partition": [
+     [
+      "C24.1",
+      "C33.1",
+      "C64.1",
+      "L2.1"
+     ],
+     [
+      "C26.2"
+     ],
+     [
+      "C27.1"
+     ],
+     [
+      "C28.1"
+     ],
+     [
+      "L4.1",
+      "U21.3"
+     ],
+     [
+      "R68.1"
+     ],
+     [
+      "SW9.2",
+      "U12.1"
+     ],
+     [
+      "U11.1"
+     ],
+     [
+      "U12.10",
+      "U12.11"
+     ],
+     [
+      "U13.3"
+     ]
+    ]
+   },
+   {
+    "clusters": 10,
+    "drc_types": {
+     "hole_clearance": 5,
+     "lib_footprint_issues": 199,
+     "solder_mask_bridge": 1
+    },
+    "min_thickness_mm": 0.21,
+    "partition": [
+     [
+      "C24.1",
+      "C33.1",
+      "C64.1",
+      "L2.1"
+     ],
+     [
+      "C26.2"
+     ],
+     [
+      "C27.1"
+     ],
+     [
+      "C28.1"
+     ],
+     [
+      "L4.1",
+      "U21.3"
+     ],
+     [
+      "R68.1"
+     ],
+     [
+      "SW9.2",
+      "U12.1"
+     ],
+     [
+      "U11.1"
+     ],
+     [
+      "U12.10",
+      "U12.11"
+     ],
+     [
+      "U13.3"
+     ]
+    ]
+   },
+   {
+    "clusters": 11,
+    "drc_types": {
+     "hole_clearance": 5,
+     "lib_footprint_issues": 199,
+     "solder_mask_bridge": 1
+    },
+    "min_thickness_mm": 0.25,
+    "partition": [
+     [
+      "C24.1",
+      "C33.1",
+      "C64.1",
+      "L2.1"
+     ],
+     [
+      "C26.2"
+     ],
+     [
+      "C27.1"
+     ],
+     [
+      "C28.1"
+     ],
+     [
+      "L4.1",
+      "U21.3"
+     ],
+     [
+      "R68.1"
+     ],
+     [
+      "SW9.2"
+     ],
+     [
+      "U11.1"
+     ],
+     [
+      "U12.1"
+     ],
+     [
+      "U12.10",
+      "U12.11"
+     ],
+     [
+      "U13.3"
+     ]
+    ]
+   },
+   {
+    "clusters": 11,
+    "drc_types": {
+     "hole_clearance": 5,
+     "lib_footprint_issues": 199,
+     "solder_mask_bridge": 1
+    },
+    "min_thickness_mm": 0.3,
+    "partition": [
+     [
+      "C24.1",
+      "C33.1",
+      "C64.1",
+      "L2.1"
+     ],
+     [
+      "C26.2"
+     ],
+     [
+      "C27.1"
+     ],
+     [
+      "C28.1"
+     ],
+     [
+      "L4.1",
+      "U21.3"
+     ],
+     [
+      "R68.1"
+     ],
+     [
+      "SW9.2"
+     ],
+     [
+      "U11.1"
+     ],
+     [
+      "U12.1"
+     ],
+     [
+      "U12.10",
+      "U12.11"
+     ],
+     [
+      "U13.3"
+     ]
+    ]
+   }
+  ],
+  "method": "the erosion bisect is a MODEL.  KiCad's own filler is not: raise the zone's `min_thickness`, refill with `kicad-cli pcb drc --refill-zones --save-board`, and ask `GetConnectivity` which pads still share a cluster.  The rung at which a pad FALLS OFF is the width of the copper that was holding it.",
+  "reading": "at 0.200 mm -- the board as it stands -- {C28.1, SW9.2, U12.1} are ONE cluster.  At 0.205 mm C28.1 falls off.  At 0.250 mm U12.1 falls off SW9.2 too.  The bisect said 0.197 mm.  The two methods agree to a rung and neither is the other's assumption.",
+  "zone": "B /01_POWER_TREE/BQ25185_SYS POUR 1  (POUR 2 was NOT edited: its row is unmoved throughout and its 0.300 mm figure rests on the bisect alone)"
+ },
+ "measured_bottlenecks": {
+  "B /01_POWER_TREE/BQ25185_SYS POUR 1 island 1": {
+   "area_mm2": 3.3115,
+   "bottleneck_mm": 1.1953,
+   "floor_mm": 0.5,
+   "pads": [
+    "C24.1"
+   ],
+   "plane_parallel": [],
+   "verdict": "OK",
+   "vias": 1
+  },
+  "B /01_POWER_TREE/BQ25185_SYS POUR 1 island 2": {
+   "area_mm2": 0.7488,
+   "bottleneck_mm": 0.8484,
+   "floor_mm": 0.5,
+   "pads": [
+    "U12.10",
+    "U12.11"
+   ],
+   "plane_parallel": [],
+   "verdict": "OK",
+   "vias": 0
+  },
+  "B /01_POWER_TREE/BQ25185_SYS POUR 1 island 3": {
+   "area_mm2": 79.4803,
+   "bottleneck_mm": 0.1969,
+   "floor_mm": 0.5,
+   "pads": [
+    "U12.1",
+    "C28.1"
+   ],
+   "plane_parallel": [],
+   "verdict": "UNDER_FLOOR",
+   "vias": 1
+  },
+  "B /01_POWER_TREE/BQ25185_SYS POUR 2 island 0": {
+   "area_mm2": 10.8135,
+   "bottleneck_mm": 0.3,
+   "floor_mm": 0.5,
+   "pads": [
+    "L4.1",
+    "U21.3"
+   ],
+   "plane_parallel": [],
+   "verdict": "UNDER_FLOOR",
+   "vias": 0
+  }
+ },
+ "neck_sites": {
+  "L4.1 <-> U21.3": {
+   "at_mm": [
+    59.2,
+    34.4
+   ],
+   "pinched_between": [
+    "R48.1/R48.2 (EXT_SDA_BUF / EXT_SDA) pads and their 0.600 mm barrels",
+    "R100.2 GND pad at (59.325, 33.000)"
+   ],
+   "width_mm": 0.3
+  },
+  "U12.1 <-> C28.1": {
+   "at_mm": [
+    65.5,
+    93.85
+   ],
+   "pinched_between": [
+    "TP13.1 pad, net Net-(SW9-A), at (65.500, 93.000)",
+    "Net-(L1-Pad1) 0.400 mm B.Cu track (65.415, 94.400) -> (65.415, 96.600)"
+   ],
+   "width_mm": 0.197
+  },
+  "U12.1 <-> the SW9.2 via": {
+   "at_mm": [
+    64.55,
+    96.8
+   ],
+   "pinched_between": [
+    "L1.1 pad at (65.415, 96.600)",
+    "+3V3 0.400 mm B.Cu track (64.300, 98.000) -> (63.800, 96.000) and its two 0.650 mm barrels"
+   ],
+   "width_mm": 0.25
+  }
+ },
+ "parts": {
+  "C24/C26/C27/C28": "10 uF SYS bulk capacitors",
+  "U11": "BQ25185 charger -- U11.1 is its SYS output",
+  "U12": "TPS63020 buck-boost -- U12.1 is its SYS input",
+  "U21": "TPS61023 accessory 5 V boost, fed through L4 (1 uH)"
+ },
+ "published_rule": {
+  "design_current_A": 1.0,
+  "local_exception": "D-185: the U21 accessory boost draws 2.19 A PEAK inductor current from SYS, so the SYS segment feeding U21 must be sized from that peak, not from 1.0 A.  That is the {L4.1, U21.3} island below, and its neck is 0.300 mm.",
+  "outer_thermal_min_mm": 0.3,
+  "rule_track_width_min_mm": 0.5,
+  "rule_track_width_opt_mm": 0.8,
+  "source": "aqroot-Beta-v2.kicad_dru section 5 and rule 'SYS_MAIN minimum width'"
+ },
+ "question": "`/01_POWER_TREE/BQ25185_SYS` is a POWER net that owns NO reserved inner plane -- `.kicad_dru` section 5 says SYS_MAIN is OUTER-LAYER BY POLICY -- so its `B.Cu` pour IS its conductor.  How WIDE is the narrowest place on that conductor, and how does that compare with the width the board's own rule publishes?",
+ "schema": 1,
+ "status": "OPEN FABRICATION FINDING -- characterised, not repaired",
+ "the_net_is_also_in_pieces": {
+  "island_gaps_mm": {
+   "C24.1 <-> body": 1.71,
+   "C26.2 <-> C24.1": 0.701,
+   "C26.2 <-> body": 1.9,
+   "U11.1 <-> C27.1": 1.673,
+   "U12.10/11 <-> body": 1.441,
+   "body <-> U11.1": 2.925
+  },
+  "note": "`U11.1` -- the charger's own SYS output -- is a cluster of ONE.  The pour islands that hold the other SYS lands are 0.701 to 2.925 mm apart, and BOTH `--join-islands` runs refuse them: at the netclass 0.800 mm AND at the `.kicad_dru` SYS_MAIN floor of 0.500 mm, 4 clusters are NO_ANCHOR (their own pour lobe admits no track centred inside it) and 4 are NO_PATH.",
+  "raw_clusters": 9,
+  "retained_open_edges": 6
+ },
+ "why_nothing_saw_it": "KiCad DRC checks TRACK width against `track_width` rules.  A zone fill is not a track and no rule in this board's `.kicad_dru` constrains how narrow a pour may become.  `verify_promotion.py` counts objects, `routing_ledger.py` counts EDGES and a 0.197 mm neck is a CLOSED edge, and `pour_partition_contract.py` measures the PARTITION, which this copper does not change.  Nothing on this board asked how WIDE the conductor is."
+}
