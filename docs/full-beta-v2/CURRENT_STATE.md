@@ -13,6 +13,110 @@
 > This file references DEVICE_SPEC rather than duplicating full specs.
 
 ## 1. Authoritative HEAD
+- **Demo D-659 (THE BOARD'S #1 FABRICATION BLOCKER IS THREE OBJECTS, NOT A
+  FLOORPLAN: `BQ25185_SYS`'s CHARGER OUTPUT IS A POUR CUT, AND A SCREEN THAT
+  COULD ONLY ASK FOR THE WHOLE POUR PRICED IT AT SEVENTEEN):**  **NO COPPER.**
+  Authority UNCHANGED at
+  `c1029d479f7edae9e5b9fafcc32ca820ef17050a249bef4b66e4e5a25b082ef5`; retained
+  open edges **33**, open retained nets 19, connected retained 154, raw board
+  ratsnest 49.  `hardware/beta-v2` untouched.  Standing suite **11/11 RAN,
+  11/11 PASS** (`evidence/d659-contract-regression-pre.json`, baseline `d633`).
+  Five cut-blame runs, a barrel-move sweep, a neck bisect and two gate dry runs;
+  the authoritative `.kicad_pcb` is byte-identical before and after every one
+  (`authoritative_unchanged` true throughout).
+  **(1) THE QUESTION HAD NEVER BEEN ASKED AT `U11`.**  D-657 built
+  `screen_pour_cut_blame.py` and asked it of `BQ25185_SYS` in
+  **[61.0, 99.0]-[72.0, 108.5]** -- the `U12` pocket.  `U11` is at
+  **(67.5, 77.8)**, twenty millimetres north of that window.  So the one
+  instrument that can say WHY a pour is in pieces had never been pointed at the
+  piece that matters: `U11.1`, the `BQ25185`'s own `SYS` OUTPUT, a cluster of
+  ONE.  Asked in **[63.5, 71.5]-[71.5, 82.5]** (66 units, 608.4 s, `kicad-cli
+  pcb drc --refill-zones` control AGREES, `evidence/d659-cut-blame-u11.json`):
+  **Q0 9 clusters -> Q1 7**, and what is freed is
+  `['C27.1','C28.1','SW9.2','U11.1','U12.1']` -- the charger's `SYS` output
+  joins the physical power switch and the `TPS63020`'s `SYS` input.  **TWO of
+  the board's 33 retained open edges.**
+  **(2) THE PROTECTED ARM IS NOT NEEDED, AND THE SCREEN'S OWN PREDICATE WAS
+  PRICING THE REST OUT.**  That Q1's minimal set is **17 units / 9.552 mm and 13
+  of them are `BAT_PROTECTED_P`**.  With `--ban /01_POWER_TREE/BAT_PROTECTED_P`
+  the SAME two lands cost **10 units / 9.005 mm on four UNPROTECTED nets**
+  (`ISET`, `ILIM_VSET`, `Net-(U11-TS_MR)`, `USB_VBUS_CHG` -- all of them the
+  EAST fan-out of `U11`, pins 6/7/8/10, `evidence/d659-cut-blame-u11-ban-bat.json`).
+  And ten was still the wrong price: the only success predicate this screen had
+  was *"reach the cluster count the all-out removal reaches"*, so its
+  reverse-greedy would not let go of one object that only the SECOND land needed.
+  **NEW `--free A.n=B.m`** states the goal as a NAMED PAIR that must end in one
+  cluster, and the same window, ban and 41 candidates answer **THREE OBJECTS /
+  3.900 mm / one edge** (`evidence/d659-cut-blame-u11-free-sys.json`, 368.1 s,
+  `kicad-cli` AGREES, `freed: true`): the `USB_VBUS_CHG` 0.500 mm `B.Cu` run
+  (66.800, 79.4464) -> (68.800, 78.9464), the `ISET` 0.200 mm `B.Cu` run
+  (70.200, 81.100) -> (70.900, 79.400), and the `USB_VBUS_CHG` 0.900/0.400
+  barrel at (66.800, 79.4464).  Confirmed independently of the screen: refill
+  that probe board with `pcbnew.ZONE_FILLER` and `POUR 1`'s body goes
+  **79.480 -> 86.259 mm2**, bbox top **80.07 -> 78.22 mm**, `U11.1` **0.001 mm**
+  from it.  **The pair is NAMED and not inferred from cluster size on purpose:**
+  this net's largest BASELINE cluster is `{C24.1, C33.1, C64.1, L2.1}` -- three
+  decoupling lands and a DNP inductor 90 mm away -- while the cluster that
+  actually DELIVERS the rail is smaller.
+  **(3) THE CUT IS A RING, NOT A WALL ON ONE SIDE.**  The WEST window
+  [64.5, 78.3]-[67.4, 81.2] (7 units) and the EAST window
+  [67.5, 76.0]-[71.5, 82.5] (15 units) each return
+  `WINDOW_DOES_NOT_HOLD_THE_CUT` at 9 clusters, both with `kicad-cli` agreeing
+  (`evidence/d659-cut-blame-u11-west.json`, `-east.json`).  The pour must travel
+  AROUND `U11`; clearing one side buys nothing.
+  **(4) `screen_island_join`'s `NO_ANCHOR` ON `U11.1` IS A SHAPE, NOT A WIDTH.**
+  D-657 recorded it at 0.800 mm and at the 0.500 mm `.kicad_dru` floor and left
+  it as a rung statement.  `U11.1`'s filled copper is **0.4492 mm2 over a
+  1.030 x 1.024 mm bbox** -- a ~0.2 mm arc tracing the clearance boundary
+  between `U11`'s own 0.4 mm-pitch pad row and the `USB_VBUS_CHG` barrel and run
+  that pass south-east of the package.  No arc that thin admits a 0.500 mm track
+  centred 0.275 mm inside it at ANY lattice.
+  **(5) D-658's OWN LEVER IS REFUTED HERE, AND THE ANSWER IS THE OPPOSITE ONE.**
+  `CURRENT_STATE` ranked `screen_barrel_move.py --sweep` over this pocket as the
+  next thing to run.  Run it was, on a probe carrying the `ISET` removal so the
+  barrel was the only question left: **12 rigid offsets, 0.36-0.50 mm, every
+  legal direction, KiCad DRC per rung -- `U11.1` bonded on NONE of them**
+  (`evidence/d659-barrel-move-vbus.json`).  A rigid move DRAGS THE RUN WITH IT,
+  and the cut here is the barrel AND its 2.062 mm run.  **This pocket wants a
+  RELAY, not a move.**
+  **(6) AND THE RELAY HAS NOWHERE TO GO -- THAT IS THE PLACEMENT FINDING.**
+  `maze3d._via_free_everywhere`, the router's own predicate, swept 6.0 mm around
+  that barrel: **259 legal 0.900/0.400 sites and EVERY ONE is at y >= 79.4464**
+  (`evidence/d659-barrel-sites-vbus.json`, x 63.6-70.0, y 79.4464-85.3464).
+  **Not one is north of the corridor**, so `U11.10` cannot leave the package
+  northward on any layer, and it cannot leave southward on `B.Cu` without
+  crossing the corridor the pour needs.  `U11.1`'s two corridors are the NORTH
+  one (`BAT_PROTECTED_P`, PROTECTED) and this one.
+  **(7) THE TRANSACTION ADDS NO NEW FRAGILITY.**  On the freed, refilled board
+  `POUR 1`'s body holds `U11.1`/`U12.1`/`C28.1` and bottlenecks at **0.197 mm** --
+  the SAME figure and the same place D-656 named (`U12.1 <-> C28.1`)
+  (`evidence/d659-sys-neck-after-cut.json`).  The sub-floor neck remains the
+  OPEN DFM item; the new `U11.1` arm is not the narrowest place.
+  **(8) FRAMEWORK.**  `screen_pour_cut_blame.py` gains `--free A.n[=B.m]` (Q1,
+  per-net `alone_sufficient` and the Q3 reverse-greedy all test THAT;
+  `edges_closed` still reports the whole net) and its work directory is now
+  keyed on **`--ban` and `--free` as well** -- a banned and an unbanned run of
+  the same net in the same window shared D-657's `(sha, net, window, layers)`
+  key, so the second would have adopted the first's cached `q0/`/`q1/`/`q2_*/`
+  and reported the UNBANNED partitions AS IF the ban had been honoured.  Found
+  before it was spent.  Re-run determinism confirmed: the WEST window under the
+  new code differs from the recorded run in `seconds` alone.
+  **NEXT, IN ORDER OF LEVERAGE:** (1) **`BQ25185_SYS` `U11.1` is still the #1
+  FABRICATION BLOCKER and it is now priced at THREE OBJECTS** -- the open
+  question is not what to remove but **where `U11.10`'s `USB_VBUS_CHG` escape
+  goes**, and (6) says not on this floorplan: a bounded re-floorplan
+  (`apply_part_shift.py`) of `R36`/`C23` or of `U11`, judged by re-running
+  `--free U11.1=U12.1` on the shifted board.  The `ISET` half is the easy half --
+  a 2-pad Default net whose 15.5 mm loop exists only to reach `U11.8` from the
+  west.  (2) `C27.1`, the second land, +7 more objects, all unprotected.
+  (3) `+3V3` `U5.2`.  (4) `/I2C_SCL_INT` `U16.3 <-> U4.13` -- re-asked on the
+  promoted board at **0.050 mm AND 0.025 mm** this decision and `NO_PATH` at
+  both, both escapes present, *"no all-layer corridor at 0.200 mm"*; D-655's
+  15-unit / 34.046 mm eviction price stands.  (5) `/I2C_SCL_INT`
+  `U14.7 <-> J1.44` remains **the one OPEN OWNER DECISION** (D-655 §7),
+  RECORDED NOT TAKEN.  (6) `copper_sliver` localisation remains an OPEN
+  INSTRUMENT GAP.  (7) `hardware/demo/fab` is STALE against `c1029d47`.
+  Everything D-658 carried is carried unchanged.
 - **Demo D-658 (THE PRODUCT OF TWO REFUTED LEVERS: `R129.1`'s TWENTY-SIX-DECISION
   WALL FALLS TO A 0.200 mm BARREL MOVE AT 0.450/0.200 mm, AND THE COMMUNITY
   PORT'S ACCESSORY-DETECT PULL-UP HAS A SUPPLY):**  **COPPER PROMOTED.**

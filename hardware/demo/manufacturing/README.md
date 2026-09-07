@@ -18,13 +18,88 @@ IMU is still NOT functional, but it is now ONE land short, not two: `U4.5`, its
 `PLACEMENT_WALL`.  The residual is **36** as of D-653, **35** as of D-655 and
 **34** as of D-656, which put `SCL` and then `SDA` on both `PCAL9535A`
 expanders; the largest single remaining net is `/01_POWER_TREE/BQ25185_SYS` with
-**six** open edges on the system power rail.
+**six** open edges on the system power rail.  D-658 closed `R129.1` and the
+residual is **33**.  **D-659 prices the `BQ25185_SYS` head of that rail at THREE
+OBJECTS** -- `U11.1`, the charger's own `SYS` output, is a POUR CUT and not a
+floorplan, and the remaining wall is where `U11.10`'s `USB_VBUS_CHG` escape
+goes (first section below).
 
 **D-652 also measured which open edges are worth what** (`screen_open_edge_cost.py`):
 **five of the thirty-seven strand four parts and thirty-seven nets** -- both
 `PCAL9535A` expanders, the `TCA4307` Qwiic buffer and the `MAX17048` fuel gauge
 -- and four of the five are on `/I2C_SCL_INT`, which is therefore this board's
 critical path.
+
+## THE GOAL IS A LAND, NOT THE WHOLE POUR -- AND IT IS THE DIFFERENCE BETWEEN 17 OBJECTS AND 3 (D-659)
+
+    python3 screen_pour_cut_blame.py /01_POWER_TREE/BQ25185_SYS 63.5 71.5 71.5 82.5 \
+        --ban /01_POWER_TREE/BAT_PROTECTED_P --free U11.1=U12.1 \
+        --cli-control -o OUT.json                                     # 370 s
+
+`U11.1` is the `BQ25185`'s own `SYS` OUTPUT and it is a cluster of ONE.  D-657
+asked the cut-blame question of this net in the `U12` pocket
+(`[61.0, 99.0]-[72.0, 108.5]`); `U11` is at (67.5, 77.8), twenty millimetres
+north of it, so the piece that decides whether this board powers up had never
+been asked about at all.
+
+    goal                                       window      ban    units    mm     edges
+    pour the whole net back into one piece     U11 pocket  --      17     9.552     2
+    pour the whole net back into one piece     U11 pocket  BAT     10     9.005     2
+    join U11.1=U12.1                           U11 pocket  BAT      3     3.900     1
+
+Thirteen of the seventeen are `BAT_PROTECTED_P`, which `protected_copper.py`
+forbids touching -- and they are not needed.  Ten is still the wrong price,
+because the only success predicate this screen had was *"reach the cluster count
+the all-out removal reaches"*, so its reverse-greedy would not release one
+object that only the SECOND land needed.  **`--free A.n=B.m` states the goal as a
+named PAIR that must end in one cluster** -- *"the charger's `SYS` output must
+reach the buck-boost's `SYS` input"* -- and `Q1`, the per-net `alone_sufficient`
+and the `Q3` minimisation all test that instead.  The answer is three objects:
+
+    /01_POWER_TREE/USB_VBUS_CHG  trk B.Cu (66.800,79.4464)->(68.800,78.9464) 0.500 mm
+    /01_POWER_TREE/ISET          trk B.Cu (70.200,81.100) ->(70.900,79.400)  0.200 mm
+    /01_POWER_TREE/USB_VBUS_CHG  via      (66.800,79.4464) 0.900/0.400
+
+**NAME THE PAIR; DO NOT INFER IT FROM CLUSTER SIZE.**  `screen_barrel_move.py`
+says "join the pad to its net's body" and takes the body to be the largest
+cluster.  On `BQ25185_SYS` that is `{C24.1, C33.1, C64.1, L2.1}` -- three
+decoupling lands and a DNP inductor 90 mm away -- while the cluster that
+actually delivers the rail, `{C28.1, SW9.2, U12.1}`, is smaller.
+
+**AND `--ban` / `--free` ARE PART OF THE WORK-DIRECTORY KEY NOW.**  D-657 keyed
+it on `(sha, net, window, layers)` after two concurrent `+3V3` windows disagreed
+about the baseline.  A banned and an unbanned run of the same net in the same
+window shared that key, so the second would have adopted the first's cached
+`q0/`, `q1/` and matching `q2_*/` and reported the UNBANNED partitions **as if
+the ban had been honoured** -- the one way this screen could say "protected
+copper is not needed" while measuring a removal that took it.
+
+**A RIGID BARREL MOVE CANNOT BUY THIS, AND THAT IS THE OPPOSITE OF D-658.**
+
+    python3 screen_barrel_move.py --board PROBE.kicad_pcb \
+        --barrel "/01_POWER_TREE/USB_VBUS_CHG@66.8,79.4464:0.9/0.4" \
+        --free "/01_POWER_TREE/BQ25185_SYS:U11.1" --sweep 4.0 --drc   # 230 s
+
+Twelve rigid offsets, 0.36-0.50 mm, every legal direction, KiCad DRC per rung:
+**`U11.1` bonded on none of them.**  `screen_barrel_move` translates every track
+end coincident with the site, which is the right ideal when the barrel WAS the
+cut (`TS_MR`, D-658).  Here the cut is the barrel AND its 2.062 mm run, and a
+run that moves 0.4 mm is still in the corridor.  **This pocket wants a RELAY.**
+
+**AND THE RELAY HAS NOWHERE TO GO.**  `maze3d._via_free_everywhere` swept 6.0 mm
+around that barrel: **259 legal 0.900/0.400 sites, every one at y >= 79.4464**
+(x 63.6-70.0, y 79.4464-85.3464).  Not one north of the corridor.  So `U11.10`
+cannot leave the package northward on any layer, and cannot leave southward on
+`B.Cu` without crossing the corridor the pour needs.  The remaining question is
+a bounded re-floorplan, judged by re-running the `--free` line above.
+
+**THE CUT IS A RING.**  The WEST half of the pocket (7 units) and the EAST half
+(15 units) each return `WINDOW_DOES_NOT_HOLD_THE_CUT`; the pour has to travel
+AROUND `U11`, so clearing one side buys nothing.
+
+**AND THE FREED POUR IS NO MORE FRAGILE.**  `screen_pour_neck_fragility.py` on
+the refilled probe: body 86.259 mm2 holding `U11.1`/`U12.1`/`C28.1`, bottleneck
+**0.197 mm** -- the same figure at the same place D-656 named.
 
 ## THE PITCH IS PART OF THE TRANSACTION, AND A FINER LATTICE IS NOT A BETTER ONE (D-656)
 

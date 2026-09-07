@@ -1,0 +1,1003 @@
+{
+ "authoritative_unchanged": true,
+ "banned": [],
+ "board": "/home/aqroot8/aqroot-demo/hardware/demo/kicad/aqroot-demo/aqroot-Beta-v2.kicad_pcb",
+ "board_sha256": "c1029d479f7edae9e5b9fafcc32ca820ef17050a249bef4b66e4e5a25b082ef5",
+ "board_sha256_at_write": "c1029d479f7edae9e5b9fafcc32ca820ef17050a249bef4b66e4e5a25b082ef5",
+ "candidates": 66,
+ "cli_control": {
+  "agrees": true,
+  "note": "the SAME removal re-poured by kicad-cli and re-read; the in-process ZONE_FILLER answer is not trusted on its own",
+  "partition": [
+   [
+    "C24.1",
+    "C33.1",
+    "C64.1",
+    "L2.1"
+   ],
+   [
+    "C26.2"
+   ],
+   [
+    "C27.1",
+    "C28.1",
+    "SW9.2",
+    "U11.1",
+    "U12.1"
+   ],
+   [
+    "L4.1",
+    "U21.3"
+   ],
+   [
+    "R68.1"
+   ],
+   [
+    "U12.10",
+    "U12.11"
+   ],
+   [
+    "U13.3"
+   ]
+  ]
+ },
+ "decision": "D-657",
+ "edges_closed": 2,
+ "layers": [
+  "B.Cu"
+ ],
+ "method": "pcbnew.ZONE_FILLER (KiCad's own filler) over the whole board per probe, partition read off GetConnectivity; one LoadBoard per child process; authoritative board never written",
+ "net": "/01_POWER_TREE/BQ25185_SYS",
+ "q0_baseline": {
+  "clusters": 9,
+  "partition": [
+   [
+    "C24.1",
+    "C33.1",
+    "C64.1",
+    "L2.1"
+   ],
+   [
+    "C26.2"
+   ],
+   [
+    "C27.1"
+   ],
+   [
+    "C28.1",
+    "SW9.2",
+    "U12.1"
+   ],
+   [
+    "L4.1",
+    "U21.3"
+   ],
+   [
+    "R68.1"
+   ],
+   [
+    "U11.1"
+   ],
+   [
+    "U12.10",
+    "U12.11"
+   ],
+   [
+    "U13.3"
+   ]
+  ]
+ },
+ "q1_upper_bound": {
+  "clusters": 7,
+  "partition": [
+   [
+    "C24.1",
+    "C33.1",
+    "C64.1",
+    "L2.1"
+   ],
+   [
+    "C26.2"
+   ],
+   [
+    "C27.1",
+    "C28.1",
+    "SW9.2",
+    "U11.1",
+    "U12.1"
+   ],
+   [
+    "L4.1",
+    "U21.3"
+   ],
+   [
+    "R68.1"
+   ],
+   [
+    "U12.10",
+    "U12.11"
+   ],
+   [
+    "U13.3"
+   ]
+  ],
+  "removed_objects": 66,
+  "removed_units": 66
+ },
+ "q2_per_net": {
+  "/01_POWER_TREE/BAT_PROTECTED_P": {
+   "alone_sufficient": false,
+   "clusters": 8,
+   "partition": [
+    [
+     "C24.1",
+     "C33.1",
+     "C64.1",
+     "L2.1"
+    ],
+    [
+     "C26.2"
+    ],
+    [
+     "C27.1",
+     "U11.1"
+    ],
+    [
+     "C28.1",
+     "SW9.2",
+     "U12.1"
+    ],
+    [
+     "L4.1",
+     "U21.3"
+    ],
+    [
+     "R68.1"
+    ],
+    [
+     "U12.10",
+     "U12.11"
+    ],
+    [
+     "U13.3"
+    ]
+   ],
+   "units": 25
+  },
+  "/01_POWER_TREE/ILIM_VSET": {
+   "alone_sufficient": false,
+   "clusters": 9,
+   "partition": [
+    [
+     "C24.1",
+     "C33.1",
+     "C64.1",
+     "L2.1"
+    ],
+    [
+     "C26.2"
+    ],
+    [
+     "C27.1"
+    ],
+    [
+     "C28.1",
+     "SW9.2",
+     "U12.1"
+    ],
+    [
+     "L4.1",
+     "U21.3"
+    ],
+    [
+     "R68.1"
+    ],
+    [
+     "U11.1"
+    ],
+    [
+     "U12.10",
+     "U12.11"
+    ],
+    [
+     "U13.3"
+    ]
+   ],
+   "units": 7
+  },
+  "/01_POWER_TREE/ISET": {
+   "alone_sufficient": false,
+   "clusters": 9,
+   "partition": [
+    [
+     "C24.1",
+     "C33.1",
+     "C64.1",
+     "L2.1"
+    ],
+    [
+     "C26.2"
+    ],
+    [
+     "C27.1"
+    ],
+    [
+     "C28.1",
+     "SW9.2",
+     "U12.1"
+    ],
+    [
+     "L4.1",
+     "U21.3"
+    ],
+    [
+     "R68.1"
+    ],
+    [
+     "U11.1"
+    ],
+    [
+     "U12.10",
+     "U12.11"
+    ],
+    [
+     "U13.3"
+    ]
+   ],
+   "units": 6
+  },
+  "/01_POWER_TREE/USB_VBUS_CHG": {
+   "alone_sufficient": false,
+   "clusters": 9,
+   "partition": [
+    [
+     "C24.1",
+     "C33.1",
+     "C64.1",
+     "L2.1"
+    ],
+    [
+     "C26.2"
+    ],
+    [
+     "C27.1"
+    ],
+    [
+     "C28.1",
+     "SW9.2",
+     "U12.1"
+    ],
+    [
+     "L4.1",
+     "U21.3"
+    ],
+    [
+     "R68.1"
+    ],
+    [
+     "U11.1"
+    ],
+    [
+     "U12.10",
+     "U12.11"
+    ],
+    [
+     "U13.3"
+    ]
+   ],
+   "units": 7
+  },
+  "/01_POWER_TREE/V3V3_FB": {
+   "alone_sufficient": false,
+   "clusters": 9,
+   "partition": [
+    [
+     "C24.1",
+     "C33.1",
+     "C64.1",
+     "L2.1"
+    ],
+    [
+     "C26.2"
+    ],
+    [
+     "C27.1"
+    ],
+    [
+     "C28.1",
+     "SW9.2",
+     "U12.1"
+    ],
+    [
+     "L4.1",
+     "U21.3"
+    ],
+    [
+     "R68.1"
+    ],
+    [
+     "U11.1"
+    ],
+    [
+     "U12.10",
+     "U12.11"
+    ],
+    [
+     "U13.3"
+    ]
+   ],
+   "units": 2
+  },
+  "/09_COMMUNITY_HEADER/WAKE_GATE_S": {
+   "alone_sufficient": false,
+   "clusters": 9,
+   "partition": [
+    [
+     "C24.1",
+     "C33.1",
+     "C64.1",
+     "L2.1"
+    ],
+    [
+     "C26.2"
+    ],
+    [
+     "C27.1"
+    ],
+    [
+     "C28.1",
+     "SW9.2",
+     "U12.1"
+    ],
+    [
+     "L4.1",
+     "U21.3"
+    ],
+    [
+     "R68.1"
+    ],
+    [
+     "U11.1"
+    ],
+    [
+     "U12.10",
+     "U12.11"
+    ],
+    [
+     "U13.3"
+    ]
+   ],
+   "units": 1
+  },
+  "GND": {
+   "alone_sufficient": false,
+   "clusters": 9,
+   "partition": [
+    [
+     "C24.1",
+     "C33.1",
+     "C64.1",
+     "L2.1"
+    ],
+    [
+     "C26.2"
+    ],
+    [
+     "C27.1"
+    ],
+    [
+     "C28.1",
+     "SW9.2",
+     "U12.1"
+    ],
+    [
+     "L4.1",
+     "U21.3"
+    ],
+    [
+     "R68.1"
+    ],
+    [
+     "U11.1"
+    ],
+    [
+     "U12.10",
+     "U12.11"
+    ],
+    [
+     "U13.3"
+    ]
+   ],
+   "units": 13
+  },
+  "Net-(U11-TS_MR)": {
+   "alone_sufficient": false,
+   "clusters": 9,
+   "partition": [
+    [
+     "C24.1",
+     "C33.1",
+     "C64.1",
+     "L2.1"
+    ],
+    [
+     "C26.2"
+    ],
+    [
+     "C27.1"
+    ],
+    [
+     "C28.1",
+     "SW9.2",
+     "U12.1"
+    ],
+    [
+     "L4.1",
+     "U21.3"
+    ],
+    [
+     "R68.1"
+    ],
+    [
+     "U11.1"
+    ],
+    [
+     "U12.10",
+     "U12.11"
+    ],
+    [
+     "U13.3"
+    ]
+   ],
+   "units": 5
+  }
+ },
+ "q3_minimal_set": {
+  "clusters": 7,
+  "detour_spec": [
+   {
+    "count": 1,
+    "end_mm": [
+     65.5,
+     78.2
+    ],
+    "layer": "B.Cu",
+    "net": "/01_POWER_TREE/BAT_PROTECTED_P",
+    "start_mm": [
+     65.5,
+     76.05
+    ],
+    "width_mm": 0.2
+   },
+   {
+    "count": 1,
+    "end_mm": [
+     68.8,
+     78.9464
+    ],
+    "layer": "B.Cu",
+    "net": "/01_POWER_TREE/USB_VBUS_CHG",
+    "start_mm": [
+     66.8,
+     79.4464
+    ],
+    "width_mm": 0.5
+   },
+   {
+    "count": 1,
+    "end_mm": [
+     70.9,
+     79.4
+    ],
+    "layer": "B.Cu",
+    "net": "/01_POWER_TREE/ISET",
+    "start_mm": [
+     70.2,
+     81.1
+    ],
+    "width_mm": 0.2
+   },
+   {
+    "count": 1,
+    "end_mm": [
+     65.5,
+     78.1
+    ],
+    "layer": "B.Cu",
+    "net": "/01_POWER_TREE/BAT_PROTECTED_P",
+    "start_mm": [
+     65.5,
+     76.725
+    ],
+    "width_mm": 0.6
+   },
+   {
+    "count": 1,
+    "end_mm": [
+     66.4,
+     78.2
+    ],
+    "layer": "B.Cu",
+    "net": "/01_POWER_TREE/BAT_PROTECTED_P",
+    "start_mm": [
+     65.5,
+     78.2
+    ],
+    "width_mm": 0.2
+   },
+   {
+    "count": 1,
+    "end_mm": [
+     65.325,
+     76.325
+    ],
+    "layer": "B.Cu",
+    "net": "/01_POWER_TREE/BAT_PROTECTED_P",
+    "start_mm": [
+     65.05,
+     76.05
+    ],
+    "width_mm": 1.2
+   },
+   {
+    "count": 1,
+    "end_mm": [
+     65.425,
+     76.525
+    ],
+    "layer": "B.Cu",
+    "net": "/01_POWER_TREE/BAT_PROTECTED_P",
+    "start_mm": [
+     65.325,
+     76.425
+    ],
+    "width_mm": 1.0
+   },
+   {
+    "count": 1,
+    "end_mm": [
+     65.6,
+     78.2
+    ],
+    "layer": "B.Cu",
+    "net": "/01_POWER_TREE/BAT_PROTECTED_P",
+    "start_mm": [
+     65.5,
+     78.1
+    ],
+    "width_mm": 0.6
+   },
+   {
+    "count": 1,
+    "end_mm": [
+     65.425,
+     76.65
+    ],
+    "layer": "B.Cu",
+    "net": "/01_POWER_TREE/BAT_PROTECTED_P",
+    "start_mm": [
+     65.425,
+     76.525
+    ],
+    "width_mm": 0.8
+   },
+   {
+    "count": 1,
+    "end_mm": [
+     65.325,
+     76.425
+    ],
+    "layer": "B.Cu",
+    "net": "/01_POWER_TREE/BAT_PROTECTED_P",
+    "start_mm": [
+     65.325,
+     76.325
+    ],
+    "width_mm": 1.0
+   },
+   {
+    "count": 1,
+    "end_mm": [
+     65.725,
+     78.2
+    ],
+    "layer": "B.Cu",
+    "net": "/01_POWER_TREE/BAT_PROTECTED_P",
+    "start_mm": [
+     65.625,
+     78.2
+    ],
+    "width_mm": 0.4
+   },
+   {
+    "count": 1,
+    "end_mm": [
+     65.825,
+     78.2
+    ],
+    "layer": "B.Cu",
+    "net": "/01_POWER_TREE/BAT_PROTECTED_P",
+    "start_mm": [
+     65.725,
+     78.2
+    ],
+    "width_mm": 0.3
+   },
+   {
+    "count": 1,
+    "end_mm": [
+     65.5,
+     76.725
+    ],
+    "layer": "B.Cu",
+    "net": "/01_POWER_TREE/BAT_PROTECTED_P",
+    "start_mm": [
+     65.45,
+     76.675
+    ],
+    "width_mm": 0.6
+   },
+   {
+    "count": 1,
+    "end_mm": [
+     65.45,
+     76.675
+    ],
+    "layer": "B.Cu",
+    "net": "/01_POWER_TREE/BAT_PROTECTED_P",
+    "start_mm": [
+     65.425,
+     76.65
+    ],
+    "width_mm": 0.8
+   },
+   {
+    "count": 1,
+    "end_mm": [
+     65.625,
+     78.2
+    ],
+    "layer": "B.Cu",
+    "net": "/01_POWER_TREE/BAT_PROTECTED_P",
+    "start_mm": [
+     65.6,
+     78.2
+    ],
+    "width_mm": 0.6
+   },
+   {
+    "barrel": {
+     "at_mm": [
+      65.25,
+      79.2
+     ],
+     "dia_mm": 0.9,
+     "drill_mm": 0.4
+    },
+    "net": "/01_POWER_TREE/USB_VBUS_CHG"
+   },
+   {
+    "barrel": {
+     "at_mm": [
+      66.8,
+      79.4464
+     ],
+     "dia_mm": 0.9,
+     "drill_mm": 0.4
+    },
+    "net": "/01_POWER_TREE/USB_VBUS_CHG"
+   }
+  ],
+  "matches_upper_bound": true,
+  "objects": 17,
+  "objects_detail": [
+   {
+    "count": 1,
+    "end_mm": [
+     65.5,
+     78.2
+    ],
+    "kind": "trk",
+    "layer": "B.Cu",
+    "length_mm": 2.15,
+    "net": "/01_POWER_TREE/BAT_PROTECTED_P",
+    "start_mm": [
+     65.5,
+     76.05
+    ],
+    "width_mm": 0.2
+   },
+   {
+    "count": 1,
+    "end_mm": [
+     68.8,
+     78.9464
+    ],
+    "kind": "trk",
+    "layer": "B.Cu",
+    "length_mm": 2.062,
+    "net": "/01_POWER_TREE/USB_VBUS_CHG",
+    "start_mm": [
+     66.8,
+     79.4464
+    ],
+    "width_mm": 0.5
+   },
+   {
+    "count": 1,
+    "end_mm": [
+     70.9,
+     79.4
+    ],
+    "kind": "trk",
+    "layer": "B.Cu",
+    "length_mm": 1.838,
+    "net": "/01_POWER_TREE/ISET",
+    "start_mm": [
+     70.2,
+     81.1
+    ],
+    "width_mm": 0.2
+   },
+   {
+    "count": 1,
+    "end_mm": [
+     65.5,
+     78.1
+    ],
+    "kind": "trk",
+    "layer": "B.Cu",
+    "length_mm": 1.375,
+    "net": "/01_POWER_TREE/BAT_PROTECTED_P",
+    "start_mm": [
+     65.5,
+     76.725
+    ],
+    "width_mm": 0.6
+   },
+   {
+    "count": 1,
+    "end_mm": [
+     66.4,
+     78.2
+    ],
+    "kind": "trk",
+    "layer": "B.Cu",
+    "length_mm": 0.9,
+    "net": "/01_POWER_TREE/BAT_PROTECTED_P",
+    "start_mm": [
+     65.5,
+     78.2
+    ],
+    "width_mm": 0.2
+   },
+   {
+    "count": 1,
+    "end_mm": [
+     65.325,
+     76.325
+    ],
+    "kind": "trk",
+    "layer": "B.Cu",
+    "length_mm": 0.389,
+    "net": "/01_POWER_TREE/BAT_PROTECTED_P",
+    "start_mm": [
+     65.05,
+     76.05
+    ],
+    "width_mm": 1.2
+   },
+   {
+    "count": 1,
+    "end_mm": [
+     65.425,
+     76.525
+    ],
+    "kind": "trk",
+    "layer": "B.Cu",
+    "length_mm": 0.141,
+    "net": "/01_POWER_TREE/BAT_PROTECTED_P",
+    "start_mm": [
+     65.325,
+     76.425
+    ],
+    "width_mm": 1.0
+   },
+   {
+    "count": 1,
+    "end_mm": [
+     65.6,
+     78.2
+    ],
+    "kind": "trk",
+    "layer": "B.Cu",
+    "length_mm": 0.141,
+    "net": "/01_POWER_TREE/BAT_PROTECTED_P",
+    "start_mm": [
+     65.5,
+     78.1
+    ],
+    "width_mm": 0.6
+   },
+   {
+    "count": 1,
+    "end_mm": [
+     65.425,
+     76.65
+    ],
+    "kind": "trk",
+    "layer": "B.Cu",
+    "length_mm": 0.125,
+    "net": "/01_POWER_TREE/BAT_PROTECTED_P",
+    "start_mm": [
+     65.425,
+     76.525
+    ],
+    "width_mm": 0.8
+   },
+   {
+    "count": 1,
+    "end_mm": [
+     65.325,
+     76.425
+    ],
+    "kind": "trk",
+    "layer": "B.Cu",
+    "length_mm": 0.1,
+    "net": "/01_POWER_TREE/BAT_PROTECTED_P",
+    "start_mm": [
+     65.325,
+     76.325
+    ],
+    "width_mm": 1.0
+   },
+   {
+    "count": 1,
+    "end_mm": [
+     65.725,
+     78.2
+    ],
+    "kind": "trk",
+    "layer": "B.Cu",
+    "length_mm": 0.1,
+    "net": "/01_POWER_TREE/BAT_PROTECTED_P",
+    "start_mm": [
+     65.625,
+     78.2
+    ],
+    "width_mm": 0.4
+   },
+   {
+    "count": 1,
+    "end_mm": [
+     65.825,
+     78.2
+    ],
+    "kind": "trk",
+    "layer": "B.Cu",
+    "length_mm": 0.1,
+    "net": "/01_POWER_TREE/BAT_PROTECTED_P",
+    "start_mm": [
+     65.725,
+     78.2
+    ],
+    "width_mm": 0.3
+   },
+   {
+    "count": 1,
+    "end_mm": [
+     65.5,
+     76.725
+    ],
+    "kind": "trk",
+    "layer": "B.Cu",
+    "length_mm": 0.071,
+    "net": "/01_POWER_TREE/BAT_PROTECTED_P",
+    "start_mm": [
+     65.45,
+     76.675
+    ],
+    "width_mm": 0.6
+   },
+   {
+    "count": 1,
+    "end_mm": [
+     65.45,
+     76.675
+    ],
+    "kind": "trk",
+    "layer": "B.Cu",
+    "length_mm": 0.035,
+    "net": "/01_POWER_TREE/BAT_PROTECTED_P",
+    "start_mm": [
+     65.425,
+     76.65
+    ],
+    "width_mm": 0.8
+   },
+   {
+    "count": 1,
+    "end_mm": [
+     65.625,
+     78.2
+    ],
+    "kind": "trk",
+    "layer": "B.Cu",
+    "length_mm": 0.025,
+    "net": "/01_POWER_TREE/BAT_PROTECTED_P",
+    "start_mm": [
+     65.6,
+     78.2
+    ],
+    "width_mm": 0.6
+   },
+   {
+    "at_mm": [
+     65.25,
+     79.2
+    ],
+    "count": 1,
+    "dia_mm": 0.9,
+    "drill_mm": 0.4,
+    "kind": "via",
+    "length_mm": 0.0,
+    "net": "/01_POWER_TREE/USB_VBUS_CHG"
+   },
+   {
+    "at_mm": [
+     66.8,
+     79.4464
+    ],
+    "count": 1,
+    "dia_mm": 0.9,
+    "drill_mm": 0.4,
+    "kind": "via",
+    "length_mm": 0.0,
+    "net": "/01_POWER_TREE/USB_VBUS_CHG"
+   }
+  ],
+  "partition": [
+   [
+    "C24.1",
+    "C33.1",
+    "C64.1",
+    "L2.1"
+   ],
+   [
+    "C26.2"
+   ],
+   [
+    "C27.1",
+    "C28.1",
+    "SW9.2",
+    "U11.1",
+    "U12.1"
+   ],
+   [
+    "L4.1",
+    "U21.3"
+   ],
+   [
+    "R68.1"
+   ],
+   [
+    "U12.10",
+    "U12.11"
+   ],
+   [
+    "U13.3"
+   ]
+  ],
+  "units": 17
+ },
+ "question": "which FOREIGN objects cut this pour into pieces, and what is the SMALLEST set whose absence lets KiCad's own filler pour it back into one",
+ "schema": 1,
+ "seconds": 608.4,
+ "verdict": "MINIMAL_SET_FOUND",
+ "window_mm": [
+  63.5,
+  71.5,
+  71.5,
+  82.5
+ ]
+}

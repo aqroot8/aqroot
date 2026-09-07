@@ -183,6 +183,41 @@ def detour_entry(u, count):
                 width_mm=m["width_mm"], count=count)
 
 
+def _freed(partition, want):
+    """Does every `--free` claim hold in this partition?
+
+    A claim is `A.n=B.m` -- these two lands must end in ONE cluster -- or a bare
+    `A.n`, which is `A.n` must not be alone.
+
+    THE PAIR IS THE HONEST FORM AND THE DEFAULT IS NOT.  The obvious predicate,
+    "the land joins the net's LARGEST cluster", is what `screen_barrel_move.py`
+    says, and on `/01_POWER_TREE/BQ25185_SYS` it is a trap: this net's largest
+    BASELINE cluster is `{C24.1, C33.1, C64.1, L2.1}` -- three decoupling lands
+    and a DNP inductor 90 mm away -- while the cluster that actually delivers
+    the rail, `{C28.1, SW9.2, U12.1}`, is SMALLER.  A removal that puts `U11.1`
+    where it belongs would tie those two at four lands and be judged against
+    whichever sorted first.  So the claim is named, not inferred: `U11.1=U12.1`
+    says "the charger's `SYS` output must reach the buck-boost's `SYS` input",
+    which is the sentence the transaction is actually being bought for.
+    """
+    if not partition:
+        return False
+    where = {}
+    for i, c in enumerate(partition):
+        for land in c:
+            where[land] = i
+    for w in want:
+        if "=" in w:
+            a, z = w.split("=", 1)
+            if where.get(a, -1) != where.get(z, -2):
+                return False
+        else:
+            hit = [c for c in partition if w in c]
+            if not hit or len(hit[0]) < 2:
+                return False
+    return True
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("net")
@@ -199,6 +234,30 @@ def main():
                     help="re-run the Q1 probe through kicad-cli and require "
                          "the two partitions to agree")
     ap.add_argument("--skip-per-net", action="store_true")
+    # D-659 -- THE GOAL MAY BE A LAND, NOT THE WHOLE POUR.
+    #
+    # Until now this screen had exactly one success predicate: the partition
+    # must reach the cluster count the ALL-OUT removal reaches.  On `+3V3` that
+    # was the right question, because the whole cut was two barrels.  On
+    # `/01_POWER_TREE/BQ25185_SYS` at `U11` it is the wrong one and it prices
+    # the transaction out: the all-out set frees TWO lands, so the minimisation
+    # will not let go of a single object that only the SECOND land needs, and
+    # the answer comes back 17 units across five nets.  But the two lands are
+    # not worth the same.  `U11.1` is the `BQ25185`'s own `SYS` OUTPUT -- with
+    # it severed nothing on this board powers up -- and `C27.1` is its bulk
+    # capacitor.  A screen that could only ask for both together could not name
+    # the transaction that buys the first one.
+    #
+    # `--free A.n=B.m` states the goal as a NAMED PAIR that must end in one
+    # cluster.  Q1 then tests THAT, the reverse-greedy holds THAT, and
+    # `edges_closed` still reports what the whole net gained, so a set bought
+    # for one land that happens to free another is not hidden.  See `_freed`
+    # for why the pair is named rather than inferred from cluster size.
+    ap.add_argument("--free", action="append", default=[],
+                    metavar="A.n[=B.m]",
+                    help="the goal is that these two lands end in ONE cluster "
+                         "(or, bare, that A.n is not alone) -- not that the "
+                         "whole pour becomes one piece (repeatable)")
     ap.add_argument("-o", "--out", type=Path)
     a = ap.parse_args()
 
@@ -210,8 +269,19 @@ def main():
     # only the board sha let them share `q0/` and `q1/` and report each other's
     # partitions.  Measured: two concurrent `+3V3` windows disagreed about the
     # BASELINE, which is the one number no removal can move.
+    #
+    # D-659 -- AND `--ban` IS PART OF THE QUESTION TOO.  "Which objects cut this
+    # pour?" and "which objects cut it if the PROTECTED ones are off the table?"
+    # are different questions asked of the same net in the same window, and the
+    # D-657 key could not tell them apart: the second run would have adopted the
+    # first's `q0/`, `q1/` and every `q2_*/` it happened to share a name with
+    # and reported the UNBANNED partitions as if the ban had been honoured --
+    # which is the one way this screen could say "protected copper is not
+    # needed" while measuring a removal that took it.
     tag = hashlib.sha256(
-        ("%s|%s|%s|%s" % (before, a.net, a.window, a.layers)).encode()
+        ("%s|%s|%s|%s|%s|%s"
+         % (before, a.net, a.window, a.layers, sorted(a.ban),
+            sorted(a.free))).encode()
     ).hexdigest()[:12]
     work = a.work or Path("/tmp/pour_cut_blame_%s" % tag)
     work.mkdir(parents=True, exist_ok=True)
@@ -293,7 +363,9 @@ def main():
     doc = dict(schema=1, decision="D-657", board=str(a.board),
                board_sha256=before, net=a.net,
                window_mm=list(a.window), layers=sorted(layers),
-               banned=sorted(a.ban),
+               banned=sorted(a.ban), free=sorted(a.free),
+               goal=("join %s" % ", ".join(sorted(a.free))) if a.free else
+                    "pour the whole net back into one piece",
                question="which FOREIGN objects cut this pour into pieces, and "
                         "what is the SMALLEST set whose absence lets KiCad's "
                         "own filler pour it back into one",
@@ -322,13 +394,25 @@ def main():
         print("CLI control agrees: %s" % (cli_part == q1),
               file=sys.stderr, flush=True)
 
-    if len(q1) >= len(base):
+    # THE WINDOW IS JUDGED AGAINST THE GOAL THAT WAS ASKED FOR.  Without
+    # `--free` that is "fewer clusters than the baseline"; with it, "these lands
+    # are in the body".  A window that shrinks the partition but leaves the
+    # named land alone has not held THIS cut and says so.
+    if a.free:
+        ok1 = _freed(q1, a.free)
+        doc["q1_upper_bound"]["freed"] = ok1
+    else:
+        ok1 = len(q1) < len(base)
+    if not ok1:
         doc["verdict"] = "WINDOW_DOES_NOT_HOLD_THE_CUT"
         doc["seconds"] = round(time.time() - t_all, 1)
         _finish(a, doc, before)
         return 0
 
     target = len(q1)
+
+    def holds(p):
+        return _freed(p, a.free) if a.free else len(p) <= target
 
     if not a.skip_per_net:
         per_net = {}
@@ -337,10 +421,10 @@ def main():
             p, _ = probe("q2_" + n.replace("/", "_").replace("(", "").replace(")", ""),
                          mine)
             per_net[n] = dict(units=len(mine), clusters=len(p), partition=p,
-                              alone_sufficient=(len(p) <= target))
+                              alone_sufficient=holds(p))
             print("  Q2 %-40s %2d units -> clusters %d%s"
                   % (n[:40], len(mine), len(p),
-                     "   ALONE SUFFICIENT" if len(p) <= target else ""),
+                     "   ALONE SUFFICIENT" if holds(p) else ""),
                   file=sys.stderr, flush=True)
         doc["q2_per_net"] = per_net
 
@@ -350,7 +434,7 @@ def main():
         if len(trial) == len(keep_out):
             continue
         p, _ = probe("q3_%d" % order.index(u), trial)
-        if len(p) <= target:
+        if holds(p):
             keep_out = trial
             print("  Q3 back  %-56s  still %d" % (str(unit_mm(u))[:56], len(p)),
                   file=sys.stderr, flush=True)
@@ -362,10 +446,11 @@ def main():
     doc["q3_minimal_set"] = dict(
         units=len(keep_out), objects=gone,
         clusters=len(final), partition=final,
-        matches_upper_bound=(len(final) <= target),
+        matches_upper_bound=holds(final),
+        freed=(_freed(final, a.free) if a.free else None),
         objects_detail=[dict(unit_mm(u), count=counts[u]) for u in keep_out],
         detour_spec=[detour_entry(u, counts[u]) for u in keep_out])
-    doc["verdict"] = ("MINIMAL_SET_FOUND" if len(final) <= target
+    doc["verdict"] = ("MINIMAL_SET_FOUND" if holds(final)
                       else "REVERSE_GREEDY_DID_NOT_REPRODUCE")
     doc["edges_closed"] = len(base) - len(final)
     doc["seconds"] = round(time.time() - t_all, 1)
