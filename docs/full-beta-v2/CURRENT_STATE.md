@@ -13,6 +13,84 @@
 > This file references DEVICE_SPEC rather than duplicating full specs.
 
 ## 1. Authoritative HEAD
+- **Demo D-661 (THE SCREEN'S OWN "MINIMAL" ARM IS THE ONE THAT FAILS:
+  `BTN_LEFT_N` FALLS TO THE 20-OBJECT OPENER THE SCREEN RANKED FIRST, AND THE
+  WHOLE D-PAD + A/B + RGB SHEET IS NOW CLOSED):**  **COPPER PROMOTED.**
+  Authority `12f8e584...` -> **`704ce0ebed77d42cb49208ec1923e35999e3942ec72e2391c71d8ae95d6b707d`**;
+  retained open edges **32 -> 31**, open retained nets **18 -> 17**, connected
+  retained **155 -> 156**, raw board ratsnest **48 -> 47**, KiCad's own
+  unconnected items **48 -> 47**.  `hardware/beta-v2` untouched.
+  **Fifteen of fifteen gate clauses PASS, ZERO refused**; real KiCad DRC exit 0,
+  **zero attributable**, profile the INHERITED one EXACTLY (`hole_clearance` 5,
+  `solder_mask_bridge` 1, parity 247 warnings / 0 errors).  `verify_promotion.py`
+  **15/15 PASS** (`evidence/d661-verify-promotion.json`) incl. `D-186` and
+  `D-269` LIVE, `beta_v2_untouched`, `fill_stable`, `pour_partition_intact`.
+  Standing suite **11/11 RAN, 11/11 PASS** both sides
+  (`evidence/d661-contract-regression-pre.json`, `-post.json`, baseline `d633`).
+  **(1) WHAT WAS CLOSED, AND WHAT IT COMPLETES.**  `/08_BUTTONS_EXPANDERS/BTN_LEFT_N`
+  is a **D-pad direction**, listed under `AQROOT_DEMO_SCOPE.md`'s *"Features that
+  MUST remain functional"*; `R6.2` (51.948, 89.208) had been an island of ONE and
+  is now 4 lands, ONE island, zero open edges.  **AND IT IS THE LAST ONE** — every
+  net on the `/08_BUTTONS_EXPANDERS` sheet now carries `open_edges 0`
+  (`BTN_UP/DOWN/LEFT/RIGHT/A/B`, `FRONT_RGB_R/G/B_N`), so this closes **the whole
+  D-pad + A/B family AND the three RGB replacement nets** — two named
+  `DEMO_READY_FOR_FAB` preconditions — in one transaction.  `/TOUCH_RST_N`,
+  re-laid whole here, is also `open_edges 0`.
+  **(2) THE RIP-UP VERDICT IS STABLE ACROSS FOURTEEN DECISIONS.**  Re-screened on
+  the D-660 board first (D-597: a rip-up verdict is a property of a BOARD,
+  `evidence/d661-corridor-rescreen-btnleft.json`), D-647's answer reproduces
+  exactly — `RIPUP_SINGLE`, same `minimal_eviction` of ONE `FRONT_RGB_R_N` object
+  at [52.1, 85.75]-[52.3, 97.9], same three `single_openers` in the same order.
+  **(3) A SCREEN MINIMISES THE REMOVAL; THE GATE SCORES THE REBUILD.**  D-660's
+  recipe applied literally FAILS here.  The named 1-object window removes the
+  `In2.Cu` trunk and `FRONT_RGB_R_N` is `NO_PATH` — at 0.100 mm and again at
+  0.050 mm with the whole 3-object chain evicted — because that 11.95 mm of
+  `In2.Cu` is not *a* path for `FRONT_RGB_R_N`, it is *the* path.  Evicting it is
+  a SWAP, not a transaction: edges 32 -> 32 at every pitch asked, plus
+  `track_dangling` / `via_dangling` antennae (D-660 §3(d) in a second place).
+  **`minimal_eviction` ranks by how little copper comes OUT; clause 4 scores
+  whether the evicted net can be PUT BACK.**
+  **(4) THE PROMOTED ARM IS `single_openers[0]`, AND THE PITCH BOUGHT HALF THE
+  TRANSACTION.**  `/TOUCH_RST_N` (touchscreen reset, `J1.47`/`R12.1`/`U2.4`) has
+  no minimal-object form — the derived corridor is `BTN_LEFT_N`'s own 2553.4 mm2
+  pad bbox — so `--evict` takes the whole net, **20 objects**.  At **0.100 mm**
+  the router closes ONE of its two joins and the run is refused on
+  `board_improved`/`no_regression` alone (`attributable_drc` already EMPTY), and
+  only passes if `FRONT_RGB_R_N` is evicted TOO (**40 objects**, two nets,
+  `evidence/d661-tx-btnleft-both-g100.json`).  At **0.050 mm ONE net and 20
+  objects reach the identical board.**  This sharpens D-656 / D-660 §3(c): a
+  finer lattice decides not only WHETHER a transaction routes but **HOW BIG IT
+  HAS TO BE**.  0.050 and 0.025 both PASS 15/15 identically; 0.050 is the shorter
+  total copper (57.544 vs 57.840 mm) and 1 m 24 s vs 7 m 53 s — D-660's "0.025 is
+  also the shortest" was a fact about that pocket, not a rule.
+  **(5) THE RELAY IS CHEAPER THAN THE COPPER IT REPLACED.**  `/TOUCH_RST_N` came
+  off at **51.452 mm / 20 objects / 1 via** and goes back at **47.268 mm / 1 via**;
+  `BTN_LEFT_N` takes `R6.2 -> U2.15` in **10.276 mm** `B->F->B` (barrels at
+  (52.85, 89.200) and (56.25, 88.650)) against the 22.299 mm the refused
+  `FRONT_RGB_R_N` arm needed for the same edge.  The arm that removes the MOST
+  copper produced the SHORTEST board.
+  **(6) WHAT WAS PROMOTED.**  28 tracks (`B.Cu` + `F.Cu`) **all 0.200 mm**, 3 vias
+  **all 0.600/0.300**, 20 licensed removals all `/TOUCH_RST_N`.  **No new via
+  geometry, no `.kicad_dru` change, no rule area, no escape relief, no detour
+  spec, no licence of any kind.**  `/ACC_3V3_SW` and `/ACC_5V_SW_EN` were never
+  candidates; `protected_copper.py` PASS.
+  **(7) A BACKGROUND SCREEN OUTLIVED ITS SESSION AND ITS RESULT WAS USED.**  Two
+  evidence files were written into the worktree DURING this iteration by a prior
+  session's detached processes — both read-only/scratch-only, both against the
+  pre-promotion authority, both finished before the promote.  Inspected and KEPT:
+  one is §2's D-597 re-proof, the other is §4's 0.100 mm row.
+  **NEXT, IN ORDER OF LEVERAGE:** (1) **`BQ25185_SYS` `U11.1` remains the #1
+  FABRICATION BLOCKER** — 6 of the 31 residual edges; unchanged by this decision.
+  (2) **RE-ASK EVERY REMAINING `RIPUP_SINGLE` AS A TRANSACTION, NOT AS A PITCH** —
+  D-659 re-asked ten of eleven open nets at 0.050 mm DRY and none routed; this
+  decision closes one of them by EVICTION at that same pitch, so a dry `NO_PATH`
+  sweep does not price a rip-up.  `screen_corridor_blockers.py` over the 17
+  residual open nets is the next framework run, reading `single_openers` rather
+  than `minimal_eviction` per §3.  (3) `/I2C_SCL_INT` `U16.3 <-> U4.13`.
+  (4) `/I2C_SCL_INT` `U14.7 <-> J1.44` remains **the one OPEN OWNER DECISION**
+  (D-655 §7), RECORDED NOT TAKEN.  (5) `copper_sliver` localisation remains an
+  OPEN INSTRUMENT GAP.  (6) `hardware/demo/fab` is STALE against `704ce0eb`.
+  Everything D-660 carried is carried unchanged.
 - **Demo D-660 (A WALL REFUSED FOUR WAYS IN D-647 FALLS TO A PRIMITIVE D-655
   BUILT AFTERWARDS: THE COMMUNITY PORT'S SWITCHED 5 V ENABLE IS CLOSED BY ONE
   NAMED OBJECT IN A 0.4 x 4.6 mm POCKET):**  **COPPER PROMOTED.**
