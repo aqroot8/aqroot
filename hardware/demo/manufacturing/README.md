@@ -21,15 +21,92 @@ expanders; the largest single remaining net is `/01_POWER_TREE/BQ25185_SYS` with
 **six** open edges on the system power rail.  D-658 closed `R129.1` and the
 residual is **33**.  **D-659 prices the `BQ25185_SYS` head of that rail at THREE
 OBJECTS** -- `U11.1`, the charger's own `SYS` output, is a POUR CUT and not a
-floorplan.  **D-660 closes `/ACC_5V_BOOST_EN` and the residual is 32**, and
-restates the `U11` wall exactly: `U11.10`'s escape and the lane the pour needs
-are the SAME 0.49 mm channel (first two sections below).
+floorplan.  **D-660 closes `/ACC_5V_BOOST_EN` and the residual is 32**; D-661 closes
+`BTN_LEFT_N` and with it the whole D-pad + A/B + RGB sheet (31), D-662 the NFC
+front-end's `VDD` (30), and **D-663 the audio word clock and with it the WHOLE
+audio path (29)**.  D-660 restated the `U11` wall as *"`U11.10`'s escape and the
+lane the pour needs are the SAME 0.49 mm channel"*; **D-663 measures that this is
+true only of the SOUTH-WEST escape** (first section below).
 
 **D-652 also measured which open edges are worth what** (`screen_open_edge_cost.py`):
 **five of the thirty-seven strand four parts and thirty-seven nets** -- both
 `PCAL9535A` expanders, the `TCA4307` Qwiic buffer and the `MAX17048` fuel gauge
 -- and four of the five are on `/I2C_SCL_INT`, which is therefore this board's
 critical path.
+
+## THE ORDER OF THE REQUESTED NETS IS PART OF THE TRANSACTION (D-663)
+
+    python3 route_maze_batch.py /I2S_BCLK /I2S_LRCLK --evict /I2S_BCLK \
+        --evict-whole --partial --grid 50000                          # 15/15
+    python3 route_maze_batch.py /I2S_LRCLK /I2S_BCLK --evict /I2S_BCLK \
+        --evict-whole --partial --grid 50000                          # REFUSED
+
+The two names swapped, the same eviction, the same pitch.  Named second, the
+evicted net is `NO_PATH` on all three of its island pairs because the requested
+net has already taken the corridor the eviction just freed.  **The net that has
+just lost all its copper is the one with the least freedom; request it FIRST.**
+
+**AND A WHOLE-NET EVICTION THROWS AWAY A TOPOLOGY THE ROUTER CANNOT REBUILD.**
+`route_join` may only aim an island at a **PAD** (D-652), so a net whose
+committed shape is a T-junction on a track comes back as independent pad-to-pad
+runs: `/I2S_BCLK` was 33.8 mm with 4 barrels and came back **100.9-103.1 mm with
+ELEVEN**.  Both such arms pass all fifteen clauses -- the gate cannot see it.
+Judge the arm on the EVICTED net's relay.
+
+    python3 route_maze_batch.py /I2S_LRCLK \
+        --detour-spec evidence/d663-detour-spec-i2s.json \
+        --partial --grid 25000 --promote                              # TAKEN
+
+Only 3.907 mm of `/I2S_BCLK` stood in `U5.14`'s escape.  Named as two detours
+they are removed whole and laid again **between their own two ends** around a
+0.5 mm reserved disc: **4.065 mm back, 2 vias, both hub barrels keep both legs,
+nothing stranded**.  The same spec at 0.050 mm relays perfectly and leaves the
+requested net `NO_PATH` -- **a detour that frees a LAND is not yet a
+transaction**; 0.025 mm is the rung that closes it.  This closed the audio word
+clock and with it the WHOLE audio path (residual **30 -> 29**).
+
+## `U11.1` IS A THEOREM NOW, AND `C27.1` IS THE CHEAPER EDGE (D-663)
+
+    python3 screen_pour_cut_blame.py /01_POWER_TREE/BQ25185_SYS 63.5 71.5 71.5 82.5 \
+        --ban /01_POWER_TREE/BAT_PROTECTED_P --ban /01_POWER_TREE/USB_VBUS_CHG \
+        --free U11.1=U12.1 --cli-control -o OUT.json                  # 26 s
+
+`WINDOW_DOES_NOT_HOLD_THE_CUT`: with the charger's own VBUS net banned, removing
+**all 34 remaining candidate objects** leaves `U11.1` a cluster of one.  So
+`USB_VBUS_CHG` is **NECESSARY** to every cut that frees the `BQ25185`'s `SYS`
+output -- a property of the board, not the outcome of one reverse-greedy search.
+
+**AND `screen_barrel_move --free` HAD BEEN ASKING A ONE-OBJECT QUESTION OF A
+THREE-OBJECT CUT.**  D-659's twelve offsets and D-660's shrink sweep both
+inherit it: a barrel move removes at most two of the three, so `U11.1` could not
+bond on any rung whatever the barrel did.  Re-asked three ways the refusal
+survives -- now for the right reason.  **When a `--free` screen prices ONE
+object, check the cut it is being priced against.**
+
+**THE POCKET HOLDS BOTH -- BUT ONLY NORTH AND EAST.**  108 idealised trials, the
+three-object cut removed, one straight `B.Cu` conductor from `U11.10`'s land to
+the pocket boundary, `ZONE_FILLER` per trial: **every** southern escape cuts the
+freed pour (0/14 at 0.200 mm, 0/14 at 0.350 mm); 14/14 northern and 9/14 eastern
+survive.  D-660's *"the escape and the lane are the same copper"* is true only of
+the SOUTH-WEST escape, which is the one the committed route takes and the only
+one the router picks when left free.
+
+**AND FREEING A POUR IS A NULL TRANSACTION UNLESS THE LANE IS RESERVED.**  The
+full run laid `USB_VBUS_CHG` straight back through the freed lane at the D-662
+trunk floor's 0.350 mm and `BQ25185_SYS` never moved.  D-660's lane is authored
+from the OLD copper's centreline and its 0.450 mm keepout **seals `U11.10`'s own
+land**; author it from the FREED pour's filled outline instead
+(`evidence/d663-u11-sys-channel-lane.json`).
+
+    python3 screen_pour_cut_blame.py /01_POWER_TREE/BQ25185_SYS 63.5 71.5 71.5 82.5 \
+        --ban /01_POWER_TREE/BAT_PROTECTED_P --free C27.1=U12.1 \
+        --cli-control -o OUT.json                                     # 417 s
+
+`C27.1`, the charger's own `SYS` decoupling cap, is a SECOND open edge of the
+same net and it falls to **eight objects on three static DC set-point straps**
+(`ISET` x2, `Net-(U11-TS_MR)` x3, `ILIM_VSET` x2 plus one 0.600/0.300 barrel) --
+none of them `USB_VBUS_CHG`, none of them protected.  The screen emits the
+`--detour-spec`.  **It is the next transaction.**
 
 ## A FOUR-WAYS REFUSAL CAN BE OLDER THAN THE PRIMITIVE THAT LIFTS IT (D-660)
 

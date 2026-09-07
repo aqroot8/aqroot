@@ -1,0 +1,148 @@
+{
+ "authoritative_unchanged": true,
+ "banned": [
+  "/01_POWER_TREE/BAT_PROTECTED_P",
+  "/01_POWER_TREE/USB_VBUS_CHG"
+ ],
+ "board": "/home/aqroot8/aqroot-demo/hardware/demo/kicad/aqroot-demo/aqroot-Beta-v2.kicad_pcb",
+ "board_sha256": "feff534230f1c2743707071e4bc8ac21b5104e95abee73016a6c00cfd1e49aef",
+ "board_sha256_at_write": "feff534230f1c2743707071e4bc8ac21b5104e95abee73016a6c00cfd1e49aef",
+ "candidates": 34,
+ "cli_control": {
+  "agrees": true,
+  "note": "the SAME removal re-poured by kicad-cli and re-read; the in-process ZONE_FILLER answer is not trusted on its own",
+  "partition": [
+   [
+    "C24.1",
+    "C33.1",
+    "C64.1",
+    "L2.1"
+   ],
+   [
+    "C26.2"
+   ],
+   [
+    "C27.1",
+    "C28.1",
+    "SW9.2",
+    "U12.1"
+   ],
+   [
+    "L4.1",
+    "U21.3"
+   ],
+   [
+    "R68.1"
+   ],
+   [
+    "U11.1"
+   ],
+   [
+    "U12.10",
+    "U12.11"
+   ],
+   [
+    "U13.3"
+   ]
+  ]
+ },
+ "decision": "D-657",
+ "free": [
+  "U11.1=U12.1"
+ ],
+ "goal": "join U11.1=U12.1",
+ "layers": [
+  "B.Cu"
+ ],
+ "method": "pcbnew.ZONE_FILLER (KiCad's own filler) over the whole board per probe, partition read off GetConnectivity; one LoadBoard per child process; authoritative board never written",
+ "net": "/01_POWER_TREE/BQ25185_SYS",
+ "q0_baseline": {
+  "clusters": 9,
+  "partition": [
+   [
+    "C24.1",
+    "C33.1",
+    "C64.1",
+    "L2.1"
+   ],
+   [
+    "C26.2"
+   ],
+   [
+    "C27.1"
+   ],
+   [
+    "C28.1",
+    "SW9.2",
+    "U12.1"
+   ],
+   [
+    "L4.1",
+    "U21.3"
+   ],
+   [
+    "R68.1"
+   ],
+   [
+    "U11.1"
+   ],
+   [
+    "U12.10",
+    "U12.11"
+   ],
+   [
+    "U13.3"
+   ]
+  ]
+ },
+ "q1_upper_bound": {
+  "clusters": 8,
+  "freed": false,
+  "partition": [
+   [
+    "C24.1",
+    "C33.1",
+    "C64.1",
+    "L2.1"
+   ],
+   [
+    "C26.2"
+   ],
+   [
+    "C27.1",
+    "C28.1",
+    "SW9.2",
+    "U12.1"
+   ],
+   [
+    "L4.1",
+    "U21.3"
+   ],
+   [
+    "R68.1"
+   ],
+   [
+    "U11.1"
+   ],
+   [
+    "U12.10",
+    "U12.11"
+   ],
+   [
+    "U13.3"
+   ]
+  ],
+  "removed_objects": 34,
+  "removed_units": 34
+ },
+ "question": "which FOREIGN objects cut this pour into pieces, and what is the SMALLEST set whose absence lets KiCad's own filler pour it back into one",
+ "schema": 1,
+ "seconds": 26.3,
+ "verdict": "WINDOW_DOES_NOT_HOLD_THE_CUT",
+ "window_mm": [
+  63.5,
+  71.5,
+  71.5,
+  82.5
+ ]
+}

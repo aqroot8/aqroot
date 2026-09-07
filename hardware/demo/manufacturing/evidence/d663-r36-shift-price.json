@@ -1,0 +1,130 @@
+{
+ "authoritative_unchanged": true,
+ "board": "/home/aqroot8/aqroot-demo/hardware/demo/kicad/aqroot-demo/aqroot-Beta-v2.kicad_pcb",
+ "board_sha256": "feff534230f1c2743707071e4bc8ac21b5104e95abee73016a6c00cfd1e49aef",
+ "channel_mm": {
+  "at_x_mm": [
+   68.5,
+   68.9
+  ],
+  "measured_on": "the freed board (D-659/D-663 three-object cut removed, KiCad ZONE_FILLER refill)",
+  "needed_breakdown": "pour min_thickness ~0.20 + clearance 0.20 + VBUS_CHG floor 0.35 + clearance 0.20",
+  "needed_for_both_mm": 0.95,
+  "north_wall_is": "U11.10 pad clearance boundary",
+  "north_wall_y": 79.247,
+  "r36_antipad_top_y": 79.525,
+  "south_wall_is": "the /01_POWER_TREE/ILIM_VSET 0.600/0.300 barrel at (68.600, 80.250), clearance boundary",
+  "south_wall_y": 79.7,
+  "width_mm": 0.453
+ },
+ "decision": "D-663",
+ "finding": "+0.400 mm south is the LARGEST R36 shift with no new courtyard overlap; +0.600 mm and beyond overlaps SW9, the user-facing power slide switch.  And the shift alone cannot buy the channel in any case: the south wall at x 68.5-68.9 is the ILIM_VSET BARREL at (68.600, 80.250), not R36's pad, so R36 at +0.400 mm leaves the channel at 79.247 -> 79.750 = 0.503 mm.  The barrel has to move with the part.",
+ "instrument": "apply_part_shift.py --ref R36 --dy-nm N (DRY: --report only, --apply never given)",
+ "question": "D-660 named R36 as 'the part to shift'.  What does the shift cost, and how much of the 0.453 mm channel does it actually buy?",
+ "schema": 1,
+ "shift_rows": [
+  {
+   "courtyard_overlaps_new": [],
+   "dy_mm": 0.4,
+   "endpoints_stranded": [
+    [
+     "/09_COMMUNITY_HEADER/NATIVE_B_HDR",
+     67.7,
+     80.0
+    ]
+   ],
+   "pad1_box_now": [
+    67.525,
+    80.175,
+    68.325,
+    81.125
+   ],
+   "verdict": "FAIL"
+  },
+  {
+   "courtyard_overlaps_new": [
+    "SW9"
+   ],
+   "dy_mm": 0.6,
+   "endpoints_stranded": [
+    [
+     "/01_POWER_TREE/ILIM_VSET",
+     67.925,
+     80.25
+    ],
+    [
+     "/09_COMMUNITY_HEADER/NATIVE_B_HDR",
+     67.7,
+     80.0
+    ]
+   ],
+   "pad1_box_now": [
+    67.525,
+    80.375,
+    68.325,
+    81.325
+   ],
+   "verdict": "FAIL"
+  },
+  {
+   "courtyard_overlaps_new": [
+    "SW9"
+   ],
+   "dy_mm": 0.8,
+   "endpoints_stranded": [
+    [
+     "/01_POWER_TREE/ILIM_VSET",
+     67.925,
+     80.25
+    ],
+    [
+     "/09_COMMUNITY_HEADER/NATIVE_B_HDR",
+     67.7,
+     80.0
+    ],
+    [
+     "GND",
+     67.8,
+     80.5
+    ]
+   ],
+   "pad1_box_now": [
+    67.525,
+    80.575,
+    68.325,
+    81.525
+   ],
+   "verdict": "FAIL"
+  },
+  {
+   "courtyard_overlaps_new": [
+    "SW9"
+   ],
+   "dy_mm": 1.0,
+   "endpoints_stranded": [
+    [
+     "/01_POWER_TREE/ILIM_VSET",
+     67.925,
+     80.25
+    ],
+    [
+     "/09_COMMUNITY_HEADER/NATIVE_B_HDR",
+     67.7,
+     80.0
+    ],
+    [
+     "GND",
+     67.8,
+     80.5
+    ]
+   ],
+   "pad1_box_now": [
+    67.525,
+    80.775,
+    68.325,
+    81.725
+   ],
+   "verdict": "FAIL"
+  }
+ ]
+}

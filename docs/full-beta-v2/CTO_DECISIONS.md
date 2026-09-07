@@ -1,3 +1,251 @@
+# D-663 · 2026-09-07 · Demo — THE ORDER OF THE REQUESTED NETS IS PART OF THE TRANSACTION, AND THE AUDIO WORD CLOCK CLOSES BY MOVING 3.9 mm INSTEAD OF HAULING A CLOCK 101 mm; PLUS: NO CUT OF ANY SIZE FREES `U11.1` WITHOUT TAKING THE CHARGER'S OWN VBUS ESCAPE
+
+    authority  feff534230f1c2743707071e4bc8ac21b5104e95abee73016a6c00cfd1e49aef
+            -> 2900f21a934d9d826644131a90baa36f7dace0db5f50cf2e702e5694f121177f
+    retained open edges 30 -> 29    open retained nets 17 -> 16
+    connected retained nets 156 -> 157   raw board ratsnest 46 -> 45
+    `hardware/beta-v2` UNTOUCHED.
+
+**COPPER PROMOTED.**  **Fifteen of fifteen gate clauses PASS, ZERO refused**;
+real KiCad DRC exit 0, **zero attributable**, and the promoted board's
+severity-error profile is the INHERITED one EXACTLY (`hole_clearance` 5,
+`solder_mask_bridge` 1, `lib_footprint_issues` 199).  `verify_promotion.py`
+**15/15 PASS** (`evidence/d663-verify-promotion.json`), including
+`dru_contracts_live`, `beta_v2_untouched`, `fill_stable`,
+`pour_partition_intact`, `unconnected_not_increased` and
+`schematic_parity_within_baseline`.  The standing suite is **12 contracts,
+12/12 RAN, 12/12 PASS** on both sides (`evidence/d663-contract-regression-pre.json`,
+`-post.json`).
+
+## 1. WHAT WAS CLOSED, AND WHAT IT COMPLETES
+
+`/I2S_LRCLK` is the **audio word clock** — `U1.33` (ESP32-S3), `MK1.5` (the
+microphone) and `U5.14` (the amplifier).  `U5.14` had been an island of one
+land, so the amplifier had no word clock and **the speaker could not work**.
+`AQROOT_DEMO_SCOPE.md` lists *"speaker"* and *"microphone"* under *"Features
+that MUST remain functional"*.
+
+**AND IT IS THE LAST ONE.**  On the promoted board every audio and I2S net
+carries `open_edges 0` — `/I2S_LRCLK`, `/I2S_BCLK`, `/I2S_MIC_DIN`,
+`/I2S_SPK_DOUT`, `/06_AUDIO/SPK_P`, `/06_AUDIO/SPK_N` — so this closes the
+**whole audio path** in one transaction.  `/I2S_LRCLK` is one island of three
+lands; `MK1.5 -> U5.14` is **40.521 mm, 2 vias, `B -> In2 -> F`**.
+
+## 2. THE OPENER WAS NAMED BY A SCREEN THAT OUTLIVED ITS SESSION
+
+`evidence/d662-corridor-blame-nopath4.json` was written into the worktree by a
+prior session's detached `screen_corridor_blockers.py` — read-only, `board_sha256`
+`704ce0eb` (pre-D-662) with `board_sha256_at_write` `feff5342`, and it says so in
+its own record (`board_changed_during_run: true`).  Inspected and KEPT, as D-661
+§7 kept two others.  Its four verdicts are the work list this decision spent:
+
+    /I2S_LRCLK      RIPUP_SINGLE      minimal eviction 3 objects of /I2S_BCLK
+    /ACC_PWR_EN     RIPUP_SET         no single net opens it
+    /SX1262_DIO1    RIPUP_SINGLE      minimal eviction 6 objects of /ACC_5V_SW_EN
+    /WAKE_INT_N     NO_OPENER_FOUND   both edges
+
+**`/SX1262_DIO1` IS THEREFORE CLOSED AS A ROUTING QUESTION AND NOT A WALL.**  Its
+only opener is `/ACC_5V_SW_EN` — the switched 5 V accessory enable this Demo's
+own invocation contract says *"has already been safely routed and must be
+preserved"*, and which `protected_copper.py` guards.  It is refused by policy,
+permanently, and no further pitch or lattice changes that.
+
+## 3. THE TRANSACTION UNIT: A DETOUR OF 3.9 mm BEAT A WHOLE-NET EVICTION OF 66 mm
+
+Four arms were measured against the same opener.  All four are in `evidence/`.
+
+    arm                                       grid     LRCLK   BCLK relay        clauses
+    --evict-whole, LRCLK requested FIRST      0.050    OK      NO_PATH           2 REFUSED
+    --evict-whole, BCLK  requested FIRST      0.050    OK      100.936 mm/11 via 15/15
+    --evict-whole, BCLK  requested FIRST      0.025    OK       78.495 mm/ 9 via 15/15
+    --evict-whole, BCLK first + U5.14 guard   0.100    OK      one join only     2 REFUSED
+    --evict-whole, BCLK first + U5.14 guard   0.050    OK      103.076 mm/11 via 15/15
+    --detour-spec, 2 tracks                   0.050    NO_PATH 4.065 mm/2 via    1 REFUSED
+    --detour-spec, 2 tracks                   0.025    OK      4.065 mm/2 via    **15/15, TAKEN**
+
+**(a) THE ORDER OF THE REQUESTED NETS IS PART OF THE TRANSACTION.**  The ONLY
+difference between the first two rows is which net is named first on the command
+line.  `/I2S_LRCLK /I2S_BCLK` routes the beneficiary into the corridor the
+eviction just freed and then the evicted net is `NO_PATH` on all three of its
+island pairs; `/I2S_BCLK /I2S_LRCLK` routes both and passes every clause.  D-660
+§3(b) established *"the evicted net must be REQUESTED, not repaired"*; this adds
+**and requested FIRST** — the net that has just lost all its copper is the one
+with the least freedom left.
+
+**(b) A WHOLE-NET EVICTION THROWS AWAY A TOPOLOGY THE ROUTER CANNOT REBUILD.**
+`/I2S_BCLK`'s committed shape is a **T-junction on a track** at (30.200, 113.700):
+one branch to `MK1.6`, one to `U5.16`, one to `U1.32`.  `route_join` can only aim
+an island at a **PAD** (D-652), so a rebuilt `I2S_BCLK` must be two independent
+pad-to-pad runs; the first consumes `U5.16`'s pocket and the second comes back
+**78.5-103.1 mm with NINE to ELEVEN barrels**, against the 33.8 mm and 4 barrels
+it was committed with -- a finer lattice shortens it and does not fix it.  All
+three such arms pass 15/15 — the
+gate cannot see it — and both were **REFUSED ON THE EVICTED NET'S RELAY**, which
+is D-652's doctrine applied to a clock instead of a header.
+
+**(c) THE UNIT THAT FITS IS `--detour-spec`.**  Only **3.907 mm** of `/I2S_BCLK`
+stands in `U5.14`'s escape: `F.Cu` (30.200,113.700)->(33.400,113.700) and
+(33.400,113.700)->(33.900,114.200).  Named as detours they are removed WHOLE and
+laid again **between their own two end coordinates**, around a 0.5 mm disc
+reserved on `F` at (32.500, 113.700) and exempt to `/I2S_LRCLK`
+(`evidence/d663-detour-spec-i2s.json`).  Nothing is stranded, both hub barrels
+keep both legs, `MK1.6` and `U1.32` keep the hauls they were committed with, and
+`every_detour_relaid` is the clause that guarantees it.  The relay is
+**3.358 mm + 0.707 mm with 2 vias** against 3.907 mm removed — **+0.16 mm of
+copper on the bit clock, not +65 mm.**
+
+**(d) AND THE PITCH IS AGAIN PART OF THE TRANSACTION (D-656/D-661).**  The same
+detour spec at 0.050 mm relays perfectly and leaves `/I2S_LRCLK` `NO_PATH` — the
+LAND opened and the CORRIDOR did not.  At 0.025 mm it closes.  A detour that
+frees a land is not yet a transaction.
+
+## 4. WHAT WAS PROMOTED
+
+24 tracks **all 0.200 mm** (`B.Cu`, `F.Cu`, `In2.Cu`), 4 vias **all 0.600/0.300**,
+**one licensed removal** (the second detoured track was re-laid byte-identically
+and is not a change).  **No `.kicad_dru` change, no rule area, no zone change, no
+escape relief, no width licence, no neck, no barrel move, no eviction of any
+net.**  `/ACC_3V3_SW` and `/ACC_5V_SW_EN` were never candidates;
+`protected_copper.py` PASS.
+
+## 5. `BQ25185_SYS` `U11.1`: THE #1 BLOCKER IS NOW A THEOREM, NOT A SEARCH RESULT
+
+The bulk of this iteration was spent on the #1 fabrication blocker and it moved
+from *"the pocket wants a relay and the relay has nowhere to go"* (D-659/D-660)
+to a set of measured, necessary and sufficient statements.  **Read-only; the
+authority was untouched by all of it.**
+
+**(a) THE THREE-OBJECT CUT REPRODUCES EXACTLY.**  D-597 discipline: re-screened
+on THIS authority, `screen_pour_cut_blame.py` returns `MINIMAL_SET_FOUND`,
+3 objects, `objects_detail` **byte-identical to D-659's**, `cli_control.agrees`,
+381.9 s (`evidence/d663-cut-blame-u11-rescreen.json`).
+
+**(b) NO CUT OF ANY SIZE FREES `U11.1` WITHOUT TAKING `USB_VBUS_CHG`.**  Asked
+with the charger's own VBUS net BANNED, removing **ALL 34 remaining candidate
+objects** in the `U11` pocket leaves `U11.1` a cluster of ONE:
+`WINDOW_DOES_NOT_HOLD_THE_CUT`, `freed: false`, 26.3 s
+(`evidence/d663-cut-blame-u11-ban-vbus.json`).  So `USB_VBUS_CHG`'s copper is
+**NECESSARY** to every such cut.  That is the wall stated as a property of the
+board rather than as the outcome of one reverse-greedy search.
+
+**(c) `screen_barrel_move --free` HAD BEEN ASKING A ONE-OBJECT QUESTION OF A
+THREE-OBJECT CUT.**  D-659 concluded *"a rigid barrel move cannot buy this"* from
+twelve offsets at 0.900/0.400 and D-660 swept sites at 0.600/0.300 without ever
+re-asking the bond.  Both inherit the same confound: a barrel move removes at most
+TWO of the three cut objects, so `U11.1` could not bond on any rung whatever the
+barrel did.  Re-asked three ways here, the verdict SURVIVES — **and now for the
+right reason**:
+
+    probe                                        rungs                     bonded
+    0.600/0.300 shrink, 4 nearest legal sites    0.36-0.41 mm              none
+    rigid east moves on the authority            +1.4 to +2.2 mm           none
+    rigid east moves, ISET diagonal ALREADY OUT  0.0 to +2.2 mm            none
+
+(`evidence/d663-barrel-move-shrink-free.json`, `-east-rungs.json`,
+`d663-barrel-east-noiset.json`.)  Beyond +1.4 mm the move also breaks
+`USB_VBUS_CHG` (`intact: false`) because the `In2` leg's end is 0.0214 mm off the
+barrel centre and does not drag.
+
+**(d) THE TRANSACTION WAS BUILT AND IT REFUSED FOUR WAYS, NAMING THREE NEW
+FAILURE MODES** (`evidence/d663-tx-u11-g50.json`, 11/15, refused
+`attributable_drc` / `board_improved` / `no_regression` / `pour_partition`).
+12 objects out, `/01_POWER_TREE/ISET` relaid, `USB_VBUS_CHG` relaid **at the
+0.350 mm the D-662 trunk floor grants it** (`VBUS_CHG` 0.500 -> 0.350,
+`PRICED_AT_THE_PUBLISHED_BAR`, 1.113 A against a 0.500 A bar) — and:
+
+  * **FREEING A POUR AND THEN ROUTING THE EVICTED NET IS A NULL TRANSACTION
+    UNLESS THE LANE IS RESERVED.**  The router laid `USB_VBUS_CHG` straight back
+    through the freed lane at 0.350 mm and `BQ25185_SYS` never moved: 7 islands
+    before, 7 after.  D-660 built `reserve_corridor.py --lane` for exactly this
+    and it had never been spent.  **But the lane D-660 emitted is authored from
+    the OLD COPPER's centreline and its 0.450 mm keepout SEALS `U11.10`'s own
+    land**, so it cannot be the lane.  A lane authored from the FREED POUR's own
+    filled outline is kept here (`evidence/d663-u11-sys-channel-lane.json`);
+    `U11.10`'s pad is 0.77 mm clear of it.
+  * **AN EVICTION THAT TAKES A HUB BARREL'S LAST TWO LEGS LEAVES IT
+    `via_dangling`.**  The only attributable DRC item was the `USB_VBUS_CHG`
+    barrel at (65.250, 79.200), left with its `In3` leg alone.  KiCad names it
+    *"Via is not connected or connected on only one layer"* and the gate refuses.
+  * **AN ORPHANED ISLAND CANNOT REJOIN A NET WHOSE NEAREST PAD IS 50 mm AWAY.**
+    `{C23.2, U11.10}` came off together and `USB_VBUS_CHG`'s next pad is `R35.2`
+    at (36.825, 136.250).  Its own COPPER is 0.9 mm away; `route_join` may only
+    aim at a pad.  This is D-652's tap, measured a second time, and it is still
+    not wired into the writer.
+
+**(e) THE POCKET HOLDS BOTH — BUT ONLY TO THE NORTH AND EAST.**  108 idealised
+trials, read-only: the three-object cut removed, ONE straight `B.Cu` conductor
+laid from `U11.10`'s land to a point on the pocket boundary, `pcbnew.ZONE_FILLER`
+per trial, and the question *"is `U11.1` still in `U12.1`'s cluster"*
+(`evidence/d663-u11-coexist.json`).
+
+    boundary reached      0.200 mm    0.350 mm
+    NORTH  y = 76.4       14 / 14     14 / 14      survives
+    EAST   x = 71.2        9 / 14      9 / 14      survives up to y = 79.2
+    WEST   x = 66.4        6 / 14      6 / 14      survives up to y = 78.4
+    SOUTH  y = 81.6        0 / 14      0 / 14      **every one cuts it**
+
+**So D-660 §6's "`U11.10`'s escape and the lane the pour needs are the same
+0.49 mm of `B.Cu`" is true only of the SOUTH-WEST escape — which is the one the
+committed route takes and the only one the router chose when left free.**  The
+transaction nobody has yet run is: evict the three, RESERVE the channel, and make
+`U11.10` leave EAST — and D-660's own site sweep already found legal 0.600/0.300
+barrel sites east of `U11` at (70.9-71.1, 75.1-76.3), which the east survivors
+reach.
+
+**(f) THE CHANNEL AND THE PART SHIFT ARE PRICED.**  Measured on the freed board:
+the pour's connection runs a channel whose narrowest place is **0.453 mm**, at
+x 68.5-68.9, between `U11.10`'s pad clearance boundary (y 79.247) and the
+`/01_POWER_TREE/ILIM_VSET` 0.600/0.300 **barrel** at (68.600, 80.250)
+(y 79.700) — **not** `R36`'s pad, whose boundary is at 79.525.  Holding a pour
+and a `VBUS_CHG` conductor side by side there needs about **0.95 mm**.  D-660
+named `R36` as *"the part to shift"*; `apply_part_shift.py` prices it
+(`evidence/d663-r36-shift-price.json`): **+0.400 mm south is the largest shift
+with no new courtyard overlap, +0.600 mm and beyond overlaps `SW9`** — the
+user-facing power slide switch — and even +0.400 mm leaves the channel at
+0.503 mm, because the wall there is the BARREL and not the part.
+
+**(g) AND THERE IS A SECOND, CHEAPER EDGE OF THE SAME NET.**  `C27.1` — the
+`BQ25185`'s own `SYS` output decoupling capacitor, north of `U11`, an island of
+one — bonds to `{C28.1, SW9.2, U12.1}` by removing **EIGHT objects on three
+static DC set-point straps**: two `/01_POWER_TREE/ISET`, three
+`Net-(U11-TS_MR)`, two `/01_POWER_TREE/ILIM_VSET` and one `ILIM_VSET`
+0.600/0.300 barrel.  `MINIMAL_SET_FOUND`, `matches_upper_bound`,
+`cli_control.agrees`, 416.6 s, and the screen emits the `--detour-spec` for it
+(`evidence/d663-cut-blame-c27.json`).  **It touches neither `USB_VBUS_CHG` nor
+`BAT_PROTECTED_P`, so it is independent of everything in (b)-(f).**
+
+## 6. `/NFC_VDD_RF` IS A LAND WALL AT THE ESCAPE FLOOR, NOT A CORRIDOR
+
+Asked with D-662's exact lever pair (`--neck --escape-floor --trunk-floor`,
+0.050 mm) the ST25R3916's second `VDD_RF` pin returns
+`U9.14: NO LEGAL ESCAPE at >= 0.200 mm; blocked by U9.15 (x27), U9.13 (x16),
+U9.33 (x8), U9.10 (x5)` (`evidence/d663-nfcvddrf-neck-tf-g50.json`).  The escape
+floor is ALREADY 0.200 mm and the blockers are the package's own neighbouring
+PADS, so no width lever reaches it; `Default` is a class the trunk floor prices
+no floor for.  It joins `U9.10` as a `U9` pad-field wall.
+
+## 7. NEXT, IN ORDER OF LEVERAGE
+
+  1. **`BQ25185_SYS` `C27.1`** — 8 named objects, three static DC straps, the
+     `--detour-spec` already emitted, and independent of the `U11.10` wall.
+     6 of 29 edges are on this net and this is the cheapest of them.
+  2. **`BQ25185_SYS` `U11.1` VIA AN EAST ESCAPE** — evict the three, guard the
+     channel with `evidence/d663-u11-sys-channel-lane.json`, and require
+     `U11.10` to leave EAST to a 0.600/0.300 barrel near (71.0, 75.5).  §5(e)
+     says the pour survives it; §5(d) names the two things that must also be
+     solved (the `C23.2` rejoin and the hub barrel's second leg).
+  3. **THE TAP** — `route_join` may only aim an island at a PAD.  D-652 built
+     `screen_net_tap.py` and measured 11 of 25 orphan lands nearer their own
+     net's copper than any pad; it is still not a writer primitive, and §3(b)
+     and §5(d) are both it, in two different pockets.
+  4. `/ACC_PWR_EN` `RIPUP_SET`, `/WAKE_INT_N` `NO_OPENER_FOUND` both edges.
+  5. `/I2C_SCL_INT` `U14.7 <-> J1.44` remains **the one OPEN OWNER DECISION**
+     (D-655 §7), RECORDED NOT TAKEN.
+  6. `/01_POWER_TREE/ACC_5V_LX` remains a PLACEMENT finding with a number
+     (`U21.5`'s widest legal escape is 0.250 mm = 0.872 A against `SYS_MAIN`'s
+     published 2.19 A peak); no width licence should be written for it.
+  7. `copper_sliver` localisation remains an OPEN INSTRUMENT GAP.
+  8. `hardware/demo/fab` is STALE against `2900f21a`.
 # D-662 · 2026-09-07 · Demo — `--escape-floor` FIXED THE LAND AND LEFT THE OTHER HALF OF ITS OWN DEFECT IN PLACE: THE NFC FRONT-END'S `VDD` PIN HAD NO SUPPLY, AND IT CLOSES AT THE WIDTH THE BOARD'S OWN RULE ALREADY ENFORCES
 
     authority  704ce0ebed77d42cb49208ec1923e35999e3942ec72e2391c71d8ae95d6b707d

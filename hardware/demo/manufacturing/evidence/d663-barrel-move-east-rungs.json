@@ -1,0 +1,552 @@
+{
+ "authoritative_unchanged": true,
+ "board": "/home/aqroot8/aqroot-demo/hardware/demo/kicad/aqroot-demo/aqroot-Beta-v2.kicad_pcb",
+ "board_sha256": "feff534230f1c2743707071e4bc8ac21b5104e95abee73016a6c00cfd1e49aef",
+ "decision": "D-658",
+ "free": [
+  "/01_POWER_TREE/BQ25185_SYS:U11.1"
+ ],
+ "method": "pcbnew.ZONE_FILLER per rung on a private copy; the barrel and every coincident track end on the layers it spans translate together; partitions read off GetConnectivity; --drc reruns kicad-cli pcb drc --refill-zones and reports the delta BY TYPE",
+ "question": "which rigid offsets of these barrels -- and of the track ends that land on them -- let KiCad's own filler pour the named pads back onto their body, leave every moved net in one piece, and keep the DRC profile?",
+ "rungs": [
+  {
+   "clusters": {
+    "/01_POWER_TREE/BQ25185_SYS": 9,
+    "/01_POWER_TREE/USB_VBUS_CHG": 1
+   },
+   "deltas_mm": [
+    [
+     0.0,
+     0.0
+    ]
+   ],
+   "drc": {
+    "by_type": {
+     "hole_clearance": 5,
+     "solder_mask_bridge": 1
+    },
+    "exit": 0,
+    "total": 6,
+    "unconnected": 46
+   },
+   "freed": {
+    "/01_POWER_TREE/BQ25185_SYS:U11.1": {
+     "bonded": false,
+     "clusters": 9,
+     "own_cluster": 1
+    }
+   },
+   "intact": {
+    "/01_POWER_TREE/USB_VBUS_CHG": true
+   },
+   "ok": false,
+   "rung": "r00-as-built",
+   "shrink_mm": null,
+   "to_mm": [
+    [
+     66.8,
+     79.4464
+    ]
+   ]
+  },
+  {
+   "clusters": {
+    "/01_POWER_TREE/BQ25185_SYS": 9,
+    "/01_POWER_TREE/USB_VBUS_CHG": 2
+   },
+   "deltas_mm": [
+    [
+     1.4,
+     0.0
+    ]
+   ],
+   "drc": {
+    "by_type": {
+     "clearance": 9,
+     "hole_clearance": 6,
+     "shorting_items": 2,
+     "solder_mask_bridge": 2
+    },
+    "delta_by_type": {
+     "clearance": 9,
+     "hole_clearance": 1,
+     "shorting_items": 2,
+     "solder_mask_bridge": 1
+    },
+    "exit": 0,
+    "total": 19,
+    "unconnected": 48
+   },
+   "freed": {
+    "/01_POWER_TREE/BQ25185_SYS:U11.1": {
+     "bonded": false,
+     "clusters": 9,
+     "own_cluster": 1
+    }
+   },
+   "intact": {
+    "/01_POWER_TREE/USB_VBUS_CHG": false
+   },
+   "move": {
+    "ends": 1,
+    "sites": [
+     {
+      "geometry_mm": [
+       0.9,
+       0.4
+      ],
+      "net": "/01_POWER_TREE/USB_VBUS_CHG",
+      "now_mm": [
+       68.2,
+       79.4464
+      ],
+      "track_ends_dragged": 1,
+      "was_mm": [
+       66.8,
+       79.4464
+      ]
+     }
+    ],
+    "vias": 1
+   },
+   "ok": false,
+   "rung": "r01-+1.40+0.00",
+   "shrink_mm": null,
+   "to_mm": [
+    [
+     68.2,
+     79.4464
+    ]
+   ]
+  },
+  {
+   "clusters": {
+    "/01_POWER_TREE/BQ25185_SYS": 9,
+    "/01_POWER_TREE/USB_VBUS_CHG": 2
+   },
+   "deltas_mm": [
+    [
+     1.8,
+     0.0
+    ]
+   ],
+   "drc": {
+    "by_type": {
+     "clearance": 6,
+     "hole_clearance": 5,
+     "shorting_items": 1,
+     "solder_mask_bridge": 1
+    },
+    "delta_by_type": {
+     "clearance": 6,
+     "shorting_items": 1
+    },
+    "exit": 0,
+    "total": 13,
+    "unconnected": 48
+   },
+   "freed": {
+    "/01_POWER_TREE/BQ25185_SYS:U11.1": {
+     "bonded": false,
+     "clusters": 9,
+     "own_cluster": 1
+    }
+   },
+   "intact": {
+    "/01_POWER_TREE/USB_VBUS_CHG": false
+   },
+   "move": {
+    "ends": 1,
+    "sites": [
+     {
+      "geometry_mm": [
+       0.9,
+       0.4
+      ],
+      "net": "/01_POWER_TREE/USB_VBUS_CHG",
+      "now_mm": [
+       68.6,
+       79.4464
+      ],
+      "track_ends_dragged": 1,
+      "was_mm": [
+       66.8,
+       79.4464
+      ]
+     }
+    ],
+    "vias": 1
+   },
+   "ok": false,
+   "rung": "r02-+1.80+0.00",
+   "shrink_mm": null,
+   "to_mm": [
+    [
+     68.6,
+     79.4464
+    ]
+   ]
+  },
+  {
+   "clusters": {
+    "/01_POWER_TREE/BQ25185_SYS": 9,
+    "/01_POWER_TREE/USB_VBUS_CHG": 2
+   },
+   "deltas_mm": [
+    [
+     2.0,
+     0.0
+    ]
+   ],
+   "drc": {
+    "by_type": {
+     "clearance": 6,
+     "hole_clearance": 5,
+     "shorting_items": 1,
+     "solder_mask_bridge": 1
+    },
+    "delta_by_type": {
+     "clearance": 6,
+     "shorting_items": 1
+    },
+    "exit": 0,
+    "total": 13,
+    "unconnected": 48
+   },
+   "freed": {
+    "/01_POWER_TREE/BQ25185_SYS:U11.1": {
+     "bonded": false,
+     "clusters": 9,
+     "own_cluster": 1
+    }
+   },
+   "intact": {
+    "/01_POWER_TREE/USB_VBUS_CHG": false
+   },
+   "move": {
+    "ends": 1,
+    "sites": [
+     {
+      "geometry_mm": [
+       0.9,
+       0.4
+      ],
+      "net": "/01_POWER_TREE/USB_VBUS_CHG",
+      "now_mm": [
+       68.8,
+       79.4464
+      ],
+      "track_ends_dragged": 1,
+      "was_mm": [
+       66.8,
+       79.4464
+      ]
+     }
+    ],
+    "vias": 1
+   },
+   "ok": false,
+   "rung": "r03-+2.00+0.00",
+   "shrink_mm": null,
+   "to_mm": [
+    [
+     68.8,
+     79.4464
+    ]
+   ]
+  },
+  {
+   "clusters": {
+    "/01_POWER_TREE/BQ25185_SYS": 9,
+    "/01_POWER_TREE/USB_VBUS_CHG": 2
+   },
+   "deltas_mm": [
+    [
+     2.2,
+     0.0
+    ]
+   ],
+   "drc": {
+    "by_type": {
+     "clearance": 6,
+     "hole_clearance": 7,
+     "shorting_items": 2,
+     "solder_mask_bridge": 3
+    },
+    "delta_by_type": {
+     "clearance": 6,
+     "hole_clearance": 2,
+     "shorting_items": 2,
+     "solder_mask_bridge": 2
+    },
+    "exit": 0,
+    "total": 18,
+    "unconnected": 48
+   },
+   "freed": {
+    "/01_POWER_TREE/BQ25185_SYS:U11.1": {
+     "bonded": false,
+     "clusters": 9,
+     "own_cluster": 1
+    }
+   },
+   "intact": {
+    "/01_POWER_TREE/USB_VBUS_CHG": false
+   },
+   "move": {
+    "ends": 1,
+    "sites": [
+     {
+      "geometry_mm": [
+       0.9,
+       0.4
+      ],
+      "net": "/01_POWER_TREE/USB_VBUS_CHG",
+      "now_mm": [
+       69.0,
+       79.4464
+      ],
+      "track_ends_dragged": 1,
+      "was_mm": [
+       66.8,
+       79.4464
+      ]
+     }
+    ],
+    "vias": 1
+   },
+   "ok": false,
+   "rung": "r04-+2.20+0.00",
+   "shrink_mm": null,
+   "to_mm": [
+    [
+     69.0,
+     79.4464
+    ]
+   ]
+  },
+  {
+   "clusters": {
+    "/01_POWER_TREE/BQ25185_SYS": 9,
+    "/01_POWER_TREE/USB_VBUS_CHG": 2
+   },
+   "deltas_mm": [
+    [
+     2.0,
+     0.2
+    ]
+   ],
+   "drc": {
+    "by_type": {
+     "clearance": 2,
+     "hole_clearance": 5,
+     "shorting_items": 6,
+     "solder_mask_bridge": 1
+    },
+    "delta_by_type": {
+     "clearance": 2,
+     "shorting_items": 6
+    },
+    "exit": 0,
+    "total": 14,
+    "unconnected": 48
+   },
+   "freed": {
+    "/01_POWER_TREE/BQ25185_SYS:U11.1": {
+     "bonded": false,
+     "clusters": 9,
+     "own_cluster": 1
+    }
+   },
+   "intact": {
+    "/01_POWER_TREE/USB_VBUS_CHG": false
+   },
+   "move": {
+    "ends": 1,
+    "sites": [
+     {
+      "geometry_mm": [
+       0.9,
+       0.4
+      ],
+      "net": "/01_POWER_TREE/USB_VBUS_CHG",
+      "now_mm": [
+       68.8,
+       79.6464
+      ],
+      "track_ends_dragged": 1,
+      "was_mm": [
+       66.8,
+       79.4464
+      ]
+     }
+    ],
+    "vias": 1
+   },
+   "ok": false,
+   "rung": "r05-+2.00+0.20",
+   "shrink_mm": null,
+   "to_mm": [
+    [
+     68.8,
+     79.6464
+    ]
+   ]
+  },
+  {
+   "clusters": {
+    "/01_POWER_TREE/BQ25185_SYS": 9,
+    "/01_POWER_TREE/USB_VBUS_CHG": 2
+   },
+   "deltas_mm": [
+    [
+     1.6,
+     0.2
+    ]
+   ],
+   "drc": {
+    "by_type": {
+     "clearance": 4,
+     "hole_clearance": 6,
+     "shorting_items": 7,
+     "solder_mask_bridge": 3
+    },
+    "delta_by_type": {
+     "clearance": 4,
+     "hole_clearance": 1,
+     "shorting_items": 7,
+     "solder_mask_bridge": 2
+    },
+    "exit": 0,
+    "total": 20,
+    "unconnected": 48
+   },
+   "freed": {
+    "/01_POWER_TREE/BQ25185_SYS:U11.1": {
+     "bonded": false,
+     "clusters": 9,
+     "own_cluster": 1
+    }
+   },
+   "intact": {
+    "/01_POWER_TREE/USB_VBUS_CHG": false
+   },
+   "move": {
+    "ends": 1,
+    "sites": [
+     {
+      "geometry_mm": [
+       0.9,
+       0.4
+      ],
+      "net": "/01_POWER_TREE/USB_VBUS_CHG",
+      "now_mm": [
+       68.4,
+       79.6464
+      ],
+      "track_ends_dragged": 1,
+      "was_mm": [
+       66.8,
+       79.4464
+      ]
+     }
+    ],
+    "vias": 1
+   },
+   "ok": false,
+   "rung": "r06-+1.60+0.20",
+   "shrink_mm": null,
+   "to_mm": [
+    [
+     68.4,
+     79.6464
+    ]
+   ]
+  },
+  {
+   "clusters": {
+    "/01_POWER_TREE/BQ25185_SYS": 9,
+    "/01_POWER_TREE/USB_VBUS_CHG": 2
+   },
+   "deltas_mm": [
+    [
+     2.2,
+     -0.2
+    ]
+   ],
+   "drc": {
+    "by_type": {
+     "clearance": 1,
+     "hole_clearance": 6,
+     "shorting_items": 3,
+     "solder_mask_bridge": 2
+    },
+    "delta_by_type": {
+     "clearance": 1,
+     "hole_clearance": 1,
+     "shorting_items": 3,
+     "solder_mask_bridge": 1
+    },
+    "exit": 0,
+    "total": 12,
+    "unconnected": 48
+   },
+   "freed": {
+    "/01_POWER_TREE/BQ25185_SYS:U11.1": {
+     "bonded": false,
+     "clusters": 9,
+     "own_cluster": 1
+    }
+   },
+   "intact": {
+    "/01_POWER_TREE/USB_VBUS_CHG": false
+   },
+   "move": {
+    "ends": 1,
+    "sites": [
+     {
+      "geometry_mm": [
+       0.9,
+       0.4
+      ],
+      "net": "/01_POWER_TREE/USB_VBUS_CHG",
+      "now_mm": [
+       69.0,
+       79.2464
+      ],
+      "track_ends_dragged": 1,
+      "was_mm": [
+       66.8,
+       79.4464
+      ]
+     }
+    ],
+    "vias": 1
+   },
+   "ok": false,
+   "rung": "r07-+2.20-0.20",
+   "shrink_mm": null,
+   "to_mm": [
+    [
+     69.0,
+     79.2464
+    ]
+   ]
+  }
+ ],
+ "schema": 1,
+ "seconds": 133.0,
+ "sites": [
+  {
+   "at_mm": [
+    66.8,
+    79.4464
+   ],
+   "dia_mm": 0.9,
+   "drill_mm": 0.4,
+   "net": "/01_POWER_TREE/USB_VBUS_CHG"
+  }
+ ],
+ "sweep": null,
+ "winners": []
+}
