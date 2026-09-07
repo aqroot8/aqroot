@@ -1,0 +1,110 @@
+{
+ "authoritative_unchanged": true,
+ "board": "/home/aqroot8/aqroot-demo/hardware/demo/kicad/aqroot-demo/aqroot-Beta-v2.kicad_pcb",
+ "board_sha256": "0eb2a4e653fded22d1f455122045812205edf72a5a1a3ae27c6189f617807489",
+ "decision": "D-657",
+ "method": "pcbnew.ZONE_FILLER over a private copy per rung; both the PLANE's partition and the STRAP's own partition read off GetConnectivity, so a rung that re-bonds the divider by stranding the strap is visible as such; authoritative board never written",
+ "net": "+3V3",
+ "question": "how SMALL must the two Net-(U11-TS_MR) barrels be for KiCad's own filler to pour R39.1 -- the TPS63020's +3V3 feedback divider top -- back onto the plane, with the strap left where it is?",
+ "rungs": [
+  {
+   "plane_clusters": 5,
+   "r39_bonded": false,
+   "r39_cluster_size": 1,
+   "rung": "0 as built 0.600/0.300",
+   "strap_clusters": 1,
+   "strap_intact": true,
+   "strap_partition": [
+    [
+     "R38.1",
+     "U11.6"
+    ]
+   ],
+   "via_dia_nm": 600000,
+   "via_drill_nm": 300000,
+   "vias_edited": 2
+  },
+  {
+   "plane_clusters": 5,
+   "r39_bonded": false,
+   "r39_cluster_size": 1,
+   "rung": "1 board floor 0.500/0.250",
+   "strap_clusters": 1,
+   "strap_intact": true,
+   "strap_partition": [
+    [
+     "R38.1",
+     "U11.6"
+    ]
+   ],
+   "via_dia_nm": 500000,
+   "via_drill_nm": 250000,
+   "vias_edited": 2
+  },
+  {
+   "plane_clusters": 5,
+   "r39_bonded": false,
+   "r39_cluster_size": 1,
+   "rung": "2 FINE_ESC 0.450/0.200",
+   "strap_clusters": 1,
+   "strap_intact": true,
+   "strap_partition": [
+    [
+     "R38.1",
+     "U11.6"
+    ]
+   ],
+   "via_dia_nm": 450000,
+   "via_drill_nm": 200000,
+   "vias_edited": 2
+  },
+  {
+   "plane_clusters": 5,
+   "r39_bonded": false,
+   "r39_cluster_size": 1,
+   "rung": "3 FINE_ESC 0.350/0.200",
+   "strap_clusters": 1,
+   "strap_intact": true,
+   "strap_partition": [
+    [
+     "R38.1",
+     "U11.6"
+    ]
+   ],
+   "via_dia_nm": 350000,
+   "via_drill_nm": 200000,
+   "vias_edited": 2
+  },
+  {
+   "plane_clusters": 4,
+   "r39_bonded": false,
+   "r39_cluster_size": 1,
+   "rung": "4 removed entirely (the D-657 cut-blame answer)",
+   "strap_clusters": 2,
+   "strap_intact": false,
+   "strap_partition": [
+    [
+     "R38.1"
+    ],
+    [
+     "U11.6"
+    ]
+   ],
+   "via_dia_nm": 0,
+   "via_drill_nm": 0,
+   "vias_edited": 2
+  }
+ ],
+ "schema": 1,
+ "sites_mm": [
+  [
+   64.7,
+   70.5
+  ],
+  [
+   66.6,
+   70.9
+  ]
+ ],
+ "strap": "Net-(U11-TS_MR)"
+}

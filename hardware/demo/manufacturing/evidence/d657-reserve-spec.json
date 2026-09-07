@@ -1,0 +1,23 @@
+{
+ "schema": 1,
+ "why": "D-657.  screen_pour_cut_blame.py names the cut that severs R129.1 -- the +3V3 end of the ACC_DETECT_N pull-up, a Community-Port function AQROOT_DEMO_SCOPE requires -- from the +3V3 plane: the TWO 0.600/0.300 Net-(U11-TS_MR) barrels at (64.700,70.500) and (66.600,70.900).  Either one ALONE still severs, and shrinking BOTH to the D-257 FINE_ESC 0.350/0.200 geometry does not free it (evidence/d657-barrel-shrink.json).  What does free it is MOVING them: 0.5 mm in any of six directions restores the bond.  A first gate run without these discs re-laid the strap with its barrels 0.100 and 0.050 mm from the old sites and the board did not improve (evidence/d657-gate-dryrun.json).  These two discs are the smallest reservation that makes the measured 0.5 mm true of the copper the router actually lays; +3V3 is exempt because the whole point is to let its own pour back in.  D-657 run 2: r_mm 1.0 on sites 1.9 mm apart is two OVERLAPPING discs -- a complete seal of the channel, D-649's lesson in a second place -- and the whole-net re-route took 138.875 mm instead of 77, pinching the GND B.Cu return fragment that holds C27.2/C28.2 to 2.117 A against the 2.19 A its own SYS neighbours publish (PP2 margin_x 0.967, evidence/d657-gate-dryrun2.json).  r_mm is now 0.60: the smallest disc that makes the MEASURED 0.5 mm true, and the two discs no longer touch.",
+ "detours": [],
+ "reserve": [
+  {
+   "x_mm": 64.7,
+   "y_mm": 70.5,
+   "r_mm": 0.6,
+   "exempt": [
+    "+3V3"
+   ]
+  },
+  {
+   "x_mm": 66.6,
+   "y_mm": 70.9,
+   "r_mm": 0.6,
+   "exempt": [
+    "+3V3"
+   ]
+  }
+ ]
+}

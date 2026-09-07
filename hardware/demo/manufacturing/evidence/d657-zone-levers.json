@@ -1,0 +1,230 @@
+{
+ "arms": [
+  {
+   "arm": "0 baseline (control)",
+   "clusters": 9,
+   "identical_to_baseline": true,
+   "note": "no edit",
+   "partition": [
+    [
+     "C24.1",
+     "C33.1",
+     "C64.1",
+     "L2.1"
+    ],
+    [
+     "C26.2"
+    ],
+    [
+     "C27.1"
+    ],
+    [
+     "C28.1",
+     "SW9.2",
+     "U12.1"
+    ],
+    [
+     "L4.1",
+     "U21.3"
+    ],
+    [
+     "R68.1"
+    ],
+    [
+     "U11.1"
+    ],
+    [
+     "U12.10",
+     "U12.11"
+    ],
+    [
+     "U13.3"
+    ]
+   ]
+  },
+  {
+   "arm": "padconn_full",
+   "clusters": 9,
+   "identical_to_baseline": true,
+   "note": "both SYS zones pad connection THERMAL -> FULL",
+   "partition": [
+    [
+     "C24.1",
+     "C33.1",
+     "C64.1",
+     "L2.1"
+    ],
+    [
+     "C26.2"
+    ],
+    [
+     "C27.1"
+    ],
+    [
+     "C28.1",
+     "SW9.2",
+     "U12.1"
+    ],
+    [
+     "L4.1",
+     "U21.3"
+    ],
+    [
+     "R68.1"
+    ],
+    [
+     "U11.1"
+    ],
+    [
+     "U12.10",
+     "U12.11"
+    ],
+    [
+     "U13.3"
+    ]
+   ],
+   "zones_edited": 2
+  },
+  {
+   "arm": "priority_1",
+   "clusters": 9,
+   "identical_to_baseline": true,
+   "note": "both SYS zones priority 0 -> 1, above `B GND PLANE`",
+   "partition": [
+    [
+     "C24.1",
+     "C33.1",
+     "C64.1",
+     "L2.1"
+    ],
+    [
+     "C26.2"
+    ],
+    [
+     "C27.1"
+    ],
+    [
+     "C28.1",
+     "SW9.2",
+     "U12.1"
+    ],
+    [
+     "L4.1",
+     "U21.3"
+    ],
+    [
+     "R68.1"
+    ],
+    [
+     "U11.1"
+    ],
+    [
+     "U12.10",
+     "U12.11"
+    ],
+    [
+     "U13.3"
+    ]
+   ],
+   "zones_edited": 2
+  },
+  {
+   "arm": "minthk_010",
+   "clusters": 9,
+   "identical_to_baseline": true,
+   "note": "both SYS zones min_thickness 0.200 -> 0.100 mm",
+   "partition": [
+    [
+     "C24.1",
+     "C33.1",
+     "C64.1",
+     "L2.1"
+    ],
+    [
+     "C26.2"
+    ],
+    [
+     "C27.1"
+    ],
+    [
+     "C28.1",
+     "SW9.2",
+     "U12.1"
+    ],
+    [
+     "L4.1",
+     "U21.3"
+    ],
+    [
+     "R68.1"
+    ],
+    [
+     "U11.1"
+    ],
+    [
+     "U12.10",
+     "U12.11"
+    ],
+    [
+     "U13.3"
+    ]
+   ],
+   "zones_edited": 2
+  },
+  {
+   "arm": "inert_removal",
+   "chains": 29,
+   "clusters": 9,
+   "identical_to_baseline": true,
+   "inert_mm": 30.363,
+   "note": "every INERT chain screen_inert_copper.py reports inside the POUR 1 rectangle, removed at once",
+   "partition": [
+    [
+     "C24.1",
+     "C33.1",
+     "C64.1",
+     "L2.1"
+    ],
+    [
+     "C26.2"
+    ],
+    [
+     "C27.1"
+    ],
+    [
+     "C28.1",
+     "SW9.2",
+     "U12.1"
+    ],
+    [
+     "L4.1",
+     "U21.3"
+    ],
+    [
+     "R68.1"
+    ],
+    [
+     "U11.1"
+    ],
+    [
+     "U12.10",
+     "U12.11"
+    ],
+    [
+     "U13.3"
+    ]
+   ],
+   "removed": 46,
+   "track_objects": 46
+  }
+ ],
+ "authoritative_unchanged": true,
+ "board": "/home/aqroot8/aqroot-demo/hardware/demo/kicad/aqroot-demo/aqroot-Beta-v2.kicad_pcb",
+ "board_sha256": "0eb2a4e653fded22d1f455122045812205edf72a5a1a3ae27c6189f617807489",
+ "decision": "D-657",
+ "method": "KiCad's own pcbnew.ZONE_FILLER over a private copy per arm; partition read off GetConnectivity; authoritative board never written",
+ "net": "/01_POWER_TREE/BQ25185_SYS",
+ "question": "do the POUR's own parameters, or the INERT copper inside its rectangle, answer the BQ25185_SYS residual?",
+ "schema": 1,
+ "verdict": "NO on all four.  every arm's partition is IDENTICAL to the baseline, cluster for cluster."
+}

@@ -1,0 +1,502 @@
+{
+ "board": "/home/aqroot8/aqroot-demo/hardware/demo/kicad/aqroot-demo/aqroot-Beta-v2.kicad_pcb",
+ "board_min_track_mm": 0.15,
+ "board_sha256": "0eb2a4e653fded22d1f455122045812205edf72a5a1a3ae27c6189f617807489",
+ "controls": [
+  {
+   "control": "positive_margin_is_not_a_wall",
+   "expected": "CLEAR",
+   "got": "CLEAR",
+   "in_courtyard": true,
+   "margin_mm": 0.25,
+   "ok": true,
+   "widest_mm": 1.0
+  },
+  {
+   "control": "zero_margin_is_never_a_neck",
+   "expected": "LATTICE_EXACT",
+   "got": "LATTICE_EXACT",
+   "in_courtyard": true,
+   "margin_mm": 0.0,
+   "ok": true,
+   "widest_mm": 1.0
+  },
+  {
+   "control": "nothing_launchable_is_a_true_wall",
+   "expected": "TRUE_WALL",
+   "got": "TRUE_WALL",
+   "in_courtyard": true,
+   "margin_mm": -0.2,
+   "ok": true,
+   "widest_mm": 0.0
+  },
+  {
+   "control": "below_board_minimum_is_a_true_wall",
+   "expected": "TRUE_WALL",
+   "got": "TRUE_WALL",
+   "in_courtyard": true,
+   "margin_mm": -0.2,
+   "ok": true,
+   "widest_mm": 0.075
+  },
+  {
+   "control": "neckable_only_inside_a_named_courtyard",
+   "expected": "WIDTH_UNLICENSED",
+   "got": "WIDTH_UNLICENSED",
+   "in_courtyard": false,
+   "margin_mm": -0.2,
+   "ok": true,
+   "widest_mm": 0.2
+  },
+  {
+   "control": "neckable_inside_a_named_courtyard",
+   "expected": "WIDTH_NECKABLE",
+   "got": "WIDTH_NECKABLE",
+   "in_courtyard": true,
+   "margin_mm": -0.2,
+   "ok": true,
+   "widest_mm": 0.2
+  },
+  {
+   "control": "just_under_the_licensed_neck_is_unlicensed",
+   "expected": "WIDTH_UNLICENSED",
+   "got": "WIDTH_UNLICENSED",
+   "in_courtyard": true,
+   "margin_mm": -0.2,
+   "ok": true,
+   "widest_mm": 0.199
+  },
+  {
+   "amps": 1.0,
+   "control": "priced_at_the_bar_is_admitted",
+   "expected": true,
+   "got": true,
+   "ok": true,
+   "required": 1.0
+  },
+  {
+   "amps": 0.999,
+   "control": "one_rounding_quantum_below_the_bar_is_refused",
+   "expected": false,
+   "got": false,
+   "ok": true,
+   "quantum_a": 0.001,
+   "required": 1.0,
+   "why": "BOND_UNDER_PRICED",
+   "width_mm": 0.301811
+  },
+  {
+   "control": "unpriced_class_is_refused",
+   "expected": false,
+   "got": false,
+   "ok": true,
+   "why": "NET_CARRIES_NO_PUBLISHED_CURRENT"
+  }
+ ],
+ "controls_ok": true,
+ "dru_class_width_rules": {
+  "ACC_3V3": {
+   "min_mm": 0.35,
+   "opt_mm": 0.5
+  },
+  "ACC_5V": {
+   "min_mm": 0.4,
+   "opt_mm": 0.6
+  },
+  "BAT_MAIN": {
+   "min_mm": 0.6,
+   "opt_mm": 1.0
+  },
+  "NFC_5V_PA": {
+   "min_mm": 0.35,
+   "opt_mm": 0.6
+  },
+  "NFC_RF": {
+   "min_mm": 0.3,
+   "opt_mm": 0.4
+  },
+  "P3V3": {
+   "min_mm": 0.4,
+   "opt_mm": 0.6
+  },
+  "SPK_OUT": {
+   "min_mm": 0.25,
+   "opt_mm": 0.3
+  },
+  "SWITCH_NODE": {
+   "min_mm": 0.4,
+   "opt_mm": 0.6
+  },
+  "SYS_MAIN": {
+   "min_mm": 0.5,
+   "opt_mm": 0.8
+  },
+  "VBUS_CHG": {
+   "min_mm": 0.35,
+   "opt_mm": 0.5
+  }
+ },
+ "escape_floor_controls": [
+  {
+   "netclass": "ACC_3V3",
+   "ok": true,
+   "rule_mm": 0.35,
+   "rule_opt_mm": 0.5,
+   "table_mm": 0.35,
+   "why": "table floor is at or above the rule KiCad enforces"
+  },
+  {
+   "netclass": "ACC_5V",
+   "ok": true,
+   "rule_mm": 0.4,
+   "rule_opt_mm": 0.6,
+   "table_mm": 0.4,
+   "why": "table floor is at or above the rule KiCad enforces"
+  },
+  {
+   "netclass": "BAT_MAIN",
+   "ok": true,
+   "rule_mm": 0.6,
+   "rule_opt_mm": 1.0,
+   "table_mm": 0.6,
+   "why": "table floor is at or above the rule KiCad enforces"
+  },
+  {
+   "netclass": "NFC_5V_PA",
+   "ok": true,
+   "rule_mm": 0.35,
+   "rule_opt_mm": 0.6,
+   "table_mm": 0.35,
+   "why": "table floor is at or above the rule KiCad enforces"
+  },
+  {
+   "netclass": "NFC_RF",
+   "ok": true,
+   "rule_mm": 0.3,
+   "rule_opt_mm": 0.4,
+   "table_mm": 0.3,
+   "why": "table floor is at or above the rule KiCad enforces"
+  },
+  {
+   "netclass": "P3V3",
+   "ok": true,
+   "rule_mm": 0.4,
+   "rule_opt_mm": 0.6,
+   "table_mm": 0.4,
+   "why": "table floor is at or above the rule KiCad enforces"
+  },
+  {
+   "netclass": "SPK_OUT",
+   "ok": true,
+   "rule_mm": 0.25,
+   "rule_opt_mm": 0.3,
+   "table_mm": 0.25,
+   "why": "table floor is at or above the rule KiCad enforces"
+  },
+  {
+   "netclass": "SWITCH_NODE",
+   "ok": true,
+   "rule_mm": 0.4,
+   "rule_opt_mm": 0.6,
+   "table_mm": 0.4,
+   "why": "table floor is at or above the rule KiCad enforces"
+  },
+  {
+   "netclass": "SYS_MAIN",
+   "ok": true,
+   "rule_mm": 0.5,
+   "rule_opt_mm": 0.8,
+   "table_mm": 0.5,
+   "why": "table floor is at or above the rule KiCad enforces"
+  },
+  {
+   "netclass": "VBUS_CHG",
+   "ok": true,
+   "rule_mm": 0.35,
+   "rule_opt_mm": 0.5,
+   "table_mm": 0.35,
+   "why": "table floor is at or above the rule KiCad enforces"
+  }
+ ],
+ "escape_floor_controls_ok": true,
+ "land_verdicts": {
+  "CLEAR": 14,
+  "WIDTH_NECKABLE": 2
+ },
+ "lands": [
+  {
+   "best_margin_mm": 1.275,
+   "contract_mm": 0.8,
+   "in_licensed_courtyard": false,
+   "licensed_neck_mm": 0.2,
+   "net": "/01_POWER_TREE/BQ25185_SYS",
+   "netclass": "SYS_MAIN",
+   "pad": "SW9.2",
+   "verdict": "CLEAR",
+   "why": "this package can launch the contract width; a router refusal here is ROUTED COPPER, not the land",
+   "widest_mm": 1.0
+  },
+  {
+   "best_margin_mm": 1.45,
+   "contract_mm": 0.8,
+   "in_licensed_courtyard": false,
+   "licensed_neck_mm": 0.2,
+   "net": "/01_POWER_TREE/BQ25185_SYS",
+   "netclass": "SYS_MAIN",
+   "pad": "R68.1",
+   "verdict": "CLEAR",
+   "why": "this package can launch the contract width; a router refusal here is ROUTED COPPER, not the land",
+   "widest_mm": 1.0
+  },
+  {
+   "best_margin_mm": 2.17,
+   "contract_mm": 0.8,
+   "in_licensed_courtyard": false,
+   "licensed_neck_mm": 0.2,
+   "net": "/01_POWER_TREE/BQ25185_SYS",
+   "netclass": "SYS_MAIN",
+   "pad": "L2.1",
+   "verdict": "CLEAR",
+   "why": "this package can launch the contract width; a router refusal here is ROUTED COPPER, not the land",
+   "widest_mm": 1.0
+  },
+  {
+   "best_margin_mm": 1.425192,
+   "contract_mm": 0.8,
+   "in_licensed_courtyard": false,
+   "licensed_neck_mm": 0.2,
+   "net": "/01_POWER_TREE/BQ25185_SYS",
+   "netclass": "SYS_MAIN",
+   "pad": "C27.1",
+   "verdict": "CLEAR",
+   "why": "this package can launch the contract width; a router refusal here is ROUTED COPPER, not the land",
+   "widest_mm": 1.0
+  },
+  {
+   "best_margin_mm": 1.588146,
+   "contract_mm": 0.8,
+   "in_licensed_courtyard": false,
+   "licensed_neck_mm": 0.2,
+   "net": "/01_POWER_TREE/BQ25185_SYS",
+   "netclass": "SYS_MAIN",
+   "pad": "L4.1",
+   "verdict": "CLEAR",
+   "why": "this package can launch the contract width; a router refusal here is ROUTED COPPER, not the land",
+   "widest_mm": 1.0
+  },
+  {
+   "best_margin_mm": 1.235705,
+   "contract_mm": 0.8,
+   "in_licensed_courtyard": false,
+   "licensed_neck_mm": 0.2,
+   "net": "/01_POWER_TREE/BQ25185_SYS",
+   "netclass": "SYS_MAIN",
+   "pad": "C24.1",
+   "verdict": "CLEAR",
+   "why": "this package can launch the contract width; a router refusal here is ROUTED COPPER, not the land",
+   "widest_mm": 1.0
+  },
+  {
+   "best_margin_mm": 0.3,
+   "contract_mm": 0.8,
+   "in_licensed_courtyard": true,
+   "licensed_neck_mm": 0.2,
+   "net": "/01_POWER_TREE/BQ25185_SYS",
+   "netclass": "SYS_MAIN",
+   "pad": "U12.1",
+   "verdict": "CLEAR",
+   "why": "this package can launch the contract width; a router refusal here is ROUTED COPPER, not the land",
+   "widest_mm": 1.0
+  },
+  {
+   "best_margin_mm": -0.1,
+   "contract_mm": 0.8,
+   "in_licensed_courtyard": true,
+   "licensed_neck_mm": 0.2,
+   "net": "/01_POWER_TREE/BQ25185_SYS",
+   "netclass": "SYS_MAIN",
+   "pad": "U12.10",
+   "price_at_licensed_neck": {
+    "admitted": false,
+    "amps": 0.742,
+    "required_amps": 2.19,
+    "why": "BOND_UNDER_PRICED",
+    "width_mm": 0.2
+   },
+   "price_at_widest": {
+    "admitted": false,
+    "amps": 1.645,
+    "required_amps": 2.19,
+    "why": "BOND_UNDER_PRICED",
+    "width_mm": 0.6
+   },
+   "verdict": "WIDTH_NECKABLE",
+   "why": "cannot launch the contract width, CAN launch 0.6000 mm >= the 0.200 mm this board's own .kicad_dru licenses inside this courtyard",
+   "widest_mm": 0.6
+  },
+  {
+   "best_margin_mm": -0.1,
+   "contract_mm": 0.8,
+   "in_licensed_courtyard": true,
+   "licensed_neck_mm": 0.2,
+   "net": "/01_POWER_TREE/BQ25185_SYS",
+   "netclass": "SYS_MAIN",
+   "pad": "U12.11",
+   "price_at_licensed_neck": {
+    "admitted": false,
+    "amps": 0.742,
+    "required_amps": 2.19,
+    "why": "BOND_UNDER_PRICED",
+    "width_mm": 0.2
+   },
+   "price_at_widest": {
+    "admitted": false,
+    "amps": 1.645,
+    "required_amps": 2.19,
+    "why": "BOND_UNDER_PRICED",
+    "width_mm": 0.6
+   },
+   "verdict": "WIDTH_NECKABLE",
+   "why": "cannot launch the contract width, CAN launch 0.6000 mm >= the 0.200 mm this board's own .kicad_dru licenses inside this courtyard",
+   "widest_mm": 0.6
+  },
+  {
+   "best_margin_mm": 1.35,
+   "contract_mm": 0.8,
+   "in_licensed_courtyard": false,
+   "licensed_neck_mm": 0.2,
+   "net": "/01_POWER_TREE/BQ25185_SYS",
+   "netclass": "SYS_MAIN",
+   "pad": "C28.1",
+   "verdict": "CLEAR",
+   "why": "this package can launch the contract width; a router refusal here is ROUTED COPPER, not the land",
+   "widest_mm": 1.0
+  },
+  {
+   "best_margin_mm": 0.2,
+   "contract_mm": 0.8,
+   "in_licensed_courtyard": true,
+   "licensed_neck_mm": 0.2,
+   "net": "/01_POWER_TREE/BQ25185_SYS",
+   "netclass": "SYS_MAIN",
+   "pad": "U11.1",
+   "verdict": "CLEAR",
+   "why": "this package can launch the contract width; a router refusal here is ROUTED COPPER, not the land",
+   "widest_mm": 1.0
+  },
+  {
+   "best_margin_mm": 0.3,
+   "contract_mm": 0.8,
+   "in_licensed_courtyard": true,
+   "licensed_neck_mm": 0.2,
+   "net": "/01_POWER_TREE/BQ25185_SYS",
+   "netclass": "SYS_MAIN",
+   "pad": "U21.3",
+   "verdict": "CLEAR",
+   "why": "this package can launch the contract width; a router refusal here is ROUTED COPPER, not the land",
+   "widest_mm": 1.0
+  },
+  {
+   "best_margin_mm": 1.195018,
+   "contract_mm": 0.8,
+   "in_licensed_courtyard": false,
+   "licensed_neck_mm": 0.2,
+   "net": "/01_POWER_TREE/BQ25185_SYS",
+   "netclass": "SYS_MAIN",
+   "pad": "C26.2",
+   "verdict": "CLEAR",
+   "why": "this package can launch the contract width; a router refusal here is ROUTED COPPER, not the land",
+   "widest_mm": 1.0
+  },
+  {
+   "best_margin_mm": 0.3,
+   "contract_mm": 0.8,
+   "in_licensed_courtyard": true,
+   "licensed_neck_mm": 0.2,
+   "net": "/01_POWER_TREE/BQ25185_SYS",
+   "netclass": "SYS_MAIN",
+   "pad": "U13.3",
+   "verdict": "CLEAR",
+   "why": "this package can launch the contract width; a router refusal here is ROUTED COPPER, not the land",
+   "widest_mm": 1.0
+  },
+  {
+   "best_margin_mm": 1.7,
+   "contract_mm": 0.8,
+   "in_licensed_courtyard": false,
+   "licensed_neck_mm": 0.2,
+   "net": "/01_POWER_TREE/BQ25185_SYS",
+   "netclass": "SYS_MAIN",
+   "pad": "C64.1",
+   "verdict": "CLEAR",
+   "why": "this package can launch the contract width; a router refusal here is ROUTED COPPER, not the land",
+   "widest_mm": 1.0
+  },
+  {
+   "best_margin_mm": 0.795,
+   "contract_mm": 0.8,
+   "in_licensed_courtyard": false,
+   "licensed_neck_mm": 0.2,
+   "net": "/01_POWER_TREE/BQ25185_SYS",
+   "netclass": "SYS_MAIN",
+   "pad": "C33.1",
+   "verdict": "CLEAR",
+   "why": "this package can launch the contract width; a router refusal here is ROUTED COPPER, not the land",
+   "widest_mm": 1.0
+  }
+ ],
+ "licensed_courtyards": [
+  "U11",
+  "U12",
+  "U13",
+  "U14",
+  "U16",
+  "U17",
+  "U20",
+  "U21",
+  "U22",
+  "U9"
+ ],
+ "licensed_neck_mm": 0.2,
+ "nets": [
+  {
+   "blocked_lands": [
+    "U12.10",
+    "U12.11"
+   ],
+   "contract_mm": 0.8,
+   "dru_floor_mm": 0.5,
+   "net": "/01_POWER_TREE/BQ25185_SYS",
+   "netclass": "SYS_MAIN",
+   "open_edges": 6,
+   "pads": 13,
+   "published_amps": 2.19,
+   "routed_above_dru_floor": true,
+   "sheet": "01_POWER_TREE",
+   "verdicts": {
+    "CLEAR": 14,
+    "WIDTH_NECKABLE": 2
+   }
+  }
+ ],
+ "open_edges": 6,
+ "open_nets": 1,
+ "published_currents": {
+  "classes": [
+   "ACC_3V3",
+   "ACC_5V",
+   "BAT_MAIN",
+   "LED_BOOST",
+   "NFC_5V_PA_PENDING",
+   "P3V3",
+   "SPK_OUT",
+   "SYS_MAIN",
+   "VBUS_CHG"
+  ],
+  "found": true,
+  "sha256": "9795318c9dbe005194e6069bd5e5729319278f49bf5b21cd2f5748c5e93c4822",
+  "source": "/home/aqroot8/aqroot-demo/hardware/demo/kicad/aqroot-demo/aqroot-Beta-v2.kicad_dru"
+ },
+ "schema": 1,
+ "what": "D-630 -- every open net's lands, classified by WHICH instrument answers them.  `no_lattice_at_any_pitch` collapses margin<0 and margin==0 into one predicate and hands both to prose naming three instruments; reading the WIDEST legal escape beside the margin separates them, and every width verdict is PRICED in amperes against .kicad_dru section 5 the way PP2 prices a bond."
+}

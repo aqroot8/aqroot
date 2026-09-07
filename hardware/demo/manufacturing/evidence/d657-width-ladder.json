@@ -1,0 +1,295 @@
+{
+ "board": "hardware/demo/kicad/aqroot-demo/aqroot-Beta-v2.kicad_pcb",
+ "board_sha256": "0eb2a4e653fded22d1f455122045812205edf72a5a1a3ae27c6189f617807489",
+ "decision": "D-657",
+ "dru_floor_mm": 0.5,
+ "ladder": [
+  {
+   "grid_nm": 50000,
+   "layers": [
+    "F",
+    "B",
+    "I2"
+   ],
+   "pairs": [
+    {
+     "ok": false,
+     "pair": "U11.1->C27.1",
+     "reason": "NO_LEGAL_ESCAPE",
+     "why": "U11.1: NO OFF-CENTRE LAUNCH at 0.800 mm from any of 41 anchors x 24 directions x 17 lengths; blocked by U11.2 (x12729), R36.1 (x1043), landing still on the land (x890), R37.2 (x770)"
+    },
+    {
+     "ok": false,
+     "pair": "C27.1->C28.1",
+     "reason": "NO_PATH",
+     "why": "no all-layer corridor at 0.800 mm from C27.1 on B to C28.1 on B"
+    },
+    {
+     "ok": false,
+     "pair": "C26.2->C24.1",
+     "reason": "NO_PATH",
+     "why": "no all-layer corridor at 0.800 mm from C26.2 on B to C24.1 on B"
+    },
+    {
+     "ok": false,
+     "pair": "U12.11->C26.2",
+     "reason": "NO_LEGAL_ESCAPE",
+     "why": "U12.11: NO OFF-CENTRE LAUNCH at 0.800 mm from any of 41 anchors x 24 directions x 17 lengths; blocked by U12.12 (x11566), U12.9 (x1938), U12.8 (x1707), C24.2 (x368)"
+    }
+   ],
+   "width_mm": 0.8
+  },
+  {
+   "grid_nm": 50000,
+   "layers": [
+    "F",
+    "B",
+    "I2"
+   ],
+   "pairs": [
+    {
+     "ok": false,
+     "pair": "U11.1->C27.1",
+     "reason": "NO_LEGAL_ESCAPE",
+     "why": "U11.1: NO OFF-CENTRE LAUNCH at 0.600 mm from any of 41 anchors x 24 directions x 17 lengths; blocked by U11.2 (x13423), landing still on the land (x890), R36.1 (x837), R37.2 (x554)"
+    },
+    {
+     "ok": false,
+     "pair": "C27.1->C28.1",
+     "reason": "NO_PATH",
+     "why": "no all-layer corridor at 0.600 mm from C27.1 on B to C28.1 on B"
+    },
+    {
+     "ok": false,
+     "pair": "C26.2->C24.1",
+     "reason": "NO_PATH",
+     "why": "no all-layer corridor at 0.600 mm from C26.2 on B to C24.1 on B"
+    },
+    {
+     "ok": false,
+     "pair": "U12.11->C26.2",
+     "reason": "NO_LEGAL_ESCAPE",
+     "why": "U12.11: NO OFF-CENTRE LAUNCH at 0.600 mm from any of 41 anchors x 24 directions x 17 lengths; blocked by U12.12 (x12463), U12.9 (x1591), U12.8 (x1416), U12.2 (x320)"
+    }
+   ],
+   "width_mm": 0.6
+  },
+  {
+   "grid_nm": 50000,
+   "layers": [
+    "F",
+    "B",
+    "I2"
+   ],
+   "pairs": [
+    {
+     "ok": false,
+     "pair": "U11.1->C27.1",
+     "reason": "NO_LEGAL_ESCAPE",
+     "why": "U11.1: NO OFF-CENTRE LAUNCH at 0.500 mm from any of 41 anchors x 24 directions x 17 lengths; blocked by U11.2 (x12722), landing still on the land (x890), R36.1 (x747), R37.2 (x458)"
+    },
+    {
+     "ok": false,
+     "pair": "C27.1->C28.1",
+     "reason": "NO_PATH",
+     "why": "no all-layer corridor at 0.500 mm from C27.1 on B to C28.1 on B"
+    },
+    {
+     "ok": false,
+     "pair": "C26.2->C24.1",
+     "reason": "NO_PATH",
+     "why": "no all-layer corridor at 0.500 mm from C26.2 on B to C24.1 on B"
+    },
+    {
+     "ok": false,
+     "pair": "U12.11->C26.2",
+     "reason": "NO_PATH",
+     "why": "no all-layer corridor at 0.500 mm from U12.11 on B to C26.2 on B"
+    }
+   ],
+   "width_mm": 0.5
+  },
+  {
+   "grid_nm": 50000,
+   "layers": [
+    "F",
+    "B",
+    "I2"
+   ],
+   "pairs": [
+    {
+     "ok": false,
+     "pair": "U11.1->C27.1",
+     "reason": "NO_LEGAL_ESCAPE",
+     "why": "U11.1: NO OFF-CENTRE LAUNCH at 0.400 mm from any of 41 anchors x 24 directions x 17 lengths; blocked by U11.2 (x12923), landing still on the land (x890), R36.1 (x674), R37.2 (x437)"
+    },
+    {
+     "ok": false,
+     "pair": "C27.1->C28.1",
+     "reason": "NO_PATH",
+     "why": "no all-layer corridor at 0.400 mm from C27.1 on B to C28.1 on B"
+    },
+    {
+     "ok": false,
+     "pair": "C26.2->C24.1",
+     "reason": "NO_PATH",
+     "why": "no all-layer corridor at 0.400 mm from C26.2 on B to C24.1 on B"
+    },
+    {
+     "ok": false,
+     "pair": "U12.11->C26.2",
+     "reason": "NO_PATH",
+     "why": "no all-layer corridor at 0.400 mm from U12.11 on B to C26.2 on B"
+    }
+   ],
+   "width_mm": 0.4
+  },
+  {
+   "grid_nm": 50000,
+   "layers": [
+    "F",
+    "B",
+    "I2"
+   ],
+   "pairs": [
+    {
+     "ok": false,
+     "pair": "U11.1->C27.1",
+     "reason": "NO_LEGAL_ESCAPE",
+     "why": "U11.1: NO OFF-CENTRE LAUNCH at 0.350 mm from any of 41 anchors x 24 directions x 17 lengths; blocked by U11.2 (x13814), landing still on the land (x890), R36.1 (x654), R37.2 (x400)"
+    },
+    {
+     "ok": false,
+     "pair": "C27.1->C28.1",
+     "reason": "NO_PATH",
+     "why": "no all-layer corridor at 0.350 mm from C27.1 on B to C28.1 on B"
+    },
+    {
+     "ok": false,
+     "pair": "C26.2->C24.1",
+     "reason": "NO_PATH",
+     "why": "no all-layer corridor at 0.350 mm from C26.2 on B to C24.1 on B"
+    },
+    {
+     "ok": false,
+     "pair": "U12.11->C26.2",
+     "reason": "NO_PATH",
+     "why": "no all-layer corridor at 0.350 mm from U12.11 on B to C26.2 on B"
+    }
+   ],
+   "width_mm": 0.35
+  },
+  {
+   "grid_nm": 50000,
+   "layers": [
+    "F",
+    "B",
+    "I2"
+   ],
+   "pairs": [
+    {
+     "ok": false,
+     "pair": "U11.1->C27.1",
+     "reason": "NO_LEGAL_ESCAPE",
+     "why": "U11.1: NO OFF-CENTRE LAUNCH at 0.300 mm from any of 41 anchors x 24 directions x 17 lengths; blocked by U11.2 (x12394), track (x1071), landing still on the land (x890), R36.1 (x644)"
+    },
+    {
+     "ok": false,
+     "pair": "C27.1->C28.1",
+     "reason": "NO_PATH",
+     "why": "no all-layer corridor at 0.300 mm from C27.1 on B to C28.1 on B"
+    },
+    {
+     "ok": false,
+     "pair": "C26.2->C24.1",
+     "reason": "NO_PATH",
+     "why": "no all-layer corridor at 0.300 mm from C26.2 on B to C24.1 on B"
+    },
+    {
+     "ok": false,
+     "pair": "U12.11->C26.2",
+     "reason": "NO_PATH",
+     "why": "no all-layer corridor at 0.300 mm from U12.11 on B to C26.2 on B"
+    }
+   ],
+   "width_mm": 0.3
+  },
+  {
+   "grid_nm": 50000,
+   "layers": [
+    "F",
+    "B",
+    "I2"
+   ],
+   "pairs": [
+    {
+     "ok": false,
+     "pair": "U11.1->C27.1",
+     "reason": "NO_LEGAL_ESCAPE",
+     "why": "U11.1: NO OFF-CENTRE LAUNCH at 0.250 mm from any of 41 anchors x 24 directions x 17 lengths; blocked by U11.2 (x11416), track (x1819), landing still on the land (x890), R36.1 (x613)"
+    },
+    {
+     "ok": false,
+     "pair": "C27.1->C28.1",
+     "reason": "NO_PATH",
+     "why": "no all-layer corridor at 0.250 mm from C27.1 on B to C28.1 on B"
+    },
+    {
+     "ok": false,
+     "pair": "C26.2->C24.1",
+     "reason": "NO_PATH",
+     "why": "no all-layer corridor at 0.250 mm from C26.2 on B to C24.1 on B"
+    },
+    {
+     "ok": false,
+     "pair": "U12.11->C26.2",
+     "reason": "NO_PATH",
+     "why": "no all-layer corridor at 0.250 mm from U12.11 on B to C26.2 on B"
+    }
+   ],
+   "width_mm": 0.25
+  },
+  {
+   "grid_nm": 50000,
+   "layers": [
+    "F",
+    "B",
+    "I2"
+   ],
+   "pairs": [
+    {
+     "ok": false,
+     "pair": "U11.1->C27.1",
+     "reason": "NO_LEGAL_ESCAPE",
+     "why": "U11.1: NO OFF-CENTRE LAUNCH at 0.200 mm from any of 41 anchors x 24 directions x 17 lengths; blocked by U11.2 (x9450), track (x3086), landing still on the land (x890), U11.11 (x661)"
+    },
+    {
+     "ok": false,
+     "pair": "C27.1->C28.1",
+     "reason": "NO_PATH",
+     "why": "no all-layer corridor at 0.200 mm from C27.1 on B to C28.1 on B"
+    },
+    {
+     "ok": false,
+     "pair": "C26.2->C24.1",
+     "reason": "NO_PATH",
+     "why": "no all-layer corridor at 0.200 mm from C26.2 on B to C24.1 on B"
+    },
+    {
+     "ok": false,
+     "pair": "U12.11->C26.2",
+     "reason": "NO_PATH",
+     "why": "no all-layer corridor at 0.200 mm from U12.11 on B to C26.2 on B"
+    }
+   ],
+   "width_mm": 0.2
+  }
+ ],
+ "licensed_neck_mm": 0.2,
+ "method": "read-only; each route is laid, measured and REVERTED; the authoritative board is never written",
+ "net": "/01_POWER_TREE/BQ25185_SYS",
+ "netclass_width_mm": 0.8,
+ "question": "is the BQ25185_SYS residual a WIDTH question?  ask maze3d.offcentre_route -- the gate's own primitive -- for four of the net's open pairs at every rung from the netclass 0.800 mm down to the board's own licensed 0.200 mm fine-pitch neck",
+ "schema": 1,
+ "verdict": "NO.  every rung refuses on every pair.  the corridors are NO_PATH at 0.200 mm and U11.1 is NO_LEGAL_ESCAPE at 0.200 mm, blocked by U11.2 (PROTECTED /01_POWER_TREE/BAT_PROTECTED_P) at the WSON-10's 0.4 mm pitch"
+}
