@@ -110,6 +110,15 @@ CONTRACTS = (
     # run was made in rather than leaving it to be inferred.
     ("obstacle_model", "checks/obstacle_model_contract.py", (),
      "obstacle_model-contract", "verdict"),
+    # D-662.  THE TWELFTH, AND THE SECOND ABOUT THE INSTRUMENT.  `--trunk-floor`
+    # lets a net route at the width `.kicad_dru` publishes as its class MINIMUM
+    # instead of the netclass `opt`, so it can lay copper on every priced rail
+    # on this board.  It belongs here for the reason `neck_contract` does: the
+    # claim that matters is not "the lever works" but "with the lever OFF
+    # `net_contract` returns what it returned before it existed", and that
+    # claim has to be re-proved on every future framework change, not once.
+    ("trunk_floor", "checks/trunk_floor_contract.py", (),
+     "trunk_floor-contract", "all_pass"),
 )
 BY_BASENAME = ("board", "schematic", "guard", "pre_board")
 

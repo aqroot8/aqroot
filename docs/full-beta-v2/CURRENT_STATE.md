@@ -13,6 +13,83 @@
 > This file references DEVICE_SPEC rather than duplicating full specs.
 
 ## 1. Authoritative HEAD
+- **Demo D-662 (`--escape-floor` FIXED THE LAND AND LEFT THE OTHER HALF OF ITS
+  OWN DEFECT IN PLACE: THE NFC FRONT-END'S `VDD` PIN HAD NO SUPPLY, AND IT
+  CLOSES AT THE WIDTH THE BOARD'S OWN RULE ALREADY ENFORCES):**
+  **COPPER PROMOTED, PLUS A NEW LEVER AND A NEW STANDING CONTRACT.**
+  Authority `704ce0eb...` -> **`feff534230f1c2743707071e4bc8ac21b5104e95abee73016a6c00cfd1e49aef`**;
+  retained open edges **31 -> 30**, open retained nets 17 -> 17, connected
+  retained 156 -> 156, raw board ratsnest **47 -> 46**.  `hardware/beta-v2`
+  untouched.  **Fifteen of fifteen gate clauses PASS, ZERO refused**; real
+  KiCad DRC exit 0, **zero attributable**, profile the INHERITED one EXACTLY
+  (`hole_clearance` 5, `solder_mask_bridge` 1, `lib_footprint_issues` 199).
+  `verify_promotion.py` **15/15 PASS** (`evidence/d662-verify-promotion.json`)
+  incl. `dru_contracts_live`, `beta_v2_untouched`, `fill_stable`,
+  `pour_partition_intact`, `nothing_removed`.  Standing suite is now **TWELVE
+  contracts, 12/12 RAN, 12/12 PASS** both sides
+  (`evidence/d662-contract-regression-pre.json`, `-post.json`).
+  **(1) WHAT WAS CLOSED.**  `/NFC_SUPPLY` `U9.8` is the **ST25R3916's `VDD`** --
+  `leaf_land_contract.py` `RAIL / SUPPLY_PORT` -- and it had **NO connection of
+  any kind**, so the NFC front-end had no supply.  `AQROOT_DEMO_SCOPE.md` lists
+  *"NFC operating from the 3.3 V path"* under *"Features that MUST remain
+  functional"*.  The net is now 2 islands / 1 open edge, down from 3 / 2.
+  **(2) THE DEFECT.**  `net_contract` takes `max(netclass width, DRU class
+  min)`, so the `.kicad_dru` **`opt`** figure became the width of the whole
+  TRUNK.  `R107.2 -> U9.8` is `NO_PATH` at 0.600 and 0.500 mm at every pitch and
+  **ROUTES in 13.806 mm at 0.400 mm and a 0.050 mm lattice** -- and 0.400 mm is
+  the minimum `(rule "P3V3 minimum width")` itself enforces.  No licence, no
+  rule area, no netclass change, no new fab capability.
+  **(3) `--trunk-floor`, PRICED BEFORE IT DESCENDS.**  A WIDTH CONTRACT, not a
+  search lever, so it is handed to the repair pass as `--escape-floor` is.
+  `trunk_floor_price()` weighs the class floor by IPC-2221B through the SAME
+  `audit_bond_ampacity` / `published_rail_currents` path `PP2` uses.  ADMITS
+  `P3V3`, `ACC_3V3`, `ACC_5V`, `VBUS_CHG`, `SPK_OUT`; **REFUSES `BAT_MAIN`
+  (1.645 A at floor vs a 3.125 A bar) and `SYS_MAIN` (1.441 vs 2.190)** and
+  every class with no published current or no published floor.  Refusals are
+  recorded in the run's own contract, never silent.
+  **(4) THE TWELFTH STANDING CONTRACT.**  `checks/trunk_floor_contract.py`:
+  TF1 the floor and the bar are re-parsed FROM the `.kicad_dru` and match
+  `DRU_CLASS` on all ten priced classes (`USB_D` file-only); TF2 with the lever
+  OFF `net_contract` is field-for-field identical to `8572ade` over **all 211
+  nets**; TF3 never wider / never below `min_track_width` / never admitted under
+  the bar / never unexplained, zero offenders; TF4 all four verdicts reachable
+  and the refusals real.  Wired into `checks/contract_regression.py`.
+  **(5) THREE INSTRUMENT FINDINGS.**  (a) **`PLACEMENT_WALL` IS A VERDICT ABOUT
+  A WIDTH** -- `screen_corridor_blockers.py` returns it for BOTH `/NFC_SUPPLY`
+  edges on the pre-promotion board and this promotion REFUTES it; the screen
+  asks at `net_contract`'s width, so the D-626/D-640/D-641 censuses inherit the
+  same limit.  (b) **A PAD-GEOMETRY `CLEAR` IS NOT A LAUNCH** --
+  `screen_escape_class.py` called `U9.8` `CLEAR` at 1.000 mm while
+  `QBoard.escape` returns ZERO escapes at every width 0.600 -> 0.200 mm; the
+  margin screen sees only foreign PADS.  (c) **THE CLOSURE IS THE PRODUCT OF TWO
+  LEVERS** -- 0.400 mm without `--neck` is `NO_LEGAL_ESCAPE`, `--neck` at
+  0.600 mm is `NO_PATH`.
+  **(6) WHAT WAS PROMOTED.**  8 tracks (SEVEN at 0.400 mm, ONE at 0.200 mm;
+  6 `B.Cu`, 2 `In2.Cu`), 2 vias both 0.800/0.400, 15.744 mm, `C55.1 -> U9.8`,
+  `B -> In2 -> B`.  **NOTHING removed.**  The 0.200 mm neck is `U9.8`'s, 0.825 mm
+  long, `outside_courtyard_mm 0.0` -- the width `(rule "Pad-escape necking")`
+  already grants inside `U9`.  No `.kicad_dru` change, no rule area, no zone
+  change, no eviction, no licence of any kind.  `protected_copper.py` PASS.
+  **(7) CHARACTERISED, NOT CLOSED.**  `U9.10` (`VDD_TX`) has no legal escape at
+  any width 0.600 -> 0.200 mm and no off-centre launch from 41 anchors x 24
+  directions x 17 lengths; its widest 0.300 mm launch prices 0.995 A against the
+  P3V3 1.000 A bar -- `BOND_UNDER_PRICED` by half a percent.  It needs a
+  `PAD_ESCAPE_RUN_U9_10` width licence, which `.kicad_dru` section 12 already
+  names *"a different claim needing its own measurement"*.  `+3V3` asked dry with
+  both levers changes NOTHING: its residual is `NO_VIA_SITE` and `U4.5`
+  `NO_LEGAL_ESCAPE` -- a BARREL and LAND problem, not a width problem.
+  **NEXT, IN ORDER OF LEVERAGE:** (1) **RE-ASK THE RESIDUAL CENSUS AT THE TRUNK
+  FLOOR** -- every one of the 30 remaining edges whose net is `P3V3`, `ACC_3V3`,
+  `ACC_5V`, `VBUS_CHG` or `SPK_OUT` was declared a wall at a width the board
+  does not require.  (2) **`BQ25185_SYS` `U11.1` REMAINS THE #1 FABRICATION
+  BLOCKER** -- 6 of the 30 edges, and `SYS_MAIN` is one of the two classes the
+  trunk-floor clause REFUSES.  (3) `/SPI_B_SCK` `U9.30` `RIPUP_SINGLE`, one
+  opener `/NFC_CS_N` at 103.627 mm.  (4) `/NFC_VDD_RF` reproduces D-647's
+  `RIPUP_SINGLE`; both openers are NFC transmit arms under
+  `rf_symmetry_contract`.  (5) `/I2C_SCL_INT` `U14.7 <-> J1.44` remains **the one
+  OPEN OWNER DECISION** (D-655 §7), RECORDED NOT TAKEN.  (6) `copper_sliver`
+  localisation remains an OPEN INSTRUMENT GAP.  (7) `hardware/demo/fab` is STALE
+  against `feff5342`.  Everything D-661 carried is carried unchanged.
 - **Demo D-661 (THE SCREEN'S OWN "MINIMAL" ARM IS THE ONE THAT FAILS:
   `BTN_LEFT_N` FALLS TO THE 20-OBJECT OPENER THE SCREEN RANKED FIRST, AND THE
   WHOLE D-PAD + A/B + RGB SHEET IS NOW CLOSED):**  **COPPER PROMOTED.**

@@ -1,3 +1,189 @@
+# D-662 · 2026-09-07 · Demo — `--escape-floor` FIXED THE LAND AND LEFT THE OTHER HALF OF ITS OWN DEFECT IN PLACE: THE NFC FRONT-END'S `VDD` PIN HAD NO SUPPLY, AND IT CLOSES AT THE WIDTH THE BOARD'S OWN RULE ALREADY ENFORCES
+
+    authority  704ce0ebed77d42cb49208ec1923e35999e3942ec72e2391c71d8ae95d6b707d
+            -> feff534230f1c2743707071e4bc8ac21b5104e95abee73016a6c00cfd1e49aef
+    retained open edges 31 -> 30    open retained nets 17 -> 17
+    connected retained nets 156 -> 156   raw board ratsnest 47 -> 46
+    `hardware/beta-v2` UNTOUCHED.
+
+**COPPER PROMOTED, AND A NEW STANDING CONTRACT.**  **Fifteen of fifteen gate
+clauses PASS, ZERO refused**; real KiCad DRC exit 0, **zero attributable**, and
+the promoted board's severity-error profile is the INHERITED one EXACTLY
+(`hole_clearance` 5, `solder_mask_bridge` 1, `lib_footprint_issues` 199).
+`verify_promotion.py` **15/15 PASS** (`evidence/d662-verify-promotion.json`),
+including `dru_contracts_live`, `beta_v2_untouched`, `fill_stable`,
+`pour_partition_intact` and `nothing_removed`.  The standing suite is now
+**TWELVE contracts, 12/12 RAN, 12/12 PASS** on both sides
+(`evidence/d662-contract-regression-pre.json`, `-post.json`).
+
+## 1. WHAT WAS CLOSED, AND WHY IT IS NOT A SMALL NET
+
+`/NFC_SUPPLY` `U9.8` is the **ST25R3916's `VDD`** — KiCad's own netlist declares
+the pin `power_in`, and `checks/leaf_land_contract.py` confirms
+`RAIL / SUPPLY_PORT` (`evidence/d662-leaf-land-nfcsupply.json`).  **It had NO
+connection of any kind**, so the NFC front-end had no supply.
+`AQROOT_DEMO_SCOPE.md` lists *"NFC operating from the 3.3 V path"* and
+*"internal NFC antenna"* under *"Features that MUST remain functional"*.
+
+On the promoted board `/NFC_SUPPLY` is **2 islands, 1 open edge** — down from
+3 islands and 2 — with `U9.8` in the main island beside `C55.1`, `C19.1`,
+`R106.2` and `TP32.1`.  Only `U9.10` (`VDD_TX`) remains, and §5 characterises
+it.
+
+## 2. THE DEFECT: A CLASS `opt` WAS ACTING AS A FLOOR ON THE WHOLE TRUNK
+
+D-630 built `--escape-floor` because `net_contract` takes
+`max(netclass track width, DRU class min)`, so the `.kicad_dru` **`opt`** figure
+became the width a LAND had to launch.  It fixed the launch.  **The same
+`max()` also makes the `opt` the width of the whole RUN**, and nothing in the
+repository could ask for anything else.
+
+`/NFC_SUPPLY` is the case that makes the difference visible.  Measured
+read-only on the pre-promotion authority, `R107.2 -> U9.8`:
+
+    trunk    lattice   verdict
+    0.600    0.100 mm  NO_PATH   "no all-layer corridor at 0.600 mm"
+    0.600    0.050 mm  NO_PATH
+    0.500    0.100 mm  NO_PATH
+    0.500    0.050 mm  NO_PATH
+    0.400    0.100 mm  NO_PATH
+    0.400    0.050 mm  **ROUTES, 13.806 mm**
+
+`(rule "P3V3 minimum width") (constraint track_width (min 0.40mm) (opt 0.60mm))`
+— **0.400 mm is the width this board's own DRC enforces for the class.**  The
+copper needed no licence, no rule area, no netclass change and no new fab
+capability.  It needed the router to be allowed to ask for it.
+
+## 3. `--trunk-floor`, AND THE DESCENT IS PRICED BEFORE IT IS TAKEN
+
+`route_maze_batch.py --trunk-floor` lets a net route its TRUNK at the class
+minimum `.kicad_dru` section 5 publishes.  It is a **WIDTH CONTRACT and not a
+search lever**, so — exactly as `--escape-floor` is — it is handed to the repair
+pass too: a net this run cuts and re-lays owes the width the primary proposal
+was allowed.
+
+**IT IS SELF-POLICING.**  `trunk_floor_price()` weighs the class floor by
+IPC-2221B at this board's copper — the SAME `audit_bond_ampacity` call `PP2`
+charges a bond with, through the SAME `published_rail_currents` parser — against
+the design current section 5 publishes for that class.  Over all 211 nets on
+this board:
+
+    class        floor    A at floor   published bar   verdict
+    P3V3         0.400    1.226        1.000           PRICED_AT_THE_PUBLISHED_BAR
+    ACC_5V       0.400    1.226        0.700           PRICED_AT_THE_PUBLISHED_BAR
+    ACC_3V3      0.350    1.113        0.760           PRICED_AT_THE_PUBLISHED_BAR
+    VBUS_CHG     0.350    1.113        0.500           PRICED_AT_THE_PUBLISHED_BAR
+    SPK_OUT      0.250    0.872        0.410           PRICED_AT_THE_PUBLISHED_BAR
+    BAT_MAIN     0.600    1.645        3.125           **TRUNK_UNDER_PRICED**
+    SYS_MAIN     0.500    1.441        2.190           **TRUNK_UNDER_PRICED**
+    SWITCH_NODE  0.400    1.226        (none)          **NET_CARRIES_NO_PUBLISHED_CURRENT**
+    NFC_RF / NFC_5V_PA                 (none)          **NET_CARRIES_NO_PUBLISHED_CURRENT**
+    GND / Default / I2C / I2S / USB_D  (no DRU floor)  **CLASS_HAS_NO_PUBLISHED_FLOOR**
+
+**The two rails that matter most on this board are the two the clause refuses.**
+A refusal is RECORDED in the run's own contract, never silent, so a net offered
+the floor and not taking it says why.
+
+## 4. THE TWELFTH STANDING CONTRACT — `checks/trunk_floor_contract.py`
+
+A lever that can lay copper on every priced rail owes the debt `neck_contract`
+pays.  Four claims, measured:
+
+  * **TF1** — the floor and the bar are both READ.  The eleven class floors are
+    re-parsed **from the `.kicad_dru` rule text** and compared against
+    `DRU_CLASS`: all ten the router prices match the file exactly, `USB_D` is
+    priced by the file only (and therefore cannot descend).  The claim asserts
+    the parse found something, because an empty parse satisfies "nothing
+    mismatched" and proves nothing.
+  * **TF2** — with the lever OFF, `net_contract` returns for **all 211 nets**
+    exactly what the pre-D-662 module returned, field for field, compared
+    against the source extracted from git at `8572ade`.  Zero moved; zero
+    contracts carry a `trunk_floor` block with the lever off.
+  * **TF3** — with the lever ON: never wider, never below board setup's
+    `min_track_width`, never admitted under the bar, never unexplained.  Zero
+    offenders over 211 nets.
+  * **TF4** — all four verdicts are reachable and the refusals are real.
+
+`checks/contract_regression.py` now carries it as the twelfth contract.
+
+## 5. WHAT THE MEASUREMENT REFUTED, AND IT IS AN INSTRUMENT AND NOT THE BOARD
+
+**(a) `PLACEMENT_WALL` IS A VERDICT ABOUT A WIDTH.**
+`screen_corridor_blockers.py`, re-run on the pre-promotion authority, returns
+`PLACEMENT_WALL` for BOTH `/NFC_SUPPLY` edges
+(`evidence/d662-corridor-blame-supply-sck.json`) — its strongest verdict, the
+one that means *"the wall really is pads/placement/keep-out"* and that no copper
+move can open.  **It is refuted by this promotion.**  The screen asks at
+`net_contract`'s width and its question inherits the same `opt` floor, so
+`PLACEMENT_WALL` means *"no rip-up opens this AT THIS WIDTH"* and nothing more.
+The D-626 / D-640 / D-641 censuses inherit that limit.
+
+**(b) A PAD-GEOMETRY VERDICT OF `CLEAR` IS NOT A LAUNCH.**
+`screen_escape_class.py` classified `U9.8` **`CLEAR`, widest 1.000 mm, margin
++0.250 mm** (`evidence/d662-escape-class-5.json`) while `QBoard.escape` returns
+**ZERO legal escapes at every width from 0.600 mm down to 0.200 mm**.  The
+margin screen sees only foreign PADS; the router sees routed copper, pours and
+the lattice guard band.  `U9.8` reaches the board through the `.kicad_dru`'s own
+`U9` courtyard neck and nothing else.
+
+**(c) THE ROUTE NEEDED BOTH LEVERS, AND EITHER ALONE FAILS.**
+At 0.400 mm without `--neck`, `U9.8` is `NO_LEGAL_ESCAPE_DST`.  With `--neck` at
+0.600 mm it is `NO_PATH`.  **The land needed the licensed neck and the corridor
+needed the class floor**; the closure is the product of the two, which is D-658's
+lesson in a second place.
+
+**(d) `U9.10` IS A CHARACTERISED WALL AND IT IS NOT A CORRIDOR.**  `VDD_TX` has
+**no legal escape at any width from 0.600 mm down to 0.200 mm**, no off-centre
+launch from 41 anchors x 24 directions x 17 lengths, and `screen_escape_class`
+prices its widest 0.300 mm launch at 0.995 A against the P3V3 1.000 A bar —
+`BOND_UNDER_PRICED` **by half a percent**.  Closing it needs a
+`PAD_ESCAPE_RUN_U9_10` width licence, which section 12 of the `.kicad_dru`
+already names as *"a different claim needing its own measurement"*.
+
+**(e) `+3V3` DOES NOT FALL TO THE FLOOR.**  Asked dry with the same two levers
+(`evidence/d662-tf-3v3-dry-g50.json`), P3V3 descends to 0.400 mm and NOTHING
+changes: the residual is `NO_VIA_SITE` (no legal 0.80 mm barrel within 8 mm of
+any escape) and `U4.5` `NO_LEGAL_ESCAPE`.  **The `+3V3` residual is a BARREL and
+a LAND problem, not a width problem** — which is what the lever was built to be
+able to distinguish.
+
+## 6. WHAT WAS PROMOTED
+
+    added     8 tracks -- SEVEN at 0.400 mm, ONE at 0.200 mm; 6 on B.Cu, 2 on In2.Cu
+              2 vias, both 0.800 / 0.400
+              15.744 mm total, `C55.1 -> U9.8`, B -> In2 -> B
+              barrels at (37.900, 22.650) and (31.200, 23.750)
+    the neck  `U9.8`, B.Cu, 0.200 mm, 0.825 mm long, `outside_courtyard_mm 0.0`
+    removed   NOTHING.  `licensed_removals` 0, `unlicensed_removals` 0.
+
+**No `.kicad_dru` change, no rule area added or widened, no zone added or
+removed, no escape relief, no detour spec, no eviction, no licence of any kind.**
+The 0.200 mm neck is the width `(rule "Pad-escape necking - width, fine-pitch
+power packages")` already grants inside `U9`, and the stub lies wholly inside
+that courtyard.  `protected_copper.py` PASS; `/ACC_3V3_SW` and `/ACC_5V_SW_EN`
+were never candidates.  `PP1`-`PP4` all `ok`.
+
+## 7. NEXT, IN ORDER OF LEVERAGE
+
+  1. **RE-ASK THE `PLACEMENT_WALL` AND `NO_PATH` CENSUS AT THE TRUNK FLOOR.**
+     §5(a) shows the whole residual census was taken at a width the board does
+     not require.  Five classes descend; `screen_corridor_blockers.py` and
+     `route_maze_batch --trunk-floor` should re-ask every one of the 30
+     remaining edges whose net is `P3V3`, `ACC_3V3`, `ACC_5V`, `VBUS_CHG` or
+     `SPK_OUT` before any of them is called a wall again.
+  2. **`/01_POWER_TREE/BQ25185_SYS` `U11.1` REMAINS THE #1 FABRICATION
+     BLOCKER** — 6 of the 30 residual edges, and `SYS_MAIN` is one of the two
+     classes the trunk-floor clause REFUSES, so this decision does not touch it.
+  3. `/SPI_B_SCK` `U9.30` is `RIPUP_SINGLE` with ONE opener, `/NFC_CS_N` at
+     103.627 mm over 31 tracks and 42 vias (`minimal_eviction` 5 objects,
+     122.705 mm, `reproved_ok`).  Expensive but named.
+  4. `/04_SPI_B_RADIOS_NFC/NFC_VDD_RF` reproduces D-647's `RIPUP_SINGLE`
+     exactly on this authority (`evidence/d662-corridor-blame-reclass2.json`);
+     both openers are NFC transmit arms and `rf_symmetry_contract` governs them.
+  5. `/I2C_SCL_INT` `U14.7 <-> J1.44` remains **the one OPEN OWNER DECISION**
+     (D-655 §7), RECORDED NOT TAKEN.
+  6. `copper_sliver` localisation remains an OPEN INSTRUMENT GAP.
+  7. `hardware/demo/fab` is STALE against `feff5342`.
 # D-661 · 2026-09-07 · Demo — THE SCREEN'S OWN "MINIMAL" ARM IS THE ONE THAT FAILS: BTN_LEFT_N FALLS TO THE 20-OBJECT OPENER THE SCREEN RANKED FIRST, AND THE WHOLE D-PAD + A/B + RGB SHEET IS NOW CLOSED
 
     authority  12f8e58413cc0159ea540199f2d5d3e49de24805d88a0df8f79b51dea0d0a5e9

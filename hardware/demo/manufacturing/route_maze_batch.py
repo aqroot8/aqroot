@@ -1782,12 +1782,83 @@ def sha256_file(path):
 PAD_CLR_RETAINED = {"BAT_MAIN": 300000}
 
 
-def net_contract(board, net):
+# --------------------------------------------------------------------------- #
+# THE TRUNK FLOOR -- D-662
+# --------------------------------------------------------------------------- #
+# `--escape-floor` (D-630) lets a LAND launch at the width `.kicad_dru` section
+# 5 publishes as its class MINIMUM instead of the `opt` figure the netclass
+# carries.  It fixed the launch and left the other half of the same defect in
+# place: `net_contract` takes `max(netclass width, DRU min)`, so the netclass
+# `opt` becomes the width of the whole TRUNK, and a rail whose corridor is
+# 0.400 mm wide is refused at 0.600 mm even though 0.400 mm is the width the
+# board's own rule ENFORCES as legal for that class.
+#
+# `/NFC_SUPPLY` is the case that forced this.  `U9.8` is the ST25R3916's `VDD`
+# and has NO supply connection today; `R107.2 -> U9.8` is `NO_PATH` at
+# 0.600 mm at every pitch asked and ROUTES IN 13.806 mm at 0.400 mm and a
+# 0.050 mm lattice.  Nothing about that copper needs a licence -- 0.400 mm is
+# the minimum `(rule "P3V3 minimum width")` itself states.
+#
+# THIS IS A DESCENT, AND IT IS PRICED BEFORE IT IS TAKEN.  The floor is only
+# offered where the class's published minimum, judged by IPC-2221B at this
+# board's copper by the SAME `audit_bond_ampacity` call `PP2` uses, carries the
+# design current `.kicad_dru` section 5 publishes for that class.  A class the
+# table does not price does not move, and neither does one the price refuses:
+# on this board that admits `P3V3`, `ACC_3V3`, `ACC_5V`, `SPK_OUT` and
+# `VBUS_CHG`, and REFUSES `BAT_MAIN` (1.645 A at its floor against a 3.125 A
+# bar), `SYS_MAIN` (1.441 A against 2.190 A), `NFC_RF`, `NFC_5V_PA` and
+# `SWITCH_NODE` (no published current at all).  The refusal is RECORDED in the
+# run's own contract, never silent, so a net that did not descend says so.
+TRUNK_FLOOR_DT_K = 10.0                 # the dT `.kicad_dru` section 5 uses
+
+
+def trunk_floor_price(cls, board_min_nm=0):
+    """May this netclass route its TRUNK at the DRU-published class minimum?
+
+    Read-only, deterministic and self-policing: the answer is the board's own
+    published design current weighed against the board's own published class
+    floor, so no figure here is transcribed and none is invented.
+    """
+    # `pour_partition_contract` lives in `checks/`, which this module does not
+    # otherwise need on `sys.path`; the price is read from the SAME parser
+    # `PP2` charges a bond with, so the two clauses cannot drift apart.
+    if str(HERE / "checks") not in sys.path:
+        sys.path.insert(0, str(HERE / "checks"))
+    import audit_bond_ampacity as ab
+    from pour_partition_contract import published_rail_currents
+    floor = DRU_CLASS.get(cls, {}).get("width")
+    out = dict(netclass=cls, floor_nm=floor, admitted=False,
+               amps=None, required_amps=None, why=None)
+    if not floor:
+        out["why"] = "CLASS_HAS_NO_PUBLISHED_FLOOR"
+        return out
+    floor = max(floor, board_min_nm or 0)
+    out["floor_nm"] = floor
+    table, _ = published_rail_currents(str(BOARD.with_suffix(".kicad_dru")))
+    required = (table.get(cls) or {}).get("amps")
+    amps = round(ab.ampacity(ab.track_area(floor / 1e6), TRUNK_FLOOR_DT_K), 3)
+    out["amps"], out["required_amps"] = amps, required
+    if required is None:
+        out["why"] = "NET_CARRIES_NO_PUBLISHED_CURRENT"
+        return out
+    if amps + 1e-9 < required:
+        out["why"] = "TRUNK_UNDER_PRICED"
+        return out
+    out["admitted"], out["why"] = True, "PRICED_AT_THE_PUBLISHED_BAR"
+    return out
+
+
+def net_contract(board, net, trunk_floor=False):
     """The width / clearance / via / layer contract for ONE net.
 
     `clr` is the clearance owed ROUTED copper -- a track or a via -- and
     `clr_pad` the clearance owed a PAD.  See `PAD_CLR_RETAINED` above for why
     they are two numbers and why exactly one class keeps them equal.
+
+    With `trunk_floor` the width DESCENDS to the class's published minimum
+    where `trunk_floor_price` admits it -- see the block above.  The default is
+    the behaviour every promoted route up to D-661 was proposed under, byte for
+    byte.
     """
     info = board.FindNet(net)
     if info is None:
@@ -1799,6 +1870,21 @@ def net_contract(board, net):
     cap = over.get("width_cap")
     if cap is not None:
         width = min(width, cap)
+    floor_price = None
+    if trunk_floor:
+        board_min = board.GetDesignSettings().m_TrackMinWidth
+        floor_price = trunk_floor_price(cls, board_min)
+        # A DESCENT ONLY.  A class whose floor is at or above the width this
+        # net already routes at cannot be widened by asking for its floor.
+        if floor_price["admitted"] and floor_price["floor_nm"] < width:
+            floor_price["from_nm"], floor_price["to_nm"] = \
+                width, floor_price["floor_nm"]
+            width = floor_price["floor_nm"]
+        else:
+            floor_price["from_nm"] = floor_price["to_nm"] = width
+            if floor_price["admitted"]:
+                floor_price["admitted"] = False
+                floor_price["why"] = "FLOOR_IS_NOT_BELOW_THE_ROUTED_WIDTH"
     return dict(
         net=net, netclass=cls,
         width=width,
@@ -1807,6 +1893,7 @@ def net_contract(board, net):
         via_dia=nc.GetViaDiameter(), via_drill=nc.GetViaDrill(),
         layers=over.get("layers"),
         known_class=cls in DRU_CLASS,
+        trunk_floor=floor_price,
     )
 
 
@@ -1894,7 +1981,7 @@ def propose(path, nets, grid, via_cost_mm, stitch_width=0, stitch_via=None,
             detour_own_layer=False, relief_extra_width=0,
             relief_pads=(), relief_bonds_per_island=1, relief_run_areas=None,
             escape_floor=False, bridge_pads=False,
-            bridge_pad_max_mm=BRIDGE_PAD_MAX_MM):
+            bridge_pad_max_mm=BRIDGE_PAD_MAX_MM, trunk_floor=False):
     import pcbnew
     import qrouter as qr
     import incremental_router as ir
@@ -1910,12 +1997,18 @@ def propose(path, nets, grid, via_cost_mm, stitch_width=0, stitch_via=None,
     # by hand owes the same three files, or its measurement is of a board that
     # does not exist.
     ref = pcbnew.LoadBoard(str(path))
-    contracts = {n: net_contract(ref, n) for n in nets}
+    # THE TRUNK FLOOR TRAVELS WITH THE CONTRACT, NOT WITH THE SEARCH -- D-662,
+    # the same reading `--escape-floor` carries.  A detour owes its own old
+    # width (see the note beside `detours` below) and a re-laid net owes the
+    # width the primary proposal was allowed, so the floor is handed to every
+    # contract this child builds or the run would judge two nets by two rules.
+    tf = bool(trunk_floor)
+    contracts = {n: net_contract(ref, n, tf) for n in nets}
     bond_by_net = pad_owner_nets(ref, bond_pads) if bond_pads else {}
     for n in bond_by_net:
-        contracts.setdefault(n, net_contract(ref, n))
+        contracts.setdefault(n, net_contract(ref, n, tf))
     for d in (detour_plan or {}).get("detours", ()):
-        contracts.setdefault(d["net"], net_contract(ref, d["net"]))
+        contracts.setdefault(d["net"], net_contract(ref, d["net"], tf))
     reserved = reserved_inner_planes(ref)
     del ref
 
@@ -2318,6 +2411,11 @@ def propose(path, nets, grid, via_cost_mm, stitch_width=0, stitch_via=None,
                           "via_drill", "layers", "reserved_inner_planes",
                           "guarded_layers")}
         r["contract"]["escape_floor"] = c.get("escape_floor", c["width"])
+        # D-662.  The trunk floor is recorded WHETHER OR NOT it moved the
+        # width, and a refusal carries the price that refused it, so a net
+        # that was offered the floor and did not take it says why.  `None`
+        # means the lever was never asked for on this run.
+        r["contract"]["trunk_floor"] = c.get("trunk_floor")
         results.append(r)
     qb.save(str(path))
     print(json.dumps(dict(results=results, bonds=bonds,
@@ -2767,7 +2865,7 @@ def gate(nets, grid, via_cost_mm, workdir, promote=False, candidate=None,
          detour_own_layer=False, relief_extra_width=0,
          relief_pads=(), relief_bonds_per_island=1, relief_run_area=None,
          promote_soft=False, escape_floor=False, bridge_pads=False,
-         bridge_pad_max_mm=BRIDGE_PAD_MAX_MM):
+         bridge_pad_max_mm=BRIDGE_PAD_MAX_MM, trunk_floor=False):
     before = sha256_file(BOARD)
     work = Path(workdir)
     work.mkdir(parents=True, exist_ok=True)
@@ -2945,6 +3043,12 @@ def gate(nets, grid, via_cost_mm, workdir, promote=False, candidate=None,
         # allowed to.
         if escape_floor:
             cmd += ["--escape-floor"]
+        # THE TRUNK FLOOR IS A WIDTH CONTRACT TOO -- D-662, and it is handed to
+        # the repair pass for the same reason the escape floor is: a net this
+        # run cut and re-lays must be re-laid at the width the primary proposal
+        # was allowed, or the run judges two pieces of one net by two rules.
+        if trunk_floor:
+            cmd += ["--trunk-floor"]
         # The bridge is the primary proposal's lever, not the repair's.  A
         # repair re-bonds copper THIS run severed and does it with the stitch;
         # letting it also drop fine barrels into pours it never touched would
@@ -3808,6 +3912,25 @@ def main():
                          "-- the floor is never board setup's min_track_width "
                          "-- so no signal class and no return path is touched. "
                          "Screen it first with screen_escape_class.py (D-630)")
+    ap.add_argument("--trunk-floor", action="store_true",
+                    help="D-662: let a net route its TRUNK at the width "
+                         "`.kicad_dru` section 5 publishes as its class's "
+                         "MINIMUM instead of the `opt` figure the .kicad_pcb "
+                         "netclass carries and `net_contract` then treats as a "
+                         "floor.  `--escape-floor` does this for the LAND; "
+                         "this does it for the run, which is the other half of "
+                         "the same defect -- `/NFC_SUPPLY` `R107.2 -> U9.8` is "
+                         "NO_PATH at 0.600 mm at every pitch and routes in "
+                         "13.806 mm at 0.400 mm, the minimum the board's own "
+                         "`P3V3 minimum width` rule enforces.  THE DESCENT IS "
+                         "PRICED FIRST: `trunk_floor_price` weighs the class "
+                         "floor by IPC-2221B at this board's copper against "
+                         "the design current section 5 publishes for that "
+                         "class, so BAT_MAIN, SYS_MAIN and every unpriced "
+                         "class are REFUSED and the refusal is recorded in the "
+                         "run's own contract.  Never a licence and never a "
+                         "netclass change: the width it descends to is one the "
+                         "DRC already enforces as legal")
     ap.add_argument("--neck", action="store_true",
                     help="allow a pad with NO full-width escape to launch at "
                          "the .kicad_dru pad-escape necking minimum, for the "
@@ -4092,7 +4215,7 @@ def main():
                 a.detour_own_layer, a.relief_extra_width,
                 tuple(a.relief_pad), a.relief_bonds_per_island,
                 load_run_areas(a.relief_run_area), a.escape_floor,
-                a.bridge_pads, a.bridge_pad_max_mm)
+                a.bridge_pads, a.bridge_pad_max_mm, a.trunk_floor)
         return 0
     evict_window_nm = None
     if a.evict_window:
@@ -4166,7 +4289,8 @@ def main():
                  join_orphans=a.join_orphans,
                  join_orphan_max_mm=a.join_orphan_max_mm,
                  escape_floor=a.escape_floor, bridge_pads=a.bridge_pads,
-                 bridge_pad_max_mm=a.bridge_pad_max_mm)
+                 bridge_pad_max_mm=a.bridge_pad_max_mm,
+                 trunk_floor=a.trunk_floor)
     spec = str(a.grid).strip().lower()
     ladder_spec, best_spec = spec in ("ladder", "best"), spec == "best"
     # `best` REFUSES BOTH TRANSACTION OUTPUTS, not just `--promote`.  `gate()`
