@@ -13,6 +13,165 @@
 > This file references DEVICE_SPEC rather than duplicating full specs.
 
 ## 1. Authoritative HEAD
+- **Demo D-657 (THE POUR-CUT QUESTION, ASKED FOR THE FIRST TIME: `BQ25185_SYS`'s
+  SIX OPEN EDGES ARE ELEVEN OBJECTS ON THREE `TPS63020` CONTROL PINS, AND
+  `R129.1`'s TWENTY-SIX-DECISION WALL IS TWO BARRELS ON AN UNPROTECTED 10 k
+  STRAP):**  **NO COPPER.**  Authority UNCHANGED at
+  `0eb2a4e653fded22d1f455122045812205edf72a5a1a3ae27c6189f617807489`; retained
+  open edges **34**, open retained nets 19, connected retained 154, raw board
+  ratsnest 50.  `hardware/beta-v2` untouched.  Standing suite **11/11 RAN,
+  11/11 PASS** (`evidence/d657-contract-regression-pre.json`, baseline `d632`).
+  One new tracked read-only screen, a dozen measurement sets and FIVE dry
+  gate runs; the authoritative `.kicad_pcb` is byte-identical before and after every
+  step.
+  **(1) A NEW READ-ONLY INSTRUMENT ASKS THE POUR QUESTION BACKWARDS.**
+  Every screen in `hardware/demo/manufacturing/` that meets a fragmented pour
+  asks *"given the cut, what jumper/barrel/relief closes it?"*.  **NEW
+  `screen_pour_cut_blame.py`** asks the inverse -- *"the pour is in pieces
+  because FOREIGN COPPER CUT IT; which objects, and what is the SMALLEST set
+  whose absence lets KiCad's own filler pour it back into one piece?"* -- with
+  Q0 baseline, Q1 upper bound (and an early `WINDOW_DOES_NOT_HOLD_THE_CUT`
+  exit), Q2 per foreign net, and a Q3 reverse-greedy minimisation that offers
+  the LONGEST unit back first so the surviving set is the cheapest to relay.
+  It emits its answer as a `--detour-spec` draft.  Every probe runs
+  `pcbnew.ZONE_FILLER` -- KiCad's OWN filler -- over the whole board and reads
+  the partition off `GetConnectivity`; **`--cli-control` re-poured the same
+  removal through `kicad-cli pcb drc --refill-zones` and the two partitions
+  AGREE**.  Byte-identical on re-run apart from `seconds`;
+  `authoritative_unchanged` true on all four runs.  Two failure modes are
+  recorded IN the module because each cost a crash to find: removing a track
+  and filling in the SAME interpreter segfaults KiCad 10.0.5, and KiCad writes
+  swig noise onto stdout MID-LINE so the child answers in a FILE.  A third was
+  found by the one number no removal can move -- two concurrent `+3V3` windows
+  disagreed about the BASELINE because the work directory was keyed on the
+  board sha alone; it is now keyed on `(sha, net, window, layers)`.
+  **(2) `BQ25185_SYS` IS A PLACEMENT WALL AND IT IS THE BOARD'S #1 FABRICATION
+  BLOCKER.**  The cut is **10 units / 11 objects -- 12.8 mm of 0.200 mm `B.Cu`
+  and one 0.600/0.300 barrel -- and EVERY ONE of them is a `TPS63020` CONTROL
+  PIN's escape**: `Net-(U12-PG)` x1, `Net-(SW9-A)` x3 + a barrel at
+  (66.350, 103.650), `Net-(U12-PS_SYNC)` x5
+  (`evidence/d657-cut-blame-u12.json`, Q0 9 -> Q1 6 -> Q3 6, `kicad-cli`
+  control AGREES).  Their absence merges FOUR clusters into ONE --
+  `{C24.1, C26.2, C28.1, C33.1, C64.1, L2.1, SW9.2, U12.1, U12.10, U12.11}` --
+  **THREE of the board's 34 retained open edges** in one transaction, against
+  the one edge each of D-653/D-655/D-656.  `U12.10`/`U12.11` are the buck-boost's `VIN` pins
+  (KiCad's own netlist: pin 1 `VINA`, pins 10/11 `VIN`) and they are a cluster
+  of two on a 0.7488 mm2 island bonded to NOTHING; `C26`, the 10 uF bulk cap
+  that belongs across them, is a cluster of ONE 3.4 mm away.  **`U11.1`, the
+  `BQ25185`'s own `SYS` output, is a cluster of ONE**, and `POUR 2`
+  (`L4.1`/`U21.3`, the accessory 5 V boost input D-185 prices at 2.19 A peak) is
+  a third.  **NOTHING ON THIS BOARD POWERS UP AS IT STANDS.**
+  **FIVE LEVERS REFUTED, EACH BY KiCad's OWN FILLER, each partition IDENTICAL to
+  the baseline cluster for cluster** (`evidence/d657-zone-levers.json`):
+  pad connection THERMAL -> FULL; SYS zone priority 0 -> 1 above the board-wide
+  `B GND PLANE`; zone `min_thickness` 0.200 -> 0.100 mm; and the removal of
+  **all 29 INERT chains / 46 track objects / 30.363 mm** of `GND` and `+3V3`
+  `B.Cu` inside the `POUR 1` rectangle (`evidence/d657-inert-window.json`).
+  **AND THE WIDTH LADDER IS REFUTED IN ONE SWEEP** -- `maze3d.offcentre_route`,
+  the gate's own primitive, at **0.800 / 0.600 / 0.500 / 0.400 / 0.350 / 0.300 /
+  0.250 / 0.200 mm** on four open pairs: **NOT ONE RUNG OPENS ANYTHING**
+  (`evidence/d657-width-ladder.json`).  `U11.1` is `NO_LEGAL_ESCAPE` even at the
+  0.200 mm the `.kicad_dru` already licenses inside `U11`'s courtyard, blocked
+  by `U11.2` (`BAT_PROTECTED_P`, PROTECTED) 0.4 mm away on a WSON-10.
+  `screen_island_join.py` agrees from the other side: **0/8 joined at `--grid`
+  0.100, 0.050 AND 0.025 mm at both rungs**, with `U12.10`/`U12.11` moving
+  `NO_ANCHOR` -> `NO_PATH` between 0.100 and 0.050 mm -- the island DOES admit a
+  0.500 mm anchor once the lattice is fine enough and the CORRIDOR is then the
+  wall.  The one detour the cut-blame names is owned by the SINGLE-FILE GATE
+  **D-649 already refuted at 0.025 mm** (`evidence/d649-pssync-relay-refuted.json`).
+  `U12`'s north row is sealed: `WROOM ANTENNA KEEPOUT` north-east, `Net-(L1-Pad1)`
+  (the inductor switching node) east, a three-signal single-file gate west, and
+  `U12.15`'s 2.85 x 1.58 mm `PGND` pad south.
+  **(3) `screen_escape_class.py`'s `CLEAR` IS PACKAGE-LOCAL AND MUST NOT BE READ
+  AS "THE LAND IS OPEN".**  It rules `U11.1` `CLEAR`, `best_margin 0.200 mm`,
+  `widest 1.0 mm`, *"a router refusal here is ROUTED COPPER, not the land"* --
+  and the emitter refuses that launch at EVERY width from 0.800 to 0.200 mm,
+  naming `U11.2` 9450-13814 times.  **14 of 16 `SYS` lands read `CLEAR` on that
+  basis** (`evidence/d657-escape-class-sys.json`).  The margin is computed from
+  the land's OWN footprint and never sees the NEIGHBOURS (`R36.1`, `R37.2`,
+  `C23.2`, `C36.2`, `U11.11`) that actually close it.  Its two `WIDTH_NECKABLE`
+  rows are sound and are worth keeping.
+  **(4) THE SAME QUESTION, ASKED OF `+3V3`, REFUTES A TWENTY-SIX-DECISION
+  RANKING.**  `R129.1` is the `+3V3` end of the **100 k pull-up on
+  `/ACC_DETECT_N`** -- the Community Port's **Accessory Detect**, which
+  `AQROOT_DEMO_SCOPE.md` lists under *"Demo implementation MUST retain"*.  D-323
+  routed the SIGNAL; the pull-up has **no supply**, so the function is
+  unimplemented today.  `.kicad_dru` section 12b records that every `R129.1`
+  escape relief since D-606 was reverted, *"the same refusal, to the same
+  0.547 mm figure, twenty-six decisions later"*, and D-651 ranked it an OWNER
+  question because *"its minimal sets are all PROTECTED copper"*.  **BOTH
+  RANKINGS ARE WRONG.**  `evidence/d657-cut-blame-r39.json`: Q0 5 -> Q1 4, and
+  Q2 finds **`Net-(U11-TS_MR)` ALONE SUFFICIENT** -- the minimal set is **TWO
+  0.600/0.300 BARRELS at (64.700, 70.500) and (66.600, 70.900)** on the
+  `BQ25185`'s TS/MR strap: two pads, `U11.6` and `R38.1` (10 k to `GND`),
+  microamps, Default netclass, **UNPROTECTED**.  Removing them takes the `+3V3`
+  body from 78 lands to 79.
+  **AND THE LADDERS SAY WHICH MOVE IS THE RIGHT ONE**
+  (`evidence/d657-barrel-shrink.json`): shrinking BOTH barrels to 0.500/0.250,
+  0.450/0.200 and the D-257 `FINE_ESC` 0.350/0.200 leaves `R129.1` SEVERED at
+  every rung; removing EITHER one alone leaves it severed; removing both frees
+  it and STRANDS the strap; and **moving both 0.5, 1.0 or 1.5 mm north or south
+  or 1.0 mm east or west frees it in all eight arms.**  The bond cannot be
+  bought any other way either: `R129.1` sits on `In3` outline 5, **25.2325 mm2,
+  1.7671 mm from an 8032 mm2 body**, on NO `F.Cu` outline at all, and sampling
+  its whole 9.24 x 13.65 mm bounding box on a 0.1 mm lattice finds **ZERO points
+  inside both that island and the 3683 mm2 `F.Cu` `+3V3` body** -- so no through
+  barrel can bridge it, which is section 12b's finding re-derived from a
+  direction it had never been asked from.  The island's bbox reaches
+  (64.846, 70.372); via 1 sits at (64.700, 70.500).  **The two barrels are ON
+  the neck.**
+  `screen_pour_bridges.py` closes the bridge arm with the board's own
+  instrument: **`bridgeable: 0` for ALL FOUR `+3V3` orphans down to
+  0.35/0.20 mm** (`evidence/d657-pour-bridges-3v3.json`).
+  **(5) THE `R129.1` TRANSACTION IS PRICED AND IS ONE FRAMEWORK PRIMITIVE
+  SHORT.**  FIVE dry gate runs, authority byte-identical throughout:
+  run 1 `--evict` + window, no reserve -- the strap re-laid 77.317 mm / 3 vias
+  and the new barrels landed **0.100 and 0.050 mm** from the old sites; edges
+  34 -> 34, `board_improved` FALSE, plus a `copper_sliver (F.Cu)`
+  (`evidence/d657-gate-dryrun.json`).  Runs 2 and 3, `--evict-whole` with two
+  reserved discs at r 1.0 and then r 0.60 mm: **THIRTEEN of fourteen clauses
+  PASS, `board_improved` TRUE -- retained open edges 34 -> 33, `nets_improved`
+  `["+3V3"]`, `nets_regressed` EMPTY -- real KiCad DRC exit clean with ZERO
+  attributable and the inherited profile exactly** (`hole_clearance` 5,
+  `lib_footprint_issues` 199, `solder_mask_bridge` 1).  **REFUSED on ONE
+  clause: `pour_partition` `PP2`** -- and the refusal is RIGHT.  Both runs took
+  the SAME 138.875 mm route with the SAME five vias, none within 30 mm of the
+  reserved sites, so **the discs are not what makes it long; `--evict-whole`
+  is**; and on that southern detour the run cut a **22.693 mm2 `GND` `B.Cu`
+  fragment** holding `C27.2`/`C28.2` off the 3640 mm2 body and `PP2` priced it
+  at **2.117 A against the 2.19 A its own `SYS_MAIN` neighbours publish**,
+  `margin_x` **0.967**.  On the authoritative board that fragment DOES NOT
+  EXIST (`priced: []`, `splits: []`, PP1-PP4 PASS,
+  `evidence/d657-pour-partition-authority.json`): the run made it and D-643's
+  return-fragment bar charged it, on the first transaction that ever tripped it.
+  Run 5 (`--evict` + window + the r 0.60 discs) takes that same southern route
+  and leaves the old stubs `track_dangling` x2.
+  **THE PRIMITIVE THIS WANTS DOES NOT EXIST.**  `Net-(U11-TS_MR)` has TWO pads
+  and `maze3d.route_net` builds its MST over PADS, so ANY eviction on it makes
+  the router re-lay the WHOLE `R38.1 -> U11.6` haul instead of closing the 2 mm
+  gap the eviction opened -- 77 mm to move two vias 0.05 mm, or 139 mm to move
+  them at all.  `--detour-spec`'s barrel entry already accepts `to_mm` and calls
+  that a MOVE (D-653); what it does not do is bring the TRACK ENDS that landed
+  on the old site with it.  **NEXT: a detour chain that may name a NEW `b` end
+  -- "re-lay this chain between its own `a` and this named point" -- so a barrel
+  move drags exactly the copper that met it and nothing else.**  Small,
+  additive, and clause 5 still licenses every removal by signature.
+  **NEXT, IN ORDER OF LEVERAGE:** (1) that primitive, then the `R129.1`
+  two-barrel move -- a Community-Port function `AQROOT_DEMO_SCOPE` requires,
+  priced at 13/14 clauses.  (2) **`BQ25185_SYS` IS THE #1 FABRICATION BLOCKER
+  AND IT IS A PLACEMENT WALL** -- a bounded re-floorplan of the `U11`/`U12`
+  power pocket (`apply_part_shift.py` exists; the objects it must make room for
+  are named above).  `.kicad_dru` section 13 already calls the `L1` half of it a
+  Full Beta v2 item; on Demo it is not optional, because nothing powers up
+  without it, and D-656's two sub-floor `SYS` necks are the SAME pocket.
+  (3) `+3V3` `U5.2` -- cut-blame gives 9 units (seven `GND` `F.Cu` chains, one
+  `GND` barrel, one `/AMP_SD_MODE` track), ONE edge, but it moves Class-D
+  amplifier ground and `U5.7`/`U5.8` are already on the plane, so it is
+  decoupling and not a dead supply (`evidence/d657-cut-blame-u5-2.json`).
+  (4) `/I2C_SCL_INT` `U16.3 <-> U4.13`.  (5) `/I2C_SCL_INT` `U14.7 <-> J1.44`
+  remains **the one OPEN OWNER DECISION** (D-655 §7), RECORDED NOT TAKEN.
+  (6) `copper_sliver` localisation remains an OPEN INSTRUMENT GAP.
+  Everything D-656 carried is carried unchanged.
 - **Demo D-656 (THE PITCH IS PART OF THE TRANSACTION AND A FINER LATTICE IS NOT
   A BETTER ONE; AND THE `BQ25185` SYSTEM RAIL IS DELIVERED THROUGH A 0.197 mm
   POUR NECK):**  **COPPER PROMOTED.**  Authority

@@ -1,3 +1,415 @@
+# D-657 · 2026-09-07 · Demo — THE POUR-CUT QUESTION, ASKED FOR THE FIRST TIME: `BQ25185_SYS`'s SIX OPEN EDGES ARE ELEVEN OBJECTS ON THREE `TPS63020` CONTROL PINS, AND `R129.1`'s TWENTY-SIX-DECISION WALL IS TWO BARRELS ON AN UNPROTECTED 10 k STRAP
+
+    authority  0eb2a4e653fded22d1f455122045812205edf72a5a1a3ae27c6189f617807489
+          ->   UNCHANGED
+    retained open edges  34        open retained nets  19
+    connected retained nets 154    raw board ratsnest 50
+    `hardware/beta-v2` UNTOUCHED.
+
+**NO COPPER.**  One new tracked read-only screen, a dozen read-only measurement
+sets and FIVE dry gate runs, every one of them on a scratch board; the
+authoritative `.kicad_pcb` is byte-identical before and after every step.  The
+standing suite is **11/11 RAN, 11/11 PASS** on the board this decision leaves
+(`evidence/d657-contract-regression-pre.json`, baseline `d632`).
+
+**THIS IS A CHARACTERIZATION DECISION AND IT CHANGES THE WORK LIST.**  It
+refutes five levers, one twenty-six-decision ranking and one instrument's
+verdict class, and it names -- object by object, under KiCad's own filler --
+the copper that stands between this board and a system rail that is currently
+in NINE PIECES.
+
+## 1. THE INSTRUMENT: THE POUR-CUT QUESTION, ASKED FOR THE FIRST TIME
+
+Every instrument in `hardware/demo/manufacturing/` that meets a fragmented pour
+asks it in the same direction: *given the cut, what closes it?*
+`screen_island_join.py` offers each orphan island a JUMPER, `screen_pour_bridges.py`
+offers it a BARREL, `screen_pad_escape_relief.py` offers its land a narrower
+LAUNCH, `screen_pad_bridge_blame.py` prices the eviction that would make room for
+one.  On `/01_POWER_TREE/BQ25185_SYS` all four refuse at every rung, and they
+refuse because the answer is not in that direction at all.
+
+**`screen_pour_cut_blame.py` (NEW, TRACKED, READ-ONLY)** asks the inverse:
+
+> the pour is in pieces because FOREIGN COPPER CUT IT.  Which objects, and what
+> is the SMALLEST set of them whose absence lets KiCad's own filler pour the net
+> back into one piece?
+
+    Q0  baseline partition
+    Q1  UPPER BOUND -- every removable foreign object in the window at once;
+        if the partition does not improve the window is wrong and Q2/Q3 are
+        SKIPPED (`WINDOW_DOES_NOT_HOLD_THE_CUT`)
+    Q2  each foreign NET alone -- the cheapest answer, when one exists
+    Q3  REVERSE-GREEDY minimisation of Q1's open set, LONGEST UNIT FIRST, so the
+        set that survives is the one that is cheapest to relay
+
+It emits its answer as a `route_maze_batch.py --detour-spec` draft, so the
+measurement and the transaction cannot drift apart.  `--ban NET` keeps a net out
+of the pool entirely; `--layers` overrides the pour's own layer set.
+
+**WHAT MAKES IT AUTHORITATIVE, AND WHAT MADE IT NOT.**
+
+  * **KiCad's OWN FILLER decides.**  Every probe runs `pcbnew.ZONE_FILLER` --
+    the same C++ class `kicad-cli pcb drc --refill-zones` drives -- over the
+    whole board, then reads the partition off `GetConnectivity`.  Nothing models
+    a re-pour.  **`--cli-control` re-poured the `BQ25185_SYS` Q1 removal through
+    `kicad-cli` instead and the two partitions AGREE** (`cli_control.agrees`
+    true); the in-process filler is not trusted on its own evidence.
+  * **The unit is the one a transaction is licensed in** -- a track description
+    together with EVERY exact duplicate this board carries (D-648 `count`), and
+    a barrel whole.  The `BQ25185_SYS` answer contains a `count: 2` unit, so
+    this mattered on the first question asked.
+  * **ONE `LoadBoard` PER PROCESS, AND THE EDIT AND THE FILL ARE SEPARATE ONES.**
+    Removing a track and then filling in the SAME interpreter segfaults KiCad
+    10.0.5 -- the filler walks a connectivity/rtree that still references the
+    object Python now owns.  Loading the saved board fresh does not.  Recorded
+    in the module because it is not obvious and it costs a crash to learn.
+  * **THE CHILD ANSWERS IN A FILE, NOT ON A PIPE.**  KiCad's C++ layer writes
+    swig and wxWidgets noise onto this process's stdout MID-LINE; a stdout
+    protocol here is not reliable and the first version of this screen failed on
+    its own Q1 because of it.
+  * **A BUG THIS RUN FOUND AND FIXED.**  The work directory was keyed on the
+    BOARD sha alone, so two concurrent runs -- a different net, or the same net
+    in a different window -- shared `q0/` and `q1/` and reported each other's
+    partitions.  It was caught by the one number no removal can move: two
+    concurrent `+3V3` windows disagreed about the BASELINE (5 and 3).  The key
+    is now `(sha, net, window, layers)`.
+  * **DETERMINISTIC.**  Re-run of the `GND` window is byte-identical apart from
+    `seconds` (sha256 `3c79564daf460c01...` both times).
+  * **NOTHING IS WRITTEN.**  `authoritative_unchanged` true on all four runs.
+
+## 2. `BQ25185_SYS`: THE CUT IS ELEVEN OBJECTS ON THREE `TPS63020` CONTROL SIGNALS
+
+`evidence/d657-cut-blame-u12.json`, window (61, 99) - (72, 108.5) on `B.Cu`,
+473.9 s, 52 candidate units.
+
+    Q0  9 clusters
+    Q1  52 units / 60 objects out  ->  6 clusters      kicad-cli control AGREES
+    Q2  of ELEVEN foreign nets, ONLY `Net-(U12-PS_SYNC)` alone helps (9 -> 8)
+    Q3  MINIMAL SET  10 units / 11 objects  ->  6 clusters   THREE OPEN EDGES
+
+The minimal set is **12.8 mm of 0.200 mm `B.Cu` and one 0.600/0.300 barrel**,
+and every object of it is on a `TPS63020` CONTROL PIN's escape:
+
+    Net-(U12-PG)        1 track   (62.025,100.325)->(64.525,102.800)  3.518 mm
+    Net-(SW9-A)         3 tracks  (66.100,103.650)->(69.150,103.425)  3.058
+                                  (66.100,102.800)->(66.100,103.650)  0.850 x2
+                                  (66.100,103.650)->(66.350,103.650)  0.250
+                        1 barrel  (66.350,103.650)  0.600/0.300
+    Net-(U12-PS_SYNC)   5 tracks  1.350 / 0.938 / 0.779 / 0.750 / 0.662 mm
+
+and their absence merges FOUR clusters into ONE:
+
+    C24.1  C26.2  C28.1  C33.1  C64.1  L2.1  SW9.2  U12.1  U12.10  U12.11
+
+**`U12.10`/`U12.11` ARE THE `TPS63020`'s `VIN` PINS.**  KiCad's own netlist calls
+pin 1 `VINA` and pins 10/11 `VIN`; `U12.1` is the analog supply and the pads that
+carry the converter's INPUT CURRENT are a cluster of two on a 0.7488 mm2 island
+bonded to nothing.  `C26` -- the 10 uF bulk capacitor that belongs across them --
+is a cluster of ONE, 3.4 mm away, on the far side of that gate.  The three
+signals that separate them are `PG` (power-good, open collector), `PS_SYNC`
+(mode select) and `SW9-A` (the hard power switch on `EN`): microamp-to-milliamp
+control pins escaping NORTH-WEST through the pocket the SYS power bridge needs.
+
+## 3. FIVE LEVERS REFUTED, EACH BY KiCad'S OWN FILLER
+
+`evidence/d657-zone-levers.json` -- four arms, each on a private copy, each
+partition read off `GetConnectivity` after `ZONE_FILLER`.  **All four are
+IDENTICAL to the baseline, cluster for cluster:**
+
+    A  pad connection THERMAL -> FULL on both SYS zones        9 clusters
+    B  SYS zone priority 0 -> 1, above `B GND PLANE`           9 clusters
+    C  zone min_thickness 0.200 -> 0.100 mm                    9 clusters
+    D  every INERT chain removed (see below)                   9 clusters
+
+Arm A is the one a reader will suspect first and it is worth saying why it is
+wrong: `U11.1` is 0.75 x 0.20 mm and `U12.10`/`U12.11` are 0.24 x 0.60 mm, and a
+thermal spoke cannot form on a land that small -- so "the relief is starving the
+pads" is a good hypothesis, and it is FALSE.  Arm B is a real defect elsewhere on
+this board (**every zone on it is priority 0, including a board-wide `B GND PLANE`
+that overlaps both SYS pours**) and it does not move this partition either.
+
+**D: THE INERT COPPER IS NOT THE CUT.**  `screen_inert_copper.py` over the whole
+`POUR 1` rectangle (58.5, 72) - (71, 108.5) reports **29 INERT chains, 46 track
+objects, 30.363 mm** of `GND` and `+3V3` `B.Cu` that duplicate a connection their
+own pour already makes (`evidence/d657-inert-window.json`).  Removing ALL of it
+leaves `BQ25185_SYS` at nine clusters, unchanged.  That copper is still a real
+D-646-class finding -- it is a hard obstacle to every proposer here and a
+conductor to nothing -- but it is not this wall.
+
+## 4. AND THE WIDTH LADDER IS REFUTED IN ONE SWEEP
+
+`evidence/d657-width-ladder.json`.  `maze3d.offcentre_route` -- the GATE's own
+primitive, laid and reverted, board never written -- for four of the net's open
+pairs at EIGHT widths from the netclass 0.800 mm down to the board's own
+licensed fine-pitch neck:
+
+    0.800  0.600  0.500  0.400  0.350  0.300  0.250  0.200 mm
+
+    U11.1  -> C27.1     NO_LEGAL_ESCAPE at every rung
+    C27.1  -> C28.1     NO_PATH         at every rung
+    C26.2  -> C24.1     NO_PATH         at every rung
+    U12.11 -> C26.2     NO_LEGAL_ESCAPE at 0.800/0.600, NO_PATH below
+
+**Not one rung opens anything.**  `U11.1` -- the `BQ25185`'s own `SYS` OUTPUT,
+the source of the whole rail -- cannot launch at the 0.200 mm the `.kicad_dru`
+already licenses inside `U11`'s courtyard, blocked by `U11.2` 9450 times:
+`/01_POWER_TREE/BAT_PROTECTED_P`, PROTECTED copper, 0.4 mm away on a WSON-10.
+
+`screen_island_join.py` agrees from the other side at THREE pitches -- **0/8
+joined at `--grid` 0.100, 0.050 and 0.025 mm, at both the netclass and the
+`.kicad_dru` rung** (`evidence/d657-join-sys-g100/g50/g25.json`).  The pitch does
+move one answer and not the wall: at 0.100 mm `U12.10`/`U12.11` is `NO_ANCHOR`
+and at 0.050 mm and the DRU floor it becomes `NO_PATH` -- the island DOES admit a
+0.500 mm anchor once the lattice is fine enough, and the CORRIDOR is then the
+wall.  That is D-655's own lesson in a third place.
+
+## 5. AN INSTRUMENT DISAGREEMENT, AND WHICH ONE IS RIGHT
+
+`screen_escape_class.py` rules `U11.1` **`CLEAR`**, `best_margin 0.200 mm`,
+`widest 1.0 mm`, *"this package can launch the contract width; a router refusal
+here is ROUTED COPPER, not the land"* -- and the emitter refuses that land's
+launch at EVERY width from 0.800 down to 0.200 mm.  **14 of 16 `SYS` lands read
+`CLEAR` on that basis** (`evidence/d657-escape-class-sys.json`).
+
+The screen is not broken; its margin is **PACKAGE-LOCAL**.  It is computed from
+the land's own footprint, and what actually closes `U11.1` is its NEIGHBOURS --
+`R36.1`, `R37.2`, `C23.2`, `C36.2`, `U11.11` -- which that arithmetic never sees.
+**Read `screen_escape_class.py`'s `CLEAR` as "not refused BY ITS OWN PACKAGE",
+never as "the land is open".**  Its two `WIDTH_NECKABLE` rows are sound and are
+worth keeping: `U12.10`/`U12.11` margin -0.100 mm at 0.800, **widest 0.600 mm**,
+priced 1.645 A against `BOND_UNDER_PRICED` 2.19 A.
+
+## 6. THE VERDICT ON `BQ25185_SYS`, AND THE CROSS-CHECK THAT SETTLES IT
+
+The `C24.1 <-> C26.2` leg of the merge D-657 measures is the SINGLE-FILE GATE
+`Net-(U12-PS_SYNC)` already owns, and **D-649 proved at a 0.025 mm lattice that a
+seal of ANY thickness there refuses that net's relay** -- discs 2..6, the middle
+of the line, each refuse ALONE (`evidence/d649-pssync-relay-refuted.json`).  The
+three control signals cannot vacate a corridor that is the only way out of
+`U12`'s north row, so the transaction this decision names is **not promotable as
+a detour.**
+
+    NORTH-EAST   `WROOM ANTENNA KEEPOUT`, all six layers, x >= 64.5, y >= 104
+    EAST         `Net-(L1-Pad1)`, the inductor switching node, 0.400 mm at
+                 x = 68.875 from y 94.4 to 102.8
+    WEST         a single-file gate already carrying PG, PS_SYNC and SW9-A
+    SOUTH        `U12.15`, the 2.85 x 1.58 mm `PGND` exposed pad
+
+**`/01_POWER_TREE/BQ25185_SYS`'s SIX OPEN EDGES ARE A PLACEMENT WALL.**  D-657 is
+the first measurement that says so with the cut named object by object and
+KiCad's own filler as the judge, rather than with another refusal.
+
+## 7. THE SAME QUESTION, ASKED OF `+3V3`, ANSWERED A TWENTY-SIX-DECISION WALL
+
+`R129.1` is the `+3V3` end of the **100 k pull-up on `/ACC_DETECT_N`** -- the
+Community Port's **Accessory Detect**, which `AQROOT_DEMO_SCOPE.md` lists under
+*"Demo implementation MUST retain"*.  D-323 routed the SIGNAL; the pull-up has
+**no supply**, so the function is unimplemented on the board as it stands.
+
+It is also this board's most-worked wall.  `.kicad_dru` section 12b records that
+*"every `R129.1` escape relief since D-606 was REVERTED by `relief_stitch`'s
+connectivity retake -- the same refusal, to the same 0.547 mm figure, twenty-six
+decisions later"*, because every barrel site the relief can find lies inside the
+SAME severed island the land is already bonded to.  D-651 ranked it an OWNER
+question: *"its minimal sets are all PROTECTED copper -- `BAT_PROTECTED_P`, three
+`/ACC_3V3_SW` tracks"*.
+
+**That ranking is refuted.**  `evidence/d657-cut-blame-r39.json`, window
+(62, 68) - (70, 76), 314.6 s, 25 candidate units:
+
+    Q0  5 clusters   orphans  R129.1 / R39.1 / U4.5 / U5.2
+    Q1  25 units out ->  4 clusters
+    Q2  `Net-(U11-TS_MR)` ALONE IS SUFFICIENT -- 2 units
+    Q3  MINIMAL SET  =  TWO BARRELS, both 0.600/0.300, on `Net-(U11-TS_MR)`
+                        (64.700, 70.500)  and  (66.600, 70.900)
+        ->  `R129.1` JOINS THE PLANE BODY.  78 lands -> 79.
+
+`Net-(U11-TS_MR)` is the `BQ25185`'s TS/MR strap: two pads, `U11.6` and `R38.1`
+(10 k to `GND`), microamps, **Default netclass, UNPROTECTED, not sensitive**.
+The wall was never `R129.1`'s land and never protected copper.  It is two vias
+punching both `+3V3` planes 17 mm away, and nothing in the repository could say
+so because nothing had ever asked which FOREIGN OBJECTS cut the plane.
+
+**THE LADDERS THAT SAY WHICH MOVE IS THE RIGHT ONE**
+(`evidence/d657-barrel-shrink.json`, and the shift arms):
+
+    barrel geometry, strap left where it is
+      0.600/0.300 as built        R129.1 severed   strap intact
+      0.500/0.250 board floor     R129.1 severed   strap intact
+      0.450/0.200 D-257 FINE_ESC  R129.1 severed   strap intact
+      0.350/0.200 D-257 FINE_ESC  R129.1 severed   strap intact
+      removed entirely            R129.1 BONDED    STRAP STRANDED
+
+    one barrel at a time
+      (64.700,70.500) removed, other kept    still severed
+      (66.600,70.900) removed, other kept    still severed
+
+    both barrels MOVED, strap otherwise untouched
+      0.5 / 1.0 / 1.5 mm north    R129.1 BONDED
+      0.5 / 1.0 / 1.5 mm south    R129.1 BONDED
+      1.0 mm east, 1.0 mm west    R129.1 BONDED
+
+So: **shrinking the hole does not work, removing it strands the strap, and
+MOVING it 0.5 mm in ANY of six directions works.**  This is not a width licence,
+not a relief, not an owner question and not a placement change -- it is a
+two-via move on a milliamp strap.
+
+## 8. THE TRANSACTION, AND THE TWO RUNS THAT PRICED IT
+
+    RUN 1  --evict Net-(U11-TS_MR) --evict-window 63.0,69.0,68.0,73.5
+           5 objects out, the strap re-laid 77.317 mm / 3 vias -- and the two
+           new barrels landed at (64.800,70.600) and (66.600,70.950), 0.100 and
+           0.050 mm from the old sites.  `board_improved` FALSE, edges 34 -> 34,
+           and a `copper_sliver (F.Cu)` appeared.  REFUSED on two clauses.
+           (`evidence/d657-gate-dryrun.json`)
+
+           The lesson is the one the shift ladder had already published and the
+           run had not been made to obey: **0.5 mm is a MEASUREMENT, and a
+           re-route honours it only if something makes it.**
+
+    RUN 2  --evict-whole plus TWO RESERVED DISCS of r 1.0 mm
+           (`evidence/d657-reserve-spec.json`).  THIRTEEN of fourteen clauses
+           PASS.  **`board_improved` TRUE -- retained open edges 34 -> 33,
+           `nets_improved` `["+3V3"]`, `nets_regressed` EMPTY** -- real KiCad
+           DRC **exit clean, ZERO attributable**, the inherited profile exactly
+           (`hole_clearance` 5, `lib_footprint_issues` 199,
+           `solder_mask_bridge` 1).  REFUSED on ONE: `pour_partition` `PP2`.
+           (`evidence/d657-gate-dryrun2.json`)
+
+**AND THE REFUSAL IS RIGHT.**  The two sites are 1.9 mm apart, so two 1.0 mm
+discs OVERLAP -- a complete seal of the channel, which is D-649's finding in a
+second place -- and the whole-net re-route went **138.875 mm with 5 vias**
+against the original 77.  On its way it cut a **22.693 mm2 `GND` `B.Cu`
+fragment** holding `C27.2` and `C28.2` off the 3640 mm2 body, and `PP2` priced
+that fragment at **2.117 A against the 2.19 A its own `SYS_MAIN` neighbours
+publish** -- `margin_x` **0.967**, short by 3.3 %, bottleneck `FRAGMENT_COPPER`
+at 0.85 mm over 0.67 mm.  On the AUTHORITATIVE board that fragment DOES NOT
+EXIST: `C27.2`/`C28.2` sit in island 16 with `C16.2`, `C17.2`, `C18.2`, `C19.2`,
+and `PP2` reports `priced: []`, `splits: []`, 4/4 PASS
+(`evidence/d657-pour-partition-authority.json`).  The run made that fragment and
+the clause charged it for it.  **This is the D-643 return-fragment bar doing
+exactly the job it was built for, on the first transaction that ever tripped
+it.**
+
+## 9. THE `R129.1` TRANSACTION IS PRICED AND NOT YET SPENT
+
+Four gate runs, all dry, authority byte-identical throughout:
+
+    run  shape                              edges  refused          route
+    1    --evict + window, no reserve       34->34 attributable_drc 77.317 mm
+                                                   board_improved   3 vias
+    2    --evict-whole + r 1.0 mm discs     34->33 pour_partition  138.875 mm
+    3    --evict-whole + r 0.60 mm discs    34->33 pour_partition  138.875 mm
+    5    --evict + window + r 0.60 mm discs 34->33 attributable_drc 138.875 mm
+                                                   pour_partition   + 2 dangling
+    4    --evict-whole + r 0.60, grid 25 um   see section 9b
+
+**RUNS 2 AND 3 ARE BYTE-FOR-BYTE THE SAME ROUTE**, five vias at
+(51.400,40.250), (55.350,36.300), (54.900,29.850), (64.050,27.050),
+(64.950,29.350) -- none of them within 30 mm of the reserved sites.  **So the
+discs are NOT what makes that route long; `--evict-whole` is.**  With the whole
+strap gone the maze router re-derives it from scratch and prefers a southern
+corridor at 138.875 mm against the 77 mm the board already had, and it is on
+THAT detour that it severs the `GND` fragment.  A reservation cannot fix a
+path it never touches -- which is worth writing down, because run 3 was spent
+on the assumption that it could.
+
+**THE OPEN ENGINEERING QUESTION IS A FRAMEWORK ONE.**  `Net-(U11-TS_MR)` has
+exactly TWO pads and `maze3d.route_net` builds its MST over PADS, so ANY
+eviction on it -- one object or the whole net -- makes the router re-lay the
+ENTIRE `R38.1 -> U11.6` haul rather than close the 2 mm gap the eviction
+actually opened.  That is why run 1 laid 77 mm to move two vias by 0.05 mm and
+why runs 2/3 laid 139 mm to move them at all.  **The primitive this transaction
+wants does not exist yet: MOVE A BARREL AND RE-LAY ONLY THE COPPER THAT MET
+IT.**  `--detour-spec`'s barrel entry already accepts `to_mm` and calls that a
+MOVE (D-653); what it does not do is bring the tracks that landed on the old
+site along with it.
+
+**AND THE BOND CANNOT BE BOUGHT ANY OTHER WAY.**  `R129.1` sits on `In3`
+outline 5, **25.2325 mm2, 1.7671 mm from an 8032 mm2 body**, and on NO `F.Cu`
+outline at all (`evidence/d657-island-map-3v3.json`).  A through barrel would
+have to be inside that `In3` island AND inside the 3683 mm2 `F.Cu` `+3V3` body
+at the same (x, y), and **there is no such point**: sampled on a 0.1 mm lattice
+over the island's whole 9.24 x 13.65 mm bounding box, ZERO points lie in both.
+`screen_pour_bridges.py` says the same thing with the board's own instrument
+and the emitter's own `bridge_sites`: **`bridgeable: 0` for ALL FOUR `+3V3`
+orphans, down to 0.35/0.20 mm** -- for `R129.1`, *"no legal barrel inside this
+island over any other cluster"* across a 7.26 mm2 `F` island and a 25.23 mm2
+`I3` one (`evidence/d657-pour-bridges-3v3.json`).  That is `.kicad_dru` section
+12b's twenty-six-decision finding re-derived from a direction it had never been
+asked from, and it closes the bridge arm.
+
+The island's bbox reaches **(64.846, 70.372)** and via 1 sits at
+**(64.700, 70.500)**.  The two barrels are ON the neck.
+
+## 10. WHAT ELSE THE INSTRUMENT FOUND ON ITS FIRST DAY
+
+    `+3V3` `U5.2` window (26,112)-(34,120)   511.4 s, 51 units
+        Q0 5 -> Q1 4 -> Q3 MINIMAL SET 9 units: SEVEN `GND` `F.Cu` chains
+        (one with `count: 3`), ONE `GND` 0.600/0.300 barrel at (28.500,115.800)
+        and ONE `/AMP_SD_MODE` track -- the ground fan-out under the
+        `MAX98357A`.  ONE open edge.  `U5.2` is one of THREE `+3V3` pins on
+        that part and `U5.7`/`U5.8` are already on the plane, so this is
+        DECOUPLING, not a dead supply: ranked below `R129.1`, and it moves
+        Class-D amplifier ground, which is an audio-sensitive review.
+        (`evidence/d657-cut-blame-u5-2.json`)
+
+    `GND` `J3.A12`/`J3.B1` window (35,142)-(50,148)   19.0 s, 25 units
+        Q1 does not improve the partition: **`WINDOW_DOES_NOT_HOLD_THE_CUT`**,
+        Q2 and Q3 SKIPPED.  This is the screen's own negative control and its
+        cheapest answer -- the USB-C shield/ground contact is not severed by
+        anything inside its own 15 x 6 mm neighbourhood.
+        (`evidence/d657-cut-blame-j3.json`)
+
+## 11. THE WORK LIST THIS LEAVES
+
+  1. **`R129.1` / `Net-(U11-TS_MR)`** -- see section 8/9.  Two barrels, 0.5 mm,
+     a Community-Port function `AQROOT_DEMO_SCOPE` requires.
+  2. **`/01_POWER_TREE/BQ25185_SYS` IS A PLACEMENT WALL AND IT IS THE BOARD'S
+     #1 FABRICATION BLOCKER.**  `U11.1` (the charger's own `SYS` output) is a
+     cluster of ONE, `U12.10`/`U12.11` (the `TPS63020`'s `VIN`) are a cluster of
+     two bonded to nothing, and `POUR 2` (`L4.1`/`U21.3`, the accessory 5 V
+     boost input D-185 prices at 2.19 A peak) is a third.  **The Demo cannot be
+     fabricated with this rail in nine pieces**, and D-657 has now refuted every
+     lever short of moving a part: five zone/inert levers, eight width rungs,
+     three lattice pitches, and the one detour the cut-blame names is owned by
+     the single-file gate D-649 already refuted.  The next move is a BOUNDED
+     RE-FLOORPLAN of the `U11`/`U12` power pocket -- `apply_part_shift.py`
+     already exists -- and the objects it has to make room for are named in
+     section 2.  `.kicad_dru` section 13 already calls the `L1` half of this a
+     Full Beta v2 item; on Demo it is not optional, because nothing on the board
+     powers up without it.
+  3. The two sub-floor `SYS` pour necks (D-656 §3) are unchanged and are the
+     SAME pocket: fix them with the re-floorplan, not separately.
+  4. `+3V3` `U5.2` (section 10), `U4.5` (`VDDIO`, still owes the per-part
+     electrical ledger), `/I2C_SCL_INT` `U16.3 <-> U4.13` (15 units / 34.046 mm,
+     D-655 §4).
+  5. `/I2C_SCL_INT` `U14.7 <-> J1.44` remains **the one OPEN OWNER DECISION**
+     (D-655 §7), RECORDED NOT TAKEN, unchanged by this decision.
+  6. `copper_sliver` localisation remains an OPEN INSTRUMENT GAP (D-656 §2).
+     Run 1 of this decision produced one and it went away when the route did.
+
+## 12. THE FRAMEWORK PRIMITIVE THIS DECISION LEAVES SPECIFIED
+
+`--detour-spec` can already take a barrel out and, since D-653, put it back
+somewhere a human NAMED (`"to_mm"`).  What it cannot do is bring the TRACK ENDS
+that landed on the old site along with it, and that is the whole gap between
+D-657's measurement and D-657's copper:
+
+    a detour entry may declare a NEW `b` end --
+      "re-lay this chain between its own `a` and this named point" --
+    so a barrel MOVE drags exactly the copper that met it, and nothing else.
+
+It is additive, it is bounded, and clause 5 still licenses every removal by
+SIGNATURE, so nothing about the safety bar moves.  It is the smallest thing
+that turns a 13/14 gate run into a 14/14 one, and it is worth building because
+the shape recurs: every barrel this board ever wants to move sits at a joint.
+
+**DO NOT** reach for it by widening `--evict`.  Five gate runs measured what
+that costs on a two-pad net: the router re-derives the whole haul, and on this
+one it prefers a 138.875 mm southern corridor over the 77 mm the board already
+had.
+
 # D-656 · 2026-09-07 · Demo — THE PITCH IS PART OF THE TRANSACTION AND A FINER LATTICE IS NOT A BETTER ONE: `U2`'s `SDA` IS ON THE BUS, AND THE `BQ25185` SYSTEM RAIL IS DELIVERED THROUGH A 0.197 mm POUR NECK
 
     authority  b6dfc5db7ec8cc80eb12a4ca47fc3449799886d45852eab130fe3e3eb7ed45c7
