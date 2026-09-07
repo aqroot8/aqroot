@@ -666,7 +666,8 @@ def evict_closure(board, evict_nets, doomed, contained):
     return extra, unevictable
 
 
-def evict_copper(path, nets, evict_nets, margin_nm, whole=False):
+def evict_copper(path, nets, evict_nets, margin_nm, whole=False,
+                 window_nm=None):
     """Rip up the evictable copper IN PLACE and describe every removal.
 
     Runs in the `--evict-apply` CHILD, never in the authority process, and for a
@@ -682,6 +683,25 @@ def evict_copper(path, nets, evict_nets, margin_nm, whole=False):
     route on -- copper that obstructs nothing is nobody's business.  A via is a
     barrel through the whole stack, so it obstructs on every layer, which is the
     honest reading rather than the convenient one.
+
+    D-655.  `window_nm` NAMES THE CORRIDOR INSTEAD OF DERIVING IT, and the
+    reason it has to exist is that the derived one is an UPPER BOUND that stops
+    being a bound when the evicted net is long.  The default corridor is the
+    requested nets' own pad bounding boxes, which is honest when the request is
+    local; `/I2C_SCL_INT` and `/I2C_SDA_INT` each span this board corner to
+    corner, so the derived corridor is 6166 mm2 and `--evict /I2C_SCL_INT`
+    takes 84 objects and 178.9 mm -- the WHOLE net -- when the measurement that
+    asked for it named TWO 0.200 mm tracks in one 3 mm pocket.  A transaction
+    that rips up 178.9 mm to admit 19.7 mm is not the transaction anybody
+    measured, and it is not reviewable.
+
+    So a caller that has SCREENED the pocket may state it.  The window is a
+    RESTRICTION and never a licence: an object still has to be routed, on a
+    named evicted net, on a permitted layer, and WHOLLY inside -- the window
+    only replaces the derived box with a smaller stated one, so nothing becomes
+    evictable that was not evictable before.  It is reported verbatim next to
+    the derived corridors it overrode, because the difference between the two
+    is the whole review.
     """
     import pcbnew
     import qrouter as qr
@@ -701,13 +721,15 @@ def evict_copper(path, nets, evict_nets, margin_nm, whole=False):
                          % ", ".join(missing))
     keep_layers = {qr.LNAME[s] for s in short}
 
+    windows = [tuple(window_nm)] if window_nm else list(boxes.values())
+
     def contained(item):
         if whole:
             return True
         bb = item.GetBoundingBox()
         return any(bb.GetLeft() >= box[0] and bb.GetTop() >= box[1]
                    and bb.GetRight() <= box[2] and bb.GetBottom() <= box[3]
-                   for box in boxes.values())
+                   for box in windows)
 
     doomed = []
     for t in board.GetTracks():
@@ -732,6 +754,8 @@ def evict_copper(path, nets, evict_nets, margin_nm, whole=False):
     return dict(
         evicted_nets=sorted(set(evict_nets)),
         whole_net=bool(whole),
+        stated_window_mm=([round(v / 1e6, 4) for v in window_nm]
+                          if window_nm else None),
         corridor_layers=sorted(short),
         margin_mm=round(margin_nm / 1e6, 3),
         corridors={n: dict(
@@ -2633,6 +2657,7 @@ def gate(nets, grid, via_cost_mm, workdir, promote=False, candidate=None,
          partial=False, attempt_cap=0, repair_planes=False,
          split_islands=False, repair_join_max_mm=REPAIR_JOIN_MAX_MM,
          evict=(), evict_margin_mm=EVICT_MARGIN_MM, evict_whole=False,
+         evict_window=None,
          guard=None,
          bridge=False, bond_pads=(), bond_max_mm=BOND_MAX_MM,
          bond_via=None, join_islands=False, join_island_max_mm=0.0,
@@ -2731,6 +2756,7 @@ def gate(nets, grid, via_cost_mm, workdir, promote=False, candidate=None,
             [sys.executable, __file__, "--evict-apply", str(scratch),
              "--evict-report", str(report),
              "--evict-margin-mm", str(evict_margin_mm)]
+            + (["--evict-window", evict_window] if evict_window else [])
             + (["--evict-whole"] if evict_whole else [])
             + [x for n in evict for x in ("--evict", n)]
             + list(nets), check=True, text=True, capture_output=True)
@@ -3664,6 +3690,20 @@ def main():
     ap.add_argument("--evict-margin-mm", type=float, default=EVICT_MARGIN_MM,
                     help="how far outside a requested net's own pad bounding "
                          "box the eviction corridor extends")
+    ap.add_argument("--evict-window", default=None, metavar="X0,Y0,X1,Y1",
+                    help="D-655: STATE the eviction corridor in millimetres "
+                         "instead of deriving it from the requested nets' pad "
+                         "bounding boxes.  The derived corridor is an upper "
+                         "bound and stops being one when a requested net spans "
+                         "the board: on `/I2C_SCL_INT` it is 6166 mm2, so "
+                         "`--evict /I2C_SCL_INT` takes 84 objects and 178.9 mm "
+                         "-- the whole net -- where the screen that asked for "
+                         "it named TWO tracks in one 3 mm pocket.  This is a "
+                         "RESTRICTION and never a licence: an object must "
+                         "still be routed, on a named evicted net, on a "
+                         "permitted layer and WHOLLY inside, so nothing "
+                         "becomes evictable that was not.  Name the pocket "
+                         "screen_pair_corridor_blame.py --per-object reported")
     ap.add_argument("--stitch-via", default=None,
                     help="DIA:DRILL in nm for stitch barrels; clamped UP to "
                          "the DRU hole-size and annular-ring floors")
@@ -3884,10 +3924,27 @@ def main():
                 load_run_areas(a.relief_run_area), a.escape_floor,
                 a.bridge_pads, a.bridge_pad_max_mm)
         return 0
+    evict_window_nm = None
+    if a.evict_window:
+        try:
+            v = [float(x) for x in a.evict_window.split(",")]
+        except ValueError:
+            v = []
+        if len(v) != 4 or v[0] >= v[2] or v[1] >= v[3]:
+            ap.error("--evict-window wants X0,Y0,X1,Y1 in millimetres with "
+                     "X0<X1 and Y0<Y1; got %r" % a.evict_window)
+        evict_window_nm = tuple(int(round(x * 1e6)) for x in v)
+    if a.evict_window and a.evict_whole:
+        ap.error("--evict-window and --evict-whole are contradictory: one "
+                 "states a pocket, the other says board-wide.  Pick the unit "
+                 "the measurement was taken in")
+    if a.evict_window and not a.evict:
+        ap.error("--evict-window needs at least one --evict NET; a corridor "
+                 "with nothing to evict in it removes nothing")
     if a.evict_apply:
         doc = evict_copper(a.evict_apply, a.nets, set(a.evict),
                            int(round(a.evict_margin_mm * 1e6)),
-                           whole=a.evict_whole)
+                           whole=a.evict_whole, window_nm=evict_window_nm)
         text = json.dumps(doc, indent=2, sort_keys=True, default=str)
         if a.evict_report:
             a.evict_report.write_text(text + "\n", encoding="utf-8")
@@ -3924,7 +3981,7 @@ def main():
                  split_islands=a.split_islands,
                  repair_join_max_mm=a.repair_join_max_mm,
                  evict=tuple(a.evict), evict_margin_mm=a.evict_margin_mm,
-                 evict_whole=a.evict_whole,
+                 evict_whole=a.evict_whole, evict_window=a.evict_window,
                  guard=a.guard, bridge=a.bridge,
                  bond_pads=tuple(a.bond_pad), bond_max_mm=a.bond_max_mm,
                  bond_via=bond_via, join_islands=a.join_islands,

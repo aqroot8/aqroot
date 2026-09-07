@@ -1,0 +1,103 @@
+{
+  "baseline_drc_profile": {
+    "hole_clearance": 5,
+    "lib_footprint_issues": 199,
+    "solder_mask_bridge": 1
+  },
+  "boards": {
+    "candidate": {
+      "copper_sliver": 1,
+      "hole_clearance": 5,
+      "lib_footprint_issues": 199,
+      "solder_mask_bridge": 1
+    },
+    "candidate_without_new_I2C_SCL_INT": {
+      "copper_sliver": 1,
+      "hole_clearance": 5,
+      "lib_footprint_issues": 199,
+      "solder_mask_bridge": 1
+    },
+    "candidate_without_new_I2C_SDA_INT": {
+      "hole_clearance": 5,
+      "lib_footprint_issues": 199,
+      "solder_mask_bridge": 1
+    },
+    "candidate_without_the_J1_44_haul": {
+      "copper_sliver": 1,
+      "hole_clearance": 5,
+      "lib_footprint_issues": 199,
+      "solder_mask_bridge": 1,
+      "track_dangling": 2
+    }
+  },
+  "geometry": {
+    "area_mm2": 0.00052,
+    "at_mm": [
+      65.577,
+      89.832
+    ],
+    "bbox_mm": [
+      0.031,
+      0.06
+    ],
+    "cause": "/I2C_SDA_INT's own 0.600/0.300 via at (65.225, 90.400), 0.668 mm away, shaves a finger of that pour and leaves 0.031 mm of it standing",
+    "layer": "B.Cu",
+    "net": "/01_POWER_TREE/BQ25185_SYS"
+  },
+  "method": "(1) revert one net's NEW copper at a time on the gate's own candidate, refill with the real KiCad engine, re-run the real DRC (evidence/d655-bisect-sliver.py); (2) erode every filled polygon by half the sliver width and dilate it back -- what does not come back is a sliver -- and difference the two boards (evidence/d655-sliver-locate.py)",
+  "pour_fragility": {
+    "area_mm2": 84.2565,
+    "bbox_mm": [
+      58.5,
+      80.071,
+      71.0,
+      102.499
+    ],
+    "erosion": [
+      {
+        "area_mm2": 80.8302,
+        "outlines": 1,
+        "r_mm": 0.025
+      },
+      {
+        "area_mm2": 78.7777,
+        "outlines": 1,
+        "r_mm": 0.04
+      },
+      {
+        "area_mm2": 77.4107,
+        "outlines": 1,
+        "r_mm": 0.05
+      },
+      {
+        "area_mm2": 73.998,
+        "outlines": 1,
+        "r_mm": 0.075
+      },
+      {
+        "area_mm2": 70.5922,
+        "outlines": 2,
+        "r_mm": 0.1
+      },
+      {
+        "area_mm2": 64.0087,
+        "outlines": 7,
+        "r_mm": 0.15
+      }
+    ],
+    "island": 3,
+    "layer": "B.Cu",
+    "net": "/01_POWER_TREE/BQ25185_SYS",
+    "next_lever": {
+      "caveat": "a probe is not a refill -- only a gate run with a real KiCad refill and a real DRC settles whether the neck survives",
+      "probe": "evidence/d655-probe-joint.py at 0.025 mm, SCL then SDA: SCL 20.587 mm, SDA 20.896 mm with its via moved out to (66.175, 89.075)",
+      "shape": "three B.Cu-ONLY reserve discs over the neck band, r 0.55/0.55/0.50",
+      "spec": "evidence/d655-reserve-sliver-band.json"
+    },
+    "reading": "this island's own necks are ALREADY about 0.200 mm wide on the AUTHORITATIVE board -- it survives a 0.075 mm erosion as one outline and breaks into two at 0.100 mm -- so any 0.200 mm track with 0.200 mm clearance laid beside one pinches it into a sliver. The sliver is a property of the POUR, not of the route: an r 0.5 mm reserve at the first crumb (65.577, 89.832) moved SDA's via and moved the crumb to (65.047, 89.883), 0.051 x 0.172 mm, rather than removing it."
+  },
+  "question": "the joint transaction's ONE refused clause is `attributable_drc`, a `copper_sliver (B.Cu)` KiCad reports with an EMPTY item list -- WHICH copper makes it, and WHERE?",
+  "remedy": "a --detour-spec RESERVE disc, r 0.5 mm at the crumb, exempting GND, the pour's own net and /I2C_SCL_INT: evidence/d655-probe-joint.py re-routes BOTH edges under it and moves SDA's via to (64.475, 91.550) -- SCL 20.587 mm, SDA 20.581 mm",
+  "schema": 1,
+  "verdict": "/I2C_SDA_INT's FOURTEEN new objects make it and /I2C_SCL_INT's FORTY-TWO do not: reverting SDA's clears the sliver, reverting SCL's does not, and reverting only the 55.183 mm J1.44 -> U2.22 haul does not either -- so it is not the long haul, it is the pocket."
+}

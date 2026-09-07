@@ -1,0 +1,218 @@
+{
+  "answer": "YES, and ONLY at 0.025 mm with /I2C_SCL_INT FIRST.  Three of the four (pitch, order) cells close exactly one of the two edges: whichever net is laid first takes the corridor and the second reads NO_PATH.  The pocket is a ONE-NET pocket at 0.050 mm and a TWO-NET pocket at 0.025 mm, and even there the order decides.",
+  "board": "w/d655/evtest2/aqroot-Beta-v2.kicad_pcb",
+  "board_note": "the authoritative board with route_maze_batch.py --evict /I2C_SCL_INT --evict-window 60.3,80.1,67.7,93.8 applied: D-653's whole 22.969 mm U2.22<->U3.22 route, 14 objects, and nothing else",
+  "instrument": "maze3d.offcentre_route, laid in sequence on one QBoard",
+  "question": "does U2's east pocket hold BOTH /I2C_SCL_INT U2.22<->U3.22 and /I2C_SDA_INT U3.23<->U2.23 -- and do the ORDER and the LATTICE decide?",
+  "schema": 1,
+  "trials": [
+    {
+      "both_closed": false,
+      "grid_nm": 50000,
+      "order": [
+        "SDA",
+        "SCL"
+      ],
+      "sequence": [
+        {
+          "layers": [
+            "B",
+            "F",
+            "B"
+          ],
+          "mm": 20.2513,
+          "mm_by_layer": {
+            "B": 16.4929,
+            "F": 1.3829
+          },
+          "net": "SDA",
+          "ok": true,
+          "stub_mm": 2.3755,
+          "terminals": [
+            "B",
+            "B"
+          ],
+          "via_xy": [
+            [
+              62.8,
+              85.15
+            ],
+            [
+              61.9,
+              86.2
+            ]
+          ],
+          "vias": 2
+        },
+        {
+          "net": "SCL",
+          "ok": false,
+          "reason": "NO_PATH",
+          "why": "no all-layer corridor at 0.200 mm from U2.22 on B to U3.22 on B"
+        }
+      ]
+    },
+    {
+      "both_closed": false,
+      "grid_nm": 50000,
+      "order": [
+        "SCL",
+        "SDA"
+      ],
+      "sequence": [
+        {
+          "layers": [
+            "B",
+            "F",
+            "B"
+          ],
+          "mm": 20.5683,
+          "mm_by_layer": {
+            "B": 15.5076,
+            "F": 2.7102
+          },
+          "net": "SCL",
+          "ok": true,
+          "stub_mm": 2.3505,
+          "terminals": [
+            "B",
+            "B"
+          ],
+          "via_xy": [
+            [
+              61.65,
+              85.95
+            ],
+            [
+              60.3,
+              83.6
+            ]
+          ],
+          "vias": 2
+        },
+        {
+          "net": "SDA",
+          "ok": false,
+          "reason": "NO_PATH",
+          "why": "no all-layer corridor at 0.200 mm from U3.23 on B to U2.23 on B"
+        }
+      ]
+    },
+    {
+      "both_closed": false,
+      "grid_nm": 25000,
+      "order": [
+        "SDA",
+        "SCL"
+      ],
+      "sequence": [
+        {
+          "layers": [
+            "B",
+            "F",
+            "B"
+          ],
+          "mm": 19.8643,
+          "mm_by_layer": {
+            "B": 16.189,
+            "F": 1.3002
+          },
+          "net": "SDA",
+          "ok": true,
+          "stub_mm": 2.375,
+          "terminals": [
+            "B",
+            "B"
+          ],
+          "via_xy": [
+            [
+              62.775,
+              85.2
+            ],
+            [
+              61.975,
+              86.225
+            ]
+          ],
+          "vias": 2
+        },
+        {
+          "net": "SCL",
+          "ok": false,
+          "reason": "NO_PATH",
+          "why": "no all-layer corridor at 0.200 mm from U2.22 on B to U3.22 on B"
+        }
+      ]
+    },
+    {
+      "both_closed": true,
+      "grid_nm": 25000,
+      "order": [
+        "SCL",
+        "SDA"
+      ],
+      "sequence": [
+        {
+          "layers": [
+            "B",
+            "F",
+            "B"
+          ],
+          "mm": 20.587,
+          "mm_by_layer": {
+            "B": 15.6224,
+            "F": 2.5896
+          },
+          "net": "SCL",
+          "ok": true,
+          "stub_mm": 2.375,
+          "terminals": [
+            "B",
+            "B"
+          ],
+          "via_xy": [
+            [
+              61.625,
+              85.875
+            ],
+            [
+              60.3,
+              83.65
+            ]
+          ],
+          "vias": 2
+        },
+        {
+          "layers": [
+            "B",
+            "F",
+            "B"
+          ],
+          "mm": 20.872,
+          "mm_by_layer": {
+            "B": 13.3003,
+            "F": 5.6217
+          },
+          "net": "SDA",
+          "ok": true,
+          "stub_mm": 1.95,
+          "terminals": [
+            "B",
+            "B"
+          ],
+          "via_xy": [
+            [
+              65.225,
+              90.4
+            ],
+            [
+              61.25,
+              93.075
+            ]
+          ],
+          "vias": 2
+        }
+      ]
+    }
+  ]
+}

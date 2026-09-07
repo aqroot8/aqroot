@@ -1,3 +1,345 @@
+# D-655 · 2026-09-07 · Demo — THE ANSWER WAS TWO TRACKS, NOT TWO NETS: THE BLAME SCREEN NOW SPEAKS THE UNIT A TRANSACTION IS WRITTEN IN, AND `U2`'s POCKET HOLDS BOTH BUS LINES ONLY AT 0.025 mm AND ONLY IN ONE ORDER
+
+    authority  9eaeacfca71fea2dcfdff71eb7e65c9566851cf8babbf07762285250ae2f829e
+          ->   b6dfc5db7ec8cc80eb12a4ca47fc3449799886d45852eab130fe3e3eb7ed45c7
+    retained open edges  36 -> 35     open retained nets  20   connected retained  153
+    /I2C_SCL_INT  open edges 4 -> 3   raw board ratsnest 52 -> 51
+    sole_path_net_count  37 -> 26     sole-path rows 5 -> 3
+    `hardware/beta-v2` UNTOUCHED.
+
+**COPPER PROMOTED.  FOURTEEN of fourteen gate clauses PASS, `refused_clauses`
+EMPTY** (`evidence/d655-gate-promote.json`); `verify_promotion.py` **PASS on all
+15 checks** (`evidence/d655-verify-promotion.json`); real KiCad DRC **exit 0,
+ZERO attributable**, profile identical to baseline; the standing suite is
+**11/11 RAN, 11/11 PASS** (`evidence/d655-contract-regression.json`, baseline
+`d632`), run BEFORE the framework change as well as after
+(`evidence/d655-contract-regression-pre.json`).
+
+D-654 handed this run a set of NETS -- `{/I2C_SCL_INT, GND}` -- and a next step
+written in them: `--evict /I2C_SCL_INT`, plus a `--detour-spec` moving `U2.21`'s
+`GND` bond barrel a third time.  Both halves of that instruction were wrong, and
+the reason is one sentence:
+
+**A BLAME SCREEN ANSWERS IN NETS.  A TRANSACTION IS LICENSED PER OBJECT.  ON A
+BOARD-SPANNING NET THOSE TWO UNITS DIFFER BY 178.9 mm.**
+
+`--evict /I2C_SCL_INT` was measured before it was spent
+(`evidence/d655-evict-wholenet-cost.json`): the eviction corridor is the
+REQUESTED nets' own pad bounding boxes, `/I2C_SCL_INT` and `/I2C_SDA_INT` each
+span this board corner to corner, the corridor is **6166 mm2**, and the flag
+takes **84 objects and 178.9 mm of 193.7 mm -- the whole net** -- to admit a
+19.7 mm route.  That is not the transaction anybody measured and it is not
+reviewable.
+
+## 1. Q4 -- THE MINIMISATION, IN THE UNIT THE APPLIER LICENSES
+
+`screen_pair_corridor_blame.py --per-object` re-runs the same reverse-greedy
+delta debugging over the OBJECTS of whatever Q2/Q3 proved open, and emits what
+survives as `--detour-spec` entries.  **A BARREL COUNTS AS ONE OBJECT**: in the
+router's model a via is six annuli plus a drill, in KiCad it is one `PCB_VIA`
+and one signature, and a minimisation that offered those seven back one at a
+time would report six annuli as "not needed" and hand over a spec that removes
+a hole and leaves the copper standing -- D-653's first probe made exactly that
+error.  Units are PHYSICAL: one track description with its duplicate `count`
+(D-648), or one whole barrel.  The pool is built over EVERY layer, not the
+routable ones, because `Without` -- the context manager Q1-Q3 were proved under
+-- iterates `qb.shapes` whole; a pool built over `far` alone would start from a
+different board than the one Q3 called open, and the run says so with a
+`Q4_POOL` row rather than reporting a set of REQUIREDs that means nothing.
+
+## 2. `--max-mm` -- AN OPENING WITH A PRICE
+
+Q2 and Q3 minimise the NUMBER OF NETS and say nothing about the route the
+opening buys.  Asked the never-asked question -- `/I2C_SCL_INT`
+`U3.22 <-> U4.13`, the 10.784 mm bus gap that strands the whole expander --
+the screen answered `GND alone OPENS 108.135 mm, 13 vias` and stopped, because
+Q3 only runs when no admissible net opens the corridor alone
+(`evidence/d655-blame-bus-unbounded.json`, 318.4 s).  Q1's own upper bound for
+that same pair is **14.306 mm on `B.Cu` with ZERO vias**.  A 108 mm haul across
+thirteen layer changes for a 10.8 mm gap is `ok: true` and nothing else.
+
+`--max-mm X` makes an opening count only if it also comes in under the bound.
+Absent, `accepts()` is exactly `ok` and every run written before it reads as it
+did.
+
+## 3. THE FRAMEWORK IS PROVED INERT ON A BOARD THAT DID NOT MOVE
+
+D-654's own invocation, re-run verbatim at its own 0.100 mm pitch
+(`evidence/d655-repro-d654-ban.json`, 203.5 s): **37 rows, ZERO differing**,
+once the two keys the patch adds (`max_mm`, `accepted`) are dropped -- the same
+`BASE`, the same `Q1` 12.381 mm, the same seventeen `Q2` refusals, the same
+`Q3` fifteen-dropped/two-required trace and the same
+`MINIMAL SET {/I2C_SCL_INT, GND} -> 24.954 mm`.
+
+`--evict` with no window stated, same invocation before and after the patch:
+the scratch board's **sha256 is IDENTICAL**
+(`f2f332057a246b09c69fe79b49903a0cf02e29b31e9d0809a6ff50c63bdad06e`) and the
+report differs by the single new key `stated_window_mm: null`.
+
+The standing suite on the unmoved authoritative board is **11/11 RAN, 11/11
+PASS** (`evidence/d655-contract-regression-pre.json`, baseline `d632`) with
+`placement`, `rf_symmetry` and `protected_copper` IDENTICAL to `d632` -- the
+same shape, contract for contract, as D-653's own pre-change run.
+
+## 4. THE ANSWER FOR `SDA` WAS TWO TRACKS, AND THE `GND` BOND NEVER HAD TO MOVE
+
+`screen_pair_corridor_blame.py /I2C_SDA_INT U3.23 U2.23 3.0 50000 --ban
+/ACC_5V_SW_EN --per-object` (`evidence/d655-blame-sda-per-object.json`, 348.5 s):
+
+    BASE   NO_PATH                              (0.100 mm said NO_LEGAL_ESCAPE)
+    Q1     drop all SEVENTEEN     ->  OPENS 12.480 mm, 2 vias
+    Q2     /I2C_SCL_INT ALONE     ->  OPENS 20.251 mm, 2 vias, B/F/B
+    Q4     8 units / 21 objects   ->  TWO UNITS, 19.710 mm
+
+    /I2C_SCL_INT  B.Cu  (60.750, 90.450) -> (61.900, 91.700)  0.200 mm
+    /I2C_SCL_INT  B.Cu  (61.900, 91.700) -> (61.200, 93.200)  0.200 mm
+
+**`GND` IS NOT IN THE ANSWER AT ALL.**  D-654's set was `{/I2C_SCL_INT, GND}` at
+the 0.100 mm lattice and the `GND` member was `U2.21`'s bond barrel, the one
+D-653 had already moved twice.  At 0.050 mm it is not needed: the barrel stays
+where it is, `screen_rebond_site.py --fragment-board` is not owed, and the
+"`U2.21` must move a THIRD time" that D-654's `NEXT` opens with is REFUTED.
+Two 0.200 mm tracks, 3.355 mm of copper, one net, no protected copper and no
+owner question -- against `--evict /I2C_SCL_INT`'s 84 objects and 178.9 mm.
+
+## 5. `--evict-window` -- THE EVICTION IN THE UNIT THE SCREEN MEASURED
+
+`--evict`'s corridor is the requested nets' own pad bounding boxes.  That is an
+upper bound and it stops being one the moment a requested net spans the board.
+`--evict-window X0,Y0,X1,Y1` STATES it instead, and it is a RESTRICTION and
+never a licence -- an object must still be routed, on a named evicted net, on a
+permitted layer and WHOLLY inside.
+
+    --evict /I2C_SCL_INT                            84 objects   178.9 mm
+    --evict /I2C_SCL_INT --evict-window
+        60.3,80.1,67.7,93.8                         14 objects    22.969 mm
+
+Fourteen is exactly D-653's whole `U2.22 <-> U3.22` route -- twelve tracks and
+two barrels -- `closure_count 0`, `dangling_unevictable 0`, nothing else of that
+net anywhere near the pocket (`evidence/d655-evict-window.json`).  With the flag
+absent the scratch board's sha256 is IDENTICAL before and after the patch and
+the report gains one key, `stated_window_mm: null`.
+
+## 6. THE POCKET HOLDS BOTH BUS LINES ONLY AT 0.025 mm AND ONLY IN ONE ORDER
+
+D-654 said `U2.22` and `U2.23` are ONE transaction.  They are, and the
+transaction has two more parameters than anybody had written down
+(`evidence/d655-pocket-capacity.json`, `maze3d.offcentre_route` laid in sequence
+on the board `--evict-window` leaves):
+
+    pitch     order        first                 second
+    0.050     SDA, SCL     SDA 20.251 mm  OK     SCL  NO_PATH
+    0.050     SCL, SDA     SCL 20.568 mm  OK     SDA  NO_PATH
+    0.025     SDA, SCL     SDA 19.864 mm  OK     SCL  NO_PATH
+    0.025     SCL, SDA     SCL 20.587 mm  OK     SDA 20.872 mm  OK
+
+**THREE OF THE FOUR CELLS CLOSE EXACTLY ONE EDGE.**  Whichever net is laid first
+takes the corridor.  `U2`'s east pocket is a ONE-NET pocket at 0.050 mm and a
+TWO-NET pocket at 0.025 mm, and 0.0333 mm and 0.040 mm are both one-net pockets
+too -- measured, not assumed.  `propose` iterates `for net in nets`, so the
+ORDER is the command line's, and `/I2C_SCL_INT` sorts before `/I2C_SDA_INT`
+anyway.
+
+## 7. THE WORK LIST, RE-RANKED BY WHAT A TRANSACTION WOULD ACTUALLY REMOVE
+
+D-652 named the five open edges that strand thirty-seven nets and ranked them by
+the parts they gate.  Q4 ranks them by what the transaction costs, and the order
+is not the same one:
+
+    edge                              minimal objects                      opens
+    /I2C_SDA_INT  U3.23 <-> U2.23     2 tracks (/I2C_SCL_INT)            19.710
+    /I2C_SCL_INT  U3.22 <-> U4.13     4 tracks + 3 barrels               28.025
+        (the BUS edge)                (/NFC_5V_EN 1, GND 6)
+    /I2C_SCL_INT  U14.7 <-> J1.44     1 track + 1 barrel  -- PROTECTED   30.756
+    /I2C_SCL_INT  U16.3 <-> U4.13     15 units / 16 objects              34.046
+                                      (/09_.../WAKE_GATE_S 5, GND 11)
+
+**THE BUS EDGE IS NOT A WALL** (`evidence/d655-blame-bus-bounded.json`).  Its
+Q1 upper bound is **14.306 mm on `B.Cu` with ZERO vias** over a 10.784 mm gap,
+and the minimal set is `{/NFC_5V_EN, GND}` at 27.249 mm -- seven named objects,
+none protected: one `In2.Cu` `/NFC_5V_EN` track, three 0.300 mm `B.Cu` `GND`
+tracks and three `GND` barrels at (57.700, 70.000), (58.000, 72.400) and
+(62.100, 71.600).  Every one of the three is a bond barrel, so `rebond_priced`
+and `screen_rebond_site.py --fragment-board` are owed before it is spent.
+
+**`U16.3`** (`TCA4307` Qwiic/STEMMA-QT buffer) launches nowhere at all --
+`NO OFF-CENTRE LAUNCH`, blocked by `U16.2`, `U16.4`, `U16.1` and one track --
+yet Q1 opens it in 18.996 mm with ZERO vias, so it is copper and not placement.
+
+**`U14.7`** (`MAX17048` fuel gauge) is the one that reaches a HUMAN.
+Its minimal object set is TWO objects -- one `B.Cu` track of
+`/01_POWER_TREE/BAT_PROT_SHDN_CTL`, (4.100, 90.900) -> (4.100, 76.550), and one
+`GND` barrel at (25.600, 93.700) -- opening at 30.756 mm
+(`evidence/d655-blame-u147.json`).  `BAT_PROT_SHDN_CTL` is **PROTECTED COPPER**:
+`protected_copper.py`'s own pattern is `BAT_\w+`, and this is the battery
+protector's shutdown control, the D-269 / D-186 safety domain.
+
+So the question D-654's `--ban` exists for was asked, and asked THREE WAYS
+before it was allowed to reach a human:
+
+    margin 8 mm,  0.050 mm, banned    Q1 over 26 nets   NO_PATH    136.3 s
+    margin 12 mm, 0.050 mm, banned    Q1 over 33 nets   NO_PATH    136.0 s
+    margin 8 mm,  0.025 mm, banned    Q1 over 26 nets   NO_PATH   2637.3 s
+
+**NO CONTAINMENT-BOUNDED RIP-UP THAT LEAVES THE BATTERY-PROTECTION COPPER ALONE
+OPENS THAT EDGE**, at either lattice this decision has proved decides things,
+and at a window half again as wide as the one that first said so.
+
+**AND A `Q1 NO_PATH` IS A STATEMENT ABOUT THE WINDOW UNTIL IT IS RE-ASKED
+WIDER.**  The first `U14.7` run, at the default 3 mm margin, reported exactly
+that refusal over the FULL pool (`evidence/d655-blame-u147-margin3.json`) and it
+was an artifact: at 8 mm the same pool opens in 25.974 mm with ONE via.  A
+containment margin is part of the answer and belongs beside it.
+
+## 8. THE TRANSACTION, THREE GATE RUNS, AND THE ONE THING THAT REFUSED IT
+
+    run  request                     evict-window  reserve  clauses  verdict
+    1    SCL + SDA                   14 objects    none     13/14    REFUSED attributable_drc
+    2    SCL + SDA                   14 objects    r 0.5    12/14    REFUSED attributable_drc,
+                                                                             no_regression
+    3    SCL                         14 objects    none     14/14    PROMOTED
+
+**RUN 1 CLOSED BOTH BUS LINES AND THE BOARD IMPROVED BY TWO EDGES**
+(`evidence/d655-gate-sliver-refused.json`, propose 10351 s + 168.6 s at
+0.025 mm): retained open edges **36 -> 34**, open retained nets 20 -> 19,
+`/I2C_SDA_INT` `remaining 0` -- FULLY CONNECTED -- and `/I2C_SCL_INT` closed
+TWO, `U2.22 <-> U3.22` in 20.587 mm (against D-653's 22.969 mm for the same
+edge) **and `J1.44 -> U2.22` in 55.183 mm with 7 barrels**, which puts the
+`PCAL9535A` pair ON THE I2C BUS.  Thirteen of fourteen clauses PASS, including
+`no_regression`, `board_improved`, `pour_partition`, `no_unlicensed_removal`
+and `rebond_priced`.
+
+**AND ONE CLAUSE REFUSED IT: `attributable_drc`, a `copper_sliver (B.Cu)`.**
+`drc_exit` is 0 and the severity is `warning`, but the type is not in this
+board's baseline profile (`hole_clearance` 5, `lib_footprint_issues` 199,
+`solder_mask_bridge` 1) and the clause is the standing bar.  KiCad reports the
+violation with an **EMPTY item list**, so the geometry had to be re-derived --
+see `evidence/d655-sliver-forensics.json`:
+
+  * **WHOSE.**  Revert one net's new copper at a time on the gate's own
+    candidate, refill with the real engine, re-run the real DRC.  Without
+    `/I2C_SDA_INT`'s FOURTEEN new objects the sliver is GONE; without
+    `/I2C_SCL_INT`'s FORTY-TWO it is not; without only the 55.183 mm haul it is
+    not either.  **It is the pocket, not the haul.**
+  * **WHERE.**  Erode every filled polygon by half the sliver width, dilate it
+    back, and difference the boards: `/01_POWER_TREE/BQ25185_SYS`, `B.Cu`,
+    **0.031 x 0.060 mm at (65.577, 89.832)**, 0.668 mm from `/I2C_SDA_INT`'s own
+    new 0.600/0.300 barrel at (65.225, 90.400).
+  * **WHY IT IS NOT A ROUTING BUG.**  That pour island (index 3, 84.257 mm2)
+    survives a 0.075 mm erosion as ONE outline and breaks into TWO at 0.100 mm:
+    **its own necks are already about 0.200 mm wide on the AUTHORITATIVE
+    board.**  Any 0.200 mm track with 0.200 mm clearance laid beside one pinches
+    it into a sliver.  The sliver is a property of the POUR.
+
+**RUN 2 PROVED THAT BY FAILING.**  An `r 0.5 mm` reserve at the crumb, exempting
+`GND`, the pour's own net and `/I2C_SCL_INT`, did move `/I2C_SDA_INT`'s barrel
+-- and **moved the crumb** to (65.047, 89.883), 0.051 x 0.172 mm, instead of
+removing it, while pushing SDA into copper that **regressed the
+`BQ25185_SYS` pour** and cost a second clause
+(`evidence/d655-gate-reserve-refused.json`).  A reservation aimed at one crumb
+of a fragile pour relocates the crumb.
+
+## 9. RUN 3 -- WHAT WAS PROMOTED
+
+The bisect in §8 is also a PRESCRIPTION: `/I2C_SCL_INT`'s forty-two new objects
+are DRC-clean by themselves, and the board that proves it is the gate's own
+candidate with `/I2C_SDA_INT`'s copper reverted and the zones refilled by the
+real engine -- `hole_clearance` 5, `lib_footprint_issues` 199,
+`solder_mask_bridge` 1, the baseline profile exactly.  So the transaction was
+split at the line the measurement drew, not at a convenient one, and run 3
+requests `/I2C_SCL_INT` alone over the same fourteen-object eviction.
+
+**FOURTEEN OF FOURTEEN GATE CLAUSES PASS, `refused_clauses` EMPTY,
+`promotion_candidate: true`** (`evidence/d655-gate-dryrun.json`, propose
+9083.8 s at 0.025 mm):
+
+    retained open edges     36 -> 35        raw board ratsnest   52 -> 51
+    /I2C_SCL_INT open edges  4 ->  3        open retained nets   20
+    connected retained nets 153             nets_regressed       NONE
+    tracks 3277 -> 3298   vias 809 -> 816   licensed removals    14
+    real KiCad DRC exit 0, ZERO attributable, profile identical to baseline
+    PP1-PP4 PASS   plane repair NOT NEEDED (`regressed_before_repair: []`)
+
+**`J1.44 -> U2.22`, 55.183 mm, 7 barrels, `F/B/I2/F/I2/B/F/B`.**  That is the
+edge D-652 priced at eighteen stranded nets and D-653 could not reach: the
+`PCAL9535APW` pair that carries **all six user buttons**, the three
+`FRONT_RGB_*` nets, `XGPIO4`/`XGPIO5` and every accessory-power control **is on
+the I2C bus on `SCL`**.  `U2.22 <-> U3.22` is re-laid at 20.587 mm against
+D-653's 22.969 mm for the same edge -- the eviction gave the pocket back and the
+finer lattice spent it better.
+
+**AND IT IS 55.183 mm WHERE Q1's OWN BOUND FOR THE BUS EDGE IS 14.306 mm.**
+`/I2C_SCL_INT` goes 193.685 -> **246.486 mm**.  That is FOUR TIMES the copper
+the 7-object transaction in §7 would have needed, and it is taken with open
+eyes: the seven objects include three `GND` bond barrels, so that route owes
+`rebond_priced` and three `screen_rebond_site.py --fragment-board` runs, and the
+edge it buys is the same edge.  **The 400 pF ceiling is still UNPRICED and now
+carries 246.5 mm** -- the D-652 open DFM item, restated with a bigger number.
+
+## 10. THE FRONTIER, RE-MEASURED ON THE PROMOTED BOARD
+
+`verify_promotion.py` **PASS on all 15 checks** including `beta_v2_untouched`,
+`unconnected_not_increased`, `pour_partition_intact`, `fill_stable`,
+`drc_zero_attributable` and `nothing_removed` (`evidence/d655-verify-promotion.json`).
+The standing suite is **11/11 RAN, 11/11 PASS** (`evidence/d655-contract-regression.json`,
+baseline `d632`) with `placement`, `rf_symmetry` and `protected_copper`
+IDENTICAL to `d632`; the only movement is `keepout_stackup`'s `In1.Cu`
+reference plane, 9413.504 -> **9407.301 mm2**, 6.203 mm2 of antipad for seven
+new barrels net of the two removed.  Measured, not assumed.
+
+`screen_open_edge_cost.py` on the promoted board
+(`evidence/d655-open-edge-cost-post.json`, 8 s):
+
+    sole_path_net_count   37 -> 26          sole-path rows   5 -> 3
+    U2 /I2C_SCL_INT  carries 18   GONE      U3 /I2C_SCL_INT  carries 14   GONE
+    U2 /I2C_SDA_INT  carries 18   REMAINS   U16 /I2C_SCL_INT carries 6    REMAINS
+                                            U14 /I2C_SCL_INT carries 3    REMAINS
+
+**ELEVEN NETS ARE NO LONGER STRANDED BY A SOLE CONTROL PATH.**  Both
+`PCAL9535APW` expanders are reachable on `SCL`; what is left of the critical
+path is `U2.23`'s `SDA`, and `U2` still answers nothing until it has both.
+
+## 11. NEXT, IN ORDER OF LEVERAGE
+
+1. **`/I2C_SDA_INT` `U3.23 <-> U2.23` -- 18 nets, and the pocket has MOVED
+   AGAIN.**  Everything measured here was measured on the pre-promotion board;
+   `/I2C_SCL_INT`'s pocket copper is now a different shape, so **re-ask
+   `screen_pair_corridor_blame.py --per-object` before anything else**, exactly
+   as D-653's `NEXT` said and for the same reason.  Take the answer at
+   **0.025 mm** -- §6 is the proof that the pitch is part of the transaction --
+   and expect the `BQ25185_SYS` pour-neck sliver (§8) to be the wall rather than
+   the corridor.  `evidence/d655-reserve-sliver-band.json` is the untried lever: three
+   B.Cu-ONLY discs over the neck band, under which the probe routes both edges
+   with SDA's barrel out at (66.175, 89.075).  A probe is not a refill -- only a
+   gate run settles it.
+2. **The `BQ25185_SYS` `B.Cu` pour is DFM-FRAGILE and that is its own item.**
+   Island 3, 84.257 mm2, breaks into two outlines under a 0.100 mm erosion: its
+   own necks are already about 0.200 mm.  Nothing this board routes near it can
+   avoid pinching one.  The durable fix is the pour's geometry, not the route's,
+   and it is **NEW OPEN DFM ITEM**.
+3. **`/I2C_SCL_INT` `U16.3 <-> U4.13`** -- 15 units / 16 objects,
+   `{/09_COMMUNITY_HEADER/WAKE_GATE_S, GND}`, 34.046 mm, none protected, but
+   ELEVEN of the sixteen are `GND` and FOUR are bond barrels, so it owes
+   `rebond_priced` four times.
+4. **`/I2C_SCL_INT` `U14.7 <-> J1.44` IS AN OWNER DECISION AND IT IS THE FIRST
+   ONE OPEN ON THIS BOARD SINCE D-618.**  Its only opening moves PROTECTED
+   battery-protection copper (§7), and the alternative was asked three ways and
+   refused every time.  The owner's choice is: leave the `MAX17048` fuel gauge's
+   `SCL` unrouted (3 nets, gauge reporting only -- the battery still charges and
+   still protects), or authorise moving one 0.200 mm `B.Cu` segment of
+   `/01_POWER_TREE/BAT_PROT_SHDN_CTL`, (4.100, 90.900) -> (4.100, 76.550),
+   under the D-269 / D-186 review.  **RECORDED, NOT TAKEN.**
+5. **The bus edge is now CLOSED but at 4x its measured price.**  If a later run
+   wants that copper back, `evidence/d655-blame-bus-bounded.json` names the
+   seven objects that would have done it in 28.025 mm.
+6. **CARRIED UNCHANGED:** `/I2C_SDA_INT` 308.5 mm and `/I2C_SCL_INT`
+   **246.5 mm** against the UNPRICED I2C 400 pF ceiling and `R19`'s pull-up;
+   `BQ25185_SYS` `C26.2`'s single-file gate; `+3V3` `R129.1`; `U12.10`/`U12.11`
+   `PLACEMENT_WALL`; `U4.5` (`VDDIO`); `/I2S_LRCLK`'s edge rate;
+   `/NFC_SUPPLY`'s per-net current; `/SPI_B_SCK` and `/BQ25185_STAT1` as LANDS;
+   `MK1.4` and `J3.A12`/`J3.B1`; `U9.16`'s single-barrel driver ground;
+   `QBoard.smooth` vs the pour-bond guard as an OPEN GAP.  D-618's `J3`
+   question remains RECORDED.
 # D-654 · 2026-09-07 · Demo — ADDENDUM: `SDA`'s OPENER IS NOW `SCL` ITSELF, AND IT IS UNPROTECTED
 
     authority  9eaeacfca71fea2dcfdff71eb7e65c9566851cf8babbf07762285250ae2f829e

@@ -1,0 +1,461 @@
+{
+  "a": "U3.23",
+  "b": "U2.23",
+  "banned_nets": [
+    "/ACC_5V_SW_EN"
+  ],
+  "board": "/home/aqroot8/aqroot-demo/hardware/demo/kicad/aqroot-demo/aqroot-Beta-v2.kicad_pcb",
+  "complete": true,
+  "grid_nm": 50000,
+  "instrument": "maze3d.offcentre_route under screen_corridor_blockers.Without",
+  "layers": [
+    "F",
+    "B",
+    "I2"
+  ],
+  "margin_mm": 3.0,
+  "net": "/I2C_SDA_INT",
+  "rows": [
+    {
+      "ok": false,
+      "reason": "NO_PATH",
+      "step": "BASE",
+      "why": "no all-layer corridor at 0.200 mm from U3.23 on B to U2.23 on B"
+    },
+    {
+      "layers": [
+        "B",
+        "F",
+        "B"
+      ],
+      "mm": 12.4797,
+      "nets": [
+        "+3V3",
+        "/08_BUTTONS_EXPANDERS/BTN_A_N",
+        "/08_BUTTONS_EXPANDERS/BTN_B_N",
+        "/08_BUTTONS_EXPANDERS/BTN_DOWN_N",
+        "/08_BUTTONS_EXPANDERS/BTN_LEFT_N",
+        "/08_BUTTONS_EXPANDERS/BTN_RIGHT_N",
+        "/08_BUTTONS_EXPANDERS/BTN_UP_N",
+        "/09_COMMUNITY_HEADER/EXT_SDA",
+        "/09_COMMUNITY_HEADER/NATIVE_A_HDR",
+        "/09_COMMUNITY_HEADER/NATIVE_B_HDR",
+        "/ACC_POWER_FAULT_N",
+        "/I2C_SCL_INT",
+        "/NFC_5V_EN",
+        "/SD_CARD_DETECT_N",
+        "/SX1262_RXEN",
+        "/TOUCH_INT_N",
+        "GND"
+      ],
+      "ok": true,
+      "reason": null,
+      "step": "Q1_UPPER_BOUND",
+      "vias": 2,
+      "why": null
+    },
+    {
+      "layers": null,
+      "mm": null,
+      "net": "+3V3",
+      "ok": false,
+      "reason": "NO_PATH",
+      "step": "Q2_SINGLE_NET",
+      "vias": null
+    },
+    {
+      "layers": null,
+      "mm": null,
+      "net": "/08_BUTTONS_EXPANDERS/BTN_A_N",
+      "ok": false,
+      "reason": "NO_PATH",
+      "step": "Q2_SINGLE_NET",
+      "vias": null
+    },
+    {
+      "layers": null,
+      "mm": null,
+      "net": "/08_BUTTONS_EXPANDERS/BTN_B_N",
+      "ok": false,
+      "reason": "NO_PATH",
+      "step": "Q2_SINGLE_NET",
+      "vias": null
+    },
+    {
+      "layers": null,
+      "mm": null,
+      "net": "/08_BUTTONS_EXPANDERS/BTN_DOWN_N",
+      "ok": false,
+      "reason": "NO_PATH",
+      "step": "Q2_SINGLE_NET",
+      "vias": null
+    },
+    {
+      "layers": null,
+      "mm": null,
+      "net": "/08_BUTTONS_EXPANDERS/BTN_LEFT_N",
+      "ok": false,
+      "reason": "NO_PATH",
+      "step": "Q2_SINGLE_NET",
+      "vias": null
+    },
+    {
+      "layers": null,
+      "mm": null,
+      "net": "/08_BUTTONS_EXPANDERS/BTN_RIGHT_N",
+      "ok": false,
+      "reason": "NO_PATH",
+      "step": "Q2_SINGLE_NET",
+      "vias": null
+    },
+    {
+      "layers": null,
+      "mm": null,
+      "net": "/08_BUTTONS_EXPANDERS/BTN_UP_N",
+      "ok": false,
+      "reason": "NO_PATH",
+      "step": "Q2_SINGLE_NET",
+      "vias": null
+    },
+    {
+      "layers": null,
+      "mm": null,
+      "net": "/09_COMMUNITY_HEADER/EXT_SDA",
+      "ok": false,
+      "reason": "NO_PATH",
+      "step": "Q2_SINGLE_NET",
+      "vias": null
+    },
+    {
+      "layers": null,
+      "mm": null,
+      "net": "/09_COMMUNITY_HEADER/NATIVE_A_HDR",
+      "ok": false,
+      "reason": "NO_PATH",
+      "step": "Q2_SINGLE_NET",
+      "vias": null
+    },
+    {
+      "layers": null,
+      "mm": null,
+      "net": "/09_COMMUNITY_HEADER/NATIVE_B_HDR",
+      "ok": false,
+      "reason": "NO_PATH",
+      "step": "Q2_SINGLE_NET",
+      "vias": null
+    },
+    {
+      "layers": null,
+      "mm": null,
+      "net": "/ACC_POWER_FAULT_N",
+      "ok": false,
+      "reason": "NO_PATH",
+      "step": "Q2_SINGLE_NET",
+      "vias": null
+    },
+    {
+      "layers": [
+        "B",
+        "F",
+        "B"
+      ],
+      "mm": 20.2513,
+      "net": "/I2C_SCL_INT",
+      "ok": true,
+      "reason": null,
+      "step": "Q2_SINGLE_NET",
+      "vias": 2
+    },
+    {
+      "layers": null,
+      "mm": null,
+      "net": "/NFC_5V_EN",
+      "ok": false,
+      "reason": "NO_PATH",
+      "step": "Q2_SINGLE_NET",
+      "vias": null
+    },
+    {
+      "layers": null,
+      "mm": null,
+      "net": "/SD_CARD_DETECT_N",
+      "ok": false,
+      "reason": "NO_PATH",
+      "step": "Q2_SINGLE_NET",
+      "vias": null
+    },
+    {
+      "layers": null,
+      "mm": null,
+      "net": "/SX1262_RXEN",
+      "ok": false,
+      "reason": "NO_PATH",
+      "step": "Q2_SINGLE_NET",
+      "vias": null
+    },
+    {
+      "layers": null,
+      "mm": null,
+      "net": "/TOUCH_INT_N",
+      "ok": false,
+      "reason": "NO_PATH",
+      "step": "Q2_SINGLE_NET",
+      "vias": null
+    },
+    {
+      "layers": null,
+      "mm": null,
+      "net": "GND",
+      "ok": false,
+      "reason": "NO_PATH",
+      "step": "Q2_SINGLE_NET",
+      "vias": null
+    },
+    {
+      "mm": 20.2513,
+      "n_objects": 21,
+      "n_units": 8,
+      "nets": [
+        "/I2C_SCL_INT"
+      ],
+      "ok": true,
+      "reason": null,
+      "step": "Q4_POOL"
+    },
+    {
+      "mm": 20.2513,
+      "remaining": 7,
+      "step": "Q4_OBJECT_RETURNED",
+      "unit": {
+        "a_mm": [
+          60.5,
+          80.375
+        ],
+        "b_mm": [
+          60.75,
+          80.45
+        ],
+        "count": 1,
+        "kind": "track",
+        "layer": "B.Cu",
+        "net": "/I2C_SCL_INT",
+        "objects": 1,
+        "width_mm": 0.2
+      }
+    },
+    {
+      "mm": 20.2513,
+      "remaining": 6,
+      "step": "Q4_OBJECT_RETURNED",
+      "unit": {
+        "a_mm": [
+          60.5,
+          90.375
+        ],
+        "b_mm": [
+          60.75,
+          90.45
+        ],
+        "count": 1,
+        "kind": "track",
+        "layer": "B.Cu",
+        "net": "/I2C_SCL_INT",
+        "objects": 1,
+        "width_mm": 0.2
+      }
+    },
+    {
+      "mm": 19.7097,
+      "remaining": 5,
+      "step": "Q4_OBJECT_RETURNED",
+      "unit": {
+        "a_mm": [
+          60.75,
+          80.45
+        ],
+        "b_mm": [
+          62.175,
+          81.075
+        ],
+        "count": 1,
+        "kind": "track",
+        "layer": "B.Cu",
+        "net": "/I2C_SCL_INT",
+        "objects": 1,
+        "width_mm": 0.2
+      }
+    },
+    {
+      "reason": "NO_PATH",
+      "remaining": 5,
+      "step": "Q4_OBJECT_REQUIRED",
+      "unit": {
+        "a_mm": [
+          60.75,
+          90.45
+        ],
+        "b_mm": [
+          61.9,
+          91.7
+        ],
+        "count": 1,
+        "kind": "track",
+        "layer": "B.Cu",
+        "net": "/I2C_SCL_INT",
+        "objects": 1,
+        "width_mm": 0.2
+      }
+    },
+    {
+      "mm": 19.7097,
+      "remaining": 4,
+      "step": "Q4_OBJECT_RETURNED",
+      "unit": {
+        "a_mm": [
+          61.2,
+          93.2
+        ],
+        "b_mm": [
+          61.1,
+          93.3
+        ],
+        "count": 1,
+        "kind": "track",
+        "layer": "B.Cu",
+        "net": "/I2C_SCL_INT",
+        "objects": 1,
+        "width_mm": 0.2
+      }
+    },
+    {
+      "reason": "NO_PATH",
+      "remaining": 4,
+      "step": "Q4_OBJECT_REQUIRED",
+      "unit": {
+        "a_mm": [
+          61.9,
+          91.7
+        ],
+        "b_mm": [
+          61.2,
+          93.2
+        ],
+        "count": 1,
+        "kind": "track",
+        "layer": "B.Cu",
+        "net": "/I2C_SCL_INT",
+        "objects": 1,
+        "width_mm": 0.2
+      }
+    },
+    {
+      "mm": 19.7097,
+      "remaining": 3,
+      "step": "Q4_OBJECT_RETURNED",
+      "unit": {
+        "a_mm": [
+          62.175,
+          81.075
+        ],
+        "b_mm": [
+          62.7,
+          81.6
+        ],
+        "count": 1,
+        "kind": "track",
+        "layer": "B.Cu",
+        "net": "/I2C_SCL_INT",
+        "objects": 1,
+        "width_mm": 0.2
+      }
+    },
+    {
+      "mm": 19.7097,
+      "remaining": 2,
+      "step": "Q4_OBJECT_RETURNED",
+      "unit": {
+        "at_mm": [
+          61.1,
+          93.3
+        ],
+        "count": 2,
+        "dia_mm": 0.6,
+        "drill_mm": 0.3,
+        "kind": "barrel",
+        "net": "/I2C_SCL_INT",
+        "objects": 14
+      }
+    },
+    {
+      "layers": [
+        "B",
+        "F",
+        "B"
+      ],
+      "mm": 19.7097,
+      "n_objects": 2,
+      "n_units": 2,
+      "nets": [
+        "/I2C_SCL_INT"
+      ],
+      "ok": true,
+      "step": "Q4_MINIMAL_OBJECTS",
+      "units": [
+        {
+          "a_mm": [
+            60.75,
+            90.45
+          ],
+          "b_mm": [
+            61.9,
+            91.7
+          ],
+          "count": 1,
+          "kind": "track",
+          "layer": "B.Cu",
+          "net": "/I2C_SCL_INT",
+          "objects": 1,
+          "width_mm": 0.2
+        },
+        {
+          "a_mm": [
+            61.9,
+            91.7
+          ],
+          "b_mm": [
+            61.2,
+            93.2
+          ],
+          "count": 1,
+          "kind": "track",
+          "layer": "B.Cu",
+          "net": "/I2C_SCL_INT",
+          "objects": 1,
+          "width_mm": 0.2
+        }
+      ],
+      "vias": 2
+    }
+  ],
+  "schema": 1,
+  "seconds": 348.5,
+  "window_nets": [
+    "+3V3",
+    "/08_BUTTONS_EXPANDERS/BTN_A_N",
+    "/08_BUTTONS_EXPANDERS/BTN_B_N",
+    "/08_BUTTONS_EXPANDERS/BTN_DOWN_N",
+    "/08_BUTTONS_EXPANDERS/BTN_LEFT_N",
+    "/08_BUTTONS_EXPANDERS/BTN_RIGHT_N",
+    "/08_BUTTONS_EXPANDERS/BTN_UP_N",
+    "/09_COMMUNITY_HEADER/EXT_SDA",
+    "/09_COMMUNITY_HEADER/NATIVE_A_HDR",
+    "/09_COMMUNITY_HEADER/NATIVE_B_HDR",
+    "/ACC_POWER_FAULT_N",
+    "/I2C_SCL_INT",
+    "/NFC_5V_EN",
+    "/SD_CARD_DETECT_N",
+    "/SX1262_RXEN",
+    "/TOUCH_INT_N",
+    "GND"
+  ]
+}

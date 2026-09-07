@@ -1,0 +1,11 @@
+{"schema": 1,
+ "note": "D-655: the sliver is not one crumb, it is a REGION -- /01_POWER_TREE/BQ25185_SYS B.Cu island 3 (84.257 mm2) survives a 0.075 mm erosion as one outline and breaks into two at 0.100 mm, so its necks are already about 0.200 mm wide and ANY 0.200 mm track with 0.200 mm clearance passing beside one pinches it into a sliver.  A single r 0.5 mm disc moved the crumb from (65.577, 89.832) to (65.047, 89.883) and did not remove it.  This reserves the whole band on B.Cu ONLY (D-649), so /I2C_SDA_INT may still tunnel under it on F or In2.",
+ "detours": [],
+ "reserve": [
+  {"x_mm": 64.90, "y_mm": 89.90, "r_mm": 0.55, "layers": ["B"],
+   "exempt": ["GND", "/01_POWER_TREE/BQ25185_SYS", "/I2C_SCL_INT"]},
+  {"x_mm": 65.60, "y_mm": 89.85, "r_mm": 0.55, "layers": ["B"],
+   "exempt": ["GND", "/01_POWER_TREE/BQ25185_SYS", "/I2C_SCL_INT"]},
+  {"x_mm": 65.25, "y_mm": 90.55, "r_mm": 0.50, "layers": ["B"],
+   "exempt": ["GND", "/01_POWER_TREE/BQ25185_SYS", "/I2C_SCL_INT"]}
+ ]}

@@ -13,6 +13,102 @@
 > This file references DEVICE_SPEC rather than duplicating full specs.
 
 ## 1. Authoritative HEAD
+- **Demo D-655 (THE ANSWER WAS TWO TRACKS, NOT TWO NETS; AND `U2`'s POCKET
+  HOLDS BOTH BUS LINES ONLY AT 0.025 mm AND ONLY IN ONE ORDER):**  **COPPER
+  PROMOTED.**  Authority
+  `9eaeacfca71fea2dcfdff71eb7e65c9566851cf8babbf07762285250ae2f829e` ->
+  **`b6dfc5db7ec8cc80eb12a4ca47fc3449799886d45852eab130fe3e3eb7ed45c7`**;
+  retained open edges **36 -> 35**, `/I2C_SCL_INT` open edges 4 -> 3, raw board
+  ratsnest 52 -> 51, open retained nets 20, connected retained 153, and
+  **`sole_path_net_count` 37 -> 26** with the sole-path rows 5 -> 3.
+  `hardware/beta-v2` untouched.  **FOURTEEN of fourteen gate clauses PASS,
+  `refused_clauses` EMPTY** (`evidence/d655-gate-promote.json`);
+  `verify_promotion.py` PASS on all 15 checks
+  (`evidence/d655-verify-promotion.json`); real KiCad DRC **exit 0, ZERO
+  attributable**, profile identical to baseline; standing suite **11/11 RAN,
+  11/11 PASS** (`evidence/d655-contract-regression.json`, baseline `d632`,
+  with a pre-change run at `evidence/d655-contract-regression-pre.json`),
+  `placement`/`rf_symmetry`/`protected_copper` IDENTICAL to `d632`, only
+  `keepout_stackup`'s `In1.Cu` moving 9413.504 -> 9407.301 mm2.
+  **`J1.44 -> U2.22` IS ROUTED** -- 55.183 mm, 7 barrels, `F/B/I2/F/I2/B/F/B` --
+  so the `PCAL9535APW` pair carrying **all six user buttons**, the three
+  `FRONT_RGB_*` nets, `XGPIO4`/`XGPIO5` and every accessory-power control is
+  **ON THE I2C BUS on `SCL`**; `U2.22 <-> U3.22` is re-laid at 20.587 mm against
+  D-653's 22.969 mm.
+  **(1) A BLAME SCREEN ANSWERS IN NETS, A TRANSACTION IS LICENSED PER OBJECT,
+  AND ON A BOARD-SPANNING NET THOSE UNITS DIFFER BY 178.9 mm.**  D-654's
+  `--evict /I2C_SCL_INT` was measured before it was spent: the eviction corridor
+  is the requested nets' own pad bboxes, 6166 mm2, and the flag takes **84
+  objects and 178.9 mm of 193.7 -- the whole net**
+  (`evidence/d655-evict-wholenet-cost.json`).  **NEW
+  `screen_pair_corridor_blame.py --per-object` (Q4)** re-runs the same
+  reverse-greedy over the OBJECTS of whatever Q2/Q3 proved open and emits them
+  as `--detour-spec` entries; a BARREL counts as ONE object and its `count`
+  comes off the BOARD, because since D-646 one `PCB_VIA` is FOURTEEN router
+  objects and two drills.  **NEW `--max-mm X`** makes an opening count only
+  under a bound -- without it the bus edge reported `GND alone OPENS 108.135 mm,
+  13 vias` for a 10.784 mm gap whose Q1 bound is 14.306 mm, and Q3 never ran.
+  **NEW `route_maze_batch.py --evict-window X0,Y0,X1,Y1`** states the eviction
+  corridor instead of deriving it: 84 objects -> **14**, exactly D-653's whole
+  `U2.22 <-> U3.22` route, `closure_count` 0, `dangling_unevictable` 0.
+  **ALL THREE PROVED INERT:** D-654's own invocation re-run verbatim gives **37
+  rows, ZERO differing** once the two new keys are dropped
+  (`evidence/d655-repro-d654-ban.json`), and `--evict` with no window leaves the
+  scratch board's **sha256 IDENTICAL**.
+  **(2) `SDA`'s ANSWER IS TWO TRACKS AND `GND` IS NOT IN IT.**  At 0.050 mm
+  `/I2C_SCL_INT` ALONE opens `U3.23 <-> U2.23`, and Q4 minimises it to **TWO
+  0.200 mm `B.Cu` tracks**, (60.750, 90.450)->(61.900, 91.700) and
+  (61.900, 91.700)->(61.200, 93.200), 19.710 mm
+  (`evidence/d655-blame-sda-per-object.json`).  D-654's `{/I2C_SCL_INT, GND}`
+  was a 0.100 mm artifact: **`U2.21`'s bond barrel does NOT have to move a third
+  time** and `screen_rebond_site.py --fragment-board` is not owed.
+  **(3) THE POCKET IS A ONE-NET POCKET AT 0.050 mm AND A TWO-NET POCKET AT
+  0.025 mm** (`evidence/d655-pocket-capacity.json`): of the four
+  (pitch, order) cells, three close exactly ONE edge -- whichever net is laid
+  first takes the corridor -- and only 0.025 mm with `/I2C_SCL_INT` FIRST closes
+  both.  0.0333 and 0.040 mm are one-net pockets too.
+  **(4) THE WORK LIST, RE-RANKED BY OBJECTS:** `/I2C_SDA_INT` `U3.23<->U2.23`
+  2 objects / 19.710 mm; `/I2C_SCL_INT` bus edge `U3.22<->U4.13` 7 units /
+  28.025 mm (`{/NFC_5V_EN, GND}`, three of them bond barrels,
+  `evidence/d655-blame-bus-bounded.json`); `U14.7<->J1.44` 2 objects /
+  30.756 mm but **one is PROTECTED**; `U16.3<->U4.13` 15 units / 34.046 mm
+  (`{WAKE_GATE_S, GND}`, `evidence/d655-blame-u163.json`).
+  **(5) THE ONE CLAUSE THAT REFUSED THE JOINT RUN WAS A `copper_sliver (B.Cu)`
+  KiCad NAMES WITH NO ITEMS.**  Runs 1 and 2 closed BOTH bus lines -- open edges
+  **36 -> 34**, `/I2C_SDA_INT` `remaining 0` -- and were REFUSED
+  (`evidence/d655-gate-sliver-refused.json`,
+  `evidence/d655-gate-reserve-refused.json`).  The geometry was re-derived by
+  reverting each net's new copper in turn and re-running the real DRC, and by
+  eroding/dilating every filled polygon: **`/I2C_SDA_INT`'s fourteen new objects
+  make it, `/I2C_SCL_INT`'s forty-two do not**, and it is a 0.031 x 0.060 mm
+  crumb of the `/01_POWER_TREE/BQ25185_SYS` `B.Cu` pour at (65.577, 89.832)
+  (`evidence/d655-sliver-forensics.json`).  **IT IS A PROPERTY OF THE POUR:**
+  that island survives a 0.075 mm erosion as one outline and breaks into two at
+  0.100 mm, so its own necks are already ~0.200 mm and any 0.200 mm track with
+  0.200 mm clearance beside one pinches it.  A reserve disc MOVED the crumb
+  rather than removing it, and cost `no_regression` as well.  So the transaction
+  was split at the line the measurement drew -- `/I2C_SCL_INT` alone -- and that
+  is what promoted.
+  **(6) `/I2C_SCL_INT` `U14.7 <-> J1.44` IS AN OWNER DECISION.**  Its only
+  containment-bounded opening moves PROTECTED
+  `/01_POWER_TREE/BAT_PROT_SHDN_CTL` copper (`protected_copper.py`'s own
+  `BAT_\w+`), and "is there an opening that leaves it alone?" was asked THREE
+  ways -- margin 8 mm and 12 mm at 0.050 mm, margin 8 mm at 0.025 mm -- and
+  every one is `Q1 NO_PATH` (`evidence/d655-blame-u147-ban-*.json`).  The choice
+  is: leave the `MAX17048` fuel gauge's `SCL` unrouted (3 nets, gauge reporting
+  only), or authorise moving one 0.200 mm `B.Cu` segment,
+  (4.100, 90.900) -> (4.100, 76.550), under D-269 / D-186 review.  **RECORDED,
+  NOT TAKEN.**  Also recorded: **a `Q1 NO_PATH` is a statement about the
+  containment MARGIN until it is re-asked wider** -- the same pair's default
+  3 mm window said `NO_PATH` over the full pool and 8 mm opens it in 25.974 mm.
+  **NEW OPEN DFM ITEM:** the `BQ25185_SYS` `B.Cu` pour is sliver-fragile by its
+  own geometry and the durable fix is the pour, not the route.
+  **NEXT:** (1) re-ask `screen_pair_corridor_blame.py --per-object` for
+  `/I2C_SDA_INT` `U3.23 <-> U2.23` ON THE PROMOTED BOARD at 0.025 mm -- the
+  pocket has moved again -- and try `evidence/d655-reserve-sliver-band.json`'s three
+  `B.Cu`-only discs over the pour-neck band; (2) the `BQ25185_SYS` pour
+  geometry; (3) `U16.3`; (4) the `U14.7` owner decision.  Everything D-654
+  carried is carried unchanged.
 - **Demo D-654 (ADDENDUM — `SDA`'s OPENER IS NOW `SCL` ITSELF, AND IT IS
   UNPROTECTED):**  **NO COPPER.**  Authority UNCHANGED at
   `9eaeacfca71fea2dcfdff71eb7e65c9566851cf8babbf07762285250ae2f829e`; retained

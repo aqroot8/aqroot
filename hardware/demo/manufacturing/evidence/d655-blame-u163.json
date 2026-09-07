@@ -1,0 +1,1437 @@
+{
+  "a": "U16.3",
+  "b": "U4.13",
+  "banned_nets": [],
+  "board": "/home/aqroot8/aqroot-demo/hardware/demo/kicad/aqroot-demo/aqroot-Beta-v2.kicad_pcb",
+  "complete": true,
+  "grid_nm": 50000,
+  "instrument": "maze3d.offcentre_route under screen_corridor_blockers.Without",
+  "layers": [
+    "F",
+    "B",
+    "I2"
+  ],
+  "margin_mm": 3.0,
+  "max_mm": 45.0,
+  "net": "/I2C_SCL_INT",
+  "rows": [
+    {
+      "ok": false,
+      "reason": "NO_LEGAL_ESCAPE",
+      "step": "BASE",
+      "why": "U16.3: NO OFF-CENTRE LAUNCH at 0.200 mm from any of 41 anchors x 24 directions x 17 lengths; blocked by U16.2 (x6297), U16.4 (x5870), U16.1 (x2158), track (x1041)"
+    },
+    {
+      "layers": [
+        "B"
+      ],
+      "mm": 18.9957,
+      "nets": [
+        "+3V3",
+        "/01_POWER_TREE/V3V3_FB",
+        "/05_I2C_DEVICES/BMI270_INT1_RAW",
+        "/05_I2C_DEVICES/BMI270_SDO_ADDR",
+        "/09_COMMUNITY_HEADER/EXT_SCL_BUF",
+        "/09_COMMUNITY_HEADER/NATIVE_A_HDR",
+        "/09_COMMUNITY_HEADER/TCA4307_READY",
+        "/09_COMMUNITY_HEADER/WAKE_GATE_S",
+        "/ACC_3V3_EN",
+        "/ACC_3V3_SW",
+        "/ACC_DETECT_N",
+        "/ACC_POWER_FAULT_N",
+        "/ACC_PWR_EN",
+        "/I2C_SDA_INT",
+        "GND",
+        "Net-(U11-TS_MR)"
+      ],
+      "ok": true,
+      "reason": null,
+      "step": "Q1_UPPER_BOUND",
+      "vias": 0,
+      "why": null
+    },
+    {
+      "accepted": false,
+      "layers": null,
+      "mm": null,
+      "net": "+3V3",
+      "ok": false,
+      "reason": "NO_LEGAL_ESCAPE",
+      "step": "Q2_SINGLE_NET",
+      "vias": null
+    },
+    {
+      "accepted": false,
+      "layers": null,
+      "mm": null,
+      "net": "/01_POWER_TREE/V3V3_FB",
+      "ok": false,
+      "reason": "NO_LEGAL_ESCAPE",
+      "step": "Q2_SINGLE_NET",
+      "vias": null
+    },
+    {
+      "accepted": false,
+      "layers": null,
+      "mm": null,
+      "net": "/05_I2C_DEVICES/BMI270_INT1_RAW",
+      "ok": false,
+      "reason": "NO_LEGAL_ESCAPE",
+      "step": "Q2_SINGLE_NET",
+      "vias": null
+    },
+    {
+      "accepted": false,
+      "layers": null,
+      "mm": null,
+      "net": "/05_I2C_DEVICES/BMI270_SDO_ADDR",
+      "ok": false,
+      "reason": "NO_LEGAL_ESCAPE",
+      "step": "Q2_SINGLE_NET",
+      "vias": null
+    },
+    {
+      "accepted": false,
+      "layers": null,
+      "mm": null,
+      "net": "/09_COMMUNITY_HEADER/EXT_SCL_BUF",
+      "ok": false,
+      "reason": "NO_PATH",
+      "step": "Q2_SINGLE_NET",
+      "vias": null
+    },
+    {
+      "accepted": false,
+      "layers": null,
+      "mm": null,
+      "net": "/09_COMMUNITY_HEADER/NATIVE_A_HDR",
+      "ok": false,
+      "reason": "NO_LEGAL_ESCAPE",
+      "step": "Q2_SINGLE_NET",
+      "vias": null
+    },
+    {
+      "accepted": false,
+      "layers": null,
+      "mm": null,
+      "net": "/09_COMMUNITY_HEADER/TCA4307_READY",
+      "ok": false,
+      "reason": "NO_LEGAL_ESCAPE",
+      "step": "Q2_SINGLE_NET",
+      "vias": null
+    },
+    {
+      "accepted": false,
+      "layers": null,
+      "mm": null,
+      "net": "/09_COMMUNITY_HEADER/WAKE_GATE_S",
+      "ok": false,
+      "reason": "NO_PATH",
+      "step": "Q2_SINGLE_NET",
+      "vias": null
+    },
+    {
+      "accepted": false,
+      "layers": null,
+      "mm": null,
+      "net": "/ACC_3V3_EN",
+      "ok": false,
+      "reason": "NO_LEGAL_ESCAPE",
+      "step": "Q2_SINGLE_NET",
+      "vias": null
+    },
+    {
+      "accepted": false,
+      "layers": null,
+      "mm": null,
+      "net": "/ACC_3V3_SW",
+      "ok": false,
+      "reason": "NO_LEGAL_ESCAPE",
+      "step": "Q2_SINGLE_NET",
+      "vias": null
+    },
+    {
+      "accepted": false,
+      "layers": null,
+      "mm": null,
+      "net": "/ACC_DETECT_N",
+      "ok": false,
+      "reason": "NO_LEGAL_ESCAPE",
+      "step": "Q2_SINGLE_NET",
+      "vias": null
+    },
+    {
+      "accepted": false,
+      "layers": null,
+      "mm": null,
+      "net": "/ACC_POWER_FAULT_N",
+      "ok": false,
+      "reason": "NO_LEGAL_ESCAPE",
+      "step": "Q2_SINGLE_NET",
+      "vias": null
+    },
+    {
+      "accepted": false,
+      "layers": null,
+      "mm": null,
+      "net": "/ACC_PWR_EN",
+      "ok": false,
+      "reason": "NO_LEGAL_ESCAPE",
+      "step": "Q2_SINGLE_NET",
+      "vias": null
+    },
+    {
+      "accepted": false,
+      "layers": null,
+      "mm": null,
+      "net": "/I2C_SDA_INT",
+      "ok": false,
+      "reason": "NO_LEGAL_ESCAPE",
+      "step": "Q2_SINGLE_NET",
+      "vias": null
+    },
+    {
+      "accepted": false,
+      "layers": null,
+      "mm": null,
+      "net": "GND",
+      "ok": false,
+      "reason": "NO_LEGAL_ESCAPE",
+      "step": "Q2_SINGLE_NET",
+      "vias": null
+    },
+    {
+      "accepted": false,
+      "layers": null,
+      "mm": null,
+      "net": "Net-(U11-TS_MR)",
+      "ok": false,
+      "reason": "NO_LEGAL_ESCAPE",
+      "step": "Q2_SINGLE_NET",
+      "vias": null
+    },
+    {
+      "mm": 20.0043,
+      "net": "+3V3",
+      "remaining": 15,
+      "step": "Q3_DROPPED"
+    },
+    {
+      "mm": 20.0043,
+      "net": "/01_POWER_TREE/V3V3_FB",
+      "remaining": 14,
+      "step": "Q3_DROPPED"
+    },
+    {
+      "mm": 20.0043,
+      "net": "/05_I2C_DEVICES/BMI270_INT1_RAW",
+      "remaining": 13,
+      "step": "Q3_DROPPED"
+    },
+    {
+      "mm": 20.0043,
+      "net": "/05_I2C_DEVICES/BMI270_SDO_ADDR",
+      "remaining": 12,
+      "step": "Q3_DROPPED"
+    },
+    {
+      "mm": 21.5818,
+      "net": "/09_COMMUNITY_HEADER/EXT_SCL_BUF",
+      "remaining": 11,
+      "step": "Q3_DROPPED"
+    },
+    {
+      "mm": 29.6631,
+      "net": "/09_COMMUNITY_HEADER/NATIVE_A_HDR",
+      "remaining": 10,
+      "step": "Q3_DROPPED"
+    },
+    {
+      "mm": 29.5515,
+      "net": "/09_COMMUNITY_HEADER/TCA4307_READY",
+      "remaining": 9,
+      "step": "Q3_DROPPED"
+    },
+    {
+      "net": "/09_COMMUNITY_HEADER/WAKE_GATE_S",
+      "reason": "NO_LEGAL_ESCAPE",
+      "remaining": 9,
+      "step": "Q3_REQUIRED"
+    },
+    {
+      "mm": 29.5515,
+      "net": "/ACC_3V3_EN",
+      "remaining": 8,
+      "step": "Q3_DROPPED"
+    },
+    {
+      "mm": 30.9525,
+      "net": "/ACC_3V3_SW",
+      "remaining": 7,
+      "step": "Q3_DROPPED"
+    },
+    {
+      "mm": 30.9525,
+      "net": "/ACC_DETECT_N",
+      "remaining": 6,
+      "step": "Q3_DROPPED"
+    },
+    {
+      "mm": 30.9525,
+      "net": "/ACC_POWER_FAULT_N",
+      "remaining": 5,
+      "step": "Q3_DROPPED"
+    },
+    {
+      "mm": 30.9525,
+      "net": "/ACC_PWR_EN",
+      "remaining": 4,
+      "step": "Q3_DROPPED"
+    },
+    {
+      "mm": 30.9525,
+      "net": "/I2C_SDA_INT",
+      "remaining": 3,
+      "step": "Q3_DROPPED"
+    },
+    {
+      "net": "GND",
+      "reason": "NO_PATH",
+      "remaining": 3,
+      "step": "Q3_REQUIRED"
+    },
+    {
+      "mm": 30.9525,
+      "net": "Net-(U11-TS_MR)",
+      "remaining": 2,
+      "step": "Q3_DROPPED"
+    },
+    {
+      "accepted": true,
+      "layers": [
+        "B",
+        "I2",
+        "B"
+      ],
+      "mm": 30.9525,
+      "n": 2,
+      "nets": [
+        "/09_COMMUNITY_HEADER/WAKE_GATE_S",
+        "GND"
+      ],
+      "ok": true,
+      "step": "Q3_MINIMAL_SET",
+      "vias": 2
+    },
+    {
+      "accepted": true,
+      "mm": 30.9525,
+      "n_objects": 214,
+      "n_units": 40,
+      "nets": [
+        "/09_COMMUNITY_HEADER/WAKE_GATE_S",
+        "GND"
+      ],
+      "ok": true,
+      "reason": null,
+      "step": "Q4_POOL"
+    },
+    {
+      "reason": "NO_PATH",
+      "remaining": 40,
+      "step": "Q4_OBJECT_REQUIRED",
+      "unit": {
+        "a_mm": [
+          55.7,
+          57.735
+        ],
+        "b_mm": [
+          56.4,
+          57.0
+        ],
+        "count": 2,
+        "kind": "track",
+        "layer": "B.Cu",
+        "net": "/09_COMMUNITY_HEADER/WAKE_GATE_S",
+        "objects": 2,
+        "router_objects": 2,
+        "width_mm": 0.2
+      }
+    },
+    {
+      "reason": "NO_PATH",
+      "remaining": 40,
+      "step": "Q4_OBJECT_REQUIRED",
+      "unit": {
+        "a_mm": [
+          56.4,
+          57.0
+        ],
+        "b_mm": [
+          58.2,
+          56.3
+        ],
+        "count": 1,
+        "kind": "track",
+        "layer": "B.Cu",
+        "net": "/09_COMMUNITY_HEADER/WAKE_GATE_S",
+        "objects": 1,
+        "router_objects": 1,
+        "width_mm": 0.2
+      }
+    },
+    {
+      "reason": "NO_PATH",
+      "remaining": 40,
+      "step": "Q4_OBJECT_REQUIRED",
+      "unit": {
+        "a_mm": [
+          57.3,
+          56.6
+        ],
+        "b_mm": [
+          56.4,
+          57.0
+        ],
+        "count": 1,
+        "kind": "track",
+        "layer": "B.Cu",
+        "net": "/09_COMMUNITY_HEADER/WAKE_GATE_S",
+        "objects": 1,
+        "router_objects": 1,
+        "width_mm": 0.2
+      }
+    },
+    {
+      "mm": 33.813,
+      "remaining": 39,
+      "step": "Q4_OBJECT_RETURNED",
+      "unit": {
+        "a_mm": [
+          58.2,
+          56.3
+        ],
+        "b_mm": [
+          58.5,
+          55.8
+        ],
+        "count": 1,
+        "kind": "track",
+        "layer": "B.Cu",
+        "net": "/09_COMMUNITY_HEADER/WAKE_GATE_S",
+        "objects": 1,
+        "router_objects": 1,
+        "width_mm": 0.2
+      }
+    },
+    {
+      "reason": "NO_LEGAL_ESCAPE",
+      "remaining": 39,
+      "step": "Q4_OBJECT_REQUIRED",
+      "unit": {
+        "a_mm": [
+          58.5,
+          55.8
+        ],
+        "b_mm": [
+          58.3,
+          52.5
+        ],
+        "count": 1,
+        "kind": "track",
+        "layer": "B.Cu",
+        "net": "/09_COMMUNITY_HEADER/WAKE_GATE_S",
+        "objects": 1,
+        "router_objects": 1,
+        "width_mm": 0.2
+      }
+    },
+    {
+      "reason": "NO_PATH",
+      "remaining": 39,
+      "step": "Q4_OBJECT_REQUIRED",
+      "unit": {
+        "a_mm": [
+          54.9,
+          59.0
+        ],
+        "b_mm": [
+          57.3,
+          56.6
+        ],
+        "count": 1,
+        "kind": "track",
+        "layer": "In3.Cu",
+        "net": "/09_COMMUNITY_HEADER/WAKE_GATE_S",
+        "objects": 1,
+        "router_objects": 1,
+        "width_mm": 0.2
+      }
+    },
+    {
+      "mm": 33.9595,
+      "remaining": 38,
+      "step": "Q4_OBJECT_RETURNED",
+      "unit": {
+        "a_mm": [
+          58.1,
+          64.1
+        ],
+        "b_mm": [
+          54.9,
+          59.0
+        ],
+        "count": 1,
+        "kind": "track",
+        "layer": "In3.Cu",
+        "net": "/09_COMMUNITY_HEADER/WAKE_GATE_S",
+        "objects": 1,
+        "router_objects": 1,
+        "width_mm": 0.2
+      }
+    },
+    {
+      "mm": 33.9595,
+      "remaining": 37,
+      "step": "Q4_OBJECT_RETURNED",
+      "unit": {
+        "a_mm": [
+          58.3,
+          64.2
+        ],
+        "b_mm": [
+          58.1,
+          64.1
+        ],
+        "count": 1,
+        "kind": "track",
+        "layer": "In3.Cu",
+        "net": "/09_COMMUNITY_HEADER/WAKE_GATE_S",
+        "objects": 1,
+        "router_objects": 1,
+        "width_mm": 0.2
+      }
+    },
+    {
+      "mm": 33.9595,
+      "remaining": 36,
+      "step": "Q4_OBJECT_RETURNED",
+      "unit": {
+        "a_mm": [
+          58.6,
+          64.5
+        ],
+        "b_mm": [
+          58.3,
+          64.2
+        ],
+        "count": 1,
+        "kind": "track",
+        "layer": "In3.Cu",
+        "net": "/09_COMMUNITY_HEADER/WAKE_GATE_S",
+        "objects": 1,
+        "router_objects": 1,
+        "width_mm": 0.2
+      }
+    },
+    {
+      "mm": 33.9595,
+      "remaining": 35,
+      "step": "Q4_OBJECT_RETURNED",
+      "unit": {
+        "a_mm": [
+          53.775,
+          70.0
+        ],
+        "b_mm": [
+          53.8,
+          70.0
+        ],
+        "count": 1,
+        "kind": "track",
+        "layer": "B.Cu",
+        "net": "GND",
+        "objects": 1,
+        "router_objects": 1,
+        "width_mm": 0.3
+      }
+    },
+    {
+      "mm": 33.9595,
+      "remaining": 34,
+      "step": "Q4_OBJECT_RETURNED",
+      "unit": {
+        "a_mm": [
+          54.6,
+          60.5
+        ],
+        "b_mm": [
+          55.6,
+          61.7
+        ],
+        "count": 1,
+        "kind": "track",
+        "layer": "B.Cu",
+        "net": "GND",
+        "objects": 1,
+        "router_objects": 1,
+        "width_mm": 0.3
+      }
+    },
+    {
+      "mm": 33.9595,
+      "remaining": 33,
+      "step": "Q4_OBJECT_RETURNED",
+      "unit": {
+        "a_mm": [
+          55.7,
+          59.585
+        ],
+        "b_mm": [
+          55.7,
+          60.6
+        ],
+        "count": 1,
+        "kind": "track",
+        "layer": "B.Cu",
+        "net": "GND",
+        "objects": 1,
+        "router_objects": 1,
+        "width_mm": 0.3
+      }
+    },
+    {
+      "mm": 33.9595,
+      "remaining": 32,
+      "step": "Q4_OBJECT_RETURNED",
+      "unit": {
+        "a_mm": [
+          55.7,
+          60.6
+        ],
+        "b_mm": [
+          55.4,
+          61.1
+        ],
+        "count": 1,
+        "kind": "track",
+        "layer": "B.Cu",
+        "net": "GND",
+        "objects": 1,
+        "router_objects": 1,
+        "width_mm": 0.3
+      }
+    },
+    {
+      "reason": "NO_PATH",
+      "remaining": 32,
+      "step": "Q4_OBJECT_REQUIRED",
+      "unit": {
+        "a_mm": [
+          55.7,
+          61.435
+        ],
+        "b_mm": [
+          55.7,
+          62.4
+        ],
+        "count": 1,
+        "kind": "track",
+        "layer": "B.Cu",
+        "net": "GND",
+        "objects": 1,
+        "router_objects": 1,
+        "width_mm": 0.3
+      }
+    },
+    {
+      "reason": "NO_PATH",
+      "remaining": 32,
+      "step": "Q4_OBJECT_REQUIRED",
+      "unit": {
+        "a_mm": [
+          55.7,
+          61.435
+        ],
+        "b_mm": [
+          56.4,
+          62.2
+        ],
+        "count": 1,
+        "kind": "track",
+        "layer": "B.Cu",
+        "net": "GND",
+        "objects": 1,
+        "router_objects": 1,
+        "width_mm": 0.3
+      }
+    },
+    {
+      "reason": "NO_PATH",
+      "remaining": 32,
+      "step": "Q4_OBJECT_REQUIRED",
+      "unit": {
+        "a_mm": [
+          55.7,
+          62.4
+        ],
+        "b_mm": [
+          55.8,
+          62.3
+        ],
+        "count": 1,
+        "kind": "track",
+        "layer": "B.Cu",
+        "net": "GND",
+        "objects": 1,
+        "router_objects": 1,
+        "width_mm": 0.3
+      }
+    },
+    {
+      "mm": 33.9931,
+      "remaining": 31,
+      "step": "Q4_OBJECT_RETURNED",
+      "unit": {
+        "a_mm": [
+          55.9,
+          59.325
+        ],
+        "b_mm": [
+          56.1,
+          59.3
+        ],
+        "count": 1,
+        "kind": "track",
+        "layer": "B.Cu",
+        "net": "GND",
+        "objects": 1,
+        "router_objects": 1,
+        "width_mm": 0.3
+      }
+    },
+    {
+      "mm": 33.9931,
+      "remaining": 30,
+      "step": "Q4_OBJECT_RETURNED",
+      "unit": {
+        "a_mm": [
+          56.1,
+          59.3
+        ],
+        "b_mm": [
+          55.9,
+          59.4
+        ],
+        "count": 1,
+        "kind": "track",
+        "layer": "B.Cu",
+        "net": "GND",
+        "objects": 1,
+        "router_objects": 1,
+        "width_mm": 0.3
+      }
+    },
+    {
+      "reason": "NO_PATH",
+      "remaining": 30,
+      "step": "Q4_OBJECT_REQUIRED",
+      "unit": {
+        "a_mm": [
+          56.4,
+          62.2
+        ],
+        "b_mm": [
+          56.4,
+          62.6
+        ],
+        "count": 1,
+        "kind": "track",
+        "layer": "B.Cu",
+        "net": "GND",
+        "objects": 1,
+        "router_objects": 1,
+        "width_mm": 0.3
+      }
+    },
+    {
+      "mm": 33.9931,
+      "remaining": 29,
+      "step": "Q4_OBJECT_RETURNED",
+      "unit": {
+        "a_mm": [
+          57.6,
+          53.675
+        ],
+        "b_mm": [
+          57.6,
+          53.6
+        ],
+        "count": 1,
+        "kind": "track",
+        "layer": "B.Cu",
+        "net": "GND",
+        "objects": 1,
+        "router_objects": 1,
+        "width_mm": 0.3
+      }
+    },
+    {
+      "mm": 33.9931,
+      "remaining": 28,
+      "step": "Q4_OBJECT_RETURNED",
+      "unit": {
+        "a_mm": [
+          58.3,
+          70.1
+        ],
+        "b_mm": [
+          58.3,
+          70.2
+        ],
+        "count": 1,
+        "kind": "track",
+        "layer": "B.Cu",
+        "net": "GND",
+        "objects": 1,
+        "router_objects": 1,
+        "width_mm": 0.3
+      }
+    },
+    {
+      "mm": 33.9931,
+      "remaining": 27,
+      "step": "Q4_OBJECT_RETURNED",
+      "unit": {
+        "a_mm": [
+          58.4,
+          70.0
+        ],
+        "b_mm": [
+          58.3,
+          70.1
+        ],
+        "count": 1,
+        "kind": "track",
+        "layer": "B.Cu",
+        "net": "GND",
+        "objects": 1,
+        "router_objects": 1,
+        "width_mm": 0.3
+      }
+    },
+    {
+      "mm": 33.9931,
+      "remaining": 26,
+      "step": "Q4_OBJECT_RETURNED",
+      "unit": {
+        "a_mm": [
+          58.4,
+          70.5
+        ],
+        "b_mm": [
+          58.675,
+          70.675
+        ],
+        "count": 2,
+        "kind": "track",
+        "layer": "B.Cu",
+        "net": "GND",
+        "objects": 2,
+        "router_objects": 2,
+        "width_mm": 0.3
+      }
+    },
+    {
+      "reason": "UNPROVED_GEOMETRY",
+      "remaining": 26,
+      "step": "Q4_OBJECT_REQUIRED",
+      "unit": {
+        "a_mm": [
+          58.4125,
+          70.0
+        ],
+        "b_mm": [
+          57.7,
+          70.0
+        ],
+        "count": 1,
+        "kind": "track",
+        "layer": "B.Cu",
+        "net": "GND",
+        "objects": 1,
+        "router_objects": 1,
+        "width_mm": 0.3
+      }
+    },
+    {
+      "mm": 33.9931,
+      "remaining": 25,
+      "step": "Q4_OBJECT_RETURNED",
+      "unit": {
+        "a_mm": [
+          58.675,
+          70.675
+        ],
+        "b_mm": [
+          58.75,
+          70.85
+        ],
+        "count": 2,
+        "kind": "track",
+        "layer": "B.Cu",
+        "net": "GND",
+        "objects": 2,
+        "router_objects": 2,
+        "width_mm": 0.3
+      }
+    },
+    {
+      "reason": "NO_PATH",
+      "remaining": 25,
+      "step": "Q4_OBJECT_REQUIRED",
+      "unit": {
+        "at_mm": [
+          57.3,
+          56.6
+        ],
+        "count": 1,
+        "dia_mm": 0.6,
+        "drill_mm": 0.3,
+        "kind": "barrel",
+        "net": "/09_COMMUNITY_HEADER/WAKE_GATE_S",
+        "objects": 14,
+        "router_objects": 14
+      }
+    },
+    {
+      "mm": 33.9931,
+      "remaining": 24,
+      "step": "Q4_OBJECT_RETURNED",
+      "unit": {
+        "at_mm": [
+          53.8,
+          70.0
+        ],
+        "count": 1,
+        "dia_mm": 0.0,
+        "drill_mm": 0.3,
+        "kind": "barrel",
+        "net": "GND",
+        "objects": 2,
+        "router_objects": 2
+      }
+    },
+    {
+      "mm": 33.9931,
+      "remaining": 23,
+      "step": "Q4_OBJECT_RETURNED",
+      "unit": {
+        "at_mm": [
+          53.9,
+          56.6
+        ],
+        "count": 1,
+        "dia_mm": 0.45,
+        "drill_mm": 0.2,
+        "kind": "barrel",
+        "net": "GND",
+        "objects": 14,
+        "router_objects": 14
+      }
+    },
+    {
+      "mm": 33.9931,
+      "remaining": 22,
+      "step": "Q4_OBJECT_RETURNED",
+      "unit": {
+        "at_mm": [
+          54.2,
+          66.5
+        ],
+        "count": 1,
+        "dia_mm": 0.6,
+        "drill_mm": 0.3,
+        "kind": "barrel",
+        "net": "GND",
+        "objects": 14,
+        "router_objects": 14
+      }
+    },
+    {
+      "mm": 33.9931,
+      "remaining": 21,
+      "step": "Q4_OBJECT_RETURNED",
+      "unit": {
+        "at_mm": [
+          55.4,
+          61.1
+        ],
+        "count": 1,
+        "dia_mm": 0.6,
+        "drill_mm": 0.3,
+        "kind": "barrel",
+        "net": "GND",
+        "objects": 14,
+        "router_objects": 14
+      }
+    },
+    {
+      "mm": 33.9931,
+      "remaining": 20,
+      "step": "Q4_OBJECT_RETURNED",
+      "unit": {
+        "at_mm": [
+          55.6,
+          61.7
+        ],
+        "count": 1,
+        "dia_mm": 0.6,
+        "drill_mm": 0.3,
+        "kind": "barrel",
+        "net": "GND",
+        "objects": 14,
+        "router_objects": 14
+      }
+    },
+    {
+      "reason": "NO_PATH",
+      "remaining": 20,
+      "step": "Q4_OBJECT_REQUIRED",
+      "unit": {
+        "at_mm": [
+          55.8,
+          62.3
+        ],
+        "count": 1,
+        "dia_mm": 0.6,
+        "drill_mm": 0.3,
+        "kind": "barrel",
+        "net": "GND",
+        "objects": 14,
+        "router_objects": 14
+      }
+    },
+    {
+      "mm": 33.9931,
+      "remaining": 19,
+      "step": "Q4_OBJECT_RETURNED",
+      "unit": {
+        "at_mm": [
+          55.9,
+          59.4
+        ],
+        "count": 1,
+        "dia_mm": 0.5,
+        "drill_mm": 0.25,
+        "kind": "barrel",
+        "net": "GND",
+        "objects": 14,
+        "router_objects": 14
+      }
+    },
+    {
+      "mm": 33.9931,
+      "remaining": 18,
+      "step": "Q4_OBJECT_RETURNED",
+      "unit": {
+        "at_mm": [
+          56.0,
+          68.1
+        ],
+        "count": 1,
+        "dia_mm": 0.6,
+        "drill_mm": 0.3,
+        "kind": "barrel",
+        "net": "GND",
+        "objects": 14,
+        "router_objects": 14
+      }
+    },
+    {
+      "reason": "NO_PATH",
+      "remaining": 18,
+      "step": "Q4_OBJECT_REQUIRED",
+      "unit": {
+        "at_mm": [
+          56.4,
+          62.6
+        ],
+        "count": 1,
+        "dia_mm": 0.5,
+        "drill_mm": 0.25,
+        "kind": "barrel",
+        "net": "GND",
+        "objects": 14,
+        "router_objects": 14
+      }
+    },
+    {
+      "mm": 33.9931,
+      "remaining": 17,
+      "step": "Q4_OBJECT_RETURNED",
+      "unit": {
+        "at_mm": [
+          57.5,
+          72.8
+        ],
+        "count": 1,
+        "dia_mm": 0.0,
+        "drill_mm": 0.3,
+        "kind": "barrel",
+        "net": "GND",
+        "objects": 2,
+        "router_objects": 2
+      }
+    },
+    {
+      "mm": 33.9931,
+      "remaining": 16,
+      "step": "Q4_OBJECT_RETURNED",
+      "unit": {
+        "at_mm": [
+          57.6,
+          53.6
+        ],
+        "count": 1,
+        "dia_mm": 0.6,
+        "drill_mm": 0.3,
+        "kind": "barrel",
+        "net": "GND",
+        "objects": 14,
+        "router_objects": 14
+      }
+    },
+    {
+      "reason": "UNPROVED_GEOMETRY",
+      "remaining": 16,
+      "step": "Q4_OBJECT_REQUIRED",
+      "unit": {
+        "at_mm": [
+          57.7,
+          70.0
+        ],
+        "count": 1,
+        "dia_mm": 0.6,
+        "drill_mm": 0.3,
+        "kind": "barrel",
+        "net": "GND",
+        "objects": 14,
+        "router_objects": 14
+      }
+    },
+    {
+      "reason": "NO_PATH",
+      "remaining": 16,
+      "step": "Q4_OBJECT_REQUIRED",
+      "unit": {
+        "at_mm": [
+          58.0,
+          72.4
+        ],
+        "count": 1,
+        "dia_mm": 0.6,
+        "drill_mm": 0.3,
+        "kind": "barrel",
+        "net": "GND",
+        "objects": 14,
+        "router_objects": 14
+      }
+    },
+    {
+      "mm": 34.0463,
+      "remaining": 15,
+      "step": "Q4_OBJECT_RETURNED",
+      "unit": {
+        "at_mm": [
+          58.3,
+          70.2
+        ],
+        "count": 1,
+        "dia_mm": 0.6,
+        "drill_mm": 0.3,
+        "kind": "barrel",
+        "net": "GND",
+        "objects": 14,
+        "router_objects": 14
+      }
+    },
+    {
+      "accepted": true,
+      "layers": [
+        "B",
+        "I2",
+        "B",
+        "I2",
+        "B"
+      ],
+      "mm": 34.0463,
+      "n_objects": 81,
+      "n_units": 15,
+      "nets": [
+        "/09_COMMUNITY_HEADER/WAKE_GATE_S",
+        "GND"
+      ],
+      "ok": true,
+      "step": "Q4_MINIMAL_OBJECTS",
+      "units": [
+        {
+          "a_mm": [
+            55.7,
+            57.735
+          ],
+          "b_mm": [
+            56.4,
+            57.0
+          ],
+          "count": 2,
+          "kind": "track",
+          "layer": "B.Cu",
+          "net": "/09_COMMUNITY_HEADER/WAKE_GATE_S",
+          "objects": 2,
+          "router_objects": 2,
+          "width_mm": 0.2
+        },
+        {
+          "a_mm": [
+            56.4,
+            57.0
+          ],
+          "b_mm": [
+            58.2,
+            56.3
+          ],
+          "count": 1,
+          "kind": "track",
+          "layer": "B.Cu",
+          "net": "/09_COMMUNITY_HEADER/WAKE_GATE_S",
+          "objects": 1,
+          "router_objects": 1,
+          "width_mm": 0.2
+        },
+        {
+          "a_mm": [
+            57.3,
+            56.6
+          ],
+          "b_mm": [
+            56.4,
+            57.0
+          ],
+          "count": 1,
+          "kind": "track",
+          "layer": "B.Cu",
+          "net": "/09_COMMUNITY_HEADER/WAKE_GATE_S",
+          "objects": 1,
+          "router_objects": 1,
+          "width_mm": 0.2
+        },
+        {
+          "a_mm": [
+            58.5,
+            55.8
+          ],
+          "b_mm": [
+            58.3,
+            52.5
+          ],
+          "count": 1,
+          "kind": "track",
+          "layer": "B.Cu",
+          "net": "/09_COMMUNITY_HEADER/WAKE_GATE_S",
+          "objects": 1,
+          "router_objects": 1,
+          "width_mm": 0.2
+        },
+        {
+          "a_mm": [
+            54.9,
+            59.0
+          ],
+          "b_mm": [
+            57.3,
+            56.6
+          ],
+          "count": 1,
+          "kind": "track",
+          "layer": "In3.Cu",
+          "net": "/09_COMMUNITY_HEADER/WAKE_GATE_S",
+          "objects": 1,
+          "router_objects": 1,
+          "width_mm": 0.2
+        },
+        {
+          "a_mm": [
+            55.7,
+            61.435
+          ],
+          "b_mm": [
+            55.7,
+            62.4
+          ],
+          "count": 1,
+          "kind": "track",
+          "layer": "B.Cu",
+          "net": "GND",
+          "objects": 1,
+          "router_objects": 1,
+          "width_mm": 0.3
+        },
+        {
+          "a_mm": [
+            55.7,
+            61.435
+          ],
+          "b_mm": [
+            56.4,
+            62.2
+          ],
+          "count": 1,
+          "kind": "track",
+          "layer": "B.Cu",
+          "net": "GND",
+          "objects": 1,
+          "router_objects": 1,
+          "width_mm": 0.3
+        },
+        {
+          "a_mm": [
+            55.7,
+            62.4
+          ],
+          "b_mm": [
+            55.8,
+            62.3
+          ],
+          "count": 1,
+          "kind": "track",
+          "layer": "B.Cu",
+          "net": "GND",
+          "objects": 1,
+          "router_objects": 1,
+          "width_mm": 0.3
+        },
+        {
+          "a_mm": [
+            56.4,
+            62.2
+          ],
+          "b_mm": [
+            56.4,
+            62.6
+          ],
+          "count": 1,
+          "kind": "track",
+          "layer": "B.Cu",
+          "net": "GND",
+          "objects": 1,
+          "router_objects": 1,
+          "width_mm": 0.3
+        },
+        {
+          "a_mm": [
+            58.4125,
+            70.0
+          ],
+          "b_mm": [
+            57.7,
+            70.0
+          ],
+          "count": 1,
+          "kind": "track",
+          "layer": "B.Cu",
+          "net": "GND",
+          "objects": 1,
+          "router_objects": 1,
+          "width_mm": 0.3
+        },
+        {
+          "at_mm": [
+            57.3,
+            56.6
+          ],
+          "count": 1,
+          "dia_mm": 0.6,
+          "drill_mm": 0.3,
+          "kind": "barrel",
+          "net": "/09_COMMUNITY_HEADER/WAKE_GATE_S",
+          "objects": 14,
+          "router_objects": 14
+        },
+        {
+          "at_mm": [
+            55.8,
+            62.3
+          ],
+          "count": 1,
+          "dia_mm": 0.6,
+          "drill_mm": 0.3,
+          "kind": "barrel",
+          "net": "GND",
+          "objects": 14,
+          "router_objects": 14
+        },
+        {
+          "at_mm": [
+            56.4,
+            62.6
+          ],
+          "count": 1,
+          "dia_mm": 0.5,
+          "drill_mm": 0.25,
+          "kind": "barrel",
+          "net": "GND",
+          "objects": 14,
+          "router_objects": 14
+        },
+        {
+          "at_mm": [
+            57.7,
+            70.0
+          ],
+          "count": 1,
+          "dia_mm": 0.6,
+          "drill_mm": 0.3,
+          "kind": "barrel",
+          "net": "GND",
+          "objects": 14,
+          "router_objects": 14
+        },
+        {
+          "at_mm": [
+            58.0,
+            72.4
+          ],
+          "count": 1,
+          "dia_mm": 0.6,
+          "drill_mm": 0.3,
+          "kind": "barrel",
+          "net": "GND",
+          "objects": 14,
+          "router_objects": 14
+        }
+      ],
+      "vias": 4
+    }
+  ],
+  "schema": 1,
+  "seconds": 2867.0,
+  "window_nets": [
+    "+3V3",
+    "/01_POWER_TREE/V3V3_FB",
+    "/05_I2C_DEVICES/BMI270_INT1_RAW",
+    "/05_I2C_DEVICES/BMI270_SDO_ADDR",
+    "/09_COMMUNITY_HEADER/EXT_SCL_BUF",
+    "/09_COMMUNITY_HEADER/NATIVE_A_HDR",
+    "/09_COMMUNITY_HEADER/TCA4307_READY",
+    "/09_COMMUNITY_HEADER/WAKE_GATE_S",
+    "/ACC_3V3_EN",
+    "/ACC_3V3_SW",
+    "/ACC_DETECT_N",
+    "/ACC_POWER_FAULT_N",
+    "/ACC_PWR_EN",
+    "/I2C_SDA_INT",
+    "GND",
+    "Net-(U11-TS_MR)"
+  ]
+}
