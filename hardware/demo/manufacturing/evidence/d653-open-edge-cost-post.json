@@ -1,0 +1,1312 @@
+{
+  "board": "/home/aqroot8/aqroot-demo/hardware/demo/kicad/aqroot-demo/aqroot-Beta-v2.kicad_pcb",
+  "board_sha256": "9eaeacfca71fea2dcfdff71eb7e65c9566851cf8babbf07762285250ae2f829e",
+  "limits": "OE3: a count is a PRICE, not a proof; only the sole_path rows claim the part is unreachable",
+  "open_nets": 29,
+  "orphan_lands": 43,
+  "orphan_lands_unfitted": 15,
+  "question": "for every open retained edge, which PART does the orphan land sit on and how many OTHER nets does that part carry",
+  "rails_excluded": [
+    "GND",
+    "+3V3",
+    "+5V"
+  ],
+  "rows": [
+    {
+      "at": [
+        47.77,
+        119.25
+      ],
+      "carries": 33,
+      "carries_nets": [
+        "/02_MCU_CORE/BOOT_N",
+        "/02_MCU_CORE/DISP_BL_CTL_STRAP",
+        "/02_MCU_CORE/GPIO45_VDDSPI_STRAP",
+        "/02_MCU_CORE/UART0_TXD_DBG",
+        "/BMI270_INT1_STRAP",
+        "/CC1101_CS_N",
+        "/CC1101_GDO0",
+        "/DISP_CS_N",
+        "/DISP_DC",
+        "/I2C_SCL_INT",
+        "/I2C_SDA_INT",
+        "/I2S_BCLK",
+        "/I2S_LRCLK",
+        "/I2S_MIC_DIN",
+        "/I2S_SPK_DOUT",
+        "/IR_RX_GPIO44",
+        "/IR_TX_GPIO16",
+        "/NATIVE_A",
+        "/NATIVE_B",
+        "/NFC_CS_N",
+        "/NFC_IRQ",
+        "/SD_CS_N",
+        "/SPI_A_MISO",
+        "/SPI_A_MOSI",
+        "/SPI_A_SCK",
+        "/SPI_B_MISO",
+        "/SPI_B_MOSI",
+        "/SPI_B_SCK",
+        "/SX1262_BUSY",
+        "/SX1262_CS_N",
+        "/USB_D_MCU_P",
+        "/WAKE_INT_N",
+        "Net-(U1-EN)"
+      ],
+      "fitted": true,
+      "land": "U1.13",
+      "net": "/USB_D_MCU_N",
+      "ref": "U1",
+      "sole_path": false,
+      "value": "ESP32-S3-WROOM-1"
+    },
+    {
+      "at": [
+        46.5,
+        119.25
+      ],
+      "carries": 33,
+      "carries_nets": [
+        "/02_MCU_CORE/BOOT_N",
+        "/02_MCU_CORE/DISP_BL_CTL_STRAP",
+        "/02_MCU_CORE/GPIO45_VDDSPI_STRAP",
+        "/02_MCU_CORE/UART0_TXD_DBG",
+        "/BMI270_INT1_STRAP",
+        "/CC1101_CS_N",
+        "/CC1101_GDO0",
+        "/DISP_CS_N",
+        "/DISP_DC",
+        "/I2C_SCL_INT",
+        "/I2C_SDA_INT",
+        "/I2S_BCLK",
+        "/I2S_LRCLK",
+        "/I2S_MIC_DIN",
+        "/I2S_SPK_DOUT",
+        "/IR_RX_GPIO44",
+        "/IR_TX_GPIO16",
+        "/NATIVE_A",
+        "/NATIVE_B",
+        "/NFC_CS_N",
+        "/NFC_IRQ",
+        "/SD_CS_N",
+        "/SPI_A_MISO",
+        "/SPI_A_MOSI",
+        "/SPI_A_SCK",
+        "/SPI_B_MISO",
+        "/SPI_B_MOSI",
+        "/SPI_B_SCK",
+        "/SX1262_BUSY",
+        "/SX1262_CS_N",
+        "/USB_D_MCU_N",
+        "/WAKE_INT_N",
+        "Net-(U1-EN)"
+      ],
+      "fitted": true,
+      "land": "U1.14",
+      "net": "/USB_D_MCU_P",
+      "ref": "U1",
+      "sole_path": false,
+      "value": "ESP32-S3-WROOM-1"
+    },
+    {
+      "at": [
+        54.138,
+        86.375
+      ],
+      "carries": 18,
+      "carries_nets": [
+        "/08_BUTTONS_EXPANDERS/BTN_A_N",
+        "/08_BUTTONS_EXPANDERS/BTN_B_N",
+        "/08_BUTTONS_EXPANDERS/BTN_DOWN_N",
+        "/08_BUTTONS_EXPANDERS/BTN_LEFT_N",
+        "/08_BUTTONS_EXPANDERS/BTN_RIGHT_N",
+        "/08_BUTTONS_EXPANDERS/BTN_UP_N",
+        "/AMP_SD_MODE",
+        "/BQ25185_STAT2",
+        "/DISP_RST_N",
+        "/I2C_SCL_INT",
+        "/I2C_SDA_INT",
+        "/NFC_5V_EN",
+        "/SD_CARD_DETECT_N",
+        "/SX1262_DIO1",
+        "/SX1262_RST_N",
+        "/TOUCH_INT_N",
+        "/TOUCH_RST_N",
+        "/WAKE_INT_N"
+      ],
+      "fitted": true,
+      "land": "U2.9",
+      "net": "/BQ25185_STAT1",
+      "ref": "U2",
+      "sole_path": false,
+      "value": "PCAL9535APW"
+    },
+    {
+      "at": [
+        54.138,
+        85.725
+      ],
+      "carries": 18,
+      "carries_nets": [
+        "/08_BUTTONS_EXPANDERS/BTN_A_N",
+        "/08_BUTTONS_EXPANDERS/BTN_B_N",
+        "/08_BUTTONS_EXPANDERS/BTN_DOWN_N",
+        "/08_BUTTONS_EXPANDERS/BTN_LEFT_N",
+        "/08_BUTTONS_EXPANDERS/BTN_RIGHT_N",
+        "/08_BUTTONS_EXPANDERS/BTN_UP_N",
+        "/AMP_SD_MODE",
+        "/BQ25185_STAT1",
+        "/DISP_RST_N",
+        "/I2C_SCL_INT",
+        "/I2C_SDA_INT",
+        "/NFC_5V_EN",
+        "/SD_CARD_DETECT_N",
+        "/SX1262_DIO1",
+        "/SX1262_RST_N",
+        "/TOUCH_INT_N",
+        "/TOUCH_RST_N",
+        "/WAKE_INT_N"
+      ],
+      "fitted": true,
+      "land": "U2.10",
+      "net": "/BQ25185_STAT2",
+      "ref": "U2",
+      "sole_path": false,
+      "value": "PCAL9535APW"
+    },
+    {
+      "at": [
+        59.862,
+        90.275
+      ],
+      "carries": 18,
+      "carries_nets": [
+        "/08_BUTTONS_EXPANDERS/BTN_A_N",
+        "/08_BUTTONS_EXPANDERS/BTN_B_N",
+        "/08_BUTTONS_EXPANDERS/BTN_DOWN_N",
+        "/08_BUTTONS_EXPANDERS/BTN_LEFT_N",
+        "/08_BUTTONS_EXPANDERS/BTN_RIGHT_N",
+        "/08_BUTTONS_EXPANDERS/BTN_UP_N",
+        "/AMP_SD_MODE",
+        "/BQ25185_STAT1",
+        "/BQ25185_STAT2",
+        "/DISP_RST_N",
+        "/I2C_SDA_INT",
+        "/NFC_5V_EN",
+        "/SD_CARD_DETECT_N",
+        "/SX1262_DIO1",
+        "/SX1262_RST_N",
+        "/TOUCH_INT_N",
+        "/TOUCH_RST_N",
+        "/WAKE_INT_N"
+      ],
+      "fitted": true,
+      "land": "U2.22",
+      "net": "/I2C_SCL_INT",
+      "ref": "U2",
+      "sole_path": true,
+      "value": "PCAL9535APW"
+    },
+    {
+      "at": [
+        59.862,
+        90.925
+      ],
+      "carries": 18,
+      "carries_nets": [
+        "/08_BUTTONS_EXPANDERS/BTN_A_N",
+        "/08_BUTTONS_EXPANDERS/BTN_B_N",
+        "/08_BUTTONS_EXPANDERS/BTN_DOWN_N",
+        "/08_BUTTONS_EXPANDERS/BTN_LEFT_N",
+        "/08_BUTTONS_EXPANDERS/BTN_RIGHT_N",
+        "/08_BUTTONS_EXPANDERS/BTN_UP_N",
+        "/AMP_SD_MODE",
+        "/BQ25185_STAT1",
+        "/BQ25185_STAT2",
+        "/DISP_RST_N",
+        "/I2C_SCL_INT",
+        "/NFC_5V_EN",
+        "/SD_CARD_DETECT_N",
+        "/SX1262_DIO1",
+        "/SX1262_RST_N",
+        "/TOUCH_INT_N",
+        "/TOUCH_RST_N",
+        "/WAKE_INT_N"
+      ],
+      "fitted": true,
+      "land": "U2.23",
+      "net": "/I2C_SDA_INT",
+      "ref": "U2",
+      "sole_path": true,
+      "value": "PCAL9535APW"
+    },
+    {
+      "at": [
+        54.138,
+        91.575
+      ],
+      "carries": 18,
+      "carries_nets": [
+        "/08_BUTTONS_EXPANDERS/BTN_A_N",
+        "/08_BUTTONS_EXPANDERS/BTN_B_N",
+        "/08_BUTTONS_EXPANDERS/BTN_DOWN_N",
+        "/08_BUTTONS_EXPANDERS/BTN_LEFT_N",
+        "/08_BUTTONS_EXPANDERS/BTN_RIGHT_N",
+        "/08_BUTTONS_EXPANDERS/BTN_UP_N",
+        "/AMP_SD_MODE",
+        "/BQ25185_STAT1",
+        "/BQ25185_STAT2",
+        "/DISP_RST_N",
+        "/I2C_SCL_INT",
+        "/I2C_SDA_INT",
+        "/NFC_5V_EN",
+        "/SD_CARD_DETECT_N",
+        "/SX1262_DIO1",
+        "/SX1262_RST_N",
+        "/TOUCH_INT_N",
+        "/TOUCH_RST_N"
+      ],
+      "fitted": true,
+      "land": "U2.1",
+      "net": "/WAKE_INT_N",
+      "ref": "U2",
+      "sole_path": false,
+      "value": "PCAL9535APW"
+    },
+    {
+      "at": [
+        34.75,
+        27.725
+      ],
+      "carries": 16,
+      "carries_nets": [
+        "/04_SPI_B_RADIOS_NFC/NFC_AGDC",
+        "/04_SPI_B_RADIOS_NFC/NFC_RFI1",
+        "/04_SPI_B_RADIOS_NFC/NFC_RFI2",
+        "/04_SPI_B_RADIOS_NFC/NFC_RFO1",
+        "/04_SPI_B_RADIOS_NFC/NFC_RFO2",
+        "/04_SPI_B_RADIOS_NFC/NFC_VDD_A",
+        "/04_SPI_B_RADIOS_NFC/NFC_VDD_AM",
+        "/04_SPI_B_RADIOS_NFC/NFC_VDD_D",
+        "/04_SPI_B_RADIOS_NFC/NFC_XIN",
+        "/04_SPI_B_RADIOS_NFC/NFC_XOUT",
+        "/NFC_CS_N",
+        "/NFC_IRQ",
+        "/NFC_SUPPLY",
+        "/SPI_B_MISO",
+        "/SPI_B_MOSI",
+        "/SPI_B_SCK"
+      ],
+      "fitted": true,
+      "land": "U9.14",
+      "net": "/04_SPI_B_RADIOS_NFC/NFC_VDD_RF",
+      "ref": "U9",
+      "sole_path": false,
+      "value": "ST25R3916-AQET"
+    },
+    {
+      "at": [
+        32.75,
+        27.725
+      ],
+      "carries": 16,
+      "carries_nets": [
+        "/04_SPI_B_RADIOS_NFC/NFC_AGDC",
+        "/04_SPI_B_RADIOS_NFC/NFC_RFI1",
+        "/04_SPI_B_RADIOS_NFC/NFC_RFI2",
+        "/04_SPI_B_RADIOS_NFC/NFC_RFO1",
+        "/04_SPI_B_RADIOS_NFC/NFC_RFO2",
+        "/04_SPI_B_RADIOS_NFC/NFC_VDD_A",
+        "/04_SPI_B_RADIOS_NFC/NFC_VDD_AM",
+        "/04_SPI_B_RADIOS_NFC/NFC_VDD_D",
+        "/04_SPI_B_RADIOS_NFC/NFC_VDD_RF",
+        "/04_SPI_B_RADIOS_NFC/NFC_XIN",
+        "/04_SPI_B_RADIOS_NFC/NFC_XOUT",
+        "/NFC_CS_N",
+        "/NFC_IRQ",
+        "/SPI_B_MISO",
+        "/SPI_B_MOSI",
+        "/SPI_B_SCK"
+      ],
+      "fitted": true,
+      "land": "U9.10",
+      "net": "/NFC_SUPPLY",
+      "ref": "U9",
+      "sole_path": false,
+      "value": "ST25R3916-AQET"
+    },
+    {
+      "at": [
+        31.725,
+        28.25
+      ],
+      "carries": 16,
+      "carries_nets": [
+        "/04_SPI_B_RADIOS_NFC/NFC_AGDC",
+        "/04_SPI_B_RADIOS_NFC/NFC_RFI1",
+        "/04_SPI_B_RADIOS_NFC/NFC_RFI2",
+        "/04_SPI_B_RADIOS_NFC/NFC_RFO1",
+        "/04_SPI_B_RADIOS_NFC/NFC_RFO2",
+        "/04_SPI_B_RADIOS_NFC/NFC_VDD_A",
+        "/04_SPI_B_RADIOS_NFC/NFC_VDD_AM",
+        "/04_SPI_B_RADIOS_NFC/NFC_VDD_D",
+        "/04_SPI_B_RADIOS_NFC/NFC_VDD_RF",
+        "/04_SPI_B_RADIOS_NFC/NFC_XIN",
+        "/04_SPI_B_RADIOS_NFC/NFC_XOUT",
+        "/NFC_CS_N",
+        "/NFC_IRQ",
+        "/SPI_B_MISO",
+        "/SPI_B_MOSI",
+        "/SPI_B_SCK"
+      ],
+      "fitted": true,
+      "land": "U9.8",
+      "net": "/NFC_SUPPLY",
+      "ref": "U9",
+      "sole_path": false,
+      "value": "ST25R3916-AQET"
+    },
+    {
+      "at": [
+        33.25,
+        32.275
+      ],
+      "carries": 16,
+      "carries_nets": [
+        "/04_SPI_B_RADIOS_NFC/NFC_AGDC",
+        "/04_SPI_B_RADIOS_NFC/NFC_RFI1",
+        "/04_SPI_B_RADIOS_NFC/NFC_RFI2",
+        "/04_SPI_B_RADIOS_NFC/NFC_RFO1",
+        "/04_SPI_B_RADIOS_NFC/NFC_RFO2",
+        "/04_SPI_B_RADIOS_NFC/NFC_VDD_A",
+        "/04_SPI_B_RADIOS_NFC/NFC_VDD_AM",
+        "/04_SPI_B_RADIOS_NFC/NFC_VDD_D",
+        "/04_SPI_B_RADIOS_NFC/NFC_VDD_RF",
+        "/04_SPI_B_RADIOS_NFC/NFC_XIN",
+        "/04_SPI_B_RADIOS_NFC/NFC_XOUT",
+        "/NFC_CS_N",
+        "/NFC_IRQ",
+        "/NFC_SUPPLY",
+        "/SPI_B_MISO",
+        "/SPI_B_MOSI"
+      ],
+      "fitted": true,
+      "land": "U9.30",
+      "net": "/SPI_B_SCK",
+      "ref": "U9",
+      "sole_path": false,
+      "value": "ST25R3916-AQET"
+    },
+    {
+      "at": [
+        59.862,
+        78.975
+      ],
+      "carries": 14,
+      "carries_nets": [
+        "/08_BUTTONS_EXPANDERS/FRONT_RGB_B_N",
+        "/08_BUTTONS_EXPANDERS/FRONT_RGB_G_N",
+        "/08_BUTTONS_EXPANDERS/FRONT_RGB_R_N",
+        "/ACC_3V3_EN",
+        "/ACC_5V_BOOST_EN",
+        "/ACC_5V_SW_EN",
+        "/ACC_DETECT_N",
+        "/ACC_POWER_FAULT_N",
+        "/I2C_SCL_INT",
+        "/I2C_SDA_INT",
+        "/SX1262_RXEN",
+        "/WAKE_INT_N",
+        "/XGPIO4",
+        "/XGPIO5"
+      ],
+      "fitted": true,
+      "land": "U3.20",
+      "net": "/ACC_PWR_EN",
+      "ref": "U3",
+      "sole_path": false,
+      "value": "PCAL9535APW"
+    },
+    {
+      "at": [
+        59.862,
+        80.275
+      ],
+      "carries": 14,
+      "carries_nets": [
+        "/08_BUTTONS_EXPANDERS/FRONT_RGB_B_N",
+        "/08_BUTTONS_EXPANDERS/FRONT_RGB_G_N",
+        "/08_BUTTONS_EXPANDERS/FRONT_RGB_R_N",
+        "/ACC_3V3_EN",
+        "/ACC_5V_BOOST_EN",
+        "/ACC_5V_SW_EN",
+        "/ACC_DETECT_N",
+        "/ACC_POWER_FAULT_N",
+        "/ACC_PWR_EN",
+        "/I2C_SDA_INT",
+        "/SX1262_RXEN",
+        "/WAKE_INT_N",
+        "/XGPIO4",
+        "/XGPIO5"
+      ],
+      "fitted": true,
+      "land": "U3.22",
+      "net": "/I2C_SCL_INT",
+      "ref": "U3",
+      "sole_path": true,
+      "value": "PCAL9535APW"
+    },
+    {
+      "at": [
+        54.138,
+        81.575
+      ],
+      "carries": 14,
+      "carries_nets": [
+        "/08_BUTTONS_EXPANDERS/FRONT_RGB_B_N",
+        "/08_BUTTONS_EXPANDERS/FRONT_RGB_G_N",
+        "/08_BUTTONS_EXPANDERS/FRONT_RGB_R_N",
+        "/ACC_3V3_EN",
+        "/ACC_5V_BOOST_EN",
+        "/ACC_5V_SW_EN",
+        "/ACC_DETECT_N",
+        "/ACC_POWER_FAULT_N",
+        "/ACC_PWR_EN",
+        "/I2C_SCL_INT",
+        "/I2C_SDA_INT",
+        "/SX1262_RXEN",
+        "/XGPIO4",
+        "/XGPIO5"
+      ],
+      "fitted": true,
+      "land": "U3.1",
+      "net": "/WAKE_INT_N",
+      "ref": "U3",
+      "sole_path": false,
+      "value": "PCAL9535APW"
+    },
+    {
+      "at": [
+        3.0,
+        142.73
+      ],
+      "carries": 8,
+      "carries_nets": [
+        "/04_SPI_B_RADIOS_NFC/DIO2_TXEN",
+        "/SPI_B_MISO",
+        "/SPI_B_MOSI",
+        "/SPI_B_SCK",
+        "/SX1262_BUSY",
+        "/SX1262_CS_N",
+        "/SX1262_RST_N",
+        "/SX1262_RXEN"
+      ],
+      "fitted": true,
+      "land": "U8.13",
+      "net": "/SX1262_DIO1",
+      "ref": "U8",
+      "sole_path": false,
+      "value": "E22-900M22S"
+    },
+    {
+      "at": [
+        66.4,
+        78.6
+      ],
+      "carries": 7,
+      "carries_nets": [
+        "/01_POWER_TREE/BAT_PROTECTED_P",
+        "/01_POWER_TREE/ILIM_VSET",
+        "/01_POWER_TREE/ISET",
+        "/01_POWER_TREE/USB_VBUS_CHG",
+        "/BQ25185_STAT1",
+        "/BQ25185_STAT2",
+        "Net-(U11-TS_MR)"
+      ],
+      "fitted": true,
+      "land": "U11.1",
+      "net": "/01_POWER_TREE/BQ25185_SYS",
+      "ref": "U11",
+      "sole_path": false,
+      "value": "BQ25185"
+    },
+    {
+      "at": [
+        68.6,
+        78.2
+      ],
+      "carries": 7,
+      "carries_nets": [
+        "/01_POWER_TREE/BAT_PROTECTED_P",
+        "/01_POWER_TREE/BQ25185_SYS",
+        "/01_POWER_TREE/ILIM_VSET",
+        "/01_POWER_TREE/ISET",
+        "/01_POWER_TREE/USB_VBUS_CHG",
+        "/BQ25185_STAT2",
+        "Net-(U11-TS_MR)"
+      ],
+      "fitted": true,
+      "land": "U11.9",
+      "net": "/BQ25185_STAT1",
+      "ref": "U11",
+      "sole_path": false,
+      "value": "BQ25185"
+    },
+    {
+      "at": [
+        66.4,
+        77.8
+      ],
+      "carries": 7,
+      "carries_nets": [
+        "/01_POWER_TREE/BAT_PROTECTED_P",
+        "/01_POWER_TREE/BQ25185_SYS",
+        "/01_POWER_TREE/ILIM_VSET",
+        "/01_POWER_TREE/ISET",
+        "/01_POWER_TREE/USB_VBUS_CHG",
+        "/BQ25185_STAT1",
+        "Net-(U11-TS_MR)"
+      ],
+      "fitted": true,
+      "land": "U11.3",
+      "net": "/BQ25185_STAT2",
+      "ref": "U11",
+      "sole_path": false,
+      "value": "BQ25185"
+    },
+    {
+      "at": [
+        29.562,
+        115.75
+      ],
+      "carries": 6,
+      "carries_nets": [
+        "/06_AUDIO/SPK_N",
+        "/06_AUDIO/SPK_P",
+        "/AMP_SD_MODE",
+        "/I2S_BCLK",
+        "/I2S_LRCLK",
+        "/I2S_SPK_DOUT"
+      ],
+      "fitted": true,
+      "land": "U5.2",
+      "net": "+3V3",
+      "ref": "U5",
+      "sole_path": false,
+      "value": "MAX98357A"
+    },
+    {
+      "at": [
+        65.1,
+        100.0
+      ],
+      "carries": 6,
+      "carries_nets": [
+        "/01_POWER_TREE/V3V3_FB",
+        "Net-(L1-Pad1)",
+        "Net-(L1-Pad2)",
+        "Net-(SW9-A)",
+        "Net-(U12-PG)",
+        "Net-(U12-PS_SYNC)"
+      ],
+      "fitted": true,
+      "land": "U12.1",
+      "net": "/01_POWER_TREE/BQ25185_SYS",
+      "ref": "U12",
+      "sole_path": false,
+      "value": "TPS63020"
+    },
+    {
+      "at": [
+        67.1,
+        102.8
+      ],
+      "carries": 6,
+      "carries_nets": [
+        "/01_POWER_TREE/V3V3_FB",
+        "Net-(L1-Pad1)",
+        "Net-(L1-Pad2)",
+        "Net-(SW9-A)",
+        "Net-(U12-PG)",
+        "Net-(U12-PS_SYNC)"
+      ],
+      "fitted": true,
+      "land": "U12.10",
+      "net": "/01_POWER_TREE/BQ25185_SYS",
+      "ref": "U12",
+      "sole_path": false,
+      "value": "TPS63020"
+    },
+    {
+      "at": [
+        66.6,
+        102.8
+      ],
+      "carries": 6,
+      "carries_nets": [
+        "/01_POWER_TREE/V3V3_FB",
+        "Net-(L1-Pad1)",
+        "Net-(L1-Pad2)",
+        "Net-(SW9-A)",
+        "Net-(U12-PG)",
+        "Net-(U12-PS_SYNC)"
+      ],
+      "fitted": true,
+      "land": "U12.11",
+      "net": "/01_POWER_TREE/BQ25185_SYS",
+      "ref": "U12",
+      "sole_path": false,
+      "value": "TPS63020"
+    },
+    {
+      "at": [
+        57.138,
+        54.425
+      ],
+      "carries": 6,
+      "carries_nets": [
+        "/09_COMMUNITY_HEADER/EXT_SCL_BUF",
+        "/09_COMMUNITY_HEADER/EXT_SDA_BUF",
+        "/09_COMMUNITY_HEADER/TCA4307_READY",
+        "/ACC_3V3_SW",
+        "/ACC_PWR_EN",
+        "/I2C_SDA_INT"
+      ],
+      "fitted": true,
+      "land": "U16.3",
+      "net": "/I2C_SCL_INT",
+      "ref": "U16",
+      "sole_path": true,
+      "value": "TCA4307DGKR"
+    },
+    {
+      "at": [
+        39.8,
+        146.38
+      ],
+      "carries": 6,
+      "carries_nets": [
+        "/01_POWER_TREE/USB_D_CONN_N",
+        "/01_POWER_TREE/USB_D_CONN_P",
+        "/01_POWER_TREE/USB_VBUS_RAW",
+        "Net-(J3-CC1)",
+        "Net-(J3-CC2)",
+        "Net-(J3-SHIELD)"
+      ],
+      "fitted": true,
+      "land": "J3.A12",
+      "net": "GND",
+      "ref": "J3",
+      "sole_path": false,
+      "value": "USB_C_Receptacle_USB2.0_16P"
+    },
+    {
+      "at": [
+        39.8,
+        146.38
+      ],
+      "carries": 6,
+      "carries_nets": [
+        "/01_POWER_TREE/USB_D_CONN_N",
+        "/01_POWER_TREE/USB_D_CONN_P",
+        "/01_POWER_TREE/USB_VBUS_RAW",
+        "Net-(J3-CC1)",
+        "Net-(J3-CC2)",
+        "Net-(J3-SHIELD)"
+      ],
+      "fitted": true,
+      "land": "J3.B1",
+      "net": "GND",
+      "ref": "J3",
+      "sole_path": false,
+      "value": "USB_C_Receptacle_USB2.0_16P"
+    },
+    {
+      "at": [
+        31.25,
+        114.562
+      ],
+      "carries": 5,
+      "carries_nets": [
+        "/06_AUDIO/SPK_N",
+        "/06_AUDIO/SPK_P",
+        "/AMP_SD_MODE",
+        "/I2S_BCLK",
+        "/I2S_SPK_DOUT"
+      ],
+      "fitted": true,
+      "land": "U5.14",
+      "net": "/I2S_LRCLK",
+      "ref": "U5",
+      "sole_path": false,
+      "value": "MAX98357A"
+    },
+    {
+      "at": [
+        58.413,
+        69.5
+      ],
+      "carries": 4,
+      "carries_nets": [
+        "/05_I2C_DEVICES/BMI270_INT1_RAW",
+        "/05_I2C_DEVICES/BMI270_SDO_ADDR",
+        "/I2C_SCL_INT",
+        "/I2C_SDA_INT"
+      ],
+      "fitted": true,
+      "land": "U4.5",
+      "net": "+3V3",
+      "ref": "U4",
+      "sole_path": false,
+      "value": "BMI270"
+    },
+    {
+      "at": [
+        58.513,
+        39.9
+      ],
+      "carries": 4,
+      "carries_nets": [
+        "/01_POWER_TREE/ACC_5V_FB",
+        "/01_POWER_TREE/ACC_5V_RAW",
+        "/01_POWER_TREE/BQ25185_SYS",
+        "/ACC_5V_BOOST_EN"
+      ],
+      "fitted": true,
+      "land": "U21.5",
+      "net": "/01_POWER_TREE/ACC_5V_LX",
+      "ref": "U21",
+      "sole_path": false,
+      "value": "TPS61023"
+    },
+    {
+      "at": [
+        57.587,
+        22.2
+      ],
+      "carries": 4,
+      "carries_nets": [
+        "/01_POWER_TREE/NFC_5V_PA_PENDING",
+        "/NFC_5V_EN",
+        "Net-(U13-FB)",
+        "Net-(U13-SW)"
+      ],
+      "fitted": false,
+      "land": "U13.3",
+      "net": "/01_POWER_TREE/BQ25185_SYS",
+      "ref": "U13",
+      "sole_path": false,
+      "value": "TPS61023"
+    },
+    {
+      "at": [
+        57.087,
+        39.4
+      ],
+      "carries": 4,
+      "carries_nets": [
+        "/01_POWER_TREE/ACC_5V_FB",
+        "/01_POWER_TREE/ACC_5V_LX",
+        "/01_POWER_TREE/ACC_5V_RAW",
+        "/ACC_5V_BOOST_EN"
+      ],
+      "fitted": true,
+      "land": "U21.3",
+      "net": "/01_POWER_TREE/BQ25185_SYS",
+      "ref": "U21",
+      "sole_path": false,
+      "value": "TPS61023"
+    },
+    {
+      "at": [
+        59.013,
+        23.2
+      ],
+      "carries": 4,
+      "carries_nets": [
+        "/01_POWER_TREE/BQ25185_SYS",
+        "/NFC_5V_EN",
+        "Net-(U13-FB)",
+        "Net-(U13-SW)"
+      ],
+      "fitted": false,
+      "land": "U13.6",
+      "net": "/01_POWER_TREE/NFC_5V_PA_PENDING",
+      "ref": "U13",
+      "sole_path": false,
+      "value": "TPS61023"
+    },
+    {
+      "at": [
+        50.263,
+        143.65
+      ],
+      "carries": 4,
+      "carries_nets": [
+        "/01_POWER_TREE/USB_D_CONN_N",
+        "/01_POWER_TREE/USB_D_ESD_N",
+        "/01_POWER_TREE/USB_D_ESD_P",
+        "/01_POWER_TREE/USB_VBUS_RAW"
+      ],
+      "fitted": true,
+      "land": "U10.3",
+      "net": "/01_POWER_TREE/USB_D_CONN_P",
+      "ref": "U10",
+      "sole_path": false,
+      "value": "USBLC6-2SC6"
+    },
+    {
+      "at": [
+        57.587,
+        23.2
+      ],
+      "carries": 4,
+      "carries_nets": [
+        "/01_POWER_TREE/BQ25185_SYS",
+        "/01_POWER_TREE/NFC_5V_PA_PENDING",
+        "/NFC_5V_EN",
+        "Net-(U13-SW)"
+      ],
+      "fitted": false,
+      "land": "U13.1",
+      "net": "Net-(U13-FB)",
+      "ref": "U13",
+      "sole_path": false,
+      "value": "TPS61023"
+    },
+    {
+      "at": [
+        59.013,
+        22.7
+      ],
+      "carries": 4,
+      "carries_nets": [
+        "/01_POWER_TREE/BQ25185_SYS",
+        "/01_POWER_TREE/NFC_5V_PA_PENDING",
+        "/NFC_5V_EN",
+        "Net-(U13-FB)"
+      ],
+      "fitted": false,
+      "land": "U13.5",
+      "net": "Net-(U13-SW)",
+      "ref": "U13",
+      "sole_path": false,
+      "value": "TPS61023"
+    },
+    {
+      "at": [
+        3.225,
+        82.765
+      ],
+      "carries": 3,
+      "carries_nets": [
+        "/01_POWER_TREE/BAT_PROTECTED_P",
+        "/01_POWER_TREE/MAX17048_ALRT_N",
+        "/I2C_SDA_INT"
+      ],
+      "fitted": true,
+      "land": "U14.7",
+      "net": "/I2C_SCL_INT",
+      "ref": "U14",
+      "sole_path": true,
+      "value": "MAX17048"
+    },
+    {
+      "at": [
+        4.0,
+        97.0
+      ],
+      "carries": 3,
+      "carries_nets": [
+        "/I2S_BCLK",
+        "/I2S_LRCLK",
+        "/I2S_MIC_DIN"
+      ],
+      "fitted": true,
+      "land": "MK1.4",
+      "net": "GND",
+      "ref": "MK1",
+      "sole_path": false,
+      "value": "DMM-4026-B-I2S"
+    },
+    {
+      "at": [
+        57.4,
+        57.735
+      ],
+      "carries": 1,
+      "carries_nets": [
+        "/ACC_DETECT_N"
+      ],
+      "fitted": true,
+      "land": "R129.1",
+      "net": "+3V3",
+      "ref": "R129",
+      "sole_path": false,
+      "value": "100k"
+    },
+    {
+      "at": [
+        65.675,
+        71.75
+      ],
+      "carries": 1,
+      "carries_nets": [
+        "/01_POWER_TREE/V3V3_FB"
+      ],
+      "fitted": true,
+      "land": "R39.1",
+      "net": "+3V3",
+      "ref": "R39",
+      "sole_path": false,
+      "value": "1M 1%"
+    },
+    {
+      "at": [
+        57.715,
+        36.2
+      ],
+      "carries": 1,
+      "carries_nets": [
+        "/01_POWER_TREE/ACC_5V_LX"
+      ],
+      "fitted": true,
+      "land": "L4.1",
+      "net": "/01_POWER_TREE/BQ25185_SYS",
+      "ref": "L4",
+      "sole_path": false,
+      "value": "1uH"
+    },
+    {
+      "at": [
+        63.459,
+        71.606
+      ],
+      "carries": 1,
+      "carries_nets": [
+        "Net-(SW9-A)"
+      ],
+      "fitted": false,
+      "land": "R68.1",
+      "net": "/01_POWER_TREE/BQ25185_SYS",
+      "ref": "R68",
+      "sole_path": false,
+      "value": "0R DNP"
+    },
+    {
+      "at": [
+        63.95,
+        86.5
+      ],
+      "carries": 1,
+      "carries_nets": [
+        "Net-(SW9-A)"
+      ],
+      "fitted": true,
+      "land": "SW9.2",
+      "net": "/01_POWER_TREE/BQ25185_SYS",
+      "ref": "SW9",
+      "sole_path": false,
+      "value": "SW_SPDT"
+    },
+    {
+      "at": [
+        25.89,
+        120.335
+      ],
+      "carries": 1,
+      "carries_nets": [
+        "/NFC_SUPPLY"
+      ],
+      "fitted": false,
+      "land": "R107.1",
+      "net": "/01_POWER_TREE/NFC_5V_PA_PENDING",
+      "ref": "R107",
+      "sole_path": false,
+      "value": "0R DNP"
+    },
+    {
+      "at": [
+        63.825,
+        16.5
+      ],
+      "carries": 1,
+      "carries_nets": [
+        "Net-(U13-FB)"
+      ],
+      "fitted": false,
+      "land": "R44.2",
+      "net": "/01_POWER_TREE/NFC_5V_PA_PENDING",
+      "ref": "R44",
+      "sole_path": false,
+      "value": "732k 1%"
+    },
+    {
+      "at": [
+        58.878,
+        144.082
+      ],
+      "carries": 1,
+      "carries_nets": [
+        "/SPI_A_MISO"
+      ],
+      "fitted": false,
+      "land": "R112.1",
+      "net": "/03_SPI_A_DISPLAY_SD/DISP_SDO",
+      "ref": "R112",
+      "sole_path": false,
+      "value": "0R DNP"
+    },
+    {
+      "at": [
+        60.528,
+        144.082
+      ],
+      "carries": 1,
+      "carries_nets": [
+        "/03_SPI_A_DISPLAY_SD/DISP_SDO"
+      ],
+      "fitted": false,
+      "land": "R112.2",
+      "net": "/SPI_A_MISO",
+      "ref": "R112",
+      "sole_path": false,
+      "value": "0R DNP"
+    },
+    {
+      "at": [
+        65.109,
+        71.606
+      ],
+      "carries": 1,
+      "carries_nets": [
+        "/01_POWER_TREE/BQ25185_SYS"
+      ],
+      "fitted": false,
+      "land": "R68.2",
+      "net": "Net-(SW9-A)",
+      "ref": "R68",
+      "sole_path": false,
+      "value": "0R DNP"
+    },
+    {
+      "at": [
+        63.225,
+        105.5
+      ],
+      "carries": 0,
+      "carries_nets": [],
+      "fitted": true,
+      "land": "C26.2",
+      "net": "/01_POWER_TREE/BQ25185_SYS",
+      "ref": "C26",
+      "sole_path": false,
+      "value": "10uF 10V X7R"
+    },
+    {
+      "at": [
+        66.525,
+        75.0
+      ],
+      "carries": 0,
+      "carries_nets": [],
+      "fitted": true,
+      "land": "C27.1",
+      "net": "/01_POWER_TREE/BQ25185_SYS",
+      "ref": "C27",
+      "sole_path": false,
+      "value": "10uF 10V X7R"
+    },
+    {
+      "at": [
+        68.4,
+        93.245
+      ],
+      "carries": 0,
+      "carries_nets": [],
+      "fitted": true,
+      "land": "C28.1",
+      "net": "/01_POWER_TREE/BQ25185_SYS",
+      "ref": "C28",
+      "sole_path": false,
+      "value": "100nF X7R"
+    },
+    {
+      "at": [
+        53.55,
+        14.75
+      ],
+      "carries": 0,
+      "carries_nets": [],
+      "fitted": false,
+      "land": "C35.1",
+      "net": "/01_POWER_TREE/NFC_5V_PA_PENDING",
+      "ref": "C35",
+      "sole_path": false,
+      "value": "22uF 10V X7R"
+    },
+    {
+      "at": [
+        49.5,
+        39.25
+      ],
+      "carries": 0,
+      "carries_nets": [],
+      "fitted": true,
+      "land": "TP9.1",
+      "net": "/01_POWER_TREE/NFC_5V_PA_PENDING",
+      "ref": "TP9",
+      "sole_path": false,
+      "value": "TestPoint"
+    },
+    {
+      "at": [
+        32.762,
+        126.233
+      ],
+      "carries": 0,
+      "carries_nets": [],
+      "fitted": false,
+      "land": "C82.1",
+      "net": "/06_AUDIO/SPK_N_CONN",
+      "ref": "C82",
+      "sole_path": false,
+      "value": "1nF DNP"
+    },
+    {
+      "at": [
+        37.378,
+        124.403
+      ],
+      "carries": 0,
+      "carries_nets": [],
+      "fitted": false,
+      "land": "C81.1",
+      "net": "/06_AUDIO/SPK_P_CONN",
+      "ref": "C81",
+      "sole_path": false,
+      "value": "1nF DNP"
+    },
+    {
+      "at": [
+        49.938,
+        10.865
+      ],
+      "carries": 0,
+      "carries_nets": [],
+      "fitted": false,
+      "land": "R123.1",
+      "net": "/07_IR/IR_LED_A",
+      "ref": "R123",
+      "sole_path": false,
+      "value": "100R DNP"
+    },
+    {
+      "at": [
+        51.948,
+        89.208
+      ],
+      "carries": 0,
+      "carries_nets": [],
+      "fitted": true,
+      "land": "R6.2",
+      "net": "/08_BUTTONS_EXPANDERS/BTN_LEFT_N",
+      "ref": "R6",
+      "sole_path": false,
+      "value": "10k"
+    },
+    {
+      "at": [
+        60.75,
+        57.735
+      ],
+      "carries": 0,
+      "carries_nets": [],
+      "fitted": true,
+      "land": "R102.1",
+      "net": "/ACC_5V_BOOST_EN",
+      "ref": "R102",
+      "sole_path": false,
+      "value": "100k"
+    },
+    {
+      "at": [
+        50.855,
+        145.919
+      ],
+      "carries": 0,
+      "carries_nets": [],
+      "fitted": true,
+      "land": "TP5.1",
+      "net": "/I2C_SCL_INT",
+      "ref": "TP5",
+      "sole_path": false,
+      "value": "I2C_SCL_TEST"
+    },
+    {
+      "at": [
+        57.2,
+        14.095
+      ],
+      "carries": 0,
+      "carries_nets": [],
+      "fitted": false,
+      "land": "R45.1",
+      "net": "Net-(U13-FB)",
+      "ref": "R45",
+      "sole_path": false,
+      "value": "100k 1%"
+    }
+  ],
+  "schema": 1,
+  "sole_path_net_count": 37,
+  "sole_path_nets": [
+    "/01_POWER_TREE/BAT_PROTECTED_P",
+    "/01_POWER_TREE/MAX17048_ALRT_N",
+    "/08_BUTTONS_EXPANDERS/BTN_A_N",
+    "/08_BUTTONS_EXPANDERS/BTN_B_N",
+    "/08_BUTTONS_EXPANDERS/BTN_DOWN_N",
+    "/08_BUTTONS_EXPANDERS/BTN_LEFT_N",
+    "/08_BUTTONS_EXPANDERS/BTN_RIGHT_N",
+    "/08_BUTTONS_EXPANDERS/BTN_UP_N",
+    "/08_BUTTONS_EXPANDERS/FRONT_RGB_B_N",
+    "/08_BUTTONS_EXPANDERS/FRONT_RGB_G_N",
+    "/08_BUTTONS_EXPANDERS/FRONT_RGB_R_N",
+    "/09_COMMUNITY_HEADER/EXT_SCL_BUF",
+    "/09_COMMUNITY_HEADER/EXT_SDA_BUF",
+    "/09_COMMUNITY_HEADER/TCA4307_READY",
+    "/ACC_3V3_EN",
+    "/ACC_3V3_SW",
+    "/ACC_5V_BOOST_EN",
+    "/ACC_5V_SW_EN",
+    "/ACC_DETECT_N",
+    "/ACC_POWER_FAULT_N",
+    "/ACC_PWR_EN",
+    "/AMP_SD_MODE",
+    "/BQ25185_STAT1",
+    "/BQ25185_STAT2",
+    "/DISP_RST_N",
+    "/I2C_SCL_INT",
+    "/I2C_SDA_INT",
+    "/NFC_5V_EN",
+    "/SD_CARD_DETECT_N",
+    "/SX1262_DIO1",
+    "/SX1262_RST_N",
+    "/SX1262_RXEN",
+    "/TOUCH_INT_N",
+    "/TOUCH_RST_N",
+    "/WAKE_INT_N",
+    "/XGPIO4",
+    "/XGPIO5"
+  ],
+  "sole_path_parts": [
+    "U14",
+    "U16",
+    "U2",
+    "U3"
+  ],
+  "sole_path_values": [
+    "MAX17048",
+    "PCAL9535APW",
+    "TCA4307DGKR"
+  ]
+}

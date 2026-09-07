@@ -985,6 +985,146 @@ def inert_removal_price(board_path, entries, grid=INERT_PRICE_GRID):
     return out
 
 
+def rebond_price(auth_path, cand_path, entries):
+    """What replaced a barrel this run REMOVED, as geometry.  D-653.
+
+    `inert_removal_price` prices a CHAIN and asks a question about ONE layer:
+    does the pour already join the chain's two ends, at least as wide?  A
+    BARREL has no two ends on one layer.  What it does is bond an outer-layer
+    filled island to the net's inner planes, and on this board that is
+    sometimes the only thing holding a pad to ground: `B.Cu` `GND` island 24 is
+    16.523 mm2, contains exactly one pad (`U2.21`) and exactly one via
+    (61.200, 90.800), and until D-653 no transaction could name that via at
+    all.
+
+    So the price of removing one is the BARREL THAT REPLACES IT, and this
+    measures it on the two boards where each half of the claim is well posed:
+
+      * ON THE AUTHORITATIVE BOARD -- the board the barrel was taken from --
+        which outer-layer filled islands did it sit in, and which PADS of its
+        own net sat in those islands with it.  Those pads are what the barrel
+        served.  A barrel that served no pad on any outer layer is recorded
+        `SERVED_NO_PAD` and is priced `ok`: it was a stitching via, its removal
+        strands nothing, and the ledger's own open-edge test is the whole
+        check.
+
+      * ON THE CANDIDATE, AFTER THE REAL REFILL -- every pad the barrel served
+        must sit in a filled island of its own net that contains a barrel of
+        that net at least as WIDE and at least as DEEP in drill as the one
+        removed.  Not "somewhere on the net": in the island the pad is
+        actually in, because that is the copper the pad can reach without a
+        track.  A pad the run re-bonded with a track and a barrel of its own
+        satisfies this by the same test -- the stitch's barrel lands in the
+        pad's island.
+
+    WHAT THIS DOES NOT CLAIM.  It does not price the return LOOP, and it does
+    not claim the new barrel is as good a bond as the old one for high
+    frequency -- moving a ground bond moves a loop, and `screen_inert_copper`
+    already says in its own words that area is not width.  It prices
+    CONDUCTOR, which is the claim the gate can settle, and it names what it
+    leaves to the reviewer.
+    """
+    import pcbnew
+    sys.path.insert(0, str(HERE))
+    import pour_bond_guard as pbg
+
+    def barrels(board, net):
+        """Every via of `net`, with the two numbers this clause compares."""
+        out = []
+        for t in board.Tracks():
+            if t.GetClass() != "PCB_VIA" or t.GetNetname() != net:
+                continue
+            v = pcbnew.Cast_to_PCB_VIA(t)
+            p = v.GetPosition()
+            out.append((p, int(v.GetWidth()), int(v.GetDrillValue())))
+        return out
+
+    auth = pcbnew.LoadBoard(str(auth_path))
+    cand = pcbnew.LoadBoard(str(cand_path))
+    a_pours, c_pours = pbg.read_pours(auth), pbg.read_pours(cand)
+    for p in a_pours:
+        pbg.assign(auth, p)
+    for p in c_pours:
+        pbg.assign(cand, p)
+
+    out = []
+    for d in entries:
+        bar = d["barrel"]
+        net = d["net"]
+        x, y = [int(round(v * 1e6)) for v in bar["at_mm"]]
+        want_d = int(round(bar["dia_mm"] * 1e6))
+        want_h = int(round(bar["drill_mm"] * 1e6))
+        rec = dict(net=net, at_mm=bar["at_mm"], dia_mm=bar["dia_mm"],
+                   drill_mm=bar["drill_mm"], served=[], ok=True, reason=None)
+        P = pcbnew.VECTOR2I(x, y)
+        for pour in a_pours:
+            if pour["net"] != net:
+                continue
+            for isl in pour["islands"]:
+                if not isl["poly"].Contains(P, -1, 0):
+                    continue
+                rec["served"].append(dict(
+                    layer=pour["layer"], island=isl["index"],
+                    island_area_mm2=round(isl["area_mm2"], 3),
+                    pads=[q["ref"] for q in isl["pads"]],
+                    other_barrels=max(0, len(isl["vias"]) - 1)))
+        served_pads = sorted({q for s in rec["served"] for q in s["pads"]})
+        if not served_pads:
+            rec.update(reason="SERVED_NO_PAD")
+            out.append(rec)
+            continue
+        # The pad's own position, read off the AUTHORITATIVE board: a pad does
+        # not move and the candidate's fill is the only thing being re-asked.
+        where = {}
+        for fp in auth.GetFootprints():
+            for q in fp.Pads():
+                ref = "%s.%s" % (fp.GetReference(), q.GetNumber())
+                if ref in served_pads and q.GetNetname() == net:
+                    where[ref] = q.GetPosition()
+        cand_vias = barrels(cand, net)
+        rec["rebonds"] = []
+        for ref in served_pads:
+            pos = where.get(ref)
+            hit = None
+            if pos is not None:
+                for pour in c_pours:
+                    if pour["net"] != net:
+                        continue
+                    for isl in pour["islands"]:
+                        if not isl["poly"].Contains(
+                                pcbnew.VECTOR2I(pos.x, pos.y), -1, 0):
+                            continue
+                        good = [(p, w, h) for p, w, h in cand_vias
+                                if w >= want_d and h >= want_h
+                                and isl["poly"].Contains(
+                                    pcbnew.VECTOR2I(p.x, p.y), -1, 0)]
+                        cand_rec = dict(
+                            pad=ref, layer=pour["layer"], island=isl["index"],
+                            island_area_mm2=round(isl["area_mm2"], 3),
+                            barrels=len(good),
+                            nearest_mm=(round(min(
+                                math.hypot(p.x - pos.x, p.y - pos.y)
+                                for p, _, _ in good) / 1e6, 4)
+                                if good else None))
+                        if good or hit is None:
+                            hit = cand_rec
+                        if good:
+                            break
+                    if hit and hit.get("barrels"):
+                        break
+            if hit is None:
+                hit = dict(pad=ref, layer=None, island=None, barrels=0,
+                           nearest_mm=None)
+            rec["rebonds"].append(hit)
+        bad = [h for h in rec["rebonds"] if not h.get("barrels")]
+        if bad:
+            rec.update(ok=False, reason="NO_REPLACEMENT_BARREL_IN_THE_PAD_"
+                                        "ISLAND",
+                       unbonded=[h["pad"] for h in bad])
+        out.append(rec)
+    return out
+
+
 def detour_apply(path, spec):
     """Remove every named track IN PLACE and resolve it to exact coordinates.
 
@@ -1052,6 +1192,52 @@ def detour_apply(path, spec):
                                                    width_mm, len(hits),
                                                    int(count)))
         return lkey, lid, hits
+
+    # D-653 -- A BARREL IS THE SIXTH KIND OF OBJECT A TRANSACTION MAY NAME.
+    #
+    # Every move this file owns adds a bond or moves a track; none MOVES a
+    # bond.  `--detour-spec` resolves `PCB_TRACK` and nothing else, so the one
+    # object standing in `U2`'s I2C pocket that a transaction could not name
+    # was the 0.600/0.300 mm `GND` barrel at (61.200, 90.800) -- and that
+    # barrel is the ONLY connection between `B.Cu` `GND` island 24 (16.523 mm2,
+    # one pad: `U2.21`) and the `In1`/`In4` planes.  D-652 recorded the gap and
+    # called the missing move a RE-BOND: remove a pad's bond chain AND its
+    # barrel, and let the run give that pad a new barrel somewhere else.
+    #
+    # THE PHYSICAL UNIT IS THE `PCB_VIA` OBJECT, and saying so is not
+    # pedantry.  In the router's own model a barrel is SEVEN objects -- a
+    # drill disc in `qb.holes` and one annulus per copper layer in
+    # `qb.shapes[L]` -- and the first probe written for this decision held out
+    # the drill alone, read `NO_PATH`, and would have recorded the corridor as
+    # closed had it not been checked against `screen_corridor_blockers` on the
+    # same window.  KiCad carries the hole and all six annuli as ONE item, so
+    # the removal is one `board.Remove` and the licence is one `_via_sig`.
+    #
+    # Resolution is EXACT, UNIQUE and DECLARED, exactly as `resolve` is: the
+    # net, the centre in millimetres, the diameter and the drill must all
+    # match, and `count` (default 1) must equal the number of hits, so a spec
+    # written against a board carrying coincident duplicate barrels cannot
+    # take one and leave the other.
+    def resolve_barrel(net, at_mm, dia_mm, drill_mm, count=1):
+        want = tuple(round(v, 4) for v in at_mm)
+        want_d = int(round(dia_mm * 1e6))
+        want_h = int(round(drill_mm * 1e6))
+        hits = []
+        for t in board.GetTracks():
+            if t.GetClass() != "PCB_VIA" or t.GetNetname() != net:
+                continue
+            v = pcbnew.Cast_to_PCB_VIA(t)
+            if key(v.GetPosition()) != want:
+                continue
+            if int(v.GetWidth()) != want_d or int(v.GetDrillValue()) != want_h:
+                continue
+            hits.append(v)
+        if len(hits) != int(count):
+            raise SystemExit(
+                "--detour: barrel %s at %s, %.3f/%.3f mm matches %d vias, not "
+                "the %d this spec declares"
+                % (net, at_mm, dia_mm, drill_mm, len(hits), int(count)))
+        return hits
 
     # A CHAIN IS ONE TRACK THAT THE EDITOR HAPPENED TO SPLIT, AND THE BOARD SAYS
     # SO OR IT IS NOT A CHAIN.  `/ACC_DETECT_N` reaches the `+3V3` `R129.1`
@@ -1123,8 +1309,72 @@ def detour_apply(path, spec):
                                        net, pt))
         return ends
 
-    doomed, resolved = [], []
+    doomed, resolved, doomed_vias, born = [], [], [], []
     for d in spec.get("detours", ()):
+        # D-653.  A BARREL ENTRY IS NOT A DETOUR AND DOES NOT PRETEND TO BE.
+        # A relay puts the same conductor back between its own two ends; a
+        # barrel's two ends are on different LAYERS and no track can stand in
+        # for it, so a barrel is always `relay: false` and the gate prices it
+        # under `rebond_priced` -- "the copper this barrel served still reaches
+        # this net's plane through a barrel at least as wide" -- rather than
+        # under `inert_removal_priced`, which asks about a pour path between
+        # two points on ONE layer and has no meaning here.
+        if "barrel" in d:
+            q = d["barrel"]
+            if d.get("relay", False):
+                raise SystemExit("--detour: barrel %s at %s cannot declare "
+                                 "`relay: true`; a barrel has no two ends on "
+                                 "one layer to be re-laid between"
+                                 % (d["net"], q["at_mm"]))
+            vias = resolve_barrel(d["net"], q["at_mm"], q["dia_mm"],
+                                  q["drill_mm"], q.get("count", 1))
+            v = vias[0]
+            doomed_vias += vias
+            top = board.GetLayerName(v.TopLayer())
+            bottom = board.GetLayerName(v.BottomLayer())
+            # THE MOVE.  A barrel may declare WHERE IT GOES, and then this is
+            # a MOVE and not a removal: the same net, the same diameter, the
+            # same drill, the same two end layers, at a site the spec NAMES.
+            #
+            # Naming it is the point.  `--bond-pad` re-bonds by SEARCH, and on
+            # the transaction this primitive was built for the search is the
+            # wrong instrument twice over: `stitch_pad` re-derives the barrel
+            # site the board already had (1.705 mm, (61.200, 90.800) --
+            # exactly the copper the run is removing), and steering it away
+            # with a `reserve` disc moves the BARREL but not the RUN, because
+            # `QBoard.smooth` straightens a lattice path against the board's
+            # own obstacle geometry and the pour-bond guard is not part of it.
+            # Measured on this board: a 1.5 mm reserve disc centred 0.70 mm
+            # off the run left the run unchanged to the micron.  A site a
+            # human picked off `screen_bond_ladder`'s own island-barrel census
+            # is reviewable, reproducible and exact; a site a search picked
+            # under a guard that does not bind it is neither.
+            to = q.get("to_mm")
+            moved = None
+            if to is not None:
+                nv = pcbnew.PCB_VIA(board)
+                nv.SetPosition(pcbnew.VECTOR2I(int(round(to[0] * 1e6)),
+                                               int(round(to[1] * 1e6))))
+                nv.SetWidth(int(v.GetWidth()))
+                nv.SetDrill(int(v.GetDrillValue()))
+                nv.SetViaType(v.GetViaType())
+                nv.SetLayerPair(v.TopLayer(), v.BottomLayer())
+                nv.SetNetCode(v.GetNetCode())
+                born.append(nv)
+                moved = [round(float(c), 4) for c in to]
+            resolved.append(dict(
+                net=d["net"], layer=top,
+                lkey=lname[top][0] if top in lname else "F",
+                relay=False, barrel=dict(
+                    at_mm=[round(c, 4) for c in key(v.GetPosition())],
+                    dia_mm=round(int(v.GetWidth()) / 1e6, 4),
+                    drill_mm=round(int(v.GetDrillValue()) / 1e6, 4),
+                    top=top, bottom=bottom, count=len(vias), to_mm=moved),
+                width_nm=int(v.GetWidth()), tracks=0, objects=len(vias),
+                a_nm=[int(v.GetPosition().x), int(v.GetPosition().y)],
+                b_nm=[int(v.GetPosition().x), int(v.GetPosition().y)],
+                mm=0.0, max_mm=0.0, exact_relay=None))
+            continue
         parts = list(d.get("tracks") or [d])
         got = [resolve(d["net"], q["layer"], q["a_mm"], q["b_mm"],
                        q["width_mm"], q.get("count", 1)) for q in parts]
@@ -1187,11 +1437,28 @@ def detour_apply(path, spec):
     for t in doomed:
         sigs.append(ir._track_sig(t))
         board.Remove(t)
+    # D-653.  The same licence, in the same shape, for the barrel: clause 5
+    # compares `ir.copper_sigs` before and after, and that counter already
+    # keys a `PCB_VIA` by `_via_sig`, so a barrel removed without its
+    # signature recorded here would be an UNLICENSED REMOVAL and refuse the
+    # run -- which is exactly the protection this line is spending.
+    for v in doomed_vias:
+        sigs.append(ir._via_sig(v))
+        board.Remove(v)
+    # THE MOVED BARREL IS LAID BY THE APPLIER, NOT BY THE ROUTER, and the gate
+    # is told whose copper it is: `detour_nets` already admits a detoured net
+    # into the promotion set, so clause 5's "no foreign copper" reads this via
+    # as GND copper THIS transaction asked for -- which is exactly what it is.
+    for v in born:
+        board.Add(v)
     pcbnew.SaveBoard(str(path), board)
     return dict(detours=resolved,
                 reserve=list(spec.get("reserve", ())),
                 removed_signatures=sorted(str(s) for s in sigs),
                 removed_count=len(sigs),
+                removed_barrels=len(doomed_vias),
+                moved_barrels=[[round(v.GetPosition().x / 1e6, 4),
+                                round(v.GetPosition().y / 1e6, 4)] for v in born],
                 removed_mm=round(sum(d["mm"] for d in resolved), 4),
                 nets=sorted({d["net"] for d in resolved}))
 
@@ -1583,18 +1850,35 @@ def propose(path, nets, grid, via_cost_mm, stitch_width=0, stitch_via=None,
         # thing that closes the corridor the relay would need.  So the chain is
         # removed, the record says so in its own words, and the GATE prices it.
         if d.get("relay") is False:
+            # D-653.  A BARREL RIDES THIS BRANCH AND IS PRICED BY A DIFFERENT
+            # CLAUSE.  It reaches here for the same reason an inert chain does
+            # -- there is nothing for `route_points` to put back -- but the
+            # claim it makes is not the chain's.  A chain says "the pour
+            # already joins these two points on this layer"; a barrel says
+            # "the copper I bonded still reaches this net's plane through a
+            # barrel at least as wide".  Carrying `barrel` through is what
+            # lets the gate tell the two apart.
+            bar = d.get("barrel")
             detours.append(dict(
                 net=net, layer=d["layer"], lkey=d["lkey"], relay=False,
-                removed_only=True, ok=False, reason="REMOVED_NOT_RELAID",
-                why="declared `relay: false`; the gate's inert_removal_priced "
-                    "clause prices the conductor that replaces it",
+                removed_only=True, ok=False,
+                reason=("BARREL_REMOVED_NOT_REBONDED_YET" if bar
+                        else "REMOVED_NOT_RELAID"),
+                why=("declared as a barrel; the gate's rebond_priced clause "
+                     "prices the barrel that replaces it" if bar else
+                     "declared `relay: false`; the gate's inert_removal_priced "
+                     "clause prices the conductor that replaces it"),
+                barrel=bar,
                 mm=0.0, vias=0, was_mm=d["mm"], width_nm=d["width_nm"],
                 max_mm=d.get("max_mm"), own_layer=False,
                 a_mm=[round(v / 1e6, 4) for v in d["a_nm"]],
                 b_mm=[round(v / 1e6, 4) for v in d["b_nm"]],
                 seconds=0.0))
-            print("  %-44s detour REMOVED_NOT_RELAID %.3f mm %s"
-                  % (net, d["mm"], d["layer"]), file=sys.stderr, flush=True)
+            print("  %-44s detour %s %.3f mm %s"
+                  % (net, ("BARREL_REMOVED %.3f/%.3f mm"
+                           % (bar["dia_mm"], bar["drill_mm"])) if bar
+                     else "REMOVED_NOT_RELAID", d["mm"], d["layer"]),
+                  file=sys.stderr, flush=True)
             continue
         g = guard_for(guard_spec, net) if guard_spec else None
         # D-609.  A track being PUT BACK may be put back on the layer it was
@@ -2866,17 +3150,32 @@ def gate(nets, grid, via_cost_mm, workdir, promote=False, candidate=None,
     # removed net's OWN open-edge count may not grow.  Whether this run's own
     # new copper then splits that pour is PP1-PP4's question and this clause
     # does not answer it.
-    inert_entries = [d for d in detoured if d.get("removed_only")]
+    removed_only = [d for d in detoured if d.get("removed_only")]
+    inert_entries = [d for d in removed_only if not d.get("barrel")]
+    # CLAUSE 14 -- A BARREL REMOVAL MUST BE RE-BONDED.  D-653.  A barrel is
+    # the one object `--detour-spec` could not name until now, and it is the
+    # one whose removal cannot be priced by a pour path: its two ends are on
+    # different layers.  `rebond_price` asks the question that belongs to it --
+    # does every pad this barrel served still sit in a filled island holding a
+    # barrel at least as wide? -- on the authoritative board for the "served"
+    # half and on the REFILLED candidate for the "still" half.  The open-edge
+    # test below is shared with the inert branch and is not a substitute: a
+    # pad can be dragged back into the cluster by a long track and still have
+    # lost its local bond, which is a derating nobody chose.
+    rebond_entries = [d for d in removed_only if d.get("barrel")]
     inert_priced = (inert_removal_price(BOARD, inert_entries)
                     if inert_entries else [])
     inert_unpriced = [r for r in inert_priced if not r.get("ok")]
-    for d in inert_entries:
+    rebond_priced = (rebond_price(BOARD, scratch, rebond_entries)
+                     if rebond_entries else [])
+    rebond_unpriced = [r for r in rebond_priced if not r.get("ok")]
+    for d in removed_only:
         n = d["net"]
         if after_open.get(n, 0) > before_open.get(n, 0):
-            inert_unpriced.append(dict(net=n, ok=False,
-                                       reason="REMOVED_NET_OPEN_EDGES_GREW",
-                                       before=before_open.get(n),
-                                       after=after_open.get(n)))
+            grew = dict(net=n, ok=False,
+                        reason="REMOVED_NET_OPEN_EDGES_GREW",
+                        before=before_open.get(n), after=after_open.get(n))
+            (rebond_unpriced if d.get("barrel") else inert_unpriced).append(grew)
 
     zone_before, zone_after = zones(BOARD), zones(scratch)
     zone_added = [z for z in zone_after if z not in zone_before]
@@ -3067,6 +3366,7 @@ def gate(nets, grid, via_cost_mm, workdir, promote=False, candidate=None,
           and not unlicensed and not foreign and edges_after < edges_before
           and zone_ok and changed and not relief_open and not detour_failed
           and not inert_unpriced
+          and not rebond_unpriced
           and not pp_failed
           and before == sha256_file(BOARD))
 
@@ -3130,6 +3430,9 @@ def gate(nets, grid, via_cost_mm, workdir, promote=False, candidate=None,
                      removed_not_relaid=inert_entries,
                      inert_price=inert_priced,
                      inert_unpriced=inert_unpriced,
+                     removed_barrels=rebond_entries,
+                     rebond_price=rebond_priced,
+                     rebond_unpriced=rebond_unpriced,
                      all_relaid=(not detour_failed))
                 if detour else None),
         preservation=dict(removed_objects=removed,
@@ -3202,6 +3505,7 @@ def gate(nets, grid, via_cost_mm, workdir, promote=False, candidate=None,
             no_open_relief_licence=not relief_open,
             every_detour_relaid=not detour_failed,
             inert_removal_priced=not inert_unpriced,
+            rebond_priced=not rebond_unpriced,
             pour_partition=not pp_failed,
             authority_unchanged=bool(before == sha256_file(BOARD)),
         ),
@@ -3513,6 +3817,16 @@ def main():
                          "ONE conductor and ONE obstacle, and taking only one "
                          "of them leaves the other in the corridor.  `count` "
                          "defaults to 1, so every earlier spec is unchanged.  "
+                         "D-653 RE-BOND: an entry may name a BARREL instead "
+                         "of a track chain -- {\"net\": ..., \"barrel\": "
+                         "{\"at_mm\": [x, y], \"dia_mm\": d, \"drill_mm\": h}} "
+                         "-- and that via is removed whole.  A barrel is "
+                         "always `relay: false` (its two ends are on different "
+                         "layers and no track stands in for it) and is priced "
+                         "by the rebond_priced clause instead: every pad it "
+                         "served must end in a filled island holding a barrel "
+                         "at least as wide.  Use --repair-planes so the run "
+                         "lays that replacement itself.  "
                          "Screen it first with screen_segment_evict.py "
                          "--plan-out")
     ap.add_argument("--detour-own-layer", action="store_true",

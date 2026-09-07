@@ -1,3 +1,231 @@
+# D-653 · 2026-09-07 · Demo — THE RE-BOND EXISTS, AND THE BOARD'S CRITICAL PATH IS OPEN: `U2.21`'s CHAIN WAS INERT ALL ALONG, THE ONE OBJECT THAT COST THE RE-BOND ITS LANDING WAS A CARD-DETECT STRAP
+
+    authority  dc6d162a597ac944457b7d8575fe70270d1f8f1892027449fb8cc73686d8f1e4
+          ->   9eaeacfca71fea2dcfdff71eb7e65c9566851cf8babbf07762285250ae2f829e
+    retained open edges  37 -> 36     open retained nets  20   connected retained  153
+    /I2C_SCL_INT  open edges 5 -> 4   raw board ratsnest 53 -> 52
+    GND open edges 2 -> 2   /SD_CARD_DETECT_N open edges 0 -> 0
+    `hardware/beta-v2` UNTOUCHED.
+
+**COPPER PROMOTED.  FOURTEEN of fourteen gate clauses PASS, `refused_clauses`
+EMPTY** (`evidence/d653-gate-promote.json`); `verify_promotion.py` **PASS on all
+15 checks** including `beta_v2_untouched`, `unconnected_not_increased`,
+`pour_partition_intact` and `fill_stable` (`evidence/d653-verify-promotion.json`);
+real KiCad DRC **exit 0, ZERO attributable**, profile identical to baseline
+(`hole_clearance` 5, `lib_footprint_issues` 199, `solder_mask_bridge` 1); the
+standing suite is **11/11 RAN, 11/11 PASS** (`evidence/d653-contract-regression.json`,
+baseline `d632`) with `placement`, `rf_symmetry` and `protected_copper`
+**IDENTICAL to `d632`**, run BEFORE the framework change as well as after
+(`evidence/d653-contract-regression-pre.json`) so the primitive is proved inert
+on a board that had not moved.
+
+**`/I2C_SCL_INT` `U2.22 <-> U3.22` IS ROUTED.**  22.969 mm, two 0.600/0.300
+barrels, `B/F/B`.  That is the first edge of the board's critical path -- the
+`PCAL9535A` that carries all six user buttons -- ever closed by any run, and
+D-652A priced it at eighteen stranded nets.
+
+## 1. THE PRIMITIVE D-652 SAID THE BOARD DID NOT HAVE
+
+`--detour-spec` resolved `PCB_TRACK` and nothing else, so the one object standing
+in `U2`'s I2C pocket that no transaction could name was a barrel.  It can now:
+
+    {"net": "GND",
+     "barrel": {"at_mm": [61.200, 90.800], "dia_mm": 0.6, "drill_mm": 0.3,
+                "count": 1, "to_mm": [60.900, 89.650]}}
+
+Resolution is EXACT, UNIQUE and DECLARED, exactly as a track's is -- net, centre,
+diameter, drill and `count` must all match or the run stops.  The physical unit
+is the ONE `PCB_VIA` object; the licence is one `ir._via_sig`, so clause 5 reads
+the removal as licensed and an unlicensed barrel removal still refuses the run.
+A barrel is always `relay: false` -- its two ends are on different LAYERS and no
+track stands in for it -- and `to_mm` makes the entry a **MOVE**: the same net,
+the same diameter, the same drill, the same two end layers, at a site the spec
+NAMES.
+
+**AND A FOURTEENTH GATE CLAUSE, `rebond_priced`, PRICES IT.**
+`inert_removal_price` asks about a pour path between two points on ONE layer and
+has no meaning for a barrel.  `rebond_price` asks the question that does, on the
+two boards where each half is well posed: on the AUTHORITATIVE board, which
+outer-layer filled islands the barrel sat in and which PADS of its own net sat
+there with it; on the CANDIDATE, AFTER THE REAL REFILL, whether every one of
+those pads sits in a filled island holding a barrel at least as WIDE and at
+least as DEEP in drill.  A barrel that served no pad is `SERVED_NO_PAD` and
+priced `ok` -- a stitching via strands nothing.  Here: served `U2.21` on island
+24 (16.523 mm², `other_barrels` **0**); re-bonded on island 26 (1.801 mm²) at
+**1.0378 mm**, one barrel, 0.600/0.300.
+
+**WHAT IT DOES NOT CLAIM,** stated in the function: it prices CONDUCTOR, not the
+return LOOP.  Moving a ground bond moves a loop and area is not width.  For
+`U2.21` that is not a live concern and the reason is in §3.
+
+## 2. THE CHAIN WAS INERT, AND D-652 SAID THE OPPOSITE
+
+D-652 §4 recorded the barrel as "`U2.21`'s ONLY path to ground, since `GND` pours
+on `In1`/`In4` and not on `B.Cu`".  **`GND` DOES pour on `B.Cu`** -- one 6441 mm²
+zone, 60 islands -- and `screen_inert_copper.py` prices the five 0.300 mm
+segments in eight seconds (`evidence/d653-inert-u2.json`):
+
+    ONE island (24, 16.523 mm²) holds both ends
+    pour path 1.332 mm at 0.35 mm  vs the 0.300 mm chain   ratio 1.167   INERT
+
+So four of the six objects were an ordinary D-646 removal that had been sitting
+there since D-646 shipped the lever.  **What was load-bearing was the BARREL, and
+only the barrel:** island 24 holds exactly ONE pad (`U2.21`) and exactly ONE via.
+
+**AND BOTH HALVES ARE NEEDED, WHICH IS WHY NEITHER SHOWED UP ALONE**
+(`evidence/d653-inert-open-100k.json`, `evidence/d653-gate-tracks-only.json`):
+
+    five tracks out, barrel in place        NO_PATH   (probe AND a full gate run)
+    barrel out, five tracks in place        NO_PATH
+    all six out                             OPENS     20.075 mm SCL / 17.801 mm SDA
+
+The first probe written for this read `NO_PATH` for all three arms and was wrong:
+it held out the barrel's DRILL and left its six ANNULI standing.  In the router's
+model a barrel is seven objects; in KiCad it is one.  The probe now says so in
+its own words and `evidence/d653-gnd-window-repro.json` reproduces D-652's
+20.0745 / 17.8014 mm to the micron by both routes.
+
+## 3. `U2.21` IS `A0`, NOT `VSS`
+
+The `PCAL9535APW` symbol's own pin types settle it: pin 12 is `power_in` `GND`;
+pins 2, 3 and **21 are `input`** -- `A1`, `A2`, `A0`, the I²C address straps.
+`U2.21` carries no rail current and never did.  The move keeps it at the full
+0.600/0.300 netclass barrel anyway, so no derating arises here -- but the fact
+belongs in the record, because the next transaction to come through this pocket
+will be told a 0.500/0.250 barrel is a derating and for THIS land it is not.
+
+## 4. THREE GATE RUNS TO LEARN ONE RULE, AND THE INSTRUMENT THAT OWES IT
+
+    gate  what it asked                          verdict
+    1     remove all six, let --repair-planes re-bond   REFUSED  rebond_priced,
+                                                        no_regression, board_improved
+    2     remove all six, MOVE the barrel 0.53 mm       REFUSED  same three
+    3     remove the five INERT tracks only             REFUSED  board_improved
+
+**A BOND BARREL MUST BE LEGAL ON THE BOARD THE RUN *ENDS* WITH, NOT THE ONE IT
+STARTS WITH.**  Before the run there are 1330 legal 0.600/0.300 `GND` barrel
+sites inside island 24 at a 0.025 mm pitch.  After `/I2C_SCL_INT` escapes
+`U2.22` -- which is the entire point of removing the barrel -- KiCad's own refill
+leaves `U2.21` on a **1.5 mm² sliver** and there are **ZERO**, at every diameter
+down to the board's 0.500 mm `min_via_diameter` and every pitch down to 0.025 mm
+(`evidence/d653-bond-ladder-u221-post.json`).  At 0.450 mm the only sites are
+inside `U2.21`'s own land -- a via-in-pad under the board floor, which is a
+licence decision and not a routing one.
+
+Two levers were measured and refused before the rule was written down:
+
+  * `--bond-pad U2.21` re-derives the barrel site the board already had --
+    1.705 mm, (61.200, 90.800), the exact copper the run is removing.
+  * a `reserve` disc moves the BARREL and **not the RUN**.  `stitch_pad` reads
+    `field.blk`, but `QBoard.smooth` straightens the lattice path against the
+    board's own obstacle geometry and the pour-bond guard is not part of it: a
+    1.5 mm disc centred 0.70 mm off the run left the run **unchanged to the
+    micron**.  A named site is reviewable; a searched site under a guard that
+    does not bind it is not.  **This is an OPEN GAP in `qrouter.QBoard.smooth`
+    and it is recorded, not fixed** -- `qrouter.py` is shared with
+    `hardware/beta-v2` and is not this decision's to move.
+
+**NEW TRACKED READ-ONLY SCREEN, `screen_rebond_site.py`,** is what those three
+gate runs owed.  For ONE pad it reports BEFORE (every legal barrel site of the
+pad's own net inside its own filled island, per via rung), AFTER
+(`--fragment-board`: the same census restricted to the band a POST board's refill
+actually leaves) and **BLAME** (per foreign net, the sites that appear when that
+net's copper is held out -- `WithoutObjects`, restored on exit, board never
+written -- plus the `ALL_FOREIGN` upper bound).  A net that opens sites is one
+`--detour-spec` away; a band that opens for nobody is a placement wall and should
+be recorded as one instead of costing a fourth gate run.
+
+## 5. THE ANSWER WAS ONE CARD-DETECT SEGMENT
+
+`screen_rebond_site.py U2.21 --fragment-board <gate 2's candidate>`
+(`evidence/d653-rebond-site-u221.json`, 0.05 mm pitch):
+
+    rung           island sites   fragment band
+    0.60 / 0.30         260             0
+    0.50 / 0.25         463             0
+
+    BLAME, 0.60/0.30, fragment band
+      /09_COMMUNITY_HEADER/NATIVE_B_HDR   -15 objects ->   1 site
+      /SD_CARD_DETECT_N                   - 1 object  ->  72 sites
+      ALL FOREIGN                        -215 objects -> 235 sites
+
+**ONE object.**  A single 0.200 mm `F.Cu` segment of `/SD_CARD_DETECT_N`,
+(59.250, 91.750) -> (62.150, 88.850), crosses the sliver diagonally and is the
+whole reason the re-bond had nowhere to land.  It is a microSD card-detect
+strap: unprotected, not a rail, not RF, and `open_edges` 0 before and after.
+
+## 6. THE TRANSACTION
+
+One `--detour-spec`, three entries and one reserve
+(`evidence/d653-detour-spec.json`), `--partial --repair-planes --split-islands`:
+
+    /SD_CARD_DETECT_N  relay: true    ONE F.Cu segment, relaid between its own
+                                      two ends around a 1.0 mm disc at
+                                      (61.1, 89.9) exempting GND + both I2C nets
+                                      4.101 -> 5.210 mm, F.Cu only, ZERO vias,
+                                      inside its own 10.384 mm bound
+    GND                relay: false   the five INERT B.Cu segments, 1.7055 mm,
+                                      priced 1.332 mm at 0.35 mm
+    GND                barrel         (61.200, 90.800) -> (60.900, 89.650),
+                                      0.600/0.300, hard against U2.21's own land
+                                      so the re-bond needs NO TRACK AT ALL
+
+    /I2C_SCL_INT  U2.22 -> U3.22      22.969 mm, 2 barrels, B/F/B
+    /I2C_SDA_INT                      NO_PATH -- unchanged, and now the next move
+
+    added   16 tracks (0.200 mm) + 3 barrels (0.600/0.300)
+    removed  7 objects, all 7 licensed by this run's own applier
+    plane repair NOT NEEDED -- `regressed_before_repair: []`
+    PP1-PP4 all PASS; zones added 0, removed 0; rule areas added 0, removed 0
+    3267 -> 3277 tracks, 807 -> 809 vias
+
+`keepout_stackup`'s `In1.Cu` reference plane moves 9415.278 -> **9413.504 mm²**,
+1.774 mm² of antipad for the two new `/I2C_SCL_INT` barrels net of the `GND`
+barrel that moved.  Measured, not assumed.
+
+## 7. THE FRONTIER, RE-ASKED
+
+`screen_island_bridge.py --blame 16` and `screen_pad_bridge_blame.py --cap 48`
+on the promoted board (`evidence/d653-island-bridge-post.json`,
+`evidence/d653-pad-bridge-post.json`, 10.2 s): pad-bridge
+**EVICTABLE 1 / PLACEMENT_WALL 33 / UNRESOLVED 2**, and per net
+`+3V3` orphans 4 / `barrel_evictable` 1 / `stroke_evictable` 1,
+`BQ25185_SYS` orphans 8 / `barrel_inexpressible` 5 / `stroke_evictable` 1,
+**`GND` orphans 2 / `barrel_ok` 0 / nothing evictable** -- unchanged in shape
+from D-651's post board, which is the claim that the re-bond cost `GND` nothing.
+
+`screen_open_edge_cost.py` (`evidence/d653-open-edge-cost-post.json`):
+**`sole_path_net_count` is still 37** and the parts are still `U2`, `U3`, `U14`,
+`U16`.  Closing `U2.22 <-> U3.22` merged two orphan lands into ONE island; it did
+not reconnect that island to the bus.  **The wall has MOVED, not fallen**: the
+remaining `/I2C_SCL_INT` refusal is `{U3.22, U2.22}` against
+`{U1.38, R20.2, J1.44, U4.13}`, `NO_PATH` at 0.200 mm across a 10.784 mm gap.
+
+## 8. NEXT, IN ORDER OF LEVERAGE
+
+1. **`/I2C_SDA_INT` `U3.23 <-> U2.23`.**  D-652A measured the SAME six objects
+   open it at 17.801 mm; five of them are now gone and the sixth has moved.
+   Re-ask `screen_pair_corridor_blame.py` on the PROMOTED board before anything
+   else -- the pocket it was measured in no longer exists.
+2. **`/I2C_SCL_INT` `{U3.22, U2.22}` -> the bus**, 10.784 mm, `NO_PATH`.  Ask it
+   with `screen_pair_corridor_blame.py`, then `screen_rebond_site.py` on any
+   pad whose bond the answer wants to move.
+3. **Run `screen_rebond_site.py --fragment-board` BEFORE any transaction that
+   removes a bond barrel.**  That is the rule this decision bought.
+4. `QBoard.smooth` does not honour the pour-bond guard (§4).  Recorded as an
+   OPEN GAP; fixing it touches `hardware/beta-v2/checks/qrouter.py` and is a
+   decision of its own.
+5. **NEW OPEN DFM ITEM CARRIED FROM D-652:** `/I2C_SDA_INT` carries 308.5 mm and
+   `/I2C_SCL_INT` now carries **170.7 + 23.0 = 193.7 mm**; neither has been
+   priced against the I2C 400 pF ceiling or `R19`'s pull-up.
+6. CARRIED UNCHANGED: `BQ25185_SYS` `C26.2`'s single-file gate; `+3V3` `R129.1`
+   as an owner question (EVICTABLE on both arms, every minimal set PROTECTED);
+   `U12.10`/`U12.11` `PLACEMENT_WALL`; `U4.5` (`VDDIO`) and its per-part
+   electrical ledger; `/I2S_LRCLK`'s edge rate; `/NFC_SUPPLY`'s per-net current;
+   `/SPI_B_SCK` and `/BQ25185_STAT1` as LANDS; `MK1.4` and `J3.A12`/`J3.B1`;
+   `U9.16`'s single-barrel driver ground.  **No owner decision is OPEN.**
+   D-618's `J3` question remains RECORDED.
+
 # D-652A · 2026-09-06 · Demo — ADDENDUM: THE SAME SIX OBJECTS OPEN BOTH OF `U2`'s BUS LANDS
 
     authority  dc6d162a597ac944457b7d8575fe70270d1f8f1892027449fb8cc73686d8f1e4

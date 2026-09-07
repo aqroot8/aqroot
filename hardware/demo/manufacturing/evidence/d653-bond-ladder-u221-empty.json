@@ -1,0 +1,414 @@
+{
+ "board": "w/d653/empty/aqroot-Beta-v2.kicad_pcb",
+ "board_floors": {
+  "annular_min_nm": 125000,
+  "min_through_hole_nm": 200000,
+  "min_via_diameter_nm": 500000
+ },
+ "board_sha256": "4fac1a0c32f220ac0a01d7f38c825f578ef4349ddd9efe4b93d7f512701aeb3b",
+ "cell_budget": 80000000,
+ "guard": null,
+ "guard_sha256": null,
+ "max_mm": 8.0,
+ "missing_pads": [],
+ "pads": [
+  {
+   "best": {
+    "cells": 4629924,
+    "escape": null,
+    "grid_mm": 0.1,
+    "grid_nm": 100000,
+    "island_barrel": {
+     "island_mm2": 16.523,
+     "lands_on_reserved_planes": [
+      {
+       "area_mm2": 9415.278,
+       "layer": "In1.Cu",
+       "zone": "In1 GND REFERENCE"
+      },
+      {
+       "area_mm2": 9415.278,
+       "layer": "In4.Cu",
+       "zone": "In1 GND REFERENCE_1"
+      }
+     ],
+     "nearest_mm": 2.303,
+     "nearest_xy_mm": [
+      61.2,
+      91.5
+     ],
+     "ok": true,
+     "reason": null,
+     "sites": 31,
+     "sites_xy_mm": [
+      [
+       61.7,
+       86.1
+      ],
+      [
+       61.7,
+       86.2
+      ],
+      [
+       61.8,
+       86.2
+      ],
+      [
+       61.7,
+       86.3
+      ],
+      [
+       61.8,
+       86.3
+      ],
+      [
+       61.2,
+       91.5
+      ],
+      [
+       61.2,
+       91.6
+      ],
+      [
+       60.3,
+       93.3
+      ],
+      [
+       60.4,
+       93.3
+      ],
+      [
+       61.0,
+       93.3
+      ],
+      [
+       61.1,
+       93.3
+      ],
+      [
+       60.3,
+       93.4
+      ],
+      [
+       60.4,
+       93.4
+      ],
+      [
+       60.5,
+       93.4
+      ],
+      [
+       60.6,
+       93.4
+      ],
+      [
+       60.7,
+       93.4
+      ],
+      [
+       60.8,
+       93.4
+      ],
+      [
+       60.9,
+       93.4
+      ],
+      [
+       61.0,
+       93.4
+      ],
+      [
+       61.1,
+       93.4
+      ],
+      [
+       60.3,
+       93.5
+      ],
+      [
+       60.4,
+       93.5
+      ],
+      [
+       60.5,
+       93.5
+      ],
+      [
+       60.6,
+       93.5
+      ],
+      [
+       60.7,
+       93.5
+      ],
+      [
+       60.3,
+       93.6
+      ],
+      [
+       60.4,
+       93.6
+      ],
+      [
+       60.5,
+       93.6
+      ],
+      [
+       60.3,
+       93.7
+      ],
+      [
+       60.4,
+       93.7
+      ],
+      [
+       60.3,
+       93.8
+      ]
+     ]
+    },
+    "layer": "B",
+    "mm": 1.705,
+    "ok": true,
+    "promotable": true,
+    "ran": true,
+    "seconds": 1.7,
+    "via_dia_nm": 600000,
+    "via_drill_nm": 300000,
+    "via_mm": [
+     0.6,
+     0.3
+    ],
+    "via_xy": [
+     61.2,
+     90.8
+    ]
+   },
+   "bonded_rungs": 1,
+   "cells": [
+    {
+     "cells": 4629924,
+     "escape": null,
+     "grid_mm": 0.1,
+     "grid_nm": 100000,
+     "island_barrel": {
+      "island_mm2": 16.523,
+      "lands_on_reserved_planes": [
+       {
+        "area_mm2": 9415.278,
+        "layer": "In1.Cu",
+        "zone": "In1 GND REFERENCE"
+       },
+       {
+        "area_mm2": 9415.278,
+        "layer": "In4.Cu",
+        "zone": "In1 GND REFERENCE_1"
+       }
+      ],
+      "nearest_mm": 2.303,
+      "nearest_xy_mm": [
+       61.2,
+       91.5
+      ],
+      "ok": true,
+      "reason": null,
+      "sites": 31,
+      "sites_xy_mm": [
+       [
+        61.7,
+        86.1
+       ],
+       [
+        61.7,
+        86.2
+       ],
+       [
+        61.8,
+        86.2
+       ],
+       [
+        61.7,
+        86.3
+       ],
+       [
+        61.8,
+        86.3
+       ],
+       [
+        61.2,
+        91.5
+       ],
+       [
+        61.2,
+        91.6
+       ],
+       [
+        60.3,
+        93.3
+       ],
+       [
+        60.4,
+        93.3
+       ],
+       [
+        61.0,
+        93.3
+       ],
+       [
+        61.1,
+        93.3
+       ],
+       [
+        60.3,
+        93.4
+       ],
+       [
+        60.4,
+        93.4
+       ],
+       [
+        60.5,
+        93.4
+       ],
+       [
+        60.6,
+        93.4
+       ],
+       [
+        60.7,
+        93.4
+       ],
+       [
+        60.8,
+        93.4
+       ],
+       [
+        60.9,
+        93.4
+       ],
+       [
+        61.0,
+        93.4
+       ],
+       [
+        61.1,
+        93.4
+       ],
+       [
+        60.3,
+        93.5
+       ],
+       [
+        60.4,
+        93.5
+       ],
+       [
+        60.5,
+        93.5
+       ],
+       [
+        60.6,
+        93.5
+       ],
+       [
+        60.7,
+        93.5
+       ],
+       [
+        60.3,
+        93.6
+       ],
+       [
+        60.4,
+        93.6
+       ],
+       [
+        60.5,
+        93.6
+       ],
+       [
+        60.3,
+        93.7
+       ],
+       [
+        60.4,
+        93.7
+       ],
+       [
+        60.3,
+        93.8
+       ]
+      ]
+     },
+     "layer": "B",
+     "mm": 1.705,
+     "ok": true,
+     "promotable": true,
+     "ran": true,
+     "seconds": 1.7,
+     "via_dia_nm": 600000,
+     "via_drill_nm": 300000,
+     "via_mm": [
+      0.6,
+      0.3
+     ],
+     "via_xy": [
+      61.2,
+      90.8
+     ]
+    }
+   ],
+   "net": "GND",
+   "pad": "U2.21",
+   "placement": {
+    "layer": "B.Cu",
+    "layers": [
+     "B.Cu"
+    ],
+    "lkey": "B",
+    "size_mm": [
+     1.475,
+     0.4
+    ],
+    "xy_mm": [
+     59.8625,
+     89.625
+    ],
+    "xy_nm": [
+     59862500,
+     89625000
+    ]
+   },
+   "promotable_rungs": 1,
+   "verdict": "BONDABLE"
+  }
+ ],
+ "pitch_ladder": [
+  100000,
+  66700,
+  50000,
+  33300,
+  25000,
+  20000
+ ],
+ "reading": "A cell is PROMOTABLE only where the barrel clears board setup's own min_via_diameter / min_through_hole_diameter and the 0.125 mm annular floor.  Anything finer is legal on this board only inside a .kicad_dru rule area that names it, which `bond_pads` cannot author -- so a LICENCE_ONLY verdict is a measurement of what a licence would buy and is NOT promotable copper.  `island_barrel` is the BRIDGE question asked of the same pad: a legal barrel site inside its OWN filled island, landing inside the net's copper on a reserved inner plane -- no escape, no run.",
+ "schema": 1,
+ "via_ladder": [
+  [
+   600000,
+   300000
+  ],
+  [
+   500000,
+   250000
+  ],
+  [
+   450000,
+   200000
+  ],
+  [
+   350000,
+   200000
+  ]
+ ]
+}

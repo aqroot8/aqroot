@@ -1,0 +1,445 @@
+{
+ "board": "w/d653/gate1/aqroot-Beta-v2.kicad_pcb",
+ "board_floors": {
+  "annular_min_nm": 125000,
+  "min_through_hole_nm": 200000,
+  "min_via_diameter_nm": 500000
+ },
+ "board_sha256": "445bc5dcecc9d34b906174f2dbdc6fc0f6d869d78d6fe3c1ab9dcae740e4e5cb",
+ "cell_budget": 80000000,
+ "guard": null,
+ "guard_sha256": null,
+ "max_mm": 8.0,
+ "missing_pads": [],
+ "pads": [
+  {
+   "best": null,
+   "bonded_rungs": 1,
+   "cells": [
+    {
+     "cells": 4629924,
+     "grid_mm": 0.1,
+     "grid_nm": 100000,
+     "island_barrel": {
+      "island_mm2": 1.515,
+      "ok": false,
+      "reason": "NO_SITE_IN_ISLAND",
+      "sites": 0,
+      "sites_in_fragment": null
+     },
+     "ok": false,
+     "promotable": true,
+     "ran": true,
+     "reason": "NO_VIA_SITE",
+     "seconds": 1.6,
+     "via_dia_nm": 600000,
+     "via_drill_nm": 300000,
+     "via_mm": [
+      0.6,
+      0.3
+     ],
+     "why": "no legal 0.60 mm barrel within 8.0 mm of any escape"
+    },
+    {
+     "cells": 4629924,
+     "grid_mm": 0.1,
+     "grid_nm": 100000,
+     "island_barrel": {
+      "island_mm2": 1.515,
+      "ok": false,
+      "reason": "NO_SITE_IN_ISLAND",
+      "sites": 0,
+      "sites_in_fragment": null
+     },
+     "ok": false,
+     "promotable": true,
+     "ran": true,
+     "reason": "NO_VIA_SITE",
+     "seconds": 1.6,
+     "via_dia_nm": 500000,
+     "via_drill_nm": 250000,
+     "via_mm": [
+      0.5,
+      0.25
+     ],
+     "why": "no legal 0.50 mm barrel within 8.0 mm of any escape"
+    },
+    {
+     "cells": 4629924,
+     "grid_mm": 0.1,
+     "grid_nm": 100000,
+     "island_barrel": {
+      "island_mm2": 1.515,
+      "ok": false,
+      "reason": "NO_SITE_IN_ISLAND",
+      "sites": 0,
+      "sites_in_fragment": null
+     },
+     "ok": false,
+     "promotable": false,
+     "ran": true,
+     "reason": "NO_VIA_SITE",
+     "seconds": 1.6,
+     "via_dia_nm": 450000,
+     "via_drill_nm": 200000,
+     "via_mm": [
+      0.45,
+      0.2
+     ],
+     "why": "no legal 0.45 mm barrel within 8.0 mm of any escape"
+    },
+    {
+     "cells": 10392240,
+     "grid_mm": 0.0667,
+     "grid_nm": 66700,
+     "island_barrel": {
+      "island_mm2": 1.515,
+      "ok": false,
+      "reason": "NO_SITE_IN_ISLAND",
+      "sites": 0,
+      "sites_in_fragment": null
+     },
+     "ok": false,
+     "promotable": true,
+     "ran": true,
+     "reason": "NO_VIA_SITE",
+     "seconds": 2.2,
+     "via_dia_nm": 600000,
+     "via_drill_nm": 300000,
+     "via_mm": [
+      0.6,
+      0.3
+     ],
+     "why": "no legal 0.60 mm barrel within 8.0 mm of any escape"
+    },
+    {
+     "cells": 10392240,
+     "grid_mm": 0.0667,
+     "grid_nm": 66700,
+     "island_barrel": {
+      "island_mm2": 1.515,
+      "ok": false,
+      "reason": "NO_SITE_IN_ISLAND",
+      "sites": 0,
+      "sites_in_fragment": null
+     },
+     "ok": false,
+     "promotable": true,
+     "ran": true,
+     "reason": "NO_VIA_SITE",
+     "seconds": 2.1,
+     "via_dia_nm": 500000,
+     "via_drill_nm": 250000,
+     "via_mm": [
+      0.5,
+      0.25
+     ],
+     "why": "no legal 0.50 mm barrel within 8.0 mm of any escape"
+    },
+    {
+     "cells": 10392240,
+     "grid_mm": 0.0667,
+     "grid_nm": 66700,
+     "island_barrel": {
+      "island_mm2": 1.515,
+      "ok": false,
+      "reason": "NO_SITE_IN_ISLAND",
+      "sites": 0,
+      "sites_in_fragment": null
+     },
+     "ok": false,
+     "promotable": false,
+     "ran": true,
+     "reason": "NO_VIA_SITE",
+     "seconds": 2.1,
+     "via_dia_nm": 450000,
+     "via_drill_nm": 200000,
+     "via_mm": [
+      0.45,
+      0.2
+     ],
+     "why": "no legal 0.45 mm barrel within 8.0 mm of any escape"
+    },
+    {
+     "cells": 18501444,
+     "grid_mm": 0.05,
+     "grid_nm": 50000,
+     "island_barrel": {
+      "island_mm2": 1.515,
+      "ok": false,
+      "reason": "NO_SITE_IN_ISLAND",
+      "sites": 0,
+      "sites_in_fragment": null
+     },
+     "ok": false,
+     "promotable": true,
+     "ran": true,
+     "reason": "NO_VIA_SITE",
+     "seconds": 2.9,
+     "via_dia_nm": 600000,
+     "via_drill_nm": 300000,
+     "via_mm": [
+      0.6,
+      0.3
+     ],
+     "why": "no legal 0.60 mm barrel within 8.0 mm of any escape"
+    },
+    {
+     "cells": 18501444,
+     "grid_mm": 0.05,
+     "grid_nm": 50000,
+     "island_barrel": {
+      "island_mm2": 1.515,
+      "ok": false,
+      "reason": "NO_SITE_IN_ISLAND",
+      "sites": 0,
+      "sites_in_fragment": null
+     },
+     "ok": false,
+     "promotable": true,
+     "ran": true,
+     "reason": "NO_VIA_SITE",
+     "seconds": 2.8,
+     "via_dia_nm": 500000,
+     "via_drill_nm": 250000,
+     "via_mm": [
+      0.5,
+      0.25
+     ],
+     "why": "no legal 0.50 mm barrel within 8.0 mm of any escape"
+    },
+    {
+     "cells": 18501444,
+     "grid_mm": 0.05,
+     "grid_nm": 50000,
+     "island_barrel": {
+      "island_mm2": 1.515,
+      "ok": false,
+      "reason": "NO_SITE_IN_ISLAND",
+      "sites": 0,
+      "sites_in_fragment": null
+     },
+     "ok": false,
+     "promotable": false,
+     "ran": true,
+     "reason": "NO_VIA_SITE",
+     "seconds": 2.8,
+     "via_dia_nm": 450000,
+     "via_drill_nm": 200000,
+     "via_mm": [
+      0.45,
+      0.2
+     ],
+     "why": "no legal 0.45 mm barrel within 8.0 mm of any escape"
+    },
+    {
+     "cells": 41687580,
+     "grid_mm": 0.0333,
+     "grid_nm": 33300,
+     "island_barrel": {
+      "island_mm2": 1.515,
+      "ok": false,
+      "reason": "NO_SITE_IN_ISLAND",
+      "sites": 0,
+      "sites_in_fragment": null
+     },
+     "ok": false,
+     "promotable": true,
+     "ran": true,
+     "reason": "NO_VIA_SITE",
+     "seconds": 5.0,
+     "via_dia_nm": 600000,
+     "via_drill_nm": 300000,
+     "via_mm": [
+      0.6,
+      0.3
+     ],
+     "why": "no legal 0.60 mm barrel within 8.0 mm of any escape"
+    },
+    {
+     "cells": 41687580,
+     "grid_mm": 0.0333,
+     "grid_nm": 33300,
+     "island_barrel": {
+      "island_mm2": 1.515,
+      "ok": false,
+      "reason": "NO_SITE_IN_ISLAND",
+      "sites": 0,
+      "sites_in_fragment": null
+     },
+     "ok": false,
+     "promotable": true,
+     "ran": true,
+     "reason": "NO_VIA_SITE",
+     "seconds": 4.9,
+     "via_dia_nm": 500000,
+     "via_drill_nm": 250000,
+     "via_mm": [
+      0.5,
+      0.25
+     ],
+     "why": "no legal 0.50 mm barrel within 8.0 mm of any escape"
+    },
+    {
+     "cells": 41687580,
+     "grid_mm": 0.0333,
+     "grid_nm": 33300,
+     "island_barrel": {
+      "island_mm2": 1.515,
+      "ok": false,
+      "reason": "NO_SITE_IN_ISLAND",
+      "sites": 0,
+      "sites_in_fragment": null
+     },
+     "ok": false,
+     "promotable": false,
+     "ran": true,
+     "reason": "NO_VIA_SITE",
+     "seconds": 4.8,
+     "via_dia_nm": 450000,
+     "via_drill_nm": 200000,
+     "via_mm": [
+      0.45,
+      0.2
+     ],
+     "why": "no legal 0.45 mm barrel within 8.0 mm of any escape"
+    },
+    {
+     "cells": 73969284,
+     "grid_mm": 0.025,
+     "grid_nm": 25000,
+     "island_barrel": {
+      "island_mm2": 1.515,
+      "ok": false,
+      "reason": "NO_SITE_IN_ISLAND",
+      "sites": 0,
+      "sites_in_fragment": null
+     },
+     "ok": false,
+     "promotable": true,
+     "ran": true,
+     "reason": "NO_VIA_SITE",
+     "seconds": 8.0,
+     "via_dia_nm": 600000,
+     "via_drill_nm": 300000,
+     "via_mm": [
+      0.6,
+      0.3
+     ],
+     "why": "no legal 0.60 mm barrel within 8.0 mm of any escape"
+    },
+    {
+     "cells": 73969284,
+     "grid_mm": 0.025,
+     "grid_nm": 25000,
+     "island_barrel": {
+      "island_mm2": 1.515,
+      "ok": false,
+      "reason": "NO_SITE_IN_ISLAND",
+      "sites": 0,
+      "sites_in_fragment": null
+     },
+     "ok": false,
+     "promotable": true,
+     "ran": true,
+     "reason": "NO_VIA_SITE",
+     "seconds": 7.8,
+     "via_dia_nm": 500000,
+     "via_drill_nm": 250000,
+     "via_mm": [
+      0.5,
+      0.25
+     ],
+     "why": "no legal 0.50 mm barrel within 8.0 mm of any escape"
+    },
+    {
+     "cells": 73969284,
+     "escape": null,
+     "grid_mm": 0.025,
+     "grid_nm": 25000,
+     "island_barrel": {
+      "island_mm2": 1.515,
+      "ok": false,
+      "reason": "NO_SITE_IN_ISLAND",
+      "sites": 0,
+      "sites_in_fragment": null
+     },
+     "layer": "B",
+     "mm": 0.131,
+     "ok": true,
+     "promotable": false,
+     "ran": true,
+     "seconds": 7.7,
+     "via_dia_nm": 450000,
+     "via_drill_nm": 200000,
+     "via_mm": [
+      0.45,
+      0.2
+     ],
+     "via_xy": [
+      60.375,
+      89.625
+     ]
+    },
+    {
+     "cells": 115565604,
+     "grid_mm": 0.02,
+     "grid_nm": 20000,
+     "ran": false,
+     "reason": "OVER_CELL_BUDGET"
+    }
+   ],
+   "net": "GND",
+   "pad": "U2.21",
+   "placement": {
+    "layer": "B.Cu",
+    "layers": [
+     "B.Cu"
+    ],
+    "lkey": "B",
+    "size_mm": [
+     1.475,
+     0.4
+    ],
+    "xy_mm": [
+     59.8625,
+     89.625
+    ],
+    "xy_nm": [
+     59862500,
+     89625000
+    ]
+   },
+   "promotable_rungs": 0,
+   "verdict": "LICENCE_ONLY"
+  }
+ ],
+ "pitch_ladder": [
+  100000,
+  66700,
+  50000,
+  33300,
+  25000,
+  20000
+ ],
+ "reading": "A cell is PROMOTABLE only where the barrel clears board setup's own min_via_diameter / min_through_hole_diameter and the 0.125 mm annular floor.  Anything finer is legal on this board only inside a .kicad_dru rule area that names it, which `bond_pads` cannot author -- so a LICENCE_ONLY verdict is a measurement of what a licence would buy and is NOT promotable copper.  `island_barrel` is the BRIDGE question asked of the same pad: a legal barrel site inside its OWN filled island, landing inside the net's copper on a reserved inner plane -- no escape, no run.",
+ "schema": 1,
+ "via_ladder": [
+  [
+   600000,
+   300000
+  ],
+  [
+   500000,
+   250000
+  ],
+  [
+   450000,
+   200000
+  ],
+  [
+   350000,
+   200000
+  ]
+ ]
+}

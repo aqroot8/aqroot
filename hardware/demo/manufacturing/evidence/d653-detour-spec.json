@@ -1,0 +1,33 @@
+{
+  "schema": 1,
+  "note": "D-653 RE-BOND, COMPLETE. (1) U2.21 is the PCAL9535A's A0 address strap and the only pad on B.Cu GND island 24 (16.523 mm2); its five 0.300 mm B.Cu segments are INERT -- the pour already joins their two ends in 1.332 mm at 0.35 mm (evidence/d653-inert-u2.json) -- and its 0.600/0.300 barrel at (61.200, 90.800) is the island's ONLY bond to the In1/In4 planes. Both must go: tracks alone NO_PATH, barrel alone NO_PATH, together the U2.22 (SCL) and U2.23 (SDA) corridors OPEN (evidence/d653-inert-open-100k.json). (2) The barrel MOVES to (60.900, 89.650), hard against U2.21's own land, so the re-bond needs no track at all. (3) That site is legal only once ONE F.Cu segment of /SD_CARD_DETECT_N is out of the way: screen_rebond_site.py reads ZERO sites in U2.21's post-route fragment at 0.60 and 0.50 mm, and 72 / 119 with that single object held out (evidence/d653-rebond-site-u221.json). /SD_CARD_DETECT_N is a microSD card-detect strap, unprotected, and it is RELAID between its own two ends around the reserved disc.",
+  "detours": [
+    {
+      "net": "/SD_CARD_DETECT_N",
+      "relay": true,
+      "tracks": [
+        {"layer": "F.Cu", "a_mm": [59.250, 91.750], "b_mm": [62.150, 88.850], "width_mm": 0.2, "count": 1}
+      ]
+    },
+    {
+      "net": "GND",
+      "relay": false,
+      "tracks": [
+        {"layer": "B.Cu", "a_mm": [60.450, 89.675], "b_mm": [60.700, 89.725], "width_mm": 0.3, "count": 1},
+        {"layer": "B.Cu", "a_mm": [60.700, 89.725], "b_mm": [60.925, 89.900], "width_mm": 0.3, "count": 1},
+        {"layer": "B.Cu", "a_mm": [60.925, 89.900], "b_mm": [61.100, 90.525], "width_mm": 0.3, "count": 1},
+        {"layer": "B.Cu", "a_mm": [61.100, 90.525], "b_mm": [61.100, 90.900], "width_mm": 0.3, "count": 1},
+        {"layer": "B.Cu", "a_mm": [61.100, 90.900], "b_mm": [61.200, 90.800], "width_mm": 0.3, "count": 1}
+      ]
+    },
+    {
+      "net": "GND",
+      "barrel": {"at_mm": [61.200, 90.800], "dia_mm": 0.6, "drill_mm": 0.3, "count": 1,
+                 "to_mm": [60.900, 89.650]}
+    }
+  ],
+  "reserve": [
+    {"x_mm": 61.1, "y_mm": 89.9, "r_mm": 1.0,
+     "exempt": ["GND", "/I2C_SCL_INT", "/I2C_SDA_INT"]}
+  ]
+}

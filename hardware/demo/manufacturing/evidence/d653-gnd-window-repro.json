@@ -1,0 +1,73 @@
+{
+  "grid_nm": 100000,
+  "rows": [
+    {
+      "a": "U2.22",
+      "b": "U3.22",
+      "layers": [
+        "B",
+        "F",
+        "B"
+      ],
+      "mm": 20.0745,
+      "net": "/I2C_SCL_INT",
+      "ok": true,
+      "reason": null,
+      "seconds": 5.5,
+      "step": "GND_WINDOW_Without",
+      "vias": 2
+    },
+    {
+      "a": "U2.22",
+      "b": "U3.22",
+      "layers": [
+        "B",
+        "F",
+        "B"
+      ],
+      "mm": 20.0745,
+      "net": "/I2C_SCL_INT",
+      "objects": 19,
+      "ok": true,
+      "reason": null,
+      "seconds": 5.4,
+      "step": "GND_WINDOW_objects",
+      "vias": 2
+    },
+    {
+      "a": "U3.23",
+      "b": "U2.23",
+      "layers": [
+        "B",
+        "F",
+        "B"
+      ],
+      "mm": 17.8014,
+      "net": "/I2C_SDA_INT",
+      "ok": true,
+      "reason": null,
+      "seconds": 5.4,
+      "step": "GND_WINDOW_Without",
+      "vias": 2
+    },
+    {
+      "a": "U3.23",
+      "b": "U2.23",
+      "layers": [
+        "B",
+        "F",
+        "B"
+      ],
+      "mm": 17.8014,
+      "net": "/I2C_SDA_INT",
+      "objects": 19,
+      "ok": true,
+      "reason": null,
+      "seconds": 5.4,
+      "step": "GND_WINDOW_objects",
+      "vias": 2
+    }
+  ],
+  "schema": 1,
+  "seconds": 25.7
+}
