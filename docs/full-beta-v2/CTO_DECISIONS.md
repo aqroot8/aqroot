@@ -184,6 +184,42 @@ were never candidates.  `PP1`-`PP4` all `ok`.
      (D-655 §7), RECORDED NOT TAKEN.
   6. `copper_sliver` localisation remains an OPEN INSTRUMENT GAP.
   7. `hardware/demo/fab` is STALE against `feff5342`.
+
+## 8. ADDENDUM, MEASURED AFTER THE PROMOTE — THE LEVER'S REMAINING REACH ON
+## THIS BOARD IS FOUR EDGES, NOT THE CENSUS
+
+§7(1) above says "re-ask the residual census at the trunk floor" and OVERSTATES
+it.  Measured on the promoted board against every residual open net
+(`evidence/d662-trunk-floor-reach.json`):
+
+    residual retained open edges                                  30
+    on a net whose netclass the trunk-floor clause ADMITS           4
+
+    /01_POWER_TREE/BQ25185_SYS   SYS_MAIN       6   TRUNK_UNDER_PRICED
+    +3V3                         P3V3           3   admitted
+    /I2C_SCL_INT                 I2C            3   CLASS_HAS_NO_PUBLISHED_FLOOR
+    /BQ25185_STAT1/2, /WAKE_INT_N, /ACC_PWR_EN, /SX1262_DIO1,
+      /SPI_B_SCK, /NFC_VDD_RF    Default        8   CLASS_HAS_NO_PUBLISHED_FLOOR
+    GND                          GND            2   CLASS_HAS_NO_PUBLISHED_FLOOR
+    /USB_D_MCU_N/P, /USB_D_CONN_P  USB_D        3   CLASS_HAS_NO_PUBLISHED_FLOOR
+    /01_POWER_TREE/ACC_5V_LX     SWITCH_NODE    1   NET_CARRIES_NO_PUBLISHED_CURRENT
+    /I2S_LRCLK                   I2S            1   CLASS_HAS_NO_PUBLISHED_FLOOR
+    /NFC_SUPPLY                  P3V3           1   admitted
+
+**AND BOTH ADMITTED NETS ARE ALREADY CHARACTERISED AS NOT FALLING TO IT** --
+`+3V3`'s residual is `NO_VIA_SITE` and `U4.5` `NO_LEGAL_ESCAPE` (§5(e)), and
+`/NFC_SUPPLY`'s last edge is `U9.10`, a width-LICENCE wall (§5(d)).  **So this
+lever unlocks nothing further on the CURRENT residual.**  Its value is as a
+standing capability -- twenty-two of the thirty residual edges sit on classes
+`.kicad_dru` section 5 prices no floor for at all, which is where the width
+question genuinely does not arise.
+
+**THE CORRECTED NEXT TASK** is therefore NOT a census re-ask.  It is, in order:
+(1) `/01_POWER_TREE/BQ25185_SYS` `U11.1`, 6 of 30 edges and untouched by this
+clause; (2) the eight `Default`-class edges, where `screen_corridor_blockers`
+already names ONE opener for `/SPI_B_SCK` (`/NFC_CS_N`, 103.627 mm) and
+reproduces D-647's `RIPUP_SINGLE` for `/NFC_VDD_RF`; (3) a
+`PAD_ESCAPE_RUN_U9_10` width licence for the NFC `VDD_TX` land.
 # D-661 · 2026-09-07 · Demo — THE SCREEN'S OWN "MINIMAL" ARM IS THE ONE THAT FAILS: BTN_LEFT_N FALLS TO THE 20-OBJECT OPENER THE SCREEN RANKED FIRST, AND THE WHOLE D-PAD + A/B + RGB SHEET IS NOW CLOSED
 
     authority  12f8e58413cc0159ea540199f2d5d3e49de24805d88a0df8f79b51dea0d0a5e9

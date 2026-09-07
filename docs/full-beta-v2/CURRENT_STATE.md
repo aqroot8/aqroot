@@ -78,12 +78,16 @@
   names *"a different claim needing its own measurement"*.  `+3V3` asked dry with
   both levers changes NOTHING: its residual is `NO_VIA_SITE` and `U4.5`
   `NO_LEGAL_ESCAPE` -- a BARREL and LAND problem, not a width problem.
-  **NEXT, IN ORDER OF LEVERAGE:** (1) **RE-ASK THE RESIDUAL CENSUS AT THE TRUNK
-  FLOOR** -- every one of the 30 remaining edges whose net is `P3V3`, `ACC_3V3`,
-  `ACC_5V`, `VBUS_CHG` or `SPK_OUT` was declared a wall at a width the board
-  does not require.  (2) **`BQ25185_SYS` `U11.1` REMAINS THE #1 FABRICATION
-  BLOCKER** -- 6 of the 30 edges, and `SYS_MAIN` is one of the two classes the
-  trunk-floor clause REFUSES.  (3) `/SPI_B_SCK` `U9.30` `RIPUP_SINGLE`, one
+  **(8) THE LEVER'S REMAINING REACH IS FOUR EDGES, MEASURED AFTER THE PROMOTE**
+  (`evidence/d662-trunk-floor-reach.json`).  Of the 30 residual edges only 4 sit
+  on a class the clause ADMITS -- 3 on `+3V3` and 1 on `/NFC_SUPPLY` -- and BOTH
+  are already characterised as not falling to it (`NO_VIA_SITE` / `U4.5`, and
+  the `U9.10` width licence).  Twenty-two of the thirty are on `Default`, `I2C`,
+  `I2S`, `GND` or `USB_D`, which section 5 prices no floor for.  **So this lever
+  unlocks nothing further on the current residual; it is a standing capability.**
+  **NEXT, IN ORDER OF LEVERAGE:** (1) **`BQ25185_SYS` `U11.1` REMAINS THE #1
+  FABRICATION BLOCKER** -- 6 of the 30 edges, and `SYS_MAIN` is one of the two
+  classes the trunk-floor clause REFUSES, so this decision does not touch it.  (3) `/SPI_B_SCK` `U9.30` `RIPUP_SINGLE`, one
   opener `/NFC_CS_N` at 103.627 mm.  (4) `/NFC_VDD_RF` reproduces D-647's
   `RIPUP_SINGLE`; both openers are NFC transmit arms under
   `rf_symmetry_contract`.  (5) `/I2C_SCL_INT` `U14.7 <-> J1.44` remains **the one

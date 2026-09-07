@@ -1,0 +1,197 @@
+{
+ "board": "/home/aqroot8/aqroot-demo/hardware/demo/kicad/aqroot-demo/aqroot-Beta-v2.kicad_pcb",
+ "board_sha256": "feff534230f1c2743707071e4bc8ac21b5104e95abee73016a6c00cfd1e49aef",
+ "edges_in_admitted_classes": 4,
+ "nets": [
+  {
+   "admitted": false,
+   "amps": 1.441,
+   "floor_nm": 500000,
+   "net": "/01_POWER_TREE/BQ25185_SYS",
+   "netclass": "SYS_MAIN",
+   "open_edges": 6,
+   "required_amps": 2.19,
+   "why": "TRUNK_UNDER_PRICED",
+   "width_now_nm": 800000
+  },
+  {
+   "admitted": true,
+   "amps": 1.226,
+   "floor_nm": 400000,
+   "net": "+3V3",
+   "netclass": "P3V3",
+   "open_edges": 3,
+   "required_amps": 1.0,
+   "why": "PRICED_AT_THE_PUBLISHED_BAR",
+   "width_now_nm": 600000
+  },
+  {
+   "admitted": false,
+   "amps": null,
+   "floor_nm": null,
+   "net": "/I2C_SCL_INT",
+   "netclass": "I2C",
+   "open_edges": 3,
+   "required_amps": null,
+   "why": "CLASS_HAS_NO_PUBLISHED_FLOOR",
+   "width_now_nm": 200000
+  },
+  {
+   "admitted": false,
+   "amps": null,
+   "floor_nm": null,
+   "net": "/BQ25185_STAT1",
+   "netclass": "Default",
+   "open_edges": 2,
+   "required_amps": null,
+   "why": "CLASS_HAS_NO_PUBLISHED_FLOOR",
+   "width_now_nm": 200000
+  },
+  {
+   "admitted": false,
+   "amps": null,
+   "floor_nm": null,
+   "net": "/BQ25185_STAT2",
+   "netclass": "Default",
+   "open_edges": 2,
+   "required_amps": null,
+   "why": "CLASS_HAS_NO_PUBLISHED_FLOOR",
+   "width_now_nm": 200000
+  },
+  {
+   "admitted": false,
+   "amps": null,
+   "floor_nm": null,
+   "net": "/WAKE_INT_N",
+   "netclass": "Default",
+   "open_edges": 2,
+   "required_amps": null,
+   "why": "CLASS_HAS_NO_PUBLISHED_FLOOR",
+   "width_now_nm": 200000
+  },
+  {
+   "admitted": false,
+   "amps": null,
+   "floor_nm": null,
+   "net": "GND",
+   "netclass": "GND",
+   "open_edges": 2,
+   "required_amps": null,
+   "why": "CLASS_HAS_NO_PUBLISHED_FLOOR",
+   "width_now_nm": 300000
+  },
+  {
+   "admitted": false,
+   "amps": 1.226,
+   "floor_nm": 400000,
+   "net": "/01_POWER_TREE/ACC_5V_LX",
+   "netclass": "SWITCH_NODE",
+   "open_edges": 1,
+   "required_amps": null,
+   "why": "NET_CARRIES_NO_PUBLISHED_CURRENT",
+   "width_now_nm": 600000
+  },
+  {
+   "admitted": false,
+   "amps": null,
+   "floor_nm": null,
+   "net": "/01_POWER_TREE/USB_D_CONN_P",
+   "netclass": "USB_D",
+   "open_edges": 1,
+   "required_amps": null,
+   "why": "CLASS_HAS_NO_PUBLISHED_FLOOR",
+   "width_now_nm": 250000
+  },
+  {
+   "admitted": false,
+   "amps": null,
+   "floor_nm": null,
+   "net": "/04_SPI_B_RADIOS_NFC/NFC_VDD_RF",
+   "netclass": "Default",
+   "open_edges": 1,
+   "required_amps": null,
+   "why": "CLASS_HAS_NO_PUBLISHED_FLOOR",
+   "width_now_nm": 200000
+  },
+  {
+   "admitted": false,
+   "amps": null,
+   "floor_nm": null,
+   "net": "/ACC_PWR_EN",
+   "netclass": "Default",
+   "open_edges": 1,
+   "required_amps": null,
+   "why": "CLASS_HAS_NO_PUBLISHED_FLOOR",
+   "width_now_nm": 200000
+  },
+  {
+   "admitted": false,
+   "amps": null,
+   "floor_nm": null,
+   "net": "/I2S_LRCLK",
+   "netclass": "I2S",
+   "open_edges": 1,
+   "required_amps": null,
+   "why": "CLASS_HAS_NO_PUBLISHED_FLOOR",
+   "width_now_nm": 200000
+  },
+  {
+   "admitted": true,
+   "amps": 1.226,
+   "floor_nm": 400000,
+   "net": "/NFC_SUPPLY",
+   "netclass": "P3V3",
+   "open_edges": 1,
+   "required_amps": 1.0,
+   "why": "PRICED_AT_THE_PUBLISHED_BAR",
+   "width_now_nm": 600000
+  },
+  {
+   "admitted": false,
+   "amps": null,
+   "floor_nm": null,
+   "net": "/SPI_B_SCK",
+   "netclass": "Default",
+   "open_edges": 1,
+   "required_amps": null,
+   "why": "CLASS_HAS_NO_PUBLISHED_FLOOR",
+   "width_now_nm": 200000
+  },
+  {
+   "admitted": false,
+   "amps": null,
+   "floor_nm": null,
+   "net": "/SX1262_DIO1",
+   "netclass": "Default",
+   "open_edges": 1,
+   "required_amps": null,
+   "why": "CLASS_HAS_NO_PUBLISHED_FLOOR",
+   "width_now_nm": 200000
+  },
+  {
+   "admitted": false,
+   "amps": null,
+   "floor_nm": null,
+   "net": "/USB_D_MCU_N",
+   "netclass": "USB_D",
+   "open_edges": 1,
+   "required_amps": null,
+   "why": "CLASS_HAS_NO_PUBLISHED_FLOOR",
+   "width_now_nm": 250000
+  },
+  {
+   "admitted": false,
+   "amps": null,
+   "floor_nm": null,
+   "net": "/USB_D_MCU_P",
+   "netclass": "USB_D",
+   "open_edges": 1,
+   "required_amps": null,
+   "why": "CLASS_HAS_NO_PUBLISHED_FLOOR",
+   "width_now_nm": 250000
+  }
+ ],
+ "question": "of the residual retained open edges, how many are on a net whose netclass the D-662 trunk-floor clause ADMITS?",
+ "residual_open_edges": 30,
+ "schema": 1
+}
