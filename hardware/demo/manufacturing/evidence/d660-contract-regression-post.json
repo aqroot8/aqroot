@@ -1,0 +1,110 @@
+{
+ "all_identical": false,
+ "all_ran": true,
+ "baseline": "d633",
+ "contracts": [
+  {
+   "baseline": null,
+   "board_sha256": "12f8e58413cc0159ea540199f2d5d3e49de24805d88a0df8f79b51dea0d0a5e9",
+   "contract": "neck",
+   "identical": null,
+   "ran": true,
+   "returncode": 0,
+   "verdict": true
+  },
+  {
+   "baseline": null,
+   "board_sha256": null,
+   "contract": "placement",
+   "identical": null,
+   "ran": true,
+   "returncode": 0,
+   "verdict": "PASS"
+  },
+  {
+   "baseline": null,
+   "board_sha256": "12f8e58413cc0159ea540199f2d5d3e49de24805d88a0df8f79b51dea0d0a5e9",
+   "contract": "population",
+   "identical": null,
+   "ran": true,
+   "returncode": 0,
+   "verdict": "PASS"
+  },
+  {
+   "baseline": null,
+   "board_sha256": "12f8e58413cc0159ea540199f2d5d3e49de24805d88a0df8f79b51dea0d0a5e9",
+   "contract": "land_parity",
+   "identical": null,
+   "ran": true,
+   "returncode": 0,
+   "verdict": "PASS"
+  },
+  {
+   "baseline": null,
+   "board_sha256": null,
+   "contract": "keepout_stackup",
+   "identical": null,
+   "ran": true,
+   "returncode": 0,
+   "verdict": true
+  },
+  {
+   "baseline": null,
+   "board_sha256": null,
+   "contract": "rf_symmetry",
+   "identical": null,
+   "ran": true,
+   "returncode": 0,
+   "verdict": "PASS"
+  },
+  {
+   "baseline": null,
+   "board_sha256": null,
+   "contract": "pour_partition",
+   "identical": null,
+   "ran": true,
+   "returncode": 0,
+   "verdict": true
+  },
+  {
+   "baseline": null,
+   "board_sha256": "12f8e58413cc0159ea540199f2d5d3e49de24805d88a0df8f79b51dea0d0a5e9",
+   "contract": "pour_bond",
+   "identical": null,
+   "ran": true,
+   "returncode": 0,
+   "verdict": true
+  },
+  {
+   "baseline": null,
+   "board_sha256": "12f8e58413cc0159ea540199f2d5d3e49de24805d88a0df8f79b51dea0d0a5e9",
+   "contract": "leaf_land",
+   "identical": null,
+   "ran": true,
+   "returncode": 0,
+   "verdict": true
+  },
+  {
+   "baseline": null,
+   "board_sha256": null,
+   "contract": "protected_copper",
+   "identical": null,
+   "ran": true,
+   "returncode": 0,
+   "verdict": true
+  },
+  {
+   "baseline": null,
+   "board_sha256": "12f8e58413cc0159ea540199f2d5d3e49de24805d88a0df8f79b51dea0d0a5e9",
+   "contract": "obstacle_model",
+   "identical": null,
+   "ran": true,
+   "returncode": 0,
+   "verdict": "PASS"
+  }
+ ],
+ "contracts_run": 11,
+ "method": "each contract re-run now and compared FIELD BY FIELD with the artifact the baseline decision committed; path-typed fields (board, schematic, guard, pre_board) compare by basename because they record the path as typed",
+ "question": "does this framework change move ANY standing contract, on a board whose sha256 did not change",
+ "schema": 1
+}

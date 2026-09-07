@@ -23,8 +23,10 @@ Exactly two things were missing and this file is one of them:
     reserved for a FAMILY.  `USB_D_CONN_N` must be as free to run down the USB
     lane as `USB_D_CONN_P` is.  That half lives in `route_maze_batch.py`.
 
-TWO MODES, and the difference between them is the difference between reserving
-a plan and reserving a fact.
+THREE MODES.  The first two are the difference between reserving a plan and
+reserving a fact; the third is for a lane that is neither -- a lane that is the
+ABSENCE of foreign copper, which a pour-served rail has and a routed link never
+does.
 
   PROSPECTIVE (default).  The centreline is the Euclidean MST over the
   CENTROIDS of the named nets' pad clusters -- the lane the link wants, drawn
@@ -43,6 +45,16 @@ a plan and reserving a fact.
   reserve the impossible, and it is the mode that stops the bleeding on any
   route worth keeping: emit it once after a promotion and hand it to every
   later batch as `--guard`.
+
+  STATED (`--lane`, D-660).  The centreline is GIVEN, in millimetres, exactly
+  as D-655's `--evict-window` states an eviction corridor instead of deriving
+  it from a pad bounding box.  `/01_POWER_TREE/BQ25185_SYS` is why: it owns
+  thirteen pads over 105 mm, so its PROSPECTIVE MST reserves lanes across the
+  whole board, and it owns no track at `U11` at all, so RETROSPECTIVE reserves
+  nothing there -- the lane the charger's `SYS` output needs is the space three
+  FOREIGN objects occupy, and the only honest way to name it is to measure it
+  and say so.  A one-point lane reserves a DISC, which is what a barrel's site
+  is.
 
 Nothing here writes the board or promotes copper.  Output is a guard spec in
 `pour_bond_guard.py`'s own shape, so `route_maze_batch.py --guard` consumes it
@@ -143,6 +155,46 @@ def net_pads(board, nets):
     return out
 
 
+def stated(lanes, layers, step):
+    """One guard record per STATED polyline -- D-660.
+
+    THE THIRD MODE, AND THE ONE A POUR-SERVED RAIL NEEDS.  Prospective draws
+    the MST over a family's pad-cluster centroids and retrospective samples the
+    family's own routed tracks.  Neither can express the lane a POUR wants:
+    `/01_POWER_TREE/BQ25185_SYS` owns thirteen pads spread over 105 mm, so its
+    prospective MST reserves lanes across the whole board, and the lane that
+    matters at `U11` is not the family's copper -- it is the ABSENCE of three
+    FOREIGN objects, measured on a probe board KiCad's own `ZONE_FILLER` refills.
+
+    So the lane is STATED in millimetres, exactly as D-655's `--evict-window`
+    states an eviction corridor instead of deriving it from a pad bounding box.
+    This is a RESTRICTION on foreign copper and never a licence: it reserves
+    nothing to the family that the family did not already own, it writes no
+    board and it relaxes no rule.  What makes a stated lane honest is that its
+    coordinates are a MEASUREMENT -- name the objects the cut-blame screen
+    named, and reserve where they lay.
+    """
+    recs = []
+    for i, pts_mm in enumerate(lanes):
+        nodes = [(int(round(x * 1e6)), int(round(y * 1e6))) for (x, y) in pts_mm]
+        pts, mm = [], 0.0
+        if len(nodes) == 1:
+            pts = [nodes[0]]
+        for k in range(len(nodes) - 1):
+            a, b = nodes[k], nodes[k + 1]
+            mm += math.hypot(b[0] - a[0], b[1] - a[1]) / 1e6
+            for p in sample(a, b, step):
+                pts.append((p[0], p[1]))
+        for L in layers:
+            recs.append(dict(lkey=LKEY[L], layer=L, mode="stated",
+                             ends=["lane %d" % (i + 1),
+                                   " ".join("%.4f,%.4f" % p for p in pts_mm)],
+                             mm=round(mm, 3),
+                             points=[[int(round(x)), int(round(y))]
+                                     for (x, y) in pts]))
+    return recs
+
+
 def prospective(board, nets, layers, step, cluster_nm):
     """One guard record per MST edge over the family's pad-cluster centroids."""
     pads = net_pads(board, nets)
@@ -231,6 +283,15 @@ def main():
     ap.add_argument("--exempt", action="append", default=[], metavar="NET",
                     help="an ADDITIONAL net the reservation does not bind, "
                          "beyond the --net family itself")
+    ap.add_argument("--lane", action="append", default=[],
+                    metavar="X0,Y0 X1,Y1 ...",
+                    help="D-660: STATE the lane in millimetres as a polyline "
+                         "instead of deriving it from the family's pads or "
+                         "tracks; repeatable, one record per lane.  A single "
+                         "point reserves a DISC, which is what a barrel's site "
+                         "is.  Use it when the lane is the absence of foreign "
+                         "copper rather than the presence of the family's own "
+                         "-- a pour-served rail has no centreline to reserve")
     ap.add_argument("--label", default="corridor")
     ap.add_argument("--merge", type=Path,
                     help="concatenate this guard spec's records into the "
@@ -249,6 +310,17 @@ def main():
     if a.from_copper and a.cluster_mm != CLUSTER_MM:
         ap.error("--cluster-mm has no meaning with --from-copper: that mode "
                  "samples real tracks, it does not group pads")
+    if a.lane and a.from_copper:
+        ap.error("--lane STATES the lane and --from-copper MEASURES it off the "
+                 "family's own tracks; a run is one mode or the other")
+    lanes = []
+    for text in a.lane:
+        pts = []
+        for tok in text.replace(",", " ").split():
+            pts.append(float(tok))
+        if len(pts) < 2 or len(pts) % 2:
+            ap.error("--lane %r is not a list of x,y pairs in mm" % text)
+        lanes.append([(pts[i], pts[i + 1]) for i in range(0, len(pts), 2)])
 
     import pcbnew
     board = pcbnew.LoadBoard(str(a.board))
@@ -259,9 +331,13 @@ def main():
 
     step = int(round(a.step_mm * 1e6))
     keepout = int(round((a.half_width_mm + a.clearance_mm) * 1e6))
-    recs = (retrospective(board, nets, layers, step) if a.from_copper
-            else prospective(board, nets, layers, step,
-                             int(round(a.cluster_mm * 1e6))))
+    if a.lane:
+        recs = stated(lanes, layers, step)
+    elif a.from_copper:
+        recs = retrospective(board, nets, layers, step)
+    else:
+        recs = prospective(board, nets, layers, step,
+                           int(round(a.cluster_mm * 1e6)))
 
     # EVERY member of the family is exempt, and the record's `net` field is one
     # of them only because `guard_for` already skips a record whose `net` equals
@@ -281,11 +357,14 @@ def main():
 
     doc = dict(schema=1, board=str(a.board), board_sha256=sha256_file(a.board),
                kind="corridor-reservation", label=a.label,
-               mode="from-copper" if a.from_copper else "prospective",
+               mode=("stated" if a.lane else
+                     "from-copper" if a.from_copper else "prospective"),
+               lanes=lanes or None,
                layers=layers, family=sorted(nets), exempt=exempt,
                half_width_mm=a.half_width_mm, clearance_mm=a.clearance_mm,
                keepout_radius=keepout, step_mm=a.step_mm,
-               cluster_mm=(None if a.from_copper else a.cluster_mm),
+               cluster_mm=(None if (a.from_copper or a.lane)
+                           else a.cluster_mm),
                merged_from=merge_src,
                summary=dict(corridors=len(recs), merged_guards=len(merged),
                             mm=round(sum(r["mm"] for r in recs), 3),

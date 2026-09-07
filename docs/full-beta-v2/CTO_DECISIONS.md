@@ -1,3 +1,184 @@
+# D-660 · 2026-09-07 · Demo — A WALL REFUSED FOUR WAYS IN D-647 FALLS TO A PRIMITIVE D-655 BUILT AFTERWARDS: THE COMMUNITY PORT'S SWITCHED 5 V ENABLE IS CLOSED BY ONE NAMED OBJECT IN A 0.4 × 4.6 mm POCKET
+
+    authority  c1029d479f7edae9e5b9fafcc32ca820ef17050a249bef4b66e4e5a25b082ef5
+            -> 12f8e58413cc0159ea540199f2d5d3e49de24805d88a0df8f79b51dea0d0a5e9
+    retained open edges 33 -> 32    open retained nets 19 -> 18
+    connected retained nets 154 -> 155   raw board ratsnest 49 -> 48
+    KiCad's own unconnected items 49 -> 48
+    `hardware/beta-v2` UNTOUCHED.
+
+**COPPER PROMOTED.**  **Fifteen of fifteen gate clauses PASS, ZERO refused**;
+real KiCad DRC exit 0, **zero attributable**, and the promoted board's
+severity-error profile is the INHERITED one EXACTLY (`hole_clearance` 5,
+`solder_mask_bridge` 1, schematic parity 247 warnings / 0 errors).
+`verify_promotion.py` **15/15 PASS** on the two board files
+(`evidence/d660-verify-promotion.json`), including `D-186_bat_main_class` and
+`D-269_bat_main_routed_clearance` LIVE, `beta_v2_untouched`, `fill_stable`.
+Standing suite **11/11 RAN, 11/11 PASS** before and after
+(`evidence/d660-contract-regression-pre.json`, `-post.json`, baseline `d633`).
+
+## 1. WHAT WAS CLOSED
+
+`/ACC_5V_BOOST_EN` is the enable on `U21`, the `TPS61023` accessory 5 V boost —
+**software-controlled switched 5 V accessory power**, which
+`AQROOT_DEMO_SCOPE.md` lists under *"Demo implementation MUST retain"*.  Its
+`R102.1` land at (60.750, 57.735) had been an island of ONE since D-597.  On
+the promoted board the net is **4 pads, ONE island, zero open edges**:
+`R102.1`, `TP30.1`, `U21.2`, `U3.16` (`evidence/d660-ledger-promoted.json`).
+
+## 2. THE REFUSAL WAS OLDER THAN THE PRIMITIVE THAT LIFTS IT
+
+D-647 named this net `RIPUP_SINGLE`, minimised it to **a SINGLE object of 32** —
+`/09_COMMUNITY_HEADER/TCA4307_READY` `B.Cu` (59.900, 57.900) → (60.100, 53.800)
+— and then **refused it four ways**: a one-track detour at the derived 9.131 mm
+budget, at a stated 12.500 mm, a three-track CHAIN at 11.414 mm, and
+`--evict-whole` over all 24 objects with the net re-requested, the last at
+41 → 42 open edges.  It recorded the reason: *"the copper the closure needs
+CROSSES the copper that blocks it."*
+
+**`--evict-window` did not exist when that was written.**  D-655 added it eight
+decisions later, for a different net, to stop a derived corridor from taking 84
+objects when a screen had named two.  The transaction D-647 could not express —
+*rip up THAT ONE OBJECT, in THAT pocket, and re-lay the net that owns it* — is
+one flag today.  The screen was **re-run first**, on the board D-659 left, because
+a rip-up verdict is a property of a board and not of a net (D-597): it holds,
+same single object, same 32 candidates, `reproved_ok`, 14 m 25 s
+(`evidence/d660-corridor-rescreen.json`).
+
+## 3. THREE THINGS HAD TO BE RIGHT AND EACH COST ONE RUN
+
+    window                            grid      removed  result
+    59.80,53.70,60.20,58.15  (bbox)   0.100 mm     0     nothing evicted, board unchanged
+    59.65,53.55,60.35,58.15           0.100 mm     1     BOOST_EN routes 8.760 mm / 0 vias,
+                                                         TCA4307_READY NO_PATH -> REGRESSED
+    59.65,53.55,60.35,58.15           0.050 mm     1     both route, but `+3V3` REGRESSED
+    59.65,53.55,60.35,58.15           0.025 mm     1     both route, 33 -> 32, refused on
+                                                         2 `track_dangling` (orphan stubs)
+    59.55,53.55,61.55,59.10           0.025 mm     3     15/15 PASS, PROMOTED
+
+**(a) AN EVICTION WINDOW EQUAL TO THE OBJECT'S OWN BOUNDING BOX EVICTS
+NOTHING.**  `--evict-window` demands an object lie **WHOLLY** inside, and the
+screen reports the object's bbox to the micrometre, so the two are the same
+rectangle and nothing qualifies.  The first run removed 0 objects and reported
+`board_changed: false` — a null result that reads exactly like a wall.  Pad the
+screen's bbox.
+
+**(b) THE EVICTED NET MUST BE REQUESTED, NOT REPAIRED.**  With
+`/09_COMMUNITY_HEADER/TCA4307_READY` evicted but not requested, the bounded 8 mm
+repair pass could not rebuild it and the run regressed that net.  Requested as a
+primary proposal it closes in **6.756 mm**, on `F.Cu` — *over* the `B.Cu` copper
+that had blocked it.  D-647's "the copper the closure needs crosses the copper
+that blocks it" is true, and the answer is that one of them changes layer.
+
+**(c) THE PITCH IS PART OF THE TRANSACTION, AGAIN (D-656).**  At 0.100 mm
+`TCA4307_READY` is `NO_PATH` — 6.253 mm gap, 22 source and 11 destination
+escapes, *"no all-layer corridor at 0.200 mm"*.  At **0.050 mm both nets route
+and `+3V3` REGRESSES**; the rung that works is **0.025 mm**, and it is also the
+SHORTEST — `BOOST_EN` 8.628 mm against 9.086 mm at 0.050 and 9.240 mm at
+0.025-with-the-narrow-window.  A refusal at the inherited pitch is a statement
+about the lattice.
+
+**(d) EVICTING ONE OBJECT OF A CHAIN LEAVES ITS NEIGHBOURS AS ANTENNAE.**  The
+0.025 mm narrow-window run reached 33 → 32 with **zero regressions** and was
+still REFUSED, on `attributable_drc` alone: two new `track_dangling` warnings on
+the 1.2627 mm and 1.0198 mm `TCA4307_READY` stubs the removed segment used to
+join.  The net was electrically whole — the re-route took another path and left
+the stubs behind.  Widening the window to **[59.55, 53.55]–[61.55, 59.10]** so
+all THREE objects are evicted together removes them, and the DRC profile is the
+inherited one exactly.
+
+## 4. WHAT WAS PROMOTED
+
+    added     11 tracks (B.Cu + F.Cu), ALL 0.200 mm; 2 vias, BOTH 0.600/0.300
+    removed   3 licensed objects, all `/09_COMMUNITY_HEADER/TCA4307_READY` B.Cu
+    joins     /ACC_5V_BOOST_EN            R102.1 -> TP30.1   8.628 mm
+              /09_COMMUNITY_HEADER/TCA4307_READY               6.756 mm
+
+No new via geometry, no `.kicad_dru` change, no rule area added or widened, no
+escape relief, no licence of any kind.  `protected_copper.py` untouched;
+`/ACC_3V3_SW` and `/ACC_5V_SW_EN` — the other single opener D-647 named, and the
+rail this Demo must preserve — were never candidates.
+
+## 5. AND THE REST OF THE RESIDUAL IS NOW FULLY INVENTORIED
+
+D-659 re-asked **ten of the twelve** non-parked open retained nets at 0.050 mm
+and none routed.  The two it did not ask were `/ACC_5V_BOOST_EN` and
+`/SPI_B_SCK`; both are asked here (`evidence/d660-open-edge-sweep-g50-remainder.json`)
+and both return `NO_PATH` at that pitch — `/SPI_B_SCK` `U9.30` across a 90.764 mm
+gap, `/ACC_5V_BOOST_EN` `R102.1` across 6.815 mm, *"no all-layer corridor at
+0.200 mm"*.  **The 0.050 mm sweep is now complete over all twelve**, and one of
+the twelve has since been closed — by a transaction, not by a pitch.
+
+## 6. D-659 §6's "NO SITE NORTH OF THE CORRIDOR" IS A VIA-**SIZE** VERDICT
+
+D-659 swept `maze3d._via_free_everywhere` 6.0 mm around the `USB_VBUS_CHG`
+barrel at (66.800, 79.4464) and found **259 legal sites, EVERY ONE at
+y >= 79.4464**, and concluded `U11.10` cannot leave the package northward on any
+layer.  Two things about that sweep were unexamined and both are measured here,
+**read-only, on probe boards; the authoritative board is untouched by all four**:
+
+**(a) IT WAS RUN WITH THE BLOCKING TRACKS STILL ON THE BOARD.**  Its own
+predicate line says *"on a copy with the named BARRELS removed"* — the 0.500 mm
+`USB_VBUS_CHG` run and the `ISET` run that D-659 named for removal in the same
+breath were both still there.  Re-run with all three objects out
+(`evidence/d660-barrel-sites-tracks-out.json`): **259 legal sites, dy 0.0 to
+5.9, ZERO north — byte-for-byte the same answer.**  The finding is robust and
+not an artefact of its own probe.
+
+**(b) IT WAS RUN AT ONE VIA SIZE.**  At the as-built 0.900/0.400 there is no
+northern site.  At this board's ORDINARY 0.600/0.300 there are **49**, at
+0.500/0.250 **103**, and at the licensed 0.350/0.200 **193**
+(`evidence/d660-barrel-sites-{0600-0300,0500-0250,0350-0200}.json`).  The
+nearest 0.600/0.300 sites are (66.500, 79.2464), (67.100, 79.2464) and
+(66.400, 79.3464) — 0.1 to 0.4 mm north of the as-built barrel.
+
+**IT DOES NOT YET OPEN THE POCKET, AND THAT IS THE USEFUL HALF.**  Those 49
+sites split **17 inside the pour band and 32 above it**, and of the 32 the only
+ones east of `U11` are at (70.9–71.1, 75.1–76.3) — 2.5 mm east and 3 mm north of
+`U11.10`.  So the wall is not *"`U11.10` has no northern escape"*; it is
+**"`U11.10`'s escape and the lane the pour needs are the same 0.5 mm of `B.Cu`"** —
+measured on the freed probe, the channel necks to **0.49 mm** between
+`U11.10`'s own antipad (bottom at y ≈ 79.247) and `R36.2`'s (top at y ≈ 79.737).
+`BQ25185_SYS` `POUR 1` island 3 on that probe is **86.259 mm2** and holds
+`U11.1` — the D-659 figure, reproduced.
+
+## 7. FRAMEWORK — `reserve_corridor.py` GAINS A THIRD MODE, `--lane`
+
+PROSPECTIVE draws the MST over a family's pad-cluster centroids; RETROSPECTIVE
+samples the family's own routed tracks.  **Neither can express the lane a
+POUR-SERVED rail wants.**  `/01_POWER_TREE/BQ25185_SYS` owns thirteen pads over
+105 mm, so its prospective MST reserves lanes across the whole board, and it
+owns no track at `U11` at all, so retrospective reserves nothing there.  The
+lane that matters is the ABSENCE of three foreign objects.
+
+`--lane "X0,Y0 X1,Y1 ..."` STATES it in millimetres — the same move D-655 made
+for `--evict-window` — repeatable, one guard record per lane, a one-point lane
+reserving a DISC because that is what a barrel's site is.  It is a RESTRICTION
+on foreign copper and never a licence: it writes no board, adds no rule area and
+relaxes nothing.  The `U11` lane is emitted and kept
+(`evidence/d660-u11-sys-lane.json`, three `B.Cu` records, `BQ25185_SYS`
+exempt) so the transaction §6 defines can be run the moment `U11.10` has
+somewhere to go.  The standing suite is **11/11 PASS both sides of the change**.
+
+## NEXT, IN ORDER OF LEVERAGE
+
+1. **`BQ25185_SYS` `U11.1` remains the #1 FABRICATION BLOCKER**, priced at three
+   objects, with the lane authored and the wall now stated exactly: `U11.10`'s
+   escape and the pour lane contend for one 0.49 mm channel.  The bounded
+   re-floorplan (`apply_part_shift.py` on `R36`, whose `R36.2` antipad forms the
+   channel's south wall, or on `C23`) is judged by re-running
+   `screen_pour_cut_blame.py --free U11.1=U12.1` on the shifted board.
+2. **Re-run `screen_corridor_blockers.py` over the remaining eleven open nets.**
+   This decision is the proof that a `RIPUP_SINGLE` verdict recorded before
+   D-655 is worth re-asking through `--evict-window`, and D-647's screen named
+   openers for `/08_BUTTONS_EXPANDERS/BTN_LEFT_N` (three single openers,
+   cheapest `/TOUCH_RST_N` at 10.151 mm) that were never tried this way.
+3. `/I2C_SCL_INT` `U16.3 <-> U4.13`; D-655's 15-unit / 34.046 mm eviction stands.
+4. `/I2C_SCL_INT` `U14.7 <-> J1.44` remains **the one OPEN OWNER DECISION**
+   (D-655 §7), RECORDED NOT TAKEN.
+5. `copper_sliver` localisation remains an OPEN INSTRUMENT GAP.
+6. `hardware/demo/fab` is STALE against `12f8e584`.
+
 # D-659 · 2026-09-07 · Demo — THE BOARD'S #1 FABRICATION BLOCKER IS THREE OBJECTS, NOT A FLOORPLAN: `BQ25185_SYS`'s CHARGER OUTPUT IS A POUR CUT, AND A SCREEN THAT COULD ONLY ASK FOR THE WHOLE POUR PRICED IT AT SEVENTEEN
 
     authority  c1029d479f7edae9e5b9fafcc32ca820ef17050a249bef4b66e4e5a25b082ef5  UNCHANGED

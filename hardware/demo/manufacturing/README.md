@@ -21,14 +21,89 @@ expanders; the largest single remaining net is `/01_POWER_TREE/BQ25185_SYS` with
 **six** open edges on the system power rail.  D-658 closed `R129.1` and the
 residual is **33**.  **D-659 prices the `BQ25185_SYS` head of that rail at THREE
 OBJECTS** -- `U11.1`, the charger's own `SYS` output, is a POUR CUT and not a
-floorplan, and the remaining wall is where `U11.10`'s `USB_VBUS_CHG` escape
-goes (first section below).
+floorplan.  **D-660 closes `/ACC_5V_BOOST_EN` and the residual is 32**, and
+restates the `U11` wall exactly: `U11.10`'s escape and the lane the pour needs
+are the SAME 0.49 mm channel (first two sections below).
 
 **D-652 also measured which open edges are worth what** (`screen_open_edge_cost.py`):
 **five of the thirty-seven strand four parts and thirty-seven nets** -- both
 `PCAL9535A` expanders, the `TCA4307` Qwiic buffer and the `MAX17048` fuel gauge
 -- and four of the five are on `/I2C_SCL_INT`, which is therefore this board's
 critical path.
+
+## A FOUR-WAYS REFUSAL CAN BE OLDER THAN THE PRIMITIVE THAT LIFTS IT (D-660)
+
+    python3 screen_corridor_blockers.py /ACC_5V_BOOST_EN -o OUT.json        # 865 s
+    python3 route_maze_batch.py /ACC_5V_BOOST_EN /09_COMMUNITY_HEADER/TCA4307_READY \
+        --evict /09_COMMUNITY_HEADER/TCA4307_READY \
+        --evict-window 59.55,53.55,61.55,59.10 --grid 25000 --partial --promote  # 156 s
+
+`/ACC_5V_BOOST_EN` is the `TPS61023` accessory-boost enable -- **software-
+controlled switched 5 V accessory power**, a Demo scope MUST-retain.  D-647
+named it `RIPUP_SINGLE`, minimised it to ONE object of 32
+(`/09_COMMUNITY_HEADER/TCA4307_READY` `B.Cu` (59.900,57.900)->(60.100,53.800))
+and then refused it FOUR ways, because **`--evict-window` did not exist yet**:
+D-655 added it eight decisions later, for a different net.  Re-screen first --
+a rip-up verdict is a property of a BOARD -- then state the pocket.
+
+    window                          grid      removed  result
+    the screen's own bbox           0.100 mm     0     NOTHING EVICTED, board unchanged
+    bbox + 0.15 mm                  0.100 mm     1     BOOST_EN routes; TCA4307_READY NO_PATH
+    bbox + 0.15 mm                  0.050 mm     1     both route, `+3V3` REGRESSED
+    bbox + 0.15 mm                  0.025 mm     1     33 -> 32, refused: 2 `track_dangling`
+    all three objects               0.025 mm     3     15/15 PASS, PROMOTED
+
+**AN EVICTION WINDOW EQUAL TO THE OBJECT'S OWN BOUNDING BOX EVICTS NOTHING.**
+`--evict-window` demands an object lie WHOLLY inside and the screen reports the
+bbox to the micrometre.  A run that removes zero objects reads exactly like a
+wall.  **THE EVICTED NET MUST BE REQUESTED, NOT REPAIRED** -- the bounded 8 mm
+repair pass cannot rebuild it; requested, it closes in 6.756 mm on `F.Cu`, over
+the `B.Cu` that blocked it.  **AND EVICTING ONE OBJECT OF A CHAIN LEAVES ITS
+NEIGHBOURS AS ANTENNAE**: 33 -> 32 with zero regressions, refused on
+`attributable_drc` alone for two `track_dangling` stubs.  Evict the chain.
+
+## A VIA-SITE SWEEP'S VERDICT IS A VIA-**SIZE** VERDICT (D-660)
+
+    python3 screen_barrel_move.py --board PROBE.kicad_pcb \
+        --barrel "/01_POWER_TREE/USB_VBUS_CHG@66.8,79.4464:0.9/0.4" \
+        --sweep 6.0 --sweep-only [--shrink 0.6/0.3]                   # 45 s
+
+    barrel        legal sites   north of the corridor   nearest north
+    0.900/0.400       259                 0             --
+    0.600/0.300       512                49             (66.500, 79.2464)
+    0.500/0.250       655               103             (66.500, 79.2464)
+    0.350/0.200       948               193             (66.500, 79.2464)
+
+D-659 swept at the as-built 0.900/0.400 only and concluded `U11.10` cannot leave
+the package northward on any layer.  It also ran *"on a copy with the named
+BARRELS removed"* -- the two TRACKS it named for removal in the same breath were
+still on the probe.  Re-run with all three out: **259 sites, ZERO north, the
+same answer**, so that half is robust.  Re-run at this board's ORDINARY
+0.600/0.300 barrel: **49 northern sites**.
+
+**IT DOES NOT YET OPEN THE POCKET, AND THAT IS THE USEFUL HALF.**  Of the 49,
+**17 lie inside the pour band and 32 above it**, and the only ones east of `U11`
+are at (70.9-71.1, 75.1-76.3).  The wall is therefore not *"`U11.10` has no
+northern escape"* but **"`U11.10`'s escape and the lane the pour needs are the
+same 0.49 mm of `B.Cu`"** -- the channel between `U11.10`'s own antipad (bottom
+y ~ 79.247) and `R36.2`'s (top y ~ 79.737), measured on the freed probe whose
+`POUR 1` island 3 is 86.259 mm2 and holds `U11.1`.  **`R36` is therefore the
+part to shift.**
+
+## RESERVE A LANE THAT IS THE *ABSENCE* OF FOREIGN COPPER (D-660)
+
+    python3 reserve_corridor.py --net /01_POWER_TREE/BQ25185_SYS --layer B.Cu \
+        --half-width-mm 0.25 --lane "66.8,79.4464 68.8,78.9464" -o A.json
+    ... --half-width-mm 0.45 --lane "66.8,79.4464" --merge B.json -o LANE.json
+
+`reserve_corridor.py`'s two modes reserve a family's pad-cluster MST or its own
+routed tracks.  **Neither can express the lane a POUR-SERVED rail wants.**
+`/01_POWER_TREE/BQ25185_SYS` owns thirteen pads over 105 mm, so PROSPECTIVE
+reserves lanes across the whole board, and it owns no track at `U11` at all, so
+RETROSPECTIVE reserves nothing there.  `--lane` STATES the lane in millimetres,
+the same move `--evict-window` made for evictions; a one-point lane reserves a
+DISC, which is what a barrel's site is.  A RESTRICTION on foreign copper and
+never a licence -- it writes no board, adds no rule area and relaxes nothing.
 
 ## THE GOAL IS A LAND, NOT THE WHOLE POUR -- AND IT IS THE DIFFERENCE BETWEEN 17 OBJECTS AND 3 (D-659)
 
