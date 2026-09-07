@@ -1,0 +1,23 @@
+{
+ "schema": 1,
+ "why": "D-658.  THE TWO BARRELS THAT SEVER R129.1 MOVE 0.200 mm SOUTH AT 0.450/0.200 mm, AND THE THREE CHAINS THAT LANDED ON THEM MOVE WITH THEM.  D-657 named the cut -- the +3V3 In3 island holding R129.1, the 100 k pull-up on /09_COMMUNITY_HEADER/ACC_DETECT_N that AQROOT_DEMO_SCOPE lists under `Demo implementation MUST retain`, is severed from the 79-land body by TWO 0.600/0.300 Net-(U11-TS_MR) through barrels.  Shrinking them in place was refuted to 0.350/0.200 (evidence/d657-barrel-shrink.json); moving them at full size frees the pour only at +0.300 mm, inside /ACC_3V3_SW's and /ACC_5V_SW_EN's clearance (evidence/d658-barrel-move-full.json); the PRODUCT of the two levers is clean at 0.450/0.200 and +0.200 mm, with `via_diameter` x2 as the ONLY new DRC item on the whole board (evidence/d658-barrel-move-0450.json).  .kicad_dru section 18 licenses exactly that and nothing else; the annular ring stays at the board's own 0.125 mm floor and the 0.200 mm hole is the process D-257 and D-531 already run.  NO RESERVE DISC: the sites are NAMED, so nothing has to be steered away from anything -- D-657's discs existed only because --evict re-derived the barrel site by search, and they cost that run a 138.875 mm haul and a PP2 refusal.",
+ "detours": [
+  {"net": "Net-(U11-TS_MR)",
+   "barrel": {"at_mm": [64.7, 70.5], "dia_mm": 0.6, "drill_mm": 0.3,
+              "to_mm": [64.7, 70.7], "to_dia_mm": 0.45, "to_drill_mm": 0.2}},
+  {"net": "Net-(U11-TS_MR)",
+   "barrel": {"at_mm": [66.6, 70.9], "dia_mm": 0.6, "drill_mm": 0.3,
+              "to_mm": [66.6, 71.1], "to_dia_mm": 0.45, "to_drill_mm": 0.2}},
+  {"net": "Net-(U11-TS_MR)", "layer": "F.Cu",
+   "a_mm": [58.3, 64.3], "b_mm": [64.7, 70.5], "width_mm": 0.2,
+   "move_ends": [{"from_mm": [64.7, 70.5], "to_mm": [64.7, 70.7]}]},
+  {"net": "Net-(U11-TS_MR)", "layer": "In2.Cu",
+   "a_mm": [64.7, 70.5], "b_mm": [66.6, 70.9], "width_mm": 0.2,
+   "move_ends": [{"from_mm": [64.7, 70.5], "to_mm": [64.7, 70.7]},
+                 {"from_mm": [66.6, 70.9], "to_mm": [66.6, 71.1]}]},
+  {"net": "Net-(U11-TS_MR)", "layer": "B.Cu",
+   "a_mm": [66.6, 70.9], "b_mm": [66.5, 71.6], "width_mm": 0.2,
+   "move_ends": [{"from_mm": [66.6, 70.9], "to_mm": [66.6, 71.1]}]}
+ ],
+ "reserve": []
+}

@@ -1647,3 +1647,84 @@
 (rule "D-632 U4.12 pad-escape relief - run width, +3V3"
 	(constraint track_width (min 0.20mm))
 	(condition "A.NetName == '+3V3' && A.enclosedByArea('PAD_ESCAPE_RUN_U4_12')"))
+
+# ---------------------------------------------------------------------
+# SECTION 18 - D-658: THE `BQ25185` TS/MR STRAP'S TWO BARRELS MOVE, AND
+# THEY MOVE AT 0.450/0.200 mm
+#
+# `/09_COMMUNITY_HEADER/ACC_DETECT_N`'s 100 k pull-up, `R129`, has no
+# supply.  Its `+3V3` land `R129.1` sits on `In3.Cu` outline 5 --
+# 25.2325 mm2, 1.7671 mm from the 8032 mm2 body, on NO `F.Cu` outline at
+# all -- and section 12b records that every escape relief written for it
+# since D-606 was reverted to the same 0.547 mm refusal, "twenty-six
+# decisions later".  D-657 asked the question from the other side and
+# named the cut: TWO 0.600/0.300 mm `Net-(U11-TS_MR)` through barrels at
+# (64.700, 70.500) and (66.600, 70.900), on the `BQ25185`'s TS/MR strap
+# -- two pads, `U11.6` and `R38.1`, a 10 k divider to `GND`, microamps,
+# Default netclass, no protection.  `Accessory Detect` is listed under
+# `AQROOT_DEMO_SCOPE.md`'s "Demo implementation MUST retain".
+#
+# THREE LEVERS WERE REFUTED SEPARATELY AND THE FOURTH IS THEIR PRODUCT.
+# Shrinking both barrels in place to 0.500/0.250, 0.450/0.200 and the
+# D-257 `FINE_ESC` 0.350/0.200 leaves `R129.1` severed at every rung
+# (`evidence/d657-barrel-shrink.json`).  Removing either alone leaves it
+# severed; removing both frees it and STRANDS the strap.  MOVING both at
+# the as-built 0.600/0.300 frees it only at +0.300 mm, where a barrel
+# lands 0.048-0.180 mm from `/ACC_3V3_SW` against its own
+# `ACC_3V3 routed clearance` 0.250 mm rule and 0.130 mm from
+# `/ACC_5V_SW_EN` against 0.200 mm -- two rails this Demo must retain.
+# The antipad a barrel subtracts from a pour and the clearance it demands
+# from its neighbours are THE SAME RADIUS, so shrink-and-move is a
+# different question from either arm, and it is the one that answers:
+#
+#   0.450/0.200 mm, both barrels +0.200 mm south
+#     (64.700, 70.500) -> (64.700, 70.700)
+#     (66.600, 70.900) -> (66.600, 71.100)
+#
+# measured under KiCad's OWN `ZONE_FILLER` and its own
+# `kicad-cli pcb drc --refill-zones`: `+3V3` goes from 5 clusters to 4,
+# `R129.1` from a cluster of ONE to the 79-land body, the strap stays in
+# ONE piece, and the ONLY new DRC item on the whole board is
+# `via_diameter` x2 -- the rule below.  No clearance, no shorting, no
+# hole clearance, no mask bridge.  `evidence/d658-barrel-move-0450.json`.
+#
+# WHAT IS AND IS NOT BEING GRANTED.  0.450 mm is under the board's
+# `min_via_diameter` 0.500 mm and nothing else.  The 0.200 mm hole is the
+# already-approved plated-through process this board has run since D-257
+# (five `FINE_ESC` areas) and D-531 (two USB-C `POFV` lands); the
+# annular ring is (0.450-0.200)/2 = 0.125 mm, which is the board's OWN
+# floor and is NOT relaxed here.  The exception is scoped to ONE net and
+# to two pad-sized areas the promoting transaction draws around the
+# barrels it actually lays, and gate clause 6 audits every rule area on
+# the board so it cannot become a back door.  Areas are named for the
+# barrels' OLD sites in micrometres, because that is the one property of
+# them that is a fact of the committed board.
+#
+# Current-carrying: none.  The TS/MR strap sets the `BQ25185`'s
+# thermistor / manual-reset input against a 10 k resistor; the whole
+# branch is microamps and a 0.200 mm barrel is three orders over it.
+# ---------------------------------------------------------------------
+
+(rule "D-658 TS_MR barrel move (64.700,70.500) - fine via diameter"
+	(constraint via_diameter (min 0.45mm) (opt 0.45mm))
+	(condition "A.NetName == 'Net-(U11-TS_MR)' && A.enclosedByArea('BARREL_MOVE_64700_70500')"))
+
+(rule "D-658 TS_MR barrel move (64.700,70.500) - annular ring, board floor"
+	(constraint annular_width (min 0.125mm))
+	(condition "A.NetName == 'Net-(U11-TS_MR)' && A.enclosedByArea('BARREL_MOVE_64700_70500')"))
+
+(rule "D-658 TS_MR barrel move (64.700,70.500) - hole, approved 0.20 mm process"
+	(constraint hole_size (min 0.20mm) (opt 0.20mm))
+	(condition "A.NetName == 'Net-(U11-TS_MR)' && A.enclosedByArea('BARREL_MOVE_64700_70500')"))
+
+(rule "D-658 TS_MR barrel move (66.600,70.900) - fine via diameter"
+	(constraint via_diameter (min 0.45mm) (opt 0.45mm))
+	(condition "A.NetName == 'Net-(U11-TS_MR)' && A.enclosedByArea('BARREL_MOVE_66600_70900')"))
+
+(rule "D-658 TS_MR barrel move (66.600,70.900) - annular ring, board floor"
+	(constraint annular_width (min 0.125mm))
+	(condition "A.NetName == 'Net-(U11-TS_MR)' && A.enclosedByArea('BARREL_MOVE_66600_70900')"))
+
+(rule "D-658 TS_MR barrel move (66.600,70.900) - hole, approved 0.20 mm process"
+	(constraint hole_size (min 0.20mm) (opt 0.20mm))
+	(condition "A.NetName == 'Net-(U11-TS_MR)' && A.enclosedByArea('BARREL_MOVE_66600_70900')"))

@@ -1375,12 +1375,46 @@ def detour_apply(path, spec):
             # under a guard that does not bind it is neither.
             to = q.get("to_mm")
             moved = None
+            # D-658.  A MOVE MAY ALSO BE A RESIZE, and the two levers were only
+            # ever refuted SEPARATELY.  On `Net-(U11-TS_MR)` the shrink alone
+            # left `+3V3`'s `R129.1` severed at every rung down to 0.350/0.200
+            # (`evidence/d657-barrel-shrink.json`) and the move alone freed it
+            # only at +0.300 mm, where the barrel lands inside `/ACC_3V3_SW`'s
+            # 0.250 mm rule clearance -- a rail `AQROOT_DEMO_SCOPE` requires.
+            # The antipad a barrel subtracts from a pour and the clearance it
+            # demands from its neighbours are the SAME radius, so shrink-and-
+            # move is a different question from either arm, and the answer is
+            # 0.450/0.200 at +0.200 mm: `via_diameter` and NOTHING else
+            # (`evidence/d658-barrel-move-0450.json`).
+            #
+            # A geometry under the board's own `min_via_diameter` is a
+            # FABRICATION EXCEPTION and is licensed exactly as a bridge barrel's
+            # is -- `.kicad_dru` rule authored first, rule area drawn by this
+            # run, audited by clause 6, checked by `barrel_move_licensed`.
+            new_dia = (int(round(q["to_dia_mm"] * 1e6)) if q.get("to_dia_mm")
+                       else int(v.GetWidth()))
+            new_drill = (int(round(q["to_drill_mm"] * 1e6))
+                         if q.get("to_drill_mm") else int(v.GetDrillValue()))
+            if (new_dia, new_drill) != (int(v.GetWidth()),
+                                        int(v.GetDrillValue())) and to is None:
+                raise SystemExit(
+                    "--detour: barrel %s at %s declares a new geometry but no "
+                    "`to_mm`; resizing a barrel in place is a different "
+                    "transaction and this primitive does not express it"
+                    % (d["net"], q["at_mm"]))
+            if new_dia - new_drill < 2 * ANNULAR_MIN:
+                raise SystemExit(
+                    "--detour: barrel %s at %s -> %.3f/%.3f mm is an annular "
+                    "ring of %.4f mm, under the %.3f mm floor; no rule area "
+                    "licenses a ring this board cannot plate"
+                    % (d["net"], q["at_mm"], new_dia / 1e6, new_drill / 1e6,
+                       (new_dia - new_drill) / 2e6, ANNULAR_MIN / 1e6))
             if to is not None:
                 nv = pcbnew.PCB_VIA(board)
                 nv.SetPosition(pcbnew.VECTOR2I(int(round(to[0] * 1e6)),
                                                int(round(to[1] * 1e6))))
-                nv.SetWidth(int(v.GetWidth()))
-                nv.SetDrill(int(v.GetDrillValue()))
+                nv.SetWidth(new_dia)
+                nv.SetDrill(new_drill)
                 nv.SetViaType(v.GetViaType())
                 nv.SetLayerPair(v.TopLayer(), v.BottomLayer())
                 nv.SetNetCode(v.GetNetCode())
@@ -1393,7 +1427,10 @@ def detour_apply(path, spec):
                     at_mm=[round(c, 4) for c in key(v.GetPosition())],
                     dia_mm=round(int(v.GetWidth()) / 1e6, 4),
                     drill_mm=round(int(v.GetDrillValue()) / 1e6, 4),
-                    top=top, bottom=bottom, count=len(vias), to_mm=moved),
+                    top=top, bottom=bottom, count=len(vias), to_mm=moved,
+                    to_dia_mm=(round(new_dia / 1e6, 4) if moved else None),
+                    to_drill_mm=(round(new_drill / 1e6, 4) if moved else None),
+                    was_at_nm=[int(v.GetPosition().x), int(v.GetPosition().y)]),
                 width_nm=int(v.GetWidth()), tracks=0, objects=len(vias),
                 a_nm=[int(v.GetPosition().x), int(v.GetPosition().y)],
                 b_nm=[int(v.GetPosition().x), int(v.GetPosition().y)],
@@ -1421,6 +1458,55 @@ def detour_apply(path, spec):
             a_nm = [int(round(v * 1e6)) for v in ends[0]]
             b_nm = [int(round(v * 1e6)) for v in ends[1]]
         t = reps[0]
+        # D-658 -- A CHAIN MAY BE RE-LAID TO A POINT IT NEVER TOUCHED.
+        #
+        # Every relay this file has laid until now put a conductor back between
+        # ITS OWN TWO ENDS: the copper moves, its terminals do not.  That is the
+        # right contract when the reason for the detour is a corridor.  It is
+        # the WRONG one when the reason is a BARREL MOVE, and D-657 measured the
+        # price of not having the difference.  `--detour-spec`'s barrel entry
+        # already accepts `to_mm` and calls that a MOVE (D-653); what it could
+        # not do was bring the TRACK ENDS THAT LANDED ON THE OLD SITE with it.
+        # So the only way to move a barrel and keep its net whole was to EVICT
+        # the whole net and let the router re-derive it -- and on
+        # `Net-(U11-TS_MR)`, a two-pad strap whose MST spans the board, that
+        # meant 77.317 mm to move two barrels 0.05 mm, or 138.875 mm to move
+        # them at all, on a southern haul that pinched a `GND` return fragment
+        # to 2.117 A against its own 2.19 A bar and was refused by `PP2`
+        # (`evidence/d657-gate-dryrun2.json`, `-dryrun3`, `-dryrun5`).  Nothing
+        # about that haul was asked for; it was the only shape the primitive
+        # could express.
+        #
+        # `move_ends` is that shape, stated exactly: for each entry, `from_mm`
+        # must be one of THIS chain's OWN free ends and `to_mm` is where that
+        # end now goes.  Both ends may move -- the `In2` hop BETWEEN two moved
+        # barrels has no stationary end at all -- and neither may move twice.
+        # Resolution is EXACT, as everywhere else here: an end this chain does
+        # not have is a description of a board that is not this one and stops
+        # the run, because a spec whose `from_mm` silently matched nothing would
+        # relay the chain to its OLD site and quietly leave the barrel it was
+        # written to follow standing alone.
+        moves = []
+        for mv in d.get("move_ends", ()):
+            f = [int(round(v * 1e6)) for v in mv["from_mm"]]
+            g = [int(round(v * 1e6)) for v in mv["to_mm"]]
+            if f == a_nm and ("a" not in [m["end"] for m in moves]):
+                a_nm, which = g, "a"
+            elif f == b_nm and ("b" not in [m["end"] for m in moves]):
+                b_nm, which = g, "b"
+            else:
+                raise SystemExit(
+                    "--detour: move_ends names %s on %s, which is not one of "
+                    "this chain's two free ends (%s, %s) or has already been "
+                    "moved"
+                    % (mv["from_mm"], d["net"],
+                       [round(v / 1e6, 4) for v in a_nm],
+                       [round(v / 1e6, 4) for v in b_nm]))
+            moves.append(dict(end=which,
+                              from_mm=[round(v / 1e6, 4) for v in f],
+                              to_mm=[round(v / 1e6, 4) for v in g],
+                              mm=round(math.hypot(g[0] - f[0],
+                                                  g[1] - f[1]) / 1e6, 4)))
         doomed += items
         was = sum(math.hypot(q.GetEnd().x - q.GetStart().x,
                              q.GetEnd().y - q.GetStart().y)
@@ -1434,6 +1520,14 @@ def detour_apply(path, spec):
         # detour's name.  A spec may state its own `max_mm` and own that
         # judgement explicitly; it may not silently exceed this one.
         rmax = max([r["r_mm"] for r in spec.get("reserve", ())] or [0.0])
+        # AND THE BOUND FOLLOWS THE ENDS.  `was + 2*pi*R_max` bounds a detour of
+        # THIS track past THESE discs; a chain whose ends have MOVED is not that
+        # track, and the shortest run it could possibly be is longer by at most
+        # the displacements themselves (a -> to is never worse than a -> from ->
+        # to).  So the default bound gains exactly the millimetres the spec
+        # declared it was moving, and nothing else; a spec may still state its
+        # own `max_mm` and own that judgement explicitly.
+        movemm = sum(m["mm"] for m in moves)
         resolved.append(dict(
             net=d["net"], layer=parts[0]["layer"], lkey=lkey,
             # D-646.  A detour entry may declare `"relay": false`, and then
@@ -1450,8 +1544,9 @@ def detour_apply(path, spec):
             objects=len(items),
             a_nm=a_nm, b_nm=b_nm,
             mm=round(was, 4),
+            move_ends=moves,
             max_mm=round(float(d.get("max_mm",
-                                     was + 2.0 * math.pi * rmax)), 4),
+                                     was + 2.0 * math.pi * rmax + movemm)), 4),
             # Carried, never invented: the spec names the allowlisted
             # exact-geometry route that may stand in when the LATTICE refuses
             # this relay, and `exact_relay_pads` still has to agree it is the
@@ -1918,6 +2013,11 @@ def propose(path, nets, grid, via_cost_mm, stitch_width=0, stitch_via=None,
         r.pop("mark", None)
         r.update(net=net, layer=d["layer"], was_mm=d["mm"],
                  exact_relay=d.get("exact_relay"),
+                 # D-658.  A relay whose ends MOVED says so in its own record,
+                 # so a reviewer reading `was_mm 0.707 -> mm 1.204` can see the
+                 # 0.500 mm of that growth that is the barrel move and not the
+                 # detour.
+                 move_ends=d.get("move_ends") or [],
                  max_mm=d.get("max_mm"), width_nm=d["width_nm"],
                  lkey=d["lkey"], layers_allowed=list(layers), own_layer=own,
                  a_mm=[round(v / 1e6, 4) for v in d["a_nm"]],
@@ -3064,7 +3164,74 @@ def gate(nets, grid, via_cost_mm, workdir, promote=False, candidate=None,
     # that area is this transaction's job: the rule text names the cluster, the
     # area is centred on the barrel the run actually laid, and clause 6 below
     # audits every rule area on the board so this can never be a back door.
+    import maze3d as mz
     bridge_areas = []
+    # D-658.  A MOVED BARREL THAT CHANGED GEOMETRY IS LICENSED LIKE ANY OTHER
+    # FABRICATION EXCEPTION ON THIS BOARD.  `--detour-spec` may now put a
+    # barrel back at a diameter the board's own `min_via_diameter` refuses --
+    # that is the whole reason `+3V3`'s `R129.1` is reachable at all -- and the
+    # moment it may, this gate owes the same three questions the pour bridge
+    # and the pad-escape relief already answer: does the `.kicad_dru` grant
+    # THIS net a barrel inside an area named for THIS barrel, is the geometry
+    # the spec asked for at least as large as the rule's own minima, and is the
+    # area the run drew the area the rule names.  The first two are this
+    # clause; the third is clause 6, which audits `want_areas` below and is
+    # what stops this from being a back door.
+    #
+    # A barrel AT OR ABOVE the floor needs no area and gets none: the board
+    # already licenses it, and drawing a rule area for it would be a licence
+    # nobody asked for sitting on the board forever.
+    class _Dru:
+        class b:
+            @staticmethod
+            def GetFileName():
+                return str(BOARD)
+    move_licences, move_unlicensed = [], []
+    for d in (detour or {}).get("detours", ()):
+        bar = d.get("barrel") or {}
+        if not bar.get("to_mm"):
+            continue
+        dia = int(round((bar.get("to_dia_mm") or bar["dia_mm"]) * 1e6))
+        drill = int(round((bar.get("to_drill_mm") or bar["drill_mm"]) * 1e6))
+        was = bar.get("was_at_nm") or [int(round(v * 1e6))
+                                       for v in bar["at_mm"]]
+        rec = dict(net=d["net"], was_mm=bar["at_mm"], to_mm=bar["to_mm"],
+                   dia_mm=round(dia / 1e6, 4), drill_mm=round(drill / 1e6, 4),
+                   area=mz.barrel_move_area_name(was[0], was[1]))
+        if dia >= BOARD_VIA_DIA_MIN:
+            rec.update(ok=True, needs_licence=False,
+                       why="at or above the board's own min_via_diameter")
+            move_licences.append(rec)
+            continue
+        lic = mz.barrel_move_licence(_Dru, d["net"], was[0], was[1])
+        rec["needs_licence"] = True
+        if lic is None:
+            rec.update(ok=False, reason="NO_RULE_AREA_LICENCE",
+                       why="the .kicad_dru grants %s no via_diameter / "
+                           "annular_width / hole_size inside %r"
+                           % (d["net"], rec["area"]))
+        elif (dia < lic["via_dia"] or drill < lic["via_drill"]
+              or (dia - drill) < 2 * lic["annular"]):
+            rec.update(ok=False, reason="GEOMETRY_UNDER_LICENCE",
+                       licence=dict(via_dia_mm=lic["via_dia"] / 1e6,
+                                    via_drill_mm=lic["via_drill"] / 1e6,
+                                    annular_mm=lic["annular"] / 1e6),
+                       why="the licence's own minima are larger than the "
+                           "geometry this spec asked for")
+        else:
+            rec.update(ok=True, licence=dict(rules=lic["rules"],
+                                             via_dia_mm=lic["via_dia"] / 1e6,
+                                             via_drill_mm=lic["via_drill"] / 1e6,
+                                             annular_mm=lic["annular"] / 1e6))
+            bridge_areas.append(dict(kind="barrel-move", name=rec["area"],
+                                     net=d["net"], cluster=rec["area"],
+                                     xy=[int(round(v * 1e6))
+                                         for v in bar["to_mm"]],
+                                     via_dia=dia, via_drill=drill,
+                                     licence=lic))
+        move_licences.append(rec)
+        if not rec.get("ok"):
+            move_unlicensed.append(rec)
     for r in routed:
         for b in (r.get("bridge") or {}).get("bridges", ()):
             if b.get("area"):
@@ -3454,6 +3621,8 @@ def gate(nets, grid, via_cost_mm, workdir, promote=False, candidate=None,
                          for d in detoured if d.get("own_layer")],
                      relaid=detoured, failed=detour_failed,
                      removed_not_relaid=inert_entries,
+                     barrel_move_licences=move_licences,
+                     barrel_move_unlicensed=move_unlicensed,
                      inert_price=inert_priced,
                      inert_unpriced=inert_unpriced,
                      removed_barrels=rebond_entries,
@@ -3530,6 +3699,7 @@ def gate(nets, grid, via_cost_mm, workdir, promote=False, candidate=None,
             board_changed=bool(changed),
             no_open_relief_licence=not relief_open,
             every_detour_relaid=not detour_failed,
+            barrel_move_licensed=not move_unlicensed,
             inert_removal_priced=not inert_unpriced,
             rebond_priced=not rebond_unpriced,
             pour_partition=not pp_failed,

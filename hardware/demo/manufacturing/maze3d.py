@@ -3952,6 +3952,35 @@ def bridge_licence(qb, net, label):
     return area_licence(qb, net, bridge_area_name(label))
 
 
+# D-658.  THE THIRD KIND OF AREA: A BARREL THAT MOVED.
+#
+# `POUR_BRIDGE_<cluster>` licenses a barrel a bridge ADDS; `PAD_ESCAPE_<pad>`
+# one a relief adds.  A `--detour-spec` barrel MOVE adds no barrel -- it puts
+# the same conductor back somewhere else -- but it may put it back with a
+# DIFFERENT geometry, and the moment that geometry is under the board's own
+# `min_via_diameter` it is exactly the object the other two prefixes exist to
+# govern: a fabrication exception that must be authored, reviewed and committed
+# BEFORE the run, not discovered in a DRC report afterwards.
+#
+# The name is keyed on the OLD SITE in micrometres, because that is the one
+# property of the barrel that is a fact of the COMMITTED board.  A reviewer can
+# find (64.700, 70.500) on the authority and see exactly which barrel the rule
+# is about; the new site is in the spec they are reviewing, and gate clause 6
+# audits the area the run actually drew.
+BARREL_MOVE_AREA_PREFIX = "BARREL_MOVE_"
+
+
+def barrel_move_area_name(x_nm, y_nm):
+    """`(64700000, 70500000)` -> `BARREL_MOVE_64700_70500`."""
+    return "%s%d_%d" % (BARREL_MOVE_AREA_PREFIX,
+                        int(round(x_nm / 1000.0)), int(round(y_nm / 1000.0)))
+
+
+def barrel_move_licence(qb, net, x_nm, y_nm):
+    """The barrel this board licenses for THIS moved barrel, or None."""
+    return area_licence(qb, net, barrel_move_area_name(x_nm, y_nm))
+
+
 ESCAPE_AREA_PREFIX = "PAD_ESCAPE_"
 
 

@@ -1,0 +1,136 @@
+{
+ "authoritative_unchanged": true,
+ "board": "/home/aqroot8/aqroot-demo/hardware/demo/kicad/aqroot-demo/aqroot-Beta-v2.kicad_pcb",
+ "board_sha256": "c1029d479f7edae9e5b9fafcc32ca820ef17050a249bef4b66e4e5a25b082ef5",
+ "decision": "D-658",
+ "free": [
+  "+3V3:R129.1"
+ ],
+ "method": "pcbnew.ZONE_FILLER per rung on a private copy; the barrel and every coincident track end on the layers it spans translate together; partitions read off GetConnectivity; --drc reruns kicad-cli pcb drc --refill-zones and reports the delta BY TYPE",
+ "question": "which rigid offsets of these barrels -- and of the track ends that land on them -- let KiCad's own filler pour the named pads back onto their body, leave every moved net in one piece, and keep the DRC profile?",
+ "rungs": [
+  {
+   "clusters": {
+    "+3V3": 4,
+    "Net-(U11-TS_MR)": 1
+   },
+   "deltas_mm": [
+    [
+     0.0,
+     0.0
+    ],
+    [
+     0.0,
+     0.0
+    ]
+   ],
+   "drc": {
+    "by_type": {
+     "hole_clearance": 5,
+     "solder_mask_bridge": 1
+    },
+    "exit": 0,
+    "total": 6,
+    "unconnected": 49
+   },
+   "freed": {
+    "+3V3:R129.1": {
+     "bonded": true,
+     "clusters": 4,
+     "own_cluster": 79
+    }
+   },
+   "intact": {
+    "Net-(U11-TS_MR)": true
+   },
+   "ok": true,
+   "rung": "r00-as-built",
+   "shrink_mm": null,
+   "to_mm": [
+    [
+     64.7,
+     70.7
+    ],
+    [
+     66.6,
+     71.1
+    ]
+   ]
+  },
+  {
+   "clusters": {
+    "+3V3": 4,
+    "Net-(U11-TS_MR)": 1
+   },
+   "deltas_mm": [
+    [
+     0.0,
+     0.0
+    ],
+    [
+     0.0,
+     0.0
+    ]
+   ],
+   "drc": {
+    "by_type": {
+     "hole_clearance": 5,
+     "solder_mask_bridge": 1
+    },
+    "delta_by_type": {},
+    "exit": 0,
+    "total": 6,
+    "unconnected": 49
+   },
+   "freed": {
+    "+3V3:R129.1": {
+     "bonded": true,
+     "clusters": 4,
+     "own_cluster": 79
+    }
+   },
+   "intact": {
+    "Net-(U11-TS_MR)": true
+   },
+   "ok": true,
+   "rung": "r01-+0.00+0.00_+0.00+0.00",
+   "shrink_mm": null,
+   "to_mm": [
+    [
+     64.7,
+     70.7
+    ],
+    [
+     66.6,
+     71.1
+    ]
+   ]
+  }
+ ],
+ "schema": 1,
+ "seconds": 30.2,
+ "sites": [
+  {
+   "at_mm": [
+    64.7,
+    70.7
+   ],
+   "dia_mm": 0.45,
+   "drill_mm": 0.2,
+   "net": "Net-(U11-TS_MR)"
+  },
+  {
+   "at_mm": [
+    66.6,
+    71.1
+   ],
+   "dia_mm": 0.45,
+   "drill_mm": 0.2,
+   "net": "Net-(U11-TS_MR)"
+  }
+ ],
+ "sweep": null,
+ "winners": [
+  "r01-+0.00+0.00_+0.00+0.00"
+ ]
+}

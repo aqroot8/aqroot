@@ -1,3 +1,179 @@
+# D-658 · 2026-09-07 · Demo — THE PRODUCT OF TWO REFUTED LEVERS: `R129.1`'s TWENTY-SIX-DECISION WALL FALLS TO A 0.200 mm BARREL MOVE AT 0.450/0.200 mm, AND THE COMMUNITY PORT'S ACCESSORY-DETECT PULL-UP HAS A SUPPLY
+
+    authority  0eb2a4e653fded22d1f455122045812205edf72a5a1a3ae27c6189f617807489
+          ->   c1029d479f7edae9e5b9fafcc32ca820ef17050a249bef4b66e4e5a25b082ef5
+    retained open edges  34 -> 33      open retained nets  19 -> 19
+    connected retained nets 154        raw board ratsnest 50 -> 49
+    `hardware/beta-v2` UNTOUCHED.
+
+**COPPER PROMOTED.**  Fifteen of fifteen gate clauses PASS, **zero refused**;
+real KiCad DRC exit 0 with **zero attributable** items and the inherited
+severity-error profile EXACTLY (`hole_clearance` 5, `solder_mask_bridge` 1).
+The standing suite is **11/11 RAN, 11/11 PASS** before and after
+(`evidence/d658-contract-regression-pre.json`, `-post.json`, baseline `d633`).
+
+## 1. WHAT WAS OPENED
+
+`R129` is the **100 k pull-up on `/09_COMMUNITY_HEADER/ACC_DETECT_N`** — the
+Community Port's **Accessory Detect**, which `AQROOT_DEMO_SCOPE.md` lists under
+*"Demo implementation MUST retain"*.  D-323 routed the SIGNAL; the pull-up had
+**no supply**, so the function was unimplemented.  `.kicad_dru` section 12b
+records that every `R129.1` escape relief written since D-606 was reverted to
+*"the same refusal, to the same 0.547 mm figure, twenty-six decisions later"*,
+and D-651 filed it as an OWNER question because *"its minimal sets are all
+PROTECTED copper"*.  D-657 refuted that ranking and named the cut; this decision
+takes it.  On the promoted board `R129.1` is **in the 79-land `+3V3` body**,
+`+3V3` goes from **5 filled clusters to 4**, and the `Net-(U11-TS_MR)` strap is
+still ONE piece (`evidence/d658-promoted-confirm.json`, read off
+`pcbnew.ZONE_FILLER` and `GetConnectivity`).
+
+## 2. THE ANSWER IS THE PRODUCT OF TWO LEVERS THAT WERE ONLY EVER REFUTED APART
+
+`evidence/d657-barrel-shrink.json` shrank the two 0.600/0.300 mm
+`Net-(U11-TS_MR)` barrels **in place** to 0.500/0.250, 0.450/0.200 and the D-257
+`FINE_ESC` 0.350/0.200: `R129.1` **SEVERED at every rung**.  This decision moved
+them at **full size** and mapped the whole arm:
+
+    geometry        move      frees R129.1   new DRC items
+    0.600/0.300     +0.20 mm       no        clearance x2
+    0.600/0.300     +0.25 mm       no        clearance x3
+    0.600/0.300     +0.30 mm      YES        clearance x5, hole_clearance x2
+    0.450/0.200     +0.15 mm       no        (licence only)
+    0.450/0.200     +0.20 mm      YES        via_diameter x2  <-- TAKEN
+    0.350/0.200     +0.00 mm       no        (licence only)
+    0.350/0.200     +0.20 mm      YES        via_diameter x2, annular_width x2
+
+(`evidence/d658-barrel-move-full.json`, `-0450.json`, `-0350.json`.)  At the
+as-built diameter the move that frees the pour lands a barrel **0.048–0.180 mm**
+from `/ACC_3V3_SW` against its own `ACC_3V3 routed clearance` **0.250 mm** rule
+and **0.130 mm** from `/ACC_5V_SW_EN` against 0.200 mm — two rails this Demo must
+retain.  **THE ANTIPAD A BARREL SUBTRACTS FROM A POUR AND THE CLEARANCE IT
+DEMANDS FROM ITS NEIGHBOURS ARE THE SAME RADIUS**, so shrink-and-move is a
+different question from either arm, and it is the one that answers.  0.350/0.200
+was rejected on its own merits: its annular ring is 0.075 mm, and this board's
+floor is 0.125 mm.  **0.450/0.200 is 0.125 mm exactly** — the floor, not a
+relaxation of it.
+
+**AND THE POCKET IS THE REASON THERE IS NO OTHER ANSWER.**
+`screen_barrel_move.py --sweep` runs `maze3d._via_free_everywhere` — the
+router's OWN through-barrel predicate, on a copy with the barrels already
+removed — over a 0.1 mm lattice.  Within **8 mm** of the site there are only
+**FOUR pockets** that admit a 0.600/0.300 barrel at all
+(`evidence/d658-barrel-site-map.json`): `x 70.5–71.1 / y 65.0–68.4` (166 pts),
+`x 68.5–69.2 / y 63.5–64.4` (23), `x 64.4–64.8 / y 70.0–70.6` (16) and
+`x 67.1–67.2 / y 73.5–73.6` (4).  Every near pocket is IN the neck: five pair
+rungs that put one or both barrels in the far pockets — including both of them
+2.6–4.0 mm away — leave `R129.1` **severed** and `+3V3` at 5 clusters
+(`evidence/d658-barrel-move-pairs.json`).  The two barrels do not have to leave
+in the same direction, and it does not help that they can.
+
+## 3. THE PRIMITIVE D-657 ASKED FOR, BUILT — `move_ends`
+
+D-657 ended: *"NEXT: a detour chain that may name a NEW `b` end … so a barrel
+move drags exactly the copper that met it and nothing else."*  That is
+`route_maze_batch.detour_apply`'s new **`move_ends`**.
+
+Every relay this file had laid put a conductor back **between its own two ends**:
+the copper moves, its terminals do not.  Right for a corridor; wrong for a
+barrel move — and D-657 measured the price of not having the difference.  The
+only way to move a barrel and keep its net whole was `--evict-whole`, and on a
+two-pad strap whose MST spans the board that meant **77.317 mm to move two
+barrels 0.05 mm, or 138.875 mm to move them at all**, on a southern haul that
+pinched a `GND` return fragment to 2.117 A against its own 2.19 A bar and was
+refused by `PP2` (`evidence/d657-gate-dryrun2/3/5.json`).  Nothing about that
+haul was asked for; it was the only shape the primitive could express.
+
+`move_ends` states the shape exactly: each entry's `from_mm` must be one of THIS
+chain's OWN free ends and `to_mm` is where that end goes.  **Both ends may move**
+— the `In2` hop BETWEEN two moved barrels has no stationary end at all — and
+neither may move twice.  Resolution is EXACT, as everywhere else in that file.
+The default length bound follows the ends: `was + 2*pi*R_max + sum(displacements)`,
+because `a -> to` is never worse than `a -> from -> to`.
+
+    F.Cu    8.9107 -> 9.0510 mm    b end (64.700,70.500) -> (64.700,70.700)
+    In2.Cu  1.9416 -> 1.9416 mm    BOTH ends move 0.200 mm
+    B.Cu    0.7071 -> 0.5099 mm    a end (66.600,70.900) -> (66.600,71.100)
+
+**ZERO new vias, zero failed detours, three chains, +0.043 mm of copper on a
+microamp strap.**
+
+## 4. AND THE LICENCE THAT PRICES IT — `barrel_move_licensed`, CLAUSE 15
+
+A barrel entry may now declare `to_dia_mm`/`to_drill_mm`, and the moment it may,
+the gate owes the same three questions the pour bridge and the pad-escape relief
+already answer.  `maze3d.barrel_move_area_name` / `barrel_move_licence` reuse
+`area_licence` unchanged; the area is named for the barrel's **OLD site in
+micrometres** — `BARREL_MOVE_64700_70500` — because that is the one property of
+it that is a fact of the COMMITTED board, so the rule can be authored, reviewed
+and committed BEFORE the run picks a coordinate.  A barrel **at or above** the
+board's `min_via_diameter` needs no area and gets none.  Two refusals are stated
+in the applier and cost nothing to hold: a resize with no `to_mm` (that is a
+different transaction), and any ring under the 0.125 mm plating floor — **no rule
+area licenses a ring this board cannot plate**.
+
+`.kicad_dru` **section 18** was authored FIRST and grants exactly one thing:
+`via_diameter min 0.45mm` for `Net-(U11-TS_MR)` inside two pad-sized areas.  The
+0.200 mm hole is the plated process D-257 (five `FINE_ESC` areas) and D-531 (two
+USB-C `POFV` lands) already run; the annular ring is restated at the board's own
+floor and is NOT relaxed.  Gate clause 6 audits every rule area on the board, so
+this is not a back door — and on the promoted board the drawn areas do their job:
+the severity-error DRC profile is back to the **inherited 6 items and nothing
+else**.
+
+Current-carrying: none.  The TS/MR strap sets the `BQ25185`'s thermistor /
+manual-reset input against a 10 k resistor to `GND`; the branch is microamps and
+a 0.200 mm barrel is three orders over it.
+
+## 5. THE INSTRUMENT — `screen_barrel_move.py` (NEW, TRACKED, READ-ONLY)
+
+*"Where must this barrel go for the pour to close?"*  Per-site offsets, an
+optional `--shrink`, a `--sweep` of the router's own legal-site predicate, and
+KiCad's own `ZONE_FILLER` plus `kicad-cli pcb drc --refill-zones` as the two
+judges — the pour partition AND the moved net's own partition read off the same
+fill, so a rung that frees the plane by stranding the strap is visible as such.
+The authoritative board is never written.
+
+**AND IT WAS WRONG ONCE, IN A WAY WORTH RECORDING.**  Its first ladder reported
+every offset as SEVERING the strap.  KiCad 10 numbers copper `F_Cu 0, B_Cu 2,
+In1 4, In2 6, In3 8, In4 10`, so `range(TopLayer, BottomLayer+1)` on a through
+via yields `{0,1,2}` — F, B and nothing else.  **The layer stack is not the layer
+numbering**; two of the four track ends never moved, and the `In2` hop was left
+standing at the old sites.  The span is now a slice of the STACK, in stack order.
+
+## 6. THE TRANSACTION
+
+    AQROOT_SCAN_BOARD_VIAS=1 python3 route_maze_batch.py "Net-(U11-TS_MR)" \
+        --detour-spec evidence/d658-detour-spec.json \
+        --grid 50000 --promote
+
+**NO RESERVE DISC.**  The sites are NAMED, so nothing has to be steered away
+from anything — D-657's discs existed only because `--evict` re-derived the
+barrel site by SEARCH, and they cost that run 138.875 mm and a `PP2` refusal.
+
+## 7. NEXT, IN ORDER OF LEVERAGE
+
+1. **`BQ25185_SYS` remains the #1 FABRICATION BLOCKER and it is a PLACEMENT
+   WALL** — six open edges, `U11.1` a cluster of one, `U12.10`/`U12.11` (the
+   `TPS63020`'s `VIN`) a two-pad island bonded to NOTHING, `C26` 3.4 mm away as a
+   cluster of one.  **NOTHING ON THIS BOARD POWERS UP AS IT STANDS.**  D-657
+   refuted five zone levers, an eight-rung width ladder and `screen_island_join`
+   at three pitches; what is left is a bounded re-floorplan of the `U11`/`U12`
+   pocket (`apply_part_shift.py` exists).  **D-658 adds the instrument that
+   should go first**: `screen_barrel_move.py --sweep` over that pocket, because
+   the `SYS` question is the same question — how much room is there, really —
+   and it took 8 mm of sweep to learn that the `TS_MR` pocket had four.
+2. `+3V3` `U5.2` — cut-blame gives 9 units, ONE edge, but it moves Class-D
+   amplifier ground (`evidence/d657-cut-blame-u5-2.json`).
+3. `/I2C_SCL_INT` `U16.3 <-> U4.13`.
+4. `/I2C_SCL_INT` `U14.7 <-> J1.44` remains **the one OPEN OWNER DECISION**
+   (D-655 §7), RECORDED NOT TAKEN.
+5. `copper_sliver` localisation remains an OPEN INSTRUMENT GAP.
+6. `hardware/demo/fab` is now STALE against `c1029d47`; regenerate with
+   `export_fab_package.py` when the board is otherwise fab-ready (the `-o`
+   argument is the package DIRECTORY, not a report file).
+
+Everything D-657 carried is carried unchanged.
+
 # D-657 · 2026-09-07 · Demo — THE POUR-CUT QUESTION, ASKED FOR THE FIRST TIME: `BQ25185_SYS`'s SIX OPEN EDGES ARE ELEVEN OBJECTS ON THREE `TPS63020` CONTROL PINS, AND `R129.1`'s TWENTY-SIX-DECISION WALL IS TWO BARRELS ON AN UNPROTECTED 10 k STRAP
 
     authority  0eb2a4e653fded22d1f455122045812205edf72a5a1a3ae27c6189f617807489

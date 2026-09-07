@@ -13,6 +13,89 @@
 > This file references DEVICE_SPEC rather than duplicating full specs.
 
 ## 1. Authoritative HEAD
+- **Demo D-658 (THE PRODUCT OF TWO REFUTED LEVERS: `R129.1`'s TWENTY-SIX-DECISION
+  WALL FALLS TO A 0.200 mm BARREL MOVE AT 0.450/0.200 mm, AND THE COMMUNITY
+  PORT'S ACCESSORY-DETECT PULL-UP HAS A SUPPLY):**  **COPPER PROMOTED.**
+  Authority `0eb2a4e6...` -> **`c1029d479f7edae9e5b9fafcc32ca820ef17050a249bef4b66e4e5a25b082ef5`**;
+  retained open edges **34 -> 33**, open retained nets 19, connected retained
+  154, raw board ratsnest **50 -> 49**.  `hardware/beta-v2` untouched.
+  **Fifteen of fifteen gate clauses PASS, ZERO refused**; real KiCad DRC exit 0,
+  **zero attributable**, and the promoted board's severity-error profile is the
+  INHERITED one EXACTLY (`hole_clearance` 5, `solder_mask_bridge` 1).  Standing
+  suite **11/11 RAN, 11/11 PASS** before and after
+  (`evidence/d658-contract-regression-pre.json`, `-post.json`, baseline `d633`).
+  **(1) WHAT WAS OPENED.**  `R129` is the **100 k pull-up on
+  `/09_COMMUNITY_HEADER/ACC_DETECT_N`** -- the Community Port's **Accessory
+  Detect**, which `AQROOT_DEMO_SCOPE.md` lists under *"Demo implementation MUST
+  retain"*.  D-323 routed the SIGNAL; the pull-up had **no supply**.
+  `.kicad_dru` section 12b records every `R129.1` escape relief since D-606
+  reverted to *"the same refusal, to the same 0.547 mm figure, twenty-six
+  decisions later"*, and D-651 filed it an OWNER question.  On the promoted
+  board `R129.1` is **in the 79-land `+3V3` body**, `+3V3` goes **5 filled
+  clusters -> 4**, and the `Net-(U11-TS_MR)` strap is still ONE piece
+  (`evidence/d658-promoted-confirm.json`).
+  **(2) THE ANSWER IS THE PRODUCT OF TWO LEVERS ONLY EVER REFUTED APART.**
+  D-657 shrank the two 0.600/0.300 `Net-(U11-TS_MR)` barrels IN PLACE to
+  0.350/0.200 and `R129.1` stayed severed at every rung.  D-658 moved them at
+  FULL SIZE and mapped the arm: **+0.20 no / +0.25 no / +0.30 YES but with five
+  `clearance` and two `hole_clearance`**, because at the as-built diameter the
+  freeing move lands a barrel **0.048-0.180 mm** from `/ACC_3V3_SW` against its
+  own 0.250 mm rule and **0.130 mm** from `/ACC_5V_SW_EN` against 0.200 mm --
+  two rails this Demo must retain (`evidence/d658-barrel-move-full.json`).
+  **THE ANTIPAD A BARREL SUBTRACTS FROM A POUR AND THE CLEARANCE IT DEMANDS FROM
+  ITS NEIGHBOURS ARE THE SAME RADIUS**, so shrink-and-move is a DIFFERENT
+  question, and the answer is **0.450/0.200 at +0.200 mm south: `via_diameter`
+  x2 and NOTHING ELSE on the whole board** (`evidence/d658-barrel-move-0450.json`).
+  0.350/0.200 was rejected on its own merits -- a 0.075 mm ring against this
+  board's 0.125 mm floor; **0.450/0.200 is 0.125 mm exactly, the floor and not a
+  relaxation of it.**
+  **AND THE POCKET IS WHY THERE IS NO OTHER ANSWER**: `maze3d._via_free_everywhere`,
+  the router's own predicate, finds only **FOUR pockets within 8 mm** that admit
+  a 0.600/0.300 barrel at all (`evidence/d658-barrel-site-map.json`), every near
+  one IN the neck; five pair rungs that move one or both barrels 2.6-4.0 mm out
+  leave `R129.1` severed (`evidence/d658-barrel-move-pairs.json`).
+  **(3) THE PRIMITIVE D-657 ASKED FOR, BUILT.**  `route_maze_batch.detour_apply`
+  now takes **`move_ends`**: each entry's `from_mm` must be one of THIS chain's
+  own free ends, `to_mm` is where it goes, **both ends may move** (the `In2` hop
+  between two moved barrels has no stationary end), neither twice, resolution
+  EXACT.  The default bound follows the ends (`was + 2*pi*R + sum(moves)`).  It
+  replaces the ONLY shape that existed before -- `--evict-whole`, which on this
+  two-pad strap cost **77.317 mm to move two barrels 0.05 mm, or 138.875 mm to
+  move them at all**, on a haul that pinched a `GND` return fragment and was
+  refused by `PP2`.  Here: **F 8.9107 -> 9.0510, In2 1.9416 -> 1.9416, B 0.7071
+  -> 0.5099 mm, ZERO new vias, zero failed detours.**
+  **(4) AND THE LICENCE THAT PRICES IT -- new gate clause `barrel_move_licensed`.**
+  A barrel entry may declare `to_dia_mm`/`to_drill_mm`; `maze3d.barrel_move_area_name`
+  / `barrel_move_licence` reuse `area_licence` unchanged, and the area is named
+  for the barrel's **OLD site in micrometres** (`BARREL_MOVE_64700_70500`)
+  because that is the one property of it that is a fact of the COMMITTED board,
+  so the rule is authored and reviewed BEFORE the run picks a coordinate.  A
+  barrel at or above `min_via_diameter` needs no area and gets none; a resize
+  with no `to_mm` and any ring under the 0.125 mm plating floor are refused by
+  name.  **`.kicad_dru` section 18** was authored FIRST and grants exactly
+  `via_diameter min 0.45mm` for one net inside two pad-sized areas -- narrower
+  than the five D-257 0.35 mm licences already on this board.  Clause 6 audits
+  every rule area, and on the promoted board the drawn areas do their job: the
+  DRC profile is the inherited one.
+  **(5) NEW TRACKED READ-ONLY INSTRUMENT `screen_barrel_move.py`** -- per-site
+  offsets, `--shrink`, `--sweep` of the router's own legal-site predicate,
+  judged by KiCad's `ZONE_FILLER` AND `kicad-cli pcb drc --refill-zones`, with
+  the moved net's own partition read off the same fill so a rung that frees the
+  plane by stranding the strap is visible as such.  **IT WAS WRONG ONCE:** KiCad
+  10 numbers copper `F 0, B 2, In1 4, In2 6, In3 8, In4 10`, so
+  `range(TopLayer, BottomLayer+1)` on a through via yields `{0,1,2}` -- **the
+  layer stack is not the layer numbering** -- and its first ladder dragged 2 of
+  4 track ends and called every offset a severing.
+  **NEXT, IN ORDER OF LEVERAGE:** (1) **`BQ25185_SYS` is still the #1
+  FABRICATION BLOCKER and it is a PLACEMENT WALL** -- nothing on this board
+  powers up as it stands; run `screen_barrel_move.py --sweep` over the
+  `U11`/`U12` pocket FIRST, because "how much room is there, really" is the same
+  question and it took 8 mm of sweep to learn the `TS_MR` pocket had four
+  answers.  (2) `+3V3` `U5.2`.  (3) `/I2C_SCL_INT` `U16.3 <-> U4.13`.
+  (4) `/I2C_SCL_INT` `U14.7 <-> J1.44` remains **the one OPEN OWNER DECISION**
+  (D-655 §7), RECORDED NOT TAKEN.  (5) `copper_sliver` localisation remains an
+  OPEN INSTRUMENT GAP.  (6) `hardware/demo/fab` is now STALE against `c1029d47`.
+  Everything D-657 carried is carried unchanged.
 - **Demo D-657 (THE POUR-CUT QUESTION, ASKED FOR THE FIRST TIME: `BQ25185_SYS`'s
   SIX OPEN EDGES ARE ELEVEN OBJECTS ON THREE `TPS63020` CONTROL PINS, AND
   `R129.1`'s TWENTY-SIX-DECISION WALL IS TWO BARRELS ON AN UNPROTECTED 10 k

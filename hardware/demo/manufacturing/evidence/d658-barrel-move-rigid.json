@@ -1,0 +1,871 @@
+{
+ "authoritative_unchanged": true,
+ "board": "/home/aqroot8/aqroot-demo/hardware/demo/kicad/aqroot-demo/aqroot-Beta-v2.kicad_pcb",
+ "board_sha256": "0eb2a4e653fded22d1f455122045812205edf72a5a1a3ae27c6189f617807489",
+ "decision": "D-658",
+ "free": [
+  "+3V3:R129.1"
+ ],
+ "method": "pcbnew.ZONE_FILLER per rung on a private copy; the barrel and every coincident track end on the layers it spans translate together; partitions read off GetConnectivity; --drc reruns kicad-cli pcb drc --refill-zones and reports the delta BY TYPE",
+ "question": "which rigid offsets of these barrels -- and of the track ends that land on them -- let KiCad's own filler pour the named pads back onto their body, leave every moved net in one piece, and keep the DRC profile?",
+ "rungs": [
+  {
+   "clusters": {
+    "+3V3": 5,
+    "Net-(U11-TS_MR)": 1
+   },
+   "drc": {
+    "by_type": {
+     "hole_clearance": 5,
+     "solder_mask_bridge": 1
+    },
+    "exit": 0,
+    "total": 6,
+    "unconnected": 50
+   },
+   "dx_mm": 0.0,
+   "dy_mm": 0.0,
+   "freed": {
+    "+3V3:R129.1": {
+     "bonded": false,
+     "clusters": 5,
+     "own_cluster": 1
+    }
+   },
+   "intact": {
+    "Net-(U11-TS_MR)": true
+   },
+   "ok": false,
+   "rung": "r00-as-built"
+  },
+  {
+   "clusters": {
+    "+3V3": 4,
+    "Net-(U11-TS_MR)": 1
+   },
+   "drc": {
+    "by_type": {
+     "clearance": 5,
+     "hole_clearance": 7,
+     "shorting_items": 1,
+     "solder_mask_bridge": 2
+    },
+    "delta_by_type": {
+     "clearance": 5,
+     "hole_clearance": 2,
+     "shorting_items": 1,
+     "solder_mask_bridge": 1
+    },
+    "exit": 0,
+    "total": 15,
+    "unconnected": 49
+   },
+   "dx_mm": 0.0,
+   "dy_mm": 0.5,
+   "freed": {
+    "+3V3:R129.1": {
+     "bonded": true,
+     "clusters": 4,
+     "own_cluster": 79
+    }
+   },
+   "intact": {
+    "Net-(U11-TS_MR)": true
+   },
+   "move": {
+    "ends": 4,
+    "sites": [
+     {
+      "net": "Net-(U11-TS_MR)",
+      "now_mm": [
+       64.7,
+       71.0
+      ],
+      "track_ends_dragged": 2,
+      "was_mm": [
+       64.7,
+       70.5
+      ]
+     },
+     {
+      "net": "Net-(U11-TS_MR)",
+      "now_mm": [
+       66.6,
+       71.4
+      ],
+      "track_ends_dragged": 2,
+      "was_mm": [
+       66.6,
+       70.9
+      ]
+     }
+    ],
+    "vias": 2
+   },
+   "ok": true,
+   "rung": "r01-+0.000+0.500"
+  },
+  {
+   "clusters": {
+    "+3V3": 4,
+    "Net-(U11-TS_MR)": 1
+   },
+   "drc": {
+    "by_type": {
+     "clearance": 5,
+     "hole_clearance": 5,
+     "solder_mask_bridge": 1
+    },
+    "delta_by_type": {
+     "clearance": 5
+    },
+    "exit": 0,
+    "total": 11,
+    "unconnected": 49
+   },
+   "dx_mm": 0.0,
+   "dy_mm": -0.5,
+   "freed": {
+    "+3V3:R129.1": {
+     "bonded": true,
+     "clusters": 4,
+     "own_cluster": 79
+    }
+   },
+   "intact": {
+    "Net-(U11-TS_MR)": true
+   },
+   "move": {
+    "ends": 4,
+    "sites": [
+     {
+      "net": "Net-(U11-TS_MR)",
+      "now_mm": [
+       64.7,
+       70.0
+      ],
+      "track_ends_dragged": 2,
+      "was_mm": [
+       64.7,
+       70.5
+      ]
+     },
+     {
+      "net": "Net-(U11-TS_MR)",
+      "now_mm": [
+       66.6,
+       70.4
+      ],
+      "track_ends_dragged": 2,
+      "was_mm": [
+       66.6,
+       70.9
+      ]
+     }
+    ],
+    "vias": 2
+   },
+   "ok": true,
+   "rung": "r02-+0.000-0.500"
+  },
+  {
+   "clusters": {
+    "+3V3": 4,
+    "Net-(U11-TS_MR)": 1
+   },
+   "drc": {
+    "by_type": {
+     "clearance": 1,
+     "hole_clearance": 7,
+     "shorting_items": 7,
+     "solder_mask_bridge": 3
+    },
+    "delta_by_type": {
+     "clearance": 1,
+     "hole_clearance": 2,
+     "shorting_items": 7,
+     "solder_mask_bridge": 2
+    },
+    "exit": 0,
+    "total": 18,
+    "unconnected": 49
+   },
+   "dx_mm": 0.0,
+   "dy_mm": 1.0,
+   "freed": {
+    "+3V3:R129.1": {
+     "bonded": true,
+     "clusters": 4,
+     "own_cluster": 79
+    }
+   },
+   "intact": {
+    "Net-(U11-TS_MR)": true
+   },
+   "move": {
+    "ends": 4,
+    "sites": [
+     {
+      "net": "Net-(U11-TS_MR)",
+      "now_mm": [
+       64.7,
+       71.5
+      ],
+      "track_ends_dragged": 2,
+      "was_mm": [
+       64.7,
+       70.5
+      ]
+     },
+     {
+      "net": "Net-(U11-TS_MR)",
+      "now_mm": [
+       66.6,
+       71.9
+      ],
+      "track_ends_dragged": 2,
+      "was_mm": [
+       66.6,
+       70.9
+      ]
+     }
+    ],
+    "vias": 2
+   },
+   "ok": true,
+   "rung": "r03-+0.000+1.000"
+  },
+  {
+   "clusters": {
+    "+3V3": 4,
+    "Net-(U11-TS_MR)": 1
+   },
+   "drc": {
+    "by_type": {
+     "clearance": 2,
+     "hole_clearance": 5,
+     "shorting_items": 5,
+     "solder_mask_bridge": 1
+    },
+    "delta_by_type": {
+     "clearance": 2,
+     "shorting_items": 5
+    },
+    "exit": 0,
+    "total": 13,
+    "unconnected": 49
+   },
+   "dx_mm": 0.0,
+   "dy_mm": -1.0,
+   "freed": {
+    "+3V3:R129.1": {
+     "bonded": true,
+     "clusters": 4,
+     "own_cluster": 79
+    }
+   },
+   "intact": {
+    "Net-(U11-TS_MR)": true
+   },
+   "move": {
+    "ends": 4,
+    "sites": [
+     {
+      "net": "Net-(U11-TS_MR)",
+      "now_mm": [
+       64.7,
+       69.5
+      ],
+      "track_ends_dragged": 2,
+      "was_mm": [
+       64.7,
+       70.5
+      ]
+     },
+     {
+      "net": "Net-(U11-TS_MR)",
+      "now_mm": [
+       66.6,
+       69.9
+      ],
+      "track_ends_dragged": 2,
+      "was_mm": [
+       66.6,
+       70.9
+      ]
+     }
+    ],
+    "vias": 2
+   },
+   "ok": true,
+   "rung": "r04-+0.000-1.000"
+  },
+  {
+   "clusters": {
+    "+3V3": 4,
+    "Net-(U11-TS_MR)": 1
+   },
+   "drc": {
+    "by_type": {
+     "clearance": 4,
+     "hole_clearance": 6,
+     "shorting_items": 8,
+     "solder_mask_bridge": 2,
+     "tracks_crossing": 1
+    },
+    "delta_by_type": {
+     "clearance": 4,
+     "hole_clearance": 1,
+     "shorting_items": 8,
+     "solder_mask_bridge": 1,
+     "tracks_crossing": 1
+    },
+    "exit": 0,
+    "total": 21,
+    "unconnected": 49
+   },
+   "dx_mm": 1.0,
+   "dy_mm": 0.0,
+   "freed": {
+    "+3V3:R129.1": {
+     "bonded": true,
+     "clusters": 4,
+     "own_cluster": 79
+    }
+   },
+   "intact": {
+    "Net-(U11-TS_MR)": true
+   },
+   "move": {
+    "ends": 4,
+    "sites": [
+     {
+      "net": "Net-(U11-TS_MR)",
+      "now_mm": [
+       65.7,
+       70.5
+      ],
+      "track_ends_dragged": 2,
+      "was_mm": [
+       64.7,
+       70.5
+      ]
+     },
+     {
+      "net": "Net-(U11-TS_MR)",
+      "now_mm": [
+       67.6,
+       70.9
+      ],
+      "track_ends_dragged": 2,
+      "was_mm": [
+       66.6,
+       70.9
+      ]
+     }
+    ],
+    "vias": 2
+   },
+   "ok": true,
+   "rung": "r05-+1.000+0.000"
+  },
+  {
+   "clusters": {
+    "+3V3": 4,
+    "Net-(U11-TS_MR)": 1
+   },
+   "drc": {
+    "by_type": {
+     "clearance": 5,
+     "hole_clearance": 7,
+     "shorting_items": 4,
+     "solder_mask_bridge": 2
+    },
+    "delta_by_type": {
+     "clearance": 5,
+     "hole_clearance": 2,
+     "shorting_items": 4,
+     "solder_mask_bridge": 1
+    },
+    "exit": 0,
+    "total": 18,
+    "unconnected": 49
+   },
+   "dx_mm": -1.0,
+   "dy_mm": 0.0,
+   "freed": {
+    "+3V3:R129.1": {
+     "bonded": true,
+     "clusters": 4,
+     "own_cluster": 79
+    }
+   },
+   "intact": {
+    "Net-(U11-TS_MR)": true
+   },
+   "move": {
+    "ends": 4,
+    "sites": [
+     {
+      "net": "Net-(U11-TS_MR)",
+      "now_mm": [
+       63.7,
+       70.5
+      ],
+      "track_ends_dragged": 2,
+      "was_mm": [
+       64.7,
+       70.5
+      ]
+     },
+     {
+      "net": "Net-(U11-TS_MR)",
+      "now_mm": [
+       65.6,
+       70.9
+      ],
+      "track_ends_dragged": 2,
+      "was_mm": [
+       66.6,
+       70.9
+      ]
+     }
+    ],
+    "vias": 2
+   },
+   "ok": true,
+   "rung": "r06--1.000+0.000"
+  },
+  {
+   "clusters": {
+    "+3V3": 4,
+    "Net-(U11-TS_MR)": 1
+   },
+   "drc": {
+    "by_type": {
+     "clearance": 5,
+     "hole_clearance": 7,
+     "shorting_items": 4,
+     "solder_mask_bridge": 3
+    },
+    "delta_by_type": {
+     "clearance": 5,
+     "hole_clearance": 2,
+     "shorting_items": 4,
+     "solder_mask_bridge": 2
+    },
+    "exit": 0,
+    "total": 19,
+    "unconnected": 49
+   },
+   "dx_mm": 0.0,
+   "dy_mm": 0.75,
+   "freed": {
+    "+3V3:R129.1": {
+     "bonded": true,
+     "clusters": 4,
+     "own_cluster": 79
+    }
+   },
+   "intact": {
+    "Net-(U11-TS_MR)": true
+   },
+   "move": {
+    "ends": 4,
+    "sites": [
+     {
+      "net": "Net-(U11-TS_MR)",
+      "now_mm": [
+       64.7,
+       71.25
+      ],
+      "track_ends_dragged": 2,
+      "was_mm": [
+       64.7,
+       70.5
+      ]
+     },
+     {
+      "net": "Net-(U11-TS_MR)",
+      "now_mm": [
+       66.6,
+       71.65
+      ],
+      "track_ends_dragged": 2,
+      "was_mm": [
+       66.6,
+       70.9
+      ]
+     }
+    ],
+    "vias": 2
+   },
+   "ok": true,
+   "rung": "r07-+0.000+0.750"
+  },
+  {
+   "clusters": {
+    "+3V3": 4,
+    "Net-(U11-TS_MR)": 1
+   },
+   "drc": {
+    "by_type": {
+     "clearance": 4,
+     "hole_clearance": 5,
+     "shorting_items": 3,
+     "solder_mask_bridge": 1
+    },
+    "delta_by_type": {
+     "clearance": 4,
+     "shorting_items": 3
+    },
+    "exit": 0,
+    "total": 13,
+    "unconnected": 49
+   },
+   "dx_mm": 0.0,
+   "dy_mm": -0.75,
+   "freed": {
+    "+3V3:R129.1": {
+     "bonded": true,
+     "clusters": 4,
+     "own_cluster": 79
+    }
+   },
+   "intact": {
+    "Net-(U11-TS_MR)": true
+   },
+   "move": {
+    "ends": 4,
+    "sites": [
+     {
+      "net": "Net-(U11-TS_MR)",
+      "now_mm": [
+       64.7,
+       69.75
+      ],
+      "track_ends_dragged": 2,
+      "was_mm": [
+       64.7,
+       70.5
+      ]
+     },
+     {
+      "net": "Net-(U11-TS_MR)",
+      "now_mm": [
+       66.6,
+       70.15
+      ],
+      "track_ends_dragged": 2,
+      "was_mm": [
+       66.6,
+       70.9
+      ]
+     }
+    ],
+    "vias": 2
+   },
+   "ok": true,
+   "rung": "r08-+0.000-0.750"
+  },
+  {
+   "clusters": {
+    "+3V3": 5,
+    "Net-(U11-TS_MR)": 1
+   },
+   "drc": {
+    "by_type": {
+     "clearance": 4,
+     "hole_clearance": 8,
+     "shorting_items": 8,
+     "solder_mask_bridge": 4
+    },
+    "delta_by_type": {
+     "clearance": 4,
+     "hole_clearance": 3,
+     "shorting_items": 8,
+     "solder_mask_bridge": 3
+    },
+    "exit": 0,
+    "total": 24,
+    "unconnected": 50
+   },
+   "dx_mm": 0.5,
+   "dy_mm": 0.5,
+   "freed": {
+    "+3V3:R129.1": {
+     "bonded": false,
+     "clusters": 5,
+     "own_cluster": 1
+    }
+   },
+   "intact": {
+    "Net-(U11-TS_MR)": true
+   },
+   "move": {
+    "ends": 4,
+    "sites": [
+     {
+      "net": "Net-(U11-TS_MR)",
+      "now_mm": [
+       65.2,
+       71.0
+      ],
+      "track_ends_dragged": 2,
+      "was_mm": [
+       64.7,
+       70.5
+      ]
+     },
+     {
+      "net": "Net-(U11-TS_MR)",
+      "now_mm": [
+       67.1,
+       71.4
+      ],
+      "track_ends_dragged": 2,
+      "was_mm": [
+       66.6,
+       70.9
+      ]
+     }
+    ],
+    "vias": 2
+   },
+   "ok": false,
+   "rung": "r09-+0.500+0.500"
+  },
+  {
+   "clusters": {
+    "+3V3": 5,
+    "Net-(U11-TS_MR)": 1
+   },
+   "drc": {
+    "by_type": {
+     "clearance": 3,
+     "hole_clearance": 5,
+     "shorting_items": 4,
+     "solder_mask_bridge": 1
+    },
+    "delta_by_type": {
+     "clearance": 3,
+     "shorting_items": 4
+    },
+    "exit": 0,
+    "total": 13,
+    "unconnected": 50
+   },
+   "dx_mm": -0.5,
+   "dy_mm": -0.5,
+   "freed": {
+    "+3V3:R129.1": {
+     "bonded": false,
+     "clusters": 5,
+     "own_cluster": 1
+    }
+   },
+   "intact": {
+    "Net-(U11-TS_MR)": true
+   },
+   "move": {
+    "ends": 4,
+    "sites": [
+     {
+      "net": "Net-(U11-TS_MR)",
+      "now_mm": [
+       64.2,
+       70.0
+      ],
+      "track_ends_dragged": 2,
+      "was_mm": [
+       64.7,
+       70.5
+      ]
+     },
+     {
+      "net": "Net-(U11-TS_MR)",
+      "now_mm": [
+       66.1,
+       70.4
+      ],
+      "track_ends_dragged": 2,
+      "was_mm": [
+       66.6,
+       70.9
+      ]
+     }
+    ],
+    "vias": 2
+   },
+   "ok": false,
+   "rung": "r10--0.500-0.500"
+  },
+  {
+   "clusters": {
+    "+3V3": 5,
+    "Net-(U11-TS_MR)": 1
+   },
+   "drc": {
+    "by_type": {
+     "clearance": 1,
+     "hole_clearance": 5,
+     "shorting_items": 3,
+     "solder_mask_bridge": 1,
+     "tracks_crossing": 1
+    },
+    "delta_by_type": {
+     "clearance": 1,
+     "shorting_items": 3,
+     "tracks_crossing": 1
+    },
+    "exit": 0,
+    "total": 11,
+    "unconnected": 50
+   },
+   "dx_mm": 0.5,
+   "dy_mm": -0.5,
+   "freed": {
+    "+3V3:R129.1": {
+     "bonded": false,
+     "clusters": 5,
+     "own_cluster": 1
+    }
+   },
+   "intact": {
+    "Net-(U11-TS_MR)": true
+   },
+   "move": {
+    "ends": 4,
+    "sites": [
+     {
+      "net": "Net-(U11-TS_MR)",
+      "now_mm": [
+       65.2,
+       70.0
+      ],
+      "track_ends_dragged": 2,
+      "was_mm": [
+       64.7,
+       70.5
+      ]
+     },
+     {
+      "net": "Net-(U11-TS_MR)",
+      "now_mm": [
+       67.1,
+       70.4
+      ],
+      "track_ends_dragged": 2,
+      "was_mm": [
+       66.6,
+       70.9
+      ]
+     }
+    ],
+    "vias": 2
+   },
+   "ok": false,
+   "rung": "r11-+0.500-0.500"
+  },
+  {
+   "clusters": {
+    "+3V3": 4,
+    "Net-(U11-TS_MR)": 1
+   },
+   "drc": {
+    "by_type": {
+     "clearance": 2,
+     "hole_clearance": 6,
+     "shorting_items": 6,
+     "solder_mask_bridge": 3
+    },
+    "delta_by_type": {
+     "clearance": 2,
+     "hole_clearance": 1,
+     "shorting_items": 6,
+     "solder_mask_bridge": 2
+    },
+    "exit": 0,
+    "total": 17,
+    "unconnected": 49
+   },
+   "dx_mm": -0.5,
+   "dy_mm": 0.5,
+   "freed": {
+    "+3V3:R129.1": {
+     "bonded": true,
+     "clusters": 4,
+     "own_cluster": 79
+    }
+   },
+   "intact": {
+    "Net-(U11-TS_MR)": true
+   },
+   "move": {
+    "ends": 4,
+    "sites": [
+     {
+      "net": "Net-(U11-TS_MR)",
+      "now_mm": [
+       64.2,
+       71.0
+      ],
+      "track_ends_dragged": 2,
+      "was_mm": [
+       64.7,
+       70.5
+      ]
+     },
+     {
+      "net": "Net-(U11-TS_MR)",
+      "now_mm": [
+       66.1,
+       71.4
+      ],
+      "track_ends_dragged": 2,
+      "was_mm": [
+       66.6,
+       70.9
+      ]
+     }
+    ],
+    "vias": 2
+   },
+   "ok": true,
+   "rung": "r12--0.500+0.500"
+  }
+ ],
+ "schema": 1,
+ "seconds": 213.4,
+ "sites": [
+  {
+   "at_mm": [
+    64.7,
+    70.5
+   ],
+   "dia_mm": 0.6,
+   "drill_mm": 0.3,
+   "net": "Net-(U11-TS_MR)"
+  },
+  {
+   "at_mm": [
+    66.6,
+    70.9
+   ],
+   "dia_mm": 0.6,
+   "drill_mm": 0.3,
+   "net": "Net-(U11-TS_MR)"
+  }
+ ],
+ "winners": [
+  "r01-+0.000+0.500",
+  "r02-+0.000-0.500",
+  "r03-+0.000+1.000",
+  "r04-+0.000-1.000",
+  "r05-+1.000+0.000",
+  "r06--1.000+0.000",
+  "r07-+0.000+0.750",
+  "r08-+0.000-0.750",
+  "r12--0.500+0.500"
+ ]
+}
