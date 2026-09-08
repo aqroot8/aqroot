@@ -1,3 +1,143 @@
+# D-665 · 2026-09-08 · Demo — THE WAKE INTERRUPT'S TWO EXPANDERS ARE ONE CLUSTER: A NET RECORDED `NO_OPENER_FOUND` ON BOTH EDGES FALLS TO TWO OBJECTS, AND THE RE-BOND SITE AND THE LANE TURNED OUT TO BE THE SAME COPPER
+
+    authority  2900f21a934d9d826644131a90baa36f7dace0db5f50cf2e702e5694f121177f
+            -> 7b2ca32554d3ce8bb7afae883316470223ead0d44de24d0a55fa3a7b18d064b7
+    retained open edges 29 -> 28    open retained nets 16 -> 16
+    raw board ratsnest 45 -> 44     connected retained 157 -> 157
+    `hardware/beta-v2` UNTOUCHED.
+
+**COPPER PROMOTED.**  Fifteen of fifteen gate clauses PASS, **ZERO refused**;
+real KiCad DRC exit 0, **zero attributable**, profile the INHERITED one EXACTLY
+(`hole_clearance` 5, `solder_mask_bridge` 1, `lib_footprint_issues` 199),
+unconnected items 45 -> 44.  `verify_promotion.py` **15/15 PASS**
+(`evidence/d665-verify-promotion.json`).  Standing suite **13 contracts, 13/13
+RAN, 13/13 PASS, 13/13 COMPARED against the d664 baseline, `vacuous` false**
+(`evidence/d665-contract-regression.json`); eleven rows differ in
+`board_sha256` alone, which is what a promotion is, and the only two other
+fields that moved are plane AREAS — `In1.Cu` 9396.969 -> 9395.066 mm² and the
+`GND` return plane 18793.938 -> 18790.132 mm², the antipads of three new
+barrels, 0.02 % each.
+
+## 1. THE CHEAP QUESTION FIRST: THE TAP OPENS NOTHING RETAINED
+
+D-664 built `--tap` and exercised it on two nets.  This decision asked it of
+**the whole board** before spending an iteration on any one land
+(`evidence/d665-tap-census.json`, `-tap-screen.json`).  24 nets: **7
+`STUB_FORBIDDEN`** by TAP4 name (`/ACC_5V_LX`, `Net-(U13-SW)`, `USB_D_CONN_P`,
+`USB_D_MCU_N`, `USB_D_MCU_P`, `SPK_N_CONN`, `SPK_P_CONN`), 17 MEASURED.  On the
+**retained** frontier the real screen returns **12 `NO_TAP` and 1
+`TAP_ROUTABLE`**, and the one that routes — `/WAKE_INT_N` `U2.1` — costs
+**150.169 mm and FIFTEEN barrels for a 25.258 mm gap**.  So the tap is not the
+instrument for a single one of the 29 open edges, and "offer it the tap" is
+retired as a hope for thirteen lands.  It also PARTITIONS them:
+
+    NO_LEGAL_ESCAPE (the LAND)      U9.14  U9.10  U9.30  U16.3  U11.9  U11.3
+    NO_PATH         (the CORRIDOR)  TP5.1  U14.7  U3.20  U2.9   U2.10  U3.1
+
+Three of the six land walls are on ONE package (`U9`, the NFC front end) and
+three of the six corridor walls are on ONE pair (`U2`/`U3`, the expanders).
+
+## 2. AND `U9`'s THREE LAND WALLS ARE TWO DIFFERENT WALLS
+
+`screen_escape_class.py` (`evidence/d665-escape-class-u9.json`): **14 CLEAR, 1
+`WIDTH_NECKABLE`**.  `U9.14` (`NFC_VDD_RF`) and `U9.30` (`SPI_B_SCK`) are
+**CLEAR at their contract width — "a router refusal here is ROUTED COPPER, not
+the land"** — and `screen_offcentre_launch.py` confirms it: both **OPEN OFF
+CENTRE at 0.200 mm on `B`** (anchors 0.000 mm and 0.037 mm off centre, reach
+0.025 mm and 0.050 mm past their own edge; centre-anchored reaches 0.150 mm and
+refuses at every rung respectively — `evidence/d665-offcentre-launch-u9.json`).
+`U9.10` (`/NFC_SUPPLY`) is the frontier's **only true WIDTH wall**: contract
+0.600 mm, best margin **-0.150 mm**, widest legal escape **0.300 mm**, priced
+**0.995 A against the 1.000 A `.kicad_dru` section 5 publishes for `P3V3`** —
+`BOND_UNDER_PRICED` by half a percent, and refused for the right reason.
+
+## 3. `/WAKE_INT_N` WAS `NO_OPENER_FOUND` ON BOTH EDGES, AND IT IS TWO OBJECTS
+
+D-663 §6 recorded the net `NO_OPENER_FOUND` on both edges.  That answer came
+from `screen_corridor_blockers.py`, which asks with `route_join`'s
+**CENTRE-anchored** launch.  `screen_pair_corridor_blame.py --per-object`, which
+asks with `maze3d.offcentre_route`, names an opener for `U2.1 <-> U3.1` — the
+two PCAL9535A `INT` pins, 10.000 mm apart in the same `B.Cu` column, both of
+which launch fine (`evidence/d665-blame-wake-u2u3.json`, 642.2 s):
+
+    Q1  all 16 foreign nets in the window   OPENS 11.669 mm
+    Q2  every net alone                     NO_PATH, 16 of 16
+    Q3  MINIMAL SET  2 nets  {/SD_CARD_DETECT_N, GND}          OPENS 11.813 mm
+    Q4  MINIMAL OBJECTS 2 units / 15 router objects            OPENS 11.813 mm
+
+The two units are **one 1.485 mm `F.Cu` segment of `/SD_CARD_DETECT_N`** — the
+microSD card-detect strap, unprotected — standing 0.354 mm from where the
+southern barrel must land against the 0.600 mm a 0.600 mm barrel needs, and
+**the `GND` barrel at (54.000, 90.400)**, which stands in the `In2` haul.
+`--ban GND` proves a GND-free opening also exists ({`/SD_CARD_DETECT_N`,
+`/TOUCH_RST_N`}, 11.636 mm, `evidence/d665-blame-wake-u2u3-ban-gnd.json`); it
+was not needed and is kept for the day it is.
+
+## 4. THE RE-BOND SITE AND THE LANE ARE THE SAME COPPER
+
+That `GND` barrel is the **only** bond of `B.Cu` `GND` island 26 (4.482 mm²,
+holding `U2.2` and `U2.3`), so removing it orphans the island and clause 4
+refuses the run.  D-653's doctrine says NAME the new site: `screen_rebond_site.py`
+reads **448 legal 0.500/0.250 sites inside that island** — and **every one of
+them lies within 0.707 mm of the run**.  The furthest, (53.775, 90.875), was
+written onto a scratch board with `--detour-apply` and re-asked: **`NO_PATH`.**
+A barrel MOVED to the best site this board has **CLOSES the corridor it was
+moved for.**
+
+So the barrel is REMOVED AND NOT MOVED, and the re-bond is owed to
+`--repair-planes` on the **POST** board — where the island is 3.056 mm², the
+run's own copper is already there to route around, and the site is chosen
+against the board the run actually leaves behind.  It worked: one barrel,
+`U2.2` at 0.196 mm and `U2.3` at 0.483 mm, `rebond_priced` **ok**.  **A re-bond
+site named BEFORE the run is authored against a board the run will not leave
+behind.**
+
+## 5. AND `--partial`'s SECOND JOIN REFUSED THE FIRST ONE'S TRANSACTION
+
+`/WAKE_INT_N` has three islands.  The first gate run took BOTH pairs: the
+11.813 mm join AND a **148.213 mm / 15-barrel** haul to the `U1.23` island, and
+that haul slotted the `+3V3` pour.  **14 of 15 clauses PASS, refused on
+`no_regression` ALONE**, `nets_regressed: ["+3V3"]`
+(`evidence/d665-tx-wake-g50.json`) — even though `board_improved`,
+`pour_partition` and `rebond_priced` all passed and retained open edges fell
+29 -> 28.  `--join-max-mm 20` states the electrical bound instead of arguing
+it: the long pair is reported `TOO_LONG` and reverted, the short one stands,
+and the SAME transaction passes **15/15**
+(`evidence/d665-tx-wake-g50-cap.json`).  **On a three-island net, `--partial`'s
+second join can refuse the first one's transaction; bound the join.**
+
+## 6. WHAT WAS PROMOTED
+
+    /WAKE_INT_N  U2.1 -> U3.1   11.813 mm   B / In2 / B   2 vias
+                 vias at (53.000, 91.450) and (53.850, 82.200)
+                 B 0.458 mm  In2 9.542 mm  stub 1.813 mm
+    /SD_CARD_DETECT_N  F.Cu relay  1.485 mm -> 4.058 mm, 0 vias  (bound 5.569)
+    GND                barrel (54.000,90.400) 0.500/0.250 REMOVED, re-bonded
+                       by --repair-planes into island 26
+
+15 objects added (12 tracks at 0.200/0.300 mm on `F`/`B`/`In2`, 3 barrels all
+0.600/0.300), 2 objects removed, both licensed by signature.  No `.kicad_dru`
+change, no rule area, no zone added or removed, no licence of any kind.
+`/WAKE_INT_N` goes 3 islands -> 2, 2 open edges -> 1; `/SD_CARD_DETECT_N` and
+`/TOUCH_RST_N` both end `open_edges 0`.
+
+## 7. NEXT, IN ORDER OF LEVERAGE
+
+1. **`/WAKE_INT_N`'s LAST edge** — `{U2.1,U3.1} <-> {Q10.3,R3.1,U1.23}`,
+   25.258 mm, `TOO_LONG` at 148.213 mm / 15 barrels and `NO_PATH` on the other
+   pairing.  Ask `screen_pair_corridor_blame.py --per-object --max-mm` of
+   `U2.1 <-> Q10.3`; that instrument has now overturned this net once.
+2. **`U9.14` (`NFC_VDD_RF`) and `U9.30` (`SPI_B_SCK`)** — CLEAR lands whose
+   refusal is ROUTED COPPER, one package, two retained edges, and §2 says which
+   instrument answers them.
+3. `U16.3` needs a BARREL SITE, not a pitch (D-664 carry).
+4. `BQ25185_SYS` `C27.1` with the tap and a RESERVED lane (D-664 carry); §1
+   changes nothing there — `U11.9`/`U11.3` are land walls, not tap questions.
+5. `/I2C_SCL_INT` `U14.7 <-> J1.44` remains **the one OPEN OWNER DECISION**
+   (D-655 §7), RECORDED NOT TAKEN.
+6. `copper_sliver` localisation remains an OPEN INSTRUMENT GAP.
+7. `hardware/demo/fab` is STALE against `7b2ca325`.
+
 # D-664 · 2026-09-08 · Demo — THE TAP IS BUILT: AN ORPHAN LAND MAY NOW AIM AT ITS OWN NET'S CONDUCTOR AND NOT ONLY AT A PAD; AND THE HARNESS THAT POLICES EVERY FRAMEWORK CHANGE HAD NEVER COMPARED ANYTHING
 
     authority  2900f21a934d9d826644131a90baa36f7dace0db5f50cf2e702e5694f121177f

@@ -1,0 +1,120 @@
+{
+  "board": "/home/aqroot8/aqroot-demo/hardware/demo/kicad/aqroot-demo/aqroot-Beta-v2.kicad_pcb",
+  "board_sha256": "2900f21a934d9d826644131a90baa36f7dace0db5f50cf2e702e5694f121177f",
+  "fragment": null,
+  "fragment_board": null,
+  "fragment_board_sha256": null,
+  "grid_nm": 25000,
+  "island": {
+    "area_mm2": 4.482,
+    "bbox_mm": [
+      52.3982,
+      89.4665,
+      56.1585,
+      92.3995
+    ],
+    "index": 26,
+    "zone": "B GND PLANE"
+  },
+  "layers": [
+    "F",
+    "B",
+    "I2"
+  ],
+  "net": "GND",
+  "pad": "U2.3",
+  "rungs": [
+    {
+      "examples": [
+        [
+          53.525,
+          90.675
+        ],
+        [
+          53.5,
+          90.7
+        ],
+        [
+          53.525,
+          90.7
+        ],
+        [
+          53.5,
+          90.725
+        ],
+        [
+          53.525,
+          90.725
+        ],
+        [
+          53.55,
+          90.725
+        ],
+        [
+          53.475,
+          90.75
+        ],
+        [
+          53.5,
+          90.75
+        ]
+      ],
+      "licensed_outright": true,
+      "sites_in_island": 145,
+      "via_mm": [
+        0.6,
+        0.3
+      ]
+    },
+    {
+      "examples": [
+        [
+          53.5,
+          90.625
+        ],
+        [
+          53.525,
+          90.625
+        ],
+        [
+          53.475,
+          90.65
+        ],
+        [
+          53.5,
+          90.65
+        ],
+        [
+          53.525,
+          90.65
+        ],
+        [
+          53.475,
+          90.675
+        ],
+        [
+          53.5,
+          90.675
+        ],
+        [
+          53.525,
+          90.675
+        ]
+      ],
+      "licensed_outright": true,
+      "sites_in_island": 448,
+      "via_mm": [
+        0.5,
+        0.25
+      ]
+    }
+  ],
+  "schema": 1,
+  "seconds": 37.4,
+  "window_mm": [
+    50.3982,
+    87.4665,
+    58.1585,
+    94.3995
+  ]
+}

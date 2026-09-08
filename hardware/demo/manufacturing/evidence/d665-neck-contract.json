@@ -1,0 +1,62 @@
+{
+ "all_pass": true,
+ "board": "/home/aqroot8/aqroot-demo/hardware/demo/kicad/aqroot-demo/aqroot-Beta-v2.kicad_pcb",
+ "board_sha256": "7b2ca32554d3ce8bb7afae883316470223ead0d44de24d0a55fa3a7b18d064b7",
+ "checks": {
+  "N1": {
+   "courtyards_found": [
+    "U11",
+    "U12",
+    "U13",
+    "U14",
+    "U16",
+    "U17",
+    "U20",
+    "U21",
+    "U22",
+    "U9"
+   ],
+   "dru_min_nm": 200000,
+   "dru_refs": [
+    "U11",
+    "U12",
+    "U13",
+    "U14",
+    "U16",
+    "U17",
+    "U20",
+    "U21",
+    "U22",
+    "U9"
+   ],
+   "ok": true,
+   "router_min_nm": 200000,
+   "router_refs": [
+    "U11",
+    "U12",
+    "U13",
+    "U14",
+    "U16",
+    "U17",
+    "U20",
+    "U21",
+    "U22",
+    "U9"
+   ]
+  },
+  "N2": {
+   "base_rev": "c5f983f",
+   "moved": [],
+   "ok": true,
+   "pads_compared": 36
+  },
+  "N3": {
+   "neck_max_mm": 1.5,
+   "offered": [],
+   "ok": true,
+   "pads_offered_a_neck": 0,
+   "violations": []
+  }
+ },
+ "schema": 1
+}

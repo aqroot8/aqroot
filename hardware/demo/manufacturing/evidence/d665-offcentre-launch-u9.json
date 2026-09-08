@@ -1,0 +1,159 @@
+{
+ "authoritative_unchanged": true,
+ "board": "/home/aqroot8/aqroot-demo/hardware/demo/kicad/aqroot-demo/aqroot-Beta-v2.kicad_pcb",
+ "board_sha256": "2900f21a934d9d826644131a90baa36f7dace0db5f50cf2e702e5694f121177f",
+ "grid": 25000,
+ "method": "read-only; every trial laid on a scratch QBoard and REVERTED, every candidate proved by maze3d.verify_laid (exact analytic clearance, never a lattice); zones invisible to QBoard, so a closure is a licence question and never copper",
+ "nets": [
+  {
+   "board_track_min": 150000,
+   "contract": 200000,
+   "dru_floor": 150000,
+   "islands": 2,
+   "lands": [
+    {
+     "best_centre": 150000,
+     "best_offcentre": 200000,
+     "centre_width": {
+      "B": 150000
+     },
+     "gained": true,
+     "layers": [
+      "B"
+     ],
+     "offcentre_width": {
+      "B": 200000
+     },
+     "pad": "U9.14",
+     "rungs": [
+      {
+       "a_xy": [
+        34.75,
+        27.725
+       ],
+       "b_xy": [
+        34.75,
+        27.325
+       ],
+       "base_dir": true,
+       "centre": false,
+       "centre_why": "U9.14: NO LEGAL ESCAPE at >= 0.200 mm; blocked by U9.15 (x27), U9.13 (x16), U9.33 (x8), U9.10 (x5)",
+       "escape_formula": false,
+       "exit_mm": 0.375,
+       "layer": "B",
+       "n": 5,
+       "offcentre": true,
+       "offcentre_mm": 0.0,
+       "offcentre_why": null,
+       "reach_mm": 0.025,
+       "seconds": 0.54,
+       "support_mm": 0.375,
+       "width": 200000
+      },
+      {
+       "a_xy": null,
+       "b_xy": null,
+       "base_dir": null,
+       "centre": true,
+       "centre_why": null,
+       "escape_formula": null,
+       "exit_mm": null,
+       "layer": "B",
+       "n": 0,
+       "offcentre": false,
+       "offcentre_mm": null,
+       "offcentre_why": null,
+       "reach_mm": null,
+       "seconds": 0.01,
+       "support_mm": null,
+       "width": 150000
+      }
+     ]
+    }
+   ],
+   "net": "/04_SPI_B_RADIOS_NFC/NFC_VDD_RF",
+   "netclass": "Default",
+   "pairs": [],
+   "widths": [
+    200000,
+    150000
+   ]
+  },
+  {
+   "board_track_min": 150000,
+   "contract": 200000,
+   "dru_floor": 150000,
+   "islands": 2,
+   "lands": [
+    {
+     "best_centre": null,
+     "best_offcentre": 200000,
+     "centre_width": {
+      "B": null
+     },
+     "gained": true,
+     "layers": [
+      "B"
+     ],
+     "offcentre_width": {
+      "B": 200000
+     },
+     "pad": "U9.30",
+     "rungs": [
+      {
+       "a_xy": [
+        33.2125,
+        32.275
+       ],
+       "b_xy": [
+        33.2,
+        32.7
+       ],
+       "base_dir": true,
+       "centre": false,
+       "centre_why": "U9.30: NO LEGAL ESCAPE at >= 0.200 mm; blocked by U9.31 (x21), U9.29 (x16), track (x9), U9.33 (x8)",
+       "escape_formula": false,
+       "exit_mm": 0.375,
+       "layer": "B",
+       "n": 2,
+       "offcentre": true,
+       "offcentre_mm": 0.0375,
+       "offcentre_why": null,
+       "reach_mm": 0.05,
+       "seconds": 0.7,
+       "support_mm": 0.375,
+       "width": 200000
+      },
+      {
+       "a_xy": null,
+       "b_xy": null,
+       "base_dir": null,
+       "centre": false,
+       "centre_why": "U9.30: NO LEGAL ESCAPE at >= 0.150 mm; blocked by U9.31 (x21), U9.29 (x17), track (x9), U9.33 (x8)",
+       "escape_formula": null,
+       "exit_mm": null,
+       "layer": "B",
+       "n": 0,
+       "offcentre": false,
+       "offcentre_mm": null,
+       "offcentre_why": null,
+       "reach_mm": null,
+       "seconds": 0.02,
+       "support_mm": null,
+       "width": 150000
+      }
+     ]
+    }
+   ],
+   "net": "/SPI_B_SCK",
+   "netclass": "Default",
+   "pairs": [],
+   "widths": [
+    200000,
+    150000
+   ]
+  }
+ ],
+ "question": "does an OFF-CENTRE LAUNCH -- a stub anchored anywhere on the land's own copper, in any of 24 directions -- open the lands and the island pairs that a CENTRE-ANCHORED escape refuses at every width this board can fabricate",
+ "schema": 1
+}

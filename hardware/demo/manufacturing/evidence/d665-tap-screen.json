@@ -1,0 +1,886 @@
+{
+  "board": "/home/aqroot8/aqroot-demo/hardware/demo/kicad/aqroot-demo/aqroot-Beta-v2.kicad_pcb",
+  "board_sha256": "2900f21a934d9d826644131a90baa36f7dace0db5f50cf2e702e5694f121177f",
+  "grid_nm": 50000,
+  "limits": "TAP5: a TAP_ROUTABLE row is a work-list entry, not a transaction -- no gate clause has been asked, the pour partition least of all",
+  "method": "read-only; maze3d.offcentre_route to an anchor END built from the target island's own connected copper, proved by verify_laid in exact geometry and REVERTED",
+  "nets": [
+    {
+      "lands": [
+        {
+          "gain_mm": 0.7146,
+          "island": 1,
+          "land": "U9.14",
+          "nearest_pad_mm": 2.5,
+          "nearest_tap_mm": 1.7854,
+          "tries": [
+            {
+              "at": [
+                33.4875,
+                28.9875
+              ],
+              "gap_mm": 1.7854,
+              "grid_nm": 50000,
+              "layer": "F",
+              "ok": false,
+              "reason": "NO_LEGAL_ESCAPE",
+              "target": "F 37.300,32.800-32.000,27.500",
+              "target_island": 0,
+              "why": "U9.14: NO OFF-CENTRE LAUNCH at 0.200 mm from any of 41 anchors x 24 directions x 17 lengths; blocked by U9.13 (x5974), U9.15 (x5611), U9.12 (x993), landing still on the land (x843)"
+            },
+            {
+              "at": [
+                33.1625,
+                26.1375
+              ],
+              "gap_mm": 2.2451,
+              "grid_nm": 50000,
+              "layer": "F",
+              "ok": false,
+              "reason": "NO_LEGAL_ESCAPE",
+              "target": "F 37.500,21.800-32.300,27.000",
+              "target_island": 0,
+              "why": "U9.14: NO OFF-CENTRE LAUNCH at 0.200 mm from any of 41 anchors x 24 directions x 17 lengths; blocked by U9.13 (x5974), U9.15 (x5611), U9.12 (x993), landing still on the land (x843)"
+            },
+            {
+              "at": [
+                32.3,
+                27.0
+              ],
+              "gap_mm": 2.555,
+              "grid_nm": 50000,
+              "layer": "F",
+              "ok": false,
+              "reason": "NO_LEGAL_ESCAPE",
+              "target": "F 32.300,27.000-32.200,26.900",
+              "target_island": 0,
+              "why": "U9.14: NO OFF-CENTRE LAUNCH at 0.200 mm from any of 41 anchors x 24 directions x 17 lengths; blocked by U9.13 (x5974), U9.15 (x5611), U9.12 (x993), landing still on the land (x843)"
+            }
+          ],
+          "verdict": "NO_TAP"
+        }
+      ],
+      "layers": [
+        "F",
+        "B",
+        "I2"
+      ],
+      "net": "/04_SPI_B_RADIOS_NFC/NFC_VDD_RF",
+      "netclass": "Default",
+      "seconds": 5.3,
+      "target_objects": 15,
+      "width": 200000
+    },
+    {
+      "lands": [
+        {
+          "gain_mm": 2.7328,
+          "island": 1,
+          "land": "TP5.1",
+          "nearest_pad_mm": 13.286,
+          "nearest_tap_mm": 10.5532,
+          "tries": [
+            {
+              "at": [
+                51.7,
+                135.4
+              ],
+              "gap_mm": 10.5532,
+              "grid_nm": 50000,
+              "layer": "F",
+              "ok": false,
+              "reason": "NO_PATH",
+              "target": "via@51.700,135.400",
+              "target_island": 0,
+              "why": "no all-layer corridor at 0.200 mm from TP5.1 on F to TAP on F"
+            },
+            {
+              "at": [
+                51.7,
+                135.4
+              ],
+              "gap_mm": 10.5532,
+              "grid_nm": 50000,
+              "layer": "I2",
+              "ok": false,
+              "reason": "NO_PATH",
+              "target": "I2 51.700,135.400-56.100,131.200",
+              "target_island": 0,
+              "why": "no all-layer corridor at 0.200 mm from TP5.1 on F to TAP on I2"
+            },
+            {
+              "at": [
+                60.47,
+                136.75
+              ],
+              "gap_mm": 13.286,
+              "grid_nm": 50000,
+              "layer": "F",
+              "ok": false,
+              "reason": "NO_PATH",
+              "target": "F 60.470,136.750-60.500,135.600",
+              "target_island": 0,
+              "why": "no all-layer corridor at 0.200 mm from TP5.1 on F to TAP on F"
+            }
+          ],
+          "verdict": "NO_TAP"
+        },
+        {
+          "gain_mm": 0.7423,
+          "island": 2,
+          "land": "U14.7",
+          "nearest_pad_mm": 24.1371,
+          "nearest_tap_mm": 23.3948,
+          "tries": [
+            {
+              "at": [
+                23.8,
+                93.9
+              ],
+              "gap_mm": 23.3948,
+              "grid_nm": 50000,
+              "layer": "F",
+              "ok": false,
+              "reason": "NO_PATH",
+              "target": "F 23.800,93.900-25.100,92.800",
+              "target_island": 0,
+              "why": "no all-layer corridor at 0.200 mm from U14.7 on B to TAP on F"
+            },
+            {
+              "at": [
+                23.8,
+                93.9
+              ],
+              "gap_mm": 23.3948,
+              "grid_nm": 50000,
+              "layer": "F",
+              "ok": false,
+              "reason": "NO_PATH",
+              "target": "F 23.525,95.125-23.800,93.900",
+              "target_island": 0,
+              "why": "no all-layer corridor at 0.200 mm from U14.7 on B to TAP on F"
+            },
+            {
+              "at": [
+                23.4,
+                94.925
+              ],
+              "gap_mm": 23.5562,
+              "grid_nm": 50000,
+              "layer": "F",
+              "ok": false,
+              "reason": "NO_PATH",
+              "target": "F 23.410,96.000-23.400,94.925",
+              "target_island": 0,
+              "why": "no all-layer corridor at 0.200 mm from U14.7 on B to TAP on F"
+            }
+          ],
+          "verdict": "NO_TAP"
+        },
+        {
+          "gain_mm": 9.5364,
+          "island": 3,
+          "land": "U16.3",
+          "nearest_pad_mm": 15.5847,
+          "nearest_tap_mm": 6.0483,
+          "tries": [
+            {
+              "at": [
+                55.7,
+                60.3
+              ],
+              "gap_mm": 6.0483,
+              "grid_nm": 50000,
+              "layer": "F",
+              "ok": false,
+              "reason": "NO_LEGAL_ESCAPE",
+              "target": "F 55.700,60.300-57.300,61.800",
+              "target_island": 0,
+              "why": "U16.3: NO OFF-CENTRE LAUNCH at 0.200 mm from any of 41 anchors x 24 directions x 17 lengths; blocked by U16.2 (x6297), U16.4 (x5870), U16.1 (x2158), track (x1041)"
+            },
+            {
+              "at": [
+                55.7,
+                60.3
+              ],
+              "gap_mm": 6.0483,
+              "grid_nm": 50000,
+              "layer": "F",
+              "ok": false,
+              "reason": "NO_LEGAL_ESCAPE",
+              "target": "F 52.800,60.900-55.700,60.300",
+              "target_island": 0,
+              "why": "U16.3: NO OFF-CENTRE LAUNCH at 0.200 mm from any of 41 anchors x 24 directions x 17 lengths; blocked by U16.2 (x6297), U16.4 (x5870), U16.1 (x2158), track (x1041)"
+            },
+            {
+              "at": [
+                57.8,
+                61.5
+              ],
+              "gap_mm": 7.106,
+              "grid_nm": 50000,
+              "layer": "F",
+              "ok": false,
+              "reason": "NO_LEGAL_ESCAPE",
+              "target": "F 57.600,61.600-57.800,61.500",
+              "target_island": 0,
+              "why": "U16.3: NO OFF-CENTRE LAUNCH at 0.200 mm from any of 41 anchors x 24 directions x 17 lengths; blocked by U16.2 (x6297), U16.4 (x5870), U16.1 (x2158), track (x1041)"
+            }
+          ],
+          "verdict": "NO_TAP"
+        }
+      ],
+      "layers": [
+        "F",
+        "B",
+        "I2"
+      ],
+      "net": "/I2C_SCL_INT",
+      "netclass": "I2C",
+      "seconds": 513.1,
+      "target_objects": 121,
+      "width": 200000
+    },
+    {
+      "lands": [
+        {
+          "gain_mm": -2.8234,
+          "island": 1,
+          "land": "U9.10",
+          "nearest_pad_mm": 1.1516,
+          "nearest_tap_mm": 3.975,
+          "tries": [
+            {
+              "at": [
+                32.75,
+                23.75
+              ],
+              "gap_mm": 3.975,
+              "grid_nm": 50000,
+              "layer": "I2",
+              "ok": false,
+              "reason": "NO_LEGAL_ESCAPE",
+              "target": "I2 33.000,23.750-31.200,23.750",
+              "target_island": 0,
+              "why": "U9.10: NO OFF-CENTRE LAUNCH at 0.600 mm from any of 41 anchors x 24 directions x 17 lengths; blocked by U9.9 (x13123), landing still on the land (x843), U9.7 (x798), U9.6 (x359)"
+            },
+            {
+              "at": [
+                33.0,
+                23.75
+              ],
+              "gap_mm": 3.9829,
+              "grid_nm": 50000,
+              "layer": "I2",
+              "ok": false,
+              "reason": "NO_LEGAL_ESCAPE",
+              "target": "I2 37.900,22.650-33.000,23.750",
+              "target_island": 0,
+              "why": "U9.10: NO OFF-CENTRE LAUNCH at 0.600 mm from any of 41 anchors x 24 directions x 17 lengths; blocked by U9.9 (x13123), landing still on the land (x843), U9.7 (x798), U9.6 (x359)"
+            },
+            {
+              "at": [
+                31.2,
+                23.75
+              ],
+              "gap_mm": 4.2665,
+              "grid_nm": 50000,
+              "layer": "F",
+              "ok": false,
+              "reason": "NO_LEGAL_ESCAPE",
+              "target": "via@31.200,23.750",
+              "target_island": 0,
+              "why": "U9.10: NO OFF-CENTRE LAUNCH at 0.600 mm from any of 41 anchors x 24 directions x 17 lengths; blocked by U9.9 (x13123), landing still on the land (x843), U9.7 (x798), U9.6 (x359)"
+            }
+          ],
+          "verdict": "NO_TAP"
+        }
+      ],
+      "layers": [
+        "F",
+        "B",
+        "I2"
+      ],
+      "net": "/NFC_SUPPLY",
+      "netclass": "P3V3",
+      "seconds": 4.5,
+      "target_objects": 35,
+      "width": 600000
+    },
+    {
+      "lands": [
+        {
+          "gain_mm": -0.1248,
+          "island": 1,
+          "land": "U3.20",
+          "nearest_pad_mm": 20.2425,
+          "nearest_tap_mm": 20.3673,
+          "tries": [
+            {
+              "at": [
+                53.9,
+                59.5
+              ],
+              "gap_mm": 20.3673,
+              "grid_nm": 50000,
+              "layer": "F",
+              "ok": false,
+              "reason": "NO_PATH",
+              "target": "via@53.900,59.500",
+              "target_island": 0,
+              "why": "no all-layer corridor at 0.200 mm from U3.20 on B to TAP on F"
+            },
+            {
+              "at": [
+                53.9,
+                59.5
+              ],
+              "gap_mm": 20.3673,
+              "grid_nm": 50000,
+              "layer": "I2",
+              "ok": false,
+              "reason": "NO_PATH",
+              "target": "I2 53.900,59.500-51.300,55.100",
+              "target_island": 0,
+              "why": "no all-layer corridor at 0.200 mm from U3.20 on B to TAP on I2"
+            },
+            {
+              "at": [
+                51.3,
+                55.1
+              ],
+              "gap_mm": 25.364,
+              "grid_nm": 50000,
+              "layer": "I2",
+              "ok": false,
+              "reason": "NO_PATH",
+              "target": "I2 51.300,55.100-51.500,54.900",
+              "target_island": 0,
+              "why": "no all-layer corridor at 0.200 mm from U3.20 on B to TAP on I2"
+            }
+          ],
+          "verdict": "NO_TAP"
+        }
+      ],
+      "layers": [
+        "F",
+        "B",
+        "I2"
+      ],
+      "net": "/ACC_PWR_EN",
+      "netclass": "Default",
+      "seconds": 474.3,
+      "target_objects": 8,
+      "width": 200000
+    },
+    {
+      "lands": [
+        {
+          "gain_mm": -2.6711,
+          "island": 1,
+          "land": "U11.9",
+          "nearest_pad_mm": 16.6131,
+          "nearest_tap_mm": 19.2842,
+          "tries": [
+            {
+              "at": [
+                70.4,
+                97.4
+              ],
+              "gap_mm": 19.2842,
+              "grid_nm": 50000,
+              "layer": "F",
+              "ok": false,
+              "reason": "NO_LEGAL_ESCAPE",
+              "target": "F 71.300,99.700-70.400,97.400",
+              "target_island": 0,
+              "why": "U11.9: NO OFF-CENTRE LAUNCH at 0.200 mm from any of 41 anchors x 24 directions x 17 lengths; blocked by U11.8 (x5835), U11.10 (x3608), U11.7 (x1177), U11.6 (x976)"
+            },
+            {
+              "at": [
+                70.4,
+                97.4
+              ],
+              "gap_mm": 19.2842,
+              "grid_nm": 50000,
+              "layer": "F",
+              "ok": false,
+              "reason": "NO_LEGAL_ESCAPE",
+              "target": "via@70.400,97.400",
+              "target_island": 0,
+              "why": "U11.9: NO OFF-CENTRE LAUNCH at 0.200 mm from any of 41 anchors x 24 directions x 17 lengths; blocked by U11.8 (x5835), U11.10 (x3608), U11.7 (x1177), U11.6 (x976)"
+            },
+            {
+              "at": [
+                71.3,
+                99.7
+              ],
+              "gap_mm": 21.6689,
+              "grid_nm": 50000,
+              "layer": "F",
+              "ok": false,
+              "reason": "NO_LEGAL_ESCAPE",
+              "target": "F 68.600,102.800-71.300,99.700",
+              "target_island": 0,
+              "why": "U11.9: NO OFF-CENTRE LAUNCH at 0.200 mm from any of 41 anchors x 24 directions x 17 lengths; blocked by U11.8 (x5835), U11.10 (x3608), U11.7 (x1177), U11.6 (x976)"
+            }
+          ],
+          "verdict": "NO_TAP"
+        },
+        {
+          "gain_mm": -3.0343,
+          "island": 2,
+          "land": "U2.9",
+          "nearest_pad_mm": 16.6131,
+          "nearest_tap_mm": 19.6474,
+          "tries": [
+            {
+              "at": [
+                70.4,
+                97.4
+              ],
+              "gap_mm": 19.6474,
+              "grid_nm": 50000,
+              "layer": "F",
+              "ok": false,
+              "reason": "NO_PATH",
+              "target": "F 71.300,99.700-70.400,97.400",
+              "target_island": 0,
+              "why": "no all-layer corridor at 0.200 mm from U2.9 on B to TAP on F"
+            },
+            {
+              "at": [
+                70.4,
+                97.4
+              ],
+              "gap_mm": 19.6474,
+              "grid_nm": 50000,
+              "layer": "F",
+              "ok": false,
+              "reason": "NO_PATH",
+              "target": "via@70.400,97.400",
+              "target_island": 0,
+              "why": "no all-layer corridor at 0.200 mm from U2.9 on B to TAP on F"
+            },
+            {
+              "at": [
+                64.4,
+                103.8
+              ],
+              "gap_mm": 20.2225,
+              "grid_nm": 50000,
+              "layer": "F",
+              "ok": false,
+              "reason": "NO_PATH",
+              "target": "F 64.400,103.800-67.200,102.300",
+              "target_island": 0,
+              "why": "no all-layer corridor at 0.200 mm from U2.9 on B to TAP on F"
+            }
+          ],
+          "verdict": "NO_TAP"
+        }
+      ],
+      "layers": [
+        "F",
+        "B",
+        "I2"
+      ],
+      "net": "/BQ25185_STAT1",
+      "netclass": "Default",
+      "seconds": 28.7,
+      "target_objects": 12,
+      "width": 200000
+    },
+    {
+      "lands": [
+        {
+          "gain_mm": -7.631,
+          "island": 1,
+          "land": "U11.3",
+          "nearest_pad_mm": 14.6005,
+          "nearest_tap_mm": 22.2315,
+          "tries": [
+            {
+              "at": [
+                63.2,
+                99.8
+              ],
+              "gap_mm": 22.2315,
+              "grid_nm": 50000,
+              "layer": "F",
+              "ok": false,
+              "reason": "NO_LEGAL_ESCAPE",
+              "target": "F 62.000,102.900-63.200,99.800",
+              "target_island": 0,
+              "why": "U11.3: NO OFF-CENTRE LAUNCH at 0.200 mm from any of 41 anchors x 24 directions x 17 lengths; blocked by U11.2 (x6111), U11.4 (x3689), U11.1 (x2454), landing still on the land (x890)"
+            },
+            {
+              "at": [
+                63.2,
+                99.8
+              ],
+              "gap_mm": 22.2315,
+              "grid_nm": 50000,
+              "layer": "F",
+              "ok": false,
+              "reason": "NO_LEGAL_ESCAPE",
+              "target": "via@63.200,99.800",
+              "target_island": 0,
+              "why": "U11.3: NO OFF-CENTRE LAUNCH at 0.200 mm from any of 41 anchors x 24 directions x 17 lengths; blocked by U11.2 (x6111), U11.4 (x3689), U11.1 (x2454), landing still on the land (x890)"
+            },
+            {
+              "at": [
+                62.0,
+                102.9
+              ],
+              "gap_mm": 25.4827,
+              "grid_nm": 50000,
+              "layer": "F",
+              "ok": false,
+              "reason": "NO_LEGAL_ESCAPE",
+              "target": "F 62.700,103.800-62.000,102.900",
+              "target_island": 0,
+              "why": "U11.3: NO OFF-CENTRE LAUNCH at 0.200 mm from any of 41 anchors x 24 directions x 17 lengths; blocked by U11.2 (x6111), U11.4 (x3689), U11.1 (x2454), landing still on the land (x890)"
+            }
+          ],
+          "verdict": "NO_TAP"
+        },
+        {
+          "gain_mm": -2.1397,
+          "island": 2,
+          "land": "U2.10",
+          "nearest_pad_mm": 14.6005,
+          "nearest_tap_mm": 16.7402,
+          "tries": [
+            {
+              "at": [
+                63.2,
+                99.8
+              ],
+              "gap_mm": 16.7402,
+              "grid_nm": 50000,
+              "layer": "F",
+              "ok": false,
+              "reason": "NO_PATH",
+              "target": "F 62.000,102.900-63.200,99.800",
+              "target_island": 0,
+              "why": "no all-layer corridor at 0.200 mm from U2.10 on B to TAP on F"
+            },
+            {
+              "at": [
+                63.2,
+                99.8
+              ],
+              "gap_mm": 16.7402,
+              "grid_nm": 50000,
+              "layer": "F",
+              "ok": false,
+              "reason": "NO_PATH",
+              "target": "via@63.200,99.800",
+              "target_island": 0,
+              "why": "no all-layer corridor at 0.200 mm from U2.10 on B to TAP on F"
+            },
+            {
+              "at": [
+                62.0,
+                102.9
+              ],
+              "gap_mm": 18.8891,
+              "grid_nm": 50000,
+              "layer": "F",
+              "ok": false,
+              "reason": "NO_PATH",
+              "target": "F 62.700,103.800-62.000,102.900",
+              "target_island": 0,
+              "why": "no all-layer corridor at 0.200 mm from U2.10 on B to TAP on F"
+            }
+          ],
+          "verdict": "NO_TAP"
+        }
+      ],
+      "layers": [
+        "F",
+        "B",
+        "I2"
+      ],
+      "net": "/BQ25185_STAT2",
+      "netclass": "Default",
+      "seconds": 83.9,
+      "target_objects": 11,
+      "width": 200000
+    },
+    {
+      "lands": [
+        {
+          "gain_mm": -15.2577,
+          "island": 1,
+          "land": "U2.1",
+          "nearest_pad_mm": 10.0,
+          "nearest_tap_mm": 25.2577,
+          "tries": [
+            {
+              "at": [
+                61.5333,
+                115.7256
+              ],
+              "gap_mm": 25.2577,
+              "grid_nm": 50000,
+              "launches": [
+                {
+                  "a_xy": [
+                    54.1375,
+                    91.575
+                  ],
+                  "b_xy": [
+                    54.15,
+                    92.2
+                  ],
+                  "base_dir": true,
+                  "centre": true,
+                  "layer": "B",
+                  "mm": 0.6251,
+                  "necked": false,
+                  "offcentre_mm": 0.0,
+                  "pad": "U2.1",
+                  "trunk_width": 200000,
+                  "width": 200000
+                }
+              ],
+              "layer": "F",
+              "layers": [
+                "B",
+                "I2",
+                "F",
+                "I2",
+                "F",
+                "B",
+                "F",
+                "B",
+                "I2",
+                "B",
+                "F",
+                "B",
+                "I2",
+                "F",
+                "I2",
+                "F"
+              ],
+              "mm": 150.1688,
+              "ok": true,
+              "reason": null,
+              "stub_mm": 0.6251,
+              "target": "F 61.533,115.726-62.300,116.500",
+              "target_island": 0,
+              "via_xy": [
+                [
+                  53.1,
+                  92.1
+                ],
+                [
+                  54.05,
+                  96.8
+                ],
+                [
+                  56.4,
+                  99.45
+                ],
+                [
+                  54.25,
+                  101.5
+                ],
+                [
+                  48.2,
+                  102.35
+                ],
+                [
+                  46.1,
+                  102.35
+                ],
+                [
+                  43.85,
+                  101.4
+                ],
+                [
+                  28.5,
+                  113.95
+                ],
+                [
+                  26.7,
+                  129.6
+                ],
+                [
+                  29.75,
+                  133.55
+                ],
+                [
+                  28.2,
+                  138.4
+                ],
+                [
+                  32.55,
+                  142.75
+                ],
+                [
+                  35.65,
+                  144.0
+                ],
+                [
+                  40.8,
+                  141.35
+                ],
+                [
+                  62.45,
+                  116.65
+                ]
+              ],
+              "vias": 15,
+              "why": null
+            }
+          ],
+          "verdict": "TAP_ROUTABLE"
+        },
+        {
+          "gain_mm": -24.9422,
+          "island": 2,
+          "land": "U3.1",
+          "nearest_pad_mm": 10.0,
+          "nearest_tap_mm": 34.9422,
+          "tries": [
+            {
+              "at": [
+                61.5333,
+                115.7256
+              ],
+              "gap_mm": 34.9422,
+              "grid_nm": 50000,
+              "layer": "F",
+              "ok": false,
+              "reason": "NO_PATH",
+              "target": "F 61.533,115.726-62.300,116.500",
+              "target_island": 0,
+              "why": "no all-layer corridor at 0.200 mm from U3.1 on B to TAP on F"
+            },
+            {
+              "at": [
+                62.3,
+                116.5
+              ],
+              "gap_mm": 35.8662,
+              "grid_nm": 50000,
+              "layer": "F",
+              "ok": false,
+              "reason": "NO_PATH",
+              "target": "F 62.300,116.500-63.100,117.500",
+              "target_island": 0,
+              "why": "no all-layer corridor at 0.200 mm from U3.1 on B to TAP on F"
+            },
+            {
+              "at": [
+                63.1,
+                117.5
+              ],
+              "gap_mm": 37.0261,
+              "grid_nm": 50000,
+              "layer": "F",
+              "ok": false,
+              "reason": "NO_PATH",
+              "target": "via@63.100,117.500",
+              "target_island": 0,
+              "why": "no all-layer corridor at 0.200 mm from U3.1 on B to TAP on F"
+            }
+          ],
+          "verdict": "NO_TAP"
+        }
+      ],
+      "layers": [
+        "F",
+        "B",
+        "I2"
+      ],
+      "net": "/WAKE_INT_N",
+      "netclass": "Default",
+      "seconds": 281.3,
+      "target_objects": 36,
+      "width": 200000
+    },
+    {
+      "lands": [
+        {
+          "gain_mm": 0.0,
+          "island": 1,
+          "land": "U9.30",
+          "nearest_pad_mm": 90.7637,
+          "nearest_tap_mm": 90.7637,
+          "tries": [
+            {
+              "at": [
+                59.2,
+                119.25
+              ],
+              "gap_mm": 90.7637,
+              "grid_nm": 50000,
+              "layer": "F",
+              "ok": false,
+              "reason": "NO_LEGAL_ESCAPE",
+              "target": "F 59.200,119.250-59.200,120.400",
+              "target_island": 0,
+              "why": "U9.30: NO OFF-CENTRE LAUNCH at 0.200 mm from any of 41 anchors x 24 directions x 17 lengths; blocked by U9.29 (x5652), U9.31 (x4664), U9.28 (x993), landing still on the land (x843)"
+            },
+            {
+              "at": [
+                59.2,
+                120.4
+              ],
+              "gap_mm": 91.8663,
+              "grid_nm": 50000,
+              "layer": "F",
+              "ok": false,
+              "reason": "NO_LEGAL_ESCAPE",
+              "target": "F 59.200,120.400-56.500,134.700",
+              "target_island": 0,
+              "why": "U9.30: NO OFF-CENTRE LAUNCH at 0.200 mm from any of 41 anchors x 24 directions x 17 lengths; blocked by U9.29 (x5652), U9.31 (x4664), U9.28 (x993), landing still on the land (x843)"
+            },
+            {
+              "at": [
+                21.4,
+                135.9
+              ],
+              "gap_mm": 104.3004,
+              "grid_nm": 50000,
+              "layer": "F",
+              "ok": false,
+              "reason": "NO_LEGAL_ESCAPE",
+              "target": "F 19.000,137.500-21.400,135.900",
+              "target_island": 0,
+              "why": "U9.30: NO OFF-CENTRE LAUNCH at 0.200 mm from any of 41 anchors x 24 directions x 17 lengths; blocked by U9.29 (x5652), U9.31 (x4664), U9.28 (x993), landing still on the land (x843)"
+            }
+          ],
+          "verdict": "NO_TAP"
+        }
+      ],
+      "layers": [
+        "F",
+        "B",
+        "I2"
+      ],
+      "net": "/SPI_B_SCK",
+      "netclass": "Default",
+      "seconds": 5.1,
+      "target_objects": 30,
+      "width": 200000
+    }
+  ],
+  "question": "for every orphan land of every partially routed net, is the net's OWN CONNECTED COPPER nearer than the nearest pad the router may aim at -- and does a legal corridor reach it",
+  "schema": 1,
+  "stub_forbidden": [
+    "NFC_RF",
+    "NFC_RX",
+    "SPK_OUT",
+    "SWITCH_NODE",
+    "USB_D"
+  ],
+  "totals": {
+    "NO_TAP": 12,
+    "TAP_ROUTABLE": 1
+  }
+}

@@ -1,0 +1,680 @@
+{
+  "a": "U2.1",
+  "b": "U3.1",
+  "banned_nets": [],
+  "board": "/home/aqroot8/aqroot-demo/hardware/demo/kicad/aqroot-demo/aqroot-Beta-v2.kicad_pcb",
+  "complete": true,
+  "grid_nm": 50000,
+  "instrument": "maze3d.offcentre_route under screen_corridor_blockers.Without",
+  "layers": [
+    "F",
+    "B",
+    "I2"
+  ],
+  "margin_mm": 3.0,
+  "max_mm": 25.0,
+  "net": "/WAKE_INT_N",
+  "rows": [
+    {
+      "ok": false,
+      "reason": "NO_PATH",
+      "step": "BASE",
+      "why": "no all-layer corridor at 0.200 mm from U2.1 on B to U3.1 on B"
+    },
+    {
+      "layers": [
+        "B"
+      ],
+      "mm": 11.6691,
+      "nets": [
+        "/08_BUTTONS_EXPANDERS/BTN_A_N",
+        "/08_BUTTONS_EXPANDERS/BTN_B_N",
+        "/08_BUTTONS_EXPANDERS/BTN_DOWN_N",
+        "/08_BUTTONS_EXPANDERS/BTN_LEFT_N",
+        "/08_BUTTONS_EXPANDERS/BTN_RIGHT_N",
+        "/08_BUTTONS_EXPANDERS/BTN_UP_N",
+        "/08_BUTTONS_EXPANDERS/FRONT_RGB_G_N",
+        "/08_BUTTONS_EXPANDERS/FRONT_RGB_R_N",
+        "/ACC_5V_SW_EN",
+        "/AMP_SD_MODE",
+        "/DISP_RST_N",
+        "/NFC_5V_EN",
+        "/SD_CARD_DETECT_N",
+        "/SX1262_RST_N",
+        "/TOUCH_RST_N",
+        "GND"
+      ],
+      "ok": true,
+      "reason": null,
+      "step": "Q1_UPPER_BOUND",
+      "vias": 0,
+      "why": null
+    },
+    {
+      "accepted": false,
+      "layers": null,
+      "mm": null,
+      "net": "/08_BUTTONS_EXPANDERS/BTN_A_N",
+      "ok": false,
+      "reason": "NO_PATH",
+      "step": "Q2_SINGLE_NET",
+      "vias": null
+    },
+    {
+      "accepted": false,
+      "layers": null,
+      "mm": null,
+      "net": "/08_BUTTONS_EXPANDERS/BTN_B_N",
+      "ok": false,
+      "reason": "NO_PATH",
+      "step": "Q2_SINGLE_NET",
+      "vias": null
+    },
+    {
+      "accepted": false,
+      "layers": null,
+      "mm": null,
+      "net": "/08_BUTTONS_EXPANDERS/BTN_DOWN_N",
+      "ok": false,
+      "reason": "NO_PATH",
+      "step": "Q2_SINGLE_NET",
+      "vias": null
+    },
+    {
+      "accepted": false,
+      "layers": null,
+      "mm": null,
+      "net": "/08_BUTTONS_EXPANDERS/BTN_LEFT_N",
+      "ok": false,
+      "reason": "NO_PATH",
+      "step": "Q2_SINGLE_NET",
+      "vias": null
+    },
+    {
+      "accepted": false,
+      "layers": null,
+      "mm": null,
+      "net": "/08_BUTTONS_EXPANDERS/BTN_RIGHT_N",
+      "ok": false,
+      "reason": "NO_PATH",
+      "step": "Q2_SINGLE_NET",
+      "vias": null
+    },
+    {
+      "accepted": false,
+      "layers": null,
+      "mm": null,
+      "net": "/08_BUTTONS_EXPANDERS/BTN_UP_N",
+      "ok": false,
+      "reason": "NO_PATH",
+      "step": "Q2_SINGLE_NET",
+      "vias": null
+    },
+    {
+      "accepted": false,
+      "layers": null,
+      "mm": null,
+      "net": "/08_BUTTONS_EXPANDERS/FRONT_RGB_G_N",
+      "ok": false,
+      "reason": "NO_PATH",
+      "step": "Q2_SINGLE_NET",
+      "vias": null
+    },
+    {
+      "accepted": false,
+      "layers": null,
+      "mm": null,
+      "net": "/08_BUTTONS_EXPANDERS/FRONT_RGB_R_N",
+      "ok": false,
+      "reason": "NO_PATH",
+      "step": "Q2_SINGLE_NET",
+      "vias": null
+    },
+    {
+      "accepted": false,
+      "layers": null,
+      "mm": null,
+      "net": "/ACC_5V_SW_EN",
+      "ok": false,
+      "reason": "NO_PATH",
+      "step": "Q2_SINGLE_NET",
+      "vias": null
+    },
+    {
+      "accepted": false,
+      "layers": null,
+      "mm": null,
+      "net": "/AMP_SD_MODE",
+      "ok": false,
+      "reason": "NO_PATH",
+      "step": "Q2_SINGLE_NET",
+      "vias": null
+    },
+    {
+      "accepted": false,
+      "layers": null,
+      "mm": null,
+      "net": "/DISP_RST_N",
+      "ok": false,
+      "reason": "NO_PATH",
+      "step": "Q2_SINGLE_NET",
+      "vias": null
+    },
+    {
+      "accepted": false,
+      "layers": null,
+      "mm": null,
+      "net": "/NFC_5V_EN",
+      "ok": false,
+      "reason": "NO_PATH",
+      "step": "Q2_SINGLE_NET",
+      "vias": null
+    },
+    {
+      "accepted": false,
+      "layers": null,
+      "mm": null,
+      "net": "/SD_CARD_DETECT_N",
+      "ok": false,
+      "reason": "NO_PATH",
+      "step": "Q2_SINGLE_NET",
+      "vias": null
+    },
+    {
+      "accepted": false,
+      "layers": null,
+      "mm": null,
+      "net": "/SX1262_RST_N",
+      "ok": false,
+      "reason": "NO_PATH",
+      "step": "Q2_SINGLE_NET",
+      "vias": null
+    },
+    {
+      "accepted": false,
+      "layers": null,
+      "mm": null,
+      "net": "/TOUCH_RST_N",
+      "ok": false,
+      "reason": "NO_PATH",
+      "step": "Q2_SINGLE_NET",
+      "vias": null
+    },
+    {
+      "accepted": false,
+      "layers": null,
+      "mm": null,
+      "net": "GND",
+      "ok": false,
+      "reason": "NO_PATH",
+      "step": "Q2_SINGLE_NET",
+      "vias": null
+    },
+    {
+      "mm": 11.6691,
+      "net": "/08_BUTTONS_EXPANDERS/BTN_A_N",
+      "remaining": 15,
+      "step": "Q3_DROPPED"
+    },
+    {
+      "mm": 11.6691,
+      "net": "/08_BUTTONS_EXPANDERS/BTN_B_N",
+      "remaining": 14,
+      "step": "Q3_DROPPED"
+    },
+    {
+      "mm": 11.6691,
+      "net": "/08_BUTTONS_EXPANDERS/BTN_DOWN_N",
+      "remaining": 13,
+      "step": "Q3_DROPPED"
+    },
+    {
+      "mm": 13.7071,
+      "net": "/08_BUTTONS_EXPANDERS/BTN_LEFT_N",
+      "remaining": 12,
+      "step": "Q3_DROPPED"
+    },
+    {
+      "mm": 13.7071,
+      "net": "/08_BUTTONS_EXPANDERS/BTN_RIGHT_N",
+      "remaining": 11,
+      "step": "Q3_DROPPED"
+    },
+    {
+      "mm": 13.7071,
+      "net": "/08_BUTTONS_EXPANDERS/BTN_UP_N",
+      "remaining": 10,
+      "step": "Q3_DROPPED"
+    },
+    {
+      "mm": 13.7071,
+      "net": "/08_BUTTONS_EXPANDERS/FRONT_RGB_G_N",
+      "remaining": 9,
+      "step": "Q3_DROPPED"
+    },
+    {
+      "mm": 13.7071,
+      "net": "/08_BUTTONS_EXPANDERS/FRONT_RGB_R_N",
+      "remaining": 8,
+      "step": "Q3_DROPPED"
+    },
+    {
+      "mm": 13.7071,
+      "net": "/ACC_5V_SW_EN",
+      "remaining": 7,
+      "step": "Q3_DROPPED"
+    },
+    {
+      "mm": 13.7071,
+      "net": "/AMP_SD_MODE",
+      "remaining": 6,
+      "step": "Q3_DROPPED"
+    },
+    {
+      "mm": 13.7071,
+      "net": "/DISP_RST_N",
+      "remaining": 5,
+      "step": "Q3_DROPPED"
+    },
+    {
+      "mm": 12.055,
+      "net": "/NFC_5V_EN",
+      "remaining": 4,
+      "step": "Q3_DROPPED"
+    },
+    {
+      "net": "/SD_CARD_DETECT_N",
+      "reason": "NO_PATH",
+      "remaining": 4,
+      "step": "Q3_REQUIRED"
+    },
+    {
+      "mm": 12.055,
+      "net": "/SX1262_RST_N",
+      "remaining": 3,
+      "step": "Q3_DROPPED"
+    },
+    {
+      "mm": 11.8131,
+      "net": "/TOUCH_RST_N",
+      "remaining": 2,
+      "step": "Q3_DROPPED"
+    },
+    {
+      "net": "GND",
+      "reason": "NO_PATH",
+      "remaining": 2,
+      "step": "Q3_REQUIRED"
+    },
+    {
+      "accepted": true,
+      "layers": [
+        "B",
+        "I2",
+        "B"
+      ],
+      "mm": 11.8131,
+      "n": 2,
+      "nets": [
+        "/SD_CARD_DETECT_N",
+        "GND"
+      ],
+      "ok": true,
+      "step": "Q3_MINIMAL_SET",
+      "vias": 2
+    },
+    {
+      "accepted": true,
+      "mm": 11.8131,
+      "n_objects": 65,
+      "n_units": 13,
+      "nets": [
+        "/SD_CARD_DETECT_N",
+        "GND"
+      ],
+      "ok": true,
+      "reason": null,
+      "step": "Q4_POOL"
+    },
+    {
+      "mm": 11.8131,
+      "remaining": 12,
+      "step": "Q4_OBJECT_RETURNED",
+      "unit": {
+        "a_mm": [
+          52.95,
+          85.1
+        ],
+        "b_mm": [
+          53.0,
+          85.05
+        ],
+        "count": 1,
+        "kind": "track",
+        "layer": "B.Cu",
+        "net": "/SD_CARD_DETECT_N",
+        "objects": 1,
+        "router_objects": 1,
+        "width_mm": 0.2
+      }
+    },
+    {
+      "mm": 11.8131,
+      "remaining": 11,
+      "step": "Q4_OBJECT_RETURNED",
+      "unit": {
+        "a_mm": [
+          53.0,
+          85.05
+        ],
+        "b_mm": [
+          53.0,
+          82.55
+        ],
+        "count": 1,
+        "kind": "track",
+        "layer": "B.Cu",
+        "net": "/SD_CARD_DETECT_N",
+        "objects": 1,
+        "router_objects": 1,
+        "width_mm": 0.2
+      }
+    },
+    {
+      "mm": 11.8131,
+      "remaining": 10,
+      "step": "Q4_OBJECT_RETURNED",
+      "unit": {
+        "a_mm": [
+          54.1375,
+          85.075
+        ],
+        "b_mm": [
+          52.95,
+          85.1
+        ],
+        "count": 1,
+        "kind": "track",
+        "layer": "B.Cu",
+        "net": "/SD_CARD_DETECT_N",
+        "objects": 1,
+        "router_objects": 1,
+        "width_mm": 0.2
+      }
+    },
+    {
+      "reason": "NO_PATH",
+      "remaining": 10,
+      "step": "Q4_OBJECT_REQUIRED",
+      "unit": {
+        "a_mm": [
+          54.05,
+          81.5
+        ],
+        "b_mm": [
+          53.0,
+          82.55
+        ],
+        "count": 1,
+        "kind": "track",
+        "layer": "F.Cu",
+        "net": "/SD_CARD_DETECT_N",
+        "objects": 1,
+        "router_objects": 1,
+        "width_mm": 0.2
+      }
+    },
+    {
+      "mm": 11.8131,
+      "remaining": 9,
+      "step": "Q4_OBJECT_RETURNED",
+      "unit": {
+        "a_mm": [
+          51.7,
+          79.45
+        ],
+        "b_mm": [
+          51.7,
+          79.5
+        ],
+        "count": 1,
+        "kind": "track",
+        "layer": "B.Cu",
+        "net": "GND",
+        "objects": 1,
+        "router_objects": 1,
+        "width_mm": 0.3
+      }
+    },
+    {
+      "mm": 11.8131,
+      "remaining": 8,
+      "step": "Q4_OBJECT_RETURNED",
+      "unit": {
+        "a_mm": [
+          53.5,
+          80.9
+        ],
+        "b_mm": [
+          53.4,
+          80.8
+        ],
+        "count": 1,
+        "kind": "track",
+        "layer": "B.Cu",
+        "net": "GND",
+        "objects": 1,
+        "router_objects": 1,
+        "width_mm": 0.3
+      }
+    },
+    {
+      "mm": 11.8131,
+      "remaining": 7,
+      "step": "Q4_OBJECT_RETURNED",
+      "unit": {
+        "a_mm": [
+          53.55,
+          80.9
+        ],
+        "b_mm": [
+          53.5,
+          80.9
+        ],
+        "count": 1,
+        "kind": "track",
+        "layer": "B.Cu",
+        "net": "GND",
+        "objects": 1,
+        "router_objects": 1,
+        "width_mm": 0.3
+      }
+    },
+    {
+      "mm": 11.8131,
+      "remaining": 6,
+      "step": "Q4_OBJECT_RETURNED",
+      "unit": {
+        "a_mm": [
+          54.1,
+          90.3
+        ],
+        "b_mm": [
+          54.0,
+          90.4
+        ],
+        "count": 1,
+        "kind": "track",
+        "layer": "B.Cu",
+        "net": "GND",
+        "objects": 1,
+        "router_objects": 1,
+        "width_mm": 0.2
+      }
+    },
+    {
+      "mm": 11.8131,
+      "remaining": 5,
+      "step": "Q4_OBJECT_RETURNED",
+      "unit": {
+        "a_mm": [
+          54.1375,
+          90.925
+        ],
+        "b_mm": [
+          54.1,
+          90.3
+        ],
+        "count": 1,
+        "kind": "track",
+        "layer": "B.Cu",
+        "net": "GND",
+        "objects": 1,
+        "router_objects": 1,
+        "width_mm": 0.2
+      }
+    },
+    {
+      "mm": 11.8131,
+      "remaining": 4,
+      "step": "Q4_OBJECT_RETURNED",
+      "unit": {
+        "at_mm": [
+          53.0,
+          82.55
+        ],
+        "count": 1,
+        "dia_mm": 0.6,
+        "drill_mm": 0.3,
+        "kind": "barrel",
+        "net": "/SD_CARD_DETECT_N",
+        "objects": 14,
+        "router_objects": 14
+      }
+    },
+    {
+      "mm": 11.8131,
+      "remaining": 3,
+      "step": "Q4_OBJECT_RETURNED",
+      "unit": {
+        "at_mm": [
+          51.7,
+          79.5
+        ],
+        "count": 1,
+        "dia_mm": 0.6,
+        "drill_mm": 0.3,
+        "kind": "barrel",
+        "net": "GND",
+        "objects": 14,
+        "router_objects": 14
+      }
+    },
+    {
+      "mm": 11.8131,
+      "remaining": 2,
+      "step": "Q4_OBJECT_RETURNED",
+      "unit": {
+        "at_mm": [
+          53.4,
+          80.8
+        ],
+        "count": 1,
+        "dia_mm": 0.6,
+        "drill_mm": 0.3,
+        "kind": "barrel",
+        "net": "GND",
+        "objects": 14,
+        "router_objects": 14
+      }
+    },
+    {
+      "reason": "NO_PATH",
+      "remaining": 2,
+      "step": "Q4_OBJECT_REQUIRED",
+      "unit": {
+        "at_mm": [
+          54.0,
+          90.4
+        ],
+        "count": 1,
+        "dia_mm": 0.5,
+        "drill_mm": 0.25,
+        "kind": "barrel",
+        "net": "GND",
+        "objects": 14,
+        "router_objects": 14
+      }
+    },
+    {
+      "accepted": true,
+      "layers": [
+        "B",
+        "I2",
+        "B"
+      ],
+      "mm": 11.8131,
+      "n_objects": 15,
+      "n_units": 2,
+      "nets": [
+        "/SD_CARD_DETECT_N",
+        "GND"
+      ],
+      "ok": true,
+      "step": "Q4_MINIMAL_OBJECTS",
+      "units": [
+        {
+          "a_mm": [
+            54.05,
+            81.5
+          ],
+          "b_mm": [
+            53.0,
+            82.55
+          ],
+          "count": 1,
+          "kind": "track",
+          "layer": "F.Cu",
+          "net": "/SD_CARD_DETECT_N",
+          "objects": 1,
+          "router_objects": 1,
+          "width_mm": 0.2
+        },
+        {
+          "at_mm": [
+            54.0,
+            90.4
+          ],
+          "count": 1,
+          "dia_mm": 0.5,
+          "drill_mm": 0.25,
+          "kind": "barrel",
+          "net": "GND",
+          "objects": 14,
+          "router_objects": 14
+        }
+      ],
+      "vias": 2
+    }
+  ],
+  "schema": 1,
+  "seconds": 642.2,
+  "window_nets": [
+    "/08_BUTTONS_EXPANDERS/BTN_A_N",
+    "/08_BUTTONS_EXPANDERS/BTN_B_N",
+    "/08_BUTTONS_EXPANDERS/BTN_DOWN_N",
+    "/08_BUTTONS_EXPANDERS/BTN_LEFT_N",
+    "/08_BUTTONS_EXPANDERS/BTN_RIGHT_N",
+    "/08_BUTTONS_EXPANDERS/BTN_UP_N",
+    "/08_BUTTONS_EXPANDERS/FRONT_RGB_G_N",
+    "/08_BUTTONS_EXPANDERS/FRONT_RGB_R_N",
+    "/ACC_5V_SW_EN",
+    "/AMP_SD_MODE",
+    "/DISP_RST_N",
+    "/NFC_5V_EN",
+    "/SD_CARD_DETECT_N",
+    "/SX1262_RST_N",
+    "/TOUCH_RST_N",
+    "GND"
+  ]
+}

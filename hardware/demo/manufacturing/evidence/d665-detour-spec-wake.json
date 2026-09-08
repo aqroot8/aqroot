@@ -1,0 +1,20 @@
+{
+  "schema": 1,
+  "note": "D-665: /WAKE_INT_N U2.1 <-> U3.1 -- the two PCAL9535A INT pins, 10.000 mm apart, both B.Cu lands that LAUNCH fine.  D-663 recorded this net NO_OPENER_FOUND ON BOTH EDGES under screen_corridor_blockers' CENTRE-anchored launch; screen_pair_corridor_blame.py --per-object with maze3d.offcentre_route names a TWO-UNIT opener (evidence/d665-blame-wake-u2u3.json): Q3 minimal NETS {/SD_CARD_DETECT_N, GND}, Q4 minimal OBJECTS 2 units / 15 router objects, corridor OPENS at 11.813 mm on B/In2/B with vias at (53.000,91.450) and (53.850,82.200).  (1) ONE F.Cu segment of /SD_CARD_DETECT_N -- a microSD card-detect strap, unprotected -- stands where the southern via must land (0.354 mm from its centre against the 0.600 mm a 0.600 mm barrel needs) and is RELAID between its own two ends around the reserved disc.  (2) The GND barrel at (54.000,90.400) is the ONLY bond of B.Cu GND island 26 (4.482 mm2, U2.2/U2.3) and stands in the In2 haul.  IT IS REMOVED AND NOT MOVED: screen_rebond_site.py reads 448 legal 0.500/0.250 sites inside that island and EVERY ONE of them lies within 0.707 mm of the run, and the furthest of them -- (53.775,90.875) -- was applied to a scratch board and CLOSES the corridor (evidence/d665-rebond-site-u2-3.json).  The re-bond is therefore owed to --repair-planes on the POST board, where the run's own copper is already there to route around, and it is priced by the gate's rebond_priced clause.",
+  "detours": [
+    {
+      "net": "/SD_CARD_DETECT_N",
+      "relay": true,
+      "tracks": [
+        {"layer": "F.Cu", "a_mm": [54.05, 81.5], "b_mm": [53.0, 82.55], "width_mm": 0.2, "count": 1}
+      ]
+    },
+    {
+      "net": "GND",
+      "barrel": {"at_mm": [54.0, 90.4], "dia_mm": 0.5, "drill_mm": 0.25, "count": 1}
+    }
+  ],
+  "reserve": [
+    {"x_mm": 53.85, "y_mm": 82.2, "r_mm": 0.65, "exempt": ["/WAKE_INT_N"]}
+  ]
+}
