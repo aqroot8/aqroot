@@ -68,7 +68,24 @@ EVIDENCE = MFG / "evidence"
 # re-emitted on the promoted board reads `P1-P4 PASS`, 49 tubes, ZERO
 # renumbered, ZERO off copper.  The STALE guard still FAILS on that same
 # board, which is this bump's own non-vacuity control.
-BOND_GUARD = "evidence/d656-pour-bond-guard-next.json"
+#
+# D-669 BUMPS IT AGAIN, FOR THE THIRD TIME AND THE SAME REASON, ON THE SAME
+# TUBE D-619 NAMED.  `/SPI_B_SCK`'s closure re-poured the `B.Cu` `GND` plane
+# around `U9`, and the D-656 spec's `GND` `U9.6 -> via` centreline -- the one
+# whose 224 sampled points D-619 already watched a 0.300 mm `Y1` shift trim
+# five of -- now has 7 of 226 points inside the new track's antipad.  THE BOND
+# DID NOT MOVE and it was measured before the pin was touched
+# (`evidence/d669-u9-6-bond-unmoved.json`): `U9.6` sits in ONE `B.Cu` `GND`
+# island either side of the promotion, 2555.8463 -> 2553.5346 mm2 (-0.09 %),
+# and the island's INDEX moved 18 -> 21 only because three new outlines appear
+# earlier in the enumeration -- the `U7`/`U8` split `PP2` ADMITTED and priced.
+# Board-wide `B.Cu` `GND` 6141.8929 -> 6110.4221 mm2.  `PP1-PP4` PASS,
+# `verify_promotion.py`'s `pour_partition_intact` PASSES, `misplaced_ends` is
+# EMPTY, and the guard re-emitted on the promoted board reads `P1-P4 PASS`,
+# 52 tubes (three of them new, over the admitted split), ZERO off copper.  The
+# STALE d656 guard still FAILS on that board, which is this bump's own
+# non-vacuity control.
+BOND_GUARD = "evidence/d669-pour-bond-guard-next.json"
 
 # name -> (script, extra argv, baseline evidence basename WITHOUT the decision
 #          prefix, verdict field).  The verdict field is read only for the

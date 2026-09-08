@@ -1,0 +1,49 @@
+{
+ "boards": {
+  "post": {
+   "bcu_gnd_area_mm2": 6110.4221,
+   "bcu_gnd_outlines": 66,
+   "board": "/home/aqroot8/aqroot-demo/hardware/demo/kicad/aqroot-demo/aqroot-Beta-v2.kicad_pcb",
+   "board_sha256": "c3286d8fdd23b6bdb037de2a753051b3ac2aa2e5ccaba2e25ced3d39cf4884b2",
+   "islands_holding_u9_6": [
+    {
+     "area_mm2": 2553.5346,
+     "outline_index": 21
+    }
+   ],
+   "u9_6_at_mm": [
+    31.725,
+    29.25
+   ]
+  },
+  "pre": {
+   "bcu_gnd_area_mm2": 6141.8929,
+   "bcu_gnd_outlines": 63,
+   "board": "/tmp/d669-authority-before.kicad_pcb",
+   "board_sha256": "7b2ca32554d3ce8bb7afae883316470223ead0d44de24d0a55fa3a7b18d064b7",
+   "islands_holding_u9_6": [
+    {
+     "area_mm2": 2555.8463,
+     "outline_index": 18
+    }
+   ],
+   "u9_6_at_mm": [
+    31.725,
+    29.25
+   ]
+  }
+ },
+ "method": "read-only; KiCad's own filled polygons on B.Cu for net GND, hit-tested at U9.6's pad centre, on the PRE and POST boards",
+ "question": "did the GND bond of U9.6 -- the tube pour_bond_contract P2 reports 7 of 226 sampled points off copper on, and the same tube D-619 already adjudicated -- actually MOVE, or did only the stale centreline move",
+ "schema": 1,
+ "verdict": {
+  "bond_moved": false,
+  "outline_index_moved_because": "three new B.Cu GND outlines appear EARLIER in the enumeration -- the U7/U8 split PP2 admitted and priced -- so the index is a position in a list and not an identity",
+  "reading": "BOND UNMOVED: U9.6 lies in exactly ONE B.Cu GND filled island either side of the promotion and that island loses 0.09 % of its area.  P2's complaint is about a POLYLINE frozen at emission, exactly as D-619 recorded for this same tube; the guard is re-derived and the pin bumped.",
+  "u9_6_island_area_delta_pct": -0.0904,
+  "u9_6_island_area_mm2_post": 2553.5346,
+  "u9_6_island_area_mm2_pre": 2555.8463,
+  "u9_6_islands_post": 1,
+  "u9_6_islands_pre": 1
+ }
+}

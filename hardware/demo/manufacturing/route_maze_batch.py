@@ -2075,7 +2075,7 @@ def propose(path, nets, grid, via_cost_mm, stitch_width=0, stitch_via=None,
             relief_pads=(), relief_bonds_per_island=1, relief_run_areas=None,
             escape_floor=False, bridge_pads=False,
             bridge_pad_max_mm=BRIDGE_PAD_MAX_MM, trunk_floor=False,
-            tap=False, tap_max_mm=0.0, tap_pairs=3):
+            tap=False, tap_max_mm=0.0, tap_pairs=3, tap_first=False):
     import pcbnew
     import qrouter as qr
     import incremental_router as ir
@@ -2368,6 +2368,36 @@ def propose(path, nets, grid, via_cost_mm, stitch_width=0, stitch_via=None,
         land_ok, land_info = None, None
         if body_landing and mz.has_plane(qb, net):
             land_ok, land_info = mz.body_landing(qb, net, field)
+        # THE TAP MAY RUN FIRST, AND ON THIS BOARD IT HAD TO -- D-669.
+        #
+        # D-664 put the tap AFTER every move that aims at a pad, on the
+        # reasoning that it is the cheapest thing on the list and should be
+        # offered "exactly the lands nothing else could close".  That order is
+        # right when the maze REFUSES.  It is wrong when the maze SUCCEEDS
+        # expensively, and `/NFC_CS_N` is what measured the difference: with
+        # its `U9.29` escape chain evicted, its orphan land stood 2.923 mm from
+        # its own retained copper and 82.954 mm from the nearest PAD the maze
+        # may aim at, and the maze closed it at 91.419 mm and FIVE barrels --
+        # a second `In2.Cu` haul laid 0.55 mm alongside the net's own retained
+        # one, which cost 88 mm, five vias and a `copper_sliver` KiCad reports
+        # with no geometry.  The tap that would have closed the same edge in
+        # about 3 mm was never asked, because by the time it ran the net was
+        # one island and `tap_sites` correctly answered `NOTHING_TO_TAP`.
+        #
+        # `--tap-first` states that preference explicitly and OFF BY DEFAULT,
+        # so every run and every contract written against D-664's order is
+        # byte-identical.  It changes no primitive: the same `join_taps`, the
+        # same TAP1-TAP5, the same `offcentre_route`, the same forbidden
+        # netclasses -- only when it is offered.  `route_net` returns
+        # `already: true` for a net the tap has already made whole, so the maze
+        # below still runs and still reports.
+        tp_first = None
+        if tap and tap_first:
+            tp_first = mz.join_taps(qb, net, field, width=c["width"], G=grid,
+                                    max_mm=tap_max_mm, pairs=tap_pairs,
+                                    netclass=c["netclass"],
+                                    forbidden=TAP_STUB_FORBIDDEN)
+            tp_first["first"] = True
         if mz.has_plane(qb, net):
             r = mz.stitch_net(qb, net, width=c["width"],
                               clr_pad=c["clr_pad"],
@@ -2506,12 +2536,16 @@ def propose(path, nets, grid, via_cost_mm, stitch_width=0, stitch_via=None,
         # branch is onto a TRACK either way, and `tap_sites` is what decides
         # whether the net owns one.
         if tap:
-            tp = mz.join_taps(qb, net, field, width=c["width"], G=grid,
-                              max_mm=tap_max_mm, pairs=tap_pairs,
-                              netclass=c["netclass"],
-                              forbidden=TAP_STUB_FORBIDDEN)
+            # A tap already spent BEFORE the maze is not asked again: the net
+            # it joined is one island now and a second call would record
+            # `NOTHING_TO_TAP` over the copper it had just laid.
+            tp = tp_first if tp_first is not None else mz.join_taps(
+                qb, net, field, width=c["width"], G=grid,
+                max_mm=tap_max_mm, pairs=tap_pairs,
+                netclass=c["netclass"], forbidden=TAP_STUB_FORBIDDEN)
             r["tap"] = tp
-            r["mode"] = r["mode"] + "+tap"
+            r["mode"] = r["mode"] + ("+tapfirst" if tp.get("first")
+                                     else "+tap")
             r["ok"] = bool(r.get("ok")) or bool(tp.get("joined"))
         if bridged is not None:
             r["bridge"] = bridged
@@ -2989,7 +3023,7 @@ def gate(nets, grid, via_cost_mm, workdir, promote=False, candidate=None,
          relief_pads=(), relief_bonds_per_island=1, relief_run_area=None,
          promote_soft=False, escape_floor=False, bridge_pads=False,
          bridge_pad_max_mm=BRIDGE_PAD_MAX_MM, trunk_floor=False,
-         tap=False, tap_max_mm=0.0, tap_pairs=3):
+         tap=False, tap_max_mm=0.0, tap_pairs=3, tap_first=False):
     before = sha256_file(BOARD)
     # THE AUTHORITY IS WATCHED EVEN WHEN IT IS NOT THE BASE (D-668).  When
     # `--board` names a candidate, `before` is that candidate's hash and says
@@ -3242,6 +3276,8 @@ def gate(nets, grid, via_cost_mm, workdir, promote=False, candidate=None,
                 cmd += ["--tap-max-mm", str(tap_max_mm)]
             if tap_pairs != 3:
                 cmd += ["--tap-pairs", str(tap_pairs)]
+            if tap_first:
+                cmd += ["--tap-first"]
         if escape_relief and use_search_levers:
             cmd += ["--escape-relief"]
             if relief_via:
@@ -3943,6 +3979,7 @@ def gate(nets, grid, via_cost_mm, workdir, promote=False, candidate=None,
         # named here with its land, its target object, the exact coordinate on
         # that object, the gap it stood off and the copper it cost.
         taps=dict(requested=bool(tap), max_mm=tap_max_mm, pairs=tap_pairs,
+                  first=bool(tap_first),
                   stub_forbidden=list(TAP_STUB_FORBIDDEN),
                   joined=sum(len((r.get("tap") or {}).get("taps", ()))
                              for r in routed),
@@ -4372,6 +4409,20 @@ def main():
     ap.add_argument("--tap-pairs", type=int, default=3,
                     help="nearest tap sites offered per land, on distinct "
                          "objects (default 3)")
+    ap.add_argument("--tap-first", action="store_true",
+                    help="D-669: offer the TAP BEFORE the whole-board maze "
+                         "instead of after it.  D-664's order is right when "
+                         "the maze refuses and wrong when it SUCCEEDS "
+                         "EXPENSIVELY: an orphan land 2.923 mm from its own "
+                         "net's copper and 82.954 mm from the nearest PAD the "
+                         "maze may aim at was closed by the maze at 91.419 mm "
+                         "and five barrels -- a second In2.Cu haul 0.55 mm "
+                         "from the net's own retained one, and a copper_sliver "
+                         "with it -- while the tap that would have branched it "
+                         "in about 3 mm was never asked, because by then the "
+                         "net was one island.  Off by default, so every run "
+                         "and every contract written against D-664's order is "
+                         "unchanged.  Needs --tap")
     ap.add_argument("--guard", type=Path,
                     help="a pour_bond_guard.py spec: keep every net OTHER than "
                          "a tube's own out of the copper that is the only "
@@ -4464,7 +4515,7 @@ def main():
                 tuple(a.relief_pad), a.relief_bonds_per_island,
                 load_run_areas(a.relief_run_area), a.escape_floor,
                 a.bridge_pads, a.bridge_pad_max_mm, a.trunk_floor,
-                a.tap, a.tap_max_mm, a.tap_pairs)
+                a.tap, a.tap_max_mm, a.tap_pairs, a.tap_first)
         return 0
     evict_window_nm = None
     if a.evict_window:
@@ -4499,6 +4550,10 @@ def main():
             a.detour_report.write_text(text + "\n", encoding="utf-8")
         print(text)
         return 0
+    if a.tap_first and not a.tap:
+        ap.error("--tap-first states WHEN the tap runs, not THAT it runs; add "
+                 "--tap.  A run that ordered a move it never offered would "
+                 "report `first: true` over a board no tap ever touched")
     if not a.nets:
         ap.error("name at least one net")
     bad = sorted(set(a.nets) & EXCLUDE)
@@ -4540,7 +4595,8 @@ def main():
                  escape_floor=a.escape_floor, bridge_pads=a.bridge_pads,
                  bridge_pad_max_mm=a.bridge_pad_max_mm,
                  trunk_floor=a.trunk_floor, tap=a.tap,
-                 tap_max_mm=a.tap_max_mm, tap_pairs=a.tap_pairs)
+                 tap_max_mm=a.tap_max_mm, tap_pairs=a.tap_pairs,
+                 tap_first=a.tap_first)
     spec = str(a.grid).strip().lower()
     ladder_spec, best_spec = spec in ("ladder", "best"), spec == "best"
     # `best` REFUSES BOTH TRANSACTION OUTPUTS, not just `--promote`.  `gate()`

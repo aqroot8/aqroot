@@ -23,11 +23,14 @@ measured rather than asserted:
        a screen that permits what the writer forbids (or the reverse) is the one
        failure this whole primitive exists to avoid.
 
-  TC2  THE LEVER IS OFF BY DEFAULT AND NON-PERTURBING.  `--tap` defaults to
-       False, `join_taps` is called nowhere else, and with the lever off the
-       per-net result carries no `tap` key at all -- so no accepted route could
-       have been proposed differently.  Proved by reading the module's own
-       parser default and its single call site, not by remembering them.
+  TC2  THE LEVER IS OFF BY DEFAULT AND NON-PERTURBING.  `--tap` and D-669's
+       `--tap-first` both default to False and EVERY `join_taps` call site sits
+       under an `if tap`, so with the lever off the per-net result carries no
+       `tap` key at all and no accepted route could have been proposed
+       differently.  Proved by reading the module's own parser defaults and
+       every one of its call sites, not by remembering them -- and by the GUARD
+       rather than by the COUNT, because a second guarded site is safe and a
+       first unguarded one is not.
 
   TC3  A TAP IS ADDITIVE (TAP2).  A DRY `join_taps(emit=False)` over every
        partially routed net on the live board leaves the router's own object
@@ -99,15 +102,30 @@ def main():
         ok=(sorted(scr) == sorted(wrt) and len(scr) == len(wrt)))
 
     # ---- TC2 -------------------------------------------------------------
+    # D-669.  THE CLAUSE WAS NEVER ABOUT THE COUNT, IT WAS ABOUT THE GUARD.
+    # `--tap-first` gave `join_taps` a SECOND call site -- the tap offered
+    # BEFORE the whole-board maze rather than after it -- and a clause pinned
+    # to `call_sites == 1` would have refused a lever that cannot run unasked
+    # while still passing an unguarded call site that can.  So the test is now
+    # what the sentence always meant: EVERY call site sits under an `if tap`,
+    # and both flags are `store_true`, so a run that did not ask for a tap
+    # cannot get one however many sites there are.
     src = (MANU / "route_maze_batch.py").read_text()
-    call_sites = src.count("mz.join_taps(")
+    sites, i = [], src.find("mz.join_taps(")
+    while i != -1:
+        sites.append(i)
+        i = src.find("mz.join_taps(", i + 1)
+    unguarded = [src[max(0, k - 80):k + 20].strip() for k in sites
+                 if "if tap" not in src[max(0, k - 600):k]]
     default_off = 'ap.add_argument("--tap", action="store_true"' in src
-    guarded = "        if tap:\n            tp = mz.join_taps(" in src
+    first_off = 'ap.add_argument("--tap-first", action="store_true"' in src
     out["clauses"]["TC2"] = dict(
-        claim="--tap is a store_true (OFF by default) and join_taps has "
-              "exactly one call site, guarded by it",
-        call_sites=call_sites, default_off=default_off, guarded=guarded,
-        ok=bool(call_sites == 1 and default_off and guarded))
+        claim="--tap and --tap-first are store_true (OFF by default) and "
+              "EVERY join_taps call site is guarded by the tap flag",
+        call_sites=len(sites), default_off=default_off,
+        tap_first_default_off=first_off,
+        unguarded_sites=unguarded, guarded=not unguarded,
+        ok=bool(sites and not unguarded and default_off and first_off))
 
     # ---- board, once, read-only -----------------------------------------
     qb = qr.QBoard(str(a.board))

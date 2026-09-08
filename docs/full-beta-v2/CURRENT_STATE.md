@@ -13,6 +13,112 @@
 > This file references DEVICE_SPEC rather than duplicating full specs.
 
 ## 1. Authoritative HEAD
+- **Demo D-669 (A LAND THAT REFUSED IN 3.9 SECONDS HAD ONE ESCAPE INTO
+  0.047 mm², AND THE CHEAPEST MOVE ON THE BOARD WAS RUNNING LAST):**  **COPPER
+  PROMOTED.**  Authority `7b2ca325...` ->
+  **`c3286d8fdd23b6bdb037de2a753051b3ac2aa2e5ccaba2e25ced3d39cf4884b2`**;
+  retained open edges **28 -> 27**, open retained nets **16 -> 15**, connected
+  retained 157 -> 158, raw board ratsnest **44 -> 43**.  `hardware/beta-v2`
+  untouched.  **Fifteen of fifteen gate clauses PASS, ZERO refused**; real KiCad
+  DRC exit 0, **zero attributable**, profile the INHERITED one EXACTLY;
+  `verify_promotion.py` **PASS, 15/15**; unconnected 44 -> 43.  **`/SPI_B_SCK` --
+  the NFC front end's SPI CLOCK, a Demo MUST-HAVE feature -- is CLOSED.**
+  **(1) THE POCKET SCREEN NOW ANSWERS FOR EVERY NET.**
+  `screen_escape_pocket.py` has measured SEALED-vs-RASTER by pocket AREA across
+  a pitch ladder since D-631 and refused every plane-less net with `NO_PLANE`;
+  the body never needed a plane.  `U9.30` reads **0 escapes at 0.100 mm, ONE at
+  0.050 mm into 0.0275 mm², ONE at 0.025 mm into 0.0469 mm², ZERO via-legal
+  cells at either -- growth 1.705, SEALED** in 15 s
+  (`evidence/d669-pocket-sck-ladder.json`).  The 3.9-second `NO_PATH` was never
+  a corridor question.
+  **(2) THE POCKET BLAME -- HOURS TO MINUTES, NETS TO OBJECTS.**  `--blame`
+  (new) holds out every foreign routed object INTERSECTING a 2 mm box round the
+  land -- all at once, then per net, then per PHYSICAL UNIT in `--detour-spec`
+  shape -- by FLOOD-FILL, not wavefront.  `evidence/d669-pocket-sck-blame.json`:
+  Q1 **2122.713 mm² / 2.47 M via-legal**, so it is not a `PLACEMENT_WALL`; Q2
+  names **ONE net of eleven, `/NFC_CS_N`** (2.0538 mm², **167 via-legal cells**),
+  the other ten leaving 0.0469 mm² unchanged to the cell; Q3 names **ONE unit**
+  (`B.Cu [33.625,32.875] -> [32.800,33.700]`, 0.5625 mm²) and shows all four
+  segments of `U9.29`'s escape chain are needed to buy a barrel.
+  **(3) THE 0.5 mm QFN POCKET HOLDS ONE OF THE TWO LANDS, MEASURED SIX WAYS.**
+  Arm A (chain relayed round a disc): SCK closes at 126.477 mm, the RELAY
+  refuses.  Arms B/E: SCK closes, `/NFC_CS_N` `NO_PATH` on all three tap targets.
+  Arms C/N/S (`/NFC_CS_N` first, with and without a reservation): SCK `NO_PATH`
+  with `dst_escapes: 4` -- the LAUNCH is open and the corridor is not.  **Arm F
+  (`--evict-whole`) PASSES 15/15 and was REFUSED ON JUDGEMENT**: it hauls
+  `/NFC_CS_N` to 238.434 mm / 20 vias including **130.427 mm and TWELVE barrels
+  for a 10.9 mm gap it already owned**.  **Arms G/I/L/T (0.050) and V (0.025),
+  the whole `U9` leg evicted, route BOTH nets beautifully and `PP2` REFUSES at
+  both pitches**: with the inherited barrel at `(33.000, 35.100)` gone, SCK takes
+  a 45 mm `B.Cu` haul up the west flank that slices the `B.Cu` `GND` pour and
+  drops `U9`'s own 19.982 mm² ground fragment under its bar -- **one inherited
+  via is what keeps the SPI clock out of the ground plane**, and
+  `--repair-planes` has no candidate because the split never grows an open edge.
+  **(4) THE ORDER WAS THE BUG -- `route_maze_batch.py --tap-first`** (new, OFF
+  by default, requires `--tap`).  D-664 put the tap AFTER every move that aims at
+  a pad; that is right when the maze REFUSES and wrong when it SUCCEEDS
+  EXPENSIVELY.  Arms U/X: both nets close, `PP2` passes, and the maze hauls
+  `/NFC_CS_N` **91.419 mm and FIVE barrels** to a PAD when its own copper stood
+  **2.923 mm** away -- laying a second `In2.Cu` run 0.55 mm from the net's own
+  retained one and **a `copper_sliver` with it**.  The tap reported
+  `NOTHING_TO_TAP` and was telling the truth: the maze had already made the net
+  one island.  `--tap-first` changes no primitive -- same `join_taps`, same
+  TAP1-TAP5, same `offcentre_route`, same forbidden classes -- only WHEN it is
+  offered, and `route_net` returns `already: true` so the maze still runs and
+  still reports.
+  **(5) ARM Y IS THE TRANSACTION.**  `/SPI_B_SCK` **129.962 mm / 4 vias**
+  `U8.18 -> U9.30`; `/NFC_CS_N` closed by a **TAP onto its own `F.Cu` conductor
+  at `(33.000, 35.100)` -- 7.931 mm and ONE barrel**, against the maze's
+  91.419 mm and five.  **31 tracks all 0.200 mm, 5 vias all 0.600/0.300, 4
+  licensed removals (2.9325 mm) and nothing else** -- no `.kicad_dru` change, no
+  rule area, no zone, no relief, no width licence.  `/SPI_B_SCK` 100.939 ->
+  **230.901 mm**, `open_edges 1 -> 0`; `/NFC_CS_N` 137.440 -> **142.438 mm**,
+  `open_edges 0 -> 0`.
+  **(6) THE POUR-BOND GUARD, RE-DERIVED FOR THE THIRD TIME ON THE SAME TUBE.**
+  The suite's first pass read `pour_bond` FAIL: `P2` found 7 of 226 points of the
+  `GND` `U9.6 -> via` tube off copper -- the tube `pour_bond_contract.py`'s own
+  source records D-619 adjudicating for the identical reason.  Measured BEFORE
+  the pin was touched (`evidence/d669-u9-6-bond-unmoved.json`): `U9.6` lies in
+  **exactly ONE `B.Cu` `GND` island either side, 2555.8463 -> 2553.5346 mm²
+  (-0.09 %)**, the index moving 18 -> 21 only because three new outlines appear
+  earlier -- the `U7`/`U8` split `PP2` ADMITTED; `misplaced_ends` EMPTY;
+  `PP1-PP4` and `pour_partition_intact` PASS.  The re-derived guard
+  (`evidence/d669-pour-bond-guard-next.json`, 52 tubes) reads **P1-P4 PASS, ZERO
+  off copper**; the stale `d656` guard still FAILS on that board, the bump's own
+  non-vacuity control.  **AND THE GUARD IS NOT NEGOTIABLE COPPER:** arm Z re-ran
+  the whole transaction with the bond guard MERGED into the lane and
+  `/SPI_B_SCK` **did not close, 28 -> 28** -- the corridor into `U9.30` lies
+  inside that tube's own 8.4 x 6.8 mm box.
+  **(7) `tap_contract` `TC2` NOW TESTS THE GUARD, NOT THE COUNT.**  It asserted
+  `join_taps` has exactly ONE call site; `--tap-first` gives it a second.  A
+  clause pinned to the count would refuse a lever that cannot run unasked while
+  passing an unguarded site that can.  `call_sites: 2`, `unguarded_sites: []`,
+  `tap_first_default_off: true`, **ok**.
+  **(8) THE SUITE AND THE PACKAGE.**  **14/14 RAN, 13/14 PASS, 14/14 COMPARED,
+  `vacuous` false** (`evidence/d669-contract-regression.json`); baselines emitted
+  for D-670.  The one FAIL is `fab_provenance`, which is what a promotion OWES:
+  the package was REGENERATED (28 artifacts) and `fab_package_contract.py` then
+  reads **FAB1-FAB8 PASS at `c3286d8f`**.  `protected_copper` **15 nets / 393
+  objects IDENTICAL**; `placement` and `rf_symmetry` byte-IDENTICAL to `d668`.
+  `ACC_5V_SW_EN`, `ACC_3V3_SW`, RGB, XGPIO4/5, D-269 / D-186 and the eight
+  approved Demo NC contacts untouched.
+  **NEXT, IN ORDER OF LEVERAGE:** (1) **RUN `screen_escape_pocket.py --blame`
+  OVER THE REMAINING FIFTEEN OPEN NETS.**  A 15 s ladder and a ~25 min blame per
+  land, against the HOURS the corridor blame charges, and it partitions them into
+  `PLACEMENT_WALL` (retired by one flood), `RASTER` (ladder it) and a NAMED
+  object.  Thirteen of the fifteen have never been asked this question.  (2)
+  `/SX1262_DIO1` `U2.20 <-> U8.13` and `/ACC_PWR_EN` `U3.20` -- single-edge nets,
+  both `CLEAR` lands.  (3) `U9.14` (`NFC_VDD_RF`) stays the RF-topology question
+  the D-665 addendum defined; `U16.3` still needs a BARREL SITE; `BQ25185_SYS`
+  `C27.1` carries.  (4) `/WAKE_INT_N`'s last edge is **PARKED** at D-668's
+  verdict -- a CAPACITY wall in one pocket, three consecutive non-promoting
+  iterations -- and this decision resets nothing there.  (5) `/I2C_SCL_INT`
+  `U14.7 <-> J1.44` remains **the one OPEN OWNER DECISION**, RECORDED NOT TAKEN;
+  `USB_D_CONN_P` remains the `J3` mechanical one.  (6) `copper_sliver`
+  localisation remains an OPEN INSTRUMENT GAP -- but D-669 removed its only
+  current instance by ROUTING BETTER, not by measuring it.  (7)
+  `hardware/demo/fab` is **FRESH at `c3286d8f`**; the next promotion owes the
+  next re-export.
 - **Demo D-668 (A SCREEN COULD NOT PUT A QUESTION TO A CANDIDATE BOARD, AND
   THE PAIR IT COULD NOT NAME TURNS OUT TO BE BLOCKED BY THE TRANSACTION'S OWN
   NEW COPPER):**  **NO COPPER PROMOTED — FRAMEWORK + CHARACTERISATION.**
