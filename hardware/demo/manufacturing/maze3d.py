@@ -547,7 +547,7 @@ class Field(object):
 
     def __init__(self, qb, net, width, clr_pad, clr_trk, via_dia, via_drill,
                  G=100000, layers=None, margin_mm=2.0, neck=None, guard=None,
-                 escape_floor=None):
+                 escape_floor=None, guard_free=None):
         # D-645.  The model is the board, or it is not a model.  ON by
         # default since D-646 spent a promoting gate on it; idempotent per
         # `QBoard`, and `AQROOT_SCAN_BOARD_VIAS=0` reproduces every
@@ -565,6 +565,33 @@ class Field(object):
         # byte-identical: `_guard_masks` returns {} and every consumer below
         # is keyed on membership, never on a False array.
         self.guard = guard or {}
+        # D-667.  A RESERVATION MAY BE LIFTED AT A STATED POINT, and the point
+        # that always needs it is a FIXED TERMINAL.  `guard_free` is the same
+        # object as `guard` -- {layer: [(x, y, keepout_nm), ...]} -- and stamps
+        # the same disc by the same formula, SUBTRACTED from the guard mask and
+        # from nothing else.  No real obstacle moves: the board's own copper,
+        # its pads, its holes and its DRU overlay are untouched, so this can
+        # never open a cell KiCad would refuse; it can only decline to add a
+        # keep-out this tool chain invented.
+        #
+        # WHY IT HAS TO EXIST.  A guard point stamps `keepout + width/2 + G`.
+        # For a 0.100 mm lane half-width at 0.200 mm clearance that is 0.450 mm
+        # against a 0.200 mm track on a 0.050 mm lattice, and the DRC-legal
+        # separation between two 0.200 mm tracks at 0.200 mm clearance is
+        # 0.400 mm.  A reservation is therefore 0.050 mm STRONGER than the rule
+        # it stands for, and it is strongest exactly where foreign copper
+        # legally hugs the lane -- which is where the ENDS of the copper the
+        # lane's own route displaced necessarily are.  D-666 measured the
+        # consequence and could not name it: both relays of the `/WAKE_INT_N`
+        # transaction reported `NO_PATH` at every budget because their own
+        # goal cells lay 0.160 mm and 0.151 mm from the lane centreline, inside
+        # it on all three reserved layers.  A relay's two ends are not new
+        # copper -- they are where the net's RETAINED conductor already stands
+        # -- and a rule about new copper may not forbid them.
+        #
+        # OFF unless the caller hands one in; `_guard_masks` subtracts nothing
+        # and every Field built without it is byte-identical.
+        self.guard_free = guard_free or {}
         self.width, self.clr_pad, self.clr_trk = width, clr_pad, clr_trk
         # ESCAPE FLOOR -- D-630.  `QBoard.escape` takes a TRUNK width and a
         # RULE MINIMUM as two arguments and walks a descending width ladder
@@ -665,10 +692,8 @@ class Field(object):
         """
         width = self.width if width is None else width
         layers = self.layers if layers is None else layers
-        out = {}
-        for L, pts in self.guard.items():
-            if L not in layers or not pts:
-                continue
+
+        def discs(pts):
             m = np.zeros((self.ny, self.nx), dtype=bool)
             for (x, y, keepout) in pts:
                 R = keepout + width / 2.0 + self.G
@@ -682,6 +707,22 @@ class Field(object):
                     (self.ox + np.arange(i0, i1 + 1) * self.G).astype(float),
                     (self.oy + np.arange(j0, j1 + 1) * self.G).astype(float))
                 m[j0:j1 + 1, i0:i1 + 1] |= ((X - x) ** 2 + (Y - y) ** 2) < R * R
+            return m
+
+        out = {}
+        for L, pts in self.guard.items():
+            if L not in layers or not pts:
+                continue
+            m = discs(pts)
+            # D-667.  THE LIFT IS THE SAME DISC, SUBTRACTED.  It is computed at
+            # the SAME `width` this call was made with, so the barrel pass
+            # (`width=via_dia`, whole stack) lifts a barrel-sized hole and the
+            # track pass lifts a track-sized one -- the asymmetry D-610 paid a
+            # refused gate to learn is not reintroduced here.  A layer with no
+            # lift, and a Field with none at all, is the D-666 mask exactly.
+            free = self.guard_free.get(L)
+            if free:
+                m &= ~discs(free)
             if m.any():
                 out[L] = m
         return out

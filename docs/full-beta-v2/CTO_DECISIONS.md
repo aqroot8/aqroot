@@ -1,3 +1,250 @@
+# D-667 · 2026-09-08 · Demo — THE RESERVATION IS 0.050 mm STRONGER THAN THE RULE IT STANDS FOR, AND IT SPENDS THAT ON THE RELAY'S OWN GOAL CELL; PLUS `/WAKE_INT_N`'s LAST EDGE IS ONE NAMED NET SHORT AND D-661's ORDER IS BACKWARDS HERE
+
+**NO COPPER PROMOTED — FRAMEWORK + CHARACTERISATION.**  Authority **UNCHANGED**
+at `7b2ca32554d3ce8bb7afae883316470223ead0d44de24d0a55fa3a7b18d064b7`; retained
+open edges 28 -> 28, open retained nets 16 -> 16, connected retained 157 -> 157.
+`hardware/beta-v2` and `hardware/demo/kicad` **UNTOUCHED**.  `maze3d.py`,
+`route_maze_batch.py` and `reserve_corridor.py` all changed, and the standing
+suite is **14/14 RAN, 14/14 PASS, 14/14 COMPARED, 14/14 IDENTICAL to `d666`,
+`vacuous` false** (`evidence/d667-contract-regression.json`); baselines emitted
+for D-668.
+
+## 1. THE WALL D-666 COULD NOT NAME WAS THE RELAY'S OWN GOAL CELL
+
+D-666 §5(c) recorded both relays of the `/WAKE_INT_N` transaction `NO_PATH` with
+the stated lane in force, tried 15.0 mm and 12.0 mm of explicit budget against
+5.136 mm and 2.428 mm of removed copper, and concluded *"the lane is the
+constraint, not the allowance"*.  That is true and it is not the reading.  The
+narrower question — is the cell the relay must FINISH on inside the reservation?
+— is answerable in ten seconds and was never asked
+(`evidence/d667-terminal-lift-probe.json`, read-only):
+
+    end                                   distance to lane centreline   free neighbours (F / B / In2)
+    /IR_TX_GPIO16  b (56.9500,109.7000)   0.1597 mm                     0/24   0/24   0/24
+    /SX1262_CS_N   b (58.4242,111.2007)   0.1510 mm                     0/24   0/24   0/24
+
+`maze3d.point_terminals` opens a terminal's OWN cell whether the raster calls it
+free or not, so **the wave had a seed and every one of its twenty-four
+neighbours was guarded, on all three reserved layers.**  (That table came from a
+one-off scratch probe; the two DURABLE instruments that carry the same finding
+are `screen_relay_wall.py`'s `nolift` arm and the `terminal_lift` record now on
+every detour, so nothing here depends on a script that is not in the tree.)  No budget can matter
+when the goal has nowhere to go.  The `a` end of each relay was clear in both
+arms and is untouched by everything below.
+
+**AND THE ARITHMETIC IS GENERAL, NOT AN ACCIDENT OF THIS LANE.**  A guard point
+stamps `keepout + width/2 + G`; the DRC clearance rule it stands for asks
+`w/2 + clearance + w/2`:
+
+    guard reach   0.300 + 0.100 + 0.050 = 0.450 mm
+    DRC-legal     0.100 + 0.200 + 0.100 = 0.400 mm
+
+**A reservation is 0.050 mm STRONGER than the rule it enforces, and it is
+strongest exactly where foreign copper legally hugs the lane.**  The ends of the
+copper a lane's own route DISPLACED are there by construction — the route went
+where that copper was.  A lane along a route therefore swallows the terminals of
+every chain it forces to move, on every layer it is reserved on, for free.
+
+## 2. TWO PRIMITIVES, BOTH INERT UNLESS ASKED FOR
+
+**(a) `maze3d.Field(guard_free=...)` — A RESERVATION MAY BE LIFTED AT A STATED
+POINT.**  The same object as `guard`, `{layer: [(x, y, keepout_nm), ...]}`,
+stamped by the same formula at the same `width` the call was made with, and
+SUBTRACTED from the guard mask and from nothing else.  No real obstacle moves:
+the board's copper, pads, holes and DRU overlay are untouched, so this can never
+open a cell KiCad would refuse — it can only decline to add a keep-out this tool
+chain invented.  Because the lift is computed per call, the barrel pass
+(`width=via_dia`, whole stack) lifts a barrel-sized hole and the track pass a
+track-sized one; the asymmetry D-610 paid a refused gate to learn is not
+reintroduced.
+
+**(b) `route_maze_batch.terminal_lift()` — A RELAY'S TWO ENDS ARE NOT NEW
+COPPER.**  A `--detour-spec` relay is asked to put a named chain back between
+its own two ends and is `WRONG_TERMINAL_LAYER` if it arrives anywhere else.
+Those coordinates are where the net's RETAINED conductor stands; a rule about
+NEW copper may not forbid them.  The lift carries the widest `keepout` of the
+guard points covering an end, so it is exactly the guard's own reach and not one
+cell more, and it applies to that end's OWN LAYER only — a track end is copper
+on one layer.  **The property that keeps it from becoming a gate through the
+lane:** a lift centred `e` off the centreline frees the NEAR side out to `R + e`
+and the FAR side only to `R - e`.  A terminal is freed to leave on the side it
+already lives on; a relay that wants the other side must still cross the
+corridor somewhere the reservation permits.  What was lifted rides on the
+detour's own record (`terminal_lift`), so the gate and a reader can see it.
+
+**(c) `reserve_corridor.py --lane "F.Cu:x,y x,y"` — A LANE MAY STATE ITS OWN
+LAYERS, AND A LANE THAT IS A ROUTE MUST.**  D-666 reserved a 35.342 mm route on
+`F.Cu`, `B.Cu` AND `In2.Cu` for its whole length: **93.561 mm of reservation for
+a 35.342 mm route.**  A route occupies exactly ONE layer between two of its
+barrels, and the other two are the only way a net it evicted can ever cross it —
+reserve all three and the crossing is impossible.  The D-667 lane
+(`evidence/d667-wake-lane-perlayer.json`) is the same route as six segments on
+the one layer each occupies — `F`, `B`, `In2`, `F`, `In2`, `B` — plus a 0.500 mm
+all-layer disc at each of the five barrel sites, because a through via IS copper
+on every layer.  **31.187 mm against 93.561 mm, one third.**
+
+**INERT WHEN UNUSED, PROVED TWICE.**  `reserve_corridor.py` re-run without a
+layer prefix reproduces `evidence/d666-wake-lane-guard.json`'s fifty-two guard
+records exactly — the only field that moves is `merged_from.spec`, the path
+string of the invocation.  And with `maze3d.py` and `route_maze_batch.py` both
+changed the standing suite reads **14/14 IDENTICAL to `d666`**.
+
+## 3. ARM F — THE LIFT WORKS, AND THE LANE STILL REFUSES
+
+Arm F is the D-666 arm E transaction with the per-layer lane and the terminal
+lift (`evidence/d667-tx-wake-last-g50-armF.json`, spec `-detour-spec-...-armF`).
+`/WAKE_INT_N` closes again at 35.342 mm / 5 vias; both relays are still
+`NO_PATH`, and each now carries its `terminal_lift` record — `(56.950,109.700)`
+and `(58.4242,111.2007)`, keepout 0.300 mm, reach 0.450 mm, nine guard points
+apiece.  Refused on `attributable_drc`, `board_improved`, `every_detour_relaid`,
+`no_regression`, as it should be.  **The wall MOVED and had to be re-measured.**
+
+## 4. AND THE FOUR-ARM PROBE SAYS WHAT IT MOVED TO
+
+**`screen_relay_wall.py`** — new, and the durable half of this decision's
+characterisation — rebuilds the exact board the gate's relay pass sees (the
+authority with the spec's units removed and NOTHING yet laid) and asks each
+relay four ways with `emit=False`, so it lays, proves and reverts and cannot
+disagree with the gate about what is legal.  Read-only, ~35 s for two relays,
+`evidence/d667-relay-wall.json`:
+
+                     lane (spec budget)   budget 40 mm   nolane 40 mm        nolift 40 mm
+    /IR_TX_GPIO16    NO_PATH              NO_PATH        ok  5.320 mm 0 via  NO_PATH
+    /SX1262_CS_N     NO_PATH              NO_PATH        ok  2.426 mm 0 via  NO_PATH
+
+**With the reservation off, both relays route in essentially their old length
+with ZERO vias — that is their old copper back.**  Not the budget (40 mm against
+5.136 and 2.428), not the terminal (lifted), not the raster (a `Field` spans the
+whole board plus 2 mm).  **Each of those two chains has exactly ONE path in that
+pocket and it is the corridor `/WAKE_INT_N`'s last edge needs.**  A relay must
+put its chain back between its own two exact ends on its own layer; here that is
+unsatisfiable, and no reservation geometry will change it.
+
+## 5. SO STOP ASKING FOR A CHAIN AND ASK FOR A NET — AND THE ORDER IS THE TRANSACTION
+
+D-666 §7 item 1(ii).  `/IR_TX_GPIO16` (2 pads `R22.1`/`U1.9`, 23.153 mm, no via)
+and `/SX1262_CS_N` (3 pads `R27.2`/`U1.10`/`U8.19`, 68.405 mm, 5 vias) are
+`--evict-whole` and REQUESTED, so each gets the whole router and its own barrels
+instead of a two-ended budget.  Only the three `GND` units stay in the spec.
+
+    arm  request order                                 guard      /WAKE_INT_N   /IR_TX     /SX1262
+    G    IR_TX, SX1262, WAKE   (D-661's order)         lane       NO_PATH       ok         116.669 mm 9 via
+    H    WAKE, IR_TX, SX1262                           lane       35.366 / 5    31.822 / 4 NO_PATH
+    I    WAKE, SX1262, IR_TX                           lane       35.366 / 5    31.822 / 4 NO_PATH
+    J    WAKE, SX1262, IR_TX                           NO lane    35.366 / 5    31.822 / 4 NO_PATH
+
+**(a) D-661's ORDER IS BACKWARDS HERE, AND THE REASON IS PAD ESCAPES.**  Arm G
+asked the evicted nets first, as D-661 records.  Both routed — `/SX1262_CS_N` at
+**116.669 mm / 9 vias** against its accepted 68.405 / 5 — and **`/WAKE_INT_N`
+came back `NO_PATH`** between two islands whose escapes both exist (24 src,
+11 dst).  They took the pocket back everywhere the reservation does not reach,
+and **a lane drawn along a route does not reach that route's own PAD ESCAPES.**
+D-661's rule is written for the case where the EVICTED net is the one at risk;
+when the REQUESTED net is, it is exactly inverted.
+
+**(b) ASK THE PROTECTED NET FIRST AND THE EDGE CLOSES.**  Arm H closes
+`/WAKE_INT_N` at **35.366 mm / 5 vias** through the gate's own proposer and
+rebuilds `/IR_TX_GPIO16` WHOLE at 31.822 mm / 4 vias — a real price, 8.669 mm
+and four barrels, against a net that had none — and leaves ONE net short.
+
+**(c) AND NEITHER THE LANE NOR THE ORDER BETWEEN THE EVICTED NETS IS THE
+CONSTRAINT.**  Arms I and J are IDENTICAL to arm H in every routed number.
+Swapping the two evicted nets changes nothing; **removing the reservation
+entirely changes nothing.**  That is worth stating as a rule: *once the
+protected net is asked FIRST, its own copper is the obstacle a lane was invented
+to be, and the reservation is redundant — 0.050 mm of pure cost charged along
+31.187 mm of corridor to exactly the nets that still have to fit.*  **A lane is
+for nets routed AFTER the one it protects, and the cheapest way to have none is
+to route the protected net first.**
+
+## 6. WHAT THIS LEAVES, STATED PRECISELY
+
+**PROVED.**  `/WAKE_INT_N`'s last edge closes at **35.366 mm / 5 vias** on a
+board where `/IR_TX_GPIO16` and `/SX1262_CS_N` are evicted whole and the wake
+net is asked first; `/IR_TX_GPIO16` rebuilds whole at 31.822 mm / 4 vias;
+`attributable_drc`, `every_detour_relaid`, `pour_partition`, `rebond_priced`,
+`barrel_move_licensed`, `no_unlicensed_removal`, `authority_unchanged`,
+`inherited_within_baseline`, `no_foreign_copper` and `zones_and_rule_areas` all
+PASS in arms H, I and J.
+
+**REFUSED, AND CORRECTLY.**  `board_improved` and `no_regression`:
+`/SX1262_CS_N` ends `NO_PATH` on one island pair — escapes at both ends (7 src,
+6 dst) — so retained open edges go 28 -> **29**.  `/WAKE_INT_N`'s last edge and
+`/SX1262_CS_N` are in direct competition for one corridor and **whichever is
+asked first gets it**: arm G rebuilds `/SX1262_CS_N` whole at 116.669 mm when
+the wake net is not in the pocket, arms H/I/J cannot when it is.
+
+**THE TRANSACTION IS ONE NAMED ISLAND PAIR SHORT.**
+`--partial` was put to it (arm K, `evidence/d667-detour-spec-wake-last-armK.json`)
+to convert "one net short" into a NAMED PAIR, and was **STOPPED after 58
+minutes** — a per-pair transaction over the complete island graph of three nets,
+each pair a whole-board wavefront, is a different order of cost from the
+all-or-nothing MST and was not budgeted here.  `w/d667/armK.log` is kept.
+
+**AND THE CHEAP WAY TO NAME IT DOES NOT WORK, WHICH IS ITSELF A GAP.**  The arm J
+work directory holds exactly the right board — `/WAKE_INT_N` and `/IR_TX_GPIO16`
+laid, `/SX1262_CS_N` evicted and not relaid — so `screen_partial_pairs.py
+--board w/d667/armJ/aqroot-Beta-v2.kicad_pcb --net /SX1262_CS_N` should have
+named the pair in half a minute.  It ran, and it answered a different board's
+question (`evidence/d667-sx1262-pairs.json`: `open_edges 2`, `pairs []`,
+`exit_code 1`).  **`--board` names the board the open-net CENSUS is read from;
+the router it drives is `route_maze_batch.py`, which has no board argument at
+all and always runs against the AUTHORITY** (`screen_partial_pairs.py:66`).  So
+the screen read two open edges off the candidate and then routed `/SX1262_CS_N`
+on a board where it is already connected.  **A screen cannot currently ask any
+question of a CANDIDATE board** — the same family of defect as D-666's `BASE was
+{ok: true} with no mm`, and it is now an OPEN INSTRUMENT GAP.
+
+## 7. NEXT, IN ORDER OF LEVERAGE
+
+1. **`/WAKE_INT_N`'s LAST EDGE, ARM L.**  The transaction is arm J and it is one
+   island pair of `/SX1262_CS_N` short.  Cheapest first: **(i)** give
+   `route_maze_batch.py` a `--board` argument so a screen may ask a CANDIDATE a
+   question, then name the failing pair off `w/d667/armJ/` in half a minute
+   (this unblocks item 6 as well and is the smallest change on this list);
+   **(ii)** with the pair named, run `screen_pair_corridor_blame.py
+   --per-object --minimise-only` on it against the arm J board and evict a THIRD
+   net — the transaction is already three nets and a fourth is not a new kind of
+   move; **(iii)** ladder the pair to 0.025 mm, since `/SX1262_CS_N`'s refusal
+   is `NO_PATH` with escapes at BOTH ends (7 src, 6 dst), which is the CORRIDOR
+   class D-625's lesson applies to.  Judge every arm on `board_improved`.
+2. **`U9.30` (`SPI_B_SCK`)** — a CLEAR land whose refusal is ROUTED COPPER, the
+   ordinary corridor half of D-665 §7 item (2), now half-price under
+   `--minimise-only`.  `U9.14` (`NFC_VDD_RF`) stays the RF question the D-665
+   addendum defined.
+3. `U16.3` needs a BARREL SITE, not a pitch (D-664 carry).
+4. `BQ25185_SYS` `C27.1` with the tap and a reserved lane (D-664 carry) — and
+   now with §5's lesson: ask the PROTECTED net first and the lane may not be
+   needed at all.
+5. `/I2C_SCL_INT` `U14.7 <-> J1.44` remains **the one OPEN OWNER DECISION**
+   (D-655 §7), RECORDED NOT TAKEN.
+6. **`route_maze_batch.py` has no `--board`** — a screen cannot put a question to
+   a candidate.  NEW OPEN INSTRUMENT GAP (§6).
+7. `copper_sliver` localisation remains an OPEN INSTRUMENT GAP.
+8. `hardware/demo/fab` is **FRESH at `7b2ca325`** and `fab_provenance` says so in
+   this run's suite.  No copper moved, so no re-export is owed by D-667; the
+   next PROMOTION still owes an `export_fab_package.py` re-run and the full
+   eight-clause review is owed once more at release.
+
+## 8. RULES THIS DECISION ADDS
+
+* **A reservation is stronger than the rule it stands for.**  `keepout + width/2
+  + G` against `w/2 + clearance + w/2` is 0.050 mm of extra reach at this
+  board's numbers, spent exactly where foreign copper legally hugs the lane.
+* **A relay's two ENDS are not new copper** and a rule about new copper may not
+  forbid them.  `Field(guard_free=)` and `terminal_lift` are how that is said.
+* **A lane that is a ROUTE must state its layers per segment.**  A route
+  occupies one layer between two of its barrels; the other layers are the only
+  way a net it evicted can cross it.
+* **A lane drawn along a route does not reach that route's own PAD ESCAPES**, so
+  a reservation cannot protect a net that is routed last.
+* **D-661's "the evicted net is requested FIRST" is written for the case where
+  the EVICTED net is at risk.**  When the REQUESTED net is at risk, ask it
+  FIRST — and then its own copper is the obstacle and the reservation is
+  redundant (arms I and J are identical in every number).
+* **`--partial` over a complete island graph is not the cheap way to name a
+  pair.**  It is a different order of cost from the all-or-nothing MST.
+
 # D-666 · 2026-09-08 · Demo — THE PACKAGE A FACTORY WOULD HAVE RECEIVED WAS FORTY PLATED HOLES SHORT OF THE BOARD, AND NOTHING IN THIS REPOSITORY ASKED; PLUS `/WAKE_INT_N`'s LAST EDGE IS NOT CLOSED, IT IS OPEN AT 151.580 mm
 
 **NO COPPER PROMOTED — SHIPPABLE REFRESHED + FRAMEWORK + CHARACTERISATION.**

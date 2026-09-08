@@ -1,0 +1,51 @@
+{
+  "detours": [
+    {
+      "net": "GND",
+      "relay": false,
+      "tracks": [
+        {
+          "a_mm": [
+            58.525,
+            105.525
+          ],
+          "b_mm": [
+            59.3,
+            106.3
+          ],
+          "count": 1,
+          "layer": "B.Cu",
+          "width_mm": 0.3
+        }
+      ],
+      "why": "D-666 ARM B: this B.Cu segment TERMINATES at the barrel (59.300,106.300) the same spec removes.  Relaying it between its own two ends asks the router to reach a site that is reserved and a bond that is gone; ARM A asked exactly that and got NO_PATH at 0.300 mm inside a 5.180 mm budget.  It is a stub of a removed bond, so it is REMOVED AND NOT PUT BACK and the gate's inert_removal_priced clause prices it."
+    },
+    {
+      "barrel": {
+        "at_mm": [
+          59.3,
+          106.3
+        ],
+        "count": 1,
+        "dia_mm": 0.6,
+        "drill_mm": 0.3
+      },
+      "net": "GND"
+    },
+    {
+      "barrel": {
+        "at_mm": [
+          59.9,
+          106.5
+        ],
+        "count": 1,
+        "dia_mm": 0.6,
+        "drill_mm": 0.3
+      },
+      "net": "GND"
+    }
+  ],
+  "note": "D-667 ARM H -- ARM G's spec with the REQUEST ORDER REVERSED.  Arm G asked /IR_TX_GPIO16 /SX1262_CS_N /WAKE_INT_N, in that order, because D-661 records 'the evicted net is requested FIRST'.  Both evicted nets routed -- /IR_TX_GPIO16, and /SX1262_CS_N at 116.669 mm / 9 vias against its accepted 68.405 mm / 5 -- and /WAKE_INT_N came back NO_PATH between two islands whose escapes both exist (24 src, 11 dst): they took the pocket back everywhere the reservation does not reach, and a lane drawn along a route does not reach that route's own PAD ESCAPES.  D-661's rule is written for the case where the EVICTED net is the one at risk.  Here the requested net is, so it is asked FIRST -- /WAKE_INT_N /IR_TX_GPIO16 /SX1262_CS_N -- and the other two rebuild around copper that is already on the board, which is a stronger obstacle than any reservation.  Same three GND units, same per-layer lane.",
+  "reserve": [],
+  "schema": 1
+}

@@ -1967,6 +1967,64 @@ def guard_for(spec, net):
     return out
 
 
+def terminal_lift(guard, lkey, ends, width_nm, grid_nm):
+    """Lift a reservation off a relay's OWN TWO FIXED ENDS -- D-667.
+
+    Returns `({lkey: [(x, y, keepout_nm), ...]}, [report, ...])` in
+    `maze3d.Field(guard_free=...)`'s shape, or `({}, [])` when no reservation
+    covers either end -- which is every run this file has ever made.
+
+    A `--detour-spec` relay is asked to put a named chain back between its own
+    two ends.  Those ends are not the transaction's to choose: they are the
+    coordinates where the net's RETAINED conductor stands, and the relay is
+    `WRONG_TERMINAL_LAYER` if it arrives anywhere else.  A corridor reservation
+    is a rule about where NEW copper may lie, so it cannot coherently forbid
+    them -- and it does, systematically, because of a half-lattice of arithmetic:
+
+        guard reach   keepout + width/2 + G   0.300 + 0.100 + 0.050 = 0.450 mm
+        DRC-legal     w/2 + clearance + w/2   0.100 + 0.200 + 0.100 = 0.400 mm
+
+    A reservation is 0.050 mm STRONGER than the clearance rule it stands for,
+    and it is strongest precisely where foreign copper legally hugs the lane.
+    The ends of the copper the lane's own route DISPLACED are exactly there, by
+    construction: the route went where that copper was.  D-666 arms D and E
+    measured `NO_PATH` on both relays of the `/WAKE_INT_N` transaction at 15.0
+    and 12.0 mm of budget and concluded the lane was "too strong"; the true
+    reading is that `/IR_TX_GPIO16`'s goal cell lay 0.1597 mm from the lane
+    centreline and `/SX1262_CS_N`'s 0.1510 mm, on all three reserved layers.
+    `maze3d.point_terminals` opens a terminal's OWN cell whether the raster
+    calls it free or not -- so the wave had a seed, and every one of its
+    twenty-four neighbours was guarded.
+
+    THE LIFT IS EXACTLY THE GUARD'S OWN REACH AND NOT ONE CELL MORE.  The disc
+    subtracted at an end carries the widest `keepout` of the guard points that
+    cover it, so `_guard_masks` stamps it with the identical formula.  That has
+    a property worth stating, because it is what keeps this from becoming a
+    gate through the lane: a lift centred `e` off the centreline frees the
+    NEAR side out to `R + e` and the FAR side only to `R - e`.  A terminal is
+    freed to leave on the side it already lives on, and a relay that wants the
+    other side must still cross the corridor somewhere the reservation permits
+    -- on another layer, which is what per-lane layers are for.
+
+    Only the end's OWN layer is lifted.  A track end is copper on one layer;
+    the reservation on every other layer is untouched.
+    """
+    pts = (guard or {}).get(lkey) or ()
+    lift, report = [], []
+    for (ex, ey) in ends:
+        cover = [k for (x, y, k) in pts
+                 if math.hypot(x - ex, y - ey) < k + width_nm / 2.0 + grid_nm]
+        if not cover:
+            continue
+        k = max(cover)
+        lift.append((ex, ey, k))
+        report.append(dict(at_mm=[round(ex / 1e6, 4), round(ey / 1e6, 4)],
+                           lkey=lkey, keepout_mm=round(k / 1e6, 4),
+                           reach_mm=round((k + width_nm / 2.0 + grid_nm) / 1e6, 4),
+                           guard_points=len(cover)))
+    return ({lkey: lift} if lift else {}), report
+
+
 def pad_owner_nets(board, refs):
     """{net: [pad ref, ...]} for the named pads, read from the board itself.
 
@@ -2117,12 +2175,21 @@ def propose(path, nets, grid, via_cost_mm, stitch_width=0, stitch_via=None,
                   file=sys.stderr, flush=True)
             continue
         g = guard_for(guard_spec, net) if guard_spec else None
+        # D-667.  A RELAY'S OWN TWO ENDS ARE NOT NEW COPPER.  A reservation
+        # reaches `keepout + width/2 + G`, which is wider than the clearance
+        # rule it stands for, so it swallows the terminals of the very copper
+        # the lane's route displaced.  Lift it there and nowhere else; the
+        # report rides on this detour's record so the gate and a reader can see
+        # exactly which terminals were freed and how far.
+        gfree, lift_report = terminal_lift(
+            g, d["lkey"], (tuple(d["a_nm"]), tuple(d["b_nm"])),
+            d["width_nm"], grid)
         # D-609.  A track being PUT BACK may be put back on the layer it was
         # already lawfully on, and on nothing else -- see `detour_layers`.
         layers, own = detour_layers(c["layers"], d["lkey"], detour_own_layer)
         field = mz.Field(qb, net, d["width_nm"], c["clr_pad"], c["clr"],
                          c["via_dia"], c["via_drill"], G=grid,
-                         layers=layers, guard=g)
+                         layers=layers, guard=g, guard_free=gfree)
         r = mz.route_points(qb, field, tuple(d["a_nm"]), tuple(d["b_nm"]),
                             d["lkey"], via_cost_mm=via_cost_mm,
                             max_mm=d.get("max_mm", 0.0))
@@ -2135,6 +2202,7 @@ def propose(path, nets, grid, via_cost_mm, stitch_width=0, stitch_via=None,
                  # 0.500 mm of that growth that is the barrel move and not the
                  # detour.
                  move_ends=d.get("move_ends") or [],
+                 terminal_lift=lift_report,
                  max_mm=d.get("max_mm"), width_nm=d["width_nm"],
                  lkey=d["lkey"], layers_allowed=list(layers), own_layer=own,
                  a_mm=[round(v / 1e6, 4) for v in d["a_nm"]],

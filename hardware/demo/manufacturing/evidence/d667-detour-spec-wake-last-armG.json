@@ -1,0 +1,51 @@
+{
+  "detours": [
+    {
+      "net": "GND",
+      "relay": false,
+      "tracks": [
+        {
+          "a_mm": [
+            58.525,
+            105.525
+          ],
+          "b_mm": [
+            59.3,
+            106.3
+          ],
+          "count": 1,
+          "layer": "B.Cu",
+          "width_mm": 0.3
+        }
+      ],
+      "why": "D-666 ARM B: this B.Cu segment TERMINATES at the barrel (59.300,106.300) the same spec removes.  Relaying it between its own two ends asks the router to reach a site that is reserved and a bond that is gone; ARM A asked exactly that and got NO_PATH at 0.300 mm inside a 5.180 mm budget.  It is a stub of a removed bond, so it is REMOVED AND NOT PUT BACK and the gate's inert_removal_priced clause prices it."
+    },
+    {
+      "barrel": {
+        "at_mm": [
+          59.3,
+          106.3
+        ],
+        "count": 1,
+        "dia_mm": 0.6,
+        "drill_mm": 0.3
+      },
+      "net": "GND"
+    },
+    {
+      "barrel": {
+        "at_mm": [
+          59.9,
+          106.5
+        ],
+        "count": 1,
+        "dia_mm": 0.6,
+        "drill_mm": 0.3
+      },
+      "net": "GND"
+    }
+  ],
+  "note": "D-667 ARM G -- THE SAME EIGHT UNITS, BUT THE TWO SIGNAL NETS ARE FIRST-CLASS AND NOT RELAYS.  D-666 \u00a77 item 1(ii).  A `--detour-spec` relay must put its chain back BETWEEN ITS OWN TWO EXACT ENDS on its own layer; evidence/d667-relay-wall.json proves that is unsatisfiable here.  With the reservation OFF and 40 mm of budget both relays route -- /IR_TX_GPIO16 in 5.320 mm and /SX1262_CS_N in 2.426 mm, ZERO vias each, which is their old copper back -- and with the D-667 PER-LAYER lane ON, at 40 mm and with their terminals lifted, both are NO_PATH.  Not the budget, not the terminal, not the copper: those two chains have exactly ONE path each in that pocket and it is the corridor /WAKE_INT_N's last edge needs.  So this arm stops asking for a chain and asks for a NET: /IR_TX_GPIO16 (2 pads R22.1/U1.9, 23.153 mm, no via) and /SX1262_CS_N (3 pads R27.2/U1.10/U8.19, 68.405 mm, 5 vias) are --evict-whole and REQUESTED FIRST (D-661), so each gets the whole router, the whole board and its own barrels instead of a two-ended budget.  Only the THREE GND units stay in this spec: the B.Cu stub that terminates at the barrel this transaction removes, and the two barrels themselves.",
+  "reserve": [],
+  "schema": 1
+}

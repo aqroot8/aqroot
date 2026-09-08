@@ -13,6 +13,96 @@
 > This file references DEVICE_SPEC rather than duplicating full specs.
 
 ## 1. Authoritative HEAD
+- **Demo D-667 (A RESERVATION IS 0.050 mm STRONGER THAN THE RULE IT STANDS FOR
+  AND IT SPENDS THAT ON THE RELAY'S OWN GOAL CELL; PLUS `/WAKE_INT_N`'s LAST
+  EDGE IS ONE NAMED NET SHORT AND D-661's ORDER IS BACKWARDS HERE):**  **NO
+  COPPER PROMOTED — FRAMEWORK + CHARACTERISATION.**  Authority **UNCHANGED** at
+  `7b2ca32554d3ce8bb7afae883316470223ead0d44de24d0a55fa3a7b18d064b7`; retained
+  open edges 28 -> 28, open retained nets 16 -> 16.  `hardware/beta-v2` and
+  `hardware/demo/kicad` **UNTOUCHED**.  `maze3d.py`, `route_maze_batch.py` and
+  `reserve_corridor.py` all changed and the standing suite reads **14/14 RAN,
+  14/14 PASS, 14/14 COMPARED, 14/14 IDENTICAL to `d666`, `vacuous` false**
+  (`evidence/d667-contract-regression.json`); baselines emitted for D-668.
+  **(1) THE WALL D-666 COULD NOT NAME WAS THE RELAY'S OWN GOAL CELL.**  D-666
+  §5(c) read both relays' `NO_PATH` as "the lane is too strong" and raised the
+  budget to 15.0 / 12.0 mm.  The narrower question takes ten seconds
+  (`evidence/d667-terminal-lift-probe.json`): `/IR_TX_GPIO16`'s goal at
+  (56.950, 109.700) and `/SX1262_CS_N`'s at (58.4242, 111.2007) lie 0.1597 mm
+  and 0.1510 mm from the lane centreline and had **ZERO of 24 free neighbours on
+  ALL THREE reserved layers**.  `maze3d.point_terminals` opens a terminal's own
+  cell whatever the raster says, so the wave had a seed and nowhere to go — **no
+  budget can matter when the goal has no neighbours**.  And the arithmetic is
+  general: a guard point reaches `keepout + width/2 + G` = 0.450 mm where DRC
+  asks `w/2 + clr + w/2` = 0.400 mm, so **a reservation is 0.050 mm stronger
+  than the rule it enforces and is strongest exactly where foreign copper
+  legally hugs the lane** — which is, by construction, where the ends of the
+  copper the lane's own route DISPLACED are.
+  **(2) THREE PRIMITIVES, ALL INERT UNLESS ASKED FOR.**
+  `maze3d.Field(guard_free=...)` — a reservation may be LIFTED at a stated
+  point; the same object, the same disc, the same formula, SUBTRACTED from the
+  guard mask and nothing else, so no real obstacle moves and it can never open a
+  cell KiCad would refuse.  `route_maze_batch.terminal_lift()` — a relay's two
+  FIXED ENDS are lifted at exactly the guard's own reach, on that end's OWN
+  layer only, and the lift is reported on the detour's record; a lift centred
+  `e` off the centreline frees the NEAR side to `R + e` and the FAR side only to
+  `R - e`, so a terminal is freed to leave on the side it already lives on and
+  the hole is **not** a gate through the lane.  `reserve_corridor.py --lane
+  "F.Cu:x,y ..."` — a lane may state its own layers, and **a lane that is a
+  ROUTE must**: D-666 reserved a 35.342 mm route on three layers for its whole
+  length (93.561 mm); the D-667 lane is the same route as six segments on the
+  one layer each occupies plus five 0.500 mm all-layer discs at the barrel
+  sites, **31.187 mm, one third** (`evidence/d667-wake-lane-perlayer.json`).
+  Re-run without a layer prefix, `reserve_corridor.py` reproduces
+  `d666-wake-lane-guard.json`'s fifty-two records exactly.
+  **(3) THE LIFT WORKS AND THE LANE STILL REFUSES — AND THE PROBE SAYS WHY.**
+  Arm F closes `/WAKE_INT_N` at 35.342 mm / 5 vias with both relays still
+  `NO_PATH`, each now carrying its `terminal_lift` record.
+  **`screen_relay_wall.py`** (new; read-only, ~35 s) rebuilds the exact board the
+  relay pass sees and asks four ways — budget, terminal, lane, copper —
+  `evidence/d667-relay-wall.json`: with the reservation OFF both relays route at essentially
+  their old length with **ZERO vias** — 5.320 mm and 2.426 mm, their old copper
+  back — and with it ON they are `NO_PATH` at 40 mm of budget, lifted or not.
+  **Each of those two chains has exactly ONE path in that pocket and it is the
+  corridor `/WAKE_INT_N`'s last edge needs.**  A relay must put its chain back
+  between its own two exact ends; here that is unsatisfiable and no reservation
+  geometry will change it.
+  **(4) SO ASK FOR A NET, NOT A CHAIN — AND THE ORDER IS THE TRANSACTION.**
+  `/IR_TX_GPIO16` (2 pads, 23.153 mm, no via) and `/SX1262_CS_N` (3 pads,
+  68.405 mm, 5 vias) `--evict-whole` and REQUESTED.  **Arm G, in D-661's order
+  (evicted nets first), routed both — `/SX1262_CS_N` at 116.669 mm / 9 vias —
+  and lost `/WAKE_INT_N` to `NO_PATH`**: they took the pocket back everywhere
+  the reservation does not reach, and **a lane drawn along a route does not
+  reach that route's own PAD ESCAPES**.  **Arm H, protected net FIRST, closes
+  `/WAKE_INT_N` at 35.366 mm / 5 vias and rebuilds `/IR_TX_GPIO16` WHOLE at
+  31.822 mm / 4 vias.**  Arms I (evicted nets swapped) and J (**the lane removed
+  entirely**) are IDENTICAL in every routed number — so once the protected net
+  is asked first its own copper is the obstacle and **the reservation is
+  redundant**.  All three refuse on `board_improved` / `no_regression` alone:
+  `/SX1262_CS_N` ends `NO_PATH` on ONE island pair with escapes at both ends
+  (7 src, 6 dst), 28 -> 29.
+  **(5) THE PAIR IS NOT YET NAMED, AND THE CHEAP INSTRUMENT ANSWERS A DIFFERENT
+  BOARD.**  Arm K (`--partial`) was STOPPED after 58 minutes.
+  `screen_partial_pairs.py --board <candidate>` ran in 26.5 s and reported
+  nothing: **`--board` names the board the open-net CENSUS is read from, while
+  the router it drives, `route_maze_batch.py`, has no board argument at all and
+  always runs against the AUTHORITY.**  A screen cannot presently put a question
+  to a CANDIDATE board — a NEW OPEN INSTRUMENT GAP.
+  **NEXT, IN ORDER OF LEVERAGE:** (1) **`/WAKE_INT_N` ARM L** — the transaction
+  is arm J and it is one island pair short; cheapest first: give
+  `route_maze_batch.py` a `--board` argument (smallest change on this list, and
+  it closes item 6 too), then name the pair off `w/d667/armJ/`, then either
+  evict a THIRD net through `screen_pair_corridor_blame.py --per-object
+  --minimise-only` or ladder the pair to 0.025 mm — its refusal is `NO_PATH`
+  with escapes at BOTH ends, the CORRIDOR class.  (2) `U9.30` (`SPI_B_SCK`),
+  half-price under `--minimise-only`; `U9.14` stays the RF question.
+  (3) `U16.3` needs a BARREL SITE (D-664 carry).  (4) `BQ25185_SYS` `C27.1`
+  (D-664 carry) — and ask the PROTECTED net first, per (4) above.  (5)
+  `/I2C_SCL_INT` `U14.7 <-> J1.44` remains **the one OPEN OWNER DECISION**,
+  RECORDED NOT TAKEN.  (6) `route_maze_batch.py` has **no `--board`** — NEW OPEN
+  INSTRUMENT GAP.  (7) `copper_sliver` localisation remains an OPEN INSTRUMENT
+  GAP.  (8) `hardware/demo/fab` is **FRESH at `7b2ca325`** and `fab_provenance`
+  says so in this run's suite; no copper moved, so D-667 owes no re-export, and
+  the next PROMOTION still owes one.
 - **Demo D-666 (THE PACKAGE A FACTORY WOULD HAVE RECEIVED WAS FORTY PLATED
   HOLES SHORT OF THE BOARD; PLUS `/WAKE_INT_N`'s LAST EDGE FALLS TO EIGHT
   OBJECTS AND THE RELAY IS WHAT REFUSES):**  **NO COPPER PROMOTED — SHIPPABLE

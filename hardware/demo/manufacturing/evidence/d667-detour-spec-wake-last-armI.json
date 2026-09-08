@@ -1,0 +1,51 @@
+{
+  "detours": [
+    {
+      "net": "GND",
+      "relay": false,
+      "tracks": [
+        {
+          "a_mm": [
+            58.525,
+            105.525
+          ],
+          "b_mm": [
+            59.3,
+            106.3
+          ],
+          "count": 1,
+          "layer": "B.Cu",
+          "width_mm": 0.3
+        }
+      ],
+      "why": "D-666 ARM B: this B.Cu segment TERMINATES at the barrel (59.300,106.300) the same spec removes.  Relaying it between its own two ends asks the router to reach a site that is reserved and a bond that is gone; ARM A asked exactly that and got NO_PATH at 0.300 mm inside a 5.180 mm budget.  It is a stub of a removed bond, so it is REMOVED AND NOT PUT BACK and the gate's inert_removal_priced clause prices it."
+    },
+    {
+      "barrel": {
+        "at_mm": [
+          59.3,
+          106.3
+        ],
+        "count": 1,
+        "dia_mm": 0.6,
+        "drill_mm": 0.3
+      },
+      "net": "GND"
+    },
+    {
+      "barrel": {
+        "at_mm": [
+          59.9,
+          106.5
+        ],
+        "count": 1,
+        "dia_mm": 0.6,
+        "drill_mm": 0.3
+      },
+      "net": "GND"
+    }
+  ],
+  "note": "D-667 ARM I -- ARM H with the two evicted nets swapped: /WAKE_INT_N /SX1262_CS_N /IR_TX_GPIO16.  Arm H proved the ORDER, not the transaction: asking the protected net FIRST (against D-661's rule, which is written for the case where the EVICTED net is the one at risk) took /WAKE_INT_N from NO_PATH to 35.366 mm / 5 vias and /IR_TX_GPIO16 rebuilt whole at 31.822 mm / 4 vias -- and left ONE net short, /SX1262_CS_N, NO_PATH on its last island pair with escapes at both ends (7 src, 6 dst).  /SX1262_CS_N is the harder of the two by every measure -- 3 pads against 2, 68.405 mm against 23.153, 5 vias against none, and it is the net arm G routed at 116.669 mm when it went SECOND -- so it goes second here and the 2-pad net rebuilds last.",
+  "reserve": [],
+  "schema": 1
+}

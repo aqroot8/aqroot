@@ -158,6 +158,16 @@ def net_pads(board, nets):
 def stated(lanes, layers, step):
     """One guard record per STATED polyline -- D-660.
 
+    D-667: A LANE MAY STATE ITS OWN LAYERS, and a lane that is a ROUTE must.
+    `layers` here is the run-wide default and every lane took it, so a lane
+    drawn along a route's five via points was reserved on `F.Cu`, `B.Cu` AND
+    `In2.Cu` for its whole length -- 93.561 mm of reservation for a 35.342 mm
+    route.  A route occupies exactly ONE layer between two of its barrels, and
+    the other two are the only way a net it evicted can ever cross it: reserve
+    all three and the crossing is impossible, which is what D-666 arms D and E
+    measured as `NO_PATH` on both relays.  A lane entry may therefore carry its
+    own layer list, and one that does not reads exactly as it did.
+
     THE THIRD MODE, AND THE ONE A POUR-SERVED RAIL NEEDS.  Prospective draws
     the MST over a family's pad-cluster centroids and retrospective samples the
     family's own routed tracks.  Neither can express the lane a POUR wants:
@@ -175,7 +185,9 @@ def stated(lanes, layers, step):
     named, and reserve where they lay.
     """
     recs = []
-    for i, pts_mm in enumerate(lanes):
+    for i, lane in enumerate(lanes):
+        pts_mm, lane_layers = lane if isinstance(lane, tuple) else (lane, None)
+        use = lane_layers or layers
         nodes = [(int(round(x * 1e6)), int(round(y * 1e6))) for (x, y) in pts_mm]
         pts, mm = [], 0.0
         if len(nodes) == 1:
@@ -185,7 +197,7 @@ def stated(lanes, layers, step):
             mm += math.hypot(b[0] - a[0], b[1] - a[1]) / 1e6
             for p in sample(a, b, step):
                 pts.append((p[0], p[1]))
-        for L in layers:
+        for L in use:
             recs.append(dict(lkey=LKEY[L], layer=L, mode="stated",
                              ends=["lane %d" % (i + 1),
                                    " ".join("%.4f,%.4f" % p for p in pts_mm)],
@@ -291,7 +303,12 @@ def main():
                          "point reserves a DISC, which is what a barrel's site "
                          "is.  Use it when the lane is the absence of foreign "
                          "copper rather than the presence of the family's own "
-                         "-- a pour-served rail has no centreline to reserve")
+                         "-- a pour-served rail has no centreline to reserve.  "
+                         "D-667: prefix `F.Cu:` (or `F.Cu+B.Cu:`) to reserve "
+                         "THAT lane on those layers instead of the run-wide "
+                         "--layer set.  A route occupies one layer between two "
+                         "of its barrels and the other layers are the only way "
+                         "a net it evicted can cross it")
     ap.add_argument("--label", default="corridor")
     ap.add_argument("--merge", type=Path,
                     help="concatenate this guard spec's records into the "
@@ -315,12 +332,25 @@ def main():
                  "family's own tracks; a run is one mode or the other")
     lanes = []
     for text in a.lane:
+        # D-667.  A LANE MAY NAME ITS OWN LAYERS.  Everything before a `:` is a
+        # layer list; without one the lane takes the run-wide --layer set and
+        # this parse is the D-660 parse exactly.
+        lane_layers = None
+        if ":" in text:
+            head, text = text.split(":", 1)
+            lane_layers = [t for t in head.replace("+", " ").replace(",", " ")
+                           .split() if t]
+            bad_l = [L for L in lane_layers if L not in LKEY]
+            if bad_l or not lane_layers:
+                ap.error("--lane layer prefix %r names no routable copper "
+                         "layer" % head)
         pts = []
         for tok in text.replace(",", " ").split():
             pts.append(float(tok))
         if len(pts) < 2 or len(pts) % 2:
             ap.error("--lane %r is not a list of x,y pairs in mm" % text)
-        lanes.append([(pts[i], pts[i + 1]) for i in range(0, len(pts), 2)])
+        lanes.append(([(pts[i], pts[i + 1]) for i in range(0, len(pts), 2)],
+                      lane_layers))
 
     import pcbnew
     board = pcbnew.LoadBoard(str(a.board))
@@ -359,7 +389,8 @@ def main():
                kind="corridor-reservation", label=a.label,
                mode=("stated" if a.lane else
                      "from-copper" if a.from_copper else "prospective"),
-               lanes=lanes or None,
+               lanes=[dict(points=pl, layers=ll or layers)
+                      for (pl, ll) in lanes] or None,
                layers=layers, family=sorted(nets), exempt=exempt,
                half_width_mm=a.half_width_mm, clearance_mm=a.clearance_mm,
                keepout_radius=keepout, step_mm=a.step_mm,

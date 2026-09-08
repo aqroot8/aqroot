@@ -1,0 +1,152 @@
+{
+  "board": "/home/aqroot8/aqroot-demo/hardware/demo/kicad/aqroot-demo/aqroot-Beta-v2.kicad_pcb",
+  "board_sha256": "7b2ca32554d3ce8bb7afae883316470223ead0d44de24d0a55fa3a7b18d064b7",
+  "grid_nm": 50000,
+  "guard": "/home/aqroot8/aqroot-demo/hardware/demo/manufacturing/evidence/d667-wake-lane-perlayer.json",
+  "relays": [
+    {
+      "a_mm": [
+        53.25,
+        108.0
+      ],
+      "arms": {
+        "budget": {
+          "layers": null,
+          "max_mm": 40.0,
+          "mm": 0.0,
+          "ok": false,
+          "reason": "NO_PATH",
+          "seconds": 4.7,
+          "via_xy": null,
+          "vias": 0
+        },
+        "lane": {
+          "layers": null,
+          "max_mm": 15.0,
+          "mm": 0.0,
+          "ok": false,
+          "reason": "NO_PATH",
+          "seconds": 4.8,
+          "via_xy": null,
+          "vias": 0
+        },
+        "nolane": {
+          "layers": [
+            "F"
+          ],
+          "max_mm": 40.0,
+          "mm": 5.32,
+          "ok": true,
+          "reason": null,
+          "seconds": 5.6,
+          "via_xy": [],
+          "vias": 0
+        },
+        "nolift": {
+          "layers": null,
+          "max_mm": 40.0,
+          "mm": 0.0,
+          "ok": false,
+          "reason": "NO_PATH",
+          "seconds": 3.1,
+          "via_xy": null,
+          "vias": 0
+        }
+      },
+      "b_mm": [
+        56.95,
+        109.7
+      ],
+      "layer": "F.Cu",
+      "net": "/IR_TX_GPIO16",
+      "spec_max_mm": 15.0,
+      "terminal_lift": [
+        {
+          "at_mm": [
+            56.95,
+            109.7
+          ],
+          "guard_points": 9,
+          "keepout_mm": 0.3,
+          "lkey": "F",
+          "reach_mm": 0.45
+        }
+      ],
+      "was_mm": 5.1364
+    },
+    {
+      "a_mm": [
+        56.6,
+        112.8
+      ],
+      "arms": {
+        "budget": {
+          "layers": null,
+          "max_mm": 40.0,
+          "mm": 0.0,
+          "ok": false,
+          "reason": "NO_PATH",
+          "seconds": 3.9,
+          "via_xy": null,
+          "vias": 0
+        },
+        "lane": {
+          "layers": null,
+          "max_mm": 12.0,
+          "mm": 0.0,
+          "ok": false,
+          "reason": "NO_PATH",
+          "seconds": 3.9,
+          "via_xy": null,
+          "vias": 0
+        },
+        "nolane": {
+          "layers": [
+            "F"
+          ],
+          "max_mm": 40.0,
+          "mm": 2.426,
+          "ok": true,
+          "reason": null,
+          "seconds": 3.7,
+          "via_xy": [],
+          "vias": 0
+        },
+        "nolift": {
+          "layers": null,
+          "max_mm": 40.0,
+          "mm": 0.0,
+          "ok": false,
+          "reason": "NO_PATH",
+          "seconds": 3.1,
+          "via_xy": null,
+          "vias": 0
+        }
+      },
+      "b_mm": [
+        58.4242,
+        111.2007
+      ],
+      "layer": "F.Cu",
+      "net": "/SX1262_CS_N",
+      "spec_max_mm": 12.0,
+      "terminal_lift": [
+        {
+          "at_mm": [
+            58.4242,
+            111.2007
+          ],
+          "guard_points": 9,
+          "keepout_mm": 0.3,
+          "lkey": "F",
+          "reach_mm": 0.45
+        }
+      ],
+      "was_mm": 2.428
+    }
+  ],
+  "removed": null,
+  "schema": 1,
+  "spec": "/home/aqroot8/aqroot-demo/hardware/demo/manufacturing/evidence/d667-detour-spec-wake-last-armF.json",
+  "wide_mm": 40.0
+}

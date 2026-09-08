@@ -1,0 +1,215 @@
+{
+  "board": "/home/aqroot8/aqroot-demo/hardware/demo/kicad/aqroot-demo/aqroot-Beta-v2.kicad_pcb",
+  "grid_nm": 50000,
+  "guard_spec": "evidence/d666-wake-lane-guard.json",
+  "nets": {
+    "/IR_TX_GPIO16": {
+      "ends": [
+        {
+          "at_mm": [
+            53.25,
+            108.0
+          ],
+          "d666_no_lift": {
+            "B": {
+              "cell": false,
+              "free_neighbours": 24,
+              "neighbours": 24
+            },
+            "F": {
+              "cell": false,
+              "free_neighbours": 22,
+              "neighbours": 24
+            },
+            "I2": {
+              "cell": true,
+              "free_neighbours": 0,
+              "neighbours": 24
+            }
+          },
+          "d667_lift": {
+            "B": {
+              "cell": false,
+              "free_neighbours": 24,
+              "neighbours": 24
+            },
+            "F": {
+              "cell": false,
+              "free_neighbours": 22,
+              "neighbours": 24
+            },
+            "I2": {
+              "cell": true,
+              "free_neighbours": 0,
+              "neighbours": 24
+            }
+          },
+          "end": "a"
+        },
+        {
+          "at_mm": [
+            56.95,
+            109.7
+          ],
+          "d666_no_lift": {
+            "B": {
+              "cell": true,
+              "free_neighbours": 0,
+              "neighbours": 24
+            },
+            "F": {
+              "cell": true,
+              "free_neighbours": 0,
+              "neighbours": 24
+            },
+            "I2": {
+              "cell": true,
+              "free_neighbours": 0,
+              "neighbours": 24
+            }
+          },
+          "d667_lift": {
+            "B": {
+              "cell": true,
+              "free_neighbours": 0,
+              "neighbours": 24
+            },
+            "F": {
+              "cell": false,
+              "free_neighbours": 24,
+              "neighbours": 24
+            },
+            "I2": {
+              "cell": true,
+              "free_neighbours": 0,
+              "neighbours": 24
+            }
+          },
+          "end": "b"
+        }
+      ],
+      "guard_layers": [
+        "B",
+        "F",
+        "I2"
+      ],
+      "lift": [
+        {
+          "at_mm": [
+            56.95,
+            109.7
+          ],
+          "guard_points": 9,
+          "keepout_mm": 0.3,
+          "lkey": "F",
+          "reach_mm": 0.45
+        }
+      ]
+    },
+    "/SX1262_CS_N": {
+      "ends": [
+        {
+          "at_mm": [
+            56.6,
+            112.8
+          ],
+          "d666_no_lift": {
+            "B": {
+              "cell": true,
+              "free_neighbours": 0,
+              "neighbours": 24
+            },
+            "F": {
+              "cell": false,
+              "free_neighbours": 23,
+              "neighbours": 24
+            },
+            "I2": {
+              "cell": true,
+              "free_neighbours": 0,
+              "neighbours": 24
+            }
+          },
+          "d667_lift": {
+            "B": {
+              "cell": true,
+              "free_neighbours": 0,
+              "neighbours": 24
+            },
+            "F": {
+              "cell": false,
+              "free_neighbours": 23,
+              "neighbours": 24
+            },
+            "I2": {
+              "cell": true,
+              "free_neighbours": 0,
+              "neighbours": 24
+            }
+          },
+          "end": "a"
+        },
+        {
+          "at_mm": [
+            58.4242,
+            111.2007
+          ],
+          "d666_no_lift": {
+            "B": {
+              "cell": true,
+              "free_neighbours": 0,
+              "neighbours": 24
+            },
+            "F": {
+              "cell": true,
+              "free_neighbours": 0,
+              "neighbours": 24
+            },
+            "I2": {
+              "cell": true,
+              "free_neighbours": 0,
+              "neighbours": 24
+            }
+          },
+          "d667_lift": {
+            "B": {
+              "cell": true,
+              "free_neighbours": 0,
+              "neighbours": 24
+            },
+            "F": {
+              "cell": false,
+              "free_neighbours": 24,
+              "neighbours": 24
+            },
+            "I2": {
+              "cell": true,
+              "free_neighbours": 0,
+              "neighbours": 24
+            }
+          },
+          "end": "b"
+        }
+      ],
+      "guard_layers": [
+        "B",
+        "F",
+        "I2"
+      ],
+      "lift": [
+        {
+          "at_mm": [
+            58.4242,
+            111.2007
+          ],
+          "guard_points": 9,
+          "keepout_mm": 0.3,
+          "lkey": "F",
+          "reach_mm": 0.45
+        }
+      ]
+    }
+  },
+  "schema": 1,
+  "seconds": 10.4
+}

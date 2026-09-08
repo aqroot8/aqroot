@@ -1,0 +1,51 @@
+{
+  "detours": [
+    {
+      "net": "GND",
+      "relay": false,
+      "tracks": [
+        {
+          "a_mm": [
+            58.525,
+            105.525
+          ],
+          "b_mm": [
+            59.3,
+            106.3
+          ],
+          "count": 1,
+          "layer": "B.Cu",
+          "width_mm": 0.3
+        }
+      ],
+      "why": "D-666 ARM B: this B.Cu segment TERMINATES at the barrel (59.300,106.300) the same spec removes.  Relaying it between its own two ends asks the router to reach a site that is reserved and a bond that is gone; ARM A asked exactly that and got NO_PATH at 0.300 mm inside a 5.180 mm budget.  It is a stub of a removed bond, so it is REMOVED AND NOT PUT BACK and the gate's inert_removal_priced clause prices it."
+    },
+    {
+      "barrel": {
+        "at_mm": [
+          59.3,
+          106.3
+        ],
+        "count": 1,
+        "dia_mm": 0.6,
+        "drill_mm": 0.3
+      },
+      "net": "GND"
+    },
+    {
+      "barrel": {
+        "at_mm": [
+          59.9,
+          106.5
+        ],
+        "count": 1,
+        "dia_mm": 0.6,
+        "drill_mm": 0.3
+      },
+      "net": "GND"
+    }
+  ],
+  "note": "D-667 ARM J -- ARM I WITHOUT THE LANE.  Arms H and I both closed /WAKE_INT_N at 35.366 mm / 5 vias and rebuilt /IR_TX_GPIO16 whole at 31.822 mm / 4 vias, and both left /SX1262_CS_N NO_PATH on one island pair with escapes at both ends, in either evicted-net order -- so the order between the two evicted nets is not the constraint.  What is left is the reservation itself.  A lane exists to stop a net routed AFTER the protected one from taking its corridor; once the protected net is asked FIRST its own copper is that obstacle, and a reservation reaches keepout + width/2 + G = 0.450 mm where DRC asks 0.400 -- so from the moment /WAKE_INT_N is laid the lane is 0.050 mm of pure cost along 31.187 mm of corridor, charged to exactly the two nets that still have to fit.  This arm carries the 49 pour-bond guards and nothing else.",
+  "reserve": [],
+  "schema": 1
+}

@@ -1,0 +1,130 @@
+{
+  "detours": [
+    {
+      "max_mm": 15.0,
+      "net": "/IR_TX_GPIO16",
+      "relay": true,
+      "tracks": [
+        {
+          "a_mm": [
+            53.25,
+            108.0
+          ],
+          "b_mm": [
+            56.5,
+            108.0
+          ],
+          "count": 1,
+          "layer": "F.Cu",
+          "width_mm": 0.2
+        },
+        {
+          "a_mm": [
+            56.5,
+            108.0
+          ],
+          "b_mm": [
+            56.95,
+            108.45
+          ],
+          "count": 1,
+          "layer": "F.Cu",
+          "width_mm": 0.2
+        },
+        {
+          "a_mm": [
+            56.95,
+            108.45
+          ],
+          "b_mm": [
+            56.95,
+            109.7
+          ],
+          "count": 1,
+          "layer": "F.Cu",
+          "width_mm": 0.2
+        }
+      ]
+    },
+    {
+      "max_mm": 12.0,
+      "net": "/SX1262_CS_N",
+      "relay": true,
+      "tracks": [
+        {
+          "a_mm": [
+            58.4242,
+            111.2007
+          ],
+          "b_mm": [
+            57.7,
+            111.9
+          ],
+          "count": 1,
+          "layer": "F.Cu",
+          "width_mm": 0.2
+        },
+        {
+          "a_mm": [
+            57.7,
+            111.9
+          ],
+          "b_mm": [
+            56.6,
+            112.8
+          ],
+          "count": 1,
+          "layer": "F.Cu",
+          "width_mm": 0.2
+        }
+      ]
+    },
+    {
+      "net": "GND",
+      "relay": false,
+      "tracks": [
+        {
+          "a_mm": [
+            58.525,
+            105.525
+          ],
+          "b_mm": [
+            59.3,
+            106.3
+          ],
+          "count": 1,
+          "layer": "B.Cu",
+          "width_mm": 0.3
+        }
+      ],
+      "why": "D-666 ARM B: this B.Cu segment TERMINATES at the barrel (59.300,106.300) the same spec removes.  Relaying it between its own two ends asks the router to reach a site that is reserved and a bond that is gone; ARM A asked exactly that and got NO_PATH at 0.300 mm inside a 5.180 mm budget.  It is a stub of a removed bond, so it is REMOVED AND NOT PUT BACK and the gate's inert_removal_priced clause prices it."
+    },
+    {
+      "barrel": {
+        "at_mm": [
+          59.3,
+          106.3
+        ],
+        "count": 1,
+        "dia_mm": 0.6,
+        "drill_mm": 0.3
+      },
+      "net": "GND"
+    },
+    {
+      "barrel": {
+        "at_mm": [
+          59.9,
+          106.5
+        ],
+        "count": 1,
+        "dia_mm": 0.6,
+        "drill_mm": 0.3
+      },
+      "net": "GND"
+    }
+  ],
+  "note": "D-667 ARM F -- the promotable shape.  Same EIGHT physical units as D-666 arms A-E and the same stated max_mm as arm E (15.0 / 12.0 mm).  TWO things are different and both are framework, not geometry.  (1) THE LANE IS PER-LAYER: evidence/d667-wake-lane-perlayer.json reserves each of arm C's six route segments on the ONE layer that segment occupies -- F, B, In2, F, In2, B -- plus a 0.500 mm all-layer disc at each of the five barrel sites, 31.187 mm against D-666's 93.561 mm.  A route occupies one layer between two of its barrels and the other two layers are the only way a net it evicted can ever cross it; D-666 reserved all three for the whole length and measured the consequence as NO_PATH on both relays.  (2) THE RELAY'S OWN ENDS ARE LIFTED: a reservation reaches keepout + width/2 + G = 0.450 mm where the DRC-legal separation of two 0.200 mm tracks at 0.200 mm clearance is 0.400 mm, so it swallows the terminals of the very copper the lane's route displaced.  evidence/d667-terminal-lift-probe.json measures it: /IR_TX_GPIO16's goal cell at (56.950,109.700) and /SX1262_CS_N's at (58.4242,111.2007) each had ZERO of 24 free neighbours on ALL THREE reserved layers -- the wave had a seed and nowhere to go, at any budget.  route_maze_batch.terminal_lift frees exactly the guard's own reach at each fixed end, on that end's OWN layer only, and reports what it freed on the detour's record.",
+  "reserve": [],
+  "schema": 1
+}
