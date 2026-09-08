@@ -171,6 +171,36 @@ only escape is into that channel.  The transaction therefore needs the tap
 (`U11.6`'s own copper is 2 mm away, its nearest PAD `R38.1` is 60 mm away) AND a
 reserved lane, and it is now expressible for the first time.
 
+## 6a. ADDENDUM — THE FREED CHANNEL IS SINGLE-LANE, AND THE NECK IS ZERO
+
+`evidence/d664-u11-channel-profile.json` (read-only; the 8 cut objects held out
+in memory, every other `B.Cu` track, every barrel on any layer and every foreign
+`B.Cu` pad grown by 0.200 mm clearance + 0.100 mm half-width, sampled at
+0.025 mm from x 67.5 to the `BQ25185_SYS` zone's own east edge at x 71.000):
+
+    y (mm)          widest free lane for a 0.200 mm FOREIGN track
+    76.25 - 76.75   1.150 - 1.200   the channel, open once the cut is made
+    76.80 - 77.60   1.200 - 1.225   the column, at its widest
+    77.85           1.000
+    78.30           0.575
+    78.60 - 78.90   0.325 -> 0.000  `USB_VBUS_CHG` and `U11.10` squeeze it
+    79.40           1.225           it opens again north of `R36`
+    79.50 - 79.85   0.150 -> 0.000
+    79.85 - 80.70   0.000           NOTHING FITS beside `R36.2`'s GND pad
+
+**SO THE TRANSACTION CANNOT ROUTE A STRAP SOUTH PAST `R36` ON `B.Cu` AT ALL.**
+The pour itself still passes — it is bounded by the zone clearance and not by a
+foreign track's, and the neck leaves it about 0.775 mm — but every one of
+`U11.6`, `U11.7` and `U11.8` is an east-row pin whose only escape is into this
+same corridor, and south of y 79.85 there is no second lane.  The straps must
+therefore leave the pocket on an INNER layer, and every barrel that does so
+costs the pour width in the 1.0-1.2 mm column at y 76.8-78.0.
+
+That is the concrete design input the next transaction needs, and it is the
+reason this decision did NOT attempt the C27.1 gate run blind: the reserve lane
+has to be authored against these numbers, and the `R36` +0.400 mm shift D-663
+§5(f) already priced is a live candidate for buying the neck back.
+
 ## 7. NEXT, IN ORDER OF LEVERAGE
 
   1. **`BQ25185_SYS` `C27.1` WITH THE TAP AND A RESERVED LANE** — §6.  The

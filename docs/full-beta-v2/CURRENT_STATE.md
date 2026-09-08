@@ -78,6 +78,20 @@
   strap plus its two clearances needs 0.70 mm, so **the channel holds the pour
   or the straps and not both**, and `U11.6`/`U11.7`/`U11.8` are east-row pins
   whose only escape is into it.
+  **(5a) AND THE CHANNEL IS SINGLE-LANE — THE NECK IS ZERO.**
+  `evidence/d664-u11-channel-profile.json` measures, with the 8 objects held
+  out, the widest free lane a 0.200 mm FOREIGN track could take at each y
+  between `U11`'s east pad row and the zone's east edge (x 71.000):
+  **1.150-1.225 mm** at y 76.25-77.60, 0.575 mm at 78.30, **0.000 mm** at
+  78.90, 1.225 mm at 79.40, and **0.000 mm from y 79.85 to 80.70** beside
+  `R36.2`'s GND pad.  **So no strap can be routed SOUTH past `R36` on `B.Cu`
+  at all** — the pour still passes (it is bounded by the ZONE clearance, about
+  0.775 mm at the neck) but `U11.6`/`U11.7`/`U11.8` must leave the pocket on an
+  INNER layer, and every barrel that does so costs the pour width in the
+  1.0-1.2 mm column at y 76.8-78.0.  This is why the C27.1 gate run was NOT
+  attempted blind: the reserve lane must be authored against these numbers, and
+  D-663 §5(f)'s priced `R36` +0.400 mm shift is a live candidate for buying the
+  neck back.
   **NEXT, IN ORDER OF LEVERAGE:** (1) **`BQ25185_SYS` `C27.1` WITH THE TAP AND A
   RESERVED LANE** — the 8 objects are named and re-proved and the tap answers
   `TS_MR`'s 60 mm rejoin (`U11.6`'s own copper is 2 mm away, its nearest PAD

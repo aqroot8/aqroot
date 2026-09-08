@@ -1,0 +1,1722 @@
+{
+ "board": "/home/aqroot8/aqroot-demo/hardware/demo/kicad/aqroot-demo/aqroot-Beta-v2.kicad_pcb",
+ "board_sha256": "2900f21a934d9d826644131a90baa36f7dace0db5f50cf2e702e5694f121177f",
+ "clearance_mm": 0.2,
+ "layer": "B.Cu",
+ "limits": "this is a GEOMETRY census, not a route: it does not ask whether a corridor CONNECTS, and the pour's own minimum width is not a KiCad-checked rule (see the D-656 'pour is a conductor' finding)",
+ "method": "read-only; the 8 cut objects are held out in memory, every other B.Cu track, every barrel on any layer and every foreign B.Cu pad is grown by 0.200 mm clearance + 0.100 mm half-width, and the free intervals are sampled at 0.025 mm from x 67.5 to the zone edge",
+ "net": "/01_POWER_TREE/BQ25185_SYS",
+ "profile": [
+  {
+   "free_intervals_mm": [
+    [
+     67.5,
+     67.775,
+     0.275
+    ],
+    [
+     70.35,
+     71.0,
+     0.65
+    ]
+   ],
+   "widest_mm": 0.65,
+   "y_mm": 75.0
+  },
+  {
+   "free_intervals_mm": [
+    [
+     67.5,
+     67.8,
+     0.3
+    ],
+    [
+     70.35,
+     71.0,
+     0.65
+    ]
+   ],
+   "widest_mm": 0.65,
+   "y_mm": 75.05
+  },
+  {
+   "free_intervals_mm": [
+    [
+     67.5,
+     67.85,
+     0.35
+    ],
+    [
+     70.35,
+     71.0,
+     0.65
+    ]
+   ],
+   "widest_mm": 0.65,
+   "y_mm": 75.1
+  },
+  {
+   "free_intervals_mm": [
+    [
+     67.5,
+     67.9,
+     0.4
+    ],
+    [
+     70.35,
+     71.0,
+     0.65
+    ]
+   ],
+   "widest_mm": 0.65,
+   "y_mm": 75.15
+  },
+  {
+   "free_intervals_mm": [
+    [
+     67.5,
+     67.95,
+     0.45
+    ],
+    [
+     70.35,
+     71.0,
+     0.65
+    ]
+   ],
+   "widest_mm": 0.65,
+   "y_mm": 75.2
+  },
+  {
+   "free_intervals_mm": [
+    [
+     67.5,
+     68.0,
+     0.5
+    ],
+    [
+     70.35,
+     71.0,
+     0.65
+    ]
+   ],
+   "widest_mm": 0.65,
+   "y_mm": 75.25
+  },
+  {
+   "free_intervals_mm": [
+    [
+     67.5,
+     68.05,
+     0.55
+    ],
+    [
+     70.35,
+     71.0,
+     0.65
+    ]
+   ],
+   "widest_mm": 0.65,
+   "y_mm": 75.3
+  },
+  {
+   "free_intervals_mm": [
+    [
+     67.5,
+     68.075,
+     0.575
+    ],
+    [
+     70.35,
+     71.0,
+     0.65
+    ]
+   ],
+   "widest_mm": 0.65,
+   "y_mm": 75.35
+  },
+  {
+   "free_intervals_mm": [
+    [
+     67.5,
+     68.075,
+     0.575
+    ],
+    [
+     70.35,
+     71.0,
+     0.65
+    ]
+   ],
+   "widest_mm": 0.65,
+   "y_mm": 75.4
+  },
+  {
+   "free_intervals_mm": [
+    [
+     67.5,
+     68.075,
+     0.575
+    ],
+    [
+     70.35,
+     71.0,
+     0.65
+    ]
+   ],
+   "widest_mm": 0.65,
+   "y_mm": 75.45
+  },
+  {
+   "free_intervals_mm": [
+    [
+     67.5,
+     68.075,
+     0.575
+    ],
+    [
+     70.35,
+     71.0,
+     0.65
+    ]
+   ],
+   "widest_mm": 0.65,
+   "y_mm": 75.5
+  },
+  {
+   "free_intervals_mm": [
+    [
+     67.5,
+     68.075,
+     0.575
+    ],
+    [
+     70.35,
+     71.0,
+     0.65
+    ]
+   ],
+   "widest_mm": 0.65,
+   "y_mm": 75.55
+  },
+  {
+   "free_intervals_mm": [
+    [
+     67.5,
+     68.075,
+     0.575
+    ],
+    [
+     70.35,
+     71.0,
+     0.65
+    ]
+   ],
+   "widest_mm": 0.65,
+   "y_mm": 75.6
+  },
+  {
+   "free_intervals_mm": [
+    [
+     67.5,
+     68.075,
+     0.575
+    ],
+    [
+     70.35,
+     71.0,
+     0.65
+    ]
+   ],
+   "widest_mm": 0.65,
+   "y_mm": 75.65
+  },
+  {
+   "free_intervals_mm": [
+    [
+     67.5,
+     68.075,
+     0.575
+    ],
+    [
+     70.35,
+     71.0,
+     0.65
+    ]
+   ],
+   "widest_mm": 0.65,
+   "y_mm": 75.7
+  },
+  {
+   "free_intervals_mm": [
+    [
+     67.5,
+     68.075,
+     0.575
+    ],
+    [
+     70.35,
+     71.0,
+     0.65
+    ]
+   ],
+   "widest_mm": 0.65,
+   "y_mm": 75.75
+  },
+  {
+   "free_intervals_mm": [
+    [
+     67.5,
+     68.075,
+     0.575
+    ],
+    [
+     70.35,
+     71.0,
+     0.65
+    ]
+   ],
+   "widest_mm": 0.65,
+   "y_mm": 75.8
+  },
+  {
+   "free_intervals_mm": [
+    [
+     67.5,
+     68.075,
+     0.575
+    ],
+    [
+     70.35,
+     71.0,
+     0.65
+    ]
+   ],
+   "widest_mm": 0.65,
+   "y_mm": 75.85
+  },
+  {
+   "free_intervals_mm": [
+    [
+     67.5,
+     68.075,
+     0.575
+    ],
+    [
+     70.35,
+     71.0,
+     0.65
+    ]
+   ],
+   "widest_mm": 0.65,
+   "y_mm": 75.9
+  },
+  {
+   "free_intervals_mm": [
+    [
+     67.5,
+     68.075,
+     0.575
+    ],
+    [
+     70.35,
+     71.0,
+     0.65
+    ]
+   ],
+   "widest_mm": 0.65,
+   "y_mm": 75.95
+  },
+  {
+   "free_intervals_mm": [
+    [
+     67.5,
+     68.075,
+     0.575
+    ],
+    [
+     70.35,
+     71.0,
+     0.65
+    ]
+   ],
+   "widest_mm": 0.65,
+   "y_mm": 76.0
+  },
+  {
+   "free_intervals_mm": [
+    [
+     67.5,
+     68.075,
+     0.575
+    ],
+    [
+     70.35,
+     71.0,
+     0.65
+    ]
+   ],
+   "widest_mm": 0.65,
+   "y_mm": 76.05
+  },
+  {
+   "free_intervals_mm": [
+    [
+     67.5,
+     68.075,
+     0.575
+    ],
+    [
+     70.35,
+     71.0,
+     0.65
+    ]
+   ],
+   "widest_mm": 0.65,
+   "y_mm": 76.1
+  },
+  {
+   "free_intervals_mm": [
+    [
+     67.5,
+     68.075,
+     0.575
+    ],
+    [
+     70.35,
+     71.0,
+     0.65
+    ]
+   ],
+   "widest_mm": 0.65,
+   "y_mm": 76.15
+  },
+  {
+   "free_intervals_mm": [
+    [
+     67.5,
+     68.075,
+     0.575
+    ],
+    [
+     70.35,
+     71.0,
+     0.65
+    ]
+   ],
+   "widest_mm": 0.65,
+   "y_mm": 76.2
+  },
+  {
+   "free_intervals_mm": [
+    [
+     67.5,
+     68.075,
+     0.575
+    ],
+    [
+     69.825,
+     71.0,
+     1.175
+    ]
+   ],
+   "widest_mm": 1.175,
+   "y_mm": 76.25
+  },
+  {
+   "free_intervals_mm": [
+    [
+     67.5,
+     68.075,
+     0.575
+    ],
+    [
+     69.85,
+     71.0,
+     1.15
+    ]
+   ],
+   "widest_mm": 1.15,
+   "y_mm": 76.3
+  },
+  {
+   "free_intervals_mm": [
+    [
+     67.5,
+     68.075,
+     0.575
+    ],
+    [
+     69.85,
+     71.0,
+     1.15
+    ]
+   ],
+   "widest_mm": 1.15,
+   "y_mm": 76.35
+  },
+  {
+   "free_intervals_mm": [
+    [
+     67.5,
+     68.075,
+     0.575
+    ],
+    [
+     69.85,
+     71.0,
+     1.15
+    ]
+   ],
+   "widest_mm": 1.15,
+   "y_mm": 76.4
+  },
+  {
+   "free_intervals_mm": [
+    [
+     67.5,
+     68.1,
+     0.6
+    ],
+    [
+     69.85,
+     71.0,
+     1.15
+    ]
+   ],
+   "widest_mm": 1.15,
+   "y_mm": 76.45
+  },
+  {
+   "free_intervals_mm": [
+    [
+     67.5,
+     68.1,
+     0.6
+    ],
+    [
+     69.85,
+     71.0,
+     1.15
+    ]
+   ],
+   "widest_mm": 1.15,
+   "y_mm": 76.5
+  },
+  {
+   "free_intervals_mm": [
+    [
+     67.5,
+     68.125,
+     0.625
+    ],
+    [
+     69.85,
+     71.0,
+     1.15
+    ]
+   ],
+   "widest_mm": 1.15,
+   "y_mm": 76.55
+  },
+  {
+   "free_intervals_mm": [
+    [
+     67.5,
+     68.15,
+     0.65
+    ],
+    [
+     69.85,
+     71.0,
+     1.15
+    ]
+   ],
+   "widest_mm": 1.15,
+   "y_mm": 76.6
+  },
+  {
+   "free_intervals_mm": [
+    [
+     67.5,
+     67.9,
+     0.4
+    ],
+    [
+     69.825,
+     71.0,
+     1.175
+    ]
+   ],
+   "widest_mm": 1.175,
+   "y_mm": 76.65
+  },
+  {
+   "free_intervals_mm": [
+    [
+     67.5,
+     67.9,
+     0.4
+    ],
+    [
+     69.8,
+     71.0,
+     1.2
+    ]
+   ],
+   "widest_mm": 1.2,
+   "y_mm": 76.7
+  },
+  {
+   "free_intervals_mm": [
+    [
+     67.5,
+     67.9,
+     0.4
+    ],
+    [
+     69.8,
+     71.0,
+     1.2
+    ]
+   ],
+   "widest_mm": 1.2,
+   "y_mm": 76.75
+  },
+  {
+   "free_intervals_mm": [
+    [
+     69.8,
+     71.0,
+     1.2
+    ]
+   ],
+   "widest_mm": 1.2,
+   "y_mm": 76.8
+  },
+  {
+   "free_intervals_mm": [
+    [
+     69.8,
+     71.0,
+     1.2
+    ]
+   ],
+   "widest_mm": 1.2,
+   "y_mm": 76.85
+  },
+  {
+   "free_intervals_mm": [
+    [
+     69.8,
+     71.0,
+     1.2
+    ]
+   ],
+   "widest_mm": 1.2,
+   "y_mm": 76.9
+  },
+  {
+   "free_intervals_mm": [
+    [
+     69.8,
+     71.0,
+     1.2
+    ]
+   ],
+   "widest_mm": 1.2,
+   "y_mm": 76.95
+  },
+  {
+   "free_intervals_mm": [
+    [
+     69.8,
+     71.0,
+     1.2
+    ]
+   ],
+   "widest_mm": 1.2,
+   "y_mm": 77.0
+  },
+  {
+   "free_intervals_mm": [
+    [
+     69.8,
+     71.0,
+     1.2
+    ]
+   ],
+   "widest_mm": 1.2,
+   "y_mm": 77.05
+  },
+  {
+   "free_intervals_mm": [
+    [
+     69.8,
+     71.0,
+     1.2
+    ]
+   ],
+   "widest_mm": 1.2,
+   "y_mm": 77.1
+  },
+  {
+   "free_intervals_mm": [
+    [
+     69.8,
+     71.0,
+     1.2
+    ]
+   ],
+   "widest_mm": 1.2,
+   "y_mm": 77.15
+  },
+  {
+   "free_intervals_mm": [
+    [
+     69.8,
+     71.0,
+     1.2
+    ]
+   ],
+   "widest_mm": 1.2,
+   "y_mm": 77.2
+  },
+  {
+   "free_intervals_mm": [
+    [
+     69.8,
+     71.0,
+     1.2
+    ]
+   ],
+   "widest_mm": 1.2,
+   "y_mm": 77.25
+  },
+  {
+   "free_intervals_mm": [
+    [
+     69.8,
+     71.0,
+     1.2
+    ]
+   ],
+   "widest_mm": 1.2,
+   "y_mm": 77.3
+  },
+  {
+   "free_intervals_mm": [
+    [
+     69.8,
+     71.0,
+     1.2
+    ]
+   ],
+   "widest_mm": 1.2,
+   "y_mm": 77.35
+  },
+  {
+   "free_intervals_mm": [
+    [
+     69.8,
+     71.0,
+     1.2
+    ]
+   ],
+   "widest_mm": 1.2,
+   "y_mm": 77.4
+  },
+  {
+   "free_intervals_mm": [
+    [
+     69.8,
+     71.0,
+     1.2
+    ]
+   ],
+   "widest_mm": 1.2,
+   "y_mm": 77.45
+  },
+  {
+   "free_intervals_mm": [
+    [
+     69.8,
+     71.0,
+     1.2
+    ]
+   ],
+   "widest_mm": 1.2,
+   "y_mm": 77.5
+  },
+  {
+   "free_intervals_mm": [
+    [
+     69.775,
+     71.0,
+     1.225
+    ]
+   ],
+   "widest_mm": 1.225,
+   "y_mm": 77.55
+  },
+  {
+   "free_intervals_mm": [
+    [
+     69.775,
+     71.0,
+     1.225
+    ]
+   ],
+   "widest_mm": 1.225,
+   "y_mm": 77.6
+  },
+  {
+   "free_intervals_mm": [
+    [
+     69.825,
+     71.0,
+     1.175
+    ]
+   ],
+   "widest_mm": 1.175,
+   "y_mm": 77.65
+  },
+  {
+   "free_intervals_mm": [
+    [
+     69.875,
+     71.0,
+     1.125
+    ]
+   ],
+   "widest_mm": 1.125,
+   "y_mm": 77.7
+  },
+  {
+   "free_intervals_mm": [
+    [
+     69.925,
+     71.0,
+     1.075
+    ]
+   ],
+   "widest_mm": 1.075,
+   "y_mm": 77.75
+  },
+  {
+   "free_intervals_mm": [
+    [
+     69.95,
+     71.0,
+     1.05
+    ]
+   ],
+   "widest_mm": 1.05,
+   "y_mm": 77.8
+  },
+  {
+   "free_intervals_mm": [
+    [
+     70.0,
+     71.0,
+     1.0
+    ]
+   ],
+   "widest_mm": 1.0,
+   "y_mm": 77.85
+  },
+  {
+   "free_intervals_mm": [
+    [
+     70.05,
+     71.0,
+     0.95
+    ]
+   ],
+   "widest_mm": 0.95,
+   "y_mm": 77.9
+  },
+  {
+   "free_intervals_mm": [
+    [
+     70.1,
+     71.0,
+     0.9
+    ]
+   ],
+   "widest_mm": 0.9,
+   "y_mm": 77.95
+  },
+  {
+   "free_intervals_mm": [
+    [
+     70.15,
+     71.0,
+     0.85
+    ]
+   ],
+   "widest_mm": 0.85,
+   "y_mm": 78.0
+  },
+  {
+   "free_intervals_mm": [
+    [
+     70.2,
+     71.0,
+     0.8
+    ]
+   ],
+   "widest_mm": 0.8,
+   "y_mm": 78.05
+  },
+  {
+   "free_intervals_mm": [
+    [
+     70.25,
+     71.0,
+     0.75
+    ]
+   ],
+   "widest_mm": 0.75,
+   "y_mm": 78.1
+  },
+  {
+   "free_intervals_mm": [
+    [
+     70.3,
+     71.0,
+     0.7
+    ]
+   ],
+   "widest_mm": 0.7,
+   "y_mm": 78.15
+  },
+  {
+   "free_intervals_mm": [
+    [
+     70.325,
+     71.0,
+     0.675
+    ]
+   ],
+   "widest_mm": 0.675,
+   "y_mm": 78.2
+  },
+  {
+   "free_intervals_mm": [
+    [
+     70.375,
+     71.0,
+     0.625
+    ]
+   ],
+   "widest_mm": 0.625,
+   "y_mm": 78.25
+  },
+  {
+   "free_intervals_mm": [
+    [
+     69.275,
+     69.3,
+     0.025
+    ],
+    [
+     70.425,
+     71.0,
+     0.575
+    ]
+   ],
+   "widest_mm": 0.575,
+   "y_mm": 78.3
+  },
+  {
+   "free_intervals_mm": [
+    [
+     69.275,
+     69.35,
+     0.075
+    ],
+    [
+     70.475,
+     71.0,
+     0.525
+    ]
+   ],
+   "widest_mm": 0.525,
+   "y_mm": 78.35
+  },
+  {
+   "free_intervals_mm": [
+    [
+     69.275,
+     69.4,
+     0.125
+    ],
+    [
+     70.525,
+     71.0,
+     0.475
+    ]
+   ],
+   "widest_mm": 0.475,
+   "y_mm": 78.4
+  },
+  {
+   "free_intervals_mm": [
+    [
+     69.275,
+     69.45,
+     0.175
+    ],
+    [
+     70.575,
+     71.0,
+     0.425
+    ]
+   ],
+   "widest_mm": 0.425,
+   "y_mm": 78.45
+  },
+  {
+   "free_intervals_mm": [
+    [
+     69.275,
+     69.5,
+     0.225
+    ],
+    [
+     70.625,
+     71.0,
+     0.375
+    ]
+   ],
+   "widest_mm": 0.375,
+   "y_mm": 78.5
+  },
+  {
+   "free_intervals_mm": [
+    [
+     69.275,
+     69.55,
+     0.275
+    ],
+    [
+     70.675,
+     71.0,
+     0.325
+    ]
+   ],
+   "widest_mm": 0.325,
+   "y_mm": 78.55
+  },
+  {
+   "free_intervals_mm": [
+    [
+     69.275,
+     69.6,
+     0.325
+    ],
+    [
+     70.7,
+     71.0,
+     0.3
+    ]
+   ],
+   "widest_mm": 0.325,
+   "y_mm": 78.6
+  },
+  {
+   "free_intervals_mm": [
+    [
+     69.275,
+     69.625,
+     0.35
+    ],
+    [
+     70.75,
+     71.0,
+     0.25
+    ]
+   ],
+   "widest_mm": 0.35,
+   "y_mm": 78.65
+  },
+  {
+   "free_intervals_mm": [
+    [
+     69.3,
+     69.675,
+     0.375
+    ],
+    [
+     70.8,
+     71.0,
+     0.2
+    ]
+   ],
+   "widest_mm": 0.375,
+   "y_mm": 78.7
+  },
+  {
+   "free_intervals_mm": [
+    [
+     69.325,
+     69.725,
+     0.4
+    ],
+    [
+     70.85,
+     71.0,
+     0.15
+    ]
+   ],
+   "widest_mm": 0.4,
+   "y_mm": 78.75
+  },
+  {
+   "free_intervals_mm": [
+    [
+     69.35,
+     69.775,
+     0.425
+    ],
+    [
+     70.9,
+     71.0,
+     0.1
+    ]
+   ],
+   "widest_mm": 0.425,
+   "y_mm": 78.8
+  },
+  {
+   "free_intervals_mm": [
+    [
+     69.35,
+     69.825,
+     0.475
+    ],
+    [
+     70.95,
+     71.0,
+     0.05
+    ]
+   ],
+   "widest_mm": 0.475,
+   "y_mm": 78.85
+  },
+  {
+   "free_intervals_mm": [
+    [
+     69.35,
+     69.875,
+     0.525
+    ],
+    [
+     71.0,
+     71.0,
+     0.0
+    ]
+   ],
+   "widest_mm": 0.525,
+   "y_mm": 78.9
+  },
+  {
+   "free_intervals_mm": [
+    [
+     69.35,
+     69.925,
+     0.575
+    ]
+   ],
+   "widest_mm": 0.575,
+   "y_mm": 78.95
+  },
+  {
+   "free_intervals_mm": [
+    [
+     69.35,
+     69.975,
+     0.625
+    ]
+   ],
+   "widest_mm": 0.625,
+   "y_mm": 79.0
+  },
+  {
+   "free_intervals_mm": [
+    [
+     69.35,
+     70.0,
+     0.65
+    ]
+   ],
+   "widest_mm": 0.65,
+   "y_mm": 79.05
+  },
+  {
+   "free_intervals_mm": [
+    [
+     69.35,
+     70.05,
+     0.7
+    ]
+   ],
+   "widest_mm": 0.7,
+   "y_mm": 79.1
+  },
+  {
+   "free_intervals_mm": [
+    [
+     69.325,
+     70.1,
+     0.775
+    ]
+   ],
+   "widest_mm": 0.775,
+   "y_mm": 79.15
+  },
+  {
+   "free_intervals_mm": [
+    [
+     69.3,
+     70.15,
+     0.85
+    ]
+   ],
+   "widest_mm": 0.85,
+   "y_mm": 79.2
+  },
+  {
+   "free_intervals_mm": [
+    [
+     69.275,
+     70.2,
+     0.925
+    ]
+   ],
+   "widest_mm": 0.925,
+   "y_mm": 79.25
+  },
+  {
+   "free_intervals_mm": [
+    [
+     69.225,
+     70.25,
+     1.025
+    ]
+   ],
+   "widest_mm": 1.025,
+   "y_mm": 79.3
+  },
+  {
+   "free_intervals_mm": [
+    [
+     69.175,
+     70.3,
+     1.125
+    ]
+   ],
+   "widest_mm": 1.125,
+   "y_mm": 79.35
+  },
+  {
+   "free_intervals_mm": [
+    [
+     69.125,
+     70.35,
+     1.225
+    ]
+   ],
+   "widest_mm": 1.225,
+   "y_mm": 79.4
+  },
+  {
+   "free_intervals_mm": [
+    [
+     69.025,
+     70.375,
+     1.35
+    ]
+   ],
+   "widest_mm": 1.35,
+   "y_mm": 79.45
+  },
+  {
+   "free_intervals_mm": [
+    [
+     70.275,
+     70.425,
+     0.15
+    ]
+   ],
+   "widest_mm": 0.15,
+   "y_mm": 79.5
+  },
+  {
+   "free_intervals_mm": [
+    [
+     68.675,
+     68.85,
+     0.175
+    ],
+    [
+     70.275,
+     70.4,
+     0.125
+    ]
+   ],
+   "widest_mm": 0.175,
+   "y_mm": 79.55
+  },
+  {
+   "free_intervals_mm": [
+    [
+     68.625,
+     68.85,
+     0.225
+    ],
+    [
+     70.275,
+     70.375,
+     0.1
+    ]
+   ],
+   "widest_mm": 0.225,
+   "y_mm": 79.6
+  },
+  {
+   "free_intervals_mm": [
+    [
+     68.625,
+     68.85,
+     0.225
+    ],
+    [
+     70.275,
+     70.35,
+     0.075
+    ]
+   ],
+   "widest_mm": 0.225,
+   "y_mm": 79.65
+  },
+  {
+   "free_intervals_mm": [
+    [
+     68.85,
+     68.85,
+     0.0
+    ],
+    [
+     70.275,
+     70.325,
+     0.05
+    ]
+   ],
+   "widest_mm": 0.05,
+   "y_mm": 79.7
+  },
+  {
+   "free_intervals_mm": [
+    [
+     70.275,
+     70.3,
+     0.025
+    ]
+   ],
+   "widest_mm": 0.025,
+   "y_mm": 79.75
+  },
+  {
+   "free_intervals_mm": [
+    [
+     70.275,
+     70.3,
+     0.025
+    ]
+   ],
+   "widest_mm": 0.025,
+   "y_mm": 79.8
+  },
+  {
+   "free_intervals_mm": [
+    [
+     70.275,
+     70.275,
+     0.0
+    ]
+   ],
+   "widest_mm": 0.0,
+   "y_mm": 79.85
+  },
+  {
+   "free_intervals_mm": [],
+   "widest_mm": 0.0,
+   "y_mm": 79.9
+  },
+  {
+   "free_intervals_mm": [],
+   "widest_mm": 0.0,
+   "y_mm": 79.95
+  },
+  {
+   "free_intervals_mm": [],
+   "widest_mm": 0.0,
+   "y_mm": 80.0
+  },
+  {
+   "free_intervals_mm": [],
+   "widest_mm": 0.0,
+   "y_mm": 80.05
+  },
+  {
+   "free_intervals_mm": [],
+   "widest_mm": 0.0,
+   "y_mm": 80.1
+  },
+  {
+   "free_intervals_mm": [],
+   "widest_mm": 0.0,
+   "y_mm": 80.15
+  },
+  {
+   "free_intervals_mm": [],
+   "widest_mm": 0.0,
+   "y_mm": 80.2
+  },
+  {
+   "free_intervals_mm": [
+    [
+     71.0,
+     71.0,
+     0.0
+    ]
+   ],
+   "widest_mm": 0.0,
+   "y_mm": 80.25
+  },
+  {
+   "free_intervals_mm": [
+    [
+     70.975,
+     71.0,
+     0.025
+    ]
+   ],
+   "widest_mm": 0.025,
+   "y_mm": 80.3
+  },
+  {
+   "free_intervals_mm": [
+    [
+     70.95,
+     71.0,
+     0.05
+    ]
+   ],
+   "widest_mm": 0.05,
+   "y_mm": 80.35
+  },
+  {
+   "free_intervals_mm": [
+    [
+     70.925,
+     71.0,
+     0.075
+    ]
+   ],
+   "widest_mm": 0.075,
+   "y_mm": 80.4
+  },
+  {
+   "free_intervals_mm": [
+    [
+     70.925,
+     71.0,
+     0.075
+    ]
+   ],
+   "widest_mm": 0.075,
+   "y_mm": 80.45
+  },
+  {
+   "free_intervals_mm": [
+    [
+     70.9,
+     71.0,
+     0.1
+    ]
+   ],
+   "widest_mm": 0.1,
+   "y_mm": 80.5
+  },
+  {
+   "free_intervals_mm": [
+    [
+     70.875,
+     71.0,
+     0.125
+    ]
+   ],
+   "widest_mm": 0.125,
+   "y_mm": 80.55
+  },
+  {
+   "free_intervals_mm": [
+    [
+     70.85,
+     71.0,
+     0.15
+    ]
+   ],
+   "widest_mm": 0.15,
+   "y_mm": 80.6
+  },
+  {
+   "free_intervals_mm": [
+    [
+     70.825,
+     71.0,
+     0.175
+    ]
+   ],
+   "widest_mm": 0.175,
+   "y_mm": 80.65
+  },
+  {
+   "free_intervals_mm": [
+    [
+     70.8,
+     71.0,
+     0.2
+    ]
+   ],
+   "widest_mm": 0.2,
+   "y_mm": 80.7
+  },
+  {
+   "free_intervals_mm": [
+    [
+     70.8,
+     71.0,
+     0.2
+    ]
+   ],
+   "widest_mm": 0.2,
+   "y_mm": 80.75
+  },
+  {
+   "free_intervals_mm": [
+    [
+     68.85,
+     68.85,
+     0.0
+    ],
+    [
+     70.775,
+     71.0,
+     0.225
+    ]
+   ],
+   "widest_mm": 0.225,
+   "y_mm": 80.8
+  },
+  {
+   "free_intervals_mm": [
+    [
+     68.625,
+     68.85,
+     0.225
+    ],
+    [
+     70.75,
+     71.0,
+     0.25
+    ]
+   ],
+   "widest_mm": 0.25,
+   "y_mm": 80.85
+  },
+  {
+   "free_intervals_mm": [
+    [
+     68.625,
+     68.85,
+     0.225
+    ],
+    [
+     70.725,
+     71.0,
+     0.275
+    ]
+   ],
+   "widest_mm": 0.275,
+   "y_mm": 80.9
+  },
+  {
+   "free_intervals_mm": [
+    [
+     68.625,
+     68.75,
+     0.125
+    ],
+    [
+     70.7,
+     71.0,
+     0.3
+    ]
+   ],
+   "widest_mm": 0.3,
+   "y_mm": 80.95
+  },
+  {
+   "free_intervals_mm": [
+    [
+     68.625,
+     68.625,
+     0.0
+    ],
+    [
+     70.675,
+     71.0,
+     0.325
+    ]
+   ],
+   "widest_mm": 0.325,
+   "y_mm": 81.0
+  },
+  {
+   "free_intervals_mm": [
+    [
+     67.5,
+     68.5,
+     1.0
+    ],
+    [
+     70.675,
+     71.0,
+     0.325
+    ]
+   ],
+   "widest_mm": 1.0,
+   "y_mm": 81.05
+  },
+  {
+   "free_intervals_mm": [
+    [
+     67.5,
+     68.375,
+     0.875
+    ],
+    [
+     70.65,
+     71.0,
+     0.35
+    ]
+   ],
+   "widest_mm": 0.875,
+   "y_mm": 81.1
+  },
+  {
+   "free_intervals_mm": [
+    [
+     67.5,
+     68.225,
+     0.725
+    ],
+    [
+     70.625,
+     71.0,
+     0.375
+    ]
+   ],
+   "widest_mm": 0.725,
+   "y_mm": 81.15
+  },
+  {
+   "free_intervals_mm": [
+    [
+     67.5,
+     68.1,
+     0.6
+    ],
+    [
+     70.6,
+     71.0,
+     0.4
+    ]
+   ],
+   "widest_mm": 0.6,
+   "y_mm": 81.2
+  },
+  {
+   "free_intervals_mm": [
+    [
+     67.5,
+     67.975,
+     0.475
+    ],
+    [
+     70.575,
+     71.0,
+     0.425
+    ]
+   ],
+   "widest_mm": 0.475,
+   "y_mm": 81.25
+  },
+  {
+   "free_intervals_mm": [
+    [
+     67.5,
+     67.85,
+     0.35
+    ],
+    [
+     70.55,
+     71.0,
+     0.45
+    ]
+   ],
+   "widest_mm": 0.45,
+   "y_mm": 81.3
+  },
+  {
+   "free_intervals_mm": [
+    [
+     67.5,
+     67.725,
+     0.225
+    ],
+    [
+     70.525,
+     71.0,
+     0.475
+    ]
+   ],
+   "widest_mm": 0.475,
+   "y_mm": 81.35
+  },
+  {
+   "free_intervals_mm": [
+    [
+     67.5,
+     67.575,
+     0.075
+    ],
+    [
+     70.475,
+     71.0,
+     0.525
+    ]
+   ],
+   "widest_mm": 0.525,
+   "y_mm": 81.4
+  }
+ ],
+ "question": "with the 8-object C27.1 cut REMOVED, how wide is the free B.Cu lane at each y between U11's east pad row and the BQ25185_SYS zone edge -- the space the freed pour and the three evicted straps must SHARE",
+ "schema": 1,
+ "track_mm": 0.2,
+ "zone_east_edge_mm": 71.0
+}
