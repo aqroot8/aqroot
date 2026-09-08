@@ -57,7 +57,19 @@ from screen_inner_plane import (OUTLINE, insert_zone, parse_outline,
 ROOT = Path(__file__).resolve().parents[3]
 HERE = Path(__file__).resolve().parent
 PROJECT = ROOT / "hardware/demo/kicad/aqroot-demo"
-BOARD = PROJECT / "aqroot-Beta-v2.kicad_pcb"
+# THE AUTHORITY IS A CONSTANT; THE BASE BOARD IS A CHOICE (D-668).
+# `AUTHORITY` is the one file this module may ever WRITE, and it never moves.
+# `BOARD` is the board a run READS -- its base, its ledger-before, its
+# `.kicad_dru`/`.kicad_pro`, the pour-partition `--pre-board`, the board every
+# removal is priced against.  Until D-668 the two were the same name, so a
+# screen that offered `--board` (screen_partial_pairs.py did) took its CENSUS
+# from a candidate and then drove a router that answered about the authority --
+# a question and an answer about two different boards, which is how a 26.5 s
+# screen came back empty on a pair that provably exists.  `--board` separates
+# them; `--promote` is refused outright whenever they differ, and the
+# `authority_unchanged` clause now watches BOTH files.
+AUTHORITY = PROJECT / "aqroot-Beta-v2.kicad_pcb"
+BOARD = AUTHORITY
 LEDGER = ROOT / "hardware/demo/manufacturing/routing_ledger.py"
 LOCAL_TWO_PAD = Path(__file__).with_name("route_local_two_pad.py")
 # CLAUSE 8 (D-623): the pour-partition contract is invoked BY the gate.
@@ -2979,6 +2991,22 @@ def gate(nets, grid, via_cost_mm, workdir, promote=False, candidate=None,
          bridge_pad_max_mm=BRIDGE_PAD_MAX_MM, trunk_floor=False,
          tap=False, tap_max_mm=0.0, tap_pairs=3):
     before = sha256_file(BOARD)
+    # THE AUTHORITY IS WATCHED EVEN WHEN IT IS NOT THE BASE (D-668).  When
+    # `--board` names a candidate, `before` is that candidate's hash and says
+    # nothing about the file this repository ships; both are measured, and the
+    # `authority_unchanged` clause is the AND of the two.  On an authority run
+    # the two hashes are the same number and every field below is unchanged.
+    authority_before = sha256_file(AUTHORITY)
+    base_is_authority = (Path(BOARD).resolve() == Path(AUTHORITY).resolve())
+    if promote and not base_is_authority:
+        # Defence in depth: `main` refuses this at the CLI, and so does the one
+        # function that can write the authority, because a screen that grows a
+        # `--promote` pass-through must not be able to promote a candidate's
+        # copper onto a board it never measured.
+        raise SystemExit(
+            "refuse promotion: --board %s is not the authority %s; a run whose "
+            "base is a candidate may not write the shipped board"
+            % (BOARD, AUTHORITY))
     work = Path(workdir)
     work.mkdir(parents=True, exist_ok=True)
     scratch = work / BOARD.name
@@ -3788,12 +3816,22 @@ def gate(nets, grid, via_cost_mm, workdir, promote=False, candidate=None,
           and not inert_unpriced
           and not rebond_unpriced
           and not pp_failed
-          and before == sha256_file(BOARD))
+          and before == sha256_file(BOARD)
+          and authority_before == sha256_file(AUTHORITY))
 
     summary = dict(
         schema=1,
-        authoritative_board_sha256=before,
-        authoritative_unchanged=(before == sha256_file(BOARD)),
+        # `authoritative_board_sha256` NAMES THE AUTHORITY, ALWAYS.  On a
+        # `--board` run it is NOT the board the copper was proposed against;
+        # `base_board_sha256` is.  On an authority run the two are one number
+        # and this report is byte-identical to every earlier one.
+        authoritative_board_sha256=authority_before,
+        authoritative_unchanged=(before == sha256_file(BOARD)
+                                 and authority_before
+                                 == sha256_file(AUTHORITY)),
+        base_board=str(BOARD),
+        base_board_sha256=before,
+        base_is_authority=bool(base_is_authority),
         requested_nets=list(nets),
         routed_nets=ok_nets,
         failed_nets=failed,
@@ -3946,7 +3984,9 @@ def gate(nets, grid, via_cost_mm, workdir, promote=False, candidate=None,
             inert_removal_priced=not inert_unpriced,
             rebond_priced=not rebond_unpriced,
             pour_partition=not pp_failed,
-            authority_unchanged=bool(before == sha256_file(BOARD)),
+            authority_unchanged=bool(before == sha256_file(BOARD)
+                                     and authority_before
+                                     == sha256_file(AUTHORITY)),
         ),
         promotion_candidate=ok,
     )
@@ -3973,7 +4013,8 @@ def gate(nets, grid, via_cost_mm, workdir, promote=False, candidate=None,
             if promote_soft:
                 return summary
             raise SystemExit("refuse promotion: gate failed")
-        if before != sha256_file(BOARD):
+        if before != sha256_file(BOARD) or (authority_before
+                                            != sha256_file(AUTHORITY)):
             raise SystemExit("refuse promotion: authority changed under the run")
         BOARD.write_bytes(scratch.read_bytes())
         summary["promoted"] = True
@@ -4336,10 +4377,60 @@ def main():
                          "a tube's own out of the copper that is the only "
                          "bond between a pour pad and its island")
     ap.add_argument("--work", default=None)
+    ap.add_argument("--board", type=Path, default=None,
+                    help="D-668: put this run's question to a STATED base "
+                         "board instead of the authority.  Until now this "
+                         "module had no board argument at all: every screen "
+                         "that drove it -- screen_partial_pairs.py among them "
+                         "-- read its CENSUS off whatever board it was given "
+                         "and then asked a router that always answered about "
+                         "`hardware/demo/kicad/aqroot-demo`, so a question "
+                         "about a candidate came back as an answer about the "
+                         "authority and an empty report looked like a clean "
+                         "one.  The named board's own `.kicad_dru` AND "
+                         "`.kicad_pro` must sit beside it -- a scratch "
+                         ".kicad_pcb without its project silently drops every "
+                         "netclass to Default and every DRU-dependent clause "
+                         "with it.  A run whose base is not the authority may "
+                         "NEVER promote: --promote is refused at the CLI and "
+                         "again inside the gate, `board_improved` is measured "
+                         "against the named base, and the report carries "
+                         "`base_board`, `base_board_sha256` and "
+                         "`base_is_authority` so no reader can mistake one "
+                         "for the other")
     ap.add_argument("--candidate", type=Path)
     ap.add_argument("--promote", action="store_true")
     ap.add_argument("--out", type=Path)
     a = ap.parse_args()
+
+    # THE REBIND HAPPENS BEFORE ANYTHING READS A BOARD.  `resolve_grid`,
+    # `lattice_advice`, `grid_ladder` and `gate` all read the module global at
+    # CALL time, so one assignment here moves the whole run onto the stated
+    # base -- and the children (`--propose`, `--evict-apply`, `--detour-apply`)
+    # are handed the SCRATCH path explicitly and need no argument of their own.
+    if a.board is not None:
+        global BOARD
+        base = a.board.resolve()
+        if not base.is_file():
+            ap.error("--board %s does not exist" % a.board)
+        missing = [x for x in (".kicad_dru", ".kicad_pro")
+                   if not base.with_suffix(x).is_file()]
+        if missing:
+            ap.error("--board %s has no %s beside it.  A scratch .kicad_pcb "
+                     "without its .kicad_pro resolves every netclass to "
+                     "Default and the run would measure widths, clearances "
+                     "and via floors this board does not have; copy the "
+                     "project files next to it (a --work directory left by an "
+                     "earlier gate already has them)"
+                     % (a.board, " / ".join(missing)))
+        if base != AUTHORITY.resolve() and a.promote:
+            ap.error("--board %s is not the authority and --promote is "
+                     "therefore refused: a transaction measured against a "
+                     "candidate has not been measured against the board this "
+                     "repository ships.  Take the same run against the "
+                     "authority, or ask for --candidate and gate that"
+                     % a.board)
+        BOARD = base
 
     via = None
     if a.stitch_via:

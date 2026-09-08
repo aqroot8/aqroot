@@ -1,0 +1,333 @@
+{
+  "a": "R27.2",
+  "b": "U1.10",
+  "banned_nets": [],
+  "board": "/home/aqroot8/aqroot-demo/hardware/demo/manufacturing/w/d667/armJ/aqroot-Beta-v2.kicad_pcb",
+  "board_is_authority": false,
+  "board_sha256": "7f42a647a67c8f7411578bb20a2c3e8b94310a7ff2e23dae82413429aca6b3db",
+  "complete": true,
+  "grid_nm": 50000,
+  "instrument": "maze3d.offcentre_route under screen_corridor_blockers.Without",
+  "layers": [
+    "F",
+    "B",
+    "I2"
+  ],
+  "margin_mm": 1.0,
+  "max_mm": null,
+  "net": "/SX1262_CS_N",
+  "q2": "SKIPPED",
+  "rows": [
+    {
+      "accepted": false,
+      "layers": null,
+      "mm": null,
+      "ok": false,
+      "reason": "NO_PATH",
+      "step": "BASE",
+      "vias": null,
+      "why": "no all-layer corridor at 0.200 mm from R27.2 on F to U1.10 on F"
+    },
+    {
+      "accepted": true,
+      "layers": [
+        "F",
+        "B",
+        "F"
+      ],
+      "mm": 15.3335,
+      "nets": [
+        "+3V3",
+        "/02_MCU_CORE/BOOT_N",
+        "/02_MCU_CORE/DISP_BL_CTL_STRAP",
+        "/07_IR/IR_GATE",
+        "/09_COMMUNITY_HEADER/WAKE_GATE_S",
+        "/BMI270_INT1_STRAP",
+        "/CC1101_CS_N",
+        "/CC1101_GDO0",
+        "/DISP_BL_CTL",
+        "/I2C_SDA_INT",
+        "/I2S_MIC_DIN",
+        "/IR_TX_GPIO16",
+        "/NFC_IRQ",
+        "/SPI_B_MISO",
+        "/WAKE_INT_N",
+        "GND",
+        "Net-(U1-EN)",
+        "Net-(U12-PS_SYNC)"
+      ],
+      "ok": true,
+      "reason": null,
+      "step": "Q1_UPPER_BOUND",
+      "vias": 2,
+      "why": null
+    },
+    {
+      "nets": 18,
+      "step": "Q2_SKIPPED",
+      "why": "--minimise-only: the single-net sweep is not asked, so this run does not prove that no one net opens the corridor alone"
+    },
+    {
+      "mm": 15.3335,
+      "net": "+3V3",
+      "remaining": 17,
+      "step": "Q3_DROPPED"
+    },
+    {
+      "mm": 15.3335,
+      "net": "/02_MCU_CORE/BOOT_N",
+      "remaining": 16,
+      "step": "Q3_DROPPED"
+    },
+    {
+      "mm": 15.3335,
+      "net": "/02_MCU_CORE/DISP_BL_CTL_STRAP",
+      "remaining": 15,
+      "step": "Q3_DROPPED"
+    },
+    {
+      "mm": 15.3335,
+      "net": "/07_IR/IR_GATE",
+      "remaining": 14,
+      "step": "Q3_DROPPED"
+    },
+    {
+      "mm": 15.1727,
+      "net": "/09_COMMUNITY_HEADER/WAKE_GATE_S",
+      "remaining": 13,
+      "step": "Q3_DROPPED"
+    },
+    {
+      "mm": 15.1727,
+      "net": "/BMI270_INT1_STRAP",
+      "remaining": 12,
+      "step": "Q3_DROPPED"
+    },
+    {
+      "mm": 14.693,
+      "net": "/CC1101_CS_N",
+      "remaining": 11,
+      "step": "Q3_DROPPED"
+    },
+    {
+      "mm": 14.7033,
+      "net": "/CC1101_GDO0",
+      "remaining": 10,
+      "step": "Q3_DROPPED"
+    },
+    {
+      "mm": 14.7033,
+      "net": "/DISP_BL_CTL",
+      "remaining": 9,
+      "step": "Q3_DROPPED"
+    },
+    {
+      "mm": 14.7033,
+      "net": "/I2C_SDA_INT",
+      "remaining": 8,
+      "step": "Q3_DROPPED"
+    },
+    {
+      "mm": 14.7033,
+      "net": "/I2S_MIC_DIN",
+      "remaining": 7,
+      "step": "Q3_DROPPED"
+    },
+    {
+      "mm": 14.7033,
+      "net": "/IR_TX_GPIO16",
+      "remaining": 6,
+      "step": "Q3_DROPPED"
+    },
+    {
+      "mm": 15.5169,
+      "net": "/NFC_IRQ",
+      "remaining": 5,
+      "step": "Q3_DROPPED"
+    },
+    {
+      "mm": 15.0414,
+      "net": "/SPI_B_MISO",
+      "remaining": 4,
+      "step": "Q3_DROPPED"
+    },
+    {
+      "net": "/WAKE_INT_N",
+      "reason": "NO_PATH",
+      "remaining": 4,
+      "step": "Q3_REQUIRED"
+    },
+    {
+      "mm": 15.0414,
+      "net": "GND",
+      "remaining": 3,
+      "step": "Q3_DROPPED"
+    },
+    {
+      "mm": 15.0414,
+      "net": "Net-(U1-EN)",
+      "remaining": 2,
+      "step": "Q3_DROPPED"
+    },
+    {
+      "mm": 15.0414,
+      "net": "Net-(U12-PS_SYNC)",
+      "remaining": 1,
+      "step": "Q3_DROPPED"
+    },
+    {
+      "accepted": true,
+      "layers": [
+        "F",
+        "B",
+        "I2",
+        "F"
+      ],
+      "mm": 15.0414,
+      "n": 1,
+      "nets": [
+        "/WAKE_INT_N"
+      ],
+      "ok": true,
+      "step": "Q3_MINIMAL_SET",
+      "vias": 3
+    },
+    {
+      "accepted": true,
+      "mm": 15.0414,
+      "n_objects": 3,
+      "n_units": 3,
+      "nets": [
+        "/WAKE_INT_N"
+      ],
+      "ok": true,
+      "reason": null,
+      "step": "Q4_POOL"
+    },
+    {
+      "reason": "NO_PATH",
+      "remaining": 3,
+      "step": "Q4_OBJECT_REQUIRED",
+      "unit": {
+        "a_mm": [
+          58.1,
+          113.9
+        ],
+        "b_mm": [
+          57.55,
+          110.9
+        ],
+        "count": 1,
+        "kind": "track",
+        "layer": "F.Cu",
+        "net": "/WAKE_INT_N",
+        "objects": 1,
+        "router_objects": 1,
+        "width_mm": 0.2
+      }
+    },
+    {
+      "mm": 15.0414,
+      "remaining": 2,
+      "step": "Q4_OBJECT_RETURNED",
+      "unit": {
+        "a_mm": [
+          58.65,
+          115.25
+        ],
+        "b_mm": [
+          58.1,
+          113.9
+        ],
+        "count": 1,
+        "kind": "track",
+        "layer": "F.Cu",
+        "net": "/WAKE_INT_N",
+        "objects": 1,
+        "router_objects": 1,
+        "width_mm": 0.2
+      }
+    },
+    {
+      "mm": 15.0414,
+      "remaining": 1,
+      "step": "Q4_OBJECT_RETURNED",
+      "unit": {
+        "a_mm": [
+          58.95,
+          115.45
+        ],
+        "b_mm": [
+          58.65,
+          115.25
+        ],
+        "count": 1,
+        "kind": "track",
+        "layer": "F.Cu",
+        "net": "/WAKE_INT_N",
+        "objects": 1,
+        "router_objects": 1,
+        "width_mm": 0.2
+      }
+    },
+    {
+      "accepted": true,
+      "layers": [
+        "F",
+        "B",
+        "I2",
+        "F"
+      ],
+      "mm": 15.0414,
+      "n_objects": 1,
+      "n_units": 1,
+      "nets": [
+        "/WAKE_INT_N"
+      ],
+      "ok": true,
+      "step": "Q4_MINIMAL_OBJECTS",
+      "units": [
+        {
+          "a_mm": [
+            58.1,
+            113.9
+          ],
+          "b_mm": [
+            57.55,
+            110.9
+          ],
+          "count": 1,
+          "kind": "track",
+          "layer": "F.Cu",
+          "net": "/WAKE_INT_N",
+          "objects": 1,
+          "router_objects": 1,
+          "width_mm": 0.2
+        }
+      ],
+      "vias": 3
+    }
+  ],
+  "schema": 1,
+  "seconds": 1166.8,
+  "window_nets": [
+    "+3V3",
+    "/02_MCU_CORE/BOOT_N",
+    "/02_MCU_CORE/DISP_BL_CTL_STRAP",
+    "/07_IR/IR_GATE",
+    "/09_COMMUNITY_HEADER/WAKE_GATE_S",
+    "/BMI270_INT1_STRAP",
+    "/CC1101_CS_N",
+    "/CC1101_GDO0",
+    "/DISP_BL_CTL",
+    "/I2C_SDA_INT",
+    "/I2S_MIC_DIN",
+    "/IR_TX_GPIO16",
+    "/NFC_IRQ",
+    "/SPI_B_MISO",
+    "/WAKE_INT_N",
+    "GND",
+    "Net-(U1-EN)",
+    "Net-(U12-PS_SYNC)"
+  ]
+}

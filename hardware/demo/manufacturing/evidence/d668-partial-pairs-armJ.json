@@ -1,0 +1,115 @@
+{
+ "board": "w/d667/armJ/aqroot-Beta-v2.kicad_pcb",
+ "board_is_authority": false,
+ "board_sha256": "7f42a647a67c8f7411578bb20a2c3e8b94310a7ff2e23dae82413429aca6b3db",
+ "corridor_pairs": [
+  {
+   "a": [
+    "R27.2"
+   ],
+   "b": [
+    "U1.10"
+   ],
+   "dst_escapes": 6,
+   "gap_mm": 10.566,
+   "net": "/SX1262_CS_N",
+   "never_asked_before": false,
+   "src_escapes": 5
+  },
+  {
+   "a": [
+    "R27.2"
+   ],
+   "b": [
+    "U8.19",
+    "U1.10"
+   ],
+   "dst_escapes": 18,
+   "gap_mm": 60.361,
+   "net": "/SX1262_CS_N",
+   "never_asked_before": true,
+   "src_escapes": 5
+  }
+ ],
+ "grid": "50000",
+ "min_open_edges": 2,
+ "nets": [
+  {
+   "closed": 1,
+   "exit_code": 0,
+   "instrument": "MST_OF_PAIRS",
+   "islands": 3,
+   "mode": "maze+partial",
+   "net": "/SX1262_CS_N",
+   "ok": true,
+   "open_edges": 2,
+   "pairs": [
+    {
+     "a": "U1.10",
+     "b": "U8.19",
+     "closed": true,
+     "ends_are": "pads",
+     "layers": [
+      "F",
+      "B",
+      "I2",
+      "F",
+      "B",
+      "F",
+      "B"
+     ],
+     "mm": 101.62758341072518,
+     "mst_would_have_asked": true,
+     "vias": 6
+    },
+    {
+     "a": [
+      "R27.2"
+     ],
+     "b": [
+      "U1.10"
+     ],
+     "closed": false,
+     "dst_escapes": 6,
+     "ends_are": "islands",
+     "gap_mm": 10.566,
+     "kind": "CORRIDOR -- ladder it",
+     "mst_would_have_asked": true,
+     "reason": "NO_PATH",
+     "src_escapes": 5,
+     "why": "no all-layer corridor at 0.200 mm between the islands"
+    },
+    {
+     "a": [
+      "R27.2"
+     ],
+     "b": [
+      "U8.19",
+      "U1.10"
+     ],
+     "closed": false,
+     "dst_escapes": 18,
+     "ends_are": "islands",
+     "gap_mm": 60.361,
+     "kind": "CORRIDOR -- ladder it",
+     "mst_would_have_asked": false,
+     "reason": "NO_PATH",
+     "src_escapes": 5,
+     "why": "no all-layer corridor at 0.200 mm between the islands"
+    }
+   ],
+   "ran": true,
+   "sheet": "GLOBAL",
+   "span_mm": 60.361,
+   "wall_seconds": 518.1
+  }
+ ],
+ "nets_probed": 1,
+ "pairs_never_asked_before": 1,
+ "pairs_the_mst_would_have_asked": 2,
+ "pairs_total": 3,
+ "pour_served": [],
+ "router_board": "w/d667/armJ/aqroot-Beta-v2.kicad_pcb",
+ "schema": 1,
+ "what": "Which island PAIRS has the all-or-nothing MST never even ASKED? -- D-626\n\nA plane-less net is routed as ONE transaction over its MST.  The FIRST pair\nthat will not close fails the whole net, and every REMAINING pair of that net\nis then never attempted -- so \"open\" in `routing_ledger.py` and \"refused\" in a\nrouter report have been the same word for two different things, and this board\nhas been reading absences of measurement as measurements.  `--partial` runs a\nper-pair transaction instead; this screen drives it over every open net and\nreports what each pair actually said.\n\nWHY IT MATTERS RIGHT NOW.  D-625 proved that a `NO_PATH` corridor refusal on\nthis board is a LADDER question before it is a wall -- `BTN_DOWN_N` refused at\n0.100 / 0.0667 / 0.050 mm under the same 47-tube guard that admitted it at\n0.0333 mm.  A pair nobody has asked cannot be laddered, so the census is the\nwork-list that comes BEFORE the ladder, and it pairs with\n`screen_ladder_prefilter.py`, which answers the other half: an ESCAPE refusal\non a land with no legal escape at ANY pitch is the one refusal a finer lattice\nprovably cannot lift.\n\n    reason NO_PATH            -> CORRIDOR.  Ladder it; D-625's lesson applies.\n    reason NO_LEGAL_ESCAPE_*  -> ESCAPE.  Ask `screen_ladder_prefilter.py`\n                                 whether ANY pitch can launch that land first.\n\nTWO THINGS THIS SCREEN REFUSES TO GUESS.\n\n**A POUR-SERVED NET IS EXCLUDED BY THE BOARD'S OWN ZONES, NOT BY ITS NAME.**\n`+3V3` and `GND` are served by a plane and a stitch, not by an MST of pairs, so\n`--partial` is the wrong instrument on them and running it would report a wall\nthe promotion path would never have hit.  A hard-coded name list would have\nbeen wrong the moment a rail was renamed or another net acquired a pour, so the\nBOARD decides: any net owning a non-rule-area zone is `POUR_SERVED` and is\nskipped before a router ever starts -- which also keeps a 246-pad `GND` off the\nwork queue.  `/01_POWER_TREE/BQ25185_SYS` is exactly that case and a name list\nwould have missed it.  The router's own `routed[0][\"mode\"]` is read back as a\nSECOND, confirming guard: a net that reaches `stitch` mode without owning a\nzone is recorded rather than silently reported as a pair census.\n\n**A CLOSED JOIN AND A FAILED ONE DO NOT NAME THEIR ENDS THE SAME WAY.**  A\nfailure carries `a`/`b` -- the two ISLANDS, as pad lists.  A join carries\n`from`/`to` -- the two PADS it actually ran between, plus the layers and via\nsites it used.  Reading `a`/`b` off a join yields `None` and prints a closed\npair with no ends, which is a report that looks complete and says nothing.\nBoth shapes are read here and `ends_are` names which one each row came from."
+}

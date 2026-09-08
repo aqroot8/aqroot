@@ -60,11 +60,22 @@ def slug(net):
     return net.strip("/").replace("/", "-").lower()
 
 
-def run_partial(net, grid, work, extra):
-    """One `--partial` run for one net.  Returns its report, or None."""
+def run_partial(net, grid, work, extra, board=None):
+    """One `--partial` run for one net.  Returns its report, or None.
+
+    D-668: THE ROUTER IS GIVEN THE SAME BOARD THE CENSUS WAS READ FROM.  This
+    screen has always taken `--board`; `route_maze_batch.py` had no board
+    argument at all, so the census came off the named board and the router
+    answered about the authority.  On a candidate whose open nets differ from
+    the authority's that is not a small error -- it is a report about a board
+    nobody asked about, and D-667 arm K spent 26.5 s getting one.  The board
+    now rides with the question.
+    """
     out = work / ("%s.json" % slug(net))
     cmd = [sys.executable, str(HERE / "route_maze_batch.py"), net, "--partial",
            "--grid", grid, "--work", str(work / slug(net)), "--out", str(out)]
+    if board is not None:
+        cmd += ["--board", str(board)]
     cmd += extra
     t0 = time.time()
     p = subprocess.run(cmd, cwd=str(HERE), capture_output=True, text=True)
@@ -148,7 +159,7 @@ def main():
                                         "and the BOARD said so, not a name "
                                         "list"))
             continue
-        rep, secs, rc = run_partial(net, a.grid, work, extra)
+        rep, secs, rc = run_partial(net, a.grid, work, extra, board=a.board)
         e = next((x for x in led["nets"] if x["net"] == net), {})
         base = dict(net=net, sheet=e.get("sheet"),
                     open_edges=e.get("open_edges"), span_mm=e.get("span_mm"),
@@ -183,6 +194,10 @@ def main():
                 if not p["closed"] and p.get("reason") == "NO_PATH"]
     out = dict(
         schema=1, board=str(a.board), board_sha256=led["board_sha256"],
+        # THE ROUTER'S BASE, NAMED BESIDE THE CENSUS'S (D-668).  Two fields
+        # that must always agree; before D-668 they silently could not.
+        router_board=str(a.board),
+        board_is_authority=bool(Path(a.board).resolve() == BOARD.resolve()),
         grid=a.grid, min_open_edges=a.min_edges, what=__doc__.strip(),
         nets_probed=len(rows), pour_served=pour_served,
         pairs_total=asked + never, pairs_the_mst_would_have_asked=asked,

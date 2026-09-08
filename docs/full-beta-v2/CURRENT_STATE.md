@@ -13,6 +13,105 @@
 > This file references DEVICE_SPEC rather than duplicating full specs.
 
 ## 1. Authoritative HEAD
+- **Demo D-668 (A SCREEN COULD NOT PUT A QUESTION TO A CANDIDATE BOARD, AND
+  THE PAIR IT COULD NOT NAME TURNS OUT TO BE BLOCKED BY THE TRANSACTION'S OWN
+  NEW COPPER):**  **NO COPPER PROMOTED — FRAMEWORK + CHARACTERISATION.**
+  Authority **UNCHANGED** at
+  `7b2ca32554d3ce8bb7afae883316470223ead0d44de24d0a55fa3a7b18d064b7`; retained
+  open edges 28 -> 28, open retained nets 16 -> 16.  `hardware/beta-v2` and
+  `hardware/demo/kicad` **UNTOUCHED**.  `route_maze_batch.py`,
+  `screen_partial_pairs.py`, `screen_pair_corridor_blame.py` and
+  `screen_corridor_blockers.py` all changed and the standing suite reads
+  **14/14 RAN, 14/14 PASS, 14/14 COMPARED, 14/14 IDENTICAL to `d667`,
+  `vacuous` false** (`evidence/d668-contract-regression.json`); baselines
+  emitted for D-669.
+  **(1) THE INSTRUMENT GAP D-667 RECORDED IS CLOSED.**  `route_maze_batch.py`
+  now takes **`--board PATH`**: `AUTHORITY` is a constant — the one file the
+  module may ever write — and `BOARD` is a choice.  `--promote` is refused at
+  the CLI AND inside `gate()` whenever they differ; the named board's
+  `.kicad_dru` and `.kicad_pro` must sit beside it; `authority_unchanged` is
+  the AND of BOTH files' hashes; and the report carries `base_board`,
+  `base_board_sha256` and `base_is_authority` beside
+  `authoritative_board_sha256`, which now always names the AUTHORITY.  On an
+  authority run every field is unchanged, which the suite proved.
+  `screen_partial_pairs.py` forwards its `--board` to the router;
+  `screen_pair_corridor_blame.py` gains one too.  **AND A SHARED PRIMITIVE WAS
+  WITHHOLDING NOTHING**: `screen_corridor_blockers.WithoutObjects` tested
+  `id(s) not in self.out`, so a caller who passed the OBJECTS got a context
+  manager that removed NOTHING — a 232 s `NO_PATH` that was really the BASE.
+  Both spellings are now accepted and an argument that resolves to an empty set
+  raises.
+  **(2) THE PAIR IS NAMED.**  The first question this repository has ever put
+  to a CANDIDATE board (`evidence/d668-partial-pairs-armJ.json`, 518 s): on arm
+  J's board `/SX1262_CS_N` is 3 islands — `U1.10 <-> U8.19` CLOSES at
+  101.628 mm, and **`R27.2 <-> U1.10` is `NO_PATH` at 10.566 mm** with 5 src /
+  6 dst escapes, the CORRIDOR class.
+  **(3) IT IS NOT A PITCH QUESTION** — **`screen_pair_pitch_ladder.py`** (new;
+  read-only), `evidence/d668-pair-ladder-r27-u1.json`,
+  2335 s): `NO_PATH` at 0.050, 0.0333 AND 0.025 mm — 55.5 M cells at the finest
+  rung.  D-667's "ladder the pair" branch is RETIRED with a measurement.
+  **(4) THE MINIMAL CUT IS ONE TRACK AND IT IS THE TRANSACTION'S OWN NEW
+  COPPER** (`evidence/d668-blame-sx1262-r27-u1-m10-min.json`, 1167 s,
+  `complete: true`): Q1 opens at 15.334 mm over 18 window nets; **Q3 MINIMAL SET
+  is ONE net, `/WAKE_INT_N`; Q4 MINIMAL OBJECTS is ONE unit — `F.Cu
+  [58.1,113.9] -> [57.55,110.9]`, 0.200 mm, count 1 — opening 15.041 mm.**  The
+  authority carries 37 `/WAKE_INT_N` objects and arm J's board 63; the blamed
+  segment is among the 26 arm J itself laid.  **The transaction is
+  SELF-BLOCKING.**  **`screen_opening_path.py`** (new; read-only) dumps the opening route as
+  ORDERED per-layer polylines (`evidence/d668-opening-path-r27-u1.json`, 15.0414 mm,
+  3 barrels, `F -> B -> In2 -> F`) so the reservation is a measurement.
+  **(5) THREE ARMS AND THE POCKET HOLDS ONE OF THEM.**  Arm J (no lane):
+  `/WAKE_INT_N` 35.366 mm / 5, `/SX1262_CS_N` `R27.2` pair `NO_PATH`, 28 -> 29.
+  **Arm M (15.042 mm lane on F+B+In2, 13 records): `/SX1262_CS_N` CLOSES BOTH
+  PAIRS at 67.21 mm / 5 — `R27.2 <-> U1.10` in 11.636 mm / 2 vias, the pair
+  three lattices called `NO_PATH` — and `/WAKE_INT_N` goes `TOO_LONG` at
+  141.255 mm / 16.  28 -> 28, refusing on `board_improved` ALONE, fourteen of
+  fifteen clauses PASS**
+  (`evidence/d668-tx-wake-sx-g50-armM.json`).  Arm N (4.769 mm, F.Cu only):
+  `/WAKE_INT_N` 70.877 mm / 12 taking the barrel site at `[53.0, 117.95]` that
+  was `/SX1262_CS_N`'s own arm-M via, both other nets `NO_PATH`, 28 -> 29 —
+  **a lane that reserves a route's TRACKS and not its BARREL SITES has not
+  reserved the route.**
+  **(6) THE ARITHMETIC REFRAMES ALL OF IT.**  `/SX1262_CS_N` is CLOSED on the
+  authority and open only on arm J's CANDIDATE, because arm J evicted it.  So
+  closing `R27.2 <-> U1.10` was never worth an edge — it RESTORES what the
+  eviction took.  **The only edge on offer in this family is `/WAKE_INT_N`'s
+  single last one, 28 -> 27.**
+  **(7) AND THE EXCLUSION IS SYMMETRIC.**  The same blame on ARM M's board —
+  `/SX1262_CS_N` whole, `/WAKE_INT_N` open — gives **Q3 MINIMAL SET 2 nets,
+  `{/SX1262_CS_N, GND}`, opening 35.546 mm**
+  (`evidence/d668-blame-wake-u2-q10-armM-min.json`).  D-666 asked the AUTHORITY
+  and got THREE nets at the same price; on arm M `/IR_TX_GPIO16` is already out
+  of the pocket.  **`/SX1262_CS_N` is REQUIRED from both directions.**  Q4 is
+  `complete: true` in 2362 s and names the transaction to the object: **FOUR
+  units / 30 router objects, opening 37.006 mm / 5 vias** — `/SX1262_CS_N`
+  `F.Cu [57.75,111.9] -> [56.2,113.25]`, `GND` `B.Cu [58.525,105.525] ->
+  [59.3,106.3]`, and `GND` barrels at `[59.3,106.3]` and `[59.9,106.5]`
+  (0.6/0.3 mm).  D-666 got EIGHT units on the authority.  Three of the four
+  are `GND` and are priceable by `screen_return_fragment_bar.py` and
+  `rebond_priced`; **the fourth is a segment ARM M ITSELF LAID**, so the
+  exclusion survives to the object — and **a `--detour-spec` names copper on
+  the BASE board, so copper a run is about to lay cannot be named.**  The
+  transaction is three-stage and `route_maze_batch.py` executes one stage per
+  run: arm O is a STAGED/CHAINED transaction or a lane reserved for BOTH nets
+  at once, not another single-run arm.
+  **VERDICT:** the pocket around `(52-58, 110-121)` admits `/WAKE_INT_N`'s cheap
+  route OR `/SX1262_CS_N`'s `R27.2` escape and not both; a reservation only
+  CHOOSES which.  **A CAPACITY wall in one pocket** — not an instrument gap, not
+  a pitch, not a reservation-geometry problem.
+  **NEXT, IN ORDER OF LEVERAGE:** (1) **`/WAKE_INT_N` ARM O — buy the pocket
+  from a THIRD net.**  §7's Q3 names `GND` beside `/SX1262_CS_N` and §4's Q1
+  opened at 15.334 mm over 18 nets; execute Q4's object list ON THE ARM-M BOARD
+  through `--detour-spec`, with `screen_return_fragment_bar.py` pricing every
+  `GND` fragment and `rebond_priced` guarding the barrels — and ask it of the
+  arm-M board, which is what (1) above built.  (2) `U9.30` (`SPI_B_SCK`),
+  half-price under `--minimise-only`; `U9.14` stays the RF question.  (3)
+  `U16.3` needs a BARREL SITE (D-664 carry).  (4) `BQ25185_SYS` `C27.1` (D-664
+  carry), protected net FIRST.  (5) `/I2C_SCL_INT` `U14.7 <-> J1.44` remains
+  **the one OPEN OWNER DECISION**, RECORDED NOT TAKEN.  (6) `copper_sliver`
+  localisation remains an OPEN INSTRUMENT GAP.  (7) `hardware/demo/fab` is
+  **FRESH at `7b2ca325`**; no copper moved, so D-668 owes no re-export and the
+  next PROMOTION still owes one.
 - **Demo D-667 (A RESERVATION IS 0.050 mm STRONGER THAN THE RULE IT STANDS FOR
   AND IT SPENDS THAT ON THE RELAY'S OWN GOAL CELL; PLUS `/WAKE_INT_N`'s LAST
   EDGE IS ONE NAMED NET SHORT AND D-661's ORDER IS BACKWARDS HERE):**  **NO

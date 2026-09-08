@@ -1,0 +1,253 @@
+{
+  "a": "R27.2",
+  "b": "U1.10",
+  "board": "/home/aqroot8/aqroot-demo/hardware/demo/manufacturing/w/d667/armJ/aqroot-Beta-v2.kicad_pcb",
+  "board_sha256": "7f42a647a67c8f7411578bb20a2c3e8b94310a7ff2e23dae82413429aca6b3db",
+  "grid_nm": 50000,
+  "lane_chains_by_layer": {
+    "B.Cu": [
+      [
+        [
+          56.05,
+          114.95
+        ],
+        [
+          53.05,
+          117.95
+        ]
+      ]
+    ],
+    "F.Cu": [
+      [
+        [
+          58.4242,
+          111.2007
+        ],
+        [
+          57.75,
+          111.9
+        ],
+        [
+          56.2,
+          113.25
+        ],
+        [
+          56.15,
+          114.85
+        ],
+        [
+          56.05,
+          114.95
+        ]
+      ],
+      [
+        [
+          51.58,
+          119.25
+        ],
+        [
+          51.6,
+          120.45
+        ],
+        [
+          52.55,
+          121.4
+        ]
+      ]
+    ],
+    "In2.Cu": [
+      [
+        [
+          53.05,
+          117.95
+        ],
+        [
+          52.55,
+          121.4
+        ]
+      ]
+    ]
+  },
+  "lane_note": "ordered polylines, one list per disjoint chain on that layer; this is the spelling reserve_corridor.py --lane reads",
+  "layers": [
+    "F",
+    "B",
+    "I2"
+  ],
+  "mm": 15.0414,
+  "mm_by_layer": {
+    "B": 4.2426,
+    "F": 5.1412,
+    "I2": 3.486
+  },
+  "net": "/SX1262_CS_N",
+  "objects": [
+    {
+      "a_mm": [
+        58.4242,
+        111.2007
+      ],
+      "b_mm": [
+        57.75,
+        111.9
+      ],
+      "kind": "track",
+      "layer": "F.Cu",
+      "width_mm": 0.2
+    },
+    {
+      "a_mm": [
+        51.58,
+        119.25
+      ],
+      "b_mm": [
+        51.6,
+        120.45
+      ],
+      "kind": "track",
+      "layer": "F.Cu",
+      "width_mm": 0.2
+    },
+    {
+      "a_mm": [
+        57.75,
+        111.9
+      ],
+      "b_mm": [
+        56.2,
+        113.25
+      ],
+      "kind": "track",
+      "layer": "F.Cu",
+      "width_mm": 0.2
+    },
+    {
+      "a_mm": [
+        56.2,
+        113.25
+      ],
+      "b_mm": [
+        56.15,
+        114.85
+      ],
+      "kind": "track",
+      "layer": "F.Cu",
+      "width_mm": 0.2
+    },
+    {
+      "a_mm": [
+        56.15,
+        114.85
+      ],
+      "b_mm": [
+        56.05,
+        114.95
+      ],
+      "kind": "track",
+      "layer": "F.Cu",
+      "width_mm": 0.2
+    },
+    {
+      "at_mm": [
+        56.05,
+        114.95
+      ],
+      "kind": "via"
+    },
+    {
+      "a_mm": [
+        56.05,
+        114.95
+      ],
+      "b_mm": [
+        53.05,
+        117.95
+      ],
+      "kind": "track",
+      "layer": "B.Cu",
+      "width_mm": 0.2
+    },
+    {
+      "at_mm": [
+        53.05,
+        117.95
+      ],
+      "kind": "via"
+    },
+    {
+      "a_mm": [
+        53.05,
+        117.95
+      ],
+      "b_mm": [
+        52.55,
+        121.4
+      ],
+      "kind": "track",
+      "layer": "In2.Cu",
+      "width_mm": 0.2
+    },
+    {
+      "at_mm": [
+        52.55,
+        121.4
+      ],
+      "kind": "via"
+    },
+    {
+      "a_mm": [
+        52.55,
+        121.4
+      ],
+      "b_mm": [
+        51.6,
+        120.45
+      ],
+      "kind": "track",
+      "layer": "F.Cu",
+      "width_mm": 0.2
+    }
+  ],
+  "ok": true,
+  "reason": null,
+  "route_layers": [
+    "F",
+    "B",
+    "I2",
+    "F"
+  ],
+  "schema": 1,
+  "seconds": 19.2,
+  "via_xy": [
+    [
+      56.05,
+      114.95
+    ],
+    [
+      53.05,
+      117.95
+    ],
+    [
+      52.55,
+      121.4
+    ]
+  ],
+  "vias": 3,
+  "what": "The EXACT copper a pair lays once NAMED objects are withheld -- D-668\n\n    screen_opening_path.py BOARD NET A_REF B_REF CUT.json OUT.json [GRID]\n\n`screen_pair_corridor_blame.py --per-object` ends at a MINIMAL OBJECT SET and a\nprice -- \"one unit, 15.041 mm, 3 vias\".  A price is not a lane.\n`reserve_corridor.py --lane \"F.Cu:x,y x,y ...\"` needs the GEOMETRY, and until\nthis existed the only way to get it was to guess, which is what D-667 spent an\narm learning not to do.  This withholds exactly the unit the blame named,\nre-runs `maze3d.offcentre_route`, and dumps what it laid.\n\nCUT.json is one `unit_spec` record straight out of the blame report:\n\n    {\"kind\": \"track\", \"net\": \"/WAKE_INT_N\", \"layer\": \"F.Cu\",\n     \"a_mm\": [58.1, 113.9], \"b_mm\": [57.55, 110.9], \"width_mm\": 0.2}\n\nA LANE IS A POLYLINE, NOT A BAG OF ENDPOINTS.  `qb.laid` order is stubs-first,\nthen the run, so appending endpoints in that order yields a list that LOOKS\nlike a lane and reserves corridors the route never took.  `lane_chains_by_layer`\nchains each layer's segments end to end and reports EVERY disjoint chain.\n\nAND THE BARREL SITES ARE PART OF THE LANE.  D-668 arm N reserved a route's\ntracks and not its via sites; `/WAKE_INT_N` took the barrel site at\n[53.0, 117.95] that the reserved net needed and both nets ended worse.  `via_xy`\nis in the report for that reason -- reserve it as a single-point all-layer lane.\n\nIt removes nothing, writes nothing to any board and takes no licence.",
+  "withheld": {
+    "a_mm": [
+      58.1,
+      113.9
+    ],
+    "b_mm": [
+      57.55,
+      110.9
+    ],
+    "count": 1,
+    "kind": "track",
+    "layer": "F.Cu",
+    "net": "/WAKE_INT_N",
+    "width_mm": 0.2
+  },
+  "withheld_router_objects": 1
+}

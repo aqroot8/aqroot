@@ -1,0 +1,961 @@
+{
+  "a": "U2.1",
+  "b": "Q10.3",
+  "banned_nets": [],
+  "board": "/home/aqroot8/aqroot-demo/hardware/demo/manufacturing/w/d668/armM/aqroot-Beta-v2.kicad_pcb",
+  "board_is_authority": false,
+  "board_sha256": "f24a8925002f8bc8d6ea59c06beb3d7bdcb7f5fe2ee1f39b406dfb43cdfccde1",
+  "complete": true,
+  "grid_nm": 50000,
+  "instrument": "maze3d.offcentre_route under screen_corridor_blockers.Without",
+  "layers": [
+    "F",
+    "B",
+    "I2"
+  ],
+  "margin_mm": 1.0,
+  "max_mm": null,
+  "net": "/WAKE_INT_N",
+  "q2": "SKIPPED",
+  "rows": [
+    {
+      "accepted": false,
+      "layers": null,
+      "mm": null,
+      "ok": false,
+      "reason": "NO_PATH",
+      "step": "BASE",
+      "vias": null,
+      "why": "no all-layer corridor at 0.200 mm from U2.1 on B to Q10.3 on F"
+    },
+    {
+      "accepted": true,
+      "layers": [
+        "B",
+        "I2",
+        "F"
+      ],
+      "mm": 29.9547,
+      "nets": [
+        "+3V3",
+        "/01_POWER_TREE/BQ25185_SYS",
+        "/02_MCU_CORE/BOOT_N",
+        "/02_MCU_CORE/GPIO45_VDDSPI_STRAP",
+        "/02_MCU_CORE/UART0_TXD_DBG",
+        "/08_BUTTONS_EXPANDERS/BTN_A_N",
+        "/08_BUTTONS_EXPANDERS/BTN_B_N",
+        "/08_BUTTONS_EXPANDERS/BTN_DOWN_N",
+        "/08_BUTTONS_EXPANDERS/BTN_LEFT_N",
+        "/08_BUTTONS_EXPANDERS/BTN_UP_N",
+        "/08_BUTTONS_EXPANDERS/FRONT_RGB_B_N",
+        "/08_BUTTONS_EXPANDERS/FRONT_RGB_G_N",
+        "/08_BUTTONS_EXPANDERS/FRONT_RGB_R_N",
+        "/09_COMMUNITY_HEADER/WAKE_GATE_S",
+        "/ACC_3V3_SW",
+        "/ACC_5V_SW_EN",
+        "/AMP_SD_MODE",
+        "/BMI270_INT1_STRAP",
+        "/BQ25185_STAT2",
+        "/CC1101_CS_N",
+        "/I2C_SCL_INT",
+        "/I2C_SDA_INT",
+        "/I2S_MIC_DIN",
+        "/NFC_IRQ",
+        "/SD_CARD_DETECT_N",
+        "/SX1262_CS_N",
+        "GND",
+        "Net-(D13-BK)",
+        "Net-(SW9-A)",
+        "Net-(U12-PG)",
+        "Net-(U12-PS_SYNC)"
+      ],
+      "ok": true,
+      "reason": null,
+      "step": "Q1_UPPER_BOUND",
+      "vias": 2,
+      "why": null
+    },
+    {
+      "nets": 31,
+      "step": "Q2_SKIPPED",
+      "why": "--minimise-only: the single-net sweep is not asked, so this run does not prove that no one net opens the corridor alone"
+    },
+    {
+      "mm": 29.9547,
+      "net": "+3V3",
+      "remaining": 30,
+      "step": "Q3_DROPPED"
+    },
+    {
+      "mm": 30.7429,
+      "net": "/01_POWER_TREE/BQ25185_SYS",
+      "remaining": 29,
+      "step": "Q3_DROPPED"
+    },
+    {
+      "mm": 30.7429,
+      "net": "/02_MCU_CORE/BOOT_N",
+      "remaining": 28,
+      "step": "Q3_DROPPED"
+    },
+    {
+      "mm": 30.546,
+      "net": "/02_MCU_CORE/GPIO45_VDDSPI_STRAP",
+      "remaining": 27,
+      "step": "Q3_DROPPED"
+    },
+    {
+      "mm": 30.546,
+      "net": "/02_MCU_CORE/UART0_TXD_DBG",
+      "remaining": 26,
+      "step": "Q3_DROPPED"
+    },
+    {
+      "mm": 30.546,
+      "net": "/08_BUTTONS_EXPANDERS/BTN_A_N",
+      "remaining": 25,
+      "step": "Q3_DROPPED"
+    },
+    {
+      "mm": 30.546,
+      "net": "/08_BUTTONS_EXPANDERS/BTN_B_N",
+      "remaining": 24,
+      "step": "Q3_DROPPED"
+    },
+    {
+      "mm": 30.546,
+      "net": "/08_BUTTONS_EXPANDERS/BTN_DOWN_N",
+      "remaining": 23,
+      "step": "Q3_DROPPED"
+    },
+    {
+      "mm": 30.546,
+      "net": "/08_BUTTONS_EXPANDERS/BTN_LEFT_N",
+      "remaining": 22,
+      "step": "Q3_DROPPED"
+    },
+    {
+      "mm": 30.546,
+      "net": "/08_BUTTONS_EXPANDERS/BTN_UP_N",
+      "remaining": 21,
+      "step": "Q3_DROPPED"
+    },
+    {
+      "mm": 30.083,
+      "net": "/08_BUTTONS_EXPANDERS/FRONT_RGB_B_N",
+      "remaining": 20,
+      "step": "Q3_DROPPED"
+    },
+    {
+      "mm": 31.0801,
+      "net": "/08_BUTTONS_EXPANDERS/FRONT_RGB_G_N",
+      "remaining": 19,
+      "step": "Q3_DROPPED"
+    },
+    {
+      "mm": 31.0801,
+      "net": "/08_BUTTONS_EXPANDERS/FRONT_RGB_R_N",
+      "remaining": 18,
+      "step": "Q3_DROPPED"
+    },
+    {
+      "mm": 31.0801,
+      "net": "/09_COMMUNITY_HEADER/WAKE_GATE_S",
+      "remaining": 17,
+      "step": "Q3_DROPPED"
+    },
+    {
+      "mm": 32.7076,
+      "net": "/ACC_3V3_SW",
+      "remaining": 16,
+      "step": "Q3_DROPPED"
+    },
+    {
+      "mm": 30.2961,
+      "net": "/ACC_5V_SW_EN",
+      "remaining": 15,
+      "step": "Q3_DROPPED"
+    },
+    {
+      "mm": 30.2961,
+      "net": "/AMP_SD_MODE",
+      "remaining": 14,
+      "step": "Q3_DROPPED"
+    },
+    {
+      "mm": 30.2961,
+      "net": "/BMI270_INT1_STRAP",
+      "remaining": 13,
+      "step": "Q3_DROPPED"
+    },
+    {
+      "mm": 31.4257,
+      "net": "/BQ25185_STAT2",
+      "remaining": 12,
+      "step": "Q3_DROPPED"
+    },
+    {
+      "mm": 31.4257,
+      "net": "/CC1101_CS_N",
+      "remaining": 11,
+      "step": "Q3_DROPPED"
+    },
+    {
+      "mm": 32.1631,
+      "net": "/I2C_SCL_INT",
+      "remaining": 10,
+      "step": "Q3_DROPPED"
+    },
+    {
+      "mm": 32.1631,
+      "net": "/I2C_SDA_INT",
+      "remaining": 9,
+      "step": "Q3_DROPPED"
+    },
+    {
+      "mm": 32.1631,
+      "net": "/I2S_MIC_DIN",
+      "remaining": 8,
+      "step": "Q3_DROPPED"
+    },
+    {
+      "mm": 35.5402,
+      "net": "/NFC_IRQ",
+      "remaining": 7,
+      "step": "Q3_DROPPED"
+    },
+    {
+      "mm": 35.4006,
+      "net": "/SD_CARD_DETECT_N",
+      "remaining": 6,
+      "step": "Q3_DROPPED"
+    },
+    {
+      "net": "/SX1262_CS_N",
+      "reason": "NO_PATH",
+      "remaining": 6,
+      "step": "Q3_REQUIRED"
+    },
+    {
+      "net": "GND",
+      "reason": "NO_PATH",
+      "remaining": 6,
+      "step": "Q3_REQUIRED"
+    },
+    {
+      "mm": 35.4006,
+      "net": "Net-(D13-BK)",
+      "remaining": 5,
+      "step": "Q3_DROPPED"
+    },
+    {
+      "mm": 35.4006,
+      "net": "Net-(SW9-A)",
+      "remaining": 4,
+      "step": "Q3_DROPPED"
+    },
+    {
+      "mm": 35.5458,
+      "net": "Net-(U12-PG)",
+      "remaining": 3,
+      "step": "Q3_DROPPED"
+    },
+    {
+      "mm": 35.5458,
+      "net": "Net-(U12-PS_SYNC)",
+      "remaining": 2,
+      "step": "Q3_DROPPED"
+    },
+    {
+      "accepted": true,
+      "layers": [
+        "B",
+        "I2",
+        "F",
+        "I2",
+        "B",
+        "F"
+      ],
+      "mm": 35.5458,
+      "n": 2,
+      "nets": [
+        "/SX1262_CS_N",
+        "GND"
+      ],
+      "ok": true,
+      "step": "Q3_MINIMAL_SET",
+      "vias": 5
+    },
+    {
+      "accepted": true,
+      "mm": 35.5458,
+      "n_objects": 118,
+      "n_units": 26,
+      "nets": [
+        "/SX1262_CS_N",
+        "GND"
+      ],
+      "ok": true,
+      "reason": null,
+      "step": "Q4_POOL"
+    },
+    {
+      "mm": 35.5458,
+      "remaining": 25,
+      "step": "Q4_OBJECT_RETURNED",
+      "unit": {
+        "a_mm": [
+          56.15,
+          114.8
+        ],
+        "b_mm": [
+          56.05,
+          114.9
+        ],
+        "count": 1,
+        "kind": "track",
+        "layer": "F.Cu",
+        "net": "/SX1262_CS_N",
+        "objects": 1,
+        "router_objects": 1,
+        "width_mm": 0.2
+      }
+    },
+    {
+      "mm": 35.5458,
+      "remaining": 24,
+      "step": "Q4_OBJECT_RETURNED",
+      "unit": {
+        "a_mm": [
+          56.2,
+          113.25
+        ],
+        "b_mm": [
+          56.15,
+          114.8
+        ],
+        "count": 1,
+        "kind": "track",
+        "layer": "F.Cu",
+        "net": "/SX1262_CS_N",
+        "objects": 1,
+        "router_objects": 1,
+        "width_mm": 0.2
+      }
+    },
+    {
+      "reason": "NO_PATH",
+      "remaining": 24,
+      "step": "Q4_OBJECT_REQUIRED",
+      "unit": {
+        "a_mm": [
+          57.75,
+          111.9
+        ],
+        "b_mm": [
+          56.2,
+          113.25
+        ],
+        "count": 1,
+        "kind": "track",
+        "layer": "F.Cu",
+        "net": "/SX1262_CS_N",
+        "objects": 1,
+        "router_objects": 1,
+        "width_mm": 0.2
+      }
+    },
+    {
+      "mm": 37.1438,
+      "remaining": 23,
+      "step": "Q4_OBJECT_RETURNED",
+      "unit": {
+        "a_mm": [
+          58.4242,
+          111.2007
+        ],
+        "b_mm": [
+          57.75,
+          111.9
+        ],
+        "count": 1,
+        "kind": "track",
+        "layer": "F.Cu",
+        "net": "/SX1262_CS_N",
+        "objects": 1,
+        "router_objects": 1,
+        "width_mm": 0.2
+      }
+    },
+    {
+      "mm": 37.1438,
+      "remaining": 22,
+      "step": "Q4_OBJECT_RETURNED",
+      "unit": {
+        "a_mm": [
+          54.15,
+          90.85
+        ],
+        "b_mm": [
+          54.05,
+          90.75
+        ],
+        "count": 1,
+        "kind": "track",
+        "layer": "B.Cu",
+        "net": "GND",
+        "objects": 1,
+        "router_objects": 1,
+        "width_mm": 0.3
+      }
+    },
+    {
+      "mm": 37.1438,
+      "remaining": 21,
+      "step": "Q4_OBJECT_RETURNED",
+      "unit": {
+        "a_mm": [
+          54.15,
+          90.875
+        ],
+        "b_mm": [
+          54.15,
+          90.85
+        ],
+        "count": 1,
+        "kind": "track",
+        "layer": "B.Cu",
+        "net": "GND",
+        "objects": 1,
+        "router_objects": 1,
+        "width_mm": 0.3
+      }
+    },
+    {
+      "mm": 37.1438,
+      "remaining": 20,
+      "step": "Q4_OBJECT_RETURNED",
+      "unit": {
+        "a_mm": [
+          58.525,
+          104.975
+        ],
+        "b_mm": [
+          59.2,
+          104.2
+        ],
+        "count": 1,
+        "kind": "track",
+        "layer": "B.Cu",
+        "net": "GND",
+        "objects": 1,
+        "router_objects": 1,
+        "width_mm": 0.3
+      }
+    },
+    {
+      "reason": "NO_PATH",
+      "remaining": 20,
+      "step": "Q4_OBJECT_REQUIRED",
+      "unit": {
+        "a_mm": [
+          58.525,
+          105.525
+        ],
+        "b_mm": [
+          59.3,
+          106.3
+        ],
+        "count": 1,
+        "kind": "track",
+        "layer": "B.Cu",
+        "net": "GND",
+        "objects": 1,
+        "router_objects": 1,
+        "width_mm": 0.3
+      }
+    },
+    {
+      "mm": 37.1438,
+      "remaining": 19,
+      "step": "Q4_OBJECT_RETURNED",
+      "unit": {
+        "a_mm": [
+          59.2,
+          104.2
+        ],
+        "b_mm": [
+          60.2,
+          102.9
+        ],
+        "count": 1,
+        "kind": "track",
+        "layer": "B.Cu",
+        "net": "GND",
+        "objects": 1,
+        "router_objects": 1,
+        "width_mm": 0.3
+      }
+    },
+    {
+      "mm": 37.1438,
+      "remaining": 18,
+      "step": "Q4_OBJECT_RETURNED",
+      "unit": {
+        "a_mm": [
+          60.1,
+          106.15
+        ],
+        "b_mm": [
+          60.1,
+          106.7
+        ],
+        "count": 1,
+        "kind": "track",
+        "layer": "B.Cu",
+        "net": "GND",
+        "objects": 1,
+        "router_objects": 1,
+        "width_mm": 0.3
+      }
+    },
+    {
+      "mm": 37.1438,
+      "remaining": 17,
+      "step": "Q4_OBJECT_RETURNED",
+      "unit": {
+        "a_mm": [
+          60.1,
+          106.7
+        ],
+        "b_mm": [
+          59.9,
+          106.5
+        ],
+        "count": 1,
+        "kind": "track",
+        "layer": "B.Cu",
+        "net": "GND",
+        "objects": 1,
+        "router_objects": 1,
+        "width_mm": 0.3
+      }
+    },
+    {
+      "mm": 37.1438,
+      "remaining": 16,
+      "step": "Q4_OBJECT_RETURNED",
+      "unit": {
+        "a_mm": [
+          60.2,
+          102.9
+        ],
+        "b_mm": [
+          60.3,
+          102.9
+        ],
+        "count": 1,
+        "kind": "track",
+        "layer": "B.Cu",
+        "net": "GND",
+        "objects": 1,
+        "router_objects": 1,
+        "width_mm": 0.3
+      }
+    },
+    {
+      "mm": 37.1438,
+      "remaining": 15,
+      "step": "Q4_OBJECT_RETURNED",
+      "unit": {
+        "a_mm": [
+          60.275,
+          105.5
+        ],
+        "b_mm": [
+          61.3,
+          104.5
+        ],
+        "count": 1,
+        "kind": "track",
+        "layer": "B.Cu",
+        "net": "GND",
+        "objects": 1,
+        "router_objects": 1,
+        "width_mm": 0.3
+      }
+    },
+    {
+      "mm": 37.1438,
+      "remaining": 14,
+      "step": "Q4_OBJECT_RETURNED",
+      "unit": {
+        "a_mm": [
+          60.3,
+          102.9
+        ],
+        "b_mm": [
+          60.9,
+          102.3
+        ],
+        "count": 1,
+        "kind": "track",
+        "layer": "B.Cu",
+        "net": "GND",
+        "objects": 1,
+        "router_objects": 1,
+        "width_mm": 0.3
+      }
+    },
+    {
+      "mm": 37.1438,
+      "remaining": 13,
+      "step": "Q4_OBJECT_RETURNED",
+      "unit": {
+        "a_mm": [
+          56.8,
+          115.65
+        ],
+        "b_mm": [
+          56.7,
+          115.6
+        ],
+        "count": 1,
+        "kind": "track",
+        "layer": "F.Cu",
+        "net": "GND",
+        "objects": 1,
+        "router_objects": 1,
+        "width_mm": 0.3
+      }
+    },
+    {
+      "mm": 37.1579,
+      "remaining": 12,
+      "step": "Q4_OBJECT_RETURNED",
+      "unit": {
+        "a_mm": [
+          57.48,
+          101.25
+        ],
+        "b_mm": [
+          56.5,
+          100.3
+        ],
+        "count": 1,
+        "kind": "track",
+        "layer": "F.Cu",
+        "net": "GND",
+        "objects": 1,
+        "router_objects": 1,
+        "width_mm": 0.3
+      }
+    },
+    {
+      "mm": 37.1579,
+      "remaining": 11,
+      "step": "Q4_OBJECT_RETURNED",
+      "unit": {
+        "a_mm": [
+          60.22,
+          101.25
+        ],
+        "b_mm": [
+          61.2,
+          100.3
+        ],
+        "count": 1,
+        "kind": "track",
+        "layer": "F.Cu",
+        "net": "GND",
+        "objects": 1,
+        "router_objects": 1,
+        "width_mm": 0.3
+      }
+    },
+    {
+      "mm": 37.1579,
+      "remaining": 10,
+      "step": "Q4_OBJECT_RETURNED",
+      "unit": {
+        "a_mm": [
+          61.2,
+          100.3
+        ],
+        "b_mm": [
+          61.1,
+          100.2
+        ],
+        "count": 1,
+        "kind": "track",
+        "layer": "F.Cu",
+        "net": "GND",
+        "objects": 1,
+        "router_objects": 1,
+        "width_mm": 0.3
+      }
+    },
+    {
+      "mm": 37.1579,
+      "remaining": 9,
+      "step": "Q4_OBJECT_RETURNED",
+      "unit": {
+        "at_mm": [
+          56.05,
+          114.9
+        ],
+        "count": 1,
+        "dia_mm": 0.6,
+        "drill_mm": 0.3,
+        "kind": "barrel",
+        "net": "/SX1262_CS_N",
+        "objects": 14,
+        "router_objects": 14
+      }
+    },
+    {
+      "mm": 37.1579,
+      "remaining": 8,
+      "step": "Q4_OBJECT_RETURNED",
+      "unit": {
+        "at_mm": [
+          54.05,
+          90.75
+        ],
+        "count": 1,
+        "dia_mm": 0.0,
+        "drill_mm": 0.3,
+        "kind": "barrel",
+        "net": "GND",
+        "objects": 2,
+        "router_objects": 2
+      }
+    },
+    {
+      "mm": 37.0059,
+      "remaining": 7,
+      "step": "Q4_OBJECT_RETURNED",
+      "unit": {
+        "at_mm": [
+          56.5,
+          100.3
+        ],
+        "count": 1,
+        "dia_mm": 0.6,
+        "drill_mm": 0.3,
+        "kind": "barrel",
+        "net": "GND",
+        "objects": 14,
+        "router_objects": 14
+      }
+    },
+    {
+      "mm": 37.0059,
+      "remaining": 6,
+      "step": "Q4_OBJECT_RETURNED",
+      "unit": {
+        "at_mm": [
+          56.7,
+          115.6
+        ],
+        "count": 1,
+        "dia_mm": 0.6,
+        "drill_mm": 0.3,
+        "kind": "barrel",
+        "net": "GND",
+        "objects": 14,
+        "router_objects": 14
+      }
+    },
+    {
+      "reason": "NO_PATH",
+      "remaining": 6,
+      "step": "Q4_OBJECT_REQUIRED",
+      "unit": {
+        "at_mm": [
+          59.3,
+          106.3
+        ],
+        "count": 1,
+        "dia_mm": 0.6,
+        "drill_mm": 0.3,
+        "kind": "barrel",
+        "net": "GND",
+        "objects": 14,
+        "router_objects": 14
+      }
+    },
+    {
+      "reason": "NO_PATH",
+      "remaining": 6,
+      "step": "Q4_OBJECT_REQUIRED",
+      "unit": {
+        "at_mm": [
+          59.9,
+          106.5
+        ],
+        "count": 1,
+        "dia_mm": 0.6,
+        "drill_mm": 0.3,
+        "kind": "barrel",
+        "net": "GND",
+        "objects": 14,
+        "router_objects": 14
+      }
+    },
+    {
+      "mm": 37.0059,
+      "remaining": 5,
+      "step": "Q4_OBJECT_RETURNED",
+      "unit": {
+        "at_mm": [
+          61.1,
+          100.2
+        ],
+        "count": 1,
+        "dia_mm": 0.6,
+        "drill_mm": 0.3,
+        "kind": "barrel",
+        "net": "GND",
+        "objects": 14,
+        "router_objects": 14
+      }
+    },
+    {
+      "mm": 37.0059,
+      "remaining": 4,
+      "step": "Q4_OBJECT_RETURNED",
+      "unit": {
+        "at_mm": [
+          61.3,
+          104.5
+        ],
+        "count": 1,
+        "dia_mm": 0.6,
+        "drill_mm": 0.3,
+        "kind": "barrel",
+        "net": "GND",
+        "objects": 14,
+        "router_objects": 14
+      }
+    },
+    {
+      "accepted": true,
+      "layers": [
+        "B",
+        "I2",
+        "F",
+        "I2",
+        "B",
+        "F"
+      ],
+      "mm": 37.0059,
+      "n_objects": 30,
+      "n_units": 4,
+      "nets": [
+        "/SX1262_CS_N",
+        "GND"
+      ],
+      "ok": true,
+      "step": "Q4_MINIMAL_OBJECTS",
+      "units": [
+        {
+          "a_mm": [
+            57.75,
+            111.9
+          ],
+          "b_mm": [
+            56.2,
+            113.25
+          ],
+          "count": 1,
+          "kind": "track",
+          "layer": "F.Cu",
+          "net": "/SX1262_CS_N",
+          "objects": 1,
+          "router_objects": 1,
+          "width_mm": 0.2
+        },
+        {
+          "a_mm": [
+            58.525,
+            105.525
+          ],
+          "b_mm": [
+            59.3,
+            106.3
+          ],
+          "count": 1,
+          "kind": "track",
+          "layer": "B.Cu",
+          "net": "GND",
+          "objects": 1,
+          "router_objects": 1,
+          "width_mm": 0.3
+        },
+        {
+          "at_mm": [
+            59.3,
+            106.3
+          ],
+          "count": 1,
+          "dia_mm": 0.6,
+          "drill_mm": 0.3,
+          "kind": "barrel",
+          "net": "GND",
+          "objects": 14,
+          "router_objects": 14
+        },
+        {
+          "at_mm": [
+            59.9,
+            106.5
+          ],
+          "count": 1,
+          "dia_mm": 0.6,
+          "drill_mm": 0.3,
+          "kind": "barrel",
+          "net": "GND",
+          "objects": 14,
+          "router_objects": 14
+        }
+      ],
+      "vias": 5
+    }
+  ],
+  "schema": 1,
+  "seconds": 2362.0,
+  "window_nets": [
+    "+3V3",
+    "/01_POWER_TREE/BQ25185_SYS",
+    "/02_MCU_CORE/BOOT_N",
+    "/02_MCU_CORE/GPIO45_VDDSPI_STRAP",
+    "/02_MCU_CORE/UART0_TXD_DBG",
+    "/08_BUTTONS_EXPANDERS/BTN_A_N",
+    "/08_BUTTONS_EXPANDERS/BTN_B_N",
+    "/08_BUTTONS_EXPANDERS/BTN_DOWN_N",
+    "/08_BUTTONS_EXPANDERS/BTN_LEFT_N",
+    "/08_BUTTONS_EXPANDERS/BTN_UP_N",
+    "/08_BUTTONS_EXPANDERS/FRONT_RGB_B_N",
+    "/08_BUTTONS_EXPANDERS/FRONT_RGB_G_N",
+    "/08_BUTTONS_EXPANDERS/FRONT_RGB_R_N",
+    "/09_COMMUNITY_HEADER/WAKE_GATE_S",
+    "/ACC_3V3_SW",
+    "/ACC_5V_SW_EN",
+    "/AMP_SD_MODE",
+    "/BMI270_INT1_STRAP",
+    "/BQ25185_STAT2",
+    "/CC1101_CS_N",
+    "/I2C_SCL_INT",
+    "/I2C_SDA_INT",
+    "/I2S_MIC_DIN",
+    "/NFC_IRQ",
+    "/SD_CARD_DETECT_N",
+    "/SX1262_CS_N",
+    "GND",
+    "Net-(D13-BK)",
+    "Net-(SW9-A)",
+    "Net-(U12-PG)",
+    "Net-(U12-PS_SYNC)"
+  ]
+}

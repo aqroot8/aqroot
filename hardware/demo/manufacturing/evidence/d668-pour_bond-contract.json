@@ -1,0 +1,396 @@
+{
+ "all_pass": true,
+ "board": "/home/aqroot8/aqroot-demo/hardware/demo/kicad/aqroot-demo/aqroot-Beta-v2.kicad_pcb",
+ "board_sha256": "7b2ca32554d3ce8bb7afae883316470223ead0d44de24d0a55fa3a7b18d064b7",
+ "checks": {
+  "P1": {
+   "base_rev": "919ebe4",
+   "diffs": [],
+   "nets_compared": 8,
+   "ok": true
+  },
+  "P2": {
+   "islands_renumbered": [
+    {
+     "ends": [
+      "U9.6",
+      "via"
+     ],
+     "layer": "B",
+     "net": "GND",
+     "now": 18,
+     "was": 16
+    },
+    {
+     "ends": [
+      "U9.12",
+      "via"
+     ],
+     "layer": "B",
+     "net": "GND",
+     "now": 18,
+     "was": 16
+    },
+    {
+     "ends": [
+      "U9.26",
+      "via"
+     ],
+     "layer": "B",
+     "net": "GND",
+     "now": 18,
+     "was": 16
+    },
+    {
+     "ends": [
+      "U12.2",
+      "U12.15"
+     ],
+     "layer": "B",
+     "net": "GND",
+     "now": 21,
+     "was": 20
+    },
+    {
+     "ends": [
+      "U2.2",
+      "U2.3"
+     ],
+     "layer": "B",
+     "net": "GND",
+     "now": 26,
+     "was": 25
+    },
+    {
+     "ends": [
+      "R105.2",
+      "C68.2"
+     ],
+     "layer": "B",
+     "net": "GND",
+     "now": 28,
+     "was": 27
+    },
+    {
+     "ends": [
+      "C68.2",
+      "U14.1"
+     ],
+     "layer": "B",
+     "net": "GND",
+     "now": 28,
+     "was": 27
+    },
+    {
+     "ends": [
+      "U14.1",
+      "U14.9"
+     ],
+     "layer": "B",
+     "net": "GND",
+     "now": 28,
+     "was": 27
+    },
+    {
+     "ends": [
+      "U14.9",
+      "U14.4"
+     ],
+     "layer": "B",
+     "net": "GND",
+     "now": 28,
+     "was": 27
+    },
+    {
+     "ends": [
+      "U2.12",
+      "U3.2"
+     ],
+     "layer": "B",
+     "net": "GND",
+     "now": 29,
+     "was": 28
+    },
+    {
+     "ends": [
+      "U3.2",
+      "U3.3"
+     ],
+     "layer": "B",
+     "net": "GND",
+     "now": 29,
+     "was": 28
+    },
+    {
+     "ends": [
+      "C36.2",
+      "R37.2"
+     ],
+     "layer": "B",
+     "net": "GND",
+     "now": 33,
+     "was": 32
+    },
+    {
+     "ends": [
+      "C36.2",
+      "C5.2"
+     ],
+     "layer": "B",
+     "net": "GND",
+     "now": 33,
+     "was": 32
+    },
+    {
+     "ends": [
+      "C5.2",
+      "R40.2"
+     ],
+     "layer": "B",
+     "net": "GND",
+     "now": 33,
+     "was": 32
+    },
+    {
+     "ends": [
+      "R37.2",
+      "C23.1"
+     ],
+     "layer": "B",
+     "net": "GND",
+     "now": 33,
+     "was": 32
+    },
+    {
+     "ends": [
+      "R40.2",
+      "C7.2"
+     ],
+     "layer": "B",
+     "net": "GND",
+     "now": 33,
+     "was": 32
+    },
+    {
+     "ends": [
+      "C23.1",
+      "R36.2"
+     ],
+     "layer": "B",
+     "net": "GND",
+     "now": 33,
+     "was": 32
+    },
+    {
+     "ends": [
+      "U11.4",
+      "U11.5"
+     ],
+     "layer": "B",
+     "net": "GND",
+     "now": 35,
+     "was": 34
+    },
+    {
+     "ends": [
+      "U11.4",
+      "U11.11"
+     ],
+     "layer": "B",
+     "net": "GND",
+     "now": 35,
+     "was": 34
+    },
+    {
+     "ends": [
+      "U4.6",
+      "U4.7"
+     ],
+     "layer": "B",
+     "net": "GND",
+     "now": 39,
+     "was": 38
+    },
+    {
+     "ends": [
+      "J5.23",
+      "C25.2"
+     ],
+     "layer": "B",
+     "net": "GND",
+     "now": 42,
+     "was": 41
+    },
+    {
+     "ends": [
+      "U18.4",
+      "U18.5"
+     ],
+     "layer": "B",
+     "net": "GND",
+     "now": 43,
+     "was": 42
+    },
+    {
+     "ends": [
+      "C37.2",
+      "R98.2"
+     ],
+     "layer": "B",
+     "net": "GND",
+     "now": 44,
+     "was": 43
+    },
+    {
+     "ends": [
+      "R98.2",
+      "R17.2"
+     ],
+     "layer": "B",
+     "net": "GND",
+     "now": 44,
+     "was": 43
+    },
+    {
+     "ends": [
+      "R98.2",
+      "R97.2"
+     ],
+     "layer": "B",
+     "net": "GND",
+     "now": 44,
+     "was": 43
+    },
+    {
+     "ends": [
+      "R102.2",
+      "C39.2"
+     ],
+     "layer": "B",
+     "net": "GND",
+     "now": 45,
+     "was": 44
+    },
+    {
+     "ends": [
+      "R78.2",
+      "C22.2"
+     ],
+     "layer": "B",
+     "net": "GND",
+     "now": 46,
+     "was": 45
+    },
+    {
+     "ends": [
+      "C22.2",
+      "C57.2"
+     ],
+     "layer": "B",
+     "net": "GND",
+     "now": 46,
+     "was": 45
+    },
+    {
+     "ends": [
+      "C65.2",
+      "U21.4"
+     ],
+     "layer": "B",
+     "net": "GND",
+     "now": 50,
+     "was": 49
+    },
+    {
+     "ends": [
+      "U21.4",
+      "C38.2"
+     ],
+     "layer": "B",
+     "net": "GND",
+     "now": 50,
+     "was": 49
+    },
+    {
+     "ends": [
+      "C76.2",
+      "C73.2"
+     ],
+     "layer": "B",
+     "net": "GND",
+     "now": 56,
+     "was": 54
+    },
+    {
+     "ends": [
+      "U9.16",
+      "via"
+     ],
+     "layer": "B",
+     "net": "GND",
+     "now": 57,
+     "was": 55
+    },
+    {
+     "ends": [
+      "R88.2",
+      "C61.2"
+     ],
+     "layer": "B",
+     "net": "GND",
+     "now": 60,
+     "was": 57
+    }
+   ],
+   "misplaced_ends": [],
+   "off_copper": [],
+   "ok": true,
+   "points": 1511,
+   "tubes": 49
+  },
+  "P3": {
+   "cells_outside_keepout": [],
+   "guarded_layers": {
+    "B": 1200,
+    "F": 311
+   },
+   "ok": true,
+   "probe_net": "/I2C_SDA_INT",
+   "tube_cells_not_blocked": []
+  },
+  "P4": {
+   "detail": {
+    "+3V3": {
+     "foreign_tubes": [
+      "/01_POWER_TREE/BQ25185_SYS",
+      "GND"
+     ],
+     "own_tubes_seen": 0
+    },
+    "/01_POWER_TREE/BQ25185_SYS": {
+     "foreign_tubes": [
+      "+3V3",
+      "GND"
+     ],
+     "own_tubes_seen": 0
+    },
+    "GND": {
+     "foreign_tubes": [
+      "+3V3",
+      "/01_POWER_TREE/BQ25185_SYS"
+     ],
+     "own_tubes_seen": 0
+    }
+   },
+   "ok": true,
+   "pour_nets": [
+    "+3V3",
+    "/01_POWER_TREE/BQ25185_SYS",
+    "GND"
+   ]
+  }
+ },
+ "guard": "evidence/d656-pour-bond-guard-next.json",
+ "guard_sha256": "a8e73bbba13c1941cccda04ce5bafe3b1541a2646124448a951370a7adb5a5fa",
+ "schema": 1
+}

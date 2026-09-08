@@ -271,7 +271,21 @@ class WithoutObjects(object):
 
     def __init__(self, qb, field, keep_out):
         self.qb, self.field = qb, field
-        self.out = set(keep_out)
+        # D-668: OBJECTS OR ids(), AND NEITHER IS SILENTLY IGNORED.  The
+        # membership test below is `id(s) not in self.out`, so a caller that
+        # handed this the OBJECTS -- the obvious reading of "exactly THESE
+        # routed objects are not there" -- got a context manager that removed
+        # NOTHING and a wavefront that answered about the untouched board.  It
+        # cost a 232 s `NO_PATH` that was really the BASE, and nothing said so:
+        # a probe that withholds nothing looks exactly like a probe that
+        # withheld something and found a wall.  Both spellings are accepted and
+        # normalised here, and an empty `keep_out` from a NON-empty argument is
+        # an error rather than a measurement.
+        want = list(keep_out)
+        self.out = {x if isinstance(x, int) else id(x) for x in want}
+        if want and not self.out:
+            raise ValueError("WithoutObjects was given %d things and could "
+                             "resolve none of them to an object id" % len(want))
 
     def __enter__(self):
         qb = self.qb

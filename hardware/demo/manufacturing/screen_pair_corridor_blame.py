@@ -91,6 +91,7 @@ run reached its own end.
         [MARGIN_MM] [GRID_NM] [OUT] [--ban NET]... [--per-object]
         [--max-mm X] [--minimise-only]
 """
+import hashlib
 import json
 import sys
 import time
@@ -109,7 +110,8 @@ from route_maze_batch import (net_contract, reserved_inner_planes,  # noqa: E402
 from screen_corridor_blockers import (Without, WithoutObjects,  # noqa: E402
                                       corridor_nets)
 
-BOARD = ROOT / "hardware/demo/kicad/aqroot-demo/aqroot-Beta-v2.kicad_pcb"
+AUTHORITY = ROOT / "hardware/demo/kicad/aqroot-demo/aqroot-Beta-v2.kicad_pcb"
+BOARD = AUTHORITY
 
 # `--ban NET` is lifted out of `argv` BEFORE the positional read, so every
 # existing invocation -- all of which are positional -- parses exactly as it
@@ -118,6 +120,20 @@ BANNED = []
 PER_OBJECT = False
 MINIMISE_ONLY = False
 MAX_MM = None
+# D-668: `--board PATH` -- ASK THIS OF A STATED BOARD.  Everything below runs
+# off ONE `QBoard`, built at import time from a hard-coded path, so this screen
+# could only ever blame the authority.  That is the wrong board exactly when
+# the question is interesting: a pair that survives a transaction is a pair on
+# the CANDIDATE that transaction produced, and on the authority it may not even
+# be open.  `/SX1262_CS_N` `R27.2 <-> U1.10` is that pair -- it exists only on
+# D-667 arm J's board, where the net has been evicted whole and rebuilt short.
+# The named board's `.kicad_dru` and `.kicad_pro` must sit beside it, for the
+# same reason `route_maze_batch.py --board` insists: without the project every
+# netclass resolves to Default and this screen's widths and clearances would be
+# measured against rules the board does not have.  This screen writes nothing,
+# so there is no promotion to refuse -- only a `board` field in the report,
+# which it already carried and which now tells the truth.
+BOARD_ARG = None
 _argv = []
 _it = iter(sys.argv)
 for _a in _it:
@@ -129,9 +145,24 @@ for _a in _it:
         MINIMISE_ONLY = True
     elif _a == "--max-mm":
         MAX_MM = float(next(_it))
+    elif _a == "--board":
+        BOARD_ARG = next(_it)
     else:
         _argv.append(_a)
 sys.argv = _argv
+if BOARD_ARG is not None:
+    _b = Path(BOARD_ARG).resolve()
+    if not _b.is_file():
+        raise SystemExit("--board %s does not exist" % BOARD_ARG)
+    _missing = [x for x in (".kicad_dru", ".kicad_pro")
+                if not _b.with_suffix(x).is_file()]
+    if _missing:
+        raise SystemExit(
+            "--board %s has no %s beside it: a scratch .kicad_pcb without its "
+            ".kicad_pro resolves every netclass to Default, so every width, "
+            "clearance and via floor this screen prices would be one the board "
+            "does not carry" % (BOARD_ARG, " / ".join(_missing)))
+    BOARD = _b
 
 NET = sys.argv[1]
 A_REF, B_REF = sys.argv[2], sys.argv[3]
@@ -273,7 +304,14 @@ def flush(complete=False):
                q2="SKIPPED" if MINIMISE_ONLY else "RUN",
                instrument="maze3d.offcentre_route under "
                           "screen_corridor_blockers.Without",
-               board=str(BOARD), seconds=round(time.time() - t0, 1),
+               board=str(BOARD),
+               # D-668: WHICH BOARD, AND IS IT THE ONE THIS REPOSITORY SHIPS.
+               # A blame taken on a candidate is still a blame; it is just not
+               # a statement about the authority, and the report has to say so
+               # on its own without the reader recognising a path.
+               board_sha256=hashlib.sha256(BOARD.read_bytes()).hexdigest(),
+               board_is_authority=bool(BOARD.resolve() == AUTHORITY.resolve()),
+               seconds=round(time.time() - t0, 1),
                complete=bool(complete), rows=rows)
     text = json.dumps(out, indent=2, sort_keys=True) + "\n"
     if OUT:

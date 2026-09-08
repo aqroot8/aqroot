@@ -1,0 +1,54 @@
+{
+  "a": "R27.2",
+  "b": "U1.10",
+  "board": "/home/aqroot8/aqroot-demo/hardware/demo/manufacturing/w/d667/armJ/aqroot-Beta-v2.kicad_pcb",
+  "board_sha256": "7f42a647a67c8f7411578bb20a2c3e8b94310a7ff2e23dae82413429aca6b3db",
+  "layers": [
+    "F",
+    "B",
+    "I2"
+  ],
+  "net": "/SX1262_CS_N",
+  "removed": "NOTHING -- this is the BASE corridor at every pitch",
+  "rows": [
+    {
+      "cells": 13876083,
+      "grid_mm": 0.05,
+      "grid_nm": 50000,
+      "layers": null,
+      "mm": null,
+      "ok": false,
+      "reason": "NO_PATH",
+      "seconds": 241.5,
+      "vias": null,
+      "why": "no all-layer corridor at 0.200 mm from R27.2 on F to U1.10 on F"
+    },
+    {
+      "cells": 31210923,
+      "grid_mm": 0.0333,
+      "grid_nm": 33333,
+      "layers": null,
+      "mm": null,
+      "ok": false,
+      "reason": "NO_PATH",
+      "seconds": 779.1,
+      "vias": null,
+      "why": "no all-layer corridor at 0.200 mm from R27.2 on F to U1.10 on F"
+    },
+    {
+      "cells": 55476963,
+      "grid_mm": 0.025,
+      "grid_nm": 25000,
+      "layers": null,
+      "mm": null,
+      "ok": false,
+      "reason": "NO_PATH",
+      "seconds": 1314.6,
+      "vias": null,
+      "why": "no all-layer corridor at 0.200 mm from R27.2 on F to U1.10 on F"
+    }
+  ],
+  "schema": 1,
+  "what": "D-668: is `/SX1262_CS_N` `R27.2 <-> U1.10` a PITCH question? -- read-only.\n\nD-668's census named the pair the D-667 arm-J transaction is one edge short\nof: `R27.2 <-> U1.10`, 10.566 mm apart, `NO_PATH` at 0.200 mm with FIVE\noff-centre escapes on one side and SIX on the other -- the CORRIDOR class,\nwhich D-625 proved pitch-dependent before it is a wall.  This asks the\ncheapest question that can retire or confirm that: the SAME pair, the SAME\nboard, NOTHING removed, at every lattice from the one that refused down to\n0.025 mm.\n\nIt removes nothing, writes nothing to any board and takes no licence.",
+  "width_mm": 0.2
+}
