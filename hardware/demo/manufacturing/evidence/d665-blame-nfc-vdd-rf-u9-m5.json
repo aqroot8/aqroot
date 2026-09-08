@@ -1,0 +1,294 @@
+{
+  "a": "U9.14",
+  "b": "U9.9",
+  "banned_nets": [],
+  "board": "/home/aqroot8/aqroot-demo/hardware/demo/kicad/aqroot-demo/aqroot-Beta-v2.kicad_pcb",
+  "complete": false,
+  "grid_nm": 25000,
+  "instrument": "maze3d.offcentre_route under screen_corridor_blockers.Without",
+  "layers": [
+    "F",
+    "B",
+    "I2"
+  ],
+  "margin_mm": 5.0,
+  "max_mm": 12.0,
+  "net": "/04_SPI_B_RADIOS_NFC/NFC_VDD_RF",
+  "rows": [
+    {
+      "ok": false,
+      "reason": "NO_LEGAL_ESCAPE",
+      "step": "BASE",
+      "why": "U9.14: NO OFF-CENTRE LAUNCH at 0.200 mm from any of 41 anchors x 24 directions x 17 lengths; blocked by U9.13 (x6302), U9.15 (x5888), U9.12 (x1029), U9.33 (x635)"
+    },
+    {
+      "layers": [
+        "B"
+      ],
+      "mm": 4.15,
+      "nets": [
+        "+3V3",
+        "/04_SPI_B_RADIOS_NFC/NFC_AGDC",
+        "/04_SPI_B_RADIOS_NFC/NFC_EMCA",
+        "/04_SPI_B_RADIOS_NFC/NFC_RFI1",
+        "/04_SPI_B_RADIOS_NFC/NFC_RFI2",
+        "/04_SPI_B_RADIOS_NFC/NFC_RFO1",
+        "/04_SPI_B_RADIOS_NFC/NFC_RFO2",
+        "/04_SPI_B_RADIOS_NFC/NFC_VDD_A",
+        "/04_SPI_B_RADIOS_NFC/NFC_VDD_AM",
+        "/04_SPI_B_RADIOS_NFC/NFC_VDD_D",
+        "/04_SPI_B_RADIOS_NFC/NFC_XIN",
+        "/04_SPI_B_RADIOS_NFC/NFC_XOUT",
+        "/NFC_SUPPLY",
+        "GND"
+      ],
+      "ok": true,
+      "reason": null,
+      "step": "Q1_UPPER_BOUND",
+      "vias": 0,
+      "why": null
+    },
+    {
+      "accepted": false,
+      "layers": null,
+      "mm": null,
+      "net": "+3V3",
+      "ok": false,
+      "reason": "NO_LEGAL_ESCAPE",
+      "step": "Q2_SINGLE_NET",
+      "vias": null
+    },
+    {
+      "accepted": false,
+      "layers": null,
+      "mm": null,
+      "net": "/04_SPI_B_RADIOS_NFC/NFC_AGDC",
+      "ok": false,
+      "reason": "NO_LEGAL_ESCAPE",
+      "step": "Q2_SINGLE_NET",
+      "vias": null
+    },
+    {
+      "accepted": false,
+      "layers": null,
+      "mm": null,
+      "net": "/04_SPI_B_RADIOS_NFC/NFC_EMCA",
+      "ok": false,
+      "reason": "NO_LEGAL_ESCAPE",
+      "step": "Q2_SINGLE_NET",
+      "vias": null
+    },
+    {
+      "accepted": false,
+      "layers": null,
+      "mm": null,
+      "net": "/04_SPI_B_RADIOS_NFC/NFC_RFI1",
+      "ok": false,
+      "reason": "NO_LEGAL_ESCAPE",
+      "step": "Q2_SINGLE_NET",
+      "vias": null
+    },
+    {
+      "accepted": false,
+      "layers": null,
+      "mm": null,
+      "net": "/04_SPI_B_RADIOS_NFC/NFC_RFI2",
+      "ok": false,
+      "reason": "NO_LEGAL_ESCAPE",
+      "step": "Q2_SINGLE_NET",
+      "vias": null
+    },
+    {
+      "accepted": false,
+      "layers": null,
+      "mm": null,
+      "net": "/04_SPI_B_RADIOS_NFC/NFC_RFO1",
+      "ok": false,
+      "reason": "NO_PATH",
+      "step": "Q2_SINGLE_NET",
+      "vias": null
+    },
+    {
+      "accepted": false,
+      "layers": null,
+      "mm": null,
+      "net": "/04_SPI_B_RADIOS_NFC/NFC_RFO2",
+      "ok": false,
+      "reason": "NO_PATH",
+      "step": "Q2_SINGLE_NET",
+      "vias": null
+    },
+    {
+      "accepted": false,
+      "layers": null,
+      "mm": null,
+      "net": "/04_SPI_B_RADIOS_NFC/NFC_VDD_A",
+      "ok": false,
+      "reason": "NO_LEGAL_ESCAPE",
+      "step": "Q2_SINGLE_NET",
+      "vias": null
+    },
+    {
+      "accepted": false,
+      "layers": null,
+      "mm": null,
+      "net": "/04_SPI_B_RADIOS_NFC/NFC_VDD_AM",
+      "ok": false,
+      "reason": "NO_LEGAL_ESCAPE",
+      "step": "Q2_SINGLE_NET",
+      "vias": null
+    },
+    {
+      "accepted": false,
+      "layers": null,
+      "mm": null,
+      "net": "/04_SPI_B_RADIOS_NFC/NFC_VDD_D",
+      "ok": false,
+      "reason": "NO_LEGAL_ESCAPE",
+      "step": "Q2_SINGLE_NET",
+      "vias": null
+    },
+    {
+      "accepted": false,
+      "layers": null,
+      "mm": null,
+      "net": "/04_SPI_B_RADIOS_NFC/NFC_XIN",
+      "ok": false,
+      "reason": "NO_LEGAL_ESCAPE",
+      "step": "Q2_SINGLE_NET",
+      "vias": null
+    },
+    {
+      "accepted": false,
+      "layers": null,
+      "mm": null,
+      "net": "/04_SPI_B_RADIOS_NFC/NFC_XOUT",
+      "ok": false,
+      "reason": "NO_LEGAL_ESCAPE",
+      "step": "Q2_SINGLE_NET",
+      "vias": null
+    },
+    {
+      "accepted": false,
+      "layers": null,
+      "mm": null,
+      "net": "/NFC_SUPPLY",
+      "ok": false,
+      "reason": "NO_LEGAL_ESCAPE",
+      "step": "Q2_SINGLE_NET",
+      "vias": null
+    },
+    {
+      "accepted": false,
+      "layers": null,
+      "mm": null,
+      "net": "GND",
+      "ok": false,
+      "reason": "NO_LEGAL_ESCAPE",
+      "step": "Q2_SINGLE_NET",
+      "vias": null
+    },
+    {
+      "mm": 4.15,
+      "net": "+3V3",
+      "remaining": 13,
+      "step": "Q3_DROPPED"
+    },
+    {
+      "mm": 4.15,
+      "net": "/04_SPI_B_RADIOS_NFC/NFC_AGDC",
+      "remaining": 12,
+      "step": "Q3_DROPPED"
+    },
+    {
+      "mm": 4.15,
+      "net": "/04_SPI_B_RADIOS_NFC/NFC_EMCA",
+      "remaining": 11,
+      "step": "Q3_DROPPED"
+    },
+    {
+      "mm": 4.15,
+      "net": "/04_SPI_B_RADIOS_NFC/NFC_RFI1",
+      "remaining": 10,
+      "step": "Q3_DROPPED"
+    },
+    {
+      "mm": 4.15,
+      "net": "/04_SPI_B_RADIOS_NFC/NFC_RFI2",
+      "remaining": 9,
+      "step": "Q3_DROPPED"
+    },
+    {
+      "mm": 6.7849,
+      "net": "/04_SPI_B_RADIOS_NFC/NFC_RFO1",
+      "remaining": 8,
+      "step": "Q3_DROPPED"
+    },
+    {
+      "net": "/04_SPI_B_RADIOS_NFC/NFC_RFO2",
+      "reason": "NO_LEGAL_ESCAPE",
+      "remaining": 8,
+      "step": "Q3_REQUIRED"
+    },
+    {
+      "mm": 6.8051,
+      "net": "/04_SPI_B_RADIOS_NFC/NFC_VDD_A",
+      "remaining": 7,
+      "step": "Q3_DROPPED"
+    },
+    {
+      "mm": 7.0522,
+      "net": "/04_SPI_B_RADIOS_NFC/NFC_VDD_AM",
+      "remaining": 6,
+      "step": "Q3_DROPPED"
+    },
+    {
+      "mm": 7.0522,
+      "net": "/04_SPI_B_RADIOS_NFC/NFC_VDD_D",
+      "remaining": 5,
+      "step": "Q3_DROPPED"
+    },
+    {
+      "mm": 7.0522,
+      "net": "/04_SPI_B_RADIOS_NFC/NFC_XIN",
+      "remaining": 4,
+      "step": "Q3_DROPPED"
+    },
+    {
+      "mm": 7.0522,
+      "net": "/04_SPI_B_RADIOS_NFC/NFC_XOUT",
+      "remaining": 3,
+      "step": "Q3_DROPPED"
+    },
+    {
+      "mm": 7.0522,
+      "net": "/NFC_SUPPLY",
+      "remaining": 2,
+      "step": "Q3_DROPPED"
+    },
+    {
+      "net": "GND",
+      "reason": "NO_PATH",
+      "remaining": 2,
+      "step": "Q3_REQUIRED"
+    }
+  ],
+  "schema": 1,
+  "seconds": 997.0,
+  "window_nets": [
+    "+3V3",
+    "/04_SPI_B_RADIOS_NFC/NFC_AGDC",
+    "/04_SPI_B_RADIOS_NFC/NFC_EMCA",
+    "/04_SPI_B_RADIOS_NFC/NFC_RFI1",
+    "/04_SPI_B_RADIOS_NFC/NFC_RFI2",
+    "/04_SPI_B_RADIOS_NFC/NFC_RFO1",
+    "/04_SPI_B_RADIOS_NFC/NFC_RFO2",
+    "/04_SPI_B_RADIOS_NFC/NFC_VDD_A",
+    "/04_SPI_B_RADIOS_NFC/NFC_VDD_AM",
+    "/04_SPI_B_RADIOS_NFC/NFC_VDD_D",
+    "/04_SPI_B_RADIOS_NFC/NFC_XIN",
+    "/04_SPI_B_RADIOS_NFC/NFC_XOUT",
+    "/NFC_SUPPLY",
+    "GND"
+  ]
+}

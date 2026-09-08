@@ -1,3 +1,52 @@
+# D-665 ADDENDUM · 2026-09-08 · Demo — `U9.14`'s OPENER RUNS THROUGH THE NFC ANTENNA DRIVE, AND NOTHING ELSE DOES
+
+    authority  7b2ca32554d3ce8bb7afae883316470223ead0d44de24d0a55fa3a7b18d064b7
+            -> 7b2ca32554d3ce8bb7afae883316470223ead0d44de24d0a55fa3a7b18d064b7  (UNCHANGED)
+    retained open edges 28 -> 28
+    READ-ONLY.  No copper, no licence, no document but this one.
+
+D-665 §7 item (2) named `U9.14` (`NFC_VDD_RF`) a CLEAR land whose refusal is
+ROUTED COPPER and pointed at `screen_pair_corridor_blame.py`.  It was asked,
+three ways, of the pair `U9.14 <-> U9.9` — 2.500 mm apart on the NFC front
+end's own 0.5 mm row.
+
+**(a) THE LAUNCH, IN THE BLAME'S OWN WORDS.**  `U9.14: NO OFF-CENTRE LAUNCH at
+0.200 mm from any of 41 anchors x 24 directions x 17 lengths; blocked by
+U9.13 (x6302), U9.15 (x5888), U9.12 (x1029), U9.33 (x635)` — **every blocker
+is another `U9` PAD**: the two `NFC_RFO` lands either side, the `GND` pin and
+the thermal pad.  That is the honest reading of D-665 §2's "reach 0.025 mm past
+its own edge": there IS an off-centre launch and it is 0.025 mm long.
+
+**(b) A 2 mm WINDOW IS NOT ENOUGH AND A 5 mm WINDOW IS.**
+
+    margin 2.0 mm   Q1 upper bound, all 7 window nets    NO_PATH          19.9 s
+    margin 5.0 mm   Q1 upper bound, all 14 window nets   OPENS 4.150 mm, 0 via
+                    Q2 every net alone                   12 NO_LEGAL_ESCAPE,
+                                                         RFO1/RFO2 NO_PATH
+                    Q3 MINIMAL SET {NFC_RFO2, GND}       OPENS 7.052 mm
+
+(`evidence/d665-blame-nfc-vdd-rf-u9-m2.json`, `-m5.json`.)  Q4 there is 28 units
+/ 145 objects and each probe is a whole-board wavefront; it was STOPPED after
+997 s inside the first unit and the report carries `complete: false`, which is
+exactly what "the report is written after every step" was built for.
+
+**(c) THE NECESSITY PROOF.**  With `NFC_RFO1`, `NFC_RFO2`, `NFC_RFI1` and
+`NFC_RFI2` all `--ban`ned, Q1's upper bound — every routed object of the other
+TEN nets in the same 5 mm window dropped AT ONCE — leaves `U9.14` at
+**`NO_LEGAL_ESCAPE`** in 17.2 s (`evidence/d665-blame-nfc-vdd-rf-u9-ban-rf.json`).
+**No containment-bounded rip-up that leaves the NFC antenna drive alone opens
+this land at all.**
+
+**(d) SO `NFC_VDD_RF` IS NOT A CORRIDOR QUESTION, IT IS AN RF-TOPOLOGY ONE.**
+`NFC_RFO1`/`NFC_RFO2` are the antenna drive pair and
+`checks/rf_symmetry_contract.py` is a STANDING contract over them, so any
+transaction here must move BOTH arms and keep them symmetric.  The next
+instrument is `screen_segment_evict.py --plan-out` on `NFC_RFO2`'s `U9` fan-out
+with `rf_symmetry` as the acceptance test — **not** a wider blame window, which
+only buys more objects for the same two nets.  D-665 §7 item (2) is SPLIT:
+`U9.30` (`SPI_B_SCK`) stays an ordinary corridor question, `U9.14` becomes an
+RF one.
+
 # D-665 · 2026-09-08 · Demo — THE WAKE INTERRUPT'S TWO EXPANDERS ARE ONE CLUSTER: A NET RECORDED `NO_OPENER_FOUND` ON BOTH EDGES FALLS TO TWO OBJECTS, AND THE RE-BOND SITE AND THE LANE TURNED OUT TO BE THE SAME COPPER
 
     authority  2900f21a934d9d826644131a90baa36f7dace0db5f50cf2e702e5694f121177f

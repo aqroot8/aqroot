@@ -1,0 +1,65 @@
+{
+  "a": "U9.14",
+  "b": "U9.9",
+  "banned_nets": [
+    "/04_SPI_B_RADIOS_NFC/NFC_RFO1",
+    "/04_SPI_B_RADIOS_NFC/NFC_RFO2",
+    "/04_SPI_B_RADIOS_NFC/NFC_RFI1",
+    "/04_SPI_B_RADIOS_NFC/NFC_RFI2"
+  ],
+  "board": "/home/aqroot8/aqroot-demo/hardware/demo/kicad/aqroot-demo/aqroot-Beta-v2.kicad_pcb",
+  "complete": true,
+  "grid_nm": 25000,
+  "instrument": "maze3d.offcentre_route under screen_corridor_blockers.Without",
+  "layers": [
+    "F",
+    "B",
+    "I2"
+  ],
+  "margin_mm": 5.0,
+  "max_mm": 12.0,
+  "net": "/04_SPI_B_RADIOS_NFC/NFC_VDD_RF",
+  "rows": [
+    {
+      "ok": false,
+      "reason": "NO_LEGAL_ESCAPE",
+      "step": "BASE",
+      "why": "U9.14: NO OFF-CENTRE LAUNCH at 0.200 mm from any of 41 anchors x 24 directions x 17 lengths; blocked by U9.13 (x6302), U9.15 (x5888), U9.12 (x1029), U9.33 (x635)"
+    },
+    {
+      "layers": null,
+      "mm": null,
+      "nets": [
+        "+3V3",
+        "/04_SPI_B_RADIOS_NFC/NFC_AGDC",
+        "/04_SPI_B_RADIOS_NFC/NFC_EMCA",
+        "/04_SPI_B_RADIOS_NFC/NFC_VDD_A",
+        "/04_SPI_B_RADIOS_NFC/NFC_VDD_AM",
+        "/04_SPI_B_RADIOS_NFC/NFC_VDD_D",
+        "/04_SPI_B_RADIOS_NFC/NFC_XIN",
+        "/04_SPI_B_RADIOS_NFC/NFC_XOUT",
+        "/NFC_SUPPLY",
+        "GND"
+      ],
+      "ok": false,
+      "reason": "NO_LEGAL_ESCAPE",
+      "step": "Q1_UPPER_BOUND",
+      "vias": null,
+      "why": "U9.14: NO OFF-CENTRE LAUNCH at 0.200 mm from any of 41 anchors x 24 directions x 17 lengths; blocked by U9.13 (x6302), U9.15 (x5888), U9.12 (x1029), U9.33 (x635)"
+    }
+  ],
+  "schema": 1,
+  "seconds": 17.2,
+  "window_nets": [
+    "+3V3",
+    "/04_SPI_B_RADIOS_NFC/NFC_AGDC",
+    "/04_SPI_B_RADIOS_NFC/NFC_EMCA",
+    "/04_SPI_B_RADIOS_NFC/NFC_VDD_A",
+    "/04_SPI_B_RADIOS_NFC/NFC_VDD_AM",
+    "/04_SPI_B_RADIOS_NFC/NFC_VDD_D",
+    "/04_SPI_B_RADIOS_NFC/NFC_XIN",
+    "/04_SPI_B_RADIOS_NFC/NFC_XOUT",
+    "/NFC_SUPPLY",
+    "GND"
+  ]
+}
