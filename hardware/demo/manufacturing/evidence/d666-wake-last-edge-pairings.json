@@ -1,0 +1,102 @@
+{
+  "board": "/home/aqroot8/aqroot-demo/hardware/demo/kicad/aqroot-demo/aqroot-Beta-v2.kicad_pcb",
+  "contract": {
+    "clr": 200000,
+    "clr_pad": 200000,
+    "known_class": true,
+    "layers": null,
+    "net": "/WAKE_INT_N",
+    "netclass": "Default",
+    "trunk_floor": null,
+    "via_dia": 600000,
+    "via_drill": 300000,
+    "width": 200000
+  },
+  "grid_nm": 50000,
+  "layers": [
+    "F",
+    "B",
+    "I2"
+  ],
+  "net": "/WAKE_INT_N",
+  "rows": [
+    {
+      "a": "U2.1",
+      "b": "Q10.3",
+      "layers": [
+        "B",
+        "I2",
+        "F",
+        "I2",
+        "F",
+        "B",
+        "F",
+        "B",
+        "I2",
+        "B",
+        "F",
+        "B",
+        "I2",
+        "F",
+        "I2",
+        "F"
+      ],
+      "mm": 151.5799,
+      "ok": true,
+      "reason": null,
+      "seconds": 137.5,
+      "vias": 15
+    },
+    {
+      "a": "U3.1",
+      "b": "Q10.3",
+      "layers": null,
+      "mm": null,
+      "ok": false,
+      "reason": "NO_PATH",
+      "seconds": 54.3,
+      "vias": null
+    },
+    {
+      "a": "U2.1",
+      "b": "U1.23",
+      "layers": null,
+      "mm": null,
+      "ok": false,
+      "reason": "NO_PATH",
+      "seconds": 53.1,
+      "vias": null
+    },
+    {
+      "a": "U3.1",
+      "b": "U1.23",
+      "layers": null,
+      "mm": null,
+      "ok": false,
+      "reason": "NO_PATH",
+      "seconds": 53.3,
+      "vias": null
+    },
+    {
+      "a": "U2.1",
+      "b": "R3.1",
+      "layers": null,
+      "mm": null,
+      "ok": false,
+      "reason": "NO_PATH",
+      "seconds": 7.3,
+      "vias": null
+    },
+    {
+      "a": "U3.1",
+      "b": "R3.1",
+      "layers": null,
+      "mm": null,
+      "ok": false,
+      "reason": "NO_PATH",
+      "seconds": 7.3,
+      "vias": null
+    }
+  ],
+  "schema": 1
+}

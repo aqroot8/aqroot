@@ -1,0 +1,128 @@
+{
+ "detours": [
+  {
+   "net": "/IR_TX_GPIO16",
+   "relay": true,
+   "tracks": [
+    {
+     "a_mm": [
+      53.25,
+      108.0
+     ],
+     "b_mm": [
+      56.5,
+      108.0
+     ],
+     "count": 1,
+     "layer": "F.Cu",
+     "width_mm": 0.2
+    },
+    {
+     "a_mm": [
+      56.5,
+      108.0
+     ],
+     "b_mm": [
+      56.95,
+      108.45
+     ],
+     "count": 1,
+     "layer": "F.Cu",
+     "width_mm": 0.2
+    },
+    {
+     "a_mm": [
+      56.95,
+      108.45
+     ],
+     "b_mm": [
+      56.95,
+      109.7
+     ],
+     "count": 1,
+     "layer": "F.Cu",
+     "width_mm": 0.2
+    }
+   ]
+  },
+  {
+   "net": "/SX1262_CS_N",
+   "relay": true,
+   "tracks": [
+    {
+     "a_mm": [
+      58.4242,
+      111.2007
+     ],
+     "b_mm": [
+      57.7,
+      111.9
+     ],
+     "count": 1,
+     "layer": "F.Cu",
+     "width_mm": 0.2
+    },
+    {
+     "a_mm": [
+      57.7,
+      111.9
+     ],
+     "b_mm": [
+      56.6,
+      112.8
+     ],
+     "count": 1,
+     "layer": "F.Cu",
+     "width_mm": 0.2
+    }
+   ]
+  },
+  {
+   "net": "GND",
+   "relay": false,
+   "tracks": [
+    {
+     "a_mm": [
+      58.525,
+      105.525
+     ],
+     "b_mm": [
+      59.3,
+      106.3
+     ],
+     "count": 1,
+     "layer": "B.Cu",
+     "width_mm": 0.3
+    }
+   ],
+   "why": "D-666 ARM B: this B.Cu segment TERMINATES at the barrel (59.300,106.300) the same spec removes.  Relaying it between its own two ends asks the router to reach a site that is reserved and a bond that is gone; ARM A asked exactly that and got NO_PATH at 0.300 mm inside a 5.180 mm budget.  It is a stub of a removed bond, so it is REMOVED AND NOT PUT BACK and the gate's inert_removal_priced clause prices it."
+  },
+  {
+   "barrel": {
+    "at_mm": [
+     59.3,
+     106.3
+    ],
+    "count": 1,
+    "dia_mm": 0.6,
+    "drill_mm": 0.3
+   },
+   "net": "GND"
+  },
+  {
+   "barrel": {
+    "at_mm": [
+     59.9,
+     106.5
+    ],
+    "count": 1,
+    "dia_mm": 0.6,
+    "drill_mm": 0.3
+   },
+   "net": "GND"
+  }
+ ],
+ "note": "D-666 ARM D -- the promotable shape. Same EIGHT units as arms A-C. The two signal detours RELAY (/IR_TX_GPIO16, /SX1262_CS_N); the GND stub is relay:false because it terminates at the barrel this spec removes. The per-site reserve DISCS of arms A/B are GONE and their job is done by a STATED LANE instead: reserve_corridor.py --lane along the route arm C proved (evidence/d666-wake-lane-guard.json, 3 corridors on F.Cu/B.Cu/In2.Cu, 93.561 mm, merged with the 49 pour-bond guards), passed to the gate as --guard. ARM C is why: with every relay OFF the gate's own route_join closes this edge in 35.342 mm / 5 vias, and with the /SX1262_CS_N relay ON it closes it in 148.213 mm -- the relay put the cut back in the same pocket it was bought out of. A disc reserves a via SITE; only a lane reserves the RUN between them.",
+ "reserve": [],
+ "schema": 1
+}

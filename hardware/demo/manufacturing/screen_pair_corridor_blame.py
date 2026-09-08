@@ -74,13 +74,22 @@ AND Q3 RUNS WHENEVER NO *ADMISSIBLE* NET OPENS THE CORRIDOR ALONE.  Before
 is banned is exactly the corridor whose minimal SET is worth searching for, and
 skipping Q3 there would report "no unprotected opening" without having looked.
 
+`--minimise-only` (D-666) skips Q2 and goes straight to Q3.  Q2 costs one
+whole-board wavefront per window net and exists only so Q3 can be SKIPPED when
+one net opens the corridor alone; on a pair where the opening needs many nets
+at once -- `/WAKE_INT_N` `U2.1 <-> Q10.3`, where every single-net drop returns
+EXACTLY the base price of 151.580 mm -- that is half the bill spent on the half
+that cannot be executed.  What the flag gives up is recorded, not hidden: the
+report carries `q2: "SKIPPED"` and a `Q2_SKIPPED` row, and the run no longer
+proves that no single net suffices.  Default OFF.
+
 THE REPORT IS WRITTEN AFTER EVERY STEP.  A probe that writes only at exit loses
 a two-hour measurement to one impatient kill, and `complete` says whether the
 run reached its own end.
 
     python3 screen_pair_corridor_blame.py NET A_REF B_REF \
         [MARGIN_MM] [GRID_NM] [OUT] [--ban NET]... [--per-object]
-        [--max-mm X]
+        [--max-mm X] [--minimise-only]
 """
 import json
 import sys
@@ -107,6 +116,7 @@ BOARD = ROOT / "hardware/demo/kicad/aqroot-demo/aqroot-Beta-v2.kicad_pcb"
 # did and the flag may sit anywhere on the line.
 BANNED = []
 PER_OBJECT = False
+MINIMISE_ONLY = False
 MAX_MM = None
 _argv = []
 _it = iter(sys.argv)
@@ -115,6 +125,8 @@ for _a in _it:
         BANNED.append(next(_it))
     elif _a == "--per-object":
         PER_OBJECT = True
+    elif _a == "--minimise-only":
+        MINIMISE_ONLY = True
     elif _a == "--max-mm":
         MAX_MM = float(next(_it))
     else:
@@ -258,6 +270,7 @@ def flush(complete=False):
     out = dict(schema=1, net=NET, a=A_REF, b=B_REF, margin_mm=MARGIN,
                grid_nm=GRID, layers=far, window_nets=list(cand),
                banned_nets=list(BANNED), max_mm=MAX_MM,
+               q2="SKIPPED" if MINIMISE_ONLY else "RUN",
                instrument="maze3d.offcentre_route under "
                           "screen_corridor_blockers.Without",
                board=str(BOARD), seconds=round(time.time() - t0, 1),
@@ -268,10 +281,51 @@ def flush(complete=False):
     return out, text
 
 
+# D-666.  BASE IS A PRICE, NOT A YES/NO, AND SO IS Q1's UPPER BOUND.
+#
+# Every run before D-666 was made on a pair whose BASE was `NO_PATH`, so `ok`
+# alone said everything there was to say and the row carried no `mm`.
+# `/WAKE_INT_N` `U2.1 <-> Q10.3` is the first pair whose BASE is OPEN and
+# WORTHLESS: `maze3d.offcentre_route` closes it with NOTHING evicted, in
+# **151.580 mm across FIFTEEN barrels** for a 25.258 mm gap, which is the same
+# answer `route_join` called `TOO_LONG` in D-665 §7 and the tap census priced
+# at 150.169 mm in D-665 §1.  Recorded as `ok: true, mm: absent`, that is
+# indistinguishable from a corridor that needs no transaction at all.
+#
+# So BASE now carries its PRICE and its verdict under `--max-mm`, and the two
+# degenerate shapes are named and stopped instead of swept:
+#
+#   * `accepts(base)` -- the corridor is already open into something worth
+#     executing.  There is no blame to apportion; the answer is "lay it".
+#     Sweeping 43 nets there reports "every one of them opens it alone", which
+#     is true, useless, and an hour of whole-board wavefronts.
+#   * `not accepts(upper)` -- Q1's OWN upper bound, every window net dropped at
+#     once, is still over the bound.  No subset can beat the whole set, so no
+#     containment-bounded transaction exists at this price and Q2 is skipped
+#     for exactly the reason the `NO_PATH` upper bound already skipped it.
+#
+# Without `--max-mm`, `accepts` IS `ok` (see above), so the only behaviour that
+# moves for a bound-less run is the BASE early exit -- and a bound-less run
+# whose BASE is open never had a question to ask.
 base = ask()
 rows.append(dict(step="BASE", ok=bool(base.get("ok")),
-                 reason=base.get("reason"), why=base.get("why")))
-print("BASE %s" % base.get("reason"), file=sys.stderr, flush=True)
+                 accepted=accepts(base), reason=base.get("reason"),
+                 why=base.get("why"), mm=base.get("mm"),
+                 vias=base.get("vias"), layers=base.get("layers")))
+print("BASE %s" % (("OPENS %.3f mm, %s via%s"
+                    % (base["mm"], base["vias"],
+                       "" if accepts(base) else "  OVER --max-mm"))
+                   if base.get("ok") else base.get("reason")),
+      file=sys.stderr, flush=True)
+
+if accepts(base):
+    rows.append(dict(step="VERDICT", verdict="NO_EVICTION_NEEDED",
+                     why="the corridor is already open at %.3f mm within the "
+                         "--max-mm bound; there is no blame to apportion"
+                         % base["mm"]))
+    flush(True)
+    print("VERDICT NO_EVICTION_NEEDED -- lay it", file=sys.stderr, flush=True)
+    sys.exit(0)
 
 cand = sorted(set(corridor_nets(qb, far, box, NET)) - set(BANNED))
 flush()
@@ -279,19 +333,50 @@ flush()
 with Without(qb, field, cand, box):
     upper = ask()
 rows.append(dict(step="Q1_UPPER_BOUND", nets=list(cand),
-                 ok=bool(upper.get("ok")), reason=upper.get("reason"),
+                 ok=bool(upper.get("ok")), accepted=accepts(upper),
+                 reason=upper.get("reason"),
                  why=upper.get("why"), mm=upper.get("mm"),
                  vias=upper.get("vias"), layers=upper.get("layers")))
 flush()
 print("Q1 drop ALL routed copper of %d foreign nets in the window -> %s"
-      % (len(cand), ("OPENS %.3f mm, %s via" % (upper["mm"], upper["vias"]))
+      % (len(cand), ("OPENS %.3f mm, %s via%s"
+                     % (upper["mm"], upper["vias"],
+                        "" if accepts(upper) else "  OVER --max-mm"))
          if upper.get("ok") else upper.get("reason")),
       file=sys.stderr, flush=True)
 
 opened = []
 minimal_nets = None
-if upper.get("ok"):
-    for net in cand:
+if accepts(upper):
+    # D-666.  Q2 IS AN OPTIMISATION, AND ON A CONGESTED PAIR IT IS HALF THE BILL.
+    #
+    # Q2 asks `len(cand)` whole-board wavefronts so that Q3 can be SKIPPED when
+    # one net opens the corridor alone.  On `/WAKE_INT_N` `U2.1 <-> Q10.3` that
+    # is 32 probes at ~2.4 minutes each -- 77 minutes -- to learn something the
+    # first three probes already made near-certain: every single-net drop
+    # returns EXACTLY the BASE price, 151.580 mm, because the 29.955 mm corridor
+    # needs many nets gone AT ONCE and no one of them is on the base path.
+    # Q3 then costs another 77 minutes, and only Q3's answer can be executed.
+    #
+    # `--minimise-only` spends the budget on the half that produces the
+    # transaction.  WHAT IT GIVES UP IS STATED, NOT HIDDEN: the run no longer
+    # proves that no single net opens the corridor, so the report records
+    # `q2: "SKIPPED"` and a `Q3_MINIMAL_SET` of one net is the only evidence
+    # that a single-net opener exists.  Reverse-greedy is still a genuine
+    # minimisation of the OPEN set -- it offers every member back and keeps it
+    # out only if the corridor survives -- so the set it lands on is minimal in
+    # the sense Q3 always meant, just not additionally certified as "and no
+    # smaller singleton exists".  Default OFF: every run made before this flag
+    # is byte-identical without it.
+    if MINIMISE_ONLY:
+        rows.append(dict(step="Q2_SKIPPED", nets=len(cand),
+                         why="--minimise-only: the single-net sweep is not "
+                             "asked, so this run does not prove that no one "
+                             "net opens the corridor alone"))
+        flush()
+        print("  Q2 SKIPPED (--minimise-only), %d nets not asked" % len(cand),
+              file=sys.stderr, flush=True)
+    for net in ([] if MINIMISE_ONLY else cand):
         with Without(qb, field, [net], box):
             r = ask()
         rows.append(dict(step="Q2_SINGLE_NET", net=net,

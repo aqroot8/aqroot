@@ -1,0 +1,83 @@
+{
+ "grid_nm": 50000,
+ "layers": [
+  "F",
+  "B",
+  "I2"
+ ],
+ "net": "/WAKE_INT_N",
+ "question": "route_join vs offcentre_route, same board, same field, with and without the D-666 eight units",
+ "rows": [
+  {
+   "label": "route_join BASE",
+   "layers": null,
+   "mm": 147.76871423140065,
+   "ok": true,
+   "reason": null,
+   "seconds": 130.6,
+   "terminals": null,
+   "vias": 15
+  },
+  {
+   "label": "offcentre_route BASE",
+   "layers": [
+    "B",
+    "I2",
+    "F",
+    "I2",
+    "F",
+    "B",
+    "F",
+    "B",
+    "I2",
+    "B",
+    "F",
+    "B",
+    "I2",
+    "F",
+    "I2",
+    "F"
+   ],
+   "mm": 151.5799,
+   "ok": true,
+   "reason": null,
+   "seconds": 129.5,
+   "terminals": [
+    "B",
+    "F"
+   ],
+   "vias": 15
+  },
+  {
+   "label": "route_join MINUS 8 units",
+   "layers": null,
+   "mm": 32.06207780149284,
+   "ok": true,
+   "reason": null,
+   "seconds": 40.9,
+   "terminals": null,
+   "vias": 5
+  },
+  {
+   "label": "offcentre_route MINUS 8 units",
+   "layers": [
+    "B",
+    "I2",
+    "F",
+    "I2",
+    "B",
+    "F"
+   ],
+   "mm": 35.4075,
+   "ok": true,
+   "reason": null,
+   "seconds": 41.3,
+   "terminals": [
+    "B",
+    "F"
+   ],
+   "vias": 5
+  }
+ ],
+ "schema": 1
+}

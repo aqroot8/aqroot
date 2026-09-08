@@ -1,0 +1,94 @@
+{
+ "artifacts": 28,
+ "deterministic": 24,
+ "layers_identical": true,
+ "moved": [
+  {
+   "new_bytes": 1277830,
+   "new_normalised_sha256": "20897e06b92b7c375fca7f8ae09e50ba25b51d11b2a64c33fcfad1a7fc6d468c",
+   "old_bytes": 1284537,
+   "old_normalised_sha256": "9fba9418a02ff12ce29f5a0ff067197749b69393d0ac4c94db6638f9a0ff27a8",
+   "path": "gerbers/aqroot-Beta-v2-B_Cu.gbr"
+  },
+  {
+   "new_bytes": 671776,
+   "new_normalised_sha256": "a5cef8b57c41d0434264c10addadc592a8a39ba331f1f64a0e7ea126d2064314",
+   "old_bytes": 688108,
+   "old_normalised_sha256": "6b74a09e4bb768337c68ab000c5f7b150c251b278b6fb3296b20ac5a5ce4e92f",
+   "path": "gerbers/aqroot-Beta-v2-F_Cu.gbr"
+  },
+  {
+   "new_bytes": 694239,
+   "new_normalised_sha256": "f8189ff789d613daf3d028e8f5e2220b372df655de3a89267757b96507ef8b78",
+   "old_bytes": 654395,
+   "old_normalised_sha256": "aeb00ae2cf4eabe3e96792bb7dc0da8c05a2c5a21c4223dabb0911d7d2160944",
+   "path": "gerbers/aqroot-Beta-v2-In1_Cu.gbr"
+  },
+  {
+   "new_bytes": 47886,
+   "new_normalised_sha256": "c6fb002114760d4fc6fbfa3b76a2654492ae24a684b665266c33b676c6de4042",
+   "old_bytes": 45206,
+   "old_normalised_sha256": "817df2e25ee9c9e0e43bf974ec9fa8b74d8ec0ac645482260f035eb244da6664",
+   "path": "gerbers/aqroot-Beta-v2-In2_Cu.gbr"
+  },
+  {
+   "new_bytes": 782689,
+   "new_normalised_sha256": "ca0b9791f5cb5b02e79f5ec23f97df1312e591a0268567118193123e356eab5e",
+   "old_bytes": 742120,
+   "old_normalised_sha256": "91e64fae3ba36cd8c8b9b43827c6ae6b3d617050a286b4dd3c0d818c59f7ad68",
+   "path": "gerbers/aqroot-Beta-v2-In3_Cu.gbr"
+  },
+  {
+   "new_bytes": 694239,
+   "new_normalised_sha256": "a51df859ba764576be5aa5f2914b7d578e873c6a96beaea6a34e00d7b3bf60c9",
+   "old_bytes": 654395,
+   "old_normalised_sha256": "da0b0f2bc35a32884aef72fe00a24ebdedfd4270042293eb564f2d139e00fd11",
+   "path": "gerbers/aqroot-Beta-v2-In4_Cu.gbr"
+  },
+  {
+   "new_bytes": 12199,
+   "new_normalised_sha256": "3e110e1ea9b0376489aeef32f38221b9facc6da4a0fe5246070f7e419e847f3f",
+   "old_bytes": 11630,
+   "old_normalised_sha256": "f2a0b5cd9242436e2a119129fd2845b1fa27344607d3e63670a8539dfd9e1441",
+   "path": "gerbers/aqroot-Beta-v2-PTH.drl"
+  },
+  {
+   "new_bytes": 1294,
+   "new_normalised_sha256": "2a428ba22086747d347443b7dfff940e85642f99d064844ba1b7cd837796d0bb",
+   "old_bytes": 1294,
+   "old_normalised_sha256": "dc07bf22c557e7a114bc0194db6750810cce20b4eb8c1dc2fdbf77d2fc6cdbcc",
+   "path": "gerbers/drill-report.txt"
+  }
+ ],
+ "new_manifest_board_sha256": "7b2ca32554d3ce8bb7afae883316470223ead0d44de24d0a55fa3a7b18d064b7",
+ "nondeterministic": [
+  "aqroot-Demo-assembly-bottom.pdf",
+  "aqroot-Demo-assembly-top.pdf",
+  "gerbers/aqroot-Beta-v2-NPTH-drl_map.pdf",
+  "gerbers/aqroot-Beta-v2-PTH-drl_map.pdf"
+ ],
+ "old_manifest_board_sha256": "5715bf5cd688a87f686e162b77bbcbff98dc9f9f3e20b4be6424849423e690d2",
+ "only_new": [],
+ "only_old": [],
+ "population_identical": true,
+ "question": "which SHIPPED artifacts moved when the package was regenerated at authority 7b2ca325",
+ "schema": 1,
+ "unchanged": [
+  "aqroot-Demo-BOM-assembly.csv",
+  "aqroot-Demo-BOM-full.csv",
+  "aqroot-Demo-DO-NOT-POPULATE.csv",
+  "aqroot-Demo-NON-PURCHASED.csv",
+  "aqroot-Demo-OFF-BOARD.csv",
+  "aqroot-Demo-pos-all.csv",
+  "aqroot-Demo-pos-fitted.csv",
+  "gerbers/aqroot-Beta-v2-B_Mask.gbr",
+  "gerbers/aqroot-Beta-v2-B_Paste.gbr",
+  "gerbers/aqroot-Beta-v2-B_Silkscreen.gbr",
+  "gerbers/aqroot-Beta-v2-Edge_Cuts.gbr",
+  "gerbers/aqroot-Beta-v2-F_Mask.gbr",
+  "gerbers/aqroot-Beta-v2-F_Paste.gbr",
+  "gerbers/aqroot-Beta-v2-F_Silkscreen.gbr",
+  "gerbers/aqroot-Beta-v2-NPTH.drl",
+  "gerbers/aqroot-Beta-v2-job.gbrjob"
+ ]
+}

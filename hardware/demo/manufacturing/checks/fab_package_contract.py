@@ -54,8 +54,13 @@ CPL has rows", it is "every row places the part where `pcbnew` says it is".
 Read-only.  `hardware/demo/kicad/aqroot-demo/` is copied to a temporary
 directory before the refill test touches anything.
 
+`--provenance-only` runs FAB1 and nothing else -- no `pcbnew` board load, no
+`kicad-cli` refill -- so the package's provenance can be re-asked on every
+promotion from `contract_regression.py` instead of once per release.  FAB2-FAB8
+remain the release review.  D-666.
+
     python3 hardware/demo/manufacturing/checks/fab_package_contract.py \
-        [--package DIR] [-o OUT]
+        [--package DIR] [-o OUT] [--provenance-only]
 """
 
 import argparse
@@ -596,27 +601,54 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--package", type=Path, default=PACKAGE)
     ap.add_argument("-o", "--out", type=Path)
+    # D-666.  THE WHOLE REVIEW IS A RELEASE ACTIVITY; FAB1 IS A HEARTBEAT.
+    #
+    # FAB2 refills a copy of the board under `kicad-cli` and FAB3-FAB8 re-derive
+    # every hole, row and outline from `pcbnew` -- minutes, and the right price
+    # for the question "is this package fit to send a factory".  But the
+    # question that ROTS between releases is narrower and free: does the
+    # package still name the board it was built from?  Nothing in this
+    # repository asked it, and the answer had been NO for twenty decisions --
+    # `5715bf5c` against an authority of `7b2ca325`, a shipped Excellon
+    # carrying 846 holes where the board has 886.  A package that is 40 plated
+    # holes short of the copper it plots is a fabrication blocker, and it was
+    # invisible because the only instrument that could see it cost minutes and
+    # so was never in the standing suite.
+    #
+    # `--provenance-only` is FAB1 alone: file hashes, the board's own sha256
+    # and the ten schematic sheets'.  No `pcbnew`, no `kicad-cli`, no board
+    # load -- fast enough to stand in `contract_regression.py` beside the
+    # thirteen contracts that watch the copper, so the package's provenance is
+    # re-asked on every promotion instead of once per release.  It is the SAME
+    # `fab1()` the full review runs, not a second implementation of it, so the
+    # heartbeat and the release gate cannot drift apart.
+    ap.add_argument("--provenance-only", action="store_true")
     a = ap.parse_args()
 
     pkg = a.package
     manifest = json.loads((pkg / "MANIFEST.json").read_text())
-    board = board_facts()
-    fitted, dnp = rl.schematic_population()
 
-    checks = {
-        "FAB1_provenance": fab1(pkg, manifest),
-        "FAB2_fill": fab2(),
-        "FAB3_layers": fab3(pkg, board),
-        "FAB4_drill": fab4(pkg, board),
-        "FAB5_cpl": fab5(pkg, board, fitted, dnp),
-        "FAB6_bom": fab6(pkg, board, fitted, dnp),
-        "FAB7_sourcing": fab7(pkg, board),
-        "FAB8_outline": fab8(pkg, board),
-    }
+    if a.provenance_only:
+        checks = {"FAB1_provenance": fab1(pkg, manifest)}
+    else:
+        board = board_facts()
+        fitted, dnp = rl.schematic_population()
+
+        checks = {
+            "FAB1_provenance": fab1(pkg, manifest),
+            "FAB2_fill": fab2(),
+            "FAB3_layers": fab3(pkg, board),
+            "FAB4_drill": fab4(pkg, board),
+            "FAB5_cpl": fab5(pkg, board, fitted, dnp),
+            "FAB6_bom": fab6(pkg, board, fitted, dnp),
+            "FAB7_sourcing": fab7(pkg, board),
+            "FAB8_outline": fab8(pkg, board),
+        }
     doc = dict(schema=1, package=str(pkg.relative_to(ROOT))
                if pkg.is_relative_to(ROOT) else str(pkg),
                board=str(BOARD.relative_to(ROOT)),
                board_sha256=sha256(BOARD),
+               provenance_only=bool(a.provenance_only),
                checks=checks,
                failing=sorted(k for k, v in checks.items() if not v["ok"]),
                verdict="PASS" if all(v["ok"] for v in checks.values())

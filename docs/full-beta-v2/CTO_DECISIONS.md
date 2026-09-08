@@ -1,3 +1,264 @@
+# D-666 · 2026-09-08 · Demo — THE PACKAGE A FACTORY WOULD HAVE RECEIVED WAS FORTY PLATED HOLES SHORT OF THE BOARD, AND NOTHING IN THIS REPOSITORY ASKED; PLUS `/WAKE_INT_N`'s LAST EDGE IS NOT CLOSED, IT IS OPEN AT 151.580 mm
+
+**NO COPPER PROMOTED — SHIPPABLE REFRESHED + FRAMEWORK + CHARACTERISATION.**
+Authority **UNCHANGED** at
+`7b2ca32554d3ce8bb7afae883316470223ead0d44de24d0a55fa3a7b18d064b7`; retained
+open edges 28 -> 28, open retained nets 16 -> 16, connected retained 157 -> 157.
+`hardware/beta-v2` and `hardware/demo/kicad` **UNTOUCHED**.  The standing suite
+is now **FOURTEEN contracts, 14/14 RAN, 14/14 PASS, 13/13 COMPARED and 13/13
+IDENTICAL to `d665`** (`evidence/d666-contract-regression.json`); the fourteenth
+is new and reports `NO BASELINE`, and its baseline is emitted for D-667.
+
+## 1. THE SHIPPABLE HAD ROTTED, AND THE ONLY INSTRUMENT THAT COULD SEE IT WAS NEVER RUN
+
+D-665 §7 item (7) recorded `hardware/demo/fab` as *"STALE against `7b2ca325`"*.
+That is the polite version.  `checks/fab_package_contract.py` — eight clauses,
+written to *"open the SHIPPED artifacts as a stranger would"* — had **never been
+in the standing suite**, and run against the package this repository actually
+carried it reads:
+
+    FAB1_provenance   FAIL   manifest board 5715bf5c…, authority 7b2ca325…
+    FAB2_fill         PASS
+    FAB3_layers       PASS
+    FAB4_drill        FAIL   board 886 holes, shipped Excellon 846
+    FAB5_cpl          PASS
+    FAB6_bom          PASS
+    FAB7_sourcing     PASS
+    FAB8_outline      PASS
+
+`evidence/d666-fab-contract-stale.json`.  **FAB4 is the one that matters and it
+is not a provenance technicality.**  The tool census names the shortfall
+exactly: `P 0.300` board 644 / file 609, `P 0.200` board 51 / file 48,
+`P 0.400` board 137 / file 134, and `P 0.250` board 10 / file **11**.  Forty-one
+plated holes in the copper and not in the drill file, one in the drill file and
+not in the copper.  **A fabricator handed that package builds a board with forty
+holes missing** — every via D-645 through D-665 promoted — and the Gerbers would
+have plotted the annular rings for them, so the defect arrives as forty
+unconnected pads on a board that passes incoming inspection on outline, mask,
+paste, silkscreen, CPL and BOM.  `FAB2_fill` PASSES, which is the cruel part:
+the stored fill was current, so the copper *plots* were honest.  It was the
+holes.
+
+## 2. WHAT CHANGED WHEN THE PACKAGE WAS REGENERATED, MEASURED FILE BY FILE
+
+`export_fab_package.py -o` rebuilt all 28 artifacts at authority `7b2ca325`
+(24 deterministic).  Diffed against the shipped manifest by NORMALISED hash —
+the field that exists so a timestamp header is not mistaken for a change —
+exactly **eight** deterministic artifacts moved:
+
+    gerbers/aqroot-Beta-v2-B_Cu.gbr      1284537 -> 1277830
+    gerbers/aqroot-Beta-v2-F_Cu.gbr       688108 ->  671776
+    gerbers/aqroot-Beta-v2-In1_Cu.gbr     654395 ->  694239
+    gerbers/aqroot-Beta-v2-In2_Cu.gbr      45206 ->   47886
+    gerbers/aqroot-Beta-v2-In3_Cu.gbr     742120 ->  782689
+    gerbers/aqroot-Beta-v2-In4_Cu.gbr     654395 ->  694239
+    gerbers/aqroot-Beta-v2-PTH.drl         11630 ->   12199
+    gerbers/drill-report.txt                1294 ->    1294
+
+The six copper layers and the plated drill.  **`population` and `layers` are
+IDENTICAL objects**, and both BOM views, both position files, the
+do-not-populate / non-purchased / off-board lists, both masks, both pastes, both
+silkscreens, `Edge.Cuts` and the NPTH drill all hash the same as before.  That
+is the honest shape of twenty decisions of pure routing: nothing about WHAT is
+assembled moved, and everything about WHERE THE HOLES GO did.  The regenerated
+package reads **8/8 PASS** (`evidence/d666-fab-contract-fresh.json`) and is what
+`hardware/demo/fab` now carries.
+
+## 3. THE FOURTEENTH STANDING CONTRACT, AND WHY IT IS FAB1 AND NOT ALL EIGHT
+
+The defect was not that the package was stale — a derived artifact behind a
+moving board is normal.  The defect was that **nothing asked**.  Thirteen
+standing contracts watch the copper and the instruments that route against it;
+none of them had ever looked at the thing a factory receives.
+
+The full review is the right question at RELEASE and the wrong one per
+promotion: FAB2 refills a copy under `kicad-cli` and FAB3–FAB8 re-derive every
+hole, row and outline from `pcbnew` — minutes, and several megabytes of
+regenerated Gerbers to commit each time.  Making that a per-promotion gate would
+buy churn, and churn is what gets switched off.
+
+So `fab_package_contract.py` gained **`--provenance-only`**: `fab1()` alone —
+28 file hashes, the board's own `sha256` and the ten schematic sheets' — no
+`pcbnew` load, no `kicad-cli`, **0.3 s**.  It is the SAME `fab1()` the release
+review runs, not a second implementation, so the heartbeat and the release gate
+cannot drift apart.  Registered in `contract_regression.py` as `fab_provenance`,
+the fourteenth.  From D-666 on, a promotion that moves the copper and leaves the
+package behind surfaces in the same iteration as
+`$.checks.FAB1_provenance.ok: False vs True`, and the fix is
+`export_fab_package.py`, not a comment.
+
+**THE STANDING SUITE'S OWN NON-VACUITY.**  The board did not move this
+iteration and none of the three framework edits is read by any contract, so the
+claim to prove is byte-identity, and it holds: thirteen of thirteen compared
+rows are **IDENTICAL to `d665`**, `all_ran` true.  `--emit-baseline d666` keeps
+all fourteen for D-667.
+
+## 4. `/WAKE_INT_N`'s LAST EDGE: THE CORRIDOR IS NOT SHUT, IT IS OPEN AT SIX TIMES THE PRICE
+
+D-665 §7 item (1) is the highest-leverage routing item and it was asked.  The
+answer overturns the framing.
+
+**(a) THE PAIRINGS, ALL SIX, AT 0.050 mm** (`evidence/d666-wake-last-edge-pairings.json`):
+
+    U2.1 <-> Q10.3    OPENS   151.580 mm   15 vias   16 layer segments   137.5 s
+    U3.1 <-> Q10.3    NO_PATH                                              54.3 s
+    U2.1 <-> U1.23    NO_PATH                                              53.1 s
+    U3.1 <-> U1.23    NO_PATH                                              53.3 s
+    U2.1 <-> R3.1     NO_PATH                                               7.3 s
+    U3.1 <-> R3.1     NO_PATH                                               7.3 s
+
+One pairing of six has a path at all, and it is the same absurd answer
+`route_join` called `TOO_LONG` at 148.213 mm in D-665 §7 and the tap census
+priced at 150.169 mm in D-665 §1.  **Three instruments, three launches, one
+corridor.**  For a **25.258 mm** gap.
+
+**(b) AND THE BLAME SCREEN COULD NOT SAY SO.**  `screen_pair_corridor_blame.py`
+recorded BASE as `{ok: true}` with no `mm`, because every pair ever put to it
+had BASE `NO_PATH`.  Read literally, `ok: true` says *"no corridor problem
+here"*.  It is the `--max-mm` lesson from D-654 one level up: an opening without
+a price is not an answer.  **BASE now carries `mm`, `vias`, `layers` and its
+`accepted` verdict**, and the two degenerate shapes are named and stopped
+instead of swept: `accepts(base)` ends the run at
+`VERDICT NO_EVICTION_NEEDED` — there is no blame to apportion, lay it — and
+`not accepts(upper)`, Q1's own upper bound over the bound, skips Q2 for exactly
+the reason a `NO_PATH` upper bound already skipped it.
+
+**(c) THE OPENING EXISTS AND IT IS A SET, NOT A NET.**  At margin 3.0, dropping
+every routed object of all **43** window nets at once opens it in **27.162 mm
+with ONE via** — near the 25.258 mm straight line.  Every single-net drop asked
+returned **EXACTLY 151.580 mm**, the base price to the micron: no one net is on
+the base path, and the short corridor needs many of them gone together
+(`evidence/d666-blame-wake-u2-q10-g50-partial.json`).  At margin **1.0** the
+window falls to **32** nets and the ideal is still **29.955 mm, 2 vias** — a
+25 % cheaper search for 2.8 mm more copper, so the narrower window is the one to
+spend (`-m10.json`).
+
+**(d) AND THE COARSE-LATTICE SHORTCUT IS NOT AVAILABLE HERE.**  The pitch lesson
+says sweep the cheap lattices first.  Asked at **0.100 mm**, this pair returns
+**BASE `NO_PATH` and Q1 `UNPROVED_GEOMETRY` in 11.4 s**
+(`-g100.json`) — the whole 43-net ideal is unprovable at that guard band.  0.050
+mm is the coarsest pitch that answers this pair at all, and its wavefronts cost
+what they cost.
+
+**(e) SO Q2 WAS COSTING HALF THE BILL FOR THE HALF THAT CANNOT BE EXECUTED.**
+Q2 asks one whole-board wavefront per window net so that Q3 may be SKIPPED when
+one net opens the corridor alone; here that is 32 probes for an answer three
+probes had already made near-certain, and only Q3's set can be turned into a
+`--detour-spec`.  **`--minimise-only`** spends the budget on Q3.  What it gives
+up is recorded and not hidden — the report carries `q2: "SKIPPED"` and a
+`Q2_SKIPPED` row, and the run no longer proves that no single net suffices.
+Default OFF; every run made before the flag is byte-identical without it.  With
+it, Q3's probes cost **~48 s** each, not the ~2.4 min a Q2 probe costs, because
+a wavefront through mostly-empty copper is cheap: the 32-net minimisation is
+**~30 minutes**, where Q2+Q3 at margin 3.0 was over four hours.
+
+## 5. THE TRANSACTION WAS BUILT AND PUT TO THE GATE FIVE TIMES
+
+The spec is `evidence/d666-detour-spec-wake-last.json` and its arms.  Every arm
+requested `/WAKE_INT_N` alone, at 0.050 mm, with `--repair-planes`.
+
+    arm  reserve            relays                     /WAKE_INT_N   detours failed
+    A    discs r=0.65       all relay:true             148.213 mm    IR_TX, GND
+    B    discs r=0.50       GND relay:false            148.213 mm    IR_TX
+    C    (none)             ALL relay:false            ** 35.342 **  none
+    D    stated LANE        signal relays true         ** 35.342 **  IR_TX, SX1262
+    E    stated LANE        + relays state max_mm      ** 35.342 **  IR_TX, SX1262
+
+**(a) ARM C IS THE CEILING AND IT IS REAL.**  With every relay off — a
+DIAGNOSTIC, refused as it should be, because it strands two signal nets and
+takes retained open edges 28 -> **29** — the gate's OWN proposer closes the edge
+in **35.342 mm on `F`/`B`/`I2`/`F`/`I2`/`B` with 5 vias** at (55.800, 107.850),
+(59.200, 106.400), (57.350, 98.750), (53.850, 96.750) and (53.150, 92.050).
+The eight units are the right eight units and the 148.213 mm haul is not a wall.
+
+**(b) AND THE 148.213 mm IN ARMS A AND B WAS THE TRANSACTION'S OWN RELAY.**
+This was nearly mis-diagnosed as a router gap — the screen proves with
+`maze3d.offcentre_route`, the gate proposes with `mz.route_join`, and it is easy
+to believe the second is weaker.  It is not.  Asked side by side on ONE board
+with ONE field (`evidence/d666-router-ab.json`):
+
+    route_join       BASE                147.769 mm  15 vias   130.6 s
+    offcentre_route  BASE                151.580 mm  15 vias   129.5 s
+    route_join       MINUS the 8 units  ** 32.062 mm ** 5 vias   40.9 s
+    offcentre_route  MINUS the 8 units    35.407 mm   5 vias    41.3 s
+
+**`route_join` is the BETTER of the two here, by 3.3 mm.**  A reserve disc's own
+net is exempt from it (`route_maze_batch.py`, `guard_for`), so the discs cannot
+have blocked `/WAKE_INT_N` either.  The only remaining difference between the
+board arm B proposed on and the board that measures 32.062 mm is the copper the
+transaction ITSELF laid: `/SX1262_CS_N`'s relay went back across the corridor it
+had just been moved out of.  **D-660 §3(d)'s "a relay can put the same cut back
+one pocket further out" — here it put it back in the SAME pocket.**
+
+**(c) THE LANE FIXES THAT, AND THE LANE IS THE NEW WALL.**  D-660 built
+`reserve_corridor.py --lane` for exactly this and D-663 recorded that it had
+never been spent.  It is spent now: `evidence/d666-wake-lane-guard.json`, three
+corridors on `F.Cu`/`B.Cu`/`In2.Cu` along arm C's own route, 93.561 mm, 960
+points, merged with the 49 pour-bond guards.  **It works** — arms D and E hold
+`/WAKE_INT_N` at 35.342 mm with the relays switched back ON.  But now BOTH
+signal relays are `NO_PATH`: **a lane that seals the corridor for the requested
+net seals it against the very nets it evicted.**
+
+**(d) AND IT IS NOT THE BUDGET, WHICH WAS THE OBVIOUS SUSPECT AND WAS ASKED.**
+The default relay bound is `was + 2*pi*R_max + moves`, so emptying arm D's
+reserve DISCS collapsed it to the removed length exactly — 5.136 mm for
+`/IR_TX_GPIO16`, 2.4 mm for `/SX1262_CS_N`, not one millimetre of slack to go
+around anything.  Arm E states `max_mm` explicitly (15.0 and 12.0, about 3x and
+5x the copper removed; the IR transmit drive at a 38 kHz carrier and a LoRa chip
+select, neither length-critical, both far inside the DRU's 25 mm uncoupled
+budget) and **both relays are STILL `NO_PATH` at 15.000 mm**.  The lane is the
+constraint, not the allowance.
+
+**A DEFAULT WORTH REMEMBERING:** `was + 2*pi*R_max + moves` is written for a
+detour past DISCS.  Delete the discs and the bound silently becomes "no detour
+at all"; reserve a LANE instead and the bound is not merely tight, it is
+nonsense.  A spec that reserves a lane MUST state its own `max_mm`.
+
+## 6. WHAT THIS LEAVES, STATED PRECISELY
+
+**PROVED.**  `/WAKE_INT_N`'s last edge closes at **35.342 mm / 5 vias** through
+the gate's own proposer once eight named objects of three named nets are out of
+the way; the eight are minimal under reverse-greedy; `/ACC_5V_SW_EN` is in the
+window and is NOT among them; the two `GND` barrels are NOT sole bonds
+(`rebond_priced` PASSES in every arm — island 8, 59.913 mm2, five other
+barrels); and `pour_partition`, `barrel_move_licensed`, `no_unlicensed_removal`,
+`authority_unchanged`, `inherited_within_baseline` and `zones_and_rule_areas`
+PASS in every arm.
+
+**NOT PROVED, AND OWED.**  A relay for `/IR_TX_GPIO16` (5.136 mm of `F.Cu` at
+y = 108.0) and `/SX1262_CS_N` (2.4 mm of `F.Cu` around (57.700, 111.900)) that
+gets to the far side of the reserved corridor.  The full-length three-layer lane
+is too strong and the bare board is too weak; the answer is between them.
+
+## 7. NEXT, IN ORDER OF LEVERAGE
+
+1. **`/WAKE_INT_N`'s LAST edge, ARM F.**  Everything is built; one thing is
+   missing.  Three shapes, cheapest first: **(i)** reserve the lane only where
+   the relay actually re-blocked — the `F.Cu` diagonal between `Q10.3` and the
+   via at (55.800, 107.850) — and leave the other 80 mm of it open, so the
+   relays may cross elsewhere; **(ii)** request `/IR_TX_GPIO16` and
+   `/SX1262_CS_N` as FIRST-CLASS nets with `--evict` instead of as end-to-end
+   detours, so they get the whole router and the bounded repair pass rather than
+   a two-ended budget (the evicted net is requested FIRST — D-661); **(iii)**
+   move the `/WAKE_INT_N` route instead — arm C's 5 vias are one of several
+   5-via answers, and `--ban`ning `/IR_TX_GPIO16` from the blame window would
+   name a different eight objects.  Judge every arm on `board_improved` and on
+   the RELAY, not on whether `/WAKE_INT_N` routed (D-660 §3(d), and §5(b) above).
+2. **`U9.30` (`SPI_B_SCK`)** — a CLEAR land whose refusal is ROUTED COPPER, and
+   the ORDINARY corridor half of D-665 §7 item (2); `U9.14` (`NFC_VDD_RF`) is
+   the RF half and the D-665 addendum's `screen_segment_evict.py --plan-out`
+   with `rf_symmetry` as the acceptance test still stands.  Ask it with
+   `--minimise-only`, which is now half the price it was.
+3. `U16.3` needs a BARREL SITE, not a pitch (D-664 carry).
+4. `BQ25185_SYS` `C27.1` with the tap and a RESERVED lane (D-664 carry).
+5. `/I2C_SCL_INT` `U14.7 <-> J1.44` remains **the one OPEN OWNER DECISION**
+   (D-655 §7), RECORDED NOT TAKEN.
+6. `copper_sliver` localisation remains an OPEN INSTRUMENT GAP.
+7. `hardware/demo/fab` is **FRESH at `7b2ca325`** and `fab_provenance` will say
+   so, or say otherwise, on every future promotion.  **The next promotion owes an
+   `export_fab_package.py` re-run**, and the full eight-clause review is owed
+   once more at release.
+
 # D-665 ADDENDUM · 2026-09-08 · Demo — `U9.14`'s OPENER RUNS THROUGH THE NFC ANTENNA DRIVE, AND NOTHING ELSE DOES
 
     authority  7b2ca32554d3ce8bb7afae883316470223ead0d44de24d0a55fa3a7b18d064b7

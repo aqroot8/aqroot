@@ -127,6 +127,28 @@ CONTRACTS = (
     # tap and the writer that LAYS one name one list and one geometry", and
     # that claim has to be re-proved on every future framework change.
     ("tap", "checks/tap_contract.py", (), "tap-contract", "all_pass"),
+    # D-666.  THE FOURTEENTH, AND THE FIRST ABOUT THE SHIPPABLE.  Every
+    # contract above asks about the BOARD or about the INSTRUMENT that routes
+    # against it.  None of them looks at `hardware/demo/fab` -- the Gerbers,
+    # the drills, the CPL and the BOM a factory would actually receive -- and
+    # so nobody noticed that it had named board `5715bf5c` since D-644 while
+    # the authority moved twenty decisions to `7b2ca325`.  Measured rather than
+    # asserted: `fab_package_contract.py` run against the SHIPPED package reads
+    # `FAB1_provenance FAIL` and `FAB4_drill FAIL`, and FAB4 says how much --
+    # the board carries 886 holes and the shipped Excellon 846, short 35
+    # 0.300 mm via drills, 3 at 0.200 and 3 at 0.400.  Sending it would have
+    # built a board with forty plated holes missing.
+    #
+    # It is the FULL review that proves that, and the full review costs minutes
+    # -- a `kicad-cli` refill plus a hole-by-hole bijection -- which is why it
+    # is a release activity and not a per-promotion one.  What belongs HERE is
+    # the part that rots: `--provenance-only` is FAB1 alone, 0.3 s, no board
+    # load, and it is the SAME `fab1()` the release review runs.  From D-666 on,
+    # a promotion that moves the copper and leaves the package behind shows up
+    # in this suite the same iteration, as `$.checks.FAB1_provenance.ok:
+    # False vs True` -- and the fix is `export_fab_package.py`, not a comment.
+    ("fab_provenance", "checks/fab_package_contract.py",
+     ("--provenance-only",), "fab_provenance-contract", "verdict"),
 )
 BY_BASENAME = ("board", "schematic", "guard", "pre_board")
 

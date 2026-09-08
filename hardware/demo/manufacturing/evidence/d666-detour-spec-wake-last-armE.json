@@ -1,0 +1,130 @@
+{
+ "detours": [
+  {
+   "max_mm": 15.0,
+   "net": "/IR_TX_GPIO16",
+   "relay": true,
+   "tracks": [
+    {
+     "a_mm": [
+      53.25,
+      108.0
+     ],
+     "b_mm": [
+      56.5,
+      108.0
+     ],
+     "count": 1,
+     "layer": "F.Cu",
+     "width_mm": 0.2
+    },
+    {
+     "a_mm": [
+      56.5,
+      108.0
+     ],
+     "b_mm": [
+      56.95,
+      108.45
+     ],
+     "count": 1,
+     "layer": "F.Cu",
+     "width_mm": 0.2
+    },
+    {
+     "a_mm": [
+      56.95,
+      108.45
+     ],
+     "b_mm": [
+      56.95,
+      109.7
+     ],
+     "count": 1,
+     "layer": "F.Cu",
+     "width_mm": 0.2
+    }
+   ]
+  },
+  {
+   "max_mm": 12.0,
+   "net": "/SX1262_CS_N",
+   "relay": true,
+   "tracks": [
+    {
+     "a_mm": [
+      58.4242,
+      111.2007
+     ],
+     "b_mm": [
+      57.7,
+      111.9
+     ],
+     "count": 1,
+     "layer": "F.Cu",
+     "width_mm": 0.2
+    },
+    {
+     "a_mm": [
+      57.7,
+      111.9
+     ],
+     "b_mm": [
+      56.6,
+      112.8
+     ],
+     "count": 1,
+     "layer": "F.Cu",
+     "width_mm": 0.2
+    }
+   ]
+  },
+  {
+   "net": "GND",
+   "relay": false,
+   "tracks": [
+    {
+     "a_mm": [
+      58.525,
+      105.525
+     ],
+     "b_mm": [
+      59.3,
+      106.3
+     ],
+     "count": 1,
+     "layer": "B.Cu",
+     "width_mm": 0.3
+    }
+   ],
+   "why": "D-666 ARM B: this B.Cu segment TERMINATES at the barrel (59.300,106.300) the same spec removes.  Relaying it between its own two ends asks the router to reach a site that is reserved and a bond that is gone; ARM A asked exactly that and got NO_PATH at 0.300 mm inside a 5.180 mm budget.  It is a stub of a removed bond, so it is REMOVED AND NOT PUT BACK and the gate's inert_removal_priced clause prices it."
+  },
+  {
+   "barrel": {
+    "at_mm": [
+     59.3,
+     106.3
+    ],
+    "count": 1,
+    "dia_mm": 0.6,
+    "drill_mm": 0.3
+   },
+   "net": "GND"
+  },
+  {
+   "barrel": {
+    "at_mm": [
+     59.9,
+     106.5
+    ],
+    "count": 1,
+    "dia_mm": 0.6,
+    "drill_mm": 0.3
+   },
+   "net": "GND"
+  }
+ ],
+ "note": "D-666 ARM E -- the promotable shape.  Same EIGHT units as arms A-D, the STATED LANE of arm D (evidence/d666-wake-lane-guard.json) as --guard, and each relay STATES ITS OWN max_mm.  Arm D refused because emptying the per-site reserve discs collapsed the default relay budget to `was + 2*pi*R_max + movemm` with R_max = 0 -- that is the removed length EXACTLY, 5.136 mm for /IR_TX_GPIO16 and 2.4 mm for /SX1262_CS_N, so neither relay was allowed a single millimetre to go around anything.  The default bound is written for a detour past DISCS; a detour past a LANE is a longer walk and the spec has to own that judgement out loud (route_maze_batch.py: 'a spec may state its own max_mm and own that judgement explicitly').  15.0 mm and 12.0 mm, about 3x and 5x the copper removed: /IR_TX_GPIO16 is the IR transmit drive at a 38 kHz carrier and /SX1262_CS_N is a LoRa chip select -- neither is a length-critical net, and both stay far inside the DRU's 25 mm uncoupled budget.",
+ "reserve": [],
+ "schema": 1
+}

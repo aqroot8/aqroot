@@ -1,0 +1,100 @@
+{
+ "a": "U2.1",
+ "b": "Q10.3",
+ "grid_nm": 50000,
+ "margin_mm": 1.0,
+ "net": "/WAKE_INT_N",
+ "nets": [
+  "/IR_TX_GPIO16",
+  "/SX1262_CS_N",
+  "GND"
+ ],
+ "route": {
+  "launches": [
+   {
+    "a_xy": [
+     54.1375,
+     91.575
+    ],
+    "b_xy": [
+     54.15,
+     92.2
+    ],
+    "base_dir": true,
+    "centre": true,
+    "layer": "B",
+    "mm": 0.6251,
+    "necked": false,
+    "offcentre_mm": 0.0,
+    "pad": "U2.1",
+    "trunk_width": 200000,
+    "width": 200000
+   },
+   {
+    "a_xy": [
+     61.5333,
+     115.7256
+    ],
+    "b_xy": [
+     61.55,
+     115.0
+    ],
+    "base_dir": true,
+    "centre": true,
+    "layer": "F",
+    "mm": 0.7258,
+    "necked": false,
+    "offcentre_mm": 0.0,
+    "pad": "Q10.3",
+    "trunk_width": 200000,
+    "width": 200000
+   }
+  ],
+  "layers": [
+   "B",
+   "I2",
+   "F",
+   "I2",
+   "B",
+   "F"
+  ],
+  "mm": 35.4075,
+  "mm_by_layer": {
+   "B": 5.7586,
+   "F": 16.6893,
+   "I2": 11.6086
+  },
+  "ok": true,
+  "stub_mm": 1.3509,
+  "terminals": [
+   "B",
+   "F"
+  ],
+  "via_xy": [
+   [
+    53.1,
+    92.1
+   ],
+   [
+    54.05,
+    96.8
+   ],
+   [
+    57.55,
+    100.05
+   ],
+   [
+    59.2,
+    106.4
+   ],
+   [
+    55.8,
+    107.85
+   ]
+  ],
+  "vias": 5
+ },
+ "router_objects": 34,
+ "schema": 1,
+ "units": 8
+}

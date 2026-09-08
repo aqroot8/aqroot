@@ -1,0 +1,66 @@
+{
+ "OM1": {
+  "by_kind": {},
+  "missing": 0,
+  "ok": true,
+  "what": "every routed copper object the board carries is in the model, on every layer it occupies"
+ },
+ "OM2": {
+  "by_kind": {},
+  "missing": 0,
+  "ok": true,
+  "what": "every drilled hole the board carries is in qb.holes"
+ },
+ "OM3": {
+  "drc": null,
+  "ok": true,
+  "verdict": "UNMEASURED",
+  "what": "the cost of any absence is read off real KiCad DRC on the same board, never assumed"
+ },
+ "OM4": {
+  "added": "one B.Cu track + one through via, on a throwaway copy",
+  "delta_missing_copper": 0,
+  "delta_missing_holes": 0,
+  "expect_copper": 0,
+  "expect_holes": 0,
+  "fires": true,
+  "ok": true,
+  "scan_gate_on": true,
+  "why": "with the gate OFF a scanned track adds nothing to the missing set and an unscanned via adds one barrel per copper layer plus its drill; with it ON both are picked up and the delta is zero -- so a SECOND arm withholds one real barrel from the model by hand and requires OM1/OM2 to name exactly it, which fires in either state",
+  "withheld_barrel": {
+   "at_mm": [
+    51.8,
+    73.5
+   ],
+   "expect_copper": 6,
+   "expect_holes": 1,
+   "fires": true,
+   "missing_copper": 6,
+   "missing_holes": 1,
+   "ran": true
+  }
+ },
+ "board": "/home/aqroot8/aqroot-demo/hardware/demo/kicad/aqroot-demo/aqroot-Beta-v2.kicad_pcb",
+ "board_sha256": "7b2ca32554d3ce8bb7afae883316470223ead0d44de24d0a55fa3a7b18d064b7",
+ "ok": true,
+ "parity": {
+  "board_copper": 8273,
+  "board_holes": 886,
+  "extra_copper": 0,
+  "extra_holes": 0,
+  "missing_copper": 0,
+  "missing_copper_by_kind": {},
+  "missing_holes": 0,
+  "missing_holes_by_kind": {},
+  "model_copper": 8273,
+  "model_holes": 886,
+  "sample_missing_copper": [],
+  "sample_missing_holes": [],
+  "scan_gate_on": true
+ },
+ "scan_gate": "AQROOT_SCAN_BOARD_VIAS",
+ "scan_gate_on": true,
+ "schema": 1,
+ "verdict": "PASS",
+ "what": "does the proposer's obstacle model contain every copper object and every drilled hole the board carries?"
+}
