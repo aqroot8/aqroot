@@ -3687,6 +3687,247 @@ def join_orphans(qb, net, field, escape_limit=8, via_cost_mm=1.5, near=8,
                 vias=sum(d.get('vias', 0) for d in done))
 
 
+# D-664 -- THE TAP: AN ORPHAN LAND MAY AIM AT ITS OWN NET'S COPPER, NOT ONLY AT
+# A PAD.
+#
+# `route_join` closes an island pair PAD TO PAD: `src_pads` and `dst_pads` are
+# lists of PADS and every escape of every one of them takes part.  That is the
+# right question for a net with no copper.  It is the WRONG question for a net
+# with accepted partial copper, and after sixty decisions this board is almost
+# entirely the second kind.  D-652 measured the gap and named it; D-655 built
+# `screen_net_tap.py`, which PROVES a tap legal and then REVERTS it; and for
+# twelve decisions there has been no WRITER, so a wall that a 6 mm branch off
+# the net's own bus would open has been priced as a 15 mm haul across the most
+# congested pocket on the board -- and refused there.
+#
+# A T-junction onto a conductor of one's own net is ordinary PCB practice and
+# every piece of the mechanism already existed.  `offcentre_route` accepts an
+# END carrying `anchor=True` and routes to that exact coordinate without asking
+# it to escape, because an anchor is not a pad: it is a point already on
+# copper.  What was missing was a caller that builds that anchor out of the
+# net's OWN CONNECTED COPPER and lets the copper STAY.  This is that caller and
+# nothing else -- no new geometry, no new clearance arithmetic, no licence.
+#
+#   TAP1  THE TARGET IS PROVED BY CONNECTIVITY, NOT BY DISTANCE.  A tap site is
+#         accepted only if KiCad's own `CONNECTIVITY_DATA` puts the track or
+#         via it lies on in the same cluster as a PAD of another island.
+#         Copper of the right net that is itself orphaned is not a target:
+#         joining to it would close no edge and the ledger would say so
+#         afterwards.
+#
+#   TAP2  NOTHING IS REMOVED AND NOTHING IS MODIFIED.  A tap only ADDS copper
+#         whose far end lies on a conductor this board already carries.  It is
+#         not an eviction, not a detour and not a relay; no existing object is
+#         named, moved, shortened or split.  So it can have no relay to judge
+#         and no licence to price -- the two things that refused D-663's
+#         whole-net arms.
+#
+#   TAP3  THE PROOF IS `offcentre_route`'s OWN, AND IT IS THE SCREEN'S OWN.
+#         The launch is the exact off-centre stub, the haul is the whole-board
+#         3D corridor, and every object is re-proved by `verify_laid` in exact
+#         geometry before it is kept.  `emit=False` still LAYS each tap, proves
+#         it and REVERTS it, exactly as `join_islands` does, so
+#         `screen_net_tap.py` and this writer cannot disagree about whether a
+#         tap is legal.  `checks/tap_contract.py` asserts that agreement.
+#
+#   TAP4  A TAP MAKES A STUB, SO THE NETCLASS DECIDES WHETHER IT MAY BE ASKED.
+#         `forbidden` classes are refused BY NAME, before any search: their
+#         rules govern the SHAPE of the conductor -- matched length, controlled
+#         impedance, a reserved layer, a switching node's loop area, an RF
+#         arm's symmetry -- and none of those survive an unbudgeted branch.
+#         The caller passes the set; `route_maze_batch.py` passes
+#         `screen_net_tap.STUB_FORBIDDEN` so the two files name one list.
+#
+#   TAP5  GREEDY NEAREST SITE WITH UNION-FIND OVER THE NET'S OWN ISLANDS, the
+#         same transaction discipline `hop_net_pads` and `join_orphans` use:
+#         each land is independent, a failure is reverted alone, a success
+#         merges its two groups and the next land is asked on a board that
+#         already carries its copper.  `max_mm` is the same ELECTRICAL bound
+#         and a land beyond it is DECLINED and reported, never silently
+#         dropped.
+TAP_INNER_SHORT = {'In1.Cu': 'I1', 'In2.Cu': 'I2', 'In3.Cu': 'I3',
+                   'In4.Cu': 'I4'}
+
+
+def _tap_short_layer(board, layer_id):
+    """The router's short name for a board layer, or None if it has none."""
+    name = board.GetLayerName(layer_id)
+    if name == 'F.Cu':
+        return 'F'
+    if name == 'B.Cu':
+        return 'B'
+    return TAP_INNER_SHORT.get(name)
+
+
+def _tap_seg_near(px, py, x0, y0, x1, y1):
+    """The point of segment (x0,y0)-(x1,y1) nearest (px,py), and the gap."""
+    dx, dy = x1 - x0, y1 - y0
+    den = float(dx * dx + dy * dy)
+    if den <= 0.0:
+        return x0, y0, math.hypot(px - x0, py - y0)
+    t = ((px - x0) * dx + (py - y0) * dy) / den
+    t = 0.0 if t < 0.0 else (1.0 if t > 1.0 else t)
+    qx, qy = x0 + t * dx, y0 + t * dy
+    return qx, qy, math.hypot(px - qx, py - qy)
+
+
+def tap_sites(qb, net, layers):
+    """Every track/via of `net` that TAP1 admits, labelled with its island.
+
+    Read-only.  Returns (islands, objects); `objects` is empty when the net has
+    no connected copper of its own on a layer its contract allows.
+    """
+    islands = net_islands(qb, net)
+    if len(islands) < 2:
+        return islands, []
+    board = qb.b
+    board.BuildConnectivity()
+    conn = board.GetConnectivity()
+    pad_island = {}
+    for i, isl in enumerate(islands):
+        for p in isl:
+            pad_island[(p['ref'], int(p['x']), int(p['y']))] = i
+    objects = []
+    for tr in board.GetTracks():
+        if tr.GetNetname() != net:
+            continue
+        owners = set()
+        for item in conn.GetConnectedItems(tr):
+            if item.GetClass() != 'PAD':
+                continue
+            fp = item.GetParentFootprint()
+            if fp is None:
+                continue
+            pos = item.GetPosition()
+            key = (fp.GetReference() + '.' + item.GetNumber(), pos.x, pos.y)
+            if key in pad_island:
+                owners.add(pad_island[key])
+        # TAP1.  A conductor whose cluster reaches pads of NO island is
+        # orphaned copper; one that reaches TWO is a board this screen cannot
+        # read, and both are refused rather than guessed at.
+        if len(owners) != 1:
+            continue
+        island = owners.pop()
+        if tr.GetClass() == 'PCB_VIA':
+            pos = tr.GetPosition()
+            for layer in layers:
+                objects.append(dict(island=island, kind='via', layer=layer,
+                                    x0=pos.x, y0=pos.y, x1=pos.x, y1=pos.y,
+                                    tag='via@%.3f,%.3f'
+                                        % (pos.x / 1e6, pos.y / 1e6)))
+            continue
+        short = _tap_short_layer(board, tr.GetLayer())
+        if short is None or short not in layers:
+            continue
+        s, e = tr.GetStart(), tr.GetEnd()
+        objects.append(dict(island=island, kind='track', layer=short,
+                            x0=s.x, y0=s.y, x1=e.x, y1=e.y,
+                            tag='%s %.3f,%.3f-%.3f,%.3f'
+                                % (short, s.x / 1e6, s.y / 1e6,
+                                   e.x / 1e6, e.y / 1e6)))
+    return islands, objects
+
+
+def join_taps(qb, net, field, width=None, G=50000, max_mm=0.0, pairs=3,
+              emit=True, netclass=None, forbidden=()):
+    """T-junction every orphan land of `net` onto its own net's copper.
+
+    See the block comment above for TAP1-TAP5.  Returns
+    dict(ok, joined, taps, failures, declined, mm, vias) with the same shape
+    `join_orphans` returns, so a caller that already reads one reads this.
+    """
+    if netclass is not None and netclass in set(forbidden):
+        return dict(ok=False, net=net, joined=0, reason='STUB_FORBIDDEN',
+                    why='TAP4: netclass %s governs the SHAPE of its conductor; '
+                        'a T-junction is not asked for it' % netclass,
+                    taps=[], failures=[], declined=[], mm=0.0, vias=0)
+    width = int(field.width if width is None else width)
+    islands, objects = tap_sites(qb, net, field.layers)
+    if len(islands) < 2:
+        return dict(ok=False, net=net, joined=0, reason='NOTHING_TO_TAP',
+                    taps=[], failures=[], declined=[], mm=0.0, vias=0)
+    if not objects:
+        return dict(ok=False, net=net, joined=0, reason='NO_OWN_COPPER',
+                    why='this net owns no connected copper on a layer its '
+                        'contract allows, so there is nothing to tap onto',
+                    taps=[], failures=[], declined=[], mm=0.0, vias=0)
+
+    parent = {k: k for k in range(len(islands))}
+
+    def find(a):
+        while parent[a] != a:
+            parent[a] = parent[parent[a]]
+            a = parent[a]
+        return a
+
+    # Every (land, site) combination, nearest first.  Ordering is total and
+    # deterministic: gap, then the land's reference, then the target's tag.
+    combos = []
+    for i, isl in enumerate(islands):
+        for p in isl:
+            sites = []
+            for o in objects:
+                if o['island'] == i:
+                    continue
+                qx, qy, d = _tap_seg_near(p['x'], p['y'],
+                                          o['x0'], o['y0'], o['x1'], o['y1'])
+                sites.append((d, qx, qy, o))
+            sites.sort(key=lambda t: (t[0], t[3]['tag']))
+            used = set()
+            for (d, qx, qy, o) in sites:
+                if o['tag'] in used:
+                    continue
+                used.add(o['tag'])
+                combos.append((d, i, p, qx, qy, o))
+                if len(used) >= max(1, pairs):
+                    break
+    combos.sort(key=lambda t: (t[0], t[2]['ref'], t[5]['tag']))
+
+    done, failed, declined = [], [], []
+    for (d, i, p, qx, qy, o) in combos:
+        ra, rb = find(i), find(o['island'])
+        if ra == rb:
+            continue
+        rec = dict(land=p['ref'], island=i, target=o['tag'],
+                   target_island=o['island'], layer=o['layer'],
+                   at=(round(qx / 1e6, 4), round(qy / 1e6, 4)),
+                   gap_mm=round(d / 1e6, 4))
+        if max_mm and d > max_mm * qr.MM:
+            declined.append(dict(rec, reason='TOO_FAR',
+                                 why='%.3f mm gap exceeds the %.1f mm tap '
+                                     'bound; NEVER ASKED' % (d / 1e6, max_mm)))
+            continue
+        anchor = dict(ref='TAP', net=net, anchor=True, layer=o['layer'],
+                      x=int(round(qx)), y=int(round(qy)))
+        m = qb.mark()
+        r = offcentre_route(qb, field, p, anchor, width=width, G=G)
+        if not r.get('ok'):
+            qb.revert(m)
+            failed.append(dict(rec, reason=r.get('reason'), why=r.get('why'),
+                               pad=r.get('pad')))
+            continue
+        done.append(dict(rec, mm=r.get('mm'), vias=r.get('vias'),
+                         layers=r.get('layers'), via_xy=r.get('via_xy'),
+                         stub_mm=r.get('stub_mm'),
+                         launches=r.get('launches')))
+        # TAP3.  A dry run lays the tap, proves it and reverts it, so a screen
+        # and a gate cannot disagree about whether it is legal; what
+        # `emit=False` changes is only that the copper does not stay.  The
+        # union-find still merges, because the QUESTION "how many edges would
+        # this close" is the same question either way.
+        if not emit:
+            qb.revert(m)
+        parent[ra] = rb
+        if emit:
+            field.rebuild_blk()
+    return dict(ok=bool(done), net=net, joined=len(done), taps=done,
+                failures=failed[:40], declined=declined[:40],
+                declined_n=len(declined), asked=len(done) + len(failed),
+                max_mm=max_mm, emitted=bool(emit),
+                mm=round(sum(t.get('mm') or 0.0 for t in done), 4),
+                vias=sum(t.get('vias') or 0 for t in done))
+
+
 def stitch_net(qb, net, width=200000, clr_pad=200000, clr_trk=200000,
                via_dia=600000, via_drill=300000, G=100000, field=None,
                max_mm=8.0, escape_limit=12, split_islands=False,

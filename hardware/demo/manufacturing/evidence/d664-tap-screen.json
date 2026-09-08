@@ -1,0 +1,323 @@
+{
+  "board": "/home/aqroot8/aqroot-demo/hardware/demo/kicad/aqroot-demo/aqroot-Beta-v2.kicad_pcb",
+  "board_sha256": "2900f21a934d9d826644131a90baa36f7dace0db5f50cf2e702e5694f121177f",
+  "grid_nm": 50000,
+  "limits": "TAP5: a TAP_ROUTABLE row is a work-list entry, not a transaction -- no gate clause has been asked, the pour partition least of all",
+  "method": "read-only; maze3d.offcentre_route to an anchor END built from the target island's own connected copper, proved by verify_laid in exact geometry and REVERTED",
+  "nets": [
+    {
+      "lands": [
+        {
+          "gain_mm": 2.7328,
+          "island": 1,
+          "land": "TP5.1",
+          "nearest_pad_mm": 13.286,
+          "nearest_tap_mm": 10.5532,
+          "tries": [
+            {
+              "at": [
+                51.7,
+                135.4
+              ],
+              "gap_mm": 10.5532,
+              "grid_nm": 50000,
+              "layer": "F",
+              "ok": false,
+              "reason": "NO_PATH",
+              "target": "via@51.700,135.400",
+              "target_island": 0,
+              "why": "no all-layer corridor at 0.200 mm from TP5.1 on F to TAP on F"
+            },
+            {
+              "at": [
+                51.7,
+                135.4
+              ],
+              "gap_mm": 10.5532,
+              "grid_nm": 50000,
+              "layer": "I2",
+              "ok": false,
+              "reason": "NO_PATH",
+              "target": "I2 51.700,135.400-56.100,131.200",
+              "target_island": 0,
+              "why": "no all-layer corridor at 0.200 mm from TP5.1 on F to TAP on I2"
+            },
+            {
+              "at": [
+                60.47,
+                136.75
+              ],
+              "gap_mm": 13.286,
+              "grid_nm": 50000,
+              "layer": "F",
+              "ok": false,
+              "reason": "NO_PATH",
+              "target": "F 60.470,136.750-60.500,135.600",
+              "target_island": 0,
+              "why": "no all-layer corridor at 0.200 mm from TP5.1 on F to TAP on F"
+            }
+          ],
+          "verdict": "NO_TAP"
+        },
+        {
+          "gain_mm": 0.7423,
+          "island": 2,
+          "land": "U14.7",
+          "nearest_pad_mm": 24.1371,
+          "nearest_tap_mm": 23.3948,
+          "tries": [
+            {
+              "at": [
+                23.8,
+                93.9
+              ],
+              "gap_mm": 23.3948,
+              "grid_nm": 50000,
+              "layer": "F",
+              "ok": false,
+              "reason": "NO_PATH",
+              "target": "F 23.800,93.900-25.100,92.800",
+              "target_island": 0,
+              "why": "no all-layer corridor at 0.200 mm from U14.7 on B to TAP on F"
+            },
+            {
+              "at": [
+                23.8,
+                93.9
+              ],
+              "gap_mm": 23.3948,
+              "grid_nm": 50000,
+              "layer": "F",
+              "ok": false,
+              "reason": "NO_PATH",
+              "target": "F 23.525,95.125-23.800,93.900",
+              "target_island": 0,
+              "why": "no all-layer corridor at 0.200 mm from U14.7 on B to TAP on F"
+            },
+            {
+              "at": [
+                23.4,
+                94.925
+              ],
+              "gap_mm": 23.5562,
+              "grid_nm": 50000,
+              "layer": "F",
+              "ok": false,
+              "reason": "NO_PATH",
+              "target": "F 23.410,96.000-23.400,94.925",
+              "target_island": 0,
+              "why": "no all-layer corridor at 0.200 mm from U14.7 on B to TAP on F"
+            }
+          ],
+          "verdict": "NO_TAP"
+        },
+        {
+          "gain_mm": 9.5364,
+          "island": 3,
+          "land": "U16.3",
+          "nearest_pad_mm": 15.5847,
+          "nearest_tap_mm": 6.0483,
+          "tries": [
+            {
+              "at": [
+                55.7,
+                60.3
+              ],
+              "gap_mm": 6.0483,
+              "grid_nm": 50000,
+              "layer": "F",
+              "ok": false,
+              "reason": "NO_LEGAL_ESCAPE",
+              "target": "F 55.700,60.300-57.300,61.800",
+              "target_island": 0,
+              "why": "U16.3: NO OFF-CENTRE LAUNCH at 0.200 mm from any of 41 anchors x 24 directions x 17 lengths; blocked by U16.2 (x6297), U16.4 (x5870), U16.1 (x2158), track (x1041)"
+            },
+            {
+              "at": [
+                55.7,
+                60.3
+              ],
+              "gap_mm": 6.0483,
+              "grid_nm": 50000,
+              "layer": "F",
+              "ok": false,
+              "reason": "NO_LEGAL_ESCAPE",
+              "target": "F 52.800,60.900-55.700,60.300",
+              "target_island": 0,
+              "why": "U16.3: NO OFF-CENTRE LAUNCH at 0.200 mm from any of 41 anchors x 24 directions x 17 lengths; blocked by U16.2 (x6297), U16.4 (x5870), U16.1 (x2158), track (x1041)"
+            },
+            {
+              "at": [
+                57.8,
+                61.5
+              ],
+              "gap_mm": 7.106,
+              "grid_nm": 50000,
+              "layer": "F",
+              "ok": false,
+              "reason": "NO_LEGAL_ESCAPE",
+              "target": "F 57.600,61.600-57.800,61.500",
+              "target_island": 0,
+              "why": "U16.3: NO OFF-CENTRE LAUNCH at 0.200 mm from any of 41 anchors x 24 directions x 17 lengths; blocked by U16.2 (x6297), U16.4 (x5870), U16.1 (x2158), track (x1041)"
+            }
+          ],
+          "verdict": "NO_TAP"
+        }
+      ],
+      "layers": [
+        "F",
+        "B",
+        "I2"
+      ],
+      "net": "/I2C_SCL_INT",
+      "netclass": "I2C",
+      "seconds": 519.5,
+      "target_objects": 121,
+      "width": 200000
+    },
+    {
+      "lands": [
+        {
+          "gain_mm": 0.7146,
+          "island": 1,
+          "land": "U9.14",
+          "nearest_pad_mm": 2.5,
+          "nearest_tap_mm": 1.7854,
+          "tries": [
+            {
+              "at": [
+                33.4875,
+                28.9875
+              ],
+              "gap_mm": 1.7854,
+              "grid_nm": 50000,
+              "layer": "F",
+              "ok": false,
+              "reason": "NO_LEGAL_ESCAPE",
+              "target": "F 37.300,32.800-32.000,27.500",
+              "target_island": 0,
+              "why": "U9.14: NO OFF-CENTRE LAUNCH at 0.200 mm from any of 41 anchors x 24 directions x 17 lengths; blocked by U9.13 (x5974), U9.15 (x5611), U9.12 (x993), landing still on the land (x843)"
+            },
+            {
+              "at": [
+                33.1625,
+                26.1375
+              ],
+              "gap_mm": 2.2451,
+              "grid_nm": 50000,
+              "layer": "F",
+              "ok": false,
+              "reason": "NO_LEGAL_ESCAPE",
+              "target": "F 37.500,21.800-32.300,27.000",
+              "target_island": 0,
+              "why": "U9.14: NO OFF-CENTRE LAUNCH at 0.200 mm from any of 41 anchors x 24 directions x 17 lengths; blocked by U9.13 (x5974), U9.15 (x5611), U9.12 (x993), landing still on the land (x843)"
+            },
+            {
+              "at": [
+                32.3,
+                27.0
+              ],
+              "gap_mm": 2.555,
+              "grid_nm": 50000,
+              "layer": "F",
+              "ok": false,
+              "reason": "NO_LEGAL_ESCAPE",
+              "target": "F 32.300,27.000-32.200,26.900",
+              "target_island": 0,
+              "why": "U9.14: NO OFF-CENTRE LAUNCH at 0.200 mm from any of 41 anchors x 24 directions x 17 lengths; blocked by U9.13 (x5974), U9.15 (x5611), U9.12 (x993), landing still on the land (x843)"
+            }
+          ],
+          "verdict": "NO_TAP"
+        }
+      ],
+      "layers": [
+        "F",
+        "B",
+        "I2"
+      ],
+      "net": "/04_SPI_B_RADIOS_NFC/NFC_VDD_RF",
+      "netclass": "Default",
+      "seconds": 5.1,
+      "target_objects": 15,
+      "width": 200000
+    },
+    {
+      "lands": [
+        {
+          "gain_mm": 1.1098,
+          "island": 1,
+          "land": "R68.2",
+          "nearest_pad_mm": 17.4327,
+          "nearest_tap_mm": 16.323,
+          "tries": [
+            {
+              "at": [
+                62.7,
+                87.75
+              ],
+              "gap_mm": 16.323,
+              "grid_nm": 50000,
+              "layer": "F",
+              "ok": false,
+              "reason": "NO_PATH",
+              "target": "F 63.950,89.000-62.700,87.750",
+              "target_island": 0,
+              "why": "no all-layer corridor at 0.200 mm from R68.2 on F to TAP on F"
+            },
+            {
+              "at": [
+                62.7,
+                87.75
+              ],
+              "gap_mm": 16.323,
+              "grid_nm": 50000,
+              "layer": "F",
+              "ok": false,
+              "reason": "NO_PATH",
+              "target": "via@62.700,87.750",
+              "target_island": 0,
+              "why": "no all-layer corridor at 0.200 mm from R68.2 on F to TAP on F"
+            },
+            {
+              "at": [
+                62.7,
+                87.75
+              ],
+              "gap_mm": 16.323,
+              "grid_nm": 50000,
+              "layer": "I2",
+              "ok": false,
+              "reason": "NO_PATH",
+              "target": "I2 65.500,91.950-62.700,87.750",
+              "target_island": 0,
+              "why": "no all-layer corridor at 0.200 mm from R68.2 on F to TAP on I2"
+            }
+          ],
+          "verdict": "NO_TAP"
+        }
+      ],
+      "layers": [
+        "F",
+        "B",
+        "I2"
+      ],
+      "net": "Net-(SW9-A)",
+      "netclass": "Default",
+      "seconds": 73.8,
+      "target_objects": 30,
+      "width": 200000
+    }
+  ],
+  "question": "for every orphan land of every partially routed net, is the net's OWN CONNECTED COPPER nearer than the nearest pad the router may aim at -- and does a legal corridor reach it",
+  "schema": 1,
+  "stub_forbidden": [
+    "NFC_RF",
+    "NFC_RX",
+    "SPK_OUT",
+    "SWITCH_NODE",
+    "USB_D"
+  ],
+  "totals": {
+    "NO_TAP": 5
+  }
+}

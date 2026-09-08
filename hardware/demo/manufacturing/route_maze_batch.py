@@ -418,6 +418,29 @@ JOIN_ORPHAN_MAX_MM = 4.0
 BRIDGE_PAD_MAX_MM = 3.0
 
 # --------------------------------------------------------------------------- #
+# THE TAP -- A BRANCH ONTO THE NET'S OWN CONDUCTOR
+# --------------------------------------------------------------------------- #
+# D-664.  `--tap` hands `maze3d.join_taps` an orphan LAND and lets it aim at the
+# net's own nearest CONNECTED COPPER instead of at the nearest PAD.  The
+# doctrine, the five clauses TAP1-TAP5 and the whole argument live above
+# `maze3d.join_taps`; what belongs HERE is only the one list both files must
+# agree on.
+#
+# A TAP MAKES A STUB, SO THE NETCLASS DECIDES WHETHER IT MAY BE ASKED.  These
+# classes are refused BY NAME, before any search: their rules govern the SHAPE
+# of the conductor -- matched length, controlled impedance, a reserved layer, a
+# switching node's loop area, an RF arm's symmetry -- and none of those survive
+# an unbudgeted branch.  It is stated here and stated again in
+# `screen_net_tap.STUB_FORBIDDEN`, and the two being EQUAL is a CONTRACT, not a
+# convention: a screen and its writer disagreeing about which nets may be asked
+# is exactly the failure this primitive exists to avoid.  `checks/tap_contract.py`
+# clause TC1 fails the standing suite the day they drift.  (The list is restated
+# rather than imported because the screen imports THIS module; a module-level
+# import the other way is a cycle, and a lazy one would put the contract inside
+# the code it is meant to police.)
+TAP_STUB_FORBIDDEN = ("USB_D", "NFC_RF", "NFC_RX", "SWITCH_NODE", "SPK_OUT")
+
+# --------------------------------------------------------------------------- #
 # BOND REDUNDANCY -- A STITCH FOR A PAD THAT IS ALREADY CONNECTED
 # --------------------------------------------------------------------------- #
 # `--bond-pad REF.NUM` hands `maze3d.bond_pads` a pad whose only bond to its net
@@ -1981,7 +2004,8 @@ def propose(path, nets, grid, via_cost_mm, stitch_width=0, stitch_via=None,
             detour_own_layer=False, relief_extra_width=0,
             relief_pads=(), relief_bonds_per_island=1, relief_run_areas=None,
             escape_floor=False, bridge_pads=False,
-            bridge_pad_max_mm=BRIDGE_PAD_MAX_MM, trunk_floor=False):
+            bridge_pad_max_mm=BRIDGE_PAD_MAX_MM, trunk_floor=False,
+            tap=False, tap_max_mm=0.0, tap_pairs=3):
     import pcbnew
     import qrouter as qr
     import incremental_router as ir
@@ -2390,6 +2414,25 @@ def propose(path, nets, grid, via_cost_mm, stitch_width=0, stitch_via=None,
                              partial=partial, attempt_cap=attempt_cap,
                              join_max_mm=join_max_mm)
             r["mode"] = "maze+partial" if partial else "maze"
+        # THE TAP RUNS AFTER EVERY MOVE THAT AIMS AT A PAD, AND THE ORDER IS
+        # THE ARGUMENT.  D-664.  A stitch, a bridge, a residual join, an island
+        # join and the whole-board maze all aim an orphan at a PAD or at the
+        # net's own pour; a tap aims it at the net's own TRACK.  It is the
+        # cheapest thing on this list -- it removes nothing, relays nothing and
+        # licenses nothing (TAP2) -- but it is also the only one that leaves a
+        # BRANCH on an accepted conductor, so it is offered exactly the lands
+        # nothing else could close, on a board that already carries their
+        # copper.  It runs for pour-owning and plane-less nets alike: the
+        # branch is onto a TRACK either way, and `tap_sites` is what decides
+        # whether the net owns one.
+        if tap:
+            tp = mz.join_taps(qb, net, field, width=c["width"], G=grid,
+                              max_mm=tap_max_mm, pairs=tap_pairs,
+                              netclass=c["netclass"],
+                              forbidden=TAP_STUB_FORBIDDEN)
+            r["tap"] = tp
+            r["mode"] = r["mode"] + "+tap"
+            r["ok"] = bool(r.get("ok")) or bool(tp.get("joined"))
         if bridged is not None:
             r["bridge"] = bridged
             r["mode"] = "bridge+" + r["mode"]
@@ -2865,7 +2908,8 @@ def gate(nets, grid, via_cost_mm, workdir, promote=False, candidate=None,
          detour_own_layer=False, relief_extra_width=0,
          relief_pads=(), relief_bonds_per_island=1, relief_run_area=None,
          promote_soft=False, escape_floor=False, bridge_pads=False,
-         bridge_pad_max_mm=BRIDGE_PAD_MAX_MM, trunk_floor=False):
+         bridge_pad_max_mm=BRIDGE_PAD_MAX_MM, trunk_floor=False,
+         tap=False, tap_max_mm=0.0, tap_pairs=3):
     before = sha256_file(BOARD)
     work = Path(workdir)
     work.mkdir(parents=True, exist_ok=True)
@@ -3091,6 +3135,17 @@ def gate(nets, grid, via_cost_mm, workdir, promote=False, candidate=None,
             cmd += ["--join-orphans"]
             if join_orphan_max_mm != JOIN_ORPHAN_MAX_MM:
                 cmd += ["--join-orphan-max-mm", str(join_orphan_max_mm)]
+        # THE TAP IS THE PRIMARY PROPOSAL'S LEVER, NOT THE REPAIR'S -- D-664,
+        # same reading as `--join-orphans` directly above.  A repair re-bonds
+        # copper THIS run severed inside an 8 mm window; branching an orphan
+        # land that was already apart before the run onto its own net's bus is
+        # a second transaction wearing a repair's name.
+        if tap and use_search_levers:
+            cmd += ["--tap"]
+            if tap_max_mm:
+                cmd += ["--tap-max-mm", str(tap_max_mm)]
+            if tap_pairs != 3:
+                cmd += ["--tap-pairs", str(tap_pairs)]
         if escape_relief and use_search_levers:
             cmd += ["--escape-relief"]
             if relief_via:
@@ -3774,6 +3829,22 @@ def gate(nets, grid, via_cost_mm, workdir, promote=False, candidate=None,
         bridges=dict(requested=bool(bridge), licensed_areas=bridge_areas,
                      ladder=[list(v) for v in BRIDGE_LADDER]) if bridge
         else None,
+        # D-664.  THE TAP REPORTS ITSELF OR IT DID NOT HAPPEN.  A tap adds a
+        # BRANCH to an accepted conductor, and a branch is the one thing a
+        # reviewer of this board's copper must be able to find by name: the
+        # ledger sees only that an edge closed, and clause 4 cannot tell a
+        # T-junction from a pad-to-pad run.  So every tap this run laid is
+        # named here with its land, its target object, the exact coordinate on
+        # that object, the gap it stood off and the copper it cost.
+        taps=dict(requested=bool(tap), max_mm=tap_max_mm, pairs=tap_pairs,
+                  stub_forbidden=list(TAP_STUB_FORBIDDEN),
+                  joined=sum(len((r.get("tap") or {}).get("taps", ()))
+                             for r in routed),
+                  nets=[dict(net=r["net"], **{k: v for k, v in
+                                              (r.get("tap") or {}).items()
+                                              if k != "net"})
+                        for r in routed if r.get("tap")]) if tap
+        else None,
         pad_bridges=dict(
             requested=bool(bridge_pads), max_mm=bridge_pad_max_mm,
             insets_mm=list(__import__("maze3d").PAD_BRIDGE_INSETS_MM),
@@ -4174,6 +4245,24 @@ def main():
                          "crossed plane's own connectivity after a real refill. "
                          "Price it first with screen_segment_evict.py "
                          "--relay-own-layer")
+    ap.add_argument("--tap", action="store_true",
+                    help="D-664: THE TAP.  Let an orphan LAND branch onto its "
+                         "own net's nearest CONNECTED COPPER -- an ordinary "
+                         "T-junction -- instead of hauling to the nearest PAD "
+                         "the router is allowed to aim at.  Removes nothing, "
+                         "relays nothing and licenses nothing; the target is "
+                         "proved by KiCad's own connectivity (TAP1) and every "
+                         "object is re-proved by maze3d.verify_laid.  Netclasses "
+                         "whose rules govern the SHAPE of the conductor are "
+                         "refused BY NAME (TAP4): " + ", ".join(TAP_STUB_FORBIDDEN)
+                         + ".  Screen it first with screen_net_tap.py")
+    ap.add_argument("--tap-max-mm", type=float, default=0.0,
+                    help="skip a land whose nearest own-copper tap site is "
+                         "further than this (0 = no bound); a land beyond it is "
+                         "DECLINED and reported, never silently dropped")
+    ap.add_argument("--tap-pairs", type=int, default=3,
+                    help="nearest tap sites offered per land, on distinct "
+                         "objects (default 3)")
     ap.add_argument("--guard", type=Path,
                     help="a pour_bond_guard.py spec: keep every net OTHER than "
                          "a tube's own out of the copper that is the only "
@@ -4215,7 +4304,8 @@ def main():
                 a.detour_own_layer, a.relief_extra_width,
                 tuple(a.relief_pad), a.relief_bonds_per_island,
                 load_run_areas(a.relief_run_area), a.escape_floor,
-                a.bridge_pads, a.bridge_pad_max_mm, a.trunk_floor)
+                a.bridge_pads, a.bridge_pad_max_mm, a.trunk_floor,
+                a.tap, a.tap_max_mm, a.tap_pairs)
         return 0
     evict_window_nm = None
     if a.evict_window:
@@ -4290,7 +4380,8 @@ def main():
                  join_orphan_max_mm=a.join_orphan_max_mm,
                  escape_floor=a.escape_floor, bridge_pads=a.bridge_pads,
                  bridge_pad_max_mm=a.bridge_pad_max_mm,
-                 trunk_floor=a.trunk_floor)
+                 trunk_floor=a.trunk_floor, tap=a.tap,
+                 tap_max_mm=a.tap_max_mm, tap_pairs=a.tap_pairs)
     spec = str(a.grid).strip().lower()
     ladder_spec, best_spec = spec in ("ladder", "best"), spec == "best"
     # `best` REFUSES BOTH TRANSACTION OUTPUTS, not just `--promote`.  `gate()`

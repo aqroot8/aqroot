@@ -1,3 +1,116 @@
+# D-664 · 2026-09-08 · Demo — THE TAP IS BUILT: AN ORPHAN LAND MAY NOW AIM AT ITS OWN NET'S CONDUCTOR AND NOT ONLY AT A PAD; AND THE HARNESS THAT POLICES EVERY FRAMEWORK CHANGE HAD NEVER COMPARED ANYTHING
+
+    authority  2900f21a934d9d826644131a90baa36f7dace0db5f50cf2e702e5694f121177f
+            -> 2900f21a934d9d826644131a90baa36f7dace0db5f50cf2e702e5694f121177f  (UNCHANGED)
+    retained open edges 29 -> 29    open retained nets 16 -> 16
+    `hardware/beta-v2` UNTOUCHED.  `hardware/demo/kicad` UNTOUCHED.
+
+**NO COPPER PROMOTED.**  A FRAMEWORK + CHARACTERISATION iteration: one new
+router primitive that was an explicit open next-task in D-652, D-655, D-661 and
+D-663; one new standing contract; one repaired harness; three new measurements.
+Standing suite **13 contracts, 13/13 RAN, 13/13 PASS**, and for the first time
+in this harness's life **13/13 COMPARED, 13/13 IDENTICAL**.
+
+## 1. THE TAP — `maze3d.join_taps` AND `route_maze_batch.py --tap`
+
+`route_join` closes an island pair PAD TO PAD, which is the right question for a
+net with no copper and the wrong one for a net with accepted partial copper.
+D-652 measured the gap; D-655 built `screen_net_tap.py`, which PROVES a
+T-junction legal and then REVERTS it; there has never been a WRITER.  Five
+clauses, each asserted by `checks/tap_contract.py`: **TAP1** the target is proved
+by KiCad's own `CONNECTIVITY_DATA`, not by distance; **TAP2** a tap only ADDS
+copper, so it has no relay to judge and no licence to price; **TAP3** `emit=False`
+still lays, proves with `verify_laid` and reverts, so the screen and the writer
+cannot disagree; **TAP4** `USB_D`, `NFC_RF`, `NFC_RX`, `SWITCH_NODE`, `SPK_OUT`
+are refused BY NAME before any search; **TAP5** a land beyond `--tap-max-mm` is
+DECLINED and reported, never silently dropped.  The lever is OFF by default,
+has ONE call site, is handed to the PRIMARY proposal and never to the repair
+pass, and runs AFTER every move that aims at a pad or at the net's own pour.
+
+**IT LAYS COPPER, AND IT IS SHORTER THAN THE PAD-TO-PAD ANSWER**, measured
+inside a real gate run on `/09_COMMUNITY_HEADER/EXT_SCL_BUF`:
+
+    lattice   land    target                            gap        copper     vias
+    0.050 mm  R50.2   B 56.400,52.800-55.800,53.500     6.922 mm   11.953 mm    0
+    0.025 mm  U16.2   B 56.400,52.800-55.800,53.500     2.066 mm    2.979 mm    0
+
+`route_join`'s only legal question for that island pair was the PAD pair
+`U16.2 <-> R50.2` at 7.3 mm across the accessory-power pocket.  **AND THE PITCH
+CHOSE THE LAND AS WELL AS THE PATH** — the same target object, a different
+land, 9 mm less copper: D-661 §4 and D-663 §4 in a third place.
+
+## 2. `U16.3` IS A TWO-WALL LAND AND THE FIRST WALL FALLS TO SEVEN OBJECTS
+
+`U16` is the **TCA4307 accessory I²C hot-swap buffer**; `U16.3` is its
+internal-side `SCLIN`, an island of one, so the Community Port's buffered `SCL`
+has no clock.  **WALL 1 — THE LAND**: `NO OFF-CENTRE LAUNCH at 0.200 mm from any
+of 41 anchors x 24 directions x 17 lengths; blocked by U16.2 (x6297), U16.4
+(x5870), U16.1 (x2158), track (x1041)`.  The pads are the package's own
+neighbours on 0.65 mm pitch; the **track** is `EXT_SCL_BUF` `B.Cu`
+`(55.900,54.375)-(55.900,53.600)`, 0.4255 mm off the pad's only free end, whose
+fan-out T at (56.075, 54.850) sends a second arm across the same corridor.  A
+named **seven-object** eviction of that fan-out
+(`--evict-window 54.4,53.15,56.6,55.15`) **OPENS THE LAND** —
+`NO_LEGAL_ESCAPE` becomes `NO_PATH`.  **WALL 2 — THE CORRIDOR, AND IT DOES NOT
+FALL TO PITCH**: all three nearest own-copper targets (`F.Cu`, 6.048 / 6.048 /
+7.106 mm) are `NO_PATH` at 0.050 mm AND at 0.025 mm.  Every nearby
+`/I2C_SCL_INT` conductor is `F.Cu` while `U16.3` is a `B.Cu` land, so the tap
+must also find a BARREL SITE in the accessory-power pocket.  Both runs were
+**REFUSED ON `board_improved` ALONE — 14 of 15 clauses PASS** and the board came
+back exactly as it went in (`evidence/d664-tx-u16-g50.json`, `-g25.json`).
+
+## 3. THE CONTRACT-REGRESSION HARNESS HAD NEVER COMPARED ANYTHING
+
+`checks/contract_regression.py` states its purpose as *"a framework change that
+lays no copper must leave every contract's REPORT byte-identical, not merely
+still-passing"*, and diffs each contract against
+`evidence/<baseline>-<name>.json`.  **THAT FILE HAS NEVER EXISTED, FOR ANY
+PREFIX**: every contract runs into a `tempfile.mkdtemp()` that is discarded, and
+the only artifact the harness ever wrote is its own summary.  Every row printed
+`NO BASELINE`, `identical` was `null` and `all_identical` was `False` — for
+D-633 through D-663 alike; `evidence/d663-contract-regression-post.json` carries
+`"baseline": null` on all twelve rows.  `--emit-baseline PREFIX` is the missing
+half: it KEEPS each report as `evidence/PREFIX-<name>.json` and REFUSES to emit
+under the prefix it is diffing against.  The summary now carries
+`contracts_compared`, `contracts_without_baseline` and `vacuous`.
+
+    run                                    contracts  compared  identical  vacuous
+    d664 --baseline d633 --emit-baseline   13/13 PASS      0          -      TRUE
+    d664 --baseline d664 (control)         13/13 PASS     13       13/13    FALSE
+
+**From D-665 onward the diff is real.**
+
+## 4. `BQ25185_SYS` `C27.1` REPRODUCES BYTE-IDENTICALLY, AND ITS CHANNEL IS MEASURED
+
+Re-screened on `2900f21a` with `--cli-control` (371.7 s): `MINIMAL_SET_FOUND`,
+`matches_upper_bound`, `cli_control.agrees`, Q1 upper bound 41 objects, **the
+same 8 objects to the micron and the same partition** as D-663 §5(g).  On the
+freed board the pour's new path is a **0.50 mm channel** at y 76.15-76.65
+between `C27.2`'s GND pad and `U11`'s north pad row, running east to a column at
+x 69.2-71.0 that only exists once the channel opens (KiCad had been deleting it
+as an isolated island).  A 0.200 mm strap plus its two clearances needs 0.70 mm,
+so **the channel holds the pour or the straps, and not both** — and `U11.6`,
+`U11.7`, `U11.8` are east-row pins whose only escape is into it.  The
+transaction therefore needs the tap (`U11.6`'s own copper is 2 mm away, its
+nearest PAD `R38.1` is 60 mm away) AND a reserved lane, and it is now
+expressible for the first time.
+
+## 5. NEXT, IN ORDER OF LEVERAGE
+
+  1. **`BQ25185_SYS` `C27.1` WITH THE TAP AND A RESERVED LANE** — §4.  The
+     8 objects are named and re-proved and the tap answers `TS_MR`'s 60 mm
+     rejoin; what is owed is a `reserve_corridor.py` lane along the 0.50 mm
+     channel, per D-663 §5(d).
+  2. **`U16.3` NEEDS A BARREL SITE, NOT A PITCH** — §2.  Screen the `B -> F`
+     transition with `screen_via_field.py` / `screen_rebond_site.py`, and
+     consider offering the tap `In2`/`In3` targets.
+  3. `/I2C_SCL_INT` `U14.7 <-> J1.44` remains **the one OPEN OWNER DECISION**
+     (D-655 §7), RECORDED NOT TAKEN.
+  4. `copper_sliver` localisation remains an OPEN INSTRUMENT GAP.
+  5. `hardware/demo/fab` is STALE against `2900f21a`.
+
+Full analysis: [`audits/2026-09-08-d664-the-tap-writer-and-the-vacuous-contract-diff.md`](../../audits/2026-09-08-d664-the-tap-writer-and-the-vacuous-contract-diff.md).
+
 # D-663 · 2026-09-07 · Demo — THE ORDER OF THE REQUESTED NETS IS PART OF THE TRANSACTION, AND THE AUDIO WORD CLOCK CLOSES BY MOVING 3.9 mm INSTEAD OF HAULING A CLOCK 101 mm; PLUS: NO CUT OF ANY SIZE FREES `U11.1` WITHOUT TAKING THE CHARGER'S OWN VBUS ESCAPE
 
     authority  feff534230f1c2743707071e4bc8ac21b5104e95abee73016a6c00cfd1e49aef

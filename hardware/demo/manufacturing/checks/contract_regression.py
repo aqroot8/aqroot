@@ -119,6 +119,14 @@ CONTRACTS = (
     # claim has to be re-proved on every future framework change, not once.
     ("trunk_floor", "checks/trunk_floor_contract.py", (),
      "trunk_floor-contract", "all_pass"),
+    # D-664.  THE THIRTEENTH, AND THE THIRD ABOUT THE INSTRUMENT.  `--tap` is
+    # the first primitive on this board that leaves a BRANCH on an ALREADY
+    # ACCEPTED conductor, and the ledger cannot tell a T-junction from a
+    # pad-to-pad run.  It belongs here for the reason `trunk_floor` does: the
+    # claim that matters is not "the lever works" but "the screen that PROVES a
+    # tap and the writer that LAYS one name one list and one geometry", and
+    # that claim has to be re-proved on every future framework change.
+    ("tap", "checks/tap_contract.py", (), "tap-contract", "all_pass"),
 )
 BY_BASENAME = ("board", "schematic", "guard", "pre_board")
 
@@ -169,8 +177,38 @@ def main():
     ap.add_argument("--only", action="append", default=[],
                     help="run only these contracts (repeatable)")
     ap.add_argument("--evidence", type=Path, default=EVIDENCE)
+    # D-664 -- THE COMPARISON HAD NOTHING TO COMPARE AGAINST, AND IT SAID SO
+    # QUIETLY.  This harness diffs each contract's report against
+    # `evidence/<baseline>-<name>.json`, and that file has NEVER EXISTED for any
+    # prefix: every contract runs into a temporary directory that is discarded
+    # when the process ends, and the only artifact this file ever wrote is its
+    # OWN summary.  So the row printed `NO BASELINE`, `identical` was recorded
+    # as `null`, and `all_identical` came back False -- for D-633 through D-663
+    # alike.  Read as "12/12 RAN, 12/12 PASS" that is true; read as the claim
+    # this file states at the top -- "a framework change that lays no copper
+    # must leave every contract's REPORT byte-identical, not merely
+    # still-passing" -- it was never asked once.  A passing check that never
+    # posed its question is the failure mode D-654's `--ban` exists for in
+    # another instrument, and it is this one's too.
+    #
+    # `--emit-baseline PREFIX` is the missing half: it KEEPS each contract's
+    # report as `evidence/<PREFIX>-<name>.json`, which is the file the NEXT
+    # decision's `--baseline PREFIX` reads.  It refuses to emit under the same
+    # prefix it is diffing against, because a run that wrote its own baseline
+    # and then compared with it would prove only that a file equals itself.
+    ap.add_argument("--emit-baseline", default=None, metavar="PREFIX",
+                    help="D-664: keep each contract's report as "
+                         "evidence/PREFIX-<name>.json so the NEXT decision's "
+                         "--baseline PREFIX has something real to diff; "
+                         "refused when PREFIX is the baseline being compared "
+                         "against")
     ap.add_argument("-o", "--out", type=Path)
     a = ap.parse_args()
+    if a.emit_baseline and a.emit_baseline == a.baseline:
+        ap.error("--emit-baseline %s is also --baseline %s: a run that wrote "
+                 "its own baseline and then diffed against it would prove "
+                 "only that a file equals itself" % (a.emit_baseline,
+                                                     a.baseline))
 
     rows, tmp = [], Path(tempfile.mkdtemp(prefix="aqroot-contract-reg-"))
     for name, script, extra, base, field in CONTRACTS:
@@ -189,6 +227,10 @@ def main():
         cur = json.loads(out.read_text())
         row["verdict"] = cur.get(field)
         row["board_sha256"] = cur.get("board_sha256")
+        if a.emit_baseline:
+            kept = a.evidence / ("%s-%s.json" % (a.emit_baseline, base))
+            kept.write_text(out.read_text())
+            row["emitted_baseline"] = kept.name
         ref = a.evidence / ("%s-%s.json" % (a.baseline, base))
         if not ref.exists():
             row["baseline"] = None
@@ -208,7 +250,17 @@ def main():
                                    else "DIFFERS: %s" % d[:110]),
               file=sys.stderr, flush=True)
 
-    doc = dict(schema=1, baseline=a.baseline, contracts_run=len(rows),
+    doc = dict(schema=1, baseline=a.baseline,
+               emitted_baseline=a.emit_baseline,
+               # D-664.  A SUMMARY THAT SAYS `all_identical` WITHOUT SAYING
+               # WHETHER ANYTHING WAS COMPARED IS THE DEFECT ITSELF.  These two
+               # counts separate "every contract matched its baseline" from
+               # "no contract had one", which the old document could not.
+               contracts_compared=sum(1 for r in rows
+                                      if r.get("identical") is not None),
+               contracts_without_baseline=sum(1 for r in rows if r["ran"]
+                                              and r.get("identical") is None),
+               contracts_run=len(rows),
                question=("does this framework change move ANY standing "
                          "contract, on a board whose sha256 did not change"),
                method=("each contract re-run now and compared FIELD BY FIELD "
@@ -218,6 +270,11 @@ def main():
                        "the path as typed"),
                all_ran=all(r["ran"] for r in rows),
                all_identical=all(r.get("identical") is True for r in rows),
+               # VACUOUS means: every contract ran and passed and NOT ONE was
+               # diffed, which is what this harness reported for D-633 through
+               # D-663 without ever saying so in one word.
+               vacuous=bool(rows and not any(r.get("identical") is not None
+                                             for r in rows)),
                contracts=rows)
     text = json.dumps(doc, indent=1, sort_keys=True)
     if a.out:
