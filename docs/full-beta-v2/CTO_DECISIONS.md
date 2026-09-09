@@ -20699,3 +20699,31 @@ Evidence, all under `hardware/demo/manufacturing/evidence/`:
 `d594-orphan-barrel-fine.json` (`7f1fc591...`),
 `d594-pour-bridges-stitch.json` (`6370bed2...`),
 `d594-pour-bridges-contract-off.json` (`2e81f669...`).
+
+## D-670 — OWNER AUTHORIZATION CONSUMED FOR D-655 PROTECTED-COPPER EXCEPTION
+
+Owner authorization is APPROVED and ACTIVE for the previously recorded D-655 decision.
+
+Purpose:
+Close `/I2C_SCL_INT` between `U14.7` and `J1.44`.
+
+Authorized protected-copper scope is strictly limited to:
+- the existing B.Cu `/01_POWER_TREE/BAT_PROT_SHDN_CTL` segment
+  `(4.100, 90.900) -> (4.100, 76.550)`
+- the blocking GND barrel at `(25.600, 93.700)`
+
+This is NOT a blanket protected-copper waiver.
+
+Conditions:
+- electrical topology must remain unchanged
+- battery-protection component values/connectivity must remain unchanged
+- D-269 and D-186 requirements must remain satisfied
+- net classes, width/clearance rules, and 6-layer stack remain unchanged
+- `BAT_PROT_SHDN_CTL` connectivity must be fully restored after any move
+- displaced GND bonding must be restored
+- no other BAT_* protected net may be modified under this authorization
+- promotion only if full-board gate, protected-copper checks, KiCad DRC, connectivity, D-269/D-186, and all standing no-regression contracts PASS
+- if those conditions cannot be met, revert the candidate
+
+The prior state "OPEN OWNER DECISION / RECORDED NOT TAKEN" is now superseded.
+No owner decision remains open for this D-655 exception.
