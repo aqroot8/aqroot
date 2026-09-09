@@ -78,6 +78,24 @@ LKEY = {"F.Cu": "F", "B.Cu": "B", "In1.Cu": "I1", "In2.Cu": "I2",
         "In3.Cu": "I3", "In4.Cu": "I4"}
 
 
+def chain_ends_mm(parts):
+    """The two FREE ends of a same-net chain, in mm, or None if it is not one.
+
+    The same rule `route_maze_batch.chain_ends` and
+    `screen_segment_evict.chain_ends_mm` apply -- an endpoint shared by two
+    members is an interior junction and exactly two may be unshared -- restated
+    here on PLAN records so this screen stays what it says it is: an answer
+    read off the SPEC, with no board loaded and nothing imported from the
+    router.
+    """
+    seen = {}
+    for c in parts:
+        for pt in (tuple(c["a_mm"]), tuple(c["b_mm"])):
+            seen[pt] = seen.get(pt, 0) + 1
+    free = sorted(pt for pt, n in seen.items() if n == 1)
+    return (free[0], free[1]) if len(free) == 2 else None
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("spec", type=Path,
@@ -101,11 +119,42 @@ def main():
                                  "rebond_priced clause prices it and no lane "
                                  "can move it"))
             continue
-        lkey = LKEY.get(d.get("layer", ""), d.get("lkey"))
-        w = int(round(d.get("width_mm", 0.2) * 1e6))
-        ax, ay = (v * 1e6 for v in d["a_mm"])
-        bx, by = (v * 1e6 for v in d["b_mm"])
+        # A DETOUR MAY BE A CHAIN, AND UNTIL D-675 THIS SCREEN COULD NOT READ
+        # ONE.  `screen_relay_transaction.py --plan-out` emits `tracks: [...]`
+        # whenever a land's cut is more than one segment -- which is the shape
+        # of `+3V3 R39.1`, the board's best candidate -- and `d["a_mm"]` then
+        # raises `KeyError` and takes the whole screen down.  D-674 closed with
+        # *"run this before ANY --detour-spec gate run"*; on the very next
+        # transaction it could not run at all.
+        #
+        # `route_maze_batch.detour_apply` removes a chain WHOLE and re-lays it
+        # between the chain's two FREE ends (`chain_ends`), so those two points
+        # are the relay's fixed terminals and the reservation is judged against
+        # them.  `L` is the STRAIGHT-LINE distance between them, not the sum of
+        # the segments: the bound this screen states is on what a lane can
+        # displace, and a relay whose terminals are 1.0 mm apart has 1.0 mm of
+        # freedom however many bends the old copper had.  The polyline length
+        # is reported beside it so a reader can see the difference.
+        parts = d.get("tracks") or [d]
+        lkey = LKEY.get(parts[0].get("layer", d.get("layer", "")),
+                        d.get("lkey"))
+        w = int(round(parts[0].get("width_mm", d.get("width_mm", 0.2)) * 1e6))
+        ends = chain_ends_mm(parts)
+        if ends is None:
+            rows.append(dict(index=i, net=d["net"], kind="chain",
+                             tracks=len(parts), verdict="NOT_A_CHAIN",
+                             why="the %d named segments do not form one chain "
+                                 "with exactly two free ends, so this screen "
+                                 "cannot name the relay's fixed terminals"
+                                 % len(parts)))
+            continue
+        (a_mm, b_mm) = ends
+        ax, ay = (v * 1e6 for v in a_mm)
+        bx, by = (v * 1e6 for v in b_mm)
         L = math.hypot(bx - ax, by - ay)
+        polyline_mm = round(sum(
+            math.hypot(t["b_mm"][0] - t["a_mm"][0],
+                       t["b_mm"][1] - t["a_mm"][1]) for t in parts), 4)
         pts = lane_points(spec, lkey)
         ca = covering(pts, ax, ay, w, a.grid)
         cb = covering(pts, bx, by, w, a.grid)
@@ -136,8 +185,11 @@ def main():
                 "lifts, so the lane has something of it to forbid"
                 % (bindable / 1e6, L / 1e6))
         rows.append(dict(
-            index=i, net=d["net"], kind="track", layer=d.get("layer"),
-            lkey=lkey, a_mm=d["a_mm"], b_mm=d["b_mm"],
+            index=i, net=d["net"],
+            kind=("chain" if len(parts) > 1 else "track"),
+            tracks=len(parts), polyline_mm=polyline_mm,
+            layer=parts[0].get("layer", d.get("layer")),
+            lkey=lkey, a_mm=list(a_mm), b_mm=list(b_mm),
             width_mm=round(w / 1e6, 4), length_mm=round(L / 1e6, 4),
             lift_a_mm=round(ra / 1e6, 4), lift_b_mm=round(rb / 1e6, 4),
             bindable_mm=round(bindable / 1e6, 4),

@@ -346,7 +346,7 @@ def pour_severs(qb, mz, net, shapes, via_dia):
 SPLIT_PRICE_SIDECARS = ("kicad_pro", "kicad_dru", "kicad_prl")
 
 
-def split_price(qb, base_board, work, tag):
+def split_price(qb, base_board, work, tag, cuts=()):
     """PRICE a foreign-pour split with the board's OWN `PP2` clause -- D-674.
 
     `pour_severs` below strikes out any round whose transaction cuts a filled
@@ -368,6 +368,24 @@ def split_price(qb, base_board, work, tag):
     against the base board exactly as the gate runs it.  What comes back is the
     gate's answer, one clause early and for a fraction of the cost.
 
+    D-675: AND THE BOARD PRICED IS THE BOARD THE TRANSACTION PRODUCES.
+    `Held` removes a cut track from the ROUTER's obstacle model (`qb.shapes`)
+    and never from the `pcbnew` BOARD, because every other arm of this screen
+    reverts and needs the board back.  `qb.save()` therefore wrote a candidate
+    that still carried the copper this transaction REMOVES -- authority PLUS
+    the stitch, the arm and the relay, with the cut still on it.  That copper
+    is a foreign object inside the pour being priced, so it can only make a
+    fragment NARROWER or SMALLER than the transaction's own geometry, and a
+    clause that refuses on 3.3% of a width cannot be asked on copper that is
+    not there afterwards.  So `cuts` -- the same records `find_seg` resolved
+    the held segments from, in mm -- are deleted from the candidate FILE by
+    the refill child, one track per record, matched on net, layer, endpoints
+    in either order and width.  `qb.b` is never touched: the deletion happens
+    in the child process on its own `LoadBoard`, so no arm of this screen and
+    no later round can see it.  A record that matches nothing is REPORTED
+    (`cuts_not_removed`) rather than skipped -- a price taken on the wrong
+    board is worse than no price.
+
     Returns the contract's own `{ok, results}` document with the candidate's
     sha256, or a record carrying `error` when the child could not be run.  It
     is NEVER a licence: `ok` false refuses the round exactly as `pour_severs`
@@ -387,17 +405,74 @@ def split_price(qb, base_board, work, tag):
         if src.exists():
             shutil.copy(src, cand.with_suffix("." + ext))
     qb.save(str(cand))
+    # THE WHOLE BOARD IS READ BEFORE ANYTHING IS REMOVED.  `BOARD::Remove`
+    # invalidates the track container mid-walk -- a second `GetTracks()` pass
+    # after one removal hands back an untyped `SwigPyObject` and the match
+    # raises -- so every track's identity is taken in ONE pass, the records
+    # are matched against that snapshot, and the removals happen afterwards.
     fill = (
-        "import sys, pcbnew\n"
+        "import sys, json, pcbnew\n"
         "b = pcbnew.LoadBoard(sys.argv[1])\n"
+        "want = json.loads(sys.argv[2])\n"
+        "seen = []\n"
+        "for t in b.GetTracks():\n"
+        "    if t.GetClass() == 'PCB_VIA':\n"
+        "        continue\n"
+        "    seen.append((t.GetNetname(),\n"
+        "                 b.GetLayerName(t.GetLayer()),\n"
+        "                 round(t.GetWidth() / 1e6, 6),\n"
+        "                 sorted([(round(t.GetStart().x / 1e6, 4),\n"
+        "                          round(t.GetStart().y / 1e6, 4)),\n"
+        "                         (round(t.GetEnd().x / 1e6, 4),\n"
+        "                          round(t.GetEnd().y / 1e6, 4))]),\n"
+        "                 t))\n"
+        "left, kill, used = [], [], set()\n"
+        "for rec in want:\n"
+        "    key = [rec['net'], rec['layer'], round(rec['width_mm'], 6),\n"
+        "           sorted([tuple(rec['a_mm']), tuple(rec['b_mm'])])]\n"
+        "    hit = None\n"
+        "    for idx, row in enumerate(seen):\n"
+        "        if idx in used:\n"
+        "            continue\n"
+        "        if list(row[:4]) == key:\n"
+        "            hit = idx\n"
+        "            break\n"
+        "    if hit is None:\n"
+        "        left.append(rec)\n"
+        "    else:\n"
+        "        used.add(hit)\n"
+        "        kill.append(seen[hit][4])\n"
+        "for t in kill:\n"
+        "    b.Remove(t)\n"
         "pcbnew.ZONE_FILLER(b).Fill(b.Zones())\n"
         "b.BuildConnectivity()\n"
-        "b.Save(sys.argv[1])\n")
-    r = subprocess.run([sys.executable, "-c", fill, str(cand)],
+        "b.Save(sys.argv[1])\n"
+        "open(sys.argv[3], 'w').write(json.dumps(left))\n")
+    # THE CUT RECORD TRAVELS AS THE SCREEN READ IT.  `find_seg` already proved
+    # each of these resolves to exactly one live segment on the obstacle
+    # model, and the child matches the same four fields on the board file, so
+    # the copper removed here is the copper `Held` held out and nothing else.
+    # `layer` on a cut record is the OBSTACLE MODEL's key (`B`, `I3`); the
+    # child matches `pcbnew`'s own layer NAME (`B.Cu`, `In3.Cu`).  `LAYER_NAME`
+    # is the one mapping this repository keeps, so the translation happens
+    # here and not in a second table.
+    spec = [dict(net=c["net"], layer=LAYER_NAME[c["layer"]],
+                 width_mm=c["width_mm"],
+                 a_mm=list(c["a_mm"]), b_mm=list(c["b_mm"])) for c in cuts]
+    # THE LEFTOVERS COME BACK IN A FILE, NOT ON `stdout`.  `pcbnew` writes
+    # SWIG and wxWidgets chatter to both streams, so a JSON document parsed
+    # off `stdout` would be at the mercy of a memory-leak notice.
+    leftover = work / ("split-%s-unremoved.json" % tag)
+    r = subprocess.run([sys.executable, "-c", fill, str(cand),
+                        json.dumps(spec), str(leftover)],
                        capture_output=True, text=True)
     if r.returncode:
         return dict(ok=False, error="REFILL_FAILED",
                     stderr=r.stderr[-400:])
+    try:
+        not_removed = json.loads(leftover.read_text(encoding="utf-8"))
+    except (OSError, ValueError):
+        not_removed = None
     rep = work / ("split-%s-pp.json" % tag)
     r = subprocess.run(
         [sys.executable, str(HERE / "checks" / "pour_partition_contract.py"),
@@ -414,14 +489,67 @@ def split_price(qb, base_board, work, tag):
                         if k in doc.get("results", {})},
                 candidate_sha256=hashlib.sha256(cand.read_bytes()).hexdigest(),
                 report=str(rep),
+                cuts_removed=len(spec) - (len(not_removed)
+                                          if not_removed is not None
+                                          else len(spec)),
+                cuts_not_removed=not_removed,
                 splits=doc.get("results", {}).get("PP2", {}).get("splits"),
                 fragments=doc.get("results", {}).get("PP2", {}).get("fragments"))
+
+
+def plant_bonds(qb, mz, net_contract, permitted_layers,
+                reserved, grid, neck, spec, requests):
+    """Lay the copper `route_maze_batch.py --bond-pad` would lay -- D-675.
+
+    A `--split-priced` round is judged by `PP2`, and `PP2` prices a fragment
+    at the widest tube from each of its pads to a BARREL THAT IS THERE.  On
+    `+3V3 R39.1` that is the whole verdict: the `GND` east-margin ribbon the
+    relay shears off holds `C27.2` and `C28.2`, the only barrel within 6 mm of
+    `C28.2` sits 1.181 mm away down a wedge, and the tube to it is 0.850 mm --
+    2.117 A against a 2.190 A bar, 3.3% short.  The copper AROUND `C28.2` is
+    1.9 mm wide; nothing needed widening.  What was missing was a barrel in
+    the wide part, and `route_maze_batch.py --bond-pad` has planted exactly
+    that kind of barrel since D-591.
+
+    So a caller that intends to run the transaction WITH a `--bond-pad` may
+    say so, and the round is then priced on the board that transaction
+    produces.  The bond is not re-implemented here: `maze3d.bond_pads` is the
+    writer's own primitive and is called with the writer's own `Field`, so the
+    site this screen prices is the site the writer will plant.  Everything is
+    laid on `qb` inside the round's existing mark, so the caller's `revert`
+    takes it off again with the stitch and the relay.
+
+    This is NEVER a licence.  The barrel still has to be legal (`Field.via_ok`
+    and `verify_laid` inside `stitch_pad`), the split is still priced by
+    `checks/pour_partition_contract.py`, and `ok` false still refuses the
+    round.  What it removes is a measurement that was never the transaction's.
+    """
+    from route_maze_batch import guard_for
+    out = []
+    for (bnet, refs) in requests:
+        c = net_contract(qb.b, bnet)
+        layers = permitted_layers(qb.routable, c["layers"], reserved, bnet)
+        fld = mz.Field(qb, bnet, c["width"], c["clr_pad"], c["clr"],
+                       c["via_dia"], c["via_drill"], G=grid, layers=layers,
+                       neck=neck, guard=(guard_for(spec, bnet) if spec
+                                         else None))
+        r = mz.bond_pads(qb, bnet, fld, list(refs))
+        out.append(dict(net=bnet, requested=list(refs),
+                        bonded=r.get("bonded", 0),
+                        ok=bool(r.get("ok")),
+                        vias=[list(b.get("via_xy") or ()) for b in
+                              (r.get("bonds") or ())],
+                        mm=r.get("mm"),
+                        failures=[dict(pad=f.get("pad"),
+                                       reason=f.get("reason"))
+                                  for f in (r.get("failures") or ())]))
+    return out
 
 
 def joint_search(qb, field, held, by_net, pad, land_ok, max_mm, grid,
                  reserved, spec, own_layer, via_dia, net, mz, radius,
                  tries=12, knock_mm=1.0, slack_mm=0.0,
-                 priced_split=None):
+                 priced_split=None, bond_req=(), bond_ctx=None):
     """THE SIMULTANEOUS RIP-UP-AND-RELAY, D-637's first-ranked item.
 
     Arm B proved that what refuses these relays is the stitch itself: the
@@ -504,10 +632,23 @@ def joint_search(qb, field, held, by_net, pad, land_ok, max_mm, grid,
             # second copy of it -- and accepted only if that says PASS.  The
             # default is OFF, so every run and every artifact written before
             # this reads exactly as it did.
-            price = None
+            price, bonds = None, None
             if ok_all and psev and priced_split is not None:
+                # D-675: THE BOARD PRICED IS THE BOARD THE TRANSACTION
+                # PRODUCES -- both halves of that.  The cut records travel
+                # with it (`by_net` is the same mapping `find_seg` built, so
+                # no geometry is re-derived), and so does any `--bond-pad`
+                # the caller intends to run WITH the detour, laid here by the
+                # writer's own primitive so the site cannot drift.
+                if bond_req and bond_ctx is not None:
+                    bonds = plant_bonds(qb, mz, bond_ctx["net_contract"],
+                                        bond_ctx["permitted_layers"],
+                                        bond_ctx["reserved"], grid,
+                                        bond_ctx["neck"], spec, bond_req)
                 price = split_price(qb, priced_split[0], priced_split[1],
-                                    "%s-%d" % (priced_split[2], k + 1))
+                                    "%s-%d" % (priced_split[2], k + 1),
+                                    cuts=[cr for v in by_net.values()
+                                          for (_L, _s, cr) in v])
                 good = bool(price.get("ok"))
             else:
                 good = bool(ok_all and not psev)
@@ -517,6 +658,7 @@ def joint_search(qb, field, held, by_net, pad, land_ok, max_mm, grid,
                 via_xy=list(st.get("via_xy")), all_relaid=bool(ok_all),
                 accepted=good,
                 antipad_severs=sev, pour_severs=psev, split_price=price,
+                split_bonds=bonds,
                 relays=[dict(net=t["net"], ok=t["ok"], reason=t.get("reason"),
                              mm=t.get("mm"), vias=t.get("vias"),
                              was_mm=t.get("was_mm"))
@@ -537,7 +679,7 @@ def joint_search(qb, field, held, by_net, pad, land_ok, max_mm, grid,
                                         why=None),
                             stitch_geometry=geom, relay_geometry=rgeom,
                             antipad_severs=sev, pour_severs=psev,
-                            split_price=price,
+                            split_price=price, split_bonds=bonds,
                             tracks=tracks)
             qb.revert(m)
         if best is not None:
@@ -572,6 +714,7 @@ def joint_search(qb, field, held, by_net, pad, land_ok, max_mm, grid,
         # would read as "nothing was cut" when the truth may be "every round
         # was cut".  So the refusal carries the union of what the rounds saw.
         out.update(stitch=None, antipad_severs=None, tracks=[],
+                   split_bonds=None,
                    split_price=[r["split_price"] for r in rounds
                                 if r.get("split_price")] or None,
                    pour_severs=[x for r in rounds
@@ -630,6 +773,25 @@ def main():
                          "`split_price_work` null, and a null `split_price` on "
                          "each round that laid a stitch"
                     )
+    ap.add_argument("--split-bond-pad", action="append", default=[],
+                    metavar="NET:REF.NUM",
+                    help="D-675: the transaction this plan will be RUN with "
+                         "also plants `route_maze_batch.py --bond-pad REF.NUM` "
+                         "on NET, so price the split on THAT board.  `PP2` "
+                         "prices a fragment at the widest tube from each of "
+                         "its pads to a barrel that IS THERE, and on `+3V3 "
+                         "R39.1` the whole 3.3% deficit is one missing "
+                         "barrel: the `GND` ribbon around `C28.2` is 1.9 mm "
+                         "wide and the only barrel within 6 mm sits 1.181 mm "
+                         "away down a 0.850 mm wedge.  The bond is laid by "
+                         "`maze3d.bond_pads` -- the writer's own primitive, "
+                         "the writer's own `Field` -- so the site priced here "
+                         "is the site the writer plants, and it is reverted "
+                         "with the rest of the round.  Requires "
+                         "`--split-priced`; a plan emitted from a round that "
+                         "used it CARRIES the bond, so a writer run without "
+                         "it is running a different transaction.  Repeatable"
+                    )
     ap.add_argument("--split-price-work", type=Path,
                     help="where --split-priced writes each candidate board and "
                          "its contract report (default: a temporary directory "
@@ -652,6 +814,19 @@ def main():
     # stated directory KEEPS that evidence -- which is what a decision needs --
     # and an unstated one is a temporary directory removed at exit, so the
     # default asks the reader to store nothing.
+    # `NET:REF.NUM`, grouped by net so one `Field` is built per net.
+    bond_req = {}
+    for item in a.split_bond_pad:
+        if ":" not in item:
+            raise SystemExit("--split-bond-pad wants NET:REF.NUM, got %r"
+                             % item)
+        bnet, bref = item.rsplit(":", 1)
+        bond_req.setdefault(bnet, []).append(bref)
+    bond_req = tuple((n, tuple(v)) for n, v in sorted(bond_req.items()))
+    if bond_req and not a.split_priced:
+        raise SystemExit("--split-bond-pad needs --split-priced: it changes "
+                         "the board the SPLIT is priced on and nothing else")
+
     split_tmp = None
     if a.split_priced and a.split_price_work is None:
         split_tmp = tempfile.mkdtemp(prefix="aqroot-split-price-")
@@ -778,7 +953,11 @@ def main():
                     priced_split=(None if not a.split_priced else
                                   (a.board, split_work,
                                    "%s-%s" % (net.strip("/").replace("/", "_"),
-                                              stitch_ref))))
+                                              stitch_ref))),
+                    bond_req=bond_req,
+                    bond_ctx=dict(net_contract=net_contract,
+                                  permitted_layers=permitted_layers,
+                                  reserved=reserved, neck=neck))
                 continue
             with Held(qb, field, held):
                 m = qb.mark()
@@ -912,6 +1091,12 @@ def main():
         # floors, so this states them and can license nothing.
         rung = dict(name=ev["rung"], per_net={}, argv=None, why=None)
         guards = []
+        # D-675: A PLAN PRICED WITH A `--bond-pad` CARRIES IT.  The whole point
+        # of this emitter is that the measurement and the transaction cannot
+        # drift; a split priced on a board that has a bond barrel on it and a
+        # writer run that plants none are two different transactions, and the
+        # second one is the one `PP2` would refuse.
+        bond_plan = []
         for rep in out:
             j = (rep.get("arms") or {}).get("joint") or {}
             if not j.get("all_relaid") or not j.get("stitch_geometry"):
@@ -955,6 +1140,9 @@ def main():
                 entry.update(parts[0] if len(parts) == 1
                              else dict(tracks=parts))
                 plan["detours"].append(entry)
+            for b in (j.get("split_bonds") or ()):
+                for ref in b.get("requested", ()):
+                    bond_plan.append(dict(net=b["net"], pad=ref))
         # ONE RUNG OR NONE.  `--stitch-width` is a RUN-WIDE lever, so a plan
         # that closed two lands of two different classes at two different rungs
         # cannot state one; it says so instead of picking, and the writer then
@@ -974,6 +1162,15 @@ def main():
         else:
             rung["why"] = "no land closed, so no rung was measured"
         plan["rung"] = rung
+        plan["bond_pads"] = dict(
+            pads=[b["pad"] for b in bond_plan],
+            detail=bond_plan,
+            argv=[x for b in bond_plan for x in ("--bond-pad", b["pad"])],
+            why=("this plan's split was PRICED with these bonds planted by "
+                 "maze3d.bond_pads; a writer run that omits them is running a "
+                 "DIFFERENT transaction and PP2 was not measured on it"
+                 if bond_plan else
+                 "no bond was planted; the split, if any, was priced as-is"))
         if a.plan_out:
             a.plan_out.write_text(
                 json.dumps(plan, indent=2, sort_keys=True) + "\n",

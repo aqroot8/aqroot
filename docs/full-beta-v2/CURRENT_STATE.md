@@ -13,6 +13,82 @@
 > This file references DEVICE_SPEC rather than duplicating full specs.
 
 ## 1. Authoritative HEAD
+- **Demo D-675 (THE 3.3 V REGULATOR'S FEEDBACK DIVIDER IS CONNECTED TO THE RAIL
+  IT SENSES):**  **COPPER PROMOTED.**  Authority
+  `c3286d8fdd23b6bdb037de2a753051b3ac2aa2e5ccaba2e25ced3d39cf4884b2` ->
+  **`28935c75f4747bac0ad2a062977c4ad13e7e48ec98169529c1d2db4f29f8a5b3`**;
+  retained open edges **27 -> 26**, open retained nets 15 -> 15, raw board
+  ratsnest 43 -> 42, `nets_improved [+3V3]`, `nets_regressed []`
+  (`evidence/d675-routing-ledger.json`).  Gate accepted on **15 of 15 clauses,
+  `refused_clauses: []`** (`evidence/d675-gate-summary.json`); real KiCad DRC
+  `attributable_drc: []` with the inherited baseline unchanged object for
+  object.  Standing suite **14/14 RAN, 14/14 PASS, 14/14 COMPARED against
+  `d674`, `vacuous` false** (`evidence/d675-contract-regression.json`);
+  baselines emitted for D-676.  `protected_copper.py` **IDENTICAL** (393
+  objects, 15 nets).  `hardware/beta-v2` **UNTOUCHED**.  `hardware/demo/fab`
+  regenerated at `28935c75`, `fab_provenance` **PASS**.
+  **(1) A REAL FUNCTIONAL DEFECT IS CLOSED.**  `R39` is the `TPS63020` 3.3 V
+  rail's OUTPUT FEEDBACK DIVIDER (`R39.1 = +3V3`, `R39.2 = V3V3_FB` with
+  `R40.1`/`U12.3`), and its TOP leg had not reached the rail it senses since
+  D-638 named it.  **`R39.1` is now in `+3V3`'s 78-pad body group**; `+3V3`
+  drops 3 open edges to 2, and both survivors (`U4.5`, `U5.2`) are D-672 §2's
+  already-classified `PACKAGE_PITCH_WALL` / `LICENCE_ONLY_UNPRICED` pair.
+  **(2) THE TRANSACTION, IN 19 OBJECTS.**  2 `Net-(U11-TS_MR)` `B.Cu` tracks
+  out (4.3353 mm); in: the `+3V3` arm `R39.1` -> a 0.65/0.40 barrel at
+  (70.650, 67.550) (6 tracks, 9.687 mm), the `Net-(U11-TS_MR)` relay
+  **4.3353 -> 17.3941 mm, ZERO vias**, and a `GND` `C28.2` bond stub (2 tracks,
+  2.043 mm) to a 0.60/0.30 barrel at (70.200, 91.650).  The rung TRAVELLED with
+  the plan and was ADOPTED (`--stitch-width 400000 --stitch-via 650000:400000`,
+  `conflict: false`), closing D-638 §5(a).  **STATED PRICE: +13.06 mm on the
+  charger's `TS`/`MR` sense input** -- a two-pad DC bias node already ~60 mm
+  long, so ~22% on a node with no edge rate.
+  **(3) THE FINDING: `PP2` PRICES A TUBE TO A BARREL THAT IS THERE.**  D-674
+  prescribed *"0.035 mm of extra pour width at `C28.2`"* and that lever is
+  VACUOUS: the `GND` `B.Cu` copper around `C28.2` is **1.9 mm wide**, and the
+  0.850 mm figure is the tube to the ONLY barrel within 6 mm -- 1.181 mm away
+  down a wedge, on the AUTHORITY board as much as on the split one.  One
+  `maze3d.bond_pads` stitch takes `C28.2` **0.850 -> 1.300 mm, 2.117 -> 2.881 A**
+  and the fragment prices **2.206 A** against its 2.190 A bar, `margin_x`
+  **1.007**.  **This is the first `GND` split this board has ever admitted**,
+  and it is admitted by D-643's own number.
+  **(4) A LEGALITY VERDICT IS ABOUT ONE LATTICE.**
+  `screen_fragment_price_ceiling.py` reports `ceiling_amps` 2.206 /
+  `best_legal_amps` 2.117 / **`PRICE_IS_HELD_BY_LEGALITY`**, 23 legal cells and
+  none near `C28.2` -- and a hand via that `PP2` admits is **REFUSED by the real
+  DRC** on `/09_COMMUNITY_HEADER/WAKE_GATE_S` (`F.Cu`) and `/IR_RX_GPIO44`
+  (`In2.Cu`) (`evidence/d675-hand-via-drc-refutation.json`).  The screen was
+  right; its lattice was not the whole answer.  `Field`'s guard band is 0.75
+  cell, so the pocket the writer used is six cells wide at 0.025 mm and does not
+  exist at 0.050 mm -- and `bond_pads`, searching the whole 8 mm bond window
+  rather than the fragment polygon, found a legal site at 0.050 mm anyway.
+  **(5) TWO INSTRUMENTS WERE ONE LINE FROM SILENCE.**  `split_price` priced a
+  board the transaction does not produce (`Held` never removes the cut from the
+  `pcbnew` BOARD); the refill child now deletes the named cuts from the
+  candidate FILE and REPORTS `cuts_not_removed` -- which immediately caught two
+  defects of its own (an obstacle-model layer KEY matched against `pcbnew`'s
+  layer NAME, and `BOARD::Remove` invalidating the track container mid-walk).
+  **The corrected price is the SAME price**, so D-674's number STANDS.  And
+  `screen_relay_bindability.py` -- which D-674 told every future decision to run
+  first -- raised `KeyError: 'a_mm'` on the very next spec, because `--plan-out`
+  emits a CHAIN.  It now reads chains via their two free ends and re-reads the
+  `d674` `C27.1` spec **byte-identical**.
+  **(6) NEW LEVER, NOT A LICENCE:** `screen_relay_transaction.py
+  --split-bond-pad NET:REF.NUM` prices the split on the board the writer's
+  `--bond-pad` will produce, using `maze3d.bond_pads` itself so the site cannot
+  drift, and the emitted plan CARRIES the bond.
+  **NEXT, IN ORDER OF LEVERAGE:** (1) **`--bond-pad` IS A PROVEN `PP2` LEVER AND
+  HAS NOT BEEN SWEPT** -- re-ask `BQ25185_SYS C26.2` and `GND J3.A12/B1` with
+  `--split-priced --split-bond-pad`; every `BOND_UNDER_PRICED` refusal on this
+  board predates it.  (2) **`GND J3.A12/B1` is still the only UNCITED cut on the
+  board** and D-640's own cheap rung (`--joint-tries 6 --joint-knockout-mm 0.35`
+  at `--grid 50000`) has never been run.  (3) `BQ25185_SYS` remains **PARKED**
+  and is still the **#1 fabrication blocker** -- 6 of the board's 26 open edges,
+  D-672 §5's converter-cluster refloorplan named as the lever.  (4) Read
+  `PRICE_IS_HELD_BY_LEGALITY` beside a `--bond-pad` trial, or at two lattices,
+  before recording a fragment as unbuyable.  (5) `/I2C_SCL_INT`'s
+  `U14.7 <-> J1.44` remains the one OPEN OWNER DECISION, RECORDED NOT TAKEN;
+  `U9.14`, `U11.9`, `U11.3`, `MK1.4` and `/I2S_LRCLK` unchanged.
+  (6) `hardware/demo/fab` is **FRESH at `28935c75`**.
 - **Demo D-674 (A SCREEN WAS STILL ENFORCING A RULE ITS OWN CONTRACT RETIRED
   THIRTY-FIVE DECISIONS AGO, AND THE TRANSACTION THIS REPOSITORY CALLED "ONE
   FLAG FROM PROMOTABLE" CANNOT BE DRAWN AT ALL):**  **NO COPPER PROMOTED —

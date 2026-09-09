@@ -1,0 +1,25 @@
+{
+  "schema": 1,
+  "decision": "D-675",
+  "question": "is a barrel that raises C28.2's fragment tube to 0.900 mm LEGAL, or was screen_fragment_price_ceiling.py right to call the price held by legality",
+  "method": "one PCB_VIA added by hand to the priced candidate board, KiCad ZONE_FILLER refill, then the authoritative kicad-cli DRC (--refill-zones --save-board --severity-all) diffed violation-by-violation against the same candidate WITHOUT the via",
+  "hand_placed_via": {
+    "xy_mm": [70.7, 93.1], "dia_mm": 0.6, "drill_mm": 0.3, "net": "GND",
+    "pp2": "PASS -- C28.2 internal 0.850 -> 1.300 mm, 2.117 -> 2.881 A, fragment priced 2.206 A, margin_x 1.007",
+    "drc": "REFUSED -- two NEW clearance violations that the baseline candidate does not have",
+    "violations_added": [
+      "clearance: Via [GND] on F.Cu - B.Cu  vs  Track [/09_COMMUNITY_HEADER/WAKE_GATE_S] on F.Cu",
+      "clearance: Via [GND] on F.Cu - B.Cu  vs  Track [/IR_RX_GPIO44] on In2.Cu"
+    ],
+    "reading": "screen_fragment_price_ceiling.py's PRICE_IS_HELD_BY_LEGALITY verdict was CORRECT and this hand via was not.  A price that PP2 admits is not a transaction; hand copper is not a route."
+  },
+  "what_was_legal_instead": {
+    "primitive": "route_maze_batch.py --bond-pad C28.2 / maze3d.bond_pads, at the GND netclass 0.60/0.30 barrel and the run's own 0.050 mm lattice",
+    "via_xy_mm": [70.2, 91.65],
+    "track_mm": 2.043,
+    "drc": "PASS -- zero attributable violations on the promoted board",
+    "pp2": "PASS -- C28.2 internal 0.850 -> 1.300 mm, fragment priced 2.206 A against a 2.190 A bar"
+  },
+  "baseline_drc_types": {"hole_clearance": 5, "solder_mask_bridge": 1, "lib_footprint_issues": 199},
+  "with_hand_via_drc_types": {"hole_clearance": 5, "solder_mask_bridge": 1, "clearance": 2, "lib_footprint_issues": 199}
+}

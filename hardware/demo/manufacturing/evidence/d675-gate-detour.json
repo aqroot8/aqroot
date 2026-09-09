@@ -1,0 +1,37 @@
+{
+  "detours": [
+    {
+      "a_nm": [
+        66500000,
+        71600000
+      ],
+      "b_nm": [
+        68500000,
+        75200000
+      ],
+      "exact_relay": null,
+      "layer": "B.Cu",
+      "lkey": "B",
+      "max_mm": 54.6008,
+      "mm": 4.3353,
+      "move_ends": [],
+      "net": "Net-(U11-TS_MR)",
+      "objects": 2,
+      "relay": true,
+      "tracks": 2,
+      "width_nm": 200000
+    }
+  ],
+  "moved_barrels": [],
+  "nets": [
+    "Net-(U11-TS_MR)"
+  ],
+  "removed_barrels": 0,
+  "removed_count": 2,
+  "removed_mm": 4.3353,
+  "removed_signatures": [
+    "('T', 'Net-(U11-TS_MR)', 2, (66500000, 71600000), (66600000, 73100000), 200000)",
+    "('T', 'Net-(U11-TS_MR)', 2, (66600000, 73100000), (68500000, 75200000), 200000)"
+  ],
+  "reserve": []
+}

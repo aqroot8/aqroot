@@ -1,3 +1,213 @@
+# D-675 · 2026-09-09 · Demo — THE 3.3 V REGULATOR'S FEEDBACK DIVIDER IS CONNECTED TO THE RAIL IT SENSES: the 3.3% deficit was never a pour WIDTH, it was a MISSING BARREL, and the two instruments that would have said so were one `KeyError` and one wrong layer name from being unable to say anything
+
+    authority  c3286d8fdd23b6bdb037de2a753051b3ac2aa2e5ccaba2e25ced3d39cf4884b2
+            -> 28935c75f4747bac0ad2a062977c4ad13e7e48ec98169529c1d2db4f29f8a5b3
+    retained open edges 27 -> 26      open retained nets 15 -> 15
+    connected retained nets 158       raw board ratsnest 43 -> 42
+    nets_improved [+3V3]              nets_regressed []
+    `hardware/beta-v2` UNTOUCHED (`git status --short hardware/beta-v2/` empty).
+
+**COPPER PROMOTED.**  The authoritative gate accepted on **15 of 15 clauses,
+`refused_clauses: []`, `promotion_candidate: true`**
+(`evidence/d675-gate-summary.json`).  Standing suite **14/14 RAN, 14/14 PASS,
+14/14 COMPARED against `d674`, `vacuous` false**
+(`evidence/d675-contract-regression.json`); baselines emitted for D-676.
+`protected_copper.py` **IDENTICAL** — 393 objects, 15 nets, `identical: true`.
+`hardware/demo/fab` regenerated at `28935c75` and `fab_provenance` is **PASS**.
+
+## 1. WHAT WAS ACTUALLY BROKEN, AND IT WAS NOT COSMETIC
+
+`R39` is `1M 1%` with `R39.1 = +3V3` and `R39.2 = /01_POWER_TREE/V3V3_FB`, and
+`V3V3_FB` joins `R39.2`, `R40.1` and `U12.3`.  `R39`/`R40` are the **OUTPUT
+FEEDBACK DIVIDER of the `TPS63020` 3.3 V rail**, and `R39.1` — the TOP leg —
+has been an open edge since D-638 named it.  A feedback divider whose top leg
+does not reach the rail it senses is not a routing nicety: `FB` sees `R40` to
+ground and nothing else.  **`R39.1` is now in `+3V3`'s 78-pad body group**
+(`evidence/d675-routing-ledger.json`); `+3V3` drops 3 open edges to 2 and the
+two that remain (`U4.5`, `U5.2`) are the `PACKAGE_PITCH_WALL` /
+`LICENCE_ONLY_UNPRICED` pair D-672 §2 already classified.
+
+## 2. THE TRANSACTION, IN NINETEEN OBJECTS
+
+    removed   2 tracks  Net-(U11-TS_MR)  B.Cu  4.3353 mm   (the licensed cut)
+    added     6 tracks  +3V3             B.Cu  0.400 mm    R39.1 -> barrel, 9.687 mm
+              1 via     +3V3             0.65/0.40 at (70.650, 67.550)
+              7 tracks  Net-(U11-TS_MR)  B.Cu  0.200 mm    relay 4.3353 -> 17.3941 mm, ZERO vias
+              2 tracks  GND              B.Cu  0.300 mm    C28.2 bond stub, 2.043 mm
+              1 via     GND              0.60/0.30 at (70.200, 91.650)
+
+29.125 mm of track added, 4.335 mm removed, two barrels, nothing else.  The
+rung travelled with the plan and was ADOPTED (`--stitch-width 400000
+--stitch-via 650000:400000`, `conflict: false`), so D-638 §5(a)'s refusal
+cannot recur.  **The relay is +13.06 mm on the charger's `TS`/`MR` sense
+input** — a two-pad DC bias node (`R38.1` at (8.700, 85.985), `U11.6` at
+(68.600, 77.000), `R38.2` to `GND`), already ~60 mm long, so the detour is a
+~22% length increase on a node with no edge rate.  **That is the stated price.**
+
+    python3 route_maze_batch.py "+3V3" \
+        --detour-spec evidence/d675-r39-plan.json \
+        --guard evidence/d675-r39-guard.json \
+        --body-landing --grid 50000 --bond-pad C28.2 \
+        --work ... --promote
+
+## 3. THE FINDING: `PP2` PRICES A TUBE TO A BARREL THAT IS THERE, AND D-674 MEASURED THE ONLY BARREL THAT HAPPENED TO EXIST
+
+D-674 left `+3V3 R39.1` as *"a 3.3% geometry question with a named coordinate"*
+and prescribed two levers: a cut that leaves `C28.2` on the body side, or
+**"0.035 mm of extra pour width at `C28.2`"**.  The second lever is **VACUOUS,
+and it was vacuous for a reason nobody had looked at**:
+
+  * `bond_price` prices a fragment pad at the **widest tube from that pad to a
+    LANDING BARREL**.  It is not a property of the pour at the pad — it is a
+    property of *where the nearest barrel is*.
+  * The `GND` `B.Cu` copper around `C28.2` is **1.9 mm wide** (x 69.525 ->
+    71.450 at y = 93.245).  Nothing there needed widening.
+  * The only barrel within **6 mm** of `C28.2` in the whole `GND` `B.Cu` island
+    — before OR after the split — sits at (70.500, 92.200), 1.181 mm away
+    **down a wedge**, and the tube to it is 0.850 mm.  That single fact is the
+    entire 2.117 A / 2.190 A deficit, and it is a property of the AUTHORITY
+    board, not of the transaction: the same 0.850 mm, the same 0.670 mm path,
+    on the unsplit 2553 mm2 island.
+
+**So the lever is a BARREL IN THE WIDE PART, and `route_maze_batch.py
+--bond-pad` has planted exactly that kind of barrel since D-591.**  One
+`maze3d.bond_pads` stitch at (70.200, 91.650) takes `C28.2`'s internal tube
+**0.850 -> 1.300 mm, 2.117 -> 2.881 A**; the fragment then prices at **2.206 A**
+(bounded by `C27.2`'s 0.900 mm) against the 2.190 A bar — **`margin_x` 1.007,
+`PP2` PASS, PP1/PP2/PP3/PP4 all true.**
+
+## 4. AND THE SCREEN THAT SAYS "LEGAL" IS NOT THE SCREEN THAT SAYS "PRICED", WHICH THIS DECISION PAID TO LEARN TWICE
+
+`screen_fragment_price_ceiling.py` was run on this fragment for the first time
+(`evidence/d675-fragment-price-ceiling-c28.json`, 1364 s): **`ceiling_amps`
+2.206, `ceiling_margin_x` 1.007, `best_legal_amps` 2.117, verdict
+`PRICE_IS_HELD_BY_LEGALITY`**, 23 legal cells and **not one of them within
+20 mm of `C28.2`**.  Read alone that says the barrel is unbuyable.
+
+**A HAND-PLACED VIA SAID OTHERWISE AND THE REAL DRC REFUTED IT**
+(`evidence/d675-hand-via-drc-refutation.json`).  A 0.60/0.30 barrel dropped at
+(70.700, 93.100) passes `PP2` exactly as predicted — and adds **TWO NEW
+`clearance` violations** against `/09_COMMUNITY_HEADER/WAKE_GATE_S` on `F.Cu`
+and `/IR_RX_GPIO44` on `In2.Cu`.  The ceiling screen was right and the hand
+copper was wrong: **`WAKE_GATE_S` runs (71.300, 95.500) -> (65.500, 83.200)
+straight down the middle of that ribbon on `F.Cu`**, and a through barrel owes
+it 0.600 mm from the centreline.
+
+**WHAT THE CEILING SCREEN COULD NOT SEE IS THE LATTICE IT WAS ASKED ON.**  Its
+legality set is `mz.poly_mask(field, frag_poly) & field.via_ok` at `--grid`,
+and `Field`'s guard band is 0.75 cell — **0.0375 mm at 0.050 and 0.01875 mm at
+0.025**.  The pocket the writer actually used is **six cells wide at 0.025 mm**
+and does not exist at 0.050 mm.  `maze3d.bond_pads`, given the run's own
+`Field` and the `GND` netclass barrel, found (70.200, 91.650) at 0.050 mm all
+the same, because it searches the whole 8 mm bond window and not just the
+fragment polygon.  **`PRICE_IS_HELD_BY_LEGALITY` is a verdict about ONE
+LATTICE AND ONE POLYGON; run `--bond-pad` before believing it.**
+
+## 5. TWO INSTRUMENTS WERE ONE LINE FROM BEING UNABLE TO ANSWER AT ALL
+
+**(a) `split_price` PRICED A BOARD THE TRANSACTION DOES NOT PRODUCE.**  `Held`
+removes a cut track from the ROUTER's obstacle model and never from the
+`pcbnew` BOARD — every other arm of `screen_relay_transaction.py` reverts and
+needs the board back.  So D-674's `--split-priced` candidate carried the
+authority **PLUS** the stitch, the arm and the relay **with the cut still on
+it**, and `PP2` refused on 3.3% of a width measured through copper the
+transaction removes.  Fixed: the refill child deletes the named cuts from the
+candidate FILE, one track per record, matched on net, layer, endpoints and
+width; `qb.b` is never touched.  A record that matches nothing is REPORTED as
+`cuts_not_removed` rather than skipped — **and that report immediately caught
+its own author**: the first run came back `cuts_removed: 0` because the record
+carries the obstacle model's layer KEY (`B`) and the child matched `pcbnew`'s
+layer NAME (`B.Cu`) (`evidence/d675-r39-split-layername-defect.json`).  A
+second defect surfaced the same way: `BOARD::Remove` invalidates the track
+container mid-walk, so a two-record removal handed back an untyped
+`SwigPyObject` on the second pass; the child now snapshots every track in ONE
+pass and removes afterwards.  **THE CORRECTED PRICE IS THE SAME PRICE**
+(`evidence/d675-r39-split-cut-removed-control.json`): `cuts_removed: 2`,
+fragment 21.889 -> 21.898 mm2, `C28.2` 0.850 mm, 2.117 A, `margin_x` 0.967.
+D-674's number STANDS; the defect was real and, here, immaterial.
+
+**(b) `screen_relay_bindability.py` COULD NOT READ A CHAIN.**  D-674 closed with
+*"run `screen_relay_bindability.py` before ANY `--detour-spec` gate run — every
+spec this repository has ever written can be checked for free."*  On the very
+next transaction it raised `KeyError: 'a_mm'` and died: `--plan-out` emits
+`tracks: [...]` whenever a land's cut is more than one segment, which is
+exactly the shape of `+3V3 R39.1`.  It now reads a chain the way
+`detour_apply` does — the chain's two FREE ends are the relay's fixed
+terminals — and reports `polyline_mm` beside the straight-line `length_mm`.
+**The `d674` `C27.1` spec re-reads BYTE-IDENTICAL**: 8 rows, 4
+`VACUOUS_TERMINAL_LIFT`, same `bindable_mm`.  On this plan:
+`Net-(U11-TS_MR)` chain, 4.1183 mm, `LANE_DOES_NOT_REACH` — correct, because
+this plan's reservation is the guard TUBE and not a disc
+(`evidence/d675-r39-bindability.json`).
+
+## 6. THE NEW LEVER, AND WHY IT IS NOT A LICENCE
+
+`screen_relay_transaction.py --split-bond-pad NET:REF.NUM` (requires
+`--split-priced`).  A caller that intends to run the transaction WITH a
+`--bond-pad` says so, and the split is priced on THAT board.  The bond is not
+re-implemented: `maze3d.bond_pads` is called with the writer's own `Field`, so
+**the site priced is the site the writer plants**, and it is laid inside the
+round's existing mark so the caller's `revert` takes it off with the stitch and
+the relay.  The barrel still has to satisfy `Field.via_ok` and `verify_laid`;
+the split is still priced by `checks/pour_partition_contract.py` itself; `ok`
+false still refuses the round.  **A plan emitted from such a round CARRIES the
+bond** (`plan["bond_pads"]`, with its own `argv`), because a split priced with
+a barrel on the board and a writer run that plants none are two different
+transactions and the second is the one `PP2` would refuse.
+
+## 7. WHAT MOVED IN THE STANDING SUITE, AND IT IS EXACTLY THE TRANSACTION
+
+Beyond the board `sha256`, two contracts differ from `d674` and both are the
+copper:
+
+    keepout_stackup   In1.Cu reference plane 9389.649 -> 9390.696 mm2  (+1.047)
+    pour_partition    results.PP2.admitted   0 -> 1 entries
+
+`PP2` now ADMITS one `GND` `B.Cu` split — the 21.9 mm2 east-margin fragment
+holding `C27.2` and `C28.2`, priced 2.206 A against its 2.190 A
+`RETURN_NEIGHBOUR_RAIL` bar.  **That is the first split this board has ever
+admitted**, and it is admitted by the number D-643 wrote, not by any relaxation
+of it.  Real KiCad DRC on the promoted board: `attributable_drc: []`; the
+inherited baseline (5 `hole_clearance`, 1 `solder_mask_bridge`, 199
+`lib_footprint_issues`) is unchanged object for object.
+
+## NEXT, IN ORDER OF LEVERAGE
+
+1. **`--bond-pad` IS NOW A PROVEN `PP2` LEVER AND IT HAS NOT BEEN SWEPT.**
+   Every `pour_severs` / `BOND_UNDER_PRICED` refusal on this board was taken
+   before a bond barrel was ever offered to the fragment.  Re-ask
+   `BQ25185_SYS C26.2` and `GND J3.A12/B1` with `--split-priced
+   --split-bond-pad`, which is D-674's NEXT item 2 with a lever it did not have.
+2. **`GND J3.A12/B1` IS STILL THE ONLY UNCITED CUT ON THE BOARD** (D-640 §5)
+   and D-640's own ranked item 4 — *"a cheaper setting: `--joint-tries 6
+   --joint-knockout-mm 0.35`, or `--grid 50000`"* — has never been run.  D-639's
+   attempt hit a 5400 s cap at `--joint-tries 24 --grid 25000` and nothing since
+   has tried the cheap rung.  Its relay goes back at its own 5.475 mm length on
+   a bare board (D-638 §2), so the wall is the stitch, which is precisely what
+   `joint_search` exists to solve.
+3. **`/01_POWER_TREE/BQ25185_SYS` remains PARKED** at 6 of the board's 26 open
+   edges (D-674 §3), with D-672 §5's converter-cluster refloorplan named as the
+   lever.  **It is still the #1 fabrication blocker.**
+4. **RUN `screen_fragment_price_ceiling.py` AT TWO LATTICES**, or read its
+   `PRICE_IS_HELD_BY_LEGALITY` beside a `--bond-pad` trial, before recording a
+   fragment as unbuyable (§4).
+5. `/I2C_SCL_INT`'s `U14.7 <-> J1.44` remains the one OPEN OWNER DECISION,
+   RECORDED NOT TAKEN.  `U9.14`, `U11.9`, `U11.3`, `MK1.4` and `/I2S_LRCLK`
+   are unchanged.
+6. `hardware/demo/fab` is **FRESH at `28935c75`**.
+
+Evidence, all under `hardware/demo/manufacturing/evidence/`:
+`d675-gate-summary.json`, `d675-gate-detour.json`,
+`d675-gate-pour-partition.json`, `d675-routing-ledger.json`,
+`d675-protected-copper.json`, `d675-contract-regression.json`,
+`d675-r39-plan.json`, `d675-r39-guard.json`, `d675-r39-bindability.json`,
+`d675-r39-relay-transaction-bonded.json`,
+`d675-r39-split-cut-removed-control.json`,
+`d675-r39-split-layername-defect.json`,
+`d675-fragment-price-ceiling-c28.json`,
+`d675-hand-via-drc-refutation.json`, and the fourteen
+`d675-*-contract.json` baselines for D-676.
+
 # D-674 · 2026-09-09 · Demo — A SCREEN WAS STILL ENFORCING A RULE ITS OWN CONTRACT RETIRED THIRTY-FIVE DECISIONS AGO, AND THE TRANSACTION THIS REPOSITORY CALLED "ONE FLAG FROM PROMOTABLE" CANNOT BE DRAWN AT ALL
 
     authority  c3286d8fdd23b6bdb037de2a753051b3ac2aa2e5ccaba2e25ced3d39cf4884b2  UNCHANGED

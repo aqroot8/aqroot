@@ -1,0 +1,41 @@
+{
+  "detours": 1,
+  "formula": "reach = keepout + width/2 + G;  bindable = max(0, L - reach_a - reach_b)",
+  "grid_nm": 50000,
+  "lane_does_not_reach": 1,
+  "question": "how much of each --detour-spec relay does its own stated lane actually bind, once D-667's terminal lift has freed the relay's two fixed ends",
+  "reserve_discs": 0,
+  "rows": [
+    {
+      "a_mm": [
+        66.5,
+        71.6
+      ],
+      "b_mm": [
+        68.5,
+        75.2
+      ],
+      "bindable_mm": 4.1183,
+      "index": 0,
+      "kind": "chain",
+      "lane_points_on_layer": 0,
+      "layer": "B.Cu",
+      "length_mm": 4.1183,
+      "lift_a_mm": 0.0,
+      "lift_b_mm": 0.0,
+      "lkey": "B",
+      "nearest_disc_to_midpoint_mm": null,
+      "net": "Net-(U11-TS_MR)",
+      "polyline_mm": 4.3353,
+      "threshold_mm": 0.0,
+      "tracks": 2,
+      "verdict": "LANE_DOES_NOT_REACH",
+      "why": "no reserve disc reaches either end or the middle of this relay; the lane cannot move it and does not need to",
+      "width_mm": 0.2
+    }
+  ],
+  "schema": 1,
+  "spec": "w/d675/r39-plan.json",
+  "vacuous": 0,
+  "verdict": "every relay this lane reaches has copper it can bind"
+}

@@ -1,0 +1,745 @@
+{
+ "board": "/home/aqroot8/aqroot-demo/hardware/demo/kicad/aqroot-demo/aqroot-Beta-v2.kicad_pcb",
+ "board_sha256": "c3286d8fdd23b6bdb037de2a753051b3ac2aa2e5ccaba2e25ced3d39cf4884b2",
+ "fragment_board": "w/d674/splitprice/split-+3V3-R39.1-2.kicad_pcb",
+ "fragment_board_sha256": "750fce60dd133e3bb4176f9956efca1cc642492270ede1c2a0429bac8223fca0",
+ "grid": 50000,
+ "guard": null,
+ "method": "read-only; pour_partition_contract.bond_price / return_fragment_bar / decide called VERBATIM with ONE hypothetical barrel injected at each cell, over the same Field.via_ok lattice screen_bond_site_deficit.py counts sites on.  Nothing is written and no board is modified",
+ "netclass_source": {
+  "classes": [
+   "ACC_3V3",
+   "ACC_5V",
+   "BAT_MAIN",
+   "Default",
+   "GND",
+   "I2C",
+   "I2S",
+   "LED_BOOST",
+   "NFC_5V_PA",
+   "NFC_OSC",
+   "NFC_RF",
+   "NFC_RX",
+   "P3V3",
+   "SPK_OUT",
+   "SWITCH_NODE",
+   "SYS_MAIN",
+   "USB_D",
+   "VBUS_CHG"
+  ],
+  "found": true,
+  "sha256": "e5af7cdf0a05f0c0778099c21aea9bb6cbbbe92e89fb5f79e11f0907ad5c52f1",
+  "source": "w/d674/splitprice/split-+3V3-R39.1-2.kicad_pro"
+ },
+ "pads": [
+  {
+   "bar": {
+    "bar_amps": 2.19,
+    "bar_from": "RETURN_NEIGHBOUR_RAIL",
+    "floor": {
+     "amps": 0.995,
+     "dT_K": 10.0,
+     "netclass": "GND",
+     "note": "one track of the net's OWN netclass width at this board's copper -- what the board publishes as an adequate conductor for this net",
+     "track_width_mm": 0.3
+    },
+    "limits": "a neighbour on a class section 5 does not price contributes nothing; the MAXIMUM neighbour is charged, not the sum",
+    "neighbour_max_amps": 2.19,
+    "neighbour_rails": [
+     {
+      "gnd_pad": "C27.2",
+      "other_net": "/01_POWER_TREE/BQ25185_SYS",
+      "other_netclass": "SYS_MAIN",
+      "other_pad": "1",
+      "part": "C27",
+      "published_amps": 2.19
+     },
+     {
+      "gnd_pad": "C28.2",
+      "other_net": "/01_POWER_TREE/BQ25185_SYS",
+      "other_netclass": "SYS_MAIN",
+      "other_pad": "1",
+      "part": "C28",
+      "published_amps": 2.19
+     }
+    ]
+   },
+   "bar_amps": 2.19,
+   "barrel": {
+    "dia_nm": 500000,
+    "drill_nm": 200000,
+    "mm": [
+     0.5,
+     0.2
+    ],
+    "promotable": true
+   },
+   "best_legal_amps": 2.117,
+   "best_legal_site": {
+    "bond_amps_parallel": 5.261,
+    "bottleneck": "FRAGMENT_COPPER",
+    "internal_min_amps": 2.117,
+    "internal_min_width_mm": 0.85,
+    "priced_amps": 2.117,
+    "xy_mm": [
+     71.2,
+     71.65
+    ]
+   },
+   "ceiling_amps": 2.206,
+   "ceiling_margin_x": 1.007,
+   "ceiling_site": {
+    "bond_amps_parallel": 5.261,
+    "bottleneck": "FRAGMENT_COPPER",
+    "internal_min_amps": 2.206,
+    "internal_min_width_mm": 0.9,
+    "priced_amps": 2.206,
+    "xy_mm": [
+     70.397,
+     92.496
+    ]
+   },
+   "fragment": {
+    "area_mm2": 21.889,
+    "pads": [
+     "C27.2",
+     "C28.2"
+    ],
+    "post_island": 28,
+    "vias": 2
+   },
+   "legal_rows": [
+    {
+     "bond_amps_parallel": 5.261,
+     "bottleneck": "FRAGMENT_COPPER",
+     "internal_min_amps": 2.117,
+     "internal_min_width_mm": 0.85,
+     "priced_amps": 2.117,
+     "xy_mm": [
+      71.2,
+      71.65
+     ]
+    },
+    {
+     "bond_amps_parallel": 5.261,
+     "bottleneck": "FRAGMENT_COPPER",
+     "internal_min_amps": 2.117,
+     "internal_min_width_mm": 0.85,
+     "priced_amps": 2.117,
+     "xy_mm": [
+      71.2,
+      71.7
+     ]
+    },
+    {
+     "bond_amps_parallel": 5.261,
+     "bottleneck": "FRAGMENT_COPPER",
+     "internal_min_amps": 2.117,
+     "internal_min_width_mm": 0.85,
+     "priced_amps": 2.117,
+     "xy_mm": [
+      71.2,
+      71.75
+     ]
+    },
+    {
+     "bond_amps_parallel": 5.261,
+     "bottleneck": "FRAGMENT_COPPER",
+     "internal_min_amps": 2.117,
+     "internal_min_width_mm": 0.85,
+     "priced_amps": 2.117,
+     "xy_mm": [
+      69.2,
+      75.4
+     ]
+    },
+    {
+     "bond_amps_parallel": 5.261,
+     "bottleneck": "FRAGMENT_COPPER",
+     "internal_min_amps": 2.117,
+     "internal_min_width_mm": 0.85,
+     "priced_amps": 2.117,
+     "xy_mm": [
+      69.2,
+      75.45
+     ]
+    },
+    {
+     "bond_amps_parallel": 5.261,
+     "bottleneck": "FRAGMENT_COPPER",
+     "internal_min_amps": 2.117,
+     "internal_min_width_mm": 0.85,
+     "priced_amps": 2.117,
+     "xy_mm": [
+      69.25,
+      75.45
+     ]
+    },
+    {
+     "bond_amps_parallel": 5.261,
+     "bottleneck": "FRAGMENT_COPPER",
+     "internal_min_amps": 2.117,
+     "internal_min_width_mm": 0.85,
+     "priced_amps": 2.117,
+     "xy_mm": [
+      69.2,
+      75.5
+     ]
+    },
+    {
+     "bond_amps_parallel": 5.261,
+     "bottleneck": "FRAGMENT_COPPER",
+     "internal_min_amps": 2.117,
+     "internal_min_width_mm": 0.85,
+     "priced_amps": 2.117,
+     "xy_mm": [
+      69.25,
+      75.5
+     ]
+    },
+    {
+     "bond_amps_parallel": 5.261,
+     "bottleneck": "FRAGMENT_COPPER",
+     "internal_min_amps": 2.117,
+     "internal_min_width_mm": 0.85,
+     "priced_amps": 2.117,
+     "xy_mm": [
+      69.3,
+      75.5
+     ]
+    },
+    {
+     "bond_amps_parallel": 5.261,
+     "bottleneck": "FRAGMENT_COPPER",
+     "internal_min_amps": 2.117,
+     "internal_min_width_mm": 0.85,
+     "priced_amps": 2.117,
+     "xy_mm": [
+      69.2,
+      75.55
+     ]
+    },
+    {
+     "bond_amps_parallel": 5.261,
+     "bottleneck": "FRAGMENT_COPPER",
+     "internal_min_amps": 2.117,
+     "internal_min_width_mm": 0.85,
+     "priced_amps": 2.117,
+     "xy_mm": [
+      69.25,
+      75.55
+     ]
+    },
+    {
+     "bond_amps_parallel": 5.261,
+     "bottleneck": "FRAGMENT_COPPER",
+     "internal_min_amps": 2.117,
+     "internal_min_width_mm": 0.85,
+     "priced_amps": 2.117,
+     "xy_mm": [
+      69.3,
+      75.55
+     ]
+    },
+    {
+     "bond_amps_parallel": 5.261,
+     "bottleneck": "FRAGMENT_COPPER",
+     "internal_min_amps": 2.117,
+     "internal_min_width_mm": 0.85,
+     "priced_amps": 2.117,
+     "xy_mm": [
+      69.35,
+      75.55
+     ]
+    },
+    {
+     "bond_amps_parallel": 5.261,
+     "bottleneck": "FRAGMENT_COPPER",
+     "internal_min_amps": 2.117,
+     "internal_min_width_mm": 0.85,
+     "priced_amps": 2.117,
+     "xy_mm": [
+      69.2,
+      75.6
+     ]
+    },
+    {
+     "bond_amps_parallel": 5.261,
+     "bottleneck": "FRAGMENT_COPPER",
+     "internal_min_amps": 2.117,
+     "internal_min_width_mm": 0.85,
+     "priced_amps": 2.117,
+     "xy_mm": [
+      69.25,
+      75.6
+     ]
+    },
+    {
+     "bond_amps_parallel": 5.261,
+     "bottleneck": "FRAGMENT_COPPER",
+     "internal_min_amps": 2.117,
+     "internal_min_width_mm": 0.85,
+     "priced_amps": 2.117,
+     "xy_mm": [
+      69.3,
+      75.6
+     ]
+    },
+    {
+     "bond_amps_parallel": 5.261,
+     "bottleneck": "FRAGMENT_COPPER",
+     "internal_min_amps": 2.117,
+     "internal_min_width_mm": 0.85,
+     "priced_amps": 2.117,
+     "xy_mm": [
+      69.35,
+      75.6
+     ]
+    },
+    {
+     "bond_amps_parallel": 5.261,
+     "bottleneck": "FRAGMENT_COPPER",
+     "internal_min_amps": 2.117,
+     "internal_min_width_mm": 0.85,
+     "priced_amps": 2.117,
+     "xy_mm": [
+      69.4,
+      75.6
+     ]
+    },
+    {
+     "bond_amps_parallel": 5.261,
+     "bottleneck": "FRAGMENT_COPPER",
+     "internal_min_amps": 2.117,
+     "internal_min_width_mm": 0.85,
+     "priced_amps": 2.117,
+     "xy_mm": [
+      69.2,
+      75.65
+     ]
+    },
+    {
+     "bond_amps_parallel": 5.261,
+     "bottleneck": "FRAGMENT_COPPER",
+     "internal_min_amps": 2.117,
+     "internal_min_width_mm": 0.85,
+     "priced_amps": 2.117,
+     "xy_mm": [
+      69.25,
+      75.65
+     ]
+    },
+    {
+     "bond_amps_parallel": 5.261,
+     "bottleneck": "FRAGMENT_COPPER",
+     "internal_min_amps": 2.117,
+     "internal_min_width_mm": 0.85,
+     "priced_amps": 2.117,
+     "xy_mm": [
+      69.3,
+      75.65
+     ]
+    },
+    {
+     "bond_amps_parallel": 5.261,
+     "bottleneck": "FRAGMENT_COPPER",
+     "internal_min_amps": 2.117,
+     "internal_min_width_mm": 0.85,
+     "priced_amps": 2.117,
+     "xy_mm": [
+      69.35,
+      75.65
+     ]
+    },
+    {
+     "bond_amps_parallel": 5.261,
+     "bottleneck": "FRAGMENT_COPPER",
+     "internal_min_amps": 2.117,
+     "internal_min_width_mm": 0.85,
+     "priced_amps": 2.117,
+     "xy_mm": [
+      69.4,
+      75.65
+     ]
+    }
+   ],
+   "legal_sites": 23,
+   "margin_x": 0.967,
+   "net": "GND",
+   "netclass": "GND",
+   "pad": "C28.2",
+   "pp2_why": "BOND_UNDER_PRICED",
+   "pp2_would_admit": false,
+   "seconds": {
+    "lattice": 2.8,
+    "pricing": 1364.3
+   },
+   "swept_cells": 346,
+   "verdict": "PRICE_IS_HELD_BY_LEGALITY"
+  },
+  {
+   "bar": {
+    "bar_amps": 2.19,
+    "bar_from": "RETURN_NEIGHBOUR_RAIL",
+    "floor": {
+     "amps": 0.995,
+     "dT_K": 10.0,
+     "netclass": "GND",
+     "note": "one track of the net's OWN netclass width at this board's copper -- what the board publishes as an adequate conductor for this net",
+     "track_width_mm": 0.3
+    },
+    "limits": "a neighbour on a class section 5 does not price contributes nothing; the MAXIMUM neighbour is charged, not the sum",
+    "neighbour_max_amps": 2.19,
+    "neighbour_rails": [
+     {
+      "gnd_pad": "C27.2",
+      "other_net": "/01_POWER_TREE/BQ25185_SYS",
+      "other_netclass": "SYS_MAIN",
+      "other_pad": "1",
+      "part": "C27",
+      "published_amps": 2.19
+     },
+     {
+      "gnd_pad": "C28.2",
+      "other_net": "/01_POWER_TREE/BQ25185_SYS",
+      "other_netclass": "SYS_MAIN",
+      "other_pad": "1",
+      "part": "C28",
+      "published_amps": 2.19
+     }
+    ]
+   },
+   "bar_amps": 2.19,
+   "barrel": {
+    "dia_nm": 500000,
+    "drill_nm": 200000,
+    "mm": [
+     0.5,
+     0.2
+    ],
+    "promotable": true
+   },
+   "best_legal_amps": 2.117,
+   "best_legal_site": {
+    "bond_amps_parallel": 5.261,
+    "bottleneck": "FRAGMENT_COPPER",
+    "internal_min_amps": 2.117,
+    "internal_min_width_mm": 0.85,
+    "priced_amps": 2.117,
+    "xy_mm": [
+     71.2,
+     71.65
+    ]
+   },
+   "ceiling_amps": 2.206,
+   "ceiling_margin_x": 1.007,
+   "ceiling_site": {
+    "bond_amps_parallel": 5.261,
+    "bottleneck": "FRAGMENT_COPPER",
+    "internal_min_amps": 2.206,
+    "internal_min_width_mm": 0.9,
+    "priced_amps": 2.206,
+    "xy_mm": [
+     70.397,
+     92.496
+    ]
+   },
+   "fragment": {
+    "area_mm2": 21.889,
+    "pads": [
+     "C27.2",
+     "C28.2"
+    ],
+    "post_island": 28,
+    "vias": 2
+   },
+   "legal_rows": [
+    {
+     "bond_amps_parallel": 5.261,
+     "bottleneck": "FRAGMENT_COPPER",
+     "internal_min_amps": 2.117,
+     "internal_min_width_mm": 0.85,
+     "priced_amps": 2.117,
+     "xy_mm": [
+      71.2,
+      71.65
+     ]
+    },
+    {
+     "bond_amps_parallel": 5.261,
+     "bottleneck": "FRAGMENT_COPPER",
+     "internal_min_amps": 2.117,
+     "internal_min_width_mm": 0.85,
+     "priced_amps": 2.117,
+     "xy_mm": [
+      71.2,
+      71.7
+     ]
+    },
+    {
+     "bond_amps_parallel": 5.261,
+     "bottleneck": "FRAGMENT_COPPER",
+     "internal_min_amps": 2.117,
+     "internal_min_width_mm": 0.85,
+     "priced_amps": 2.117,
+     "xy_mm": [
+      71.2,
+      71.75
+     ]
+    },
+    {
+     "bond_amps_parallel": 5.261,
+     "bottleneck": "FRAGMENT_COPPER",
+     "internal_min_amps": 2.117,
+     "internal_min_width_mm": 0.85,
+     "priced_amps": 2.117,
+     "xy_mm": [
+      69.2,
+      75.4
+     ]
+    },
+    {
+     "bond_amps_parallel": 5.261,
+     "bottleneck": "FRAGMENT_COPPER",
+     "internal_min_amps": 2.117,
+     "internal_min_width_mm": 0.85,
+     "priced_amps": 2.117,
+     "xy_mm": [
+      69.2,
+      75.45
+     ]
+    },
+    {
+     "bond_amps_parallel": 5.261,
+     "bottleneck": "FRAGMENT_COPPER",
+     "internal_min_amps": 2.117,
+     "internal_min_width_mm": 0.85,
+     "priced_amps": 2.117,
+     "xy_mm": [
+      69.25,
+      75.45
+     ]
+    },
+    {
+     "bond_amps_parallel": 5.261,
+     "bottleneck": "FRAGMENT_COPPER",
+     "internal_min_amps": 2.117,
+     "internal_min_width_mm": 0.85,
+     "priced_amps": 2.117,
+     "xy_mm": [
+      69.2,
+      75.5
+     ]
+    },
+    {
+     "bond_amps_parallel": 5.261,
+     "bottleneck": "FRAGMENT_COPPER",
+     "internal_min_amps": 2.117,
+     "internal_min_width_mm": 0.85,
+     "priced_amps": 2.117,
+     "xy_mm": [
+      69.25,
+      75.5
+     ]
+    },
+    {
+     "bond_amps_parallel": 5.261,
+     "bottleneck": "FRAGMENT_COPPER",
+     "internal_min_amps": 2.117,
+     "internal_min_width_mm": 0.85,
+     "priced_amps": 2.117,
+     "xy_mm": [
+      69.3,
+      75.5
+     ]
+    },
+    {
+     "bond_amps_parallel": 5.261,
+     "bottleneck": "FRAGMENT_COPPER",
+     "internal_min_amps": 2.117,
+     "internal_min_width_mm": 0.85,
+     "priced_amps": 2.117,
+     "xy_mm": [
+      69.2,
+      75.55
+     ]
+    },
+    {
+     "bond_amps_parallel": 5.261,
+     "bottleneck": "FRAGMENT_COPPER",
+     "internal_min_amps": 2.117,
+     "internal_min_width_mm": 0.85,
+     "priced_amps": 2.117,
+     "xy_mm": [
+      69.25,
+      75.55
+     ]
+    },
+    {
+     "bond_amps_parallel": 5.261,
+     "bottleneck": "FRAGMENT_COPPER",
+     "internal_min_amps": 2.117,
+     "internal_min_width_mm": 0.85,
+     "priced_amps": 2.117,
+     "xy_mm": [
+      69.3,
+      75.55
+     ]
+    },
+    {
+     "bond_amps_parallel": 5.261,
+     "bottleneck": "FRAGMENT_COPPER",
+     "internal_min_amps": 2.117,
+     "internal_min_width_mm": 0.85,
+     "priced_amps": 2.117,
+     "xy_mm": [
+      69.35,
+      75.55
+     ]
+    },
+    {
+     "bond_amps_parallel": 5.261,
+     "bottleneck": "FRAGMENT_COPPER",
+     "internal_min_amps": 2.117,
+     "internal_min_width_mm": 0.85,
+     "priced_amps": 2.117,
+     "xy_mm": [
+      69.2,
+      75.6
+     ]
+    },
+    {
+     "bond_amps_parallel": 5.261,
+     "bottleneck": "FRAGMENT_COPPER",
+     "internal_min_amps": 2.117,
+     "internal_min_width_mm": 0.85,
+     "priced_amps": 2.117,
+     "xy_mm": [
+      69.25,
+      75.6
+     ]
+    },
+    {
+     "bond_amps_parallel": 5.261,
+     "bottleneck": "FRAGMENT_COPPER",
+     "internal_min_amps": 2.117,
+     "internal_min_width_mm": 0.85,
+     "priced_amps": 2.117,
+     "xy_mm": [
+      69.3,
+      75.6
+     ]
+    },
+    {
+     "bond_amps_parallel": 5.261,
+     "bottleneck": "FRAGMENT_COPPER",
+     "internal_min_amps": 2.117,
+     "internal_min_width_mm": 0.85,
+     "priced_amps": 2.117,
+     "xy_mm": [
+      69.35,
+      75.6
+     ]
+    },
+    {
+     "bond_amps_parallel": 5.261,
+     "bottleneck": "FRAGMENT_COPPER",
+     "internal_min_amps": 2.117,
+     "internal_min_width_mm": 0.85,
+     "priced_amps": 2.117,
+     "xy_mm": [
+      69.4,
+      75.6
+     ]
+    },
+    {
+     "bond_amps_parallel": 5.261,
+     "bottleneck": "FRAGMENT_COPPER",
+     "internal_min_amps": 2.117,
+     "internal_min_width_mm": 0.85,
+     "priced_amps": 2.117,
+     "xy_mm": [
+      69.2,
+      75.65
+     ]
+    },
+    {
+     "bond_amps_parallel": 5.261,
+     "bottleneck": "FRAGMENT_COPPER",
+     "internal_min_amps": 2.117,
+     "internal_min_width_mm": 0.85,
+     "priced_amps": 2.117,
+     "xy_mm": [
+      69.25,
+      75.65
+     ]
+    },
+    {
+     "bond_amps_parallel": 5.261,
+     "bottleneck": "FRAGMENT_COPPER",
+     "internal_min_amps": 2.117,
+     "internal_min_width_mm": 0.85,
+     "priced_amps": 2.117,
+     "xy_mm": [
+      69.3,
+      75.65
+     ]
+    },
+    {
+     "bond_amps_parallel": 5.261,
+     "bottleneck": "FRAGMENT_COPPER",
+     "internal_min_amps": 2.117,
+     "internal_min_width_mm": 0.85,
+     "priced_amps": 2.117,
+     "xy_mm": [
+      69.35,
+      75.65
+     ]
+    },
+    {
+     "bond_amps_parallel": 5.261,
+     "bottleneck": "FRAGMENT_COPPER",
+     "internal_min_amps": 2.117,
+     "internal_min_width_mm": 0.85,
+     "priced_amps": 2.117,
+     "xy_mm": [
+      69.4,
+      75.65
+     ]
+    }
+   ],
+   "legal_sites": 23,
+   "margin_x": 0.967,
+   "net": "GND",
+   "netclass": "GND",
+   "pad": "C27.2",
+   "pp2_why": "BOND_UNDER_PRICED",
+   "pp2_would_admit": false,
+   "seconds": {
+    "lattice": 2.8,
+    "pricing": 1364.5
+   },
+   "swept_cells": 346,
+   "verdict": "PRICE_IS_HELD_BY_LEGALITY"
+  }
+ ],
+ "published_table_source": {
+  "classes": [
+   "ACC_3V3",
+   "ACC_5V",
+   "BAT_MAIN",
+   "LED_BOOST",
+   "NFC_5V_PA_PENDING",
+   "P3V3",
+   "SPK_OUT",
+   "SYS_MAIN",
+   "VBUS_CHG"
+  ],
+  "found": true,
+  "sha256": "adc7b0476f1da0676880ff60b4265817668e0efa434858dabfd7f32231fa5281",
+  "source": "w/d674/splitprice/split-+3V3-R39.1-2.kicad_dru"
+ },
+ "reading": "`ceiling_amps` is what the fragment's OWN COPPER allows and no router, licence or placement move can raise it; `best_legal_amps` is what a barrel may actually be worth today.  A gap between them is the only case in which buying a via site -- an eviction, a relay, a part shift -- can close the edge",
+ "schema": 1,
+ "step_mm": 0.25
+}

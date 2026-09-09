@@ -1,0 +1,664 @@
+{
+  "arm": "joint",
+  "authoritative_unchanged": true,
+  "board": "/home/aqroot8/aqroot-demo/hardware/demo/kicad/aqroot-demo/aqroot-Beta-v2.kicad_pcb",
+  "board_sha256": "c3286d8fdd23b6bdb037de2a753051b3ac2aa2e5ccaba2e25ced3d39cf4884b2",
+  "evidence": "evidence/d674-segment-evict-r39.json",
+  "evidence_sha256": "19d7e625558ec0b7d0a2dd52a550304eb4c33c285c109e36cf777cdd2f88813e",
+  "grid": 50000,
+  "lands": [
+    {
+      "arms": {
+        "joint": {
+          "all_relaid": true,
+          "antipad_severs": [],
+          "knockout_mm": 1.0,
+          "note": null,
+          "pour_severs": [
+            {
+              "layer": "B",
+              "mm2": 2553.53,
+              "own_net": false,
+              "pour": "GND",
+              "why": "89 land(s) of GND on this B island end in 2 separate pieces once 14 piece(s) of new copper are subtracted at clearance 0.25 + min_thickness 0.20 mm"
+            }
+          ],
+          "priced_against_foreign_pours": true,
+          "relay_geometry": {
+            "tracks": [
+              {
+                "a_nm": [
+                  66500000,
+                  71600000
+                ],
+                "b_nm": [
+                  67300000,
+                  69850000
+                ],
+                "lkey": "B",
+                "width_nm": 200000
+              },
+              {
+                "a_nm": [
+                  67300000,
+                  69850000
+                ],
+                "b_nm": [
+                  70000000,
+                  67100000
+                ],
+                "lkey": "B",
+                "width_nm": 200000
+              },
+              {
+                "a_nm": [
+                  70000000,
+                  67100000
+                ],
+                "b_nm": [
+                  70100000,
+                  66900000
+                ],
+                "lkey": "B",
+                "width_nm": 200000
+              },
+              {
+                "a_nm": [
+                  70100000,
+                  66900000
+                ],
+                "b_nm": [
+                  70700000,
+                  66400000
+                ],
+                "lkey": "B",
+                "width_nm": 200000
+              },
+              {
+                "a_nm": [
+                  70700000,
+                  66400000
+                ],
+                "b_nm": [
+                  71350000,
+                  67100000
+                ],
+                "lkey": "B",
+                "width_nm": 200000
+              },
+              {
+                "a_nm": [
+                  71350000,
+                  67100000
+                ],
+                "b_nm": [
+                  71100000,
+                  71000000
+                ],
+                "lkey": "B",
+                "width_nm": 200000
+              },
+              {
+                "a_nm": [
+                  71100000,
+                  71000000
+                ],
+                "b_nm": [
+                  67850000,
+                  74550000
+                ],
+                "lkey": "B",
+                "width_nm": 200000
+              },
+              {
+                "a_nm": [
+                  67850000,
+                  74550000
+                ],
+                "b_nm": [
+                  68500000,
+                  75200000
+                ],
+                "lkey": "B",
+                "width_nm": 200000
+              }
+            ],
+            "vias": []
+          },
+          "reservation": "none -- the stitch and the relay are searched TOGETHER, and a stitch that strands a relay is struck out and retried",
+          "rounds": [
+            {
+              "accepted": false,
+              "all_relaid": false,
+              "antipad_severs": null,
+              "pour_severs": null,
+              "relays": [
+                {
+                  "mm": null,
+                  "net": "Net-(U11-TS_MR)",
+                  "ok": false,
+                  "reason": "NO_PATH",
+                  "vias": null,
+                  "was_mm": 4.3353
+                }
+              ],
+              "round": 1,
+              "split_bonds": null,
+              "split_price": null,
+              "stitch_layer": "B",
+              "stitch_mm": 9.128,
+              "stitch_ok": true,
+              "via_xy": [
+                71.1,
+                68.25
+              ]
+            },
+            {
+              "accepted": true,
+              "all_relaid": true,
+              "antipad_severs": [],
+              "pour_severs": [
+                {
+                  "layer": "B",
+                  "mm2": 2553.53,
+                  "own_net": false,
+                  "pour": "GND",
+                  "why": "89 land(s) of GND on this B island end in 2 separate pieces once 14 piece(s) of new copper are subtracted at clearance 0.25 + min_thickness 0.20 mm"
+                }
+              ],
+              "relays": [
+                {
+                  "mm": 17.378209340985684,
+                  "net": "Net-(U11-TS_MR)",
+                  "ok": true,
+                  "reason": null,
+                  "vias": 0,
+                  "was_mm": 4.3353
+                }
+              ],
+              "round": 2,
+              "split_bonds": [
+                {
+                  "bonded": 1,
+                  "failures": [],
+                  "mm": 2.043,
+                  "net": "GND",
+                  "ok": true,
+                  "requested": [
+                    "C28.2"
+                  ],
+                  "vias": [
+                    [
+                      70.2,
+                      91.65
+                    ]
+                  ]
+                }
+              ],
+              "split_price": {
+                "candidate_sha256": "28a119e12d89c108be0d7ec1da25966cbfcc5b6ee2e430239c738df32561089d",
+                "clause": {
+                  "PP1": true,
+                  "PP2": true,
+                  "PP3": true,
+                  "PP4": true
+                },
+                "cuts_not_removed": [],
+                "cuts_removed": 2,
+                "fragments": null,
+                "ok": true,
+                "report": "w/d675/sp-bond/split-+3V3-R39.1-2-pp.json",
+                "splits": [
+                  {
+                    "layer": "B.Cu",
+                    "net": "GND",
+                    "parts": [
+                      {
+                        "area_mm2": 2508.581,
+                        "body": true,
+                        "pads": [
+                          "C16.2",
+                          "C17.2",
+                          "C18.2",
+                          "C19.2",
+                          "C34.1",
+                          "C35.2",
+                          "C46.2",
+                          "C48.2",
+                          "C49.2",
+                          "C50.2",
+                          "C52.2",
+                          "C54.2",
+                          "C55.2",
+                          "C58.2",
+                          "C66.2",
+                          "C78.2",
+                          "C79.2",
+                          "C80.2",
+                          "D9.2",
+                          "J5.19",
+                          "J5.2",
+                          "J5.6",
+                          "Q9.2",
+                          "R101.2",
+                          "R14.2",
+                          "R45.2",
+                          "R83.2",
+                          "R92.2",
+                          "U13.4",
+                          "U6.2",
+                          "U9.12",
+                          "U9.20",
+                          "U9.21",
+                          "U9.26",
+                          "U9.33",
+                          "U9.6",
+                          "Y1.2",
+                          "Y1.4"
+                        ],
+                        "post_island": 21
+                      },
+                      {
+                        "area_mm2": 22.362,
+                        "body": false,
+                        "pads": [
+                          "C27.2",
+                          "C28.2"
+                        ],
+                        "post_island": 28
+                      }
+                    ],
+                    "pour": "GND|B|38685722-44ee-566f-b52b-89a56220a9e0",
+                    "pre_area_mm2": 2553.535,
+                    "pre_island": 21,
+                    "pre_pads": 40
+                  }
+                ]
+              },
+              "stitch_layer": "B",
+              "stitch_mm": 9.887,
+              "stitch_ok": true,
+              "via_xy": [
+                70.65,
+                67.35
+              ]
+            }
+          ],
+          "slack_mm": null,
+          "split_bonds": [
+            {
+              "bonded": 1,
+              "failures": [],
+              "mm": 2.043,
+              "net": "GND",
+              "ok": true,
+              "requested": [
+                "C28.2"
+              ],
+              "vias": [
+                [
+                  70.2,
+                  91.65
+                ]
+              ]
+            }
+          ],
+          "split_price": {
+            "candidate_sha256": "28a119e12d89c108be0d7ec1da25966cbfcc5b6ee2e430239c738df32561089d",
+            "clause": {
+              "PP1": true,
+              "PP2": true,
+              "PP3": true,
+              "PP4": true
+            },
+            "cuts_not_removed": [],
+            "cuts_removed": 2,
+            "fragments": null,
+            "ok": true,
+            "report": "w/d675/sp-bond/split-+3V3-R39.1-2-pp.json",
+            "splits": [
+              {
+                "layer": "B.Cu",
+                "net": "GND",
+                "parts": [
+                  {
+                    "area_mm2": 2508.581,
+                    "body": true,
+                    "pads": [
+                      "C16.2",
+                      "C17.2",
+                      "C18.2",
+                      "C19.2",
+                      "C34.1",
+                      "C35.2",
+                      "C46.2",
+                      "C48.2",
+                      "C49.2",
+                      "C50.2",
+                      "C52.2",
+                      "C54.2",
+                      "C55.2",
+                      "C58.2",
+                      "C66.2",
+                      "C78.2",
+                      "C79.2",
+                      "C80.2",
+                      "D9.2",
+                      "J5.19",
+                      "J5.2",
+                      "J5.6",
+                      "Q9.2",
+                      "R101.2",
+                      "R14.2",
+                      "R45.2",
+                      "R83.2",
+                      "R92.2",
+                      "U13.4",
+                      "U6.2",
+                      "U9.12",
+                      "U9.20",
+                      "U9.21",
+                      "U9.26",
+                      "U9.33",
+                      "U9.6",
+                      "Y1.2",
+                      "Y1.4"
+                    ],
+                    "post_island": 21
+                  },
+                  {
+                    "area_mm2": 22.362,
+                    "body": false,
+                    "pads": [
+                      "C27.2",
+                      "C28.2"
+                    ],
+                    "post_island": 28
+                  }
+                ],
+                "pour": "GND|B|38685722-44ee-566f-b52b-89a56220a9e0",
+                "pre_area_mm2": 2553.535,
+                "pre_island": 21,
+                "pre_pads": 40
+              }
+            ]
+          },
+          "split_priced": true,
+          "stitch": {
+            "layer": "B",
+            "mm": 9.887,
+            "ok": true,
+            "reason": null,
+            "via_xy": [
+              70.65,
+              67.35
+            ],
+            "via_xy_nm": [
+              70650000,
+              67350000
+            ],
+            "why": null
+          },
+          "stitch_geometry": {
+            "tracks": [
+              {
+                "a_nm": [
+                  65675000,
+                  71750000
+                ],
+                "b_nm": [
+                  66450000,
+                  72500000
+                ],
+                "lkey": "B",
+                "width_nm": 400000
+              },
+              {
+                "a_nm": [
+                  66450000,
+                  72500000
+                ],
+                "b_nm": [
+                  66650000,
+                  73100000
+                ],
+                "lkey": "B",
+                "width_nm": 400000
+              },
+              {
+                "a_nm": [
+                  66650000,
+                  73100000
+                ],
+                "b_nm": [
+                  67100000,
+                  73450000
+                ],
+                "lkey": "B",
+                "width_nm": 400000
+              },
+              {
+                "a_nm": [
+                  67100000,
+                  73450000
+                ],
+                "b_nm": [
+                  67500000,
+                  73450000
+                ],
+                "lkey": "B",
+                "width_nm": 400000
+              },
+              {
+                "a_nm": [
+                  67500000,
+                  73450000
+                ],
+                "b_nm": [
+                  67800000,
+                  73300000
+                ],
+                "lkey": "B",
+                "width_nm": 400000
+              },
+              {
+                "a_nm": [
+                  67800000,
+                  73300000
+                ],
+                "b_nm": [
+                  70650000,
+                  69350000
+                ],
+                "lkey": "B",
+                "width_nm": 400000
+              },
+              {
+                "a_nm": [
+                  70650000,
+                  69350000
+                ],
+                "b_nm": [
+                  70650000,
+                  67350000
+                ],
+                "lkey": "B",
+                "width_nm": 400000
+              }
+            ],
+            "vias": [
+              {
+                "dia_nm": 650000,
+                "drill_nm": 400000,
+                "xy_nm": [
+                  70650000,
+                  67350000
+                ]
+              }
+            ]
+          },
+          "tracks": [
+            {
+              "a_mm": [
+                66.5,
+                71.6
+              ],
+              "b_mm": [
+                68.5,
+                75.2
+              ],
+              "layer": [
+                "B"
+              ],
+              "layers_allowed": [
+                "F",
+                "B",
+                "I2"
+              ],
+              "max_mm": 54.6008,
+              "mm": 17.378209340985684,
+              "mm_by_layer": {
+                "B": 17.3782
+              },
+              "net": "Net-(U11-TS_MR)",
+              "ok": true,
+              "own_layer": false,
+              "reason": null,
+              "slack_mm": null,
+              "tracks": 2,
+              "via_xy": [],
+              "vias": 0,
+              "was_mm": 4.3353,
+              "why": null
+            }
+          ],
+          "tries": 6
+        }
+      },
+      "body_landing": {
+        "body": [
+          "C10.1",
+          "C12.2",
+          "C13.1",
+          "C14.1",
+          "C15.1",
+          "C16.1",
+          "C17.1",
+          "C18.1"
+        ],
+        "body_pads": 79,
+        "cells": {
+          "F": 2289255,
+          "I3": 3271457
+        },
+        "erode": 0,
+        "total": 3358584
+      },
+      "cut_nets": [
+        "Net-(U11-TS_MR)"
+      ],
+      "cut_radius_mm": 8.0,
+      "cut_records": [
+        {
+          "a_mm": [
+            66.5,
+            71.6
+          ],
+          "b_mm": [
+            66.6,
+            73.1
+          ],
+          "layer": "B",
+          "mm": 1.5033,
+          "net": "Net-(U11-TS_MR)",
+          "removed_mm": 1.5033,
+          "stubs_mm": [],
+          "whole_track": true,
+          "width_mm": 0.2
+        },
+        {
+          "a_mm": [
+            66.6,
+            73.1
+          ],
+          "b_mm": [
+            68.5,
+            75.2
+          ],
+          "layer": "B",
+          "mm": 2.832,
+          "net": "Net-(U11-TS_MR)",
+          "removed_mm": 2.832,
+          "stubs_mm": [],
+          "whole_track": true,
+          "width_mm": 0.2
+        }
+      ],
+      "cut_tracks": 2,
+      "ends_inside_reserve": [
+        {
+          "d_mm": 5.6906,
+          "inside": true,
+          "net": "Net-(U11-TS_MR)",
+          "xy_mm": [
+            66.5,
+            71.6
+          ]
+        },
+        {
+          "d_mm": 6.6161,
+          "inside": true,
+          "net": "Net-(U11-TS_MR)",
+          "xy_mm": [
+            66.6,
+            73.1
+          ]
+        },
+        {
+          "d_mm": 6.6161,
+          "inside": true,
+          "net": "Net-(U11-TS_MR)",
+          "xy_mm": [
+            66.6,
+            73.1
+          ]
+        },
+        {
+          "d_mm": 7.4204,
+          "inside": true,
+          "net": "Net-(U11-TS_MR)",
+          "xy_mm": [
+            68.5,
+            75.2
+          ]
+        }
+      ],
+      "land": "+3V3:R39.1",
+      "net": "+3V3",
+      "netclass": "P3V3",
+      "pads": [
+        "R39.1"
+      ],
+      "reserve_clr_nm": 200000,
+      "site_mm": [
+        71.1,
+        68.25
+      ],
+      "stitch_pad": "R39.1",
+      "stitch_via_dia_nm": 650000,
+      "stitch_via_drill_nm": 400000,
+      "stitch_width_nm": 400000,
+      "unmatched": [],
+      "verdict_measured": "SEGMENT_SET_OPENS"
+    }
+  ],
+  "max_mm": 8.0,
+  "method": "read-only; the named tracks are held out of the obstacle model whole, the real maze3d.stitch_pad is laid with the same body certificate the measurement used, and each cut net is put back by maze3d.route_points between its own chain ends at the same budget -- every object proved by verify_laid, the barrel put through _antipad_severs, every trial reverted",
+  "question": "does a cut that opens a plane land go back when the reservation is the STITCH THAT WILL BE THERE instead of an all-layer keep-out disc big enough to swallow the relay's own two terminals",
+  "relay_own_layer": true,
+  "relay_slack_mm": null,
+  "rung": "floor",
+  "schema": 1,
+  "split_price_work": "w/d675/sp-bond",
+  "split_priced": true
+}
