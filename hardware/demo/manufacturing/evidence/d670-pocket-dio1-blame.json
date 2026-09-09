@@ -1,0 +1,1010 @@
+{
+  "all_lands": true,
+  "board": "/home/aqroot8/aqroot-demo/hardware/demo/kicad/aqroot-demo/aqroot-Beta-v2.kicad_pcb",
+  "board_sha256": "c3286d8fdd23b6bdb037de2a753051b3ac2aa2e5ccaba2e25ced3d39cf4884b2",
+  "escape_floor": false,
+  "guard": null,
+  "guard_sha256": null,
+  "method": "read-only; maze3d._shift_or flood over ~field.blk[layer] from maze3d.pad_escapes launch points, at each pitch, on the same contract/guard/escape-floor route_maze_batch.propose builds; area in mm2 so the rungs are comparable",
+  "neck": false,
+  "nets": [
+    {
+      "body": [
+        "U2.20"
+      ],
+      "body_arbitrary": true,
+      "has_plane": false,
+      "lands": [
+        {
+          "area_max_mm2": 0.5356,
+          "area_min_mm2": 0.34,
+          "blame": {
+            "base": {
+              "area_mm2": 0.5356,
+              "cells": 857,
+              "escapes": 3,
+              "layer": "B",
+              "via_legal_in_pocket": 0
+            },
+            "box_mm": [
+              57.8625,
+              86.975,
+              61.8625,
+              90.975
+            ],
+            "grid_nm": 25000,
+            "margin_mm": 2.0,
+            "material_net_openers": [
+              {
+                "area_mm2": 17.2175,
+                "escapes": 4,
+                "net": "/08_BUTTONS_EXPANDERS/BTN_B_N",
+                "via_legal_in_pocket": 4009
+              },
+              {
+                "area_mm2": 12.6781,
+                "escapes": 3,
+                "net": "/ACC_5V_SW_EN",
+                "via_legal_in_pocket": 4166
+              },
+              {
+                "area_mm2": 1.2144,
+                "escapes": 4,
+                "net": "/TOUCH_INT_N",
+                "via_legal_in_pocket": 29
+              }
+            ],
+            "material_unit_openers": [
+              {
+                "area_mm2": 16.7019,
+                "cells": 26723,
+                "escapes": 4,
+                "layer": "B",
+                "seconds": 96.3,
+                "unit": {
+                  "a_mm": [
+                    54.4,
+                    92.75
+                  ],
+                  "b_mm": [
+                    58.7,
+                    88.45
+                  ],
+                  "count": 1,
+                  "kind": "track",
+                  "layer": "B.Cu",
+                  "net": "/08_BUTTONS_EXPANDERS/BTN_B_N",
+                  "objects": 1,
+                  "router_objects": 1,
+                  "width_mm": 0.2
+                },
+                "via_legal_in_pocket": 4009
+              }
+            ],
+            "material_verdict": "RIPUP_SINGLE_UNIT",
+            "materiality": {
+              "base_area_mm2": 0.5356,
+              "base_via_legal": 0,
+              "growth_threshold": 2.0,
+              "rule": "an opener is MATERIAL if it gains a via-legal cell in the pocket or multiplies the pocket area by at least 2.0 -- the same figure the ladder uses to call a seal a raster"
+            },
+            "nets": [
+              "/01_POWER_TREE/V3V3_FB",
+              "/05_I2C_DEVICES/BMI270_INT1_RAW",
+              "/08_BUTTONS_EXPANDERS/BTN_A_N",
+              "/08_BUTTONS_EXPANDERS/BTN_B_N",
+              "/08_BUTTONS_EXPANDERS/BTN_DOWN_N",
+              "/08_BUTTONS_EXPANDERS/BTN_UP_N",
+              "/09_COMMUNITY_HEADER/NATIVE_A_HDR",
+              "/09_COMMUNITY_HEADER/NATIVE_B_HDR",
+              "/ACC_5V_SW_EN",
+              "/I2C_SCL_INT",
+              "/I2C_SDA_INT",
+              "/NFC_5V_EN",
+              "/SD_CARD_DETECT_N",
+              "/SX1262_RXEN",
+              "/TOUCH_INT_N",
+              "GND"
+            ],
+            "objects": 122,
+            "per_unit": [
+              {
+                "area_mm2": 16.7019,
+                "cells": 26723,
+                "escapes": 4,
+                "layer": "B",
+                "seconds": 96.3,
+                "unit": {
+                  "a_mm": [
+                    54.4,
+                    92.75
+                  ],
+                  "b_mm": [
+                    58.7,
+                    88.45
+                  ],
+                  "count": 1,
+                  "kind": "track",
+                  "layer": "B.Cu",
+                  "net": "/08_BUTTONS_EXPANDERS/BTN_B_N",
+                  "objects": 1,
+                  "router_objects": 1,
+                  "width_mm": 0.2
+                },
+                "via_legal_in_pocket": 4009
+              },
+              {
+                "area_mm2": 0.6119,
+                "cells": 979,
+                "escapes": 3,
+                "layer": "B",
+                "seconds": 26.4,
+                "unit": {
+                  "at_mm": [
+                    58.5,
+                    89.75
+                  ],
+                  "count": 1,
+                  "dia_mm": 0.6,
+                  "drill_mm": 0.3,
+                  "kind": "barrel",
+                  "net": "/ACC_5V_SW_EN",
+                  "objects": 14,
+                  "router_objects": 14
+                },
+                "via_legal_in_pocket": 0
+              },
+              {
+                "area_mm2": 0.5888,
+                "cells": 942,
+                "escapes": 3,
+                "layer": "B",
+                "seconds": 25.7,
+                "unit": {
+                  "at_mm": [
+                    61.15,
+                    88.85
+                  ],
+                  "count": 1,
+                  "dia_mm": 0.6,
+                  "drill_mm": 0.3,
+                  "kind": "barrel",
+                  "net": "/TOUCH_INT_N",
+                  "objects": 14,
+                  "router_objects": 14
+                },
+                "via_legal_in_pocket": 0
+              },
+              {
+                "area_mm2": 0.5356,
+                "cells": 857,
+                "escapes": 3,
+                "layer": "B",
+                "seconds": 25.6,
+                "unit": {
+                  "a_mm": [
+                    58.7,
+                    88.45
+                  ],
+                  "b_mm": [
+                    58.7,
+                    87.7
+                  ],
+                  "count": 1,
+                  "kind": "track",
+                  "layer": "B.Cu",
+                  "net": "/08_BUTTONS_EXPANDERS/BTN_B_N",
+                  "objects": 1,
+                  "router_objects": 1,
+                  "width_mm": 0.2
+                },
+                "via_legal_in_pocket": 0
+              },
+              {
+                "area_mm2": 0.5356,
+                "cells": 857,
+                "escapes": 3,
+                "layer": "B",
+                "seconds": 25.4,
+                "unit": {
+                  "a_mm": [
+                    59.8625,
+                    87.675
+                  ],
+                  "b_mm": [
+                    58.7,
+                    87.7
+                  ],
+                  "count": 1,
+                  "kind": "track",
+                  "layer": "B.Cu",
+                  "net": "/08_BUTTONS_EXPANDERS/BTN_B_N",
+                  "objects": 1,
+                  "router_objects": 1,
+                  "width_mm": 0.2
+                },
+                "via_legal_in_pocket": 0
+              },
+              {
+                "area_mm2": 0.5356,
+                "cells": 857,
+                "escapes": 3,
+                "layer": "B",
+                "seconds": 25.4,
+                "unit": {
+                  "a_mm": [
+                    58.5,
+                    89.75
+                  ],
+                  "b_mm": [
+                    58.75,
+                    92.0
+                  ],
+                  "count": 1,
+                  "kind": "track",
+                  "layer": "B.Cu",
+                  "net": "/ACC_5V_SW_EN",
+                  "objects": 1,
+                  "router_objects": 1,
+                  "width_mm": 0.2
+                },
+                "via_legal_in_pocket": 0
+              },
+              {
+                "area_mm2": 0.5356,
+                "cells": 857,
+                "escapes": 3,
+                "layer": "B",
+                "seconds": 25.5,
+                "unit": {
+                  "a_mm": [
+                    56.5,
+                    87.0
+                  ],
+                  "b_mm": [
+                    58.5,
+                    89.75
+                  ],
+                  "count": 1,
+                  "kind": "track",
+                  "layer": "F.Cu",
+                  "net": "/ACC_5V_SW_EN",
+                  "objects": 1,
+                  "router_objects": 1,
+                  "width_mm": 0.2
+                },
+                "via_legal_in_pocket": 0
+              },
+              {
+                "area_mm2": 0.5356,
+                "cells": 857,
+                "escapes": 3,
+                "layer": "B",
+                "seconds": 25.3,
+                "unit": {
+                  "a_mm": [
+                    59.8625,
+                    88.325
+                  ],
+                  "b_mm": [
+                    61.05,
+                    88.3
+                  ],
+                  "count": 1,
+                  "kind": "track",
+                  "layer": "B.Cu",
+                  "net": "/TOUCH_INT_N",
+                  "objects": 1,
+                  "router_objects": 1,
+                  "width_mm": 0.2
+                },
+                "via_legal_in_pocket": 0
+              },
+              {
+                "area_mm2": 0.5356,
+                "cells": 857,
+                "escapes": 3,
+                "layer": "B",
+                "seconds": 25.3,
+                "unit": {
+                  "a_mm": [
+                    61.05,
+                    88.3
+                  ],
+                  "b_mm": [
+                    61.15,
+                    88.4
+                  ],
+                  "count": 1,
+                  "kind": "track",
+                  "layer": "B.Cu",
+                  "net": "/TOUCH_INT_N",
+                  "objects": 1,
+                  "router_objects": 1,
+                  "width_mm": 0.2
+                },
+                "via_legal_in_pocket": 0
+              },
+              {
+                "area_mm2": 0.5356,
+                "cells": 857,
+                "escapes": 3,
+                "layer": "B",
+                "seconds": 25.4,
+                "unit": {
+                  "a_mm": [
+                    61.15,
+                    88.4
+                  ],
+                  "b_mm": [
+                    61.15,
+                    88.85
+                  ],
+                  "count": 1,
+                  "kind": "track",
+                  "layer": "B.Cu",
+                  "net": "/TOUCH_INT_N",
+                  "objects": 1,
+                  "router_objects": 1,
+                  "width_mm": 0.2
+                },
+                "via_legal_in_pocket": 0
+              },
+              {
+                "area_mm2": 0.5356,
+                "cells": 857,
+                "escapes": 3,
+                "layer": "B",
+                "seconds": 25.5,
+                "unit": {
+                  "a_mm": [
+                    59.05,
+                    86.75
+                  ],
+                  "b_mm": [
+                    61.15,
+                    88.85
+                  ],
+                  "count": 1,
+                  "kind": "track",
+                  "layer": "F.Cu",
+                  "net": "/TOUCH_INT_N",
+                  "objects": 1,
+                  "router_objects": 1,
+                  "width_mm": 0.2
+                },
+                "via_legal_in_pocket": 0
+              }
+            ],
+            "schema": 1,
+            "single_net_openers": [
+              {
+                "area_mm2": 17.2175,
+                "escapes": 4,
+                "net": "/08_BUTTONS_EXPANDERS/BTN_B_N",
+                "via_legal_in_pocket": 4009
+              },
+              {
+                "area_mm2": 12.6781,
+                "escapes": 3,
+                "net": "/ACC_5V_SW_EN",
+                "via_legal_in_pocket": 4166
+              },
+              {
+                "area_mm2": 1.2144,
+                "escapes": 4,
+                "net": "/TOUCH_INT_N",
+                "via_legal_in_pocket": 29
+              }
+            ],
+            "single_unit_openers": [
+              {
+                "area_mm2": 16.7019,
+                "cells": 26723,
+                "escapes": 4,
+                "layer": "B",
+                "seconds": 96.3,
+                "unit": {
+                  "a_mm": [
+                    54.4,
+                    92.75
+                  ],
+                  "b_mm": [
+                    58.7,
+                    88.45
+                  ],
+                  "count": 1,
+                  "kind": "track",
+                  "layer": "B.Cu",
+                  "net": "/08_BUTTONS_EXPANDERS/BTN_B_N",
+                  "objects": 1,
+                  "router_objects": 1,
+                  "width_mm": 0.2
+                },
+                "via_legal_in_pocket": 4009
+              },
+              {
+                "area_mm2": 0.6119,
+                "cells": 979,
+                "escapes": 3,
+                "layer": "B",
+                "seconds": 26.4,
+                "unit": {
+                  "at_mm": [
+                    58.5,
+                    89.75
+                  ],
+                  "count": 1,
+                  "dia_mm": 0.6,
+                  "drill_mm": 0.3,
+                  "kind": "barrel",
+                  "net": "/ACC_5V_SW_EN",
+                  "objects": 14,
+                  "router_objects": 14
+                },
+                "via_legal_in_pocket": 0
+              },
+              {
+                "area_mm2": 0.5888,
+                "cells": 942,
+                "escapes": 3,
+                "layer": "B",
+                "seconds": 25.7,
+                "unit": {
+                  "at_mm": [
+                    61.15,
+                    88.85
+                  ],
+                  "count": 1,
+                  "dia_mm": 0.6,
+                  "drill_mm": 0.3,
+                  "kind": "barrel",
+                  "net": "/TOUCH_INT_N",
+                  "objects": 14,
+                  "router_objects": 14
+                },
+                "via_legal_in_pocket": 0
+              }
+            ],
+            "steps": [
+              {
+                "area_mm2": 117.9563,
+                "cells": 188730,
+                "escapes": 5,
+                "layer": "B",
+                "seconds": 256.2,
+                "step": "Q1_ALL_OUT",
+                "via_legal_in_pocket": 38245
+              },
+              {
+                "area_mm2": 0.5356,
+                "cells": 857,
+                "escapes": 3,
+                "layer": "B",
+                "net": "/01_POWER_TREE/V3V3_FB",
+                "seconds": 26.5,
+                "step": "Q2_NET_OUT",
+                "via_legal_in_pocket": 0
+              },
+              {
+                "area_mm2": 0.5356,
+                "cells": 857,
+                "escapes": 3,
+                "layer": "B",
+                "net": "/05_I2C_DEVICES/BMI270_INT1_RAW",
+                "seconds": 26.4,
+                "step": "Q2_NET_OUT",
+                "via_legal_in_pocket": 0
+              },
+              {
+                "area_mm2": 0.5356,
+                "cells": 857,
+                "escapes": 3,
+                "layer": "B",
+                "net": "/08_BUTTONS_EXPANDERS/BTN_A_N",
+                "seconds": 26.6,
+                "step": "Q2_NET_OUT",
+                "via_legal_in_pocket": 0
+              },
+              {
+                "area_mm2": 17.2175,
+                "cells": 27548,
+                "escapes": 4,
+                "layer": "B",
+                "net": "/08_BUTTONS_EXPANDERS/BTN_B_N",
+                "seconds": 96.4,
+                "step": "Q2_NET_OUT",
+                "via_legal_in_pocket": 4009
+              },
+              {
+                "area_mm2": 0.5356,
+                "cells": 857,
+                "escapes": 3,
+                "layer": "B",
+                "net": "/08_BUTTONS_EXPANDERS/BTN_DOWN_N",
+                "seconds": 27.0,
+                "step": "Q2_NET_OUT",
+                "via_legal_in_pocket": 0
+              },
+              {
+                "area_mm2": 0.5356,
+                "cells": 857,
+                "escapes": 3,
+                "layer": "B",
+                "net": "/08_BUTTONS_EXPANDERS/BTN_UP_N",
+                "seconds": 26.7,
+                "step": "Q2_NET_OUT",
+                "via_legal_in_pocket": 0
+              },
+              {
+                "area_mm2": 0.5356,
+                "cells": 857,
+                "escapes": 3,
+                "layer": "B",
+                "net": "/09_COMMUNITY_HEADER/NATIVE_A_HDR",
+                "seconds": 26.7,
+                "step": "Q2_NET_OUT",
+                "via_legal_in_pocket": 0
+              },
+              {
+                "area_mm2": 0.5356,
+                "cells": 857,
+                "escapes": 3,
+                "layer": "B",
+                "net": "/09_COMMUNITY_HEADER/NATIVE_B_HDR",
+                "seconds": 26.2,
+                "step": "Q2_NET_OUT",
+                "via_legal_in_pocket": 0
+              },
+              {
+                "area_mm2": 12.6781,
+                "cells": 20285,
+                "escapes": 3,
+                "layer": "B",
+                "net": "/ACC_5V_SW_EN",
+                "seconds": 67.9,
+                "step": "Q2_NET_OUT",
+                "via_legal_in_pocket": 4166
+              },
+              {
+                "area_mm2": 0.5356,
+                "cells": 857,
+                "escapes": 3,
+                "layer": "B",
+                "net": "/I2C_SCL_INT",
+                "seconds": 25.3,
+                "step": "Q2_NET_OUT",
+                "via_legal_in_pocket": 0
+              },
+              {
+                "area_mm2": 0.5356,
+                "cells": 857,
+                "escapes": 3,
+                "layer": "B",
+                "net": "/I2C_SDA_INT",
+                "seconds": 25.4,
+                "step": "Q2_NET_OUT",
+                "via_legal_in_pocket": 0
+              },
+              {
+                "area_mm2": 0.5356,
+                "cells": 857,
+                "escapes": 3,
+                "layer": "B",
+                "net": "/NFC_5V_EN",
+                "seconds": 25.7,
+                "step": "Q2_NET_OUT",
+                "via_legal_in_pocket": 0
+              },
+              {
+                "area_mm2": 0.5356,
+                "cells": 857,
+                "escapes": 3,
+                "layer": "B",
+                "net": "/SD_CARD_DETECT_N",
+                "seconds": 25.5,
+                "step": "Q2_NET_OUT",
+                "via_legal_in_pocket": 0
+              },
+              {
+                "area_mm2": 0.5356,
+                "cells": 857,
+                "escapes": 3,
+                "layer": "B",
+                "net": "/SX1262_RXEN",
+                "seconds": 25.8,
+                "step": "Q2_NET_OUT",
+                "via_legal_in_pocket": 0
+              },
+              {
+                "area_mm2": 1.2144,
+                "cells": 1943,
+                "escapes": 4,
+                "layer": "B",
+                "net": "/TOUCH_INT_N",
+                "seconds": 38.7,
+                "step": "Q2_NET_OUT",
+                "via_legal_in_pocket": 29
+              },
+              {
+                "area_mm2": 0.5356,
+                "cells": 857,
+                "escapes": 3,
+                "layer": "B",
+                "net": "GND",
+                "seconds": 27.0,
+                "step": "Q2_NET_OUT",
+                "via_legal_in_pocket": 0
+              },
+              {
+                "area_mm2": 16.7019,
+                "cells": 26723,
+                "escapes": 4,
+                "layer": "B",
+                "seconds": 96.3,
+                "step": "Q3_UNIT_OUT",
+                "unit": {
+                  "a_mm": [
+                    54.4,
+                    92.75
+                  ],
+                  "b_mm": [
+                    58.7,
+                    88.45
+                  ],
+                  "count": 1,
+                  "kind": "track",
+                  "layer": "B.Cu",
+                  "net": "/08_BUTTONS_EXPANDERS/BTN_B_N",
+                  "objects": 1,
+                  "router_objects": 1,
+                  "width_mm": 0.2
+                },
+                "via_legal_in_pocket": 4009
+              },
+              {
+                "area_mm2": 0.5356,
+                "cells": 857,
+                "escapes": 3,
+                "layer": "B",
+                "seconds": 25.6,
+                "step": "Q3_UNIT_OUT",
+                "unit": {
+                  "a_mm": [
+                    58.7,
+                    88.45
+                  ],
+                  "b_mm": [
+                    58.7,
+                    87.7
+                  ],
+                  "count": 1,
+                  "kind": "track",
+                  "layer": "B.Cu",
+                  "net": "/08_BUTTONS_EXPANDERS/BTN_B_N",
+                  "objects": 1,
+                  "router_objects": 1,
+                  "width_mm": 0.2
+                },
+                "via_legal_in_pocket": 0
+              },
+              {
+                "area_mm2": 0.5356,
+                "cells": 857,
+                "escapes": 3,
+                "layer": "B",
+                "seconds": 25.4,
+                "step": "Q3_UNIT_OUT",
+                "unit": {
+                  "a_mm": [
+                    59.8625,
+                    87.675
+                  ],
+                  "b_mm": [
+                    58.7,
+                    87.7
+                  ],
+                  "count": 1,
+                  "kind": "track",
+                  "layer": "B.Cu",
+                  "net": "/08_BUTTONS_EXPANDERS/BTN_B_N",
+                  "objects": 1,
+                  "router_objects": 1,
+                  "width_mm": 0.2
+                },
+                "via_legal_in_pocket": 0
+              },
+              {
+                "area_mm2": 0.5356,
+                "cells": 857,
+                "escapes": 3,
+                "layer": "B",
+                "seconds": 25.4,
+                "step": "Q3_UNIT_OUT",
+                "unit": {
+                  "a_mm": [
+                    58.5,
+                    89.75
+                  ],
+                  "b_mm": [
+                    58.75,
+                    92.0
+                  ],
+                  "count": 1,
+                  "kind": "track",
+                  "layer": "B.Cu",
+                  "net": "/ACC_5V_SW_EN",
+                  "objects": 1,
+                  "router_objects": 1,
+                  "width_mm": 0.2
+                },
+                "via_legal_in_pocket": 0
+              },
+              {
+                "area_mm2": 0.5356,
+                "cells": 857,
+                "escapes": 3,
+                "layer": "B",
+                "seconds": 25.5,
+                "step": "Q3_UNIT_OUT",
+                "unit": {
+                  "a_mm": [
+                    56.5,
+                    87.0
+                  ],
+                  "b_mm": [
+                    58.5,
+                    89.75
+                  ],
+                  "count": 1,
+                  "kind": "track",
+                  "layer": "F.Cu",
+                  "net": "/ACC_5V_SW_EN",
+                  "objects": 1,
+                  "router_objects": 1,
+                  "width_mm": 0.2
+                },
+                "via_legal_in_pocket": 0
+              },
+              {
+                "area_mm2": 0.6119,
+                "cells": 979,
+                "escapes": 3,
+                "layer": "B",
+                "seconds": 26.4,
+                "step": "Q3_UNIT_OUT",
+                "unit": {
+                  "at_mm": [
+                    58.5,
+                    89.75
+                  ],
+                  "count": 1,
+                  "dia_mm": 0.6,
+                  "drill_mm": 0.3,
+                  "kind": "barrel",
+                  "net": "/ACC_5V_SW_EN",
+                  "objects": 14,
+                  "router_objects": 14
+                },
+                "via_legal_in_pocket": 0
+              },
+              {
+                "area_mm2": 0.5356,
+                "cells": 857,
+                "escapes": 3,
+                "layer": "B",
+                "seconds": 25.3,
+                "step": "Q3_UNIT_OUT",
+                "unit": {
+                  "a_mm": [
+                    59.8625,
+                    88.325
+                  ],
+                  "b_mm": [
+                    61.05,
+                    88.3
+                  ],
+                  "count": 1,
+                  "kind": "track",
+                  "layer": "B.Cu",
+                  "net": "/TOUCH_INT_N",
+                  "objects": 1,
+                  "router_objects": 1,
+                  "width_mm": 0.2
+                },
+                "via_legal_in_pocket": 0
+              },
+              {
+                "area_mm2": 0.5356,
+                "cells": 857,
+                "escapes": 3,
+                "layer": "B",
+                "seconds": 25.3,
+                "step": "Q3_UNIT_OUT",
+                "unit": {
+                  "a_mm": [
+                    61.05,
+                    88.3
+                  ],
+                  "b_mm": [
+                    61.15,
+                    88.4
+                  ],
+                  "count": 1,
+                  "kind": "track",
+                  "layer": "B.Cu",
+                  "net": "/TOUCH_INT_N",
+                  "objects": 1,
+                  "router_objects": 1,
+                  "width_mm": 0.2
+                },
+                "via_legal_in_pocket": 0
+              },
+              {
+                "area_mm2": 0.5356,
+                "cells": 857,
+                "escapes": 3,
+                "layer": "B",
+                "seconds": 25.4,
+                "step": "Q3_UNIT_OUT",
+                "unit": {
+                  "a_mm": [
+                    61.15,
+                    88.4
+                  ],
+                  "b_mm": [
+                    61.15,
+                    88.85
+                  ],
+                  "count": 1,
+                  "kind": "track",
+                  "layer": "B.Cu",
+                  "net": "/TOUCH_INT_N",
+                  "objects": 1,
+                  "router_objects": 1,
+                  "width_mm": 0.2
+                },
+                "via_legal_in_pocket": 0
+              },
+              {
+                "area_mm2": 0.5356,
+                "cells": 857,
+                "escapes": 3,
+                "layer": "B",
+                "seconds": 25.5,
+                "step": "Q3_UNIT_OUT",
+                "unit": {
+                  "a_mm": [
+                    59.05,
+                    86.75
+                  ],
+                  "b_mm": [
+                    61.15,
+                    88.85
+                  ],
+                  "count": 1,
+                  "kind": "track",
+                  "layer": "F.Cu",
+                  "net": "/TOUCH_INT_N",
+                  "objects": 1,
+                  "router_objects": 1,
+                  "width_mm": 0.2
+                },
+                "via_legal_in_pocket": 0
+              },
+              {
+                "area_mm2": 0.5888,
+                "cells": 942,
+                "escapes": 3,
+                "layer": "B",
+                "seconds": 25.7,
+                "step": "Q3_UNIT_OUT",
+                "unit": {
+                  "at_mm": [
+                    61.15,
+                    88.85
+                  ],
+                  "count": 1,
+                  "dia_mm": 0.6,
+                  "drill_mm": 0.3,
+                  "kind": "barrel",
+                  "net": "/TOUCH_INT_N",
+                  "objects": 14,
+                  "router_objects": 14
+                },
+                "via_legal_in_pocket": 0
+              }
+            ],
+            "units": 43,
+            "verdict": "RIPUP_SINGLE_UNIT"
+          },
+          "growth": 1.575,
+          "island": [
+            "U2.20"
+          ],
+          "pad": "U2.20",
+          "rungs": [
+            {
+              "area_mm2": 0.34,
+              "cells": 34,
+              "escapes": 1,
+              "grid_nm": 100000,
+              "layer": "B",
+              "seconds": 0.1,
+              "via_legal_in_pocket": 0
+            },
+            {
+              "area_mm2": 0.395,
+              "cells": 158,
+              "escapes": 1,
+              "grid_nm": 50000,
+              "layer": "B",
+              "seconds": 0.4,
+              "via_legal_in_pocket": 0
+            },
+            {
+              "area_mm2": 0.5356,
+              "cells": 857,
+              "escapes": 3,
+              "grid_nm": 25000,
+              "layer": "B",
+              "seconds": 9.8,
+              "via_legal_in_pocket": 0
+            }
+          ],
+          "verdict": "SEALED"
+        },
+        {
+          "area_max_mm2": 304.7763,
+          "area_min_mm2": 288.99,
+          "growth": 1.055,
+          "island": [
+            "U8.13"
+          ],
+          "pad": "U8.13",
+          "rungs": [
+            {
+              "area_mm2": 288.99,
+              "cells": 28899,
+              "escapes": 13,
+              "grid_nm": 100000,
+              "layer": "B",
+              "seconds": 11.0,
+              "via_legal_in_pocket": 12681
+            },
+            {
+              "area_mm2": 299.8075,
+              "cells": 119923,
+              "escapes": 9,
+              "grid_nm": 50000,
+              "layer": "B",
+              "seconds": 64.9,
+              "via_legal_in_pocket": 54203
+            },
+            {
+              "area_mm2": 304.7763,
+              "cells": 487642,
+              "escapes": 8,
+              "grid_nm": 25000,
+              "layer": "B",
+              "seconds": 663.6,
+              "via_legal_in_pocket": 223208
+            }
+          ],
+          "verdict": "HAS_VIA_SITE"
+        }
+      ],
+      "lands_measured": "all",
+      "net": "/SX1262_DIO1",
+      "netclass": "Default"
+    }
+  ],
+  "pitches": [
+    100000,
+    50000,
+    25000
+  ],
+  "question": "for every land whose escape opens into a free pocket, does that pocket keep its AREA as the lattice refines -- a real seal -- or grow, which would make it a rasterisation artifact a finer pitch can open",
+  "schema": 1,
+  "stitch_via": null
+}

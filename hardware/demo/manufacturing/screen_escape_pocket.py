@@ -141,6 +141,14 @@ def _unit_spec(qb, k, objs):
                 width_mm=round(2 * k[7] / 1e6, 4))
 
 
+# The one figure this screen judges a pocket by: below it an area change is a
+# rasterisation artifact, at or above it the lattice has expressed a real mouth.
+# D-670 gave it a name so the blame's materiality test and the ladder's own
+# RASTER verdict cannot drift apart -- they are the same judgement about the
+# same pocket, made once by refining the lattice and once by removing copper.
+GROWTH_RASTER = 2.0
+
+
 def pocket_blame(qb, mz, np, field, net, pad, G, cell_mm2, margin_mm,
                  measure):
     """WHICH foreign copper, held out, GROWS this land's escape pocket."""
@@ -230,6 +238,61 @@ def pocket_blame(qb, mz, np, field, net, pad, G, cell_mm2, margin_mm,
     out["verdict"] = ("RIPUP_SINGLE_UNIT" if out["single_unit_openers"] else
                       "RIPUP_SINGLE_NET" if openers else
                       "RIPUP_SET_REQUIRED")
+
+    # ---------------------------------------------------------------- #
+    # MATERIALITY -- D-670.  "OPENS" AND "OPENS USEFULLY" ARE NOT THE SAME
+    # CLAIM, AND THE TEST ABOVE MAKES ONLY THE FIRST.
+    #
+    # `> base` is the right predicate for "did this copper contribute to the
+    # seal at all", and it is the wrong one for "is this the rip-up to buy".
+    # `/ACC_PWR_EN`'s `R17.1` is the case that shows it, twice over.  TWELVE
+    # units read as single-unit openers against a base of 5.5844 mm2 and ZERO
+    # via-legal cells.  NINE of them move the area to between 5.5850 and
+    # 5.7138 mm2 -- 0.01 % to 2.3 % -- and gain NO via-legal cell, so the land
+    # has no barrel site before those rip-ups and none after, and a reader who
+    # took `RIPUP_SINGLE_UNIT` at face value would have spent a gate run on
+    # 0.03 mm2.
+    #
+    # AND THE SORT WAS WORSE THAN THE PREDICATE.  `per_unit` is ranked by AREA,
+    # and the THREE units that matter on that land change the area by NOTHING
+    # AT ALL -- 5.5844 to 5.5844 mm2 -- while taking the pocket from ZERO
+    # via-legal cells to 230, 227 and 134.  Area-ranked they sat DEAD LAST of
+    # twelve.  A land whose problem is that it cannot place a barrel is not
+    # helped by a bigger pocket; it is helped by a legal barrel SITE, and that
+    # is the quantity the ranking was blind to.
+    #
+    # THE THRESHOLD IS THE LADDER'S OWN, not a new number: an opener is
+    # MATERIAL if it gains at least one VIA-LEGAL cell -- a pocket with a
+    # barrel site in it is not a wall whatever its size, which is the rule
+    # `HAS_VIA_SITE` already states -- or if it grows the pocket by the same
+    # 2.0x this screen already uses to separate a real seal from a raster.
+    #
+    # `verdict` and `single_unit_openers` are UNCHANGED, so every reader and
+    # every artifact written before this reads exactly as it did; the judgement
+    # rides beside them.
+    def material(u):
+        return (u["via_legal_in_pocket"] > base["via_legal_in_pocket"]
+                or (base["area_mm2"] > 0
+                    and u["area_mm2"] / base["area_mm2"] >= GROWTH_RASTER)
+                or (base["area_mm2"] <= 0 and u["area_mm2"] > 0))
+
+    out["materiality"] = dict(
+        rule=("an opener is MATERIAL if it gains a via-legal cell in the "
+              "pocket or multiplies the pocket area by at least %.1f -- the "
+              "same figure the ladder uses to call a seal a raster"
+              % GROWTH_RASTER),
+        growth_threshold=GROWTH_RASTER,
+        base_area_mm2=base["area_mm2"],
+        base_via_legal=base["via_legal_in_pocket"])
+    out["material_net_openers"] = [
+        n_ for n_ in out.get("single_net_openers", ())
+        if material(n_)]
+    out["material_unit_openers"] = [
+        u for u in out["single_unit_openers"] if material(u)]
+    out["material_verdict"] = (
+        "RIPUP_SINGLE_UNIT" if out["material_unit_openers"] else
+        "RIPUP_SINGLE_NET" if out["material_net_openers"] else
+        "NO_MATERIAL_OPENER")
     return out
 
 
@@ -244,6 +307,23 @@ def main():
     ap.add_argument("--escape-limit", type=int, default=12)
     ap.add_argument("--pitch", type=int, action="append", default=None)
     ap.add_argument("--orphans-only", action="store_true", default=True)
+    # D-670: A TWO-ISLAND NET'S LADDER ANSWERED ABOUT ONE OF ITS TWO LANDS,
+    # AND WHICH ONE WAS ARBITRARY.  `body = max(islands, key=len)` is the right
+    # reading for the stitch this screen was written for -- a pour body and its
+    # stranded orphans -- and it is meaningless for a plane-less net whose
+    # islands are single pads: `max` breaks the tie by ITERATION ORDER, the
+    # body's lands are then never measured, and the ladder reports the far end
+    # of the refusal while saying nothing about the near one.  `/SX1262_DIO1`
+    # bought it: `U8.13` reads 304.776 mm2 and 223,208 via-legal cells, which
+    # reads as "this net's launch is wide open" and is a statement about the
+    # pad the tie-break happened to discard `U2.20` in favour of.
+    # `--all-lands` measures EVERY island's lands.  The pocket question is
+    # per-LAND and has nothing to do with which island a net calls its body.
+    ap.add_argument("--all-lands", action="store_true",
+                    help="ladder the lands of EVERY island, including the "
+                         "largest (the `body`).  Default measures only the "
+                         "non-body islands, which for a net whose islands are "
+                         "the same size leaves half the question unasked")
     # D-669: THE POCKET BLAME.  A SEALED verdict names no seal, and the only
     # instrument that could -- `screen_pair_corridor_blame.py` -- charges one
     # WHOLE-BOARD WAVEFRONT per candidate and takes hours.  For a land whose
@@ -311,9 +391,17 @@ def main():
         if len(islands) < 2:
             continue
         body = max(islands, key=len)
-        targets = [i for i in islands if i is not body]
+        # D-670: `body_arbitrary` records that the tie-break above had no
+        # engineering content -- more than one island is of maximal size -- so a
+        # reader can tell "this net's body is its pour" from "this net's body is
+        # whichever single pad came first".
+        arbitrary = sum(1 for i in islands if len(i) == len(body)) > 1
+        targets = list(islands) if a.all_lands else [i for i in islands
+                                                    if i is not body]
         rec = dict(net=net, netclass=c["netclass"], has_plane=planed,
-                   body=[p["ref"] for p in body], lands=[])
+                   body=[p["ref"] for p in body], body_arbitrary=arbitrary,
+                   lands_measured=("all" if a.all_lands else "non-body"),
+                   lands=[])
         per_land = {}
         def measure(field, pad, G):
             """(escapes, cells, via-legal cells, layer) of `pad`'s BEST pocket.
@@ -374,7 +462,8 @@ def main():
                             "HAS_VIA_SITE" if any(
                                 x["via_legal_in_pocket"]
                                 for x in r["rungs"]) else
-                            "RASTER" if r["growth"] and r["growth"] >= 2.0 else
+                            "RASTER" if r["growth"] and
+                            r["growth"] >= GROWTH_RASTER else
                             "SEALED")
             rec["lands"].append(r)
 
@@ -418,7 +507,7 @@ def main():
     doc = dict(
         schema=1, board=str(a.board), board_sha256=board_sha,
         pitches=list(pitches), escape_floor=bool(a.escape_floor),
-        neck=bool(a.neck),
+        neck=bool(a.neck), all_lands=bool(a.all_lands),
         stitch_via=list(stitch_via) if stitch_via else None,
         guard=str(a.guard) if a.guard else None,
         guard_sha256=(hashlib.sha256(a.guard.read_bytes()).hexdigest()

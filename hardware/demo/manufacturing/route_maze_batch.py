@@ -2030,10 +2030,28 @@ def terminal_lift(guard, lkey, ends, width_nm, grid_nm):
             continue
         k = max(cover)
         lift.append((ex, ey, k))
+        # D-670: SAY WHAT THE RESERVATION IS STILL WORTH.  The docstring above
+        # states the property -- a lift centred `e` off the guard point frees
+        # the near side to `R + e` and the far side to `R - e` -- and until now
+        # nothing computed `R - e`, so a lane that had cancelled ITSELF looked
+        # exactly like a lane that was binding.  D-670 spent two arms on that:
+        # arm L reserved 2.200 mm around `U3.20` whose relay terminal stood
+        # 2.128 mm away and kept 0.072 mm of it, and the `/SX1262_DIO1` lane
+        # reserved 2.000 mm around `U2.20` against a terminal 1.276 mm away
+        # and the relay came back 6.0810 mm against the 6.0811 mm it replaced
+        # -- the original path, to the tenth of a micron, under a reservation
+        # that read as spent.  THE COPPER THAT SEALS A POCKET ENDS BESIDE IT,
+        # because that is why it seals it, so a disc centred on the LAND is
+        # self-cancelling BY CONSTRUCTION and the number has to be printed.
+        offset = min(math.hypot(x - ex, y - ey)
+                     for (x, y, q) in pts if q == k)
         report.append(dict(at_mm=[round(ex / 1e6, 4), round(ey / 1e6, 4)],
                            lkey=lkey, keepout_mm=round(k / 1e6, 4),
                            reach_mm=round((k + width_nm / 2.0 + grid_nm) / 1e6, 4),
-                           guard_points=len(cover)))
+                           guard_points=len(cover),
+                           offset_mm=round(offset / 1e6, 4),
+                           residual_mm=round((k - offset) / 1e6, 4),
+                           nullified=bool(offset >= k)))
     return ({lkey: lift} if lift else {}), report
 
 

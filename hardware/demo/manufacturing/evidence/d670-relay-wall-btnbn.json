@@ -1,0 +1,86 @@
+{
+  "board": "/home/aqroot8/aqroot-demo/hardware/demo/kicad/aqroot-demo/aqroot-Beta-v2.kicad_pcb",
+  "board_sha256": "c3286d8fdd23b6bdb037de2a753051b3ac2aa2e5ccaba2e25ced3d39cf4884b2",
+  "grid_nm": 50000,
+  "guard": "w/d670/guard-dio1.json",
+  "relays": [
+    {
+      "a_mm": [
+        54.4,
+        92.75
+      ],
+      "arms": {
+        "budget": {
+          "layers": [
+            "B"
+          ],
+          "max_mm": 40.0,
+          "mm": 6.081,
+          "ok": true,
+          "reason": null,
+          "seconds": 5.4,
+          "via_xy": [],
+          "vias": 0
+        },
+        "lane": {
+          "layers": [
+            "B"
+          ],
+          "max_mm": 16.0,
+          "mm": 6.081,
+          "ok": true,
+          "reason": null,
+          "seconds": 5.6,
+          "via_xy": [],
+          "vias": 0
+        },
+        "nolane": {
+          "layers": [
+            "B"
+          ],
+          "max_mm": 40.0,
+          "mm": 6.081,
+          "ok": true,
+          "reason": null,
+          "seconds": 5.4,
+          "via_xy": [],
+          "vias": 0
+        },
+        "nolift": {
+          "layers": null,
+          "max_mm": 40.0,
+          "mm": 0.0,
+          "ok": false,
+          "reason": "NO_PATH",
+          "seconds": 3.1,
+          "via_xy": null,
+          "vias": 0
+        }
+      },
+      "b_mm": [
+        58.7,
+        88.45
+      ],
+      "layer": "B.Cu",
+      "net": "/08_BUTTONS_EXPANDERS/BTN_B_N",
+      "spec_max_mm": 16.0,
+      "terminal_lift": [
+        {
+          "at_mm": [
+            58.7,
+            88.45
+          ],
+          "guard_points": 1,
+          "keepout_mm": 2.0,
+          "lkey": "B",
+          "reach_mm": 2.15
+        }
+      ],
+      "was_mm": 6.0811
+    }
+  ],
+  "removed": null,
+  "schema": 1,
+  "spec": "w/d670/detour-dio1.json",
+  "wide_mm": 40.0
+}

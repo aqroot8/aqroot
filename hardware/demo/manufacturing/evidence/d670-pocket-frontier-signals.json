@@ -1,0 +1,690 @@
+{
+  "board": "/home/aqroot8/aqroot-demo/hardware/demo/kicad/aqroot-demo/aqroot-Beta-v2.kicad_pcb",
+  "board_sha256": "c3286d8fdd23b6bdb037de2a753051b3ac2aa2e5ccaba2e25ced3d39cf4884b2",
+  "escape_floor": false,
+  "guard": null,
+  "guard_sha256": null,
+  "method": "read-only; maze3d._shift_or flood over ~field.blk[layer] from maze3d.pad_escapes launch points, at each pitch, on the same contract/guard/escape-floor route_maze_batch.propose builds; area in mm2 so the rungs are comparable",
+  "neck": false,
+  "nets": [
+    {
+      "body": [
+        "U2.20"
+      ],
+      "has_plane": false,
+      "lands": [
+        {
+          "area_max_mm2": 304.7763,
+          "area_min_mm2": 288.99,
+          "growth": 1.055,
+          "island": [
+            "U8.13"
+          ],
+          "pad": "U8.13",
+          "rungs": [
+            {
+              "area_mm2": 288.99,
+              "cells": 28899,
+              "escapes": 13,
+              "grid_nm": 100000,
+              "layer": "B",
+              "seconds": 11.0,
+              "via_legal_in_pocket": 12681
+            },
+            {
+              "area_mm2": 299.8075,
+              "cells": 119923,
+              "escapes": 9,
+              "grid_nm": 50000,
+              "layer": "B",
+              "seconds": 78.8,
+              "via_legal_in_pocket": 54203
+            },
+            {
+              "area_mm2": 304.7763,
+              "cells": 487642,
+              "escapes": 8,
+              "grid_nm": 25000,
+              "layer": "B",
+              "seconds": 818.7,
+              "via_legal_in_pocket": 223208
+            }
+          ],
+          "verdict": "HAS_VIA_SITE"
+        }
+      ],
+      "net": "/SX1262_DIO1",
+      "netclass": "Default"
+    },
+    {
+      "body": [
+        "U16.1",
+        "R17.1"
+      ],
+      "has_plane": false,
+      "lands": [
+        {
+          "area_max_mm2": 2.3181,
+          "area_min_mm2": 1.77,
+          "growth": 1.31,
+          "island": [
+            "U3.20"
+          ],
+          "pad": "U3.20",
+          "rungs": [
+            {
+              "area_mm2": 1.77,
+              "cells": 177,
+              "escapes": 7,
+              "grid_nm": 100000,
+              "layer": "B",
+              "seconds": 0.5,
+              "via_legal_in_pocket": 0
+            },
+            {
+              "area_mm2": 2.055,
+              "cells": 822,
+              "escapes": 6,
+              "grid_nm": 50000,
+              "layer": "B",
+              "seconds": 2.9,
+              "via_legal_in_pocket": 0
+            },
+            {
+              "area_mm2": 2.3181,
+              "cells": 3709,
+              "escapes": 5,
+              "grid_nm": 25000,
+              "layer": "B",
+              "seconds": 37.8,
+              "via_legal_in_pocket": 0
+            }
+          ],
+          "verdict": "SEALED"
+        }
+      ],
+      "net": "/ACC_PWR_EN",
+      "netclass": "Default"
+    },
+    {
+      "body": [
+        "L4.2"
+      ],
+      "has_plane": false,
+      "lands": [
+        {
+          "area_max_mm2": null,
+          "area_min_mm2": null,
+          "growth": null,
+          "island": [
+            "U21.5"
+          ],
+          "pad": "U21.5",
+          "rungs": [
+            {
+              "area_mm2": 0.0,
+              "cells": 0,
+              "escapes": 0,
+              "grid_nm": 100000,
+              "layer": null,
+              "seconds": 0.1,
+              "via_legal_in_pocket": 0
+            },
+            {
+              "area_mm2": 0.0,
+              "cells": 0,
+              "escapes": 0,
+              "grid_nm": 50000,
+              "layer": null,
+              "seconds": 0.1,
+              "via_legal_in_pocket": 0
+            },
+            {
+              "area_mm2": 0.0,
+              "cells": 0,
+              "escapes": 0,
+              "grid_nm": 25000,
+              "layer": null,
+              "seconds": 0.3,
+              "via_legal_in_pocket": 0
+            }
+          ],
+          "verdict": "NO_ESCAPE_AT_ANY_PITCH"
+        }
+      ],
+      "net": "/01_POWER_TREE/ACC_5V_LX",
+      "netclass": "SWITCH_NODE"
+    },
+    {
+      "body": [
+        "R34.2"
+      ],
+      "has_plane": false,
+      "lands": [
+        {
+          "area_max_mm2": 38.0325,
+          "area_min_mm2": 36.17,
+          "growth": 1.051,
+          "island": [
+            "U1.14"
+          ],
+          "pad": "U1.14",
+          "rungs": [
+            {
+              "area_mm2": 36.17,
+              "cells": 3617,
+              "escapes": 13,
+              "grid_nm": 100000,
+              "layer": "F",
+              "seconds": 3.4,
+              "via_legal_in_pocket": 750
+            },
+            {
+              "area_mm2": 37.0,
+              "cells": 14800,
+              "escapes": 7,
+              "grid_nm": 50000,
+              "layer": "F",
+              "seconds": 16.4,
+              "via_legal_in_pocket": 3305
+            },
+            {
+              "area_mm2": 38.0325,
+              "cells": 60852,
+              "escapes": 6,
+              "grid_nm": 25000,
+              "layer": "F",
+              "seconds": 158.8,
+              "via_legal_in_pocket": 13947
+            }
+          ],
+          "verdict": "HAS_VIA_SITE"
+        }
+      ],
+      "net": "/USB_D_MCU_P",
+      "netclass": "USB_D"
+    },
+    {
+      "body": [
+        "R33.2"
+      ],
+      "has_plane": false,
+      "lands": [
+        {
+          "area_max_mm2": 37.5425,
+          "area_min_mm2": 35.59,
+          "growth": 1.055,
+          "island": [
+            "U1.13"
+          ],
+          "pad": "U1.13",
+          "rungs": [
+            {
+              "area_mm2": 35.59,
+              "cells": 3559,
+              "escapes": 13,
+              "grid_nm": 100000,
+              "layer": "F",
+              "seconds": 3.2,
+              "via_legal_in_pocket": 750
+            },
+            {
+              "area_mm2": 36.53,
+              "cells": 14612,
+              "escapes": 7,
+              "grid_nm": 50000,
+              "layer": "F",
+              "seconds": 14.9,
+              "via_legal_in_pocket": 3305
+            },
+            {
+              "area_mm2": 37.5425,
+              "cells": 60068,
+              "escapes": 7,
+              "grid_nm": 25000,
+              "layer": "F",
+              "seconds": 165.6,
+              "via_legal_in_pocket": 13943
+            }
+          ],
+          "verdict": "HAS_VIA_SITE"
+        }
+      ],
+      "net": "/USB_D_MCU_N",
+      "netclass": "USB_D"
+    },
+    {
+      "body": [
+        "R127.2",
+        "TP6.1"
+      ],
+      "has_plane": false,
+      "lands": [
+        {
+          "area_max_mm2": null,
+          "area_min_mm2": null,
+          "growth": null,
+          "island": [
+            "U11.9"
+          ],
+          "pad": "U11.9",
+          "rungs": [
+            {
+              "area_mm2": 0.0,
+              "cells": 0,
+              "escapes": 0,
+              "grid_nm": 100000,
+              "layer": null,
+              "seconds": 0.1,
+              "via_legal_in_pocket": 0
+            },
+            {
+              "area_mm2": 0.0,
+              "cells": 0,
+              "escapes": 0,
+              "grid_nm": 50000,
+              "layer": null,
+              "seconds": 0.1,
+              "via_legal_in_pocket": 0
+            },
+            {
+              "area_mm2": 0.0,
+              "cells": 0,
+              "escapes": 0,
+              "grid_nm": 25000,
+              "layer": null,
+              "seconds": 0.2,
+              "via_legal_in_pocket": 0
+            }
+          ],
+          "verdict": "NO_ESCAPE_AT_ANY_PITCH"
+        },
+        {
+          "area_max_mm2": 7.6469,
+          "area_min_mm2": 5.98,
+          "growth": 1.279,
+          "island": [
+            "U2.9"
+          ],
+          "pad": "U2.9",
+          "rungs": [
+            {
+              "area_mm2": 5.98,
+              "cells": 598,
+              "escapes": 14,
+              "grid_nm": 100000,
+              "layer": "B",
+              "seconds": 1.9,
+              "via_legal_in_pocket": 0
+            },
+            {
+              "area_mm2": 6.9975,
+              "cells": 2799,
+              "escapes": 7,
+              "grid_nm": 50000,
+              "layer": "B",
+              "seconds": 8.5,
+              "via_legal_in_pocket": 0
+            },
+            {
+              "area_mm2": 7.6469,
+              "cells": 12235,
+              "escapes": 5,
+              "grid_nm": 25000,
+              "layer": "B",
+              "seconds": 75.7,
+              "via_legal_in_pocket": 0
+            }
+          ],
+          "verdict": "SEALED"
+        }
+      ],
+      "net": "/BQ25185_STAT1",
+      "netclass": "Default"
+    },
+    {
+      "body": [
+        "R128.2",
+        "TP7.1"
+      ],
+      "has_plane": false,
+      "lands": [
+        {
+          "area_max_mm2": null,
+          "area_min_mm2": null,
+          "growth": null,
+          "island": [
+            "U11.3"
+          ],
+          "pad": "U11.3",
+          "rungs": [
+            {
+              "area_mm2": 0.0,
+              "cells": 0,
+              "escapes": 0,
+              "grid_nm": 100000,
+              "layer": null,
+              "seconds": 0.1,
+              "via_legal_in_pocket": 0
+            },
+            {
+              "area_mm2": 0.0,
+              "cells": 0,
+              "escapes": 0,
+              "grid_nm": 50000,
+              "layer": null,
+              "seconds": 0.1,
+              "via_legal_in_pocket": 0
+            },
+            {
+              "area_mm2": 0.0,
+              "cells": 0,
+              "escapes": 0,
+              "grid_nm": 25000,
+              "layer": null,
+              "seconds": 0.2,
+              "via_legal_in_pocket": 0
+            }
+          ],
+          "verdict": "NO_ESCAPE_AT_ANY_PITCH"
+        },
+        {
+          "area_max_mm2": 7.6806,
+          "area_min_mm2": 6.01,
+          "growth": 1.278,
+          "island": [
+            "U2.10"
+          ],
+          "pad": "U2.10",
+          "rungs": [
+            {
+              "area_mm2": 6.01,
+              "cells": 601,
+              "escapes": 14,
+              "grid_nm": 100000,
+              "layer": "B",
+              "seconds": 1.7,
+              "via_legal_in_pocket": 0
+            },
+            {
+              "area_mm2": 7.0325,
+              "cells": 2813,
+              "escapes": 7,
+              "grid_nm": 50000,
+              "layer": "B",
+              "seconds": 7.7,
+              "via_legal_in_pocket": 0
+            },
+            {
+              "area_mm2": 7.6806,
+              "cells": 12289,
+              "escapes": 5,
+              "grid_nm": 25000,
+              "layer": "B",
+              "seconds": 67.9,
+              "via_legal_in_pocket": 0
+            }
+          ],
+          "verdict": "SEALED"
+        }
+      ],
+      "net": "/BQ25185_STAT2",
+      "netclass": "Default"
+    },
+    {
+      "body": [
+        "R107.2",
+        "U9.8",
+        "R106.2",
+        "TP32.1",
+        "C55.1",
+        "C19.1"
+      ],
+      "has_plane": false,
+      "lands": [
+        {
+          "area_max_mm2": null,
+          "area_min_mm2": null,
+          "growth": null,
+          "island": [
+            "U9.10"
+          ],
+          "pad": "U9.10",
+          "rungs": [
+            {
+              "area_mm2": 0.0,
+              "cells": 0,
+              "escapes": 0,
+              "grid_nm": 100000,
+              "layer": null,
+              "seconds": 0.0,
+              "via_legal_in_pocket": 0
+            },
+            {
+              "area_mm2": 0.0,
+              "cells": 0,
+              "escapes": 0,
+              "grid_nm": 50000,
+              "layer": null,
+              "seconds": 0.1,
+              "via_legal_in_pocket": 0
+            },
+            {
+              "area_mm2": 0.0,
+              "cells": 0,
+              "escapes": 0,
+              "grid_nm": 25000,
+              "layer": null,
+              "seconds": 0.2,
+              "via_legal_in_pocket": 0
+            }
+          ],
+          "verdict": "NO_ESCAPE_AT_ANY_PITCH"
+        }
+      ],
+      "net": "/NFC_SUPPLY",
+      "netclass": "P3V3"
+    },
+    {
+      "body": [
+        "U9.9",
+        "C50.1",
+        "C49.1"
+      ],
+      "has_plane": false,
+      "lands": [
+        {
+          "area_max_mm2": 0.01,
+          "area_min_mm2": 0.01,
+          "growth": 1.0,
+          "island": [
+            "U9.14"
+          ],
+          "pad": "U9.14",
+          "rungs": [
+            {
+              "area_mm2": 0.01,
+              "cells": 1,
+              "escapes": 1,
+              "grid_nm": 100000,
+              "layer": "B",
+              "seconds": 0.1,
+              "via_legal_in_pocket": 0
+            },
+            {
+              "area_mm2": 0.0,
+              "cells": 0,
+              "escapes": 0,
+              "grid_nm": 50000,
+              "layer": null,
+              "seconds": 0.1,
+              "via_legal_in_pocket": 0
+            },
+            {
+              "area_mm2": 0.0,
+              "cells": 0,
+              "escapes": 0,
+              "grid_nm": 25000,
+              "layer": null,
+              "seconds": 0.2,
+              "via_legal_in_pocket": 0
+            }
+          ],
+          "verdict": "SEALED"
+        }
+      ],
+      "net": "/04_SPI_B_RADIOS_NFC/NFC_VDD_RF",
+      "netclass": "Default"
+    },
+    {
+      "body": [
+        "J3.A6",
+        "J3.B6"
+      ],
+      "has_plane": false,
+      "lands": [
+        {
+          "area_max_mm2": 3.7638,
+          "area_min_mm2": 3.27,
+          "growth": 1.151,
+          "island": [
+            "U10.3"
+          ],
+          "pad": "U10.3",
+          "rungs": [
+            {
+              "area_mm2": 3.27,
+              "cells": 327,
+              "escapes": 14,
+              "grid_nm": 100000,
+              "layer": "F",
+              "seconds": 0.7,
+              "via_legal_in_pocket": 8
+            },
+            {
+              "area_mm2": 3.5475,
+              "cells": 1419,
+              "escapes": 7,
+              "grid_nm": 50000,
+              "layer": "F",
+              "seconds": 3.2,
+              "via_legal_in_pocket": 55
+            },
+            {
+              "area_mm2": 3.7638,
+              "cells": 6022,
+              "escapes": 7,
+              "grid_nm": 25000,
+              "layer": "F",
+              "seconds": 38.1,
+              "via_legal_in_pocket": 276
+            }
+          ],
+          "verdict": "HAS_VIA_SITE"
+        }
+      ],
+      "net": "/01_POWER_TREE/USB_D_CONN_P",
+      "netclass": "USB_D"
+    },
+    {
+      "body": [
+        "R3.1",
+        "U1.23",
+        "Q10.3"
+      ],
+      "has_plane": false,
+      "lands": [
+        {
+          "area_max_mm2": 2.9013,
+          "area_min_mm2": 1.69,
+          "growth": 1.717,
+          "island": [
+            "U2.1",
+            "U3.1"
+          ],
+          "pad": "U2.1",
+          "rungs": [
+            {
+              "area_mm2": 1.69,
+              "cells": 169,
+              "escapes": 11,
+              "grid_nm": 100000,
+              "layer": "B",
+              "seconds": 0.5,
+              "via_legal_in_pocket": 0
+            },
+            {
+              "area_mm2": 2.62,
+              "cells": 1048,
+              "escapes": 7,
+              "grid_nm": 50000,
+              "layer": "B",
+              "seconds": 4.6,
+              "via_legal_in_pocket": 10
+            },
+            {
+              "area_mm2": 2.9013,
+              "cells": 4642,
+              "escapes": 6,
+              "grid_nm": 25000,
+              "layer": "B",
+              "seconds": 42.7,
+              "via_legal_in_pocket": 81
+            }
+          ],
+          "verdict": "HAS_VIA_SITE"
+        },
+        {
+          "area_max_mm2": 7.6019,
+          "area_min_mm2": 6.64,
+          "growth": 1.145,
+          "island": [
+            "U2.1",
+            "U3.1"
+          ],
+          "pad": "U3.1",
+          "rungs": [
+            {
+              "area_mm2": 6.64,
+              "cells": 664,
+              "escapes": 14,
+              "grid_nm": 100000,
+              "layer": "B",
+              "seconds": 1.9,
+              "via_legal_in_pocket": 0
+            },
+            {
+              "area_mm2": 7.15,
+              "cells": 2860,
+              "escapes": 6,
+              "grid_nm": 50000,
+              "layer": "B",
+              "seconds": 7.0,
+              "via_legal_in_pocket": 0
+            },
+            {
+              "area_mm2": 7.6019,
+              "cells": 12163,
+              "escapes": 6,
+              "grid_nm": 25000,
+              "layer": "B",
+              "seconds": 80.7,
+              "via_legal_in_pocket": 0
+            }
+          ],
+          "verdict": "SEALED"
+        }
+      ],
+      "net": "/WAKE_INT_N",
+      "netclass": "Default"
+    }
+  ],
+  "pitches": [
+    100000,
+    50000,
+    25000
+  ],
+  "question": "for every land whose escape opens into a free pocket, does that pocket keep its AREA as the lattice refines -- a real seal -- or grow, which would make it a rasterisation artifact a finer pitch can open",
+  "schema": 1,
+  "stitch_via": null
+}

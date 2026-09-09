@@ -13,6 +13,126 @@
 > This file references DEVICE_SPEC rather than duplicating full specs.
 
 ## 1. Authoritative HEAD
+- **Demo D-670 (A LADDER THAT MEASURED THE WRONG END OF EVERY TWO-PAD NET, AND
+  A RESERVATION WORTH 0.072 mm OF THE 2.200 mm IT ASKED FOR):**  **NO COPPER
+  PROMOTED — FRAMEWORK + CHARACTERISATION.**  Authority **UNCHANGED** at
+  `c3286d8fdd23b6bdb037de2a753051b3ac2aa2e5ccaba2e25ced3d39cf4884b2`; retained
+  open edges 27 -> 27, open retained nets 15 -> 15.  `hardware/beta-v2` and
+  `hardware/demo/kicad` **UNTOUCHED**.  `screen_escape_pocket.py` and
+  `route_maze_batch.py` changed; standing suite **14/14 RAN, 14/14 PASS, 14/14
+  COMPARED, `vacuous` false**, twelve rows IDENTICAL to `d669`
+  (`evidence/d670-contract-regression.json`); baselines emitted for D-671.
+  **(1) D-669 §7 ITEM (1) IS DONE AND THE WHOLE FRONTIER IS PARTITIONED.**
+  `evidence/d670-pocket-frontier-{signals,rails}.json` ladder **every land of
+  all fifteen open retained nets** at 0.100/0.050/0.025 mm;
+  `evidence/d670-frontier-partition.json` folds them: **38 lands — 13
+  `NO_ESCAPE_AT_ANY_PITCH`, 14 `SEALED`, 3 `RASTER`, 8 `HAS_VIA_SITE`**; by
+  weakest land **7 nets `NO_ESCAPE_AT_ANY_PITCH`, 5 `SEALED`, 3
+  `HAS_VIA_SITE`**.  **SEVEN OF THE FIFTEEN OPEN NETS HAVE A LAND THAT CANNOT
+  LAUNCH AT ALL** — no rip-up, no lane and no lattice reaches those.  **AND THE
+  WIDTH LEVER WAS ASKED HERE AND MOVES NOTHING**
+  (`evidence/d670-pocket-escape-floor.json`): the seven were re-laddered with
+  `--escape-floor` and **0 of 35 lands changed verdict or area by a cell**,
+  though for four of them the floor is genuinely lower — **`SYS_MAIN` 0.800 ->
+  0.500, `P3V3` 0.600 -> 0.400, `SWITCH_NODE` 0.600 -> 0.400 mm**, a 25-37 %
+  narrower launch.  **PAD-GEOMETRY WALLS, NOT WIDTH WALLS**, confirming D-665's
+  `EXACT`/`UNLAUNCHABLE` reading by a second instrument.  The only unspent lever
+  is `--neck`, and it is right for exactly one land: `U9.10` `/NFC_SUPPLY`,
+  0.600 mm needed against a widest legal escape of 0.300 mm, which no 0.400 mm
+  class floor could have opened.
+  **(2) THE LADDER HAD BEEN MEASURING AN ARBITRARY ONE OF A TWO-PAD NET'S TWO
+  LANDS.**  `body = max(islands, key=len)` breaks a tie by ITERATION ORDER and
+  the body's lands were never measured, so D-669 §7 item (2)'s *"CLEAR land"*
+  for `/SX1262_DIO1` was `U8.13` — **223,208 via-legal cells** — and
+  `--all-lands` (new, default off) reads the other one: **`U2.20`, ONE escape at
+  every pitch, 0.340 -> 0.5356 mm², ZERO via-legal cells, `SEALED`**.  Records
+  now carry `body_arbitrary` (true here) and `lands_measured`.
+  **(3) A POCKET VERDICT IS NECESSARY, NOT SUFFICIENT.**  `/ACC_PWR_EN` `U3.20`
+  blames to ONE unit (`BTN_UP_N` `B.Cu [57.8,78.45]->[58.7,84.4]`, **2.3181 ->
+  15.9538 mm², 0 -> 1240 via-legal**) and this decision's own arms A/B/D removed
+  **that unit AND its neighbour** — `/ACC_PWR_EN` still **`NO_PATH` at 0.100,
+  0.050 AND 0.025 mm** (19/10/10 src escapes).  The pocket opened; the corridor
+  did not.  Carried as a `caveat` field in the partition.
+  **(4) `RIPUP_SINGLE_UNIT` FIRED ON 0.5 % OF A POCKET, AND THE RANKING BURIED
+  THE ONLY UNITS THAT MATTERED.**  `R17.1` has **twelve** unit openers; nine
+  move 5.5844 -> 5.5850…5.7138 mm² with **ZERO via-legal cells**, and the three
+  that matter change the area **by nothing** (5.5844 -> 5.5844) while taking the
+  pocket from **0 to 230 / 227 / 134 via-legal cells** — so `per_unit`'s
+  AREA sort put them **dead last of twelve**.  A land that cannot place a barrel
+  is helped by a barrel SITE, not by a bigger pocket.  `GROWTH_RASTER = 2.0` is
+  now named once and used twice — the ladder's RASTER test and the blame's new
+  MATERIALITY test — and an opener is MATERIAL only if it gains a via-legal cell
+  or doubles the area.  `verdict`/`single_unit_openers` UNCHANGED;
+  `materiality`, `material_{net,unit}_openers`, `material_verdict` ride beside.
+  Keeps **6 of 22** units over the three blamed lands.  **AND ON `R17.1` THE
+  ANSWER IS A REFUSAL: all three material openers are PROTECTED copper**
+  (`/ACC_3V3_SW`, `/ACC_5V_SW_EN`, `/XGPIO5` — 79/23/6 objects, two named
+  must-preserve by `AQROOT_DEMO_SCOPE`), so `R17.1` is closed and `/ACC_PWR_EN`
+  must be routed to **`U16.1`**, the one land already carrying a barrel site
+  (14.127 mm², 184 via-legal).
+  **(5) `/SX1262_DIO1` FALLS TO ONE OBJECT AND ELEVEN ARMS TOOK THE WRONG
+  LEVER.**  `U2.20` (43 units / 122 objects / 16 window nets): **ONE unit —
+  `BTN_B_N` `B.Cu [54.4,92.75]->[58.7,88.45]`, 0.200 mm, count 1 — 0.5356 ->
+  16.7019 mm² (31.2x), 0 -> 4009 via-legal**; no protected copper involved
+  (`/ACC_5V_SW_EN`'s barrel buys 0.6119 mm² and no barrel site).  All eleven
+  scratch arms used `--evict`, `detour: null` in every one: DIO1 closes and
+  `BTN_B_N` cannot go back (**27 -> 29**, armK 90.650 mm/5 at 0.025), or the
+  order inverts and DIO1 refuses (armJ).  **Arm L is the first `--detour-spec`
+  run: `all_relaid: true`, 6.0177 -> 6.0187 mm, zero vias, 8.2 s** — the
+  segment detour relays where the whole-net eviction cannot.
+  **(6) A RESERVATION IS WORTH `keepout − offset` AND NOTHING COMPUTED IT.**
+  Arm L's 2.200 mm disc round `U3.20` retained **0.072 mm**: the relay's fixed
+  terminal stands 2.128 mm away, inside the guard's 2.35 mm reach, so the lift
+  freed a disc centred 2.128 mm off centre.  **THE COPPER THAT SEALS A POCKET
+  ENDS BESIDE IT, SO A DISC CENTRED ON THE LAND IS SELF-CANCELLING BY
+  CONSTRUCTION.**  `screen_relay_wall.py`
+  (`evidence/d670-relay-wall-btnbn.json`): **`lane` ok 6.081 mm, `nolane` ok
+  6.081 mm, `budget` (40 mm) ok 6.081 mm, `nolift` NO_PATH** — with the lift the
+  lane is worth nothing, without it the relay is impossible.  `terminal_lift`
+  now reports `offset_mm`, `residual_mm`, `nullified`.
+  **(7) AND NO LANE GEOMETRY EXISTS AT ALL.**  New tracked read-only
+  **`screen_lane_geometry.py`** puts the disc on the displaced copper's BODY
+  instead — offset 1.5-3.0 mm along the chain, radius 1.3-2.8 mm, eight
+  geometries, each asked through `screen_relay_wall.py` so the question is the
+  gate's own (`evidence/d670-lane-geometry-sweep.json`,
+  `any_worth_a_gate_run: false`): **all eight are lift-free (`lifts: 0`) and all
+  eight return `NO_PATH` on the `lane` arm AND on the `budget` arm at 40 mm**,
+  across `F`/`B`/`In2` on a 0.050 mm lattice, while `nolane` routes at
+  6.081 mm — a GEOMETRIC wall, not a length allowance.  **That 6.081 mm is both the
+  seal on `U2.20` and `BTN_B_N`'s ONLY corridor at 0.200 mm; the two nets are
+  mutually exclusive TO THE OBJECT** — D-668's shape, proved by a sweep instead
+  of by two failing arms.
+  **(8) OPERATIONAL.**  Two blame runs died with empty logs and no traceback and
+  it was not memory: the harness SIGTERMs a background job's PROCESS GROUP when
+  the foreground command beside it times out.  `setsid` survives it.
+  **NEXT, IN ORDER OF LEVERAGE:** (1) **`/I2C_SCL_INT` `U1.38 <-> TP5.1` IS THE
+  BEST EDGE ON THE BOARD AND ITS BLOCKER WAS RETIRED THREE DECISIONS AGO.**
+  D-635 measured it CLOSING at the **FULL 0.200 mm netclass trunk**, two
+  barrels, `F -> In1.Cu -> F`, `licensed_unconditionally: true`, and
+  `screen_plane_slot.py` measured the slot SURVIVING (0 of 268 anchors off the
+  main body) even under the worst-case straight cut; D-635/D-636 left it blocked
+  on the `GND` return-path price and **D-643 made that price payable**
+  (`screen_return_fragment_bar.py`).  Nothing has re-asked it since.  This
+  decision's ladder confirms the land: `TP5.1` **`HAS_VIA_SITE`, 956 via-legal
+  cells**.  Author the `.kicad_dru` `In1.Cu` corridor licence BEFORE the router
+  runs (gate clause 7), price the return, then gate.  **27 -> 26.**  (2)
+  `/SX1262_DIO1` is **PARKED** at §7's verdict; what is left is an `F.Cu`
+  refloorplan of the `U2` expander column — placement, not routing.  (3)
+  `/ACC_PWR_EN` is a CORRIDOR question with an OPENED pocket: route it to
+  **`U16.1`** (§4 closes `R17.1`) and point
+  `screen_pair_corridor_blame.py --per-object` at `U3.20 <-> U16.1` with
+  `BTN_UP_N`'s two segments held out — the only frontier pair whose launch is
+  known open and whose corridor has never been blamed.  A SECOND untried lever
+  on the same land: **`/SX1262_RXEN`'s barrel alone opens `U3.20` to 4.4975 mm²
+  and 447 via-legal cells**, and it is not protected.  (4) The **thirteen
+  `NO_ESCAPE_AT_ANY_PITCH` lands** are PLACEMENT and WIDTH findings and no
+  router flag reaches them.  (5) `/USB_D_MCU_N`/`_P` stay the D-583/D-618
+  `SEGMENT_WALL` (both MCU lands `HAS_VIA_SITE`, ~13,945 via-legal — the wall is
+  the corridor, not the launch); `/I2C_SCL_INT` `U14.7 <-> J1.44` remains **the
+  one OPEN OWNER DECISION**, RECORDED NOT TAKEN; `USB_D_CONN_P` remains the `J3`
+  mechanical one.  (6) `copper_sliver` localisation remains an OPEN INSTRUMENT
+  GAP.  (7) `hardware/demo/fab` is **FRESH at `c3286d8f`** and this decision
+  promotes nothing that stales it.
 - **Demo D-669 (A LAND THAT REFUSED IN 3.9 SECONDS HAD ONE ESCAPE INTO
   0.047 mm², AND THE CHEAPEST MOVE ON THE BOARD WAS RUNNING LAST):**  **COPPER
   PROMOTED.**  Authority `7b2ca325...` ->

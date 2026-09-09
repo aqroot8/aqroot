@@ -1,0 +1,1226 @@
+{
+  "board": "/home/aqroot8/aqroot-demo/hardware/demo/kicad/aqroot-demo/aqroot-Beta-v2.kicad_pcb",
+  "board_sha256": "c3286d8fdd23b6bdb037de2a753051b3ac2aa2e5ccaba2e25ced3d39cf4884b2",
+  "escape_floor": false,
+  "guard": null,
+  "guard_sha256": null,
+  "method": "read-only; maze3d._shift_or flood over ~field.blk[layer] from maze3d.pad_escapes launch points, at each pitch, on the same contract/guard/escape-floor route_maze_batch.propose builds; area in mm2 so the rungs are comparable",
+  "neck": false,
+  "nets": [
+    {
+      "body": [
+        "L2.1",
+        "C24.1",
+        "C64.1",
+        "C33.1"
+      ],
+      "has_plane": true,
+      "lands": [
+        {
+          "area_max_mm2": 1.8669,
+          "area_min_mm2": 1.52,
+          "growth": 1.228,
+          "island": [
+            "C26.2"
+          ],
+          "pad": "C26.2",
+          "rungs": [
+            {
+              "area_mm2": 1.52,
+              "cells": 152,
+              "escapes": 8,
+              "grid_nm": 100000,
+              "layer": "B",
+              "seconds": 0.4,
+              "via_legal_in_pocket": 0
+            },
+            {
+              "area_mm2": 1.7425,
+              "cells": 697,
+              "escapes": 6,
+              "grid_nm": 50000,
+              "layer": "B",
+              "seconds": 2.8,
+              "via_legal_in_pocket": 0
+            },
+            {
+              "area_mm2": 1.8669,
+              "cells": 2987,
+              "escapes": 4,
+              "grid_nm": 25000,
+              "layer": "B",
+              "seconds": 20.9,
+              "via_legal_in_pocket": 0
+            }
+          ],
+          "verdict": "SEALED"
+        },
+        {
+          "area_max_mm2": 2.0288,
+          "area_min_mm2": 1.66,
+          "growth": 1.222,
+          "island": [
+            "C27.1"
+          ],
+          "pad": "C27.1",
+          "rungs": [
+            {
+              "area_mm2": 1.66,
+              "cells": 166,
+              "escapes": 6,
+              "grid_nm": 100000,
+              "layer": "B",
+              "seconds": 0.4,
+              "via_legal_in_pocket": 0
+            },
+            {
+              "area_mm2": 1.9275,
+              "cells": 771,
+              "escapes": 5,
+              "grid_nm": 50000,
+              "layer": "B",
+              "seconds": 2.5,
+              "via_legal_in_pocket": 0
+            },
+            {
+              "area_mm2": 2.0288,
+              "cells": 3246,
+              "escapes": 4,
+              "grid_nm": 25000,
+              "layer": "B",
+              "seconds": 21.4,
+              "via_legal_in_pocket": 0
+            }
+          ],
+          "verdict": "SEALED"
+        },
+        {
+          "area_max_mm2": 1.9838,
+          "area_min_mm2": 1.7,
+          "growth": 1.167,
+          "island": [
+            "SW9.2",
+            "U12.1",
+            "C28.1"
+          ],
+          "pad": "C28.1",
+          "rungs": [
+            {
+              "area_mm2": 1.7,
+              "cells": 170,
+              "escapes": 7,
+              "grid_nm": 100000,
+              "layer": "B",
+              "seconds": 0.3,
+              "via_legal_in_pocket": 0
+            },
+            {
+              "area_mm2": 1.8725,
+              "cells": 749,
+              "escapes": 4,
+              "grid_nm": 50000,
+              "layer": "B",
+              "seconds": 1.9,
+              "via_legal_in_pocket": 0
+            },
+            {
+              "area_mm2": 1.9838,
+              "cells": 3174,
+              "escapes": 2,
+              "grid_nm": 25000,
+              "layer": "B",
+              "seconds": 9.9,
+              "via_legal_in_pocket": 0
+            }
+          ],
+          "verdict": "SEALED"
+        },
+        {
+          "area_max_mm2": 4.8206,
+          "area_min_mm2": 4.29,
+          "growth": 1.124,
+          "island": [
+            "L4.1",
+            "U21.3"
+          ],
+          "pad": "L4.1",
+          "rungs": [
+            {
+              "area_mm2": 4.29,
+              "cells": 429,
+              "escapes": 12,
+              "grid_nm": 100000,
+              "layer": "B",
+              "seconds": 1.0,
+              "via_legal_in_pocket": 0
+            },
+            {
+              "area_mm2": 4.6325,
+              "cells": 1853,
+              "escapes": 6,
+              "grid_nm": 50000,
+              "layer": "B",
+              "seconds": 4.9,
+              "via_legal_in_pocket": 0
+            },
+            {
+              "area_mm2": 4.8206,
+              "cells": 7713,
+              "escapes": 6,
+              "grid_nm": 25000,
+              "layer": "B",
+              "seconds": 52.6,
+              "via_legal_in_pocket": 0
+            }
+          ],
+          "verdict": "SEALED"
+        },
+        {
+          "area_max_mm2": 1.7131,
+          "area_min_mm2": 1.44,
+          "growth": 1.19,
+          "island": [
+            "R68.1"
+          ],
+          "pad": "R68.1",
+          "rungs": [
+            {
+              "area_mm2": 1.44,
+              "cells": 144,
+              "escapes": 6,
+              "grid_nm": 100000,
+              "layer": "F",
+              "seconds": 0.4,
+              "via_legal_in_pocket": 0
+            },
+            {
+              "area_mm2": 1.585,
+              "cells": 634,
+              "escapes": 4,
+              "grid_nm": 50000,
+              "layer": "F",
+              "seconds": 1.9,
+              "via_legal_in_pocket": 0
+            },
+            {
+              "area_mm2": 1.7131,
+              "cells": 2741,
+              "escapes": 2,
+              "grid_nm": 25000,
+              "layer": "F",
+              "seconds": 10.5,
+              "via_legal_in_pocket": 0
+            }
+          ],
+          "verdict": "SEALED"
+        },
+        {
+          "area_max_mm2": 9.7556,
+          "area_min_mm2": 8.08,
+          "growth": 1.207,
+          "island": [
+            "SW9.2",
+            "U12.1",
+            "C28.1"
+          ],
+          "pad": "SW9.2",
+          "rungs": [
+            {
+              "area_mm2": 8.08,
+              "cells": 808,
+              "escapes": 13,
+              "grid_nm": 100000,
+              "layer": "F",
+              "seconds": 1.2,
+              "via_legal_in_pocket": 136
+            },
+            {
+              "area_mm2": 9.315,
+              "cells": 3726,
+              "escapes": 7,
+              "grid_nm": 50000,
+              "layer": "F",
+              "seconds": 7.6,
+              "via_legal_in_pocket": 723
+            },
+            {
+              "area_mm2": 9.7556,
+              "cells": 15609,
+              "escapes": 5,
+              "grid_nm": 25000,
+              "layer": "F",
+              "seconds": 63.7,
+              "via_legal_in_pocket": 3158
+            }
+          ],
+          "verdict": "HAS_VIA_SITE"
+        },
+        {
+          "area_max_mm2": null,
+          "area_min_mm2": null,
+          "growth": null,
+          "island": [
+            "U11.1"
+          ],
+          "pad": "U11.1",
+          "rungs": [
+            {
+              "area_mm2": 0.0,
+              "cells": 0,
+              "escapes": 0,
+              "grid_nm": 100000,
+              "layer": null,
+              "seconds": 0.1,
+              "via_legal_in_pocket": 0
+            },
+            {
+              "area_mm2": 0.0,
+              "cells": 0,
+              "escapes": 0,
+              "grid_nm": 50000,
+              "layer": null,
+              "seconds": 0.1,
+              "via_legal_in_pocket": 0
+            },
+            {
+              "area_mm2": 0.0,
+              "cells": 0,
+              "escapes": 0,
+              "grid_nm": 25000,
+              "layer": null,
+              "seconds": 0.4,
+              "via_legal_in_pocket": 0
+            }
+          ],
+          "verdict": "NO_ESCAPE_AT_ANY_PITCH"
+        },
+        {
+          "area_max_mm2": null,
+          "area_min_mm2": null,
+          "growth": null,
+          "island": [
+            "SW9.2",
+            "U12.1",
+            "C28.1"
+          ],
+          "pad": "U12.1",
+          "rungs": [
+            {
+              "area_mm2": 0.0,
+              "cells": 0,
+              "escapes": 0,
+              "grid_nm": 100000,
+              "layer": null,
+              "seconds": 0.1,
+              "via_legal_in_pocket": 0
+            },
+            {
+              "area_mm2": 0.0,
+              "cells": 0,
+              "escapes": 0,
+              "grid_nm": 50000,
+              "layer": null,
+              "seconds": 0.1,
+              "via_legal_in_pocket": 0
+            },
+            {
+              "area_mm2": 0.0,
+              "cells": 0,
+              "escapes": 0,
+              "grid_nm": 25000,
+              "layer": null,
+              "seconds": 0.4,
+              "via_legal_in_pocket": 0
+            }
+          ],
+          "verdict": "NO_ESCAPE_AT_ANY_PITCH"
+        },
+        {
+          "area_max_mm2": null,
+          "area_min_mm2": null,
+          "growth": null,
+          "island": [
+            "U12.10",
+            "U12.11"
+          ],
+          "pad": "U12.10",
+          "rungs": [
+            {
+              "area_mm2": 0.0,
+              "cells": 0,
+              "escapes": 0,
+              "grid_nm": 100000,
+              "layer": null,
+              "seconds": 0.1,
+              "via_legal_in_pocket": 0
+            },
+            {
+              "area_mm2": 0.0,
+              "cells": 0,
+              "escapes": 0,
+              "grid_nm": 50000,
+              "layer": null,
+              "seconds": 0.1,
+              "via_legal_in_pocket": 0
+            },
+            {
+              "area_mm2": 0.0,
+              "cells": 0,
+              "escapes": 0,
+              "grid_nm": 25000,
+              "layer": null,
+              "seconds": 0.3,
+              "via_legal_in_pocket": 0
+            }
+          ],
+          "verdict": "NO_ESCAPE_AT_ANY_PITCH"
+        },
+        {
+          "area_max_mm2": null,
+          "area_min_mm2": null,
+          "growth": null,
+          "island": [
+            "U12.10",
+            "U12.11"
+          ],
+          "pad": "U12.11",
+          "rungs": [
+            {
+              "area_mm2": 0.0,
+              "cells": 0,
+              "escapes": 0,
+              "grid_nm": 100000,
+              "layer": null,
+              "seconds": 0.1,
+              "via_legal_in_pocket": 0
+            },
+            {
+              "area_mm2": 0.0,
+              "cells": 0,
+              "escapes": 0,
+              "grid_nm": 50000,
+              "layer": null,
+              "seconds": 0.1,
+              "via_legal_in_pocket": 0
+            },
+            {
+              "area_mm2": 0.0,
+              "cells": 0,
+              "escapes": 0,
+              "grid_nm": 25000,
+              "layer": null,
+              "seconds": 0.3,
+              "via_legal_in_pocket": 0
+            }
+          ],
+          "verdict": "NO_ESCAPE_AT_ANY_PITCH"
+        },
+        {
+          "area_max_mm2": null,
+          "area_min_mm2": null,
+          "growth": null,
+          "island": [
+            "U13.3"
+          ],
+          "pad": "U13.3",
+          "rungs": [
+            {
+              "area_mm2": 0.0,
+              "cells": 0,
+              "escapes": 0,
+              "grid_nm": 100000,
+              "layer": null,
+              "seconds": 0.1,
+              "via_legal_in_pocket": 0
+            },
+            {
+              "area_mm2": 0.0,
+              "cells": 0,
+              "escapes": 0,
+              "grid_nm": 50000,
+              "layer": null,
+              "seconds": 0.1,
+              "via_legal_in_pocket": 0
+            },
+            {
+              "area_mm2": 0.0,
+              "cells": 0,
+              "escapes": 0,
+              "grid_nm": 25000,
+              "layer": null,
+              "seconds": 0.2,
+              "via_legal_in_pocket": 0
+            }
+          ],
+          "verdict": "NO_ESCAPE_AT_ANY_PITCH"
+        },
+        {
+          "area_max_mm2": null,
+          "area_min_mm2": null,
+          "growth": null,
+          "island": [
+            "L4.1",
+            "U21.3"
+          ],
+          "pad": "U21.3",
+          "rungs": [
+            {
+              "area_mm2": 0.0,
+              "cells": 0,
+              "escapes": 0,
+              "grid_nm": 100000,
+              "layer": null,
+              "seconds": 0.1,
+              "via_legal_in_pocket": 0
+            },
+            {
+              "area_mm2": 0.0,
+              "cells": 0,
+              "escapes": 0,
+              "grid_nm": 50000,
+              "layer": null,
+              "seconds": 0.1,
+              "via_legal_in_pocket": 0
+            },
+            {
+              "area_mm2": 0.0,
+              "cells": 0,
+              "escapes": 0,
+              "grid_nm": 25000,
+              "layer": null,
+              "seconds": 0.3,
+              "via_legal_in_pocket": 0
+            }
+          ],
+          "verdict": "NO_ESCAPE_AT_ANY_PITCH"
+        }
+      ],
+      "net": "/01_POWER_TREE/BQ25185_SYS",
+      "netclass": "SYS_MAIN"
+    },
+    {
+      "body": [
+        "U1.38",
+        "R20.2",
+        "J1.44",
+        "U2.22",
+        "U4.13",
+        "U3.22"
+      ],
+      "has_plane": false,
+      "lands": [
+        {
+          "area_max_mm2": 4.9869,
+          "area_min_mm2": 4.08,
+          "growth": 1.222,
+          "island": [
+            "TP5.1"
+          ],
+          "pad": "TP5.1",
+          "rungs": [
+            {
+              "area_mm2": 4.08,
+              "cells": 408,
+              "escapes": 11,
+              "grid_nm": 100000,
+              "layer": "F",
+              "seconds": 0.8,
+              "via_legal_in_pocket": 47
+            },
+            {
+              "area_mm2": 4.7225,
+              "cells": 1889,
+              "escapes": 6,
+              "grid_nm": 50000,
+              "layer": "F",
+              "seconds": 4.2,
+              "via_legal_in_pocket": 260
+            },
+            {
+              "area_mm2": 4.9869,
+              "cells": 7979,
+              "escapes": 5,
+              "grid_nm": 25000,
+              "layer": "F",
+              "seconds": 40.1,
+              "via_legal_in_pocket": 1189
+            }
+          ],
+          "verdict": "HAS_VIA_SITE"
+        },
+        {
+          "area_max_mm2": 0.04,
+          "area_min_mm2": 0.005,
+          "growth": 8.0,
+          "island": [
+            "U14.7"
+          ],
+          "pad": "U14.7",
+          "rungs": [
+            {
+              "area_mm2": 0.0,
+              "cells": 0,
+              "escapes": 0,
+              "grid_nm": 100000,
+              "layer": null,
+              "seconds": 0.1,
+              "via_legal_in_pocket": 0
+            },
+            {
+              "area_mm2": 0.005,
+              "cells": 2,
+              "escapes": 1,
+              "grid_nm": 50000,
+              "layer": "B",
+              "seconds": 0.1,
+              "via_legal_in_pocket": 0
+            },
+            {
+              "area_mm2": 0.04,
+              "cells": 64,
+              "escapes": 1,
+              "grid_nm": 25000,
+              "layer": "B",
+              "seconds": 1.9,
+              "via_legal_in_pocket": 0
+            }
+          ],
+          "verdict": "RASTER"
+        },
+        {
+          "area_max_mm2": 0.2875,
+          "area_min_mm2": 0.15,
+          "growth": 1.917,
+          "island": [
+            "U16.3"
+          ],
+          "pad": "U16.3",
+          "rungs": [
+            {
+              "area_mm2": 0.15,
+              "cells": 15,
+              "escapes": 1,
+              "grid_nm": 100000,
+              "layer": "B",
+              "seconds": 0.1,
+              "via_legal_in_pocket": 0
+            },
+            {
+              "area_mm2": 0.165,
+              "cells": 66,
+              "escapes": 2,
+              "grid_nm": 50000,
+              "layer": "B",
+              "seconds": 0.8,
+              "via_legal_in_pocket": 0
+            },
+            {
+              "area_mm2": 0.2875,
+              "cells": 460,
+              "escapes": 2,
+              "grid_nm": 25000,
+              "layer": "B",
+              "seconds": 9.2,
+              "via_legal_in_pocket": 0
+            }
+          ],
+          "verdict": "SEALED"
+        }
+      ],
+      "net": "/I2C_SCL_INT",
+      "netclass": "I2C"
+    },
+    {
+      "body": [
+        "C56.1",
+        "C3.1",
+        "R113.1",
+        "R3.2",
+        "U1.2",
+        "R1.2",
+        "R26.1",
+        "C8.1",
+        "C15.1",
+        "C10.1",
+        "R28.1",
+        "R2.1",
+        "R29.1",
+        "D13.1",
+        "U5.7",
+        "U5.8",
+        "R20.1",
+        "C9.1",
+        "J1.7",
+        "J1.8",
+        "J1.9",
+        "J1.35",
+        "J1.40",
+        "J1.41",
+        "J1.42",
+        "R27.1",
+        "R24.2",
+        "R19.1",
+        "R25.1",
+        "J2.4",
+        "C13.1",
+        "C12.2",
+        "R21.1",
+        "C2.1",
+        "C14.1",
+        "R123.2",
+        "C18.1",
+        "MK1.3",
+        "U9.1",
+        "C6.1",
+        "L3.1",
+        "R119.1",
+        "R106.1",
+        "R5.1",
+        "C32.1",
+        "U2.24",
+        "C17.1",
+        "C29.1",
+        "C62.1",
+        "C31.1",
+        "R127.1",
+        "U7.9",
+        "R6.1",
+        "U12.4",
+        "U12.5",
+        "R103.1",
+        "C5.1",
+        "C7.1",
+        "R8.1",
+        "R41.1",
+        "R81.1",
+        "U20.2",
+        "C16.1",
+        "R9.1",
+        "U8.9",
+        "R4.1",
+        "R129.1",
+        "U4.2",
+        "U4.3",
+        "U4.8",
+        "U4.12",
+        "C43.1",
+        "R128.1",
+        "R7.1",
+        "C4.1",
+        "C30.1",
+        "U17.5",
+        "U3.21",
+        "U3.24"
+      ],
+      "has_plane": true,
+      "lands": [
+        {
+          "area_max_mm2": 0.8344,
+          "area_min_mm2": 0.64,
+          "growth": 1.304,
+          "island": [
+            "R39.1"
+          ],
+          "pad": "R39.1",
+          "rungs": [
+            {
+              "area_mm2": 0.64,
+              "cells": 64,
+              "escapes": 4,
+              "grid_nm": 100000,
+              "layer": "B",
+              "seconds": 0.3,
+              "via_legal_in_pocket": 0
+            },
+            {
+              "area_mm2": 0.75,
+              "cells": 300,
+              "escapes": 3,
+              "grid_nm": 50000,
+              "layer": "B",
+              "seconds": 1.1,
+              "via_legal_in_pocket": 0
+            },
+            {
+              "area_mm2": 0.8344,
+              "cells": 1335,
+              "escapes": 3,
+              "grid_nm": 25000,
+              "layer": "B",
+              "seconds": 12.1,
+              "via_legal_in_pocket": 0
+            }
+          ],
+          "verdict": "SEALED"
+        },
+        {
+          "area_max_mm2": null,
+          "area_min_mm2": null,
+          "growth": null,
+          "island": [
+            "U4.5"
+          ],
+          "pad": "U4.5",
+          "rungs": [
+            {
+              "area_mm2": 0.0,
+              "cells": 0,
+              "escapes": 0,
+              "grid_nm": 100000,
+              "layer": null,
+              "seconds": 0.1,
+              "via_legal_in_pocket": 0
+            },
+            {
+              "area_mm2": 0.0,
+              "cells": 0,
+              "escapes": 0,
+              "grid_nm": 50000,
+              "layer": null,
+              "seconds": 0.1,
+              "via_legal_in_pocket": 0
+            },
+            {
+              "area_mm2": 0.0,
+              "cells": 0,
+              "escapes": 0,
+              "grid_nm": 25000,
+              "layer": null,
+              "seconds": 0.2,
+              "via_legal_in_pocket": 0
+            }
+          ],
+          "verdict": "NO_ESCAPE_AT_ANY_PITCH"
+        },
+        {
+          "area_max_mm2": null,
+          "area_min_mm2": null,
+          "growth": null,
+          "island": [
+            "U5.2"
+          ],
+          "pad": "U5.2",
+          "rungs": [
+            {
+              "area_mm2": 0.0,
+              "cells": 0,
+              "escapes": 0,
+              "grid_nm": 100000,
+              "layer": null,
+              "seconds": 0.0,
+              "via_legal_in_pocket": 0
+            },
+            {
+              "area_mm2": 0.0,
+              "cells": 0,
+              "escapes": 0,
+              "grid_nm": 50000,
+              "layer": null,
+              "seconds": 0.1,
+              "via_legal_in_pocket": 0
+            },
+            {
+              "area_mm2": 0.0,
+              "cells": 0,
+              "escapes": 0,
+              "grid_nm": 25000,
+              "layer": null,
+              "seconds": 0.3,
+              "via_legal_in_pocket": 0
+            }
+          ],
+          "verdict": "NO_ESCAPE_AT_ANY_PITCH"
+        }
+      ],
+      "net": "+3V3",
+      "netclass": "P3V3"
+    },
+    {
+      "body": [
+        "C56.2",
+        "J5.2",
+        "J5.6",
+        "J5.19",
+        "J5.23",
+        "C82.2",
+        "C3.2",
+        "R15.2",
+        "D4.2",
+        "U1.1",
+        "U1.40",
+        "U1.41",
+        "SW1.2",
+        "C20.2",
+        "J3.A1",
+        "J3.B12",
+        "SW5.2",
+        "C8.2",
+        "C15.2",
+        "C10.2",
+        "R30.2",
+        "J8.1",
+        "R111.2",
+        "SW4.2",
+        "C11.2",
+        "U5.3",
+        "U5.11",
+        "U5.15",
+        "U5.17",
+        "R12.2",
+        "Q1.2",
+        "C67.2",
+        "R31.2",
+        "C9.2",
+        "J1.11",
+        "J1.12",
+        "J1.13",
+        "J1.14",
+        "J1.15",
+        "J1.16",
+        "J1.17",
+        "J1.18",
+        "J1.19",
+        "J1.20",
+        "J1.21",
+        "J1.22",
+        "J1.23",
+        "J1.24",
+        "J1.25",
+        "J1.26",
+        "J1.27",
+        "J1.28",
+        "J1.29",
+        "J1.30",
+        "J1.31",
+        "J1.32",
+        "J1.43",
+        "J1.48",
+        "J1.49",
+        "J1.50",
+        "C81.2",
+        "U6.2",
+        "D5.2",
+        "R23.2",
+        "R108.2",
+        "D2.2",
+        "R110.2",
+        "SW6.2",
+        "J2.6",
+        "J2.9",
+        "J2.11",
+        "SW7.2",
+        "C13.2",
+        "C1.1",
+        "SW3.2",
+        "C12.1",
+        "R16.2",
+        "R120.2",
+        "U10.2",
+        "C2.2",
+        "R32.2",
+        "SW2.2",
+        "C14.2",
+        "R78.2",
+        "C18.2",
+        "C35.2",
+        "MK1.1",
+        "MK1.2",
+        "R102.2",
+        "U9.6",
+        "U9.12",
+        "U9.16",
+        "U9.20",
+        "U9.21",
+        "U9.26",
+        "U9.33",
+        "C57.2",
+        "C6.2",
+        "C34.1",
+        "R13.2",
+        "C65.2",
+        "R88.2",
+        "C61.2",
+        "C36.2",
+        "R37.2",
+        "C50.2",
+        "R90.2",
+        "C52.2",
+        "C47.2",
+        "C27.2",
+        "R36.2",
+        "C32.2",
+        "C21.2",
+        "C48.2",
+        "R100.2",
+        "U2.2",
+        "U2.3",
+        "U2.12",
+        "U2.21",
+        "C17.2",
+        "U22.3",
+        "Q9.2",
+        "Q8.2",
+        "C29.2",
+        "R45.2",
+        "C54.2",
+        "C24.2",
+        "R105.2",
+        "C74.2",
+        "C62.2",
+        "C31.2",
+        "C38.2",
+        "U7.1",
+        "U7.2",
+        "U7.3",
+        "U7.4",
+        "U7.5",
+        "U7.11",
+        "U7.12",
+        "U7.20",
+        "U7.22",
+        "C76.2",
+        "C80.2",
+        "R83.2",
+        "Q4.2",
+        "U19.4",
+        "U12.2",
+        "U12.15",
+        "R118.2",
+        "U14.1",
+        "U14.4",
+        "U14.9",
+        "C49.2",
+        "C5.2",
+        "C69.2",
+        "C7.2",
+        "C66.2",
+        "C28.2",
+        "R131.2",
+        "C78.2",
+        "U11.4",
+        "U11.5",
+        "U11.11",
+        "R14.2",
+        "C45.2",
+        "C37.2",
+        "R92.2",
+        "U20.3",
+        "C16.2",
+        "C55.2",
+        "R42.1",
+        "D9.2",
+        "C53.2",
+        "C44.2",
+        "U21.4",
+        "C26.1",
+        "C51.2",
+        "J4.2",
+        "R101.2",
+        "C39.2",
+        "C23.1",
+        "C58.2",
+        "U8.1",
+        "U8.2",
+        "U8.3",
+        "U8.4",
+        "U8.5",
+        "U8.10",
+        "U8.11",
+        "U8.12",
+        "U8.20",
+        "U8.22",
+        "C59.2",
+        "R43.2",
+        "U13.4",
+        "C46.2",
+        "U16.4",
+        "C64.2",
+        "C68.2",
+        "C19.2",
+        "C73.2",
+        "C33.2",
+        "U4.6",
+        "U4.7",
+        "C25.2",
+        "C43.2",
+        "R38.2",
+        "C63.2",
+        "C79.2",
+        "C70.2",
+        "U18.4",
+        "U18.5",
+        "R97.2",
+        "R40.2",
+        "R98.2",
+        "C4.2",
+        "Y1.2",
+        "Y1.4",
+        "R17.2",
+        "C30.2",
+        "R74.2",
+        "U17.2",
+        "R69.2",
+        "R82.2",
+        "C60.2",
+        "C22.2",
+        "U3.2",
+        "U3.3",
+        "U3.12",
+        "U1.41",
+        "U1.41",
+        "U1.41",
+        "U1.41",
+        "U1.41",
+        "U1.41",
+        "U1.41",
+        "U1.41",
+        "U1.41",
+        "U1.41",
+        "U1.41",
+        "U1.41",
+        "SW1.2",
+        "SW5.2",
+        "SW4.2",
+        "SW6.2",
+        "J2.9",
+        "J2.9",
+        "J2.9",
+        "SW7.2",
+        "SW3.2",
+        "SW2.2"
+      ],
+      "has_plane": true,
+      "lands": [
+        {
+          "area_max_mm2": 0.3906,
+          "area_min_mm2": 0.19,
+          "growth": 2.056,
+          "island": [
+            "J3.A12",
+            "J3.B1"
+          ],
+          "pad": "J3.A12",
+          "rungs": [
+            {
+              "area_mm2": 0.19,
+              "cells": 19,
+              "escapes": 1,
+              "grid_nm": 100000,
+              "layer": "F",
+              "seconds": 0.0,
+              "via_legal_in_pocket": 0
+            },
+            {
+              "area_mm2": 0.3225,
+              "cells": 129,
+              "escapes": 2,
+              "grid_nm": 50000,
+              "layer": "F",
+              "seconds": 0.4,
+              "via_legal_in_pocket": 0
+            },
+            {
+              "area_mm2": 0.3906,
+              "cells": 625,
+              "escapes": 2,
+              "grid_nm": 25000,
+              "layer": "F",
+              "seconds": 5.4,
+              "via_legal_in_pocket": 0
+            }
+          ],
+          "verdict": "RASTER"
+        },
+        {
+          "area_max_mm2": 0.3906,
+          "area_min_mm2": 0.19,
+          "growth": 2.056,
+          "island": [
+            "J3.A12",
+            "J3.B1"
+          ],
+          "pad": "J3.B1",
+          "rungs": [
+            {
+              "area_mm2": 0.19,
+              "cells": 19,
+              "escapes": 1,
+              "grid_nm": 100000,
+              "layer": "F",
+              "seconds": 0.0,
+              "via_legal_in_pocket": 0
+            },
+            {
+              "area_mm2": 0.3225,
+              "cells": 129,
+              "escapes": 2,
+              "grid_nm": 50000,
+              "layer": "F",
+              "seconds": 0.4,
+              "via_legal_in_pocket": 0
+            },
+            {
+              "area_mm2": 0.3906,
+              "cells": 625,
+              "escapes": 2,
+              "grid_nm": 25000,
+              "layer": "F",
+              "seconds": 5.3,
+              "via_legal_in_pocket": 0
+            }
+          ],
+          "verdict": "RASTER"
+        },
+        {
+          "area_max_mm2": null,
+          "area_min_mm2": null,
+          "growth": null,
+          "island": [
+            "MK1.4"
+          ],
+          "pad": "MK1.4",
+          "rungs": [
+            {
+              "area_mm2": 0.0,
+              "cells": 0,
+              "escapes": 0,
+              "grid_nm": 100000,
+              "layer": null,
+              "seconds": 0.0,
+              "via_legal_in_pocket": 0
+            },
+            {
+              "area_mm2": 0.0,
+              "cells": 0,
+              "escapes": 0,
+              "grid_nm": 50000,
+              "layer": null,
+              "seconds": 0.0,
+              "via_legal_in_pocket": 0
+            },
+            {
+              "area_mm2": 0.0,
+              "cells": 0,
+              "escapes": 0,
+              "grid_nm": 25000,
+              "layer": null,
+              "seconds": 0.1,
+              "via_legal_in_pocket": 0
+            }
+          ],
+          "verdict": "NO_ESCAPE_AT_ANY_PITCH"
+        }
+      ],
+      "net": "GND",
+      "netclass": "GND"
+    }
+  ],
+  "pitches": [
+    100000,
+    50000,
+    25000
+  ],
+  "question": "for every land whose escape opens into a free pocket, does that pocket keep its AREA as the lattice refines -- a real seal -- or grow, which would make it a rasterisation artifact a finer pitch can open",
+  "schema": 1,
+  "stitch_via": null
+}
