@@ -1,3 +1,213 @@
+# D-674 · 2026-09-09 · Demo — A SCREEN WAS STILL ENFORCING A RULE ITS OWN CONTRACT RETIRED THIRTY-FIVE DECISIONS AGO, AND THE TRANSACTION THIS REPOSITORY CALLED "ONE FLAG FROM PROMOTABLE" CANNOT BE DRAWN AT ALL
+
+    authority  c3286d8fdd23b6bdb037de2a753051b3ac2aa2e5ccaba2e25ced3d39cf4884b2  UNCHANGED
+    retained open edges 27 -> 27      open retained nets 15 -> 15
+    connected retained nets 158       raw board ratsnest 43
+    `hardware/beta-v2` and `hardware/demo/kicad` UNTOUCHED.
+
+**NO COPPER PROMOTED — FRAMEWORK + CHARACTERISATION.**  One new tracked
+read-only screen and one add-only flag on an existing read-only screen; no
+promoting instrument touched.  Standing suite **14/14 RAN, 14/14 PASS, 14/14
+COMPARED, ALL IDENTICAL to `d673`, `vacuous` false**
+(`evidence/d674-contract-regression.json`); baselines emitted for D-675.
+`protected_copper.py` unchanged.
+
+## 1. D-673's NEXT ITEM 1 IS SPENT, AND IT IS A REFUTATION
+
+D-673 closed with *"`C27.1` IS ONE FLAG AND ONE `guard_free` FROM PROMOTABLE —
+re-run §5's spec with `--detour-own-layer` and author the reserve with
+`Field(guard_free=)` lifting the eight detour terminals instead of thinning the
+lane around them.  Both levers exist, neither has been spent."*  Both were spent
+here (`evidence/d674-c27-transaction-refutation.json`,
+`d674-c27-full-lane-{spec,run}.json`).
+
+**NEITHER LEVER WAS WHAT D-673 THOUGHT IT WAS.**
+
+  * **`--detour-own-layer` is VACUOUS on this spec.**  It licenses a DETOUR to
+    be re-laid on a reserved inner plane it already occupies.  The dangling
+    `In3.Cu` stub D-673 named is not a detour — it is the copper the removed
+    BARREL used to bond — and no entry in the spec names it.  The run reports
+    `own_layer_requested: true`, `own_layer_spent: []`, and `rebond_priced`
+    refuses exactly as before on `REMOVED_NET_OPEN_EDGES_GREW`.
+  * **`Field(guard_free=)` was never unspent.**  D-667's `terminal_lift` has
+    been wired into every `--detour-spec` relay since D-667
+    (`route_maze_batch.py` ~line 2214); D-673's own run used it.  It is not the
+    repair — **it is the mechanism that makes the lane vacuous.**
+
+**THE FULL LANE, AUTHORED EXACTLY AS PRESCRIBED, REFUSES HARDER.**  All 26
+subsampled stations of `screen_pour_arm_path.py`'s traced arm inside the pocket,
+un-thinned: **the two `ISET` relays come back `NO_PATH`** at 0.200 mm inside
+their own 4.078 / 3.723 mm budgets, and the five short straps that DO relay come
+back **on their original geometry to the micron** — `mm == was_mm` at 1.200,
+0.800, 0.600, 0.212 and 0.100 mm.  `nets_regressed: [ILIM_VSET, ISET]`,
+`nets_improved: []`, 27 -> 29.
+
+## 2. WHY, IN ARITHMETIC — AND A SCREEN THAT SAYS IT IN MILLISECONDS
+
+D-667 lifts the reservation off a relay's own two ends, because a lane that
+forbids them forbids the only two cells the relay may finish on.  The lift is
+the guard's own reach, `keepout + width/2 + G`.  So a straight relay of length
+`L` with both ends inside the lane has
+
+    bindable = max(0, L - 2 * (keepout + width/2 + G))
+
+millimetres of itself the lane can displace, and at this board's usual figures
+(0.300 / 0.200 / 0.050) the threshold is **0.900 mm**.
+
+New tracked **`screen_relay_bindability.py`** — spec in, no board loaded,
+milliseconds (`evidence/d674-relay-bindability-c27.json`):
+
+    /01_POWER_TREE/ISET       2.1932 mm   bindable 1.7432   BINDABLE
+    /01_POWER_TREE/ISET       1.8385 mm   bindable 1.3885   BINDABLE
+    Net-(U11-TS_MR)           1.2000 mm   bindable 0.7500   BINDABLE
+    /01_POWER_TREE/ILIM_VSET  0.8000 mm   bindable 0.0000   VACUOUS_TERMINAL_LIFT
+    Net-(U11-TS_MR)           0.6000 mm   bindable 0.0000   VACUOUS_TERMINAL_LIFT
+    /01_POWER_TREE/ILIM_VSET  0.2121 mm   bindable 0.0000   VACUOUS_TERMINAL_LIFT
+    Net-(U11-TS_MR)           0.1000 mm   bindable 0.0000   VACUOUS_TERMINAL_LIFT
+    /01_POWER_TREE/ILIM_VSET  barrel                        BARREL_NOT_RELAID
+
+**FOUR OF THE EIGHT OBJECTS LIE ENTIRELY INSIDE THEIR OWN TWO TERMINAL LIFTS.**
+No lane can move them, however it is drawn.  D-663 emitted this spec and called
+it *"the next transaction"*; D-673 ran it nine decisions later; D-674 ran it
+again.  **Both answers were available from the spec alone, for free.**
+
+## 3. AND THE CUT IS IRREDUCIBLE, SO THE VACUITY IS FATAL
+
+Each subset cut off the authority with KiCad's own filler and measured with
+`routing_ledger.py`:
+
+    subset                       SYS open edges   C27.1's group
+    the 3 long objects  (S3)           6          {C27.1}          NOT FREED
+    the 5 short straps  (S5)           6          {C27.1}          NOT FREED
+    all 8               (SALL)         5          {C27.1, C28.1, SW9.2, U12.1}
+
+**ALL EIGHT ARE LOAD-BEARING.**  The transaction needs four objects out of the
+corridor that no reservation can move, and a lane strong enough to move the
+other two refuses them outright.  **`C27.1 = U12.1` IS NOT REACHABLE THROUGH
+`--detour-spec`.**  Its lever is a PLACEMENT or a re-terminated strap.
+
+Read with D-673 §3–4 (the `U11.1` half of the same net, whose west cut is
+`NO_PATH` on `USB_VBUS_CHG`), `/01_POWER_TREE/BQ25185_SYS` — six of the board's
+27 open edges — is **PARKED** under CODEX_AUTONOMY_POLICY's routing-wall
+iteration budget: D-670, D-671, D-672 and D-673 promoted nothing on it, and
+D-672 §5 already named the real lever, *"a refloorplan of the `U12`/`U13`/`U21`
+converter cluster, not a routing problem."*
+
+## 4. THE PIVOT — AND A SCREEN ENFORCING A RETIRED RULE
+
+`+3V3` carries 3 of the 27 open edges.  One of its three orphans, `R39.1`, is
+**the TOP LEG OF THE 3.3 V REGULATOR'S FEEDBACK DIVIDER** (`R39` = 1M 1%,
+`R39.1` = `+3V3`, `R39.2` = `/01_POWER_TREE/V3V3_FB`, fully routed) — the rail
+sense is not connected to the rail.  D-640 carries it as
+`+3V3 R39.1  NO_SINGLE_CUT (2-track set)  D-639: relay splits a GND pour`, and
+D-639 wrote *"`+3V3 R39.1` is therefore REFUSED, not open."*
+
+**THAT REFUSAL IS OLDER THAN THE PRIMITIVE THAT PRICES IT.**
+`screen_relay_transaction.py`'s last commit is `f8a906c` (D-639).  **D-643 —
+the very next decision — replaced the unconditional refusal of a `GND` split
+with a NUMBER**: a return fragment is priced against the 0.300 mm conductor the
+board publishes for its own ground (0.995 A at this copper), raised by
+Kirchhoff at the part.  The screen was never told, and for thirty-five
+decisions it has been striking out splits its own contract would have to PRICE.
+
+**THE FIX, AND IT ADDS NO SECOND COPY OF THE BAR.**
+`screen_relay_transaction.py --split-priced` (add-only, default OFF: with the
+flag off the search is D-639's to the object, and the artifact gains exactly
+three explicit keys — `split_priced` false, `split_price_work` null, and a null
+`split_price` on each round that laid a stitch — and nothing else, MEASURED and
+not asserted: the same run with the flag off is identical object for object,
+same three rounds, same 9.887 mm stitch, same relay, same refusal
+(`evidence/d674-r39-relay-flag-off-control.json`)): a round that splits a filled
+island writes its candidate board with its sidecars, refills it with KiCad's
+own filler, and puts it to **`checks/pour_partition_contract.py` itself** —
+`--pre-board` the authority, `--board` the candidate, the gate's own PP1–PP4.
+What comes back is the gate's answer, one clause early.
+
+## 5. WHAT THE NUMBER ACTUALLY IS
+
+`--land '+3V3:R39.1' --arm joint --grid 50000 --relay-own-layer --split-priced`
+(`evidence/d674-segment-evict-r39.json`, `d674-r39-relay-transaction.json`,
+`d674-r39-split-price{,-pp}.json`).  The cut is unchanged on the current
+authority: two whole `Net-(U11-TS_MR)` `B.Cu` tracks, 1.5033 + 2.832 mm.  Round
+1's relay is `NO_PATH`; **round 2 lays a 9.887 mm `B` stitch to a 0.65/0.40
+barrel at (70.65, 67.35) and relays `Net-(U11-TS_MR)` 4.3353 -> 17.378 mm, all
+relaid**; round 3 is `NO_BODY_VIA_SITE` — the site pool is exhausted.
+
+    PP1 PASS   PP2 FAIL   PP3 PASS   PP4 PASS
+
+**AND `PP2` FAILS BY 3.3%, NOT UNCONDITIONALLY.**  The `GND` `B.Cu` island
+loses a **21.889 mm2** east-margin strip holding exactly **`C27.2` and
+`C28.2`** — the ground ends of the `BQ25185`'s `SYS` decoupling caps:
+
+    bar          2.190 A   RETURN_NEIGHBOUR_RAIL -- C27.1 and C28.1 are
+                           BQ25185_SYS (SYS_MAIN); the GND floor is 0.995 A
+    bond         3.804 A   two 0.300 mm barrels into the plane, in parallel
+    fragment     2.117 A   bottleneck FRAGMENT_COPPER: 0.850 mm at C28.2
+                           (C27.2's own path prices 2.206 A)
+    margin_x     0.967     deficit 0.073 A
+
+**`C27.2` ALONE WOULD BE ADMITTED.**  2.206 A against the same 2.190 A bar.
+The whole refusal is `C28.2`'s 0.850 mm of pour, which needs about 0.885 mm.
+
+## 6. AND THE PITCH IS PROVED IRRELEVANT
+
+The obvious lever is a different transaction geometry, so the same run was made
+at **half the lattice** (`--grid 25000 --joint-tries 8`,
+`evidence/d674-r39-relay-transaction-g25.json`,
+`d674-r39-split-price-pp-g25.json`).  Different stitch (9.953 mm), different
+barrel (70.65, 67.45), different relay (17.304 mm), same three rounds, same
+`NO_BODY_VIA_SITE` third — **and the SAME fragment pads, the SAME 0.850 mm neck
+at `C28.2`, the SAME 2.117 A, `margin_x` 0.967 both times.**  The 0.073 A is the
+`GND` pour's OWN local geometry around `C28.2`, not the router's.
+
+`screen_pour_arm_path.py` on the candidate traces the severed strip: **21.450 mm
+from `C28.2` to `C27.2`, pinched to 0.250 mm at (71.297, 79.446) between two
+`/01_POWER_TREE/ISET` tracks** (`evidence/d674-r39-fragment-arm-path.json`) —
+the same net that owns three of the eight objects in §1's refuted cut.  **One
+net bounds both open items in this pocket.**
+
+## 7. NEXT, IN ORDER OF LEVERAGE
+
+1. **`+3V3 R39.1` IS RE-OPENED AS A PRICED LAND AND IT IS THE BOARD'S BEST
+   CANDIDATE.**  It is no longer *"refused because the relay splits a `GND`
+   pour"*; it is **0.073 A of `FRAGMENT_COPPER` at `C28.2`** on a 2.190 A
+   Kirchhoff bar, with the bond proven adequate at 3.804 A and the lattice
+   proven irrelevant.  Two named moves: **(a)** a transaction whose cut leaves
+   `C28.2` on the BODY side — `C27.2` alone is ADMITTED — which is a question
+   about where the 9.887 mm stitch runs down the east margin, so try
+   `--joint-knockout-mm` large enough to force a genuinely different pocket, a
+   `--guard` that holds the strip beside `C28.2`, or `--relay-slack-mm` to buy
+   a relay that does not cross it; **(b)** 0.035 mm of extra pour width at
+   `C28.2`, which `apply_part_shift.py` + `screen_fanout_channel.py --board`
+   can screen on a scratch project before any gate run.
+2. **RE-SWEEP EVERY OTHER `pour_severs` REFUSAL WITH `--split-priced`.**  D-640
+   recorded FOUR lands and the `SEGMENT_WALL` class beside them; every one of
+   those verdicts was taken under the rule D-643 retired.  `+3V3 U4.5` and
+   `+3V3 U5.2` are `PACKAGE_PITCH_WALL`/`LICENCE_ONLY_UNPRICED` (D-672 §2) and
+   are NOT in this class, but `GND J3.A12/B1` and `BQ25185_SYS C26.2` are.
+3. **`/01_POWER_TREE/BQ25185_SYS` IS PARKED**, not solved (§3).  Revisit only
+   on a materially changed geometry, a converter-cluster refloorplan, or if it
+   becomes the immediate critical path with a new lever.
+4. **RUN `screen_relay_bindability.py` BEFORE ANY `--detour-spec` GATE RUN.**
+   Every spec this repository has ever written can be checked for free.
+5. `/I2C_SCL_INT`'s `U14.7 <-> J1.44` remains the one OPEN OWNER DECISION,
+   RECORDED NOT TAKEN.  `U9.14` `/NFC_VDD_RF`, `U11.9`'s 0.150 mm DRU grant,
+   `U11.3`'s D-269 safety conflict, `MK1.4`'s mechanical bound and
+   `/I2S_LRCLK`'s edge-rate DATA gap are all unchanged.
+6. `hardware/demo/fab` is **FRESH at `c3286d8f`** and this decision promotes
+   nothing that stales it.
+
+Evidence, all under `hardware/demo/manufacturing/evidence/`:
+`d674-c27-transaction-refutation.json`, `d674-c27-full-lane-spec.json`,
+`d674-c27-full-lane-run.json`, `d674-relay-bindability-c27.json`,
+`d674-segment-evict-r39.json`, `d674-r39-relay-transaction.json`,
+`d674-r39-relay-transaction-g25.json`, `d674-r39-split-priced.json`,
+`d674-r39-split-price-pp.json`, `d674-r39-split-price-pp-g25.json`,
+`d674-r39-fragment-arm-path.json`, `d674-r39-relay-flag-off-control.json`,
+`d674-routing-ledger.json`,
+`d674-protected-copper.json`, `d674-contract-regression.json` (+ the 14 emitted
+`d674-*-contract.json` baselines).
+
 # D-673 · 2026-09-09 · Demo — THE CUT THAT FREES THE CHARGER'S OUTPUT IS ITS OWN ESCAPE, AND THE NEXT TRANSACTION THIS REPOSITORY NAMED NINE DECISIONS AGO REFUSES ON TWO CLAUSES
 
     authority  c3286d8fdd23b6bdb037de2a753051b3ac2aa2e5ccaba2e25ced3d39cf4884b2  UNCHANGED

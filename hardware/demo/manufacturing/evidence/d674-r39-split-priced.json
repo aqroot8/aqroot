@@ -1,0 +1,267 @@
+{
+ "authoritative_unchanged": true,
+ "board_sha256": "c3286d8fdd23b6bdb037de2a753051b3ac2aa2e5ccaba2e25ced3d39cf4884b2",
+ "candidate_sha256": "750fce60dd133e3bb4176f9956efca1cc642492270ede1c2a0429bac8223fca0",
+ "contract_report": "d674-r39-split-price-pp.json",
+ "land": "+3V3 R39.1",
+ "next": "+3V3 R39.1 is RE-OPENED as a PRICED land and its deficit is now a board geometry question with a coordinate: 0.073 A of FRAGMENT_COPPER at C28.2 (0.850 mm, needs ~0.885 mm) on a 2.190 A Kirchhoff bar raised by C27.1 and C28.1 being BQ25185_SYS.  The bond is proven adequate at 3.804 A and the pitch is proven irrelevant.  The named levers are (a) a transaction that leaves C28.2 on the BODY side of the cut -- C27.2 ALONE prices 2.206 A and would be ADMITTED -- or (b) 0.035 mm of extra pour width at C28.2.",
+ "schema": 1,
+ "the_fragment_traced": {
+  "board": "the g50 candidate, w/d674/splitprice/split-+3V3-R39.1-2.kicad_pcb",
+  "bound_by": [
+   {
+    "kind": "track",
+    "land": null,
+    "mm": 0.5242,
+    "net": "/01_POWER_TREE/ISET"
+   },
+   {
+    "kind": "track",
+    "land": null,
+    "mm": 0.0765,
+    "net": "/01_POWER_TREE/ISET"
+   }
+  ],
+  "path_mm": 21.45,
+  "pinch_at": [
+   71.2971,
+   79.4456
+  ],
+  "pinch_mm": 0.25,
+  "reading": "the severed east strip runs 21.450 mm from C28.2 to C27.2 and is pinched to 0.250 mm at (71.297, 79.446) between two /01_POWER_TREE/ISET tracks -- the SAME net whose two segments are three of the eight objects in the C27.1 cut refuted in d674-c27-transaction-refutation.json.  One net bounds both open items in this pocket.",
+  "tool": "screen_pour_arm_path.py (D-673)",
+  "verdict": "ONE_ISLAND"
+ },
+ "the_framework_fix": {
+  "default": "OFF -- and MEASURED, not asserted: the same run with the flag off (d674-r39-relay-flag-off-control.json) is IDENTICAL to the priced one object for object once the new keys are removed -- same three rounds, same 9.887 mm stitch, same barrel, same 17.378 mm relay, same refusal.  The artifact gains exactly `split_priced` false, `split_price_work` null, and a null `split_price` on each round that laid a stitch, and nothing else",
+  "file": "screen_relay_transaction.py",
+  "flag": "--split-priced (+ --split-price-work)",
+  "mechanism": "the round's candidate board is written out with its sidecars, refilled by KiCad's own filler, and put to checks/pour_partition_contract.py against this base board.  The answer is the GATE'S OWN CLAUSE, not a second copy of the bar -- there is nothing to drift."
+ },
+ "the_measurement": {
+  "body_via_sites": "exhausted at 3 rounds -- round 3 is NO_BODY_VIA_SITE",
+  "cmd": "screen_relay_transaction.py --evidence d674-segment-evict-r39.json --land '+3V3:R39.1' --arm joint --grid 50000 --relay-own-layer --joint-tries 6 --split-priced",
+  "cut": [
+   {
+    "a_mm": [
+     66.5,
+     71.6
+    ],
+    "b_mm": [
+     66.6,
+     73.1
+    ],
+    "layer": "B",
+    "mm": 1.5033,
+    "net": "Net-(U11-TS_MR)"
+   },
+   {
+    "a_mm": [
+     66.6,
+     73.1
+    ],
+    "b_mm": [
+     68.5,
+     75.2
+    ],
+    "layer": "B",
+    "mm": 2.832,
+    "net": "Net-(U11-TS_MR)"
+   }
+  ],
+  "rounds": [
+   {
+    "accepted": false,
+    "all_relaid": false,
+    "reason": null,
+    "relays": [
+     {
+      "mm": null,
+      "net": "Net-(U11-TS_MR)",
+      "ok": false,
+      "reason": "NO_PATH",
+      "vias": null,
+      "was_mm": 4.3353
+     }
+    ],
+    "round": 1,
+    "stitch_mm": 9.128,
+    "stitch_ok": true,
+    "via_xy": [
+     71.1,
+     68.25
+    ]
+   },
+   {
+    "accepted": false,
+    "all_relaid": true,
+    "reason": null,
+    "relays": [
+     {
+      "mm": 17.378209340985684,
+      "net": "Net-(U11-TS_MR)",
+      "ok": true,
+      "reason": null,
+      "vias": 0,
+      "was_mm": 4.3353
+     }
+    ],
+    "round": 2,
+    "stitch_mm": 9.887,
+    "stitch_ok": true,
+    "via_xy": [
+     70.65,
+     67.35
+    ]
+   },
+   {
+    "accepted": null,
+    "all_relaid": null,
+    "reason": "NO_BODY_VIA_SITE",
+    "relays": null,
+    "round": 3,
+    "stitch_mm": null,
+    "stitch_ok": false,
+    "via_xy": null
+   }
+  ]
+ },
+ "the_pitch_is_not_the_lever": {
+  "cmd": "the same run at --grid 25000 --joint-tries 8",
+  "g25": {
+   "fragment_mm2": 21.853,
+   "internal_min_width_mm": 0.85,
+   "priced_amps": 2.117,
+   "relay_mm": 17.3041,
+   "rounds": 3,
+   "stitch_mm": 9.953,
+   "third_round": "NO_BODY_VIA_SITE",
+   "via_xy": [
+    70.65,
+    67.45
+   ]
+  },
+  "g50": {
+   "fragment_mm2": 21.889,
+   "internal_min_width_mm": 0.85,
+   "priced_amps": 2.117,
+   "relay_mm": 17.3782,
+   "rounds": 3,
+   "stitch_mm": 9.887,
+   "third_round": "NO_BODY_VIA_SITE",
+   "via_xy": [
+    70.65,
+    67.35
+   ]
+  },
+  "verdict": "HALVING THE PITCH CHANGES THE TRANSACTION AND NOT THE PRICE.  Different stitch, different barrel site, different relay -- and the SAME fragment pads, the SAME 0.850 mm internal neck at C28.2, the SAME 2.117 A against the SAME 2.190 A bar, margin_x 0.967 both times.  The 0.073 A deficit is the GND pour's OWN local geometry around C28.2, not the router's.",
+  "why_asked": "the fragment's bottleneck is FRAGMENT_COPPER, so the obvious lever is a different transaction geometry: a finer lattice gives stitch_pad a larger body_landing set and route_points a tighter relay, and either could leave the east strip wider."
+ },
+ "the_price": {
+  "bar": {
+   "bar_amps": 2.19,
+   "bar_from": "RETURN_NEIGHBOUR_RAIL",
+   "floor": {
+    "amps": 0.995,
+    "dT_K": 10.0,
+    "netclass": "GND",
+    "note": "one track of the net's OWN netclass width at this board's copper -- what the board publishes as an adequate conductor for this net",
+    "track_width_mm": 0.3
+   },
+   "limits": "a neighbour on a class section 5 does not price contributes nothing; the MAXIMUM neighbour is charged, not the sum",
+   "neighbour_max_amps": 2.19,
+   "neighbour_rails": [
+    {
+     "gnd_pad": "C27.2",
+     "other_net": "/01_POWER_TREE/BQ25185_SYS",
+     "other_netclass": "SYS_MAIN",
+     "other_pad": "1",
+     "part": "C27",
+     "published_amps": 2.19
+    },
+    {
+     "gnd_pad": "C28.2",
+     "other_net": "/01_POWER_TREE/BQ25185_SYS",
+     "other_netclass": "SYS_MAIN",
+     "other_pad": "1",
+     "part": "C28",
+     "published_amps": 2.19
+    }
+   ]
+  },
+  "clause": {
+   "PP1": true,
+   "PP2": false,
+   "PP3": true,
+   "PP4": true
+  },
+  "deficit_amps": 0.073,
+  "margin_x": 0.967,
+  "priced": {
+   "barrels": [
+    {
+     "amps": 1.902,
+     "drill_mm": 0.3,
+     "wall_mm2": 0.025525,
+     "xy_mm": [
+      70.5,
+      92.2
+     ]
+    },
+    {
+     "amps": 1.902,
+     "drill_mm": 0.3,
+     "wall_mm2": 0.025525,
+     "xy_mm": [
+      70.9,
+      72.2
+     ]
+    }
+   ],
+   "barrels_into_plane": 2,
+   "barrels_without_drill": [],
+   "bond_amps_parallel": 3.804,
+   "bottleneck": "FRAGMENT_COPPER",
+   "dT_K": 10.0,
+   "internal": [
+    {
+     "amps": 2.206,
+     "mm": 2.742,
+     "mohm": 1.509,
+     "pad": "C27.2",
+     "width_mm": 0.9
+    },
+    {
+     "amps": 2.117,
+     "mm": 0.67,
+     "mohm": 0.39,
+     "pad": "C28.2",
+     "width_mm": 0.85
+    }
+   ],
+   "internal_min_amps": 2.117,
+   "internal_min_width_mm": 0.85,
+   "priced_amps": 2.117,
+   "unmeasurable_pads": []
+  },
+  "priced_amps": 2.117,
+  "reading": "The GND B.Cu island loses a 21.889 mm2 strip holding exactly C27.2 and C28.2 -- the ground ends of the BQ25185's SYS decoupling caps.  Because C27.1 and C28.1 are BQ25185_SYS (SYS_MAIN), Kirchhoff at the part raises the bar from the 0.995 A GND netclass floor to 2.190 A.  The BOND is not the bottleneck: two 0.300 mm barrels into the plane carry 3.804 A in parallel.  The bottleneck is FRAGMENT_COPPER -- the strip's own width, 0.850 mm at C28.2 (2.117 A) and 0.900 mm at C27.2 (2.206 A).  The transaction is 0.073 A short of the bar.",
+  "required_amps": 2.19,
+  "split": {
+   "body_mm2": 2508.581,
+   "fragment_mm2": 21.889,
+   "fragment_pads": [
+    "C27.2",
+    "C28.2"
+   ],
+   "layer": "B.Cu",
+   "net": "GND",
+   "pre_area_mm2": 2553.535,
+   "pre_pads": 40
+  },
+  "the_number_that_names_the_next_move": "C27.2 alone prices 2.206 A and would be ADMITTED; C28.2 prices 2.117 A and is not. A transaction that leaves C28.2 on the BODY side of the cut, or that widens the east-margin strip by ~0.035 mm at C28.2, closes this land.  That is a 3.3% geometry question with a named coordinate, not a wall.",
+  "verdict": "PP2 FAIL -- but by 3.3%, not unconditionally"
+ },
+ "the_refusal_that_was_inherited": "D-639 struck this transaction out because its relay splits GND's B.Cu island, and D-640 recorded `+3V3 R39.1  NO_SINGLE_CUT (2-track set)  D-639: relay splits a GND pour`.  D-643 then REPLACED that unconditional refusal with a NUMBER -- PP2's return-fragment bar -- and screen_relay_transaction.py was never told: its last commit is f8a906c (D-639), four days and thirty-five decisions before the clause changed.  For thirty-five decisions this screen has been refusing splits its own contract would have to PRICE.",
+ "what_it_is": "the TOP LEG OF THE 3.3 V REGULATOR'S FEEDBACK DIVIDER.  R39 is 1M 1% with R39.1 = +3V3 and R39.2 = /01_POWER_TREE/V3V3_FB; V3V3_FB is fully routed and joins R39.2, R40.1 and U12.3.  R39.1 is not connected to the rail it senses (D-638 section 3, unchanged)."
+}

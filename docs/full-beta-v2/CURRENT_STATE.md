@@ -13,6 +13,88 @@
 > This file references DEVICE_SPEC rather than duplicating full specs.
 
 ## 1. Authoritative HEAD
+- **Demo D-674 (A SCREEN WAS STILL ENFORCING A RULE ITS OWN CONTRACT RETIRED
+  THIRTY-FIVE DECISIONS AGO, AND THE TRANSACTION THIS REPOSITORY CALLED "ONE
+  FLAG FROM PROMOTABLE" CANNOT BE DRAWN AT ALL):**  **NO COPPER PROMOTED —
+  FRAMEWORK + CHARACTERISATION.**  Authority **UNCHANGED** at
+  `c3286d8fdd23b6bdb037de2a753051b3ac2aa2e5ccaba2e25ced3d39cf4884b2`; retained
+  open edges 27 -> 27, open retained nets 15 -> 15
+  (`evidence/d674-routing-ledger.json`).  `hardware/beta-v2` and
+  `hardware/demo/kicad` **UNTOUCHED**; one new tracked read-only screen and one
+  add-only flag on an existing read-only screen, no promoting instrument
+  touched.  Standing suite **14/14 RAN, 14/14 PASS, 14/14 COMPARED, ALL
+  IDENTICAL to `d673`, `vacuous` false**
+  (`evidence/d674-contract-regression.json`); baselines emitted for D-675.
+  **(1) D-673's NEXT ITEM 1 IS SPENT AND IT IS A REFUTATION.**  Both prescribed
+  levers were spent on the `C27.1 = U12.1` spec and **neither is what D-673
+  thought it was**: `--detour-own-layer` is VACUOUS here (it licenses a DETOUR
+  onto a reserved plane; the dangling `In3.Cu` stub is the removed BARREL's
+  bond, which no spec entry names — `own_layer_spent: []`, `rebond_priced`
+  refuses exactly as before), and `Field(guard_free=)` was never unspent —
+  D-667's `terminal_lift` has been wired into every `--detour-spec` relay since
+  D-667 and **is the mechanism that makes the lane vacuous**.  The FULL 26-disc
+  lane, authored exactly as prescribed, refuses HARDER: both `ISET` relays
+  `NO_PATH`, and the five short straps that do relay come back **on their
+  original geometry to the micron** (`evidence/d674-c27-transaction-refutation.json`).
+  **(2) THE ARITHMETIC, AND A SCREEN THAT SAYS IT IN MILLISECONDS.**  A relay's
+  two D-667 lifts each reach `keepout + width/2 + G`, so a straight relay of
+  length `L` has `bindable = max(0, L - 2*reach)` — **0.900 mm at this board's
+  usual figures**.  New tracked **`screen_relay_bindability.py`** (spec in, no
+  board loaded): **four of the eight objects are `VACUOUS_TERMINAL_LIFT`** —
+  0.800, 0.600, 0.212 and 0.100 mm, `bindable 0.0000`.  No lane can move them.
+  D-663 emitted this spec and called it *"the next transaction"*; D-673 ran it
+  nine decisions later; D-674 ran it again — **both answers were free from the
+  spec alone.**
+  **(3) AND THE CUT IS IRREDUCIBLE, SO THE VACUITY IS FATAL.**  Measured three
+  ways on the authority: the 3 long objects alone leave `BQ25185_SYS` at 6 open
+  edges, the 5 short straps alone leave it at 6, all 8 take it to 5.  **`C27.1
+  = U12.1` IS NOT REACHABLE THROUGH `--detour-spec`; its lever is a PLACEMENT
+  or a re-terminated strap.**  Read with D-673 §3–4, `BQ25185_SYS` — 6 of the
+  board's 27 open edges — is **PARKED** under the CODEX_AUTONOMY_POLICY
+  routing-wall iteration budget (D-670..D-673 promoted nothing on it), with
+  D-672 §5's converter-cluster refloorplan already named as the real lever.
+  **(4) THE PIVOT: A SCREEN ENFORCING A RETIRED RULE.**  `+3V3` `R39.1` is the
+  **TOP LEG OF THE 3.3 V REGULATOR'S FEEDBACK DIVIDER** and D-640 carries it as
+  *"`NO_SINGLE_CUT` … D-639: relay splits a `GND` pour"*.
+  `screen_relay_transaction.py`'s last commit is D-639's — and **D-643, the very
+  next decision, replaced that unconditional refusal with a NUMBER**.  For
+  thirty-five decisions the screen has struck out splits its own contract would
+  have to PRICE.  New add-only **`--split-priced`** (default OFF: the search is
+  then D-639's to the object and the artifact gains three explicit null/false
+  keys and nothing else, MEASURED -- the same run with the flag off is identical
+  object for object, `evidence/d674-r39-relay-flag-off-control.json`): the
+  round's candidate board is refilled and put to
+  **`checks/pour_partition_contract.py` itself**, so there is no second copy of
+  the bar to drift.
+  **(5) `PP2` FAILS BY 3.3%, NOT UNCONDITIONALLY.**  Round 2 lays a 9.887 mm
+  `B` stitch to a 0.65/0.40 barrel at `(70.65, 67.35)` and relays
+  `Net-(U11-TS_MR)` 4.3353 -> 17.378 mm, all relaid; round 3 is
+  `NO_BODY_VIA_SITE`.  The `GND` `B.Cu` island loses a **21.889 mm2** strip
+  holding exactly **`C27.2` and `C28.2`**: bar **2.190 A**
+  (`RETURN_NEIGHBOUR_RAIL` — `C27.1`/`C28.1` are `BQ25185_SYS`), bond **3.804 A**
+  (two barrels in parallel, NOT the bottleneck), fragment **2.117 A**
+  (`FRAGMENT_COPPER`, 0.850 mm at `C28.2`), `margin_x` **0.967**, deficit
+  **0.073 A**.  **`C27.2` alone prices 2.206 A and WOULD BE ADMITTED.**
+  **(6) AND THE PITCH IS PROVED IRRELEVANT.**  The same run at half the lattice
+  gives a different stitch, barrel and relay and **the same fragment, the same
+  0.850 mm, the same 2.117 A, `margin_x` 0.967 both times** — the deficit is the
+  `GND` pour's own local geometry at `C28.2`.  `screen_pour_arm_path.py` traces
+  the strip: 21.450 mm `C28.2 -> C27.2`, pinched to **0.250 mm at
+  (71.297, 79.446) between two `/01_POWER_TREE/ISET` tracks** — the same net
+  that owns three of the eight objects in §1's refuted cut.
+  **NEXT, IN ORDER OF LEVERAGE:** (1) **`+3V3 R39.1` IS RE-OPENED AS A PRICED
+  LAND AND IS THE BOARD'S BEST CANDIDATE** — 0.073 A of `FRAGMENT_COPPER` at
+  `C28.2` on a 2.190 A bar, bond proven, lattice proven irrelevant; two named
+  moves — a cut that leaves `C28.2` on the BODY side (`--joint-knockout-mm`, a
+  `--guard` holding the strip, or `--relay-slack-mm`), or 0.035 mm of extra pour
+  width at `C28.2` screened with `screen_fanout_channel.py --board` on a shifted
+  scratch project.  (2) **RE-SWEEP EVERY OTHER `pour_severs` REFUSAL WITH
+  `--split-priced`** — `GND J3.A12/B1` and `BQ25185_SYS C26.2` were both judged
+  under the retired rule.  (3) `BQ25185_SYS` is **PARKED**, not solved.  (4) Run
+  `screen_relay_bindability.py` before ANY `--detour-spec` gate run.  (5)
+  `/I2C_SCL_INT`'s `U14.7 <-> J1.44` remains the one OPEN OWNER DECISION,
+  RECORDED NOT TAKEN; `U9.14`, `U11.9`, `U11.3`, `MK1.4` and `/I2S_LRCLK`
+  unchanged.  (6) `hardware/demo/fab` is **FRESH at `c3286d8f`**.
 - **Demo D-673 (THE CUT THAT FREES THE CHARGER'S OUTPUT IS ITS OWN ESCAPE, AND
   THE NEXT TRANSACTION THIS REPOSITORY NAMED NINE DECISIONS AGO REFUSES ON TWO
   CLAUSES):**  **NO COPPER PROMOTED — FRAMEWORK + CHARACTERISATION.**  Authority

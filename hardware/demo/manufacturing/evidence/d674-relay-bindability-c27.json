@@ -1,0 +1,200 @@
+{
+  "detours": 8,
+  "formula": "reach = keepout + width/2 + G;  bindable = max(0, L - reach_a - reach_b)",
+  "grid_nm": 50000,
+  "lane_does_not_reach": 0,
+  "question": "how much of each --detour-spec relay does its own stated lane actually bind, once D-667's terminal lift has freed the relay's two fixed ends",
+  "reserve_discs": 26,
+  "rows": [
+    {
+      "a_mm": [
+        69.4,
+        77.8
+      ],
+      "b_mm": [
+        70.9,
+        79.4
+      ],
+      "bindable_mm": 1.7432,
+      "index": 0,
+      "kind": "track",
+      "lane_points_on_layer": 26,
+      "layer": "B.Cu",
+      "length_mm": 2.1932,
+      "lift_a_mm": 0.45,
+      "lift_b_mm": 0.0,
+      "lkey": "B",
+      "nearest_disc_to_midpoint_mm": 0.4448,
+      "net": "/01_POWER_TREE/ISET",
+      "threshold_mm": 0.45,
+      "verdict": "BINDABLE",
+      "why": "1.743 mm of this relay's 2.193 mm lies outside both terminal lifts, so the lane has something of it to forbid",
+      "width_mm": 0.2
+    },
+    {
+      "a_mm": [
+        70.2,
+        81.1
+      ],
+      "b_mm": [
+        70.9,
+        79.4
+      ],
+      "bindable_mm": 1.3885,
+      "index": 1,
+      "kind": "track",
+      "lane_points_on_layer": 26,
+      "layer": "B.Cu",
+      "length_mm": 1.8385,
+      "lift_a_mm": 0.45,
+      "lift_b_mm": 0.0,
+      "lkey": "B",
+      "nearest_disc_to_midpoint_mm": 0.2929,
+      "net": "/01_POWER_TREE/ISET",
+      "threshold_mm": 0.45,
+      "verdict": "BINDABLE",
+      "why": "1.388 mm of this relay's 1.838 mm lies outside both terminal lifts, so the lane has something of it to forbid",
+      "width_mm": 0.2
+    },
+    {
+      "a_mm": [
+        68.5,
+        75.2
+      ],
+      "b_mm": [
+        68.5,
+        76.4
+      ],
+      "bindable_mm": 0.75,
+      "index": 2,
+      "kind": "track",
+      "lane_points_on_layer": 26,
+      "layer": "B.Cu",
+      "length_mm": 1.2,
+      "lift_a_mm": 0.0,
+      "lift_b_mm": 0.45,
+      "lkey": "B",
+      "nearest_disc_to_midpoint_mm": 0.8587,
+      "net": "Net-(U11-TS_MR)",
+      "threshold_mm": 0.45,
+      "verdict": "BINDABLE",
+      "why": "0.750 mm of this relay's 1.200 mm lies outside both terminal lifts, so the lane has something of it to forbid",
+      "width_mm": 0.2
+    },
+    {
+      "a_mm": [
+        69.4,
+        76.6
+      ],
+      "b_mm": [
+        69.4,
+        77.4
+      ],
+      "bindable_mm": 0.0,
+      "index": 3,
+      "kind": "track",
+      "lane_points_on_layer": 26,
+      "layer": "B.Cu",
+      "length_mm": 0.8,
+      "lift_a_mm": 0.45,
+      "lift_b_mm": 0.45,
+      "lkey": "B",
+      "nearest_disc_to_midpoint_mm": 0.058,
+      "net": "/01_POWER_TREE/ILIM_VSET",
+      "threshold_mm": 0.9,
+      "verdict": "VACUOUS_TERMINAL_LIFT",
+      "why": "the relay is 0.800 mm long and its own two D-667 terminal lifts free 0.900 mm of it, so NOTHING of it is reserved and it is guaranteed to be re-laid on its original geometry",
+      "width_mm": 0.2
+    },
+    {
+      "a_mm": [
+        68.6,
+        76.4
+      ],
+      "b_mm": [
+        68.6,
+        77.0
+      ],
+      "bindable_mm": 0.0,
+      "index": 4,
+      "kind": "track",
+      "lane_points_on_layer": 26,
+      "layer": "B.Cu",
+      "length_mm": 0.6,
+      "lift_a_mm": 0.45,
+      "lift_b_mm": 0.45,
+      "lkey": "B",
+      "nearest_disc_to_midpoint_mm": 0.149,
+      "net": "Net-(U11-TS_MR)",
+      "threshold_mm": 0.9,
+      "verdict": "VACUOUS_TERMINAL_LIFT",
+      "why": "the relay is 0.600 mm long and its own two D-667 terminal lifts free 0.900 mm of it, so NOTHING of it is reserved and it is guaranteed to be re-laid on its original geometry",
+      "width_mm": 0.2
+    },
+    {
+      "a_mm": [
+        69.25,
+        76.45
+      ],
+      "b_mm": [
+        69.4,
+        76.6
+      ],
+      "bindable_mm": 0.0,
+      "index": 5,
+      "kind": "track",
+      "lane_points_on_layer": 26,
+      "layer": "B.Cu",
+      "length_mm": 0.2121,
+      "lift_a_mm": 0.45,
+      "lift_b_mm": 0.45,
+      "lkey": "B",
+      "nearest_disc_to_midpoint_mm": 0.3062,
+      "net": "/01_POWER_TREE/ILIM_VSET",
+      "threshold_mm": 0.9,
+      "verdict": "VACUOUS_TERMINAL_LIFT",
+      "why": "the relay is 0.212 mm long and its own two D-667 terminal lifts free 0.900 mm of it, so NOTHING of it is reserved and it is guaranteed to be re-laid on its original geometry",
+      "width_mm": 0.2
+    },
+    {
+      "a_mm": [
+        68.5,
+        76.4
+      ],
+      "b_mm": [
+        68.6,
+        76.4
+      ],
+      "bindable_mm": 0.0,
+      "index": 6,
+      "kind": "track",
+      "lane_points_on_layer": 26,
+      "layer": "B.Cu",
+      "length_mm": 0.1,
+      "lift_a_mm": 0.45,
+      "lift_b_mm": 0.45,
+      "lkey": "B",
+      "nearest_disc_to_midpoint_mm": 0.2738,
+      "net": "Net-(U11-TS_MR)",
+      "threshold_mm": 0.9,
+      "verdict": "VACUOUS_TERMINAL_LIFT",
+      "why": "the relay is 0.100 mm long and its own two D-667 terminal lifts free 0.900 mm of it, so NOTHING of it is reserved and it is guaranteed to be re-laid on its original geometry",
+      "width_mm": 0.2
+    },
+    {
+      "at_mm": [
+        69.25,
+        76.45
+      ],
+      "index": 7,
+      "kind": "barrel",
+      "net": "/01_POWER_TREE/ILIM_VSET",
+      "verdict": "BARREL_NOT_RELAID",
+      "why": "a barrel is always `relay: false`; the gate's rebond_priced clause prices it and no lane can move it"
+    }
+  ],
+  "schema": 1,
+  "spec": "w/d674/spec-full-lane.json",
+  "vacuous": 4,
+  "verdict": "THE LANE CANNOT BIND 4 OF 8 RELAYS -- the transaction is vacuous for them however it is drawn"
+}

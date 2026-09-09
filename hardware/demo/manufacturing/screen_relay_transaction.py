@@ -101,7 +101,10 @@ import argparse
 import hashlib
 import json
 import math
+import shutil
+import subprocess
 import sys
+import tempfile
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[3]
@@ -340,9 +343,85 @@ def pour_severs(qb, mz, net, shapes, via_dia):
     return out
 
 
+SPLIT_PRICE_SIDECARS = ("kicad_pro", "kicad_dru", "kicad_prl")
+
+
+def split_price(qb, base_board, work, tag):
+    """PRICE a foreign-pour split with the board's OWN `PP2` clause -- D-674.
+
+    `pour_severs` below strikes out any round whose transaction cuts a filled
+    island in two.  That was the right rule on the day it was written: D-638
+    spent a real gate run on exactly such a round and `PP2` refused it, and a
+    screen that reports a split and accepts anyway is a screen that spends gate
+    runs.  **D-643 replaced that rule with a number** -- a return fragment is
+    priced against the conductor the board publishes for its own ground
+    (0.300 mm of netclass track, 0.995 A at this copper), raised by Kirchhoff
+    at the part -- and this screen was never told.  So it has gone on refusing,
+    for thirty-five decisions, splits the contract it stands in for would
+    ADMIT: `+3V3 R39.1`, the TOP LEG OF THE 3.3 V REGULATOR'S FEEDBACK DIVIDER,
+    is carried in the ledger as REFUSED on that ground alone.
+
+    A SCREEN MAY NOT HOLD AN OPINION ITS OWN CONTRACT HAS RETIRED.  So the
+    price is not re-derived here -- there is no second implementation of the
+    bar to drift from the first.  The candidate board is written out, KiCad's
+    own filler refills it, and `checks/pour_partition_contract.py` is run
+    against the base board exactly as the gate runs it.  What comes back is the
+    gate's answer, one clause early and for a fraction of the cost.
+
+    Returns the contract's own `{ok, results}` document with the candidate's
+    sha256, or a record carrying `error` when the child could not be run.  It
+    is NEVER a licence: `ok` false refuses the round exactly as `pour_severs`
+    did, and a caller that does not ask for it (`--split-priced` off) reaches
+    none of this code -- with the flag off the search is D-639's to the object
+    and the artifact gains three explicit null/false keys and nothing else.
+    """
+    work = Path(work)
+    work.mkdir(parents=True, exist_ok=True)
+    cand = work / ("split-%s.kicad_pcb" % tag)
+    # THE SIDECARS TRAVEL WITH THE BOARD.  A scratch `.kicad_pcb` without its
+    # `.kicad_pro` silently drops every netclass to `Default`, and the return
+    # bar is resolved THROUGH the netclass table -- so a missing project file
+    # would not fail, it would answer the wrong question.
+    for ext in SPLIT_PRICE_SIDECARS:
+        src = base_board.with_suffix("." + ext)
+        if src.exists():
+            shutil.copy(src, cand.with_suffix("." + ext))
+    qb.save(str(cand))
+    fill = (
+        "import sys, pcbnew\n"
+        "b = pcbnew.LoadBoard(sys.argv[1])\n"
+        "pcbnew.ZONE_FILLER(b).Fill(b.Zones())\n"
+        "b.BuildConnectivity()\n"
+        "b.Save(sys.argv[1])\n")
+    r = subprocess.run([sys.executable, "-c", fill, str(cand)],
+                       capture_output=True, text=True)
+    if r.returncode:
+        return dict(ok=False, error="REFILL_FAILED",
+                    stderr=r.stderr[-400:])
+    rep = work / ("split-%s-pp.json" % tag)
+    r = subprocess.run(
+        [sys.executable, str(HERE / "checks" / "pour_partition_contract.py"),
+         "--pre-board", str(base_board), "--board", str(cand),
+         "-o", str(rep)],
+        capture_output=True, text=True)
+    if not rep.exists():
+        return dict(ok=False, error="CONTRACT_DID_NOT_RUN",
+                    returncode=r.returncode, stderr=r.stderr[-400:])
+    doc = json.loads(rep.read_text(encoding="utf-8"))
+    return dict(ok=bool(doc.get("ok")),
+                clause={k: doc["results"][k]["ok"]
+                        for k in ("PP1", "PP2", "PP3", "PP4")
+                        if k in doc.get("results", {})},
+                candidate_sha256=hashlib.sha256(cand.read_bytes()).hexdigest(),
+                report=str(rep),
+                splits=doc.get("results", {}).get("PP2", {}).get("splits"),
+                fragments=doc.get("results", {}).get("PP2", {}).get("fragments"))
+
+
 def joint_search(qb, field, held, by_net, pad, land_ok, max_mm, grid,
                  reserved, spec, own_layer, via_dia, net, mz, radius,
-                 tries=12, knock_mm=1.0, slack_mm=0.0):
+                 tries=12, knock_mm=1.0, slack_mm=0.0,
+                 priced_split=None):
     """THE SIMULTANEOUS RIP-UP-AND-RELAY, D-637's first-ranked item.
 
     Arm B proved that what refuses these relays is the stitch itself: the
@@ -416,13 +495,28 @@ def joint_search(qb, field, held, by_net, pad, land_ok, max_mm, grid,
             # EXACTLY AS ONE THAT STRANDS A RELAY IS.  D-638's gate run refused
             # the whole transaction for this and nothing else; a screen that
             # reports it and accepts anyway is a screen that spends gate runs.
-            good = bool(ok_all and not psev)
+            #
+            # D-674: UNLESS THE CALLER ASKS FOR THE PRICE.  D-643 turned that
+            # unconditional refusal into a number and this screen was never
+            # told, so it has gone on refusing splits its own contract would
+            # admit.  With `--split-priced` the round is put to
+            # `pour_partition_contract.py` itself -- the gate's clause, not a
+            # second copy of it -- and accepted only if that says PASS.  The
+            # default is OFF, so every run and every artifact written before
+            # this reads exactly as it did.
+            price = None
+            if ok_all and psev and priced_split is not None:
+                price = split_price(qb, priced_split[0], priced_split[1],
+                                    "%s-%d" % (priced_split[2], k + 1))
+                good = bool(price.get("ok"))
+            else:
+                good = bool(ok_all and not psev)
             rounds.append(dict(
                 round=k + 1, stitch_ok=True, stitch_mm=st.get("mm"),
                 stitch_layer=st.get("layer"),
                 via_xy=list(st.get("via_xy")), all_relaid=bool(ok_all),
                 accepted=good,
-                antipad_severs=sev, pour_severs=psev,
+                antipad_severs=sev, pour_severs=psev, split_price=price,
                 relays=[dict(net=t["net"], ok=t["ok"], reason=t.get("reason"),
                              mm=t.get("mm"), vias=t.get("vias"),
                              was_mm=t.get("was_mm"))
@@ -443,6 +537,7 @@ def joint_search(qb, field, held, by_net, pad, land_ok, max_mm, grid,
                                         why=None),
                             stitch_geometry=geom, relay_geometry=rgeom,
                             antipad_severs=sev, pour_severs=psev,
+                            split_price=price,
                             tracks=tracks)
             qb.revert(m)
         if best is not None:
@@ -464,6 +559,7 @@ def joint_search(qb, field, held, by_net, pad, land_ok, max_mm, grid,
                rounds=rounds,
                all_relaid=best is not None,
                priced_against_foreign_pours=True,
+               split_priced=priced_split is not None,
                note=None if best is not None else
                     "no barrel in %d tries left every cut net a corridor it "
                     "could take without splitting a foreign pour"
@@ -476,6 +572,8 @@ def joint_search(qb, field, held, by_net, pad, land_ok, max_mm, grid,
         # would read as "nothing was cut" when the truth may be "every round
         # was cut".  So the refusal carries the union of what the rounds saw.
         out.update(stitch=None, antipad_severs=None, tracks=[],
+                   split_price=[r["split_price"] for r in rounds
+                                if r.get("split_price")] or None,
                    pour_severs=[x for r in rounds
                                 for x in (r.get("pour_severs") or ())] or None)
     return out
@@ -513,6 +611,29 @@ def main():
     ap.add_argument("--guard", type=Path)
     ap.add_argument("--relay-own-layer", action="store_true",
                     help="D-609's own-layer allowance, as the measurement used")
+    ap.add_argument("--split-priced", action="store_true",
+                    help="D-674: when this transaction SPLITS a filled island, "
+                         "put the split to `checks/pour_partition_contract.py` "
+                         "-- the gate's own PP1-PP4 clauses on the refilled "
+                         "candidate against this base board -- instead of "
+                         "striking the round out unconditionally.  D-639 wrote "
+                         "that strike-out and D-643 replaced the rule behind "
+                         "it with a number (a return fragment is priced at the "
+                         "0.300 mm netclass conductor the board publishes for "
+                         "its own ground, raised by Kirchhoff at the part), so "
+                         "this screen has been refusing splits its own "
+                         "contract would ADMIT.  Never a licence: the answer "
+                         "is the contract's, `ok` false still refuses the "
+                         "round.  With the flag OFF the search is the one D-639 "
+                         "wrote, to the object, and the artifact gains exactly "
+                         "three keys and nothing else -- `split_priced` false, "
+                         "`split_price_work` null, and a null `split_price` on "
+                         "each round that laid a stitch"
+                    )
+    ap.add_argument("--split-price-work", type=Path,
+                    help="where --split-priced writes each candidate board and "
+                         "its contract report (default: a temporary directory "
+                         "discarded at exit).  State it to keep the evidence")
     ap.add_argument("--plan-out", type=Path,
                     help="write the `route_maze_batch.py --detour-spec` file "
                          "for every land whose JOINT arm closed, so the "
@@ -526,6 +647,17 @@ def main():
                          "own `max_mm`")
     ap.add_argument("-o", "--out", type=Path)
     a = ap.parse_args()
+
+    # D-674.  `--split-priced` writes a candidate board per priced round.  A
+    # stated directory KEEPS that evidence -- which is what a decision needs --
+    # and an unstated one is a temporary directory removed at exit, so the
+    # default asks the reader to store nothing.
+    split_tmp = None
+    if a.split_priced and a.split_price_work is None:
+        split_tmp = tempfile.mkdtemp(prefix="aqroot-split-price-")
+        split_work = Path(split_tmp)
+    else:
+        split_work = a.split_price_work
 
     import qrouter as qr
     import incremental_router as ir
@@ -642,7 +774,11 @@ def main():
                     a.grid, reserved, spec, a.relay_own_layer, vd, net, mz,
                     radius, tries=a.joint_tries,
                     knock_mm=a.joint_knockout_mm,
-                    slack_mm=a.relay_slack_mm)
+                    slack_mm=a.relay_slack_mm,
+                    priced_split=(None if not a.split_priced else
+                                  (a.board, split_work,
+                                   "%s-%s" % (net.strip("/").replace("/", "_"),
+                                              stitch_ref))))
                 continue
             with Held(qb, field, held):
                 m = qb.mark()
@@ -861,6 +997,8 @@ def main():
         grid=a.grid, arm=a.arm, rung=ev["rung"], max_mm=ev["max_mm"],
         relay_own_layer=bool(a.relay_own_layer),
         relay_slack_mm=a.relay_slack_mm or None,
+        split_priced=bool(a.split_priced),
+        split_price_work=(str(split_work) if a.split_priced else None),
         question=("does a cut that opens a plane land go back when the "
                   "reservation is the STITCH THAT WILL BE THERE instead of an "
                   "all-layer keep-out disc big enough to swallow the relay's "
@@ -877,6 +1015,8 @@ def main():
         a.out.write_text(text + "\n", encoding="utf-8")
     else:
         print(text)
+    if split_tmp is not None:
+        shutil.rmtree(split_tmp, ignore_errors=True)
     return 0
 
 

@@ -1,0 +1,188 @@
+{
+ "authoritative_unchanged": true,
+ "board_sha256": "c3286d8fdd23b6bdb037de2a753051b3ac2aa2e5ccaba2e25ced3d39cf4884b2",
+ "conclusion": "THE C27.1 = U12.1 TRANSACTION IS STRUCTURALLY IMPOSSIBLE THROUGH --detour-spec, AND NOT FOR WANT OF A FLAG.  The cut needs all eight objects out of the corridor (measured, three ways).  Four of the eight are straps of 0.100, 0.212, 0.600 and 0.800 mm between FIXED ENDS inside that corridor, and D-667's terminal lift frees 0.450 mm at each end -- so every cell of them is lifted and a relay must return them to their original geometry, whatever lane is drawn.  A lane strong enough to move the remaining relays refuses two of them outright.  The lever this pocket needs is a PLACEMENT or a re-terminated strap, not a reservation.",
+ "goal": "C27.1 = U12.1 on /01_POWER_TREE/BQ25185_SYS",
+ "history": "D-663 priced this 8-object cut and called it THE NEXT TRANSACTION.  D-673 ran it for the first time with the lane THINNED to the stations at least 0.60 mm from every detour's own terminal, got every_detour_relaid true and pour_partition false, and ranked it NEXT item 1: `ONE FLAG AND ONE guard_free FROM PROMOTABLE`.  D-674 spent both levers.",
+ "levers_spent": {
+  "detour_own_layer": {
+   "finding": "--detour-own-layer is VACUOUS on this spec.  It licenses a DETOUR to be re-laid on a reserved inner plane it already occupies; the dangling In3.Cu stub D-673 named is NOT a detour -- it is the copper the removed BARREL used to bond, and no entry in the spec names it.  own_layer_spent is empty and rebond_priced still refuses on REMOVED_NET_OPEN_EDGES_GREW.",
+   "requested": true,
+   "spent": []
+  },
+  "guard_free": {
+   "finding": "D-667's terminal_lift was ALREADY wired into every --detour-spec relay (route_maze_batch.py line ~2214) and both D-673's run and this one used it.  It was never the unspent lever; it is the mechanism that makes the lane vacuous.  See screen_relay_bindability.py."
+  }
+ },
+ "next": "This is a REFUTATION of D-673 NEXT item 1 and it closes that line.  The C27.1 half of BQ25185_SYS is PARKED with U11.1 (D-673 NEXT item 2) under the CODEX_AUTONOMY_POLICY routing-wall iteration budget.",
+ "schema": 1,
+ "the_cut_is_irreducible": {
+  "method": "cut each subset off the authority with KiCad's own filler, then routing_ledger.py",
+  "subsets": [
+   {
+    "BQ25185_SYS_open_edges": 6,
+    "C27_group": [
+     "C27.1"
+    ],
+    "freed": false,
+    "name": "S3",
+    "objects": [
+     "ISET 69.4,77.8->70.9,79.4",
+     "ISET 70.2,81.1->70.9,79.4",
+     "ILIM_VSET barrel 69.25,76.45"
+    ]
+   },
+   {
+    "BQ25185_SYS_open_edges": 6,
+    "C27_group": [
+     "C27.1"
+    ],
+    "freed": false,
+    "name": "S5",
+    "objects": [
+     "TS_MR 1.200 mm",
+     "ILIM_VSET 0.800 mm",
+     "TS_MR 0.600 mm",
+     "ILIM_VSET 0.212 mm",
+     "TS_MR 0.100 mm"
+    ]
+   },
+   {
+    "BQ25185_SYS_open_edges": 5,
+    "C27_group": [
+     "C27.1",
+     "C28.1",
+     "SW9.2",
+     "U12.1"
+    ],
+    "freed": true,
+    "name": "SALL",
+    "objects": [
+     "all 8"
+    ]
+   }
+  ],
+  "verdict": "ALL EIGHT OBJECTS ARE LOAD-BEARING.  Neither the three long ones nor the five short ones free C27.1 alone."
+ },
+ "the_full_lane_run": {
+  "cmd": "route_maze_batch.py /01_POWER_TREE/BQ25185_SYS --detour-spec d674-c27-full-lane-spec.json --detour-own-layer --partial --repair-planes --grid 50000",
+  "connectivity": {
+   "nets_improved": [],
+   "nets_regressed": [
+    "/01_POWER_TREE/ILIM_VSET",
+    "/01_POWER_TREE/ISET"
+   ],
+   "open_retained_nets_after": 17,
+   "open_retained_nets_before": 15,
+   "retained_open_edges_after": 29,
+   "retained_open_edges_before": 27
+  },
+  "detours_relaid": [
+   {
+    "mm": null,
+    "net": "/01_POWER_TREE/ISET",
+    "ok": false,
+    "reason": "NO_PATH",
+    "returned_identical": false,
+    "terminal_lifts": 1,
+    "was_mm": 2.1932
+   },
+   {
+    "mm": null,
+    "net": "/01_POWER_TREE/ISET",
+    "ok": false,
+    "reason": "NO_PATH",
+    "returned_identical": false,
+    "terminal_lifts": 1,
+    "was_mm": 1.8385
+   },
+   {
+    "mm": 1.2,
+    "net": "Net-(U11-TS_MR)",
+    "ok": true,
+    "reason": null,
+    "returned_identical": true,
+    "terminal_lifts": 1,
+    "was_mm": 1.2
+   },
+   {
+    "mm": 0.8,
+    "net": "/01_POWER_TREE/ILIM_VSET",
+    "ok": true,
+    "reason": null,
+    "returned_identical": true,
+    "terminal_lifts": 2,
+    "was_mm": 0.8
+   },
+   {
+    "mm": 0.6,
+    "net": "Net-(U11-TS_MR)",
+    "ok": true,
+    "reason": null,
+    "returned_identical": true,
+    "terminal_lifts": 2,
+    "was_mm": 0.6
+   },
+   {
+    "mm": 0.21213203435596426,
+    "net": "/01_POWER_TREE/ILIM_VSET",
+    "ok": true,
+    "reason": null,
+    "returned_identical": true,
+    "terminal_lifts": 2,
+    "was_mm": 0.2121
+   },
+   {
+    "mm": 0.1,
+    "net": "Net-(U11-TS_MR)",
+    "ok": true,
+    "reason": null,
+    "returned_identical": true,
+    "terminal_lifts": 2,
+    "was_mm": 0.1
+   },
+   {
+    "mm": 0.0,
+    "net": "/01_POWER_TREE/ILIM_VSET",
+    "ok": false,
+    "reason": "BARREL_REMOVED_NOT_REBONDED_YET",
+    "returned_identical": false,
+    "terminal_lifts": 0,
+    "was_mm": 0.0
+   }
+  ],
+  "failed": [
+   {
+    "a_mm": [
+     70.9,
+     79.4
+    ],
+    "b_mm": [
+     69.4,
+     77.8
+    ],
+    "layer": "B.Cu",
+    "net": "/01_POWER_TREE/ISET",
+    "reason": "NO_PATH",
+    "why": "no all-layer corridor at 0.200 mm between the two ends of this track once the site is reserved, inside the 4.078 mm budget, on a 0.0500 mm lattice"
+   },
+   {
+    "a_mm": [
+     70.2,
+     81.1
+    ],
+    "b_mm": [
+     70.9,
+     79.4
+    ],
+    "layer": "B.Cu",
+    "net": "/01_POWER_TREE/ISET",
+    "reason": "NO_PATH",
+    "why": "no all-layer corridor at 0.200 mm between the two ends of this track once the site is reserved, inside the 3.723 mm budget, on a 0.0500 mm lattice"
+   }
+  ],
+  "reserve_discs": 26,
+  "reserve_note": "every one of the 26 subsampled stations of screen_pour_arm_path.py's traced arm inside the pocket, NOT thinned away from the detours' own terminals -- the exact repair D-673 NEXT item 1 prescribed",
+  "verdict": "REFUSED.  The two ISET relays are NO_PATH under the full lane; the five short straps that DO relay come back on their original geometry to the micron (mm == was_mm), so the lane binds none of them."
+ }
+}
