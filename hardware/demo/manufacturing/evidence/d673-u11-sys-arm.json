@@ -1,0 +1,436 @@
+{
+ "authoritative_unchanged": true,
+ "board": "hardware/demo/kicad/aqroot-demo/aqroot-Beta-v2.kicad_pcb",
+ "board_sha256": "c3286d8fdd23b6bdb037de2a753051b3ac2aa2e5ccaba2e25ced3d39cf4884b2",
+ "cut_sets": [
+  {
+   "board_open_edges": 29,
+   "name": "D-659 EAST",
+   "note": "re-verified on the CURRENT authority; D-659 measured it at c1029d47",
+   "remove": [
+    "VBUS_TRK",
+    "VBUS_VIA",
+    "ISET_SEG"
+   ],
+   "sys_islands": 6,
+   "sys_open_edges": 5,
+   "u11_1_merged_with": [
+    "C28.1",
+    "SW9.2",
+    "U12.1"
+   ]
+  },
+  {
+   "board_open_edges": 29,
+   "name": "subset VBUS only",
+   "remove": [
+    "VBUS_TRK",
+    "VBUS_VIA"
+   ],
+   "sys_open_edges": 6,
+   "u11_1_merged_with": []
+  },
+  {
+   "board_open_edges": 28,
+   "name": "subset ISET_SEG only",
+   "remove": [
+    "ISET_SEG"
+   ],
+   "sys_open_edges": 6,
+   "u11_1_merged_with": []
+  },
+  {
+   "board_open_edges": 29,
+   "name": "D-673 WEST (NEW)",
+   "note": "same cardinality as D-659's, DIFFERENT corridor -- see arm_paths",
+   "remove": [
+    "VBUS_TRK",
+    "VBUS_VIA",
+    "ISET_DIAG"
+   ],
+   "sys_open_edges": 5,
+   "u11_1_merged_with": [
+    "C28.1",
+    "SW9.2",
+    "U12.1"
+   ]
+  },
+  {
+   "board_open_edges": 30,
+   "name": "subset VBUS_VIA + ISET_DIAG",
+   "remove": [
+    "VBUS_VIA",
+    "ISET_DIAG"
+   ],
+   "sys_open_edges": 6,
+   "u11_1_merged_with": []
+  },
+  {
+   "board_open_edges": 29,
+   "name": "subset VBUS_TRK + VBUS_VIA (control)",
+   "remove": [
+    "VBUS_TRK",
+    "VBUS_VIA"
+   ],
+   "sys_open_edges": 6,
+   "u11_1_merged_with": []
+  }
+ ],
+ "east_arm_exclusivity": {
+  "arm": "U11.1 (66.41,78.60) -> south to y 79.52 -> EAST along y ~= 79.52 to x ~= 70.0 -> down the east leg x ~= 70.3-70.6 -> body; 34.850 mm",
+  "barrel_sweep": {
+   "geometry": "B.Cu 0.500 mm stub from (68.8,78.9464) to a 0.900/0.400 barrel",
+   "severed": 12,
+   "sites": 12,
+   "verdict": "U11.1 alone in 12 of 12",
+   "x_mm": [
+    68.4,
+    69.0,
+    69.6
+   ],
+   "y_mm": [
+    79.5,
+    80.2,
+    81.0,
+    81.8
+   ]
+  },
+  "claim": "the EAST arm and `U11.10`'s escape are the SAME COPPER",
+  "placement_shift_alone_is_vacuous": {
+   "cases": 13,
+   "merged": 0,
+   "moves": [
+    "R36 +0.3/+0.5/+0.7/+0.9 y",
+    "C23 +0.3/+0.5/+0.7/+0.9 y",
+    "R36+C23 +0.5/+0.7/+0.9 y",
+    "C23 -0.7 x",
+    "C23 -0.7 x +0.5 y"
+   ],
+   "why": "R36/C23 bound the channel on the SOUTH; the USB_VBUS_CHG run bounds it on the NORTH"
+  },
+  "south_bound_named": {
+   "note": "79.525 is exactly the y the traced arm runs at -- the channel is R36/C23's pad row",
+   "objects": [
+    "R36.1",
+    "R36.2",
+    "C23.2"
+   ],
+   "pad_top_mm": 79.775,
+   "pour_excluded_above_mm": 79.525,
+   "zone_clearance_mm": 0.25
+  }
+ },
+ "land": "U11.1",
+ "method": "every row is KiCad's own `ZONE_FILLER` re-run on a SCRATCH copy of the authority followed by `routing_ledger.py --board`, which is the same connectivity the promotion gate counts.  The authority is never written.",
+ "net": "/01_POWER_TREE/BQ25185_SYS",
+ "objects": {
+  "ISET_DIAG": {
+   "a_mm": [
+    66.1,
+    82.4
+   ],
+   "b_mm": [
+    69.5,
+    81.1
+   ],
+   "kind": "track",
+   "layer": "B.Cu",
+   "net": "/01_POWER_TREE/ISET",
+   "uuid": "53967c38-5476-4aeb-aeb6-1d9a6ff2243d",
+   "width_mm": 0.2
+  },
+  "ISET_SEG": {
+   "a_mm": [
+    70.2,
+    81.1
+   ],
+   "b_mm": [
+    70.9,
+    79.4
+   ],
+   "kind": "track",
+   "layer": "B.Cu",
+   "net": "/01_POWER_TREE/ISET",
+   "uuid": "1ac6ca28-2dc0-4806-a4cd-c9555249e653",
+   "width_mm": 0.2
+  },
+  "VBUS_TRK": {
+   "a_mm": [
+    68.8,
+    78.9464
+   ],
+   "b_mm": [
+    66.8,
+    79.4464
+   ],
+   "kind": "track",
+   "layer": "B.Cu",
+   "net": "/01_POWER_TREE/USB_VBUS_CHG",
+   "uuid": "7532ffa5-8aa4-4ea4-875a-e447d14bada1",
+   "width_mm": 0.5
+  },
+  "VBUS_VIA": {
+   "at_mm": [
+    66.8,
+    79.4464
+   ],
+   "dia_mm": 0.9,
+   "drill_mm": 0.4,
+   "kind": "via",
+   "net": "/01_POWER_TREE/USB_VBUS_CHG",
+   "uuid": "84566066-9df7-43e5-93a3-deb4a5091b32"
+  }
+ },
+ "question": "D-659 priced the board's #1 fabrication blocker -- the BQ25185's own SYS OUTPUT `U11.1` reaching the TPS63020's SYS INPUT `U12.1` -- at THREE OBJECTS, and left one question open: WHERE DOES `U11.10`'s `USB_VBUS_CHG` ESCAPE GO once that copper is removed.  This answers it, and finds a SECOND three-object cut whose corridor does not collide with the escape it displaces.",
+ "rebuildable": {
+  "ISET": {
+   "join": "R37.1 -> U11.8",
+   "layers": [
+    "B"
+   ],
+   "mm": 16.132,
+   "ok": true,
+   "vias": 0
+  },
+  "USB_VBUS_CHG": {
+   "join": "C23.2 -> U11.10",
+   "layers": [
+    "B"
+   ],
+   "mm": 3.078,
+   "ok": true,
+   "vias": 0
+  },
+  "but": "the rebuild RETAKES the corridor: BQ25185_SYS regresses 5 -> 6 in every unguarded arm, and with the EAST arm reserved as a stated lane ISET routes 17.472 mm around it and STILL severs the junction while U11.10 returns NO_LEGAL_ESCAPE",
+  "question": "D-659 never asked whether the two donor nets CAN be rebuilt after the cut",
+  "run": "route_maze_batch.py /01_POWER_TREE/USB_VBUS_CHG /01_POWER_TREE/ISET --partial --neck --grid 50000 --board <EAST cut>",
+  "without_neck": "U11.10: NO LEGAL ESCAPE at >= 0.500 mm; blocked by R36.1 (x15), U11.8 (x11), U11.9 (x11), board_edge (x8) -- `U11` is one of the ten fine-pitch courtyards the `.kicad_dru` pad-escape necking rule names, and the escape on the board today is a 0.200 mm neck"
+ },
+ "schema": 1,
+ "verdict": "NO COPPER.  D-659's EAST cut is re-verified and shown to be TOPOLOGICALLY SELF-DEFEATING: its corridor IS `U11.10`'s only escape (12 relocated barrel sites of 12 sever it), and a placement shift of R36/C23 alone is vacuous in 13 cases of 13 because those parts bound the channel on the SOUTH while the copper being removed bounds it on the NORTH.  A SECOND three-object cut is found whose corridor runs WEST, through the 0.55 mm channel between C23.2 and R36.1, and does NOT exclude the escape.  The topology admits a 27 -> 26 solution and the one residual it creates (R36.2's GND bond) has a measured one-barrel answer -- but the escape the west cut frees is still NO_PATH at its own 0.500 mm class width, so the transaction is NAMED and NOT TAKEN.",
+ "west_arm": {
+  "arm": "U11.1 (66.41,78.60) -> south to (66.41,79.50) -> the 0.55 mm channel between C23.2 (right edge 66.475) and R36.1 (left edge 67.525) at x ~= 66.76 -> out at (67.06,82.45) into the body; 28.550 mm",
+  "authority_control": {
+   "note": "the board ALREADY delivers this rail through 0.200 mm -- D-656's 0.197 mm figure -- so the arm's pinch is the SAME OPEN DFM ITEM and not a new one",
+   "pair": "U12.1 -> C28.1",
+   "path_mm": 13.95,
+   "pinch_at_mm": [
+    65.307,
+    93.771
+   ],
+   "pinch_mm": 0.2
+  },
+  "claim": "the WEST cut opens a corridor that does NOT collide with the escape it displaces",
+  "iset_reroute": {
+   "alternatives_tried": 4,
+   "arm_survives": true,
+   "geometry": [
+    {
+     "a_mm": [
+      66.1,
+      82.4
+     ],
+     "b_mm": [
+      65.9,
+      83.0
+     ],
+     "kind": "track",
+     "layer": "B.Cu",
+     "w_mm": 0.2
+    },
+    {
+     "at_mm": [
+      65.9,
+      83.0
+     ],
+     "dia_mm": 0.6,
+     "drill_mm": 0.3,
+     "kind": "via"
+    },
+    {
+     "a_mm": [
+      65.9,
+      83.0
+     ],
+     "b_mm": [
+      68.6,
+      83.0
+     ],
+     "kind": "track",
+     "layer": "In2.Cu",
+     "w_mm": 0.2
+    },
+    {
+     "at_mm": [
+      68.6,
+      83.0
+     ],
+     "dia_mm": 0.6,
+     "drill_mm": 0.3,
+     "kind": "via"
+    },
+    {
+     "a_mm": [
+      68.6,
+      83.0
+     ],
+     "b_mm": [
+      69.5,
+      81.1
+     ],
+     "kind": "track",
+     "layer": "B.Cu",
+     "w_mm": 0.2
+    }
+   ],
+   "iset_open_edges": 0,
+   "sys_open_edges": 5,
+   "why_a_via_pair": "ISET's chain runs from R37.1 (west of the arm) round the south of U11 to U11.8 (east of it), so on ONE layer it and the arm must cross: four router arms were run (unguarded 16.132 mm, lane 18.451 mm, extended lane 21.409 mm, and 21.409 mm refused at --join-max-mm 14) and every single-layer arm severed the pour.  The crossing has to go UNDER."
+  },
+  "pinch_at_mm": [
+   67.307,
+   82.65
+  ],
+  "pinch_bounded_by": [
+   {
+    "kind": "pad",
+    "land": "SW9",
+    "mm": 0.1084
+   },
+   {
+    "kind": "via",
+    "mm": 0.2621,
+    "net": "GND"
+   }
+  ],
+  "pinch_mm": 0.2,
+  "r36_2_rebond_is_solved": {
+   "bond": {
+    "layer": "B",
+    "mm": 1.273,
+    "ok": true,
+    "pad": "R36.2",
+    "via": [
+     500000,
+     250000
+    ],
+    "via_xy_mm": [
+     68.45,
+     81.3
+    ]
+   },
+   "gate_clauses": {
+    "board_improved": true,
+    "no_regression": true,
+    "pour_partition": true,
+    "rebond_priced": true
+   },
+   "note": "the one residual the arm creates has a MEASURED answer -- one 0.500/0.250 barrel and 1.273 mm of 0.300 mm B.Cu -- so it is not the thing standing in the way",
+   "run": "route_maze_batch.py GND --bond-pad R36.2 --bond-via 500000:250000 --body-landing --grid 50000"
+  },
+  "residual_price": {
+   "after": 3,
+   "before": 2,
+   "board_lands_at": 27,
+   "board_would_land_at_if_rebonded": 26,
+   "cause": "the arm's copper is copper the GND pour gives up: at equal zone priority two different-net pours retreat from each other, and R36.2 -- the ILIM_VSET divider's ground end -- was bonded through exactly the strip the SYS arm now fills",
+   "invariant": "GND = 3 in ALL 5 USB_VBUS_CHG barrel sites and ALL 4 ISET crossings measured, so it is the ARM and not the reroute geometry",
+   "land": "R36.2",
+   "named_answer": "a GND stitch barrel at R36.2 -- GND owns In1 and In4 -- via --bond-pad R36.2",
+   "net": "GND"
+  },
+  "router_verdict_with_the_arm_reserved": {
+   "ISET": {
+    "but": "severs the arm -- BQ25185_SYS regressed; every single-layer ISET arm does",
+    "join": "R37.1 -> U11.8",
+    "mm": 18.451,
+    "ok": true,
+    "vias": 0
+   },
+   "USB_VBUS_CHG": {
+    "ok": false,
+    "reason": "NO_PATH",
+    "why": "no all-layer corridor at 0.500 mm between the islands"
+   },
+   "lane": "stated (D-660): 66.41,78.70 66.41,79.50 66.76,80.05 66.76,82.15 67.06,82.50 on B.Cu, half-width 0.10 mm, foreign clearance 0.25 mm",
+   "run": "route_maze_batch.py /01_POWER_TREE/USB_VBUS_CHG /01_POWER_TREE/ISET --partial --neck --repair-planes --guard <west lane> --grid 50000 --board <WEST cut>",
+   "verdict": "THE WEST CUT IS BETTER POSED THAN THE EAST ONE AND IS STILL NOT ROUTABLE TODAY.  The east cut excluded U11.10's escape by TOPOLOGY (12 barrel sites of 12).  The west cut does not -- the escape is free to leave eastward -- but the corridor it then needs is refused by the board's own copper: NO_PATH at USB_VBUS_CHG's own 0.500 mm class width, and In2 under this pocket already carries GND, V3V3_FB and /I2C_SDA_INT."
+  },
+  "sketch_is_not_copper": {
+   "but_real_drc_refuses_it": {
+    "authority": {
+     "hole_clearance": 5,
+     "lib_footprint_issues": 199,
+     "solder_mask_bridge": 1,
+     "unconnected_items": 43
+    },
+    "conclusion": "THE SKETCH PROVES THE TOPOLOGY ADMITS A SOLUTION; IT IS NOT ONE",
+    "sketch": {
+     "clearance": 6,
+     "hole_clearance": 21,
+     "hole_to_hole": 2,
+     "lib_footprint_issues": 199,
+     "shorting_items": 7,
+     "solder_mask_bridge": 4,
+     "tracks_crossing": 1,
+     "unconnected_items": 42
+    },
+    "tool": "kicad-cli pcb drc --refill-zones, authority control run the same way",
+    "why": "the In2.Cu crossings both run over other nets' copper -- USB_VBUS_CHG shorts GND, V3V3_FB and /I2C_SDA_INT, ISET shorts V3V3_FB and /I2C_SDA_INT -- because In2 is NOT empty under this pocket.  A hand polyline on a raster is not a route"
+   },
+   "connectivity_reached": {
+    "BQ25185_SYS": 5,
+    "GND": 2,
+    "ISET": 0,
+    "USB_VBUS_CHG": 0,
+    "note": "27 -> 26; the charger's SYS output reaches the buck-boost's SYS input",
+    "raw_board_ratsnest": 42,
+    "retained_open_edges": 26
+   },
+   "what_it_is": "the USB_VBUS_CHG and ISET geometries above were drawn BY HAND on a scratch copy to test the TOPOLOGY -- can the arm and the escape coexist at all -- and they answer that question and nothing else"
+  },
+  "usb_vbus_chg_reroute": {
+   "arm_survives": true,
+   "geometry": [
+    {
+     "a_mm": [
+      68.8,
+      78.9464
+     ],
+     "b_mm": [
+      69.4,
+      79.6
+     ],
+     "kind": "track",
+     "layer": "B.Cu",
+     "w_mm": 0.5
+    },
+    {
+     "at_mm": [
+      69.4,
+      79.6
+     ],
+     "dia_mm": 0.9,
+     "drill_mm": 0.4,
+     "kind": "via"
+    },
+    {
+     "a_mm": [
+      69.4,
+      79.6
+     ],
+     "b_mm": [
+      66.8,
+      79.425
+     ],
+     "kind": "track",
+     "layer": "In2.Cu",
+     "w_mm": 0.5
+    }
+   ],
+   "note": "In2 lands on this net's OWN retained In2 stub, which reaches the (65.25,79.2) barrel and C23.2",
+   "sys_open_edges": 5,
+   "usb_vbus_chg_open_edges": 0
+  }
+ }
+}

@@ -13,6 +13,87 @@
 > This file references DEVICE_SPEC rather than duplicating full specs.
 
 ## 1. Authoritative HEAD
+- **Demo D-673 (THE CUT THAT FREES THE CHARGER'S OUTPUT IS ITS OWN ESCAPE, AND
+  THE NEXT TRANSACTION THIS REPOSITORY NAMED NINE DECISIONS AGO REFUSES ON TWO
+  CLAUSES):**  **NO COPPER PROMOTED — FRAMEWORK + CHARACTERISATION.**  Authority
+  **UNCHANGED** at `c3286d8fdd23b6bdb037de2a753051b3ac2aa2e5ccaba2e25ced3d39cf4884b2`;
+  retained open edges 27 -> 27, open retained nets 15 -> 15
+  (`evidence/d673-routing-ledger.json`).  `hardware/beta-v2` and
+  `hardware/demo/kicad` **UNTOUCHED**; one new tracked read-only screen,
+  add-only, no promoting instrument touched.  Standing suite **14/14 RAN, 14/14
+  PASS, 14/14 COMPARED, ALL IDENTICAL to `d672`, `vacuous` false**
+  (`evidence/d673-contract-regression.json`); baselines emitted for D-674.
+  **(1) D-672 NEXT ITEM (3) IS CLOSED AND THE ANSWER DOES NOT MOVE.**
+  `/I2C_SCL_INT` re-asked with the GATE's own launcher (`route_maze_batch.py
+  --partial`, no `--promote`) at 0.100/0.050/0.025 mm: **every island pair
+  `NO_PATH` at every pitch, with escapes present at BOTH ends of all six pairs
+  at 0.050 mm and finer** (`evidence/d673-scl-gate-launcher.json`).  D-672 §4's
+  launcher disagreement is real and changes nothing; D-671 §4 and D-659 §9 item
+  4 STAND.
+  **(2) A POUR'S DELIVERY PATH IS NOW DRAWN, PRICED AND BLAMED.**  New tracked
+  **`screen_pour_arm_path.py`**: KiCad's own filled polygons are the conductor,
+  so the island holding `--from` is rasterised, a BFS to `--to` returns the
+  path, the free width of the island ACROSS the path is measured at every
+  station, and the two nearest FOREIGN objects on either side of the narrowest
+  one are NAMED.  Read-only; board sha256 re-read at exit.  **The calibration
+  matters more than any single answer**: on the AUTHORITY, `U12.1 -> C28.1` is
+  13.950 mm with a **0.200 mm** pinch at `(65.307,93.771)` between a
+  `Net-(L1-Pad1)` track and `TP13.1`'s pad — this board ALREADY delivers the
+  charger's system rail through 0.200 mm (D-656's 0.197 mm), so an arm whose
+  pinch is in that class is the SAME OPEN DFM ITEM and not a new one
+  (`evidence/d673-arm-path-authority-control.json`).
+  **(3) D-659's THREE-OBJECT CUT IS RE-VERIFIED AND SELF-DEFEATING.**  On the
+  CURRENT authority the cut still takes `BQ25185_SYS` **6 -> 5** and joins
+  `U11.1` to `{C28.1, SW9.2, U12.1}`; both two-object subsets fail.  **NEW: the
+  cut is REBUILDABLE** — both donors re-close with ZERO vias (`USB_VBUS_CHG`
+  `C23.2 -> U11.10` 3.078 mm, `ISET` `R37.1 -> U11.8` 16.132 mm) but only with
+  `--neck`, because `U11.10`'s escape on this board is a 0.200 mm neck.  **And
+  every rebuild retakes the corridor**, because the freed arm is *U11.1
+  (66.41,78.60) -> south to y 79.52 -> EAST along y ≈ 79.52 -> down the east leg
+  -> body* and `U11.10` sits at `(68.6,78.6)`, directly north of it.  **The
+  channel's SOUTH bound is named**: `R36.1`/`R36.2`/`C23.2` pad tops at
+  **y = 79.775**, minus the 0.25 mm zone clearance = **79.525**, exactly the y
+  the arm runs at — D-660's *"0.49 mm channel"* is R36/C23's pad row.  **And the
+  placement lever D-659 §9 recommended is VACUOUS ALONE, 13 cases of 13**
+  (`R36`/`C23`, ±0.3–0.9 mm, singly and together): those parts bound the channel
+  on the SOUTH while the `USB_VBUS_CHG` run bounds it on the NORTH.  **Do not
+  spend `apply_part_shift.py` on `R36`/`C23` alone.**
+  **(4) A SECOND THREE-OBJECT CUT RUNS WEST AND IS BETTER POSED.**  Swapping
+  `ISET`'s east segment for its `(66.1,82.4)->(69.5,81.1)` diagonal frees the
+  same land through the **0.55 mm channel between `C23.2` and `R36.1`** at
+  x ≈ 66.76 (28.550 mm, pinch 0.200 mm at `(67.307,82.650)` between `SW9`'s pad
+  and a `GND` via), and `U11.10`'s escape is then free to leave EASTWARD.  A
+  hand sketch reaches **27 -> 26** and **real `kicad-cli` DRC refuses it** (7
+  `shorting_items`, 6 `clearance`, In2.Cu is not empty under this pocket) — a
+  hand polyline on a raster is not a route.  Asked of the ROUTER with the arm
+  reserved, `USB_VBUS_CHG` is **`NO_PATH` at its own 0.500 mm class width**.
+  **The one residual the arm creates is SOLVED**: `R36.2`'s `GND` bond falls to
+  ONE 0.500/0.250 barrel at `(68.45,81.3)` + 1.273 mm of 0.300 mm `B.Cu`, with
+  `board_improved`/`no_regression`/`pour_partition`/`rebond_priced` all true.
+  **(5) D-663's "NEXT TRANSACTION" WAS RUN FOR THE FIRST TIME, NINE DECISIONS
+  LATE, AND REFUSES ON TWO NAMED CLAUSES.**  The `C27.1 = U12.1` 8-object
+  `--detour-spec` still exists and still frees `C27.1` on `c3286d8f`
+  (`BQ25185_SYS` 6 -> 5); `every_detour_relaid` 8 of 8.  It refuses on
+  **`rebond_priced`** — the eighth object is a BARREL tying `ILIM_VSET`'s
+  `In3.Cu` stub to its `B.Cu` run, `--repair-planes` stitches only pour-owning
+  nets, and `In3.Cu` is a RESERVED plane, so only **`--detour-own-layer`**
+  (D-609, unspent here) can put it back — and on
+  **`pour_partition`/`board_improved`**, because **32 of the 78 arm stations in
+  this pocket are within 0.60 mm of one of the detours' OWN FIXED TERMINALS
+  (closest 0.258 mm)**, so the lane that would bind the arm seals the copper it
+  displaced (D-667).
+  **NEXT, IN ORDER OF LEVERAGE:** (1) **`C27.1` is ONE FLAG AND ONE
+  `guard_free` FROM PROMOTABLE** — re-run §5's spec with `--detour-own-layer`
+  and author the reserve with `Field(guard_free=)` lifting the eight detour
+  terminals instead of thinning the lane around them.  (2) `U11.1` — the WEST
+  cut is the better base and its one open question is `USB_VBUS_CHG`'s escape
+  (`--trunk-floor` and an In2.Cu-aware corridor are unspent; the `R36.2` re-bond
+  is already measured).  (3) `/I2C_SCL_INT` is a corridor wall on all three
+  edges at every pitch; `U14.7 <-> J1.44` remains the one OPEN OWNER DECISION,
+  RECORDED NOT TAKEN.  (4) `U9.14` `/NFC_VDD_RF`.  (5) `U11.9`'s 0.150 mm grant
+  is an owner-grade `.kicad_dru` question, `U11.3` a D-269 safety conflict,
+  `MK1.4` mechanical, `/I2S_LRCLK`'s edge rate the DATA gap.  (6)
+  `hardware/demo/fab` is **FRESH at `c3286d8f`**.
 - **Demo D-672 (THE FRONTIER WAS NEVER MEASURED IN MILLIMETRES OF CHANNEL, AND
   THE TWO LAUNCHERS THIS BOARD ROUTES WITH DISAGREE ABOUT A LAND):**  **NO
   COPPER PROMOTED — FRAMEWORK + CHARACTERISATION.**  Authority **UNCHANGED** at

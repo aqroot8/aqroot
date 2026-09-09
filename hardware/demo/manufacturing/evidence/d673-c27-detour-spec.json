@@ -1,0 +1,271 @@
+{
+ "schema": 1,
+ "detours": [
+  {
+   "net": "/01_POWER_TREE/ISET",
+   "layer": "B.Cu",
+   "a_mm": [
+    69.4,
+    77.8
+   ],
+   "b_mm": [
+    70.9,
+    79.4
+   ],
+   "width_mm": 0.2,
+   "count": 1
+  },
+  {
+   "net": "/01_POWER_TREE/ISET",
+   "layer": "B.Cu",
+   "a_mm": [
+    70.2,
+    81.1
+   ],
+   "b_mm": [
+    70.9,
+    79.4
+   ],
+   "width_mm": 0.2,
+   "count": 1
+  },
+  {
+   "net": "Net-(U11-TS_MR)",
+   "layer": "B.Cu",
+   "a_mm": [
+    68.5,
+    75.2
+   ],
+   "b_mm": [
+    68.5,
+    76.4
+   ],
+   "width_mm": 0.2,
+   "count": 1
+  },
+  {
+   "net": "/01_POWER_TREE/ILIM_VSET",
+   "layer": "B.Cu",
+   "a_mm": [
+    69.4,
+    76.6
+   ],
+   "b_mm": [
+    69.4,
+    77.4
+   ],
+   "width_mm": 0.2,
+   "count": 1
+  },
+  {
+   "net": "Net-(U11-TS_MR)",
+   "layer": "B.Cu",
+   "a_mm": [
+    68.6,
+    76.4
+   ],
+   "b_mm": [
+    68.6,
+    77.0
+   ],
+   "width_mm": 0.2,
+   "count": 1
+  },
+  {
+   "net": "/01_POWER_TREE/ILIM_VSET",
+   "layer": "B.Cu",
+   "a_mm": [
+    69.25,
+    76.45
+   ],
+   "b_mm": [
+    69.4,
+    76.6
+   ],
+   "width_mm": 0.2,
+   "count": 1
+  },
+  {
+   "net": "Net-(U11-TS_MR)",
+   "layer": "B.Cu",
+   "a_mm": [
+    68.5,
+    76.4
+   ],
+   "b_mm": [
+    68.6,
+    76.4
+   ],
+   "width_mm": 0.2,
+   "count": 1
+  },
+  {
+   "net": "/01_POWER_TREE/ILIM_VSET",
+   "barrel": {
+    "at_mm": [
+     69.25,
+     76.45
+    ],
+    "dia_mm": 0.6,
+    "drill_mm": 0.3
+   }
+  }
+ ],
+ "reserve": [
+  {
+   "x_mm": 66.5072,
+   "y_mm": 75.0076,
+   "r_mm": 0.3,
+   "layers": [
+    "B"
+   ],
+   "exempt": [
+    "/01_POWER_TREE/BQ25185_SYS"
+   ]
+  },
+  {
+   "x_mm": 66.5072,
+   "y_mm": 75.4576,
+   "r_mm": 0.3,
+   "layers": [
+    "B"
+   ],
+   "exempt": [
+    "/01_POWER_TREE/BQ25185_SYS"
+   ]
+  },
+  {
+   "x_mm": 66.5072,
+   "y_mm": 75.9076,
+   "r_mm": 0.3,
+   "layers": [
+    "B"
+   ],
+   "exempt": [
+    "/01_POWER_TREE/BQ25185_SYS"
+   ]
+  },
+  {
+   "x_mm": 66.5072,
+   "y_mm": 76.3576,
+   "r_mm": 0.3,
+   "layers": [
+    "B"
+   ],
+   "exempt": [
+    "/01_POWER_TREE/BQ25185_SYS"
+   ]
+  },
+  {
+   "x_mm": 66.9572,
+   "y_mm": 76.6576,
+   "r_mm": 0.3,
+   "layers": [
+    "B"
+   ],
+   "exempt": [
+    "/01_POWER_TREE/BQ25185_SYS"
+   ]
+  },
+  {
+   "x_mm": 67.4072,
+   "y_mm": 76.6576,
+   "r_mm": 0.3,
+   "layers": [
+    "B"
+   ],
+   "exempt": [
+    "/01_POWER_TREE/BQ25185_SYS"
+   ]
+  },
+  {
+   "x_mm": 67.8572,
+   "y_mm": 76.6576,
+   "r_mm": 0.3,
+   "layers": [
+    "B"
+   ],
+   "exempt": [
+    "/01_POWER_TREE/BQ25185_SYS"
+   ]
+  },
+  {
+   "x_mm": 69.7072,
+   "y_mm": 78.4076,
+   "r_mm": 0.3,
+   "layers": [
+    "B"
+   ],
+   "exempt": [
+    "/01_POWER_TREE/BQ25185_SYS"
+   ]
+  },
+  {
+   "x_mm": 69.7072,
+   "y_mm": 78.8576,
+   "r_mm": 0.3,
+   "layers": [
+    "B"
+   ],
+   "exempt": [
+    "/01_POWER_TREE/BQ25185_SYS"
+   ]
+  },
+  {
+   "x_mm": 69.7072,
+   "y_mm": 79.4576,
+   "r_mm": 0.3,
+   "layers": [
+    "B"
+   ],
+   "exempt": [
+    "/01_POWER_TREE/BQ25185_SYS"
+   ]
+  },
+  {
+   "x_mm": 70.2072,
+   "y_mm": 79.7076,
+   "r_mm": 0.3,
+   "layers": [
+    "B"
+   ],
+   "exempt": [
+    "/01_POWER_TREE/BQ25185_SYS"
+   ]
+  },
+  {
+   "x_mm": 70.2572,
+   "y_mm": 80.2576,
+   "r_mm": 0.3,
+   "layers": [
+    "B"
+   ],
+   "exempt": [
+    "/01_POWER_TREE/BQ25185_SYS"
+   ]
+  },
+  {
+   "x_mm": 70.5572,
+   "y_mm": 81.6076,
+   "r_mm": 0.3,
+   "layers": [
+    "B"
+   ],
+   "exempt": [
+    "/01_POWER_TREE/BQ25185_SYS"
+   ]
+  },
+  {
+   "x_mm": 70.5572,
+   "y_mm": 82.2076,
+   "r_mm": 0.3,
+   "layers": [
+    "B"
+   ],
+   "exempt": [
+    "/01_POWER_TREE/BQ25185_SYS"
+   ]
+  }
+ ],
+ "note": "D-673: the D-663 C27.1=U12.1 minimal cut, re-verified on authority c3286d8f, with the reserve authored from screen_pour_arm_path.py's traced arm on the CUT board and thinned to the stations at least 0.60 mm from every detour's own fixed terminal, so the lane cannot seal the copper it displaced (D-667)."
+}

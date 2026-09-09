@@ -65,6 +65,42 @@ requested net `NO_PATH` -- **a detour that frees a LAND is not yet a
 transaction**; 0.025 mm is the rung that closes it.  This closed the audio word
 clock and with it the WHOLE audio path (residual **30 -> 29**).
 
+## A POUR'S DELIVERY PATH IS DRAWN, PRICED AND BLAMED (D-673)
+
+    python3 screen_pour_arm_path.py /01_POWER_TREE/BQ25185_SYS \
+        --from U12.1 --to C28.1 -o OUT.json                           # read-only
+
+    U12.1 -> C28.1  ONE_ISLAND
+      path 13.950 mm, pinch 0.200 mm at (65.307, 93.771) on B.Cu
+        a  track  Net-(L1-Pad1)   0.2421 mm
+        b  pad    TP13.1          0.1029 mm
+
+Every other pour instrument here answers a COUNT -- how many islands, which
+objects cut them, how thin the thinnest place is.  **None said WHERE the
+conductor runs.**  KiCad's filled polygons ARE the conductor, so the island
+holding `--from` is rasterised, BFS to `--to` draws the path, the island's free
+width ACROSS the path is measured at every station, and the two nearest FOREIGN
+objects beside the narrowest one are NAMED.
+
+**Read the AUTHORITY line first.**  This board already delivers the charger's
+system rail through **0.200 mm** (D-656's 0.197 mm, now with the two objects
+that make it so), so an arm whose pinch is in that class is the same OPEN DFM
+item and not a new one.
+
+**Use it to author a lane.**  D-663 established that freeing a pour is a null
+transaction unless the lane is reserved, and that the lane must come from the
+FREED pour's outline; this traces that lane.  **But check it against the
+terminals it must not seal** -- on the `C27.1` pocket 32 of 78 arm stations lie
+within 0.60 mm of one of the detours' own fixed terminals (closest 0.258 mm),
+and the discs that CAN be placed do not bound the arm (D-673 §5).
+
+**`U11.1`'s corridor and `U11.10`'s escape are the same copper, and the channel
+is R36/C23's pad row** (D-673 §3): `R36.1`/`R36.2`/`C23.2` pad tops are at
+y = 79.775, minus the 0.25 mm zone clearance = 79.525, which is exactly the y
+the traced arm runs at.  **A shift of `R36`/`C23` ALONE is vacuous in 13 cases
+of 13** -- they bound the channel on the SOUTH and the `USB_VBUS_CHG` run bounds
+it on the NORTH.
+
 ## `U11.1` IS A THEOREM NOW, AND `C27.1` IS THE CHEAPER EDGE (D-663)
 
     python3 screen_pour_cut_blame.py /01_POWER_TREE/BQ25185_SYS 63.5 71.5 71.5 82.5 \

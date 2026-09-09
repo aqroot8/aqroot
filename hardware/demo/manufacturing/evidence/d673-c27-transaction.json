@@ -1,0 +1,65 @@
+{
+ "arm": {
+  "path_mm": 38.35,
+  "pinch_at_mm": [
+   63.2072,
+   95.8076
+  ],
+  "pinch_mm": 0.25,
+  "pinch_note": "the same far-away 0.25 mm neck the U11.1 arm has and the same class as the 0.200 mm the authority ALREADY delivers U12.1 -> C28.1 through -- no NEW pinch is created; the local narrowest stations are 0.6-0.9 mm",
+  "route": "C27.1 (66.507,75.008) -> south -> EAST along y ~= 76.66 to x ~= 68.66 (0.900 mm wide) -> (69.207,77.058) -> north-south at x ~= 69.71 to y 79.41 -> (70.257,79.808) 0.800 mm -> (70.557,81.408) 0.600 mm -> south down x = 70.557 into the body",
+  "tool": "screen_pour_arm_path.py (new, D-673)"
+ },
+ "authoritative_unchanged": true,
+ "board_sha256": "c3286d8fdd23b6bdb037de2a753051b3ac2aa2e5ccaba2e25ced3d39cf4884b2",
+ "goal": "C27.1 = U12.1",
+ "history": "D-663 measured this cut -- 8 objects on three static DC set-point straps, none protected, none USB_VBUS_CHG -- emitted the --detour-spec, and named it THE NEXT TRANSACTION.  Nine decisions later it had still never been run.  This is the run.",
+ "net": "/01_POWER_TREE/BQ25185_SYS",
+ "next": "re-run with `--detour-own-layer` so the ILIM_VSET In3.Cu stub is legal to re-lay, and author the reserve with `Field(guard_free=)` lifting the eight detour terminals (D-667's own repair) instead of thinning the lane around them.  Both levers exist; neither has been spent on this pocket.",
+ "re_verification": {
+  "board_measured_on": "c3286d8f (D-663 measured it on feff5342)",
+  "cut_result": {
+   "BQ25185_SYS_open_edges": 5,
+   "C27.1_joins": [
+    "C28.1",
+    "SW9.2",
+    "U12.1"
+   ],
+   "board_open_edges": 29,
+   "donors_opened": {
+    "/01_POWER_TREE/ILIM_VSET": 1,
+    "/01_POWER_TREE/ISET": 1,
+    "Net-(U11-TS_MR)": 1
+   }
+  },
+  "objects_found": 8,
+  "objects_missing": 0,
+  "verdict": "THE CUT STILL FREES C27.1 ON THE CURRENT AUTHORITY"
+ },
+ "schema": 1,
+ "the_run": {
+  "cmd": "route_maze_batch.py /01_POWER_TREE/BQ25185_SYS --detour-spec <spec> --partial --repair-planes --grid 50000",
+  "connectivity": {
+   "after": 28,
+   "before": 27,
+   "nets_improved": [],
+   "nets_regressed": [
+    "/01_POWER_TREE/ILIM_VSET"
+   ]
+  },
+  "detours": 8,
+  "every_detour_relaid": true,
+  "refused_clauses": [
+   "attributable_drc",
+   "board_improved",
+   "no_regression",
+   "pour_partition",
+   "rebond_priced"
+  ],
+  "reserve": "authored from the traced arm on the CUT board and thinned to the stations at least 0.60 mm from every detour's own fixed terminal -- 14 discs of r 0.30 mm on B.Cu, exempt BQ25185_SYS"
+ },
+ "why_it_failed_exactly": {
+  "1_rebond_priced": "the spec's eighth object is a BARREL -- ILIM_VSET 0.600/0.300 at (69.25,76.45) -- and it ties that net's In3.Cu stub to its B.Cu run.  A barrel is always `relay: false`, `--repair-planes` only stitches POUR-OWNING nets, and ILIM_VSET owns no pour, so the In3.Cu stub (0.9192 mm at 68.6,77.1) and the B.Cu stub (0.2121 mm at 69.4,76.6) are left dangling and the net regresses.  In3.Cu is a RESERVED plane (+3V3, D-580), so the ONLY lever that can put that stub back is `--detour-own-layer` (D-609)",
+  "2_the_lane_cannot_be_authored": "32 of the 78 arm stations inside this pocket are within 0.60 mm of one of the detours' OWN FIXED TERMINALS -- the closest is 0.258 mm -- so a disc that reserves those stations seals the copper it displaced (D-667).  The 14 discs that CAN be placed do not bound the arm, and the relaid detours take it back: `pour_partition` false, no net improved.  This is D-663's *'freeing a pour is a null transaction unless the lane is reserved'* meeting D-667's *'the reservation is stronger than the rule it stands for'* at the same pocket"
+ }
+}

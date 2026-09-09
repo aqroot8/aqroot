@@ -1,0 +1,225 @@
+{
+ "method": "`route_maze_batch.py /I2C_SCL_INT --partial` at three pitches against the authority, dry (no --promote).  --partial makes every island pair its own transaction, so a pair that closes is not hidden by one that does not.",
+ "net": "/I2C_SCL_INT",
+ "question": "D-672 \u00a74 found `maze3d.pad_escapes` -- the launcher `route_join` and therefore the GATE uses -- disagrees with the EXACT launcher about `U16.3`.  D-672 NEXT item (3) asked for the corridor to be RE-ASKED with the gate's launcher.  This is that answer.",
+ "rows": [
+  {
+   "grid_nm": 100000,
+   "islands": 4,
+   "ok": false,
+   "pairs": [
+    {
+     "a": [
+      "U1.38"
+     ],
+     "b": [
+      "TP5.1"
+     ],
+     "dst_escapes": 9,
+     "gap_mm": 13.286,
+     "reason": "NO_PATH",
+     "src_escapes": 57
+    },
+    {
+     "a": [
+      "U1.38"
+     ],
+     "b": [
+      "U16.3"
+     ],
+     "dst_escapes": 1,
+     "gap_mm": 15.585,
+     "reason": "NO_PATH",
+     "src_escapes": 56
+    },
+    {
+     "a": [
+      "U1.38"
+     ],
+     "b": [
+      "U14.7"
+     ],
+     "dst_escapes": null,
+     "gap_mm": 24.137,
+     "reason": "NO_LEGAL_ESCAPE_DST",
+     "src_escapes": null
+    },
+    {
+     "a": [
+      "TP5.1"
+     ],
+     "b": [
+      "U16.3"
+     ],
+     "dst_escapes": 1,
+     "gap_mm": 91.71,
+     "reason": "NO_PATH",
+     "src_escapes": 9
+    }
+   ],
+   "seconds": 4.4
+  },
+  {
+   "grid_nm": 50000,
+   "islands": 4,
+   "ok": false,
+   "pairs": [
+    {
+     "a": [
+      "U1.38"
+     ],
+     "b": [
+      "TP5.1"
+     ],
+     "dst_escapes": 5,
+     "gap_mm": 13.286,
+     "reason": "NO_PATH",
+     "src_escapes": 32
+    },
+    {
+     "a": [
+      "U1.38"
+     ],
+     "b": [
+      "U16.3"
+     ],
+     "dst_escapes": 2,
+     "gap_mm": 15.585,
+     "reason": "NO_PATH",
+     "src_escapes": 34
+    },
+    {
+     "a": [
+      "U1.38"
+     ],
+     "b": [
+      "U14.7"
+     ],
+     "dst_escapes": 1,
+     "gap_mm": 24.137,
+     "reason": "NO_PATH",
+     "src_escapes": 34
+    },
+    {
+     "a": [
+      "U14.7"
+     ],
+     "b": [
+      "U16.3"
+     ],
+     "dst_escapes": 2,
+     "gap_mm": 60.907,
+     "reason": "NO_PATH",
+     "src_escapes": 1
+    },
+    {
+     "a": [
+      "TP5.1"
+     ],
+     "b": [
+      "U14.7"
+     ],
+     "dst_escapes": 1,
+     "gap_mm": 79.102,
+     "reason": "NO_PATH",
+     "src_escapes": 5
+    },
+    {
+     "a": [
+      "TP5.1"
+     ],
+     "b": [
+      "U16.3"
+     ],
+     "dst_escapes": 2,
+     "gap_mm": 91.71,
+     "reason": "NO_PATH",
+     "src_escapes": 5
+    }
+   ],
+   "seconds": 12.7
+  },
+  {
+   "grid_nm": 25000,
+   "islands": 4,
+   "ok": false,
+   "pairs": [
+    {
+     "a": [
+      "U1.38"
+     ],
+     "b": [
+      "TP5.1"
+     ],
+     "dst_escapes": 5,
+     "gap_mm": 13.286,
+     "reason": "NO_PATH",
+     "src_escapes": 24
+    },
+    {
+     "a": [
+      "U1.38"
+     ],
+     "b": [
+      "U16.3"
+     ],
+     "dst_escapes": 2,
+     "gap_mm": 15.585,
+     "reason": "NO_PATH",
+     "src_escapes": 25
+    },
+    {
+     "a": [
+      "U1.38"
+     ],
+     "b": [
+      "U14.7"
+     ],
+     "dst_escapes": 1,
+     "gap_mm": 24.137,
+     "reason": "NO_PATH",
+     "src_escapes": 26
+    },
+    {
+     "a": [
+      "U14.7"
+     ],
+     "b": [
+      "U16.3"
+     ],
+     "dst_escapes": 2,
+     "gap_mm": 60.907,
+     "reason": "NO_PATH",
+     "src_escapes": 1
+    },
+    {
+     "a": [
+      "TP5.1"
+     ],
+     "b": [
+      "U14.7"
+     ],
+     "dst_escapes": 1,
+     "gap_mm": 79.102,
+     "reason": "NO_PATH",
+     "src_escapes": 5
+    },
+    {
+     "a": [
+      "TP5.1"
+     ],
+     "b": [
+      "U16.3"
+     ],
+     "dst_escapes": 2,
+     "gap_mm": 91.71,
+     "reason": "NO_PATH",
+     "src_escapes": 5
+    }
+   ],
+   "seconds": 83.5
+  }
+ ],
+ "schema": 1,
+ "verdict": "EVERY PAIR NO_PATH AT EVERY PITCH, WITH ESCAPES PRESENT AT BOTH ENDS.  The launcher disagreement is real and does not change the corridor conclusion: D-671 \u00a74 and D-659 \u00a79 item 4 STAND, now proved with the launcher the gate actually uses."
+}
