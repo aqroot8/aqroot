@@ -1,0 +1,305 @@
+{
+ "any_closed": false,
+ "arms": "evidence/d671-arms-scl-u16-3.json",
+ "arms_spec": {
+  "arms": [
+   {
+    "name": "hub",
+    "nets": [
+     "/09_COMMUNITY_HEADER/WAKE_GATE_S"
+    ],
+    "window_mm": [
+     54.4,
+     51.4,
+     59.6,
+     60.0
+    ]
+   }
+  ],
+  "note": "D-671.  The whole local /09_COMMUNITY_HEADER/WAKE_GATE_S hub round U16.3 -- exactly the eight objects route_maze_batch.py --evict /09_COMMUNITY_HEADER/WAKE_GATE_S --evict-window 54.4,51.4,59.6,60.0 removed in arm A, which took U16.3's dst_escapes from 0 to 5.",
+  "schema": 1
+ },
+ "authoritative_unchanged": true,
+ "board": "/home/aqroot8/aqroot-demo/hardware/demo/kicad/aqroot-demo/aqroot-Beta-v2.kicad_pcb",
+ "board_is_authority": true,
+ "board_sha256": "c3286d8fdd23b6bdb037de2a753051b3ac2aa2e5ccaba2e25ced3d39cf4884b2",
+ "dst": "U4.13",
+ "far": [
+  "F",
+  "B",
+  "I2"
+ ],
+ "method": "read-only; every trial laid on the live QBoard by maze3d.offcentre_route and reverted; holds are the same units route_maze_batch.py licenses -- a net inside a window, or one object signature; the board's sha256 is re-read at exit",
+ "net": "/I2C_SCL_INT",
+ "pitches": [
+  100000,
+  50000,
+  25000
+ ],
+ "pool_box_mm": "52.0,51.0,61.0,63.0",
+ "pool_grid_nm": 50000,
+ "question": "when a rip-up opens a land's POCKET, does the CORRIDOR move -- and at which PITCH",
+ "rows": [
+  {
+   "arm": "BASE",
+   "grid_nm": 100000,
+   "held_out": 0,
+   "layers": null,
+   "mm": null,
+   "ok": false,
+   "reason": "NO_LEGAL_ESCAPE",
+   "seconds": 0.7,
+   "step": "ARM",
+   "vias": null,
+   "why": "U16.3: NO OFF-CENTRE LAUNCH at 0.200 mm from any of 41 anchors x 24 directions x 17 lengths; blocked by U16.2 (x6228), U16.4 (x5470), U16.1 (x2168), track (x989)"
+  },
+  {
+   "arm": "BASE",
+   "grid_nm": 50000,
+   "held_out": 0,
+   "layers": null,
+   "mm": null,
+   "ok": false,
+   "reason": "NO_LEGAL_ESCAPE",
+   "seconds": 0.6,
+   "step": "ARM",
+   "vias": null,
+   "why": "U16.3: NO OFF-CENTRE LAUNCH at 0.200 mm from any of 41 anchors x 24 directions x 17 lengths; blocked by U16.2 (x6297), U16.4 (x5870), U16.1 (x2158), track (x1041)"
+  },
+  {
+   "arm": "BASE",
+   "grid_nm": 25000,
+   "held_out": 0,
+   "layers": null,
+   "mm": null,
+   "ok": false,
+   "reason": "NO_PATH",
+   "seconds": 116.6,
+   "step": "ARM",
+   "vias": null,
+   "why": "no all-layer corridor at 0.200 mm from U16.3 on B to U4.13 on B"
+  },
+  {
+   "arm": "hub",
+   "grid_nm": 100000,
+   "held_out": 16,
+   "layers": null,
+   "mm": null,
+   "ok": false,
+   "reason": "NO_PATH",
+   "seconds": 4.0,
+   "step": "ARM",
+   "vias": null,
+   "why": "no all-layer corridor at 0.200 mm from U16.3 on B to U4.13 on B"
+  },
+  {
+   "arm": "hub",
+   "grid_nm": 50000,
+   "held_out": 16,
+   "layers": null,
+   "mm": null,
+   "ok": false,
+   "reason": "NO_PATH",
+   "seconds": 7.7,
+   "step": "ARM",
+   "vias": null,
+   "why": "no all-layer corridor at 0.200 mm from U16.3 on B to U4.13 on B"
+  },
+  {
+   "arm": "hub",
+   "grid_nm": 25000,
+   "held_out": 16,
+   "layers": null,
+   "mm": null,
+   "ok": false,
+   "reason": "NO_PATH",
+   "seconds": 128.1,
+   "step": "ARM",
+   "vias": null,
+   "why": "no all-layer corridor at 0.200 mm from U16.3 on B to U4.13 on B"
+  },
+  {
+   "box_mm": [
+    52.0,
+    51.0,
+    61.0,
+    63.0
+   ],
+   "grid_nm": 50000,
+   "nets": [
+    "+3V3",
+    "/09_COMMUNITY_HEADER/EXT_SCL",
+    "/09_COMMUNITY_HEADER/EXT_SCL_BUF",
+    "/09_COMMUNITY_HEADER/TCA4307_READY",
+    "/ACC_3V3_EN",
+    "/ACC_3V3_SW",
+    "/ACC_5V_BOOST_EN",
+    "/ACC_5V_SW_EN",
+    "/ACC_DETECT_N",
+    "/ACC_POWER_FAULT_N",
+    "/ACC_PWR_EN",
+    "GND"
+   ],
+   "on_arm": "hub",
+   "step": "POOL"
+  },
+  {
+   "drop": "+3V3",
+   "grid_nm": 50000,
+   "mm": null,
+   "ok": false,
+   "on_arm": "hub",
+   "reason": "NO_PATH",
+   "seconds": 7.6,
+   "step": "POOL_DROP",
+   "vias": null
+  },
+  {
+   "drop": "/09_COMMUNITY_HEADER/EXT_SCL",
+   "grid_nm": 50000,
+   "mm": null,
+   "ok": false,
+   "on_arm": "hub",
+   "reason": "NO_PATH",
+   "seconds": 7.7,
+   "step": "POOL_DROP",
+   "vias": null
+  },
+  {
+   "drop": "/09_COMMUNITY_HEADER/EXT_SCL_BUF",
+   "grid_nm": 50000,
+   "mm": null,
+   "ok": false,
+   "on_arm": "hub",
+   "reason": "NO_PATH",
+   "seconds": 7.7,
+   "step": "POOL_DROP",
+   "vias": null
+  },
+  {
+   "drop": "/09_COMMUNITY_HEADER/TCA4307_READY",
+   "grid_nm": 50000,
+   "mm": null,
+   "ok": false,
+   "on_arm": "hub",
+   "reason": "NO_PATH",
+   "seconds": 7.7,
+   "step": "POOL_DROP",
+   "vias": null
+  },
+  {
+   "drop": "/ACC_3V3_EN",
+   "grid_nm": 50000,
+   "mm": null,
+   "ok": false,
+   "on_arm": "hub",
+   "reason": "NO_PATH",
+   "seconds": 7.8,
+   "step": "POOL_DROP",
+   "vias": null
+  },
+  {
+   "drop": "/ACC_3V3_SW",
+   "grid_nm": 50000,
+   "mm": null,
+   "ok": false,
+   "on_arm": "hub",
+   "reason": "NO_PATH",
+   "seconds": 7.7,
+   "step": "POOL_DROP",
+   "vias": null
+  },
+  {
+   "drop": "/ACC_5V_BOOST_EN",
+   "grid_nm": 50000,
+   "mm": null,
+   "ok": false,
+   "on_arm": "hub",
+   "reason": "NO_PATH",
+   "seconds": 7.7,
+   "step": "POOL_DROP",
+   "vias": null
+  },
+  {
+   "drop": "/ACC_5V_SW_EN",
+   "grid_nm": 50000,
+   "mm": null,
+   "ok": false,
+   "on_arm": "hub",
+   "reason": "NO_PATH",
+   "seconds": 7.7,
+   "step": "POOL_DROP",
+   "vias": null
+  },
+  {
+   "drop": "/ACC_DETECT_N",
+   "grid_nm": 50000,
+   "mm": null,
+   "ok": false,
+   "on_arm": "hub",
+   "reason": "NO_PATH",
+   "seconds": 7.7,
+   "step": "POOL_DROP",
+   "vias": null
+  },
+  {
+   "drop": "/ACC_POWER_FAULT_N",
+   "grid_nm": 50000,
+   "mm": null,
+   "ok": false,
+   "on_arm": "hub",
+   "reason": "NO_PATH",
+   "seconds": 7.7,
+   "step": "POOL_DROP",
+   "vias": null
+  },
+  {
+   "drop": "/ACC_PWR_EN",
+   "grid_nm": 50000,
+   "mm": null,
+   "ok": false,
+   "on_arm": "hub",
+   "reason": "NO_PATH",
+   "seconds": 7.7,
+   "step": "POOL_DROP",
+   "vias": null
+  },
+  {
+   "drop": "GND",
+   "grid_nm": 50000,
+   "mm": null,
+   "ok": false,
+   "on_arm": "hub",
+   "reason": "NO_PATH",
+   "seconds": 7.6,
+   "step": "POOL_DROP",
+   "vias": null
+  },
+  {
+   "drop": [
+    "+3V3",
+    "/09_COMMUNITY_HEADER/EXT_SCL",
+    "/09_COMMUNITY_HEADER/EXT_SCL_BUF",
+    "/09_COMMUNITY_HEADER/TCA4307_READY",
+    "/ACC_3V3_EN",
+    "/ACC_3V3_SW",
+    "/ACC_5V_BOOST_EN",
+    "/ACC_5V_SW_EN",
+    "/ACC_DETECT_N",
+    "/ACC_POWER_FAULT_N",
+    "/ACC_PWR_EN",
+    "GND"
+   ],
+   "grid_nm": 50000,
+   "mm": null,
+   "ok": false,
+   "on_arm": "hub",
+   "reason": "NO_PATH",
+   "seconds": 7.6,
+   "step": "POOL_ALL",
+   "vias": null
+  }
+ ],
+ "schema": 1,
+ "src": "U16.3"
+}

@@ -1,0 +1,27 @@
+{
+ "schema": 1,
+ "note": "D-671.  D-670 blamed /ACC_PWR_EN U3.20's pocket to TWO material openers and its own arms A/B/D spent only the FIRST.  arm `btn` is that one; arm `rxen` is /SX1262_RXEN's barrel at (58.7, 78.3), which D-670 recorded as `a SECOND untried lever ... opens U3.20 to 4.4975 mm2 and 447 via-legal cells, and it is not protected`; arm `btn+rxen` is both.",
+ "arms": [
+  {
+   "name": "btn",
+   "objects": [
+    {"kind": "track", "net": "/08_BUTTONS_EXPANDERS/BTN_UP_N", "layer": "B",
+     "a_mm": [57.8, 78.45], "b_mm": [58.7, 84.4]}
+   ]
+  },
+  {
+   "name": "rxen",
+   "objects": [
+    {"kind": "via", "net": "/SX1262_RXEN", "at_mm": [58.7, 78.3]}
+   ]
+  },
+  {
+   "name": "btn+rxen",
+   "objects": [
+    {"kind": "track", "net": "/08_BUTTONS_EXPANDERS/BTN_UP_N", "layer": "B",
+     "a_mm": [57.8, 78.45], "b_mm": [58.7, 84.4]},
+    {"kind": "via", "net": "/SX1262_RXEN", "at_mm": [58.7, 78.3]}
+   ]
+  }
+ ]
+}

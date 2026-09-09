@@ -1,0 +1,19 @@
+{
+  "schema": 1,
+  "note": "D-671 -- U16.3 (/I2C_SCL_INT, TCA4307 SCLIN, the Community Port's internal SCL) is SEALED at 0.2875 mm2 with ZERO via-legal cells.  screen_escape_pocket.py --blame names ONE MATERIAL unit of 103 in the 4 mm box: this /09_COMMUNITY_HEADER/WAKE_GATE_S B.Cu segment, whose removal takes the pocket to 2.5138 mm2 (8.7x) and 0 -> 172 via-legal cells.  The net is NOT protected copper.  Site and radius: the land itself; the relay's two fixed terminals stand 1.936 mm and 2.249 mm away, so a 1.5 mm disc (reach 1.65 mm) is LIFT-FREE by D-670 section 6.",
+  "reserve": [
+    {"x_mm": 57.1375, "y_mm": 54.425, "r_mm": 1.5, "layers": ["B"], "exempt": ["/I2C_SCL_INT"]}
+  ],
+  "detours": [
+    {
+      "net": "/09_COMMUNITY_HEADER/WAKE_GATE_S",
+      "layer": "B.Cu",
+      "a_mm": [58.5, 55.8],
+      "b_mm": [58.3, 52.5],
+      "width_mm": 0.2,
+      "count": 1,
+      "relay": true,
+      "max_mm": 14.0
+    }
+  ]
+}

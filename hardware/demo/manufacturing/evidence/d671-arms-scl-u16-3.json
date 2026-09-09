@@ -1,0 +1,11 @@
+{
+ "schema": 1,
+ "note": "D-671.  The whole local /09_COMMUNITY_HEADER/WAKE_GATE_S hub round U16.3 -- exactly the eight objects route_maze_batch.py --evict /09_COMMUNITY_HEADER/WAKE_GATE_S --evict-window 54.4,51.4,59.6,60.0 removed in arm A, which took U16.3's dst_escapes from 0 to 5.",
+ "arms": [
+  {
+   "name": "hub",
+   "nets": ["/09_COMMUNITY_HEADER/WAKE_GATE_S"],
+   "window_mm": [54.4, 51.4, 59.6, 60.0]
+  }
+ ]
+}

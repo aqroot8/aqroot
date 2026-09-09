@@ -1,0 +1,71 @@
+{
+  "board": "/home/aqroot8/aqroot-demo/hardware/demo/kicad/aqroot-demo/aqroot-Beta-v2.kicad_pcb",
+  "board_sha256": "c3286d8fdd23b6bdb037de2a753051b3ac2aa2e5ccaba2e25ced3d39cf4884b2",
+  "grid_nm": 50000,
+  "guard": "w/d671/guard-r1.5.json",
+  "relays": [
+    {
+      "a_mm": [
+        58.5,
+        55.8
+      ],
+      "arms": {
+        "budget": {
+          "layers": null,
+          "max_mm": 40.0,
+          "mm": 0.0,
+          "ok": false,
+          "reason": "NO_PATH",
+          "seconds": 13.6,
+          "via_xy": null,
+          "vias": 0
+        },
+        "lane": {
+          "layers": null,
+          "max_mm": 14.0,
+          "mm": 0.0,
+          "ok": false,
+          "reason": "NO_PATH",
+          "seconds": 13.8,
+          "via_xy": null,
+          "vias": 0
+        },
+        "nolane": {
+          "layers": [
+            "B"
+          ],
+          "max_mm": 40.0,
+          "mm": 3.306,
+          "ok": true,
+          "reason": null,
+          "seconds": 5.2,
+          "via_xy": [],
+          "vias": 0
+        },
+        "nolift": {
+          "layers": null,
+          "max_mm": 40.0,
+          "mm": 0.0,
+          "ok": false,
+          "reason": "NO_PATH",
+          "seconds": 13.6,
+          "via_xy": null,
+          "vias": 0
+        }
+      },
+      "b_mm": [
+        58.3,
+        52.5
+      ],
+      "layer": "B.Cu",
+      "net": "/09_COMMUNITY_HEADER/WAKE_GATE_S",
+      "spec_max_mm": 14.0,
+      "terminal_lift": [],
+      "was_mm": 3.3061
+    }
+  ],
+  "removed": null,
+  "schema": 1,
+  "spec": "w/d671/detour-scl-u16.json",
+  "wide_mm": 40.0
+}

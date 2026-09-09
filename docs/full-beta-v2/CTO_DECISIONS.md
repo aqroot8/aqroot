@@ -1,3 +1,236 @@
+# D-671 · 2026-09-09 · Demo — THE NEXT STEP NAMED THE WRONG PLANE AND THE CHEAPEST LAND WAS THE LEAST VALUABLE ONE; THE LEVER THAT FIXES RP4 SEVERS THE PLANE IN 39 GEOMETRIES OF 39
+
+**NO COPPER PROMOTED — FRAMEWORK + CHARACTERISATION.**  Authority **UNCHANGED**
+at `c3286d8fdd23b6bdb037de2a753051b3ac2aa2e5ccaba2e25ced3d39cf4884b2`; retained
+open edges 27 -> 27, open retained nets 15 -> 15
+(`evidence/d671-routing-ledger.json`).  `hardware/beta-v2` and
+`hardware/demo/kicad` **UNTOUCHED** — every artifact below reports
+`authoritative_unchanged: true` and the board's sha256 is byte-identical at
+exit.  Two new tracked read-only screens, **add-only**, and not one line of any
+promoting instrument touched; the standing suite was re-run anyway and reads
+**14/14 RAN, 14/14 PASS, 14/14 COMPARED, all IDENTICAL to `d670`, `vacuous`
+false** (`evidence/d671-contract-regression.json`); baselines emitted for D-672.
+
+D-670 §7 left a ranked next list whose first item was unambiguous:
+*"`/I2C_SCL_INT` `U1.38 <-> TP5.1` IS THE BEST EDGE ON THE BOARD AND ITS
+BLOCKER WAS RETIRED THREE DECISIONS AGO … author the `.kicad_dru` `In1.Cu`
+corridor licence BEFORE the router runs, price the return, then gate.  27 ->
+26."*  **All three clauses of that sentence are wrong, and the repository
+already said so.**
+
+## 1. `In1.Cu` IS REFUSED BY THE BOARD'S OWN RULE, AND D-643 DOES NOT REACH IT
+
+Re-asked on the CURRENT authority, not on D-635's `5715bf5c`:
+`screen_plane_haul.py` closes `/I2C_SCL_INT` `U1.38 <-> TP5.1` at the full
+0.200 mm netclass trunk on **`F -> In1 -> F`** and on **`F -> In4 -> F`**, both
+**14.4917 mm, both 2 barrels** at (60.2, 138.0) and (52.0, 145.8)
+(`evidence/d671-plane-haul-{i1,i4}.json`) — D-635's measurement reproduces
+exactly on a board 35 decisions younger.  **And offering `F,B,I2` alone is
+`NO_PATH`** (`evidence/d671-plane-haul-i2-refused.json`): only a RESERVED PLANE
+closes this edge, so it is a licence question and never an ordinary route.
+
+**`In1.Cu` was already REFUSED by D-636 §5, by `RP3`**, because four of its
+nine crossings are the USB high-speed pair and the rule `RP3` cites is named
+*"USB 2.0 differential pair geometry (90 ohm on F.Cu over In1)"* — the board
+NAMES `In1` as that pair's reference plane.  Writing an `In1.Cu` corridor
+licence would have been a gate run spent against the design's own authored
+intent.
+
+**AND THE PRICE THAT IS OUTSTANDING IS NOT THE ONE D-643 MADE PAYABLE.**
+`PP2` prices a POUR severance in amperes and `screen_return_fragment_bar.py`
+(D-643) made a `GND` pour fragment payable at its netclass track width.  A
+REFERENCE severance is a different clause in a different module —
+`checks/plane_return_path.py` `RP1..RP6`, D-636 — and it was never blocked.  It
+was ALREADY RUN, and re-run here on the current board with an identical verdict
+(`evidence/d671-return-path-i4.json`): **`RP1` PASS (outlines 1 -> 1, 8.902 mm2
+lost, 270 anchors, 0 off the main body), `RP2`/`RP3`/`RP5`/`RP6` PASS, `RP4`
+FAIL — 7.6698 mm of induced return detour on `/I2S_LRCLK` against a 7.146 mm
+budget at a stated `--edge-ns 1.0`.**  The In4 edge is a **DATA** gap of one
+figure, exactly as D-636 §5 recorded it, and no licence, screen or router flag
+retires it.
+
+## 2. THE LEVER THAT FIXES `RP4` SEVERS THE PLANE — 39 GEOMETRIES, 39 SEVERANCES
+
+D-636 §3 spent `--plane-block` as a HALF-PLANE — forbid `In4` east of the
+crossing so the slot must START past it — at every rung from x = 59.0 down to
+57.0, got `NO_PATH` at all of them, and concluded *"the 7.670 mm crossing is
+FORCED BY THE BOARD"* and *"the number cannot be reduced by routing"*.
+
+**A NARROW box BESIDE the crossing is a different question and it was never
+asked.**  The haul does not have to LEAVE the plane to get past a small
+obstacle; it only has to go ROUND it, and going round moves BOTH slot ends.
+New tracked read-only **`screen_plane_block_sweep.py`** asks it and prices
+every rung with the board's own clause
+(`evidence/d671-plane-block-sweep.json`, base rung + **39 boxes**):
+
+  * **the crossing is NOT forced.**  All 39 boxes CLOSE at the full 0.200 mm
+    trunk with 2 barrels, 14.6847 -> 17.5399 mm, and **`RP4`'s worst admitted
+    detour falls from 7.6698 mm to as little as 3.3145 mm — `RP4` PASSES in 37
+    of 39.**
+  * **and `RP1` fails in 39 of 39.**  Outlines **1 -> 2, 3 or 4**; area lost
+    8.923 -> 11.034 mm2 against the base 8.902; `anchors_off_body` **0 in every
+    one**.  The detour that shortens the return arc closes a loop and leaves
+    ANCHOR-LESS SLIVERS of the reference plane — copper connected to no pad and
+    no barrel, which is not a connectivity failure and is exactly the shape the
+    board's own unlocalised `copper_sliver` finding is about.
+
+**So D-636's conclusion was right about the copper and wrong about the reason.**
+The 7.670 mm crossing is not geometrically forced; it is the price of the ONLY
+geometry in which the plane survives.  `any_all_pass: false`.  **The In4 edge
+stays a DATA question and this decision closes the routing family that looked
+like an alternative to it.**
+
+## 3. THE FRONTIER WAS RANKED BY CHEAPNESS AND THE THREE OPEN `/I2C_SCL_INT` LANDS ARE NOT WORTH THE SAME
+
+D-670's partition ranks lands by whether they can LAUNCH.  That is the right
+question for a router and the wrong one for a release gate, and on this net the
+two orders are opposite:
+
+    TP5.1   HAS_VIA_SITE, 1189 via-legal   TestPoint_Pad_D1.0mm `I2C_SCL_TEST`
+                                           -- TESTABILITY ONLY
+    U14.7   RASTER, 0 via-legal            MAX17048 fuel gauge SCL -- a
+                                           MUST-HAVE feature, and the board's
+                                           one OPEN OWNER DECISION
+    U16.3   SEALED, 0 via-legal            TCA4307 `SCLIN` -- the COMMUNITY
+                                           PORT's internal SCL, named by
+                                           AQROOT_DEMO_SCOPE, and the missing
+                                           half of a pair whose SDA twin
+                                           `U16.6` is already routed
+
+`U16`'s pinout is not inferred here: `docs/full-beta-v2/assembly/
+FOOTPRINT_VERIFICATION_LEDGER.md` carries it verified pin by pin — *"1 EN,
+2 SCLOUT, 3 SCLIN, 4 GND, 5 READY, 6 SDAIN, 7 SDAOUT, 8 VCC; IN side on the
+internal bus, OUT side on the accessory segment"* — and the board agrees on all
+eight.  **The cheapest land on this net is the only one that is not a Demo
+feature, and slotting a `GND` reference plane to reach a TEST POINT is the
+worst trade of the three.**
+
+## 4. `U16.3`'s POCKET FALLS TO ONE OBJECT, ITS TAP IS THE BEST ON THE BOARD, AND THE CORRIDOR MOVES FOR NEITHER
+
+  * **THE POCKET IS ONE OBJECT.**  `screen_escape_pocket.py --blame`
+    (`evidence/d671-pocket-scl-blame.json`): 103 objects of 11 nets in the 4 mm
+    box; **ONE MATERIAL unit** — `/09_COMMUNITY_HEADER/WAKE_GATE_S`
+    `B.Cu [58.5, 55.8] -> [58.3, 52.5]`, 0.200 mm, `count` 1 — takes the pocket
+    **0.2875 -> 2.5138 mm2 (8.7x) and 0 -> 172 via-legal cells**, escapes 2 ->
+    4.  It is **not protected copper** (`evidence/d671-protected-copper.json`,
+    15 nets / 393 objects, identical to HEAD).
+  * **AND THE TAP IS THE BEST GAIN ON THE BOARD.**  `screen_net_tap.py
+    --census` (`evidence/d671-tap-census.json`, 19 MEASURED / 7
+    STUB_FORBIDDEN): `U16.3` is **6.0483 mm from its own `F.Cu` copper against
+    15.5847 mm to the nearest pad — a 9.5364 mm gain**, the largest of the
+    nineteen, and D-669 §4 built `--tap-first` for exactly that shape.
+  * **THE TRANSACTION OPENED THE LAUNCH AND THE CORRIDOR REFUSED.**  Arm A
+    (`evidence/d671-tx-scl-evict-hub-armA.json`): `--evict
+    /09_COMMUNITY_HEADER/WAKE_GATE_S --evict-window 54.4,51.4,59.6,60.0`
+    removed **exactly the eight objects of the whole local hub** — five `B.Cu`
+    tracks, one `In3.Cu` track and the barrel at (57.3, 56.6) — with `--tap
+    --tap-first --tap-max-mm 8` at 0.050 mm.  **`U16.3`'s `dst_escapes` went
+    0 -> 5** and every route refused: the maze `NO_PATH` on all three island
+    pairs and the TAP `NO_PATH` on all three targets.  `board_improved` false,
+    `no_regression` false (the bounded repair did not put `WAKE_GATE_S` back,
+    27 -> 29); **REFUSED, nothing written.**
+  * **AND IT IS NOT A PITCH AND IT IS NOT ONE MORE NET.**  New tracked
+    read-only **`screen_evicted_corridor.py`** — the instrument D-670 §3's
+    caveat has now needed three times — asks the SECOND question without a gate
+    run (`evidence/d671-evicted-corridor-scl.json`, arms in
+    `evidence/d671-arms-scl-u16-3.json`).  **BASE is `NO_LEGAL_ESCAPE` at
+    0.100 and 0.050 mm and `NO_PATH` at 0.025 mm** — so at the finest pitch the
+    land launches with NO rip-up at all and still has no route — and with the
+    hub's sixteen router objects held out it is **`NO_PATH` at 0.100, 0.050 AND
+    0.025 mm**, then **`NO_PATH` with each of the twelve foreign nets in a
+    9 x 12 mm window round the land dropped one at a time AND `NO_PATH` with
+    ALL TWELVE dropped at once.**  `any_closed: false`.
+  * **THE PER-OBJECT ANSWER IS SIXTEEN UNITS, NOT ONE.**
+    `screen_pair_corridor_blame.py --per-object --minimise-only`, 2370 s
+    (`evidence/d671-pair-blame-u16-3.json`): Q1's upper bound opens `U16.3 <->
+    U4.13` at **19.0389 mm on `B.Cu` with ZERO vias**; Q3's minimal NET set is
+    **four** (`BMI270_SDO_ADDR`, `WAKE_GATE_S`, `I2C_SDA_INT`, `GND`) at
+    21.1619 mm; **Q4 minimises 38 physical units to SIXTEEN** — five
+    `WAKE_GATE_S` tracks and its barrel, one `BMI270_SDO_ADDR` track, two
+    `I2C_SDA_INT` tracks, **four `GND` tracks and FOUR `GND` BARRELS** — at
+    24.8207 mm / 4 vias.  **A pocket answer of ONE object and a corridor answer
+    of SIXTEEN, on the same land**, and four of the sixteen are `GND` pour
+    bonds that `rebond_priced` would charge for.
+
+## 5. D-670 ITEM (3)'s UNSPENT LEVER IS NOW SPENT, AND REFUTED
+
+D-670 §7 item (3) recorded *"A SECOND untried lever on the same land:
+`/SX1262_RXEN`'s barrel alone opens `U3.20` to 4.4975 mm2 and 447 via-legal
+cells, and it is not protected."*  Asked through the same new screen
+(`evidence/d671-evicted-corridor-accpwren.json`, arms in
+`evidence/d671-arms-accpwren-u3-20.json`), `/ACC_PWR_EN` `U3.20 <-> U16.1` —
+the one frontier pair whose BOTH ends the partition calls launchable — is:
+
+    BASE       NO_PATH at 0.100 and 0.050 mm
+    btn        NO_PATH        (BTN_UP_N's B.Cu track, 1 object)
+    rxen       NO_PATH        (SX1262_RXEN's barrel, 14 router objects)
+    btn+rxen   NO_PATH        (both, 15)
+
+**Third confirmation of D-670 §3 in three attempts: on this board a pocket
+opener is not a corridor opener.**  `/ACC_PWR_EN` `U3.20` is now a
+CHARACTERISED corridor wall and not an unasked question.
+
+## 6. WHAT THE TWO NEW SCREENS ARE, AND WHAT THEY ARE NOT
+
+`screen_plane_block_sweep.py` drives `screen_plane_haul.py` and
+`checks/plane_return_path.py` and adds no model of its own; it exists because
+those two must be read TOGETHER and a sweep that recorded only the clause it
+aimed at would have published *"`RP4` PASSES at 3.314 mm"* and hidden that the
+same copper took the plane from one outline to three.  `--edge-ns` is required
+and has no default, exactly as in the clause it calls.
+
+`screen_evicted_corridor.py` holds copper out in the units
+`route_maze_batch.py` already licenses — a net WHOLLY INSIDE a stated window
+(`--evict` / `--evict-window`) or one exact object signature
+(`--detour-spec`) — ladders the pitch and stops at the first rung that closes,
+and can then sweep a stated window net by net and all at once.  Arm `BASE` is
+always run first, so a refusal is never mistaken for a measurement — the D-668
+failure that cost a 232 s `NO_PATH` which was really the base.  It writes
+nothing and asks nothing the gate would not ask.
+
+## 7. NEXT, IN ORDER OF LEVERAGE
+
+ 1. **THE `/I2S_LRCLK` EDGE RATE IS STILL THE ONLY THING BETWEEN THIS BOARD AND
+    ITS FIRST PLANE HAUL**, and §2 has now closed the routing alternative to
+    it.  D-636 item 1 remains exactly right and is 35 decisions old: read the
+    figure off the parts, record it as a machine-readable per-part `edge_ns`
+    column beside `docs/full-beta-v2/assembly/SOURCING_LEDGER.md`, and have
+    `RP4` read it instead of a command-line argument.  **Any published value at
+    or above 1.08 ns admits `/I2C_SCL_INT` `U1.38 <-> TP5.1` outright** at the
+    full netclass trunk on `In4`, with the `GND` stitch barrels D-636 item 2
+    already named; below it, the edge is REFUSED on measurement rather than
+    parked on an assumption.  This is worth more than one edge: `RP4` is the
+    clause every future plane licence is decided by.  **It is a DATA task, not
+    a routing task, and this repository does not carry the figure** — D-633's
+    LL-C forbids inventing it.
+ 2. **`/I2C_SCL_INT` `U16.3` IS A PLACEMENT FINDING, NOT A ROUTING ONE, AND IT
+    IS A DEMO FEATURE.**  The Community Port's internal SCL cannot reach the
+    `TCA4307` and §4 proves no containment-bounded rip-up in a 9 x 12 mm window
+    reaches it either.  The board's own answer is in the geometry: `U16` is a
+    `B.Cu` VSSOP-8 whose west pin row faces a thicket of its own
+    `EXT_SCL_BUF` return and whose east side is walled by `/ACC_DETECT_N` at
+    x = 59.05, 0.65 mm past the `WAKE_GATE_S` segment §4 blames.  **The move is
+    a `U16` / `R17` / `R63` pocket re-floorplan**, which is the same pocket
+    `/ACC_PWR_EN` `U16.1` and `R17.1` are stuck in (§5) — **three open edges of
+    two Demo-required Community Port nets in one 6 x 6 mm square**, which is
+    the first refloorplan on this board that pays for itself three times.
+    Screen it with `screen_u2_status_neighborhood_refloor.py`'s shape before
+    moving anything.
+ 3. **`/I2C_SCL_INT` `U14.7`** (MAX17048 fuel-gauge SCL, `RASTER`, 0.005 ->
+    0.040 mm2, ONE escape at the finest pitch) remains the **one OPEN OWNER
+    DECISION**, RECORDED NOT TAKEN, and is a MUST-HAVE feature; it is the third
+    open edge of this net and neither §4's instrument nor a refloorplan of `U16`
+    reaches it.
+ 4. `/USB_D_MCU_N`/`_P` stay the D-583/D-618 `SEGMENT_WALL` and are refused on
+    `either` plane by `RP5` (D-636 §4); `/USB_D_CONN_P` remains the `J3`
+    mechanical owner decision.  The **thirteen `NO_ESCAPE_AT_ANY_PITCH` lands**
+    (D-670 §1) are unchanged.
+ 5. `copper_sliver` localisation remains an OPEN INSTRUMENT GAP and §2 has just
+    made it load-bearing: every rung of the block sweep produces exactly the
+    anchor-less sliver that finding is about.
+ 6. `hardware/demo/fab` is **FRESH at `c3286d8f`** and this decision promotes
+    nothing that stales it.
+
 # D-670 · 2026-09-09 · Demo — A LADDER THAT MEASURED THE WRONG END OF EVERY TWO-PAD NET, AND A RESERVATION WORTH 0.072 mm OF THE 2.200 mm IT ASKED FOR
 
 **NO COPPER PROMOTED — FRAMEWORK + CHARACTERISATION.**  Authority **UNCHANGED**

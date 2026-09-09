@@ -1,0 +1,76 @@
+{
+ "a": "U1.38",
+ "authoritative_unchanged": true,
+ "b": "TP5.1",
+ "barrels": [],
+ "board": "/home/aqroot8/aqroot-demo/hardware/demo/kicad/aqroot-demo/aqroot-Beta-v2.kicad_pcb",
+ "board_sha256": "c3286d8fdd23b6bdb037de2a753051b3ac2aa2e5ccaba2e25ced3d39cf4884b2",
+ "dru_floor_nm": 150000,
+ "far": [
+  "F",
+  "B",
+  "I2"
+ ],
+ "gap_mm": 13.286,
+ "grid_nm": 100000,
+ "launches": [
+  {
+   "a_xy": [
+    60.47,
+    136.75
+   ],
+   "b_xy": [
+    60.5,
+    138.0
+   ],
+   "base_dir": true,
+   "centre": true,
+   "layer": "F",
+   "mm": 1.2504,
+   "necked": false,
+   "offcentre_mm": 0.0,
+   "pad": "U1.38",
+   "trunk_width": 200000,
+   "width": 200000
+  },
+  {
+   "a_xy": [
+    50.8553,
+    145.9194
+   ],
+   "b_xy": [
+    51.8,
+    145.9
+   ],
+   "base_dir": true,
+   "centre": true,
+   "layer": "F",
+   "mm": 0.9449,
+   "necked": false,
+   "offcentre_mm": 0.0,
+   "pad": "TP5.1",
+   "trunk_width": 200000,
+   "width": 200000
+  }
+ ],
+ "layers": null,
+ "licensed_unconditionally": false,
+ "method": "read-only; one pad pair, one trunk width, one --far set; every object the trial laid is dumped from qb.laid before qb.revert removes it, and the board's sha256 is re-read afterwards.  A closure here is a LICENCE QUESTION and never copper: the plane is reserved to GND by .kicad_dru sections 2a/2b and no rule area names a corridor in it",
+ "mm": null,
+ "mm_by_layer": null,
+ "net": "/I2C_SCL_INT",
+ "netclass": "I2C",
+ "ok": false,
+ "plane_blocks": [],
+ "question": "what EXACT copper does maze3d.offcentre_route lay for this pad pair when a reserved inner plane is offered as a haul layer",
+ "reason": "NO_PATH",
+ "return_keepout": null,
+ "schema": 1,
+ "seconds": 0.46,
+ "stub_mm": null,
+ "terminals": null,
+ "tracks": [],
+ "trunk_width_nm": 200000,
+ "vias_count": null,
+ "why": "no all-layer corridor at 0.200 mm from U1.38 on F to TP5.1 on F"
+}

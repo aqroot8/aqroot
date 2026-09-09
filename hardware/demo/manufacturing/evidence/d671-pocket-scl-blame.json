@@ -1,0 +1,1123 @@
+{
+  "all_lands": false,
+  "board": "/home/aqroot8/aqroot-demo/hardware/demo/kicad/aqroot-demo/aqroot-Beta-v2.kicad_pcb",
+  "board_sha256": "c3286d8fdd23b6bdb037de2a753051b3ac2aa2e5ccaba2e25ced3d39cf4884b2",
+  "escape_floor": false,
+  "guard": null,
+  "guard_sha256": null,
+  "method": "read-only; maze3d._shift_or flood over ~field.blk[layer] from maze3d.pad_escapes launch points, at each pitch, on the same contract/guard/escape-floor route_maze_batch.propose builds; area in mm2 so the rungs are comparable",
+  "neck": false,
+  "nets": [
+    {
+      "body": [
+        "U1.38",
+        "R20.2",
+        "J1.44",
+        "U2.22",
+        "U4.13",
+        "U3.22"
+      ],
+      "body_arbitrary": false,
+      "has_plane": false,
+      "lands": [
+        {
+          "area_max_mm2": 4.9869,
+          "area_min_mm2": 4.08,
+          "growth": 1.222,
+          "island": [
+            "TP5.1"
+          ],
+          "pad": "TP5.1",
+          "rungs": [
+            {
+              "area_mm2": 4.08,
+              "cells": 408,
+              "escapes": 11,
+              "grid_nm": 100000,
+              "layer": "F",
+              "seconds": 0.8,
+              "via_legal_in_pocket": 47
+            },
+            {
+              "area_mm2": 4.7225,
+              "cells": 1889,
+              "escapes": 6,
+              "grid_nm": 50000,
+              "layer": "F",
+              "seconds": 3.6,
+              "via_legal_in_pocket": 260
+            },
+            {
+              "area_mm2": 4.9869,
+              "cells": 7979,
+              "escapes": 5,
+              "grid_nm": 25000,
+              "layer": "F",
+              "seconds": 31.5,
+              "via_legal_in_pocket": 1189
+            }
+          ],
+          "verdict": "HAS_VIA_SITE"
+        },
+        {
+          "area_max_mm2": 0.04,
+          "area_min_mm2": 0.005,
+          "growth": 8.0,
+          "island": [
+            "U14.7"
+          ],
+          "pad": "U14.7",
+          "rungs": [
+            {
+              "area_mm2": 0.0,
+              "cells": 0,
+              "escapes": 0,
+              "grid_nm": 100000,
+              "layer": null,
+              "seconds": 0.1,
+              "via_legal_in_pocket": 0
+            },
+            {
+              "area_mm2": 0.005,
+              "cells": 2,
+              "escapes": 1,
+              "grid_nm": 50000,
+              "layer": "B",
+              "seconds": 0.1,
+              "via_legal_in_pocket": 0
+            },
+            {
+              "area_mm2": 0.04,
+              "cells": 64,
+              "escapes": 1,
+              "grid_nm": 25000,
+              "layer": "B",
+              "seconds": 1.6,
+              "via_legal_in_pocket": 0
+            }
+          ],
+          "verdict": "RASTER"
+        },
+        {
+          "area_max_mm2": 0.2875,
+          "area_min_mm2": 0.15,
+          "blame": {
+            "base": {
+              "area_mm2": 0.2875,
+              "cells": 460,
+              "escapes": 2,
+              "layer": "B",
+              "via_legal_in_pocket": 0
+            },
+            "box_mm": [
+              55.1375,
+              52.425,
+              59.1375,
+              56.425
+            ],
+            "grid_nm": 25000,
+            "margin_mm": 2.0,
+            "material_net_openers": [
+              {
+                "area_mm2": 22.8269,
+                "escapes": 4,
+                "net": "/09_COMMUNITY_HEADER/WAKE_GATE_S",
+                "via_legal_in_pocket": 5468
+              },
+              {
+                "area_mm2": 10.9306,
+                "escapes": 4,
+                "net": "/09_COMMUNITY_HEADER/EXT_SCL_BUF",
+                "via_legal_in_pocket": 1255
+              }
+            ],
+            "material_unit_openers": [
+              {
+                "area_mm2": 2.5138,
+                "cells": 4022,
+                "escapes": 4,
+                "layer": "B",
+                "seconds": 47.2,
+                "unit": {
+                  "a_mm": [
+                    58.5,
+                    55.8
+                  ],
+                  "b_mm": [
+                    58.3,
+                    52.5
+                  ],
+                  "count": 1,
+                  "kind": "track",
+                  "layer": "B.Cu",
+                  "net": "/09_COMMUNITY_HEADER/WAKE_GATE_S",
+                  "objects": 1,
+                  "router_objects": 1,
+                  "width_mm": 0.2
+                },
+                "via_legal_in_pocket": 172
+              }
+            ],
+            "material_verdict": "RIPUP_SINGLE_UNIT",
+            "materiality": {
+              "base_area_mm2": 0.2875,
+              "base_via_legal": 0,
+              "growth_threshold": 2.0,
+              "rule": "an opener is MATERIAL if it gains a via-legal cell in the pocket or multiplies the pocket area by at least 2.0 -- the same figure the ladder uses to call a seal a raster"
+            },
+            "nets": [
+              "/09_COMMUNITY_HEADER/EXT_SCL",
+              "/09_COMMUNITY_HEADER/EXT_SCL_BUF",
+              "/09_COMMUNITY_HEADER/WAKE_GATE_S",
+              "/ACC_3V3_SW",
+              "/ACC_5V_SW_EN",
+              "/ACC_DETECT_N",
+              "/ACC_POWER_FAULT_N",
+              "/ACC_PWR_EN",
+              "/XGPIO4",
+              "/XGPIO5",
+              "GND"
+            ],
+            "objects": 103,
+            "per_unit": [
+              {
+                "area_mm2": 2.5138,
+                "cells": 4022,
+                "escapes": 4,
+                "layer": "B",
+                "seconds": 47.2,
+                "unit": {
+                  "a_mm": [
+                    58.5,
+                    55.8
+                  ],
+                  "b_mm": [
+                    58.3,
+                    52.5
+                  ],
+                  "count": 1,
+                  "kind": "track",
+                  "layer": "B.Cu",
+                  "net": "/09_COMMUNITY_HEADER/WAKE_GATE_S",
+                  "objects": 1,
+                  "router_objects": 1,
+                  "width_mm": 0.2
+                },
+                "via_legal_in_pocket": 172
+              },
+              {
+                "area_mm2": 0.2963,
+                "cells": 474,
+                "escapes": 2,
+                "layer": "B",
+                "seconds": 22.6,
+                "unit": {
+                  "a_mm": [
+                    56.075,
+                    54.85
+                  ],
+                  "b_mm": [
+                    55.9,
+                    54.375
+                  ],
+                  "count": 1,
+                  "kind": "track",
+                  "layer": "B.Cu",
+                  "net": "/09_COMMUNITY_HEADER/EXT_SCL_BUF",
+                  "objects": 1,
+                  "router_objects": 1,
+                  "width_mm": 0.2
+                },
+                "via_legal_in_pocket": 0
+              },
+              {
+                "area_mm2": 0.2875,
+                "cells": 460,
+                "escapes": 2,
+                "layer": "B",
+                "seconds": 22.9,
+                "unit": {
+                  "a_mm": [
+                    55.8,
+                    53.5
+                  ],
+                  "b_mm": [
+                    55.9,
+                    53.6
+                  ],
+                  "count": 1,
+                  "kind": "track",
+                  "layer": "B.Cu",
+                  "net": "/09_COMMUNITY_HEADER/EXT_SCL_BUF",
+                  "objects": 1,
+                  "router_objects": 1,
+                  "width_mm": 0.2
+                },
+                "via_legal_in_pocket": 0
+              },
+              {
+                "area_mm2": 0.2875,
+                "cells": 460,
+                "escapes": 2,
+                "layer": "B",
+                "seconds": 22.9,
+                "unit": {
+                  "a_mm": [
+                    55.9,
+                    54.375
+                  ],
+                  "b_mm": [
+                    55.9,
+                    53.6
+                  ],
+                  "count": 1,
+                  "kind": "track",
+                  "layer": "B.Cu",
+                  "net": "/09_COMMUNITY_HEADER/EXT_SCL_BUF",
+                  "objects": 1,
+                  "router_objects": 1,
+                  "width_mm": 0.2
+                },
+                "via_legal_in_pocket": 0
+              },
+              {
+                "area_mm2": 0.2875,
+                "cells": 460,
+                "escapes": 2,
+                "layer": "B",
+                "seconds": 22.7,
+                "unit": {
+                  "a_mm": [
+                    56.075,
+                    54.85
+                  ],
+                  "b_mm": [
+                    54.5,
+                    53.2
+                  ],
+                  "count": 1,
+                  "kind": "track",
+                  "layer": "B.Cu",
+                  "net": "/09_COMMUNITY_HEADER/EXT_SCL_BUF",
+                  "objects": 1,
+                  "router_objects": 1,
+                  "width_mm": 0.2
+                },
+                "via_legal_in_pocket": 0
+              },
+              {
+                "area_mm2": 0.2875,
+                "cells": 460,
+                "escapes": 2,
+                "layer": "B",
+                "seconds": 22.8,
+                "unit": {
+                  "a_mm": [
+                    56.3,
+                    55.0
+                  ],
+                  "b_mm": [
+                    56.075,
+                    54.85
+                  ],
+                  "count": 2,
+                  "kind": "track",
+                  "layer": "B.Cu",
+                  "net": "/09_COMMUNITY_HEADER/EXT_SCL_BUF",
+                  "objects": 2,
+                  "router_objects": 2,
+                  "width_mm": 0.2
+                },
+                "via_legal_in_pocket": 0
+              },
+              {
+                "area_mm2": 0.2875,
+                "cells": 460,
+                "escapes": 2,
+                "layer": "B",
+                "seconds": 22.9,
+                "unit": {
+                  "a_mm": [
+                    56.4,
+                    52.8
+                  ],
+                  "b_mm": [
+                    55.8,
+                    53.5
+                  ],
+                  "count": 1,
+                  "kind": "track",
+                  "layer": "B.Cu",
+                  "net": "/09_COMMUNITY_HEADER/EXT_SCL_BUF",
+                  "objects": 1,
+                  "router_objects": 1,
+                  "width_mm": 0.2
+                },
+                "via_legal_in_pocket": 0
+              },
+              {
+                "area_mm2": 0.2875,
+                "cells": 460,
+                "escapes": 2,
+                "layer": "B",
+                "seconds": 22.8,
+                "unit": {
+                  "a_mm": [
+                    56.45,
+                    55.0
+                  ],
+                  "b_mm": [
+                    56.3,
+                    55.0
+                  ],
+                  "count": 2,
+                  "kind": "track",
+                  "layer": "B.Cu",
+                  "net": "/09_COMMUNITY_HEADER/EXT_SCL_BUF",
+                  "objects": 2,
+                  "router_objects": 2,
+                  "width_mm": 0.2
+                },
+                "via_legal_in_pocket": 0
+              },
+              {
+                "area_mm2": 0.2875,
+                "cells": 460,
+                "escapes": 2,
+                "layer": "B",
+                "seconds": 22.7,
+                "unit": {
+                  "a_mm": [
+                    60.1,
+                    49.1
+                  ],
+                  "b_mm": [
+                    56.4,
+                    52.8
+                  ],
+                  "count": 1,
+                  "kind": "track",
+                  "layer": "F.Cu",
+                  "net": "/09_COMMUNITY_HEADER/EXT_SCL_BUF",
+                  "objects": 1,
+                  "router_objects": 1,
+                  "width_mm": 0.2
+                },
+                "via_legal_in_pocket": 0
+              },
+              {
+                "area_mm2": 0.2875,
+                "cells": 460,
+                "escapes": 2,
+                "layer": "B",
+                "seconds": 22.7,
+                "unit": {
+                  "at_mm": [
+                    56.4,
+                    52.8
+                  ],
+                  "count": 1,
+                  "dia_mm": 0.6,
+                  "drill_mm": 0.3,
+                  "kind": "barrel",
+                  "net": "/09_COMMUNITY_HEADER/EXT_SCL_BUF",
+                  "objects": 14,
+                  "router_objects": 14
+                },
+                "via_legal_in_pocket": 0
+              },
+              {
+                "area_mm2": 0.2875,
+                "cells": 460,
+                "escapes": 2,
+                "layer": "B",
+                "seconds": 22.5,
+                "unit": {
+                  "a_mm": [
+                    56.4,
+                    57.0
+                  ],
+                  "b_mm": [
+                    58.2,
+                    56.3
+                  ],
+                  "count": 1,
+                  "kind": "track",
+                  "layer": "B.Cu",
+                  "net": "/09_COMMUNITY_HEADER/WAKE_GATE_S",
+                  "objects": 1,
+                  "router_objects": 1,
+                  "width_mm": 0.2
+                },
+                "via_legal_in_pocket": 0
+              },
+              {
+                "area_mm2": 0.2875,
+                "cells": 460,
+                "escapes": 2,
+                "layer": "B",
+                "seconds": 22.7,
+                "unit": {
+                  "a_mm": [
+                    58.2,
+                    56.3
+                  ],
+                  "b_mm": [
+                    58.5,
+                    55.8
+                  ],
+                  "count": 1,
+                  "kind": "track",
+                  "layer": "B.Cu",
+                  "net": "/09_COMMUNITY_HEADER/WAKE_GATE_S",
+                  "objects": 1,
+                  "router_objects": 1,
+                  "width_mm": 0.2
+                },
+                "via_legal_in_pocket": 0
+              },
+              {
+                "area_mm2": 0.2875,
+                "cells": 460,
+                "escapes": 2,
+                "layer": "B",
+                "seconds": 22.8,
+                "unit": {
+                  "a_mm": [
+                    58.3,
+                    52.5
+                  ],
+                  "b_mm": [
+                    54.3,
+                    48.1
+                  ],
+                  "count": 1,
+                  "kind": "track",
+                  "layer": "B.Cu",
+                  "net": "/09_COMMUNITY_HEADER/WAKE_GATE_S",
+                  "objects": 1,
+                  "router_objects": 1,
+                  "width_mm": 0.2
+                },
+                "via_legal_in_pocket": 0
+              },
+              {
+                "area_mm2": 0.2875,
+                "cells": 460,
+                "escapes": 2,
+                "layer": "B",
+                "seconds": 22.6,
+                "unit": {
+                  "at_mm": [
+                    57.3,
+                    56.6
+                  ],
+                  "count": 1,
+                  "dia_mm": 0.6,
+                  "drill_mm": 0.0,
+                  "kind": "barrel",
+                  "net": "/09_COMMUNITY_HEADER/WAKE_GATE_S",
+                  "objects": 12,
+                  "router_objects": 12
+                },
+                "via_legal_in_pocket": 0
+              }
+            ],
+            "schema": 1,
+            "single_net_openers": [
+              {
+                "area_mm2": 22.8269,
+                "escapes": 4,
+                "net": "/09_COMMUNITY_HEADER/WAKE_GATE_S",
+                "via_legal_in_pocket": 5468
+              },
+              {
+                "area_mm2": 10.9306,
+                "escapes": 4,
+                "net": "/09_COMMUNITY_HEADER/EXT_SCL_BUF",
+                "via_legal_in_pocket": 1255
+              }
+            ],
+            "single_unit_openers": [
+              {
+                "area_mm2": 2.5138,
+                "cells": 4022,
+                "escapes": 4,
+                "layer": "B",
+                "seconds": 47.2,
+                "unit": {
+                  "a_mm": [
+                    58.5,
+                    55.8
+                  ],
+                  "b_mm": [
+                    58.3,
+                    52.5
+                  ],
+                  "count": 1,
+                  "kind": "track",
+                  "layer": "B.Cu",
+                  "net": "/09_COMMUNITY_HEADER/WAKE_GATE_S",
+                  "objects": 1,
+                  "router_objects": 1,
+                  "width_mm": 0.2
+                },
+                "via_legal_in_pocket": 172
+              },
+              {
+                "area_mm2": 0.2963,
+                "cells": 474,
+                "escapes": 2,
+                "layer": "B",
+                "seconds": 22.6,
+                "unit": {
+                  "a_mm": [
+                    56.075,
+                    54.85
+                  ],
+                  "b_mm": [
+                    55.9,
+                    54.375
+                  ],
+                  "count": 1,
+                  "kind": "track",
+                  "layer": "B.Cu",
+                  "net": "/09_COMMUNITY_HEADER/EXT_SCL_BUF",
+                  "objects": 1,
+                  "router_objects": 1,
+                  "width_mm": 0.2
+                },
+                "via_legal_in_pocket": 0
+              }
+            ],
+            "steps": [
+              {
+                "area_mm2": 66.9413,
+                "cells": 107106,
+                "escapes": 4,
+                "layer": "B",
+                "seconds": 111.8,
+                "step": "Q1_ALL_OUT",
+                "via_legal_in_pocket": 50322
+              },
+              {
+                "area_mm2": 0.2875,
+                "cells": 460,
+                "escapes": 2,
+                "layer": "B",
+                "net": "/09_COMMUNITY_HEADER/EXT_SCL",
+                "seconds": 22.7,
+                "step": "Q2_NET_OUT",
+                "via_legal_in_pocket": 0
+              },
+              {
+                "area_mm2": 10.9306,
+                "cells": 17489,
+                "escapes": 4,
+                "layer": "B",
+                "net": "/09_COMMUNITY_HEADER/EXT_SCL_BUF",
+                "seconds": 76.0,
+                "step": "Q2_NET_OUT",
+                "via_legal_in_pocket": 1255
+              },
+              {
+                "area_mm2": 22.8269,
+                "cells": 36523,
+                "escapes": 4,
+                "layer": "B",
+                "net": "/09_COMMUNITY_HEADER/WAKE_GATE_S",
+                "seconds": 116.1,
+                "step": "Q2_NET_OUT",
+                "via_legal_in_pocket": 5468
+              },
+              {
+                "area_mm2": 0.2875,
+                "cells": 460,
+                "escapes": 2,
+                "layer": "B",
+                "net": "/ACC_3V3_SW",
+                "seconds": 22.8,
+                "step": "Q2_NET_OUT",
+                "via_legal_in_pocket": 0
+              },
+              {
+                "area_mm2": 0.2875,
+                "cells": 460,
+                "escapes": 2,
+                "layer": "B",
+                "net": "/ACC_5V_SW_EN",
+                "seconds": 22.9,
+                "step": "Q2_NET_OUT",
+                "via_legal_in_pocket": 0
+              },
+              {
+                "area_mm2": 0.2875,
+                "cells": 460,
+                "escapes": 2,
+                "layer": "B",
+                "net": "/ACC_DETECT_N",
+                "seconds": 22.7,
+                "step": "Q2_NET_OUT",
+                "via_legal_in_pocket": 0
+              },
+              {
+                "area_mm2": 0.2875,
+                "cells": 460,
+                "escapes": 2,
+                "layer": "B",
+                "net": "/ACC_POWER_FAULT_N",
+                "seconds": 22.6,
+                "step": "Q2_NET_OUT",
+                "via_legal_in_pocket": 0
+              },
+              {
+                "area_mm2": 0.2875,
+                "cells": 460,
+                "escapes": 2,
+                "layer": "B",
+                "net": "/ACC_PWR_EN",
+                "seconds": 22.6,
+                "step": "Q2_NET_OUT",
+                "via_legal_in_pocket": 0
+              },
+              {
+                "area_mm2": 0.2875,
+                "cells": 460,
+                "escapes": 2,
+                "layer": "B",
+                "net": "/XGPIO4",
+                "seconds": 22.7,
+                "step": "Q2_NET_OUT",
+                "via_legal_in_pocket": 0
+              },
+              {
+                "area_mm2": 0.2875,
+                "cells": 460,
+                "escapes": 2,
+                "layer": "B",
+                "net": "/XGPIO5",
+                "seconds": 22.7,
+                "step": "Q2_NET_OUT",
+                "via_legal_in_pocket": 0
+              },
+              {
+                "area_mm2": 0.2875,
+                "cells": 460,
+                "escapes": 2,
+                "layer": "B",
+                "net": "GND",
+                "seconds": 22.7,
+                "step": "Q2_NET_OUT",
+                "via_legal_in_pocket": 0
+              },
+              {
+                "area_mm2": 0.2875,
+                "cells": 460,
+                "escapes": 2,
+                "layer": "B",
+                "seconds": 22.9,
+                "step": "Q3_UNIT_OUT",
+                "unit": {
+                  "a_mm": [
+                    55.8,
+                    53.5
+                  ],
+                  "b_mm": [
+                    55.9,
+                    53.6
+                  ],
+                  "count": 1,
+                  "kind": "track",
+                  "layer": "B.Cu",
+                  "net": "/09_COMMUNITY_HEADER/EXT_SCL_BUF",
+                  "objects": 1,
+                  "router_objects": 1,
+                  "width_mm": 0.2
+                },
+                "via_legal_in_pocket": 0
+              },
+              {
+                "area_mm2": 0.2875,
+                "cells": 460,
+                "escapes": 2,
+                "layer": "B",
+                "seconds": 22.9,
+                "step": "Q3_UNIT_OUT",
+                "unit": {
+                  "a_mm": [
+                    55.9,
+                    54.375
+                  ],
+                  "b_mm": [
+                    55.9,
+                    53.6
+                  ],
+                  "count": 1,
+                  "kind": "track",
+                  "layer": "B.Cu",
+                  "net": "/09_COMMUNITY_HEADER/EXT_SCL_BUF",
+                  "objects": 1,
+                  "router_objects": 1,
+                  "width_mm": 0.2
+                },
+                "via_legal_in_pocket": 0
+              },
+              {
+                "area_mm2": 0.2875,
+                "cells": 460,
+                "escapes": 2,
+                "layer": "B",
+                "seconds": 22.7,
+                "step": "Q3_UNIT_OUT",
+                "unit": {
+                  "a_mm": [
+                    56.075,
+                    54.85
+                  ],
+                  "b_mm": [
+                    54.5,
+                    53.2
+                  ],
+                  "count": 1,
+                  "kind": "track",
+                  "layer": "B.Cu",
+                  "net": "/09_COMMUNITY_HEADER/EXT_SCL_BUF",
+                  "objects": 1,
+                  "router_objects": 1,
+                  "width_mm": 0.2
+                },
+                "via_legal_in_pocket": 0
+              },
+              {
+                "area_mm2": 0.2963,
+                "cells": 474,
+                "escapes": 2,
+                "layer": "B",
+                "seconds": 22.6,
+                "step": "Q3_UNIT_OUT",
+                "unit": {
+                  "a_mm": [
+                    56.075,
+                    54.85
+                  ],
+                  "b_mm": [
+                    55.9,
+                    54.375
+                  ],
+                  "count": 1,
+                  "kind": "track",
+                  "layer": "B.Cu",
+                  "net": "/09_COMMUNITY_HEADER/EXT_SCL_BUF",
+                  "objects": 1,
+                  "router_objects": 1,
+                  "width_mm": 0.2
+                },
+                "via_legal_in_pocket": 0
+              },
+              {
+                "area_mm2": 0.2875,
+                "cells": 460,
+                "escapes": 2,
+                "layer": "B",
+                "seconds": 22.8,
+                "step": "Q3_UNIT_OUT",
+                "unit": {
+                  "a_mm": [
+                    56.3,
+                    55.0
+                  ],
+                  "b_mm": [
+                    56.075,
+                    54.85
+                  ],
+                  "count": 2,
+                  "kind": "track",
+                  "layer": "B.Cu",
+                  "net": "/09_COMMUNITY_HEADER/EXT_SCL_BUF",
+                  "objects": 2,
+                  "router_objects": 2,
+                  "width_mm": 0.2
+                },
+                "via_legal_in_pocket": 0
+              },
+              {
+                "area_mm2": 0.2875,
+                "cells": 460,
+                "escapes": 2,
+                "layer": "B",
+                "seconds": 22.9,
+                "step": "Q3_UNIT_OUT",
+                "unit": {
+                  "a_mm": [
+                    56.4,
+                    52.8
+                  ],
+                  "b_mm": [
+                    55.8,
+                    53.5
+                  ],
+                  "count": 1,
+                  "kind": "track",
+                  "layer": "B.Cu",
+                  "net": "/09_COMMUNITY_HEADER/EXT_SCL_BUF",
+                  "objects": 1,
+                  "router_objects": 1,
+                  "width_mm": 0.2
+                },
+                "via_legal_in_pocket": 0
+              },
+              {
+                "area_mm2": 0.2875,
+                "cells": 460,
+                "escapes": 2,
+                "layer": "B",
+                "seconds": 22.8,
+                "step": "Q3_UNIT_OUT",
+                "unit": {
+                  "a_mm": [
+                    56.45,
+                    55.0
+                  ],
+                  "b_mm": [
+                    56.3,
+                    55.0
+                  ],
+                  "count": 2,
+                  "kind": "track",
+                  "layer": "B.Cu",
+                  "net": "/09_COMMUNITY_HEADER/EXT_SCL_BUF",
+                  "objects": 2,
+                  "router_objects": 2,
+                  "width_mm": 0.2
+                },
+                "via_legal_in_pocket": 0
+              },
+              {
+                "area_mm2": 0.2875,
+                "cells": 460,
+                "escapes": 2,
+                "layer": "B",
+                "seconds": 22.7,
+                "step": "Q3_UNIT_OUT",
+                "unit": {
+                  "a_mm": [
+                    60.1,
+                    49.1
+                  ],
+                  "b_mm": [
+                    56.4,
+                    52.8
+                  ],
+                  "count": 1,
+                  "kind": "track",
+                  "layer": "F.Cu",
+                  "net": "/09_COMMUNITY_HEADER/EXT_SCL_BUF",
+                  "objects": 1,
+                  "router_objects": 1,
+                  "width_mm": 0.2
+                },
+                "via_legal_in_pocket": 0
+              },
+              {
+                "area_mm2": 0.2875,
+                "cells": 460,
+                "escapes": 2,
+                "layer": "B",
+                "seconds": 22.7,
+                "step": "Q3_UNIT_OUT",
+                "unit": {
+                  "at_mm": [
+                    56.4,
+                    52.8
+                  ],
+                  "count": 1,
+                  "dia_mm": 0.6,
+                  "drill_mm": 0.3,
+                  "kind": "barrel",
+                  "net": "/09_COMMUNITY_HEADER/EXT_SCL_BUF",
+                  "objects": 14,
+                  "router_objects": 14
+                },
+                "via_legal_in_pocket": 0
+              },
+              {
+                "area_mm2": 0.2875,
+                "cells": 460,
+                "escapes": 2,
+                "layer": "B",
+                "seconds": 22.5,
+                "step": "Q3_UNIT_OUT",
+                "unit": {
+                  "a_mm": [
+                    56.4,
+                    57.0
+                  ],
+                  "b_mm": [
+                    58.2,
+                    56.3
+                  ],
+                  "count": 1,
+                  "kind": "track",
+                  "layer": "B.Cu",
+                  "net": "/09_COMMUNITY_HEADER/WAKE_GATE_S",
+                  "objects": 1,
+                  "router_objects": 1,
+                  "width_mm": 0.2
+                },
+                "via_legal_in_pocket": 0
+              },
+              {
+                "area_mm2": 0.2875,
+                "cells": 460,
+                "escapes": 2,
+                "layer": "B",
+                "seconds": 22.7,
+                "step": "Q3_UNIT_OUT",
+                "unit": {
+                  "a_mm": [
+                    58.2,
+                    56.3
+                  ],
+                  "b_mm": [
+                    58.5,
+                    55.8
+                  ],
+                  "count": 1,
+                  "kind": "track",
+                  "layer": "B.Cu",
+                  "net": "/09_COMMUNITY_HEADER/WAKE_GATE_S",
+                  "objects": 1,
+                  "router_objects": 1,
+                  "width_mm": 0.2
+                },
+                "via_legal_in_pocket": 0
+              },
+              {
+                "area_mm2": 0.2875,
+                "cells": 460,
+                "escapes": 2,
+                "layer": "B",
+                "seconds": 22.8,
+                "step": "Q3_UNIT_OUT",
+                "unit": {
+                  "a_mm": [
+                    58.3,
+                    52.5
+                  ],
+                  "b_mm": [
+                    54.3,
+                    48.1
+                  ],
+                  "count": 1,
+                  "kind": "track",
+                  "layer": "B.Cu",
+                  "net": "/09_COMMUNITY_HEADER/WAKE_GATE_S",
+                  "objects": 1,
+                  "router_objects": 1,
+                  "width_mm": 0.2
+                },
+                "via_legal_in_pocket": 0
+              },
+              {
+                "area_mm2": 2.5138,
+                "cells": 4022,
+                "escapes": 4,
+                "layer": "B",
+                "seconds": 47.2,
+                "step": "Q3_UNIT_OUT",
+                "unit": {
+                  "a_mm": [
+                    58.5,
+                    55.8
+                  ],
+                  "b_mm": [
+                    58.3,
+                    52.5
+                  ],
+                  "count": 1,
+                  "kind": "track",
+                  "layer": "B.Cu",
+                  "net": "/09_COMMUNITY_HEADER/WAKE_GATE_S",
+                  "objects": 1,
+                  "router_objects": 1,
+                  "width_mm": 0.2
+                },
+                "via_legal_in_pocket": 172
+              },
+              {
+                "area_mm2": 0.2875,
+                "cells": 460,
+                "escapes": 2,
+                "layer": "B",
+                "seconds": 22.6,
+                "step": "Q3_UNIT_OUT",
+                "unit": {
+                  "at_mm": [
+                    57.3,
+                    56.6
+                  ],
+                  "count": 1,
+                  "dia_mm": 0.6,
+                  "drill_mm": 0.0,
+                  "kind": "barrel",
+                  "net": "/09_COMMUNITY_HEADER/WAKE_GATE_S",
+                  "objects": 12,
+                  "router_objects": 12
+                },
+                "via_legal_in_pocket": 0
+              }
+            ],
+            "units": 38,
+            "verdict": "RIPUP_SINGLE_UNIT"
+          },
+          "growth": 1.917,
+          "island": [
+            "U16.3"
+          ],
+          "pad": "U16.3",
+          "rungs": [
+            {
+              "area_mm2": 0.15,
+              "cells": 15,
+              "escapes": 1,
+              "grid_nm": 100000,
+              "layer": "B",
+              "seconds": 0.1,
+              "via_legal_in_pocket": 0
+            },
+            {
+              "area_mm2": 0.165,
+              "cells": 66,
+              "escapes": 2,
+              "grid_nm": 50000,
+              "layer": "B",
+              "seconds": 0.7,
+              "via_legal_in_pocket": 0
+            },
+            {
+              "area_mm2": 0.2875,
+              "cells": 460,
+              "escapes": 2,
+              "grid_nm": 25000,
+              "layer": "B",
+              "seconds": 7.3,
+              "via_legal_in_pocket": 0
+            }
+          ],
+          "verdict": "SEALED"
+        }
+      ],
+      "lands_measured": "non-body",
+      "net": "/I2C_SCL_INT",
+      "netclass": "I2C"
+    }
+  ],
+  "pitches": [
+    100000,
+    50000,
+    25000
+  ],
+  "question": "for every land whose escape opens into a free pocket, does that pocket keep its AREA as the lattice refines -- a real seal -- or grow, which would make it a rasterisation artifact a finer pitch can open",
+  "schema": 1,
+  "stitch_via": null
+}

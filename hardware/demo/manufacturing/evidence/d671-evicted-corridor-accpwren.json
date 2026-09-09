@@ -1,0 +1,194 @@
+{
+ "any_closed": false,
+ "arms": "evidence/d671-arms-accpwren-u3-20.json",
+ "arms_spec": {
+  "arms": [
+   {
+    "name": "btn",
+    "objects": [
+     {
+      "a_mm": [
+       57.8,
+       78.45
+      ],
+      "b_mm": [
+       58.7,
+       84.4
+      ],
+      "kind": "track",
+      "layer": "B",
+      "net": "/08_BUTTONS_EXPANDERS/BTN_UP_N"
+     }
+    ]
+   },
+   {
+    "name": "rxen",
+    "objects": [
+     {
+      "at_mm": [
+       58.7,
+       78.3
+      ],
+      "kind": "via",
+      "net": "/SX1262_RXEN"
+     }
+    ]
+   },
+   {
+    "name": "btn+rxen",
+    "objects": [
+     {
+      "a_mm": [
+       57.8,
+       78.45
+      ],
+      "b_mm": [
+       58.7,
+       84.4
+      ],
+      "kind": "track",
+      "layer": "B",
+      "net": "/08_BUTTONS_EXPANDERS/BTN_UP_N"
+     },
+     {
+      "at_mm": [
+       58.7,
+       78.3
+      ],
+      "kind": "via",
+      "net": "/SX1262_RXEN"
+     }
+    ]
+   }
+  ],
+  "note": "D-671.  D-670 blamed /ACC_PWR_EN U3.20's pocket to TWO material openers and its own arms A/B/D spent only the FIRST.  arm `btn` is that one; arm `rxen` is /SX1262_RXEN's barrel at (58.7, 78.3), which D-670 recorded as `a SECOND untried lever ... opens U3.20 to 4.4975 mm2 and 447 via-legal cells, and it is not protected`; arm `btn+rxen` is both.",
+  "schema": 1
+ },
+ "authoritative_unchanged": true,
+ "board": "/home/aqroot8/aqroot-demo/hardware/demo/kicad/aqroot-demo/aqroot-Beta-v2.kicad_pcb",
+ "board_is_authority": true,
+ "board_sha256": "c3286d8fdd23b6bdb037de2a753051b3ac2aa2e5ccaba2e25ced3d39cf4884b2",
+ "dst": "U16.1",
+ "far": [
+  "F",
+  "B",
+  "I2"
+ ],
+ "method": "read-only; every trial laid on the live QBoard by maze3d.offcentre_route and reverted; holds are the same units route_maze_batch.py licenses -- a net inside a window, or one object signature; the board's sha256 is re-read at exit",
+ "net": "/ACC_PWR_EN",
+ "pitches": [
+  100000,
+  50000
+ ],
+ "pool_box_mm": null,
+ "pool_grid_nm": 50000,
+ "question": "when a rip-up opens a land's POCKET, does the CORRIDOR move -- and at which PITCH",
+ "rows": [
+  {
+   "arm": "BASE",
+   "grid_nm": 100000,
+   "held_out": 0,
+   "layers": null,
+   "mm": null,
+   "ok": false,
+   "reason": "NO_PATH",
+   "seconds": 0.5,
+   "step": "ARM",
+   "vias": null,
+   "why": "no all-layer corridor at 0.200 mm from U3.20 on B to U16.1 on B"
+  },
+  {
+   "arm": "BASE",
+   "grid_nm": 50000,
+   "held_out": 0,
+   "layers": null,
+   "mm": null,
+   "ok": false,
+   "reason": "NO_PATH",
+   "seconds": 167.1,
+   "step": "ARM",
+   "vias": null,
+   "why": "no all-layer corridor at 0.200 mm from U3.20 on B to U16.1 on B"
+  },
+  {
+   "arm": "btn",
+   "grid_nm": 100000,
+   "held_out": 1,
+   "layers": null,
+   "mm": null,
+   "ok": false,
+   "reason": "NO_PATH",
+   "seconds": 4.3,
+   "step": "ARM",
+   "vias": null,
+   "why": "no all-layer corridor at 0.200 mm from U3.20 on B to U16.1 on B"
+  },
+  {
+   "arm": "btn",
+   "grid_nm": 50000,
+   "held_out": 1,
+   "layers": null,
+   "mm": null,
+   "ok": false,
+   "reason": "NO_PATH",
+   "seconds": 168.2,
+   "step": "ARM",
+   "vias": null,
+   "why": "no all-layer corridor at 0.200 mm from U3.20 on B to U16.1 on B"
+  },
+  {
+   "arm": "rxen",
+   "grid_nm": 100000,
+   "held_out": 14,
+   "layers": null,
+   "mm": null,
+   "ok": false,
+   "reason": "NO_PATH",
+   "seconds": 4.3,
+   "step": "ARM",
+   "vias": null,
+   "why": "no all-layer corridor at 0.200 mm from U3.20 on B to U16.1 on B"
+  },
+  {
+   "arm": "rxen",
+   "grid_nm": 50000,
+   "held_out": 14,
+   "layers": null,
+   "mm": null,
+   "ok": false,
+   "reason": "NO_PATH",
+   "seconds": 169.5,
+   "step": "ARM",
+   "vias": null,
+   "why": "no all-layer corridor at 0.200 mm from U3.20 on B to U16.1 on B"
+  },
+  {
+   "arm": "btn+rxen",
+   "grid_nm": 100000,
+   "held_out": 15,
+   "layers": null,
+   "mm": null,
+   "ok": false,
+   "reason": "NO_PATH",
+   "seconds": 4.3,
+   "step": "ARM",
+   "vias": null,
+   "why": "no all-layer corridor at 0.200 mm from U3.20 on B to U16.1 on B"
+  },
+  {
+   "arm": "btn+rxen",
+   "grid_nm": 50000,
+   "held_out": 15,
+   "layers": null,
+   "mm": null,
+   "ok": false,
+   "reason": "NO_PATH",
+   "seconds": 169.2,
+   "step": "ARM",
+   "vias": null,
+   "why": "no all-layer corridor at 0.200 mm from U3.20 on B to U16.1 on B"
+  }
+ ],
+ "schema": 1,
+ "src": "U3.20"
+}
