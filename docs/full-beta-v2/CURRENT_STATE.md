@@ -13,6 +13,101 @@
 > This file references DEVICE_SPEC rather than duplicating full specs.
 
 ## 1. Authoritative HEAD
+- **Demo D-672 (THE FRONTIER WAS NEVER MEASURED IN MILLIMETRES OF CHANNEL, AND
+  THE TWO LAUNCHERS THIS BOARD ROUTES WITH DISAGREE ABOUT A LAND):**  **NO
+  COPPER PROMOTED — FRAMEWORK + CHARACTERISATION.**  Authority **UNCHANGED** at
+  `c3286d8fdd23b6bdb037de2a753051b3ac2aa2e5ccaba2e25ced3d39cf4884b2`; retained
+  open edges 27 -> 27, open retained nets 15 -> 15
+  (`evidence/d672-routing-ledger.json`).  `hardware/beta-v2` and
+  `hardware/demo/kicad` **UNTOUCHED**; two new tracked read-only screens,
+  add-only, no promoting instrument touched.  Standing suite **14/14 RAN, 14/14
+  PASS, 14/14 COMPARED, ALL IDENTICAL to `d671`, `vacuous` false**
+  (`evidence/d672-contract-regression.json`); baselines emitted for D-673.
+  **(1) NOBODY HAD MEASURED THE FRONTIER IN MILLIMETRES OF CHANNEL.**  Every
+  width instrument here answers a YES/NO at ONE width, so D-670 §1's
+  *"PAD-GEOMETRY WALLS, NOT WIDTH WALLS"* could not say WHAT geometry, HOW
+  SHORT, or WHICH object.  New tracked **`screen_fanout_channel.py`** walks a
+  land's exit corridor outward along its own LEAD axis in 0.025 mm stations in
+  EXACT geometry, measures the free gap CONTAINING THE PAD'S CENTRELINE, and
+  reports `row` (the land's own extent — a LAND-PATTERN figure), `pinch` and a
+  `profile` at 0.00/0.25/0.50/1.00/1.50/2.00 mm; the width ladder is
+  `maze3d.pad_escapes`, the launcher `route_join` and therefore the GATE uses.
+  **A geometric opening is not an admission**: every narrow rung is priced by
+  `audit_bond_ampacity` against `published_rail_currents` — the pair
+  `trunk_floor_price` and `PP2` charge with — and comes back `..._UNPRICED`
+  when the class's own published current refuses it.  **101 lands in one pass,
+  board byte-identical at exit** (`evidence/d672-fanout-channel-frontier.json`):
+  **84 `LAUNCHES_AT_CLASS`, 5 `NECK_OPENS_UNPRICED`, 4 `PACKAGE_PITCH_WALL`, 3
+  `NO_CHANNEL`, 2 `LICENCE_ONLY_UNPRICED`, 1 each `CLASS_FLOOR_OPENS`,
+  `NECK_OPENS`, `LICENCE_ONLY`.**
+  **(2) FOUR LANDS ARE BOUND BY THEIR OWN PACKAGE.**  `U9.10` `/NFC_SUPPLY`
+  (row **0.700 mm** between `U9.9` and `U9.11`, admits **0.300**, needs 0.600,
+  floor 0.400), `U5.2` `+3V3` (0.750 -> 0.350), `U21.5` `/ACC_5V_LX` (0.650 ->
+  0.250), `U13.5` `Net-(U13-SW)` (0.650 -> 0.250).  The binder is the VENDOR
+  LAND PATTERN, so the levers are a PART CHANGE or a REFLOORPLAN and nothing
+  else.
+  **(3) D-670 §1's "ONLY UNSPENT LEVER" WAS ALREADY SPENT AND CANNOT WORK.**
+  `--neck` on `U9.10` was run at D-630 and D-662, both `NO LEGAL ESCAPE at >=
+  0.600 mm`.  The mechanism is now measured: a necked stub may terminate ONLY
+  on a cell the FULL-WIDTH lattice calls free, and `U9.10`'s profile is 0.300
+  at the row, **0.350 at 0.25 mm and at 0.50 mm**, 2.427 at 1.00, 0.305 at
+  1.50, 0.132 at 2.00 — the 0.400 mm the `P3V3` floor demands is not admitted
+  until 1.00 mm out and a conductor must cross a 0.350 mm pinch to reach it.
+  And the D-610 width-licence route is refused by the board's own contract, not
+  by judgement: `checks/leaf_land_contract.py` re-run here
+  (`evidence/d672-leaf-land-nfcsupply.json`, PASS) reads `U9.10` as
+  **`VDD_TX_10`, `power_in`, `SUPPLY_PORT`** — the ST25R3916's TRANSMITTER
+  supply — and rules *"the rail bar stands unchanged (LL4)"*; 0.200 mm carries
+  0.602 A against the 1.0 A `P3V3` bar.
+  **(4) THE TWO LAUNCHERS DISAGREE.**  `maze3d.pad_escapes` is what
+  `route_join` — the GATE — starts with; `maze3d.offcentre_route` is what
+  `screen_evicted_corridor.py`, `screen_net_tap.py`, `screen_relay_wall.py` and
+  `screen_lane_geometry.py` all drive, and it never calls `pad_escapes`.  New
+  tracked **`screen_launcher_parity.py`** hands BOTH the same `Field` at the
+  same width and pitch: ten rows, five lands, **two disagreements and both on
+  `/I2C_SCL_INT` `U16.3`** — at the full 0.200 mm netclass width the gate's
+  launcher finds **1 escape at 0.100 mm and 2 at 0.050 mm** where the exact one
+  returns `NO_LEGAL_ESCAPE … blocked by U16.2 (x6228), U16.4 (x5470), U16.1
+  (x2168)` (`evidence/d672-launcher-parity-{scl,accpwren,nfcsupply}.json`).
+  D-671 §4's corridor CONCLUSION is untouched — still `NO_PATH` at every pitch
+  — but two of its three BASE rungs were LAUNCH refusals of a launcher the gate
+  does not use.  `/ACC_PWR_EN` `U3.20` and `/NFC_SUPPLY` `U9.10` AGREE.
+  **(5) WHAT THE PARTITION TAKES OFF THE LADDER, AND WHAT IT PUTS ON.**
+  `/01_POWER_TREE/BQ25185_SYS` carries **6 of the 27 open edges** and **five of
+  its lands open only at a width `SYS_MAIN`'s own 2.190 A refuses** (`U12.1`
+  0.350, `U12.10` 0.400, `U12.11` 0.500, `U13.3` 0.500, `U21.3` 0.500);
+  `trunk_floor_price` already refuses `SYS_MAIN` at 1.441 A, so
+  `--escape-floor`, `--trunk-floor` and `--neck` are ALL closed on price.  **It
+  is a refloorplan of the `U12`/`U13`/`U21` converter cluster, not a routing
+  problem.**  `U11.9` `/BQ25185_STAT1` is the ONE land on a payable ladder —
+  row 0.600 admits 0.200, widest launch **0.150 mm**, `Default` class with no
+  published current — but 0.150 mm is board setup's `min_track_width`, BELOW
+  the 0.200 mm section 9 grants anywhere, and D-610/D-630 both refused it: an
+  owner-grade `.kicad_dru` question, RECORDED NOT TAKEN.  `U11.3`
+  `/BQ25185_STAT2` closes to **0.000 mm at 0.525 mm out on a
+  `BAT_PROTECTED_P` track** — D-269 retained battery safety, a
+  SAFETY-versus-CONNECTIVITY conflict to be NAMED, never routed around.
+  `U9.14` `/NFC_VDD_RF` closes at 1.55 mm on **two `NFC_VDD_A` barrels**, not
+  protected copper — a `--detour-spec` re-bond target.  `MK1.4` `GND` is bound
+  both sides by a `KO` keep-out: MECHANICAL.
+  **NEXT, IN ORDER OF LEVERAGE:** (1) **`BQ25185_SYS` REFLOORPLAN** — the
+  largest block of open edges on the board, now with a named mechanism; screen
+  candidate shifts with `screen_fanout_channel.py --board` on the shifted
+  scratch project BEFORE any gate run, because the channel is the number a
+  shift has to move (`apply_part_shift.py` + `placement_contract.py` PL1-PL9
+  already make it reviewable; D-619/D-621 spent one).  (2) `U9.14`
+  `/NFC_VDD_RF` — the only `NO_CHANNEL` land whose binder is ordinary
+  unprotected copper.  (3) **`U16.3` MUST BE RE-ASKED WITH THE GATE'S
+  LAUNCHER.**  (4) `U11.9`'s 0.150 mm grant is an owner-grade DRU question.
+  (5) `U11.3` is a D-269 safety conflict; NAME it.  (6) `MK1.4` is mechanical.
+  (7) `/I2S_LRCLK`'s edge rate remains the DATA gap (D-636 item 1) and the only
+  thing between this board and its first plane haul; `/USB_D_MCU_N`/`_P` stay
+  the D-583/D-618 `SEGMENT_WALL` — **both MCU lands read `LAUNCHES_AT_CLASS` at
+  0.800 mm here, a third instrument confirming the wall is the CORRIDOR and not
+  the launch**; `/I2C_SCL_INT` `U14.7` remains the one OPEN OWNER DECISION,
+  RECORDED NOT TAKEN; `USB_D_CONN_P` remains the `J3` mechanical one.  (8)
+  `hardware/demo/fab` is **FRESH at `c3286d8f`** and this decision promotes
+  nothing that stales it.
 - **Demo D-671 (THE NEXT STEP NAMED THE WRONG PLANE AND THE CHEAPEST LAND WAS
   THE LEAST VALUABLE ONE):**  **NO COPPER PROMOTED — FRAMEWORK +
   CHARACTERISATION.**  Authority **UNCHANGED** at

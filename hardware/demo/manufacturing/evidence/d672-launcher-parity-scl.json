@@ -1,0 +1,226 @@
+{
+ "authoritative_unchanged": true,
+ "board": "/home/aqroot8/aqroot-demo/hardware/demo/kicad/aqroot-demo/aqroot-Beta-v2.kicad_pcb",
+ "board_is_authority": true,
+ "board_sha256": "c3286d8fdd23b6bdb037de2a753051b3ac2aa2e5ccaba2e25ced3d39cf4884b2",
+ "contract": {
+  "clr": 200000,
+  "clr_pad": 200000,
+  "known_class": true,
+  "layers": null,
+  "net": "/I2C_SCL_INT",
+  "netclass": "I2C",
+  "via_dia": 600000,
+  "via_drill": 300000,
+  "width": 200000
+ },
+ "disagreements": 2,
+ "far": [
+  "F",
+  "B",
+  "I2"
+ ],
+ "method": "read-only; both launchers are handed the SAME `Field` object at the SAME width and pitch, the exact one's copper is reverted, and the board's sha256 is re-read at exit",
+ "net": "/I2C_SCL_INT",
+ "question": "does `maze3d.pad_escapes` -- the launcher `route_join` and therefore the GATE uses -- agree with `maze3d.offcentre_route`, the launcher every corridor, tap, relay and lane screen drives, about whether this land can START",
+ "rows": [
+  {
+   "agree": false,
+   "exact_mm": null,
+   "exact_ok": false,
+   "exact_reason": "NO_LEGAL_ESCAPE",
+   "exact_seconds": 0.66,
+   "exact_why": "U16.3: NO OFF-CENTRE LAUNCH at 0.200 mm from any of 41 anchors x 24 directions x 17 lengths; blocked by U16.2 (x6228), U16.4 (x5470), U16.1 (x2168), track (x989)",
+   "grid_nm": 100000,
+   "land": "U16.3",
+   "lattice_at": [
+    [
+     "B",
+     57.9,
+     54.4,
+     0.2
+    ]
+   ],
+   "lattice_escapes": 1,
+   "lattice_seconds": 0.07,
+   "to": "U4.13",
+   "width_nm": 200000
+  },
+  {
+   "agree": false,
+   "exact_mm": null,
+   "exact_ok": false,
+   "exact_reason": "NO_LEGAL_ESCAPE",
+   "exact_seconds": 0.65,
+   "exact_why": "U16.3: NO OFF-CENTRE LAUNCH at 0.200 mm from any of 41 anchors x 24 directions x 17 lengths; blocked by U16.2 (x6297), U16.4 (x5870), U16.1 (x2158), track (x1041)",
+   "grid_nm": 50000,
+   "land": "U16.3",
+   "lattice_at": [
+    [
+     "B",
+     57.85,
+     54.45,
+     0.2
+    ],
+    [
+     "B",
+     56.4,
+     54.45,
+     0.2
+    ]
+   ],
+   "lattice_escapes": 2,
+   "lattice_seconds": 0.11,
+   "to": "U4.13",
+   "width_nm": 200000
+  },
+  {
+   "agree": true,
+   "exact_mm": null,
+   "exact_ok": false,
+   "exact_reason": "NO_PATH",
+   "exact_seconds": 0.21,
+   "exact_why": "no all-layer corridor at 0.200 mm from TP5.1 on F to U4.13 on B",
+   "grid_nm": 100000,
+   "land": "TP5.1",
+   "lattice_at": [
+    [
+     "F",
+     50.9,
+     145.0,
+     0.2
+    ],
+    [
+     "F",
+     50.2,
+     145.2,
+     0.2
+    ],
+    [
+     "F",
+     51.8,
+     145.9,
+     0.2
+    ],
+    [
+     "F",
+     51.5,
+     146.6,
+     0.2
+    ],
+    [
+     "F",
+     50.9,
+     145.9,
+     0.2
+    ],
+    [
+     "F",
+     50.4,
+     145.5,
+     0.2
+    ],
+    [
+     "F",
+     51.3,
+     146.4,
+     0.2
+    ],
+    [
+     "F",
+     51.5,
+     145.7,
+     0.2
+    ]
+   ],
+   "lattice_escapes": 9,
+   "lattice_seconds": 0.08,
+   "to": "U4.13",
+   "width_nm": 200000
+  },
+  {
+   "agree": true,
+   "exact_mm": null,
+   "exact_ok": false,
+   "exact_reason": "NO_PATH",
+   "exact_seconds": 1.67,
+   "exact_why": "no all-layer corridor at 0.200 mm from TP5.1 on F to U4.13 on B",
+   "grid_nm": 50000,
+   "land": "TP5.1",
+   "lattice_at": [
+    [
+     "F",
+     50.85,
+     144.95,
+     0.2
+    ],
+    [
+     "F",
+     50.2,
+     145.25,
+     0.2
+    ],
+    [
+     "F",
+     51.8,
+     145.9,
+     0.2
+    ],
+    [
+     "F",
+     51.55,
+     146.6,
+     0.2
+    ],
+    [
+     "F",
+     50.85,
+     145.9,
+     0.2
+    ]
+   ],
+   "lattice_escapes": 5,
+   "lattice_seconds": 0.12,
+   "to": "U4.13",
+   "width_nm": 200000
+  },
+  {
+   "agree": true,
+   "exact_mm": null,
+   "exact_ok": false,
+   "exact_reason": "NO_LEGAL_ESCAPE",
+   "exact_seconds": 0.52,
+   "exact_why": "U14.7: NO OFF-CENTRE LAUNCH at 0.200 mm from any of 41 anchors x 24 directions x 17 lengths; blocked by U14.6 (x5598), U14.8 (x5206), U14.5 (x2082), board_edge (x689)",
+   "grid_nm": 100000,
+   "land": "U14.7",
+   "lattice_at": [],
+   "lattice_escapes": 0,
+   "lattice_seconds": 0.56,
+   "to": "U4.13",
+   "width_nm": 200000
+  },
+  {
+   "agree": true,
+   "exact_mm": null,
+   "exact_ok": false,
+   "exact_reason": "NO_PATH",
+   "exact_seconds": 2.19,
+   "exact_why": "no all-layer corridor at 0.200 mm from U14.7 on B to U4.13 on B",
+   "grid_nm": 50000,
+   "land": "U14.7",
+   "lattice_at": [
+    [
+     "B",
+     3.55,
+     82.75,
+     0.2
+    ]
+   ],
+   "lattice_escapes": 1,
+   "lattice_seconds": 0.1,
+   "to": "U4.13",
+   "width_nm": 200000
+  }
+ ],
+ "schema": 1
+}

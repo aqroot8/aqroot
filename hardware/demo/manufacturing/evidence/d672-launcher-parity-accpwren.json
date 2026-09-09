@@ -1,0 +1,139 @@
+{
+ "authoritative_unchanged": true,
+ "board": "/home/aqroot8/aqroot-demo/hardware/demo/kicad/aqroot-demo/aqroot-Beta-v2.kicad_pcb",
+ "board_is_authority": true,
+ "board_sha256": "c3286d8fdd23b6bdb037de2a753051b3ac2aa2e5ccaba2e25ced3d39cf4884b2",
+ "contract": {
+  "clr": 200000,
+  "clr_pad": 200000,
+  "known_class": true,
+  "layers": null,
+  "net": "/ACC_PWR_EN",
+  "netclass": "Default",
+  "via_dia": 600000,
+  "via_drill": 300000,
+  "width": 200000
+ },
+ "disagreements": 0,
+ "far": [
+  "F",
+  "B",
+  "I2"
+ ],
+ "method": "read-only; both launchers are handed the SAME `Field` object at the SAME width and pitch, the exact one's copper is reverted, and the board's sha256 is re-read at exit",
+ "net": "/ACC_PWR_EN",
+ "question": "does `maze3d.pad_escapes` -- the launcher `route_join` and therefore the GATE uses -- agree with `maze3d.offcentre_route`, the launcher every corridor, tap, relay and lane screen drives, about whether this land can START",
+ "rows": [
+  {
+   "agree": true,
+   "exact_mm": null,
+   "exact_ok": false,
+   "exact_reason": "NO_PATH",
+   "exact_seconds": 0.47,
+   "exact_why": "no all-layer corridor at 0.200 mm from U3.20 on B to U16.1 on B",
+   "grid_nm": 100000,
+   "land": "U3.20",
+   "lattice_at": [
+    [
+     "B",
+     61.0,
+     79.0,
+     0.2
+    ],
+    [
+     "B",
+     59.2,
+     78.9,
+     0.2
+    ],
+    [
+     "B",
+     60.6,
+     78.9,
+     0.2
+    ],
+    [
+     "B",
+     61.1,
+     78.5,
+     0.2
+    ],
+    [
+     "B",
+     61.5,
+     79.0,
+     0.2
+    ],
+    [
+     "B",
+     61.7,
+     78.2,
+     0.2
+    ],
+    [
+     "B",
+     62.1,
+     78.7,
+     0.2
+    ]
+   ],
+   "lattice_escapes": 7,
+   "lattice_seconds": 0.11,
+   "to": "U16.1",
+   "width_nm": 200000
+  },
+  {
+   "agree": true,
+   "exact_mm": null,
+   "exact_ok": false,
+   "exact_reason": "NO_PATH",
+   "exact_seconds": 167.82,
+   "exact_why": "no all-layer corridor at 0.200 mm from U3.20 on B to U16.1 on B",
+   "grid_nm": 50000,
+   "land": "U3.20",
+   "lattice_at": [
+    [
+     "B",
+     61.05,
+     79.0,
+     0.2
+    ],
+    [
+     "B",
+     59.2,
+     78.9,
+     0.2
+    ],
+    [
+     "B",
+     60.55,
+     78.9,
+     0.2
+    ],
+    [
+     "B",
+     61.0,
+     78.5,
+     0.2
+    ],
+    [
+     "B",
+     61.15,
+     79.1,
+     0.2
+    ],
+    [
+     "B",
+     58.55,
+     78.95,
+     0.2
+    ]
+   ],
+   "lattice_escapes": 6,
+   "lattice_seconds": 0.17,
+   "to": "U16.1",
+   "width_nm": 200000
+  }
+ ],
+ "schema": 1
+}

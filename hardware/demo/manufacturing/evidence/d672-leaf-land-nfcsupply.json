@@ -1,0 +1,298 @@
+{
+ "board": "/home/aqroot8/aqroot-demo/hardware/demo/kicad/aqroot-demo/aqroot-Beta-v2.kicad_pcb",
+ "board_sha256": "c3286d8fdd23b6bdb037de2a753051b3ac2aa2e5ccaba2e25ced3d39cf4884b2",
+ "bound_volts": 5.5,
+ "controls": [
+  {
+   "bound_amps": null,
+   "got": "SUPPLY_PORT",
+   "land": "U1.2",
+   "ohms": null,
+   "ok": true,
+   "pintype": "power_in",
+   "value": "ESP32-S3-WROOM-1",
+   "want": "SUPPLY_PORT"
+  },
+  {
+   "bound_amps": null,
+   "got": "SUPPLY_PORT",
+   "land": "U4.5",
+   "ohms": null,
+   "ok": true,
+   "pintype": "power_in",
+   "value": "BMI270",
+   "want": "SUPPLY_PORT"
+  },
+  {
+   "bound_amps": null,
+   "got": "SUPPLY_PORT",
+   "land": "U4.8",
+   "ohms": null,
+   "ok": true,
+   "pintype": "power_in",
+   "value": "BMI270",
+   "want": "SUPPLY_PORT"
+  },
+  {
+   "bound_amps": null,
+   "got": "SUPPLY_PORT",
+   "land": "U12.10",
+   "ohms": null,
+   "ok": true,
+   "pintype": "power_in",
+   "value": "TPS63020",
+   "want": "SUPPLY_PORT"
+  },
+  {
+   "bound_amps": null,
+   "got": "SUPPLY_PORT",
+   "land": "U11.1",
+   "ohms": null,
+   "ok": true,
+   "pintype": "power_out",
+   "value": "BQ25185",
+   "want": "SUPPLY_PORT"
+  },
+  {
+   "bound_amps": null,
+   "got": "SUPPLY_PORT",
+   "land": "U9.16",
+   "ohms": null,
+   "ok": true,
+   "pintype": "power_in",
+   "value": "ST25R3916-AQET",
+   "want": "SUPPLY_PORT"
+  },
+  {
+   "bound_amps": null,
+   "got": "SUPPLY_PORT",
+   "land": "U13.3",
+   "ohms": null,
+   "ok": true,
+   "pintype": "power_in",
+   "value": "TPS61023",
+   "want": "SUPPLY_PORT"
+  },
+  {
+   "bound_amps": null,
+   "got": "SIGNAL_PIN",
+   "land": "U4.12",
+   "ohms": null,
+   "ok": true,
+   "pintype": "input",
+   "value": "BMI270",
+   "want": "SIGNAL_PIN"
+  },
+  {
+   "bound_amps": null,
+   "got": "SIGNAL_PIN",
+   "land": "U4.2",
+   "ohms": null,
+   "ok": true,
+   "pintype": "bidirectional",
+   "value": "BMI270",
+   "want": "SIGNAL_PIN"
+  },
+  {
+   "bound_amps": null,
+   "got": "SIGNAL_PIN",
+   "land": "U4.3",
+   "ohms": null,
+   "ok": true,
+   "pintype": "bidirectional",
+   "value": "BMI270",
+   "want": "SIGNAL_PIN"
+  },
+  {
+   "bound_amps": 5.5e-05,
+   "got": "BOUNDED_PASSIVE",
+   "land": "R129.1",
+   "ohms": 100000.0,
+   "ok": true,
+   "pintype": "passive",
+   "value": "100k",
+   "want": "BOUNDED_PASSIVE"
+  },
+  {
+   "bound_amps": 0.00055,
+   "got": "BOUNDED_PASSIVE",
+   "land": "R127.1",
+   "ohms": 10000.0,
+   "ok": true,
+   "pintype": "passive",
+   "value": "10k",
+   "want": "BOUNDED_PASSIVE"
+  },
+  {
+   "bound_amps": null,
+   "got": "UNBOUNDED_PASSIVE",
+   "land": "R118.1",
+   "ohms": 0.0,
+   "ok": true,
+   "pintype": "passive",
+   "value": "0R",
+   "want": "UNBOUNDED_PASSIVE"
+  },
+  {
+   "bound_amps": null,
+   "got": "UNBOUNDED_PASSIVE",
+   "land": "L4.1",
+   "ohms": null,
+   "ok": true,
+   "pintype": "passive",
+   "value": "1uH",
+   "want": "UNBOUNDED_PASSIVE"
+  },
+  {
+   "bound_amps": null,
+   "got": "UNBOUNDED_PASSIVE",
+   "land": "SW9.2",
+   "ohms": null,
+   "ok": true,
+   "pintype": "passive",
+   "value": "SW_SPDT",
+   "want": "UNBOUNDED_PASSIVE"
+  },
+  {
+   "bound_amps": null,
+   "got": "UNBOUNDED_PASSIVE",
+   "land": "C24.1",
+   "ohms": null,
+   "ok": true,
+   "pintype": "passive",
+   "value": "10uF 25V X5R",
+   "want": "UNBOUNDED_PASSIVE"
+  }
+ ],
+ "controls_ok": true,
+ "coverage": {
+  "BOUNDED_PASSIVE": 158,
+  "SIGNAL_PIN": 228,
+  "SUPPLY_PORT": 95,
+  "UNBOUNDED_PASSIVE": 483
+ },
+ "coverage_ok": true,
+ "islands": [
+  {
+   "admitted": false,
+   "bounded_amps_total": null,
+   "is_body": true,
+   "island_lands": [
+    "C19.1",
+    "C55.1",
+    "R106.2",
+    "R107.2",
+    "TP32.1",
+    "U9.8"
+   ],
+   "lands": [
+    {
+     "bound_amps": null,
+     "klass": "UNBOUNDED_PASSIVE",
+     "land": "C19.1",
+     "ohms": null,
+     "pinfunction": null,
+     "pintype": "passive",
+     "value": "100nF",
+     "why": "a 'passive' terminal of a part with 2 terminal(s) and value '100nF': no published resistance >= 1000 ohm bounds the current in this copper"
+    },
+    {
+     "bound_amps": null,
+     "klass": "UNBOUNDED_PASSIVE",
+     "land": "C55.1",
+     "ohms": null,
+     "pinfunction": null,
+     "pintype": "passive",
+     "value": "2.2uF",
+     "why": "a 'passive' terminal of a part with 2 terminal(s) and value '2.2uF': no published resistance >= 1000 ohm bounds the current in this copper"
+    },
+    {
+     "bound_amps": null,
+     "klass": "UNBOUNDED_PASSIVE",
+     "land": "R106.2",
+     "ohms": 0.0,
+     "pinfunction": null,
+     "pintype": "passive",
+     "value": "0R FIT",
+     "why": "a 'passive' terminal of a part with 2 terminal(s) and value '0R FIT': no published resistance >= 1000 ohm bounds the current in this copper"
+    },
+    {
+     "bound_amps": null,
+     "klass": "UNBOUNDED_PASSIVE",
+     "land": "R107.2",
+     "ohms": 0.0,
+     "pinfunction": null,
+     "pintype": "passive",
+     "value": "0R DNP",
+     "why": "a 'passive' terminal of a part with 2 terminal(s) and value '0R DNP': no published resistance >= 1000 ohm bounds the current in this copper"
+    },
+    {
+     "bound_amps": null,
+     "klass": "UNBOUNDED_PASSIVE",
+     "land": "TP32.1",
+     "ohms": null,
+     "pinfunction": "1_1",
+     "pintype": "passive",
+     "value": "TestPoint",
+     "why": "a 'passive' terminal of a part with 1 terminal(s) and value 'TestPoint': no published resistance >= 1000 ohm bounds the current in this copper"
+    },
+    {
+     "bound_amps": null,
+     "klass": "SUPPLY_PORT",
+     "land": "U9.8",
+     "ohms": null,
+     "pinfunction": "VDD_8",
+     "pintype": "power_in",
+     "value": "ST25R3916-AQET",
+     "why": "the schematic declares this pin 'power_in': it is a SUPPLY PORT and the device behind it draws through this copper"
+    }
+   ],
+   "net": "/NFC_SUPPLY",
+   "pads": 6,
+   "refused_lands": [
+    "C19.1",
+    "C55.1",
+    "R106.2",
+    "R107.2",
+    "TP32.1",
+    "U9.8"
+   ],
+   "verdict": "RAIL",
+   "why": "C19.1 is UNBOUNDED_PASSIVE, so the rail bar stands unchanged (LL4)"
+  },
+  {
+   "admitted": false,
+   "bounded_amps_total": null,
+   "is_body": false,
+   "island_lands": [
+    "U9.10"
+   ],
+   "lands": [
+    {
+     "bound_amps": null,
+     "klass": "SUPPLY_PORT",
+     "land": "U9.10",
+     "ohms": null,
+     "pinfunction": "VDD_TX_10",
+     "pintype": "power_in",
+     "value": "ST25R3916-AQET",
+     "why": "the schematic declares this pin 'power_in': it is a SUPPLY PORT and the device behind it draws through this copper"
+    }
+   ],
+   "net": "/NFC_SUPPLY",
+   "pads": 1,
+   "refused_lands": [
+    "U9.10"
+   ],
+   "verdict": "RAIL",
+   "why": "U9.10 is SUPPLY_PORT, so the rail bar stands unchanged (LL4)"
+  }
+ ],
+ "leaf_min_ohms": 1000.0,
+ "ok": true,
+ "schema": 1,
+ "schematic": "/home/aqroot8/aqroot-demo/hardware/demo/kicad/aqroot-demo/aqroot-Beta-v2.kicad_sch",
+ "schematic_sha256": "195a985ca49cd03d88b006776f31ef6fa929d23d6a9eb3c29e37581307d31603",
+ "unresolved_islands": [],
+ "what": "LL1-LL6: which islands of a pour-served net are fed through this copper, decided from KiCad's own pintype field"
+}
