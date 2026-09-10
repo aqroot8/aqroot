@@ -1,0 +1,987 @@
+{
+  "board": "/home/aqroot8/aqroot-demo/hardware/demo/kicad/aqroot-demo/aqroot-Beta-v2.kicad_pcb",
+  "board_sha256": "0285ef45466c1c7dd1823099c35d75d704b50266460e94f339c1b19b5409180d",
+  "chains": [
+    {
+      "a_mm": [
+        60.6,
+        38.425
+      ],
+      "b_mm": [
+        60.6,
+        38.425
+      ],
+      "chain_mm": 4.2485,
+      "layer": "B.Cu",
+      "net": "GND",
+      "one_width": true,
+      "price": {
+        "a_mm": [
+          60.6,
+          38.425
+        ],
+        "b_mm": [
+          60.6,
+          38.425
+        ],
+        "bar_width_mm": 0.3,
+        "island": 54,
+        "island_area_mm2": 44.27,
+        "layer": "B.Cu",
+        "net": "GND",
+        "ok": true,
+        "pour_path_mm": 0.0,
+        "pour_path_width_max_mm": 0.8,
+        "pour_path_width_mm": 0.8,
+        "ratio": 2.667,
+        "reason": null,
+        "removed_mm": 4.2485,
+        "zone_name": "B GND PLANE"
+      },
+      "segments": 2,
+      "tracks": [
+        {
+          "a_mm": [
+            58.7,
+            39.375
+          ],
+          "b_mm": [
+            60.6,
+            38.425
+          ],
+          "layer": "B.Cu",
+          "width_mm": 0.3
+        },
+        {
+          "a_mm": [
+            58.7,
+            39.375
+          ],
+          "b_mm": [
+            60.6,
+            38.425
+          ],
+          "layer": "B.Cu",
+          "width_mm": 0.3
+        }
+      ],
+      "verdict": "INERT",
+      "width_mm": 0.3
+    },
+    {
+      "a_mm": [
+        63.5,
+        39.4
+      ],
+      "b_mm": [
+        63.5,
+        39.4
+      ],
+      "chain_mm": 3.2,
+      "layer": "B.Cu",
+      "net": "GND",
+      "one_width": true,
+      "price": {
+        "a_mm": [
+          63.5,
+          39.4
+        ],
+        "b_mm": [
+          63.5,
+          39.4
+        ],
+        "bar_width_mm": 0.3,
+        "island": 54,
+        "island_area_mm2": 44.27,
+        "layer": "B.Cu",
+        "net": "GND",
+        "ok": true,
+        "pour_path_mm": 0.0,
+        "pour_path_width_max_mm": 0.8,
+        "pour_path_width_mm": 0.8,
+        "ratio": 2.667,
+        "reason": null,
+        "removed_mm": 3.2,
+        "zone_name": "B GND PLANE"
+      },
+      "segments": 2,
+      "tracks": [
+        {
+          "a_mm": [
+            63.5,
+            37.8
+          ],
+          "b_mm": [
+            63.5,
+            39.4
+          ],
+          "layer": "B.Cu",
+          "width_mm": 0.3
+        },
+        {
+          "a_mm": [
+            63.5,
+            37.8
+          ],
+          "b_mm": [
+            63.5,
+            39.4
+          ],
+          "layer": "B.Cu",
+          "width_mm": 0.3
+        }
+      ],
+      "verdict": "INERT",
+      "width_mm": 0.3
+    },
+    {
+      "a_mm": [
+        63.5,
+        39.4
+      ],
+      "b_mm": [
+        61.9,
+        41.0
+      ],
+      "chain_mm": 2.2932,
+      "layer": "B.Cu",
+      "net": "GND",
+      "one_width": true,
+      "price": {
+        "a_mm": [
+          63.5,
+          39.4
+        ],
+        "b_mm": [
+          61.9,
+          41.0
+        ],
+        "bar_width_mm": 0.3,
+        "island": 54,
+        "island_area_mm2": 44.27,
+        "layer": "B.Cu",
+        "net": "GND",
+        "ok": true,
+        "pour_path_mm": 2.165,
+        "pour_path_width_max_mm": 0.8,
+        "pour_path_width_mm": 0.8,
+        "ratio": 2.667,
+        "reason": null,
+        "removed_mm": 2.2932,
+        "zone_name": "B GND PLANE"
+      },
+      "segments": 2,
+      "tracks": [
+        {
+          "a_mm": [
+            62.0,
+            41.0
+          ],
+          "b_mm": [
+            61.9,
+            41.0
+          ],
+          "layer": "B.Cu",
+          "width_mm": 0.3
+        },
+        {
+          "a_mm": [
+            63.5,
+            39.4
+          ],
+          "b_mm": [
+            62.0,
+            41.0
+          ],
+          "layer": "B.Cu",
+          "width_mm": 0.3
+        }
+      ],
+      "verdict": "INERT",
+      "width_mm": 0.3
+    },
+    {
+      "a_mm": [
+        61.1,
+        38.0
+      ],
+      "b_mm": [
+        63.0,
+        38.1
+      ],
+      "chain_mm": 1.9026,
+      "layer": "B.Cu",
+      "net": "GND",
+      "one_width": true,
+      "price": {
+        "a_mm": [
+          61.1,
+          38.0
+        ],
+        "b_mm": [
+          63.0,
+          38.1
+        ],
+        "bar_width_mm": 0.3,
+        "island": 54,
+        "island_area_mm2": 44.27,
+        "layer": "B.Cu",
+        "net": "GND",
+        "ok": true,
+        "pour_path_mm": 1.691,
+        "pour_path_width_max_mm": 0.8,
+        "pour_path_width_mm": 0.7,
+        "ratio": 2.333,
+        "reason": null,
+        "removed_mm": 1.9026,
+        "zone_name": "B GND PLANE"
+      },
+      "segments": 1,
+      "tracks": [
+        {
+          "a_mm": [
+            61.1,
+            38.0
+          ],
+          "b_mm": [
+            63.0,
+            38.1
+          ],
+          "layer": "B.Cu",
+          "width_mm": 0.3
+        }
+      ],
+      "verdict": "INERT",
+      "width_mm": 0.3
+    },
+    {
+      "a_mm": [
+        61.1,
+        38.0
+      ],
+      "b_mm": [
+        63.0,
+        38.1
+      ],
+      "chain_mm": 1.9026,
+      "layer": "B.Cu",
+      "net": "GND",
+      "one_width": true,
+      "price": {
+        "a_mm": [
+          61.1,
+          38.0
+        ],
+        "b_mm": [
+          63.0,
+          38.1
+        ],
+        "bar_width_mm": 0.3,
+        "island": 54,
+        "island_area_mm2": 44.27,
+        "layer": "B.Cu",
+        "net": "GND",
+        "ok": true,
+        "pour_path_mm": 1.691,
+        "pour_path_width_max_mm": 0.8,
+        "pour_path_width_mm": 0.7,
+        "ratio": 2.333,
+        "reason": null,
+        "removed_mm": 1.9026,
+        "zone_name": "B GND PLANE"
+      },
+      "segments": 1,
+      "tracks": [
+        {
+          "a_mm": [
+            61.1,
+            38.0
+          ],
+          "b_mm": [
+            63.0,
+            38.1
+          ],
+          "layer": "B.Cu",
+          "width_mm": 0.3
+        }
+      ],
+      "verdict": "INERT",
+      "width_mm": 0.3
+    },
+    {
+      "a_mm": [
+        63.5,
+        39.4
+      ],
+      "b_mm": [
+        62.4,
+        40.6
+      ],
+      "chain_mm": 1.6279,
+      "layer": "B.Cu",
+      "net": "GND",
+      "one_width": true,
+      "price": {
+        "a_mm": [
+          63.5,
+          39.4
+        ],
+        "b_mm": [
+          62.4,
+          40.6
+        ],
+        "bar_width_mm": 0.3,
+        "island": 54,
+        "island_area_mm2": 44.27,
+        "layer": "B.Cu",
+        "net": "GND",
+        "ok": true,
+        "pour_path_mm": 1.5,
+        "pour_path_width_max_mm": 0.8,
+        "pour_path_width_mm": 0.8,
+        "ratio": 2.667,
+        "reason": null,
+        "removed_mm": 1.6279,
+        "zone_name": "B GND PLANE"
+      },
+      "segments": 1,
+      "tracks": [
+        {
+          "a_mm": [
+            63.5,
+            39.4
+          ],
+          "b_mm": [
+            62.4,
+            40.6
+          ],
+          "layer": "B.Cu",
+          "width_mm": 0.3
+        }
+      ],
+      "verdict": "INERT",
+      "width_mm": 0.3
+    },
+    {
+      "a_mm": [
+        63.5,
+        39.4
+      ],
+      "b_mm": [
+        62.8,
+        40.1
+      ],
+      "chain_mm": 1.022,
+      "layer": "B.Cu",
+      "net": "GND",
+      "one_width": true,
+      "price": {
+        "a_mm": [
+          63.5,
+          39.4
+        ],
+        "b_mm": [
+          62.8,
+          40.1
+        ],
+        "bar_width_mm": 0.3,
+        "island": 54,
+        "island_area_mm2": 44.27,
+        "layer": "B.Cu",
+        "net": "GND",
+        "ok": true,
+        "pour_path_mm": 0.892,
+        "pour_path_width_max_mm": 0.8,
+        "pour_path_width_mm": 0.8,
+        "ratio": 2.667,
+        "reason": null,
+        "removed_mm": 1.022,
+        "zone_name": "B GND PLANE"
+      },
+      "segments": 2,
+      "tracks": [
+        {
+          "a_mm": [
+            62.9,
+            40.1
+          ],
+          "b_mm": [
+            62.8,
+            40.1
+          ],
+          "layer": "B.Cu",
+          "width_mm": 0.3
+        },
+        {
+          "a_mm": [
+            63.5,
+            39.4
+          ],
+          "b_mm": [
+            62.9,
+            40.1
+          ],
+          "layer": "B.Cu",
+          "width_mm": 0.3
+        }
+      ],
+      "verdict": "INERT",
+      "width_mm": 0.3
+    },
+    {
+      "a_mm": [
+        63.5,
+        38.5
+      ],
+      "b_mm": [
+        63.5,
+        39.4
+      ],
+      "chain_mm": 0.9,
+      "layer": "B.Cu",
+      "net": "GND",
+      "one_width": true,
+      "price": {
+        "a_mm": [
+          63.5,
+          38.5
+        ],
+        "b_mm": [
+          63.5,
+          39.4
+        ],
+        "bar_width_mm": 0.3,
+        "island": 54,
+        "island_area_mm2": 44.27,
+        "layer": "B.Cu",
+        "net": "GND",
+        "ok": true,
+        "pour_path_mm": 0.766,
+        "pour_path_width_max_mm": 0.8,
+        "pour_path_width_mm": 0.8,
+        "ratio": 2.667,
+        "reason": null,
+        "removed_mm": 0.9,
+        "zone_name": "B GND PLANE"
+      },
+      "segments": 1,
+      "tracks": [
+        {
+          "a_mm": [
+            63.5,
+            38.5
+          ],
+          "b_mm": [
+            63.5,
+            39.4
+          ],
+          "layer": "B.Cu",
+          "width_mm": 0.3
+        }
+      ],
+      "verdict": "INERT",
+      "width_mm": 0.3
+    },
+    {
+      "a_mm": [
+        63.5,
+        38.5
+      ],
+      "b_mm": [
+        63.5,
+        39.4
+      ],
+      "chain_mm": 0.9,
+      "layer": "B.Cu",
+      "net": "GND",
+      "one_width": true,
+      "price": {
+        "a_mm": [
+          63.5,
+          38.5
+        ],
+        "b_mm": [
+          63.5,
+          39.4
+        ],
+        "bar_width_mm": 0.3,
+        "island": 54,
+        "island_area_mm2": 44.27,
+        "layer": "B.Cu",
+        "net": "GND",
+        "ok": true,
+        "pour_path_mm": 0.766,
+        "pour_path_width_max_mm": 0.8,
+        "pour_path_width_mm": 0.8,
+        "ratio": 2.667,
+        "reason": null,
+        "removed_mm": 0.9,
+        "zone_name": "B GND PLANE"
+      },
+      "segments": 1,
+      "tracks": [
+        {
+          "a_mm": [
+            63.5,
+            38.5
+          ],
+          "b_mm": [
+            63.5,
+            39.4
+          ],
+          "layer": "B.Cu",
+          "width_mm": 0.3
+        }
+      ],
+      "verdict": "INERT",
+      "width_mm": 0.3
+    },
+    {
+      "a_mm": [
+        63.0,
+        38.1
+      ],
+      "b_mm": [
+        63.5,
+        38.5
+      ],
+      "chain_mm": 0.6403,
+      "layer": "B.Cu",
+      "net": "GND",
+      "one_width": true,
+      "price": {
+        "a_mm": [
+          63.0,
+          38.1
+        ],
+        "b_mm": [
+          63.5,
+          38.5
+        ],
+        "bar_width_mm": 0.3,
+        "island": 54,
+        "island_area_mm2": 44.27,
+        "layer": "B.Cu",
+        "net": "GND",
+        "ok": true,
+        "pour_path_mm": 0.449,
+        "pour_path_width_max_mm": 0.8,
+        "pour_path_width_mm": 0.8,
+        "ratio": 2.667,
+        "reason": null,
+        "removed_mm": 0.6403,
+        "zone_name": "B GND PLANE"
+      },
+      "segments": 1,
+      "tracks": [
+        {
+          "a_mm": [
+            63.0,
+            38.1
+          ],
+          "b_mm": [
+            63.5,
+            38.5
+          ],
+          "layer": "B.Cu",
+          "width_mm": 0.3
+        }
+      ],
+      "verdict": "INERT",
+      "width_mm": 0.3
+    },
+    {
+      "a_mm": [
+        63.0,
+        38.1
+      ],
+      "b_mm": [
+        63.5,
+        38.5
+      ],
+      "chain_mm": 0.6403,
+      "layer": "B.Cu",
+      "net": "GND",
+      "one_width": true,
+      "price": {
+        "a_mm": [
+          63.0,
+          38.1
+        ],
+        "b_mm": [
+          63.5,
+          38.5
+        ],
+        "bar_width_mm": 0.3,
+        "island": 54,
+        "island_area_mm2": 44.27,
+        "layer": "B.Cu",
+        "net": "GND",
+        "ok": true,
+        "pour_path_mm": 0.449,
+        "pour_path_width_max_mm": 0.8,
+        "pour_path_width_mm": 0.8,
+        "ratio": 2.667,
+        "reason": null,
+        "removed_mm": 0.6403,
+        "zone_name": "B GND PLANE"
+      },
+      "segments": 1,
+      "tracks": [
+        {
+          "a_mm": [
+            63.0,
+            38.1
+          ],
+          "b_mm": [
+            63.5,
+            38.5
+          ],
+          "layer": "B.Cu",
+          "width_mm": 0.3
+        }
+      ],
+      "verdict": "INERT",
+      "width_mm": 0.3
+    },
+    {
+      "a_mm": [
+        60.925,
+        38.25
+      ],
+      "b_mm": [
+        61.1,
+        38.0
+      ],
+      "chain_mm": 0.3052,
+      "layer": "B.Cu",
+      "net": "GND",
+      "one_width": true,
+      "price": {
+        "a_mm": [
+          60.925,
+          38.25
+        ],
+        "b_mm": [
+          61.1,
+          38.0
+        ],
+        "bar_width_mm": 0.3,
+        "island": 54,
+        "island_area_mm2": 44.27,
+        "layer": "B.Cu",
+        "net": "GND",
+        "ok": true,
+        "pour_path_mm": 0.035,
+        "pour_path_width_max_mm": 0.8,
+        "pour_path_width_mm": 0.8,
+        "ratio": 2.667,
+        "reason": null,
+        "removed_mm": 0.3052,
+        "zone_name": "B GND PLANE"
+      },
+      "segments": 1,
+      "tracks": [
+        {
+          "a_mm": [
+            60.925,
+            38.25
+          ],
+          "b_mm": [
+            61.1,
+            38.0
+          ],
+          "layer": "B.Cu",
+          "width_mm": 0.3
+        }
+      ],
+      "verdict": "INERT",
+      "width_mm": 0.3
+    },
+    {
+      "a_mm": [
+        60.925,
+        38.25
+      ],
+      "b_mm": [
+        61.1,
+        38.0
+      ],
+      "chain_mm": 0.3052,
+      "layer": "B.Cu",
+      "net": "GND",
+      "one_width": true,
+      "price": {
+        "a_mm": [
+          60.925,
+          38.25
+        ],
+        "b_mm": [
+          61.1,
+          38.0
+        ],
+        "bar_width_mm": 0.3,
+        "island": 54,
+        "island_area_mm2": 44.27,
+        "layer": "B.Cu",
+        "net": "GND",
+        "ok": true,
+        "pour_path_mm": 0.035,
+        "pour_path_width_max_mm": 0.8,
+        "pour_path_width_mm": 0.8,
+        "ratio": 2.667,
+        "reason": null,
+        "removed_mm": 0.3052,
+        "zone_name": "B GND PLANE"
+      },
+      "segments": 1,
+      "tracks": [
+        {
+          "a_mm": [
+            60.925,
+            38.25
+          ],
+          "b_mm": [
+            61.1,
+            38.0
+          ],
+          "layer": "B.Cu",
+          "width_mm": 0.3
+        }
+      ],
+      "verdict": "INERT",
+      "width_mm": 0.3
+    },
+    {
+      "a_mm": [
+        60.7,
+        38.425
+      ],
+      "b_mm": [
+        60.925,
+        38.25
+      ],
+      "chain_mm": 0.285,
+      "layer": "B.Cu",
+      "net": "GND",
+      "one_width": true,
+      "price": {
+        "a_mm": [
+          60.7,
+          38.425
+        ],
+        "b_mm": [
+          60.925,
+          38.25
+        ],
+        "bar_width_mm": 0.3,
+        "island": 54,
+        "island_area_mm2": 44.27,
+        "layer": "B.Cu",
+        "net": "GND",
+        "ok": true,
+        "pour_path_mm": 0.0,
+        "pour_path_width_max_mm": 0.8,
+        "pour_path_width_mm": 0.8,
+        "ratio": 2.667,
+        "reason": null,
+        "removed_mm": 0.285,
+        "zone_name": "B GND PLANE"
+      },
+      "segments": 1,
+      "tracks": [
+        {
+          "a_mm": [
+            60.7,
+            38.425
+          ],
+          "b_mm": [
+            60.925,
+            38.25
+          ],
+          "layer": "B.Cu",
+          "width_mm": 0.3
+        }
+      ],
+      "verdict": "INERT",
+      "width_mm": 0.3
+    },
+    {
+      "a_mm": [
+        60.7,
+        38.425
+      ],
+      "b_mm": [
+        60.925,
+        38.25
+      ],
+      "chain_mm": 0.285,
+      "layer": "B.Cu",
+      "net": "GND",
+      "one_width": true,
+      "price": {
+        "a_mm": [
+          60.7,
+          38.425
+        ],
+        "b_mm": [
+          60.925,
+          38.25
+        ],
+        "bar_width_mm": 0.3,
+        "island": 54,
+        "island_area_mm2": 44.27,
+        "layer": "B.Cu",
+        "net": "GND",
+        "ok": true,
+        "pour_path_mm": 0.0,
+        "pour_path_width_max_mm": 0.8,
+        "pour_path_width_mm": 0.8,
+        "ratio": 2.667,
+        "reason": null,
+        "removed_mm": 0.285,
+        "zone_name": "B GND PLANE"
+      },
+      "segments": 1,
+      "tracks": [
+        {
+          "a_mm": [
+            60.7,
+            38.425
+          ],
+          "b_mm": [
+            60.925,
+            38.25
+          ],
+          "layer": "B.Cu",
+          "width_mm": 0.3
+        }
+      ],
+      "verdict": "INERT",
+      "width_mm": 0.3
+    },
+    {
+      "a_mm": [
+        60.6,
+        38.425
+      ],
+      "b_mm": [
+        60.7,
+        38.425
+      ],
+      "chain_mm": 0.1,
+      "layer": "B.Cu",
+      "net": "GND",
+      "one_width": true,
+      "price": {
+        "a_mm": [
+          60.6,
+          38.425
+        ],
+        "b_mm": [
+          60.7,
+          38.425
+        ],
+        "bar_width_mm": 0.3,
+        "island": 54,
+        "island_area_mm2": 44.27,
+        "layer": "B.Cu",
+        "net": "GND",
+        "ok": true,
+        "pour_path_mm": 0.0,
+        "pour_path_width_max_mm": 0.8,
+        "pour_path_width_mm": 0.8,
+        "ratio": 2.667,
+        "reason": null,
+        "removed_mm": 0.1,
+        "zone_name": "B GND PLANE"
+      },
+      "segments": 1,
+      "tracks": [
+        {
+          "a_mm": [
+            60.6,
+            38.425
+          ],
+          "b_mm": [
+            60.7,
+            38.425
+          ],
+          "layer": "B.Cu",
+          "width_mm": 0.3
+        }
+      ],
+      "verdict": "INERT",
+      "width_mm": 0.3
+    },
+    {
+      "a_mm": [
+        60.6,
+        38.425
+      ],
+      "b_mm": [
+        60.7,
+        38.425
+      ],
+      "chain_mm": 0.1,
+      "layer": "B.Cu",
+      "net": "GND",
+      "one_width": true,
+      "price": {
+        "a_mm": [
+          60.6,
+          38.425
+        ],
+        "b_mm": [
+          60.7,
+          38.425
+        ],
+        "bar_width_mm": 0.3,
+        "island": 54,
+        "island_area_mm2": 44.27,
+        "layer": "B.Cu",
+        "net": "GND",
+        "ok": true,
+        "pour_path_mm": 0.0,
+        "pour_path_width_max_mm": 0.8,
+        "pour_path_width_mm": 0.8,
+        "ratio": 2.667,
+        "reason": null,
+        "removed_mm": 0.1,
+        "zone_name": "B GND PLANE"
+      },
+      "segments": 1,
+      "tracks": [
+        {
+          "a_mm": [
+            60.6,
+            38.425
+          ],
+          "b_mm": [
+            60.7,
+            38.425
+          ],
+          "layer": "B.Cu",
+          "width_mm": 0.3
+        }
+      ],
+      "verdict": "INERT",
+      "width_mm": 0.3
+    }
+  ],
+  "layers": [
+    "B.Cu"
+  ],
+  "nets": [
+    "GND"
+  ],
+  "schema": 1,
+  "summary": {
+    "chains": 17,
+    "inert_mm": 20.658,
+    "verdicts": {
+      "INERT": 17
+    }
+  },
+  "window_mm": "57.5,37.0,64.0,41.0"
+}

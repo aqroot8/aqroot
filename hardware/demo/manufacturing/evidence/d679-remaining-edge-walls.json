@@ -1,0 +1,339 @@
+{
+ "authority_unchanged": true,
+ "board_sha256": "0285ef45466c1c7dd1823099c35d75d704b50266460e94f339c1b19b5409180d",
+ "decision": "D-679",
+ "escape_class_census": {
+  "CLEAR": 13,
+  "LATTICE_EXACT": [
+   "U11.9 /BQ25185_STAT1",
+   "U11.3 /BQ25185_STAT2"
+  ],
+  "WIDTH_NECKABLE": [
+   "U21.5 /01_POWER_TREE/ACC_5V_LX: contract 0.600 mm, widest legal 0.2500 mm"
+  ],
+  "artifact": "evidence/d679-escape-class.json"
+ },
+ "findings": [
+  {
+   "artifacts": [
+    "w/d678/wake-repair.json",
+    "w/d678/wake-vc5.json",
+    "w/d678/wake-guard.json"
+   ],
+   "detail": "it closes its own edge at 148.224 mm with 15 vias -- for two PCAL9535 lands 10 mm apart -- and the haul severs the +3V3 pour, so the board is 25 -> 25 and nets_regressed is ['+3V3'].  With --join-max-mm 30 it is TOO_LONG.  Four runs (--repair-planes, --via-cost 5, --guard, both) all land on 148.224 or 158.045 mm.",
+   "net": "/WAKE_INT_N",
+   "verdict": "ROUTES, AND THE ROUTE IS THE REFUSAL"
+  },
+  {
+   "detail": "screen_escape_class calls U11.9 and U11.3 LATTICE_EXACT -- margin exactly zero at 0.2000 mm -- so screen_lattice_exact_route.py was aimed at them with the EXACT-GEOMETRY launcher D-630 named for that class.  All ten ordered island pairs REFUSE: U11.9 and U11.3 have NO LEGAL ESCAPE at >= 0.150 mm, the BOARD MINIMUM, and the U2 side has no legal corridor at 0.150 mm at 0.05 or 0.025 mm.  The class was right about the margin and the corridor is the wall.",
+   "net": "/BQ25185_STAT1 and /BQ25185_STAT2",
+   "verdict": "HARD WALL AT EVERY WIDTH"
+  },
+  {
+   "detail": "the TPS61023 accessory-boost SWITCH NODE has NEVER been routed -- the net carries ZERO tracks -- and it is 2 pads 4.02 mm apart.  U21.5's widest legal escape is 0.2500 mm, and that figure is not a search result: U21.4 and U21.6 sit 0.5 mm above and below it, their lands end at y 39.575 and y 40.225, and 0.650 - 2 x 0.200 = 0.250 exactly.  The .kicad_dru licenses a 0.200 mm neck INSIDE U21's courtyard, and U21's courtyard ends at x = 58.995 -- while the first x at which even a 0.400 mm trunk (the SWITCH_NODE class FLOOR) can legally exist beside U21.4's land is x = 58.853 + sqrt(0.419^2 - 0.325^2) = 59.117.  The licence stops 0.122 mm before the trunk can start; at the 0.600 mm class OPT it stops 0.262 mm short.  --neck is therefore VACUOUS here for the reason D-597 recorded and nobody had measured: the necked escape must end where the TRUNK can start.",
+   "net": "/01_POWER_TREE/ACC_5V_LX",
+   "verdict": "THE LICENCE STOPS 0.122 mm SHORT"
+  },
+  {
+   "artifact": "evidence/d679-inert-gnd-u21.json",
+   "detail": "screen_inert_copper.py over 57.5,37.0-64.0,41.0 on B.Cu: 17 chains, ALL INERT, 20.658 mm -- copper redundant with the B GND PLANE it lies in.  The chain that walls U21.5 off from L4.2 is U21.4's own escape, (58.700,39.375)-(60.600,38.425), TWO coincident copies.  Removing it is refused by the gate's inert_removal_priced clause: the pour path that replaces it is 0.250 mm at its narrowest against the 0.300 mm removed, ratio 0.833, POUR_PATH_NARROWER_THAN_THE_COPPER_REMOVED.  The SCREEN and the GATE ask different questions and both are right.",
+   "net": "GND (U21 window)",
+   "verdict": "20.658 mm OF INERT COPPER, AND THE GATE STILL REFUSES ONE"
+  }
+ ],
+ "question": "with both power-block pockets measured saturated (D-678), what wall does EACH of the board's remaining 25 retained open edges actually stand behind?",
+ "runs": [
+  {
+   "attributable_drc": 0,
+   "connectivity": {
+    "nets_improved": [],
+    "nets_regressed": [],
+    "open_retained_nets_after": 15,
+    "open_retained_nets_before": 15,
+    "retained_open_edges_after": 25,
+    "retained_open_edges_before": 25
+   },
+   "drc_types": {
+    "lib_footprint_issues": 199,
+    "solder_mask_bridge": 1
+   },
+   "failures": [
+    {
+     "reason": "NO_PATH",
+     "why": "no all-layer corridor at 0.250 mm between the islands"
+    }
+   ],
+   "joins": [],
+   "mm": null,
+   "ok": false,
+   "reason": "NO_PATH",
+   "refused_clauses": [
+    "board_changed",
+    "board_improved"
+   ],
+   "run": "usbconnp",
+   "why": "/01_POWER_TREE/USB_D_CONN_P, --partial at 0.025 mm"
+  },
+  {
+   "attributable_drc": 0,
+   "connectivity": {
+    "nets_improved": [],
+    "nets_regressed": [],
+    "open_retained_nets_after": 15,
+    "open_retained_nets_before": 15,
+    "retained_open_edges_after": 25,
+    "retained_open_edges_before": 25
+   },
+   "drc_types": {
+    "lib_footprint_issues": 199,
+    "solder_mask_bridge": 1
+   },
+   "failures": [
+    {
+     "reason": "NO_PATH",
+     "why": "no all-layer corridor at 0.200 mm between the islands"
+    }
+   ],
+   "joins": [],
+   "mm": null,
+   "ok": false,
+   "reason": "NO_PATH",
+   "refused_clauses": [
+    "board_changed",
+    "board_improved"
+   ],
+   "run": "accpwren",
+   "why": "/ACC_PWR_EN, --partial at 0.025 mm"
+  },
+  {
+   "attributable_drc": 0,
+   "connectivity": {
+    "nets_improved": [],
+    "nets_regressed": [],
+    "open_retained_nets_after": 15,
+    "open_retained_nets_before": 15,
+    "retained_open_edges_after": 25,
+    "retained_open_edges_before": 25
+   },
+   "drc_types": {
+    "lib_footprint_issues": 199,
+    "solder_mask_bridge": 1
+   },
+   "failures": [
+    {
+     "reason": "NO_LEGAL_ESCAPE_SRC",
+     "why": "U11.3: NO LEGAL ESCAPE at >= 0.200 mm; blocked by U11.1 (x23), U11.4 (x18), U11.8 (x5), R37.2 (x4)"
+    },
+    {
+     "reason": "NO_PATH",
+     "why": "no all-layer corridor at 0.200 mm between the islands"
+    }
+   ],
+   "joins": [],
+   "mm": null,
+   "ok": false,
+   "reason": "NO_LEGAL_ESCAPE_SRC",
+   "refused_clauses": [
+    "board_changed",
+    "board_improved"
+   ],
+   "run": "stat2",
+   "why": "/BQ25185_STAT2, --partial at 0.025 mm"
+  },
+  {
+   "attributable_drc": 0,
+   "connectivity": {
+    "nets_improved": [],
+    "nets_regressed": [],
+    "open_retained_nets_after": 15,
+    "open_retained_nets_before": 15,
+    "retained_open_edges_after": 25,
+    "retained_open_edges_before": 25
+   },
+   "drc_types": {
+    "lib_footprint_issues": 199,
+    "solder_mask_bridge": 1
+   },
+   "failures": [
+    {
+     "reason": "NO_LEGAL_ESCAPE_SRC",
+     "why": "U11.9: NO LEGAL ESCAPE at >= 0.200 mm; blocked by U11.10 (x18), U11.7 (x16), U11.6 (x7), track (x6)"
+    },
+    {
+     "reason": "NO_PATH",
+     "why": "no all-layer corridor at 0.200 mm between the islands"
+    }
+   ],
+   "joins": [],
+   "mm": null,
+   "ok": false,
+   "reason": "NO_LEGAL_ESCAPE_SRC",
+   "refused_clauses": [
+    "board_changed",
+    "board_improved"
+   ],
+   "run": "s1p",
+   "why": "/BQ25185_STAT1, --partial at 0.050 mm"
+  },
+  {
+   "attributable_drc": 0,
+   "connectivity": {
+    "nets_improved": [],
+    "nets_regressed": [],
+    "open_retained_nets_after": 15,
+    "open_retained_nets_before": 15,
+    "retained_open_edges_after": 25,
+    "retained_open_edges_before": 25
+   },
+   "drc_types": {
+    "lib_footprint_issues": 199,
+    "solder_mask_bridge": 1
+   },
+   "failures": [
+    {
+     "reason": "NO_LEGAL_ESCAPE_SRC",
+     "why": "U11.3: NO LEGAL ESCAPE at >= 0.200 mm; blocked by U11.1 (x23), U11.4 (x18), U11.8 (x5), R37.2 (x4)"
+    },
+    {
+     "reason": "NO_PATH",
+     "why": "no all-layer corridor at 0.200 mm between the islands"
+    }
+   ],
+   "joins": [],
+   "mm": null,
+   "ok": false,
+   "reason": "NO_LEGAL_ESCAPE_SRC",
+   "refused_clauses": [
+    "board_changed",
+    "board_improved"
+   ],
+   "run": "s2p",
+   "why": "/BQ25185_STAT2, --partial at 0.050 mm"
+  },
+  {
+   "attributable_drc": 0,
+   "connectivity": {
+    "nets_improved": [],
+    "nets_regressed": [],
+    "open_retained_nets_after": 15,
+    "open_retained_nets_before": 15,
+    "retained_open_edges_after": 25,
+    "retained_open_edges_before": 25
+   },
+   "drc_types": {
+    "lib_footprint_issues": 199,
+    "solder_mask_bridge": 1
+   },
+   "failures": [
+    {
+     "reason": "TOO_LONG",
+     "why": "148.224 mm of copper exceeds the 30.0 mm per-join bound"
+    }
+   ],
+   "joins": [],
+   "mm": null,
+   "ok": false,
+   "reason": "TOO_LONG",
+   "refused_clauses": [
+    "board_changed",
+    "board_improved"
+   ],
+   "run": "wkp",
+   "why": "/WAKE_INT_N, --partial with --join-max-mm 30"
+  },
+  {
+   "attributable_drc": 0,
+   "connectivity": {
+    "nets_improved": [],
+    "nets_regressed": [],
+    "open_retained_nets_after": 15,
+    "open_retained_nets_before": 15,
+    "retained_open_edges_after": 25,
+    "retained_open_edges_before": 25
+   },
+   "drc_types": {
+    "lib_footprint_issues": 199,
+    "solder_mask_bridge": 1
+   },
+   "failures": [
+    {
+     "reason": "NO_LEGAL_ESCAPE_DST",
+     "why": "U21.5: NO LEGAL ESCAPE at >= 0.600 mm; blocked by U21.4 (x21), C65.1 (x18), U21.1 (x13), L4.1 (x11)"
+    }
+   ],
+   "joins": [],
+   "mm": null,
+   "ok": false,
+   "reason": "NO_LEGAL_ESCAPE_DST",
+   "refused_clauses": [
+    "board_changed",
+    "board_improved"
+   ],
+   "run": "lx",
+   "why": "/01_POWER_TREE/ACC_5V_LX, --neck"
+  },
+  {
+   "attributable_drc": 0,
+   "connectivity": {
+    "nets_improved": [],
+    "nets_regressed": [],
+    "open_retained_nets_after": 15,
+    "open_retained_nets_before": 15,
+    "retained_open_edges_after": 25,
+    "retained_open_edges_before": 25
+   },
+   "drc_types": {
+    "lib_footprint_issues": 199,
+    "solder_mask_bridge": 1
+   },
+   "failures": [
+    {
+     "reason": "NO_LEGAL_ESCAPE_DST",
+     "why": "U21.5: NO LEGAL ESCAPE at >= 0.400 mm; blocked by U21.4 (x109), C65.1 (x90), U21.1 (x68), L4.1 (x49)"
+    }
+   ],
+   "joins": [],
+   "mm": null,
+   "ok": false,
+   "reason": "NO_LEGAL_ESCAPE_DST",
+   "refused_clauses": [
+    "board_changed",
+    "board_improved"
+   ],
+   "run": "lx2",
+   "why": "/01_POWER_TREE/ACC_5V_LX, --neck --escape-floor"
+  },
+  {
+   "attributable_drc": 0,
+   "connectivity": {
+    "nets_improved": [],
+    "nets_regressed": [],
+    "open_retained_nets_after": 15,
+    "open_retained_nets_before": 15,
+    "retained_open_edges_after": 25,
+    "retained_open_edges_before": 25
+   },
+   "drc_types": {
+    "lib_footprint_issues": 199,
+    "solder_mask_bridge": 1
+   },
+   "failures": [
+    {
+     "reason": "NO_LEGAL_ESCAPE_DST",
+     "why": "U21.5: NO LEGAL ESCAPE at >= 0.600 mm; blocked by U21.4 (x21), C65.1 (x18), U21.1 (x13), L4.1 (x11)"
+    }
+   ],
+   "joins": [],
+   "mm": null,
+   "ok": false,
+   "reason": "NO_LEGAL_ESCAPE_DST",
+   "refused_clauses": [
+    "board_improved",
+    "inert_removal_priced"
+   ],
+   "run": "lx3",
+   "why": "/01_POWER_TREE/ACC_5V_LX, the INERT GND wall removed"
+  }
+ ],
+ "schema": 1
+}

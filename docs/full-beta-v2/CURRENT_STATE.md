@@ -13,6 +13,60 @@
 > This file references DEVICE_SPEC rather than duplicating full specs.
 
 ## 1. Authoritative HEAD
+- **Demo D-679 (EVERY REMAINING OPEN EDGE, AND THE EXACT WALL IT STANDS
+  BEHIND — INCLUDING A SWITCH NODE WHOSE WIDTH LICENCE STOPS 0.122 mm SHORT):**
+  **NO COPPER PROMOTED — CHARACTERISATION.**  Authority **UNCHANGED** at
+  `0285ef45466c1c7dd1823099c35d75d704b50266460e94f339c1b19b5409180d`; retained
+  open edges 25 -> 25.  Nothing was written outside `evidence/`; no framework
+  changed.  Nine gate dry-runs and four read-only screens
+  (`evidence/d679-remaining-edge-walls.json`).
+  **(1) THE ESCAPE CENSUS.**  `screen_escape_class.py`: **13 `CLEAR`, 2
+  `LATTICE_EXACT`, 1 `WIDTH_NECKABLE`** — thirteen lands launch fine and their
+  wall is the CORRIDOR (`evidence/d679-escape-class.json`).
+  **(2) `/WAKE_INT_N` ROUTES, AND THE ROUTE IS THE REFUSAL.**  It closes its own
+  edge at **148.224 mm with 15 vias** for two `PCAL9535` lands **10 mm apart**,
+  and the haul severs the `+3V3` pour, so the board reads 25 -> 25 with
+  `nets_regressed ['+3V3']`; four runs all land on 148.224 or 158.045 mm and
+  `--join-max-mm 30` reports `TOO_LONG`.  **Closable, and closing it that way
+  would be bad engineering** — a different verdict from "blocked", recorded so
+  nobody promotes it by accident.
+  **(3) THE `LATTICE_EXACT` CLASS, ASKED WITH THE RIGHT LAUNCHER, STILL
+  REFUSES.**  D-631 noted `screen_lattice_exact_route.py` had never been aimed
+  at the list; it is aimed now, and ALL TEN ordered island pairs of
+  `/BQ25185_STAT1` + `/BQ25185_STAT2` refuse: `U11.9` and `U11.3` have **NO
+  LEGAL ESCAPE at >= 0.150 mm, the BOARD MINIMUM**, and the `U2` side has no
+  legal corridor at 0.150 mm at 0.05 or 0.025 mm.
+  **(4) THE ACCESSORY BOOST'S SWITCH NODE HAS NEVER BEEN ROUTED, AND ITS
+  LICENCE STOPS 0.122 mm SHORT.**  `/01_POWER_TREE/ACC_5V_LX` carries **ZERO
+  tracks**: two pads 4.02 mm apart, `U21.5` (`TPS61023` `SW`) and `L4.2`.
+  `U21.5`'s widest legal escape is **0.2500 mm** and that is arithmetic, not a
+  search — `U21.4` and `U21.6` are 0.5 mm away on a SOT-563, their lands end at
+  y 39.575 and 40.225, and 0.650 - 2 x 0.200 = 0.250 exactly.  The `.kicad_dru`
+  licenses a **0.200 mm neck inside `U21`'s courtyard**, whose east edge is
+  **x = 58.995**; the first x at which even a **0.400 mm** trunk (the
+  `SWITCH_NODE` class FLOOR) can exist beside `U21.4`'s land is **59.117**.
+  **The licence stops 0.122 mm before the trunk can start** (0.262 mm at the
+  0.600 mm `opt`).  That is why `--neck` is VACUOUS here, and it is the reason
+  D-597 recorded twice without measuring: a necked escape must END where the
+  TRUNK can START.
+  **(5) 20.658 mm OF INERT GROUND COPPER, AND THE GATE STILL REFUSES ONE PIECE
+  OF IT.**  `screen_inert_copper.py` over (57.5,37.0)-(64.0,41.0) on `B.Cu`:
+  **17 chains, ALL INERT, 20.658 mm** (`evidence/d679-inert-gnd-u21.json`).
+  The chain that walls `U21.5` off from `L4.2` is `U21.4`'s own escape, TWO
+  coincident copies — and removing it is REFUSED by the gate's
+  `inert_removal_priced` clause at **ratio 0.833**, because the pour path that
+  replaces it is 0.250 mm against the 0.300 mm removed.  The SCREEN asks *is
+  this copper carrying anything the pour is not*; the GATE asks *is the pour
+  that replaces it at least as good a conductor*.  Both are right.
+  **NEXT:** (1) `ACC_5V_LX` is the CHEAPEST remaining edge and it is a
+  PLACEMENT problem — 0.122 mm of licensed courtyard closes it; the honest
+  shapes are a named rule AREA reaching x 59.30 (the `PAD_ESCAPE_RUN_<REF>`
+  shape), a `C65` shift east (measured: REFUSES without `--release`, a `GND`
+  endpoint at (61.900,41.000) strands), or moving `U21`.  (2) `/WAKE_INT_N` is
+  the one open edge whose blocker is a JUDGEMENT and not a wall.  (3) D-678's
+  NEXT stands.  (4) Every other remaining edge is a corridor or land-pattern
+  wall measured AT OR BELOW the board minimum: **none is a lattice question and
+  none is a width question.  What is left on this board is FLOORPLAN.**
 - **Demo D-678 (THE ONE-EDGE TRANSACTION THIS BOARD WOULD HAVE ACCEPTED PUTS
   THE CHARGER'S OWN GROUND ON AN 8.5 mm2 ISLAND, AND `PP2` SAID SO AFTER THE
   GATE DID NOT):**  **NO COPPER PROMOTED — a transaction was DRAWN, GATED at

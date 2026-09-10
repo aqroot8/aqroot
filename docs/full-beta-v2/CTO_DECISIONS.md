@@ -1,3 +1,112 @@
+# D-679 · 2026-09-10 · Demo — EVERY REMAINING OPEN EDGE, AND THE EXACT WALL IT STANDS BEHIND — INCLUDING A SWITCH NODE WHOSE WIDTH LICENCE STOPS 0.122 mm SHORT
+
+    authority  0285ef45466c1c7dd1823099c35d75d704b50266460e94f339c1b19b5409180d
+            -> 0285ef45466c1c7dd1823099c35d75d704b50266460e94f339c1b19b5409180d   UNCHANGED
+    retained open edges 25 -> 25      open retained nets 15 -> 15
+    `hardware/demo/kicad`, `hardware/demo/fab`, `hardware/beta-v2`  UNTOUCHED
+    no framework changed; nine gate dry-runs and four read-only screens
+
+**NO COPPER PROMOTED.**  D-678 measured both power-block pockets saturated.
+This decision asks the same question of the OTHER nineteen edges, and answers
+it: **every one of them stands behind a wall that is now named and measured in
+millimetres.**  Nine gate dry-runs and four read-only screens,
+`evidence/d679-remaining-edge-walls.json`.
+
+## 1. THE ESCAPE CENSUS
+
+`screen_escape_class.py` over the five cheapest open nets
+(`evidence/d679-escape-class.json`): **13 `CLEAR`, 2 `LATTICE_EXACT`, 1
+`WIDTH_NECKABLE`**.  Thirteen lands launch fine and their wall is the corridor.
+Three do not, and each is a different wall.
+
+## 2. `/WAKE_INT_N` ROUTES — AND THE ROUTE IS THE REFUSAL
+
+It closes its own edge.  **At 148.224 mm with 15 vias**, for two `PCAL9535`
+lands **10 mm apart** — and the haul severs the `+3V3` pour, so the board reads
+25 -> 25 with `nets_regressed ['+3V3']`.  Four runs (`--repair-planes`,
+`--via-cost 5`, `--guard`, both) all land on 148.224 or 158.045 mm; with
+`--join-max-mm 30` it is `TOO_LONG`.  **This edge is closable and closing it
+this way would be bad engineering**, and that is a different verdict from
+"blocked" — it is recorded so nobody promotes it by accident.
+
+## 3. `/BQ25185_STAT1` AND `/BQ25185_STAT2` — THE `LATTICE_EXACT` CLASS, ASKED WITH THE RIGHT LAUNCHER, STILL REFUSES
+
+`screen_escape_class.py` calls `U11.9` and `U11.3` **`LATTICE_EXACT`** — margin
+exactly zero at 0.2000 mm — which is D-630's class for a land no lattice can
+launch at any pitch and D-631's note says the instrument for it,
+`screen_lattice_exact_route.py`, *"had still never been aimed at the list"*.
+It is aimed now.  **All ten ordered island pairs REFUSE**, and the numbers are
+worse than the class: `U11.9` and `U11.3` have **NO LEGAL ESCAPE at ≥ 0.150 mm
+— the BOARD MINIMUM** — with the exact-geometry launcher, and the `U2` side has
+**no legal corridor at 0.150 mm at 0.05 or 0.025 mm**.  Both charger status
+nets are hard walls at every width this board can fabricate.
+
+## 4. THE ACCESSORY BOOST'S SWITCH NODE HAS NEVER BEEN ROUTED, AND ITS LICENCE STOPS 0.122 mm SHORT
+
+`/01_POWER_TREE/ACC_5V_LX` carries **ZERO tracks**.  It is two pads 4.02 mm
+apart: `U21.5`, the `TPS61023`'s `SW` pin, and `L4.2`, its inductor.  Section 4
+of the `.kicad_dru` already says why in words — *"ON THE CURRENT PLACEMENT ALL
+FOUR SWITCH NODES FAIL IT … these rules constrain routing; they cannot repair
+placement"*.  This is the millimetres:
+
+  * `U21.5`'s **widest legal escape is 0.2500 mm**, and that is not a search
+    result.  `U21.4` and `U21.6` sit 0.5 mm above and below it on a SOT-563;
+    their lands end at y 39.575 and y 40.225; **0.650 − 2 × 0.200 = 0.250
+    exactly.**
+  * The `.kicad_dru` licenses a **0.200 mm neck inside `U21`'s courtyard**, and
+    `U21`'s courtyard ends at **x = 58.995**.
+  * The first x at which even a **0.400 mm** trunk — the `SWITCH_NODE` class
+    FLOOR, not its 0.600 mm `opt` — can legally exist beside `U21.4`'s land is
+    x = 58.853 + √(0.419² − 0.325²) = **59.117**.
+
+**The licence stops 0.122 mm before the trunk can start**; at the class `opt`
+it stops 0.262 mm short.  That is why `--neck` is VACUOUS here, and it is the
+reason D-597 recorded twice without measuring: *a necked escape must end
+somewhere the TRUNK can start*, and inside this courtyard there is no such
+point.  `--escape-floor` moves the escape ladder 0.600 -> 0.400 and changes
+nothing, because 0.400 > 0.250 too.
+
+## 5. 20.658 mm OF INERT GROUND COPPER, AND THE GATE STILL REFUSES ONE PIECE OF IT
+
+The wall between `U21.5` and `L4.2` is `U21.4`'s own `GND` escape,
+(58.700, 39.375)-(60.600, 38.425), **two coincident copies**.
+`screen_inert_copper.py` over (57.5, 37.0)-(64.0, 41.0) on `B.Cu`: **17 chains,
+ALL 17 INERT, 20.658 mm** — copper redundant with the `B GND PLANE` it lies in
+(`evidence/d679-inert-gnd-u21.json`).  And removing that one chain is REFUSED by
+the gate's `inert_removal_priced` clause: the pour path that replaces it is
+**0.250 mm at its narrowest against the 0.300 mm removed, ratio 0.833,
+`POUR_PATH_NARROWER_THAN_THE_COPPER_REMOVED`**.
+
+**The screen and the gate ask different questions and both are right.**  The
+screen asks *is this copper carrying anything the pour is not*; the gate asks
+*is the pour that replaces it at least as good a conductor*.  A future decision
+that wants this 20.658 mm should widen the pour path first, not argue with
+either clause.
+
+## 6. NEXT, IN ORDER OF LEVERAGE
+
+ 1. **`/01_POWER_TREE/ACC_5V_LX` IS THE CHEAPEST REMAINING EDGE AND IT IS A
+    PLACEMENT PROBLEM, NOT A ROUTING ONE.**  0.122 mm of licensed courtyard
+    would close it.  Three shapes, in order of honesty: widen the
+    `intersectsCourtyard('U21')` necking area to a named rule AREA that reaches
+    x 59.30 (the shape D-610's `PAD_ESCAPE_RUN_<REF>` already has); move `C65`
+    east — its land sits 0.73 mm from `U21.5` and D-679 measured the shift
+    REFUSES without `--release` because a `GND` endpoint at (61.900, 41.000)
+    strands; or move `U21` itself.
+ 2. `/WAKE_INT_N` is closable at 148 mm and should NOT be closed that way.  It
+    is the one open edge on this board whose blocker is a JUDGEMENT and not a
+    wall.
+ 3. D-678's `NEXT` stands: a read-only screen that says which pour island a
+    moved land will END UP on, and the (67.300, 78.250) `GND` barrel payload
+    for the charger's single-barrel ground.
+ 4. `/BQ25185_STAT1`, `/BQ25185_STAT2`, `/USB_D_MCU_N`, `/USB_D_MCU_P`,
+    `/I2C_SCL_INT`, `/NFC_SUPPLY`, `/SX1262_DIO1`, `/ACC_PWR_EN`,
+    `/01_POWER_TREE/USB_D_CONN_P`, `+3V3`, `GND MK1.4` and
+    `/04_SPI_B_RADIOS_NFC/NFC_VDD_RF` are all corridor or land-pattern walls
+    measured at or below the board minimum.  **None of them is a lattice
+    question and none of them is a width question.**  What is left on this
+    board is FLOORPLAN.
+
 # D-678 · 2026-09-10 · Demo — THE ONE-EDGE TRANSACTION THIS BOARD WOULD HAVE ACCEPTED PUTS THE CHARGER'S OWN GROUND ON AN 8.5 mm² ISLAND, AND PP2 SAID SO AFTER THE GATE DID NOT
 
     authority  0285ef45466c1c7dd1823099c35d75d704b50266460e94f339c1b19b5409180d
