@@ -1,0 +1,774 @@
+{
+ "authority_unchanged": true,
+ "board_sha256": "0285ef45466c1c7dd1823099c35d75d704b50266460e94f339c1b19b5409180d",
+ "charger_ground_finding": {
+  "pp2_today": "PASSES: priced 1.226 A against the GND netclass floor 0.995 A -- 23 % of margin",
+  "ready_payload": {
+   "barrel": {
+    "at_mm": [
+     67.3,
+     78.25
+    ],
+    "dia_mm": 0.5,
+    "drill_mm": 0.25,
+    "net": "GND",
+    "note": "the board's own min_via_diameter / min_through_hole floors; needs NO licence"
+   },
+   "measured": "real kicad-cli DRC on the candidate: exit 0, ONLY the inherited lib_footprint_issues 199 and solder_mask_bridge 1.  ZERO via_diameter, ZERO annular_width, ZERO hole_to_hole, ZERO clearance, ZERO shorting_items (w/d678/probe/tv3)",
+   "refused_neighbours": [
+    {
+     "at_mm": [
+      67.7,
+      77.35
+     ],
+     "dia_mm": 0.5,
+     "why": "shorts /09_COMMUNITY_HEADER/NATIVE_B_HDR on In2.Cu"
+    },
+    {
+     "at_mm": [
+      67.25,
+      77.35
+     ],
+     "dia_mm": 0.35,
+     "why": "via_diameter + annular_width + hole_to_hole 0.125 mm to the existing barrel"
+    },
+    {
+     "at_mm": [
+      67.25,
+      78.25
+     ],
+     "dia_mm": 0.35,
+     "why": "as above, and the fine-pitch necking clearance rule at 0.1059 mm"
+    }
+   ],
+   "status": "READY PAYLOAD.  It closes NO open edge, so gate clause 4 refuses it alone; the next promoting decision must carry it with an edge-closing route (the D-601/D-603 shape)"
+  },
+  "what": "ON THE AUTHORITY AS IT STANDS, the BQ25185's ENTIRE ground -- pin 4, pin 5 and the exposed thermal pad, pin 11 -- sits on a 2.307 mm2 SEVERED B.Cu island whose only connection to the rest of the board's ground is ONE 0.35/0.20 mm plated barrel at (67.300, 77.700), licensed by the POUR_BRIDGE_U11_11 rule area.  U11 is a B.Cu part and that island is B.Cu, so the barrel is the only way off the layer.",
+  "why_it_matters": "a single open plated hole floats the charger's ground reference AND its only heat path; the BQ25185 dissipates (VBUS - VBAT) x ICHG in linear mode and TI's own layout guidance asks for a via field under the exposed pad"
+ },
+ "control_no_rotation": {
+  "case": "sw_none",
+  "clusters": 9,
+  "lands": {
+   "C23.1": {
+    "island": {
+     "area_mm2": 20.863,
+     "layer": "B.Cu",
+     "outline": 37,
+     "zone": "B GND PLANE"
+    },
+    "net": "GND"
+   },
+   "C27.1": {
+    "island": {
+     "area_mm2": 5.829,
+     "layer": "B.Cu",
+     "outline": 5,
+     "zone": "B /01_POWER_TREE/BQ25185_SYS POUR 1"
+    },
+    "net": "/01_POWER_TREE/BQ25185_SYS"
+   },
+   "C27.2": {
+    "island": {
+     "area_mm2": 14.882,
+     "layer": "B.Cu",
+     "outline": 28,
+     "zone": "B GND PLANE"
+    },
+    "net": "GND"
+   },
+   "C28.2": {
+    "island": {
+     "area_mm2": 14.882,
+     "layer": "B.Cu",
+     "outline": 28,
+     "zone": "B GND PLANE"
+    },
+    "net": "GND"
+   },
+   "U11.11": {
+    "island": {
+     "area_mm2": 2.307,
+     "layer": "B.Cu",
+     "outline": 39,
+     "zone": "B GND PLANE"
+    },
+    "net": "GND"
+   },
+   "U11.4": {
+    "island": {
+     "area_mm2": 2.307,
+     "layer": "B.Cu",
+     "outline": 39,
+     "zone": "B GND PLANE"
+    },
+    "net": "GND"
+   },
+   "U11.5": {
+    "island": {
+     "area_mm2": 2.307,
+     "layer": "B.Cu",
+     "outline": 39,
+     "zone": "B GND PLANE"
+    },
+    "net": "GND"
+   }
+  },
+  "reading": "C27.1 stays on its own 5.829 mm2 island (no edge closed) and C27.2 lands on GND island #28 -- 14.882 mm2, TOGETHER WITH C28.2 and NOT with U11's ground.  That is why PP2 passes today"
+ },
+ "decision": "D-678",
+ "method": "evidence/d678-candidate-drc-probe.py: a PRIVATE COPY per case, the swept GND stub and the two ISET tracks removed, C27 rotated 180 deg and translated by (dx, dy), refilled and DRC'd by real kicad-cli, and for every named land the filled island of its OWN net that the land ends up sitting on",
+ "question": "is there ANY position for a 180-degree-rotated C27 that closes C27.1 into the BQ25185_SYS pour body WITHOUT putting its GND land on U11's own severed ground island?",
+ "schema": 1,
+ "sweep": [
+  {
+   "case": "sw_-0.40_-0.40",
+   "clusters": 8,
+   "dx_mm": -0.4,
+   "dy_mm": -0.4,
+   "lands": {
+    "C23.1": {
+     "island": {
+      "area_mm2": 20.863,
+      "layer": "B.Cu",
+      "outline": 37,
+      "zone": "B GND PLANE"
+     },
+     "net": "GND"
+    },
+    "C27.1": {
+     "island": {
+      "area_mm2": 90.862,
+      "layer": "B.Cu",
+      "outline": 3,
+      "zone": "B /01_POWER_TREE/BQ25185_SYS POUR 1"
+     },
+     "net": "/01_POWER_TREE/BQ25185_SYS"
+    },
+    "C27.2": {
+     "island": {
+      "area_mm2": 8.527,
+      "layer": "B.Cu",
+      "outline": 39,
+      "zone": "B GND PLANE"
+     },
+     "net": "GND"
+    },
+    "C28.2": {
+     "island": {
+      "area_mm2": 11.838,
+      "layer": "B.Cu",
+      "outline": 28,
+      "zone": "B GND PLANE"
+     },
+     "net": "GND"
+    },
+    "U11.11": {
+     "island": {
+      "area_mm2": 8.527,
+      "layer": "B.Cu",
+      "outline": 39,
+      "zone": "B GND PLANE"
+     },
+     "net": "GND"
+    },
+    "U11.4": {
+     "island": {
+      "area_mm2": 8.527,
+      "layer": "B.Cu",
+      "outline": 39,
+      "zone": "B GND PLANE"
+     },
+     "net": "GND"
+    },
+    "U11.5": {
+     "island": {
+      "area_mm2": 8.527,
+      "layer": "B.Cu",
+      "outline": 39,
+      "zone": "B GND PLANE"
+     },
+     "net": "GND"
+    }
+   },
+   "rot_deg": 180
+  },
+  {
+   "case": "sw_-0.40_+0.00",
+   "clusters": 8,
+   "dx_mm": -0.4,
+   "dy_mm": 0.0,
+   "lands": {
+    "C23.1": {
+     "island": {
+      "area_mm2": 20.863,
+      "layer": "B.Cu",
+      "outline": 37,
+      "zone": "B GND PLANE"
+     },
+     "net": "GND"
+    },
+    "C27.1": {
+     "island": {
+      "area_mm2": 90.862,
+      "layer": "B.Cu",
+      "outline": 3,
+      "zone": "B /01_POWER_TREE/BQ25185_SYS POUR 1"
+     },
+     "net": "/01_POWER_TREE/BQ25185_SYS"
+    },
+    "C27.2": {
+     "island": {
+      "area_mm2": 8.527,
+      "layer": "B.Cu",
+      "outline": 39,
+      "zone": "B GND PLANE"
+     },
+     "net": "GND"
+    },
+    "C28.2": {
+     "island": {
+      "area_mm2": 11.972,
+      "layer": "B.Cu",
+      "outline": 28,
+      "zone": "B GND PLANE"
+     },
+     "net": "GND"
+    },
+    "U11.11": {
+     "island": {
+      "area_mm2": 8.527,
+      "layer": "B.Cu",
+      "outline": 39,
+      "zone": "B GND PLANE"
+     },
+     "net": "GND"
+    },
+    "U11.4": {
+     "island": {
+      "area_mm2": 8.527,
+      "layer": "B.Cu",
+      "outline": 39,
+      "zone": "B GND PLANE"
+     },
+     "net": "GND"
+    },
+    "U11.5": {
+     "island": {
+      "area_mm2": 8.527,
+      "layer": "B.Cu",
+      "outline": 39,
+      "zone": "B GND PLANE"
+     },
+     "net": "GND"
+    }
+   },
+   "rot_deg": 180
+  },
+  {
+   "case": "sw_-0.40_+0.25",
+   "clusters": 8,
+   "dx_mm": -0.4,
+   "dy_mm": 0.25,
+   "lands": {
+    "C23.1": {
+     "island": {
+      "area_mm2": 20.863,
+      "layer": "B.Cu",
+      "outline": 37,
+      "zone": "B GND PLANE"
+     },
+     "net": "GND"
+    },
+    "C27.1": {
+     "island": {
+      "area_mm2": 90.862,
+      "layer": "B.Cu",
+      "outline": 3,
+      "zone": "B /01_POWER_TREE/BQ25185_SYS POUR 1"
+     },
+     "net": "/01_POWER_TREE/BQ25185_SYS"
+    },
+    "C27.2": {
+     "island": {
+      "area_mm2": 8.527,
+      "layer": "B.Cu",
+      "outline": 39,
+      "zone": "B GND PLANE"
+     },
+     "net": "GND"
+    },
+    "C28.2": {
+     "island": {
+      "area_mm2": 11.972,
+      "layer": "B.Cu",
+      "outline": 28,
+      "zone": "B GND PLANE"
+     },
+     "net": "GND"
+    },
+    "U11.11": {
+     "island": {
+      "area_mm2": 8.527,
+      "layer": "B.Cu",
+      "outline": 39,
+      "zone": "B GND PLANE"
+     },
+     "net": "GND"
+    },
+    "U11.4": {
+     "island": {
+      "area_mm2": 8.527,
+      "layer": "B.Cu",
+      "outline": 39,
+      "zone": "B GND PLANE"
+     },
+     "net": "GND"
+    },
+    "U11.5": {
+     "island": {
+      "area_mm2": 8.527,
+      "layer": "B.Cu",
+      "outline": 39,
+      "zone": "B GND PLANE"
+     },
+     "net": "GND"
+    }
+   },
+   "rot_deg": 180
+  },
+  {
+   "case": "sw_+0.00_-0.40",
+   "clusters": 8,
+   "dx_mm": 0.0,
+   "dy_mm": -0.4,
+   "lands": {
+    "C23.1": {
+     "island": {
+      "area_mm2": 20.863,
+      "layer": "B.Cu",
+      "outline": 37,
+      "zone": "B GND PLANE"
+     },
+     "net": "GND"
+    },
+    "C27.1": {
+     "island": {
+      "area_mm2": 92.419,
+      "layer": "B.Cu",
+      "outline": 3,
+      "zone": "B /01_POWER_TREE/BQ25185_SYS POUR 1"
+     },
+     "net": "/01_POWER_TREE/BQ25185_SYS"
+    },
+    "C27.2": {
+     "island": {
+      "area_mm2": 8.527,
+      "layer": "B.Cu",
+      "outline": 39,
+      "zone": "B GND PLANE"
+     },
+     "net": "GND"
+    },
+    "C28.2": {
+     "island": {
+      "area_mm2": 10.236,
+      "layer": "B.Cu",
+      "outline": 28,
+      "zone": "B GND PLANE"
+     },
+     "net": "GND"
+    },
+    "U11.11": {
+     "island": {
+      "area_mm2": 8.527,
+      "layer": "B.Cu",
+      "outline": 39,
+      "zone": "B GND PLANE"
+     },
+     "net": "GND"
+    },
+    "U11.4": {
+     "island": {
+      "area_mm2": 8.527,
+      "layer": "B.Cu",
+      "outline": 39,
+      "zone": "B GND PLANE"
+     },
+     "net": "GND"
+    },
+    "U11.5": {
+     "island": {
+      "area_mm2": 8.527,
+      "layer": "B.Cu",
+      "outline": 39,
+      "zone": "B GND PLANE"
+     },
+     "net": "GND"
+    }
+   },
+   "rot_deg": 180
+  },
+  {
+   "case": "sw_+0.00_+0.00",
+   "clusters": 8,
+   "dx_mm": 0.0,
+   "dy_mm": 0.0,
+   "lands": {
+    "C23.1": {
+     "island": {
+      "area_mm2": 20.863,
+      "layer": "B.Cu",
+      "outline": 37,
+      "zone": "B GND PLANE"
+     },
+     "net": "GND"
+    },
+    "C27.1": {
+     "island": {
+      "area_mm2": 90.862,
+      "layer": "B.Cu",
+      "outline": 3,
+      "zone": "B /01_POWER_TREE/BQ25185_SYS POUR 1"
+     },
+     "net": "/01_POWER_TREE/BQ25185_SYS"
+    },
+    "C27.2": {
+     "island": {
+      "area_mm2": 8.527,
+      "layer": "B.Cu",
+      "outline": 39,
+      "zone": "B GND PLANE"
+     },
+     "net": "GND"
+    },
+    "C28.2": {
+     "island": {
+      "area_mm2": 11.972,
+      "layer": "B.Cu",
+      "outline": 28,
+      "zone": "B GND PLANE"
+     },
+     "net": "GND"
+    },
+    "U11.11": {
+     "island": {
+      "area_mm2": 8.527,
+      "layer": "B.Cu",
+      "outline": 39,
+      "zone": "B GND PLANE"
+     },
+     "net": "GND"
+    },
+    "U11.4": {
+     "island": {
+      "area_mm2": 8.527,
+      "layer": "B.Cu",
+      "outline": 39,
+      "zone": "B GND PLANE"
+     },
+     "net": "GND"
+    },
+    "U11.5": {
+     "island": {
+      "area_mm2": 8.527,
+      "layer": "B.Cu",
+      "outline": 39,
+      "zone": "B GND PLANE"
+     },
+     "net": "GND"
+    }
+   },
+   "rot_deg": 180
+  },
+  {
+   "case": "sw_+0.00_+0.25",
+   "clusters": 8,
+   "dx_mm": 0.0,
+   "dy_mm": 0.25,
+   "lands": {
+    "C23.1": {
+     "island": {
+      "area_mm2": 20.863,
+      "layer": "B.Cu",
+      "outline": 37,
+      "zone": "B GND PLANE"
+     },
+     "net": "GND"
+    },
+    "C27.1": {
+     "island": {
+      "area_mm2": 90.862,
+      "layer": "B.Cu",
+      "outline": 3,
+      "zone": "B /01_POWER_TREE/BQ25185_SYS POUR 1"
+     },
+     "net": "/01_POWER_TREE/BQ25185_SYS"
+    },
+    "C27.2": {
+     "island": {
+      "area_mm2": 8.527,
+      "layer": "B.Cu",
+      "outline": 39,
+      "zone": "B GND PLANE"
+     },
+     "net": "GND"
+    },
+    "C28.2": {
+     "island": {
+      "area_mm2": 11.972,
+      "layer": "B.Cu",
+      "outline": 28,
+      "zone": "B GND PLANE"
+     },
+     "net": "GND"
+    },
+    "U11.11": {
+     "island": {
+      "area_mm2": 8.527,
+      "layer": "B.Cu",
+      "outline": 39,
+      "zone": "B GND PLANE"
+     },
+     "net": "GND"
+    },
+    "U11.4": {
+     "island": {
+      "area_mm2": 8.527,
+      "layer": "B.Cu",
+      "outline": 39,
+      "zone": "B GND PLANE"
+     },
+     "net": "GND"
+    },
+    "U11.5": {
+     "island": {
+      "area_mm2": 8.527,
+      "layer": "B.Cu",
+      "outline": 39,
+      "zone": "B GND PLANE"
+     },
+     "net": "GND"
+    }
+   },
+   "rot_deg": 180
+  },
+  {
+   "case": "sw_+0.40_-0.40",
+   "clusters": 8,
+   "dx_mm": 0.4,
+   "dy_mm": -0.4,
+   "lands": {
+    "C23.1": {
+     "island": {
+      "area_mm2": 20.863,
+      "layer": "B.Cu",
+      "outline": 37,
+      "zone": "B GND PLANE"
+     },
+     "net": "GND"
+    },
+    "C27.1": {
+     "island": {
+      "area_mm2": 92.419,
+      "layer": "B.Cu",
+      "outline": 3,
+      "zone": "B /01_POWER_TREE/BQ25185_SYS POUR 1"
+     },
+     "net": "/01_POWER_TREE/BQ25185_SYS"
+    },
+    "C27.2": {
+     "island": {
+      "area_mm2": 8.527,
+      "layer": "B.Cu",
+      "outline": 39,
+      "zone": "B GND PLANE"
+     },
+     "net": "GND"
+    },
+    "C28.2": {
+     "island": {
+      "area_mm2": 10.236,
+      "layer": "B.Cu",
+      "outline": 28,
+      "zone": "B GND PLANE"
+     },
+     "net": "GND"
+    },
+    "U11.11": {
+     "island": {
+      "area_mm2": 8.527,
+      "layer": "B.Cu",
+      "outline": 39,
+      "zone": "B GND PLANE"
+     },
+     "net": "GND"
+    },
+    "U11.4": {
+     "island": {
+      "area_mm2": 8.527,
+      "layer": "B.Cu",
+      "outline": 39,
+      "zone": "B GND PLANE"
+     },
+     "net": "GND"
+    },
+    "U11.5": {
+     "island": {
+      "area_mm2": 8.527,
+      "layer": "B.Cu",
+      "outline": 39,
+      "zone": "B GND PLANE"
+     },
+     "net": "GND"
+    }
+   },
+   "rot_deg": 180
+  },
+  {
+   "case": "sw_+0.40_+0.00",
+   "clusters": 8,
+   "dx_mm": 0.4,
+   "dy_mm": 0.0,
+   "lands": {
+    "C23.1": {
+     "island": {
+      "area_mm2": 20.863,
+      "layer": "B.Cu",
+      "outline": 37,
+      "zone": "B GND PLANE"
+     },
+     "net": "GND"
+    },
+    "C27.1": {
+     "island": {
+      "area_mm2": 90.862,
+      "layer": "B.Cu",
+      "outline": 3,
+      "zone": "B /01_POWER_TREE/BQ25185_SYS POUR 1"
+     },
+     "net": "/01_POWER_TREE/BQ25185_SYS"
+    },
+    "C27.2": {
+     "island": {
+      "area_mm2": 8.527,
+      "layer": "B.Cu",
+      "outline": 39,
+      "zone": "B GND PLANE"
+     },
+     "net": "GND"
+    },
+    "C28.2": {
+     "island": {
+      "area_mm2": 11.972,
+      "layer": "B.Cu",
+      "outline": 28,
+      "zone": "B GND PLANE"
+     },
+     "net": "GND"
+    },
+    "U11.11": {
+     "island": {
+      "area_mm2": 8.527,
+      "layer": "B.Cu",
+      "outline": 39,
+      "zone": "B GND PLANE"
+     },
+     "net": "GND"
+    },
+    "U11.4": {
+     "island": {
+      "area_mm2": 8.527,
+      "layer": "B.Cu",
+      "outline": 39,
+      "zone": "B GND PLANE"
+     },
+     "net": "GND"
+    },
+    "U11.5": {
+     "island": {
+      "area_mm2": 8.527,
+      "layer": "B.Cu",
+      "outline": 39,
+      "zone": "B GND PLANE"
+     },
+     "net": "GND"
+    }
+   },
+   "rot_deg": 180
+  },
+  {
+   "case": "sw_+0.40_+0.25",
+   "clusters": 8,
+   "dx_mm": 0.4,
+   "dy_mm": 0.25,
+   "lands": {
+    "C23.1": {
+     "island": {
+      "area_mm2": 20.863,
+      "layer": "B.Cu",
+      "outline": 37,
+      "zone": "B GND PLANE"
+     },
+     "net": "GND"
+    },
+    "C27.1": {
+     "island": {
+      "area_mm2": 90.862,
+      "layer": "B.Cu",
+      "outline": 3,
+      "zone": "B /01_POWER_TREE/BQ25185_SYS POUR 1"
+     },
+     "net": "/01_POWER_TREE/BQ25185_SYS"
+    },
+    "C27.2": {
+     "island": {
+      "area_mm2": 8.527,
+      "layer": "B.Cu",
+      "outline": 39,
+      "zone": "B GND PLANE"
+     },
+     "net": "GND"
+    },
+    "C28.2": {
+     "island": {
+      "area_mm2": 11.972,
+      "layer": "B.Cu",
+      "outline": 28,
+      "zone": "B GND PLANE"
+     },
+     "net": "GND"
+    },
+    "U11.11": {
+     "island": {
+      "area_mm2": 8.527,
+      "layer": "B.Cu",
+      "outline": 39,
+      "zone": "B GND PLANE"
+     },
+     "net": "GND"
+    },
+    "U11.4": {
+     "island": {
+      "area_mm2": 8.527,
+      "layer": "B.Cu",
+      "outline": 39,
+      "zone": "B GND PLANE"
+     },
+     "net": "GND"
+    },
+    "U11.5": {
+     "island": {
+      "area_mm2": 8.527,
+      "layer": "B.Cu",
+      "outline": 39,
+      "zone": "B GND PLANE"
+     },
+     "net": "GND"
+    }
+   },
+   "rot_deg": 180
+  }
+ ],
+ "verdict": "NONE.  Every one of the nine rotated positions closes C27.1 into the 90.862 mm2 pour body AND puts C27.2 on GND island #39 -- 8.527 mm2, with U11.4, U11.5 and U11.11 -- which is the island PP2 prices at 1.226 A against a 2.190 A bar.  Three of the nine also produce real shorts or clearance errors.  The C27 rotation is incompatible with PP2, not marginal."
+}

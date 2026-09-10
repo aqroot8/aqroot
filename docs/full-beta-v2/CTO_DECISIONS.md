@@ -180,7 +180,7 @@ other cluster's copper on another layer"* for every orphan.  The lever is
 VACUOUS here, measured, and it would have cost `In2` — `reserved_inner_planes`
 reserves a LAYER as soon as any pour appears on it — for nothing.
 
-## 8. ADDENDUM, SAME DECISION — THE GAP IN SECTION 4 IS CLOSED
+## 7. ADDENDUM, SAME DECISION — THE GAP IN SECTION 4 IS CLOSED
 
 Leaving section 4's defect written down and unfixed would have handed the next
 placement transaction the same promote-then-revert cycle.  It is fixed in the
@@ -215,9 +215,63 @@ Two controls, `evidence/d678-gate-pre-board-controls.json`, both behaved:
 Standing suite re-run after the change: **14/14 RAN, 13/13 COMPARABLE
 IDENTICAL to `d677`, `vacuous` false** on a board whose `sha256` did not move.
 
-## 7. NEXT, IN ORDER OF LEVERAGE
+## 8. ADDENDUM — THE `C27` ROTATION IS INCOMPATIBLE WITH `PP2`, NOT MARGINAL
 
- 1. **DONE IN SECTION 8** — the gate now judges a placement shift against
+Section 4 could have been a near miss.  It is not, and the sweep that says so
+took nine private copies and about six minutes
+(`evidence/d678-c27-placement-sweep.json`).  Each case removes the swept `GND`
+stub and the two `ISET` tracks, rotates `C27` 180° and TRANSLATES it by
+(dx, dy) over `dx` ∈ {-0.4, 0, +0.4} and `dy` ∈ {-0.4, 0, +0.25} mm, refills
+and DRCs with real `kicad-cli`, and reports which filled island of its own net
+each land ends up sitting on:
+
+    control (NO rotation)  C27.1 alone on 5.829 mm2   C27.2 -> GND island 14.882 mm2 (with C28.2)
+    all NINE rotated       C27.1 in the 90.862 mm2 body   C27.2 -> GND island 8.527 mm2 (with U11)
+
+**Every one of the nine.**  There is no offset within ±0.4 mm at which the
+rotation closes `C27.1` and leaves `C27.2` off `U11`'s ground island, and three
+of the nine additionally produce real `shorting_items` against
+`Net-(U11-TS_MR)`, `/01_POWER_TREE/ILIM_VSET` or — worse —
+`/01_POWER_TREE/BAT_PROTECTED_P`, which is PROTECTED copper.  The control is
+the whole explanation of why `PP2` passes today: unrotated, `C27.2` shares its
+island with `C28.2` and NOT with the charger.
+
+## 9. ADDENDUM — AND THE SWEEP FOUND SOMETHING THE OPEN-EDGE LEDGER CANNOT SEE
+
+Reading the control's island map back is what surfaced this, and it is the most
+important sentence in this decision:
+
+> **On the authority as it stands, the `BQ25185`'s ENTIRE ground — pin 4, pin 5
+> and the exposed thermal pad, pin 11 — sits on a 2.307 mm² SEVERED `B.Cu`
+> island, and its only connection to the rest of the board's ground is ONE
+> 0.35/0.20 mm plated barrel at (67.300, 77.700).**
+
+`U11` is a `B.Cu` part and that island is `B.Cu`, so the barrel is the only way
+off the layer.  One open plated hole floats the charger's ground reference AND
+its only heat path, and the `BQ25185` dissipates (V<sub>BUS</sub> −
+V<sub>BAT</sub>) × I<sub>CHG</sub> in linear mode.  `PP2` PASSES it — 1.226 A
+priced against the `GND` netclass floor of 0.995 A, 23 % of margin — because
+nothing on that island carries a rail bar.  It is not a violation.  It is a
+single point of failure the open-edge ledger has no column for.
+
+**A READY PAYLOAD, measured, not proposed:** ONE more `GND` barrel at
+**(67.300, 78.250), 0.50/0.25 mm** — the board's own `min_via_diameter` and
+`min_through_hole_diameter`, so it needs no licence and no rule area — inside
+`U11`'s exposed pad.  Real `kicad-cli` DRC on the candidate: **exit 0, ONLY the
+inherited `lib_footprint_issues` 199 and `solder_mask_bridge` 1.  ZERO
+`via_diameter`, ZERO `annular_width`, ZERO `hole_to_hole`, ZERO `clearance`,
+ZERO `shorting_items`.**  Three neighbouring sites were measured and REFUSED
+and are recorded so nobody re-measures them: (67.700, 77.350) shorts
+`/09_COMMUNITY_HEADER/NATIVE_B_HDR` on `In2.Cu`; the two 0.35 mm sites fail
+`via_diameter`, `annular_width` and `hole_to_hole` at 0.125 mm against the
+barrel already there.
+
+It closes NO open edge, so gate clause 4 refuses it alone — this is the
+D-601/D-603 shape, and the next promoting decision owes it a partner.
+
+## 10. NEXT, IN ORDER OF LEVERAGE
+
+ 1. **DONE IN SECTION 7** — the gate now judges a placement shift against
     `HEAD`'s board.  What is NOT done: `apply_part_shift.py` still cannot say
     which pour a moved land will end up on, because it does not refill.  A
     read-only screen that answers *"which filled island will this land sit on
@@ -229,10 +283,13 @@ IDENTICAL to `d677`, `vacuous` false** on a board whose `sha256` did not move.
     relay, not the cut.  The lever that has not been tried on it is a
     **placement** one: `U12`'s south row has three signal escapes and one power
     rail in a corridor the antenna keepout caps at 0.9 mm.
- 3. `C27.1` needs `C27` rotated AND a ground return for `C27.2` that is not
-    `U11`'s 8.5 mm² island.  A `GND` barrel field under `U11` does not fix it
-    (`PP2`'s bottleneck is `FRAGMENT_COPPER`, not the barrels); moving `C27`
-    south so the `GND` island stays whole dies on `PL4` at 0.03 mm of courtyard.
+ 3. `C27.1` is CLOSED as a rotation target (section 8): nine positions, nine
+    times `C27.2` on `U11`'s island.  What is left is a `C27` move large enough
+    to leave the pocket, or `U11`'s own placement.
+ 4. **SPEND THE SECTION 9 PAYLOAD.**  The next promoting decision should carry
+    the (67.300, 78.250) 0.50/0.25 mm `GND` barrel with whatever edge it closes;
+    it is DRC-clean today and it halves a single point of failure on the
+    charger's ground and heat path.
  4. Everything D-677 §NEXT listed that this decision did not reach stands:
     `min_hole_to_hole` re-asked against the fabricator's number, `U9.14`'s
     corridor at 0.200 mm, `--ban-net` on every other `SOLE_CUT` land.
@@ -5499,7 +5556,7 @@ new barrels net of the two removed.  Measured, not assumed.
 `PCAL9535APW` expanders are reachable on `SCL`; what is left of the critical
 path is `U2.23`'s `SDA`, and `U2` still answers nothing until it has both.
 
-## 11. NEXT, IN ORDER OF LEVERAGE
+## 10. NEXT, IN ORDER OF LEVERAGE
 
 1. **`/I2C_SDA_INT` `U3.23 <-> U2.23` -- 18 nets, and the pocket has MOVED
    AGAIN.**  Everything measured here was measured on the pre-promotion board;

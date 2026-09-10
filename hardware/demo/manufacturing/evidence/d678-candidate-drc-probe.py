@@ -1,9 +1,17 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""D-678 -- READ-ONLY: build a candidate (remove copper, then rotate parts) on a
-PRIVATE COPY, refill and DRC it with the real `kicad-cli pcb drc
---refill-zones --severity-all --schematic-parity`, and report the DRC classes
-beside the /01_POWER_TREE/BQ25185_SYS pad partition and the pour outlines.
+"""D-678 -- READ-ONLY: build a candidate on a PRIVATE COPY of the authority --
+remove copper, ADD barrels or tracks, ROTATE or TRANSLATE footprints -- refill
+and DRC it with the real `kicad-cli pcb drc --refill-zones --severity-all
+--schematic-parity`, and report the DRC classes beside the
+/01_POWER_TREE/BQ25185_SYS pad partition, the pour outlines, and WHICH FILLED
+ISLAND OF ITS OWN NET each named land ends up sitting on.
+
+REMOVALS RUN BEFORE THE ROTATION AND BEFORE THE SAVE, because KiCad reassigns a
+track's net when a rotated pad lands on its endpoint -- which is how a GND stub
+silently became SYS copper the first time this was tried.
+
+    python3 evidence/d678-candidate-drc-probe.py NAME SPEC.json
 """
 import json, shutil, subprocess, sys, collections
 from pathlib import Path
@@ -33,6 +41,16 @@ def edit():
     print("removed",len(doomed))
     for r in d.get("rotate",[]):
         f=b.FindFootprintByReference(r["ref"]); f.SetOrientationDegrees(f.GetOrientationDegrees()+r["deg"])
+    for m in d.get("move",[]):
+        f=b.FindFootprintByReference(m["ref"])
+        f.Move(pcbnew.VECTOR2I(int(round(m["dx_mm"]*1e6)),int(round(m["dy_mm"]*1e6))))
+    for v in d.get("add_via",[]):
+        q=pcbnew.PCB_VIA(b)
+        q.SetPosition(pcbnew.VECTOR2I(int(round(v["at_mm"][0]*1e6)),int(round(v["at_mm"][1]*1e6))))
+        q.SetWidth(int(round(v["dia_mm"]*1e6))); q.SetDrill(int(round(v["drill_mm"]*1e6)))
+        q.SetViaType(pcbnew.VIATYPE_THROUGH)
+        q.SetLayerPair(b.GetLayerID("F.Cu"), b.GetLayerID("B.Cu"))
+        q.SetNetCode(b.GetNetsByName()[v["net"]].GetNetCode()); b.Add(q)
     for m in d.get("add_track",[]):
         t=pcbnew.PCB_TRACK(b)
         t.SetStart(pcbnew.VECTOR2I(int(m["a_mm"][0]*1e6),int(m["a_mm"][1]*1e6)))
@@ -60,7 +78,28 @@ def report():
         sh=z.GetFilledPolysList(pcbnew.B_Cu)
         for k in range(sh.OutlineCount()):
             outl.append(round(abs(sh.Outline(k).Area())/1e12,3))
-    out.write_text(json.dumps(dict(partition=sorted(parts),clusters=len(parts),pour=sorted(outl,reverse=True))))
+    # which filled island of its OWN net does each named land sit on?
+    lands={}
+    for f in b.GetFootprints():
+        for p in f.Pads():
+            k=f.GetReference()+"."+p.GetNumber()
+            if k not in ("C27.1","C27.2","C28.2","U11.4","U11.5","U11.11","C23.1"): continue
+            best=None
+            for i in range(b.GetAreaCount()):
+                z=b.GetArea(i)
+                if z.GetIsRuleArea() or z.GetNetname()!=p.GetNetname(): continue
+                for lid in z.GetLayerSet().Seq():
+                    if not p.IsOnLayer(lid): continue
+                    sh=z.GetFilledPolysList(lid)
+                    for q in range(sh.OutlineCount()):
+                        poly=pcbnew.SHAPE_POLY_SET(); poly.AddOutline(sh.Outline(q))
+                        if poly.Contains(p.GetPosition()):
+                            a=abs(sh.Outline(q).Area())/1e12
+                            best=dict(zone=z.GetZoneName(),layer=b.GetLayerName(lid),
+                                      outline=q,area_mm2=round(a,3))
+            lands[k]=dict(net=p.GetNetname(),island=best)
+    out.write_text(json.dumps(dict(partition=sorted(parts),clusters=len(parts),
+                                   pour=sorted(outl,reverse=True),lands=lands)))
     return 0
 if __name__=="__main__":
     if sys.argv[1]=="--edit": sys.exit(edit())
@@ -89,5 +128,8 @@ if __name__=="__main__":
     out=work/"part.json"
     r=subprocess.run([sys.executable,__file__,"--report",brd,str(out)],capture_output=True,text=True)
     if r.returncode: print(r.stderr[-900:]); sys.exit(1)
-    o=json.loads(out.read_text()); print(name,"clusters",o["clusters"],"pour",o["pour"])
-    for g in o["partition"]: print("   ",g)
+    o=json.loads(out.read_text()); print(name,"clusters",o["clusters"],"pour",o["pour"][:3])
+    for k,v in sorted((o.get("lands") or {}).items()):
+        isl=v["island"]
+        print("    %-8s %-28s %s"%(k,v["net"][:28],
+              "%s#%d %.3f mm2"%(isl["layer"],isl["outline"],isl["area_mm2"]) if isl else "NO ISLAND"))

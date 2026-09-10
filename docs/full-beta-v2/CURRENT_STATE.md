@@ -94,6 +94,27 @@
   the 94.1 mm2 island stops at y = 99.158 and overlaps no orphan at all, so
   `--bridge` reports *"this island overlaps no other cluster's copper on
   another layer"* for every one.  It would have reserved `In2` for nothing.
+  **(8) THE `C27` ROTATION IS CLOSED, NOT MARGINAL.**  Nine private copies --
+  180 deg plus (dx, dy) over +/-0.4 mm -- refilled and DRC'd
+  (`evidence/d678-c27-placement-sweep.json`): in ALL NINE `C27.1` joins the
+  90.862 mm2 body AND `C27.2` lands on the 8.527 mm2 `GND` island with `U11`,
+  and three of the nine additionally short `Net-(U11-TS_MR)`, `ILIM_VSET` or
+  `BAT_PROTECTED_P` (PROTECTED).  The control -- no rotation -- puts `C27.2` on
+  a 14.882 mm2 island WITH `C28.2`, which is exactly why `PP2` passes today.
+  **(9) AND THE SWEEP FOUND WHAT THE OPEN-EDGE LEDGER HAS NO COLUMN FOR.**  On
+  the authority as it stands the `BQ25185`'s ENTIRE ground -- pin 4, pin 5 and
+  the exposed thermal pad pin 11 -- sits on a **2.307 mm2 SEVERED `B.Cu`
+  island** whose ONLY connection to the rest of the board's ground is **ONE
+  0.35/0.20 mm plated barrel at (67.300, 77.700)**.  `U11` is a `B.Cu` part, so
+  that barrel is the only way off the layer: one open plated hole floats the
+  charger's ground reference AND its only heat path.  `PP2` PASSES it (1.226 A
+  against the `GND` floor 0.995 A) because nothing on that island carries a
+  rail bar -- it is not a violation, it is a single point of failure.  **READY
+  PAYLOAD, measured:** one more `GND` barrel at **(67.300, 78.250), 0.50/0.25
+  mm** -- the board's own floors, no licence -- inside `U11`'s exposed pad, real
+  `kicad-cli` DRC **exit 0 with ZERO attributable violations**; three
+  neighbouring sites measured and REFUSED and recorded.  It closes no edge, so
+  clause 4 refuses it alone and the next promoting decision owes it a partner.
   **NEXT:** (1) `apply_part_shift.py` still cannot say which pour a moved land
   will END UP on, because it does not refill; a read-only screen for that would
   have refused the `C27` rotation in seconds instead of in a gate run.  (2) `BQ25185_SYS` is still
