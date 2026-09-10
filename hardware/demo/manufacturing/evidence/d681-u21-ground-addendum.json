@@ -1,0 +1,134 @@
+{
+ "schema": 1,
+ "decision": "D-681 addendum",
+ "question": "why can U21.4, the TPS61023 accessory boost's GND pin, not be grounded at this placement",
+ "board": "/home/aqroot8/aqroot-demo/hardware/demo/kicad/aqroot-demo/aqroot-Beta-v2.kicad_pcb",
+ "board_sha256": "d57d7d27ba0c400891132fba88da0719decefbaf846965b6dfef32764884af7d",
+ "u21_pads": {
+  "1": {
+   "xy_mm": [
+    57.0875,
+    40.4
+   ],
+   "size_mm": [
+    0.675,
+    0.35
+   ],
+   "net": "/01_POWER_TREE/ACC_5V_FB"
+  },
+  "2": {
+   "xy_mm": [
+    57.0875,
+    39.9
+   ],
+   "size_mm": [
+    0.675,
+    0.35
+   ],
+   "net": "/ACC_5V_BOOST_EN"
+  },
+  "3": {
+   "xy_mm": [
+    57.0875,
+    39.4
+   ],
+   "size_mm": [
+    0.675,
+    0.35
+   ],
+   "net": "/01_POWER_TREE/BQ25185_SYS"
+  },
+  "4": {
+   "xy_mm": [
+    58.5125,
+    39.4
+   ],
+   "size_mm": [
+    0.675,
+    0.35
+   ],
+   "net": "GND"
+  },
+  "5": {
+   "xy_mm": [
+    58.5125,
+    39.9
+   ],
+   "size_mm": [
+    0.675,
+    0.35
+   ],
+   "net": "/01_POWER_TREE/ACC_5V_LX"
+  },
+  "6": {
+   "xy_mm": [
+    58.5125,
+    40.4
+   ],
+   "size_mm": [
+    0.675,
+    0.35
+   ],
+   "net": "/01_POWER_TREE/ACC_5V_RAW"
+  }
+ },
+ "inter_column_channel": {
+  "west_land_edge_mm": 57.425,
+  "east_land_edge_mm": 58.175,
+  "channel_mm": 0.75,
+  "zone_local_clearance_mm": 0.25,
+  "zone_min_thickness_mm": 0.2,
+  "zone_thermal_gap_mm": 0.3,
+  "zone_thermal_spoke_mm": 0.4,
+  "pad_connection": 2,
+  "pour_strip_mm": 0.25,
+  "u21_4_land_height_mm": 0.35,
+  "why_no_spoke": "the zone connects pads by THERMAL RELIEF (pad_connection 2): the fill is held 0.300 mm off the land and reaches it only through spokes 0.400 mm wide, and U21.4's land is 0.350 mm TALL -- a spoke of that width cannot be cut into a pad shorter than itself, so the west channel can never reach it however clear it is"
+ },
+ "foreign_copper_over_the_footprint": {
+  "B.Cu": {
+   "nets": [
+    "/01_POWER_TREE/ACC_5V_FB",
+    "/01_POWER_TREE/ACC_5V_RAW",
+    "/09_COMMUNITY_HEADER/EXT_SCL_BUF",
+    "/ACC_5V_BOOST_EN",
+    "/ACC_DETECT_N",
+    "GND"
+   ],
+   "protected": []
+  },
+  "F.Cu": {
+   "nets": [
+    "/01_POWER_TREE/ACC_5V_FB",
+    "/09_COMMUNITY_HEADER/ACC_DETECT_N_HDR",
+    "/ACC_5V_BOOST_EN",
+    "/ACC_DETECT_N"
+   ],
+   "protected": []
+  },
+  "In2.Cu": {
+   "nets": [
+    "/09_COMMUNITY_HEADER/EXT_SDA_BUF",
+    "/ACC_3V3_SW",
+    "/XGPIO4"
+   ],
+   "protected": [
+    "/ACC_3V3_SW",
+    "/XGPIO4"
+   ]
+  },
+  "In3.Cu": {
+   "nets": [
+    "/01_POWER_TREE/ACC_5V_RAW",
+    "/ACC_5V_SW"
+   ],
+   "protected": []
+  }
+ },
+ "window_mm": [
+  56.6,
+  38.0,
+  60.7,
+  43.2
+ ]
+}

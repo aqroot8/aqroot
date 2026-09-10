@@ -57,6 +57,7 @@ out = dict(
         arm(W / "lx1/run3.json", "U21.4's escape released by the placement transaction + --bond-pad U21.4: PP1-PP4 ALL TRUE, but the 3.842 mm bond track took the LX lane"),
         arm(W / "lx1/run4.json", "--bond-max-mm 1.2: NO_VIA_SITE, and ACC_5V_RAW came back at 75.995 mm"),
         arm(W / "lx1/run5.json", "GND column reserved, --tap-first: LX 3.275 mm, RAW 0 mm by TAP, U21.4 STILL a 0.175 mm2 STRANDED fragment"),
+        arm(W / "lx2/run1.json", "the /ACC_DETECT_N channel chain RELAID out of U21's inter-column channel (5.866 mm, 0 vias) + --repair-planes + --join-islands: the channel is clear, U21.4 is STILL STRANDED at 0.279 mm2, and r 0.45 discs over the west 0.075 mm of U21.4/U21.5's own lands cost both nets their licensed neck"),
     ],
     usb=[
         arm(W / "usb/run1.json", "the three USB data edges on the authority: all three NO_PATH at 0.250 mm"),

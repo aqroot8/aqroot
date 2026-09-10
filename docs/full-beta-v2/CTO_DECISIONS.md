@@ -1,3 +1,102 @@
+# D-681 addendum · 2026-09-10 · Demo — WHY THE ACCESSORY BOOST'S GROUND PIN CANNOT BE GROUNDED: A 0.400 mm THERMAL SPOKE INTO A 0.350 mm LAND, AND FOUR LAYERS OF OTHER PEOPLE'S COPPER OVER THE FOOTPRINT
+
+    authority  d57d7d27ba0c400891132fba88da0719decefbaf846965b6dfef32764884af7d
+            -> d57d7d27ba0c400891132fba88da0719decefbaf846965b6dfef32764884af7d   UNCHANGED
+    retained open edges 24 -> 24
+    `hardware/demo/kicad`, `hardware/demo/fab`, `hardware/beta-v2`  UNTOUCHED
+    seven gate runs on a `--board` scratch, two private refill probes
+
+**NO COPPER PROMOTED.**  D-681 section 7 recorded that
+`/01_POWER_TREE/ACC_5V_LX` **ROUTES** — `L4.2 -> U21.5`, 3.529 mm, zero vias —
+and is not promotable because `U21.4` ends up on a stranded fragment.  This
+addendum finishes that sentence with numbers, so nobody spends another five
+arms on it.
+
+## 1. THE WEST CHANNEL CANNOT REACH THE PAD, AND IT IS ARITHMETIC
+
+`U21` is a SOT-563.  Between its two pad columns there is a channel
+**0.750 mm** wide (`U21.3` land east edge 57.4245, `U21.4` land west edge
+58.1755).  The `B GND PLANE` carries `local_clearance` **0.250 mm**, so the
+pour strip that could run down it is **0.250 mm** — above the zone's own
+`min_thickness` of 0.200 mm, so the strip is fillable.
+
+**And it can never touch `U21.4`.**  The zone's `pad_connection` is **THERMAL
+RELIEF**: the fill is held **0.300 mm** off the land and reaches it only
+through spokes **0.400 mm** wide — and `U21.4`'s land is **0.350 mm TALL**.
+*A spoke cannot be cut into a pad shorter than the spoke.*  Two private
+`ZONE_FILLER` probes confirm it (`evidence/d681-u214-channel-probe.py`): with
+`/ACC_DETECT_N`'s three objects AND its barrel out of the channel, `U21.4` is
+still alone on a **0.154 mm² island** — the fill patch over its own land — and
+no single island holds both it and the ground body 2 mm to the south.
+
+**AND THE CHANNEL CAN BE CLEARED, WHICH IS WORTH KNOWING.**
+`/ACC_DETECT_N`'s `B.Cu` run `(57.800,38.900) -> (57.800,40.700) ->
+(57.650,40.850)` relays out of it in **5.866 mm with zero vias**, between its
+own two ends, `all_relaid true`
+(`evidence/d681-acc-detect-channel-relay-spec.json`).  The channel is
+available; it is the SPOKE that is not.
+
+## 2. NO BARREL FITS, AND FOUR LAYERS SAY WHY
+
+Sweeping a **0.500 mm** through barrel — the board's own `min_via_diameter`,
+needing no licence — over `x 58.2..60.8, y 37.9..39.6` at 0.05 mm:
+
+    best clearance anywhere                       0.1055 mm
+    with /XGPIO4 held out                         0.2149 mm   (PROTECTED, immovable)
+    with R64's F.Cu lands held out                0.2109 mm
+    with both held out                            0.4653 mm
+
+`/XGPIO4` is **PROTECTED COPPER** (`protected_copper.py`'s own pattern
+`XGPIO[45]`) and its `In2` diagonal `(55.150,22.450) -> (64.600,67.650)` passes
+**UNDER `U21.4`'s own land** — x 58.40 at y 38.0, x 58.69 at y 39.4.  South of
+`U21`, where the ground body is, the sweep reports **0.0000 mm everywhere**.
+
+The inventory, measured over `x 56.6..60.7, y 38.0..43.2`
+(`evidence/d681-u21-ground-addendum.json`):
+
+    B.Cu    ACC_5V_FB, ACC_5V_RAW, EXT_SCL_BUF, ACC_5V_BOOST_EN, ACC_DETECT_N
+    F.Cu    ACC_5V_FB, ACC_DETECT_N_HDR, ACC_5V_BOOST_EN, ACC_DETECT_N
+    In2.Cu  EXT_SDA_BUF, ACC_3V3_SW (PROTECTED), XGPIO4 (PROTECTED)
+    In3.Cu  ACC_5V_RAW, ACC_5V_SW
+
+**Four layers of other people's copper cross this converter's footprint, two of
+them on nets the Demo scope protects.**  That is the whole finding.
+
+## 3. THE EAST CORRIDOR IS THE SWITCH NODE'S CORRIDOR
+
+With `C65` moved out, `pour_bond_guard.geodesic` walks `U21.4` to the ground
+body along `y ≈ 39.35` — and that is the corridor the `ACC_5V_LX` trunk must
+cross to get from `U21.5` (directly SOUTH of `U21.4`) to `L4.2` (NORTH-EAST of
+both).  **One starts south of the other and both must go east then north**, so
+the two paths cross wherever they are drawn and one severs the other.  Not a
+search result: a topological one.
+
+## 4. A RESERVE DISC OVER A LAND IS A RESERVATION AGAINST THE PAD IT SERVES
+
+Recorded because it cost a run.  Three `r 0.45 mm` discs at `x 57.75`, meant to
+keep `/ACC_DETECT_N` out of the channel, reach `x 58.25` and cover the **west
+0.075 mm of `U21.4`'s and `U21.5`'s OWN LANDS**.  Both `ACC_5V_LX` and
+`ACC_5V_RAW` then reported `NO LEGAL ESCAPE` where the identical run without
+them had launched on a licensed neck.  At `r 0.30` the relay still succeeds and
+the lands are clear.
+
+## 5. WHAT WOULD ACTUALLY CLOSE IT
+
+1. **`U21.4`'s `zone_connect` set to SOLID.**  It removes the spoke problem at
+   a stroke and is better engineering for a switching converter's return than
+   thermal relief.  Measured consequence, not yet taken: the pour then reaches
+   the land through the channel's **0.250 mm** strip, which prices at about
+   0.87 A against the `GND` netclass floor of 0.995 A — so it closes the
+   CONNECTIVITY and would be thin, and whether that matters is a `PP2`
+   question about whether a fragment exists at all.
+2. **Move the boost cell.**  `U21`, `L4`, `C65`, `R64` and the `ACC_5V_FB` /
+   `ACC_5V_BOOST_EN` / `ACC_DETECT_N` local copper are one floorplan, and the
+   band south of `U21` is a signal field (D-680 section 8) while the band north
+   is `SYS POUR 2`.  This is the honest answer and it is a project, not a
+   transaction.
+3. **Neither is attempted here**, and `ACC_5V_LX`'s routed 3.529 mm is recorded
+   so the next attempt starts from a route and not from a search.
+
 # D-681 · 2026-09-10 · Demo — THE FUEL GAUGE IS ON THE I2C BUS: THE OWNER-APPROVED PROTECTED-COPPER EXCEPTION IS SPENT, AND IT COST ONE RELAY AND SIX DISCS
 
     authority  0285ef45466c1c7dd1823099c35d75d704b50266460e94f339c1b19b5409180d
