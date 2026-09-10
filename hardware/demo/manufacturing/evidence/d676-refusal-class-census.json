@@ -1,0 +1,5353 @@
+{
+  "counts": {
+    "CANDIDATE": 2,
+    "CLOSED": 5,
+    "CLOSED_AT_FLOOR": 4,
+    "LANE_UNSAT": 5,
+    "NO_SITE": 21,
+    "POUR_PRICE": 6,
+    "RELAY": 21
+  },
+  "lands": [
+    {
+      "bare_arm": [
+        {
+          "mm": 5.475,
+          "net": "Net-(J3-CC2)",
+          "ok": true,
+          "own_geometry_zero_vias": true,
+          "reason": null,
+          "vias": 0,
+          "was_mm": 5.475
+        }
+      ],
+      "bare_arm_signature": "SIGNATURE",
+      "board_sha256": "5715bf5cd688a87f686e162b77bbcbff98dc9f9f3e20b4be6424849423e690d2",
+      "bond_pad_applicable": false,
+      "land": "GND:J3.A12",
+      "levers": {
+        "applicable": [
+          "--evict-whole with the evicted net REQUESTED FIRST",
+          "placement / refloorplan",
+          "a part change that empties the pocket"
+        ],
+        "vacuous": [
+          [
+            "--bond-pad / --split-bond-pad",
+            "pour_severs is null: no fragment is priced"
+          ],
+          [
+            "more joint barrels",
+            "the BARE arm -- no reservation at all -- returns the cut chain's OWN geometry with zero vias, so every barrel in the pocket lands on the chain's only path (D-667)"
+          ],
+          [
+            "--ban-net cut-set retry",
+            "the refusing chain is the one the land must cut to reach its own site"
+          ]
+        ]
+      },
+      "net": "GND",
+      "refusal_class": "LANE_UNSAT",
+      "relay_refusals": [],
+      "rounds": [],
+      "rounds_laid": 0,
+      "rounds_severing_pour": 0,
+      "site_refusals": [],
+      "source": "evidence/d638-relay-bare-j3-g25.json",
+      "source_kind": "relay_transaction",
+      "source_sha256": "f240806d80be010e175e6838d845371900df16468727caad642fb940ba6ab29e",
+      "why": "the BARE arm returned every cut chain's own geometry with zero vias: any reservation in this pocket is unsatisfiable by construction (D-667)"
+    },
+    {
+      "bare_arm": [
+        {
+          "mm": 5.475,
+          "net": "Net-(J3-CC2)",
+          "ok": true,
+          "own_geometry_zero_vias": true,
+          "reason": null,
+          "vias": 0,
+          "was_mm": 5.475
+        }
+      ],
+      "bare_arm_signature": "SIGNATURE",
+      "board_sha256": "5715bf5cd688a87f686e162b77bbcbff98dc9f9f3e20b4be6424849423e690d2",
+      "bond_pad_applicable": false,
+      "land": "GND:J3.A12",
+      "levers": {
+        "applicable": [
+          "--evict-whole with the evicted net REQUESTED FIRST",
+          "placement / refloorplan",
+          "a part change that empties the pocket"
+        ],
+        "vacuous": [
+          [
+            "--bond-pad / --split-bond-pad",
+            "pour_severs is null: no fragment is priced"
+          ],
+          [
+            "more joint barrels",
+            "the BARE arm -- no reservation at all -- returns the cut chain's OWN geometry with zero vias, so every barrel in the pocket lands on the chain's only path (D-667)"
+          ],
+          [
+            "--ban-net cut-set retry",
+            "the refusing chain is the one the land must cut to reach its own site"
+          ]
+        ]
+      },
+      "net": "GND",
+      "refusal_class": "LANE_UNSAT",
+      "relay_refusals": [],
+      "rounds": [],
+      "rounds_laid": 0,
+      "rounds_severing_pour": 0,
+      "site_refusals": [],
+      "source": "evidence/d638-relay-bare-j3-g50.json",
+      "source_kind": "relay_transaction",
+      "source_sha256": "7996e90e765b7f4ffc374580f1875e0757bb7b0197ea905075dc0164fb02a186",
+      "why": "the BARE arm returned every cut chain's own geometry with zero vias: any reservation in this pocket is unsatisfiable by construction (D-667)"
+    },
+    {
+      "bare_arm": [],
+      "bare_arm_signature": null,
+      "board_sha256": "5715bf5cd688a87f686e162b77bbcbff98dc9f9f3e20b4be6424849423e690d2",
+      "bond_pad_applicable": false,
+      "land": "+3V3:R39.1",
+      "levers": {
+        "applicable": [
+          "none -- this land closed"
+        ],
+        "vacuous": []
+      },
+      "net": "+3V3",
+      "refusal_class": "CLOSED",
+      "relay_refusals": [
+        {
+          "arm": "joint",
+          "net": "Net-(U11-TS_MR)",
+          "reason": "NO_PATH",
+          "round": 1,
+          "was_mm": 4.3353
+        },
+        {
+          "arm": "joint",
+          "net": "Net-(U11-TS_MR)",
+          "reason": "NO_PATH",
+          "round": 2,
+          "was_mm": 4.3353
+        },
+        {
+          "arm": "joint",
+          "net": "Net-(U11-TS_MR)",
+          "reason": "NO_PATH",
+          "round": 3,
+          "was_mm": 4.3353
+        }
+      ],
+      "rounds": [
+        {
+          "accepted": null,
+          "arm": "joint",
+          "reason": null,
+          "round": 1,
+          "stitch_mm": 9.128,
+          "stitch_ok": true,
+          "via_xy": [
+            71.1,
+            68.25
+          ]
+        },
+        {
+          "accepted": null,
+          "arm": "joint",
+          "reason": null,
+          "round": 2,
+          "stitch_mm": 9.337,
+          "stitch_ok": true,
+          "via_xy": [
+            70.8,
+            67.95
+          ]
+        },
+        {
+          "accepted": null,
+          "arm": "joint",
+          "reason": null,
+          "round": 3,
+          "stitch_mm": 9.728,
+          "stitch_ok": true,
+          "via_xy": [
+            71.1,
+            67.65
+          ]
+        },
+        {
+          "accepted": null,
+          "arm": "joint",
+          "reason": null,
+          "round": 4,
+          "stitch_mm": 9.687,
+          "stitch_ok": true,
+          "via_xy": [
+            70.65,
+            67.55
+          ]
+        }
+      ],
+      "rounds_laid": 4,
+      "rounds_severing_pour": 0,
+      "site_refusals": [],
+      "source": "evidence/d638-relay-joint-g50.json",
+      "source_kind": "relay_transaction",
+      "source_sha256": "88c9d6a7b1b32cac320c749006a5e17aaad30557669691a0c8e42e22a3096b72",
+      "why": "arm 'joint' relaid every cut net at an unrecorded width"
+    },
+    {
+      "bare_arm": [],
+      "bare_arm_signature": null,
+      "board_sha256": "5715bf5cd688a87f686e162b77bbcbff98dc9f9f3e20b4be6424849423e690d2",
+      "bond_pad_applicable": false,
+      "land": "GND:C37.2",
+      "levers": {
+        "applicable": [
+          "none -- this land closed"
+        ],
+        "vacuous": []
+      },
+      "net": "GND",
+      "refusal_class": "CLOSED",
+      "relay_refusals": [],
+      "rounds": [
+        {
+          "accepted": null,
+          "arm": "joint",
+          "reason": null,
+          "round": 1,
+          "stitch_mm": 3.149,
+          "stitch_ok": true,
+          "via_xy": [
+            58.45,
+            58.6
+          ]
+        }
+      ],
+      "rounds_laid": 1,
+      "rounds_severing_pour": 0,
+      "site_refusals": [],
+      "source": "evidence/d638-relay-joint-g50.json",
+      "source_kind": "relay_transaction",
+      "source_sha256": "88c9d6a7b1b32cac320c749006a5e17aaad30557669691a0c8e42e22a3096b72",
+      "why": "arm 'joint' relaid every cut net at an unrecorded width"
+    },
+    {
+      "bare_arm": [],
+      "bare_arm_signature": null,
+      "board_sha256": "5715bf5cd688a87f686e162b77bbcbff98dc9f9f3e20b4be6424849423e690d2",
+      "bond_pad_applicable": false,
+      "land": "GND:J3.A12",
+      "levers": {
+        "applicable": [
+          "more joint barrels (--joint-tries / --joint-knockout-mm)",
+          "--ban-net cut-set retry (D-641)",
+          "--detour-own-layer",
+          "--evict-whole with the evicted net REQUESTED FIRST",
+          "placement / refloorplan"
+        ],
+        "vacuous": [
+          [
+            "--bond-pad / --split-bond-pad",
+            "pour_severs is null in every round that laid a stitch: this transaction splits no pour, so PP2 never prices a fragment and a bond barrel changes nothing"
+          ]
+        ]
+      },
+      "net": "GND",
+      "refusal_class": "RELAY",
+      "relay_refusals": [
+        {
+          "arm": "joint",
+          "net": "Net-(J3-CC2)",
+          "reason": "NO_PATH",
+          "round": 1,
+          "was_mm": 5.475
+        },
+        {
+          "arm": "joint",
+          "net": "Net-(J3-CC2)",
+          "reason": "NO_PATH",
+          "round": 2,
+          "was_mm": 5.475
+        },
+        {
+          "arm": "joint",
+          "net": "Net-(J3-CC2)",
+          "reason": "NO_PATH",
+          "round": 3,
+          "was_mm": 5.475
+        },
+        {
+          "arm": "joint",
+          "net": "Net-(J3-CC2)",
+          "reason": "NO_PATH",
+          "round": 4,
+          "was_mm": 5.475
+        },
+        {
+          "arm": "joint",
+          "net": "Net-(J3-CC2)",
+          "reason": "NO_PATH",
+          "round": 5,
+          "was_mm": 5.475
+        },
+        {
+          "arm": "joint",
+          "net": "Net-(J3-CC2)",
+          "reason": "NO_PATH",
+          "round": 6,
+          "was_mm": 5.475
+        },
+        {
+          "arm": "joint",
+          "net": "Net-(J3-CC2)",
+          "reason": "NO_PATH",
+          "round": 7,
+          "was_mm": 5.475
+        },
+        {
+          "arm": "joint",
+          "net": "Net-(J3-CC2)",
+          "reason": "NO_PATH",
+          "round": 8,
+          "was_mm": 5.475
+        },
+        {
+          "arm": "joint",
+          "net": "Net-(J3-CC2)",
+          "reason": "NO_PATH",
+          "round": 9,
+          "was_mm": 5.475
+        },
+        {
+          "arm": "joint",
+          "net": "Net-(J3-CC2)",
+          "reason": "NO_PATH",
+          "round": 10,
+          "was_mm": 5.475
+        }
+      ],
+      "rounds": [
+        {
+          "accepted": null,
+          "arm": "joint",
+          "reason": null,
+          "round": 1,
+          "stitch_mm": 2.662,
+          "stitch_ok": true,
+          "via_xy": [
+            37.7,
+            146.6
+          ]
+        },
+        {
+          "accepted": null,
+          "arm": "joint",
+          "reason": null,
+          "round": 2,
+          "stitch_mm": 3.086,
+          "stitch_ok": true,
+          "via_xy": [
+            37.4,
+            146.3
+          ]
+        },
+        {
+          "accepted": null,
+          "arm": "joint",
+          "reason": null,
+          "round": 3,
+          "stitch_mm": 3.062,
+          "stitch_ok": true,
+          "via_xy": [
+            37.2,
+            146.65
+          ]
+        },
+        {
+          "accepted": null,
+          "arm": "joint",
+          "reason": null,
+          "round": 4,
+          "stitch_mm": 3.511,
+          "stitch_ok": true,
+          "via_xy": [
+            37.1,
+            146.0
+          ]
+        },
+        {
+          "accepted": null,
+          "arm": "joint",
+          "reason": null,
+          "round": 5,
+          "stitch_mm": 3.298,
+          "stitch_ok": true,
+          "via_xy": [
+            37.6,
+            145.95
+          ]
+        },
+        {
+          "accepted": null,
+          "arm": "joint",
+          "reason": null,
+          "round": 6,
+          "stitch_mm": 3.461,
+          "stitch_ok": true,
+          "via_xy": [
+            36.9,
+            146.35
+          ]
+        },
+        {
+          "accepted": null,
+          "arm": "joint",
+          "reason": null,
+          "round": 7,
+          "stitch_mm": 3.935,
+          "stitch_ok": true,
+          "via_xy": [
+            36.8,
+            145.7
+          ]
+        },
+        {
+          "accepted": null,
+          "arm": "joint",
+          "reason": null,
+          "round": 8,
+          "stitch_mm": 3.872,
+          "stitch_ok": true,
+          "via_xy": [
+            36.6,
+            146.05
+          ]
+        },
+        {
+          "accepted": null,
+          "arm": "joint",
+          "reason": null,
+          "round": 9,
+          "stitch_mm": 3.637,
+          "stitch_ok": true,
+          "via_xy": [
+            36.6,
+            146.65
+          ]
+        },
+        {
+          "accepted": null,
+          "arm": "joint",
+          "reason": null,
+          "round": 10,
+          "stitch_mm": 4.359,
+          "stitch_ok": true,
+          "via_xy": [
+            36.5,
+            145.4
+          ]
+        }
+      ],
+      "rounds_laid": 10,
+      "rounds_severing_pour": 0,
+      "site_refusals": [],
+      "source": "evidence/d638-relay-joint-g50.json",
+      "source_kind": "relay_transaction",
+      "source_sha256": "88c9d6a7b1b32cac320c749006a5e17aaad30557669691a0c8e42e22a3096b72",
+      "why": "10 rounds laid a stitch, none severed a pour, 10 relay refusals"
+    },
+    {
+      "bare_arm": [],
+      "bare_arm_signature": null,
+      "board_sha256": "5715bf5cd688a87f686e162b77bbcbff98dc9f9f3e20b4be6424849423e690d2",
+      "bond_pad_applicable": false,
+      "land": "GND:U9.16",
+      "levers": {
+        "applicable": [
+          "more joint barrels (--joint-tries / --joint-knockout-mm)",
+          "--ban-net cut-set retry (D-641)",
+          "--detour-own-layer",
+          "--evict-whole with the evicted net REQUESTED FIRST",
+          "placement / refloorplan"
+        ],
+        "vacuous": [
+          [
+            "--bond-pad / --split-bond-pad",
+            "pour_severs is null in every round that laid a stitch: this transaction splits no pour, so PP2 never prices a fragment and a bond barrel changes nothing"
+          ]
+        ]
+      },
+      "net": "GND",
+      "refusal_class": "RELAY",
+      "relay_refusals": [
+        {
+          "arm": "joint",
+          "net": "/04_SPI_B_RADIOS_NFC/NFC_RFO2",
+          "reason": "NO_PATH",
+          "round": 1,
+          "was_mm": 2.6872
+        },
+        {
+          "arm": "joint",
+          "net": "/04_SPI_B_RADIOS_NFC/NFC_RFO2",
+          "reason": "NO_PATH",
+          "round": 2,
+          "was_mm": 2.6872
+        },
+        {
+          "arm": "joint",
+          "net": "/04_SPI_B_RADIOS_NFC/NFC_RFO2",
+          "reason": "NO_PATH",
+          "round": 3,
+          "was_mm": 2.6872
+        },
+        {
+          "arm": "joint",
+          "net": "/04_SPI_B_RADIOS_NFC/NFC_RFO2",
+          "reason": "NO_PATH",
+          "round": 4,
+          "was_mm": 2.6872
+        },
+        {
+          "arm": "joint",
+          "net": "/04_SPI_B_RADIOS_NFC/NFC_RFO2",
+          "reason": "NO_PATH",
+          "round": 5,
+          "was_mm": 2.6872
+        },
+        {
+          "arm": "joint",
+          "net": "/04_SPI_B_RADIOS_NFC/NFC_RFO2",
+          "reason": "NO_PATH",
+          "round": 6,
+          "was_mm": 2.6872
+        },
+        {
+          "arm": "joint",
+          "net": "/04_SPI_B_RADIOS_NFC/NFC_RFO2",
+          "reason": "NO_PATH",
+          "round": 7,
+          "was_mm": 2.6872
+        },
+        {
+          "arm": "joint",
+          "net": "/04_SPI_B_RADIOS_NFC/NFC_RFO2",
+          "reason": "NO_PATH",
+          "round": 8,
+          "was_mm": 2.6872
+        }
+      ],
+      "rounds": [
+        {
+          "accepted": null,
+          "arm": "joint",
+          "reason": null,
+          "round": 1,
+          "stitch_mm": 0.731,
+          "stitch_ok": true,
+          "via_xy": [
+            36.45,
+            27.6
+          ]
+        },
+        {
+          "accepted": null,
+          "arm": "joint",
+          "reason": null,
+          "round": 2,
+          "stitch_mm": 1.055,
+          "stitch_ok": true,
+          "via_xy": [
+            36.75,
+            27.15
+          ]
+        },
+        {
+          "accepted": null,
+          "arm": "joint",
+          "reason": null,
+          "round": 3,
+          "stitch_mm": 1.363,
+          "stitch_ok": true,
+          "via_xy": [
+            37.05,
+            27.85
+          ]
+        },
+        {
+          "accepted": null,
+          "arm": "joint",
+          "reason": null,
+          "round": 4,
+          "stitch_mm": 1.503,
+          "stitch_ok": true,
+          "via_xy": [
+            37.15,
+            28.25
+          ]
+        },
+        {
+          "accepted": null,
+          "arm": "joint",
+          "reason": null,
+          "round": 5,
+          "stitch_mm": 1.464,
+          "stitch_ok": true,
+          "via_xy": [
+            37.1,
+            27.4
+          ]
+        },
+        {
+          "accepted": null,
+          "arm": "joint",
+          "reason": null,
+          "round": 6,
+          "stitch_mm": 1.742,
+          "stitch_ok": true,
+          "via_xy": [
+            37.45,
+            27.75
+          ]
+        },
+        {
+          "accepted": null,
+          "arm": "joint",
+          "reason": null,
+          "round": 7,
+          "stitch_mm": 1.802,
+          "stitch_ok": true,
+          "via_xy": [
+            37.55,
+            28.15
+          ]
+        },
+        {
+          "accepted": null,
+          "arm": "joint",
+          "reason": null,
+          "round": 8,
+          "stitch_mm": 1.88,
+          "stitch_ok": true,
+          "via_xy": [
+            37.2,
+            28.65
+          ]
+        },
+        {
+          "accepted": null,
+          "arm": "joint",
+          "reason": "NO_BODY_VIA_SITE",
+          "round": 9,
+          "stitch_mm": null,
+          "stitch_ok": false,
+          "via_xy": null
+        }
+      ],
+      "rounds_laid": 8,
+      "rounds_severing_pour": 0,
+      "site_refusals": [
+        {
+          "arm": "joint",
+          "reason": "NO_BODY_VIA_SITE",
+          "round": 9
+        }
+      ],
+      "source": "evidence/d638-relay-joint-g50.json",
+      "source_kind": "relay_transaction",
+      "source_sha256": "88c9d6a7b1b32cac320c749006a5e17aaad30557669691a0c8e42e22a3096b72",
+      "why": "8 rounds laid a stitch, none severed a pour, 8 relay refusals"
+    },
+    {
+      "bare_arm": [],
+      "bare_arm_signature": null,
+      "board_sha256": "5715bf5cd688a87f686e162b77bbcbff98dc9f9f3e20b4be6424849423e690d2",
+      "bond_pad_applicable": false,
+      "land": "+3V3:R39.1",
+      "levers": {
+        "applicable": [
+          "none -- this land closed"
+        ],
+        "vacuous": []
+      },
+      "net": "+3V3",
+      "refusal_class": "CLOSED",
+      "relay_refusals": [
+        {
+          "arm": "joint",
+          "net": "Net-(U11-TS_MR)",
+          "reason": "NO_PATH",
+          "round": 1,
+          "was_mm": 4.3353
+        },
+        {
+          "arm": "joint",
+          "net": "Net-(U11-TS_MR)",
+          "reason": "NO_PATH",
+          "round": 2,
+          "was_mm": 4.3353
+        },
+        {
+          "arm": "joint",
+          "net": "Net-(U11-TS_MR)",
+          "reason": "NO_PATH",
+          "round": 3,
+          "was_mm": 4.3353
+        }
+      ],
+      "rounds": [
+        {
+          "accepted": null,
+          "arm": "joint",
+          "reason": null,
+          "round": 1,
+          "stitch_mm": 9.128,
+          "stitch_ok": true,
+          "via_xy": [
+            71.1,
+            68.25
+          ]
+        },
+        {
+          "accepted": null,
+          "arm": "joint",
+          "reason": null,
+          "round": 2,
+          "stitch_mm": 9.337,
+          "stitch_ok": true,
+          "via_xy": [
+            70.8,
+            67.95
+          ]
+        },
+        {
+          "accepted": null,
+          "arm": "joint",
+          "reason": null,
+          "round": 3,
+          "stitch_mm": 9.728,
+          "stitch_ok": true,
+          "via_xy": [
+            71.1,
+            67.65
+          ]
+        },
+        {
+          "accepted": null,
+          "arm": "joint",
+          "reason": null,
+          "round": 4,
+          "stitch_mm": 9.687,
+          "stitch_ok": true,
+          "via_xy": [
+            70.65,
+            67.55
+          ]
+        }
+      ],
+      "rounds_laid": 4,
+      "rounds_severing_pour": 0,
+      "site_refusals": [],
+      "source": "evidence/d638-relay-joint-r39-g50.json",
+      "source_kind": "relay_transaction",
+      "source_sha256": "7854b4c5d5d62d36723bb0ff41cbb2b3b84656628e45268da392605e31234766",
+      "why": "arm 'joint' relaid every cut net at an unrecorded width"
+    },
+    {
+      "bare_arm": [],
+      "bare_arm_signature": null,
+      "board_sha256": "5715bf5cd688a87f686e162b77bbcbff98dc9f9f3e20b4be6424849423e690d2",
+      "bond_pad_applicable": false,
+      "land": "GND:U9.16",
+      "levers": {
+        "applicable": [
+          "none -- this land closed"
+        ],
+        "vacuous": []
+      },
+      "net": "GND",
+      "refusal_class": "CLOSED",
+      "relay_refusals": [],
+      "rounds": [
+        {
+          "accepted": null,
+          "arm": "joint",
+          "reason": null,
+          "round": 1,
+          "stitch_mm": 0.675,
+          "stitch_ok": true,
+          "via_xy": [
+            36.325,
+            27.625
+          ]
+        }
+      ],
+      "rounds_laid": 1,
+      "rounds_severing_pour": 0,
+      "site_refusals": [],
+      "source": "evidence/d638-relay-joint-u916-g25.json",
+      "source_kind": "relay_transaction",
+      "source_sha256": "fd0879c24293c93d9c2a16e06113f91e34b310d751deb30d3f5be516c71eddea",
+      "why": "arm 'joint' relaid every cut net at an unrecorded width"
+    },
+    {
+      "bare_arm": [],
+      "bare_arm_signature": null,
+      "board_sha256": "5715bf5cd688a87f686e162b77bbcbff98dc9f9f3e20b4be6424849423e690d2",
+      "bond_pad_applicable": false,
+      "land": "+3V3:R39.1",
+      "levers": {
+        "applicable": [
+          "more joint barrels (--joint-tries / --joint-knockout-mm)",
+          "--ban-net cut-set retry (D-641)",
+          "--detour-own-layer",
+          "--evict-whole with the evicted net REQUESTED FIRST",
+          "placement / refloorplan"
+        ],
+        "vacuous": [
+          [
+            "--bond-pad / --split-bond-pad",
+            "pour_severs is null in every round that laid a stitch: this transaction splits no pour, so PP2 never prices a fragment and a bond barrel changes nothing"
+          ]
+        ]
+      },
+      "net": "+3V3",
+      "refusal_class": "RELAY",
+      "relay_refusals": [
+        {
+          "arm": "joint",
+          "net": "Net-(U11-TS_MR)",
+          "reason": "NO_PATH",
+          "round": 1,
+          "was_mm": 4.3353
+        },
+        {
+          "arm": "joint",
+          "net": "Net-(U11-TS_MR)",
+          "reason": "NO_PATH",
+          "round": 2,
+          "was_mm": 4.3353
+        },
+        {
+          "arm": "joint",
+          "net": "Net-(U11-TS_MR)",
+          "reason": "NO_PATH",
+          "round": 3,
+          "was_mm": 4.3353
+        },
+        {
+          "arm": "joint",
+          "net": "Net-(U11-TS_MR)",
+          "reason": "NO_PATH",
+          "round": 4,
+          "was_mm": 4.3353
+        },
+        {
+          "arm": "joint",
+          "net": "Net-(U11-TS_MR)",
+          "reason": "NO_PATH",
+          "round": 5,
+          "was_mm": 4.3353
+        }
+      ],
+      "rounds": [
+        {
+          "accepted": null,
+          "arm": "joint",
+          "reason": null,
+          "round": 1,
+          "stitch_mm": 9.128,
+          "stitch_ok": true,
+          "via_xy": [
+            71.1,
+            68.25
+          ]
+        },
+        {
+          "accepted": null,
+          "arm": "joint",
+          "reason": null,
+          "round": 2,
+          "stitch_mm": 9.337,
+          "stitch_ok": true,
+          "via_xy": [
+            70.8,
+            67.95
+          ]
+        },
+        {
+          "accepted": null,
+          "arm": "joint",
+          "reason": null,
+          "round": 3,
+          "stitch_mm": 9.728,
+          "stitch_ok": true,
+          "via_xy": [
+            71.1,
+            67.65
+          ]
+        },
+        {
+          "accepted": null,
+          "arm": "joint",
+          "reason": null,
+          "round": 4,
+          "stitch_mm": 9.687,
+          "stitch_ok": true,
+          "via_xy": [
+            70.65,
+            67.55
+          ]
+        },
+        {
+          "accepted": null,
+          "arm": "joint",
+          "reason": null,
+          "round": 5,
+          "stitch_mm": 10.078,
+          "stitch_ok": true,
+          "via_xy": [
+            70.95,
+            67.25
+          ]
+        },
+        {
+          "accepted": null,
+          "arm": "joint",
+          "reason": "NO_BODY_VIA_SITE",
+          "round": 6,
+          "stitch_mm": null,
+          "stitch_ok": false,
+          "via_xy": null
+        }
+      ],
+      "rounds_laid": 5,
+      "rounds_severing_pour": 0,
+      "site_refusals": [
+        {
+          "arm": "joint",
+          "reason": "NO_BODY_VIA_SITE",
+          "round": 6
+        }
+      ],
+      "source": "evidence/d638-relay-slack-r39-s2.json",
+      "source_kind": "relay_transaction",
+      "source_sha256": "cbdaddc34840216325e7c8f8c001cf7fb8afa0167a997c421ab9da76c0d4f557",
+      "why": "5 rounds laid a stitch, none severed a pour, 5 relay refusals"
+    },
+    {
+      "bare_arm": [],
+      "bare_arm_signature": null,
+      "board_sha256": "5715bf5cd688a87f686e162b77bbcbff98dc9f9f3e20b4be6424849423e690d2",
+      "bond_pad_applicable": false,
+      "land": "+3V3:R39.1",
+      "levers": {
+        "applicable": [
+          "more joint barrels (--joint-tries / --joint-knockout-mm)",
+          "--ban-net cut-set retry (D-641)",
+          "--detour-own-layer",
+          "--evict-whole with the evicted net REQUESTED FIRST",
+          "placement / refloorplan"
+        ],
+        "vacuous": [
+          [
+            "--bond-pad / --split-bond-pad",
+            "pour_severs is null in every round that laid a stitch: this transaction splits no pour, so PP2 never prices a fragment and a bond barrel changes nothing"
+          ]
+        ]
+      },
+      "net": "+3V3",
+      "refusal_class": "RELAY",
+      "relay_refusals": [
+        {
+          "arm": "joint",
+          "net": "Net-(U11-TS_MR)",
+          "reason": "NO_PATH",
+          "round": 1,
+          "was_mm": 4.3353
+        },
+        {
+          "arm": "joint",
+          "net": "Net-(U11-TS_MR)",
+          "reason": "NO_PATH",
+          "round": 2,
+          "was_mm": 4.3353
+        },
+        {
+          "arm": "joint",
+          "net": "Net-(U11-TS_MR)",
+          "reason": "NO_PATH",
+          "round": 3,
+          "was_mm": 4.3353
+        },
+        {
+          "arm": "joint",
+          "net": "Net-(U11-TS_MR)",
+          "reason": "NO_PATH",
+          "round": 4,
+          "was_mm": 4.3353
+        },
+        {
+          "arm": "joint",
+          "net": "Net-(U11-TS_MR)",
+          "reason": "NO_PATH",
+          "round": 5,
+          "was_mm": 4.3353
+        }
+      ],
+      "rounds": [
+        {
+          "accepted": null,
+          "arm": "joint",
+          "reason": null,
+          "round": 1,
+          "stitch_mm": 9.128,
+          "stitch_ok": true,
+          "via_xy": [
+            71.1,
+            68.25
+          ]
+        },
+        {
+          "accepted": null,
+          "arm": "joint",
+          "reason": null,
+          "round": 2,
+          "stitch_mm": 9.337,
+          "stitch_ok": true,
+          "via_xy": [
+            70.8,
+            67.95
+          ]
+        },
+        {
+          "accepted": null,
+          "arm": "joint",
+          "reason": null,
+          "round": 3,
+          "stitch_mm": 9.728,
+          "stitch_ok": true,
+          "via_xy": [
+            71.1,
+            67.65
+          ]
+        },
+        {
+          "accepted": null,
+          "arm": "joint",
+          "reason": null,
+          "round": 4,
+          "stitch_mm": 9.687,
+          "stitch_ok": true,
+          "via_xy": [
+            70.65,
+            67.55
+          ]
+        },
+        {
+          "accepted": null,
+          "arm": "joint",
+          "reason": null,
+          "round": 5,
+          "stitch_mm": 10.078,
+          "stitch_ok": true,
+          "via_xy": [
+            70.95,
+            67.25
+          ]
+        },
+        {
+          "accepted": null,
+          "arm": "joint",
+          "reason": "NO_BODY_VIA_SITE",
+          "round": 6,
+          "stitch_mm": null,
+          "stitch_ok": false,
+          "via_xy": null
+        }
+      ],
+      "rounds_laid": 5,
+      "rounds_severing_pour": 0,
+      "site_refusals": [
+        {
+          "arm": "joint",
+          "reason": "NO_BODY_VIA_SITE",
+          "round": 6
+        }
+      ],
+      "source": "evidence/d638-relay-slack-r39-s6.json",
+      "source_kind": "relay_transaction",
+      "source_sha256": "97b378344acaa3105124d7910f057a5890989a524cc858c208ed58b55caa8d8d",
+      "why": "5 rounds laid a stitch, none severed a pour, 5 relay refusals"
+    },
+    {
+      "bare_arm": [
+        {
+          "mm": 4.33529008953855,
+          "net": "Net-(U11-TS_MR)",
+          "ok": true,
+          "own_geometry_zero_vias": true,
+          "reason": null,
+          "vias": 0,
+          "was_mm": 4.3353
+        }
+      ],
+      "bare_arm_signature": "SIGNATURE",
+      "board_sha256": "5715bf5cd688a87f686e162b77bbcbff98dc9f9f3e20b4be6424849423e690d2",
+      "bond_pad_applicable": false,
+      "land": "+3V3:R39.1",
+      "levers": {
+        "applicable": [
+          "--evict-whole with the evicted net REQUESTED FIRST",
+          "placement / refloorplan",
+          "a part change that empties the pocket"
+        ],
+        "vacuous": [
+          [
+            "--bond-pad / --split-bond-pad",
+            "pour_severs is null: no fragment is priced"
+          ],
+          [
+            "more joint barrels",
+            "the BARE arm -- no reservation at all -- returns the cut chain's OWN geometry with zero vias, so every barrel in the pocket lands on the chain's only path (D-667)"
+          ],
+          [
+            "--ban-net cut-set retry",
+            "the refusing chain is the one the land must cut to reach its own site"
+          ]
+        ]
+      },
+      "net": "+3V3",
+      "refusal_class": "LANE_UNSAT",
+      "relay_refusals": [
+        {
+          "arm": "joint",
+          "net": "Net-(U11-TS_MR)",
+          "reason": "NO_PATH",
+          "round": 1,
+          "was_mm": 4.3353
+        },
+        {
+          "arm": "joint",
+          "net": "Net-(U11-TS_MR)",
+          "reason": "NO_PATH",
+          "round": 2,
+          "was_mm": 4.3353
+        },
+        {
+          "arm": "joint",
+          "net": "Net-(U11-TS_MR)",
+          "reason": "NO_PATH",
+          "round": 3,
+          "was_mm": 4.3353
+        },
+        {
+          "arm": "joint",
+          "net": "Net-(U11-TS_MR)",
+          "reason": "NO_PATH",
+          "round": 4,
+          "was_mm": 4.3353
+        },
+        {
+          "arm": "joint",
+          "net": "Net-(U11-TS_MR)",
+          "reason": "NO_PATH",
+          "round": 5,
+          "was_mm": 4.3353
+        },
+        {
+          "arm": "joint",
+          "net": "Net-(U11-TS_MR)",
+          "reason": "NO_PATH",
+          "round": 6,
+          "was_mm": 4.3353
+        },
+        {
+          "arm": "joint",
+          "net": "Net-(U11-TS_MR)",
+          "reason": "NO_PATH",
+          "round": 7,
+          "was_mm": 4.3353
+        },
+        {
+          "arm": "joint",
+          "net": "Net-(U11-TS_MR)",
+          "reason": "NO_PATH",
+          "round": 8,
+          "was_mm": 4.3353
+        },
+        {
+          "arm": "joint",
+          "net": "Net-(U11-TS_MR)",
+          "reason": "NO_PATH",
+          "round": 9,
+          "was_mm": 4.3353
+        },
+        {
+          "arm": "joint",
+          "net": "Net-(U11-TS_MR)",
+          "reason": "NO_PATH",
+          "round": 10,
+          "was_mm": 4.3353
+        }
+      ],
+      "rounds": [
+        {
+          "accepted": null,
+          "arm": "joint",
+          "reason": null,
+          "round": 1,
+          "stitch_mm": 9.06,
+          "stitch_ok": true,
+          "via_xy": [
+            71.1,
+            68.2
+          ]
+        },
+        {
+          "accepted": null,
+          "arm": "joint",
+          "reason": null,
+          "round": 2,
+          "stitch_mm": 9.235,
+          "stitch_ok": true,
+          "via_xy": [
+            70.8,
+            67.9
+          ]
+        },
+        {
+          "accepted": null,
+          "arm": "joint",
+          "reason": null,
+          "round": 3,
+          "stitch_mm": 9.66,
+          "stitch_ok": true,
+          "via_xy": [
+            71.1,
+            67.6
+          ]
+        },
+        {
+          "accepted": null,
+          "arm": "joint",
+          "reason": null,
+          "round": 4,
+          "stitch_mm": 9.594,
+          "stitch_ok": true,
+          "via_xy": [
+            70.7,
+            67.5
+          ]
+        },
+        {
+          "accepted": null,
+          "arm": "joint",
+          "reason": null,
+          "round": 5,
+          "stitch_mm": 10.018,
+          "stitch_ok": true,
+          "via_xy": [
+            71.0,
+            67.2
+          ]
+        },
+        {
+          "accepted": null,
+          "arm": "joint",
+          "reason": null,
+          "round": 6,
+          "stitch_mm": 10.194,
+          "stitch_ok": true,
+          "via_xy": [
+            70.7,
+            66.9
+          ]
+        },
+        {
+          "accepted": null,
+          "arm": "joint",
+          "reason": null,
+          "round": 7,
+          "stitch_mm": 10.46,
+          "stitch_ok": true,
+          "via_xy": [
+            71.1,
+            66.8
+          ]
+        },
+        {
+          "accepted": null,
+          "arm": "joint",
+          "reason": null,
+          "round": 8,
+          "stitch_mm": 10.635,
+          "stitch_ok": true,
+          "via_xy": [
+            70.8,
+            66.5
+          ]
+        },
+        {
+          "accepted": null,
+          "arm": "joint",
+          "reason": null,
+          "round": 9,
+          "stitch_mm": 11.06,
+          "stitch_ok": true,
+          "via_xy": [
+            71.1,
+            66.2
+          ]
+        },
+        {
+          "accepted": null,
+          "arm": "joint",
+          "reason": null,
+          "round": 10,
+          "stitch_mm": 10.994,
+          "stitch_ok": true,
+          "via_xy": [
+            70.7,
+            66.1
+          ]
+        }
+      ],
+      "rounds_laid": 10,
+      "rounds_severing_pour": 0,
+      "site_refusals": [],
+      "source": "evidence/d638-relay-transaction-g100.json",
+      "source_kind": "relay_transaction",
+      "source_sha256": "2abdbb3ea0c315882e60145e4e6947a3486ca73ff18f7391ac1a8d45ae364720",
+      "why": "10 rounds laid a stitch, none severed a pour, every relay refused, and the BARE arm returned each cut chain's own geometry with zero vias"
+    },
+    {
+      "bare_arm": [
+        {
+          "mm": 5.450917353987308,
+          "net": "/ACC_DETECT_N",
+          "ok": true,
+          "own_geometry_zero_vias": true,
+          "reason": null,
+          "vias": 0,
+          "was_mm": 5.4509
+        },
+        {
+          "mm": 9.686366193420636,
+          "net": "Net-(U11-TS_MR)",
+          "ok": true,
+          "own_geometry_zero_vias": false,
+          "reason": null,
+          "vias": 0,
+          "was_mm": 9.5273
+        }
+      ],
+      "bare_arm_signature": "ELSEWHERE",
+      "board_sha256": "5715bf5cd688a87f686e162b77bbcbff98dc9f9f3e20b4be6424849423e690d2",
+      "bond_pad_applicable": false,
+      "land": "GND:C37.2",
+      "levers": {
+        "applicable": [
+          "more joint barrels (--joint-tries / --joint-knockout-mm)",
+          "--ban-net cut-set retry (D-641)",
+          "--detour-own-layer",
+          "--evict-whole with the evicted net REQUESTED FIRST",
+          "placement / refloorplan"
+        ],
+        "vacuous": [
+          [
+            "--bond-pad / --split-bond-pad",
+            "pour_severs is null in every round that laid a stitch: this transaction splits no pour, so PP2 never prices a fragment and a bond barrel changes nothing"
+          ]
+        ]
+      },
+      "net": "GND",
+      "refusal_class": "RELAY",
+      "relay_refusals": [
+        {
+          "arm": "joint",
+          "net": "/ACC_DETECT_N",
+          "reason": "NO_PATH",
+          "round": 1,
+          "was_mm": 5.4509
+        },
+        {
+          "arm": "joint",
+          "net": "/ACC_DETECT_N",
+          "reason": "NO_PATH",
+          "round": 2,
+          "was_mm": 5.4509
+        },
+        {
+          "arm": "joint",
+          "net": "/ACC_DETECT_N",
+          "reason": "NO_PATH",
+          "round": 3,
+          "was_mm": 5.4509
+        },
+        {
+          "arm": "joint",
+          "net": "/ACC_DETECT_N",
+          "reason": "NO_PATH",
+          "round": 4,
+          "was_mm": 5.4509
+        },
+        {
+          "arm": "joint",
+          "net": "/ACC_DETECT_N",
+          "reason": "NO_PATH",
+          "round": 5,
+          "was_mm": 5.4509
+        },
+        {
+          "arm": "joint",
+          "net": "/ACC_DETECT_N",
+          "reason": "NO_PATH",
+          "round": 6,
+          "was_mm": 5.4509
+        },
+        {
+          "arm": "joint",
+          "net": "/ACC_DETECT_N",
+          "reason": "NO_PATH",
+          "round": 7,
+          "was_mm": 5.4509
+        }
+      ],
+      "rounds": [
+        {
+          "accepted": null,
+          "arm": "joint",
+          "reason": null,
+          "round": 1,
+          "stitch_mm": 8.299,
+          "stitch_ok": true,
+          "via_xy": [
+            55.4,
+            62.8
+          ]
+        },
+        {
+          "accepted": null,
+          "arm": "joint",
+          "reason": null,
+          "round": 2,
+          "stitch_mm": 8.294,
+          "stitch_ok": true,
+          "via_xy": [
+            55.8,
+            62.9
+          ]
+        },
+        {
+          "accepted": null,
+          "arm": "joint",
+          "reason": null,
+          "round": 3,
+          "stitch_mm": 8.777,
+          "stitch_ok": true,
+          "via_xy": [
+            53.1,
+            61.5
+          ]
+        },
+        {
+          "accepted": null,
+          "arm": "joint",
+          "reason": null,
+          "round": 4,
+          "stitch_mm": 8.3,
+          "stitch_ok": true,
+          "via_xy": [
+            56.7,
+            63.1
+          ]
+        },
+        {
+          "accepted": null,
+          "arm": "joint",
+          "reason": null,
+          "round": 5,
+          "stitch_mm": 8.677,
+          "stitch_ok": true,
+          "via_xy": [
+            55.5,
+            63.2
+          ]
+        },
+        {
+          "accepted": null,
+          "arm": "joint",
+          "reason": null,
+          "round": 6,
+          "stitch_mm": 8.511,
+          "stitch_ok": true,
+          "via_xy": [
+            56.1,
+            63.2
+          ]
+        },
+        {
+          "accepted": null,
+          "arm": "joint",
+          "reason": null,
+          "round": 7,
+          "stitch_mm": 8.894,
+          "stitch_ok": true,
+          "via_xy": [
+            55.8,
+            63.5
+          ]
+        },
+        {
+          "accepted": null,
+          "arm": "joint",
+          "reason": "NO_BODY_VIA_SITE",
+          "round": 8,
+          "stitch_mm": null,
+          "stitch_ok": false,
+          "via_xy": null
+        }
+      ],
+      "rounds_laid": 7,
+      "rounds_severing_pour": 0,
+      "site_refusals": [
+        {
+          "arm": "joint",
+          "reason": "NO_BODY_VIA_SITE",
+          "round": 8
+        }
+      ],
+      "source": "evidence/d638-relay-transaction-g100.json",
+      "source_kind": "relay_transaction",
+      "source_sha256": "2abdbb3ea0c315882e60145e4e6947a3486ca73ff18f7391ac1a8d45ae364720",
+      "why": "7 rounds laid a stitch, none severed a pour, 7 relay refusals"
+    },
+    {
+      "bare_arm": [
+        {
+          "mm": null,
+          "net": "Net-(J3-CC2)",
+          "ok": false,
+          "own_geometry_zero_vias": false,
+          "reason": "NO_PATH",
+          "vias": null,
+          "was_mm": 5.475
+        }
+      ],
+      "bare_arm_signature": "REFUSED",
+      "board_sha256": "5715bf5cd688a87f686e162b77bbcbff98dc9f9f3e20b4be6424849423e690d2",
+      "bond_pad_applicable": false,
+      "land": "GND:J3.A12",
+      "levers": {
+        "applicable": [
+          "more joint barrels (--joint-tries / --joint-knockout-mm)",
+          "--ban-net cut-set retry (D-641)",
+          "--detour-own-layer",
+          "--evict-whole with the evicted net REQUESTED FIRST",
+          "placement / refloorplan"
+        ],
+        "vacuous": [
+          [
+            "--bond-pad / --split-bond-pad",
+            "pour_severs is null in every round that laid a stitch: this transaction splits no pour, so PP2 never prices a fragment and a bond barrel changes nothing"
+          ]
+        ]
+      },
+      "net": "GND",
+      "refusal_class": "RELAY",
+      "relay_refusals": [
+        {
+          "arm": "joint",
+          "net": "Net-(J3-CC2)",
+          "reason": "NO_PATH",
+          "round": 1,
+          "was_mm": 5.475
+        },
+        {
+          "arm": "joint",
+          "net": "Net-(J3-CC2)",
+          "reason": "NO_PATH",
+          "round": 2,
+          "was_mm": 5.475
+        },
+        {
+          "arm": "joint",
+          "net": "Net-(J3-CC2)",
+          "reason": "NO_PATH",
+          "round": 3,
+          "was_mm": 5.475
+        },
+        {
+          "arm": "joint",
+          "net": "Net-(J3-CC2)",
+          "reason": "NO_PATH",
+          "round": 4,
+          "was_mm": 5.475
+        },
+        {
+          "arm": "joint",
+          "net": "Net-(J3-CC2)",
+          "reason": "NO_PATH",
+          "round": 5,
+          "was_mm": 5.475
+        },
+        {
+          "arm": "joint",
+          "net": "Net-(J3-CC2)",
+          "reason": "NO_PATH",
+          "round": 6,
+          "was_mm": 5.475
+        },
+        {
+          "arm": "joint",
+          "net": "Net-(J3-CC2)",
+          "reason": "NO_PATH",
+          "round": 7,
+          "was_mm": 5.475
+        },
+        {
+          "arm": "joint",
+          "net": "Net-(J3-CC2)",
+          "reason": "NO_PATH",
+          "round": 8,
+          "was_mm": 5.475
+        },
+        {
+          "arm": "joint",
+          "net": "Net-(J3-CC2)",
+          "reason": "NO_PATH",
+          "round": 9,
+          "was_mm": 5.475
+        },
+        {
+          "arm": "joint",
+          "net": "Net-(J3-CC2)",
+          "reason": "NO_PATH",
+          "round": 10,
+          "was_mm": 5.475
+        }
+      ],
+      "rounds": [
+        {
+          "accepted": null,
+          "arm": "joint",
+          "reason": null,
+          "round": 1,
+          "stitch_mm": 2.938,
+          "stitch_ok": true,
+          "via_xy": [
+            37.2,
+            146.1
+          ]
+        },
+        {
+          "accepted": null,
+          "arm": "joint",
+          "reason": null,
+          "round": 2,
+          "stitch_mm": 2.441,
+          "stitch_ok": true,
+          "via_xy": [
+            37.6,
+            146.4
+          ]
+        },
+        {
+          "accepted": null,
+          "arm": "joint",
+          "reason": null,
+          "round": 3,
+          "stitch_mm": 2.961,
+          "stitch_ok": true,
+          "via_xy": [
+            36.9,
+            146.6
+          ]
+        },
+        {
+          "accepted": null,
+          "arm": "joint",
+          "reason": null,
+          "round": 4,
+          "stitch_mm": 3.362,
+          "stitch_ok": true,
+          "via_xy": [
+            36.9,
+            145.8
+          ]
+        },
+        {
+          "accepted": null,
+          "arm": "joint",
+          "reason": null,
+          "round": 5,
+          "stitch_mm": 3.35,
+          "stitch_ok": true,
+          "via_xy": [
+            36.8,
+            146.2
+          ]
+        },
+        {
+          "accepted": null,
+          "arm": "joint",
+          "reason": null,
+          "round": 6,
+          "stitch_mm": 3.358,
+          "stitch_ok": true,
+          "via_xy": [
+            36.5,
+            146.5
+          ]
+        },
+        {
+          "accepted": null,
+          "arm": "joint",
+          "reason": null,
+          "round": 7,
+          "stitch_mm": 3.786,
+          "stitch_ok": true,
+          "via_xy": [
+            36.6,
+            145.5
+          ]
+        },
+        {
+          "accepted": null,
+          "arm": "joint",
+          "reason": null,
+          "round": 8,
+          "stitch_mm": 3.668,
+          "stitch_ok": true,
+          "via_xy": [
+            36.4,
+            146.1
+          ]
+        },
+        {
+          "accepted": null,
+          "arm": "joint",
+          "reason": null,
+          "round": 9,
+          "stitch_mm": 4.062,
+          "stitch_ok": true,
+          "via_xy": [
+            36.9,
+            145.1
+          ]
+        },
+        {
+          "accepted": null,
+          "arm": "joint",
+          "reason": null,
+          "round": 10,
+          "stitch_mm": 3.768,
+          "stitch_ok": true,
+          "via_xy": [
+            36.1,
+            146.4
+          ]
+        }
+      ],
+      "rounds_laid": 10,
+      "rounds_severing_pour": 0,
+      "site_refusals": [],
+      "source": "evidence/d638-relay-transaction-g100.json",
+      "source_kind": "relay_transaction",
+      "source_sha256": "2abdbb3ea0c315882e60145e4e6947a3486ca73ff18f7391ac1a8d45ae364720",
+      "why": "10 rounds laid a stitch, none severed a pour, 10 relay refusals"
+    },
+    {
+      "bare_arm": [
+        {
+          "mm": 2.687238359357056,
+          "net": "/04_SPI_B_RADIOS_NFC/NFC_RFO2",
+          "ok": true,
+          "own_geometry_zero_vias": true,
+          "reason": null,
+          "vias": 0,
+          "was_mm": 2.6872
+        }
+      ],
+      "bare_arm_signature": "SIGNATURE",
+      "board_sha256": "5715bf5cd688a87f686e162b77bbcbff98dc9f9f3e20b4be6424849423e690d2",
+      "bond_pad_applicable": false,
+      "land": "GND:U9.16",
+      "levers": {
+        "applicable": [
+          "--evict-whole with the evicted net REQUESTED FIRST",
+          "placement / refloorplan",
+          "a part change that empties the pocket"
+        ],
+        "vacuous": [
+          [
+            "--bond-pad / --split-bond-pad",
+            "pour_severs is null: no fragment is priced"
+          ],
+          [
+            "more joint barrels",
+            "the BARE arm -- no reservation at all -- returns the cut chain's OWN geometry with zero vias, so every barrel in the pocket lands on the chain's only path (D-667)"
+          ],
+          [
+            "--ban-net cut-set retry",
+            "the refusing chain is the one the land must cut to reach its own site"
+          ]
+        ]
+      },
+      "net": "GND",
+      "refusal_class": "LANE_UNSAT",
+      "relay_refusals": [
+        {
+          "arm": "joint",
+          "net": "/04_SPI_B_RADIOS_NFC/NFC_RFO2",
+          "reason": "NO_PATH",
+          "round": 1,
+          "was_mm": 2.6872
+        },
+        {
+          "arm": "joint",
+          "net": "/04_SPI_B_RADIOS_NFC/NFC_RFO2",
+          "reason": "NO_PATH",
+          "round": 2,
+          "was_mm": 2.6872
+        },
+        {
+          "arm": "joint",
+          "net": "/04_SPI_B_RADIOS_NFC/NFC_RFO2",
+          "reason": "NO_PATH",
+          "round": 3,
+          "was_mm": 2.6872
+        },
+        {
+          "arm": "joint",
+          "net": "/04_SPI_B_RADIOS_NFC/NFC_RFO2",
+          "reason": "NO_PATH",
+          "round": 4,
+          "was_mm": 2.6872
+        }
+      ],
+      "rounds": [
+        {
+          "accepted": null,
+          "arm": "joint",
+          "reason": null,
+          "round": 1,
+          "stitch_mm": 1.727,
+          "stitch_ok": true,
+          "via_xy": [
+            37.3,
+            28.4
+          ]
+        },
+        {
+          "accepted": null,
+          "arm": "joint",
+          "reason": null,
+          "round": 2,
+          "stitch_mm": 0.834,
+          "stitch_ok": true,
+          "via_xy": [
+            36.6,
+            27.5
+          ]
+        },
+        {
+          "accepted": null,
+          "arm": "joint",
+          "reason": null,
+          "round": 3,
+          "stitch_mm": 1.816,
+          "stitch_ok": true,
+          "via_xy": [
+            37.4,
+            27.8
+          ]
+        },
+        {
+          "accepted": null,
+          "arm": "joint",
+          "reason": null,
+          "round": 4,
+          "stitch_mm": 1.322,
+          "stitch_ok": true,
+          "via_xy": [
+            37.0,
+            27.7
+          ]
+        },
+        {
+          "accepted": null,
+          "arm": "joint",
+          "reason": "NO_BODY_VIA_SITE",
+          "round": 5,
+          "stitch_mm": null,
+          "stitch_ok": false,
+          "via_xy": null
+        }
+      ],
+      "rounds_laid": 4,
+      "rounds_severing_pour": 0,
+      "site_refusals": [
+        {
+          "arm": "joint",
+          "reason": "NO_BODY_VIA_SITE",
+          "round": 5
+        }
+      ],
+      "source": "evidence/d638-relay-transaction-g100.json",
+      "source_kind": "relay_transaction",
+      "source_sha256": "2abdbb3ea0c315882e60145e4e6947a3486ca73ff18f7391ac1a8d45ae364720",
+      "why": "4 rounds laid a stitch, none severed a pour, every relay refused, and the BARE arm returned each cut chain's own geometry with zero vias"
+    },
+    {
+      "bare_arm": [],
+      "bare_arm_signature": null,
+      "board_sha256": "5715bf5cd688a87f686e162b77bbcbff98dc9f9f3e20b4be6424849423e690d2",
+      "bond_pad_applicable": false,
+      "land": "GND:C37.2",
+      "levers": {
+        "applicable": [
+          "an owner-grade `.kicad_dru` width grant (D-610, D-630, twice RECORDED NOT TAKEN)",
+          "placement / refloorplan, which is the CTO-scope answer"
+        ],
+        "vacuous": [
+          [
+            "a gate run at this rung",
+            "the closing stitch is the BOARD minimum 0.150 mm.  Section 9 grants 0.200 mm anywhere and this net's own netclass asks more; promoting it would lay copper narrower than the board publishes without the grant that permits it"
+          ]
+        ]
+      },
+      "net": "GND",
+      "refusal_class": "CLOSED_AT_FLOOR",
+      "relay_refusals": [],
+      "rounds": [
+        {
+          "accepted": true,
+          "arm": "joint",
+          "reason": null,
+          "round": 1,
+          "stitch_mm": 3.149,
+          "stitch_ok": true,
+          "via_xy": [
+            58.45,
+            58.6
+          ]
+        }
+      ],
+      "rounds_laid": 1,
+      "rounds_severing_pour": 0,
+      "site_refusals": [],
+      "source": "evidence/d639-relay-joint-c372-g50.json",
+      "source_kind": "relay_transaction",
+      "source_sha256": "edbf1ea96e4b4fd2111b953d555fd881f37fb1fdb510d998b6eaffcef008deed",
+      "why": "arm 'joint' relaid every cut net, but the stitch is 0.150 mm -- the BOARD minimum, below the 0.200 mm granted anywhere and below this net's own netclass"
+    },
+    {
+      "bare_arm": [],
+      "bare_arm_signature": null,
+      "board_sha256": "5715bf5cd688a87f686e162b77bbcbff98dc9f9f3e20b4be6424849423e690d2",
+      "bond_pad_applicable": true,
+      "land": "+3V3:R39.1",
+      "levers": {
+        "applicable": [
+          "--split-priced --split-bond-pad NET:REF.NUM (D-675)",
+          "route_maze_batch.py --bond-pad REF.NUM",
+          "a cut that leaves the priced pad on the body side",
+          "--stitch-width / a wider arm"
+        ],
+        "vacuous": [
+          [
+            "--ban-net cut-set retry",
+            "the cut set was accepted; the SPLIT was refused"
+          ]
+        ]
+      },
+      "net": "+3V3",
+      "refusal_class": "POUR_PRICE",
+      "relay_refusals": [
+        {
+          "arm": "joint",
+          "net": "Net-(U11-TS_MR)",
+          "reason": "NO_PATH",
+          "round": 1,
+          "was_mm": 4.3353
+        }
+      ],
+      "rounds": [
+        {
+          "accepted": false,
+          "arm": "joint",
+          "reason": null,
+          "round": 1,
+          "stitch_mm": 9.128,
+          "stitch_ok": true,
+          "via_xy": [
+            71.1,
+            68.25
+          ]
+        },
+        {
+          "accepted": false,
+          "arm": "joint",
+          "reason": null,
+          "round": 2,
+          "stitch_mm": 9.887,
+          "stitch_ok": true,
+          "via_xy": [
+            70.65,
+            67.35
+          ]
+        },
+        {
+          "accepted": null,
+          "arm": "joint",
+          "reason": "NO_BODY_VIA_SITE",
+          "round": 3,
+          "stitch_mm": null,
+          "stitch_ok": false,
+          "via_xy": null
+        }
+      ],
+      "rounds_laid": 2,
+      "rounds_severing_pour": 1,
+      "site_refusals": [
+        {
+          "arm": "joint",
+          "reason": "NO_BODY_VIA_SITE",
+          "round": 3
+        }
+      ],
+      "source": "evidence/d639-relay-joint-r39-g50.json",
+      "source_kind": "relay_transaction",
+      "source_sha256": "81160ed16cf69c0ee3468edd6481133636225cb3fd270f2fb9219cf9fecb901d",
+      "why": "1 of 2 laid rounds severed a pour or failed its split price"
+    },
+    {
+      "bare_arm": [],
+      "bare_arm_signature": null,
+      "board_sha256": "5715bf5cd688a87f686e162b77bbcbff98dc9f9f3e20b4be6424849423e690d2",
+      "bond_pad_applicable": false,
+      "land": "GND:U9.16",
+      "levers": {
+        "applicable": [
+          "an owner-grade `.kicad_dru` width grant (D-610, D-630, twice RECORDED NOT TAKEN)",
+          "placement / refloorplan, which is the CTO-scope answer"
+        ],
+        "vacuous": [
+          [
+            "a gate run at this rung",
+            "the closing stitch is the BOARD minimum 0.150 mm.  Section 9 grants 0.200 mm anywhere and this net's own netclass asks more; promoting it would lay copper narrower than the board publishes without the grant that permits it"
+          ]
+        ]
+      },
+      "net": "GND",
+      "refusal_class": "CLOSED_AT_FLOOR",
+      "relay_refusals": [],
+      "rounds": [
+        {
+          "accepted": true,
+          "arm": "joint",
+          "reason": null,
+          "round": 1,
+          "stitch_mm": 0.675,
+          "stitch_ok": true,
+          "via_xy": [
+            36.325,
+            27.625
+          ]
+        }
+      ],
+      "rounds_laid": 1,
+      "rounds_severing_pour": 0,
+      "site_refusals": [],
+      "source": "evidence/d639-relay-joint-u916-g25.json",
+      "source_kind": "relay_transaction",
+      "source_sha256": "9d28adbbfd1e837450dda704d1c6ca79f952b44d84a436e6f6df9f04b9a96788",
+      "why": "arm 'joint' relaid every cut net, but the stitch is 0.150 mm -- the BOARD minimum, below the 0.200 mm granted anywhere and below this net's own netclass"
+    },
+    {
+      "bare_arm": [],
+      "bare_arm_signature": null,
+      "board_sha256": "f496d2f39c0827248a47ab7d47efa4322f078b68d2da1d91ae6585d97bf8f875",
+      "bond_pad_applicable": false,
+      "land": "/01_POWER_TREE/BQ25185_SYS:C26.2",
+      "levers": {
+        "applicable": [
+          "more joint barrels (--joint-tries / --joint-knockout-mm)",
+          "--ban-net cut-set retry (D-641)",
+          "--detour-own-layer",
+          "--evict-whole with the evicted net REQUESTED FIRST",
+          "placement / refloorplan"
+        ],
+        "vacuous": [
+          [
+            "--bond-pad / --split-bond-pad",
+            "pour_severs is null in every round that laid a stitch: this transaction splits no pour, so PP2 never prices a fragment and a bond barrel changes nothing"
+          ]
+        ]
+      },
+      "net": "/01_POWER_TREE/BQ25185_SYS",
+      "refusal_class": "RELAY",
+      "relay_refusals": [
+        {
+          "arm": "joint",
+          "net": "Net-(U12-PS_SYNC)",
+          "reason": "NO_PATH",
+          "round": 1,
+          "was_mm": 2.7036
+        }
+      ],
+      "rounds": [
+        {
+          "accepted": false,
+          "arm": "joint",
+          "reason": null,
+          "round": 1,
+          "stitch_mm": 0.972,
+          "stitch_ok": true,
+          "via_xy": [
+            62.225,
+            104.15
+          ]
+        },
+        {
+          "accepted": null,
+          "arm": "joint",
+          "reason": "NO_BODY_VIA_SITE",
+          "round": 2,
+          "stitch_mm": null,
+          "stitch_ok": false,
+          "via_xy": null
+        }
+      ],
+      "rounds_laid": 1,
+      "rounds_severing_pour": 0,
+      "site_refusals": [
+        {
+          "arm": "joint",
+          "reason": "NO_BODY_VIA_SITE",
+          "round": 2
+        }
+      ],
+      "source": "evidence/d640-relay-joint-c262-g25.json",
+      "source_kind": "relay_transaction",
+      "source_sha256": "c9e4b934d0da5903ac5742440c200146c31da91164d31cb190b9d3f2fb806057",
+      "why": "1 rounds laid a stitch, none severed a pour, 1 relay refusals"
+    },
+    {
+      "board_sha256": "f496d2f39c0827248a47ab7d47efa4322f078b68d2da1d91ae6585d97bf8f875",
+      "bond_pad_applicable": false,
+      "cut_radius_mm": null,
+      "cut_tracks": 0,
+      "land": "+3V3:R129.1",
+      "levers": {
+        "applicable": [
+          "placement / refloorplan (apply_part_shift.py)",
+          "a coarser or finer --grid (the site set is a lattice verdict -- D-675 section 4)",
+          "--shrink on the barrel (screen_via_site_sweep)"
+        ],
+        "vacuous": [
+          [
+            "--bond-pad / --split-bond-pad",
+            "no stitch was laid, so no pour was split and there is no fragment to price"
+          ],
+          [
+            "--ban-net cut-set retry",
+            "the cut pool is not what refused; no site exists to open"
+          ],
+          [
+            "--evict-whole / --detour-spec",
+            "a relay lever answers a relay refusal"
+          ]
+        ]
+      },
+      "net": "+3V3",
+      "note": "a disc is the most constraining reservation this repository draws; a RELAY here is not final until the joint arm of screen_relay_transaction.py has been asked",
+      "refusal_class": "NO_SITE",
+      "relay_refusals": [],
+      "source": "evidence/d640-segment-evict-pourfamily.json",
+      "source_kind": "segment_evict",
+      "source_sha256": "9709544d58f9e0efabeb803cc59a7165c6eccef4708ee292a00fceeb1ed9ad31",
+      "uncut_escape": "NO_BODY_VIA_SITE",
+      "verdict": "SEGMENT_WALL",
+      "why": "verdict SEGMENT_WALL: NO_BODY_VIA_SITE"
+    },
+    {
+      "board_sha256": "f496d2f39c0827248a47ab7d47efa4322f078b68d2da1d91ae6585d97bf8f875",
+      "bond_pad_applicable": false,
+      "cut_radius_mm": 8.0,
+      "cut_tracks": 2,
+      "land": "+3V3:R39.1",
+      "levers": {
+        "applicable": [
+          "more joint barrels (--joint-tries / --joint-knockout-mm)",
+          "--ban-net cut-set retry (D-641)",
+          "--detour-own-layer",
+          "--evict-whole with the evicted net REQUESTED FIRST",
+          "placement / refloorplan"
+        ],
+        "vacuous": [
+          [
+            "--bond-pad / --split-bond-pad",
+            "pour_severs is null in every round that laid a stitch: this transaction splits no pour, so PP2 never prices a fragment and a bond barrel changes nothing"
+          ]
+        ]
+      },
+      "net": "+3V3",
+      "note": "a disc is the most constraining reservation this repository draws; a RELAY here is not final until the joint arm of screen_relay_transaction.py has been asked",
+      "refusal_class": "RELAY",
+      "relay_refusals": [
+        {
+          "net": "Net-(U11-TS_MR)",
+          "reason": "NO_PATH",
+          "was_mm": 4.3353
+        }
+      ],
+      "source": "evidence/d640-segment-evict-pourfamily.json",
+      "source_kind": "segment_evict",
+      "source_sha256": "9709544d58f9e0efabeb803cc59a7165c6eccef4708ee292a00fceeb1ed9ad31",
+      "uncut_escape": "NO_BODY_VIA_SITE",
+      "verdict": "SEGMENT_SET_OPENS",
+      "why": "verdict SEGMENT_SET_OPENS, but 1 cut net(s) would not go back behind this screen's own all-layer disc"
+    },
+    {
+      "board_sha256": "f496d2f39c0827248a47ab7d47efa4322f078b68d2da1d91ae6585d97bf8f875",
+      "bond_pad_applicable": false,
+      "cut_radius_mm": null,
+      "cut_tracks": 0,
+      "land": "+3V3:U4.2",
+      "levers": {
+        "applicable": [
+          "placement / refloorplan (apply_part_shift.py)",
+          "a coarser or finer --grid (the site set is a lattice verdict -- D-675 section 4)",
+          "--shrink on the barrel (screen_via_site_sweep)"
+        ],
+        "vacuous": [
+          [
+            "--bond-pad / --split-bond-pad",
+            "no stitch was laid, so no pour was split and there is no fragment to price"
+          ],
+          [
+            "--ban-net cut-set retry",
+            "the cut pool is not what refused; no site exists to open"
+          ],
+          [
+            "--evict-whole / --detour-spec",
+            "a relay lever answers a relay refusal"
+          ]
+        ]
+      },
+      "net": "+3V3",
+      "note": "a disc is the most constraining reservation this repository draws; a RELAY here is not final until the joint arm of screen_relay_transaction.py has been asked",
+      "refusal_class": "NO_SITE",
+      "relay_refusals": [],
+      "source": "evidence/d640-segment-evict-pourfamily.json",
+      "source_kind": "segment_evict",
+      "source_sha256": "9709544d58f9e0efabeb803cc59a7165c6eccef4708ee292a00fceeb1ed9ad31",
+      "uncut_escape": "NO_LEGAL_ESCAPE",
+      "verdict": "SEGMENT_WALL",
+      "why": "verdict SEGMENT_WALL: NO_LEGAL_ESCAPE"
+    },
+    {
+      "board_sha256": "f496d2f39c0827248a47ab7d47efa4322f078b68d2da1d91ae6585d97bf8f875",
+      "bond_pad_applicable": false,
+      "cut_radius_mm": null,
+      "cut_tracks": 0,
+      "land": "+3V3:U4.5",
+      "levers": {
+        "applicable": [
+          "placement / refloorplan (apply_part_shift.py)",
+          "a coarser or finer --grid (the site set is a lattice verdict -- D-675 section 4)",
+          "--shrink on the barrel (screen_via_site_sweep)"
+        ],
+        "vacuous": [
+          [
+            "--bond-pad / --split-bond-pad",
+            "no stitch was laid, so no pour was split and there is no fragment to price"
+          ],
+          [
+            "--ban-net cut-set retry",
+            "the cut pool is not what refused; no site exists to open"
+          ],
+          [
+            "--evict-whole / --detour-spec",
+            "a relay lever answers a relay refusal"
+          ]
+        ]
+      },
+      "net": "+3V3",
+      "note": "a disc is the most constraining reservation this repository draws; a RELAY here is not final until the joint arm of screen_relay_transaction.py has been asked",
+      "refusal_class": "NO_SITE",
+      "relay_refusals": [],
+      "source": "evidence/d640-segment-evict-pourfamily.json",
+      "source_kind": "segment_evict",
+      "source_sha256": "9709544d58f9e0efabeb803cc59a7165c6eccef4708ee292a00fceeb1ed9ad31",
+      "uncut_escape": "NO_LEGAL_ESCAPE",
+      "verdict": "SEGMENT_WALL",
+      "why": "verdict SEGMENT_WALL: NO_LEGAL_ESCAPE"
+    },
+    {
+      "board_sha256": "f496d2f39c0827248a47ab7d47efa4322f078b68d2da1d91ae6585d97bf8f875",
+      "bond_pad_applicable": false,
+      "cut_radius_mm": null,
+      "cut_tracks": 0,
+      "land": "+3V3:U4.8",
+      "levers": {
+        "applicable": [
+          "placement / refloorplan (apply_part_shift.py)",
+          "a coarser or finer --grid (the site set is a lattice verdict -- D-675 section 4)",
+          "--shrink on the barrel (screen_via_site_sweep)"
+        ],
+        "vacuous": [
+          [
+            "--bond-pad / --split-bond-pad",
+            "no stitch was laid, so no pour was split and there is no fragment to price"
+          ],
+          [
+            "--ban-net cut-set retry",
+            "the cut pool is not what refused; no site exists to open"
+          ],
+          [
+            "--evict-whole / --detour-spec",
+            "a relay lever answers a relay refusal"
+          ]
+        ]
+      },
+      "net": "+3V3",
+      "note": "a disc is the most constraining reservation this repository draws; a RELAY here is not final until the joint arm of screen_relay_transaction.py has been asked",
+      "refusal_class": "NO_SITE",
+      "relay_refusals": [],
+      "source": "evidence/d640-segment-evict-pourfamily.json",
+      "source_kind": "segment_evict",
+      "source_sha256": "9709544d58f9e0efabeb803cc59a7165c6eccef4708ee292a00fceeb1ed9ad31",
+      "uncut_escape": "NO_LEGAL_ESCAPE",
+      "verdict": "SEGMENT_WALL",
+      "why": "verdict SEGMENT_WALL: NO_LEGAL_ESCAPE"
+    },
+    {
+      "board_sha256": "f496d2f39c0827248a47ab7d47efa4322f078b68d2da1d91ae6585d97bf8f875",
+      "bond_pad_applicable": false,
+      "cut_radius_mm": null,
+      "cut_tracks": 0,
+      "land": "+3V3:U5.2",
+      "levers": {
+        "applicable": [
+          "placement / refloorplan (apply_part_shift.py)",
+          "a coarser or finer --grid (the site set is a lattice verdict -- D-675 section 4)",
+          "--shrink on the barrel (screen_via_site_sweep)"
+        ],
+        "vacuous": [
+          [
+            "--bond-pad / --split-bond-pad",
+            "no stitch was laid, so no pour was split and there is no fragment to price"
+          ],
+          [
+            "--ban-net cut-set retry",
+            "the cut pool is not what refused; no site exists to open"
+          ],
+          [
+            "--evict-whole / --detour-spec",
+            "a relay lever answers a relay refusal"
+          ]
+        ]
+      },
+      "net": "+3V3",
+      "note": "a disc is the most constraining reservation this repository draws; a RELAY here is not final until the joint arm of screen_relay_transaction.py has been asked",
+      "refusal_class": "NO_SITE",
+      "relay_refusals": [],
+      "source": "evidence/d640-segment-evict-pourfamily.json",
+      "source_kind": "segment_evict",
+      "source_sha256": "9709544d58f9e0efabeb803cc59a7165c6eccef4708ee292a00fceeb1ed9ad31",
+      "uncut_escape": "NO_LEGAL_ESCAPE",
+      "verdict": "SEGMENT_WALL",
+      "why": "verdict SEGMENT_WALL: NO_LEGAL_ESCAPE"
+    },
+    {
+      "board_sha256": "f496d2f39c0827248a47ab7d47efa4322f078b68d2da1d91ae6585d97bf8f875",
+      "bond_pad_applicable": false,
+      "cut_radius_mm": 1.2,
+      "cut_tracks": 7,
+      "land": "/01_POWER_TREE/BQ25185_SYS:C26.2",
+      "levers": {
+        "applicable": [
+          "more joint barrels (--joint-tries / --joint-knockout-mm)",
+          "--ban-net cut-set retry (D-641)",
+          "--detour-own-layer",
+          "--evict-whole with the evicted net REQUESTED FIRST",
+          "placement / refloorplan"
+        ],
+        "vacuous": [
+          [
+            "--bond-pad / --split-bond-pad",
+            "pour_severs is null in every round that laid a stitch: this transaction splits no pour, so PP2 never prices a fragment and a bond barrel changes nothing"
+          ]
+        ]
+      },
+      "net": "/01_POWER_TREE/BQ25185_SYS",
+      "note": "a disc is the most constraining reservation this repository draws; a RELAY here is not final until the joint arm of screen_relay_transaction.py has been asked",
+      "refusal_class": "RELAY",
+      "relay_refusals": [
+        {
+          "net": "Net-(U12-PS_SYNC)",
+          "reason": "NO_PATH",
+          "was_mm": 2.7036
+        }
+      ],
+      "source": "evidence/d640-segment-evict-pourfamily.json",
+      "source_kind": "segment_evict",
+      "source_sha256": "9709544d58f9e0efabeb803cc59a7165c6eccef4708ee292a00fceeb1ed9ad31",
+      "uncut_escape": "NO_BODY_VIA_SITE",
+      "verdict": "SEGMENT_SET_OPENS",
+      "why": "verdict SEGMENT_SET_OPENS, but 1 cut net(s) would not go back behind this screen's own all-layer disc"
+    },
+    {
+      "board_sha256": "f496d2f39c0827248a47ab7d47efa4322f078b68d2da1d91ae6585d97bf8f875",
+      "bond_pad_applicable": false,
+      "cut_radius_mm": null,
+      "cut_tracks": 0,
+      "land": "/01_POWER_TREE/BQ25185_SYS:C27.1",
+      "levers": {
+        "applicable": [
+          "placement / refloorplan (apply_part_shift.py)",
+          "a coarser or finer --grid (the site set is a lattice verdict -- D-675 section 4)",
+          "--shrink on the barrel (screen_via_site_sweep)"
+        ],
+        "vacuous": [
+          [
+            "--bond-pad / --split-bond-pad",
+            "no stitch was laid, so no pour was split and there is no fragment to price"
+          ],
+          [
+            "--ban-net cut-set retry",
+            "the cut pool is not what refused; no site exists to open"
+          ],
+          [
+            "--evict-whole / --detour-spec",
+            "a relay lever answers a relay refusal"
+          ]
+        ]
+      },
+      "net": "/01_POWER_TREE/BQ25185_SYS",
+      "note": "a disc is the most constraining reservation this repository draws; a RELAY here is not final until the joint arm of screen_relay_transaction.py has been asked",
+      "refusal_class": "NO_SITE",
+      "relay_refusals": [],
+      "source": "evidence/d640-segment-evict-pourfamily.json",
+      "source_kind": "segment_evict",
+      "source_sha256": "9709544d58f9e0efabeb803cc59a7165c6eccef4708ee292a00fceeb1ed9ad31",
+      "uncut_escape": "NO_BODY_VIA_SITE",
+      "verdict": "SEGMENT_WALL",
+      "why": "verdict SEGMENT_WALL: NO_BODY_VIA_SITE"
+    },
+    {
+      "board_sha256": "f496d2f39c0827248a47ab7d47efa4322f078b68d2da1d91ae6585d97bf8f875",
+      "bond_pad_applicable": false,
+      "cut_radius_mm": null,
+      "cut_tracks": 0,
+      "land": "/01_POWER_TREE/BQ25185_SYS:C28.1",
+      "levers": {
+        "applicable": [
+          "placement / refloorplan (apply_part_shift.py)",
+          "a coarser or finer --grid (the site set is a lattice verdict -- D-675 section 4)",
+          "--shrink on the barrel (screen_via_site_sweep)"
+        ],
+        "vacuous": [
+          [
+            "--bond-pad / --split-bond-pad",
+            "no stitch was laid, so no pour was split and there is no fragment to price"
+          ],
+          [
+            "--ban-net cut-set retry",
+            "the cut pool is not what refused; no site exists to open"
+          ],
+          [
+            "--evict-whole / --detour-spec",
+            "a relay lever answers a relay refusal"
+          ]
+        ]
+      },
+      "net": "/01_POWER_TREE/BQ25185_SYS",
+      "note": "a disc is the most constraining reservation this repository draws; a RELAY here is not final until the joint arm of screen_relay_transaction.py has been asked",
+      "refusal_class": "NO_SITE",
+      "relay_refusals": [],
+      "source": "evidence/d640-segment-evict-pourfamily.json",
+      "source_kind": "segment_evict",
+      "source_sha256": "9709544d58f9e0efabeb803cc59a7165c6eccef4708ee292a00fceeb1ed9ad31",
+      "uncut_escape": "NO_BODY_VIA_SITE",
+      "verdict": "SEGMENT_WALL",
+      "why": "verdict SEGMENT_WALL: NO_BODY_VIA_SITE"
+    },
+    {
+      "board_sha256": "f496d2f39c0827248a47ab7d47efa4322f078b68d2da1d91ae6585d97bf8f875",
+      "bond_pad_applicable": false,
+      "cut_radius_mm": null,
+      "cut_tracks": 0,
+      "land": "/01_POWER_TREE/BQ25185_SYS:L4.1",
+      "levers": {
+        "applicable": [
+          "placement / refloorplan (apply_part_shift.py)",
+          "a coarser or finer --grid (the site set is a lattice verdict -- D-675 section 4)",
+          "--shrink on the barrel (screen_via_site_sweep)"
+        ],
+        "vacuous": [
+          [
+            "--bond-pad / --split-bond-pad",
+            "no stitch was laid, so no pour was split and there is no fragment to price"
+          ],
+          [
+            "--ban-net cut-set retry",
+            "the cut pool is not what refused; no site exists to open"
+          ],
+          [
+            "--evict-whole / --detour-spec",
+            "a relay lever answers a relay refusal"
+          ]
+        ]
+      },
+      "net": "/01_POWER_TREE/BQ25185_SYS",
+      "note": "a disc is the most constraining reservation this repository draws; a RELAY here is not final until the joint arm of screen_relay_transaction.py has been asked",
+      "refusal_class": "NO_SITE",
+      "relay_refusals": [],
+      "source": "evidence/d640-segment-evict-pourfamily.json",
+      "source_kind": "segment_evict",
+      "source_sha256": "9709544d58f9e0efabeb803cc59a7165c6eccef4708ee292a00fceeb1ed9ad31",
+      "uncut_escape": "NO_BODY_VIA_SITE",
+      "verdict": "SEGMENT_WALL",
+      "why": "verdict SEGMENT_WALL: NO_BODY_VIA_SITE"
+    },
+    {
+      "board_sha256": "f496d2f39c0827248a47ab7d47efa4322f078b68d2da1d91ae6585d97bf8f875",
+      "bond_pad_applicable": false,
+      "cut_radius_mm": null,
+      "cut_tracks": 0,
+      "land": "/01_POWER_TREE/BQ25185_SYS:R68.1",
+      "levers": {
+        "applicable": [
+          "placement / refloorplan (apply_part_shift.py)",
+          "a coarser or finer --grid (the site set is a lattice verdict -- D-675 section 4)",
+          "--shrink on the barrel (screen_via_site_sweep)"
+        ],
+        "vacuous": [
+          [
+            "--bond-pad / --split-bond-pad",
+            "no stitch was laid, so no pour was split and there is no fragment to price"
+          ],
+          [
+            "--ban-net cut-set retry",
+            "the cut pool is not what refused; no site exists to open"
+          ],
+          [
+            "--evict-whole / --detour-spec",
+            "a relay lever answers a relay refusal"
+          ]
+        ]
+      },
+      "net": "/01_POWER_TREE/BQ25185_SYS",
+      "note": "a disc is the most constraining reservation this repository draws; a RELAY here is not final until the joint arm of screen_relay_transaction.py has been asked",
+      "refusal_class": "NO_SITE",
+      "relay_refusals": [],
+      "source": "evidence/d640-segment-evict-pourfamily.json",
+      "source_kind": "segment_evict",
+      "source_sha256": "9709544d58f9e0efabeb803cc59a7165c6eccef4708ee292a00fceeb1ed9ad31",
+      "uncut_escape": "NO_BODY_VIA_SITE",
+      "verdict": "SEGMENT_WALL",
+      "why": "verdict SEGMENT_WALL: NO_BODY_VIA_SITE"
+    },
+    {
+      "board_sha256": "f496d2f39c0827248a47ab7d47efa4322f078b68d2da1d91ae6585d97bf8f875",
+      "bond_pad_applicable": false,
+      "cut_radius_mm": null,
+      "cut_tracks": 0,
+      "land": "/01_POWER_TREE/BQ25185_SYS:SW9.2",
+      "levers": {
+        "applicable": [
+          "placement / refloorplan (apply_part_shift.py)",
+          "a coarser or finer --grid (the site set is a lattice verdict -- D-675 section 4)",
+          "--shrink on the barrel (screen_via_site_sweep)"
+        ],
+        "vacuous": [
+          [
+            "--bond-pad / --split-bond-pad",
+            "no stitch was laid, so no pour was split and there is no fragment to price"
+          ],
+          [
+            "--ban-net cut-set retry",
+            "the cut pool is not what refused; no site exists to open"
+          ],
+          [
+            "--evict-whole / --detour-spec",
+            "a relay lever answers a relay refusal"
+          ]
+        ]
+      },
+      "net": "/01_POWER_TREE/BQ25185_SYS",
+      "note": "a disc is the most constraining reservation this repository draws; a RELAY here is not final until the joint arm of screen_relay_transaction.py has been asked",
+      "refusal_class": "NO_SITE",
+      "relay_refusals": [],
+      "source": "evidence/d640-segment-evict-pourfamily.json",
+      "source_kind": "segment_evict",
+      "source_sha256": "9709544d58f9e0efabeb803cc59a7165c6eccef4708ee292a00fceeb1ed9ad31",
+      "uncut_escape": "NO_LEGAL_ESCAPE",
+      "verdict": "SEGMENT_WALL",
+      "why": "verdict SEGMENT_WALL: NO_LEGAL_ESCAPE"
+    },
+    {
+      "board_sha256": "f496d2f39c0827248a47ab7d47efa4322f078b68d2da1d91ae6585d97bf8f875",
+      "bond_pad_applicable": false,
+      "cut_radius_mm": null,
+      "cut_tracks": 0,
+      "land": "/01_POWER_TREE/BQ25185_SYS:U11.1",
+      "levers": {
+        "applicable": [
+          "placement / refloorplan (apply_part_shift.py)",
+          "a coarser or finer --grid (the site set is a lattice verdict -- D-675 section 4)",
+          "--shrink on the barrel (screen_via_site_sweep)"
+        ],
+        "vacuous": [
+          [
+            "--bond-pad / --split-bond-pad",
+            "no stitch was laid, so no pour was split and there is no fragment to price"
+          ],
+          [
+            "--ban-net cut-set retry",
+            "the cut pool is not what refused; no site exists to open"
+          ],
+          [
+            "--evict-whole / --detour-spec",
+            "a relay lever answers a relay refusal"
+          ]
+        ]
+      },
+      "net": "/01_POWER_TREE/BQ25185_SYS",
+      "note": "a disc is the most constraining reservation this repository draws; a RELAY here is not final until the joint arm of screen_relay_transaction.py has been asked",
+      "refusal_class": "NO_SITE",
+      "relay_refusals": [],
+      "source": "evidence/d640-segment-evict-pourfamily.json",
+      "source_kind": "segment_evict",
+      "source_sha256": "9709544d58f9e0efabeb803cc59a7165c6eccef4708ee292a00fceeb1ed9ad31",
+      "uncut_escape": "NO_LEGAL_ESCAPE",
+      "verdict": "SEGMENT_WALL",
+      "why": "verdict SEGMENT_WALL: NO_LEGAL_ESCAPE"
+    },
+    {
+      "board_sha256": "f496d2f39c0827248a47ab7d47efa4322f078b68d2da1d91ae6585d97bf8f875",
+      "bond_pad_applicable": false,
+      "cut_radius_mm": null,
+      "cut_tracks": 0,
+      "land": "/01_POWER_TREE/BQ25185_SYS:U12.10",
+      "levers": {
+        "applicable": [
+          "placement / refloorplan (apply_part_shift.py)",
+          "a coarser or finer --grid (the site set is a lattice verdict -- D-675 section 4)",
+          "--shrink on the barrel (screen_via_site_sweep)"
+        ],
+        "vacuous": [
+          [
+            "--bond-pad / --split-bond-pad",
+            "no stitch was laid, so no pour was split and there is no fragment to price"
+          ],
+          [
+            "--ban-net cut-set retry",
+            "the cut pool is not what refused; no site exists to open"
+          ],
+          [
+            "--evict-whole / --detour-spec",
+            "a relay lever answers a relay refusal"
+          ]
+        ]
+      },
+      "net": "/01_POWER_TREE/BQ25185_SYS",
+      "note": "a disc is the most constraining reservation this repository draws; a RELAY here is not final until the joint arm of screen_relay_transaction.py has been asked",
+      "refusal_class": "NO_SITE",
+      "relay_refusals": [],
+      "source": "evidence/d640-segment-evict-pourfamily.json",
+      "source_kind": "segment_evict",
+      "source_sha256": "9709544d58f9e0efabeb803cc59a7165c6eccef4708ee292a00fceeb1ed9ad31",
+      "uncut_escape": "NO_BODY_VIA_SITE",
+      "verdict": "SEGMENT_WALL",
+      "why": "verdict SEGMENT_WALL: NO_BODY_VIA_SITE"
+    },
+    {
+      "board_sha256": "f496d2f39c0827248a47ab7d47efa4322f078b68d2da1d91ae6585d97bf8f875",
+      "bond_pad_applicable": false,
+      "cut_radius_mm": null,
+      "cut_tracks": 0,
+      "land": "/01_POWER_TREE/BQ25185_SYS:U13.3",
+      "levers": {
+        "applicable": [
+          "placement / refloorplan (apply_part_shift.py)",
+          "a coarser or finer --grid (the site set is a lattice verdict -- D-675 section 4)",
+          "--shrink on the barrel (screen_via_site_sweep)"
+        ],
+        "vacuous": [
+          [
+            "--bond-pad / --split-bond-pad",
+            "no stitch was laid, so no pour was split and there is no fragment to price"
+          ],
+          [
+            "--ban-net cut-set retry",
+            "the cut pool is not what refused; no site exists to open"
+          ],
+          [
+            "--evict-whole / --detour-spec",
+            "a relay lever answers a relay refusal"
+          ]
+        ]
+      },
+      "net": "/01_POWER_TREE/BQ25185_SYS",
+      "note": "a disc is the most constraining reservation this repository draws; a RELAY here is not final until the joint arm of screen_relay_transaction.py has been asked",
+      "refusal_class": "NO_SITE",
+      "relay_refusals": [],
+      "source": "evidence/d640-segment-evict-pourfamily.json",
+      "source_kind": "segment_evict",
+      "source_sha256": "9709544d58f9e0efabeb803cc59a7165c6eccef4708ee292a00fceeb1ed9ad31",
+      "uncut_escape": "NO_BODY_VIA_SITE",
+      "verdict": "SEGMENT_WALL",
+      "why": "verdict SEGMENT_WALL: NO_BODY_VIA_SITE"
+    },
+    {
+      "board_sha256": "f496d2f39c0827248a47ab7d47efa4322f078b68d2da1d91ae6585d97bf8f875",
+      "bond_pad_applicable": false,
+      "cut_radius_mm": 8.0,
+      "cut_tracks": 1,
+      "land": "GND:J3.A12",
+      "levers": {
+        "applicable": [
+          "more joint barrels (--joint-tries / --joint-knockout-mm)",
+          "--ban-net cut-set retry (D-641)",
+          "--detour-own-layer",
+          "--evict-whole with the evicted net REQUESTED FIRST",
+          "placement / refloorplan"
+        ],
+        "vacuous": [
+          [
+            "--bond-pad / --split-bond-pad",
+            "pour_severs is null in every round that laid a stitch: this transaction splits no pour, so PP2 never prices a fragment and a bond barrel changes nothing"
+          ]
+        ]
+      },
+      "net": "GND",
+      "note": "a disc is the most constraining reservation this repository draws; a RELAY here is not final until the joint arm of screen_relay_transaction.py has been asked",
+      "refusal_class": "RELAY",
+      "relay_refusals": [
+        {
+          "net": "Net-(J3-CC2)",
+          "reason": "NO_PATH",
+          "was_mm": 5.475
+        }
+      ],
+      "source": "evidence/d640-segment-evict-pourfamily.json",
+      "source_kind": "segment_evict",
+      "source_sha256": "9709544d58f9e0efabeb803cc59a7165c6eccef4708ee292a00fceeb1ed9ad31",
+      "uncut_escape": "NO_BODY_VIA_SITE",
+      "verdict": "SEGMENT_OPENS",
+      "why": "verdict SEGMENT_OPENS, but 1 cut net(s) would not go back behind this screen's own all-layer disc"
+    },
+    {
+      "board_sha256": "f496d2f39c0827248a47ab7d47efa4322f078b68d2da1d91ae6585d97bf8f875",
+      "bond_pad_applicable": false,
+      "cut_radius_mm": null,
+      "cut_tracks": 0,
+      "land": "GND:MK1.4",
+      "levers": {
+        "applicable": [
+          "placement / refloorplan (apply_part_shift.py)",
+          "a coarser or finer --grid (the site set is a lattice verdict -- D-675 section 4)",
+          "--shrink on the barrel (screen_via_site_sweep)"
+        ],
+        "vacuous": [
+          [
+            "--bond-pad / --split-bond-pad",
+            "no stitch was laid, so no pour was split and there is no fragment to price"
+          ],
+          [
+            "--ban-net cut-set retry",
+            "the cut pool is not what refused; no site exists to open"
+          ],
+          [
+            "--evict-whole / --detour-spec",
+            "a relay lever answers a relay refusal"
+          ]
+        ]
+      },
+      "net": "GND",
+      "note": "a disc is the most constraining reservation this repository draws; a RELAY here is not final until the joint arm of screen_relay_transaction.py has been asked",
+      "refusal_class": "NO_SITE",
+      "relay_refusals": [],
+      "source": "evidence/d640-segment-evict-pourfamily.json",
+      "source_kind": "segment_evict",
+      "source_sha256": "9709544d58f9e0efabeb803cc59a7165c6eccef4708ee292a00fceeb1ed9ad31",
+      "uncut_escape": "NO_LEGAL_ESCAPE",
+      "verdict": "SEGMENT_WALL",
+      "why": "verdict SEGMENT_WALL: NO_LEGAL_ESCAPE"
+    },
+    {
+      "board_sha256": "f496d2f39c0827248a47ab7d47efa4322f078b68d2da1d91ae6585d97bf8f875",
+      "bond_pad_applicable": false,
+      "cut_radius_mm": 2.0,
+      "cut_tracks": 1,
+      "land": "GND:U9.16",
+      "levers": {
+        "applicable": [
+          "more joint barrels (--joint-tries / --joint-knockout-mm)",
+          "--ban-net cut-set retry (D-641)",
+          "--detour-own-layer",
+          "--evict-whole with the evicted net REQUESTED FIRST",
+          "placement / refloorplan"
+        ],
+        "vacuous": [
+          [
+            "--bond-pad / --split-bond-pad",
+            "pour_severs is null in every round that laid a stitch: this transaction splits no pour, so PP2 never prices a fragment and a bond barrel changes nothing"
+          ]
+        ]
+      },
+      "net": "GND",
+      "note": "a disc is the most constraining reservation this repository draws; a RELAY here is not final until the joint arm of screen_relay_transaction.py has been asked",
+      "refusal_class": "RELAY",
+      "relay_refusals": [
+        {
+          "net": "/04_SPI_B_RADIOS_NFC/NFC_RFO2",
+          "reason": "NO_PATH",
+          "was_mm": 2.6872
+        }
+      ],
+      "source": "evidence/d640-segment-evict-pourfamily.json",
+      "source_kind": "segment_evict",
+      "source_sha256": "9709544d58f9e0efabeb803cc59a7165c6eccef4708ee292a00fceeb1ed9ad31",
+      "uncut_escape": "NO_BODY_VIA_SITE",
+      "verdict": "SEGMENT_OPENS",
+      "why": "verdict SEGMENT_OPENS, but 1 cut net(s) would not go back behind this screen's own all-layer disc"
+    },
+    {
+      "bare_arm": [
+        {
+          "mm": 5.830044144312065,
+          "net": "/08_BUTTONS_EXPANDERS/BTN_DOWN_N",
+          "ok": true,
+          "own_geometry_zero_vias": false,
+          "reason": null,
+          "vias": 0,
+          "was_mm": 5.8398
+        },
+        {
+          "mm": 2.6768783415457684,
+          "net": "/BQ25185_STAT2",
+          "ok": true,
+          "own_geometry_zero_vias": false,
+          "reason": null,
+          "vias": 0,
+          "was_mm": 2.8607
+        },
+        {
+          "mm": 2.7036205751198716,
+          "net": "Net-(U12-PS_SYNC)",
+          "ok": true,
+          "own_geometry_zero_vias": true,
+          "reason": null,
+          "vias": 0,
+          "was_mm": 2.7036
+        }
+      ],
+      "bare_arm_signature": "ELSEWHERE",
+      "board_sha256": "f496d2f39c0827248a47ab7d47efa4322f078b68d2da1d91ae6585d97bf8f875",
+      "bond_pad_applicable": false,
+      "land": "/01_POWER_TREE/BQ25185_SYS:C26.2",
+      "levers": {
+        "applicable": [
+          "more joint barrels (--joint-tries / --joint-knockout-mm)",
+          "--ban-net cut-set retry (D-641)",
+          "--detour-own-layer",
+          "--evict-whole with the evicted net REQUESTED FIRST",
+          "placement / refloorplan"
+        ],
+        "vacuous": [
+          [
+            "--bond-pad / --split-bond-pad",
+            "pour_severs is null in every round that laid a stitch: this transaction splits no pour, so PP2 never prices a fragment and a bond barrel changes nothing"
+          ]
+        ]
+      },
+      "net": "/01_POWER_TREE/BQ25185_SYS",
+      "refusal_class": "RELAY",
+      "relay_refusals": [],
+      "rounds": [],
+      "rounds_laid": 0,
+      "rounds_severing_pour": 0,
+      "site_refusals": [],
+      "source": "evidence/d641-relay-bare-c262-g25.json",
+      "source_kind": "relay_transaction",
+      "source_sha256": "46a19116d6db331706fbe96b62ff9b19560258d418f50d82c6283e77db131fdf",
+      "why": "the BARE arm relaid every chain but at least one took a DIFFERENT path, so the pocket has slack a barrel may use"
+    },
+    {
+      "bare_arm": [],
+      "bare_arm_signature": null,
+      "board_sha256": "f496d2f39c0827248a47ab7d47efa4322f078b68d2da1d91ae6585d97bf8f875",
+      "bond_pad_applicable": false,
+      "land": "/01_POWER_TREE/BQ25185_SYS:C26.2",
+      "levers": {
+        "applicable": [
+          "more joint barrels (--joint-tries / --joint-knockout-mm)",
+          "--ban-net cut-set retry (D-641)",
+          "--detour-own-layer",
+          "--evict-whole with the evicted net REQUESTED FIRST",
+          "placement / refloorplan"
+        ],
+        "vacuous": [
+          [
+            "--bond-pad / --split-bond-pad",
+            "pour_severs is null in every round that laid a stitch: this transaction splits no pour, so PP2 never prices a fragment and a bond barrel changes nothing"
+          ]
+        ]
+      },
+      "net": "/01_POWER_TREE/BQ25185_SYS",
+      "refusal_class": "RELAY",
+      "relay_refusals": [
+        {
+          "arm": "joint",
+          "net": "Net-(U12-PS_SYNC)",
+          "reason": "NO_PATH",
+          "round": 1,
+          "was_mm": 2.7036
+        }
+      ],
+      "rounds": [
+        {
+          "accepted": false,
+          "arm": "joint",
+          "reason": null,
+          "round": 1,
+          "stitch_mm": 0.955,
+          "stitch_ok": true,
+          "via_xy": [
+            62.225,
+            104.175
+          ]
+        },
+        {
+          "accepted": null,
+          "arm": "joint",
+          "reason": "NO_BODY_VIA_SITE",
+          "round": 2,
+          "stitch_mm": null,
+          "stitch_ok": false,
+          "via_xy": null
+        }
+      ],
+      "rounds_laid": 1,
+      "rounds_severing_pour": 0,
+      "site_refusals": [
+        {
+          "arm": "joint",
+          "reason": "NO_BODY_VIA_SITE",
+          "round": 2
+        }
+      ],
+      "source": "evidence/d641-relay-joint-c262-g12.json",
+      "source_kind": "relay_transaction",
+      "source_sha256": "2c01d1f925593e516871f2b2865e84bcb8da549c3834dda3a7e81ca9d3da08f6",
+      "why": "1 rounds laid a stitch, none severed a pour, 1 relay refusals"
+    },
+    {
+      "bare_arm": [],
+      "bare_arm_signature": null,
+      "board_sha256": "f496d2f39c0827248a47ab7d47efa4322f078b68d2da1d91ae6585d97bf8f875",
+      "bond_pad_applicable": false,
+      "land": "/01_POWER_TREE/BQ25185_SYS:C26.2",
+      "levers": {
+        "applicable": [
+          "more joint barrels (--joint-tries / --joint-knockout-mm)",
+          "--ban-net cut-set retry (D-641)",
+          "--detour-own-layer",
+          "--evict-whole with the evicted net REQUESTED FIRST",
+          "placement / refloorplan"
+        ],
+        "vacuous": [
+          [
+            "--bond-pad / --split-bond-pad",
+            "pour_severs is null in every round that laid a stitch: this transaction splits no pour, so PP2 never prices a fragment and a bond barrel changes nothing"
+          ]
+        ]
+      },
+      "net": "/01_POWER_TREE/BQ25185_SYS",
+      "refusal_class": "RELAY",
+      "relay_refusals": [
+        {
+          "arm": "joint",
+          "net": "Net-(U12-PS_SYNC)",
+          "reason": "NO_PATH",
+          "round": 1,
+          "was_mm": 2.7036
+        },
+        {
+          "arm": "joint",
+          "net": "Net-(U12-PS_SYNC)",
+          "reason": "NO_PATH",
+          "round": 2,
+          "was_mm": 2.7036
+        },
+        {
+          "arm": "joint",
+          "net": "/BQ25185_STAT2",
+          "reason": "NO_PATH",
+          "round": 3,
+          "was_mm": 2.8607
+        },
+        {
+          "arm": "joint",
+          "net": "Net-(U12-PS_SYNC)",
+          "reason": "NO_PATH",
+          "round": 3,
+          "was_mm": 2.7036
+        }
+      ],
+      "rounds": [
+        {
+          "accepted": false,
+          "arm": "joint",
+          "reason": null,
+          "round": 1,
+          "stitch_mm": 0.972,
+          "stitch_ok": true,
+          "via_xy": [
+            62.225,
+            104.15
+          ]
+        },
+        {
+          "accepted": false,
+          "arm": "joint",
+          "reason": null,
+          "round": 2,
+          "stitch_mm": 1.326,
+          "stitch_ok": true,
+          "via_xy": [
+            61.975,
+            103.9
+          ]
+        },
+        {
+          "accepted": false,
+          "arm": "joint",
+          "reason": null,
+          "round": 3,
+          "stitch_mm": 1.199,
+          "stitch_ok": true,
+          "via_xy": [
+            62.325,
+            103.8
+          ]
+        },
+        {
+          "accepted": null,
+          "arm": "joint",
+          "reason": "NO_BODY_VIA_SITE",
+          "round": 4,
+          "stitch_mm": null,
+          "stitch_ok": false,
+          "via_xy": null
+        }
+      ],
+      "rounds_laid": 3,
+      "rounds_severing_pour": 0,
+      "site_refusals": [
+        {
+          "arm": "joint",
+          "reason": "NO_BODY_VIA_SITE",
+          "round": 4
+        }
+      ],
+      "source": "evidence/d641-relay-joint-c262-k035.json",
+      "source_kind": "relay_transaction",
+      "source_sha256": "9d4356650c3192c9695f9b3e0bd04762b070237b584f61a876b8e5637a6054b3",
+      "why": "3 rounds laid a stitch, none severed a pour, 4 relay refusals"
+    },
+    {
+      "board_sha256": "f496d2f39c0827248a47ab7d47efa4322f078b68d2da1d91ae6585d97bf8f875",
+      "bond_pad_applicable": false,
+      "cut_radius_mm": null,
+      "cut_tracks": 0,
+      "land": "/01_POWER_TREE/BQ25185_SYS:C26.2",
+      "levers": {
+        "applicable": [
+          "placement / refloorplan (apply_part_shift.py)",
+          "a coarser or finer --grid (the site set is a lattice verdict -- D-675 section 4)",
+          "--shrink on the barrel (screen_via_site_sweep)"
+        ],
+        "vacuous": [
+          [
+            "--bond-pad / --split-bond-pad",
+            "no stitch was laid, so no pour was split and there is no fragment to price"
+          ],
+          [
+            "--ban-net cut-set retry",
+            "the cut pool is not what refused; no site exists to open"
+          ],
+          [
+            "--evict-whole / --detour-spec",
+            "a relay lever answers a relay refusal"
+          ]
+        ]
+      },
+      "net": "/01_POWER_TREE/BQ25185_SYS",
+      "note": "a disc is the most constraining reservation this repository draws; a RELAY here is not final until the joint arm of screen_relay_transaction.py has been asked",
+      "refusal_class": "NO_SITE",
+      "relay_refusals": [],
+      "source": "evidence/d641-segevict-c262-ban-pssync.json",
+      "source_kind": "segment_evict",
+      "source_sha256": "ab7b75f61ed22511965ff1ba7225390531b026425b64459cd65626011bc13669",
+      "uncut_escape": "NO_BODY_VIA_SITE",
+      "verdict": "SEGMENT_WALL",
+      "why": "verdict SEGMENT_WALL: NO_BODY_VIA_SITE"
+    },
+    {
+      "bare_arm": [],
+      "bare_arm_signature": null,
+      "board_sha256": "c3286d8fdd23b6bdb037de2a753051b3ac2aa2e5ccaba2e25ced3d39cf4884b2",
+      "bond_pad_applicable": true,
+      "land": "+3V3:R39.1",
+      "levers": {
+        "applicable": [
+          "--split-priced --split-bond-pad NET:REF.NUM (D-675)",
+          "route_maze_batch.py --bond-pad REF.NUM",
+          "a cut that leaves the priced pad on the body side",
+          "--stitch-width / a wider arm"
+        ],
+        "vacuous": [
+          [
+            "--ban-net cut-set retry",
+            "the cut set was accepted; the SPLIT was refused"
+          ]
+        ]
+      },
+      "net": "+3V3",
+      "refusal_class": "POUR_PRICE",
+      "relay_refusals": [
+        {
+          "arm": "joint",
+          "net": "Net-(U11-TS_MR)",
+          "reason": "NO_PATH",
+          "round": 1,
+          "was_mm": 4.3353
+        }
+      ],
+      "rounds": [
+        {
+          "accepted": false,
+          "arm": "joint",
+          "reason": null,
+          "round": 1,
+          "stitch_mm": 9.128,
+          "stitch_ok": true,
+          "via_xy": [
+            71.1,
+            68.25
+          ]
+        },
+        {
+          "accepted": false,
+          "arm": "joint",
+          "reason": null,
+          "round": 2,
+          "stitch_mm": 9.887,
+          "stitch_ok": true,
+          "via_xy": [
+            70.65,
+            67.35
+          ]
+        },
+        {
+          "accepted": null,
+          "arm": "joint",
+          "reason": "NO_BODY_VIA_SITE",
+          "round": 3,
+          "stitch_mm": null,
+          "stitch_ok": false,
+          "via_xy": null
+        }
+      ],
+      "rounds_laid": 2,
+      "rounds_severing_pour": 1,
+      "site_refusals": [
+        {
+          "arm": "joint",
+          "reason": "NO_BODY_VIA_SITE",
+          "round": 3
+        }
+      ],
+      "source": "evidence/d674-r39-relay-flag-off-control.json",
+      "source_kind": "relay_transaction",
+      "source_sha256": "689502cc6800a54ba628cbdaa3b579c24e44e761a6faf7ed4b0766f519bbab31",
+      "why": "1 of 2 laid rounds severed a pour or failed its split price"
+    },
+    {
+      "bare_arm": [],
+      "bare_arm_signature": null,
+      "board_sha256": "c3286d8fdd23b6bdb037de2a753051b3ac2aa2e5ccaba2e25ced3d39cf4884b2",
+      "bond_pad_applicable": true,
+      "land": "+3V3:R39.1",
+      "levers": {
+        "applicable": [
+          "--split-priced --split-bond-pad NET:REF.NUM (D-675)",
+          "route_maze_batch.py --bond-pad REF.NUM",
+          "a cut that leaves the priced pad on the body side",
+          "--stitch-width / a wider arm"
+        ],
+        "vacuous": [
+          [
+            "--ban-net cut-set retry",
+            "the cut set was accepted; the SPLIT was refused"
+          ]
+        ]
+      },
+      "net": "+3V3",
+      "refusal_class": "POUR_PRICE",
+      "relay_refusals": [
+        {
+          "arm": "joint",
+          "net": "Net-(U11-TS_MR)",
+          "reason": "NO_PATH",
+          "round": 1,
+          "was_mm": 4.3353
+        }
+      ],
+      "rounds": [
+        {
+          "accepted": false,
+          "arm": "joint",
+          "reason": null,
+          "round": 1,
+          "stitch_mm": 9.285,
+          "stitch_ok": true,
+          "via_xy": [
+            71.15,
+            68.325
+          ]
+        },
+        {
+          "accepted": false,
+          "arm": "joint",
+          "reason": null,
+          "round": 2,
+          "stitch_mm": 9.953,
+          "stitch_ok": true,
+          "via_xy": [
+            70.65,
+            67.45
+          ]
+        },
+        {
+          "accepted": null,
+          "arm": "joint",
+          "reason": "NO_BODY_VIA_SITE",
+          "round": 3,
+          "stitch_mm": null,
+          "stitch_ok": false,
+          "via_xy": null
+        }
+      ],
+      "rounds_laid": 2,
+      "rounds_severing_pour": 2,
+      "site_refusals": [
+        {
+          "arm": "joint",
+          "reason": "NO_BODY_VIA_SITE",
+          "round": 3
+        }
+      ],
+      "source": "evidence/d674-r39-relay-transaction-g25.json",
+      "source_kind": "relay_transaction",
+      "source_sha256": "4c855b25a2d6b284047611f1c7f0c3cfacfaf0574e43b47218f2bda3b7c2ae67",
+      "why": "2 of 2 laid rounds severed a pour or failed its split price"
+    },
+    {
+      "bare_arm": [],
+      "bare_arm_signature": null,
+      "board_sha256": "c3286d8fdd23b6bdb037de2a753051b3ac2aa2e5ccaba2e25ced3d39cf4884b2",
+      "bond_pad_applicable": true,
+      "land": "+3V3:R39.1",
+      "levers": {
+        "applicable": [
+          "--split-priced --split-bond-pad NET:REF.NUM (D-675)",
+          "route_maze_batch.py --bond-pad REF.NUM",
+          "a cut that leaves the priced pad on the body side",
+          "--stitch-width / a wider arm"
+        ],
+        "vacuous": [
+          [
+            "--ban-net cut-set retry",
+            "the cut set was accepted; the SPLIT was refused"
+          ]
+        ]
+      },
+      "net": "+3V3",
+      "refusal_class": "POUR_PRICE",
+      "relay_refusals": [
+        {
+          "arm": "joint",
+          "net": "Net-(U11-TS_MR)",
+          "reason": "NO_PATH",
+          "round": 1,
+          "was_mm": 4.3353
+        }
+      ],
+      "rounds": [
+        {
+          "accepted": false,
+          "arm": "joint",
+          "reason": null,
+          "round": 1,
+          "stitch_mm": 9.128,
+          "stitch_ok": true,
+          "via_xy": [
+            71.1,
+            68.25
+          ]
+        },
+        {
+          "accepted": false,
+          "arm": "joint",
+          "reason": null,
+          "round": 2,
+          "stitch_mm": 9.887,
+          "stitch_ok": true,
+          "via_xy": [
+            70.65,
+            67.35
+          ]
+        },
+        {
+          "accepted": null,
+          "arm": "joint",
+          "reason": "NO_BODY_VIA_SITE",
+          "round": 3,
+          "stitch_mm": null,
+          "stitch_ok": false,
+          "via_xy": null
+        }
+      ],
+      "rounds_laid": 2,
+      "rounds_severing_pour": 2,
+      "site_refusals": [
+        {
+          "arm": "joint",
+          "reason": "NO_BODY_VIA_SITE",
+          "round": 3
+        }
+      ],
+      "source": "evidence/d674-r39-relay-transaction.json",
+      "source_kind": "relay_transaction",
+      "source_sha256": "ef53977ebd84f307b1983770b52e1378f027e590790dfc461f028aad19971ae3",
+      "why": "2 of 2 laid rounds severed a pour or failed its split price"
+    },
+    {
+      "board_sha256": "c3286d8fdd23b6bdb037de2a753051b3ac2aa2e5ccaba2e25ced3d39cf4884b2",
+      "bond_pad_applicable": false,
+      "cut_radius_mm": 8.0,
+      "cut_tracks": 2,
+      "land": "+3V3:R39.1",
+      "levers": {
+        "applicable": [
+          "more joint barrels (--joint-tries / --joint-knockout-mm)",
+          "--ban-net cut-set retry (D-641)",
+          "--detour-own-layer",
+          "--evict-whole with the evicted net REQUESTED FIRST",
+          "placement / refloorplan"
+        ],
+        "vacuous": [
+          [
+            "--bond-pad / --split-bond-pad",
+            "pour_severs is null in every round that laid a stitch: this transaction splits no pour, so PP2 never prices a fragment and a bond barrel changes nothing"
+          ]
+        ]
+      },
+      "net": "+3V3",
+      "note": "a disc is the most constraining reservation this repository draws; a RELAY here is not final until the joint arm of screen_relay_transaction.py has been asked",
+      "refusal_class": "RELAY",
+      "relay_refusals": [
+        {
+          "net": "Net-(U11-TS_MR)",
+          "reason": "NO_PATH",
+          "was_mm": 4.3353
+        }
+      ],
+      "source": "evidence/d674-segment-evict-r39.json",
+      "source_kind": "segment_evict",
+      "source_sha256": "19d7e625558ec0b7d0a2dd52a550304eb4c33c285c109e36cf777cdd2f88813e",
+      "uncut_escape": "NO_BODY_VIA_SITE",
+      "verdict": "SEGMENT_SET_OPENS",
+      "why": "verdict SEGMENT_SET_OPENS, but 1 cut net(s) would not go back behind this screen's own all-layer disc"
+    },
+    {
+      "bare_arm": [],
+      "bare_arm_signature": null,
+      "board_sha256": "c3286d8fdd23b6bdb037de2a753051b3ac2aa2e5ccaba2e25ced3d39cf4884b2",
+      "bond_pad_applicable": false,
+      "land": "+3V3:R39.1",
+      "levers": {
+        "applicable": [
+          "none -- this land closed"
+        ],
+        "vacuous": []
+      },
+      "net": "+3V3",
+      "refusal_class": "CLOSED",
+      "relay_refusals": [
+        {
+          "arm": "joint",
+          "net": "Net-(U11-TS_MR)",
+          "reason": "NO_PATH",
+          "round": 1,
+          "was_mm": 4.3353
+        }
+      ],
+      "rounds": [
+        {
+          "accepted": false,
+          "arm": "joint",
+          "reason": null,
+          "round": 1,
+          "stitch_mm": 9.128,
+          "stitch_ok": true,
+          "via_xy": [
+            71.1,
+            68.25
+          ]
+        },
+        {
+          "accepted": true,
+          "arm": "joint",
+          "reason": null,
+          "round": 2,
+          "stitch_mm": 9.887,
+          "stitch_ok": true,
+          "via_xy": [
+            70.65,
+            67.35
+          ]
+        }
+      ],
+      "rounds_laid": 2,
+      "rounds_severing_pour": 1,
+      "site_refusals": [],
+      "source": "evidence/d675-r39-relay-transaction-bonded.json",
+      "source_kind": "relay_transaction",
+      "source_sha256": "8cc86f701e6320d155236b06a29068107f33d337ce643f6f2de65303fbad0a2a",
+      "why": "arm 'joint' relaid every cut net at 0.400 mm"
+    },
+    {
+      "bare_arm": [],
+      "bare_arm_signature": null,
+      "board_sha256": "c3286d8fdd23b6bdb037de2a753051b3ac2aa2e5ccaba2e25ced3d39cf4884b2",
+      "bond_pad_applicable": true,
+      "land": "+3V3:R39.1",
+      "levers": {
+        "applicable": [
+          "--split-priced --split-bond-pad NET:REF.NUM (D-675)",
+          "route_maze_batch.py --bond-pad REF.NUM",
+          "a cut that leaves the priced pad on the body side",
+          "--stitch-width / a wider arm"
+        ],
+        "vacuous": [
+          [
+            "--ban-net cut-set retry",
+            "the cut set was accepted; the SPLIT was refused"
+          ]
+        ]
+      },
+      "net": "+3V3",
+      "refusal_class": "POUR_PRICE",
+      "relay_refusals": [
+        {
+          "arm": "joint",
+          "net": "Net-(U11-TS_MR)",
+          "reason": "NO_PATH",
+          "round": 1,
+          "was_mm": 4.3353
+        }
+      ],
+      "rounds": [
+        {
+          "accepted": false,
+          "arm": "joint",
+          "reason": null,
+          "round": 1,
+          "stitch_mm": 9.128,
+          "stitch_ok": true,
+          "via_xy": [
+            71.1,
+            68.25
+          ]
+        },
+        {
+          "accepted": false,
+          "arm": "joint",
+          "reason": null,
+          "round": 2,
+          "stitch_mm": 9.887,
+          "stitch_ok": true,
+          "via_xy": [
+            70.65,
+            67.35
+          ]
+        },
+        {
+          "accepted": null,
+          "arm": "joint",
+          "reason": "NO_BODY_VIA_SITE",
+          "round": 3,
+          "stitch_mm": null,
+          "stitch_ok": false,
+          "via_xy": null
+        }
+      ],
+      "rounds_laid": 2,
+      "rounds_severing_pour": 2,
+      "site_refusals": [
+        {
+          "arm": "joint",
+          "reason": "NO_BODY_VIA_SITE",
+          "round": 3
+        }
+      ],
+      "source": "evidence/d675-r39-split-cut-removed-control.json",
+      "source_kind": "relay_transaction",
+      "source_sha256": "823c952db0cb3556669e97dc77d3516a9b1e14136db5f3987b35774971b751ac",
+      "why": "2 of 2 laid rounds severed a pour or failed its split price"
+    },
+    {
+      "bare_arm": [],
+      "bare_arm_signature": null,
+      "board_sha256": "c3286d8fdd23b6bdb037de2a753051b3ac2aa2e5ccaba2e25ced3d39cf4884b2",
+      "bond_pad_applicable": true,
+      "land": "+3V3:R39.1",
+      "levers": {
+        "applicable": [
+          "--split-priced --split-bond-pad NET:REF.NUM (D-675)",
+          "route_maze_batch.py --bond-pad REF.NUM",
+          "a cut that leaves the priced pad on the body side",
+          "--stitch-width / a wider arm"
+        ],
+        "vacuous": [
+          [
+            "--ban-net cut-set retry",
+            "the cut set was accepted; the SPLIT was refused"
+          ]
+        ]
+      },
+      "net": "+3V3",
+      "refusal_class": "POUR_PRICE",
+      "relay_refusals": [
+        {
+          "arm": "joint",
+          "net": "Net-(U11-TS_MR)",
+          "reason": "NO_PATH",
+          "round": 1,
+          "was_mm": 4.3353
+        }
+      ],
+      "rounds": [
+        {
+          "accepted": false,
+          "arm": "joint",
+          "reason": null,
+          "round": 1,
+          "stitch_mm": 9.128,
+          "stitch_ok": true,
+          "via_xy": [
+            71.1,
+            68.25
+          ]
+        },
+        {
+          "accepted": false,
+          "arm": "joint",
+          "reason": null,
+          "round": 2,
+          "stitch_mm": 9.887,
+          "stitch_ok": true,
+          "via_xy": [
+            70.65,
+            67.35
+          ]
+        },
+        {
+          "accepted": null,
+          "arm": "joint",
+          "reason": "NO_BODY_VIA_SITE",
+          "round": 3,
+          "stitch_mm": null,
+          "stitch_ok": false,
+          "via_xy": null
+        }
+      ],
+      "rounds_laid": 2,
+      "rounds_severing_pour": 2,
+      "site_refusals": [
+        {
+          "arm": "joint",
+          "reason": "NO_BODY_VIA_SITE",
+          "round": 3
+        }
+      ],
+      "source": "evidence/d675-r39-split-layername-defect.json",
+      "source_kind": "relay_transaction",
+      "source_sha256": "84a67daadf77873180d8f6af81f26ed469a401d50670b6706e3ef8c83a0891dd",
+      "why": "2 of 2 laid rounds severed a pour or failed its split price"
+    },
+    {
+      "bare_arm": [
+        {
+          "mm": 2.9949643086354136,
+          "net": "/08_BUTTONS_EXPANDERS/BTN_DOWN_N",
+          "ok": true,
+          "own_geometry_zero_vias": true,
+          "reason": null,
+          "vias": 0,
+          "was_mm": 2.995
+        },
+        {
+          "mm": 1.1401754250991378,
+          "net": "/BQ25185_STAT2",
+          "ok": true,
+          "own_geometry_zero_vias": true,
+          "reason": null,
+          "vias": 0,
+          "was_mm": 1.1402
+        },
+        {
+          "mm": 2.800900701996349,
+          "net": "Net-(U12-PS_SYNC)",
+          "ok": true,
+          "own_geometry_zero_vias": false,
+          "reason": null,
+          "vias": 0,
+          "was_mm": 2.7036
+        }
+      ],
+      "bare_arm_signature": "ELSEWHERE",
+      "board_sha256": "28935c75f4747bac0ad2a062977c4ad13e7e48ec98169529c1d2db4f29f8a5b3",
+      "bond_pad_applicable": false,
+      "land": "/01_POWER_TREE/BQ25185_SYS:C26.2",
+      "levers": {
+        "applicable": [
+          "more joint barrels (--joint-tries / --joint-knockout-mm)",
+          "--ban-net cut-set retry (D-641)",
+          "--detour-own-layer",
+          "--evict-whole with the evicted net REQUESTED FIRST",
+          "placement / refloorplan"
+        ],
+        "vacuous": [
+          [
+            "--bond-pad / --split-bond-pad",
+            "pour_severs is null in every round that laid a stitch: this transaction splits no pour, so PP2 never prices a fragment and a bond barrel changes nothing"
+          ]
+        ]
+      },
+      "net": "/01_POWER_TREE/BQ25185_SYS",
+      "refusal_class": "RELAY",
+      "relay_refusals": [],
+      "rounds": [],
+      "rounds_laid": 0,
+      "rounds_severing_pour": 0,
+      "site_refusals": [],
+      "source": "evidence/d676-bare-bq-c26.json",
+      "source_kind": "relay_transaction",
+      "source_sha256": "e9da90b71587a790784e2fd85d5987ec669500af02ffc10294c8c4f5a424dbd5",
+      "why": "the BARE arm relaid every chain but at least one took a DIFFERENT path, so the pocket has slack a barrel may use"
+    },
+    {
+      "bare_arm": [
+        {
+          "mm": 5.475,
+          "net": "Net-(J3-CC2)",
+          "ok": true,
+          "own_geometry_zero_vias": true,
+          "reason": null,
+          "vias": 0,
+          "was_mm": 5.475
+        }
+      ],
+      "bare_arm_signature": "SIGNATURE",
+      "board_sha256": "28935c75f4747bac0ad2a062977c4ad13e7e48ec98169529c1d2db4f29f8a5b3",
+      "bond_pad_applicable": false,
+      "land": "GND:J3.A12",
+      "levers": {
+        "applicable": [
+          "--evict-whole with the evicted net REQUESTED FIRST",
+          "placement / refloorplan",
+          "a part change that empties the pocket"
+        ],
+        "vacuous": [
+          [
+            "--bond-pad / --split-bond-pad",
+            "pour_severs is null: no fragment is priced"
+          ],
+          [
+            "more joint barrels",
+            "the BARE arm -- no reservation at all -- returns the cut chain's OWN geometry with zero vias, so every barrel in the pocket lands on the chain's only path (D-667)"
+          ],
+          [
+            "--ban-net cut-set retry",
+            "the refusing chain is the one the land must cut to reach its own site"
+          ]
+        ]
+      },
+      "net": "GND",
+      "refusal_class": "LANE_UNSAT",
+      "relay_refusals": [],
+      "rounds": [],
+      "rounds_laid": 0,
+      "rounds_severing_pour": 0,
+      "site_refusals": [],
+      "source": "evidence/d676-bare-gnd-j3.json",
+      "source_kind": "relay_transaction",
+      "source_sha256": "e1697a5e8c9f1bbe641e924088e4ea78f2df1c9b2f7c5290a2cda0b93750561a",
+      "why": "the BARE arm returned every cut chain's own geometry with zero vias: any reservation in this pocket is unsatisfiable by construction (D-667)"
+    },
+    {
+      "bare_arm": [],
+      "bare_arm_signature": null,
+      "board_sha256": "28935c75f4747bac0ad2a062977c4ad13e7e48ec98169529c1d2db4f29f8a5b3",
+      "bond_pad_applicable": false,
+      "land": "/01_POWER_TREE/BQ25185_SYS:C26.2",
+      "levers": {
+        "applicable": [
+          "more joint barrels (--joint-tries / --joint-knockout-mm)",
+          "--ban-net cut-set retry (D-641)",
+          "--detour-own-layer",
+          "--evict-whole with the evicted net REQUESTED FIRST",
+          "placement / refloorplan"
+        ],
+        "vacuous": [
+          [
+            "--bond-pad / --split-bond-pad",
+            "pour_severs is null in every round that laid a stitch: this transaction splits no pour, so PP2 never prices a fragment and a bond barrel changes nothing"
+          ]
+        ]
+      },
+      "net": "/01_POWER_TREE/BQ25185_SYS",
+      "refusal_class": "RELAY",
+      "relay_refusals": [
+        {
+          "arm": "joint",
+          "net": "/BQ25185_STAT2",
+          "reason": "NO_PATH",
+          "round": 1,
+          "was_mm": 1.1402
+        },
+        {
+          "arm": "joint",
+          "net": "Net-(U12-PS_SYNC)",
+          "reason": "NO_PATH",
+          "round": 1,
+          "was_mm": 2.7036
+        }
+      ],
+      "rounds": [
+        {
+          "accepted": false,
+          "arm": "joint",
+          "reason": null,
+          "round": 1,
+          "stitch_mm": 1.571,
+          "stitch_ok": true,
+          "via_xy": [
+            61.85,
+            103.7
+          ]
+        },
+        {
+          "accepted": null,
+          "arm": "joint",
+          "reason": "NO_BODY_VIA_SITE",
+          "round": 2,
+          "stitch_mm": null,
+          "stitch_ok": false,
+          "via_xy": null
+        }
+      ],
+      "rounds_laid": 1,
+      "rounds_severing_pour": 0,
+      "site_refusals": [
+        {
+          "arm": "joint",
+          "reason": "NO_BODY_VIA_SITE",
+          "round": 2
+        }
+      ],
+      "source": "evidence/d676-relay-bq-c26.json",
+      "source_kind": "relay_transaction",
+      "source_sha256": "6abbe099fc59e4d8fdf8e9a31dc17f5c1a87e4f47c617a899a7185ff6537cb2e",
+      "why": "1 rounds laid a stitch, none severed a pour, 2 relay refusals"
+    },
+    {
+      "bare_arm": [],
+      "bare_arm_signature": null,
+      "board_sha256": "28935c75f4747bac0ad2a062977c4ad13e7e48ec98169529c1d2db4f29f8a5b3",
+      "bond_pad_applicable": false,
+      "land": "GND:J3.A12",
+      "levers": {
+        "applicable": [
+          "an owner-grade `.kicad_dru` width grant (D-610, D-630, twice RECORDED NOT TAKEN)",
+          "placement / refloorplan, which is the CTO-scope answer"
+        ],
+        "vacuous": [
+          [
+            "a gate run at this rung",
+            "the closing stitch is the BOARD minimum 0.150 mm.  Section 9 grants 0.200 mm anywhere and this net's own netclass asks more; promoting it would lay copper narrower than the board publishes without the grant that permits it"
+          ]
+        ]
+      },
+      "net": "GND",
+      "refusal_class": "CLOSED_AT_FLOOR",
+      "relay_refusals": [],
+      "rounds": [
+        {
+          "accepted": true,
+          "arm": "joint",
+          "reason": null,
+          "round": 1,
+          "stitch_mm": 1.621,
+          "stitch_ok": true,
+          "via_xy": [
+            39.8,
+            144.55
+          ]
+        }
+      ],
+      "rounds_laid": 1,
+      "rounds_severing_pour": 0,
+      "site_refusals": [],
+      "source": "evidence/d676-relay-gnd-j3-cc1-flag-off-control.json",
+      "source_kind": "relay_transaction",
+      "source_sha256": "0e31262d8205032f037db75ca3594eedce0877d9583d54bac084414759d03028",
+      "why": "arm 'joint' relaid every cut net, but the stitch is 0.150 mm -- the BOARD minimum, below the 0.200 mm granted anywhere and below this net's own netclass"
+    },
+    {
+      "bare_arm": [],
+      "bare_arm_signature": null,
+      "board_sha256": "28935c75f4747bac0ad2a062977c4ad13e7e48ec98169529c1d2db4f29f8a5b3",
+      "bond_pad_applicable": false,
+      "land": "GND:J3.A12",
+      "levers": {
+        "applicable": [
+          "an owner-grade `.kicad_dru` width grant (D-610, D-630, twice RECORDED NOT TAKEN)",
+          "placement / refloorplan, which is the CTO-scope answer"
+        ],
+        "vacuous": [
+          [
+            "a gate run at this rung",
+            "the closing stitch is the BOARD minimum 0.150 mm.  Section 9 grants 0.200 mm anywhere and this net's own netclass asks more; promoting it would lay copper narrower than the board publishes without the grant that permits it"
+          ]
+        ]
+      },
+      "net": "GND",
+      "refusal_class": "CLOSED_AT_FLOOR",
+      "relay_refusals": [],
+      "rounds": [
+        {
+          "accepted": true,
+          "arm": "joint",
+          "reason": null,
+          "round": 1,
+          "stitch_mm": 1.621,
+          "stitch_ok": true,
+          "via_xy": [
+            39.8,
+            144.55
+          ]
+        }
+      ],
+      "rounds_laid": 1,
+      "rounds_severing_pour": 0,
+      "site_refusals": [],
+      "source": "evidence/d676-relay-gnd-j3-cc1-floor.json",
+      "source_kind": "relay_transaction",
+      "source_sha256": "6b19e5afb9d31bae26ffa020034c40a9389ad3d9c4897882eb36c9767f5e8498",
+      "why": "arm 'joint' relaid every cut net, but the stitch is 0.150 mm -- the BOARD minimum, below the 0.200 mm granted anywhere and below this net's own netclass"
+    },
+    {
+      "bare_arm": [],
+      "bare_arm_signature": null,
+      "board_sha256": "28935c75f4747bac0ad2a062977c4ad13e7e48ec98169529c1d2db4f29f8a5b3",
+      "bond_pad_applicable": false,
+      "land": "GND:J3.A12",
+      "levers": {
+        "applicable": [
+          "more joint barrels (--joint-tries / --joint-knockout-mm)",
+          "--ban-net cut-set retry (D-641)",
+          "--detour-own-layer",
+          "--evict-whole with the evicted net REQUESTED FIRST",
+          "placement / refloorplan"
+        ],
+        "vacuous": [
+          [
+            "--bond-pad / --split-bond-pad",
+            "pour_severs is null in every round that laid a stitch: this transaction splits no pour, so PP2 never prices a fragment and a bond barrel changes nothing"
+          ]
+        ]
+      },
+      "net": "GND",
+      "refusal_class": "RELAY",
+      "relay_refusals": [
+        {
+          "arm": "joint",
+          "net": "Net-(J3-CC2)",
+          "reason": "NO_PATH",
+          "round": 1,
+          "was_mm": 5.475
+        },
+        {
+          "arm": "joint",
+          "net": "Net-(J3-CC2)",
+          "reason": "NO_PATH",
+          "round": 2,
+          "was_mm": 5.475
+        },
+        {
+          "arm": "joint",
+          "net": "Net-(J3-CC2)",
+          "reason": "NO_PATH",
+          "round": 3,
+          "was_mm": 5.475
+        },
+        {
+          "arm": "joint",
+          "net": "Net-(J3-CC2)",
+          "reason": "NO_PATH",
+          "round": 4,
+          "was_mm": 5.475
+        },
+        {
+          "arm": "joint",
+          "net": "Net-(J3-CC2)",
+          "reason": "NO_PATH",
+          "round": 5,
+          "was_mm": 5.475
+        },
+        {
+          "arm": "joint",
+          "net": "Net-(J3-CC2)",
+          "reason": "NO_PATH",
+          "round": 6,
+          "was_mm": 5.475
+        }
+      ],
+      "rounds": [
+        {
+          "accepted": false,
+          "arm": "joint",
+          "reason": null,
+          "round": 1,
+          "stitch_mm": 2.662,
+          "stitch_ok": true,
+          "via_xy": [
+            37.7,
+            146.6
+          ]
+        },
+        {
+          "accepted": false,
+          "arm": "joint",
+          "reason": null,
+          "round": 2,
+          "stitch_mm": 3.016,
+          "stitch_ok": true,
+          "via_xy": [
+            37.45,
+            146.35
+          ]
+        },
+        {
+          "accepted": false,
+          "arm": "joint",
+          "reason": null,
+          "round": 3,
+          "stitch_mm": 3.016,
+          "stitch_ok": true,
+          "via_xy": [
+            37.25,
+            146.65
+          ]
+        },
+        {
+          "accepted": false,
+          "arm": "joint",
+          "reason": null,
+          "round": 4,
+          "stitch_mm": 3.369,
+          "stitch_ok": true,
+          "via_xy": [
+            37.2,
+            146.1
+          ]
+        },
+        {
+          "accepted": false,
+          "arm": "joint",
+          "reason": null,
+          "round": 5,
+          "stitch_mm": 3.179,
+          "stitch_ok": true,
+          "via_xy": [
+            37.65,
+            146.05
+          ]
+        },
+        {
+          "accepted": false,
+          "arm": "joint",
+          "reason": null,
+          "round": 6,
+          "stitch_mm": 3.349,
+          "stitch_ok": true,
+          "via_xy": [
+            37.0,
+            146.4
+          ]
+        }
+      ],
+      "rounds_laid": 6,
+      "rounds_severing_pour": 0,
+      "site_refusals": [],
+      "source": "evidence/d676-relay-gnd-j3-cheap-rung.json",
+      "source_kind": "relay_transaction",
+      "source_sha256": "572ad18a2ff594fc9e03ec8f1d5dfbace9160936f508e8465c361cb8a609c78e",
+      "why": "6 rounds laid a stitch, none severed a pour, 6 relay refusals"
+    },
+    {
+      "bare_arm": [],
+      "bare_arm_signature": null,
+      "board_sha256": "28935c75f4747bac0ad2a062977c4ad13e7e48ec98169529c1d2db4f29f8a5b3",
+      "bond_pad_applicable": false,
+      "land": "GND:J3.A12",
+      "levers": {
+        "applicable": [
+          "placement / refloorplan (apply_part_shift.py)",
+          "a coarser or finer --grid (the site set is a lattice verdict -- D-675 section 4)",
+          "--shrink on the barrel (screen_via_site_sweep)"
+        ],
+        "vacuous": [
+          [
+            "--bond-pad / --split-bond-pad",
+            "no stitch was laid, so no pour was split and there is no fragment to price"
+          ],
+          [
+            "--ban-net cut-set retry",
+            "the cut pool is not what refused; no site exists to open"
+          ],
+          [
+            "--evict-whole / --detour-spec",
+            "a relay lever answers a relay refusal"
+          ]
+        ]
+      },
+      "net": "GND",
+      "refusal_class": "NO_SITE",
+      "relay_refusals": [],
+      "rounds": [
+        {
+          "accepted": null,
+          "arm": "joint",
+          "reason": "NO_BODY_VIA_SITE",
+          "round": 1,
+          "stitch_mm": null,
+          "stitch_ok": false,
+          "via_xy": null
+        }
+      ],
+      "rounds_laid": 0,
+      "rounds_severing_pour": 0,
+      "site_refusals": [
+        {
+          "arm": "joint",
+          "reason": "NO_BODY_VIA_SITE",
+          "round": 1
+        }
+      ],
+      "source": "evidence/d676-rung-200000_500000_200000.json",
+      "source_kind": "relay_transaction",
+      "source_sha256": "bed98d86362affdb34983f744a1f17162094017b445fc5324f8f5154e4ddd1dc",
+      "why": "no round laid a stitch: NO_BODY_VIA_SITE"
+    },
+    {
+      "bare_arm": [],
+      "bare_arm_signature": null,
+      "board_sha256": "28935c75f4747bac0ad2a062977c4ad13e7e48ec98169529c1d2db4f29f8a5b3",
+      "bond_pad_applicable": false,
+      "land": "GND:J3.A12",
+      "levers": {
+        "applicable": [
+          "placement / refloorplan (apply_part_shift.py)",
+          "a coarser or finer --grid (the site set is a lattice verdict -- D-675 section 4)",
+          "--shrink on the barrel (screen_via_site_sweep)"
+        ],
+        "vacuous": [
+          [
+            "--bond-pad / --split-bond-pad",
+            "no stitch was laid, so no pour was split and there is no fragment to price"
+          ],
+          [
+            "--ban-net cut-set retry",
+            "the cut pool is not what refused; no site exists to open"
+          ],
+          [
+            "--evict-whole / --detour-spec",
+            "a relay lever answers a relay refusal"
+          ]
+        ]
+      },
+      "net": "GND",
+      "refusal_class": "NO_SITE",
+      "relay_refusals": [],
+      "rounds": [
+        {
+          "accepted": null,
+          "arm": "joint",
+          "reason": "NO_BODY_VIA_SITE",
+          "round": 1,
+          "stitch_mm": null,
+          "stitch_ok": false,
+          "via_xy": null
+        }
+      ],
+      "rounds_laid": 0,
+      "rounds_severing_pour": 0,
+      "site_refusals": [
+        {
+          "arm": "joint",
+          "reason": "NO_BODY_VIA_SITE",
+          "round": 1
+        }
+      ],
+      "source": "evidence/d676-rung-200000_600000_300000.json",
+      "source_kind": "relay_transaction",
+      "source_sha256": "5041945e9d12f93c911851c3632ab2ce18cefa01377bbeae680adc8425257c02",
+      "why": "no round laid a stitch: NO_BODY_VIA_SITE"
+    },
+    {
+      "bare_arm": [],
+      "bare_arm_signature": null,
+      "board_sha256": "28935c75f4747bac0ad2a062977c4ad13e7e48ec98169529c1d2db4f29f8a5b3",
+      "bond_pad_applicable": false,
+      "land": "GND:J3.A12",
+      "levers": {
+        "applicable": [
+          "placement / refloorplan (apply_part_shift.py)",
+          "a coarser or finer --grid (the site set is a lattice verdict -- D-675 section 4)",
+          "--shrink on the barrel (screen_via_site_sweep)"
+        ],
+        "vacuous": [
+          [
+            "--bond-pad / --split-bond-pad",
+            "no stitch was laid, so no pour was split and there is no fragment to price"
+          ],
+          [
+            "--ban-net cut-set retry",
+            "the cut pool is not what refused; no site exists to open"
+          ],
+          [
+            "--evict-whole / --detour-spec",
+            "a relay lever answers a relay refusal"
+          ]
+        ]
+      },
+      "net": "GND",
+      "refusal_class": "NO_SITE",
+      "relay_refusals": [],
+      "rounds": [
+        {
+          "accepted": null,
+          "arm": "joint",
+          "reason": "NO_BODY_VIA_SITE",
+          "round": 1,
+          "stitch_mm": null,
+          "stitch_ok": false,
+          "via_xy": null
+        }
+      ],
+      "rounds_laid": 0,
+      "rounds_severing_pour": 0,
+      "site_refusals": [
+        {
+          "arm": "joint",
+          "reason": "NO_BODY_VIA_SITE",
+          "round": 1
+        }
+      ],
+      "source": "evidence/d676-rung-300000_500000_200000.json",
+      "source_kind": "relay_transaction",
+      "source_sha256": "2aca1dcb511601316a548bd4bece595baebc2b1490f316a6e86c39500e774ba3",
+      "why": "no round laid a stitch: NO_BODY_VIA_SITE"
+    },
+    {
+      "bare_arm": [],
+      "bare_arm_signature": null,
+      "board_sha256": "28935c75f4747bac0ad2a062977c4ad13e7e48ec98169529c1d2db4f29f8a5b3",
+      "bond_pad_applicable": false,
+      "land": "GND:J3.A12",
+      "levers": {
+        "applicable": [
+          "placement / refloorplan (apply_part_shift.py)",
+          "a coarser or finer --grid (the site set is a lattice verdict -- D-675 section 4)",
+          "--shrink on the barrel (screen_via_site_sweep)"
+        ],
+        "vacuous": [
+          [
+            "--bond-pad / --split-bond-pad",
+            "no stitch was laid, so no pour was split and there is no fragment to price"
+          ],
+          [
+            "--ban-net cut-set retry",
+            "the cut pool is not what refused; no site exists to open"
+          ],
+          [
+            "--evict-whole / --detour-spec",
+            "a relay lever answers a relay refusal"
+          ]
+        ]
+      },
+      "net": "GND",
+      "refusal_class": "NO_SITE",
+      "relay_refusals": [],
+      "rounds": [
+        {
+          "accepted": null,
+          "arm": "joint",
+          "reason": "NO_BODY_VIA_SITE",
+          "round": 1,
+          "stitch_mm": null,
+          "stitch_ok": false,
+          "via_xy": null
+        }
+      ],
+      "rounds_laid": 0,
+      "rounds_severing_pour": 0,
+      "site_refusals": [
+        {
+          "arm": "joint",
+          "reason": "NO_BODY_VIA_SITE",
+          "round": 1
+        }
+      ],
+      "source": "evidence/d676-rung300-g25.json",
+      "source_kind": "relay_transaction",
+      "source_sha256": "a720ea5ed2fa6ef091b52ec8644103a4639677071cc5e13ff6e1d7301e03db50",
+      "why": "no round laid a stitch: NO_BODY_VIA_SITE"
+    },
+    {
+      "bare_arm": [],
+      "bare_arm_signature": null,
+      "board_sha256": "28935c75f4747bac0ad2a062977c4ad13e7e48ec98169529c1d2db4f29f8a5b3",
+      "bond_pad_applicable": false,
+      "land": "GND:J3.A12",
+      "levers": {
+        "applicable": [
+          "placement / refloorplan (apply_part_shift.py)",
+          "a coarser or finer --grid (the site set is a lattice verdict -- D-675 section 4)",
+          "--shrink on the barrel (screen_via_site_sweep)"
+        ],
+        "vacuous": [
+          [
+            "--bond-pad / --split-bond-pad",
+            "no stitch was laid, so no pour was split and there is no fragment to price"
+          ],
+          [
+            "--ban-net cut-set retry",
+            "the cut pool is not what refused; no site exists to open"
+          ],
+          [
+            "--evict-whole / --detour-spec",
+            "a relay lever answers a relay refusal"
+          ]
+        ]
+      },
+      "net": "GND",
+      "refusal_class": "NO_SITE",
+      "relay_refusals": [],
+      "rounds": [
+        {
+          "accepted": null,
+          "arm": "joint",
+          "reason": "NO_BODY_VIA_SITE",
+          "round": 1,
+          "stitch_mm": null,
+          "stitch_ok": false,
+          "via_xy": null
+        }
+      ],
+      "rounds_laid": 0,
+      "rounds_severing_pour": 0,
+      "site_refusals": [
+        {
+          "arm": "joint",
+          "reason": "NO_BODY_VIA_SITE",
+          "round": 1
+        }
+      ],
+      "source": "evidence/d676-rung300-g50.json",
+      "source_kind": "relay_transaction",
+      "source_sha256": "112514f863c0c87b57a90fae034c85a802791576412871c6af2b9028f39bd0b0",
+      "why": "no round laid a stitch: NO_BODY_VIA_SITE"
+    },
+    {
+      "board_sha256": "28935c75f4747bac0ad2a062977c4ad13e7e48ec98169529c1d2db4f29f8a5b3",
+      "bond_pad_applicable": false,
+      "cut_radius_mm": null,
+      "cut_tracks": 0,
+      "land": "/01_POWER_TREE/BQ25185_SYS:C26.2",
+      "levers": {
+        "applicable": [
+          "placement / refloorplan (apply_part_shift.py)",
+          "a coarser or finer --grid (the site set is a lattice verdict -- D-675 section 4)",
+          "--shrink on the barrel (screen_via_site_sweep)"
+        ],
+        "vacuous": [
+          [
+            "--bond-pad / --split-bond-pad",
+            "no stitch was laid, so no pour was split and there is no fragment to price"
+          ],
+          [
+            "--ban-net cut-set retry",
+            "the cut pool is not what refused; no site exists to open"
+          ],
+          [
+            "--evict-whole / --detour-spec",
+            "a relay lever answers a relay refusal"
+          ]
+        ]
+      },
+      "net": "/01_POWER_TREE/BQ25185_SYS",
+      "note": "a disc is the most constraining reservation this repository draws; a RELAY here is not final until the joint arm of screen_relay_transaction.py has been asked",
+      "refusal_class": "NO_SITE",
+      "relay_refusals": [],
+      "source": "evidence/d676-segment-evict-bq-c26-ban.json",
+      "source_kind": "segment_evict",
+      "source_sha256": "5c531452d12166a9be7a4e7596965befa679252e49830f1f400d57cafb1277fd",
+      "uncut_escape": "NO_BODY_VIA_SITE",
+      "verdict": "SEGMENT_WALL",
+      "why": "verdict SEGMENT_WALL: NO_BODY_VIA_SITE"
+    },
+    {
+      "board_sha256": "28935c75f4747bac0ad2a062977c4ad13e7e48ec98169529c1d2db4f29f8a5b3",
+      "bond_pad_applicable": false,
+      "cut_radius_mm": 2.0,
+      "cut_tracks": 5,
+      "land": "/01_POWER_TREE/BQ25185_SYS:C26.2",
+      "levers": {
+        "applicable": [
+          "more joint barrels (--joint-tries / --joint-knockout-mm)",
+          "--ban-net cut-set retry (D-641)",
+          "--detour-own-layer",
+          "--evict-whole with the evicted net REQUESTED FIRST",
+          "placement / refloorplan"
+        ],
+        "vacuous": [
+          [
+            "--bond-pad / --split-bond-pad",
+            "pour_severs is null in every round that laid a stitch: this transaction splits no pour, so PP2 never prices a fragment and a bond barrel changes nothing"
+          ]
+        ]
+      },
+      "net": "/01_POWER_TREE/BQ25185_SYS",
+      "note": "a disc is the most constraining reservation this repository draws; a RELAY here is not final until the joint arm of screen_relay_transaction.py has been asked",
+      "refusal_class": "RELAY",
+      "relay_refusals": [
+        {
+          "net": "Net-(U12-PS_SYNC)",
+          "reason": "NO_PATH",
+          "was_mm": 2.7036
+        }
+      ],
+      "source": "evidence/d676-segment-evict-bq-c26.json",
+      "source_kind": "segment_evict",
+      "source_sha256": "bb022af32ea9c448f7a472201dc6641395059d269c8a303312cd5ab1e08ebbf5",
+      "uncut_escape": "NO_BODY_VIA_SITE",
+      "verdict": "SEGMENT_SET_OPENS",
+      "why": "verdict SEGMENT_SET_OPENS, but 1 cut net(s) would not go back behind this screen's own all-layer disc"
+    },
+    {
+      "board_sha256": "28935c75f4747bac0ad2a062977c4ad13e7e48ec98169529c1d2db4f29f8a5b3",
+      "bond_pad_applicable": false,
+      "cut_radius_mm": 0.45,
+      "cut_tracks": 1,
+      "land": "GND:J3.A12",
+      "levers": {
+        "applicable": [
+          "screen_relay_transaction.py --arm joint, which replaces this screen's all-layer disc with the stitch that will actually be there",
+          "--stitch-rung, to ask at the width the GATE will use"
+        ],
+        "vacuous": [
+          [
+            "a gate run on this artifact alone",
+            "a segment-evict relay is priced behind a DISC and at the `.kicad_dru` FLOOR rung; neither is the transaction"
+          ]
+        ]
+      },
+      "net": "GND",
+      "note": "a disc is the most constraining reservation this repository draws; a RELAY here is not final until the joint arm of screen_relay_transaction.py has been asked",
+      "refusal_class": "CANDIDATE",
+      "relay_refusals": [],
+      "source": "evidence/d676-segment-evict-gnd-j3-ban-cc2.json",
+      "source_kind": "segment_evict",
+      "source_sha256": "f230920e6ff3747e4082c854b4ec964fa41b6472724799e3ada12c7e9efb7a4e",
+      "uncut_escape": "NO_BODY_VIA_SITE",
+      "verdict": "SEGMENT_OPENS",
+      "why": "verdict SEGMENT_OPENS and every cut net relaid behind this screen's disc"
+    },
+    {
+      "board_sha256": "28935c75f4747bac0ad2a062977c4ad13e7e48ec98169529c1d2db4f29f8a5b3",
+      "bond_pad_applicable": false,
+      "cut_radius_mm": 0.45,
+      "cut_tracks": 1,
+      "land": "GND:J3.A12",
+      "levers": {
+        "applicable": [
+          "screen_relay_transaction.py --arm joint, which replaces this screen's all-layer disc with the stitch that will actually be there",
+          "--stitch-rung, to ask at the width the GATE will use"
+        ],
+        "vacuous": [
+          [
+            "a gate run on this artifact alone",
+            "a segment-evict relay is priced behind a DISC and at the `.kicad_dru` FLOOR rung; neither is the transaction"
+          ]
+        ]
+      },
+      "net": "GND",
+      "note": "a disc is the most constraining reservation this repository draws; a RELAY here is not final until the joint arm of screen_relay_transaction.py has been asked",
+      "refusal_class": "CANDIDATE",
+      "relay_refusals": [],
+      "source": "evidence/d676-segment-evict-gnd-j3-ban-max14.json",
+      "source_kind": "segment_evict",
+      "source_sha256": "136a12fcb033506a8757d1e78b10e547c8713bc7f97d5985fc63854b63504d35",
+      "uncut_escape": "NO_BODY_VIA_SITE",
+      "verdict": "SEGMENT_OPENS",
+      "why": "verdict SEGMENT_OPENS and every cut net relaid behind this screen's disc"
+    },
+    {
+      "board_sha256": "28935c75f4747bac0ad2a062977c4ad13e7e48ec98169529c1d2db4f29f8a5b3",
+      "bond_pad_applicable": false,
+      "cut_radius_mm": 2.0,
+      "cut_tracks": 1,
+      "land": "GND:J3.A12",
+      "levers": {
+        "applicable": [
+          "more joint barrels (--joint-tries / --joint-knockout-mm)",
+          "--ban-net cut-set retry (D-641)",
+          "--detour-own-layer",
+          "--evict-whole with the evicted net REQUESTED FIRST",
+          "placement / refloorplan"
+        ],
+        "vacuous": [
+          [
+            "--bond-pad / --split-bond-pad",
+            "pour_severs is null in every round that laid a stitch: this transaction splits no pour, so PP2 never prices a fragment and a bond barrel changes nothing"
+          ]
+        ]
+      },
+      "net": "GND",
+      "note": "a disc is the most constraining reservation this repository draws; a RELAY here is not final until the joint arm of screen_relay_transaction.py has been asked",
+      "refusal_class": "RELAY",
+      "relay_refusals": [
+        {
+          "net": "Net-(J3-CC2)",
+          "reason": "NO_PATH",
+          "was_mm": 5.475
+        }
+      ],
+      "source": "evidence/d676-segment-evict-gnd-j3-max14.json",
+      "source_kind": "segment_evict",
+      "source_sha256": "ab8d58fc3eddbdbe3ee88453ae079074d7cdd07671b482cbb543107bec0f869b",
+      "uncut_escape": "NO_BODY_VIA_SITE",
+      "verdict": "SEGMENT_OPENS",
+      "why": "verdict SEGMENT_OPENS, but 1 cut net(s) would not go back behind this screen's own all-layer disc"
+    },
+    {
+      "board_sha256": "28935c75f4747bac0ad2a062977c4ad13e7e48ec98169529c1d2db4f29f8a5b3",
+      "bond_pad_applicable": false,
+      "cut_radius_mm": 2.0,
+      "cut_tracks": 1,
+      "land": "GND:J3.A12",
+      "levers": {
+        "applicable": [
+          "more joint barrels (--joint-tries / --joint-knockout-mm)",
+          "--ban-net cut-set retry (D-641)",
+          "--detour-own-layer",
+          "--evict-whole with the evicted net REQUESTED FIRST",
+          "placement / refloorplan"
+        ],
+        "vacuous": [
+          [
+            "--bond-pad / --split-bond-pad",
+            "pour_severs is null in every round that laid a stitch: this transaction splits no pour, so PP2 never prices a fragment and a bond barrel changes nothing"
+          ]
+        ]
+      },
+      "net": "GND",
+      "note": "a disc is the most constraining reservation this repository draws; a RELAY here is not final until the joint arm of screen_relay_transaction.py has been asked",
+      "refusal_class": "RELAY",
+      "relay_refusals": [
+        {
+          "net": "Net-(J3-CC2)",
+          "reason": "NO_PATH",
+          "was_mm": 5.475
+        }
+      ],
+      "source": "evidence/d676-segment-evict-gnd-j3.json",
+      "source_kind": "segment_evict",
+      "source_sha256": "91bc8cc3abcbd4774fc4b45941f9c1f9fa9237ab12d813e7e02980cb7c315773",
+      "uncut_escape": "NO_BODY_VIA_SITE",
+      "verdict": "SEGMENT_OPENS",
+      "why": "verdict SEGMENT_OPENS, but 1 cut net(s) would not go back behind this screen's own all-layer disc"
+    }
+  ],
+  "merged": [
+    {
+      "authority_sha256": "28935c75f4747bac0ad2a062977c4ad13e7e48ec98169529c1d2db4f29f8a5b3",
+      "bare_signature": false,
+      "board_sha256": [
+        "f496d2f39c0827248a47ab7d47efa4322f078b68d2da1d91ae6585d97bf8f875"
+      ],
+      "boards_differ": false,
+      "bond_pad_applicable": false,
+      "land": "+3V3:R129.1",
+      "levers": {
+        "applicable": [
+          "placement / refloorplan (apply_part_shift.py)",
+          "a coarser or finer --grid (the site set is a lattice verdict -- D-675 section 4)",
+          "--shrink on the barrel (screen_via_site_sweep)"
+        ],
+        "vacuous": [
+          [
+            "--bond-pad / --split-bond-pad",
+            "no stitch was laid, so no pour was split and there is no fragment to price"
+          ],
+          [
+            "--ban-net cut-set retry",
+            "the cut pool is not what refused; no site exists to open"
+          ],
+          [
+            "--evict-whole / --detour-spec",
+            "a relay lever answers a relay refusal"
+          ]
+        ]
+      },
+      "per_source": {
+        "evidence/d640-segment-evict-pourfamily.json": "NO_SITE"
+      },
+      "refusal_class": "NO_SITE",
+      "rounds_laid": 0,
+      "sources": [
+        "evidence/d640-segment-evict-pourfamily.json"
+      ],
+      "sources_on_authority": [],
+      "why": "no artifact laid a stitch"
+    },
+    {
+      "authority_sha256": "28935c75f4747bac0ad2a062977c4ad13e7e48ec98169529c1d2db4f29f8a5b3",
+      "bare_signature": true,
+      "board_sha256": [
+        "5715bf5cd688a87f686e162b77bbcbff98dc9f9f3e20b4be6424849423e690d2",
+        "c3286d8fdd23b6bdb037de2a753051b3ac2aa2e5ccaba2e25ced3d39cf4884b2",
+        "f496d2f39c0827248a47ab7d47efa4322f078b68d2da1d91ae6585d97bf8f875"
+      ],
+      "boards_differ": true,
+      "bond_pad_applicable": false,
+      "land": "+3V3:R39.1",
+      "levers": {
+        "applicable": [
+          "none -- this land closed"
+        ],
+        "vacuous": []
+      },
+      "per_source": {
+        "evidence/d638-relay-joint-g50.json": "CLOSED",
+        "evidence/d638-relay-joint-r39-g50.json": "CLOSED",
+        "evidence/d638-relay-slack-r39-s2.json": "RELAY",
+        "evidence/d638-relay-slack-r39-s6.json": "RELAY",
+        "evidence/d638-relay-transaction-g100.json": "LANE_UNSAT",
+        "evidence/d639-relay-joint-r39-g50.json": "POUR_PRICE",
+        "evidence/d640-segment-evict-pourfamily.json": "RELAY",
+        "evidence/d674-r39-relay-flag-off-control.json": "POUR_PRICE",
+        "evidence/d674-r39-relay-transaction-g25.json": "POUR_PRICE",
+        "evidence/d674-r39-relay-transaction.json": "POUR_PRICE",
+        "evidence/d674-segment-evict-r39.json": "RELAY",
+        "evidence/d675-r39-relay-transaction-bonded.json": "CLOSED",
+        "evidence/d675-r39-split-cut-removed-control.json": "POUR_PRICE",
+        "evidence/d675-r39-split-layername-defect.json": "POUR_PRICE"
+      },
+      "refusal_class": "CLOSED",
+      "rounds_laid": 42,
+      "sources": [
+        "evidence/d638-relay-joint-g50.json",
+        "evidence/d638-relay-joint-r39-g50.json",
+        "evidence/d638-relay-slack-r39-s2.json",
+        "evidence/d638-relay-slack-r39-s6.json",
+        "evidence/d638-relay-transaction-g100.json",
+        "evidence/d639-relay-joint-r39-g50.json",
+        "evidence/d640-segment-evict-pourfamily.json",
+        "evidence/d674-r39-relay-flag-off-control.json",
+        "evidence/d674-r39-relay-transaction-g25.json",
+        "evidence/d674-r39-relay-transaction.json",
+        "evidence/d674-segment-evict-r39.json",
+        "evidence/d675-r39-relay-transaction-bonded.json",
+        "evidence/d675-r39-split-cut-removed-control.json",
+        "evidence/d675-r39-split-layername-defect.json"
+      ],
+      "sources_on_authority": [],
+      "why": "at least one artifact closed this land"
+    },
+    {
+      "authority_sha256": "28935c75f4747bac0ad2a062977c4ad13e7e48ec98169529c1d2db4f29f8a5b3",
+      "bare_signature": false,
+      "board_sha256": [
+        "f496d2f39c0827248a47ab7d47efa4322f078b68d2da1d91ae6585d97bf8f875"
+      ],
+      "boards_differ": false,
+      "bond_pad_applicable": false,
+      "land": "+3V3:U4.2",
+      "levers": {
+        "applicable": [
+          "placement / refloorplan (apply_part_shift.py)",
+          "a coarser or finer --grid (the site set is a lattice verdict -- D-675 section 4)",
+          "--shrink on the barrel (screen_via_site_sweep)"
+        ],
+        "vacuous": [
+          [
+            "--bond-pad / --split-bond-pad",
+            "no stitch was laid, so no pour was split and there is no fragment to price"
+          ],
+          [
+            "--ban-net cut-set retry",
+            "the cut pool is not what refused; no site exists to open"
+          ],
+          [
+            "--evict-whole / --detour-spec",
+            "a relay lever answers a relay refusal"
+          ]
+        ]
+      },
+      "per_source": {
+        "evidence/d640-segment-evict-pourfamily.json": "NO_SITE"
+      },
+      "refusal_class": "NO_SITE",
+      "rounds_laid": 0,
+      "sources": [
+        "evidence/d640-segment-evict-pourfamily.json"
+      ],
+      "sources_on_authority": [],
+      "why": "no artifact laid a stitch"
+    },
+    {
+      "authority_sha256": "28935c75f4747bac0ad2a062977c4ad13e7e48ec98169529c1d2db4f29f8a5b3",
+      "bare_signature": false,
+      "board_sha256": [
+        "f496d2f39c0827248a47ab7d47efa4322f078b68d2da1d91ae6585d97bf8f875"
+      ],
+      "boards_differ": false,
+      "bond_pad_applicable": false,
+      "land": "+3V3:U4.5",
+      "levers": {
+        "applicable": [
+          "placement / refloorplan (apply_part_shift.py)",
+          "a coarser or finer --grid (the site set is a lattice verdict -- D-675 section 4)",
+          "--shrink on the barrel (screen_via_site_sweep)"
+        ],
+        "vacuous": [
+          [
+            "--bond-pad / --split-bond-pad",
+            "no stitch was laid, so no pour was split and there is no fragment to price"
+          ],
+          [
+            "--ban-net cut-set retry",
+            "the cut pool is not what refused; no site exists to open"
+          ],
+          [
+            "--evict-whole / --detour-spec",
+            "a relay lever answers a relay refusal"
+          ]
+        ]
+      },
+      "per_source": {
+        "evidence/d640-segment-evict-pourfamily.json": "NO_SITE"
+      },
+      "refusal_class": "NO_SITE",
+      "rounds_laid": 0,
+      "sources": [
+        "evidence/d640-segment-evict-pourfamily.json"
+      ],
+      "sources_on_authority": [],
+      "why": "no artifact laid a stitch"
+    },
+    {
+      "authority_sha256": "28935c75f4747bac0ad2a062977c4ad13e7e48ec98169529c1d2db4f29f8a5b3",
+      "bare_signature": false,
+      "board_sha256": [
+        "f496d2f39c0827248a47ab7d47efa4322f078b68d2da1d91ae6585d97bf8f875"
+      ],
+      "boards_differ": false,
+      "bond_pad_applicable": false,
+      "land": "+3V3:U4.8",
+      "levers": {
+        "applicable": [
+          "placement / refloorplan (apply_part_shift.py)",
+          "a coarser or finer --grid (the site set is a lattice verdict -- D-675 section 4)",
+          "--shrink on the barrel (screen_via_site_sweep)"
+        ],
+        "vacuous": [
+          [
+            "--bond-pad / --split-bond-pad",
+            "no stitch was laid, so no pour was split and there is no fragment to price"
+          ],
+          [
+            "--ban-net cut-set retry",
+            "the cut pool is not what refused; no site exists to open"
+          ],
+          [
+            "--evict-whole / --detour-spec",
+            "a relay lever answers a relay refusal"
+          ]
+        ]
+      },
+      "per_source": {
+        "evidence/d640-segment-evict-pourfamily.json": "NO_SITE"
+      },
+      "refusal_class": "NO_SITE",
+      "rounds_laid": 0,
+      "sources": [
+        "evidence/d640-segment-evict-pourfamily.json"
+      ],
+      "sources_on_authority": [],
+      "why": "no artifact laid a stitch"
+    },
+    {
+      "authority_sha256": "28935c75f4747bac0ad2a062977c4ad13e7e48ec98169529c1d2db4f29f8a5b3",
+      "bare_signature": false,
+      "board_sha256": [
+        "f496d2f39c0827248a47ab7d47efa4322f078b68d2da1d91ae6585d97bf8f875"
+      ],
+      "boards_differ": false,
+      "bond_pad_applicable": false,
+      "land": "+3V3:U5.2",
+      "levers": {
+        "applicable": [
+          "placement / refloorplan (apply_part_shift.py)",
+          "a coarser or finer --grid (the site set is a lattice verdict -- D-675 section 4)",
+          "--shrink on the barrel (screen_via_site_sweep)"
+        ],
+        "vacuous": [
+          [
+            "--bond-pad / --split-bond-pad",
+            "no stitch was laid, so no pour was split and there is no fragment to price"
+          ],
+          [
+            "--ban-net cut-set retry",
+            "the cut pool is not what refused; no site exists to open"
+          ],
+          [
+            "--evict-whole / --detour-spec",
+            "a relay lever answers a relay refusal"
+          ]
+        ]
+      },
+      "per_source": {
+        "evidence/d640-segment-evict-pourfamily.json": "NO_SITE"
+      },
+      "refusal_class": "NO_SITE",
+      "rounds_laid": 0,
+      "sources": [
+        "evidence/d640-segment-evict-pourfamily.json"
+      ],
+      "sources_on_authority": [],
+      "why": "no artifact laid a stitch"
+    },
+    {
+      "authority_sha256": "28935c75f4747bac0ad2a062977c4ad13e7e48ec98169529c1d2db4f29f8a5b3",
+      "bare_signature": false,
+      "board_sha256": [
+        "28935c75f4747bac0ad2a062977c4ad13e7e48ec98169529c1d2db4f29f8a5b3",
+        "f496d2f39c0827248a47ab7d47efa4322f078b68d2da1d91ae6585d97bf8f875"
+      ],
+      "boards_differ": true,
+      "bond_pad_applicable": false,
+      "land": "/01_POWER_TREE/BQ25185_SYS:C26.2",
+      "levers": {
+        "applicable": [
+          "more joint barrels (--joint-tries / --joint-knockout-mm)",
+          "--ban-net cut-set retry (D-641)",
+          "--detour-own-layer",
+          "--evict-whole with the evicted net REQUESTED FIRST",
+          "placement / refloorplan"
+        ],
+        "vacuous": [
+          [
+            "--bond-pad / --split-bond-pad",
+            "pour_severs is null in every round that laid a stitch: this transaction splits no pour, so PP2 never prices a fragment and a bond barrel changes nothing"
+          ]
+        ]
+      },
+      "per_source": {
+        "evidence/d640-relay-joint-c262-g25.json": "RELAY",
+        "evidence/d640-segment-evict-pourfamily.json": "RELAY",
+        "evidence/d641-relay-bare-c262-g25.json": "RELAY",
+        "evidence/d641-relay-joint-c262-g12.json": "RELAY",
+        "evidence/d641-relay-joint-c262-k035.json": "RELAY",
+        "evidence/d641-segevict-c262-ban-pssync.json": "NO_SITE",
+        "evidence/d676-bare-bq-c26.json": "RELAY",
+        "evidence/d676-relay-bq-c26.json": "RELAY",
+        "evidence/d676-segment-evict-bq-c26-ban.json": "NO_SITE",
+        "evidence/d676-segment-evict-bq-c26.json": "RELAY"
+      },
+      "refusal_class": "RELAY",
+      "rounds_laid": 6,
+      "sources": [
+        "evidence/d640-relay-joint-c262-g25.json",
+        "evidence/d640-segment-evict-pourfamily.json",
+        "evidence/d641-relay-bare-c262-g25.json",
+        "evidence/d641-relay-joint-c262-g12.json",
+        "evidence/d641-relay-joint-c262-k035.json",
+        "evidence/d641-segevict-c262-ban-pssync.json",
+        "evidence/d676-bare-bq-c26.json",
+        "evidence/d676-relay-bq-c26.json",
+        "evidence/d676-segment-evict-bq-c26-ban.json",
+        "evidence/d676-segment-evict-bq-c26.json"
+      ],
+      "sources_on_authority": [
+        "evidence/d676-bare-bq-c26.json",
+        "evidence/d676-relay-bq-c26.json",
+        "evidence/d676-segment-evict-bq-c26-ban.json",
+        "evidence/d676-segment-evict-bq-c26.json"
+      ],
+      "why": "stitches were laid and a relay refused"
+    },
+    {
+      "authority_sha256": "28935c75f4747bac0ad2a062977c4ad13e7e48ec98169529c1d2db4f29f8a5b3",
+      "bare_signature": false,
+      "board_sha256": [
+        "f496d2f39c0827248a47ab7d47efa4322f078b68d2da1d91ae6585d97bf8f875"
+      ],
+      "boards_differ": false,
+      "bond_pad_applicable": false,
+      "land": "/01_POWER_TREE/BQ25185_SYS:C27.1",
+      "levers": {
+        "applicable": [
+          "placement / refloorplan (apply_part_shift.py)",
+          "a coarser or finer --grid (the site set is a lattice verdict -- D-675 section 4)",
+          "--shrink on the barrel (screen_via_site_sweep)"
+        ],
+        "vacuous": [
+          [
+            "--bond-pad / --split-bond-pad",
+            "no stitch was laid, so no pour was split and there is no fragment to price"
+          ],
+          [
+            "--ban-net cut-set retry",
+            "the cut pool is not what refused; no site exists to open"
+          ],
+          [
+            "--evict-whole / --detour-spec",
+            "a relay lever answers a relay refusal"
+          ]
+        ]
+      },
+      "per_source": {
+        "evidence/d640-segment-evict-pourfamily.json": "NO_SITE"
+      },
+      "refusal_class": "NO_SITE",
+      "rounds_laid": 0,
+      "sources": [
+        "evidence/d640-segment-evict-pourfamily.json"
+      ],
+      "sources_on_authority": [],
+      "why": "no artifact laid a stitch"
+    },
+    {
+      "authority_sha256": "28935c75f4747bac0ad2a062977c4ad13e7e48ec98169529c1d2db4f29f8a5b3",
+      "bare_signature": false,
+      "board_sha256": [
+        "f496d2f39c0827248a47ab7d47efa4322f078b68d2da1d91ae6585d97bf8f875"
+      ],
+      "boards_differ": false,
+      "bond_pad_applicable": false,
+      "land": "/01_POWER_TREE/BQ25185_SYS:C28.1",
+      "levers": {
+        "applicable": [
+          "placement / refloorplan (apply_part_shift.py)",
+          "a coarser or finer --grid (the site set is a lattice verdict -- D-675 section 4)",
+          "--shrink on the barrel (screen_via_site_sweep)"
+        ],
+        "vacuous": [
+          [
+            "--bond-pad / --split-bond-pad",
+            "no stitch was laid, so no pour was split and there is no fragment to price"
+          ],
+          [
+            "--ban-net cut-set retry",
+            "the cut pool is not what refused; no site exists to open"
+          ],
+          [
+            "--evict-whole / --detour-spec",
+            "a relay lever answers a relay refusal"
+          ]
+        ]
+      },
+      "per_source": {
+        "evidence/d640-segment-evict-pourfamily.json": "NO_SITE"
+      },
+      "refusal_class": "NO_SITE",
+      "rounds_laid": 0,
+      "sources": [
+        "evidence/d640-segment-evict-pourfamily.json"
+      ],
+      "sources_on_authority": [],
+      "why": "no artifact laid a stitch"
+    },
+    {
+      "authority_sha256": "28935c75f4747bac0ad2a062977c4ad13e7e48ec98169529c1d2db4f29f8a5b3",
+      "bare_signature": false,
+      "board_sha256": [
+        "f496d2f39c0827248a47ab7d47efa4322f078b68d2da1d91ae6585d97bf8f875"
+      ],
+      "boards_differ": false,
+      "bond_pad_applicable": false,
+      "land": "/01_POWER_TREE/BQ25185_SYS:L4.1",
+      "levers": {
+        "applicable": [
+          "placement / refloorplan (apply_part_shift.py)",
+          "a coarser or finer --grid (the site set is a lattice verdict -- D-675 section 4)",
+          "--shrink on the barrel (screen_via_site_sweep)"
+        ],
+        "vacuous": [
+          [
+            "--bond-pad / --split-bond-pad",
+            "no stitch was laid, so no pour was split and there is no fragment to price"
+          ],
+          [
+            "--ban-net cut-set retry",
+            "the cut pool is not what refused; no site exists to open"
+          ],
+          [
+            "--evict-whole / --detour-spec",
+            "a relay lever answers a relay refusal"
+          ]
+        ]
+      },
+      "per_source": {
+        "evidence/d640-segment-evict-pourfamily.json": "NO_SITE"
+      },
+      "refusal_class": "NO_SITE",
+      "rounds_laid": 0,
+      "sources": [
+        "evidence/d640-segment-evict-pourfamily.json"
+      ],
+      "sources_on_authority": [],
+      "why": "no artifact laid a stitch"
+    },
+    {
+      "authority_sha256": "28935c75f4747bac0ad2a062977c4ad13e7e48ec98169529c1d2db4f29f8a5b3",
+      "bare_signature": false,
+      "board_sha256": [
+        "f496d2f39c0827248a47ab7d47efa4322f078b68d2da1d91ae6585d97bf8f875"
+      ],
+      "boards_differ": false,
+      "bond_pad_applicable": false,
+      "land": "/01_POWER_TREE/BQ25185_SYS:R68.1",
+      "levers": {
+        "applicable": [
+          "placement / refloorplan (apply_part_shift.py)",
+          "a coarser or finer --grid (the site set is a lattice verdict -- D-675 section 4)",
+          "--shrink on the barrel (screen_via_site_sweep)"
+        ],
+        "vacuous": [
+          [
+            "--bond-pad / --split-bond-pad",
+            "no stitch was laid, so no pour was split and there is no fragment to price"
+          ],
+          [
+            "--ban-net cut-set retry",
+            "the cut pool is not what refused; no site exists to open"
+          ],
+          [
+            "--evict-whole / --detour-spec",
+            "a relay lever answers a relay refusal"
+          ]
+        ]
+      },
+      "per_source": {
+        "evidence/d640-segment-evict-pourfamily.json": "NO_SITE"
+      },
+      "refusal_class": "NO_SITE",
+      "rounds_laid": 0,
+      "sources": [
+        "evidence/d640-segment-evict-pourfamily.json"
+      ],
+      "sources_on_authority": [],
+      "why": "no artifact laid a stitch"
+    },
+    {
+      "authority_sha256": "28935c75f4747bac0ad2a062977c4ad13e7e48ec98169529c1d2db4f29f8a5b3",
+      "bare_signature": false,
+      "board_sha256": [
+        "f496d2f39c0827248a47ab7d47efa4322f078b68d2da1d91ae6585d97bf8f875"
+      ],
+      "boards_differ": false,
+      "bond_pad_applicable": false,
+      "land": "/01_POWER_TREE/BQ25185_SYS:SW9.2",
+      "levers": {
+        "applicable": [
+          "placement / refloorplan (apply_part_shift.py)",
+          "a coarser or finer --grid (the site set is a lattice verdict -- D-675 section 4)",
+          "--shrink on the barrel (screen_via_site_sweep)"
+        ],
+        "vacuous": [
+          [
+            "--bond-pad / --split-bond-pad",
+            "no stitch was laid, so no pour was split and there is no fragment to price"
+          ],
+          [
+            "--ban-net cut-set retry",
+            "the cut pool is not what refused; no site exists to open"
+          ],
+          [
+            "--evict-whole / --detour-spec",
+            "a relay lever answers a relay refusal"
+          ]
+        ]
+      },
+      "per_source": {
+        "evidence/d640-segment-evict-pourfamily.json": "NO_SITE"
+      },
+      "refusal_class": "NO_SITE",
+      "rounds_laid": 0,
+      "sources": [
+        "evidence/d640-segment-evict-pourfamily.json"
+      ],
+      "sources_on_authority": [],
+      "why": "no artifact laid a stitch"
+    },
+    {
+      "authority_sha256": "28935c75f4747bac0ad2a062977c4ad13e7e48ec98169529c1d2db4f29f8a5b3",
+      "bare_signature": false,
+      "board_sha256": [
+        "f496d2f39c0827248a47ab7d47efa4322f078b68d2da1d91ae6585d97bf8f875"
+      ],
+      "boards_differ": false,
+      "bond_pad_applicable": false,
+      "land": "/01_POWER_TREE/BQ25185_SYS:U11.1",
+      "levers": {
+        "applicable": [
+          "placement / refloorplan (apply_part_shift.py)",
+          "a coarser or finer --grid (the site set is a lattice verdict -- D-675 section 4)",
+          "--shrink on the barrel (screen_via_site_sweep)"
+        ],
+        "vacuous": [
+          [
+            "--bond-pad / --split-bond-pad",
+            "no stitch was laid, so no pour was split and there is no fragment to price"
+          ],
+          [
+            "--ban-net cut-set retry",
+            "the cut pool is not what refused; no site exists to open"
+          ],
+          [
+            "--evict-whole / --detour-spec",
+            "a relay lever answers a relay refusal"
+          ]
+        ]
+      },
+      "per_source": {
+        "evidence/d640-segment-evict-pourfamily.json": "NO_SITE"
+      },
+      "refusal_class": "NO_SITE",
+      "rounds_laid": 0,
+      "sources": [
+        "evidence/d640-segment-evict-pourfamily.json"
+      ],
+      "sources_on_authority": [],
+      "why": "no artifact laid a stitch"
+    },
+    {
+      "authority_sha256": "28935c75f4747bac0ad2a062977c4ad13e7e48ec98169529c1d2db4f29f8a5b3",
+      "bare_signature": false,
+      "board_sha256": [
+        "f496d2f39c0827248a47ab7d47efa4322f078b68d2da1d91ae6585d97bf8f875"
+      ],
+      "boards_differ": false,
+      "bond_pad_applicable": false,
+      "land": "/01_POWER_TREE/BQ25185_SYS:U12.10",
+      "levers": {
+        "applicable": [
+          "placement / refloorplan (apply_part_shift.py)",
+          "a coarser or finer --grid (the site set is a lattice verdict -- D-675 section 4)",
+          "--shrink on the barrel (screen_via_site_sweep)"
+        ],
+        "vacuous": [
+          [
+            "--bond-pad / --split-bond-pad",
+            "no stitch was laid, so no pour was split and there is no fragment to price"
+          ],
+          [
+            "--ban-net cut-set retry",
+            "the cut pool is not what refused; no site exists to open"
+          ],
+          [
+            "--evict-whole / --detour-spec",
+            "a relay lever answers a relay refusal"
+          ]
+        ]
+      },
+      "per_source": {
+        "evidence/d640-segment-evict-pourfamily.json": "NO_SITE"
+      },
+      "refusal_class": "NO_SITE",
+      "rounds_laid": 0,
+      "sources": [
+        "evidence/d640-segment-evict-pourfamily.json"
+      ],
+      "sources_on_authority": [],
+      "why": "no artifact laid a stitch"
+    },
+    {
+      "authority_sha256": "28935c75f4747bac0ad2a062977c4ad13e7e48ec98169529c1d2db4f29f8a5b3",
+      "bare_signature": false,
+      "board_sha256": [
+        "f496d2f39c0827248a47ab7d47efa4322f078b68d2da1d91ae6585d97bf8f875"
+      ],
+      "boards_differ": false,
+      "bond_pad_applicable": false,
+      "land": "/01_POWER_TREE/BQ25185_SYS:U13.3",
+      "levers": {
+        "applicable": [
+          "placement / refloorplan (apply_part_shift.py)",
+          "a coarser or finer --grid (the site set is a lattice verdict -- D-675 section 4)",
+          "--shrink on the barrel (screen_via_site_sweep)"
+        ],
+        "vacuous": [
+          [
+            "--bond-pad / --split-bond-pad",
+            "no stitch was laid, so no pour was split and there is no fragment to price"
+          ],
+          [
+            "--ban-net cut-set retry",
+            "the cut pool is not what refused; no site exists to open"
+          ],
+          [
+            "--evict-whole / --detour-spec",
+            "a relay lever answers a relay refusal"
+          ]
+        ]
+      },
+      "per_source": {
+        "evidence/d640-segment-evict-pourfamily.json": "NO_SITE"
+      },
+      "refusal_class": "NO_SITE",
+      "rounds_laid": 0,
+      "sources": [
+        "evidence/d640-segment-evict-pourfamily.json"
+      ],
+      "sources_on_authority": [],
+      "why": "no artifact laid a stitch"
+    },
+    {
+      "authority_sha256": "28935c75f4747bac0ad2a062977c4ad13e7e48ec98169529c1d2db4f29f8a5b3",
+      "bare_signature": false,
+      "board_sha256": [
+        "5715bf5cd688a87f686e162b77bbcbff98dc9f9f3e20b4be6424849423e690d2"
+      ],
+      "boards_differ": false,
+      "bond_pad_applicable": false,
+      "land": "GND:C37.2",
+      "levers": {
+        "applicable": [
+          "none -- this land closed"
+        ],
+        "vacuous": []
+      },
+      "per_source": {
+        "evidence/d638-relay-joint-g50.json": "CLOSED",
+        "evidence/d638-relay-transaction-g100.json": "RELAY",
+        "evidence/d639-relay-joint-c372-g50.json": "CLOSED_AT_FLOOR"
+      },
+      "refusal_class": "CLOSED",
+      "rounds_laid": 9,
+      "sources": [
+        "evidence/d638-relay-joint-g50.json",
+        "evidence/d638-relay-transaction-g100.json",
+        "evidence/d639-relay-joint-c372-g50.json"
+      ],
+      "sources_on_authority": [],
+      "why": "at least one artifact closed this land"
+    },
+    {
+      "authority_sha256": "28935c75f4747bac0ad2a062977c4ad13e7e48ec98169529c1d2db4f29f8a5b3",
+      "bare_signature": true,
+      "board_sha256": [
+        "28935c75f4747bac0ad2a062977c4ad13e7e48ec98169529c1d2db4f29f8a5b3",
+        "5715bf5cd688a87f686e162b77bbcbff98dc9f9f3e20b4be6424849423e690d2",
+        "f496d2f39c0827248a47ab7d47efa4322f078b68d2da1d91ae6585d97bf8f875"
+      ],
+      "boards_differ": true,
+      "bond_pad_applicable": false,
+      "land": "GND:J3.A12",
+      "levers": {
+        "applicable": [
+          "an owner-grade `.kicad_dru` width grant (D-610, D-630, twice RECORDED NOT TAKEN)",
+          "placement / refloorplan, which is the CTO-scope answer"
+        ],
+        "vacuous": [
+          [
+            "a gate run at this rung",
+            "the closing stitch is the BOARD minimum 0.150 mm.  Section 9 grants 0.200 mm anywhere and this net's own netclass asks more; promoting it would lay copper narrower than the board publishes without the grant that permits it"
+          ]
+        ]
+      },
+      "per_source": {
+        "evidence/d638-relay-bare-j3-g25.json": "LANE_UNSAT",
+        "evidence/d638-relay-bare-j3-g50.json": "LANE_UNSAT",
+        "evidence/d638-relay-joint-g50.json": "RELAY",
+        "evidence/d638-relay-transaction-g100.json": "RELAY",
+        "evidence/d640-segment-evict-pourfamily.json": "RELAY",
+        "evidence/d676-bare-gnd-j3.json": "LANE_UNSAT",
+        "evidence/d676-relay-gnd-j3-cc1-flag-off-control.json": "CLOSED_AT_FLOOR",
+        "evidence/d676-relay-gnd-j3-cc1-floor.json": "CLOSED_AT_FLOOR",
+        "evidence/d676-relay-gnd-j3-cheap-rung.json": "RELAY",
+        "evidence/d676-rung-200000_500000_200000.json": "NO_SITE",
+        "evidence/d676-rung-200000_600000_300000.json": "NO_SITE",
+        "evidence/d676-rung-300000_500000_200000.json": "NO_SITE",
+        "evidence/d676-rung300-g25.json": "NO_SITE",
+        "evidence/d676-rung300-g50.json": "NO_SITE",
+        "evidence/d676-segment-evict-gnd-j3-ban-cc2.json": "CANDIDATE",
+        "evidence/d676-segment-evict-gnd-j3-ban-max14.json": "CANDIDATE",
+        "evidence/d676-segment-evict-gnd-j3-max14.json": "RELAY",
+        "evidence/d676-segment-evict-gnd-j3.json": "RELAY"
+      },
+      "refusal_class": "CLOSED_AT_FLOOR",
+      "rounds_laid": 28,
+      "sources": [
+        "evidence/d638-relay-bare-j3-g25.json",
+        "evidence/d638-relay-bare-j3-g50.json",
+        "evidence/d638-relay-joint-g50.json",
+        "evidence/d638-relay-transaction-g100.json",
+        "evidence/d640-segment-evict-pourfamily.json",
+        "evidence/d676-bare-gnd-j3.json",
+        "evidence/d676-relay-gnd-j3-cc1-flag-off-control.json",
+        "evidence/d676-relay-gnd-j3-cc1-floor.json",
+        "evidence/d676-relay-gnd-j3-cheap-rung.json",
+        "evidence/d676-rung-200000_500000_200000.json",
+        "evidence/d676-rung-200000_600000_300000.json",
+        "evidence/d676-rung-300000_500000_200000.json",
+        "evidence/d676-rung300-g25.json",
+        "evidence/d676-rung300-g50.json",
+        "evidence/d676-segment-evict-gnd-j3-ban-cc2.json",
+        "evidence/d676-segment-evict-gnd-j3-ban-max14.json",
+        "evidence/d676-segment-evict-gnd-j3-max14.json",
+        "evidence/d676-segment-evict-gnd-j3.json"
+      ],
+      "sources_on_authority": [
+        "evidence/d676-bare-gnd-j3.json",
+        "evidence/d676-relay-gnd-j3-cc1-flag-off-control.json",
+        "evidence/d676-relay-gnd-j3-cc1-floor.json",
+        "evidence/d676-relay-gnd-j3-cheap-rung.json",
+        "evidence/d676-rung-200000_500000_200000.json",
+        "evidence/d676-rung-200000_600000_300000.json",
+        "evidence/d676-rung-300000_500000_200000.json",
+        "evidence/d676-rung300-g25.json",
+        "evidence/d676-rung300-g50.json",
+        "evidence/d676-segment-evict-gnd-j3-ban-cc2.json",
+        "evidence/d676-segment-evict-gnd-j3-ban-max14.json",
+        "evidence/d676-segment-evict-gnd-j3-max14.json",
+        "evidence/d676-segment-evict-gnd-j3.json"
+      ],
+      "why": "the only arm that closed this land did so at the BOARD minimum track width; the transaction is a `.kicad_dru` width grant, not a route"
+    },
+    {
+      "authority_sha256": "28935c75f4747bac0ad2a062977c4ad13e7e48ec98169529c1d2db4f29f8a5b3",
+      "bare_signature": false,
+      "board_sha256": [
+        "f496d2f39c0827248a47ab7d47efa4322f078b68d2da1d91ae6585d97bf8f875"
+      ],
+      "boards_differ": false,
+      "bond_pad_applicable": false,
+      "land": "GND:MK1.4",
+      "levers": {
+        "applicable": [
+          "placement / refloorplan (apply_part_shift.py)",
+          "a coarser or finer --grid (the site set is a lattice verdict -- D-675 section 4)",
+          "--shrink on the barrel (screen_via_site_sweep)"
+        ],
+        "vacuous": [
+          [
+            "--bond-pad / --split-bond-pad",
+            "no stitch was laid, so no pour was split and there is no fragment to price"
+          ],
+          [
+            "--ban-net cut-set retry",
+            "the cut pool is not what refused; no site exists to open"
+          ],
+          [
+            "--evict-whole / --detour-spec",
+            "a relay lever answers a relay refusal"
+          ]
+        ]
+      },
+      "per_source": {
+        "evidence/d640-segment-evict-pourfamily.json": "NO_SITE"
+      },
+      "refusal_class": "NO_SITE",
+      "rounds_laid": 0,
+      "sources": [
+        "evidence/d640-segment-evict-pourfamily.json"
+      ],
+      "sources_on_authority": [],
+      "why": "no artifact laid a stitch"
+    },
+    {
+      "authority_sha256": "28935c75f4747bac0ad2a062977c4ad13e7e48ec98169529c1d2db4f29f8a5b3",
+      "bare_signature": true,
+      "board_sha256": [
+        "5715bf5cd688a87f686e162b77bbcbff98dc9f9f3e20b4be6424849423e690d2",
+        "f496d2f39c0827248a47ab7d47efa4322f078b68d2da1d91ae6585d97bf8f875"
+      ],
+      "boards_differ": true,
+      "bond_pad_applicable": false,
+      "land": "GND:U9.16",
+      "levers": {
+        "applicable": [
+          "none -- this land closed"
+        ],
+        "vacuous": []
+      },
+      "per_source": {
+        "evidence/d638-relay-joint-g50.json": "RELAY",
+        "evidence/d638-relay-joint-u916-g25.json": "CLOSED",
+        "evidence/d638-relay-transaction-g100.json": "LANE_UNSAT",
+        "evidence/d639-relay-joint-u916-g25.json": "CLOSED_AT_FLOOR",
+        "evidence/d640-segment-evict-pourfamily.json": "RELAY"
+      },
+      "refusal_class": "CLOSED",
+      "rounds_laid": 14,
+      "sources": [
+        "evidence/d638-relay-joint-g50.json",
+        "evidence/d638-relay-joint-u916-g25.json",
+        "evidence/d638-relay-transaction-g100.json",
+        "evidence/d639-relay-joint-u916-g25.json",
+        "evidence/d640-segment-evict-pourfamily.json"
+      ],
+      "sources_on_authority": [],
+      "why": "at least one artifact closed this land"
+    }
+  ],
+  "method": "read-only; no board is loaded and nothing is routed.  Every verdict restates numbers already in the named artifact and `why` names the key it came from",
+  "question": "which of NO_SITE / POUR_PRICE / RELAY / LANE_UNSAT is this land's refusal, and which levers can touch it",
+  "schema": 1
+}

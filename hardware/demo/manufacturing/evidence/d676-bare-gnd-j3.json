@@ -1,0 +1,149 @@
+{
+  "arm": "bare",
+  "authoritative_unchanged": true,
+  "board": "/home/aqroot8/aqroot-demo/hardware/demo/kicad/aqroot-demo/aqroot-Beta-v2.kicad_pcb",
+  "board_sha256": "28935c75f4747bac0ad2a062977c4ad13e7e48ec98169529c1d2db4f29f8a5b3",
+  "evidence": "w/d676/evict-gnd-j3.json",
+  "evidence_sha256": "91bc8cc3abcbd4774fc4b45941f9c1f9fa9237ab12d813e7e02980cb7c315773",
+  "grid": 50000,
+  "lands": [
+    {
+      "arms": {
+        "bare": {
+          "all_relaid": true,
+          "antipad_severs": null,
+          "note": null,
+          "reservation": "nothing at all -- the positive control",
+          "stitch": null,
+          "tracks": [
+            {
+              "a_mm": [
+                35.5,
+                147.275
+              ],
+              "b_mm": [
+                40.975,
+                147.275
+              ],
+              "layer": [
+                "F"
+              ],
+              "layers_allowed": [
+                "F",
+                "B",
+                "I2"
+              ],
+              "max_mm": 18.0414,
+              "mm": 5.475,
+              "mm_by_layer": {
+                "F": 5.475
+              },
+              "net": "Net-(J3-CC2)",
+              "ok": true,
+              "own_layer": false,
+              "reason": null,
+              "slack_mm": null,
+              "tracks": 1,
+              "via_xy": [],
+              "vias": 0,
+              "was_mm": 5.475,
+              "why": null
+            }
+          ]
+        }
+      },
+      "body_landing": null,
+      "cut_nets": [
+        "Net-(J3-CC2)"
+      ],
+      "cut_radius_mm": 2.0,
+      "cut_records": [
+        {
+          "a_mm": [
+            40.975,
+            147.275
+          ],
+          "b_mm": [
+            35.5,
+            147.275
+          ],
+          "layer": "F",
+          "mm": 5.475,
+          "net": "Net-(J3-CC2)",
+          "removed_mm": 3.9771,
+          "stubs_mm": [
+            [
+              [
+                40.975,
+                147.275
+              ],
+              [
+                39.6886,
+                147.275
+              ]
+            ],
+            [
+              [
+                35.7114,
+                147.275
+              ],
+              [
+                35.5,
+                147.275
+              ]
+            ]
+          ],
+          "whole_track": false,
+          "width_mm": 0.2
+        }
+      ],
+      "cut_tracks": 1,
+      "ends_inside_reserve": [
+        {
+          "d_mm": 3.3438,
+          "inside": false,
+          "net": "Net-(J3-CC2)",
+          "xy_mm": [
+            40.975,
+            147.275
+          ]
+        },
+        {
+          "d_mm": 2.3012,
+          "inside": false,
+          "net": "Net-(J3-CC2)",
+          "xy_mm": [
+            35.5,
+            147.275
+          ]
+        }
+      ],
+      "land": "GND:J3.A12",
+      "net": "GND",
+      "netclass": "GND",
+      "pads": [
+        "J3.A12"
+      ],
+      "reserve_clr_nm": 200000,
+      "site_mm": [
+        37.7,
+        146.6
+      ],
+      "stitch_pad": "J3.A12",
+      "stitch_via_dia_nm": 500000,
+      "stitch_via_drill_nm": 200000,
+      "stitch_width_nm": 150000,
+      "unmatched": [],
+      "verdict_measured": "SEGMENT_OPENS"
+    }
+  ],
+  "max_mm": 8.0,
+  "method": "read-only; the named tracks are held out of the obstacle model whole, the real maze3d.stitch_pad is laid with the same body certificate the measurement used, and each cut net is put back by maze3d.route_points between its own chain ends at the same budget -- every object proved by verify_laid, the barrel put through _antipad_severs, every trial reverted",
+  "question": "does a cut that opens a plane land go back when the reservation is the STITCH THAT WILL BE THERE instead of an all-layer keep-out disc big enough to swallow the relay's own two terminals",
+  "relay_own_layer": true,
+  "relay_slack_mm": null,
+  "rung": "floor",
+  "schema": 1,
+  "split_price_work": null,
+  "split_priced": false
+}

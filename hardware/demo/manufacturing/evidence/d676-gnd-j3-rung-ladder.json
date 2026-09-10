@@ -1,0 +1,81 @@
+{
+  "board_min_track_mm": 0.15,
+  "board_sha256": "28935c75f4747bac0ad2a062977c4ad13e7e48ec98169529c1d2db4f29f8a5b3",
+  "finding": "the land closes ONLY at the board minimum 0.150 mm into a 0.50/0.20 barrel.  0.200 mm closes it at neither barrel, and the 0.300 mm the GND netclass publishes -- the width every GND stitch this gate has promoted actually carries -- returns NO_BODY_VIA_SITE at 0.050 mm AND at 0.025 mm",
+  "method": "screen_relay_transaction.py --arm joint on evidence/d676-segment-evict-gnd-j3-ban-cc2.json, one run per rung, read-only, board sha256 unchanged at exit",
+  "netclass_via_mm": [
+    0.6,
+    0.3
+  ],
+  "netclass_width_mm": 0.3,
+  "question": "GND J3.A12/B1 opens on a Net-(J3-CC1) cut -- at WHICH stitch rung, and does the width the GATE uses admit it",
+  "rungs": [
+    {
+      "closed": true,
+      "drill_mm": 0.2,
+      "first_round": "stitch 1.621 mm at [39.8, 144.55]",
+      "from_dru_floor": true,
+      "grid_nm": 50000,
+      "sha256": "6b19e5afb9d31bae26ffa020034c40a9389ad3d9c4897882eb36c9767f5e8498",
+      "source": "w/d676/relay-gnd-j3-ban.json",
+      "via_mm": 0.5,
+      "width_mm": 0.15
+    },
+    {
+      "closed": false,
+      "drill_mm": 0.2,
+      "first_round": "NO_BODY_VIA_SITE",
+      "from_dru_floor": false,
+      "grid_nm": 50000,
+      "sha256": "bed98d86362affdb34983f744a1f17162094017b445fc5324f8f5154e4ddd1dc",
+      "source": "w/d676/rung-200000_500000_200000.json",
+      "via_mm": 0.5,
+      "width_mm": 0.2
+    },
+    {
+      "closed": false,
+      "drill_mm": 0.3,
+      "first_round": "NO_BODY_VIA_SITE",
+      "from_dru_floor": false,
+      "grid_nm": 50000,
+      "sha256": "5041945e9d12f93c911851c3632ab2ce18cefa01377bbeae680adc8425257c02",
+      "source": "w/d676/rung-200000_600000_300000.json",
+      "via_mm": 0.6,
+      "width_mm": 0.2
+    },
+    {
+      "closed": false,
+      "drill_mm": 0.2,
+      "first_round": "NO_BODY_VIA_SITE",
+      "from_dru_floor": false,
+      "grid_nm": 50000,
+      "sha256": "2aca1dcb511601316a548bd4bece595baebc2b1490f316a6e86c39500e774ba3",
+      "source": "w/d676/rung-300000_500000_200000.json",
+      "via_mm": 0.5,
+      "width_mm": 0.3
+    },
+    {
+      "closed": false,
+      "drill_mm": 0.3,
+      "first_round": "NO_BODY_VIA_SITE",
+      "from_dru_floor": false,
+      "grid_nm": 50000,
+      "sha256": "112514f863c0c87b57a90fae034c85a802791576412871c6af2b9028f39bd0b0",
+      "source": "w/d676/relay-gnd-j3-ban300.json",
+      "via_mm": 0.6,
+      "width_mm": 0.3
+    },
+    {
+      "closed": false,
+      "drill_mm": 0.3,
+      "first_round": "NO_BODY_VIA_SITE",
+      "from_dru_floor": false,
+      "grid_nm": 25000,
+      "sha256": "a720ea5ed2fa6ef091b52ec8644103a4639677071cc5e13ff6e1d7301e03db50",
+      "source": "w/d676/rung300-g25.json",
+      "via_mm": 0.6,
+      "width_mm": 0.3
+    }
+  ],
+  "schema": 1
+}

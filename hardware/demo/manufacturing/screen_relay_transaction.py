@@ -792,6 +792,19 @@ def main():
                          "used it CARRIES the bond, so a writer run without "
                          "it is running a different transaction.  Repeatable"
                     )
+    ap.add_argument("--stitch-rung", metavar="WIDTH_NM:VIA_NM:DRILL_NM",
+                    help="D-676: state the stitch geometry the WRITER will be "
+                         "given instead of taking the `.kicad_dru` class "
+                         "floor.  `rung: floor` means the DRU floor, and for "
+                         "`GND` -- which the DRU does not override -- that is "
+                         "the BOARD minimum 0.150 mm, a width D-610/D-630 "
+                         "twice refused to grant anywhere.  This board's own "
+                         "ground bond stub is 0.300 mm into a 0.60/0.30 "
+                         "barrel (D-675 section 2), so a pocket proved at "
+                         "0.150 mm has not been proved for the transaction "
+                         "the gate would run.  e.g. 300000:600000:300000.  "
+                         "Absent, every measurement is the one prior "
+                         "decisions took, object for object")
     ap.add_argument("--split-price-work", type=Path,
                     help="where --split-priced writes each candidate board and "
                          "its contract report (default: a temporary directory "
@@ -826,6 +839,16 @@ def main():
     if bond_req and not a.split_priced:
         raise SystemExit("--split-bond-pad needs --split-priced: it changes "
                          "the board the SPLIT is priced on and nothing else")
+
+    if a.stitch_rung:
+        try:
+            parts = tuple(int(x) for x in a.stitch_rung.split(":"))
+            if len(parts) != 3 or min(parts) <= 0:
+                raise ValueError
+        except ValueError:
+            raise SystemExit("--stitch-rung wants WIDTH_NM:VIA_NM:DRILL_NM, "
+                             "got %r" % a.stitch_rung)
+        a.stitch_rung = parts
 
     split_tmp = None
     if a.split_priced and a.split_price_work is None:
@@ -881,6 +904,18 @@ def main():
         else:
             w, clr, vd, vdr = (min(w_floor, RELIEF_WIDTH), RELIEF_CLR,
                                RELIEF_VIA_DIA, RELIEF_VIA_DRILL)
+        # D-676.  THE FLOOR RUNG IS NOT THE GATE'S WIDTH.  `rung: floor` is the
+        # `.kicad_dru` class floor, and for a class the DRU does not override
+        # -- `GND` among them -- that floor is the BOARD minimum, 0.150 mm.
+        # The gate lays a `GND` bond stub at the 0.300 mm this board publishes
+        # for its own ground (D-643, and D-675's own promoted `C28.2` stub), so
+        # a pocket proved at 0.150 mm has not been proved for the transaction.
+        # This states the rung the writer will actually be given.  Absent, the
+        # search is the one every prior decision ran, to the object.
+        if a.stitch_rung:
+            w, vd, vdr = a.stitch_rung
+        rep_rung = dict(width_nm=w, via_dia_nm=vd, via_drill_nm=vdr,
+                        clr_nm=clr, from_dru_floor=not a.stitch_rung)
 
         radius = int(round(l["cut_radius_mm"] * 1e6))
         site_mm = l["stitch"]["via_xy"]
@@ -903,7 +938,7 @@ def main():
                    cut_radius_mm=l["cut_radius_mm"], site_mm=site_mm,
                    stitch_pad=stitch_ref, cut_tracks=len(l["cuts"]),
                    cut_nets=sorted(by_net), unmatched=missing,
-                   ends_inside_reserve=[])
+                   rung=rep_rung, ends_inside_reserve=[])
         for cr in l["cuts"]:
             for pt in (cr["a_mm"], cr["b_mm"]):
                 d = math.hypot(pt[0] - site_mm[0], pt[1] - site_mm[1])

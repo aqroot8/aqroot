@@ -1,0 +1,480 @@
+{
+  "authoritative_unchanged": true,
+  "board": "/home/aqroot8/aqroot-demo/hardware/demo/kicad/aqroot-demo/aqroot-Beta-v2.kicad_pcb",
+  "board_sha256": "28935c75f4747bac0ad2a062977c4ad13e7e48ec98169529c1d2db4f29f8a5b3",
+  "body_landing": true,
+  "cap": 20,
+  "contract_files": [
+    "hardware/demo/manufacturing/checks/contract_regression.py",
+    "hardware/demo/manufacturing/checks/fab_package_contract.py",
+    "hardware/demo/manufacturing/checks/keepout_stackup_contract.py",
+    "hardware/demo/manufacturing/checks/land_parity_contract.py",
+    "hardware/demo/manufacturing/checks/leaf_land_contract.py",
+    "hardware/demo/manufacturing/checks/neck_contract.py",
+    "hardware/demo/manufacturing/checks/obstacle_model_contract.py",
+    "hardware/demo/manufacturing/checks/pair_sweep_diff.py",
+    "hardware/demo/manufacturing/checks/placement_contract.py",
+    "hardware/demo/manufacturing/checks/plane_return_path.py",
+    "hardware/demo/manufacturing/checks/population_contract.py",
+    "hardware/demo/manufacturing/checks/pour_bond_contract.py",
+    "hardware/demo/manufacturing/checks/pour_partition_contract.py",
+    "hardware/demo/manufacturing/checks/rf_symmetry_contract.py",
+    "hardware/demo/manufacturing/checks/tap_contract.py",
+    "hardware/demo/manufacturing/checks/trunk_floor_contract.py",
+    "hardware/demo/manufacturing/protected_copper.py",
+    "hardware/demo/manufacturing/verify_promotion.py"
+  ],
+  "evidence": "w/d676/evict-gnd-j3.json",
+  "evidence_sha256": "91bc8cc3abcbd4774fc4b45941f9c1f9fa9237ab12d813e7e02980cb7c315773",
+  "grid": 50000,
+  "lands": [
+    {
+      "candidates": 20,
+      "foreign_vias": 10,
+      "island": [
+        "J3.A12"
+      ],
+      "land": "GND:J3.A12",
+      "net": "GND",
+      "netclass": "GND",
+      "opener_nets": [
+        "Net-(J3-CC2)"
+      ],
+      "openers": [
+        {
+          "citations": [],
+          "cut": {
+            "a_mm": [
+              40.975,
+              147.275
+            ],
+            "b_mm": [
+              35.5,
+              147.275
+            ],
+            "layer": "F",
+            "mm": 5.475,
+            "net": "Net-(J3-CC2)",
+            "width_mm": 0.2
+          },
+          "dru_rules": [],
+          "is_evidence_cut": true,
+          "net_copper": {
+            "layers": [
+              "F"
+            ],
+            "mm": 14.066,
+            "vias": 0
+          },
+          "netclass": "Default",
+          "opens": true,
+          "stitch_mm": 2.662,
+          "via_xy": [
+            37.7,
+            146.6
+          ]
+        }
+      ],
+      "refused": [
+        {
+          "cut": {
+            "a_mm": [
+              38.675,
+              144.2
+            ],
+            "b_mm": [
+              40.05,
+              146.825
+            ],
+            "layer": "B",
+            "mm": 2.9633,
+            "net": "Net-(J3-SHIELD)",
+            "width_mm": 0.3
+          },
+          "is_evidence_cut": false,
+          "netclass": "Default",
+          "opens": false,
+          "reason": "NO_BODY_VIA_SITE"
+        },
+        {
+          "cut": {
+            "a_mm": [
+              38.68,
+              145.805
+            ],
+            "b_mm": [
+              39.7,
+              146.825
+            ],
+            "layer": "B",
+            "mm": 1.4425,
+            "net": "Net-(J3-SHIELD)",
+            "width_mm": 0.3
+          },
+          "is_evidence_cut": false,
+          "netclass": "Default",
+          "opens": false,
+          "reason": "NO_BODY_VIA_SITE"
+        },
+        {
+          "cut": {
+            "a_mm": [
+              39.925,
+              147.05
+            ],
+            "b_mm": [
+              39.7,
+              146.825
+            ],
+            "layer": "B",
+            "mm": 0.3182,
+            "net": "Net-(J3-SHIELD)",
+            "width_mm": 0.3
+          },
+          "is_evidence_cut": false,
+          "netclass": "Default",
+          "opens": false,
+          "reason": "NO_BODY_VIA_SITE"
+        },
+        {
+          "cut": {
+            "a_mm": [
+              40.05,
+              146.825
+            ],
+            "b_mm": [
+              40.75,
+              147.325
+            ],
+            "layer": "B",
+            "mm": 0.8602,
+            "net": "Net-(J3-SHIELD)",
+            "width_mm": 0.3
+          },
+          "is_evidence_cut": false,
+          "netclass": "Default",
+          "opens": false,
+          "reason": "NO_BODY_VIA_SITE"
+        },
+        {
+          "cut": {
+            "a_mm": [
+              46.075,
+              147.05
+            ],
+            "b_mm": [
+              39.925,
+              147.05
+            ],
+            "layer": "B",
+            "mm": 6.15,
+            "net": "Net-(J3-SHIELD)",
+            "width_mm": 0.3
+          },
+          "is_evidence_cut": false,
+          "netclass": "Default",
+          "opens": false,
+          "reason": "NO_BODY_VIA_SITE"
+        },
+        {
+          "cut": {
+            "a_mm": [
+              40.6,
+              146.38
+            ],
+            "b_mm": [
+              45.4,
+              146.38
+            ],
+            "layer": "B",
+            "mm": 4.8,
+            "net": "/01_POWER_TREE/USB_VBUS_RAW",
+            "width_mm": 0.5
+          },
+          "is_evidence_cut": false,
+          "netclass": "VBUS_CHG",
+          "opens": false,
+          "reason": "NO_BODY_VIA_SITE"
+        },
+        {
+          "cut": {
+            "a_mm": [
+              41.0,
+              146.38
+            ],
+            "b_mm": [
+              40.6,
+              146.38
+            ],
+            "layer": "B",
+            "mm": 0.4,
+            "net": "/01_POWER_TREE/USB_VBUS_RAW",
+            "width_mm": 0.5
+          },
+          "is_evidence_cut": false,
+          "netclass": "VBUS_CHG",
+          "opens": false,
+          "reason": "NO_BODY_VIA_SITE"
+        },
+        {
+          "cut": {
+            "a_mm": [
+              47.5,
+              147.3
+            ],
+            "b_mm": [
+              15.2,
+              147.2
+            ],
+            "layer": "I2",
+            "mm": 32.3002,
+            "net": "/SPI_B_SCK",
+            "width_mm": 0.2
+          },
+          "is_evidence_cut": false,
+          "netclass": "Default",
+          "opens": false,
+          "reason": "NO_BODY_VIA_SITE"
+        },
+        {
+          "cut": {
+            "a_mm": [
+              41.0,
+              143.0
+            ],
+            "b_mm": [
+              41.0,
+              146.38
+            ],
+            "layer": "B",
+            "mm": 3.38,
+            "net": "/01_POWER_TREE/USB_VBUS_RAW",
+            "width_mm": 0.5
+          },
+          "is_evidence_cut": false,
+          "netclass": "VBUS_CHG",
+          "opens": false,
+          "reason": "NO_BODY_VIA_SITE"
+        },
+        {
+          "cut": {
+            "a_mm": [
+              41.0,
+              146.38
+            ],
+            "b_mm": [
+              41.0,
+              143.0
+            ],
+            "layer": "B",
+            "mm": 3.38,
+            "net": "/01_POWER_TREE/USB_VBUS_RAW",
+            "width_mm": 0.5
+          },
+          "is_evidence_cut": false,
+          "netclass": "VBUS_CHG",
+          "opens": false,
+          "reason": "NO_BODY_VIA_SITE"
+        },
+        {
+          "cut": {
+            "a_mm": [
+              45.4,
+              146.38
+            ],
+            "b_mm": [
+              41.0,
+              146.38
+            ],
+            "layer": "B",
+            "mm": 4.4,
+            "net": "/01_POWER_TREE/USB_VBUS_RAW",
+            "width_mm": 0.5
+          },
+          "is_evidence_cut": false,
+          "netclass": "VBUS_CHG",
+          "opens": false,
+          "reason": "NO_BODY_VIA_SITE"
+        },
+        {
+          "cut": {
+            "a_mm": [
+              38.68,
+              145.805
+            ],
+            "b_mm": [
+              38.675,
+              144.2
+            ],
+            "layer": "B",
+            "mm": 1.605,
+            "net": "Net-(J3-SHIELD)",
+            "width_mm": 0.3
+          },
+          "is_evidence_cut": false,
+          "netclass": "Default",
+          "opens": false,
+          "reason": "NO_BODY_VIA_SITE"
+        },
+        {
+          "cut": {
+            "a_mm": [
+              40.75,
+              147.325
+            ],
+            "b_mm": [
+              48.7,
+              146.875
+            ],
+            "layer": "B",
+            "mm": 7.9627,
+            "net": "Net-(J3-SHIELD)",
+            "width_mm": 0.3
+          },
+          "is_evidence_cut": false,
+          "netclass": "Default",
+          "opens": false,
+          "reason": "NO_BODY_VIA_SITE"
+        },
+        {
+          "cut": {
+            "a_mm": [
+              41.25,
+              145.35
+            ],
+            "b_mm": [
+              41.25,
+              147.0
+            ],
+            "layer": "F",
+            "mm": 1.65,
+            "net": "Net-(J3-CC2)",
+            "width_mm": 0.2
+          },
+          "is_evidence_cut": false,
+          "netclass": "Default",
+          "opens": false,
+          "reason": "NO_BODY_VIA_SITE"
+        },
+        {
+          "cut": {
+            "a_mm": [
+              41.25,
+              146.38
+            ],
+            "b_mm": [
+              41.25,
+              145.35
+            ],
+            "layer": "F",
+            "mm": 1.03,
+            "net": "Net-(J3-CC2)",
+            "width_mm": 0.2
+          },
+          "is_evidence_cut": false,
+          "netclass": "Default",
+          "opens": false,
+          "reason": "NO_BODY_VIA_SITE"
+        },
+        {
+          "cut": {
+            "a_mm": [
+              41.25,
+              147.0
+            ],
+            "b_mm": [
+              40.975,
+              147.275
+            ],
+            "layer": "F",
+            "mm": 0.3889,
+            "net": "Net-(J3-CC2)",
+            "width_mm": 0.2
+          },
+          "is_evidence_cut": false,
+          "netclass": "Default",
+          "opens": false,
+          "reason": "NO_BODY_VIA_SITE"
+        },
+        {
+          "cut": {
+            "a_mm": [
+              41.1,
+              144.9
+            ],
+            "b_mm": [
+              40.8,
+              145.0
+            ],
+            "layer": "F",
+            "mm": 0.3162,
+            "net": "/01_POWER_TREE/USB_D_CONN_N",
+            "width_mm": 0.25
+          },
+          "is_evidence_cut": false,
+          "netclass": "USB_D",
+          "opens": false,
+          "reason": "NO_BODY_VIA_SITE"
+        },
+        {
+          "cut": {
+            "a_mm": [
+              41.6,
+              144.9
+            ],
+            "b_mm": [
+              41.1,
+              144.9
+            ],
+            "layer": "F",
+            "mm": 0.5,
+            "net": "/01_POWER_TREE/USB_D_CONN_N",
+            "width_mm": 0.25
+          },
+          "is_evidence_cut": false,
+          "netclass": "USB_D",
+          "opens": false,
+          "reason": "NO_BODY_VIA_SITE"
+        },
+        {
+          "cut": {
+            "a_mm": [
+              42.6,
+              144.9
+            ],
+            "b_mm": [
+              41.1,
+              144.9
+            ],
+            "layer": "F",
+            "mm": 1.5,
+            "net": "/01_POWER_TREE/USB_D_CONN_N",
+            "width_mm": 0.25
+          },
+          "is_evidence_cut": false,
+          "netclass": "USB_D",
+          "opens": false,
+          "reason": "NO_BODY_VIA_SITE"
+        }
+      ],
+      "reproduces_evidence_cut": true,
+      "rung": {
+        "clr": 200000,
+        "name": "floor",
+        "needs_licence": false,
+        "via_dia": 500000,
+        "via_drill": 200000,
+        "width": 150000
+      },
+      "uncited_openers": [
+        "Net-(J3-CC2)"
+      ],
+      "verdict": "SOLE_CUT"
+    }
+  ],
+  "max_mm": 8.0,
+  "method": "read-only; screen_segment_evict.land_field builds the lattice, screen_segment_evict.candidates the list, and screen_segment_evict.try_island under Cuts is QUESTION 2's own body -- every trial reverted.  Citations are grepped out of checks/*.py, verify_promotion.py, protected_copper.py and the board's .kicad_dru, never listed here",
+  "question": "screen_segment_evict stops at the FIRST candidate track whose single cut opens a plane land, nearest-first, and every instrument downstream inherits that choice.  Which OTHER single cuts open the same land, and what does this repository's own contracts say about each cut net?",
+  "rung": "floor",
+  "schema": 1
+}

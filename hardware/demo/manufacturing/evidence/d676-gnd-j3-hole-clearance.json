@@ -1,0 +1,220 @@
+{
+  "finding": "every one of the ELEVEN new hole_clearance errors is against ONE object: J3's own NPTH shell post at (40.110, 145.305), under the board's 0.250 mm hole clearance.  The four J3 GND pads ALREADY sit 0.1944 mm from those posts on the authority -- four of the five INHERITED hole_clearance errors -- so the land this transaction escapes from is itself inside the exclusion ring, and the only via site that opens it is 0.2412 mm from the same post",
+  "inherited": [
+    {
+      "a": "Pad 4 [GND] of MK1 on B.Cu",
+      "a_xy": {
+        "x": 4.0,
+        "y": 97.0
+      },
+      "actual_mm": 0.0,
+      "b": "NPTH pad of MK1",
+      "b_xy": {
+        "x": 4.0,
+        "y": 97.0
+      }
+    },
+    {
+      "a": "Pad A1 [GND] of J3 on F.Cu",
+      "a_xy": {
+        "x": 46.2,
+        "y": 146.38
+      },
+      "actual_mm": 0.1944,
+      "b": "NPTH pad of J3",
+      "b_xy": {
+        "x": 45.89,
+        "y": 145.305
+      }
+    },
+    {
+      "a": "Pad B12 [GND] of J3 on F.Cu",
+      "a_xy": {
+        "x": 46.2,
+        "y": 146.38
+      },
+      "actual_mm": 0.1944,
+      "b": "NPTH pad of J3",
+      "b_xy": {
+        "x": 45.89,
+        "y": 145.305
+      }
+    },
+    {
+      "a": "Pad A12 [GND] of J3 on F.Cu",
+      "a_xy": {
+        "x": 39.8,
+        "y": 146.38
+      },
+      "actual_mm": 0.1944,
+      "b": "NPTH pad of J3",
+      "b_xy": {
+        "x": 40.11,
+        "y": 145.305
+      }
+    },
+    {
+      "a": "Pad B1 [GND] of J3 on F.Cu",
+      "a_xy": {
+        "x": 39.8,
+        "y": 146.38
+      },
+      "actual_mm": 0.1944,
+      "b": "NPTH pad of J3",
+      "b_xy": {
+        "x": 40.11,
+        "y": 145.305
+      }
+    }
+  ],
+  "inherited_errors": 5,
+  "new": [
+    {
+      "a": "Via [GND] on F.Cu - B.Cu",
+      "a_xy": {
+        "x": 39.8,
+        "y": 144.55
+      },
+      "actual_mm": 0.2412,
+      "b": "NPTH pad of J3",
+      "b_xy": {
+        "x": 40.11,
+        "y": 145.305
+      }
+    },
+    {
+      "a": "Via [GND] on F.Cu - B.Cu",
+      "a_xy": {
+        "x": 39.8,
+        "y": 144.55
+      },
+      "actual_mm": 0.2412,
+      "b": "NPTH pad of J3",
+      "b_xy": {
+        "x": 40.11,
+        "y": 145.305
+      }
+    },
+    {
+      "a": "Via [GND] on F.Cu - B.Cu",
+      "a_xy": {
+        "x": 39.8,
+        "y": 144.55
+      },
+      "actual_mm": 0.2412,
+      "b": "NPTH pad of J3",
+      "b_xy": {
+        "x": 40.11,
+        "y": 145.305
+      }
+    },
+    {
+      "a": "Via [GND] on F.Cu - B.Cu",
+      "a_xy": {
+        "x": 39.8,
+        "y": 144.55
+      },
+      "actual_mm": 0.2412,
+      "b": "NPTH pad of J3",
+      "b_xy": {
+        "x": 40.11,
+        "y": 145.305
+      }
+    },
+    {
+      "a": "Via [GND] on F.Cu - B.Cu",
+      "a_xy": {
+        "x": 39.8,
+        "y": 144.55
+      },
+      "actual_mm": 0.2412,
+      "b": "NPTH pad of J3",
+      "b_xy": {
+        "x": 40.11,
+        "y": 145.305
+      }
+    },
+    {
+      "a": "Via [GND] on F.Cu - B.Cu",
+      "a_xy": {
+        "x": 39.8,
+        "y": 144.55
+      },
+      "actual_mm": 0.2412,
+      "b": "NPTH pad of J3",
+      "b_xy": {
+        "x": 40.11,
+        "y": 145.305
+      }
+    },
+    {
+      "a": "Track [GND] on F.Cu, length 0.3448 mm",
+      "a_xy": {
+        "x": 39.65,
+        "y": 144.8875
+      },
+      "actual_mm": 0.2195,
+      "b": "NPTH pad of J3",
+      "b_xy": {
+        "x": 40.11,
+        "y": 145.305
+      }
+    },
+    {
+      "a": "Track [GND] on F.Cu, length 0.5580 mm",
+      "a_xy": {
+        "x": 39.65,
+        "y": 145.9625
+      },
+      "actual_mm": 0.2198,
+      "b": "NPTH pad of J3",
+      "b_xy": {
+        "x": 40.11,
+        "y": 145.305
+      }
+    },
+    {
+      "a": "Track [GND] on F.Cu, length 0.2500 mm",
+      "a_xy": {
+        "x": 39.5,
+        "y": 145.425
+      },
+      "actual_mm": 0.21,
+      "b": "NPTH pad of J3",
+      "b_xy": {
+        "x": 40.11,
+        "y": 145.305
+      }
+    },
+    {
+      "a": "Track [GND] on F.Cu, length 0.1741 mm",
+      "a_xy": {
+        "x": 39.5,
+        "y": 145.175
+      },
+      "actual_mm": 0.216,
+      "b": "NPTH pad of J3",
+      "b_xy": {
+        "x": 40.11,
+        "y": 145.305
+      }
+    },
+    {
+      "a": "Track [GND] on F.Cu, length 0.1526 mm",
+      "a_xy": {
+        "x": 39.5625,
+        "y": 145.0125
+      },
+      "actual_mm": 0.2163,
+      "b": "NPTH pad of J3",
+      "b_xy": {
+        "x": 40.11,
+        "y": 145.305
+      }
+    }
+  ],
+  "new_errors": 11,
+  "question": "the GND J3.A12/B1 transaction is DRC-legal on copper -- why does the gate refuse it",
+  "rule_mm": 0.25,
+  "schema": 1
+}

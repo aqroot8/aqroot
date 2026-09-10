@@ -169,6 +169,18 @@ CONTRACTS = (
 )
 BY_BASENAME = ("board", "schematic", "guard", "pre_board")
 
+# D-676.  A CONTRACT WHOSE INPUT MOVED DID NOT REGRESS -- IT WAS ASKED ANOTHER
+# QUESTION.  `pour_partition_contract.py` takes its PRE board from a git
+# revision, `HEAD` by default, so the report a promoting decision commits as a
+# baseline names an input that resolves elsewhere the moment that promotion is
+# committed.  D-676 read `$.results.PP2.admitted: 0 vs 1 entries` against a
+# byte-identical board for precisely that reason.  When a top-level key in this
+# tuple differs, the two reports are not two answers to one question and the
+# row says INCOMPARABLE rather than DIFFERS.  `all_identical` keeps its old,
+# strict meaning; `all_identical_where_comparable` is the reading a framework
+# decision needs.
+INPUT_KEYS = ("ref_commit",)
+
 
 def norm(doc, path=()):
     """The document with path-typed fields reduced to their basenames."""
@@ -281,12 +293,34 @@ def main():
             continue
         old = json.loads(ref.read_text())
         d = first_diff(norm(cur), norm(old))
+        moved = [k for k in INPUT_KEYS
+                 if k in cur or k in old
+                 if cur.get(k) != old.get(k)]
+        # AND SAY WHAT ELSE MOVED.  An INCOMPARABLE row whose only report is
+        # the input key would hide the substantive difference behind it, so
+        # the same diff is taken again with the input keys removed from both.
+        rest = None
+        if moved:
+            strip = lambda doc: {k: v for k, v in doc.items()
+                                 if k not in INPUT_KEYS}
+            rest = first_diff(norm(strip(cur)), norm(strip(old)))
         row.update(baseline=ref.name, identical=(d is None), difference=d,
-                   baseline_verdict=old.get(field))
+                   baseline_verdict=old.get(field),
+                   comparable=not (moved and d is not None),
+                   difference_excluding_inputs=rest,
+                   inputs_moved={k: [old.get(k), cur.get(k)] for k in moved}
+                                or None)
         rows.append(row)
-        print(" %-17s %-6s  %s" % (name, str(row["verdict"]),
-                                   "IDENTICAL to %s" % a.baseline if d is None
-                                   else "DIFFERS: %s" % d[:110]),
+        if d is None:
+            verdict_text = "IDENTICAL to %s" % a.baseline
+        elif not row["comparable"]:
+            verdict_text = ("INCOMPARABLE (%s moved); rest: %s"
+                            % (",".join(moved),
+                               (row["difference_excluding_inputs"]
+                                or "IDENTICAL")[:80]))
+        else:
+            verdict_text = "DIFFERS: %s" % d[:110]
+        print(" %-17s %-6s  %s" % (name, str(row["verdict"]), verdict_text),
               file=sys.stderr, flush=True)
 
     doc = dict(schema=1, baseline=a.baseline,
@@ -300,6 +334,8 @@ def main():
                contracts_without_baseline=sum(1 for r in rows if r["ran"]
                                               and r.get("identical") is None),
                contracts_run=len(rows),
+               contracts_incomparable=sum(1 for r in rows
+                                          if r.get("comparable") is False),
                question=("does this framework change move ANY standing "
                          "contract, on a board whose sha256 did not change"),
                method=("each contract re-run now and compared FIELD BY FIELD "
@@ -309,6 +345,11 @@ def main():
                        "the path as typed"),
                all_ran=all(r["ran"] for r in rows),
                all_identical=all(r.get("identical") is True for r in rows),
+               # D-676: the same question asked only of the rows whose inputs
+               # did not move under them.  A framework decision reads THIS.
+               all_identical_where_comparable=all(
+                   r.get("identical") is True for r in rows
+                   if r.get("comparable") is not False),
                # VACUOUS means: every contract ran and passed and NOT ONE was
                # diffed, which is what this harness reported for D-633 through
                # D-663 without ever saying so in one word.

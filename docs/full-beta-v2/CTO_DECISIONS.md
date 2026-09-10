@@ -1,3 +1,264 @@
+# D-676 · 2026-09-10 · Demo — THE USB-C RECEPTACLE'S OWN MOUNTING POSTS BOX IN ITS GROUND CONTACTS, AND SIXTEEN BARRELS WERE SPENT AT A WIDTH THE GATE DOES NOT USE
+
+    authority  28935c75f4747bac0ad2a062977c4ad13e7e48ec98169529c1d2db4f29f8a5b3  UNCHANGED
+    retained open edges 26 -> 26      open retained nets 15 -> 15
+    connected retained nets 158       raw board ratsnest 42
+    `hardware/beta-v2`, `hardware/demo/kicad` and `hardware/demo/fab` UNTOUCHED
+    (`git status --short` empty for all three).
+
+**NO COPPER PROMOTED — the transaction was DRAWN, GATED and REFUSED on a named
+physical defect.**  One new tracked read-only screen, one add-only flag on an
+existing read-only screen, one add-only key on a standing contract and one
+add-only classification in the standing-suite harness.  No promoting instrument
+was touched.  Standing suite **14/14 RAN, 13/13 COMPARABLE IDENTICAL to
+`d675`, `all_identical_where_comparable` true, 1 INCOMPARABLE and NAMED,
+`vacuous` false** (`evidence/d676-contract-regression.json`); baselines emitted
+for D-677.  `protected_copper.py` **IDENTICAL**.
+
+## 1. D-675's NEXT ITEM 1 IS VACUOUS ON BOTH TARGETS IT NAMED
+
+D-675 closed: *"`--bond-pad` IS NOW A PROVEN `PP2` LEVER AND IT HAS NOT BEEN
+SWEPT.  Every `pour_severs` / `BOND_UNDER_PRICED` refusal on this board was
+taken before a bond barrel was ever offered to the fragment.  Re-ask
+`BQ25185_SYS C26.2` and `GND J3.A12/B1` with `--split-priced
+--split-bond-pad`."*  **Neither land has a `pour_severs` refusal.**  Both were
+re-measured on the current authority with `--split-priced`:
+
+    land                        rounds that laid a stitch   pour_severs   refusal
+    BQ25185_SYS C26.2           1 of 2                      null          RELAY NO_PATH x2
+    GND J3.A12/B1               6 of 6                      null          RELAY NO_PATH x6
+
+(`evidence/d676-relay-bq-c26.json`, `evidence/d676-relay-gnd-j3-cheap-rung.json`)
+
+A bond barrel raises the tube from a **fragment pad to a landing barrel**.
+Where no pour is split there is no fragment, `PP2` never prices one, and
+`--split-bond-pad` changes nothing.  **The lever was prescribed for a refusal
+class neither land is in, and the artifacts that say so were already on disk.**
+
+## 2. D-675's NEXT ITEM 2 IS SPENT, AND THE SIXTEEN BARRELS WERE ALWAYS GOING TO REFUSE
+
+D-640's cheap rung — *"`--joint-tries 6 --joint-knockout-mm 0.35`, or `--grid
+50000`"* — had never been run on `GND J3.A12/B1`.  It was run.  **Six distinct
+barrel sites, every stitch laid (2.662 – 3.369 mm of `F.Cu`), every
+`Net-(J3-CC2)` relay `NO_PATH`.**  With D-638's ten that is **sixteen barrel
+sites on one land**.
+
+**AND D-667 WROTE THE SIGNATURE THAT PREDICTS THEM, THIRTY-EIGHT DECISIONS
+AGO.**  `screen_relay_wall.py`'s own docstring: *"A `nolane` answer at the OLD
+length with ZERO vias is the loudest result here: it means the router put the
+chain back where it was, so that chain has exactly one path in that pocket and
+a reservation over it is unsatisfiable by construction."*  D-638's BARE arm
+reported exactly that for this land at 0.050 mm and again at 0.025 mm —
+`Net-(J3-CC2)`, **5.475 mm against 5.475 mm, zero vias** — and it reproduces on
+today's board to the micron (`evidence/d676-bare-gnd-j3.json`).  Nobody read
+the two files together, because they are two files.
+
+`BQ25185_SYS C26.2` is a DIFFERENT refusal and the same probe separates them:
+its bare arm relays all three cut nets but puts `Net-(U12-PS_SYNC)` back on a
+**different** path (2.8009 mm against 2.7036, zero vias), so that pocket has
+slack (`evidence/d676-bare-bq-c26.json`).  Its wall is that it has exactly ONE
+body via site: banning both refusing nets from the cut pool cuts twenty tracks
+and still returns `SEGMENT_WALL / NO_BODY_VIA_SITE`
+(`evidence/d676-segment-evict-bq-c26-ban.json`).  D-641's cut-set retry is
+spent there.
+
+## 3. THE READER THAT WOULD HAVE ANSWERED BOTH IN MILLISECONDS
+
+New tracked **`screen_refusal_class.py`**.  It loads no board and routes
+nothing: it reads `screen_relay_transaction.py` and `screen_segment_evict.py`
+artifacts — files a decision already paid for — and classifies each land's
+refusal, naming the levers that class admits and the levers it makes VACUOUS,
+with the measurement behind each vacuity claim.
+
+    NO_SITE      no legal barrel in the net's own body pour, cut or uncut
+    POUR_PRICE   a stitch was laid, it SPLIT a foreign pour, the split refused
+                 on price                       <- the ONLY class --bond-pad touches
+    RELAY        a stitch was laid, no pour severed, a cut net would not go back
+    LANE_UNSAT   as RELAY, and the BARE arm returns the chain's own geometry
+                 with zero vias (D-667)
+    COPPER       the BARE arm refuses with NOTHING reserved
+    CANDIDATE    a segment-evict opened and relaid behind its DISC and at the
+                 DRU FLOOR rung -- neither is the transaction
+    CLOSED / CLOSED_AT_FLOOR                     (section 5)
+
+**THE MERGE IS THE INSTRUMENT.**  A bare probe and a joint search are two
+files, and `LANE_UNSAT` is only visible when they are read together.  Merged
+over the 41 classifiable artifacts in `evidence/`, `GND J3.A12` reads
+`rounds_laid: 16` with `--bond-pad` marked vacuous; every source's board
+`sha256` is carried, so a probe taken on `5715bf5c` is never mistaken for one
+taken on the authority (`evidence/d676-refusal-class-census.json`).  It
+reproduces the one land where `--bond-pad` DID work — D-674's `+3V3 R39.1` run
+reads **`POUR_PRICE`, `bond_pad_applicable: true`**, and D-675's bonded run
+reads `CLOSED` at 0.400 mm.
+
+## 4. THE CUT CENSUS WAS CAPPED BY DISTANCE, AND THE CUT THAT OPENS THIS LAND WAS OUTSIDE THE CAP
+
+D-640 recorded `GND J3.A12/B1  SOLE_CUT  Net-(J3-CC2)  ZERO rules, ZERO cites
+** UNCITED **` and D-675 repeated it as *"still the only UNCITED cut on the
+board."*  Re-run on the authority at 0.050 mm, `screen_cut_choice.py`
+reproduces it exactly: **20 candidates, 1 opener, `Net-(J3-CC2)`**
+(`evidence/d676-cut-choice-gnd-j3.json`).
+
+**`Net-(J3-CC1)` IS NOT IN THE TWENTY.**  The candidate pool is nearest-first
+under `--cap`, and CC1's track sits farther out.  Ban `Net-(J3-CC2)` from the
+pool and four more candidates enter — and one of them opens a **different**
+site with a **different** price:
+
+    cut     ONE F.Cu track  Net-(J3-CC1)  (43.325,144.425)->(36.2,144.425)  7.125 mm
+    stitch  GND F.Cu 1.621 mm  J3.A12 -> barrel at (39.800, 144.550)
+    relay   Net-(J3-CC1)  7.125 -> 7.5484 mm  F.Cu only  ZERO vias   +0.4234 mm
+    severs  pour_severs []   antipad_severs []
+
+`Net-(J3-CC1)` is `Default` class and is cited by nothing — no `checks/*.py`,
+no `verify_promotion.py`, no `protected_copper.py`, no `.kicad_dru` rule.
+**`SOLE_CUT` was a statement about the twenty NEAREST tracks, not about the
+board**, and the same caveat applies to every `SOLE_CUT` this repository has
+recorded.
+
+## 5. THE FLOOR RUNG IS NOT THE GATE'S WIDTH, AND THIS LAND CLOSES ONLY AT THE FLOOR
+
+`rung: floor` means the `.kicad_dru` CLASS floor.  The DRU carries **no width
+override for `GND`**, so its floor is the BOARD minimum, **0.150 mm** — while
+the `GND` netclass publishes **0.300 mm / 0.60 / 0.30**, and that is what the
+gate lays: every `GND` stitch the gate has actually promoted near `C37.2` and
+`U9.16` measures **0.300 mm on the authority board**, though D-639's screening
+artifacts for both lands recorded 0.150.  Those two survived the widening.  New
+add-only **`screen_relay_transaction.py --stitch-rung WIDTH:VIA:DRILL`** states
+the rung the writer will be given, and the ladder is unambiguous
+(`evidence/d676-gnd-j3-rung-ladder.json`):
+
+    width   barrel      grid      verdict
+    0.150   0.50/0.20   0.050     CLOSED -- 1.621 mm stitch at (39.800,144.550)
+    0.200   0.50/0.20   0.050     NO_BODY_VIA_SITE
+    0.200   0.60/0.30   0.050     NO_BODY_VIA_SITE
+    0.300   0.50/0.20   0.050     NO_BODY_VIA_SITE
+    0.300   0.60/0.30   0.050     NO_BODY_VIA_SITE
+    0.300   0.60/0.30   0.025     NO_BODY_VIA_SITE
+
+Neither a wider window (`--max-mm 14.0`, same site, same refusal) nor a finer
+lattice opens it.  With the flag ABSENT the search is the one every prior
+decision ran: the same run reads **byte-identical object for object**, gaining
+exactly one key, `rung`, and nothing else
+(`evidence/d676-relay-gnd-j3-cc1-flag-off-control.json` diffed field by field
+against `evidence/d676-relay-gnd-j3-cc1-floor.json`).
+
+**AND 0.150 mm IS NOT AN OWNER QUESTION HERE, BECAUSE D-607 ALREADY TOOK IT.**
+D-607 promoted `GND J1.43` — a ground contact on the display FPC connector —
+*"at 0.150 mm, board setup's own `min_track_width`, because the land does not
+open at 0.200 mm — measured, at the same barrel — and an open ground contact on
+the display connector is worse than a thin one."*  Nine `GND` tracks at
+0.150 mm entered the authority at that commit (`964573d1`) and are on the board
+today; the board carries 9 at 0.150, 10 at 0.200 and 410 at 0.300.  D-610 and
+D-630's refusals of 0.150 mm were about `U11.9` `/BQ25185_STAT1`, a
+`Default`-class SIGNAL land, which is a different question.  The ampacity half
+is PRICED here where D-607 did not price it: IPC-2221B at this stack-up gives
+0.150 mm **0.602 A** at ΔT = 10 K, above the 0.5 A `VBUS_CHG` ILIM500 bar that
+bounds anything this receptacle returns, and `J3.A1`/`J3.B12` are already in
+the main `GND` body group, so this is a PARALLEL return.  **So the transaction
+was put to the authoritative gate.**
+
+## 6. THE GATE ACCEPTED FOURTEEN CLAUSES, IMPROVED THE BOARD, AND REFUSED — AND THE REFUSAL IS A REAL DEFECT
+
+    python3 route_maze_batch.py "GND" \
+        --detour-spec w/d676/gnd-j3-ban-plan.json \
+        --guard w/d676/gnd-j3-ban-guard.json \
+        --body-landing --grid 50000 --work w/d676/gate1
+
+    gate_clauses  14 of 15 true          refused_clauses ["inherited_within_baseline"]
+    connectivity  retained open edges 26 -> 25   nets_improved ["GND"]   nets_regressed []
+    attributable_drc []   authoritative_unchanged true   promotion_candidate FALSE
+
+`board_improved`, `no_regression`, `every_detour_relaid`, `pour_partition`,
+`preservation` and `attributable_drc` all PASS.  The single refusal is the
+INHERITED DRC baseline: **`hole_clearance` 5 -> 16**
+(`evidence/d676-gate-gnd-j3-cc1.json`, `evidence/d676-gnd-j3-hole-clearance.json`).
+
+**ALL ELEVEN NEW ERRORS ARE AGAINST ONE OBJECT: `J3`'s OWN NPTH SHELL POST AT
+(40.110, 145.305).**  The board's hole clearance is 0.250 mm; the barrel that
+opens the land sits **0.2412 mm** from that post and five of the stitch's track
+segments sit **0.210 – 0.220 mm** from it.
+
+**AND THE LAND WAS ALREADY INSIDE THAT RING BEFORE THIS RUN.**  Four of the
+five INHERITED `hole_clearance` errors are `J3`'s own `GND` pads against `J3`'s
+own NPTH posts — `A1`, `B12`, `A12` and `B1`, each at **0.1944 mm** against the
+same 0.250 mm rule.  (The fifth is `MK1.4`, pad-on-its-own-NPTH at 0.000 mm,
+the mechanical wall D-672 already named.)
+
+**So `GND J3.A12/B1` is not a routing wall, not a width question and not a
+relay question.  It is a LAND-PATTERN conflict in the `J3` USB-C receptacle
+footprint**: the receptacle's through-hole shell posts are closer to its own
+ground contacts than the board's hole-clearance rule allows, and the only via
+site that reaches those contacts is inside the same exclusion ring.  The levers
+are a `J3` footprint revision, a board-setup hole-clearance ruling that would
+have to cover the four pads ALREADY in violation, or a different receptacle —
+all mechanical / owner scope, none of them routing.  **Sixteen barrels, four
+screens and three decisions were spent on a land whose blocker is 0.0556 mm of
+NPTH-to-pad clearance printed in its own footprint.**
+
+## 7. A STANDING CONTRACT NAMED ITS INPUT WITH A SYMBOL, AND THE SYMBOL MOVED
+
+The suite came back `all_identical False` on a board whose `sha256` did not
+change.  The diff was `$.results.PP2.admitted: 0 vs 1 entries` — and it is not
+a regression.  `pour_partition_contract.py` is the only contract in the
+standing suite whose PRE input is a **git revision**, `--ref HEAD` by default.
+D-675 emitted its baseline BEFORE committing its own promotion, so its `HEAD`
+was the pre-promotion board and it correctly found one admitted `GND` split;
+D-676's `HEAD` is the promoted board, pre equals post, and there is no split to
+find.  **The report recorded the symbol `HEAD` and not the commit, so no
+promotion's baseline could ever be reproduced afterwards.**
+
+Fixed in two add-only pieces: the contract resolves `--ref` and records
+`ref_commit`; the harness carries `INPUT_KEYS`, and when a recorded input moved
+under a row it reports **`INCOMPARABLE`** with `inputs_moved` and
+`difference_excluding_inputs` rather than `DIFFERS`, adds
+`contracts_incomparable`, and adds `all_identical_where_comparable` — the
+reading a framework decision needs — while `all_identical` keeps its old strict
+meaning and the exit code is unchanged.  Today: **13/13 comparable IDENTICAL,
+`all_identical_where_comparable` true, 1 INCOMPARABLE naming
+`ref_commit null -> daee7e3a`.**
+
+## NEXT, IN ORDER OF LEVERAGE
+
+1. **`GND J3.A12/B1` IS RETIRED AS A ROUTING TARGET.**  It is a `J3` land-
+   pattern / hole-clearance conflict (§6), it is the last `GND` land anyone was
+   asking a router about, and no further barrel, lattice, rung, cut set or
+   eviction can touch it.  The board's hole clearance is 0.250 mm and `J3`'s
+   own four `GND` pads sit at 0.1944 mm from its own NPTH posts on the
+   AUTHORITY — a fabrication item worth a footprint review in its own right,
+   independently of connectivity.
+2. **RUN `screen_refusal_class.py` BEFORE PRESCRIBING A LEVER.**  Two of
+   D-675's three ranked items were refuted by files already on disk.  Re-emit
+   `evidence/d676-refusal-class-census.json` each decision.
+3. **`--cap` IS A DISTANCE BOUND AND EVERY `SOLE_CUT` ON THIS BOARD INHERITED
+   IT** (§4).  Re-ask the other `SOLE_CUT` lands with `--ban-net` on their own
+   sole cut before believing the word.
+4. **`/01_POWER_TREE/BQ25185_SYS` remains PARKED** at 6 of the board's 26 open
+   edges, `RELAY` class with exactly one body via site and D-641's retry spent;
+   D-672 §5's converter-cluster refloorplan is still the lever, and it is
+   the **#1 fabrication blocker**.
+5. `/I2C_SCL_INT`'s `U14.7 <-> J1.44` remains the one OPEN OWNER DECISION,
+   RECORDED NOT TAKEN.  `U9.14`, `U11.9`, `U11.3`, `MK1.4` and `/I2S_LRCLK`
+   are unchanged.
+6. `hardware/demo/fab` is **FRESH at `28935c75`** and this decision promotes
+   nothing that stales it.
+
+Evidence, all under `hardware/demo/manufacturing/evidence/`:
+`d676-gate-gnd-j3-cc1.json`, `d676-gate-gnd-j3-cc1-drc.json`,
+`d676-gnd-j3-hole-clearance.json`, `d676-gnd-j3-rung-ladder.json`,
+`d676-refusal-class-census.json`, `d676-relay-bq-c26.json`,
+`d676-relay-gnd-j3-cheap-rung.json`, `d676-relay-gnd-j3-cc1-floor.json`,
+`d676-relay-gnd-j3-cc1-flag-off-control.json`, `d676-rung300-g50.json`,
+`d676-rung300-g25.json`, `d676-rung-200000_500000_200000.json`,
+`d676-rung-200000_600000_300000.json`,
+`d676-rung-300000_500000_200000.json`, `d676-bare-gnd-j3.json`,
+`d676-bare-bq-c26.json`, `d676-segment-evict-gnd-j3.json`,
+`d676-segment-evict-gnd-j3-ban-cc2.json`,
+`d676-segment-evict-gnd-j3-ban-max14.json`,
+`d676-segment-evict-gnd-j3-max14.json`, `d676-segment-evict-bq-c26.json`,
+`d676-segment-evict-bq-c26-ban.json`, `d676-cut-choice-gnd-j3.json`,
+`d676-routing-ledger.json`, `d676-contract-regression.json`, and the fourteen
+`d676-*-contract.json` baselines for D-677.
+
 # D-675 · 2026-09-09 · Demo — THE 3.3 V REGULATOR'S FEEDBACK DIVIDER IS CONNECTED TO THE RAIL IT SENSES: the 3.3% deficit was never a pour WIDTH, it was a MISSING BARREL, and the two instruments that would have said so were one `KeyError` and one wrong layer name from being unable to say anything
 
     authority  c3286d8fdd23b6bdb037de2a753051b3ac2aa2e5ccaba2e25ced3d39cf4884b2

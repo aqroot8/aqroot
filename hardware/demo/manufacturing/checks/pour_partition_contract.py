@@ -1167,7 +1167,26 @@ def main():
         pre = a.pre_board if a.pre_board else board_at(a.ref, tmp)
         res = compare(pre, Path(a.board))
     ok = all(res[k]["ok"] for k in ("PP1", "PP2", "PP3", "PP4"))
+    # D-676.  `ref` RECORDS THE SYMBOL AND THE SYMBOL MOVES.  This contract is
+    # the only one in the standing suite whose PRE input is a git revision, and
+    # it defaults to `HEAD` -- so the report a decision commits as a baseline
+    # names an input that means something else the moment that decision is
+    # committed.  D-676 read `PP2.admitted: 0 vs 1 entries` against a
+    # BYTE-IDENTICAL board for exactly this reason: D-675 emitted its baseline
+    # before its own promotion commit, so its `HEAD` was the pre-promotion
+    # board and D-676's was the promoted one.  Recording the RESOLVED commit
+    # costs one `git rev-parse` and lets the harness say INCOMPARABLE instead
+    # of DIFFERS.
+    ref_commit = None
+    if not a.pre_board:
+        try:
+            ref_commit = subprocess.run(
+                ["git", "-C", str(ROOT), "rev-parse", a.ref],
+                check=True, capture_output=True, text=True).stdout.strip()
+        except Exception:
+            ref_commit = None
     doc = dict(schema=1, ref=(str(a.pre_board) if a.pre_board else a.ref),
+               ref_commit=ref_commit,
                pre_board=str(a.pre_board) if a.pre_board else None,
                board=str(a.board), ok=ok, results=res)
     text = json.dumps(doc, indent=1, sort_keys=True, default=str)

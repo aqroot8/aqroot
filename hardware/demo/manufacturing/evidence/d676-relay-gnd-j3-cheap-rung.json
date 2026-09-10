@@ -1,0 +1,300 @@
+{
+  "arm": "joint",
+  "authoritative_unchanged": true,
+  "board": "/home/aqroot8/aqroot-demo/hardware/demo/kicad/aqroot-demo/aqroot-Beta-v2.kicad_pcb",
+  "board_sha256": "28935c75f4747bac0ad2a062977c4ad13e7e48ec98169529c1d2db4f29f8a5b3",
+  "evidence": "w/d676/evict-gnd-j3.json",
+  "evidence_sha256": "91bc8cc3abcbd4774fc4b45941f9c1f9fa9237ab12d813e7e02980cb7c315773",
+  "grid": 50000,
+  "lands": [
+    {
+      "arms": {
+        "joint": {
+          "all_relaid": false,
+          "antipad_severs": null,
+          "knockout_mm": 0.35,
+          "note": "no barrel in 6 tries left every cut net a corridor it could take without splitting a foreign pour",
+          "pour_severs": null,
+          "priced_against_foreign_pours": true,
+          "reservation": "none -- the stitch and the relay are searched TOGETHER, and a stitch that strands a relay is struck out and retried",
+          "rounds": [
+            {
+              "accepted": false,
+              "all_relaid": false,
+              "antipad_severs": null,
+              "pour_severs": null,
+              "relays": [
+                {
+                  "mm": null,
+                  "net": "Net-(J3-CC2)",
+                  "ok": false,
+                  "reason": "NO_PATH",
+                  "vias": null,
+                  "was_mm": 5.475
+                }
+              ],
+              "round": 1,
+              "split_bonds": null,
+              "split_price": null,
+              "stitch_layer": "F",
+              "stitch_mm": 2.662,
+              "stitch_ok": true,
+              "via_xy": [
+                37.7,
+                146.6
+              ]
+            },
+            {
+              "accepted": false,
+              "all_relaid": false,
+              "antipad_severs": null,
+              "pour_severs": null,
+              "relays": [
+                {
+                  "mm": null,
+                  "net": "Net-(J3-CC2)",
+                  "ok": false,
+                  "reason": "NO_PATH",
+                  "vias": null,
+                  "was_mm": 5.475
+                }
+              ],
+              "round": 2,
+              "split_bonds": null,
+              "split_price": null,
+              "stitch_layer": "F",
+              "stitch_mm": 3.016,
+              "stitch_ok": true,
+              "via_xy": [
+                37.45,
+                146.35
+              ]
+            },
+            {
+              "accepted": false,
+              "all_relaid": false,
+              "antipad_severs": null,
+              "pour_severs": null,
+              "relays": [
+                {
+                  "mm": null,
+                  "net": "Net-(J3-CC2)",
+                  "ok": false,
+                  "reason": "NO_PATH",
+                  "vias": null,
+                  "was_mm": 5.475
+                }
+              ],
+              "round": 3,
+              "split_bonds": null,
+              "split_price": null,
+              "stitch_layer": "F",
+              "stitch_mm": 3.016,
+              "stitch_ok": true,
+              "via_xy": [
+                37.25,
+                146.65
+              ]
+            },
+            {
+              "accepted": false,
+              "all_relaid": false,
+              "antipad_severs": null,
+              "pour_severs": null,
+              "relays": [
+                {
+                  "mm": null,
+                  "net": "Net-(J3-CC2)",
+                  "ok": false,
+                  "reason": "NO_PATH",
+                  "vias": null,
+                  "was_mm": 5.475
+                }
+              ],
+              "round": 4,
+              "split_bonds": null,
+              "split_price": null,
+              "stitch_layer": "F",
+              "stitch_mm": 3.369,
+              "stitch_ok": true,
+              "via_xy": [
+                37.2,
+                146.1
+              ]
+            },
+            {
+              "accepted": false,
+              "all_relaid": false,
+              "antipad_severs": null,
+              "pour_severs": null,
+              "relays": [
+                {
+                  "mm": null,
+                  "net": "Net-(J3-CC2)",
+                  "ok": false,
+                  "reason": "NO_PATH",
+                  "vias": null,
+                  "was_mm": 5.475
+                }
+              ],
+              "round": 5,
+              "split_bonds": null,
+              "split_price": null,
+              "stitch_layer": "F",
+              "stitch_mm": 3.179,
+              "stitch_ok": true,
+              "via_xy": [
+                37.65,
+                146.05
+              ]
+            },
+            {
+              "accepted": false,
+              "all_relaid": false,
+              "antipad_severs": null,
+              "pour_severs": null,
+              "relays": [
+                {
+                  "mm": null,
+                  "net": "Net-(J3-CC2)",
+                  "ok": false,
+                  "reason": "NO_PATH",
+                  "vias": null,
+                  "was_mm": 5.475
+                }
+              ],
+              "round": 6,
+              "split_bonds": null,
+              "split_price": null,
+              "stitch_layer": "F",
+              "stitch_mm": 3.349,
+              "stitch_ok": true,
+              "via_xy": [
+                37.0,
+                146.4
+              ]
+            }
+          ],
+          "slack_mm": null,
+          "split_bonds": null,
+          "split_price": null,
+          "split_priced": true,
+          "stitch": null,
+          "tracks": [],
+          "tries": 6
+        }
+      },
+      "body_landing": {
+        "body": [
+          "C1.1",
+          "C10.2",
+          "C11.2",
+          "C12.1",
+          "C13.2",
+          "C14.2",
+          "C15.2",
+          "C16.2"
+        ],
+        "body_pads": 251,
+        "cells": {
+          "B": 2430355,
+          "I1": 3750699,
+          "I4": 3750699
+        },
+        "erode": 0,
+        "total": 3750699
+      },
+      "cut_nets": [
+        "Net-(J3-CC2)"
+      ],
+      "cut_radius_mm": 2.0,
+      "cut_records": [
+        {
+          "a_mm": [
+            40.975,
+            147.275
+          ],
+          "b_mm": [
+            35.5,
+            147.275
+          ],
+          "layer": "F",
+          "mm": 5.475,
+          "net": "Net-(J3-CC2)",
+          "removed_mm": 3.9771,
+          "stubs_mm": [
+            [
+              [
+                40.975,
+                147.275
+              ],
+              [
+                39.6886,
+                147.275
+              ]
+            ],
+            [
+              [
+                35.7114,
+                147.275
+              ],
+              [
+                35.5,
+                147.275
+              ]
+            ]
+          ],
+          "whole_track": false,
+          "width_mm": 0.2
+        }
+      ],
+      "cut_tracks": 1,
+      "ends_inside_reserve": [
+        {
+          "d_mm": 3.3438,
+          "inside": false,
+          "net": "Net-(J3-CC2)",
+          "xy_mm": [
+            40.975,
+            147.275
+          ]
+        },
+        {
+          "d_mm": 2.3012,
+          "inside": false,
+          "net": "Net-(J3-CC2)",
+          "xy_mm": [
+            35.5,
+            147.275
+          ]
+        }
+      ],
+      "land": "GND:J3.A12",
+      "net": "GND",
+      "netclass": "GND",
+      "pads": [
+        "J3.A12"
+      ],
+      "reserve_clr_nm": 200000,
+      "site_mm": [
+        37.7,
+        146.6
+      ],
+      "stitch_pad": "J3.A12",
+      "stitch_via_dia_nm": 500000,
+      "stitch_via_drill_nm": 200000,
+      "stitch_width_nm": 150000,
+      "unmatched": [],
+      "verdict_measured": "SEGMENT_OPENS"
+    }
+  ],
+  "max_mm": 8.0,
+  "method": "read-only; the named tracks are held out of the obstacle model whole, the real maze3d.stitch_pad is laid with the same body certificate the measurement used, and each cut net is put back by maze3d.route_points between its own chain ends at the same budget -- every object proved by verify_laid, the barrel put through _antipad_severs, every trial reverted",
+  "question": "does a cut that opens a plane land go back when the reservation is the STITCH THAT WILL BE THERE instead of an all-layer keep-out disc big enough to swallow the relay's own two terminals",
+  "relay_own_layer": true,
+  "relay_slack_mm": null,
+  "rung": "floor",
+  "schema": 1,
+  "split_price_work": "w/d676/sp-gnd",
+  "split_priced": true
+}

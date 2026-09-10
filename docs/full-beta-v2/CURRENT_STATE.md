@@ -13,6 +13,93 @@
 > This file references DEVICE_SPEC rather than duplicating full specs.
 
 ## 1. Authoritative HEAD
+- **Demo D-676 (THE USB-C RECEPTACLE'S OWN MOUNTING POSTS BOX IN ITS GROUND
+  CONTACTS, AND SIXTEEN BARRELS WERE SPENT AT A WIDTH THE GATE DOES NOT USE):**
+  **NO COPPER PROMOTED — the transaction was DRAWN, GATED and REFUSED on a
+  named physical defect.**  Authority **UNCHANGED** at
+  `28935c75f4747bac0ad2a062977c4ad13e7e48ec98169529c1d2db4f29f8a5b3`; retained
+  open edges 26 -> 26, open retained nets 15 -> 15
+  (`evidence/d676-routing-ledger.json`).  `hardware/beta-v2`,
+  `hardware/demo/kicad` and `hardware/demo/fab` **UNTOUCHED**; one new tracked
+  read-only screen, one add-only flag on an existing read-only screen, one
+  add-only key on a standing contract, one add-only classification in the
+  standing-suite harness, no promoting instrument touched.  Standing suite
+  **14/14 RAN, 13/13 COMPARABLE IDENTICAL to `d675`,
+  `all_identical_where_comparable` true, 1 INCOMPARABLE and NAMED, `vacuous`
+  false** (`evidence/d676-contract-regression.json`); baselines emitted for
+  D-677.  `protected_copper.py` **IDENTICAL**.
+  **(1) `GND J3.A12/B1` IS RETIRED AS A ROUTING TARGET.**  D-640 called it *"the
+  best candidate on the board"*.  Its transaction was finally DRAWN — cut ONE
+  `Net-(J3-CC1)` `F.Cu` track, stitch `GND` 1.621 mm to a barrel at
+  (39.800, 144.550), relay `Net-(J3-CC1)` 7.125 -> 7.5484 mm with ZERO vias,
+  +0.4234 mm on an UNCITED `Default` net — and the gate accepted **14 of 15
+  clauses** with **retained open edges 26 -> 25, `nets_improved [GND]`,
+  `nets_regressed []`, `attributable_drc []`**, refusing on ONE:
+  `inherited_within_baseline`, `hole_clearance` **5 -> 16**.  **All eleven new
+  errors are against ONE object — `J3`'s own NPTH shell post at
+  (40.110, 145.305)** under the board's 0.250 mm hole clearance: the barrel is
+  0.2412 mm from it and five stitch segments are 0.210 – 0.220 mm.  **And the
+  land was already inside that ring**: four of the five INHERITED
+  `hole_clearance` errors are `J3`'s own `GND` pads `A1`/`B12`/`A12`/`B1` at
+  **0.1944 mm** from `J3`'s own NPTH posts, on the AUTHORITY.  It is a
+  LAND-PATTERN conflict in the `J3` USB-C receptacle footprint — a `J3`
+  footprint revision, a hole-clearance ruling that would have to cover the four
+  pads already in violation, or a different receptacle.  **Not routing.**  It
+  is also a fabrication item in its own right, independent of connectivity.
+  **(2) D-675's NEXT ITEM 1 WAS VACUOUS ON BOTH TARGETS IT NAMED.**
+  `--split-bond-pad` prices a SPLIT pour fragment, and neither `BQ25185_SYS
+  C26.2` nor `GND J3.A12/B1` splits one: `pour_severs` is **null in every one
+  of the seven rounds that laid a stitch** across both lands.  Both are RELAY
+  refusals.  **(3) ITEM 2 IS SPENT AND WAS PREDETERMINED.**  D-640's never-run
+  cheap rung gave six more barrel sites, all stitched, all
+  `Net-(J3-CC2)` `NO_PATH` — sixteen with D-638's ten — and D-667's own
+  `screen_relay_wall.py` docstring names the signature that predicts every one
+  of them: D-638's BARE arm returned the chain at **5.475 mm against 5.475 mm,
+  zero vias**, at 0.050 AND 0.025 mm, and it reproduces on today's board.
+  **(4) NEW READER, NO BOARD LOADED:** `screen_refusal_class.py` classifies a
+  land's refusal from artifacts already on disk — `NO_SITE` / `POUR_PRICE` /
+  `RELAY` / `LANE_UNSAT` / `COPPER` / `CANDIDATE` / `CLOSED` /
+  `CLOSED_AT_FLOOR` — and names the levers each class admits and makes VACUOUS,
+  each vacuity claim carrying its measurement.  Merging is the instrument: a
+  bare probe and a joint search are two files.  Census over 41 artifacts in
+  `evidence/d676-refusal-class-census.json`; it reproduces D-674's `+3V3 R39.1`
+  as `POUR_PRICE, bond_pad_applicable true` — the one land where `--bond-pad`
+  did work.
+  **(5) `SOLE_CUT` WAS A STATEMENT ABOUT THE TWENTY NEAREST TRACKS.**
+  `screen_cut_choice.py --cap 20` reproduces D-640's `Net-(J3-CC2)` SOLE_CUT
+  exactly — and `Net-(J3-CC1)`, the cut that actually opens a DIFFERENT site,
+  is not in the twenty.  Every `SOLE_CUT` this repository recorded inherited
+  that distance bound.
+  **(6) THE FLOOR RUNG IS NOT THE GATE'S WIDTH.**  The `.kicad_dru` has no
+  width override for `GND`, so `rung: floor` is the BOARD minimum 0.150 mm
+  while the netclass publishes 0.300; every `GND` stitch the gate has actually
+  promoted near `C37.2`/`U9.16` measures 0.300 mm.  New add-only
+  `screen_relay_transaction.py --stitch-rung WIDTH:VIA:DRILL` states the rung
+  the writer gets: this land closes ONLY at 0.150/0.50/0.20 and returns
+  `NO_BODY_VIA_SITE` at 0.200 and at 0.300, at 0.050 mm AND at 0.025 mm
+  (`evidence/d676-gnd-j3-rung-ladder.json`).  0.150 mm itself is CTO scope
+  under **D-607's standing ruling** (it promoted `GND J1.43` at 0.150 for the
+  same reason; nine such `GND` tracks are on the board today) and its ampacity
+  is PRICED at 0.602 A against a 0.5 A `VBUS_CHG` bar — which is why the gate
+  was run at all.
+  **(7) A STANDING CONTRACT NAMED ITS INPUT WITH A SYMBOL.**
+  `pour_partition_contract.py` takes its PRE board from `--ref HEAD` and
+  recorded the SYMBOL, so no promoting decision's baseline could be reproduced
+  after its own commit — D-676 read `PP2.admitted: 0 vs 1` against a
+  byte-identical board.  The contract now records `ref_commit`; the harness
+  carries `INPUT_KEYS` and reports **INCOMPARABLE** with `inputs_moved` and
+  `difference_excluding_inputs`, plus `contracts_incomparable` and
+  `all_identical_where_comparable`, leaving `all_identical` and the exit code
+  unchanged.
+  **NEXT, IN ORDER OF LEVERAGE:** (1) `GND J3.A12/B1` is CLOSED as a routing
+  question; its `J3` NPTH-to-pad clearance is a footprint item.  (2) Run
+  `screen_refusal_class.py` before prescribing any lever.  (3) Re-ask every
+  other `SOLE_CUT` land with `--ban-net` on its own sole cut.  (4)
+  `/01_POWER_TREE/BQ25185_SYS` remains **PARKED** at 6 of the board's 26 open
+  edges and is the **#1 fabrication blocker**; D-672 §5's converter-cluster
+  refloorplan is the lever.  (5) `/I2C_SCL_INT`'s `U14.7 <-> J1.44` remains the
+  one OPEN OWNER DECISION, RECORDED NOT TAKEN.  (6) `hardware/demo/fab` is
+  **FRESH at `28935c75`**.
 - **Demo D-675 (THE 3.3 V REGULATOR'S FEEDBACK DIVIDER IS CONNECTED TO THE RAIL
   IT SENSES):**  **COPPER PROMOTED.**  Authority
   `c3286d8fdd23b6bdb037de2a753051b3ac2aa2e5ccaba2e25ced3d39cf4884b2` ->

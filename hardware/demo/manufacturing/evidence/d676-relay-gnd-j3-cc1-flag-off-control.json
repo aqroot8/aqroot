@@ -1,0 +1,340 @@
+{
+  "arm": "joint",
+  "authoritative_unchanged": true,
+  "board": "/home/aqroot8/aqroot-demo/hardware/demo/kicad/aqroot-demo/aqroot-Beta-v2.kicad_pcb",
+  "board_sha256": "28935c75f4747bac0ad2a062977c4ad13e7e48ec98169529c1d2db4f29f8a5b3",
+  "evidence": "w/d676/evict-gnd-j3-ban.json",
+  "evidence_sha256": "f230920e6ff3747e4082c854b4ec964fa41b6472724799e3ada12c7e9efb7a4e",
+  "grid": 50000,
+  "lands": [
+    {
+      "arms": {
+        "joint": {
+          "all_relaid": true,
+          "antipad_severs": [],
+          "knockout_mm": 0.35,
+          "note": null,
+          "pour_severs": [],
+          "priced_against_foreign_pours": true,
+          "relay_geometry": {
+            "tracks": [
+              {
+                "a_nm": [
+                  36200000,
+                  144425000
+                ],
+                "b_nm": [
+                  42450000,
+                  143550000
+                ],
+                "lkey": "F",
+                "width_nm": 200000
+              },
+              {
+                "a_nm": [
+                  42450000,
+                  143550000
+                ],
+                "b_nm": [
+                  43325000,
+                  144425000
+                ],
+                "lkey": "F",
+                "width_nm": 200000
+              }
+            ],
+            "vias": []
+          },
+          "reservation": "none -- the stitch and the relay are searched TOGETHER, and a stitch that strands a relay is struck out and retried",
+          "rounds": [
+            {
+              "accepted": true,
+              "all_relaid": true,
+              "antipad_severs": [],
+              "pour_severs": [],
+              "relays": [
+                {
+                  "mm": 7.548389647758627,
+                  "net": "Net-(J3-CC1)",
+                  "ok": true,
+                  "reason": null,
+                  "vias": 0,
+                  "was_mm": 7.125
+                }
+              ],
+              "round": 1,
+              "split_bonds": null,
+              "split_price": null,
+              "stitch_layer": "F",
+              "stitch_mm": 1.621,
+              "stitch_ok": true,
+              "via_xy": [
+                39.8,
+                144.55
+              ]
+            }
+          ],
+          "slack_mm": null,
+          "split_bonds": null,
+          "split_price": null,
+          "split_priced": true,
+          "stitch": {
+            "layer": "F",
+            "mm": 1.621,
+            "ok": true,
+            "reason": null,
+            "via_xy": [
+              39.8,
+              144.55
+            ],
+            "via_xy_nm": [
+              39800000,
+              144550000
+            ],
+            "why": null
+          },
+          "stitch_geometry": {
+            "tracks": [
+              {
+                "a_nm": [
+                  39650000,
+                  145962500
+                ],
+                "b_nm": [
+                  39500000,
+                  145425000
+                ],
+                "lkey": "F",
+                "width_nm": 150000
+              },
+              {
+                "a_nm": [
+                  39500000,
+                  145425000
+                ],
+                "b_nm": [
+                  39500000,
+                  145175000
+                ],
+                "lkey": "F",
+                "width_nm": 150000
+              },
+              {
+                "a_nm": [
+                  39500000,
+                  145175000
+                ],
+                "b_nm": [
+                  39562500,
+                  145012500
+                ],
+                "lkey": "F",
+                "width_nm": 150000
+              },
+              {
+                "a_nm": [
+                  39562500,
+                  145012500
+                ],
+                "b_nm": [
+                  39650000,
+                  144887500
+                ],
+                "lkey": "F",
+                "width_nm": 150000
+              },
+              {
+                "a_nm": [
+                  39650000,
+                  144887500
+                ],
+                "b_nm": [
+                  39900000,
+                  144650000
+                ],
+                "lkey": "F",
+                "width_nm": 150000
+              },
+              {
+                "a_nm": [
+                  39900000,
+                  144650000
+                ],
+                "b_nm": [
+                  39800000,
+                  144550000
+                ],
+                "lkey": "F",
+                "width_nm": 150000
+              }
+            ],
+            "vias": [
+              {
+                "dia_nm": 500000,
+                "drill_nm": 200000,
+                "xy_nm": [
+                  39800000,
+                  144550000
+                ]
+              }
+            ]
+          },
+          "tracks": [
+            {
+              "a_mm": [
+                36.2,
+                144.425
+              ],
+              "b_mm": [
+                43.325,
+                144.425
+              ],
+              "layer": [
+                "F"
+              ],
+              "layers_allowed": [
+                "F",
+                "B",
+                "I2"
+              ],
+              "max_mm": 9.9524,
+              "mm": 7.548389647758627,
+              "mm_by_layer": {
+                "F": 7.5484
+              },
+              "net": "Net-(J3-CC1)",
+              "ok": true,
+              "own_layer": false,
+              "reason": null,
+              "slack_mm": null,
+              "tracks": 1,
+              "via_xy": [],
+              "vias": 0,
+              "was_mm": 7.125,
+              "why": null
+            }
+          ],
+          "tries": 6
+        }
+      },
+      "body_landing": {
+        "body": [
+          "C1.1",
+          "C10.2",
+          "C11.2",
+          "C12.1",
+          "C13.2",
+          "C14.2",
+          "C15.2",
+          "C16.2"
+        ],
+        "body_pads": 251,
+        "cells": {
+          "B": 2430355,
+          "I1": 3750699,
+          "I4": 3750699
+        },
+        "erode": 0,
+        "total": 3750699
+      },
+      "cut_nets": [
+        "Net-(J3-CC1)"
+      ],
+      "cut_radius_mm": 0.45,
+      "cut_records": [
+        {
+          "a_mm": [
+            43.325,
+            144.425
+          ],
+          "b_mm": [
+            36.2,
+            144.425
+          ],
+          "layer": "F",
+          "mm": 7.125,
+          "net": "Net-(J3-CC1)",
+          "removed_mm": 1.0712,
+          "stubs_mm": [
+            [
+              [
+                43.325,
+                144.425
+              ],
+              [
+                40.3356,
+                144.425
+              ]
+            ],
+            [
+              [
+                39.2644,
+                144.425
+              ],
+              [
+                36.2,
+                144.425
+              ]
+            ]
+          ],
+          "whole_track": false,
+          "width_mm": 0.2
+        }
+      ],
+      "cut_tracks": 1,
+      "ends_inside_reserve": [
+        {
+          "d_mm": 5.2126,
+          "inside": false,
+          "net": "Net-(J3-CC1)",
+          "xy_mm": [
+            43.325,
+            144.425
+          ]
+        },
+        {
+          "d_mm": 2.0477,
+          "inside": false,
+          "net": "Net-(J3-CC1)",
+          "xy_mm": [
+            36.2,
+            144.425
+          ]
+        }
+      ],
+      "land": "GND:J3.A12",
+      "net": "GND",
+      "netclass": "GND",
+      "pads": [
+        "J3.A12"
+      ],
+      "reserve_clr_nm": 200000,
+      "rung": {
+        "clr_nm": 200000,
+        "from_dru_floor": true,
+        "via_dia_nm": 500000,
+        "via_drill_nm": 200000,
+        "width_nm": 150000
+      },
+      "site_mm": [
+        38.15,
+        143.8
+      ],
+      "stitch_pad": "J3.A12",
+      "stitch_via_dia_nm": 500000,
+      "stitch_via_drill_nm": 200000,
+      "stitch_width_nm": 150000,
+      "unmatched": [],
+      "verdict_measured": "SEGMENT_OPENS"
+    }
+  ],
+  "max_mm": 8.0,
+  "method": "read-only; the named tracks are held out of the obstacle model whole, the real maze3d.stitch_pad is laid with the same body certificate the measurement used, and each cut net is put back by maze3d.route_points between its own chain ends at the same budget -- every object proved by verify_laid, the barrel put through _antipad_severs, every trial reverted",
+  "question": "does a cut that opens a plane land go back when the reservation is the STITCH THAT WILL BE THERE instead of an all-layer keep-out disc big enough to swallow the relay's own two terminals",
+  "relay_own_layer": true,
+  "relay_slack_mm": null,
+  "rung": "floor",
+  "schema": 1,
+  "split_price_work": "w/d676/sp-gnd-ban-ctl",
+  "split_priced": true
+}

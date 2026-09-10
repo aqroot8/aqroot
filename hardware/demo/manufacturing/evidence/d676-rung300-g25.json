@@ -1,0 +1,157 @@
+{
+  "arm": "joint",
+  "authoritative_unchanged": true,
+  "board": "/home/aqroot8/aqroot-demo/hardware/demo/kicad/aqroot-demo/aqroot-Beta-v2.kicad_pcb",
+  "board_sha256": "28935c75f4747bac0ad2a062977c4ad13e7e48ec98169529c1d2db4f29f8a5b3",
+  "evidence": "w/d676/evict-gnd-j3-ban.json",
+  "evidence_sha256": "f230920e6ff3747e4082c854b4ec964fa41b6472724799e3ada12c7e9efb7a4e",
+  "grid": 25000,
+  "lands": [
+    {
+      "arms": {
+        "joint": {
+          "all_relaid": false,
+          "antipad_severs": null,
+          "knockout_mm": 0.35,
+          "note": "no barrel in 1 tries left every cut net a corridor it could take without splitting a foreign pour",
+          "pour_severs": null,
+          "priced_against_foreign_pours": true,
+          "reservation": "none -- the stitch and the relay are searched TOGETHER, and a stitch that strands a relay is struck out and retried",
+          "rounds": [
+            {
+              "reason": "NO_BODY_VIA_SITE",
+              "round": 1,
+              "stitch_ok": false,
+              "why": "no legal 0.60 mm barrel INSIDE THIS NET'S OWN BODY POUR within 8.0 mm of any escape"
+            }
+          ],
+          "slack_mm": null,
+          "split_bonds": null,
+          "split_price": null,
+          "split_priced": false,
+          "stitch": null,
+          "tracks": [],
+          "tries": 6
+        }
+      },
+      "body_landing": {
+        "body": [
+          "C1.1",
+          "C10.2",
+          "C11.2",
+          "C12.1",
+          "C13.2",
+          "C14.2",
+          "C15.2",
+          "C16.2"
+        ],
+        "body_pads": 251,
+        "cells": {
+          "B": 9725240,
+          "I1": 15011162,
+          "I4": 15011162
+        },
+        "erode": 0,
+        "total": 15011162
+      },
+      "cut_nets": [
+        "Net-(J3-CC1)"
+      ],
+      "cut_radius_mm": 0.45,
+      "cut_records": [
+        {
+          "a_mm": [
+            43.325,
+            144.425
+          ],
+          "b_mm": [
+            36.2,
+            144.425
+          ],
+          "layer": "F",
+          "mm": 7.125,
+          "net": "Net-(J3-CC1)",
+          "removed_mm": 1.0712,
+          "stubs_mm": [
+            [
+              [
+                43.325,
+                144.425
+              ],
+              [
+                40.3356,
+                144.425
+              ]
+            ],
+            [
+              [
+                39.2644,
+                144.425
+              ],
+              [
+                36.2,
+                144.425
+              ]
+            ]
+          ],
+          "whole_track": false,
+          "width_mm": 0.2
+        }
+      ],
+      "cut_tracks": 1,
+      "ends_inside_reserve": [
+        {
+          "d_mm": 5.2126,
+          "inside": false,
+          "net": "Net-(J3-CC1)",
+          "xy_mm": [
+            43.325,
+            144.425
+          ]
+        },
+        {
+          "d_mm": 2.0477,
+          "inside": false,
+          "net": "Net-(J3-CC1)",
+          "xy_mm": [
+            36.2,
+            144.425
+          ]
+        }
+      ],
+      "land": "GND:J3.A12",
+      "net": "GND",
+      "netclass": "GND",
+      "pads": [
+        "J3.A12"
+      ],
+      "reserve_clr_nm": 200000,
+      "rung": {
+        "clr_nm": 200000,
+        "from_dru_floor": false,
+        "via_dia_nm": 600000,
+        "via_drill_nm": 300000,
+        "width_nm": 300000
+      },
+      "site_mm": [
+        38.15,
+        143.8
+      ],
+      "stitch_pad": "J3.A12",
+      "stitch_via_dia_nm": 600000,
+      "stitch_via_drill_nm": 300000,
+      "stitch_width_nm": 300000,
+      "unmatched": [],
+      "verdict_measured": "SEGMENT_OPENS"
+    }
+  ],
+  "max_mm": 8.0,
+  "method": "read-only; the named tracks are held out of the obstacle model whole, the real maze3d.stitch_pad is laid with the same body certificate the measurement used, and each cut net is put back by maze3d.route_points between its own chain ends at the same budget -- every object proved by verify_laid, the barrel put through _antipad_severs, every trial reverted",
+  "question": "does a cut that opens a plane land go back when the reservation is the STITCH THAT WILL BE THERE instead of an all-layer keep-out disc big enough to swallow the relay's own two terminals",
+  "relay_own_layer": true,
+  "relay_slack_mm": null,
+  "rung": "floor",
+  "schema": 1,
+  "split_price_work": null,
+  "split_priced": false
+}

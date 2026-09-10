@@ -1,0 +1,48 @@
+{
+  "bond_pads": {
+    "argv": [],
+    "detail": [],
+    "pads": [],
+    "why": "no bond was planted; the split, if any, was priced as-is"
+  },
+  "detours": [
+    {
+      "a_mm": [
+        43.325,
+        144.425
+      ],
+      "b_mm": [
+        36.2,
+        144.425
+      ],
+      "layer": "F.Cu",
+      "max_mm": 9.9524,
+      "net": "Net-(J3-CC1)",
+      "width_mm": 0.2
+    }
+  ],
+  "note": "emitted by screen_relay_transaction.py from board 28935c75f4747bac; the reservation is NOT a disc -- see the guard file that goes with this plan",
+  "reserve": [],
+  "rung": {
+    "argv": [
+      "--stitch-width",
+      "150000",
+      "--stitch-via",
+      "500000:200000"
+    ],
+    "name": "floor",
+    "per_net": {
+      "GND": {
+        "netclass": "GND",
+        "stitch_via_dia_nm": 500000,
+        "stitch_via_drill_nm": 200000,
+        "stitch_width_nm": 150000
+      }
+    },
+    "stitch_via_dia_nm": 500000,
+    "stitch_via_drill_nm": 200000,
+    "stitch_width_nm": 150000,
+    "why": null
+  },
+  "schema": 1
+}
