@@ -1,0 +1,258 @@
+{
+ "schema": 1,
+ "note": "D-681, THE OWNER-APPROVED D-670 / D-655 TRANSACTION, IN ITS RELAY FORM. /home/aqroot8/.aqroot-owner-authorization-d655.txt authorizes a bounded rip-up-and-reroute of ONE object -- the B.Cu /01_POWER_TREE/BAT_PROT_SHDN_CTL track (4.100,90.900) -> (4.100,76.550) -- and requires that BAT_PROT_SHDN_CTL be RESTORED to full electrical connectivity.  A --evict of the same object satisfies the second condition only by re-routing the whole net from Q4.1, which leaves the branch that used to feed the removed track dangling and unrolls into objects the authorization does not name.  A DETOUR RELAY re-lays the conductor between ITS OWN TWO ENDS, so exactly one object moves, nothing is stranded and the authorization's scope is the transaction's scope.  The discs reserve the 14 mm of x = 4.100 that stands in front of U14.7's only escape and are exempt to /I2C_SCL_INT, so the relay cannot simply put the conductor back where it was.  v2: the disc line is bounded to y 79.4 .. 88.4 -- the 9 mm that actually stands in front of U14.7 -- because v1 reached y 77.0 and swallowed TP19.1 (4.000,77.500), a TEST POINT the removed track served as a MID-POINT TAP: the relay restored the conductor's two ENDS and KiCad then reported BAT_PROT_SHDN_CTL 0 -> 1 open edges with TP19.1 alone on its own island.  The net is REQUESTED in this run so that tap is re-laid as ordinary copper, which is what 'restore BAT_PROT_SHDN_CTL to full electrical connectivity' means here.  v3: w/d681/i2c/sliv2.log is a per-OBJECT bisect under the REAL kicad-cli DRC (D-656's discipline, 8.6 s a probe) over all 40 objects this transaction lays.  Removing exactly ONE of them -- the B.Cu segment (56.250,130.450) -> (60.200,136.150), a 6.9 mm diagonal across the B.Cu GND pour under U1 -- takes copper_sliver from 2 to 0, and removing any of the other 39 leaves it at 2.  Six discs on B.Cu ONLY, exempt to nothing, reserve that diagonal so /I2C_SCL_INT reaches U1.38 another way; the BAT relay is 50 mm west of them and cannot be affected.",
+ "detours": [
+  {
+   "net": "/01_POWER_TREE/BAT_PROT_SHDN_CTL",
+   "relay": true,
+   "max_mm": 45,
+   "tracks": [
+    {
+     "layer": "B.Cu",
+     "a_mm": [
+      4.1,
+      90.9
+     ],
+     "b_mm": [
+      4.1,
+      76.55
+     ],
+     "width_mm": 0.25,
+     "count": 1
+    }
+   ]
+  }
+ ],
+ "reserve": [
+  {
+   "x_mm": 4.1,
+   "y_mm": 79.4,
+   "r_mm": 0.5,
+   "layers": [
+    "B"
+   ],
+   "exempt": [
+    "/I2C_SCL_INT"
+   ]
+  },
+  {
+   "x_mm": 4.1,
+   "y_mm": 80.0,
+   "r_mm": 0.5,
+   "layers": [
+    "B"
+   ],
+   "exempt": [
+    "/I2C_SCL_INT"
+   ]
+  },
+  {
+   "x_mm": 4.1,
+   "y_mm": 80.6,
+   "r_mm": 0.5,
+   "layers": [
+    "B"
+   ],
+   "exempt": [
+    "/I2C_SCL_INT"
+   ]
+  },
+  {
+   "x_mm": 4.1,
+   "y_mm": 81.2,
+   "r_mm": 0.5,
+   "layers": [
+    "B"
+   ],
+   "exempt": [
+    "/I2C_SCL_INT"
+   ]
+  },
+  {
+   "x_mm": 4.1,
+   "y_mm": 81.8,
+   "r_mm": 0.5,
+   "layers": [
+    "B"
+   ],
+   "exempt": [
+    "/I2C_SCL_INT"
+   ]
+  },
+  {
+   "x_mm": 4.1,
+   "y_mm": 82.4,
+   "r_mm": 0.5,
+   "layers": [
+    "B"
+   ],
+   "exempt": [
+    "/I2C_SCL_INT"
+   ]
+  },
+  {
+   "x_mm": 4.1,
+   "y_mm": 83.0,
+   "r_mm": 0.5,
+   "layers": [
+    "B"
+   ],
+   "exempt": [
+    "/I2C_SCL_INT"
+   ]
+  },
+  {
+   "x_mm": 4.1,
+   "y_mm": 83.6,
+   "r_mm": 0.5,
+   "layers": [
+    "B"
+   ],
+   "exempt": [
+    "/I2C_SCL_INT"
+   ]
+  },
+  {
+   "x_mm": 4.1,
+   "y_mm": 84.2,
+   "r_mm": 0.5,
+   "layers": [
+    "B"
+   ],
+   "exempt": [
+    "/I2C_SCL_INT"
+   ]
+  },
+  {
+   "x_mm": 4.1,
+   "y_mm": 84.8,
+   "r_mm": 0.5,
+   "layers": [
+    "B"
+   ],
+   "exempt": [
+    "/I2C_SCL_INT"
+   ]
+  },
+  {
+   "x_mm": 4.1,
+   "y_mm": 85.4,
+   "r_mm": 0.5,
+   "layers": [
+    "B"
+   ],
+   "exempt": [
+    "/I2C_SCL_INT"
+   ]
+  },
+  {
+   "x_mm": 4.1,
+   "y_mm": 86.0,
+   "r_mm": 0.5,
+   "layers": [
+    "B"
+   ],
+   "exempt": [
+    "/I2C_SCL_INT"
+   ]
+  },
+  {
+   "x_mm": 4.1,
+   "y_mm": 86.6,
+   "r_mm": 0.5,
+   "layers": [
+    "B"
+   ],
+   "exempt": [
+    "/I2C_SCL_INT"
+   ]
+  },
+  {
+   "x_mm": 4.1,
+   "y_mm": 87.2,
+   "r_mm": 0.5,
+   "layers": [
+    "B"
+   ],
+   "exempt": [
+    "/I2C_SCL_INT"
+   ]
+  },
+  {
+   "x_mm": 4.1,
+   "y_mm": 87.8,
+   "r_mm": 0.5,
+   "layers": [
+    "B"
+   ],
+   "exempt": [
+    "/I2C_SCL_INT"
+   ]
+  },
+  {
+   "x_mm": 4.1,
+   "y_mm": 88.4,
+   "r_mm": 0.5,
+   "layers": [
+    "B"
+   ],
+   "exempt": [
+    "/I2C_SCL_INT"
+   ]
+  },
+  {
+   "x_mm": 56.814,
+   "y_mm": 131.264,
+   "r_mm": 0.7,
+   "layers": [
+    "B"
+   ],
+   "exempt": []
+  },
+  {
+   "x_mm": 57.379,
+   "y_mm": 132.079,
+   "r_mm": 0.7,
+   "layers": [
+    "B"
+   ],
+   "exempt": []
+  },
+  {
+   "x_mm": 57.943,
+   "y_mm": 132.893,
+   "r_mm": 0.7,
+   "layers": [
+    "B"
+   ],
+   "exempt": []
+  },
+  {
+   "x_mm": 58.507,
+   "y_mm": 133.707,
+   "r_mm": 0.7,
+   "layers": [
+    "B"
+   ],
+   "exempt": []
+  },
+  {
+   "x_mm": 59.071,
+   "y_mm": 134.521,
+   "r_mm": 0.7,
+   "layers": [
+    "B"
+   ],
+   "exempt": []
+  },
+  {
+   "x_mm": 59.636,
+   "y_mm": 135.336,
+   "r_mm": 0.7,
+   "layers": [
+    "B"
+   ],
+   "exempt": []
+  }
+ ]
+}

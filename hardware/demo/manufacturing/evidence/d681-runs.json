@@ -1,0 +1,1475 @@
+{
+ "schema": 1,
+ "decision": "D-681",
+ "board": "/home/aqroot8/aqroot-demo/hardware/demo/kicad/aqroot-demo/aqroot-Beta-v2.kicad_pcb",
+ "board_sha256": "d57d7d27ba0c400891132fba88da0719decefbaf846965b6dfef32764884af7d",
+ "question": "three subjects: (1) the OWNER-APPROVED D-670 / D-655 /I2C_SCL_INT U14.7 <-> J1.44 transaction, (2) the U21 accessory boost pocket, (3) the USB data pair and the In2-pierce ruling",
+ "i2c_scl_int": [
+  {
+   "run": "w/d681/i2c/run1.json",
+   "why": "barrel removed, eviction window 0.025 mm too small: removed_count 0",
+   "ran": true,
+   "refused_clauses": [
+    "attributable_drc",
+    "board_improved",
+    "no_regression",
+    "rebond_priced"
+   ],
+   "connectivity": {
+    "nets_improved": [],
+    "nets_regressed": [
+     "GND"
+    ],
+    "open_retained_nets_after": 15,
+    "open_retained_nets_before": 15,
+    "retained_open_edges_after": 26,
+    "retained_open_edges_before": 25
+   },
+   "drc_types": {
+    "lib_footprint_issues": 199,
+    "solder_mask_bridge": 1,
+    "track_dangling": 1
+   },
+   "attributable_drc": [
+    "track_dangling"
+   ],
+   "routed": [
+    {
+     "net": "/I2C_SCL_INT",
+     "ok": false,
+     "mm": null,
+     "vias": null,
+     "closed": 0,
+     "remaining": null,
+     "failures": [
+      "NO_PATH",
+      "NO_PATH",
+      "NO_PATH",
+      "NO_PATH",
+      "NO_PATH",
+      "NO_PATH"
+     ]
+    },
+    {
+     "net": "/01_POWER_TREE/BAT_PROT_SHDN_CTL",
+     "ok": true,
+     "mm": 0.0,
+     "vias": 0,
+     "closed": null,
+     "remaining": null,
+     "failures": []
+    }
+   ],
+   "detour": {
+    "all_relaid": true,
+    "relaid": [
+     [
+      0.0,
+      0
+     ]
+    ],
+    "failed": []
+   }
+  },
+  {
+   "run": "w/d681/i2c/run2.json",
+   "why": "eviction window corrected; barrel KEPT; 25 -> 24, dangling feeder + 2 slivers",
+   "ran": true,
+   "refused_clauses": [
+    "attributable_drc"
+   ],
+   "connectivity": {
+    "nets_improved": [
+     "/I2C_SCL_INT"
+    ],
+    "nets_regressed": [],
+    "open_retained_nets_after": 15,
+    "open_retained_nets_before": 15,
+    "retained_open_edges_after": 24,
+    "retained_open_edges_before": 25
+   },
+   "drc_types": {
+    "copper_sliver": 2,
+    "lib_footprint_issues": 199,
+    "solder_mask_bridge": 1,
+    "track_dangling": 1
+   },
+   "attributable_drc": [
+    "copper_sliver",
+    "copper_sliver",
+    "track_dangling"
+   ],
+   "routed": [
+    {
+     "net": "/I2C_SCL_INT",
+     "ok": true,
+     "mm": 85.988,
+     "vias": 7,
+     "closed": 1,
+     "remaining": 2,
+     "failures": [
+      "NO_PATH",
+      "NO_PATH",
+      "NO_PATH",
+      "NO_PATH",
+      "NO_PATH"
+     ]
+    },
+    {
+     "net": "/01_POWER_TREE/BAT_PROT_SHDN_CTL",
+     "ok": true,
+     "mm": 25.393,
+     "vias": 0,
+     "closed": 2,
+     "remaining": 0,
+     "failures": []
+    }
+   ]
+  },
+  {
+   "run": "w/d681/i2c/run3.json",
+   "why": "window widened by the feeder stub; the dangle unrolls one link further",
+   "ran": true,
+   "refused_clauses": [
+    "attributable_drc"
+   ],
+   "connectivity": {
+    "nets_improved": [
+     "/I2C_SCL_INT"
+    ],
+    "nets_regressed": [],
+    "open_retained_nets_after": 15,
+    "open_retained_nets_before": 15,
+    "retained_open_edges_after": 24,
+    "retained_open_edges_before": 25
+   },
+   "drc_types": {
+    "copper_sliver": 2,
+    "lib_footprint_issues": 199,
+    "solder_mask_bridge": 1,
+    "track_dangling": 1
+   },
+   "attributable_drc": [
+    "copper_sliver",
+    "copper_sliver",
+    "track_dangling"
+   ],
+   "routed": [
+    {
+     "net": "/I2C_SCL_INT",
+     "ok": true,
+     "mm": 85.988,
+     "vias": 7,
+     "closed": 1,
+     "remaining": 2,
+     "failures": [
+      "NO_PATH",
+      "NO_PATH",
+      "NO_PATH",
+      "NO_PATH",
+      "NO_PATH"
+     ]
+    },
+    {
+     "net": "/01_POWER_TREE/BAT_PROT_SHDN_CTL",
+     "ok": true,
+     "mm": 25.393,
+     "vias": 0,
+     "closed": 2,
+     "remaining": 0,
+     "failures": []
+    }
+   ]
+  },
+  {
+   "run": "w/d681/i2c/run4.json",
+   "why": "RELAY form: one object moves, nothing stranded -- but TP19.1 was a MID-POINT TAP and orphaned",
+   "ran": true,
+   "refused_clauses": [
+    "attributable_drc",
+    "board_improved",
+    "no_regression"
+   ],
+   "connectivity": {
+    "nets_improved": [
+     "/I2C_SCL_INT"
+    ],
+    "nets_regressed": [
+     "/01_POWER_TREE/BAT_PROT_SHDN_CTL"
+    ],
+    "open_retained_nets_after": 16,
+    "open_retained_nets_before": 15,
+    "retained_open_edges_after": 25,
+    "retained_open_edges_before": 25
+   },
+   "drc_types": {
+    "copper_sliver": 2,
+    "lib_footprint_issues": 199,
+    "solder_mask_bridge": 1
+   },
+   "attributable_drc": [
+    "copper_sliver",
+    "copper_sliver"
+   ],
+   "routed": [
+    {
+     "net": "/I2C_SCL_INT",
+     "ok": true,
+     "mm": 86.208,
+     "vias": 7,
+     "closed": 1,
+     "remaining": 2,
+     "failures": [
+      "NO_PATH",
+      "NO_PATH",
+      "NO_PATH",
+      "NO_PATH",
+      "NO_PATH"
+     ]
+    }
+   ],
+   "detour": {
+    "all_relaid": true,
+    "relaid": [
+     [
+      19.054184062324808,
+      2
+     ]
+    ],
+    "failed": []
+   }
+  },
+  {
+   "run": "w/d681/i2c/run5.json",
+   "why": "relay + BAT requested so TP19.1 is re-tapped: refused ONLY on 2 copper_sliver",
+   "ran": true,
+   "refused_clauses": [
+    "attributable_drc"
+   ],
+   "connectivity": {
+    "nets_improved": [
+     "/I2C_SCL_INT"
+    ],
+    "nets_regressed": [],
+    "open_retained_nets_after": 15,
+    "open_retained_nets_before": 15,
+    "retained_open_edges_after": 24,
+    "retained_open_edges_before": 25
+   },
+   "drc_types": {
+    "copper_sliver": 2,
+    "lib_footprint_issues": 199,
+    "solder_mask_bridge": 1
+   },
+   "attributable_drc": [
+    "copper_sliver",
+    "copper_sliver"
+   ],
+   "routed": [
+    {
+     "net": "/I2C_SCL_INT",
+     "ok": true,
+     "mm": 86.189,
+     "vias": 7,
+     "closed": 1,
+     "remaining": 2,
+     "failures": [
+      "NO_PATH",
+      "NO_PATH",
+      "NO_PATH",
+      "NO_PATH",
+      "NO_PATH"
+     ]
+    },
+    {
+     "net": "/01_POWER_TREE/BAT_PROT_SHDN_CTL",
+     "ok": true,
+     "mm": 2.1,
+     "vias": 0,
+     "closed": 1,
+     "remaining": 0,
+     "failures": []
+    }
+   ],
+   "detour": {
+    "all_relaid": true,
+    "relaid": [
+     [
+      17.25713070382405,
+      2
+     ]
+    ],
+    "failed": []
+   }
+  },
+  {
+   "run": "w/d681/i2c/run6.json",
+   "why": "the sliver diagonal reserved: refused_clauses []",
+   "ran": true,
+   "refused_clauses": [],
+   "connectivity": {
+    "nets_improved": [
+     "/I2C_SCL_INT"
+    ],
+    "nets_regressed": [],
+    "open_retained_nets_after": 15,
+    "open_retained_nets_before": 15,
+    "retained_open_edges_after": 24,
+    "retained_open_edges_before": 25
+   },
+   "drc_types": {
+    "lib_footprint_issues": 199,
+    "solder_mask_bridge": 1
+   },
+   "attributable_drc": [],
+   "routed": [
+    {
+     "net": "/I2C_SCL_INT",
+     "ok": true,
+     "mm": 89.084,
+     "vias": 8,
+     "closed": 1,
+     "remaining": 2,
+     "failures": [
+      "NO_PATH",
+      "NO_PATH",
+      "NO_PATH",
+      "NO_PATH",
+      "NO_PATH"
+     ]
+    },
+    {
+     "net": "/01_POWER_TREE/BAT_PROT_SHDN_CTL",
+     "ok": true,
+     "mm": 2.1,
+     "vias": 0,
+     "closed": 1,
+     "remaining": 0,
+     "failures": []
+    }
+   ],
+   "detour": {
+    "all_relaid": true,
+    "relaid": [
+     [
+      17.25713070382405,
+      2
+     ]
+    ],
+    "failed": []
+   }
+  },
+  {
+   "run": "w/d681/i2c/promote.json",
+   "why": "the authoritative promotion run",
+   "ran": true,
+   "refused_clauses": [],
+   "connectivity": {
+    "nets_improved": [
+     "/I2C_SCL_INT"
+    ],
+    "nets_regressed": [],
+    "open_retained_nets_after": 15,
+    "open_retained_nets_before": 15,
+    "retained_open_edges_after": 24,
+    "retained_open_edges_before": 25
+   },
+   "drc_types": {
+    "lib_footprint_issues": 199,
+    "solder_mask_bridge": 1
+   },
+   "attributable_drc": [],
+   "routed": [
+    {
+     "net": "/I2C_SCL_INT",
+     "ok": true,
+     "mm": 89.084,
+     "vias": 8,
+     "closed": 1,
+     "remaining": 2,
+     "failures": [
+      "NO_PATH",
+      "NO_PATH",
+      "NO_PATH",
+      "NO_PATH",
+      "NO_PATH"
+     ]
+    },
+    {
+     "net": "/01_POWER_TREE/BAT_PROT_SHDN_CTL",
+     "ok": true,
+     "mm": 2.1,
+     "vias": 0,
+     "closed": 1,
+     "remaining": 0,
+     "failures": []
+    }
+   ],
+   "detour": {
+    "all_relaid": true,
+    "relaid": [
+     [
+      17.25713070382405,
+      2
+     ]
+    ],
+    "failed": []
+   }
+  }
+ ],
+ "boost_pocket": [
+  {
+   "run": "w/d681/lx1/run1.json",
+   "why": "C65 to (60.700,42.200) + the U21.4 GND diagonal removed by --detour-spec: LX ROUTES 3.529 mm 0 vias, FIRST TIME EVER",
+   "ran": true,
+   "refused_clauses": [
+    "attributable_drc",
+    "inert_removal_priced",
+    "no_regression",
+    "pour_partition"
+   ],
+   "connectivity": {
+    "nets_improved": [
+     "/01_POWER_TREE/ACC_5V_LX",
+     "/01_POWER_TREE/ACC_5V_RAW"
+    ],
+    "nets_regressed": [
+     "GND"
+    ],
+    "open_retained_nets_after": 15,
+    "open_retained_nets_before": 16,
+    "retained_open_edges_after": 26,
+    "retained_open_edges_before": 27
+   },
+   "drc_types": {
+    "lib_footprint_issues": 199,
+    "solder_mask_bridge": 1,
+    "via_dangling": 1
+   },
+   "attributable_drc": [
+    "via_dangling"
+   ],
+   "routed": [
+    {
+     "net": "/01_POWER_TREE/ACC_5V_LX",
+     "ok": true,
+     "mm": 3.529,
+     "vias": 0,
+     "closed": 1,
+     "remaining": 0,
+     "failures": []
+    },
+    {
+     "net": "/01_POWER_TREE/ACC_5V_RAW",
+     "ok": true,
+     "mm": 2.514,
+     "vias": 0,
+     "closed": 1,
+     "remaining": 1,
+     "failures": [
+      "NO_PATH",
+      "NO_PATH"
+     ]
+    }
+   ],
+   "detour": {
+    "all_relaid": true,
+    "relaid": [
+     [
+      0.0,
+      0
+     ]
+    ],
+    "failed": []
+   }
+  },
+  {
+   "run": "w/d681/lx1/run2.json",
+   "why": "the same removal RELAID around a reserved LX lane: NO_PATH at 0.300 mm",
+   "ran": true,
+   "refused_clauses": [
+    "attributable_drc",
+    "every_detour_relaid",
+    "no_regression",
+    "pour_partition"
+   ],
+   "connectivity": {
+    "nets_improved": [
+     "/01_POWER_TREE/ACC_5V_LX",
+     "/01_POWER_TREE/ACC_5V_RAW"
+    ],
+    "nets_regressed": [
+     "GND"
+    ],
+    "open_retained_nets_after": 15,
+    "open_retained_nets_before": 16,
+    "retained_open_edges_after": 26,
+    "retained_open_edges_before": 27
+   },
+   "drc_types": {
+    "lib_footprint_issues": 199,
+    "solder_mask_bridge": 1,
+    "via_dangling": 1
+   },
+   "attributable_drc": [
+    "via_dangling"
+   ],
+   "routed": [
+    {
+     "net": "/01_POWER_TREE/ACC_5V_LX",
+     "ok": true,
+     "mm": 3.529,
+     "vias": 0,
+     "closed": 1,
+     "remaining": 0,
+     "failures": []
+    },
+    {
+     "net": "/01_POWER_TREE/ACC_5V_RAW",
+     "ok": true,
+     "mm": 2.514,
+     "vias": 0,
+     "closed": 1,
+     "remaining": 1,
+     "failures": [
+      "NO_PATH",
+      "NO_PATH"
+     ]
+    }
+   ],
+   "detour": {
+    "all_relaid": false,
+    "relaid": [
+     [
+      null,
+      null
+     ]
+    ],
+    "failed": [
+     "NO_PATH"
+    ]
+   }
+  },
+  {
+   "run": "w/d681/lx1/run3.json",
+   "why": "U21.4's escape released by the placement transaction + --bond-pad U21.4: PP1-PP4 ALL TRUE, but the 3.842 mm bond track took the LX lane",
+   "ran": true,
+   "refused_clauses": [
+    "attributable_drc"
+   ],
+   "connectivity": {
+    "nets_improved": [
+     "/01_POWER_TREE/ACC_5V_RAW"
+    ],
+    "nets_regressed": [],
+    "open_retained_nets_after": 16,
+    "open_retained_nets_before": 16,
+    "retained_open_edges_after": 26,
+    "retained_open_edges_before": 27
+   },
+   "drc_types": {
+    "lib_footprint_issues": 199,
+    "solder_mask_bridge": 1,
+    "via_dangling": 1
+   },
+   "attributable_drc": [
+    "via_dangling"
+   ],
+   "routed": [
+    {
+     "net": "/01_POWER_TREE/ACC_5V_LX",
+     "ok": false,
+     "mm": null,
+     "vias": null,
+     "closed": 0,
+     "remaining": null,
+     "failures": [
+      "NO_LEGAL_ESCAPE_DST"
+     ]
+    },
+    {
+     "net": "/01_POWER_TREE/ACC_5V_RAW",
+     "ok": true,
+     "mm": 2.301,
+     "vias": 0,
+     "closed": 1,
+     "remaining": 1,
+     "failures": [
+      "NO_PATH",
+      "NO_PATH"
+     ]
+    }
+   ]
+  },
+  {
+   "run": "w/d681/lx1/run4.json",
+   "why": "--bond-max-mm 1.2: NO_VIA_SITE, and ACC_5V_RAW came back at 75.995 mm",
+   "ran": true,
+   "refused_clauses": [
+    "attributable_drc",
+    "no_regression",
+    "pour_partition"
+   ],
+   "connectivity": {
+    "nets_improved": [
+     "/01_POWER_TREE/ACC_5V_LX",
+     "/01_POWER_TREE/ACC_5V_RAW"
+    ],
+    "nets_regressed": [
+     "GND"
+    ],
+    "open_retained_nets_after": 14,
+    "open_retained_nets_before": 16,
+    "retained_open_edges_after": 25,
+    "retained_open_edges_before": 27
+   },
+   "drc_types": {
+    "lib_footprint_issues": 199,
+    "solder_mask_bridge": 1,
+    "via_dangling": 1
+   },
+   "attributable_drc": [
+    "via_dangling"
+   ],
+   "routed": [
+    {
+     "net": "/01_POWER_TREE/ACC_5V_LX",
+     "ok": true,
+     "mm": 3.529,
+     "vias": 0,
+     "closed": 1,
+     "remaining": 0,
+     "failures": []
+    },
+    {
+     "net": "/01_POWER_TREE/ACC_5V_RAW",
+     "ok": true,
+     "mm": 75.995,
+     "vias": 5,
+     "closed": 2,
+     "remaining": 0,
+     "failures": []
+    }
+   ]
+  },
+  {
+   "run": "w/d681/lx1/run5.json",
+   "why": "GND column reserved, --tap-first: LX 3.275 mm, RAW 0 mm by TAP, U21.4 STILL a 0.175 mm2 STRANDED fragment",
+   "ran": true,
+   "refused_clauses": [
+    "attributable_drc",
+    "no_regression",
+    "pour_partition"
+   ],
+   "connectivity": {
+    "nets_improved": [
+     "/01_POWER_TREE/ACC_5V_LX",
+     "/01_POWER_TREE/ACC_5V_RAW"
+    ],
+    "nets_regressed": [
+     "GND"
+    ],
+    "open_retained_nets_after": 14,
+    "open_retained_nets_before": 16,
+    "retained_open_edges_after": 25,
+    "retained_open_edges_before": 27
+   },
+   "drc_types": {
+    "lib_footprint_issues": 199,
+    "solder_mask_bridge": 1,
+    "via_dangling": 1
+   },
+   "attributable_drc": [
+    "via_dangling"
+   ],
+   "routed": [
+    {
+     "net": "/01_POWER_TREE/ACC_5V_LX",
+     "ok": true,
+     "mm": 3.275,
+     "vias": 0,
+     "closed": 1,
+     "remaining": 0,
+     "failures": []
+    },
+    {
+     "net": "/01_POWER_TREE/ACC_5V_RAW",
+     "ok": true,
+     "mm": 0.0,
+     "vias": 0,
+     "closed": null,
+     "remaining": null,
+     "failures": []
+    }
+   ],
+   "detour": {
+    "all_relaid": true,
+    "relaid": [],
+    "failed": []
+   }
+  }
+ ],
+ "usb": [
+  {
+   "run": "w/d681/usb/run1.json",
+   "why": "the three USB data edges on the authority: all three NO_PATH at 0.250 mm",
+   "ran": true,
+   "refused_clauses": [
+    "board_changed",
+    "board_improved"
+   ],
+   "connectivity": {
+    "nets_improved": [],
+    "nets_regressed": [],
+    "open_retained_nets_after": 15,
+    "open_retained_nets_before": 15,
+    "retained_open_edges_after": 25,
+    "retained_open_edges_before": 25
+   },
+   "drc_types": {
+    "lib_footprint_issues": 199,
+    "solder_mask_bridge": 1
+   },
+   "attributable_drc": [],
+   "routed": [
+    {
+     "net": "/01_POWER_TREE/USB_D_CONN_P",
+     "ok": false,
+     "mm": null,
+     "vias": null,
+     "closed": 0,
+     "remaining": null,
+     "failures": [
+      "NO_PATH"
+     ]
+    },
+    {
+     "net": "/USB_D_MCU_N",
+     "ok": false,
+     "mm": null,
+     "vias": null,
+     "closed": 0,
+     "remaining": null,
+     "failures": [
+      "NO_PATH"
+     ]
+    },
+    {
+     "net": "/USB_D_MCU_P",
+     "ok": false,
+     "mm": null,
+     "vias": null,
+     "closed": 0,
+     "remaining": null,
+     "failures": [
+      "NO_PATH"
+     ]
+    }
+   ]
+  },
+  {
+   "run": "w/d681/usb/run2.json",
+   "why": "D- evicted whole and re-laid: D+ still NO_PATH",
+   "ran": true,
+   "refused_clauses": [
+    "board_improved"
+   ],
+   "connectivity": {
+    "nets_improved": [],
+    "nets_regressed": [],
+    "open_retained_nets_after": 15,
+    "open_retained_nets_before": 15,
+    "retained_open_edges_after": 25,
+    "retained_open_edges_before": 25
+   },
+   "drc_types": {
+    "lib_footprint_issues": 199,
+    "solder_mask_bridge": 1
+   },
+   "attributable_drc": [],
+   "routed": [
+    {
+     "net": "/01_POWER_TREE/USB_D_CONN_P",
+     "ok": false,
+     "mm": null,
+     "vias": null,
+     "closed": 0,
+     "remaining": null,
+     "failures": [
+      "NO_PATH"
+     ]
+    },
+    {
+     "net": "/01_POWER_TREE/USB_D_CONN_N",
+     "ok": true,
+     "mm": 13.479,
+     "vias": 0,
+     "closed": 2,
+     "remaining": 0,
+     "failures": []
+    }
+   ]
+  },
+  {
+   "run": "w/d681/usb/run3.json",
+   "why": "+ the I2S_LRCLK relay: D+ ROUTES 10.709 mm 0 vias, and D- then has NO LEGAL ESCAPE from J3.B7",
+   "ran": true,
+   "refused_clauses": [
+    "attributable_drc",
+    "board_improved",
+    "every_detour_relaid",
+    "no_regression"
+   ],
+   "connectivity": {
+    "nets_improved": [
+     "/01_POWER_TREE/USB_D_CONN_P"
+    ],
+    "nets_regressed": [
+     "/01_POWER_TREE/USB_D_CONN_N",
+     "/I2S_LRCLK"
+    ],
+    "open_retained_nets_after": 16,
+    "open_retained_nets_before": 15,
+    "retained_open_edges_after": 27,
+    "retained_open_edges_before": 25
+   },
+   "drc_types": {
+    "lib_footprint_issues": 199,
+    "solder_mask_bridge": 1,
+    "track_dangling": 1,
+    "via_dangling": 1
+   },
+   "attributable_drc": [
+    "track_dangling",
+    "via_dangling"
+   ],
+   "routed": [
+    {
+     "net": "/01_POWER_TREE/USB_D_CONN_P",
+     "ok": true,
+     "mm": 10.709,
+     "vias": 0,
+     "closed": 1,
+     "remaining": 0,
+     "failures": []
+    },
+    {
+     "net": "/01_POWER_TREE/USB_D_CONN_N",
+     "ok": false,
+     "mm": null,
+     "vias": null,
+     "closed": 0,
+     "remaining": null,
+     "failures": [
+      "NO_LEGAL_ESCAPE_DST",
+      "NO_PATH"
+     ]
+    }
+   ],
+   "detour": {
+    "all_relaid": false,
+    "relaid": [
+     [
+      null,
+      null
+     ]
+    ],
+    "failed": [
+     "NO_PATH"
+    ]
+   }
+  },
+  {
+   "run": "w/d681/usb/run4.json",
+   "why": "D- first, the I2S chain extended barrel-to-barrel: D- 11.231 mm, D+ NO_PATH",
+   "ran": true,
+   "refused_clauses": [
+    "attributable_drc",
+    "board_improved",
+    "every_detour_relaid",
+    "no_regression"
+   ],
+   "connectivity": {
+    "nets_improved": [],
+    "nets_regressed": [
+     "/I2S_LRCLK"
+    ],
+    "open_retained_nets_after": 16,
+    "open_retained_nets_before": 15,
+    "retained_open_edges_after": 26,
+    "retained_open_edges_before": 25
+   },
+   "drc_types": {
+    "lib_footprint_issues": 199,
+    "solder_mask_bridge": 1,
+    "via_dangling": 2
+   },
+   "attributable_drc": [
+    "via_dangling",
+    "via_dangling"
+   ],
+   "routed": [
+    {
+     "net": "/01_POWER_TREE/USB_D_CONN_N",
+     "ok": true,
+     "mm": 11.231,
+     "vias": 0,
+     "closed": 2,
+     "remaining": 0,
+     "failures": []
+    },
+    {
+     "net": "/01_POWER_TREE/USB_D_CONN_P",
+     "ok": false,
+     "mm": null,
+     "vias": null,
+     "closed": 0,
+     "remaining": null,
+     "failures": [
+      "NO_PATH"
+     ]
+    }
+   ],
+   "detour": {
+    "all_relaid": false,
+    "relaid": [
+     [
+      null,
+      null
+     ]
+    ],
+    "failed": [
+     "NO_PATH"
+    ]
+   }
+  },
+  {
+   "run": "w/d681/usbmcu/run1.json",
+   "why": "the D-681 In2 RULING on a scratch .kicad_dru: USB_D_MCU_P ROUTES 33.432 mm with 4 vias where it was NO_PATH",
+   "ran": true,
+   "refused_clauses": [
+    "attributable_drc"
+   ],
+   "connectivity": {
+    "nets_improved": [
+     "/USB_D_MCU_P"
+    ],
+    "nets_regressed": [],
+    "open_retained_nets_after": 14,
+    "open_retained_nets_before": 15,
+    "retained_open_edges_after": 24,
+    "retained_open_edges_before": 25
+   },
+   "drc_types": {
+    "diff_pair_uncoupled_length_too_long": 1,
+    "lib_footprint_issues": 199,
+    "solder_mask_bridge": 1
+   },
+   "attributable_drc": [
+    "diff_pair_uncoupled_length_too_long"
+   ],
+   "routed": [
+    {
+     "net": "/USB_D_MCU_N",
+     "ok": false,
+     "mm": null,
+     "vias": null,
+     "closed": 0,
+     "remaining": null,
+     "failures": [
+      "NO_PATH"
+     ]
+    },
+    {
+     "net": "/USB_D_MCU_P",
+     "ok": true,
+     "mm": 33.432,
+     "vias": 4,
+     "closed": 1,
+     "remaining": 0,
+     "failures": []
+    }
+   ]
+  },
+  {
+   "run": "w/d681/usbmcu/run2.json",
+   "why": "the same at 0.025 mm: 35.477 mm, MCU_N still NO_PATH",
+   "ran": true,
+   "refused_clauses": [
+    "attributable_drc"
+   ],
+   "connectivity": {
+    "nets_improved": [
+     "/USB_D_MCU_P"
+    ],
+    "nets_regressed": [],
+    "open_retained_nets_after": 14,
+    "open_retained_nets_before": 15,
+    "retained_open_edges_after": 24,
+    "retained_open_edges_before": 25
+   },
+   "drc_types": {
+    "diff_pair_uncoupled_length_too_long": 1,
+    "lib_footprint_issues": 199,
+    "solder_mask_bridge": 1
+   },
+   "attributable_drc": [
+    "diff_pair_uncoupled_length_too_long"
+   ],
+   "routed": [
+    {
+     "net": "/USB_D_MCU_N",
+     "ok": false,
+     "mm": null,
+     "vias": null,
+     "closed": 0,
+     "remaining": null,
+     "failures": [
+      "NO_PATH"
+     ]
+    },
+    {
+     "net": "/USB_D_MCU_P",
+     "ok": true,
+     "mm": 35.477,
+     "vias": 4,
+     "closed": 1,
+     "remaining": 0,
+     "failures": []
+    }
+   ]
+  },
+  {
+   "run": "w/d681/usbmcu/conn1.json",
+   "why": "the connector half under the same ruling: still NO_PATH -- the J3 fanout is not a layer question",
+   "ran": true,
+   "refused_clauses": [
+    "board_changed",
+    "board_improved"
+   ],
+   "connectivity": {
+    "nets_improved": [],
+    "nets_regressed": [],
+    "open_retained_nets_after": 15,
+    "open_retained_nets_before": 15,
+    "retained_open_edges_after": 25,
+    "retained_open_edges_before": 25
+   },
+   "drc_types": {
+    "lib_footprint_issues": 199,
+    "solder_mask_bridge": 1
+   },
+   "attributable_drc": [],
+   "routed": [
+    {
+     "net": "/01_POWER_TREE/USB_D_CONN_P",
+     "ok": false,
+     "mm": null,
+     "vias": null,
+     "closed": 0,
+     "remaining": null,
+     "failures": [
+      "NO_PATH"
+     ]
+    }
+   ]
+  }
+ ],
+ "blame": {
+  "usb_conn_p": {
+   "net": "/01_POWER_TREE/USB_D_CONN_P",
+   "a": "J3.A6",
+   "b": "U10.3",
+   "layers": [
+    "F"
+   ],
+   "window_nets": [
+    "/01_POWER_TREE/USB_D_CONN_N",
+    "/01_POWER_TREE/USB_VBUS_RAW",
+    "/I2C_SDA_INT",
+    "/I2S_LRCLK",
+    "/SPI_B_SCK",
+    "/WAKE_INT_N",
+    "GND",
+    "Net-(J3-CC1)",
+    "Net-(J3-CC2)",
+    "Net-(J3-SHIELD)"
+   ],
+   "complete": true
+  },
+  "usb_conn_p_minimal": [
+   {
+    "accepted": true,
+    "layers": [
+     "F"
+    ],
+    "mm": 8.2845,
+    "nets": [
+     "/01_POWER_TREE/USB_D_CONN_N",
+     "/01_POWER_TREE/USB_VBUS_RAW",
+     "/I2C_SDA_INT",
+     "/I2S_LRCLK",
+     "/SPI_B_SCK",
+     "/WAKE_INT_N",
+     "GND",
+     "Net-(J3-CC1)",
+     "Net-(J3-CC2)",
+     "Net-(J3-SHIELD)"
+    ],
+    "ok": true,
+    "reason": null,
+    "step": "Q1_UPPER_BOUND",
+    "vias": 0,
+    "why": null
+   },
+   {
+    "accepted": true,
+    "layers": [
+     "F"
+    ],
+    "mm": 11.4168,
+    "n": 2,
+    "nets": [
+     "/01_POWER_TREE/USB_D_CONN_N",
+     "/I2S_LRCLK"
+    ],
+    "ok": true,
+    "step": "Q3_MINIMAL_SET",
+    "vias": 0
+   },
+   {
+    "accepted": true,
+    "layers": [
+     "F"
+    ],
+    "mm": 11.4168,
+    "n_objects": 8,
+    "n_units": 8,
+    "nets": [
+     "/01_POWER_TREE/USB_D_CONN_N",
+     "/I2S_LRCLK"
+    ],
+    "ok": true,
+    "step": "Q4_MINIMAL_OBJECTS",
+    "units": [
+     {
+      "a_mm": [
+       42.75,
+       145.75
+      ],
+      "b_mm": [
+       42.85,
+       145.575
+      ],
+      "count": 1,
+      "kind": "track",
+      "layer": "F.Cu",
+      "net": "/01_POWER_TREE/USB_D_CONN_N",
+      "objects": 1,
+      "router_objects": 1,
+      "width_mm": 0.25
+     },
+     {
+      "a_mm": [
+       42.85,
+       145.575
+      ],
+      "b_mm": [
+       44.7,
+       143.8
+      ],
+      "count": 1,
+      "kind": "track",
+      "layer": "F.Cu",
+      "net": "/01_POWER_TREE/USB_D_CONN_N",
+      "objects": 1,
+      "router_objects": 1,
+      "width_mm": 0.25
+     },
+     {
+      "a_mm": [
+       43.65,
+       145.575
+      ],
+      "b_mm": [
+       42.6,
+       144.9
+      ],
+      "count": 1,
+      "kind": "track",
+      "layer": "F.Cu",
+      "net": "/01_POWER_TREE/USB_D_CONN_N",
+      "objects": 1,
+      "router_objects": 1,
+      "width_mm": 0.25
+     },
+     {
+      "a_mm": [
+       43.75,
+       145.75
+      ],
+      "b_mm": [
+       43.65,
+       145.575
+      ],
+      "count": 1,
+      "kind": "track",
+      "layer": "F.Cu",
+      "net": "/01_POWER_TREE/USB_D_CONN_N",
+      "objects": 1,
+      "router_objects": 1,
+      "width_mm": 0.25
+     },
+     {
+      "a_mm": [
+       44.7,
+       143.8
+      ],
+      "b_mm": [
+       44.9,
+       141.7
+      ],
+      "count": 1,
+      "kind": "track",
+      "layer": "F.Cu",
+      "net": "/01_POWER_TREE/USB_D_CONN_N",
+      "objects": 1,
+      "router_objects": 1,
+      "width_mm": 0.25
+     },
+     {
+      "a_mm": [
+       45.6,
+       142.1
+      ],
+      "b_mm": [
+       48.2,
+       144.8
+      ],
+      "count": 1,
+      "kind": "track",
+      "layer": "F.Cu",
+      "net": "/I2S_LRCLK",
+      "objects": 1,
+      "router_objects": 1,
+      "width_mm": 0.2
+     },
+     {
+      "a_mm": [
+       48.2,
+       144.8
+      ],
+      "b_mm": [
+       48.2,
+       145.1
+      ],
+      "count": 1,
+      "kind": "track",
+      "layer": "F.Cu",
+      "net": "/I2S_LRCLK",
+      "objects": 1,
+      "router_objects": 1,
+      "width_mm": 0.2
+     },
+     {
+      "a_mm": [
+       48.2,
+       145.1
+      ],
+      "b_mm": [
+       51.2,
+       147.3
+      ],
+      "count": 1,
+      "kind": "track",
+      "layer": "F.Cu",
+      "net": "/I2S_LRCLK",
+      "objects": 1,
+      "router_objects": 1,
+      "width_mm": 0.2
+     }
+    ],
+    "vias": 0
+   }
+  ],
+  "usb_conn_p_ban_partner": [
+   {
+    "accepted": false,
+    "layers": null,
+    "mm": null,
+    "ok": false,
+    "reason": "NO_PATH",
+    "step": "BASE",
+    "vias": null,
+    "why": "no all-layer corridor at 0.250 mm from J3.A6 on F to U10.3 on F"
+   },
+   {
+    "accepted": false,
+    "layers": null,
+    "mm": null,
+    "nets": [
+     "/01_POWER_TREE/USB_VBUS_RAW",
+     "/I2C_SDA_INT",
+     "/I2S_LRCLK",
+     "/SPI_B_SCK",
+     "/WAKE_INT_N",
+     "GND",
+     "Net-(J3-CC1)",
+     "Net-(J3-CC2)",
+     "Net-(J3-SHIELD)"
+    ],
+    "ok": false,
+    "reason": "NO_PATH",
+    "step": "Q1_UPPER_BOUND",
+    "vias": null,
+    "why": "no all-layer corridor at 0.250 mm from J3.A6 on F to U10.3 on F"
+   }
+  ],
+  "usb_mcu_n": [
+   {
+    "accepted": true,
+    "layers": [
+     "F",
+     "B",
+     "F"
+    ],
+    "mm": 24.787,
+    "nets": [
+     "+3V3",
+     "/01_POWER_TREE/USB_D_CONN_N",
+     "/01_POWER_TREE/USB_D_ESD_N",
+     "/01_POWER_TREE/USB_D_ESD_P",
+     "/02_MCU_CORE/BOOT_N",
+     "/02_MCU_CORE/DISP_BL_CTL_STRAP",
+     "/02_MCU_CORE/GPIO45_VDDSPI_STRAP",
+     "/02_MCU_CORE/UART0_TXD_DBG",
+     "/05_I2C_DEVICES/BMI270_INT1_RAW",
+     "/BMI270_INT1_STRAP",
+     "/CC1101_CS_N",
+     "/CC1101_GDO0",
+     "/I2C_SCL_INT",
+     "/I2S_BCLK",
+     "/I2S_LRCLK",
+     "/I2S_MIC_DIN",
+     "/I2S_SPK_DOUT",
+     "/IR_RX_GPIO44",
+     "/IR_TX_GPIO16",
+     "/NATIVE_A",
+     "/NFC_CS_N",
+     "/NFC_IRQ",
+     "/SD_CS_N",
+     "/SPI_B_MISO",
+     "/SPI_B_MOSI",
+     "/SPI_B_SCK",
+     "/SX1262_BUSY",
+     "/SX1262_CS_N",
+     "/WAKE_INT_N",
+     "GND",
+     "Net-(J3-SHIELD)",
+     "Net-(U1-EN)"
+    ],
+    "ok": true,
+    "reason": null,
+    "step": "Q1_UPPER_BOUND",
+    "vias": 2,
+    "why": null
+   },
+   {
+    "accepted": true,
+    "layers": [
+     "F",
+     "B",
+     "F"
+    ],
+    "mm": 26.0348,
+    "net": "/I2S_LRCLK",
+    "ok": true,
+    "reason": null,
+    "step": "Q2_SINGLE_NET",
+    "vias": 2
+   },
+   {
+    "accepted": true,
+    "layers": [
+     "F",
+     "B",
+     "F",
+     "B",
+     "F"
+    ],
+    "mm": 31.9765,
+    "net": "/NATIVE_A",
+    "ok": true,
+    "reason": null,
+    "step": "Q2_SINGLE_NET",
+    "vias": 4
+   },
+   {
+    "accepted": true,
+    "mm": 26.0348,
+    "n_objects": 20,
+    "n_units": 7,
+    "nets": [
+     "/I2S_LRCLK"
+    ],
+    "ok": true,
+    "reason": null,
+    "step": "Q4_POOL"
+   },
+   {
+    "accepted": true,
+    "layers": [
+     "F",
+     "B",
+     "F"
+    ],
+    "mm": 26.1941,
+    "n_objects": 1,
+    "n_units": 1,
+    "nets": [
+     "/I2S_LRCLK"
+    ],
+    "ok": true,
+    "step": "Q4_MINIMAL_OBJECTS",
+    "units": [
+     {
+      "a_mm": [
+       57.3,
+       138.8
+      ],
+      "b_mm": [
+       56.7,
+       134.8
+      ],
+      "count": 1,
+      "kind": "track",
+      "layer": "B.Cu",
+      "net": "/I2S_LRCLK",
+      "objects": 1,
+      "router_objects": 1,
+      "width_mm": 0.2
+     }
+    ],
+    "vias": 2
+   }
+  ]
+ },
+ "sliver_bisect": {
+  "method": "per-OBJECT removal, refill and REAL kicad-cli DRC, 8.6 s a probe, over all 40 objects the I2C transaction lays",
+  "log": "w/d681/i2c/sliv2.log",
+  "source_object": [
+   "trk",
+   "/I2C_SCL_INT",
+   "B.Cu",
+   56.25,
+   130.45,
+   60.2,
+   136.15,
+   0.2
+  ],
+  "slivers_with_it": 2,
+  "slivers_without_it": 0,
+  "others_probed": 17,
+  "others_that_moved_the_count": 0
+ }
+}

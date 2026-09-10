@@ -1,0 +1,33 @@
+{
+ "schema": 1,
+ "decision": "D-681",
+ "question": "is TF2's DECLARED_MOVES table a named exception or a hole",
+ "probes": [
+  {
+   "control": "declared_move_is_recognised",
+   "expected": true,
+   "got": true,
+   "why": "the exact move D-681 took"
+  },
+  {
+   "control": "undeclared_net_still_fails",
+   "expected": false,
+   "got": false,
+   "why": "a class D-681 did not name"
+  },
+  {
+   "control": "declared_net_wrong_move_still_fails",
+   "expected": false,
+   "got": false,
+   "why": "the declared pair is the WHOLE claim, not just the net name"
+  },
+  {
+   "control": "declared_net_wrong_base_still_fails",
+   "expected": false,
+   "got": false,
+   "why": "a different starting contract is a different move"
+  }
+ ],
+ "ok": true,
+ "declared_entries": 6
+}

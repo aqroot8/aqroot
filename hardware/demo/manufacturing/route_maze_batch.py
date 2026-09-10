@@ -192,7 +192,20 @@ DRU_CLASS = {
     # `.kicad_dru` section-6 ruling on whether a through via that merely
     # PIERCES In2 is the In2 excursion that rule forbids, or an F.Cu
     # refloorplan of the MCU fanout.  Neither is smuggled in here.
-    "USB_D":        dict(clr=200000, layers=("F",)),
+    # D-681.  THE RULING THE COMMENT ABOVE ASKED FOR HAS BEEN TAKEN, so this
+    # class now carries BOTH outer layers.  `.kicad_dru` section 6's In2 rule
+    # is restated as "USB pair carries no track on any inner layer" -- strictly
+    # HARDER for tracks (In1/In3/In4 named where only In2 was) and looser for
+    # exactly one thing, a THROUGH barrel that carries no inner-layer copper.
+    # The reasoning is written out beside the rule itself and not duplicated
+    # here.  What this table must say is only the shape the router may draw:
+    # F and B, so the maze's via move has a second layer to land on, and NO
+    # inner layer, so it can still never lay inner-layer copper.  The three
+    # rules that bound the result -- 90 ohm geometry, 0.23/0.25/0.27 mm width,
+    # and the 25 mm uncoupled budget -- are unchanged and KiCad still judges
+    # every proposal against them, which is what keeps a 36 mm B.Cu excursion
+    # refused without this table having to forbid it.
+    "USB_D":        dict(clr=200000, layers=("F", "B")),
 }
 
 # A `width_cap` may state what a package can LAUNCH; it may never state less

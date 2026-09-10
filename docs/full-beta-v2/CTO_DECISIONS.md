@@ -1,3 +1,234 @@
+# D-681 · 2026-09-10 · Demo — THE FUEL GAUGE IS ON THE I2C BUS: THE OWNER-APPROVED PROTECTED-COPPER EXCEPTION IS SPENT, AND IT COST ONE RELAY AND SIX DISCS
+
+    authority  0285ef45466c1c7dd1823099c35d75d704b50266460e94f339c1b19b5409180d
+            -> d57d7d27ba0c400891132fba88da0719decefbaf846965b6dfef32764884af7d
+    retained open edges 25 -> 24      open retained nets 15 -> 15
+    `/I2C_SCL_INT` 3 -> 2             `hardware/beta-v2`  UNTOUCHED
+    `hardware/demo/fab` REGENERATED at the new board; `fab_package_contract` PASS
+    twenty-two gate runs, four corridor blames, one per-object sliver bisect
+    standing suite 14/14 RAN, `vacuous` false, ONE verdict moved and it is the
+    authorized one
+
+**COPPER PROMOTED.**  `verify_promotion.py --ref HEAD` **PASS**, 15 of 15
+checks, `D-186_bat_main_class` and `D-269_bat_main_routed_clearance` both TRUE,
+`pour_partition_intact` TRUE, `beta_v2_untouched` TRUE
+(`evidence/d681-verify-promotion.json`).
+
+## 1. THE OWNER DECISION IS TAKEN AND SPENT
+
+`/home/aqroot8/.aqroot-owner-authorization-d655.txt` APPROVES a bounded
+rip-up-and-reroute of exactly two objects to close `/I2C_SCL_INT`
+`U14.7 <-> J1.44` — D-655's own minimal set: the `B.Cu`
+`/01_POWER_TREE/BAT_PROT_SHDN_CTL` track **(4.100,90.900) -> (4.100,76.550)**
+and the `GND` barrel at **(25.600,93.700)**.  `MAX17048` fuel-gauge `SCL` had
+never been on the bus.
+
+**IT TOOK ONE OF THE TWO.**  The barrel was tried first and refused itself:
+`J1.43` is an `F.Cu`-only FPC land and that barrel is its ONLY path to ground,
+so removing it takes `GND` 1 -> 2 open edges and leaves a 0.141 mm dangling
+`F.Cu` stub (`w/d681/i2c/run1.json`; `screen_rebond_site.py J1.43` cannot even
+be asked — the pad "sits in no filled `B.Cu` island of its own net").  **The
+barrel stays on the board.**  The transaction spends ONE authorized object.
+
+**AND IT SPENDS IT AS A RELAY, NOT AS AN EVICTION.**  Three runs measured the
+difference and it is the whole shape of the decision:
+
+    form                                 result
+    --evict, window 0.4 x 14.6 mm        25 -> 24, no regression, and the
+                                         0.778 mm segment that used to FEED the
+                                         removed track dangles
+    --evict, window widened by that      25 -> 24, and the dangle unrolls one
+                                         segment                   link further
+    --detour-spec relay: true            ONE object moves, both its ends are put
+                                         back, NOTHING is stranded
+
+An eviction re-routes the NET and leaves whatever only existed to reach the
+removed conductor; a **relay re-lays the conductor between ITS OWN TWO ENDS**,
+which is what "restore `BAT_PROT_SHDN_CTL` to full electrical connectivity"
+means when the authorization names one object.  `protected_copper.py` says so
+exactly: of fifteen protected nets and 402 objects, **ONE net moved** —
+`BAT_PROT_SHDN_CTL`, `lost 1`, `gained 10` — and `ACC_5V_SW_EN` (23),
+`ACC_3V3_SW` (79), the three `FRONT_RGB_*_N`, `XGPIO4`/`XGPIO5` and every other
+`BAT_*` net are **IDENTICAL** (`evidence/d681-protected-copper.json`).
+
+The relay runs **17.257 mm with 2 vias** — `(4.100,90.900)` up to a barrel at
+`(4.200,91.050)`, across `F.Cu` to `(9.400,82.050)`, down through
+`(7.750,80.400)` and back to `(4.100,76.550)`.
+
+## 2. A MID-POINT TAP IS NOT AN END, AND THE FIRST RELAY LOST ONE
+
+The first relay reported `all_relaid true`, `failed []`, and
+`BAT_PROT_SHDN_CTL` **0 -> 1 open edges** anyway.  **`TP19.1` (4.000,77.500)
+was not an end of the removed track — it was a point ON it**, and a relay that
+honours the two ends has no reason to pass through the middle.  The net is
+therefore REQUESTED in the promoting run, which re-lays that tap as **2.100 mm
+of ordinary `B.Cu`** from `R83.1`.  This is the general lesson and it belongs
+beside `--detour-spec`: *the ends of a chain are not the pads it served.*
+
+## 3. TWO `copper_sliver` WARNINGS, AND THE OBJECT THAT MADE THEM, BY NAME
+
+The transaction reached `refused_clauses ['attributable_drc']` with exactly two
+`copper_sliver (B.Cu)` — the type KiCad reports with an **EMPTY items list**
+(D-656), so nothing in the report says where.  Two locators were built and only
+one worked:
+
+  * a GEOMETRIC one (`evidence/d681-sliver-open-locator.py`) that opens every
+    filled polygon and diffs the loss against the pre-board.  **It is not
+    KiCad's predicate**: it names 35 847 pieces on a board KiCad calls clean,
+    and its best B.Cu candidate `(60.554,129.197)-(60.704,130.853)` is present
+    in the PRE board too.  Recorded as a refuted instrument.
+  * a per-OBJECT BISECT under the REAL `kicad-cli` DRC — **8.6 s a probe**, so
+    forty objects is six minutes.  Removing object #14 —
+    `B.Cu (56.250,130.450) -> (60.200,136.150)`, a 6.9 mm diagonal across the
+    `B.Cu` `GND` pour under `U1` — takes `copper_sliver` **2 -> 0**.  All
+    seventeen others probed leave it at 2
+    (`evidence/d681-sliver-bisect.log`).
+
+**SIX DISCS ON `B.Cu`, EXEMPT TO NOTHING**, reserve that diagonal.  The route
+reaches `U1.38` another way, at **89.084 mm with 8 vias** against 86.189 mm and
+7, and the gate returns **`refused_clauses []`**.
+
+## 4. THE PRICE, STATED RATHER THAN HIDDEN
+
+`/I2C_SCL_INT` `U1.38 -> U14.7` is **89.084 mm with 8 barrels** for a 24 mm
+gap.  D-655 measured the DIRECT opening at 30.756 mm — and that figure is the
+price of BOTH authorized objects.  With the barrel kept, the direct corridor is
+shut and the bus goes round.  The judgement, taken deliberately and against
+D-680's own refusal of a 78 mm trace: **an I2C bus is not a feedback node.**
+This is open-drain copper at 100-400 kHz whose edges are RC-dominated; 89 mm of
+0.200 mm trace over a plane plus 8 barrels adds on the order of **15 pF** to a
+bus whose budget is 400 pF, the route enters no antenna keepout, and real KiCad
+DRC reports **zero attributable violations** including every `SWITCH_NODE`- and
+`LED_BOOST`-to-`I2C` separation rule.  D-680 refused 78.759 mm on
+`/01_POWER_TREE/ACC_5V_FB` because that net is a **732 k / 100 k feedback node
+on a switching converter**.  The two numbers look alike and the nets do not.
+
+## 5. THE `In2` RULING `.kicad_dru` SECTION 6 ASKED FOR, TAKEN
+
+`route_maze_batch.py`'s own `DRU_CLASS` note left this open in these words:
+closing `/USB_D_MCU_P` and `/USB_D_MCU_N` *"needs either a real `.kicad_dru`
+section-6 ruling on whether a through via that merely PIERCES In2 is the In2
+excursion that rule forbids, or an `F.Cu` refloorplan of the MCU fanout"*.
+
+**THE RULING.**  The rule read `(layer "In2.Cu") (constraint disallow track
+via)`, and KiCad reports a THROUGH via as an item *on* In2 because its span
+crosses In2 — so a rule whose own name is *"it has no business leaving F.Cu"*
+forbade any layer change at all.  It is restated as
+
+    (rule "USB pair carries no track on any inner layer ..."
+        (layer inner) (severity error) (constraint disallow track)
+        (condition "A.hasNetclass('USB_D')"))
+
+which is **STRICTLY HARDER for tracks** — `In1`, `In3` and `In4` are named
+where only `In2` was — and looser for exactly one thing: a through barrel that
+carries no inner-layer copper.  The grounds are this file's own: the board's
+USB is **Full Speed only** (12 Mbit/s, 4-20 ns edges) and section 6 already
+says *"Neither matters at Full Speed over 40 mm"*; an `F.Cu` end references
+`In1` GND and a `B.Cu` end references `In4` GND, so a layer change here is a
+GND-to-GND reference transfer; and the alternative is a USB data interface that
+is **not connected**.  `USB 2.0 differential pair geometry`, `USB 2.0 trace
+width` and the **25 mm uncoupled budget are unchanged**.
+
+**PROVED NON-VACUOUS AND PROVED A NO-OP.**  On the authoritative board the
+amended rule gives DRC **199 `lib_footprint_issues` + 1 `solder_mask_bridge`,
+identical to the baseline**.  On a scratch project carrying it, `/USB_D_MCU_P`
+**ROUTES — 33.432 mm with 4 vias — where it was `NO_PATH`** at every pitch
+before (`evidence/d681-runs.json`).
+
+**AND IT IS NOT ENOUGH, WHICH IS RECORDED HERE AND NOT PROMOTED.**
+`/USB_D_MCU_N` stays `NO_PATH` even on `F+B`; the corridor blame says one net
+opens it alone — `/I2S_LRCLK`, at 26.035 mm with 2 vias — so it is copper and
+not placement.  The wall is the OTHER rule: with `MCU_P` at 33.4 mm and
+`MCU_N` at 26.0 mm, **both uncoupled, the pair reports 59 mm against a 25 mm
+budget**, and no maze that routes one net at a time can couple them.  Raising
+that budget is an ELECTRICAL relaxation of a USB constraint and this decision
+does not take it.
+
+## 6. THE STANDING CONTRACT THAT CAUGHT THE RULING, AND WHAT WAS DONE ABOUT IT
+
+`trunk_floor_contract` **TF2** — *"with the lever OFF, `net_contract` returns
+for EVERY net what the pre-D-662 module returned"* — reported the six `USB_D`
+nets' `layers` moving `["F"] -> ["F","B"]`.  **That is the clause working.**
+It is not silenced and `BASE_REV` is not moved: a `DECLARED_MOVES` table now
+names the six pairs, their exact `was`/`now`, and the decision that took them,
+and an UNDECLARED move on any net or field still FAILS TF2.  Four controls
+(`evidence/d681-tf2-declared-move-controls.json`): the declared move is
+recognised; an undeclared net FAILS; a declared net with a different `now`
+FAILS; a declared net with a different `was` FAILS.
+
+## 7. THE `U21` ACCESSORY BOOST: THE SWITCH NODE ROUTED, AND THE PIN THAT CANNOT BE GROUNDED
+
+D-680 left `/01_POWER_TREE/ACC_5V_LX` as "one placement decision from
+promotable".  Five gate runs took that decision and found the next one.
+
+**THE SWITCH NODE ROUTES.**  With `C65` shifted to (60.700,42.200) — a site
+`d680-placement-site-clearance.py` calls clean at 0.553 mm — and `U21.4`'s own
+`GND` escape out of the way, `ACC_5V_LX` closes **`L4.2 -> U21.5` in 3.529 mm
+with ZERO vias**, launching on a 0.200 mm neck that reaches 0.250 mm past
+`U21`'s courtyard under D-680's `--neck-reach-mm`.  It has never routed before.
+`ACC_5V_RAW` follows it out south, 2.514 mm, zero vias.
+
+**AND `U21.4` CANNOT BE GROUNDED.**  Every arm ends in the same place:
+
+    arm  what it did                                    U21.4
+    A    --detour-spec relay:false on the diagonal      0.168 mm2 STRANDED, and
+                                                        inert_removal_priced
+                                                        refuses at ratio 0.833
+    B    the same, RELAID around a reserved LX lane     relay NO_PATH at 0.300 mm
+    C    released by the placement move + --bond-pad    PP1-PP4 ALL TRUE -- and the
+                                                        3.842 mm bond track took the
+                                                        LX lane, so LX failed
+    D    --bond-max-mm 1.2                              NO_VIA_SITE
+    E    the GND column reserved, --tap-first           0.175 mm2 STRANDED
+
+**THE MEASUREMENT THAT EXPLAINS ALL FIVE.**  `U21.4` is boxed: `SYS POUR 2`
+owns the channel to its north, `U21.5`'s own land squeezes the pour to
+**0.250 mm** at its east edge (`pour_bond_guard.geodesic`, per-point radius),
+`U21.3` is west and `U21.5`/`U21.6` are south.  Its ONLY ground is the east
+corridor, and that is the corridor the switch node must cross — the two are
+topologically forced to cross, so one severs the other.  A barrel would settle
+it and **there is no site**: a 0.500 mm through hole anywhere in
+`x 58.2..60.6, y 38.2..39.5` clears at most **0.1055 mm**, blocked by
+`/XGPIO4`'s `In2` diagonal (which passes UNDER `U21.4`'s own land), `R64`'s
+`F.Cu` lands and `/01_POWER_TREE/ACC_5V_RAW`'s `In3` haul.  **Three foreign
+layers are routed straight through the boost's footprint.**  That is the
+finding, and it is a floorplan finding: the boost cell cannot be closed until
+`U21`/`L4` move or those three hauls do.
+
+## 8. THE USB CONNECTOR HALF, MEASURED THE SAME WAY
+
+`screen_pair_corridor_blame.py --per-object` on `/01_POWER_TREE/USB_D_CONN_P`
+`J3.A6 <-> U10.3`: Q1 opens at **8.285 mm on `F.Cu` with ZERO vias**, and the
+minimal set is **EIGHT objects across TWO nets** — five `F.Cu` segments of its
+own pair partner `USB_D_CONN_N` and three of `/I2S_LRCLK`.  With `--ban` on the
+partner, **Q1 over the other nine nets is `NO_PATH`**: there is ONE lane out of
+the `J3` fanout and the pair must share it.  Ripping up `D-` and relaying the
+`I2S` chain BARREL-TO-BARREL gets **`D+` routed at 10.709 mm with zero vias** —
+and `D-` then has **NO LEGAL ESCAPE from `J3.B7`**, blocked by `J3.A6`, the
+board edge and `J3.A5`.  Reversing the order swaps which one fails.  This is
+recorded as a PAIR problem with a measured opening, not a wall.
+
+## 9. NEXT, IN ORDER OF LEVERAGE
+
+1. **`U21.4`'s ground is the boost's only remaining question.**  `ACC_5V_LX`
+   routes; the transaction that promotes it must first move `/XGPIO4`'s `In2`
+   diagonal, `R64` (an `F.Cu` 0603 on a 100 R accessory-detect strap) or
+   `ACC_5V_RAW`'s `In3` haul out of `U21`'s footprint — any one of them may be
+   enough and `evidence/d681-site-sweep.py` prices the sites in seconds.
+2. **The USB connector pair needs to be laid AS A PAIR.**  Both halves route
+   individually and neither survives the other; the lane is 0.05 mm too narrow
+   for two independent mazes and the opening is measured.
+3. **`/USB_D_MCU_*` is now a 25 mm uncoupled budget question and nothing else.**
+   Either the pair is coupled (needs a differential router this repository does
+   not have) or `R33`/`R34` move to within ~12 mm of `U1.13`/`U1.14`, which
+   spends the `ESD` pair's own budget — the arithmetic is in section 5.
+4. `/01_POWER_TREE/BQ25185_SYS` remains 6 of 24 and the **#1 fabrication
+   blocker**; D-678's `Net-(U12-PG)` + `Net-(U12-PS_SYNC)` six-unit cut set and
+   D-680's boost island are the two ends of it.
+5. `/I2C_SCL_INT` is now **2** edges: `TP5.1` and `U16.3`, both D-655 corridor
+   walls, neither an owner decision.  **There is no open owner decision on this
+   board.**
+
 # D-680 · 2026-09-10 · Demo — THE ACCESSORY BOOST IS A CLOSED ROOM: ITS SYS EDGE CLOSES AT 18.883 mm AND THE GATE PASSES IT 15 OF 15, AND IT IS REFUSED ANYWAY BECAUSE THE PRICE IS A 78 mm FEEDBACK TRACE
 
     authority  0285ef45466c1c7dd1823099c35d75d704b50266460e94f339c1b19b5409180d

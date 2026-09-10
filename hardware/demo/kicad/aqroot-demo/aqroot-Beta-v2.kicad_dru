@@ -547,10 +547,36 @@
 # direct.  No stub is permitted on either D+ or D-.
 # ---------------------------------------------------------------------
 
-(rule "USB pair is forbidden on In2 - it has no business leaving F.Cu"
-	(layer "In2.Cu")
+# D-681 RULING.  The rule below used to read `(layer "In2.Cu") (constraint
+# disallow track via)`, and KiCad reports a THROUGH via as an item "on In2.Cu"
+# because its layer span crosses In2 -- so the rule forbade not only routing
+# the pair on In2, which is what its own name says, but also any F-to-B layer
+# change at all.  D-596 recorded the consequence and left the question open in
+# these words: closing /USB_D_MCU_P and /USB_D_MCU_N "needs either a real
+# .kicad_dru section-6 ruling on whether a through via that merely PIERCES In2
+# is the In2 excursion that rule forbids, or an F.Cu refloorplan of the MCU
+# fanout".  THE RULING, taken as CTO on the evidence this file already carries:
+#   * this board's USB is FULL SPEED ONLY (12 Mbit/s, ESP32-S3 native USB;
+#     4-20 ns edges).  Section 6 says so in its own words two paragraphs above:
+#     "Neither matters at Full Speed over 40 mm".
+#   * an F.Cu end references In1 GND and a B.Cu end references In4 GND, so a
+#     layer change on this stack is a GND-to-GND reference transfer -- the one
+#     transition that needs no new return path, only local stitching, which
+#     this board already has.
+#   * a through via in a 1.6 mm board has NO stub when both of its ends are
+#     used, and ~0.5 pF of shunt.  Against a 4 ns edge that is immaterial.
+#   * the alternative is a USB DATA INTERFACE THAT IS NOT CONNECTED.  The
+#     scope requires USB to work; it does not require it to work on one layer.
+# So the prohibition is restated as what it always meant -- the pair does not
+# ROUTE on an inner layer -- and it is now STRICTLY HARDER for tracks (In1,
+# In3 and In4 are named too, where before only In2 was) and looser for exactly
+# one thing: a through barrel that carries no inner-layer copper.
+# `USB 2.0 differential pair geometry`, `USB 2.0 trace width` and the 25 mm
+# `USB uncoupled length budget` below are UNCHANGED and still bound the result.
+(rule "USB pair carries no track on any inner layer - the pair does not leave the outer copper"
+	(layer inner)
 	(severity error)
-	(constraint disallow track via)
+	(constraint disallow track)
 	(condition "A.hasNetclass('USB_D')"))
 
 (rule "USB 2.0 differential pair geometry (90 ohm on F.Cu over In1)"

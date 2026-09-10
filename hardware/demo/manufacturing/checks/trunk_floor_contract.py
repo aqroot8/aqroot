@@ -70,6 +70,32 @@ sys.path.insert(0, str(ROOT / "hardware/beta-v2/checks"))
 BASE_FIELDS = ("net", "netclass", "width", "clr", "clr_pad",
                "via_dia", "via_drill", "layers", "known_class")
 
+# A MOVE A DECISION TOOK, NAMED, EXACT, AND STILL COMPARED.  D-681.
+#
+# TF2's claim is "with the lever OFF, `net_contract` returns for EVERY net what
+# the pre-D-662 module returned", and its whole value is that it FAILS when
+# something moves.  A decision may nevertheless move one deliberately: D-681
+# ruled on the question `.kicad_dru` section 6 had left open in its own words --
+# whether a THROUGH via that merely PIERCES In2 is the In2 excursion the USB
+# rule forbids -- restated that rule as "USB pair carries no track on any inner
+# layer" (STRICTLY HARDER for tracks: In1, In3 and In4 are named where only In2
+# was) and gave the `USB_D` class the second outer layer the restated rule
+# permits.  The reasoning is written beside the rule in the `.kicad_dru`.
+#
+# Declaring it here keeps the clause's teeth exactly where they were: a move
+# that is not in this table, on any net or any field, still fails TF2, and the
+# report carries BOTH lists so a reader sees the declared move as well as the
+# absence of undeclared ones.  A declaration is a WEAKER statement than silence
+# -- it says which move happened and which decision took it.
+DECLARED_MOVES = {
+    ("/01_POWER_TREE/USB_D_CONN_N", "layers"): (["F"], ["F", "B"], "D-681"),
+    ("/01_POWER_TREE/USB_D_CONN_P", "layers"): (["F"], ["F", "B"], "D-681"),
+    ("/01_POWER_TREE/USB_D_ESD_N", "layers"): (["F"], ["F", "B"], "D-681"),
+    ("/01_POWER_TREE/USB_D_ESD_P", "layers"): (["F"], ["F", "B"], "D-681"),
+    ("/USB_D_MCU_N", "layers"): (["F"], ["F", "B"], "D-681"),
+    ("/USB_D_MCU_P", "layers"): (["F"], ["F", "B"], "D-681"),
+}
+
 
 def load_rev_module(rev, name="route_maze_batch_base"):
     """Import `route_maze_batch.py` as it stands at `rev`, worktree untouched.
@@ -165,7 +191,7 @@ def main():
     nets = sorted({board.GetNetInfo().GetNetItem(i).GetNetname()
                    for i in range(board.GetNetInfo().GetNetCount())}
                   - {""})
-    moved, checked, carried = [], 0, []
+    moved, checked, carried, declared = [], 0, [], []
     for n in nets:
         try:
             now = rmb.net_contract(board, n)
@@ -177,10 +203,18 @@ def main():
             carried.append(n)
         for f in BASE_FIELDS:
             if now.get(f) != was.get(f):
-                moved.append(dict(net=n, field=f,
-                                  now=now.get(f), was=was.get(f)))
+                d = DECLARED_MOVES.get((n, f))
+                rec = dict(net=n, field=f, now=now.get(f), was=was.get(f))
+                if d and list(d[0]) == list(was.get(f) or []) \
+                        and list(d[1]) == list(now.get(f) or []):
+                    rec["declared_by"] = d[2]
+                    declared.append(rec)
+                else:
+                    moved.append(rec)
     results["TF2"] = dict(ok=(not moved and not carried and checked > 0),
                           rev=a.rev, nets_compared=checked, moved=moved[:20],
+                          declared_moves=declared[:20],
+                          declared_moves_expected=len(DECLARED_MOVES),
                           nets_carrying_a_block_with_lever_off=carried[:20])
 
     # -- TF3: the descent, over every net on the board ---------------------- #
