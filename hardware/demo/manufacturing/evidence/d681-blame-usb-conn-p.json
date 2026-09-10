@@ -1,0 +1,842 @@
+{
+  "a": "J3.A6",
+  "b": "U10.3",
+  "banned_nets": [],
+  "board": "/home/aqroot8/aqroot-demo/hardware/demo/kicad/aqroot-demo/aqroot-Beta-v2.kicad_pcb",
+  "board_is_authority": true,
+  "board_sha256": "0285ef45466c1c7dd1823099c35d75d704b50266460e94f339c1b19b5409180d",
+  "complete": true,
+  "grid_nm": 50000,
+  "instrument": "maze3d.offcentre_route under screen_corridor_blockers.Without",
+  "layers": [
+    "F"
+  ],
+  "margin_mm": 3.0,
+  "max_mm": null,
+  "net": "/01_POWER_TREE/USB_D_CONN_P",
+  "q2": "RUN",
+  "rows": [
+    {
+      "accepted": false,
+      "layers": null,
+      "mm": null,
+      "ok": false,
+      "reason": "NO_PATH",
+      "step": "BASE",
+      "vias": null,
+      "why": "no all-layer corridor at 0.250 mm from J3.A6 on F to U10.3 on F"
+    },
+    {
+      "accepted": true,
+      "layers": [
+        "F"
+      ],
+      "mm": 8.2845,
+      "nets": [
+        "/01_POWER_TREE/USB_D_CONN_N",
+        "/01_POWER_TREE/USB_VBUS_RAW",
+        "/I2C_SDA_INT",
+        "/I2S_LRCLK",
+        "/SPI_B_SCK",
+        "/WAKE_INT_N",
+        "GND",
+        "Net-(J3-CC1)",
+        "Net-(J3-CC2)",
+        "Net-(J3-SHIELD)"
+      ],
+      "ok": true,
+      "reason": null,
+      "step": "Q1_UPPER_BOUND",
+      "vias": 0,
+      "why": null
+    },
+    {
+      "accepted": false,
+      "layers": null,
+      "mm": null,
+      "net": "/01_POWER_TREE/USB_D_CONN_N",
+      "ok": false,
+      "reason": "NO_PATH",
+      "step": "Q2_SINGLE_NET",
+      "vias": null
+    },
+    {
+      "accepted": false,
+      "layers": null,
+      "mm": null,
+      "net": "/01_POWER_TREE/USB_VBUS_RAW",
+      "ok": false,
+      "reason": "NO_PATH",
+      "step": "Q2_SINGLE_NET",
+      "vias": null
+    },
+    {
+      "accepted": false,
+      "layers": null,
+      "mm": null,
+      "net": "/I2C_SDA_INT",
+      "ok": false,
+      "reason": "NO_PATH",
+      "step": "Q2_SINGLE_NET",
+      "vias": null
+    },
+    {
+      "accepted": false,
+      "layers": null,
+      "mm": null,
+      "net": "/I2S_LRCLK",
+      "ok": false,
+      "reason": "NO_PATH",
+      "step": "Q2_SINGLE_NET",
+      "vias": null
+    },
+    {
+      "accepted": false,
+      "layers": null,
+      "mm": null,
+      "net": "/SPI_B_SCK",
+      "ok": false,
+      "reason": "NO_PATH",
+      "step": "Q2_SINGLE_NET",
+      "vias": null
+    },
+    {
+      "accepted": false,
+      "layers": null,
+      "mm": null,
+      "net": "/WAKE_INT_N",
+      "ok": false,
+      "reason": "NO_PATH",
+      "step": "Q2_SINGLE_NET",
+      "vias": null
+    },
+    {
+      "accepted": false,
+      "layers": null,
+      "mm": null,
+      "net": "GND",
+      "ok": false,
+      "reason": "NO_PATH",
+      "step": "Q2_SINGLE_NET",
+      "vias": null
+    },
+    {
+      "accepted": false,
+      "layers": null,
+      "mm": null,
+      "net": "Net-(J3-CC1)",
+      "ok": false,
+      "reason": "NO_PATH",
+      "step": "Q2_SINGLE_NET",
+      "vias": null
+    },
+    {
+      "accepted": false,
+      "layers": null,
+      "mm": null,
+      "net": "Net-(J3-CC2)",
+      "ok": false,
+      "reason": "NO_PATH",
+      "step": "Q2_SINGLE_NET",
+      "vias": null
+    },
+    {
+      "accepted": false,
+      "layers": null,
+      "mm": null,
+      "net": "Net-(J3-SHIELD)",
+      "ok": false,
+      "reason": "NO_PATH",
+      "step": "Q2_SINGLE_NET",
+      "vias": null
+    },
+    {
+      "net": "/01_POWER_TREE/USB_D_CONN_N",
+      "reason": "NO_PATH",
+      "remaining": 10,
+      "step": "Q3_REQUIRED"
+    },
+    {
+      "mm": 8.2845,
+      "net": "/01_POWER_TREE/USB_VBUS_RAW",
+      "remaining": 9,
+      "step": "Q3_DROPPED"
+    },
+    {
+      "mm": 9.8279,
+      "net": "/I2C_SDA_INT",
+      "remaining": 8,
+      "step": "Q3_DROPPED"
+    },
+    {
+      "net": "/I2S_LRCLK",
+      "reason": "NO_PATH",
+      "remaining": 8,
+      "step": "Q3_REQUIRED"
+    },
+    {
+      "mm": 9.8279,
+      "net": "/SPI_B_SCK",
+      "remaining": 7,
+      "step": "Q3_DROPPED"
+    },
+    {
+      "mm": 9.8279,
+      "net": "/WAKE_INT_N",
+      "remaining": 6,
+      "step": "Q3_DROPPED"
+    },
+    {
+      "mm": 11.2844,
+      "net": "GND",
+      "remaining": 5,
+      "step": "Q3_DROPPED"
+    },
+    {
+      "mm": 11.4168,
+      "net": "Net-(J3-CC1)",
+      "remaining": 4,
+      "step": "Q3_DROPPED"
+    },
+    {
+      "mm": 11.4168,
+      "net": "Net-(J3-CC2)",
+      "remaining": 3,
+      "step": "Q3_DROPPED"
+    },
+    {
+      "mm": 11.4168,
+      "net": "Net-(J3-SHIELD)",
+      "remaining": 2,
+      "step": "Q3_DROPPED"
+    },
+    {
+      "accepted": true,
+      "layers": [
+        "F"
+      ],
+      "mm": 11.4168,
+      "n": 2,
+      "nets": [
+        "/01_POWER_TREE/USB_D_CONN_N",
+        "/I2S_LRCLK"
+      ],
+      "ok": true,
+      "step": "Q3_MINIMAL_SET",
+      "vias": 0
+    },
+    {
+      "accepted": true,
+      "mm": 11.4168,
+      "n_objects": 48,
+      "n_units": 20,
+      "nets": [
+        "/01_POWER_TREE/USB_D_CONN_N",
+        "/I2S_LRCLK"
+      ],
+      "ok": true,
+      "reason": null,
+      "step": "Q4_POOL"
+    },
+    {
+      "mm": 11.4168,
+      "remaining": 19,
+      "step": "Q4_OBJECT_RETURNED",
+      "unit": {
+        "a_mm": [
+          41.1,
+          144.9
+        ],
+        "b_mm": [
+          40.8,
+          145.0
+        ],
+        "count": 2,
+        "kind": "track",
+        "layer": "F.Cu",
+        "net": "/01_POWER_TREE/USB_D_CONN_N",
+        "objects": 2,
+        "router_objects": 2,
+        "width_mm": 0.25
+      }
+    },
+    {
+      "mm": 11.4168,
+      "remaining": 18,
+      "step": "Q4_OBJECT_RETURNED",
+      "unit": {
+        "a_mm": [
+          41.6,
+          144.9
+        ],
+        "b_mm": [
+          41.1,
+          144.9
+        ],
+        "count": 1,
+        "kind": "track",
+        "layer": "F.Cu",
+        "net": "/01_POWER_TREE/USB_D_CONN_N",
+        "objects": 1,
+        "router_objects": 1,
+        "width_mm": 0.25
+      }
+    },
+    {
+      "mm": 11.4168,
+      "remaining": 17,
+      "step": "Q4_OBJECT_RETURNED",
+      "unit": {
+        "a_mm": [
+          42.6,
+          144.9
+        ],
+        "b_mm": [
+          41.1,
+          144.9
+        ],
+        "count": 1,
+        "kind": "track",
+        "layer": "F.Cu",
+        "net": "/01_POWER_TREE/USB_D_CONN_N",
+        "objects": 1,
+        "router_objects": 1,
+        "width_mm": 0.25
+      }
+    },
+    {
+      "mm": 11.4168,
+      "remaining": 16,
+      "step": "Q4_OBJECT_RETURNED",
+      "unit": {
+        "a_mm": [
+          42.65,
+          145.575
+        ],
+        "b_mm": [
+          41.6,
+          144.9
+        ],
+        "count": 1,
+        "kind": "track",
+        "layer": "F.Cu",
+        "net": "/01_POWER_TREE/USB_D_CONN_N",
+        "objects": 1,
+        "router_objects": 1,
+        "width_mm": 0.25
+      }
+    },
+    {
+      "mm": 11.4168,
+      "remaining": 15,
+      "step": "Q4_OBJECT_RETURNED",
+      "unit": {
+        "a_mm": [
+          42.75,
+          145.75
+        ],
+        "b_mm": [
+          42.65,
+          145.575
+        ],
+        "count": 1,
+        "kind": "track",
+        "layer": "F.Cu",
+        "net": "/01_POWER_TREE/USB_D_CONN_N",
+        "objects": 1,
+        "router_objects": 1,
+        "width_mm": 0.25
+      }
+    },
+    {
+      "reason": "NO_PATH",
+      "remaining": 15,
+      "step": "Q4_OBJECT_REQUIRED",
+      "unit": {
+        "a_mm": [
+          42.75,
+          145.75
+        ],
+        "b_mm": [
+          42.85,
+          145.575
+        ],
+        "count": 1,
+        "kind": "track",
+        "layer": "F.Cu",
+        "net": "/01_POWER_TREE/USB_D_CONN_N",
+        "objects": 1,
+        "router_objects": 1,
+        "width_mm": 0.25
+      }
+    },
+    {
+      "mm": 11.4168,
+      "remaining": 14,
+      "step": "Q4_OBJECT_RETURNED",
+      "unit": {
+        "a_mm": [
+          42.75,
+          145.95
+        ],
+        "b_mm": [
+          42.75,
+          145.75
+        ],
+        "count": 2,
+        "kind": "track",
+        "layer": "F.Cu",
+        "net": "/01_POWER_TREE/USB_D_CONN_N",
+        "objects": 2,
+        "router_objects": 2,
+        "width_mm": 0.25
+      }
+    },
+    {
+      "reason": "NO_PATH",
+      "remaining": 14,
+      "step": "Q4_OBJECT_REQUIRED",
+      "unit": {
+        "a_mm": [
+          42.85,
+          145.575
+        ],
+        "b_mm": [
+          44.7,
+          143.8
+        ],
+        "count": 1,
+        "kind": "track",
+        "layer": "F.Cu",
+        "net": "/01_POWER_TREE/USB_D_CONN_N",
+        "objects": 1,
+        "router_objects": 1,
+        "width_mm": 0.25
+      }
+    },
+    {
+      "reason": "NO_PATH",
+      "remaining": 14,
+      "step": "Q4_OBJECT_REQUIRED",
+      "unit": {
+        "a_mm": [
+          43.65,
+          145.575
+        ],
+        "b_mm": [
+          42.6,
+          144.9
+        ],
+        "count": 1,
+        "kind": "track",
+        "layer": "F.Cu",
+        "net": "/01_POWER_TREE/USB_D_CONN_N",
+        "objects": 1,
+        "router_objects": 1,
+        "width_mm": 0.25
+      }
+    },
+    {
+      "reason": "NO_PATH",
+      "remaining": 14,
+      "step": "Q4_OBJECT_REQUIRED",
+      "unit": {
+        "a_mm": [
+          43.75,
+          145.75
+        ],
+        "b_mm": [
+          43.65,
+          145.575
+        ],
+        "count": 1,
+        "kind": "track",
+        "layer": "F.Cu",
+        "net": "/01_POWER_TREE/USB_D_CONN_N",
+        "objects": 1,
+        "router_objects": 1,
+        "width_mm": 0.25
+      }
+    },
+    {
+      "mm": 11.4168,
+      "remaining": 13,
+      "step": "Q4_OBJECT_RETURNED",
+      "unit": {
+        "a_mm": [
+          43.75,
+          145.95
+        ],
+        "b_mm": [
+          43.75,
+          145.75
+        ],
+        "count": 1,
+        "kind": "track",
+        "layer": "F.Cu",
+        "net": "/01_POWER_TREE/USB_D_CONN_N",
+        "objects": 1,
+        "router_objects": 1,
+        "width_mm": 0.25
+      }
+    },
+    {
+      "reason": "NO_PATH",
+      "remaining": 13,
+      "step": "Q4_OBJECT_REQUIRED",
+      "unit": {
+        "a_mm": [
+          44.7,
+          143.8
+        ],
+        "b_mm": [
+          44.9,
+          141.7
+        ],
+        "count": 1,
+        "kind": "track",
+        "layer": "F.Cu",
+        "net": "/01_POWER_TREE/USB_D_CONN_N",
+        "objects": 1,
+        "router_objects": 1,
+        "width_mm": 0.25
+      }
+    },
+    {
+      "mm": 11.4168,
+      "remaining": 12,
+      "step": "Q4_OBJECT_RETURNED",
+      "unit": {
+        "a_mm": [
+          49.75,
+          141.6
+        ],
+        "b_mm": [
+          49.5,
+          141.3
+        ],
+        "count": 1,
+        "kind": "track",
+        "layer": "F.Cu",
+        "net": "/01_POWER_TREE/USB_D_CONN_N",
+        "objects": 1,
+        "router_objects": 1,
+        "width_mm": 0.25
+      }
+    },
+    {
+      "reason": "NO_PATH",
+      "remaining": 12,
+      "step": "Q4_OBJECT_REQUIRED",
+      "unit": {
+        "a_mm": [
+          45.6,
+          142.1
+        ],
+        "b_mm": [
+          48.2,
+          144.8
+        ],
+        "count": 1,
+        "kind": "track",
+        "layer": "F.Cu",
+        "net": "/I2S_LRCLK",
+        "objects": 1,
+        "router_objects": 1,
+        "width_mm": 0.2
+      }
+    },
+    {
+      "reason": "NO_PATH",
+      "remaining": 12,
+      "step": "Q4_OBJECT_REQUIRED",
+      "unit": {
+        "a_mm": [
+          48.2,
+          144.8
+        ],
+        "b_mm": [
+          48.2,
+          145.1
+        ],
+        "count": 1,
+        "kind": "track",
+        "layer": "F.Cu",
+        "net": "/I2S_LRCLK",
+        "objects": 1,
+        "router_objects": 1,
+        "width_mm": 0.2
+      }
+    },
+    {
+      "reason": "NO_PATH",
+      "remaining": 12,
+      "step": "Q4_OBJECT_REQUIRED",
+      "unit": {
+        "a_mm": [
+          48.2,
+          145.1
+        ],
+        "b_mm": [
+          51.2,
+          147.3
+        ],
+        "count": 1,
+        "kind": "track",
+        "layer": "F.Cu",
+        "net": "/I2S_LRCLK",
+        "objects": 1,
+        "router_objects": 1,
+        "width_mm": 0.2
+      }
+    },
+    {
+      "mm": 11.4168,
+      "remaining": 11,
+      "step": "Q4_OBJECT_RETURNED",
+      "unit": {
+        "a_mm": [
+          51.2,
+          147.3
+        ],
+        "b_mm": [
+          52.6,
+          146.6
+        ],
+        "count": 1,
+        "kind": "track",
+        "layer": "F.Cu",
+        "net": "/I2S_LRCLK",
+        "objects": 1,
+        "router_objects": 1,
+        "width_mm": 0.2
+      }
+    },
+    {
+      "mm": 11.4168,
+      "remaining": 10,
+      "step": "Q4_OBJECT_RETURNED",
+      "unit": {
+        "a_mm": [
+          45.5,
+          142.0
+        ],
+        "b_mm": [
+          45.6,
+          142.1
+        ],
+        "count": 1,
+        "kind": "track",
+        "layer": "In2.Cu",
+        "net": "/I2S_LRCLK",
+        "objects": 1,
+        "router_objects": 1,
+        "width_mm": 0.2
+      }
+    },
+    {
+      "mm": 11.4168,
+      "remaining": 9,
+      "step": "Q4_OBJECT_RETURNED",
+      "unit": {
+        "at_mm": [
+          45.6,
+          142.1
+        ],
+        "count": 1,
+        "dia_mm": 0.6,
+        "drill_mm": 0.3,
+        "kind": "barrel",
+        "net": "/I2S_LRCLK",
+        "objects": 14,
+        "router_objects": 14
+      }
+    },
+    {
+      "mm": 11.4168,
+      "remaining": 8,
+      "step": "Q4_OBJECT_RETURNED",
+      "unit": {
+        "at_mm": [
+          52.6,
+          146.6
+        ],
+        "count": 1,
+        "dia_mm": 0.6,
+        "drill_mm": 0.3,
+        "kind": "barrel",
+        "net": "/I2S_LRCLK",
+        "objects": 14,
+        "router_objects": 14
+      }
+    },
+    {
+      "accepted": true,
+      "layers": [
+        "F"
+      ],
+      "mm": 11.4168,
+      "n_objects": 8,
+      "n_units": 8,
+      "nets": [
+        "/01_POWER_TREE/USB_D_CONN_N",
+        "/I2S_LRCLK"
+      ],
+      "ok": true,
+      "step": "Q4_MINIMAL_OBJECTS",
+      "units": [
+        {
+          "a_mm": [
+            42.75,
+            145.75
+          ],
+          "b_mm": [
+            42.85,
+            145.575
+          ],
+          "count": 1,
+          "kind": "track",
+          "layer": "F.Cu",
+          "net": "/01_POWER_TREE/USB_D_CONN_N",
+          "objects": 1,
+          "router_objects": 1,
+          "width_mm": 0.25
+        },
+        {
+          "a_mm": [
+            42.85,
+            145.575
+          ],
+          "b_mm": [
+            44.7,
+            143.8
+          ],
+          "count": 1,
+          "kind": "track",
+          "layer": "F.Cu",
+          "net": "/01_POWER_TREE/USB_D_CONN_N",
+          "objects": 1,
+          "router_objects": 1,
+          "width_mm": 0.25
+        },
+        {
+          "a_mm": [
+            43.65,
+            145.575
+          ],
+          "b_mm": [
+            42.6,
+            144.9
+          ],
+          "count": 1,
+          "kind": "track",
+          "layer": "F.Cu",
+          "net": "/01_POWER_TREE/USB_D_CONN_N",
+          "objects": 1,
+          "router_objects": 1,
+          "width_mm": 0.25
+        },
+        {
+          "a_mm": [
+            43.75,
+            145.75
+          ],
+          "b_mm": [
+            43.65,
+            145.575
+          ],
+          "count": 1,
+          "kind": "track",
+          "layer": "F.Cu",
+          "net": "/01_POWER_TREE/USB_D_CONN_N",
+          "objects": 1,
+          "router_objects": 1,
+          "width_mm": 0.25
+        },
+        {
+          "a_mm": [
+            44.7,
+            143.8
+          ],
+          "b_mm": [
+            44.9,
+            141.7
+          ],
+          "count": 1,
+          "kind": "track",
+          "layer": "F.Cu",
+          "net": "/01_POWER_TREE/USB_D_CONN_N",
+          "objects": 1,
+          "router_objects": 1,
+          "width_mm": 0.25
+        },
+        {
+          "a_mm": [
+            45.6,
+            142.1
+          ],
+          "b_mm": [
+            48.2,
+            144.8
+          ],
+          "count": 1,
+          "kind": "track",
+          "layer": "F.Cu",
+          "net": "/I2S_LRCLK",
+          "objects": 1,
+          "router_objects": 1,
+          "width_mm": 0.2
+        },
+        {
+          "a_mm": [
+            48.2,
+            144.8
+          ],
+          "b_mm": [
+            48.2,
+            145.1
+          ],
+          "count": 1,
+          "kind": "track",
+          "layer": "F.Cu",
+          "net": "/I2S_LRCLK",
+          "objects": 1,
+          "router_objects": 1,
+          "width_mm": 0.2
+        },
+        {
+          "a_mm": [
+            48.2,
+            145.1
+          ],
+          "b_mm": [
+            51.2,
+            147.3
+          ],
+          "count": 1,
+          "kind": "track",
+          "layer": "F.Cu",
+          "net": "/I2S_LRCLK",
+          "objects": 1,
+          "router_objects": 1,
+          "width_mm": 0.2
+        }
+      ],
+      "vias": 0
+    }
+  ],
+  "schema": 1,
+  "seconds": 118.0,
+  "window_nets": [
+    "/01_POWER_TREE/USB_D_CONN_N",
+    "/01_POWER_TREE/USB_VBUS_RAW",
+    "/I2C_SDA_INT",
+    "/I2S_LRCLK",
+    "/SPI_B_SCK",
+    "/WAKE_INT_N",
+    "GND",
+    "Net-(J3-CC1)",
+    "Net-(J3-CC2)",
+    "Net-(J3-SHIELD)"
+  ]
+}

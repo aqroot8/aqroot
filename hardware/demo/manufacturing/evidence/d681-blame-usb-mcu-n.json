@@ -1,0 +1,643 @@
+{
+  "a": "R33.2",
+  "b": "U1.13",
+  "banned_nets": [],
+  "board": "/home/aqroot8/aqroot-demo/hardware/demo/manufacturing/w/d681/usbmcu/cand.kicad_pcb",
+  "board_is_authority": false,
+  "board_sha256": "0285ef45466c1c7dd1823099c35d75d704b50266460e94f339c1b19b5409180d",
+  "complete": true,
+  "grid_nm": 50000,
+  "instrument": "maze3d.offcentre_route under screen_corridor_blockers.Without",
+  "layers": [
+    "F",
+    "B"
+  ],
+  "margin_mm": 3.0,
+  "max_mm": null,
+  "net": "/USB_D_MCU_N",
+  "q2": "RUN",
+  "rows": [
+    {
+      "accepted": false,
+      "layers": null,
+      "mm": null,
+      "ok": false,
+      "reason": "NO_PATH",
+      "step": "BASE",
+      "vias": null,
+      "why": "no all-layer corridor at 0.250 mm from R33.2 on F to U1.13 on F"
+    },
+    {
+      "accepted": true,
+      "layers": [
+        "F",
+        "B",
+        "F"
+      ],
+      "mm": 24.787,
+      "nets": [
+        "+3V3",
+        "/01_POWER_TREE/USB_D_CONN_N",
+        "/01_POWER_TREE/USB_D_ESD_N",
+        "/01_POWER_TREE/USB_D_ESD_P",
+        "/02_MCU_CORE/BOOT_N",
+        "/02_MCU_CORE/DISP_BL_CTL_STRAP",
+        "/02_MCU_CORE/GPIO45_VDDSPI_STRAP",
+        "/02_MCU_CORE/UART0_TXD_DBG",
+        "/05_I2C_DEVICES/BMI270_INT1_RAW",
+        "/BMI270_INT1_STRAP",
+        "/CC1101_CS_N",
+        "/CC1101_GDO0",
+        "/I2C_SCL_INT",
+        "/I2S_BCLK",
+        "/I2S_LRCLK",
+        "/I2S_MIC_DIN",
+        "/I2S_SPK_DOUT",
+        "/IR_RX_GPIO44",
+        "/IR_TX_GPIO16",
+        "/NATIVE_A",
+        "/NFC_CS_N",
+        "/NFC_IRQ",
+        "/SD_CS_N",
+        "/SPI_B_MISO",
+        "/SPI_B_MOSI",
+        "/SPI_B_SCK",
+        "/SX1262_BUSY",
+        "/SX1262_CS_N",
+        "/WAKE_INT_N",
+        "GND",
+        "Net-(J3-SHIELD)",
+        "Net-(U1-EN)"
+      ],
+      "ok": true,
+      "reason": null,
+      "step": "Q1_UPPER_BOUND",
+      "vias": 2,
+      "why": null
+    },
+    {
+      "accepted": false,
+      "layers": null,
+      "mm": null,
+      "net": "+3V3",
+      "ok": false,
+      "reason": "NO_PATH",
+      "step": "Q2_SINGLE_NET",
+      "vias": null
+    },
+    {
+      "accepted": false,
+      "layers": null,
+      "mm": null,
+      "net": "/01_POWER_TREE/USB_D_CONN_N",
+      "ok": false,
+      "reason": "NO_PATH",
+      "step": "Q2_SINGLE_NET",
+      "vias": null
+    },
+    {
+      "accepted": false,
+      "layers": null,
+      "mm": null,
+      "net": "/01_POWER_TREE/USB_D_ESD_N",
+      "ok": false,
+      "reason": "NO_PATH",
+      "step": "Q2_SINGLE_NET",
+      "vias": null
+    },
+    {
+      "accepted": false,
+      "layers": null,
+      "mm": null,
+      "net": "/01_POWER_TREE/USB_D_ESD_P",
+      "ok": false,
+      "reason": "NO_PATH",
+      "step": "Q2_SINGLE_NET",
+      "vias": null
+    },
+    {
+      "accepted": false,
+      "layers": null,
+      "mm": null,
+      "net": "/02_MCU_CORE/BOOT_N",
+      "ok": false,
+      "reason": "NO_PATH",
+      "step": "Q2_SINGLE_NET",
+      "vias": null
+    },
+    {
+      "accepted": false,
+      "layers": null,
+      "mm": null,
+      "net": "/02_MCU_CORE/DISP_BL_CTL_STRAP",
+      "ok": false,
+      "reason": "NO_PATH",
+      "step": "Q2_SINGLE_NET",
+      "vias": null
+    },
+    {
+      "accepted": false,
+      "layers": null,
+      "mm": null,
+      "net": "/02_MCU_CORE/GPIO45_VDDSPI_STRAP",
+      "ok": false,
+      "reason": "NO_PATH",
+      "step": "Q2_SINGLE_NET",
+      "vias": null
+    },
+    {
+      "accepted": false,
+      "layers": null,
+      "mm": null,
+      "net": "/02_MCU_CORE/UART0_TXD_DBG",
+      "ok": false,
+      "reason": "NO_PATH",
+      "step": "Q2_SINGLE_NET",
+      "vias": null
+    },
+    {
+      "accepted": false,
+      "layers": null,
+      "mm": null,
+      "net": "/05_I2C_DEVICES/BMI270_INT1_RAW",
+      "ok": false,
+      "reason": "NO_PATH",
+      "step": "Q2_SINGLE_NET",
+      "vias": null
+    },
+    {
+      "accepted": false,
+      "layers": null,
+      "mm": null,
+      "net": "/BMI270_INT1_STRAP",
+      "ok": false,
+      "reason": "NO_PATH",
+      "step": "Q2_SINGLE_NET",
+      "vias": null
+    },
+    {
+      "accepted": false,
+      "layers": null,
+      "mm": null,
+      "net": "/CC1101_CS_N",
+      "ok": false,
+      "reason": "NO_PATH",
+      "step": "Q2_SINGLE_NET",
+      "vias": null
+    },
+    {
+      "accepted": false,
+      "layers": null,
+      "mm": null,
+      "net": "/CC1101_GDO0",
+      "ok": false,
+      "reason": "NO_PATH",
+      "step": "Q2_SINGLE_NET",
+      "vias": null
+    },
+    {
+      "accepted": false,
+      "layers": null,
+      "mm": null,
+      "net": "/I2C_SCL_INT",
+      "ok": false,
+      "reason": "NO_PATH",
+      "step": "Q2_SINGLE_NET",
+      "vias": null
+    },
+    {
+      "accepted": false,
+      "layers": null,
+      "mm": null,
+      "net": "/I2S_BCLK",
+      "ok": false,
+      "reason": "NO_PATH",
+      "step": "Q2_SINGLE_NET",
+      "vias": null
+    },
+    {
+      "accepted": true,
+      "layers": [
+        "F",
+        "B",
+        "F"
+      ],
+      "mm": 26.0348,
+      "net": "/I2S_LRCLK",
+      "ok": true,
+      "reason": null,
+      "step": "Q2_SINGLE_NET",
+      "vias": 2
+    },
+    {
+      "accepted": false,
+      "layers": null,
+      "mm": null,
+      "net": "/I2S_MIC_DIN",
+      "ok": false,
+      "reason": "NO_PATH",
+      "step": "Q2_SINGLE_NET",
+      "vias": null
+    },
+    {
+      "accepted": false,
+      "layers": null,
+      "mm": null,
+      "net": "/I2S_SPK_DOUT",
+      "ok": false,
+      "reason": "NO_PATH",
+      "step": "Q2_SINGLE_NET",
+      "vias": null
+    },
+    {
+      "accepted": false,
+      "layers": null,
+      "mm": null,
+      "net": "/IR_RX_GPIO44",
+      "ok": false,
+      "reason": "NO_PATH",
+      "step": "Q2_SINGLE_NET",
+      "vias": null
+    },
+    {
+      "accepted": false,
+      "layers": null,
+      "mm": null,
+      "net": "/IR_TX_GPIO16",
+      "ok": false,
+      "reason": "NO_PATH",
+      "step": "Q2_SINGLE_NET",
+      "vias": null
+    },
+    {
+      "accepted": true,
+      "layers": [
+        "F",
+        "B",
+        "F",
+        "B",
+        "F"
+      ],
+      "mm": 31.9765,
+      "net": "/NATIVE_A",
+      "ok": true,
+      "reason": null,
+      "step": "Q2_SINGLE_NET",
+      "vias": 4
+    },
+    {
+      "accepted": false,
+      "layers": null,
+      "mm": null,
+      "net": "/NFC_CS_N",
+      "ok": false,
+      "reason": "NO_PATH",
+      "step": "Q2_SINGLE_NET",
+      "vias": null
+    },
+    {
+      "accepted": false,
+      "layers": null,
+      "mm": null,
+      "net": "/NFC_IRQ",
+      "ok": false,
+      "reason": "NO_PATH",
+      "step": "Q2_SINGLE_NET",
+      "vias": null
+    },
+    {
+      "accepted": false,
+      "layers": null,
+      "mm": null,
+      "net": "/SD_CS_N",
+      "ok": false,
+      "reason": "NO_PATH",
+      "step": "Q2_SINGLE_NET",
+      "vias": null
+    },
+    {
+      "accepted": false,
+      "layers": null,
+      "mm": null,
+      "net": "/SPI_B_MISO",
+      "ok": false,
+      "reason": "NO_PATH",
+      "step": "Q2_SINGLE_NET",
+      "vias": null
+    },
+    {
+      "accepted": false,
+      "layers": null,
+      "mm": null,
+      "net": "/SPI_B_MOSI",
+      "ok": false,
+      "reason": "NO_PATH",
+      "step": "Q2_SINGLE_NET",
+      "vias": null
+    },
+    {
+      "accepted": false,
+      "layers": null,
+      "mm": null,
+      "net": "/SPI_B_SCK",
+      "ok": false,
+      "reason": "NO_PATH",
+      "step": "Q2_SINGLE_NET",
+      "vias": null
+    },
+    {
+      "accepted": false,
+      "layers": null,
+      "mm": null,
+      "net": "/SX1262_BUSY",
+      "ok": false,
+      "reason": "NO_PATH",
+      "step": "Q2_SINGLE_NET",
+      "vias": null
+    },
+    {
+      "accepted": false,
+      "layers": null,
+      "mm": null,
+      "net": "/SX1262_CS_N",
+      "ok": false,
+      "reason": "NO_PATH",
+      "step": "Q2_SINGLE_NET",
+      "vias": null
+    },
+    {
+      "accepted": false,
+      "layers": null,
+      "mm": null,
+      "net": "/WAKE_INT_N",
+      "ok": false,
+      "reason": "NO_PATH",
+      "step": "Q2_SINGLE_NET",
+      "vias": null
+    },
+    {
+      "accepted": false,
+      "layers": null,
+      "mm": null,
+      "net": "GND",
+      "ok": false,
+      "reason": "NO_PATH",
+      "step": "Q2_SINGLE_NET",
+      "vias": null
+    },
+    {
+      "accepted": false,
+      "layers": null,
+      "mm": null,
+      "net": "Net-(J3-SHIELD)",
+      "ok": false,
+      "reason": "NO_PATH",
+      "step": "Q2_SINGLE_NET",
+      "vias": null
+    },
+    {
+      "accepted": false,
+      "layers": null,
+      "mm": null,
+      "net": "Net-(U1-EN)",
+      "ok": false,
+      "reason": "NO_PATH",
+      "step": "Q2_SINGLE_NET",
+      "vias": null
+    },
+    {
+      "accepted": true,
+      "mm": 26.0348,
+      "n_objects": 20,
+      "n_units": 7,
+      "nets": [
+        "/I2S_LRCLK"
+      ],
+      "ok": true,
+      "reason": null,
+      "step": "Q4_POOL"
+    },
+    {
+      "mm": 26.0348,
+      "remaining": 6,
+      "step": "Q4_OBJECT_RETURNED",
+      "unit": {
+        "a_mm": [
+          55.6,
+          134.1
+        ],
+        "b_mm": [
+          54.1,
+          135.6
+        ],
+        "count": 1,
+        "kind": "track",
+        "layer": "B.Cu",
+        "net": "/I2S_LRCLK",
+        "objects": 1,
+        "router_objects": 1,
+        "width_mm": 0.2
+      }
+    },
+    {
+      "mm": 26.1941,
+      "remaining": 5,
+      "step": "Q4_OBJECT_RETURNED",
+      "unit": {
+        "a_mm": [
+          56.7,
+          134.8
+        ],
+        "b_mm": [
+          55.6,
+          134.1
+        ],
+        "count": 1,
+        "kind": "track",
+        "layer": "B.Cu",
+        "net": "/I2S_LRCLK",
+        "objects": 1,
+        "router_objects": 1,
+        "width_mm": 0.2
+      }
+    },
+    {
+      "reason": "NO_PATH",
+      "remaining": 5,
+      "step": "Q4_OBJECT_REQUIRED",
+      "unit": {
+        "a_mm": [
+          57.3,
+          138.8
+        ],
+        "b_mm": [
+          56.7,
+          134.8
+        ],
+        "count": 1,
+        "kind": "track",
+        "layer": "B.Cu",
+        "net": "/I2S_LRCLK",
+        "objects": 1,
+        "router_objects": 1,
+        "width_mm": 0.2
+      }
+    },
+    {
+      "mm": 26.1941,
+      "remaining": 4,
+      "step": "Q4_OBJECT_RETURNED",
+      "unit": {
+        "a_mm": [
+          58.1,
+          141.1
+        ],
+        "b_mm": [
+          57.3,
+          138.8
+        ],
+        "count": 1,
+        "kind": "track",
+        "layer": "B.Cu",
+        "net": "/I2S_LRCLK",
+        "objects": 1,
+        "router_objects": 1,
+        "width_mm": 0.2
+      }
+    },
+    {
+      "mm": 26.1941,
+      "remaining": 3,
+      "step": "Q4_OBJECT_RETURNED",
+      "unit": {
+        "a_mm": [
+          54.12,
+          136.75
+        ],
+        "b_mm": [
+          54.1,
+          135.6
+        ],
+        "count": 1,
+        "kind": "track",
+        "layer": "F.Cu",
+        "net": "/I2S_LRCLK",
+        "objects": 1,
+        "router_objects": 1,
+        "width_mm": 0.2
+      }
+    },
+    {
+      "mm": 26.1941,
+      "remaining": 2,
+      "step": "Q4_OBJECT_RETURNED",
+      "unit": {
+        "a_mm": [
+          45.5,
+          142.0
+        ],
+        "b_mm": [
+          45.6,
+          142.1
+        ],
+        "count": 1,
+        "kind": "track",
+        "layer": "In2.Cu",
+        "net": "/I2S_LRCLK",
+        "objects": 1,
+        "router_objects": 1,
+        "width_mm": 0.2
+      }
+    },
+    {
+      "mm": 26.1941,
+      "remaining": 1,
+      "step": "Q4_OBJECT_RETURNED",
+      "unit": {
+        "at_mm": [
+          54.1,
+          135.6
+        ],
+        "count": 1,
+        "dia_mm": 0.6,
+        "drill_mm": 0.3,
+        "kind": "barrel",
+        "net": "/I2S_LRCLK",
+        "objects": 14,
+        "router_objects": 14
+      }
+    },
+    {
+      "accepted": true,
+      "layers": [
+        "F",
+        "B",
+        "F"
+      ],
+      "mm": 26.1941,
+      "n_objects": 1,
+      "n_units": 1,
+      "nets": [
+        "/I2S_LRCLK"
+      ],
+      "ok": true,
+      "step": "Q4_MINIMAL_OBJECTS",
+      "units": [
+        {
+          "a_mm": [
+            57.3,
+            138.8
+          ],
+          "b_mm": [
+            56.7,
+            134.8
+          ],
+          "count": 1,
+          "kind": "track",
+          "layer": "B.Cu",
+          "net": "/I2S_LRCLK",
+          "objects": 1,
+          "router_objects": 1,
+          "width_mm": 0.2
+        }
+      ],
+      "vias": 2
+    }
+  ],
+  "schema": 1,
+  "seconds": 1028.1,
+  "window_nets": [
+    "+3V3",
+    "/01_POWER_TREE/USB_D_CONN_N",
+    "/01_POWER_TREE/USB_D_ESD_N",
+    "/01_POWER_TREE/USB_D_ESD_P",
+    "/02_MCU_CORE/BOOT_N",
+    "/02_MCU_CORE/DISP_BL_CTL_STRAP",
+    "/02_MCU_CORE/GPIO45_VDDSPI_STRAP",
+    "/02_MCU_CORE/UART0_TXD_DBG",
+    "/05_I2C_DEVICES/BMI270_INT1_RAW",
+    "/BMI270_INT1_STRAP",
+    "/CC1101_CS_N",
+    "/CC1101_GDO0",
+    "/I2C_SCL_INT",
+    "/I2S_BCLK",
+    "/I2S_LRCLK",
+    "/I2S_MIC_DIN",
+    "/I2S_SPK_DOUT",
+    "/IR_RX_GPIO44",
+    "/IR_TX_GPIO16",
+    "/NATIVE_A",
+    "/NFC_CS_N",
+    "/NFC_IRQ",
+    "/SD_CS_N",
+    "/SPI_B_MISO",
+    "/SPI_B_MOSI",
+    "/SPI_B_SCK",
+    "/SX1262_BUSY",
+    "/SX1262_CS_N",
+    "/WAKE_INT_N",
+    "GND",
+    "Net-(J3-SHIELD)",
+    "Net-(U1-EN)"
+  ]
+}

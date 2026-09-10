@@ -1,0 +1,66 @@
+{
+  "a": "J3.A6",
+  "b": "U10.3",
+  "banned_nets": [
+    "/01_POWER_TREE/USB_D_CONN_N"
+  ],
+  "board": "/home/aqroot8/aqroot-demo/hardware/demo/kicad/aqroot-demo/aqroot-Beta-v2.kicad_pcb",
+  "board_is_authority": true,
+  "board_sha256": "0285ef45466c1c7dd1823099c35d75d704b50266460e94f339c1b19b5409180d",
+  "complete": true,
+  "grid_nm": 50000,
+  "instrument": "maze3d.offcentre_route under screen_corridor_blockers.Without",
+  "layers": [
+    "F"
+  ],
+  "margin_mm": 3.0,
+  "max_mm": null,
+  "net": "/01_POWER_TREE/USB_D_CONN_P",
+  "q2": "RUN",
+  "rows": [
+    {
+      "accepted": false,
+      "layers": null,
+      "mm": null,
+      "ok": false,
+      "reason": "NO_PATH",
+      "step": "BASE",
+      "vias": null,
+      "why": "no all-layer corridor at 0.250 mm from J3.A6 on F to U10.3 on F"
+    },
+    {
+      "accepted": false,
+      "layers": null,
+      "mm": null,
+      "nets": [
+        "/01_POWER_TREE/USB_VBUS_RAW",
+        "/I2C_SDA_INT",
+        "/I2S_LRCLK",
+        "/SPI_B_SCK",
+        "/WAKE_INT_N",
+        "GND",
+        "Net-(J3-CC1)",
+        "Net-(J3-CC2)",
+        "Net-(J3-SHIELD)"
+      ],
+      "ok": false,
+      "reason": "NO_PATH",
+      "step": "Q1_UPPER_BOUND",
+      "vias": null,
+      "why": "no all-layer corridor at 0.250 mm from J3.A6 on F to U10.3 on F"
+    }
+  ],
+  "schema": 1,
+  "seconds": 4.3,
+  "window_nets": [
+    "/01_POWER_TREE/USB_VBUS_RAW",
+    "/I2C_SDA_INT",
+    "/I2S_LRCLK",
+    "/SPI_B_SCK",
+    "/WAKE_INT_N",
+    "GND",
+    "Net-(J3-CC1)",
+    "Net-(J3-CC2)",
+    "Net-(J3-SHIELD)"
+  ]
+}

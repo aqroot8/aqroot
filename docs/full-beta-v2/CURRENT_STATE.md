@@ -23,6 +23,30 @@
 > `verify_promotion` PASS and `protected_copper` showing exactly one protected
 > net moved.  `U14.7` is on the bus.  This board has **no open owner decision**.
 
+- **Demo D-681 addendum 2 (`/ACC_PWR_EN` IS NOT A WALL, IT IS A PRICE: ELEVEN
+  OBJECTS AND FOUR GROUND BARRELS OUT OF THE CHARGER'S OWN GROUND, FOR ONE SLOW
+  ENABLE LINE):**  **NO COPPER PROMOTED — MEASURED AND REFUSED ON PRICE.**
+  Authority **UNCHANGED** at
+  `d57d7d27ba0c400891132fba88da0719decefbaf846965b6dfef32764884af7d`; 24 -> 24.
+  One gate dry-run over the three cheapest-looking remaining edges and one full
+  four-question corridor blame (**3993.7 s**,
+  `evidence/d681-blame-acc-pwr-en.json`).
+  `/04_SPI_B_RADIOS_NFC/NFC_VDD_RF` `U9.14` is a **PACKAGE-PITCH** wall (`NO
+  LEGAL ESCAPE at >= 0.200 mm`, blocked by `U9.15`/`U9.13`/`U9.33`/`U9.10`) and
+  `/SX1262_DIO1` is a 78.249 mm corridor with ONE escape at the `U2` end.
+  `/ACC_PWR_EN`'s three lands are ALL `CLEAR`, so its wall is crossing copper:
+  Q1 opens it at **25.710 mm on `B.Cu` with ZERO vias**, the minimal NET set is
+  **three** (`I2C_SCL_INT`, `SX1262_RXEN`, `GND`) at 38.881 mm, and the minimal
+  OBJECT set is **11 units / 76 objects** opening at **50.753 mm with 6 vias** —
+  one `In2` `I2C_SCL_INT` track, one `B.Cu` `SX1262_RXEN` track and its barrel,
+  four `B.Cu` `GND` tracks and **FOUR `GND` BARRELS** at (56.000,68.100),
+  (61.200,69.100), (61.700,69.500) and (62.100,71.600).  **REFUSED:** that is
+  2.5x the copper and six barrels to carry a slow enable 20 mm, paid for out of
+  `U11`/`U18`'s ground corner — the same corner where D-678 found the
+  `BQ25185`'s entire ground hanging on one plated hole.  Recorded as **PRICED
+  AND REFUSED, not as a wall**; the number to beat is 11 units / 50.753 mm /
+  6 vias and a floorplan beats it trivially.  The instrument's own cost is on
+  the record too: 66 minutes for a 26-net window at 0.050 mm.
 - **Demo D-681 addendum (WHY THE ACCESSORY BOOST'S GROUND PIN CANNOT BE
   GROUNDED: A 0.400 mm THERMAL SPOKE INTO A 0.350 mm LAND, AND FOUR LAYERS OF
   OTHER PEOPLE'S COPPER OVER THE FOOTPRINT):**  **NO COPPER PROMOTED.**

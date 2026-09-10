@@ -1,3 +1,67 @@
+# D-681 addendum 2 · 2026-09-10 · Demo — `/ACC_PWR_EN` IS NOT A WALL, IT IS A PRICE: ELEVEN OBJECTS AND FOUR GROUND BARRELS OUT OF THE CHARGER'S OWN GROUND, FOR ONE SLOW ENABLE LINE
+
+    authority  d57d7d27ba0c400891132fba88da0719decefbaf846965b6dfef32764884af7d
+            -> d57d7d27ba0c400891132fba88da0719decefbaf846965b6dfef32764884af7d   UNCHANGED
+    retained open edges 24 -> 24
+    `hardware/demo/kicad`, `hardware/demo/fab`, `hardware/beta-v2`  UNTOUCHED
+    one gate dry-run over three nets, one full four-question corridor blame (3993.7 s)
+
+**NO COPPER PROMOTED — MEASURED AND REFUSED ON PRICE.**
+
+## 1. THE THREE CHEAPEST-LOOKING REMAINING EDGES, ASKED TOGETHER
+
+    net                              verdict
+    /ACC_PWR_EN                      NO_PATH, 20.242 mm gap, 10 and 6 escapes
+    /04_.../NFC_VDD_RF  U9.14        NO LEGAL ESCAPE at >= 0.200 mm, blocked by
+                                     U9.15, U9.13, U9.33, U9.10 -- PACKAGE PITCH
+    /SX1262_DIO1                     NO_PATH, 78.249 mm gap, 1 escape at the U2 end
+
+`/ACC_PWR_EN` is the interesting one: D-679's escape census calls **all three of
+its lands `CLEAR`** — `U16.1` 1.000 mm widest, `R17.1` 1.000 mm, `U3.20`
+0.500 mm — so its wall is crossing copper and nothing else.  It is exactly the
+shape that yields a bounded transaction, and it was asked properly.
+
+## 2. THE FULL BLAME, AND WHAT IT COSTS
+
+`screen_pair_corridor_blame.py --per-object`, `U16.1 <-> U3.20`, margin 3 mm,
+0.050 mm lattice, 26 window nets, **3993.7 s**
+(`evidence/d681-blame-acc-pwr-en.json`):
+
+    Q1  every foreign net out            OPENS  25.710 mm on B.Cu, ZERO vias
+    Q3  minimal NET set                  3 nets  {I2C_SCL_INT, SX1262_RXEN, GND}
+                                         opens at 38.881 mm, 5 vias
+    Q4  minimal OBJECT set               11 units / 76 objects
+                                         opens at 50.753 mm, 6 vias
+
+The eleven: one `In2.Cu` `/I2C_SCL_INT` track, one `B.Cu` `/SX1262_RXEN` track
+**and its 0.60/0.30 barrel at (58.700,78.300)**, four `B.Cu` `GND` tracks and
+**FOUR `GND` BARRELS** — (56.000,68.100), (61.200,69.100), (61.700,69.500) and
+(62.100,71.600).
+
+## 3. REFUSED, AND WHY THAT IS THE ENGINEERING ANSWER
+
+`/ACC_PWR_EN` is a **slow digital enable**.  What the opening asks for is
+**50.753 mm and six barrels** to carry it 20.242 mm — 2.5x — and the currency
+is **four ground barrels lifted out of `x 56..62, y 68..78`**, which is `U11`'s
+and `U18`'s ground neighbourhood: the same corner where D-678 found the
+`BQ25185`'s entire ground hanging on ONE plated hole.  Every one of the four
+would owe `rebond_priced` and `screen_rebond_site.py --fragment-board` before
+it could be spent, and the thing being bought is one enable line.
+
+**This is D-680's judgement in a second place:** a gate can pass a transaction
+that an engineer should not sign.  `/ACC_PWR_EN` is recorded as **PRICED AND
+REFUSED**, not as a wall — the number to beat is 11 units / 50.753 mm / 6 vias,
+and a floorplan that shortens `U16`/`R17` to `U3.20` beats it trivially.
+
+## 4. AND THE COST OF ASKING IS NOW ON THE RECORD
+
+The blame took **66 minutes** on a 26-net window at 0.050 mm — Q4's
+reverse-greedy alone is 75 units, each a whole-board wavefront.  That is the
+price of the instrument, and it belongs beside the answer so the next selection
+is made on expected value rather than on curiosity.  Three blames were run this
+decision (`/01_POWER_TREE/USB_D_CONN_P`, `/USB_D_MCU_N`, `/ACC_PWR_EN`) and all
+three are committed under `evidence/d681-blame-*.json`.
+
 # D-681 addendum · 2026-09-10 · Demo — WHY THE ACCESSORY BOOST'S GROUND PIN CANNOT BE GROUNDED: A 0.400 mm THERMAL SPOKE INTO A 0.350 mm LAND, AND FOUR LAYERS OF OTHER PEOPLE'S COPPER OVER THE FOOTPRINT
 
     authority  d57d7d27ba0c400891132fba88da0719decefbaf846965b6dfef32764884af7d
