@@ -82,13 +82,18 @@ the lands are clear.
 
 ## 5. WHAT WOULD ACTUALLY CLOSE IT
 
-1. **`U21.4`'s `zone_connect` set to SOLID.**  It removes the spoke problem at
-   a stroke and is better engineering for a switching converter's return than
-   thermal relief.  Measured consequence, not yet taken: the pour then reaches
-   the land through the channel's **0.250 mm** strip, which prices at about
-   0.87 A against the `GND` netclass floor of 0.995 A — so it closes the
-   CONNECTIVITY and would be thin, and whether that matters is a `PP2`
-   question about whether a fragment exists at all.
+1. ~~`U21.4`'s `zone_connect` set to SOLID~~ — **PROPOSED AND REFUTED IN THE
+   SAME DECISION, MEASURED**
+   (`evidence/d681-u214-solid-zone-connection-controls.json`).  Four arms,
+   each a private copy refilled by KiCad's own `ZONE_FILLER`, over
+   `{thermal, solid} x {channel kept, channel cleared}`: `U21.4` stays alone on
+   a **0.1539 - 0.1656 mm² island in ALL FOUR**.  So the spoke is NOT the
+   binding constraint — KiCad's fill does not put copper in that channel at
+   all, even though the 0.251 mm strip the zone's own 0.250 mm
+   `local_clearance` leaves is above its 0.200 mm `min_thickness`.  Widening it
+   means lowering the ZONE's local clearance BOARD-WIDE, which trades every
+   `GND`-to-foreign gap on this board for one pad.  **Refused, and recorded so
+   the next attempt does not start here.**
 2. **Move the boost cell.**  `U21`, `L4`, `C65`, `R64` and the `ACC_5V_FB` /
    `ACC_5V_BOOST_EN` / `ACC_DETECT_N` local copper are one floorplan, and the
    band south of `U21` is a signal field (D-680 section 8) while the band north

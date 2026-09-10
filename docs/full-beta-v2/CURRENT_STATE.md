@@ -62,11 +62,18 @@
   0.075 mm of `U21.4`'s and `U21.5`'s OWN lands; both nets then reported `NO
   LEGAL ESCAPE` where the identical run without them launched on a licensed
   neck.  At `r 0.30` the relay still succeeds and the lands are clear.
-  **NEXT:** (1) `U21.4`'s `zone_connect` -> SOLID removes the spoke problem at a
-  stroke and is better engineering for a converter return than thermal relief;
-  the channel strip then prices at about 0.87 A against the `GND` floor 0.995 A,
-  which is a `PP2` question about whether a fragment exists at all.  (2)
-  Otherwise MOVE THE CELL: `U21`, `L4`, `C65`, `R64` and the local
+  **(5) AND THE OBVIOUS FIX IS REFUTED IN THE SAME DECISION.**  `U21.4`'s
+  `zone_connect` set to SOLID would remove the spoke problem at a stroke -- and
+  it does not work.  Four arms, each a private copy refilled by KiCad's own
+  `ZONE_FILLER`, over `{thermal, solid} x {channel kept, channel cleared}`:
+  `U21.4` stays alone on a **0.1539 - 0.1656 mm2 island in ALL FOUR**
+  (`evidence/d681-u214-solid-zone-connection-controls.json`).  The spoke is not
+  the binding constraint: KiCad's fill puts NO copper in that channel at all,
+  though the 0.251 mm strip left by the zone's own 0.250 mm `local_clearance`
+  is above its 0.200 mm `min_thickness`.  Widening it means lowering the ZONE's
+  local clearance BOARD-WIDE -- every `GND`-to-foreign gap traded for one pad --
+  and that is refused here.
+  **NEXT:** (1) MOVE THE CELL: `U21`, `L4`, `C65`, `R64` and the local
   `ACC_5V_FB` / `ACC_5V_BOOST_EN` / `ACC_DETECT_N` copper are one floorplan.
   (3) `ACC_5V_LX`'s **3.529 mm, zero-via** route is recorded so the next attempt
   starts from a route and not from a search.

@@ -1,0 +1,39 @@
+{
+ "schema": 1,
+ "decision": "D-681 addendum correction",
+ "question": "does U21.4's zone connection explain why the B.Cu GND pour never enters the 0.750 mm channel between U21's pad columns",
+ "board": "/home/aqroot8/aqroot-demo/hardware/demo/kicad/aqroot-demo/aqroot-Beta-v2.kicad_pcb",
+ "board_sha256": "d57d7d27ba0c400891132fba88da0719decefbaf846965b6dfef32764884af7d",
+ "arms": [
+  {
+   "solid_zone_connection": false,
+   "channel_cleared": false,
+   "removed": 2,
+   "island_area_mm2": 0.1656,
+   "holds_the_body": false
+  },
+  {
+   "solid_zone_connection": false,
+   "channel_cleared": true,
+   "removed": 5,
+   "island_area_mm2": 0.1539,
+   "holds_the_body": false
+  },
+  {
+   "solid_zone_connection": true,
+   "channel_cleared": false,
+   "removed": 2,
+   "island_area_mm2": 0.1656,
+   "holds_the_body": false
+  },
+  {
+   "solid_zone_connection": true,
+   "channel_cleared": true,
+   "removed": 5,
+   "island_area_mm2": 0.1539,
+   "holds_the_body": false
+  }
+ ],
+ "answer": "NO.  U21.4 stays alone on a 0.154 - 0.166 mm2 island in ALL FOUR arms, so the THERMAL SPOKE is not the binding constraint: KiCad's fill does not put copper in the channel at all.  The strip the zone's own 0.250 mm local_clearance leaves between the two pad columns is 0.251 mm against a 0.200 mm min_thickness and it is still not filled.  Widening it needs the ZONE's local clearance lowered board-wide, which trades every GND-to-foreign gap on the board for this one pad and is refused here.",
+ "ok": true
+}
