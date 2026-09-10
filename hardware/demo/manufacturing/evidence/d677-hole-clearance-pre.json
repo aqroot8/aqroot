@@ -1,0 +1,126 @@
+{
+ "accepted_by_scoped_rule": 0,
+ "agrees_with_drc": true,
+ "authoritative_unchanged": true,
+ "below_board_default_accepted_by_a_scoped_rule": [],
+ "board": "w/d677/pre/aqroot-Beta-v2.kicad_pcb",
+ "board_is_authority": false,
+ "board_sha256": "28935c75f4747bac0ad2a062977c4ad13e7e48ec98169529c1d2db4f29f8a5b3",
+ "classification_counts": {
+  "OWN_FOOTPRINT_LAND_PATTERN": 5
+ },
+ "drc_hole_clearance_errors": 5,
+ "drc_pairs_not_found": [],
+ "method": "read-only.  The gap is measured from the hole's own `GetEffectiveHoleShape()` capsule to the copper's `GetEffectivePolygon()` / segment, then KiCad's own DRC is re-run on the same board and the two are compared by item UUID.  Zone fills are NOT walked: a refill honours the rule by construction and KiCad reports none here",
+ "question": "for every drill-to-copper error on this board, WHOSE geometry is it -- a footprint's own land pattern, a placement, or routed copper",
+ "rows": [
+  {
+   "classification": "OWN_FOOTPRINT_LAND_PATTERN",
+   "copper": "MK1.4",
+   "copper_kind": "pad",
+   "copper_layer": "B.Cu",
+   "copper_net": "GND",
+   "copper_uuid": "5696b1f6-aae4-4b6c-92b5-91076fb33808",
+   "deficit_mm": 0.25,
+   "drc_actual_mm": 0.0,
+   "drc_rule": "board setup constraints hole clearance",
+   "gap_mm": 0.0,
+   "hole": "MK1.",
+   "hole_dia_mm": 1.05,
+   "hole_kind": "NPTH",
+   "hole_uuid": "d86c10e6-8ea1-4de2-b440-1b7ebeaff0cd",
+   "hole_xy": [
+    4.0,
+    97.0
+   ],
+   "in_drc": true
+  },
+  {
+   "classification": "OWN_FOOTPRINT_LAND_PATTERN",
+   "copper": "J3.A1",
+   "copper_kind": "pad",
+   "copper_layer": "F.Cu",
+   "copper_net": "GND",
+   "copper_uuid": "5361c982-860d-46cc-a676-1e6641d94388",
+   "deficit_mm": 0.0534,
+   "drc_actual_mm": 0.1944,
+   "drc_rule": "board setup constraints hole clearance",
+   "gap_mm": 0.1966,
+   "hole": "J3.",
+   "hole_dia_mm": 0.65,
+   "hole_kind": "NPTH",
+   "hole_uuid": "73cd94d0-f66c-4b73-b2af-701a4a079218",
+   "hole_xy": [
+    45.89,
+    145.305
+   ],
+   "in_drc": true
+  },
+  {
+   "classification": "OWN_FOOTPRINT_LAND_PATTERN",
+   "copper": "J3.A12",
+   "copper_kind": "pad",
+   "copper_layer": "F.Cu",
+   "copper_net": "GND",
+   "copper_uuid": "e5212f1d-e66e-4897-9aa0-8f399302d96e",
+   "deficit_mm": 0.0534,
+   "drc_actual_mm": 0.1944,
+   "drc_rule": "board setup constraints hole clearance",
+   "gap_mm": 0.1966,
+   "hole": "J3.",
+   "hole_dia_mm": 0.65,
+   "hole_kind": "NPTH",
+   "hole_uuid": "7b93f5a0-7bbf-4c46-8860-0ece0b17d033",
+   "hole_xy": [
+    40.11,
+    145.305
+   ],
+   "in_drc": true
+  },
+  {
+   "classification": "OWN_FOOTPRINT_LAND_PATTERN",
+   "copper": "J3.B1",
+   "copper_kind": "pad",
+   "copper_layer": "F.Cu",
+   "copper_net": "GND",
+   "copper_uuid": "9fb528e1-29ef-4709-b9f1-cd1fb97b9cbe",
+   "deficit_mm": 0.0534,
+   "drc_actual_mm": 0.1944,
+   "drc_rule": "board setup constraints hole clearance",
+   "gap_mm": 0.1966,
+   "hole": "J3.",
+   "hole_dia_mm": 0.65,
+   "hole_kind": "NPTH",
+   "hole_uuid": "7b93f5a0-7bbf-4c46-8860-0ece0b17d033",
+   "hole_xy": [
+    40.11,
+    145.305
+   ],
+   "in_drc": true
+  },
+  {
+   "classification": "OWN_FOOTPRINT_LAND_PATTERN",
+   "copper": "J3.B12",
+   "copper_kind": "pad",
+   "copper_layer": "F.Cu",
+   "copper_net": "GND",
+   "copper_uuid": "a6b58080-1649-4277-a3ef-b115ae58bfe2",
+   "deficit_mm": 0.0534,
+   "drc_actual_mm": 0.1944,
+   "drc_rule": "board setup constraints hole clearance",
+   "gap_mm": 0.1966,
+   "hole": "J3.",
+   "hole_dia_mm": 0.65,
+   "hole_kind": "NPTH",
+   "hole_uuid": "73cd94d0-f66c-4b73-b2af-701a4a079218",
+   "hole_xy": [
+    45.89,
+    145.305
+   ],
+   "in_drc": true
+  }
+ ],
+ "rule_mm": 0.25,
+ "schema": 1,
+ "search_mm": 3.0
+}

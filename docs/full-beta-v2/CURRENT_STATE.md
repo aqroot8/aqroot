@@ -13,6 +13,116 @@
 > This file references DEVICE_SPEC rather than duplicating full specs.
 
 ## 1. Authoritative HEAD
+- **Demo D-677 (THE DRILL-TO-COPPER RULE THIS BOARD HAS BEEN REFUSING ITSELF
+  WITH IS 25 % STRICTER THAN THE SHOP THAT WILL BUILD IT, AND ALL FIVE
+  "INHERITED" ERRORS WERE ONE CLASS):**  **COPPER PROMOTED, AND A FABRICATION
+  CLASS CLOSED.**  Authority
+  `28935c75f4747bac0ad2a062977c4ad13e7e48ec98169529c1d2db4f29f8a5b3` ->
+  **`0285ef45466c1c7dd1823099c35d75d704b50266460e94f339c1b19b5409180d`**;
+  retained open edges **26 -> 25**, open retained nets 15 -> 15, raw board
+  ratsnest 42 -> 41, `nets_improved [GND]`, `nets_regressed []`
+  (`evidence/d677-routing-ledger.json`).  Gate **15 of 15 clauses,
+  `refused_clauses []`** (`evidence/d677-gate-gnd-j3-cc1.json`); real KiCad DRC
+  exit 0, `attributable_drc []`, **`hole_clearance` 5 -> 0**;
+  `verify_promotion.py` **VERDICT PASS** (`evidence/d677-verify-promotion.json`);
+  standing suite **14/14 RAN, 14/14 PASS, 13/13 COMPARABLE, 1 INCOMPARABLE and
+  NAMED, `vacuous` false** (`evidence/d677-contract-regression.json`);
+  `protected_copper.py` **IDENTICAL** (393 objects, 15 nets);
+  `hardware/beta-v2` **UNTOUCHED**; `hardware/demo/fab` regenerated at
+  `0285ef45` (29 artifacts), `fab_provenance` **PASS**.
+  **(1) FIVE ERRORS, ONE CLASS.**  New tracked **`screen_hole_clearance.py`**
+  measures every drilled hole against every copper object from the board's own
+  `GetEffectiveHoleShape()` / `GetEffectivePolygon()` (containment first, so a
+  hole drilled through its own pad is an overlap and not the widest clearance on
+  the board), classifies each pair and then re-runs KiCad's own DRC and compares
+  BY ITEM UUID.  On the pre-promotion authority: **5
+  `OWN_FOOTPRINT_LAND_PATTERN`, 0 `FOREIGN_FOOTPRINT_PAD`, 0 `ROUTED_COPPER`,
+  `agrees_with_drc` true** (`evidence/d677-hole-clearance-pre.json`).  Four are
+  `J3`'s own Ø0.65 mm NPTH locating pegs against `J3`'s own `GND` contacts at
+  **0.1944 mm**; the fifth is `MK1`'s Ø1.05 mm acoustic port INSIDE its own
+  Ø1.65 mm `GND` annulus — the construction **D-227 ratified**.  **No router
+  placed any of them and no route can move any of them.**
+  **(2) THE YARDSTICK WAS A KiCad DEFAULT.**  `min_hole_clearance = 0.250 mm`
+  lives in `.kicad_pro` board setup; no decision ever set it and the
+  `.kicad_dru` carried **ZERO** `hole_clearance` rules.  JLCPCB capability,
+  checked live 2026-09-10: **NPTH to track 0.200 mm**, via hole to track
+  0.200 mm, PTH to track 0.280 mm, via hole-to-hole 0.200 mm, minimum
+  non-plated hole 0.500 mm.  **And D-676's eleven new errors all measure
+  0.2100 – 0.2412 mm — at or ABOVE the fabricator's own minimum.**  The
+  transaction was refused by the default, not by a fabrication limit.
+  **(3) THREE SCOPED RULES, PROVED NOT ASSERTED.**  `.kicad_dru` section 11,
+  add-only, global 0.250 mm floor UNCHANGED: `FP-J3` own-pegs-vs-own-pads
+  **0.150 mm** (a GUARD with 0.0444 mm to spare), `FP-MK1` port-in-annulus
+  **0.000 mm**, `FP-J3` peg-vs-FOREIGN-copper **0.200 mm** (the fab's number,
+  the only one a router can use).  Four real DRC runs
+  (`evidence/d677-hole-rule-proof.json`): authority `hole_clearance` **5 -> 0**
+  with everything else byte-identical; D-676's own refused candidate **16 -> 0**
+  with its profile now EQUAL to the baseline; and a **VACUITY** board where a
+  synthetic via 0.1900 mm from the peg is **REFUSED BY NAME** — *"rule 'FP-J3
+  NPTH locating peg vs foreign copper …' clearance 0.2000 mm; actual
+  0.1900 mm"*.  A floor that accepts everything is not a floor.
+  **(4) AND THE TRANSACTION D-676 DREW PASSED.**  Licence authored BEFORE the
+  router ran; D-676's command unchanged (the router has **no hole-to-copper
+  model at all** — `maze3d.HOLE_CLR` is hole-TO-HOLE — so the copper is the same
+  copper).  **`GND J3.A12/B1` is PROMOTED**: one `Net-(J3-CC1)` `F.Cu` track out
+  (7.125 mm, licensed by signature), a `GND` stitch **1.621 mm at 0.150 mm**
+  from `J3.A12` to a **0.50/0.20 mm** barrel at (39.800, 144.550), and the
+  `Net-(J3-CC1)` relay **7.125 -> 7.5484 mm, `F.Cu` only, ZERO vias**
+  (+0.4234 mm, UNCITED `Default` net).  `GND` 2 open edges -> **1**.  0.150 mm
+  is D-607's standing ruling and is priced at 0.602 A against the 0.5 A
+  `VBUS_CHG` bar, in PARALLEL with `J3.A1`/`J3.B12`.
+  **(5) THE GUARD CONSTANT WAS TIGHTENED, NOT LEFT BEHIND.**
+  `verify_promotion.INHERITED` is now `{"hole_clearance": 0,
+  "solder_mask_bridge": 1}` — the key KEPT so a return fails
+  `inherited_within_baseline` BY NAME; `screen_plane_only.INHERITED` likewise;
+  `verify_promotion.py` re-run after the change **PASS**.
+  **(6) THE FAB NOTE TRAVELS WITH THE GERBERS.**  `export_fab_package.py` now
+  emits **`aqroot-Demo-FAB-NOTES.md`** into the package, built by READING the
+  `.kicad_dru`'s `hole_clearance` rules at generation time so it cannot drift,
+  with `fabrication_notes.every_rule_explained` in the manifest (FALSE if a
+  future rule arrives without a note).  It states the **5.6 µm `J3` deviation
+  against JLCPCB's 0.200 mm explicitly, with a PLEASE CONFIRM**, and `MK1`'s
+  exposed barrel copper.  The deviation is **ACCEPTED AND STATED, NOT FIXED**:
+  the geometric fix is priced (`evidence/d677-j3-pad-fix-price.json` — roundrect
+  corner ratio 0.25 -> 0.50 reads **0.2330 mm**, 16.5 % clear of the fab figure,
+  8.6 % of pad area lost at four corners the contact does not wipe) and NOT
+  executed, because `land_parity_contract` **LAND2** holds every pad identical
+  to a STOCK library master to the nanometre and
+  `declared_master_divergences` is **EMPTY BY DESIGN** (D-617 closed the only
+  one by converging).  The ladder is recorded ready to execute if the
+  fabricator says no.
+  **(7) `U9.14` `/NFC_VDD_RF`'s TAP IS VACUOUS, AND THE REASON IS A LAUNCHER.**
+  D-672 NEXT item (2) and D-665's addendum were both asked properly.
+  `screen_launcher_parity.py`: at **G = 100000 the GATE's launcher has 1 escape**
+  (`B` 34.800, 26.900) where `offcentre_route` says `NO_LEGAL_ESCAPE`; at 50000
+  and 25000 **both** report none — so D-665's RF-topology conclusion rested on a
+  refusal the gate does not make, and the only pitch this land launches at is
+  the coarse one (`evidence/d677-launcher-parity-u914.json`).  The gate itself:
+  `src_escapes 28, dst_escapes 1, NO_PATH` — **the wall is the CORRIDOR**
+  (`evidence/d677-gate-dryrun-nfcvddrf.json`).  `screen_net_tap.py --census`
+  puts its nearest own-copper tap at **1.7854 mm** vs 2.5 mm to the nearest pad
+  (`evidence/d677-tap-census.json`), and `--tap --tap-first` DECLINES at the
+  launch because `join_taps` launches with `offcentre_route`.  So the tap was
+  re-asked with the GATE's launcher by hand (`pad_escapes` + `point_terminals`,
+  every attempt laid, `verify_laid`-proved and reverted): **six targets × three
+  pitches — `NO_PATH` at all six at G = 100000 and `NO_LEGAL_ESCAPE` at all
+  twelve finer rows** (`evidence/d677-lattice-tap-u914.json`).  **A
+  "lattice-launched tap" primitive is the obvious next lever and it is VACUOUS
+  here, measured BEFORE it was built.**
+  **NEXT, IN ORDER OF LEVERAGE:** (1) `/01_POWER_TREE/BQ25185_SYS` is now **6 of
+  the board's 25 open edges** and remains the **#1 fabrication blocker**;
+  D-672 §5's `U12`/`U13`/`U21` converter-cluster refloorplan is the lever,
+  screened with `screen_fanout_channel.py --board` on the shifted scratch
+  project BEFORE any gate run.  (2) **Re-ask every other refusal taken against a
+  board-setup DEFAULT rather than a measured limit** — `min_hole_to_hole`
+  (0.250 mm vs the fab's 0.200 mm) is the next candidate and
+  `screen_hole_clearance.py` is the shape of the reader that settles it.
+  (3) `U9.14` is a CORRIDOR question at 0.200 mm; `U9.10` stays D-672 §2's
+  `PACKAGE_PITCH_WALL`.  (4) Re-ask every other `SOLE_CUT` land with
+  `--ban-net` on its own sole cut (D-676 §4 carry — this promotion is what that
+  correction bought).  (5) `/I2C_SCL_INT`'s `U14.7 <-> J1.44` remains the one
+  OPEN OWNER DECISION, RECORDED NOT TAKEN.  (6) `hardware/demo/fab` is **FRESH
+  at `0285ef45`** and carries the fab notes.
 - **Demo D-676 (THE USB-C RECEPTACLE'S OWN MOUNTING POSTS BOX IN ITS GROUND
   CONTACTS, AND SIXTEEN BARRELS WERE SPENT AT A WIDTH THE GATE DOES NOT USE):**
   **NO COPPER PROMOTED — the transaction was DRAWN, GATED and REFUSED on a

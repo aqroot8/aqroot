@@ -1,0 +1,354 @@
+{
+ "authoritative_unchanged": true,
+ "board": "/home/aqroot8/aqroot-demo/hardware/demo/kicad/aqroot-demo/aqroot-Beta-v2.kicad_pcb",
+ "board_sha256": "28935c75f4747bac0ad2a062977c4ad13e7e48ec98169529c1d2db4f29f8a5b3",
+ "contract": {
+  "clr": 200000,
+  "clr_pad": 200000,
+  "known_class": true,
+  "layers": null,
+  "net": "/04_SPI_B_RADIOS_NFC/NFC_VDD_RF",
+  "netclass": "Default",
+  "via_dia": 600000,
+  "via_drill": 300000,
+  "width": 200000
+ },
+ "far": [
+  "F",
+  "B",
+  "I2"
+ ],
+ "land": "U9.14",
+ "method": "read-only; every attempt is laid, re-proved by `verify_laid` and reverted, and the board's sha256 is re-read at exit.  `Field.offcentre` is left UNSET, exactly as `route_maze_batch` leaves it",
+ "net": "/04_SPI_B_RADIOS_NFC/NFC_VDD_RF",
+ "question": "does the TAP close this land when it is launched with `pad_escapes` -- the launcher the GATE uses -- instead of `offcentre_route`",
+ "rows": [
+  {
+   "G": 100000,
+   "at": [
+    33.4875,
+    28.9875
+   ],
+   "escapes": 1,
+   "layer": "F",
+   "ok": false,
+   "reason": "NO_PATH",
+   "seconds": 13.49,
+   "site_mm": 1.7854,
+   "tag": "F 37.300,32.800-32.000,27.500"
+  },
+  {
+   "G": 100000,
+   "at": [
+    33.1625,
+    26.1375
+   ],
+   "escapes": 1,
+   "layer": "F",
+   "ok": false,
+   "reason": "NO_PATH",
+   "seconds": 14.17,
+   "site_mm": 2.2451,
+   "tag": "F 37.500,21.800-32.300,27.000"
+  },
+  {
+   "G": 100000,
+   "at": [
+    32.25,
+    27.725
+   ],
+   "escapes": 1,
+   "layer": "B",
+   "ok": false,
+   "reason": "NO_PATH",
+   "seconds": 0.1,
+   "site_mm": 2.5,
+   "tag": "B 32.250,27.725-32.200,26.900"
+  },
+  {
+   "G": 100000,
+   "at": [
+    32.3,
+    27.0
+   ],
+   "escapes": 1,
+   "layer": "F",
+   "ok": false,
+   "reason": "NO_PATH",
+   "seconds": 14.06,
+   "site_mm": 2.555,
+   "tag": "F 32.300,27.000-32.200,26.900"
+  },
+  {
+   "G": 100000,
+   "at": [
+    32.2,
+    27.45
+   ],
+   "escapes": 1,
+   "layer": "B",
+   "ok": false,
+   "reason": "NO_PATH",
+   "seconds": 0.09,
+   "site_mm": 2.5648,
+   "tag": "B 32.200,27.450-32.200,27.400"
+  },
+  {
+   "G": 100000,
+   "at": [
+    32.2,
+    27.4
+   ],
+   "escapes": 1,
+   "layer": "B",
+   "ok": false,
+   "reason": "NO_PATH",
+   "seconds": 0.09,
+   "site_mm": 2.5706,
+   "tag": "B 32.000,27.500-32.200,27.400"
+  },
+  {
+   "G": 50000,
+   "at": [
+    33.4875,
+    28.9875
+   ],
+   "escapes": 0,
+   "layer": "F",
+   "ok": false,
+   "reason": "NO_LEGAL_ESCAPE",
+   "site_mm": 1.7854,
+   "tag": "F 37.300,32.800-32.000,27.500",
+   "why": "U9.14: NO LEGAL ESCAPE at >= 0.200 mm; blocked by U9.15 (x27), U9.13 (x16), U9.33 (x8), U9.10 (x5)"
+  },
+  {
+   "G": 50000,
+   "at": [
+    33.1625,
+    26.1375
+   ],
+   "escapes": 0,
+   "layer": "F",
+   "ok": false,
+   "reason": "NO_LEGAL_ESCAPE",
+   "site_mm": 2.2451,
+   "tag": "F 37.500,21.800-32.300,27.000",
+   "why": "U9.14: NO LEGAL ESCAPE at >= 0.200 mm; blocked by U9.15 (x27), U9.13 (x16), U9.33 (x8), U9.10 (x5)"
+  },
+  {
+   "G": 50000,
+   "at": [
+    32.25,
+    27.725
+   ],
+   "escapes": 0,
+   "layer": "B",
+   "ok": false,
+   "reason": "NO_LEGAL_ESCAPE",
+   "site_mm": 2.5,
+   "tag": "B 32.250,27.725-32.200,26.900",
+   "why": "U9.14: NO LEGAL ESCAPE at >= 0.200 mm; blocked by U9.15 (x27), U9.13 (x16), U9.33 (x8), U9.10 (x5)"
+  },
+  {
+   "G": 50000,
+   "at": [
+    32.3,
+    27.0
+   ],
+   "escapes": 0,
+   "layer": "F",
+   "ok": false,
+   "reason": "NO_LEGAL_ESCAPE",
+   "site_mm": 2.555,
+   "tag": "F 32.300,27.000-32.200,26.900",
+   "why": "U9.14: NO LEGAL ESCAPE at >= 0.200 mm; blocked by U9.15 (x27), U9.13 (x16), U9.33 (x8), U9.10 (x5)"
+  },
+  {
+   "G": 50000,
+   "at": [
+    32.2,
+    27.45
+   ],
+   "escapes": 0,
+   "layer": "B",
+   "ok": false,
+   "reason": "NO_LEGAL_ESCAPE",
+   "site_mm": 2.5648,
+   "tag": "B 32.200,27.450-32.200,27.400",
+   "why": "U9.14: NO LEGAL ESCAPE at >= 0.200 mm; blocked by U9.15 (x27), U9.13 (x16), U9.33 (x8), U9.10 (x5)"
+  },
+  {
+   "G": 50000,
+   "at": [
+    32.2,
+    27.4
+   ],
+   "escapes": 0,
+   "layer": "B",
+   "ok": false,
+   "reason": "NO_LEGAL_ESCAPE",
+   "site_mm": 2.5706,
+   "tag": "B 32.000,27.500-32.200,27.400",
+   "why": "U9.14: NO LEGAL ESCAPE at >= 0.200 mm; blocked by U9.15 (x27), U9.13 (x16), U9.33 (x8), U9.10 (x5)"
+  },
+  {
+   "G": 25000,
+   "at": [
+    33.4875,
+    28.9875
+   ],
+   "escapes": 0,
+   "layer": "F",
+   "ok": false,
+   "reason": "NO_LEGAL_ESCAPE",
+   "site_mm": 1.7854,
+   "tag": "F 37.300,32.800-32.000,27.500",
+   "why": "U9.14: NO LEGAL ESCAPE at >= 0.200 mm; blocked by U9.15 (x27), U9.13 (x16), U9.33 (x8), U9.10 (x5)"
+  },
+  {
+   "G": 25000,
+   "at": [
+    33.1625,
+    26.1375
+   ],
+   "escapes": 0,
+   "layer": "F",
+   "ok": false,
+   "reason": "NO_LEGAL_ESCAPE",
+   "site_mm": 2.2451,
+   "tag": "F 37.500,21.800-32.300,27.000",
+   "why": "U9.14: NO LEGAL ESCAPE at >= 0.200 mm; blocked by U9.15 (x27), U9.13 (x16), U9.33 (x8), U9.10 (x5)"
+  },
+  {
+   "G": 25000,
+   "at": [
+    32.25,
+    27.725
+   ],
+   "escapes": 0,
+   "layer": "B",
+   "ok": false,
+   "reason": "NO_LEGAL_ESCAPE",
+   "site_mm": 2.5,
+   "tag": "B 32.250,27.725-32.200,26.900",
+   "why": "U9.14: NO LEGAL ESCAPE at >= 0.200 mm; blocked by U9.15 (x27), U9.13 (x16), U9.33 (x8), U9.10 (x5)"
+  },
+  {
+   "G": 25000,
+   "at": [
+    32.3,
+    27.0
+   ],
+   "escapes": 0,
+   "layer": "F",
+   "ok": false,
+   "reason": "NO_LEGAL_ESCAPE",
+   "site_mm": 2.555,
+   "tag": "F 32.300,27.000-32.200,26.900",
+   "why": "U9.14: NO LEGAL ESCAPE at >= 0.200 mm; blocked by U9.15 (x27), U9.13 (x16), U9.33 (x8), U9.10 (x5)"
+  },
+  {
+   "G": 25000,
+   "at": [
+    32.2,
+    27.45
+   ],
+   "escapes": 0,
+   "layer": "B",
+   "ok": false,
+   "reason": "NO_LEGAL_ESCAPE",
+   "site_mm": 2.5648,
+   "tag": "B 32.200,27.450-32.200,27.400",
+   "why": "U9.14: NO LEGAL ESCAPE at >= 0.200 mm; blocked by U9.15 (x27), U9.13 (x16), U9.33 (x8), U9.10 (x5)"
+  },
+  {
+   "G": 25000,
+   "at": [
+    32.2,
+    27.4
+   ],
+   "escapes": 0,
+   "layer": "B",
+   "ok": false,
+   "reason": "NO_LEGAL_ESCAPE",
+   "site_mm": 2.5706,
+   "tag": "B 32.000,27.500-32.200,27.400",
+   "why": "U9.14: NO LEGAL ESCAPE at >= 0.200 mm; blocked by U9.15 (x27), U9.13 (x16), U9.33 (x8), U9.10 (x5)"
+  }
+ ],
+ "schema": 1,
+ "sites": [
+  {
+   "at": [
+    33.4875,
+    28.9875
+   ],
+   "layer": "F",
+   "mm": 1.7854,
+   "tag": "F 37.300,32.800-32.000,27.500"
+  },
+  {
+   "at": [
+    33.1625,
+    26.1375
+   ],
+   "layer": "F",
+   "mm": 2.2451,
+   "tag": "F 37.500,21.800-32.300,27.000"
+  },
+  {
+   "at": [
+    32.25,
+    27.725
+   ],
+   "layer": "B",
+   "mm": 2.5,
+   "tag": "B 32.250,27.725-32.200,26.900"
+  },
+  {
+   "at": [
+    32.3,
+    27.0
+   ],
+   "layer": "F",
+   "mm": 2.555,
+   "tag": "F 32.300,27.000-32.200,26.900"
+  },
+  {
+   "at": [
+    32.2,
+    27.45
+   ],
+   "layer": "B",
+   "mm": 2.5648,
+   "tag": "B 32.200,27.450-32.200,27.400"
+  },
+  {
+   "at": [
+    32.2,
+    27.4
+   ],
+   "layer": "B",
+   "mm": 2.5706,
+   "tag": "B 32.000,27.500-32.200,27.400"
+  },
+  {
+   "at": [
+    32.2,
+    26.9
+   ],
+   "layer": "F",
+   "mm": 2.6801,
+   "tag": "via@32.200,26.900"
+  },
+  {
+   "at": [
+    32.0,
+    27.5
+   ],
+   "layer": "F",
+   "mm": 2.7592,
+   "tag": "via@32.000,27.500"
+  }
+ ]
+}

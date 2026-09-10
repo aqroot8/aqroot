@@ -88,7 +88,17 @@ POUR_PARTITION = Path(__file__).with_name("checks") / "pour_partition_contract.p
 # It is deliberately NOT listed here any more, for the same reason
 # `lib_footprint_issues` is not: if it returns, a board footprint has drifted
 # from the library it was ruled against and that must fail loudly.
-INHERITED = {"hole_clearance": 5, "solder_mask_bridge": 1}
+# D-677: `hole_clearance` WAS 5 AND IS NOW 0, SO THE CEILING IS 0.
+# The five were all ONE class -- `J3`'s own NPTH pegs against `J3`'s own
+# `GND` contacts and `MK1`'s acoustic port inside its own `GND` annulus --
+# and the `.kicad_dru` now carries three NAMED, FOOTPRINT-SCOPED
+# `hole_clearance` rules that accept exactly that vendor geometry and the
+# fabricator's own 0.200 mm, nothing else.  KiCad reports ZERO.  A ceiling
+# of 5 left behind would let five drill-to-copper errors return in silence,
+# which is the one failure this constant exists to prevent; the class is
+# KEPT as a key at 0 so a return fails `inherited_within_baseline` BY NAME
+# rather than arriving as an unnamed new class.
+INHERITED = {"hole_clearance": 0, "solder_mask_bridge": 1}
 
 # D-613: `--schematic-parity` was never actually ASKED.  `stage()` copied the
 # board, the rules and the project into a temporary directory and left the nine

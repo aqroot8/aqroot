@@ -1728,3 +1728,104 @@
 (rule "D-658 TS_MR barrel move (66.600,70.900) - hole, approved 0.20 mm process"
 	(constraint hole_size (min 0.20mm) (opt 0.20mm))
 	(condition "A.NetName == 'Net-(U11-TS_MR)' && A.enclosedByArea('BARREL_MOVE_66600_70900')"))
+
+
+# =====================================================================
+# 11. DRILL-TO-COPPER: ONE COUNT WAS THREE DIFFERENT QUESTIONS  (D-677)
+#
+# `hole_clearance` has been carried on this board as a NUMBER -- five
+# inherited errors, quoted in every decision since D-302 -- and a number
+# cannot be acted on.  `screen_hole_clearance.py` measures every drilled
+# hole against every copper object, classifies the pair and then re-runs
+# KiCad's own DRC and compares by item UUID.  The answer, on the
+# authority, is that ALL FIVE are ONE class:
+#
+#     OWN_FOOTPRINT_LAND_PATTERN   5     hole and copper are pads of the
+#                                        SAME footprint -- vendor geometry
+#     FOREIGN_FOOTPRINT_PAD        0     (a placement question)
+#     ROUTED_COPPER                0     (a routing question)
+#
+# No router placed any of them and no route can move any of them.
+#
+# THE YARDSTICK WAS NEVER CHOSEN.  `min_hole_clearance` = 0.250 mm is
+# KiCad's BOARD-SETUP DEFAULT.  No decision in this repository ever set
+# it, and this file -- 1730 lines of per-net rulings -- carried ZERO
+# `hole_clearance` rules before this block.  FABRICATOR CAPABILITY,
+# checked live 2026-09-10 against JLCPCB's own capability page for a
+# 4-6 layer 1 oz multilayer board:
+#
+#     NPTH to track                0.200 mm
+#     Via hole to track            0.200 mm
+#     PTH to track                 0.280 mm  (0.350 mm recommended)
+#     Via hole-to-hole             0.200 mm
+#     Minimum non-plated hole      0.500 mm
+#
+# So the board has been refusing itself at a figure 25 % STRICTER than
+# the shop that will build it, and nothing in the repository ever said
+# why.  These three rules replace that silence with three numbers, each
+# scoped to the objects its evidence covers.  The GLOBAL 0.250 mm floor
+# is NOT lowered and no other hole on the board is affected.
+#
+# (a) `J3`'s OWN PEGS vs `J3`'s OWN CONTACTS -- 0.150 mm.
+# `J3` is a GCT USB4105-xx-A 16P top-mount horizontal USB-C receptacle
+# and its footprint is verified MATCH against the GCT series drawing
+# (assembly/FOOTPRINT_VERIFICATION_LEDGER.md, tier 2A).  The drawing
+# places two Oe0.65 mm NPTH locating pegs at (40.110, 145.305) and
+# (45.890, 145.305) and the four `GND` contacts `A1`/`B12`/`A12`/`B1`
+# at 0.1944 mm from them.  Both the hole and the copper are the
+# MANUFACTURER's: nothing on this board can move either without
+# diverging from a stock library master, and `land_parity_contract.py`
+# LAND2 requires every board footprint to be pad-identical to its
+# master to the nanometre.  0.1944 mm is 5.6 um BELOW JLCPCB's stated
+# 0.200 mm NPTH-to-track figure; that 5.6 um is STATED, not hidden --
+# it is carried as a DFM note in the fabrication package for the
+# fabricator's engineering review, and it is a LAND PATTERN deviation,
+# not a routing one.  This rule is a GUARD, not a waiver: 0.150 mm
+# pins the vendor geometry with 0.0444 mm to spare, so a footprint
+# update that made the receptacle WORSE would fail loudly.
+#
+# (b) `MK1`'s ACOUSTIC PORT INSIDE ITS OWN `GND` ANNULUS -- 0.000 mm.
+# `MK1` is the PUI DMM-4026-B-I2S bottom-port MEMS microphone.  D-227
+# ratified its padstack: an Oe1.05 mm NPTH acoustic port concentric
+# inside an Oe1.65 mm `GND` land, ID 1.05 / OD 1.65, with a 0.10 mm
+# paste pullback and NO fake plated through-hole.  The hole is INSIDE
+# the copper BY CONSTRUCTION -- the drill is how the annulus is made,
+# and the annulus is what the microphone's port seals against.  There
+# is no geometry in which this clearance is positive, so there is
+# nothing for a floor above zero to mean.  Registration is not the
+# risk a drill-to-copper rule exists for here: the port is CONCENTRIC,
+# so a 0.075 mm drill wander leaves 0.300 -> 0.225 mm of annulus all
+# round.  The exposed copper in an unplated barrel is real and is
+# carried as a DFM note, not as a clearance error.
+#
+# (c) `J3`'s NPTH PEGS vs FOREIGN COPPER -- 0.200 mm, THE FAB's NUMBER.
+# This is the only one of the three that licenses anything a router can
+# place, and it licenses exactly what JLCPCB publishes and not one
+# micron more.  It is written because the 0.250 mm default was costing
+# real connectivity: D-676 DREW, GATED and was REFUSED a `GND`
+# transaction that closed an open edge on the board's ground net
+# (retained open edges 26 -> 25, `nets_improved ["GND"]`,
+# `nets_regressed []`, `attributable_drc []`, 14 of 15 clauses) on
+# `hole_clearance` 5 -> 16 alone -- and EVERY ONE of those eleven new
+# errors measures 0.210 - 0.2412 mm, i.e. ABOVE the fabricator's own
+# minimum.  The peg is the receptacle's metal shell leg in an UNPLATED
+# hole, and the shell is already tied to `GND` through `R32` (0 ohm),
+# so the worst case a drill wander can reach here is copper that is
+# already at the peg's own potential.  `Oe0.65 mm` is also well above
+# the 0.500 mm minimum non-plated hole.  Scoped to `J3`'s NPTH pads and
+# to copper that is NOT part of `J3`, both argument orders named
+# explicitly; `J3`'s four PTH shell lands are NOT included, because no
+# evidence was taken for them.
+# ---------------------------------------------------------------------
+
+(rule "FP-J3 USB4105 land pattern - its own NPTH pegs vs its own pads, D-677"
+	(constraint hole_clearance (min 0.150mm))
+	(condition "A.Type == 'Pad' && B.Type == 'Pad' && A.memberOfFootprint('J3') && B.memberOfFootprint('J3')"))
+
+(rule "FP-MK1 DMM-4026 acoustic port inside its own GND annulus - D-227 construction, D-677"
+	(constraint hole_clearance (min 0.000mm))
+	(condition "A.Type == 'Pad' && B.Type == 'Pad' && A.memberOfFootprint('MK1') && B.memberOfFootprint('MK1')"))
+
+(rule "FP-J3 NPTH locating peg vs foreign copper - JLCPCB NPTH-to-track 0.200 mm, D-677"
+	(constraint hole_clearance (min 0.200mm))
+	(condition "(A.Pad_Type == 'NPTH, mechanical' && A.memberOfFootprint('J3') && !B.memberOfFootprint('J3')) || (B.Pad_Type == 'NPTH, mechanical' && B.memberOfFootprint('J3') && !A.memberOfFootprint('J3'))"))

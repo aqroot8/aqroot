@@ -140,7 +140,33 @@ rather than quietly excluded.
     aqroot-Demo-NON-PURCHASED.csv    46 refs — test points
     aqroot-Demo-OFF-BOARD.csv         1 ref — LS1, the speaker
     aqroot-Demo-assembly-top/bottom.pdf   F.Fab / B.Fab, DNP crossed out
+    aqroot-Demo-FAB-NOTES.md     the accepted drill-to-copper clearances (D-677)
     MANIFEST.json
+
+**THE FAB NOTES (D-677).**  Two of this board's drill-to-copper clearances are
+MANUFACTURER land patterns and are accepted by named, footprint-scoped
+`.kicad_dru` rules rather than by the board's global 0.250 mm floor, so KiCad
+reports ZERO `hole_clearance` violations.  A note in a document the shop never
+opens is not a note: `export_fab_package.py` writes
+`aqroot-Demo-FAB-NOTES.md` INTO the package, and it builds it by READING the
+`.kicad_dru`'s `hole_clearance` rules at generation time, so the file cannot
+drift from the rules it describes.  `MANIFEST.json` carries
+`fabrication_notes.every_rule_explained`, which is FALSE the moment a rule is
+added without a note.  What the file says, and it says it plainly:
+
+  * `J3` (GCT USB4105-xx-A USB-C receptacle) — its two Ø0.65 mm NPTH locating
+    pegs stand **0.1944 mm** from its own `GND` contacts `A1`/`B12`/`A12`/`B1`.
+    Both the hole and the copper are the manufacturer's.  That is **5.6 µm
+    BELOW** JLCPCB's published 0.200 mm NPTH-to-track figure, and the note asks
+    the fabricator to **CONFIRM** and to advise if the pads must be trimmed.
+    The geometric fix is priced and ready
+    (`evidence/d677-j3-pad-fix-price.json`) and deliberately NOT executed.
+  * `MK1` (PUI DMM-4026-B-I2S microphone) — its Ø1.05 mm acoustic port is an
+    UNPLATED hole drilled concentrically through its own Ø1.65 mm `GND` land,
+    leaving a 0.30 mm annulus.  Intentional (D-227), no plated through-hole, and
+    copper IS exposed in the barrel wall; no plating or tenting is required.
+  * Routed `GND` copper near `J3`'s pegs is held to JLCPCB's own **0.200 mm**
+    and measures 0.2100 mm (tracks) / 0.2412 mm (one barrel).
 
 The four BOM views **partition** the schematic's 310 symbols exactly once each.
 That partition is the fix for a defect this package's first review found: taken

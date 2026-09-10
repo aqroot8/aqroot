@@ -1,0 +1,195 @@
+{
+ "authority_after": {
+  "board_sha256": "28935c75f4747bac0ad2a062977c4ad13e7e48ec98169529c1d2db4f29f8a5b3",
+  "dru": "hardware/demo/kicad/aqroot-demo/aqroot-Beta-v2.kicad_dru",
+  "hole_clearance": [],
+  "profile": {
+   "lib_footprint_issues": 199,
+   "solder_mask_bridge": 1
+  }
+ },
+ "authority_before": {
+  "board_sha256": "28935c75f4747bac0ad2a062977c4ad13e7e48ec98169529c1d2db4f29f8a5b3",
+  "dru": "w/d677/pre/aqroot-Beta-v2.kicad_dru",
+  "hole_clearance": [
+   {
+    "description": "Hole clearance violation (board setup constraints hole clearance 0.2500 mm; actual 0.0000 mm)",
+    "items": [
+     "Pad 4 [GND] of MK1 on B.Cu",
+     "NPTH pad of MK1"
+    ]
+   },
+   {
+    "description": "Hole clearance violation (board setup constraints hole clearance 0.2500 mm; actual 0.1944 mm)",
+    "items": [
+     "Pad A1 [GND] of J3 on F.Cu",
+     "NPTH pad of J3"
+    ]
+   },
+   {
+    "description": "Hole clearance violation (board setup constraints hole clearance 0.2500 mm; actual 0.1944 mm)",
+    "items": [
+     "Pad B12 [GND] of J3 on F.Cu",
+     "NPTH pad of J3"
+    ]
+   },
+   {
+    "description": "Hole clearance violation (board setup constraints hole clearance 0.2500 mm; actual 0.1944 mm)",
+    "items": [
+     "Pad A12 [GND] of J3 on F.Cu",
+     "NPTH pad of J3"
+    ]
+   },
+   {
+    "description": "Hole clearance violation (board setup constraints hole clearance 0.2500 mm; actual 0.1944 mm)",
+    "items": [
+     "Pad B1 [GND] of J3 on F.Cu",
+     "NPTH pad of J3"
+    ]
+   }
+  ],
+  "profile": {
+   "hole_clearance": 5,
+   "lib_footprint_issues": 199,
+   "solder_mask_bridge": 1
+  }
+ },
+ "d676_candidate": {
+  "board": "hardware/demo/manufacturing/w/d676/gate1/aqroot-Beta-v2.kicad_pcb",
+  "board_sha256": "3011ead3542ac8ca9b970960bc4af17d41369407f7549a17a7a9fec20e73b05c",
+  "new_profile_equals_authority_baseline": true,
+  "note": "D-676's own refused candidate, re-DRCed with the OLD dru beside it and then with the NEW one.  Its eleven new errors all measured 0.210 - 0.2412 mm, i.e. at or above JLCPCB's stated 0.200 mm",
+  "with_new_dru": {
+   "hole_clearance_errors": 0,
+   "profile": {
+    "lib_footprint_issues": 199,
+    "solder_mask_bridge": 1
+   }
+  },
+  "with_old_dru": {
+   "hole_clearance_errors": 16,
+   "profile": {
+    "hole_clearance": 16,
+    "lib_footprint_issues": 199,
+    "solder_mask_bridge": 1
+   }
+  }
+ },
+ "method": "four real `kicad-cli pcb drc --severity-all` runs.  The candidate is D-676's own gate board, byte-unchanged; the vacuity board is the authority plus two synthetic `via` objects placed at computed distances from the J3 peg at (40.110,145.305), nothing else",
+ "question": "do the three D-677 `hole_clearance` rules accept EXACTLY the two manufacturer land patterns and the fabricator's own 0.200 mm, and REFUSE copper below it",
+ "schema": 1,
+ "vacuity": {
+  "board": "hardware/demo/manufacturing/w/d677/vacuity/aqroot-Beta-v2.kicad_pcb",
+  "hole_clearance": [
+   {
+    "description": "Hole clearance violation (rule 'FP-J3 NPTH locating peg vs foreign copper - JLCPCB NPTH-to-track 0.200 mm, D-677' clearance 0.2000 mm; actual 0.1900 mm)",
+    "items": [
+     "Via [Net-(J3-SHIELD)] on F.Cu - B.Cu",
+     "NPTH pad of J3"
+    ]
+   },
+   {
+    "description": "Hole clearance violation (rule 'FP-J3 NPTH locating peg vs foreign copper - JLCPCB NPTH-to-track 0.200 mm, D-677' clearance 0.2000 mm; actual 0.1900 mm)",
+    "items": [
+     "Via [Net-(J3-SHIELD)] on F.Cu - B.Cu",
+     "NPTH pad of J3"
+    ]
+   },
+   {
+    "description": "Hole clearance violation (rule 'FP-J3 NPTH locating peg vs foreign copper - JLCPCB NPTH-to-track 0.200 mm, D-677' clearance 0.2000 mm; actual 0.1900 mm)",
+    "items": [
+     "Via [Net-(J3-SHIELD)] on F.Cu - B.Cu",
+     "NPTH pad of J3"
+    ]
+   },
+   {
+    "description": "Hole clearance violation (board setup constraints hole clearance 0.2500 mm; actual 0.1335 mm)",
+    "items": [
+     "Via [Net-(J3-SHIELD)] on F.Cu - B.Cu",
+     "Zone 'In1 GND REFERENCE' [GND] on In1.Cu, priority 0"
+    ]
+   },
+   {
+    "description": "Hole clearance violation (rule 'FP-J3 NPTH locating peg vs foreign copper - JLCPCB NPTH-to-track 0.200 mm, D-677' clearance 0.2000 mm; actual 0.1900 mm)",
+    "items": [
+     "Via [Net-(J3-SHIELD)] on F.Cu - B.Cu",
+     "NPTH pad of J3"
+    ]
+   },
+   {
+    "description": "Hole clearance violation (rule 'FP-J3 NPTH locating peg vs foreign copper - JLCPCB NPTH-to-track 0.200 mm, D-677' clearance 0.2000 mm; actual 0.1900 mm)",
+    "items": [
+     "Via [Net-(J3-SHIELD)] on F.Cu - B.Cu",
+     "NPTH pad of J3"
+    ]
+   },
+   {
+    "description": "Hole clearance violation (board setup constraints hole clearance 0.2500 mm; actual 0.1335 mm)",
+    "items": [
+     "Via [Net-(J3-SHIELD)] on F.Cu - B.Cu",
+     "Zone 'In3 +3V3 PLANE' [+3V3] on In3.Cu, priority 0"
+    ]
+   },
+   {
+    "description": "Hole clearance violation (rule 'FP-J3 NPTH locating peg vs foreign copper - JLCPCB NPTH-to-track 0.200 mm, D-677' clearance 0.2000 mm; actual 0.1900 mm)",
+    "items": [
+     "Via [Net-(J3-SHIELD)] on F.Cu - B.Cu",
+     "NPTH pad of J3"
+    ]
+   },
+   {
+    "description": "Hole clearance violation (board setup constraints hole clearance 0.2500 mm; actual 0.1335 mm)",
+    "items": [
+     "Via [Net-(J3-SHIELD)] on F.Cu - B.Cu",
+     "Zone 'In1 GND REFERENCE_1' [GND] on In4.Cu, priority 0"
+    ]
+   }
+  ],
+  "note": "two synthetic vias on the authority+new-dru board: one whose copper stands 0.1900 mm from the J3 peg -- BELOW the fabricator's figure -- and one 0.8000 mm away as the control.  The 0.190 mm via must be REFUSED BY NAME or the rule is a hole, not a floor",
+  "refused_by_the_named_rule": [
+   {
+    "description": "Hole clearance violation (rule 'FP-J3 NPTH locating peg vs foreign copper - JLCPCB NPTH-to-track 0.200 mm, D-677' clearance 0.2000 mm; actual 0.1900 mm)",
+    "items": [
+     "Via [Net-(J3-SHIELD)] on F.Cu - B.Cu",
+     "NPTH pad of J3"
+    ]
+   },
+   {
+    "description": "Hole clearance violation (rule 'FP-J3 NPTH locating peg vs foreign copper - JLCPCB NPTH-to-track 0.200 mm, D-677' clearance 0.2000 mm; actual 0.1900 mm)",
+    "items": [
+     "Via [Net-(J3-SHIELD)] on F.Cu - B.Cu",
+     "NPTH pad of J3"
+    ]
+   },
+   {
+    "description": "Hole clearance violation (rule 'FP-J3 NPTH locating peg vs foreign copper - JLCPCB NPTH-to-track 0.200 mm, D-677' clearance 0.2000 mm; actual 0.1900 mm)",
+    "items": [
+     "Via [Net-(J3-SHIELD)] on F.Cu - B.Cu",
+     "NPTH pad of J3"
+    ]
+   },
+   {
+    "description": "Hole clearance violation (rule 'FP-J3 NPTH locating peg vs foreign copper - JLCPCB NPTH-to-track 0.200 mm, D-677' clearance 0.2000 mm; actual 0.1900 mm)",
+    "items": [
+     "Via [Net-(J3-SHIELD)] on F.Cu - B.Cu",
+     "NPTH pad of J3"
+    ]
+   },
+   {
+    "description": "Hole clearance violation (rule 'FP-J3 NPTH locating peg vs foreign copper - JLCPCB NPTH-to-track 0.200 mm, D-677' clearance 0.2000 mm; actual 0.1900 mm)",
+    "items": [
+     "Via [Net-(J3-SHIELD)] on F.Cu - B.Cu",
+     "NPTH pad of J3"
+    ]
+   },
+   {
+    "description": "Hole clearance violation (rule 'FP-J3 NPTH locating peg vs foreign copper - JLCPCB NPTH-to-track 0.200 mm, D-677' clearance 0.2000 mm; actual 0.1900 mm)",
+    "items": [
+     "Via [Net-(J3-SHIELD)] on F.Cu - B.Cu",
+     "NPTH pad of J3"
+    ]
+   }
+  ],
+  "rule_fires": true
+ }
+}

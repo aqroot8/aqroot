@@ -1,0 +1,427 @@
+{
+ "accepted_by_scoped_rule": 11,
+ "agrees_with_drc": true,
+ "authoritative_unchanged": true,
+ "below_board_default_accepted_by_a_scoped_rule": [
+  {
+   "classification": "OWN_FOOTPRINT_LAND_PATTERN",
+   "copper": "MK1.4",
+   "copper_kind": "pad",
+   "copper_layer": "B.Cu",
+   "copper_net": "GND",
+   "copper_uuid": "5696b1f6-aae4-4b6c-92b5-91076fb33808",
+   "deficit_mm": 0.25,
+   "gap_mm": 0.0,
+   "hole": "MK1.",
+   "hole_dia_mm": 1.05,
+   "hole_kind": "NPTH",
+   "hole_uuid": "d86c10e6-8ea1-4de2-b440-1b7ebeaff0cd",
+   "hole_xy": [
+    4.0,
+    97.0
+   ]
+  },
+  {
+   "classification": "OWN_FOOTPRINT_LAND_PATTERN",
+   "copper": "J3.A1",
+   "copper_kind": "pad",
+   "copper_layer": "F.Cu",
+   "copper_net": "GND",
+   "copper_uuid": "5361c982-860d-46cc-a676-1e6641d94388",
+   "deficit_mm": 0.0534,
+   "gap_mm": 0.1966,
+   "hole": "J3.",
+   "hole_dia_mm": 0.65,
+   "hole_kind": "NPTH",
+   "hole_uuid": "73cd94d0-f66c-4b73-b2af-701a4a079218",
+   "hole_xy": [
+    45.89,
+    145.305
+   ]
+  },
+  {
+   "classification": "OWN_FOOTPRINT_LAND_PATTERN",
+   "copper": "J3.A12",
+   "copper_kind": "pad",
+   "copper_layer": "F.Cu",
+   "copper_net": "GND",
+   "copper_uuid": "e5212f1d-e66e-4897-9aa0-8f399302d96e",
+   "deficit_mm": 0.0534,
+   "gap_mm": 0.1966,
+   "hole": "J3.",
+   "hole_dia_mm": 0.65,
+   "hole_kind": "NPTH",
+   "hole_uuid": "7b93f5a0-7bbf-4c46-8860-0ece0b17d033",
+   "hole_xy": [
+    40.11,
+    145.305
+   ]
+  },
+  {
+   "classification": "OWN_FOOTPRINT_LAND_PATTERN",
+   "copper": "J3.B1",
+   "copper_kind": "pad",
+   "copper_layer": "F.Cu",
+   "copper_net": "GND",
+   "copper_uuid": "9fb528e1-29ef-4709-b9f1-cd1fb97b9cbe",
+   "deficit_mm": 0.0534,
+   "gap_mm": 0.1966,
+   "hole": "J3.",
+   "hole_dia_mm": 0.65,
+   "hole_kind": "NPTH",
+   "hole_uuid": "7b93f5a0-7bbf-4c46-8860-0ece0b17d033",
+   "hole_xy": [
+    40.11,
+    145.305
+   ]
+  },
+  {
+   "classification": "OWN_FOOTPRINT_LAND_PATTERN",
+   "copper": "J3.B12",
+   "copper_kind": "pad",
+   "copper_layer": "F.Cu",
+   "copper_net": "GND",
+   "copper_uuid": "a6b58080-1649-4277-a3ef-b115ae58bfe2",
+   "deficit_mm": 0.0534,
+   "gap_mm": 0.1966,
+   "hole": "J3.",
+   "hole_dia_mm": 0.65,
+   "hole_kind": "NPTH",
+   "hole_uuid": "73cd94d0-f66c-4b73-b2af-701a4a079218",
+   "hole_xy": [
+    45.89,
+    145.305
+   ]
+  },
+  {
+   "classification": "OWN_ROUTED_COPPER",
+   "copper": "track",
+   "copper_kind": "track",
+   "copper_layer": "F.Cu",
+   "copper_net": "GND",
+   "copper_uuid": "c6f92d3b-d771-47df-8b7d-6e2e2fb6e392",
+   "deficit_mm": 0.04,
+   "gap_mm": 0.21,
+   "hole": "J3.",
+   "hole_dia_mm": 0.65,
+   "hole_kind": "NPTH",
+   "hole_uuid": "7b93f5a0-7bbf-4c46-8860-0ece0b17d033",
+   "hole_xy": [
+    40.11,
+    145.305
+   ]
+  },
+  {
+   "classification": "OWN_ROUTED_COPPER",
+   "copper": "track",
+   "copper_kind": "track",
+   "copper_layer": "F.Cu",
+   "copper_net": "GND",
+   "copper_uuid": "71e0d502-3d6d-4ac9-80c7-0465d4bc8a3c",
+   "deficit_mm": 0.034,
+   "gap_mm": 0.216,
+   "hole": "J3.",
+   "hole_dia_mm": 0.65,
+   "hole_kind": "NPTH",
+   "hole_uuid": "7b93f5a0-7bbf-4c46-8860-0ece0b17d033",
+   "hole_xy": [
+    40.11,
+    145.305
+   ]
+  },
+  {
+   "classification": "OWN_ROUTED_COPPER",
+   "copper": "track",
+   "copper_kind": "track",
+   "copper_layer": "F.Cu",
+   "copper_net": "GND",
+   "copper_uuid": "80aa89e9-2520-4f1c-8f54-9a62296b0152",
+   "deficit_mm": 0.0337,
+   "gap_mm": 0.2163,
+   "hole": "J3.",
+   "hole_dia_mm": 0.65,
+   "hole_kind": "NPTH",
+   "hole_uuid": "7b93f5a0-7bbf-4c46-8860-0ece0b17d033",
+   "hole_xy": [
+    40.11,
+    145.305
+   ]
+  },
+  {
+   "classification": "OWN_ROUTED_COPPER",
+   "copper": "track",
+   "copper_kind": "track",
+   "copper_layer": "F.Cu",
+   "copper_net": "GND",
+   "copper_uuid": "09314570-9dcb-4237-a1ef-9c49cd2ddc11",
+   "deficit_mm": 0.0305,
+   "gap_mm": 0.2195,
+   "hole": "J3.",
+   "hole_dia_mm": 0.65,
+   "hole_kind": "NPTH",
+   "hole_uuid": "7b93f5a0-7bbf-4c46-8860-0ece0b17d033",
+   "hole_xy": [
+    40.11,
+    145.305
+   ]
+  },
+  {
+   "classification": "OWN_ROUTED_COPPER",
+   "copper": "track",
+   "copper_kind": "track",
+   "copper_layer": "F.Cu",
+   "copper_net": "GND",
+   "copper_uuid": "057cff2a-fb52-4e68-b7bf-143924b32abf",
+   "deficit_mm": 0.0302,
+   "gap_mm": 0.2198,
+   "hole": "J3.",
+   "hole_dia_mm": 0.65,
+   "hole_kind": "NPTH",
+   "hole_uuid": "7b93f5a0-7bbf-4c46-8860-0ece0b17d033",
+   "hole_xy": [
+    40.11,
+    145.305
+   ]
+  },
+  {
+   "classification": "OWN_ROUTED_COPPER",
+   "copper": "via",
+   "copper_kind": "via",
+   "copper_layer": "*",
+   "copper_net": "GND",
+   "copper_uuid": "ee989f05-9b22-4964-a31a-4817e0379de4",
+   "deficit_mm": 0.0088,
+   "gap_mm": 0.2412,
+   "hole": "J3.",
+   "hole_dia_mm": 0.65,
+   "hole_kind": "NPTH",
+   "hole_uuid": "7b93f5a0-7bbf-4c46-8860-0ece0b17d033",
+   "hole_xy": [
+    40.11,
+    145.305
+   ]
+  }
+ ],
+ "board": "/home/aqroot8/aqroot-demo/hardware/demo/kicad/aqroot-demo/aqroot-Beta-v2.kicad_pcb",
+ "board_is_authority": true,
+ "board_sha256": "0285ef45466c1c7dd1823099c35d75d704b50266460e94f339c1b19b5409180d",
+ "classification_counts": {},
+ "drc_hole_clearance_errors": 0,
+ "drc_pairs_not_found": [],
+ "method": "read-only.  The gap is measured from the hole's own `GetEffectiveHoleShape()` capsule to the copper's `GetEffectivePolygon()` / segment, then KiCad's own DRC is re-run on the same board and the two are compared by item UUID.  Zone fills are NOT walked: a refill honours the rule by construction and KiCad reports none here",
+ "question": "for every drill-to-copper error on this board, WHOSE geometry is it -- a footprint's own land pattern, a placement, or routed copper",
+ "rows": [
+  {
+   "classification": "OWN_FOOTPRINT_LAND_PATTERN",
+   "copper": "MK1.4",
+   "copper_kind": "pad",
+   "copper_layer": "B.Cu",
+   "copper_net": "GND",
+   "copper_uuid": "5696b1f6-aae4-4b6c-92b5-91076fb33808",
+   "deficit_mm": 0.25,
+   "gap_mm": 0.0,
+   "hole": "MK1.",
+   "hole_dia_mm": 1.05,
+   "hole_kind": "NPTH",
+   "hole_uuid": "d86c10e6-8ea1-4de2-b440-1b7ebeaff0cd",
+   "hole_xy": [
+    4.0,
+    97.0
+   ],
+   "in_drc": false
+  },
+  {
+   "classification": "OWN_FOOTPRINT_LAND_PATTERN",
+   "copper": "J3.A1",
+   "copper_kind": "pad",
+   "copper_layer": "F.Cu",
+   "copper_net": "GND",
+   "copper_uuid": "5361c982-860d-46cc-a676-1e6641d94388",
+   "deficit_mm": 0.0534,
+   "gap_mm": 0.1966,
+   "hole": "J3.",
+   "hole_dia_mm": 0.65,
+   "hole_kind": "NPTH",
+   "hole_uuid": "73cd94d0-f66c-4b73-b2af-701a4a079218",
+   "hole_xy": [
+    45.89,
+    145.305
+   ],
+   "in_drc": false
+  },
+  {
+   "classification": "OWN_FOOTPRINT_LAND_PATTERN",
+   "copper": "J3.A12",
+   "copper_kind": "pad",
+   "copper_layer": "F.Cu",
+   "copper_net": "GND",
+   "copper_uuid": "e5212f1d-e66e-4897-9aa0-8f399302d96e",
+   "deficit_mm": 0.0534,
+   "gap_mm": 0.1966,
+   "hole": "J3.",
+   "hole_dia_mm": 0.65,
+   "hole_kind": "NPTH",
+   "hole_uuid": "7b93f5a0-7bbf-4c46-8860-0ece0b17d033",
+   "hole_xy": [
+    40.11,
+    145.305
+   ],
+   "in_drc": false
+  },
+  {
+   "classification": "OWN_FOOTPRINT_LAND_PATTERN",
+   "copper": "J3.B1",
+   "copper_kind": "pad",
+   "copper_layer": "F.Cu",
+   "copper_net": "GND",
+   "copper_uuid": "9fb528e1-29ef-4709-b9f1-cd1fb97b9cbe",
+   "deficit_mm": 0.0534,
+   "gap_mm": 0.1966,
+   "hole": "J3.",
+   "hole_dia_mm": 0.65,
+   "hole_kind": "NPTH",
+   "hole_uuid": "7b93f5a0-7bbf-4c46-8860-0ece0b17d033",
+   "hole_xy": [
+    40.11,
+    145.305
+   ],
+   "in_drc": false
+  },
+  {
+   "classification": "OWN_FOOTPRINT_LAND_PATTERN",
+   "copper": "J3.B12",
+   "copper_kind": "pad",
+   "copper_layer": "F.Cu",
+   "copper_net": "GND",
+   "copper_uuid": "a6b58080-1649-4277-a3ef-b115ae58bfe2",
+   "deficit_mm": 0.0534,
+   "gap_mm": 0.1966,
+   "hole": "J3.",
+   "hole_dia_mm": 0.65,
+   "hole_kind": "NPTH",
+   "hole_uuid": "73cd94d0-f66c-4b73-b2af-701a4a079218",
+   "hole_xy": [
+    45.89,
+    145.305
+   ],
+   "in_drc": false
+  },
+  {
+   "classification": "OWN_ROUTED_COPPER",
+   "copper": "track",
+   "copper_kind": "track",
+   "copper_layer": "F.Cu",
+   "copper_net": "GND",
+   "copper_uuid": "c6f92d3b-d771-47df-8b7d-6e2e2fb6e392",
+   "deficit_mm": 0.04,
+   "gap_mm": 0.21,
+   "hole": "J3.",
+   "hole_dia_mm": 0.65,
+   "hole_kind": "NPTH",
+   "hole_uuid": "7b93f5a0-7bbf-4c46-8860-0ece0b17d033",
+   "hole_xy": [
+    40.11,
+    145.305
+   ],
+   "in_drc": false
+  },
+  {
+   "classification": "OWN_ROUTED_COPPER",
+   "copper": "track",
+   "copper_kind": "track",
+   "copper_layer": "F.Cu",
+   "copper_net": "GND",
+   "copper_uuid": "71e0d502-3d6d-4ac9-80c7-0465d4bc8a3c",
+   "deficit_mm": 0.034,
+   "gap_mm": 0.216,
+   "hole": "J3.",
+   "hole_dia_mm": 0.65,
+   "hole_kind": "NPTH",
+   "hole_uuid": "7b93f5a0-7bbf-4c46-8860-0ece0b17d033",
+   "hole_xy": [
+    40.11,
+    145.305
+   ],
+   "in_drc": false
+  },
+  {
+   "classification": "OWN_ROUTED_COPPER",
+   "copper": "track",
+   "copper_kind": "track",
+   "copper_layer": "F.Cu",
+   "copper_net": "GND",
+   "copper_uuid": "80aa89e9-2520-4f1c-8f54-9a62296b0152",
+   "deficit_mm": 0.0337,
+   "gap_mm": 0.2163,
+   "hole": "J3.",
+   "hole_dia_mm": 0.65,
+   "hole_kind": "NPTH",
+   "hole_uuid": "7b93f5a0-7bbf-4c46-8860-0ece0b17d033",
+   "hole_xy": [
+    40.11,
+    145.305
+   ],
+   "in_drc": false
+  },
+  {
+   "classification": "OWN_ROUTED_COPPER",
+   "copper": "track",
+   "copper_kind": "track",
+   "copper_layer": "F.Cu",
+   "copper_net": "GND",
+   "copper_uuid": "09314570-9dcb-4237-a1ef-9c49cd2ddc11",
+   "deficit_mm": 0.0305,
+   "gap_mm": 0.2195,
+   "hole": "J3.",
+   "hole_dia_mm": 0.65,
+   "hole_kind": "NPTH",
+   "hole_uuid": "7b93f5a0-7bbf-4c46-8860-0ece0b17d033",
+   "hole_xy": [
+    40.11,
+    145.305
+   ],
+   "in_drc": false
+  },
+  {
+   "classification": "OWN_ROUTED_COPPER",
+   "copper": "track",
+   "copper_kind": "track",
+   "copper_layer": "F.Cu",
+   "copper_net": "GND",
+   "copper_uuid": "057cff2a-fb52-4e68-b7bf-143924b32abf",
+   "deficit_mm": 0.0302,
+   "gap_mm": 0.2198,
+   "hole": "J3.",
+   "hole_dia_mm": 0.65,
+   "hole_kind": "NPTH",
+   "hole_uuid": "7b93f5a0-7bbf-4c46-8860-0ece0b17d033",
+   "hole_xy": [
+    40.11,
+    145.305
+   ],
+   "in_drc": false
+  },
+  {
+   "classification": "OWN_ROUTED_COPPER",
+   "copper": "via",
+   "copper_kind": "via",
+   "copper_layer": "*",
+   "copper_net": "GND",
+   "copper_uuid": "ee989f05-9b22-4964-a31a-4817e0379de4",
+   "deficit_mm": 0.0088,
+   "gap_mm": 0.2412,
+   "hole": "J3.",
+   "hole_dia_mm": 0.65,
+   "hole_kind": "NPTH",
+   "hole_uuid": "7b93f5a0-7bbf-4c46-8860-0ece0b17d033",
+   "hole_xy": [
+    40.11,
+    145.305
+   ],
+   "in_drc": false
+  }
+ ],
+ "rule_mm": 0.25,
+ "schema": 1,
+ "search_mm": 3.0
+}

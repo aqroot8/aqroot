@@ -1,0 +1,79 @@
+{
+ "blast_radius": "land_parity_contract LAND2 requires every board footprint to be pad-identical to its LIBRARY MASTER to the nanometre, and J3's master is the stock Connector_USB library.  Any row but the first needs a project-local footprint, an identity change (apply_footprint_identity.py), a land_citations.json row, a FOOTPRINT_VERIFICATION_LEDGER row and a schematic-parity re-check.  declared_master_divergences is EMPTY BY DESIGN (D-617 CLOSED the only one by converging to the master)",
+ "fabricator_minimum_mm": 0.2,
+ "ladder": [
+  {
+   "area_loss_pct": 0.0,
+   "clears_fabricator": false,
+   "corner_radius_mm": 0.15,
+   "gap_mm": 0.1944,
+   "pad_area_mm2": 0.6707,
+   "ratio": 0.25
+  },
+  {
+   "area_loss_pct": 1.27,
+   "clears_fabricator": true,
+   "corner_radius_mm": 0.18,
+   "gap_mm": 0.201,
+   "pad_area_mm2": 0.6622,
+   "ratio": 0.3
+  },
+  {
+   "area_loss_pct": 2.77,
+   "clears_fabricator": true,
+   "corner_radius_mm": 0.21,
+   "gap_mm": 0.2083,
+   "pad_area_mm2": 0.6521,
+   "ratio": 0.35
+  },
+  {
+   "area_loss_pct": 4.49,
+   "clears_fabricator": true,
+   "corner_radius_mm": 0.24,
+   "gap_mm": 0.2161,
+   "pad_area_mm2": 0.6406,
+   "ratio": 0.4
+  },
+  {
+   "area_loss_pct": 6.46,
+   "clears_fabricator": true,
+   "corner_radius_mm": 0.27,
+   "gap_mm": 0.2243,
+   "pad_area_mm2": 0.6274,
+   "ratio": 0.45
+  },
+  {
+   "area_loss_pct": 8.65,
+   "clears_fabricator": true,
+   "corner_radius_mm": 0.3,
+   "gap_mm": 0.233,
+   "pad_area_mm2": 0.6127,
+   "ratio": 0.5
+  }
+ ],
+ "method": "analytic: the roundrect corner nearest the peg is an arc of radius ratio*min(w,h) centred inside the rectangle, so the gap is |peg centre - arc centre| - arc radius - peg radius.  The ratio 0.25 row REPRODUCES KiCad's own 0.1944 mm, which is what makes the other rows trustworthy",
+ "pad": {
+  "centre_mm": [
+   39.8,
+   146.38
+  ],
+  "current_ratio": 0.25,
+  "ref": "J3.A12 / J3.B1 (coincident) and J3.A1 / J3.B12",
+  "shape": "roundrect",
+  "size_mm": [
+   0.6,
+   1.15
+  ]
+ },
+ "peg": {
+  "centre_mm": [
+   40.11,
+   145.305
+  ],
+  "diameter_mm": 0.65,
+  "kind": "NPTH, mechanical"
+ },
+ "question": "IF the J3 land-pattern deviation has to be FIXED rather than stated, what does the cheapest geometric change buy and cost",
+ "schema": 1,
+ "verdict": "NOT EXECUTED.  The 5.6 um deviation is STATED to the fabricator in aqroot-Demo-FAB-NOTES.md with a PLEASE CONFIRM; ratio 0.50 is the row to execute if the answer is no"
+}

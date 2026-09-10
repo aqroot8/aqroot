@@ -1,0 +1,466 @@
+{
+  "board": "/home/aqroot8/aqroot-demo/hardware/demo/kicad/aqroot-demo/aqroot-Beta-v2.kicad_pcb",
+  "board_sha256": "28935c75f4747bac0ad2a062977c4ad13e7e48ec98169529c1d2db4f29f8a5b3",
+  "grid_nm": 50000,
+  "limits": "TAP5: a TAP_ROUTABLE row is a work-list entry, not a transaction -- no gate clause has been asked, the pour partition least of all",
+  "method": "read-only; maze3d.offcentre_route to an anchor END built from the target island's own connected copper, proved by verify_laid in exact geometry and REVERTED",
+  "nets": [
+    {
+      "lands": [],
+      "layers": [
+        "F",
+        "B"
+      ],
+      "net": "/01_POWER_TREE/ACC_5V_LX",
+      "netclass": "SWITCH_NODE",
+      "seconds": 0.0,
+      "verdict": "STUB_FORBIDDEN",
+      "why": "TAP4: netclass SWITCH_NODE governs the SHAPE of its conductor; a T-junction is not asked for it",
+      "width": 600000
+    },
+    {
+      "lands": [],
+      "layers": [
+        "F",
+        "B",
+        "I2"
+      ],
+      "net": "/01_POWER_TREE/NFC_5V_PA_PENDING",
+      "netclass": "NFC_5V_PA",
+      "seconds": 0.0,
+      "target_objects": 0,
+      "verdict": "NO_OWN_COPPER",
+      "width": 600000
+    },
+    {
+      "lands": [],
+      "layers": [
+        "F"
+      ],
+      "net": "/01_POWER_TREE/USB_D_CONN_P",
+      "netclass": "USB_D",
+      "seconds": 0.0,
+      "verdict": "STUB_FORBIDDEN",
+      "why": "TAP4: netclass USB_D governs the SHAPE of its conductor; a T-junction is not asked for it",
+      "width": 250000
+    },
+    {
+      "lands": [
+        {
+          "gain_mm": 0.0,
+          "island": 1,
+          "land": "R112.1",
+          "nearest_pad_mm": 56.6562,
+          "nearest_tap_mm": 56.6562,
+          "tries": [],
+          "verdict": "MEASURED"
+        }
+      ],
+      "layers": [
+        "F",
+        "B",
+        "I2"
+      ],
+      "net": "/03_SPI_A_DISPLAY_SD/DISP_SDO",
+      "netclass": "Default",
+      "target_objects": 4,
+      "width": 200000
+    },
+    {
+      "lands": [
+        {
+          "gain_mm": 0.7146,
+          "island": 1,
+          "land": "U9.14",
+          "nearest_pad_mm": 2.5,
+          "nearest_tap_mm": 1.7854,
+          "tries": [],
+          "verdict": "MEASURED"
+        }
+      ],
+      "layers": [
+        "F",
+        "B",
+        "I2"
+      ],
+      "net": "/04_SPI_B_RADIOS_NFC/NFC_VDD_RF",
+      "netclass": "Default",
+      "target_objects": 15,
+      "width": 200000
+    },
+    {
+      "lands": [],
+      "layers": [
+        "F",
+        "B"
+      ],
+      "net": "/06_AUDIO/SPK_N_CONN",
+      "netclass": "SPK_OUT",
+      "seconds": 0.0,
+      "verdict": "STUB_FORBIDDEN",
+      "why": "TAP4: netclass SPK_OUT governs the SHAPE of its conductor; a T-junction is not asked for it",
+      "width": 300000
+    },
+    {
+      "lands": [],
+      "layers": [
+        "F",
+        "B"
+      ],
+      "net": "/06_AUDIO/SPK_P_CONN",
+      "netclass": "SPK_OUT",
+      "seconds": 0.0,
+      "verdict": "STUB_FORBIDDEN",
+      "why": "TAP4: netclass SPK_OUT governs the SHAPE of its conductor; a T-junction is not asked for it",
+      "width": 300000
+    },
+    {
+      "lands": [
+        {
+          "gain_mm": 2.7912,
+          "island": 1,
+          "land": "R123.1",
+          "nearest_pad_mm": 4.1562,
+          "nearest_tap_mm": 1.365,
+          "tries": [],
+          "verdict": "MEASURED"
+        }
+      ],
+      "layers": [
+        "F",
+        "B",
+        "I2"
+      ],
+      "net": "/07_IR/IR_LED_A",
+      "netclass": "Default",
+      "target_objects": 7,
+      "width": 200000
+    },
+    {
+      "lands": [
+        {
+          "gain_mm": -0.1248,
+          "island": 1,
+          "land": "U3.20",
+          "nearest_pad_mm": 20.2425,
+          "nearest_tap_mm": 20.3673,
+          "tries": [],
+          "verdict": "MEASURED"
+        }
+      ],
+      "layers": [
+        "F",
+        "B",
+        "I2"
+      ],
+      "net": "/ACC_PWR_EN",
+      "netclass": "Default",
+      "target_objects": 8,
+      "width": 200000
+    },
+    {
+      "lands": [
+        {
+          "gain_mm": -2.6711,
+          "island": 1,
+          "land": "U11.9",
+          "nearest_pad_mm": 16.6131,
+          "nearest_tap_mm": 19.2842,
+          "tries": [],
+          "verdict": "MEASURED"
+        },
+        {
+          "gain_mm": -3.0343,
+          "island": 2,
+          "land": "U2.9",
+          "nearest_pad_mm": 16.6131,
+          "nearest_tap_mm": 19.6474,
+          "tries": [],
+          "verdict": "MEASURED"
+        }
+      ],
+      "layers": [
+        "F",
+        "B",
+        "I2"
+      ],
+      "net": "/BQ25185_STAT1",
+      "netclass": "Default",
+      "target_objects": 12,
+      "width": 200000
+    },
+    {
+      "lands": [
+        {
+          "gain_mm": -7.631,
+          "island": 1,
+          "land": "U11.3",
+          "nearest_pad_mm": 14.6005,
+          "nearest_tap_mm": 22.2315,
+          "tries": [],
+          "verdict": "MEASURED"
+        },
+        {
+          "gain_mm": -2.1397,
+          "island": 2,
+          "land": "U2.10",
+          "nearest_pad_mm": 14.6005,
+          "nearest_tap_mm": 16.7402,
+          "tries": [],
+          "verdict": "MEASURED"
+        }
+      ],
+      "layers": [
+        "F",
+        "B",
+        "I2"
+      ],
+      "net": "/BQ25185_STAT2",
+      "netclass": "Default",
+      "target_objects": 11,
+      "width": 200000
+    },
+    {
+      "lands": [
+        {
+          "gain_mm": 2.7328,
+          "island": 1,
+          "land": "TP5.1",
+          "nearest_pad_mm": 13.286,
+          "nearest_tap_mm": 10.5532,
+          "tries": [],
+          "verdict": "MEASURED"
+        },
+        {
+          "gain_mm": 0.7423,
+          "island": 2,
+          "land": "U14.7",
+          "nearest_pad_mm": 24.1371,
+          "nearest_tap_mm": 23.3948,
+          "tries": [],
+          "verdict": "MEASURED"
+        },
+        {
+          "gain_mm": 9.5364,
+          "island": 3,
+          "land": "U16.3",
+          "nearest_pad_mm": 15.5847,
+          "nearest_tap_mm": 6.0483,
+          "tries": [],
+          "verdict": "MEASURED"
+        }
+      ],
+      "layers": [
+        "F",
+        "B",
+        "I2"
+      ],
+      "net": "/I2C_SCL_INT",
+      "netclass": "I2C",
+      "target_objects": 121,
+      "width": 200000
+    },
+    {
+      "lands": [
+        {
+          "gain_mm": -2.8234,
+          "island": 1,
+          "land": "U9.10",
+          "nearest_pad_mm": 1.1516,
+          "nearest_tap_mm": 3.975,
+          "tries": [],
+          "verdict": "MEASURED"
+        }
+      ],
+      "layers": [
+        "F",
+        "B",
+        "I2"
+      ],
+      "net": "/NFC_SUPPLY",
+      "netclass": "P3V3",
+      "target_objects": 35,
+      "width": 600000
+    },
+    {
+      "lands": [
+        {
+          "gain_mm": 0.0,
+          "island": 1,
+          "land": "R112.2",
+          "nearest_pad_mm": 21.7259,
+          "nearest_tap_mm": 21.7259,
+          "tries": [],
+          "verdict": "MEASURED"
+        }
+      ],
+      "layers": [
+        "F",
+        "B",
+        "I2"
+      ],
+      "net": "/SPI_A_MISO",
+      "netclass": "Default",
+      "target_objects": 12,
+      "width": 200000
+    },
+    {
+      "lands": [],
+      "layers": [
+        "F",
+        "B",
+        "I2"
+      ],
+      "net": "/SX1262_DIO1",
+      "netclass": "Default",
+      "seconds": 0.0,
+      "target_objects": 0,
+      "verdict": "NO_OWN_COPPER",
+      "width": 200000
+    },
+    {
+      "lands": [],
+      "layers": [
+        "F"
+      ],
+      "net": "/USB_D_MCU_N",
+      "netclass": "USB_D",
+      "seconds": 0.0,
+      "verdict": "STUB_FORBIDDEN",
+      "why": "TAP4: netclass USB_D governs the SHAPE of its conductor; a T-junction is not asked for it",
+      "width": 250000
+    },
+    {
+      "lands": [],
+      "layers": [
+        "F"
+      ],
+      "net": "/USB_D_MCU_P",
+      "netclass": "USB_D",
+      "seconds": 0.0,
+      "verdict": "STUB_FORBIDDEN",
+      "why": "TAP4: netclass USB_D governs the SHAPE of its conductor; a T-junction is not asked for it",
+      "width": 250000
+    },
+    {
+      "lands": [
+        {
+          "gain_mm": -0.1202,
+          "island": 0,
+          "land": "R3.1",
+          "nearest_pad_mm": 54.0702,
+          "nearest_tap_mm": 54.1904,
+          "tries": [],
+          "verdict": "MEASURED"
+        },
+        {
+          "gain_mm": 0.1111,
+          "island": 0,
+          "land": "U1.23",
+          "nearest_pad_mm": 40.5851,
+          "nearest_tap_mm": 40.4739,
+          "tries": [],
+          "verdict": "MEASURED"
+        },
+        {
+          "gain_mm": -0.4741,
+          "island": 0,
+          "land": "Q10.3",
+          "nearest_pad_mm": 25.2577,
+          "nearest_tap_mm": 25.7317,
+          "tries": [],
+          "verdict": "MEASURED"
+        },
+        {
+          "gain_mm": 0.0,
+          "island": 1,
+          "land": "U2.1",
+          "nearest_pad_mm": 25.2577,
+          "nearest_tap_mm": 25.2577,
+          "tries": [],
+          "verdict": "MEASURED"
+        },
+        {
+          "gain_mm": 0.0,
+          "island": 1,
+          "land": "U3.1",
+          "nearest_pad_mm": 34.9422,
+          "nearest_tap_mm": 34.9422,
+          "tries": [],
+          "verdict": "MEASURED"
+        }
+      ],
+      "layers": [
+        "F",
+        "B",
+        "I2"
+      ],
+      "net": "/WAKE_INT_N",
+      "netclass": "Default",
+      "target_objects": 44,
+      "width": 200000
+    },
+    {
+      "lands": [
+        {
+          "gain_mm": 1.1098,
+          "island": 1,
+          "land": "R68.2",
+          "nearest_pad_mm": 17.4327,
+          "nearest_tap_mm": 16.323,
+          "tries": [],
+          "verdict": "MEASURED"
+        }
+      ],
+      "layers": [
+        "F",
+        "B",
+        "I2"
+      ],
+      "net": "Net-(SW9-A)",
+      "netclass": "Default",
+      "target_objects": 30,
+      "width": 200000
+    },
+    {
+      "lands": [],
+      "layers": [
+        "F",
+        "B",
+        "I2"
+      ],
+      "net": "Net-(U13-FB)",
+      "netclass": "Default",
+      "seconds": 0.0,
+      "target_objects": 0,
+      "verdict": "NO_OWN_COPPER",
+      "width": 200000
+    },
+    {
+      "lands": [],
+      "layers": [
+        "F",
+        "B"
+      ],
+      "net": "Net-(U13-SW)",
+      "netclass": "SWITCH_NODE",
+      "seconds": 0.0,
+      "verdict": "STUB_FORBIDDEN",
+      "why": "TAP4: netclass SWITCH_NODE governs the SHAPE of its conductor; a T-junction is not asked for it",
+      "width": 600000
+    }
+  ],
+  "question": "for every orphan land of every partially routed net, is the net's OWN CONNECTED COPPER nearer than the nearest pad the router may aim at -- and does a legal corridor reach it",
+  "schema": 1,
+  "stub_forbidden": [
+    "NFC_RF",
+    "NFC_RX",
+    "SPK_OUT",
+    "SWITCH_NODE",
+    "USB_D"
+  ],
+  "totals": {
+    "MEASURED": 19,
+    "STUB_FORBIDDEN": 7
+  }
+}

@@ -41,7 +41,7 @@ LEDGER = Path(__file__).resolve().parent / "routing_ledger.py"
 
 # Same inherited-class pins as the promotion gate, so a screen and a gate
 # cannot disagree about what "attributable" means.
-INHERITED = {"lib_footprint_issues": 199, "hole_clearance": 5,
+INHERITED = {"lib_footprint_issues": 199, "hole_clearance": 0,   # D-677: the five were vendor land patterns; scoped rules accept them and KiCad reports none
              "solder_mask_bridge": 1}
 
 
