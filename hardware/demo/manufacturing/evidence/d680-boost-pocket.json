@@ -107,11 +107,34 @@
     "grid_mm": 0.05,
     "budget_mm": 60,
     "all_relaid": false
+   },
+   "sysN": {
+    "reserve_r_mm": 0.75,
+    "grid_mm": 0.05,
+    "budget_mm": 40,
+    "chains_extended": "each chain extended by one more track so BOTH its ends are clear of the lane -- FB (57.700,30.700) <-> (56.100,36.900), EXT_SCL_BUF via to via (57.800,31.800) <-> (55.700,40.300)",
+    "why_it_was_asked": "sysK/L/M's relays refused with terminal_lift residual 0.3228 mm: ACC_5V_FB's own terminal (55.600,32.900) sits 0.4272 mm from the lane centre, so the guard swallowed the very terminal the relay had to re-attach to",
+    "all_relaid": false,
+    "relaid": {
+     "/01_POWER_TREE/ACC_5V_FB": {
+      "was_mm": 7.2649,
+      "reason": "NO_PATH"
+     },
+     "/09_COMMUNITY_HEADER/EXT_SCL_BUF": {
+      "was_mm": 9.4398,
+      "reason": "NO_PATH"
+     }
+    },
+    "and_SYS_still_joined": {
+     "mm": 18.884,
+     "vias": 2
+    },
+    "spec": "evidence/d680-fb-buf-relay-spec-v2.json"
    }
   },
   "why": "both relays NO_PATH at 0.200 mm once the lane is reserved, in all three",
   "and_the_budget_was_re-asked": "sysM raises the detour budget to 60 mm because this decision's own section 3 says a refusal under a max_mm is a refusal of the BUDGET until it is re-asked.  It is not: the verdict does not move",
-  "verdict": "the pocket carries TWO conductors of the THREE that want it"
+  "verdict": "FOUR arms, two lane radii, two lattices, budgets of 18 / 40 / 60 mm, and both chains extended until their terminals were clear of the guard: NEITHER ACC_5V_FB NOR EXT_SCL_BUF can be re-laid across the SYS lane, on any permitted layer.  The pocket carries TWO conductors of the THREE that want it, and the remaining instrument is PLACEMENT"
  },
  "acc_5v_lx_needs_a_part_moved_and_the_arithmetic_says_which": {
   "escape": {

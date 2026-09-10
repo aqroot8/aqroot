@@ -842,6 +842,85 @@
      3.221
     ]
    ]
+  },
+  {
+   "arm": "sysN",
+   "why": "NO eviction; FB+BUF RELAYED with BOTH chains EXTENDED clear of the lane, 0.75 mm discs, 40 mm budget",
+   "ran": true,
+   "refused_clauses": [
+    "attributable_drc",
+    "board_improved",
+    "every_detour_relaid",
+    "no_regression"
+   ],
+   "connectivity": {
+    "nets_improved": [
+     "/01_POWER_TREE/BQ25185_SYS"
+    ],
+    "nets_regressed": [
+     "/01_POWER_TREE/ACC_5V_FB",
+     "/09_COMMUNITY_HEADER/EXT_SCL_BUF"
+    ],
+    "open_retained_nets_after": 17,
+    "open_retained_nets_before": 15,
+    "retained_open_edges_after": 26,
+    "retained_open_edges_before": 25
+   },
+   "drc_types": {
+    "lib_footprint_issues": 199,
+    "solder_mask_bridge": 1,
+    "track_dangling": 1,
+    "via_dangling": 3
+   },
+   "attributable_drc": 4,
+   "routed": [
+    {
+     "net": "/01_POWER_TREE/BQ25185_SYS",
+     "ok": true,
+     "mode": "stitch+join",
+     "mm": 0,
+     "vias": 0,
+     "join": {
+      "joined": 1,
+      "mm": 18.884,
+      "vias": 2
+     }
+    }
+   ],
+   "repair": [],
+   "detour": {
+    "all_relaid": false,
+    "failed": [
+     {
+      "a_mm": [
+       56.1,
+       36.9
+      ],
+      "b_mm": [
+       57.7,
+       30.7
+      ],
+      "layer": "B.Cu",
+      "net": "/01_POWER_TREE/ACC_5V_FB",
+      "reason": "NO_PATH",
+      "why": "no all-layer corridor at 0.200 mm between the two ends of this track once the site is reserved, inside the 40.000 mm budget, on a 0.0500 mm lattice"
+     },
+     {
+      "a_mm": [
+       55.7,
+       40.3
+      ],
+      "b_mm": [
+       57.8,
+       31.8
+      ],
+      "layer": "B.Cu",
+      "net": "/09_COMMUNITY_HEADER/EXT_SCL_BUF",
+      "reason": "NO_PATH",
+      "why": "no all-layer corridor at 0.200 mm between the two ends of this track once the site is reserved, inside the 40.000 mm budget, on a 0.0500 mm lattice"
+     }
+    ]
+   }
   }
  ]
 }

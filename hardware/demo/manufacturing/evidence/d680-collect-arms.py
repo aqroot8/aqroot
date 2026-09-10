@@ -21,6 +21,8 @@ ARMS = [
     ("sysM", "NO eviction; FB+BUF RELAYED, 0.75 mm lane, 60 mm budget, grid 0.050"),
     ("fbA", "R100 MOVED to (58.900,42.400); BUF windowed; all three requested"),
     ("fbB", "R100 MOVED to (58.900,42.400); BUF whole; all three requested"),
+    ("sysN", "NO eviction; FB+BUF RELAYED with BOTH chains EXTENDED clear of the "
+             "lane, 0.75 mm discs, 40 mm budget"),
 ]
 out = dict(schema=1, decision="D-680",
            question="the /01_POWER_TREE/BQ25185_SYS edge that feeds the U21 "

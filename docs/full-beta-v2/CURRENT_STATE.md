@@ -61,8 +61,12 @@
   **DRAWN, GATED 15/15, NOT PROMOTED.**
   **(7) THE POCKET HOLDS TWO OF THREE.**  Keeping both signals local and
   relaying only the two walling chains around a reserved `SYS` lane refuses in
-  all three arms — r 0.90/0.75 mm, 0.050/0.025 mm lattice, 18 mm and **60 mm**
-  budgets — `every_detour_relaid` FALSE, both relays `NO_PATH` at 0.200 mm.
+  **all four** arms — r 0.90/0.75 mm, 0.050/0.025 mm lattice, 18/40/60 mm
+  budgets, and in `sysN` with **both chains EXTENDED** until their terminals are
+  clear of the guard (`sysK`/`L`/`M` had `terminal_lift residual 0.3228 mm`
+  because `ACC_5V_FB`'s own terminal sits 0.4272 mm from the lane centre) —
+  `every_detour_relaid` FALSE, both relays `NO_PATH` at 0.200 mm on `F.Cu` as
+  well as `B.Cu`, while `SYS` still joined at 18.884 mm in the same run.
   **(8) ONE RESISTOR OPENS IT.**  With `R100` moved to (58.900, 42.400), the
   pocket opens with **`EXT_SCL_BUF` alone** evicted, and two more gate runs
   closed `SYS` at 21.602 / 20.448 mm — both refused, and usefully: `R100`'s land

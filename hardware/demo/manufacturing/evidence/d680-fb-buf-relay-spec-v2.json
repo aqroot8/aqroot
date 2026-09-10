@@ -1,0 +1,185 @@
+{
+ "schema": 1,
+ "note": "D-681 candidate: the D-680 relay refused because each chain's own END sat INSIDE the reserved SYS lane -- ACC_5V_FB's terminal (55.600,32.900) is 0.4272 mm from the lane centre, so the guard swallowed the very terminal it had to re-attach to (terminal_lift residual 0.3228 mm).  Each chain is therefore extended by ONE more track, until both its ends are clear of the lane: FB now runs (57.700,30.700) <-> (56.100,36.900) and EXT_SCL_BUF runs via to via, (57.800,31.800) <-> (55.700,40.300).  Both must now CROSS the lane, which is what F.Cu is for -- the discs are on B only.",
+ "reserve": [
+  {
+   "x_mm": 54.8,
+   "y_mm": 28.75,
+   "r_mm": 0.75,
+   "layers": [
+    "B"
+   ],
+   "exempt": [
+    "/01_POWER_TREE/BQ25185_SYS"
+   ]
+  },
+  {
+   "x_mm": 55.1,
+   "y_mm": 29.9,
+   "r_mm": 0.75,
+   "layers": [
+    "B"
+   ],
+   "exempt": [
+    "/01_POWER_TREE/BQ25185_SYS"
+   ]
+  },
+  {
+   "x_mm": 55.4,
+   "y_mm": 31.0,
+   "r_mm": 0.75,
+   "layers": [
+    "B"
+   ],
+   "exempt": [
+    "/01_POWER_TREE/BQ25185_SYS"
+   ]
+  },
+  {
+   "x_mm": 55.7,
+   "y_mm": 32.1,
+   "r_mm": 0.75,
+   "layers": [
+    "B"
+   ],
+   "exempt": [
+    "/01_POWER_TREE/BQ25185_SYS"
+   ]
+  },
+  {
+   "x_mm": 56.0,
+   "y_mm": 33.05,
+   "r_mm": 0.75,
+   "layers": [
+    "B"
+   ],
+   "exempt": [
+    "/01_POWER_TREE/BQ25185_SYS"
+   ]
+  },
+  {
+   "x_mm": 56.6,
+   "y_mm": 33.7,
+   "r_mm": 0.75,
+   "layers": [
+    "B"
+   ],
+   "exempt": [
+    "/01_POWER_TREE/BQ25185_SYS"
+   ]
+  },
+  {
+   "x_mm": 57.2,
+   "y_mm": 34.3,
+   "r_mm": 0.75,
+   "layers": [
+    "B"
+   ],
+   "exempt": [
+    "/01_POWER_TREE/BQ25185_SYS"
+   ]
+  }
+ ],
+ "detours": [
+  {
+   "net": "/01_POWER_TREE/ACC_5V_FB",
+   "layer": "B.Cu",
+   "width_mm": 0.2,
+   "max_mm": 40.0,
+   "tracks": [
+    {
+     "layer": "B.Cu",
+     "a_mm": [
+      57.7,
+      30.7
+     ],
+     "b_mm": [
+      55.6,
+      32.9
+     ],
+     "width_mm": 0.2
+    },
+    {
+     "layer": "B.Cu",
+     "a_mm": [
+      55.6,
+      32.9
+     ],
+     "b_mm": [
+      56.2,
+      33.6
+     ],
+     "width_mm": 0.2
+    },
+    {
+     "layer": "B.Cu",
+     "a_mm": [
+      56.2,
+      33.6
+     ],
+     "b_mm": [
+      56.1,
+      36.9
+     ],
+     "width_mm": 0.2
+    }
+   ]
+  },
+  {
+   "net": "/09_COMMUNITY_HEADER/EXT_SCL_BUF",
+   "layer": "B.Cu",
+   "width_mm": 0.2,
+   "max_mm": 40.0,
+   "tracks": [
+    {
+     "layer": "B.Cu",
+     "a_mm": [
+      57.8,
+      31.8
+     ],
+     "b_mm": [
+      56.7,
+      32.5
+     ],
+     "width_mm": 0.2
+    },
+    {
+     "layer": "B.Cu",
+     "a_mm": [
+      56.7,
+      32.5
+     ],
+     "b_mm": [
+      56.8,
+      38.3
+     ],
+     "width_mm": 0.2
+    },
+    {
+     "layer": "B.Cu",
+     "a_mm": [
+      56.8,
+      38.3
+     ],
+     "b_mm": [
+      56.2,
+      38.9
+     ],
+     "width_mm": 0.2
+    },
+    {
+     "layer": "B.Cu",
+     "a_mm": [
+      56.2,
+      38.9
+     ],
+     "b_mm": [
+      55.7,
+      40.3
+     ],
+     "width_mm": 0.2
+    }
+   ]
+  }
+ ]
+}

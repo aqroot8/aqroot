@@ -106,7 +106,23 @@ reserved on the `SYS` lane (`evidence/d680-fb-buf-relay-spec.json`, the D-607
     sysL   reserve r = 0.75 mm, grid 0.025, budget 18 mm   every_detour_relaid FALSE
     sysM   reserve r = 0.75 mm, grid 0.050, budget 60 mm   every_detour_relaid FALSE
 
-all three: **both relays `NO_PATH` at 0.200 mm once the lane is reserved.**
+    sysN   reserve r = 0.75 mm, grid 0.050, budget 40 mm, CHAINS EXTENDED  FALSE
+
+all four: **both relays `NO_PATH` at 0.200 mm once the lane is reserved.**
+
+`sysN` is the one that matters, because `sysK`/`sysL`/`sysM` had a defect of
+their own: `terminal_lift` reported `residual 0.3228 mm` — `ACC_5V_FB`'s own
+terminal (55.600, 32.900) sits **0.4272 mm from the lane centre**, so the guard
+swallowed the very terminal the relay had to re-attach to, which is exactly the
+failure D-668 recorded for reservations.  `sysN` extends each chain by one more
+track until **both** its ends are clear — `FB` (57.700, 30.700) <-> (56.100,
+36.900), `EXT_SCL_BUF` via to via (57.800, 31.800) <-> (55.700, 40.300) — at a
+40 mm budget.  Still `NO_PATH`, on `F.Cu` as well as `B.Cu`.  And `SYS` still
+joined in that run, at **18.884 mm**, on a board where the relay had removed both
+chains and failed to put them back.
+
+**Four arms, two lane radii, two lattices, three budgets, and terminals lifted
+clear of the guard.**
 0.75 mm is the honest lane and not a guess — 0.400 mm of `SYS` half-width plus
 the 0.250 mm `SYS_MAIN` routed clearance plus 0.100 mm of the signal's own
 half-width — and `sysM` re-asks at a **60 mm budget** precisely because section 3
