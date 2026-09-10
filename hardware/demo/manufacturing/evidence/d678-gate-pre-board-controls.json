@@ -1,0 +1,87 @@
+{
+ "agrees_with_verify_promotion": {
+  "gate_now_reports": [
+   {
+    "margin_x": 0.56,
+    "pads": [
+     "C27.2"
+    ],
+    "priced_amps": 1.226,
+    "required_amps": 2.19
+   }
+  ],
+  "verify_promotion_artifact": "evidence/d678-verify-c27-r36-REFUSED.json"
+ },
+ "all_controls_behaved": true,
+ "authority_sha256": "0285ef45466c1c7dd1823099c35d75d704b50266460e94f339c1b19b5409180d",
+ "authority_unchanged": true,
+ "controls": [
+  {
+   "PP": {
+    "PP1": true,
+    "PP2": true,
+    "PP3": true,
+    "PP4": true
+   },
+   "behaved": true,
+   "expected": "pre_board_used is the run's own base; PP1-PP4 all true",
+   "name": "A_clean_authority_is_a_NO_OP",
+   "pre_board_used": {
+    "path": "/home/aqroot8/aqroot-demo/hardware/demo/kicad/aqroot-demo/aqroot-Beta-v2.kicad_pcb",
+    "sha256": "0285ef45466c1c7dd1823099c35d75d704b50266460e94f339c1b19b5409180d",
+    "why": "the run's own base"
+   },
+   "refused_clauses": [
+    "board_improved"
+   ]
+  },
+  {
+   "PP": {
+    "PP1": true,
+    "PP2": false,
+    "PP3": true,
+    "PP4": true
+   },
+   "behaved": true,
+   "connectivity": {
+    "nets_improved": [
+     "/01_POWER_TREE/BQ25185_SYS",
+     "/01_POWER_TREE/ILIM_VSET",
+     "GND"
+    ],
+    "nets_regressed": [],
+    "open_retained_nets_after": 15,
+    "open_retained_nets_before": 16,
+    "retained_open_edges_after": 24,
+    "retained_open_edges_before": 28
+   },
+   "expected": "the EXACT transaction that passed 15/15 before this change is refused on `pour_partition`, with PP2's numbers equal to the ones verify_promotion reported",
+   "name": "B_shifted_authority_is_now_REFUSED",
+   "pp2_fragments": [
+    {
+     "area_mm2": 8.527,
+     "margin_x": 0.56,
+     "pads": [
+      "C27.2"
+     ],
+     "priced_amps": 1.226,
+     "required_amps": 2.19,
+     "why": "BOND_UNDER_PRICED"
+    }
+   ],
+   "pre_board_used": {
+    "path": "w/d678/ppctlB/pp-pre-HEAD.kicad_pcb",
+    "sha256": "0285ef45466c1c7dd1823099c35d75d704b50266460e94f339c1b19b5409180d",
+    "why": "HEAD's board: the working-tree authority has been edited outside this run (a placement shift), and PP must judge the WHOLE change"
+   },
+   "refused_clauses": [
+    "pour_partition"
+   ]
+  }
+ ],
+ "decision": "D-678",
+ "defect": "`apply_part_shift.py --apply` WRITES the authority.  A gate run started afterwards took that SHIFTED board as its `--pre-board`, so a pour the SHIFT split was invisible to the `pour_partition` clause.  D-678's C27+R36 transaction passed 15 of 15 clauses with `refused_clauses []` and was then REFUSED by `verify_promotion.py` on `PP2`, on the SAME board.  Two clauses that disagree about which board is BEFORE are not two opinions.",
+ "fix": "when the base IS the authority and the authority no longer matches `HEAD`'s board, `gate()` stages `git show HEAD:<board>` and hands THAT to `pour_partition_contract.py --pre-board`.  Strictly harder (an earlier PRE), a no-op on a clean authority, and the sha256 of whatever was used is written into the run's own `pour-partition.json`.",
+ "question": "does the GATE now judge a promotion that includes a PLACEMENT SHIFT against the board `HEAD` holds -- the one `verify_promotion.py --ref HEAD` will diff against -- instead of against the already-shifted working-tree authority?",
+ "schema": 1
+}

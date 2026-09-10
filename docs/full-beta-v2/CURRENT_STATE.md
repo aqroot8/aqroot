@@ -63,11 +63,21 @@
   0.400 mm tube), `margin_x` **0.56**
   (`evidence/d678-verify-c27-r36-REFUSED.json`).  No barrel widens a 0.400 mm
   land-pattern neck, so the promotion was REVERTED byte for byte.
-  **(5) AND THE GAP IS NAMED: A PLACEMENT CHANGE REACHES THE BOARD WITHOUT
-  PASSING `PP2`.**  The gate's `pour_partition` clause compares its own PRE —
-  the board WITH the shift already applied — so a pour split the SHIFT caused
-  is invisible to it.  That is a real framework defect and closing it is
-  D-679's first item.
+  **(5) AND THE GAP IS NAMED — AND CLOSED IN THE SAME DECISION.**  The gate's
+  `pour_partition` clause compared its own PRE — the board WITH the shift
+  already applied — so a pour split the SHIFT caused was invisible to it.
+  `route_maze_batch.gate()` now stages `git show HEAD:<board>` and hands THAT
+  to `pour_partition_contract.py --pre-board` whenever the base IS the
+  authority and the authority no longer matches `HEAD`; the `sha256` used is
+  recorded as `pre_board_used` in the run's own `pour-partition.json`.  Two
+  controls (`evidence/d678-gate-pre-board-controls.json`): a CLEAN authority is
+  a **NO-OP** (`PP1`-`PP4` true, PRE = the run's own base), and the EXACT
+  transaction that passed **15/15 with `refused_clauses []`** now returns
+  **`refused_clauses ['pour_partition']`** with `PP2`'s numbers equal to
+  `verify_promotion`'s — 8.527 mm2, bar 2.190 A, price 1.226 A, `margin_x`
+  0.56.  **The gate and `verify_promotion.py` now agree about which board is
+  BEFORE.**  Suite re-run after the change: 14/14 RAN, 13/13 COMPARABLE
+  IDENTICAL, `vacuous` false.
   **(6) TWO FRAMEWORK UNITS, FIVE CONTROLS, ALL BEHAVED.**
   `apply_part_shift.py --rot-deg` (rotation, with a new LAYER-AWARE
   `swept_conflicts` clause that refuses a turn which puts foreign copper under
@@ -84,8 +94,9 @@
   the 94.1 mm2 island stops at y = 99.158 and overlaps no orphan at all, so
   `--bridge` reports *"this island overlaps no other cluster's copper on
   another layer"* for every one.  It would have reserved `In2` for nothing.
-  **NEXT:** (1) put a promotion's PRE board — the one `HEAD` holds, before any
-  shift — through `pour_partition_contract.py`.  (2) `BQ25185_SYS` is still
+  **NEXT:** (1) `apply_part_shift.py` still cannot say which pour a moved land
+  will END UP on, because it does not refill; a read-only screen for that would
+  have refused the `C27` rotation in seconds instead of in a gate run.  (2) `BQ25185_SYS` is still
   **6 of 25** and the **#1 blocker**; its cheapest measured transaction is now
   the six-unit two-net set above and its wall is the RELAY.  (3) `C27.1` needs
   `C27` rotated AND a `GND` return for `C27.2` that is not `U11`'s island.

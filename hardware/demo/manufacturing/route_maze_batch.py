@@ -3848,12 +3848,52 @@ def gate(nets, grid, via_cost_mm, workdir, promote=False, candidate=None,
     # file would turn that silence back into assent.
     pp_report = work / "pour-partition.json"
     pp_report.unlink(missing_ok=True)
+    # D-678 -- A PLACEMENT CHANGE MUST NOT REACH THE BOARD WITHOUT PASSING PP.
+    #
+    # `--pre-board BOARD` is the run's own base, and until now that was always
+    # the same board `verify_promotion.py --ref HEAD` would compare against.
+    # `apply_part_shift.py --apply` breaks that identity: it writes the
+    # AUTHORITY, so a gate run started afterwards takes the SHIFTED board as
+    # its PRE and a pour the SHIFT split is invisible to this clause.  D-678
+    # walked into it -- gate 15 of 15 with `refused_clauses []`, and then
+    # `verify_promotion` FAILED `PP2` on the same board, because rotating `C27`
+    # had put its `GND` land on `U11`'s own 8.527 mm2 island (bar 2.190 A,
+    # price 1.226 A, `margin_x` 0.56).  Two clauses that disagree about which
+    # board is BEFORE are not two opinions; one of them is measuring the wrong
+    # thing.
+    #
+    # So when the base IS the authority and the authority no longer matches the
+    # board `HEAD` holds, the PRE handed to the contract is `HEAD`'s board --
+    # the one the reviewer will diff against.  This can only ever make the
+    # clause HARDER (it compares against an EARLIER board), it is a no-op on
+    # every run whose authority is clean, and the sha256 of whatever was used
+    # is recorded beside the verdict so no reader has to guess.
+    pp_pre = BOARD
+    pp_pre_note = "the run's own base"
+    if base_is_authority:
+        head_copy = work / "pp-pre-HEAD.kicad_pcb"
+        rel = AUTHORITY.resolve().relative_to(ROOT.resolve())
+        show = subprocess.run(["git", "-C", str(ROOT), "show", "HEAD:%s" % rel],
+                              capture_output=True)
+        if show.returncode == 0 and show.stdout:
+            head_copy.write_bytes(show.stdout)
+            if sha256_file(head_copy) != sha256_file(BOARD):
+                pp_pre = head_copy
+                pp_pre_note = ("HEAD's board: the working-tree authority has "
+                               "been edited outside this run (a placement "
+                               "shift), and PP must judge the WHOLE change")
     pp_run = subprocess.run(
-        [sys.executable, str(POUR_PARTITION), "--pre-board", str(BOARD),
+        [sys.executable, str(POUR_PARTITION), "--pre-board", str(pp_pre),
          "--board", str(scratch), "-o", str(pp_report)],
         text=True, capture_output=True)
     if pp_report.exists():
         partition_doc = json.loads(pp_report.read_text())
+        # The PRE the clause actually used travels WITH the artifact, or the
+        # next reader has to reconstruct it from the run's flags.
+        partition_doc["pre_board_used"] = dict(
+            path=str(pp_pre), sha256=sha256_file(pp_pre), why=pp_pre_note)
+        pp_report.write_text(json.dumps(partition_doc, indent=2,
+                                        sort_keys=True) + "\n")
         pp_failed = sorted(k for k in ("PP1", "PP2", "PP3", "PP4")
                            if not partition_doc["results"][k]["ok"])
     else:

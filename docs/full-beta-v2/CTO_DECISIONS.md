@@ -180,13 +180,49 @@ other cluster's copper on another layer"* for every orphan.  The lever is
 VACUOUS here, measured, and it would have cost `In2` — `reserved_inner_planes`
 reserves a LAYER as soon as any pour appears on it — for nothing.
 
+## 8. ADDENDUM, SAME DECISION — THE GAP IN SECTION 4 IS CLOSED
+
+Leaving section 4's defect written down and unfixed would have handed the next
+placement transaction the same promote-then-revert cycle.  It is fixed in the
+gate itself, in the smallest shape that can express it.
+
+`route_maze_batch.gate()` handed `pour_partition_contract.py` a `--pre-board`
+of `BOARD` — the run's own base — and until `apply_part_shift.py --apply`
+existed that was always the same board `verify_promotion.py --ref HEAD` diffs
+against.  It is not any more.  So: **when the base IS the authority and the
+authority no longer matches the board `HEAD` holds, the gate stages
+`git show HEAD:<board>` and hands THAT to the contract.**  The change can only
+make the clause HARDER — it compares against an EARLIER board — it is a no-op
+on every run whose authority is clean, and the `sha256` of whichever board was
+used is written into the run's own `pour-partition.json` as `pre_board_used`,
+so no reader has to reconstruct it from the flags.
+
+Two controls, `evidence/d678-gate-pre-board-controls.json`, both behaved:
+
+  * **A — a CLEAN authority is a NO-OP.**  `pre_board_used.why` = *"the run's
+    own base"*, `sha256` = `0285ef45`, `PP1`-`PP4` all true, and the only
+    refusal is `board_improved` (that run closed nothing).
+  * **B — the SHIFTED authority is now REFUSED.**  The EXACT transaction that
+    passed **15 of 15 clauses with `refused_clauses []`** before this change —
+    same spec file, same eviction, same lattice, still 25 -> 24 retained open
+    edges and `nets_regressed []` — now returns **`refused_clauses
+    ['pour_partition']`**, `PP2` false, `pre_board_used.sha256` `0285ef45`
+    (`HEAD`'s board).  And the numbers it reports are the numbers
+    `verify_promotion.py` reported: fragment `C27.2`, **8.527 mm², bar
+    2.190 A, price 1.226 A, `margin_x` 0.56, `BOND_UNDER_PRICED`**.
+
+**The gate and `verify_promotion.py` now agree about which board is BEFORE.**
+Standing suite re-run after the change: **14/14 RAN, 13/13 COMPARABLE
+IDENTICAL to `d677`, `vacuous` false** on a board whose `sha256` did not move.
+
 ## 7. NEXT, IN ORDER OF LEVERAGE
 
- 1. **CLOSE THE GAP SECTION 4 NAMES.**  A promotion that includes a PLACEMENT
-    change must put the PRE board — the one `HEAD` holds, before the shift —
-    through `pour_partition_contract.py`, or the gate is judging a board the
-    reviewer is not.  The cheapest shape is a `--pre-board` argument on the
-    gate's own PP invocation.
+ 1. **DONE IN SECTION 8** — the gate now judges a placement shift against
+    `HEAD`'s board.  What is NOT done: `apply_part_shift.py` still cannot say
+    which pour a moved land will end up on, because it does not refill.  A
+    read-only screen that answers *"which filled island will this land sit on
+    after the move, and what does that island price"* would have refused the
+    `C27` rotation in seconds instead of in a gate run.
  2. `/01_POWER_TREE/BQ25185_SYS` is still **6 of the board's 25 open edges** and
     the **#1 fabrication blocker**.  The cheapest measured transaction on it is
     now case `e` — six units, two nets, TWO edges — and its wall is the
