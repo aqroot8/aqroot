@@ -1,0 +1,107 @@
+{
+  "applied": true,
+  "board": "/home/aqroot8/aqroot-demo/hardware/demo/kicad/aqroot-demo/aqroot-Beta-v2.kicad_pcb",
+  "courtyard_overlaps_new": [],
+  "courtyard_overlaps_now": [
+    "J8"
+  ],
+  "courtyard_overlaps_was": [
+    "J8"
+  ],
+  "dx_nm": 0,
+  "dy_nm": 0,
+  "endpoints_on_pads": 3,
+  "endpoints_stranded": [],
+  "endpoints_swept_under_moved_land": [
+    {
+      "at_mm": [
+        67.925,
+        80.25
+      ],
+      "net": "/01_POWER_TREE/ILIM_VSET",
+      "pad": "R36.2",
+      "pad_net": "GND"
+    }
+  ],
+  "orientation_now_deg": 180.0,
+  "orientation_was_deg": 0.0,
+  "pad_boxes_now_mm": {
+    "1": [
+      [
+        69.175,
+        79.775,
+        69.975,
+        80.725
+      ]
+    ],
+    "2": [
+      [
+        67.525,
+        79.775,
+        68.325,
+        80.725
+      ]
+    ]
+  },
+  "pad_boxes_was_mm": {
+    "1": [
+      [
+        67.525,
+        79.775,
+        68.325,
+        80.725
+      ]
+    ],
+    "2": [
+      [
+        69.175,
+        79.775,
+        69.975,
+        80.725
+      ]
+    ]
+  },
+  "pads": 2,
+  "position_now_mm": [
+    68.75,
+    80.25
+  ],
+  "position_was_mm": [
+    68.75,
+    80.25
+  ],
+  "ref": "R36",
+  "release_named_points": [
+    [
+      "/01_POWER_TREE/ILIM_VSET",
+      68.8,
+      80.25
+    ]
+  ],
+  "release_named_vias": [],
+  "release_nets": [
+    "/01_POWER_TREE/ILIM_VSET"
+  ],
+  "release_refusals": [],
+  "release_requested": true,
+  "release_retained_barrels": [
+    {
+      "at_mm": [
+        68.6,
+        80.25
+      ],
+      "net": "/01_POWER_TREE/ILIM_VSET",
+      "why": "a surviving track still meets it"
+    }
+  ],
+  "released_count": 2,
+  "released_objects": [
+    "('trk', '/01_POWER_TREE/ILIM_VSET', 'B.Cu', 67925000, 80250000, 68800000, 80250000, 200000)",
+    "('trk', '/01_POWER_TREE/ILIM_VSET', 'B.Cu', 68800000, 80250000, 68600000, 80250000, 200000)"
+  ],
+  "rot_deg": 180.0,
+  "schema": 2,
+  "verdict": "PASS",
+  "via_in_pad_allowed": false,
+  "vias_in_moved_pads": []
+}

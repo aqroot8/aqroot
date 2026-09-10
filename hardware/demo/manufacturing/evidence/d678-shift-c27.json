@@ -1,0 +1,100 @@
+{
+  "applied": true,
+  "board": "/home/aqroot8/aqroot-demo/hardware/demo/kicad/aqroot-demo/aqroot-Beta-v2.kicad_pcb",
+  "courtyard_overlaps_new": [],
+  "courtyard_overlaps_now": [
+    "J8"
+  ],
+  "courtyard_overlaps_was": [
+    "J8"
+  ],
+  "dx_nm": 0,
+  "dy_nm": 0,
+  "endpoints_on_pads": 3,
+  "endpoints_stranded": [],
+  "endpoints_swept_under_moved_land": [
+    {
+      "at_mm": [
+        69.475,
+        75.0
+      ],
+      "net": "GND",
+      "pad": "C27.1",
+      "pad_net": "/01_POWER_TREE/BQ25185_SYS"
+    }
+  ],
+  "orientation_now_deg": 180.0,
+  "orientation_was_deg": 0.0,
+  "pad_boxes_now_mm": {
+    "1": [
+      [
+        68.9,
+        74.1,
+        70.05,
+        75.9
+      ]
+    ],
+    "2": [
+      [
+        65.95,
+        74.1,
+        67.1,
+        75.9
+      ]
+    ]
+  },
+  "pad_boxes_was_mm": {
+    "1": [
+      [
+        65.95,
+        74.1,
+        67.1,
+        75.9
+      ]
+    ],
+    "2": [
+      [
+        68.9,
+        74.1,
+        70.05,
+        75.9
+      ]
+    ]
+  },
+  "pads": 2,
+  "position_now_mm": [
+    68.0,
+    75.0
+  ],
+  "position_was_mm": [
+    68.0,
+    75.0
+  ],
+  "ref": "C27",
+  "release_named_points": [],
+  "release_named_vias": [],
+  "release_nets": [
+    "GND"
+  ],
+  "release_refusals": [],
+  "release_requested": true,
+  "release_retained_barrels": [
+    {
+      "at_mm": [
+        69.5,
+        73.6
+      ],
+      "net": "GND",
+      "why": "surviving track lies in its own filled pour on that layer; not floating"
+    }
+  ],
+  "released_count": 1,
+  "released_objects": [
+    "('trk', 'GND', 'B.Cu', 69475000, 75000000, 69500000, 73600000, 300000)"
+  ],
+  "rot_deg": 180.0,
+  "schema": 2,
+  "verdict": "PASS",
+  "via_in_pad_allowed": false,
+  "vias_in_moved_pads": []
+}

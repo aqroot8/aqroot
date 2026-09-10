@@ -1,0 +1,698 @@
+{
+ "board_sha256": "0285ef45466c1c7dd1823099c35d75d704b50266460e94f339c1b19b5409180d",
+ "decision": "D-678",
+ "geometry": {
+  "antenna_keepout_mm": {
+   "note": "all six layers; it is what seals the U12 pocket to the south-east",
+   "x": [
+    64.5,
+    85.5
+   ],
+   "y": [
+    104.0,
+    152.0
+   ]
+  },
+  "band_mm": {
+   "note": "the ONLY link from C27.1's island to the channel while C27 is UNROTATED: the corridor between C27.2's GND land (clearance edge y=76.15) and U11.6's land (clearance edge y=76.65).  0.50 mm tall, and every obstacle that crosses it is >= 0.70 mm wide",
+   "x": [
+    65.65,
+    70.95
+   ],
+   "y": [
+    76.2,
+    76.6
+   ]
+  },
+  "channel_mm": {
+   "note": "U11's east pads end at x=68.975 and the SYS pour's own zone outline ends at x=71.000",
+   "x": [
+    69.2,
+    71.0
+   ],
+   "y": [
+    76.6,
+    81.1
+   ]
+  },
+  "r36_gap_mm": {
+   "note": "the only westward exit from the U11 east pocket: 0.850 mm between R36.1's and R36.2's lands.  A 0.200 mm track needs 0.600 mm of it and ILIM_VSET's (67.925,80.250)-(68.800,80.250) occupies 0.475 mm",
+   "x": [
+    68.325,
+    69.175
+   ],
+   "y": [
+    79.775,
+    80.725
+   ]
+  }
+ },
+ "question": "can the U11 EAST CHANNEL carry BOTH the /01_POWER_TREE/BQ25185_SYS pour's only path to C27.1 AND the escapes of U11's east pad row (ISET, ILIM_VSET, TS_MR)?",
+ "rows": [
+  {
+   "attributable_drc": 0,
+   "connectivity": {
+    "nets_improved": [
+     "GND"
+    ],
+    "nets_regressed": [],
+    "open_retained_nets_after": 15,
+    "open_retained_nets_before": 15,
+    "retained_open_edges_after": 25,
+    "retained_open_edges_before": 26
+   },
+   "detours": [
+    {
+     "layer": "B.Cu",
+     "mm": 7.754607648320085,
+     "net": "/01_POWER_TREE/ISET",
+     "ok": true,
+     "reason": null,
+     "was_mm": 4.0316,
+     "why": null
+    }
+   ],
+   "drc_types": {
+    "lib_footprint_issues": 199,
+    "solder_mask_bridge": 1
+   },
+   "refused_clauses": [],
+   "routed": [
+    {
+     "mm": 2.723,
+     "mode": "stitch-split",
+     "net": "/01_POWER_TREE/BQ25185_SYS",
+     "ok": true,
+     "reason": null
+    }
+   ],
+   "run": "r2",
+   "why": "C27 rotated; ISET 2-seg chain; lane r=0.42 at x=70.60, y 77.2-80.3"
+  },
+  {
+   "attributable_drc": 2,
+   "connectivity": {
+    "nets_improved": [
+     "/01_POWER_TREE/BQ25185_SYS",
+     "GND"
+    ],
+    "nets_regressed": [
+     "/01_POWER_TREE/ISET"
+    ],
+    "open_retained_nets_after": 16,
+    "open_retained_nets_before": 15,
+    "retained_open_edges_after": 25,
+    "retained_open_edges_before": 26
+   },
+   "detours": [
+    {
+     "layer": "B.Cu",
+     "mm": null,
+     "net": "/01_POWER_TREE/ISET",
+     "ok": false,
+     "reason": "NO_PATH",
+     "was_mm": 4.0316,
+     "why": "no all-layer corridor at 0.200 mm between the two ends of this track once the site is reserved, inside the 18.000 mm budget, on a 0.0250 mm lattice"
+    }
+   ],
+   "drc_types": {
+    "lib_footprint_issues": 199,
+    "solder_mask_bridge": 1,
+    "track_dangling": 2
+   },
+   "refused_clauses": [
+    "attributable_drc",
+    "every_detour_relaid",
+    "no_regression"
+   ],
+   "routed": [
+    {
+     "mm": 2.723,
+     "mode": "stitch-split",
+     "net": "/01_POWER_TREE/BQ25185_SYS",
+     "ok": true,
+     "reason": null
+    }
+   ],
+   "run": "r3",
+   "why": "C27 rotated; ISET 2-seg chain; lane r=0.75 at x=70.80, y 76.3-80.3"
+  },
+  {
+   "attributable_drc": 2,
+   "connectivity": {
+    "nets_improved": [
+     "/01_POWER_TREE/BQ25185_SYS"
+    ],
+    "nets_regressed": [
+     "/01_POWER_TREE/ISET"
+    ],
+    "open_retained_nets_after": 16,
+    "open_retained_nets_before": 15,
+    "retained_open_edges_after": 26,
+    "retained_open_edges_before": 26
+   },
+   "detours": [
+    {
+     "layer": "B.Cu",
+     "mm": null,
+     "net": "/01_POWER_TREE/ISET",
+     "ok": false,
+     "reason": "NO_PATH",
+     "was_mm": 8.3717,
+     "why": "no all-layer corridor at 0.200 mm between the two ends of this track once the site is reserved, inside the 22.000 mm budget, on a 0.0250 mm lattice"
+    }
+   ],
+   "drc_types": {
+    "lib_footprint_issues": 199,
+    "solder_mask_bridge": 1,
+    "track_dangling": 2
+   },
+   "refused_clauses": [
+    "attributable_drc",
+    "board_improved",
+    "every_detour_relaid",
+    "no_regression",
+    "pour_partition"
+   ],
+   "routed": [
+    {
+     "mm": 2.723,
+     "mode": "stitch-split",
+     "net": "/01_POWER_TREE/BQ25185_SYS",
+     "ok": true,
+     "reason": null
+    }
+   ],
+   "run": "r4",
+   "why": "C27 rotated; ISET 4-seg chain to (66.1,82.4); same wide lane"
+  },
+  {
+   "attributable_drc": 2,
+   "connectivity": {
+    "nets_improved": [
+     "/01_POWER_TREE/BQ25185_SYS"
+    ],
+    "nets_regressed": [
+     "/01_POWER_TREE/ISET"
+    ],
+    "open_retained_nets_after": 16,
+    "open_retained_nets_before": 15,
+    "retained_open_edges_after": 26,
+    "retained_open_edges_before": 26
+   },
+   "detours": [
+    {
+     "layer": "B.Cu",
+     "mm": null,
+     "net": "/01_POWER_TREE/ISET",
+     "ok": false,
+     "reason": "NO_PATH",
+     "was_mm": 8.3717,
+     "why": "no all-layer corridor at 0.200 mm between the two ends of this track once the site is reserved, inside the 22.000 mm budget, on a 0.0250 mm lattice"
+    }
+   ],
+   "drc_types": {
+    "lib_footprint_issues": 199,
+    "solder_mask_bridge": 1,
+    "track_dangling": 2
+   },
+   "refused_clauses": [
+    "attributable_drc",
+    "board_improved",
+    "every_detour_relaid",
+    "no_regression",
+    "pour_partition"
+   ],
+   "routed": [
+    {
+     "mm": 2.723,
+     "mode": "stitch-split",
+     "net": "/01_POWER_TREE/BQ25185_SYS",
+     "ok": true,
+     "reason": null
+    }
+   ],
+   "run": "r5",
+   "why": "C27 rotated; ISET 4-seg chain; narrow lane r=0.42, y 76.3-80.3"
+  },
+  {
+   "attributable_drc": 1,
+   "connectivity": {
+    "nets_improved": [
+     "/01_POWER_TREE/BQ25185_SYS"
+    ],
+    "nets_regressed": [
+     "/01_POWER_TREE/ISET"
+    ],
+    "open_retained_nets_after": 16,
+    "open_retained_nets_before": 15,
+    "retained_open_edges_after": 26,
+    "retained_open_edges_before": 26
+   },
+   "detours": [
+    {
+     "layer": "B.Cu",
+     "mm": null,
+     "net": "/01_POWER_TREE/ISET",
+     "ok": false,
+     "reason": "NO_PATH",
+     "was_mm": 9.1717,
+     "why": "no all-layer corridor at 0.200 mm between the two ends of this track once the site is reserved, inside the 24.000 mm budget, on a 0.0250 mm lattice"
+    }
+   ],
+   "drc_types": {
+    "lib_footprint_issues": 199,
+    "solder_mask_bridge": 1,
+    "track_dangling": 1
+   },
+   "refused_clauses": [
+    "attributable_drc",
+    "board_improved",
+    "every_detour_relaid",
+    "no_regression",
+    "pour_partition"
+   ],
+   "routed": [
+    {
+     "mm": 2.723,
+     "mode": "stitch-split",
+     "net": "/01_POWER_TREE/BQ25185_SYS",
+     "ok": true,
+     "reason": null
+    }
+   ],
+   "run": "r6",
+   "why": "C27 rotated; ISET 5-seg chain FROM U11.8's OWN LAND; narrow lane"
+  },
+  {
+   "attributable_drc": 0,
+   "connectivity": {
+    "nets_improved": [
+     "GND"
+    ],
+    "nets_regressed": [],
+    "open_retained_nets_after": 15,
+    "open_retained_nets_before": 15,
+    "retained_open_edges_after": 25,
+    "retained_open_edges_before": 26
+   },
+   "detours": [],
+   "drc_types": {
+    "lib_footprint_issues": 199,
+    "solder_mask_bridge": 1
+   },
+   "refused_clauses": [],
+   "routed": [
+    {
+     "mm": 2.723,
+     "mode": "stitch-split+islands",
+     "net": "/01_POWER_TREE/BQ25185_SYS",
+     "ok": true,
+     "reason": null
+    }
+   ],
+   "run": "r7",
+   "why": "C27 rotated; NO detour -- can C27.1 stitch/join by itself?"
+  },
+  {
+   "attributable_drc": 2,
+   "connectivity": {
+    "nets_improved": [
+     "/01_POWER_TREE/BQ25185_SYS"
+    ],
+    "nets_regressed": [
+     "/01_POWER_TREE/ILIM_VSET"
+    ],
+    "open_retained_nets_after": 16,
+    "open_retained_nets_before": 15,
+    "retained_open_edges_after": 26,
+    "retained_open_edges_before": 26
+   },
+   "detours": [
+    {
+     "layer": "F.Cu",
+     "mm": 0.0,
+     "net": "/01_POWER_TREE/ILIM_VSET",
+     "ok": false,
+     "reason": "BARREL_REMOVED_NOT_REBONDED_YET",
+     "was_mm": 0.0,
+     "why": "declared as a barrel; the gate's rebond_priced clause prices the barrel that replaces it"
+    },
+    {
+     "layer": "B.Cu",
+     "mm": null,
+     "net": "/01_POWER_TREE/ILIM_VSET",
+     "ok": false,
+     "reason": "NO_PATH",
+     "was_mm": 1.075,
+     "why": "no all-layer corridor at 0.200 mm between the two ends of this track once the site is reserved, inside the 6.000 mm budget, on a 0.0250 mm lattice"
+    },
+    {
+     "layer": "In3.Cu",
+     "mm": null,
+     "net": "/01_POWER_TREE/ILIM_VSET",
+     "ok": false,
+     "reason": "NO_PATH",
+     "was_mm": 4.0692,
+     "why": "no all-layer corridor at 0.200 mm between the two ends of this track once the site is reserved, inside the 12.000 mm budget, on a 0.0250 mm lattice"
+    },
+    {
+     "layer": "B.Cu",
+     "mm": 6.54113358275378,
+     "net": "/01_POWER_TREE/ISET",
+     "ok": true,
+     "reason": null,
+     "was_mm": 8.3717,
+     "why": null
+    }
+   ],
+   "drc_types": {
+    "clearance": 1,
+    "lib_footprint_issues": 199,
+    "solder_mask_bridge": 1,
+    "via_dangling": 1
+   },
+   "refused_clauses": [
+    "attributable_drc",
+    "board_improved",
+    "every_detour_relaid",
+    "no_foreign_copper",
+    "no_regression",
+    "pour_partition",
+    "rebond_priced"
+   ],
+   "routed": [
+    {
+     "mm": 2.723,
+     "mode": "stitch-split",
+     "net": "/01_POWER_TREE/BQ25185_SYS",
+     "ok": true,
+     "reason": null
+    }
+   ],
+   "run": "r8",
+   "why": "C27 rotated; ILIM barrel moved to (68.6,81.6); ISET 4-seg; narrow lane"
+  },
+  {
+   "attributable_drc": 8,
+   "connectivity": {
+    "nets_improved": [
+     "/01_POWER_TREE/BQ25185_SYS"
+    ],
+    "nets_regressed": [
+     "/01_POWER_TREE/ILIM_VSET"
+    ],
+    "open_retained_nets_after": 16,
+    "open_retained_nets_before": 15,
+    "retained_open_edges_after": 26,
+    "retained_open_edges_before": 26
+   },
+   "detours": [
+    {
+     "layer": "F.Cu",
+     "mm": 0.0,
+     "net": "/01_POWER_TREE/ILIM_VSET",
+     "ok": false,
+     "reason": "BARREL_REMOVED_NOT_REBONDED_YET",
+     "was_mm": 0.0,
+     "why": "declared as a barrel; the gate's rebond_priced clause prices the barrel that replaces it"
+    },
+    {
+     "layer": "B.Cu",
+     "mm": null,
+     "net": "/01_POWER_TREE/ILIM_VSET",
+     "ok": false,
+     "reason": "NO_PATH",
+     "was_mm": 1.075,
+     "why": "no all-layer corridor at 0.200 mm between the two ends of this track once the site is reserved, inside the 6.000 mm budget, on a 0.0250 mm lattice"
+    },
+    {
+     "layer": "In3.Cu",
+     "mm": null,
+     "net": "/01_POWER_TREE/ILIM_VSET",
+     "ok": false,
+     "reason": "NO_PATH",
+     "was_mm": 4.0692,
+     "why": "no all-layer corridor at 0.200 mm between the two ends of this track once the site is reserved, inside the 14.000 mm budget, on a 0.0250 mm lattice"
+    },
+    {
+     "layer": "B.Cu",
+     "mm": 6.494971252988902,
+     "net": "/01_POWER_TREE/ISET",
+     "ok": true,
+     "reason": null,
+     "was_mm": 8.3717,
+     "why": null
+    }
+   ],
+   "drc_types": {
+    "clearance": 6,
+    "lib_footprint_issues": 199,
+    "solder_mask_bridge": 1,
+    "via_dangling": 2
+   },
+   "refused_clauses": [
+    "attributable_drc",
+    "board_improved",
+    "every_detour_relaid",
+    "no_foreign_copper",
+    "no_regression",
+    "pour_partition",
+    "rebond_priced"
+   ],
+   "routed": [
+    {
+     "mm": 2.723,
+     "mode": "stitch-split",
+     "net": "/01_POWER_TREE/BQ25185_SYS",
+     "ok": true,
+     "reason": null
+    }
+   ],
+   "run": "r9",
+   "why": "C27 rotated; ILIM barrel moved to (67.0,80.25); ISET 4-seg; narrow lane"
+  },
+  {
+   "attributable_drc": 3,
+   "connectivity": {
+    "nets_improved": [
+     "/01_POWER_TREE/BQ25185_SYS",
+     "/01_POWER_TREE/ILIM_VSET",
+     "GND"
+    ],
+    "nets_regressed": [
+     "/01_POWER_TREE/ISET"
+    ],
+    "open_retained_nets_after": 16,
+    "open_retained_nets_before": 16,
+    "retained_open_edges_after": 26,
+    "retained_open_edges_before": 28
+   },
+   "detours": [
+    {
+     "layer": "B.Cu",
+     "mm": null,
+     "net": "/01_POWER_TREE/ISET",
+     "ok": false,
+     "reason": "NO_PATH",
+     "was_mm": 8.3717,
+     "why": "no all-layer corridor at 0.200 mm between the two ends of this track once the site is reserved, inside the 22.000 mm budget, on a 0.0250 mm lattice"
+    }
+   ],
+   "drc_types": {
+    "hole_clearance": 1,
+    "lib_footprint_issues": 199,
+    "shorting_items": 1,
+    "solder_mask_bridge": 2,
+    "track_dangling": 2
+   },
+   "refused_clauses": [
+    "attributable_drc",
+    "every_detour_relaid",
+    "inherited_within_baseline",
+    "no_regression"
+   ],
+   "routed": [
+    {
+     "mm": 2.723,
+     "mode": "stitch-split",
+     "net": "/01_POWER_TREE/BQ25185_SYS",
+     "ok": true,
+     "reason": null
+    },
+    {
+     "mm": 4.09,
+     "mode": "maze+partial",
+     "net": "/01_POWER_TREE/ILIM_VSET",
+     "ok": true,
+     "reason": null
+    }
+   ],
+   "run": "r10",
+   "why": "C27 AND R36 rotated; ISET 4-seg; ILIM re-routed from R36.1's new land"
+  },
+  {
+   "attributable_drc": 0,
+   "connectivity": {
+    "nets_improved": [
+     "/01_POWER_TREE/BQ25185_SYS",
+     "/01_POWER_TREE/ILIM_VSET",
+     "GND"
+    ],
+    "nets_regressed": [],
+    "open_retained_nets_after": 15,
+    "open_retained_nets_before": 16,
+    "retained_open_edges_after": 24,
+    "retained_open_edges_before": 28
+   },
+   "detours": [
+    {
+     "layer": "B.Cu",
+     "mm": 6.494971252988902,
+     "net": "/01_POWER_TREE/ISET",
+     "ok": true,
+     "reason": null,
+     "was_mm": 8.3717,
+     "why": null
+    }
+   ],
+   "drc_types": {
+    "lib_footprint_issues": 199,
+    "solder_mask_bridge": 1
+   },
+   "refused_clauses": [],
+   "routed": [
+    {
+     "mm": 2.723,
+     "mode": "stitch-split",
+     "net": "/01_POWER_TREE/BQ25185_SYS",
+     "ok": true,
+     "reason": null
+    },
+    {
+     "mm": 15.037,
+     "mode": "maze+partial",
+     "net": "/01_POWER_TREE/ILIM_VSET",
+     "ok": true,
+     "reason": null
+    }
+   ],
+   "run": "r11",
+   "why": "as r10 + ILIM_VSET EVICTED WHOLE -- gate 15/15, refused []"
+  },
+  {
+   "attributable_drc": 0,
+   "connectivity": {
+    "nets_improved": [
+     "/01_POWER_TREE/BQ25185_SYS",
+     "/01_POWER_TREE/ILIM_VSET",
+     "GND"
+    ],
+    "nets_regressed": [],
+    "open_retained_nets_after": 15,
+    "open_retained_nets_before": 16,
+    "retained_open_edges_after": 24,
+    "retained_open_edges_before": 28
+   },
+   "detours": [
+    {
+     "layer": "B.Cu",
+     "mm": 6.494971252988902,
+     "net": "/01_POWER_TREE/ISET",
+     "ok": true,
+     "reason": null,
+     "was_mm": 8.3717,
+     "why": null
+    }
+   ],
+   "drc_types": {
+    "lib_footprint_issues": 199,
+    "solder_mask_bridge": 1
+   },
+   "refused_clauses": [],
+   "routed": [
+    {
+     "mm": 2.723,
+     "mode": "stitch-split",
+     "net": "/01_POWER_TREE/BQ25185_SYS",
+     "ok": true,
+     "reason": null
+    },
+    {
+     "mm": 15.037,
+     "mode": "maze+partial",
+     "net": "/01_POWER_TREE/ILIM_VSET",
+     "ok": true,
+     "reason": null
+    }
+   ],
+   "run": "r12",
+   "why": "as r11 without the gap discs -- byte-identical outcome"
+  },
+  {
+   "attributable_drc": 1,
+   "connectivity": {
+    "nets_improved": [
+     "/01_POWER_TREE/BQ25185_SYS",
+     "GND"
+    ],
+    "nets_regressed": [
+     "Net-(U11-TS_MR)"
+    ],
+    "open_retained_nets_after": 17,
+    "open_retained_nets_before": 16,
+    "retained_open_edges_after": 26,
+    "retained_open_edges_before": 27
+   },
+   "detours": [
+    {
+     "layer": "B.Cu",
+     "mm": null,
+     "net": "Net-(U11-TS_MR)",
+     "ok": false,
+     "reason": "NO_PATH",
+     "was_mm": 1.9,
+     "why": "no all-layer corridor at 0.200 mm between the two ends of this track once the site is reserved, inside the 16.000 mm budget, on a 0.0250 mm lattice"
+    },
+    {
+     "layer": "B.Cu",
+     "mm": 6.494971252988902,
+     "net": "/01_POWER_TREE/ISET",
+     "ok": true,
+     "reason": null,
+     "was_mm": 8.3717,
+     "why": null
+    }
+   ],
+   "drc_types": {
+    "lib_footprint_issues": 199,
+    "solder_mask_bridge": 1,
+    "track_dangling": 1
+   },
+   "refused_clauses": [
+    "attributable_drc",
+    "every_detour_relaid",
+    "no_regression"
+   ],
+   "routed": [
+    {
+     "mm": 2.723,
+     "mode": "stitch-split",
+     "net": "/01_POWER_TREE/BQ25185_SYS",
+     "ok": true,
+     "reason": null
+    },
+    {
+     "mm": null,
+     "mode": "maze+partial",
+     "net": "/01_POWER_TREE/ILIM_VSET",
+     "ok": false,
+     "reason": "NO_PATH"
+    }
+   ],
+   "run": "r13",
+   "why": "R36 rotated ONLY; ILIM evicted whole; ISET AND TS_MR detoured; band reserved"
+  }
+ ],
+ "schema": 1
+}

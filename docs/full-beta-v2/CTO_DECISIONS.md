@@ -1,3 +1,208 @@
+# D-678 · 2026-09-10 · Demo — THE ONE-EDGE TRANSACTION THIS BOARD WOULD HAVE ACCEPTED PUTS THE CHARGER'S OWN GROUND ON AN 8.5 mm² ISLAND, AND PP2 SAID SO AFTER THE GATE DID NOT
+
+    authority  0285ef45466c1c7dd1823099c35d75d704b50266460e94f339c1b19b5409180d
+            -> 0285ef45466c1c7dd1823099c35d75d704b50266460e94f339c1b19b5409180d   UNCHANGED
+    retained open edges 25 -> 25      open retained nets 15 -> 15
+    `hardware/demo/kicad`, `hardware/demo/fab`, `hardware/beta-v2`  UNTOUCHED
+    standing suite 14/14 RAN, 13/13 COMPARABLE IDENTICAL to d677,
+      1 INCOMPARABLE and NAMED, `all_identical_where_comparable` true,
+      `vacuous` false   (`evidence/d678-contract-regression.json`)
+
+**NO COPPER PROMOTED.  A transaction was DRAWN, GATED at 15 of 15 clauses with
+`refused_clauses []` and 25 -> 24 retained open edges, PROMOTED, and then
+REVERTED — because `verify_promotion.py`'s `PP2` refused it on the charger's
+ground return and `PP2` is the clause that is right.**  Two framework units and
+one measured wall are what this decision leaves behind, and the refusal itself
+is the most useful thing in it: **a PLACEMENT change reaches the board without
+ever passing the pour-partition gate.**
+
+## 1. `BQ25185_SYS`'s SIX EDGES ARE ONE POUR IN SIX PIECES, AND THE PIECES ARE NAMED
+
+D-597 gave this rail a bounded `B.Cu` pour and D-604 recorded that it fills in
+seven islands.  Nothing since had asked, on TODAY's board, *which object holds
+which piece apart*.  New tracked `evidence/d678-pour-cut-probe.py` answers it
+the only way that cannot be argued with: a PRIVATE COPY of the authority with
+the named objects removed, refilled by `pcbnew.ZONE_FILLER` — KiCad's own
+filler — and the net's pad partition read off `GetConnectivity`.  Twenty cases,
+`evidence/d678-pour-cut-sets.json`:
+
+    case  removed                                                 clusters
+    base  nothing                                                    9
+    a     PS_SYNC (62.325,104.575)-(62.900,104.050) ALONE             9
+    b     PG      (62.025,100.325)-(64.525,102.800) ALONE             9
+    e     b + the PS_SYNC 5-CHAIN  -- TWO nets, SIX units             7   <- NEW
+    f     the PS_SYNC 5-chain alone                                   8
+    d     D-657's 10-unit set, re-run today                           6
+    h     D-664's 8-unit C27.1 set, re-run today                      8
+    dh    d + h                                                       5
+    (nine clusters, not six: R68.1, U13.3 and L2.1 are DNP on Demo)
+
+Three things follow and none of them was on the record.  **(i) D-657's and
+D-664's sets both still reproduce**, forty and fifteen decisions later.
+**(ii) There is a SMALLER set than D-657's**: `e` — the `Net-(U12-PG)` diagonal
+plus the `Net-(U12-PS_SYNC)` five-segment chain — closes TWO edges with SIX
+units across TWO nets, where D-657's closes three with ten units across three,
+and `e` never touches `Net-(SW9-A)`.  The `B.Cu` pour goes **78.844 -> 94.245
+mm²** and its body reaches from y = 80.071 to y = 108.057 in one piece.
+**(iii) Single removals are worthless**: `a`, `b` and `g` each move NOTHING.
+The set is joint or it is nothing.
+
+## 2. THE POUR IS NOT AN OBSTACLE TO THE ROUTER, AND THAT IS WHY EVERY RELAY CAME BACK
+
+`checks/obstacle_model_contract.py` states the model: `QBoard.shapes` and
+`QBoard.holes`, tracks and barrels, **and no zone at all**.  So when
+`--detour-spec` removes `PS_SYNC` from the corridor the pour needs, nothing in
+the router knows the pour wants it, and the relay puts the track back where it
+was — 18.297 mm against 18.624, zero vias.  The reserve disc is the only
+instrument that can say otherwise, and on THIS pocket saying it is fatal:
+
+  * `/01_POWER_TREE/BQ25185_SYS` `C26.2` is held apart from `C24.1`'s cluster by
+    **0.7010 mm**, and that figure is not a coincidence — it is
+    0.200 mm of `PS_SYNC` plus the zone's 0.250 mm clearance twice.
+  * `U12`'s south pad row (`L1`, `L1`, `SYS`, `SYS`, `SW9-A`, `PS_SYNC`, `PG`)
+    can leave westward on `B.Cu` and nowhere else: the **WROOM ANTENNA
+    KEEPOUT** — `(64.5, 104.0)-(85.5, 152.0)` on **all six layers** — seals the
+    south-east, and the corridor at y 103.1-104.0 that survives is the corridor
+    the pour needs.  Reserve it and the relay is `NO_PATH` at 0.0250 mm with a
+    45 mm budget on `F`/`B`/`In2`.
+
+## 3. THE `U11` EAST CHANNEL: MEASURED, AND IT WILL NOT CARRY BOTH
+
+`evidence/d678-relay-wall-u11.json` records twelve gate runs and the geometry
+they establish:
+
+    channel      x 69.2 .. 71.0   the only path from C27.1 to the pour body,
+                                  and the only escape U11's east pad row has
+    band         y 76.2 .. 76.6   C27.1's ONLY link into that channel while C27
+                                  is unrotated -- 0.50 mm tall, between C27.2's
+                                  GND land and U11.6's land.  EVERY obstacle
+                                  that crosses it is >= 0.70 mm wide, so every
+                                  crossing severs it
+    R36 gap      x 68.325..69.175 the only westward exit from the pocket.
+                                  0.850 mm; a 0.200 mm track needs 0.600 mm of
+                                  it and ILIM_VSET's own track occupies 0.475
+
+`Net-(U11-TS_MR)` runs from north of `C27` to `U11.6`, so it MUST cross the
+band, and there is no x at which it can (r13: `NO_PATH`).  `ISET` must leave
+through the `R36` gap, and `ILIM_VSET` is in it.  **`C27.1` is not a routing
+problem.  It is a four-conductor problem in a 1.8 mm channel.**
+
+## 4. WHAT DID WORK, AND WHY IT WAS STILL REFUSED
+
+**Rotating `C27` by 180° reduces D-664's eight-unit cut to TWO.**  A 1206
+ceramic is symmetric; turning it puts its `SYS` land at (69.475, 75.000), on
+the east channel, and the band stops mattering.  Measured with real DRC on a
+private copy (`evidence/d678-candidate-drc-probe.py`, case `srot`): **DRC exit
+0, zero `clearance`, zero `shorting_items`, zero `hole_clearance`**, `C27.1`
+JOINED, pour **78.844 -> 90.862 mm²**.  Add a 180° rotation of `R36` — which
+puts the `ILIM_VSET` land on the channel side so the charger's programming
+resistor no longer reaches ACROSS the `R36` gap — evict `ILIM_VSET` whole, and
+re-lay the `ISET` chain through the freed gap, and the full gate returns:
+
+    gate 15 of 15 clauses, `refused_clauses []`
+    retained open edges 25 -> 24     nets_improved [BQ25185_SYS, ILIM_VSET, GND]
+    nets_regressed []                attributable_drc []
+    ISET  8.372 -> 6.495 mm (SHORTER)     ILIM_VSET re-routed, 15.037 mm
+    authority 0285ef45 -> 3821b93c        (`evidence/d678-gate-c27-r36-REFUSED.json`)
+
+`protected_copper.py` **IDENTICAL**.  And then `verify_promotion.py` — which
+compares against `HEAD` and therefore sees the PLACEMENT change the gate's own
+base already contained — returned **VERDICT FAIL on `pour_partition_intact`**
+(`evidence/d678-verify-c27-r36-REFUSED.json`):
+
+    GND B.Cu island 28   22.354 mm2  ->  11.972 (C28.2)  +  8.527 (C27.2, U11.4,
+                                                              U11.5, U11.11)
+    fragment bar    2.190 A   RETURN_NEIGHBOUR_RAIL: C27.2's partner land is
+                              C27.1, and SYS_MAIN publishes 2.190 A
+    fragment price  1.226 A   FRAGMENT_COPPER: U11.4's tube to the island's one
+                              barrel is 0.960 mm long and 0.400 mm wide
+    margin_x        0.56      BOND_UNDER_PRICED
+
+**The rotation swaps which side of `C27` carries ground, and the side it
+carries it to is `U11`'s own 8.5 mm² ground island.**  The 0.400 mm neck is
+`U11`'s land pattern and no barrel can widen it, so the fragment cannot be
+priced up; the only fix is not to put `C27.2` there.  The promotion was
+REVERTED — `sha256` back to `0285ef45`, byte for byte — and the artifacts are
+kept under their `-REFUSED` names so nobody re-measures this.
+
+**AND THE GAP IS NAMED.**  The gate PASSED and `verify_promotion` FAILED on the
+same board, and they are not in conflict: the gate's `pour_partition` clause
+compares its own PRE (the board WITH the rotation already applied) against its
+POST, so a pour split that the ROTATION caused is invisible to it.  **A
+placement change reaches the board without passing PP2.**  That is a real
+framework defect, it is now written down, and closing it is the first item of
+NEXT.
+
+## 5. TWO FRAMEWORK UNITS, EACH WITH ITS OWN CONTROL
+
+**`apply_part_shift.py --rot-deg DEG`.**  D-619's applier could translate and
+D-621's could release; neither could turn a part, and `PL2` refused any board
+where an orientation moved.  Rotation is now expressible, with every existing
+clause unchanged and **one new one, because a rotation asks a question a
+translation cannot**: a translation may take an endpoint OFF its pad
+(`endpoints_stranded`); a rotation brings a DIFFERENT PAD to where an endpoint
+already is.  `swept_conflicts` reports those by name — net, coordinate, pad and
+that pad's net — and REFUSES the move unless `--release` takes the copper with
+it.  It is LAYER-AWARE and that is not a detail: without the layer test the
+same `C27` rotation reported THREE conflicts, two of them
+`/09_COMMUNITY_HEADER/EXT_SCL` on `F.Cu` under a `B.Cu` SMD land — copper on
+the far side of the laminate — and the clause would refuse every rotation this
+board could ever want.  `--release-point NET:X,Y` states the REST of a chain
+the sweep started, because a rotation strands chains and not endpoints, and
+`release_closure` now exempts a far end that lies inside its OWN net's filled
+pour on that layer — the same doctrine `pour_backed` already applies to a
+barrel, asked of a point.
+
+**`checks/placement_contract.py --move REF:DX:DY:ROT`.**  `PL2` now checks the
+rotation delta against the claim and refuses an unclaimed one; `PL3` compares
+the land pattern through the CLAIMED turn, so a part that rotated 180° must
+carry its pads to where 180° puts them and nowhere else.  With no rotation
+claimed both read exactly as they always did.
+
+Five controls, `evidence/d678-placement-rotation-controls.json`, all behaved:
+the rotation WITHOUT `--release` **FAILS** and names the swept `GND` stub; WITH
+`--release` it **PASSES** and takes exactly one object; the rotation CLAIMED
+passes all nine `PL` clauses; NOT claimed **fails `PL2`**; claimed at the WRONG
+angle (90° against a 180° turn) **fails `PL2`**.  And the standing suite is the
+proof that nothing else moved: **14/14 RAN, 13/13 COMPARABLE IDENTICAL to
+d677, `vacuous` false** on a board whose `sha256` did not change.
+
+## 6. THE `In2` POUR IS PRICED AND IT IS NOT THE ANSWER
+
+D-604 named a `--plane-outline` `In2.Cu` pour as the bounded form of "give
+`BQ25185_SYS` a body" and nobody had run it.  It is run
+(`evidence/d678-in2-bounded-pour.json`): over `(58.5,72.0)-(71.0,108.5)` it
+fills **96.1 mm² in TWO islands (94.1 + 2.0)** with **`drc_exit` 0 and
+`attributable_drc []`** — and closes **ZERO** edges, because the 94.1 mm² island
+stops at y = 99.158 (the `In2` signal tracks at y 99-102 cut it) and overlaps no
+orphan `B.Cu` island at all.  `--bridge` then reports *"this island overlaps no
+other cluster's copper on another layer"* for every orphan.  The lever is
+VACUOUS here, measured, and it would have cost `In2` — `reserved_inner_planes`
+reserves a LAYER as soon as any pour appears on it — for nothing.
+
+## 7. NEXT, IN ORDER OF LEVERAGE
+
+ 1. **CLOSE THE GAP SECTION 4 NAMES.**  A promotion that includes a PLACEMENT
+    change must put the PRE board — the one `HEAD` holds, before the shift —
+    through `pour_partition_contract.py`, or the gate is judging a board the
+    reviewer is not.  The cheapest shape is a `--pre-board` argument on the
+    gate's own PP invocation.
+ 2. `/01_POWER_TREE/BQ25185_SYS` is still **6 of the board's 25 open edges** and
+    the **#1 fabrication blocker**.  The cheapest measured transaction on it is
+    now case `e` — six units, two nets, TWO edges — and its wall is the
+    relay, not the cut.  The lever that has not been tried on it is a
+    **placement** one: `U12`'s south row has three signal escapes and one power
+    rail in a corridor the antenna keepout caps at 0.9 mm.
+ 3. `C27.1` needs `C27` rotated AND a ground return for `C27.2` that is not
+    `U11`'s 8.5 mm² island.  A `GND` barrel field under `U11` does not fix it
+    (`PP2`'s bottleneck is `FRAGMENT_COPPER`, not the barrels); moving `C27`
+    south so the `GND` island stays whole dies on `PL4` at 0.03 mm of courtyard.
+ 4. Everything D-677 §NEXT listed that this decision did not reach stands:
+    `min_hole_to_hole` re-asked against the fabricator's number, `U9.14`'s
+    corridor at 0.200 mm, `--ban-net` on every other `SOLE_CUT` land.
+ 5. `hardware/demo/fab` is **FRESH at `0285ef45`** and untouched by this
+    decision.
+
 # D-677 · 2026-09-10 · Demo — THE DRILL-TO-COPPER RULE THIS BOARD HAS BEEN REFUSING ITSELF WITH IS 25 % STRICTER THAN THE SHOP THAT WILL BUILD IT, AND ALL FIVE "INHERITED" ERRORS WERE ONE CLASS
 
     authority  28935c75f4747bac0ad2a062977c4ad13e7e48ec98169529c1d2db4f29f8a5b3

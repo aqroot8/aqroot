@@ -1,0 +1,1044 @@
+{
+  "attributable_drc": [],
+  "authoritative_board_sha256": "688f4c6d4cb2d963d7b8c1a4c366a288e8f0342f9f24de4b4ac532ab7c457c50",
+  "authoritative_unchanged": true,
+  "base_board": "/home/aqroot8/aqroot-demo/hardware/demo/kicad/aqroot-demo/aqroot-Beta-v2.kicad_pcb",
+  "base_board_sha256": "688f4c6d4cb2d963d7b8c1a4c366a288e8f0342f9f24de4b4ac532ab7c457c50",
+  "base_is_authority": true,
+  "bonds": null,
+  "bridges": null,
+  "candidate_sha256": "3821b93c3c7a613ccd8a4a3841f03b3d9bb17e8a02b803f9ca3114e1a3b63043",
+  "connectivity": {
+    "nets_improved": [
+      "/01_POWER_TREE/BQ25185_SYS",
+      "/01_POWER_TREE/ILIM_VSET",
+      "GND"
+    ],
+    "nets_regressed": [],
+    "open_retained_nets_after": 15,
+    "open_retained_nets_before": 16,
+    "retained_open_edges_after": 24,
+    "retained_open_edges_before": 28
+  },
+  "detour": {
+    "all_relaid": true,
+    "barrel_move_licences": [],
+    "barrel_move_unlicensed": [],
+    "failed": [],
+    "guard_spec": "w/d678/promote/guard-with-detour.json",
+    "inert_price": [],
+    "inert_unpriced": [],
+    "nets": [
+      "/01_POWER_TREE/ISET"
+    ],
+    "own_layer_requested": false,
+    "own_layer_spent": [],
+    "rebond_price": [],
+    "rebond_unpriced": [],
+    "relaid": [
+      {
+        "a_mm": [
+          66.1,
+          82.4
+        ],
+        "b_mm": [
+          69.4,
+          77.8
+        ],
+        "exact_relay": null,
+        "layer": "B.Cu",
+        "layers": [
+          "B"
+        ],
+        "layers_allowed": [
+          "F",
+          "B",
+          "I2"
+        ],
+        "lkey": "B",
+        "max_mm": 22.0,
+        "mm": 6.494971252988902,
+        "mm_by_layer": {
+          "B": 6.495
+        },
+        "move_ends": [],
+        "net": "/01_POWER_TREE/ISET",
+        "ok": true,
+        "own_layer": false,
+        "seconds": 43.4,
+        "terminal_lift": [],
+        "via_xy": [],
+        "vias": 0,
+        "was_mm": 8.3717,
+        "width_nm": 200000
+      }
+    ],
+    "removed_barrels": [],
+    "removed_count": 4,
+    "removed_mm": 8.3717,
+    "removed_not_relaid": [],
+    "requested": "w/d678/promote/spec.json",
+    "reserve": [
+      {
+        "exempt": [
+          "/01_POWER_TREE/BQ25185_SYS"
+        ],
+        "layers": [
+          "B"
+        ],
+        "r_mm": 0.42,
+        "x_mm": 70.6,
+        "y_mm": 76.3
+      },
+      {
+        "exempt": [
+          "/01_POWER_TREE/BQ25185_SYS"
+        ],
+        "layers": [
+          "B"
+        ],
+        "r_mm": 0.42,
+        "x_mm": 70.6,
+        "y_mm": 76.6
+      },
+      {
+        "exempt": [
+          "/01_POWER_TREE/BQ25185_SYS"
+        ],
+        "layers": [
+          "B"
+        ],
+        "r_mm": 0.42,
+        "x_mm": 70.6,
+        "y_mm": 76.9
+      },
+      {
+        "exempt": [
+          "/01_POWER_TREE/BQ25185_SYS"
+        ],
+        "layers": [
+          "B"
+        ],
+        "r_mm": 0.42,
+        "x_mm": 70.6,
+        "y_mm": 77.2
+      },
+      {
+        "exempt": [
+          "/01_POWER_TREE/BQ25185_SYS"
+        ],
+        "layers": [
+          "B"
+        ],
+        "r_mm": 0.42,
+        "x_mm": 70.6,
+        "y_mm": 77.5
+      },
+      {
+        "exempt": [
+          "/01_POWER_TREE/BQ25185_SYS"
+        ],
+        "layers": [
+          "B"
+        ],
+        "r_mm": 0.42,
+        "x_mm": 70.6,
+        "y_mm": 77.8
+      },
+      {
+        "exempt": [
+          "/01_POWER_TREE/BQ25185_SYS"
+        ],
+        "layers": [
+          "B"
+        ],
+        "r_mm": 0.42,
+        "x_mm": 70.6,
+        "y_mm": 78.1
+      },
+      {
+        "exempt": [
+          "/01_POWER_TREE/BQ25185_SYS"
+        ],
+        "layers": [
+          "B"
+        ],
+        "r_mm": 0.42,
+        "x_mm": 70.6,
+        "y_mm": 78.4
+      },
+      {
+        "exempt": [
+          "/01_POWER_TREE/BQ25185_SYS"
+        ],
+        "layers": [
+          "B"
+        ],
+        "r_mm": 0.42,
+        "x_mm": 70.6,
+        "y_mm": 78.7
+      },
+      {
+        "exempt": [
+          "/01_POWER_TREE/BQ25185_SYS"
+        ],
+        "layers": [
+          "B"
+        ],
+        "r_mm": 0.42,
+        "x_mm": 70.6,
+        "y_mm": 79.0
+      },
+      {
+        "exempt": [
+          "/01_POWER_TREE/BQ25185_SYS"
+        ],
+        "layers": [
+          "B"
+        ],
+        "r_mm": 0.42,
+        "x_mm": 70.6,
+        "y_mm": 79.3
+      },
+      {
+        "exempt": [
+          "/01_POWER_TREE/BQ25185_SYS"
+        ],
+        "layers": [
+          "B"
+        ],
+        "r_mm": 0.42,
+        "x_mm": 70.6,
+        "y_mm": 79.6
+      },
+      {
+        "exempt": [
+          "/01_POWER_TREE/BQ25185_SYS"
+        ],
+        "layers": [
+          "B"
+        ],
+        "r_mm": 0.42,
+        "x_mm": 70.6,
+        "y_mm": 79.9
+      },
+      {
+        "exempt": [
+          "/01_POWER_TREE/BQ25185_SYS"
+        ],
+        "layers": [
+          "B"
+        ],
+        "r_mm": 0.42,
+        "x_mm": 70.6,
+        "y_mm": 80.2
+      }
+    ],
+    "rung": {
+      "adopted": false,
+      "cli_stitch_via": null,
+      "cli_stitch_width": null,
+      "conflict": false,
+      "plan_argv": null,
+      "plan_rung": null,
+      "plan_why": null
+    }
+  },
+  "drc_exit": 0,
+  "drc_types": {
+    "lib_footprint_issues": 199,
+    "solder_mask_bridge": 1
+  },
+  "escape_relief": null,
+  "eviction": {
+    "closure_count": 0,
+    "corridor_layers": [
+      "B",
+      "F",
+      "I2"
+    ],
+    "corridors": {
+      "/01_POWER_TREE/BQ25185_SYS": {
+        "area_mm2": 7359.805,
+        "box_mm": [
+          5.795,
+          15.4,
+          72.475,
+          125.775
+        ]
+      },
+      "/01_POWER_TREE/ILIM_VSET": {
+        "area_mm2": 61.729,
+        "box_mm": [
+          65.6,
+          74.4,
+          72.575,
+          83.25
+        ]
+      }
+    },
+    "dangling_unevictable": [],
+    "evicted_nets": [
+      "/01_POWER_TREE/ILIM_VSET"
+    ],
+    "margin_mm": 3.0,
+    "removed_by_net": {
+      "/01_POWER_TREE/ILIM_VSET": 7
+    },
+    "removed_count": 7,
+    "removed_signatures": [
+      "('T', '/01_POWER_TREE/ILIM_VSET', 2, (68600000, 77400000), (69400000, 77400000), 200000)",
+      "('T', '/01_POWER_TREE/ILIM_VSET', 2, (69250000, 76450000), (69400000, 76600000), 200000)",
+      "('T', '/01_POWER_TREE/ILIM_VSET', 2, (69400000, 76600000), (69400000, 77400000), 200000)",
+      "('T', '/01_POWER_TREE/ILIM_VSET', 8, (68600000, 77100000), (68600000, 80250000), 200000)",
+      "('T', '/01_POWER_TREE/ILIM_VSET', 8, (68600000, 77100000), (69250000, 76450000), 200000)",
+      "('V', '/01_POWER_TREE/ILIM_VSET', (68600000, 80250000), 600000, 300000)",
+      "('V', '/01_POWER_TREE/ILIM_VSET', (69250000, 76450000), 600000, 300000)"
+    ],
+    "stated_window_mm": null,
+    "whole_net": true
+  },
+  "exact_relay": [],
+  "failed_nets": [],
+  "gate_clauses": {
+    "attributable_drc": true,
+    "authority_unchanged": true,
+    "barrel_move_licensed": true,
+    "board_changed": true,
+    "board_improved": true,
+    "every_detour_relaid": true,
+    "inert_removal_priced": true,
+    "inherited_within_baseline": true,
+    "no_foreign_copper": true,
+    "no_open_relief_licence": true,
+    "no_regression": true,
+    "no_unlicensed_removal": true,
+    "pour_partition": true,
+    "rebond_priced": true,
+    "zones_and_rule_areas": true
+  },
+  "guard": null,
+  "inherited_within_baseline": true,
+  "lattice": {
+    "any_too_coarse": false,
+    "any_unlaunchable": true,
+    "grid_nm": 25000,
+    "nets": {
+      "/01_POWER_TREE/BQ25185_SYS": {
+        "binding_pad": "U11.1",
+        "grid_mm": 0.025,
+        "lands": 16,
+        "no_lattice_at_any_pitch": true,
+        "required_lattice_mm": 0.2667,
+        "too_coarse": false,
+        "unlaunchable_lands": [
+          "U12.10",
+          "U12.11"
+        ],
+        "verdict": "UNLAUNCHABLE"
+      },
+      "/01_POWER_TREE/ILIM_VSET": {
+        "binding_pad": "R36.1",
+        "grid_mm": 0.025,
+        "lands": 2,
+        "no_lattice_at_any_pitch": true,
+        "required_lattice_mm": 1.9333,
+        "too_coarse": false,
+        "unlaunchable_lands": [
+          "U11.7"
+        ],
+        "verdict": "EXACT"
+      }
+    },
+    "schema": 1,
+    "tightest_required_mm": null
+  },
+  "pad_bridges": null,
+  "plane": null,
+  "plane_repair": {
+    "candidates": [],
+    "evicted_nets": [
+      "/01_POWER_TREE/ILIM_VSET"
+    ],
+    "join_max_mm": 8.0,
+    "pour_owning_nets": [
+      "+3V3",
+      "/01_POWER_TREE/BQ25185_SYS",
+      "GND"
+    ],
+    "regressed_before_repair": [],
+    "retained_open_edges_before_repair": 24
+  },
+  "pour_partition": {
+    "detail": {
+      "PP1": {
+        "newly_unresolved": [],
+        "ok": true,
+        "pours_post": 4,
+        "pours_pre": 4,
+        "unresolved_inherited": [
+          "/01_POWER_TREE/BQ25185_SYS C24.1",
+          "/01_POWER_TREE/BQ25185_SYS C26.2",
+          "/01_POWER_TREE/BQ25185_SYS C27.1",
+          "/01_POWER_TREE/BQ25185_SYS C28.1",
+          "/01_POWER_TREE/BQ25185_SYS C33.1",
+          "/01_POWER_TREE/BQ25185_SYS C33.1",
+          "/01_POWER_TREE/BQ25185_SYS C64.1",
+          "/01_POWER_TREE/BQ25185_SYS C64.1",
+          "/01_POWER_TREE/BQ25185_SYS L2.1",
+          "/01_POWER_TREE/BQ25185_SYS L2.1",
+          "/01_POWER_TREE/BQ25185_SYS L4.1",
+          "/01_POWER_TREE/BQ25185_SYS U11.1",
+          "/01_POWER_TREE/BQ25185_SYS U11.1",
+          "/01_POWER_TREE/BQ25185_SYS U12.1",
+          "/01_POWER_TREE/BQ25185_SYS U12.10",
+          "/01_POWER_TREE/BQ25185_SYS U12.11",
+          "/01_POWER_TREE/BQ25185_SYS U13.3",
+          "/01_POWER_TREE/BQ25185_SYS U13.3",
+          "/01_POWER_TREE/BQ25185_SYS U21.3",
+          "GND MK1.4"
+        ],
+        "unresolved_post": 20,
+        "unresolved_pre": 23
+      },
+      "PP2": {
+        "admitted": [],
+        "controls": {
+          "ok": true,
+          "probes": [
+            {
+              "behaved": true,
+              "control": "min_thickness_sliver_refused",
+              "expected": false,
+              "got": false,
+              "priced_amps": 0.742,
+              "required_amps": 1.0,
+              "verdict": "BONDED",
+              "why": "BOND_UNDER_PRICED"
+            },
+            {
+              "behaved": true,
+              "control": "one_class_width_track_refused",
+              "expected": false,
+              "got": false,
+              "priced_amps": 0.995,
+              "required_amps": 1.0,
+              "verdict": "BONDED",
+              "why": "BOND_UNDER_PRICED"
+            },
+            {
+              "behaved": true,
+              "control": "four_barrel_bond_admitted",
+              "expected": true,
+              "got": true,
+              "priced_amps": 9.244,
+              "required_amps": 1.0,
+              "verdict": "BONDED",
+              "why": "BOND_PRICED_AT_OR_ABOVE_THE_PUBLISHED_RAIL_CURRENT"
+            },
+            {
+              "behaved": true,
+              "control": "stranded_refused_however_priced",
+              "expected": false,
+              "got": false,
+              "priced_amps": 9.244,
+              "required_amps": 1.0,
+              "verdict": "STRANDED",
+              "why": "PP3_NOT_BONDED"
+            },
+            {
+              "behaved": true,
+              "control": "unpriced_net_refused",
+              "expected": false,
+              "got": false,
+              "priced_amps": 9.244,
+              "required_amps": null,
+              "verdict": "BONDED",
+              "why": "NET_CARRIES_NO_PUBLISHED_CURRENT"
+            },
+            {
+              "behaved": true,
+              "control": "bar_located_one_ppm_below",
+              "expected": false,
+              "got": false,
+              "priced_amps": 0.999999,
+              "required_amps": 1.0,
+              "verdict": "BONDED",
+              "why": "BOND_UNDER_PRICED"
+            },
+            {
+              "behaved": true,
+              "control": "bar_located_at_equality",
+              "expected": true,
+              "got": true,
+              "priced_amps": 1.0,
+              "required_amps": 1.0,
+              "verdict": "BONDED",
+              "why": "BOND_PRICED_AT_OR_ABOVE_THE_PUBLISHED_RAIL_CURRENT"
+            }
+          ],
+          "reference_amps": {
+            "four_0p400mm_barrels": 9.244,
+            "outer_track_0p300mm": 0.995,
+            "zone_min_thickness_0p200mm": 0.742
+          }
+        },
+        "islands": {
+          "+3V3|F|8c612136-d173-58bf-87cf-c0b97bedd2e0": [
+            34,
+            34
+          ],
+          "/01_POWER_TREE/BQ25185_SYS|B|4ad6fd49-a7ee-5f03-a8e4-f021f24e1091": [
+            1,
+            1
+          ],
+          "/01_POWER_TREE/BQ25185_SYS|B|da11f1b0-6501-5c41-b2b6-d6199a789ea9": [
+            6,
+            5
+          ],
+          "GND|B|38685722-44ee-566f-b52b-89a56220a9e0": [
+            67,
+            67
+          ]
+        },
+        "netclass_conductors": {
+          "ACC_3V3": {
+            "track_width_mm": 0.5,
+            "via_diameter_mm": 0.8,
+            "via_drill_mm": 0.4
+          },
+          "ACC_5V": {
+            "track_width_mm": 0.6,
+            "via_diameter_mm": 0.8,
+            "via_drill_mm": 0.4
+          },
+          "BAT_MAIN": {
+            "track_width_mm": 1.0,
+            "via_diameter_mm": 0.8,
+            "via_drill_mm": 0.4
+          },
+          "Default": {
+            "track_width_mm": 0.2,
+            "via_diameter_mm": 0.6,
+            "via_drill_mm": 0.3
+          },
+          "GND": {
+            "track_width_mm": 0.3,
+            "via_diameter_mm": 0.6,
+            "via_drill_mm": 0.3
+          },
+          "I2C": {
+            "track_width_mm": 0.2,
+            "via_diameter_mm": 0.6,
+            "via_drill_mm": 0.3
+          },
+          "I2S": {
+            "track_width_mm": 0.2,
+            "via_diameter_mm": 0.6,
+            "via_drill_mm": 0.3
+          },
+          "LED_BOOST": {
+            "track_width_mm": 0.3,
+            "via_diameter_mm": 0.6,
+            "via_drill_mm": 0.3
+          },
+          "NFC_5V_PA": {
+            "track_width_mm": 0.6,
+            "via_diameter_mm": 0.8,
+            "via_drill_mm": 0.4
+          },
+          "NFC_OSC": {
+            "track_width_mm": 0.2,
+            "via_diameter_mm": 0.6,
+            "via_drill_mm": 0.3
+          },
+          "NFC_RF": {
+            "track_width_mm": 0.4,
+            "via_diameter_mm": 0.8,
+            "via_drill_mm": 0.4
+          },
+          "NFC_RX": {
+            "track_width_mm": 0.2,
+            "via_diameter_mm": 0.6,
+            "via_drill_mm": 0.3
+          },
+          "P3V3": {
+            "track_width_mm": 0.6,
+            "via_diameter_mm": 0.8,
+            "via_drill_mm": 0.4
+          },
+          "SPK_OUT": {
+            "track_width_mm": 0.3,
+            "via_diameter_mm": 0.6,
+            "via_drill_mm": 0.3
+          },
+          "SWITCH_NODE": {
+            "track_width_mm": 0.6,
+            "via_diameter_mm": 0.8,
+            "via_drill_mm": 0.4
+          },
+          "SYS_MAIN": {
+            "track_width_mm": 0.8,
+            "via_diameter_mm": 0.8,
+            "via_drill_mm": 0.4
+          },
+          "USB_D": {
+            "track_width_mm": 0.25,
+            "via_diameter_mm": 0.55,
+            "via_drill_mm": 0.25
+          },
+          "VBUS_CHG": {
+            "track_width_mm": 0.5,
+            "via_diameter_mm": 0.8,
+            "via_drill_mm": 0.4
+          }
+        },
+        "netclass_source": {
+          "classes": [
+            "ACC_3V3",
+            "ACC_5V",
+            "BAT_MAIN",
+            "Default",
+            "GND",
+            "I2C",
+            "I2S",
+            "LED_BOOST",
+            "NFC_5V_PA",
+            "NFC_OSC",
+            "NFC_RF",
+            "NFC_RX",
+            "P3V3",
+            "SPK_OUT",
+            "SWITCH_NODE",
+            "SYS_MAIN",
+            "USB_D",
+            "VBUS_CHG"
+          ],
+          "found": true,
+          "sha256": "e5af7cdf0a05f0c0778099c21aea9bb6cbbbe92e89fb5f79e11f0907ad5c52f1",
+          "source": "w/d678/promote/aqroot-Beta-v2.kicad_pro"
+        },
+        "ok": true,
+        "priced": [],
+        "published_rail_currents": {
+          "ACC_3V3": 0.76,
+          "ACC_5V": 0.7,
+          "BAT_MAIN": 3.125,
+          "LED_BOOST": 0.09,
+          "NFC_5V_PA_PENDING": 0.5,
+          "P3V3": 1.0,
+          "SPK_OUT": 0.41,
+          "SYS_MAIN": 2.19,
+          "VBUS_CHG": 0.5
+        },
+        "published_table_source": {
+          "classes": [
+            "ACC_3V3",
+            "ACC_5V",
+            "BAT_MAIN",
+            "LED_BOOST",
+            "NFC_5V_PA_PENDING",
+            "P3V3",
+            "SPK_OUT",
+            "SYS_MAIN",
+            "VBUS_CHG"
+          ],
+          "found": true,
+          "sha256": "328bbc3fc8dfa29ccb876d4f744c13d4b7295b46813faaf64007f1853af197f7",
+          "source": "w/d678/promote/aqroot-Beta-v2.kicad_dru"
+        },
+        "refused": [],
+        "return_controls": {
+          "netclass_floor": {
+            "amps": 0.995,
+            "dT_K": 10.0,
+            "netclass": "GND",
+            "track_width_mm": 0.3
+          },
+          "ok": true,
+          "probes": [
+            {
+              "bar_from": "RETURN_FLOOR_ONE_NETCLASS_TRACK",
+              "behaved": true,
+              "control": "unpriced_neighbours_fall_to_the_floor",
+              "expected": 0.995,
+              "floor_amps": 0.995,
+              "got": 0.995,
+              "track_width_mm": 0.3
+            },
+            {
+              "bar_from": "RETURN_NEIGHBOUR_RAIL",
+              "behaved": true,
+              "control": "battery_neighbour_raises_the_bar",
+              "expected": 3.125,
+              "got": 3.125,
+              "neighbour": [
+                "BAT_MAIN"
+              ]
+            },
+            {
+              "behaved": true,
+              "control": "priced_neighbour_below_the_floor_does_not_lower_it",
+              "expected": 1.0,
+              "got": 1.0
+            },
+            {
+              "behaved": true,
+              "control": "the_largest_neighbour_is_the_one_charged",
+              "expected": 3.125,
+              "got": 3.125,
+              "n_neighbours": 2
+            },
+            {
+              "behaved": true,
+              "control": "a_net_with_no_netclass_conductor_has_no_floor",
+              "expected": null,
+              "got": null
+            },
+            {
+              "behaved": true,
+              "control": "zone_min_thickness_sliver_refused_at_the_floor",
+              "expected": false,
+              "got": false,
+              "priced_amps": 0.742,
+              "required_amps": 0.995,
+              "why": "BOND_UNDER_PRICED"
+            },
+            {
+              "behaved": true,
+              "control": "the_d619_fragment_is_admitted_at_the_floor",
+              "expected": true,
+              "got": true,
+              "priced_amps": 2.552,
+              "required_amps": 0.995,
+              "why": "BOND_PRICED_AT_OR_ABOVE_RETURN_FRAGMENT_BAR"
+            },
+            {
+              "behaved": true,
+              "control": "the_same_fragment_is_REFUSED_beside_the_battery",
+              "expected": false,
+              "got": false,
+              "priced_amps": 2.552,
+              "required_amps": 3.125,
+              "why": "BOND_UNDER_PRICED"
+            },
+            {
+              "behaved": true,
+              "control": "floor_located_one_ppm_below",
+              "expected": false,
+              "got": false,
+              "priced_amps": 0.994999,
+              "required_amps": 0.995,
+              "why": "BOND_UNDER_PRICED"
+            },
+            {
+              "behaved": true,
+              "control": "floor_located_at_equality",
+              "expected": true,
+              "got": true,
+              "priced_amps": 0.995,
+              "required_amps": 0.995,
+              "why": "BOND_PRICED_AT_OR_ABOVE_RETURN_FRAGMENT_BAR"
+            },
+            {
+              "behaved": true,
+              "control": "stranded_refused_however_priced_on_a_return_net",
+              "expected": false,
+              "got": false,
+              "why": "PP3_NOT_BONDED"
+            }
+          ],
+          "reference_amps": {
+            "d619_real_fragment": 2.552,
+            "zone_min_thickness_0p200mm": 0.742
+          }
+        },
+        "return_nets": {
+          "GND": {
+            "netclass": "GND",
+            "plane_area_mm2": 18778.328,
+            "reserved_layers": [
+              "I1",
+              "I4"
+            ]
+          }
+        },
+        "splits": []
+      },
+      "PP3": {
+        "fragments": [],
+        "ok": true,
+        "reserved_inner_planes": {
+          "I1": [
+            "GND"
+          ],
+          "I3": [
+            "+3V3"
+          ],
+          "I4": [
+            "GND"
+          ]
+        }
+      },
+      "PP4": {
+        "condemned_fragments_skipped": [],
+        "ok": true,
+        "probes": [
+          {
+            "flips": true,
+            "pads": [
+              "C12.2",
+              "R123.2",
+              "R21.1",
+              "R24.2"
+            ],
+            "post_island": 26,
+            "pour": "+3V3|F|8c612136-d173-58bf-87cf-c0b97bedd2e0",
+            "with_barrels": "BONDED",
+            "without_barrels": "STRANDED"
+          },
+          {
+            "flips": true,
+            "pads": [
+              "C16.2",
+              "C17.2",
+              "C18.2",
+              "C19.2",
+              "C34.1",
+              "C35.2"
+            ],
+            "post_island": 21,
+            "pour": "GND|B|38685722-44ee-566f-b52b-89a56220a9e0",
+            "with_barrels": "BONDED",
+            "without_barrels": "STRANDED"
+          }
+        ]
+      }
+    },
+    "failed_clauses": [],
+    "ok": true,
+    "pre_board": "/home/aqroot8/aqroot-demo/hardware/demo/kicad/aqroot-demo/aqroot-Beta-v2.kicad_pcb",
+    "report": "w/d678/promote/pour-partition.json",
+    "results": {
+      "PP1": true,
+      "PP2": true,
+      "PP3": true,
+      "PP4": true
+    }
+  },
+  "preservation": {
+    "added_object_nets": [
+      "/01_POWER_TREE/BQ25185_SYS",
+      "/01_POWER_TREE/ILIM_VSET",
+      "/01_POWER_TREE/ISET"
+    ],
+    "foreign_added_nets": [],
+    "licensed_removals": 11,
+    "removed_objects": [
+      "('T', '/01_POWER_TREE/ILIM_VSET', 2, (68600000, 77400000), (69400000, 77400000), 200000)",
+      "('T', '/01_POWER_TREE/ILIM_VSET', 2, (69250000, 76450000), (69400000, 76600000), 200000)",
+      "('T', '/01_POWER_TREE/ILIM_VSET', 2, (69400000, 76600000), (69400000, 77400000), 200000)",
+      "('T', '/01_POWER_TREE/ILIM_VSET', 8, (68600000, 77100000), (68600000, 80250000), 200000)",
+      "('T', '/01_POWER_TREE/ILIM_VSET', 8, (68600000, 77100000), (69250000, 76450000), 200000)",
+      "('T', '/01_POWER_TREE/ISET', 2, (66100000, 82400000), (69500000, 81100000), 200000)",
+      "('T', '/01_POWER_TREE/ISET', 2, (69400000, 77800000), (70900000, 79400000), 200000)",
+      "('T', '/01_POWER_TREE/ISET', 2, (69500000, 81100000), (70200000, 81100000), 200000)",
+      "('T', '/01_POWER_TREE/ISET', 2, (70200000, 81100000), (70900000, 79400000), 200000)",
+      "('V', '/01_POWER_TREE/ILIM_VSET', (68600000, 80250000), 600000, 300000)",
+      "('V', '/01_POWER_TREE/ILIM_VSET', (69250000, 76450000), 600000, 300000)"
+    ],
+    "reverted_failures_clean": true,
+    "rule_area_inventory_ok": true,
+    "rule_areas_added": [],
+    "rule_areas_removed": [],
+    "unlicensed_removals": [],
+    "zone_inventory_ok": true,
+    "zones_added": [],
+    "zones_removed": []
+  },
+  "promoted": true,
+  "promoted_sha256": "3821b93c3c7a613ccd8a4a3841f03b3d9bb17e8a02b803f9ca3114e1a3b63043",
+  "promotion_candidate": true,
+  "refused_clauses": [],
+  "requested_nets": [
+    "/01_POWER_TREE/BQ25185_SYS",
+    "/01_POWER_TREE/ILIM_VSET"
+  ],
+  "routed": [
+    {
+      "contract": {
+        "clr": 250000,
+        "clr_pad": 200000,
+        "escape_floor": 800000,
+        "guarded_layers": {},
+        "layers": [
+          "F",
+          "B",
+          "I2"
+        ],
+        "netclass": "SYS_MAIN",
+        "reserved_inner_planes": {
+          "I1": [
+            "GND"
+          ],
+          "I3": [
+            "+3V3"
+          ],
+          "I4": [
+            "GND"
+          ]
+        },
+        "trunk_floor": null,
+        "via_dia": 800000,
+        "via_drill": 400000,
+        "width": 800000
+      },
+      "failures": [
+        {
+          "island": [
+            "C26.2"
+          ],
+          "pad": "C26.2",
+          "reason": "NO_VIA_SITE",
+          "why": "no legal 0.80 mm barrel within 8.0 mm of any escape"
+        },
+        {
+          "island": [
+            "C27.1"
+          ],
+          "pad": "C27.1",
+          "reason": "NO_VIA_SITE",
+          "why": "no legal 0.80 mm barrel within 8.0 mm of any escape"
+        },
+        {
+          "island": [
+            "L4.1",
+            "U21.3"
+          ],
+          "pad": "L4.1",
+          "reason": "NO_VIA_SITE",
+          "why": "no legal 0.80 mm barrel within 8.0 mm of any escape"
+        },
+        {
+          "island": [
+            "R68.1"
+          ],
+          "pad": "R68.1",
+          "reason": "NO_VIA_SITE",
+          "why": "no legal 0.80 mm barrel within 8.0 mm of any escape"
+        },
+        {
+          "island": [
+            "U11.1"
+          ],
+          "pad": "U11.1",
+          "reason": "NO_LEGAL_ESCAPE",
+          "why": "U11.1: NO LEGAL ESCAPE at >= 0.800 mm; blocked by U11.2 (x48), R36.2 (x6), C27.2 (x4), R37.2 (x4)"
+        },
+        {
+          "island": [
+            "U12.10",
+            "U12.11"
+          ],
+          "pad": "U12.10",
+          "reason": "NO_LEGAL_ESCAPE",
+          "why": "U12.10: NO LEGAL ESCAPE at >= 0.800 mm; blocked by U12.9 (x37), U12.8 (x26), U12.4 (x5), C24.2 (x3)"
+        },
+        {
+          "island": [
+            "U13.3"
+          ],
+          "pad": "U13.3",
+          "reason": "NO_LEGAL_ESCAPE",
+          "why": "U13.3: NO LEGAL ESCAPE at >= 0.800 mm; blocked by U13.2 (x37), U13.1 (x23), C34.1 (x8), L2.2 (x4)"
+        }
+      ],
+      "mm": 2.723,
+      "mode": "stitch-split",
+      "net": "/01_POWER_TREE/BQ25185_SYS",
+      "ok": true,
+      "seconds": 16.8,
+      "stitched": 1,
+      "unreachable": 7,
+      "via_xy": [
+        [
+          65.55,
+          87.0
+        ]
+      ],
+      "vias": 1
+    },
+    {
+      "closed": 1,
+      "contract": {
+        "clr": 200000,
+        "clr_pad": 200000,
+        "escape_floor": 200000,
+        "guarded_layers": {
+          "B": 14
+        },
+        "layers": [
+          "F",
+          "B",
+          "I2"
+        ],
+        "netclass": "Default",
+        "reserved_inner_planes": {
+          "I1": [
+            "GND"
+          ],
+          "I3": [
+            "+3V3"
+          ],
+          "I4": [
+            "GND"
+          ]
+        },
+        "trunk_floor": null,
+        "via_dia": 600000,
+        "via_drill": 300000,
+        "width": 200000
+      },
+      "failures": [],
+      "islands": 2,
+      "joins": [
+        {
+          "from": "R36.1",
+          "layers": [
+            "B",
+            "F",
+            "B"
+          ],
+          "mm": 15.036962048299376,
+          "to": "U11.7",
+          "via_xy": [
+            [
+              67.95,
+              84.325
+            ],
+            [
+              69.25,
+              76.475
+            ]
+          ],
+          "vias": 2
+        }
+      ],
+      "mm": 15.037,
+      "mode": "maze+partial",
+      "mode_partial": true,
+      "net": "/01_POWER_TREE/ILIM_VSET",
+      "ok": true,
+      "remaining": 0,
+      "seconds": 108.3,
+      "vias": 2
+    }
+  ],
+  "routed_nets": [
+    "/01_POWER_TREE/BQ25185_SYS",
+    "/01_POWER_TREE/ILIM_VSET",
+    "/01_POWER_TREE/ISET"
+  ],
+  "schema": 1,
+  "taps": null
+}

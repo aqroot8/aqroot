@@ -146,6 +146,66 @@ def pour_backed(board, via):
     return False
 
 
+def pour_backed_point(board, net, x, y, layer_id):
+    """Is (x, y) inside its OWN net's filled pour on `layer_id`?
+
+    D-678.  `release_closure` refuses to orphan a point some SURVIVING track
+    still meets, and it is right to when the net is a bare signal.  It is
+    WRONG when the net owns a filled pour on that layer: the surviving track
+    lies IN its own copper for its whole length, so the released escape was
+    never what held it.  This is the same doctrine `pour_backed` already
+    applies to a BARREL, asked of a point instead of a via.
+    """
+    import pcbnew
+    pt = pcbnew.VECTOR2I(int(x), int(y))
+    for i in range(board.GetAreaCount()):
+        z = board.GetArea(i)
+        if z.GetIsRuleArea() or z.GetNetname() != net or not z.IsFilled():
+            continue
+        if not z.IsOnLayer(layer_id):
+            continue
+        if z.GetFilledPolysList(layer_id).Contains(pt):
+            return True
+    return False
+
+
+def swept_conflicts(board, fp):
+    """Foreign-net endpoints that the moved/ROTATED part's pads now cover.
+
+    D-678.  `endpoints_stranded` asks whether an endpoint LEFT its pad.  A
+    ROTATION asks the opposite question as well: pad 1 arrives where pad 2 was,
+    so an endpoint that never moved is now inside a pad of a DIFFERENT NET --
+    a dead short that PL5 cannot see, because the point is still "inside a pad
+    of this part".  `checks/placement_contract.py` PL7 catches it on the
+    finished board; this catches it in the applier, before the board is saved,
+    and names the copper a `--release` has to take with it.
+    """
+    out = []
+    for p in fp.Pads():
+        bb = p.GetBoundingBox()
+        box = (bb.GetLeft(), bb.GetTop(), bb.GetRight(), bb.GetBottom())
+        # A LAND IS COPPER ON THE LAYERS IT OCCUPIES AND ON NO OTHER.  An
+        # `F.Cu` track under a `B.Cu` SMD land is on the far side of the
+        # laminate; reporting it would refuse every rotation on this board.
+        pl = set(p.GetLayerSet().CuStack())
+        for t in board.GetTracks():
+            if t.GetClass() == "PCB_VIA":
+                pts, tl = [t.GetStart()], set(t.GetLayerSet().CuStack())
+            else:
+                pts, tl = [t.GetStart(), t.GetEnd()], {t.GetLayer()}
+            if not (pl & tl):
+                continue
+            for q in pts:
+                if not inside(box, q.x, q.y):
+                    continue
+                if t.GetNetname() == p.GetNetname():
+                    continue
+                out.append((t.GetNetname(), q.x, q.y,
+                            "%s.%s" % (fp.GetReference(), p.GetNumber()),
+                            p.GetNetname()))
+    return sorted(set(out))
+
+
 def release_closure(board, doomed_points, allowed_nets, named_vias=()):
     """Which objects a release must remove, and what it must NOT strand.
 
@@ -231,6 +291,15 @@ def release_closure(board, doomed_points, allowed_nets, named_vias=()):
         if any(v["net"] == net and v["at_mm"] == [x / 1e6, y / 1e6]
                for v in kept_via):
             continue
+        # D-678: a surviving track of a POUR-OWNING net that meets this point
+        # is held by its own filled copper, not by the escape being released.
+        if others and not pads and all(
+                pour_backed_point(board, net, x, y, t.GetLayer())
+                for t in others):
+            kept_via.append(dict(net=net, at_mm=[x / 1e6, y / 1e6],
+                                 why="surviving track lies in its own filled "
+                                     "pour on that layer; not floating"))
+            continue
         if others or pads:
             refusals.append(dict(reason="RELEASE_WOULD_STRAND", net=net,
                                  at_mm=[x / 1e6, y / 1e6],
@@ -269,6 +338,15 @@ def main():
     ap.add_argument("--ref", required=True)
     ap.add_argument("--dx-nm", type=int, default=0)
     ap.add_argument("--dy-nm", type=int, default=0)
+    ap.add_argument("--rot-deg", type=float, default=0.0,
+                    help="D-678: also ROTATE the part by this many degrees "
+                         "about its own origin.  Every clause above applies "
+                         "unchanged -- endpoints are measured against the "
+                         "pads where they END UP -- and one more is added: a "
+                         "rotation brings a DIFFERENT pad to where an "
+                         "endpoint already is, so foreign copper swept under "
+                         "a moved land is reported by name and REFUSES the "
+                         "move unless --release takes it with the move")
     ap.add_argument("--release", action="store_true",
                     help="remove the copper whose endpoint the move takes off "
                          "a pad, WHOLE and by measured closure, instead of "
@@ -284,6 +362,18 @@ def main():
                          "honest form for a stitch that stands in the way of "
                          "the copper this transaction lays.  Refused if any "
                          "SURVIVING track or pad of that net still meets it")
+    ap.add_argument("--release-point", action="append", default=[],
+                    metavar="NET:X,Y",
+                    help="D-678: release the copper meeting ONE named point, "
+                         "in millimetres, as if the move had stranded it.  A "
+                         "rotation can strand a whole CHAIN -- the swept "
+                         "endpoint is one link and the next link is met by a "
+                         "surviving track, which `RELEASE_WOULD_STRAND` "
+                         "refuses and is right to.  Naming the next point "
+                         "states the rest of the chain explicitly instead of "
+                         "widening the closure silently; every removal still "
+                         "owes a `--release-net` and PL8 still owes the land "
+                         "a new escape")
     ap.add_argument("--allow-via-in-pad", action="store_true",
                     help="price a move whose destination swallows a barrel "
                          "into a moved land.  D-620 measured this for C17 at "
@@ -306,7 +396,11 @@ def main():
     was_hits = endpoints_on(board, fp)
     was_overlap = courtyard_overlaps(board, a.ref)
 
+    was_orient = round(fp.GetOrientationDegrees(), 6)
     fp.Move(pcbnew.VECTOR2I(a.dx_nm, a.dy_nm))
+    if a.rot_deg:
+        fp.SetOrientationDegrees(fp.GetOrientationDegrees() + a.rot_deg)
+    now_orient = round(fp.GetOrientationDegrees(), 6)
 
     now_pos = (fp.GetPosition().x, fp.GetPosition().y)
     now_pads = pad_boxes(fp)
@@ -317,6 +411,7 @@ def main():
                 if not any(inside(b, h[1], h[2]) for b in now_boxes)]
     new_overlap = sorted(set(now_overlap) - set(was_overlap))
     swallowed = vias_in_pads(board, fp)
+    swept = swept_conflicts(board, fp)
 
     named = []
     for spec in a.release_via:
@@ -324,10 +419,22 @@ def main():
         x, y = (int(round(float(v) * 1e6)) for v in xy.split(","))
         named.append((net, x, y))
 
+    # D-678: a swept endpoint is copper this move puts UNDER A FOREIGN LAND.
+    # It is released exactly as a stranded one is -- same closure, same
+    # `--release-net` allowlist, same signatures -- because the only honest
+    # answer to "your pad landed on somebody's track" is to move the track.
+    extra_pts = []
+    for spec in a.release_point:
+        net, xy = spec.rsplit(":", 1)
+        x, y = (int(round(float(v) * 1e6)) for v in xy.split(","))
+        extra_pts.append((net, x, y))
+    doomed_pts = sorted(set(stranded)
+                        | {(n, x, y) for n, x, y, _p, _pn in swept}
+                        | set(extra_pts))
     released, refusals, kept = [], [], []
-    if a.release and (stranded or named):
+    if a.release and (doomed_pts or named):
         doomed, refusals, kept = release_closure(
-            board, stranded, set(a.release_net), named)
+            board, doomed_pts, set(a.release_net), named)
         released = [sig(board, t) for t in doomed]
         if not refusals:
             for t in doomed:
@@ -335,11 +442,13 @@ def main():
 
     ok = (not new_overlap
           and (not stranded or (a.release and not refusals))
+          and (not swept or (a.release and not refusals))
           and not refusals
           and (not swallowed or a.allow_via_in_pad))
     report = dict(
         schema=2, board=str(a.board), ref=a.ref,
-        dx_nm=a.dx_nm, dy_nm=a.dy_nm,
+        dx_nm=a.dx_nm, dy_nm=a.dy_nm, rot_deg=a.rot_deg,
+        orientation_was_deg=was_orient, orientation_now_deg=now_orient,
         position_was_mm=[v / 1e6 for v in was_pos],
         position_now_mm=[v / 1e6 for v in now_pos],
         pads=len(was_pads),
@@ -349,12 +458,16 @@ def main():
                           for k, v in sorted(now_pads.items())},
         endpoints_on_pads=len(was_hits),
         endpoints_stranded=[[n, x / 1e6, y / 1e6] for n, x, y in stranded],
+        endpoints_swept_under_moved_land=[
+            dict(net=n, at_mm=[x / 1e6, y / 1e6], pad=pad, pad_net=pnet)
+            for n, x, y, pad, pnet in swept],
         release_requested=bool(a.release),
         release_nets=sorted(set(a.release_net)),
         released_objects=sorted(str(s) for s in released),
         released_count=len(released),
         release_refusals=refusals,
         release_named_vias=[[n, x / 1e6, y / 1e6] for n, x, y in named],
+        release_named_points=[[n, x / 1e6, y / 1e6] for n, x, y in extra_pts],
         release_retained_barrels=kept,
         vias_in_moved_pads=swallowed,
         via_in_pad_allowed=bool(a.allow_via_in_pad),

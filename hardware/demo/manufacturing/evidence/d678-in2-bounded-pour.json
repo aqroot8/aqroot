@@ -1,0 +1,73 @@
+{
+  "authoritative_board_sha256": "0285ef45466c1c7dd1823099c35d75d704b50266460e94f339c1b19b5409180d",
+  "authoritative_unchanged": true,
+  "cases": [
+    {
+      "attributable_drc": [],
+      "candidate_sha256": "8d5cabef88280477df1ef58a06b09f0ae5b1eccb9d0bc93daa7de92b9dc396c4",
+      "drc_exit": 0,
+      "drc_types": {
+        "lib_footprint_issues": 199,
+        "solder_mask_bridge": 1
+      },
+      "fill_islands": 2,
+      "filled_area_mm2": 96.1,
+      "inherited_within_baseline": true,
+      "island_area_mm2": [
+        94.1,
+        2.0
+      ],
+      "island_removal_mode": 0,
+      "layer": "In2.Cu",
+      "net": "/01_POWER_TREE/BQ25185_SYS",
+      "net_open_edges_after": 6,
+      "net_open_edges_before": 6,
+      "nets_improved": [],
+      "nets_regressed": [],
+      "open_retained_nets_after": 15,
+      "open_retained_nets_before": 15,
+      "outline": [
+        [
+          58.5,
+          72.0
+        ],
+        [
+          71.0,
+          72.0
+        ],
+        [
+          71.0,
+          108.5
+        ],
+        [
+          58.5,
+          108.5
+        ]
+      ],
+      "retained_open_edges_after": 25,
+      "retained_open_edges_before": 25,
+      "zone_clearance_mm": 0.25,
+      "zone_name": "In2 /01_POWER_TREE/BQ25185_SYS POUR"
+    }
+  ],
+  "net": "/01_POWER_TREE/BQ25185_SYS",
+  "outline": [
+    [
+      58.5,
+      72.0
+    ],
+    [
+      71.0,
+      72.0
+    ],
+    [
+      71.0,
+      108.5
+    ],
+    [
+      58.5,
+      108.5
+    ]
+  ],
+  "schema": 1
+}

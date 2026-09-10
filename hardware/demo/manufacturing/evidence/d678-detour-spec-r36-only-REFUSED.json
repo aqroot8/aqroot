@@ -1,0 +1,328 @@
+{
+ "schema": 1,
+ "note": "D-678 variant B: R36 rotated 180 deg only.  ILIM_VSET is evicted whole (its barrel at 69.25,76.45 is the wall in the 0.5 mm band that is C27.1's only link to the east channel) and re-routed from R36.1's new east land; ISET and TS_MR are moved out of the band and the channel; a 0.84 mm B.Cu lane and the band's west half are reserved for the SYS pour.",
+ "detours": [
+  {
+   "net": "Net-(U11-TS_MR)",
+   "layer": "B.Cu",
+   "width_mm": 0.2,
+   "max_mm": 16.0,
+   "tracks": [
+    {
+     "layer": "B.Cu",
+     "a_mm": [
+      68.5,
+      75.2
+     ],
+     "b_mm": [
+      68.5,
+      76.4
+     ],
+     "width_mm": 0.2
+    },
+    {
+     "layer": "B.Cu",
+     "a_mm": [
+      68.5,
+      76.4
+     ],
+     "b_mm": [
+      68.6,
+      76.4
+     ],
+     "width_mm": 0.2
+    },
+    {
+     "layer": "B.Cu",
+     "a_mm": [
+      68.6,
+      76.4
+     ],
+     "b_mm": [
+      68.6,
+      77.0
+     ],
+     "width_mm": 0.2
+    }
+   ]
+  },
+  {
+   "net": "/01_POWER_TREE/ISET",
+   "layer": "B.Cu",
+   "width_mm": 0.2,
+   "max_mm": 22.0,
+   "tracks": [
+    {
+     "layer": "B.Cu",
+     "a_mm": [
+      69.4,
+      77.8
+     ],
+     "b_mm": [
+      70.9,
+      79.4
+     ],
+     "width_mm": 0.2
+    },
+    {
+     "layer": "B.Cu",
+     "a_mm": [
+      70.2,
+      81.1
+     ],
+     "b_mm": [
+      70.9,
+      79.4
+     ],
+     "width_mm": 0.2
+    },
+    {
+     "layer": "B.Cu",
+     "a_mm": [
+      69.5,
+      81.1
+     ],
+     "b_mm": [
+      70.2,
+      81.1
+     ],
+     "width_mm": 0.2
+    },
+    {
+     "layer": "B.Cu",
+     "a_mm": [
+      66.1,
+      82.4
+     ],
+     "b_mm": [
+      69.5,
+      81.1
+     ],
+     "width_mm": 0.2
+    }
+   ]
+  }
+ ],
+ "reserve": [
+  {
+   "x_mm": 70.6,
+   "y_mm": 76.3,
+   "r_mm": 0.42,
+   "layers": [
+    "B"
+   ],
+   "exempt": [
+    "/01_POWER_TREE/BQ25185_SYS"
+   ]
+  },
+  {
+   "x_mm": 70.6,
+   "y_mm": 76.6,
+   "r_mm": 0.42,
+   "layers": [
+    "B"
+   ],
+   "exempt": [
+    "/01_POWER_TREE/BQ25185_SYS"
+   ]
+  },
+  {
+   "x_mm": 70.6,
+   "y_mm": 76.9,
+   "r_mm": 0.42,
+   "layers": [
+    "B"
+   ],
+   "exempt": [
+    "/01_POWER_TREE/BQ25185_SYS"
+   ]
+  },
+  {
+   "x_mm": 70.6,
+   "y_mm": 77.2,
+   "r_mm": 0.42,
+   "layers": [
+    "B"
+   ],
+   "exempt": [
+    "/01_POWER_TREE/BQ25185_SYS"
+   ]
+  },
+  {
+   "x_mm": 70.6,
+   "y_mm": 77.5,
+   "r_mm": 0.42,
+   "layers": [
+    "B"
+   ],
+   "exempt": [
+    "/01_POWER_TREE/BQ25185_SYS"
+   ]
+  },
+  {
+   "x_mm": 70.6,
+   "y_mm": 77.8,
+   "r_mm": 0.42,
+   "layers": [
+    "B"
+   ],
+   "exempt": [
+    "/01_POWER_TREE/BQ25185_SYS"
+   ]
+  },
+  {
+   "x_mm": 70.6,
+   "y_mm": 78.1,
+   "r_mm": 0.42,
+   "layers": [
+    "B"
+   ],
+   "exempt": [
+    "/01_POWER_TREE/BQ25185_SYS"
+   ]
+  },
+  {
+   "x_mm": 70.6,
+   "y_mm": 78.4,
+   "r_mm": 0.42,
+   "layers": [
+    "B"
+   ],
+   "exempt": [
+    "/01_POWER_TREE/BQ25185_SYS"
+   ]
+  },
+  {
+   "x_mm": 70.6,
+   "y_mm": 78.7,
+   "r_mm": 0.42,
+   "layers": [
+    "B"
+   ],
+   "exempt": [
+    "/01_POWER_TREE/BQ25185_SYS"
+   ]
+  },
+  {
+   "x_mm": 70.6,
+   "y_mm": 79.0,
+   "r_mm": 0.42,
+   "layers": [
+    "B"
+   ],
+   "exempt": [
+    "/01_POWER_TREE/BQ25185_SYS"
+   ]
+  },
+  {
+   "x_mm": 70.6,
+   "y_mm": 79.3,
+   "r_mm": 0.42,
+   "layers": [
+    "B"
+   ],
+   "exempt": [
+    "/01_POWER_TREE/BQ25185_SYS"
+   ]
+  },
+  {
+   "x_mm": 70.6,
+   "y_mm": 79.6,
+   "r_mm": 0.42,
+   "layers": [
+    "B"
+   ],
+   "exempt": [
+    "/01_POWER_TREE/BQ25185_SYS"
+   ]
+  },
+  {
+   "x_mm": 70.6,
+   "y_mm": 79.9,
+   "r_mm": 0.42,
+   "layers": [
+    "B"
+   ],
+   "exempt": [
+    "/01_POWER_TREE/BQ25185_SYS"
+   ]
+  },
+  {
+   "x_mm": 70.6,
+   "y_mm": 80.2,
+   "r_mm": 0.42,
+   "layers": [
+    "B"
+   ],
+   "exempt": [
+    "/01_POWER_TREE/BQ25185_SYS"
+   ]
+  },
+  {
+   "x_mm": 67.9,
+   "y_mm": 76.4,
+   "r_mm": 0.42,
+   "layers": [
+    "B"
+   ],
+   "exempt": [
+    "/01_POWER_TREE/BQ25185_SYS"
+   ]
+  },
+  {
+   "x_mm": 68.2,
+   "y_mm": 76.4,
+   "r_mm": 0.42,
+   "layers": [
+    "B"
+   ],
+   "exempt": [
+    "/01_POWER_TREE/BQ25185_SYS"
+   ]
+  },
+  {
+   "x_mm": 68.5,
+   "y_mm": 76.4,
+   "r_mm": 0.42,
+   "layers": [
+    "B"
+   ],
+   "exempt": [
+    "/01_POWER_TREE/BQ25185_SYS"
+   ]
+  },
+  {
+   "x_mm": 68.8,
+   "y_mm": 76.4,
+   "r_mm": 0.42,
+   "layers": [
+    "B"
+   ],
+   "exempt": [
+    "/01_POWER_TREE/BQ25185_SYS"
+   ]
+  },
+  {
+   "x_mm": 69.1,
+   "y_mm": 76.4,
+   "r_mm": 0.42,
+   "layers": [
+    "B"
+   ],
+   "exempt": [
+    "/01_POWER_TREE/BQ25185_SYS"
+   ]
+  },
+  {
+   "x_mm": 69.4,
+   "y_mm": 76.4,
+   "r_mm": 0.42,
+   "layers": [
+    "B"
+   ],
+   "exempt": [
+    "/01_POWER_TREE/BQ25185_SYS"
+   ]
+  }
+ ]
+}

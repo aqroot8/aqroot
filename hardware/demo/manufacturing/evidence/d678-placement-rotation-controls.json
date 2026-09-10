@@ -1,0 +1,73 @@
+{
+ "all_controls_behaved": true,
+ "authority_unchanged": true,
+ "board_sha256": "0285ef45466c1c7dd1823099c35d75d704b50266460e94f339c1b19b5409180d",
+ "controls": [
+  {
+   "applied": false,
+   "behaved": true,
+   "expected": "FAIL, naming the swept endpoint",
+   "got": "FAIL",
+   "name": "C1_rotation_without_release_REFUSES",
+   "swept": [
+    {
+     "at_mm": [
+      69.475,
+      75.0
+     ],
+     "net": "GND",
+     "pad": "C27.1",
+     "pad_net": "/01_POWER_TREE/BQ25185_SYS"
+    }
+   ]
+  },
+  {
+   "behaved": true,
+   "expected": "PASS, exactly one released object",
+   "got": "PASS",
+   "name": "C2_rotation_with_release_PASSES_and_takes_exactly_that_copper",
+   "released": [
+    "('trk', 'GND', 'B.Cu', 69475000, 75000000, 69500000, 73600000, 300000)"
+   ]
+  },
+  {
+   "behaved": true,
+   "checks": {
+    "PL1_reference_set_unchanged": true,
+    "PL2_only_claimed_parts_moved": true,
+    "PL3_land_patterns_travelled_whole": true,
+    "PL4_no_new_courtyard_overlap": true,
+    "PL5_nothing_stranded": true,
+    "PL6_screen_is_not_vacuous": true,
+    "PL7_moved_pads_clear_foreign_copper": true,
+    "PL8_released_pads_reconnected": true,
+    "PL9_no_via_under_a_moved_land": true
+   },
+   "expected": "PASS",
+   "got": "PASS",
+   "name": "C3_PL_rotation_CLAIMED_passes_all_nine"
+  },
+  {
+   "PL2": false,
+   "behaved": true,
+   "expected": "FAIL on PL2",
+   "got": "FAIL",
+   "name": "C4_PL_rotation_NOT_claimed_fails_PL2"
+  },
+  {
+   "PL2": false,
+   "behaved": true,
+   "expected": "FAIL on PL2 with 90 deg claimed against a 180 deg rotation",
+   "got": "FAIL",
+   "name": "C5_PL_WRONG_angle_claimed_fails_PL2"
+  }
+ ],
+ "decision": "D-678",
+ "layer_test": {
+  "note": "BEFORE the layer test, the same C27 rotation reported THREE swept endpoints; two of them were /09_COMMUNITY_HEADER/EXT_SCL on F.Cu under a B.Cu SMD land -- copper on the far side of the laminate.  A land is copper on the layers it occupies and on no other, and without that test the clause would refuse every rotation on this board.",
+  "reported_with_layer_test": 1,
+  "reported_without_layer_test": 3
+ },
+ "question": "does `apply_part_shift.py --rot-deg` refuse a rotation that puts foreign copper under a moved land, and does `checks/placement_contract.py` refuse a rotation nobody claimed?",
+ "schema": 1
+}

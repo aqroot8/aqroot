@@ -13,6 +13,84 @@
 > This file references DEVICE_SPEC rather than duplicating full specs.
 
 ## 1. Authoritative HEAD
+- **Demo D-678 (THE ONE-EDGE TRANSACTION THIS BOARD WOULD HAVE ACCEPTED PUTS
+  THE CHARGER'S OWN GROUND ON AN 8.5 mm2 ISLAND, AND `PP2` SAID SO AFTER THE
+  GATE DID NOT):**  **NO COPPER PROMOTED — a transaction was DRAWN, GATED at
+  15 of 15 clauses with `refused_clauses []` and 25 -> 24 retained open edges,
+  PROMOTED, and then REVERTED on `verify_promotion.py`'s `PP2`.**  Authority
+  **UNCHANGED** at
+  `0285ef45466c1c7dd1823099c35d75d704b50266460e94f339c1b19b5409180d`; retained
+  open edges 25 -> 25, open retained nets 15 -> 15.  `hardware/demo/kicad`,
+  `hardware/demo/fab` and `hardware/beta-v2` **UNTOUCHED**.  Standing suite
+  **14/14 RAN, 13/13 COMPARABLE IDENTICAL to `d677`,
+  `all_identical_where_comparable` true, 1 INCOMPARABLE and NAMED, `vacuous`
+  false** (`evidence/d678-contract-regression.json`); baselines emitted for
+  D-679.  `protected_copper.py` **IDENTICAL**.
+  **(1) `BQ25185_SYS`'s SIX EDGES ARE ONE POUR IN SIX PIECES AND THE PIECES ARE
+  NAMED.**  New tracked `evidence/d678-pour-cut-probe.py` removes named copper
+  from a PRIVATE COPY, refills with `pcbnew.ZONE_FILLER` and reads the pad
+  partition off `GetConnectivity`.  Twenty cases
+  (`evidence/d678-pour-cut-sets.json`): D-657's ten-unit set and D-664's
+  eight-unit set BOTH still reproduce; **a SMALLER set exists** — the
+  `Net-(U12-PG)` diagonal plus the `Net-(U12-PS_SYNC)` five-chain, **six units
+  across TWO nets, TWO edges, pour 78.844 -> 94.245 mm2** — and single removals
+  move NOTHING, so the set is joint or it is nothing.
+  **(2) THE POUR IS NOT AN OBSTACLE TO THE ROUTER.**  `obstacle_model_contract`
+  states the model is tracks and barrels and NO ZONE, so a relay puts its track
+  back in the corridor the pour needs (`PS_SYNC` 18.297 mm against 18.624, zero
+  vias).  A reserve disc is the only instrument that says otherwise, and the
+  **WROOM ANTENNA KEEPOUT `(64.5,104.0)-(85.5,152.0)` on ALL SIX LAYERS** seals
+  `U12`'s south-east, so reserving the corridor leaves `PG`/`PS_SYNC`
+  `NO_PATH` at 0.0250 mm with a 45 mm budget on `F`/`B`/`In2`.
+  **(3) THE `U11` EAST CHANNEL WILL NOT CARRY BOTH**
+  (`evidence/d678-relay-wall-u11.json`, twelve gate runs): the channel
+  `x 69.2-71.0` is the pour's only path to `C27.1` AND `U11`'s east pad row's
+  only escape; the **band `y 76.2-76.6`, 0.50 mm tall**, is `C27.1`'s only link
+  into it and every obstacle that crosses it is >= 0.70 mm wide; the **`R36`
+  gap `x 68.325-69.175`, 0.850 mm**, is the only westward exit and
+  `ILIM_VSET` occupies 0.475 mm of it.
+  **(4) WHAT WORKED, AND WHY IT WAS STILL REFUSED.**  Rotating `C27` 180 deg
+  (a symmetric 1206) puts its `SYS` land on the channel and reduces D-664's
+  eight-unit cut to TWO; with `R36` rotated too, `ILIM_VSET` evicted whole and
+  the `ISET` chain re-laid through the freed gap, the gate returned **15/15,
+  `refused_clauses []`, 25 -> 24, `nets_regressed []`, `attributable_drc []`,
+  `ISET` 8.372 -> 6.495 mm** (`evidence/d678-gate-c27-r36-REFUSED.json`).
+  `verify_promotion.py` then **FAILED `pour_partition_intact`**: the rotation
+  swaps which side of `C27` carries ground, and the side it carries it to is
+  `U11`'s own **8.527 mm2** island — `GND` island 28 splits 22.354 ->
+  11.972 + 8.527, bar **2.190 A** (`RETURN_NEIGHBOUR_RAIL`, `C27.1` is
+  `SYS_MAIN`), price **1.226 A** (`FRAGMENT_COPPER`, `U11.4`'s 0.960 x
+  0.400 mm tube), `margin_x` **0.56**
+  (`evidence/d678-verify-c27-r36-REFUSED.json`).  No barrel widens a 0.400 mm
+  land-pattern neck, so the promotion was REVERTED byte for byte.
+  **(5) AND THE GAP IS NAMED: A PLACEMENT CHANGE REACHES THE BOARD WITHOUT
+  PASSING `PP2`.**  The gate's `pour_partition` clause compares its own PRE —
+  the board WITH the shift already applied — so a pour split the SHIFT caused
+  is invisible to it.  That is a real framework defect and closing it is
+  D-679's first item.
+  **(6) TWO FRAMEWORK UNITS, FIVE CONTROLS, ALL BEHAVED.**
+  `apply_part_shift.py --rot-deg` (rotation, with a new LAYER-AWARE
+  `swept_conflicts` clause that refuses a turn which puts foreign copper under
+  a moved land, `--release-point NET:X,Y` for the rest of a swept chain, and a
+  pour-backed exemption for a released chain's far end) and
+  `checks/placement_contract.py --move REF:DX:DY:ROT` (`PL2` checks the
+  rotation delta, `PL3` compares the land pattern THROUGH the claimed turn).
+  Without the layer test the same rotation reported THREE conflicts, two of
+  them `F.Cu` copper under a `B.Cu` land.  Controls in
+  `evidence/d678-placement-rotation-controls.json`.
+  **(7) THE `In2` BOUNDED POUR IS PRICED AND VACUOUS.**  D-604's named lever,
+  run for the first time (`evidence/d678-in2-bounded-pour.json`): 96.1 mm2 in
+  TWO islands, `drc_exit` 0, `attributable_drc []`, and **ZERO edges closed** —
+  the 94.1 mm2 island stops at y = 99.158 and overlaps no orphan at all, so
+  `--bridge` reports *"this island overlaps no other cluster's copper on
+  another layer"* for every one.  It would have reserved `In2` for nothing.
+  **NEXT:** (1) put a promotion's PRE board — the one `HEAD` holds, before any
+  shift — through `pour_partition_contract.py`.  (2) `BQ25185_SYS` is still
+  **6 of 25** and the **#1 blocker**; its cheapest measured transaction is now
+  the six-unit two-net set above and its wall is the RELAY.  (3) `C27.1` needs
+  `C27` rotated AND a `GND` return for `C27.2` that is not `U11`'s island.
+  (4) D-677's NEXT items 2-5 stand.  (5) `hardware/demo/fab` is FRESH at
+  `0285ef45`.
 - **Demo D-677 (THE DRILL-TO-COPPER RULE THIS BOARD HAS BEEN REFUSING ITSELF
   WITH IS 25 % STRICTER THAN THE SHOP THAT WILL BUILD IT, AND ALL FIVE
   "INHERITED" ERRORS WERE ONE CLASS):**  **COPPER PROMOTED, AND A FABRICATION

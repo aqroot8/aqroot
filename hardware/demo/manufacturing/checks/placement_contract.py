@@ -19,10 +19,14 @@ MICRONS.  So this file is the invariant that makes moving a part reviewable:
 
     PL1  the board holds exactly the same footprint REFERENCES it held before
     PL2  exactly the CLAIMED references moved, each by exactly the claimed
-         (dx, dy) in nanometres, and every other footprint's position,
-         orientation and layer are IDENTICAL
+         (dx, dy) in nanometres AND by exactly the claimed ROTATION in degrees
+         (D-678), and every other footprint's position, orientation and layer
+         are IDENTICAL
     PL3  a moved part carried its LAND PATTERN whole: same pad numbers, same
-         sizes, same shapes, same offsets from the footprint origin
+         sizes, same shapes, and offsets from the footprint origin that are
+         the PRE offsets turned through exactly the claimed rotation (D-678 --
+         with no rotation claimed this is the identity and reads as it always
+         did)
     PL4  no NEW footprint-bounding-box overlap was created
     PL5  NOTHING WAS STRANDED.  Every track or via endpoint that lay inside a
          moved part's pad BEFORE still lies inside that pad AFTER.  This is the
@@ -75,6 +79,7 @@ clauses that keep it reviewable:
 
 import argparse
 import json
+import math
 import subprocess
 import sys
 import tempfile
@@ -141,6 +146,34 @@ def inside(box, x, y):
     return box[0] <= x <= box[2] and box[1] <= y <= box[3]
 
 
+def _norm_deg(d):
+    """A rotation delta in (-180, 180], to six places."""
+    return round(((float(d) + 180.0) % 360.0) - 180.0, 6)
+
+
+def _turn(lands, deg):
+    """`lands` with each pad OFFSET turned through `deg` about the origin.
+
+    D-678.  KiCad's footprint rotation is clockwise-positive in board
+    coordinates (y grows downward), which is what `FOOTPRINT::SetOrientation`
+    applies to every pad, so the same sign convention is used here.  The pad's
+    own size and shape do not change when the FOOTPRINT turns -- only where the
+    land sits and which way it faces -- so this rotates the offset and leaves
+    the rest of the tuple alone.  Rounded to the nanometre because that is the
+    unit the board is written in.
+    """
+    if not deg:
+        return sorted(lands)
+    th = math.radians(float(deg))
+    c, s_ = math.cos(th), math.sin(th)
+    out = []
+    for num, sx, sy, shape, ox, oy in lands:
+        nx = ox * c - oy * s_
+        ny = ox * s_ + oy * c
+        out.append((num, sx, sy, shape, int(round(nx)), int(round(ny))))
+    return sorted(out)
+
+
 def foreign_copper_hits(path, refs, clearance_nm):
     """PL7: copper of a FOREIGN net inside a moved pad's clearance envelope."""
     import pcbnew
@@ -200,19 +233,24 @@ def judge(pre, post, claimed, released=()):
     for ref in sorted(set(fpre) & set(fpost)):
         a, b = fpre[ref], fpost[ref]
         d = (b["x"] - a["x"], b["y"] - a["y"])
-        same_pose = (a["orient"] == b["orient"] and a["layer"] == b["layer"])
+        dr = _norm_deg(b["orient"] - a["orient"])
+        same_layer = a["layer"] == b["layer"]
         if ref in claimed:
-            if d != tuple(claimed[ref]) or not same_pose:
-                wrong.append(dict(ref=ref, want=list(claimed[ref]),
-                                  got=list(d), pose_same=same_pose))
-        elif d != (0, 0) or not same_pose:
+            want = claimed[ref]
+            if (d != tuple(want[:2]) or abs(dr - _norm_deg(want[2])) > 1e-6
+                    or not same_layer):
+                wrong.append(dict(ref=ref, want=list(want),
+                                  got=list(d) + [dr], layer_same=same_layer))
+        elif d != (0, 0) or abs(dr) > 1e-6 or not same_layer:
             unclaimed_moved.append(dict(ref=ref, delta_nm=list(d),
-                                        pose_same=same_pose))
+                                        rot_deg=dr, layer_same=same_layer))
     pl2 = pl1 and not wrong and not unclaimed_moved
 
+    # PL3: the land pattern travelled whole THROUGH THE CLAIMED ROTATION.  With
+    # no rotation claimed `_turn` is the identity and this is the old test.
     pl3 = [ref for ref in claimed
            if ref in fpre and ref in fpost
-           and fpre[ref]["lands"] != fpost[ref]["lands"]]
+           and _turn(fpre[ref]["lands"], claimed[ref][2]) != fpost[ref]["lands"]]
 
     new_overlap = sorted(overlaps(fpost) - overlaps(fpre))
 
@@ -307,9 +345,12 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--ref", default="HEAD",
                     help="git revision holding the PRE-promotion board")
-    ap.add_argument("--move", action="append", default=[], metavar="REF:DX:DY",
+    ap.add_argument("--move", action="append", default=[],
+                    metavar="REF:DX:DY[:ROT]",
                     help="a reference this promotion claims to have MOVED, and "
-                         "the exact delta in nanometres.  Repeatable")
+                         "the exact delta in nanometres, optionally followed "
+                         "by the exact ROTATION in degrees (D-678).  "
+                         "Repeatable")
     ap.add_argument("--release", action="append", default=[],
                     metavar="REF.PIN",
                     help="a land whose escape this promotion claims to have "
@@ -327,8 +368,15 @@ def main():
 
     claimed = {}
     for spec in a.move:
-        ref, dx, dy = spec.split(":")
-        claimed[ref] = (int(dx), int(dy))
+        parts = spec.split(":")
+        if len(parts) == 3:
+            ref, dx, dy = parts
+            rot = 0.0
+        elif len(parts) == 4:
+            ref, dx, dy, rot = parts
+        else:
+            ap.error("--move wants REF:DX:DY or REF:DX:DY:ROT, got %r" % spec)
+        claimed[ref] = (int(dx), int(dy), float(rot))
 
     sys.path.insert(0, "/usr/lib/python3/dist-packages")
     tmp = Path(tempfile.mkdtemp(prefix="aqroot-demo-placement-"))

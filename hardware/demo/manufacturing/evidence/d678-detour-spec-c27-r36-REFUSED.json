@@ -1,0 +1,218 @@
+{
+ "schema": 1,
+ "note": "D-678: C27 and R36 both rotated 180 deg -- the SYS bulk cap's own land now faces the east channel and the ILIM_VSET land now faces it too, so the charger's programming resistor no longer has to reach ACROSS the R36.1/R36.2 gap.  This spec re-lays the ISET chain through that freed gap and reserves a 0.84 mm B.Cu lane (x 70.18-71.02, y 75.88-80.72) for the SYS pour.",
+ "detours": [
+  {
+   "net": "/01_POWER_TREE/ISET",
+   "layer": "B.Cu",
+   "width_mm": 0.2,
+   "max_mm": 22.0,
+   "tracks": [
+    {
+     "layer": "B.Cu",
+     "a_mm": [
+      69.4,
+      77.8
+     ],
+     "b_mm": [
+      70.9,
+      79.4
+     ],
+     "width_mm": 0.2
+    },
+    {
+     "layer": "B.Cu",
+     "a_mm": [
+      70.2,
+      81.1
+     ],
+     "b_mm": [
+      70.9,
+      79.4
+     ],
+     "width_mm": 0.2
+    },
+    {
+     "layer": "B.Cu",
+     "a_mm": [
+      69.5,
+      81.1
+     ],
+     "b_mm": [
+      70.2,
+      81.1
+     ],
+     "width_mm": 0.2
+    },
+    {
+     "layer": "B.Cu",
+     "a_mm": [
+      66.1,
+      82.4
+     ],
+     "b_mm": [
+      69.5,
+      81.1
+     ],
+     "width_mm": 0.2
+    }
+   ]
+  }
+ ],
+ "reserve": [
+  {
+   "x_mm": 70.6,
+   "y_mm": 76.3,
+   "r_mm": 0.42,
+   "layers": [
+    "B"
+   ],
+   "exempt": [
+    "/01_POWER_TREE/BQ25185_SYS"
+   ]
+  },
+  {
+   "x_mm": 70.6,
+   "y_mm": 76.6,
+   "r_mm": 0.42,
+   "layers": [
+    "B"
+   ],
+   "exempt": [
+    "/01_POWER_TREE/BQ25185_SYS"
+   ]
+  },
+  {
+   "x_mm": 70.6,
+   "y_mm": 76.9,
+   "r_mm": 0.42,
+   "layers": [
+    "B"
+   ],
+   "exempt": [
+    "/01_POWER_TREE/BQ25185_SYS"
+   ]
+  },
+  {
+   "x_mm": 70.6,
+   "y_mm": 77.2,
+   "r_mm": 0.42,
+   "layers": [
+    "B"
+   ],
+   "exempt": [
+    "/01_POWER_TREE/BQ25185_SYS"
+   ]
+  },
+  {
+   "x_mm": 70.6,
+   "y_mm": 77.5,
+   "r_mm": 0.42,
+   "layers": [
+    "B"
+   ],
+   "exempt": [
+    "/01_POWER_TREE/BQ25185_SYS"
+   ]
+  },
+  {
+   "x_mm": 70.6,
+   "y_mm": 77.8,
+   "r_mm": 0.42,
+   "layers": [
+    "B"
+   ],
+   "exempt": [
+    "/01_POWER_TREE/BQ25185_SYS"
+   ]
+  },
+  {
+   "x_mm": 70.6,
+   "y_mm": 78.1,
+   "r_mm": 0.42,
+   "layers": [
+    "B"
+   ],
+   "exempt": [
+    "/01_POWER_TREE/BQ25185_SYS"
+   ]
+  },
+  {
+   "x_mm": 70.6,
+   "y_mm": 78.4,
+   "r_mm": 0.42,
+   "layers": [
+    "B"
+   ],
+   "exempt": [
+    "/01_POWER_TREE/BQ25185_SYS"
+   ]
+  },
+  {
+   "x_mm": 70.6,
+   "y_mm": 78.7,
+   "r_mm": 0.42,
+   "layers": [
+    "B"
+   ],
+   "exempt": [
+    "/01_POWER_TREE/BQ25185_SYS"
+   ]
+  },
+  {
+   "x_mm": 70.6,
+   "y_mm": 79.0,
+   "r_mm": 0.42,
+   "layers": [
+    "B"
+   ],
+   "exempt": [
+    "/01_POWER_TREE/BQ25185_SYS"
+   ]
+  },
+  {
+   "x_mm": 70.6,
+   "y_mm": 79.3,
+   "r_mm": 0.42,
+   "layers": [
+    "B"
+   ],
+   "exempt": [
+    "/01_POWER_TREE/BQ25185_SYS"
+   ]
+  },
+  {
+   "x_mm": 70.6,
+   "y_mm": 79.6,
+   "r_mm": 0.42,
+   "layers": [
+    "B"
+   ],
+   "exempt": [
+    "/01_POWER_TREE/BQ25185_SYS"
+   ]
+  },
+  {
+   "x_mm": 70.6,
+   "y_mm": 79.9,
+   "r_mm": 0.42,
+   "layers": [
+    "B"
+   ],
+   "exempt": [
+    "/01_POWER_TREE/BQ25185_SYS"
+   ]
+  },
+  {
+   "x_mm": 70.6,
+   "y_mm": 80.2,
+   "r_mm": 0.42,
+   "layers": [
+    "B"
+   ],
+   "exempt": [
+    "/01_POWER_TREE/BQ25185_SYS"
+   ]
+  }
+ ]
+}
