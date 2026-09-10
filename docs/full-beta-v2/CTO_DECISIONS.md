@@ -1,3 +1,273 @@
+# D-680 · 2026-09-10 · Demo — THE ACCESSORY BOOST IS A CLOSED ROOM: ITS SYS EDGE CLOSES AT 18.883 mm AND THE GATE PASSES IT 15 OF 15, AND IT IS REFUSED ANYWAY BECAUSE THE PRICE IS A 78 mm FEEDBACK TRACE
+
+    authority  0285ef45466c1c7dd1823099c35d75d704b50266460e94f339c1b19b5409180d
+            -> 0285ef45466c1c7dd1823099c35d75d704b50266460e94f339c1b19b5409180d   UNCHANGED
+    retained open edges 25 -> 25      open retained nets 15 -> 15
+    `hardware/demo/kicad`, `hardware/demo/fab`, `hardware/beta-v2`  UNTOUCHED
+    fourteen gate runs, eight read-only probes, three framework corrections
+    standing suite 14/14 RAN, 13/13 COMPARABLE IDENTICAL to `d678`, `vacuous` false
+
+**NO COPPER PROMOTED.**  A transaction was DRAWN, GATED at **15 of 15 clauses
+with `refused_clauses []`** and **25 -> 24 retained open edges**, and then
+**REFUSED BY ENGINEERING JUDGEMENT** — the same shape as D-678, for a different
+reason: not a clause, but a 78.759 mm feedback trace no clause scores.
+
+The subject is the **`U21` TPS61023 accessory boost**, which on this board is
+**completely dead**: `/01_POWER_TREE/BQ25185_SYS`'s `{L4.1, U21.3}` island is
+severed from the rail — the converter has **no input** — and
+`/01_POWER_TREE/ACC_5V_LX` carries **zero tracks** — it has **no switch node**.
+`AQROOT_DEMO_SCOPE` requires switched 5 V accessory power, so these two edges
+are not two of twenty-five: they are the feature.
+
+## 1. THE POCKET IS SEALED AT EVERY WIDTH, AND WIDTH WAS NEVER THE QUESTION
+
+`evidence/d680-pocket-width-ladder.py` floods `maze3d.Field`'s own free map out
+of the `BQ25185_SYS` trunk on the outer layers, with a through-via move wherever
+`Field.via_ok` is set, and asks whether `L4.1`'s land is reached.
+
+    0.800  0.700  0.600  0.500  0.400  0.300 mm      L4.1 land: UNREACHABLE at all six
+
+`L4.1`'s land is **FREE** on `B.Cu` and **not reachable**.  The `U21`/`L4`
+pocket is a closed room.  So the `SYS_MAIN` netclass width, the `.kicad_dru`
+0.300 mm floor and D-185's 2.19 A peak ruling are all beside the point for this
+edge — **none of them opens it**, and `--trunk-floor` would have been spent for
+nothing.
+
+## 2. THE WALL IS EXACTLY TWO 0.200 mm SIGNALS, AND IT IS A JOINT WALL
+
+`evidence/d680-pocket-eviction-flood.py` runs the same flood under
+`screen_corridor_blockers.Without`, so the eviction it reports is the eviction
+`route_maze_batch --evict` executes.  Window `(55.5, 32.0)-(58.0, 39.5)`, at the
+full 0.800 mm rail width:
+
+    control                                   SEALED
+    /01_POWER_TREE/ACC_5V_FB          alone   SEALED
+    /09_COMMUNITY_HEADER/EXT_SCL_BUF  alone   SEALED
+    /09_COMMUNITY_HEADER/EXT_SCL      alone   SEALED
+    FB + EXT_SCL                              SEALED
+    EXT_SCL_BUF + EXT_SCL                     SEALED
+    FB + EXT_SCL_BUF                          OPEN   <- trunk reached on F.Cu AND B.Cu
+    FB + EXT_SCL_BUF + EXT_SCL                OPEN
+
+`ACC_5V_FB`'s `B.Cu` vertical at x 56.1–56.2 and `EXT_SCL_BUF`'s at x 56.65–56.85.
+**Two 0.200 mm signals, and neither alone moves it.**
+
+## 3. `--join-max-mm` IS ALSO THE WAVEFRONT BUDGET, AND FOUR GATE RUNS PAID FOR IT
+
+Four runs reported `NO_PATH` for a join that **exists**.
+`evidence/d680-route-join-budget.py` calls `maze3d.route_join` directly on the
+evicted board:
+
+    max_mm = None  (WAVE_STEPS 6000)   ok=True   22.768 mm, 2 vias
+    max_mm = 45                        NO_PATH
+    max_mm = 120                       NO_PATH
+
+`route_maze_batch.py` line 3609 derives the wavefront budget from
+`--join-max-mm` as `max_mm * MM / G` **steps**, so a bound that reads as an
+ELECTRICAL length cap silently starves the search — at `--grid 50000` a 30 mm
+cap is **600 wavefront steps**.  **`--join-max-mm 0` is what asks the
+question.**  Every earlier `NO_PATH` on this board taken under a
+`--join-max-mm` bound is a refusal of the BUDGET, not of the board.
+
+## 4. THE EDGE CLOSES, THE GATE PASSES IT, AND IT IS STILL WRONG
+
+Arm `sysJ` — `--evict-whole` on both walls, all three nets requested,
+`--body-landing` (without it the stitch lays a barrel that connects nothing,
+which is one `via_dangling` **and** blocks the join that would have worked):
+
+    refused_clauses []              retained open edges 25 -> 24
+    nets_improved ['/01_POWER_TREE/BQ25185_SYS']   nets_regressed []
+    attributable_drc []             drc_types == the inherited baseline exactly
+
+**And the `SYS` copper is good engineering**: 18.883 mm at 0.800 mm with 2 vias,
+from `L2.1` (57.715, 18.400) south-east down the west side of the
+community-header field into `L4.1`'s own land at (57.625, 34.750).  A clean,
+wide rail.
+
+**The price is not.**  `--evict-whole` re-routes `/01_POWER_TREE/ACC_5V_FB` at
+**78.759 mm with 5 vias**, around the TOP of the board and across `In2`, for a
+net whose three lands span **7 mm**.  `ACC_5V_FB` is the TPS61023's **feedback
+node, driven by a 732 k / 100 k divider**.  Seventy-eight millimetres of
+high-impedance trace with five layer changes beside a switching converter is not
+a feedback trace; it is an antenna wired to the error amplifier.
+`/09_COMMUNITY_HEADER/EXT_SCL_BUF` comes back at **98.593 mm with 4 vias**.
+
+No DRC rule and no gate clause scores either number.  **The transaction is
+recorded, reproducible, and NOT PROMOTED.**
+
+## 5. AND THE POCKET HOLDS TWO OF THE THREE
+
+The honest alternative is to keep both signals LOCAL and move only the two
+`B.Cu` chains that wall the pocket, re-laid between their OWN ends around discs
+reserved on the `SYS` lane (`evidence/d680-fb-buf-relay-spec.json`, the D-607
+`--detour-spec` shape).
+
+    sysK   reserve r = 0.90 mm, grid 0.050, budget 18 mm   every_detour_relaid FALSE
+    sysL   reserve r = 0.75 mm, grid 0.025, budget 18 mm   every_detour_relaid FALSE
+    sysM   reserve r = 0.75 mm, grid 0.050, budget 60 mm   every_detour_relaid FALSE
+
+all three: **both relays `NO_PATH` at 0.200 mm once the lane is reserved.**
+0.75 mm is the honest lane and not a guess — 0.400 mm of `SYS` half-width plus
+the 0.250 mm `SYS_MAIN` routed clearance plus 0.100 mm of the signal's own
+half-width — and `sysM` re-asks at a **60 mm budget** precisely because section 3
+says a refusal under a `max_mm` is a refusal of the budget until it is re-asked.
+It is not.  **The pocket carries two conductors of the three that want it.**
+
+## 5b. SO A PART MOVED — AND ONE RESISTOR IS ENOUGH TO OPEN THE POCKET
+
+`ACC_5V_FB`'s divider sits **7 mm** from `U21.1`, and its `B.Cu` vertical at
+x 56.1–56.2 exists only because the feedback node has to climb from the divider
+at y ≈ 33 to the `FB` pin at y = 40.4 **through the corridor**.  Move the
+divider and the wall goes with it.
+
+`R100` (100 k) was moved +0.400 / +9.400 mm to **(58.900, 42.400)** on a
+candidate, releasing the twelve objects the closure names.  On that board, the
+same flood asks the same question:
+
+    candidate, NO eviction at all              SEALED   (2071 cells at 0.050 mm)
+    candidate, EXT_SCL_BUF alone evicted       OPEN     at 0.050 AND 0.025 mm
+
+**One resistor and ONE 0.200 mm signal, where the authority needs two signals.**
+Two gate runs on that candidate (`fbA` windowed, `fbB` whole) both closed
+`BQ25185_SYS` — 21.602 mm and 20.448 mm, 2 vias — and both were **REFUSED**, and
+the refusals are the useful part:
+
+  * **`R100`'s destination is not clean.**  Its own land ends up **0.0482 mm**
+    from `/ACC_5V_BOOST_EN`'s `B.Cu` diagonal, plus a new `hole_clearance` and
+    two extra `solder_mask_bridge`.  `apply_part_shift`'s clauses did not see it
+    because they measure ENDPOINTS and COURTYARDS, and a track that merely
+    CROSSES a moved land has neither.  New `evidence/d680-placement-site-clearance.py`
+    measures the real thing — every land against every foreign object, by
+    `SHAPE.Collide` bisection, the same predicate KiCad's DRC evaluates — and
+    swept thirty destinations for `R100`: **the band south of `U21` is not empty
+    real estate, it is a signal field.**  `ACC_DETECT_N`, `ACC_5V_BOOST_EN`,
+    `ACC_5V_SW`, `ACC_POWER_FAULT_N` and `ACC_5V_ILIM` cross it, and only
+    (59.400, 41.900) / (59.900, 41.900) clear 0.225 mm — and those two overlap
+    `C65`'s courtyard, which is the part `ACC_5V_LX` needs moved.
+  * **`ACC_5V_FB` re-routes at 170.584 mm with 13 vias** once its lands are
+    bare.  Same verdict as section 4 and worse.
+
+So the divider move is right and its DESTINATION is an open floorplan question,
+which is a much smaller question than the one this decision started with.
+
+## 6. `/01_POWER_TREE/ACC_5V_LX` — THE ARITHMETIC NAMES THE PART TO MOVE
+
+D-679 called this `WIDTH_NECKABLE` and named a licence.  It is not a licence
+problem.
+
+`evidence/d680-lx-escape-probe.py` asks `maze3d.pad_escapes` for `U21.5` at neck
+reaches 0.00 / 0.30 / 0.50 / 0.80 mm: **ZERO escapes at every one**.  The reason
+is exact geometry, not a search.  The TRUNK is 0.600 mm — `SWITCH_NODE`'s
+netclass width, and the `.kicad_dru` section 5 table prices **no current for
+that class**, so `--trunk-floor` refuses the descent to its own 0.400 mm floor.
+A 0.600 mm trunk needs its launch at
+
+    x >= 59.257   to clear U21.4 and U21.6      (0.500 mm from a 0.35 mm-wide pin's land)
+    x <= 59.086   to clear C65.1's land
+
+**The window is empty.**  A necked escape must END where the TRUNK can START,
+and with `C65` where it is there is nowhere for it to end.  No reach and no
+licence changes that.
+
+The CORRIDOR agrees.  Flooding from `L4.2` with `GND` and `ACC_5V_RAW` held out
+of `(57,37)-(64,42)`: `U21.5`'s land is reached at **0.200 mm**, the escape
+corridor at (59.10, 39.90) at **0.300 mm**, and **nothing at 0.400 or 0.600 mm**.
+Even the corridor is under the `SWITCH_NODE` floor while `C65` is there.
+
+**So `C65` moves, and the destination is measured** — nine offsets through
+`apply_part_shift.py --report`:
+
+    dx -1.135  dy +1.800  ->  (59.900, 42.275)
+      courtyard_overlaps_new []   vias_in_moved_pads 0   swept 0   stranded 6
+      output loop U21.6->C65.1 + U21.4->C65.2:  5.21 mm today -> 5.63 mm
+
+and the neighbours are refused **by name**: `+0.200 mm` east puts two `GND`
+barrels inside `C65.2` — the same clause fires on a **NULL** move, so that is a
+pre-existing construction and not a consequence of the shift; `dy +1.425` overlaps
+`U21`'s footprint box; `dx -1.435` costs one via-in-pad and one swept conflict;
+`dx -0.500` and `-0.800` are clean but lengthen the output loop to 6.29 / 5.95 mm.
+
+What is still owed: the move strands `ACC_5V_RAW`'s whole chain back to `U21.6`,
+and `apply_part_shift` refuses a `--release` whose closure ends **on a stationary
+pad**.  The honest order is **evict `ACC_5V_RAW` first, then shift, then route
+`LX` and `RAW` together** with `--neck --neck-reach-mm`.
+
+## 7. THREE FRAMEWORK CORRECTIONS, EVERY ONE DEFAULT-OFF OR PURELY A FIX
+
+**(a) `maze3d.Neck` may now leave the courtyard, and the board's own copper is
+the proof.**  `A.intersectsCourtyard('U21')` matches a TRACK OBJECT that **MEETS**
+the courtyard.  This board's `/01_POWER_TREE/ACC_5V_RAW` escape from `U21.6` is
+ONE 0.250 mm segment (58.513, 40.400) -> (59.023, 40.400) whose copper, with
+KiCad's own width/2 end cap, reaches **x = 59.148** while `U21`'s courtyard stops
+at **58.995** — **0.153 mm outside, and real DRC has passed it since D-597**.
+`Neck` has always demanded strict CONTAINMENT, which is stricter than the rule
+the board wrote; D-584's failure was segments lying **WHOLLY** outside, which is
+a different shape.
+
+`--neck-reach-mm` states the difference and **defaults to 0.0**, which is strict
+containment byte for byte, so every pre-D-680 measurement reproduces.  Above zero
+the emitted polyline must START strictly inside a named courtyard, **only its
+LAST vertex** may lie outside one, and the length outside must not exceed the
+reach — so exactly one segment leaves, from a point the rule matches, and D-584's
+shape stays refused.  Five controls, `evidence/d680-neck-reach-controls.json`,
+`all_controls_behaved` **true**.
+
+**(b) `--release-bare-pad REF.NUM` — the flag now does what its own help says.**
+`--release`'s help has read *"a released pad is left with no escape on purpose;
+the transaction owes it a new one"* since D-678, and the clause underneath
+REFUSED exactly that.  `ACC_5V_FB` is a three-land chain `U21.1` – `R100.1` –
+`R99.2`, so moving EITHER resistor releases a closure that ends on the OTHER
+one's land: **neither resistor of the TPS61023's feedback divider could be moved
+at all.**  It is expressible now and never implicit — the land must be NAMED, and
+the release proceeds only where **nothing else survives at that point**; a
+surviving TRACK is still a refusal, because then the chain is not fully released
+and the land was never going to float.  Three controls,
+`evidence/d680-release-bare-pad-controls.json`, `all_controls_behaved` **true**:
+without the flag the move is REFUSED naming `R99.2`; with it the move is APPLIED
+and the bare land is written into `bare_pads_released`; and with the closure not
+unrolled, a surviving track still refuses.
+
+**(c) `apply_part_shift.endpoints_on` is layer-aware.**  D-678 gave
+`swept_conflicts` the reading *"a land is copper on the layers it occupies and on
+no other"*; the clause that asks the same question from the other end never got
+it.  Measured: `EXT_SDA_BUF`'s **`In2.Cu`** waypoint at (60.300, 40.800) was
+counted as an endpoint on `C65.1`, a `B.Cu` SMD land the whole laminate away, and
+REFUSED every `C65` move unless a `--release` removed inner-layer copper the move
+never touches.
+
+Standing suite after both: **14/14 RAN, 13/13 COMPARABLE IDENTICAL to `d678`,
+1 INCOMPARABLE and NAMED (`pour_partition`'s `ref_commit`),
+`all_identical_where_comparable` true, `vacuous` FALSE**
+(`evidence/d680-contract-regression.json`).
+
+## 8. NEXT
+
+1. **The `BQ25185_SYS` edge is one placement decision from promotable.**  The
+   transaction is drawn and gated; what it needs is a destination for
+   `ACC_5V_FB`'s divider that `evidence/d680-placement-site-clearance.py` calls
+   clean.  The band south of `U21` is a signal field, so the honest candidates
+   are (a) move `R99` **and** `R100` together — which `--release-bare-pad` now
+   makes expressible — and take `ACC_5V_BOOST_EN`, `ACC_DETECT_N` and
+   `ACC_5V_SW` with them, or (b) move the divider NORTH-EAST past `R99`'s own
+   position, where `FB`'s climb never crosses the corridor at all.
+2. **`ACC_5V_LX` after that**: evict `ACC_5V_RAW`, shift `C65` to
+   (59.900, 42.275) — measured clean, with its four refused neighbours named —
+   and route `LX` + `RAW` together with `--neck --neck-reach-mm 0.5`.  Note that
+   `C65`'s destination and `R100`'s two clean sites (59.400/59.900, 41.900)
+   COMPETE for the same courtyard, so the two transactions have to be planned as
+   one floorplan and not as two moves.
+3. **Re-ask every `NO_PATH` this project recorded under a `--join-max-mm`
+   bound.**  Section 3 says they were budget refusals.  `sysM` shows how to tell
+   the difference: re-ask at a budget far above the answer and see whether the
+   verdict moves.  On the two `--detour-spec` relays it did NOT, so those two are
+   real.
+4. `--body-landing` belongs on every pour-owning stitch on this board.  Without
+   it, `--split-islands` lays a barrel that connects nothing on a net whose pours
+   are all on ONE layer — one `via_dangling`, and it BLOCKS the join that would
+   have worked (`sysG` versus `sysJ`).
+5. D-679's NEXT items 2 and 4, and D-678's, stand.
+
+
 # D-679 · 2026-09-10 · Demo — EVERY REMAINING OPEN EDGE, AND THE EXACT WALL IT STANDS BEHIND — INCLUDING A SWITCH NODE WHOSE WIDTH LICENCE STOPS 0.122 mm SHORT
 
     authority  0285ef45466c1c7dd1823099c35d75d704b50266460e94f339c1b19b5409180d

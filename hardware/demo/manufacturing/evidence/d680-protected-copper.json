@@ -1,0 +1,25 @@
+{
+  "counts": {
+    "/01_POWER_TREE/BAT_CONNECTOR_P": 7,
+    "/01_POWER_TREE/BAT_MID": 12,
+    "/01_POWER_TREE/BAT_PROTECTED_P": 84,
+    "/01_POWER_TREE/BAT_PROT_SHDN_CTL": 9,
+    "/01_POWER_TREE/BAT_RAW": 70,
+    "/01_POWER_TREE/BAT_SENSE": 22,
+    "/08_BUTTONS_EXPANDERS/FRONT_RGB_B_N": 18,
+    "/08_BUTTONS_EXPANDERS/FRONT_RGB_G_N": 13,
+    "/08_BUTTONS_EXPANDERS/FRONT_RGB_R_N": 20,
+    "/09_COMMUNITY_HEADER/XGPIO4_HDR": 9,
+    "/09_COMMUNITY_HEADER/XGPIO5_HDR": 12,
+    "/ACC_3V3_SW": 79,
+    "/ACC_5V_SW_EN": 23,
+    "/XGPIO4": 9,
+    "/XGPIO5": 6
+  },
+  "differences": {},
+  "identical": true,
+  "nets": 15,
+  "objects": 393,
+  "ref": "HEAD",
+  "schema": 1
+}

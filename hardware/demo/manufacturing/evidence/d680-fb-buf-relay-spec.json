@@ -1,0 +1,127 @@
+{
+ "schema": 1,
+ "note": "D-680: keep /01_POWER_TREE/ACC_5V_FB and /09_COMMUNITY_HEADER/EXT_SCL_BUF as LOCAL nets and move only the two B.Cu chains that wall the U21/L4 boost pocket off from the BQ25185_SYS trunk.  Each chain is re-laid between its own two ends around discs reserved on the 0.800 mm SYS lane the join measured at 18.883 mm.  Evicting these nets whole instead re-routes the boost FEEDBACK node -- a 732 k / 100 k divider -- 78.759 mm around the top of the board, which is not a feedback trace.  Reserve radius 0.75 mm is the honest lane: 0.400 mm of SYS half-width plus the 0.250 mm SYS_MAIN routed clearance plus 0.100 mm of the 0.200 mm signal's own half-width.  The first attempt reserved 0.90 mm and refused both relays.",
+ "reserve": [
+  {
+   "x_mm": 55.4,
+   "y_mm": 31.0,
+   "r_mm": 0.75,
+   "layers": [
+    "B"
+   ],
+   "exempt": [
+    "/01_POWER_TREE/BQ25185_SYS"
+   ]
+  },
+  {
+   "x_mm": 55.7,
+   "y_mm": 32.1,
+   "r_mm": 0.75,
+   "layers": [
+    "B"
+   ],
+   "exempt": [
+    "/01_POWER_TREE/BQ25185_SYS"
+   ]
+  },
+  {
+   "x_mm": 56.0,
+   "y_mm": 33.05,
+   "r_mm": 0.75,
+   "layers": [
+    "B"
+   ],
+   "exempt": [
+    "/01_POWER_TREE/BQ25185_SYS"
+   ]
+  },
+  {
+   "x_mm": 56.6,
+   "y_mm": 33.7,
+   "r_mm": 0.75,
+   "layers": [
+    "B"
+   ],
+   "exempt": [
+    "/01_POWER_TREE/BQ25185_SYS"
+   ]
+  },
+  {
+   "x_mm": 57.2,
+   "y_mm": 34.3,
+   "r_mm": 0.75,
+   "layers": [
+    "B"
+   ],
+   "exempt": [
+    "/01_POWER_TREE/BQ25185_SYS"
+   ]
+  }
+ ],
+ "detours": [
+  {
+   "net": "/01_POWER_TREE/ACC_5V_FB",
+   "layer": "B.Cu",
+   "width_mm": 0.2,
+   "max_mm": 18.0,
+   "tracks": [
+    {
+     "layer": "B.Cu",
+     "a_mm": [
+      55.6,
+      32.9
+     ],
+     "b_mm": [
+      56.2,
+      33.6
+     ],
+     "width_mm": 0.2
+    },
+    {
+     "layer": "B.Cu",
+     "a_mm": [
+      56.1,
+      36.9
+     ],
+     "b_mm": [
+      56.2,
+      33.6
+     ],
+     "width_mm": 0.2
+    }
+   ]
+  },
+  {
+   "net": "/09_COMMUNITY_HEADER/EXT_SCL_BUF",
+   "layer": "B.Cu",
+   "width_mm": 0.2,
+   "max_mm": 18.0,
+   "tracks": [
+    {
+     "layer": "B.Cu",
+     "a_mm": [
+      56.2,
+      38.9
+     ],
+     "b_mm": [
+      56.8,
+      38.3
+     ],
+     "width_mm": 0.2
+    },
+    {
+     "layer": "B.Cu",
+     "a_mm": [
+      56.7,
+      32.5
+     ],
+     "b_mm": [
+      56.8,
+      38.3
+     ],
+     "width_mm": 0.2
+    }
+   ]
+  }
+ ]
+}

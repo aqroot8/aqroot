@@ -144,6 +144,44 @@ HOLE_CLR = 250000
 # 0.30 mm wide and carries the same current whatever the trace does.
 NECK_MAX_MM = 1.5               # default bound on ONE necked stub
 
+# D-680.  AND CONTAINMENT IS STRICTER THAN THE RULE THE BOARD ACTUALLY WROTE.
+#
+# `A.intersectsCourtyard('U21')` matches a TRACK OBJECT that MEETS the
+# courtyard.  It does not ask the object to be contained in one, and this board
+# has been relying on that reading since D-597: `/01_POWER_TREE/ACC_5V_RAW`
+# leaves `U21.6` as ONE 0.250 mm segment (58.513, 40.400) -> (59.023, 40.400)
+# whose copper -- with KiCad's own width/2 end cap -- reaches x = 59.148 while
+# `U21`'s courtyard stops at x = 58.995.  0.153 mm of that track lies outside
+# the courtyard, the segment still MEETS it, and the real DRC has passed it on
+# every run since.
+#
+# The block above is therefore right about the FAILURE it records and wrong
+# about the predicate it inferred from it: D-584's `U9.10` stub strayed over
+# SEVERAL segments and the ones that strayed lay WHOLLY outside, so the rule
+# stopped matching them.  A segment with one endpoint strictly inside a named
+# courtyard cannot be that segment.
+#
+# `NECK_REACH_MM` is that difference, stated as a number and DEFAULTED TO ZERO:
+# at 0.0 this class behaves exactly as it did before D-680, byte for byte, so
+# every measurement taken under the old reading reproduces.  Above zero the
+# raster is dilated by the reach and `Neck.licensed` gates the emitted polyline
+# on the predicate KiCad actually evaluates, conservatively:
+#
+#   * the FIRST vertex must be strictly inside a named courtyard, and
+#   * ONLY THE LAST vertex may lie outside one -- so exactly one segment leaves,
+#     it leaves from a point the rule matches, and no segment lies wholly
+#     outside, which is the shape D-584 measured and the shape that must stay
+#     refused, and
+#   * the length outside must not exceed the reach.
+#
+# The stub is still proved by `_stub_legal` and `verify_laid` at its own width,
+# the trunk still starts only where the FULL-WIDTH lattice is free, and real
+# KiCad DRC is still the judge.  This buys ONE thing: a necked stub may END
+# where the trunk can START when that point is just outside the courtyard, which
+# is the wall D-679 measured at `U21.5` -- the licence stops at x = 58.995 and
+# the first x a 0.600 mm `SWITCH_NODE` trunk can legally exist at is 59.257.
+NECK_REACH_MM = 0.0             # default: containment, exactly as before D-680
+
 
 class Neck(object):
     """The board's pad-escape necking allowance, read from its `.kicad_dru`.
@@ -177,8 +215,9 @@ class Neck(object):
     strictly inside is a subset of what the rule allows.
     """
 
-    def __init__(self, min_w, refs, polys, max_nm):
+    def __init__(self, min_w, refs, polys, max_nm, reach_nm=0):
         self.min_w, self.refs, self.max_nm = min_w, tuple(refs), max_nm
+        self.reach_nm = int(reach_nm)
         self.polys = polys
         self.outlines = []          # (xs, ys, bbox) per closed outline
         for poly in polys.values():
@@ -226,6 +265,61 @@ class Neck(object):
             res |= hit
         return res
 
+    def mask_reach(self, X, Y):
+        """Inside a named courtyard, OR within `reach_nm` of one.
+
+        The raster the escape wavefront walks.  At `reach_nm == 0` this is
+        `mask` and nothing else, so the search is the pre-D-680 search.  Above
+        zero it lets the wavefront step far enough past the courtyard edge to
+        reach the first cell the FULL-WIDTH lattice calls free -- and buys the
+        emitted polyline nothing, because `licensed` still gates it.
+        """
+        m = self.mask(X, Y)
+        if self.reach_nm <= 0:
+            return m
+        X = np.asarray(X, dtype=float)
+        Y = np.asarray(Y, dtype=float)
+        r = float(self.reach_nm)
+        near = np.zeros(X.shape, dtype=bool)
+        for xs, ys, (bx0, by0, bx1, by1) in self.outlines:
+            if (X.max() < bx0 - r or X.min() > bx1 + r or
+                    Y.max() < by0 - r or Y.min() > by1 + r):
+                continue
+            x2, y2 = np.roll(xs, -1), np.roll(ys, -1)
+            for a in range(len(xs)):
+                ax, ay, bx, by = xs[a], ys[a], x2[a], y2[a]
+                dx, dy = bx - ax, by - ay
+                L2 = dx * dx + dy * dy
+                if L2 == 0:
+                    d2 = (X - ax) ** 2 + (Y - ay) ** 2
+                else:
+                    t = np.clip(((X - ax) * dx + (Y - ay) * dy) / L2, 0.0, 1.0)
+                    d2 = (X - (ax + t * dx)) ** 2 + (Y - (ay + t * dy)) ** 2
+                near |= d2 <= r * r
+        return m | near
+
+    def licensed(self, pts):
+        """Is this polyline copper the board's own necking rule matches?
+
+        Returns `(ok, outside_nm)`.  The predicate is KiCad's -- a track object
+        is licensed where it MEETS a named courtyard -- read conservatively:
+        the stub must START strictly inside one, ONLY its last vertex may lie
+        outside, and the length outside must not exceed `reach_nm`.  At
+        `reach_nm == 0` that reduces to "no part of the polyline strays", which
+        is exactly the D-584 gate this replaces.
+        """
+        strayed = self.outside(pts)
+        if self.reach_nm <= 0:
+            return (strayed <= 0), strayed
+        if len(pts) < 2:
+            return False, strayed
+        inside = [self.contains(x, y) for (x, y) in pts]
+        if not inside[0]:
+            return False, strayed
+        if not all(inside[:-1]):
+            return False, strayed
+        return (strayed <= self.reach_nm), strayed
+
     def outside(self, pts, step=25000):
         """Length of this polyline, in nm, that lies OUTSIDE every named courtyard.
 
@@ -255,7 +349,7 @@ _NECK_RE = re.compile(
     r'([0-9.]+)mm\)\s*\)\s*\(condition\s+"([^"]*)"\)\s*\)', re.S)
 
 
-def neck_rule(qb, max_mm=NECK_MAX_MM):
+def neck_rule(qb, max_mm=NECK_MAX_MM, reach_mm=NECK_REACH_MM):
     """Read the pad-escape necking allowance out of the board's `.kicad_dru`.
 
     Accepts ONLY a `track_width (min ...)` rule whose condition is a pure
@@ -291,7 +385,8 @@ def neck_rule(qb, max_mm=NECK_MAX_MM):
             polys[ref] = f.GetCourtyard(f.GetLayer())
     if not polys:
         return None
-    return Neck(min_w, refs, polys, int(round(max_mm * qr.MM)))
+    return Neck(min_w, refs, polys, int(round(max_mm * qr.MM)),
+                int(round(reach_mm * qr.MM)))
 
 
 # ---------------------------------------------------------------------------
@@ -1107,7 +1202,7 @@ def _pocket_escapes(qb, field, pad, layer, prefer, limit, width=None,
         # confined to it.  The pad's own core still anchors the stub: it is the
         # footprint's land and lies inside its own courtyard by construction,
         # and excluding it would leave the search with nowhere to start.
-        free &= confine.mask(X, Y) | core
+        free &= confine.mask_reach(X, Y) | core
 
     # goal cells: whole-board lattice cells this window contains that the
     # GLOBAL grid already calls free -- the seed the trunk wavefront wants.
@@ -1182,8 +1277,8 @@ def _pocket_escapes(qb, field, pad, layer, prefer, limit, width=None,
             # `track_width` DRC errors.
             if ln > confine.max_nm:
                 continue
-            strayed = confine.outside(pts)
-            if strayed > 0:
+            lic, strayed = confine.licensed(pts)
+            if not lic:
                 continue
             rec['neck'] = True
             rec['neck_outside_mm'] = round(strayed / 1e6, 4)

@@ -1,0 +1,120 @@
+{
+ "schema": 1,
+ "decision": "D-680",
+ "closure_points_named_by_the_tool": [
+  [
+   "/01_POWER_TREE/ACC_5V_FB",
+   "58.7",
+   "32.0"
+  ],
+  [
+   "/01_POWER_TREE/ACC_5V_FB",
+   "58.9",
+   "31.8"
+  ],
+  [
+   "/01_POWER_TREE/ACC_5V_FB",
+   "57.7",
+   "30.7"
+  ],
+  [
+   "/01_POWER_TREE/ACC_5V_FB",
+   "59.3",
+   "30.9"
+  ],
+  [
+   "/01_POWER_TREE/ACC_5V_FB",
+   "55.6",
+   "32.9"
+  ],
+  [
+   "/01_POWER_TREE/ACC_5V_FB",
+   "61.5",
+   "29.0"
+  ],
+  [
+   "/01_POWER_TREE/ACC_5V_FB",
+   "56.2",
+   "33.6"
+  ],
+  [
+   "/01_POWER_TREE/ACC_5V_FB",
+   "63.7",
+   "31.3"
+  ],
+  [
+   "/01_POWER_TREE/ACC_5V_FB",
+   "63.3",
+   "32.3"
+  ]
+ ],
+ "what": "apply_part_shift.py --release-bare-pad",
+ "move": "R100 +0.400 / +9.400 mm",
+ "c1_without_the_flag": {
+  "verdict": "FAIL",
+  "applied": false,
+  "refusals": [
+   {
+    "at_mm": [
+     63.625,
+     33.225
+    ],
+    "net": "/01_POWER_TREE/ACC_5V_FB",
+    "pads": [
+     "R99.2"
+    ],
+    "reason": "RELEASE_WOULD_STRAND",
+    "surviving_tracks": 0,
+    "why": "name it with --release-bare-pad to leave this land bare on purpose"
+   }
+  ]
+ },
+ "c2_with_the_flag": {
+  "verdict": "PASS",
+  "applied": true,
+  "released_count": 12,
+  "bare_pads_released": [
+   {
+    "at_mm": [
+     63.625,
+     33.225
+    ],
+    "net": "/01_POWER_TREE/ACC_5V_FB",
+    "pads": [
+     "R99.2"
+    ]
+   }
+  ],
+  "release_bare_pads_requested": [
+   "R99.2"
+  ],
+  "refusals": []
+ },
+ "c3_surviving_track_is_still_a_refusal": {
+  "verdict": "FAIL",
+  "applied": false,
+  "refusals": [
+   {
+    "at_mm": [
+     58.7,
+     32.0
+    ],
+    "net": "/01_POWER_TREE/ACC_5V_FB",
+    "pads": [],
+    "reason": "RELEASE_WOULD_STRAND",
+    "surviving_tracks": 1
+   },
+   {
+    "at_mm": [
+     58.9,
+     31.8
+    ],
+    "net": "/01_POWER_TREE/ACC_5V_FB",
+    "pads": [],
+    "reason": "RELEASE_WOULD_STRAND",
+    "surviving_tracks": 1
+   }
+  ]
+ },
+ "all_controls_behaved": true
+}

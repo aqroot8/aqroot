@@ -90,15 +90,34 @@ def inside(box, x, y):
 
 
 def endpoints_on(board, fp):
-    """(net, x, y) track endpoints that currently land inside a pad of `fp`."""
-    boxes = [b for bs in pad_boxes(fp).values() for b in bs]
+    """(net, x, y) track endpoints that currently land inside a pad of `fp`.
+
+    A LAND IS COPPER ON THE LAYERS IT OCCUPIES AND ON NO OTHER -- the same
+    reading `swept_conflicts` was given in D-678, applied here in D-680 because
+    the two clauses ask the same question from opposite ends and only one of
+    them had it.  Without the layer test this counted an `In2.Cu` waypoint at
+    (60.300, 40.800) as an endpoint "on" `C65.1`, a `B.Cu` SMD land it is
+    separated from by the whole laminate, and then REFUSED the C65 move unless
+    a `--release` removed that inner-layer track -- copper the move does not
+    touch and a release must never take.
+    """
     hits = []
+    tracks = []
     for t in board.GetTracks():
-        pts = [t.GetStart()] if t.GetClass() == "PCB_VIA" else [t.GetStart(),
-                                                                t.GetEnd()]
-        for p in pts:
-            if any(inside(b, p.x, p.y) for b in boxes):
-                hits.append((t.GetNetname(), p.x, p.y))
+        if t.GetClass() == "PCB_VIA":
+            tracks.append((t, [t.GetStart()], set(t.GetLayerSet().CuStack())))
+        else:
+            tracks.append((t, [t.GetStart(), t.GetEnd()], {t.GetLayer()}))
+    for pad in fp.Pads():
+        pl = set(pad.GetLayerSet().CuStack())
+        bb = pad.GetBoundingBox()
+        box = (bb.GetLeft(), bb.GetTop(), bb.GetRight(), bb.GetBottom())
+        for t, pts, tl in tracks:
+            if not (pl & tl):
+                continue
+            for q in pts:
+                if inside(box, q.x, q.y):
+                    hits.append((t.GetNetname(), q.x, q.y))
     return sorted(set(hits))
 
 
@@ -206,7 +225,8 @@ def swept_conflicts(board, fp):
     return sorted(set(out))
 
 
-def release_closure(board, doomed_points, allowed_nets, named_vias=()):
+def release_closure(board, doomed_points, allowed_nets, named_vias=(),
+                    bare_pads=()):
     """Which objects a release must remove, and what it must NOT strand.
 
     `doomed_points` is the set of (net, x, y) endpoints the move takes off a
@@ -274,7 +294,7 @@ def release_closure(board, doomed_points, allowed_nets, named_vias=()):
     killed_via_pts = {(v.GetNetname(), v.GetStart().x, v.GetStart().y)
                       for v in kill_via}
 
-    refusals = list(refusals_via)
+    refusals, bared = list(refusals_via), []
     for net, x, y in sorted(far - killed_via_pts):
         others = [t for t in tracks
                   if id(t) not in killset and t.GetNetname() == net
@@ -300,10 +320,39 @@ def release_closure(board, doomed_points, allowed_nets, named_vias=()):
                                  why="surviving track lies in its own filled "
                                      "pour on that layer; not floating"))
             continue
-        if others or pads:
+        # D-680.  A RELEASED PAD IS LEFT WITH NO ESCAPE ON PURPOSE, and
+        # `--release`'s own help has said so since D-678 -- but the clause below
+        # refused it, so the one thing the flag documents was the one thing it
+        # could not do.  The refusal is right in general: a chain whose far end
+        # sits on a STATIONARY land is a land this move is about to disconnect,
+        # and that must never happen by accident.
+        #
+        # So it is expressible and never implicit.  `--release-bare-pad REF.NUM`
+        # names each land the caller is willing to leave bare, and the release
+        # proceeds ONLY where nothing else survives at that point -- a surviving
+        # TRACK is still a refusal, because then the chain is not fully released
+        # and the pad was never going to float.  The transaction still owes that
+        # land a new escape, `placement_contract` PL8 still asks for one, and
+        # the gate's clause 4 still requires the net not to regress.
+        #
+        # Measured on this board: `/01_POWER_TREE/ACC_5V_FB` is a three-land
+        # chain U21.1 - R100.1 - R99.2, so moving EITHER resistor releases a
+        # closure that ends on the OTHER one's land and on U21.1's.  Without
+        # this, neither resistor of the TPS61023's feedback divider can be moved
+        # at all, which is exactly the placement change D-680 measured the board
+        # needs.
+        if others:
             refusals.append(dict(reason="RELEASE_WOULD_STRAND", net=net,
                                  at_mm=[x / 1e6, y / 1e6],
                                  surviving_tracks=len(others), pads=pads))
+        elif pads and not all(q in bare_pads for q in pads):
+            refusals.append(dict(reason="RELEASE_WOULD_STRAND", net=net,
+                                 at_mm=[x / 1e6, y / 1e6],
+                                 surviving_tracks=0, pads=pads,
+                                 why="name it with --release-bare-pad to leave "
+                                     "this land bare on purpose"))
+        elif pads:
+            bared.append(dict(net=net, at_mm=[x / 1e6, y / 1e6], pads=pads))
 
     removals = kill + kill_via
     for t in removals:
@@ -312,7 +361,7 @@ def release_closure(board, doomed_points, allowed_nets, named_vias=()):
                                  net=t.GetNetname(),
                                  at_mm=[t.GetStart().x / 1e6,
                                         t.GetStart().y / 1e6]))
-    return removals, refusals, kept_via
+    return removals, refusals, kept_via, bared
 
 
 def vias_in_pads(board, fp):
@@ -352,6 +401,16 @@ def main():
                          "a pad, WHOLE and by measured closure, instead of "
                          "refusing the move.  A released pad is left with no "
                          "escape on purpose; the transaction owes it a new one")
+    ap.add_argument("--release-bare-pad", action="append", default=[],
+                    metavar="REF.NUM",
+                    help="D-680: leave THIS land with no escape on purpose.  A "
+                         "--release closure that ends on a stationary pad is "
+                         "refused unless the pad is named here, and even then "
+                         "only where NOTHING ELSE survives at that point -- a "
+                         "surviving track is still a refusal.  The transaction "
+                         "owes the named land a new escape; placement_contract "
+                         "PL8 asks for one and the gate's clause 4 still "
+                         "requires the net not to regress.  Repeatable")
     ap.add_argument("--release-net", action="append", default=[],
                     help="a net --release may touch.  Repeatable.  A release "
                          "that would remove copper of any other net refuses")
@@ -431,10 +490,11 @@ def main():
     doomed_pts = sorted(set(stranded)
                         | {(n, x, y) for n, x, y, _p, _pn in swept}
                         | set(extra_pts))
-    released, refusals, kept = [], [], []
+    released, refusals, kept, bared = [], [], [], []
     if a.release and (doomed_pts or named):
-        doomed, refusals, kept = release_closure(
-            board, doomed_pts, set(a.release_net), named)
+        doomed, refusals, kept, bared = release_closure(
+            board, doomed_pts, set(a.release_net), named,
+            bare_pads=set(a.release_bare_pad))
         released = [sig(board, t) for t in doomed]
         if not refusals:
             for t in doomed:
@@ -466,6 +526,8 @@ def main():
         released_objects=sorted(str(s) for s in released),
         released_count=len(released),
         release_refusals=refusals,
+        bare_pads_released=bared,
+        release_bare_pads_requested=sorted(set(a.release_bare_pad)),
         release_named_vias=[[n, x / 1e6, y / 1e6] for n, x, y in named],
         release_named_points=[[n, x / 1e6, y / 1e6] for n, x, y in extra_pts],
         release_retained_barrels=kept,

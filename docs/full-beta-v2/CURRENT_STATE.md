@@ -13,6 +13,93 @@
 > This file references DEVICE_SPEC rather than duplicating full specs.
 
 ## 1. Authoritative HEAD
+- **Demo D-680 (THE ACCESSORY BOOST IS A CLOSED ROOM: ITS `SYS` EDGE CLOSES AT
+  18.883 mm AND THE GATE PASSES IT 15 OF 15, AND IT IS REFUSED ANYWAY BECAUSE
+  THE PRICE IS A 78 mm FEEDBACK TRACE):**  **NO COPPER PROMOTED — a transaction
+  was DRAWN, GATED at 15 of 15 clauses with `refused_clauses []` and 25 -> 24
+  retained open edges, and REFUSED BY ENGINEERING JUDGEMENT.**  Authority
+  **UNCHANGED** at
+  `0285ef45466c1c7dd1823099c35d75d704b50266460e94f339c1b19b5409180d`; retained
+  open edges 25 -> 25, open retained nets 15 -> 15.  `hardware/demo/kicad`,
+  `hardware/demo/fab` and `hardware/beta-v2` **UNTOUCHED**.  Standing suite
+  **14/14 RAN, 13/13 COMPARABLE IDENTICAL to `d678`, 1 INCOMPARABLE and NAMED,
+  `all_identical_where_comparable` true, `vacuous` false**
+  (`evidence/d680-contract-regression.json`); baselines emitted for D-681.
+  Fourteen gate runs, eight read-only probes
+  (`evidence/d680-boost-pocket.json`, `evidence/d680-boost-pocket-arms.json`).
+  **(1) THE SUBJECT.**  The `U21` TPS61023 accessory boost is **completely
+  dead**: `BQ25185_SYS`'s `{L4.1, U21.3}` island is severed from the rail (no
+  input) and `/01_POWER_TREE/ACC_5V_LX` carries **zero tracks** (no switch
+  node).  `AQROOT_DEMO_SCOPE` requires switched 5 V accessory power, so these
+  two edges are the feature.
+  **(2) THE POCKET IS SEALED AT EVERY WIDTH.**
+  `evidence/d680-pocket-width-ladder.py` floods `maze3d.Field`'s own free map out
+  of the trunk with a through-via move: `L4.1`'s land is UNREACHABLE at **0.800,
+  0.700, 0.600, 0.500, 0.400 and 0.300 mm** while being FREE on `B.Cu`.  Width
+  was never the question, so `--trunk-floor` and D-185's 2.19 A peak ruling are
+  both beside the point for this edge.
+  **(3) THE WALL IS EXACTLY TWO 0.200 mm SIGNALS, JOINTLY.**  Under
+  `screen_corridor_blockers.Without`: `ACC_5V_FB` alone SEALED, `EXT_SCL_BUF`
+  alone SEALED, `EXT_SCL` alone SEALED, every PAIR but one SEALED — **`ACC_5V_FB`
+  + `EXT_SCL_BUF` OPEN**.
+  **(4) `--join-max-mm` IS ALSO THE WAVEFRONT BUDGET.**  `route_join` called
+  directly: unbounded **ok, 22.768 mm, 2 vias**; `max_mm 45` and `max_mm 120`
+  **NO_PATH**.  `route_maze_batch` derives the budget as `max_mm*MM/G` STEPS, so
+  at `--grid 50000` a 30 mm cap is 600 steps.  **Four gate runs reported NO_PATH
+  for a join that exists.**  Every earlier `NO_PATH` taken under a
+  `--join-max-mm` bound is a refusal of the BUDGET.
+  **(5) THE EDGE CLOSES AND THE GATE PASSES IT.**  Arm `sysJ`:
+  `refused_clauses []`, 25 -> 24, `nets_improved ['/01_POWER_TREE/BQ25185_SYS']`,
+  `nets_regressed []`, `attributable_drc []`, DRC equal to the inherited
+  baseline.  The `SYS` copper is **18.883 mm at 0.800 mm with 2 vias** from
+  `L2.1` into `L4.1`'s own land — good engineering.
+  **(6) AND IT IS REFUSED ANYWAY.**  `--evict-whole` re-routes
+  `/01_POWER_TREE/ACC_5V_FB` at **78.759 mm with 5 vias** around the top of the
+  board for a net whose three lands span 7 mm — and `ACC_5V_FB` is the
+  TPS61023's **feedback node behind a 732 k / 100 k divider**.
+  `EXT_SCL_BUF` comes back at 98.593 mm.  No clause scores either number.
+  **DRAWN, GATED 15/15, NOT PROMOTED.**
+  **(7) THE POCKET HOLDS TWO OF THREE.**  Keeping both signals local and
+  relaying only the two walling chains around a reserved `SYS` lane refuses in
+  all three arms — r 0.90/0.75 mm, 0.050/0.025 mm lattice, 18 mm and **60 mm**
+  budgets — `every_detour_relaid` FALSE, both relays `NO_PATH` at 0.200 mm.
+  **(8) ONE RESISTOR OPENS IT.**  With `R100` moved to (58.900, 42.400), the
+  pocket opens with **`EXT_SCL_BUF` alone** evicted, and two more gate runs
+  closed `SYS` at 21.602 / 20.448 mm — both refused, and usefully: `R100`'s land
+  lands **0.0482 mm** from `/ACC_5V_BOOST_EN`, which `apply_part_shift`'s
+  endpoint-and-courtyard clauses cannot see.  New
+  `evidence/d680-placement-site-clearance.py` measures every land against every
+  foreign object by `SHAPE.Collide` bisection and swept thirty sites: **the band
+  south of `U21` is a signal field, not free area** — only (59.400/59.900,
+  41.900) clear 0.225 mm and both overlap `C65`'s courtyard, the part
+  `ACC_5V_LX` needs moved.
+  **(9) `ACC_5V_LX` IS NOT A LICENCE PROBLEM.**  `maze3d.pad_escapes` for
+  `U21.5` at neck reaches 0.00 / 0.30 / 0.50 / 0.80 mm: **ZERO escapes at every
+  one**.  A 0.600 mm `SWITCH_NODE` trunk needs its launch at x >= 59.257 to
+  clear `U21.4`/`U21.6` and x <= 59.086 to clear `C65.1` — **the window is
+  empty**.  The corridor agrees: with `GND` and `ACC_5V_RAW` evicted, `U21.5`'s
+  land is reached at 0.200 mm and the corridor at 0.300 mm, and **nothing at
+  0.400 or 0.600**.  `C65` must move, and (59.900, 42.275) is measured clean
+  with its four refused neighbours named.
+  **(10) THREE FRAMEWORK CORRECTIONS, EVERY ONE DEFAULT-OFF OR PURELY A FIX.**
+  `maze3d.Neck` may now leave a courtyard ONCE, at its last segment, bounded by
+  `--neck-reach-mm` (**default 0.0 = strict containment, byte for byte**) —
+  because `A.intersectsCourtyard` matches a track that MEETS the courtyard and
+  this board's own `U21.6` escape has run **0.153 mm past** `U21`'s courtyard,
+  DRC-clean, since D-597; five controls,
+  `evidence/d680-neck-reach-controls.json`.  `apply_part_shift
+  --release-bare-pad REF.NUM` makes the thing `--release`'s own help documents
+  expressible, and only where NOTHING ELSE survives at that point; three
+  controls, `evidence/d680-release-bare-pad-controls.json`.  And
+  `apply_part_shift.endpoints_on` is **layer-aware** — it had been counting an
+  `In2.Cu` waypoint as an endpoint on a `B.Cu` SMD land.
+  **NEXT:** (1) the `SYS` edge is **one placement decision** from promotable —
+  it needs a divider destination `d680-placement-site-clearance.py` calls clean,
+  and `C65`'s and `R100`'s clean sites COMPETE, so the boost pocket has to be
+  planned as ONE floorplan.  (2) `ACC_5V_LX` after it, with `--neck
+  --neck-reach-mm 0.5`.  (3) Re-ask every `NO_PATH` recorded under a
+  `--join-max-mm` bound.  (4) `--body-landing` belongs on every pour-owning
+  stitch here.  (5) D-679's and D-678's NEXT stand.
 - **Demo D-679 (EVERY REMAINING OPEN EDGE, AND THE EXACT WALL IT STANDS
   BEHIND — INCLUDING A SWITCH NODE WHOSE WIDTH LICENCE STOPS 0.122 mm SHORT):**
   **NO COPPER PROMOTED — CHARACTERISATION.**  Authority **UNCHANGED** at

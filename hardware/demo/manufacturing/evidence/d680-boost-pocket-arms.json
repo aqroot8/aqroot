@@ -1,0 +1,847 @@
+{
+ "schema": 1,
+ "decision": "D-680",
+ "question": "the /01_POWER_TREE/BQ25185_SYS edge that feeds the U21 TPS61023 accessory boost: is it closable, at what price, and what does the price buy",
+ "board": "/home/aqroot8/aqroot-demo/hardware/demo/kicad/aqroot-demo/aqroot-Beta-v2.kicad_pcb",
+ "board_sha256": "0285ef45466c1c7dd1823099c35d75d704b50266460e94f339c1b19b5409180d",
+ "arms": [
+  {
+   "arm": "sysA",
+   "why": "--partial --join-max-mm 8 (no eviction)",
+   "ran": true,
+   "refused_clauses": [
+    "board_changed",
+    "board_improved"
+   ],
+   "connectivity": {
+    "nets_improved": [],
+    "nets_regressed": [],
+    "open_retained_nets_after": 15,
+    "open_retained_nets_before": 15,
+    "retained_open_edges_after": 25,
+    "retained_open_edges_before": 25
+   },
+   "drc_types": {
+    "lib_footprint_issues": 199,
+    "solder_mask_bridge": 1
+   },
+   "attributable_drc": 0,
+   "routed": [
+    {
+     "net": "/01_POWER_TREE/BQ25185_SYS",
+     "ok": false,
+     "mode": "stitch",
+     "mm": 0,
+     "vias": 0,
+     "join": null
+    }
+   ],
+   "repair": []
+  },
+  {
+   "arm": "sysB",
+   "why": "--split-islands --join-residual --join-max-mm 12 (no eviction)",
+   "ran": true,
+   "refused_clauses": [
+    "board_improved"
+   ],
+   "connectivity": {
+    "nets_improved": [],
+    "nets_regressed": [],
+    "open_retained_nets_after": 15,
+    "open_retained_nets_before": 15,
+    "retained_open_edges_after": 25,
+    "retained_open_edges_before": 25
+   },
+   "drc_types": {
+    "lib_footprint_issues": 199,
+    "solder_mask_bridge": 1
+   },
+   "attributable_drc": 0,
+   "routed": [
+    {
+     "net": "/01_POWER_TREE/BQ25185_SYS",
+     "ok": true,
+     "mode": "stitch+join",
+     "mm": 0.509,
+     "vias": 1,
+     "join": {
+      "joined": 0,
+      "mm": 0,
+      "vias": 0
+     }
+    }
+   ],
+   "repair": []
+  },
+  {
+   "arm": "sysC",
+   "why": "windowed eviction FB+BUF, --join-max-mm 30, grid 0.050",
+   "ran": true,
+   "refused_clauses": [
+    "attributable_drc",
+    "board_improved",
+    "no_regression"
+   ],
+   "connectivity": {
+    "nets_improved": [],
+    "nets_regressed": [
+     "/09_COMMUNITY_HEADER/EXT_SCL_BUF"
+    ],
+    "open_retained_nets_after": 16,
+    "open_retained_nets_before": 15,
+    "retained_open_edges_after": 26,
+    "retained_open_edges_before": 25
+   },
+   "drc_types": {
+    "lib_footprint_issues": 199,
+    "solder_mask_bridge": 1,
+    "track_dangling": 4,
+    "via_dangling": 1
+   },
+   "attributable_drc": 5,
+   "routed": [
+    {
+     "net": "/01_POWER_TREE/BQ25185_SYS",
+     "ok": true,
+     "mode": "stitch+join",
+     "mm": 2.46,
+     "vias": 2,
+     "join": {
+      "joined": 0,
+      "mm": 0,
+      "vias": 0
+     }
+    }
+   ],
+   "repair": [
+    [
+     "/01_POWER_TREE/ACC_5V_FB",
+     true,
+     45.863
+    ],
+    [
+     "/09_COMMUNITY_HEADER/EXT_SCL_BUF",
+     false,
+     null
+    ]
+   ]
+  },
+  {
+   "arm": "sysE",
+   "why": "windowed eviction FB+BUF, --join-max-mm 45, grid 0.050",
+   "ran": true,
+   "refused_clauses": [
+    "attributable_drc",
+    "board_improved",
+    "no_regression"
+   ],
+   "connectivity": {
+    "nets_improved": [],
+    "nets_regressed": [
+     "/09_COMMUNITY_HEADER/EXT_SCL_BUF"
+    ],
+    "open_retained_nets_after": 16,
+    "open_retained_nets_before": 15,
+    "retained_open_edges_after": 26,
+    "retained_open_edges_before": 25
+   },
+   "drc_types": {
+    "lib_footprint_issues": 199,
+    "solder_mask_bridge": 1,
+    "track_dangling": 4,
+    "via_dangling": 1
+   },
+   "attributable_drc": 5,
+   "routed": [
+    {
+     "net": "/01_POWER_TREE/BQ25185_SYS",
+     "ok": true,
+     "mode": "stitch+join",
+     "mm": 2.46,
+     "vias": 2,
+     "join": {
+      "joined": 0,
+      "mm": 0,
+      "vias": 0
+     }
+    }
+   ],
+   "repair": [
+    [
+     "/01_POWER_TREE/ACC_5V_FB",
+     true,
+     45.863
+    ],
+    [
+     "/09_COMMUNITY_HEADER/EXT_SCL_BUF",
+     false,
+     null
+    ]
+   ]
+  },
+  {
+   "arm": "sysF",
+   "why": "windowed eviction FB+BUF, --join-max-mm 70, --repair-join-max-mm 15",
+   "ran": true,
+   "refused_clauses": [
+    "attributable_drc",
+    "board_improved",
+    "no_regression"
+   ],
+   "connectivity": {
+    "nets_improved": [],
+    "nets_regressed": [
+     "/09_COMMUNITY_HEADER/EXT_SCL_BUF"
+    ],
+    "open_retained_nets_after": 16,
+    "open_retained_nets_before": 15,
+    "retained_open_edges_after": 26,
+    "retained_open_edges_before": 25
+   },
+   "drc_types": {
+    "lib_footprint_issues": 199,
+    "solder_mask_bridge": 1,
+    "track_dangling": 4,
+    "via_dangling": 1
+   },
+   "attributable_drc": 5,
+   "routed": [
+    {
+     "net": "/01_POWER_TREE/BQ25185_SYS",
+     "ok": true,
+     "mode": "stitch+join",
+     "mm": 2.46,
+     "vias": 2,
+     "join": {
+      "joined": 0,
+      "mm": 0,
+      "vias": 0
+     }
+    }
+   ],
+   "repair": [
+    [
+     "/01_POWER_TREE/ACC_5V_FB",
+     true,
+     45.863
+    ],
+    [
+     "/09_COMMUNITY_HEADER/EXT_SCL_BUF",
+     false,
+     null
+    ]
+   ]
+  },
+  {
+   "arm": "sysG",
+   "why": "windowed eviction FB+BUF, --join-max-mm 0 (unbounded)",
+   "ran": true,
+   "refused_clauses": [
+    "attributable_drc",
+    "board_improved",
+    "no_regression"
+   ],
+   "connectivity": {
+    "nets_improved": [],
+    "nets_regressed": [
+     "/09_COMMUNITY_HEADER/EXT_SCL_BUF"
+    ],
+    "open_retained_nets_after": 16,
+    "open_retained_nets_before": 15,
+    "retained_open_edges_after": 26,
+    "retained_open_edges_before": 25
+   },
+   "drc_types": {
+    "lib_footprint_issues": 199,
+    "solder_mask_bridge": 1,
+    "track_dangling": 4,
+    "via_dangling": 1
+   },
+   "attributable_drc": 5,
+   "routed": [
+    {
+     "net": "/01_POWER_TREE/BQ25185_SYS",
+     "ok": true,
+     "mode": "stitch+join",
+     "mm": 2.46,
+     "vias": 2,
+     "join": {
+      "joined": 0,
+      "mm": 0,
+      "vias": 0
+     }
+    }
+   ],
+   "repair": [
+    [
+     "/01_POWER_TREE/ACC_5V_FB",
+     true,
+     45.863
+    ],
+    [
+     "/09_COMMUNITY_HEADER/EXT_SCL_BUF",
+     false,
+     null
+    ]
+   ]
+  },
+  {
+   "arm": "sysH",
+   "why": "--evict-whole FB+BUF, all three nets REQUESTED, --join-max-mm 0",
+   "ran": true,
+   "refused_clauses": [
+    "attributable_drc"
+   ],
+   "connectivity": {
+    "nets_improved": [
+     "/01_POWER_TREE/BQ25185_SYS"
+    ],
+    "nets_regressed": [],
+    "open_retained_nets_after": 15,
+    "open_retained_nets_before": 15,
+    "retained_open_edges_after": 24,
+    "retained_open_edges_before": 25
+   },
+   "drc_types": {
+    "lib_footprint_issues": 199,
+    "solder_mask_bridge": 1,
+    "via_dangling": 1
+   },
+   "attributable_drc": 1,
+   "routed": [
+    {
+     "net": "/01_POWER_TREE/BQ25185_SYS",
+     "ok": true,
+     "mode": "stitch+join",
+     "mm": 2.46,
+     "vias": 2,
+     "join": {
+      "joined": 1,
+      "mm": 18.883,
+      "vias": 2
+     }
+    },
+    {
+     "net": "/01_POWER_TREE/ACC_5V_FB",
+     "ok": true,
+     "mode": "maze",
+     "mm": 78.759,
+     "vias": 5,
+     "join": null
+    },
+    {
+     "net": "/09_COMMUNITY_HEADER/EXT_SCL_BUF",
+     "ok": true,
+     "mode": "maze",
+     "mm": 98.593,
+     "vias": 4,
+     "join": null
+    }
+   ],
+   "repair": []
+  },
+  {
+   "arm": "sysI",
+   "why": "windowed eviction, all three REQUESTED, --body-landing",
+   "ran": true,
+   "refused_clauses": [
+    "attributable_drc",
+    "board_improved",
+    "no_regression"
+   ],
+   "connectivity": {
+    "nets_improved": [
+     "/01_POWER_TREE/BQ25185_SYS"
+    ],
+    "nets_regressed": [
+     "/09_COMMUNITY_HEADER/EXT_SCL_BUF"
+    ],
+    "open_retained_nets_after": 16,
+    "open_retained_nets_before": 15,
+    "retained_open_edges_after": 25,
+    "retained_open_edges_before": 25
+   },
+   "drc_types": {
+    "lib_footprint_issues": 199,
+    "solder_mask_bridge": 1,
+    "track_dangling": 4
+   },
+   "attributable_drc": 4,
+   "routed": [
+    {
+     "net": "/01_POWER_TREE/BQ25185_SYS",
+     "ok": true,
+     "mode": "stitch+join",
+     "mm": 0,
+     "vias": 0,
+     "join": {
+      "joined": 1,
+      "mm": 22.768,
+      "vias": 2
+     }
+    },
+    {
+     "net": "/01_POWER_TREE/ACC_5V_FB",
+     "ok": true,
+     "mode": "maze",
+     "mm": 70.757,
+     "vias": 6,
+     "join": null
+    },
+    {
+     "net": "/09_COMMUNITY_HEADER/EXT_SCL_BUF",
+     "ok": false,
+     "mode": "maze",
+     "mm": null,
+     "vias": null,
+     "join": null
+    }
+   ],
+   "repair": [
+    [
+     "/09_COMMUNITY_HEADER/EXT_SCL_BUF",
+     false,
+     null
+    ]
+   ]
+  },
+  {
+   "arm": "sysJ",
+   "why": "--evict-whole, all three REQUESTED, --body-landing",
+   "ran": true,
+   "refused_clauses": [],
+   "connectivity": {
+    "nets_improved": [
+     "/01_POWER_TREE/BQ25185_SYS"
+    ],
+    "nets_regressed": [],
+    "open_retained_nets_after": 15,
+    "open_retained_nets_before": 15,
+    "retained_open_edges_after": 24,
+    "retained_open_edges_before": 25
+   },
+   "drc_types": {
+    "lib_footprint_issues": 199,
+    "solder_mask_bridge": 1
+   },
+   "attributable_drc": 0,
+   "routed": [
+    {
+     "net": "/01_POWER_TREE/BQ25185_SYS",
+     "ok": true,
+     "mode": "stitch+join",
+     "mm": 0,
+     "vias": 0,
+     "join": {
+      "joined": 1,
+      "mm": 18.883,
+      "vias": 2
+     }
+    },
+    {
+     "net": "/01_POWER_TREE/ACC_5V_FB",
+     "ok": true,
+     "mode": "maze",
+     "mm": 78.759,
+     "vias": 5,
+     "join": null
+    },
+    {
+     "net": "/09_COMMUNITY_HEADER/EXT_SCL_BUF",
+     "ok": true,
+     "mode": "maze",
+     "mm": 98.593,
+     "vias": 4,
+     "join": null
+    }
+   ],
+   "repair": []
+  },
+  {
+   "arm": "sysK",
+   "why": "NO eviction; FB+BUF RELAYED around a 0.90 mm reserved lane",
+   "ran": true,
+   "refused_clauses": [
+    "attributable_drc",
+    "board_changed",
+    "board_improved",
+    "every_detour_relaid",
+    "no_regression"
+   ],
+   "connectivity": {
+    "nets_improved": [],
+    "nets_regressed": [
+     "/01_POWER_TREE/ACC_5V_FB",
+     "/09_COMMUNITY_HEADER/EXT_SCL_BUF"
+    ],
+    "open_retained_nets_after": 17,
+    "open_retained_nets_before": 15,
+    "retained_open_edges_after": 27,
+    "retained_open_edges_before": 25
+   },
+   "drc_types": {
+    "lib_footprint_issues": 199,
+    "solder_mask_bridge": 1,
+    "track_dangling": 3,
+    "via_dangling": 1
+   },
+   "attributable_drc": 4,
+   "routed": [
+    {
+     "net": "/01_POWER_TREE/BQ25185_SYS",
+     "ok": false,
+     "mode": "stitch+join",
+     "mm": 0,
+     "vias": 0,
+     "join": {
+      "joined": 0,
+      "mm": 0,
+      "vias": 0
+     }
+    }
+   ],
+   "repair": [],
+   "detour": {
+    "all_relaid": false,
+    "failed": [
+     {
+      "a_mm": [
+       55.6,
+       32.9
+      ],
+      "b_mm": [
+       56.1,
+       36.9
+      ],
+      "layer": "B.Cu",
+      "net": "/01_POWER_TREE/ACC_5V_FB",
+      "reason": "NO_PATH",
+      "why": "no all-layer corridor at 0.200 mm between the two ends of this track once the site is reserved, inside the 18.000 mm budget, on a 0.0500 mm lattice"
+     },
+     {
+      "a_mm": [
+       56.2,
+       38.9
+      ],
+      "b_mm": [
+       56.7,
+       32.5
+      ],
+      "layer": "B.Cu",
+      "net": "/09_COMMUNITY_HEADER/EXT_SCL_BUF",
+      "reason": "NO_PATH",
+      "why": "no all-layer corridor at 0.200 mm between the two ends of this track once the site is reserved, inside the 18.000 mm budget, on a 0.0500 mm lattice"
+     }
+    ]
+   }
+  },
+  {
+   "arm": "sysL",
+   "why": "NO eviction; FB+BUF RELAYED around a 0.75 mm reserved lane, grid 0.025",
+   "ran": true,
+   "refused_clauses": [
+    "attributable_drc",
+    "board_changed",
+    "board_improved",
+    "every_detour_relaid",
+    "no_regression"
+   ],
+   "connectivity": {
+    "nets_improved": [],
+    "nets_regressed": [
+     "/01_POWER_TREE/ACC_5V_FB",
+     "/09_COMMUNITY_HEADER/EXT_SCL_BUF"
+    ],
+    "open_retained_nets_after": 17,
+    "open_retained_nets_before": 15,
+    "retained_open_edges_after": 27,
+    "retained_open_edges_before": 25
+   },
+   "drc_types": {
+    "lib_footprint_issues": 199,
+    "solder_mask_bridge": 1,
+    "track_dangling": 3,
+    "via_dangling": 1
+   },
+   "attributable_drc": 4,
+   "routed": [
+    {
+     "net": "/01_POWER_TREE/BQ25185_SYS",
+     "ok": false,
+     "mode": "stitch+join",
+     "mm": 0,
+     "vias": 0,
+     "join": {
+      "joined": 0,
+      "mm": 0,
+      "vias": 0
+     }
+    }
+   ],
+   "repair": [],
+   "detour": {
+    "all_relaid": false,
+    "failed": [
+     {
+      "a_mm": [
+       55.6,
+       32.9
+      ],
+      "b_mm": [
+       56.1,
+       36.9
+      ],
+      "layer": "B.Cu",
+      "net": "/01_POWER_TREE/ACC_5V_FB",
+      "reason": "NO_PATH",
+      "why": "no all-layer corridor at 0.200 mm between the two ends of this track once the site is reserved, inside the 18.000 mm budget, on a 0.0250 mm lattice"
+     },
+     {
+      "a_mm": [
+       56.2,
+       38.9
+      ],
+      "b_mm": [
+       56.7,
+       32.5
+      ],
+      "layer": "B.Cu",
+      "net": "/09_COMMUNITY_HEADER/EXT_SCL_BUF",
+      "reason": "NO_PATH",
+      "why": "no all-layer corridor at 0.200 mm between the two ends of this track once the site is reserved, inside the 18.000 mm budget, on a 0.0250 mm lattice"
+     }
+    ]
+   }
+  },
+  {
+   "arm": "sysM",
+   "why": "NO eviction; FB+BUF RELAYED, 0.75 mm lane, 60 mm budget, grid 0.050",
+   "ran": true,
+   "refused_clauses": [
+    "attributable_drc",
+    "board_changed",
+    "board_improved",
+    "every_detour_relaid",
+    "no_regression"
+   ],
+   "connectivity": {
+    "nets_improved": [],
+    "nets_regressed": [
+     "/01_POWER_TREE/ACC_5V_FB",
+     "/09_COMMUNITY_HEADER/EXT_SCL_BUF"
+    ],
+    "open_retained_nets_after": 17,
+    "open_retained_nets_before": 15,
+    "retained_open_edges_after": 27,
+    "retained_open_edges_before": 25
+   },
+   "drc_types": {
+    "lib_footprint_issues": 199,
+    "solder_mask_bridge": 1,
+    "track_dangling": 3,
+    "via_dangling": 1
+   },
+   "attributable_drc": 4,
+   "routed": [
+    {
+     "net": "/01_POWER_TREE/BQ25185_SYS",
+     "ok": false,
+     "mode": "stitch+join",
+     "mm": 0,
+     "vias": 0,
+     "join": {
+      "joined": 0,
+      "mm": 0,
+      "vias": 0
+     }
+    }
+   ],
+   "repair": [],
+   "detour": {
+    "all_relaid": false,
+    "failed": [
+     {
+      "a_mm": [
+       55.6,
+       32.9
+      ],
+      "b_mm": [
+       56.1,
+       36.9
+      ],
+      "layer": "B.Cu",
+      "net": "/01_POWER_TREE/ACC_5V_FB",
+      "reason": "NO_PATH",
+      "why": "no all-layer corridor at 0.200 mm between the two ends of this track once the site is reserved, inside the 60.000 mm budget, on a 0.0500 mm lattice"
+     },
+     {
+      "a_mm": [
+       56.2,
+       38.9
+      ],
+      "b_mm": [
+       56.7,
+       32.5
+      ],
+      "layer": "B.Cu",
+      "net": "/09_COMMUNITY_HEADER/EXT_SCL_BUF",
+      "reason": "NO_PATH",
+      "why": "no all-layer corridor at 0.200 mm between the two ends of this track once the site is reserved, inside the 60.000 mm budget, on a 0.0500 mm lattice"
+     }
+    ]
+   }
+  },
+  {
+   "arm": "fbA",
+   "why": "R100 MOVED to (58.900,42.400); BUF windowed; all three requested",
+   "ran": true,
+   "refused_clauses": [
+    "attributable_drc",
+    "inherited_within_baseline",
+    "no_regression",
+    "pour_partition"
+   ],
+   "connectivity": {
+    "nets_improved": [
+     "/01_POWER_TREE/ACC_5V_FB",
+     "/01_POWER_TREE/BQ25185_SYS"
+    ],
+    "nets_regressed": [
+     "/09_COMMUNITY_HEADER/EXT_SCL_BUF"
+    ],
+    "open_retained_nets_after": 16,
+    "open_retained_nets_before": 16,
+    "retained_open_edges_after": 25,
+    "retained_open_edges_before": 27
+   },
+   "drc_types": {
+    "clearance": 1,
+    "hole_clearance": 1,
+    "lib_footprint_issues": 199,
+    "shorting_items": 2,
+    "solder_mask_bridge": 3,
+    "track_dangling": 2,
+    "via_dangling": 1
+   },
+   "attributable_drc": 6,
+   "routed": [
+    {
+     "net": "/01_POWER_TREE/BQ25185_SYS",
+     "ok": true,
+     "mode": "stitch+join",
+     "mm": 0,
+     "vias": 0,
+     "join": {
+      "joined": 1,
+      "mm": 21.602,
+      "vias": 2
+     }
+    },
+    {
+     "net": "/01_POWER_TREE/ACC_5V_FB",
+     "ok": true,
+     "mode": "maze",
+     "mm": 170.584,
+     "vias": 13,
+     "join": null
+    },
+    {
+     "net": "/09_COMMUNITY_HEADER/EXT_SCL_BUF",
+     "ok": false,
+     "mode": "maze",
+     "mm": null,
+     "vias": null,
+     "join": null
+    }
+   ],
+   "repair": [
+    [
+     "/09_COMMUNITY_HEADER/EXT_SCL_BUF",
+     false,
+     null
+    ],
+    [
+     "GND",
+     true,
+     3.221
+    ]
+   ]
+  },
+  {
+   "arm": "fbB",
+   "why": "R100 MOVED to (58.900,42.400); BUF whole; all three requested",
+   "ran": true,
+   "refused_clauses": [
+    "attributable_drc",
+    "inherited_within_baseline",
+    "no_regression",
+    "pour_partition"
+   ],
+   "connectivity": {
+    "nets_improved": [
+     "/01_POWER_TREE/ACC_5V_FB",
+     "/01_POWER_TREE/BQ25185_SYS"
+    ],
+    "nets_regressed": [
+     "/09_COMMUNITY_HEADER/EXT_SCL_BUF"
+    ],
+    "open_retained_nets_after": 16,
+    "open_retained_nets_before": 16,
+    "retained_open_edges_after": 26,
+    "retained_open_edges_before": 27
+   },
+   "drc_types": {
+    "clearance": 1,
+    "hole_clearance": 1,
+    "lib_footprint_issues": 199,
+    "shorting_items": 2,
+    "solder_mask_bridge": 3,
+    "via_dangling": 1
+   },
+   "attributable_drc": 4,
+   "routed": [
+    {
+     "net": "/01_POWER_TREE/BQ25185_SYS",
+     "ok": true,
+     "mode": "stitch+join",
+     "mm": 0,
+     "vias": 0,
+     "join": {
+      "joined": 1,
+      "mm": 20.448,
+      "vias": 2
+     }
+    },
+    {
+     "net": "/01_POWER_TREE/ACC_5V_FB",
+     "ok": true,
+     "mode": "maze",
+     "mm": 160.374,
+     "vias": 10,
+     "join": null
+    },
+    {
+     "net": "/09_COMMUNITY_HEADER/EXT_SCL_BUF",
+     "ok": false,
+     "mode": "maze",
+     "mm": null,
+     "vias": null,
+     "join": null
+    }
+   ],
+   "repair": [
+    [
+     "/09_COMMUNITY_HEADER/EXT_SCL_BUF",
+     false,
+     null
+    ],
+    [
+     "GND",
+     true,
+     3.221
+    ]
+   ]
+  }
+ ]
+}

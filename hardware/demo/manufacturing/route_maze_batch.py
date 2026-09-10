@@ -2093,7 +2093,8 @@ def propose(path, nets, grid, via_cost_mm, stitch_width=0, stitch_via=None,
             relief_pads=(), relief_bonds_per_island=1, relief_run_areas=None,
             escape_floor=False, bridge_pads=False,
             bridge_pad_max_mm=BRIDGE_PAD_MAX_MM, trunk_floor=False,
-            tap=False, tap_max_mm=0.0, tap_pairs=3, tap_first=False):
+            tap=False, tap_max_mm=0.0, tap_pairs=3, tap_first=False,
+            neck_reach_mm=0.0):
     import pcbnew
     import qrouter as qr
     import incremental_router as ir
@@ -2133,7 +2134,12 @@ def propose(path, nets, grid, via_cost_mm, stitch_width=0, stitch_via=None,
     # so the router cannot permit a neck the DRC would refuse, nor refuse one
     # the board's rules were written to allow.  None => the router behaves
     # exactly as it did before this flag existed.
-    neck_rule = mz.neck_rule(qb, neck_max_mm or mz.NECK_MAX_MM) if neck else None
+    # D-680.  `--neck-reach-mm` is handed to the SEARCH lever only; the
+    # LICENCE fact below is read at reach 0, because the width ladder is
+    # clamped to what the .kicad_dru names and not to how far a stub may run.
+    neck_rule = (mz.neck_rule(qb, neck_max_mm or mz.NECK_MAX_MM,
+                              neck_reach_mm or mz.NECK_REACH_MM)
+                 if neck else None)
     # D-609.  The board's own pad-escape necking rule, read WHETHER OR NOT
     # `--neck` was asked for: `--neck` is a ROUTING lever (may this pad launch
     # narrow?) and this is a LICENCE fact (how narrow does the `.kicad_dru`
@@ -3041,7 +3047,8 @@ def gate(nets, grid, via_cost_mm, workdir, promote=False, candidate=None,
          relief_pads=(), relief_bonds_per_island=1, relief_run_area=None,
          promote_soft=False, escape_floor=False, bridge_pads=False,
          bridge_pad_max_mm=BRIDGE_PAD_MAX_MM, trunk_floor=False,
-         tap=False, tap_max_mm=0.0, tap_pairs=3, tap_first=False):
+         tap=False, tap_max_mm=0.0, tap_pairs=3, tap_first=False,
+         neck_reach_mm=0.0):
     before = sha256_file(BOARD)
     # THE AUTHORITY IS WATCHED EVEN WHEN IT IS NOT THE BASE (D-668).  When
     # `--board` names a candidate, `before` is that candidate's hash and says
@@ -3228,6 +3235,8 @@ def gate(nets, grid, via_cost_mm, workdir, promote=False, candidate=None,
             cmd += ["--stitch-via", "%d:%d" % stitch_via]
         if neck:
             cmd += ["--neck", "--neck-max-mm", str(neck_max_mm)]
+            if neck_reach_mm:
+                cmd += ["--neck-reach-mm", str(neck_reach_mm)]
         # THE ESCAPE FLOOR IS NOT A SEARCH LEVER -- it is part of the WIDTH
         # CONTRACT the run is judged under, so unlike `--bridge` it is handed
         # to the repair pass too.  A repair that re-lays a net this run cut
@@ -4214,6 +4223,22 @@ def main():
     ap.add_argument("--neck-max-mm", type=float, default=0.0,
                     help="bound on ONE necked stub in millimetres "
                          "(0 = the module default)")
+    ap.add_argument("--neck-reach-mm", type=float, default=0.0,
+                    help="D-680: how far past a NAMED COURTYARD the FINAL "
+                         "segment of a necked stub may run, in millimetres. "
+                         "`A.intersectsCourtyard` matches a track object that "
+                         "MEETS the courtyard -- this board's own U21.6 escape "
+                         "is one 0.250 mm segment whose copper reaches 0.153 mm "
+                         "past U21's courtyard and real DRC has passed it since "
+                         "D-597 -- while maze3d.Neck has always required strict "
+                         "CONTAINMENT.  Above zero the emitted polyline must "
+                         "START strictly inside a named courtyard, ONLY its LAST "
+                         "vertex may lie outside one, and the length outside must "
+                         "not exceed this figure -- so exactly one segment leaves, "
+                         "from a point the rule matches, and D-584's wholly-outside "
+                         "segments stay refused.  The DEFAULT 0.0 is strict "
+                         "containment and every pre-D-680 measurement reproduces "
+                         "under it")
     ap.add_argument("--partial", action="store_true",
                     help="complete each plane-less net BEST-EFFORT: union-find "
                          "Kruskal over every island pair, per-pair transaction, "
@@ -4573,7 +4598,8 @@ def main():
                 tuple(a.relief_pad), a.relief_bonds_per_island,
                 load_run_areas(a.relief_run_area), a.escape_floor,
                 a.bridge_pads, a.bridge_pad_max_mm, a.trunk_floor,
-                a.tap, a.tap_max_mm, a.tap_pairs, a.tap_first)
+                a.tap, a.tap_max_mm, a.tap_pairs, a.tap_first,
+                a.neck_reach_mm)
         return 0
     evict_window_nm = None
     if a.evict_window:
@@ -4631,6 +4657,7 @@ def main():
                  stitch_width=a.stitch_width, stitch_via=via,
                  join_residual=a.join_residual, join_max_mm=a.join_max_mm,
                  neck=a.neck, neck_max_mm=a.neck_max_mm,
+                 neck_reach_mm=a.neck_reach_mm,
                  partial=a.partial, attempt_cap=a.attempt_cap,
                  repair_planes=a.repair_planes,
                  split_islands=a.split_islands,

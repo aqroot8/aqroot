@@ -1,0 +1,63 @@
+{
+ "schema": 1,
+ "decision": "D-680",
+ "board": "/home/aqroot8/aqroot-demo/hardware/demo/kicad/aqroot-demo/aqroot-Beta-v2.kicad_pcb",
+ "refs": [
+  "U11",
+  "U12",
+  "U13",
+  "U14",
+  "U16",
+  "U17",
+  "U20",
+  "U21",
+  "U22",
+  "U9"
+ ],
+ "min_w_nm": 200000,
+ "reach_nm": {
+  "c0": 0,
+  "c1": 500000
+ },
+ "c1_mask_reach_equals_mask_at_reach0": true,
+ "c1_reach0_refuses_a_stray": true,
+ "c1_reach0_admits_contained": true,
+ "c2_d584_shape": {
+  "admitted": false,
+  "outside_mm": 0.3978,
+  "why": "last TWO vertices outside -> a whole segment lies outside every named courtyard"
+ },
+ "c3_single_exit_within_reach": {
+  "admitted": true,
+  "outside_mm": 0.2739
+ },
+ "c4_stray_over_reach": {
+  "reach_mm": 0.05,
+  "admitted": false,
+  "outside_mm": 0.2739
+ },
+ "c5_starts_outside": {
+  "admitted": false
+ },
+ "c6_u21_courtyard_east_mm": 58.995,
+ "c6_existing_u21_6_neck": {
+  "net": "/01_POWER_TREE/ACC_5V_RAW",
+  "width_mm": 0.25,
+  "a_mm": [
+   58.513,
+   40.4
+  ],
+  "b_mm": [
+   59.023,
+   40.4
+  ],
+  "copper_reaches_x_mm": 59.148,
+  "past_courtyard_mm": 0.153,
+  "note": "one segment; it MEETS U21's courtyard and real DRC passes it"
+ },
+ "c6_mask_reach_grew": {
+  "at_reach_0": 2743,
+  "at_reach_0p5": 5958
+ },
+ "all_controls_behaved": true
+}

@@ -1,0 +1,225 @@
+{
+ "schema": 1,
+ "decision": "D-680",
+ "board": "/home/aqroot8/aqroot-demo/hardware/demo/kicad/aqroot-demo/aqroot-Beta-v2.kicad_pcb",
+ "board_sha256": "0285ef45466c1c7dd1823099c35d75d704b50266460e94f339c1b19b5409180d",
+ "question": "the U21 TPS61023 accessory boost is DEAD on this board -- both its SYS input edge and its ACC_5V_LX switch node are open.  What holds each, at what width, and what does opening it cost?",
+ "the_pocket_is_sealed_at_every_width": {
+  "instrument": "evidence/d680-pocket-width-ladder.py -- floods maze3d.Field's own free map from the BQ25185_SYS trunk on the OUTER layers, with a through-via move wherever Field.via_ok is set",
+  "seeds": [
+   "F.Cu trunk vertex (52.000,36.700)",
+   "B.Cu trunk (56.000,20.100) at L2",
+   "F.Cu trunk (54.700,23.900)"
+  ],
+  "target": "L4.1's own land (57.715,36.200)",
+  "widths_mm": [
+   0.8,
+   0.7,
+   0.6,
+   0.5,
+   0.4,
+   0.3
+  ],
+  "verdict": "UNREACHABLE AT EVERY ONE.  L4.1's land is FREE on B.Cu and is not reachable: the U21/L4 pocket is a closed room, and it is closed by ROUTED COPPER, not by width",
+  "note": "so --trunk-floor, the netclass width and the D-185 2.19 A peak ruling are all beside the point for this edge; none of them opens it"
+ },
+ "the_minimal_opening_is_two_0p200_mm_signals": {
+  "instrument": "evidence/d680-pocket-eviction-flood.py -- the same flood under screen_corridor_blockers.Without, so the eviction it reports is the eviction route_maze_batch --evict executes",
+  "window_mm": [
+   55.5,
+   32.0,
+   58.0,
+   39.5
+  ],
+  "width_mm": 0.8,
+  "cases": {
+   "control": "SEALED",
+   "/01_POWER_TREE/ACC_5V_FB alone": "SEALED",
+   "/09_COMMUNITY_HEADER/EXT_SCL_BUF alone": "SEALED",
+   "/09_COMMUNITY_HEADER/EXT_SCL alone": "SEALED",
+   "FB + EXT_SCL": "SEALED",
+   "EXT_SCL_BUF + EXT_SCL": "SEALED",
+   "FB + EXT_SCL_BUF": "OPEN -- trunk reached on BOTH F.Cu and B.Cu",
+   "FB + EXT_SCL_BUF + EXT_SCL": "OPEN"
+  },
+  "verdict": "the wall is exactly TWO 0.200 mm signals -- ACC_5V_FB's B.Cu vertical at x = 56.1-56.2 and EXT_SCL_BUF's B.Cu vertical at x = 56.65-56.85 -- and it is a JOINT wall: neither alone moves it"
+ },
+ "join_max_mm_is_also_the_wavefront_budget": {
+  "instrument": "evidence/d680-route-join-budget.py -- calls maze3d.route_join directly on the evicted board",
+  "measured": {
+   "max_mm=None (WAVE_STEPS 6000)": {
+    "ok": true,
+    "mm": 22.768,
+    "vias": 2
+   },
+   "max_mm=45": {
+    "ok": false,
+    "reason": "NO_PATH"
+   },
+   "max_mm=120": {
+    "ok": false,
+    "reason": "NO_PATH"
+   }
+  },
+  "why": "route_maze_batch line 3609 derives the wavefront budget from --join-max-mm as max_mm*MM/G steps, so a bound that reads as an ELECTRICAL length cap silently starves the search: at --grid 50000 a 30 mm cap is 600 wavefront steps.  Four gate runs reported NO_PATH for a join that exists.  --join-max-mm 0 is what asks the question",
+  "consequence": "every earlier NO_PATH on this board taken under a --join-max-mm bound is a REFUSAL OF THE BUDGET and not of the board"
+ },
+ "the_edge_closes_and_the_gate_passes_it": {
+  "arm": "sysJ",
+  "command": "route_maze_batch.py /01_POWER_TREE/BQ25185_SYS /01_POWER_TREE/ACC_5V_FB /09_COMMUNITY_HEADER/EXT_SCL_BUF --grid 50000 --split-islands --join-residual --join-max-mm 0 --body-landing --evict /01_POWER_TREE/ACC_5V_FB --evict /09_COMMUNITY_HEADER/EXT_SCL_BUF --evict-whole",
+  "gate": {
+   "refused_clauses": [],
+   "retained_open_edges": "25 -> 24",
+   "nets_improved": [
+    "/01_POWER_TREE/BQ25185_SYS"
+   ],
+   "nets_regressed": [],
+   "attributable_drc": [],
+   "drc_types": {
+    "lib_footprint_issues": 199,
+    "solder_mask_bridge": 1
+   }
+  },
+  "the_sys_copper_is_good": "18.883 mm at 0.800 mm with 2 vias, from L2.1 (57.715,18.400) south-east along the west of the community-header field to L4.1's own land at (57.625,34.750) -- a clean wide rail",
+  "and_it_is_REFUSED_ANYWAY": {
+   "why": "the collateral, which no gate clause scores.  --evict-whole re-routes /01_POWER_TREE/ACC_5V_FB at 78.759 mm with 5 vias, around the TOP of the board and across In2, for a net whose three lands span 7 mm.  ACC_5V_FB is the TPS61023's feedback node driven by a 732 k / 100 k divider; 78 mm of high-impedance trace with five layer changes beside a switching converter is not a feedback trace, and no DRC rule says so",
+   "second_casualty": "/09_COMMUNITY_HEADER/EXT_SCL_BUF at 98.593 mm with 4 vias",
+   "verdict": "DRAWN, GATED 15 of 15, NOT PROMOTED -- an engineering refusal, recorded so nobody promotes it by accident"
+  }
+ },
+ "and_the_pocket_holds_two_of_the_three": {
+  "instrument": "--detour-spec: keep FB and EXT_SCL_BUF LOCAL and re-lay only the two B.Cu chains that wall the pocket, between their OWN ends, around discs reserved on the SYS lane (evidence/d680-fb-buf-relay-spec.json)",
+  "arms": {
+   "sysK": {
+    "reserve_r_mm": 0.9,
+    "grid_mm": 0.05,
+    "budget_mm": 18,
+    "all_relaid": false
+   },
+   "sysL": {
+    "reserve_r_mm": 0.75,
+    "grid_mm": 0.025,
+    "budget_mm": 18,
+    "all_relaid": false
+   },
+   "sysM": {
+    "reserve_r_mm": 0.75,
+    "grid_mm": 0.05,
+    "budget_mm": 60,
+    "all_relaid": false
+   }
+  },
+  "why": "both relays NO_PATH at 0.200 mm once the lane is reserved, in all three",
+  "and_the_budget_was_re-asked": "sysM raises the detour budget to 60 mm because this decision's own section 3 says a refusal under a max_mm is a refusal of the BUDGET until it is re-asked.  It is not: the verdict does not move",
+  "verdict": "the pocket carries TWO conductors of the THREE that want it"
+ },
+ "acc_5v_lx_needs_a_part_moved_and_the_arithmetic_says_which": {
+  "escape": {
+   "instrument": "evidence/d680-lx-escape-probe.py -- maze3d.pad_escapes for U21.5 at neck reaches 0.00 / 0.30 / 0.50 / 0.80 mm",
+   "result": "ZERO escapes at every reach",
+   "why": "the TRUNK width is 0.600 mm (SWITCH_NODE netclass; the DRU prices no current for that class so --trunk-floor refuses the descent to its 0.400 mm floor).  A 0.600 mm trunk needs its launch at x >= 59.257 to clear U21.4 and U21.6, and at x <= 59.086 to clear C65.1's land.  THE WINDOW IS EMPTY.  No neck licence can help: the neck must END where the trunk can START, and with C65 where it is there is nowhere"
+  },
+  "corridor": {
+   "instrument": "the same eviction flood aimed from L4.2",
+   "result": {
+    "0.600 mm": "U21.5 land unreachable even with GND and ACC_5V_RAW evicted from (57,37)-(64,42)",
+    "0.300 mm": "reaches (59.10,39.90) -- the escape corridor -- with GND+RAW out",
+    "0.200 mm": "reaches U21.5's own land with GND+RAW out"
+   },
+   "verdict": "even the CORRIDOR is under the SWITCH_NODE 0.400 mm floor while C65 is where it is"
+  },
+  "the_measured_C65_destination": {
+   "instrument": "apply_part_shift.py --report over nine offsets",
+   "chosen": {
+    "dx_mm": -1.135,
+    "dy_mm": 1.8,
+    "to_mm": [
+     59.9,
+     42.275
+    ],
+    "courtyard_overlaps_new": [],
+    "vias_in_moved_pads": 0,
+    "endpoints_swept_under_moved_land": 0,
+    "endpoints_stranded": 6
+   },
+   "output_loop_mm": {
+    "today": 5.21,
+    "moved": 5.63,
+    "note": "U21.6 -> C65.1 plus U21.4 -> C65.2, centre to centre"
+   },
+   "refused_neighbours": {
+    "+0.200 mm east": "two GND barrels land inside C65.2 (via-in-pad); the SAME clause fires on a NULL move, so it is a pre-existing construction and not a consequence of the shift",
+    "dy +1.425 mm": "footprint bounding boxes of C65 and U21 overlap",
+    "dy +1.800 mm, dx -1.435": "one via-in-pad and one swept conflict",
+    "dy +1.800 mm, dx -0.500 / -0.800": "clean, but a longer output loop (6.29 / 5.95 mm)"
+   },
+   "still_owed": "the move strands ACC_5V_RAW's whole chain back to U21.6, and apply_part_shift refuses a --release whose closure ends ON A STATIONARY PAD.  The honest order is EVICT ACC_5V_RAW first, then shift, then route LX and RAW together with --neck --neck-reach-mm"
+  }
+ },
+ "framework": {
+  "maze3d.Neck reach": {
+   "what": "a necked stub may leave a named courtyard ONCE, at its last segment, by at most --neck-reach-mm",
+   "why": "A.intersectsCourtyard matches a TRACK OBJECT that MEETS the courtyard.  This board's own /01_POWER_TREE/ACC_5V_RAW escape from U21.6 is ONE 0.250 mm segment (58.513,40.400)->(59.023,40.400) whose copper, with KiCad's width/2 end cap, reaches x = 59.148 while U21's courtyard stops at 58.995 -- 0.153 mm outside, DRC-clean since D-597.  Neck has always demanded strict CONTAINMENT, which is stricter than the rule the board wrote",
+   "default": "NECK_REACH_MM = 0.0 -- strict containment, byte for byte the pre-D-680 search; every earlier measurement reproduces",
+   "controls": "evidence/d680-neck-reach-controls.json, all_controls_behaved true: mask_reach == mask at reach 0; the D-584 shape (a segment WHOLLY outside) still REFUSED at reach 0.5; a single exit within reach ADMITTED; the same shape REFUSED at reach 0.05; a polyline that STARTS outside REFUSED"
+  },
+  "apply_part_shift.endpoints_on layer-aware": {
+   "what": "an endpoint counts as ON a land only where the track's layers and the pad's layers meet -- the reading D-678 gave swept_conflicts, applied to the clause that asks the same question from the other end",
+   "measured": "without it, EXT_SDA_BUF's In2.Cu waypoint at (60.300,40.800) was counted as an endpoint on C65.1, a B.Cu SMD land the whole laminate away, and REFUSED every C65 move unless a --release removed inner-layer copper the move never touches"
+  },
+  "standing suite": "evidence/d680-contract-regression.json -- 14/14 RAN, 13/13 COMPARABLE IDENTICAL to d678, 1 INCOMPARABLE and NAMED (pour_partition's ref_commit), all_identical_where_comparable true, vacuous FALSE",
+  "apply_part_shift --release-bare-pad": {
+   "what": "leave a named land with no escape ON PURPOSE, and only where NOTHING ELSE survives at that point; a surviving TRACK is still a refusal",
+   "why": "--release's own help has documented this since D-678 and the clause underneath refused it.  ACC_5V_FB is a three-land chain U21.1 - R100.1 - R99.2, so moving EITHER resistor releases a closure that ends on the OTHER one's land: neither resistor of the feedback divider could be moved at all",
+   "controls": "evidence/d680-release-bare-pad-controls.json, all_controls_behaved true"
+  }
+ },
+ "one_resistor_opens_it": {
+  "move": {
+   "ref": "R100",
+   "dx_mm": 0.4,
+   "dy_mm": 9.4,
+   "to_mm": [
+    58.9,
+    42.4
+   ],
+   "released_objects": 12,
+   "bare_pads_released": [
+    "R99.2"
+   ]
+  },
+  "flood_on_the_candidate": {
+   "no eviction": "SEALED (2071 cells at 0.050 mm)",
+   "EXT_SCL_BUF alone": "OPEN at 0.050 AND 0.025 mm"
+  },
+  "gate": {
+   "fbA": {
+    "join_mm": 21.602,
+    "vias": 2,
+    "refused_clauses": [
+     "attributable_drc",
+     "inherited_within_baseline",
+     "no_regression",
+     "pour_partition"
+    ],
+    "acc_5v_fb_mm": 170.584,
+    "acc_5v_fb_vias": 13
+   },
+   "fbB": {
+    "join_mm": 20.448,
+    "vias": 2,
+    "refused_clauses": [
+     "attributable_drc",
+     "inherited_within_baseline",
+     "no_regression",
+     "pour_partition"
+    ],
+    "acc_5v_fb_mm": 160.374,
+    "acc_5v_fb_vias": 10
+   }
+  },
+  "why_the_destination_is_wrong": "R100.1's land ends up 0.0482 mm from /ACC_5V_BOOST_EN's B.Cu diagonal, plus one new hole_clearance and two extra solder_mask_bridge.  apply_part_shift measures ENDPOINTS and COURTYARDS; a track that merely CROSSES a moved land has neither",
+  "new_instrument": "evidence/d680-placement-site-clearance.py measures every land against every foreign object by SHAPE.Collide bisection -- the predicate KiCad's DRC evaluates -- and swept thirty destinations for R100",
+  "what_it_found": "the band south of U21 is a SIGNAL FIELD, not free area: ACC_DETECT_N, ACC_5V_BOOST_EN, ACC_5V_SW, ACC_POWER_FAULT_N and ACC_5V_ILIM cross it.  Only (59.400,41.900) and (59.900,41.900) clear 0.225 mm, and BOTH overlap C65's courtyard -- the part ACC_5V_LX needs moved"
+ }
+}
