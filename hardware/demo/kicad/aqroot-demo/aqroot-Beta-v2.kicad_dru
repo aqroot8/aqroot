@@ -1518,6 +1518,71 @@
 #   Evidence: `evidence/d632-relief-g100-no-body-landing.json`,
 #   `evidence/d632-relief-g25-licensed.json`.
 
+# ---------------------------------------------------------------------
+# 12c. D-682 -- THE BMI270's I/O SUPPLY PIN.  A SUPPLY PORT, ADMITTED
+# ON A PUBLISHED PER-PART CURRENT AND NOT ON A CATEGORY.
+#
+# `U4.5` IS `VDDIO`.  KiCad's netlist declares it `power_in`, so
+# `checks/leaf_land_contract.py` classifies it `SUPPLY_PORT` and rules
+# `LL4 -- the rail bar stands unchanged`.  That verdict is CORRECT and
+# this block does not argue with it: LL4 is a statement that the rail
+# figure is not REMOVED, not a statement that 1.0 A flows here.  The
+# figure that flows here is published, in this board's own schematic,
+# and has been since FBV2-S1-005:
+#
+#   U4.5     +3V3  BMI270 `VDDIO`, the interface/I-O supply.  The `U4`
+#     schematic note quotes BST-BMI270-DS000-08 Rev 1.6 verbatim:
+#     "Accel-only low-power mode down to 4 uA plus about 3 uA for
+#     advanced features; suspend 3.5 uA", and the strap-audit note on
+#     the same sheet states "ALWAYS POWERED FROM +3V3.  NO LOAD SWITCH:
+#     ACCEL LOW-POWER + FEATURES ~7-10 uA".  The only DYNAMIC load on
+#     `VDDIO` is the part's own output pads, and the same note bounds
+#     those too: "Output pads are specified at IOH/IOL under 2 mA".
+#     `U4` drives exactly one output pad on this board -- `INT1`
+#     (pin 4, `/05_I2C_DEVICES/BMI270_INT1_RAW`); `SDA` is open-drain
+#     and sinks through the bus pull-up, not out of `VDDIO`.  So the
+#     worst case this land carries is about 10 uA of quiescent plus a
+#     single sub-2 mA pad drive.
+#
+#     0.200 mm of 1 oz outer copper carries 0.602 A at dT = 10 K
+#     (`audit_bond_ampacity.py`, the same derivation section 5's own
+#     printed table reproduces to within 0.9 %).  Against 2 mA that is
+#     a margin of 300x, and against the quiescent figure 60000x.  The
+#     0.35/0.20 mm barrel carries 1.457 A and is not the bottleneck.
+#     THIS IS NOT A DERATING.  Section 13's `U12.4` ruling had to trade
+#     0.742 A against a 1.0 A design figure because the WHOLE 3.3 V
+#     rail passes through that neck; nothing but this one sensor's I-O
+#     supply passes through this one, and the part that draws it is
+#     specified in MICROAMPS on the sheet that instantiates it.
+#
+#     AND THE ALTERNATIVE IS A DEAD PART.  `U4.5` has NO CONNECTION OF
+#     ANY KIND today (D-647 named it; `U4.8` `VDD` was closed after,
+#     `VDDIO` was not).  `VDDIO` is not optional on a BMI270: with it
+#     open the digital interface has no supply, the device does not
+#     answer on I2C, and the 6-axis IMU -- a retained Demo feature in
+#     `AQROOT_DEMO_SCOPE.md` -- does not work at all.
+#
+# NO NEW FAB CAPABILITY AND NOTHING BROADENED.  Same three constraints,
+# same 0.35/0.20/0.075 mm D-257 `FINE_ESC_*` geometry, same
+# `enclosedByArea` shape and the same all-permitted rule area as every
+# rule in section 12; only WHERE it applies is new, and that is one
+# 0.65 mm square drawn by the promoting transaction around the barrel
+# it actually laid, audited by gate clause 6 and re-proved by
+# `verify_promotion.py --bridge`.
+# ---------------------------------------------------------------------
+
+(rule "D-682 U4.5 pad-escape relief - via, +3V3"
+	(constraint via_diameter (min 0.35mm))
+	(condition "A.NetName == '+3V3' && A.enclosedByArea('PAD_ESCAPE_U4_5')"))
+
+(rule "D-682 U4.5 pad-escape relief - annular ring, +3V3"
+	(constraint annular_width (min 0.075mm))
+	(condition "A.NetName == '+3V3' && A.enclosedByArea('PAD_ESCAPE_U4_5')"))
+
+(rule "D-682 U4.5 pad-escape relief - hole, +3V3"
+	(constraint hole_size (min 0.20mm))
+	(condition "A.NetName == '+3V3' && A.enclosedByArea('PAD_ESCAPE_U4_5')"))
+
 
 # =====================================================================
 # 13. PAD-ESCAPE RELIEF - WIDTH  (D-610)
@@ -1673,6 +1738,56 @@
 (rule "D-632 U4.12 pad-escape relief - run width, +3V3"
 	(constraint track_width (min 0.20mm))
 	(condition "A.NetName == '+3V3' && A.enclosedByArea('PAD_ESCAPE_RUN_U4_12')"))
+
+# ---------------------------------------------------------------------
+# 13c. D-682 ADDENDUM -- THE THIRD WIDTH LICENCE, ON THE SAME PART AS
+# THE SECOND.
+#
+# Section 12c rules the CURRENT on `U4.5`: about 10 uA of quiescent
+# plus one sub-2 mA output-pad drive, published on this board's own
+# `U4` sheet, against 0.602 A in 0.200 mm of outer copper.  This rule
+# is the other half of the same transaction, because the relief ladder
+# measured that the barrel alone does not open the land:
+#
+#     rung 0  0.400 mm run, 0.65/0.40 barrel   NO LEGAL ESCAPE
+#     rung 2  0.400 mm run, 0.35/0.20 barrel   NO LEGAL ESCAPE
+#     rung 4  0.600 mm run, 0.35/0.20 barrel   NO LEGAL ESCAPE
+#     rung 1  0.200 mm run, 0.65/0.40 barrel   OPENS, 3.767 mm
+#     rung 3  0.200 mm run, 0.35/0.20 barrel   OPENS, 1.421 mm
+#
+# (`evidence/d682-relief-ladder.json`, `screen_pad_escape_relief.py` at
+# 0.050 mm; the 0.025 mm ladder gives the same two rungs at 3.759 and
+# 1.383 mm.)  BOTH walls are the RUN and not the barrel, exactly as
+# D-609 measured on `U12.4`.  Rung 3 is promoted because it is the
+# SHORTER run -- 1.4 mm against 3.8 mm -- and therefore the smaller
+# licence: it stays beside `U4`'s own north pad row instead of crossing
+# 3 mm of open board.
+#
+# THE WIDTH IS STILL THE BOARD'S OWN.  0.200 mm is the minimum section
+# 9's "Pad-escape necking - width, fine-pitch power packages" already
+# grants inside the ten courtyards it names.  `U4` is NOT one of them
+# and this rule does not add it: `enclosedByArea` is all-or-nothing per
+# track, so a run that leaves its own declared rectangle by a micron is
+# judged at the P3V3 class floor and the whole transaction is refused.
+#
+#   PAD_ESCAPE_RUN_U4_5   x 56.975 .. 58.525   y 68.225 .. 69.738 mm
+#
+# sized from the copper the LADDER lays at rung 3 -- bbox 57.125/68.375
+# to 58.375/69.5875, barrel included -- plus section 17 clause 7's
+# 0.150 mm end-cap overhang on every side, and declared in
+# `evidence/d682-relief-run-areas.json` BEFORE the router moved.  The
+# promoted run's own track bbox came in INSIDE that figure, at
+# 57.200/68.450 to 58.375/69.5875, and its 0.35 mm barrel at
+# (57.300, 68.550) spans 57.125..57.475 / 68.375..68.725; the rectangle
+# is the ladder's measurement and is not re-cut around the result.
+#
+# Order: after section 13b, so it wins over section 5's "P3V3 minimum
+# width on the outer layers" exactly as the two rules above it do.
+# ---------------------------------------------------------------------
+
+(rule "D-682 U4.5 pad-escape relief - run width, +3V3"
+	(constraint track_width (min 0.20mm))
+	(condition "A.NetName == '+3V3' && A.enclosedByArea('PAD_ESCAPE_RUN_U4_5')"))
 
 # ---------------------------------------------------------------------
 # SECTION 18 - D-658: THE `BQ25185` TS/MR STRAP'S TWO BARRELS MOVE, AND

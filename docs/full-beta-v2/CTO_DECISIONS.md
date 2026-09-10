@@ -1,3 +1,145 @@
+# D-682 · 2026-09-10 · Demo — THE IMU HAD NO I/O SUPPLY: `U4.5` `VDDIO` IS CLOSED BY A 1.421 mm LICENSED RELIEF, AND THE LICENCE IS ARGUED FROM A CURRENT THE SCHEMATIC ALREADY PUBLISHES
+
+    authority  d57d7d27ba0c400891132fba88da0719decefbaf846965b6dfef32764884af7d
+            -> d0743e72da3fa650d8eb59ed4f41fb89f4e4663c3ea7f8694d257ed9c86a1dad
+    retained open edges 24 -> 23      open retained nets 15 -> 15
+    `+3V3`  2 -> 1                    raw board ratsnest 40 -> 39
+    `hardware/beta-v2` UNTOUCHED.  `hardware/demo/fab` REGENERATED, contract PASS.
+
+**COPPER PROMOTED.**  Gate **15 of 15 clauses, `refused_clauses []`**
+(`evidence/d682-gate-u4-5-PROMOTED.json`).  `verify_promotion.py --ref HEAD`
+**PASS, 15/15 checks**, `D-186_bat_main_class` and
+`D-269_bat_main_routed_clearance` both **TRUE**
+(`evidence/d682-verify-promotion.json`).  `protected_copper.py`
+**IDENTICAL** — 15 nets, 402 objects, `differences {}`.  Standing suite
+**14/14 RAN, `vacuous` false**, 13 comparable, 1 INCOMPARABLE and NAMED
+(`pour_partition`'s `published_table_source.sha256` — the `.kicad_dru` this
+decision amends), and **no verdict moved**
+(`evidence/d682-contract-regression.json`).
+
+## 1. THE SUBJECT IS A DEAD PART, NOT AN OPEN EDGE
+
+`U4` is the **BMI270 6-axis IMU**, a retained Demo feature in
+`AQROOT_DEMO_SCOPE.md`.  D-647 found that **both** of its supply pins had no
+connection of any kind and named the reason nobody had noticed: *"every
+instrument on this board counts OPEN EDGES and one open edge on an 80-pad rail
+looks like every other."*  `U4.8` `VDD` was closed after that; **`U4.5`
+`VDDIO` was not**, and it has been one of `+3V3`'s two remaining open edges
+ever since (D-672 §2 classified it `PACKAGE_PITCH_WALL`, D-675 §1 carried it,
+D-662 §5(e) recorded `NO_LEGAL_ESCAPE` at the trunk floor).
+
+`VDDIO` is not optional on a BMI270.  With it open the device's digital
+interface has no supply, it does not answer on I2C, and the IMU does not work.
+**This was a functional failure wearing an open edge's clothes.**
+
+## 2. THE WALL IS THE RUN, AND BOTH LADDER RUNGS THAT OPEN IT ARE 0.200 mm
+
+`screen_pad_escape_relief.py "+3V3" --offcentre-launch`, five rungs, at
+0.050 mm and again at 0.025 mm (`evidence/d682-relief-ladder.json`):
+
+    rung 0   0.400 mm run,  0.65/0.40 barrel    NO LEGAL ESCAPE
+    rung 2   0.400 mm run,  0.35/0.20 barrel    NO LEGAL ESCAPE
+    rung 4   0.600 mm run,  0.35/0.20 barrel    NO LEGAL ESCAPE
+    rung 1   0.200 mm run,  0.65/0.40 barrel    OPENS   3.767 mm  (3.759 at 0.025)
+    rung 3   0.200 mm run,  0.35/0.20 barrel    OPENS   1.421 mm  (1.383 at 0.025)
+
+The BARREL is not the wall — the fine barrel alone (rung 2) refuses and the
+DRU-floor barrel with a narrow run (rung 1) succeeds.  **The wall is the run
+width**, exactly as D-609 measured on `U12.4`.  **Rung 3 is promoted because
+it is the SHORTER run** — 1.4 mm against 3.8 mm — and therefore the smaller
+licence: it stays beside `U4`'s own north pad row instead of crossing 3 mm of
+open board.  And the barrel lands where D-647 already measured it does: **In3
+outline 0, the 8047.8 mm² `+3V3` plane BODY**, not another orphan piece.
+
+## 3. THE LICENCE, AND WHY A SUPPLY PORT IS ADMITTED HERE
+
+`checks/leaf_land_contract.py` reads `U4.5` as `power_in` → **`SUPPLY_PORT` →
+`LL4`, the rail bar stands unchanged**, and that verdict is CORRECT and is not
+argued with.  LL4 says the rail figure is not REMOVED; it does not say 1.0 A
+flows here.  **What flows here is published in this board's own schematic and
+has been since FBV2-S1-005**, so D-633's LL-C is satisfied without inventing a
+figure:
+
+  * `U4` sheet note, quoting BST-BMI270-DS000-08 Rev 1.6: *"Accel-only
+    low-power mode down to 4 uA plus about 3 uA for advanced features; suspend
+    3.5 uA"*, and *"Output pads are specified at IOH/IOL under 2 mA"*.
+  * `U4` strap-audit note on the same sheet: *"ALWAYS POWERED FROM +3V3.  NO
+    LOAD SWITCH: ACCEL LOW-POWER + FEATURES ~7-10 uA."*
+  * `U4` drives exactly ONE output pad on this board — `INT1` (pin 4); `SDA`
+    is open-drain and sinks through the bus pull-up, not out of `VDDIO`.
+
+So the worst case on this land is **~10 µA quiescent plus one sub-2 mA pad
+drive**.  0.200 mm of 1 oz outer copper carries **0.602 A at dT = 10 K** — a
+**300x** margin on the transient and 60000x on the quiescent — and the
+0.35/0.20 mm barrel carries 1.457 A and is not the bottleneck.  **THIS IS NOT
+A DERATING.**  Section 13's `U12.4` ruling had to trade 0.742 A against a 1.0 A
+design figure because the whole 3.3 V rail passes through that neck; nothing
+but one sensor's I/O supply passes through this one.
+
+`.kicad_dru` sections **12c** (via 0.35 / annular 0.075 / hole 0.20 inside
+`PAD_ESCAPE_U4_5`) and **13c** (track width 0.20 inside `PAD_ESCAPE_RUN_U4_5`)
+carry that reasoning in full.  No new fab capability: 0.35/0.20/0.075 mm is
+the D-257 `FINE_ESC_*` process this file already licenses by name, and
+0.200 mm is the width section 9 already grants inside ten named courtyards.
+
+## 4. THE RECTANGLE WAS DECLARED BEFORE THE ROUTER MOVED, AND THE CONTROL PROVES THE LICENCE IS LOAD-BEARING
+
+`evidence/d682-relief-run-areas.json` declares
+`PAD_ESCAPE_RUN_U4_5 = x 56.975 .. 58.525, y 68.225 .. 69.738 mm`, sized from
+the LADDER's rung-3 copper plus section 17 clause 7's 0.150 mm end-cap
+overhang, and committed with the rule.  The promoted run's own track bbox came
+in **inside** it at 57.200/68.450 – 58.375/69.5875; the rectangle is the
+ladder's measurement and was **not** re-cut around the result.
+
+**THE CONTROL.**  The identical command with the `.kicad_dru` rules absent
+(`evidence/d682-gate-u4-5-no-licence-control.json`) refuses with
+**`NO_DRU_LICENCE` — *"no .kicad_dru rule grants +3V3 a 0.35/0.20 mm barrel
+inside PAD_ESCAPE_U4_5"*** — `refused_clauses ['board_changed',
+'board_improved']`, board untouched.  The licence is doing the work and the
+gate will not lay this copper without it.
+
+## 5. WHAT WAS PROMOTED
+
+    added   3 tracks   +3V3   B.Cu   0.200 mm   1.421 mm total
+                       (58.275,69.4875) -> (57.9375,69.3375) -> (57.300,68.700)
+                       -> (57.300,68.550)
+            1 via      +3V3   0.35/0.20 at (57.300, 68.550), B.Cu -> In3 BODY
+            2 rule areas  PAD_ESCAPE_U4_5, PAD_ESCAPE_RUN_U4_5
+    removed NOTHING.  `objects_removed` 0, `nothing_removed` true.
+
+No eviction, no detour spec, no relay, no placement change, no zone added or
+removed, no netclass change.  DRC **exit 0**, `{lib_footprint_issues: 199,
+solder_mask_bridge: 1}` — equal to the inherited baseline — and
+`attributable_drc []`.  The only measurable side-effect is the barrel's own
+antipad: the `In1`/`In4` `GND` reference planes go **9381.132 -> 9380.560 mm²**
+each, 0.572 mm², which is one 0.35 mm through hole at the zone clearance and
+is what `keepout_stackup` reports.
+
+## 6. NEXT, IN ORDER OF LEVERAGE
+
+ 1. **`/01_POWER_TREE/BQ25185_SYS` remains 6 of 23 and the #1 fabrication
+    blocker.**  D-672 §5 and `PROTOTYPE CLOSURE MODE` both say the same thing:
+    it is a `U12`/`U13`/`U21` converter-cluster REFLOORPLAN, not a route.
+ 2. **`/I2C_SCL_INT` `U16.3` + `/ACC_PWR_EN` `U3.20`** — D-671 §7(2)'s
+    `U16`/`R17`/`R63` pocket refloorplan, *"the first refloorplan on this board
+    that pays for itself three times"*.  `U16` is the `TCA4307` and
+    `screen_open_edge_cost.py` reports it as the board's ONLY `sole_path` part:
+    six nets are stranded behind it.
+ 3. `/01_POWER_TREE/ACC_5V_LX` — D-681 §7 has the 3.529 mm zero-via route
+    already drawn; it needs the `U21`/`L4`/`C65`/`R64` cell moved.
+ 4. `+3V3` `U5.2` (MAX98357A) is now `+3V3`'s LAST open edge and is
+    `NO_LEGAL_ESCAPE` at every rung of the same ladder, blocked by `U5.1`
+    (x56) — a different wall from `U4.5`'s and not reachable by this
+    instrument.
+ 5. **THERE IS NO OPEN OWNER DECISION ON THIS BOARD.**
+
+Evidence, all under `hardware/demo/manufacturing/evidence/`:
+`d682-relief-ladder.json`, `d682-relief-run-areas.json`, `d682-runs.json`,
+`d682-gate-u4-5-PROMOTED.json`, `d682-gate-u4-5-no-licence-control.json`,
+`d682-verify-promotion.json`, `d682-protected-copper.json`,
+`d682-routing-ledger.json`, `d682-contract-regression.json` (+ the 14 emitted
+`d682-*-contract.json` baselines).
+
 # D-681 addendum 2 · 2026-09-10 · Demo — `/ACC_PWR_EN` IS NOT A WALL, IT IS A PRICE: ELEVEN OBJECTS AND FOUR GROUND BARRELS OUT OF THE CHARGER'S OWN GROUND, FOR ONE SLOW ENABLE LINE
 
     authority  d57d7d27ba0c400891132fba88da0719decefbaf846965b6dfef32764884af7d

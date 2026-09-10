@@ -1,0 +1,9 @@
+{
+  "schema": 1,
+  "decision": "D-682",
+  "net": "+3V3",
+  "why": "the PAD_ESCAPE_RUN_U4_5 width-licence rectangle, declared BEFORE the router moved (D-610 doctrine). Sized from the copper screen_pad_escape_relief.py rung 3 lays for U4.5 -- bbox 57.125/68.375 to 58.375/69.5875, barrel included -- plus section 17 clause 7's 0.150 mm end-cap overhang on every side.",
+  "areas": {
+    "U4.5": [56.975, 68.225, 58.525, 69.738]
+  }
+}

@@ -1,0 +1,310 @@
+{
+  "authoritative_unchanged": true,
+  "board": "/home/aqroot8/aqroot-demo/hardware/demo/kicad/aqroot-demo/aqroot-Beta-v2.kicad_pcb",
+  "board_sha256": "d57d7d27ba0c400891132fba88da0719decefbaf846965b6dfef32764884af7d",
+  "grid": 50000,
+  "guard": null,
+  "guard_sha256": null,
+  "max_mm": 8.0,
+  "method": "read-only; maze3d.stitch_pad through maze3d.Field at four rungs, verify_laid proving each, every trial reverted",
+  "nets": [
+    {
+      "body_pads": 80,
+      "contract": {
+        "clr": 200000,
+        "via_dia": 800000,
+        "via_drill": 400000,
+        "width": 600000
+      },
+      "dru_floor": {
+        "drill": 400000,
+        "via_dia": 650000,
+        "width": 400000
+      },
+      "layers": [
+        "F",
+        "B",
+        "I2",
+        "I3"
+      ],
+      "net": "+3V3",
+      "netclass": "P3V3",
+      "orphan_islands": 2,
+      "rungs": [
+        {
+          "clr": 200000,
+          "islands": [],
+          "needs_licence": false,
+          "opened": 0,
+          "rung": "0 dru floor (D-604 control)",
+          "via_dia": 650000,
+          "via_drill": 400000,
+          "walls": [
+            {
+              "island": [
+                "U4.5"
+              ],
+              "reason": "NO_LEGAL_ESCAPE",
+              "why": "U4.5: NO LEGAL ESCAPE at >= 0.400 mm; blocked by U4.6 (x41), U4.4 (x19), C6.2 (x5), C7.2 (x3)"
+            },
+            {
+              "island": [
+                "U5.2"
+              ],
+              "reason": "NO_LEGAL_ESCAPE",
+              "why": "U5.2: NO LEGAL ESCAPE at >= 0.400 mm; blocked by U5.1 (x56), R15.2 (x10), R15.1 (x3), C10.2 (x3)"
+            }
+          ],
+          "width": 400000
+        },
+        {
+          "clr": 200000,
+          "islands": [
+            {
+              "geometry": {
+                "bbox_mm": [
+                  55.275,
+                  66.675,
+                  58.375,
+                  69.5875
+                ],
+                "narrow_mm": 3.7668,
+                "segments": [
+                  {
+                    "a": [
+                      58.275,
+                      69.4875
+                    ],
+                    "b": [
+                      57.9375,
+                      69.3375
+                    ],
+                    "mm": 0.3693,
+                    "w": 0.2
+                  },
+                  {
+                    "a": [
+                      57.9375,
+                      69.3375
+                    ],
+                    "b": [
+                      57.3,
+                      68.7
+                    ],
+                    "mm": 0.9016,
+                    "w": 0.2
+                  },
+                  {
+                    "a": [
+                      57.3,
+                      68.7
+                    ],
+                    "b": [
+                      57.1,
+                      68.25
+                    ],
+                    "mm": 0.4924,
+                    "w": 0.2
+                  },
+                  {
+                    "a": [
+                      57.1,
+                      68.25
+                    ],
+                    "b": [
+                      55.8,
+                      67.0
+                    ],
+                    "mm": 1.8035,
+                    "w": 0.2
+                  },
+                  {
+                    "a": [
+                      55.8,
+                      67.0
+                    ],
+                    "b": [
+                      55.6,
+                      67.0
+                    ],
+                    "mm": 0.2,
+                    "w": 0.2
+                  }
+                ]
+              },
+              "layer": "B",
+              "mm": 3.767,
+              "pad": "U4.5",
+              "pad_xy": [
+                58.4125,
+                69.5
+              ],
+              "via_xy": [
+                55.6,
+                67.0
+              ]
+            }
+          ],
+          "needs_licence": true,
+          "opened": 1,
+          "rung": "1 relief WIDTH only",
+          "via_dia": 650000,
+          "via_drill": 400000,
+          "walls": [
+            {
+              "island": [
+                "U5.2"
+              ],
+              "reason": "NO_LEGAL_ESCAPE",
+              "why": "U5.2: NO LEGAL ESCAPE at >= 0.200 mm; blocked by U5.3 (x27), U5.1 (x23), U5.17 (x5), R15.2 (x5)"
+            }
+          ],
+          "width": 200000
+        },
+        {
+          "clr": 200000,
+          "islands": [],
+          "needs_licence": true,
+          "opened": 0,
+          "rung": "2 relief BARREL only",
+          "via_dia": 350000,
+          "via_drill": 200000,
+          "walls": [
+            {
+              "island": [
+                "U4.5"
+              ],
+              "reason": "NO_LEGAL_ESCAPE",
+              "why": "U4.5: NO LEGAL ESCAPE at >= 0.400 mm; blocked by U4.6 (x41), U4.4 (x19), C6.2 (x5), C7.2 (x3)"
+            },
+            {
+              "island": [
+                "U5.2"
+              ],
+              "reason": "NO_LEGAL_ESCAPE",
+              "why": "U5.2: NO LEGAL ESCAPE at >= 0.400 mm; blocked by U5.1 (x56), R15.2 (x10), R15.1 (x3), C10.2 (x3)"
+            }
+          ],
+          "width": 400000
+        },
+        {
+          "clr": 200000,
+          "islands": [
+            {
+              "geometry": {
+                "bbox_mm": [
+                  57.125,
+                  68.375,
+                  58.375,
+                  69.5875
+                ],
+                "narrow_mm": 1.4209,
+                "segments": [
+                  {
+                    "a": [
+                      58.275,
+                      69.4875
+                    ],
+                    "b": [
+                      57.9375,
+                      69.3375
+                    ],
+                    "mm": 0.3693,
+                    "w": 0.2
+                  },
+                  {
+                    "a": [
+                      57.9375,
+                      69.3375
+                    ],
+                    "b": [
+                      57.3,
+                      68.7
+                    ],
+                    "mm": 0.9016,
+                    "w": 0.2
+                  },
+                  {
+                    "a": [
+                      57.3,
+                      68.7
+                    ],
+                    "b": [
+                      57.3,
+                      68.55
+                    ],
+                    "mm": 0.15,
+                    "w": 0.2
+                  }
+                ]
+              },
+              "layer": "B",
+              "mm": 1.421,
+              "pad": "U4.5",
+              "pad_xy": [
+                58.4125,
+                69.5
+              ],
+              "via_xy": [
+                57.3,
+                68.55
+              ]
+            }
+          ],
+          "needs_licence": true,
+          "opened": 1,
+          "rung": "3 relief WIDTH + BARREL",
+          "via_dia": 350000,
+          "via_drill": 200000,
+          "walls": [
+            {
+              "island": [
+                "U5.2"
+              ],
+              "reason": "NO_LEGAL_ESCAPE",
+              "why": "U5.2: NO LEGAL ESCAPE at >= 0.200 mm; blocked by U5.3 (x27), U5.1 (x23), U5.17 (x5), R15.2 (x5)"
+            }
+          ],
+          "width": 200000
+        },
+        {
+          "clr": 200000,
+          "islands": [],
+          "needs_licence": true,
+          "opened": 0,
+          "rung": "4 relief BARREL at netclass width",
+          "via_dia": 350000,
+          "via_drill": 200000,
+          "walls": [
+            {
+              "island": [
+                "U4.5"
+              ],
+              "reason": "NO_LEGAL_ESCAPE",
+              "why": "U4.5: NO LEGAL ESCAPE at >= 0.600 mm; blocked by U4.4 (x47), U4.1 (x11), C6.2 (x6), TP26.1 (x4)"
+            },
+            {
+              "island": [
+                "U5.2"
+              ],
+              "reason": "NO_LEGAL_ESCAPE",
+              "why": "U5.2: NO LEGAL ESCAPE at >= 0.600 mm; blocked by U5.1 (x53), R15.2 (x12), R15.1 (x4), C10.2 (x3)"
+            }
+          ],
+          "width": 600000
+        }
+      ]
+    }
+  ],
+  "offcentre_launch": true,
+  "question": "for every orphan land of a pour-owning net, does the E6 escape-relief doctrine of FBV2_P2_ROUTING_PLAN section 17 -- one rule area per pad -- open it, and which lever does the opening",
+  "relief": {
+    "annular": 75000,
+    "clr": 200000,
+    "provenance": "every figure is already licensed by this board's own .kicad_dru: 0.200 mm width and clearance by the pad-escape necking rules, 0.35/0.20 mm and the 0.075 mm ring by the sixteen D-257 FINE_ESC_* areas",
+    "via_dia": 350000,
+    "via_drill": 200000,
+    "width": 200000
+  },
+  "schema": 1
+}

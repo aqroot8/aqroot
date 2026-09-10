@@ -23,6 +23,52 @@
 > `verify_promotion` PASS and `protected_copper` showing exactly one protected
 > net moved.  `U14.7` is on the bus.  This board has **no open owner decision**.
 
+- **Demo D-682 (THE IMU HAD NO I/O SUPPLY: `U4.5` `VDDIO` IS CLOSED BY A
+  1.421 mm LICENSED RELIEF, AND THE LICENCE IS ARGUED FROM A CURRENT THE
+  SCHEMATIC ALREADY PUBLISHES):**  **COPPER PROMOTED.**  Authority
+  `d57d7d27ba0c400891132fba88da0719decefbaf846965b6dfef32764884af7d` ->
+  **`d0743e72da3fa650d8eb59ed4f41fb89f4e4663c3ea7f8694d257ed9c86a1dad`**;
+  retained open edges **24 -> 23**, open retained nets 15 -> 15, `+3V3`
+  **2 -> 1**.  `hardware/beta-v2` **UNTOUCHED**; `hardware/demo/fab`
+  **REGENERATED** at the new board and `fab_package_contract` **PASS**.
+  Gate **15 of 15, `refused_clauses []`**; `verify_promotion.py --ref HEAD`
+  **PASS 15/15** with `D-186_bat_main_class` and
+  `D-269_bat_main_routed_clearance` **TRUE**; `protected_copper.py`
+  **IDENTICAL** (15 nets / 402 objects, `differences {}`); standing suite
+  **14/14 RAN, `vacuous` false, no verdict moved**.
+  **(1) THE SUBJECT WAS A DEAD PART.**  `U4.5` is the **BMI270's `VDDIO`** —
+  the IMU's interface supply — and it had **no connection of any kind**
+  (D-647 named both supply pins; `VDD` was closed after, `VDDIO` was not).
+  With it open the device does not answer on I2C and the 6-axis IMU, a
+  retained `AQROOT_DEMO_SCOPE` feature, does not work.
+  **(2) THE WALL WAS THE RUN, NOT THE BARREL.**  Five relief rungs at
+  0.050 mm and again at 0.025 mm: 0.400 and 0.600 mm runs all
+  `NO LEGAL ESCAPE`; **both** rungs that open the land are 0.200 mm — 3.767 mm
+  with the DRU-floor barrel, **1.421 mm with the 0.35/0.20 fine barrel**.  The
+  shorter one is promoted, and its barrel lands in **`In3` outline 0, the
+  8047.8 mm2 `+3V3` plane BODY**, exactly where D-647 measured it would.
+  **(3) A SUPPLY PORT ADMITTED ON A PUBLISHED FIGURE, NOT A CATEGORY.**
+  `leaf_land_contract` reads `power_in` -> `SUPPLY_PORT` -> `LL4`, and that is
+  not argued with: LL4 declines to REMOVE the rail bar, it does not claim 1.0 A
+  flows here.  The `U4` sheet publishes what does — *"4 uA plus about 3 uA",
+  "suspend 3.5 uA", "~7-10 uA", "Output pads ... under 2 mA"* — and `U4` drives
+  ONE output pad (`INT1`; `SDA` is open-drain).  **0.200 mm carries 0.602 A:
+  a 300x margin on the transient.**  Not a derating, unlike section 13's
+  `U12.4`, where the whole rail passes through the neck.
+  **(4) THE LICENCE IS LOAD-BEARING AND THE CONTROL PROVES IT.**  The identical
+  command with the `.kicad_dru` rules absent refuses **`NO_DRU_LICENCE`** and
+  writes nothing.  `PAD_ESCAPE_RUN_U4_5` was **declared before the router
+  moved** (`evidence/d682-relief-run-areas.json`) from the LADDER's copper, and
+  the promoted run came in INSIDE it.
+  **(5) FOUR OBJECTS, NOTHING REMOVED.**  3 tracks `+3V3` `B.Cu` 0.200 mm /
+  1.421 mm, 1 via 0.35/0.20 at (57.300, 68.550), 2 rule areas.  DRC exit 0,
+  `attributable_drc []`.  Only side-effect: the barrel's antipad takes
+  `In1`/`In4` `GND` **9381.132 -> 9380.560 mm2**.
+  **NEXT:** (1) `BQ25185_SYS` is 6 of 23 and still the **#1 blocker** — a
+  `U12`/`U13`/`U21` converter-cluster REFLOORPLAN.  (2) the `U16`/`R17`/`R63`
+  pocket refloorplan (`U16` is the board's ONLY `sole_path` part; six nets
+  stranded behind it).  (3) `ACC_5V_LX` needs the `U21` cell moved.  (4) `+3V3`
+  `U5.2` is now the rail's LAST open edge and is a different wall.
 - **Demo D-681 addendum 2 (`/ACC_PWR_EN` IS NOT A WALL, IT IS A PRICE: ELEVEN
   OBJECTS AND FOUR GROUND BARRELS OUT OF THE CHARGER'S OWN GROUND, FOR ONE SLOW
   ENABLE LINE):**  **NO COPPER PROMOTED — MEASURED AND REFUSED ON PRICE.**

@@ -1,0 +1,165 @@
+{
+ "arms": [
+  {
+   "attributable_drc": [],
+   "connectivity": {
+    "nets_improved": [],
+    "nets_regressed": [],
+    "open_retained_nets_after": 15,
+    "open_retained_nets_before": 15,
+    "retained_open_edges_after": 24,
+    "retained_open_edges_before": 24
+   },
+   "drc_types": {
+    "lib_footprint_issues": 199,
+    "solder_mask_bridge": 1
+   },
+   "refused_clauses": [
+    "board_changed",
+    "board_improved"
+   ],
+   "relief": [
+    {
+     "failures": [
+      "NO_DRU_LICENCE",
+      "NOT_OFFERED"
+     ],
+     "mm": 0,
+     "net": "+3V3",
+     "ok": false,
+     "stitched": 0,
+     "stitches": []
+    }
+   ],
+   "run": "w/d682/u45b.json",
+   "why": "CONTROL: the same transaction with NO .kicad_dru rule -- refused NO_DRU_LICENCE, board unchanged"
+  },
+  {
+   "attributable_drc": [],
+   "connectivity": {
+    "nets_improved": [
+     "+3V3"
+    ],
+    "nets_regressed": [],
+    "open_retained_nets_after": 15,
+    "open_retained_nets_before": 15,
+    "retained_open_edges_after": 23,
+    "retained_open_edges_before": 24
+   },
+   "drc_types": {
+    "lib_footprint_issues": 199,
+    "solder_mask_bridge": 1
+   },
+   "refused_clauses": [],
+   "relief": [
+    {
+     "failures": [
+      "NOT_OFFERED"
+     ],
+     "mm": 1.421,
+     "net": "+3V3",
+     "ok": true,
+     "stitched": 1,
+     "stitches": [
+      {
+       "area": "PAD_ESCAPE_U4_5",
+       "mm": 1.421,
+       "pad": "U4.5",
+       "run_area": "PAD_ESCAPE_RUN_U4_5",
+       "run_bbox": [
+        57200000,
+        68450000,
+        58375000,
+        69587500
+       ],
+       "run_rect": [
+        56975000,
+        68225000,
+        58525000,
+        69738000
+       ],
+       "rung": 2,
+       "via": [
+        350000,
+        200000
+       ],
+       "via_xy": [
+        57.3,
+        68.55
+       ],
+       "width": 200000
+      }
+     ]
+    }
+   ],
+   "run": "w/d682/u45c.json",
+   "why": "licence authored + run rectangle declared: gate 15/15, refused_clauses [], 24 -> 23"
+  },
+  {
+   "attributable_drc": [],
+   "connectivity": {
+    "nets_improved": [
+     "+3V3"
+    ],
+    "nets_regressed": [],
+    "open_retained_nets_after": 15,
+    "open_retained_nets_before": 15,
+    "retained_open_edges_after": 23,
+    "retained_open_edges_before": 24
+   },
+   "drc_types": {
+    "lib_footprint_issues": 199,
+    "solder_mask_bridge": 1
+   },
+   "refused_clauses": [],
+   "relief": [
+    {
+     "failures": [
+      "NOT_OFFERED"
+     ],
+     "mm": 1.421,
+     "net": "+3V3",
+     "ok": true,
+     "stitched": 1,
+     "stitches": [
+      {
+       "area": "PAD_ESCAPE_U4_5",
+       "mm": 1.421,
+       "pad": "U4.5",
+       "run_area": "PAD_ESCAPE_RUN_U4_5",
+       "run_bbox": [
+        57200000,
+        68450000,
+        58375000,
+        69587500
+       ],
+       "run_rect": [
+        56975000,
+        68225000,
+        58525000,
+        69738000
+       ],
+       "rung": 2,
+       "via": [
+        350000,
+        200000
+       ],
+       "via_xy": [
+        57.3,
+        68.55
+       ],
+       "width": 200000
+      }
+     ]
+    }
+   ],
+   "run": "w/d682/u45promote.json",
+   "why": "the authoritative promoting run"
+  }
+ ],
+ "board": "/home/aqroot8/aqroot-demo/hardware/demo/kicad/aqroot-demo/aqroot-Beta-v2.kicad_pcb",
+ "board_sha256": "d0743e72da3fa650d8eb59ed4f41fb89f4e4663c3ea7f8694d257ed9c86a1dad",
+ "decision": "D-682",
+ "question": "close +3V3 U4.5 -- the BMI270's VDDIO -- with a .kicad_dru-licensed pad-escape relief",
+ "schema": 1
+}
