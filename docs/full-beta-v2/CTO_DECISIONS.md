@@ -1,3 +1,113 @@
+# D-693 · 2026-09-11 · Demo — **`R36` OUT OF THE POCKET CHANGES NOTHING, AND THE ONLY INSTRUMENT LEFT FOR EIGHT EDGES MOVES PROTECTED BATTERY COPPER** — OWNER DECISION RAISED, WITH A RECOMMENDATION
+
+    authority  2f456279cb9540f5e29a2a9b2fbc60a6ad761e0ec33253f2802c4ada83aebbc4
+            -> 2f456279cb9540f5e29a2a9b2fbc60a6ad761e0ec33253f2802c4ada83aebbc4   UNCHANGED
+    retained open edges 18 -> 18
+    `hardware/demo/kicad`, `hardware/demo/fab`, `hardware/beta-v2` UNTOUCHED
+    `evidence/d693-u11-fanout-escalation.json`
+
+**NO COPPER PROMOTED.**
+
+## 1. `R36` WAS THE LAST THING IN THE POCKET THAT COULD MOVE FREELY, AND IT DID NOT HELP
+
+`R36` is the 18 k `ILIM_VSET` programming resistor and its courtyard —
+`(67.225,79.475)-(70.275,81.025)` — sits directly under `U11`'s east column,
+and `U11.10`'s refusal names it by name (`R36.1 (x13)`).  Moved to
+**(70.000, 82.600)**, courtyard-clear at 0.5953 mm, with `R127` → (70.000,
+85.000) and `TP6` → (70.400, 87.500) beside it:
+
+    /01_POWER_TREE/ILIM_VSET   R36.1 -> U11.7   7.779 mm, ZERO vias   restored
+    /BQ25185_STAT1             R127.2 -> TP6.1  2.623 mm, ZERO vias
+    /BQ25185_STAT1             R127.2 -> U11.9  STILL NOT CLOSED
+
+Scratch **21 → 19** against an authority of 18: the three moves cost three
+edges and two closures bought two back.  ***Emptying the pocket of the one part
+that was blocking it does not give `U11.9` a corridor.***
+
+## 2. FIVE INSTRUMENTS NOW AGREE, AND THEY AGREE ON THE SAME SENTENCE
+
+    D-690  U11.9 and U11.3 CAN launch, at 0.150 mm            -> NO_PATH
+    D-692  0 of 9 single-net evictions open the corridor
+    D-692  the minimal cut is THREE nets, and spending it costs
+           /09_COMMUNITY_HEADER/NATIVE_B_HDR a 108.737 mm / TEN-barrel relay
+    D-692  give STAT1 the corridor and the charger's own VBUS input
+           loses its launch: U11.10 NO LEGAL ESCAPE at >= 0.350 mm
+    D-693  move the one blocking part out and nothing changes
+
+**`U11` is a 3.55 × 2.59 mm WSON carrying TEN signals with the board's east
+edge 3.45 mm away, and its east-column fan-out pocket is 2.75 mm wide.  It is
+full.**
+
+## 3. THE INSTRUMENT LEFT IS `U11` ITSELF, AND IT IS AN OWNER DECISION
+
+Four dry runs of a `U11` translation (`evidence/d693-u11-fanout-escalation.json`):
+
+    dx      dy      released  refusals  nets  courtyards hit    PROTECTED net
+    -1.5     0         11        17      5    C36 R37           BAT_PROTECTED_P
+    -2.5     0         11        19      6    C36 R37 TP33      BAT_PROTECTED_P
+    -1.5   -1.5         6        12      5    C27 C36 R37       BAT_PROTECTED_P
+    -2.5   -1.5        13        21      5    C27 C36 R37       BAT_PROTECTED_P
+
+***Every one of them rips up `/01_POWER_TREE/BAT_PROTECTED_P`***, and the
+D-655 authorization says in its own words *"No other `BAT_*` protected net may
+be changed under this authorization."*  So this is raised, not taken.
+
+### OWNER DECISION — `U11` FAN-OUT RE-FLOORPLAN, PROTECTED-COPPER EXCEPTION
+
+**THE PROBLEM.**  Eight of the board's eighteen remaining open edges are held
+by `U11`'s fan-out: `/BQ25185_STAT1` ×2, `/BQ25185_STAT2` ×2, and
+`BQ25185_SYS`'s `U11.1`, `C27.1` and `R68.1` clusters.  Five independent
+measurements say the pocket cannot hold another conductor and that no router
+flag, eviction, lattice, rule area or neighbouring-part move reaches it.  The
+only instrument left is to move `U11` and the block around it (`C27`, `C23`,
+`R36`, `R37`, `C36`), and `U11.2` is on a protected battery net.
+
+**RECOMMENDED DECISION.**  Grant a bounded protected-copper exception for
+`/01_POWER_TREE/BAT_PROTECTED_P`, limited to the copper between `U11.2` and the
+first junction or barrel outside `U11`'s courtyard, on the D-655 conditions:
+no change of electrical topology, no change of any battery-protection component
+value or connectivity, D-269 and D-186 preserved, full restoration of
+`BAT_PROTECTED_P` connectivity, and promotion only if the full gate, real DRC,
+`verify_promotion` and the standing suite all pass.
+
+**WHY.**  (a) The topology does not change — only where the same conductor runs.
+(b) It is the only remaining instrument for the largest single block of open
+edges on the board.  (c) It is the same shape and roughly the same size as
+D-655's exception, which the owner approved and D-681 spent successfully.
+(d) Every safety property it could threaten is already measured on every
+promotion: `protected_copper` names each object that moved, `verify_promotion`
+re-proves D-186 and D-269, real DRC must stay at zero attributable, and gate
+clause 4 requires the board to improve.
+
+**ALTERNATIVES.**
+  * **Ship `STAT1`/`STAT2` unrouted.**  Costs the charger telemetry that D-165
+    and D-166 record as the reason `U2` keeps those two pins.  Charge state
+    becomes invisible to firmware.  No cost, no schedule — and a prototype that
+    cannot report whether it is charging.
+  * **Fly-wire them on the prototype.**  Cheap and quick, and not a fabricable
+    board; it also does not touch `BQ25185_SYS`'s three `U11`-side clusters.
+  * **Grow the board ~3 mm eastward** so `U11`'s east column has a fan-out
+    field.  Clean electrically; it changes EXTERNAL DIMENSIONS and therefore
+    the enclosure — a larger owner decision than this one, with mechanical
+    re-work.
+  * **Move the whole charger block west into the `U2`/`U3` region.**  Same
+    protected-copper problem, far more disturbance, and `U2`/`U3` are
+    themselves congested.
+
+**COST / SCHEDULE / RISK.**  One gated transaction; hours, not days.  No BOM
+change, no mechanical change, no cost change.  Risk is bounded by the gate: if
+any clause, DRC item or contract moves the wrong way the candidate is reverted
+and the authority is untouched, exactly as four transactions did today.
+
+**WHAT I WOULD CHOOSE IF RESPONSIBLE FOR SHIPPING AQROOT.**  **Grant it.**  It
+is the smallest instrument that reaches the largest remaining block of edges,
+it is precedented, and it is fully measured before and after.  Growing the
+board is the fallback if the re-floorplan is then measured and still refuses.
+
+**NEXT:** (1) this decision.  (2) the `U12` `+3V3` fan-out re-floorplan (D-691
+§4) — independent of it, and the other named pocket.  (3) `BQ25185_SYS`'s
+remaining five.
+
 # D-692 · 2026-09-11 · Demo — **THE `U11` EAST POCKET HOLDS ONE CONDUCTOR AND TWO NETS WANT IT**: THE THREE-NET CUT IS NAMED, MINIMAL AND SPENT, AND IT TRADES `/BQ25185_STAT1` FOR THE CHARGER'S OWN `VBUS` INPUT
 
     authority  2f456279cb9540f5e29a2a9b2fbc60a6ad761e0ec33253f2802c4ada83aebbc4

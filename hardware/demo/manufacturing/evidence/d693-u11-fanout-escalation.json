@@ -1,0 +1,216 @@
+{
+  "authority_unchanged": true,
+  "board_sha256": "2f456279cb9540f5e29a2a9b2fbc60a6ad761e0ec33253f2802c4ada83aebbc4",
+  "decision": "D-693",
+  "five_instruments_agree": [
+    "D-690: U11.9 and U11.3 CAN launch at 0.150 mm -> NO_PATH",
+    "D-692: 0 of 9 single-net evictions open the corridor",
+    "D-692: the minimal cut is THREE nets and costs NATIVE_B_HDR a 108.737 mm / TEN-barrel relay",
+    "D-692: give STAT1 the corridor and U11.10 (the charger's own VBUS input) reports NO LEGAL ESCAPE at >= 0.350 mm",
+    "D-693: move the one blocking part out and nothing changes"
+  ],
+  "owner_decision": {
+    "alternatives": [
+      {
+        "consequence": "loses the charger telemetry D-165/D-166 record as the reason U2 keeps those two pins; charge state becomes invisible to firmware",
+        "cost": "no cost, no schedule",
+        "option": "ship STAT1/STAT2 unrouted"
+      },
+      {
+        "consequence": "not a fabricable board, and it does not touch BQ25185_SYS's three U11-side clusters",
+        "cost": "minutes per unit",
+        "option": "fly-wire them on the prototype"
+      },
+      {
+        "consequence": "clean electrically; changes EXTERNAL DIMENSIONS and is a LARGER owner decision than this one",
+        "cost": "enclosure re-work",
+        "option": "grow the board about 3 mm eastward"
+      },
+      {
+        "consequence": "same protected-copper problem, far more disturbance, and U2/U3 are themselves congested",
+        "cost": "a much larger transaction",
+        "option": "move the whole charger block west into the U2/U3 region"
+      }
+    ],
+    "cost_schedule_risk": "one gated transaction, hours not days; no BOM, mechanical or cost change; risk bounded by the gate -- any clause, DRC item or contract moving the wrong way reverts the candidate and leaves the authority untouched, exactly as four transactions did today",
+    "edges_at_stake": 8,
+    "nets_at_stake": [
+      "/BQ25185_STAT1 x2",
+      "/BQ25185_STAT2 x2",
+      "/01_POWER_TREE/BQ25185_SYS: U11.1, C27.1, R68.1"
+    ],
+    "recommendation": "GRANT, scoped to the copper between U11.2 and the first junction or barrel outside U11's courtyard, on the D-655 conditions",
+    "status": "RAISED, NOT TAKEN",
+    "title": "U11 fan-out re-floorplan -- bounded protected-copper exception for /01_POWER_TREE/BAT_PROTECTED_P",
+    "what_i_would_choose": "GRANT.  It is the smallest instrument that reaches the largest remaining block of edges, it is precedented, and it is fully measured before and after.  Growing the board is the fallback if the re-floorplan is then measured and still refuses.",
+    "why": [
+      "the electrical topology does not change -- only where the same conductor runs",
+      "it is the only remaining instrument for the largest single block of open edges",
+      "same shape and roughly the same size as D-655's exception, which was approved and spent successfully at D-681",
+      "every safety property it could threaten is already measured on every promotion: protected_copper names each moved object, verify_promotion re-proves D-186 and D-269, real DRC must stay at zero attributable, and clause 4 requires the board to improve"
+    ]
+  },
+  "question": "does emptying U11's fan-out pocket of the one part that blocks it open the corridor, and if not what instrument is left",
+  "r36_arm": {
+    "moves": {
+      "R127": {
+        "to_mm": [
+          70.0,
+          85.0
+        ]
+      },
+      "R36": {
+        "clearance_mm": 0.5953,
+        "courtyards": "CLEAR",
+        "to_mm": [
+          70.0,
+          82.6
+        ],
+        "why": "its courtyard (67.225,79.475)-(70.275,81.025) sits directly under U11's east column and U11.10's refusal names R36.1 (x13)"
+      },
+      "TP6": {
+        "to_mm": [
+          70.4,
+          87.5
+        ]
+      }
+    },
+    "reading": "ILIM_VSET is restored (R36.1 -> U11.7, 7.779 mm, ZERO vias) and STAT1 closes only R127.2 <-> TP6.1 (2.623 mm, ZERO vias).  U11.9 STILL has no corridor.  Scratch 21 -> 19 against an authority of 18: three moves cost three edges and two closures bought two back.  EMPTYING THE POCKET DOES NOT OPEN IT.",
+    "result": {
+      "connectivity": {
+        "nets_improved": [
+          "/01_POWER_TREE/ILIM_VSET",
+          "/BQ25185_STAT1"
+        ],
+        "nets_regressed": [],
+        "open_retained_nets_after": 12,
+        "open_retained_nets_before": 13,
+        "retained_open_edges_after": 19,
+        "retained_open_edges_before": 21
+      },
+      "drc": {
+        "lib_footprint_issues": 199,
+        "solder_mask_bridge": 1,
+        "track_dangling": 2,
+        "via_dangling": 1
+      },
+      "refused_clauses": [
+        "attributable_drc"
+      ],
+      "routed": [
+        {
+          "joins": [
+            [
+              "R127.2",
+              "TP6.1",
+              2.623,
+              0
+            ]
+          ],
+          "mm": 2.623,
+          "net": "/BQ25185_STAT1",
+          "ok": true,
+          "vias": 0
+        },
+        {
+          "joins": [
+            [
+              "R36.1",
+              "U11.7",
+              7.779,
+              0
+            ]
+          ],
+          "mm": 7.779,
+          "net": "/01_POWER_TREE/ILIM_VSET",
+          "ok": true,
+          "vias": 0
+        },
+        {
+          "joins": [],
+          "mm": 0,
+          "net": "GND",
+          "ok": false,
+          "vias": 0
+        },
+        {
+          "joins": [],
+          "mm": 0,
+          "net": "+3V3",
+          "ok": false,
+          "vias": 0
+        }
+      ]
+    }
+  },
+  "schema": 1,
+  "u11_translation_dry_runs": [
+    {
+      "courtyards": [
+        "C36",
+        "R37"
+      ],
+      "dx_mm": -1.5,
+      "dy_mm": 0.0,
+      "nets": 5,
+      "protected_nets": [
+        "/01_POWER_TREE/BAT_PROTECTED_P"
+      ],
+      "refusals": 17,
+      "released": 11,
+      "swept_under_a_land": 7
+    },
+    {
+      "courtyards": [
+        "C36",
+        "R37",
+        "TP33"
+      ],
+      "dx_mm": -2.5,
+      "dy_mm": 0.0,
+      "nets": 6,
+      "protected_nets": [
+        "/01_POWER_TREE/BAT_PROTECTED_P"
+      ],
+      "refusals": 19,
+      "released": 11,
+      "swept_under_a_land": 5
+    },
+    {
+      "courtyards": [
+        "C27",
+        "C36",
+        "R37"
+      ],
+      "dx_mm": -1.5,
+      "dy_mm": -1.5,
+      "nets": 5,
+      "protected_nets": [
+        "/01_POWER_TREE/BAT_PROTECTED_P"
+      ],
+      "refusals": 12,
+      "released": 6,
+      "swept_under_a_land": 0
+    },
+    {
+      "courtyards": [
+        "C27",
+        "C36",
+        "R37"
+      ],
+      "dx_mm": -2.5,
+      "dy_mm": -1.5,
+      "nets": 5,
+      "protected_nets": [
+        "/01_POWER_TREE/BAT_PROTECTED_P"
+      ],
+      "refusals": 21,
+      "released": 13,
+      "swept_under_a_land": 6
+    }
+  ],
+  "verification": {
+    "beta_v2_untouched": true,
+    "copper": "NONE PROMOTED; authority unchanged at 2f456279"
+  }
+}

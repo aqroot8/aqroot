@@ -14,6 +14,19 @@
 
 ## 1. Authoritative HEAD
 
+> **ONE OPEN OWNER DECISION (D-693, 2026-09-11): the `U11` FAN-OUT
+> RE-FLOORPLAN and its bounded `/01_POWER_TREE/BAT_PROTECTED_P` exception.**
+> Eight of the board's eighteen remaining open edges are held by `U11`'s
+> fan-out and FIVE independent measurements say the pocket cannot hold another
+> conductor (D-690, D-692 x3, D-693).  Every `U11` translation dry run rips up
+> exactly one protected net, `/01_POWER_TREE/BAT_PROTECTED_P`, and the D-655
+> authorization says in its own words *"No other `BAT_*` protected net may be
+> changed under this authorization."*  **RAISED WITH A RECOMMENDATION TO
+> GRANT** -- problem, reasoning, four alternatives, cost/schedule/risk and the
+> choice I would make are all in the D-693 entry of `CTO_DECISIONS.md` and in
+> `evidence/d693-u11-fanout-escalation.json`.  The paragraph below is the
+> PREVIOUS state of that question and is left standing as history.
+>
 > **NO OPEN OWNER DECISION (D-681, 2026-09-10).**  Every entry below dated
 > D-655 .. D-680 closes its NEXT list with *"`/I2C_SCL_INT`'s `U14.7 <-> J1.44`
 > remains the one OPEN OWNER DECISION, RECORDED NOT TAKEN"*.  That text is
@@ -23,6 +36,39 @@
 > `verify_promotion` PASS and `protected_copper` showing exactly one protected
 > net moved.  `U14.7` is on the bus.  This board has **no open owner decision**.
 
+- **Demo D-693 (`R36` OUT OF THE POCKET CHANGES NOTHING, AND THE ONLY
+  INSTRUMENT LEFT FOR EIGHT EDGES MOVES PROTECTED BATTERY COPPER -- OWNER
+  DECISION RAISED):**  **NO COPPER PROMOTED.**  Authority **UNCHANGED** at
+  `2f456279cb9540f5e29a2a9b2fbc60a6ad761e0ec33253f2802c4ada83aebbc4`; 18 -> 18;
+  `hardware/demo/kicad`, `hardware/demo/fab`, `hardware/beta-v2` **UNTOUCHED**
+  (`evidence/d693-u11-fanout-escalation.json`).
+  **(1) THE LAST FREE PART IN THE POCKET MOVED, AND IT DID NOT HELP.**  `R36`
+  is the 18 k `ILIM_VSET` resistor, its courtyard
+  `(67.225,79.475)-(70.275,81.025)` sits directly under `U11`'s east column,
+  and `U11.10`'s refusal names `R36.1 (x13)`.  Moved to **(70.000, 82.600)**
+  (courtyard-clear, 0.5953 mm) with `R127` -> (70.000,85.000) and `TP6` ->
+  (70.400,87.500): `ILIM_VSET` is restored `R36.1` -> `U11.7` in **7.779 mm
+  with ZERO vias**, `STAT1` closes `R127.2` <-> `TP6.1` in **2.623 mm with ZERO
+  vias**, and ***`U11.9` STILL has no corridor***.  Scratch **21 -> 19** against
+  an authority of 18.
+  **(2) FIVE INSTRUMENTS AGREE.**  `U11.9`/`U11.3` CAN launch and still
+  `NO_PATH` (D-690); 0 of 9 single-net evictions open it (D-692); the minimal
+  cut is THREE nets and costs `NATIVE_B_HDR` a **108.737 mm / TEN-barrel**
+  relay (D-692); giving `STAT1` the corridor costs the charger's own `VBUS`
+  input its launch (D-692); and emptying the pocket changes nothing (D-693).
+  **`U11` is a 3.55 x 2.59 mm WSON carrying TEN signals with the board edge
+  3.45 mm away and a 2.75 mm-wide east pocket.  It is FULL.**
+  **(3) THE INSTRUMENT LEFT IS `U11` ITSELF.**  Four translation dry runs
+  (-1.5/0, -2.5/0, -1.5/-1.5, -2.5/-1.5 mm) release 6 to 13 objects across 5-6
+  nets, hit the `C27`/`C36`/`R37`/`TP33` courtyards -- and **every one of them
+  rips up `/01_POWER_TREE/BAT_PROTECTED_P`**, which the D-655 authorization
+  explicitly excludes.  **OWNER DECISION RAISED WITH A RECOMMENDATION TO
+  GRANT** a bounded exception scoped to the copper between `U11.2` and the
+  first junction or barrel outside `U11`'s courtyard, on the D-655 conditions;
+  four alternatives (ship unrouted / fly-wire / grow the board ~3 mm eastward /
+  move the whole charger block) are priced in the D-693 entry.
+  **NEXT:** (1) this decision.  (2) the `U12` `+3V3` fan-out re-floorplan
+  (D-691 (4)) -- independent of it.  (3) `BQ25185_SYS`'s remaining five.
 - **Demo D-692 (THE `U11` EAST POCKET HOLDS ONE CONDUCTOR AND TWO NETS WANT
   IT):**  **NO COPPER PROMOTED.**  Authority **UNCHANGED** at
   `2f456279cb9540f5e29a2a9b2fbc60a6ad761e0ec33253f2802c4ada83aebbc4`; 18 -> 18;
