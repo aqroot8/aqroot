@@ -1,3 +1,84 @@
+# D-692 · 2026-09-11 · Demo — **THE `U11` EAST POCKET HOLDS ONE CONDUCTOR AND TWO NETS WANT IT**: THE THREE-NET CUT IS NAMED, MINIMAL AND SPENT, AND IT TRADES `/BQ25185_STAT1` FOR THE CHARGER'S OWN `VBUS` INPUT
+
+    authority  2f456279cb9540f5e29a2a9b2fbc60a6ad761e0ec33253f2802c4ada83aebbc4
+            -> 2f456279cb9540f5e29a2a9b2fbc60a6ad761e0ec33253f2802c4ada83aebbc4   UNCHANGED
+    retained open edges 18 -> 18
+    `hardware/demo/kicad`, `hardware/demo/fab`, `hardware/beta-v2` UNTOUCHED
+    `evidence/d692-u11-pocket-holds-one-conductor.json`
+
+**NO COPPER PROMOTED.**  D-690 opened `U11.9`'s launch and D-691 freed the back
+side; this spends both and finds the wall behind them.
+
+## 1. THE PLACEMENT DEFECT, AND IT IS REAL
+
+`R127` is `/BQ25185_STAT1`'s pull-up and sat **30 mm from the pin it pulls up**;
+`TP6` is its test point and sat **17 mm** away, both in the congested `U12`
+pocket.  That is D-686's `R108` defect again.  With D-691's corrected
+side-predicate the back side under `SW9` is available, and both move to `U11`'s
+own neighbourhood — **`R127` → (69.500, 83.000)** and **`TP6` → (70.400,
+86.000)**, each courtyard-clear at 0.600 mm.
+
+## 2. THE CUT IS NAMED AND IT IS THREE NETS
+
+`screen_pair_corridor_blame`, `U11.9` → `R127.2` on the moved scratch, 3 mm
+window, 0.025 mm, at the width D-690 published:
+
+    BASE                  NO_PATH at 0.150 mm, B -> B
+    Q1 upper bound        drop ALL routed copper of the NINE foreign nets
+                          in the window -> OPENS at 6.354 mm, ZERO vias
+    Q2 single-net         0 openers of 9
+    Q3 minimal cut        /01_POWER_TREE/USB_VBUS_CHG
+                          /09_COMMUNITY_HEADER/NATIVE_B_HDR
+                          GND
+    Q3 not needed         BAT_PROTECTED_P, ILIM_VSET, ISET, ACC_3V3_SW,
+                          I2C_SDA_INT, Net-(U11-TS_MR)
+
+**Three nets, minimal, and the first time this board has priced a cut for these
+edges.**
+
+## 3. BOTH ORDERS WERE SPENT AND THE POCKET ANSWERS THE SAME WAY
+
+**EVICTED NETS FIRST** — they take the freed corridor straight back.  `STAT1`
+closes only its own `R127.2` ↔ `TP6.1` link, **3.002 mm with ZERO vias**; the
+scratch goes 20 → 19, which is the authority's 18 plus what the moves cost, so
+**zero net gain**.
+
+**PROTECTED NET FIRST** — `STAT1` closes **BOTH** links, `R127.2` ↔ `TP6.1`
+3.002 mm and **`R127.2` ↔ `U11.9` 8.480 mm / 2 vias** — and then the charger's
+own input cannot get back:
+
+    /01_POWER_TREE/USB_VBUS_CHG   NO_LEGAL_ESCAPE_DST
+    U11.10: NO LEGAL ESCAPE at >= 0.350 mm;
+            blocked by U11.9 (x16), U11.8 (x13), R36.1 (x13), board_edge (x7)
+
+`STAT1`'s own barrel at **(68.025, 79.125)** lands **0.78 mm from `U11.10`** and
+takes its launch.  `GND` regresses as well and the gate refuses on five clauses.
+
+**AND THE RELAY IS THE OTHER PRICE.**  `/09_COMMUNITY_HEADER/NATIVE_B_HDR`
+re-routes at **108.737 mm with TEN barrels** in *both* arms.  Judged on the
+evicted net's relay — D-661's own rule — the cut is not payable even where it
+works.
+
+## 4. THIS IS THE THIRD POCKET OF THE SAME SHAPE
+
+    D-685   ONE LANE out of J3, and BOTH USB polarities want it
+    D-687   a 1.205 mm band under U12, and FOUR nets want it
+    D-692   ONE conductor out of U11, and STAT1 and the charger's VBUS want it
+
+***The board is over-subscribed LOCALLY, in three named pockets, and the
+instrument for all three is a FLOORPLAN and not a router flag.***  Every other
+refusal on the board is already classified that way (D-690 §7).
+
+**WHAT IS KEPT:** the two measured sites — `R127` (69.500, 83.000) and `TP6`
+(70.400, 86.000) — are real and stand ready; they must be spent **together
+with** `U11.10`'s escape, in one `U11` fan-out re-floorplan, rather than ahead
+of it.
+
+**NEXT:** (1) the `U11` fan-out re-floorplan — ten signals off a 3.55 × 2.59 mm
+WSON with the board edge 3.45 mm east, carrying `STAT1`, `STAT2` and the
+charger's `VBUS` together.  (2) the `U12` `+3V3` fan-out re-floorplan (D-691
+§4).  (3) `BQ25185_SYS`'s remaining five.  **NO OPEN OWNER DECISION.**
+
 # D-691 · 2026-09-11 · Demo — **THE "COURTYARD" CHECKS WERE SIDE-BLIND BOUNDING BOXES, AND 83 OF THE 120 PAIRS THEY FLAGGED WERE ON OPPOSITE SIDES OF THE BOARD** — AND WITH THAT CORRECTED THE `U12` COLUMN IS REFUSED BY `PL7` AND `PL9` INSTEAD, WHICH IS A DIFFERENT AND TRUER ANSWER
 
     authority  2f456279cb9540f5e29a2a9b2fbc60a6ad761e0ec33253f2802c4ada83aebbc4

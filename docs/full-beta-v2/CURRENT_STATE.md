@@ -23,6 +23,45 @@
 > `verify_promotion` PASS and `protected_copper` showing exactly one protected
 > net moved.  `U14.7` is on the bus.  This board has **no open owner decision**.
 
+- **Demo D-692 (THE `U11` EAST POCKET HOLDS ONE CONDUCTOR AND TWO NETS WANT
+  IT):**  **NO COPPER PROMOTED.**  Authority **UNCHANGED** at
+  `2f456279cb9540f5e29a2a9b2fbc60a6ad761e0ec33253f2802c4ada83aebbc4`; 18 -> 18;
+  `hardware/demo/kicad`, `hardware/demo/fab`, `hardware/beta-v2` **UNTOUCHED**
+  (`evidence/d692-u11-pocket-holds-one-conductor.json`).
+  **(1) THE PLACEMENT DEFECT IS REAL.**  `R127` is `/BQ25185_STAT1`'s pull-up
+  and sat **30 mm from the pin it pulls up**; `TP6`, its test point, **17 mm**
+  -- D-686's `R108` defect again.  With D-691's corrected side-predicate both
+  move into `U11`'s own neighbourhood: **`R127` -> (69.500, 83.000)** and
+  **`TP6` -> (70.400, 86.000)**, each courtyard-clear at 0.600 mm.
+  **(2) THE CUT IS NAMED, MINIMAL AND THREE NETS.**  `U11.9` -> `R127.2` is
+  `NO_PATH` at 0.150 mm; dropping ALL routed copper of the NINE foreign nets in
+  a 3 mm window **OPENS it at 6.354 mm with ZERO vias**; **0 of 9 single-net
+  evictions open it**; and Q3's minimal cut is
+  **`/01_POWER_TREE/USB_VBUS_CHG` + `/09_COMMUNITY_HEADER/NATIVE_B_HDR` +
+  `GND`**, with `BAT_PROTECTED_P`, `ILIM_VSET`, `ISET`, `ACC_3V3_SW`,
+  `I2C_SDA_INT` and `Net-(U11-TS_MR)` NOT NEEDED.
+  **(3) BOTH ORDERS SPENT, SAME ANSWER.**  Evicted nets FIRST: they take the
+  corridor back and `STAT1` closes only `R127.2` <-> `TP6.1` (3.002 mm, zero
+  vias) -- **zero net gain**.  Protected net FIRST: `STAT1` closes BOTH links
+  (3.002 mm and **`R127.2` <-> `U11.9` 8.480 mm / 2 vias**) and then the
+  charger's own input cannot get back -- ***`U11.10`: NO LEGAL ESCAPE at
+  >= 0.350 mm; blocked by `U11.9`, `U11.8`, `R36.1`, `board_edge`*** -- because
+  `STAT1`'s own barrel at (68.025,79.125) lands **0.78 mm from `U11.10`** and
+  takes its launch.  `GND` regresses too; five clauses refuse.  **AND THE RELAY
+  IS THE OTHER PRICE**: `/09_COMMUNITY_HEADER/NATIVE_B_HDR` re-routes at
+  **108.737 mm with TEN barrels** in BOTH arms, so on D-661's own rule the cut
+  is not payable even where it works.
+  **(4) THIS IS THE THIRD POCKET OF THE SAME SHAPE.**  D-685: ONE lane out of
+  `J3`, both USB polarities want it.  D-687: a 1.205 mm band under `U12`, FOUR
+  nets want it.  D-692: ONE conductor out of `U11`, `STAT1` and the charger's
+  `VBUS` want it.  ***The board is OVER-SUBSCRIBED LOCALLY, in three named
+  pockets, and the instrument for all three is a FLOORPLAN.***  The two
+  measured sites are KEPT and must be spent TOGETHER with `U11.10`'s escape.
+  **NEXT:** (1) the `U11` fan-out re-floorplan -- ten signals off a
+  3.55 x 2.59 mm WSON with the board edge 3.45 mm east, carrying `STAT1`,
+  `STAT2` and the charger's `VBUS` together.  (2) the `U12` `+3V3` fan-out
+  re-floorplan (D-691 (4)).  (3) `BQ25185_SYS`'s remaining five.  **NO OPEN
+  OWNER DECISION.**
 - **Demo D-691 (THE "COURTYARD" CHECKS WERE SIDE-BLIND BOUNDING BOXES, AND THE
   `U12` COLUMN IS REFUSED BY `PL7`/`PL9` INSTEAD):**  **NO COPPER PROMOTED.**
   Authority **UNCHANGED** at

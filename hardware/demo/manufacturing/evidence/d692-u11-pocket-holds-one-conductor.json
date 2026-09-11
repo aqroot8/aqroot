@@ -1,0 +1,286 @@
+{
+  "arms": [
+    {
+      "drc": {
+        "clearance": 1,
+        "hole_clearance": 1,
+        "lib_footprint_issues": 199,
+        "solder_mask_bridge": 1,
+        "via_dangling": 2
+      },
+      "edges_after": 19,
+      "edges_before": 20,
+      "improved": [
+        "/BQ25185_STAT1"
+      ],
+      "name": "no eviction",
+      "refused_clauses": [
+        "attributable_drc"
+      ],
+      "regressed": [],
+      "requested_order": "STAT1, +3V3",
+      "routed": [
+        {
+          "joins": [
+            [
+              "R127.2",
+              "TP6.1",
+              3.002,
+              0
+            ]
+          ],
+          "mm": 3.002,
+          "net": "/BQ25185_STAT1",
+          "ok": true,
+          "reason": null,
+          "vias": 0
+        },
+        {
+          "joins": [],
+          "mm": 0,
+          "net": "+3V3",
+          "ok": false,
+          "reason": null,
+          "vias": 0
+        }
+      ]
+    },
+    {
+      "drc": {
+        "hole_clearance": 6,
+        "lib_footprint_issues": 199,
+        "solder_mask_bridge": 1,
+        "track_dangling": 5
+      },
+      "edges_after": 19,
+      "edges_before": 20,
+      "improved": [
+        "/BQ25185_STAT1"
+      ],
+      "name": "cut spent, EVICTED NETS FIRST",
+      "refused_clauses": [
+        "attributable_drc",
+        "inherited_within_baseline"
+      ],
+      "regressed": [],
+      "requested_order": "USB_VBUS_CHG, NATIVE_B_HDR, GND, STAT1, +3V3",
+      "routed": [
+        {
+          "joins": [
+            [
+              "C23.2",
+              "U11.10",
+              2.975,
+              0
+            ]
+          ],
+          "mm": 2.975,
+          "net": "/01_POWER_TREE/USB_VBUS_CHG",
+          "ok": true,
+          "reason": null,
+          "vias": 0
+        },
+        {
+          "joins": [
+            [
+              "D2.3",
+              "R62.2",
+              108.737,
+              10
+            ]
+          ],
+          "mm": 108.737,
+          "net": "/09_COMMUNITY_HEADER/NATIVE_B_HDR",
+          "ok": true,
+          "reason": null,
+          "vias": 10
+        },
+        {
+          "joins": [],
+          "mm": 1.275,
+          "net": "GND",
+          "ok": true,
+          "reason": null,
+          "vias": 1
+        },
+        {
+          "joins": [
+            [
+              "R127.2",
+              "TP6.1",
+              3.002,
+              0
+            ]
+          ],
+          "mm": 3.002,
+          "net": "/BQ25185_STAT1",
+          "ok": true,
+          "reason": null,
+          "vias": 0
+        },
+        {
+          "joins": [],
+          "mm": 0,
+          "net": "+3V3",
+          "ok": false,
+          "reason": null,
+          "vias": 0
+        }
+      ]
+    },
+    {
+      "drc": {
+        "hole_clearance": 6,
+        "lib_footprint_issues": 199,
+        "solder_mask_bridge": 1,
+        "track_dangling": 5
+      },
+      "edges_after": 20,
+      "edges_before": 20,
+      "improved": [
+        "/BQ25185_STAT1"
+      ],
+      "name": "cut spent, PROTECTED NET FIRST",
+      "refused_clauses": [
+        "attributable_drc",
+        "board_improved",
+        "inherited_within_baseline",
+        "no_regression",
+        "pour_partition"
+      ],
+      "regressed": [
+        "/01_POWER_TREE/USB_VBUS_CHG",
+        "GND"
+      ],
+      "requested_order": "STAT1, USB_VBUS_CHG, NATIVE_B_HDR, GND, +3V3",
+      "routed": [
+        {
+          "joins": [
+            [
+              "R127.2",
+              "TP6.1",
+              3.002,
+              0
+            ],
+            [
+              "R127.2",
+              "U11.9",
+              8.484,
+              2
+            ]
+          ],
+          "mm": 11.486,
+          "net": "/BQ25185_STAT1",
+          "ok": true,
+          "reason": null,
+          "vias": 2
+        },
+        {
+          "joins": [],
+          "mm": null,
+          "net": "/01_POWER_TREE/USB_VBUS_CHG",
+          "ok": false,
+          "reason": "NO_LEGAL_ESCAPE_DST",
+          "vias": null
+        },
+        {
+          "joins": [
+            [
+              "D2.3",
+              "R62.2",
+              108.737,
+              10
+            ]
+          ],
+          "mm": 108.737,
+          "net": "/09_COMMUNITY_HEADER/NATIVE_B_HDR",
+          "ok": true,
+          "reason": null,
+          "vias": 10
+        },
+        {
+          "joins": [],
+          "mm": 1.275,
+          "net": "GND",
+          "ok": true,
+          "reason": null,
+          "vias": 1
+        },
+        {
+          "joins": [],
+          "mm": 0,
+          "net": "+3V3",
+          "ok": false,
+          "reason": null,
+          "vias": 0
+        }
+      ]
+    }
+  ],
+  "authority_unchanged": true,
+  "board_sha256": "2f456279cb9540f5e29a2a9b2fbc60a6ad761e0ec33253f2802c4ada83aebbc4",
+  "decision": "D-692",
+  "finding": {
+    "and_the_relay_is_the_other_price": "/09_COMMUNITY_HEADER/NATIVE_B_HDR re-routes at 108.737 mm with TEN barrels in both arms -- judged on the EVICTED net's relay, the cut is not payable even where it works.",
+    "detail": "With the evicted nets requested FIRST they take the freed corridor back and STAT1 closes only its own R127.2 <-> TP6.1 link (3.002 mm, 0 vias) -- 20 -> 19 on the scratch, which is the authority's 18 plus the moves' cost, so ZERO net gain.  With STAT1 requested FIRST it closes BOTH links -- R127.2 <-> TP6.1 3.002 mm and R127.2 <-> U11.9 8.480 mm / 2 vias -- and then /01_POWER_TREE/USB_VBUS_CHG cannot get back: 'U11.10: NO LEGAL ESCAPE at >= 0.350 mm; blocked by U11.9, U11.8, R36.1, board_edge'.  STAT1's own barrel at (68.025,79.125) lands 0.78 mm from U11.10 and takes its launch.  GND regresses too, and the gate refuses on five clauses.",
+    "headline": "THE U11 EAST POCKET HOLDS ONE CONDUCTOR AND TWO NETS WANT IT.",
+    "this_is_the_third_one": "D-685 measured ONE LANE out of J3 that both USB polarities want; D-687 measured a 1.205 mm band under U12 that FOUR nets want; this measures ONE conductor out of U11 that STAT1 and the charger's own VBUS input want.  Three pockets, one shape: the board is OVER-SUBSCRIBED LOCALLY, and the instrument is a floorplan, not a router flag.",
+    "what_is_kept": "R127 and TP6 are 30 mm and 17 mm from the pin they serve and that IS a placement defect; the sites measured here ((69.5,83.0) and (70.4,86.0), both courtyard-clear at 0.600 mm) stand ready for the U11 re-floorplan that spends them together with U11.10's escape."
+  },
+  "placement": {
+    "dangling_vias_removed": [
+      [
+        70.4,
+        97.4
+      ],
+      [
+        63.5,
+        107.0
+      ]
+    ],
+    "moves": {
+      "R127": {
+        "released": 4,
+        "to_mm": [
+          69.5,
+          83.0
+        ]
+      },
+      "TP6": {
+        "released": 2,
+        "to_mm": [
+          70.4,
+          86.0
+        ]
+      }
+    },
+    "why": "R127 (the STAT1 pull-up) sat 30 mm from the pin it pulls up and TP6 17 mm from it, both in the congested U12 pocket -- the same defect D-686 fixed for R108.  D-691 freed the back side under SW9, so both move to U11's own neighbourhood."
+  },
+  "question": "with U11.9's launch open (D-690) and the back side free (D-691), can /BQ25185_STAT1 be given a corridor out of the U11 pocket",
+  "schema": 1,
+  "the_cut": {
+    "base": "NO_PATH at 0.150 mm from U11.9 on B to R127.2 on B",
+    "instrument": "screen_pair_corridor_blame --board <scratch> /BQ25185_STAT1 U11.9 R127.2 3.0 25000, AQROOT_TRUNK_FLOOR=1",
+    "minimal_cut": [
+      "/01_POWER_TREE/USB_VBUS_CHG",
+      "/09_COMMUNITY_HEADER/NATIVE_B_HDR",
+      "GND"
+    ],
+    "not_needed": [
+      "/01_POWER_TREE/BAT_PROTECTED_P",
+      "/01_POWER_TREE/ILIM_VSET",
+      "/01_POWER_TREE/ISET",
+      "/ACC_3V3_SW",
+      "/I2C_SDA_INT",
+      "Net-(U11-TS_MR)"
+    ],
+    "note": "a THREE-net cut, named and minimal -- the first time this board has priced one for these edges",
+    "single_net_openers": 0,
+    "single_nets_asked": 9,
+    "upper_bound": "dropping ALL routed copper of the NINE foreign nets in the 3 mm window OPENS it at 6.354 mm with ZERO vias"
+  },
+  "verification": {
+    "beta_v2_untouched": true,
+    "copper": "NONE PROMOTED; authority unchanged at 2f456279"
+  }
+}
