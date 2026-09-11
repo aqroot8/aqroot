@@ -1,0 +1,225 @@
+{
+ "arms": [
+  {
+   "attributable_drc_n": 1,
+   "connectivity": {
+    "nets_improved": [],
+    "nets_regressed": [],
+    "open_retained_nets_after": 14,
+    "open_retained_nets_before": 14,
+    "retained_open_edges_after": 21,
+    "retained_open_edges_before": 21
+   },
+   "drc_types": {
+    "diff_pair_gap_out_of_range": 1,
+    "lib_footprint_issues": 199,
+    "solder_mask_bridge": 1
+   },
+   "evicted": {
+    "/01_POWER_TREE/USB_D_CONN_N": 17
+   },
+   "refused": [
+    "attributable_drc",
+    "board_improved"
+   ],
+   "routed": [
+    {
+     "escape_floor": 250000,
+     "failures": [
+      {
+       "a": [
+        "J3.A6",
+        "J3.B6"
+       ],
+       "b": [
+        "U10.3"
+       ],
+       "reason": "NO_PATH",
+       "why": "no all-layer corridor at 0.250 mm between the islands"
+      }
+     ],
+     "joins": [],
+     "layers": [
+      "F",
+      "B"
+     ],
+     "mm": null,
+     "net": "/01_POWER_TREE/USB_D_CONN_P",
+     "ok": false,
+     "vias": null,
+     "width": 250000
+    },
+    {
+     "escape_floor": 250000,
+     "failures": [],
+     "joins": [
+      {
+       "a": "J3.A7",
+       "b": "J3.B7",
+       "mm": 1.634,
+       "vias": 0
+      },
+      {
+       "a": "J3.B7",
+       "b": "U10.1",
+       "mm": 11.547,
+       "vias": 0
+      }
+     ],
+     "layers": [
+      "F",
+      "B"
+     ],
+     "mm": 13.181,
+     "net": "/01_POWER_TREE/USB_D_CONN_N",
+     "ok": true,
+     "vias": 0,
+     "width": 250000
+    }
+   ],
+   "why": "ONE evicted: D- re-routes WHOLE in 13.181 mm with ZERO vias -- better than the 17.255 mm of duplicated copper it replaces -- and takes the lane, after which D+ is NO_PATH"
+  },
+  {
+   "attributable_drc_n": 0,
+   "connectivity": {
+    "nets_improved": [],
+    "nets_regressed": [
+     "/01_POWER_TREE/USB_D_CONN_N"
+    ],
+    "open_retained_nets_after": 15,
+    "open_retained_nets_before": 14,
+    "retained_open_edges_after": 22,
+    "retained_open_edges_before": 21
+   },
+   "drc_types": {
+    "lib_footprint_issues": 199,
+    "solder_mask_bridge": 1
+   },
+   "evicted": {
+    "/01_POWER_TREE/USB_D_CONN_N": 17,
+    "/01_POWER_TREE/USB_D_CONN_P": 8
+   },
+   "refused": [
+    "board_improved",
+    "no_regression"
+   ],
+   "routed": [
+    {
+     "escape_floor": 250000,
+     "failures": [
+      {
+       "a": [
+        "J3.B6",
+        "J3.A6"
+       ],
+       "b": [
+        "U10.3"
+       ],
+       "reason": "NO_PATH",
+       "why": "no all-layer corridor at 0.250 mm between the islands"
+      },
+      {
+       "a": [
+        "J3.B6",
+        "J3.A6"
+       ],
+       "b": [
+        "U10.3"
+       ],
+       "reason": "NO_PATH",
+       "why": "no all-layer corridor at 0.250 mm between the islands"
+      }
+     ],
+     "joins": [
+      {
+       "a": "J3.A6",
+       "b": "J3.B6",
+       "mm": 3.11,
+       "vias": 0
+      }
+     ],
+     "layers": [
+      "F",
+      "B"
+     ],
+     "mm": 3.11,
+     "net": "/01_POWER_TREE/USB_D_CONN_P",
+     "ok": true,
+     "vias": 0,
+     "width": 250000
+    },
+    {
+     "escape_floor": 250000,
+     "failures": [
+      {
+       "a": [
+        "J3.B7",
+        "J3.A7"
+       ],
+       "b": [
+        "U10.1"
+       ],
+       "reason": "NO_PATH",
+       "why": "no all-layer corridor at 0.250 mm between the islands"
+      },
+      {
+       "a": [
+        "J3.B7",
+        "J3.A7"
+       ],
+       "b": [
+        "U10.1"
+       ],
+       "reason": "NO_PATH",
+       "why": "no all-layer corridor at 0.250 mm between the islands"
+      }
+     ],
+     "joins": [
+      {
+       "a": "J3.A7",
+       "b": "J3.B7",
+       "mm": 1.71,
+       "vias": 0
+      }
+     ],
+     "layers": [
+      "F",
+      "B"
+     ],
+     "mm": 1.71,
+     "net": "/01_POWER_TREE/USB_D_CONN_N",
+     "ok": true,
+     "vias": 0,
+     "width": 250000
+    }
+   ],
+   "why": "BOTH evicted: each polarity ties its own two J3 lands (D+ 3.110 mm, D- 1.710 mm) and then NEITHER can reach U10 -- both NO_PATH on F and B"
+  }
+ ],
+ "board_sha256": "58f7a3df69cec6bd3faa9c0f40632adee2c41e02fe4926b2ade60834274179fd",
+ "cross_cutting": "BOTH USB pairs now refuse for a GEOMETRIC reason and neither refuses for want of a differential router: /USB_D_MCU_* because a COUPLED 0.640 mm envelope cannot leave the WROOM fanout, which admits 0.300 mm and refuses 0.400 mm (D-683 section 5), and /USB_D_CONN_* because the J3 fanout lane holds one conductor.  Three of the board's 21 edges ride on ONE re-floorplan of the USB corner.",
+ "decision": "D-685",
+ "escape_floor_is_a_noop_for_usb_d": {
+  "cause": "route_maze_batch.DRU_CLASS['USB_D'] carries clr and layers but NO `width`, so `--escape-floor` resolves to the netclass 0.250 mm and offers the class's published 0.230 mm minimum to nothing",
+  "deficit_d681_mm": 0.05,
+  "dru_publishes": "`USB 2.0 trace width` (min 0.23mm) (opt 0.25mm)",
+  "observed_escape_floor_nm": 250000,
+  "ruling": "RECORDED, NOT TAKEN: 0.04 mm does not cover D-681's measured 0.05 mm deficit and would not have closed either arm above, so the table is not edited by a transaction that cannot prove the edit non-vacuous",
+  "worth_mm": 0.04
+ },
+ "finding": "the J3 D-pair fanout and the exit to U10 are the SAME lane, and it holds ONE conductor.  With one net freed the other takes it; with both freed the two A/B ties take it and nothing leaves.  This is the U12.13-versus-SYS shape (D-683 section 4) in the USB corner, and it is GEOMETRY.",
+ "geometry": {
+  "j3_dminus": [
+   "J3.A7 (42.750,146.380)",
+   "J3.B7 (43.750,146.380)"
+  ],
+  "j3_dplus": [
+   "J3.A6 (43.250,146.380)",
+   "J3.B6 (42.250,146.380)"
+  ],
+  "note": "USB-C is flip-symmetric, so BOTH rows carry BOTH polarities and the four lands INTERLEAVE at 0.5 mm: B6 D+ / A7 D- / A6 D+ / B7 D-.  Each polarity must first tie its own two lands ACROSS the other polarity, and only then leave for U10.",
+  "u10": "ESD array at (51.4, 142.7); U10.1 = D-, U10.3 = D+"
+ },
+ "question": "can the USB-C connector's D+ / D- pair be made to leave J3 at all",
+ "schema": 1
+}

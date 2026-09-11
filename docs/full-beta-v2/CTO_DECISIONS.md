@@ -1,3 +1,85 @@
+# D-685 · 2026-09-11 · Demo — THE USB-C D-PAIR'S OWN FLIP-SYMMETRY EATS THE ONLY LANE OUT OF `J3`, AND BOTH USB PAIRS NOW REFUSE FOR GEOMETRY RATHER THAN FOR WANT OF A DIFFERENTIAL ROUTER
+
+    authority  58f7a3df69cec6bd3faa9c0f40632adee2c41e02fe4926b2ade60834274179fd
+            -> 58f7a3df69cec6bd3faa9c0f40632adee2c41e02fe4926b2ade60834274179fd   UNCHANGED
+    retained open edges 21 -> 21
+    `hardware/demo/kicad`, `hardware/demo/fab`, `hardware/beta-v2`  UNTOUCHED
+    two gate runs (`evidence/d685-usb-fanout.json`)
+
+**NO COPPER PROMOTED.**  D-681 §8 left `/01_POWER_TREE/USB_D_CONN_P` as *"a
+PAIR problem with a measured opening, not a wall"*.  Two runs re-ask it with
+`--evict-whole` and the answer is that it is a wall, and which one.
+
+## 1. THE CONNECTOR'S OWN SYMMETRY IS THE OBSTACLE
+
+`J3` is a flip-symmetric USB-C receptacle, so **both rows carry both
+polarities** and the four data lands **interleave at 0.5 mm**:
+
+    x   42.250   42.750   43.250   43.750
+        B6 D+    A7 D-    A6 D+    B7 D-
+
+Each polarity must therefore first **tie its own two lands ACROSS the other
+polarity**, and only then leave north-east for `U10`.  Both moves want the same
+strip of `F.Cu` between `J3`'s land row and the board edge.
+
+## 2. TWO RUNS, AND THEY AGREE
+
+    ONE net evicted (`D-` whole, both requested)
+      /USB_D_CONN_N   ROUTES WHOLE: J3.A7->J3.B7 1.634 mm + J3.B7->U10.1
+                      11.547 mm = 13.181 mm, ZERO vias
+                      -- against the 17.255 mm of duplicated copper it replaces
+      /USB_D_CONN_P   NO_PATH, J3.A6/J3.B6 -> U10.3
+
+    BOTH evicted (both requested)
+      /USB_D_CONN_P   ties J3.A6 -> J3.B6 in 3.110 mm, then NO_PATH to U10.3
+      /USB_D_CONN_N   ties J3.A7 -> J3.B7 in 1.710 mm, then NO_PATH to U10.1
+
+Layers offered were `F` and `B` in every arm — D-681's `In2` ruling is live and
+the barrel is available — and every refusal is `NO_PATH at 0.250 mm`, not a
+launch refusal.
+
+> **THE `J3` D-PAIR FANOUT AND THE EXIT TO `U10` ARE THE SAME LANE, AND IT HOLDS
+> ONE CONDUCTOR.**  With one net freed the other takes it; with both freed the
+> two A/B ties take it and nothing leaves.  This is exactly the shape D-683 §4
+> found at `U12.13` versus the `SYS` seam, in the USB corner.
+
+## 3. `--escape-floor` IS A NO-OP FOR `USB_D`, AND THE EDIT IS REFUSED ANYWAY
+
+The runs report `escape_floor 250000` — the netclass width — while the board's
+own `.kicad_dru` publishes `USB 2.0 trace width (min 0.23mm) (opt 0.25mm)`.
+The cause is one missing key: `route_maze_batch.DRU_CLASS['USB_D']` carries
+`clr` and `layers` and **no `width`**, so the class's published minimum is
+offered to nothing.  That is the defect the table's own comment describes for
+the three NFC families.
+
+**IT IS RECORDED AND NOT TAKEN.**  0.230 mm buys **0.04 mm** across two tracks
+against D-681's measured **0.05 mm** deficit, and it would not have changed
+either arm above, so the table is not edited by a transaction that cannot prove
+the edit non-vacuous.  The next USB transaction should take it *with* the
+re-floorplan, where it can be measured.
+
+## 4. THE CROSS-CUTTING RESULT, WHICH IS THE USEFUL ONE
+
+D-683 §5 measured `/USB_D_MCU_*` and concluded a coupled pair needs a
+**0.640 mm envelope** while the `WROOM` fanout **admits 0.300 mm and refuses
+0.400 mm**.  This decision measures `/USB_D_CONN_*` and finds a lane that holds
+one 0.250 mm conductor.
+
+> **NEITHER USB PAIR IS WAITING FOR A DIFFERENTIAL ROUTER.**  Both are waiting
+> for **space**: 1.04 mm of coupled channel out of `U1.13`/`U1.14`, and a second
+> lane out of `J3`.  **Three of the board's twenty-one edges ride on one
+> re-floorplan of the USB corner** — `U10`, `R32`, `R33`/`R34` and the `J3`
+> shield fanout are the movable parts in it, and `J3` itself is not (an external
+> connector is an owner decision, and this decision does not raise one).
+
+**NEXT:** unchanged and in order — (1) `/01_POWER_TREE/BQ25185_SYS`, 6 of 21
+(D-683 §4); (2) the USB corner re-floorplan, 3 of 21 (this decision §4);
+(3) `+3V3` `U5.2`, the licensed-width island jumper (D-684 addendum);
+(4) `/BQ25185_STAT1`/`STAT2` at `U2`'s west fanout and `U11`'s pad pitch.
+**THERE IS NO OPEN OWNER DECISION ON THIS BOARD.**
+
+Evidence: `d685-usb-fanout.json`.
+
 # D-684 addendum · 2026-09-11 · Demo — `+3V3` `U5.2` IS A JUMPER QUESTION AND THE RAIL HAS NO FLAG FOR IT; AND THE `MAX98357A`'s GAIN STRAP IS ONE ROW OFF THE GAIN D-147 CHOSE
 
     authority  58f7a3df69cec6bd3faa9c0f40632adee2c41e02fe4926b2ade60834274179fd

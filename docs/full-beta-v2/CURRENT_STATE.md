@@ -23,6 +23,41 @@
 > `verify_promotion` PASS and `protected_copper` showing exactly one protected
 > net moved.  `U14.7` is on the bus.  This board has **no open owner decision**.
 
+- **Demo D-685 (THE USB-C D-PAIR'S OWN FLIP-SYMMETRY EATS THE ONLY LANE OUT OF
+  `J3`, AND BOTH USB PAIRS NOW REFUSE FOR GEOMETRY RATHER THAN FOR WANT OF A
+  DIFFERENTIAL ROUTER):**  **NO COPPER PROMOTED.**  Authority **UNCHANGED** at
+  `58f7a3df69cec6bd3faa9c0f40632adee2c41e02fe4926b2ade60834274179fd`; 21 -> 21;
+  `hardware/demo/kicad`, `hardware/demo/fab`, `hardware/beta-v2` **UNTOUCHED**.
+  Two gate runs (`evidence/d685-usb-fanout.json`).
+  **(1) THE CONNECTOR'S OWN SYMMETRY IS THE OBSTACLE.**  `J3` is flip-symmetric,
+  so both rows carry both polarities and the four data lands **interleave at
+  0.5 mm** -- `B6 D+ / A7 D- / A6 D+ / B7 D-`.  Each polarity must tie its own
+  two lands **across** the other before it can leave for `U10`, and both moves
+  want the same strip of `F.Cu`.
+  **(2) TWO RUNS AGREE.**  With `D-` alone evicted it **re-routes WHOLE in
+  13.181 mm with ZERO vias** -- against the 17.255 mm of duplicated copper it
+  replaces -- and `D+` is then `NO_PATH`.  With **both** evicted, `D+` ties its
+  pair in 3.110 mm and `D-` in 1.710 mm and then **NEITHER reaches `U10`**.
+  Layers `F` and `B` were offered throughout (D-681's `In2` ruling is live), and
+  every refusal is `NO_PATH at 0.250 mm`, never a launch refusal.
+  ***The `J3` D-pair fanout and the exit to `U10` are the SAME lane, and it
+  holds ONE conductor*** -- the `U12.13`-versus-`SYS` shape (D-683 section 4) in
+  the USB corner.
+  **(3) `--escape-floor` IS A NO-OP FOR `USB_D`.**  The runs report
+  `escape_floor 250000` while the `.kicad_dru` publishes `USB 2.0 trace width
+  (min 0.23mm)`: `route_maze_batch.DRU_CLASS['USB_D']` carries `clr` and
+  `layers` and **no `width`**.  **RECORDED, NOT TAKEN** -- 0.230 mm buys 0.04 mm
+  across two tracks against D-681's measured 0.05 mm deficit and would not have
+  changed either arm, so the table is not edited by a transaction that cannot
+  prove the edit non-vacuous.
+  **(4) THE CROSS-CUTTING RESULT.**  With D-683 section 5's measurement
+  (`/USB_D_MCU_*` needs a **0.640 mm** coupled envelope; the `WROOM` fanout
+  admits **0.300 mm** and refuses **0.400 mm**), **NEITHER USB PAIR IS WAITING
+  FOR A DIFFERENTIAL ROUTER -- both are waiting for SPACE.**  Three of the
+  board's twenty-one edges ride on ONE re-floorplan of the USB corner, whose
+  movable parts are `U10`, `R32`, `R33`/`R34` and the `J3` shield fanout; `J3`
+  itself is an external connector and is not moved, and no owner decision is
+  raised.  **NO OPEN OWNER DECISION.**
 - **Demo D-684 addendum (`+3V3` `U5.2` IS A JUMPER QUESTION AND THE RAIL HAS NO
   FLAG FOR IT; AND THE `MAX98357A`'s GAIN STRAP IS ONE ROW OFF THE GAIN D-147
   CHOSE):**  **NO COPPER PROMOTED.**  Authority **UNCHANGED** at
