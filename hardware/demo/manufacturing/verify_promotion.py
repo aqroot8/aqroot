@@ -27,7 +27,9 @@ driver's scratch tree, its ledger or its evidence JSON:
     was never audited here at all -- changed by exactly the licence areas the
     caller asserts, none was lost, every added one forbids nothing, and every
     area whose COPPER LAYER SET GREW is named by `--rule-area-widened` and
-    changed in no other way;
+    changed in no other way, and every KEEP-OUT whose POLYGON SHRANK is named
+    by `--rule-area-narrowed`, proved by polygon boolean to lie WHOLLY inside
+    its own former outline, and changed in no other way (D-684);
   * the zone inventory changed by exactly the pours the caller asserts, and no
     surviving zone's net, layer, outline or fill parameters changed;
   * real KiCad `--refill-zones --save-board --severity-all --schematic-parity`
@@ -492,6 +494,32 @@ def bridge_proof(path, vias, drill_floor, annular_floor):
     return not detail["strays"], detail
 
 
+def poly_is_contained(inner, outer):
+    """Is the `inner` outline WHOLLY inside the `outer` one?
+
+    D-684.  `--rule-area-widened` exists because growing a LICENCE area's layer
+    set is the dangerous direction for a licence.  For a KEEP-OUT the dangerous
+    direction is the other one, and it has a different shape: a keep-out is
+    narrowed by moving its POLYGON, and a polygon that merely MOVED could
+    protect somewhere new while abandoning somewhere old, which is not a
+    narrowing at all.  So a narrowing claim is admitted only on containment --
+    every point the new area covers, the old one covered too -- proved by a
+    real polygon boolean and not by a bounding box.
+    """
+    import pcbnew
+
+    def mk(pts):
+        poly = pcbnew.SHAPE_POLY_SET()
+        poly.NewOutline()
+        for x, y in pts:
+            poly.Append(int(x), int(y))
+        return poly
+
+    residue = mk(inner)
+    residue.BooleanSubtract(mk(outer))
+    return residue.IsEmpty()
+
+
 def rule_area_sigs(path):
     """uuid -> every rule area's owner, name, layers, flags and outline.
 
@@ -687,6 +715,14 @@ def main():
                          "name, the OWNER's reference -- of a rule area whose "
                          "copper LAYER SET the promotion claims to have GROWN "
                          "and changed in no other way.  D-617.  Repeatable")
+    ap.add_argument("--rule-area-narrowed", action="append", default=[],
+                    metavar="NAME",
+                    help="name -- or, for a footprint-embedded area with no "
+                         "name, the OWNER's reference -- of a KEEP-OUT whose "
+                         "POLYGON the promotion claims to have SHRUNK, wholly "
+                         "inside its own former outline, with its owner, name, "
+                         "copper layer set and all four disallow flags "
+                         "unchanged.  D-684.  Repeatable")
     ap.add_argument("--out", type=Path)
     a = ap.parse_args()
 
@@ -712,14 +748,24 @@ def main():
     # repairing that is a change to ONE field -- the copper layer set, and only
     # ever upward.  A promotion must NAME each one; anything else about a rule
     # area that moved is a change nobody reviewed.
-    rwidened, rmoved = [], []
+    rwidened, rnarrowed, rmoved = [], [], []
     for u in sorted(set(rpre) & set(rpost)):
         was, now = rpre[u], rpost[u]
         if was == now:
             continue
         rest_same = (was[:2] == now[:2] and was[3:] == now[3:])
+        # D-684.  A NARROWED keep-out changes ONE field the other way -- the
+        # OUTLINE -- and is admitted only when everything else is identical AND
+        # the new polygon lies wholly inside the old one.  Anything that moved
+        # is still `rmoved` and still a refusal.
+        shrank = (was[:3] == now[:3] and was[3:7] == now[3:7]
+                  and was[7] != now[7] and poly_is_contained(now[7], was[7]))
         if rest_same and set(was[2]) < set(now[2]):
             rwidened.append((u, was[1] or was[0], list(was[2]), list(now[2])))
+        elif shrank:
+            rnarrowed.append((u, was[1] or was[0],
+                              [[c / 1e6 for c in pt] for pt in was[7]],
+                              [[c / 1e6 for c in pt] for pt in now[7]]))
         else:
             rmoved.append((u, was[1] or was[0]))
 
@@ -777,6 +823,8 @@ def main():
         annular_floor_met=(all((dia - d) / 2 >= a.annular for dia, d in vdims)
                            or (a.bridge and bridge_ok)),
         rule_areas_as_claimed=(not rlost and not rmoved
+                               and sorted(str(z[1]) for z in rnarrowed)
+                               == sorted(a.rule_area_narrowed)
                                and sorted(str(z[1]) for z in rwidened)
                                == sorted(a.rule_area_widened)
                                and sorted(z[1] for z in radded)
@@ -817,9 +865,11 @@ def main():
         pour_bridge=bridge_detail,
         rule_areas_added=radded, rule_areas_removed=rlost,
         rule_areas_widened=rwidened,
+        rule_areas_narrowed=rnarrowed,
         rule_areas_otherwise_changed=rmoved,
         claimed_rule_areas=sorted(a.rule_area),
         claimed_widened_rule_areas=sorted(a.rule_area_widened),
+        claimed_narrowed_rule_areas=sorted(a.rule_area_narrowed),
         zones_added=zadded, zones_removed=zlost,
         drc=first, drc_second_pass=second, dru_contracts=contracts,
         pour_partition=pp_detail,

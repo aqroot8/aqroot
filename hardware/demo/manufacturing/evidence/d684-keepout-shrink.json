@@ -1,0 +1,199 @@
+{
+ "board_sha256_after": "58f7a3df69cec6bd3faa9c0f40632adee2c41e02fe4926b2ade60834274179fd",
+ "board_sha256_before": "d7ed92a58300c69c5d4c1770200f5aed641a079ea0b743afb54a6ab467b72706",
+ "controls": {
+  "claim_withheld": {
+   "rule_areas_as_claimed": false,
+   "verdict": "FAIL"
+  },
+  "containment": [
+   {
+    "control_holds": true,
+    "ok": true,
+    "want": true,
+    "what": "the promoted shrink is CONTAINED"
+   },
+   {
+    "control_holds": true,
+    "ok": false,
+    "want": false,
+    "what": "the REVERSE (old inside new) is NOT"
+   },
+   {
+    "control_holds": true,
+    "ok": false,
+    "want": false,
+    "what": "a same-size TRANSLATION out of the old area is NOT a narrowing"
+   },
+   {
+    "control_holds": true,
+    "ok": false,
+    "want": false,
+    "what": "a LARGER polygon is NOT a narrowing"
+   }
+  ],
+  "wrong_area_claimed": {
+   "rule_areas_as_claimed": false,
+   "verdict": "FAIL"
+  }
+ },
+ "copper_added": 0,
+ "copper_removed": 0,
+ "decision": "D-684",
+ "gate": {
+  "clauses": {
+   "attributable_drc": true,
+   "authority_unchanged": true,
+   "barrel_move_licensed": true,
+   "board_changed": false,
+   "board_improved": true,
+   "every_detour_relaid": true,
+   "inert_removal_priced": true,
+   "inherited_within_baseline": true,
+   "no_foreign_copper": true,
+   "no_open_relief_licence": true,
+   "no_regression": true,
+   "no_unlicensed_removal": true,
+   "pour_partition": true,
+   "rebond_priced": true,
+   "zones_and_rule_areas": true
+  },
+  "connectivity": {
+   "nets_improved": [
+    "GND"
+   ],
+   "nets_regressed": [],
+   "open_retained_nets_after": 14,
+   "open_retained_nets_before": 15,
+   "retained_open_edges_after": 21,
+   "retained_open_edges_before": 22
+  },
+  "drc_types": {
+   "lib_footprint_issues": 199,
+   "solder_mask_bridge": 1
+  },
+  "refused": [
+   "board_changed"
+  ],
+  "why_board_changed_is_false": "clause 1 asks whether COPPER moved and none did; the board improved by the REFILL the narrowed keep-out permits, and the other fourteen clauses judge that refill in full"
+ },
+ "keepout": {
+  "flags_unchanged": {
+   "disallow_pads": false,
+   "disallow_tracks": true,
+   "disallow_vias": true,
+   "disallow_zone_fills": true
+  },
+  "layers_unchanged": [
+   "F.Cu",
+   "In1.Cu",
+   "In2.Cu",
+   "In3.Cu",
+   "In4.Cu",
+   "B.Cu"
+  ],
+  "name": "MIC_ACOUSTIC_KEEPOUT",
+  "now_polygon_mm": [
+   [
+    4.6,
+    97.0
+   ],
+   [
+    4.554328,
+    97.22961
+   ],
+   [
+    4.424264,
+    97.424264
+   ],
+   [
+    4.22961,
+    97.554328
+   ],
+   [
+    4.0,
+    97.6
+   ],
+   [
+    3.77039,
+    97.554328
+   ],
+   [
+    3.575736,
+    97.424264
+   ],
+   [
+    3.445672,
+    97.22961
+   ],
+   [
+    3.4,
+    97.0
+   ],
+   [
+    3.445672,
+    96.77039
+   ],
+   [
+    3.575736,
+    96.575736
+   ],
+   [
+    3.77039,
+    96.445672
+   ],
+   [
+    4.0,
+    96.4
+   ],
+   [
+    4.22961,
+    96.445672
+   ],
+   [
+    4.424264,
+    96.575736
+   ],
+   [
+    4.554328,
+    96.77039
+   ]
+  ],
+  "now_source": "D-151's own recorded manufacturer figure -- no copper inside O1.65 mm, which IS pad 4's outer diameter -- expressed as a 16-gon of r 0.600 mm: it covers the O1.05 mm port with 0.075 mm of margin on every facet and lies wholly inside pad 4's copper (r 0.825 mm)",
+  "was_polygon_mm": [
+   [
+    3.0,
+    98.0
+   ],
+   [
+    5.0,
+    98.0
+   ],
+   [
+    5.0,
+    96.0
+   ],
+   [
+    3.0,
+    96.0
+   ]
+  ],
+  "was_source": "the footprint O2.0 mm dashed B.Fab legend, taken as its bounding square by D-483"
+ },
+ "part": {
+  "gasket": "ID >= 1.5 mm / OD 4-5 mm, sealing on the F.Cu face (D-151, M-14)",
+  "mounted_on": "B.Cu",
+  "mpn_family": "PUI DMM-4026-B-I2S",
+  "pad4": "GND ring, ID 1.05 / OD 1.65 mm, concentric with the port (D-151, D-203, D-227)",
+  "port": "O1.05 mm NPTH at (4.000, 97.000)",
+  "ref": "MK1",
+  "style": "bottom-port MEMS microphone"
+ },
+ "question": "the microphone's own GND ring lies wholly inside MIC_ACOUSTIC_KEEPOUT, so no track, via or pour may reach it -- is the keep-out's polygon faithful to the manufacturer figure",
+ "reference_planes": {
+  "In1_In4_area_mm2_after": 9381.706964,
+  "In1_In4_area_mm2_before": 9379.602413,
+  "note": "KO5 holds: the two GND references remain the SAME copper"
+ },
+ "schema": 1
+}

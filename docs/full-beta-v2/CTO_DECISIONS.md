@@ -1,3 +1,128 @@
+# D-684 · 2026-09-11 · Demo — THE MICROPHONE HAD NO GROUND: ITS OWN ACOUSTIC KEEP-OUT COVERED ITS `GND` RING, AND CORRECTING THE POLYGON TO THE MANUFACTURER'S OWN FIGURE CLOSES `GND` WITH ZERO COPPER
+
+    authority  d7ed92a58300c69c5d4c1770200f5aed641a079ea0b743afb54a6ab467b72706
+            -> 58f7a3df69cec6bd3faa9c0f40632adee2c41e02fe4926b2ade60834274179fd
+    retained open edges 22 -> 21      open retained nets 15 -> 14
+    `GND` 1 -> 0                      `hardware/beta-v2`  UNTOUCHED
+    copper added 0, copper removed 0
+    `hardware/demo/fab` REGENERATED; `fab_package_contract` PASS 8/8
+
+**PROMOTED, AND NOT ONE TRACK WAS LAID.**  `verify_promotion.py --ref HEAD
+--rule-area-narrowed MIC_ACOUSTIC_KEEPOUT` **PASS 15/15** with
+`D-186_bat_main_class` and `D-269_bat_main_routed_clearance` **TRUE**,
+`objects_added 0`, `objects_removed 0`, `rule_areas_otherwise_changed []`;
+`keepout_stackup_contract` **KO1-KO5 PASS**; `pour_partition` PP1-PP4 PASS;
+`protected_copper.py` **IDENTICAL** (15 nets / 402 objects); `placement_contract`
+**PASS 9/9**; standing suite **14/14 RAN, `vacuous` false, NO verdict regressed**.
+Real KiCad DRC is **unchanged**: `{lib_footprint_issues: 199,
+solder_mask_bridge: 1}`, `attributable_drc []`.
+
+## 1. THE PART, AND WHY IT COULD NOT WORK
+
+`MK1` is the PUI **`DMM-4026-B-I2S`**, a **bottom-port** MEMS microphone
+soldered to **`B.Cu`**, whose sound path leaves through a **Ø1.05 mm NPTH** at
+`(4.000, 97.000)` to the **`F.Cu`** face, where the enclosure gasket
+(**ID >= 1.5 / OD 4-5 mm**, D-151, M-14) seals.  Its **pad 4** is the
+**GND ring, ID 1.05 / OD 1.65 mm**, concentric with that port (D-151, D-203,
+ratified as a padstack by D-227).
+
+`MIC_ACOUSTIC_KEEPOUT` is a board-level rule area forbidding **tracks, vias and
+zone fill on all six copper layers**.  D-483 already corrected it once, from
+5 x 7 mm down to the **2 x 2 mm bounding square of the footprint's Ø2.0 mm
+dashed `B.Fab` legend**, to free `MK1.5` / `MK1.6`.  **It still covered pad 4
+entirely** -- the pad spans `3.175..4.825 x 96.175..97.825` and the square
+spans `3.0..5.0 x 96.0..98.0` -- so **no track, no via and no pour could reach
+the microphone's own ground ring**, on any layer.  That was `GND`'s single open
+edge, and a MEMS microphone with no ground return does not work at all.  The
+**microphone is a retained `AQROOT_DEMO_SCOPE` feature.**
+
+## 2. THE FIGURE THE KEEP-OUT SHOULD HAVE CARRIED
+
+D-151 recorded the manufacturer's own number and this file never spent it:
+*"no copper, mask or component inside **Ø1.65 mm**"* — and **Ø1.65 mm is pad
+4's own outer diameter.**  The 2 x 2 mm square came from the footprint's Ø2.0 mm
+**drawn legend**, not from the drawing.  A keep-out that isolates the very pad
+the drawing requires soldered to board ground cannot be what either document
+means.
+
+**AND THE SEAL IS MADE ON THE OTHER FACE.**  `MK1` sits on `B.Cu`; the gasket
+contacts `F.Cu` from r 0.75 to r 2.5 mm.  What a gasket cannot tolerate there is
+a TRACK's topography or a VIA's hole — and a *continuous pour* is flatter than
+the bare mask step the square was preserving.
+
+So the polygon is restated as a **16-gon of radius 0.600 mm on the port**:
+
+    was   (3.0,98.0) (5.0,98.0) (5.0,96.0) (3.0,96.0)          2 x 2 mm square
+    now   16-gon, centre (4.000, 97.000), r 0.600 mm
+    layers   F.Cu In1.Cu In2.Cu In3.Cu In4.Cu B.Cu             UNCHANGED
+    flags    tracks NO, vias NO, pads yes, zone fill NO        UNCHANGED
+
+It covers the Ø1.05 mm port with **0.075 mm of margin on every facet** and lies
+**wholly inside pad 4's copper** (r 0.825 mm), so on every layer the port keeps
+a keep-out and on `B.Cu` the `GND` pour can now bond the ring.  **KO1 is
+untouched — all six copper layers are retained** — and KO5 still holds: `In1.Cu`
+and `In4.Cu` remain the SAME copper, 9379.602 -> **9381.707 mm2 each**.
+
+## 3. WHAT THE GATE SAID, INCLUDING THE CLAUSE IT REFUSED
+
+The transaction was put to the full gate (`w/d684/mkgate`), which returned
+**fourteen of fifteen** — `board_improved` **true** (22 -> 21), `no_regression`
+true, `pour_partition` true, `attributable_drc` true, `zones_and_rule_areas`
+true — and refused exactly one: **`board_changed` false.**  That is the gate
+being right: clause 1 asks whether COPPER moved, and none did.  The board
+improved by the **refill** the corrected keep-out permits, and the other
+fourteen clauses judge that refill in full.  The refilled authority is
+**byte-identical** to the candidate the gate built (`58f7a3df...`), which is
+the independent confirmation that nothing else changed.
+
+## 4. THE VERIFIER LEARNED A WORD IT DID NOT HAVE
+
+`verify_promotion.py` could say `--rule-area-widened`, because growing a
+LICENCE area's layer set is the dangerous direction for a licence (D-617).  For
+a **KEEP-OUT** the dangerous direction is the other one, and it has a different
+shape: a keep-out is narrowed by moving its **polygon**, and a polygon that
+merely MOVED could protect somewhere new while abandoning somewhere old.
+
+`--rule-area-narrowed NAME` is added, and it is admitted **only on
+containment**: owner, name, copper layer set and all four disallow flags must
+be identical, and the new outline must lie **wholly inside** the old one, proved
+by a real polygon boolean (`poly_is_contained`) and not by a bounding box.
+**FOUR CONTROLS AND TWO NEGATIVES, ALL HOLD**
+(`evidence/d684-keepout-shrink.json`):
+
+    the promoted shrink is CONTAINED                       True   (want True)
+    the REVERSE (old inside new) is NOT                    False  (want False)
+    a same-size TRANSLATION out of the old area is NOT     False  (want False)
+    a LARGER polygon is NOT a narrowing                    False  (want False)
+    the same board with the claim WITHHELD                 FAIL rule_areas_as_claimed
+    the same board with the WRONG area claimed             FAIL rule_areas_as_claimed
+
+## 5. WHAT REMAINS, AND ONE THING THIS DECISION DID NOT BUY
+
+`MK1.4` is now bonded by the `B.Cu` `GND` pour around most of its
+circumference, which is how a bottom-port MEMS ground ring is normally
+delivered.  It has **no dedicated barrel of its own** to `In1`/`In4`; the
+corrected keep-out now permits one just outside pad 4 and it would be better
+practice.  That is copper, it needs the ordinary gate, and it is **recorded as
+the follow-up, not smuggled into this transaction.**
+
+**NEXT:** (1) `/01_POWER_TREE/BQ25185_SYS`, 6 of 21, still #1 — D-683 §4.
+(2) the USB MCU fanout, 3 of 21 — D-683 §5.  (3) `+3V3` `U5.2`: D-684's ladder
+shows the **0.200 mm relief width OPENS THE LAND** (the wall moves from
+`NO_LEGAL_ESCAPE` to `NO_VIA_SITE`), its filled island is **0.1831 mm2 /
+0.868 x 0.225 mm** and the nearest `+3V3` body pour is **0.7282 mm away** past
+`U5.1` — so `U5.2` is a JUMPER question, not a barrel question, and no flag
+this repository has offers an island jumper at a licensed width.  `U5.2` is the
+**`GAIN_SLOT`** strap, which the schematic itself types `passive`.
+(4) `/BQ25185_STAT1` / `STAT2`: relocating `R127`+`TP6` to within **6.29 mm** of
+`U2.9` still returns `NO_PATH` — **`U2`'s west fanout is the wall, not the
+distance.**  **THERE IS NO OPEN OWNER DECISION ON THIS BOARD.**
+
+Evidence: `d684-keepout-shrink.json`, `d684-verify-promotion.json`,
+`d684-protected-copper.json`, `d684-placement-contract.json`,
+`d684-routing-ledger.json`, `d684-contract-regression.json`,
+`d684-keepout_stackup-contract.json`, `d684-fab_provenance-contract.json`.
+
 # D-683 · 2026-09-11 · Demo — THE I2C TEST POINT WAS IN A SEALED POCKET AND A TEST POINT IS NOT A PART: MOVED 35 mm AND TAPPED ONTO ITS OWN BUS IN 1.515 mm; AND THE SYS SEAM IS `U12.13`'s ONLY DOOR
 
     authority  d0743e72da3fa650d8eb59ed4f41fb89f4e4663c3ea7f8694d257ed9c86a1dad

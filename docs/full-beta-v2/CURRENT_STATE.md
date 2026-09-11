@@ -23,6 +23,68 @@
 > `verify_promotion` PASS and `protected_copper` showing exactly one protected
 > net moved.  `U14.7` is on the bus.  This board has **no open owner decision**.
 
+- **Demo D-684 (THE MICROPHONE HAD NO GROUND: ITS OWN ACOUSTIC KEEP-OUT
+  COVERED ITS `GND` RING, AND CORRECTING THE POLYGON TO THE MANUFACTURER'S OWN
+  FIGURE CLOSES `GND` WITH ZERO COPPER):**  **PROMOTED, AND NOT ONE TRACK WAS
+  LAID.**  Authority
+  `d7ed92a58300c69c5d4c1770200f5aed641a079ea0b743afb54a6ab467b72706` ->
+  **`58f7a3df69cec6bd3faa9c0f40632adee2c41e02fe4926b2ade60834274179fd`**;
+  retained open edges **22 -> 21**, open retained nets 15 -> 14, **`GND` 1 -> 0**;
+  copper added **0**, removed **0**.  `hardware/beta-v2` **UNTOUCHED**;
+  `hardware/demo/fab` **REGENERATED**, `fab_package_contract` **PASS 8/8**.
+  `verify_promotion.py --ref HEAD --rule-area-narrowed MIC_ACOUSTIC_KEEPOUT`
+  **PASS 15/15** (D-186 + D-269 TRUE, `rule_areas_otherwise_changed []`);
+  `keepout_stackup_contract` **KO1-KO5 PASS**; `pour_partition` PP1-PP4 PASS;
+  `protected_copper` **IDENTICAL**; `placement_contract` **PASS 9/9**; standing
+  suite **14/14 RAN, `vacuous` false, NO verdict regressed**; real DRC
+  **unchanged** (`199 lib_footprint_issues + 1 solder_mask_bridge`).
+  **(1) THE PART COULD NOT WORK.**  `MK1` is the PUI `DMM-4026-B-I2S`
+  **bottom-port** MEMS microphone on `B.Cu`; its **pad 4 is the GND ring,
+  ID 1.05 / OD 1.65 mm**, concentric with the Ø1.05 mm NPTH port.
+  `MIC_ACOUSTIC_KEEPOUT` -- 2 x 2 mm, six layers, tracks/vias/fill all
+  forbidden -- **covered that pad entirely**, so nothing could reach the
+  microphone's own ground.  That was `GND`'s single open edge, and the
+  microphone is a retained `AQROOT_DEMO_SCOPE` feature.
+  **(2) THE FIGURE THE KEEP-OUT SHOULD HAVE CARRIED.**  D-151 recorded the
+  manufacturer's own number -- *"no copper inside **Ø1.65 mm**"* -- and Ø1.65 mm
+  **IS pad 4's outer diameter**; the 2 x 2 mm square came from the footprint's
+  Ø2.0 mm **drawn legend** (D-483's bounding square), not from the drawing.
+  **AND THE SEAL IS ON THE OTHER FACE:** the gasket (ID >= 1.5 / OD 4-5 mm)
+  contacts `F.Cu`, and a continuous pour there is FLATTER than the bare mask
+  step the square preserved.  The polygon is restated as a **16-gon, centre
+  (4.000, 97.000), r 0.600 mm** -- covering the port with 0.075 mm of margin on
+  every facet, wholly inside pad 4's copper (r 0.825 mm) -- with the **layer set
+  and all four flags UNCHANGED**, so **KO1 is untouched** and KO5 still holds
+  (`In1.Cu` = `In4.Cu`, 9379.602 -> 9381.707 mm2).
+  **(3) THE GATE RETURNED 14 OF 15 AND REFUSED THE RIGHT ONE.**
+  `board_improved` true (22 -> 21), `no_regression`, `pour_partition`,
+  `attributable_drc`, `zones_and_rule_areas` all true; **`board_changed` FALSE**,
+  because clause 1 asks whether COPPER moved and none did.  The refilled
+  authority is **byte-identical** to the candidate the gate built.
+  **(4) THE VERIFIER LEARNED A WORD IT DID NOT HAVE.**  `--rule-area-narrowed`
+  is added to `verify_promotion.py`, the mirror of D-617's
+  `--rule-area-widened`, admitted **only on CONTAINMENT** proved by a real
+  polygon boolean: owner, name, layer set and all four flags identical, and the
+  new outline wholly inside the old.  Four containment controls and two
+  negatives all hold (`evidence/d684-keepout-shrink.json`): the shrink is
+  contained; the reverse is not; a same-size TRANSLATION out of the old area is
+  not; a LARGER polygon is not; and the same board FAILS
+  `rule_areas_as_claimed` both with the claim WITHHELD and with the WRONG area
+  claimed.
+  **(5) RECORDED, NOT SMUGGLED.**  `MK1.4` now bonds to the `B.Cu` `GND` pour
+  around most of its circumference and has **no barrel of its own** to
+  `In1`/`In4`.  The corrected keep-out permits one just outside pad 4 and it
+  would be better practice; that is COPPER, it needs the ordinary gate, and it
+  is the follow-up.
+  **NEXT:** (1) `BQ25185_SYS` 6 of 21, still #1 (D-683 section 4).  (2) the USB
+  MCU fanout, 3 of 21 (D-683 section 5).  (3) `+3V3` `U5.2` is a **JUMPER**
+  question and not a barrel one -- the 0.200 mm relief width OPENS the land, the
+  island is 0.1831 mm2 / 0.868 x 0.225 mm and the nearest `+3V3` body pour is
+  **0.7282 mm** away past `U5.1`; `U5.2` is the `MAX98357A`'s **`GAIN_SLOT`**
+  strap, which the schematic itself types `passive`.  (4) `/BQ25185_STAT1` /
+  `STAT2`: relocating `R127`+`TP6` to within **6.29 mm** of `U2.9` still returns
+  `NO_PATH` -- **`U2`'s west fanout is the wall, not the distance.**
+  **NO OPEN OWNER DECISION.**
 - **Demo D-683 (THE I2C TEST POINT WAS IN A SEALED POCKET AND A TEST POINT IS
   NOT A PART: MOVED 35 mm AND TAPPED ONTO ITS OWN BUS IN 1.515 mm; AND THE
   `SYS` SEAM IS `U12.13`'s ONLY DOOR):**  **COPPER PROMOTED.**  Authority
