@@ -23,6 +23,46 @@
 > `verify_promotion` PASS and `protected_copper` showing exactly one protected
 > net moved.  `U14.7` is on the bus.  This board has **no open owner decision**.
 
+- **Demo D-688 (THE `SYS` ISLAND JUMPER'S WALL IS THE BARREL, NOT THE
+  TRACK):**  **NO COPPER PROMOTED.**  Authority **UNCHANGED** at
+  `fb7b61f2a490283c1ee1a8ff1b969c88f11c5ebc3917dc495425e945149fe401`; 20 -> 20;
+  `hardware/demo/kicad`, `hardware/demo/fab`, `hardware/beta-v2` **UNTOUCHED**
+  (`evidence/d688-sys-island-jumper-barrel.json`).  D-687's addendum named a
+  *licensed-WIDTH island jumper* as the instrument for `BQ25185_SYS`'s island
+  edges; **this measurement retires that name.**
+  **(1) THE WIDTH LADDER.**  `maze3d.join_islands` with `emit=False` at
+  0.025 mm, `max_mm 14`, down a ladder the class floor forbids (new probe
+  `w/d688/ij_width_probe.py`, ~15 min per rung): **0.500 mm joins 0 of 8;
+  0.400, 0.300, 0.250, 0.200 and 0.150 mm each join EXACTLY 1 of 8.**  The one
+  that moves is `{C28.1, SW9.2, U12.1}` -> `{C24.1, C33.1, C64.1, L2.1}`,
+  **4.644 mm, 2 barrels, `B`-`F`-`B`**, at (61.625,99.475) and (61.725,103.700)
+  -- it closes `BQ25185_SYS` **6 -> 5**.  `L4.1`/`U21.3`, `U12.10/11`, `C26.2`
+  and `C27.1` refuse at EVERY width down to 0.150 mm.
+  **(2) AND THE PINCH IS NOT WIDTH AT ALL.**  Three arms, all at the DRU's own
+  0.500 mm `SYS_MAIN` minimum: via **0.750/0.250 NO_PATH**, via
+  **0.650/0.400 NO_PATH**, via **0.650/0.250 JOINED**.  ***The wall is the
+  BARREL*** -- so **no width licence is needed**; the run is legal at the class
+  floor the board already publishes.
+  **(3) WHAT THE BARREL IS WORTH.**  IPC-2221B at 10 K / 0.025 mm plating:
+  track 0.400/0.500/0.800 mm = **1.226 / 1.441 / 2.026 A**; barrel drill
+  0.250/0.400 mm = **1.685 / 2.311 A**.  Against the **1.0 A the `SYS_MAIN`
+  class row publishes** the winning geometry is sound with margin; against the
+  **2.19 A `U21` SEGMENT** figure neither clears -- **and neither does the
+  board's own 0.800 mm at 2.026 A**.  RESIDUAL RISK RECORDED: `SW9.2` is the
+  source of the whole rail, so `U21`'s eventual path starts on this cluster and
+  that segment must be sized from the peak the DRU already names.
+  **(4) THE LEGALITY AND THE MISSING FLAG.**  `POWER-class vias use the 0.40 mm
+  drill` names `SYS_MAIN`, so 0.250 mm is forbidden outright: the geometry
+  needs a **named rule area licensing a fine barrel at those two sites** -- the
+  `POUR_BRIDGE_<REF>` shape of D-595 / D-632.  And it needs **a barrel argument
+  for `--join-islands`**, which does not exist: `join_islands` takes its via
+  from `net_contract`, `--escape-floor` lowers only the WIDTH and
+  `--stitch-via` is clamped UP to the DRU hole floor.  **Two lines of CLI plus
+  the rule area is the whole transaction.**
+  **NEXT:** (1) `--join-island-via` + the `POUR_BRIDGE` rule area -- one edge,
+  `SYS` 6 -> 5, at a width needing no licence.  (2) the `U12` + `L1` + `TP13` +
+  `C28` NORTH translation for the other four `SYS` edges and the
+  four-claimant band.  (3) `/USB_D_MCU_N`.  **NO OPEN OWNER DECISION.**
 - **Demo D-687 addendum (THE `U12` ROTATION IS REFUSED, THE ESCAPE FLOOR
   RECLASSIFIES FOUR `SYS` EDGES, AND `SYS_MAIN`'s 0.800 mm IS NOT LAUNCHABLE
   FROM THE PART IT SERVES):**  **NO COPPER PROMOTED.**  Authority **UNCHANGED**

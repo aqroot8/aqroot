@@ -1,0 +1,335 @@
+{
+  "ampacity": {
+    "barrel_drill_250um_A": 1.685,
+    "barrel_drill_400um_A": 2.311,
+    "class_row_design_current_A": 1.0,
+    "class_table_bar_charged_A": 2.19,
+    "method": "audit_bond_ampacity, IPC-2221B, 10 K rise, 0.025 mm plating",
+    "reading": "for the 1.0 A the SYS_MAIN class row publishes, the winning geometry is sound with margin -- 0.500 mm carries 1.441 A and a 0.250 mm-drill barrel carries 1.685 A.  Against the 2.19 A U21 SEGMENT figure neither clears, and NEITHER DOES THE BOARD'S OWN 0.800 mm (2.026 A).  RESIDUAL RISK, RECORDED: SW9.2 is the source of the whole rail, so whatever path U21's island (POUR 2, still open) eventually gets starts on this cluster, and that segment must be sized from the peak the .kicad_dru already names.",
+    "track_400um_A": 1.226,
+    "track_500um_A": 1.441,
+    "track_800um_A": 2.026
+  },
+  "authority_unchanged": true,
+  "board_sha256": "fb7b61f2a490283c1ee1a8ff1b969c88f11c5ebc3917dc495425e945149fe401",
+  "decision": "D-688",
+  "legality": {
+    "condition": "A.Type == 'Via' && A.hasNetclass('SYS_MAIN') || ...",
+    "consequence": "the 0.250 mm drill is FORBIDDEN for SYS_MAIN outright, so the winning geometry needs a NAMED RULE AREA licensing a fine barrel for this net at these two sites -- the POUR_BRIDGE_<REF> shape D-595 used for POUR_BRIDGE_U11_11 and D-632 for U4.12",
+    "rule": "POWER-class vias use the 0.40 mm drill (hole_size min 0.40mm)"
+  },
+  "missing_instrument": {
+    "and_it_is_not_the_licensed_width_jumper": "D-687's addendum named a licensed-WIDTH island jumper; this measurement retires that name.  The width is already legal at the class floor.",
+    "name": "a barrel argument for --join-islands",
+    "why": "maze3d.join_islands takes its via geometry from the same Field the stitch uses, built from net_contract's via_dia / via_drill.  --escape-floor lowers the WIDTH and --stitch-via is clamped UP to the DRU hole floor, so NO existing flag can ask for the geometry that works.  Two lines of CLI plus the rule area is the whole transaction."
+  },
+  "net": "/01_POWER_TREE/BQ25185_SYS",
+  "netclass": "SYS_MAIN",
+  "question": "does a NARROWER island jumper find a path where the class floor cannot, and if so what is the 0.100 mm actually made of",
+  "schema": 1,
+  "the_join": {
+    "closes": "BQ25185_SYS 6 -> 5",
+    "cluster": [
+      "C28.1",
+      "SW9.2",
+      "U12.1"
+    ],
+    "layers": [
+      "B",
+      "F",
+      "B"
+    ],
+    "mm": 4.644,
+    "to_cluster": [
+      "C24.1",
+      "C33.1",
+      "C64.1",
+      "L2.1"
+    ],
+    "via_xy": [
+      [
+        61.625,
+        99.475
+      ],
+      [
+        61.725,
+        103.7
+      ]
+    ],
+    "vias": 2
+  },
+  "three_geometries_at_the_class_floor": {
+    "arms": [
+      {
+        "result": "NO_PATH",
+        "source": "w/d688/ij_width_sys.json rung 0.500",
+        "via_dia_mm": 0.75,
+        "via_drill_mm": 0.25
+      },
+      {
+        "result": "NO_PATH",
+        "source": "w/d688/ij_floors.json rung 'kicad_dru / board floor'",
+        "via_dia_mm": 0.65,
+        "via_drill_mm": 0.4
+      },
+      {
+        "result": "JOINED",
+        "source": "w/d688/ij_pinch.log BASE arm, 637 s",
+        "via_dia_mm": 0.65,
+        "via_drill_mm": 0.25
+      }
+    ],
+    "finding": "THE WALL IS THE BARREL, NOT THE TRACK.  At the class-floor WIDTH the jumper closes with a 0.650 / 0.250 mm barrel and refuses with 0.750 / 0.250 and with 0.650 / 0.400.  D-682's 'not a radius finding and not a width finding: a BARREL DIAMETER finding' is confirmed on the island jumper.",
+    "note": "all three at width 0.500 mm, the .kicad_dru SYS_MAIN minimum"
+  },
+  "what_it_does_not_close": {
+    "at_every_width_down_to_150um": true,
+    "still_refusing": [
+      "L4.1/U21.3 (POUR 2)",
+      "U12.10/11",
+      "C26.2",
+      "C27.1",
+      "R68.1 (DNP)",
+      "U11.1",
+      "U13.3 (DNP)"
+    ]
+  },
+  "width_ladder": {
+    "finding": "EXACTLY ONE of eight clusters closes below the class floor, and it closes at 0.400 mm and not at 0.500 mm.  Narrower buys NOTHING: 0.300, 0.250, 0.200 and 0.150 mm give the same one join and the same seven refusals.",
+    "instrument": "maze3d.join_islands, emit=False, grid 25000, max_mm 14, via dia = max(0.500, width + 0.250) mm, drill 0.250 mm",
+    "rungs": [
+      {
+        "join": null,
+        "joined": 0,
+        "mm": 0,
+        "seconds": 297.3,
+        "unjoined": 8,
+        "via_mm": [
+          0.75,
+          0.25
+        ],
+        "width_mm": 0.5
+      },
+      {
+        "join": {
+          "cluster": [
+            "C28.1",
+            "SW9.2",
+            "U12.1"
+          ],
+          "dry": true,
+          "layers": [
+            "B",
+            "F",
+            "B"
+          ],
+          "mm": 4.644,
+          "pads": 3,
+          "to_cluster": [
+            "C24.1",
+            "C33.1",
+            "C64.1",
+            "L2.1"
+          ],
+          "to_is_body": true,
+          "via_xy": [
+            [
+              61.625,
+              99.475
+            ],
+            [
+              61.725,
+              103.7
+            ]
+          ],
+          "vias": 2
+        },
+        "joined": 1,
+        "mm": 4.644,
+        "seconds": 790.9,
+        "unjoined": 7,
+        "via_mm": [
+          0.65,
+          0.25
+        ],
+        "width_mm": 0.4
+      },
+      {
+        "join": {
+          "cluster": [
+            "C28.1",
+            "SW9.2",
+            "U12.1"
+          ],
+          "dry": true,
+          "layers": [
+            "B",
+            "F",
+            "B"
+          ],
+          "mm": 4.376,
+          "pads": 3,
+          "to_cluster": [
+            "C24.1",
+            "C33.1",
+            "C64.1",
+            "L2.1"
+          ],
+          "to_is_body": true,
+          "via_xy": [
+            [
+              61.675,
+              99.575
+            ],
+            [
+              61.75,
+              103.65
+            ]
+          ],
+          "vias": 2
+        },
+        "joined": 1,
+        "mm": 4.376,
+        "seconds": 896.1,
+        "unjoined": 7,
+        "via_mm": [
+          0.55,
+          0.25
+        ],
+        "width_mm": 0.3
+      },
+      {
+        "join": {
+          "cluster": [
+            "C28.1",
+            "SW9.2",
+            "U12.1"
+          ],
+          "dry": true,
+          "layers": [
+            "B",
+            "F",
+            "B"
+          ],
+          "mm": 4.35,
+          "pads": 3,
+          "to_cluster": [
+            "C24.1",
+            "C33.1",
+            "C64.1",
+            "L2.1"
+          ],
+          "to_is_body": true,
+          "via_xy": [
+            [
+              61.675,
+              99.6
+            ],
+            [
+              61.75,
+              103.625
+            ]
+          ],
+          "vias": 2
+        },
+        "joined": 1,
+        "mm": 4.35,
+        "seconds": 865.1,
+        "unjoined": 7,
+        "via_mm": [
+          0.5,
+          0.25
+        ],
+        "width_mm": 0.25
+      },
+      {
+        "join": {
+          "cluster": [
+            "C28.1",
+            "SW9.2",
+            "U12.1"
+          ],
+          "dry": true,
+          "layers": [
+            "B",
+            "F",
+            "B"
+          ],
+          "mm": 4.339,
+          "pads": 3,
+          "to_cluster": [
+            "C24.1",
+            "C33.1",
+            "C64.1",
+            "L2.1"
+          ],
+          "to_is_body": true,
+          "via_xy": [
+            [
+              61.7,
+              99.6
+            ],
+            [
+              61.75,
+              103.625
+            ]
+          ],
+          "vias": 2
+        },
+        "joined": 1,
+        "mm": 4.339,
+        "seconds": 894.9,
+        "unjoined": 7,
+        "via_mm": [
+          0.5,
+          0.25
+        ],
+        "width_mm": 0.2
+      },
+      {
+        "join": {
+          "cluster": [
+            "C28.1",
+            "SW9.2",
+            "U12.1"
+          ],
+          "dry": true,
+          "layers": [
+            "B",
+            "F",
+            "B"
+          ],
+          "mm": 4.319,
+          "pads": 3,
+          "to_cluster": [
+            "C24.1",
+            "C33.1",
+            "C64.1",
+            "L2.1"
+          ],
+          "to_is_body": true,
+          "via_xy": [
+            [
+              61.7,
+              99.6
+            ],
+            [
+              61.75,
+              103.625
+            ]
+          ],
+          "vias": 2
+        },
+        "joined": 1,
+        "mm": 4.319,
+        "seconds": 917.7,
+        "unjoined": 7,
+        "via_mm": [
+          0.5,
+          0.25
+        ],
+        "width_mm": 0.15
+      }
+    ]
+  }
+}

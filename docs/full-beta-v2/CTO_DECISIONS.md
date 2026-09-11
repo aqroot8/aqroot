@@ -1,3 +1,84 @@
+# D-688 · 2026-09-11 · Demo — THE `SYS` ISLAND JUMPER'S WALL IS THE **BARREL**, NOT THE TRACK: AT THE CLASS-FLOOR WIDTH IT CLOSES WITH A 0.650 / 0.250 mm VIA AND REFUSES WITH 0.750 / 0.250 AND WITH 0.650 / 0.400 — AND EXACTLY ONE OF EIGHT CLUSTERS MOVES AT ANY WIDTH
+
+    authority  fb7b61f2a490283c1ee1a8ff1b969c88f11c5ebc3917dc495425e945149fe401
+            -> fb7b61f2a490283c1ee1a8ff1b969c88f11c5ebc3917dc495425e945149fe401   UNCHANGED
+    retained open edges 20 -> 20
+    `hardware/demo/kicad`, `hardware/demo/fab`, `hardware/beta-v2`  UNTOUCHED
+    `evidence/d688-sys-island-jumper-barrel.json`
+
+**NO COPPER PROMOTED.**  D-687's addendum named a *licensed-width island
+jumper* as the instrument for `BQ25185_SYS`'s four island edges.  **This
+measurement retires that name.**  The width is already legal; the barrel is not.
+
+## 1. THE WIDTH LADDER, AND WHAT IT ACTUALLY SAYS
+
+`maze3d.join_islands` with `emit=False` at 0.025 mm, `max_mm 14`, straight down
+a ladder the class floor forbids (new tracked probe
+`w/d688/ij_width_probe.py`; ~15 minutes per rung):
+
+    0.500 mm   joined 0 / 8      0.250 mm   joined 1 / 8
+    0.400 mm   joined 1 / 8      0.200 mm   joined 1 / 8
+    0.300 mm   joined 1 / 8      0.150 mm   joined 1 / 8
+
+***EXACTLY ONE of eight clusters moves, and narrower buys NOTHING.***  The one
+that moves is `{C28.1, SW9.2, U12.1}` -> `{C24.1, C33.1, C64.1, L2.1}`,
+**4.644 mm, 2 barrels, `B` -> `F` -> `B`**, barrels at (61.625,99.475) and
+(61.725,103.700).  It closes `BQ25185_SYS` **6 -> 5**.  `L4.1`/`U21.3`,
+`U12.10/11`, `C26.2` and `C27.1` refuse at **every** width down to 0.150 mm.
+
+## 2. AND THE 0.100 mm IS NOT WIDTH AT ALL
+
+Three arms, ALL at the `.kicad_dru`'s own 0.500 mm `SYS_MAIN` minimum:
+
+    via 0.750 / 0.250 mm   NO_PATH
+    via 0.650 / 0.400 mm   NO_PATH
+    via 0.650 / 0.250 mm   JOINED
+
+***THE WALL IS THE BARREL, NOT THE TRACK.***  D-682 wrote *"not a radius
+finding and not a width finding: a BARREL DIAMETER finding"* about the stitch;
+it is true of the island jumper too, and it means **no width licence is needed
+at all** — the run is legal at the class floor the board already publishes.
+
+## 3. WHAT THAT BARREL IS WORTH, AND WHAT IT IS NOT
+
+`audit_bond_ampacity`, IPC-2221B, 10 K rise, 0.025 mm plating:
+
+    track  0.400 mm   1.226 A        barrel drill 0.250 mm   1.685 A
+    track  0.500 mm   1.441 A        barrel drill 0.400 mm   2.311 A
+    track  0.800 mm   2.026 A
+
+Against the **1.0 A the `SYS_MAIN` class row publishes**, the winning geometry
+is sound with margin: 1.441 A of track through a 1.685 A barrel.  Against the
+**2.19 A `U21` SEGMENT figure** neither clears — **and neither does the board's
+own 0.800 mm netclass width, at 2.026 A.**
+
+**RESIDUAL RISK, RECORDED AND NOT SMUGGLED:** `SW9.2` is the source of the
+whole rail, so whatever path `U21`'s island (`POUR 2`, still open) eventually
+gets starts on this cluster.  That segment must be sized from the peak the
+`.kicad_dru` already names, and this jumper is not that segment's sizing.
+
+## 4. THE LEGALITY, AND THE INSTRUMENT THAT DOES NOT EXIST
+
+`(rule "POWER-class vias use the 0.40 mm drill") (constraint hole_size (min
+0.40mm))` names `SYS_MAIN`, so a 0.250 mm drill is **forbidden outright**.  The
+winning geometry therefore needs a **named rule area licensing a fine barrel
+for this net at these two sites** — the `POUR_BRIDGE_<REF>` shape D-595 used
+for `POUR_BRIDGE_U11_11` and D-632 for `U4.12`.
+
+And it needs one more thing the board does not have: **a barrel argument for
+`--join-islands`.**  `maze3d.join_islands` takes its via geometry from the same
+`Field` the stitch uses, built from `net_contract`'s `via_dia`/`via_drill`;
+`--escape-floor` lowers the WIDTH and `--stitch-via` is clamped UP to the DRU
+hole floor, so **no existing flag can ask for the geometry that works.**  Two
+lines of CLI plus the rule area is the whole transaction.
+
+**NEXT:** (1) the `--join-island-via` argument + a `POUR_BRIDGE`-shaped rule
+area at (61.625,99.475) and (61.725,103.700) — one edge, `BQ25185_SYS` 6 -> 5,
+at a width that needs no licence.  (2) the `U12` + `L1` + `TP13` + `C28` NORTH
+translation for the remaining four `SYS` edges and the four-claimant band.
+(3) `/USB_D_MCU_N`'s second lane and the 25 mm uncoupled budget.
+**NO OPEN OWNER DECISION.**
+
 # D-687 addendum · 2026-09-11 · Demo — THE `U12` ROTATION IS REFUSED, THE ESCAPE FLOOR RECLASSIFIES FOUR `SYS` EDGES FROM "THE ISLAND IS TOO SMALL" TO "THERE IS NO CORRIDOR", AND `SYS_MAIN`'s 0.800 mm IS NOT LAUNCHABLE FROM THE PART IT SERVES
 
     authority  fb7b61f2a490283c1ee1a8ff1b969c88f11c5ebc3917dc495425e945149fe401
