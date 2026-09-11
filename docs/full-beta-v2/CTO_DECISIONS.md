@@ -1,3 +1,92 @@
+# D-694 · 2026-09-11 · Demo — **THE `U12` POCKET HAS FOUR BOUNDARIES AND EVERY OCCUPANT IS JUSTIFIED; AND TWO OF THE THREE OVER-SUBSCRIBED POCKETS ARE THE SAME 3.355 mm RIBBON AGAINST THE LOCKED EAST EDGE**
+
+    authority  2f456279cb9540f5e29a2a9b2fbc60a6ad761e0ec33253f2802c4ada83aebbc4
+            -> 2f456279cb9540f5e29a2a9b2fbc60a6ad761e0ec33253f2802c4ada83aebbc4   UNCHANGED
+    retained open edges 18 -> 18
+    `hardware/demo/kicad`, `hardware/demo/fab`, `hardware/beta-v2` UNTOUCHED
+    `evidence/d694-u12-pocket-and-the-east-ribbon.json`
+
+**NO COPPER PROMOTED.**  D-693 raised an owner decision on `U11`; this is the
+independent work carried on beside it, as the charter requires, and it ends in
+an architectural finding rather than in copper.
+
+## 1. THE `U12` POCKET, BOUNDED ON FOUR SIDES
+
+**SOUTH — the antenna.**  The `WROOM ANTENNA KEEPOUT` is all six layers with
+its north edge at `y = 104.005`; `U12`'s south pad row is at `y = 102.800`.
+**1.205 mm, and four nets want it** (D-687).
+
+**WEST — a 0.475 mm slot, and what is behind it is already full.**  The band's
+only westward drain is between `C24`'s courtyard (right edge **x = 64.025**) and
+the keep-out's west edge (**x = 64.500**).  And moving `C24` does not widen it:
+**every one of twenty candidate sites at `x 58.8..60.4`, `y 102.6..103.6`
+collides with `Net-(U12-PG)`'s own copper** — the drain beyond the slot is
+already carrying one of the band's own four claimants.
+
+**NORTH — `L1`, and it cannot move.**  `L1` is the `TPS63020`'s buck-boost
+inductor and it lands on `U12.6`/`U12.7` on the NORTH pad row **and**
+`U12.8`/`U12.9` on the SOUTH row — *both switch nodes*.  The only place it fits
+once `TP7` and `TP47` go is WEST of `U12`, which makes both switch nodes long on
+a switching converter.  **REFUSED on signal integrity, not on geometry.**
+Beyond `L1` are `TP13` and `SW9`'s 0.90 mm NPTH; D-691 measured 2.4 mm of column
+travel with zero courtyard overlap and D-691 §4 measured why it cannot be taken.
+
+**EAST — the board's own edge.**  `U12`'s courtyard ends at `x = 68.695`, the
+outline at `x = 72.050`: **a 3.355 mm ribbon**, already carrying `Net-(SW9-A)`
+and `/BQ25185_STAT1`.
+
+## 2. AND THAT RIBBON IS ALSO `U11`'s
+
+    part   east edge      board left
+    U11      69.275         2.775 mm
+    U12      68.695         3.355 mm
+    L1       68.895         3.155 mm
+    R36      70.275         1.775 mm
+    C27      70.345         1.705 mm
+    SW9      70.995         1.055 mm
+    TP6      71.295         0.755 mm
+    J8       71.725         0.325 mm
+
+***`U11`'s east-column fan-out (D-692) and `U12`'s south band drain into the
+SAME strip***, and that strip also carries `SW9`, `C27`, `R36`, `TP6` and the
+`J8` Qwiic connector, none of which has more than 1.8 mm of board behind it.
+Two of the three over-subscribed pockets this board has are one crowded ribbon.
+
+**AND THE ANTENNA DOES NOT FORBID GROWING IT.**  The keep-out rectangle
+`(64.500,104.000)-(85.500,152.000)` **already extends 13.4 mm past the board's
+own east edge**.  `U11` sits at `y 76.5..79.1` and `U12` at `y 99.3..103.5` —
+**both below `y = 104.005`** — so board added east of `x = 72.050` *below* that
+line lies outside the keep-out entirely and costs the antenna nothing.
+
+## 3. OWNER OPTION B — WIDEN THE PCB EASTWARD BELOW `y = 104.005`
+
+**RAISED AS AN ALTERNATIVE, AND RANKED BELOW D-693's.**
+
+**WHAT.**  Grow the outline from 72.000 mm to about **77.000 mm for
+`y < 104.005` only** — a notch, not a rectangle — taking the east ribbon from
+3.355 mm to about **8.355 mm**.
+
+**WOULD RELIEVE.**  `U11`'s east-column fan-out (D-692: `STAT1` ×2, `STAT2` ×2
+and three `BQ25185_SYS` clusters); `U12`'s south band (the `SYS` `U12.10/11`
+island and the band's four claimants); **and it needs no protected-copper
+exception at all.**
+
+**COST.**  `DEVICE_SPEC.md` line 302 records **PCB outline 72.000 × 148.000 mm,
+LOCKED (D-239), MARKETING-SAFE**.  This is an EXTERNAL DIMENSION change:
+enclosure re-work, the mechanical spec, every render and every published
+board-size claim.
+
+**RECOMMENDATION — DO NOT TAKE THIS FIRST.**  D-693's bounded protected-copper
+exception costs one gated transaction and no external change; this costs the
+enclosure and the published spec.  Take it **only if** D-693 is granted, spent
+and still measured insufficient — at which point it is the instrument that
+relieves **both** pockets at once, and it should then be taken decisively rather
+than in millimetres.
+
+**NEXT:** (1) D-693's decision.  (2) `BQ25185_SYS`'s remaining five, which are
+the only open work that touches neither pocket.  (3) this option, if and only
+if (1) is spent and insufficient.
+
 # D-693 · 2026-09-11 · Demo — **`R36` OUT OF THE POCKET CHANGES NOTHING, AND THE ONLY INSTRUMENT LEFT FOR EIGHT EDGES MOVES PROTECTED BATTERY COPPER** — OWNER DECISION RAISED, WITH A RECOMMENDATION
 
     authority  2f456279cb9540f5e29a2a9b2fbc60a6ad761e0ec33253f2802c4ada83aebbc4

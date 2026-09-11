@@ -1,0 +1,45 @@
+{
+  "authority_unchanged": true,
+  "board_sha256": "2f456279cb9540f5e29a2a9b2fbc60a6ad761e0ec33253f2802c4ada83aebbc4",
+  "decision": "D-694",
+  "owner_option_B": {
+    "cost": "`DEVICE_SPEC.md` line 302 records **PCB outline 72.000 x 148.000 mm, LOCKED (D-239), MARKETING-SAFE**.  Changing it is an EXTERNAL DIMENSION change: enclosure re-work, the mechanical spec, every render and every published board-size claim.",
+    "recommendation": "DO NOT TAKE THIS FIRST.  D-693's bounded protected-copper exception costs one gated transaction and no external change; this costs the enclosure and the published spec.  Take this ONLY if D-693 is granted, spent and still measured insufficient -- at which point it is the instrument that relieves BOTH pockets at once and should be taken decisively rather than in millimetres.",
+    "status": "RAISED AS AN ALTERNATIVE, RANKED BELOW D-693's",
+    "title": "widen the PCB eastward below y = 104.005",
+    "what": "grow the outline from 72.000 mm to about 77.000 mm for y < 104.005 only -- a notch, not a rectangle -- taking the east ribbon from 3.355 mm to about 8.355 mm",
+    "would_relieve": [
+      "U11's east-column fan-out (D-692): STAT1 x2, STAT2 x2 and three BQ25185_SYS clusters",
+      "U12's south band (D-687/D-691/D-694): the SYS U12.10/11 island and the band's four claimants",
+      "and it needs NO protected-copper exception at all"
+    ]
+  },
+  "question": "the U12 pocket is the second of three over-subscribed pockets; what exactly bounds it, and is there anything inside it that can give",
+  "schema": 1,
+  "the_east_ribbon": {
+    "and_the_antenna_does_not_forbid_growing_it": "the `WROOM ANTENNA KEEPOUT` rectangle is (64.500,104.000)-(85.500,152.000) and ALREADY extends 13.4 mm past the board's own east edge.  `U11` sits at y 76.5-79.1 and `U12` at y 99.3-103.5, BOTH below the keep-out's y = 104.005, so board added east of x = 72.050 BELOW y = 104.005 is outside the keep-out entirely and costs the antenna nothing.",
+    "clearance_to_the_edge_mm": {
+      "C27": 1.705,
+      "J8": 0.325,
+      "L1": 3.155,
+      "R36": 1.775,
+      "SW9": 1.055,
+      "TP6": 0.755,
+      "U11": 2.775,
+      "U12": 3.355
+    },
+    "east_edge_mm": 72.05,
+    "finding": "TWO OF THE THREE OVER-SUBSCRIBED POCKETS ARE THE SAME RIBBON.  `U11`'s east-column fan-out (D-692) and `U12`'s south band (D-687, D-691) both drain into the strip between x = 68.7 and the board's outline at x = 72.050, and that strip also carries `SW9`, `C27`, `R36`, `TP6` and the `J8` Qwiic connector, none of which has more than 1.8 mm of board behind it."
+  },
+  "the_u12_pocket_has_four_boundaries_and_every_occupant_is_justified": {
+    "east": "the board's own edge.  U12's courtyard ends at x = 68.695 and the outline at x = 72.050: a **3.355 mm ribbon**, already carrying `Net-(SW9-A)` and `/BQ25185_STAT1`.",
+    "north": "`L1`, and it cannot move.  `L1` is the TPS63020's buck-boost inductor and it connects to `U12.6`/`U12.7` on the NORTH pad row and `U12.8`/`U12.9` on the SOUTH row -- BOTH switch nodes.  Moving it west of U12 (the only place it fits, once TP7 and TP47 go) makes both switch nodes long on a switching converter.  REFUSED on signal-integrity grounds, not on geometry.",
+    "north_beyond_L1": "`TP13`, then `SW9`'s 0.90 mm NPTH at (66.700, 89.900).  D-691 measured 2.4 mm of column travel with ZERO courtyard overlap; D-691 (4) measured why it cannot be taken -- `U12.15`, the GND exposed pad, sweeps `+3V3` and `V3V3_FB` copper at every distance from 0.8 mm up.",
+    "south": "the `WROOM` ANTENNA KEEPOUT, all six layers, west edge x = 64.500, north edge y = 104.005.  U12's south pad row is at y = 102.800, so the band is 1.205 mm tall and FOUR nets want it (D-687).",
+    "west": "the band's only westward drain is the slot between C24's courtyard (right edge x = 64.025) and the keep-out's west edge (x = 64.500) -- **0.475 mm**.  And beyond it the region y 102.5..104.0 is already carrying `Net-(U12-PG)`: every one of twenty candidate C24 sites at x 58.8..60.4 collides with PG's own copper."
+  },
+  "verification": {
+    "beta_v2_untouched": true,
+    "copper": "NONE PROMOTED; authority unchanged at 2f456279"
+  }
+}
