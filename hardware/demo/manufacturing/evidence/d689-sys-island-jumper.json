@@ -1,0 +1,629 @@
+{
+  "base_board_sha256": "fb7b61f2a490283c1ee1a8ff1b969c88f11c5ebc3917dc495425e945149fe401",
+  "decision": "D-689",
+  "frontier": {
+    "finding": "THE LARGEST GEOMETRY THAT JOINS IS 0.600 mm OF TRACK THROUGH A 0.650 / 0.300 mm BARREL.  Width and barrel BOTH bind: 0.650 mm of track refuses the same barrel, 0.700 mm of barrel refuses the same track, and D-687's 0.800 / 0.650:0.400 class geometry refuses both.  D-688's winning rung (0.500 / 0.650:0.250) is inside this one and is superseded -- it was the finest rung of a DESCENDING ladder, not the coarsest rung that fits.",
+    "rungs": [
+      {
+        "failures": [
+          "L4.1:NO_PATH",
+          "U12.10:NO_PATH",
+          "C26.2:NO_PATH",
+          "C27.1:NO_PATH",
+          "R68.1:NO_ANCHOR",
+          "U11.1:NO_ANCHOR",
+          "U13.3:NO_ANCHOR"
+        ],
+        "joined": 1,
+        "layers": [
+          "B",
+          "F",
+          "B"
+        ],
+        "mm": 4.878,
+        "seconds": 1222.1,
+        "unjoined": 7,
+        "via_mm": [
+          0.55,
+          0.3
+        ],
+        "via_xy": [
+          [
+            61.675,
+            99.575
+          ],
+          [
+            61.775,
+            103.675
+          ]
+        ],
+        "vias": 2,
+        "width_mm": 0.5
+      },
+      {
+        "failures": [
+          "L4.1:NO_PATH",
+          "U12.10:NO_PATH",
+          "C26.2:NO_PATH",
+          "C27.1:NO_PATH",
+          "R68.1:NO_ANCHOR",
+          "U11.1:NO_ANCHOR",
+          "U13.3:NO_ANCHOR"
+        ],
+        "joined": 1,
+        "layers": [
+          "B",
+          "F",
+          "B"
+        ],
+        "mm": 4.821,
+        "seconds": 1264.2,
+        "unjoined": 7,
+        "via_mm": [
+          0.6,
+          0.25
+        ],
+        "via_xy": [
+          [
+            61.65,
+            99.525
+          ],
+          [
+            61.75,
+            103.675
+          ]
+        ],
+        "vias": 2,
+        "width_mm": 0.5
+      },
+      {
+        "failures": [
+          "L4.1:NO_PATH",
+          "U12.10:NO_PATH",
+          "C26.2:NO_PATH",
+          "C27.1:NO_PATH",
+          "R68.1:NO_ANCHOR",
+          "U11.1:NO_ANCHOR",
+          "U13.3:NO_ANCHOR"
+        ],
+        "joined": 1,
+        "layers": [
+          "B",
+          "F",
+          "B"
+        ],
+        "mm": 4.845,
+        "seconds": 1393.8,
+        "unjoined": 7,
+        "via_mm": [
+          0.6,
+          0.3
+        ],
+        "via_xy": [
+          [
+            61.65,
+            99.525
+          ],
+          [
+            61.75,
+            103.7
+          ]
+        ],
+        "vias": 2,
+        "width_mm": 0.5
+      },
+      {
+        "failures": [
+          "L4.1:NO_PATH",
+          "U12.10:NO_PATH",
+          "C26.2:NO_PATH",
+          "C27.1:NO_PATH",
+          "R68.1:NO_ANCHOR",
+          "U11.1:NO_ANCHOR",
+          "U13.3:NO_ANCHOR"
+        ],
+        "joined": 1,
+        "layers": [
+          "B",
+          "F",
+          "B"
+        ],
+        "mm": 4.836,
+        "seconds": 1302.6,
+        "unjoined": 7,
+        "via_mm": [
+          0.65,
+          0.25
+        ],
+        "via_xy": [
+          [
+            61.625,
+            99.475
+          ],
+          [
+            61.725,
+            103.7
+          ]
+        ],
+        "vias": 2,
+        "width_mm": 0.5
+      },
+      {
+        "failures": [
+          "L4.1:NO_PATH",
+          "U12.10:NO_PATH",
+          "C26.2:NO_PATH",
+          "C27.1:NO_PATH",
+          "R68.1:NO_ANCHOR",
+          "U11.1:NO_ANCHOR",
+          "U13.3:NO_ANCHOR"
+        ],
+        "joined": 1,
+        "layers": [
+          "B",
+          "F",
+          "B"
+        ],
+        "mm": 4.872,
+        "seconds": 1283.9,
+        "unjoined": 7,
+        "via_mm": [
+          0.65,
+          0.3
+        ],
+        "via_xy": [
+          [
+            61.625,
+            99.475
+          ],
+          [
+            61.75,
+            103.725
+          ]
+        ],
+        "vias": 2,
+        "width_mm": 0.5
+      },
+      {
+        "failures": [
+          "C28.1:NO_PATH",
+          "L4.1:NO_PATH",
+          "U12.10:NO_PATH",
+          "C26.2:NO_PATH",
+          "C27.1:NO_PATH",
+          "R68.1:NO_ANCHOR",
+          "U11.1:NO_ANCHOR",
+          "U13.3:NO_ANCHOR"
+        ],
+        "joined": 0,
+        "layers": null,
+        "mm": null,
+        "seconds": 474.4,
+        "unjoined": 8,
+        "via_mm": [
+          0.7,
+          0.3
+        ],
+        "via_xy": null,
+        "vias": null,
+        "width_mm": 0.5
+      },
+      {
+        "failures": [
+          "L4.1:NO_PATH",
+          "U12.10:NO_PATH",
+          "C26.2:NO_PATH",
+          "C27.1:NO_PATH",
+          "R68.1:NO_ANCHOR",
+          "U11.1:NO_ANCHOR",
+          "U13.3:NO_ANCHOR"
+        ],
+        "joined": 1,
+        "layers": [
+          "B",
+          "F",
+          "B"
+        ],
+        "mm": 5.115,
+        "seconds": 1111.8,
+        "unjoined": 7,
+        "via_mm": [
+          0.65,
+          0.25
+        ],
+        "via_xy": [
+          [
+            61.675,
+            99.5
+          ],
+          [
+            61.725,
+            103.7
+          ]
+        ],
+        "vias": 2,
+        "width_mm": 0.6
+      },
+      {
+        "failures": [
+          "L4.1:NO_PATH",
+          "U12.10:NO_PATH",
+          "C26.2:NO_PATH",
+          "C27.1:NO_PATH",
+          "R68.1:NO_ANCHOR",
+          "U11.1:NO_ANCHOR",
+          "U13.3:NO_ANCHOR"
+        ],
+        "joined": 1,
+        "layers": [
+          "B",
+          "F",
+          "B"
+        ],
+        "mm": 5.15,
+        "seconds": 725.9,
+        "unjoined": 7,
+        "via_mm": [
+          0.65,
+          0.3
+        ],
+        "via_xy": [
+          [
+            61.675,
+            99.5
+          ],
+          [
+            61.75,
+            103.725
+          ]
+        ],
+        "vias": 2,
+        "width_mm": 0.6
+      },
+      {
+        "failures": [
+          "C28.1:NO_PATH",
+          "L4.1:NO_PATH",
+          "U12.10:NO_PATH",
+          "C26.2:NO_PATH",
+          "C27.1:NO_PATH",
+          "R68.1:NO_ANCHOR",
+          "U11.1:NO_ANCHOR",
+          "U13.3:NO_ANCHOR"
+        ],
+        "joined": 0,
+        "layers": null,
+        "mm": null,
+        "seconds": 459.6,
+        "unjoined": 8,
+        "via_mm": [
+          0.65,
+          0.3
+        ],
+        "via_xy": null,
+        "vias": null,
+        "width_mm": 0.65
+      },
+      {
+        "failures": [
+          "C28.1:NO_PATH",
+          "L4.1:NO_PATH",
+          "U12.10:NO_ANCHOR",
+          "C26.2:NO_PATH",
+          "C27.1:NO_PATH",
+          "R68.1:NO_ANCHOR",
+          "U11.1:NO_ANCHOR",
+          "U13.3:NO_ANCHOR"
+        ],
+        "joined": 0,
+        "layers": null,
+        "mm": null,
+        "seconds": 330.8,
+        "unjoined": 8,
+        "via_mm": [
+          0.65,
+          0.25
+        ],
+        "via_xy": null,
+        "vias": null,
+        "width_mm": 0.7
+      },
+      {
+        "failures": [
+          "C28.1:NO_PATH",
+          "L4.1:NO_PATH",
+          "U12.10:NO_ANCHOR",
+          "C26.2:NO_PATH",
+          "C27.1:NO_PATH",
+          "R68.1:NO_ANCHOR",
+          "U11.1:NO_ANCHOR",
+          "U13.3:NO_ANCHOR"
+        ],
+        "joined": 0,
+        "layers": null,
+        "mm": null,
+        "seconds": 327.5,
+        "unjoined": 8,
+        "via_mm": [
+          0.65,
+          0.3
+        ],
+        "via_xy": null,
+        "vias": null,
+        "width_mm": 0.7
+      },
+      {
+        "failures": [
+          "C28.1:NO_PATH",
+          "L4.1:NO_PATH",
+          "U12.10:NO_ANCHOR",
+          "C26.2:NO_PATH",
+          "C27.1:NO_PATH",
+          "R68.1:NO_ANCHOR",
+          "U11.1:NO_ANCHOR",
+          "U13.3:NO_ANCHOR"
+        ],
+        "joined": 0,
+        "layers": null,
+        "mm": null,
+        "seconds": 469.3,
+        "unjoined": 8,
+        "via_mm": [
+          0.65,
+          0.25
+        ],
+        "via_xy": null,
+        "vias": null,
+        "width_mm": 0.8
+      }
+    ]
+  },
+  "instrument": {
+    "probe": "w/d689/ij_barrel_probe.py -- maze3d.join_islands, emit=False, grid 25000 nm, max_mm 14, one (width, via) pair per run, nothing written",
+    "runs": 12
+  },
+  "instrument_built": {
+    "clamp": "--join-island-width is clamped into the band .kicad_dru section 5 publishes for the class, [min, trunk]; the BARREL is not clamped, because the licence machinery is where its geometry is judged",
+    "clause6": "every ISLAND_JOIN_<cluster>_<n> area the run draws is audited by the same clause 6 that audits POUR_BRIDGE and PAD_ESCAPE areas",
+    "flags": [
+      "--join-island-via DIA:DRILL",
+      "--join-island-width NM"
+    ],
+    "maze3d": "join_islands(floors=..., licence=True) -- a jumper carrying even ONE unlicensed barrel is reverted WHOLE and reported NO_DRU_LICENCE"
+  },
+  "licence": {
+    "areas": [
+      "ISLAND_JOIN_C28_1_1",
+      "ISLAND_JOIN_C28_1_2"
+    ],
+    "authored_before_the_run": "w/d689/apply_dru.py, committed with this decision; the area NAMES are a property of the cluster and the barrel's ordinal, so the rule text could be written before the router chose a coordinate",
+    "geometry_mm": {
+      "annular": 0.175,
+      "hole_size": 0.3,
+      "via_diameter": 0.65
+    },
+    "no_new_capability": "a 0.30 mm drill in a 0.65 mm pad is COARSER than the 0.20 mm process this file licenses by name in nine places, and D-595 already licenses a 0.30 mm drill by name for POUR_BRIDGE_R19_1",
+    "rules": 6,
+    "why": "only the 0.300 mm DRILL needs an exception, against section 8's POWER-class 0.40 mm hole_size minimum.  0.650 mm clears board setup's 0.500 mm min_via_diameter and 0.175 mm clears the unconditional 0.125 mm annular floor, and both are stated at the value laid."
+  },
+  "net": "/01_POWER_TREE/BQ25185_SYS",
+  "netclass": "SYS_MAIN",
+  "price": {
+    "barrel_drill_300um_A": 1.902,
+    "class_row_design_current_A": 1.0,
+    "margin": "64 % over the 1.0 A the SYS_MAIN row of .kicad_dru section 5 publishes for this class",
+    "method": "audit_bond_ampacity, IPC-2221B, 10 K rise, 1 oz outer copper, 0.025 mm plated barrel wall",
+    "open_finding": "the 2.19 A in that row is the U21 accessory boost's PEAK INDUCTOR CURRENT and section 5 labels it a LOCAL EXCEPTION for 'the SYS segment that feeds U21'.  U21.3 is still an OPEN cluster (POUR 2, with L4.1): there is no such segment on this board and this jumper is not it.  When that feed is built it owes 2.19 A on its own copper, and NOTHING on this board meets it -- SYS_MAIN's own 0.800 mm opt carries 2.026 A.  OPEN, recorded, not closed by this decision.",
+    "resistance_mohm": {
+      "barrel_each": 1.081,
+      "total": 6.41,
+      "track_5_15mm": 4.252
+    },
+    "series_A": 1.645,
+    "track_600um_A": 1.645
+  },
+  "promoted_board_sha256": "fe99095143edd211c10421bd364dc56a21ec1db840377cd8dbf593f5fbb635ce",
+  "question": "what is the LARGEST island-jumper geometry BQ25185_SYS's SW9 cluster will take, and can a gated transaction lay it",
+  "schema": 1,
+  "still_refusing": [
+    "L4.1:NO_PATH",
+    "U12.10:NO_PATH",
+    "C26.2:NO_PATH",
+    "C27.1:NO_PATH",
+    "R68.1:NO_ANCHOR",
+    "U11.1:NO_ANCHOR",
+    "U13.3:NO_ANCHOR"
+  ],
+  "transaction": {
+    "added_track_layers": [
+      "B.Cu",
+      "F.Cu"
+    ],
+    "added_track_widths_nm": [
+      600000
+    ],
+    "added_tracks": 6,
+    "added_via_dia_drill_nm": [
+      [
+        650000,
+        300000
+      ]
+    ],
+    "added_vias": 2,
+    "argv": [
+      "route_maze_batch.py",
+      "/01_POWER_TREE/BQ25185_SYS",
+      "--grid",
+      "25000",
+      "--join-islands",
+      "--join-island-max-mm",
+      "14",
+      "--join-island-width",
+      "600000",
+      "--join-island-via",
+      "650000:300000",
+      "--promote"
+    ],
+    "join": {
+      "barrels": [
+        {
+          "area": "ISLAND_JOIN_C28_1_1",
+          "licence": {
+            "annular": 175000,
+            "area": "ISLAND_JOIN_C28_1_1",
+            "rules": [
+              "D-689 BQ25185_SYS island jumper barrel 1 - annular ring",
+              "D-689 BQ25185_SYS island jumper barrel 1 - barrel diameter",
+              "D-689 BQ25185_SYS island jumper barrel 1 - drill"
+            ],
+            "via_dia": 650000,
+            "via_drill": 300000
+          },
+          "needs_licence": true,
+          "via_dia": 650000,
+          "via_drill": 300000,
+          "xy": [
+            61675000,
+            99500000
+          ],
+          "xy_mm": [
+            61.675,
+            99.5
+          ]
+        },
+        {
+          "area": "ISLAND_JOIN_C28_1_2",
+          "licence": {
+            "annular": 175000,
+            "area": "ISLAND_JOIN_C28_1_2",
+            "rules": [
+              "D-689 BQ25185_SYS island jumper barrel 2 - annular ring",
+              "D-689 BQ25185_SYS island jumper barrel 2 - barrel diameter",
+              "D-689 BQ25185_SYS island jumper barrel 2 - drill"
+            ],
+            "via_dia": 650000,
+            "via_drill": 300000
+          },
+          "needs_licence": true,
+          "via_dia": 650000,
+          "via_drill": 300000,
+          "xy": [
+            61750000,
+            103725000
+          ],
+          "xy_mm": [
+            61.75,
+            103.725
+          ]
+        }
+      ],
+      "cluster": [
+        "C28.1",
+        "SW9.2",
+        "U12.1"
+      ],
+      "layers": [
+        "B",
+        "F",
+        "B"
+      ],
+      "mm": 5.15,
+      "pads": 3,
+      "to_cluster": [
+        "C24.1",
+        "C33.1",
+        "C64.1",
+        "L2.1"
+      ],
+      "to_is_body": true,
+      "via_xy": [
+        [
+          61.675,
+          99.5
+        ],
+        [
+          61.75,
+          103.725
+        ]
+      ],
+      "vias": 2
+    },
+    "objects_added": 8,
+    "objects_removed": 0
+  },
+  "verification": {
+    "beta_v2_untouched": true,
+    "connectivity": {
+      "nets_improved": [
+        "/01_POWER_TREE/BQ25185_SYS"
+      ],
+      "nets_regressed": [],
+      "open_retained_nets_after": 13,
+      "open_retained_nets_before": 13,
+      "retained_open_edges_after": 19,
+      "retained_open_edges_before": 20
+    },
+    "fab_package_contract": "PASS 8/8",
+    "gate": "15/15, refused_clauses [], attributable_drc []",
+    "protected_copper": "IDENTICAL (15 nets, differences {})",
+    "real_drc": {
+      "lib_footprint_issues": 199,
+      "solder_mask_bridge": 1
+    },
+    "standing_suite": "14/14 RAN, vacuous false, every verdict PASS/True; fab_provenance PASSES after the regen",
+    "verify_promotion": {
+      "checks": {
+        "added_only_on_claimed_nets": true,
+        "annular_floor_met": true,
+        "beta_v2_untouched": true,
+        "drc_inherited_within_baseline": true,
+        "drc_zero_attributable": true,
+        "dru_contracts_live": true,
+        "fill_stable": true,
+        "nothing_removed": true,
+        "pour_partition_intact": true,
+        "rule_areas_as_claimed": true,
+        "schematic_parity_within_baseline": true,
+        "track_width_floor_met": true,
+        "unconnected_not_increased": true,
+        "via_drill_floor_met": true,
+        "zone_inventory_as_claimed": true
+      },
+      "dru_contracts": {
+        "D-186_bat_main_class": true,
+        "D-269_bat_main_routed_clearance": true,
+        "annular_ring_floor": true,
+        "power_via_drill_floor": true
+      },
+      "pour_bridge": {
+        "areas": [
+          {
+            "area": "ISLAND_JOIN_C28_1_1",
+            "at": [
+              61675000,
+              99500000
+            ],
+            "dia_nm": 650000,
+            "drill_nm": 300000,
+            "net": "/01_POWER_TREE/BQ25185_SYS"
+          },
+          {
+            "area": "ISLAND_JOIN_C28_1_2",
+            "at": [
+              61750000,
+              103725000
+            ],
+            "dia_nm": 650000,
+            "drill_nm": 300000,
+            "net": "/01_POWER_TREE/BQ25185_SYS"
+          }
+        ],
+        "fine_vias": 2,
+        "licensed": 2,
+        "strays": []
+      },
+      "unconnected_items": 35,
+      "verdict": "PASS"
+    }
+  }
+}

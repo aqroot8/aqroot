@@ -1,0 +1,388 @@
+{
+ "all_pass": true,
+ "base_rev": "8572ade",
+ "board": "/home/aqroot8/aqroot-demo/hardware/demo/kicad/aqroot-demo/aqroot-Beta-v2.kicad_pcb",
+ "board_sha256": "fe99095143edd211c10421bd364dc56a21ec1db840377cd8dbf593f5fbb635ce",
+ "dru": "/home/aqroot8/aqroot-demo/hardware/demo/kicad/aqroot-demo/aqroot-Beta-v2.kicad_dru",
+ "results": {
+  "TF1": {
+   "currents_source_found": true,
+   "dru_file_floors": {
+    "ACC_3V3": 350000,
+    "ACC_5V": 400000,
+    "BAT_MAIN": 600000,
+    "NFC_5V_PA": 350000,
+    "NFC_RF": 300000,
+    "P3V3": 400000,
+    "SPK_OUT": 250000,
+    "SWITCH_NODE": 400000,
+    "SYS_MAIN": 500000,
+    "USB_D": 230000,
+    "VBUS_CHG": 350000
+   },
+   "mismatched": [],
+   "ok": true,
+   "priced_by_file_only": [
+    "USB_D"
+   ],
+   "published_currents": {
+    "ACC_3V3": 0.76,
+    "ACC_5V": 0.7,
+    "BAT_MAIN": 3.125,
+    "LED_BOOST": 0.09,
+    "NFC_5V_PA_PENDING": 0.5,
+    "P3V3": 1.0,
+    "SPK_OUT": 0.41,
+    "SYS_MAIN": 2.19,
+    "VBUS_CHG": 0.5
+   },
+   "router_table_floors": {
+    "ACC_3V3": 350000,
+    "ACC_5V": 400000,
+    "BAT_MAIN": 600000,
+    "NFC_5V_PA": 350000,
+    "NFC_RF": 300000,
+    "P3V3": 400000,
+    "SPK_OUT": 250000,
+    "SWITCH_NODE": 400000,
+    "SYS_MAIN": 500000,
+    "VBUS_CHG": 350000
+   }
+  },
+  "TF2": {
+   "declared_moves": [
+    {
+     "declared_by": "D-681",
+     "field": "layers",
+     "net": "/01_POWER_TREE/USB_D_CONN_N",
+     "now": [
+      "F",
+      "B"
+     ],
+     "was": [
+      "F"
+     ]
+    },
+    {
+     "declared_by": "D-681",
+     "field": "layers",
+     "net": "/01_POWER_TREE/USB_D_CONN_P",
+     "now": [
+      "F",
+      "B"
+     ],
+     "was": [
+      "F"
+     ]
+    },
+    {
+     "declared_by": "D-681",
+     "field": "layers",
+     "net": "/01_POWER_TREE/USB_D_ESD_N",
+     "now": [
+      "F",
+      "B"
+     ],
+     "was": [
+      "F"
+     ]
+    },
+    {
+     "declared_by": "D-681",
+     "field": "layers",
+     "net": "/01_POWER_TREE/USB_D_ESD_P",
+     "now": [
+      "F",
+      "B"
+     ],
+     "was": [
+      "F"
+     ]
+    },
+    {
+     "declared_by": "D-681",
+     "field": "layers",
+     "net": "/USB_D_MCU_N",
+     "now": [
+      "F",
+      "B"
+     ],
+     "was": [
+      "F"
+     ]
+    },
+    {
+     "declared_by": "D-681",
+     "field": "layers",
+     "net": "/USB_D_MCU_P",
+     "now": [
+      "F",
+      "B"
+     ],
+     "was": [
+      "F"
+     ]
+    }
+   ],
+   "declared_moves_expected": 6,
+   "moved": [],
+   "nets_carrying_a_block_with_lever_off": [],
+   "nets_compared": 211,
+   "ok": true,
+   "rev": "8572ade"
+  },
+  "TF3": {
+   "board_min_nm": 150000,
+   "by_class": {
+    "ACC_3V3": {
+     "admitted": true,
+     "amps": 1.113,
+     "from_nm": 500000,
+     "reason": "PRICED_AT_THE_PUBLISHED_BAR",
+     "required_amps": 0.76,
+     "to_nm": 350000
+    },
+    "ACC_5V": {
+     "admitted": true,
+     "amps": 1.226,
+     "from_nm": 600000,
+     "reason": "PRICED_AT_THE_PUBLISHED_BAR",
+     "required_amps": 0.7,
+     "to_nm": 400000
+    },
+    "BAT_MAIN": {
+     "admitted": false,
+     "amps": 1.645,
+     "from_nm": 1000000,
+     "reason": "TRUNK_UNDER_PRICED",
+     "required_amps": 3.125,
+     "to_nm": 1000000
+    },
+    "Default": {
+     "admitted": false,
+     "amps": null,
+     "from_nm": 200000,
+     "reason": "CLASS_HAS_NO_PUBLISHED_FLOOR",
+     "required_amps": null,
+     "to_nm": 200000
+    },
+    "GND": {
+     "admitted": false,
+     "amps": null,
+     "from_nm": 300000,
+     "reason": "CLASS_HAS_NO_PUBLISHED_FLOOR",
+     "required_amps": null,
+     "to_nm": 300000
+    },
+    "I2C": {
+     "admitted": false,
+     "amps": null,
+     "from_nm": 200000,
+     "reason": "CLASS_HAS_NO_PUBLISHED_FLOOR",
+     "required_amps": null,
+     "to_nm": 200000
+    },
+    "I2S": {
+     "admitted": false,
+     "amps": null,
+     "from_nm": 200000,
+     "reason": "CLASS_HAS_NO_PUBLISHED_FLOOR",
+     "required_amps": null,
+     "to_nm": 200000
+    },
+    "LED_BOOST": {
+     "admitted": false,
+     "amps": null,
+     "from_nm": 300000,
+     "reason": "CLASS_HAS_NO_PUBLISHED_FLOOR",
+     "required_amps": null,
+     "to_nm": 300000
+    },
+    "NFC_5V_PA": {
+     "admitted": false,
+     "amps": 1.113,
+     "from_nm": 600000,
+     "reason": "NET_CARRIES_NO_PUBLISHED_CURRENT",
+     "required_amps": null,
+     "to_nm": 600000
+    },
+    "NFC_OSC": {
+     "admitted": false,
+     "amps": null,
+     "from_nm": 200000,
+     "reason": "CLASS_HAS_NO_PUBLISHED_FLOOR",
+     "required_amps": null,
+     "to_nm": 200000
+    },
+    "NFC_RF": {
+     "admitted": false,
+     "amps": 0.995,
+     "from_nm": 300000,
+     "reason": "NET_CARRIES_NO_PUBLISHED_CURRENT",
+     "required_amps": null,
+     "to_nm": 300000
+    },
+    "NFC_RX": {
+     "admitted": false,
+     "amps": null,
+     "from_nm": 200000,
+     "reason": "CLASS_HAS_NO_PUBLISHED_FLOOR",
+     "required_amps": null,
+     "to_nm": 200000
+    },
+    "P3V3": {
+     "admitted": true,
+     "amps": 1.226,
+     "from_nm": 600000,
+     "reason": "PRICED_AT_THE_PUBLISHED_BAR",
+     "required_amps": 1.0,
+     "to_nm": 400000
+    },
+    "SPK_OUT": {
+     "admitted": true,
+     "amps": 0.872,
+     "from_nm": 300000,
+     "reason": "PRICED_AT_THE_PUBLISHED_BAR",
+     "required_amps": 0.41,
+     "to_nm": 250000
+    },
+    "SWITCH_NODE": {
+     "admitted": false,
+     "amps": 1.226,
+     "from_nm": 600000,
+     "reason": "NET_CARRIES_NO_PUBLISHED_CURRENT",
+     "required_amps": null,
+     "to_nm": 600000
+    },
+    "SYS_MAIN": {
+     "admitted": false,
+     "amps": 1.441,
+     "from_nm": 800000,
+     "reason": "TRUNK_UNDER_PRICED",
+     "required_amps": 2.19,
+     "to_nm": 800000
+    },
+    "USB_D": {
+     "admitted": false,
+     "amps": null,
+     "from_nm": 250000,
+     "reason": "CLASS_HAS_NO_PUBLISHED_FLOOR",
+     "required_amps": null,
+     "to_nm": 250000
+    },
+    "VBUS_CHG": {
+     "admitted": true,
+     "amps": 1.113,
+     "from_nm": 500000,
+     "reason": "PRICED_AT_THE_PUBLISHED_BAR",
+     "required_amps": 0.5,
+     "to_nm": 350000
+    }
+   },
+   "classes_descended": [
+    "ACC_3V3",
+    "ACC_5V",
+    "P3V3",
+    "SPK_OUT",
+    "VBUS_CHG"
+   ],
+   "classes_refused": [
+    "BAT_MAIN",
+    "Default",
+    "GND",
+    "I2C",
+    "I2S",
+    "LED_BOOST",
+    "NFC_5V_PA",
+    "NFC_OSC",
+    "NFC_RF",
+    "NFC_RX",
+    "SWITCH_NODE",
+    "SYS_MAIN",
+    "USB_D"
+   ],
+   "nets": 211,
+   "offenders": [],
+   "ok": true
+  },
+  "TF4": {
+   "bar_located": true,
+   "controls": [
+    {
+     "admitted": true,
+     "amps": 1.226,
+     "expected": "PRICED_AT_THE_PUBLISHED_BAR",
+     "got": "PRICED_AT_THE_PUBLISHED_BAR",
+     "netclass": "P3V3",
+     "ok": true,
+     "required_amps": 1.0
+    },
+    {
+     "admitted": true,
+     "amps": 1.226,
+     "expected": "PRICED_AT_THE_PUBLISHED_BAR",
+     "got": "PRICED_AT_THE_PUBLISHED_BAR",
+     "netclass": "ACC_5V",
+     "ok": true,
+     "required_amps": 0.7
+    },
+    {
+     "admitted": false,
+     "amps": 1.645,
+     "expected": "TRUNK_UNDER_PRICED",
+     "got": "TRUNK_UNDER_PRICED",
+     "netclass": "BAT_MAIN",
+     "ok": true,
+     "required_amps": 3.125
+    },
+    {
+     "admitted": false,
+     "amps": 1.441,
+     "expected": "TRUNK_UNDER_PRICED",
+     "got": "TRUNK_UNDER_PRICED",
+     "netclass": "SYS_MAIN",
+     "ok": true,
+     "required_amps": 2.19
+    },
+    {
+     "admitted": false,
+     "amps": 1.226,
+     "expected": "NET_CARRIES_NO_PUBLISHED_CURRENT",
+     "got": "NET_CARRIES_NO_PUBLISHED_CURRENT",
+     "netclass": "SWITCH_NODE",
+     "ok": true,
+     "required_amps": null
+    },
+    {
+     "admitted": false,
+     "amps": 0.995,
+     "expected": "NET_CARRIES_NO_PUBLISHED_CURRENT",
+     "got": "NET_CARRIES_NO_PUBLISHED_CURRENT",
+     "netclass": "NFC_RF",
+     "ok": true,
+     "required_amps": null
+    },
+    {
+     "admitted": false,
+     "amps": null,
+     "expected": "CLASS_HAS_NO_PUBLISHED_FLOOR",
+     "got": "CLASS_HAS_NO_PUBLISHED_FLOOR",
+     "netclass": "GND",
+     "ok": true,
+     "required_amps": null
+    },
+    {
+     "admitted": false,
+     "amps": null,
+     "expected": "CLASS_HAS_NO_PUBLISHED_FLOOR",
+     "got": "CLASS_HAS_NO_PUBLISHED_FLOOR",
+     "netclass": "Default",
+     "ok": true,
+     "required_amps": null
+    }
+   ],
+   "ok": true
+  }
+ },
+ "schema": 1
+}

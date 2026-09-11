@@ -1,3 +1,139 @@
+# D-689 · 2026-09-11 · Demo — **THE `SYS` ISLAND JUMPER IS BUILT, LICENSED AND PROMOTED**, AND THE GEOMETRY IT TOOK IS **BIGGER IN BOTH DIMENSIONS** THAN THE ONE D-688 FOUND: 0.600 mm OF TRACK THROUGH A 0.650 / 0.300 mm BARREL, 1.645 A AGAINST THE CLASS'S OWN 1.0 A
+
+    authority  fb7b61f2a490283c1ee1a8ff1b969c88f11c5ebc3917dc495425e945149fe401
+            -> fe99095143edd211c10421bd364dc56a21ec1db840377cd8dbf593f5fbb635ce
+    retained open edges 20 -> 19   open retained nets 13 -> 13
+    `/01_POWER_TREE/BQ25185_SYS`   6 -> 5
+    `hardware/demo/fab` REGENERATED · `hardware/beta-v2` UNTOUCHED
+    `evidence/d689-sys-island-jumper.json`
+
+**COPPER PROMOTED.**  D-688 named the missing instrument exactly — *"a barrel
+argument for `--join-islands` ... two lines of CLI plus the rule area is the
+whole transaction"* — and it was right about the instrument and **wrong about
+the rung**.
+
+## 1. D-688 MEASURED A DESCENDING LADDER AND REPORTED ITS FINEST RUNG
+
+D-688's probe swept WIDTH downward with the barrel tied to it
+(`via_dia = max(0.500, width + 0.250)`), so it could only ever report the
+FINEST geometry that works.  Section 11's own doctrine is the opposite: *"each
+rule states the LARGEST that fits, not the smallest the fab can make."*
+Twelve read-only runs at 0.025 mm, one `(width, via)` pair each
+(`w/d689/ij_barrel_probe.py`, `evidence/d689-sys-island-jumper.json`):
+
+    width 0.500   0.55/0.30 JOIN   0.60/0.25 JOIN   0.60/0.30 JOIN
+                  0.65/0.25 JOIN   0.65/0.30 JOIN   0.70/0.30 NO
+    width 0.600   0.65/0.25 JOIN   0.65/0.30 JOIN   <-- LARGEST, TAKEN
+    width 0.650   0.65/0.30 NO
+    width 0.700   0.65/0.25 NO     0.65/0.30 NO
+    width 0.800   0.65/0.25 NO     (D-687: 0.65/0.40 NO)
+
+***BOTH DIMENSIONS BIND AND NEITHER IS THE WHOLE WALL.***  0.650 mm of track
+refuses the barrel 0.600 mm accepts; 0.700 mm of barrel refuses the track
+0.650 mm accepts.  D-688's rung is strictly INSIDE the one taken here and is
+superseded.
+
+## 2. THE INSTRUMENT, BUILT
+
+`--join-island-via DIA:DRILL` and `--join-island-width NM`, and the two are
+governed differently **on purpose**:
+
+  * the **WIDTH is CLAMPED** into the band `.kicad_dru` section 5 publishes for
+    the class — never below its stated `min`, never above the trunk the run
+    already routes at.  `SYS_MAIN` publishes `min 0.50mm / opt 0.80mm`, so
+    0.600 mm needs **no licence of any kind** and KiCad's own DRC enforces it.
+  * the **BARREL is NOT clamped**, because that is the whole point, and it is
+    **licensed instead**.  `maze3d.join_islands` now takes `floors=` and refuses
+    any barrel under an ordinary floor unless the `.kicad_dru` grants THIS net
+    THAT geometry inside `ISLAND_JOIN_<cluster>_<n>` — a **fifth kind of rule
+    area**, keyed on the cluster's own first pad and the barrel's ORDINAL along
+    the jumper, so the rule text is authorable before the router picks a
+    coordinate and a jumper that wants a THIRD barrel is refused rather than
+    licensed by accident.  A jumper carrying even one unlicensed barrel is
+    reverted **whole**.
+  * every area the run draws is audited by the **same clause 6** that audits
+    `POUR_BRIDGE` and `PAD_ESCAPE`, and proved on the promoted board by
+    `verify_promotion --bridge`.
+
+Both flags are OFF by default and every run before this one reproduces byte for
+byte.
+
+## 3. THE LICENCE, AND THE ONE NUMBER IT ACTUALLY GRANTS
+
+`.kicad_dru` section **11c**, six rules over two pad-sized areas, authored
+BEFORE the router ran (`w/d689/apply_dru.py`).  **Exactly one number needs an
+exception:** the **0.300 mm drill**, against section 8's *"POWER-class vias use
+the 0.40 mm drill"*.  The 0.650 mm diameter clears board setup's 0.500 mm
+`min_via_diameter` and the 0.175 mm ring clears the unconditional 0.125 mm
+floor; both are stated at the value laid rather than relaxed.  **NO NEW FAB
+CAPABILITY** — a 0.30 mm drill in a 0.65 mm pad is COARSER than the 0.20 mm
+process this file licenses by name in nine places, and D-595 already licenses a
+0.30 mm drill by name for `POUR_BRIDGE_R19_1`.
+
+## 4. THE PRICE, AND THE OPEN FINDING IT DOES **NOT** CLOSE
+
+IPC-2221B, 10 K rise, 1 oz outer copper, 0.025 mm plated wall — the same
+`audit_bond_ampacity` call `PP2` and `--trunk-floor` use, now reported by the
+run itself in `island_joins.ampacity`:
+
+    track  0.600 mm         0.02088 mm2    1.645 A
+    barrel 0.300 mm drill   0.02553 mm2    1.902 A
+    in SERIES the conductor is worth the smaller:   1.645 A
+    about 4.25 mOhm of track + about 1.08 mOhm per barrel = about 6.4 mOhm
+
+against the **1.0 A** the `SYS_MAIN` row of section 5 publishes as this class's
+design current — **64 % of margin**, where D-688's rung had 44 %.
+
+**THE 2.19 A IN THAT ROW IS NOT THIS SEGMENT'S AND IS STILL OPEN.**  Section 5
+labels it a LOCAL EXCEPTION for *"the SYS segment that feeds `U21`"* — the
+accessory boost's peak inductor current.  `U21.3` is still an OPEN cluster
+(`POUR 2`, with `L4.1`): **there is no such segment on this board and this
+jumper is not it.**  When that feed is built it owes 2.19 A on its own copper,
+and **nothing on this board meets that today** — `SYS_MAIN`'s own 0.800 mm
+`opt` carries 2.026 A.  Recorded, unchanged, not inherited by this rule.
+
+## 5. THE TRANSACTION
+
+    AQROOT_SCAN_BOARD_VIAS=1 python3 route_maze_batch.py \
+        /01_POWER_TREE/BQ25185_SYS --grid 25000 \
+        --join-islands --join-island-max-mm 14 \
+        --join-island-width 600000 --join-island-via 650000:300000 --promote
+
+  * `{C28.1, SW9.2, U12.1}` -> the BODY `{C24.1, C33.1, C64.1, L2.1}`,
+    **5.150 mm, 2 barrels, `B` -> `F` -> `B`**, at (61.675,99.500) and
+    (61.750,103.725)
+  * **8 objects added, 0 removed** — 6 tracks at 0.600 mm on `B.Cu`+`F.Cu`,
+    2 vias at 0.650/0.300
+  * `SW9.2` is the pole of the user slide switch and the SOURCE of this rail;
+    the body it now feeds carries `C33`, `C64` and `L2` and **was fed by
+    nothing at all** before this jumper
+
+## 6. WHAT IT DID NOT CLOSE, MEASURED ON THE SAME RUN
+
+`L4.1`/`U21.3`, `U12.10/11`, `C26.2` and `C27.1` are `NO_PATH` at 0.600 mm;
+`R68.1` (DNP), `U11.1` and `U13.3` (DNP) are `NO_ANCHOR` — no cell of their
+filled copper admits a 0.600 mm track centred 0.325 mm inside it.  `SYS` keeps
+**five** of the board's nineteen edges and is still #1.
+
+## 7. VERIFICATION
+
+    gate                15/15, `refused_clauses []`, `attributable_drc []`
+    verify_promotion    PASS 15/15; D-186 and D-269 TRUE;
+                        `pour_bridge` licensed 2 / fine_vias 2 / strays [];
+                        unconnected_items 36 -> 35; `nothing_removed`
+    protected_copper    IDENTICAL (15 nets, `differences {}`)
+    standing suite      14/14 RAN, `vacuous false`, every verdict PASS/True
+    fab package         REGENERATED, `fab_package_contract` PASS 8/8
+    real DRC            unchanged: 199 `lib_footprint_issues` +
+                        1 `solder_mask_bridge`, `attributable []`
+
+**NEXT:** (1) the `U12` + `L1` NORTH translation — `U12`'s south pad row is at
+`y = 102.800` and the all-layer `WROOM` antenna keep-out starts at
+`y = 104.005`, so the band that four nets want is 1.205 mm tall; `TP13` is a
+test point and moving it off the column is what buys the travel.  (2)
+`/BQ25185_STAT1` + `/BQ25185_STAT2`, two edges each and four of nineteen.  (3)
+`/USB_D_MCU_N`'s second lane.  **NO OPEN OWNER DECISION.**
+
 # D-688 · 2026-09-11 · Demo — THE `SYS` ISLAND JUMPER'S WALL IS THE **BARREL**, NOT THE TRACK: AT THE CLASS-FLOOR WIDTH IT CLOSES WITH A 0.650 / 0.250 mm VIA AND REFUSES WITH 0.750 / 0.250 AND WITH 0.650 / 0.400 — AND EXACTLY ONE OF EIGHT CLUSTERS MOVES AT ANY WIDTH
 
     authority  fb7b61f2a490283c1ee1a8ff1b969c88f11c5ebc3917dc495425e945149fe401

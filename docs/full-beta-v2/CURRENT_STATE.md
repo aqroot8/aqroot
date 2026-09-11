@@ -23,6 +23,63 @@
 > `verify_promotion` PASS and `protected_copper` showing exactly one protected
 > net moved.  `U14.7` is on the bus.  This board has **no open owner decision**.
 
+- **Demo D-689 (THE `SYS` ISLAND JUMPER IS BUILT, LICENSED AND PROMOTED, AND
+  ITS GEOMETRY IS BIGGER IN BOTH DIMENSIONS THAN D-688's):**  **COPPER
+  PROMOTED.**  Authority `fb7b61f2a490283c1ee1a8ff1b969c88f11c5ebc3917dc495425e945149fe401`
+  -> **`fe99095143edd211c10421bd364dc56a21ec1db840377cd8dbf593f5fbb635ce`**;
+  retained open edges **20 -> 19**, `/01_POWER_TREE/BQ25185_SYS` **6 -> 5**,
+  open retained nets 13 -> 13.  `hardware/demo/fab` **REGENERATED**,
+  `fab_package_contract` **PASS 8/8**; `hardware/beta-v2` **UNTOUCHED**
+  (`evidence/d689-sys-island-jumper.json`).
+  **(1) D-688 REPORTED THE FINEST RUNG OF A DESCENDING LADDER.**  Its probe
+  tied the barrel to the width (`via_dia = max(0.500, width + 0.250)`), so it
+  could only ever find the SMALLEST geometry that works; section 11's doctrine
+  is that a rule states the LARGEST that fits.  Twelve read-only runs at
+  0.025 mm, one `(width, via)` pair each (`w/d689/ij_barrel_probe.py`):
+  **0.600 mm of track through a 0.650 / 0.300 mm barrel JOINS** and is the
+  frontier -- 0.650 mm of track refuses that barrel, 0.700 mm of barrel refuses
+  that track, and D-687's 0.800 / 0.650:0.400 class geometry refuses both.
+  ***Both dimensions bind and neither is the whole wall.***
+  **(2) THE INSTRUMENT, BUILT, AND THE TWO HALVES GOVERNED DIFFERENTLY.**
+  `--join-island-width` is **CLAMPED** into the band `.kicad_dru` section 5
+  publishes for the class (`SYS_MAIN` `min 0.50 / opt 0.80`), so 0.600 mm needs
+  **no licence at all**; `--join-island-via` is **NOT clamped** and is
+  **licensed instead** -- `maze3d.join_islands(floors=...)` refuses any barrel
+  under an ordinary floor unless the `.kicad_dru` grants THIS net THAT geometry
+  inside `ISLAND_JOIN_<cluster>_<n>`, a FIFTH kind of rule area keyed on the
+  cluster and the barrel's ORDINAL, and a jumper carrying one unlicensed barrel
+  is reverted WHOLE.  Both flags OFF by default.
+  **(3) THE LICENCE GRANTS ONE NUMBER.**  Section **11c**, six rules, two
+  pad-sized areas, authored BEFORE the router ran (`w/d689/apply_dru.py`): the
+  **0.300 mm drill** against section 8's POWER-class 0.40 mm minimum.  0.650 mm
+  clears `min_via_diameter`, 0.175 mm clears the annular floor.  **NO NEW FAB
+  CAPABILITY** -- coarser than the 0.20 mm process this file licenses by name
+  nine times, and D-595 already licenses a 0.30 mm drill for
+  `POUR_BRIDGE_R19_1`.
+  **(4) THE PRICE.**  IPC-2221B at 10 K: track 0.600 mm = **1.645 A**, barrel
+  0.300 mm drill = **1.902 A**, in SERIES **1.645 A** against the **1.0 A** the
+  `SYS_MAIN` class row publishes -- **64 % margin**, about 6.4 mOhm end to end.
+  **THE 2.19 A `U21` FIGURE IS STILL OPEN AND IS NOT THIS SEGMENT'S**: `U21.3`
+  is an OPEN cluster (`POUR 2`, with `L4.1`), so the segment that exception
+  names does not exist yet -- and when it is built **nothing on this board
+  meets it**, since `SYS_MAIN`'s own 0.800 mm `opt` carries 2.026 A.
+  **(5) WHAT IT LAID AND WHAT IT DID NOT.**  `{C28.1, SW9.2, U12.1}` -> the
+  BODY `{C24.1, C33.1, C64.1, L2.1}`, **5.150 mm, 2 barrels, `B`-`F`-`B`** at
+  (61.675,99.500) and (61.750,103.725); **8 objects added, 0 removed**.
+  `SW9.2` is the slide-switch pole that SOURCES this rail and the body it now
+  feeds -- `C33`, `C64`, `L2` -- **was fed by nothing at all**.  Still refusing:
+  `L4.1`/`U21.3`, `U12.10/11`, `C26.2`, `C27.1` `NO_PATH`; `R68.1` (DNP),
+  `U11.1`, `U13.3` (DNP) `NO_ANCHOR`.
+  **(6) VERIFICATION.**  Gate **15/15** `refused_clauses []`;
+  `verify_promotion` **PASS 15/15** with D-186 + D-269 TRUE, `pour_bridge`
+  licensed 2 / strays [], `unconnected_items` 36 -> 35, `nothing_removed`;
+  `protected_copper` **IDENTICAL**; standing suite **14/14 RAN, `vacuous`
+  false**, every verdict PASS/True; real DRC **unchanged** (199
+  `lib_footprint_issues` + 1 `solder_mask_bridge`, `attributable []`).
+  **NEXT:** (1) the `U12` + `L1` NORTH translation -- the four-claimant band is
+  1.205 mm tall and `TP13` is the test point whose removal from the column buys
+  the travel.  (2) `/BQ25185_STAT1` + `/BQ25185_STAT2`, four of nineteen.  (3)
+  `/USB_D_MCU_N`.  **NO OPEN OWNER DECISION.**
 - **Demo D-688 (THE `SYS` ISLAND JUMPER'S WALL IS THE BARREL, NOT THE
   TRACK):**  **NO COPPER PROMOTED.**  Authority **UNCHANGED** at
   `fb7b61f2a490283c1ee1a8ff1b969c88f11c5ebc3917dc495425e945149fe401`; 20 -> 20;

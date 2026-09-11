@@ -4329,6 +4329,38 @@ def bridge_licence(qb, net, label):
     return area_licence(qb, net, bridge_area_name(label))
 
 
+# D-689.  THE FIFTH KIND OF AREA: A JUMPER'S BARREL.
+#
+# `POUR_BRIDGE_<cluster>` licenses the barrel a BRIDGE drops straight down
+# inside one island; `ISLAND_JOIN_<cluster>_<n>` licenses the barrels a
+# `join_islands` JUMPER lays along a lateral run between two islands.  They are
+# different objects and must not share a name: a bridge has exactly one barrel
+# and its site is inside the cluster's own copper, while a jumper has as many
+# barrels as its path has layer changes and every one of them is somewhere on
+# the way.
+#
+# THE NAME IS STILL AUTHORABLE BEFORE THE COORDINATE IS KNOWN, which is the
+# whole point of the doctrine.  It is keyed on the CLUSTER -- the orphan's own
+# first pad, exactly as `bridge_area_name` is -- and on the barrel's ORDINAL
+# along the jumper, which is a property of the transaction being reviewed and
+# not of a lattice.  A jumper that turns out to need MORE barrels than the
+# `.kicad_dru` was told about is refused, not licensed by accident: the
+# (n+1)-th name has no rule, `area_licence` returns None and the whole join is
+# reverted.  That is the conservative direction.
+ISLAND_JOIN_AREA_PREFIX = "ISLAND_JOIN_"
+
+
+def island_join_area_name(label, idx):
+    """`C28.1`, barrel 0 -> `ISLAND_JOIN_C28_1_1`."""
+    return "%s%s_%d" % (ISLAND_JOIN_AREA_PREFIX,
+                        str(label).replace('.', '_'), int(idx) + 1)
+
+
+def island_join_licence(qb, net, label, idx):
+    """The barrel this board licenses for THIS jumper's n-th barrel, or None."""
+    return area_licence(qb, net, island_join_area_name(label, idx))
+
+
 # D-658.  THE THIRD KIND OF AREA: A BARREL THAT MOVED.
 #
 # `POUR_BRIDGE_<cluster>` licenses a barrel a bridge ADDS; `PAD_ESCAPE_<pad>`
@@ -5663,7 +5695,7 @@ def _antipad_severs(qb, net, sites, via_dia):
 
 
 def join_islands(qb, net, field, via_cost_mm=1.5, max_mm=0.0, emit=True,
-                 goal_cap=3000, tries=3):
+                 goal_cap=3000, tries=3, floors=None, licence=True):
     """Join every orphan pour island of `net` to the rest of the net.
 
     One transaction per orphan cluster: a jumper from a cell inside that
@@ -5680,6 +5712,17 @@ def join_islands(qb, net, field, via_cost_mm=1.5, max_mm=0.0, emit=True,
     and a gate cannot disagree about whether a join is legal or about whether it
     severs a foreign pour; what `emit=False` changes is only that the copper does
     not stay.  `tries` bounds the retry loop after a severance.
+
+    `floors` -- D-689 -- is the ordinary via floors dict every other licensed
+    primitive on this board is handed (`route_maze_batch.via_floors`).  When it
+    is None nothing is checked and this function is byte-identical to the one
+    every caller before D-689 called; when it is given, a barrel AT OR ABOVE
+    every ordinary floor needs no exception and gets none, and a barrel BELOW
+    one is emitted only where the `.kicad_dru` grants THIS NET THAT GEOMETRY
+    inside `ISLAND_JOIN_<cluster>_<n>`.  A jumper carrying even one unlicensed
+    barrel is reverted WHOLE and reported `NO_DRU_LICENCE` -- never laid, and
+    never laid in part.  Each join records `barrels`, which names the areas the
+    promoting transaction owes and clause 6 audits.
     """
     if not has_plane(qb, net):
         return dict(ok=False, net=net, reason='NO_PLANE', joins=[],
@@ -5758,6 +5801,39 @@ def join_islands(qb, net, field, via_cost_mm=1.5, max_mm=0.0, emit=True,
                 break
             sites = [(round(x * 1e6), round(y * 1e6))
                      for (x, y) in got['via_xy']]
+            # A JUMPER'S BARREL IS LICENSED EXACTLY AS A BRIDGE'S IS.  D-689.
+            # The proof is already laid and proved at this point, so the
+            # licence question is asked against the barrels the transaction
+            # ACTUALLY produced rather than against the ones it hoped for, and
+            # a jumper with even one unlicensed barrel is reverted whole.
+            barrels, unlicensed = [], []
+            if floors is not None:
+                plain = _meets_floors(field.via_dia, field.via_drill, floors)
+                lab0 = (labels[r][0] if labels.get(r) else str(r))
+                for n, (sx, sy) in enumerate(sites):
+                    area = island_join_area_name(lab0, n)
+                    lic = None if plain else (area_licence(qb, net, area)
+                                              if licence else None)
+                    rec_b = dict(area=(None if plain else area),
+                                 needs_licence=(not plain), licence=lic,
+                                 via_dia=field.via_dia,
+                                 via_drill=field.via_drill,
+                                 xy=[sx, sy],
+                                 xy_mm=[round(sx / 1e6, 4), round(sy / 1e6, 4)])
+                    if licence and not _barrel_licensed(field.via_dia,
+                                                        field.via_drill,
+                                                        floors, lic):
+                        rec_b['why'] = ('no .kicad_dru rule grants %s a '
+                                        '%.2f/%.2f mm barrel inside %s'
+                                        % (net, field.via_dia / 1e6,
+                                           field.via_drill / 1e6, area))
+                        unlicensed.append(rec_b)
+                    barrels.append(rec_b)
+            if unlicensed:
+                qb.revert(got['mark'])
+                last = dict(reason='NO_DRU_LICENCE', unlicensed=unlicensed,
+                            why='; '.join(b['why'] for b in unlicensed))
+                break
             broke = [(n,) + c for n in foreign
                      for c in _antipad_severs(qb, n, sites, field.via_dia)]
             if broke:
@@ -5795,6 +5871,8 @@ def join_islands(qb, net, field, via_cost_mm=1.5, max_mm=0.0, emit=True,
                    to_is_body=bool(find(tgt) == find(body)),
                    mm=round(laid['mm'], 3), vias=laid['vias'],
                    via_xy=laid['via_xy'], layers=laid['layers'])
+        if barrels:
+            rec['barrels'] = barrels
         if shut:
             rec['closed_foreign_islands'] = shut
         if not emit:

@@ -1896,6 +1896,36 @@ def trunk_floor_price(cls, board_min_nm=0):
     return out
 
 
+def island_join_ampacity(width_nm, via=None, dT=TRUNK_FLOOR_DT_K):
+    """What an island jumper CARRIES, by IPC-2221B, at this board's copper.
+
+    D-689.  A jumper between two islands of a POUR is rail copper and nothing
+    else, and the one number a reviewer of rail copper needs is the current it
+    admits.  This is NOT a clause and refuses nothing -- `--join-island-width`
+    is already clamped to the band the `.kicad_dru` publishes for the class, so
+    the width cannot be illegal -- it is the PRICE, reported beside the copper,
+    from the same `audit_bond_ampacity` call `PP2` and `--trunk-floor` use so
+    the three cannot drift apart.
+
+    The pair matters as much as either figure: a jumper is a track AND its
+    barrels in SERIES, so the conductor is worth the SMALLER of the two.
+    """
+    if str(HERE / "checks") not in sys.path:
+        sys.path.insert(0, str(HERE / "checks"))
+    import audit_bond_ampacity as ab
+    out = dict(dT_K=dT, plating_mm=ab.PLATING_MM)
+    if width_nm:
+        out["track_amps"] = round(ab.ampacity(ab.track_area(width_nm / 1e6),
+                                              dT), 3)
+    if via:
+        out["barrel_amps"] = round(ab.ampacity(ab.barrel_area(via[1] / 1e6),
+                                               dT), 3)
+    xs = [v for k, v in out.items() if k.endswith("_amps")]
+    if xs:
+        out["series_amps"] = min(xs)
+    return out
+
+
 def net_contract(board, net, trunk_floor=False):
     """The width / clearance / via / layer contract for ONE net.
 
@@ -2099,6 +2129,7 @@ def propose(path, nets, grid, via_cost_mm, stitch_width=0, stitch_via=None,
             split_islands=False, guard_spec=None, bridge=False,
             bond_pads=(), bond_max_mm=BOND_MAX_MM, bond_via=None,
             join_islands=False, join_island_max_mm=0.0,
+            join_island_via=None, join_island_width=0,
             escape_relief=False, relief_via=None, detour_plan=None,
             body_landing=False, join_orphans=False,
             join_orphan_max_mm=JOIN_ORPHAN_MAX_MM,
@@ -2466,8 +2497,60 @@ def propose(path, nets, grid, via_cost_mm, stitch_width=0, stitch_via=None,
             # jumper is offered only what they could not close, and it is
             # offered on a board that already carries their copper.
             if join_islands:
-                ji = mz.join_islands(qb, net, field, via_cost_mm=via_cost_mm,
-                                     max_mm=join_island_max_mm)
+                # D-689.  THE JUMPER'S BARREL IS AN ARGUMENT, AND UNTIL NOW IT
+                # WAS NOT.  `join_islands` took its via from the same `Field`
+                # the stitch uses -- `net_contract`'s `via_dia` / `via_drill`
+                # -- and no flag could move it: `--escape-floor` lowers only
+                # the WIDTH and `--stitch-via` is clamped UP to the DRU hole
+                # floor.  D-688 measured the consequence on `BQ25185_SYS`: at
+                # the class-floor WIDTH the jumper REFUSES with 0.750/0.250 and
+                # with the class's own 0.650/0.400 and CLOSES with 0.650/0.250.
+                # ***The wall was the barrel, not the track.***
+                #
+                # A barrel handed in here is NOT clamped to the class floor --
+                # that is the whole point -- so it is licensed instead: the
+                # `Field` is rebuilt with exactly the requested geometry and
+                # `join_islands` is handed `via_floors`, which refuses any
+                # barrel under an ordinary floor unless the `.kicad_dru` grants
+                # THIS net THAT geometry inside `ISLAND_JOIN_<cluster>_<n>`.
+                # Off by default: without the flag the field below IS `field`
+                # and the run is byte-identical.
+                # AND THE JUMPER'S WIDTH IS AN ARGUMENT FOR THE SAME REASON,
+                # BUT IT IS CLAMPED AND THE BARREL IS NOT.  A width BELOW the
+                # class minimum would need a licence this lever does not have,
+                # and a width ABOVE the routed trunk would be a widening nobody
+                # asked for -- so `--join-island-width` may only choose a width
+                # INSIDE the band the `.kicad_dru` itself publishes for the
+                # class, `[min, opt]`, and is clamped into it.  On `SYS_MAIN`
+                # that band is 0.500..0.800 mm and KiCad's own DRC enforces the
+                # 0.500 mm end of it, so nothing here can propose copper the
+                # real DRC would refuse.  It is PRICED in `island_joins` below
+                # by the same IPC-2221B call `PP2` and `--trunk-floor` use.
+                jw = c["width"]
+                jw_clamp = None
+                if join_island_width:
+                    lo = max(BOARD_TRACK_MIN,
+                             DRU_CLASS.get(c["netclass"], {}).get("width", 0))
+                    jw = max(lo, min(int(join_island_width), c["width"]))
+                    jw_clamp = dict(asked=int(join_island_width), used=jw,
+                                    class_min_nm=lo, trunk_nm=c["width"],
+                                    clamped=(jw != int(join_island_width)))
+                    c["join_island_width"] = jw_clamp
+                jf = field
+                if join_island_via or jw != c["width"]:
+                    jf = mz.Field(qb, net, jw, c["clr_pad"], c["clr"],
+                                  join_island_via[0] if join_island_via
+                                  else c["via_dia"],
+                                  join_island_via[1] if join_island_via
+                                  else c["via_drill"],
+                                  G=grid, layers=c["layers"], neck=neck_rule,
+                                  guard=g, escape_floor=floor)
+                ji = mz.join_islands(qb, net, jf, via_cost_mm=via_cost_mm,
+                                     max_mm=join_island_max_mm,
+                                     floors=via_floors(c["netclass"]))
+                ji["width_nm"] = jw
+                if jw_clamp:
+                    ji["width_clamp"] = jw_clamp
                 r["island_join"] = ji
                 r["mode"] = r["mode"] + "+islands"
                 r["ok"] = bool(r.get("ok")) or bool(ji.get("joined"))
@@ -3053,6 +3136,7 @@ def gate(nets, grid, via_cost_mm, workdir, promote=False, candidate=None,
          guard=None,
          bridge=False, bond_pads=(), bond_max_mm=BOND_MAX_MM,
          bond_via=None, join_islands=False, join_island_max_mm=0.0,
+         join_island_via=None, join_island_width=0,
          escape_relief=False, relief_via=None, detour_spec=None,
          body_landing=False, join_orphans=False,
          join_orphan_max_mm=JOIN_ORPHAN_MAX_MM,
@@ -3278,6 +3362,10 @@ def gate(nets, grid, via_cost_mm, workdir, promote=False, candidate=None,
             cmd += ["--join-islands"]
             if join_island_max_mm:
                 cmd += ["--join-island-max-mm", str(join_island_max_mm)]
+            if join_island_via:
+                cmd += ["--join-island-via", "%d:%d" % join_island_via]
+            if join_island_width:
+                cmd += ["--join-island-width", str(int(join_island_width))]
         # THE RELIEF IS THE PRIMARY PROPOSAL'S LEVER, NOT THE REPAIR'S -- and
         # here the reading is stronger than for `--bridge`.  A repair that
         # could spend a DRU licence would be authoring board rules while
@@ -3572,6 +3660,22 @@ def gate(nets, grid, via_cost_mm, workdir, promote=False, candidate=None,
                                          via_dia=b["via_dia"],
                                          via_drill=b["via_drill"],
                                          licence=b.get("licence")))
+        # D-689.  AN ISLAND JUMPER'S BARRELS ARE THE SAME OBJECT AGAIN.  A
+        # jumper may lay MORE THAN ONE, so this loop is over `barrels` and not
+        # over the join, and each one carries its own area name -- but every
+        # other property is identical to a bridge's and clause 6 audits them
+        # side by side.  `maze3d.join_islands` has already refused any barrel
+        # whose rule is missing, so an entry reaching here is one the
+        # `.kicad_dru` already grants.
+        for j in (r.get("island_join") or {}).get("joins", ()):
+            for b in j.get("barrels", ()):
+                if b.get("area"):
+                    bridge_areas.append(dict(kind="island-join", name=b["area"],
+                                             net=r["net"],
+                                             cluster=j["cluster"], xy=b["xy"],
+                                             via_dia=b["via_dia"],
+                                             via_drill=b["via_drill"],
+                                             licence=b.get("licence")))
         # D-606.  A pad-escape relief area is the SAME object as a pour-bridge
         # area -- a pad-sized region that forbids nothing and exists only to be
         # the region an `enclosedByArea` condition names -- so it is drawn by
@@ -4051,6 +4155,34 @@ def gate(nets, grid, via_cost_mm, workdir, promote=False, candidate=None,
         bridges=dict(requested=bool(bridge), licensed_areas=bridge_areas,
                      ladder=[list(v) for v in BRIDGE_LADDER]) if bridge
         else None,
+        # D-689.  THE JUMPER REPORTS ITS BARREL OR IT DID NOT HAPPEN -- the
+        # same reading `taps` gets below.  A `--join-island-via` run lays a
+        # barrel the board's ordinary floors forbid, and the one thing a
+        # reviewer of that copper must be able to find by name is WHICH
+        # geometry, at WHICH coordinates, under WHICH rule.
+        island_joins=dict(
+            requested=bool(join_islands), max_mm=join_island_max_mm,
+            via=(list(join_island_via) if join_island_via else None),
+            width_asked_nm=(int(join_island_width) or None),
+            joined=sum((r.get("island_join") or {}).get("joined", 0)
+                       for r in routed),
+            # THE PRICE, ALWAYS, WHETHER OR NOT A WIDTH WAS ASKED FOR.  A
+            # jumper between two islands of a POUR is rail copper, and the one
+            # number a reviewer of rail copper needs is what it carries.  Same
+            # IPC-2221B call, same dT, same parser as `--trunk-floor`.
+            ampacity=[dict(net=r["net"],
+                           width_nm=(r.get("island_join") or {}).get("width_nm"),
+                           **island_join_ampacity(
+                               (r.get("island_join") or {}).get("width_nm"),
+                               join_island_via))
+                      for r in routed if r.get("island_join")],
+            licensed_areas=[a for a in bridge_areas
+                            if a.get("kind") == "island-join"],
+            nets=[dict(net=r["net"], **{k: v for k, v in
+                                        (r.get("island_join") or {}).items()
+                                        if k != "net"})
+                  for r in routed if r.get("island_join")]) if join_islands
+        else None,
         # D-664.  THE TAP REPORTS ITSELF OR IT DID NOT HAPPEN.  A tap adds a
         # BRANCH to an accepted conductor, and a branch is the one thing a
         # reviewer of this board's copper must be able to find by name: the
@@ -4446,6 +4578,21 @@ def main():
     ap.add_argument("--join-island-max-mm", type=float, default=0.0,
                     help="cap an island jumper's wavefront at this run length "
                          "(0 = maze3d's own WAVE_STEPS budget)")
+    ap.add_argument("--join-island-width", type=int, default=0,
+                    help="D-689: the WIDTH an island jumper is laid at, in nm, "
+                         "clamped into the band .kicad_dru section 5 publishes "
+                         "for the net's class -- never below its stated `min` "
+                         "and never above the trunk the run already routes at. "
+                         "0 = the trunk width, which is every run before D-689")
+    ap.add_argument("--join-island-via", default=None, metavar="DIA:DRILL",
+                    help="D-689: the BARREL an island jumper may use, in nm.  "
+                         "Unlike --stitch-via this is NOT clamped up to the "
+                         "class hole floor -- D-688 measured that the jumper's "
+                         "wall IS the barrel -- so a geometry under an "
+                         "ordinary floor is emitted ONLY where the .kicad_dru "
+                         "grants that net that geometry inside "
+                         "ISLAND_JOIN_<cluster>_<n>, and a jumper carrying one "
+                         "unlicensed barrel is reverted whole")
     ap.add_argument("--detour-spec", type=Path,
                     help="D-607: SEGMENT eviction.  A JSON spec naming the "
                          "crossing tracks to MOVE and the discs to RESERVE.  "
@@ -4585,6 +4732,19 @@ def main():
     relief_via = None
     if a.relief_via:
         relief_via = tuple(int(v) for v in a.relief_via.split(":"))
+    # NO CLAMP AND NO EARLY REFUSAL HERE, AND THAT IS THE POINT.  `--bond-via`
+    # errors below the board's `min_via_diameter` because `bond_pads` has no
+    # licence machinery; `--stitch-via` is clamped UP to the class hole floor.
+    # This flag has licence machinery -- `join_islands(floors=...)` refuses any
+    # barrel under an ordinary floor that the `.kicad_dru` has not granted
+    # inside `ISLAND_JOIN_<cluster>_<n>` -- so the geometry is judged where the
+    # rule text is read, not by a second opinion here that could not see the
+    # rule area at all.  A rule area may license a finer DRILL and a thinner
+    # RING alike (D-595's `POUR_BRIDGE_U11_11` licenses 0.075 mm), so an
+    # unconditional ring test here would be simply wrong.
+    join_island_via = None
+    if a.join_island_via:
+        join_island_via = tuple(int(v) for v in a.join_island_via.split(":"))
     bond_via = None
     if a.bond_via:
         bond_via = tuple(int(v) for v in a.bond_via.split(":"))
@@ -4602,7 +4762,8 @@ def main():
                 a.partial, a.attempt_cap, a.split_islands,
                 load_guard(a.guard), a.bridge,
                 tuple(a.bond_pad), a.bond_max_mm, bond_via,
-                a.join_islands, a.join_island_max_mm,
+                a.join_islands, a.join_island_max_mm, join_island_via,
+                a.join_island_width,
                 a.escape_relief, relief_via,
                 json.loads(a.detour_plan.read_text()) if a.detour_plan
                 else None,
@@ -4681,6 +4842,8 @@ def main():
                  bond_pads=tuple(a.bond_pad), bond_max_mm=a.bond_max_mm,
                  bond_via=bond_via, join_islands=a.join_islands,
                  join_island_max_mm=a.join_island_max_mm,
+                 join_island_via=join_island_via,
+                 join_island_width=a.join_island_width,
                  escape_relief=a.escape_relief, relief_via=relief_via,
                  detour_spec=a.detour_spec, body_landing=a.body_landing,
                  detour_own_layer=a.detour_own_layer,
