@@ -1,0 +1,182 @@
+{
+ "schema": 1,
+ "decision": "D-682 addendum 3",
+ "question": "what does adding the In2 BQ25185_SYS pour cost every OTHER net on this board",
+ "method": "route_maze_batch.reserved_inner_planes + permitted_layers, run on the authority and on the sysplane4 scratch that carries the pour.  reserved_inner_planes reads EVERY filled inner-layer zone, and permitted_layers keeps an inner layer for a net only when that net OWNS a zone on it -- so one bounded 12.5 x 27 mm pour reserves the WHOLE layer.",
+ "reserved_before": {
+  "I1": [
+   "GND"
+  ],
+  "I3": [
+   "+3V3"
+  ],
+  "I4": [
+   "GND"
+  ]
+ },
+ "reserved_after": {
+  "I1": [
+   "GND"
+  ],
+  "I2": [
+   "/01_POWER_TREE/BQ25185_SYS"
+  ],
+  "I3": [
+   "+3V3"
+  ],
+  "I4": [
+   "GND"
+  ]
+ },
+ "nets_that_lose_In2": 185,
+ "nets_measured": 211,
+ "sample": [
+  {
+   "net": "+3V3",
+   "was": [
+    "F",
+    "B",
+    "I2",
+    "I3"
+   ],
+   "now": [
+    "F",
+    "B",
+    "I3"
+   ]
+  },
+  {
+   "net": "/01_POWER_TREE/ACC_3V3_ILIM",
+   "was": [
+    "F",
+    "B",
+    "I2"
+   ],
+   "now": [
+    "F",
+    "B"
+   ]
+  },
+  {
+   "net": "/01_POWER_TREE/ACC_5V_FB",
+   "was": [
+    "F",
+    "B",
+    "I2"
+   ],
+   "now": [
+    "F",
+    "B"
+   ]
+  },
+  {
+   "net": "/01_POWER_TREE/ACC_5V_ILIM",
+   "was": [
+    "F",
+    "B",
+    "I2"
+   ],
+   "now": [
+    "F",
+    "B"
+   ]
+  },
+  {
+   "net": "/01_POWER_TREE/ACC_5V_RAW",
+   "was": [
+    "F",
+    "B",
+    "I2"
+   ],
+   "now": [
+    "F",
+    "B"
+   ]
+  },
+  {
+   "net": "/01_POWER_TREE/BAT_CONNECTOR_P",
+   "was": [
+    "F",
+    "B",
+    "I2"
+   ],
+   "now": [
+    "F",
+    "B"
+   ]
+  },
+  {
+   "net": "/01_POWER_TREE/BAT_MID",
+   "was": [
+    "F",
+    "B",
+    "I2"
+   ],
+   "now": [
+    "F",
+    "B"
+   ]
+  },
+  {
+   "net": "/01_POWER_TREE/BAT_PROTECTED_P",
+   "was": [
+    "F",
+    "B",
+    "I2"
+   ],
+   "now": [
+    "F",
+    "B"
+   ]
+  },
+  {
+   "net": "/01_POWER_TREE/BAT_PROT_SHDN_CTL",
+   "was": [
+    "F",
+    "B",
+    "I2"
+   ],
+   "now": [
+    "F",
+    "B"
+   ]
+  },
+  {
+   "net": "/01_POWER_TREE/BAT_RAW",
+   "was": [
+    "F",
+    "B",
+    "I2"
+   ],
+   "now": [
+    "F",
+    "B"
+   ]
+  },
+  {
+   "net": "/01_POWER_TREE/BAT_SENSE",
+   "was": [
+    "F",
+    "B",
+    "I2"
+   ],
+   "now": [
+    "F",
+    "B"
+   ]
+  },
+  {
+   "net": "/01_POWER_TREE/ILIM_VSET",
+   "was": [
+    "F",
+    "B",
+    "I2"
+   ],
+   "now": [
+    "F",
+    "B"
+   ]
+  }
+ ],
+ "ruling": "REFUSED.  In2 is one of only THREE routable layers (F, B, In2) for every signal net on this board, and the pour takes it from all of them for 1-2 SYS edges.  It would repeat exactly the defect D-608 censused on In3: 111 tracks / 969.6 mm of legacy copper on a layer their own net may no longer route on.  The In2 SYS pour is a SCREEN, not a promotion."
+}

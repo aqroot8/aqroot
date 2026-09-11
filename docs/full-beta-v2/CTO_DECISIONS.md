@@ -1,3 +1,82 @@
+# D-682 addendum 3 · 2026-09-11 · Demo — A CORRECTION TO MY OWN RECOMMENDATION: THE `In2` `SYS` POUR COSTS 185 OF THIS BOARD'S 211 NETS THEIR THIRD ROUTABLE LAYER, AND IS REFUSED
+
+    authority  d0743e72da3fa650d8eb59ed4f41fb89f4e4663c3ea7f8694d257ed9c86a1dad
+            -> d0743e72da3fa650d8eb59ed4f41fb89f4e4663c3ea7f8694d257ed9c86a1dad   UNCHANGED
+    retained open edges 23 -> 23
+    `hardware/demo/kicad`, `hardware/demo/fab`, `hardware/beta-v2`  UNTOUCHED
+
+**NO COPPER PROMOTED.**  Addendum 2 §4 item (2) proposed spending a licensed
+fine barrel to stitch `BQ25185_SYS`'s capacitor lands into the `In2` pour it had
+just proved DRC-clean.  **That recommendation is WITHDRAWN, and the reason is a
+number addendum 2 did not measure.**
+
+## 1. THE PRICE IS THE WHOLE LAYER
+
+`route_maze_batch.reserved_inner_planes` reads **every filled inner-layer
+zone**, and `permitted_layers` keeps an inner layer for a net only when that net
+OWNS a zone on it.  So a bounded 12.5 x 27 mm pour reserves the **entire**
+layer.  Measured on the authority and on the `sysplane4` scratch that carries
+the pour (`evidence/d682-in2-pour-layer-price.json`):
+
+    reserved before   I1 GND   I3 +3V3   I4 GND
+    reserved after    I1 GND   I2 /01_POWER_TREE/BQ25185_SYS   I3 +3V3   I4 GND
+
+    /I2C_SCL_INT                     (F, B, I2) -> (F, B)
+    /I2C_SDA_INT                     (F, B, I2) -> (F, B)
+    /ACC_PWR_EN                      (F, B, I2) -> (F, B)
+    /09_COMMUNITY_HEADER/TCA4307_READY (F, B, I2) -> (F, B)
+    ...
+    **185 of this board's 211 nets lose `In2`.**
+
+`In2` is one of only THREE routable layers for every signal net here.  Paying
+185 nets' third layer to close one or two `SYS` edges is not a trade this board
+can take — and it would repeat, on a larger scale, exactly the defect D-608
+censused on `In3`: *"111 tracks / 969.6 mm of this board's 3054 / 8712.6 mm lie
+on a layer their own net may no longer route on, 29 (net, layer) pairs, EVERY
+ONE on `In3.Cu` — legacy signal copper routed before the `+3V3` pour existed."*
+
+It bites hardest exactly where this decision has been working: addendum 1 §2
+measured `/I2C_SCL_INT` `U16.3`'s `In2` wavefront reaching **18 682 cells to
+y = 60.0**, the closest any layer gets it to its own net.  The pour deletes that
+option outright.
+
+## 2. WHAT SURVIVES FROM ADDENDUM 2
+
+  * **§1 STANDS.** D-678 case `e` is geometry, not a budget: both relays
+    `NO_PATH` at 120 mm, 2.7x the refused budget.
+  * **§2's MEASUREMENT STANDS AND ITS CONCLUSION NARROWS.**  The `In2` pour
+    fills, `first_fill_exit` 0, real DRC **exit 0**, `attributable_drc []`, and
+    with the board's own floors it stitches `SW9.2` in 2.404 mm with one barrel.
+    That is a real measurement and it is worth keeping — **as a SCREEN.**  It
+    established the wall as one number (*no legal 0.65 mm barrel within 8.0 mm
+    of any escape*) without needing the pour to be promoted.
+  * **THE INSTRUMENT LESSON, GENERALISED.**  `--plane` is not a free lever on a
+    six-layer board with two reference planes and one signal inner layer left.
+    On THIS board it may only ever be spent on a layer some net already
+    reserves — and both of those (`In1`/`In4` `GND`, `In3` `+3V3`) would be
+    carved out of a reference plane to do it.  **`--plane` is closed on this
+    board for any new net.**
+
+## 3. NEXT, IN ORDER OF LEVERAGE
+
+ 1. **THE `U12` / `L1` CONVERTER REFLOORPLAN.**  With addendum 2 §1 and this
+    §1, it is now the ONLY remaining lever on `/01_POWER_TREE/BQ25185_SYS`, 6 of
+    the board's 23 edges.  The number that sizes it is addendum 2 §3: `U12`'s
+    south pad row at y = 102.8 against a six-layer antenna keepout starting at
+    y = 104.0 — **1.2 mm of corridor for a pour, a `PG` and a `PS_SYNC`** —
+    against about **3.4 mm** if `TP13` (a test point at (65.5, 93.0)), then
+    `L1`, then `U12` all move north.
+ 2. **`/01_POWER_TREE/ACC_5V_LX`** — addendum 1 §6 reduced it to a `GND` WIDTH
+    question in `U21`'s own named 0.750 mm inter-column channel.
+ 3. **`/I2C_SCL_INT` `U16.3`** — addendum 1 §3; only by moving `U16` south of
+    the passive farm.  PRICED, NOT REFUSED.
+ 4. `+3V3` `U5.2`, `/NFC_SUPPLY` `U9.10` and `/04_SPI_B_RADIOS_NFC/NFC_VDD_RF`
+    `U9.14` are vendor land-pattern walls; `GND` `MK1.4` and
+    `/01_POWER_TREE/USB_D_CONN_P` are `J3`/`MK1` FOOTPRINT questions.
+ 5. **THERE IS NO OPEN OWNER DECISION ON THIS BOARD.**
+
+Evidence: `d682-in2-pour-layer-price.json`.
+
 # D-682 addendum 2 · 2026-09-11 · Demo — THE #1 BLOCKER'S TWO UNSPENT LEVERS, BOTH SPENT: D-678's CHEAPEST CUT IS NOT A BUDGET ARTEFACT, AND THE `In2` POUR IS NOT VACUOUS FOR THE REASON D-678 GAVE — IT IS A 0.65 mm BARREL SHORT
 
     authority  d0743e72da3fa650d8eb59ed4f41fb89f4e4663c3ea7f8694d257ed9c86a1dad

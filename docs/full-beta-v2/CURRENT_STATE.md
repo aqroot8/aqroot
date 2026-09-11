@@ -23,6 +23,32 @@
 > `verify_promotion` PASS and `protected_copper` showing exactly one protected
 > net moved.  `U14.7` is on the bus.  This board has **no open owner decision**.
 
+- **Demo D-682 addendum 3 (A CORRECTION TO MY OWN RECOMMENDATION: THE `In2`
+  `SYS` POUR COSTS 185 OF THIS BOARD'S 211 NETS THEIR THIRD ROUTABLE LAYER, AND
+  IS REFUSED):**  **NO COPPER PROMOTED.**  Authority **UNCHANGED** at
+  `d0743e72da3fa650d8eb59ed4f41fb89f4e4663c3ea7f8694d257ed9c86a1dad`; 23 -> 23.
+  Addendum 2 §4(2) proposed spending a licensed fine barrel to stitch
+  `BQ25185_SYS`'s capacitor lands into the `In2` pour; **that recommendation is
+  WITHDRAWN.**  `reserved_inner_planes` reads EVERY filled inner-layer zone and
+  `permitted_layers` keeps an inner layer for a net only when that net OWNS a
+  zone on it, so one bounded 12.5 x 27 mm pour reserves the **WHOLE layer**:
+  measured on the authority against the scratch that carries it
+  (`evidence/d682-in2-pour-layer-price.json`), **185 of 211 nets go
+  `(F, B, In2)` -> `(F, B)`** — `/I2C_SCL_INT`, `/I2C_SDA_INT`, `/ACC_PWR_EN`
+  and `TCA4307_READY` among them.  It would repeat, larger, the defect D-608
+  censused on `In3` (111 tracks / 969.6 mm stranded on a layer their own net may
+  no longer route on), and it deletes exactly the option addendum 1 §2
+  measured as `U16.3`'s best — its 18 682-cell `In2` wavefront.
+  **WHAT SURVIVES:** case `e` is geometry not a budget (addendum 2 §1); the
+  `In2` pour's own measurement stands **as a SCREEN** — it fills, DRC exit 0,
+  `attributable_drc []`, stitches `SW9.2` in 2.404 mm, and reduced the wall to
+  ONE number without needing to be promoted.  **GENERALISED: `--plane` is
+  CLOSED on this board for any new net** — the only inner layers it could be
+  spent on are already reference planes.
+  **NEXT:** (1) the `U12`/`L1` refloorplan is now the ONLY remaining lever on
+  `BQ25185_SYS`, 6 of 23 — 1.2 mm of corridor today against ~3.4 mm if `TP13`,
+  `L1` and `U12` move north.  (2) `/ACC_5V_LX` as a `GND` width question in
+  `U21`'s 0.750 mm channel.  (3) `U16.3` only by moving `U16`.
 - **Demo D-682 addendum 2 (THE #1 BLOCKER'S TWO UNSPENT LEVERS, BOTH SPENT:
   D-678's CHEAPEST CUT IS NOT A BUDGET ARTEFACT, AND THE `In2` POUR IS NOT
   VACUOUS FOR THE REASON D-678 GAVE — IT IS A 0.65 mm BARREL SHORT):**  **NO
