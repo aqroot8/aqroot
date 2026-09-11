@@ -1,0 +1,135 @@
+{
+ "board": "/home/aqroot8/aqroot-demo/hardware/demo/kicad/aqroot-demo/aqroot-Beta-v2.kicad_pcb",
+ "board_sha256": "58f7a3df69cec6bd3faa9c0f40632adee2c41e02fe4926b2ade60834274179fd",
+ "decision": "D-684 addendum",
+ "gain_finding": {
+  "as_built": "tied DIRECTLY to +3V3 -- no series resistor exists on this net",
+  "consequence": "a DIRECT tie is the 3 dB row: with a 2.1 dBV full-scale DAC, 0 dBFS asks 1.79 Vrms against the 2.33 Vrms the 3.3 V rail can deliver, so about 2.3 dB (roughly 0.80 W against 1.36 W into 4 ohm) of maximum acoustic output is left unused",
+  "d147_intent": "D-147 chose \"VDD (6 dB)\", which is the 100 k-to-VDD row",
+  "datasheet_table": {
+   "100k to GND": "12 dB",
+   "100k to VDD": "6 dB",
+   "direct to GND": "15 dB",
+   "direct to VDD": "3 dB",
+   "floating": "9 dB"
+  },
+  "pin": "U5.2 = MAX98357A GAIN_SLOT (schematic pinfunction GAIN_SLOT_2, pintype passive)",
+  "recommendation": "close U5.2 THROUGH a new 100 k 0402 from U5.2 to +3V3.  It restores D-147's intended 6 dB AND bounds the land at 33 uA, which is what leaf_land_contract needs to stop reading it UNBOUNDED_PASSIVE -- the same one part fixes the gain and settles the width argument."
+ },
+ "geometry": {
+  "corridor": "between R15.2 (x <= 28.125) and U5.1 (x >= 29.1495) = 1.025 mm, so 0.400 mm of trunk fits and 0.600 mm does not",
+  "filled_island_bbox_mm": [
+   29.122,
+   115.625,
+   29.99,
+   115.85
+  ],
+  "filled_island_mm2": 0.1831,
+  "gap_line_mm": [
+   [
+    29.1996,
+    115.6277
+   ],
+   [
+    29.0608,
+    114.9129
+   ]
+  ],
+  "gap_to_body_mm": 0.7282,
+  "land": "U5.2 at (29.562, 115.750), F.Cu, 0.825 x 0.250 mm, a MIDDLE pin of a 0.5 mm-pitch TQFN-16 west column",
+  "nearest_body_pour": "+3V3 F.Cu outline 15, area 10.975 mm2"
+ },
+ "ladder": [
+  {
+   "reason": "NO_LEGAL_ESCAPE",
+   "rung": "0 dru floor (D-604 control)",
+   "via_dia": 650000,
+   "why": "U5.2: NO LEGAL ESCAPE at >= 0.400 mm; blocked by U5.1 (x56), R15.2 (x10), R15.1 (x3), C10.2 (x3)",
+   "width": 400000
+  },
+  {
+   "reason": "NO_VIA_SITE",
+   "rung": "1 relief WIDTH only",
+   "via_dia": 650000,
+   "why": "no legal 0.65 mm barrel within 8.0 mm of any escape",
+   "width": 200000
+  },
+  {
+   "reason": "NO_LEGAL_ESCAPE",
+   "rung": "2 relief BARREL only",
+   "via_dia": 350000,
+   "why": "U5.2: NO LEGAL ESCAPE at >= 0.400 mm; blocked by U5.1 (x56), R15.2 (x10), R15.1 (x3), C10.2 (x3)",
+   "width": 400000
+  },
+  {
+   "reason": "NO_VIA_SITE",
+   "rung": "3 relief WIDTH + BARREL",
+   "via_dia": 350000,
+   "why": "no legal 0.35 mm barrel within 8.0 mm of any escape",
+   "width": 200000
+  },
+  {
+   "reason": "NO_LEGAL_ESCAPE",
+   "rung": "4 relief BARREL at netclass width",
+   "via_dia": 350000,
+   "why": "U5.2: NO LEGAL ESCAPE at >= 0.600 mm; blocked by U5.1 (x53), R15.2 (x12), R15.1 (x4), C10.2 (x3)",
+   "width": 600000
+  }
+ ],
+ "leaf_land": {
+  "admitted": false,
+  "bounded_amps_total": null,
+  "is_body": false,
+  "island_lands": [
+   "U5.2"
+  ],
+  "lands": [
+   {
+    "bound_amps": null,
+    "klass": "UNBOUNDED_PASSIVE",
+    "land": "U5.2",
+    "ohms": null,
+    "pinfunction": "GAIN_SLOT_2",
+    "pintype": "passive",
+    "value": "MAX98357A",
+    "why": "a 'passive' terminal of a part with 17 terminal(s) and value 'MAX98357A': no published resistance >= 1000 ohm bounds the current in this copper"
+   }
+  ],
+  "net": "+3V3",
+  "pads": 1,
+  "refused_lands": [
+   "U5.2"
+  ],
+  "verdict": "RAIL",
+  "why": "U5.2 is UNBOUNDED_PASSIVE, so the rail bar stands unchanged (LL4)"
+ },
+ "missing_instrument": "a licensed-width ISLAND JUMPER: --escape-relief offers the 0.200 mm run but always ends in a BARREL (NO_VIA_SITE here), and --join-islands reaches a POUR but only at the netclass width or the .kicad_dru class floor.  U5.2 needs 0.7282 mm of 0.200 mm copper ending in filled copper, which no flag in this repository expresses.",
+ "neck_experiment": {
+  "authority_untouched": true,
+  "reading": "--trunk-floor is ADMITTED for P3V3 (1.226 A against 1.0 A required, floor 0.400 mm) and the escape STILL refuses at >= 0.400 mm: `QBoard.escape` refuses any launch point where the TRUNK width is not also legal, so a necked LAUNCH cannot help a land whose TRUNK does not fit.  U5.2 needs the WHOLE conductor at 0.200 mm.",
+  "result": [
+   {
+    "island": [
+     "U5.2"
+    ],
+    "pad": "U5.2",
+    "reason": "NO_LEGAL_ESCAPE",
+    "why": "U5.2: NO LEGAL ESCAPE at >= 0.400 mm; blocked by U5.1 (x56), R15.2 (x10), R15.1 (x3), C10.2 (x3)"
+   }
+  ],
+  "scratch_only": true,
+  "trunk_floor": {
+   "admitted": true,
+   "amps": 1.226,
+   "floor_nm": 400000,
+   "from_nm": 600000,
+   "netclass": "P3V3",
+   "required_amps": 1.0,
+   "to_nm": 400000,
+   "why": "PRICED_AT_THE_PUBLISHED_BAR"
+  },
+  "what": "U5 ADDED to the .kicad_dru `Pad-escape necking - width, fine-pitch power packages` courtyard list on a SCRATCH, then +3V3 routed with --neck --escape-floor --trunk-floor --split-islands --join-residual --join-islands at 0.025 mm"
+ },
+ "question": "what instrument does +3V3 U5.2 -- the MAX98357A GAIN_SLOT strap and the rail's LAST open edge -- actually need",
+ "schema": 1
+}

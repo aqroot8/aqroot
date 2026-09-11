@@ -23,6 +23,52 @@
 > `verify_promotion` PASS and `protected_copper` showing exactly one protected
 > net moved.  `U14.7` is on the bus.  This board has **no open owner decision**.
 
+- **Demo D-684 addendum (`+3V3` `U5.2` IS A JUMPER QUESTION AND THE RAIL HAS NO
+  FLAG FOR IT; AND THE `MAX98357A`'s GAIN STRAP IS ONE ROW OFF THE GAIN D-147
+  CHOSE):**  **NO COPPER PROMOTED.**  Authority **UNCHANGED** at
+  `58f7a3df69cec6bd3faa9c0f40632adee2c41e02fe4926b2ade60834274179fd`; 21 -> 21;
+  `hardware/demo/kicad`, `hardware/demo/fab`, `hardware/beta-v2` **UNTOUCHED**.
+  **(1) IT IS 0.7282 mm OF COPPER AND THE TARGET IS A POUR.**  `U5.2`'s filled
+  island is **0.1831 mm2 (0.868 x 0.225 mm)** -- the pad and almost nothing else
+  -- and the nearest `+3V3` BODY pour (`F.Cu` outline 15, 10.975 mm2) is
+  **0.7282 mm** away on the line (29.1996,115.6277)->(29.0608,114.9129).  The
+  corridor it crosses, `R15.2` to `U5.1`, is **1.025 mm**: 0.400 mm of trunk
+  fits, 0.600 mm does not.
+  **(2) THE LADDER SAYS THE LAND OPENS AND THE BARREL DOES NOT.**  All five
+  relief rungs at 0.025 mm: at the 0.400 mm floor and at the 0.600 mm netclass
+  width `NO_LEGAL_ESCAPE`; **at the 0.200 mm relief width the LAND OPENS** and
+  the wall becomes `NO_VIA_SITE` for both the 0.65 mm and the 0.35 mm barrel.
+  Every rung that finds a barrel cannot launch and every rung that launches
+  cannot find a barrel.
+  **(3) AND THE NECK CANNOT STAND IN.**  `U5` is a `MAX98357A` TQFN-16 at
+  0.5 mm pitch with 0.250 mm lands -- finer than several packages section 9's
+  necking rule already names -- so `U5` was added to that rule **on a SCRATCH**
+  and `+3V3` re-routed with `--neck --escape-floor --trunk-floor`:
+  `--trunk-floor` was **ADMITTED** for P3V3 (1.226 A against 1.0 A, 0.600 ->
+  0.400 mm) and the escape **still refused at >= 0.400 mm**.  ***A necked LAUNCH
+  cannot help a land whose TRUNK does not fit*** -- `QBoard.escape` refuses any
+  launch point where the trunk width is not also legal.  `U5.2` needs the WHOLE
+  conductor at 0.200 mm.
+  **(4) THE MISSING INSTRUMENT, NAMED.**  `--escape-relief` offers the 0.200 mm
+  run under a declared `PAD_ESCAPE_RUN_*` rectangle and ALWAYS ends in a barrel;
+  `--join-islands` ends in FILLED COPPER and only at the netclass or class-floor
+  width.  **`+3V3`'s last edge needs a LICENSED-WIDTH ISLAND JUMPER** -- D-610's
+  declared rectangle spent on `--join-islands`'s destination.  Named, not
+  half-built.
+  **(5) THE PIN IS ONE ROW OFF.**  `leaf_land_contract` types `U5.2`
+  `GAIN_SLOT_2 / passive / UNBOUNDED_PASSIVE, admitted false`.  `GAIN_SLOT`
+  selects gain by HOW it is tied -- 15 dB direct GND, 12 dB 100k GND, 9 dB
+  floating, **6 dB 100k VDD, 3 dB direct VDD** -- and **D-147 chose "VDD
+  (6 dB)", the 100k row, while the board ties `U5.2` DIRECTLY to `+3V3` with no
+  series resistor: the 3 dB row.**  Against the 2.1 dBV full-scale DAC D-147
+  reasoned from, 0 dBFS then asks 1.79 Vrms against the 2.33 Vrms the rail can
+  deliver -- about **2.3 dB, roughly 0.80 W against 1.36 W into 4 ohm**, of
+  maximum acoustic output left unused.  **RECOMMENDATION: close `U5.2` THROUGH a
+  new 100 k 0402 to `+3V3`** -- it restores the intended 6 dB, it **bounds the
+  land at 33 uA** so `leaf_land_contract` can admit it and the 0.200 mm jumper
+  stops being an argument, and it is the manufacturer's own sanctioned
+  connection.  Schematic + BOM + tight board area, so recorded for the next
+  transaction.
 - **Demo D-684 (THE MICROPHONE HAD NO GROUND: ITS OWN ACOUSTIC KEEP-OUT
   COVERED ITS `GND` RING, AND CORRECTING THE POLYGON TO THE MANUFACTURER'S OWN
   FIGURE CLOSES `GND` WITH ZERO COPPER):**  **PROMOTED, AND NOT ONE TRACK WAS

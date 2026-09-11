@@ -1,3 +1,118 @@
+# D-684 addendum · 2026-09-11 · Demo — `+3V3` `U5.2` IS A JUMPER QUESTION AND THE RAIL HAS NO FLAG FOR IT; AND THE `MAX98357A`'s GAIN STRAP IS ONE ROW OFF THE GAIN D-147 CHOSE
+
+    authority  58f7a3df69cec6bd3faa9c0f40632adee2c41e02fe4926b2ade60834274179fd
+            -> 58f7a3df69cec6bd3faa9c0f40632adee2c41e02fe4926b2ade60834274179fd   UNCHANGED
+    retained open edges 21 -> 21
+    `hardware/demo/kicad`, `hardware/demo/fab`, `hardware/beta-v2`  UNTOUCHED
+
+**NO COPPER PROMOTED.**  `+3V3` `U5.2` is the rail's LAST open edge and D-682
+retired it as `NO_VIA_SITE` with the radius doubled to 15 mm.  It is re-asked
+here from the other end, and the answer is that the wall was never the barrel.
+
+## 1. IT IS 0.7282 mm OF COPPER, AND THE TARGET IS A POUR
+
+    U5.2 land                 (29.562, 115.750) F.Cu, 0.825 x 0.250 mm,
+                              a MIDDLE pin of a 0.5 mm-pitch TQFN-16 column
+    its filled island         0.1831 mm2 -- 0.868 x 0.225 mm, the pad and
+                              almost nothing else
+    nearest `+3V3` BODY pour  F.Cu outline 15, 10.975 mm2
+    gap                       0.7282 mm, on the line
+                              (29.1996,115.6277) -> (29.0608,114.9129)
+    the corridor it crosses   R15.2 (x <= 28.125) to U5.1 (x >= 29.1495)
+                              = 1.025 mm, so 0.400 mm of trunk fits and
+                              0.600 mm does not
+
+So `U5.2` does not need a barrel at all.  It needs **three quarters of a
+millimetre of track, on its own layer, ending in its own net's filled copper.**
+
+## 2. THE LADDER SAYS THE LAND OPENS AND THE BARREL DOES NOT
+
+`screen_pad_escape_relief.py` at 0.025 mm, all five rungs
+(`evidence/d684-u52-gain-slot.json`):
+
+    rung 0  dru floor 0.400 / 0.65 barrel   NO_LEGAL_ESCAPE at >= 0.400 mm
+    rung 1  relief WIDTH 0.200              NO_VIA_SITE  (0.65 mm barrel)
+    rung 2  relief BARREL only, 0.400       NO_LEGAL_ESCAPE at >= 0.400 mm
+    rung 3  WIDTH 0.200 + BARREL 0.35       NO_VIA_SITE  (0.35 mm barrel)
+    rung 4  BARREL at netclass 0.600        NO_LEGAL_ESCAPE at >= 0.600 mm
+
+**The 0.200 mm relief width OPENS THE LAND** -- the wall moves from
+`NO_LEGAL_ESCAPE` to `NO_VIA_SITE` -- and then the primitive insists on a barrel
+that does not exist.  Every rung that finds a barrel cannot launch, and every
+rung that launches cannot find a barrel.
+
+## 3. AND THE NECK CANNOT STAND IN, FOR A REASON WORTH WRITING DOWN
+
+`U5` is a `MAX98357A` TQFN-16 at **0.5 mm pitch with 0.250 mm-tall lands** --
+finer than several packages section 9's *"Pad-escape necking - width, fine-pitch
+power packages"* already names -- so the obvious move is to add it to that
+rule's courtyard list and let `--neck` launch the land at 0.200 mm.  **It was
+tried on a SCRATCH and it does not work**, and the authority was never touched:
+
+    U5 added to the necking rule, then
+    +3V3 --neck --escape-floor --trunk-floor --split-islands
+         --join-residual --join-islands, grid 0.025 mm
+    trunk_floor  ADMITTED for P3V3: 1.226 A against 1.0 A required,
+                 600000 -> 400000 nm
+    result       U5.2: NO LEGAL ESCAPE at >= 0.400 mm
+
+> **A NECKED LAUNCH CANNOT HELP A LAND WHOSE TRUNK DOES NOT FIT.**
+> `QBoard.escape` refuses any launch point where the TRUNK width is not also
+> legal -- that is D-630's own sentence about `--escape-floor` -- so necking the
+> LAUNCH is powerless when the wall is 0.4 mm of trunk in a 1.025 mm corridor
+> shared with `U5.1`.  `U5.2` needs the WHOLE conductor at 0.200 mm.
+
+## 4. THE INSTRUMENT THIS REPOSITORY DOES NOT HAVE
+
+    --escape-relief   offers the 0.200 mm run under a declared
+                      `PAD_ESCAPE_RUN_*` rectangle -- and ALWAYS ends in a
+                      BARREL, which here has no site
+    --join-islands    ends in FILLED COPPER, which is what U5.2 wants -- and
+                      only at the netclass width or the `.kicad_dru` class
+                      floor, neither of which can leave the land
+
+**The missing primitive is a LICENSED-WIDTH ISLAND JUMPER**: D-610's declared
+rectangle spent on `--join-islands`'s destination instead of on
+`--escape-relief`'s.  It is named here rather than half-built at the end of a
+session, and it is the whole of `+3V3`'s remaining edge.
+
+## 5. AND WHILE MEASURING IT, THE PIN TURNED OUT TO BE ONE ROW OFF
+
+`leaf_land_contract.py` reads `U5.2` as `pinfunction GAIN_SLOT_2`,
+`pintype passive`, class **`UNBOUNDED_PASSIVE`**, **`admitted false`** -- *"no
+published resistance >= 1000 ohm bounds the current in this land"*.  That is the
+contract being right, and it points straight at a second finding.
+
+`GAIN_SLOT` on the `MAX98357A` selects gain by **how** it is tied:
+
+    direct to GND  15 dB     100k to GND  12 dB     floating  9 dB
+    100k to VDD     6 dB     direct to VDD 3 dB
+
+**D-147 chose *"VDD (6 dB)"*, which is the 100 k-to-VDD row.  The board ties
+`U5.2` DIRECTLY to `+3V3`, and there is no series resistor on the net** -- which
+is the **3 dB** row.  With the 2.1 dBV full-scale DAC D-147 reasoned from, a
+0 dBFS sample then asks **1.79 Vrms** against the **2.33 Vrms** the 3.3 V rail
+can deliver: about **2.3 dB — roughly 0.80 W against 1.36 W into 4 ohm — of
+maximum acoustic output left unused.**  D-147's own note that *"maximum acoustic
+output is identical either way because it is rail-limited"* was true of 12 -> 6
+and is NOT true of 6 -> 3.
+
+**RECOMMENDATION, AND IT IS ONE PART FOR TWO PROBLEMS.**  When `U5.2` is closed,
+close it **through a new 100 k 0402 to `+3V3`** instead of onto the rail:
+
+  * it restores D-147's intended **6 dB** and the 2.3 dB of output with it;
+  * it **bounds the land at 33 uA**, which is exactly what
+    `leaf_land_contract` needs to stop reading it `UNBOUNDED_PASSIVE` -- so the
+    0.200 mm jumper stops being an argument and becomes a measurement;
+  * and it is the manufacturer's OWN sanctioned connection for this pin, so no
+    licence has to be argued from a category.
+
+It is a schematic and BOM change (one passive, and board area beside `U5` that
+is tight), so it is **recorded for the next transaction, not executed at the end
+of this one.**
+
+Evidence: `d684-u52-gain-slot.json`.
+
 # D-684 · 2026-09-11 · Demo — THE MICROPHONE HAD NO GROUND: ITS OWN ACOUSTIC KEEP-OUT COVERED ITS `GND` RING, AND CORRECTING THE POLYGON TO THE MANUFACTURER'S OWN FIGURE CLOSES `GND` WITH ZERO COPPER
 
     authority  d7ed92a58300c69c5d4c1770200f5aed641a079ea0b743afb54a6ab467b72706
