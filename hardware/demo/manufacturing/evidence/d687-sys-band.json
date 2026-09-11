@@ -1,0 +1,472 @@
+{
+  "authority_unchanged": true,
+  "band": {
+    "arm_stat1_evicted": {
+      "connectivity": {
+        "nets_improved": [
+          "/01_POWER_TREE/BQ25185_SYS"
+        ],
+        "nets_regressed": [
+          "/BQ25185_STAT1"
+        ],
+        "open_retained_nets_after": 13,
+        "open_retained_nets_before": 13,
+        "retained_open_edges_after": 20,
+        "retained_open_edges_before": 20
+      },
+      "drc_types": {
+        "lib_footprint_issues": 199,
+        "solder_mask_bridge": 1
+      },
+      "gate_clauses": {
+        "attributable_drc": true,
+        "authority_unchanged": true,
+        "barrel_move_licensed": true,
+        "board_changed": true,
+        "board_improved": false,
+        "every_detour_relaid": true,
+        "inert_removal_priced": true,
+        "inherited_within_baseline": true,
+        "no_foreign_copper": true,
+        "no_open_relief_licence": true,
+        "no_regression": false,
+        "no_unlicensed_removal": true,
+        "pour_partition": true,
+        "rebond_priced": true,
+        "zones_and_rule_areas": true
+      },
+      "routed": [
+        {
+          "joins": [
+            {
+              "from": "R42.2",
+              "mm": 28.128288551915098,
+              "ok": true,
+              "to": "TP14.1",
+              "via_xy": [
+                [
+                  25.4,
+                  116.6
+                ],
+                [
+                  37.2,
+                  122.3
+                ]
+              ],
+              "vias": 2
+            },
+            {
+              "from": "TP14.1",
+              "mm": 42.18779008229064,
+              "ok": true,
+              "to": "U12.13",
+              "via_xy": [
+                [
+                  40.2,
+                  124.6
+                ],
+                [
+                  42.0,
+                  126.8
+                ]
+              ],
+              "vias": 2
+            }
+          ],
+          "mm": 70.316,
+          "net": "Net-(U12-PS_SYNC)",
+          "ok": true,
+          "vias": 4
+        },
+        {
+          "joins": [
+            {
+              "from": "R41.2",
+              "mm": 31.687621634205044,
+              "ok": true,
+              "to": "TP8.1",
+              "via_xy": [
+                [
+                  28.0,
+                  128.7
+                ],
+                [
+                  36.4,
+                  125.9
+                ]
+              ],
+              "vias": 2
+            },
+            {
+              "from": "TP8.1",
+              "mm": 60.83214591646487,
+              "ok": true,
+              "to": "U12.14",
+              "via_xy": [
+                [
+                  36.0,
+                  119.1
+                ],
+                [
+                  32.4,
+                  118.9
+                ],
+                [
+                  28.6,
+                  113.7
+                ],
+                [
+                  44.5,
+                  100.7
+                ],
+                [
+                  46.2,
+                  102.3
+                ],
+                [
+                  49.0,
+                  102.5
+                ],
+                [
+                  54.6,
+                  101.4
+                ],
+                [
+                  59.5,
+                  102.5
+                ]
+              ],
+              "vias": 8
+            }
+          ],
+          "mm": 92.52,
+          "net": "Net-(U12-PG)",
+          "ok": true,
+          "vias": 10
+        },
+        {
+          "joins": [
+            {
+              "dst_escapes": 8,
+              "ok": false,
+              "reason": "NO_PATH",
+              "src_escapes": 9,
+              "why": "no all-layer corridor at 0.200 mm between the islands"
+            }
+          ],
+          "mm": null,
+          "net": "/BQ25185_STAT1",
+          "ok": false,
+          "vias": null
+        }
+      ]
+    },
+    "arm_stat1_first": {
+      "connectivity": {
+        "nets_improved": [
+          "/01_POWER_TREE/BQ25185_SYS"
+        ],
+        "nets_regressed": [
+          "/BQ25185_STAT1"
+        ],
+        "open_retained_nets_after": 13,
+        "open_retained_nets_before": 13,
+        "retained_open_edges_after": 20,
+        "retained_open_edges_before": 20
+      },
+      "drc_types": {
+        "lib_footprint_issues": 199,
+        "solder_mask_bridge": 1
+      },
+      "gate_clauses": {
+        "attributable_drc": true,
+        "authority_unchanged": true,
+        "barrel_move_licensed": true,
+        "board_changed": true,
+        "board_improved": false,
+        "every_detour_relaid": true,
+        "inert_removal_priced": true,
+        "inherited_within_baseline": true,
+        "no_foreign_copper": true,
+        "no_open_relief_licence": true,
+        "no_regression": false,
+        "no_unlicensed_removal": true,
+        "pour_partition": true,
+        "rebond_priced": true,
+        "zones_and_rule_areas": true
+      },
+      "routed": [
+        {
+          "joins": [
+            {
+              "dst_escapes": 8,
+              "ok": false,
+              "reason": "NO_PATH",
+              "src_escapes": 12,
+              "why": "no all-layer corridor at 0.200 mm between the islands"
+            }
+          ],
+          "mm": null,
+          "net": "/BQ25185_STAT1",
+          "ok": false,
+          "vias": null
+        },
+        {
+          "joins": [
+            {
+              "from": "R42.2",
+              "mm": 28.128288551915098,
+              "ok": true,
+              "to": "TP14.1",
+              "via_xy": [
+                [
+                  25.4,
+                  116.6
+                ],
+                [
+                  37.2,
+                  122.3
+                ]
+              ],
+              "vias": 2
+            },
+            {
+              "from": "TP14.1",
+              "mm": 42.18779008229064,
+              "ok": true,
+              "to": "U12.13",
+              "via_xy": [
+                [
+                  40.2,
+                  124.6
+                ],
+                [
+                  42.0,
+                  126.8
+                ]
+              ],
+              "vias": 2
+            }
+          ],
+          "mm": 70.316,
+          "net": "Net-(U12-PS_SYNC)",
+          "ok": true,
+          "vias": 4
+        },
+        {
+          "joins": [
+            {
+              "from": "R41.2",
+              "mm": 31.687621634205044,
+              "ok": true,
+              "to": "TP8.1",
+              "via_xy": [
+                [
+                  28.0,
+                  128.7
+                ],
+                [
+                  36.4,
+                  125.9
+                ]
+              ],
+              "vias": 2
+            },
+            {
+              "from": "TP8.1",
+              "mm": 60.83214591646487,
+              "ok": true,
+              "to": "U12.14",
+              "via_xy": [
+                [
+                  36.0,
+                  119.1
+                ],
+                [
+                  32.4,
+                  118.9
+                ],
+                [
+                  28.6,
+                  113.7
+                ],
+                [
+                  44.5,
+                  100.7
+                ],
+                [
+                  46.2,
+                  102.3
+                ],
+                [
+                  49.0,
+                  102.5
+                ],
+                [
+                  54.6,
+                  101.4
+                ],
+                [
+                  59.5,
+                  102.5
+                ]
+              ],
+              "vias": 8
+            }
+          ],
+          "mm": 92.52,
+          "net": "Net-(U12-PG)",
+          "ok": true,
+          "vias": 10
+        }
+      ]
+    },
+    "claimants": [
+      "/BQ25185_STAT1",
+      "Net-(U12-PS_SYNC)",
+      "Net-(U12-PG)",
+      "Net-(SW9-A)"
+    ],
+    "extent_mm": {
+      "x": [
+        64.5,
+        68.7
+      ],
+      "y": [
+        103.1,
+        104.0
+      ]
+    },
+    "finding": "ONE CONDUCTOR, FOUR NETS.  With /BQ25185_STAT1's F.Cu chain out of the band BOTH straps reach their pins and SYS improves by one edge; STAT1 then cannot re-route AT ALL -- NO_PATH even when it is requested FIRST with the band reserved against it.",
+    "height_mm": 1.2,
+    "sealed_north_by": "U12's own 0.5 mm-pitch south pad row at y = 102.8",
+    "sealed_south_east_by": "WROOM ANTENNA KEEPOUT (64.505,104.005)-(85.495,151.995), all six layers"
+  },
+  "board_sha256": "fb7b61f2a490283c1ee1a8ff1b969c88f11c5ebc3917dc495425e945149fe401",
+  "decision": "D-687",
+  "next": [
+    "U12 + L1 + TP13 north refloorplan -- the band is the #1 blocker and it is a placement number",
+    "/USB_D_MCU_N needs a SECOND lane and a ruling on the 25 mm uncoupled budget",
+    "/01_POWER_TREE/USB_D_CONN_P, the J3 flip-symmetry wall (D-685)"
+  ],
+  "question": "what actually holds BQ25185_SYS's six edges shut, and what does /USB_D_MCU_N need",
+  "resweep": {
+    "note": "all eleven remaining open nets re-asked solo on the D-686 authority",
+    "result": "every one still refuses; D-686 opened nothing else"
+  },
+  "schema": 1,
+  "seam": {
+    "gap_mm": 0.701,
+    "guarded_seam": "with the seam guarded on B.Cu only, U12.13 is NO_PATH -- D-683 reproduces (w/d687/ps1.json)",
+    "ledger_after_removal": "w/d687/pssync",
+    "line": [
+      [
+        62.535,
+        103.909
+      ],
+      [
+        63.008,
+        104.426
+      ]
+    ],
+    "removing_ps_sync": "SYS 6 -> 5 with ZERO new copper, by refill (re-measured on the D-686 authority)"
+  },
+  "strap_bank": {
+    "note": "the same defect D-686 fixed for R108, and worth about 150 mm of B.Cu -- but it does NOT open the band on its own, because U12.13/U12.14's exit is the band wherever the strap sits",
+    "parts": {
+      "R41": {
+        "at": [
+          13.315,
+          120.335
+        ],
+        "mm": 52.0,
+        "serves": "U12.14 PG at (65.100,102.800)",
+        "value": "1M"
+      },
+      "R42": {
+        "at": [
+          16.665,
+          120.335
+        ],
+        "mm": 49.0,
+        "serves": "U12.13 PS/SYNC at (65.600,102.800)",
+        "value": "0R"
+      },
+      "R43": {
+        "at": [
+          19.19,
+          120.335
+        ],
+        "mm": 47.0,
+        "serves": "U12.12 SW9-A at (66.100,102.800)",
+        "value": "pull"
+      }
+    },
+    "test_points": {
+      "TP14": [
+        40.5,
+        124.5
+      ],
+      "TP8": [
+        38.0,
+        124.5
+      ]
+    }
+  },
+  "sys_main_ampacity": {
+    "dru_class_floor_mm": 0.5,
+    "floor_carries_A": 1.441,
+    "netclass_width_carries_A": 2.06,
+    "netclass_width_mm": 0.8,
+    "note": "the DRU's own section-5 table publishes 2.19 A for SYS_MAIN (the U21 boost peak, its stated LOCAL EXCEPTION).  trunk_floor_price refuses the 0.500 mm descent at 1.441 A -- and the 0.800 mm the netclass ALREADY routes at carries about 2.06 A, which is ALSO under that bar. OPEN FINDING: the SYS segment that feeds U21 is not sized for the current the board publishes for it.",
+    "published_design_current_A": 2.19
+  },
+  "sys_pour": {
+    "bare_lands": [
+      "U11.1"
+    ],
+    "body_mm2": 78.8443,
+    "island_join_at_800um": "every cluster refuses: NO_PATH for C26.2, C27.1, L4/U21 and the body; NO_ANCHOR for U12.10/11, U11.1, R68.1, U13.3",
+    "islands": {
+      "C24.1": {
+        "area_mm2": 3.3115,
+        "gap_to_body_mm": 1.7105
+      },
+      "C26.2": {
+        "area_mm2": 6.5525,
+        "gap_to_body_mm": 1.8999
+      },
+      "C27.1": {
+        "area_mm2": 5.8288,
+        "gap_to_body_mm": 4.6165
+      },
+      "U12.10/U12.11": {
+        "area_mm2": 0.7488,
+        "gap_to_body_mm": 1.4413
+      }
+    },
+    "map": "w/d687/sysmap.json",
+    "second_pour_mm2": 10.8135
+  },
+  "usb_mcu_n": {
+    "best_route_mm": 27.014,
+    "best_route_vias": 2,
+    "blame": "w/d686/blame_n.json (Q1 upper bound 24.787 mm; Q2 complete for 20 of 33 window nets)",
+    "i2s_lrclk_whole_eviction": "REFUSED -- U5.14 NO LEGAL ESCAPE at >= 0.200 mm",
+    "i2s_lrclk_windowed_eviction": "re-routes at 143.056 mm with 8 vias -- REFUSED on price",
+    "r33_relocation": {
+      "only_clean_site_in": "x 57..64, y 139..145, both rotations",
+      "result": "REFUSED: /01_POWER_TREE/USB_D_ESD_N and /USB_D_MCU_N are BOTH NO_PATH from there",
+      "rot_deg": 90,
+      "site": [
+        60.5,
+        141.75
+      ]
+    },
+    "refused_by": "diff_pair_uncoupled (max 25 mm); actual 27.0138 mm",
+    "single_net_openers": {
+      "/I2S_LRCLK": 28.6465,
+      "/NATIVE_A": 34.6259
+    }
+  }
+}

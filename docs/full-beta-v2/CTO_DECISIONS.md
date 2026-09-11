@@ -1,3 +1,114 @@
+# D-687 · 2026-09-11 · Demo — ONE CONDUCTOR, FOUR NETS: `U12`'s SOUTH BAND IS 1.2 mm TALL BECAUSE THE `WROOM` ANTENNA KEEP-OUT SEALS IT, AND `/BQ25185_STAT1`, `PS_SYNC`, `PG` AND `SW9-A` ALL WANT IT — WITH `STAT1` OUT, BOTH STRAPS REACH THEIR PINS AND `BQ25185_SYS` CLOSES AN EDGE
+
+    authority  fb7b61f2a490283c1ee1a8ff1b969c88f11c5ebc3917dc495425e945149fe401
+            -> fb7b61f2a490283c1ee1a8ff1b969c88f11c5ebc3917dc495425e945149fe401   UNCHANGED
+    retained open edges 20 -> 20
+    `hardware/demo/kicad`, `hardware/demo/fab`, `hardware/beta-v2`  UNTOUCHED
+    `evidence/d687-sys-band.json`
+
+**NO COPPER PROMOTED.**  D-678 §1 found the smallest pour-cut set —
+*"the `Net-(U12-PG)` diagonal plus the `Net-(U12-PS_SYNC)` five-chain, six units
+across TWO nets, TWO edges"* — and stopped there, because a relay put the copper
+straight back.  This decision asks the next question: **why can neither strap
+leave `U12` any other way**, and the answer is a channel with a name and a size.
+
+## 1. THE `SYS` POUR, IN NUMBERS
+
+`screen_pour_island_map.py` (`w/d687/sysmap.json`): a **78.844 mm2 body** plus
+four islands and a second pour, and every gap is small.
+
+    C24.1           3.3115 mm2   1.7105 mm to the body
+    C26.2           6.5525 mm2   1.8999 mm
+    C27.1           5.8288 mm2   4.6165 mm
+    U12.10/U12.11   0.7488 mm2   1.4413 mm
+    POUR 2 (L4.1 / U21.3)  10.8135 mm2      -- the ACC boost, isolated
+    U11.1           NO POUR AT ALL -- a bare pad
+
+`--join-islands` at `SYS_MAIN`'s 0.800 mm refuses **every** one: `NO_PATH` for
+`C26.2`, `C27.1`, `L4`/`U21` and the body; `NO_ANCHOR` for `U12.10/11`, `U11.1`,
+`R68.1` and `U13.3` -- *no cell of this cluster's filled copper admits a
+0.800 mm track centred 0.450 mm inside it.*  `U11.1` has **NO LEGAL ESCAPE at
+>= 0.800 mm** from its 0.4 mm-pitch `WSON` land.
+
+## 2. AN OPEN FINDING THE AMPACITY PRICE HANDED OVER
+
+`trunk_floor_price('SYS_MAIN')` refuses the 0.500 mm descent: the class floor
+carries **1.441 A** against the **2.19 A** the `.kicad_dru`'s own section-5
+table publishes for it (the `U21` boost peak, its stated LOCAL EXCEPTION).
+Run the same arithmetic on the width the netclass ALREADY uses: **0.800 mm
+carries about 2.06 A, which is ALSO under that bar.**  ***The `SYS` segment that
+feeds `U21` is not sized for the current this board publishes for it.***
+Recorded as an OPEN FINDING; it is a width decision on one segment, not a
+routing one, and it does not block anything this decision measured.
+
+## 3. THE SEAM, RE-MEASURED ON THE D-686 AUTHORITY
+
+Delete `Net-(U12-PS_SYNC)`'s copper, refill: `C24.1`'s and `C26.2`'s islands
+MERGE and **`BQ25185_SYS` goes 6 -> 5 with ZERO new copper.**  D-683's figure
+reproduces exactly.  Guard that 0.701 mm gap on `B.Cu` alone and ask `PS_SYNC`
+back: `R42.2 -> TP14.1` closes in 29.946 mm and **`U12.13` is `NO_PATH`.**
+
+## 4. THE BAND, AND WHY IT IS THE #1 BLOCKER
+
+`U12`'s south pad row sits at `y = 102.800` on 0.5 mm pitch.  The **`WROOM`
+ANTENNA KEEPOUT `(64.505,104.005)-(85.495,151.995)` is all six layers**, so
+south of that row and east of `x = 64.5` there is a strip **1.2 mm tall**
+(`y` 103.1 .. 104.0) and nothing else.  **FOUR nets need it:**
+
+    /BQ25185_STAT1     R127.2 -> TP6.1, its ONLY connected edge
+    Net-(U12-PS_SYNC)  U12.13
+    Net-(U12-PG)       U12.14
+    Net-(SW9-A)        U12.12 -- and it HAS the strip today
+
+Two gate runs settle it (`evidence/d687-sys-band.json`):
+
+  * **`STAT1` evicted whole, seam guarded:** `PS_SYNC` reaches `U12.13` in
+    **42.188 mm / 2 vias** and `PG` reaches `U12.14` in **60.832 mm / 8 vias`,
+    `BQ25185_SYS` is in `nets_improved`, and `STAT1` is `NO_PATH`.
+  * **`STAT1` requested FIRST with the band reserved against it** (three-layer
+    discs, the two straps and `SYS` exempt): `STAT1` is **`NO_PATH` anyway.**
+
+***The band holds ONE conductor and four nets want it.***  It is not a lattice
+question, not a width question and not a router question: it is the distance
+between `U12`'s south pad row and the antenna keep-out, and that is a
+PLACEMENT number.
+
+## 5. THE STRAP BANK, NAMED — AND WHY IT IS NOT THE FIX
+
+`R41` (1M, `PG` pull-up) at (13.315,120.335), `R42` (0R, `PS/SYNC` to `GND`) at
+(16.665,120.335) and `R43` (`SW9-A`) at (19.190,120.335) are **47 to 52 mm from
+the `U12` pins they strap**, with `TP8` and `TP14` parked at (38.0 / 40.5,
+124.5).  That is the defect D-686 fixed for `R108`, and it is worth about
+150 mm of `B.Cu`.  **It does NOT open the band**, because `U12.13`'s and
+`U12.14`'s exit is the band wherever their strap sits.  It rides with the
+refloorplan, not instead of it.
+
+## 6. `/USB_D_MCU_N`, PRICED
+
+`screen_pair_corridor_blame.py` on `R33.2 -> U1.13` names **two single-net
+openers**: `/I2S_LRCLK` (28.647 mm) and `/NATIVE_A` (34.626 mm).  With
+`I2S_LRCLK` out, `MCU_N` routes in **27.014 mm / 2 vias** -- **2.014 mm over
+the board's own 25 mm `diff_pair_uncoupled` budget**, and that budget is now
+the binding constraint on the last USB data edge.  Neither way of moving
+`I2S_LRCLK` is payable: **whole-net eviction is refused** (`U5.14`: NO LEGAL
+ESCAPE at >= 0.200 mm) and a **windowed eviction re-routes it at 143.056 mm
+with 8 vias**.  The single clean `R33` site in the band D-686 freed --
+**(60.500,141.750) rot 90**, the only one in `x` 57..64 / `y` 139..145 at
+either rotation -- is measured and **REFUSED**: from there
+`/01_POWER_TREE/USB_D_ESD_N` and `/USB_D_MCU_N` are BOTH `NO_PATH`.
+
+## 7. AND NOTHING ELSE CAME FREE
+
+All eleven remaining open nets were re-asked solo on the D-686 authority.
+Every one still refuses.  D-686 opened exactly what it claimed and no more.
+
+**NEXT:** (1) the **`U12` + `L1` + `TP13` north refloorplan** -- the band is
+the #1 blocker and it is a placement number.  `SW9` (the user-facing slide
+switch) bounds it at `y = 91.55`, so the headroom is about 2.4 mm and it costs
+`TP13` and `C28` a new site.  (2) `/USB_D_MCU_N` needs a SECOND lane and a
+ruling on the 25 mm uncoupled budget.  (3) `/01_POWER_TREE/USB_D_CONN_P`, the
+`J3` flip-symmetry wall.  **NO OPEN OWNER DECISION.**
+
 # D-686 · 2026-09-11 · Demo — THE BACKLIGHT STRAP'S PULL-DOWN WAS 30 mm FROM ITS OWN PIN AND ITS HAUL WAS THE ONLY LANE UNDER THE `WROOM`: `R108` MOVED 32.8 mm, THE STRAP RECONNECTED IN 2.473 mm WITH NO VIA, AND `/USB_D_MCU_P` CLOSED IN 24.839 mm INSIDE ITS OWN 25 mm UNCOUPLED BUDGET
 
     authority  58f7a3df69cec6bd3faa9c0f40632adee2c41e02fe4926b2ade60834274179fd

@@ -23,6 +23,65 @@
 > `verify_promotion` PASS and `protected_copper` showing exactly one protected
 > net moved.  `U14.7` is on the bus.  This board has **no open owner decision**.
 
+- **Demo D-687 (ONE CONDUCTOR, FOUR NETS: `U12`'s SOUTH BAND IS 1.2 mm TALL
+  BECAUSE THE `WROOM` ANTENNA KEEP-OUT SEALS IT):**  **NO COPPER PROMOTED.**
+  Authority **UNCHANGED** at
+  `fb7b61f2a490283c1ee1a8ff1b969c88f11c5ebc3917dc495425e945149fe401`; 20 -> 20;
+  `hardware/demo/kicad`, `hardware/demo/fab`, `hardware/beta-v2` **UNTOUCHED**.
+  (`evidence/d687-sys-band.json`.)
+  **(1) THE `SYS` POUR, IN NUMBERS.**  A 78.844 mm2 BODY plus four islands --
+  `C24.1` 3.3115 mm2 at 1.7105 mm, `C26.2` 6.5525 at 1.8999, `C27.1` 5.8288 at
+  4.6165, `U12.10/11` 0.7488 at 1.4413 -- plus `POUR 2` (`L4`/`U21`,
+  10.8135 mm2), and `U11.1` on **no pour at all**.  `--join-islands` at
+  `SYS_MAIN`'s 0.800 mm refuses EVERY cluster: `NO_PATH` for `C26.2`, `C27.1`,
+  `L4`/`U21` and the body; `NO_ANCHOR` for `U12.10/11`, `U11.1`, `R68.1`,
+  `U13.3`.  `U11.1` has **NO LEGAL ESCAPE at >= 0.800 mm** from its 0.4 mm-pitch
+  `WSON` land.
+  **(2) AN OPEN FINDING THE AMPACITY PRICE HANDED OVER.**  `trunk_floor_price`
+  refuses `SYS_MAIN`'s 0.500 mm descent at **1.441 A against the 2.19 A** the
+  `.kicad_dru` publishes for the class.  The same arithmetic on the width the
+  netclass ALREADY uses: **0.800 mm carries about 2.06 A, ALSO under that bar.**
+  ***The `SYS` segment that feeds `U21` is not sized for the current this board
+  publishes for it.***  OPEN FINDING; a width decision on one segment.
+  **(3) THE SEAM REPRODUCES.**  Delete `Net-(U12-PS_SYNC)`'s copper and refill:
+  `C24.1` and `C26.2` MERGE and **`BQ25185_SYS` goes 6 -> 5 with ZERO new
+  copper**.  Guard that 0.701 mm gap on `B.Cu` alone and `U12.13` is `NO_PATH`.
+  **(4) THE BAND, AND IT IS THE #1 BLOCKER.**  `U12`'s south pad row is at
+  `y = 102.800`; the **`WROOM` ANTENNA KEEPOUT `(64.505,104.005)`-`(85.495,151.995)`
+  is ALL SIX LAYERS**, so east of `x = 64.5` the strip between them is
+  **1.2 mm tall** -- and **FOUR nets need it**: `/BQ25185_STAT1` (its ONLY
+  connected edge), `Net-(U12-PS_SYNC)`, `Net-(U12-PG)` and `Net-(SW9-A)`, which
+  has it today.  Two runs settle it: with **`STAT1` evicted** and the seam
+  guarded, `PS_SYNC` reaches `U12.13` in **42.188 mm / 2 vias**, `PG` reaches
+  `U12.14` in **60.832 mm / 8 vias** and `BQ25185_SYS` is in `nets_improved`;
+  and with **`STAT1` requested FIRST** with the band reserved against it on
+  three layers, `STAT1` is **`NO_PATH` anyway**.  ***The band holds ONE
+  conductor and four nets want it*** -- not a lattice, width or router
+  question, but the distance between a pad row and a keep-out, which is
+  PLACEMENT.
+  **(5) THE STRAP BANK, NAMED, AND IT IS NOT THE FIX.**  `R41` (1M, `PG`),
+  `R42` (0R, `PS/SYNC` to `GND`) and `R43` (`SW9-A`) sit at `y = 120.335`,
+  `x = 13.3 / 16.7 / 19.2` -- **47 to 52 mm from the `U12` pins they strap** --
+  with `TP8`/`TP14` at (38.0 / 40.5, 124.5).  Same defect D-686 fixed for
+  `R108`, worth ~150 mm of `B.Cu`; it does NOT open the band, so it rides with
+  the refloorplan rather than instead of it.
+  **(6) `/USB_D_MCU_N`, PRICED.**  The corridor blame names **two** single-net
+  openers -- `/I2S_LRCLK` 28.647 mm and `/NATIVE_A` 34.626 mm.  With
+  `I2S_LRCLK` out, `MCU_N` routes in **27.014 mm / 2 vias**, **2.014 mm over
+  the board's own 25 mm `diff_pair_uncoupled` budget**, which is now the
+  binding constraint on the last USB data edge.  Neither way of moving
+  `I2S_LRCLK` is payable: whole-net eviction is refused (`U5.14` NO LEGAL
+  ESCAPE at >= 0.200 mm) and a windowed eviction re-routes it at **143.056 mm
+  with 8 vias**.  The ONLY clean `R33` site in the band D-686 freed --
+  (60.500,141.750) rot 90 -- is measured and **REFUSED**: `USB_D_ESD_N` and
+  `USB_D_MCU_N` are BOTH `NO_PATH` from there.
+  **(7) NOTHING ELSE CAME FREE.**  All eleven remaining open nets re-asked solo
+  on the D-686 authority; every one still refuses.
+  **NEXT:** (1) the **`U12` + `L1` + `TP13` north refloorplan** -- `SW9`, the
+  user-facing slide switch, bounds it at `y = 91.55`, so the headroom is about
+  2.4 mm and it costs `TP13` and `C28` a new site.  (2) `/USB_D_MCU_N`'s SECOND
+  lane and a ruling on the 25 mm uncoupled budget.  (3)
+  `/01_POWER_TREE/USB_D_CONN_P`.  **NO OPEN OWNER DECISION.**
 - **Demo D-686 (THE BACKLIGHT STRAP'S PULL-DOWN WAS 30 mm FROM ITS OWN PIN AND
   ITS HAUL WAS THE ONLY LANE UNDER THE `WROOM`):**  **COPPER PROMOTED.**
   Authority `58f7a3df69cec6bd3faa9c0f40632adee2c41e02fe4926b2ade60834274179fd`
