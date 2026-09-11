@@ -1,3 +1,122 @@
+# D-682 addendum 2 · 2026-09-11 · Demo — THE #1 BLOCKER'S TWO UNSPENT LEVERS, BOTH SPENT: D-678's CHEAPEST CUT IS NOT A BUDGET ARTEFACT, AND THE `In2` POUR IS NOT VACUOUS FOR THE REASON D-678 GAVE — IT IS A 0.65 mm BARREL SHORT
+
+    authority  d0743e72da3fa650d8eb59ed4f41fb89f4e4663c3ea7f8694d257ed9c86a1dad
+            -> d0743e72da3fa650d8eb59ed4f41fb89f4e4663c3ea7f8694d257ed9c86a1dad   UNCHANGED
+    retained open edges 23 -> 23
+    `hardware/demo/kicad`, `hardware/demo/fab`, `hardware/beta-v2`  UNTOUCHED
+    three gate runs (`evidence/d682-sys-two-levers.json`)
+
+**NO COPPER PROMOTED.**  Both levers this repository was still carrying for
+`/01_POWER_TREE/BQ25185_SYS` are now measured on today's authority.
+
+## 1. D-678 CASE `e` IS GEOMETRY, NOT A BUDGET — THE D-680 HYPOTHESIS IS REFUTED
+
+D-678 §1 found the smallest cut that moves this net: `Net-(U12-PG)`'s diagonal
+plus `Net-(U12-PS_SYNC)`'s five-segment chain — **TWO edges for SIX units
+across TWO nets**, `B.Cu` pour 78.844 -> 94.245 mm².  It could not buy it,
+because the obstacle model carries no zone (D-678 §2) so a bare relay puts each
+track back where it was, and the reserve discs that stop it reported `NO_PATH`
+**at a 45 mm budget**.
+
+D-680 §4 then established that a relay's `max_mm` is **also its wavefront STEP
+budget**, and ruled that *"every earlier `NO_PATH` taken under a
+`--join-max-mm` bound is a refusal of the BUDGET"*.  That makes D-678's refusal
+a candidate for re-asking, and it is re-asked here.
+
+    evidence/d682-sys-case-e-spec.json   both chains, RELAY, max_mm 120
+                                         12 discs, r 0.55 (a 0.70 mm stamp --
+                                         0.200 mm of track plus the zone's own
+                                         0.250 mm clearance twice, which is
+                                         exactly the 0.7010 mm D-678 measured
+                                         holding C26.2 off C24.1's cluster),
+                                         trimmed 0.65 mm clear of every terminal
+    screen_relay_bindability             BINDABLE, 2.818 of 3.518 mm (PG) and
+                                         3.025 of 3.725 mm (PS_SYNC) -- the lane
+                                         has real copper to forbid, not vacuous
+
+**Both relays are `NO_PATH` at 120 mm on a 0.050 mm lattice**
+(`evidence/d682-gate-sys-case-e-REFUSED.json`).  The budget was **not** the
+binder: **2.7x D-678's budget changes nothing.**  D-678 §2's reading stands
+exactly as written — `U12`'s south pad row can leave westward on `B.Cu` and
+nowhere else, the **WROOM antenna keepout `(64.5,104.0)-(85.5,152.0)` seals the
+south-east on ALL SIX LAYERS**, and the one surviving corridor at y 103.1-104.0
+is the corridor the pour needs.  **One corridor, three claimants.**
+
+## 2. THE `In2` POUR IS NOT VACUOUS FOR THE REASON D-678 GAVE
+
+D-678 §6 ran the bounded `In2` pour, saw `--bridge` report *"this island
+overlaps no other cluster's copper on another layer"* for every orphan, and
+retired the lever.  **`--bridge` is the wrong primitive for this pour** — it
+needs filled copper of the same net on two layers over each other.  The STITCH
+is the right one: an escape, a run and a barrel from the LAND itself.  It was
+never asked.  It is asked here, three ways, over
+`(58.5,72.0)-(71.0,99.0)`:
+
+    arm   flags                                        fill   DRC   result
+    A     SYS_MAIN netclass, --body-landing            ok     0     0 stitched, 8 unreachable
+            5 lands NO_BODY_VIA_SITE (0.80 mm barrel)
+            U11.1 / U12.10 / U13.3 NO_LEGAL_ESCAPE at >= 0.800 mm
+    B     + --escape-floor, 0.500 mm, 0.50 barrel      ok     0     0 stitched
+            the barrel CLAMPS UP to 0.65 mm -- SYS_MAIN's own .kicad_dru floor
+    C     + --neck, no --body-landing                  ok     0     1 stitched
+            SW9.2 closes in 2.404 mm with ONE barrel; U12.10 moves
+            NO_LEGAL_ESCAPE -> NO_VIA_SITE; every remaining land is
+            NO_VIA_SITE: "no legal 0.65 mm barrel within 8.0 mm of any escape"
+
+**THE POUR ITSELF IS SOUND.**  `first_fill_exit` 0, real `kicad-cli` DRC
+**exit 0**, `drc_types` equal to the inherited baseline, `attributable_drc []`
+in all three arms.  A 12.5 x 27 mm `SYS` pour on `In2`, between the `In1` and
+`In3` planes, is ordinary power-supply practice and adds rail-to-return
+capacitance rather than taking anything.
+
+**AND THE WALL IS NOW ONE NUMBER.**  Every remaining land fails on the same
+sentence: *no legal **0.65 mm** barrel within 8.0 mm of any escape*.  0.65 mm is
+`SYS_MAIN`'s `.kicad_dru` class floor and the stitch is clamped UP to it, so
+this is not a search-radius finding and not a width finding — **it is a BARREL
+DIAMETER finding**, the same shape as D-606's pad-escape relief and D-595's
+`POUR_BRIDGE_U11_11`.  The lever that would spend it is a licensed fine barrel,
+and on a RAIL that is an ampacity question with a published bar: a 0.35/0.20 mm
+barrel carries **1.457 A** against `SYS_MAIN`'s **2.190 A**.  That is a real
+derating for `U11.1` and `U12.10`/`U12.11` — through which the whole rail
+passes — and it is **not** one for `C26.2`, `C27.1` or `SW9.2`, which are a
+decoupling terminal, a bulk-cap terminal and a switch contact.  **Recorded, not
+taken**: it wants its own decision, with `leaf_land_contract` run per land and
+the split stated.
+
+## 3. WHAT THIS LEAVES
+
+`/01_POWER_TREE/BQ25185_SYS` is **6 of 23** and both of its standing levers are
+now spent and recorded.  What remains is what D-672 §5 and
+`PROTOTYPE CLOSURE MODE` both already say: **a `U12` / `L1` converter-cluster
+refloorplan.**  The measurement that sizes it is in §1: `U12`'s south pad row
+sits at y = 102.8 and the six-layer antenna keepout starts at y = 104.0, so the
+whole block has **1.2 mm** of corridor for a pour, a `PG` and a `PS_SYNC`.
+`U12` can move about 1.0 mm north before its own north pads meet `L1`
+(94.6..98.6); moving `L1` as well — `TP13` at (65.5, 93.0) is the only part in
+its way and it is a test point — buys roughly **3.4 mm**, which is three times
+the corridor that exists today.
+
+## 4. NEXT, IN ORDER OF LEVERAGE
+
+ 1. **THE `U12` / `L1` REFLOORPLAN**, §3.  It is the only remaining lever on 6
+    of the board's 23 edges.  Move `TP13`, then `L1` north, then `U12` north;
+    `apply_part_shift` + `checks/placement_contract.py` PL1-PL9 already make it
+    reviewable and `evidence/d680-placement-site-clearance.py` scores the sites.
+ 2. **A `SYS` FINE-BARREL DECISION**, §2.  Three of the eight lands are
+    capacitor/switch terminals and would take a 0.35/0.20 mm licensed barrel
+    into the `In2` pour without any derating argument at all; the pour is
+    already proved DRC-clean.  Two or three edges, and it does not touch the
+    congested corridor §1 refuses.
+ 3. `/ACC_5V_LX` as a `GND` class-floor question in `U21`'s own 0.750 mm channel
+    (addendum 1 §6).
+ 4. `/I2C_SCL_INT` `U16.3` only by moving `U16` south of the passive farm
+    (addendum 1 §3) — PRICED, NOT REFUSED.
+ 5. **THERE IS NO OPEN OWNER DECISION ON THIS BOARD.**
+
+Evidence: `d682-sys-case-e-spec.json`, `d682-sys-two-levers.json`,
+`d682-gate-sys-case-e-REFUSED.json`, `d682-gate-sys-in2-pour-netclass.json`,
+`d682-gate-sys-in2-pour-floors.json`.
+
 # D-682 addendum · 2026-09-11 · Demo — THE GATE'S OWN LAUNCHER, ASKED FOR THE FIRST TIME: `U16.3` IS SEALED IN 66 CELLS, AND WHEN THE CHANNEL IS OPENED IT REACHES 57 679 AND STILL CANNOT GET SOUTH OF PROTECTED COPPER
 
     authority  d0743e72da3fa650d8eb59ed4f41fb89f4e4663c3ea7f8694d257ed9c86a1dad

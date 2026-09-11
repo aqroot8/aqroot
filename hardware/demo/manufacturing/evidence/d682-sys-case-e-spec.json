@@ -1,0 +1,232 @@
+{
+ "schema": 1,
+ "note": "D-682: D-678 section 1 case `e` -- the SMALLEST cut that moves /01_POWER_TREE/BQ25185_SYS, TWO edges for SIX units across TWO nets, `B.Cu` pour 78.844 -> 94.245 mm2.  D-678 measured the cut with a PRIVATE ZONE_FILLER copy and then could not buy it: the obstacle model carries no zone, so a bare --detour-spec relay puts each track back where it was, and the reserve discs that stop it were reported NO_PATH at a 45 mm budget.  D-680 section 4 then established that a relay's `max_mm` is ALSO its wavefront STEP budget, so every pre-D-680 NO_PATH taken under a bound is a refusal of the BUDGET and not of the geometry.  This asks the same transaction again at 120 mm.  The discs are r 0.55 (a 0.70 mm stamp: 0.200 mm of track plus the zone's own 0.250 mm clearance twice, which is exactly the 0.7010 mm D-678 measured holding C26.2 off C24.1's cluster) and are trimmed 0.65 mm clear of every terminal so no disc lies over a U12 land.",
+ "detours": [
+  {
+   "net": "Net-(U12-PG)",
+   "relay": true,
+   "max_mm": 120,
+   "tracks": [
+    {
+     "layer": "B.Cu",
+     "a_mm": [
+      62.025,
+      100.325
+     ],
+     "b_mm": [
+      64.525,
+      102.8
+     ],
+     "width_mm": 0.2,
+     "count": 1
+    }
+   ]
+  },
+  {
+   "net": "Net-(U12-PS_SYNC)",
+   "relay": true,
+   "max_mm": 120,
+   "tracks": [
+    {
+     "layer": "B.Cu",
+     "a_mm": [
+      62.325,
+      104.575
+     ],
+     "b_mm": [
+      62.9,
+      104.05
+     ],
+     "width_mm": 0.2,
+     "count": 1
+    },
+    {
+     "layer": "B.Cu",
+     "a_mm": [
+      62.9,
+      104.05
+     ],
+     "b_mm": [
+      64.25,
+      104.05
+     ],
+     "width_mm": 0.2,
+     "count": 1
+    },
+    {
+     "layer": "B.Cu",
+     "a_mm": [
+      64.25,
+      104.05
+     ],
+     "b_mm": [
+      64.95,
+      103.425
+     ],
+     "width_mm": 0.2,
+     "count": 1
+    },
+    {
+     "layer": "B.Cu",
+     "a_mm": [
+      64.95,
+      103.425
+     ],
+     "b_mm": [
+      65.6,
+      103.55
+     ],
+     "width_mm": 0.2,
+     "count": 1
+    },
+    {
+     "layer": "B.Cu",
+     "a_mm": [
+      65.6,
+      102.8
+     ],
+     "b_mm": [
+      65.6,
+      103.55
+     ],
+     "width_mm": 0.2,
+     "count": 1
+    }
+   ]
+  }
+ ],
+ "reserve": [
+  {
+   "x_mm": 62.487,
+   "y_mm": 100.782,
+   "r_mm": 0.55,
+   "layers": [
+    "B"
+   ],
+   "exempt": [
+    "/01_POWER_TREE/BQ25185_SYS"
+   ]
+  },
+  {
+   "x_mm": 62.842,
+   "y_mm": 101.134,
+   "r_mm": 0.55,
+   "layers": [
+    "B"
+   ],
+   "exempt": [
+    "/01_POWER_TREE/BQ25185_SYS"
+   ]
+  },
+  {
+   "x_mm": 63.198,
+   "y_mm": 101.486,
+   "r_mm": 0.55,
+   "layers": [
+    "B"
+   ],
+   "exempt": [
+    "/01_POWER_TREE/BQ25185_SYS"
+   ]
+  },
+  {
+   "x_mm": 63.553,
+   "y_mm": 101.838,
+   "r_mm": 0.55,
+   "layers": [
+    "B"
+   ],
+   "exempt": [
+    "/01_POWER_TREE/BQ25185_SYS"
+   ]
+  },
+  {
+   "x_mm": 63.908,
+   "y_mm": 102.189,
+   "r_mm": 0.55,
+   "layers": [
+    "B"
+   ],
+   "exempt": [
+    "/01_POWER_TREE/BQ25185_SYS"
+   ]
+  },
+  {
+   "x_mm": 62.805,
+   "y_mm": 104.137,
+   "r_mm": 0.55,
+   "layers": [
+    "B"
+   ],
+   "exempt": [
+    "/01_POWER_TREE/BQ25185_SYS"
+   ]
+  },
+  {
+   "x_mm": 63.271,
+   "y_mm": 104.05,
+   "r_mm": 0.55,
+   "layers": [
+    "B"
+   ],
+   "exempt": [
+    "/01_POWER_TREE/BQ25185_SYS"
+   ]
+  },
+  {
+   "x_mm": 63.771,
+   "y_mm": 104.05,
+   "r_mm": 0.55,
+   "layers": [
+    "B"
+   ],
+   "exempt": [
+    "/01_POWER_TREE/BQ25185_SYS"
+   ]
+  },
+  {
+   "x_mm": 64.266,
+   "y_mm": 104.036,
+   "r_mm": 0.55,
+   "layers": [
+    "B"
+   ],
+   "exempt": [
+    "/01_POWER_TREE/BQ25185_SYS"
+   ]
+  },
+  {
+   "x_mm": 64.639,
+   "y_mm": 103.703,
+   "r_mm": 0.55,
+   "layers": [
+    "B"
+   ],
+   "exempt": [
+    "/01_POWER_TREE/BQ25185_SYS"
+   ]
+  },
+  {
+   "x_mm": 65.031,
+   "y_mm": 103.441,
+   "r_mm": 0.55,
+   "layers": [
+    "B"
+   ],
+   "exempt": [
+    "/01_POWER_TREE/BQ25185_SYS"
+   ]
+  },
+  {
+   "x_mm": 65.522,
+   "y_mm": 103.535,
+   "r_mm": 0.55,
+   "layers": [
+    "B"
+   ],
+   "exempt": [
+    "/01_POWER_TREE/BQ25185_SYS"
+   ]
+  }
+ ]
+}

@@ -23,6 +23,48 @@
 > `verify_promotion` PASS and `protected_copper` showing exactly one protected
 > net moved.  `U14.7` is on the bus.  This board has **no open owner decision**.
 
+- **Demo D-682 addendum 2 (THE #1 BLOCKER'S TWO UNSPENT LEVERS, BOTH SPENT:
+  D-678's CHEAPEST CUT IS NOT A BUDGET ARTEFACT, AND THE `In2` POUR IS NOT
+  VACUOUS FOR THE REASON D-678 GAVE — IT IS A 0.65 mm BARREL SHORT):**  **NO
+  COPPER PROMOTED.**  Authority **UNCHANGED** at
+  `d0743e72da3fa650d8eb59ed4f41fb89f4e4663c3ea7f8694d257ed9c86a1dad`; 23 -> 23;
+  `hardware/demo/kicad`, `hardware/demo/fab` and `hardware/beta-v2`
+  **UNTOUCHED**.  Three gate runs (`evidence/d682-sys-two-levers.json`).
+  **(1) CASE `e` IS GEOMETRY.**  D-678's cheapest cut — `Net-(U12-PG)`'s
+  diagonal plus `Net-(U12-PS_SYNC)`'s five-segment chain, TWO edges for SIX
+  units — was refused at a 45 mm relay budget, and D-680 §4 later proved a
+  relay's `max_mm` is ALSO its wavefront STEP budget.  Re-asked at **120 mm**
+  with 12 discs whose 0.70 mm stamp is exactly the 0.7010 mm D-678 measured
+  holding `C26.2` off `C24.1` (`screen_relay_bindability` **BINDABLE**, not
+  vacuous): **BOTH relays `NO_PATH`.**  2.7x the budget changes nothing —
+  D-678 §2's reading stands, and the **WROOM antenna keepout
+  (64.5,104.0)-(85.5,152.0) on ALL SIX LAYERS** leaves ONE corridor with THREE
+  claimants.
+  **(2) THE `In2` POUR WAS RETIRED ON THE WRONG PRIMITIVE.**  D-678 §6 asked it
+  with `--bridge`, which needs same-net filled copper on two layers over each
+  other; the STITCH — escape, run, barrel from the LAND — was never asked.
+  Asked three ways over `(58.5,72.0)-(71.0,99.0)`: the pour **fills, `DRC`
+  exit 0, `attributable_drc []`** in all three, and with `--escape-floor
+  --neck --stitch-width 500000 --stitch-via 500000:250000` it **stitches
+  `SW9.2` in 2.404 mm with one barrel**.  Every remaining land now fails on ONE
+  sentence: *no legal **0.65 mm** barrel within 8.0 mm of any escape* — and
+  0.65 mm is `SYS_MAIN`'s own `.kicad_dru` class floor the stitch is clamped up
+  to.  **Not a radius finding and not a width finding: a BARREL DIAMETER
+  finding**, the D-606 / D-595 shape.  A 0.35/0.20 mm barrel carries 1.457 A
+  against `SYS_MAIN`'s 2.190 A — a real derating for `U11.1` / `U12.10` /
+  `U12.11`, and **none at all** for `C26.2`, `C27.1` and `SW9.2`, which are two
+  capacitor terminals and a switch contact.  RECORDED, NOT TAKEN.
+  **(3) WHAT SIZES THE REFLOORPLAN.**  `U12`'s south pad row is at y = 102.8
+  and the six-layer keepout starts at y = 104.0: **1.2 mm** of corridor for a
+  pour, a `PG` and a `PS_SYNC`.  `U12` alone can move ~1.0 mm north before its
+  north pads meet `L1` (94.6..98.6); moving `L1` too — `TP13` at (65.5,93.0) is
+  the only part in its way and it is a TEST POINT — buys about **3.4 mm**,
+  three times today's corridor.
+  **NEXT:** (1) the `U12`/`L1` refloorplan — the only remaining lever on 6 of
+  23 edges.  (2) a `SYS` fine-barrel decision for the three capacitor/switch
+  lands into the already-DRC-clean `In2` pour: two or three edges without
+  touching the congested corridor.  (3) `/ACC_5V_LX` as a `GND` class-floor
+  question.  (4) `U16.3` only by moving `U16`.
 - **Demo D-682 addendum (THE GATE'S OWN LAUNCHER, ASKED FOR THE FIRST TIME:
   `U16.3` IS SEALED IN 66 CELLS, AND WHEN THE CHANNEL IS OPENED IT REACHES
   57 679 AND STILL CANNOT GET SOUTH OF PROTECTED COPPER):**  **NO COPPER

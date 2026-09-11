@@ -1,0 +1,238 @@
+{
+ "schema": 1,
+ "decision": "D-682 addendum 2",
+ "board": "/home/aqroot8/aqroot-demo/hardware/demo/kicad/aqroot-demo/aqroot-Beta-v2.kicad_pcb",
+ "board_sha256": "d0743e72da3fa650d8eb59ed4f41fb89f4e4663c3ea7f8694d257ed9c86a1dad",
+ "question": "two unspent levers on /01_POWER_TREE/BQ25185_SYS, the board's #1 fabrication blocker: (1) D-678 case `e` re-asked at a budget D-680 proved was the real binder, (2) the In2 bounded pour asked with the STITCH instead of --bridge",
+ "arms": [
+  {
+   "run": "w/d682/syse/gate-summary.json",
+   "why": "D-678 case `e`: PG's diagonal + PS_SYNC's 5-chain, RELAYED between their own ends around 12 reserve discs, at a 120 mm budget instead of D-678's 45 mm",
+   "refused_clauses": [
+    "attributable_drc",
+    "board_improved",
+    "every_detour_relaid",
+    "no_regression"
+   ],
+   "connectivity": {
+    "nets_improved": [],
+    "nets_regressed": [
+     "Net-(U12-PG)"
+    ],
+    "open_retained_nets_after": 16,
+    "open_retained_nets_before": 15,
+    "retained_open_edges_after": 24,
+    "retained_open_edges_before": 23
+   },
+   "drc_types": {
+    "lib_footprint_issues": 199,
+    "solder_mask_bridge": 1,
+    "track_dangling": 2
+   },
+   "attributable_drc": [
+    "track_dangling",
+    "track_dangling"
+   ],
+   "plane": null,
+   "detour": {
+    "all_relaid": false,
+    "failed": [
+     {
+      "net": "Net-(U12-PG)",
+      "reason": "NO_PATH",
+      "why": "no all-layer corridor at 0.200 mm between the two ends of this track once the site is reserved, inside the 120.000 mm budget, on a 0.0500 mm lattice"
+     },
+     {
+      "net": "Net-(U12-PS_SYNC)",
+      "reason": "NO_PATH",
+      "why": "no all-layer corridor at 0.200 mm between the two ends of this track once the site is reserved, inside the 120.000 mm budget, on a 0.0500 mm lattice"
+     }
+    ]
+   },
+   "stitched": null,
+   "unreachable": null,
+   "stitch_mm": null,
+   "stitch_vias": null,
+   "failures": []
+  },
+  {
+   "run": "w/d682/sysplane/gate-summary.json",
+   "why": "In2 bounded pour (58.5,72.0)-(71.0,99.0) + the STITCH at the SYS_MAIN netclass (0.800 mm run, 0.80 mm barrel) with --body-landing",
+   "refused_clauses": [
+    "board_improved"
+   ],
+   "connectivity": {
+    "nets_improved": [],
+    "nets_regressed": [],
+    "open_retained_nets_after": 15,
+    "open_retained_nets_before": 15,
+    "retained_open_edges_after": 23,
+    "retained_open_edges_before": 23
+   },
+   "drc_types": {
+    "lib_footprint_issues": 199,
+    "solder_mask_bridge": 1
+   },
+   "attributable_drc": [],
+   "plane": {
+    "clearance": 0.25,
+    "first_fill_exit": 0,
+    "kind": "POUR",
+    "layer": "In2.Cu",
+    "name": "In2 /01_POWER_TREE/BQ25185_SYS POUR",
+    "outline": [
+     [
+      58.5,
+      72.0
+     ],
+     [
+      71.0,
+      72.0
+     ],
+     [
+      71.0,
+      99.0
+     ],
+     [
+      58.5,
+      99.0
+     ]
+    ]
+   },
+   "detour": null,
+   "stitched": 0,
+   "unreachable": 8,
+   "stitch_mm": 0,
+   "stitch_vias": 0,
+   "failures": [
+    {
+     "pad": "C26.2",
+     "reason": "NO_BODY_VIA_SITE",
+     "why": "no legal 0.80 mm barrel INSIDE THIS NET'S OWN BODY POUR within 8.0 mm of any escape"
+    },
+    {
+     "pad": "C27.1",
+     "reason": "NO_BODY_VIA_SITE",
+     "why": "no legal 0.80 mm barrel INSIDE THIS NET'S OWN BODY POUR within 8.0 mm of any escape"
+    },
+    {
+     "pad": "SW9.2",
+     "reason": "NO_BODY_VIA_SITE",
+     "why": "no legal 0.80 mm barrel INSIDE THIS NET'S OWN BODY POUR within 8.0 mm of any escape"
+    },
+    {
+     "pad": "L4.1",
+     "reason": "NO_BODY_VIA_SITE",
+     "why": "no legal 0.80 mm barrel INSIDE THIS NET'S OWN BODY POUR within 8.0 mm of any escape"
+    },
+    {
+     "pad": "R68.1",
+     "reason": "NO_BODY_VIA_SITE",
+     "why": "no legal 0.80 mm barrel INSIDE THIS NET'S OWN BODY POUR within 8.0 mm of any escape"
+    },
+    {
+     "pad": "U11.1",
+     "reason": "NO_LEGAL_ESCAPE",
+     "why": "U11.1: NO LEGAL ESCAPE at >= 0.800 mm; blocked by U11.2 (x49), R36.1 (x9), R37.2 (x4), C27.2 (x3)"
+    },
+    {
+     "pad": "U12.10",
+     "reason": "NO_LEGAL_ESCAPE",
+     "why": "U12.10: NO LEGAL ESCAPE at >= 0.800 mm; blocked by U12.9 (x37), U12.8 (x26), U12.4 (x5), C24.2 (x3)"
+    },
+    {
+     "pad": "U13.3",
+     "reason": "NO_LEGAL_ESCAPE",
+     "why": "U13.3: NO LEGAL ESCAPE at >= 0.800 mm; blocked by U13.2 (x36), U13.1 (x23), C34.1 (x8), L2.2 (x5)"
+    }
+   ]
+  },
+  {
+   "run": "w/d682/sysplane3/gate-summary.json",
+   "why": "the same pour with --escape-floor --neck --stitch-width 500000 --stitch-via 500000:250000 and no --body-landing",
+   "refused_clauses": [
+    "board_improved"
+   ],
+   "connectivity": {
+    "nets_improved": [],
+    "nets_regressed": [],
+    "open_retained_nets_after": 15,
+    "open_retained_nets_before": 15,
+    "retained_open_edges_after": 23,
+    "retained_open_edges_before": 23
+   },
+   "drc_types": {
+    "lib_footprint_issues": 199,
+    "solder_mask_bridge": 1
+   },
+   "attributable_drc": [],
+   "plane": {
+    "clearance": 0.25,
+    "first_fill_exit": 0,
+    "kind": "POUR",
+    "layer": "In2.Cu",
+    "name": "In2 /01_POWER_TREE/BQ25185_SYS POUR",
+    "outline": [
+     [
+      58.5,
+      72.0
+     ],
+     [
+      71.0,
+      72.0
+     ],
+     [
+      71.0,
+      99.0
+     ],
+     [
+      58.5,
+      99.0
+     ]
+    ]
+   },
+   "detour": null,
+   "stitched": 1,
+   "unreachable": 7,
+   "stitch_mm": 2.404,
+   "stitch_vias": 1,
+   "failures": [
+    {
+     "pad": "C26.2",
+     "reason": "NO_VIA_SITE",
+     "why": "no legal 0.65 mm barrel within 8.0 mm of any escape"
+    },
+    {
+     "pad": "C27.1",
+     "reason": "NO_VIA_SITE",
+     "why": "no legal 0.65 mm barrel within 8.0 mm of any escape"
+    },
+    {
+     "pad": "L4.1",
+     "reason": "NO_VIA_SITE",
+     "why": "no legal 0.65 mm barrel within 8.0 mm of any escape"
+    },
+    {
+     "pad": "R68.1",
+     "reason": "NO_VIA_SITE",
+     "why": "no legal 0.65 mm barrel within 8.0 mm of any escape"
+    },
+    {
+     "pad": "U11.1",
+     "reason": "NO_LEGAL_ESCAPE",
+     "why": "U11.1: NO LEGAL ESCAPE at >= 0.500 mm; blocked by U11.2 (x54), R36.1 (x7), R37.2 (x3), C36.2 (x3)"
+    },
+    {
+     "pad": "U12.10",
+     "reason": "NO_VIA_SITE",
+     "why": "no legal 0.65 mm barrel within 8.0 mm of any escape"
+    },
+    {
+     "pad": "U13.3",
+     "reason": "NO_VIA_SITE",
+     "why": "no legal 0.65 mm barrel within 8.0 mm of any escape"
+    }
+   ]
+  }
+ ]
+}
