@@ -23,6 +23,68 @@
 > `verify_promotion` PASS and `protected_copper` showing exactly one protected
 > net moved.  `U14.7` is on the bus.  This board has **no open owner decision**.
 
+- **Demo D-683 (THE I2C TEST POINT WAS IN A SEALED POCKET AND A TEST POINT IS
+  NOT A PART: MOVED 35 mm AND TAPPED ONTO ITS OWN BUS IN 1.515 mm; AND THE
+  `SYS` SEAM IS `U12.13`'s ONLY DOOR):**  **COPPER PROMOTED.**  Authority
+  `d0743e72da3fa650d8eb59ed4f41fb89f4e4663c3ea7f8694d257ed9c86a1dad` ->
+  **`d7ed92a58300c69c5d4c1770200f5aed641a079ea0b743afb54a6ab467b72706`**;
+  retained open edges **23 -> 22**, open retained nets 15 -> 15,
+  `/I2C_SCL_INT` **2 -> 1**.  `hardware/beta-v2` **UNTOUCHED**;
+  `hardware/demo/fab` **REGENERATED** and `fab_package_contract` **PASS 8/8**.
+  Gate **15 of 15, `refused_clauses []`**; `verify_promotion.py --ref HEAD`
+  **PASS 15/15** with `D-186_bat_main_class` and
+  `D-269_bat_main_routed_clearance` **TRUE**; `placement_contract.py --ref HEAD
+  --move TP5:-8855329:-33919361` **PASS 9/9 including PL9**;
+  `protected_copper.py` **IDENTICAL** (15 nets / 402 objects,
+  `differences {}`); standing suite **14/14 RAN, `vacuous` false**, ONE verdict
+  moved and it is the declared placement.
+  **(1) A TEST POINT IS NOT A PART.**  `TP5` (`I2C_SCL_TEST`) sat at
+  (50.855,145.919) in the `J3`/`U10`/`R32`/`R33` pocket UNDER the WROOM, and
+  every instrument refused it there: the whole-board maze `NO_PATH`, the TAP
+  `NO_PATH` from all six sites.  It has no function, no netlist neighbour and
+  no mechanical constraint, so it was **MOVED 35.0 mm to (42.000,112.000)** --
+  one of **1175** sites on this board that are clean at >= 0.200 mm with **no
+  courtyard clash**, ranked by distance to `/I2C_SCL_INT`'s own copper.
+  **(2) THE NEAREST SITE WAS THE WRONG ONE, TWICE.**  (43.0,111.0) is 0.22 mm
+  from the bus: the MAZE closes it at 45.925 mm / 4 barrels with one
+  `copper_sliver`, and the TAP closes it in 1.841 mm with its barrel **inside
+  the moved land**, which `placement_contract` **PL9** refuses.  **A tap barrel
+  sits on its TARGET, not on its land** -- so the site was moved OUT 1.4 mm on
+  purpose.  **(3) PROMOTED:** 3 tracks + 1 via, **1.515 mm**, zero removed,
+  tapping `/I2C_SCL_INT`'s own `In2.Cu` haul; DRC exit 0,
+  `attributable_drc []`.
+  **(4) THE `SYS` SEAM, REDUCED TO ONE SENTENCE.**  The shortest gap between
+  any two of `BQ25185_SYS`'s seven `B.Cu` pours is **0.701 mm** --
+  `C24`'s pour to `C26`'s pour on the line (62.535,103.909)-(63.008,104.426) --
+  and the ONLY foreign copper in it is `Net-(U12-PS_SYNC)`.  Evicting that one
+  net takes `SYS` **6 -> 5 with ZERO new copper, by REFILL**.  It cannot be
+  bought: `PS_SYNC` re-routes fully (68.639 mm) and takes the seam back, and
+  with the seam reserved (five discs, r 0.25, `B.Cu` only, `SYS` exempt)
+  `U12.13` is **`NO_PATH` on `F`, `B` AND `In2`**.  ***`U12.13`'s only exit
+  from the `TPS63020` south pad row is the exact channel the `SYS` rail needs.
+  One or the other.***
+  **(5) TWO NEW, VERIFIED NUMBERS FOR THE NEXT TRANSACTION.**  `U12` moves
+  **0.300 mm north for EIGHT `GND` objects** with the ledger unmoved (23 -> 23)
+  -- but it raises two clearance errors (`U12.5` vs `Net-(L1-Pad2)` 0.1804 mm,
+  the `V3V3_FB` barrel vs `U12.2` 0.1482 mm) so it must ride with their
+  re-route; and `U12.10`/`U12.11`'s pour fragment is **0.918 mm wide and admits
+  NO 0.800 mm conductor at ANY placement** (`NO_ANCHOR`) -- `SYS_MAIN`'s width
+  is not layable at the `TPS63020`'s 0.5 mm pitch, so the instrument is a
+  `PAD_ESCAPE_U12_10/11` relief licence, exactly as `U12.4` already has.
+  **(6) THREE MORE WALLS PRICED.**  `/USB_D_MCU_*` is ARITHMETIC: `MCU_P`
+  routes 32.634 mm and blows the board's own `diff_pair_uncoupled (max 25mm)`
+  BY ITSELF, the two direct distances sum to 46 mm, and a COUPLED pair needs a
+  0.640 mm envelope where the `WROOM` fanout admits **0.300 mm and refuses
+  0.400 mm** -- a fanout refloorplan, 3 of 22 edges.  `/WAKE_INT_N` ROUTES, at
+  148.224 mm with 15 barrels, and **severs a four-pad `+3V3` island** --
+  REFUSED ON PRICE.  `/BQ25185_STAT1` `U11.9` and `/BQ25185_STAT2` `U11.3` are
+  MIDDLE PINS of a 0.4 mm-pitch column: package-pitch walls, not corridors.
+  **NEXT:** (1) `BQ25185_SYS` 6 of 22 -- the `PAD_ESCAPE_U12_10/11` relief
+  licence, then the `U12` shift riding with `Net-(L1-Pad2)` + the `V3V3_FB`
+  barrel; `U12.13` needs its own door first.  (2) the USB MCU fanout (1.04 mm
+  of coupled channel where there is 0.35 mm).  (3) `/I2C_SCL_INT` `U16.3`, a
+  `U16` placement question.  (4) the vendor land-pattern and `J3`/`MK1`
+  footprint walls.  **NO OPEN OWNER DECISION.**
 - **Demo D-682 addendum 3 (A CORRECTION TO MY OWN RECOMMENDATION: THE `In2`
   `SYS` POUR COSTS 185 OF THIS BOARD'S 211 NETS THEIR THIRD ROUTABLE LAYER, AND
   IS REFUSED):**  **NO COPPER PROMOTED.**  Authority **UNCHANGED** at

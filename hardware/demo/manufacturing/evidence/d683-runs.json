@@ -1,0 +1,734 @@
+{
+ "arms": [
+  {
+   "attributable_drc_n": 1,
+   "connectivity": {
+    "nets_improved": [
+     "/USB_D_MCU_P"
+    ],
+    "nets_regressed": [],
+    "open_retained_nets_after": 14,
+    "open_retained_nets_before": 15,
+    "retained_open_edges_after": 22,
+    "retained_open_edges_before": 23
+   },
+   "drc_types": {
+    "diff_pair_uncoupled_length_too_long": 1,
+    "lib_footprint_issues": 199,
+    "solder_mask_bridge": 1
+   },
+   "refused_clauses": [
+    "attributable_drc"
+   ],
+   "routed": [
+    {
+     "failures": [
+      {
+       "a": [
+        "R33.2"
+       ],
+       "b": [
+        "U1.13"
+       ],
+       "gap_mm": 21.858,
+       "reason": "NO_PATH",
+       "why": "no all-layer corridor at 0.250 mm between the islands"
+      }
+     ],
+     "mm": null,
+     "net": "/USB_D_MCU_N",
+     "ok": false,
+     "vias": null
+    },
+    {
+     "failures": [],
+     "mm": 32.634,
+     "net": "/USB_D_MCU_P",
+     "ok": true,
+     "vias": 4
+    }
+   ],
+   "run": "w/d683/usb1.json",
+   "why": "USB: /USB_D_MCU_P routes 32.634 mm / 4 vias and FAILS the 25 mm diff-pair uncoupled budget by itself; /USB_D_MCU_N is NO_PATH"
+  },
+  {
+   "attributable_drc_n": 0,
+   "connectivity": {
+    "nets_improved": [
+     "/01_POWER_TREE/BQ25185_SYS"
+    ],
+    "nets_regressed": [
+     "Net-(U12-PS_SYNC)"
+    ],
+    "open_retained_nets_after": 16,
+    "open_retained_nets_before": 15,
+    "retained_open_edges_after": 23,
+    "retained_open_edges_before": 23
+   },
+   "drc_types": {
+    "lib_footprint_issues": 199,
+    "solder_mask_bridge": 1
+   },
+   "refused_clauses": [
+    "board_improved",
+    "no_regression"
+   ],
+   "routed": [
+    {
+     "failures": [
+      {
+       "reason": "NO_VIA_SITE",
+       "why": "no legal 0.80 mm barrel within 8.0 mm of any escape"
+      },
+      {
+       "reason": "NO_LEGAL_ESCAPE",
+       "why": "U13.3: NO LEGAL ESCAPE at >= 0.800 mm; blocked by U13.2 (x36), U13.1 (x23), C34.1 (x8), L2.2 (x5)"
+      }
+     ],
+     "mm": 0,
+     "net": "/01_POWER_TREE/BQ25185_SYS",
+     "ok": true,
+     "vias": 0
+    },
+    {
+     "failures": [
+      {
+       "a": [
+        "TP14.1",
+        "R42.2"
+       ],
+       "b": [
+        "U12.13"
+       ],
+       "gap_mm": 33.18,
+       "reason": "NO_PATH",
+       "why": "no all-layer corridor at 0.200 mm between the islands"
+      },
+      {
+       "a": [
+        "TP14.1",
+        "R42.2"
+       ],
+       "b": [
+        "U12.13"
+       ],
+       "gap_mm": 51.206,
+       "reason": "NO_PATH",
+       "why": "no all-layer corridor at 0.200 mm between the islands"
+      }
+     ],
+     "mm": 29.832,
+     "net": "Net-(U12-PS_SYNC)",
+     "ok": true,
+     "vias": 2
+    }
+   ],
+   "run": "w/d683/sysA.json",
+   "why": "SYS: evict Net-(U12-PS_SYNC) WHOLE -- SYS 6 -> 5 edges with ZERO new copper, purely by REFILL; PS_SYNC then cannot re-reach U12.13"
+  },
+  {
+   "attributable_drc_n": 0,
+   "connectivity": {
+    "nets_improved": [],
+    "nets_regressed": [],
+    "open_retained_nets_after": 15,
+    "open_retained_nets_before": 15,
+    "retained_open_edges_after": 23,
+    "retained_open_edges_before": 23
+   },
+   "drc_types": {
+    "lib_footprint_issues": 199,
+    "solder_mask_bridge": 1
+   },
+   "refused_clauses": [
+    "board_improved"
+   ],
+   "routed": [
+    {
+     "failures": [],
+     "mm": 68.639,
+     "net": "Net-(U12-PS_SYNC)",
+     "ok": true,
+     "vias": 4
+    }
+   ],
+   "run": "w/d683/psA.json",
+   "why": "CONTROL: PS_SYNC alone re-routes fully (68.639 mm / 4 vias) and takes the SAME seam back, so SYS gains nothing"
+  },
+  {
+   "attributable_drc_n": 0,
+   "connectivity": {
+    "nets_improved": [
+     "/01_POWER_TREE/BQ25185_SYS"
+    ],
+    "nets_regressed": [
+     "Net-(U12-PS_SYNC)"
+    ],
+    "open_retained_nets_after": 16,
+    "open_retained_nets_before": 15,
+    "retained_open_edges_after": 23,
+    "retained_open_edges_before": 23
+   },
+   "drc_types": {
+    "lib_footprint_issues": 199,
+    "solder_mask_bridge": 1
+   },
+   "refused_clauses": [
+    "board_improved",
+    "no_regression"
+   ],
+   "routed": [
+    {
+     "failures": [
+      {
+       "a": [
+        "TP14.1",
+        "R42.2"
+       ],
+       "b": [
+        "U12.13"
+       ],
+       "gap_mm": 33.18,
+       "reason": "NO_PATH",
+       "why": "no all-layer corridor at 0.200 mm between the islands"
+      },
+      {
+       "a": [
+        "TP14.1",
+        "R42.2"
+       ],
+       "b": [
+        "U12.13"
+       ],
+       "gap_mm": 51.206,
+       "reason": "NO_PATH",
+       "why": "no all-layer corridor at 0.200 mm between the islands"
+      }
+     ],
+     "mm": 29.832,
+     "net": "Net-(U12-PS_SYNC)",
+     "ok": true,
+     "vias": 2
+    },
+    {
+     "failures": [
+      {
+       "reason": "NO_VIA_SITE",
+       "why": "no legal 0.80 mm barrel within 8.0 mm of any escape"
+      },
+      {
+       "reason": "NO_LEGAL_ESCAPE",
+       "why": "U13.3: NO LEGAL ESCAPE at >= 0.800 mm; blocked by U13.2 (x36), U13.1 (x23), C34.1 (x8), L2.2 (x5)"
+      }
+     ],
+     "mm": 0,
+     "net": "/01_POWER_TREE/BQ25185_SYS",
+     "ok": true,
+     "vias": 0
+    }
+   ],
+   "run": "w/d683/seamB.json",
+   "why": "SYS: the seam reserved by FIVE discs (r 0.25) on B.Cu only -- U12.13 is NO_PATH on F, B and In2. The seam is U12.13s ONLY exit"
+  },
+  {
+   "attributable_drc_n": 2,
+   "connectivity": {
+    "nets_improved": [
+     "/01_POWER_TREE/BQ25185_SYS"
+    ],
+    "nets_regressed": [
+     "Net-(U12-PS_SYNC)"
+    ],
+    "open_retained_nets_after": 16,
+    "open_retained_nets_before": 15,
+    "retained_open_edges_after": 23,
+    "retained_open_edges_before": 23
+   },
+   "drc_types": {
+    "clearance": 2,
+    "lib_footprint_issues": 199,
+    "solder_mask_bridge": 1
+   },
+   "refused_clauses": [
+    "attributable_drc",
+    "board_improved",
+    "no_regression"
+   ],
+   "routed": [
+    {
+     "failures": [
+      {
+       "a": [
+        "TP14.1",
+        "R42.2"
+       ],
+       "b": [
+        "U12.13"
+       ],
+       "gap_mm": 33.377,
+       "reason": "NO_PATH",
+       "why": "no all-layer corridor at 0.200 mm between the islands"
+      },
+      {
+       "a": [
+        "TP14.1",
+        "R42.2"
+       ],
+       "b": [
+        "U12.13"
+       ],
+       "gap_mm": 51.309,
+       "reason": "NO_PATH",
+       "why": "no all-layer corridor at 0.200 mm between the islands"
+      }
+     ],
+     "mm": 29.832,
+     "net": "Net-(U12-PS_SYNC)",
+     "ok": true,
+     "vias": 2
+    },
+    {
+     "failures": [
+      {
+       "reason": "NO_VIA_SITE",
+       "why": "no legal 0.80 mm barrel within 8.0 mm of any escape"
+      },
+      {
+       "reason": "NO_LEGAL_ESCAPE",
+       "why": "U13.3: NO LEGAL ESCAPE at >= 0.800 mm; blocked by U13.2 (x36), U13.1 (x23), C34.1 (x8), L2.2 (x5)"
+      }
+     ],
+     "mm": 0,
+     "net": "/01_POWER_TREE/BQ25185_SYS",
+     "ok": true,
+     "vias": 0
+    }
+   ],
+   "run": "w/d683/shiftB.json",
+   "why": "SYS: same question with U12 shifted 0.300 mm north -- still NO_PATH, and the shift itself raises two clearance errors on the L1-Pad2 / V3V3_FB side"
+  },
+  {
+   "attributable_drc_n": 0,
+   "connectivity": {
+    "nets_improved": [
+     "/WAKE_INT_N"
+    ],
+    "nets_regressed": [
+     "+3V3"
+    ],
+    "open_retained_nets_after": 14,
+    "open_retained_nets_before": 15,
+    "retained_open_edges_after": 23,
+    "retained_open_edges_before": 23
+   },
+   "drc_types": {
+    "lib_footprint_issues": 199,
+    "solder_mask_bridge": 1
+   },
+   "refused_clauses": [
+    "board_improved",
+    "no_regression"
+   ],
+   "routed": [
+    {
+     "failures": [],
+     "mm": 148.224,
+     "net": "/WAKE_INT_N",
+     "ok": true,
+     "vias": 15
+    },
+    {
+     "failures": [
+      {
+       "a": [
+        "U2.20"
+       ],
+       "b": [
+        "U8.13"
+       ],
+       "gap_mm": 78.249,
+       "reason": "NO_PATH",
+       "why": "no all-layer corridor at 0.200 mm between the islands"
+      }
+     ],
+     "mm": null,
+     "net": "/SX1262_DIO1",
+     "ok": false,
+     "vias": null
+    },
+    {
+     "failures": [
+      {
+       "a": [
+        "U11.9"
+       ],
+       "b": [
+        "U2.9"
+       ],
+       "gap_mm": 16.613,
+       "reason": "NO_LEGAL_ESCAPE_SRC",
+       "why": "U11.9: NO LEGAL ESCAPE at >= 0.200 mm; blocked by U11.10 (x18), U11.7 (x16), U11.6 (x7), track (x6)"
+      },
+      {
+       "a": [
+        "R127.2",
+        "TP6.1"
+       ],
+       "b": [
+        "U2.9"
+       ],
+       "gap_mm": 18.517,
+       "reason": "NO_PATH",
+       "why": "no all-layer corridor at 0.200 mm between the islands"
+      }
+     ],
+     "mm": null,
+     "net": "/BQ25185_STAT1",
+     "ok": false,
+     "vias": null
+    },
+    {
+     "failures": [
+      {
+       "a": [
+        "U11.3"
+       ],
+       "b": [
+        "U2.10"
+       ],
+       "gap_mm": 14.6,
+       "reason": "NO_LEGAL_ESCAPE_SRC",
+       "why": "U11.3: NO LEGAL ESCAPE at >= 0.200 mm; blocked by U11.1 (x23), U11.4 (x18), U11.8 (x5), R37.2 (x4)"
+      },
+      {
+       "a": [
+        "R128.2",
+        "TP7.1"
+       ],
+       "b": [
+        "U2.10"
+       ],
+       "gap_mm": 15.407,
+       "reason": "NO_PATH",
+       "why": "no all-layer corridor at 0.200 mm between the islands"
+      }
+     ],
+     "mm": null,
+     "net": "/BQ25185_STAT2",
+     "ok": false,
+     "vias": null
+    }
+   ],
+   "run": "w/d683/probe1.json",
+   "why": "FRONTIER: /SX1262_DIO1, /BQ25185_STAT1 and /BQ25185_STAT2 all refuse; /WAKE_INT_N routes only at 148.224 mm with 15 vias"
+  },
+  {
+   "attributable_drc_n": 0,
+   "connectivity": {
+    "nets_improved": [
+     "/WAKE_INT_N"
+    ],
+    "nets_regressed": [
+     "+3V3"
+    ],
+    "open_retained_nets_after": 14,
+    "open_retained_nets_before": 15,
+    "retained_open_edges_after": 23,
+    "retained_open_edges_before": 23
+   },
+   "drc_types": {
+    "lib_footprint_issues": 199,
+    "solder_mask_bridge": 1
+   },
+   "refused_clauses": [
+    "board_improved",
+    "no_regression"
+   ],
+   "routed": [
+    {
+     "failures": [],
+     "mm": 148.224,
+     "net": "/WAKE_INT_N",
+     "ok": true,
+     "vias": 15
+    }
+   ],
+   "run": "w/d683/wake2.json",
+   "why": "WAKE_INT_N: the 148 mm route SEVERS a four-pad +3V3 island (C3.1/R127.1/R2.1/R27.1); --repair-planes does not recover it. REFUSED on price"
+  },
+  {
+   "attributable_drc_n": 0,
+   "connectivity": {
+    "nets_improved": [],
+    "nets_regressed": [],
+    "open_retained_nets_after": 15,
+    "open_retained_nets_before": 15,
+    "retained_open_edges_after": 23,
+    "retained_open_edges_before": 23
+   },
+   "drc_types": {
+    "lib_footprint_issues": 199,
+    "solder_mask_bridge": 1
+   },
+   "refused_clauses": [
+    "board_changed",
+    "board_improved"
+   ],
+   "routed": [
+    {
+     "failures": [
+      {
+       "a": [
+        "U1.38",
+        "R20.2",
+        "J1.44",
+        "U2.22",
+        "U14.7",
+        "U4.13",
+        "U3.22"
+       ],
+       "b": [
+        "TP5.1"
+       ],
+       "gap_mm": 13.286,
+       "reason": "NO_PATH",
+       "why": "no all-layer corridor at 0.200 mm between the islands"
+      },
+      {
+       "a": [
+        "U1.38",
+        "R20.2",
+        "J1.44",
+        "U2.22",
+        "U14.7",
+        "U4.13",
+        "U3.22"
+       ],
+       "b": [
+        "U16.3"
+       ],
+       "gap_mm": 15.585,
+       "reason": "NO_PATH",
+       "why": "no all-layer corridor at 0.200 mm between the islands"
+      },
+      {
+       "a": [
+        "TP5.1"
+       ],
+       "b": [
+        "U16.3"
+       ],
+       "gap_mm": 91.71,
+       "reason": "NO_PATH",
+       "why": "no all-layer corridor at 0.200 mm between the islands"
+      }
+     ],
+     "mm": null,
+     "net": "/I2C_SCL_INT",
+     "ok": false,
+     "vias": null
+    }
+   ],
+   "run": "w/d683/scl1.json",
+   "why": "SCL: TP5.1 is NO_PATH at its ORIGINAL placement (50.855, 145.919)"
+  },
+  {
+   "attributable_drc_n": 0,
+   "connectivity": {
+    "nets_improved": [],
+    "nets_regressed": [],
+    "open_retained_nets_after": 15,
+    "open_retained_nets_before": 15,
+    "retained_open_edges_after": 23,
+    "retained_open_edges_before": 23
+   },
+   "drc_types": {
+    "lib_footprint_issues": 199,
+    "solder_mask_bridge": 1
+   },
+   "refused_clauses": [
+    "board_changed",
+    "board_improved"
+   ],
+   "routed": [
+    {
+     "failures": [
+      {
+       "a": [
+        "U1.38",
+        "R20.2",
+        "J1.44",
+        "U2.22",
+        "U14.7",
+        "U4.13",
+        "U3.22"
+       ],
+       "b": [
+        "TP5.1"
+       ],
+       "gap_mm": 13.286,
+       "reason": "NO_PATH",
+       "why": "no all-layer corridor at 0.200 mm between the islands"
+      },
+      {
+       "a": [
+        "U1.38",
+        "R20.2",
+        "J1.44",
+        "U2.22",
+        "U14.7",
+        "U4.13",
+        "U3.22"
+       ],
+       "b": [
+        "U16.3"
+       ],
+       "gap_mm": 15.585,
+       "reason": "NO_PATH",
+       "why": "no all-layer corridor at 0.200 mm between the islands"
+      },
+      {
+       "a": [
+        "TP5.1"
+       ],
+       "b": [
+        "U16.3"
+       ],
+       "gap_mm": 91.71,
+       "reason": "NO_PATH",
+       "why": "no all-layer corridor at 0.200 mm between the islands"
+      }
+     ],
+     "mm": null,
+     "net": "/I2C_SCL_INT",
+     "ok": false,
+     "vias": null
+    }
+   ],
+   "run": "w/d683/scl3.json",
+   "why": "SCL: the TAP is NO_PATH from TP5.1 at its original placement, and NO_LEGAL_ESCAPE for U16.3"
+  },
+  {
+   "attributable_drc_n": 1,
+   "connectivity": {
+    "nets_improved": [
+     "/I2C_SCL_INT"
+    ],
+    "nets_regressed": [],
+    "open_retained_nets_after": 15,
+    "open_retained_nets_before": 15,
+    "retained_open_edges_after": 22,
+    "retained_open_edges_before": 23
+   },
+   "drc_types": {
+    "copper_sliver": 1,
+    "lib_footprint_issues": 199,
+    "solder_mask_bridge": 1
+   },
+   "refused_clauses": [
+    "attributable_drc"
+   ],
+   "routed": [
+    {
+     "failures": [
+      {
+       "a": [
+        "U1.38",
+        "R20.2",
+        "J1.44",
+        "U2.22",
+        "U14.7",
+        "U4.13",
+        "U3.22"
+       ],
+       "b": [
+        "U16.3"
+       ],
+       "gap_mm": 15.585,
+       "reason": "NO_PATH",
+       "why": "no all-layer corridor at 0.200 mm between the islands"
+      },
+      {
+       "a": [
+        "TP5.1",
+        "U1.38",
+        "R20.2",
+        "J1.44",
+        "U2.22",
+        "U14.7",
+        "U4.13",
+        "U3.22"
+       ],
+       "b": [
+        "U16.3"
+       ],
+       "gap_mm": 58.315,
+       "reason": "NO_PATH",
+       "why": "no all-layer corridor at 0.200 mm between the islands"
+      }
+     ],
+     "mm": 45.925,
+     "net": "/I2C_SCL_INT",
+     "ok": true,
+     "vias": 4
+    }
+   ],
+   "run": "w/d683/tp5broute.json",
+   "why": "SCL: TP5 moved to (43.0,111.0) -- the MAZE closes it at 45.925 mm / 4 vias but reports one copper_sliver, and the tap barrel lands INSIDE the moved land (placement PL9)"
+  },
+  {
+   "attributable_drc_n": 0,
+   "connectivity": {
+    "nets_improved": [
+     "/I2C_SCL_INT"
+    ],
+    "nets_regressed": [],
+    "open_retained_nets_after": 15,
+    "open_retained_nets_before": 15,
+    "retained_open_edges_after": 22,
+    "retained_open_edges_before": 23
+   },
+   "drc_types": {
+    "lib_footprint_issues": 199,
+    "solder_mask_bridge": 1
+   },
+   "refused_clauses": [],
+   "routed": [
+    {
+     "failures": [
+      {
+       "a": [
+        "U1.38",
+        "TP5.1",
+        "R20.2",
+        "J1.44",
+        "U2.22",
+        "U14.7",
+        "U4.13",
+        "U3.22"
+       ],
+       "b": [
+        "U16.3"
+       ],
+       "gap_mm": 15.585,
+       "reason": "NO_PATH",
+       "why": "no all-layer corridor at 0.200 mm between the islands"
+      }
+     ],
+     "mm": null,
+     "net": "/I2C_SCL_INT",
+     "ok": true,
+     "vias": null
+    }
+   ],
+   "run": "w/d683/promote2.json",
+   "why": "SCL: TP5 moved to (42.0,112.0) and TAPPED -- gate 15/15, refused_clauses [], 23 -> 22.  THE PROMOTING RUN"
+  }
+ ],
+ "board": "/home/aqroot8/aqroot-demo/hardware/demo/kicad/aqroot-demo/aqroot-Beta-v2.kicad_pcb",
+ "board_sha256_after": "d7ed92a58300c69c5d4c1770200f5aed641a079ea0b743afb54a6ab467b72706",
+ "board_sha256_before": "d0743e72da3fa650d8eb59ed4f41fb89f4e4663c3ea7f8694d257ed9c86a1dad",
+ "decision": "D-683",
+ "question": "close what the 0.701 mm SYS seam and the I2C_SCL test point can actually be made to close",
+ "schema": 1
+}

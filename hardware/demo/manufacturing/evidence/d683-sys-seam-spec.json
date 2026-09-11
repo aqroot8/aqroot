@@ -1,0 +1,62 @@
+{
+ "schema": 1,
+ "note": "D-683: reserve ONLY the 0.701 mm seam between SYS pour #1 (C24) and pour #0 (C26) on B.Cu -- five discs on the measured shortest-gap line, r 0.25 (a 0.40 mm stamp: 0.100 mm of track plus the zone's own 0.250 mm clearance).  SYS is exempt.",
+ "detours": [],
+ "reserve": [
+  {
+   "x_mm": 62.535,
+   "y_mm": 103.909,
+   "r_mm": 0.25,
+   "layers": [
+    "B"
+   ],
+   "exempt": [
+    "/01_POWER_TREE/BQ25185_SYS"
+   ]
+  },
+  {
+   "x_mm": 62.653,
+   "y_mm": 104.038,
+   "r_mm": 0.25,
+   "layers": [
+    "B"
+   ],
+   "exempt": [
+    "/01_POWER_TREE/BQ25185_SYS"
+   ]
+  },
+  {
+   "x_mm": 62.771,
+   "y_mm": 104.168,
+   "r_mm": 0.25,
+   "layers": [
+    "B"
+   ],
+   "exempt": [
+    "/01_POWER_TREE/BQ25185_SYS"
+   ]
+  },
+  {
+   "x_mm": 62.89,
+   "y_mm": 104.297,
+   "r_mm": 0.25,
+   "layers": [
+    "B"
+   ],
+   "exempt": [
+    "/01_POWER_TREE/BQ25185_SYS"
+   ]
+  },
+  {
+   "x_mm": 63.008,
+   "y_mm": 104.426,
+   "r_mm": 0.25,
+   "layers": [
+    "B"
+   ],
+   "exempt": [
+    "/01_POWER_TREE/BQ25185_SYS"
+   ]
+  }
+ ]
+}
