@@ -1,0 +1,131 @@
+{
+ "schema": 1,
+ "decision": "D-682 addendum",
+ "question": "where can the GATE's own launcher actually REACH from three of the board's remaining orphan lands, and which objects seal them",
+ "board": "/home/aqroot8/aqroot-demo/hardware/demo/kicad/aqroot-demo/aqroot-Beta-v2.kicad_pcb",
+ "board_sha256": "d0743e72da3fa650d8eb59ed4f41fb89f4e4663c3ea7f8694d257ed9c86a1dad",
+ "instrument": "evidence/d682-reach-probe.py -- READ-ONLY.  Builds the same maze3d.Field the gate builds, asks maze3d.pad_escapes (the LATTICE launcher route_join uses) for the land's escapes, and floods maze3d.wave3d from them to exhaustion against a deliberately unreachable goal.  Reports the reached-cell count and bbox per layer and probes named points.  D-672 proved this board's two launchers disagree on U16.3: every corridor verdict taken through maze3d.offcentre_route (which every screen and join_taps drive) is a LAUNCH refusal wearing a corridor's clothes.",
+ "i2c_scl_int_u16_3": {
+  "authority": {
+   "escapes": 2,
+   "escape_xy_mm": [
+    [
+     57.85,
+     54.45
+    ],
+    [
+     56.4,
+     54.45
+    ]
+   ],
+   "reached_cells": {
+    "F": 0,
+    "B": 66,
+    "I2": 0
+   },
+   "reached_bbox_mm": {
+    "B": [
+     56.4,
+     54.35,
+     57.95,
+     54.5
+    ]
+   },
+   "verdict": "SEALED.  The wavefront never leaves the pad: 66 cells in a 1.55 x 0.15 mm slot that is U16.3's own footprint strip, and ZERO cells on F.Cu or In2.Cu."
+  },
+  "with_the_channel_cleared": {
+   "removed": [
+    "WAKE_GATE_S B.Cu (58.300,52.500)-(54.300,48.100)",
+    "WAKE_GATE_S B.Cu (58.500,55.800)-(58.300,52.500)",
+    "WAKE_GATE_S B.Cu (58.200,56.300)-(58.500,55.800)",
+    "WAKE_GATE_S B.Cu (56.400,57.000)-(58.200,56.300)",
+    "ACC_DETECT_N B.Cu (59.050,58.650)-(59.150,55.850)",
+    "ACC_DETECT_N B.Cu (59.050,57.735)-(59.050,56.800)",
+    "ACC_DETECT_N B.Cu (59.050,56.800)-(59.050,52.400)",
+    "ACC_DETECT_N B.Cu (59.050,52.400)-(57.650,51.000)"
+   ],
+   "escapes": 5,
+   "reached_cells": {
+    "F": 17965,
+    "B": 21032,
+    "I2": 18682
+   },
+   "reached_bbox_mm": {
+    "F": [
+     53.7,
+     41.75,
+     61.45,
+     55.5
+    ],
+    "B": [
+     54.2,
+     43.8,
+     63.05,
+     57.05
+    ],
+    "I2": [
+     54.55,
+     43.25,
+     61.05,
+     60.0
+    ]
+   },
+   "targets_probed_all_unreachable": [
+    [
+     "F",
+     55.7,
+     60.3
+    ],
+    [
+     "F",
+     57.3,
+     61.8
+    ],
+    [
+     "F",
+     49.0,
+     56.8
+    ],
+    [
+     "F",
+     50.5,
+     58.4
+    ],
+    [
+     "B",
+     55.7,
+     60.3
+    ],
+    [
+     "I2",
+     61.3,
+     65.1
+    ]
+   ],
+   "verdict": "the land OPENS -- 57 679 cells on three layers, and it can go NORTH freely to y = 41.75 -- and it still cannot reach its own net.  Every one of its own copper points lies SOUTH of y = 60.3 and the wavefront stops at y = 55.5 (F), 57.05 (B) and 60.0 (In2)."
+  },
+  "the_three_southern_seals": {
+   "B.Cu": "the passive row at y = 57.735 (R50/R63/R129/R102).  Its widest gap, x 57.800..58.650 between R129's two lands, is sealed by the +3V3 0.70/0.40 mm BARREL at (57.900, 57.400) and its two 0.400 mm stubs -- which are R129.1's ONLY bond to the 3.3 V rail, the land D-606..D-632 spent twenty-six decisions on.  The next gap west is WAKE_GATE_S's own hub to R63.2, the next east is TCA4307_READY.",
+   "In2.Cu": "/ACC_3V3_SW -- PROTECTED COPPER -- forms a closed wedge: a 0.400 mm bar (57.400,60.650) -> (59.975,60.425) with a 0.900 mm barrel at EACH end, plus the two 0.400 mm diagonals that meet at (59.975,60.425).  Union of barrel and track keep-outs spans x 56.95..60.425 at y ~ 60.4-60.65.  It cannot be moved.",
+   "F.Cu": "/ACC_3V3_SW (53.775,51.400) -> (71.275,69.625) at 0.400 mm and /ACC_5V_SW_EN (53.750,52.500) -> (66.000,71.250) at 0.200 mm -- BOTH PROTECTED -- cross the whole south-west quadrant of the reachable region."
+  },
+  "ruling": "U16.3 is walled on ALL THREE of its permitted layers and on TWO of them by PROTECTED copper.  D-671 sec 7(2)'s 'U16 / R17 / R63 pocket refloorplan' is REFUTED in its stated form: no rip-up bounded by that pocket reaches the net, because the wall is the passive farm at y 57.7-61.4 and the protected ACC_3V3_SW wedge BELOW it, not the pocket.  The only remaining lever is moving U16 itself SOUTH of the farm, into the y 62-67 highway -- a transaction that releases all EIGHT of its escapes and sweeps BAT_PROTECTED_P's 1.000 mm trunk at x = 62.2.  Not attempted here; PRICED."
+ },
+ "plus3v3_u5_2": {
+  "screen": "screen_pad_escape_relief.py +3V3 --grid 25000 --max-mm 15 --offcentre-launch",
+  "rungs": {
+   "0 (0.400 run, 0.65 barrel)": "NO_LEGAL_ESCAPE, blocked by U5.1 (x56), R15.2 (x10)",
+   "2 (0.400 run, 0.35 barrel)": "NO_LEGAL_ESCAPE",
+   "4 (0.600 run, 0.35 barrel)": "NO_LEGAL_ESCAPE",
+   "1 (0.200 run, 0.65 barrel)": "NO_VIA_SITE within 15.0 mm of any escape",
+   "3 (0.200 run, 0.35 barrel)": "NO_VIA_SITE within 15.0 mm of any escape"
+  },
+  "ruling": "the search radius was DOUBLED from D-647's 8 mm to 15 mm and the smallest barrel this board licenses outright was already on the ladder, so 'no via site' is not a radius artefact and not a barrel-size artefact.  U5.2 is a DIFFERENT wall from U4.5's and the instrument that just closed U4.5 does not reach it."
+ },
+ "acc_5v_lx_topology": {
+  "finding": "the TPS61023's east column is GND(4) / SW(5) / VOUT(6) in that order, so ANY approach to the switch node from the north crosses U21.4's land -- the switch node can only be entered from the EAST.  U21.4's own ground escape is the B.Cu chain (58.700,39.375) -> (60.600,38.425) -> (60.925,38.250) -> (61.100,38.000) -> (63.000,38.100), which also leaves east.  At x = 58.7 the LX lane sits at y = 39.46 and the GND chain at y = 39.375: they cross 0.085 mm apart.  THE CROSSING IS THE PINOUT, NOT THE PLACEMENT.",
+  "why_moving_L4_does_not_fix_it": "L4 west by 1.572 mm would put L4.2 directly above U21.5 -- and apply_part_shift REFUSES it: L4.1's land would swallow the 0.900 mm /ACC_5V_RAW barrel at (55.850,38.000) and the 0.600 mm /ACC_5V_FB barrel at (56.100,36.900).  The move is bounded to about 0.8 mm west, which does not reach U21.5's column -- and would not help if it did, because of the pinout.",
+  "the_only_non_crossing_route": "U21.4's ground out the WEST through U21's own 0.750 mm inter-column channel.  At the 0.300 mm GND width with 0.200 mm clearance that channel leaves a 0.050 mm centre-line window (57.775 .. 57.825), and D-681 already proved the channel's current tenant, /ACC_DETECT_N, relays out of it in 5.866 mm with zero vias.  The open question is therefore a GND WIDTH question in a named 0.750 mm channel, not a placement search.",
+  "no_local_sys_copper": "/01_POWER_TREE/BQ25185_SYS owns NO tracks at all near U21: L4.1 and U21.3 are one island because `B /01_POWER_TREE/BQ25185_SYS POUR 2` (55.0,33.0)-(60.0,42.0), 10.813 mm2 filled, holds both.  A part move in this cell therefore strands no SYS conductor -- the pour refills."
+ }
+}

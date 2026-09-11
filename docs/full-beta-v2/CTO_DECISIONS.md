@@ -1,3 +1,155 @@
+# D-682 addendum · 2026-09-11 · Demo — THE GATE'S OWN LAUNCHER, ASKED FOR THE FIRST TIME: `U16.3` IS SEALED IN 66 CELLS, AND WHEN THE CHANNEL IS OPENED IT REACHES 57 679 AND STILL CANNOT GET SOUTH OF PROTECTED COPPER
+
+    authority  d0743e72da3fa650d8eb59ed4f41fb89f4e4663c3ea7f8694d257ed9c86a1dad
+            -> d0743e72da3fa650d8eb59ed4f41fb89f4e4663c3ea7f8694d257ed9c86a1dad   UNCHANGED
+    retained open edges 23 -> 23
+    `hardware/demo/kicad`, `hardware/demo/fab`, `hardware/beta-v2`  UNTOUCHED
+    four gate runs, one new read-only instrument, one tap census
+
+**NO COPPER PROMOTED.**  Three walls measured to the object, and one of them
+REFUTES a NEXT item this repository has carried since D-671.
+
+## 1. THE INSTRUMENT, AND WHY IT HAD TO EXIST
+
+D-672 §4 proved this board routes with **two** launchers that disagree:
+`maze3d.pad_escapes` (the LATTICE launcher — `route_join` uses it, so the GATE
+uses it) and `maze3d.offcentre_route` (the EXACT launcher — every `screen_*`
+and `join_taps` use it).  On `/I2C_SCL_INT` `U16.3` the second is a strict
+SUBSET of the first, so **every corridor verdict ever taken on that land
+through a screen is a LAUNCH refusal wearing a corridor's clothes.**
+
+`evidence/d682-reach-probe.py` asks the FIRST launcher's question and nothing
+else: build the gate's own `Field`, take `pad_escapes`' answers as seeds, and
+flood `wave3d` to exhaustion against a deliberately unreachable goal.  It
+reports reached cells and bbox per layer.  It writes nothing and licenses
+nothing.
+
+## 2. `U16.3` IS SEALED, AND THEN IT IS NOT, AND IT STILL DOES NOT REACH
+
+    on the authority          2 escapes   F 0 / B 66 / In2 0 cells
+                              B bbox  56.400,54.350 .. 57.950,54.500
+    with 8 objects removed    5 escapes   F 17965 / B 21032 / In2 18682
+      (WAKE_GATE_S x4,        F bbox  53.700,41.750 .. 61.450,55.500
+       ACC_DETECT_N x4)       B bbox  54.200,43.800 .. 63.050,57.050
+                              In2 bbox 54.550,43.250 .. 61.050,60.000
+
+**On the authority the wavefront never leaves the pad** — 66 cells in a
+1.55 x 0.15 mm slot that is `U16.3`'s own footprint strip, and ZERO cells on
+`F.Cu` or `In2.Cu`.  Open the inter-column channel and the land reaches
+**57 679 cells on three layers** and can go NORTH freely to y = 41.75 — and
+**every one of its own net's copper points is SOUTH of y = 60.3**, where the
+wavefront stops at 55.5 (F), 57.05 (B) and 60.0 (In2).  Six probe points on
+the net's own retained copper: all unreachable.
+
+## 3. THE THREE SOUTHERN SEALS, BY NAME — AND TWO ARE PROTECTED
+
+  * **`B.Cu`** — the passive row at y = 57.735 (`R50`/`R63`/`R129`/`R102`).
+    Its widest gap, `x 57.800..58.650` between `R129`'s two lands, is sealed by
+    the **`+3V3` 0.70/0.40 mm BARREL at (57.900, 57.400)** and its two 0.400 mm
+    stubs — which are **`R129.1`'s ONLY bond to the 3.3 V rail**, the land
+    D-606 .. D-632 spent twenty-six decisions on.  The gap west of it is
+    `WAKE_GATE_S`'s own hub to `R63.2`; the gap east is `TCA4307_READY`.
+  * **`In2.Cu`** — **`/ACC_3V3_SW`, PROTECTED**, forms a closed wedge: a
+    0.400 mm bar (57.400,60.650) -> (59.975,60.425) with a **0.900 mm barrel at
+    EACH end**, plus the two 0.400 mm diagonals that meet at (59.975,60.425).
+    The union of those keep-outs spans `x 56.95..60.425` at y ~ 60.4-60.65.
+  * **`F.Cu`** — **`/ACC_3V3_SW`** (53.775,51.400) -> (71.275,69.625) at
+    0.400 mm and **`/ACC_5V_SW_EN`** (53.750,52.500) -> (66.000,71.250) at
+    0.200 mm, **both PROTECTED**, cross the whole south-west quadrant.
+
+**RULING.**  `U16.3` is walled on ALL THREE of its permitted layers and on TWO
+of them by PROTECTED copper.  **D-671 §7(2)'s "`U16` / `R17` / `R63` pocket
+refloorplan — the first refloorplan on this board that pays for itself three
+times" is REFUTED IN ITS STATED FORM**: no rip-up bounded by that pocket
+reaches the net, because the wall is the passive farm at y 57.7-61.4 and the
+protected `ACC_3V3_SW` wedge BELOW it, not the pocket.
+
+## 4. AND THE GATE SAYS THE SAME THING TWICE
+
+  * **`evidence/d682-gate-u16-pocket-evict-REFUSED.json`** — `--evict` of
+    `WAKE_GATE_S` + `ACC_DETECT_N` + `ACC_5V_BOOST_EN` + `ACC_PWR_EN` inside
+    `55.5,51.0,63.5,59.0` removed **19 objects** and `/I2C_SCL_INT` was
+    `NO_PATH` on all three island pairs anyway.  `WAKE_GATE_S` came back at
+    **214.486 mm with 12 vias**; refused on four clauses.
+  * **`evidence/d682-gate-u16-channel-relay-REFUSED.json`** — the honest RELAY
+    form (`evidence/d682-u16-channel-relay-spec.json`, `screen_relay_bindability`
+    **BINDABLE 9.144 of 9.144 mm**): `WAKE_GATE_S`'s 13 mm eastward excursion
+    relaid between its own two ends (54.300,48.100) and (56.400,57.000) around
+    eight discs.  **The relay itself is `NO_PATH`** at 25 mm on a 0.050 mm
+    lattice, and `/I2C_SCL_INT`'s tap moved from `NO_LEGAL_ESCAPE` to
+    `NO_PATH` — the launch opened and the corridor still refused.
+
+## 5. `+3V3` `U5.2`: THE RADIUS WAS DOUBLED AND THE ANSWER DID NOT MOVE
+
+`screen_pad_escape_relief.py "+3V3" --grid 25000 --max-mm 15`: rungs 0/2/4
+`NO_LEGAL_ESCAPE` (blocked by `U5.1` x56, `R15.2` x10), rungs 1/3
+**`NO_VIA_SITE` within 15.0 mm of any escape**.  D-647 asked at 8 mm; this asks
+at 15 mm with the smallest barrel the board licenses outright already on the
+ladder.  **Not a radius artefact and not a barrel-size artefact.**  `U5.2` is
+now `+3V3`'s LAST open edge and it is a DIFFERENT wall from `U4.5`'s.
+
+## 6. `/01_POWER_TREE/ACC_5V_LX`: THE CROSSING IS THE PINOUT, NOT THE PLACEMENT
+
+The `TPS61023`'s east column is **`GND`(4) / `SW`(5) / `VOUT`(6)** in that
+order, so **any approach to the switch node from the north crosses `U21.4`'s
+land** — `U21.5` can only be entered from the EAST.  `U21.4`'s own ground
+escape is the `B.Cu` chain (58.700,39.375) -> (60.600,38.425) ->
+(60.925,38.250) -> (61.100,38.000) -> (63.000,38.100), which also leaves east.
+At x = 58.7 the `LX` lane sits at y = 39.46 and the `GND` chain at y = 39.375:
+**they cross 0.085 mm apart.**  No translation of `U21` or `L4` removes that —
+it is the package.
+
+  * **`L4` CANNOT MOVE FAR ENOUGH ANYWAY.**  West by 1.572 mm would put `L4.2`
+    directly above `U21.5`; `apply_part_shift` **REFUSES** it — `L4.1`'s land
+    would swallow the 0.900 mm `/ACC_5V_RAW` barrel at (55.850,38.000) and the
+    0.600 mm `/ACC_5V_FB` barrel at (56.100,36.900).  The move is bounded to
+    about 0.8 mm, which does not reach that column.
+  * **AND A PART MOVE HERE STRANDS NO `SYS` CONDUCTOR.**
+    `/01_POWER_TREE/BQ25185_SYS` owns **no tracks at all** near `U21`: `L4.1`
+    and `U21.3` are one island because `B .. SYS POUR 2`
+    (55.0,33.0)-(60.0,42.0), **10.813 mm2 filled**, holds both, and it refills.
+  * **THE ONLY NON-CROSSING ROUTE IS THE WEST CHANNEL**, and it is now a WIDTH
+    question and not a search: `U21`'s inter-column channel is **0.750 mm**, a
+    0.300 mm `GND` track at 0.200 mm clearance leaves a **0.050 mm centre-line
+    window (x 57.775 .. 57.825)**, and D-681 already proved the channel's
+    current tenant `/ACC_DETECT_N` relays out of it in 5.866 mm with zero vias.
+
+## 7. THE TAP CENSUS SAYS THERE ARE NO CHEAP LANDS LEFT
+
+`screen_net_tap.py --census` on the promoted board
+(`evidence/d682-tap-census.json`): **18 MEASURED, 7 STUB_FORBIDDEN**, and only
+**two** lands have a positive own-copper gain worth anything — `U16.3`
+(9.5364 mm, §2-§3 above) and `/I2C_SCL_INT` `TP5.1` (2.7328 mm), which is
+`NO_PATH` at a 12 mm tap bound with the bound no longer the binder.  Every
+other orphan land is CLOSER to a pad than to its own copper.  **The tap is
+exhausted on this board.**
+
+## 8. NEXT, IN ORDER OF LEVERAGE
+
+ 1. **`/01_POWER_TREE/BQ25185_SYS`, 6 of 23, the #1 fabrication blocker.**
+    D-678 §1 case `e` is still the cheapest named cut — `Net-(U12-PG)`'s
+    diagonal plus `Net-(U12-PS_SYNC)`'s five-segment chain, **TWO edges for SIX
+    units across TWO nets**, pour 78.844 -> 94.245 mm2 — and its recorded
+    refusal is that the relay retakes the corridor unless it is reserved, and
+    refuses when it is.  A `U12` / `L1` converter refloorplan is the standing
+    alternative.
+ 2. **`/ACC_5V_LX`** — §6 makes it a `GND` WIDTH question in a 0.750 mm named
+    channel.  Ask `screen_fanout_channel.py` what the board's `GND` class floor
+    is there before anything else.
+ 3. **`/I2C_SCL_INT` `U16.3`** — §3.  The only lever left is moving `U16`
+    itself SOUTH of the passive farm into the y 62-67 highway, which releases
+    all EIGHT of its escapes and sweeps `BAT_PROTECTED_P`'s 1.000 mm trunk at
+    x = 62.2.  **PRICED, NOT REFUSED.**
+ 4. `/BQ25185_STAT1` `U11.9` still wants the 0.150 mm grant D-672 §5 priced and
+    D-610/D-630 declined; `--relief-extra-width` **cannot express it** (it is
+    clamped UP to the 0.200 mm the necking rule names), so it is a doctrine
+    decision and not a flag.
+ 5. **THERE IS NO OPEN OWNER DECISION ON THIS BOARD.**
+
+Evidence: `d682-reach-probe.py`, `d682-reachability-and-walls.json`,
+`d682-u16-channel-relay-spec.json`, `d682-gate-u16-pocket-evict-REFUSED.json`,
+`d682-gate-u16-channel-relay-REFUSED.json`, `d682-tap-census.json`.
+
 # D-682 · 2026-09-10 · Demo — THE IMU HAD NO I/O SUPPLY: `U4.5` `VDDIO` IS CLOSED BY A 1.421 mm LICENSED RELIEF, AND THE LICENCE IS ARGUED FROM A CURRENT THE SCHEMATIC ALREADY PUBLISHES
 
     authority  d57d7d27ba0c400891132fba88da0719decefbaf846965b6dfef32764884af7d

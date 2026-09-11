@@ -1,0 +1,155 @@
+{
+ "schema": 1,
+ "note": "D-682: /I2C_SCL_INT U16.3.  A read-only reachability probe through the GATE's own launcher (maze3d.pad_escapes, not offcentre_route -- D-672 proved the two disagree on exactly this land) finds U16.3's wavefront trapped in 66 cells, a 1.55 x 0.15 mm slot that is the pad's own footprint: the land is SEALED, not merely hard.  The east seal is /09_COMMUNITY_HEADER/WAKE_GATE_S, which leaves (54.300,48.100), runs 13 mm EAST to x = 58.5 straight through U16's 2.6 mm inter-column channel, and comes back WEST to its own R63.2 pull-up at (55.700,57.735) -- a pointless excursion that seals a fine-pitch package's only channel.  All four segments of that excursion are RELAID between their own two ends, (54.300,48.100) and (56.400,57.000), which are 9.2 mm apart on the WEST side of U16 where the conductor should have gone.  Eight discs reserve the channel at x = 58.40 and are exempt to /I2C_SCL_INT so the relay cannot put the excursion back.",
+ "detours": [
+  {
+   "net": "/09_COMMUNITY_HEADER/WAKE_GATE_S",
+   "relay": true,
+   "max_mm": 25,
+   "tracks": [
+    {
+     "layer": "B.Cu",
+     "a_mm": [
+      58.3,
+      52.5
+     ],
+     "b_mm": [
+      54.3,
+      48.1
+     ],
+     "width_mm": 0.2,
+     "count": 1
+    },
+    {
+     "layer": "B.Cu",
+     "a_mm": [
+      58.5,
+      55.8
+     ],
+     "b_mm": [
+      58.3,
+      52.5
+     ],
+     "width_mm": 0.2,
+     "count": 1
+    },
+    {
+     "layer": "B.Cu",
+     "a_mm": [
+      58.2,
+      56.3
+     ],
+     "b_mm": [
+      58.5,
+      55.8
+     ],
+     "width_mm": 0.2,
+     "count": 1
+    },
+    {
+     "layer": "B.Cu",
+     "a_mm": [
+      56.4,
+      57.0
+     ],
+     "b_mm": [
+      58.2,
+      56.3
+     ],
+     "width_mm": 0.2,
+     "count": 1
+    }
+   ]
+  }
+ ],
+ "reserve": [
+  {
+   "x_mm": 58.4,
+   "y_mm": 52.8,
+   "r_mm": 0.25,
+   "layers": [
+    "B"
+   ],
+   "exempt": [
+    "/I2C_SCL_INT"
+   ]
+  },
+  {
+   "x_mm": 58.4,
+   "y_mm": 53.4,
+   "r_mm": 0.25,
+   "layers": [
+    "B"
+   ],
+   "exempt": [
+    "/I2C_SCL_INT"
+   ]
+  },
+  {
+   "x_mm": 58.4,
+   "y_mm": 54.0,
+   "r_mm": 0.25,
+   "layers": [
+    "B"
+   ],
+   "exempt": [
+    "/I2C_SCL_INT"
+   ]
+  },
+  {
+   "x_mm": 58.4,
+   "y_mm": 54.6,
+   "r_mm": 0.25,
+   "layers": [
+    "B"
+   ],
+   "exempt": [
+    "/I2C_SCL_INT"
+   ]
+  },
+  {
+   "x_mm": 58.4,
+   "y_mm": 55.2,
+   "r_mm": 0.25,
+   "layers": [
+    "B"
+   ],
+   "exempt": [
+    "/I2C_SCL_INT"
+   ]
+  },
+  {
+   "x_mm": 58.4,
+   "y_mm": 55.8,
+   "r_mm": 0.25,
+   "layers": [
+    "B"
+   ],
+   "exempt": [
+    "/I2C_SCL_INT"
+   ]
+  },
+  {
+   "x_mm": 58.4,
+   "y_mm": 56.4,
+   "r_mm": 0.25,
+   "layers": [
+    "B"
+   ],
+   "exempt": [
+    "/I2C_SCL_INT"
+   ]
+  },
+  {
+   "x_mm": 58.4,
+   "y_mm": 57.0,
+   "r_mm": 0.25,
+   "layers": [
+    "B"
+   ],
+   "exempt": [
+    "/I2C_SCL_INT"
+   ]
+  }
+ ]
+}

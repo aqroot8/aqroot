@@ -23,6 +23,56 @@
 > `verify_promotion` PASS and `protected_copper` showing exactly one protected
 > net moved.  `U14.7` is on the bus.  This board has **no open owner decision**.
 
+- **Demo D-682 addendum (THE GATE'S OWN LAUNCHER, ASKED FOR THE FIRST TIME:
+  `U16.3` IS SEALED IN 66 CELLS, AND WHEN THE CHANNEL IS OPENED IT REACHES
+  57 679 AND STILL CANNOT GET SOUTH OF PROTECTED COPPER):**  **NO COPPER
+  PROMOTED.**  Authority **UNCHANGED** at
+  `d0743e72da3fa650d8eb59ed4f41fb89f4e4663c3ea7f8694d257ed9c86a1dad`; 23 -> 23;
+  `hardware/demo/kicad`, `hardware/demo/fab` and `hardware/beta-v2`
+  **UNTOUCHED**.  Four gate runs, one new read-only instrument, one tap census.
+  **(1) THE INSTRUMENT.**  D-672 §4 proved this board routes with TWO launchers
+  that disagree and that the SCREENS all drive the one the GATE does not, so
+  every corridor verdict ever taken on `U16.3` through a screen was a LAUNCH
+  refusal.  New tracked `evidence/d682-reach-probe.py` asks the GATE's
+  launcher's question: seed `wave3d` from `pad_escapes`' answers and flood to
+  exhaustion.  Writes nothing.
+  **(2) SEALED, THEN NOT, AND STILL SHORT.**  On the authority `U16.3` reaches
+  **66 cells** — a 1.55 x 0.15 mm slot that is its own footprint strip, ZERO on
+  `F.Cu` and `In2.Cu`.  With the eight `WAKE_GATE_S` / `ACC_DETECT_N` objects
+  out of `U16`'s inter-column channel it reaches **57 679 cells on three
+  layers** and can go NORTH to y = 41.75 — and **every one of its own net's
+  copper points is SOUTH of y = 60.3**, where the wavefront stops at 55.5 (F),
+  57.05 (B) and 60.0 (In2).
+  **(3) THE THREE SEALS, AND TWO ARE PROTECTED.**  `B.Cu`: the y = 57.735
+  passive row, whose widest gap is closed by the `+3V3` **0.70/0.40 mm barrel
+  at (57.900,57.400)** — `R129.1`'s ONLY bond to the rail.  `In2.Cu`:
+  **`/ACC_3V3_SW` (PROTECTED)** as a closed wedge — a 0.400 mm bar
+  (57.400,60.650)->(59.975,60.425) with a **0.900 mm barrel at each end** —
+  spanning `x 56.95..60.425`.  `F.Cu`: **`/ACC_3V3_SW` and `/ACC_5V_SW_EN`,
+  both PROTECTED**, crossing the whole south-west quadrant.
+  **THIS REFUTES D-671 §7(2)** — the "`U16`/`R17`/`R63` pocket refloorplan that
+  pays for itself three times" — IN ITS STATED FORM: the wall is the passive
+  farm and the protected wedge BELOW the pocket, not the pocket.  Two gate runs
+  agree: a 19-object `--evict` and an honest `--detour-spec` RELAY
+  (`screen_relay_bindability` BINDABLE 9.144/9.144 mm) both refuse.
+  **(4) `+3V3` `U5.2`** — radius doubled 8 -> 15 mm, smallest licensed barrel
+  already on the ladder: still `NO_VIA_SITE`.  A DIFFERENT wall from `U4.5`'s,
+  and now the rail's LAST open edge.
+  **(5) `/ACC_5V_LX`: THE CROSSING IS THE PINOUT.**  The `TPS61023`'s east
+  column is `GND`(4)/`SW`(5)/`VOUT`(6), so the switch node can only be entered
+  from the EAST and `U21.4`'s ground leaves east too; at x = 58.7 they cross
+  **0.085 mm apart**.  `L4` cannot move west far enough anyway
+  (`apply_part_shift` REFUSES 1.572 mm — `L4.1` would swallow two barrels).  A
+  part move here strands no `SYS` conductor: `L4.1` and `U21.3` are one island
+  only because `SYS POUR 2` (10.813 mm2) holds both.  **The only non-crossing
+  route is `U21`'s own 0.750 mm west channel, which makes this a `GND` WIDTH
+  question and not a search.**
+  **(6) THE TAP IS EXHAUSTED** — census 18 MEASURED / 7 STUB_FORBIDDEN, only
+  two lands with a useful own-copper gain and both refuse.
+  **NEXT:** (1) `BQ25185_SYS`, 6 of 23, #1 blocker — D-678 case `e` (2 edges,
+  6 units, 2 nets) or the `U12`/`L1` refloorplan.  (2) `/ACC_5V_LX` as a `GND`
+  class-floor question in a named 0.750 mm channel.  (3) `U16.3` only by moving
+  `U16` south of the farm — PRICED, NOT REFUSED.
 - **Demo D-682 (THE IMU HAD NO I/O SUPPLY: `U4.5` `VDDIO` IS CLOSED BY A
   1.421 mm LICENSED RELIEF, AND THE LICENCE IS ARGUED FROM A CURRENT THE
   SCHEMATIC ALREADY PUBLISHES):**  **COPPER PROMOTED.**  Authority
