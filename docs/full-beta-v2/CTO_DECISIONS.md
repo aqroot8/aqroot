@@ -1,3 +1,99 @@
+# D-691 · 2026-09-11 · Demo — **THE "COURTYARD" CHECKS WERE SIDE-BLIND BOUNDING BOXES, AND 83 OF THE 120 PAIRS THEY FLAGGED WERE ON OPPOSITE SIDES OF THE BOARD** — AND WITH THAT CORRECTED THE `U12` COLUMN IS REFUSED BY `PL7` AND `PL9` INSTEAD, WHICH IS A DIFFERENT AND TRUER ANSWER
+
+    authority  2f456279cb9540f5e29a2a9b2fbc60a6ad761e0ec33253f2802c4ada83aebbc4
+            -> 2f456279cb9540f5e29a2a9b2fbc60a6ad761e0ec33253f2802c4ada83aebbc4   UNCHANGED
+    retained open edges 18 -> 18
+    `hardware/demo/kicad`, `hardware/demo/fab`, `hardware/beta-v2` UNTOUCHED
+    `evidence/d691-courtyard-side-blind.json`
+
+**NO COPPER PROMOTED.**  D-690 named this as the gate on every remaining
+placement transaction.  It is one, and correcting it moved the `U12` wall
+rather than removing it.
+
+## 1. THE DEFECT
+
+`apply_part_shift.courtyard_overlaps` and `checks/placement_contract.overlaps`
+both compare **every footprint to every other, regardless of side**, using
+`GetBoundingBox(False, False)` — under the name *courtyard*.  A courtyard is a
+**per-side keep-out**; KiCad publishes `F.CrtYd` and `B.CrtYd` separately for
+exactly that reason.
+
+`SW9` is an SMD slide switch whose footprint draws `F.CrtYd` and **nothing** on
+`B.CrtYd`, and its 8.84 × 10.09 mm box sits over the only free back-side real
+estate between `U11` and `U2`.  Board-wide the old predicate flagged **120
+pairs; the corrected one flags 37, and every one of the 83 dropped pairs is
+cross-side.**
+
+**THE FOOTPRINT IS HONOURED EXACTLY AS AUTHORED**, which is the sentence
+`qrouter.addko` already writes for rule areas: *"Blocking layers the zone does
+not claim invents NO-PATH results that DRC would never have raised, and
+inventing obstacles is the same class of error as ignoring them."*  A part that
+needs the other side says so by drawing a courtyard there, and is then compared
+there.  `SW9`'s two 0.90 mm NPTH mounting holes are not a courtyard: they are
+holes, already judged by real DRC's `hole_clearance`, by `PL7` and by `PL9`.
+
+**THE GEOMETRY COMPARED IS UNCHANGED** — still the same coarse bounding box,
+not the courtyard polygon, which would be smaller and would relax the test a
+second way.  The only difference is **which pairs are compared**.
+
+## 2. THE CONTROLS
+
+`evidence/d691-courtyard-side-controls.py`, eight synthetic moves, both
+predicates on each:
+
+    TP13 -> (62.300,90.800) vs SW9   B/F   old=True  new=False   CHANGED
+    TP6  -> (70.000,84.000) vs SW9   B/F   old=True  new=False   CHANGED
+    TP7  -> (65.000,87.000) vs SW9   B/F   old=True  new=False   CHANGED
+    TP13 -> (62.250,96.000) vs TP47  B/B   old=True  new=True    refused
+    TP6  -> (66.600,101.400) vs U12  B/B   old=True  new=True    refused
+    R127 -> (66.600,96.600) vs L1    B/B   old=True  new=True    refused
+    R120 -> (64.200,99.000) vs SW2   F/F   old=True  new=True    refused
+    R27  -> (66.700,86.500) vs SW9   F/F   old=True  new=True    refused
+
+**Every cross-side case changed; every same-side collision is still refused;
+and the two implementations agree on every footprint on the board.**  The
+standing suite is **14/14 RAN with every contract byte-IDENTICAL to D-690** —
+the authority is legal today, so a correctly-scoped relaxation must and does
+change nothing about it.
+
+## 3. WHAT IT FREED
+
+Before: a 15 × 14 station sweep for `TP13` over `x 58..72 / y 76..98` returned
+**three** courtyard-clear sites — two ON the board's own east edge (the outline
+ends at `x = 72.050`) and one where a moved `L1` lands.  After: **the whole
+back-side field under `SW9`**, `x 70..71 / y 83..90`, every station at 0.600 mm
+clearance and courtyard-clear.
+
+On a scratch, three of the four column moves then go: **`TP13` → (70.0, 88.0)**
+(15 objects released), **`C28` −2.4 mm** (2), **`L1` −2.4 mm** (9).
+
+## 4. AND `U12` IS REFUSED FOR A DIFFERENT REASON, WHICH IS THE POINT
+
+    dy       released  refusals  swept under a LAND  vias in a moved PAD  new courtyard overlaps
+    -0.8 mm      9         4             6                   3                    0
+    -1.2 mm     11         5             9                   3                    0
+    -1.6 mm     21         8            10                   1                    0
+    -2.4 mm     78         0             9                   2                    0
+
+***No courtyard overlap at any distance***, and at every distance `PL7` and
+`PL9` refuse: `+3V3` and `/01_POWER_TREE/V3V3_FB` copper swept **under
+`U12.15`, the `TPS63020`'s GND EXPOSED PAD**.  All nine would be dead shorts,
+and the release declines them because they are held by the `+3V3` pour rather
+than floating.
+
+**THE SPACE IMMEDIATELY NORTH OF `U12` IS `U12`'s OWN `+3V3` FAN-OUT AND ITS
+GND / `V3V3_FB` STITCH FIELD.**  The column move is therefore not a translation
+at all — it is a re-floorplan of that fan-out, and must be designed as one.
+That `PL7` and `PL9` refuse it at 0.8 mm is the placement contract working
+exactly as D-619 and D-621 built it, **on the very move this relaxation was
+written to enable** — which is the proof that removing a side-blind bounding
+box did not remove the clauses that measure real copper and real barrels.
+
+**NEXT:** (1) the `U12` `+3V3` fan-out re-floorplan, now the named form of the
+board's #1 blocker.  (2) `/BQ25185_STAT1` + `/BQ25185_STAT2`'s multi-net cut,
+four of eighteen.  (3) `BQ25185_SYS`'s remaining five.  **NO OPEN OWNER
+DECISION.**
+
 # D-690 · 2026-09-11 · Demo — **THE MAZE'S BARREL WAS NEVER AN ARGUMENT, AND IT WAS THE WALL**: `/WAKE_INT_N` CLOSES ON A 0.500 mm VIA WHERE THE NETCLASS'S 0.600 mm ONE HAS NO CORRIDOR — AND `U11.9` / `U11.3` STOP BEING PACKAGE WALLS BECAUSE 0.200 mm IN A 0.600 mm SLOT IS **EXACTLY ZERO MARGIN**
 
     authority  fe99095143edd211c10421bd364dc56a21ec1db840377cd8dbf593f5fbb635ce

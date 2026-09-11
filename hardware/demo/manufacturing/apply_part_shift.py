@@ -121,14 +121,65 @@ def endpoints_on(board, fp):
     return sorted(set(hits))
 
 
+def _sides(f):
+    """The sides a footprint CLAIMS, by its own courtyards.  D-691.
+
+    A footprint with no courtyard at all claims its mounting side, which is
+    strictly what the old whole-board comparison assumed for it anyway.
+    """
+    import pcbnew
+    got = set()
+    for name, cu in (("F", pcbnew.F_Cu), ("B", pcbnew.B_Cu)):
+        try:
+            c = f.GetCourtyard(cu)
+        except Exception:
+            c = None
+        if c is not None and c.OutlineCount():
+            got.add(name)
+    return got or {"B" if f.IsFlipped() else "F"}
+
+
 def courtyard_overlaps(board, ref):
-    """Pairs (ref, other) whose FOOTPRINT bounding boxes intersect."""
+    """Refs whose FOOTPRINT bounding boxes intersect this one ON A SHARED SIDE.
+
+    A COURTYARD IS A PER-SIDE KEEP-OUT AND WAS BEING READ AS A TWO-SIDED ONE.
+    D-691.  This test compared every footprint to every other regardless of
+    which side each is mounted on, so a `B.Cu` part under an `F.CrtYd`-only
+    `F.Cu` part was refused.  On this board that is not hypothetical: `SW9` is
+    an SMD slide switch whose footprint draws `F.CrtYd` and NOTHING on
+    `B.CrtYd`, and its 8.84 x 10.09 mm box sits over the only free back-side
+    real estate between `U11` and `U2`.  A 15 x 14 station sweep for `TP13`
+    over `x 58..72 / y 76..98` returned exactly THREE courtyard-clear sites --
+    two of them ON the board's own east edge (the outline ends at x = 72.050)
+    and one where a moved `L1` lands -- and every other site was rejected for
+    overlapping a courtyard on the other side of the board.
+
+    THE FOOTPRINT IS HONOURED EXACTLY AS AUTHORED, which is the sentence
+    `qrouter.addko` already writes for rule areas: *"Blocking layers the zone
+    does not claim invents NO-PATH results that DRC would never have raised,
+    and inventing obstacles is the same class of error as ignoring them."*  A
+    footprint that needs the other side -- a through-hole part whose body or
+    leads protrude -- says so by drawing a courtyard there, and then it IS
+    compared there.  `SW9` does not say so, and its two 0.90 mm NPTH mounting
+    holes are not a courtyard: they are holes, and they are already judged by
+    real DRC's `hole_clearance`, by PL7 (a moved land swept into foreign
+    copper) and by PL9 (no barrel under a moved land).
+
+    NOTHING ELSE MOVES.  The geometry compared is still
+    `GetBoundingBox(False, False)`, the same coarse box as before -- not the
+    courtyard polygon, which would be smaller and would relax the test a second
+    way.  The ONLY difference is WHICH PAIRS are compared, so a same-side
+    overlap that failed before fails identically now.
+    """
     fps = list(board.GetFootprints())
     me = next(f for f in fps if f.GetReference() == ref)
     mb = me.GetBoundingBox(False, False)
+    ms = _sides(me)
     out = []
     for f in fps:
         if f.GetReference() == ref:
+            continue
+        if not (ms & _sides(f)):
             continue
         b = f.GetBoundingBox(False, False)
         if (mb.GetLeft() <= b.GetRight() and b.GetLeft() <= mb.GetRight()

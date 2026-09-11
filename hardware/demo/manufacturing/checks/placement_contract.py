@@ -121,6 +121,7 @@ def read(path):
             orient=round(f.GetOrientationDegrees(), 6),
             layer=board.GetLayerName(f.GetLayer()),
             lands=sorted(lands),
+            sides=sorted(_sides(f)),
             bbox=(bb.GetLeft(), bb.GetTop(), bb.GetRight(), bb.GetBottom()))
         boxes[ref] = sorted(
             (p.GetBoundingBox().GetLeft(), p.GetBoundingBox().GetTop(),
@@ -217,13 +218,66 @@ def foreign_copper_hits(path, refs, clearance_nm):
     return hits
 
 
+def _sides(f):
+    """The sides a footprint CLAIMS, by its own courtyards.  D-691.
+
+    A footprint with no courtyard at all claims its mounting side, which is
+    strictly what the old whole-board comparison assumed for it anyway.
+    """
+    import pcbnew
+    got = set()
+    for name, cu in (("F", pcbnew.F_Cu), ("B", pcbnew.B_Cu)):
+        try:
+            c = f.GetCourtyard(cu)
+        except Exception:
+            c = None
+        if c is not None and c.OutlineCount():
+            got.add(name)
+    return got or {"B" if f.IsFlipped() else "F"}
+
+
 def overlaps(fps):
+    """Pairs whose FOOTPRINT bounding boxes intersect ON A SHARED SIDE.
+
+    A COURTYARD IS A PER-SIDE KEEP-OUT AND WAS BEING READ AS A TWO-SIDED ONE.
+    D-691.  This test compared every footprint to every other regardless of
+    which side each is mounted on, so a `B.Cu` part under an `F.CrtYd`-only
+    `F.Cu` part was refused.  On this board that is not hypothetical: `SW9` is
+    an SMD slide switch whose footprint draws `F.CrtYd` and NOTHING on
+    `B.CrtYd`, and its 8.84 x 10.09 mm box sits over the only free back-side
+    real estate between `U11` and `U2`.  A 15 x 14 station sweep for `TP13`
+    over `x 58..72 / y 76..98` returned exactly THREE courtyard-clear sites --
+    two of them ON the board's own east edge (the outline ends at x = 72.050)
+    and one where a moved `L1` lands -- and every other site was rejected for
+    overlapping a courtyard on the other side of the board.
+
+    THE FOOTPRINT IS HONOURED EXACTLY AS AUTHORED, which is the sentence
+    `qrouter.addko` already writes for rule areas: *"Blocking layers the zone
+    does not claim invents NO-PATH results that DRC would never have raised,
+    and inventing obstacles is the same class of error as ignoring them."*  A
+    footprint that needs the other side -- a through-hole part whose body or
+    leads protrude -- says so by drawing a courtyard there, and then it IS
+    compared there.  `SW9` does not say so, and its two 0.90 mm NPTH mounting
+    holes are not a courtyard: they are holes, and they are already judged by
+    real DRC's `hole_clearance`, by PL7 (a moved land swept into foreign
+    copper) and by PL9 (no barrel under a moved land).
+
+    NOTHING ELSE MOVES.  The geometry compared is still
+    `GetBoundingBox(False, False)`, the same coarse box as before -- not the
+    courtyard polygon, which would be smaller and would relax the test a second
+    way.  The ONLY difference is WHICH PAIRS are compared, so a same-side
+    overlap that failed before fails identically now.
+    """
     refs = sorted(fps)
     out = set()
     for i, a in enumerate(refs):
-        ba = fps[a]["bbox"]
+        ba, sa = fps[a]["bbox"], set(fps[a].get("sides") or ())
         for b in refs[i + 1:]:
-            bb = fps[b]["bbox"]
+            bb, sb = fps[b]["bbox"], set(fps[b].get("sides") or ())
+            # A collection taken before D-691 carries no `sides`; comparing
+            # every pair is what it meant, and is what it still gets.
+            if sa and sb and not (sa & sb):
+                continue
             if (ba[0] <= bb[2] and bb[0] <= ba[2]
                     and ba[1] <= bb[3] and bb[1] <= ba[3]):
                 out.add((a, b))

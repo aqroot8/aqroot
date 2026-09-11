@@ -1,0 +1,274 @@
+{
+  "authority_unchanged": true,
+  "board_sha256": "2f456279cb9540f5e29a2a9b2fbc60a6ad761e0ec33253f2802c4ada83aebbc4",
+  "controls": {
+    "every_cross_side_case_changed": true,
+    "every_same_side_collision_still_refused": true,
+    "file": "evidence/d691-courtyard-side-controls.py",
+    "implementations_agree": true,
+    "non_vacuous": true,
+    "rows": [
+      {
+        "against": "SW9",
+        "against_courtyards": [
+          "F"
+        ],
+        "against_side": "F",
+        "boxes_touch": true,
+        "changed": true,
+        "moved": "TP13",
+        "moved_courtyards": [
+          "B"
+        ],
+        "moved_side": "B",
+        "new_verdict": false,
+        "old_verdict": true,
+        "to_mm": [
+          62.3,
+          90.8
+        ],
+        "why": "B under an F.CrtYd-only part"
+      },
+      {
+        "against": "SW9",
+        "against_courtyards": [
+          "F"
+        ],
+        "against_side": "F",
+        "boxes_touch": true,
+        "changed": true,
+        "moved": "TP6",
+        "moved_courtyards": [
+          "B"
+        ],
+        "moved_side": "B",
+        "new_verdict": false,
+        "old_verdict": true,
+        "to_mm": [
+          70.0,
+          84.0
+        ],
+        "why": "B under an F.CrtYd-only part"
+      },
+      {
+        "against": "SW9",
+        "against_courtyards": [
+          "F"
+        ],
+        "against_side": "F",
+        "boxes_touch": true,
+        "changed": true,
+        "moved": "TP7",
+        "moved_courtyards": [
+          "B"
+        ],
+        "moved_side": "B",
+        "new_verdict": false,
+        "old_verdict": true,
+        "to_mm": [
+          65.0,
+          87.0
+        ],
+        "why": "B under an F.CrtYd-only part"
+      },
+      {
+        "against": "TP47",
+        "against_courtyards": [
+          "B"
+        ],
+        "against_side": "B",
+        "boxes_touch": true,
+        "changed": false,
+        "moved": "TP13",
+        "moved_courtyards": [
+          "B"
+        ],
+        "moved_side": "B",
+        "new_verdict": true,
+        "old_verdict": true,
+        "to_mm": [
+          62.25,
+          96.0
+        ],
+        "why": "B onto B -- a real collision"
+      },
+      {
+        "against": "U12",
+        "against_courtyards": [
+          "B"
+        ],
+        "against_side": "B",
+        "boxes_touch": true,
+        "changed": false,
+        "moved": "TP6",
+        "moved_courtyards": [
+          "B"
+        ],
+        "moved_side": "B",
+        "new_verdict": true,
+        "old_verdict": true,
+        "to_mm": [
+          66.6,
+          101.4
+        ],
+        "why": "B onto B -- a real collision"
+      },
+      {
+        "against": "L1",
+        "against_courtyards": [
+          "B"
+        ],
+        "against_side": "B",
+        "boxes_touch": true,
+        "changed": false,
+        "moved": "R127",
+        "moved_courtyards": [
+          "B"
+        ],
+        "moved_side": "B",
+        "new_verdict": true,
+        "old_verdict": true,
+        "to_mm": [
+          66.6,
+          96.6
+        ],
+        "why": "B onto B -- a real collision"
+      },
+      {
+        "against": "SW2",
+        "against_courtyards": [
+          "F"
+        ],
+        "against_side": "F",
+        "boxes_touch": true,
+        "changed": false,
+        "moved": "R120",
+        "moved_courtyards": [
+          "F"
+        ],
+        "moved_side": "F",
+        "new_verdict": true,
+        "old_verdict": true,
+        "to_mm": [
+          64.2,
+          99.0
+        ],
+        "why": "F onto F -- a real collision"
+      },
+      {
+        "against": "SW9",
+        "against_courtyards": [
+          "F"
+        ],
+        "against_side": "F",
+        "boxes_touch": true,
+        "changed": false,
+        "moved": "R27",
+        "moved_courtyards": [
+          "F"
+        ],
+        "moved_side": "F",
+        "new_verdict": true,
+        "old_verdict": true,
+        "to_mm": [
+          66.7,
+          86.5
+        ],
+        "why": "F onto F -- a real collision"
+      }
+    ],
+    "still_refuses": true
+  },
+  "decision": "D-691",
+  "defect": {
+    "board_wide": {
+      "dropped": 83,
+      "every_dropped_pair_is_cross_side": true,
+      "pairs_new": 37,
+      "pairs_old": 120
+    },
+    "now": "compared only where the two footprints CLAIM A COMMON SIDE, by their own courtyards; a footprint with no courtyard at all claims its mounting side, which is what the old comparison assumed for it anyway. The GEOMETRY compared is unchanged -- still the same coarse bounding box, not the courtyard polygon -- so the only difference is WHICH PAIRS are compared.",
+    "precedent": "qrouter.addko says it for rule areas: 'Blocking layers the zone does not claim invents NO-PATH results that DRC would never have raised, and inventing obstacles is the same class of error as ignoring them.'",
+    "was": "every footprint compared to every other, regardless of side, using GetBoundingBox(False, False)",
+    "where": [
+      "apply_part_shift.courtyard_overlaps",
+      "checks/placement_contract.overlaps"
+    ]
+  },
+  "question": "the placement checks call themselves COURTYARD checks and compare footprint BOUNDING BOXES side-blind; what does correcting that free, and does the U12 column move then go",
+  "schema": 1,
+  "u12_refused_and_the_reason_is_new": {
+    "finding": "the column move is NOT refused by courtyards and NOT refused by travel.  With TP13, C28 and L1 already moved on the scratch, U12 is refused by PL7 and PL9 -- copper swept under a moved LAND and barrels that end up INSIDE one -- at every distance asked:",
+    "ladder": [
+      {
+        "dy_mm": -0.8,
+        "new_courtyard_overlaps": 0,
+        "refusals": 4,
+        "released": 9,
+        "stranded": 3,
+        "swept_under_a_land": 6,
+        "vias_in_moved_pads": 3
+      },
+      {
+        "dy_mm": -1.2,
+        "new_courtyard_overlaps": 0,
+        "refusals": 5,
+        "released": 11,
+        "stranded": 2,
+        "swept_under_a_land": 9,
+        "vias_in_moved_pads": 3
+      },
+      {
+        "dy_mm": -1.6,
+        "new_courtyard_overlaps": 0,
+        "refusals": 8,
+        "released": 21,
+        "stranded": 7,
+        "swept_under_a_land": 10,
+        "vias_in_moved_pads": 1
+      },
+      {
+        "dy_mm": -2.4,
+        "new_courtyard_overlaps": 0,
+        "refusals": 0,
+        "released": 78,
+        "stranded": 13,
+        "swept_under_a_land": 9,
+        "vias_in_moved_pads": 2
+      }
+    ],
+    "non_vacuity_of_the_relaxation": "the clause that was relaxed (PL4, a side-blind BOUNDING BOX) and the clauses that still refuse (PL7 real copper, PL9 real barrels, plus real DRC) are different questions, and this ladder is the proof that removing the first did not remove the rest",
+    "reading": "the space immediately NORTH of U12 is U12's OWN +3V3 fan-out and its GND / V3V3_FB stitching.  The column move is therefore not a translation at all -- it is a re-floorplan of U12's +3V3 output and its stitch field, and it must be designed as one.  PL7 and PL9 refusing it at 0.8 mm is the placement contract working exactly as D-619 and D-621 built it, on the very move D-691's relaxation was written to enable.",
+    "what_is_swept": "+3V3 and /01_POWER_TREE/V3V3_FB copper, under U12.15 -- the TPS63020's GND EXPOSED PAD.  Every one of the nine would be a dead short, and the release declines them because they are held by the +3V3 pour on that layer rather than floating."
+  },
+  "verification": {
+    "beta_v2_untouched": true,
+    "copper": "NONE PROMOTED; authority unchanged at 2f456279",
+    "placement_contract": "PASS on the authority, report byte-IDENTICAL to d690",
+    "standing_suite": "14/14 RAN, vacuous false, every contract IDENTICAL to d690 but pour_partition's ref_commit"
+  },
+  "what_it_freed": {
+    "after": "the whole back-side field under SW9 -- x 70..71, y 83..90, every station at 0.600 mm clearance and courtyard-CLEAR",
+    "before": "a 15 x 14 station sweep for TP13 over x 58..72 / y 76..98 returned THREE courtyard-clear sites, two of them ON the board's east edge (the outline ends at x = 72.050) and one where a moved L1 lands",
+    "moves_taken_on_a_scratch": {
+      "C28": {
+        "dy_mm": -2.4,
+        "released": 2,
+        "verdict": "PASS"
+      },
+      "L1": {
+        "dy_mm": -2.4,
+        "released": 9,
+        "verdict": "PASS"
+      },
+      "TP13": {
+        "released": 15,
+        "to_mm": [
+          70.0,
+          88.0
+        ],
+        "verdict": "PASS"
+      }
+    }
+  }
+}

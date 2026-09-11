@@ -1,0 +1,355 @@
+{
+ "board": "/home/aqroot8/aqroot-demo/hardware/demo/kicad/aqroot-demo/aqroot-Beta-v2.kicad_pcb",
+ "changed": [
+  {
+   "against": "SW9",
+   "against_courtyards": [
+    "F"
+   ],
+   "against_side": "F",
+   "boxes_touch": true,
+   "changed": true,
+   "moved": "TP13",
+   "moved_courtyards": [
+    "B"
+   ],
+   "moved_side": "B",
+   "new_verdict": false,
+   "old_verdict": true,
+   "to_mm": [
+    62.3,
+    90.8
+   ],
+   "why": "B under an F.CrtYd-only part"
+  },
+  {
+   "against": "SW9",
+   "against_courtyards": [
+    "F"
+   ],
+   "against_side": "F",
+   "boxes_touch": true,
+   "changed": true,
+   "moved": "TP6",
+   "moved_courtyards": [
+    "B"
+   ],
+   "moved_side": "B",
+   "new_verdict": false,
+   "old_verdict": true,
+   "to_mm": [
+    70.0,
+    84.0
+   ],
+   "why": "B under an F.CrtYd-only part"
+  },
+  {
+   "against": "SW9",
+   "against_courtyards": [
+    "F"
+   ],
+   "against_side": "F",
+   "boxes_touch": true,
+   "changed": true,
+   "moved": "TP7",
+   "moved_courtyards": [
+    "B"
+   ],
+   "moved_side": "B",
+   "new_verdict": false,
+   "old_verdict": true,
+   "to_mm": [
+    65.0,
+    87.0
+   ],
+   "why": "B under an F.CrtYd-only part"
+  }
+ ],
+ "controls": [
+  {
+   "against": "SW9",
+   "against_courtyards": [
+    "F"
+   ],
+   "against_side": "F",
+   "boxes_touch": true,
+   "changed": true,
+   "moved": "TP13",
+   "moved_courtyards": [
+    "B"
+   ],
+   "moved_side": "B",
+   "new_verdict": false,
+   "old_verdict": true,
+   "to_mm": [
+    62.3,
+    90.8
+   ],
+   "why": "B under an F.CrtYd-only part"
+  },
+  {
+   "against": "SW9",
+   "against_courtyards": [
+    "F"
+   ],
+   "against_side": "F",
+   "boxes_touch": true,
+   "changed": true,
+   "moved": "TP6",
+   "moved_courtyards": [
+    "B"
+   ],
+   "moved_side": "B",
+   "new_verdict": false,
+   "old_verdict": true,
+   "to_mm": [
+    70.0,
+    84.0
+   ],
+   "why": "B under an F.CrtYd-only part"
+  },
+  {
+   "against": "SW9",
+   "against_courtyards": [
+    "F"
+   ],
+   "against_side": "F",
+   "boxes_touch": true,
+   "changed": true,
+   "moved": "TP7",
+   "moved_courtyards": [
+    "B"
+   ],
+   "moved_side": "B",
+   "new_verdict": false,
+   "old_verdict": true,
+   "to_mm": [
+    65.0,
+    87.0
+   ],
+   "why": "B under an F.CrtYd-only part"
+  },
+  {
+   "against": "TP47",
+   "against_courtyards": [
+    "B"
+   ],
+   "against_side": "B",
+   "boxes_touch": true,
+   "changed": false,
+   "moved": "TP13",
+   "moved_courtyards": [
+    "B"
+   ],
+   "moved_side": "B",
+   "new_verdict": true,
+   "old_verdict": true,
+   "to_mm": [
+    62.25,
+    96.0
+   ],
+   "why": "B onto B -- a real collision"
+  },
+  {
+   "against": "U12",
+   "against_courtyards": [
+    "B"
+   ],
+   "against_side": "B",
+   "boxes_touch": true,
+   "changed": false,
+   "moved": "TP6",
+   "moved_courtyards": [
+    "B"
+   ],
+   "moved_side": "B",
+   "new_verdict": true,
+   "old_verdict": true,
+   "to_mm": [
+    66.6,
+    101.4
+   ],
+   "why": "B onto B -- a real collision"
+  },
+  {
+   "against": "L1",
+   "against_courtyards": [
+    "B"
+   ],
+   "against_side": "B",
+   "boxes_touch": true,
+   "changed": false,
+   "moved": "R127",
+   "moved_courtyards": [
+    "B"
+   ],
+   "moved_side": "B",
+   "new_verdict": true,
+   "old_verdict": true,
+   "to_mm": [
+    66.6,
+    96.6
+   ],
+   "why": "B onto B -- a real collision"
+  },
+  {
+   "against": "SW2",
+   "against_courtyards": [
+    "F"
+   ],
+   "against_side": "F",
+   "boxes_touch": true,
+   "changed": false,
+   "moved": "R120",
+   "moved_courtyards": [
+    "F"
+   ],
+   "moved_side": "F",
+   "new_verdict": true,
+   "old_verdict": true,
+   "to_mm": [
+    64.2,
+    99.0
+   ],
+   "why": "F onto F -- a real collision"
+  },
+  {
+   "against": "SW9",
+   "against_courtyards": [
+    "F"
+   ],
+   "against_side": "F",
+   "boxes_touch": true,
+   "changed": false,
+   "moved": "R27",
+   "moved_courtyards": [
+    "F"
+   ],
+   "moved_side": "F",
+   "new_verdict": true,
+   "old_verdict": true,
+   "to_mm": [
+    66.7,
+    86.5
+   ],
+   "why": "F onto F -- a real collision"
+  }
+ ],
+ "decision": "D-691",
+ "disagreements": [],
+ "every_cross_side_case_changed": true,
+ "every_same_side_collision_still_refused": true,
+ "implementations_agree": true,
+ "non_vacuous": true,
+ "pairs_flagged_board_wide": 37,
+ "question": "does the shared-side predicate change the F/B answer, leave the same-side answer alone, and do the two implementations agree",
+ "schema": 1,
+ "still_refuses": true,
+ "unchanged_same_side": [
+  {
+   "against": "TP47",
+   "against_courtyards": [
+    "B"
+   ],
+   "against_side": "B",
+   "boxes_touch": true,
+   "changed": false,
+   "moved": "TP13",
+   "moved_courtyards": [
+    "B"
+   ],
+   "moved_side": "B",
+   "new_verdict": true,
+   "old_verdict": true,
+   "to_mm": [
+    62.25,
+    96.0
+   ],
+   "why": "B onto B -- a real collision"
+  },
+  {
+   "against": "U12",
+   "against_courtyards": [
+    "B"
+   ],
+   "against_side": "B",
+   "boxes_touch": true,
+   "changed": false,
+   "moved": "TP6",
+   "moved_courtyards": [
+    "B"
+   ],
+   "moved_side": "B",
+   "new_verdict": true,
+   "old_verdict": true,
+   "to_mm": [
+    66.6,
+    101.4
+   ],
+   "why": "B onto B -- a real collision"
+  },
+  {
+   "against": "L1",
+   "against_courtyards": [
+    "B"
+   ],
+   "against_side": "B",
+   "boxes_touch": true,
+   "changed": false,
+   "moved": "R127",
+   "moved_courtyards": [
+    "B"
+   ],
+   "moved_side": "B",
+   "new_verdict": true,
+   "old_verdict": true,
+   "to_mm": [
+    66.6,
+    96.6
+   ],
+   "why": "B onto B -- a real collision"
+  },
+  {
+   "against": "SW2",
+   "against_courtyards": [
+    "F"
+   ],
+   "against_side": "F",
+   "boxes_touch": true,
+   "changed": false,
+   "moved": "R120",
+   "moved_courtyards": [
+    "F"
+   ],
+   "moved_side": "F",
+   "new_verdict": true,
+   "old_verdict": true,
+   "to_mm": [
+    64.2,
+    99.0
+   ],
+   "why": "F onto F -- a real collision"
+  },
+  {
+   "against": "SW9",
+   "against_courtyards": [
+    "F"
+   ],
+   "against_side": "F",
+   "boxes_touch": true,
+   "changed": false,
+   "moved": "R27",
+   "moved_courtyards": [
+    "F"
+   ],
+   "moved_side": "F",
+   "new_verdict": true,
+   "old_verdict": true,
+   "to_mm": [
+    66.7,
+    86.5
+   ],
+   "why": "F onto F -- a real collision"
+  }
+ ]
+}

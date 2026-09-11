@@ -23,6 +23,45 @@
 > `verify_promotion` PASS and `protected_copper` showing exactly one protected
 > net moved.  `U14.7` is on the bus.  This board has **no open owner decision**.
 
+- **Demo D-691 (THE "COURTYARD" CHECKS WERE SIDE-BLIND BOUNDING BOXES, AND THE
+  `U12` COLUMN IS REFUSED BY `PL7`/`PL9` INSTEAD):**  **NO COPPER PROMOTED.**
+  Authority **UNCHANGED** at
+  `2f456279cb9540f5e29a2a9b2fbc60a6ad761e0ec33253f2802c4ada83aebbc4`;
+  18 -> 18; `hardware/demo/kicad`, `hardware/demo/fab`, `hardware/beta-v2`
+  **UNTOUCHED** (`evidence/d691-courtyard-side-blind.json`).
+  **(1) THE DEFECT.**  `apply_part_shift.courtyard_overlaps` and
+  `checks/placement_contract.overlaps` compared EVERY footprint to EVERY other
+  regardless of side, using `GetBoundingBox(False, False)`, under the name
+  *courtyard*.  Board-wide that flagged **120 pairs; the corrected predicate
+  flags 37, and every one of the 83 dropped pairs is CROSS-SIDE.**  `SW9` is an
+  SMD slide switch drawing `F.CrtYd` and NOTHING on `B.CrtYd`, and its
+  8.84 x 10.09 mm box sits over the only free back-side ground between `U11`
+  and `U2`.  The footprint is now honoured exactly as authored -- the sentence
+  `qrouter.addko` already writes for rule areas -- and **the GEOMETRY compared
+  is unchanged**, still the same coarse bounding box, so the only difference is
+  WHICH PAIRS are compared.
+  **(2) THE CONTROLS.**  Eight synthetic moves
+  (`evidence/d691-courtyard-side-controls.py`): **every cross-side case CHANGED
+  (3 of 3), every same-side collision STILL REFUSED (5 of 5)**, both
+  implementations agree on every footprint on the board, and the standing suite
+  is **14/14 RAN with every contract byte-IDENTICAL to D-690**.
+  **(3) WHAT IT FREED.**  `TP13`'s site sweep goes from **three** clear sites
+  -- two ON the board's own east edge, one where a moved `L1` lands -- to **the
+  whole back-side field under `SW9`** (`x 70..71`, `y 83..90`, 0.600 mm).  On a
+  scratch, `TP13` -> (70.0, 88.0), `C28` -2.4 mm and `L1` -2.4 mm all PASS.
+  **(4) AND `U12` IS REFUSED FOR A DIFFERENT REASON.**  At -0.8, -1.2, -1.6 and
+  -2.4 mm there is **ZERO courtyard overlap** and at every one of them `PL7`
+  and `PL9` refuse: **`+3V3` and `/01_POWER_TREE/V3V3_FB` copper swept under
+  `U12.15`, the `TPS63020`'s GND EXPOSED PAD** -- nine dead shorts, declined by
+  the release because the `+3V3` pour holds them.  ***The space immediately
+  north of `U12` is `U12`'s OWN `+3V3` fan-out and its GND / `V3V3_FB` stitch
+  field***, so the column move is not a translation but a re-floorplan of that
+  fan-out.  That `PL7`/`PL9` refuse it **on the very move this relaxation was
+  written to enable** is the proof that removing a side-blind bounding box did
+  not remove the clauses that measure real copper and real barrels.
+  **NEXT:** (1) the `U12` `+3V3` fan-out re-floorplan -- the named form of the
+  #1 blocker.  (2) `/BQ25185_STAT1` + `/BQ25185_STAT2`'s multi-net cut, four of
+  eighteen.  (3) `BQ25185_SYS`'s remaining five.  **NO OPEN OWNER DECISION.**
 - **Demo D-690 (THE MAZE'S BARREL WAS NEVER AN ARGUMENT, AND IT WAS THE WALL;
   AND `U11.9` / `U11.3` STOP BEING PACKAGE WALLS BECAUSE 0.200 mm IN A
   0.600 mm SLOT IS EXACTLY ZERO MARGIN):**  **COPPER PROMOTED.**  Authority
