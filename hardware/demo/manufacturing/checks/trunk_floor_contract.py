@@ -64,6 +64,22 @@ sys.path.insert(0, str(MANU))
 sys.path.insert(0, str(HERE))
 sys.path.insert(0, str(ROOT / "hardware/beta-v2/checks"))
 
+def _dru_rules():
+    """Every `.kicad_dru` rule as (name, {constraint: min_nm}, condition).
+
+    Read HERE, from the file, so TF3's re-derivation of a D-690 per-net width
+    licence does not consult the same code path it is checking.
+    """
+    import maze3d as _mz
+
+    class _Shim(object):
+        class b:
+            @staticmethod
+            def GetFileName():
+                return str(BOARD)
+    return _mz.dru_rules(_Shim)
+
+
 # The fields `net_contract` returned BEFORE this lever existed.  TF2 compares
 # exactly these, so a future field added beside `trunk_floor` cannot make the
 # non-perturbation claim weaker by accident.
@@ -239,7 +255,31 @@ def main():
         if tf["admitted"]:
             if on["width"] != tf["floor_nm"]:
                 bad.append(dict(net=n, why="ADMITTED_BUT_WIDTH_NOT_THE_FLOOR"))
-            if tf["required_amps"] is None or tf["amps"] + 1e-9 < \
+            # TWO ADMISSIONS, TWO BARS, AND NEITHER MAY STAND IN FOR THE OTHER.
+            # D-662's descent is to a CLASS floor and its bar is an AMPACITY:
+            # the class must publish a design current and the floor must carry
+            # it.  D-690's descent is to a floor the `.kicad_dru` publishes for
+            # ONE NAMED NET, for a class section 5 prices NOWHERE -- there is no
+            # current to weigh, and the bar is instead that the rule EXISTS, in
+            # the exact shape `net_width_licence` accepts, granting THIS net
+            # THIS width.  That is re-derived here from the rule text rather
+            # than taken from the driver's own answer, so the two cannot agree
+            # by construction.
+            if tf["why"] == "PUBLISHED_PER_NET_IN_THE_KICAD_DRU":
+                want = "A.NetName == '%s'" % n
+                grants = [nm for nm, cons, cond in _dru_rules()
+                          if ' '.join(cond.split()) == want
+                          and cons.get("track_width") is not None
+                          and cons["track_width"] <= tf["floor_nm"]]
+                if not grants:
+                    bad.append(dict(net=n, why="ADMITTED_WITH_NO_NAMED_RULE"))
+                elif tf.get("floor_source") not in grants:
+                    bad.append(dict(net=n, why="ADMITTED_BY_AN_UNNAMED_RULE",
+                                    said=tf.get("floor_source"), found=grants))
+                elif (tf["required_amps"] is not None
+                      and tf["amps"] + 1e-9 < tf["required_amps"]):
+                    bad.append(dict(net=n, why="ADMITTED_UNDER_THE_BAR"))
+            elif tf["required_amps"] is None or tf["amps"] + 1e-9 < \
                     tf["required_amps"]:
                 bad.append(dict(net=n, why="ADMITTED_UNDER_THE_BAR"))
         elif on["width"] != off["width"]:
@@ -281,6 +321,26 @@ def main():
         controls.append(dict(netclass=cls, expected=expect, got=got["why"],
                              admitted=got["admitted"], amps=got["amps"],
                              required_amps=got["required_amps"], ok=ok))
+    # D-690's FIFTH VERDICT, AND ITS OWN REFUSAL BESIDE IT.  A per-net floor
+    # that cannot refuse is not a clause: the same class, asked about a net the
+    # `.kicad_dru` does NOT name, must still answer `CLASS_HAS_NO_PUBLISHED_FLOOR`.
+    for cls, net, expect in (
+            ("Default", "/BQ25185_STAT1", "PUBLISHED_PER_NET_IN_THE_KICAD_DRU"),
+            ("Default", "/BQ25185_STAT2", "PUBLISHED_PER_NET_IN_THE_KICAD_DRU"),
+            ("Default", "/WAKE_INT_N", "CLASS_HAS_NO_PUBLISHED_FLOOR"),
+            ("GND", "GND", "CLASS_HAS_NO_PUBLISHED_FLOOR"),
+            ("USB_D", "/USB_D_MCU_N", "CLASS_HAS_NO_PUBLISHED_FLOOR")):
+        got = rmb.trunk_floor_price(cls, board_min, net=net)
+        ok = (got["why"] == expect
+              and got["admitted"] == (expect
+                                      == "PUBLISHED_PER_NET_IN_THE_KICAD_DRU")
+              and (got["floor_nm"] is None or got["floor_nm"] >= board_min))
+        ctl_ok = ctl_ok and ok
+        controls.append(dict(netclass=cls, net=net, expected=expect,
+                             got=got["why"], admitted=got["admitted"],
+                             floor_nm=got["floor_nm"],
+                             floor_source=got.get("floor_source"),
+                             amps=got["amps"], ok=ok))
     # THE BAR IS LOCATED, NOT MERELY QUOTED.  A clause that admits at equality
     # and one part per million below it is not a bar.
     probe = rmb.trunk_floor_price("P3V3", board_min)

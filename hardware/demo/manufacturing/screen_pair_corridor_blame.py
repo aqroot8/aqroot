@@ -91,6 +91,7 @@ run reached its own end.
         [MARGIN_MM] [GRID_NM] [OUT] [--ban NET]... [--per-object]
         [--max-mm X] [--minimise-only]
 """
+import os
 import hashlib
 import json
 import sys
@@ -173,7 +174,12 @@ OUT = Path(sys.argv[6]) if len(sys.argv) > 6 else None
 qb = qr.QBoard(str(BOARD))
 ir.inject_existing_via_obstacles(qb)
 reserved = reserved_inner_planes(qb.b)
-c = net_contract(qb.b, NET)
+c = net_contract(qb.b, NET, trunk_floor=bool(os.environ.get(
+    "AQROOT_TRUNK_FLOOR")))
+# D-690.  The screen must price the width the GATE will route at, or it blames
+# the wrong corridor.  `--trunk-floor` descends a class the `.kicad_dru` prices
+# and, since D-690, a NET the `.kicad_dru` prices by name; env-gated so every
+# run before this one reproduces byte for byte.
 far = list(permitted_layers(qb.routable, c["layers"], reserved, NET))
 
 islands = mz.net_islands(qb, NET)

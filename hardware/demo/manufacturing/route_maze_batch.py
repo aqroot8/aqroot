@@ -1860,12 +1860,76 @@ PAD_CLR_RETAINED = {"BAT_MAIN": 300000}
 TRUNK_FLOOR_DT_K = 10.0                 # the dT `.kicad_dru` section 5 uses
 
 
-def trunk_floor_price(cls, board_min_nm=0):
+# D-690.  A WIDTH FLOOR THE `.kicad_dru` PUBLISHES FOR ONE NAMED NET.
+#
+# Section 5 prices nine RAILS by netclass; a signal class is priced nowhere,
+# and `--escape-floor` / `--trunk-floor` have therefore been NO-OPS for every
+# signal net on this board (D-685 recorded it for `USB_D` and declined to act
+# on it).  That is right as a default -- a width the board has not published is
+# a width the board has not chosen -- and it left `/BQ25185_STAT1`'s `U11.9`
+# and `/BQ25185_STAT2`'s `U11.3` unreachable at ANY lattice, because the
+# `BQ25185`'s WSON leaves exactly 0.600 mm between neighbouring lands and a
+# 0.200 mm trunk at 0.200 mm clearance needs exactly 0.600 mm -- zero margin,
+# which no rasterised lattice can ever express (`QBoard.grid`'s guard band is
+# 0.75 of a cell).
+#
+# The floor is therefore read from the board's own rule text, one rule per net:
+#
+#     (constraint track_width (min <w>))
+#     (condition "A.NetName == '<net>'")
+#
+# ACCEPTED ONLY IN THAT EXACT SHAPE.  A condition with any other term is
+# ignored rather than guessed at, so broadening the rule text can never
+# silently broaden the router -- the same read `maze3d.area_licence` makes of a
+# barrel licence.  The rule is authored, reviewed and committed BEFORE the
+# router runs, and the width it grants is still clamped UP to board setup's own
+# `min_track_width`, so this can never propose copper KiCad's DRC would refuse.
+def net_width_licence(net, dru=None):
+    """The track width THIS BOARD publishes for THIS NET by name, or None.
+
+    The figure returned is the rule's `min`, and the CALLER decides what to do
+    with it.  A per-net `track_width` rule on this board is not always a floor
+    to descend TO: `BAT_PROTECTED_P high-current trunk width - D-249` states
+    `min 1.20mm`, which RAISES that net's minimum.  `net_contract` is a DESCENT
+    ONLY -- it takes the floor only when it is strictly below the width the net
+    already routes at, and records `FLOOR_IS_NOT_BELOW_THE_ROUTED_WIDTH`
+    otherwise -- so a rule that raises a minimum can never widen a net here,
+    and `BAT_MAIN` never reaches this function at all because section 5 prices
+    its class.  Measured on the promoted board: `BAT_PROTECTED_P` 1.000 mm
+    unchanged with the lever on and off.
+    """
+    if not net:
+        return None
+    path = Path(dru) if dru else BOARD.with_suffix(".kicad_dru")
+    if not path.exists():
+        return None
+    import maze3d as mz
+
+    class _Shim(object):
+        class b:
+            @staticmethod
+            def GetFileName():
+                return str(path.with_suffix(".kicad_pcb"))
+    want = "A.NetName == '%s'" % net
+    best = None
+    for name, cons, cond in mz.dru_rules(_Shim):
+        if ' '.join(cond.split()) != want or 'track_width' not in cons:
+            continue
+        if best is None or cons['track_width'] < best['width']:
+            best = dict(width=cons['track_width'], rule=name, net=net)
+    return best
+
+
+def trunk_floor_price(cls, board_min_nm=0, net=None):
     """May this netclass route its TRUNK at the DRU-published class minimum?
 
     Read-only, deterministic and self-policing: the answer is the board's own
     published design current weighed against the board's own published class
     floor, so no figure here is transcribed and none is invented.
+
+    `net` -- D-690 -- lets a class section 5 does NOT price fall back to a
+    floor the `.kicad_dru` publishes for THAT NET by name.  Omitted, the answer
+    is byte-identical to every call before D-690.
     """
     # `pour_partition_contract` lives in `checks/`, which this module does not
     # otherwise need on `sys.path`; the price is read from the SAME parser
@@ -1874,16 +1938,50 @@ def trunk_floor_price(cls, board_min_nm=0):
         sys.path.insert(0, str(HERE / "checks"))
     import audit_bond_ampacity as ab
     from pour_partition_contract import published_rail_currents
+    table, _ = published_rail_currents(str(BOARD.with_suffix(".kicad_dru")))
+    required = (table.get(cls) or {}).get("amps")
     floor = DRU_CLASS.get(cls, {}).get("width")
     out = dict(netclass=cls, floor_nm=floor, admitted=False,
                amps=None, required_amps=None, why=None)
     if not floor:
-        out["why"] = "CLASS_HAS_NO_PUBLISHED_FLOOR"
+        # D-690.  A CLASS SECTION 5 DOES NOT PRICE MAY STILL HAVE A PUBLISHED
+        # FLOOR -- BUT IT IS PUBLISHED PER NET, AND IT IS PUBLISHED IN THE
+        # `.kicad_dru`, NOT IN THIS FILE.
+        #
+        # `CLASS_HAS_NO_PUBLISHED_FLOOR` is the right answer for a RAIL whose
+        # width is an ampacity, and every rail on this board IS in section 5's
+        # table.  For a class the table does not price, the sentence means only
+        # "section 5 has nothing to say" -- and the obvious repair, descending
+        # to board setup's `min_track_width` for any unpriced class, is WRONG
+        # and measurably so: it would admit `GND`, which section 5 deliberately
+        # does not price (D-643) and which carries every return on the board,
+        # and `USB_D`, whose width is an IMPEDANCE and not an ampacity at all.
+        #
+        # So the floor is read from a rule that names THE NET, exactly as a
+        # barrel licence is read from a rule that names the net and an area:
+        #
+        #     (constraint track_width (min <w>))
+        #     (condition "A.NetName == '<net>'")
+        #
+        # One net per rule, reviewed and committed before the router runs, and
+        # nothing is inherited by a neighbour that happens to share a netclass.
+        # A class the table DOES price never reaches this branch.
+        lic = net_width_licence(net)
+        if lic is None:
+            out["why"] = "CLASS_HAS_NO_PUBLISHED_FLOOR"
+            return out
+        import audit_bond_ampacity as _ab
+        floor = max(lic["width"], board_min_nm or 0)
+        out.update(floor_nm=floor, floor_source=lic["rule"],
+                   amps=round(_ab.ampacity(_ab.track_area(floor / 1e6),
+                                           TRUNK_FLOOR_DT_K), 3),
+                   required_amps=required, admitted=True,
+                   why="PUBLISHED_PER_NET_IN_THE_KICAD_DRU")
+        if required is not None and out["amps"] + 1e-9 < required:
+            out.update(admitted=False, why="TRUNK_UNDER_PRICED")
         return out
     floor = max(floor, board_min_nm or 0)
     out["floor_nm"] = floor
-    table, _ = published_rail_currents(str(BOARD.with_suffix(".kicad_dru")))
-    required = (table.get(cls) or {}).get("amps")
     amps = round(ab.ampacity(ab.track_area(floor / 1e6), TRUNK_FLOOR_DT_K), 3)
     out["amps"], out["required_amps"] = amps, required
     if required is None:
@@ -1951,7 +2049,7 @@ def net_contract(board, net, trunk_floor=False):
     floor_price = None
     if trunk_floor:
         board_min = board.GetDesignSettings().m_TrackMinWidth
-        floor_price = trunk_floor_price(cls, board_min)
+        floor_price = trunk_floor_price(cls, board_min, net=net)
         # A DESCENT ONLY.  A class whose floor is at or above the width this
         # net already routes at cannot be widened by asking for its floor.
         if floor_price["admitted"] and floor_price["floor_nm"] < width:
@@ -2129,7 +2227,7 @@ def propose(path, nets, grid, via_cost_mm, stitch_width=0, stitch_via=None,
             split_islands=False, guard_spec=None, bridge=False,
             bond_pads=(), bond_max_mm=BOND_MAX_MM, bond_via=None,
             join_islands=False, join_island_max_mm=0.0,
-            join_island_via=None, join_island_width=0,
+            join_island_via=None, join_island_width=0, maze_via=None,
             escape_relief=False, relief_via=None, detour_plan=None,
             body_landing=False, join_orphans=False,
             join_orphan_max_mm=JOIN_ORPHAN_MAX_MM,
@@ -2368,6 +2466,25 @@ def propose(path, nets, grid, via_cost_mm, stitch_width=0, stitch_via=None,
                         DRU_CLASS.get(c["netclass"], {}).get("drill", 0))
             c["via_drill"] = drill
             c["via_dia"] = max(stitch_via[0], drill + 2 * ANNULAR_MIN)
+        # D-690.  THE MAZE'S BARREL IS AN ARGUMENT TOO, AND IT IS CLAMPED.
+        # `net_contract` takes the barrel off the NETCLASS, which on this board
+        # gives every `Default` signal a 0.60/0.30 mm via.  In a corridor a
+        # 0.150 mm conductor is being squeezed through, a 0.60 mm barrel needs
+        # 1.00 mm of room and is a different obstacle entirely -- so a route
+        # that has an escape and no path may be refused by its VIA and not by
+        # its track.  Unlike `--join-island-via` this one is CLAMPED UP to
+        # `via_floors`, the board's own unaided minima, so it can license
+        # nothing and needs no rule area: on a `Default` net the smallest it can
+        # ask for is 0.500/0.200 mm, which is board setup's own floor.
+        if maze_via:
+            fl = via_floors(c["netclass"])
+            drill = max(maze_via[1], fl["drill"])
+            dia = max(maze_via[0], fl["dia"], drill + 2 * fl["annular"])
+            c["maze_via"] = dict(asked=list(maze_via), used=[dia, drill],
+                                 was=[c["via_dia"], c["via_drill"]],
+                                 floors=fl,
+                                 clamped=(dia, drill) != tuple(maze_via))
+            c["via_dia"], c["via_drill"] = dia, drill
         t0 = time.time()
         g = guard_for(guard_spec, net) if guard_spec else None
         c["guarded_layers"] = {k: len(v) for k, v in (g or {}).items()}
@@ -2396,6 +2513,20 @@ def propose(path, nets, grid, via_cost_mm, stitch_width=0, stitch_via=None,
         # refuse, and no signal class and no return path is touched.
         floor = DRU_CLASS.get(c["netclass"], {}).get("width") if escape_floor \
             else None
+        # D-690.  AND THE ESCAPE LADDER READS THE SAME PER-NET FLOOR.
+        # `--escape-floor` has been a no-op for every signal net on this board
+        # because section 5 prices only rails; where the `.kicad_dru` publishes
+        # a width for THIS NET by name, that is the rule minimum the escape
+        # ladder is owed.  `net_width_licence` accepts only the exact
+        # `A.NetName == '<net>'` condition and the result is clamped up to board
+        # setup's own `min_track_width`, so nothing here can be illegal.
+        if escape_floor and floor is None:
+            lic = net_width_licence(net)
+            if lic:
+                floor = max(lic["width"], BOARD_TRACK_MIN)
+                c["escape_floor_licence"] = dict(
+                    rule=lic["rule"], width_nm=floor,
+                    amps_at_dt10=island_join_ampacity(floor)["track_amps"])
         c["escape_floor"] = min(c["width"], floor or c["width"])
         field = mz.Field(qb, net, c["width"], c["clr_pad"], c["clr"],
                          c["via_dia"], c["via_drill"], G=grid,
@@ -3136,7 +3267,7 @@ def gate(nets, grid, via_cost_mm, workdir, promote=False, candidate=None,
          guard=None,
          bridge=False, bond_pads=(), bond_max_mm=BOND_MAX_MM,
          bond_via=None, join_islands=False, join_island_max_mm=0.0,
-         join_island_via=None, join_island_width=0,
+         join_island_via=None, join_island_width=0, maze_via=None,
          escape_relief=False, relief_via=None, detour_spec=None,
          body_landing=False, join_orphans=False,
          join_orphan_max_mm=JOIN_ORPHAN_MAX_MM,
@@ -3347,6 +3478,8 @@ def gate(nets, grid, via_cost_mm, workdir, promote=False, candidate=None,
         # was allowed, or the run judges two pieces of one net by two rules.
         if trunk_floor:
             cmd += ["--trunk-floor"]
+        if maze_via:
+            cmd += ["--maze-via", "%d:%d" % maze_via]
         # The bridge is the primary proposal's lever, not the repair's.  A
         # repair re-bonds copper THIS run severed and does it with the stitch;
         # letting it also drop fine barrels into pours it never touched would
@@ -4578,6 +4711,14 @@ def main():
     ap.add_argument("--join-island-max-mm", type=float, default=0.0,
                     help="cap an island jumper's wavefront at this run length "
                          "(0 = maze3d's own WAVE_STEPS budget)")
+    ap.add_argument("--maze-via", default=None, metavar="DIA:DRILL",
+                    help="D-690: the BARREL the whole-board maze may use, in "
+                         "nm, CLAMPED UP to via_floors() -- the board's own "
+                         "min_via_diameter, min_through_hole_diameter, the "
+                         "unconditional annular floor and the POWER-class hole "
+                         "minimum where the net's class is named by it.  It can "
+                         "license nothing; it only declines the netclass's "
+                         "larger default where a corridor cannot hold it")
     ap.add_argument("--join-island-width", type=int, default=0,
                     help="D-689: the WIDTH an island jumper is laid at, in nm, "
                          "clamped into the band .kicad_dru section 5 publishes "
@@ -4742,6 +4883,9 @@ def main():
     # rule area at all.  A rule area may license a finer DRILL and a thinner
     # RING alike (D-595's `POUR_BRIDGE_U11_11` licenses 0.075 mm), so an
     # unconditional ring test here would be simply wrong.
+    maze_via = None
+    if a.maze_via:
+        maze_via = tuple(int(v) for v in a.maze_via.split(":"))
     join_island_via = None
     if a.join_island_via:
         join_island_via = tuple(int(v) for v in a.join_island_via.split(":"))
@@ -4763,7 +4907,7 @@ def main():
                 load_guard(a.guard), a.bridge,
                 tuple(a.bond_pad), a.bond_max_mm, bond_via,
                 a.join_islands, a.join_island_max_mm, join_island_via,
-                a.join_island_width,
+                a.join_island_width, maze_via,
                 a.escape_relief, relief_via,
                 json.loads(a.detour_plan.read_text()) if a.detour_plan
                 else None,
@@ -4844,6 +4988,7 @@ def main():
                  join_island_max_mm=a.join_island_max_mm,
                  join_island_via=join_island_via,
                  join_island_width=a.join_island_width,
+                 maze_via=maze_via,
                  escape_relief=a.escape_relief, relief_via=relief_via,
                  detour_spec=a.detour_spec, body_landing=a.body_landing,
                  detour_own_layer=a.detour_own_layer,

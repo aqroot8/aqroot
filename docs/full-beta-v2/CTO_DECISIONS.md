@@ -1,3 +1,161 @@
+# D-690 · 2026-09-11 · Demo — **THE MAZE'S BARREL WAS NEVER AN ARGUMENT, AND IT WAS THE WALL**: `/WAKE_INT_N` CLOSES ON A 0.500 mm VIA WHERE THE NETCLASS'S 0.600 mm ONE HAS NO CORRIDOR — AND `U11.9` / `U11.3` STOP BEING PACKAGE WALLS BECAUSE 0.200 mm IN A 0.600 mm SLOT IS **EXACTLY ZERO MARGIN**
+
+    authority  fe99095143edd211c10421bd364dc56a21ec1db840377cd8dbf593f5fbb635ce
+            -> 2f456279cb9540f5e29a2a9b2fbc60a6ad761e0ec33253f2802c4ada83aebbc4
+    retained open edges 19 -> 18   open retained nets 13 -> 12
+    `/WAKE_INT_N`  1 -> 0
+    `hardware/demo/fab` REGENERATED · `hardware/beta-v2` UNTOUCHED
+    `evidence/d690-what-is-refusing-the-board.json`
+
+**COPPER PROMOTED.**  Thirteen nets were re-asked on the D-689 authority with
+every lever this driver owns and all thirteen refused.  Reading the refusals
+rather than the totals found **two levers that did not exist** and one wall
+that is not where it was thought to be.
+
+## 1. `--maze-via`: THE BARREL THE WHOLE-BOARD MAZE MAY USE
+
+`net_contract` takes the maze's barrel off the **NETCLASS**, which on this
+board gives every `Default` signal a **0.600 / 0.300 mm** via.  A 0.600 mm
+barrel needs 1.000 mm of room at 0.200 mm clearance; the same net's ordinary
+floors — board setup's `min_via_diameter` 0.500 mm, `min_through_hole_diameter`
+0.200 mm and the unconditional 0.125 mm ring — admit **0.500 / 0.200 mm**,
+which needs 0.900 mm.  ***A route that has an escape and no path may be refused
+by its VIA and not by its track***, and no flag could say so: `--stitch-via`
+belongs to the stitch, `--bond-via` to the bond, `--relief-via` to the relief
+and D-689's `--join-island-via` to the jumper.
+
+`--maze-via` is **CLAMPED UP** to `via_floors()`, so unlike `--join-island-via`
+it can license nothing and needs no rule area.  It only declines the netclass's
+larger default where a corridor cannot hold it.
+
+    route_maze_batch.py /WAKE_INT_N --grid 25000 --escape-floor --trunk-floor
+        --neck --partial --maze-via 500000:200000 --tap --tap-max-mm 6 --promote
+
+  * `U1.23` → `U2.1`, **104.455 mm, 16 barrels**, `F`/`B`/`In2`, 0.200 mm
+  * **58 objects added, 0 removed**; every via 0.500/0.200, every track 0.200 mm
+  * the expanders can wake the MCU.  Before this they could not.
+
+## 2. THE LENGTH IS MEASURED, NOT ACCEPTED
+
+104 mm for one interrupt is a great deal of copper, so the two shorter-looking
+closures were **asked and refused**, not assumed away:
+
+    Q10.3 -> U2.1   25.258 mm apart on the straight line
+                    the EXACT launcher routes it in 127.822 mm
+    --tap-first     a 126.972 mm tap, and the gate REFUSES it: `no_regression`
+    grid 50000      107.670 mm / 16 vias        grid 100000   NO_PATH
+
+***104.455 mm is the SHORTEST of the three closures this board admits***, and
+it is the router's own pair choice vindicated rather than second-guessed.
+Electrically it is an open-drain wake interrupt: about 285 mOhm and about
+25 pF, a sub-microsecond edge on a signal whose only timing requirement is that
+the MCU sees it.  **RECORDED AS AN OPEN OPTIMISATION:** if a later refloorplan
+opens the `Q10.3` lane, re-route and recover about 80 mm of copper.
+
+## 3. `U11.9` AND `U11.3`: A WALL THAT IS EXACTLY ZERO MICRONS WIDE
+
+`screen_fanout_channel.py`, 25 um stations, both `BQ25185` charge-status lands:
+
+    U11.9   at 0.00 mm  gap 0.600 (U11.8 <-> U11.10)  admits 0.200
+            at 0.25 mm  gap 1.975                     admits 1.575
+    U11.3   at 0.00 mm  gap 0.600 (U11.4 <-> U11.2)   admits 0.200
+            at 0.25 mm  gap 5.975                     admits 5.575
+
+The channel is **wide open a quarter of a millimetre out**.  At the land row the
+WSON leaves 0.600 mm and a 0.200 mm track at 0.200 mm clearance needs **exactly
+0.600 mm** — it fits, with **zero margin**, and ***no rasterised lattice can
+express zero***: `QBoard.grid`'s guard band is 0.75 of a cell, so the launch is
+refused at 0.100 mm, at 0.050 mm, at 0.025 mm and at every finer pitch alike.
+0.150 mm needs 0.550 mm and has 0.050 mm of real margin.
+
+**THE WIDTH IS PUBLISHED, NOT ASSUMED.**  `.kicad_dru` **section 19** states
+0.15 mm for `/BQ25185_STAT1` and `/BQ25185_STAT2` **by name**, and
+`route_maze_batch.net_width_licence` accepts only the exact
+`A.NetName == '<net>'` condition, so broadening the text cannot broaden the
+router.  The obvious repair — let `--escape-floor` descend to board setup's
+`min_track_width` for ANY class section 5 does not price — **is wrong and was
+measured wrong**: it admits `GND`, which section 5 deliberately does not price
+(D-643) and which carries every return on this board, and `USB_D`, whose width
+is an IMPEDANCE and not an ampacity.  0.150 mm is board setup's own minimum,
+`audit_narrow_copper` has always treated a 0.150 mm `Default` track as ordinary
+copper owing no licence, and the board already carries **84 tracks** at it.
+
+**RESULT:** both lands move from `NO_LEGAL_ESCAPE_SRC` — which D-672 called
+final, *"no router flag, no eviction, no lattice and no rule area reaches it"* —
+to **`NO_PATH` with 3 and 1 escapes**.  ***Four of the board's eighteen edges
+stop being a package wall and become a corridor question.***
+
+And the corridor is priced: `screen_pair_corridor_blame` (now able to price the
+width the gate routes at) reports `U11.9 -> U2.9` **NO_PATH at 0.150 mm**, an
+upper bound of **19.4325 mm on `B.Cu` alone with ZERO vias** once all 42 nets in
+the window are removed, and **not one of those 42 single-net evictions opens
+it**, with `/01_POWER_TREE/ISET` and `/01_POWER_TREE/USB_VBUS_CHG` REQUIRED.
+**The next instrument for these four edges is a MULTI-NET cut or a placement
+change, not a router flag.**
+
+## 4. `/NFC_SUPPLY` `U9.10`: THE CHANNEL IS OPENABLE AND IT IS NOT THE WALL
+
+`U9.9`'s escape BARREL is 0.60 mm and it is what pinches `U9.10`'s channel:
+
+    U9.9 barrel   0.60/0.30 (today)   channel at 0.25 mm out  0.3500 mm
+                  0.50/0.25           channel                 0.4000 mm
+                  0.35/0.20           channel                 0.6379 mm
+
+0.50/0.25 meets every ordinary floor for a `Default` net and needs **no licence
+at all**.  **NEITHER CLOSES THE LAND.**  Gated runs at both barrels return the
+SAME refusal with the SAME blocker counts, because at the land ROW the
+ST25R3916's 0.5 mm pitch admits 0.300 mm against `P3V3`'s 0.400 mm floor.
+`U9.10` remains exactly what D-672 called it — a 0.100 mm deficit against a
+vendor land pattern — and its only remaining lever is **a published per-net
+design current for `/NFC_SUPPLY`**, an OPEN DATA ITEM this board has carried
+since D-655 and which is **NOT invented here**.
+
+## 5. TWO WALLS, RE-CLASSIFIED
+
+**`/01_POWER_TREE/ACC_5V_LX`** — the straight pad bridge `L4.2` → `U21.5` is not
+*blocked*, it is **geometrically impossible**: `U21.4`, the adjacent `GND` land,
+lies ON the line (signed distance **−0.0875 mm** against `QBoard`'s own obstacle
+list, and two `GND` tracks at −0.150 mm).  No `--bridge-pad-max-mm` reaches it.
+
+**THE `U12` COLUMN** — the travel EXISTS.  `U12` + `L1` + `C28` translated north
+together show **ZERO courtyard overlap** at −1.5, −2.0, −2.4 and −2.8 mm, with
+the nearest moved land 0.860 mm from `SW9`'s NPTH; at −2.4 mm the four-claimant
+band grows **1.205 → 3.605 mm**.  What refuses it is that **`TP13` has nowhere
+to go**: a 15 × 14 station sweep of `x 58..72 / y 76..98` returns exactly three
+courtyard-clear sites — two of them ON the board's east edge (the outline ends
+at `x = 72.050`) and the third where the moved `L1` lands.  Everything else is
+inside `SW9`'s or `U2`'s courtyard or on `/I2C_SCL_INT`'s copper.  ***The column
+move is refused by there being nowhere on this board to put a test point***, so
+it rides with a south-east re-floorplan rather than ahead of one.
+
+## 6. VERIFICATION
+
+    gate                15/15, `refused_clauses []`, `attributable_drc []`
+    verify_promotion    PASS 15/15; D-186 and D-269 TRUE;
+                        unconnected_items 35 -> 34; `nothing_removed`
+    protected_copper    IDENTICAL (15 nets, `differences {}`)
+    standing suite      14/14 RAN, `vacuous false`, every verdict PASS/True
+    trunk_floor         PASS TF1-TF4 after being taught D-690's FIFTH VERDICT
+                        **and its refusal**: TF3 re-derives a per-net floor
+                        from the `.kicad_dru` TEXT rather than trusting the
+                        driver, and TF4 controls that the same class asked
+                        about a net the rules do NOT name still answers
+                        `CLASS_HAS_NO_PUBLISHED_FLOOR`
+    licence scope       exactly THREE nets carry a per-net `track_width` rule:
+                        the two D-690 floors at 0.15 mm and D-249's
+                        `BAT_PROTECTED_P` at 1.20 mm — a RAISED minimum on a
+                        class section 5 prices, which never reaches the new
+                        branch and is measured unchanged at 1.000 mm with the
+                        lever on and off
+    fab package         REGENERATED, `fab_package_contract` PASS 8/8
+    real DRC            unchanged: 199 `lib_footprint_issues` +
+                        1 `solder_mask_bridge`, `attributable []`
+
+**NEXT:** (1) `/BQ25185_STAT1` + `/BQ25185_STAT2` — four of eighteen, now a
+priced MULTI-NET cut rather than a package wall.  (2) `BQ25185_SYS`'s remaining
+five.  (3) `/NFC_SUPPLY`'s per-net design current, the one OPEN DATA ITEM that
+would close `U9.10`.  **NO OPEN OWNER DECISION.**
+
 # D-689 · 2026-09-11 · Demo — **THE `SYS` ISLAND JUMPER IS BUILT, LICENSED AND PROMOTED**, AND THE GEOMETRY IT TOOK IS **BIGGER IN BOTH DIMENSIONS** THAN THE ONE D-688 FOUND: 0.600 mm OF TRACK THROUGH A 0.650 / 0.300 mm BARREL, 1.645 A AGAINST THE CLASS'S OWN 1.0 A
 
     authority  fb7b61f2a490283c1ee1a8ff1b969c88f11c5ebc3917dc495425e945149fe401

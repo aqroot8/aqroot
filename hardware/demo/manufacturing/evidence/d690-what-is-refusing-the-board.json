@@ -1,0 +1,577 @@
+{
+  "acc_5v_lx": {
+    "finding": "the straight pad bridge L4.2 -> U21.5 is not blocked, it is GEOMETRICALLY IMPOSSIBLE: U21.4, the adjacent GND land, lies ON the line.  Measured against QBoard's own obstacle list, the signed distance from the segment to U21.4 is -0.0875 mm and to two GND tracks -0.1500 mm.  --bridge-pad-max-mm cannot help; the pair needs a ROUTE, and U21.5 has no legal escape at the SWITCH_NODE 0.400 mm floor from its SOT-563."
+  },
+  "base_board_sha256": "fe99095143edd211c10421bd364dc56a21ec1db840377cd8dbf593f5fbb635ce",
+  "decision": "D-690",
+  "nfc_supply_u9_10": {
+    "base": {
+      "narrow_price": {
+        "amps_at_dt10": 0.872,
+        "class_required_amps": 1.0,
+        "ok": false,
+        "why": "UNDER_PRICED",
+        "width_mm": 0.25
+      },
+      "profile": [
+        {
+          "admits_mm": 0.3,
+          "at_mm": 0.0,
+          "gap_mm": 0.7,
+          "hi": "U9.11",
+          "lo": "U9.9"
+        },
+        {
+          "admits_mm": 0.35,
+          "at_mm": 0.25,
+          "gap_mm": 0.75,
+          "hi": "/04_SPI_B_RADIOS_NFC/NFC_VDD_AM",
+          "lo": "/04_SPI_B_RADIOS_NFC/NFC_VDD_RF"
+        },
+        {
+          "admits_mm": 0.35,
+          "at_mm": 0.5,
+          "gap_mm": 0.75,
+          "hi": "/04_SPI_B_RADIOS_NFC/NFC_VDD_AM",
+          "lo": "/04_SPI_B_RADIOS_NFC/NFC_VDD_RF"
+        },
+        {
+          "admits_mm": 2.4273,
+          "at_mm": 1.0,
+          "gap_mm": 2.8273,
+          "hi": "/04_SPI_B_RADIOS_NFC/NFC_VDD_AM",
+          "lo": "/04_SPI_B_RADIOS_NFC/NFC_VDD_D"
+        },
+        {
+          "admits_mm": 0.3045,
+          "at_mm": 1.5,
+          "gap_mm": 0.7045,
+          "hi": "/04_SPI_B_RADIOS_NFC/NFC_VDD_AM",
+          "lo": "GND"
+        },
+        {
+          "admits_mm": 0.1318,
+          "at_mm": 2.0,
+          "gap_mm": 0.5318,
+          "hi": "/04_SPI_B_RADIOS_NFC/NFC_VDD_AM",
+          "lo": "C45.2"
+        }
+      ],
+      "verdict": "PACKAGE_PITCH_WALL",
+      "widest_launch_mm": 0.25
+    },
+    "finding": "the CHANNEL is openable and it is not the wall.",
+    "reading": "U9.9's escape BARREL is 0.60 mm and it is what pinches U9.10's channel to 0.350 mm at 0.25 mm out.  Shrink it to 0.50/0.25 -- a geometry that meets every ordinary floor for a Default net and needs no licence at all -- and the channel admits 0.400 mm exactly; shrink it to 0.35/0.20 and it admits 0.6379 mm.  NEITHER closes the land: at the land ROW the ST25R3916's 0.5 mm pitch admits 0.300 mm against P3V3's 0.400 mm floor, and a gated run at both barrels returns the SAME refusal with the SAME counts.  U9.10 remains what D-672 called it -- a 0.100 mm deficit against a vendor land pattern, whose only remaining lever is a published per-net design current for /NFC_SUPPLY, which this board has carried as an OPEN DATA ITEM since D-655 and which is NOT invented here.",
+    "with_u9_9_barrel_at_0_35_0_20": {
+      "profile": [
+        {
+          "admits_mm": 0.3,
+          "at_mm": 0.0,
+          "gap_mm": 0.7,
+          "hi": "U9.11",
+          "lo": "U9.9"
+        },
+        {
+          "admits_mm": 0.6379,
+          "at_mm": 0.25,
+          "gap_mm": 1.0379,
+          "hi": "/04_SPI_B_RADIOS_NFC/NFC_VDD_AM",
+          "lo": "/04_SPI_B_RADIOS_NFC/NFC_VDD_RF"
+        },
+        {
+          "admits_mm": 0.475,
+          "at_mm": 0.5,
+          "gap_mm": 0.875,
+          "hi": "/04_SPI_B_RADIOS_NFC/NFC_VDD_AM",
+          "lo": "/04_SPI_B_RADIOS_NFC/NFC_VDD_RF"
+        },
+        {
+          "admits_mm": 2.4273,
+          "at_mm": 1.0,
+          "gap_mm": 2.8273,
+          "hi": "/04_SPI_B_RADIOS_NFC/NFC_VDD_AM",
+          "lo": "/04_SPI_B_RADIOS_NFC/NFC_VDD_D"
+        },
+        {
+          "admits_mm": 0.3045,
+          "at_mm": 1.5,
+          "gap_mm": 0.7045,
+          "hi": "/04_SPI_B_RADIOS_NFC/NFC_VDD_AM",
+          "lo": "GND"
+        },
+        {
+          "admits_mm": 0.1318,
+          "at_mm": 2.0,
+          "gap_mm": 0.5318,
+          "hi": "/04_SPI_B_RADIOS_NFC/NFC_VDD_AM",
+          "lo": "C45.2"
+        }
+      ],
+      "widest_launch_mm": 0.25
+    },
+    "with_u9_9_barrel_at_0_50_0_25": {
+      "profile": [
+        {
+          "admits_mm": 0.3,
+          "at_mm": 0.0,
+          "gap_mm": 0.7,
+          "hi": "U9.11",
+          "lo": "U9.9"
+        },
+        {
+          "admits_mm": 0.4,
+          "at_mm": 0.25,
+          "gap_mm": 0.8,
+          "hi": "/04_SPI_B_RADIOS_NFC/NFC_VDD_AM",
+          "lo": "/04_SPI_B_RADIOS_NFC/NFC_VDD_RF"
+        },
+        {
+          "admits_mm": 0.4,
+          "at_mm": 0.5,
+          "gap_mm": 0.8,
+          "hi": "/04_SPI_B_RADIOS_NFC/NFC_VDD_AM",
+          "lo": "/04_SPI_B_RADIOS_NFC/NFC_VDD_RF"
+        },
+        {
+          "admits_mm": 2.4273,
+          "at_mm": 1.0,
+          "gap_mm": 2.8273,
+          "hi": "/04_SPI_B_RADIOS_NFC/NFC_VDD_AM",
+          "lo": "/04_SPI_B_RADIOS_NFC/NFC_VDD_D"
+        },
+        {
+          "admits_mm": 0.3045,
+          "at_mm": 1.5,
+          "gap_mm": 0.7045,
+          "hi": "/04_SPI_B_RADIOS_NFC/NFC_VDD_AM",
+          "lo": "GND"
+        },
+        {
+          "admits_mm": 0.1318,
+          "at_mm": 2.0,
+          "gap_mm": 0.5318,
+          "hi": "/04_SPI_B_RADIOS_NFC/NFC_VDD_AM",
+          "lo": "C45.2"
+        }
+      ],
+      "widest_launch_mm": 0.25
+    }
+  },
+  "promoted": {
+    "argv": [
+      "route_maze_batch.py",
+      "/WAKE_INT_N",
+      "--grid",
+      "25000",
+      "--escape-floor",
+      "--trunk-floor",
+      "--neck",
+      "--partial",
+      "--maze-via",
+      "500000:200000",
+      "--tap",
+      "--tap-max-mm",
+      "6",
+      "--promote"
+    ],
+    "electrical": "open-drain wake interrupt, U2.1/U3.1 -> U1.23.  0.200 mm x 104.455 mm plus 16 barrels is about 285 mOhm and about 25 pF; with the strap's pull-up that is a sub-microsecond edge on a signal whose only timing requirement is that the MCU sees it.",
+    "layers": [
+      "B.Cu",
+      "F.Cu",
+      "In2.Cu"
+    ],
+    "length_is_measured_not_accepted": {
+      "grid_100000": "NO_PATH",
+      "grid_50000_mm": 107.67,
+      "reading": "104.455 mm is the SHORTEST of the three closures this board admits for this net, not the first one tried.  It is recorded as an OPEN OPTIMISATION: if a later refloorplan opens the Q10.3 lane the net should be re-routed and about 80 mm of copper recovered.",
+      "shorter_pair_asked": "Q10.3 -> U2.1 -- 25.258 mm apart on the straight line, and the EXACT launcher routes it in 127.822 mm",
+      "shorter_pair_mm": 127.8215,
+      "taken_mm": 104.455,
+      "taken_vias": 16,
+      "tap_first_mm": 126.9724,
+      "tap_first_verdict": "REFUSED -- no_regression"
+    },
+    "lever": "--maze-via -- the netclass gives every Default signal a 0.600/0.300 mm barrel, which needs 1.000 mm of room; clamped to via_floors() the same net may use 0.500/0.200, which needs 0.900 mm, and at that size the corridor EXISTS.  The flag can license nothing: it is clamped UP to the board's own min_via_diameter, min_through_hole_diameter, the unconditional annular floor and the POWER-class hole minimum.",
+    "net": "/WAKE_INT_N",
+    "objects_added": 58,
+    "objects_removed": 0,
+    "route": {
+      "from": "U1.23",
+      "layers": [
+        "F",
+        "B",
+        "F",
+        "B",
+        "F",
+        "I2",
+        "B",
+        "F",
+        "I2",
+        "F",
+        "I2",
+        "B",
+        "F",
+        "I2",
+        "F",
+        "I2",
+        "B"
+      ],
+      "mm": 104.45479270544054,
+      "to": "U2.1",
+      "vias": 16
+    },
+    "tracks": 42,
+    "via_nm": [
+      [
+        500000,
+        200000
+      ]
+    ],
+    "via_xy": [
+      [
+        48.45,
+        135.55
+      ],
+      [
+        50.55,
+        138.575
+      ],
+      [
+        48.375,
+        139.4
+      ],
+      [
+        46.05,
+        140.15
+      ],
+      [
+        35.6,
+        143.925
+      ],
+      [
+        30.225,
+        140.325
+      ],
+      [
+        28.2,
+        138.05
+      ],
+      [
+        37.675,
+        129.5
+      ],
+      [
+        34.7,
+        124.325
+      ],
+      [
+        40.55,
+        118.475
+      ],
+      [
+        41.45,
+        112.8
+      ],
+      [
+        46.2,
+        106.95
+      ],
+      [
+        51.775,
+        104.05
+      ],
+      [
+        56.325,
+        99.4
+      ],
+      [
+        53.875,
+        96.675
+      ],
+      [
+        53.175,
+        92.125
+      ]
+    ],
+    "vias": 16,
+    "widths_nm": [
+      200000
+    ]
+  },
+  "promoted_board_sha256": "2f456279cb9540f5e29a2a9b2fbc60a6ad761e0ec33253f2802c4ada83aebbc4",
+  "question": "what is actually refusing the board's remaining nineteen edges, and which of those refusals is a LEVER THIS DRIVER DOES NOT HAVE rather than a wall",
+  "schema": 1,
+  "stat_reclassification": {
+    "after": [
+      {
+        "failures": [
+          {
+            "a": [
+              "U11.9"
+            ],
+            "b": [
+              "U2.9"
+            ],
+            "dst_escapes": 4,
+            "reason": "NO_PATH",
+            "src_escapes": 3
+          },
+          {
+            "a": [
+              "R127.2",
+              "TP6.1"
+            ],
+            "b": [
+              "U11.9"
+            ],
+            "dst_escapes": 3,
+            "reason": "NO_PATH",
+            "src_escapes": 11
+          },
+          {
+            "a": [
+              "R127.2",
+              "TP6.1"
+            ],
+            "b": [
+              "U2.9"
+            ],
+            "dst_escapes": 5,
+            "reason": "NO_PATH",
+            "src_escapes": 11
+          }
+        ],
+        "net": "/BQ25185_STAT1",
+        "reason": "NO_PATH"
+      },
+      {
+        "failures": [
+          {
+            "a": [
+              "U11.3"
+            ],
+            "b": [
+              "U2.10"
+            ],
+            "dst_escapes": 4,
+            "reason": "NO_PATH",
+            "src_escapes": 1
+          },
+          {
+            "a": [
+              "R128.2",
+              "TP7.1"
+            ],
+            "b": [
+              "U2.10"
+            ],
+            "dst_escapes": 5,
+            "reason": "NO_PATH",
+            "src_escapes": 16
+          },
+          {
+            "a": [
+              "R128.2",
+              "TP7.1"
+            ],
+            "b": [
+              "U11.3"
+            ],
+            "dst_escapes": 1,
+            "reason": "NO_PATH",
+            "src_escapes": 16
+          }
+        ],
+        "net": "/BQ25185_STAT2",
+        "reason": "NO_PATH"
+      }
+    ],
+    "channels": {
+      "U11.3": {
+        "narrow_price": {
+          "amps_at_dt10": 0.602,
+          "class_required_amps": null,
+          "ok": null,
+          "why": "CLASS_CARRIES_NO_PUBLISHED_CURRENT",
+          "width_mm": 0.15
+        },
+        "netclass": "Default",
+        "profile": [
+          {
+            "admits_mm": 0.2,
+            "at_mm": 0.0,
+            "gap_mm": 0.6,
+            "hi": "U11.2",
+            "lo": "U11.4"
+          },
+          {
+            "admits_mm": 5.575,
+            "at_mm": 0.25,
+            "gap_mm": 5.975,
+            "hi": "/01_POWER_TREE/BAT_PROTECTED_P",
+            "lo": "R39.1"
+          },
+          {
+            "admits_mm": 5.5,
+            "at_mm": 0.5,
+            "gap_mm": 5.9,
+            "hi": "/01_POWER_TREE/BAT_PROTECTED_P",
+            "lo": "R39.1"
+          },
+          {
+            "admits_mm": 2.775,
+            "at_mm": 1.0,
+            "gap_mm": 3.175,
+            "hi": "/01_POWER_TREE/USB_VBUS_CHG",
+            "lo": "/01_POWER_TREE/BAT_PROTECTED_P"
+          },
+          {
+            "admits_mm": 0.0,
+            "at_mm": 1.5,
+            "gap_mm": 0.0,
+            "hi": "GND",
+            "lo": "GND"
+          },
+          {
+            "admits_mm": 2.5778,
+            "at_mm": 2.0,
+            "gap_mm": 2.9778,
+            "hi": "C23.1",
+            "lo": "GND"
+          }
+        ],
+        "verdict": "LICENCE_ONLY",
+        "widest_launch_mm": 0.15
+      },
+      "U11.9": {
+        "narrow_price": {
+          "amps_at_dt10": 0.602,
+          "class_required_amps": null,
+          "ok": null,
+          "why": "CLASS_CARRIES_NO_PUBLISHED_CURRENT",
+          "width_mm": 0.15
+        },
+        "netclass": "Default",
+        "profile": [
+          {
+            "admits_mm": 0.2,
+            "at_mm": 0.0,
+            "gap_mm": 0.6,
+            "hi": "U11.10",
+            "lo": "U11.8"
+          },
+          {
+            "admits_mm": 1.575,
+            "at_mm": 0.25,
+            "gap_mm": 1.975,
+            "hi": "R36.2",
+            "lo": "/01_POWER_TREE/ISET"
+          },
+          {
+            "admits_mm": 1.495,
+            "at_mm": 0.5,
+            "gap_mm": 1.895,
+            "hi": "R36.2",
+            "lo": "/01_POWER_TREE/ISET"
+          },
+          {
+            "admits_mm": 2.1133,
+            "at_mm": 1.0,
+            "gap_mm": 2.5133,
+            "hi": "/01_POWER_TREE/ISET",
+            "lo": "C27.2"
+          },
+          {
+            "admits_mm": 5.9217,
+            "at_mm": 1.5,
+            "gap_mm": 6.3217,
+            "hi": "/01_POWER_TREE/ISET",
+            "lo": "GND"
+          },
+          {
+            "admits_mm": 22.1315,
+            "at_mm": 2.0,
+            "gap_mm": 22.5315,
+            "hi": "Net-(SW9-A)",
+            "lo": "GND"
+          }
+        ],
+        "verdict": "LICENCE_ONLY",
+        "widest_launch_mm": 0.15
+      }
+    },
+    "corridor": {
+      "base": "NO_PATH at 0.150 mm from U11.9 on B to U2.9 on B",
+      "complete": false,
+      "instrument": "screen_pair_corridor_blame, U11.9 -> U2.9, 3.0 mm margin, grid 50000, with AQROOT_TRUNK_FLOOR=1 so the screen prices the width the gate routes at",
+      "reading": "no single-net eviction opens it.  The next instrument for these four edges is a MULTI-NET cut or a placement change, not a router flag.",
+      "required_so_far": [
+        "/01_POWER_TREE/ISET",
+        "/01_POWER_TREE/USB_VBUS_CHG"
+      ],
+      "single_net_openers": 0,
+      "single_nets_asked": 42,
+      "upper_bound": "with all 42 nets in the window removed the route exists at 19.4325 mm on B.Cu alone with ZERO vias"
+    },
+    "finding": "D-672 ruled U11.9 and U11.3 unreachable -- 'no router flag, no eviction, no lattice and no rule area reaches it'.  Both are now NO_PATH, which is a corridor question.",
+    "instrument": "a width floor the .kicad_dru publishes for ONE NAMED NET (section 19), read by route_maze_batch.net_width_licence in the exact `A.NetName == '<net>'` shape and clamped up to board setup's own min_track_width",
+    "the_arithmetic": "the BQ25185's WSON leaves 0.600 mm between neighbouring lands; a 0.200 mm track at 0.200 mm clearance needs EXACTLY 0.600 mm.  It fits with zero margin, and no rasterised lattice can express zero -- QBoard.grid's guard band is 0.75 of a cell, so the launch is refused at 0.100, 0.050 and 0.025 mm alike.  0.150 mm needs 0.550 mm and has 0.050 mm."
+  },
+  "u12_column": {
+    "blocked_by": "TP13, a 1.0 mm test point on Net-(SW9-A), has NO free B-side site: a 15 x 14 station sweep of x 58..72 / y 76..98 returns exactly three courtyard-clear sites -- (72.0, 98.0) and (72.0, 93.0), both ON the board's own east edge (the outline ends at x = 72.050), and (68.0, 93.0), which is where the moved L1 lands.  Every other site is inside SW9's courtyard, U2's courtyard, or on /I2C_SCL_INT's copper.",
+    "cost": "moving U12 alone releases 35 objects and refuses 43 times across EIGHT nets (+3V3, V3V3_FB, GND, L1-Pad1, L1-Pad2, SW9-A, U12-PG, U12-PS_SYNC); the chain-release walks TP13's own move out to U12.12.",
+    "finding": "the travel EXISTS and the displaced test point has nowhere to go.",
+    "measured": "U12 + L1 + C28 translated NORTH together, with TP13 relocated: at dy = -1.5, -2.0, -2.4 and -2.8 mm there is ZERO courtyard overlap on the moved parts' own side and the nearest moved land is 0.860 mm from SW9's NPTH.  At -2.4 mm U12's south pad row moves from y = 102.800 to 100.400 and the four-claimant band grows from 1.205 mm to 3.605 mm.",
+    "reading": "the column move is not refused by geometry -- it is refused by there being nowhere on this board to put a test point.  It rides with a USB/south-east re-floorplan, not ahead of one."
+  },
+  "verification": {
+    "beta_v2_untouched": true,
+    "connectivity": {
+      "nets_improved": [
+        "/WAKE_INT_N"
+      ],
+      "nets_regressed": [],
+      "open_retained_nets_after": 12,
+      "open_retained_nets_before": 13,
+      "retained_open_edges_after": 18,
+      "retained_open_edges_before": 19
+    },
+    "fab_package_contract": "PASS 8/8 after regeneration",
+    "gate": "15/15, refused_clauses [], attributable_drc []",
+    "licence_scope": "exactly three nets on this board carry a per-net track_width rule: /BQ25185_STAT1 and /BQ25185_STAT2 at 0.15 mm (D-690) and /01_POWER_TREE/BAT_PROTECTED_P at 1.20 mm (D-249, a RAISED minimum on a class section 5 prices, which never reaches the new branch and is measured unchanged at 1.000 mm with the lever on and off)",
+    "protected_copper": "IDENTICAL (15 nets, differences {})",
+    "real_drc": {
+      "lib_footprint_issues": 199,
+      "solder_mask_bridge": 1
+    },
+    "standing_suite": "14/14 RAN, vacuous false, every verdict PASS/True",
+    "trunk_floor_contract": "PASS TF1-TF4 after being taught D-690's fifth verdict AND its refusal: a per-net floor is admitted only where TF3 RE-DERIVES the rule from the .kicad_dru text itself, and TF4 now controls that the same class asked about a net the rules do NOT name still answers CLASS_HAS_NO_PUBLISHED_FLOOR",
+    "verify_promotion": {
+      "checks": {
+        "added_only_on_claimed_nets": true,
+        "annular_floor_met": true,
+        "beta_v2_untouched": true,
+        "drc_inherited_within_baseline": true,
+        "drc_zero_attributable": true,
+        "dru_contracts_live": true,
+        "fill_stable": true,
+        "nothing_removed": true,
+        "pour_partition_intact": true,
+        "rule_areas_as_claimed": true,
+        "schematic_parity_within_baseline": true,
+        "track_width_floor_met": true,
+        "unconnected_not_increased": true,
+        "via_drill_floor_met": true,
+        "zone_inventory_as_claimed": true
+      },
+      "dru_contracts": {
+        "D-186_bat_main_class": true,
+        "D-269_bat_main_routed_clearance": true,
+        "annular_ring_floor": true,
+        "power_via_drill_floor": true
+      },
+      "unconnected_items": 34,
+      "verdict": "PASS"
+    }
+  }
+}

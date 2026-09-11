@@ -1,0 +1,23 @@
+{
+ "board": "hardware/demo/kicad/aqroot-demo/aqroot-Beta-v2.kicad_pcb",
+ "board_sha256": "2f456279cb9540f5e29a2a9b2fbc60a6ad761e0ec33253f2802c4ada83aebbc4",
+ "checks": {
+  "FAB1_provenance": {
+   "artifacts": 29,
+   "authoritative_board_sha256": "2f456279cb9540f5e29a2a9b2fbc60a6ad761e0ec33253f2802c4ada83aebbc4",
+   "deterministic": 24,
+   "drift": [],
+   "kicad": "10.0.5",
+   "manifest_board_sha256": "2f456279cb9540f5e29a2a9b2fbc60a6ad761e0ec33253f2802c4ada83aebbc4",
+   "ok": true,
+   "schematic_sheet_drift": [],
+   "schematic_sheets": 10,
+   "unmanifested": []
+  }
+ },
+ "failing": [],
+ "package": "hardware/demo/fab",
+ "provenance_only": true,
+ "schema": 1,
+ "verdict": "PASS"
+}
