@@ -23,6 +23,61 @@
 > `verify_promotion` PASS and `protected_copper` showing exactly one protected
 > net moved.  `U14.7` is on the bus.  This board has **no open owner decision**.
 
+- **Demo D-686 (THE BACKLIGHT STRAP'S PULL-DOWN WAS 30 mm FROM ITS OWN PIN AND
+  ITS HAUL WAS THE ONLY LANE UNDER THE `WROOM`):**  **COPPER PROMOTED.**
+  Authority `58f7a3df69cec6bd3faa9c0f40632adee2c41e02fe4926b2ade60834274179fd`
+  -> **`fb7b61f2a490283c1ee1a8ff1b969c88f11c5ebc3917dc495425e945149fe401`**;
+  retained open edges **21 -> 20**, open retained nets 14 -> 13,
+  `/USB_D_MCU_P` **1 -> 0**.  `hardware/beta-v2` **UNTOUCHED**;
+  `hardware/demo/fab` **REGENERATED**, `fab_package_contract` **PASS 8/8**.
+  **(1) THE LEVER WAS A PLACEMENT ERROR.**  `R108` is the 10 k pull-down on
+  `GPIO46` (`/02_MCU_CORE/DISP_BL_CTL_STRAP`).  Every other member of that net
+  is in the south (`U1.16`, `TP2.1`, `R109.1`); `R108` sat at
+  (61.038,142.020) and paid for it with a **17 mm `B.Cu` diagonal
+  (58.600,135.000)->(46.500,122.800) straight under the `ESP32-S3-WROOM-1`**,
+  two barrels and two `F.Cu` stubs -- ***and that diagonal was the only clear
+  lane the USB MCU pair had.***  On the authority `/USB_D_MCU_P` routes in
+  **32.634 mm / 4 vias** and is refused by ONE real error, the board's own
+  25 mm `diff_pair_uncoupled` budget; with the diagonal and its
+  (46.700,122.600) barrel gone the SAME net routes in **24.839 mm / 2 vias**
+  and the gate returns `refused_clauses []`.
+  **(2) A CLEAN SITE IS NOT A REACHABLE SITE.**  `R108` -> **(39.750,117.000)
+  rot +90**.  Four swept sites are clean on clearance and courtyard; three are
+  useless -- the strap re-routes 31.3 mm, 38.1 mm and 38.1 mm-plus-two-shorts
+  -- because `/AMP_SD_MODE`'s `F.Cu` diagonal
+  (30.200,118.450)->(40.500,116.850)->(53.800,103.700) fences them off from
+  `TP2`.  The site taken is on `TP2`'s own side of that fence and the strap
+  reconnects in **2.473 mm with ZERO vias**.  **The board LOST about 27 mm of
+  conductor and GAINED a USB data net.**
+  **(3) `PL3`'s ROTATION SIGN WAS WRONG AND THIS IS THE FIRST QUARTER TURN.**
+  `placement_contract._turn` rotated clockwise and its docstring asserted KiCad
+  does; `SetOrientationDegrees(+90)` sends `(ox, oy)` to `(oy, -ox)` -- measured
+  on `R108` pad 1, offset `(-825000, 0)` -> `(0, +825000)`.  D-678's only
+  control was 180 deg and the two formulas AGREE at 0 and 180, so the sign was
+  never exercised.  Corrected, with four controls
+  (`evidence/d686-placement-rotation-sign-controls.json`): **+90 PASSES; -90,
+  0 and 180 each still FAIL PL3.**
+  **(4) VERIFICATION.**  Gate **15/15**; `verify_promotion` **PASS 15/15**
+  with D-186 + D-269 TRUE and `unconnected_items` 37 -> 36;
+  `placement_contract --move R108:-21288252:-25019536:90 --release R108.1
+  --release R108.2` **PASS 9/9**; `protected_copper` **IDENTICAL**; standing
+  suite **14/14 RAN, `vacuous` false**, 12 verdicts unchanged (`placement`
+  fails only because the suite claims no move; `fab_provenance` PASSES after
+  the regen); real DRC **unchanged** (199 `lib_footprint_issues` +
+  1 `solder_mask_bridge`).
+  **(5) WHAT IT DID NOT CLOSE, MEASURED.**  ***The under-`WROOM` corridor holds
+  exactly ONE conductor.***  With the strap's lane free `P` takes it at
+  24.839 mm and `N` refuses; with `/NATIVE_A` evicted instead `N` takes the OLD
+  lane at 34.519 mm and `P` refuses; in either order the two nets choose the
+  IDENTICAL via chain (60.2,138.1)->(61.0,129.9)->(58.8,127.7)->(50.9,122.4).
+  `R33.2` is boxed on `F.Cu` by `/NATIVE_A`'s
+  (51.575,137.950)->(59.025,138.475) fence (0.37 mm of gap against the 0.65 mm
+  a 0.250 mm conductor needs) and on `B.Cu` by the `/SPI_B_SCK` barrel at
+  (56.000,135.200) and the `/I2S_LRCLK` barrel at (56.700,134.800), 0.806 mm
+  apart and so 0.206 mm of edge gap.
+  **NEXT:** (1) `BQ25185_SYS` 6 of 20, still #1.  (2) `/USB_D_MCU_N`'s SECOND
+  lane.  (3) `/01_POWER_TREE/USB_D_CONN_P`, the `J3` flip-symmetry wall.
+  **NO OPEN OWNER DECISION.**
 - **Demo D-685 (THE USB-C D-PAIR'S OWN FLIP-SYMMETRY EATS THE ONLY LANE OUT OF
   `J3`, AND BOTH USB PAIRS NOW REFUSE FOR GEOMETRY RATHER THAN FOR WANT OF A
   DIFFERENTIAL ROUTER):**  **NO COPPER PROMOTED.**  Authority **UNCHANGED** at

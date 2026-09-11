@@ -1,0 +1,143 @@
+{
+  "applied": true,
+  "bare_pads_released": [],
+  "board": "/home/aqroot8/aqroot-demo/hardware/demo/kicad/aqroot-demo/aqroot-Beta-v2.kicad_pcb",
+  "courtyard_overlaps_new": [],
+  "courtyard_overlaps_now": [],
+  "courtyard_overlaps_was": [
+    "U1"
+  ],
+  "dx_nm": -21288252,
+  "dy_nm": -25019536,
+  "endpoints_on_pads": 2,
+  "endpoints_stranded": [
+    [
+      "/02_MCU_CORE/DISP_BL_CTL_STRAP",
+      60.213252,
+      142.019536
+    ],
+    [
+      "GND",
+      61.863252,
+      142.019536
+    ]
+  ],
+  "endpoints_swept_under_moved_land": [],
+  "orientation_now_deg": 90.0,
+  "orientation_was_deg": 0.0,
+  "pad_boxes_now_mm": {
+    "1": [
+      [
+        39.275,
+        117.425,
+        40.225,
+        118.225
+      ]
+    ],
+    "2": [
+      [
+        39.275,
+        115.775,
+        40.225,
+        116.575
+      ]
+    ]
+  },
+  "pad_boxes_was_mm": {
+    "1": [
+      [
+        59.813252,
+        141.544536,
+        60.613252,
+        142.494536
+      ]
+    ],
+    "2": [
+      [
+        61.463252,
+        141.544536,
+        62.263252,
+        142.494536
+      ]
+    ]
+  },
+  "pads": 2,
+  "position_now_mm": [
+    39.75,
+    117.0
+  ],
+  "position_was_mm": [
+    61.038252,
+    142.019536
+  ],
+  "ref": "R108",
+  "release_bare_pads_requested": [],
+  "release_named_points": [
+    [
+      "/02_MCU_CORE/DISP_BL_CTL_STRAP",
+      60.2,
+      141.1
+    ],
+    [
+      "/02_MCU_CORE/DISP_BL_CTL_STRAP",
+      60.2,
+      140.4
+    ],
+    [
+      "/02_MCU_CORE/DISP_BL_CTL_STRAP",
+      58.6,
+      135.0
+    ],
+    [
+      "/02_MCU_CORE/DISP_BL_CTL_STRAP",
+      46.5,
+      122.8
+    ]
+  ],
+  "release_named_vias": [
+    [
+      "/02_MCU_CORE/DISP_BL_CTL_STRAP",
+      60.2,
+      140.4
+    ]
+  ],
+  "release_nets": [
+    "/02_MCU_CORE/DISP_BL_CTL_STRAP",
+    "GND"
+  ],
+  "release_refusals": [],
+  "release_requested": true,
+  "release_retained_barrels": [
+    {
+      "at_mm": [
+        61.9,
+        143.0
+      ],
+      "net": "GND",
+      "why": "pour-backed stitch barrel; not floating"
+    },
+    {
+      "at_mm": [
+        46.7,
+        122.6
+      ],
+      "net": "/02_MCU_CORE/DISP_BL_CTL_STRAP",
+      "why": "a surviving track still meets it"
+    }
+  ],
+  "released_count": 7,
+  "released_objects": [
+    "('trk', '/02_MCU_CORE/DISP_BL_CTL_STRAP', 'B.Cu', 46500000, 122800000, 46700000, 122600000, 200000)",
+    "('trk', '/02_MCU_CORE/DISP_BL_CTL_STRAP', 'B.Cu', 58600000, 135000000, 46500000, 122800000, 200000)",
+    "('trk', '/02_MCU_CORE/DISP_BL_CTL_STRAP', 'B.Cu', 60200000, 140400000, 58600000, 135000000, 200000)",
+    "('trk', '/02_MCU_CORE/DISP_BL_CTL_STRAP', 'F.Cu', 60200000, 141100000, 60200000, 140400000, 200000)",
+    "('trk', '/02_MCU_CORE/DISP_BL_CTL_STRAP', 'F.Cu', 60213252, 142019536, 60200000, 141100000, 200000)",
+    "('trk', 'GND', 'F.Cu', 61863252, 142019536, 61900000, 143000000, 300000)",
+    "('via', '/02_MCU_CORE/DISP_BL_CTL_STRAP', 60200000, 140400000, 600000, 300000)"
+  ],
+  "rot_deg": 90.0,
+  "schema": 2,
+  "verdict": "PASS",
+  "via_in_pad_allowed": false,
+  "vias_in_moved_pads": []
+}

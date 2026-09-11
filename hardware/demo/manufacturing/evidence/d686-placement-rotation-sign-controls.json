@@ -1,0 +1,49 @@
+{
+  "all_controls_behaved": true,
+  "controls": [
+    {
+      "behaved": true,
+      "claimed_rot_deg": "90",
+      "expected_PL3": true,
+      "got_PL2": true,
+      "got_PL3": true,
+      "verdict": "PASS"
+    },
+    {
+      "behaved": true,
+      "claimed_rot_deg": "-90",
+      "expected_PL3": false,
+      "got_PL2": false,
+      "got_PL3": false,
+      "verdict": "FAIL"
+    },
+    {
+      "behaved": true,
+      "claimed_rot_deg": "0",
+      "expected_PL3": false,
+      "got_PL2": false,
+      "got_PL3": false,
+      "verdict": "FAIL"
+    },
+    {
+      "behaved": true,
+      "claimed_rot_deg": "180",
+      "expected_PL3": false,
+      "got_PL2": false,
+      "got_PL3": false,
+      "verdict": "FAIL"
+    }
+  ],
+  "decision": "D-686",
+  "measured_offset_after_nm": [
+    0,
+    825000
+  ],
+  "measured_offset_before_nm": [
+    -825000,
+    0
+  ],
+  "question": "does the corrected PL3 rotation sign accept ONLY the true turn?",
+  "schema": 1,
+  "true_rotation_deg": 90.0
+}

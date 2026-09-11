@@ -154,13 +154,24 @@ def _norm_deg(d):
 def _turn(lands, deg):
     """`lands` with each pad OFFSET turned through `deg` about the origin.
 
-    D-678.  KiCad's footprint rotation is clockwise-positive in board
-    coordinates (y grows downward), which is what `FOOTPRINT::SetOrientation`
-    applies to every pad, so the same sign convention is used here.  The pad's
-    own size and shape do not change when the FOOTPRINT turns -- only where the
-    land sits and which way it faces -- so this rotates the offset and leaves
-    the rest of the tuple alone.  Rounded to the nanometre because that is the
-    unit the board is written in.
+    D-678 wrote this as CLOCKWISE-positive in board coordinates, and D-686
+    measured that KiCad is the other way round.  `FOOTPRINT::SetOrientation`
+    is COUNTER-CLOCKWISE-positive, and with y growing downward that sends a
+    pad offset `(ox, oy)` to `(oy, -ox)` at +90 deg -- measured on this board:
+    `R108` pad 1 sits at offset `(-825000, 0)` before the turn and at
+    `(0, +825000)` after `SetOrientationDegrees(+90)`, which is `(oy, -ox)`
+    and NOT `(-oy, ox)`.  The old sign was never exercised, because the only
+    rotation D-678 controlled was 180 deg and 180 deg is its own mirror: the
+    two formulas agree at 0 and at 180 and disagree at every quarter turn.
+    So the sign is corrected here and the controls in
+    `evidence/d686-placement-rotation-sign-controls.json` prove the clause is
+    still not vacuous -- a claim of -90, of 0 or of 180 against this real +90
+    turn each still FAIL PL3.
+
+    The pad's own size and shape do not change when the FOOTPRINT turns --
+    only where the land sits and which way it faces -- so this rotates the
+    offset and leaves the rest of the tuple alone.  Rounded to the nanometre
+    because that is the unit the board is written in.
     """
     if not deg:
         return sorted(lands)
@@ -168,8 +179,8 @@ def _turn(lands, deg):
     c, s_ = math.cos(th), math.sin(th)
     out = []
     for num, sx, sy, shape, ox, oy in lands:
-        nx = ox * c - oy * s_
-        ny = ox * s_ + oy * c
+        nx = ox * c + oy * s_
+        ny = -ox * s_ + oy * c
         out.append((num, sx, sy, shape, int(round(nx)), int(round(ny))))
     return sorted(out)
 

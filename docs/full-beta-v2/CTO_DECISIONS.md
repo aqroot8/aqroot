@@ -1,3 +1,115 @@
+# D-686 · 2026-09-11 · Demo — THE BACKLIGHT STRAP'S PULL-DOWN WAS 30 mm FROM ITS OWN PIN AND ITS HAUL WAS THE ONLY LANE UNDER THE `WROOM`: `R108` MOVED 32.8 mm, THE STRAP RECONNECTED IN 2.473 mm WITH NO VIA, AND `/USB_D_MCU_P` CLOSED IN 24.839 mm INSIDE ITS OWN 25 mm UNCOUPLED BUDGET
+
+    authority  58f7a3df69cec6bd3faa9c0f40632adee2c41e02fe4926b2ade60834274179fd
+            -> fb7b61f2a490283c1ee1a8ff1b969c88f11c5ebc3917dc495425e945149fe401
+    retained open edges 21 -> 20   (the shift cost 2, taking the base to 23; the run closed 3)
+    open retained nets  14 -> 13,  /USB_D_MCU_P 1 -> 0
+    copper added 14 objects, removed 10;  `hardware/beta-v2` UNTOUCHED
+    `hardware/demo/fab` REGENERATED, `fab_package_contract` PASS 8/8
+
+**COPPER PROMOTED, AND THE LEVER WAS A PLACEMENT ERROR, NOT A ROUTER.**
+
+## 1. THE PART WAS IN THE WRONG PLACE
+
+`R108` is the **10 k pull-down on `GPIO46`** — `/02_MCU_CORE/DISP_BL_CTL_STRAP`,
+the display-backlight strap.  Every other member of that net lives in the south
+of the board (`U1.16` at (45.250,122.285), `TP2.1` at (42.222,117.760),
+`R109.1` at (51.779,113.910)).  `R108` sat at **(61.038,142.020)** — the far
+north-east — and paid for it with a **17 mm `B.Cu` diagonal**
+(58.600,135.000)->(46.500,122.800) **straight under the `ESP32-S3-WROOM-1`**,
+two barrels and two `F.Cu` stubs.
+
+**That diagonal was the only clear lane the USB MCU pair had.**  Measured on the
+authority: `/USB_D_MCU_P` routes `R34.2 -> U1.14` in **32.634 mm with 4 vias**
+and is refused by ONE real KiCad error — `diff_pair_uncoupled_length_too_long`,
+the board's own 25 mm budget.  With the strap's diagonal and its
+(46.700,122.600) barrel out of the way the SAME net routes in **24.839 mm with
+2 vias**, and the whole gate returns `refused_clauses []` with
+`attributable_drc []`.
+
+## 2. THE MOVE, AND WHY THIS SITE
+
+`R108` -> **(39.750,117.000), rotated +90 deg** (delta -21.288252, -25.019536 mm).
+Four clean sites were swept (`site_sweep2`, real courtyard polygons, foreign-copper
+clearance by `SHAPE.Collide` bisection).  Three of them are CLEAN and USELESS:
+
+    (40.000,113.500) rot 90   strap re-routes 31.3 mm / 3 vias (west, past U5)
+    (44.000,111.000) rot 90   strap re-routes 38.1 mm / 3 vias
+    (44.750,105.250) rot  0   strap re-routes 38.1 mm AND shorts GND (2 DRC)
+    (39.750,117.000) rot 90   strap re-routes  2.473 mm / ZERO vias   <-- TAKEN
+
+The difference is a fence, not a distance: `/AMP_SD_MODE`'s `F.Cu` diagonal
+(30.200,118.450)->(40.500,116.850)->(53.800,103.700) separates the first three
+sites from `TP2`, and (39.750,117.000) is on `TP2`'s own side of it.
+**A clean site is not a reachable site, and the sweep cannot tell them apart.**
+
+## 3. WHAT THE TRANSACTION SPENT
+
+    apply_part_shift.py --ref R108 --rot-deg 90 --release
+        released 7 objects, 0 refusals, `release_retained_barrels` names the
+        pour-backed GND stitch at (61.900,143.000) it did NOT take
+    route_maze_batch.py /USB_D_MCU_P /02_MCU_CORE/DISP_BL_CTL_STRAP /USB_D_MCU_N
+        --evict /02_MCU_CORE/DISP_BL_CTL_STRAP --evict-window 45.0,121.5,47.5,123.5
+        --bond-pad R108.2 --grid 100000 --promote
+
+  * `/USB_D_MCU_P`  R34.2 -> U1.14, **24.839 mm**, 2 vias, F->B->F,
+    barrels at (60.200,138.100) and (46.700,122.600)
+  * `/02_MCU_CORE/DISP_BL_CTL_STRAP`  R108.1 -> TP2.1, **2.473 mm, NO via**
+  * `GND`  R108.2 bonded in 0.876 mm + one barrel at (39.800,115.300)
+  * the `--evict-window` took the three dead objects the release could not
+    reach without stranding `U1.16` — the (46.700,122.600) barrel and its two
+    `F.Cu` stubs — and `/USB_D_MCU_P` then placed its OWN barrel on that site
+
+**NET COPPER: the board LOST about 27 mm of conductor** — a ~30 mm strap haul
+with two barrels replaced by 2.473 mm with none — and GAINED a USB data net.
+
+## 4. `PL3`'s ROTATION SIGN WAS WRONG, AND THIS IS THE FIRST QUARTER TURN
+
+`checks/placement_contract.py::_turn` rotated a pad offset the CLOCKWISE way and
+its docstring asserted that is what KiCad does.  It is not:
+`FOOTPRINT::SetOrientationDegrees(+90)` sends `(ox, oy)` to `(oy, -ox)` —
+measured on this very move, `R108` pad 1 goes from offset `(-825000, 0)` to
+`(0, +825000)`.  **The sign was never exercised, because D-678's only control
+was 180 deg and the two formulas agree at 0 and at 180.**  Corrected, with
+four controls in `evidence/d686-placement-rotation-sign-controls.json`:
+claiming **+90 PASSES**; claiming **-90, 0 or 180 each still FAIL PL3**.
+No other clause moved.
+
+## 5. VERIFICATION
+
+    gate                15/15, `refused_clauses []`, `attributable_drc []`
+    verify_promotion    PASS 15/15; D-186 and D-269 TRUE;
+                        unconnected_items 37 -> 36; nothing_removed on the
+                        claimed evicted nets only
+    placement_contract  PASS 9/9 with `--move R108:-21288252:-25019536:90`
+                        and `--release R108.1 --release R108.2`
+    protected_copper    IDENTICAL (15 nets / 402 objects, `differences {}`)
+    standing suite      14/14 RAN, `vacuous` false, 12 verdicts UNCHANGED;
+                        `placement` FAILs only because the suite re-runs it
+                        with NO move claimed, and `fab_provenance` FAILed on
+                        the stale package and PASSES 8/8 after the regen
+    real DRC            unchanged: 199 `lib_footprint_issues` +
+                        1 `solder_mask_bridge`, `attributable []`
+
+## 6. WHAT THIS DID NOT CLOSE, MEASURED
+
+`/USB_D_MCU_N` is still `NO_PATH`, and now for a reason that is stated rather
+than guessed.  **The under-`WROOM` corridor holds exactly ONE conductor.**
+Three arms agree: with the strap's lane free `P` takes it at 24.839 mm and `N`
+refuses; with `/NATIVE_A` evicted instead, `N` takes the OLD lane at 34.519 mm
+and `P` refuses; requested in either order, the two nets choose **the identical
+via chain** (60.2,138.1)->(61.0,129.9)->(58.8,127.7)->(50.9,122.4).  `R33.2` is
+boxed on `F.Cu` by `/NATIVE_A`'s (51.575,137.950)->(59.025,138.475) fence — the
+gap to `R33.2`'s land is 0.37 mm against the 0.65 mm a 0.250 mm conductor needs
+— and on `B.Cu` by the `/SPI_B_SCK` barrel at (56.000,135.200) and the
+`/I2S_LRCLK` barrel at (56.700,134.800), whose 0.806 mm centres leave 0.206 mm
+of edge gap.  **`/USB_D_MCU_N` needs a SECOND lane, and the next transaction
+is the one that makes it.**
+
+**NEXT:** (1) `BQ25185_SYS` 6 of 20, still #1.  (2) `/USB_D_MCU_N`'s second lane.
+(3) `/01_POWER_TREE/USB_D_CONN_P`, the `J3` flip-symmetry wall (D-685).
+**NO OPEN OWNER DECISION.**
+
 # D-685 · 2026-09-11 · Demo — THE USB-C D-PAIR'S OWN FLIP-SYMMETRY EATS THE ONLY LANE OUT OF `J3`, AND BOTH USB PAIRS NOW REFUSE FOR GEOMETRY RATHER THAN FOR WANT OF A DIFFERENTIAL ROUTER
 
     authority  58f7a3df69cec6bd3faa9c0f40632adee2c41e02fe4926b2ade60834274179fd

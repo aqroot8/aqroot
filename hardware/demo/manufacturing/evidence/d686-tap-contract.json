@@ -1,0 +1,175 @@
+{
+  "all_pass": true,
+  "board": "/home/aqroot8/aqroot-demo/hardware/demo/kicad/aqroot-demo/aqroot-Beta-v2.kicad_pcb",
+  "board_sha256": "fb7b61f2a490283c1ee1a8ff1b969c88f11c5ebc3917dc495425e945149fe401",
+  "clauses": {
+    "TC1": {
+      "claim": "screen_net_tap.STUB_FORBIDDEN == route_maze_batch.TAP_STUB_FORBIDDEN",
+      "ok": true,
+      "screen": [
+        "USB_D",
+        "NFC_RF",
+        "NFC_RX",
+        "SWITCH_NODE",
+        "SPK_OUT"
+      ],
+      "writer": [
+        "USB_D",
+        "NFC_RF",
+        "NFC_RX",
+        "SWITCH_NODE",
+        "SPK_OUT"
+      ]
+    },
+    "TC2": {
+      "call_sites": 2,
+      "claim": "--tap and --tap-first are store_true (OFF by default) and EVERY join_taps call site is guarded by the tap flag",
+      "default_off": true,
+      "guarded": true,
+      "ok": true,
+      "tap_first_default_off": true,
+      "unguarded_sites": []
+    },
+    "TC3": {
+      "after": {
+        "tracks": 3463,
+        "vias": 851
+      },
+      "before": {
+        "tracks": 3463,
+        "vias": 851
+      },
+      "claim": "a DRY join_taps over every partially routed net leaves the board's own object census unchanged (TAP2)",
+      "dry": [
+        {
+          "asked": 3,
+          "joined": 0,
+          "net": "+3V3",
+          "reason": null
+        },
+        {
+          "asked": 44,
+          "joined": 0,
+          "net": "/01_POWER_TREE/BQ25185_SYS",
+          "reason": null
+        },
+        {
+          "asked": 3,
+          "joined": 0,
+          "net": "/03_SPI_A_DISPLAY_SD/DISP_SDO",
+          "reason": null
+        },
+        {
+          "asked": 3,
+          "joined": 0,
+          "net": "/04_SPI_B_RADIOS_NFC/NFC_VDD_RF",
+          "reason": null
+        },
+        {
+          "asked": 1,
+          "joined": 1,
+          "net": "/07_IR/IR_LED_A",
+          "reason": null
+        },
+        {
+          "asked": 3,
+          "joined": 0,
+          "net": "/ACC_PWR_EN",
+          "reason": null
+        },
+        {
+          "asked": 6,
+          "joined": 0,
+          "net": "/BQ25185_STAT1",
+          "reason": null
+        },
+        {
+          "asked": 6,
+          "joined": 0,
+          "net": "/BQ25185_STAT2",
+          "reason": null
+        },
+        {
+          "asked": 3,
+          "joined": 0,
+          "net": "/I2C_SCL_INT",
+          "reason": null
+        },
+        {
+          "asked": 3,
+          "joined": 0,
+          "net": "/NFC_SUPPLY",
+          "reason": null
+        },
+        {
+          "asked": 1,
+          "joined": 1,
+          "net": "/SPI_A_MISO",
+          "reason": null
+        },
+        {
+          "asked": 15,
+          "joined": 0,
+          "net": "/WAKE_INT_N",
+          "reason": null
+        },
+        {
+          "asked": 3,
+          "joined": 0,
+          "net": "Net-(SW9-A)",
+          "reason": null
+        }
+      ],
+      "nets_asked": 13,
+      "ok": true
+    },
+    "TC4": {
+      "claim": "every tap site is on a conductor connectivity puts in ONE island of this net and on a layer the net's contract allows; a forbidden netclass is refused BEFORE any search",
+      "forbidden": [
+        {
+          "net": "/01_POWER_TREE/ACC_5V_LX",
+          "netclass": "SWITCH_NODE",
+          "reason": "STUB_FORBIDDEN",
+          "searched": false
+        },
+        {
+          "net": "/01_POWER_TREE/USB_D_CONN_P",
+          "netclass": "USB_D",
+          "reason": "STUB_FORBIDDEN",
+          "searched": false
+        },
+        {
+          "net": "/06_AUDIO/SPK_N_CONN",
+          "netclass": "SPK_OUT",
+          "reason": "STUB_FORBIDDEN",
+          "searched": false
+        },
+        {
+          "net": "/06_AUDIO/SPK_P_CONN",
+          "netclass": "SPK_OUT",
+          "reason": "STUB_FORBIDDEN",
+          "searched": false
+        },
+        {
+          "net": "/USB_D_MCU_N",
+          "netclass": "USB_D",
+          "reason": "STUB_FORBIDDEN",
+          "searched": false
+        },
+        {
+          "net": "Net-(U13-SW)",
+          "netclass": "SWITCH_NODE",
+          "reason": "STUB_FORBIDDEN",
+          "searched": false
+        }
+      ],
+      "nets_with_islands": 22,
+      "offender_n": 0,
+      "offenders": [],
+      "ok": true,
+      "sites_offered": 994
+    }
+  },
+  "grid_nm": 100000,
+  "schema": 1
+}
