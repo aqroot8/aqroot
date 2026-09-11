@@ -89,9 +89,25 @@
   answers `CLASS_HAS_NO_PUBLISHED_FLOOR`); exactly THREE nets carry a per-net
   `track_width` rule and D-249's `BAT_PROTECTED_P` (a RAISED minimum) is
   measured unchanged; real DRC **unchanged**.
+  **(7) AND THE NEW BARREL WAS OFFERED TO THE OTHER TWO LONG HAULS AND
+  REFUSED, so the next session need not re-ask.**  On the promoted board, at
+  0.025 mm with `--maze-via 500000:200000 --escape-floor --trunk-floor
+  --neck`: `/SX1262_DIO1` (`U2.20` <-> `U8.13`, about 90 mm) is **`NO_PATH`**
+  with 3 src / 8 dst escapes, and `/I2C_SCL_INT` (`U16.3`) is **`NO_PATH`** at
+  0.200 mm with 34 src / **2 dst** escapes -- `U16.3` launches for the gate's
+  own launcher, exactly as D-672's parity table said, and there is no corridor
+  to launch into.  `/BQ25185_STAT1`, `/BQ25185_STAT2`, `/ACC_PWR_EN` and
+  `/04_SPI_B_RADIOS_NFC/NFC_VDD_RF` were asked on the same terms and refuse
+  likewise.  ***Every remaining refusal on this board is now a CORRIDOR or a
+  PLACEMENT, and not one of them is a launch.***
   **NEXT:** (1) `/BQ25185_STAT1` + `/BQ25185_STAT2`, four of eighteen, now a
   priced MULTI-NET cut.  (2) `BQ25185_SYS`'s remaining five.  (3)
-  `/NFC_SUPPLY`'s per-net design current.  **NO OPEN OWNER DECISION.**
+  `/NFC_SUPPLY`'s per-net design current.  (4) A KNOWN OVER-STRICTNESS worth
+  fixing before the next placement transaction: `apply_part_shift.courtyard_overlaps`
+  and `placement_contract.overlaps` both compare FOOTPRINT BOUNDING BOXES,
+  side-blind, under the name *courtyard* -- so a `B.Cu` test point under `SW9`'s
+  `F.CrtYd`-only slide switch is refused, and that refusal is what leaves
+  `TP13`, `TP6` and `TP7` with nowhere to go.  **NO OPEN OWNER DECISION.**
 - **Demo D-689 (THE `SYS` ISLAND JUMPER IS BUILT, LICENSED AND PROMOTED, AND
   ITS GEOMETRY IS BIGGER IN BOTH DIMENSIONS THAN D-688's):**  **COPPER
   PROMOTED.**  Authority `fb7b61f2a490283c1ee1a8ff1b969c88f11c5ebc3917dc495425e945149fe401`
