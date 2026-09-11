@@ -1,0 +1,709 @@
+{
+  "ampacity_bar": {
+    "and_the_package_answers_it": "U12.10 and U12.11 are two pins of the same rail, so two 0.500 mm necks in parallel carry 2.882 A against the 2.19 A bar; --relief-bonds-per-island expresses it",
+    "charged": 2.19,
+    "dru_words": "LOCAL EXCEPTION, NOT ENCODABLE: the U21 accessory boost draws a 2.19 A peak inductor current from SYS (D-185), so the SYS segment that feeds U21 must be sized from that peak, not from 1.0 A",
+    "one_neck_500um_A": 1.441,
+    "parser": "pour_partition_contract.published_rail_currents",
+    "reading": "the class row publishes 1.0 A; 2.19 A is a SEGMENT figure living in a class row.  Taking the largest is the right policy for a clause that must not under-charge -- the defect is where the figure lives.",
+    "rule": "every '<n> A' in a class's own rows is collected and the LARGEST is the bar",
+    "sys_main_figures": [
+      1.0,
+      2.19
+    ],
+    "two_necks_500um_A": 2.882
+  },
+  "authority_unchanged": true,
+  "board_sha256": "fb7b61f2a490283c1ee1a8ff1b969c88f11c5ebc3917dc495425e945149fe401",
+  "decision": "D-687 addendum",
+  "missing_instrument": {
+    "closes": [
+      "BQ25185_SYS C24.1 / C26.2 / C27.1 / U12.10-11 islands",
+      "+3V3's last edge at U5.2 (D-684 named the same gap)"
+    ],
+    "name": "licensed-width ISLAND JUMPER",
+    "shape": "a --join-islands destination laid inside a declared PAD_ESCAPE_RUN_<REF> rectangle",
+    "why_escape_relief_cannot_stand_in": "--escape-relief always ends in a BARREL, and BQ25185_SYS owns no pour on any other layer for one to land in"
+  },
+  "schema": 1,
+  "sys_escape_floor": {
+    "finding": "the escape floor RECLASSIFIES four SYS edges: U12.10/11, C26.2, C27.1, L4/U21 and the body move from NO_ANCHOR at 0.800 mm to NO_PATH at 0.500 mm -- the islands CAN anchor, there is no corridor.  NO_ANCHOR survives only on R68.1, U11.1 and U13.3.",
+    "flags": "--join-islands --split-islands --neck --escape-floor --stitch-width 500000 --stitch-via 500000:250000 --bond-via 500000:250000 --grid 50000",
+    "run": {
+      "connectivity": {
+        "nets_improved": [],
+        "nets_regressed": [],
+        "open_retained_nets_after": 13,
+        "open_retained_nets_before": 13,
+        "retained_open_edges_after": 20,
+        "retained_open_edges_before": 20
+      },
+      "drc_types": {
+        "lib_footprint_issues": 199,
+        "solder_mask_bridge": 1
+      },
+      "refused": [
+        "board_improved"
+      ],
+      "routed": [
+        {
+          "failures": [
+            {
+              "island": [
+                "C26.2"
+              ],
+              "pad": "C26.2",
+              "reason": "NO_VIA_SITE",
+              "why": "no legal 0.65 mm barrel within 8.0 mm of any escape"
+            },
+            {
+              "island": [
+                "C27.1"
+              ],
+              "pad": "C27.1",
+              "reason": "NO_VIA_SITE",
+              "why": "no legal 0.65 mm barrel within 8.0 mm of any escape"
+            },
+            {
+              "island": [
+                "L4.1",
+                "U21.3"
+              ],
+              "pad": "L4.1",
+              "reason": "NO_VIA_SITE",
+              "why": "no legal 0.65 mm barrel within 8.0 mm of any escape"
+            },
+            {
+              "island": [
+                "R68.1"
+              ],
+              "pad": "R68.1",
+              "reason": "NO_VIA_SITE",
+              "why": "no legal 0.65 mm barrel within 8.0 mm of any escape"
+            },
+            {
+              "island": [
+                "U11.1"
+              ],
+              "pad": "U11.1",
+              "reason": "NO_LEGAL_ESCAPE",
+              "why": "U11.1: NO LEGAL ESCAPE at >= 0.500 mm; blocked by U11.2 (x54), R36.1 (x7), R37.2 (x3), C36.2 (x3)"
+            },
+            {
+              "island": [
+                "U12.10",
+                "U12.11"
+              ],
+              "pad": "U12.10",
+              "reason": "NO_VIA_SITE",
+              "why": "no legal 0.65 mm barrel within 8.0 mm of any escape"
+            },
+            {
+              "island": [
+                "U13.3"
+              ],
+              "pad": "U13.3",
+              "reason": "NO_VIA_SITE",
+              "why": "no legal 0.65 mm barrel within 8.0 mm of any escape"
+            }
+          ],
+          "island_join": {
+            "failures": [
+              {
+                "cluster": [
+                  "C28.1",
+                  "SW9.2",
+                  "U12.1"
+                ],
+                "pads": 3,
+                "reason": "NO_PATH",
+                "tries": 1,
+                "why": "no all-layer corridor at 0.500 mm from this island to any other cluster of the net"
+              },
+              {
+                "cluster": [
+                  "L4.1",
+                  "U21.3"
+                ],
+                "pads": 2,
+                "reason": "NO_PATH",
+                "tries": 1,
+                "why": "no all-layer corridor at 0.500 mm from this island to any other cluster of the net"
+              },
+              {
+                "cluster": [
+                  "U12.10",
+                  "U12.11"
+                ],
+                "pads": 2,
+                "reason": "NO_PATH",
+                "tries": 1,
+                "why": "no all-layer corridor at 0.500 mm from this island to any other cluster of the net"
+              },
+              {
+                "cluster": [
+                  "C26.2"
+                ],
+                "pads": 1,
+                "reason": "NO_PATH",
+                "tries": 1,
+                "why": "no all-layer corridor at 0.500 mm from this island to any other cluster of the net"
+              },
+              {
+                "cluster": [
+                  "C27.1"
+                ],
+                "pads": 1,
+                "reason": "NO_PATH",
+                "tries": 1,
+                "why": "no all-layer corridor at 0.500 mm from this island to any other cluster of the net"
+              },
+              {
+                "cluster": [
+                  "R68.1"
+                ],
+                "pads": 1,
+                "reason": "NO_ANCHOR",
+                "why": "no cell of this cluster's filled copper admits a 0.500 mm track centred 0.300 mm inside it"
+              },
+              {
+                "cluster": [
+                  "U11.1"
+                ],
+                "pads": 1,
+                "reason": "NO_ANCHOR",
+                "why": "no cell of this cluster's filled copper admits a 0.500 mm track centred 0.300 mm inside it"
+              },
+              {
+                "cluster": [
+                  "U13.3"
+                ],
+                "pads": 1,
+                "reason": "NO_ANCHOR",
+                "why": "no cell of this cluster's filled copper admits a 0.500 mm track centred 0.300 mm inside it"
+              }
+            ],
+            "joined": 0,
+            "unjoined": 8
+          },
+          "mm": 2.404,
+          "mode": "stitch-split+islands",
+          "net": "/01_POWER_TREE/BQ25185_SYS",
+          "ok": true
+        }
+      ]
+    }
+  },
+  "sys_launch_wall": {
+    "base": "U12.10: NO OFF-CENTRE LAUNCH at 0.800 mm from any of 41 anchors x 24 directions x 17 lengths; blocked by U12.9 (x11679), U12.8 (x3622), U12.2 (x288), C24.2 (x246)",
+    "finding": "the blockers are U12's OWN NEIGHBOURING PADS, so NO rip-up of any foreign net can change it: SYS_MAIN's 0.800 mm is not launchable from the TPS63020's own 0.5 mm-pitch lands",
+    "grid_nm": 25000,
+    "pair": "U12.10 -> U12.1",
+    "q1_upper_bound": "U12.10: NO OFF-CENTRE LAUNCH at 0.800 mm from any of 41 anchors x 24 directions x 17 lengths; blocked by U12.9 (x11679), U12.8 (x3622), U12.2 (x288), C24.2 (x246)",
+    "seconds": 24
+  },
+  "u12_rotation_90": {
+    "baseline_edges": 20,
+    "edges_after_reroute": 26,
+    "edges_after_rotation": 36,
+    "l1_also_turned_180": "yes -- so the switch nodes align west/east with U12's new columns",
+    "release_chain_reached": [
+      "R41.2",
+      "R42.2",
+      "TP8.1",
+      "TP14.1",
+      "L1.1",
+      "L1.2",
+      "SW2.2"
+    ],
+    "release_objects": 96,
+    "run": {
+      "connectivity": {
+        "nets_improved": [
+          "+3V3",
+          "/01_POWER_TREE/BQ25185_SYS",
+          "Net-(L1-Pad1)",
+          "Net-(SW9-A)",
+          "Net-(U12-PG)",
+          "Net-(U12-PS_SYNC)"
+        ],
+        "nets_regressed": [],
+        "open_retained_nets_after": 19,
+        "open_retained_nets_before": 19,
+        "retained_open_edges_after": 26,
+        "retained_open_edges_before": 36
+      },
+      "drc_types": {
+        "clearance": 13,
+        "drill_out_of_range": 2,
+        "hole_clearance": 2,
+        "lib_footprint_issues": 199,
+        "shorting_items": 2,
+        "solder_mask_bridge": 9,
+        "via_dangling": 2
+      },
+      "refused": [
+        "attributable_drc",
+        "inherited_within_baseline"
+      ],
+      "routed": [
+        {
+          "failures": [
+            {
+              "a": [
+                "U12.8"
+              ],
+              "b": [
+                "U12.9"
+              ],
+              "gap_mm": 0.5,
+              "pads": [
+                "U12.9"
+              ],
+              "reason": "NO_LEGAL_ESCAPE_DST",
+              "why": "U12.9: NO LEGAL ESCAPE at >= 0.600 mm; blocked by U12.10 (x59), board_edge (x5), U12.5 (x4), U12.1 (x3)",
+              "why_lands": [
+                "U12.9: NO LEGAL ESCAPE at >= 0.600 mm; blocked by U12.10 (x59), board_edge (x5), U12.5 (x4), U12.1 (x3)"
+              ]
+            }
+          ],
+          "island_join": {},
+          "mm": 3.5,
+          "mode": "maze+partial",
+          "net": "Net-(L1-Pad1)",
+          "ok": true
+        },
+        {
+          "failures": [
+            {
+              "a": [
+                "U12.6"
+              ],
+              "b": [
+                "U12.7"
+              ],
+              "gap_mm": 0.5,
+              "pads": [
+                "U12.6"
+              ],
+              "reason": "NO_LEGAL_ESCAPE_SRC",
+              "why": "U12.6: NO LEGAL ESCAPE at >= 0.600 mm; blocked by U12.5 (x45), U12.4 (x14), U12.1 (x5), U12.3 (x3)",
+              "why_lands": [
+                "U12.6: NO LEGAL ESCAPE at >= 0.600 mm; blocked by U12.5 (x45), U12.4 (x14), U12.1 (x5), U12.3 (x3)"
+              ]
+            },
+            {
+              "a": [
+                "L1.2"
+              ],
+              "b": [
+                "U12.7"
+              ],
+              "gap_mm": 3.307,
+              "pads": [
+                "U12.7"
+              ],
+              "reason": "NO_LEGAL_ESCAPE_DST",
+              "why": "U12.7: NO LEGAL ESCAPE at >= 0.600 mm; blocked by U12.5 (x16), track (x14), U12.15 (x13), via (x9)",
+              "why_lands": [
+                "U12.7: NO LEGAL ESCAPE at >= 0.600 mm; blocked by U12.5 (x16), track (x14), U12.15 (x13), via (x9)"
+              ]
+            }
+          ],
+          "island_join": {},
+          "mm": null,
+          "mode": "maze+partial",
+          "net": "Net-(L1-Pad2)",
+          "ok": false
+        },
+        {
+          "failures": [
+            {
+              "a": [
+                "R39.2",
+                "R40.1"
+              ],
+              "b": [
+                "U12.3"
+              ],
+              "dst_escapes": 8,
+              "gap_mm": 29.669,
+              "reason": "NO_PATH",
+              "src_escapes": 18,
+              "why": "no all-layer corridor at 0.200 mm between the islands"
+            }
+          ],
+          "island_join": {},
+          "mm": null,
+          "mode": "maze+partial",
+          "net": "/01_POWER_TREE/V3V3_FB",
+          "ok": false
+        },
+        {
+          "failures": [
+            {
+              "island": [
+                "U12.4"
+              ],
+              "pad": "U12.4",
+              "reason": "NO_LEGAL_ESCAPE",
+              "why": "U12.4: NO LEGAL ESCAPE at >= 0.600 mm; blocked by U12.3 (x45), U12.2 (x14), U12.1 (x8), C24.2 (x5)"
+            },
+            {
+              "island": [
+                "U12.5"
+              ],
+              "pad": "U12.5",
+              "reason": "NO_LEGAL_ESCAPE",
+              "why": "U12.5: NO LEGAL ESCAPE at >= 0.600 mm; blocked by U12.6 (x45), U12.3 (x15), U12.1 (x6), U12.2 (x2)"
+            },
+            {
+              "island": [
+                "U5.2"
+              ],
+              "pad": "U5.2",
+              "reason": "NO_LEGAL_ESCAPE",
+              "why": "U5.2: NO LEGAL ESCAPE at >= 0.600 mm; blocked by U5.1 (x54), R15.2 (x11), R15.1 (x4), C10.2 (x3)"
+            }
+          ],
+          "island_join": {
+            "failures": [
+              {
+                "cluster": [
+                  "U12.4"
+                ],
+                "pads": 1,
+                "reason": "NO_ANCHOR",
+                "why": "no cell of this cluster's filled copper admits a 0.600 mm track centred 0.400 mm inside it"
+              },
+              {
+                "cluster": [
+                  "U12.5"
+                ],
+                "pads": 1,
+                "reason": "NO_ANCHOR",
+                "why": "no cell of this cluster's filled copper admits a 0.600 mm track centred 0.400 mm inside it"
+              },
+              {
+                "cluster": [
+                  "U5.2"
+                ],
+                "pads": 1,
+                "reason": "NO_ANCHOR",
+                "why": "no cell of this cluster's filled copper admits a 0.600 mm track centred 0.400 mm inside it"
+              }
+            ],
+            "joined": 0,
+            "unjoined": 3
+          },
+          "mm": 0,
+          "mode": "stitch-split+islands",
+          "net": "+3V3",
+          "ok": false
+        },
+        {
+          "failures": [
+            {
+              "a": [
+                "TP13.1",
+                "SW9.1"
+              ],
+              "b": [
+                "U12.12"
+              ],
+              "gap_mm": 9.244,
+              "pads": [
+                "U12.12"
+              ],
+              "reason": "NO_LEGAL_ESCAPE_DST",
+              "why": "U12.12: NO LEGAL ESCAPE at >= 0.200 mm; blocked by U12.13 (x27), U12.11 (x18), via (x7), U12.8 (x5)",
+              "why_lands": [
+                "U12.12: NO LEGAL ESCAPE at >= 0.200 mm; blocked by U12.13 (x27), U12.11 (x18), via (x7), U12.8 (x5)"
+              ]
+            },
+            {
+              "a": [
+                "R68.2"
+              ],
+              "b": [
+                "TP13.1",
+                "SW9.1"
+              ],
+              "dst_escapes": 26,
+              "gap_mm": 17.433,
+              "reason": "NO_PATH",
+              "src_escapes": 10,
+              "why": "no all-layer corridor at 0.200 mm between the islands"
+            },
+            {
+              "a": [
+                "R68.2"
+              ],
+              "b": [
+                "TP13.1",
+                "SW9.1"
+              ],
+              "dst_escapes": 26,
+              "gap_mm": 21.398,
+              "reason": "NO_PATH",
+              "src_escapes": 10,
+              "why": "no all-layer corridor at 0.200 mm between the islands"
+            },
+            {
+              "a": [
+                "TP13.1",
+                "SW9.1",
+                "R43.1"
+              ],
+              "b": [
+                "R68.2"
+              ],
+              "dst_escapes": 10,
+              "gap_mm": 66.956,
+              "reason": "NO_PATH",
+              "src_escapes": 40,
+              "why": "no all-layer corridor at 0.200 mm between the islands"
+            }
+          ],
+          "island_join": {},
+          "mm": 75.99,
+          "mode": "maze+partial",
+          "net": "Net-(SW9-A)",
+          "ok": true
+        },
+        {
+          "failures": [
+            {
+              "a": [
+                "TP14.1",
+                "R42.2"
+              ],
+              "b": [
+                "U12.13"
+              ],
+              "dst_escapes": 9,
+              "gap_mm": 35.28,
+              "reason": "NO_PATH",
+              "src_escapes": 25,
+              "why": "no all-layer corridor at 0.200 mm between the islands"
+            },
+            {
+              "a": [
+                "TP14.1",
+                "R42.2"
+              ],
+              "b": [
+                "U12.13"
+              ],
+              "dst_escapes": 9,
+              "gap_mm": 53.6,
+              "reason": "NO_PATH",
+              "src_escapes": 25,
+              "why": "no all-layer corridor at 0.200 mm between the islands"
+            }
+          ],
+          "island_join": {},
+          "mm": 31.593,
+          "mode": "maze+partial",
+          "net": "Net-(U12-PS_SYNC)",
+          "ok": true
+        },
+        {
+          "failures": [
+            {
+              "a": [
+                "TP8.1",
+                "R41.2"
+              ],
+              "b": [
+                "U12.14"
+              ],
+              "dst_escapes": 12,
+              "gap_mm": 36.967,
+              "reason": "NO_PATH",
+              "src_escapes": 20,
+              "why": "no all-layer corridor at 0.200 mm between the islands"
+            },
+            {
+              "a": [
+                "TP8.1",
+                "R41.2"
+              ],
+              "b": [
+                "U12.14"
+              ],
+              "dst_escapes": 12,
+              "gap_mm": 56.612,
+              "reason": "NO_PATH",
+              "src_escapes": 20,
+              "why": "no all-layer corridor at 0.200 mm between the islands"
+            }
+          ],
+          "island_join": {},
+          "mm": 33.414,
+          "mode": "maze+partial",
+          "net": "Net-(U12-PG)",
+          "ok": true
+        },
+        {
+          "failures": [
+            {
+              "island": [
+                "C26.2"
+              ],
+              "pad": "C26.2",
+              "reason": "NO_VIA_SITE",
+              "why": "no legal 0.80 mm barrel within 8.0 mm of any escape"
+            },
+            {
+              "island": [
+                "C27.1"
+              ],
+              "pad": "C27.1",
+              "reason": "NO_VIA_SITE",
+              "why": "no legal 0.80 mm barrel within 8.0 mm of any escape"
+            },
+            {
+              "island": [
+                "L4.1",
+                "U21.3"
+              ],
+              "pad": "L4.1",
+              "reason": "NO_VIA_SITE",
+              "why": "no legal 0.80 mm barrel within 8.0 mm of any escape"
+            },
+            {
+              "island": [
+                "R68.1"
+              ],
+              "pad": "R68.1",
+              "reason": "NO_VIA_SITE",
+              "why": "no legal 0.80 mm barrel within 8.0 mm of any escape"
+            },
+            {
+              "island": [
+                "U11.1"
+              ],
+              "pad": "U11.1",
+              "reason": "NO_LEGAL_ESCAPE",
+              "why": "U11.1: NO LEGAL ESCAPE at >= 0.800 mm; blocked by U11.2 (x49), R36.1 (x9), R37.2 (x4), C27.2 (x3)"
+            },
+            {
+              "island": [
+                "U12.1"
+              ],
+              "pad": "U12.1",
+              "reason": "NO_LEGAL_ESCAPE",
+              "why": "U12.1: NO LEGAL ESCAPE at >= 0.800 mm; blocked by U12.2 (x56), C24.2 (x16)"
+            },
+            {
+              "island": [
+                "U12.10"
+              ],
+              "pad": "U12.10",
+              "reason": "NO_LEGAL_ESCAPE",
+              "why": "U12.10: NO LEGAL ESCAPE at >= 0.800 mm; blocked by U12.9 (x36), U12.8 (x26), U12.4 (x5), board_edge (x5)"
+            },
+            {
+              "island": [
+                "U12.11"
+              ],
+              "pad": "U12.11",
+              "reason": "NO_LEGAL_ESCAPE",
+              "why": "U12.11: NO LEGAL ESCAPE at >= 0.800 mm; blocked by U12.12 (x36), U12.9 (x17), U12.8 (x9), U12.3 (x5)"
+            }
+          ],
+          "island_join": {
+            "failures": [
+              {
+                "cluster": [
+                  "C28.1",
+                  "SW9.2"
+                ],
+                "pads": 2,
+                "reason": "NO_PATH",
+                "tries": 1,
+                "why": "no all-layer corridor at 0.800 mm from this island to any other cluster of the net"
+              },
+              {
+                "cluster": [
+                  "L4.1",
+                  "U21.3"
+                ],
+                "pads": 2,
+                "reason": "NO_PATH",
+                "tries": 1,
+                "why": "no all-layer corridor at 0.800 mm from this island to any other cluster of the net"
+              },
+              {
+                "cluster": [
+                  "C27.1"
+                ],
+                "pads": 1,
+                "reason": "NO_PATH",
+                "tries": 1,
+                "why": "no all-layer corridor at 0.800 mm from this island to any other cluster of the net"
+              },
+              {
+                "cluster": [
+                  "R68.1"
+                ],
+                "pads": 1,
+                "reason": "NO_ANCHOR",
+                "why": "no cell of this cluster's filled copper admits a 0.800 mm track centred 0.500 mm inside it"
+              },
+              {
+                "cluster": [
+                  "U11.1"
+                ],
+                "pads": 1,
+                "reason": "NO_ANCHOR",
+                "why": "no cell of this cluster's filled copper admits a 0.800 mm track centred 0.500 mm inside it"
+              },
+              {
+                "cluster": [
+                  "U12.1"
+                ],
+                "pads": 1,
+                "reason": "NO_ANCHOR",
+                "why": "no cell of this cluster's filled copper admits a 0.800 mm track centred 0.500 mm inside it"
+              },
+              {
+                "cluster": [
+                  "U12.10"
+                ],
+                "pads": 1,
+                "reason": "NO_ANCHOR",
+                "why": "no cell of this cluster's filled copper admits a 0.800 mm track centred 0.500 mm inside it"
+              },
+              {
+                "cluster": [
+                  "U12.11"
+                ],
+                "pads": 1,
+                "reason": "NO_ANCHOR",
+                "why": "no cell of this cluster's filled copper admits a 0.800 mm track centred 0.500 mm inside it"
+              },
+              {
+                "cluster": [
+                  "U13.3"
+                ],
+                "pads": 1,
+                "reason": "NO_ANCHOR",
+                "why": "no cell of this cluster's filled copper admits a 0.800 mm track centred 0.500 mm inside it"
+              }
+            ],
+            "joined": 1,
+            "unjoined": 9
+          },
+          "mm": 1.031,
+          "mode": "stitch-split+islands",
+          "net": "/01_POWER_TREE/BQ25185_SYS",
+          "ok": true
+        }
+      ]
+    },
+    "verdict": "REFUSED",
+    "why": "+90 deg turns U12's two 0.5 mm-pitch ROWS into two 0.5 mm-pitch COLUMNS and buys nothing: every land still refuses at 0.600 / 0.800 mm, now blocked by its new column neighbours"
+  }
+}

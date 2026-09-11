@@ -1,3 +1,103 @@
+# D-687 addendum · 2026-09-11 · Demo — THE `U12` ROTATION IS REFUSED, THE ESCAPE FLOOR RECLASSIFIES FOUR `SYS` EDGES FROM "THE ISLAND IS TOO SMALL" TO "THERE IS NO CORRIDOR", AND `SYS_MAIN`'s 0.800 mm IS NOT LAUNCHABLE FROM THE PART IT SERVES
+
+    authority  fb7b61f2a490283c1ee1a8ff1b969c88f11c5ebc3917dc495425e945149fe401
+            -> fb7b61f2a490283c1ee1a8ff1b969c88f11c5ebc3917dc495425e945149fe401   UNCHANGED
+    retained open edges 20 -> 20
+    `hardware/demo/kicad`, `hardware/demo/fab`, `hardware/beta-v2`  UNTOUCHED
+    `evidence/d687-u12-rotation-and-escape-floor.json`
+
+**NO COPPER PROMOTED.**  D-687 named the band and said the fix is placement.
+This addendum spends the cheapest placement candidate and REFUSES it, then
+takes the wall apart with the instruments that were never tried on it.
+
+## 1. THE `U12` 90 deg ROTATION IS MEASURED AND REFUSED
+
+The idea was good: turn `U12` so its south pin row becomes an EAST column and
+escapes into `x 68.7 .. 72`, `y 99 .. 104`, which is free board (the antenna
+keep-out needs `y >= 104.005`).  The board says no.
+
+  * `apply_part_shift --rot-deg 90 --release` needs **96 objects**, and the
+    release chain walks all the way out to **`R41.2`, `R42.2`, `TP8.1`,
+    `TP14.1`, `L1.1`, `L1.2`** and `SW2.2`.
+  * The rotated board is **20 -> 36** open edges.  With `L1` also turned 180 deg
+    so the switch nodes align west/east with `U12`'s new columns, the best
+    re-route recovers only to **26 -- six WORSE than the baseline** -- and
+    raises **13 `clearance`, 2 `shorting_items`, 9 `solder_mask_bridge` and
+    2 `drill_out_of_range`**.
+  * ***A 0.5 mm-pitch ROW turned into a 0.5 mm-pitch COLUMN is still 0.5 mm
+    pitch.***  `U12.6`, `U12.7`, `U12.9`, `U12.4`, `U12.5` and `U12.1` each
+    report `NO LEGAL ESCAPE at >= 0.600 mm` blocked by their NEW neighbours,
+    exactly as they did from their old row.
+
+The remaining placement candidate is the NORTH translation (`TP13` + `C28` +
+`L1` + `U12`, ~2.4 mm, bounded by `SW9`).  It is not cheaper than this one.
+
+## 2. THE ESCAPE FLOOR RECLASSIFIES FOUR `SYS` EDGES
+
+Re-asked with `--join-islands --split-islands --neck --escape-floor
+--stitch-width 500000 --stitch-via 500000:250000 --bond-via 500000:250000`:
+
+    at 0.800 mm   U12.10/11, U11.1, R68.1, U13.3   NO_ANCHOR
+                  C26.2, C27.1, L4/U21, the body   NO_PATH
+    at 0.500 mm   U12.10/11, C26.2, C27.1,
+                  L4/U21, the body                 NO_PATH
+                  R68.1, U11.1, U13.3              NO_ANCHOR   (two are DNP)
+
+***The islands CAN anchor.  What they cannot find is a corridor.***  That is a
+different problem from the one D-678 and D-682 recorded, and it is the one the
+next transaction has to solve.
+
+## 3. `SYS_MAIN`'s 0.800 mm IS NOT LAUNCHABLE FROM THE PART IT SERVES
+
+`screen_pair_corridor_blame.py /01_POWER_TREE/BQ25185_SYS U12.10 U12.1` at
+0.025 mm, 24 seconds, and the BASE and the Q1 UPPER BOUND give the same answer:
+
+    U12.10: NO OFF-CENTRE LAUNCH at 0.800 mm from any of
+    41 anchors x 24 directions x 17 lengths;
+    blocked by U12.9 (x11679), U12.8 (x362...)
+
+***The blockers are `U12`'s OWN NEIGHBOURING PADS.***  No rip-up of any foreign
+net can move them.  It is a package-pitch wall, the same shape as `U11.1`'s on
+the `BQ25185`'s 0.4 mm-pitch `WSON`, and it means `SYS` cannot be closed at the
+netclass width by ANY router move.
+
+## 4. THE AMPACITY BAR THAT REFUSES EVERY `SYS` RELIEF IS A SEGMENT FIGURE READ AS A CLASS FIGURE
+
+`pour_partition_contract.published_rail_currents` collects every `"<n> A"` in a
+class's own rows and takes the LARGEST, so `SYS_MAIN` is charged **2.19 A**.
+The `.kicad_dru`'s own row says what that figure is:
+
+    SYS_MAIN           1.0 A                0.300 mm    1.563 mm
+      LOCAL EXCEPTION, NOT ENCODABLE: the U21 accessory boost draws a
+      2.19 A peak inductor current from SYS (D-185), so the SYS segment
+      that feeds U21 must be sized from that peak, not from 1.0 A.
+
+The class publishes **1.0 A**; 2.19 A is a **SEGMENT** figure living in a class
+row.  Taking the largest is the RIGHT policy for a clause that must not
+under-charge, so the parser is not changed here -- the defect is where the
+figure lives, and moving it is a netclass decision.
+
+**AND THE PACKAGE ANSWERS THE BAR ANYWAY.**  `U12.10` and `U12.11` are **two
+pins of the same rail**: two 0.500 mm necks in parallel carry **2.882 A**
+against the 2.19 A bar, where one carries 1.441 A.  `--relief-bonds-per-island`
+is the flag that expresses it and D-610 already ruled on the arithmetic.
+
+## 5. WHAT IS ACTUALLY MISSING, NAMED
+
+`BQ25185_SYS`'s four island edges need a **LICENSED-WIDTH ISLAND JUMPER** -- a
+`--join-islands` destination laid inside a declared `PAD_ESCAPE_RUN_<REF>`
+rectangle.  **That is the SAME instrument D-684 named for `+3V3`'s last edge at
+`U5.2`**, and one primitive closes both.  `--escape-relief` cannot stand in:
+it always ends in a BARREL, and `BQ25185_SYS` owns no pour on any other layer
+for a barrel to land in.
+
+**NEXT:** (1) build the licensed-width island jumper -- it is now the only
+instrument left for `C24.1` / `C26.2` / `C27.1` / `U12.10-11` AND for `+3V3`'s
+`U5.2`, five of the board's twenty edges between them.  (2) the `U12` + `L1` +
+`TP13` + `C28` NORTH translation, ~2.4 mm, bounded by `SW9`.  (3)
+`/USB_D_MCU_N`'s second lane and the 25 mm uncoupled budget.
+**NO OPEN OWNER DECISION.**
+
 # D-687 · 2026-09-11 · Demo — ONE CONDUCTOR, FOUR NETS: `U12`'s SOUTH BAND IS 1.2 mm TALL BECAUSE THE `WROOM` ANTENNA KEEP-OUT SEALS IT, AND `/BQ25185_STAT1`, `PS_SYNC`, `PG` AND `SW9-A` ALL WANT IT — WITH `STAT1` OUT, BOTH STRAPS REACH THEIR PINS AND `BQ25185_SYS` CLOSES AN EDGE
 
     authority  fb7b61f2a490283c1ee1a8ff1b969c88f11c5ebc3917dc495425e945149fe401

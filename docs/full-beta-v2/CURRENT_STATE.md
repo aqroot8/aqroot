@@ -23,6 +23,59 @@
 > `verify_promotion` PASS and `protected_copper` showing exactly one protected
 > net moved.  `U14.7` is on the bus.  This board has **no open owner decision**.
 
+- **Demo D-687 addendum (THE `U12` ROTATION IS REFUSED, THE ESCAPE FLOOR
+  RECLASSIFIES FOUR `SYS` EDGES, AND `SYS_MAIN`'s 0.800 mm IS NOT LAUNCHABLE
+  FROM THE PART IT SERVES):**  **NO COPPER PROMOTED.**  Authority **UNCHANGED**
+  at `fb7b61f2a490283c1ee1a8ff1b969c88f11c5ebc3917dc495425e945149fe401`;
+  20 -> 20; `hardware/demo/kicad`, `hardware/demo/fab`, `hardware/beta-v2`
+  **UNTOUCHED** (`evidence/d687-u12-rotation-and-escape-floor.json`).
+  **(1) THE CHEAPEST PLACEMENT CANDIDATE, SPENT AND REFUSED.**  Turning `U12`
+  +90 deg makes its south pin row an EAST column escaping into
+  `x 68.7..72, y 99..104` -- free board, since the keep-out needs
+  `y >= 104.005`.  The release costs **96 objects** and the chain walks out to
+  `R41.2`, `R42.2`, `TP8.1`, `TP14.1`, `L1.1`, `L1.2` and `SW2.2`; the board
+  goes **20 -> 36**; and with `L1` also turned 180 deg so the switch nodes
+  align, the best re-route recovers only to **26 -- six WORSE than the
+  baseline** -- with **13 `clearance`, 2 `shorting_items`,
+  9 `solder_mask_bridge`, 2 `drill_out_of_range`**.  ***A 0.5 mm-pitch ROW
+  turned into a 0.5 mm-pitch COLUMN is still 0.5 mm pitch***: every `U12` land
+  refuses at >= 0.600 mm from its NEW neighbours exactly as from its old row.
+  **(2) THE ESCAPE FLOOR RECLASSIFIES FOUR `SYS` EDGES.**  With
+  `--join-islands --split-islands --neck --escape-floor --stitch-width 500000
+  --stitch-via/--bond-via 500000:250000`, `U12.10/11`, `C26.2`, `C27.1`,
+  `L4`/`U21` and the body move from **`NO_ANCHOR` at 0.800 mm** to
+  **`NO_PATH` at 0.500 mm**; `NO_ANCHOR` survives only on `R68.1`, `U11.1` and
+  `U13.3`, two of them DNP.  ***The islands CAN anchor; what they cannot find
+  is a corridor.***
+  **(3) AND THE WIDTH IS NOT LAUNCHABLE FROM THE PART.**
+  `screen_pair_corridor_blame U12.10 -> U12.1` at 0.025 mm returns, for the
+  BASE and the Q1 UPPER BOUND alike, *"`U12.10`: NO OFF-CENTRE LAUNCH at
+  0.800 mm from any of 41 anchors x 24 directions x 17 lengths; blocked by
+  `U12.9` (x11679), `U12.8` ..."* -- ***the blockers are `U12`'s OWN
+  NEIGHBOURING PADS***, so no rip-up of any foreign net can move them.  A
+  package-pitch wall, the same shape as `U11.1`'s on the `BQ25185`'s 0.4 mm
+  `WSON`.
+  **(4) THE AMPACITY BAR IS A SEGMENT FIGURE READ AS A CLASS FIGURE.**
+  `published_rail_currents` takes the LARGEST `"<n> A"` in a class's rows, so
+  `SYS_MAIN` is charged **2.19 A** -- the figure the DRU's own row labels
+  *"LOCAL EXCEPTION, NOT ENCODABLE ... the SYS segment that feeds `U21`"*,
+  while the class row itself publishes **1.0 A**.  Taking the largest is the
+  RIGHT policy for a clause that must not under-charge, so the parser is NOT
+  changed; the defect is where the figure lives.  **AND THE PACKAGE ANSWERS THE
+  BAR ANYWAY**: `U12.10` and `U12.11` are TWO PINS of the same rail, so two
+  0.500 mm necks in parallel carry **2.882 A** against 2.19 A where one carries
+  1.441 A -- `--relief-bonds-per-island`, on D-610's own arithmetic.
+  **(5) THE MISSING INSTRUMENT, NAMED.**  `BQ25185_SYS`'s four island edges
+  need a **LICENSED-WIDTH ISLAND JUMPER** -- a `--join-islands` destination laid
+  inside a declared `PAD_ESCAPE_RUN_<REF>` rectangle -- and that is the SAME
+  instrument D-684 named for `+3V3`'s last edge at `U5.2`.  **One primitive,
+  five of the board's twenty edges.**  `--escape-relief` cannot stand in: it
+  always ends in a BARREL and `BQ25185_SYS` owns no pour on another layer for
+  one to land in.
+  **NEXT:** (1) build the licensed-width island jumper.  (2) the `U12` + `L1`
+  + `TP13` + `C28` NORTH translation, ~2.4 mm, bounded by `SW9`.  (3)
+  `/USB_D_MCU_N`'s second lane and the 25 mm uncoupled budget.
+  **NO OPEN OWNER DECISION.**
 - **Demo D-687 (ONE CONDUCTOR, FOUR NETS: `U12`'s SOUTH BAND IS 1.2 mm TALL
   BECAUSE THE `WROOM` ANTENNA KEEP-OUT SEALS IT):**  **NO COPPER PROMOTED.**
   Authority **UNCHANGED** at
