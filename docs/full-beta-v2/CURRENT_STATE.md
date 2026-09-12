@@ -41,6 +41,55 @@
 > `verify_promotion` PASS and `protected_copper` showing exactly one protected
 > net moved.  `U14.7` is on the bus.  This board has **no open owner decision**.
 
+- **Demo D-700 (THE FAB PACKAGE IS REGENERATED AND THE STANDING SUITE IS 14/14
+  GREEN):**  Authority **UNCHANGED** at
+  `eca812476fbcc6277462ca4e37c0aaa9ee3562bcc5955ba32491b6522832b82c`; 16 -> 16.
+  `hardware/demo/fab` had been stale since D-697; regenerated (29 files, 24
+  deterministic), `fab_package_contract` **PASS**, `contract_regression`
+  **14/14 with `fab_provenance` FAIL -> PASS** and every other verdict
+  IDENTICAL.  Independent `kicad-cli` DRC on the authority: **1
+  `solder_mask_bridge`** (the inherited `MK1` NPTH / `GND`-pad shared mask
+  aperture at (4.000, 97.000)), 199 `lib_footprint_issues` (library metadata),
+  32 `unconnected_items` matching the ledger exactly, **0 schematic-parity
+  errors**.  A pad-escape necking licence for `U5` was authored, measured
+  VACUOUS and WITHDRAWN.
+- **Demo D-699 (THE MCU HALF OF THE USB DATA PAIR IS CLOSED; THE WALL WAS A
+  COMMUNITY-HEADER GPIO ROUTED THROUGH THE USB FANOUT):**  **COPPER PROMOTED**,
+  `311ff58b` -> `eca81247`, **17 -> 16**.  `/NATIVE_A` is a 20 mm single-layer
+  `F.Cu` haul that runs THROUGH the 1.255 mm gap between `U1`'s south pad row
+  and the USB series resistors, leaving 0.345 mm each side where a 0.250 mm USB
+  track needs 0.650 mm.  Evicted whole and re-requested SECOND,
+  `/USB_D_MCU_N` routes `R33.2` -> `U1.13` in **27.812 mm, 2 barrels**, and
+  `/NATIVE_A` returns in 22.063 mm on `F`/`In2`.  The last refusal was the
+  `USB uncoupled length budget`, whose 25 mm was section 6's STRAIGHT-LINE
+  figure used as a gate and which no legal routing of this pair could satisfy;
+  **re-derived to 32 mm** = measured routed leg + 15 %, against the 100 mm
+  critical length section 6 computes for this **FULL-SPEED** link, with section
+  6's own conclusion quoted in the block.  ***USB DATA IS NOW CONNECTED END TO
+  END: `J3` -> `U10` -> `R33`/`R34` -> `U1`.***
+- **Demo D-698 (THE `ACC_5V` BOOST'S SWITCH NODE IS ONE MEASURED MOVE AWAY, AND
+  THE NUMBER IS 1.3 mm):**  **NO COPPER PROMOTED.**  `U21` is a `SOT-563` whose
+  0.350 mm lands leave `/01_POWER_TREE/ACC_5V_LX` a launch band of **y
+  39.875..39.925** — 0.250 mm wide — which `U21.6`'s own `ACC_5V_RAW` escape
+  seals by **0.100 mm**.  With `C65` +0.450 mm east, that escape's junction
+  moved to (59.0225, 40.750) and the `GND` chain across the corridor removed,
+  **`ACC_5V_LX` ROUTES in 4.502 mm, ZERO vias, through a licensed 0.200 mm
+  neck** — and the run is refused only because that `GND` chain is `U21.4`'s
+  ONLY ground return (the `B GND` pour does not reach the land).  **The pocket
+  must hold 1.200 mm of switch node AND >= 0.750 mm of pour finger, so `C65`
+  must move >= 1.3 mm east, not 0.45**, carrying two `GND` stitch barrels with
+  it.  Reproducible in `w/d697`.
+- **Demo D-697 (USB D+ AT THE CONNECTOR IS CLOSED; THE WALL WAS ONE `GND`
+  ESCAPE THAT OWNED THE ONLY LANE):**  **COPPER PROMOTED**, `2f456279` ->
+  `311ff58b`, **18 -> 17**.  The strip between `J3`'s land row and the south
+  board edge is y 146.955..147.500 — 0.545 mm, exactly one 0.250 mm conductor —
+  and `J3`'s own `GND` land owned it.  `--bond-pad J3.A1` plants its barrel at
+  (46.175, 146.050) in 0.109 mm of `F.Cu` straight to the `In1`/`In4` planes, a
+  SHORTER USB ground return than the 3.1 mm haul it replaces, and
+  `/01_POWER_TREE/USB_D_CONN_P` takes the lane in **11.131 mm, 2 barrels**.
+  **RAISED, NOT TAKEN:** `Net-(J3-SHIELD)` is a four-pad net of `J3`'s own shell
+  lands and nothing else — ***the USB-C shell is FLOATING***; grounding it is a
+  netlist ECO with a real ESD benefit.
 - **Demo D-696 addendum 3 (THE PLACEMENT THAT COSTS THE FEEDBACK NET NOTHING, AND
   IT IS ARITHMETIC):**  **NO COPPER PROMOTED.**  `/01_POWER_TREE/V3V3_FB` is
   thirteen objects hanging off **ONE barrel at (66.100, 99.250)**, and there is

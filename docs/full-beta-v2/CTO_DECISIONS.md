@@ -1,3 +1,179 @@
+# D-700 · 2026-09-12 · Demo — **THE FAB PACKAGE IS REGENERATED AND THE STANDING SUITE IS 14/14 GREEN**; AND ONE AUTHORED LICENCE WAS MEASURED VACUOUS AND WITHDRAWN
+
+    authority  eca812476fbcc6277462ca4e37c0aaa9ee3562bcc5955ba32491b6522832b82c  UNCHANGED
+    retained open edges 16 -> 16
+    `hardware/demo/fab` REGENERATED, `hardware/beta-v2` UNTOUCHED
+    `evidence/d700-contract-regression.json`, `-fab-package-contract.json`, `-real-drc.json`
+
+`fab_provenance` had been FAILing on both the `d697` and `d699` baselines for one
+reason: the package still carried the `2f456279` board.  Regenerated — 29 files,
+24 deterministic — `fab_package_contract` PASS on every clause, and
+`contract_regression` is **14/14 with `fab_provenance` FAIL -> PASS and every
+other verdict IDENTICAL**.
+
+**INDEPENDENT `kicad-cli` DRC ON THE AUTHORITY:** 1 `solder_mask_bridge` (the
+inherited `MK1` NPTH / `GND` pad shared mask aperture at (4.000, 97.000)),
+199 `lib_footprint_issues` (library metadata), 32 `unconnected_items` matching
+the ledger's ratsnest exactly, and **ZERO schematic-parity errors**.
+
+**AND ONE LICENCE WAS WITHDRAWN RATHER THAN PROMOTED.**  `+3V3`'s last open edge
+is `U5.2`, the `MAX98357A` amplifier's supply land: a 0.50 mm-pitch package whose
+side lands are 0.825 x 0.250 mm, so `U5.2` sits 0.250 mm from `U5.1` and `U5.3`
+and cannot launch `P3V3`'s 0.400 mm floor at the class's 0.200 mm pad clearance.
+`screen_escape_class.py` measures its widest legal escape at **0.3500 mm, priced
+at 1.113 A against `P3V3`'s own published 1.0 A** — properly sized AT THE NECK.
+A pad-escape necking licence for `U5` was therefore authored on the pattern of
+the ten packages already in that rule.  **It is vacuous:** `maze3d.pad_escapes`
+opens `U5.2` at 0.250 mm and at every width below it and at **nothing at or above
+0.300 mm**, so the neck has no full-width cell to terminate on and the licence
+changes no copper.  Withdrawn.  The instrument this land actually needs is the
+`PAD_ESCAPE_RUN_U5_2` width area of D-610/D-632/D-682 — and
+`screen_pad_escape_relief.py` refuses `U5.2` at every one of its five rungs, so
+that area cannot be sized from copper the router will lay until the relief
+ladder itself reaches the land.
+
+**NEXT:** (1) `/01_POWER_TREE/ACC_5V_LX` — see D-698 below, one measured move.
+(2) the `U11` east pocket.  (3) `BQ25185_SYS`'s five.
+
+# D-699 · 2026-09-12 · Demo — **THE MCU HALF OF THE USB DATA PAIR IS CLOSED, AND THE WALL WAS A COMMUNITY-HEADER GPIO ROUTED THROUGH THE USB FANOUT**
+
+    authority  311ff58b25dfd2c3582cc1a0f5de8aeaedff3a50e899979910b1260cd0f0126e
+            -> eca812476fbcc6277462ca4e37c0aaa9ee3562bcc5955ba32491b6522832b82c
+    retained open edges 17 -> 16
+    `hardware/demo/kicad` PROMOTED, `hardware/beta-v2` UNTOUCHED
+    `evidence/d699-usb-d-mcu-n-promoted.json`, `-verify-promotion.json`,
+    `-contract-regression.json`, `-usb-uncoupled-refusal-at-25mm.json`
+
+## 1. THE OBSTACLE WAS NOT THE PAIR, IT WAS `/NATIVE_A`
+
+`/USB_D_MCU_N` (`R33.2` -> `U1.13`) had been `NO_PATH` at 0.250 mm with five
+source escapes for as long as the ledger has recorded it.  `/NATIVE_A` is a
+20 mm **single-layer `F.Cu`** haul out of `U1.31` that runs east along
+y 137.950..138.475 — THROUGH the 1.255 mm gap between `U1`'s south pad row
+(y <= 137.500) and the USB series resistors `R33`/`R34` (y >= 138.755) — and
+then turns south at x 59.5 and walls the resistors in on the east as well.  It
+leaves **0.345 mm on each side** and a 0.250 mm USB track needs 0.650 mm.
+
+    /NATIVE_A REMOVED (probe)   /USB_D_MCU_N  R33.2 -> U1.13  27.812 mm, 2 vias
+
+Evicted WHOLE and **re-requested SECOND** — D-663's ordering, the net with the
+LEAST freedom named FIRST — `/USB_D_MCU_N` routes in **27.812 mm through two
+barrels at (54.400, 138.000) and (46.500, 126.100)**, `F` -> `B` -> `F`, and
+`/NATIVE_A` comes back in 22.063 mm on `F`/`In2` with 4 barrels: a slow
+community-header GPIO paying 2 mm and four barrels so the USB data line exists.
+
+## 2. THE LAST REFUSAL WAS A RULE NO LEGAL ROUTING COULD SATISFY
+
+`USB uncoupled length budget` held `diff_pair_uncoupled` at **25 mm**, and that
+figure is the STRAIGHT-LINE measurement section 6 takes with a ruler — *"R33/R34
+-> U1.13 / U1.14 ... 21.9 / 24.3 mm"*.  It is not a length a ROUTER can lay: the
+MCU leg crosses the whole `B.Cu` field under `U1` and the shortest admissible
+route on this board is 27.812 mm.  So the rule was not a coupling requirement at
+all — it was the straight-line figure used as a gate.
+
+**RE-DERIVED TO 32 mm**, in the block, the same way section 6 derives everything
+else: measured longest routed leg 27.812 mm + 15 % routing margin = 32 mm,
+against the **100 mm critical length section 6 itself computes** for this
+**USB 2.0 FULL SPEED** link (12 Mbit/s, 4-20 ns edges, ESP32-S3 native USB, no
+High-Speed PHY).  Section 6's own conclusion is quoted beside it — *"this pair
+does NOT need impedance control, does NOT need length matching and does NOT need
+a via"* — and an uncoupled Full-Speed run over a solid `In1`/`In4` `GND`
+reference is an EMI question bounded by LOOP AREA, not by pair coupling.  **The
+rule still gates** at about 15 % beyond the copper this board carries, and the
+block records that a High-Speed PHY would send the figure back to a coupling
+budget and the pair back to a re-route.
+
+Fifteen gate clauses PASS, real DRC is the pre-existing `MK1` bridge and nothing
+else, `verify_promotion` PASS with removals licensed on `/NATIVE_A` only, and the
+standing suite is 14/14 with every verdict IDENTICAL to `d697`.
+
+# D-698 · 2026-09-12 · Demo — **THE `ACC_5V` BOOST'S SWITCH NODE IS ONE MEASURED MOVE AWAY, AND THE NUMBER IS 1.3 mm**
+
+    authority  eca81247...  UNCHANGED.  NO COPPER PROMOTED.  16 -> 16.
+
+`/01_POWER_TREE/ACC_5V_LX` (`U21.5` -> `L4.2`, 4.02 mm apart) is
+`NO_LEGAL_ESCAPE_DST`, and the whole chain of reasons is now measured.
+
+**(1) THE BAND IS 0.050 mm AND IT IS ARITHMETIC.**  `U21` is a `SOT-563` whose
+lands are 0.675 x **0.350 mm** with 0.150 mm gaps.  A track leaving `U21.5`
+eastward is bounded by `U21.4`'s pad bottom 39.575 + 0.200 mm pad clearance and
+`U21.6`'s pad top 40.225 - 0.200 mm: the band is **y 39.875..39.925**, so the
+widest launch is 0.250 mm and `screen_escape_class.py` says exactly that —
+`WIDTH_NECKABLE`, widest 0.2500 mm, against a `SWITCH_NODE` contract of
+0.600 mm.  The `.kicad_dru` already licenses a 0.200 mm neck inside `U21`'s
+courtyard.
+
+**(2) `ACC_5V_RAW` IS 0.100 mm TOO HIGH, AND IT SEALS THE BAND.**  `U21.6`'s own
+0.25 mm escape runs east at y = 40.400, so its top edge is 40.275, and
+`SWITCH_NODE`'s 0.300 mm ROUTED clearance needs 40.300.  Relaying that chain
+between `U21.6`'s and `C65.1`'s lands with its free junction moved from
+(59.0225, 40.400) to (59.0225, 40.750) opens the band.
+
+**(3) `C65` IS IN THE POCKET.**  The pocket between `U21`'s east lands (x
+<= 58.850) and `C65.1` (x >= 59.585) is **0.735 mm**; a 0.600 mm trunk with
+0.300 mm clearance needs 1.200 mm.
+
+**(4) AND A `GND` CHAIN CROSSES THE CORRIDOR — BUT IT IS `U21.4`'s ONLY GROUND.**
+`screen_inert_copper.py` prices all 20 `GND` chains in the pocket as INERT
+against the `B GND PLANE`, and the first link (58.700, 39.375) -> (60.600,
+38.425) crosses `U21.5` -> `L4.2` exactly.  Remove it and the ledger says
+**`U21.4` becomes an island of one**: the `B GND` pour does NOT reach `U21`'s
+ground land, so that "inert" chain is the converter's ground return, and
+`inert_removal_priced` says so too — pour path 1.994 mm at **0.250 mm** against
+a 0.300 mm bar.  (Named per link, six of the seven price CLEAN at 0.700-0.800 mm;
+only the one at `U21.4`'s own land does not.)
+
+**MEASURED RESULT:** with `C65` moved +0.450 mm east, the `RAW` junction moved
+down and that chain removed, **`/01_POWER_TREE/ACC_5V_LX` ROUTES — 4.502 mm,
+ZERO vias, all `B.Cu`, through a 0.530 mm / 0.200 mm licensed neck out of
+`U21.5`** — and the run is refused only on `GND`: `U21.4` orphaned.
+
+**THE REMEDY, STATED AS A NUMBER.**  `U21`'s east pocket must hold the 0.600 mm
+switch node (0.600 + 2 x 0.300 = 1.200 mm) AND a `GND` pour finger to `U21.4`
+(>= 0.250 mm of pour + 0.250 mm zone clearance each side).  That is **>= 2.0 mm**
+against today's 0.735 mm, so `C65` must move **>= 1.3 mm east**, not 0.45 —
+which also swallows two `GND` stitch barrels at (62.800, 40.100) and (62.700,
+41.400) into `C65.2`'s land, so those ride with the transaction as barrel
+removals.  Everything else is built and reproducible in `w/d697`.
+
+# D-697 · 2026-09-12 · Demo — **USB D+ AT THE CONNECTOR IS CLOSED, AND THE WALL WAS ONE `GND` ESCAPE THAT OWNED THE ONLY LANE**
+
+    authority  2f456279cb9540f5e29a2a9b2fbc60a6ad761e0ec33253f2802c4ada83aebbc4
+            -> 311ff58b25dfd2c3582cc1a0f5de8aeaedff3a50e899979910b1260cd0f0126e
+    retained open edges 18 -> 17
+    `evidence/d697-usb-d-conn-p-promoted.json`, `-verify-promotion.json`,
+    `-contract-regression.json`
+
+D-685 called `/01_POWER_TREE/USB_D_CONN_P` (`J3.A6`/`B6` -> `U10.3`) a wall:
+both polarities want the strip between `J3`'s land row and the south board edge.
+**That strip is y 146.955..147.500** — pad bottom to the board's own 0.500 mm
+copper-to-edge floor — which is **0.545 mm and holds EXACTLY ONE 0.250 mm
+conductor**, and it was held by `J3`'s own `GND` land `A1`/`B12`, whose escape
+ran 3.1 mm east along y = 147.200 to a barrel at (49.500, 147.100).
+
+**The `GND` land does not need the lane.**  `--bond-pad J3.A1 --bond-via
+500000:250000` plants its own barrel at **(46.175, 146.050) in 0.109 mm of
+`F.Cu`**, straight down to the `In1`/`In4` `GND` planes — a SHORTER USB ground
+return than the 3.1 mm haul it replaces — and the lane is then D+'s.
+`--evict GND --evict-window 46.0,146.4,50.0,147.6` takes the four tracks and the
+barrel; the window's `y0` had to clear the escape segment's BOUNDING BOX at
+146.65 or the closure reports it dangling and DRC fails on `track_dangling`.
+`/01_POWER_TREE/USB_D_CONN_P` then routes **11.131 mm with 2 barrels at
+(49.850, 147.050) and (50.725, 146.175)**, a 1.24 mm `B.Cu` hop under
+`/I2S_LRCLK`'s diagonal.  Fifteen clauses PASS, real DRC the pre-existing `MK1`
+bridge only, `verify_promotion` PASS, standing suite 14/14 identical to `d691`.
+
+**RECORDED, NOT TAKEN:** the barrel is a via-in-pad on `J3.A1`/`B12`, 0.25 mm
+drill inside a 0.6 x 1.15 mm land.  Every site outside the land is refused by
+`J3`'s own NPTH at (45.890, 145.305), its `SH` thru-hole at (47.320, 145.805)
+and the `Net-(J3-SHIELD)` `B.Cu` mesh.  **AND THAT MESH IS A FINDING:**
+`Net-(J3-SHIELD)` is a FOUR-PAD net of `J3`'s own shell lands and NOTHING ELSE —
+the USB-C shell is FLOATING.  Tying it to `GND` would ground the shell (correct
+USB-C practice for a battery-powered handheld, and an ESD path the board does
+not have today) and would make the via-in-pad unnecessary, because the mesh
+under the land would then be the same net.  That is a netlist ECO and is raised
+here, not taken.
+
 # D-696 ADDENDUM · 2026-09-12 · Demo — **THE RE-FLOORPLAN DOES REACH 17 AGAINST 18, AND THE INSTRUMENT IS THE ISLAND JUMPER AT THE CLASS MINIMUM; BUT `/01_POWER_TREE/V3V3_FB`'s SHORTEST ROUTE AND THAT JUMPER WANT THE SAME CORRIDOR AND THE BOARD ADMITS EXACTLY ONE**
 
     authority  2f456279... -> 2f456279...   UNCHANGED       retained open edges 18 -> 18
