@@ -41,6 +41,22 @@
 > `verify_promotion` PASS and `protected_copper` showing exactly one protected
 > net moved.  `U14.7` is on the bus.  This board has **no open owner decision**.
 
+- **Demo D-702 (`ACC_5V_LX` AND `ACC_5V_RAW` BOTH ROUTE, ZERO VIAS, THE MOMENT
+  `C65` LEAVES `U21`'s EAST POCKET):**  **NO COPPER PROMOTED.**  Authority
+  **UNCHANGED** at `eca81247`; 16 -> 16.  D-698's remedy is built: with `C65`
+  moved east, `U21.6`'s escape released with it and the `GND` chain across the
+  corridor removed, ***`/01_POWER_TREE/ACC_5V_LX` routes `U21.5` -> `L4.2` in
+  4.533 mm with ZERO vias and `/01_POWER_TREE/ACC_5V_RAW` in 3.253 mm with ZERO
+  vias*** (candidate 18 -> 16).  Two NAMED items remain: **(a)** the `B GND
+  PLANE` cannot reach `U21.4` — at y 39.500 the fill must stay 0.250 mm off
+  `U21.5`'s land corner so it cannot start before x 58.959 while `U21.4`'s land
+  ends at 58.850, **a 0.109 mm gap** — so that 6.3 mm "inert" `GND` chain IS the
+  converter's ground return, and the land wants a `PAD_ESCAPE_U21_4` 0.35/0.20 mm
+  barrel licence on the D-606 pattern; **(b)** `C65` is an 0805 whose 0.9 mm
+  inter-land gap is NARROWER than a 0.9 mm barrel's 1.3 mm keep-out, so every
+  destination that clears the pocket shorts one of three barrels — the
+  `/ACC_5V_SW` 0.9 mm via at (62.525, 39.025) and the `GND` stitches at
+  (61.400, 41.400) and (61.900, 41.000).
 - **Demo D-701 (THE `U11` RE-FLOORPLAN IS TAKEN UNDER THE OWNER'S APPROVAL AND
   THE MOVE WAS NEVER THE BLOCKER):**  **NO COPPER PROMOTED, NO RULE PROMOTED.**
   Authority **UNCHANGED** at `eca81247`; 16 -> 16.  ***THE D-693 OWNER DECISION

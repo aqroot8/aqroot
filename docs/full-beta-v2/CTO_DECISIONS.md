@@ -1,3 +1,51 @@
+# D-702 · 2026-09-12 · Demo — **`ACC_5V_LX` AND `ACC_5V_RAW` BOTH ROUTE, ZERO VIAS, THE MOMENT `C65` LEAVES `U21`'s EAST POCKET — AND WHAT IS LEFT IS THREE NAMED BARRELS AND ONE GROUND LAND**
+
+    authority  eca812476fbcc6277462ca4e37c0aaa9ee3562bcc5955ba32491b6522832b82c  UNCHANGED
+    retained open edges 16 -> 16.  NO COPPER PROMOTED.
+    `evidence/d701-acc5v-lx-routes-c65-cleared.json`, `-c65-east.json`; candidate in `w/d701`
+
+D-698 named the remedy as a number — `C65` >= 1.3 mm east — and it is now built
+and routed.  With `C65` moved, `U21.6`'s escape released with it and the inert
+`GND` chain across the corridor removed:
+
+    /01_POWER_TREE/ACC_5V_LX   U21.5 -> L4.2   4.533 mm, ZERO vias, all B.Cu
+    /01_POWER_TREE/ACC_5V_RAW  U21.6 -> C65.1  3.253 mm, ZERO vias, all B.Cu
+                                               18 -> 16 on the candidate
+
+***The boost's switch node and its output are both routable.***  Two named
+items stand between that and a promotion, and neither is a search:
+
+**(a) `U21.4` HAS NO GROUND.**  The `B GND PLANE` does not reach `U21`'s ground
+land: at `y = 39.500` the pour must stay 0.250 mm off `U21.5`'s land corner
+(58.850, 39.725), so it cannot start before x = 58.959 while `U21.4`'s land ends
+at 58.850 — **a 0.109 mm gap, and the fill therefore never merges with the
+land**.  That is why the 6.3 mm `GND` chain east of `U21.4` is NOT inert however
+the screen prices it: it is the converter's ground return.  `--bond-pad U21.4`
+finds a site at 4.0 mm (which then eats the switch node's corridor) and NONE at
+1.4 mm: *"no legal 0.50 mm barrel within 1.4 mm of any escape"*.  The land wants
+the 0.35/0.20 mm barrel this file already licenses inside `PAD_ESCAPE_<REF>`
+areas — i.e. a `PAD_ESCAPE_U21_4` licence on the D-606 pattern.
+
+**(b) EVERY `C65` DESTINATION THAT CLEARS THE POCKET COLLIDES WITH A BARREL.**
+`C65` is an 0805 whose two lands are 1.0 mm wide on a 1.9 mm span, so the 0.9 mm
+free gap between them is NARROWER than the 1.3 mm keep-out of a 0.9 mm barrel —
+no barrel can sit between its lands.  Measured:
+
+    +1.300, 0      C65.1 shorts GND vias (61.400,41.400) and (61.900,41.000)
+    +1.300, -0.900 C65.2 shorts the ACC_5V_SW 0.9 mm via (62.525,39.025)
+    cy must be >= 40.400 to clear that via, and then cx >= 63.350 to clear
+    the two GND stitches -- 0.075 mm of margin, which is not a placement
+
+**So the transaction owes three barrel decisions**: the two `GND` stitches at
+(61.400, 41.400) and (61.900, 41.000) are redundant members of a six-barrel
+stitch field and are removable with `--release-via` once the inert chains that
+still meet them go; the `/ACC_5V_SW` barrel at (62.525, 39.025) is a real 0.9 mm
+power via and is the one that fixes `C65`'s `y`.
+
+**NEXT:** author `PAD_ESCAPE_U21_4`, release the two `GND` stitches with the
+chain, place `C65` at cy 40.475 and cx >= 63.350 or move the `/ACC_5V_SW`
+barrel, and the switch node closes with everything else already measured.
+
 # D-701 · 2026-09-12 · Demo — **THE `U11` RE-FLOORPLAN IS TAKEN UNDER THE OWNER'S APPROVAL, THE `BAT_PROTECTED_P` EXCEPTION IS SPENT IN A DRY RUN, AND THE ANSWER IS THAT THE MOVE WAS NEVER THE BLOCKER: `U11`'s OWN LAND PATTERN GIVES THE `.kicad_dru`'s NECKING PAIR EXACTLY ZERO MARGIN**
 
     authority  eca812476fbcc6277462ca4e37c0aaa9ee3562bcc5955ba32491b6522832b82c  UNCHANGED
