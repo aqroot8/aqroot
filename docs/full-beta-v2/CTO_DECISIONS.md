@@ -26499,3 +26499,91 @@ D-694's PCB-outline enlargement is NOT approved at this time.
 Only reconsider external board-dimension changes if the approved D-693/U11 re-floorplan is attempted and measured insufficient, and then escalate with a recommendation.
 
 This owner decision supersedes the prior "OPEN OWNER DECISION" state for D-693.
+
+## D-703 — CTO/OWNER ARCHITECTURE AUTHORITY FOR KICKSTARTER PROTOTYPE CLOSURE
+
+APPROVED by owner and CTO.
+
+OBJECTIVE:
+Finish a functional, safe, manufacturable AQROOT Kickstarter Demo PCB as quickly
+and reliably as practical while preserving the user-visible Kickstarter feature set.
+
+Opus is authorized to evaluate and choose the best engineering architecture rather
+than continuing to preserve the current PCB implementation merely because it exists.
+
+AUTHORIZED OPTIONS:
+
+1. CURRENT 6-LAYER / CURRENT OUTLINE
+   Continue with the existing architecture if it remains the fastest and lowest-risk
+   path to fabrication.
+
+2. MODEST PCB OUTLINE INCREASE
+   Opus may enlarge the PCB where needed to relieve demonstrated placement/routing
+   congestion.
+
+   The D-694 east-side expansion below approximately y = 104.005 mm, including an
+   increase of up to about 5 mm in that congested region, is specifically authorized
+   for engineering evaluation and implementation if it materially improves closure.
+
+   Preserve connector positions, mounting points, display alignment, antenna
+   requirements and enclosure-critical geometry wherever practical.
+
+3. 8-LAYER MIGRATION
+   Opus may migrate the Demo from 6 layers to 8 layers if engineering analysis shows
+   that doing so provides a materially faster, safer or more reliable path to a
+   fabrication-ready prototype than continuing to resolve congestion on 6 layers.
+
+   Any 8-layer implementation must revalidate stackup-dependent USB, RF/NFC, power,
+   return-path, impedance and manufacturing requirements.
+
+4. COMPONENT / PACKAGE OPTIMIZATION
+   Opus may replace a component with an electrically equivalent or better package/part
+   when package size or geometry is a demonstrated fabrication blocker, provided:
+   - required electrical function remains intact;
+   - ratings and margins remain adequate;
+   - sourcing/manufacturing suitability is acceptable;
+   - firmware-visible behavior is unchanged unless explicitly justified;
+   - BOM and design documentation are updated.
+
+DECISION CRITERIA:
+
+Choose the architecture that best optimizes:
+
+1. preservation of Kickstarter-visible features
+2. electrical safety and functional correctness
+3. manufacturability and assembly reliability
+4. time to fabrication
+5. signal/power/RF integrity
+6. prototype robustness
+7. reasonable prototype cost
+
+Do not optimize for production miniaturization or final production elegance at the
+expense of prototype schedule. Those can be improved in the post-Kickstarter revision.
+
+KICKSTARTER FEATURES MUST NOT BE REMOVED MERELY TO SOLVE LAYOUT CONGESTION.
+
+Before removing or materially degrading a user-visible Kickstarter capability,
+escalate with:
+- the feature affected;
+- why the current implementation is not viable;
+- recommended alternative;
+- schedule/cost/risk impact.
+
+ENGINEERING AUTHORITY:
+
+Opus should make the normal technical decision itself.
+
+It does NOT need additional owner approval merely to:
+- move or rotate components;
+- re-floorplan blocks;
+- reroute ordinary copper;
+- change internal layer usage;
+- enlarge the board within the bounded prototype authority above;
+- change from 6 to 8 layers when technically justified;
+- substitute an equivalent internal part/package;
+- change internal implementation details.
+
+The goal is a working Kickstarter prototype, not preservation of the existing PCB layout.
+
+Use engineering judgment, implement the best option, verify it rigorously, and continue
+until DEMO_READY_FOR_FAB or until a genuine product/business decision is unavoidable.
