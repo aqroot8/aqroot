@@ -26147,3 +26147,46 @@ Conditions:
 
 The prior state "OPEN OWNER DECISION / RECORDED NOT TAKEN" is now superseded.
 No owner decision remains open for this D-655 exception.
+
+## D-697 — OWNER APPROVAL: U11 FAN-OUT RE-FLOORPLAN / BAT_PROTECTED_P EXCEPTION
+
+APPROVED by owner.
+
+This approval resolves the D-693 owner decision.
+
+AUTHORIZED PURPOSE:
+Re-floorplan the U11 charger/fan-out area to relieve the congested U11 pocket and close the associated retained open edges.
+
+AUTHORIZED PROTECTED-COPPER SCOPE:
+A bounded modification of:
+
+`/01_POWER_TREE/BAT_PROTECTED_P`
+
+strictly limited to the copper between `U11.2` and the first junction or barrel outside U11's courtyard, as described in D-693.
+
+This is NOT a blanket waiver for BAT_* protected copper.
+
+MANDATORY CONDITIONS:
+- Electrical topology must remain unchanged.
+- Battery-protection component values and connectivity must remain unchanged.
+- D-269 and D-186 safety intent must remain satisfied.
+- BAT_PROTECTED_P connectivity must be fully restored after the re-floorplan.
+- Current-carrying capacity must remain adequate.
+- No unrelated BAT_* protected net may be modified under this approval.
+- Promotion is permitted only if:
+  * the authoritative full-board gate passes,
+  * real KiCad DRC shows no new attributable fabrication blockers,
+  * verify_promotion passes,
+  * protected-copper checks pass,
+  * retained connectivity improves with no unacceptable regression,
+  * D-269 / D-186 remain proven,
+  * the standing regression suite passes.
+- If those conditions cannot be met, revert the candidate and continue engineering.
+
+OWNER DIRECTION:
+Proceed autonomously with the U11 re-floorplan using engineering judgment.
+
+D-694's PCB-outline enlargement is NOT approved at this time.
+Only reconsider external board-dimension changes if the approved D-693/U11 re-floorplan is attempted and measured insufficient, and then escalate with a recommendation.
+
+This owner decision supersedes the prior "OPEN OWNER DECISION" state for D-693.
