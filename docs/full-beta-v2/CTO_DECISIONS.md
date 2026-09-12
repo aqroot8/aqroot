@@ -1,3 +1,194 @@
+# D-703 · 2026-09-12 · Demo — **EVERY REMAINING LAND ON THIS BOARD NOW LAUNCHES. `ACC_5V_LX` ROUTES AT ZERO VIAS AND `/BQ25185_STAT1` ROUTES FOR THE FIRST TIME IN SIX DECISIONS — AND WHAT IS LEFT IS THREE NAMED INTRUDERS AND ONE GROUND PENINSULA WITH NO LEGAL BARREL AT ANY DIAMETER**
+
+    authority  eca812476fbcc6277462ca4e37c0aaa9ee3562bcc5955ba32491b6522832b82c  UNCHANGED
+    retained open edges 16 -> 16.  NO COPPER PROMOTED, NO RULE PROMOTED.
+    `evidence/d703-summary.json` and eight artifacts beside it; candidates in `w/d703`
+
+## 0. WHAT CHANGED IN WHAT THIS BOARD IS
+
+Five decisions (D-690, D-692, D-693, D-701, D-702) ended on a LAND: `U11.9`,
+`U11.3` and `U21.5` were `NO_LEGAL_ESCAPE` and the sentence was always the
+package.  **That era is over.**  With `--trunk-floor` reading D-690's OWN
+per-net 0.150 mm floor, `--escape-floor`, the D-633 off-centre launcher and a
+0.50/0.25 mm maze barrel:
+
+    U11.9  /BQ25185_STAT1   3 source escapes   (was NO_LEGAL_ESCAPE)
+    U11.3  /BQ25185_STAT2   1 source escape    (was NO_LEGAL_ESCAPE)
+    U9.10 / U9.14 / U16.3 / U2.20 / U3.20      all launch off centre,
+                                               all REFUSE centre-anchored
+
+***Every retained open edge on this board is now a CORRIDOR question and not a
+package question.***  Only `U5.2` (`+3V3`) is still SEALED at every rung.
+
+## 1. `/BQ25185_STAT1` ROUTES — 23.682 mm, `U11.9` -> `TP6.1`
+
+    /BQ25185_STAT1   U11.9 -> TP6.1   23.682 mm, 2 barrels, B -> In3 -> B
+                     barrels (70.625, 97.900) and (71.225, 80.225)
+                     nets_improved ["/BQ25185_STAT1"]
+
+and it took THREE things, each measured on its own:
+
+**(a) THE CORRIDOR EXISTS AND IT IS OCCUPIED BY `/01_POWER_TREE/ISET`.**
+`screen_pair_corridor_blame.py --per-object` on `U11.9 <-> TP6.1` at the
+0.150 mm width the trunk now routes at: **Q1** — with the twelve foreign nets'
+routed copper dropped inside a 3 mm window the pair routes in **18.756 mm on
+`B.Cu` with ZERO vias**; **Q2** — no SINGLE net opens it; **Q3** reverse-greedy
+drops `BAT_PROTECTED_P`, `BQ25185_SYS` and `ILIM_VSET` and names
+***`/01_POWER_TREE/ISET` REQUIRED***.  `ISET` is `R37.1 <-> U11.8`, a **5.683 mm
+gap routed as 15.53 mm** hugging the east board edge, and it is not protected
+copper.  Evicted and re-requested it comes back in **14.122 mm, zero vias**.
+
+**(b) `U11.10`'s OWN ESCAPE COSTS `U11.9` EXACTLY 0.025 mm.**  With `ISET` gone
+the pair stopped being `NO_PATH` and became `UNPROVED_GEOMETRY`: *"against
+/01_POWER_TREE/USB_VBUS_CHG, gap 0.225 mm, need 0.250 mm"*.  The arithmetic is
+exact.  `U11.9`'s 0.150 mm escape owes `U11.8`'s land 0.200 mm on the north
+(`y >= 78.175`) and owes `USB_VBUS_CHG`'s escape 0.250 mm on the south
+(`y <= 78.175`) — because that escape launches from `U11.10`'s pad CENTRE and
+its 0.200 mm round cap reaches `y = 78.500`.  **A launch band of exactly one
+point is a launch band no lattice can express.**  Removed and re-requested so
+`U11.10` launches OFF CENTRE from its own land's south half, and the pair
+routes.
+
+**(c) AND IT ROUTES ON `In3.Cu`.**  See section 3.
+
+## 2. `/01_POWER_TREE/ACC_5V_LX` ROUTES AT ZERO VIAS, AND D-702's PRICE WAS WRONG IN THE RIGHT DIRECTION
+
+D-702 priced `U21.4`'s ground as a 0.109 mm fill gap and priced `C65`'s move at
+`>= 1.3 mm` east.  Both figures move:
+
+**THE OBSTACLE IS THE BOARD'S OWN SYS POUR.**  `B /01_POWER_TREE/BQ25185_SYS
+POUR 2` is a rectangle (55, 33)-(60, 42) mm whose east lobe owns the whole
+pocket east of `U21`.  Pull its east edge **60.000 -> 58.400 mm** — `L4.1` and
+`U21.3` stay joined through the pour's own west lobe — and `B GND` floods the
+pocket, reaches `U21.4`'s land, and the 6.3 mm `GND` chain
+(58.700, 39.375)-(60.600, 38.425) x2 can be removed **with `GND` STILL CLOSED**:
+16 -> 16, open nets identical.
+
+**AND THE `C65` MOVE IS 0.350 mm EAST.**  `U21.4`'s land ends at x 58.8505 and
+`C65.1`'s began at 59.585 — 0.7345 mm.  A 0.600 mm `SWITCH_NODE` trunk owes
+0.200 mm pad clearance each side, so it needs **0.900 mm**.  +0.350 mm east
+gives **1.0845 mm**.  `apply_part_shift` PASS, no new courtyard overlap, NO
+stranded endpoint, and the `GND` barrels under `C65.2` were under it ALREADY —
+the authority carries four, plus an `ACC_5V_RAW` barrel under `C65.1`.
+
+    /01_POWER_TREE/ACC_5V_LX    U21.5 -> L4.2   3.209 mm, ZERO vias, all B.Cu
+    /01_POWER_TREE/ACC_5V_RAW   U21.6 -> C65.1  2.690 mm, ZERO vias
+                                failed_nets []
+
+**THE REFUSAL IS `GND`, AND IT IS EXACT.**  The `LX` trunk crosses the only
+place the `B GND` plane joins `U21.4`, and what it severs is a **3.05 mm²
+peninsula** — `U21.4`'s land, the 0.6 mm `GND` column between `L4`'s two 3.7 mm
+pads, and the blob north of `L4`.  **No through barrel fits inside it at ANY
+diameter this board licenses**: over x 58.15..59.34, y 34.26..39.47 at a
+0.025 mm lattice, `0` legal cells at 0.60/0.30, `0` at 0.50/0.25 and `0` at
+0.35/0.20 — the fine-pitch geometry section 12 already grants.  Per layer,
+**`F.Cu` and `In2.Cu` block every cell**, and the blockers are named:
+
+    In2   /09_COMMUNITY_HEADER/EXT_SDA_BUF   (58.700,34.000)->(60.300,40.800)
+          -- the Qwiic I2C haul, routed DIAGONALLY THROUGH the accessory
+             boost's ground
+    F.Cu  /09_COMMUNITY_HEADER/ACC_DETECT_N_HDR  (58.975,37.425)->(59.682,38.119)
+          and (56.000,33.525)->(59.675,37.200)
+
+Remove those three and the peninsula holds **780 legal 0.60/0.30 mm `GND`
+barrel sites**, nearest at (59.075, 36.625).  The nearest legal site WITHOUT
+removing them is **3.707 mm away at (61.25, 41.90)**, on the far side of `C65`.
+Tightening the `SYS` pour in `y` as well (34.1..39.8) does NOT reconnect the
+peninsula — measured on the routed candidate, `GND` still carries exactly one
+open edge and it is still `U21.4`.
+
+## 3. THIS BOARD ROUTES ON THREE LAYERS, AND NOW THE QUESTION CAN BE PUT
+
+`In1` (GND), `In3` (+3V3) and `In4` (GND) all carry filled pours, and
+`reserved_inner_planes` reserves an inner plane to the net that owns it — so
+every foreign net on this board has had `F`, `In2` and `B` and nothing else,
+while `F.Cu` ALSO carries a full-board `+3V3` plane and `In3` carries 111
+legacy tracks / 969.6 mm of foreign copper already (D-608's own census).
+
+**`AQROOT_PLANE_SIGNAL` puts that question for the first time.**  Syntax
+`"I3:/NET_A,/NET_B;I4:/NET_C"`; **UNSET by default and then a byte-for-byte
+no-op**, on the discipline `AQROOT_OFFCENTRE_LAUNCH` and
+`AQROOT_SCAN_BOARD_VIAS` are held to.  It licenses NOTHING on its own: it
+removes a ROUTER-SIDE refusal, and the gate's `no_regression`, `pour_partition`
+/ PP2 and `checks/plane_return_path.py` RP1-RP6 still judge what comes back.
+
+    /BQ25185_STAT2 on In3   VACUOUS   -- identical NO_PATH at 0.150 mm,
+                                         gap for gap, layers F/B/In2/In3
+    /BQ25185_STAT1 on In3   LOAD-BEARING -- its 23.682 mm route hauls
+                                         In3 from (71.225,80.225) to
+                                         (70.625,97.900)
+
+**So the third routing layer is not a general answer and it is not nothing.**
+
+## 4. WHAT ELSE IS MEASURED SHUT
+
+  * **The `SYS` pour cannot be jumpered at any width this board publishes.**
+    `screen_island_join.py` over `/01_POWER_TREE/BQ25185_SYS` at BOTH rungs —
+    netclass contract 0.800 mm / 0.80:0.40 and `.kicad_dru` floor 0.500 mm /
+    0.65:0.40 — reports `joined 0 / 7`.  `L4.1`+`U21.3`, `U12.10`+`U12.11`,
+    `C26.2` and `C27.1` are `NO_PATH`; `R68.1`, `U11.1` and `U13.3` are
+    `NO_ANCHOR`.  D-689's jumper was the only one this board had.
+  * **`--evict-whole` on `/01_POWER_TREE/USB_VBUS_CHG` is refused and priced:**
+    65 objects out, rebuild `TOO_LONG` at 68.833 / 71.384 / 72.816 mm against
+    a 40 mm bound, 16 -> 19, `nets_regressed [USB_VBUS_CHG]`.
+  * **A `relay: false` removal on a net that owns NO POUR cannot be priced at
+    all** — `inert_removal_priced` answers `NO_FILLED_ISLAND_HOLDS_BOTH_ENDS`,
+    because the clause replaces removed copper with POUR.  The honest unit for
+    `U11.10`'s escape is a WINDOWED eviction, not a detour.
+  * **A courtyard is not a router obstacle.**  `qrouter.QBoard` rasterises pads,
+    tracks, holes and rule areas that FORBID tracks — nothing else.  `SW9`'s
+    8.75 x 10.0 mm courtyard, which D-701 named the real wall, blocks the
+    router at exactly two points: its own 0.9 mm NPTH pads.  **A filled zone is
+    not an obstacle either**, so the `F.Cu` `+3V3` plane and the `B.Cu` `GND`
+    plane never refused anything; what refuses is real copper.
+
+## 5. THE TRANSACTIONS THIS NAMES, IN ORDER
+
+**(A) `/BQ25185_STAT1` — ONE NET AWAY.**  The shape is measured and the
+remaining refusals are named:
+
+    AQROOT_OFFCENTRE_LAUNCH=1 \
+    AQROOT_PLANE_SIGNAL='I3:/BQ25185_STAT1,/01_POWER_TREE/ILIM_VSET,...' \
+    route_maze_batch.py --grid 25000 --partial --trunk-floor --escape-floor \
+      --neck --maze-via 500000:250000 --join-max-mm 0 --repair-planes \
+      --evict /01_POWER_TREE/ISET --evict /01_POWER_TREE/ILIM_VSET \
+      --evict /01_POWER_TREE/USB_VBUS_CHG --evict-window 62.5,76.0,71.2,82.8 \
+      /BQ25185_STAT1 /01_POWER_TREE/USB_VBUS_CHG /01_POWER_TREE/ISET \
+      /01_POWER_TREE/ILIM_VSET
+
+`STAT1` routes (23.682 mm) and `ILIM_VSET` comes back (5.781 mm) every time.
+What is left is **`/01_POWER_TREE/ISET`** — `R37.1 <-> U11.8`, `dst_escapes 1`,
+`NO_PATH` at 0.200 mm — and **`U11.10`'s relaunch**, `NO_LEGAL_ESCAPE at >=
+0.350 mm`, which `--neck` should answer because `U11` IS one of the ten
+courtyards section 9's necking rule names.  And `pour_partition`/PP2 still
+prices the `B GND` fragment `STAT1`'s own copper leaves; more barrels on that
+fragment, or more of the run on `In3`, is the lever.
+
+**(B) `/01_POWER_TREE/ACC_5V_LX` — THREE OBJECTS AWAY.**  Reshape
+`B /01_POWER_TREE/BQ25185_SYS POUR 2` east edge to 58.400 mm, shift `C65`
++0.350 mm east, remove the `U21.4` `GND` chain, RELAY the Qwiic `In2` haul and
+the `ACC_DETECT_N_HDR` `F.Cu` elbow out of the peninsula, bond `U21.4` with a
+0.60/0.30 mm barrel at about (59.075, 36.625), then route `ACC_5V_LX` and
+`ACC_5V_RAW`.  **`verify_promotion.py` OWES A CLAUSE FIRST:** it asserts that
+"no surviving zone's net, layer, OUTLINE or fill parameters changed" and that
+no pre-existing track moved, so a promotion that RESHAPES a pour or SHIFTS a
+part cannot be re-proved by it today.  That clause — a `--zone-reshaped NAME`
+and a `--part-shifted REF` licence on the D-684 `--rule-area-narrowed` pattern
+— is the gate between this measurement and copper.
+
+**(C) THE STRUCTURAL ITEM, STATED PLAINLY.**  `U11`'s east row is five lands
+(`U11.6`..`U11.10`) on 0.400 mm pitch that must all reach a board edge 2.9 mm
+away through a corridor that also carries `R36`, `J8`'s mounting pad and the
+`ISET`/`ILIM_VSET` hauls; the west row is five more into a pocket that also
+carries `C23`, `R37`, the `BAT_PROTECTED_P` taper and the `USB_VBUS_CHG`
+U-turn.  Nine of the board's sixteen open edges are behind those two pockets.
+Every land now launches, so this is no longer a package question: it is a
+CAPACITY question, and the two levers that have not been spent are (i) opening
+`In3` more widely under `AQROOT_PLANE_SIGNAL` with `plane_return_path.py`
+RP1-RP6 run on each slot, and (ii) a `U11`-neighbourhood re-floorplan that
+moves `C23`, `R36`, `R37` and `J8` off the two escape corridors.  `SW9` is NOT
+that lever and this decision withdraws that claim.
+
 # D-702 · 2026-09-12 · Demo — **`ACC_5V_LX` AND `ACC_5V_RAW` BOTH ROUTE, ZERO VIAS, THE MOMENT `C65` LEAVES `U21`'s EAST POCKET — AND WHAT IS LEFT IS THREE NAMED BARRELS AND ONE GROUND LAND**
 
     authority  eca812476fbcc6277462ca4e37c0aaa9ee3562bcc5955ba32491b6522832b82c  UNCHANGED

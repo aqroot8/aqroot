@@ -1,0 +1,512 @@
+{
+ "authoritative_unchanged": true,
+ "board": "../../../w/d703/aqroot-Beta-v2.kicad_pcb",
+ "board_sha256": "eca812476fbcc6277462ca4e37c0aaa9ee3562bcc5955ba32491b6522832b82c",
+ "grid": 25000,
+ "method": "read-only; every trial laid on a scratch QBoard and REVERTED, every candidate proved by maze3d.verify_laid (exact analytic clearance, never a lattice); zones invisible to QBoard, so a closure is a licence question and never copper",
+ "nets": [
+  {
+   "board_track_min": 150000,
+   "contract": 800000,
+   "dru_floor": 500000,
+   "islands": 8,
+   "lands": [
+    {
+     "best_centre": null,
+     "best_offcentre": 150000,
+     "centre_width": {
+      "B": null
+     },
+     "gained": true,
+     "layers": [
+      "B"
+     ],
+     "offcentre_width": {
+      "B": 150000
+     },
+     "pad": "U11.1",
+     "rungs": [
+      {
+       "a_xy": null,
+       "b_xy": null,
+       "base_dir": null,
+       "centre": false,
+       "centre_why": "U11.1: NO LEGAL ESCAPE at >= 0.600 mm; blocked by U11.2 (x52), R36.1 (x7), R37.2 (x4), C27.2 (x3)",
+       "escape_formula": null,
+       "exit_mm": null,
+       "layer": "B",
+       "n": 0,
+       "offcentre": false,
+       "offcentre_mm": null,
+       "offcentre_why": "U11.1: NO OFF-CENTRE LAUNCH at 0.600 mm from any of 41 anchors x 24 directions x 17 lengths; blocked by U11.2 (x14108), R36.1 (x837), R37.2 (x566), R37.1 (x218)",
+       "reach_mm": null,
+       "seconds": 0.47,
+       "support_mm": null,
+       "width": 600000
+      },
+      {
+       "a_xy": null,
+       "b_xy": null,
+       "base_dir": null,
+       "centre": false,
+       "centre_why": "U11.1: NO LEGAL ESCAPE at >= 0.500 mm; blocked by U11.2 (x54), R36.1 (x7), R37.2 (x3), C36.2 (x3)",
+       "escape_formula": null,
+       "exit_mm": null,
+       "layer": "B",
+       "n": 0,
+       "offcentre": false,
+       "offcentre_mm": null,
+       "offcentre_why": "U11.1: NO OFF-CENTRE LAUNCH at 0.500 mm from any of 41 anchors x 24 directions x 17 lengths; blocked by U11.2 (x13424), R36.1 (x741), R37.2 (x450), R37.1 (x202)",
+       "reach_mm": null,
+       "seconds": 0.45,
+       "support_mm": null,
+       "width": 500000
+      },
+      {
+       "a_xy": null,
+       "b_xy": null,
+       "base_dir": null,
+       "centre": false,
+       "centre_why": "U11.1: NO LEGAL ESCAPE at >= 0.400 mm; blocked by U11.2 (x56), R36.1 (x6), R37.2 (x3), C36.2 (x3)",
+       "escape_formula": null,
+       "exit_mm": null,
+       "layer": "B",
+       "n": 0,
+       "offcentre": false,
+       "offcentre_mm": null,
+       "offcentre_why": "U11.1: NO OFF-CENTRE LAUNCH at 0.400 mm from any of 41 anchors x 24 directions x 17 lengths; blocked by U11.2 (x13618), R36.1 (x675), R37.2 (x440), R37.1 (x213)",
+       "reach_mm": null,
+       "seconds": 0.45,
+       "support_mm": null,
+       "width": 400000
+      },
+      {
+       "a_xy": null,
+       "b_xy": null,
+       "base_dir": null,
+       "centre": false,
+       "centre_why": "U11.1: NO LEGAL ESCAPE at >= 0.300 mm; blocked by U11.2 (x58), R36.1 (x6), C36.2 (x3), C27.2 (x2)",
+       "escape_formula": null,
+       "exit_mm": null,
+       "layer": "B",
+       "n": 0,
+       "offcentre": false,
+       "offcentre_mm": null,
+       "offcentre_why": "U11.1: NO OFF-CENTRE LAUNCH at 0.300 mm from any of 41 anchors x 24 directions x 17 lengths; blocked by U11.2 (x13010), track (x1169), R36.1 (x643), R37.2 (x381)",
+       "reach_mm": null,
+       "seconds": 0.57,
+       "support_mm": null,
+       "width": 300000
+      },
+      {
+       "a_xy": null,
+       "b_xy": null,
+       "base_dir": null,
+       "centre": false,
+       "centre_why": "U11.1: NO LEGAL ESCAPE at >= 0.250 mm; blocked by U11.2 (x58), R36.1 (x6), C36.2 (x3), C27.2 (x2)",
+       "escape_formula": null,
+       "exit_mm": null,
+       "layer": "B",
+       "n": 0,
+       "offcentre": false,
+       "offcentre_mm": null,
+       "offcentre_why": "U11.1: NO OFF-CENTRE LAUNCH at 0.250 mm from any of 41 anchors x 24 directions x 17 lengths; blocked by U11.2 (x11709), track (x2093), R36.1 (x616), C23.2 (x407)",
+       "reach_mm": null,
+       "seconds": 0.65,
+       "support_mm": null,
+       "width": 250000
+      },
+      {
+       "a_xy": null,
+       "b_xy": null,
+       "base_dir": null,
+       "centre": false,
+       "centre_why": "U11.1: NO LEGAL ESCAPE at >= 0.200 mm; blocked by U11.2 (x20), track (x18), C23.2 (x6), R36.1 (x6)",
+       "escape_formula": null,
+       "exit_mm": null,
+       "layer": "B",
+       "n": 0,
+       "offcentre": false,
+       "offcentre_mm": null,
+       "offcentre_why": "U11.1: NO OFF-CENTRE LAUNCH at 0.200 mm from any of 41 anchors x 24 directions x 17 lengths; blocked by U11.2 (x9957), track (x3338), U11.11 (x637), C23.2 (x623)",
+       "reach_mm": null,
+       "seconds": 0.77,
+       "support_mm": null,
+       "width": 200000
+      },
+      {
+       "a_xy": [
+        66.4,
+        78.685
+       ],
+       "b_xy": [
+        66.425,
+        78.725
+       ],
+       "base_dir": true,
+       "centre": false,
+       "centre_why": "U11.1: NO LEGAL ESCAPE at >= 0.150 mm; blocked by U11.2 (x20), track (x18), C23.2 (x6), R36.1 (x6)",
+       "escape_formula": false,
+       "exit_mm": 0.0212,
+       "layer": "B",
+       "n": 8,
+       "offcentre": true,
+       "offcentre_mm": 0.085,
+       "offcentre_why": null,
+       "reach_mm": 0.025,
+       "seconds": 0.24,
+       "support_mm": 0.3152,
+       "width": 150000
+      }
+     ]
+    }
+   ],
+   "net": "/01_POWER_TREE/BQ25185_SYS",
+   "netclass": "SYS_MAIN",
+   "pairs": [],
+   "widths": [
+    600000,
+    500000,
+    400000,
+    300000,
+    250000,
+    200000,
+    150000
+   ]
+  },
+  {
+   "board_track_min": 150000,
+   "contract": 200000,
+   "dru_floor": 150000,
+   "islands": 3,
+   "lands": [
+    {
+     "best_centre": null,
+     "best_offcentre": 150000,
+     "centre_width": {
+      "B": null
+     },
+     "gained": true,
+     "layers": [
+      "B"
+     ],
+     "offcentre_width": {
+      "B": 150000
+     },
+     "pad": "U11.9",
+     "rungs": [
+      {
+       "a_xy": null,
+       "b_xy": null,
+       "base_dir": null,
+       "centre": false,
+       "centre_why": "U11.9: NO LEGAL ESCAPE at >= 0.600 mm; blocked by U11.8 (x16), R36.1 (x12), U11.7 (x11), board_edge (x8)",
+       "escape_formula": null,
+       "exit_mm": null,
+       "layer": "B",
+       "n": 0,
+       "offcentre": false,
+       "offcentre_mm": null,
+       "offcentre_why": "U11.9: NO OFF-CENTRE LAUNCH at 0.600 mm from any of 41 anchors x 24 directions x 17 lengths; blocked by U11.8 (x8081), U11.7 (x1675), U11.6 (x1538), R36.1 (x827)",
+       "reach_mm": null,
+       "seconds": 0.54,
+       "support_mm": null,
+       "width": 600000
+      },
+      {
+       "a_xy": null,
+       "b_xy": null,
+       "base_dir": null,
+       "centre": false,
+       "centre_why": "U11.9: NO LEGAL ESCAPE at >= 0.500 mm; blocked by U11.8 (x20), R36.1 (x11), U11.7 (x11), board_edge (x7)",
+       "escape_formula": null,
+       "exit_mm": null,
+       "layer": "B",
+       "n": 0,
+       "offcentre": false,
+       "offcentre_mm": null,
+       "offcentre_why": "U11.9: NO OFF-CENTRE LAUNCH at 0.500 mm from any of 41 anchors x 24 directions x 17 lengths; blocked by U11.8 (x8728), U11.7 (x1452), U11.6 (x1432), R36.1 (x764)",
+       "reach_mm": null,
+       "seconds": 0.54,
+       "support_mm": null,
+       "width": 500000
+      },
+      {
+       "a_xy": null,
+       "b_xy": null,
+       "base_dir": null,
+       "centre": false,
+       "centre_why": "U11.9: NO LEGAL ESCAPE at >= 0.400 mm; blocked by U11.8 (x26), U11.7 (x13), board_edge (x7), R36.1 (x5)",
+       "escape_formula": null,
+       "exit_mm": null,
+       "layer": "B",
+       "n": 0,
+       "offcentre": false,
+       "offcentre_mm": null,
+       "offcentre_why": "U11.9: NO OFF-CENTRE LAUNCH at 0.400 mm from any of 41 anchors x 24 directions x 17 lengths; blocked by U11.8 (x9888), U11.7 (x1826), U11.6 (x1170), board_edge (x683)",
+       "reach_mm": null,
+       "seconds": 0.58,
+       "support_mm": null,
+       "width": 400000
+      },
+      {
+       "a_xy": null,
+       "b_xy": null,
+       "base_dir": null,
+       "centre": false,
+       "centre_why": "U11.9: NO LEGAL ESCAPE at >= 0.300 mm; blocked by U11.8 (x26), U11.7 (x16), board_edge (x5), R36.1 (x5)",
+       "escape_formula": null,
+       "exit_mm": null,
+       "layer": "B",
+       "n": 0,
+       "offcentre": false,
+       "offcentre_mm": null,
+       "offcentre_why": "U11.9: NO OFF-CENTRE LAUNCH at 0.300 mm from any of 41 anchors x 24 directions x 17 lengths; blocked by U11.8 (x9073), U11.7 (x1626), U11.10 (x1528), U11.6 (x1039)",
+       "reach_mm": null,
+       "seconds": 0.58,
+       "support_mm": null,
+       "width": 300000
+      },
+      {
+       "a_xy": null,
+       "b_xy": null,
+       "base_dir": null,
+       "centre": false,
+       "centre_why": "U11.9: NO LEGAL ESCAPE at >= 0.250 mm; blocked by U11.8 (x27), U11.7 (x16), board_edge (x5), R36.1 (x5)",
+       "escape_formula": null,
+       "exit_mm": null,
+       "layer": "B",
+       "n": 0,
+       "offcentre": false,
+       "offcentre_mm": null,
+       "offcentre_why": "U11.9: NO OFF-CENTRE LAUNCH at 0.250 mm from any of 41 anchors x 24 directions x 17 lengths; blocked by U11.8 (x8101), U11.10 (x2758), U11.7 (x1521), U11.6 (x1001)",
+       "reach_mm": null,
+       "seconds": 0.56,
+       "support_mm": null,
+       "width": 250000
+      },
+      {
+       "a_xy": null,
+       "b_xy": null,
+       "base_dir": null,
+       "centre": false,
+       "centre_why": "U11.9: NO LEGAL ESCAPE at >= 0.200 mm; blocked by U11.10 (x19), U11.7 (x16), U11.6 (x7), track (x6)",
+       "escape_formula": null,
+       "exit_mm": null,
+       "layer": "B",
+       "n": 0,
+       "offcentre": false,
+       "offcentre_mm": null,
+       "offcentre_why": "U11.9: NO OFF-CENTRE LAUNCH at 0.200 mm from any of 41 anchors x 24 directions x 17 lengths; blocked by U11.8 (x6285), U11.10 (x3827), U11.7 (x1218), U11.6 (x969)",
+       "reach_mm": null,
+       "seconds": 0.56,
+       "support_mm": null,
+       "width": 200000
+      },
+      {
+       "a_xy": [
+        68.7875,
+        78.2
+       ],
+       "b_xy": [
+        69.0,
+        78.2
+       ],
+       "base_dir": true,
+       "centre": false,
+       "centre_why": "U11.9: NO LEGAL ESCAPE at >= 0.150 mm; blocked by U11.10 (x23), U11.7 (x16), U11.6 (x7), track (x6)",
+       "escape_formula": false,
+       "exit_mm": 0.1875,
+       "layer": "B",
+       "n": 7,
+       "offcentre": true,
+       "offcentre_mm": 0.1875,
+       "offcentre_why": null,
+       "reach_mm": 0.025,
+       "seconds": 0.67,
+       "support_mm": 0.375,
+       "width": 150000
+      }
+     ]
+    }
+   ],
+   "net": "/BQ25185_STAT1",
+   "netclass": "Default",
+   "pairs": [],
+   "widths": [
+    600000,
+    500000,
+    400000,
+    300000,
+    250000,
+    200000,
+    150000
+   ]
+  },
+  {
+   "board_track_min": 150000,
+   "contract": 200000,
+   "dru_floor": 150000,
+   "islands": 3,
+   "lands": [
+    {
+     "best_centre": null,
+     "best_offcentre": null,
+     "centre_width": {
+      "B": null
+     },
+     "gained": false,
+     "layers": [
+      "B"
+     ],
+     "offcentre_width": {
+      "B": null
+     },
+     "pad": "U11.3",
+     "rungs": [
+      {
+       "a_xy": null,
+       "b_xy": null,
+       "base_dir": null,
+       "centre": false,
+       "centre_why": "U11.3: NO LEGAL ESCAPE at >= 0.600 mm; blocked by U11.2 (x23), U11.1 (x22), R37.2 (x5), C27.1 (x5)",
+       "escape_formula": null,
+       "exit_mm": null,
+       "layer": "B",
+       "n": 0,
+       "offcentre": false,
+       "offcentre_mm": null,
+       "offcentre_why": "U11.3: NO OFF-CENTRE LAUNCH at 0.600 mm from any of 41 anchors x 24 directions x 17 lengths; blocked by U11.2 (x8378), U11.1 (x3730), R37.2 (x986), C27.1 (x774)",
+       "reach_mm": null,
+       "seconds": 0.5,
+       "support_mm": null,
+       "width": 600000
+      },
+      {
+       "a_xy": null,
+       "b_xy": null,
+       "base_dir": null,
+       "centre": false,
+       "centre_why": "U11.3: NO LEGAL ESCAPE at >= 0.500 mm; blocked by U11.2 (x25), U11.1 (x22), R37.2 (x5), C27.1 (x5)",
+       "escape_formula": null,
+       "exit_mm": null,
+       "layer": "B",
+       "n": 0,
+       "offcentre": false,
+       "offcentre_mm": null,
+       "offcentre_why": "U11.3: NO OFF-CENTRE LAUNCH at 0.500 mm from any of 41 anchors x 24 directions x 17 lengths; blocked by U11.2 (x9002), U11.1 (x3354), R37.2 (x974), C27.1 (x723)",
+       "reach_mm": null,
+       "seconds": 0.49,
+       "support_mm": null,
+       "width": 500000
+      },
+      {
+       "a_xy": null,
+       "b_xy": null,
+       "base_dir": null,
+       "centre": false,
+       "centre_why": "U11.3: NO LEGAL ESCAPE at >= 0.400 mm; blocked by U11.2 (x26), U11.1 (x23), R37.2 (x5), C27.1 (x5)",
+       "escape_formula": null,
+       "exit_mm": null,
+       "layer": "B",
+       "n": 0,
+       "offcentre": false,
+       "offcentre_mm": null,
+       "offcentre_why": "U11.3: NO OFF-CENTRE LAUNCH at 0.400 mm from any of 41 anchors x 24 directions x 17 lengths; blocked by U11.2 (x10152), U11.1 (x3413), R37.2 (x895), C27.1 (x673)",
+       "reach_mm": null,
+       "seconds": 0.52,
+       "support_mm": null,
+       "width": 400000
+      },
+      {
+       "a_xy": null,
+       "b_xy": null,
+       "base_dir": null,
+       "centre": false,
+       "centre_why": "U11.3: NO LEGAL ESCAPE at >= 0.300 mm; blocked by U11.2 (x27), U11.1 (x23), C27.1 (x5), R37.2 (x4)",
+       "escape_formula": null,
+       "exit_mm": null,
+       "layer": "B",
+       "n": 0,
+       "offcentre": false,
+       "offcentre_mm": null,
+       "offcentre_why": "U11.3: NO OFF-CENTRE LAUNCH at 0.300 mm from any of 41 anchors x 24 directions x 17 lengths; blocked by U11.2 (x9295), U11.1 (x3029), U11.4 (x1553), R37.2 (x802)",
+       "reach_mm": null,
+       "seconds": 0.53,
+       "support_mm": null,
+       "width": 300000
+      },
+      {
+       "a_xy": null,
+       "b_xy": null,
+       "base_dir": null,
+       "centre": false,
+       "centre_why": "U11.3: NO LEGAL ESCAPE at >= 0.250 mm; blocked by U11.2 (x27), U11.1 (x23), C27.1 (x5), R37.2 (x4)",
+       "escape_formula": null,
+       "exit_mm": null,
+       "layer": "B",
+       "n": 0,
+       "offcentre": false,
+       "offcentre_mm": null,
+       "offcentre_why": "U11.3: NO OFF-CENTRE LAUNCH at 0.250 mm from any of 41 anchors x 24 directions x 17 lengths; blocked by U11.2 (x8357), U11.1 (x2867), U11.4 (x2803), R37.2 (x745)",
+       "reach_mm": null,
+       "seconds": 0.54,
+       "support_mm": null,
+       "width": 250000
+      },
+      {
+       "a_xy": null,
+       "b_xy": null,
+       "base_dir": null,
+       "centre": false,
+       "centre_why": "U11.3: NO LEGAL ESCAPE at >= 0.200 mm; blocked by U11.1 (x23), U11.4 (x18), U11.8 (x5), U11.11 (x4)",
+       "escape_formula": null,
+       "exit_mm": null,
+       "layer": "B",
+       "n": 0,
+       "offcentre": false,
+       "offcentre_mm": null,
+       "offcentre_why": "U11.3: NO OFF-CENTRE LAUNCH at 0.200 mm from any of 41 anchors x 24 directions x 17 lengths; blocked by U11.2 (x6554), U11.4 (x3909), U11.1 (x2485), R37.2 (x700)",
+       "reach_mm": null,
+       "seconds": 0.52,
+       "support_mm": null,
+       "width": 200000
+      },
+      {
+       "a_xy": null,
+       "b_xy": null,
+       "base_dir": null,
+       "centre": false,
+       "centre_why": "U11.3: NO LEGAL ESCAPE at >= 0.150 mm; blocked by U11.1 (x24), U11.4 (x18), U11.8 (x5), U11.11 (x4)",
+       "escape_formula": null,
+       "exit_mm": null,
+       "layer": "B",
+       "n": 0,
+       "offcentre": false,
+       "offcentre_mm": null,
+       "offcentre_why": "U11.3: NO OFF-CENTRE LAUNCH at 0.150 mm from any of 41 anchors x 24 directions x 17 lengths; blocked by U11.2 (x5762), U11.4 (x5149), U11.1 (x2623), R37.2 (x594)",
+       "reach_mm": null,
+       "seconds": 0.56,
+       "support_mm": null,
+       "width": 150000
+      }
+     ]
+    }
+   ],
+   "net": "/BQ25185_STAT2",
+   "netclass": "Default",
+   "pairs": [],
+   "widths": [
+    600000,
+    500000,
+    400000,
+    300000,
+    250000,
+    200000,
+    150000
+   ]
+  }
+ ],
+ "question": "does an OFF-CENTRE LAUNCH -- a stub anchored anywhere on the land's own copper, in any of 24 directions -- open the lands and the island pairs that a CENTRE-ANCHORED escape refuses at every width this board can fabricate",
+ "schema": 1
+}

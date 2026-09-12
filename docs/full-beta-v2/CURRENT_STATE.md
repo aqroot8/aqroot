@@ -41,6 +41,56 @@
 > `verify_promotion` PASS and `protected_copper` showing exactly one protected
 > net moved.  `U14.7` is on the bus.  This board has **no open owner decision**.
 
+- **Demo D-703 (EVERY REMAINING LAND NOW LAUNCHES; `ACC_5V_LX` ROUTES AT ZERO
+  VIAS AND `/BQ25185_STAT1` ROUTES FOR THE FIRST TIME IN SIX DECISIONS):**
+  **NO COPPER PROMOTED, NO RULE PROMOTED.**  Authority **UNCHANGED** at
+  `eca81247`; 16 -> 16.  ***THE FIVE-DECISION `NO_LEGAL_ESCAPE` ERA IS OVER***
+  — with `--trunk-floor` reading D-690's own per-net 0.150 mm floor,
+  `--escape-floor`, the D-633 off-centre launcher and a 0.50/0.25 mm maze
+  barrel, `U11.9` reports **3 source escapes** and `U11.3` reports **1**, and
+  `U9.10`, `U9.14`, `U16.3`, `U2.20` and `U3.20` all launch off centre while
+  all REFUSE centre-anchored.  **Every retained open edge is now a CORRIDOR
+  question**; only `U5.2` (`+3V3`) is still SEALED at every rung.  **(1)
+  `/BQ25185_STAT1` ROUTES `U11.9` -> `TP6.1` in 23.682 mm, 2 barrels,
+  `B` -> `In3` -> `B`**, and it took three named things: `/01_POWER_TREE/ISET`
+  is a **5.683 mm pair routed as 15.53 mm** hugging the east edge and the
+  corridor blame names it the REQUIRED member of the minimal cut (Q1: the pair
+  routes in **18.756 mm on `B.Cu` with ZERO vias** once the window's twelve
+  foreign nets are dropped; Q2: no single net opens it); `U11.10`'s own
+  `USB_VBUS_CHG` escape launches from its PAD CENTRE so its 0.200 mm cap
+  reaches y 78.500 and leaves `U11.9` a launch band of **exactly y = 78.175,
+  zero margin** — 0.200 mm to `U11.8`'s land on the north, 0.250 mm to that
+  track on the south; and the run hauls `In3`.  **(2) `/01_POWER_TREE/ACC_5V_LX`
+  ROUTES `U21.5` -> `L4.2` in 3.209 mm, ZERO vias**, with
+  `/01_POWER_TREE/ACC_5V_RAW` re-laid in 2.690 mm, `failed_nets []`.  D-702's
+  two figures both move: `U21.4`'s missing ground is **not** a 0.109 mm fill
+  gap, it is the board's own `B /01_POWER_TREE/BQ25185_SYS POUR 2` — pull its
+  east edge **60.000 -> 58.400 mm** and `B GND` floods the pocket, reaches
+  `U21.4` and lets the 6.3 mm `GND` chain go with `GND` STILL CLOSED (16 ->
+  16); and `C65` moves **+0.350 mm east**, not 1.3 mm, which takes the
+  `U21.4`-land / `C65.1`-land gap **0.7345 -> 1.0845 mm** against the 0.900 mm
+  a 0.600 mm `SWITCH_NODE` trunk owes.  **THE ONE REFUSAL IS `GND`:** the `LX`
+  trunk severs a **3.05 mm² peninsula** holding `U21.4`, and **no through
+  barrel fits in it at 0.60, 0.50 OR 0.35 mm** — `F.Cu` and `In2.Cu` block
+  every cell, and the blockers are `/09_COMMUNITY_HEADER/EXT_SDA_BUF`'s `In2`
+  haul (58.700,34.000)->(60.300,40.800), the Qwiic I2C line routed diagonally
+  through the boost's ground, and an `/09_COMMUNITY_HEADER/ACC_DETECT_N_HDR`
+  `F.Cu` elbow.  Remove those three and the peninsula holds **780 legal
+  0.60/0.30 mm sites**.  **(3) NEW LEVER, `AQROOT_PLANE_SIGNAL`** — ask an
+  inner PLANE for ONE named net (`"I3:/NET_A;I4:/NET_B"`), UNSET by default and
+  then a byte-for-byte no-op.  This board routes on **three** layers because
+  `In1`/`In3`/`In4` are all poured; `In3` for `/BQ25185_STAT2` is measured
+  VACUOUS and for `/BQ25185_STAT1` is LOAD-BEARING.  **(4) MEASURED SHUT:** the
+  `SYS` pour cannot be jumpered at EITHER rung (`joined 0/7` at 0.800 mm and at
+  0.500 mm); `--evict-whole` on `USB_VBUS_CHG` is 65 objects and rebuilds
+  TOO_LONG at 68.8/71.4/72.8 mm (16 -> 19); a `"relay": false` removal on a net
+  that owns no pour is UNPRICEABLE by construction
+  (`NO_FILLED_ISLAND_HOLDS_BOTH_ENDS`).  **(5) AND A STANDING CLAIM IS
+  WITHDRAWN:** a COURTYARD is not a router obstacle and neither is a FILLED
+  ZONE — `qrouter` rasterises pads, tracks, holes and `DoNotAllowTracks` rule
+  areas and nothing else, so D-701's "the real wall is `SW9`" is a PLACEMENT
+  observation, not a routing one; `SW9` blocks the router at exactly its two
+  0.9 mm NPTH pads.
 - **Demo D-702 (`ACC_5V_LX` AND `ACC_5V_RAW` BOTH ROUTE, ZERO VIAS, THE MOMENT
   `C65` LEAVES `U21`'s EAST POCKET):**  **NO COPPER PROMOTED.**  Authority
   **UNCHANGED** at `eca81247`; 16 -> 16.  D-698's remedy is built: with `C65`

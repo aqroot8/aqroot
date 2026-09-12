@@ -44,6 +44,7 @@ import argparse
 import hashlib
 import json
 import math
+import os
 import subprocess
 import sys
 import tempfile
@@ -1661,6 +1662,49 @@ def detour_apply(path, spec):
 INNER = {"In1.Cu": "I1", "In2.Cu": "I2", "In3.Cu": "I3", "In4.Cu": "I4"}
 
 
+# D-703 -- ASK AN INNER PLANE FOR A NAMED NET, AND MEASURE WHAT IT COSTS.
+#
+# The reservation above is a POLICY, not a rule: it is derived from which
+# zones happen to be filled, and it is right in general.  It is also the
+# reason this board routes on THREE layers -- `F`, `In2`, `B` -- while
+# carrying `In1` (GND), `In3` (+3V3) and `In4` (GND) as full planes, and
+# every one of the sixteen remaining open edges has been measured NO_PATH
+# on those three.  `AQROOT_PLANE_SIGNAL` lets ONE named net be asked of ONE
+# named inner layer, so the question "does this edge close if In3 carries
+# it?" can be PUT rather than assumed, and the answer is then judged by the
+# clauses that already exist and were built for exactly this: the gate's
+# `no_regression` (a slot that separates pads the pour bonded is refused),
+# `pour_partition`/PP2 (a severance is priced in amperes against the rail
+# current section 5 publishes) and `checks/plane_return_path.py` RP1..RP6
+# (what the slot costs the RETURN PATH of the traces that reference it).
+#
+# SYNTAX  AQROOT_PLANE_SIGNAL="I3:/NET_A,/NET_B;I4:/NET_C"
+#
+# Unset -- the default -- every run reproduces byte for byte.  This can
+# license nothing on its own: it only removes a ROUTER-SIDE refusal, and a
+# candidate that actually damages a plane is still refused by the gate.
+def _plane_signal_licence():
+    """{layer_short: set(nets)} from `AQROOT_PLANE_SIGNAL`, or {}."""
+    spec = os.environ.get("AQROOT_PLANE_SIGNAL", "").strip()
+    if not spec:
+        return {}
+    out = {}
+    for clause in spec.split(";"):
+        clause = clause.strip()
+        if not clause:
+            continue
+        layer, _, nets = clause.partition(":")
+        layer = layer.strip()
+        if layer not in set(INNER.values()):
+            raise SystemExit("AQROOT_PLANE_SIGNAL: %r is not an inner layer "
+                             "(%s)" % (layer, ", ".join(sorted(set(INNER.values())))))
+        for n in nets.split(","):
+            n = n.strip()
+            if n:
+                out.setdefault(layer, set()).add(n)
+    return out
+
+
 def reserved_inner_planes(board):
     """Short names of the inner layers a filled pour owns, mapped to its nets.
 
@@ -1675,6 +1719,9 @@ def reserved_inner_planes(board):
             name = board.GetLayerName(layer)
             if name in INNER:
                 out.setdefault(INNER[name], set()).add(z.GetNetname())
+    for layer, nets in _plane_signal_licence().items():
+        if layer in out:
+            out[layer] |= nets
     return out
 
 

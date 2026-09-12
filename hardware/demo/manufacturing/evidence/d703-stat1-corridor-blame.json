@@ -1,0 +1,774 @@
+{
+  "a": "U11.9",
+  "b": "TP6.1",
+  "banned_nets": [],
+  "board": "/home/aqroot8/aqroot-demo/w/d703/aqroot-Beta-v2.kicad_pcb",
+  "board_is_authority": false,
+  "board_sha256": "eca812476fbcc6277462ca4e37c0aaa9ee3562bcc5955ba32491b6522832b82c",
+  "complete": true,
+  "grid_nm": 50000,
+  "instrument": "maze3d.offcentre_route under screen_corridor_blockers.Without",
+  "layers": [
+    "F",
+    "B",
+    "I2"
+  ],
+  "margin_mm": 3.0,
+  "max_mm": 30.0,
+  "net": "/BQ25185_STAT1",
+  "q2": "RUN",
+  "rows": [
+    {
+      "accepted": false,
+      "layers": null,
+      "mm": null,
+      "ok": false,
+      "reason": "NO_PATH",
+      "step": "BASE",
+      "vias": null,
+      "why": "no all-layer corridor at 0.150 mm from U11.9 on B to TP6.1 on B"
+    },
+    {
+      "accepted": true,
+      "layers": [
+        "B"
+      ],
+      "mm": 18.7563,
+      "nets": [
+        "/01_POWER_TREE/BAT_PROTECTED_P",
+        "/01_POWER_TREE/BQ25185_SYS",
+        "/01_POWER_TREE/ILIM_VSET",
+        "/01_POWER_TREE/ISET",
+        "/01_POWER_TREE/USB_VBUS_CHG",
+        "/08_BUTTONS_EXPANDERS/BTN_UP_N",
+        "/09_COMMUNITY_HEADER/NATIVE_B_HDR",
+        "/ACC_3V3_SW",
+        "/I2C_SDA_INT",
+        "GND",
+        "Net-(SW9-A)",
+        "Net-(U11-TS_MR)"
+      ],
+      "ok": true,
+      "reason": null,
+      "step": "Q1_UPPER_BOUND",
+      "vias": 0,
+      "why": null
+    },
+    {
+      "accepted": false,
+      "layers": null,
+      "mm": null,
+      "net": "/01_POWER_TREE/BAT_PROTECTED_P",
+      "ok": false,
+      "reason": "NO_PATH",
+      "step": "Q2_SINGLE_NET",
+      "vias": null
+    },
+    {
+      "accepted": false,
+      "layers": null,
+      "mm": null,
+      "net": "/01_POWER_TREE/BQ25185_SYS",
+      "ok": false,
+      "reason": "NO_PATH",
+      "step": "Q2_SINGLE_NET",
+      "vias": null
+    },
+    {
+      "accepted": false,
+      "layers": null,
+      "mm": null,
+      "net": "/01_POWER_TREE/ILIM_VSET",
+      "ok": false,
+      "reason": "NO_PATH",
+      "step": "Q2_SINGLE_NET",
+      "vias": null
+    },
+    {
+      "accepted": false,
+      "layers": null,
+      "mm": null,
+      "net": "/01_POWER_TREE/ISET",
+      "ok": false,
+      "reason": "NO_PATH",
+      "step": "Q2_SINGLE_NET",
+      "vias": null
+    },
+    {
+      "accepted": false,
+      "layers": null,
+      "mm": null,
+      "net": "/01_POWER_TREE/USB_VBUS_CHG",
+      "ok": false,
+      "reason": "NO_PATH",
+      "step": "Q2_SINGLE_NET",
+      "vias": null
+    },
+    {
+      "accepted": false,
+      "layers": null,
+      "mm": null,
+      "net": "/08_BUTTONS_EXPANDERS/BTN_UP_N",
+      "ok": false,
+      "reason": "NO_PATH",
+      "step": "Q2_SINGLE_NET",
+      "vias": null
+    },
+    {
+      "accepted": false,
+      "layers": null,
+      "mm": null,
+      "net": "/09_COMMUNITY_HEADER/NATIVE_B_HDR",
+      "ok": false,
+      "reason": "NO_PATH",
+      "step": "Q2_SINGLE_NET",
+      "vias": null
+    },
+    {
+      "accepted": false,
+      "layers": null,
+      "mm": null,
+      "net": "/ACC_3V3_SW",
+      "ok": false,
+      "reason": "NO_PATH",
+      "step": "Q2_SINGLE_NET",
+      "vias": null
+    },
+    {
+      "accepted": false,
+      "layers": null,
+      "mm": null,
+      "net": "/I2C_SDA_INT",
+      "ok": false,
+      "reason": "NO_PATH",
+      "step": "Q2_SINGLE_NET",
+      "vias": null
+    },
+    {
+      "accepted": false,
+      "layers": null,
+      "mm": null,
+      "net": "GND",
+      "ok": false,
+      "reason": "NO_PATH",
+      "step": "Q2_SINGLE_NET",
+      "vias": null
+    },
+    {
+      "accepted": false,
+      "layers": null,
+      "mm": null,
+      "net": "Net-(SW9-A)",
+      "ok": false,
+      "reason": "NO_PATH",
+      "step": "Q2_SINGLE_NET",
+      "vias": null
+    },
+    {
+      "accepted": false,
+      "layers": null,
+      "mm": null,
+      "net": "Net-(U11-TS_MR)",
+      "ok": false,
+      "reason": "NO_PATH",
+      "step": "Q2_SINGLE_NET",
+      "vias": null
+    },
+    {
+      "mm": 18.7563,
+      "net": "/01_POWER_TREE/BAT_PROTECTED_P",
+      "remaining": 11,
+      "step": "Q3_DROPPED"
+    },
+    {
+      "mm": 18.7563,
+      "net": "/01_POWER_TREE/BQ25185_SYS",
+      "remaining": 10,
+      "step": "Q3_DROPPED"
+    },
+    {
+      "mm": 18.8362,
+      "net": "/01_POWER_TREE/ILIM_VSET",
+      "remaining": 9,
+      "step": "Q3_DROPPED"
+    },
+    {
+      "net": "/01_POWER_TREE/ISET",
+      "reason": "UNPROVED_GEOMETRY",
+      "remaining": 9,
+      "step": "Q3_REQUIRED"
+    },
+    {
+      "net": "/01_POWER_TREE/USB_VBUS_CHG",
+      "reason": "UNPROVED_GEOMETRY",
+      "remaining": 9,
+      "step": "Q3_REQUIRED"
+    },
+    {
+      "mm": 18.8362,
+      "net": "/08_BUTTONS_EXPANDERS/BTN_UP_N",
+      "remaining": 8,
+      "step": "Q3_DROPPED"
+    },
+    {
+      "mm": 18.8362,
+      "net": "/09_COMMUNITY_HEADER/NATIVE_B_HDR",
+      "remaining": 7,
+      "step": "Q3_DROPPED"
+    },
+    {
+      "mm": 18.8362,
+      "net": "/ACC_3V3_SW",
+      "remaining": 6,
+      "step": "Q3_DROPPED"
+    },
+    {
+      "mm": 18.8362,
+      "net": "/I2C_SDA_INT",
+      "remaining": 5,
+      "step": "Q3_DROPPED"
+    },
+    {
+      "mm": 19.0275,
+      "net": "GND",
+      "remaining": 4,
+      "step": "Q3_DROPPED"
+    },
+    {
+      "net": "Net-(SW9-A)",
+      "reason": "NO_PATH",
+      "remaining": 4,
+      "step": "Q3_REQUIRED"
+    },
+    {
+      "mm": 19.0275,
+      "net": "Net-(U11-TS_MR)",
+      "remaining": 3,
+      "step": "Q3_DROPPED"
+    },
+    {
+      "accepted": true,
+      "layers": [
+        "B"
+      ],
+      "mm": 19.0275,
+      "n": 3,
+      "nets": [
+        "/01_POWER_TREE/ISET",
+        "/01_POWER_TREE/USB_VBUS_CHG",
+        "Net-(SW9-A)"
+      ],
+      "ok": true,
+      "step": "Q3_MINIMAL_SET",
+      "vias": 0
+    },
+    {
+      "accepted": true,
+      "mm": 19.0275,
+      "n_objects": 58,
+      "n_units": 19,
+      "nets": [
+        "/01_POWER_TREE/ISET",
+        "/01_POWER_TREE/USB_VBUS_CHG",
+        "Net-(SW9-A)"
+      ],
+      "ok": true,
+      "reason": null,
+      "step": "Q4_POOL"
+    },
+    {
+      "mm": 19.0275,
+      "remaining": 18,
+      "step": "Q4_OBJECT_RETURNED",
+      "unit": {
+        "a_mm": [
+          66.1,
+          82.4
+        ],
+        "b_mm": [
+          69.5,
+          81.1
+        ],
+        "count": 1,
+        "kind": "track",
+        "layer": "B.Cu",
+        "net": "/01_POWER_TREE/ISET",
+        "objects": 1,
+        "router_objects": 1,
+        "width_mm": 0.2
+      }
+    },
+    {
+      "mm": 19.0275,
+      "remaining": 17,
+      "step": "Q4_OBJECT_RETURNED",
+      "unit": {
+        "a_mm": [
+          68.6,
+          77.8
+        ],
+        "b_mm": [
+          69.4,
+          77.8
+        ],
+        "count": 1,
+        "kind": "track",
+        "layer": "B.Cu",
+        "net": "/01_POWER_TREE/ISET",
+        "objects": 1,
+        "router_objects": 1,
+        "width_mm": 0.2
+      }
+    },
+    {
+      "mm": 19.0275,
+      "remaining": 16,
+      "step": "Q4_OBJECT_RETURNED",
+      "unit": {
+        "a_mm": [
+          69.5,
+          81.1
+        ],
+        "b_mm": [
+          70.2,
+          81.1
+        ],
+        "count": 1,
+        "kind": "track",
+        "layer": "B.Cu",
+        "net": "/01_POWER_TREE/ISET",
+        "objects": 1,
+        "router_objects": 1,
+        "width_mm": 0.2
+      }
+    },
+    {
+      "mm": 19.6764,
+      "remaining": 15,
+      "step": "Q4_OBJECT_RETURNED",
+      "unit": {
+        "a_mm": [
+          70.2,
+          81.1
+        ],
+        "b_mm": [
+          70.9,
+          79.4
+        ],
+        "count": 1,
+        "kind": "track",
+        "layer": "B.Cu",
+        "net": "/01_POWER_TREE/ISET",
+        "objects": 1,
+        "router_objects": 1,
+        "width_mm": 0.2
+      }
+    },
+    {
+      "reason": "NO_PATH",
+      "remaining": 15,
+      "step": "Q4_OBJECT_REQUIRED",
+      "unit": {
+        "a_mm": [
+          70.9,
+          79.4
+        ],
+        "b_mm": [
+          69.4,
+          77.8
+        ],
+        "count": 1,
+        "kind": "track",
+        "layer": "B.Cu",
+        "net": "/01_POWER_TREE/ISET",
+        "objects": 1,
+        "router_objects": 1,
+        "width_mm": 0.2
+      }
+    },
+    {
+      "reason": "UNPROVED_GEOMETRY",
+      "remaining": 15,
+      "step": "Q4_OBJECT_REQUIRED",
+      "unit": {
+        "a_mm": [
+          68.6,
+          78.6
+        ],
+        "b_mm": [
+          68.8,
+          78.9464
+        ],
+        "count": 1,
+        "kind": "track",
+        "layer": "B.Cu",
+        "net": "/01_POWER_TREE/USB_VBUS_CHG",
+        "objects": 1,
+        "router_objects": 1,
+        "width_mm": 0.2
+      }
+    },
+    {
+      "mm": 19.6764,
+      "remaining": 14,
+      "step": "Q4_OBJECT_RETURNED",
+      "unit": {
+        "a_mm": [
+          68.8,
+          78.9464
+        ],
+        "b_mm": [
+          66.8,
+          79.4464
+        ],
+        "count": 1,
+        "kind": "track",
+        "layer": "B.Cu",
+        "net": "/01_POWER_TREE/USB_VBUS_CHG",
+        "objects": 1,
+        "router_objects": 1,
+        "width_mm": 0.5
+      }
+    },
+    {
+      "mm": 19.6764,
+      "remaining": 13,
+      "step": "Q4_OBJECT_RETURNED",
+      "unit": {
+        "a_mm": [
+          68.225,
+          90.825
+        ],
+        "b_mm": [
+          69.65,
+          92.275
+        ],
+        "count": 1,
+        "kind": "track",
+        "layer": "B.Cu",
+        "net": "Net-(SW9-A)",
+        "objects": 1,
+        "router_objects": 1,
+        "width_mm": 0.2
+      }
+    },
+    {
+      "mm": 19.6764,
+      "remaining": 12,
+      "step": "Q4_OBJECT_RETURNED",
+      "unit": {
+        "a_mm": [
+          69.15,
+          92.8
+        ],
+        "b_mm": [
+          69.175,
+          92.925
+        ],
+        "count": 1,
+        "kind": "track",
+        "layer": "B.Cu",
+        "net": "Net-(SW9-A)",
+        "objects": 1,
+        "router_objects": 1,
+        "width_mm": 0.2
+      }
+    },
+    {
+      "mm": 19.6764,
+      "remaining": 11,
+      "step": "Q4_OBJECT_RETURNED",
+      "unit": {
+        "a_mm": [
+          69.175,
+          92.925
+        ],
+        "b_mm": [
+          69.175,
+          93.75
+        ],
+        "count": 1,
+        "kind": "track",
+        "layer": "B.Cu",
+        "net": "Net-(SW9-A)",
+        "objects": 1,
+        "router_objects": 1,
+        "width_mm": 0.2
+      }
+    },
+    {
+      "mm": 19.6764,
+      "remaining": 10,
+      "step": "Q4_OBJECT_RETURNED",
+      "unit": {
+        "a_mm": [
+          69.175,
+          93.75
+        ],
+        "b_mm": [
+          69.475,
+          94.05
+        ],
+        "count": 1,
+        "kind": "track",
+        "layer": "B.Cu",
+        "net": "Net-(SW9-A)",
+        "objects": 1,
+        "router_objects": 1,
+        "width_mm": 0.2
+      }
+    },
+    {
+      "mm": 19.6764,
+      "remaining": 9,
+      "step": "Q4_OBJECT_RETURNED",
+      "unit": {
+        "a_mm": [
+          69.65,
+          92.275
+        ],
+        "b_mm": [
+          69.15,
+          92.8
+        ],
+        "count": 1,
+        "kind": "track",
+        "layer": "B.Cu",
+        "net": "Net-(SW9-A)",
+        "objects": 1,
+        "router_objects": 1,
+        "width_mm": 0.2
+      }
+    },
+    {
+      "mm": 19.6764,
+      "remaining": 8,
+      "step": "Q4_OBJECT_RETURNED",
+      "unit": {
+        "a_mm": [
+          69.9,
+          94.05
+        ],
+        "b_mm": [
+          69.475,
+          94.05
+        ],
+        "count": 1,
+        "kind": "track",
+        "layer": "B.Cu",
+        "net": "Net-(SW9-A)",
+        "objects": 1,
+        "router_objects": 1,
+        "width_mm": 0.2
+      }
+    },
+    {
+      "mm": 21.918,
+      "remaining": 7,
+      "step": "Q4_OBJECT_RETURNED",
+      "unit": {
+        "a_mm": [
+          71.05,
+          95.1
+        ],
+        "b_mm": [
+          69.9,
+          94.05
+        ],
+        "count": 1,
+        "kind": "track",
+        "layer": "B.Cu",
+        "net": "Net-(SW9-A)",
+        "objects": 1,
+        "router_objects": 1,
+        "width_mm": 0.2
+      }
+    },
+    {
+      "mm": 21.918,
+      "remaining": 6,
+      "step": "Q4_OBJECT_RETURNED",
+      "unit": {
+        "a_mm": [
+          69.7,
+          98.0
+        ],
+        "b_mm": [
+          69.8,
+          98.1
+        ],
+        "count": 1,
+        "kind": "track",
+        "layer": "In3.Cu",
+        "net": "Net-(SW9-A)",
+        "objects": 1,
+        "router_objects": 1,
+        "width_mm": 0.2
+      }
+    },
+    {
+      "reason": "NO_PATH",
+      "remaining": 6,
+      "step": "Q4_OBJECT_REQUIRED",
+      "unit": {
+        "a_mm": [
+          69.8,
+          94.5
+        ],
+        "b_mm": [
+          69.7,
+          98.0
+        ],
+        "count": 1,
+        "kind": "track",
+        "layer": "In3.Cu",
+        "net": "Net-(SW9-A)",
+        "objects": 1,
+        "router_objects": 1,
+        "width_mm": 0.2
+      }
+    },
+    {
+      "mm": 21.918,
+      "remaining": 5,
+      "step": "Q4_OBJECT_RETURNED",
+      "unit": {
+        "at_mm": [
+          66.8,
+          79.4464
+        ],
+        "count": 1,
+        "dia_mm": 0.9,
+        "drill_mm": 0.4,
+        "kind": "barrel",
+        "net": "/01_POWER_TREE/USB_VBUS_CHG",
+        "objects": 14,
+        "router_objects": 14
+      }
+    },
+    {
+      "mm": 22.7665,
+      "remaining": 4,
+      "step": "Q4_OBJECT_RETURNED",
+      "unit": {
+        "at_mm": [
+          69.8,
+          94.5
+        ],
+        "count": 1,
+        "dia_mm": 0.6,
+        "drill_mm": 0.3,
+        "kind": "barrel",
+        "net": "Net-(SW9-A)",
+        "objects": 14,
+        "router_objects": 14
+      }
+    },
+    {
+      "mm": 22.7665,
+      "remaining": 3,
+      "step": "Q4_OBJECT_RETURNED",
+      "unit": {
+        "at_mm": [
+          69.8,
+          98.1
+        ],
+        "count": 1,
+        "dia_mm": 0.6,
+        "drill_mm": 0.3,
+        "kind": "barrel",
+        "net": "Net-(SW9-A)",
+        "objects": 14,
+        "router_objects": 14
+      }
+    },
+    {
+      "accepted": true,
+      "layers": [
+        "B",
+        "I2",
+        "B"
+      ],
+      "mm": 22.7665,
+      "n_objects": 3,
+      "n_units": 3,
+      "nets": [
+        "/01_POWER_TREE/ISET",
+        "/01_POWER_TREE/USB_VBUS_CHG",
+        "Net-(SW9-A)"
+      ],
+      "ok": true,
+      "step": "Q4_MINIMAL_OBJECTS",
+      "units": [
+        {
+          "a_mm": [
+            70.9,
+            79.4
+          ],
+          "b_mm": [
+            69.4,
+            77.8
+          ],
+          "count": 1,
+          "kind": "track",
+          "layer": "B.Cu",
+          "net": "/01_POWER_TREE/ISET",
+          "objects": 1,
+          "router_objects": 1,
+          "width_mm": 0.2
+        },
+        {
+          "a_mm": [
+            68.6,
+            78.6
+          ],
+          "b_mm": [
+            68.8,
+            78.9464
+          ],
+          "count": 1,
+          "kind": "track",
+          "layer": "B.Cu",
+          "net": "/01_POWER_TREE/USB_VBUS_CHG",
+          "objects": 1,
+          "router_objects": 1,
+          "width_mm": 0.2
+        },
+        {
+          "a_mm": [
+            69.8,
+            94.5
+          ],
+          "b_mm": [
+            69.7,
+            98.0
+          ],
+          "count": 1,
+          "kind": "track",
+          "layer": "In3.Cu",
+          "net": "Net-(SW9-A)",
+          "objects": 1,
+          "router_objects": 1,
+          "width_mm": 0.2
+        }
+      ],
+      "vias": 2
+    }
+  ],
+  "schema": 1,
+  "seconds": 1074.0,
+  "window_nets": [
+    "/01_POWER_TREE/BAT_PROTECTED_P",
+    "/01_POWER_TREE/BQ25185_SYS",
+    "/01_POWER_TREE/ILIM_VSET",
+    "/01_POWER_TREE/ISET",
+    "/01_POWER_TREE/USB_VBUS_CHG",
+    "/08_BUTTONS_EXPANDERS/BTN_UP_N",
+    "/09_COMMUNITY_HEADER/NATIVE_B_HDR",
+    "/ACC_3V3_SW",
+    "/I2C_SDA_INT",
+    "GND",
+    "Net-(SW9-A)",
+    "Net-(U11-TS_MR)"
+  ]
+}
