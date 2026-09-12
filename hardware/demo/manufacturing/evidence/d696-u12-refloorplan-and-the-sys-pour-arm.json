@@ -473,5 +473,111 @@
     "The re-floorplan is correct and should be taken, but only TOGETHER with a real BQ25185_SYS conductor from U12.11 to U12.1 / C24.1 replacing the 25.850 mm pour arm.",
     "The instrument that is missing is an OFF-CENTRE ESCAPE in the ordinary maze: maze3d.offcentre_route exists and screen_offcentre_launch proves U12.11 opens at 0.400 mm with a 0.060 mm anchor offset, but only join_taps uses it and --tap only serves ORPHAN lands, so a connected-but-fragile land can never ask for it.",
     "The alternative is a PAD_ESCAPE_U12_11 / PAD_ESCAPE_RUN_U12_11 width licence of the D-610 shape, authored in the .kicad_dru BEFORE the router runs, and an ampacity ruling for the converter's INPUT current the way D-610 ruled on its OUTPUT."
-  ]
+  ],
+  "addendum_the_island_jumper_and_the_one_corridor": {
+    "statement": "The re-floorplan DOES reach 17 against 18 -- one better than the authority -- and the instrument is the island jumper, not the launcher. But V3V3_FB's shortest route and that jumper want the SAME corridor, and the board admits exactly one of them.",
+    "1_the_off_centre_launcher_already_exists_and_the_screen_had_measured_the_wrong_rung": {
+      "env_gate": "AQROOT_OFFCENTRE_LAUNCH (maze3d.Field.offcentre, D-633) -- consulted ONLY where the ordinary candidate set is EMPTY, so it can add launches and never move one",
+      "screen_offcentre_launch_at_the_class_floor": {
+        "U12.11": "OFF-CENTRE OPENS at 0.500 mm on B (anchor 0.102 mm off centre) -- 0.500 mm IS SYS_MAIN's published min, so NO licence is needed; centre-anchored refuses at every rung",
+        "U12.10": "SEALED at every rung, centre and off-centre",
+        "C28.1": "OFF-CENTRE OPENS at 0.800 mm (anchor 0.113 mm); centre-anchored only reaches 0.700 mm"
+      },
+      "with_the_gate_on": "the residual join reports src_escapes 4 for {U12.10,U12.11,C28.1} where the centre-anchored run reported NO LEGAL ESCAPE -- the launcher works"
+    },
+    "2_and_the_trunk_floor_clause_charges_this_segment_a_current_section_5_says_is_another_segments": {
+      "trunk_floor_price": {
+        "netclass": "SYS_MAIN",
+        "floor_nm": 500000,
+        "amps": 1.441,
+        "required_amps": 2.19,
+        "admitted": false,
+        "why": "TRUNK_UNDER_PRICED"
+      },
+      "the_defect": "2.19 A is section 5's LOCAL EXCEPTION for the U21 accessory boost -- 'the SYS segment that feeds U21 must be sized from that peak, not from 1.0 A' -- and D-689's own block says in its own words that the figure 'IS NOT THIS SEGMENT'S'. Charged to the whole class it can never be met: SYS_MAIN's own 0.800 mm opt carries only 2.026 A, so --trunk-floor is unreachable for this class by construction.",
+      "consequence": "--escape-floor descends the ESCAPE to 0.500 mm but the TRUNK stays at the 0.800 mm opt, and the residual join then refuses with 'no all-layer corridor at 0.800 mm'."
+    },
+    "3_the_island_jumper_is_the_instrument_and_it_needs_no_licence": {
+      "command": "AQROOT_OFFCENTRE_LAUNCH=1 route_maze_batch.py /01_POWER_TREE/BQ25185_SYS --grid 25000 --partial --join-islands --join-island-width 500000 --join-island-via 650000:400000 --join-island-max-mm 20 --escape-floor",
+      "result": {
+        "cluster": [
+          "C28.1",
+          "U12.10",
+          "U12.11"
+        ],
+        "mm": 7.859,
+        "width_mm": 0.5,
+        "barrels": [
+          {
+            "xy_mm": [
+              70.575,
+              97.3
+            ],
+            "dia_mm": 0.65,
+            "drill_mm": 0.4,
+            "needs_licence": false
+          },
+          {
+            "xy_mm": [
+              68.2,
+              103.625
+            ],
+            "dia_mm": 0.65,
+            "drill_mm": 0.4,
+            "needs_licence": false
+          }
+        ],
+        "layers": [
+          "B",
+          "I2",
+          "B"
+        ],
+        "width_clamp": {
+          "asked": 500000,
+          "clamped": false,
+          "class_min_nm": 500000,
+          "trunk_nm": 800000
+        },
+        "ampacity_A": 1.441,
+        "against_class_design_current_A": 1.0
+      },
+      "ledger": "BQ25185_SYS 5 -> 3; board 18 -> 17; real DRC one pre-existing violation (MK1)",
+      "why_it_matters": "this replaces D-696 \u00a74's 25.850 mm / 0.200 mm pour arm with a REAL conductor, so the one-for-one trade that held the whole transaction at 18 is broken"
+    },
+    "4_and_the_last_edge_is_a_single_corridor_two_nets_want": {
+      "V3V3_FB": {
+        "pair": "U12.3 <-> {R39.2, R40.1}",
+        "gap_mm": 5.735,
+        "src_escapes": 18,
+        "dst_escapes": 1,
+        "shortest_route_the_board_admits_mm": 27.394,
+        "why_the_direct_lane_refuses": "U12.3's ONE escape is walled north by the 0.600 mm +3V3 relief-run feed (65.000,98.800)->(64.150,98.700) and south by U12.1's 0.300 mm SYS escape (64.600,100.400)->(64.100,99.700), with /BQ25185_STAT2's 0.6 mm barrel at (63.200,99.800) and D-689's own SYS barrel at (61.675,99.500) beyond them",
+        "things_measured_and_refused": [
+          "evicting /BQ25185_STAT2 from a 4.2 x 2.9 mm window: STAT2 relays in 21.340 mm, FB still NO_PATH",
+          "deleting the GND stitch at (61.100,100.200): still NO_PATH",
+          "deleting U12.1's north-west SYS escape: FB CLOSES, at 27.394 mm -- and BQ25185_SYS goes 3 -> 5",
+          "re-joining the SYS islands afterwards at 0.500 mm with a 40 mm bound: 0 joins, NO_PATH",
+          "moving R40 into the pocket at (62.500,101.500): the FB pair then relays at 29.188 mm and SYS regresses again",
+          "R39 has NO site in the pocket at all -- every candidate is inside 0.2 mm of a GND stitch barrel or the /ACC_5V_SW_EN track"
+        ]
+      },
+      "verdict": "17 with the buck-boost's FEEDBACK PIN OPEN is not shippable -- U12.3 floating is a dead 3.3 V rail, which is worse than any edge count -- and 18 with it closed is not an improvement. NEITHER CANDIDATE IS PROMOTED."
+    },
+    "5_the_move_that_removes_the_competition_and_why_it_is_0_045_mm_short": {
+      "idea": "V3V3_FB hangs entirely off ONE barrel at (66.100, 99.250): 13 objects, an In2 haul to R40 and an In3 haul to R39 both terminating there. The U12 move swallows that barrel under U12.15 and THAT is what forced the whole chain out. Move U12 far enough north and the barrel survives, the FB net stays whole, and U12.3 needs only a 2 mm local link.",
+      "arithmetic": {
+        "barrel_survives_if_U12_cy_mm_below": 97.325,
+        "L1_must_clear_SW9s_NPTH_at_66.700_89.900_and_the_dru_rule_SWITCH_NODE_to_I2C_separation_0.500mm_against_the_I2C_SDA_INT_barrel_at_65.250_90.400": true,
+        "measured_at_L1_cy_92.500": [
+          "npth_inside_courtyard SW9 vs L1",
+          "clearance L1.2 vs /I2C_SDA_INT track",
+          "clearance L1.2 vs /I2C_SDA_INT via"
+        ],
+        "L1_cy_must_be_at_least_mm": 93.0,
+        "which_forces_U12_cy_at_least_mm": 97.37,
+        "shortfall_mm": 0.045
+      },
+      "recommendation": "the 4.55 x 4.55 mm L1 is 0.045 mm too big for this stack-up of constraints. The clean fix is a SMALLER 1.5 uH inductor (3.0 x 3.0 mm class) with equal Isat and DCR -- a BOM change, priced and sourced, not a routing flag. With it, U12 sits at cy 97.0-97.3, the V3V3_FB barrel survives untouched, the FB net never opens, and the island jumper's 17 becomes the promoted number."
+    }
+  }
 }

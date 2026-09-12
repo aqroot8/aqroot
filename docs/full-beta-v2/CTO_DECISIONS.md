@@ -1,3 +1,112 @@
+# D-696 ADDENDUM · 2026-09-12 · Demo — **THE RE-FLOORPLAN DOES REACH 17 AGAINST 18, AND THE INSTRUMENT IS THE ISLAND JUMPER AT THE CLASS MINIMUM; BUT `/01_POWER_TREE/V3V3_FB`'s SHORTEST ROUTE AND THAT JUMPER WANT THE SAME CORRIDOR AND THE BOARD ADMITS EXACTLY ONE**
+
+    authority  2f456279... -> 2f456279...   UNCHANGED       retained open edges 18 -> 18
+    `hardware/demo/kicad`, `hardware/demo/fab`, `hardware/beta-v2` UNTOUCHED
+    `evidence/d696-u12-refloorplan-and-the-sys-pour-arm.json` (addendum section)
+    `evidence/d696-build4.sh`
+
+**STILL NO COPPER PROMOTED**, and this addendum says exactly why, because §6 of the
+decision above recommended the wrong instrument first.
+
+## A. THE OFF-CENTRE LAUNCHER ALREADY EXISTS, AND THE SCREEN HAD MEASURED THE WRONG RUNG
+
+`maze3d.Field.offcentre` is env-gated on **`AQROOT_OFFCENTRE_LAUNCH`** (D-633) and
+is consulted wherever the ordinary candidate set is EMPTY.  §5 above reported
+`U12.11` opening at 0.400 mm — *below* `SYS_MAIN`'s 0.500 mm floor — because the
+screen was run on the rungs 0.800 / 0.600 / 0.400 and **0.500 was never asked.**
+Asked:
+
+    land U12.11   OFF-CENTRE OPENS at 0.500 mm on B (anchor 0.102 mm off centre)
+    land U12.10   SEALED at every rung, centre and off-centre
+    land C28.1    OFF-CENTRE OPENS at 0.800 mm (anchor 0.113 mm)
+
+**0.500 mm IS the published class minimum, so no licence is needed at all.**  With
+the gate on, the residual join reports `src_escapes 4` where the centre-anchored
+run reported `NO LEGAL ESCAPE`.
+
+## B. AND `--trunk-floor` CHARGES THIS SEGMENT A CURRENT SECTION 5 SAYS IS ANOTHER SEGMENT'S
+
+    trunk_floor_price(SYS_MAIN) -> floor 0.500 mm, 1.441 A, required 2.19 A,
+                                   admitted FALSE, why TRUNK_UNDER_PRICED
+
+2.19 A is section 5's **LOCAL EXCEPTION** for the `U21` accessory boost — *"the SYS
+segment that feeds `U21` must be sized from that peak, not from 1.0 A"* — and
+D-689's own block says the figure ***"IS NOT THIS SEGMENT'S"***.  Charged to the
+whole class it can never be met: `SYS_MAIN`'s own 0.800 mm `opt` carries only
+2.026 A.  So `--escape-floor` descends the ESCAPE to 0.500 mm, the TRUNK stays at
+0.800 mm, and the join refuses with *"no all-layer corridor at 0.800 mm"*.
+
+## C. THE ISLAND JUMPER IS THE INSTRUMENT, AND IT NEEDS NO LICENCE
+
+    AQROOT_OFFCENTRE_LAUNCH=1 route_maze_batch.py /01_POWER_TREE/BQ25185_SYS \
+        --grid 25000 --partial --join-islands --join-island-width 500000 \
+        --join-island-via 650000:400000 --join-island-max-mm 20 --escape-floor
+
+    cluster {C28.1, U12.10, U12.11}   7.859 mm at 0.500 mm, B / I2 / B
+      barrel (70.575, 97.300)  0.650 / 0.400 mm   needs_licence FALSE
+      barrel (68.200, 103.625) 0.650 / 0.400 mm   needs_licence FALSE
+      width_clamp asked 500000, clamped FALSE, class_min 500000
+      ampacity 1.441 A against the class's published 1.0 A design current
+
+**`BQ25185_SYS` 5 -> 3, board 18 -> 17, real DRC one pre-existing violation.**  This
+replaces §4's **25.850 mm / 0.200 mm pour arm** with a real conductor, and with it
+the one-for-one trade that pinned the whole transaction at 18 is broken.
+
+## D. AND THE LAST EDGE IS ONE CORRIDOR TWO NETS WANT
+
+`/01_POWER_TREE/V3V3_FB` `U12.3` <-> `{R39.2, R40.1}`: 5.735 mm apart,
+**18 src escapes and ONE dst escape**, and the shortest route the board admits is
+**27.394 mm**.  `U12.3`'s single escape is walled north by the 0.600 mm `+3V3`
+relief-run feed (65.000,98.800)->(64.150,98.700) and south by `U12.1`'s 0.300 mm
+`SYS` escape (64.600,100.400)->(64.100,99.700), with `/BQ25185_STAT2`'s barrel at
+(63.200,99.800) and D-689's own `SYS` barrel at (61.675,99.500) beyond them.
+Measured and refused:
+
+  * evict `/BQ25185_STAT2` from a 4.2 x 2.9 mm window — it relays in 21.340 mm and
+    `V3V3_FB` is still `NO_PATH`;
+  * delete the `GND` stitch at (61.100,100.200) — still `NO_PATH`;
+  * delete `U12.1`'s north-west `SYS` escape — **`V3V3_FB` CLOSES, at 27.394 mm, and
+    `BQ25185_SYS` goes 3 -> 5**;
+  * re-join the `SYS` islands afterwards at 0.500 mm with a 40 mm bound — **0 joins**;
+  * move `R40` into the pocket at (62.500,101.500) — the pair relays at 29.188 mm
+    and `SYS` regresses again;
+  * `R39` has **no site in the pocket at all** — every candidate lands inside 0.2 mm
+    of a `GND` stitch barrel or the `/ACC_5V_SW_EN` track.
+
+**17 with the buck-boost's FEEDBACK PIN OPEN is not shippable** — `U12.3` floating is
+a dead 3.3 V rail, which is worse than any edge count — **and 18 with it closed is
+not an improvement.  Neither candidate is promoted.**
+
+## E. THE MOVE THAT REMOVES THE COMPETITION, AND WHY IT IS 0.045 mm SHORT
+
+`V3V3_FB` hangs entirely off **ONE barrel at (66.100, 99.250)**: thirteen objects,
+an `In2` haul to `R40` and an `In3` haul to `R39`, both terminating there.  The
+`U12` move swallows that barrel under `U12.15` and *that* is what forces the whole
+chain out.  Move `U12` far enough north and the barrel survives, the feedback net
+is never opened, and `U12.3` needs only a ~2 mm local link.
+
+    the barrel survives if U12 cy  <  97.325 mm
+    L1 must clear SW9's NPTH at (66.700, 89.900) AND the .kicad_dru rule
+      "SWITCH_NODE to I2C separation" (0.500 mm) against /I2C_SDA_INT's
+      barrel at (65.250, 90.400)  ->  L1 cy  >=  93.0 mm
+    which forces                       U12 cy  >=  97.37 mm
+    shortfall                                      0.045 mm
+
+Measured, not inferred: at `L1` cy 92.500 the candidate draws
+`npth_inside_courtyard SW9 vs L1` and **two** `SWITCH_NODE to I2C separation`
+clearance errors.
+
+**RECOMMENDATION: the 4.55 x 4.55 mm `L1` is 0.045 mm too large for this stack of
+constraints.  Replace it with a 3.0 x 3.0 mm-class 1.5 uH inductor of equal `Isat`
+and `DCR`** — a priced, sourced BOM change, not a routing flag.  With it `U12` sits
+at cy 97.0-97.3, the `V3V3_FB` barrel survives untouched, the feedback net never
+opens, and the island jumper's **17** becomes the promoted number.
+
+**NEXT:** (1) source the smaller `L1`, then re-run `evidence/d696-build4.sh` with
+`U12` at cy 97.0 and `L1` at its new courtyard — everything else in this decision
+is already measured and reproducible.  (2) `+3V3` `U5.2` through a new 100 k 0402
+(D-684).  (3) D-693's owner decision on `U11` remains **OPEN**.
+
 # D-696 · 2026-09-12 · Demo — **THE THREE `U12` CONTROL STRAPS WERE 50 mm FROM THEIR PINS AND THEIR COPPER IS TWO OF `BQ25185_SYS`'s FIVE EDGES; THE 90° ROTATION MAKES BOTH SWITCH NODES STRAIGHT; AND THE WHOLE RE-FLOORPLAN IS 18 AGAINST 18 BECAUSE THE `SYS` RAIL REACHES `U12` THROUGH A 25.850 mm POUR ARM THAT PINCHES TO 0.200 mm**
 
     authority  2f456279cb9540f5e29a2a9b2fbc60a6ad761e0ec33253f2802c4ada83aebbc4

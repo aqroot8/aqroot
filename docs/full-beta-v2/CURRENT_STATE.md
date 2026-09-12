@@ -41,6 +41,55 @@
 > `verify_promotion` PASS and `protected_copper` showing exactly one protected
 > net moved.  `U14.7` is on the bus.  This board has **no open owner decision**.
 
+- **Demo D-696 addendum (THE RE-FLOORPLAN DOES REACH 17 AGAINST 18 AND THE
+  INSTRUMENT IS THE ISLAND JUMPER AT THE CLASS MINIMUM; BUT `/01_POWER_TREE/V3V3_FB`'s
+  SHORTEST ROUTE AND THAT JUMPER WANT THE SAME CORRIDOR AND THE BOARD ADMITS
+  EXACTLY ONE):**  **NO COPPER PROMOTED.**  Authority **UNCHANGED**; 18 -> 18;
+  `hardware/demo/kicad`, `hardware/demo/fab`, `hardware/beta-v2` **UNTOUCHED**.
+  **(A) THE OFF-CENTRE LAUNCHER ALREADY EXISTS.**  `maze3d.Field.offcentre` is
+  env-gated on **`AQROOT_OFFCENTRE_LAUNCH`** (D-633).  D-696 §5 reported `U12.11`
+  opening at 0.400 mm because the screen was asked 0.800/0.600/0.400 and **0.500
+  was never asked**; asked, **`U12.11` OFF-CENTRE OPENS at 0.500 mm -- which IS
+  `SYS_MAIN`'s published minimum, so no licence is needed at all**
+  (`U12.10` SEALED at every rung; `C28.1` opens at the full 0.800 mm).
+  **(B) AND `--trunk-floor` CHARGES THIS SEGMENT ANOTHER SEGMENT'S CURRENT.**
+  `trunk_floor_price(SYS_MAIN)` = floor 0.500 mm, **1.441 A against a required
+  2.19 A**, `TRUNK_UNDER_PRICED`.  2.19 A is section 5's LOCAL EXCEPTION for the
+  `U21` boost, and D-689's own block says the figure ***"IS NOT THIS
+  SEGMENT'S"***; charged to the whole class it can never be met, because
+  `SYS_MAIN`'s own 0.800 mm `opt` carries 2.026 A.
+  **(C) THE ISLAND JUMPER IS THE INSTRUMENT, AND IT NEEDS NO LICENCE.**
+  `--join-islands --join-island-width 500000 --join-island-via 650000:400000`
+  with the launcher on joins `{C28.1, U12.10, U12.11}` to the body in **7.859 mm
+  of 0.500 mm track through two 0.650/0.400 mm barrels, `needs_licence` FALSE on
+  both**, 1.441 A against the class's published 1.0 A design current.
+  ***`BQ25185_SYS` 5 -> 3, board 18 -> 17***, real DRC one pre-existing violation
+  -- and §4's 25.850 mm / 0.200 mm pour arm is replaced by a REAL conductor.
+  **(D) AND THE LAST EDGE IS ONE CORRIDOR TWO NETS WANT.**  `/01_POWER_TREE/V3V3_FB`
+  `U12.3` <-> `{R39.2,R40.1}`: 5.735 mm apart, **18 src escapes and ONE dst
+  escape**, shortest admissible route **27.394 mm**.  Six instruments measured and
+  refused (STAT2 eviction, `GND` stitch deletion, `R40` relocation, a 40 mm
+  re-join, ...); the only one that CLOSES it -- deleting `U12.1`'s north-west
+  `SYS` escape -- takes `BQ25185_SYS` 3 -> 5 and the jumper will not come back.
+  **17 with the buck-boost's FEEDBACK PIN OPEN is not shippable** (a floating
+  `U12.3` is a dead 3.3 V rail) **and 18 with it closed is not an improvement.**
+  **(E) THE MOVE THAT REMOVES THE COMPETITION IS 0.045 mm SHORT.**  `V3V3_FB`
+  hangs entirely off ONE barrel at **(66.100, 99.250)** -- thirteen objects, an
+  `In2` haul to `R40` and an `In3` haul to `R39`, both terminating there -- and
+  the `U12` move swallows it under `U12.15`.  The barrel survives if `U12` cy <
+  **97.325 mm**; `L1` must clear `SW9`'s NPTH at (66.700, 89.900) and the
+  `.kicad_dru` rule *"SWITCH_NODE to I2C separation"* (0.500 mm) against
+  `/I2C_SDA_INT`'s barrel at (65.250, 90.400), which puts `L1` cy at **>= 93.0 mm**
+  and therefore `U12` cy at **>= 97.37 mm**.  **RECOMMENDATION: the 4.55 x 4.55 mm
+  `L1` is 0.045 mm too large for this stack of constraints -- replace it with a
+  3.0 x 3.0 mm-class 1.5 uH inductor of equal `Isat` and `DCR`**, a priced and
+  sourced BOM change and not a routing flag.  With it `U12` sits at cy 97.0-97.3,
+  the `V3V3_FB` barrel survives untouched, the feedback net never opens, and the
+  island jumper's **17** becomes the promoted number.
+  **NEXT:** (1) source the smaller `L1` and re-run `evidence/d696-build4.sh` with
+  `U12` at cy 97.0 -- everything else is measured and reproducible.  (2) `+3V3`
+  `U5.2` through a new 100 k 0402 (D-684).  (3) D-693's owner decision on `U11`
+  remains **OPEN**.
 - **Demo D-696 (THE THREE `U12` CONTROL STRAPS WERE 50 mm FROM THEIR PINS AND
   THEIR COPPER IS TWO OF `BQ25185_SYS`'s FIVE EDGES; THE 90-DEGREE ROTATION
   MAKES BOTH SWITCH NODES STRAIGHT; AND THE WHOLE RE-FLOORPLAN IS 18 AGAINST 18
