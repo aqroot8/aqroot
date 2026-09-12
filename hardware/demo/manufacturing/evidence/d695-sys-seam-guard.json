@@ -1,0 +1,70 @@
+{
+ "board": "hardware/demo/kicad/aqroot-demo/aqroot-Beta-v2.kicad_pcb",
+ "guards": [
+  {
+   "ends": [
+    "C24.1",
+    "C26.2"
+   ],
+   "island": null,
+   "keepout_radius": 375000,
+   "layer": "B.Cu",
+   "lkey": "B",
+   "mm": 0.7074,
+   "net": "/01_POWER_TREE/BQ25185_SYS",
+   "ok": true,
+   "point_keepout": [
+    375000,
+    375000,
+    375000,
+    375000,
+    375000,
+    375000,
+    375000,
+    375000,
+    375000
+   ],
+   "points": [
+    [
+     62605000,
+     103845000
+    ],
+    [
+     62655375,
+     103917625
+    ],
+    [
+     62705750,
+     103990250
+    ],
+    [
+     62756125,
+     104062875
+    ],
+    [
+     62806500,
+     104135500
+    ],
+    [
+     62856875,
+     104208125
+    ],
+    [
+     62907250,
+     104280750
+    ],
+    [
+     62957625,
+     104353375
+    ],
+    [
+     63008000,
+     104426000
+    ]
+   ],
+   "why": "SEAM RESERVATION -- the pour's own narrowest waist"
+  }
+ ],
+ "note": "D-695: the C24.1 / C26.2 seam of the BQ25185_SYS B.Cu pour, 0.7074 mm at its narrowest between (62.605,103.845) and (63.008,104.426).  Any foreign conductor laid across it cuts the pour in two and costs the net an edge; this reserves it so a re-routed Net-(U12-PS_SYNC) cannot put the same cut back.",
+ "schema": 1
+}

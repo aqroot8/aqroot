@@ -1,3 +1,55 @@
+# D-695 · 2026-09-12 · Demo — **THE `SYS` SEAM MERGES FOR ZERO COPPER AND IT IS GATED ON THE `U12` BAND**; AND `--join-max-mm` SILENTLY REFUSED A 38.5 mm ROUTE THAT EXISTS
+
+    authority  2f456279cb9540f5e29a2a9b2fbc60a6ad761e0ec33253f2802c4ada83aebbc4
+            -> 2f456279cb9540f5e29a2a9b2fbc60a6ad761e0ec33253f2802c4ada83aebbc4   UNCHANGED
+    retained open edges 18 -> 18
+    `hardware/demo/kicad`, `hardware/demo/fab`, `hardware/beta-v2` UNTOUCHED
+    `evidence/d695-sys-seam-is-gated-on-the-u12-band.json`
+
+**NO COPPER PROMOTED.**  D-687 §3 measured that deleting `Net-(U12-PS_SYNC)`'s
+copper merges two `BQ25185_SYS` pour islands *with zero new copper*.  This asks
+whether that edge is collectable now, and answers it in three arms.
+
+## 1. THE SEAM, RE-MEASURED EXACTLY
+
+The two `B.Cu` islands carrying `C24.1` and `C26.2` come within **0.7074 mm**
+of each other, between **(62.605, 103.845)** and **(63.008, 104.426)**,
+midpoint **(62.806, 104.136)** — D-687's 0.701 mm figure reproduced.
+`Net-(U12-PS_SYNC)`'s copper is the whole cut.
+
+## 2. THREE ARMS
+
+**(a) evict `PS_SYNC` whole, `--join-max-mm 8`.**  `SYS` **merges**, and
+`PS_SYNC` is `TOO_LONG` — *"38.502 mm of copper exceeds the 8.0 mm per-join
+bound"*.  ***The refusal was the FLAG, not the board.***  `--join-max-mm` is
+**both** the residual-join bound **and** the per-join length cap on the maze,
+and 8 mm had been inherited from the former.  18 → 19, refused.
+
+**(b) no length bound.**  `PS_SYNC` re-routes **whole, 68.740 mm / 4 vias** —
+and `SYS` does **not** improve, because the re-route **puts the same cut back**.
+The seam is not incidental to `PS_SYNC`'s path; it *is* its path.  18 → 18.
+
+**(c) no length bound, SEAM RESERVED.**  A nine-point tube on `B.Cu` at
+0.375 mm keep-out over the waist (`evidence/d695-sys-seam-guard.json`), and the
+seam holds: **`BQ25185_SYS` merges — `stitch+join+islands`, ZERO new copper,
+5 → 4** — and `PS_SYNC` re-routes in **30.238 mm / 2 vias**… but only its
+`TP14.1` ↔ `R42.2` pair.  18 → 18.
+
+## 3. THE RESIDUAL IS THE `U12` BAND AGAIN
+
+    {TP14.1, R42.2} <-> {U12.13}   gap 33.180 mm   NO_PATH at 0.200 mm
+                                   src escapes 17, dst escapes 2
+
+`U12.13` **can launch** — two escapes — and has no corridor.  It sits in `U12`'s
+1.205 mm south band, whose only westward drain is D-694's **0.475 mm `C24`
+slot**, which already carries `Net-(U12-PG)`.
+
+***`BQ25185_SYS` 5 → 4 is available for ZERO new copper the moment `U12`'s band
+opens***, and the reservation that makes it safe is written and kept.
+
+**NEXT:** unchanged — D-693's owner decision, then the `U12` band, at which
+point this edge falls out for free.
+
 # D-694 · 2026-09-11 · Demo — **THE `U12` POCKET HAS FOUR BOUNDARIES AND EVERY OCCUPANT IS JUSTIFIED; AND TWO OF THE THREE OVER-SUBSCRIBED POCKETS ARE THE SAME 3.355 mm RIBBON AGAINST THE LOCKED EAST EDGE**
 
     authority  2f456279cb9540f5e29a2a9b2fbc60a6ad761e0ec33253f2802c4ada83aebbc4

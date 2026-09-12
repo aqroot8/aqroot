@@ -1,0 +1,147 @@
+{
+  "arms": [
+    {
+      "connectivity": {
+        "nets_improved": [
+          "/01_POWER_TREE/BQ25185_SYS"
+        ],
+        "nets_regressed": [
+          "Net-(U12-PS_SYNC)"
+        ],
+        "open_retained_nets_after": 13,
+        "open_retained_nets_before": 12,
+        "retained_open_edges_after": 19,
+        "retained_open_edges_before": 18
+      },
+      "drc": {
+        "lib_footprint_issues": 199,
+        "solder_mask_bridge": 1
+      },
+      "name": "evict PS_SYNC whole, --join-max-mm 8",
+      "note": "SYS MERGES with ZERO new copper and PS_SYNC is TOO_LONG -- and the refusal is the FLAG, not the board: '38.502 mm of copper exceeds the 8.0 mm per-join bound'.  --join-max-mm is also the per-join length cap, and 8 mm was inherited from the residual join.",
+      "refused_clauses": [
+        "board_improved",
+        "no_regression"
+      ],
+      "routed": [
+        {
+          "mm": null,
+          "net": "Net-(U12-PS_SYNC)",
+          "ok": false,
+          "reason": "TOO_LONG",
+          "vias": null
+        },
+        {
+          "mm": 0,
+          "net": "/01_POWER_TREE/BQ25185_SYS",
+          "ok": true,
+          "reason": null,
+          "vias": 0
+        }
+      ]
+    },
+    {
+      "connectivity": {
+        "nets_improved": [],
+        "nets_regressed": [],
+        "open_retained_nets_after": 12,
+        "open_retained_nets_before": 12,
+        "retained_open_edges_after": 18,
+        "retained_open_edges_before": 18
+      },
+      "drc": {
+        "lib_footprint_issues": 199,
+        "solder_mask_bridge": 1
+      },
+      "name": "evict PS_SYNC whole, no length bound",
+      "note": "PS_SYNC re-routes whole at 68.740 mm / 4 vias -- and SYS does NOT improve, because the re-route puts the SAME cut back.  The seam is not incidental to PS_SYNC's path; it IS its path.",
+      "refused_clauses": [
+        "board_improved"
+      ],
+      "routed": [
+        {
+          "mm": 68.74,
+          "net": "Net-(U12-PS_SYNC)",
+          "ok": true,
+          "reason": null,
+          "vias": 4
+        },
+        {
+          "mm": 0,
+          "net": "/01_POWER_TREE/BQ25185_SYS",
+          "ok": false,
+          "reason": null,
+          "vias": 0
+        }
+      ]
+    },
+    {
+      "connectivity": {
+        "nets_improved": [
+          "/01_POWER_TREE/BQ25185_SYS"
+        ],
+        "nets_regressed": [
+          "Net-(U12-PS_SYNC)"
+        ],
+        "open_retained_nets_after": 13,
+        "open_retained_nets_before": 12,
+        "retained_open_edges_after": 18,
+        "retained_open_edges_before": 18
+      },
+      "drc": {
+        "lib_footprint_issues": 199,
+        "solder_mask_bridge": 1
+      },
+      "name": "evict PS_SYNC whole, no length bound, SEAM RESERVED",
+      "note": "the seam holds: SYS MERGES (mode stitch+join+islands, ZERO new copper, 5 -> 4) and PS_SYNC re-routes in 30.238 mm / 2 vias -- but only its TP14.1 <-> R42.2 pair.  U12.13 is left at 1 open edge.",
+      "refused_clauses": [
+        "board_improved",
+        "no_regression"
+      ],
+      "routed": [
+        {
+          "mm": 30.238,
+          "net": "Net-(U12-PS_SYNC)",
+          "ok": true,
+          "reason": null,
+          "vias": 2
+        },
+        {
+          "mm": 0,
+          "net": "/01_POWER_TREE/BQ25185_SYS",
+          "ok": true,
+          "reason": null,
+          "vias": 0
+        }
+      ]
+    }
+  ],
+  "authority_unchanged": true,
+  "board_sha256": "2f456279cb9540f5e29a2a9b2fbc60a6ad761e0ec33253f2802c4ada83aebbc4",
+  "decision": "D-695",
+  "kept": {
+    "guard": "evidence/d695-sys-seam-guard.json -- one 9-point tube on B.Cu over the seam at 0.375 mm keep-out, exempting the pour's own net, ready for the transaction that opens the band",
+    "lesson": "--join-max-mm is BOTH the residual-join bound AND the per-join length cap on the maze; inheriting 8 mm from the former silently refused a 38.5 mm route that exists"
+  },
+  "net_result": "18 -> 18 in every arm.  BQ25185_SYS 5 -> 4 is available the moment U12's band opens, at a cost of ZERO new copper, and the seam reservation that makes it safe is written and kept (evidence/d695-sys-seam-guard.json).",
+  "question": "D-687 measured that deleting Net-(U12-PS_SYNC)'s copper merges two BQ25185_SYS pour islands with ZERO new copper; is that edge collectable now that the net can be re-routed",
+  "schema": 1,
+  "the_residual": {
+    "dst_escapes": 2,
+    "gap_mm": 33.18,
+    "pair": "{TP14.1, R42.2} <-> {U12.13}",
+    "reading": "U12.13 CAN launch -- two escapes -- and has no corridor.  It sits in U12's 1.205 mm south band, and its only westward drain is D-694's 0.475 mm C24 slot, which already carries Net-(U12-PG).  ***The SYS seam edge is worth exactly one edge and it is GATED ON THE U12 BAND***, which is the second of the board's three over-subscribed pockets.",
+    "reason": "NO_PATH at 0.200 mm",
+    "src_escapes": 17
+  },
+  "the_seam": {
+    "d687_figure_mm": 0.701,
+    "measured_here": "the two BQ25185_SYS B.Cu islands that carry C24.1 and C26.2 come within 0.7074 mm of each other, between (62.605,103.845) and (63.008,104.426), midpoint (62.806,104.136)",
+    "reproduced_mm": 0.7074,
+    "what_crosses_it": "Net-(U12-PS_SYNC), and its copper is the whole cut"
+  },
+  "verification": {
+    "beta_v2_untouched": true,
+    "copper": "NONE PROMOTED; authority unchanged at 2f456279"
+  }
+}

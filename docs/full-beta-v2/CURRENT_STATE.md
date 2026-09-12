@@ -41,6 +41,34 @@
 > `verify_promotion` PASS and `protected_copper` showing exactly one protected
 > net moved.  `U14.7` is on the bus.  This board has **no open owner decision**.
 
+- **Demo D-695 (THE `SYS` SEAM MERGES FOR ZERO COPPER AND IS GATED ON THE `U12`
+  BAND; AND `--join-max-mm` SILENTLY REFUSED A 38.5 mm ROUTE THAT EXISTS):**
+  **NO COPPER PROMOTED.**  Authority **UNCHANGED** at
+  `2f456279cb9540f5e29a2a9b2fbc60a6ad761e0ec33253f2802c4ada83aebbc4`; 18 -> 18;
+  `hardware/demo/kicad`, `hardware/demo/fab`, `hardware/beta-v2` **UNTOUCHED**
+  (`evidence/d695-sys-seam-is-gated-on-the-u12-band.json`).
+  **(1) THE SEAM, EXACTLY.**  The two `B.Cu` islands carrying `C24.1` and
+  `C26.2` come within **0.7074 mm** between (62.605,103.845) and
+  (63.008,104.426), midpoint (62.806,104.136) -- D-687's 0.701 mm reproduced.
+  **(2) THREE ARMS.**  (a) evict `PS_SYNC` whole with `--join-max-mm 8`: `SYS`
+  MERGES and `PS_SYNC` is `TOO_LONG` -- ***the refusal was the FLAG***, since
+  `--join-max-mm` is BOTH the residual-join bound AND the per-join length cap
+  on the maze, and 8 mm was inherited from the former (*"38.502 mm exceeds the
+  8.0 mm per-join bound"*).  (b) no bound: `PS_SYNC` re-routes WHOLE at
+  68.740 mm / 4 vias and `SYS` does NOT improve, because the re-route ***puts
+  the same cut back*** -- the seam is not incidental to its path, it IS its
+  path.  (c) no bound + the seam RESERVED (a 9-point `B.Cu` tube at 0.375 mm,
+  `evidence/d695-sys-seam-guard.json`): **`BQ25185_SYS` MERGES, ZERO new
+  copper, 5 -> 4**, and `PS_SYNC` re-routes in 30.238 mm / 2 vias -- but only
+  its `TP14.1` <-> `R42.2` pair.
+  **(3) THE RESIDUAL IS THE `U12` BAND AGAIN.**  `{TP14.1,R42.2}` <->
+  `{U12.13}`, gap 33.180 mm, `NO_PATH` at 0.200 mm, **17 src / 2 dst escapes**
+  -- `U12.13` CAN launch and has no corridor, and its only westward drain is
+  D-694's 0.475 mm `C24` slot, already carrying `Net-(U12-PG)`.
+  ***`BQ25185_SYS` 5 -> 4 is available for ZERO new copper the moment the band
+  opens***, and the reservation that makes it safe is written and kept.
+  **NEXT:** unchanged -- D-693's owner decision, then the `U12` band, at which
+  point this edge falls out for free.
 - **Demo D-694 (THE `U12` POCKET HAS FOUR BOUNDARIES AND EVERY OCCUPANT IS
   JUSTIFIED; AND TWO OF THE THREE OVER-SUBSCRIBED POCKETS ARE THE SAME 3.355 mm
   RIBBON AGAINST THE LOCKED EAST EDGE):**  **NO COPPER PROMOTED.**  Authority
