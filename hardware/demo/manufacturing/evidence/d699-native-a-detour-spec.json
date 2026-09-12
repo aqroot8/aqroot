@@ -1,0 +1,106 @@
+{
+ "schema": 1,
+ "detours": [
+  {
+   "net": "/NATIVE_A",
+   "layer": "F.Cu",
+   "max_mm": 26.0,
+   "tracks": [
+    {
+     "layer": "F.Cu",
+     "a_mm": [
+      51.575,
+      137.95
+     ],
+     "b_mm": [
+      59.025,
+      138.475
+     ],
+     "width_mm": 0.2
+    },
+    {
+     "layer": "F.Cu",
+     "a_mm": [
+      59.025,
+      138.475
+     ],
+     "b_mm": [
+      59.5,
+      139.025
+     ],
+     "width_mm": 0.2
+    },
+    {
+     "layer": "F.Cu",
+     "a_mm": [
+      59.5,
+      139.025
+     ],
+     "b_mm": [
+      59.475,
+      143.425
+     ],
+     "width_mm": 0.2
+    }
+   ]
+  }
+ ],
+ "reserve": [
+  {
+   "x_mm": 53.0,
+   "y_mm": 138.2,
+   "r_mm": 0.45,
+   "exempt": [
+    "/USB_D_MCU_N"
+   ],
+   "layers": [
+    "F"
+   ]
+  },
+  {
+   "x_mm": 54.4,
+   "y_mm": 138.2,
+   "r_mm": 0.45,
+   "exempt": [
+    "/USB_D_MCU_N"
+   ],
+   "layers": [
+    "F"
+   ]
+  },
+  {
+   "x_mm": 55.5,
+   "y_mm": 138.2,
+   "r_mm": 0.45,
+   "exempt": [
+    "/USB_D_MCU_N"
+   ],
+   "layers": [
+    "F"
+   ]
+  },
+  {
+   "x_mm": 56.7,
+   "y_mm": 138.3,
+   "r_mm": 0.4,
+   "exempt": [
+    "/USB_D_MCU_N"
+   ],
+   "layers": [
+    "F"
+   ]
+  },
+  {
+   "x_mm": 57.9,
+   "y_mm": 138.3,
+   "r_mm": 0.4,
+   "exempt": [
+    "/USB_D_MCU_N"
+   ],
+   "layers": [
+    "F"
+   ]
+  }
+ ],
+ "note": "D-699: /NATIVE_A is a 20 mm single-layer F.Cu haul from U1.31 that runs east along y 137.95..138.475 THROUGH the gap between U1's south pad row (y<=137.500) and the USB series resistors R33/R34 (y>=138.755), then turns south at x 59.5 and walls the resistors in on the east. That leaves 0.345 mm on each side of it and /USB_D_MCU_N -- the MCU half of the USB data pair -- NO_PATH at 0.250 mm. Relayed between its own two ends around five 0.40-0.45 mm F.Cu discs that /USB_D_MCU_N is exempt from; the net is a community-header GPIO and may take In2."
+}

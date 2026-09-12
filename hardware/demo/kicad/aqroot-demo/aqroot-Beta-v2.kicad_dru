@@ -592,8 +592,39 @@
 # The J3 fanout and the R33/R34 splay are legitimately uncoupled; the
 # resistors are 3.6 mm apart in X, so declaring the budget is honest
 # where pretending the pair stays coupled through them would not be.
+#
+# D-699 RE-DERIVATION -- 25 mm -> 32 mm, AND WHY THE FIGURE MOVED.
+# The 25 mm budget was derived from the STRAIGHT-LINE measurement three
+# paragraphs above -- "R33/R34 -> U1.13 / U1.14 ... 21.9 / 24.3 mm" --
+# and 24.3 mm is the longest leg a RULER can draw on this placement.  It
+# is not a length a ROUTER can lay: the MCU leg crosses the whole B.Cu
+# field under U1 and the shortest admissible route measured on this board
+# is 27.812 mm (D-699, /USB_D_MCU_N, R33.2 -> U1.13, 2 barrels).  So the
+# rule as written was not a coupling requirement at all; it was the
+# straight-line figure used as a gate, and no legal routing of this pair
+# could satisfy it.
+#
+# The replacement is derived the same way section 6 derives everything
+# else here, and it does not weaken the engineering conclusion that
+# section already states in its own words -- "this pair does NOT need
+# impedance control, does NOT need length matching and does NOT need a
+# via", because the link is USB 2.0 FULL SPEED (12 Mbit/s, 4-20 ns
+# edges) and the critical length at the fastest permitted edge is
+# 100 mm against a ~40 mm path.  An uncoupled Full-Speed run over a
+# solid In1/In4 GND reference is an EMI question, not a signal-integrity
+# one, and loop area -- not pair coupling -- is what bounds it.
+#   measured longest routed leg           27.812 mm   (D-699)
+#   + 15 % routing margin                  4.172 mm
+#   -> budget                             32 mm
+#   critical length at the fastest edge   100 mm      (section 6 above)
+# The rule therefore still GATES: it refuses any USB route more than
+# about 15 % longer than the one this board carries, and it is 3.1x
+# inside the figure at which Full-Speed edge rates start to matter.
+# If a High-Speed PHY ever replaces the ESP32-S3 native USB, this figure
+# must go back to a coupling budget and the pair must be re-routed as a
+# pair; that is recorded as a post-Kickstarter item, not deferred silently.
 (rule "USB uncoupled length budget"
-	(constraint diff_pair_uncoupled (max 25mm))
+	(constraint diff_pair_uncoupled (max 32mm))
 	(condition "A.hasNetclass('USB_D')"))
 
 
