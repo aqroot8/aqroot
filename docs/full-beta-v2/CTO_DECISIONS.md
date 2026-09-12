@@ -107,6 +107,47 @@ opens, and the island jumper's **17** becomes the promoted number.
 is already measured and reproducible.  (2) `+3V3` `U5.2` through a new 100 k 0402
 (D-684).  (3) D-693's owner decision on `U11` remains **OPEN**.
 
+## F. ADDENDUM 2 — THE WINDOW, MEASURED FROM THE FOOTPRINTS
+
+`L1` is a **Coilcraft `XFL4020`**: 4.0 x 4.0 mm body, 0.98 x 3.4 mm pads at
++/- 1.185 mm, `B.CrtYd` 4.59 mm square.  The four numbers that bind:
+
+    SW9's NPTH   (66.700, 89.900) drill 0.9 -> edge 90.350   L1 cy >= 92.645
+    /I2C_SDA_INT barrel (65.250, 90.400) dia 0.6 -> edge 90.700,
+      against the .kicad_dru rule "SWITCH_NODE to I2C separation" 0.500 mm,
+      with L1.2's pad top at cy - 1.700                      L1 cy >= 92.900
+    U12's courtyard half                                     U12 cy >= L1 cy + 4.3875
+    /01_POWER_TREE/V3V3_FB's hub barrel (66.100, 99.250) dia 0.6 -> top edge
+      98.950, U12.15's bottom at cy + 1.425, clearance 0.200 U12 cy <= 97.325
+
+**The window is [97.2875, 97.325] — 0.0375 mm wide — and it needs the `I2C`
+separation met at EXACTLY 0.500 mm.**  Moving `L1` east does not save it: `L1.2`'s
+pad spans `cx - 1.675 .. cx - 0.695` and the barrel spans 64.950..65.550, so they
+OVERLAP in x until `cx >= 67.725`, at which point `L1`'s courtyard right edge is
+70.020 and collides with the east ribbon column.  Both controls measured: at
+`L1` (66.600, 92.500) and at (67.100, 92.500) the candidate draws the same three
+errors — `npth_inside_courtyard` plus two `SWITCH_NODE to I2C separation`.
+
+**TWO REPAIRS, AND THE CHEAPER ONE IS THREE OBJECTS.**
+
+  1. **RECOMMENDED — relay three ordinary objects of `/I2C_SDA_INT`** between
+     their own two ends, the D-679 form: the `B.Cu` 0.2 mm track
+     (64.300,87.100)->(65.250,90.400), the 0.6 mm barrel at (65.250,90.400) and
+     the `F.Cu` 0.2 mm track (65.250,90.400)->(61.850,93.850).  Then only `SW9`'s
+     NPTH binds, `L1 cy >= 92.645`, `U12 cy >= 97.0375`, and the window is
+     **0.29 mm**.
+  2. Replace `L1` with a 3.0 x 3.0 mm-class 1.5 uH inductor of equal `Isat` and
+     `DCR`.  Courtyard half 1.75 mm -> `U12 cy >= 96.49`, about **0.8 mm** of
+     window, and 0.8 mm of extra room in the whole `U12`/`L1` column.  Costs a
+     priced, sourced BOM change and a new footprint.
+
+**NEXT, RESTATED:** relay those three `/I2C_SDA_INT` objects; then re-run
+`evidence/d696-build5.sh` with `L1` at cy 92.700 and `U12` at cy 97.150; then
+`--join-islands --join-island-width 500000 --join-island-via 650000:400000` with
+`AQROOT_OFFCENTRE_LAUNCH=1`.  The `V3V3_FB` hub barrel survives, the feedback net
+is never opened, and **17** is the number the gate should see.
+
+
 # D-696 · 2026-09-12 · Demo — **THE THREE `U12` CONTROL STRAPS WERE 50 mm FROM THEIR PINS AND THEIR COPPER IS TWO OF `BQ25185_SYS`'s FIVE EDGES; THE 90° ROTATION MAKES BOTH SWITCH NODES STRAIGHT; AND THE WHOLE RE-FLOORPLAN IS 18 AGAINST 18 BECAUSE THE `SYS` RAIL REACHES `U12` THROUGH A 25.850 mm POUR ARM THAT PINCHES TO 0.200 mm**
 
     authority  2f456279cb9540f5e29a2a9b2fbc60a6ad761e0ec33253f2802c4ada83aebbc4

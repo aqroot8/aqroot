@@ -41,6 +41,27 @@
 > `verify_promotion` PASS and `protected_copper` showing exactly one protected
 > net moved.  `U14.7` is on the bus.  This board has **no open owner decision**.
 
+- **Demo D-696 addendum 2 (THE WINDOW, MEASURED FROM THE FOOTPRINTS: 0.0375 mm
+  WIDE, AND THREE ORDINARY OBJECTS OPEN IT TO 0.29 mm):**  **NO COPPER
+  PROMOTED.**  `L1` is a **Coilcraft `XFL4020`** -- 4.0 x 4.0 mm body, 0.98 x
+  3.4 mm pads, 4.59 mm courtyard.  `SW9`'s NPTH at (66.700, 89.900) drill 0.9
+  gives `L1 cy >= 92.645`; `/I2C_SDA_INT`'s 0.6 mm barrel at (65.250, 90.400)
+  under the `.kicad_dru` rule *"SWITCH_NODE to I2C separation"* (0.500 mm) gives
+  `L1 cy >= 92.900`; `U12`'s courtyard gives `U12 cy >= L1 cy + 4.3875`; and
+  `V3V3_FB`'s hub barrel at (66.100, 99.250) gives `U12 cy <= 97.325`.  **The
+  window is [97.2875, 97.325] and it needs the I2C rule met at EXACTLY its
+  bar.**  Moving `L1` east does not save it -- `L1.2`'s pad and the barrel
+  OVERLAP in x until `cx >= 67.725`, where `L1`'s courtyard hits the ribbon
+  column (both controls measured at `L1` cx 66.600 and 67.100).
+  **THE REPAIR IS THREE OBJECTS:** relay `/I2C_SDA_INT`'s `B.Cu`
+  (64.300,87.100)->(65.250,90.400), its 0.6 mm barrel at (65.250,90.400) and its
+  `F.Cu` (65.250,90.400)->(61.850,93.850) between their own ends (D-679's
+  `--detour-spec` form).  Then only the NPTH binds, `U12 cy >= 97.0375`, and the
+  window is **0.29 mm**.  The alternative is a 3.0 x 3.0 mm-class 1.5 uH `L1`
+  (about 0.8 mm of window, a sourced BOM change).
+  **NEXT:** relay those three objects, re-run `evidence/d696-build5.sh` with `L1`
+  cy 92.700 and `U12` cy 97.150, then the island jumper -- **17** is the number
+  the gate should then see.
 - **Demo D-696 addendum (THE RE-FLOORPLAN DOES REACH 17 AGAINST 18 AND THE
   INSTRUMENT IS THE ISLAND JUMPER AT THE CLASS MINIMUM; BUT `/01_POWER_TREE/V3V3_FB`'s
   SHORTEST ROUTE AND THAT JUMPER WANT THE SAME CORRIDOR AND THE BOARD ADMITS

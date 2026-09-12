@@ -579,5 +579,138 @@
       },
       "recommendation": "the 4.55 x 4.55 mm L1 is 0.045 mm too big for this stack-up of constraints. The clean fix is a SMALLER 1.5 uH inductor (3.0 x 3.0 mm class) with equal Isat and DCR -- a BOM change, priced and sourced, not a routing flag. With it, U12 sits at cy 97.0-97.3, the V3V3_FB barrel survives untouched, the FB net never opens, and the island jumper's 17 becomes the promoted number."
     }
+  },
+  "addendum_2_the_window_measured_from_the_real_footprints": {
+    "statement": "The 0.045 mm shortfall in addendum section 5 is now measured from the footprints themselves rather than inferred, and it is a 0.0375 mm WINDOW that also requires the I2C separation rule to be met at EXACTLY its 0.500 mm bar. Two repairs are named and priced; the cheaper one moves three ordinary objects.",
+    "L1_is_a_Coilcraft_XFL4020": {
+      "fpid": "AQROOT_Beta:Coilcraft_XFL4020",
+      "body_mm": [
+        4.0,
+        4.0
+      ],
+      "pads_mm": {
+        "size": [
+          0.98,
+          3.4
+        ],
+        "offset_x_mm": 1.185
+      },
+      "B_CrtYd_mm": 4.59,
+      "half_pad_height_mm": 1.7,
+      "half_courtyard_mm": 2.295
+    },
+    "the_four_binding_numbers": {
+      "SW9_NPTH": {
+        "at_mm": [
+          66.7,
+          89.9
+        ],
+        "drill_mm": 0.9,
+        "edge_mm": 90.35,
+        "gives": "L1 cy >= 92.645"
+      },
+      "I2C_SDA_INT_barrel": {
+        "at_mm": [
+          65.25,
+          90.4
+        ],
+        "dia_mm": 0.6,
+        "edge_mm": 90.7,
+        "rule": "SWITCH_NODE to I2C separation, 0.500 mm",
+        "gives": "L1 cy >= 92.900",
+        "and_x_does_not_save_it": "L1.2's pad spans cx-1.675 .. cx-0.695 and the barrel spans 64.950 .. 65.550, so they OVERLAP in x until cx >= 67.725, at which point L1's courtyard right edge is 70.020 and collides with the east ribbon column"
+      },
+      "U12_courtyard": {
+        "half_mm": 2.0925,
+        "gives": "U12 cy >= L1 cy + 2.295 + 2.0925"
+      },
+      "V3V3_FB_hub_barrel": {
+        "at_mm": [
+          66.1,
+          99.25
+        ],
+        "dia_mm": 0.6,
+        "top_edge_mm": 98.95,
+        "U12_15_bottom": "cy + 1.425",
+        "clearance_mm": 0.2,
+        "gives": "U12 cy <= 97.325"
+      }
+    },
+    "the_window": {
+      "lower_mm": 97.2875,
+      "upper_mm": 97.325,
+      "width_mm": 0.0375,
+      "and_it_needs_the_I2C_rule_met_at_exactly": 0.5,
+      "verdict": "NOT SOUND -- two independent 0.01-0.04 mm margins on a switching converter"
+    },
+    "measured_controls": [
+      {
+        "L1_cy_mm": 92.5,
+        "L1_cx_mm": 66.6,
+        "drc": [
+          "npth_inside_courtyard SW9 vs L1",
+          "clearance L1.2 vs /I2C_SDA_INT track",
+          "clearance L1.2 vs /I2C_SDA_INT via"
+        ]
+      },
+      {
+        "L1_cy_mm": 92.5,
+        "L1_cx_mm": 67.1,
+        "drc": [
+          "npth_inside_courtyard SW9 vs L1",
+          "clearance L1.2 vs /I2C_SDA_INT track",
+          "clearance L1.2 vs /I2C_SDA_INT via"
+        ],
+        "note": "moving L1 0.5 mm east changed nothing -- the pads overlap in x"
+      }
+    ],
+    "repair_1_move_three_ordinary_objects_RECOMMENDED": {
+      "objects": [
+        {
+          "kind": "track",
+          "layer": "B.Cu",
+          "from_mm": [
+            64.3,
+            87.1
+          ],
+          "to_mm": [
+            65.25,
+            90.4
+          ],
+          "width_mm": 0.2
+        },
+        {
+          "kind": "via",
+          "at_mm": [
+            65.25,
+            90.4
+          ],
+          "dia_mm": 0.6
+        },
+        {
+          "kind": "track",
+          "layer": "F.Cu",
+          "from_mm": [
+            65.25,
+            90.4
+          ],
+          "to_mm": [
+            61.85,
+            93.85
+          ],
+          "width_mm": 0.2
+        }
+      ],
+      "net": "/I2C_SDA_INT",
+      "form": "--detour-spec (D-679: when an authorization names objects, relay them between their own ends)",
+      "effect": "only SW9's NPTH then binds -> L1 cy >= 92.645 -> U12 cy >= 97.0375, a 0.29 mm window",
+      "cost": "three objects of ordinary copper, relaid between their own two ends"
+    },
+    "repair_2_a_smaller_inductor": {
+      "part": "a 3.0 x 3.0 mm-class 1.5 uH inductor of equal Isat and DCR (XFL3012 class)",
+      "effect": "courtyard half 1.75 mm -> U12 cy >= 96.49, about 0.8 mm of window",
+      "cost": "a priced and sourced BOM change plus a new footprint",
+      "also_buys": "0.8 mm of extra room in the whole U12/L1 column"
+    }
   }
 }
