@@ -1,3 +1,88 @@
+# D-701 · 2026-09-12 · Demo — **THE `U11` RE-FLOORPLAN IS TAKEN UNDER THE OWNER'S APPROVAL, THE `BAT_PROTECTED_P` EXCEPTION IS SPENT IN A DRY RUN, AND THE ANSWER IS THAT THE MOVE WAS NEVER THE BLOCKER: `U11`'s OWN LAND PATTERN GIVES THE `.kicad_dru`'s NECKING PAIR EXACTLY ZERO MARGIN**
+
+    authority  eca812476fbcc6277462ca4e37c0aaa9ee3562bcc5955ba32491b6522832b82c  UNCHANGED
+    retained open edges 16 -> 16.  NO COPPER PROMOTED.  NO RULE PROMOTED.
+    `evidence/d701-u11-refloorplan-gate.json`, `-stat-pair-at-0p15-neck.json`,
+    `-east-ribbon-evicted.json`, `-u11-pocket-straps-evicted.json`; candidate in `w/d701`
+
+The owner APPROVED D-693 (commit `7564846`) with the direction *"proceed
+autonomously with the `U11` re-floorplan using engineering judgment"*, and
+D-694's outline enlargement explicitly NOT approved.  The re-floorplan was built
+and routed end to end.
+
+## 1. THE MOVE IS CLEAN AND IT WAS MADE
+
+`R37` west 0.900 mm (its own `ACC_POWER_FAULT_N` and `ISET` copper released; west
+of that `U3`'s courtyard and a 0.6 mm barrel stop it at 1.400 mm) and then `U11`
+west 1.200 mm, **36 objects released including the whole `BAT_PROTECTED_P` taper
+from `U11.2` down to `C36.1`** — the exact scope the approval names.  Only `R37`
+ever conflicted; `C36`, `C23`, `C27`, `R36` and `J8` (which is `F.Cu` SMD and
+overlaps `U11` in plan without touching it) all stay.  The east fan-out pocket
+goes from **3.03 mm to 4.23 mm**.
+
+## 2. AND THE BOARD CAME BACK WORSE, FOR ONE REASON REPEATED FIVE TIMES
+
+    23 open edges after the move, 18 after routing, against an authority of 16
+
+    /BQ25185_STAT2       U11.3  NO LEGAL ESCAPE at >= 0.200 mm
+    /01_POWER_TREE/ISET  U11.8  NO LEGAL ESCAPE at >= 0.200 mm
+    BAT_PROTECTED_P      U11.2  NO LEGAL ESCAPE at >= 1.000 mm
+    BQ25185_SYS          U11.1  NO LEGAL ESCAPE
+    Net-(U11-TS_MR)      relaid at 138.437 mm
+
+**`U11` IS A BQ25185 WSON-10: 0.400 mm PITCH, LANDS 0.750 x 0.200 mm, SO
+ADJACENT LANDS ARE 0.200 mm APART.**  A track leaving a land on its own
+centreline owes 0.200 mm to each neighbour, and
+
+    0.400 pitch - 0.200 land = 0.200 free - 2 x 0.200 clearance
+      -> width <= 0.200 mm, AT THE BAR, WITH ZERO MARGIN
+
+— and the `.kicad_dru`'s pad-escape necking pair licenses **width 0.20 mm AND
+clearance 0.20 mm**, so the two halves of that pair cancel exactly.  D-690 said
+the same thing from the other side (*"`U11.9` and `U11.3` CAN launch, at
+0.150 mm"*; *"0.200 mm in a 0.600 mm slot is EXACTLY ZERO MARGIN"*).  **No
+`U11` land can launch at any width the board licenses, at any placement.**  That
+is why D-690, D-692, D-693 and this re-floorplan all end in the same sentence.
+
+## 3. THE ENABLING CHANGE IS ONE NUMBER, IT IS MEASURED, AND IT IS NOT SPENT
+
+Lowering that rule's floor from 0.20 mm to **0.15 mm** — board setup's own
+`min_track_width`, 1.67x JLCPCB's verified 0.09 mm multilayer minimum, and the
+width this file already licenses by name for the D-257 `FINE_ESC_*` escapes —
+**opens the launch and is measured non-vacuous: `U11.9`'s source escapes go
+1 -> 2 and `/BQ25185_STAT1` changes class from `NO_LEGAL_ESCAPE` to `NO_PATH`
+for the first time in five decisions.**  A 0.150 mm escape centred in a 0.400 mm
+pitch leaves **0.225 mm to each neighbouring land — MORE than the 0.200 mm the
+vendor's own land pattern leaves between those two lands** — so the escape is
+not the weakest geometry in the courtyard; the package is, which is exactly what
+section 9 says these rules are for.
+
+**IT IS NOT PROMOTED, BECAUSE IT LAYS NO COPPER.**  With the launch open,
+`/BQ25185_STAT1` is still `NO_PATH` on all three of its pairs, and the east
+ribbon eviction (`Net-(SW9-A)` 7 objects + `ISET` 4) does not open it either.
+
+## 4. THE REAL WALL, NAMED
+
+`U11.9` -> `U2.9` is 16.613 mm and the only band between them is y 79..81.5 at
+x 54..68, because **`SW9`'s courtyard is 8.75 x 10.0 mm (62.200..70.950,
+81.500..91.500)** and `C23`/`R36`/`R37` fill the 2.34 mm strip above it.  `SW9`
+is the user-facing power slide switch — a MECHANICAL placement, not a routing
+one.  `U11.9` -> `TP6.1` is 17.379 mm straight down the east ribbon, which
+D-694 already measured as over-subscribed against the LOCKED 72 mm east edge.
+
+***So the `U11` fan-out is not a `U11` problem.  It is `SW9`'s courtyard and the
+east ribbon, and the approved `BAT_PROTECTED_P` exception — now measured — is
+not what unlocks it.***
+
+**NEXT, IN ORDER OF MEASURED VALUE:**
+(1) the 0.150 mm necking floor, spent TOGETHER with whatever opens the
+    `U11.9` corridor, so the rule change rides with copper;
+(2) `SW9`'s placement — the only object whose courtyard bounds both the
+    `U11` -> `U2` band and `BQ25185_SYS`'s southern arm — evaluated as a
+    MECHANICAL question first, because it is the user's power switch;
+(3) `/01_POWER_TREE/ACC_5V_LX` — D-698's `C65` >= 1.3 mm east, the one
+    remaining edge whose remedy is a single measured number.
+
 # D-700 · 2026-09-12 · Demo — **THE FAB PACKAGE IS REGENERATED AND THE STANDING SUITE IS 14/14 GREEN**; AND ONE AUTHORED LICENCE WAS MEASURED VACUOUS AND WITHDRAWN
 
     authority  eca812476fbcc6277462ca4e37c0aaa9ee3562bcc5955ba32491b6522832b82c  UNCHANGED

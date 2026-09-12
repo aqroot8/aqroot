@@ -41,6 +41,27 @@
 > `verify_promotion` PASS and `protected_copper` showing exactly one protected
 > net moved.  `U14.7` is on the bus.  This board has **no open owner decision**.
 
+- **Demo D-701 (THE `U11` RE-FLOORPLAN IS TAKEN UNDER THE OWNER'S APPROVAL AND
+  THE MOVE WAS NEVER THE BLOCKER):**  **NO COPPER PROMOTED, NO RULE PROMOTED.**
+  Authority **UNCHANGED** at `eca81247`; 16 -> 16.  ***THE D-693 OWNER DECISION
+  IS CLOSED*** — the owner APPROVED it (commit `7564846`) and this decision
+  SPENT the `BAT_PROTECTED_P` exception: `R37` west 0.900 mm then `U11` west
+  1.200 mm, 36 objects released including the whole `BAT_PROTECTED_P` taper from
+  `U11.2` to `C36.1`, east fan-out pocket **3.03 -> 4.23 mm**.  **The board came
+  back at 18 against an authority of 16**, and every refusal is one sentence:
+  `U11` is a **BQ25185 WSON-10, 0.400 mm pitch, 0.750 x 0.200 mm lands, so
+  adjacent lands are 0.200 mm apart** — and the `.kicad_dru`'s pad-escape necking
+  pair licenses width 0.20 mm AND clearance 0.20 mm, which **cancel exactly**.
+  ***No `U11` land can launch at any width the board licenses, at any
+  placement.***  Lowering that floor to **0.150 mm** (board setup's own
+  `min_track_width`; 0.225 mm to each neighbour, MORE than the vendor's own
+  0.200 mm land-to-land gap) IS measured non-vacuous — `U11.9` goes 1 -> 2
+  escapes and `/BQ25185_STAT1` changes class from `NO_LEGAL_ESCAPE` to `NO_PATH`
+  for the first time in five decisions — but **it is not promoted because it
+  lays no copper**.  **THE REAL WALL IS `SW9`:** its 8.75 x 10.0 mm courtyard
+  (62.200..70.950, 81.500..91.500) plus `C23`/`R36`/`R37` leave a 2.34 mm strip
+  as the ONLY band between `U11.9` and `U2.9`, and `SW9` is the user-facing
+  power slide switch — a MECHANICAL placement question, not a routing one.
 - **Demo D-700 (THE FAB PACKAGE IS REGENERATED AND THE STANDING SUITE IS 14/14
   GREEN):**  Authority **UNCHANGED** at
   `eca812476fbcc6277462ca4e37c0aaa9ee3562bcc5955ba32491b6522832b82c`; 16 -> 16.
