@@ -712,5 +712,94 @@
       "cost": "a priced and sourced BOM change plus a new footprint",
       "also_buys": "0.8 mm of extra room in the whole U12/L1 column"
     }
+  },
+  "addendum_3_the_placement_that_costs_the_feedback_net_nothing": {
+    "statement": "There is exactly one U12 placement at which the re-floorplan costs /01_POWER_TREE/V3V3_FB NOTHING, and it is arithmetic, not search: rotate U12 +90 degrees and place it so U12.3 lands on its OWN FORMER PAD CENTRE.",
+    "the_placement": {
+      "U12": {
+        "at_mm": [
+          67.5,
+          99.5
+        ],
+        "rot_deg": 90,
+        "puts_U12_3_at_mm": [
+          66.1,
+          100.0
+        ],
+        "which_is": "the pad centre U12.3 occupied on the authority board"
+      },
+      "what_survives_untouched": [
+        "the 0.75 mm B.Cu stub (66.100,100.000) -> (66.100,99.250)",
+        "the hub barrel at (66.100, 99.250)",
+        "the In2 haul (66.100,99.250) -> (59.975,84.300) -> (55.975,77.925) -> (56.000,75.575) -> barrel (58.825,72.750) -> R40.1",
+        "the In3 haul (66.100,99.250) -> (70.075,75.425) -> barrel (67.325,72.675) -> R39.2"
+      ],
+      "clearance_that_makes_it_legal": "U12.15 then spans x 66.710..68.290, y 98.075..100.925; the hub barrel at x 66.100 clears its west edge by 0.610 mm, 0.310 mm after the barrel's own 0.300 mm radius",
+      "L1": {
+        "at_mm": [
+          67.5,
+          95.0
+        ],
+        "rot_deg": 180,
+        "freedom_mm": 2.3,
+        "note": "L1's courtyard bottom must be <= 97.4075 and the I2C separation rule needs cy >= 92.900 -- a 2.3 mm window instead of addendum 2's 0.0375 mm one",
+        "switch_nodes": "U12.7 -> L1.2 and U12.8 -> L1.1 are both 3.000 mm straight runs"
+      },
+      "the_cost": "U12's east column moves to x = 68.900 and its courtyard right edge to 69.575, so the whole east ribbon column must move from x 70.200 to about 70.950 with the 0603s rotated 90 degrees (pads at 71.425, 0.075 mm inside the 71.500 board-edge-clearance limit) and TP8/TP14 move to the south pocket",
+      "band_under_U12_mm": 2.425,
+      "against_the_authoritys": 1.205
+    },
+    "the_intermediate_state_reached_and_kept": {
+      "build": "evidence/d696-build6.sh -- U12 (66.600, 97.200) rot 90, L1 (66.600, 92.750) rot 180",
+      "plus": "a windowed eviction and relay of /I2C_SDA_INT (61.5, 86.7, 65.7, 94.3), which moved the 0.6 mm barrel at (65.250, 90.400) out of L1's way -- U3.23 <-> U2.23 relaid in 20.150 mm with 2 vias -- and cleared the last SWITCH_NODE-to-I2C clearance error",
+      "retained_open_edges": 26,
+      "real_drc": "one violation, the pre-existing MK1 solder_mask_bridge",
+      "closed_here": {
+        "Net-(U12-PG)": "R41.2 -> TP8.1 2.719 mm + R41.2 -> U12.14 2.955 mm, 0 vias",
+        "Net-(U12-PS_SYNC)": "R42.2 -> U12.13 1.918 mm + TP14.1 -> R42.2 8.862 mm, 0 vias",
+        "Net-(L1-Pad1)": "L1.1 -> U12.9 3.502 mm, 0 vias",
+        "Net-(L1-Pad2)": "L1.2 -> U12.6 3.502 mm, 0 vias",
+        "/BQ25185_STAT1": "R127.2 -> TP6.1 2.947 mm, 0 vias"
+      },
+      "still_open_there": {
+        "+3V3": 5,
+        "/01_POWER_TREE/BQ25185_SYS": 3,
+        "Net-(SW9-A)": 3,
+        "GND": 2,
+        "/01_POWER_TREE/V3V3_FB": 1
+      },
+      "arithmetic": "26 - 3 (SW9-A) - 2 (GND) - 4 (+3V3) - 1 (the SYS island jumper) = 16, with V3V3_FB the only regression"
+    },
+    "and_why_no_router_flag_reaches_V3V3_FB_there": {
+      "the_maze": "route_join aims at PADS, so U12.3's only offer is R40.1 at 25.554 mm -- NO_PATH",
+      "the_tap": {
+        "AQROOT_OFFCENTRE_LAUNCH": 1,
+        "tap_max_mm": 14,
+        "tap_pairs": 14,
+        "joined": 0,
+        "sites_offered": [
+          {
+            "at_mm": [
+              65.4269,
+              97.607
+            ],
+            "gap_mm": 0.245,
+            "layer": "I2",
+            "reason": "NO_PATH",
+            "why": "the In2 haul passes 0.245 mm from U12.3 and a barrel cannot be planted beside the pad"
+          },
+          {
+            "at_mm": [
+              66.1,
+              99.25
+            ],
+            "gap_mm": 1.792,
+            "layer": "F",
+            "reason": "NO_PATH"
+          }
+        ]
+      },
+      "conclusion": "the feedback net's junction is 0.245 mm away and unreachable, which is exactly why the placement that keeps the stub is worth more than any flag"
+    }
   }
 }

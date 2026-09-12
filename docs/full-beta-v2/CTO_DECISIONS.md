@@ -148,6 +148,55 @@ errors — `npth_inside_courtyard` plus two `SWITCH_NODE to I2C separation`.
 is never opened, and **17** is the number the gate should see.
 
 
+## G. ADDENDUM 3 — THE PLACEMENT THAT COSTS THE FEEDBACK NET NOTHING, AND IT IS ARITHMETIC
+
+`/01_POWER_TREE/V3V3_FB` is thirteen objects hanging off **one barrel at
+(66.100, 99.250)**.  There is exactly one `U12` placement at which the
+re-floorplan costs that net nothing, and it is not found by search:
+
+    rotate U12 +90 degrees and place it at (67.500, 99.500)
+      -> U12.3 lands at (66.100, 100.000)
+      -> which is the pad centre U12.3 occupied on the authority board
+
+The 0.75 mm `B.Cu` stub (66.100,100.000)->(66.100,99.250), the hub barrel, the
+`In2` haul to `R40` and the `In3` haul to `R39` **all survive untouched — the
+feedback net is never opened and needs no re-route at all.**  `U12.15` then spans
+x 66.710..68.290, and the barrel at x 66.100 clears its west edge by 0.610 mm,
+0.310 mm after the barrel's own radius.
+
+`L1` then has **2.3 mm of freedom** (courtyard bottom <= 97.4075, I2C rule
+cy >= 92.900) instead of addendum 2's 0.0375 mm window, and at (67.500, 95.000)
+rot 180 both switch nodes are **3.000 mm straight runs**.  The cost is that
+`U12`'s east column moves to x = 68.900 and its courtyard right edge to 69.575,
+so the ribbon column moves from x 70.200 to about 70.950 with the 0603s rotated
+90 degrees, and `TP8`/`TP14` go to the south pocket.  The band under `U12`
+becomes **2.425 mm** against the authority's 1.205 mm.
+
+**THE INTERMEDIATE STATE IS KEPT AND REPRODUCIBLE.**  `evidence/d696-build6.sh`
+(`U12` at (66.600, 97.200) rot 90, `L1` at (66.600, 92.750) rot 180), plus a
+windowed eviction and relay of `/I2C_SDA_INT` over (61.5, 86.7, 65.7, 94.3) that
+moved its 0.6 mm barrel at (65.250, 90.400) out of `L1`'s way -- `U3.23` <->
+`U2.23` relaid in 20.150 mm with 2 vias -- reaches **26 retained open edges with
+real DRC showing one violation, the pre-existing `MK1` bridge**:
+
+    Net-(U12-PG)       R41.2 -> TP8.1   2.719 mm  +  R41.2 -> U12.14  2.955 mm   0 vias
+    Net-(U12-PS_SYNC)  R42.2 -> U12.13  1.918 mm  +  TP14.1 -> R42.2  8.862 mm   0 vias
+    Net-(L1-Pad1)      L1.1  -> U12.9   3.502 mm                                 0 vias
+    Net-(L1-Pad2)      L1.2  -> U12.6   3.502 mm                                 0 vias
+    /BQ25185_STAT1     R127.2 -> TP6.1  2.947 mm                                 0 vias
+
+and `26 - 3 (SW9-A) - 2 (GND) - 4 (+3V3) - 1 (the island jumper) = 16`, with
+`V3V3_FB` the only regression.
+
+**AND NO ROUTER FLAG REACHES `V3V3_FB` THERE.**  `route_join` aims at PADS, so
+`U12.3`'s only offer is `R40.1` at 25.554 mm.  The TAP, with the off-centre
+launcher on, a 14 mm bound and 14 sites, offers two and closes neither: the `In2`
+haul passes **0.245 mm** from `U12.3` — and a barrel cannot be planted beside the
+pad — and the hub barrel itself is 1.792 mm away on `F`.  **The junction is a
+quarter of a millimetre away and unreachable, which is exactly why the placement
+that keeps the stub is worth more than any flag.**
+
+
 # D-696 · 2026-09-12 · Demo — **THE THREE `U12` CONTROL STRAPS WERE 50 mm FROM THEIR PINS AND THEIR COPPER IS TWO OF `BQ25185_SYS`'s FIVE EDGES; THE 90° ROTATION MAKES BOTH SWITCH NODES STRAIGHT; AND THE WHOLE RE-FLOORPLAN IS 18 AGAINST 18 BECAUSE THE `SYS` RAIL REACHES `U12` THROUGH A 25.850 mm POUR ARM THAT PINCHES TO 0.200 mm**
 
     authority  2f456279cb9540f5e29a2a9b2fbc60a6ad761e0ec33253f2802c4ada83aebbc4

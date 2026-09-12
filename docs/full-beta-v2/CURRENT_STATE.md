@@ -41,6 +41,32 @@
 > `verify_promotion` PASS and `protected_copper` showing exactly one protected
 > net moved.  `U14.7` is on the bus.  This board has **no open owner decision**.
 
+- **Demo D-696 addendum 3 (THE PLACEMENT THAT COSTS THE FEEDBACK NET NOTHING, AND
+  IT IS ARITHMETIC):**  **NO COPPER PROMOTED.**  `/01_POWER_TREE/V3V3_FB` is
+  thirteen objects hanging off **ONE barrel at (66.100, 99.250)**, and there is
+  exactly one `U12` placement at which the re-floorplan costs it nothing:
+  ***rotate `U12` +90 degrees and place it at (67.500, 99.500), which lands
+  `U12.3` at (66.100, 100.000) -- the pad centre it occupied on the authority
+  board.***  The 0.75 mm stub, the hub barrel and both inner hauls then survive
+  UNTOUCHED and the feedback net is never opened.  `U12.15` spans x
+  66.710..68.290 there, so the barrel clears its west edge by 0.610 mm; `L1` gets
+  **2.3 mm of freedom** instead of addendum 2's 0.0375 mm window and at
+  (67.500, 95.000) rot 180 both switch nodes are **3.000 mm straight runs**; the
+  band under `U12` becomes **2.425 mm** against the authority's 1.205 mm.  The
+  cost is that the east ribbon column moves from x 70.200 to about 70.950 with
+  its 0603s rotated 90 degrees and `TP8`/`TP14` go to the south pocket.
+  **THE INTERMEDIATE STATE IS KEPT AND REPRODUCIBLE** -- `evidence/d696-build6.sh`
+  plus a windowed relay of `/I2C_SDA_INT` reaches **26 retained open edges with
+  real DRC showing only the pre-existing `MK1` bridge**, with `PG`, `PS_SYNC`,
+  both `L1` switch nodes and `STAT1`'s `R127.2` <-> `TP6.1` all closed at zero
+  vias, and `26 - 3 - 2 - 4 - 1 = 16` once `SW9-A`, `GND`, `+3V3` and the island
+  jumper are spent.  **AND NO ROUTER FLAG REACHES `V3V3_FB` THERE:** the maze
+  aims at PADS so `U12.3`'s only offer is `R40.1` at 25.554 mm, and the TAP --
+  off-centre launcher on, 14 mm bound, 14 sites -- offers two and closes neither,
+  because the `In2` haul passes **0.245 mm** from `U12.3` and a barrel cannot be
+  planted beside the pad.  ***The junction is a quarter of a millimetre away and
+  unreachable, which is why the placement that keeps the stub is worth more than
+  any flag.***
 - **Demo D-696 addendum 2 (THE WINDOW, MEASURED FROM THE FOOTPRINTS: 0.0375 mm
   WIDE, AND THREE ORDINARY OBJECTS OPEN IT TO 0.29 mm):**  **NO COPPER
   PROMOTED.**  `L1` is a **Coilcraft `XFL4020`** -- 4.0 x 4.0 mm body, 0.98 x
