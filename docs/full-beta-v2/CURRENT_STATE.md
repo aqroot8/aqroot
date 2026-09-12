@@ -90,7 +90,13 @@
   ZONE — `qrouter` rasterises pads, tracks, holes and `DoNotAllowTracks` rule
   areas and nothing else, so D-701's "the real wall is `SW9`" is a PLACEMENT
   observation, not a routing one; `SW9` blocks the router at exactly its two
-  0.9 mm NPTH pads.
+  0.9 mm NPTH pads.  **(6) `verify_promotion.py --zone-reshaped NAME`** is
+  built and CONTROLLED three ways -- it admits a pour whose OUTLINE shrank
+  wholly inside its own former outline with every other field identical, on
+  D-684's `--rule-area-narrowed` terms, and **control 3 re-proves THE ACTUAL
+  `BQ25185_SYS POUR 2` narrowing against `HEAD` with real refilled DRC,
+  schematic parity, fill-stability and PP1-PP4, and it PASSES**.  Without it a
+  promotion that reshapes a pour could not be re-proved at all.
 - **Demo D-702 (`ACC_5V_LX` AND `ACC_5V_RAW` BOTH ROUTE, ZERO VIAS, THE MOMENT
   `C65` LEAVES `U21`'s EAST POCKET):**  **NO COPPER PROMOTED.**  Authority
   **UNCHANGED** at `eca81247`; 16 -> 16.  D-698's remedy is built: with `C65`

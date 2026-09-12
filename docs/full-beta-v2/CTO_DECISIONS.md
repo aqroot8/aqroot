@@ -189,6 +189,31 @@ RP1-RP6 run on each slot, and (ii) a `U11`-neighbourhood re-floorplan that
 moves `C23`, `R36`, `R37` and `J8` off the two escape corridors.  `SW9` is NOT
 that lever and this decision withdraws that claim.
 
+## 6. AND THE CLAUSE THAT GATE (B) NEEDED IS BUILT AND CONTROLLED
+
+`verify_promotion.py` asserted *"no surviving zone's net, layer, OUTLINE or
+fill parameters changed"*, so any change to a surviving pour read as ONE LOST
+signature plus ONE ADDED one and a promotion that narrows a LOCAL pour could
+not be re-proved here at all.  **`--zone-reshaped NAME`** closes that, on the
+same two terms D-684's `--rule-area-narrowed` is admitted on: every other
+field identical -- net, copper layer set, name, minimum thickness, local
+clearance, island-removal mode, pad connection -- and the new polygon **WHOLLY
+INSIDE** the old one by real polygon boolean.  The direction is the safe one:
+copper a local pour gives up returns to the global planes, and PP1-PP4 still
+measure what it did to every pad partition on the board.
+
+    CONTROL 1  unchanged board, flag absent    PASS, zones_reshaped []
+    CONTROL 2  POUR 2 narrowed, flag ABSENT    FAIL, zone_inventory_as_claimed
+                                               False, and the report NAMES the
+                                               geometry: (55,33)-(60,42) ->
+                                               (55,33)-(58.4,42)
+    CONTROL 3  POUR 2 narrowed, flag PRESENT   PASS, every check True
+
+**Control 3 is more than a unit test.**  It re-proves THE ACTUAL NARROWING
+section 2 wants — against `HEAD`'s board, with real refilled KiCad DRC,
+schematic parity, fill-stability and `pour_partition` PP1-PP4 — and it passes.
+The authority was restored byte-for-byte afterwards (`eca812476fbcc627...`).
+
 # D-702 · 2026-09-12 · Demo — **`ACC_5V_LX` AND `ACC_5V_RAW` BOTH ROUTE, ZERO VIAS, THE MOMENT `C65` LEAVES `U21`'s EAST POCKET — AND WHAT IS LEFT IS THREE NAMED BARRELS AND ONE GROUND LAND**
 
     authority  eca812476fbcc6277462ca4e37c0aaa9ee3562bcc5955ba32491b6522832b82c  UNCHANGED

@@ -30,8 +30,11 @@ driver's scratch tree, its ledger or its evidence JSON:
     changed in no other way, and every KEEP-OUT whose POLYGON SHRANK is named
     by `--rule-area-narrowed`, proved by polygon boolean to lie WHOLLY inside
     its own former outline, and changed in no other way (D-684);
-  * the zone inventory changed by exactly the pours the caller asserts, and no
-    surviving zone's net, layer, outline or fill parameters changed;
+  * the zone inventory changed by exactly the pours the caller asserts, no
+    surviving zone's net, layer or fill parameters changed, and every pour
+    whose OUTLINE SHRANK is named by `--zone-reshaped`, proved by polygon
+    boolean to lie WHOLLY inside its own former outline and changed in no
+    other way (D-703);
   * real KiCad `--refill-zones --save-board --severity-all --schematic-parity`
     DRC on the promoted board reports only the inherited classes, with ZERO
     attributable violations -- and it is run with the footprint libraries
@@ -723,6 +726,19 @@ def main():
                          "inside its own former outline, with its owner, name, "
                          "copper layer set and all four disallow flags "
                          "unchanged.  D-684.  Repeatable")
+    ap.add_argument("--zone-reshaped", action="append", default=[],
+                    metavar="NAME",
+                    help="D-703: name of a POUR whose OUTLINE the promotion "
+                         "claims to have SHRUNK -- wholly inside its own "
+                         "former outline, proved by polygon boolean -- with "
+                         "its net, copper layer set, name, minimum thickness, "
+                         "local clearance, island-removal mode and pad "
+                         "connection all UNCHANGED.  A pour is narrowed for "
+                         "the same reason a keep-out is (D-684) and the "
+                         "direction is the safe one: copper a local pour "
+                         "gives up returns to the global planes, and PP1-PP4 "
+                         "still measure what that did to every pad partition. "
+                         "Repeatable")
     ap.add_argument("--out", type=Path)
     a = ap.parse_args()
 
@@ -770,8 +786,31 @@ def main():
             rmoved.append((u, was[1] or was[0]))
 
     zpre, zpost = zone_sigs(pre), zone_sigs(post)
-    zadded = [z for z in zpost if z not in zpre]
-    zlost = [z for z in zpre if z not in zpost]
+    # D-703 -- A NARROWED POUR IS NEITHER AN ADDITION NOR A LOSS.
+    #
+    # Until now any change to a surviving pour read as one LOST signature plus
+    # one ADDED signature, so a promotion that pulls a LOCAL pour back off a
+    # pocket -- ordinary power-distribution geometry, and the SAFE direction,
+    # because the copper it gives up returns to the global planes -- could not
+    # be re-proved here at all.  Admitted only on the same two terms
+    # `--rule-area-narrowed` is: every other field identical, and the new
+    # polygon WHOLLY INSIDE the old one by real polygon boolean.  Everything
+    # else about a pour that moved is still a loss and still a refusal, and
+    # PP1-PP4 below still measure what the narrowing did to every pad
+    # partition on the board.
+    zreshaped, zshrunk_keys = [], set()
+    _zpre_by_key = {z[:7]: z for z in zpre}
+    _zpost_by_key = {z[:7]: z for z in zpost}
+    for key in sorted(set(_zpre_by_key) & set(_zpost_by_key), key=str):
+        was, now = _zpre_by_key[key], _zpost_by_key[key]
+        if was == now or not poly_is_contained(now[7], was[7]):
+            continue
+        zshrunk_keys.add(key)
+        zreshaped.append((key[2] or "%s|%s" % (key[0], key[1][0]),
+                          [[c / 1e6 for c in pt] for pt in was[7]],
+                          [[c / 1e6 for c in pt] for pt in now[7]]))
+    zadded = [z for z in zpost if z not in zpre and z[:7] not in zshrunk_keys]
+    zlost = [z for z in zpre if z not in zpost and z[:7] not in zshrunk_keys]
     zclaim = sorted((z[0], z[1][0]) for z in zadded)
 
     removed_nets = sorted({x[1] for x in (before - after)})
@@ -812,7 +851,9 @@ def main():
             True if pre_drc is None
             else first["unconnected_items"] <= pre_drc["unconnected_items"]),
         added_only_on_claimed_nets=set(added_nets) <= set(nets),
-        zone_inventory_as_claimed=(not zlost and zclaim == planes),
+        zone_inventory_as_claimed=(not zlost and zclaim == planes
+                                   and sorted(z[0] for z in zreshaped)
+                                   == sorted(a.zone_reshaped)),
         track_width_floor_met=(not a.track_width
                                or all(w >= a.track_width for w in widths)
                                or (a.neck and neck_ok)
@@ -870,7 +911,7 @@ def main():
         claimed_rule_areas=sorted(a.rule_area),
         claimed_widened_rule_areas=sorted(a.rule_area_widened),
         claimed_narrowed_rule_areas=sorted(a.rule_area_narrowed),
-        zones_added=zadded, zones_removed=zlost,
+        zones_added=zadded, zones_removed=zlost, zones_reshaped=zreshaped,
         drc=first, drc_second_pass=second, dru_contracts=contracts,
         pour_partition=pp_detail,
         checks=checks, verdict="PASS" if all(checks.values()) else "FAIL",
