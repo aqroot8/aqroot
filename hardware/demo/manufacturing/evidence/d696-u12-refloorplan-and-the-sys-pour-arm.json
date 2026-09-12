@@ -1,0 +1,477 @@
+{
+  "schema": 1,
+  "decision": "D-696",
+  "title": "THE THREE U12 CONTROL STRAPS WERE 50 mm FROM THEIR PINS AND THEIR COPPER IS TWO OF BQ25185_SYS's FIVE EDGES; THE 90-DEGREE ROTATION MAKES BOTH SWITCH NODES STRAIGHT; AND THE WHOLE RE-FLOORPLAN IS 18 AGAINST 18 BECAUSE THE SYS RAIL REACHES U12 THROUGH A 25.850 mm POUR ARM THAT PINCHES TO 0.200 mm",
+  "authority_board": "hardware/demo/kicad/aqroot-demo/aqroot-Beta-v2.kicad_pcb",
+  "authority_sha256": "2f456279cb9540f5e29a2a9b2fbc60a6ad761e0ec33253f2802c4ada83aebbc4",
+  "authority_unchanged": true,
+  "copper_promoted": false,
+  "baseline_retained_open_edges": 18,
+  "best_candidate_retained_open_edges": 18,
+  "verdict": "NOT PROMOTED -- clause 4 (board_improved) cannot be satisfied at 18 against 18",
+  "finding_1_strap_placement_defect": {
+    "statement": "R41 (1M PG pull-up), R42 (0R PS/SYNC strap) and R43 (100k EN pull-down) are ALL THREE of U12's control-pin straps and all three sat in a leftover passive row at y = 120.335, about 50 mm from a switching converter at (66.600, 101.400). Their three nets carry 93 routed objects across the congested middle of the board.",
+    "was_mm": {
+      "R41": [
+        13.315,
+        120.335
+      ],
+      "R42": [
+        16.665,
+        120.335
+      ],
+      "R43": [
+        20.015,
+        120.335
+      ],
+      "TP8": [
+        38.0,
+        124.5
+      ],
+      "TP14": [
+        40.5,
+        124.5
+      ],
+      "U12": [
+        66.6,
+        101.4
+      ]
+    },
+    "objects_removed_by_stripping_the_three_nets": 93,
+    "bq25185_sys_open_edges_before": 5,
+    "bq25185_sys_open_edges_after_strip_and_refill": 3,
+    "what_merged": [
+      "C26.2 (D-695's 0.7074 mm seam closes itself)",
+      "U12.10 + U12.11"
+    ],
+    "new_copper": 0,
+    "same_defect_class_as": [
+      "D-686 R108",
+      "D-692 R127"
+    ]
+  },
+  "finding_2_the_rotation": {
+    "statement": "The TPS63020's two switch nodes are pins 6/7 and 8/9 -- ADJACENT around the package's east corner -- while L1 sits due NORTH of U12, so Net-(L1-Pad2) ran 3.4 mm straight and Net-(L1-Pad1) had to wrap the whole part through the 1.205 mm antenna band. Rotating U12 by +90 degrees turns the two 7-pad ROWS into two 7-pad COLUMNS and puts BOTH switch nodes at the columns' north ends, facing L1.",
+    "u12_pad_map_after_rot90_at_66_600_99_000": {
+      "west_column_x_65.200": {
+        "7": 97.5,
+        "6": 98.0,
+        "5": 98.5,
+        "4": 99.0,
+        "3": 99.5,
+        "2": 100.0,
+        "1": 100.5
+      },
+      "east_column_x_68.000": {
+        "8": 97.5,
+        "9": 98.0,
+        "10": 98.5,
+        "11": 99.0,
+        "12": 99.5,
+        "13": 100.0,
+        "14": 100.5
+      }
+    },
+    "measured_switch_node_routes": {
+      "Net-(L1-Pad1) L1.1 -> U12.8": {
+        "mm": 3.524,
+        "vias": 0
+      },
+      "Net-(L1-Pad2) L1.2 -> U12.7": {
+        "mm": 3.524,
+        "vias": 0
+      },
+      "same-net pad bridges U12.8<->U12.9 and U12.6<->U12.7": {
+        "mm": 0.4,
+        "vias": 0,
+        "width_mm": 0.4
+      }
+    },
+    "this_is_the_fix_the_dru_already_names": "hardware/demo/kicad/aqroot-demo/aqroot-Beta-v2.kicad_dru section 13, D-610 block: \"THE PRODUCTION FIX IS A PLACEMENT CHANGE AND IT IS NOT SMUGGLED IN HERE. L1 sits 0.41 mm off U12's courtyard and boxes the VOUT row into a 1.4 mm corridor ... It is a Full Beta v2 item.\"",
+    "side_effects": [
+      "EN / PS_SYNC / PG land on U12's EAST face looking at the free 3.3 mm back-side ribbon",
+      "VIN / GND / FB / VOUT land on the WEST face",
+      "the 1.205 mm band under U12 grows to about 3.3 mm because U12 also moves 2.4 mm north",
+      "U12.4 and U12.5 land inside the EXISTING PAD_ESCAPE_U12_4 and PAD_ESCAPE_RUN_U12_4 rule areas and re-join the +3V3 rail on the surviving D-610 relief run with no rule-area change at all"
+    ]
+  },
+  "finding_3_the_blocker": {
+    "statement": "The charger's system rail reaches the buck-boost's VIN pins through a POUR ARM, and that arm is 25.850 mm long and 0.200 mm wide at its narrowest. Every additional track laid anywhere in U12's ribbon or pocket cuts it, so each of the last four edges cost exactly one BQ25185_SYS edge to buy.",
+    "screen": "screen_pour_arm_path.py /01_POWER_TREE/BQ25185_SYS --from U12.11 --to U12.1",
+    "arm": {
+      "verdict": "ONE_ISLAND",
+      "path_mm": 25.85,
+      "pinch_mm": 0.2,
+      "pinch_at_mm": [
+        68.6,
+        95.071
+      ],
+      "layer": "B.Cu",
+      "bounded_by": [
+        {
+          "kind": "via",
+          "net": "GND",
+          "mm": 0.2005
+        },
+        {
+          "kind": "pad",
+          "ref": "L1.1",
+          "mm": 0.125
+        }
+      ]
+    },
+    "one_for_one_trades_measured": [
+      "+3V3 R41.1 tap closes +3V3 and BQ25185_SYS goes 3 -> 4",
+      "Net-(U12-PS_SYNC) TP14 link closes PS_SYNC and BQ25185_SYS goes 3 -> 4",
+      "/01_POWER_TREE/V3V3_FB R39.2 <-> R40.1 relay closes FB and BQ25185_SYS goes 4 -> 5",
+      "GND C28.2 bond lands its barrel IN the arm at (69.25, 95.05)"
+    ],
+    "and_the_vin_pins_cannot_launch_a_real_track": {
+      "router": "U12.10 / U12.11: NO LEGAL ESCAPE at >= 0.800 mm (SYS_MAIN), blocked by their own 0.5 mm-pitch neighbours",
+      "screen_offcentre_launch": {
+        "U12.10": "SEALED at every rung, centre and off-centre",
+        "U12.11": "OFF-CENTRE OPENS at 0.400 mm on B (anchor 0.060 mm off centre, base ray, reach 0.025 mm past its own edge); centre-anchored refuses at every rung"
+      },
+      "same_shape_as": {
+        "U12.4": "OFF-CENTRE OPENS at 0.400 mm (anchor 0.030 mm off centre); centre-anchored only reaches 0.350 mm",
+        "U12.5": "OFF-CENTRE OPENS at 0.400 mm (anchor 0.030 mm off centre); centre-anchored only reaches 0.350 mm"
+      }
+    }
+  },
+  "placement_measured_and_kept": {
+    "U12": {
+      "to_mm": [
+        66.6,
+        99.0
+      ],
+      "rot_deg": 90,
+      "from_mm": [
+        66.6,
+        101.4
+      ],
+      "from_rot": 0
+    },
+    "L1": {
+      "to_mm": [
+        66.6,
+        94.5
+      ],
+      "rot_deg": 180,
+      "from_mm": [
+        66.6,
+        96.6
+      ],
+      "from_rot": 0
+    },
+    "C28": {
+      "to_mm": [
+        70.2,
+        96.8
+      ],
+      "rot_deg": 90,
+      "from_mm": [
+        69.175,
+        93.245
+      ],
+      "from_rot": 0
+    },
+    "R43": {
+      "to_mm": [
+        70.2,
+        99.2
+      ],
+      "rot_deg": 0,
+      "from_mm": [
+        20.015,
+        120.335
+      ],
+      "note": "EN 100k, 1.247 mm from U12.12"
+    },
+    "R42": {
+      "to_mm": [
+        70.2,
+        101.1
+      ],
+      "rot_deg": 180,
+      "from_mm": [
+        16.665,
+        120.335
+      ],
+      "note": "PS/SYNC 0R, 1.804 mm from U12.13"
+    },
+    "R41": {
+      "to_mm": [
+        70.2,
+        103.0
+      ],
+      "rot_deg": 180,
+      "from_mm": [
+        13.315,
+        120.335
+      ],
+      "note": "PG 1M, 2.955 mm from U12.14"
+    },
+    "TP8": {
+      "to_mm": [
+        67.3,
+        102.9
+      ],
+      "from_mm": [
+        38.0,
+        124.5
+      ],
+      "note": "PG test point, 2.093 mm from R41.2"
+    },
+    "TP14": {
+      "to_mm": [
+        70.2,
+        91.8
+      ],
+      "from_mm": [
+        40.5,
+        124.5
+      ],
+      "note": "PS/SYNC test point"
+    },
+    "TP13": {
+      "to_mm": [
+        70.2,
+        89.4
+      ],
+      "from_mm": [
+        65.5,
+        93.0
+      ]
+    },
+    "TP6": {
+      "to_mm": [
+        70.2,
+        86.8
+      ],
+      "from_mm": [
+        70.25,
+        95.5
+      ],
+      "note": "STAT1 test point, now 2.881 mm from R127.2"
+    },
+    "R127": {
+      "to_mm": [
+        70.2,
+        84.3
+      ],
+      "rot_deg": 180,
+      "from_mm": [
+        62.25,
+        107.75
+      ],
+      "note": "STAT1 1M pull-up, was 30 mm from U11.9, now 6.2 mm"
+    },
+    "R39": {
+      "to_mm": [
+        59.0,
+        97.5
+      ],
+      "from_mm": [
+        66.5,
+        71.75
+      ],
+      "note": "+3V3 feedback divider top leg, was 28 mm from the FB pin"
+    },
+    "R40": {
+      "to_mm": [
+        58.5,
+        99.3
+      ],
+      "rot_deg": 180,
+      "from_mm": [
+        60.5,
+        72.75
+      ],
+      "note": "feedback divider bottom leg"
+    }
+  },
+  "ledger_sequence": [
+    {
+      "step": "A_moves_only",
+      "retained_open_edges": 38,
+      "open_nets": {
+        "+3V3": 5,
+        "GND": 4,
+        "/01_POWER_TREE/BQ25185_SYS": 3,
+        "/BQ25185_STAT1": 3,
+        "Net-(SW9-A)": 3,
+        "/01_POWER_TREE/V3V3_FB": 2,
+        "/BQ25185_STAT2": 2,
+        "Net-(L1-Pad1)": 2,
+        "Net-(L1-Pad2)": 2,
+        "Net-(U12-PG)": 2,
+        "Net-(U12-PS_SYNC)": 2,
+        "/01_POWER_TREE/ACC_5V_LX": 1,
+        "/01_POWER_TREE/USB_D_CONN_P": 1,
+        "/04_SPI_B_RADIOS_NFC/NFC_VDD_RF": 1,
+        "/ACC_PWR_EN": 1,
+        "/I2C_SCL_INT": 1,
+        "/NFC_SUPPLY": 1,
+        "/SX1262_DIO1": 1,
+        "/USB_D_MCU_N": 1
+      },
+      "note": "all placement applied, nothing re-routed; BQ25185_SYS already 5 -> 3"
+    },
+    {
+      "step": "B_local_nets",
+      "retained_open_edges": 30,
+      "open_nets": {
+        "+3V3": 5,
+        "/01_POWER_TREE/BQ25185_SYS": 4,
+        "GND": 4,
+        "Net-(SW9-A)": 3,
+        "/01_POWER_TREE/V3V3_FB": 2,
+        "/BQ25185_STAT1": 2,
+        "/BQ25185_STAT2": 2,
+        "/01_POWER_TREE/ACC_5V_LX": 1,
+        "/01_POWER_TREE/USB_D_CONN_P": 1,
+        "/04_SPI_B_RADIOS_NFC/NFC_VDD_RF": 1,
+        "/ACC_PWR_EN": 1,
+        "/I2C_SCL_INT": 1,
+        "/NFC_SUPPLY": 1,
+        "/SX1262_DIO1": 1,
+        "/USB_D_MCU_N": 1
+      },
+      "note": "PG, PS_SYNC, L1-Pad1, L1-Pad2, STAT1's R127<->TP6 routed"
+    },
+    {
+      "step": "C_pour_bonds",
+      "retained_open_edges": 23,
+      "open_nets": {
+        "/01_POWER_TREE/BQ25185_SYS": 4,
+        "Net-(SW9-A)": 3,
+        "+3V3": 2,
+        "/01_POWER_TREE/V3V3_FB": 2,
+        "/BQ25185_STAT1": 2,
+        "/BQ25185_STAT2": 2,
+        "/01_POWER_TREE/ACC_5V_LX": 1,
+        "/01_POWER_TREE/USB_D_CONN_P": 1,
+        "/04_SPI_B_RADIOS_NFC/NFC_VDD_RF": 1,
+        "/ACC_PWR_EN": 1,
+        "/I2C_SCL_INT": 1,
+        "/NFC_SUPPLY": 1,
+        "/SX1262_DIO1": 1,
+        "/USB_D_MCU_N": 1
+      },
+      "note": "GND x4 and +3V3 bonds"
+    },
+    {
+      "step": "D_sw9a",
+      "retained_open_edges": 21,
+      "open_nets": {
+        "/01_POWER_TREE/BQ25185_SYS": 4,
+        "+3V3": 2,
+        "/01_POWER_TREE/V3V3_FB": 2,
+        "/BQ25185_STAT1": 2,
+        "/BQ25185_STAT2": 2,
+        "/01_POWER_TREE/ACC_5V_LX": 1,
+        "/01_POWER_TREE/USB_D_CONN_P": 1,
+        "/04_SPI_B_RADIOS_NFC/NFC_VDD_RF": 1,
+        "/ACC_PWR_EN": 1,
+        "/I2C_SCL_INT": 1,
+        "/NFC_SUPPLY": 1,
+        "/SX1262_DIO1": 1,
+        "/USB_D_MCU_N": 1,
+        "Net-(SW9-A)": 1
+      },
+      "note": "SW9-A closed after R43 rotated so its SW9-A pad faces U12.12"
+    },
+    {
+      "step": "E_pg_pssync_short",
+      "retained_open_edges": 20,
+      "open_nets": {
+        "/01_POWER_TREE/BQ25185_SYS": 3,
+        "+3V3": 2,
+        "/BQ25185_STAT1": 2,
+        "/BQ25185_STAT2": 2,
+        "/01_POWER_TREE/ACC_5V_LX": 1,
+        "/01_POWER_TREE/USB_D_CONN_P": 1,
+        "/01_POWER_TREE/V3V3_FB": 1,
+        "/04_SPI_B_RADIOS_NFC/NFC_VDD_RF": 1,
+        "/ACC_PWR_EN": 1,
+        "/I2C_SCL_INT": 1,
+        "/NFC_SUPPLY": 1,
+        "/SX1262_DIO1": 1,
+        "/USB_D_MCU_N": 1,
+        "GND": 1,
+        "Net-(U12-PS_SYNC)": 1
+      },
+      "note": "PG/PS_SYNC re-routed short; BQ25185_SYS recovers 4 -> 3"
+    },
+    {
+      "step": "F_gnd_bond",
+      "retained_open_edges": 19,
+      "open_nets": {
+        "/01_POWER_TREE/BQ25185_SYS": 3,
+        "+3V3": 2,
+        "/BQ25185_STAT1": 2,
+        "/BQ25185_STAT2": 2,
+        "/01_POWER_TREE/ACC_5V_LX": 1,
+        "/01_POWER_TREE/USB_D_CONN_P": 1,
+        "/01_POWER_TREE/V3V3_FB": 1,
+        "/04_SPI_B_RADIOS_NFC/NFC_VDD_RF": 1,
+        "/ACC_PWR_EN": 1,
+        "/I2C_SCL_INT": 1,
+        "/NFC_SUPPLY": 1,
+        "/SX1262_DIO1": 1,
+        "/USB_D_MCU_N": 1,
+        "Net-(U12-PS_SYNC)": 1
+      },
+      "note": "GND C28.2 bonded"
+    },
+    {
+      "step": "G_best_sys3",
+      "retained_open_edges": 18,
+      "open_nets": {
+        "/01_POWER_TREE/BQ25185_SYS": 3,
+        "+3V3": 2,
+        "/BQ25185_STAT1": 2,
+        "/BQ25185_STAT2": 2,
+        "/01_POWER_TREE/ACC_5V_LX": 1,
+        "/01_POWER_TREE/USB_D_CONN_P": 1,
+        "/01_POWER_TREE/V3V3_FB": 1,
+        "/04_SPI_B_RADIOS_NFC/NFC_VDD_RF": 1,
+        "/ACC_PWR_EN": 1,
+        "/I2C_SCL_INT": 1,
+        "/NFC_SUPPLY": 1,
+        "/SX1262_DIO1": 1,
+        "/USB_D_MCU_N": 1
+      },
+      "note": "BEST-A: 18, BQ25185_SYS 3, +3V3 2 (R41.1 orphan), V3V3_FB 1"
+    },
+    {
+      "step": "H_best_3v3",
+      "retained_open_edges": 18,
+      "open_nets": {
+        "/01_POWER_TREE/BQ25185_SYS": 4,
+        "/BQ25185_STAT1": 2,
+        "/BQ25185_STAT2": 2,
+        "+3V3": 1,
+        "/01_POWER_TREE/ACC_5V_LX": 1,
+        "/01_POWER_TREE/USB_D_CONN_P": 1,
+        "/01_POWER_TREE/V3V3_FB": 1,
+        "/04_SPI_B_RADIOS_NFC/NFC_VDD_RF": 1,
+        "/ACC_PWR_EN": 1,
+        "/I2C_SCL_INT": 1,
+        "/NFC_SUPPLY": 1,
+        "/SX1262_DIO1": 1,
+        "/USB_D_MCU_N": 1
+      },
+      "note": "BEST-B: 18, +3V3 closed by tap, BQ25185_SYS 4"
+    }
+  ],
+  "real_drc_on_the_placement_only_board": {
+    "solder_mask_bridge": 1,
+    "note": "the pre-existing MK1 NPTH/GND aperture only; zero new attributable violations from the moves"
+  },
+  "next": [
+    "The re-floorplan is correct and should be taken, but only TOGETHER with a real BQ25185_SYS conductor from U12.11 to U12.1 / C24.1 replacing the 25.850 mm pour arm.",
+    "The instrument that is missing is an OFF-CENTRE ESCAPE in the ordinary maze: maze3d.offcentre_route exists and screen_offcentre_launch proves U12.11 opens at 0.400 mm with a 0.060 mm anchor offset, but only join_taps uses it and --tap only serves ORPHAN lands, so a connected-but-fragile land can never ask for it.",
+    "The alternative is a PAD_ESCAPE_U12_11 / PAD_ESCAPE_RUN_U12_11 width licence of the D-610 shape, authored in the .kicad_dru BEFORE the router runs, and an ampacity ruling for the converter's INPUT current the way D-610 ruled on its OUTPUT."
+  ]
+}

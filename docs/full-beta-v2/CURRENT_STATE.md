@@ -41,6 +41,73 @@
 > `verify_promotion` PASS and `protected_copper` showing exactly one protected
 > net moved.  `U14.7` is on the bus.  This board has **no open owner decision**.
 
+- **Demo D-696 (THE THREE `U12` CONTROL STRAPS WERE 50 mm FROM THEIR PINS AND
+  THEIR COPPER IS TWO OF `BQ25185_SYS`'s FIVE EDGES; THE 90-DEGREE ROTATION
+  MAKES BOTH SWITCH NODES STRAIGHT; AND THE WHOLE RE-FLOORPLAN IS 18 AGAINST 18
+  BECAUSE THE `SYS` RAIL REACHES `U12` THROUGH A 25.850 mm POUR ARM THAT
+  PINCHES TO 0.200 mm):**  **NO COPPER PROMOTED.**  Authority **UNCHANGED** at
+  `2f456279cb9540f5e29a2a9b2fbc60a6ad761e0ec33253f2802c4ada83aebbc4`; 18 -> 18;
+  `hardware/demo/kicad`, `hardware/demo/fab`, `hardware/beta-v2` **UNTOUCHED**
+  (`evidence/d696-u12-refloorplan-and-the-sys-pour-arm.json`, reproduced exactly
+  by `evidence/d696-build3.sh` + six helpers).  This is D-691 (4)'s named #1
+  blocker -- *"the `U12` `+3V3` fan-out re-floorplan"* -- built, routed and
+  measured end to end.
+  **(1) THE PLACEMENT DEFECT, WORTH TWO EDGES FOR ZERO COPPER.**  `R41` (1 M
+  `PG` pull-up), `R42` (0 R `PS/SYNC` strap) and `R43` (100 k `EN` pull-down)
+  are ALL THREE of `U12`'s control-pin straps and all three sat at
+  `y = 120.335`, **about 50 mm from a switching converter**, with `TP8`/`TP14`
+  27 mm away.  Their three nets carry **93 routed objects**.  Strip them and
+  refill, changing nothing else: **`/01_POWER_TREE/BQ25185_SYS` 5 -> 3 with ZERO
+  new copper** -- `C26.2` merges (D-695's 0.7074 mm seam WAS `PS_SYNC`'s copper)
+  and `U12.10` + `U12.11` merge with it.  D-686's `R108` and D-692's `R127`, a
+  third and fourth time.
+  **(2) THE ROTATION IS THE RIGHT FLOORPLAN AND IT IS MEASURED.**  The
+  `TPS63020`'s two switch nodes are pins **6/7 and 8/9, ADJACENT** around the
+  package's east corner, while `L1` sits due NORTH -- so `Net-(L1-Pad1)` had to
+  wrap the whole part through the 1.205 mm antenna band.  `--rot-deg 90` turns
+  the two 7-pad ROWS into two 7-pad COLUMNS and puts **both switch nodes at the
+  columns' north ends**: with `L1` rotated 180 degrees and moved 2.1 mm north
+  both routed first time at the full 0.600 mm `SWITCH_NODE` width, **3.524 mm
+  each, ZERO vias**, plus 0.400 mm same-net pad bridges.  ***This is the fix
+  `.kicad_dru` section 13's D-610 block names in its own words*** (*"THE
+  PRODUCTION FIX IS A PLACEMENT CHANGE ... `L1` sits 0.41 mm off `U12`'s
+  courtyard ... It is a Full Beta v2 item"*), and it costs **no rule-area change
+  at all** -- rotated, `U12.4`/`U12.5` land INSIDE the existing
+  `PAD_ESCAPE_U12_4` / `PAD_ESCAPE_RUN_U12_4` rectangles and re-join `+3V3` on
+  the surviving D-610 relief run.  Thirteen moves, two rotations, seven deleted
+  stitch barrels, and real DRC on the placement-only board is **one violation,
+  the pre-existing `MK1` `solder_mask_bridge`**.
+  **(3) AND IT IS 18 AGAINST 18.**  38 (placement only) -> 30 -> 23 -> 21 -> 20
+  -> 19 -> **18**, two ways (`SYS` 3 + `+3V3` 2, or `SYS` 4 + `+3V3` 1); never
+  below.  Clause 4 cannot be satisfied, so the candidate is correctly not
+  promoted.
+  **(4) THE ZERO-SUM HAS ONE NAMED CAUSE, AND IT IS NOT THE FLOORPLAN.**
+  `screen_pour_arm_path` `U12.11 -> U12.1`: **`ONE_ISLAND`, path 25.850 mm,
+  pinch 0.200 mm at (68.600, 95.071) on `B.Cu`**, between a `GND` via
+  (0.2005 mm) and **`L1.1`'s own pad** (0.1250 mm).  The charger's system rail
+  reaches the buck-boost's `VIN` pins through a 25.85 mm pour arm 0.200 mm wide,
+  so ***every additional track anywhere in `U12`'s ribbon or pocket cuts it***
+  -- measured four times, each of the last four edges costing exactly one
+  `BQ25185_SYS` edge.  Deleting the barrel does NOT widen it: same 0.200 mm at
+  the same station, now bounded by a `GND` track.  **The 0.200 mm is
+  structural.**
+  **(5) AND THE `VIN` PINS CANNOT LAUNCH, FOR A REASON THIS BOARD HAS NAMED
+  FIVE TIMES.**  `U12.10`/`U12.11`: `NO LEGAL ESCAPE at >= 0.800 mm`.
+  `screen_offcentre_launch`: `U12.10` **SEALED at every rung**, but **`U12.11`
+  OFF-CENTRE OPENS at 0.400 mm (anchor 0.060 mm off centre)** and
+  `U12.4`/`U12.5` open at 0.400 mm (anchor 0.030 mm) -- *centre-anchored refuses
+  all three*.  `maze3d.offcentre_route` EXISTS, but only `join_taps` uses it and
+  `--tap` only serves ORPHAN lands, so a **connected-but-fragile** land can
+  never ask for the primitive that would make it robust.
+  **NEXT:** (1) the `BQ25185_SYS` `U12.11` conductor -- the single object that
+  turns this re-floorplan from 18-against-18 into a promotion, and the same
+  instrument `U12.4`/`U12.5` have wanted since D-609: either wire the off-centre
+  launcher into the ordinary maze escape, or author a
+  `PAD_ESCAPE_U12_11`/`PAD_ESCAPE_RUN_U12_11` width licence of the D-610 shape
+  with an ampacity ruling for the converter's INPUT current.  (2) `+3V3`
+  `U5.2` through a **new 100 k 0402**, which restores the 6 dB `GAIN_SLOT` row
+  D-147 chose and needs no width licence.  (3) D-693's owner decision on `U11`
+  remains **OPEN** and untouched by this work.
 - **Demo D-695 (THE `SYS` SEAM MERGES FOR ZERO COPPER AND IS GATED ON THE `U12`
   BAND; AND `--join-max-mm` SILENTLY REFUSED A 38.5 mm ROUTE THAT EXISTS):**
   **NO COPPER PROMOTED.**  Authority **UNCHANGED** at
