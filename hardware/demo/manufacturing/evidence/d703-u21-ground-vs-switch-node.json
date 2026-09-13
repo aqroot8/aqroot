@@ -1,0 +1,137 @@
+{
+ "schema": 1,
+ "decision": "D-703 addendum",
+ "question": "U21.4 must keep a ground when /01_POWER_TREE/ACC_5V_LX takes the only corridor -- can it?",
+ "runs": [
+  {
+   "run": "r14",
+   "shape": "bond BEFORE the maze, no guard",
+   "bond": {
+    "ok": true,
+    "via_xy": [
+     59.075,
+     36.625
+    ],
+    "dia_mm": 0.6,
+    "drill_mm": 0.3,
+    "arm_mm": 2.839
+   },
+   "acc_5v_lx": "NO_LEGAL_ESCAPE at >= 0.600 mm",
+   "acc_5v_raw_mm": 1.982,
+   "edges": "16 -> 16",
+   "refused": [
+    "board_improved"
+   ],
+   "note": "14 of 15 clauses PASS -- inert_removal_priced, every_detour_relaid, pour_partition, no_regression, attributable_drc all TRUE"
+  },
+  {
+   "run": "r15",
+   "shape": "bond BEFORE the maze, switch-node lane reserved (3 discs)",
+   "bond": {
+    "ok": false,
+    "why": "no legal 0.60 mm barrel within 4.0 mm of any escape"
+   },
+   "acc_5v_lx": "ROUTED 3.209 mm 0 vias",
+   "edges": "16 -> 16",
+   "refused": [
+    "board_improved",
+    "inert_removal_priced",
+    "no_regression",
+    "pour_partition"
+   ],
+   "note": "the repair inherits the same guard and also fails"
+  },
+  {
+   "run": "r16",
+   "shape": "NO bond; left to --repair-planes, which runs AFTER the maze",
+   "bond": {
+    "ok": false,
+    "why": "no legal 0.60 mm barrel within 8.0 mm of any escape"
+   },
+   "acc_5v_lx": "ROUTED 3.209 mm 0 vias",
+   "acc_5v_raw_mm": 2.69,
+   "failed_nets": [],
+   "edges": "16 -> 16",
+   "refused": [
+    "board_improved",
+    "inert_removal_priced",
+    "no_regression",
+    "pour_partition"
+   ]
+  },
+  {
+   "run": "r17",
+   "shape": "bond first, southern approach to U21.4 forbidden by one disc",
+   "bond": {
+    "ok": true,
+    "via_xy": [
+     61.4,
+     41.975
+    ],
+    "arm_mm": 4.711
+   },
+   "acc_5v_lx": "NO_LEGAL_ESCAPE",
+   "acc_5v_raw": "NO_PATH at 0.600 mm",
+   "edges": "16 -> 17",
+   "refused": [
+    "board_improved",
+    "no_regression"
+   ],
+   "note": "the 4.7 mm eastern arm blocks BOTH nets"
+  },
+  {
+   "run": "r18",
+   "shape": "--escape-relief --relief-pad U21.4 --relief-extra-width 200000, bond left to the relief",
+   "escape_relief": {
+    "lands_closed_ok": true,
+    "lands_still_open": [],
+    "stitched": 0,
+    "why": "the relief runs BEFORE the maze and offers only lands that are ALREADY orphans; U21.4 is still bonded by the pour at that moment, so it is a NO-OP here"
+   },
+   "acc_5v_lx": "ROUTED 3.209 mm 0 vias",
+   "acc_5v_raw_mm": 2.69,
+   "failed_nets": [],
+   "edges": "16 -> 16",
+   "refused": [
+    "board_improved",
+    "inert_removal_priced",
+    "no_regression",
+    "pour_partition"
+   ]
+  }
+ ],
+ "the_number": {
+  "bond_escape_anchor_mm": [
+   58.7,
+   39.375
+  ],
+  "bond_escape_width_mm": 0.3,
+  "bond_cap_reaches_y_mm": 39.525,
+  "acc_5v_lx_neck_centre_y_mm": 39.9,
+  "acc_5v_lx_neck_width_mm": 0.2,
+  "acc_5v_lx_south_edge_y_mm": 39.8,
+  "gap_mm": 0.275,
+  "required_mm": 0.3,
+  "short_by_mm": 0.025,
+  "rule": "SWITCH_NODE routed clearance (min 0.30mm), .kicad_dru section 6"
+ },
+ "levers_refused_on_the_merits": [
+  {
+   "lever": "narrow the switch node to 0.150 mm",
+   "why": "ACC_5V publishes 0.70 A ILIM in section 5; 0.150 mm carries 0.602 A at dT = 10 K",
+   "verdict": "REFUSED ON CURRENT"
+  },
+  {
+   "lever": "weaken the 0.300 mm SWITCH_NODE routed clearance",
+   "why": "a switching-aggressor separation, not an unchosen default",
+   "verdict": "NOT A CANDIDATE"
+  },
+  {
+   "lever": "move the barrel",
+   "why": "exactly one legal 0.60/0.30 mm site exists in the peninsula; r17 shows the next is 4.7 mm east, through the corridor both nets need",
+   "verdict": "MEASURED SHUT"
+  }
+ ],
+ "conclusion": "the blocker is a FLOORPLAN fact: U21 is a SOT-563 whose GND, SW and VOUT lands are stacked on 0.500 mm pitch on the same side, all three must leave EAST, and the only inductor pad they can reach is 3.7 mm north behind a 0.98 x 3.70 mm land. The next transaction is a local re-floorplan of the U21 / L4 / C65 block in which U21.4 sits ON open B GND pour with room for TWO ground barrels and U21.5 faces L4.2 directly.",
+ "ordering_finding": "the two primitives that could bond U21.4 sit on opposite sides of the maze and neither can be moved by a flag: --bond-pad and --escape-relief run BEFORE it (so a bond placed then owns the switch node's corridor, and the relief sees no orphan yet), and --repair-planes runs AFTER it (so the switch node already owns the corridor and no barrel site survives)."
+}

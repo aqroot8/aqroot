@@ -214,6 +214,79 @@ section 2 wants — against `HEAD`'s board, with real refilled KiCad DRC,
 schematic parity, fill-stability and `pour_partition` PP1-PP4 — and it passes.
 The authority was restored byte-for-byte afterwards (`eca812476fbcc627...`).
 
+# D-703 ADDENDUM · 2026-09-12 · Demo — **THE `ACC_5V` BOOST'S GROUND AND ITS SWITCH NODE WANT THE SAME 0.7 mm CORRIDOR, THE BOARD ADMITS EXACTLY ONE, AND THE MARGIN IS 0.025 mm**
+
+    authority  eca812476fbcc6277462ca4e37c0aaa9ee3562bcc5955ba32491b6522832b82c  UNCHANGED
+    retained open edges 16 -> 16.  NO COPPER PROMOTED.
+    `w/d703/r14` .. `w/d703/r18`; `evidence/d703-u21-ground-vs-switch-node.json`
+
+Section 2 above left ONE thing between a measured 3.209 mm zero-via
+`/01_POWER_TREE/ACC_5V_LX` and copper: `U21.4` must keep a ground.  Five gate
+runs answer it, and between them they close the question for THIS FLOORPLAN.
+
+    r14  bond BEFORE the maze, no guard
+         BOND OK -- 0.60/0.30 barrel at (59.075, 36.625), 2.839 mm arm --
+         and then `U21.5: NO LEGAL ESCAPE at >= 0.600 mm`.
+         14 of 15 clauses PASS; only `board_improved` is refused.
+    r15  same, with the switch node's own lane reserved (3 discs)
+         BOND IMPOSSIBLE -- `no legal 0.60 mm barrel within 4.0 mm of any
+         escape` -- and the repair, which inherits the same guard, also fails.
+         `ACC_5V_LX` routes.  16 -> 16.
+    r16  NO bond; left to `--repair-planes`, which runs AFTER the maze
+         `ACC_5V_LX` 3.209 mm and `ACC_5V_RAW` 2.690 mm, both ZERO vias,
+         `failed_nets []` -- and the repair then reports `no legal 0.60 mm
+         barrel within 8.0 mm of any escape`.  16 -> 16.
+    r17  bond first, southern approach to `U21.4` forbidden by one disc
+         BOND OK but 4.711 mm EAST to (61.400, 41.975), which then blocks
+         BOTH `ACC_5V_LX` and `ACC_5V_RAW`.  16 -> 17.
+
+**AND THE NUMBER IS 0.025 mm.**  Unguarded, the bond's escape anchors at
+(58.700, 39.375) on `U21.4`'s land and its 0.300 mm round cap reaches
+y = 39.525.  `ACC_5V_LX`'s 0.200 mm neck runs at y = 39.900 and its south edge
+is y = 39.800.  The gap is **0.275 mm** against the **0.300 mm** the
+`.kicad_dru`'s own *"SWITCH_NODE routed clearance"* demands between two tracks.
+
+    0.300 - 0.275 = 0.025 mm
+
+Every lever that could pay it has been priced and refused **on the merits**:
+
+  * **NARROW THE SWITCH NODE.**  `ACC_5V` publishes 0.70 A `ILIM` in section 5
+    and 0.150 mm carries 0.602 A at dT = 10 K.  **REFUSED ON CURRENT.**
+  * **WEAKEN THE 0.300 mm CLEARANCE.**  That figure is a switching-aggressor
+    separation, not an unchosen default.  **NOT A CANDIDATE.**
+  * **MOVE THE BARREL.**  There is exactly one legal 0.60/0.30 mm site in the
+    peninsula and r17 shows the next one out is 4.7 mm east, through the
+    corridor both nets need.
+
+**SO THE BLOCKER IS A FLOORPLAN FACT AND THIS DECISION NAMES IT AS ONE.**
+`U21` is a `SOT-563` whose `GND` (`U21.4`), `SW` (`U21.5`) and `VOUT`
+(`U21.6`) lands are stacked on 0.500 mm pitch on the SAME side, all three must
+leave EAST, and the only inductor pad they can reach is 3.7 mm north behind a
+0.98 x 3.70 mm land.  What the board owes this converter is a local
+re-floorplan of the `U21` / `L4` / `C65` block in which `U21.4` sits ON open
+`B GND` pour with room for TWO ground barrels and `U21.5` faces `L4.2`
+directly — the arrangement that makes `ACC_5V_LX` a sub-millimetre node
+instead of a 3.2 mm one.  **That is the next transaction, and everything else
+it needs is already measured and committed**: the `SYS` pour narrowing, the
+`C65` +0.350 mm shift, the two community-header relays that open 780 legal
+barrel sites, and `verify_promotion.py --zone-reshaped`.
+
+## AND THE ORDERING IS PART OF THE FINDING
+
+    r18  --escape-relief --relief-pad U21.4 --relief-extra-width 200000
+         NO-OP: `lands_closed_ok true, lands_still_open [], stitched 0`.
+         The relief runs BEFORE the maze and offers only lands that are
+         ALREADY orphans; `U21.4` is still bonded by the pour at that moment.
+         `ACC_5V_LX` 3.209 mm and `ACC_5V_RAW` 2.690 mm, both ZERO vias.
+
+**The two primitives that could bond `U21.4` sit on OPPOSITE SIDES of the maze
+and no flag moves either.**  `--bond-pad` and `--escape-relief` run BEFORE it,
+so a bond placed then owns the switch node's corridor and the relief sees no
+orphan yet; `--repair-planes` runs AFTER it, so the switch node already owns
+the corridor and no barrel site survives.  That is a real property of this
+driver and it is recorded here rather than worked around, because on a board
+where the two nets did NOT want the same 0.7 mm it would never have mattered.
+
 # D-702 · 2026-09-12 · Demo — **`ACC_5V_LX` AND `ACC_5V_RAW` BOTH ROUTE, ZERO VIAS, THE MOMENT `C65` LEAVES `U21`'s EAST POCKET — AND WHAT IS LEFT IS THREE NAMED BARRELS AND ONE GROUND LAND**
 
     authority  eca812476fbcc6277462ca4e37c0aaa9ee3562bcc5955ba32491b6522832b82c  UNCHANGED

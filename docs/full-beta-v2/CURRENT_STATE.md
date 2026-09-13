@@ -97,6 +97,31 @@
   `BQ25185_SYS POUR 2` narrowing against `HEAD` with real refilled DRC,
   schematic parity, fill-stability and PP1-PP4, and it PASSES**.  Without it a
   promotion that reshapes a pour could not be re-proved at all.
+- **Demo D-703 ADDENDUM (THE BOOST'S GROUND AND ITS SWITCH NODE WANT THE SAME
+  0.7 mm CORRIDOR AND THE MARGIN IS 0.025 mm):**  **NO COPPER PROMOTED.**
+  Authority **UNCHANGED**; 16 -> 16.  Five gate runs close the `U21.4` question
+  for this floorplan.  **`r14`** (bond first, unguarded) plants a 0.60/0.30 mm
+  barrel at **(59.075, 36.625)** with a 2.839 mm arm and passes **14 of 15
+  clauses** — `inert_removal_priced`, `every_detour_relaid`, `pour_partition`,
+  `no_regression` and `attributable_drc` all TRUE — and then `U21.5` answers
+  `NO LEGAL ESCAPE`.  **`r15`** (lane reserved) makes the bond impossible.
+  **`r16`** (bond left to `--repair-planes`) routes `ACC_5V_LX` 3.209 mm and
+  `ACC_5V_RAW` 2.690 mm at ZERO vias with `failed_nets []`, and the repair then
+  finds no barrel within 8 mm.  **`r17`** (southern approach forbidden) bonds
+  4.711 mm EAST and blocks BOTH nets, 16 -> 17.  **`r18`** (`--escape-relief`)
+  is a measured NO-OP.  ***AND THE NUMBER IS 0.025 mm:*** the bond's 0.300 mm
+  escape cap reaches y 39.525 and `ACC_5V_LX`'s 0.200 mm neck has its south
+  edge at y 39.800 — **0.275 mm against the 0.300 mm the `.kicad_dru`'s own
+  "SWITCH_NODE routed clearance" demands**.  Every lever is refused ON THE
+  MERITS: 0.150 mm carries 0.602 A against `ACC_5V`'s published 0.70 A `ILIM`;
+  the 0.300 mm figure is a switching-aggressor separation and not a default;
+  and the next legal barrel site is 4.7 mm away through the same corridor.
+  **THE BLOCKER IS A FLOORPLAN FACT** — `U21` is a `SOT-563` whose `GND`, `SW`
+  and `VOUT` lands are stacked on 0.500 mm pitch on the SAME side, all three
+  must leave EAST, and the only inductor pad they can reach is 3.7 mm north
+  behind a 0.98 x 3.70 mm land.  **AND THE ORDERING IS PART OF IT:**
+  `--bond-pad` and `--escape-relief` run BEFORE the maze and `--repair-planes`
+  runs AFTER it, and no flag moves either.
 - **Demo D-702 (`ACC_5V_LX` AND `ACC_5V_RAW` BOTH ROUTE, ZERO VIAS, THE MOMENT
   `C65` LEAVES `U21`'s EAST POCKET):**  **NO COPPER PROMOTED.**  Authority
   **UNCHANGED** at `eca81247`; 16 -> 16.  D-698's remedy is built: with `C65`
