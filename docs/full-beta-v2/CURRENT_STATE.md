@@ -14,6 +14,31 @@
 
 ## 1. Authoritative HEAD
 
+> **OWNER/CTO ARCHITECTURE AUTHORITY, GRANTED 2026-09-12 (commit `cc9f356`,
+> labelled `D-703` in `CTO_DECISIONS.md`).**  The owner has authorized Opus to
+> *"evaluate and choose the best engineering architecture rather than continuing
+> to preserve the current PCB implementation merely because it exists"*, and
+> names four options explicitly: **(1)** stay on the current 6-layer stack and
+> outline; **(2)** a MODEST PCB OUTLINE INCREASE, with D-694's east-side
+> expansion below about `y = 104.005 mm` and up to about **5 mm** specifically
+> authorized; **(3)** a **6 -> 8 LAYER MIGRATION** where analysis shows it is a
+> faster, safer or more reliable path, with stackup-dependent USB, RF/NFC,
+> power, return-path, impedance and manufacturing requirements REVALIDATED;
+> **(4)** COMPONENT / PACKAGE substitution where package geometry is a
+> demonstrated blocker.  No further approval is needed to move or rotate parts,
+> re-floorplan blocks, change internal layer usage, enlarge the board within
+> that bound, migrate to 8 layers, or substitute an equivalent internal part.
+> **Kickstarter-visible features may NOT be removed to solve congestion** —
+> that remains an escalation.
+>
+> **THIS ARRIVES EXACTLY WHERE D-703 LEFT THE BOARD.**  D-703 measured that
+> every remaining land LAUNCHES and that all sixteen open edges are CORRIDOR
+> problems, and that the board routes on **three** layers (`F`, `In2`, `B`)
+> because `In1` (GND), `In3` (+3V3) and `In4` (GND) all carry filled pours.
+> Options (2) and (3) are the two levers that address that directly, and the
+> `AQROOT_PLANE_SIGNAL` instrument D-703 built is what measures (3) without
+> restacking anything first.
+
 > **ONE OPEN OWNER DECISION (D-693, 2026-09-11): the `U11` FAN-OUT
 > RE-FLOORPLAN and its bounded `/01_POWER_TREE/BAT_PROTECTED_P` exception.**
 > Eight of the board's eighteen remaining open edges are held by `U11`'s
@@ -41,6 +66,36 @@
 > `verify_promotion` PASS and `protected_copper` showing exactly one protected
 > net moved.  `U14.7` is on the bus.  This board has **no open owner decision**.
 
+- **Demo D-705 (THE ARCHITECTURE CHOICE, MEASURED: A FOURTH ROUTING LAYER
+  CLOSES ZERO EDGES — THE BOARD LACKS AREA, NOT LAYERS):**  **NO COPPER
+  PROMOTED.**  Authority **UNCHANGED**; 16 -> 16.  ***CORRECTION TO D-703 §3:***
+  the stack-up's own intent is **FOUR** routing layers, not three —
+  `qrouter.ROUTABLE = {4: ('F','B'), 6: ('F','B','I2','I3')}`, so on six copper
+  layers `In1` and `In4` are the two SOLID REFERENCES (for `F.Cu` and `B.Cu`)
+  and are never routable by design, while `In2` AND `In3` are both signal
+  layers.  What takes one away is the full-board `+3V3` POUR on `In3`, not the
+  stack.  (`AQROOT_PLANE_SIGNAL` on `I1`/`I4` is inert for the same reason:
+  `permitted_layers` intersects with `routable` first.)  **AND HANDING `In3` TO
+  EVERY ONE OF THE NINE OPEN NON-POUR NETS AT ONCE CLOSES NOTHING** — 16 -> 16,
+  `nets_improved []` — because **four of the nine fail INSIDE A PACKAGE at or
+  below the board's own 0.150 mm minimum**: `U11.3` `NO LEGAL ESCAPE at >=
+  0.150 mm`, `U21.5` at `>= 0.400`, `U9.14` at `>= 0.200`, `U9.10` at `>=
+  0.400`.  A ninth layer cannot reach a land that cannot launch.  **SO OPTION 3
+  (6 -> 8 LAYERS) IS NOT RECOMMENDED** — it buys layers, layers are measurably
+  not the constraint, and it would force re-deriving the `.kicad_dru`'s USB
+  *"90 ohm on F.Cu over In1"* rule, the `In1`/`In4` reference assignment,
+  `plane_return_path` RP1-RP6, `keepout_stackup_contract`, `qrouter.ROUTABLE`
+  and the whole fab package.  ***RECOMMENDED: OPTION 2*** — widen the outline
+  eastward below `y = 104.005 mm` by up to 5 mm (the `WROOM` antenna keep-out
+  starts at 104.005, so nothing antenna-critical is touched), which takes
+  `U11`'s east fan-out corridor from **2.9 mm to 7.9 mm** and gives the `U21`
+  boost the room its 0.025 mm ground-vs-switch-node conflict needs; then
+  re-floorplan the `U11` pocket and the `U21` block into it.  **OPTION 4 IS
+  SECOND AND HAS ONE NAMED TARGET:** `U11` is a `BQ25185` `DLH0010A` WSON-10 on
+  0.400 mm pitch whose land pattern gives the necking pair exactly zero margin,
+  and nine of sixteen open edges sit behind it and `U2`; a larger-pitch package
+  for the same die would be worth more than any routing lever spent in six
+  decisions — a BOM/sourcing question, RAISED not taken.
 - **Demo D-703 (EVERY REMAINING LAND NOW LAUNCHES; `ACC_5V_LX` ROUTES AT ZERO
   VIAS AND `/BQ25185_STAT1` ROUTES FOR THE FIRST TIME IN SIX DECISIONS):**
   **NO COPPER PROMOTED, NO RULE PROMOTED.**  Authority **UNCHANGED** at

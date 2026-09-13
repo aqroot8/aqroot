@@ -1,7 +1,121 @@
+# D-705 · 2026-09-13 · Demo — **THE ARCHITECTURE CHOICE, MEASURED: OPENING A FOURTH ROUTING LAYER TO EVERY OPEN NET CLOSES ZERO EDGES, SO THE BOARD DOES NOT LACK LAYERS — IT LACKS AREA. RECOMMEND OPTION 2, NOT OPTION 3**
+
+    authority  eca812476fbcc6277462ca4e37c0aaa9ee3562bcc5955ba32491b6522832b82c  UNCHANGED
+    retained open edges 16 -> 16.  NO COPPER PROMOTED.
+    `evidence/d705-architecture-screen-in3-open-to-every-open-net.json`
+
+The owner's architecture authority (commit `cc9f356`, labelled `D-703`) names
+four options and asks for the best one.  This decision answers it with a
+measurement rather than a preference, and **corrects a sentence D-703 wrote**.
+
+## 1. THE CORRECTION: THE STACK ALREADY INTENDS FOUR ROUTING LAYERS
+
+D-703 §3 said *"this board routes on THREE layers"*.  The stack-up's own intent
+is FOUR.  `qrouter.ROUTABLE` is a published table:
+
+    ROUTABLE = {4: ('F', 'B'), 6: ('F', 'B', 'I2', 'I3')}
+
+On six copper layers `In1` and `In4` are the two SOLID REFERENCES — for `F.Cu`
+and `B.Cu` respectively — and are never routable by design, while **`In2` AND
+`In3` are both signal layers**.  What takes one of them away is not the
+stack-up: it is the full-board `+3V3` pour on `In3`, which
+`reserved_inner_planes` then reserves to `+3V3`.  So the practical count is
+three and the designed count is four, and the difference is a POUR, not a
+layer.  (`AQROOT_PLANE_SIGNAL` on `I1` or `I4` is silently inert for the same
+reason — `permitted_layers` intersects with `routable` first.)
+
+## 2. AND A FOURTH ROUTING LAYER CLOSES NOTHING
+
+`AQROOT_PLANE_SIGNAL` opened `In3` to **every one of the nine open non-pour
+nets at once**, with `--trunk-floor`, `--escape-floor`, `--neck`, the
+off-centre launcher and a 0.50/0.25 mm maze barrel:
+
+    /BQ25185_STAT1     NO_PATH at 0.150 mm     src 4 / dst 6
+    /BQ25185_STAT2     U11.3 NO LEGAL ESCAPE at >= 0.150 mm -- the BOARD MINIMUM
+    /01_POWER_TREE/ACC_5V_LX   U21.5 NO LEGAL ESCAPE at >= 0.400 mm
+    /04_SPI_B_RADIOS_NFC/NFC_VDD_RF  U9.14 NO LEGAL ESCAPE at >= 0.200 mm
+    /NFC_SUPPLY        U9.10 NO LEGAL ESCAPE at >= 0.400 mm
+    /I2C_SCL_INT       NO_PATH at 0.200 mm over 15.585 mm   dst 2
+    /ACC_PWR_EN        NO_PATH at 0.200 mm over 20.242 mm   dst 6
+    /SX1262_DIO1       NO_PATH at 0.200 mm over 78.249 mm   src 1
+    /01_POWER_TREE/BQ25185_SYS   NO_VIA_SITE on R68.1 and U13.3 (both DNP)
+
+    16 -> 16.  nets_improved [].  ZERO edges closed.
+
+**FOUR of the nine do not fail for want of a layer at all** — they fail INSIDE
+a package, at or below the board's own 0.150 mm minimum track width, in
+`U11`'s 0.400 mm-pitch WSON and `U9`'s and `U21`'s fine-pitch land patterns.
+A ninth routing layer cannot reach a land that cannot launch.
+
+## 3. WHAT THAT MEANS FOR THE FOUR AUTHORIZED OPTIONS
+
+**OPTION 3 — 6 -> 8 LAYERS — IS NOT RECOMMENDED ON THIS EVIDENCE.**  It buys
+routing LAYERS.  Layers are measurably not the binding constraint: the fourth
+one this board already owns, once handed to every open net, bought nothing.
+And the price is not small — `qrouter.ROUTABLE` has no 8-layer row, the
+`.kicad_dru`'s USB rule is authored as *"90 ohm on F.Cu over In1"* and would
+have to be re-derived against a new dielectric stack, `In1`/`In4` reference
+assignment, `plane_return_path.py` RP1-RP6, `keepout_stackup_contract`, the
+whole fab package and JLCPCB's 8-layer process would all need revalidating,
+for capacity the screen says is not what is missing.
+
+**OPTION 2 — THE MODEST EAST-SIDE OUTLINE INCREASE — IS THE MATCHED LEVER, AND
+IT IS RECOMMENDED.**  What the failing nets lack is AREA in two named pockets,
+and the authorized expansion is in exactly the right place:
+
+  * `U11`'s EAST row is five lands (`U11.6`..`U11.10`) on 0.400 mm pitch that
+    must all reach the board edge **2.9 mm** away, through a corridor that also
+    carries `R36`, `J8`'s mounting pad and the `ISET` / `ILIM_VSET` hauls.  At
+    `x = 71.5 -> 76.5` that corridor becomes **7.9 mm**.  D-703's own
+    measurement is that the corridor EXISTS and is merely OCCUPIED — Q1 routes
+    `U11.9 <-> TP6.1` in 18.756 mm on `B.Cu` with ZERO vias once the window is
+    cleared.
+  * the `U21` / `L4` / `C65` boost pocket, where D-703's addendum measured the
+    ground and the switch node competing for the same 0.7 mm with a **0.025 mm**
+    margin, gains the room to be re-floorplanned so `U21.4` sits on open `B GND`
+    pour with TWO barrels and `U21.5` faces `L4.2` directly.
+  * the `WROOM` antenna keep-out starts at `y = 104.005 mm`, so an expansion
+    BELOW it touches no antenna geometry; `MK1`, `BOSS1`/`BOSS2` and the
+    display are all west or north of the affected band.
+
+**OPTION 4 — PACKAGE SUBSTITUTION — IS SECOND, AND IT HAS ONE NAMED TARGET.**
+`U11` is a `BQ25185` in a `DLH0010A` WSON-10 2.2 x 2.0 mm on 0.400 mm pitch,
+and D-701 proved its land pattern gives the `.kicad_dru`'s necking pair exactly
+zero margin; **nine of the board's sixteen open edges are behind that package
+and `U2`**.  If TI offers the same die in a larger-pitch package, that single
+substitution is worth more than any routing lever measured in six decisions.
+That is a BOM/sourcing question and is raised here, not taken.
+
+**OPTION 1 — STAY AS IS — IS REFUSED BY THE ARITHMETIC.**  Sixteen edges,
+every land launching, every failure a corridor, and six decisions of levers
+spent.
+
+## 4. THE RECOMMENDATION, PLAINLY
+
+Take **OPTION 2**: widen the outline eastward below `y = 104.005 mm` by up to
+5 mm, then re-floorplan the `U11` charger pocket and the `U21` boost block into
+the area it creates.  Keep `SW9`, `J5`, `J8`, `J3`, `MK1`, the display and both
+antennas where they are.  Do NOT migrate to eight layers on the present
+evidence; revisit it only if, after the re-floorplan, the remaining failures
+are corridor-capacity ones rather than package ones.
+
+**NEXT (in order):** (a) edge-cuts and zone-outline change plus a mechanical
+re-check against `check_mechanical_consistency.py`, `keepout_stackup_contract`
+and `placement_contract`; (b) `U11` pocket re-floorplan — `C23`, `R36`, `R37`
+and `J8` off the two escape corridors; (c) the `U21` / `L4` / `C65` boost
+re-floorplan D-703's addendum specifies; (d) re-run the four transactions
+D-703 §5 already names, which need no new search.
+
 # D-703 · 2026-09-12 · Demo — **EVERY REMAINING LAND ON THIS BOARD NOW LAUNCHES. `ACC_5V_LX` ROUTES AT ZERO VIAS AND `/BQ25185_STAT1` ROUTES FOR THE FIRST TIME IN SIX DECISIONS — AND WHAT IS LEFT IS THREE NAMED INTRUDERS AND ONE GROUND PENINSULA WITH NO LEGAL BARREL AT ANY DIAMETER**
 
     authority  eca812476fbcc6277462ca4e37c0aaa9ee3562bcc5955ba32491b6522832b82c  UNCHANGED
     retained open edges 16 -> 16.  NO COPPER PROMOTED, NO RULE PROMOTED.
+
+> **NUMBERING.**  The owner's *"CTO/OWNER ARCHITECTURE AUTHORITY FOR KICKSTARTER
+> PROTOTYPE CLOSURE"* block (commit `cc9f356`, 2026-09-12 20:56 UTC) also carries
+> the label **D-703**; it landed while this decision was being measured.  Both
+> are kept under that number, the owner's block is the AUTHORITY one, and the
+> next engineering decision is **D-705**.
     `evidence/d703-summary.json` and eight artifacts beside it; candidates in `w/d703`
 
 ## 0. WHAT CHANGED IN WHAT THIS BOARD IS
