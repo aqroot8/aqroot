@@ -27227,3 +27227,20 @@ The goal is a working Kickstarter prototype, not preservation of the existing PC
 
 Use engineering judgment, implement the best option, verify it rigorously, and continue
 until DEMO_READY_FOR_FAB or until a genuine product/business decision is unavoidable.
+
+## D-707 — OWNER APPROVAL: MOVE J8 WITH EAST-SIDE EXPANSION
+
+APPROVED by owner.
+
+Purpose:
+Allow the coordinated U11-pocket re-floorplan to use the authorized east-side board expansion while preserving J8 as a usable external Qwiic / STEMMA QT connector.
+
+Decision:
+- J8 may move outward with the expanded right edge.
+- Keep J8 externally accessible and mechanically usable at the enclosure wall.
+- Preserve J8 electrical function, orientation/useability, pinout, keepout, and assembly access.
+- The enclosure/mechanical prototype may be adjusted to match the new J8 position.
+- Do not remove the Qwiic / STEMMA QT feature.
+- This approval is specifically for the Kickstarter Demo revision.
+
+Proceed autonomously with the coordinated U11/U21 re-floorplan, routing, verification, and promotion if all safety/DRC/connectivity/manufacturing checks pass.
