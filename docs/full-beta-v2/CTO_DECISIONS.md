@@ -1,3 +1,199 @@
+# D-706 · 2026-09-13 · Demo — **THE WALL D-703 COULD NOT NAME WAS `ISET`'s MISSING WIDTH FLOOR. WITH IT PUBLISHED, `/BQ25185_STAT1` CLOSES IN EVERY CONFIGURATION — AND `U11`'s EAST FAN-OUT IS FULL AT FOUR CONDUCTORS IN 2.525 mm, SO THE AUTHORIZED AREA AND ONE PART MOVE MUST BE SPENT TOGETHER**
+
+    authority  eca812476fbcc6277462ca4e37c0aaa9ee3562bcc5955ba32491b6522832b82c  UNCHANGED
+    retained open edges 16 -> 16.  NO COPPER PROMOTED.
+    RULE PROMOTED: `.kicad_dru` SECTION 20 — three per-net 0.150 mm width floors.
+    TOOL FIX: `route_maze_batch.INHERITED['hole_clearance']` 5 -> 0.
+    `evidence/d706-summary.json`, `evidence/d706-run-*.json` (18 gated runs)
+
+## 1. D-703 ROUTED `/BQ25185_STAT1` AND LOST IT TO A NET IT HAD TO EVICT
+
+D-703 §1 is not overstated: `/BQ25185_STAT1` **does** route `U11.9 -> TP6.1` in
+23.682 mm through two barrels.  Its own report says why it could not be
+promoted, and it is one line:
+
+    nets_improved  ["/BQ25185_STAT1"]
+    nets_regressed ["/01_POWER_TREE/ISET"]          16 -> 16
+
+The corridor only opens once `/01_POWER_TREE/ISET`'s 15.53 mm east-edge haul is
+evicted, and when `ISET` was asked to come back it answered
+**`U11.8: NO LEGAL ESCAPE at >= 0.200 mm`**.  The STAT1 route was never the
+problem.  `ISET`'s re-lay was.
+
+## 2. THE RULE: SECTION 20, ON SECTION 19's EXACT TERMS
+
+`U11` is a `BQ25185` in a `DLH0010A` WSON-10 — 0.400 mm pitch, 0.750 × 0.200 mm
+lands, so **0.600 mm between the lands either side of an inner pin**.  A
+0.200 mm track at this board's 0.200 mm routed clearance needs EXACTLY
+0.600 mm: it fits with **zero margin**, and no rasterised lattice can express
+zero (`QBoard.grid`'s guard band is 0.75 of a cell).  A 0.150 mm track needs
+0.550 mm and has 0.050 mm of real margin.  That is D-690 §19's arithmetic,
+pin for pin, and it applies to `U11.7`, `U11.8` and `U11.6` exactly as it
+applied to `U11.9` and `U11.3`.
+
+So section 20 publishes a 0.150 mm floor for **three named nets**:
+`/01_POWER_TREE/ISET`, `/01_POWER_TREE/ILIM_VSET` and `Net-(U11-TS_MR)` — the
+`BQ25185`'s three RESISTOR-PROGRAMMED bias pins.  The current is not asserted,
+it is read off the board's own contract: `checks/leaf_land_contract.py` types
+all three `U11` lands `SIGNAL_PIN` from the **schematic's own `pintype`**
+(`ISET_8` input, `ILIM_VSET_7` input, `TS_MR_6` bidirectional) and bounds the
+far terminal by the published resistor at the board's 5.50 V ceiling:
+
+    net                       resistor    bound        0.150 mm carries   margin
+    /01_POWER_TREE/ISET       R37   1k    5.500 mA     0.602 A             109 x
+    /01_POWER_TREE/ILIM_VSET  R36  18k    0.306 mA     0.602 A            1970 x
+    Net-(U11-TS_MR)           R38  10k    0.550 mA     0.602 A            1095 x
+
+**MEASURED NON-VACUOUS.**  `U11.8` goes from `NO LEGAL ESCAPE at >= 0.200 mm`
+to **three source escapes**, and `/01_POWER_TREE/ISET` re-lays — 11.132 mm with
+2 barrels (run `s3`), 10.235 mm (`e2`), 10.923 mm (`g2`), 18.192 mm at ZERO
+vias (`e5`).  **DRC-NEUTRAL ON THE AUTHORITY:** the rule only LOWERS a minimum,
+so real `kicad-cli` DRC on the unchanged board is byte-identical — 1
+`solder_mask_bridge`, 199 `lib_footprint_issues`, 32 unconnected.
+`contract_regression` is **14/14 ran, all PASS, all identical to `d700` where
+comparable**; the single incomparable field is the `.kicad_dru` sha256 this
+decision changed.
+
+## 3. A GATE DEFECT, FOUND BY WALKING INTO IT
+
+`route_maze_batch.INHERITED` pinned `hole_clearance` at **5**.  The authority
+carries **none** — real DRC on `eca81247` is exactly
+`{solder_mask_bridge: 1, lib_footprint_issues: 199}` — so the pin had quietly
+become a licence for five NEW hole-clearance errors.  Run `e4` then passed all
+fifteen clauses with `attributable_drc []` while its own
+`/01_POWER_TREE/ISET` track ran **0.2346 mm** from `SW9`'s 0.900 mm NPTH
+against the board's own 0.250 mm.  A pin that outlives the board it was
+measured on is not a pin: it is now **0**, and the same transaction re-run
+(`e5`) routes around the hole and comes back to the inherited baseline exactly.
+
+## 4. THE ARITHMETIC THAT DECIDES THE REST OF `U11`
+
+`U11`'s EAST COLUMN is five nets — pin 6 `TS_MR`, 7 `ILIM_VSET`, 8 `ISET`,
+9 `STAT1`, 10 `USB_VBUS_CHG` — and they fan into the strip between the land row
+at `x 68.975` and the board's copper limit at `x 71.500`.  **That is 2.525 mm.**
+Five conductors at 0.150–0.200 mm with 0.200–0.250 mm clearances need
+`5 × 0.2 + 6 × 0.25 = 2.500 mm`.  The strip is FULL, and it was full before this
+decision: four of the five were routed and the fifth — `STAT1` — is one of the
+sixteen open edges.
+
+Eighteen gated runs say the same thing, and which three of the four close
+depends only on the order they are asked in:
+
+    s3  STAT1, ISET, ILIM, USB    -> STAT1 + ISET        ILIM, USB fail
+    s4  STAT1, ILIM, USB, ISET    -> STAT1 + ILIM        ISET, USB fail
+    s7  STAT1, USB, ILIM, ISET    -> STAT1 + ILIM + USB  ISET fails
+    s8  STAT1, USB, ISET, ILIM    -> STAT1 + ISET + USB  ILIM fails
+    s9  ILIM never evicted        -> STAT1 + USB         ISET fails
+
+## 5. AND THIS IS WHERE THE AUTHORIZED AREA EARNS ITSELF — WITH ONE PART MOVED INTO IT
+
+D-705 §5 measured that **area alone closes nothing** and prescribed the remedy
+in the same sentence: *widen AND move the parts in the SAME transaction*.  Run
+**`e5`** is that transaction, and it is the first clean sheet this board has
+seen in seven decisions:
+
+    board   authority + the stepped outline (x 72 -> 77 between y 70.500 and
+            y 104.005, all five full-board planes extended) + R36 MOVED to
+            (73.500, 75.000), which is INSIDE the new area
+    result  failed_nets []            nets_regressed []
+            retained open edges 17 -> 15  (the authority is 16)
+    gate    ALL FIFTEEN CLAUSES TRUE
+    DRC     {solder_mask_bridge: 1, lib_footprint_issues: 199}  attributable []
+    PP      PP1 PP2 PP3 PP4 all true
+
+    /BQ25185_STAT1             TP6.1 -> U11.9   27.036 mm  B -> F -> B  2 barrels
+    /01_POWER_TREE/ILIM_VSET   R36.1 -> U11.7    5.055 mm  B.Cu  ZERO vias
+    /01_POWER_TREE/ISET        R37.1 -> U11.8   18.192 mm  B.Cu  ZERO vias
+    /01_POWER_TREE/USB_VBUS_CHG C23.2 -> U11.10  3.164 mm  ZERO vias, 0.100 mm neck
+
+**WHY IT WORKS, AND IT IS ONE SENTENCE:** with `R36` north-east of `U11` in the
+new area, `ILIM_VSET` reaches it on `B.Cu` **with no via at all**, and that is
+what frees the single via column at `x 69.2 / y 76.5` that `ISET` needs.
+
+**AND THE CONTROLS SAY THE AREA IS LOAD-BEARING, NOT DECORATIVE.**  The same
+transaction with `R36` moved into the `SW9` pocket on the UNEXPANDED board —
+`(69.000, 83.500)` in run `f1`, `(70.000, 81.600)` in `f2` — puts `ILIM_VSET`
+back on the via column and `ISET` fails again; `h1` (`R36` south by 1.200 mm
+only) reaches 19 -> 17 and draws a 0.175 mm pad-to-via clearance error.
+
+## 6. WHY IT IS NOT PROMOTED, AND IT IS MECHANICAL
+
+The `y = 70.500` expansion recesses **`J8`** — the Qwiic / STEMMA QT connector,
+which `DEVICE_SPEC` §10.2 records as **EXTERNAL (right wall)** — five
+millimetres inside the new east edge.  A right-wall connector must follow its
+wall.  Promoting that board would ship a port the cable cannot reach.
+
+The mechanically clean variant was built and measured too.  Run **`g2`** takes
+the same expansion **narrowed to `y 81.000 .. 104.005`**, below `J8`'s courtyard
+(which ends at `y 80.345`), so `J8` never moves; it adds three `STEP_EDGE`
+keep-outs so the router honours a non-rectangular outline; and it puts `R36` at
+`(73.500, 83.000)`.  `STAT1`, `ISET` and `USB_VBUS_CHG` all route,
+`nets_regressed []`, DRC is the inherited baseline exactly — **and `ILIM_VSET`
+fails**, 17 -> 16.  The reason is the same arithmetic: `R36`'s only home that
+lets `ILIM_VSET` reach `U11.7` without a via is NORTH-EAST of `U11`, at about
+`y 75`, and that is inside `J8`'s `y` band.
+
+**So the choice is not "expand or don't".  It is "move `J8`, or leave
+`ILIM_VSET` open".**  That is a mechanical/enclosure decision that belongs to
+one transaction with the rest of the block, not to a run that buys one edge.
+
+## 7. THE OTHER WALLS, MEASURED THIS DECISION
+
+**`/01_POWER_TREE/BQ25185_SYS` — the cut is the BATTERY INPUT's own escape.**
+`screen_pour_cut_blame --free U11.1=C28.1 --free C27.1=C28.1` over
+`(61,71)-(72,86)`: `MINIMAL_SET_FOUND`, `edges_closed 2`, and the minimal set is
+**seventeen units — thirteen of them the `/01_POWER_TREE/BAT_PROTECTED_P`
+taper** from `(65.050, 76.050)` to `U11.2`, three `USB_VBUS_CHG`, one `ISET`.
+The charger's own `SYS` output pad and its bulk capacitor are cut off the `SYS`
+pour by the taper that feeds `U11` its battery.  **And both edges close for
+free the moment `U11` leaves the pocket:** run `a` moved `U11` to `(68.500,
+86.500)` — the empty `B.Cu` under `SW9`, whose three electrical pads are
+`F.Cu`-only SMD and whose only `B.Cu` obstruction is two 0.900 mm NPTH — and
+`BQ25185_SYS` went **5 open edges to 3 with ZERO new copper**.
+
+**`/04_SPI_B_RADIOS_NFC/NFC_VDD_RF` — `U9.14` is enclosed by its own transmit
+arms.**  `U9.13` (`NFC_RFO1`) and `U9.15` (`NFC_RFO2`) leave their pads
+STRAIGHT NORTH for 0.925 mm at `x 34.250` and `x 35.250`; the `NFC_RF` class
+owes 0.250 mm of routed clearance, so the channel at `x 34.400..35.100` admits
+exactly 0.200 mm with **zero margin** — and then `RFO1` turns north-east ACROSS
+it at `(34.250,26.800) -> (34.825,26.225)` and caps it.  No barrel fits either:
+a 0.500 mm via needs 0.650 mm from an RF track centre and has 0.500 mm.
+Evicting both arms lets `VDD_RF` route in 8.765 mm (`u9c`) and then `NFC_RFO2`
+cannot be rebuilt from scratch (`u9e`).  **The fix is an RF fan-out redesign:**
+both arms must diverge from their pads' north edge instead of running 0.925 mm
+straight north, which is also the better differential shape.
+
+**`/ACC_PWR_EN` — the minimal cut is three nets and one of them is `/I2C_SCL_INT`.**
+`screen_pair_corridor_blame U3.20 <-> R17.1`, reverse-greedy, 1079.7 s:
+**`{/I2C_SCL_INT, /SX1262_RXEN, GND}`**, and with those three out the corridor
+opens in 31.480 mm on `B`/`In2`/`F` with 4 vias.  `/I2C_SCL_INT` is itself one
+of the sixteen open edges and wants the same channel, so **the two are one
+transaction.**  Run `acc2` evicted 24 `I2C_SCL_INT` objects and 2
+`SX1262_RXEN` objects in that window: `I2C_SCL_INT` rebuilt two of its own
+joins and `/SX1262_RXEN` — a 58.048 mm net — could not be re-laid.
+
+**`/SX1262_DIO1`** is a 78.249 mm ratsnest, `NO_PATH` at 0.200 mm with 3 source
+and 8 destination escapes: a corridor problem at BOARD scale, not a pocket.
+
+## 8. THE NEXT TRANSACTION, NAMED
+
+1. **Take the owner's Option 2 in full**: the stepped outline `x 72 -> 77`
+   between `y 70.500` and `y 104.005`, **`J8` moved +5.000 mm east to
+   `(73.400, 76.400)`** so the Qwiic port stays on the right wall, and
+   `R36` / `R37` / `R38` moved into the strip that move vacates.
+   `DEVICE_SPEC` §12's `72.000 × 148.000 mm` LOCKED / MARKETING-SAFE entry and
+   the enclosure brief move with it.
+2. **`R38` is free money.**  `Net-(U11-TS_MR)` runs from `U11.6` to a 10 k
+   resistor at `(9.525, 85.985)` — **fifty-eight millimetres**, twenty-two
+   objects, on a pin that draws 0.550 mA.  Moving `R38` beside `U11` deletes
+   that haul and frees the `x 66..71 / y 66..75` corridor it occupies.
+3. Then re-request the four `U11` east-column nets in the `s7` order; `e5`
+   already shows they all route once `ILIM_VSET` has a via-free home.
+4. The `SYS` pour's `U11.1` / `C27.1` pair comes with the same move: it is the
+   `BAT_PROTECTED_P` taper that cuts them, and the taper is released by any
+   `U11` or `C23` relocation.
+
+
 # D-705 · 2026-09-13 · Demo — **THE ARCHITECTURE CHOICE, MEASURED: OPENING A FOURTH ROUTING LAYER TO EVERY OPEN NET CLOSES ZERO EDGES, SO THE BOARD DOES NOT LACK LAYERS — IT LACKS AREA. RECOMMEND OPTION 2, NOT OPTION 3**
 
     authority  eca812476fbcc6277462ca4e37c0aaa9ee3562bcc5955ba32491b6522832b82c  UNCHANGED

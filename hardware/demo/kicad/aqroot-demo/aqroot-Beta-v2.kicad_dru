@@ -2187,3 +2187,84 @@
 (rule "D-690 BQ25185_STAT2 charge-status signal - width floor"
 	(constraint track_width (min 0.15mm))
 	(condition "A.NetName == '/BQ25185_STAT2'"))
+
+
+# ---------------------------------------------------------------------
+# SECTION 20 - D-706: THE THREE `BQ25185` PROGRAMMING PINS PUBLISH THE
+#              SAME WIDTH FLOOR SECTION 19 PUBLISHES FOR ITS TWO STATUS
+#              PINS, FOR THE SAME REASON AND ON THE SAME EVIDENCE
+#
+# `/01_POWER_TREE/ISET`, `/01_POWER_TREE/ILIM_VSET` and
+# `Net-(U11-TS_MR)` are the `BQ25185`'s three RESISTOR-PROGRAMMED bias
+# pins.  Each is a TWO-PAD net: one `U11` land and one resistor to
+# `GND` -- `R37` 1k on `ISET`, `R36` 18k on `ILIM_VSET`, `R38` 10k on
+# `TS_MR`.  None of them carries a supply, none of them is priced by
+# section 5, and all three sit on the SAME 0.400 mm-pitch WSON land row
+# section 19 already measured.
+#
+# THE WALL IS SECTION 19'S WALL, PIN FOR PIN.  `U11`'s `DLH0010A`
+# WSON-10 leaves 0.600 mm between the lands either side of an inner
+# pin, and a 0.200 mm track at this board's 0.200 mm routed clearance
+# needs EXACTLY 0.600 mm.  It fits with ZERO margin, and no rasterised
+# lattice can express zero -- `QBoard.grid`'s guard band is 0.75 of a
+# cell -- so the launch is refused at 0.100 mm, at 0.050 mm, at
+# 0.025 mm and at every finer pitch alike.  Measured again at D-706 on
+# an EMPTY 5 x 5 mm pocket with `U11` moved into the middle of it:
+# `U11.8` still answers `NO LEGAL ESCAPE at >= 0.200 mm; blocked by
+# U11.6, U11.9, U11.3`.  The refusal is the LAND PATTERN and it is
+# independent of placement, of layer count and of board area.  A
+# 0.150 mm track needs 0.550 mm and has 0.050 mm of real margin.
+#
+# AND IT IS LOAD-BEARING, NOT COSMETIC.  D-703 routed `/BQ25185_STAT1`
+# `U11.9 -> TP6.1` in 23.682 mm and could not promote it, because the
+# transaction had to evict `/01_POWER_TREE/ISET` to open the corridor
+# and `ISET` could not be re-laid at 0.200 mm.  This rule is what lets
+# that net come back.
+#
+# CURRENT, MEASURED BY THE BOARD'S OWN CONTRACT.
+# `checks/leaf_land_contract.py` types every `U11` land here
+# `SIGNAL_PIN` from the SCHEMATIC's own `pintype` -- `ISET_8` input,
+# `ILIM_VSET_7` input, `TS_MR_6` bidirectional -- and bounds the far
+# terminal by the published resistor value at the board's 5.50 V
+# ceiling:
+#
+#   net                       resistor     bound        0.150 mm carries
+#   /01_POWER_TREE/ISET       R37   1k     5.500 mA     0.602 A   109 x
+#   /01_POWER_TREE/ILIM_VSET  R36  18k     0.306 mA     0.602 A  1970 x
+#   Net-(U11-TS_MR)           R38  10k     0.550 mA     0.602 A  1095 x
+#
+# IPC-2221B at 10 K on this board's 1 oz outer copper gives the 0.602 A
+# figure -- the same call `--trunk-floor` and `PP2` make.
+#
+# WHY A RULE AND NOT A DEFAULT.  Identical to section 19: a signal
+# class is priced nowhere, and letting the router descend to board
+# setup's `min_track_width` for ANY unpriced class would admit `GND`
+# and `USB_D`, whose widths are a return path and an impedance.  So the
+# floor is published for ONE NAMED NET at a time, here, where a
+# reviewer reads it, and `route_maze_batch.net_width_licence` accepts
+# only the exact `A.NetName == '<net>'` condition below.
+#
+# THE FIGURE IS THE BOARD'S OWN AND IS NOT NEW.  0.150 mm is
+# `board.design_settings.rules.min_track_width` in
+# `aqroot-Beta-v2.kicad_pro`; the board already carries eighty-four
+# tracks at 0.150 mm; JLCPCB's published 4-layer-and-up minimum is
+# 0.127 mm (5 mil) at 1 oz.  Nothing here asks the fabricator for
+# anything it is not already making.
+#
+# SCOPE.  Three nets, named individually.  No netclass moves, no
+# clearance is weakened, and the 0.200 mm routed clearance every other
+# rule on this board states is untouched -- the narrow rung buys its
+# margin out of the TRACK, never out of the gap.
+# ---------------------------------------------------------------------
+
+(rule "D-706 BQ25185 ISET programming pin - width floor"
+	(constraint track_width (min 0.15mm))
+	(condition "A.NetName == '/01_POWER_TREE/ISET'"))
+
+(rule "D-706 BQ25185 ILIM_VSET programming pin - width floor"
+	(constraint track_width (min 0.15mm))
+	(condition "A.NetName == '/01_POWER_TREE/ILIM_VSET'"))
+
+(rule "D-706 BQ25185 TS_MR programming pin - width floor"
+	(constraint track_width (min 0.15mm))
+	(condition "A.NetName == 'Net-(U11-TS_MR)'"))

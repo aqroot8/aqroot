@@ -66,6 +66,61 @@
 > `verify_promotion` PASS and `protected_copper` showing exactly one protected
 > net moved.  `U14.7` is on the bus.  This board has **no open owner decision**.
 
+- **Demo D-706 (THE WALL D-703 COULD NOT NAME WAS `ISET`'s MISSING WIDTH
+  FLOOR; `/BQ25185_STAT1` NOW CLOSES IN EVERY CONFIGURATION, AND `U11`'s EAST
+  FAN-OUT IS FULL AT FOUR CONDUCTORS IN 2.525 mm):**  **NO COPPER PROMOTED.**
+  Authority **UNCHANGED** at `eca81247`; 16 -> 16.  **RULE PROMOTED:**
+  `.kicad_dru` **SECTION 20**, a 0.150 mm per-net width floor for
+  `/01_POWER_TREE/ISET`, `/01_POWER_TREE/ILIM_VSET` and `Net-(U11-TS_MR)` on
+  D-690 section 19's exact terms — the same `DLH0010A` WSON-10 arithmetic
+  (0.600 mm between the lands either side of an inner pin; a 0.200 mm track at
+  0.200 mm clearance needs EXACTLY 0.600 mm and no lattice expresses zero; a
+  0.150 mm track has 0.050 mm of margin), and the current read off
+  `leaf_land_contract`'s own `SIGNAL_PIN` typing and the published resistors:
+  `ISET` <= 5.500 mA, `ILIM_VSET` <= 0.306 mA, `TS_MR` <= 0.550 mA against
+  0.602 A.  ***MEASURED NON-VACUOUS:*** `U11.8` goes from `NO LEGAL ESCAPE at
+  >= 0.200 mm` to THREE source escapes and `ISET` re-lays, which is the ONE
+  thing D-703's proved `/BQ25185_STAT1` route (`U11.9 -> TP6.1`, 23.682 mm, 2
+  barrels) lacked.  DRC on the unchanged board is byte-identical and
+  `contract_regression` is **14/14, all PASS, all identical to `d700` where
+  comparable**.  **TOOL FIX, FOUND BY WALKING INTO IT:**
+  `route_maze_batch.INHERITED['hole_clearance']` was pinned at **5** while the
+  authority carries **none**, so the gate held a licence for five NEW
+  hole-clearance errors and used it — run `e4` passed all fifteen clauses with
+  `attributable_drc []` while its own `ISET` track ran 0.2346 mm from `SW9`'s
+  NPTH against 0.250 mm.  Pinned to **0**.  ***AND THE REMAINING `U11`
+  ARITHMETIC IS EXACT:*** the east column's five nets (`TS_MR`, `ILIM_VSET`,
+  `ISET`, `STAT1`, `USB_VBUS_CHG`) fan into the strip from the land row at
+  `x 68.975` to the copper limit at `x 71.500` — **2.525 mm** — and five
+  conductors at 0.150-0.200 mm with 0.200-0.250 mm clearances need **2.500 mm**.
+  Eighteen gated runs close exactly THREE of the four, and which three depends
+  only on the order they are asked in.  ***THE AUTHORIZED AREA CLOSES THE
+  FOURTH, WITH ONE PART MOVED INTO IT:*** run **`e5`** — the D-694/D-705
+  stepped outline plus `R36` moved to `(73.500, 75.000)` inside the new area —
+  returns **`failed_nets []`, `nets_regressed []`, ALL FIFTEEN GATE CLAUSES
+  TRUE, DRC = the inherited baseline exactly, PP1-PP4 all true, 17 -> 15**
+  (`ILIM_VSET` 5.055 mm at ZERO vias, `ISET` 18.192 mm at ZERO vias,
+  `USB_VBUS_CHG` 3.164 mm, `STAT1` 27.036 mm / 2 barrels).  It works because
+  `R36` north-east of `U11` lets `ILIM_VSET` reach it WITHOUT A VIA, which frees
+  the single via column `ISET` needs; controls `f1`/`f2`/`h1` put `R36` in the
+  `SW9` pocket on the UNEXPANDED board and `ISET` fails again.  ***IT IS NOT
+  PROMOTED FOR A MECHANICAL REASON:*** the `y = 70.500` expansion recesses `J8`
+  — the Qwiic / STEMMA QT connector `DEVICE_SPEC` section 10.2 records as
+  EXTERNAL (right wall) — five millimetres inside the new east edge.  The
+  variant that keeps `J8` (`g2`, expansion narrowed to `y 81.000..104.005` plus
+  three `STEP_EDGE` keep-outs) routes `STAT1` + `ISET` + `USB_VBUS_CHG` cleanly
+  and leaves `ILIM_VSET` open, 17 -> 16, because `R36`'s only via-free home is
+  inside `J8`'s `y` band.  **So the choice is not "expand or don't" — it is
+  "MOVE `J8`, or leave `ILIM_VSET` open", and that belongs in ONE transaction
+  with the rest of the block.**  ***ALSO MEASURED:*** the `SYS` pour's `U11.1`
+  and `C27.1` are cut off by the `/01_POWER_TREE/BAT_PROTECTED_P` TAPER — 13 of
+  the 17-unit minimal set — and both close with ZERO new copper the moment
+  `U11` leaves the pocket (`BQ25185_SYS` 5 -> 3 open edges); `U9.14` is
+  ENCLOSED by its own `NFC_RFO1`/`NFC_RFO2` transmit arms, which run 0.925 mm
+  straight north at 0.250 mm RF clearance and leave a channel that admits
+  0.200 mm with ZERO margin and no barrel at all; and `/ACC_PWR_EN`'s minimal
+  cut is `{/I2C_SCL_INT, /SX1262_RXEN, GND}`, which makes it and `/I2C_SCL_INT`
+  ONE transaction.
 - **Demo D-705 (THE ARCHITECTURE CHOICE, MEASURED: A FOURTH ROUTING LAYER
   CLOSES ZERO EDGES — THE BOARD LACKS AREA, NOT LAYERS):**  **NO COPPER
   PROMOTED.**  Authority **UNCHANGED**; 16 -> 16.  ***CORRECTION TO D-703 §3:***

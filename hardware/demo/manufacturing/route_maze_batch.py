@@ -81,7 +81,15 @@ sys.path.insert(0, str(ROOT / "hardware/beta-v2/checks"))
 
 # Inherited DRC classes: present on the accepted board before any Demo routing
 # and not attributable to it.  Their counts are pinned, not merely ignored.
-INHERITED = {"lib_footprint_issues": 199, "hole_clearance": 5,
+# D-706 TIGHTENED `hole_clearance` FROM 5 TO 0.  The figure was pinned when
+# the accepted board still carried five of them; the authority carries NONE
+# -- real `kicad-cli` DRC on `eca81247` reports exactly
+# {solder_mask_bridge: 1, lib_footprint_issues: 199} -- so the allowance had
+# become a licence for FIVE NEW hole-clearance errors, and this decision
+# walked into it: an `/01_POWER_TREE/ISET` track passed 0.2346 mm from `SW9`'s
+# 0.9 mm NPTH against the board's own 0.250 mm and the gate said nothing.
+# A pin that outlives the board it was measured on is not a pin.
+INHERITED = {"lib_footprint_issues": 199, "hole_clearance": 0,
              "solder_mask_bridge": 1}
 
 # Per-netclass routing contract taken from `aqroot-Beta-v2.kicad_dru`, because a

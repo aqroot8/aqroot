@@ -1,0 +1,273 @@
+{
+ "authoritative_unchanged": true,
+ "board": "/home/aqroot8/aqroot-demo/hardware/demo/kicad/aqroot-demo/aqroot-Beta-v2.kicad_pcb",
+ "board_sha256": "eca812476fbcc6277462ca4e37c0aaa9ee3562bcc5955ba32491b6522832b82c",
+ "grid": 25000,
+ "method": "read-only; every trial laid on a scratch QBoard and REVERTED, every candidate proved by maze3d.verify_laid (exact analytic clearance, never a lattice); zones invisible to QBoard, so a closure is a licence question and never copper",
+ "nets": [
+  {
+   "board_track_min": 150000,
+   "contract": 200000,
+   "dru_floor": 150000,
+   "islands": 2,
+   "lands": [
+    {
+     "best_centre": 150000,
+     "best_offcentre": 200000,
+     "centre_width": {
+      "B": 150000
+     },
+     "gained": true,
+     "layers": [
+      "B"
+     ],
+     "offcentre_width": {
+      "B": 200000
+     },
+     "pad": "U9.14",
+     "rungs": [
+      {
+       "a_xy": null,
+       "b_xy": null,
+       "base_dir": null,
+       "centre": false,
+       "centre_why": "U9.14: NO LEGAL ESCAPE at >= 0.400 mm; blocked by U9.13 (x45), U9.12 (x17), U9.8 (x3), U9.11 (x2)",
+       "escape_formula": null,
+       "exit_mm": null,
+       "layer": "B",
+       "n": 0,
+       "offcentre": false,
+       "offcentre_mm": null,
+       "offcentre_why": "U9.14: NO OFF-CENTRE LAUNCH at 0.400 mm from any of 41 anchors x 24 directions x 17 lengths; blocked by U9.13 (x11613), U9.15 (x1959), U9.12 (x1568), U9.11 (x604)",
+       "reach_mm": null,
+       "seconds": 0.48,
+       "support_mm": null,
+       "width": 400000
+      },
+      {
+       "a_xy": null,
+       "b_xy": null,
+       "base_dir": null,
+       "centre": false,
+       "centre_why": "U9.14: NO LEGAL ESCAPE at >= 0.300 mm; blocked by U9.15 (x27), U9.13 (x16), U9.33 (x7), U9.10 (x5)",
+       "escape_formula": null,
+       "exit_mm": null,
+       "layer": "B",
+       "n": 0,
+       "offcentre": false,
+       "offcentre_mm": null,
+       "offcentre_why": "U9.14: NO OFF-CENTRE LAUNCH at 0.300 mm from any of 41 anchors x 24 directions x 17 lengths; blocked by U9.13 (x8190), U9.15 (x5363), U9.12 (x1472), U9.11 (x463)",
+       "reach_mm": null,
+       "seconds": 0.53,
+       "support_mm": null,
+       "width": 300000
+      },
+      {
+       "a_xy": null,
+       "b_xy": null,
+       "base_dir": null,
+       "centre": false,
+       "centre_why": "U9.14: NO LEGAL ESCAPE at >= 0.250 mm; blocked by U9.15 (x27), U9.13 (x16), U9.33 (x7), U9.10 (x5)",
+       "escape_formula": null,
+       "exit_mm": null,
+       "layer": "B",
+       "n": 0,
+       "offcentre": false,
+       "offcentre_mm": null,
+       "offcentre_why": "U9.14: NO OFF-CENTRE LAUNCH at 0.250 mm from any of 41 anchors x 24 directions x 17 lengths; blocked by U9.13 (x8205), U9.15 (x5409), U9.12 (x1377), U9.11 (x417)",
+       "reach_mm": null,
+       "seconds": 0.5,
+       "support_mm": null,
+       "width": 250000
+      },
+      {
+       "a_xy": [
+        34.75,
+        27.725
+       ],
+       "b_xy": [
+        34.75,
+        27.325
+       ],
+       "base_dir": true,
+       "centre": false,
+       "centre_why": "U9.14: NO LEGAL ESCAPE at >= 0.200 mm; blocked by U9.15 (x27), U9.13 (x16), U9.33 (x8), U9.10 (x5)",
+       "escape_formula": false,
+       "exit_mm": 0.375,
+       "layer": "B",
+       "n": 5,
+       "offcentre": true,
+       "offcentre_mm": 0.0,
+       "offcentre_why": null,
+       "reach_mm": 0.025,
+       "seconds": 0.55,
+       "support_mm": 0.375,
+       "width": 200000
+      },
+      {
+       "a_xy": null,
+       "b_xy": null,
+       "base_dir": null,
+       "centre": true,
+       "centre_why": null,
+       "escape_formula": null,
+       "exit_mm": null,
+       "layer": "B",
+       "n": 0,
+       "offcentre": false,
+       "offcentre_mm": null,
+       "offcentre_why": null,
+       "reach_mm": null,
+       "seconds": 0.01,
+       "support_mm": null,
+       "width": 150000
+      }
+     ]
+    }
+   ],
+   "net": "/04_SPI_B_RADIOS_NFC/NFC_VDD_RF",
+   "netclass": "Default",
+   "pairs": [],
+   "widths": [
+    400000,
+    300000,
+    250000,
+    200000,
+    150000
+   ]
+  },
+  {
+   "board_track_min": 150000,
+   "contract": 600000,
+   "dru_floor": 400000,
+   "islands": 2,
+   "lands": [
+    {
+     "best_centre": null,
+     "best_offcentre": 250000,
+     "centre_width": {
+      "B": null
+     },
+     "gained": true,
+     "layers": [
+      "B"
+     ],
+     "offcentre_width": {
+      "B": 250000
+     },
+     "pad": "U9.10",
+     "rungs": [
+      {
+       "a_xy": null,
+       "b_xy": null,
+       "base_dir": null,
+       "centre": false,
+       "centre_why": "U9.10: NO LEGAL ESCAPE at >= 0.400 mm; blocked by U9.9 (x63), U9.5 (x4), U9.7 (x3), U9.6 (x2)",
+       "escape_formula": null,
+       "exit_mm": null,
+       "layer": "B",
+       "n": 0,
+       "offcentre": false,
+       "offcentre_mm": null,
+       "offcentre_why": "U9.10: NO OFF-CENTRE LAUNCH at 0.400 mm from any of 41 anchors x 24 directions x 17 lengths; blocked by U9.9 (x13011), U9.11 (x1959), U9.7 (x744), U9.6 (x388)",
+       "reach_mm": null,
+       "seconds": 0.4,
+       "support_mm": null,
+       "width": 400000
+      },
+      {
+       "a_xy": null,
+       "b_xy": null,
+       "base_dir": null,
+       "centre": false,
+       "centre_why": "U9.10: NO LEGAL ESCAPE at >= 0.300 mm; blocked by U9.11 (x27), U9.9 (x18), U9.33 (x7), U9.6 (x6)",
+       "escape_formula": null,
+       "exit_mm": null,
+       "layer": "B",
+       "n": 0,
+       "offcentre": false,
+       "offcentre_mm": null,
+       "offcentre_why": "U9.10: NO OFF-CENTRE LAUNCH at 0.300 mm from any of 41 anchors x 24 directions x 17 lengths; blocked by U9.9 (x9526), U9.11 (x5333), U9.7 (x646), U9.6 (x323)",
+       "reach_mm": null,
+       "seconds": 0.47,
+       "support_mm": null,
+       "width": 300000
+      },
+      {
+       "a_xy": [
+        32.75,
+        27.725
+       ],
+       "b_xy": [
+        32.75,
+        27.325
+       ],
+       "base_dir": true,
+       "centre": false,
+       "centre_why": "U9.10: NO LEGAL ESCAPE at >= 0.250 mm; blocked by U9.11 (x27), U9.9 (x19), U9.33 (x7), U9.6 (x5)",
+       "escape_formula": false,
+       "exit_mm": 0.375,
+       "layer": "B",
+       "n": 4,
+       "offcentre": true,
+       "offcentre_mm": 0.0,
+       "offcentre_why": null,
+       "reach_mm": 0.025,
+       "seconds": 0.47,
+       "support_mm": 0.375,
+       "width": 250000
+      },
+      {
+       "a_xy": null,
+       "b_xy": null,
+       "base_dir": null,
+       "centre": false,
+       "centre_why": "U9.10: NO LEGAL ESCAPE at >= 0.200 mm; blocked by U9.11 (x27), U9.9 (x19), U9.33 (x8), via (x5)",
+       "escape_formula": null,
+       "exit_mm": null,
+       "layer": "B",
+       "n": 0,
+       "offcentre": false,
+       "offcentre_mm": null,
+       "offcentre_why": null,
+       "reach_mm": null,
+       "seconds": 0.02,
+       "support_mm": null,
+       "width": 200000
+      },
+      {
+       "a_xy": null,
+       "b_xy": null,
+       "base_dir": null,
+       "centre": false,
+       "centre_why": "U9.10: NO LEGAL ESCAPE at >= 0.150 mm; blocked by U9.11 (x27), U9.9 (x19), U9.33 (x8), via (x5)",
+       "escape_formula": null,
+       "exit_mm": null,
+       "layer": "B",
+       "n": 0,
+       "offcentre": false,
+       "offcentre_mm": null,
+       "offcentre_why": null,
+       "reach_mm": null,
+       "seconds": 0.02,
+       "support_mm": null,
+       "width": 150000
+      }
+     ]
+    }
+   ],
+   "net": "/NFC_SUPPLY",
+   "netclass": "P3V3",
+   "pairs": [],
+   "widths": [
+    400000,
+    300000,
+    250000,
+    200000,
+    150000
+   ]
+  }
+ ],
+ "question": "does an OFF-CENTRE LAUNCH -- a stub anchored anywhere on the land's own copper, in any of 24 directions -- open the lands and the island pairs that a CENTRE-ANCHORED escape refuses at every width this board can fabricate",
+ "schema": 1
+}

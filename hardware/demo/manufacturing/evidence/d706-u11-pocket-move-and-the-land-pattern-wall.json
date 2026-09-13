@@ -1,0 +1,46 @@
+{
+ "also_measured": {
+  "Net-(U11-TS_MR)": "R38 is at (9.525, 85.985) -- FIFTY-EIGHT MILLIMETRES from the U11 pin it programs.  A 10k to GND on a microamp bias pin has no business crossing the board; moving R38 beside U11 removes a 22-object haul and is an obvious post-move cleanup.",
+  "SW9_and_SW2_are_F_side_only": "their electrical pads are SMD on F.Cu; the B.Cu under both is free apart from two NPTH.  This is the board's largest unused contiguous B.Cu area inside the east power block."
+ },
+ "decision": "D-706 section 1",
+ "schema": 1,
+ "the_move": {
+  "board": "w/d706/a/aqroot-Beta-v2.kicad_pcb",
+  "dx_mm": 1.0,
+  "dy_mm": 8.7,
+  "from_mm": [
+   67.5,
+   77.8
+  ],
+  "released_objects": 44,
+  "to_mm": [
+   68.5,
+   86.5
+  ],
+  "why_that_pocket": "SW9 is a slide switch whose THREE electrical pads are SMD on F.Cu ONLY; its only B.Cu obstruction is two 0.9 mm NPTH at (66.700,83.100) and (66.700,89.900).  SW2 is the same shape.  So a 8.8 x 10.0 mm courtyard on F.Cu sits over VIRGIN B.Cu, and the SYS pour already fills it."
+ },
+ "the_rule_is_measured_non_vacuous": {
+  "after": "U11.8 reports 3 source escapes and the failure class changes to NO_PATH",
+  "and_the_net_re_lays": "/01_POWER_TREE/ISET re-routes R37.1 -> U11.8 in 11.132 mm (2 barrels) once evicted, which is the net D-703 could not put back and the only reason its PROVED /BQ25185_STAT1 route could not be promoted",
+  "before": "U11.8 NO LEGAL ESCAPE at >= 0.200 mm",
+  "drc_on_the_unchanged_board": "identical: 1 solder_mask_bridge, 199 lib_footprint_issues, 32 unconnected -- the rule only LOWERS a minimum, so it is a no-op for existing copper"
+ },
+ "the_rule_this_produced": "aqroot-Beta-v2.kicad_dru SECTION 20: a 0.150 mm per-net width floor for /01_POWER_TREE/ISET, /01_POWER_TREE/ILIM_VSET and Net-(U11-TS_MR), on D-690's exact terms.  checks/leaf_land_contract.py types all three U11 lands SIGNAL_PIN from the schematic's own pintype and bounds the far terminal by the published resistor at 5.50 V: ISET <= 5.500 mA (R37 1k), ILIM_VSET <= 0.306 mA (R36 18k), TS_MR <= 0.550 mA (R38 10k), against 0.602 A for 0.150 mm at 1 oz and 10 K.  109x, 1970x and 1095x of margin.",
+ "title": "THE U11 EAST FAN-OUT, MEASURED PIN BY PIN: THE LAND PATTERN IS THE WALL AND IT IS PLACEMENT-INDEPENDENT",
+ "what_the_move_bought": {
+  "/01_POWER_TREE/BQ25185_SYS": "5 open edges -> 3.  U11.1 lands ON the SYS pour body and C27.1 REJOINS it, both with ZERO new copper, because U11's own copper was what cut them off",
+  "/01_POWER_TREE/ILIM_VSET": "U11.7 -> R36.1 routes in 7.075 mm, 2 barrels",
+  "/01_POWER_TREE/USB_VBUS_CHG": "C23.2 -> U11.10 routes in 10.188 mm, ZERO vias, through a 0.125 mm licensed neck",
+  "/BQ25185_STAT2": "U11.3 -> TP7.1 routes in 13.857 mm on B.Cu with ZERO vias"
+ },
+ "what_the_move_did_not_buy": {
+  "U11.2": "NO LEGAL ESCAPE at >= 0.600 mm (BAT_MAIN's own minimum); blocked by U11.1",
+  "U11.8": "NO LEGAL ESCAPE at >= 0.200 mm; blocked by U11.6, U11.9, U11.3 -- its OWN neighbours",
+  "U11.9": "NO LEGAL ESCAPE at >= 0.150 mm before the licence; blocked by U11.10, U11.7, U11.6",
+  "arithmetic": "DLH0010A WSON-10, 0.400 mm pitch, 0.750 x 0.200 mm lands => 0.200 mm land-to-land gap and 0.600 mm between the lands either side of an inner pin.  A 0.200 mm track at the board's 0.200 mm routed clearance needs EXACTLY 0.600 mm: it fits with ZERO margin and no rasterised lattice can express zero (Field's guard band is 0.75 of a cell).  A 0.150 mm track needs 0.550 mm and has 0.050 mm of real margin.",
+  "consequence": "the refusal is a property of the LAND PATTERN.  It does not move with the part, it does not move with the layer count (D-705) and it does not move with the board area (D-705 section 5).",
+  "verdict": "THREE OF U11's TEN PINS STILL CANNOT LAUNCH IN THE MIDDLE OF AN EMPTY 5 x 5 mm POCKET"
+ },
+ "what_was_asked": "move U11 out of J8's shadow into the empty B.Cu pocket under SW9 and re-request every net the move opens"
+}
