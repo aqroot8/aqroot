@@ -106,6 +106,47 @@ and `J8` off the two escape corridors; (c) the `U21` / `L4` / `C65` boost
 re-floorplan D-703's addendum specifies; (d) re-run the four transactions
 D-703 §5 already names, which need no new search.
 
+## 5. AND THE EXPANSION WAS BUILT AND MEASURED — **AREA ALONE CLOSES NOTHING EITHER**
+
+A recommendation that has not been tried is a preference.  The authorized
+outline was BUILT — `x 72 -> 77 mm between y 70.500 and y 104.005`, a stepped
+east bump **below the `WROOM` antenna keep-out (which starts at y 104.000) and
+below `J5`'s mating volume (courtyard y 7.930..70.490, extending east to
+x 72.975)**, with all five full-board planes extended to it at the same 0.5 mm
+edge clearance.  It is a **LEGAL BOARD**:
+
+    real refilled KiCad DRC   1 solder_mask_bridge + 199 lib_footprint_issues
+                              -- the two inherited classes and NOTHING ELSE.
+                              ZERO new violations from the outline change.
+    ledger                    16 retained open edges, same ten nets
+
+**AND THEN IT CLOSES ZERO EDGES.**  The same six nets, at 0.025 mm, with
+`--trunk-floor`, `--escape-floor`, `--neck`, the off-centre launcher and the
+0.50/0.25 mm barrel, fail **IDENTICALLY** — same gaps, same escape counts:
+
+    /BQ25185_STAT1   NO_PATH at 0.150 mm   src 3 / dst 4   gap 16.613 mm
+    /BQ25185_STAT2   NO_PATH at 0.150 mm   src 1 / dst 4   gap 14.600 mm
+    /ACC_PWR_EN      NO_PATH at 0.200 mm over 20.242 mm
+    /I2C_SCL_INT     NO_PATH at 0.200 mm over 15.585 mm
+    /SX1262_DIO1     NO_PATH at 0.200 mm over 78.249 mm
+    16 -> 16.  nets_improved [].
+
+**THIS CORRECTS §4 ABOVE.**  The expansion adds EMPTY copper east of x 72, and
+every failing net's obstacle lies BETWEEN ITS OWN TWO ENDPOINTS inside the
+existing congestion: `U11`'s fan-out is bounded by `C23`, `R36`, `R37`, `J8`'s
+mounting pad and the `ISET` / `ILIM_VSET` hauls — **not by the board edge**.
+So the outline change is an **ENABLER FOR A RE-FLOORPLAN, not a fix**, and
+Option 2 must be taken TOGETHER WITH the `U11`-pocket move rather than before
+it.  Widening the board and leaving `C23` / `R36` / `R37` / `J8` where they are
+buys nothing measurable.
+
+**THE STANDING RESULT OF THIS DECISION IS THEREFORE SHARPER THAN ITS TITLE.**
+Neither more LAYERS nor more AREA closes a single edge on its own.  What this
+board needs is for **PARTS TO MOVE**, and what the authorized expansion buys is
+the ROOM TO MOVE THEM.  The order is: widen, then move `C23`/`R36`/`R37`/`J8`
+east off `U11`'s two escape corridors in the same transaction, then re-request
+the four transactions D-703 §5 already names.
+
 # D-703 · 2026-09-12 · Demo — **EVERY REMAINING LAND ON THIS BOARD NOW LAUNCHES. `ACC_5V_LX` ROUTES AT ZERO VIAS AND `/BQ25185_STAT1` ROUTES FOR THE FIRST TIME IN SIX DECISIONS — AND WHAT IS LEFT IS THREE NAMED INTRUDERS AND ONE GROUND PENINSULA WITH NO LEGAL BARREL AT ANY DIAMETER**
 
     authority  eca812476fbcc6277462ca4e37c0aaa9ee3562bcc5955ba32491b6522832b82c  UNCHANGED

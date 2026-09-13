@@ -1,0 +1,45 @@
+{
+ "schema": 1,
+ "decision": "D-705 section 5",
+ "outline_built": {
+  "was": "72.000 x 148.000 mm rectangle",
+  "now": "stepped: x 72 -> 77 mm between y 70.500 and y 104.005 mm",
+  "why_that_band": "BELOW the WROOM ANTENNA KEEPOUT, which starts at y 104.000, and BELOW J5's mating volume, whose courtyard runs y 7.930..70.490 and extends east to x 72.975 -- so neither the antenna nor the Community Port connector is touched",
+  "planes_extended": 5,
+  "board_sha256": "c4a2e82001c451c31192527a05ec9a776e763e8109156dff5bec79417dc8040f"
+ },
+ "legality": {
+  "real_drc": {
+   "solder_mask_bridge": 1,
+   "lib_footprint_issues": 199
+  },
+  "new_violations": 0,
+  "retained_open_edges": 16,
+  "verdict": "the stepped outline is a LEGAL board and changes no connectivity"
+ },
+ "routing_measurement": {
+  "nets_requested": [
+   "/BQ25185_STAT1",
+   "/BQ25185_STAT2",
+   "/ACC_PWR_EN",
+   "/I2C_SCL_INT",
+   "/SX1262_DIO1",
+   "/01_POWER_TREE/BQ25185_SYS"
+  ],
+  "flags": "--grid 25000 --partial --trunk-floor --escape-floor --neck --maze-via 500000:250000 --join-max-mm 0, AQROOT_OFFCENTRE_LAUNCH=1",
+  "edges_closed": 0,
+  "nets_improved": [],
+  "retained_open_edges": "16 -> 16",
+  "failures_identical_to_the_unexpanded_board": true,
+  "detail": {
+   "/BQ25185_STAT1": "NO_PATH at 0.150 mm, src 3 / dst 4, gap 16.613 mm",
+   "/BQ25185_STAT2": "NO_PATH at 0.150 mm, src 1 / dst 4, gap 14.600 mm",
+   "/ACC_PWR_EN": "NO_PATH at 0.200 mm over 20.242 mm",
+   "/I2C_SCL_INT": "NO_PATH at 0.200 mm over 15.585 mm",
+   "/SX1262_DIO1": "NO_PATH at 0.200 mm over 78.249 mm",
+   "/01_POWER_TREE/BQ25185_SYS": "NO_VIA_SITE on R68.1 and U13.3, both DNP"
+  }
+ },
+ "finding": "AREA ALONE CLOSES NOTHING, exactly as LAYERS ALONE CLOSED NOTHING. The expansion adds EMPTY copper east of x 72, and every failing net's obstacle lies BETWEEN ITS OWN TWO ENDPOINTS inside the existing congestion: U11's fan-out is bounded by C23, R36, R37, J8's mounting pad and the ISET/ILIM_VSET hauls, not by the board edge. The outline change is an ENABLER FOR A RE-FLOORPLAN, not a fix -- the edges close when the PARTS MOVE into the area it creates.",
+ "revised_recommendation": "Option 2 is still the right lever and it is still recommended, but it must be taken TOGETHER WITH the U11-pocket re-floorplan, not before it and not instead of it. Widening the board and leaving C23/R36/R37/J8 where they are buys nothing measurable."
+}

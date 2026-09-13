@@ -95,7 +95,19 @@
   0.400 mm pitch whose land pattern gives the necking pair exactly zero margin,
   and nine of sixteen open edges sit behind it and `U2`; a larger-pitch package
   for the same die would be worth more than any routing lever spent in six
-  decisions — a BOM/sourcing question, RAISED not taken.
+  decisions — a BOM/sourcing question, RAISED not taken.  ***AND THE EXPANSION
+  WAS BUILT AND MEASURED, WHICH CORRECTS THAT RECOMMENDATION:*** the stepped
+  outline (`x 72 -> 77` between `y 70.500` and `y 104.005`, with all five
+  full-board planes extended) is a **LEGAL BOARD** — real refilled DRC shows the
+  two inherited classes and **ZERO new violations**, ledger unchanged at 16 —
+  **and it closes ZERO edges.**  The same six nets fail IDENTICALLY, gap for gap
+  and escape count for escape count.  **AREA ALONE CLOSES NOTHING, exactly as
+  LAYERS ALONE CLOSED NOTHING**, because every failing net's obstacle lies
+  BETWEEN ITS OWN TWO ENDPOINTS — `U11`'s fan-out is bounded by `C23`, `R36`,
+  `R37`, `J8`'s mounting pad and the `ISET`/`ILIM_VSET` hauls, not by the board
+  edge.  **So the outline change is an ENABLER FOR A RE-FLOORPLAN, not a fix:**
+  widen AND move `C23`/`R36`/`R37`/`J8` east off `U11`'s two escape corridors in
+  the SAME transaction, then re-request the four transactions D-703 §5 names.
 - **Demo D-703 (EVERY REMAINING LAND NOW LAUNCHES; `ACC_5V_LX` ROUTES AT ZERO
   VIAS AND `/BQ25185_STAT1` ROUTES FOR THE FIRST TIME IN SIX DECISIONS):**
   **NO COPPER PROMOTED, NO RULE PROMOTED.**  Authority **UNCHANGED** at
