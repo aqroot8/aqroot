@@ -1,0 +1,103 @@
+{
+ "schema": 1,
+ "decision": "D-708",
+ "headline": "THE OWNER-APPROVED EAST EXPANSION AND J8 MOVE WERE BUILT AND GATED: THE BOARD REACHES 15 RETAINED OPEN EDGES WITH ALL FIFTEEN GATE CLAUSES TRUE, AND IT IS HELD OUT OF PROMOTION BY ONE PRE-EXISTING GROUND PATH -- C5.2's 4.383 mm / 0.95 mm POUR GEODESIC -- THAT PP2 ONLY CHARGES ONCE R36's PAD LEAVES ITS ISLAND.  AND THE U11 RELOCATION IS REFUTED IN BOTH DIRECTIONS BY ONE THING: U11.2's BATTERY ESCAPE.",
+ "authority_unchanged": "eca812476fbcc6277462ca4e37c0aaa9ee3562bcc5955ba32491b6522832b82c",
+ "copper_promoted": false,
+ "retained_open_edges": "16 -> 16 (no copper promoted)",
+ "owner_authority_spent": "D-707 (J8 may move outward with the expanded right edge) and D-703 option 2 (outline increase up to about 5 mm below y = 104.005)",
+ "1_the_finalist": {
+  "run": "r7",
+  "board": "authority + the stepped outline x 72 -> 77 between y 70.500 and y 104.005, all five full-board planes grown to it, three STEP_EDGE keep-outs, J8 MOVED +5.000 mm east to (73.400, 76.400) so the Qwiic port stays on the right wall, R36 MOVED to (73.500, 75.000) inside the new area",
+  "base_edges": 32,
+  "result_edges": 15,
+  "authority_edges": 16,
+  "failed_nets": [],
+  "nets_regressed": [],
+  "refused_clauses": [],
+  "drc": {
+   "solder_mask_bridge": 1,
+   "lib_footprint_issues": 199,
+   "attributable": 0
+  },
+  "pour_partition_vs_its_own_base": {
+   "PP1": true,
+   "PP2": true,
+   "PP3": true,
+   "PP4": true
+  },
+  "nets_improved": [
+   "/01_POWER_TREE/ILIM_VSET",
+   "/01_POWER_TREE/USB_VBUS_CHG",
+   "/09_COMMUNITY_HEADER/EXT_SCL",
+   "/09_COMMUNITY_HEADER/EXT_SDA",
+   "/ACC_3V3_SW",
+   "/BQ25185_STAT1",
+   "GND"
+  ],
+  "net_gain_against_the_authority": "one edge -- /BQ25185_STAT1 2 -> 1",
+  "why_it_is_worth_more_than_one_edge": "the expansion takes U11's east fan-out strip from 2.525 mm to 7.525 mm and is the ENABLER every later U11 transaction needs"
+ },
+ "2_why_it_is_not_promoted": {
+  "clause": "pour_partition PP2, measured HEAD -> candidate",
+  "fragment": [
+   "C36.2",
+   "C5.2",
+   "C7.2",
+   "R37.2",
+   "R40.2"
+  ],
+  "priced_amps": 2.295,
+  "required_amps": 3.125,
+  "bottleneck": "FRAGMENT_COPPER",
+  "the_pad": "C5.2 -- a +3V3 decoupling cap's ground -- reaches its nearest landing barrel through 4.383 mm of 0.95 mm B.Cu pour",
+  "the_bar": "3.125 A, set by RETURN_NEIGHBOUR_RAIL: C36.1 is /01_POWER_TREE/BAT_PROTECTED_P, netclass BAT_MAIN",
+  "the_trigger": "R36's GND pad LEAVING pre-island 36, which splits it; the weak path itself is PRE-EXISTING and is not created by this transaction",
+  "four_remedies_measured_and_refused": [
+   "--bond-pad C5.2 (in r7): the nearest LEGAL 0.50/0.25 barrel is (61.125, 72.600), a 2.117 mm run, and it lands inside R40.2's own pad -- it lifts R40.2 to 5.282 A and leaves C5.2 at 2.295 A",
+   "--bond-max-mm 1.0: the site search returns the SAME barrel, so 2.117 mm is the nearest legal one and not a window artefact",
+   "trimming `B /01_POWER_TREE/BQ25185_SYS POUR 1` out of the +3V3 decoupling pocket (x 58.5..64.5, y 72..80, where it holds no live pad): DRC stays clean and 15 edges hold, and C5.2 does NOT move off 2.295 A -- the SYS pour was not the pinch",
+   "stripping /ACC_3V3_EN and /ACC_POWER_FAULT_N out of the pocket: the fragment MERGES with a larger region and gets WORSE -- C37.2 at 0.995 A over 16.811 mm of 0.30 mm copper"
+  ],
+  "what_actually_blocks_a_closer_barrel": "/ACC_POWER_FAULT_N's In3.Cu haul (62.250,72.975) -> (61.725,77.450) passes 0.19 mm from every site adjacent to C5.2; a 0.50 mm barrel needs 0.45 mm",
+  "the_named_next_step": "re-route that one In3 segment out of the pocket, then --bond-pad C5.2 lands about 0.5 mm away and the fragment prices above 5 A"
+ },
+ "3_the_U11_relocation_is_refuted_in_both_directions": {
+  "why_it_was_tried": "D-706 section 7 named it: the SYS pour's U11.1 and C27.1 are cut off by the BAT_PROTECTED_P taper and 'both close for free the moment U11 leaves the pocket'",
+  "run_b2_south": {
+   "move": "U11 -> (68.500, 86.500), the empty B.Cu under SW9",
+   "result": "23 -> 22, nets_regressed [+3V3, /01_POWER_TREE/BQ25185_SYS]",
+   "failed": [
+    "/01_POWER_TREE/BAT_PROTECTED_P",
+    "/01_POWER_TREE/ISET",
+    "/BQ25185_STAT1"
+   ],
+   "drc": "copper_sliver 1, track_dangling 1, via_dangling 3"
+  },
+  "run_u6_east_into_the_new_area": {
+   "move": "U11 -> (71.500, 77.800) and R36/R37/R38 -> x 74.900 at y 76.600 / 78.400 / 74.800, all inside the authorized area, with J8 already at the new wall",
+   "result": "38 -> 20, nets_regressed [/01_POWER_TREE/BQ25185_SYS] 5 -> 8",
+   "what_it_PROVED": "the east fan-out works: /01_POWER_TREE/ISET, Net-(U11-TS_MR) and /01_POWER_TREE/USB_VBUS_CHG all close locally, /BQ25185_STAT1 goes 2 -> 1 and /BQ25185_STAT2 goes 2 -> 1 -- the FIRST time STAT2 has moved in eight decisions",
+   "failed": [
+    "/01_POWER_TREE/BAT_PROTECTED_P",
+    "/01_POWER_TREE/ILIM_VSET"
+   ]
+  },
+  "THE_ONE_BLOCKER_BOTH_SHARE": {
+   "net": "/01_POWER_TREE/BAT_PROTECTED_P",
+   "report": "U11.2: NO LEGAL ESCAPE at >= 0.600 mm; blocked by U11.1 (x535), C27.2 (x57), R37.1 (x36), C27.1 (x20)",
+   "reading": "U11.2 is the BQ25185's BATTERY input on a DLH0010A WSON-10, 0.400 mm pitch, and BAT_MAIN owes 0.600 mm at 3.125 A.  The copper the authority carries there is a HAND TAPER -- 1.500 -> 1.200 -> 1.000 -> 0.800 -> 0.600 -> 0.400 -> 0.300 -> 0.200 mm in eight steps into the land -- and no router on this board can propose a taper: it lays ONE width.  --trunk-floor refuses BAT_MAIN by name and is right to (D-662).",
+   "consequence": "MOVING U11 AT ALL REQUIRES REBUILDING THAT TAPER.  Until a primitive can propose a tapered trunk, or the taper is authored as a declared geometry the gate can audit, U11 cannot move -- in any direction, into any amount of new area."
+  }
+ },
+ "4_gate_work_done_and_verified": {
+  "verify_promotion.--board-outline-grown": "NEW (D-708).  This gate had NO opinion about the board outline at all: every clause audited copper, pours and rule areas, and a promotion could have moved the board edge -- the one dimension a reviewer, an enclosure and a Kickstarter page all read -- unnoticed.  Now an outline change is a CLAIM, admitted only on containment (old wholly inside new) with the before/after extents reported in millimetres.  SIX CONTROLS, all behaved: evidence/d708-outline-claim-controls.json",
+  "verify_promotion.--zone-grown_and_--rule-area-keepout": "carried in from the previous session and NEVER EXERCISED until now.  SIXTEEN CONTROLS on the real expanded board, all behaved: evidence/d708-zone-and-keepout-claim-controls.json.  One of them found a bug in the CONTROL, not the gate: a pour that GREW is not a pour that was ADDED, and an inventory that forgets to subtract the moved keys reads five planes as five new pours."
+ },
+ "5_the_next_transaction_named": [
+  "Re-route /ACC_POWER_FAULT_N's In3.Cu segment (62.250,72.975) -> (61.725,77.450) out of the +3V3 decoupling pocket, then --bond-pad C5.2.  That is the ONLY thing between run r7 and a promotion at 16 -> 15.",
+  "Then promote r7's recipe on the authority: strip /09_COMMUNITY_HEADER/EXT_SDA + EXT_SCL and /01_POWER_TREE/USB_VBUS_CHG's In3 leg, shift J8 +5.000 mm east and R36 to (73.500,75.000), and run the gate with --evict-window 58.5,70.0,77.0,85.5 and --bond-pad J8.1 C23.1 C63.2 C5.2.",
+  "DEVICE_SPEC section 12 and the enclosure move with it: PCB 72.000 x 148.000 -> stepped, 77.000 mm maximum width; internal cavity 75.0 -> 80.0 mm; enclosure external 80 -> 85 mm.  Height and depth unchanged.",
+  "Only then re-open U11: it needs a TAPERED-TRUNK primitive (or a declared, auditable taper geometry) before it can move at all."
+ ]
+}

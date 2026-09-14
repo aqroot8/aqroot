@@ -1,0 +1,105 @@
+{
+ "schema": 1,
+ "decision": "D-708",
+ "what": "controls for verify_promotion.board_outline_as_claimed",
+ "edge_segments_edited": {
+  "shrunk": 4,
+  "moved": 4
+ },
+ "extents_mm": {
+  "authority": [
+   0.0,
+   0.0,
+   72.0,
+   148.0
+  ],
+  "grown": [
+   0.0,
+   0.0,
+   77.0,
+   148.0
+  ],
+  "shrunk": [
+   0.0,
+   0.0,
+   70.56,
+   145.04
+  ],
+  "moved": [
+   1.0,
+   0.0,
+   73.0,
+   148.0
+  ]
+ },
+ "probes": [
+  {
+   "control": "noop_unclaimed_passes",
+   "pre": "authority",
+   "post": "authority",
+   "claimed": false,
+   "expected": true,
+   "got": true,
+   "behaved": true,
+   "outline_changed": false,
+   "outline_grew": false
+  },
+  {
+   "control": "noop_claimed_is_refused",
+   "pre": "authority",
+   "post": "authority",
+   "claimed": true,
+   "expected": false,
+   "got": false,
+   "behaved": true,
+   "outline_changed": false,
+   "outline_grew": false
+  },
+  {
+   "control": "grown_unclaimed_is_refused",
+   "pre": "authority",
+   "post": "grown",
+   "claimed": false,
+   "expected": false,
+   "got": false,
+   "behaved": true,
+   "outline_changed": true,
+   "outline_grew": true
+  },
+  {
+   "control": "grown_claimed_passes",
+   "pre": "authority",
+   "post": "grown",
+   "claimed": true,
+   "expected": true,
+   "got": true,
+   "behaved": true,
+   "outline_changed": true,
+   "outline_grew": true
+  },
+  {
+   "control": "shrunk_claimed_is_refused",
+   "pre": "authority",
+   "post": "shrunk",
+   "claimed": true,
+   "expected": false,
+   "got": false,
+   "behaved": true,
+   "outline_changed": true,
+   "outline_grew": false
+  },
+  {
+   "control": "moved_claimed_is_refused",
+   "pre": "authority",
+   "post": "moved",
+   "claimed": true,
+   "expected": false,
+   "got": false,
+   "behaved": true,
+   "outline_changed": true,
+   "outline_grew": false
+  }
+ ],
+ "ok": true,
+ "verdict": "PASS"
+}

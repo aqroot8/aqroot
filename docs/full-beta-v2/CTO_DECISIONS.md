@@ -1,3 +1,159 @@
+# D-708 · 2026-09-14 · Demo — **THE OWNER-APPROVED EXPANSION AND `J8` MOVE WERE BUILT AND GATED AND THE BOARD REACHES 15 EDGES WITH ALL FIFTEEN CLAUSES TRUE. IT IS HELD OUT OF PROMOTION BY ONE PRE-EXISTING GROUND PATH, AND `U11` IS REFUTED IN BOTH DIRECTIONS BY ONE THING: ITS BATTERY PIN'S HAND TAPER**
+
+    authority  eca812476fbcc6277462ca4e37c0aaa9ee3562bcc5955ba32491b6522832b82c  UNCHANGED
+    retained open edges 16 -> 16.  NO COPPER PROMOTED.
+    GATE WORK PROMOTED: verify_promotion --board-outline-grown (NEW), plus the
+    first controls for --zone-grown and --rule-area-keepout.
+    `evidence/d708-summary.json`, `evidence/d708-run-*.json` (8 gated runs)
+
+## 1. THE FINALIST EXISTS AND IT PASSES EVERY CLAUSE IT IS ASKED
+
+Run **`r7`** is D-706 §8 item 1 built in full, on D-707's authority:
+
+    board   authority + the stepped outline (x 72 -> 77 between y 70.500 and
+            y 104.005), all FIVE full-board planes grown to it, THREE
+            STEP_EDGE keep-outs so `qrouter`'s bounding-box extents cannot lay
+            copper in the notch, `J8` MOVED +5.000 mm east to (73.400, 76.400)
+            so the Qwiic port stays on the right wall, `R36` MOVED to
+            (73.500, 75.000) inside the new area
+    result  failed_nets []          nets_regressed []
+            retained open edges 32 -> 15   (the authority is 16)
+    gate    ALL FIFTEEN CLAUSES TRUE, refused_clauses []
+    DRC     {solder_mask_bridge: 1, lib_footprint_issues: 199}  attributable []
+    PP      PP1 PP2 PP3 PP4 all true against its own base
+
+`J8`'s four nets and `/01_POWER_TREE/ILIM_VSET` are re-laid and closed,
+`/BQ25185_STAT1` goes **2 -> 1**, and `GND` closes through four bond barrels
+(`J8.1`, `C23.1`, `C63.2`, `C5.2`).  The **net gain against the authority is
+one edge** — but the transaction's value is not the edge: it takes `U11`'s east
+fan-out strip from **2.525 mm to 7.525 mm** and is the enabler every later
+`U11` transaction needs.
+
+**TWO GATE LESSONS PAID FOR IN FULL RUNS.**  `--evict-whole` on
+`/01_POWER_TREE/USB_VBUS_CHG` — an 11-pad net whose derived corridor is
+**9871 mm²**, the whole board — re-lays it as 108 objects whose new `B.Cu`
+diagonals slice the `GND` pour, and `PP2` then fails on fragments in the
+BATTERY block (2.295 A against a 3.125 A bar) and the NFC block (0.872 A
+against 1.0 A), thousands of square millimetres from anything the transaction
+touched (run `r2`).  Windowed to `58.5,70.0,77.0,85.5` it removes 19 objects
+and `PP` passes (run `r4`).  And `apply_part_shift --release` walks a chain to
+the next VIA and stops there, leaving it connected on one layer — a
+`via_dangling` the gate refuses — so each `--release-via` exposes the next one;
+after two rounds, strip the net (`evidence/d696-strip.py`) and REQUEST it
+instead.
+
+## 2. WHY IT IS NOT PROMOTED, AND IT IS ONE PAD
+
+Measured **HEAD -> candidate**, which is what a promoting run compares,
+`pour_partition` **PP2** refuses one `GND` fragment:
+
+    fragment   C36.2, C5.2, C7.2, R37.2, R40.2      13.831 mm2, 8 barrels
+    priced     2.295 A   against a bar of 3.125 A   bottleneck FRAGMENT_COPPER
+    the pad    C5.2 -- a +3V3 decoupling cap's ground -- reaches its nearest
+               landing barrel through 4.383 mm of 0.95 mm B.Cu pour
+    the bar    RETURN_NEIGHBOUR_RAIL: C36.1 is /01_POWER_TREE/BAT_PROTECTED_P,
+               netclass BAT_MAIN, 3.125 A
+
+**THE WEAK PATH IS PRE-EXISTING.**  What this transaction does is SPLIT the
+island — `R36`'s `GND` pad leaves pre-island 36 for the new area — and `PP2`
+only prices a fragment once it is one.  Four remedies were measured and all
+four are refused on the evidence: `--bond-pad C5.2` places the nearest LEGAL
+0.50/0.25 barrel at `(61.125, 72.600)`, a 2.117 mm run that lands inside
+`R40.2`'s own pad and lifts `R40.2` to 5.282 A while leaving `C5.2` at 2.295;
+`--bond-max-mm 1.0` returns the SAME barrel, so that is the nearest legal site
+and not a window artefact; trimming `B /01_POWER_TREE/BQ25185_SYS POUR 1` out
+of the `+3V3` decoupling pocket (`x 58.5..64.5, y 72..80`, where it holds no
+live pad) keeps DRC clean and 15 edges and moves `C5.2` **not at all**, so the
+`SYS` pour was not the pinch; and stripping `/ACC_3V3_EN` and
+`/ACC_POWER_FAULT_N` out of the pocket makes it WORSE — the fragment merges
+with a larger region whose weakest pad is `C37.2` at **0.995 A over 16.811 mm
+of 0.30 mm copper**.
+
+**WHAT ACTUALLY BLOCKS A CLOSER BARREL IS ONE INNER-LAYER SEGMENT.**
+`/ACC_POWER_FAULT_N` runs `In3.Cu` from `(62.250, 72.975)` to
+`(61.725, 77.450)` and passes **0.19 mm** from every site adjacent to `C5.2`;
+a 0.500 mm barrel needs 0.45 mm.  Re-route that one segment and `--bond-pad
+C5.2` lands about 0.5 mm away and the fragment prices above 5 A.  **That is
+the only thing between run `r7` and a promotion.**
+
+## 3. AND `U11` CANNOT MOVE AT ALL — IN ANY DIRECTION, INTO ANY AMOUNT OF AREA
+
+D-706 §7 named the `U11` relocation as the next transaction on the strength of
+one measurement: `BQ25185_SYS` 5 open edges -> 3 with zero new copper.  **Two
+gated runs say it does not close.**
+
+    b2  U11 -> (68.500, 86.500), the empty B.Cu under SW9
+        23 -> 22, nets_regressed [+3V3, /01_POWER_TREE/BQ25185_SYS],
+        failed [BAT_PROTECTED_P, ISET, STAT1], DRC gains a copper_sliver,
+        a track_dangling and three via_dangling
+
+    u6  U11 -> (71.500, 77.800) INTO THE NEW AREA, with R36/R37/R38 at
+        x 74.900 (y 76.600 / 78.400 / 74.800) and J8 already at the new wall
+        38 -> 20, nets_regressed [/01_POWER_TREE/BQ25185_SYS] 5 -> 8,
+        failed [BAT_PROTECTED_P, ILIM_VSET]
+
+`u6` PROVES the east re-floorplan is right for the signal fan-out:
+`/01_POWER_TREE/ISET`, `Net-(U11-TS_MR)` and `/01_POWER_TREE/USB_VBUS_CHG` all
+close locally, `/BQ25185_STAT1` goes 2 -> 1 and **`/BQ25185_STAT2` goes 2 -> 1,
+the first time it has moved in eight decisions**.  And both runs fail on the
+same line:
+
+    U11.2: NO LEGAL ESCAPE at >= 0.600 mm; blocked by U11.1 (x535),
+           C27.2 (x57), R37.1 (x36), C27.1 (x20)
+
+`U11.2` is the `BQ25185`'s BATTERY input on a `DLH0010A` WSON-10 at 0.400 mm
+pitch, and `BAT_MAIN` owes 0.600 mm at 3.125 A.  **The copper the authority
+carries there is a HAND TAPER** — 1.500, 1.300, 1.200, 1.000, 0.800, 0.600,
+0.400, 0.300, 0.200 mm in nine steps into the land — and no router on this
+board can propose a taper: it lays ONE width, and `--trunk-floor` refuses
+`BAT_MAIN` by name and is right to (D-662).  **So moving `U11` requires
+rebuilding that taper, and nothing here can.**  Until a tapered-trunk primitive
+exists — or the taper is authored as a declared geometry the gate can audit —
+`U11` is immovable, and that is a sharper statement than "the pocket is full".
+
+## 4. THE GATE LEARNED TO WATCH THE BOARD EDGE
+
+`verify_promotion.py` had **no opinion about the board outline at all**: every
+clause audited copper, pours and rule areas, and a promotion could have moved
+the board edge — the one dimension a reviewer, an enclosure and a Kickstarter
+page all read — without a single check noticing.  `--board-outline-grown` makes
+it a CLAIM, admitted only on containment (the old polygon wholly inside the
+new, by the same polygon boolean `--zone-grown` uses), with the before/after
+extents reported in millimetres so the external-dimension change is STATED and
+not inferred.  **Six controls, all behaved** — an unclaimed change refuses, a
+claimed no-op refuses, and a SHRUNK or a MOVED outline refuses even though a
+bounding box would call the moved one bigger
+(`evidence/d708-outline-claim-controls.json`).
+
+`--zone-grown` and `--rule-area-keepout`, carried in from the previous session,
+had **never been exercised**.  Sixteen controls on the real expanded board, all
+behaved (`evidence/d708-zone-and-keepout-claim-controls.json`): the five
+full-board planes grew and none shrank, moved, was lost or was added; the three
+`STEP_EDGE` keep-outs forbid all four things on all six copper layers; and a
+keep-out claimed as an ordinary licence area is a refusal.  One control found a
+bug **in the control, not the gate** — a pour that GREW is not a pour that was
+ADDED, and an inventory that forgets to subtract the moved keys reads five
+planes as five new pours.
+
+## 5. THE NEXT TRANSACTION, NAMED
+
+1. **Re-route `/ACC_POWER_FAULT_N`'s `In3.Cu` segment `(62.250,72.975) ->
+   (61.725,77.450)` out of the `+3V3` decoupling pocket, then `--bond-pad
+   C5.2`.**  That is the ONLY thing between run `r7` and a promotion at
+   16 -> 15.
+2. Then promote `r7`'s recipe on the authority: strip
+   `/09_COMMUNITY_HEADER/EXT_SDA` + `EXT_SCL` and
+   `/01_POWER_TREE/USB_VBUS_CHG`'s redundant `In3` leg, shift `J8` +5.000 mm
+   east and `R36` to `(73.500, 75.000)`, and gate with
+   `--evict-window 58.5,70.0,77.0,85.5` and
+   `--bond-pad J8.1 C23.1 C63.2 C5.2`.
+3. `DEVICE_SPEC` §12 and the enclosure move with it: PCB `72.000 x 148.000` ->
+   **stepped, 77.000 mm maximum width**; internal cavity 75.0 -> 80.0 mm;
+   enclosure external 80 -> 85 mm.  Height and depth unchanged.  **This is a
+   consequence of D-703 option 2 and D-707 and is recorded, not re-escalated.**
+4. Only then re-open `U11`, and only with a way to lay its battery taper.
+
+
 # D-706 · 2026-09-13 · Demo — **THE WALL D-703 COULD NOT NAME WAS `ISET`'s MISSING WIDTH FLOOR. WITH IT PUBLISHED, `/BQ25185_STAT1` CLOSES IN EVERY CONFIGURATION — AND `U11`'s EAST FAN-OUT IS FULL AT FOUR CONDUCTORS IN 2.525 mm, SO THE AUTHORIZED AREA AND ONE PART MOVE MUST BE SPENT TOGETHER**
 
     authority  eca812476fbcc6277462ca4e37c0aaa9ee3562bcc5955ba32491b6522832b82c  UNCHANGED

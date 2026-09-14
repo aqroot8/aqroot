@@ -66,6 +66,61 @@
 > `verify_promotion` PASS and `protected_copper` showing exactly one protected
 > net moved.  `U14.7` is on the bus.  This board has **no open owner decision**.
 
+- **Demo D-708 (THE AUTHORIZED EXPANSION AND `J8` MOVE ARE BUILT AND GATED AT
+  15 EDGES; ONE PRE-EXISTING GROUND PATH HOLDS THEM OUT, AND `U11` IS
+  IMMOVABLE BECAUSE ITS BATTERY PIN IS FED BY A HAND TAPER):**  **NO COPPER
+  PROMOTED.**  Authority **UNCHANGED** at `eca81247`; 16 -> 16.  **GATE WORK
+  PROMOTED:** `verify_promotion --board-outline-grown` (NEW — this gate had no
+  opinion about the board edge at all, so an outline change could reach a
+  promotion unaudited; now it is a CLAIM admitted only on containment, with the
+  extents reported in mm), plus the FIRST controls for `--zone-grown` and
+  `--rule-area-keepout`.  **22 controls, all behaved.**  ***THE FINALIST:***
+  run **`r7`** — authority + the stepped outline (`x 72 -> 77` between
+  `y 70.500` and `y 104.005`), all five full-board planes grown to it, three
+  `STEP_EDGE` keep-outs, **`J8` moved +5.000 mm east to `(73.400, 76.400)`** so
+  the Qwiic port stays on the right wall (D-707), and `R36` moved to
+  `(73.500, 75.000)` inside the new area — returns **`failed_nets []`,
+  `nets_regressed []`, `refused_clauses []` (ALL FIFTEEN CLAUSES TRUE), DRC =
+  the inherited baseline exactly, PP1-PP4 true, 32 -> 15 against an authority
+  of 16.**  ***WHY IT IS NOT PROMOTED:*** measured **HEAD -> candidate**, which
+  is what a promoting run compares, `PP2` refuses one `GND` fragment
+  (`C36.2, C5.2, C7.2, R37.2, R40.2`) at **2.295 A against a 3.125 A bar** —
+  `C5.2`, a `+3V3` decoupling cap's ground, reaches its nearest barrel through
+  **4.383 mm of 0.95 mm pour**, and the bar is `C36.1`'s `BAT_PROTECTED_P`
+  neighbour.  **The weak path is PRE-EXISTING**; what the transaction does is
+  SPLIT the island, and `PP2` only prices a fragment once it is one.  Four
+  remedies measured and refused: `--bond-pad C5.2` (nearest legal 0.50/0.25
+  barrel is 2.117 mm away, inside `R40.2`'s pad), `--bond-max-mm 1.0` (same
+  barrel, so that IS the nearest), trimming the `SYS` pour out of the `+3V3`
+  decoupling pocket (no change — the `SYS` pour was not the pinch), and
+  stripping `/ACC_3V3_EN` + `/ACC_POWER_FAULT_N` (WORSE — `C37.2` at 0.995 A
+  over 16.811 mm).  **The one thing that blocks a closer barrel is
+  `/ACC_POWER_FAULT_N`'s `In3.Cu` segment `(62.250,72.975) ->
+  (61.725,77.450)`, which passes 0.19 mm from every adjacent site against the
+  0.45 mm a 0.500 mm barrel needs** — re-route it and `r7` promotes.
+  ***AND `U11` IS REFUTED IN BOTH DIRECTIONS:*** run `b2` (`U11` -> the empty
+  `B.Cu` under `SW9`) is 23 -> 22 with both pours regressed, and run `u6`
+  (`U11` -> `(71.500, 77.800)` INSIDE the new area with `R36`/`R37`/`R38` at
+  `x 74.900`) is 38 -> 20 — **and `u6` proves the east fan-out is right**:
+  `ISET`, `TS_MR` and `USB_VBUS_CHG` all close locally, `/BQ25185_STAT1` goes
+  2 -> 1 and **`/BQ25185_STAT2` goes 2 -> 1, the first time it has moved in
+  eight decisions**.  Both fail on the SAME line — `U11.2: NO LEGAL ESCAPE at
+  >= 0.600 mm` — because `U11.2` is the `BQ25185`'s BATTERY input on a 0.400 mm
+  pitch WSON-10 and **the copper the authority carries there is a HAND TAPER,
+  1.500 -> 0.200 mm in nine steps**, which no router here can propose: it lays
+  ONE width and `--trunk-floor` refuses `BAT_MAIN` by name.  **So `U11` cannot
+  move in any direction into any amount of area until a tapered-trunk primitive
+  exists.**  ***ALSO MEASURED:*** `--evict-whole` on a board-spanning net
+  (`USB_VBUS_CHG`, corridor 9871 mm²) re-lays it board-wide and its new `B.Cu`
+  diagonals slice the `GND` pour so `PP2` fails in the battery and NFC blocks —
+  use `--evict-window`; and `apply_part_shift --release` stops AT a via and
+  leaves it connected on one layer, so each `--release-via` exposes the next and
+  the honest move after two rounds is to strip the net and REQUEST it.
+  ***CONSEQUENCE TO RECORD, NOT RE-ESCALATE:*** the authorized expansion makes
+  the PCB **77.000 mm** at its widest, so `DEVICE_SPEC` §12's internal cavity
+  goes 75.0 -> 80.0 mm and the enclosure external 80 -> 85 mm; height and depth
+  unchanged.  That follows from D-703 option 2 and D-707 and is booked with the
+  promotion, not before it.
 - **Demo D-706 (THE WALL D-703 COULD NOT NAME WAS `ISET`'s MISSING WIDTH
   FLOOR; `/BQ25185_STAT1` NOW CLOSES IN EVERY CONFIGURATION, AND `U11`'s EAST
   FAN-OUT IS FULL AT FOUR CONDUCTORS IN 2.525 mm):**  **NO COPPER PROMOTED.**

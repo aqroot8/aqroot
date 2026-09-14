@@ -1,0 +1,152 @@
+{
+ "schema": 1,
+ "decision": "D-708",
+ "what": "controls for --zone-grown, --rule-area-keepout and --board-outline-grown on the real expanded board",
+ "pre_board": "/home/aqroot8/aqroot-demo/hardware/demo/kicad/aqroot-demo/aqroot-Beta-v2.kicad_pcb",
+ "post_board": "/home/aqroot8/aqroot-demo/w/d708/t3/aqroot-Beta-v2.kicad_pcb",
+ "zones_grown": [
+  "B GND PLANE",
+  "F +3V3 PLANE",
+  "In1 GND REFERENCE",
+  "In1 GND REFERENCE_1",
+  "In3 +3V3 PLANE"
+ ],
+ "zones_shrunk": [],
+ "rule_areas_added": [
+  "STEP_EDGE_KEEPOUT_E",
+  "STEP_EDGE_KEEPOUT_N",
+  "STEP_EDGE_KEEPOUT_S"
+ ],
+ "outline_extents_mm_before": [
+  0.0,
+  0.0,
+  72.0,
+  148.0
+ ],
+ "outline_extents_mm_after": [
+  0.0,
+  0.0,
+  77.0,
+  148.0
+ ],
+ "probes": [
+  {
+   "control": "five_full_board_planes_grew",
+   "expected": [
+    "B GND PLANE",
+    "F +3V3 PLANE",
+    "In1 GND REFERENCE",
+    "In1 GND REFERENCE_1",
+    "In3 +3V3 PLANE"
+   ],
+   "got": [
+    "B GND PLANE",
+    "F +3V3 PLANE",
+    "In1 GND REFERENCE",
+    "In1 GND REFERENCE_1",
+    "In3 +3V3 PLANE"
+   ],
+   "behaved": true
+  },
+  {
+   "control": "no_pour_shrank",
+   "expected": [],
+   "got": [],
+   "behaved": true
+  },
+  {
+   "control": "no_pour_lost",
+   "expected": [],
+   "got": [],
+   "behaved": true
+  },
+  {
+   "control": "no_pour_added",
+   "expected": [],
+   "got": [],
+   "behaved": true
+  },
+  {
+   "control": "grown_claim_matches",
+   "expected": true,
+   "got": true,
+   "behaved": true
+  },
+  {
+   "control": "an_unclaimed_growth_is_refused",
+   "expected": false,
+   "got": false,
+   "behaved": true
+  },
+  {
+   "control": "the_growth_is_containment_not_a_move",
+   "expected": true,
+   "got": true,
+   "behaved": true
+  },
+  {
+   "control": "three_step_edge_keepouts_added",
+   "expected": [
+    "STEP_EDGE_KEEPOUT_E",
+    "STEP_EDGE_KEEPOUT_N",
+    "STEP_EDGE_KEEPOUT_S"
+   ],
+   "got": [
+    "STEP_EDGE_KEEPOUT_E",
+    "STEP_EDGE_KEEPOUT_N",
+    "STEP_EDGE_KEEPOUT_S"
+   ],
+   "behaved": true
+  },
+  {
+   "control": "no_rule_area_lost",
+   "expected": [],
+   "got": [],
+   "behaved": true
+  },
+  {
+   "control": "every_added_area_forbids_all_four",
+   "expected": true,
+   "got": true,
+   "behaved": true
+  },
+  {
+   "control": "none_of_them_is_a_licence_region",
+   "expected": false,
+   "got": false,
+   "behaved": true
+  },
+  {
+   "control": "each_claims_all_six_copper_layers",
+   "expected": true,
+   "got": true,
+   "behaved": true
+  },
+  {
+   "control": "a_keepout_claimed_as_a_licence_is_refused",
+   "expected": false,
+   "got": false,
+   "behaved": true
+  },
+  {
+   "control": "outline_changed",
+   "expected": true,
+   "got": true,
+   "behaved": true
+  },
+  {
+   "control": "outline_grew",
+   "expected": true,
+   "got": true,
+   "behaved": true
+  },
+  {
+   "control": "outline_did_not_shrink",
+   "expected": false,
+   "got": false,
+   "behaved": true
+  }
+ ],
+ "ok": true,
+ "verdict": "PASS"
+}

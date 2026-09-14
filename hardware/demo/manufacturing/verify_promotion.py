@@ -172,6 +172,36 @@ def zone_sigs(path):
     return sorted(out)
 
 
+def outline_sig(path):
+    """The board's own EDGE.CUTS outline, as closed polygons in nm.
+
+    D-708.  Until now this gate had no opinion about the BOARD OUTLINE at all:
+    every clause below audits copper, pours and rule areas, and a promotion
+    could have moved the board edge -- the one dimension a reviewer, an
+    enclosure and a Kickstarter page all read -- without a single check
+    noticing.  An outline change is the most consequential geometry a
+    transaction can carry, so it is claimed BY NAME like everything else here.
+    """
+    import pcbnew
+    board = pcbnew.LoadBoard(str(path))
+    poly = pcbnew.SHAPE_POLY_SET()
+    board.GetBoardPolygonOutlines(poly, False)
+    outs = []
+    for i in range(poly.OutlineCount()):
+        o = poly.Outline(i)
+        outs.append(tuple((o.CPoint(j).x, o.CPoint(j).y)
+                          for j in range(o.PointCount())))
+    return tuple(sorted(outs))
+
+
+def outline_bbox_mm(outs):
+    if not outs:
+        return None
+    xs = [p[0] for o in outs for p in o]
+    ys = [p[1] for o in outs for p in o]
+    return [min(xs) / 1e6, min(ys) / 1e6, max(xs) / 1e6, max(ys) / 1e6]
+
+
 def drc(path, out):
     """Real KiCad DRC, refilling and saving the copy it is handed."""
     subprocess.run([
@@ -726,6 +756,36 @@ def main():
                          "inside its own former outline, with its owner, name, "
                          "copper layer set and all four disallow flags "
                          "unchanged.  D-684.  Repeatable")
+    ap.add_argument("--rule-area-keepout", action="append", default=[],
+                    metavar="NAME",
+                    help="D-706: name of a KEEP-OUT rule area the promotion "
+                         "claims to have ADDED.  Unlike --rule-area (a LICENCE "
+                         "region, whose four disallow flags must be OFF) a "
+                         "keep-out must have ALL FOUR ON: it can only forbid "
+                         "copper, never permit it.  What a non-rectangular "
+                         "board outline needs, because qrouter takes its "
+                         "extents from a bounding box.  Repeatable")
+    ap.add_argument("--zone-grown", action="append", default=[],
+                    metavar="NAME",
+                    help="D-706: name of a POUR whose OUTLINE the promotion "
+                         "claims to have GROWN -- the OLD polygon wholly "
+                         "inside the new one, proved by polygon boolean -- "
+                         "with its net, copper layer set, name, minimum "
+                         "thickness, local clearance, island-removal mode and "
+                         "pad connection all UNCHANGED.  The mirror of "
+                         "--zone-reshaped, and what a board-OUTLINE increase "
+                         "needs: the full-board planes must follow the new "
+                         "edge.  Repeatable")
+    ap.add_argument("--board-outline-grown", action="store_true",
+                    help="D-708: the promotion claims to have GROWN the BOARD "
+                         "OUTLINE -- the OLD Edge.Cuts polygon wholly inside "
+                         "the new one, proved by the same polygon boolean "
+                         "--zone-grown uses.  Without this flag ANY change to "
+                         "the board edge is a refusal, which is what this gate "
+                         "lacked entirely; with it, a SHRUNK or MOVED outline "
+                         "is still a refusal, and the before/after extents are "
+                         "reported in millimetres so the external-dimension "
+                         "change is stated and not inferred")
     ap.add_argument("--zone-reshaped", action="append", default=[],
                     metavar="NAME",
                     help="D-703: name of a POUR whose OUTLINE the promotion "
@@ -785,6 +845,12 @@ def main():
         else:
             rmoved.append((u, was[1] or was[0]))
 
+    # D-708 -- THE BOARD OUTLINE, CLAIMED.
+    opre, opost = outline_sig(pre), outline_sig(post)
+    outline_changed = opre != opost
+    outline_grew = (outline_changed and len(opre) == 1 and len(opost) == 1
+                    and poly_is_contained(opre[0], opost[0]))
+
     zpre, zpost = zone_sigs(pre), zone_sigs(post)
     # D-703 -- A NARROWED POUR IS NEITHER AN ADDITION NOR A LOSS.
     #
@@ -799,18 +865,41 @@ def main():
     # PP1-PP4 below still measure what the narrowing did to every pad
     # partition on the board.
     zreshaped, zshrunk_keys = [], set()
+    # D-706 -- AND A POUR THAT GREW IS THE OTHER HALF OF THE SAME CLAIM.
+    #
+    # D-703 admitted a pour whose outline SHRANK wholly inside its own former
+    # outline.  A BOARD OUTLINE INCREASE needs the mirror: the five full-board
+    # planes must follow the new edge, and every one of them then reads as one
+    # LOST signature plus one ADDED signature, so an authorized expansion could
+    # not be re-proved here at all.  Admitted on the same two terms, with the
+    # containment reversed -- every other field identical (net, copper layer
+    # set, name, minimum thickness, local clearance, island-removal mode, pad
+    # connection) and the OLD polygon WHOLLY INSIDE the new one by real polygon
+    # boolean, so a plane that MOVED, or that abandoned copper anywhere, is
+    # still a loss and still a refusal.  The direction is the safe one for a
+    # PLANE for the same reason the other was safe for a local pour: growing a
+    # reference plane can only add return copper, and PP1-PP4 below still
+    # measure what it did to every pad partition on the board.
+    zgrown, zgrown_keys = [], set()
     _zpre_by_key = {z[:7]: z for z in zpre}
     _zpost_by_key = {z[:7]: z for z in zpost}
     for key in sorted(set(_zpre_by_key) & set(_zpost_by_key), key=str):
         was, now = _zpre_by_key[key], _zpost_by_key[key]
-        if was == now or not poly_is_contained(now[7], was[7]):
+        if was == now:
             continue
-        zshrunk_keys.add(key)
-        zreshaped.append((key[2] or "%s|%s" % (key[0], key[1][0]),
-                          [[c / 1e6 for c in pt] for pt in was[7]],
-                          [[c / 1e6 for c in pt] for pt in now[7]]))
-    zadded = [z for z in zpost if z not in zpre and z[:7] not in zshrunk_keys]
-    zlost = [z for z in zpre if z not in zpost and z[:7] not in zshrunk_keys]
+        if poly_is_contained(now[7], was[7]):
+            zshrunk_keys.add(key)
+            zreshaped.append((key[2] or "%s|%s" % (key[0], key[1][0]),
+                              [[c / 1e6 for c in pt] for pt in was[7]],
+                              [[c / 1e6 for c in pt] for pt in now[7]]))
+        elif poly_is_contained(was[7], now[7]):
+            zgrown_keys.add(key)
+            zgrown.append((key[2] or "%s|%s" % (key[0], key[1][0]),
+                           [[c / 1e6 for c in pt] for pt in was[7]],
+                           [[c / 1e6 for c in pt] for pt in now[7]]))
+    _moved = zshrunk_keys | zgrown_keys
+    zadded = [z for z in zpost if z not in zpre and z[:7] not in _moved]
+    zlost = [z for z in zpre if z not in zpost and z[:7] not in _moved]
     zclaim = sorted((z[0], z[1][0]) for z in zadded)
 
     removed_nets = sorted({x[1] for x in (before - after)})
@@ -851,9 +940,14 @@ def main():
             True if pre_drc is None
             else first["unconnected_items"] <= pre_drc["unconnected_items"]),
         added_only_on_claimed_nets=set(added_nets) <= set(nets),
+        # D-708 -- an outline change is a CLAIM, and only in one direction.
+        board_outline_as_claimed=(outline_grew if a.board_outline_grown
+                                  else not outline_changed),
         zone_inventory_as_claimed=(not zlost and zclaim == planes
                                    and sorted(z[0] for z in zreshaped)
-                                   == sorted(a.zone_reshaped)),
+                                   == sorted(a.zone_reshaped)
+                                   and sorted(z[0] for z in zgrown)
+                                   == sorted(a.zone_grown)),
         track_width_floor_met=(not a.track_width
                                or all(w >= a.track_width for w in widths)
                                or (a.neck and neck_ok)
@@ -863,15 +957,34 @@ def main():
                              or (a.bridge and bridge_ok)),
         annular_floor_met=(all((dia - d) / 2 >= a.annular for dia, d in vdims)
                            or (a.bridge and bridge_ok)),
+        # D-706 -- AND AN ADDED KEEP-OUT IS A DIFFERENT OBJECT FROM AN ADDED
+        # LICENCE AREA.  Every rule area this board had added until now is a
+        # LICENCE region -- a named polygon a `.kicad_dru` rule points at so a
+        # narrow escape or a fine barrel is legal INSIDE it -- and for those the
+        # four disallow flags must be OFF, which is what `not any(z[3:7])`
+        # says.  A KEEP-OUT is the opposite object: it can only ever FORBID
+        # copper, never permit it, so admitting one is strictly safe.  It is
+        # still claimed BY NAME, and it is still refused if it is claimed as an
+        # ordinary rule area, so nothing is admitted silently.  A board with a
+        # NON-RECTANGULAR outline needs them: `qrouter` takes its extents from
+        # a bounding box and would otherwise lay copper in the notch.
         rule_areas_as_claimed=(not rlost and not rmoved
                                and sorted(str(z[1]) for z in rnarrowed)
                                == sorted(a.rule_area_narrowed)
                                and sorted(str(z[1]) for z in rwidened)
                                == sorted(a.rule_area_widened)
-                               and sorted(z[1] for z in radded)
+                               and sorted(z[1] for z in radded
+                                          if z[1] not in a.rule_area_keepout)
                                == sorted(a.rule_area)
                                and all(len(z[2]) == 6 and not any(z[3:7])
-                                       for z in radded)),
+                                       for z in radded
+                                       if z[1] not in a.rule_area_keepout)
+                               and all(len(z[2]) == 6 and all(z[3:7])
+                                       for z in radded
+                                       if z[1] in a.rule_area_keepout)
+                               and sorted(a.rule_area_keepout)
+                               == sorted(z[1] for z in radded
+                                         if z[1] in a.rule_area_keepout)),
         drc_zero_attributable=not first["attributable"],
         drc_inherited_within_baseline=all(
             first["counts"].get(k, 0) <= n for k, n in INHERITED.items()),
@@ -909,9 +1022,16 @@ def main():
         rule_areas_narrowed=rnarrowed,
         rule_areas_otherwise_changed=rmoved,
         claimed_rule_areas=sorted(a.rule_area),
+        claimed_keepout_rule_areas=sorted(a.rule_area_keepout),
         claimed_widened_rule_areas=sorted(a.rule_area_widened),
         claimed_narrowed_rule_areas=sorted(a.rule_area_narrowed),
+        board_outline_changed=outline_changed,
+        board_outline_grown=bool(outline_grew),
+        claimed_board_outline_grown=bool(a.board_outline_grown),
+        board_outline_extents_mm_before=outline_bbox_mm(opre),
+        board_outline_extents_mm_after=outline_bbox_mm(opost),
         zones_added=zadded, zones_removed=zlost, zones_reshaped=zreshaped,
+        zones_grown=zgrown, claimed_grown_zones=sorted(a.zone_grown),
         drc=first, drc_second_pass=second, dru_contracts=contracts,
         pour_partition=pp_detail,
         checks=checks, verdict="PASS" if all(checks.values()) else "FAIL",
