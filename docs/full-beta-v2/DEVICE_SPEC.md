@@ -299,13 +299,13 @@ dimension source and supersedes older Enclosure Field Slate v3/v4/v5 dimensions.
 
 | Item | Value | Label | Evidence |
 |---|---|---|---|
-| PCB outline | **72.000 × 148.000 mm** | LOCKED (D-239) · MARKETING-SAFE (board size) | `FBV2_P1_METRICS.txt`; `FBV2_SIXLAYER_STACKUP.md`; mech spec |
+| PCB outline | **77.000 × 148.000 mm maximum** — stepped: 72.000 mm wide except an east bump to **x = 77.000** between `y = 70.500` and `y = 104.005` | REVISED D-709 under owner authority D-703 option 2 (`cc9f356`) · MARKETING-SAFE (board size) | `evidence/d709-verify-promotion.json` (outline extents measured 0,0→77,148); `FBV2_SIXLAYER_STACKUP.md`; mech spec |
 | PCB thickness | **1.6 mm** | LOCKED | mech spec; stackup |
 | PCB stackup | **6 copper layers** (F/In1 GND/In2 sig/In3 sig/In4 GND/B), JLC06161H-7628, 1 oz outer / 0.5 oz inner, no HDI/blind/buried | LOCKED · ENGINEERING-ONLY | `FBV2_SIXLAYER_STACKUP.md` |
 | Mounting holes | **2 × M2**, Ø2.2 mm NPTH, Ø4.5 mm keep-out; BOSS1 (40.000, 12.000), BOSS2 (59.000, 145.000) | LOCKED (D-226/D-232) · CAD-TO-VERIFY | mech spec; floorplan |
-| Enclosure external | **80 × 160 × 23 mm** (portrait) | LOCKED (CTO) · MARKETING-SAFE (with rounding to CAD) | mech spec |
+| Enclosure external | **85 × 160 × 23 mm** (portrait) | REVISED D-709 (width only; follows the PCB outline and owner approval D-707 `ac9d333`) · MARKETING-SAFE (with rounding to CAD) | mech spec; D-709 |
 | Enclosure wall | 2.0 mm nominal | TARGET · CAD-TO-VERIFY | mech spec |
-| Internal cavity | 75.0 × 155.0 × 18.5 mm nominal | TARGET · CAD-TO-VERIFY | mech spec |
+| Internal cavity | 80.0 × 155.0 × 18.5 mm nominal | REVISED D-709 (width only) · TARGET · CAD-TO-VERIFY | mech spec; D-709 |
 | Board→cavity clearance | ≥1.5 mm (actual 2.5 mm X, 3.5 mm Y) | LOCKED (rule) | mech spec |
 
 **Conflicts flagged / UNRESOLVED (CAD-TO-VERIFY):**
@@ -317,6 +317,13 @@ dimension source and supersedes older Enclosure Field Slate v3/v4/v5 dimensions.
 - **Community-port wall aperture** for the current 1×24 socket (62.5 mm recess) not
   restated (34×10 mm was for the superseded 2×12 body) — UNRESOLVED.
 - Corner radii/chamfers, surface finish, texture, branding = **M-05**, not dimensioned.
+- **D-709 EAST STEP (CAD-TO-VERIFY):** the 5.00 mm east bump runs `y 70.500 .. 104.005`
+  only.  It is BELOW the `WROOM` antenna keep-out (starts `y = 104.005`) and BELOW `J5`'s
+  mating volume (courtyard ends `y = 70.490`), so neither is touched.  **`J8` (Qwiic /
+  STEMMA QT, §10.2 EXTERNAL right wall) moved +5.000 mm east with the edge and its
+  relationship to that edge is unchanged** — courtyard 0.275 mm inboard, rightmost pad
+  0.825 mm from the edge, before and after.  The right-wall aperture must follow the
+  step, not the old flat wall.
 
 ---
 

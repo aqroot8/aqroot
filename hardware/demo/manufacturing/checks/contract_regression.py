@@ -85,7 +85,7 @@ EVIDENCE = MFG / "evidence"
 # 52 tubes (three of them new, over the admitted split), ZERO off copper.  The
 # STALE d656 guard still FAILS on that board, which is this bump's own
 # non-vacuity control.
-BOND_GUARD = "evidence/d669-pour-bond-guard-next.json"
+BOND_GUARD = "evidence/d709-pour-bond-guard-next.json"
 
 # name -> (script, extra argv, baseline evidence basename WITHOUT the decision
 #          prefix, verdict field).  The verdict field is read only for the

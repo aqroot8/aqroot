@@ -27454,3 +27454,160 @@ Decision:
 - This approval is specifically for the Kickstarter Demo revision.
 
 Proceed autonomously with the coordinated U11/U21 re-floorplan, routing, verification, and promotion if all safety/DRC/connectivity/manufacturing checks pass.
+
+## D-709 — THE EXPANSION, THE J8 MOVE AND THE R36 MOVE ARE PROMOTED; THE CLAUSE THAT HELD THEM WAS CHARGING ONE PAD'S CURRENT TO ANOTHER PAD'S COPPER
+
+**COPPER PROMOTED.**  Authority `eca81247` → `4414da31`; **16 → 15 retained
+open edges.**  `hardware/beta-v2` UNTOUCHED.
+
+D-708 built a finalist — the owner-authorized east expansion (`x 72 → 77`
+between `y 70.500` and `y 104.005`), all five full-board planes grown to it,
+three `STEP_EDGE` keep-outs, `J8` +5.000 mm east so the Qwiic port stays on the
+new right wall (D-707), `R36` into the new area — that returned `failed_nets
+[]`, `nets_regressed []`, all fifteen gate clauses true, DRC equal to the
+inherited baseline and `promotion_candidate` TRUE, and then **refused it on one
+clause measured HEAD → candidate.**  This decision finds that the clause was
+wrong, repairs it, and promotes the board.
+
+### 1. THE DEFECT
+
+`pour_partition` **PP2**'s D-643 return-fragment arm builds its bar **per pad**,
+by Kirchhoff at the part — in D-643's own words, *"the current into a part's
+ground pin is bounded by the current its OTHER pins carry."*  It then compared
+that bar to `bond_price`, which returns `min(bond, MIN over pads of that pad's
+own path)`.  So the admission was
+
+    MIN over the fragment's pads of each pad's OWN conductor
+        >=  MAX over the fragment's pads of each pad's OWN current
+
+**and the two extrema are taken over DIFFERENT PADS.**
+
+On the D-708 finalist the severed `GND` fragment is
+`{C36.2, C5.2, C7.2, R37.2, R40.2}`.  `C36.2` raises the bar to `BAT_MAIN`'s
+**3.125 A** — `C36.1` is `/01_POWER_TREE/BAT_PROTECTED_P` — **and `C36.2` sits
+on its own barrel, 0.000 mm away, priced 5.282 A.**  The 2.295 A the fragment
+was refused at belongs to `C5.2`, a 0603 `+3V3` decoupling cap's ground, whose
+own neighbour rail is `P3V3` at **1.0 A**.  The battery's current was charged to
+a conductor it demonstrably does not traverse: `C36.2`'s return goes straight
+down its own barrel into the reference planes and never enters `C5.2`'s neck.
+
+**AND NO LAYOUT COULD EVER PAY IT.**  `bond_price` prices a pad at the narrowest
+place on the WIDEST path to a landing barrel, and for `C5.2` that is **0.95 mm —
+the height of its own 0603 land.**  `0.995 × (0.95 / 0.300) ^ 0.725 = 2.295 A`;
+reaching 3.125 A needs **1.454 mm of copper AT THE PAD**.  So the old form said:
+*no 0603 ground land may ever share a severed fragment with a part that touches
+`BAT_MAIN`, at any placement, with any router, on any board this project can
+build.*  That is a statement about 0603 land patterns, not about this board's
+safety — and the authority board **already** delivers `C5.2`'s return through
+exactly that 0.95 mm of copper, unsevered and unremarked, because an unsplit
+island is never priced at all.  D-708 measured four remedies and then built the
+`--bond-at` instrument to measure a fifth; every one returned the same 2.295 A.
+
+### 2. THE REPAIR, AND IT CUTS BOTH WAYS
+
+A return fragment is not one conductor in series; it is a **star** of per-pad
+paths onto a set of barrels.  `PP2` now admits a return fragment on two terms:
+
+- **(A) THE BOUNDARY — NEW, AND STRICTER THAN D-643.**  Everything entering the
+  fragment through its pads must leave through its barrels, so the parallel bond
+  must carry the **SUM** of every pad's bar.  D-643 compared the bond to a single
+  MAXIMUM, so a fragment with twenty 1.0 A pads and one 1.5 A barrel was
+  admitted.  It no longer is.
+- **(B) THE PAD.**  Each pad's own path to its barrel must carry **that pad's**
+  bar — the floor of one `GND`-netclass track, raised by the rails on that pad's
+  OWN footprint, resolved by literally calling `return_fragment_bar` one pad at
+  a time so the floor, the neighbour resolution and the provenance cannot drift
+  from the aggregate figure reported beside them.
+
+Neither term is a model: (A) is KCL at the fragment boundary and (B) is D-643's
+own Kirchhoff-at-the-part applied to the conductor the current actually flows
+in.  **RAIL fragments are untouched** — a `+3V3` fragment's pads are all pads OF
+that rail and the rail's current really does flow through the fragment's copper
+in series, so D-628's whole-rail comparison stays exactly as it was.  The
+under-charge where two pads' paths SHARE copper is **stated, not hidden**, and
+every pad's path is published in `per_pad` so a reviewer can see which do.
+
+**FOURTEEN CONTROLS, ALL BEHAVED** (`evidence/d709-pour-partition-head-control.json`).
+The three that carry the argument:
+
+    the_battery_pad_on_its_own_barrel_does_not_condemn_its_neighbour  ADMIT
+    battery_pad_on_the_weak_path_is_REFUSED                           REFUSE
+    the_boundary_sum_refuses_a_bond_every_pad_passes                   REFUSE
+
+The second is the safety property intact: put the 3.125 A pad ON the 2.295 A
+copper and the same fragment is rejected, `PAD_RETURN_UNDER_PRICED`.  The third
+is the new term refusing what D-643 admitted.
+
+### 3. A SECOND DEFECT, FOUND BY WALKING INTO IT
+
+`placement` **PL5** ("nothing was stranded") tested a bare axis-aligned pad
+RECTANGLE — layer-blind, net-blind, inclusive at the edge.  Moving `J8`, a
+9.66 × 13.49 mm Qwiic connector standing over the charger pocket, reported
+**SIXTEEN** stranded endpoints of which **EIGHT had never touched a `J8` or
+`R36` land**: five `BAT_PROTECTED_P` segments running along `B.Cu` at
+`y = 78.200`, which is exactly where the bounding box of `J8.1` — an `F.Cu`
+`GND` land — ENDS; an `ISET` and a `GND` track on `B.Cu` under an UNNETTED
+`F.Cu` mounting pad; and a `NATIVE_B_HDR` `In2.Cu` haul and a `GND` `F.Cu` track
+under `R36.1`, which is on `B.Cu`.  A move cannot detach copper that was never
+attached, and a clause reporting eight phantoms beside eight real releases
+cannot be read.  `attached()` now requires the endpoint to share the pad's NET
+and at least one of its COPPER LAYERS.  Foreign copper a moved land travels
+INTO is **PL7**'s business, and PL7 passes on the same board.
+**NON-VACUOUS:** with nothing declared, PL5 still FAILS and names all seven
+genuinely attached endpoints (`evidence/d709-pl5-control-norelease.json`).
+
+### 4. WHAT WAS PROMOTED, AND HOW IT WAS PROVED
+
+Outline stepped `x 72 → 77 mm` between `y 70.500` and `y 104.005` — below the
+`WROOM` antenna keep-out and below `J5`'s mating volume; five full-board planes
+grown to it; three `STEP_EDGE` keep-outs; `J8` +5.000 mm east; `R36`
++4.750/−5.250 mm.  **`J8`'s relationship to the board edge is preserved
+EXACTLY** — courtyard 0.275 mm inboard and rightmost pad 0.825 mm from the edge,
+before and after — which is what D-707's *"may move outward with the expanded
+right edge"* asks for.
+
+    gate r9            failed_nets [] nets_regressed [] refused_clauses []
+                       attributable_drc []  promotion_candidate TRUE  37 -> 15
+    verify_promotion   PASS, 16 checks, --board-outline-grown + 5 --zone-grown
+                       + 3 --rule-area-keepout + 9 --evicted
+    pour_partition     PP1-PP4 PASS HEAD -> candidate; both GND splits admitted
+                       BOND_PRICED_PER_PAD_AND_AT_THE_RETURN_BOUNDARY
+    real KiCad DRC     1 solder_mask_bridge (inherited MK1), 199
+                       lib_footprint_issues, 31 unconnected (32 before),
+                       ZERO schematic-parity errors
+    placement          PL1-PL9 PASS with both moves and five releases claimed
+    pour_bond          P1-P4 PASS on a guard RE-DERIVED against the promoted
+                       board (47 tubes, 154.038 mm); the d669 guard was stale
+                       exactly as D-610 and D-619 record
+    protected_copper   every BAT_* net BYTE-IDENTICAL -- D-269 / D-186 copper
+                       untouched
+    fab package        regenerated, 29 files (24 deterministic), FAB1-FAB8 PASS
+
+**THE ONE PROTECTED-NET CHANGE IS NAMED AND LICENSED.**  `/ACC_3V3_SW` goes
+79 → 83 objects because `J8.2` IS its Qwiic land and `J8` moved — the transaction
+D-707 approves.  **91.834 mm of 0.40 mm copper is replaced by 31.916 mm of
+0.35 mm copper and six barrels**: a SHORTER path, and 0.35 mm is the
+`.kicad_dru`'s own published `ACC_3V3` floor (section 5: *0.40 A published,
+0.76 A typ ILIM*) carrying **1.113 A**, a 1.46× margin on the worst case.  The
+net is fully connected in the ledger and `J8`'s pinout, orientation and external
+accessibility are unchanged.
+
+### 5. THE MECHANICAL CONSEQUENCE, BOOKED WITH THE PROMOTION
+
+The PCB is now **77.000 mm at its widest** (stepped; 72.000 mm elsewhere), so
+`DEVICE_SPEC` §12's internal cavity goes 75.0 → 80.0 mm and the enclosure
+external 80 → 85 mm.  Height and depth unchanged.  This follows from D-703
+option 2 (`cc9f356`) and D-707 (`ac9d333`) and is recorded, not re-escalated.
+
+### 6. NEXT
+
+The pocket is OPEN: `U11`'s east fan-out strip went **2.525 → 7.525 mm** and
+`J8` and `R36` are out of it.  D-708 run `u6` already measured what that buys —
+`ISET`, `TS_MR` and `USB_VBUS_CHG` close locally and **`/BQ25185_STAT2` moves
+2 → 1, the first time in eight decisions** — and the one thing that stopped it
+is `U11.2`'s BATTERY escape, fed by a **1.500 → 0.200 mm HAND TAPER in nine
+steps** that no router here can propose because it lays ONE width.
+`/01_POWER_TREE/BQ25185_SYS` is now the largest single open net at **five**
+edges, and D-706 measured that `U11.1` and `C27.1` are cut off by that same
+taper.  **A tapered-trunk primitive — or an authored, gate-auditable taper
+geometry — is the one lever that unlocks `U11` in any direction.**

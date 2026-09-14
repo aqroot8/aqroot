@@ -28,11 +28,30 @@ MICRONS.  So this file is the invariant that makes moving a part reviewable:
          with no rotation claimed this is the identity and reads as it always
          did)
     PL4  no NEW footprint-bounding-box overlap was created
-    PL5  NOTHING WAS STRANDED.  Every track or via endpoint that lay inside a
-         moved part's pad BEFORE still lies inside that pad AFTER.  This is the
-         clause that makes a move safe without re-routing: copper is absolute
-         and only the part moves, so a 0.300 mm shift of a 1.400 mm pad keeps
-         its tracks attached -- but only a measurement may say so.
+    PL5  NOTHING WAS STRANDED.  Every track or via endpoint that was ATTACHED
+         to a moved part's pad BEFORE is still attached to that pad AFTER.
+         This is the clause that makes a move safe without re-routing: copper
+         is absolute and only the part moves, so a 0.300 mm shift of a
+         1.400 mm pad keeps its tracks attached -- but only a measurement may
+         say so.
+
+         D-709 CORRECTED WHAT "ATTACHED" MEANS.  The test was a bare
+         axis-aligned pad RECTANGLE, layer-blind and net-blind, and
+         `inside()` is inclusive at the edge.  Moving `J8` -- a
+         9.66 x 13.49 mm Qwiic connector standing over the charger pocket --
+         reported SIXTEEN stranded endpoints of which EIGHT were copper that
+         had never touched a `J8` or `R36` land at all: five
+         `BAT_PROTECTED_P` segments running along `B.Cu` at `y = 78.200`,
+         which is exactly where the bounding box of `J8.1` -- an `F.Cu` `GND`
+         land -- ends; an `ISET` and a `GND` track on `B.Cu` under an
+         UNNETTED `F.Cu` mounting pad; and a `NATIVE_B_HDR` `In2.Cu` haul and
+         a `GND` `F.Cu` track under `R36.1`, which is on `B.Cu`.  A move
+         cannot detach copper that was never attached, and a clause that
+         reports eight phantoms beside eight real releases cannot be read.
+         `attached()` now requires the endpoint to share the pad's NET and at
+         least one of its COPPER LAYERS.  Foreign copper a moved land travels
+         INTO is not this clause's business and never was -- that is PL7,
+         which is measured on the same board and passes.
     PL6  the screen is NOT VACUOUS: a synthetic 1 um perturbation of an
          UNCLAIMED footprint must be caught by PL2.
     PL7  A MOVED PAD SWEPT INTO NO FOREIGN COPPER.  A part that travels drags
@@ -123,20 +142,34 @@ def read(path):
             lands=sorted(lands),
             sides=sorted(_sides(f)),
             bbox=(bb.GetLeft(), bb.GetTop(), bb.GetRight(), bb.GetBottom()))
+        # D-709: a pad box now carries the pad's NET and its COPPER LAYERS.
+        # PL5 asks whether the move DETACHED copper from a land, and copper is
+        # attached to a land only where it shares the land's net AND one of its
+        # copper layers.  Without those two fields the clause tested a bare
+        # axis-aligned rectangle and read every foreign track that passes UNDER
+        # a pad on another layer as that pad's own -- see the note on PL5.
         boxes[ref] = sorted(
             (p.GetBoundingBox().GetLeft(), p.GetBoundingBox().GetTop(),
-             p.GetBoundingBox().GetRight(), p.GetBoundingBox().GetBottom())
+             p.GetBoundingBox().GetRight(), p.GetBoundingBox().GetBottom(),
+             p.GetNetname(),
+             frozenset(board.GetLayerName(l)
+                       for l in p.GetLayerSet().CuStack()))
             for p in f.Pads())
         for p in f.Pads():
             bb = p.GetBoundingBox()
             bynum.setdefault("%s.%s" % (ref, p.GetNumber()), []).append(
-                (bb.GetLeft(), bb.GetTop(), bb.GetRight(), bb.GetBottom()))
+                (bb.GetLeft(), bb.GetTop(), bb.GetRight(), bb.GetBottom(),
+                 p.GetNetname(),
+                 frozenset(board.GetLayerName(l)
+                           for l in p.GetLayerSet().CuStack())))
     ends, via_pts = [], []
     for t in board.GetTracks():
         pts = ([t.GetStart()] if t.GetClass() == "PCB_VIA"
                else [t.GetStart(), t.GetEnd()])
+        lay = frozenset(board.GetLayerName(l)
+                        for l in t.GetLayerSet().CuStack())
         for p in pts:
-            ends.append((t.GetNetname(), p.x, p.y))
+            ends.append((t.GetNetname(), p.x, p.y, lay))
         if t.GetClass() == "PCB_VIA":
             via_pts.append((t.GetNetname(), t.GetStart().x, t.GetStart().y,
                             t.GetWidth()))
@@ -145,6 +178,24 @@ def read(path):
 
 def inside(box, x, y):
     return box[0] <= x <= box[2] and box[1] <= y <= box[3]
+
+
+def attached(box, net, x, y, layers=None):
+    """Is this endpoint copper ATTACHED to this land?  D-709.
+
+    Three terms, and all three are necessary.  The rectangle alone says a
+    `BAT_PROTECTED_P` track running along `B.Cu` at `y = 78.200` is inside
+    `J8.1`, an `F.Cu` `GND` land whose bounding box ENDS at `y = 78.200` -- and
+    it is, in projection, and it is not attached to it in any sense a move can
+    break.
+    """
+    if not inside(box, x, y):
+        return False
+    if len(box) > 4 and box[4] != net:
+        return False
+    if layers is not None and len(box) > 5 and box[5] and not (box[5] & layers):
+        return False
+    return True
 
 
 def _norm_deg(d):
@@ -322,18 +373,20 @@ def judge(pre, post, claimed, released=()):
     # PL5, and PL8's half of it.  An endpoint that left a moved pad is
     # STRANDED unless that pad was declared RELEASED and the object carrying
     # the endpoint is gone from the board entirely -- removed, not dangling.
-    post_pts = {(x, y) for _n, x, y in epost}
+    post_pts = {(x, y) for _n, x, y, _l in epost}
     stranded, releases = [], []
     for ref in sorted(claimed):
         if ref not in bpre or ref not in bpost:
             continue
-        was = [e for e in epre if any(inside(box, e[1], e[2])
-                                      for box in bpre[ref])]
-        for net, x, y in was:
-            if any(inside(box, x, y) for box in bpost[ref]):
+        was = [e for e in epre
+               if any(attached(box, e[0], e[1], e[2], e[3])
+                      for box in bpre[ref])]
+        for net, x, y, lay in was:
+            if any(attached(box, net, x, y, lay) for box in bpost[ref]):
                 continue
             pad = next((r for r in released
-                        if any(inside(b, x, y) for b in npre.get(r, []))), None)
+                        if any(attached(b, net, x, y, lay)
+                               for b in npre.get(r, []))), None)
             if pad is not None and (x, y) not in post_pts:
                 releases.append(dict(pad=pad, net=net,
                                      at_mm=[x / 1e6, y / 1e6],
@@ -348,7 +401,7 @@ def judge(pre, post, claimed, released=()):
     for pad in sorted(set(released)):
         boxes = npost.get(pad, [])
         hits = [e for e in epost
-                if any(inside(b, e[1], e[2]) for b in boxes)]
+                if any(attached(b, e[0], e[1], e[2], e[3]) for b in boxes)]
         (reconnected if hits else orphan_pads).append(
             dict(pad=pad, post_endpoints=len(hits)))
 
@@ -381,7 +434,8 @@ def judge(pre, post, claimed, released=()):
         courtyard_overlaps_new=[list(p) for p in new_overlap],
         endpoints_checked=sum(
             len([e for e in epre
-                 if any(inside(box, e[1], e[2]) for box in bpre.get(ref, []))])
+                 if any(attached(box, e[0], e[1], e[2], e[3])
+                        for box in bpre.get(ref, []))])
             for ref in claimed),
         endpoints_stranded=stranded,
         released_claimed=sorted(set(released)),

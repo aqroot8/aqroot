@@ -578,6 +578,130 @@ def return_fragment_bar(net, cls, frag_pad_refs, pads_by_footprint,
                "nothing; the MAXIMUM neighbour is charged, not the sum")
 
 
+# --------------------------------------------------------------------------- #
+# THE PP2 PER-PAD RETURN CLAUSE -- D-709
+# --------------------------------------------------------------------------- #
+# D-643 built the return bar out of KIRCHHOFF AT THE PART, in its own words:
+# "the current into a part's ground pin is bounded by the current its OTHER
+# pins carry -- that is Kirchhoff, not an estimate, and for the two-terminal
+# decoupling caps that make up most of these pads it is an identity."  It then
+# compared that bar to `bond_price`, and `bond_price` returns
+# `min(bond, min over pads of that pad's own path)`.  So the admission was
+#
+#     MIN over the fragment's pads of each pad's OWN conductor
+#         >=  MAX over the fragment's pads of each pad's OWN current
+#
+# and those two extrema are taken over DIFFERENT PADS.  The clause builds a
+# per-pad bound and then charges it to somebody else's copper.
+#
+# ON THIS BOARD THAT IS NOT ACADEMIC AND IT IS NOT SATISFIABLE.  D-708's
+# finalist severs a `GND` fragment holding `C36.2`, `C5.2`, `C7.2`, `R37.2` and
+# `R40.2`.  `C36.2` raises the bar to `BAT_MAIN`'s 3.125 A because `C36.1` is a
+# battery-rail pad -- and `C36.2` SITS ON ITS OWN BARREL, 0.000 mm away, priced
+# 5.282 A.  The 2.295 A the fragment is refused at belongs to `C5.2`, a 0603
+# `+3V3` decoupling cap's ground, whose own neighbour rail is `P3V3` at 1.0 A.
+# The battery's 3.125 A is charged to a conductor it demonstrably does not
+# traverse: `C36.2`'s return goes straight down its own barrel into the
+# reference planes and never enters `C5.2`'s neck.
+#
+# AND THE CHARGE CANNOT BE PAID BY ANY LAYOUT.  `bond_price` prices a pad at
+# the narrowest place on the WIDEST path from the pad to a landing barrel, and
+# for `C5.2` that is 0.95 mm -- the height of its own 0603 land, which is what
+# the board's copper narrows to at the pad whatever the pour around it does.
+# 0.995 A * (0.95 / 0.300) ** 0.725 = 2.295 A, and reaching 3.125 A would take
+# 1.454 mm of copper AT THE PAD.  So the old form says: no 0603 ground land may
+# ever share a severed fragment with a part that touches `BAT_MAIN`, at any
+# placement, with any router, on any board this project can build.  That is a
+# statement about 0603 land patterns, not about this board's safety -- and the
+# authority board ALREADY delivers `C5.2`'s return through exactly that 0.95 mm
+# of copper, unsevered and unremarked, because an unsplit island is never
+# priced at all.
+#
+# THE REPAIR IS TO CHARGE EACH PAD ITS OWN CURRENT, AND TO ADD THE TERM THE OLD
+# FORM NEVER HAD.  A return fragment is not one conductor in series; it is a
+# STAR of per-pad paths onto a set of barrels.  So:
+#
+#     (A) THE BOUNDARY.  Everything that enters the fragment through its pads
+#         must leave it through its barrels.  The parallel bond must carry the
+#         SUM of every pad's bar.  This term is NEW -- D-643 compared the bond
+#         to a single MAXIMUM, so a fragment with twenty 1.0 A pads and one
+#         1.5 A barrel was admitted.  It no longer is.
+#
+#     (B) THE PAD.  Each pad's own path to its barrel must carry that PAD's own
+#         bar -- the floor of one `GND`-netclass track, raised by the rails on
+#         that pad's OWN footprint, exactly as D-643 resolves it.
+#
+# NEITHER TERM IS A MODEL.  (A) is KCL at the fragment boundary and (B) is
+# D-643's own Kirchhoff-at-the-part, applied to the conductor the current
+# actually flows in.  The direction of the change is BOTH ways: (B) admits the
+# cross-charge D-643 refused, and (A) refuses an under-bonded fragment D-643
+# admitted.  What is NOT weakened is the thing the clause exists for -- a
+# battery return pad severed onto thin copper is still refused, and
+# `battery_pad_on_the_weak_path_is_REFUSED` below is that exact probe.
+#
+# THE LIMIT, STATED.  Where two pads' paths SHARE copper the shared cross
+# section owes their SUM, and (B) charges it only the larger.  That is the same
+# class of under-charge D-643 already published about taking the MAXIMUM
+# neighbour rather than the SUM, it sits against (A) which is a genuine
+# addition in the other direction, and it is bounded: a shared bottleneck is
+# only reachable between pads whose widest paths run to the same barrel, and
+# `per_pad` publishes every pad's path in the artifact so a reviewer can see
+# which do.  RAIL fragments are untouched: a `+3V3` fragment's pads are all
+# pads OF that rail, the rail's current really does flow through the fragment's
+# copper in series, and D-628's whole-rail comparison stays exactly as it was.
+def return_fragment_pad_bars(net, cls, pad_refs, pads_by_footprint,
+                             netclass_of, classes, table):
+    """D-643's bar, resolved ONE PAD AT A TIME -- D-709.
+
+    Literally `return_fragment_bar` called per pad, so the floor, the neighbour
+    resolution and the provenance are the same code and cannot drift from the
+    aggregate figure reported beside them.
+    """
+    out = {}
+    for ref in sorted(set(pad_refs)):
+        amps, prov = return_fragment_bar(net, cls, [ref], pads_by_footprint,
+                                         netclass_of, classes, table)
+        out[ref] = dict(bar_amps=amps, bar_from=prov["bar_from"],
+                        neighbour_rails=prov["neighbour_rails"])
+    return out
+
+
+def decide_return(verdict, price, pad_bars):
+    """THE RETURN-FRAGMENT ADMISSION -- D-709.  Returns `(ok, why, detail)`.
+
+    The refusal strings `PP3_NOT_BONDED`, `NET_CARRIES_NO_PUBLISHED_CURRENT`
+    and `BOND_NOT_MEASURABLE` are D-628's own, unchanged and in D-628's own
+    order, so a report reads the same for every reason that has not moved.
+    """
+    if verdict != "BONDED":
+        return False, "PP3_NOT_BONDED", None
+    bars = {r: v["bar_amps"] for r, v in (pad_bars or {}).items()}
+    if not bars or any(b is None for b in bars.values()):
+        return False, "NET_CARRIES_NO_PUBLISHED_CURRENT", None
+    if price.get("priced_amps") is None:
+        return False, "BOND_NOT_MEASURABLE", None
+    path = {r.get("pad"): r.get("amps") for r in price.get("internal") or []}
+    bond = price.get("bond_amps_parallel")
+    total = round(sum(bars.values()), 3)
+    boundary = dict(bond_amps_parallel=bond, sum_of_pad_bars=total,
+                    ok=bool(bond is not None and bond + AMP_TOL >= total),
+                    note="KCL at the fragment boundary: everything entering "
+                         "through the pads leaves through the barrels")
+    pads = [dict(pad=r, bar_amps=bars[r], bar_from=pad_bars[r]["bar_from"],
+                 path_amps=path.get(r),
+                 ok=bool(path.get(r) is not None
+                         and path[r] + AMP_TOL >= bars[r]))
+            for r in sorted(bars)]
+    detail = dict(boundary=boundary, per_pad=pads)
+    if not boundary["ok"]:
+        return False, "RETURN_BOUNDARY_UNDER_PRICED", detail
+    if any(p["path_amps"] is None for p in pads):
+        return False, "BOND_NOT_MEASURABLE", detail
+    if any(not p["ok"] for p in pads):
+        return False, "PAD_RETURN_UNDER_PRICED", detail
+    return True, "BOND_PRICED_PER_PAD_AND_AT_THE_RETURN_BOUNDARY", detail
+
+
 def decide(verdict, priced_amps, required_amps, bar_source=None):
     """THE ADMISSION, in ONE place -- the verdict and the controls share it.
 
@@ -713,22 +837,72 @@ def return_controls(classes, table):
                                     ncl, classes, table)
     note("a_net_with_no_netclass_conductor_has_no_floor", b_none, None)
 
-    # -- the admission at that bar ------------------------------------------ #
-    for name, priced, req, want in (
-            ("zone_min_thickness_sliver_refused_at_the_floor", sliver, floor,
-             False),
-            ("the_d619_fragment_is_admitted_at_the_floor", real, floor, True),
-            ("the_same_fragment_is_REFUSED_beside_the_battery", real, b_bat,
-             False),
-            ("floor_located_one_ppm_below", floor * (1 - 1e-6), floor, False),
-            ("floor_located_at_equality", floor, floor, True)):
-        got, why = decide("BONDED", priced, req,
-                          bar_source="RETURN_FRAGMENT_BAR")
-        note(name, got, want, dict(priced_amps=round(priced, 6),
-                                   required_amps=req, why=why))
-    got, why = decide("STRANDED", real, floor, bar_source="RETURN_FRAGMENT_BAR")
-    note("stranded_refused_however_priced_on_a_return_net", got, False,
-         dict(why=why))
+    # -- the admission at that bar, D-709: PER PAD AND AT THE BOUNDARY ------ #
+    # Every probe below drives `decide_return`, which is the function the
+    # verdict calls, on figures this board actually produced.  `bat` is the
+    # D-708 fragment's own arithmetic: `C36.2` sits ON its barrel (5.282 A,
+    # 0.000 mm) and raises the bar to `BAT_MAIN`'s 3.125 A; `C5.2` reaches the
+    # pocket's only barrel through 0.95 mm of copper (2.295 A) and its own
+    # neighbour is `P3V3` at 1.0 A.
+    on_barrel = 5.282                 # a pad standing on its own through via
+    c5_2 = 2.295                      # 0.95 mm -- a 0603 land's own height
+    bat_parts = {"C36": "BAT", "C5": "RAIL3V3"}
+    bat_fp = {r: {"1": n, "2": "GND"} for r, n in bat_parts.items()}
+
+    def rbar(parts_map, refs):
+        return return_fragment_pad_bars("GND", "GND", refs, parts_map, ncl,
+                                        classes, table)
+
+    def rprice(paths, bond):
+        # mirrors `bond_price`: an unmeasurable pad makes the whole price None
+        vals = list(paths.values())
+        priced = (None if any(v is None for v in vals)
+                  else round(min([bond] + vals), 6))
+        return dict(priced_amps=priced, bond_amps_parallel=bond,
+                    internal=[dict(pad=k, amps=v)
+                              for k, v in sorted(paths.items())])
+
+    def rnote(name, verdict, paths, bond, parts_map, want, refs=None):
+        bars = rbar(parts_map, refs or sorted(paths))
+        got, why, detail = decide_return(verdict, rprice(paths, bond), bars)
+        note(name, got, want,
+             dict(why=why,
+                  per_pad=[dict(pad=p["pad"], bar_amps=p["bar_amps"],
+                                path_amps=p["path_amps"], ok=p["ok"])
+                           for p in (detail or {}).get("per_pad", [])],
+                  boundary=(detail or {}).get("boundary")))
+
+    # (1) THE D-708 FRAGMENT'S OWN SHAPE.  Refused by D-643 at 2.295 < 3.125,
+    #     admitted here because the 3.125 A pad's conductor is its own barrel.
+    rnote("the_battery_pad_on_its_own_barrel_does_not_condemn_its_neighbour",
+          "BONDED", {"C36.2": on_barrel, "C5.2": c5_2}, 14.348, bat_fp, True)
+    # (2) THE SAFETY PROPERTY, UNCHANGED.  Put the battery pad ON the thin
+    #     copper and the same fragment is REFUSED.
+    rnote("battery_pad_on_the_weak_path_is_REFUSED",
+          "BONDED", {"C36.2": c5_2, "C5.2": on_barrel}, 14.348, bat_fp, False)
+    # (3) THE FLOOR still binds a pad with no priced neighbour at all.
+    rnote("a_signal_pad_below_the_floor_is_refused", "BONDED",
+          {"C45.2": sliver}, 14.348, {"C45": {"1": "SIG", "2": "GND"}}, False)
+    rnote("a_signal_pad_at_the_floor_is_admitted", "BONDED",
+          {"C45.2": floor}, 14.348, {"C45": {"1": "SIG", "2": "GND"}}, True)
+    rnote("pad_bar_located_one_ppm_below", "BONDED",
+          {"C45.2": floor * (1 - 1e-6)}, 14.348,
+          {"C45": {"1": "SIG", "2": "GND"}}, False)
+    # (4) THE NEW TERM.  Five pads each comfortably above their OWN bar, and a
+    #     bond that cannot carry their sum -- admitted by D-643's MAXIMUM,
+    #     refused here.  This is the direction in which D-709 is STRICTER.
+    many = {"C%d.2" % i: on_barrel for i in range(60, 65)}
+    many_fp = {"C%d" % i: {"1": "RAIL3V3", "2": "GND"} for i in range(60, 65)}
+    rnote("the_boundary_sum_refuses_a_bond_every_pad_passes",
+          "BONDED", many, 3.0, many_fp, False)
+    rnote("the_same_pads_are_admitted_when_the_boundary_carries_the_sum",
+          "BONDED", many, 5.0, many_fp, True)
+    # (5) D-628's refusals, unmoved.
+    rnote("stranded_refused_however_priced_on_a_return_net",
+          "STRANDED", {"C36.2": on_barrel, "C5.2": on_barrel}, 14.348,
+          bat_fp, False)
+    rnote("an_unmeasurable_pad_refuses", "BONDED",
+          {"C36.2": on_barrel, "C5.2": None}, 14.348, bat_fp, False)
 
     return dict(ok=ok,
                 netclass_floor=dict(netclass="GND", track_width_mm=floor_w,
@@ -1011,12 +1185,27 @@ def compare(pre_path, post_path):
             # instead of nothing at all.  Every other net is untouched.
             req, prov = required, None
             if required is None and net in returns:
+                # D-709: the bar is resolved PER PAD and the admission is the
+                # per-pad one.  The aggregate figure is still computed and
+                # reported -- it is what a reader compares across decisions --
+                # but it is no longer what admits or refuses.
                 req, prov = return_fragment_bar(
                     net, cls, part["pads"], pads_by_footprint, netclass_of,
                     classes, table)
-            ok, why = decide(verdict, price["priced_amps"], req,
-                             bar_source=(None if prov is None else
-                                         "RETURN_FRAGMENT_BAR"))
+                seen = sorted(set(part["pads"])
+                              | {r["pad"] for r in price["internal"]})
+                pad_bars = return_fragment_pad_bars(
+                    net, cls, seen, pads_by_footprint, netclass_of,
+                    classes, table)
+                ok, why, detail = decide_return(verdict, price, pad_bars)
+                prov = dict(prov, per_pad=(detail or {}).get("per_pad"),
+                            boundary=(detail or {}).get("boundary"),
+                            note="D-709: the ADMISSION is the per-pad clause "
+                                 "below; `bar_amps` is the fragment-wide "
+                                 "MAXIMUM, reported for continuity")
+            else:
+                ok, why = decide(verdict, price["priced_amps"], req,
+                                 bar_source=None)
             admit = admit and ok
             neck = None
             if pre_isl is not None:
