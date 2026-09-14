@@ -94,10 +94,22 @@
   barrel, so that IS the nearest), trimming the `SYS` pour out of the `+3V3`
   decoupling pocket (no change — the `SYS` pour was not the pinch), and
   stripping `/ACC_3V3_EN` + `/ACC_POWER_FAULT_N` (WORSE — `C37.2` at 0.995 A
-  over 16.811 mm).  **The one thing that blocks a closer barrel is
-  `/ACC_POWER_FAULT_N`'s `In3.Cu` segment `(62.250,72.975) ->
-  (61.725,77.450)`, which passes 0.19 mm from every adjacent site against the
-  0.45 mm a 0.500 mm barrel needs** — re-route it and `r7` promotes.
+  over 16.811 mm).  ***AND THAT LAST GUESS WAS MEASURED AND IS WRONG:*** run **`r9`**
+  strips `/ACC_POWER_FAULT_N` WHOLE (so the pocket is empty when `--bond-pad`
+  runs, which is BEFORE the maze) and re-routes it — **37 -> 15,
+  `failed_nets []`, `nets_regressed []`, `refused_clauses []`, DRC the
+  inherited baseline, PP1-PP4 true against its own base,
+  `promotion_candidate` TRUE** — **and `C5.2`'s barrel lands at the SAME
+  `(61.125, 72.600)` and prices the SAME 2.295 A.**  Sampling the `B.Cu` `GND`
+  fill at 0.05 mm shows it is **continuous and 1.5-1.9 mm wide** from `C5.2` to
+  `R40.2`, so 4.383 mm is not a detour: `PP2` reports the **widest** path and
+  its 0.95 mm bottleneck is **`C5.2`'s own pad height**, which no pour widening
+  can beat.  **The remaining lever is a barrel about 2.3 mm of widest-path
+  distance from `C5.2` — roughly `(62.0, 73.5)`, inside the fill and clear of
+  both same-net pads — and `maze3d.bond_pads` takes the FIRST legal site, not
+  the one that minimises `PP2`'s own metric.  So the next step is a TOOL step:
+  let `--bond-pad` be told WHERE, or let its search rank sites by the fragment
+  price they buy.**
   ***AND `U11` IS REFUTED IN BOTH DIRECTIONS:*** run `b2` (`U11` -> the empty
   `B.Cu` under `SW9`) is 23 -> 22 with both pours regressed, and run `u6`
   (`U11` -> `(71.500, 77.800)` INSIDE the new area with `R36`/`R37`/`R38` at

@@ -76,6 +76,33 @@ a 0.500 mm barrel needs 0.45 mm.  Re-route that one segment and `--bond-pad
 C5.2` lands about 0.5 mm away and the fragment prices above 5 A.  **That is
 the only thing between run `r7` and a promotion.**
 
+## 2a. CORRECTION, MEASURED IN THIS SAME DECISION: §2's NAMED NEXT STEP IS WRONG
+
+§2 above says *"re-route that one `In3` segment and `--bond-pad C5.2` lands
+about 0.5 mm away"*.  **Run `r9` did exactly that and it is false.**
+`/ACC_POWER_FAULT_N` was stripped WHOLE from the base — so the pocket is empty
+when `--bond-pad` runs, and bonds run BEFORE the maze — and the maze then
+re-routed it.  The run is the cleanest finalist this decision produced:
+
+    r9   37 -> 15,  failed_nets [],  nets_regressed [],  refused_clauses [],
+         DRC {solder_mask_bridge: 1, lib_footprint_issues: 199}, PP1-PP4 true
+         against its own base, promotion_candidate TRUE
+
+**And `C5.2`'s barrel lands at the SAME `(61.125, 72.600)` and the fragment
+prices the SAME 2.295 A.**
+
+So the blocker is not an obstacle.  Sampling the `B.Cu` `GND` fill at 0.05 mm
+over `y 73.2 .. 74.4` shows it is **CONTINUOUS and 1.5–1.9 mm wide** all the way
+from `C5.2` to `R40.2`, so 4.383 mm is not a detour: `PP2` reports the **widest**
+path, and its 0.95 mm bottleneck is **`C5.2`'s own pad height**.  No pour
+widening can beat a bottleneck set by the pad.  The only lever left is a barrel
+about **2.3 mm of widest-path distance** from `C5.2` — roughly `(62.0, 73.5)`,
+which is inside the fill and clear of both `R40.2`'s and `C5.2`'s own pads —
+and `maze3d.bond_pads` takes the first legal site it finds, not the one that
+minimises `PP2`'s own metric.  **The next step is therefore a TOOL step:** let
+`--bond-pad` be told WHERE, or let its search rank sites by the fragment price
+they buy.
+
 ## 3. AND `U11` CANNOT MOVE AT ALL — IN ANY DIRECTION, INTO ANY AMOUNT OF AREA
 
 D-706 §7 named the `U11` relocation as the next transaction on the strength of

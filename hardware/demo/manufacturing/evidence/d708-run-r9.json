@@ -1,0 +1,3325 @@
+{
+  "attributable_drc": [],
+  "authoritative_board_sha256": "eca812476fbcc6277462ca4e37c0aaa9ee3562bcc5955ba32491b6522832b82c",
+  "authoritative_unchanged": true,
+  "base_board": "/home/aqroot8/aqroot-demo/w/d708/t6/aqroot-Beta-v2.kicad_pcb",
+  "base_board_sha256": "a3cf35981a376dec74879df3a226e45bcefd3ad70bb5f6305e820a8e67eb4aad",
+  "base_is_authority": false,
+  "bonds": {
+    "bonded": 4,
+    "detail": [
+      {
+        "bonded": 4,
+        "bonds": [
+          {
+            "layer": "F",
+            "mm": 0.8,
+            "ok": true,
+            "pad": "J8.1",
+            "via_xy": [
+              71.4,
+              78.7
+            ],
+            "via_xy_nm": [
+              71400000,
+              78700000
+            ]
+          },
+          {
+            "layer": "B",
+            "mm": 0.95,
+            "ok": true,
+            "pad": "C23.1",
+            "via_xy": [
+              63.525,
+              80.25
+            ],
+            "via_xy_nm": [
+              63525000,
+              80250000
+            ]
+          },
+          {
+            "layer": "B",
+            "mm": 0.054,
+            "ok": true,
+            "pad": "C63.2",
+            "via_xy": [
+              52.35,
+              59.825
+            ],
+            "via_xy_nm": [
+              52350000,
+              59825000
+            ]
+          },
+          {
+            "layer": "B",
+            "mm": 2.117,
+            "ok": true,
+            "pad": "C5.2",
+            "via_xy": [
+              61.125,
+              72.6
+            ],
+            "via_xy_nm": [
+              61125000,
+              72600000
+            ]
+          }
+        ],
+        "contract": {
+          "clr": 200000,
+          "clr_pad": 200000,
+          "layers": [
+            "F",
+            "B",
+            "I2"
+          ],
+          "netclass": "GND",
+          "via_dia": 500000,
+          "via_drill": 250000,
+          "width": 300000
+        },
+        "failures": [],
+        "mm": 3.921,
+        "net": "GND",
+        "ok": true,
+        "requested": 4,
+        "seconds": 8.6,
+        "via": [
+          500000,
+          250000
+        ],
+        "vias": 4
+      }
+    ],
+    "max_mm": 8.0,
+    "nets": [
+      "GND"
+    ],
+    "requested": [
+      "J8.1",
+      "C23.1",
+      "C63.2",
+      "C5.2"
+    ],
+    "via": [
+      500000,
+      250000
+    ]
+  },
+  "bridges": null,
+  "candidate_sha256": "903347021567141dea295680d199b67756ac69b230fcf919bbfcd9e5dc245726",
+  "connectivity": {
+    "nets_improved": [
+      "/01_POWER_TREE/ILIM_VSET",
+      "/01_POWER_TREE/USB_VBUS_CHG",
+      "/09_COMMUNITY_HEADER/EXT_SCL",
+      "/09_COMMUNITY_HEADER/EXT_SDA",
+      "/ACC_3V3_SW",
+      "/ACC_POWER_FAULT_N",
+      "/BQ25185_STAT1",
+      "GND"
+    ],
+    "nets_regressed": [],
+    "open_retained_nets_after": 10,
+    "open_retained_nets_before": 17,
+    "retained_open_edges_after": 15,
+    "retained_open_edges_before": 37
+  },
+  "detour": null,
+  "drc_exit": 0,
+  "drc_types": {
+    "lib_footprint_issues": 199,
+    "solder_mask_bridge": 1
+  },
+  "escape_relief": null,
+  "eviction": {
+    "closure_count": 0,
+    "corridor_layers": [
+      "B",
+      "F",
+      "I2"
+    ],
+    "corridors": {
+      "/01_POWER_TREE/ILIM_VSET": {
+        "area_mm2": 84.63,
+        "box_mm": [
+          65.6,
+          72.0,
+          75.675,
+          80.4
+        ]
+      },
+      "/01_POWER_TREE/ISET": {
+        "area_mm2": 73.552,
+        "box_mm": [
+          59.925,
+          74.5,
+          71.6,
+          80.8
+        ]
+      },
+      "/01_POWER_TREE/USB_VBUS_CHG": {
+        "area_mm2": 9871.677,
+        "box_mm": [
+          -1.7,
+          4.575,
+          71.6,
+          139.25
+        ]
+      },
+      "/09_COMMUNITY_HEADER/EXT_SCL": {
+        "area_mm2": 1549.801,
+        "box_mm": [
+          48.885,
+          17.16,
+          74.4,
+          77.9
+        ]
+      },
+      "/09_COMMUNITY_HEADER/EXT_SDA": {
+        "area_mm2": 1401.887,
+        "box_mm": [
+          52.895,
+          13.712,
+          74.4,
+          78.9
+        ]
+      },
+      "/ACC_3V3_SW": {
+        "area_mm2": 3036.106,
+        "box_mm": [
+          45.675,
+          12.08,
+          74.4,
+          117.776
+        ]
+      },
+      "/ACC_POWER_FAULT_N": {
+        "area_mm2": 716.347,
+        "box_mm": [
+          48.112,
+          40.95,
+          65.25,
+          82.75
+        ]
+      },
+      "/BQ25185_STAT1": {
+        "area_mm2": 786.099,
+        "box_mm": [
+          51.138,
+          75.2,
+          73.25,
+          110.75
+        ]
+      }
+    },
+    "dangling_unevictable": [],
+    "evicted_nets": [
+      "/01_POWER_TREE/ILIM_VSET",
+      "/01_POWER_TREE/ISET",
+      "/01_POWER_TREE/USB_VBUS_CHG",
+      "/BQ25185_STAT1"
+    ],
+    "margin_mm": 3.0,
+    "removed_by_net": {
+      "/01_POWER_TREE/ISET": 8,
+      "/01_POWER_TREE/USB_VBUS_CHG": 8
+    },
+    "removed_count": 16,
+    "removed_signatures": [
+      "('T', '/01_POWER_TREE/ISET', 2, (62900000, 78400000), (62925000, 77500000), 200000)",
+      "('T', '/01_POWER_TREE/ISET', 2, (62900000, 78400000), (63700000, 80900000), 200000)",
+      "('T', '/01_POWER_TREE/ISET', 2, (63700000, 80900000), (66100000, 82400000), 200000)",
+      "('T', '/01_POWER_TREE/ISET', 2, (66100000, 82400000), (69500000, 81100000), 200000)",
+      "('T', '/01_POWER_TREE/ISET', 2, (68600000, 77800000), (69400000, 77800000), 200000)",
+      "('T', '/01_POWER_TREE/ISET', 2, (69400000, 77800000), (70900000, 79400000), 200000)",
+      "('T', '/01_POWER_TREE/ISET', 2, (69500000, 81100000), (70200000, 81100000), 200000)",
+      "('T', '/01_POWER_TREE/ISET', 2, (70200000, 81100000), (70900000, 79400000), 200000)",
+      "('T', '/01_POWER_TREE/USB_VBUS_CHG', 2, (65150000, 79400000), (65250000, 79300000), 500000)",
+      "('T', '/01_POWER_TREE/USB_VBUS_CHG', 2, (65150000, 79400000), (66025000, 80250000), 500000)",
+      "('T', '/01_POWER_TREE/USB_VBUS_CHG', 2, (65250000, 79200000), (65250000, 79300000), 500000)",
+      "('T', '/01_POWER_TREE/USB_VBUS_CHG', 2, (66800000, 79446400), (68800000, 78946400), 500000)",
+      "('T', '/01_POWER_TREE/USB_VBUS_CHG', 2, (68600000, 78600000), (68800000, 78946400), 200000)",
+      "('T', '/01_POWER_TREE/USB_VBUS_CHG', 6, (65250000, 79200000), (66800000, 79425000), 500000)",
+      "('V', '/01_POWER_TREE/USB_VBUS_CHG', (65250000, 79200000), 900000, 400000)",
+      "('V', '/01_POWER_TREE/USB_VBUS_CHG', (66800000, 79446400), 900000, 400000)"
+    ],
+    "stated_window_mm": [
+      58.5,
+      70.0,
+      77.0,
+      85.5
+    ],
+    "whole_net": false
+  },
+  "exact_relay": [],
+  "failed_nets": [],
+  "gate_clauses": {
+    "attributable_drc": true,
+    "authority_unchanged": true,
+    "barrel_move_licensed": true,
+    "board_changed": true,
+    "board_improved": true,
+    "every_detour_relaid": true,
+    "inert_removal_priced": true,
+    "inherited_within_baseline": true,
+    "no_foreign_copper": true,
+    "no_open_relief_licence": true,
+    "no_regression": true,
+    "no_unlicensed_removal": true,
+    "pour_partition": true,
+    "rebond_priced": true,
+    "zones_and_rule_areas": true
+  },
+  "guard": {
+    "sha256": "a9b5819e8183e1d2c908b8a3f6977965801db603c6accce9c5877119faa2b399",
+    "spec": "/tmp/aq/npth_guard.json",
+    "tubes": 8
+  },
+  "inherited_within_baseline": true,
+  "island_joins": null,
+  "lattice": {
+    "any_too_coarse": false,
+    "any_unlaunchable": true,
+    "grid_nm": 25000,
+    "nets": {
+      "/01_POWER_TREE/ILIM_VSET": {
+        "binding_pad": "R36.1",
+        "grid_mm": 0.025,
+        "lands": 2,
+        "no_lattice_at_any_pitch": true,
+        "required_lattice_mm": 1.9333,
+        "too_coarse": false,
+        "unlaunchable_lands": [
+          "U11.7"
+        ],
+        "verdict": "EXACT"
+      },
+      "/01_POWER_TREE/ISET": {
+        "binding_pad": "R37.1",
+        "grid_mm": 0.025,
+        "lands": 2,
+        "no_lattice_at_any_pitch": true,
+        "required_lattice_mm": 1.516,
+        "too_coarse": false,
+        "unlaunchable_lands": [
+          "U11.8"
+        ],
+        "verdict": "EXACT"
+      },
+      "/01_POWER_TREE/USB_VBUS_CHG": {
+        "binding_pad": "U11.10",
+        "grid_mm": 0.025,
+        "lands": 11,
+        "no_lattice_at_any_pitch": false,
+        "required_lattice_mm": 0.2667,
+        "too_coarse": false,
+        "unlaunchable_lands": [],
+        "verdict": "CLEAR"
+      },
+      "/09_COMMUNITY_HEADER/EXT_SCL": {
+        "binding_pad": "D2.6",
+        "grid_mm": 0.025,
+        "lands": 5,
+        "no_lattice_at_any_pitch": false,
+        "required_lattice_mm": 0.4,
+        "too_coarse": false,
+        "unlaunchable_lands": [],
+        "verdict": "CLEAR"
+      },
+      "/09_COMMUNITY_HEADER/EXT_SDA": {
+        "binding_pad": "D2.4",
+        "grid_mm": 0.025,
+        "lands": 5,
+        "no_lattice_at_any_pitch": false,
+        "required_lattice_mm": 0.4,
+        "too_coarse": false,
+        "unlaunchable_lands": [],
+        "verdict": "CLEAR"
+      },
+      "/ACC_3V3_SW": {
+        "binding_pad": "U20.5",
+        "grid_mm": 0.025,
+        "lands": 15,
+        "no_lattice_at_any_pitch": false,
+        "required_lattice_mm": 0.2667,
+        "too_coarse": false,
+        "unlaunchable_lands": [],
+        "verdict": "CLEAR"
+      },
+      "/ACC_POWER_FAULT_N": {
+        "binding_pad": "U3.18",
+        "grid_mm": 0.025,
+        "lands": 6,
+        "no_lattice_at_any_pitch": false,
+        "required_lattice_mm": 0.2,
+        "too_coarse": false,
+        "unlaunchable_lands": [],
+        "verdict": "CLEAR"
+      },
+      "/BQ25185_STAT1": {
+        "binding_pad": "U2.9",
+        "grid_mm": 0.025,
+        "lands": 4,
+        "no_lattice_at_any_pitch": true,
+        "required_lattice_mm": 0.2,
+        "too_coarse": false,
+        "unlaunchable_lands": [
+          "U11.9"
+        ],
+        "verdict": "EXACT"
+      }
+    },
+    "schema": 1,
+    "tightest_required_mm": null
+  },
+  "pad_bridges": null,
+  "plane": null,
+  "plane_repair": {
+    "candidates": [],
+    "evicted_nets": [
+      "/01_POWER_TREE/ILIM_VSET",
+      "/01_POWER_TREE/ISET",
+      "/01_POWER_TREE/USB_VBUS_CHG",
+      "/BQ25185_STAT1"
+    ],
+    "join_max_mm": 8.0,
+    "pour_owning_nets": [
+      "+3V3",
+      "/01_POWER_TREE/BQ25185_SYS",
+      "GND"
+    ],
+    "regressed_before_repair": [],
+    "retained_open_edges_before_repair": 15
+  },
+  "pour_partition": {
+    "detail": {
+      "PP1": {
+        "newly_unresolved": [],
+        "ok": true,
+        "pours_post": 4,
+        "pours_pre": 4,
+        "unresolved_inherited": [
+          "/01_POWER_TREE/BQ25185_SYS C24.1",
+          "/01_POWER_TREE/BQ25185_SYS C26.2",
+          "/01_POWER_TREE/BQ25185_SYS C27.1",
+          "/01_POWER_TREE/BQ25185_SYS C28.1",
+          "/01_POWER_TREE/BQ25185_SYS C33.1",
+          "/01_POWER_TREE/BQ25185_SYS C33.1",
+          "/01_POWER_TREE/BQ25185_SYS C64.1",
+          "/01_POWER_TREE/BQ25185_SYS C64.1",
+          "/01_POWER_TREE/BQ25185_SYS L2.1",
+          "/01_POWER_TREE/BQ25185_SYS L2.1",
+          "/01_POWER_TREE/BQ25185_SYS L4.1",
+          "/01_POWER_TREE/BQ25185_SYS U11.1",
+          "/01_POWER_TREE/BQ25185_SYS U11.1",
+          "/01_POWER_TREE/BQ25185_SYS U12.1",
+          "/01_POWER_TREE/BQ25185_SYS U12.10",
+          "/01_POWER_TREE/BQ25185_SYS U12.11",
+          "/01_POWER_TREE/BQ25185_SYS U13.3",
+          "/01_POWER_TREE/BQ25185_SYS U13.3",
+          "/01_POWER_TREE/BQ25185_SYS U21.3",
+          "GND MK1.4"
+        ],
+        "unresolved_post": 20,
+        "unresolved_pre": 21
+      },
+      "PP2": {
+        "admitted": [
+          "GND|B|38685722-44ee-566f-b52b-89a56220a9e0",
+          "GND|B|38685722-44ee-566f-b52b-89a56220a9e0"
+        ],
+        "controls": {
+          "ok": true,
+          "probes": [
+            {
+              "behaved": true,
+              "control": "min_thickness_sliver_refused",
+              "expected": false,
+              "got": false,
+              "priced_amps": 0.742,
+              "required_amps": 1.0,
+              "verdict": "BONDED",
+              "why": "BOND_UNDER_PRICED"
+            },
+            {
+              "behaved": true,
+              "control": "one_class_width_track_refused",
+              "expected": false,
+              "got": false,
+              "priced_amps": 0.995,
+              "required_amps": 1.0,
+              "verdict": "BONDED",
+              "why": "BOND_UNDER_PRICED"
+            },
+            {
+              "behaved": true,
+              "control": "four_barrel_bond_admitted",
+              "expected": true,
+              "got": true,
+              "priced_amps": 9.244,
+              "required_amps": 1.0,
+              "verdict": "BONDED",
+              "why": "BOND_PRICED_AT_OR_ABOVE_THE_PUBLISHED_RAIL_CURRENT"
+            },
+            {
+              "behaved": true,
+              "control": "stranded_refused_however_priced",
+              "expected": false,
+              "got": false,
+              "priced_amps": 9.244,
+              "required_amps": 1.0,
+              "verdict": "STRANDED",
+              "why": "PP3_NOT_BONDED"
+            },
+            {
+              "behaved": true,
+              "control": "unpriced_net_refused",
+              "expected": false,
+              "got": false,
+              "priced_amps": 9.244,
+              "required_amps": null,
+              "verdict": "BONDED",
+              "why": "NET_CARRIES_NO_PUBLISHED_CURRENT"
+            },
+            {
+              "behaved": true,
+              "control": "bar_located_one_ppm_below",
+              "expected": false,
+              "got": false,
+              "priced_amps": 0.999999,
+              "required_amps": 1.0,
+              "verdict": "BONDED",
+              "why": "BOND_UNDER_PRICED"
+            },
+            {
+              "behaved": true,
+              "control": "bar_located_at_equality",
+              "expected": true,
+              "got": true,
+              "priced_amps": 1.0,
+              "required_amps": 1.0,
+              "verdict": "BONDED",
+              "why": "BOND_PRICED_AT_OR_ABOVE_THE_PUBLISHED_RAIL_CURRENT"
+            }
+          ],
+          "reference_amps": {
+            "four_0p400mm_barrels": 9.244,
+            "outer_track_0p300mm": 0.995,
+            "zone_min_thickness_0p200mm": 0.742
+          }
+        },
+        "islands": {
+          "+3V3|F|8c612136-d173-58bf-87cf-c0b97bedd2e0": [
+            33,
+            34
+          ],
+          "/01_POWER_TREE/BQ25185_SYS|B|4ad6fd49-a7ee-5f03-a8e4-f021f24e1091": [
+            1,
+            1
+          ],
+          "/01_POWER_TREE/BQ25185_SYS|B|da11f1b0-6501-5c41-b2b6-d6199a789ea9": [
+            6,
+            6
+          ],
+          "GND|B|38685722-44ee-566f-b52b-89a56220a9e0": [
+            67,
+            69
+          ]
+        },
+        "netclass_conductors": {
+          "ACC_3V3": {
+            "track_width_mm": 0.5,
+            "via_diameter_mm": 0.8,
+            "via_drill_mm": 0.4
+          },
+          "ACC_5V": {
+            "track_width_mm": 0.6,
+            "via_diameter_mm": 0.8,
+            "via_drill_mm": 0.4
+          },
+          "BAT_MAIN": {
+            "track_width_mm": 1.0,
+            "via_diameter_mm": 0.8,
+            "via_drill_mm": 0.4
+          },
+          "Default": {
+            "track_width_mm": 0.2,
+            "via_diameter_mm": 0.6,
+            "via_drill_mm": 0.3
+          },
+          "GND": {
+            "track_width_mm": 0.3,
+            "via_diameter_mm": 0.6,
+            "via_drill_mm": 0.3
+          },
+          "I2C": {
+            "track_width_mm": 0.2,
+            "via_diameter_mm": 0.6,
+            "via_drill_mm": 0.3
+          },
+          "I2S": {
+            "track_width_mm": 0.2,
+            "via_diameter_mm": 0.6,
+            "via_drill_mm": 0.3
+          },
+          "LED_BOOST": {
+            "track_width_mm": 0.3,
+            "via_diameter_mm": 0.6,
+            "via_drill_mm": 0.3
+          },
+          "NFC_5V_PA": {
+            "track_width_mm": 0.6,
+            "via_diameter_mm": 0.8,
+            "via_drill_mm": 0.4
+          },
+          "NFC_OSC": {
+            "track_width_mm": 0.2,
+            "via_diameter_mm": 0.6,
+            "via_drill_mm": 0.3
+          },
+          "NFC_RF": {
+            "track_width_mm": 0.4,
+            "via_diameter_mm": 0.8,
+            "via_drill_mm": 0.4
+          },
+          "NFC_RX": {
+            "track_width_mm": 0.2,
+            "via_diameter_mm": 0.6,
+            "via_drill_mm": 0.3
+          },
+          "P3V3": {
+            "track_width_mm": 0.6,
+            "via_diameter_mm": 0.8,
+            "via_drill_mm": 0.4
+          },
+          "SPK_OUT": {
+            "track_width_mm": 0.3,
+            "via_diameter_mm": 0.6,
+            "via_drill_mm": 0.3
+          },
+          "SWITCH_NODE": {
+            "track_width_mm": 0.6,
+            "via_diameter_mm": 0.8,
+            "via_drill_mm": 0.4
+          },
+          "SYS_MAIN": {
+            "track_width_mm": 0.8,
+            "via_diameter_mm": 0.8,
+            "via_drill_mm": 0.4
+          },
+          "USB_D": {
+            "track_width_mm": 0.25,
+            "via_diameter_mm": 0.55,
+            "via_drill_mm": 0.25
+          },
+          "VBUS_CHG": {
+            "track_width_mm": 0.5,
+            "via_diameter_mm": 0.8,
+            "via_drill_mm": 0.4
+          }
+        },
+        "netclass_source": {
+          "classes": [
+            "ACC_3V3",
+            "ACC_5V",
+            "BAT_MAIN",
+            "Default",
+            "GND",
+            "I2C",
+            "I2S",
+            "LED_BOOST",
+            "NFC_5V_PA",
+            "NFC_OSC",
+            "NFC_RF",
+            "NFC_RX",
+            "P3V3",
+            "SPK_OUT",
+            "SWITCH_NODE",
+            "SYS_MAIN",
+            "USB_D",
+            "VBUS_CHG"
+          ],
+          "found": true,
+          "sha256": "e5af7cdf0a05f0c0778099c21aea9bb6cbbbe92e89fb5f79e11f0907ad5c52f1",
+          "source": "../../../w/d708/r9/aqroot-Beta-v2.kicad_pro"
+        },
+        "ok": true,
+        "priced": [
+          {
+            "admit": true,
+            "body": {
+              "area_mm2": 14.78,
+              "exempt": true,
+              "pads": [
+                "C36.2",
+                "C5.2",
+                "C7.2",
+                "R37.2",
+                "R40.2"
+              ],
+              "post_island": 39,
+              "why": null
+            },
+            "fragments": [
+              {
+                "admit": true,
+                "area_mm2": 2.364,
+                "margin_x": 1.552,
+                "pads": [
+                  "C23.1"
+                ],
+                "post_island": 36,
+                "pp3_verdict": "BONDED",
+                "price": {
+                  "barrels": [
+                    {
+                      "amps": 1.902,
+                      "drill_mm": 0.3,
+                      "wall_mm2": 0.025525,
+                      "xy_mm": [
+                        65.8,
+                        81.3
+                      ]
+                    },
+                    {
+                      "amps": 1.685,
+                      "drill_mm": 0.25,
+                      "wall_mm2": 0.021598,
+                      "xy_mm": [
+                        63.525,
+                        80.25
+                      ]
+                    }
+                  ],
+                  "barrels_into_plane": 2,
+                  "barrels_without_drill": [],
+                  "bond_amps_parallel": 3.587,
+                  "bottleneck": "FRAGMENT_COPPER",
+                  "dT_K": 10.0,
+                  "internal": [
+                    {
+                      "amps": 1.544,
+                      "mm": 0.371,
+                      "mohm": 0.334,
+                      "pad": "C23.1",
+                      "width_mm": 0.55
+                    }
+                  ],
+                  "internal_min_amps": 1.544,
+                  "internal_min_width_mm": 0.55,
+                  "priced_amps": 1.544,
+                  "unmeasurable_pads": []
+                },
+                "required_amps": 0.995,
+                "return_fragment_bar": {
+                  "bar_amps": 0.995,
+                  "bar_from": "RETURN_FLOOR_ONE_NETCLASS_TRACK",
+                  "floor": {
+                    "amps": 0.995,
+                    "dT_K": 10.0,
+                    "netclass": "GND",
+                    "note": "one track of the net's OWN netclass width at this board's copper -- what the board publishes as an adequate conductor for this net",
+                    "track_width_mm": 0.3
+                  },
+                  "limits": "a neighbour on a class section 5 does not price contributes nothing; the MAXIMUM neighbour is charged, not the sum",
+                  "neighbour_max_amps": 0.5,
+                  "neighbour_rails": [
+                    {
+                      "gnd_pad": "C23.1",
+                      "other_net": "/01_POWER_TREE/USB_VBUS_CHG",
+                      "other_netclass": "VBUS_CHG",
+                      "other_pad": "2",
+                      "part": "C23",
+                      "published_amps": 0.5
+                    }
+                  ]
+                },
+                "severed_neck": {
+                  "amps": 1.335,
+                  "note": "the narrowest place on the widest PRE path from the fragment's pads to the body's; under-stated by a geodesic that reaches its own search window, which is why it is published and not charged",
+                  "probes": [
+                    {
+                      "body_pad": "C36.2",
+                      "frag_pad": "C23.1",
+                      "mm": 3.941,
+                      "width_mm": 0.45
+                    },
+                    {
+                      "body_pad": "R37.2",
+                      "frag_pad": "C23.1",
+                      "mm": 2.086,
+                      "width_mm": 0.45
+                    }
+                  ],
+                  "width_mm": 0.45
+                },
+                "why": "BOND_PRICED_AT_OR_ABOVE_RETURN_FRAGMENT_BAR"
+              }
+            ],
+            "layer": "B.Cu",
+            "net": "GND",
+            "netclass": "GND",
+            "pour": "GND|B|38685722-44ee-566f-b52b-89a56220a9e0",
+            "pre_area_mm2": 22.526,
+            "pre_island": 36,
+            "published_amps": null,
+            "published_figures": null
+          },
+          {
+            "admit": true,
+            "body": {
+              "area_mm2": 2269.882,
+              "exempt": true,
+              "pads": [
+                "C16.2",
+                "C17.2",
+                "C18.2",
+                "C34.1",
+                "C35.2",
+                "C46.2",
+                "C48.2",
+                "C49.2",
+                "C50.2",
+                "C52.2",
+                "C54.2",
+                "C55.2",
+                "C58.2",
+                "C79.2",
+                "C80.2",
+                "D9.2",
+                "J5.19",
+                "J5.2",
+                "J5.6",
+                "Q9.2",
+                "R101.2",
+                "R14.2",
+                "R45.2",
+                "R83.2",
+                "R92.2",
+                "U13.4",
+                "U6.2",
+                "U9.12",
+                "U9.20",
+                "U9.21",
+                "U9.26",
+                "U9.33",
+                "U9.6",
+                "Y1.2",
+                "Y1.4"
+              ],
+              "post_island": 37,
+              "why": null
+            },
+            "fragments": [
+              {
+                "admit": true,
+                "area_mm2": 80.767,
+                "margin_x": 1.743,
+                "pads": [
+                  "C19.2",
+                  "C66.2",
+                  "C78.2"
+                ],
+                "post_island": 56,
+                "pp3_verdict": "BONDED",
+                "price": {
+                  "barrels": [
+                    {
+                      "amps": 1.685,
+                      "drill_mm": 0.25,
+                      "wall_mm2": 0.021598,
+                      "xy_mm": [
+                        57.6,
+                        29.1
+                      ]
+                    },
+                    {
+                      "amps": 1.902,
+                      "drill_mm": 0.3,
+                      "wall_mm2": 0.025525,
+                      "xy_mm": [
+                        43.7,
+                        38.3
+                      ]
+                    },
+                    {
+                      "amps": 1.902,
+                      "drill_mm": 0.3,
+                      "wall_mm2": 0.025525,
+                      "xy_mm": [
+                        54.4,
+                        33.7
+                      ]
+                    },
+                    {
+                      "amps": 1.902,
+                      "drill_mm": 0.3,
+                      "wall_mm2": 0.025525,
+                      "xy_mm": [
+                        51.2,
+                        34.3
+                      ]
+                    }
+                  ],
+                  "barrels_into_plane": 4,
+                  "barrels_without_drill": [],
+                  "bond_amps_parallel": 7.391,
+                  "bottleneck": "FRAGMENT_COPPER",
+                  "dT_K": 10.0,
+                  "internal": [
+                    {
+                      "amps": 2.881,
+                      "mm": 6.787,
+                      "mohm": 2.586,
+                      "pad": "C66.2",
+                      "width_mm": 1.3
+                    },
+                    {
+                      "amps": 3.573,
+                      "mm": 0.402,
+                      "mohm": 0.114,
+                      "pad": "C78.2",
+                      "width_mm": 1.75
+                    },
+                    {
+                      "amps": 1.743,
+                      "mm": 0.474,
+                      "mohm": 0.361,
+                      "pad": "C19.2",
+                      "width_mm": 0.65
+                    }
+                  ],
+                  "internal_min_amps": 1.743,
+                  "internal_min_width_mm": 0.65,
+                  "priced_amps": 1.743,
+                  "unmeasurable_pads": []
+                },
+                "required_amps": 1.0,
+                "return_fragment_bar": {
+                  "bar_amps": 1.0,
+                  "bar_from": "RETURN_NEIGHBOUR_RAIL",
+                  "floor": {
+                    "amps": 0.995,
+                    "dT_K": 10.0,
+                    "netclass": "GND",
+                    "note": "one track of the net's OWN netclass width at this board's copper -- what the board publishes as an adequate conductor for this net",
+                    "track_width_mm": 0.3
+                  },
+                  "limits": "a neighbour on a class section 5 does not price contributes nothing; the MAXIMUM neighbour is charged, not the sum",
+                  "neighbour_max_amps": 1.0,
+                  "neighbour_rails": [
+                    {
+                      "gnd_pad": "C19.2",
+                      "other_net": "/NFC_SUPPLY",
+                      "other_netclass": "P3V3",
+                      "other_pad": "1",
+                      "part": "C19",
+                      "published_amps": 1.0
+                    },
+                    {
+                      "gnd_pad": "C66.2",
+                      "other_net": "/01_POWER_TREE/ACC_5V_RAW",
+                      "other_netclass": "ACC_5V",
+                      "other_pad": "1",
+                      "part": "C66",
+                      "published_amps": 0.7
+                    }
+                  ]
+                },
+                "severed_neck": {
+                  "amps": 0.742,
+                  "note": "the narrowest place on the widest PRE path from the fragment's pads to the body's; under-stated by a geodesic that reaches its own search window, which is why it is published and not charged",
+                  "probes": [
+                    {
+                      "body_pad": "J5.2",
+                      "frag_pad": "C66.2",
+                      "mm": 26.256,
+                      "width_mm": 0.2
+                    },
+                    {
+                      "body_pad": "J5.6",
+                      "frag_pad": "C66.2",
+                      "mm": 20.825,
+                      "width_mm": 0.2
+                    },
+                    {
+                      "body_pad": "J5.2",
+                      "frag_pad": "C78.2",
+                      "mm": 32.5,
+                      "width_mm": 0.2
+                    },
+                    {
+                      "body_pad": "J5.6",
+                      "frag_pad": "C78.2",
+                      "mm": 27.048,
+                      "width_mm": 0.2
+                    },
+                    {
+                      "body_pad": "J5.2",
+                      "frag_pad": "C19.2",
+                      "mm": 40.346,
+                      "width_mm": 0.2
+                    },
+                    {
+                      "body_pad": "J5.6",
+                      "frag_pad": "C19.2",
+                      "mm": 34.895,
+                      "width_mm": 0.2
+                    }
+                  ],
+                  "width_mm": 0.2
+                },
+                "why": "BOND_PRICED_AT_OR_ABOVE_RETURN_FRAGMENT_BAR"
+              }
+            ],
+            "layer": "B.Cu",
+            "net": "GND",
+            "netclass": "GND",
+            "pour": "GND|B|38685722-44ee-566f-b52b-89a56220a9e0",
+            "pre_area_mm2": 2375.439,
+            "pre_island": 37,
+            "published_amps": null,
+            "published_figures": null
+          }
+        ],
+        "published_rail_currents": {
+          "ACC_3V3": 0.76,
+          "ACC_5V": 0.7,
+          "BAT_MAIN": 3.125,
+          "LED_BOOST": 0.09,
+          "NFC_5V_PA_PENDING": 0.5,
+          "P3V3": 1.0,
+          "SPK_OUT": 0.41,
+          "SYS_MAIN": 2.19,
+          "VBUS_CHG": 0.5
+        },
+        "published_table_source": {
+          "classes": [
+            "ACC_3V3",
+            "ACC_5V",
+            "BAT_MAIN",
+            "LED_BOOST",
+            "NFC_5V_PA_PENDING",
+            "P3V3",
+            "SPK_OUT",
+            "SYS_MAIN",
+            "VBUS_CHG"
+          ],
+          "found": true,
+          "sha256": "150ad37b6f13a3bdf4bea5278e71b09bc780b0a21d74b6ecf896d4a8aba80451",
+          "source": "../../../w/d708/r9/aqroot-Beta-v2.kicad_dru"
+        },
+        "refused": [],
+        "return_controls": {
+          "netclass_floor": {
+            "amps": 0.995,
+            "dT_K": 10.0,
+            "netclass": "GND",
+            "track_width_mm": 0.3
+          },
+          "ok": true,
+          "probes": [
+            {
+              "bar_from": "RETURN_FLOOR_ONE_NETCLASS_TRACK",
+              "behaved": true,
+              "control": "unpriced_neighbours_fall_to_the_floor",
+              "expected": 0.995,
+              "floor_amps": 0.995,
+              "got": 0.995,
+              "track_width_mm": 0.3
+            },
+            {
+              "bar_from": "RETURN_NEIGHBOUR_RAIL",
+              "behaved": true,
+              "control": "battery_neighbour_raises_the_bar",
+              "expected": 3.125,
+              "got": 3.125,
+              "neighbour": [
+                "BAT_MAIN"
+              ]
+            },
+            {
+              "behaved": true,
+              "control": "priced_neighbour_below_the_floor_does_not_lower_it",
+              "expected": 1.0,
+              "got": 1.0
+            },
+            {
+              "behaved": true,
+              "control": "the_largest_neighbour_is_the_one_charged",
+              "expected": 3.125,
+              "got": 3.125,
+              "n_neighbours": 2
+            },
+            {
+              "behaved": true,
+              "control": "a_net_with_no_netclass_conductor_has_no_floor",
+              "expected": null,
+              "got": null
+            },
+            {
+              "behaved": true,
+              "control": "zone_min_thickness_sliver_refused_at_the_floor",
+              "expected": false,
+              "got": false,
+              "priced_amps": 0.742,
+              "required_amps": 0.995,
+              "why": "BOND_UNDER_PRICED"
+            },
+            {
+              "behaved": true,
+              "control": "the_d619_fragment_is_admitted_at_the_floor",
+              "expected": true,
+              "got": true,
+              "priced_amps": 2.552,
+              "required_amps": 0.995,
+              "why": "BOND_PRICED_AT_OR_ABOVE_RETURN_FRAGMENT_BAR"
+            },
+            {
+              "behaved": true,
+              "control": "the_same_fragment_is_REFUSED_beside_the_battery",
+              "expected": false,
+              "got": false,
+              "priced_amps": 2.552,
+              "required_amps": 3.125,
+              "why": "BOND_UNDER_PRICED"
+            },
+            {
+              "behaved": true,
+              "control": "floor_located_one_ppm_below",
+              "expected": false,
+              "got": false,
+              "priced_amps": 0.994999,
+              "required_amps": 0.995,
+              "why": "BOND_UNDER_PRICED"
+            },
+            {
+              "behaved": true,
+              "control": "floor_located_at_equality",
+              "expected": true,
+              "got": true,
+              "priced_amps": 0.995,
+              "required_amps": 0.995,
+              "why": "BOND_PRICED_AT_OR_ABOVE_RETURN_FRAGMENT_BAR"
+            },
+            {
+              "behaved": true,
+              "control": "stranded_refused_however_priced_on_a_return_net",
+              "expected": false,
+              "got": false,
+              "why": "PP3_NOT_BONDED"
+            }
+          ],
+          "reference_amps": {
+            "d619_real_fragment": 2.552,
+            "zone_min_thickness_0p200mm": 0.742
+          }
+        },
+        "return_nets": {
+          "GND": {
+            "netclass": "GND",
+            "plane_area_mm2": 19037.034,
+            "reserved_layers": [
+              "I1",
+              "I4"
+            ]
+          }
+        },
+        "splits": [
+          {
+            "layer": "B.Cu",
+            "net": "GND",
+            "parts": [
+              {
+                "area_mm2": 2.364,
+                "body": false,
+                "pads": [
+                  "C23.1"
+                ],
+                "post_island": 36
+              },
+              {
+                "area_mm2": 14.78,
+                "body": true,
+                "pads": [
+                  "C36.2",
+                  "C5.2",
+                  "C7.2",
+                  "R37.2",
+                  "R40.2"
+                ],
+                "post_island": 39
+              }
+            ],
+            "pour": "GND|B|38685722-44ee-566f-b52b-89a56220a9e0",
+            "pre_area_mm2": 22.526,
+            "pre_island": 36,
+            "pre_pads": 6
+          },
+          {
+            "layer": "B.Cu",
+            "net": "GND",
+            "parts": [
+              {
+                "area_mm2": 2269.882,
+                "body": true,
+                "pads": [
+                  "C16.2",
+                  "C17.2",
+                  "C18.2",
+                  "C34.1",
+                  "C35.2",
+                  "C46.2",
+                  "C48.2",
+                  "C49.2",
+                  "C50.2",
+                  "C52.2",
+                  "C54.2",
+                  "C55.2",
+                  "C58.2",
+                  "C79.2",
+                  "C80.2",
+                  "D9.2",
+                  "J5.19",
+                  "J5.2",
+                  "J5.6",
+                  "Q9.2",
+                  "R101.2",
+                  "R14.2",
+                  "R45.2",
+                  "R83.2",
+                  "R92.2",
+                  "U13.4",
+                  "U6.2",
+                  "U9.12",
+                  "U9.20",
+                  "U9.21",
+                  "U9.26",
+                  "U9.33",
+                  "U9.6",
+                  "Y1.2",
+                  "Y1.4"
+                ],
+                "post_island": 37
+              },
+              {
+                "area_mm2": 80.767,
+                "body": false,
+                "pads": [
+                  "C19.2",
+                  "C66.2",
+                  "C78.2"
+                ],
+                "post_island": 56
+              }
+            ],
+            "pour": "GND|B|38685722-44ee-566f-b52b-89a56220a9e0",
+            "pre_area_mm2": 2375.439,
+            "pre_island": 37,
+            "pre_pads": 38
+          }
+        ]
+      },
+      "PP3": {
+        "fragments": [
+          {
+            "area_mm2": 2.364,
+            "barrels": 2,
+            "barrels_into_reserved_planes": 2,
+            "detail": [
+              {
+                "planes": [
+                  {
+                    "area_mm2": 9518.517,
+                    "layer": "In1.Cu",
+                    "zone": "In1 GND REFERENCE"
+                  },
+                  {
+                    "area_mm2": 9518.517,
+                    "layer": "In4.Cu",
+                    "zone": "In1 GND REFERENCE_1"
+                  }
+                ],
+                "xy_mm": [
+                  65.8,
+                  81.3
+                ]
+              },
+              {
+                "planes": [
+                  {
+                    "area_mm2": 9518.517,
+                    "layer": "In1.Cu",
+                    "zone": "In1 GND REFERENCE"
+                  },
+                  {
+                    "area_mm2": 9518.517,
+                    "layer": "In4.Cu",
+                    "zone": "In1 GND REFERENCE_1"
+                  }
+                ],
+                "xy_mm": [
+                  63.525,
+                  80.25
+                ]
+              }
+            ],
+            "layer": "B.Cu",
+            "net": "GND",
+            "pads": [
+              "C23.1"
+            ],
+            "post_island": 36,
+            "pour": "GND|B|38685722-44ee-566f-b52b-89a56220a9e0",
+            "unbonded_body": false,
+            "verdict": "BONDED"
+          },
+          {
+            "area_mm2": 80.767,
+            "barrels": 4,
+            "barrels_into_reserved_planes": 4,
+            "detail": [
+              {
+                "planes": [
+                  {
+                    "area_mm2": 9518.517,
+                    "layer": "In1.Cu",
+                    "zone": "In1 GND REFERENCE"
+                  },
+                  {
+                    "area_mm2": 9518.517,
+                    "layer": "In4.Cu",
+                    "zone": "In1 GND REFERENCE_1"
+                  }
+                ],
+                "xy_mm": [
+                  57.6,
+                  29.1
+                ]
+              },
+              {
+                "planes": [
+                  {
+                    "area_mm2": 9518.517,
+                    "layer": "In1.Cu",
+                    "zone": "In1 GND REFERENCE"
+                  },
+                  {
+                    "area_mm2": 9518.517,
+                    "layer": "In4.Cu",
+                    "zone": "In1 GND REFERENCE_1"
+                  }
+                ],
+                "xy_mm": [
+                  43.7,
+                  38.3
+                ]
+              },
+              {
+                "planes": [
+                  {
+                    "area_mm2": 9518.517,
+                    "layer": "In1.Cu",
+                    "zone": "In1 GND REFERENCE"
+                  },
+                  {
+                    "area_mm2": 9518.517,
+                    "layer": "In4.Cu",
+                    "zone": "In1 GND REFERENCE_1"
+                  }
+                ],
+                "xy_mm": [
+                  54.4,
+                  33.7
+                ]
+              },
+              {
+                "planes": [
+                  {
+                    "area_mm2": 9518.517,
+                    "layer": "In1.Cu",
+                    "zone": "In1 GND REFERENCE"
+                  },
+                  {
+                    "area_mm2": 9518.517,
+                    "layer": "In4.Cu",
+                    "zone": "In1 GND REFERENCE_1"
+                  }
+                ],
+                "xy_mm": [
+                  51.2,
+                  34.3
+                ]
+              }
+            ],
+            "layer": "B.Cu",
+            "net": "GND",
+            "pads": [
+              "C19.2",
+              "C66.2",
+              "C78.2"
+            ],
+            "post_island": 56,
+            "pour": "GND|B|38685722-44ee-566f-b52b-89a56220a9e0",
+            "unbonded_body": false,
+            "verdict": "BONDED"
+          }
+        ],
+        "ok": true,
+        "reserved_inner_planes": {
+          "I1": [
+            "GND"
+          ],
+          "I3": [
+            "+3V3"
+          ],
+          "I4": [
+            "GND"
+          ]
+        }
+      },
+      "PP4": {
+        "condemned_fragments_skipped": [],
+        "ok": true,
+        "probes": [
+          {
+            "flips": true,
+            "pads": [
+              "C23.1"
+            ],
+            "post_island": 36,
+            "pour": "GND|B|38685722-44ee-566f-b52b-89a56220a9e0",
+            "with_barrels": "BONDED",
+            "without_barrels": "STRANDED"
+          },
+          {
+            "flips": true,
+            "pads": [
+              "C19.2",
+              "C66.2",
+              "C78.2"
+            ],
+            "post_island": 56,
+            "pour": "GND|B|38685722-44ee-566f-b52b-89a56220a9e0",
+            "with_barrels": "BONDED",
+            "without_barrels": "STRANDED"
+          }
+        ]
+      }
+    },
+    "failed_clauses": [],
+    "ok": true,
+    "pre_board": "/home/aqroot8/aqroot-demo/w/d708/t6/aqroot-Beta-v2.kicad_pcb",
+    "report": "../../../w/d708/r9/pour-partition.json",
+    "results": {
+      "PP1": true,
+      "PP2": true,
+      "PP3": true,
+      "PP4": true
+    }
+  },
+  "preservation": {
+    "added_object_nets": [
+      "/01_POWER_TREE/ILIM_VSET",
+      "/01_POWER_TREE/ISET",
+      "/01_POWER_TREE/USB_VBUS_CHG",
+      "/09_COMMUNITY_HEADER/EXT_SCL",
+      "/09_COMMUNITY_HEADER/EXT_SDA",
+      "/ACC_3V3_SW",
+      "/ACC_POWER_FAULT_N",
+      "/BQ25185_STAT1",
+      "GND"
+    ],
+    "foreign_added_nets": [],
+    "licensed_removals": 16,
+    "removed_objects": [
+      "('T', '/01_POWER_TREE/ISET', 2, (62900000, 78400000), (62925000, 77500000), 200000)",
+      "('T', '/01_POWER_TREE/ISET', 2, (62900000, 78400000), (63700000, 80900000), 200000)",
+      "('T', '/01_POWER_TREE/ISET', 2, (63700000, 80900000), (66100000, 82400000), 200000)",
+      "('T', '/01_POWER_TREE/ISET', 2, (66100000, 82400000), (69500000, 81100000), 200000)",
+      "('T', '/01_POWER_TREE/ISET', 2, (68600000, 77800000), (69400000, 77800000), 200000)",
+      "('T', '/01_POWER_TREE/ISET', 2, (69400000, 77800000), (70900000, 79400000), 200000)",
+      "('T', '/01_POWER_TREE/ISET', 2, (69500000, 81100000), (70200000, 81100000), 200000)",
+      "('T', '/01_POWER_TREE/ISET', 2, (70200000, 81100000), (70900000, 79400000), 200000)",
+      "('T', '/01_POWER_TREE/USB_VBUS_CHG', 2, (65150000, 79400000), (65250000, 79300000), 500000)",
+      "('T', '/01_POWER_TREE/USB_VBUS_CHG', 2, (65150000, 79400000), (66025000, 80250000), 500000)",
+      "('T', '/01_POWER_TREE/USB_VBUS_CHG', 2, (65250000, 79200000), (65250000, 79300000), 500000)",
+      "('T', '/01_POWER_TREE/USB_VBUS_CHG', 2, (66800000, 79446400), (68800000, 78946400), 500000)",
+      "('T', '/01_POWER_TREE/USB_VBUS_CHG', 2, (68600000, 78600000), (68800000, 78946400), 200000)",
+      "('T', '/01_POWER_TREE/USB_VBUS_CHG', 6, (65250000, 79200000), (66800000, 79425000), 500000)",
+      "('V', '/01_POWER_TREE/USB_VBUS_CHG', (65250000, 79200000), 900000, 400000)",
+      "('V', '/01_POWER_TREE/USB_VBUS_CHG', (66800000, 79446400), 900000, 400000)"
+    ],
+    "reverted_failures_clean": true,
+    "rule_area_inventory_ok": true,
+    "rule_areas_added": [],
+    "rule_areas_removed": [],
+    "unlicensed_removals": [],
+    "zone_inventory_ok": true,
+    "zones_added": [],
+    "zones_removed": []
+  },
+  "promotion_candidate": true,
+  "refused_clauses": [],
+  "requested_nets": [
+    "/BQ25185_STAT1",
+    "/01_POWER_TREE/ILIM_VSET",
+    "/01_POWER_TREE/USB_VBUS_CHG",
+    "/01_POWER_TREE/ISET",
+    "/ACC_POWER_FAULT_N",
+    "/ACC_3V3_SW",
+    "/09_COMMUNITY_HEADER/EXT_SDA",
+    "/09_COMMUNITY_HEADER/EXT_SCL"
+  ],
+  "routed": [
+    {
+      "closed": 1,
+      "contract": {
+        "clr": 200000,
+        "clr_pad": 200000,
+        "escape_floor": 150000,
+        "guarded_layers": {
+          "B": 2,
+          "F": 2,
+          "I2": 2,
+          "I3": 2
+        },
+        "layers": [
+          "F",
+          "B",
+          "I2"
+        ],
+        "netclass": "Default",
+        "reserved_inner_planes": {
+          "I1": [
+            "GND"
+          ],
+          "I3": [
+            "+3V3"
+          ],
+          "I4": [
+            "GND"
+          ]
+        },
+        "trunk_floor": {
+          "admitted": true,
+          "amps": 0.602,
+          "floor_nm": 150000,
+          "floor_source": "D-690 BQ25185_STAT1 charge-status signal - width floor",
+          "from_nm": 200000,
+          "netclass": "Default",
+          "required_amps": null,
+          "to_nm": 150000,
+          "why": "PUBLISHED_PER_NET_IN_THE_KICAD_DRU"
+        },
+        "via_dia": 500000,
+        "via_drill": 250000,
+        "width": 150000
+      },
+      "failures": [
+        {
+          "a": [
+            "U11.9"
+          ],
+          "b": [
+            "U2.9"
+          ],
+          "dst_escapes": 4,
+          "gap_mm": 16.613,
+          "reason": "NO_PATH",
+          "src_escapes": 3,
+          "why": "no all-layer corridor at 0.150 mm between the islands"
+        },
+        {
+          "a": [
+            "U11.9",
+            "R127.2",
+            "TP6.1"
+          ],
+          "b": [
+            "U2.9"
+          ],
+          "dst_escapes": 4,
+          "gap_mm": 18.517,
+          "reason": "NO_PATH",
+          "src_escapes": 14,
+          "why": "no all-layer corridor at 0.150 mm between the islands"
+        }
+      ],
+      "islands": 3,
+      "joins": [
+        {
+          "from": "TP6.1",
+          "layers": [
+            "B",
+            "F",
+            "B"
+          ],
+          "mm": 27.03588885197635,
+          "to": "U11.9",
+          "via_xy": [
+            [
+              70.625,
+              97.9
+            ],
+            [
+              71.2,
+              80.0
+            ]
+          ],
+          "vias": 2
+        }
+      ],
+      "mm": 27.036,
+      "mode": "maze+partial+tapfirst",
+      "mode_partial": true,
+      "net": "/BQ25185_STAT1",
+      "ok": true,
+      "remaining": 1,
+      "seconds": 288.4,
+      "tap": {
+        "asked": 0,
+        "declined": [
+          {
+            "at": [
+              70.25,
+              95.5
+            ],
+            "gap_mm": 17.3785,
+            "island": 1,
+            "land": "U11.9",
+            "layer": "B",
+            "reason": "TOO_FAR",
+            "target": "B 70.250,95.500-69.600,96.600",
+            "target_island": 0,
+            "why": "17.379 mm gap exceeds the 4.0 mm tap bound; NEVER ASKED"
+          },
+          {
+            "at": [
+              69.6,
+              96.6
+            ],
+            "gap_mm": 18.4272,
+            "island": 1,
+            "land": "U11.9",
+            "layer": "B",
+            "reason": "TOO_FAR",
+            "target": "B 70.400,97.400-69.600,96.600",
+            "target_island": 0,
+            "why": "18.427 mm gap exceeds the 4.0 mm tap bound; NEVER ASKED"
+          },
+          {
+            "at": [
+              70.0766,
+              95.7935
+            ],
+            "gap_mm": 18.5138,
+            "island": 2,
+            "land": "U2.9",
+            "layer": "B",
+            "reason": "TOO_FAR",
+            "target": "B 70.250,95.500-69.600,96.600",
+            "target_island": 0,
+            "why": "18.514 mm gap exceeds the 4.0 mm tap bound; NEVER ASKED"
+          },
+          {
+            "at": [
+              69.6,
+              96.6
+            ],
+            "gap_mm": 18.5375,
+            "island": 2,
+            "land": "U2.9",
+            "layer": "B",
+            "reason": "TOO_FAR",
+            "target": "B 70.400,97.400-69.600,96.600",
+            "target_island": 0,
+            "why": "18.538 mm gap exceeds the 4.0 mm tap bound; NEVER ASKED"
+          },
+          {
+            "at": [
+              70.4,
+              97.4
+            ],
+            "gap_mm": 19.2842,
+            "island": 1,
+            "land": "U11.9",
+            "layer": "F",
+            "reason": "TOO_FAR",
+            "target": "F 71.300,99.700-70.400,97.400",
+            "target_island": 0,
+            "why": "19.284 mm gap exceeds the 4.0 mm tap bound; NEVER ASKED"
+          },
+          {
+            "at": [
+              70.4,
+              97.4
+            ],
+            "gap_mm": 19.6474,
+            "island": 2,
+            "land": "U2.9",
+            "layer": "F",
+            "reason": "TOO_FAR",
+            "target": "F 71.300,99.700-70.400,97.400",
+            "target_island": 0,
+            "why": "19.647 mm gap exceeds the 4.0 mm tap bound; NEVER ASKED"
+          }
+        ],
+        "declined_n": 6,
+        "emitted": true,
+        "failures": [],
+        "first": true,
+        "joined": 0,
+        "max_mm": 4.0,
+        "mm": 0,
+        "net": "/BQ25185_STAT1",
+        "ok": false,
+        "taps": [],
+        "vias": 0
+      },
+      "vias": 2
+    },
+    {
+      "closed": 1,
+      "contract": {
+        "clr": 200000,
+        "clr_pad": 200000,
+        "escape_floor": 150000,
+        "guarded_layers": {
+          "B": 2,
+          "F": 2,
+          "I2": 2,
+          "I3": 2
+        },
+        "layers": [
+          "F",
+          "B",
+          "I2"
+        ],
+        "netclass": "Default",
+        "reserved_inner_planes": {
+          "I1": [
+            "GND"
+          ],
+          "I3": [
+            "+3V3"
+          ],
+          "I4": [
+            "GND"
+          ]
+        },
+        "trunk_floor": {
+          "admitted": true,
+          "amps": 0.602,
+          "floor_nm": 150000,
+          "floor_source": "D-706 BQ25185 ILIM_VSET programming pin - width floor",
+          "from_nm": 200000,
+          "netclass": "Default",
+          "required_amps": null,
+          "to_nm": 150000,
+          "why": "PUBLISHED_PER_NET_IN_THE_KICAD_DRU"
+        },
+        "via_dia": 500000,
+        "via_drill": 250000,
+        "width": 150000
+      },
+      "failures": [],
+      "islands": 2,
+      "joins": [
+        {
+          "from": "R36.1",
+          "layers": [
+            "B"
+          ],
+          "mm": 5.054650127928503,
+          "to": "U11.7",
+          "via_xy": [],
+          "vias": 0
+        }
+      ],
+      "mm": 5.055,
+      "mode": "maze+partial+tapfirst",
+      "mode_partial": true,
+      "net": "/01_POWER_TREE/ILIM_VSET",
+      "ok": true,
+      "remaining": 0,
+      "seconds": 23.6,
+      "tap": {
+        "declined": [],
+        "failures": [],
+        "first": true,
+        "joined": 0,
+        "mm": 0.0,
+        "net": "/01_POWER_TREE/ILIM_VSET",
+        "ok": false,
+        "reason": "NO_OWN_COPPER",
+        "taps": [],
+        "vias": 0,
+        "why": "this net owns no connected copper on a layer its contract allows, so there is nothing to tap onto"
+      },
+      "vias": 0
+    },
+    {
+      "closed": 2,
+      "contract": {
+        "clr": 250000,
+        "clr_pad": 200000,
+        "escape_floor": 350000,
+        "guarded_layers": {
+          "B": 2,
+          "F": 2,
+          "I2": 2,
+          "I3": 2
+        },
+        "layers": [
+          "F",
+          "B",
+          "I2"
+        ],
+        "netclass": "VBUS_CHG",
+        "reserved_inner_planes": {
+          "I1": [
+            "GND"
+          ],
+          "I3": [
+            "+3V3"
+          ],
+          "I4": [
+            "GND"
+          ]
+        },
+        "trunk_floor": {
+          "admitted": true,
+          "amps": 1.113,
+          "floor_nm": 350000,
+          "from_nm": 500000,
+          "netclass": "VBUS_CHG",
+          "required_amps": 0.5,
+          "to_nm": 350000,
+          "why": "PRICED_AT_THE_PUBLISHED_BAR"
+        },
+        "via_dia": 650000,
+        "via_drill": 400000,
+        "width": 350000
+      },
+      "failures": [],
+      "islands": 3,
+      "joins": [
+        {
+          "from": "C23.2",
+          "layers": [
+            "B"
+          ],
+          "mm": 3.2136598574205424,
+          "necks": [
+            {
+              "layer": "B",
+              "outside_courtyard_mm": 0.0,
+              "pad": "U11.10",
+              "stub_mm": 0.1,
+              "width_mm": 0.2
+            }
+          ],
+          "to": "U11.10",
+          "via_xy": [],
+          "vias": 0
+        },
+        {
+          "from": "C23.2",
+          "layers": [
+            "B",
+            "F",
+            "I2",
+            "F",
+            "B"
+          ],
+          "mm": 77.10424329857534,
+          "to": "D11.2",
+          "via_xy": [
+            [
+              63.25,
+              79.45
+            ],
+            [
+              52.85,
+              76.625
+            ],
+            [
+              51.75,
+              72.675
+            ],
+            [
+              29.1,
+              45.15
+            ]
+          ],
+          "vias": 4
+        }
+      ],
+      "mm": 80.318,
+      "mode": "maze+partial+tapfirst",
+      "mode_partial": true,
+      "net": "/01_POWER_TREE/USB_VBUS_CHG",
+      "ok": true,
+      "remaining": 0,
+      "seconds": 633.9,
+      "tap": {
+        "asked": 0,
+        "declined": [
+          {
+            "at": [
+              13.6944,
+              80.9241
+            ],
+            "gap_mm": 52.3349,
+            "island": 0,
+            "land": "C23.2",
+            "layer": "I2",
+            "reason": "TOO_FAR",
+            "target": "I2 13.050,30.900-13.725,83.300",
+            "target_island": 1,
+            "why": "52.335 mm gap exceeds the 4.0 mm tap bound; NEVER ASKED"
+          },
+          {
+            "at": [
+              13.725,
+              83.3
+            ],
+            "gap_mm": 52.3889,
+            "island": 0,
+            "land": "C23.2",
+            "layer": "I2",
+            "reason": "TOO_FAR",
+            "target": "I2 13.725,83.300-3.500,93.525",
+            "target_island": 1,
+            "why": "52.389 mm gap exceeds the 4.0 mm tap bound; NEVER ASKED"
+          },
+          {
+            "at": [
+              13.6736,
+              79.3075
+            ],
+            "gap_mm": 54.931,
+            "island": 2,
+            "land": "U11.10",
+            "layer": "I2",
+            "reason": "TOO_FAR",
+            "target": "I2 13.050,30.900-13.725,83.300",
+            "target_island": 1,
+            "why": "54.931 mm gap exceeds the 4.0 mm tap bound; NEVER ASKED"
+          },
+          {
+            "at": [
+              13.725,
+              83.3
+            ],
+            "gap_mm": 55.0759,
+            "island": 2,
+            "land": "U11.10",
+            "layer": "I2",
+            "reason": "TOO_FAR",
+            "target": "I2 13.725,83.300-3.500,93.525",
+            "target_island": 1,
+            "why": "55.076 mm gap exceeds the 4.0 mm tap bound; NEVER ASKED"
+          },
+          {
+            "at": [
+              36.8,
+              135.1
+            ],
+            "gap_mm": 62.15,
+            "island": 0,
+            "land": "C23.2",
+            "layer": "F",
+            "reason": "TOO_FAR",
+            "target": "F 36.825,136.250-36.800,135.100",
+            "target_island": 1,
+            "why": "62.150 mm gap exceeds the 4.0 mm tap bound; NEVER ASKED"
+          },
+          {
+            "at": [
+              36.8,
+              135.1
+            ],
+            "gap_mm": 64.8343,
+            "island": 2,
+            "land": "U11.10",
+            "layer": "F",
+            "reason": "TOO_FAR",
+            "target": "F 36.825,136.250-36.800,135.100",
+            "target_island": 1,
+            "why": "64.834 mm gap exceeds the 4.0 mm tap bound; NEVER ASKED"
+          }
+        ],
+        "declined_n": 6,
+        "emitted": true,
+        "failures": [],
+        "first": true,
+        "joined": 0,
+        "max_mm": 4.0,
+        "mm": 0,
+        "net": "/01_POWER_TREE/USB_VBUS_CHG",
+        "ok": false,
+        "taps": [],
+        "vias": 0
+      },
+      "vias": 4
+    },
+    {
+      "closed": 1,
+      "contract": {
+        "clr": 200000,
+        "clr_pad": 200000,
+        "escape_floor": 150000,
+        "guarded_layers": {
+          "B": 2,
+          "F": 2,
+          "I2": 2,
+          "I3": 2
+        },
+        "layers": [
+          "F",
+          "B",
+          "I2"
+        ],
+        "netclass": "Default",
+        "reserved_inner_planes": {
+          "I1": [
+            "GND"
+          ],
+          "I3": [
+            "+3V3"
+          ],
+          "I4": [
+            "GND"
+          ]
+        },
+        "trunk_floor": {
+          "admitted": true,
+          "amps": 0.602,
+          "floor_nm": 150000,
+          "floor_source": "D-706 BQ25185 ISET programming pin - width floor",
+          "from_nm": 200000,
+          "netclass": "Default",
+          "required_amps": null,
+          "to_nm": 150000,
+          "why": "PUBLISHED_PER_NET_IN_THE_KICAD_DRU"
+        },
+        "via_dia": 500000,
+        "via_drill": 250000,
+        "width": 150000
+      },
+      "failures": [],
+      "islands": 2,
+      "joins": [
+        {
+          "from": "R37.1",
+          "layers": [
+            "B",
+            "F",
+            "B"
+          ],
+          "mm": 13.299611522419282,
+          "to": "U11.8",
+          "via_xy": [
+            [
+              62.8,
+              77.15
+            ],
+            [
+              71.6,
+              79.4
+            ]
+          ],
+          "vias": 2
+        }
+      ],
+      "mm": 13.3,
+      "mode": "maze+partial+tapfirst",
+      "mode_partial": true,
+      "net": "/01_POWER_TREE/ISET",
+      "ok": true,
+      "remaining": 0,
+      "seconds": 128.6,
+      "tap": {
+        "declined": [],
+        "failures": [],
+        "first": true,
+        "joined": 0,
+        "mm": 0.0,
+        "net": "/01_POWER_TREE/ISET",
+        "ok": false,
+        "reason": "NO_OWN_COPPER",
+        "taps": [],
+        "vias": 0,
+        "why": "this net owns no connected copper on a layer its contract allows, so there is nothing to tap onto"
+      },
+      "vias": 2
+    },
+    {
+      "closed": 5,
+      "contract": {
+        "clr": 200000,
+        "clr_pad": 200000,
+        "escape_floor": 200000,
+        "guarded_layers": {
+          "B": 2,
+          "F": 2,
+          "I2": 2,
+          "I3": 2
+        },
+        "layers": [
+          "F",
+          "B",
+          "I2"
+        ],
+        "netclass": "Default",
+        "reserved_inner_planes": {
+          "I1": [
+            "GND"
+          ],
+          "I3": [
+            "+3V3"
+          ],
+          "I4": [
+            "GND"
+          ]
+        },
+        "trunk_floor": {
+          "admitted": false,
+          "amps": null,
+          "floor_nm": null,
+          "from_nm": 200000,
+          "netclass": "Default",
+          "required_amps": null,
+          "to_nm": 200000,
+          "why": "CLASS_HAS_NO_PUBLISHED_FLOOR"
+        },
+        "via_dia": 500000,
+        "via_drill": 250000,
+        "width": 200000
+      },
+      "failures": [],
+      "islands": 6,
+      "joins": [
+        {
+          "from": "TP33.1",
+          "layers": [
+            "B"
+          ],
+          "mm": 3.7823784149595983,
+          "to": "U3.18",
+          "via_xy": [],
+          "vias": 0
+        },
+        {
+          "from": "TP27.1",
+          "layers": [
+            "B",
+            "F",
+            "B"
+          ],
+          "mm": 6.791695033876415,
+          "to": "U20.6",
+          "via_xy": [
+            [
+              54.15,
+              63.075
+            ],
+            [
+              52.225,
+              63.8
+            ]
+          ],
+          "vias": 2
+        },
+        {
+          "from": "R103.2",
+          "layers": [
+            "B",
+            "I2",
+            "B"
+          ],
+          "mm": 9.326698728742596,
+          "to": "U20.6",
+          "via_xy": [
+            [
+              52.4,
+              58.625
+            ],
+            [
+              52.0,
+              62.925
+            ]
+          ],
+          "vias": 2
+        },
+        {
+          "from": "R103.2",
+          "layers": [
+            "B",
+            "F",
+            "B"
+          ],
+          "mm": 15.439993726215947,
+          "to": "U22.6",
+          "via_xy": [
+            [
+              53.075,
+              55.3
+            ],
+            [
+              54.75,
+              45.325
+            ]
+          ],
+          "vias": 2
+        },
+        {
+          "from": "R103.2",
+          "layers": [
+            "B",
+            "I2",
+            "F",
+            "I2",
+            "B",
+            "I2",
+            "B"
+          ],
+          "mm": 36.38775846654849,
+          "to": "U3.18",
+          "via_xy": [
+            [
+              55.075,
+              55.6
+            ],
+            [
+              58.475,
+              56.8
+            ],
+            [
+              64.875,
+              62.575
+            ],
+            [
+              65.65,
+              67.125
+            ],
+            [
+              65.675,
+              69.7
+            ],
+            [
+              61.575,
+              77.15
+            ]
+          ],
+          "vias": 6
+        }
+      ],
+      "mm": 71.729,
+      "mode": "maze+partial+tapfirst",
+      "mode_partial": true,
+      "net": "/ACC_POWER_FAULT_N",
+      "ok": true,
+      "remaining": 0,
+      "seconds": 634.5,
+      "tap": {
+        "declined": [],
+        "failures": [],
+        "first": true,
+        "joined": 0,
+        "mm": 0.0,
+        "net": "/ACC_POWER_FAULT_N",
+        "ok": false,
+        "reason": "NO_OWN_COPPER",
+        "taps": [],
+        "vias": 0,
+        "why": "this net owns no connected copper on a layer its contract allows, so there is nothing to tap onto"
+      },
+      "vias": 12
+    },
+    {
+      "closed": 3,
+      "contract": {
+        "clr": 250000,
+        "clr_pad": 200000,
+        "escape_floor": 350000,
+        "guarded_layers": {
+          "B": 2,
+          "F": 2,
+          "I2": 2,
+          "I3": 2
+        },
+        "layers": [
+          "F",
+          "B",
+          "I2"
+        ],
+        "netclass": "ACC_3V3",
+        "reserved_inner_planes": {
+          "I1": [
+            "GND"
+          ],
+          "I3": [
+            "+3V3"
+          ],
+          "I4": [
+            "GND"
+          ]
+        },
+        "trunk_floor": {
+          "admitted": true,
+          "amps": 1.113,
+          "floor_nm": 350000,
+          "from_nm": 500000,
+          "netclass": "ACC_3V3",
+          "required_amps": 0.76,
+          "to_nm": 350000,
+          "why": "PRICED_AT_THE_PUBLISHED_BAR"
+        },
+        "via_dia": 650000,
+        "via_drill": 400000,
+        "width": 350000
+      },
+      "failures": [],
+      "islands": 4,
+      "joins": [
+        {
+          "from": "J5.22",
+          "layers": [
+            "B",
+            "F",
+            "B"
+          ],
+          "mm": 6.16127732815317,
+          "to": "TP25.1",
+          "via_xy": [
+            [
+              63.1,
+              64.125
+            ],
+            [
+              63.5,
+              66.15
+            ]
+          ],
+          "vias": 2
+        },
+        {
+          "from": "C39.1",
+          "layers": [
+            "B",
+            "F",
+            "B"
+          ],
+          "mm": 5.880179805331225,
+          "to": "J5.22",
+          "via_xy": [
+            [
+              61.1,
+              61.7
+            ],
+            [
+              63.0,
+              63.45
+            ]
+          ],
+          "vias": 2
+        },
+        {
+          "from": "J8.2",
+          "layers": [
+            "F"
+          ],
+          "mm": 15.726164073830757,
+          "to": "J5.22",
+          "via_xy": [],
+          "vias": 0
+        }
+      ],
+      "mm": 27.768,
+      "mode": "maze+partial+tapfirst",
+      "mode_partial": true,
+      "net": "/ACC_3V3_SW",
+      "ok": true,
+      "remaining": 0,
+      "seconds": 296.9,
+      "tap": {
+        "asked": 1,
+        "declined": [
+          {
+            "at": [
+              61.625,
+              62.25
+            ],
+            "gap_mm": 4.4118,
+            "island": 2,
+            "land": "J5.22",
+            "layer": "B",
+            "reason": "TOO_FAR",
+            "target": "B 60.800,61.435-61.625,62.250",
+            "target_island": 0,
+            "why": "4.412 mm gap exceeds the 4.0 mm tap bound; NEVER ASKED"
+          },
+          {
+            "at": [
+              61.625,
+              62.25
+            ],
+            "gap_mm": 4.4118,
+            "island": 2,
+            "land": "J5.22",
+            "layer": "B",
+            "reason": "TOO_FAR",
+            "target": "B 61.625,62.250-61.500,62.375",
+            "target_island": 0,
+            "why": "4.412 mm gap exceeds the 4.0 mm tap bound; NEVER ASKED"
+          },
+          {
+            "at": [
+              61.5,
+              62.4
+            ],
+            "gap_mm": 4.4993,
+            "island": 2,
+            "land": "J5.22",
+            "layer": "B",
+            "reason": "TOO_FAR",
+            "target": "B 61.500,62.375-61.500,62.400",
+            "target_island": 0,
+            "why": "4.499 mm gap exceeds the 4.0 mm tap bound; NEVER ASKED"
+          },
+          {
+            "at": [
+              60.0,
+              63.5
+            ],
+            "gap_mm": 5.1296,
+            "island": 4,
+            "land": "TP25.1",
+            "layer": "B",
+            "reason": "TOO_FAR",
+            "target": "B 60.000,63.500-58.900,63.500",
+            "target_island": 0,
+            "why": "5.130 mm gap exceeds the 4.0 mm tap bound; NEVER ASKED"
+          },
+          {
+            "at": [
+              61.5,
+              62.4
+            ],
+            "gap_mm": 5.2462,
+            "island": 4,
+            "land": "TP25.1",
+            "layer": "B",
+            "reason": "TOO_FAR",
+            "target": "B 61.500,62.375-61.500,62.400",
+            "target_island": 0,
+            "why": "5.246 mm gap exceeds the 4.0 mm tap bound; NEVER ASKED"
+          },
+          {
+            "at": [
+              61.5,
+              62.4
+            ],
+            "gap_mm": 5.2462,
+            "island": 4,
+            "land": "TP25.1",
+            "layer": "I2",
+            "reason": "TOO_FAR",
+            "target": "I2 59.975,60.425-61.500,62.400",
+            "target_island": 0,
+            "why": "5.246 mm gap exceeds the 4.0 mm tap bound; NEVER ASKED"
+          },
+          {
+            "at": [
+              61.5,
+              62.4
+            ],
+            "gap_mm": 17.5573,
+            "island": 3,
+            "land": "J8.2",
+            "layer": "B",
+            "reason": "TOO_FAR",
+            "target": "B 61.500,62.375-61.500,62.400",
+            "target_island": 0,
+            "why": "17.557 mm gap exceeds the 4.0 mm tap bound; NEVER ASKED"
+          },
+          {
+            "at": [
+              61.5,
+              62.4
+            ],
+            "gap_mm": 17.5573,
+            "island": 3,
+            "land": "J8.2",
+            "layer": "I2",
+            "reason": "TOO_FAR",
+            "target": "I2 59.975,60.425-61.500,62.400",
+            "target_island": 0,
+            "why": "17.557 mm gap exceeds the 4.0 mm tap bound; NEVER ASKED"
+          },
+          {
+            "at": [
+              61.5,
+              62.4
+            ],
+            "gap_mm": 17.5573,
+            "island": 3,
+            "land": "J8.2",
+            "layer": "F",
+            "reason": "TOO_FAR",
+            "target": "via@61.500,62.400",
+            "target_island": 0,
+            "why": "17.557 mm gap exceeds the 4.0 mm tap bound; NEVER ASKED"
+          }
+        ],
+        "declined_n": 9,
+        "emitted": true,
+        "failures": [],
+        "first": true,
+        "joined": 1,
+        "max_mm": 4.0,
+        "mm": 4.148,
+        "net": "/ACC_3V3_SW",
+        "ok": true,
+        "taps": [
+          {
+            "at": [
+              51.575,
+              58.775
+            ],
+            "gap_mm": 2.6846,
+            "island": 0,
+            "land": "R63.1",
+            "launches": [
+              {
+                "a_xy": [
+                  54.05,
+                  57.735
+                ],
+                "b_xy": [
+                  53.075,
+                  57.725
+                ],
+                "base_dir": true,
+                "centre": true,
+                "layer": "B",
+                "mm": 0.9751,
+                "necked": false,
+                "offcentre_mm": 0.0,
+                "pad": "R63.1",
+                "trunk_width": 350000,
+                "width": 350000
+              }
+            ],
+            "layer": "B",
+            "layers": [
+              "B",
+              "F",
+              "B"
+            ],
+            "mm": 4.148,
+            "stub_mm": 0.9751,
+            "target": "B 50.750,59.585-51.575,58.775",
+            "target_island": 1,
+            "via_xy": [
+              [
+                53.425,
+                57.325
+              ],
+              [
+                51.675,
+                58.025
+              ]
+            ],
+            "vias": 2
+          }
+        ],
+        "vias": 2
+      },
+      "vias": 4
+    },
+    {
+      "closed": 4,
+      "contract": {
+        "clr": 200000,
+        "clr_pad": 200000,
+        "escape_floor": 200000,
+        "guarded_layers": {
+          "B": 2,
+          "F": 2,
+          "I2": 2,
+          "I3": 2
+        },
+        "layers": [
+          "F",
+          "B",
+          "I2"
+        ],
+        "netclass": "I2C",
+        "reserved_inner_planes": {
+          "I1": [
+            "GND"
+          ],
+          "I3": [
+            "+3V3"
+          ],
+          "I4": [
+            "GND"
+          ]
+        },
+        "trunk_floor": {
+          "admitted": false,
+          "amps": null,
+          "floor_nm": null,
+          "from_nm": 200000,
+          "netclass": "I2C",
+          "required_amps": null,
+          "to_nm": 200000,
+          "why": "CLASS_HAS_NO_PUBLISHED_FLOOR"
+        },
+        "via_dia": 500000,
+        "via_drill": 250000,
+        "width": 200000
+      },
+      "failures": [],
+      "islands": 5,
+      "joins": [
+        {
+          "from": "D2.4",
+          "layers": [
+            "F",
+            "B",
+            "I2",
+            "F"
+          ],
+          "mm": 11.434638995944987,
+          "to": "R48.2",
+          "via_xy": [
+            [
+              61.025,
+              26.25
+            ],
+            [
+              57.975,
+              28.475
+            ],
+            [
+              60.225,
+              33.075
+            ]
+          ],
+          "vias": 3
+        },
+        {
+          "from": "D2.4",
+          "layers": [
+            "F"
+          ],
+          "mm": 10.341472082828767,
+          "to": "J5.4",
+          "via_xy": [],
+          "vias": 0
+        },
+        {
+          "from": "J5.4",
+          "layers": [
+            "F"
+          ],
+          "mm": 13.72678210658744,
+          "to": "TP45.1",
+          "via_xy": [],
+          "vias": 0
+        },
+        {
+          "from": "J8.3",
+          "layers": [
+            "F",
+            "B",
+            "F"
+          ],
+          "mm": 56.72769482623971,
+          "to": "D2.4",
+          "via_xy": [
+            [
+              68.45,
+              65.575
+            ],
+            [
+              64.825,
+              29.625
+            ]
+          ],
+          "vias": 2
+        }
+      ],
+      "mm": 92.231,
+      "mode": "maze+partial+tapfirst",
+      "mode_partial": true,
+      "net": "/09_COMMUNITY_HEADER/EXT_SDA",
+      "ok": true,
+      "remaining": 0,
+      "seconds": 762.5,
+      "tap": {
+        "declined": [],
+        "failures": [],
+        "first": true,
+        "joined": 0,
+        "mm": 0.0,
+        "net": "/09_COMMUNITY_HEADER/EXT_SDA",
+        "ok": false,
+        "reason": "NO_OWN_COPPER",
+        "taps": [],
+        "vias": 0,
+        "why": "this net owns no connected copper on a layer its contract allows, so there is nothing to tap onto"
+      },
+      "vias": 5
+    },
+    {
+      "closed": 4,
+      "contract": {
+        "clr": 200000,
+        "clr_pad": 200000,
+        "escape_floor": 200000,
+        "guarded_layers": {
+          "B": 2,
+          "F": 2,
+          "I2": 2,
+          "I3": 2
+        },
+        "layers": [
+          "F",
+          "B",
+          "I2"
+        ],
+        "netclass": "I2C",
+        "reserved_inner_planes": {
+          "I1": [
+            "GND"
+          ],
+          "I3": [
+            "+3V3"
+          ],
+          "I4": [
+            "GND"
+          ]
+        },
+        "trunk_floor": {
+          "admitted": false,
+          "amps": null,
+          "floor_nm": null,
+          "from_nm": 200000,
+          "netclass": "I2C",
+          "required_amps": null,
+          "to_nm": 200000,
+          "why": "CLASS_HAS_NO_PUBLISHED_FLOOR"
+        },
+        "via_dia": 500000,
+        "via_drill": 250000,
+        "width": 200000
+      },
+      "failures": [],
+      "islands": 5,
+      "joins": [
+        {
+          "from": "D2.6",
+          "layers": [
+            "F",
+            "B"
+          ],
+          "mm": 7.388242556808557,
+          "to": "J5.5",
+          "via_xy": [
+            [
+              62.225,
+              22.3
+            ]
+          ],
+          "vias": 1
+        },
+        {
+          "from": "D2.6",
+          "layers": [
+            "F",
+            "I2",
+            "F"
+          ],
+          "mm": 22.09337051236701,
+          "to": "R47.2",
+          "via_xy": [
+            [
+              61.6,
+              22.625
+            ],
+            [
+              61.075,
+              33.025
+            ]
+          ],
+          "vias": 2
+        },
+        {
+          "from": "D2.6",
+          "layers": [
+            "F",
+            "I2",
+            "B",
+            "F"
+          ],
+          "mm": 19.14771781531584,
+          "to": "TP46.1",
+          "via_xy": [
+            [
+              61.875,
+              21.775
+            ],
+            [
+              56.375,
+              25.375
+            ],
+            [
+              54.25,
+              25.975
+            ]
+          ],
+          "vias": 3
+        },
+        {
+          "from": "J8.4",
+          "layers": [
+            "F",
+            "I2",
+            "F"
+          ],
+          "mm": 57.78340517694823,
+          "to": "J5.5",
+          "via_xy": [
+            [
+              71.025,
+              72.975
+            ],
+            [
+              68.375,
+              23.55
+            ]
+          ],
+          "vias": 2
+        }
+      ],
+      "mm": 106.413,
+      "mode": "maze+partial+tapfirst",
+      "mode_partial": true,
+      "net": "/09_COMMUNITY_HEADER/EXT_SCL",
+      "ok": true,
+      "remaining": 0,
+      "seconds": 904.4,
+      "tap": {
+        "declined": [],
+        "failures": [],
+        "first": true,
+        "joined": 0,
+        "mm": 0.0,
+        "net": "/09_COMMUNITY_HEADER/EXT_SCL",
+        "ok": false,
+        "reason": "NO_OWN_COPPER",
+        "taps": [],
+        "vias": 0,
+        "why": "this net owns no connected copper on a layer its contract allows, so there is nothing to tap onto"
+      },
+      "vias": 8
+    }
+  ],
+  "routed_nets": [
+    "/01_POWER_TREE/ILIM_VSET",
+    "/01_POWER_TREE/ISET",
+    "/01_POWER_TREE/USB_VBUS_CHG",
+    "/09_COMMUNITY_HEADER/EXT_SCL",
+    "/09_COMMUNITY_HEADER/EXT_SDA",
+    "/ACC_3V3_SW",
+    "/ACC_POWER_FAULT_N",
+    "/BQ25185_STAT1",
+    "GND"
+  ],
+  "schema": 1,
+  "taps": {
+    "first": true,
+    "joined": 1,
+    "max_mm": 4.0,
+    "nets": [
+      {
+        "asked": 0,
+        "declined": [
+          {
+            "at": [
+              70.25,
+              95.5
+            ],
+            "gap_mm": 17.3785,
+            "island": 1,
+            "land": "U11.9",
+            "layer": "B",
+            "reason": "TOO_FAR",
+            "target": "B 70.250,95.500-69.600,96.600",
+            "target_island": 0,
+            "why": "17.379 mm gap exceeds the 4.0 mm tap bound; NEVER ASKED"
+          },
+          {
+            "at": [
+              69.6,
+              96.6
+            ],
+            "gap_mm": 18.4272,
+            "island": 1,
+            "land": "U11.9",
+            "layer": "B",
+            "reason": "TOO_FAR",
+            "target": "B 70.400,97.400-69.600,96.600",
+            "target_island": 0,
+            "why": "18.427 mm gap exceeds the 4.0 mm tap bound; NEVER ASKED"
+          },
+          {
+            "at": [
+              70.0766,
+              95.7935
+            ],
+            "gap_mm": 18.5138,
+            "island": 2,
+            "land": "U2.9",
+            "layer": "B",
+            "reason": "TOO_FAR",
+            "target": "B 70.250,95.500-69.600,96.600",
+            "target_island": 0,
+            "why": "18.514 mm gap exceeds the 4.0 mm tap bound; NEVER ASKED"
+          },
+          {
+            "at": [
+              69.6,
+              96.6
+            ],
+            "gap_mm": 18.5375,
+            "island": 2,
+            "land": "U2.9",
+            "layer": "B",
+            "reason": "TOO_FAR",
+            "target": "B 70.400,97.400-69.600,96.600",
+            "target_island": 0,
+            "why": "18.538 mm gap exceeds the 4.0 mm tap bound; NEVER ASKED"
+          },
+          {
+            "at": [
+              70.4,
+              97.4
+            ],
+            "gap_mm": 19.2842,
+            "island": 1,
+            "land": "U11.9",
+            "layer": "F",
+            "reason": "TOO_FAR",
+            "target": "F 71.300,99.700-70.400,97.400",
+            "target_island": 0,
+            "why": "19.284 mm gap exceeds the 4.0 mm tap bound; NEVER ASKED"
+          },
+          {
+            "at": [
+              70.4,
+              97.4
+            ],
+            "gap_mm": 19.6474,
+            "island": 2,
+            "land": "U2.9",
+            "layer": "F",
+            "reason": "TOO_FAR",
+            "target": "F 71.300,99.700-70.400,97.400",
+            "target_island": 0,
+            "why": "19.647 mm gap exceeds the 4.0 mm tap bound; NEVER ASKED"
+          }
+        ],
+        "declined_n": 6,
+        "emitted": true,
+        "failures": [],
+        "first": true,
+        "joined": 0,
+        "max_mm": 4.0,
+        "mm": 0,
+        "net": "/BQ25185_STAT1",
+        "ok": false,
+        "taps": [],
+        "vias": 0
+      },
+      {
+        "declined": [],
+        "failures": [],
+        "first": true,
+        "joined": 0,
+        "mm": 0.0,
+        "net": "/01_POWER_TREE/ILIM_VSET",
+        "ok": false,
+        "reason": "NO_OWN_COPPER",
+        "taps": [],
+        "vias": 0,
+        "why": "this net owns no connected copper on a layer its contract allows, so there is nothing to tap onto"
+      },
+      {
+        "asked": 0,
+        "declined": [
+          {
+            "at": [
+              13.6944,
+              80.9241
+            ],
+            "gap_mm": 52.3349,
+            "island": 0,
+            "land": "C23.2",
+            "layer": "I2",
+            "reason": "TOO_FAR",
+            "target": "I2 13.050,30.900-13.725,83.300",
+            "target_island": 1,
+            "why": "52.335 mm gap exceeds the 4.0 mm tap bound; NEVER ASKED"
+          },
+          {
+            "at": [
+              13.725,
+              83.3
+            ],
+            "gap_mm": 52.3889,
+            "island": 0,
+            "land": "C23.2",
+            "layer": "I2",
+            "reason": "TOO_FAR",
+            "target": "I2 13.725,83.300-3.500,93.525",
+            "target_island": 1,
+            "why": "52.389 mm gap exceeds the 4.0 mm tap bound; NEVER ASKED"
+          },
+          {
+            "at": [
+              13.6736,
+              79.3075
+            ],
+            "gap_mm": 54.931,
+            "island": 2,
+            "land": "U11.10",
+            "layer": "I2",
+            "reason": "TOO_FAR",
+            "target": "I2 13.050,30.900-13.725,83.300",
+            "target_island": 1,
+            "why": "54.931 mm gap exceeds the 4.0 mm tap bound; NEVER ASKED"
+          },
+          {
+            "at": [
+              13.725,
+              83.3
+            ],
+            "gap_mm": 55.0759,
+            "island": 2,
+            "land": "U11.10",
+            "layer": "I2",
+            "reason": "TOO_FAR",
+            "target": "I2 13.725,83.300-3.500,93.525",
+            "target_island": 1,
+            "why": "55.076 mm gap exceeds the 4.0 mm tap bound; NEVER ASKED"
+          },
+          {
+            "at": [
+              36.8,
+              135.1
+            ],
+            "gap_mm": 62.15,
+            "island": 0,
+            "land": "C23.2",
+            "layer": "F",
+            "reason": "TOO_FAR",
+            "target": "F 36.825,136.250-36.800,135.100",
+            "target_island": 1,
+            "why": "62.150 mm gap exceeds the 4.0 mm tap bound; NEVER ASKED"
+          },
+          {
+            "at": [
+              36.8,
+              135.1
+            ],
+            "gap_mm": 64.8343,
+            "island": 2,
+            "land": "U11.10",
+            "layer": "F",
+            "reason": "TOO_FAR",
+            "target": "F 36.825,136.250-36.800,135.100",
+            "target_island": 1,
+            "why": "64.834 mm gap exceeds the 4.0 mm tap bound; NEVER ASKED"
+          }
+        ],
+        "declined_n": 6,
+        "emitted": true,
+        "failures": [],
+        "first": true,
+        "joined": 0,
+        "max_mm": 4.0,
+        "mm": 0,
+        "net": "/01_POWER_TREE/USB_VBUS_CHG",
+        "ok": false,
+        "taps": [],
+        "vias": 0
+      },
+      {
+        "declined": [],
+        "failures": [],
+        "first": true,
+        "joined": 0,
+        "mm": 0.0,
+        "net": "/01_POWER_TREE/ISET",
+        "ok": false,
+        "reason": "NO_OWN_COPPER",
+        "taps": [],
+        "vias": 0,
+        "why": "this net owns no connected copper on a layer its contract allows, so there is nothing to tap onto"
+      },
+      {
+        "declined": [],
+        "failures": [],
+        "first": true,
+        "joined": 0,
+        "mm": 0.0,
+        "net": "/ACC_POWER_FAULT_N",
+        "ok": false,
+        "reason": "NO_OWN_COPPER",
+        "taps": [],
+        "vias": 0,
+        "why": "this net owns no connected copper on a layer its contract allows, so there is nothing to tap onto"
+      },
+      {
+        "asked": 1,
+        "declined": [
+          {
+            "at": [
+              61.625,
+              62.25
+            ],
+            "gap_mm": 4.4118,
+            "island": 2,
+            "land": "J5.22",
+            "layer": "B",
+            "reason": "TOO_FAR",
+            "target": "B 60.800,61.435-61.625,62.250",
+            "target_island": 0,
+            "why": "4.412 mm gap exceeds the 4.0 mm tap bound; NEVER ASKED"
+          },
+          {
+            "at": [
+              61.625,
+              62.25
+            ],
+            "gap_mm": 4.4118,
+            "island": 2,
+            "land": "J5.22",
+            "layer": "B",
+            "reason": "TOO_FAR",
+            "target": "B 61.625,62.250-61.500,62.375",
+            "target_island": 0,
+            "why": "4.412 mm gap exceeds the 4.0 mm tap bound; NEVER ASKED"
+          },
+          {
+            "at": [
+              61.5,
+              62.4
+            ],
+            "gap_mm": 4.4993,
+            "island": 2,
+            "land": "J5.22",
+            "layer": "B",
+            "reason": "TOO_FAR",
+            "target": "B 61.500,62.375-61.500,62.400",
+            "target_island": 0,
+            "why": "4.499 mm gap exceeds the 4.0 mm tap bound; NEVER ASKED"
+          },
+          {
+            "at": [
+              60.0,
+              63.5
+            ],
+            "gap_mm": 5.1296,
+            "island": 4,
+            "land": "TP25.1",
+            "layer": "B",
+            "reason": "TOO_FAR",
+            "target": "B 60.000,63.500-58.900,63.500",
+            "target_island": 0,
+            "why": "5.130 mm gap exceeds the 4.0 mm tap bound; NEVER ASKED"
+          },
+          {
+            "at": [
+              61.5,
+              62.4
+            ],
+            "gap_mm": 5.2462,
+            "island": 4,
+            "land": "TP25.1",
+            "layer": "B",
+            "reason": "TOO_FAR",
+            "target": "B 61.500,62.375-61.500,62.400",
+            "target_island": 0,
+            "why": "5.246 mm gap exceeds the 4.0 mm tap bound; NEVER ASKED"
+          },
+          {
+            "at": [
+              61.5,
+              62.4
+            ],
+            "gap_mm": 5.2462,
+            "island": 4,
+            "land": "TP25.1",
+            "layer": "I2",
+            "reason": "TOO_FAR",
+            "target": "I2 59.975,60.425-61.500,62.400",
+            "target_island": 0,
+            "why": "5.246 mm gap exceeds the 4.0 mm tap bound; NEVER ASKED"
+          },
+          {
+            "at": [
+              61.5,
+              62.4
+            ],
+            "gap_mm": 17.5573,
+            "island": 3,
+            "land": "J8.2",
+            "layer": "B",
+            "reason": "TOO_FAR",
+            "target": "B 61.500,62.375-61.500,62.400",
+            "target_island": 0,
+            "why": "17.557 mm gap exceeds the 4.0 mm tap bound; NEVER ASKED"
+          },
+          {
+            "at": [
+              61.5,
+              62.4
+            ],
+            "gap_mm": 17.5573,
+            "island": 3,
+            "land": "J8.2",
+            "layer": "I2",
+            "reason": "TOO_FAR",
+            "target": "I2 59.975,60.425-61.500,62.400",
+            "target_island": 0,
+            "why": "17.557 mm gap exceeds the 4.0 mm tap bound; NEVER ASKED"
+          },
+          {
+            "at": [
+              61.5,
+              62.4
+            ],
+            "gap_mm": 17.5573,
+            "island": 3,
+            "land": "J8.2",
+            "layer": "F",
+            "reason": "TOO_FAR",
+            "target": "via@61.500,62.400",
+            "target_island": 0,
+            "why": "17.557 mm gap exceeds the 4.0 mm tap bound; NEVER ASKED"
+          }
+        ],
+        "declined_n": 9,
+        "emitted": true,
+        "failures": [],
+        "first": true,
+        "joined": 1,
+        "max_mm": 4.0,
+        "mm": 4.148,
+        "net": "/ACC_3V3_SW",
+        "ok": true,
+        "taps": [
+          {
+            "at": [
+              51.575,
+              58.775
+            ],
+            "gap_mm": 2.6846,
+            "island": 0,
+            "land": "R63.1",
+            "launches": [
+              {
+                "a_xy": [
+                  54.05,
+                  57.735
+                ],
+                "b_xy": [
+                  53.075,
+                  57.725
+                ],
+                "base_dir": true,
+                "centre": true,
+                "layer": "B",
+                "mm": 0.9751,
+                "necked": false,
+                "offcentre_mm": 0.0,
+                "pad": "R63.1",
+                "trunk_width": 350000,
+                "width": 350000
+              }
+            ],
+            "layer": "B",
+            "layers": [
+              "B",
+              "F",
+              "B"
+            ],
+            "mm": 4.148,
+            "stub_mm": 0.9751,
+            "target": "B 50.750,59.585-51.575,58.775",
+            "target_island": 1,
+            "via_xy": [
+              [
+                53.425,
+                57.325
+              ],
+              [
+                51.675,
+                58.025
+              ]
+            ],
+            "vias": 2
+          }
+        ],
+        "vias": 2
+      },
+      {
+        "declined": [],
+        "failures": [],
+        "first": true,
+        "joined": 0,
+        "mm": 0.0,
+        "net": "/09_COMMUNITY_HEADER/EXT_SDA",
+        "ok": false,
+        "reason": "NO_OWN_COPPER",
+        "taps": [],
+        "vias": 0,
+        "why": "this net owns no connected copper on a layer its contract allows, so there is nothing to tap onto"
+      },
+      {
+        "declined": [],
+        "failures": [],
+        "first": true,
+        "joined": 0,
+        "mm": 0.0,
+        "net": "/09_COMMUNITY_HEADER/EXT_SCL",
+        "ok": false,
+        "reason": "NO_OWN_COPPER",
+        "taps": [],
+        "vias": 0,
+        "why": "this net owns no connected copper on a layer its contract allows, so there is nothing to tap onto"
+      }
+    ],
+    "pairs": 3,
+    "requested": true,
+    "stub_forbidden": [
+      "USB_D",
+      "NFC_RF",
+      "NFC_RX",
+      "SWITCH_NODE",
+      "SPK_OUT"
+    ]
+  }
+}

@@ -36,7 +36,8 @@
    "GND"
   ],
   "net_gain_against_the_authority": "one edge -- /BQ25185_STAT1 2 -> 1",
-  "why_it_is_worth_more_than_one_edge": "the expansion takes U11's east fan-out strip from 2.525 mm to 7.525 mm and is the ENABLER every later U11 transaction needs"
+  "why_it_is_worth_more_than_one_edge": "the expansion takes U11's east fan-out strip from 2.525 mm to 7.525 mm and is the ENABLER every later U11 transaction needs",
+  "superseded_by": "run r9 -- the same recipe plus /ACC_POWER_FAULT_N stripped and re-routed; 37 -> 15, refused_clauses [], PP1-PP4 true, promotion_candidate true"
  },
  "2_why_it_is_not_promoted": {
   "clause": "pour_partition PP2, measured HEAD -> candidate",
@@ -57,10 +58,11 @@
    "--bond-pad C5.2 (in r7): the nearest LEGAL 0.50/0.25 barrel is (61.125, 72.600), a 2.117 mm run, and it lands inside R40.2's own pad -- it lifts R40.2 to 5.282 A and leaves C5.2 at 2.295 A",
    "--bond-max-mm 1.0: the site search returns the SAME barrel, so 2.117 mm is the nearest legal one and not a window artefact",
    "trimming `B /01_POWER_TREE/BQ25185_SYS POUR 1` out of the +3V3 decoupling pocket (x 58.5..64.5, y 72..80, where it holds no live pad): DRC stays clean and 15 edges hold, and C5.2 does NOT move off 2.295 A -- the SYS pour was not the pinch",
-   "stripping /ACC_3V3_EN and /ACC_POWER_FAULT_N out of the pocket: the fragment MERGES with a larger region and gets WORSE -- C37.2 at 0.995 A over 16.811 mm of 0.30 mm copper"
+   "stripping /ACC_3V3_EN and /ACC_POWER_FAULT_N out of the pocket: the fragment MERGES with a larger region and gets WORSE -- C37.2 at 0.995 A over 16.811 mm of 0.30 mm copper",
+   "run r9 -- /ACC_POWER_FAULT_N STRIPPED WHOLE from the base so the pocket is empty when --bond-pad runs (bonds run BEFORE the maze), then re-routed by the maze: 37 -> 15, failed_nets [], nets_regressed [], refused_clauses [], DRC the inherited baseline, PP1-PP4 true against its own base -- AND THE C5.2 BARREL LANDS AT THE SAME (61.125, 72.600) AND THE FRAGMENT PRICES THE SAME 2.295 A.  THIS REFUTES THIS DECISION'S OWN NAMED NEXT STEP."
   ],
-  "what_actually_blocks_a_closer_barrel": "/ACC_POWER_FAULT_N's In3.Cu haul (62.250,72.975) -> (61.725,77.450) passes 0.19 mm from every site adjacent to C5.2; a 0.50 mm barrel needs 0.45 mm",
-  "the_named_next_step": "re-route that one In3 segment out of the pocket, then --bond-pad C5.2 lands about 0.5 mm away and the fragment prices above 5 A"
+  "what_actually_blocks_a_closer_barrel": "CORRECTED BY RUN r9.  It is NOT /ACC_POWER_FAULT_N's In3 haul: with that net stripped whole the bond site does not move and the price does not move.  The B.Cu GND fill between C5.2 and the barrel is CONTINUOUS and 1.5-1.9 mm wide (sampled at 0.05 mm over y 73.2..74.4), so the 4.383 mm is not a detour around an obstacle: PP2 reports the WIDEST path, and its 0.95 mm bottleneck is C5.2's OWN PAD HEIGHT.  No amount of pour widening beats a bottleneck set by the pad, so the only lever left is a barrel roughly 2.3 mm of widest-path distance from C5.2 -- about (62.0, 73.5), which is inside the fill and clear of both same-net pads -- and maze3d.bond_pads will not choose it.",
+  "the_named_next_step": "Teach the bond site search to prefer the site that MINIMISES the fragment's priced path (PP2's own metric) instead of the first legal one, or give --bond-pad an explicit --bond-at X,Y so a site screened and priced beforehand can be spent.  Everything else about the finalist is already true."
  },
  "3_the_U11_relocation_is_refuted_in_both_directions": {
   "why_it_was_tried": "D-706 section 7 named it: the SYS pour's U11.1 and C27.1 are cut off by the BAT_PROTECTED_P taper and 'both close for free the moment U11 leaves the pocket'",
@@ -95,7 +97,7 @@
   "verify_promotion.--zone-grown_and_--rule-area-keepout": "carried in from the previous session and NEVER EXERCISED until now.  SIXTEEN CONTROLS on the real expanded board, all behaved: evidence/d708-zone-and-keepout-claim-controls.json.  One of them found a bug in the CONTROL, not the gate: a pour that GREW is not a pour that was ADDED, and an inventory that forgets to subtract the moved keys reads five planes as five new pours."
  },
  "5_the_next_transaction_named": [
-  "Re-route /ACC_POWER_FAULT_N's In3.Cu segment (62.250,72.975) -> (61.725,77.450) out of the +3V3 decoupling pocket, then --bond-pad C5.2.  That is the ONLY thing between run r7 and a promotion at 16 -> 15.",
+  "Place C5.2's GND barrel at about (62.0, 73.5) instead of (61.125, 72.600) -- 0.9 mm of widest-path distance instead of 4.383 mm.  The site is inside the B.Cu GND fill and clear of R40.2's and C5.2's own pads; what is missing is a way to ASK for it (bond_pads takes the first legal site).  That is the ONLY thing between run r9 and a promotion at 16 -> 15.",
   "Then promote r7's recipe on the authority: strip /09_COMMUNITY_HEADER/EXT_SDA + EXT_SCL and /01_POWER_TREE/USB_VBUS_CHG's In3 leg, shift J8 +5.000 mm east and R36 to (73.500,75.000), and run the gate with --evict-window 58.5,70.0,77.0,85.5 and --bond-pad J8.1 C23.1 C63.2 C5.2.",
   "DEVICE_SPEC section 12 and the enclosure move with it: PCB 72.000 x 148.000 -> stepped, 77.000 mm maximum width; internal cavity 75.0 -> 80.0 mm; enclosure external 80 -> 85 mm.  Height and depth unchanged.",
   "Only then re-open U11: it needs a TAPERED-TRUNK primitive (or a declared, auditable taper geometry) before it can move at all."
