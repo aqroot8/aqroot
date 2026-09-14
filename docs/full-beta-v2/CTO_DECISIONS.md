@@ -27611,3 +27611,123 @@ steps** that no router here can propose because it lays ONE width.
 edges, and D-706 measured that `U11.1` and `C27.1` are cut off by that same
 taper.  **A tapered-trunk primitive — or an authored, gate-auditable taper
 geometry — is the one lever that unlocks `U11` in any direction.**
+
+## D-710 — `/BQ25185_STAT1` ROUTES TO `U2.9` AND CANNOT BE PROMOTED, BECAUSE THREE ADJACENT `U2` PINS SHARE ONE CONDUCTOR'S WORTH OF CORRIDOR; AND `U21.4`'s MISSING GROUND WAS NEVER A FILL GAP OR A BARREL — IT WAS THE BOARD'S OWN `SYS` POUR
+
+**NO COPPER PROMOTED.**  Authority **UNCHANGED** at `4414da31`; 15 → 15.
+`hardware/beta-v2` UNTOUCHED.
+
+### 1. `/BQ25185_STAT1` ROUTES, AND THE WALL IS A FAN-OUT
+
+`U11.9 → U2.9` lays in **26.128 mm, 3 barrels, `B → In2 → F → B`**, reproduced
+in two independent gate runs.  `screen_pair_corridor_blame` swept all 41 window
+nets one at a time and exactly **ONE** opens the corridor —
+`/SD_CARD_DETECT_N`, at 31.313 mm / 2 vias, against a Q1 upper bound of
+21.257 mm at ZERO vias.
+
+**AND IT IS NOT PROMOTABLE.**  `U2.9`, `U2.10` and `U2.11` are three ADJACENT
+`PCAL9535A` pins in one column at `x 54.138`, and the corridor feeding them
+admits exactly one conductor.  Six gate runs price the trade:
+
+    a1  no eviction                 both NO_PATH
+    b1  wide window, STAT1 first    STAT1 26.128 mm OK, SD NO_PATH, 1 dangling
+    b4  narrow window, SD first     SD 73.680 mm OK, STAT1 NO_PATH
+    b5  narrow + 12 mm tap          STAT1 NO_PATH (the RETAINED U2.11 stub),
+                                    SD 73.680 mm OK
+    b6  window leaving a 9.9 mm     STAT1 26.128 mm OK, SD NO_PATH -- and its
+        tap stub, 12 mm tap         TAP WAS ASKED THREE TIMES and answered
+                                    NO_PATH at 0.200 mm, so the refusal is not
+                                    a --tap-max-mm artefact
+    b7  wide window, SD first       SD 78.816 mm OK, DRC CLEAN, nets_regressed
+                                    [] -- and STAT1 STILL NO_PATH, so SD's long
+                                    way round uses the SAME channel
+
+So this is a **FAN-OUT problem at `U2`, not a corridor search**, and the
+transaction that closes it is a re-floorplan of the `U2` pin neighbourhood —
+which would close `/BQ25185_STAT1` **and** `/BQ25185_STAT2` together, three of
+the fifteen remaining edges.  `/BQ25185_STAT2` confirms it: its `TP7.1 ↔ U2.10`
+leg has a **two-net** minimal cut, `{/NFC_5V_EN, /TOUCH_RST_N}`, and even then
+opens only at **177.521 mm / 11 vias** against a 17.865 mm zero-via upper
+bound; its `U11.3` leg needs `/01_POWER_TREE/BAT_PROTECTED_P`, which is
+protected copper no authorization covers.
+
+### 2. `ACC_5V_LX`: D-702 AND D-703 ARE REFUTED AND REPLACED
+
+D-702 §(a) ruled that `U21.4` has no ground because the `B GND` fill *"must stay
+0.250 mm off `U21.5`'s land corner so it cannot start before `x 58.959` while
+`U21.4`'s land ends at 58.850 — a 0.109 mm gap"*, and D-703 then spent **five
+gate runs** on the bond barrel that was supposed to give it one, closing at a
+0.025 mm bond-escape-versus-`LX`-neck conflict.
+
+**THE BLOCKER WAS NEITHER.  IT WAS THE BOARD'S OWN
+`B /01_POWER_TREE/BQ25185_SYS POUR 2`.**  Pull its east edge
+**60.000 → 58.400 mm** and `B.Cu GND` floods the pocket and reaches `U21.4`
+directly.  `evidence/d710-build-boost-base.sh` rebuilds it in one command —
+pour narrowed, `C65` +0.300 mm east, and the 6.3 mm "inert" `GND` chain out of
+`U21.4` **REMOVED** — and
+
+    real refilled KiCad DRC   solder_mask_bridge 1, lib_footprint_issues 199
+                              31 unconnected items
+    routing_ledger            15 retained open edges over the SAME 10 nets
+
+both **identical to the authority**.  `GND` is not regressed.  There is no
+peninsula, no bond barrel, and D-703's 0.025 mm conflict does not arise at all.
+
+**THE REAL WALL IS `U21.5` ITSELF, AND THE ARITHMETIC IS EXACT.**
+`QBoard.escape` casts its ray from the PAD CENTRE, so the escape is a TRACK
+down the land's spine and owes the full routed clearance to the flanking lands
+— `verify_laid` says so in its own docstring and names `U21.4` as one of the
+three pads that taught it.  The distance is **always 0.325 mm** (0.175 mm land
+half-height plus the 0.150 mm inter-land gap of a 0.500 mm-pitch `SOT-563`) and
+the requirement is `w/2 + 0.200`, so **`w ≤ 0.250 mm`**.  And the first point
+east of `U21.4` where a 0.400 mm `SWITCH_NODE` trunk can legally exist is
+`x = 59.083` — `sqrt(0.400² − 0.325²) = 0.2332 mm` past `U21.4`'s corner —
+while `U21`'s courtyard, where the `.kicad_dru` **already** licenses a 0.200 mm
+neck, ends at `x = 59.000`.  **EIGHTY-THREE MICRONS.**
+`evidence/d710-u21-escape-trials.json` publishes all 96 trials with the
+obstacle each meets, the distance it has and the distance it owes.  **ZERO are
+free.**
+
+**FOUR REMEDIES BUILT AND MEASURED AND ALL FOUR REFUSED:**
+
+- **`C65` further east.**  At +0.300 mm the 0.400 mm trial is short
+  **0.0072 mm** against `C65.1` — seven microns — and at +0.500 mm `C65` is
+  clear and `U21.4` becomes the binding blocker at 0.075 mm.  So `C65` is a
+  real constraint and not the last one.
+- **Extend `U21.5`'s `SW` land east, 0.675 → 1.425 mm** (standard
+  boost-converter practice): **NO EFFECT**, because the ray still starts at the
+  pad centre and runs down the spine whatever the land's shape is.
+- **Widen `U21`'s courtyard to IPC nominal**, centreline `x 59.000 → 59.150`,
+  so the board's own 0.200 mm necking licence reaches the first legal trunk
+  point: `pad_escapes` still returns **ZERO**.
+- **Evict `/01_POWER_TREE/ACC_5V_RAW` whole:** re-laid at 137.851 mm / 8 vias,
+  `GND` regressed, `pour_partition` REFUSED, and `U21.5` still sealed.
+
+**AND THE WIDTH THAT WOULD FIT IS REFUSED ON THE MERITS.**  The `.kicad_dru`'s
+own section 5 publishes a **2.19 A peak inductor current** for this boost
+(D-185), and 0.200 mm at this board's copper carries **0.742 A** at ΔT = 10 K.
+A `PAD_ESCAPE_RUN_U21_5` width licence at 0.200 mm would be a knowing derating
+of the accessory 5 V switch node and **is not taken**.
+
+**CONSEQUENCE:** `ACC_5V_LX` — and with it the switched 5 V accessory supply, a
+RETAINED Demo feature — is now a **PACKAGE** question, which is exactly D-703
+option 4 (`cc9f356`), already owner-authorized.
+
+### 3. WHAT THIS LEAVES ON DISK
+
+`evidence/d710-build-boost-base.sh` — reproducible, DRC-clean, ledger-identical;
+the base every later `ACC_5V` transaction should start from.
+`evidence/d710-u21-escape-trials.py` — prints the ARITHMETIC of every
+`QBoard.escape` trial for a land instead of the histogram the gate prints.
+`evidence/d710-strip-objects.py` — removes NAMED objects by exact signature and
+reports each one.
+
+### 4. NEXT
+
+1. **Re-floorplan the `U2` pin neighbourhood** — three of fifteen edges, and
+   `STAT1`'s route is already measured at 26.128 mm.
+2. **`U21` package substitution** under D-703 option 4 — the `SOT-563`'s middle
+   land cannot pass a 0.400 mm trunk at any placement.
+3. `/01_POWER_TREE/BQ25185_SYS` remains the largest single open net at **five**
+   edges, behind the `BAT_PROTECTED_P` hand taper D-708 named; a
+   **tapered-trunk primitive** is still the one lever that unlocks `U11`.

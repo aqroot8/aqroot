@@ -1,0 +1,2360 @@
+{
+  "attributable_drc": [
+    {
+      "description": "Via is not connected or connected on only one layer",
+      "items": [
+        {
+          "description": "Via [/01_POWER_TREE/ACC_5V_RAW] on F.Cu - B.Cu",
+          "pos": {
+            "x": 52.325,
+            "y": 35.225
+          },
+          "uuid": "8d6269dc-bfdd-488d-b1ea-536daaad8bf5"
+        }
+      ],
+      "severity": "warning",
+      "type": "via_dangling"
+    }
+  ],
+  "authoritative_board_sha256": "4414da3161517861c91711093a0aeb103ee78e41eeb8845d717cfa68607b24c8",
+  "authoritative_unchanged": true,
+  "base_board": "/home/aqroot8/aqroot-demo/hardware/demo/manufacturing/w/d710/c3base/aqroot-Beta-v2.kicad_pcb",
+  "base_board_sha256": "cd5059bf109f87a5850fc8b15dbb912d6c33f971643e33d08e6568babc393b56",
+  "base_is_authority": false,
+  "bonds": null,
+  "bridges": null,
+  "candidate_sha256": "c023432330040a5dd1d4be677d24d1d060d54ab37a2fa77284aaf5c820a4fc7d",
+  "connectivity": {
+    "nets_improved": [],
+    "nets_regressed": [
+      "GND"
+    ],
+    "open_retained_nets_after": 11,
+    "open_retained_nets_before": 10,
+    "retained_open_edges_after": 16,
+    "retained_open_edges_before": 15
+  },
+  "detour": null,
+  "drc_exit": 0,
+  "drc_types": {
+    "lib_footprint_issues": 199,
+    "solder_mask_bridge": 1,
+    "via_dangling": 1
+  },
+  "escape_relief": null,
+  "eviction": {
+    "closure_count": 5,
+    "corridor_layers": [
+      "B",
+      "F",
+      "I2"
+    ],
+    "corridors": {
+      "/01_POWER_TREE/ACC_5V_LX": {
+        "area_mm2": 73.453,
+        "box_mm": [
+          55.513,
+          33.2,
+          63.085,
+          42.9
+        ]
+      },
+      "/01_POWER_TREE/ACC_5V_RAW": {
+        "area_mm2": 230.562,
+        "box_mm": [
+          50.3,
+          30.5,
+          65.175,
+          46.0
+        ]
+      }
+    },
+    "dangling_unevictable": [
+      {
+        "kind": "via",
+        "layer": null,
+        "net": "/01_POWER_TREE/ACC_5V_RAW",
+        "xy_mm": [
+          52.325,
+          35.225
+        ]
+      }
+    ],
+    "evicted_nets": [
+      "/01_POWER_TREE/ACC_5V_RAW"
+    ],
+    "margin_mm": 3.0,
+    "removed_by_net": {
+      "/01_POWER_TREE/ACC_5V_RAW": 18
+    },
+    "removed_count": 18,
+    "removed_signatures": [
+      "('T', '/01_POWER_TREE/ACC_5V_RAW', 2, (52325000, 35225000), (53300000, 34250000), 400000)",
+      "('T', '/01_POWER_TREE/ACC_5V_RAW', 2, (52600000, 43000000), (53862500, 43000000), 400000)",
+      "('T', '/01_POWER_TREE/ACC_5V_RAW', 2, (54750000, 38000000), (55850000, 38000000), 400000)",
+      "('T', '/01_POWER_TREE/ACC_5V_RAW', 2, (58512500, 40400000), (59022500, 40400000), 250000)",
+      "('T', '/01_POWER_TREE/ACC_5V_RAW', 2, (59022500, 40400000), (60085000, 40475000), 400000)",
+      "('T', '/01_POWER_TREE/ACC_5V_RAW', 2, (60085000, 40475000), (61050000, 39500000), 400000)",
+      "('T', '/01_POWER_TREE/ACC_5V_RAW', 2, (60950000, 39425000), (60975000, 39425000), 400000)",
+      "('T', '/01_POWER_TREE/ACC_5V_RAW', 2, (60975000, 39425000), (61050000, 39500000), 400000)",
+      "('T', '/01_POWER_TREE/ACC_5V_RAW', 2, (61375000, 34300000), (62175000, 33500000), 400000)",
+      "('T', '/01_POWER_TREE/ACC_5V_RAW', 8, (52325000, 35225000), (55850000, 38000000), 400000)",
+      "('T', '/01_POWER_TREE/ACC_5V_RAW', 8, (52600000, 43000000), (55850000, 38000000), 400000)",
+      "('T', '/01_POWER_TREE/ACC_5V_RAW', 8, (55850000, 38000000), (57450000, 39600000), 400000)",
+      "('T', '/01_POWER_TREE/ACC_5V_RAW', 8, (57450000, 39600000), (60950000, 39425000), 400000)",
+      "('T', '/01_POWER_TREE/ACC_5V_RAW', 8, (60950000, 39425000), (61375000, 34300000), 400000)",
+      "('V', '/01_POWER_TREE/ACC_5V_RAW', (52600000, 43000000), 900000, 400000)",
+      "('V', '/01_POWER_TREE/ACC_5V_RAW', (55850000, 38000000), 900000, 400000)",
+      "('V', '/01_POWER_TREE/ACC_5V_RAW', (60950000, 39425000), 900000, 400000)",
+      "('V', '/01_POWER_TREE/ACC_5V_RAW', (61375000, 34300000), 900000, 400000)"
+    ],
+    "stated_window_mm": [
+      52.0,
+      33.0,
+      62.5,
+      43.5
+    ],
+    "whole_net": false
+  },
+  "exact_relay": [],
+  "failed_nets": [
+    "/01_POWER_TREE/ACC_5V_LX"
+  ],
+  "gate_clauses": {
+    "attributable_drc": false,
+    "authority_unchanged": true,
+    "barrel_move_licensed": true,
+    "board_changed": true,
+    "board_improved": false,
+    "every_detour_relaid": true,
+    "inert_removal_priced": true,
+    "inherited_within_baseline": true,
+    "no_foreign_copper": true,
+    "no_open_relief_licence": true,
+    "no_regression": false,
+    "no_unlicensed_removal": true,
+    "pour_partition": false,
+    "rebond_priced": true,
+    "zones_and_rule_areas": true
+  },
+  "guard": {
+    "sha256": "a9b5819e8183e1d2c908b8a3f6977965801db603c6accce9c5877119faa2b399",
+    "spec": "evidence/d708-npth-guard.json",
+    "tubes": 8
+  },
+  "inherited_within_baseline": true,
+  "island_joins": null,
+  "pad_bridges": null,
+  "plane": null,
+  "plane_repair": {
+    "candidates": [
+      "GND"
+    ],
+    "evicted_nets": [
+      "/01_POWER_TREE/ACC_5V_RAW"
+    ],
+    "join_max_mm": 8.0,
+    "pour_owning_nets": [
+      "+3V3",
+      "/01_POWER_TREE/BQ25185_SYS",
+      "GND"
+    ],
+    "regressed_before_repair": [
+      "GND"
+    ],
+    "retained_open_edges_before_repair": 16,
+    "routed": [
+      {
+        "contract": {
+          "clr": 200000,
+          "clr_pad": 200000,
+          "escape_floor": 300000,
+          "guarded_layers": {
+            "B": 2,
+            "F": 2,
+            "I2": 2,
+            "I3": 2
+          },
+          "layers": [
+            "F",
+            "B",
+            "I2"
+          ],
+          "netclass": "GND",
+          "reserved_inner_planes": {
+            "I1": [
+              "GND"
+            ],
+            "I3": [
+              "+3V3"
+            ],
+            "I4": [
+              "GND"
+            ]
+          },
+          "trunk_floor": {
+            "admitted": false,
+            "amps": null,
+            "floor_nm": null,
+            "from_nm": 300000,
+            "netclass": "GND",
+            "required_amps": null,
+            "to_nm": 300000,
+            "why": "CLASS_HAS_NO_PUBLISHED_FLOOR"
+          },
+          "via_dia": 500000,
+          "via_drill": 250000,
+          "width": 300000
+        },
+        "failures": [
+          {
+            "island": [
+              "U21.4"
+            ],
+            "pad": "U21.4",
+            "reason": "NO_VIA_SITE",
+            "why": "no legal 0.50 mm barrel within 8.0 mm of any escape"
+          }
+        ],
+        "mm": 0,
+        "mode": "stitch+join",
+        "net": "GND",
+        "ok": false,
+        "residual_join": {
+          "failures": [
+            {
+              "dst_escapes": 45,
+              "island": [
+                "U21.4"
+              ],
+              "reason": "NO_PATH",
+              "src_escapes": 1,
+              "why": "no all-layer corridor at 0.300 mm between the islands"
+            }
+          ],
+          "joined": 0,
+          "joins": [],
+          "mm": 0,
+          "net": "GND",
+          "ok": false,
+          "unreachable": 1,
+          "vias": 0
+        },
+        "seconds": 1643.2,
+        "stitched": 0,
+        "unreachable": 1,
+        "via_xy": [],
+        "vias": 0
+      }
+    ]
+  },
+  "pour_partition": {
+    "detail": {
+      "PP1": {
+        "newly_unresolved": [],
+        "ok": true,
+        "pours_post": 4,
+        "pours_pre": 4,
+        "unresolved_inherited": [
+          "/01_POWER_TREE/BQ25185_SYS C24.1",
+          "/01_POWER_TREE/BQ25185_SYS C26.2",
+          "/01_POWER_TREE/BQ25185_SYS C27.1",
+          "/01_POWER_TREE/BQ25185_SYS C28.1",
+          "/01_POWER_TREE/BQ25185_SYS C33.1",
+          "/01_POWER_TREE/BQ25185_SYS C33.1",
+          "/01_POWER_TREE/BQ25185_SYS C64.1",
+          "/01_POWER_TREE/BQ25185_SYS C64.1",
+          "/01_POWER_TREE/BQ25185_SYS L2.1",
+          "/01_POWER_TREE/BQ25185_SYS L2.1",
+          "/01_POWER_TREE/BQ25185_SYS L4.1",
+          "/01_POWER_TREE/BQ25185_SYS U11.1",
+          "/01_POWER_TREE/BQ25185_SYS U11.1",
+          "/01_POWER_TREE/BQ25185_SYS U12.1",
+          "/01_POWER_TREE/BQ25185_SYS U12.10",
+          "/01_POWER_TREE/BQ25185_SYS U12.11",
+          "/01_POWER_TREE/BQ25185_SYS U13.3",
+          "/01_POWER_TREE/BQ25185_SYS U13.3",
+          "/01_POWER_TREE/BQ25185_SYS U21.3",
+          "GND MK1.4"
+        ],
+        "unresolved_post": 20,
+        "unresolved_pre": 20
+      },
+      "PP2": {
+        "admitted": [
+          "GND|B|38685722-44ee-566f-b52b-89a56220a9e0"
+        ],
+        "controls": {
+          "ok": true,
+          "probes": [
+            {
+              "behaved": true,
+              "control": "min_thickness_sliver_refused",
+              "expected": false,
+              "got": false,
+              "priced_amps": 0.742,
+              "required_amps": 1.0,
+              "verdict": "BONDED",
+              "why": "BOND_UNDER_PRICED"
+            },
+            {
+              "behaved": true,
+              "control": "one_class_width_track_refused",
+              "expected": false,
+              "got": false,
+              "priced_amps": 0.995,
+              "required_amps": 1.0,
+              "verdict": "BONDED",
+              "why": "BOND_UNDER_PRICED"
+            },
+            {
+              "behaved": true,
+              "control": "four_barrel_bond_admitted",
+              "expected": true,
+              "got": true,
+              "priced_amps": 9.244,
+              "required_amps": 1.0,
+              "verdict": "BONDED",
+              "why": "BOND_PRICED_AT_OR_ABOVE_THE_PUBLISHED_RAIL_CURRENT"
+            },
+            {
+              "behaved": true,
+              "control": "stranded_refused_however_priced",
+              "expected": false,
+              "got": false,
+              "priced_amps": 9.244,
+              "required_amps": 1.0,
+              "verdict": "STRANDED",
+              "why": "PP3_NOT_BONDED"
+            },
+            {
+              "behaved": true,
+              "control": "unpriced_net_refused",
+              "expected": false,
+              "got": false,
+              "priced_amps": 9.244,
+              "required_amps": null,
+              "verdict": "BONDED",
+              "why": "NET_CARRIES_NO_PUBLISHED_CURRENT"
+            },
+            {
+              "behaved": true,
+              "control": "bar_located_one_ppm_below",
+              "expected": false,
+              "got": false,
+              "priced_amps": 0.999999,
+              "required_amps": 1.0,
+              "verdict": "BONDED",
+              "why": "BOND_UNDER_PRICED"
+            },
+            {
+              "behaved": true,
+              "control": "bar_located_at_equality",
+              "expected": true,
+              "got": true,
+              "priced_amps": 1.0,
+              "required_amps": 1.0,
+              "verdict": "BONDED",
+              "why": "BOND_PRICED_AT_OR_ABOVE_THE_PUBLISHED_RAIL_CURRENT"
+            }
+          ],
+          "reference_amps": {
+            "four_0p400mm_barrels": 9.244,
+            "outer_track_0p300mm": 0.995,
+            "zone_min_thickness_0p200mm": 0.742
+          }
+        },
+        "islands": {
+          "+3V3|F|8c612136-d173-58bf-87cf-c0b97bedd2e0": [
+            34,
+            34
+          ],
+          "/01_POWER_TREE/BQ25185_SYS|B|4ad6fd49-a7ee-5f03-a8e4-f021f24e1091": [
+            1,
+            1
+          ],
+          "/01_POWER_TREE/BQ25185_SYS|B|da11f1b0-6501-5c41-b2b6-d6199a789ea9": [
+            6,
+            6
+          ],
+          "GND|B|38685722-44ee-566f-b52b-89a56220a9e0": [
+            69,
+            75
+          ]
+        },
+        "netclass_conductors": {
+          "ACC_3V3": {
+            "track_width_mm": 0.5,
+            "via_diameter_mm": 0.8,
+            "via_drill_mm": 0.4
+          },
+          "ACC_5V": {
+            "track_width_mm": 0.6,
+            "via_diameter_mm": 0.8,
+            "via_drill_mm": 0.4
+          },
+          "BAT_MAIN": {
+            "track_width_mm": 1.0,
+            "via_diameter_mm": 0.8,
+            "via_drill_mm": 0.4
+          },
+          "Default": {
+            "track_width_mm": 0.2,
+            "via_diameter_mm": 0.6,
+            "via_drill_mm": 0.3
+          },
+          "GND": {
+            "track_width_mm": 0.3,
+            "via_diameter_mm": 0.6,
+            "via_drill_mm": 0.3
+          },
+          "I2C": {
+            "track_width_mm": 0.2,
+            "via_diameter_mm": 0.6,
+            "via_drill_mm": 0.3
+          },
+          "I2S": {
+            "track_width_mm": 0.2,
+            "via_diameter_mm": 0.6,
+            "via_drill_mm": 0.3
+          },
+          "LED_BOOST": {
+            "track_width_mm": 0.3,
+            "via_diameter_mm": 0.6,
+            "via_drill_mm": 0.3
+          },
+          "NFC_5V_PA": {
+            "track_width_mm": 0.6,
+            "via_diameter_mm": 0.8,
+            "via_drill_mm": 0.4
+          },
+          "NFC_OSC": {
+            "track_width_mm": 0.2,
+            "via_diameter_mm": 0.6,
+            "via_drill_mm": 0.3
+          },
+          "NFC_RF": {
+            "track_width_mm": 0.4,
+            "via_diameter_mm": 0.8,
+            "via_drill_mm": 0.4
+          },
+          "NFC_RX": {
+            "track_width_mm": 0.2,
+            "via_diameter_mm": 0.6,
+            "via_drill_mm": 0.3
+          },
+          "P3V3": {
+            "track_width_mm": 0.6,
+            "via_diameter_mm": 0.8,
+            "via_drill_mm": 0.4
+          },
+          "SPK_OUT": {
+            "track_width_mm": 0.3,
+            "via_diameter_mm": 0.6,
+            "via_drill_mm": 0.3
+          },
+          "SWITCH_NODE": {
+            "track_width_mm": 0.6,
+            "via_diameter_mm": 0.8,
+            "via_drill_mm": 0.4
+          },
+          "SYS_MAIN": {
+            "track_width_mm": 0.8,
+            "via_diameter_mm": 0.8,
+            "via_drill_mm": 0.4
+          },
+          "USB_D": {
+            "track_width_mm": 0.25,
+            "via_diameter_mm": 0.55,
+            "via_drill_mm": 0.25
+          },
+          "VBUS_CHG": {
+            "track_width_mm": 0.5,
+            "via_diameter_mm": 0.8,
+            "via_drill_mm": 0.4
+          }
+        },
+        "netclass_source": {
+          "classes": [
+            "ACC_3V3",
+            "ACC_5V",
+            "BAT_MAIN",
+            "Default",
+            "GND",
+            "I2C",
+            "I2S",
+            "LED_BOOST",
+            "NFC_5V_PA",
+            "NFC_OSC",
+            "NFC_RF",
+            "NFC_RX",
+            "P3V3",
+            "SPK_OUT",
+            "SWITCH_NODE",
+            "SYS_MAIN",
+            "USB_D",
+            "VBUS_CHG"
+          ],
+          "found": true,
+          "sha256": "e5af7cdf0a05f0c0778099c21aea9bb6cbbbe92e89fb5f79e11f0907ad5c52f1",
+          "source": "w/d710/c3/aqroot-Beta-v2.kicad_pro"
+        },
+        "ok": false,
+        "priced": [
+          {
+            "admit": false,
+            "body": {
+              "area_mm2": 1991.395,
+              "exempt": true,
+              "pads": [
+                "C16.2",
+                "C17.2",
+                "C18.2",
+                "C35.2",
+                "C46.2",
+                "C48.2",
+                "C49.2",
+                "C50.2",
+                "C52.2",
+                "C54.2",
+                "C55.2",
+                "C58.2",
+                "C79.2",
+                "C80.2",
+                "D9.2",
+                "J5.2",
+                "Q9.2",
+                "R101.2",
+                "R14.2",
+                "R45.2",
+                "R83.2",
+                "R92.2",
+                "U6.2",
+                "U9.12",
+                "U9.20",
+                "U9.21",
+                "U9.26",
+                "U9.33",
+                "U9.6",
+                "Y1.2",
+                "Y1.4"
+              ],
+              "post_island": 37,
+              "why": null
+            },
+            "fragments": [
+              {
+                "admit": false,
+                "area_mm2": 17.546,
+                "margin_x": 0.896,
+                "pads": [
+                  "C25.2",
+                  "J5.23"
+                ],
+                "post_island": 45,
+                "pp3_verdict": "BONDED",
+                "price": {
+                  "barrels": [
+                    {
+                      "amps": 1.685,
+                      "drill_mm": 0.25,
+                      "wall_mm2": 0.021598,
+                      "xy_mm": [
+                        66.6,
+                        66.6
+                      ]
+                    },
+                    {
+                      "amps": 1.902,
+                      "drill_mm": 0.3,
+                      "wall_mm2": 0.025525,
+                      "xy_mm": [
+                        65.3,
+                        64.6
+                      ]
+                    }
+                  ],
+                  "barrels_into_plane": 2,
+                  "barrels_without_drill": [],
+                  "bond_amps_parallel": 3.587,
+                  "bottleneck": "FRAGMENT_COPPER",
+                  "dT_K": 10.0,
+                  "internal": [
+                    {
+                      "amps": 2.881,
+                      "mm": 0.177,
+                      "mohm": 0.067,
+                      "pad": "J5.23",
+                      "width_mm": 1.3
+                    },
+                    {
+                      "amps": 2.8,
+                      "mm": 2.99,
+                      "mohm": 1.185,
+                      "pad": "C25.2",
+                      "width_mm": 1.25
+                    }
+                  ],
+                  "internal_min_amps": 2.8,
+                  "internal_min_width_mm": 1.25,
+                  "priced_amps": 2.8,
+                  "unmeasurable_pads": []
+                },
+                "required_amps": 3.125,
+                "return_fragment_bar": {
+                  "bar_amps": 3.125,
+                  "bar_from": "RETURN_NEIGHBOUR_RAIL",
+                  "boundary": {
+                    "bond_amps_parallel": 3.587,
+                    "note": "KCL at the fragment boundary: everything entering through the pads leaves through the barrels",
+                    "ok": false,
+                    "sum_of_pad_bars": 4.12
+                  },
+                  "floor": {
+                    "amps": 0.995,
+                    "dT_K": 10.0,
+                    "netclass": "GND",
+                    "note": "one track of the net's OWN netclass width at this board's copper -- what the board publishes as an adequate conductor for this net",
+                    "track_width_mm": 0.3
+                  },
+                  "limits": "a neighbour on a class section 5 does not price contributes nothing; the MAXIMUM neighbour is charged, not the sum",
+                  "neighbour_max_amps": 3.125,
+                  "neighbour_rails": [
+                    {
+                      "gnd_pad": "C25.2",
+                      "other_net": "/01_POWER_TREE/BAT_PROTECTED_P",
+                      "other_netclass": "BAT_MAIN",
+                      "other_pad": "1",
+                      "part": "C25",
+                      "published_amps": 3.125
+                    },
+                    {
+                      "gnd_pad": "J5.23",
+                      "other_net": "/ACC_5V_SW",
+                      "other_netclass": "ACC_5V",
+                      "other_pad": "1",
+                      "part": "J5",
+                      "published_amps": 0.7
+                    },
+                    {
+                      "gnd_pad": "J5.23",
+                      "other_net": "/ACC_3V3_SW",
+                      "other_netclass": "ACC_3V3",
+                      "other_pad": "22",
+                      "part": "J5",
+                      "published_amps": 0.76
+                    },
+                    {
+                      "gnd_pad": "J5.23",
+                      "other_net": "/ACC_5V_SW",
+                      "other_netclass": "ACC_5V",
+                      "other_pad": "24",
+                      "part": "J5",
+                      "published_amps": 0.7
+                    },
+                    {
+                      "gnd_pad": "J5.23",
+                      "other_net": "/ACC_3V3_SW",
+                      "other_netclass": "ACC_3V3",
+                      "other_pad": "3",
+                      "part": "J5",
+                      "published_amps": 0.76
+                    }
+                  ],
+                  "note": "D-709: the ADMISSION is the per-pad clause below; `bar_amps` is the fragment-wide MAXIMUM, reported for continuity",
+                  "per_pad": [
+                    {
+                      "bar_amps": 3.125,
+                      "bar_from": "RETURN_NEIGHBOUR_RAIL",
+                      "ok": false,
+                      "pad": "C25.2",
+                      "path_amps": 2.8
+                    },
+                    {
+                      "bar_amps": 0.995,
+                      "bar_from": "RETURN_FLOOR_ONE_NETCLASS_TRACK",
+                      "ok": true,
+                      "pad": "J5.23",
+                      "path_amps": 2.881
+                    }
+                  ]
+                },
+                "severed_neck": {
+                  "amps": 1.839,
+                  "note": "the narrowest place on the widest PRE path from the fragment's pads to the body's; under-stated by a geodesic that reaches its own search window, which is why it is published and not charged",
+                  "probes": [
+                    {
+                      "body_pad": "J5.2",
+                      "frag_pad": "J5.23",
+                      "mm": 58.166,
+                      "width_mm": 0.7
+                    },
+                    {
+                      "body_pad": "U6.2",
+                      "frag_pad": "J5.23",
+                      "mm": 65.728,
+                      "width_mm": 0.7
+                    },
+                    {
+                      "body_pad": "J5.2",
+                      "frag_pad": "C25.2",
+                      "mm": 60.983,
+                      "width_mm": 0.7
+                    },
+                    {
+                      "body_pad": "U6.2",
+                      "frag_pad": "C25.2",
+                      "mm": 68.468,
+                      "width_mm": 0.7
+                    }
+                  ],
+                  "width_mm": 0.7
+                },
+                "why": "RETURN_BOUNDARY_UNDER_PRICED"
+              },
+              {
+                "admit": false,
+                "area_mm2": 154.58,
+                "margin_x": 0.751,
+                "pads": [
+                  "C34.1",
+                  "J5.6",
+                  "U13.4"
+                ],
+                "post_island": 49,
+                "pp3_verdict": "BONDED",
+                "price": {
+                  "barrels": [
+                    {
+                      "amps": 1.685,
+                      "drill_mm": 0.25,
+                      "wall_mm2": 0.021598,
+                      "xy_mm": [
+                        58.3,
+                        23.7
+                      ]
+                    },
+                    {
+                      "amps": 1.685,
+                      "drill_mm": 0.25,
+                      "wall_mm2": 0.021598,
+                      "xy_mm": [
+                        58.2,
+                        24.9
+                      ]
+                    },
+                    {
+                      "amps": 1.902,
+                      "drill_mm": 0.3,
+                      "wall_mm2": 0.025525,
+                      "xy_mm": [
+                        61.1,
+                        21.9
+                      ]
+                    },
+                    {
+                      "amps": 1.902,
+                      "drill_mm": 0.3,
+                      "wall_mm2": 0.025525,
+                      "xy_mm": [
+                        60.9,
+                        23.0
+                      ]
+                    }
+                  ],
+                  "barrels_into_plane": 4,
+                  "barrels_without_drill": [],
+                  "bond_amps_parallel": 7.174,
+                  "bottleneck": "FRAGMENT_COPPER",
+                  "dT_K": 10.0,
+                  "internal": [
+                    {
+                      "amps": 1.933,
+                      "mm": 7.629,
+                      "mohm": 5.039,
+                      "pad": "J5.6",
+                      "width_mm": 0.75
+                    },
+                    {
+                      "amps": 5.282,
+                      "mm": 0.0,
+                      "mohm": 0.0,
+                      "pad": "C34.1",
+                      "width_mm": 3.0
+                    },
+                    {
+                      "amps": 1.645,
+                      "mm": 1.981,
+                      "mohm": 1.636,
+                      "pad": "U13.4",
+                      "width_mm": 0.6
+                    }
+                  ],
+                  "internal_min_amps": 1.645,
+                  "internal_min_width_mm": 0.6,
+                  "priced_amps": 1.645,
+                  "unmeasurable_pads": []
+                },
+                "required_amps": 2.19,
+                "return_fragment_bar": {
+                  "bar_amps": 2.19,
+                  "bar_from": "RETURN_NEIGHBOUR_RAIL",
+                  "boundary": {
+                    "bond_amps_parallel": 7.174,
+                    "note": "KCL at the fragment boundary: everything entering through the pads leaves through the barrels",
+                    "ok": true,
+                    "sum_of_pad_bars": 4.18
+                  },
+                  "floor": {
+                    "amps": 0.995,
+                    "dT_K": 10.0,
+                    "netclass": "GND",
+                    "note": "one track of the net's OWN netclass width at this board's copper -- what the board publishes as an adequate conductor for this net",
+                    "track_width_mm": 0.3
+                  },
+                  "limits": "a neighbour on a class section 5 does not price contributes nothing; the MAXIMUM neighbour is charged, not the sum",
+                  "neighbour_max_amps": 2.19,
+                  "neighbour_rails": [
+                    {
+                      "gnd_pad": "J5.6",
+                      "other_net": "/ACC_5V_SW",
+                      "other_netclass": "ACC_5V",
+                      "other_pad": "1",
+                      "part": "J5",
+                      "published_amps": 0.7
+                    },
+                    {
+                      "gnd_pad": "J5.6",
+                      "other_net": "/ACC_3V3_SW",
+                      "other_netclass": "ACC_3V3",
+                      "other_pad": "22",
+                      "part": "J5",
+                      "published_amps": 0.76
+                    },
+                    {
+                      "gnd_pad": "J5.6",
+                      "other_net": "/ACC_5V_SW",
+                      "other_netclass": "ACC_5V",
+                      "other_pad": "24",
+                      "part": "J5",
+                      "published_amps": 0.7
+                    },
+                    {
+                      "gnd_pad": "J5.6",
+                      "other_net": "/ACC_3V3_SW",
+                      "other_netclass": "ACC_3V3",
+                      "other_pad": "3",
+                      "part": "J5",
+                      "published_amps": 0.76
+                    },
+                    {
+                      "gnd_pad": "U13.4",
+                      "other_net": "/01_POWER_TREE/BQ25185_SYS",
+                      "other_netclass": "SYS_MAIN",
+                      "other_pad": "3",
+                      "part": "U13",
+                      "published_amps": 2.19
+                    }
+                  ],
+                  "note": "D-709: the ADMISSION is the per-pad clause below; `bar_amps` is the fragment-wide MAXIMUM, reported for continuity",
+                  "per_pad": [
+                    {
+                      "bar_amps": 0.995,
+                      "bar_from": "RETURN_FLOOR_ONE_NETCLASS_TRACK",
+                      "ok": true,
+                      "pad": "C34.1",
+                      "path_amps": 5.282
+                    },
+                    {
+                      "bar_amps": 0.995,
+                      "bar_from": "RETURN_FLOOR_ONE_NETCLASS_TRACK",
+                      "ok": true,
+                      "pad": "J5.6",
+                      "path_amps": 1.933
+                    },
+                    {
+                      "bar_amps": 2.19,
+                      "bar_from": "RETURN_NEIGHBOUR_RAIL",
+                      "ok": false,
+                      "pad": "U13.4",
+                      "path_amps": 1.645
+                    }
+                  ]
+                },
+                "severed_neck": {
+                  "amps": 4.561,
+                  "note": "the narrowest place on the widest PRE path from the fragment's pads to the body's; under-stated by a geodesic that reaches its own search window, which is why it is published and not charged",
+                  "probes": [
+                    {
+                      "body_pad": "J5.2",
+                      "frag_pad": "J5.6",
+                      "mm": 10.577,
+                      "width_mm": 1.9
+                    },
+                    {
+                      "body_pad": "U6.2",
+                      "frag_pad": "J5.6",
+                      "mm": 18.36,
+                      "width_mm": 2.45
+                    },
+                    {
+                      "body_pad": "J5.2",
+                      "frag_pad": "C34.1",
+                      "mm": 16.564,
+                      "width_mm": 0.75
+                    },
+                    {
+                      "body_pad": "U6.2",
+                      "frag_pad": "C34.1",
+                      "mm": 24.111,
+                      "width_mm": 0.75
+                    },
+                    {
+                      "body_pad": "J5.2",
+                      "frag_pad": "U13.4",
+                      "mm": 12.599,
+                      "width_mm": 0.6
+                    },
+                    {
+                      "body_pad": "U6.2",
+                      "frag_pad": "U13.4",
+                      "mm": 20.029,
+                      "width_mm": 0.6
+                    }
+                  ],
+                  "width_mm": 2.45
+                },
+                "why": "PAD_RETURN_UNDER_PRICED"
+              },
+              {
+                "admit": false,
+                "area_mm2": 6.27,
+                "margin_x": null,
+                "pads": [
+                  "J5.19"
+                ],
+                "post_island": 55,
+                "pp3_verdict": "STRANDED",
+                "price": {
+                  "barrels": [],
+                  "barrels_into_plane": 0,
+                  "barrels_without_drill": [],
+                  "bond_amps_parallel": 0.0,
+                  "bottleneck": null,
+                  "dT_K": 10.0,
+                  "internal": [
+                    {
+                      "amps": null,
+                      "mm": null,
+                      "mohm": null,
+                      "pad": "J5.19",
+                      "width_mm": null
+                    }
+                  ],
+                  "internal_min_amps": null,
+                  "internal_min_width_mm": null,
+                  "priced_amps": null,
+                  "unmeasurable_pads": [
+                    "J5.19"
+                  ]
+                },
+                "required_amps": 0.995,
+                "return_fragment_bar": {
+                  "bar_amps": 0.995,
+                  "bar_from": "RETURN_FLOOR_ONE_NETCLASS_TRACK",
+                  "boundary": null,
+                  "floor": {
+                    "amps": 0.995,
+                    "dT_K": 10.0,
+                    "netclass": "GND",
+                    "note": "one track of the net's OWN netclass width at this board's copper -- what the board publishes as an adequate conductor for this net",
+                    "track_width_mm": 0.3
+                  },
+                  "limits": "a neighbour on a class section 5 does not price contributes nothing; the MAXIMUM neighbour is charged, not the sum",
+                  "neighbour_max_amps": 0.76,
+                  "neighbour_rails": [
+                    {
+                      "gnd_pad": "J5.19",
+                      "other_net": "/ACC_5V_SW",
+                      "other_netclass": "ACC_5V",
+                      "other_pad": "1",
+                      "part": "J5",
+                      "published_amps": 0.7
+                    },
+                    {
+                      "gnd_pad": "J5.19",
+                      "other_net": "/ACC_3V3_SW",
+                      "other_netclass": "ACC_3V3",
+                      "other_pad": "22",
+                      "part": "J5",
+                      "published_amps": 0.76
+                    },
+                    {
+                      "gnd_pad": "J5.19",
+                      "other_net": "/ACC_5V_SW",
+                      "other_netclass": "ACC_5V",
+                      "other_pad": "24",
+                      "part": "J5",
+                      "published_amps": 0.7
+                    },
+                    {
+                      "gnd_pad": "J5.19",
+                      "other_net": "/ACC_3V3_SW",
+                      "other_netclass": "ACC_3V3",
+                      "other_pad": "3",
+                      "part": "J5",
+                      "published_amps": 0.76
+                    }
+                  ],
+                  "note": "D-709: the ADMISSION is the per-pad clause below; `bar_amps` is the fragment-wide MAXIMUM, reported for continuity",
+                  "per_pad": null
+                },
+                "severed_neck": {
+                  "amps": 1.839,
+                  "note": "the narrowest place on the widest PRE path from the fragment's pads to the body's; under-stated by a geodesic that reaches its own search window, which is why it is published and not charged",
+                  "probes": [
+                    {
+                      "body_pad": "J5.2",
+                      "frag_pad": "J5.19",
+                      "mm": 67.238,
+                      "width_mm": 0.7
+                    },
+                    {
+                      "body_pad": "U6.2",
+                      "frag_pad": "J5.19",
+                      "mm": 74.79,
+                      "width_mm": 0.7
+                    }
+                  ],
+                  "width_mm": 0.7
+                },
+                "why": "PP3_NOT_BONDED"
+              }
+            ],
+            "layer": "B.Cu",
+            "net": "GND",
+            "netclass": "GND",
+            "pour": "GND|B|38685722-44ee-566f-b52b-89a56220a9e0",
+            "pre_area_mm2": 2269.882,
+            "pre_island": 37,
+            "published_amps": null,
+            "published_figures": null
+          },
+          {
+            "admit": false,
+            "body": {
+              "area_mm2": 39.912,
+              "exempt": true,
+              "pads": [
+                "C38.2",
+                "C65.2"
+              ],
+              "post_island": 59,
+              "why": null
+            },
+            "fragments": [
+              {
+                "admit": false,
+                "area_mm2": 4.891,
+                "margin_x": null,
+                "pads": [
+                  "U21.4"
+                ],
+                "post_island": 61,
+                "pp3_verdict": "STRANDED",
+                "price": {
+                  "barrels": [],
+                  "barrels_into_plane": 0,
+                  "barrels_without_drill": [],
+                  "bond_amps_parallel": 0.0,
+                  "bottleneck": null,
+                  "dT_K": 10.0,
+                  "internal": [
+                    {
+                      "amps": null,
+                      "mm": null,
+                      "mohm": null,
+                      "pad": "U21.4",
+                      "width_mm": null
+                    }
+                  ],
+                  "internal_min_amps": null,
+                  "internal_min_width_mm": null,
+                  "priced_amps": null,
+                  "unmeasurable_pads": [
+                    "U21.4"
+                  ]
+                },
+                "required_amps": 2.19,
+                "return_fragment_bar": {
+                  "bar_amps": 2.19,
+                  "bar_from": "RETURN_NEIGHBOUR_RAIL",
+                  "boundary": null,
+                  "floor": {
+                    "amps": 0.995,
+                    "dT_K": 10.0,
+                    "netclass": "GND",
+                    "note": "one track of the net's OWN netclass width at this board's copper -- what the board publishes as an adequate conductor for this net",
+                    "track_width_mm": 0.3
+                  },
+                  "limits": "a neighbour on a class section 5 does not price contributes nothing; the MAXIMUM neighbour is charged, not the sum",
+                  "neighbour_max_amps": 2.19,
+                  "neighbour_rails": [
+                    {
+                      "gnd_pad": "U21.4",
+                      "other_net": "/01_POWER_TREE/BQ25185_SYS",
+                      "other_netclass": "SYS_MAIN",
+                      "other_pad": "3",
+                      "part": "U21",
+                      "published_amps": 2.19
+                    },
+                    {
+                      "gnd_pad": "U21.4",
+                      "other_net": "/01_POWER_TREE/ACC_5V_RAW",
+                      "other_netclass": "ACC_5V",
+                      "other_pad": "6",
+                      "part": "U21",
+                      "published_amps": 0.7
+                    }
+                  ],
+                  "note": "D-709: the ADMISSION is the per-pad clause below; `bar_amps` is the fragment-wide MAXIMUM, reported for continuity",
+                  "per_pad": null
+                },
+                "severed_neck": {
+                  "amps": 0.742,
+                  "note": "the narrowest place on the widest PRE path from the fragment's pads to the body's; under-stated by a geodesic that reaches its own search window, which is why it is published and not charged",
+                  "probes": [
+                    {
+                      "body_pad": "C65.2",
+                      "frag_pad": "U21.4",
+                      "mm": 7.063,
+                      "width_mm": 0.2
+                    },
+                    {
+                      "body_pad": "C38.2",
+                      "frag_pad": "U21.4",
+                      "mm": 10.549,
+                      "width_mm": 0.2
+                    }
+                  ],
+                  "width_mm": 0.2
+                },
+                "why": "PP3_NOT_BONDED"
+              }
+            ],
+            "layer": "B.Cu",
+            "net": "GND",
+            "netclass": "GND",
+            "pour": "GND|B|38685722-44ee-566f-b52b-89a56220a9e0",
+            "pre_area_mm2": 44.27,
+            "pre_island": 55,
+            "published_amps": null,
+            "published_figures": null
+          },
+          {
+            "admit": true,
+            "body": {
+              "area_mm2": 39.831,
+              "exempt": true,
+              "pads": [
+                "C66.2"
+              ],
+              "post_island": 62,
+              "why": null
+            },
+            "fragments": [
+              {
+                "admit": true,
+                "area_mm2": 33.632,
+                "margin_x": 1.743,
+                "pads": [
+                  "C19.2",
+                  "C78.2"
+                ],
+                "post_island": 60,
+                "pp3_verdict": "BONDED",
+                "price": {
+                  "barrels": [
+                    {
+                      "amps": 1.902,
+                      "drill_mm": 0.3,
+                      "wall_mm2": 0.025525,
+                      "xy_mm": [
+                        43.7,
+                        38.3
+                      ]
+                    },
+                    {
+                      "amps": 1.902,
+                      "drill_mm": 0.3,
+                      "wall_mm2": 0.025525,
+                      "xy_mm": [
+                        51.2,
+                        34.3
+                      ]
+                    }
+                  ],
+                  "barrels_into_plane": 2,
+                  "barrels_without_drill": [],
+                  "bond_amps_parallel": 3.804,
+                  "bottleneck": "FRAGMENT_COPPER",
+                  "dT_K": 10.0,
+                  "internal": [
+                    {
+                      "amps": 2.295,
+                      "mm": 0.437,
+                      "mohm": 0.228,
+                      "pad": "C78.2",
+                      "width_mm": 0.95
+                    },
+                    {
+                      "amps": 1.743,
+                      "mm": 0.474,
+                      "mohm": 0.361,
+                      "pad": "C19.2",
+                      "width_mm": 0.65
+                    }
+                  ],
+                  "internal_min_amps": 1.743,
+                  "internal_min_width_mm": 0.65,
+                  "priced_amps": 1.743,
+                  "unmeasurable_pads": []
+                },
+                "required_amps": 1.0,
+                "return_fragment_bar": {
+                  "bar_amps": 1.0,
+                  "bar_from": "RETURN_NEIGHBOUR_RAIL",
+                  "boundary": {
+                    "bond_amps_parallel": 3.804,
+                    "note": "KCL at the fragment boundary: everything entering through the pads leaves through the barrels",
+                    "ok": true,
+                    "sum_of_pad_bars": 1.995
+                  },
+                  "floor": {
+                    "amps": 0.995,
+                    "dT_K": 10.0,
+                    "netclass": "GND",
+                    "note": "one track of the net's OWN netclass width at this board's copper -- what the board publishes as an adequate conductor for this net",
+                    "track_width_mm": 0.3
+                  },
+                  "limits": "a neighbour on a class section 5 does not price contributes nothing; the MAXIMUM neighbour is charged, not the sum",
+                  "neighbour_max_amps": 1.0,
+                  "neighbour_rails": [
+                    {
+                      "gnd_pad": "C19.2",
+                      "other_net": "/NFC_SUPPLY",
+                      "other_netclass": "P3V3",
+                      "other_pad": "1",
+                      "part": "C19",
+                      "published_amps": 1.0
+                    }
+                  ],
+                  "note": "D-709: the ADMISSION is the per-pad clause below; `bar_amps` is the fragment-wide MAXIMUM, reported for continuity",
+                  "per_pad": [
+                    {
+                      "bar_amps": 1.0,
+                      "bar_from": "RETURN_NEIGHBOUR_RAIL",
+                      "ok": true,
+                      "pad": "C19.2",
+                      "path_amps": 1.743
+                    },
+                    {
+                      "bar_amps": 0.995,
+                      "bar_from": "RETURN_FLOOR_ONE_NETCLASS_TRACK",
+                      "ok": true,
+                      "pad": "C78.2",
+                      "path_amps": 2.295
+                    }
+                  ]
+                },
+                "severed_neck": {
+                  "amps": 2.881,
+                  "note": "the narrowest place on the widest PRE path from the fragment's pads to the body's; under-stated by a geodesic that reaches its own search window, which is why it is published and not charged",
+                  "probes": [
+                    {
+                      "body_pad": "C66.2",
+                      "frag_pad": "C78.2",
+                      "mm": 6.669,
+                      "width_mm": 1.3
+                    },
+                    {
+                      "body_pad": "C66.2",
+                      "frag_pad": "C19.2",
+                      "mm": 13.494,
+                      "width_mm": 0.4
+                    }
+                  ],
+                  "width_mm": 1.3
+                },
+                "why": "BOND_PRICED_PER_PAD_AND_AT_THE_RETURN_BOUNDARY"
+              }
+            ],
+            "layer": "B.Cu",
+            "net": "GND",
+            "netclass": "GND",
+            "pour": "GND|B|38685722-44ee-566f-b52b-89a56220a9e0",
+            "pre_area_mm2": 80.767,
+            "pre_island": 56,
+            "published_amps": null,
+            "published_figures": null
+          }
+        ],
+        "published_rail_currents": {
+          "ACC_3V3": 0.76,
+          "ACC_5V": 0.7,
+          "BAT_MAIN": 3.125,
+          "LED_BOOST": 0.09,
+          "NFC_5V_PA_PENDING": 0.5,
+          "P3V3": 1.0,
+          "SPK_OUT": 0.41,
+          "SYS_MAIN": 2.19,
+          "VBUS_CHG": 0.5
+        },
+        "published_table_source": {
+          "classes": [
+            "ACC_3V3",
+            "ACC_5V",
+            "BAT_MAIN",
+            "LED_BOOST",
+            "NFC_5V_PA_PENDING",
+            "P3V3",
+            "SPK_OUT",
+            "SYS_MAIN",
+            "VBUS_CHG"
+          ],
+          "found": true,
+          "sha256": "150ad37b6f13a3bdf4bea5278e71b09bc780b0a21d74b6ecf896d4a8aba80451",
+          "source": "w/d710/c3/aqroot-Beta-v2.kicad_dru"
+        },
+        "refused": [
+          {
+            "pour": "GND|B|38685722-44ee-566f-b52b-89a56220a9e0",
+            "why": [
+              "PAD_RETURN_UNDER_PRICED",
+              "PP3_NOT_BONDED",
+              "RETURN_BOUNDARY_UNDER_PRICED"
+            ]
+          },
+          {
+            "pour": "GND|B|38685722-44ee-566f-b52b-89a56220a9e0",
+            "why": [
+              "PP3_NOT_BONDED"
+            ]
+          }
+        ],
+        "return_controls": {
+          "netclass_floor": {
+            "amps": 0.995,
+            "dT_K": 10.0,
+            "netclass": "GND",
+            "track_width_mm": 0.3
+          },
+          "ok": true,
+          "probes": [
+            {
+              "bar_from": "RETURN_FLOOR_ONE_NETCLASS_TRACK",
+              "behaved": true,
+              "control": "unpriced_neighbours_fall_to_the_floor",
+              "expected": 0.995,
+              "floor_amps": 0.995,
+              "got": 0.995,
+              "track_width_mm": 0.3
+            },
+            {
+              "bar_from": "RETURN_NEIGHBOUR_RAIL",
+              "behaved": true,
+              "control": "battery_neighbour_raises_the_bar",
+              "expected": 3.125,
+              "got": 3.125,
+              "neighbour": [
+                "BAT_MAIN"
+              ]
+            },
+            {
+              "behaved": true,
+              "control": "priced_neighbour_below_the_floor_does_not_lower_it",
+              "expected": 1.0,
+              "got": 1.0
+            },
+            {
+              "behaved": true,
+              "control": "the_largest_neighbour_is_the_one_charged",
+              "expected": 3.125,
+              "got": 3.125,
+              "n_neighbours": 2
+            },
+            {
+              "behaved": true,
+              "control": "a_net_with_no_netclass_conductor_has_no_floor",
+              "expected": null,
+              "got": null
+            },
+            {
+              "behaved": true,
+              "boundary": {
+                "bond_amps_parallel": 14.348,
+                "note": "KCL at the fragment boundary: everything entering through the pads leaves through the barrels",
+                "ok": true,
+                "sum_of_pad_bars": 4.125
+              },
+              "control": "the_battery_pad_on_its_own_barrel_does_not_condemn_its_neighbour",
+              "expected": true,
+              "got": true,
+              "per_pad": [
+                {
+                  "bar_amps": 3.125,
+                  "ok": true,
+                  "pad": "C36.2",
+                  "path_amps": 5.282
+                },
+                {
+                  "bar_amps": 1.0,
+                  "ok": true,
+                  "pad": "C5.2",
+                  "path_amps": 2.295
+                }
+              ],
+              "why": "BOND_PRICED_PER_PAD_AND_AT_THE_RETURN_BOUNDARY"
+            },
+            {
+              "behaved": true,
+              "boundary": {
+                "bond_amps_parallel": 14.348,
+                "note": "KCL at the fragment boundary: everything entering through the pads leaves through the barrels",
+                "ok": true,
+                "sum_of_pad_bars": 4.125
+              },
+              "control": "battery_pad_on_the_weak_path_is_REFUSED",
+              "expected": false,
+              "got": false,
+              "per_pad": [
+                {
+                  "bar_amps": 3.125,
+                  "ok": false,
+                  "pad": "C36.2",
+                  "path_amps": 2.295
+                },
+                {
+                  "bar_amps": 1.0,
+                  "ok": true,
+                  "pad": "C5.2",
+                  "path_amps": 5.282
+                }
+              ],
+              "why": "PAD_RETURN_UNDER_PRICED"
+            },
+            {
+              "behaved": true,
+              "boundary": {
+                "bond_amps_parallel": 14.348,
+                "note": "KCL at the fragment boundary: everything entering through the pads leaves through the barrels",
+                "ok": true,
+                "sum_of_pad_bars": 0.995
+              },
+              "control": "a_signal_pad_below_the_floor_is_refused",
+              "expected": false,
+              "got": false,
+              "per_pad": [
+                {
+                  "bar_amps": 0.995,
+                  "ok": false,
+                  "pad": "C45.2",
+                  "path_amps": 0.742
+                }
+              ],
+              "why": "PAD_RETURN_UNDER_PRICED"
+            },
+            {
+              "behaved": true,
+              "boundary": {
+                "bond_amps_parallel": 14.348,
+                "note": "KCL at the fragment boundary: everything entering through the pads leaves through the barrels",
+                "ok": true,
+                "sum_of_pad_bars": 0.995
+              },
+              "control": "a_signal_pad_at_the_floor_is_admitted",
+              "expected": true,
+              "got": true,
+              "per_pad": [
+                {
+                  "bar_amps": 0.995,
+                  "ok": true,
+                  "pad": "C45.2",
+                  "path_amps": 0.995
+                }
+              ],
+              "why": "BOND_PRICED_PER_PAD_AND_AT_THE_RETURN_BOUNDARY"
+            },
+            {
+              "behaved": true,
+              "boundary": {
+                "bond_amps_parallel": 14.348,
+                "note": "KCL at the fragment boundary: everything entering through the pads leaves through the barrels",
+                "ok": true,
+                "sum_of_pad_bars": 0.995
+              },
+              "control": "pad_bar_located_one_ppm_below",
+              "expected": false,
+              "got": false,
+              "per_pad": [
+                {
+                  "bar_amps": 0.995,
+                  "ok": false,
+                  "pad": "C45.2",
+                  "path_amps": 0.9949990049999999
+                }
+              ],
+              "why": "PAD_RETURN_UNDER_PRICED"
+            },
+            {
+              "behaved": true,
+              "boundary": {
+                "bond_amps_parallel": 3.0,
+                "note": "KCL at the fragment boundary: everything entering through the pads leaves through the barrels",
+                "ok": false,
+                "sum_of_pad_bars": 5.0
+              },
+              "control": "the_boundary_sum_refuses_a_bond_every_pad_passes",
+              "expected": false,
+              "got": false,
+              "per_pad": [
+                {
+                  "bar_amps": 1.0,
+                  "ok": true,
+                  "pad": "C60.2",
+                  "path_amps": 5.282
+                },
+                {
+                  "bar_amps": 1.0,
+                  "ok": true,
+                  "pad": "C61.2",
+                  "path_amps": 5.282
+                },
+                {
+                  "bar_amps": 1.0,
+                  "ok": true,
+                  "pad": "C62.2",
+                  "path_amps": 5.282
+                },
+                {
+                  "bar_amps": 1.0,
+                  "ok": true,
+                  "pad": "C63.2",
+                  "path_amps": 5.282
+                },
+                {
+                  "bar_amps": 1.0,
+                  "ok": true,
+                  "pad": "C64.2",
+                  "path_amps": 5.282
+                }
+              ],
+              "why": "RETURN_BOUNDARY_UNDER_PRICED"
+            },
+            {
+              "behaved": true,
+              "boundary": {
+                "bond_amps_parallel": 5.0,
+                "note": "KCL at the fragment boundary: everything entering through the pads leaves through the barrels",
+                "ok": true,
+                "sum_of_pad_bars": 5.0
+              },
+              "control": "the_same_pads_are_admitted_when_the_boundary_carries_the_sum",
+              "expected": true,
+              "got": true,
+              "per_pad": [
+                {
+                  "bar_amps": 1.0,
+                  "ok": true,
+                  "pad": "C60.2",
+                  "path_amps": 5.282
+                },
+                {
+                  "bar_amps": 1.0,
+                  "ok": true,
+                  "pad": "C61.2",
+                  "path_amps": 5.282
+                },
+                {
+                  "bar_amps": 1.0,
+                  "ok": true,
+                  "pad": "C62.2",
+                  "path_amps": 5.282
+                },
+                {
+                  "bar_amps": 1.0,
+                  "ok": true,
+                  "pad": "C63.2",
+                  "path_amps": 5.282
+                },
+                {
+                  "bar_amps": 1.0,
+                  "ok": true,
+                  "pad": "C64.2",
+                  "path_amps": 5.282
+                }
+              ],
+              "why": "BOND_PRICED_PER_PAD_AND_AT_THE_RETURN_BOUNDARY"
+            },
+            {
+              "behaved": true,
+              "boundary": null,
+              "control": "stranded_refused_however_priced_on_a_return_net",
+              "expected": false,
+              "got": false,
+              "per_pad": [],
+              "why": "PP3_NOT_BONDED"
+            },
+            {
+              "behaved": true,
+              "boundary": null,
+              "control": "an_unmeasurable_pad_refuses",
+              "expected": false,
+              "got": false,
+              "per_pad": [],
+              "why": "BOND_NOT_MEASURABLE"
+            }
+          ],
+          "reference_amps": {
+            "d619_real_fragment": 2.552,
+            "zone_min_thickness_0p200mm": 0.742
+          }
+        },
+        "return_nets": {
+          "GND": {
+            "netclass": "GND",
+            "plane_area_mm2": 19033.27,
+            "reserved_layers": [
+              "I1",
+              "I4"
+            ]
+          }
+        },
+        "splits": [
+          {
+            "layer": "B.Cu",
+            "net": "GND",
+            "parts": [
+              {
+                "area_mm2": 1991.395,
+                "body": true,
+                "pads": [
+                  "C16.2",
+                  "C17.2",
+                  "C18.2",
+                  "C35.2",
+                  "C46.2",
+                  "C48.2",
+                  "C49.2",
+                  "C50.2",
+                  "C52.2",
+                  "C54.2",
+                  "C55.2",
+                  "C58.2",
+                  "C79.2",
+                  "C80.2",
+                  "D9.2",
+                  "J5.2",
+                  "Q9.2",
+                  "R101.2",
+                  "R14.2",
+                  "R45.2",
+                  "R83.2",
+                  "R92.2",
+                  "U6.2",
+                  "U9.12",
+                  "U9.20",
+                  "U9.21",
+                  "U9.26",
+                  "U9.33",
+                  "U9.6",
+                  "Y1.2",
+                  "Y1.4"
+                ],
+                "post_island": 37
+              },
+              {
+                "area_mm2": 17.546,
+                "body": false,
+                "pads": [
+                  "C25.2",
+                  "J5.23"
+                ],
+                "post_island": 45
+              },
+              {
+                "area_mm2": 154.58,
+                "body": false,
+                "pads": [
+                  "C34.1",
+                  "J5.6",
+                  "U13.4"
+                ],
+                "post_island": 49
+              },
+              {
+                "area_mm2": 6.27,
+                "body": false,
+                "pads": [
+                  "J5.19"
+                ],
+                "post_island": 55
+              }
+            ],
+            "pour": "GND|B|38685722-44ee-566f-b52b-89a56220a9e0",
+            "pre_area_mm2": 2269.882,
+            "pre_island": 37,
+            "pre_pads": 37
+          },
+          {
+            "layer": "B.Cu",
+            "net": "GND",
+            "parts": [
+              {
+                "area_mm2": 39.912,
+                "body": true,
+                "pads": [
+                  "C38.2",
+                  "C65.2"
+                ],
+                "post_island": 59
+              },
+              {
+                "area_mm2": 4.891,
+                "body": false,
+                "pads": [
+                  "U21.4"
+                ],
+                "post_island": 61
+              }
+            ],
+            "pour": "GND|B|38685722-44ee-566f-b52b-89a56220a9e0",
+            "pre_area_mm2": 44.27,
+            "pre_island": 55,
+            "pre_pads": 3
+          },
+          {
+            "layer": "B.Cu",
+            "net": "GND",
+            "parts": [
+              {
+                "area_mm2": 33.632,
+                "body": false,
+                "pads": [
+                  "C19.2",
+                  "C78.2"
+                ],
+                "post_island": 60
+              },
+              {
+                "area_mm2": 39.831,
+                "body": true,
+                "pads": [
+                  "C66.2"
+                ],
+                "post_island": 62
+              }
+            ],
+            "pour": "GND|B|38685722-44ee-566f-b52b-89a56220a9e0",
+            "pre_area_mm2": 80.767,
+            "pre_island": 56,
+            "pre_pads": 3
+          }
+        ]
+      },
+      "PP3": {
+        "fragments": [
+          {
+            "area_mm2": 17.546,
+            "barrels": 2,
+            "barrels_into_reserved_planes": 2,
+            "detail": [
+              {
+                "planes": [
+                  {
+                    "area_mm2": 9516.635,
+                    "layer": "In1.Cu",
+                    "zone": "In1 GND REFERENCE"
+                  },
+                  {
+                    "area_mm2": 9516.635,
+                    "layer": "In4.Cu",
+                    "zone": "In1 GND REFERENCE_1"
+                  }
+                ],
+                "xy_mm": [
+                  66.6,
+                  66.6
+                ]
+              },
+              {
+                "planes": [
+                  {
+                    "area_mm2": 9516.635,
+                    "layer": "In1.Cu",
+                    "zone": "In1 GND REFERENCE"
+                  },
+                  {
+                    "area_mm2": 9516.635,
+                    "layer": "In4.Cu",
+                    "zone": "In1 GND REFERENCE_1"
+                  }
+                ],
+                "xy_mm": [
+                  65.3,
+                  64.6
+                ]
+              }
+            ],
+            "layer": "B.Cu",
+            "net": "GND",
+            "pads": [
+              "C25.2",
+              "J5.23"
+            ],
+            "post_island": 45,
+            "pour": "GND|B|38685722-44ee-566f-b52b-89a56220a9e0",
+            "unbonded_body": false,
+            "verdict": "BONDED"
+          },
+          {
+            "area_mm2": 154.58,
+            "barrels": 4,
+            "barrels_into_reserved_planes": 4,
+            "detail": [
+              {
+                "planes": [
+                  {
+                    "area_mm2": 9516.635,
+                    "layer": "In1.Cu",
+                    "zone": "In1 GND REFERENCE"
+                  },
+                  {
+                    "area_mm2": 9516.635,
+                    "layer": "In4.Cu",
+                    "zone": "In1 GND REFERENCE_1"
+                  }
+                ],
+                "xy_mm": [
+                  58.3,
+                  23.7
+                ]
+              },
+              {
+                "planes": [
+                  {
+                    "area_mm2": 9516.635,
+                    "layer": "In1.Cu",
+                    "zone": "In1 GND REFERENCE"
+                  },
+                  {
+                    "area_mm2": 9516.635,
+                    "layer": "In4.Cu",
+                    "zone": "In1 GND REFERENCE_1"
+                  }
+                ],
+                "xy_mm": [
+                  58.2,
+                  24.9
+                ]
+              },
+              {
+                "planes": [
+                  {
+                    "area_mm2": 9516.635,
+                    "layer": "In1.Cu",
+                    "zone": "In1 GND REFERENCE"
+                  },
+                  {
+                    "area_mm2": 9516.635,
+                    "layer": "In4.Cu",
+                    "zone": "In1 GND REFERENCE_1"
+                  }
+                ],
+                "xy_mm": [
+                  61.1,
+                  21.9
+                ]
+              },
+              {
+                "planes": [
+                  {
+                    "area_mm2": 9516.635,
+                    "layer": "In1.Cu",
+                    "zone": "In1 GND REFERENCE"
+                  },
+                  {
+                    "area_mm2": 9516.635,
+                    "layer": "In4.Cu",
+                    "zone": "In1 GND REFERENCE_1"
+                  }
+                ],
+                "xy_mm": [
+                  60.9,
+                  23.0
+                ]
+              }
+            ],
+            "layer": "B.Cu",
+            "net": "GND",
+            "pads": [
+              "C34.1",
+              "J5.6",
+              "U13.4"
+            ],
+            "post_island": 49,
+            "pour": "GND|B|38685722-44ee-566f-b52b-89a56220a9e0",
+            "unbonded_body": false,
+            "verdict": "BONDED"
+          },
+          {
+            "area_mm2": 6.27,
+            "barrels": 0,
+            "barrels_into_reserved_planes": 0,
+            "detail": [],
+            "layer": "B.Cu",
+            "net": "GND",
+            "pads": [
+              "J5.19"
+            ],
+            "post_island": 55,
+            "pour": "GND|B|38685722-44ee-566f-b52b-89a56220a9e0",
+            "unbonded_body": false,
+            "verdict": "STRANDED"
+          },
+          {
+            "area_mm2": 4.891,
+            "barrels": 0,
+            "barrels_into_reserved_planes": 0,
+            "detail": [],
+            "layer": "B.Cu",
+            "net": "GND",
+            "pads": [
+              "U21.4"
+            ],
+            "post_island": 61,
+            "pour": "GND|B|38685722-44ee-566f-b52b-89a56220a9e0",
+            "unbonded_body": false,
+            "verdict": "STRANDED"
+          },
+          {
+            "area_mm2": 33.632,
+            "barrels": 2,
+            "barrels_into_reserved_planes": 2,
+            "detail": [
+              {
+                "planes": [
+                  {
+                    "area_mm2": 9516.635,
+                    "layer": "In1.Cu",
+                    "zone": "In1 GND REFERENCE"
+                  },
+                  {
+                    "area_mm2": 9516.635,
+                    "layer": "In4.Cu",
+                    "zone": "In1 GND REFERENCE_1"
+                  }
+                ],
+                "xy_mm": [
+                  43.7,
+                  38.3
+                ]
+              },
+              {
+                "planes": [
+                  {
+                    "area_mm2": 9516.635,
+                    "layer": "In1.Cu",
+                    "zone": "In1 GND REFERENCE"
+                  },
+                  {
+                    "area_mm2": 9516.635,
+                    "layer": "In4.Cu",
+                    "zone": "In1 GND REFERENCE_1"
+                  }
+                ],
+                "xy_mm": [
+                  51.2,
+                  34.3
+                ]
+              }
+            ],
+            "layer": "B.Cu",
+            "net": "GND",
+            "pads": [
+              "C19.2",
+              "C78.2"
+            ],
+            "post_island": 60,
+            "pour": "GND|B|38685722-44ee-566f-b52b-89a56220a9e0",
+            "unbonded_body": false,
+            "verdict": "BONDED"
+          }
+        ],
+        "ok": false,
+        "reserved_inner_planes": {
+          "I1": [
+            "GND"
+          ],
+          "I3": [
+            "+3V3"
+          ],
+          "I4": [
+            "GND"
+          ]
+        }
+      },
+      "PP4": {
+        "condemned_fragments_skipped": [
+          {
+            "pads": [
+              "J5.19"
+            ],
+            "post_island": 55,
+            "pour": "GND|B|38685722-44ee-566f-b52b-89a56220a9e0",
+            "verdict": "STRANDED",
+            "why": "PP3 has already condemned this fragment; a STRANDED fragment cannot FLIP when its barrels are stripped"
+          },
+          {
+            "pads": [
+              "U21.4"
+            ],
+            "post_island": 61,
+            "pour": "GND|B|38685722-44ee-566f-b52b-89a56220a9e0",
+            "verdict": "STRANDED",
+            "why": "PP3 has already condemned this fragment; a STRANDED fragment cannot FLIP when its barrels are stripped"
+          }
+        ],
+        "ok": true,
+        "probes": [
+          {
+            "flips": true,
+            "pads": [
+              "C25.2",
+              "J5.23"
+            ],
+            "post_island": 45,
+            "pour": "GND|B|38685722-44ee-566f-b52b-89a56220a9e0",
+            "with_barrels": "BONDED",
+            "without_barrels": "STRANDED"
+          },
+          {
+            "flips": true,
+            "pads": [
+              "C34.1",
+              "J5.6",
+              "U13.4"
+            ],
+            "post_island": 49,
+            "pour": "GND|B|38685722-44ee-566f-b52b-89a56220a9e0",
+            "with_barrels": "BONDED",
+            "without_barrels": "STRANDED"
+          },
+          {
+            "flips": true,
+            "pads": [
+              "C19.2",
+              "C78.2"
+            ],
+            "post_island": 60,
+            "pour": "GND|B|38685722-44ee-566f-b52b-89a56220a9e0",
+            "with_barrels": "BONDED",
+            "without_barrels": "STRANDED"
+          }
+        ]
+      }
+    },
+    "failed_clauses": [
+      "PP2",
+      "PP3"
+    ],
+    "ok": false,
+    "pre_board": "/home/aqroot8/aqroot-demo/hardware/demo/manufacturing/w/d710/c3base/aqroot-Beta-v2.kicad_pcb",
+    "report": "w/d710/c3/pour-partition.json",
+    "results": {
+      "PP1": true,
+      "PP2": false,
+      "PP3": false,
+      "PP4": true
+    }
+  },
+  "preservation": {
+    "added_object_nets": [
+      "/01_POWER_TREE/ACC_5V_RAW"
+    ],
+    "foreign_added_nets": [],
+    "licensed_removals": 18,
+    "removed_objects": [
+      "('T', '/01_POWER_TREE/ACC_5V_RAW', 2, (52325000, 35225000), (53300000, 34250000), 400000)",
+      "('T', '/01_POWER_TREE/ACC_5V_RAW', 2, (54750000, 38000000), (55850000, 38000000), 400000)",
+      "('T', '/01_POWER_TREE/ACC_5V_RAW', 2, (58512500, 40400000), (59022500, 40400000), 250000)",
+      "('T', '/01_POWER_TREE/ACC_5V_RAW', 2, (59022500, 40400000), (60085000, 40475000), 400000)",
+      "('T', '/01_POWER_TREE/ACC_5V_RAW', 2, (60085000, 40475000), (61050000, 39500000), 400000)",
+      "('T', '/01_POWER_TREE/ACC_5V_RAW', 2, (60950000, 39425000), (60975000, 39425000), 400000)",
+      "('T', '/01_POWER_TREE/ACC_5V_RAW', 2, (60975000, 39425000), (61050000, 39500000), 400000)",
+      "('T', '/01_POWER_TREE/ACC_5V_RAW', 8, (52325000, 35225000), (55850000, 38000000), 400000)",
+      "('T', '/01_POWER_TREE/ACC_5V_RAW', 8, (52600000, 43000000), (55850000, 38000000), 400000)",
+      "('T', '/01_POWER_TREE/ACC_5V_RAW', 8, (55850000, 38000000), (57450000, 39600000), 400000)",
+      "('T', '/01_POWER_TREE/ACC_5V_RAW', 8, (57450000, 39600000), (60950000, 39425000), 400000)",
+      "('T', '/01_POWER_TREE/ACC_5V_RAW', 8, (60950000, 39425000), (61375000, 34300000), 400000)",
+      "('V', '/01_POWER_TREE/ACC_5V_RAW', (52600000, 43000000), 900000, 400000)",
+      "('V', '/01_POWER_TREE/ACC_5V_RAW', (55850000, 38000000), 900000, 400000)",
+      "('V', '/01_POWER_TREE/ACC_5V_RAW', (60950000, 39425000), 900000, 400000)",
+      "('V', '/01_POWER_TREE/ACC_5V_RAW', (61375000, 34300000), 900000, 400000)"
+    ],
+    "reverted_failures_clean": true,
+    "rule_area_inventory_ok": true,
+    "rule_areas_added": [],
+    "rule_areas_removed": [],
+    "unlicensed_removals": [],
+    "zone_inventory_ok": true,
+    "zones_added": [],
+    "zones_removed": []
+  },
+  "promotion_candidate": false,
+  "refused_clauses": [
+    "attributable_drc",
+    "board_improved",
+    "no_regression",
+    "pour_partition"
+  ],
+  "requested_nets": [
+    "/01_POWER_TREE/ACC_5V_LX",
+    "/01_POWER_TREE/ACC_5V_RAW"
+  ],
+  "routed": [
+    {
+      "closed": 0,
+      "contract": {
+        "clr": 300000,
+        "clr_pad": 200000,
+        "escape_floor": 400000,
+        "guarded_layers": {
+          "B": 2,
+          "F": 2,
+          "I2": 2,
+          "I3": 2
+        },
+        "layers": [
+          "F",
+          "B"
+        ],
+        "netclass": "SWITCH_NODE",
+        "reserved_inner_planes": {
+          "I1": [
+            "GND"
+          ],
+          "I3": [
+            "+3V3"
+          ],
+          "I4": [
+            "GND"
+          ]
+        },
+        "trunk_floor": {
+          "admitted": false,
+          "amps": 1.226,
+          "floor_nm": 400000,
+          "from_nm": 600000,
+          "netclass": "SWITCH_NODE",
+          "required_amps": null,
+          "to_nm": 600000,
+          "why": "NET_CARRIES_NO_PUBLISHED_CURRENT"
+        },
+        "via_dia": 500000,
+        "via_drill": 250000,
+        "width": 600000
+      },
+      "failures": [
+        {
+          "a": [
+            "L4.2"
+          ],
+          "b": [
+            "U21.5"
+          ],
+          "gap_mm": 4.02,
+          "pads": [
+            "U21.5"
+          ],
+          "reason": "NO_LEGAL_ESCAPE_DST",
+          "why": "U21.5: NO LEGAL ESCAPE at >= 0.400 mm; blocked by U21.4 (x120), C65.1 (x79), U21.1 (x68), L4.1 (x49)",
+          "why_lands": [
+            "U21.5: NO LEGAL ESCAPE at >= 0.400 mm; blocked by U21.4 (x120), C65.1 (x79), U21.1 (x68), L4.1 (x49)"
+          ]
+        }
+      ],
+      "islands": 2,
+      "joins": [],
+      "mode": "maze+partial",
+      "mode_partial": true,
+      "net": "/01_POWER_TREE/ACC_5V_LX",
+      "ok": false,
+      "reason": "NO_LEGAL_ESCAPE_DST",
+      "seconds": 12.7
+    },
+    {
+      "closed": 5,
+      "contract": {
+        "clr": 250000,
+        "clr_pad": 200000,
+        "escape_floor": 400000,
+        "guarded_layers": {
+          "B": 2,
+          "F": 2,
+          "I2": 2,
+          "I3": 2
+        },
+        "layers": [
+          "F",
+          "B",
+          "I2"
+        ],
+        "netclass": "ACC_5V",
+        "reserved_inner_planes": {
+          "I1": [
+            "GND"
+          ],
+          "I3": [
+            "+3V3"
+          ],
+          "I4": [
+            "GND"
+          ]
+        },
+        "trunk_floor": {
+          "admitted": true,
+          "amps": 1.226,
+          "floor_nm": 400000,
+          "from_nm": 600000,
+          "netclass": "ACC_5V",
+          "required_amps": 0.7,
+          "to_nm": 400000,
+          "why": "PRICED_AT_THE_PUBLISHED_BAR"
+        },
+        "via_dia": 650000,
+        "via_drill": 400000,
+        "width": 400000
+      },
+      "failures": [],
+      "islands": 6,
+      "joins": [
+        {
+          "from": "C65.1",
+          "layers": [
+            "B"
+          ],
+          "mm": 1.6459799489218472,
+          "necks": [
+            {
+              "layer": "B",
+              "outside_courtyard_mm": 0.0,
+              "pad": "U21.6",
+              "stub_mm": 0.035,
+              "width_mm": 0.2
+            }
+          ],
+          "to": "U21.6",
+          "via_xy": [],
+          "vias": 0
+        },
+        {
+          "from": "C66.1",
+          "layers": [
+            "B"
+          ],
+          "mm": 4.3892110375415365,
+          "to": "TP28.1",
+          "via_xy": [],
+          "vias": 0
+        },
+        {
+          "from": "C66.1",
+          "layers": [
+            "B",
+            "I2",
+            "B",
+            "I2",
+            "B"
+          ],
+          "mm": 117.2282498335541,
+          "to": "C65.1",
+          "via_xy": [
+            [
+              50.675,
+              33.2
+            ],
+            [
+              61.325,
+              13.325
+            ],
+            [
+              65.375,
+              46.8
+            ],
+            [
+              62.025,
+              43.45
+            ]
+          ],
+          "vias": 4
+        },
+        {
+          "from": "TP28.1",
+          "layers": [
+            "B",
+            "F",
+            "B"
+          ],
+          "mm": 7.167243545758456,
+          "to": "U22.2",
+          "via_xy": [
+            [
+              54.8,
+              40.775
+            ],
+            [
+              52.6,
+              43.0
+            ]
+          ],
+          "vias": 2
+        },
+        {
+          "from": "C65.1",
+          "layers": [
+            "B",
+            "F",
+            "B"
+          ],
+          "mm": 7.419933779035584,
+          "to": "R99.1",
+          "via_xy": [
+            [
+              60.6,
+              38.6
+            ],
+            [
+              61.375,
+              34.3
+            ]
+          ],
+          "vias": 2
+        }
+      ],
+      "mm": 137.851,
+      "mode": "maze+partial",
+      "mode_partial": true,
+      "net": "/01_POWER_TREE/ACC_5V_RAW",
+      "ok": true,
+      "remaining": 0,
+      "seconds": 1296.9,
+      "vias": 8
+    }
+  ],
+  "routed_nets": [
+    "/01_POWER_TREE/ACC_5V_RAW"
+  ],
+  "schema": 1,
+  "taps": null
+}

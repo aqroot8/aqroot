@@ -1,0 +1,1360 @@
+{
+  "board": "w/d710/c3base/aqroot-Beta-v2.kicad_pcb",
+  "clr_pad_mm": 0.2,
+  "clr_trk_mm": 0.3,
+  "free": [],
+  "net": "/01_POWER_TREE/ACC_5V_LX",
+  "note": "QBoard.escape casts its ray from the PAD CENTRE, so the segment runs down the land's spine and owes the full routed clearance to the flanking lands whatever the land's shape is",
+  "pad": "U21.5",
+  "pad_centre_mm": [
+    58.5125,
+    39.9
+  ],
+  "schema": 1,
+  "trials": [
+    {
+      "blocker": "C65.1:/01_POWER_TREE/ACC_5V_RAW",
+      "dir": "E",
+      "end_mm": [
+        59.6,
+        39.9
+      ],
+      "free": false,
+      "have_mm": 0.2943,
+      "owe_mm": 0.5,
+      "short_mm": 0.2057,
+      "slack_mm": 0.15,
+      "width_mm": 0.6
+    },
+    {
+      "blocker": "C65.1:/01_POWER_TREE/ACC_5V_RAW",
+      "dir": "E",
+      "end_mm": [
+        59.75,
+        39.9
+      ],
+      "free": false,
+      "have_mm": 0.1478,
+      "owe_mm": 0.5,
+      "short_mm": 0.3522,
+      "slack_mm": 0.3,
+      "width_mm": 0.6
+    },
+    {
+      "blocker": "C65.1:/01_POWER_TREE/ACC_5V_RAW",
+      "dir": "E",
+      "end_mm": [
+        59.95,
+        39.9
+      ],
+      "free": false,
+      "have_mm": -0.0397,
+      "owe_mm": 0.5,
+      "short_mm": 0.5397,
+      "slack_mm": 0.5,
+      "width_mm": 0.6
+    },
+    {
+      "blocker": "C65.1:/01_POWER_TREE/ACC_5V_RAW",
+      "dir": "E",
+      "end_mm": [
+        60.25,
+        39.9
+      ],
+      "free": false,
+      "have_mm": -0.15,
+      "owe_mm": 0.5,
+      "short_mm": 0.65,
+      "slack_mm": 0.8,
+      "width_mm": 0.6
+    },
+    {
+      "blocker": "U21.1:/01_POWER_TREE/ACC_5V_FB",
+      "dir": "W",
+      "end_mm": [
+        57.425,
+        39.9
+      ],
+      "free": false,
+      "have_mm": 0.3342,
+      "owe_mm": 0.5,
+      "short_mm": 0.1658,
+      "slack_mm": 0.15,
+      "width_mm": 0.6
+    },
+    {
+      "blocker": "U21.1:/01_POWER_TREE/ACC_5V_FB",
+      "dir": "W",
+      "end_mm": [
+        57.275,
+        39.9
+      ],
+      "free": false,
+      "have_mm": 0.325,
+      "owe_mm": 0.5,
+      "short_mm": 0.175,
+      "slack_mm": 0.3,
+      "width_mm": 0.6
+    },
+    {
+      "blocker": "U21.1:/01_POWER_TREE/ACC_5V_FB",
+      "dir": "W",
+      "end_mm": [
+        57.075,
+        39.9
+      ],
+      "free": false,
+      "have_mm": 0.325,
+      "owe_mm": 0.5,
+      "short_mm": 0.175,
+      "slack_mm": 0.5,
+      "width_mm": 0.6
+    },
+    {
+      "blocker": "U21.1:/01_POWER_TREE/ACC_5V_FB",
+      "dir": "W",
+      "end_mm": [
+        56.775,
+        39.9
+      ],
+      "free": false,
+      "have_mm": 0.325,
+      "owe_mm": 0.5,
+      "short_mm": 0.175,
+      "slack_mm": 0.8,
+      "width_mm": 0.6
+    },
+    {
+      "blocker": "U21.4:GND",
+      "dir": "N",
+      "end_mm": [
+        58.5,
+        38.975
+      ],
+      "free": false,
+      "have_mm": -0.0875,
+      "owe_mm": 0.5,
+      "short_mm": 0.5875,
+      "slack_mm": 0.15,
+      "width_mm": 0.6
+    },
+    {
+      "blocker": "U21.4:GND",
+      "dir": "N",
+      "end_mm": [
+        58.5,
+        38.825
+      ],
+      "free": false,
+      "have_mm": -0.0875,
+      "owe_mm": 0.5,
+      "short_mm": 0.5875,
+      "slack_mm": 0.3,
+      "width_mm": 0.6
+    },
+    {
+      "blocker": "U21.4:GND",
+      "dir": "N",
+      "end_mm": [
+        58.5,
+        38.625
+      ],
+      "free": false,
+      "have_mm": -0.0875,
+      "owe_mm": 0.5,
+      "short_mm": 0.5875,
+      "slack_mm": 0.5,
+      "width_mm": 0.6
+    },
+    {
+      "blocker": "L4.1:/01_POWER_TREE/BQ25185_SYS",
+      "dir": "N",
+      "end_mm": [
+        58.5,
+        38.325
+      ],
+      "free": false,
+      "have_mm": 0.4033,
+      "owe_mm": 0.5,
+      "short_mm": 0.0967,
+      "slack_mm": 0.8,
+      "width_mm": 0.6
+    },
+    {
+      "blocker": "U21.4:GND",
+      "dir": "S",
+      "end_mm": [
+        58.5,
+        40.825
+      ],
+      "free": false,
+      "have_mm": 0.325,
+      "owe_mm": 0.5,
+      "short_mm": 0.175,
+      "slack_mm": 0.15,
+      "width_mm": 0.6
+    },
+    {
+      "blocker": "U21.4:GND",
+      "dir": "S",
+      "end_mm": [
+        58.5,
+        40.975
+      ],
+      "free": false,
+      "have_mm": 0.325,
+      "owe_mm": 0.5,
+      "short_mm": 0.175,
+      "slack_mm": 0.3,
+      "width_mm": 0.6
+    },
+    {
+      "blocker": "U21.4:GND",
+      "dir": "S",
+      "end_mm": [
+        58.5,
+        41.175
+      ],
+      "free": false,
+      "have_mm": 0.325,
+      "owe_mm": 0.5,
+      "short_mm": 0.175,
+      "slack_mm": 0.5,
+      "width_mm": 0.6
+    },
+    {
+      "blocker": "U21.4:GND",
+      "dir": "S",
+      "end_mm": [
+        58.5,
+        41.475
+      ],
+      "free": false,
+      "have_mm": 0.325,
+      "owe_mm": 0.5,
+      "short_mm": 0.175,
+      "slack_mm": 0.8,
+      "width_mm": 0.6
+    },
+    {
+      "blocker": "C65.1:/01_POWER_TREE/ACC_5V_RAW",
+      "dir": "E",
+      "end_mm": [
+        59.5,
+        39.9
+      ],
+      "free": false,
+      "have_mm": 0.3928,
+      "owe_mm": 0.4,
+      "short_mm": 0.0072,
+      "slack_mm": 0.15,
+      "width_mm": 0.4
+    },
+    {
+      "blocker": "C65.1:/01_POWER_TREE/ACC_5V_RAW",
+      "dir": "E",
+      "end_mm": [
+        59.65,
+        39.9
+      ],
+      "free": false,
+      "have_mm": 0.2452,
+      "owe_mm": 0.4,
+      "short_mm": 0.1548,
+      "slack_mm": 0.3,
+      "width_mm": 0.4
+    },
+    {
+      "blocker": "C65.1:/01_POWER_TREE/ACC_5V_RAW",
+      "dir": "E",
+      "end_mm": [
+        59.85,
+        39.9
+      ],
+      "free": false,
+      "have_mm": 0.052,
+      "owe_mm": 0.4,
+      "short_mm": 0.348,
+      "slack_mm": 0.5,
+      "width_mm": 0.4
+    },
+    {
+      "blocker": "C65.1:/01_POWER_TREE/ACC_5V_RAW",
+      "dir": "E",
+      "end_mm": [
+        60.15,
+        39.9
+      ],
+      "free": false,
+      "have_mm": -0.15,
+      "owe_mm": 0.4,
+      "short_mm": 0.55,
+      "slack_mm": 0.8,
+      "width_mm": 0.4
+    },
+    {
+      "blocker": "U21.1:/01_POWER_TREE/ACC_5V_FB",
+      "dir": "W",
+      "end_mm": [
+        57.525,
+        39.9
+      ],
+      "free": false,
+      "have_mm": 0.3656,
+      "owe_mm": 0.4,
+      "short_mm": 0.0344,
+      "slack_mm": 0.15,
+      "width_mm": 0.4
+    },
+    {
+      "blocker": "U21.1:/01_POWER_TREE/ACC_5V_FB",
+      "dir": "W",
+      "end_mm": [
+        57.375,
+        39.9
+      ],
+      "free": false,
+      "have_mm": 0.3267,
+      "owe_mm": 0.4,
+      "short_mm": 0.0733,
+      "slack_mm": 0.3,
+      "width_mm": 0.4
+    },
+    {
+      "blocker": "U21.1:/01_POWER_TREE/ACC_5V_FB",
+      "dir": "W",
+      "end_mm": [
+        57.175,
+        39.9
+      ],
+      "free": false,
+      "have_mm": 0.325,
+      "owe_mm": 0.4,
+      "short_mm": 0.075,
+      "slack_mm": 0.5,
+      "width_mm": 0.4
+    },
+    {
+      "blocker": "U21.1:/01_POWER_TREE/ACC_5V_FB",
+      "dir": "W",
+      "end_mm": [
+        56.875,
+        39.9
+      ],
+      "free": false,
+      "have_mm": 0.325,
+      "owe_mm": 0.4,
+      "short_mm": 0.075,
+      "slack_mm": 0.8,
+      "width_mm": 0.4
+    },
+    {
+      "blocker": "U21.4:GND",
+      "dir": "N",
+      "end_mm": [
+        58.5,
+        39.075
+      ],
+      "free": false,
+      "have_mm": -0.0875,
+      "owe_mm": 0.4,
+      "short_mm": 0.4875,
+      "slack_mm": 0.15,
+      "width_mm": 0.4
+    },
+    {
+      "blocker": "U21.4:GND",
+      "dir": "N",
+      "end_mm": [
+        58.5,
+        38.925
+      ],
+      "free": false,
+      "have_mm": -0.0875,
+      "owe_mm": 0.4,
+      "short_mm": 0.4875,
+      "slack_mm": 0.3,
+      "width_mm": 0.4
+    },
+    {
+      "blocker": "U21.4:GND",
+      "dir": "N",
+      "end_mm": [
+        58.5,
+        38.725
+      ],
+      "free": false,
+      "have_mm": -0.0875,
+      "owe_mm": 0.4,
+      "short_mm": 0.4875,
+      "slack_mm": 0.5,
+      "width_mm": 0.4
+    },
+    {
+      "blocker": "U21.4:GND",
+      "dir": "N",
+      "end_mm": [
+        58.5,
+        38.425
+      ],
+      "free": false,
+      "have_mm": -0.0875,
+      "owe_mm": 0.4,
+      "short_mm": 0.4875,
+      "slack_mm": 0.8,
+      "width_mm": 0.4
+    },
+    {
+      "blocker": "U21.4:GND",
+      "dir": "S",
+      "end_mm": [
+        58.5,
+        40.725
+      ],
+      "free": false,
+      "have_mm": 0.325,
+      "owe_mm": 0.4,
+      "short_mm": 0.075,
+      "slack_mm": 0.15,
+      "width_mm": 0.4
+    },
+    {
+      "blocker": "U21.4:GND",
+      "dir": "S",
+      "end_mm": [
+        58.5,
+        40.875
+      ],
+      "free": false,
+      "have_mm": 0.325,
+      "owe_mm": 0.4,
+      "short_mm": 0.075,
+      "slack_mm": 0.3,
+      "width_mm": 0.4
+    },
+    {
+      "blocker": "U21.4:GND",
+      "dir": "S",
+      "end_mm": [
+        58.5,
+        41.075
+      ],
+      "free": false,
+      "have_mm": 0.325,
+      "owe_mm": 0.4,
+      "short_mm": 0.075,
+      "slack_mm": 0.5,
+      "width_mm": 0.4
+    },
+    {
+      "blocker": "U21.4:GND",
+      "dir": "S",
+      "end_mm": [
+        58.5,
+        41.375
+      ],
+      "free": false,
+      "have_mm": 0.325,
+      "owe_mm": 0.4,
+      "short_mm": 0.075,
+      "slack_mm": 0.8,
+      "width_mm": 0.4
+    },
+    {
+      "blocker": "U21.4:GND",
+      "dir": "E",
+      "end_mm": [
+        59.45,
+        39.9
+      ],
+      "free": false,
+      "have_mm": 0.325,
+      "owe_mm": 0.35,
+      "short_mm": 0.025,
+      "slack_mm": 0.15,
+      "width_mm": 0.3
+    },
+    {
+      "blocker": "C65.1:/01_POWER_TREE/ACC_5V_RAW",
+      "dir": "E",
+      "end_mm": [
+        59.6,
+        39.9
+      ],
+      "free": false,
+      "have_mm": 0.2943,
+      "owe_mm": 0.35,
+      "short_mm": 0.0557,
+      "slack_mm": 0.3,
+      "width_mm": 0.3
+    },
+    {
+      "blocker": "C65.1:/01_POWER_TREE/ACC_5V_RAW",
+      "dir": "E",
+      "end_mm": [
+        59.8,
+        39.9
+      ],
+      "free": false,
+      "have_mm": 0.0996,
+      "owe_mm": 0.35,
+      "short_mm": 0.2504,
+      "slack_mm": 0.5,
+      "width_mm": 0.3
+    },
+    {
+      "blocker": "C65.1:/01_POWER_TREE/ACC_5V_RAW",
+      "dir": "E",
+      "end_mm": [
+        60.1,
+        39.9
+      ],
+      "free": false,
+      "have_mm": -0.1441,
+      "owe_mm": 0.35,
+      "short_mm": 0.4941,
+      "slack_mm": 0.8,
+      "width_mm": 0.3
+    },
+    {
+      "blocker": "U21.2:/ACC_5V_BOOST_EN",
+      "dir": "W",
+      "end_mm": [
+        57.575,
+        39.9
+      ],
+      "free": false,
+      "have_mm": 0.15,
+      "owe_mm": 0.35,
+      "short_mm": 0.2,
+      "slack_mm": 0.15,
+      "width_mm": 0.3
+    },
+    {
+      "blocker": "U21.1:/01_POWER_TREE/ACC_5V_FB",
+      "dir": "W",
+      "end_mm": [
+        57.425,
+        39.9
+      ],
+      "free": false,
+      "have_mm": 0.3342,
+      "owe_mm": 0.35,
+      "short_mm": 0.0158,
+      "slack_mm": 0.3,
+      "width_mm": 0.3
+    },
+    {
+      "blocker": "U21.1:/01_POWER_TREE/ACC_5V_FB",
+      "dir": "W",
+      "end_mm": [
+        57.225,
+        39.9
+      ],
+      "free": false,
+      "have_mm": 0.325,
+      "owe_mm": 0.35,
+      "short_mm": 0.025,
+      "slack_mm": 0.5,
+      "width_mm": 0.3
+    },
+    {
+      "blocker": "U21.1:/01_POWER_TREE/ACC_5V_FB",
+      "dir": "W",
+      "end_mm": [
+        56.925,
+        39.9
+      ],
+      "free": false,
+      "have_mm": 0.325,
+      "owe_mm": 0.35,
+      "short_mm": 0.025,
+      "slack_mm": 0.8,
+      "width_mm": 0.3
+    },
+    {
+      "blocker": "U21.4:GND",
+      "dir": "N",
+      "end_mm": [
+        58.5,
+        39.125
+      ],
+      "free": false,
+      "have_mm": -0.0875,
+      "owe_mm": 0.35,
+      "short_mm": 0.4375,
+      "slack_mm": 0.15,
+      "width_mm": 0.3
+    },
+    {
+      "blocker": "U21.4:GND",
+      "dir": "N",
+      "end_mm": [
+        58.5,
+        38.975
+      ],
+      "free": false,
+      "have_mm": -0.0875,
+      "owe_mm": 0.35,
+      "short_mm": 0.4375,
+      "slack_mm": 0.3,
+      "width_mm": 0.3
+    },
+    {
+      "blocker": "U21.4:GND",
+      "dir": "N",
+      "end_mm": [
+        58.5,
+        38.775
+      ],
+      "free": false,
+      "have_mm": -0.0875,
+      "owe_mm": 0.35,
+      "short_mm": 0.4375,
+      "slack_mm": 0.5,
+      "width_mm": 0.3
+    },
+    {
+      "blocker": "U21.4:GND",
+      "dir": "N",
+      "end_mm": [
+        58.5,
+        38.475
+      ],
+      "free": false,
+      "have_mm": -0.0875,
+      "owe_mm": 0.35,
+      "short_mm": 0.4375,
+      "slack_mm": 0.8,
+      "width_mm": 0.3
+    },
+    {
+      "blocker": "U21.4:GND",
+      "dir": "S",
+      "end_mm": [
+        58.5,
+        40.675
+      ],
+      "free": false,
+      "have_mm": 0.325,
+      "owe_mm": 0.35,
+      "short_mm": 0.025,
+      "slack_mm": 0.15,
+      "width_mm": 0.3
+    },
+    {
+      "blocker": "U21.4:GND",
+      "dir": "S",
+      "end_mm": [
+        58.5,
+        40.825
+      ],
+      "free": false,
+      "have_mm": 0.325,
+      "owe_mm": 0.35,
+      "short_mm": 0.025,
+      "slack_mm": 0.3,
+      "width_mm": 0.3
+    },
+    {
+      "blocker": "U21.4:GND",
+      "dir": "S",
+      "end_mm": [
+        58.5,
+        41.025
+      ],
+      "free": false,
+      "have_mm": 0.325,
+      "owe_mm": 0.35,
+      "short_mm": 0.025,
+      "slack_mm": 0.5,
+      "width_mm": 0.3
+    },
+    {
+      "blocker": "U21.4:GND",
+      "dir": "S",
+      "end_mm": [
+        58.5,
+        41.325
+      ],
+      "free": false,
+      "have_mm": 0.325,
+      "owe_mm": 0.35,
+      "short_mm": 0.025,
+      "slack_mm": 0.8,
+      "width_mm": 0.3
+    },
+    {
+      "blocker": "track:/01_POWER_TREE/ACC_5V_RAW",
+      "dir": "E",
+      "end_mm": [
+        59.425,
+        39.9
+      ],
+      "free": false,
+      "have_mm": 0.375,
+      "owe_mm": 0.425,
+      "short_mm": 0.05,
+      "slack_mm": 0.15,
+      "width_mm": 0.25
+    },
+    {
+      "blocker": "C65.1:/01_POWER_TREE/ACC_5V_RAW",
+      "dir": "E",
+      "end_mm": [
+        59.575,
+        39.9
+      ],
+      "free": false,
+      "have_mm": 0.3189,
+      "owe_mm": 0.325,
+      "short_mm": 0.0061,
+      "slack_mm": 0.3,
+      "width_mm": 0.25
+    },
+    {
+      "blocker": "C65.1:/01_POWER_TREE/ACC_5V_RAW",
+      "dir": "E",
+      "end_mm": [
+        59.775,
+        39.9
+      ],
+      "free": false,
+      "have_mm": 0.1236,
+      "owe_mm": 0.325,
+      "short_mm": 0.2014,
+      "slack_mm": 0.5,
+      "width_mm": 0.25
+    },
+    {
+      "blocker": "C65.1:/01_POWER_TREE/ACC_5V_RAW",
+      "dir": "E",
+      "end_mm": [
+        60.075,
+        39.9
+      ],
+      "free": false,
+      "have_mm": -0.1334,
+      "owe_mm": 0.325,
+      "short_mm": 0.4584,
+      "slack_mm": 0.8,
+      "width_mm": 0.25
+    },
+    {
+      "blocker": "U21.2:/ACC_5V_BOOST_EN",
+      "dir": "W",
+      "end_mm": [
+        57.6,
+        39.9
+      ],
+      "free": false,
+      "have_mm": 0.175,
+      "owe_mm": 0.325,
+      "short_mm": 0.15,
+      "slack_mm": 0.15,
+      "width_mm": 0.25
+    },
+    {
+      "blocker": "U21.2:/ACC_5V_BOOST_EN",
+      "dir": "W",
+      "end_mm": [
+        57.45,
+        39.9
+      ],
+      "free": false,
+      "have_mm": 0.025,
+      "owe_mm": 0.325,
+      "short_mm": 0.3,
+      "slack_mm": 0.3,
+      "width_mm": 0.25
+    },
+    {
+      "blocker": "U21.2:/ACC_5V_BOOST_EN",
+      "dir": "W",
+      "end_mm": [
+        57.25,
+        39.9
+      ],
+      "free": false,
+      "have_mm": -0.0875,
+      "owe_mm": 0.325,
+      "short_mm": 0.4125,
+      "slack_mm": 0.5,
+      "width_mm": 0.25
+    },
+    {
+      "blocker": "U21.2:/ACC_5V_BOOST_EN",
+      "dir": "W",
+      "end_mm": [
+        56.95,
+        39.9
+      ],
+      "free": false,
+      "have_mm": -0.0875,
+      "owe_mm": 0.325,
+      "short_mm": 0.4125,
+      "slack_mm": 0.8,
+      "width_mm": 0.25
+    },
+    {
+      "blocker": "U21.4:GND",
+      "dir": "N",
+      "end_mm": [
+        58.5,
+        39.15
+      ],
+      "free": false,
+      "have_mm": -0.0875,
+      "owe_mm": 0.325,
+      "short_mm": 0.4125,
+      "slack_mm": 0.15,
+      "width_mm": 0.25
+    },
+    {
+      "blocker": "U21.4:GND",
+      "dir": "N",
+      "end_mm": [
+        58.5,
+        39.0
+      ],
+      "free": false,
+      "have_mm": -0.0875,
+      "owe_mm": 0.325,
+      "short_mm": 0.4125,
+      "slack_mm": 0.3,
+      "width_mm": 0.25
+    },
+    {
+      "blocker": "U21.4:GND",
+      "dir": "N",
+      "end_mm": [
+        58.5,
+        38.8
+      ],
+      "free": false,
+      "have_mm": -0.0875,
+      "owe_mm": 0.325,
+      "short_mm": 0.4125,
+      "slack_mm": 0.5,
+      "width_mm": 0.25
+    },
+    {
+      "blocker": "U21.4:GND",
+      "dir": "N",
+      "end_mm": [
+        58.5,
+        38.5
+      ],
+      "free": false,
+      "have_mm": -0.0875,
+      "owe_mm": 0.325,
+      "short_mm": 0.4125,
+      "slack_mm": 0.8,
+      "width_mm": 0.25
+    },
+    {
+      "blocker": "U21.6:/01_POWER_TREE/ACC_5V_RAW",
+      "dir": "S",
+      "end_mm": [
+        58.5,
+        40.65
+      ],
+      "free": false,
+      "have_mm": -0.0875,
+      "owe_mm": 0.325,
+      "short_mm": 0.4125,
+      "slack_mm": 0.15,
+      "width_mm": 0.25
+    },
+    {
+      "blocker": "U21.6:/01_POWER_TREE/ACC_5V_RAW",
+      "dir": "S",
+      "end_mm": [
+        58.5,
+        40.8
+      ],
+      "free": false,
+      "have_mm": -0.0875,
+      "owe_mm": 0.325,
+      "short_mm": 0.4125,
+      "slack_mm": 0.3,
+      "width_mm": 0.25
+    },
+    {
+      "blocker": "U21.6:/01_POWER_TREE/ACC_5V_RAW",
+      "dir": "S",
+      "end_mm": [
+        58.5,
+        41.0
+      ],
+      "free": false,
+      "have_mm": -0.0875,
+      "owe_mm": 0.325,
+      "short_mm": 0.4125,
+      "slack_mm": 0.5,
+      "width_mm": 0.25
+    },
+    {
+      "blocker": "U21.6:/01_POWER_TREE/ACC_5V_RAW",
+      "dir": "S",
+      "end_mm": [
+        58.5,
+        41.3
+      ],
+      "free": false,
+      "have_mm": -0.0875,
+      "owe_mm": 0.325,
+      "short_mm": 0.4125,
+      "slack_mm": 0.8,
+      "width_mm": 0.25
+    },
+    {
+      "blocker": "track:/01_POWER_TREE/ACC_5V_RAW",
+      "dir": "E",
+      "end_mm": [
+        59.4,
+        39.9
+      ],
+      "free": false,
+      "have_mm": 0.375,
+      "owe_mm": 0.4,
+      "short_mm": 0.025,
+      "slack_mm": 0.15,
+      "width_mm": 0.2
+    },
+    {
+      "blocker": "track:/01_POWER_TREE/ACC_5V_RAW",
+      "dir": "E",
+      "end_mm": [
+        59.55,
+        39.9
+      ],
+      "free": false,
+      "have_mm": 0.375,
+      "owe_mm": 0.4,
+      "short_mm": 0.025,
+      "slack_mm": 0.3,
+      "width_mm": 0.2
+    },
+    {
+      "blocker": "C65.1:/01_POWER_TREE/ACC_5V_RAW",
+      "dir": "E",
+      "end_mm": [
+        59.75,
+        39.9
+      ],
+      "free": false,
+      "have_mm": 0.1478,
+      "owe_mm": 0.3,
+      "short_mm": 0.1522,
+      "slack_mm": 0.5,
+      "width_mm": 0.2
+    },
+    {
+      "blocker": "C65.1:/01_POWER_TREE/ACC_5V_RAW",
+      "dir": "E",
+      "end_mm": [
+        60.05,
+        39.9
+      ],
+      "free": false,
+      "have_mm": -0.1188,
+      "owe_mm": 0.3,
+      "short_mm": 0.4188,
+      "slack_mm": 0.8,
+      "width_mm": 0.2
+    },
+    {
+      "blocker": "U21.2:/ACC_5V_BOOST_EN",
+      "dir": "W",
+      "end_mm": [
+        57.625,
+        39.9
+      ],
+      "free": false,
+      "have_mm": 0.2,
+      "owe_mm": 0.3,
+      "short_mm": 0.1,
+      "slack_mm": 0.15,
+      "width_mm": 0.2
+    },
+    {
+      "blocker": "U21.2:/ACC_5V_BOOST_EN",
+      "dir": "W",
+      "end_mm": [
+        57.475,
+        39.9
+      ],
+      "free": false,
+      "have_mm": 0.05,
+      "owe_mm": 0.3,
+      "short_mm": 0.25,
+      "slack_mm": 0.3,
+      "width_mm": 0.2
+    },
+    {
+      "blocker": "U21.2:/ACC_5V_BOOST_EN",
+      "dir": "W",
+      "end_mm": [
+        57.275,
+        39.9
+      ],
+      "free": false,
+      "have_mm": -0.0875,
+      "owe_mm": 0.3,
+      "short_mm": 0.3875,
+      "slack_mm": 0.5,
+      "width_mm": 0.2
+    },
+    {
+      "blocker": "U21.2:/ACC_5V_BOOST_EN",
+      "dir": "W",
+      "end_mm": [
+        56.975,
+        39.9
+      ],
+      "free": false,
+      "have_mm": -0.0875,
+      "owe_mm": 0.3,
+      "short_mm": 0.3875,
+      "slack_mm": 0.8,
+      "width_mm": 0.2
+    },
+    {
+      "blocker": "U21.4:GND",
+      "dir": "N",
+      "end_mm": [
+        58.5,
+        39.175
+      ],
+      "free": false,
+      "have_mm": -0.0875,
+      "owe_mm": 0.3,
+      "short_mm": 0.3875,
+      "slack_mm": 0.15,
+      "width_mm": 0.2
+    },
+    {
+      "blocker": "U21.4:GND",
+      "dir": "N",
+      "end_mm": [
+        58.5,
+        39.025
+      ],
+      "free": false,
+      "have_mm": -0.0875,
+      "owe_mm": 0.3,
+      "short_mm": 0.3875,
+      "slack_mm": 0.3,
+      "width_mm": 0.2
+    },
+    {
+      "blocker": "U21.4:GND",
+      "dir": "N",
+      "end_mm": [
+        58.5,
+        38.825
+      ],
+      "free": false,
+      "have_mm": -0.0875,
+      "owe_mm": 0.3,
+      "short_mm": 0.3875,
+      "slack_mm": 0.5,
+      "width_mm": 0.2
+    },
+    {
+      "blocker": "U21.4:GND",
+      "dir": "N",
+      "end_mm": [
+        58.5,
+        38.525
+      ],
+      "free": false,
+      "have_mm": -0.0875,
+      "owe_mm": 0.3,
+      "short_mm": 0.3875,
+      "slack_mm": 0.8,
+      "width_mm": 0.2
+    },
+    {
+      "blocker": "U21.6:/01_POWER_TREE/ACC_5V_RAW",
+      "dir": "S",
+      "end_mm": [
+        58.5,
+        40.625
+      ],
+      "free": false,
+      "have_mm": -0.0875,
+      "owe_mm": 0.3,
+      "short_mm": 0.3875,
+      "slack_mm": 0.15,
+      "width_mm": 0.2
+    },
+    {
+      "blocker": "U21.6:/01_POWER_TREE/ACC_5V_RAW",
+      "dir": "S",
+      "end_mm": [
+        58.5,
+        40.775
+      ],
+      "free": false,
+      "have_mm": -0.0875,
+      "owe_mm": 0.3,
+      "short_mm": 0.3875,
+      "slack_mm": 0.3,
+      "width_mm": 0.2
+    },
+    {
+      "blocker": "U21.6:/01_POWER_TREE/ACC_5V_RAW",
+      "dir": "S",
+      "end_mm": [
+        58.5,
+        40.975
+      ],
+      "free": false,
+      "have_mm": -0.0875,
+      "owe_mm": 0.3,
+      "short_mm": 0.3875,
+      "slack_mm": 0.5,
+      "width_mm": 0.2
+    },
+    {
+      "blocker": "U21.6:/01_POWER_TREE/ACC_5V_RAW",
+      "dir": "S",
+      "end_mm": [
+        58.5,
+        41.275
+      ],
+      "free": false,
+      "have_mm": -0.0875,
+      "owe_mm": 0.3,
+      "short_mm": 0.3875,
+      "slack_mm": 0.8,
+      "width_mm": 0.2
+    },
+    {
+      "blocker": "track:/01_POWER_TREE/ACC_5V_RAW",
+      "dir": "E",
+      "end_mm": [
+        59.375,
+        39.9
+      ],
+      "free": false,
+      "have_mm": 0.3,
+      "owe_mm": 0.375,
+      "short_mm": 0.075,
+      "slack_mm": 0.15,
+      "width_mm": 0.15
+    },
+    {
+      "blocker": "track:/01_POWER_TREE/ACC_5V_RAW",
+      "dir": "E",
+      "end_mm": [
+        59.525,
+        39.9
+      ],
+      "free": false,
+      "have_mm": 0.3,
+      "owe_mm": 0.375,
+      "short_mm": 0.075,
+      "slack_mm": 0.3,
+      "width_mm": 0.15
+    },
+    {
+      "blocker": "C65.1:/01_POWER_TREE/ACC_5V_RAW",
+      "dir": "E",
+      "end_mm": [
+        59.725,
+        39.9
+      ],
+      "free": false,
+      "have_mm": 0.172,
+      "owe_mm": 0.275,
+      "short_mm": 0.103,
+      "slack_mm": 0.5,
+      "width_mm": 0.15
+    },
+    {
+      "blocker": "C65.1:/01_POWER_TREE/ACC_5V_RAW",
+      "dir": "E",
+      "end_mm": [
+        60.025,
+        39.9
+      ],
+      "free": false,
+      "have_mm": -0.1013,
+      "owe_mm": 0.275,
+      "short_mm": 0.3763,
+      "slack_mm": 0.8,
+      "width_mm": 0.15
+    },
+    {
+      "blocker": "U21.2:/ACC_5V_BOOST_EN",
+      "dir": "W",
+      "end_mm": [
+        57.65,
+        39.9
+      ],
+      "free": false,
+      "have_mm": 0.225,
+      "owe_mm": 0.275,
+      "short_mm": 0.05,
+      "slack_mm": 0.15,
+      "width_mm": 0.15
+    },
+    {
+      "blocker": "U21.2:/ACC_5V_BOOST_EN",
+      "dir": "W",
+      "end_mm": [
+        57.5,
+        39.9
+      ],
+      "free": false,
+      "have_mm": 0.075,
+      "owe_mm": 0.275,
+      "short_mm": 0.2,
+      "slack_mm": 0.3,
+      "width_mm": 0.15
+    },
+    {
+      "blocker": "U21.2:/ACC_5V_BOOST_EN",
+      "dir": "W",
+      "end_mm": [
+        57.3,
+        39.9
+      ],
+      "free": false,
+      "have_mm": -0.0875,
+      "owe_mm": 0.275,
+      "short_mm": 0.3625,
+      "slack_mm": 0.5,
+      "width_mm": 0.15
+    },
+    {
+      "blocker": "U21.2:/ACC_5V_BOOST_EN",
+      "dir": "W",
+      "end_mm": [
+        57.0,
+        39.9
+      ],
+      "free": false,
+      "have_mm": -0.0875,
+      "owe_mm": 0.275,
+      "short_mm": 0.3625,
+      "slack_mm": 0.8,
+      "width_mm": 0.15
+    },
+    {
+      "blocker": "U21.4:GND",
+      "dir": "N",
+      "end_mm": [
+        58.5,
+        39.2
+      ],
+      "free": false,
+      "have_mm": -0.0875,
+      "owe_mm": 0.275,
+      "short_mm": 0.3625,
+      "slack_mm": 0.15,
+      "width_mm": 0.15
+    },
+    {
+      "blocker": "U21.4:GND",
+      "dir": "N",
+      "end_mm": [
+        58.5,
+        39.05
+      ],
+      "free": false,
+      "have_mm": -0.0875,
+      "owe_mm": 0.275,
+      "short_mm": 0.3625,
+      "slack_mm": 0.3,
+      "width_mm": 0.15
+    },
+    {
+      "blocker": "U21.4:GND",
+      "dir": "N",
+      "end_mm": [
+        58.5,
+        38.85
+      ],
+      "free": false,
+      "have_mm": -0.0875,
+      "owe_mm": 0.275,
+      "short_mm": 0.3625,
+      "slack_mm": 0.5,
+      "width_mm": 0.15
+    },
+    {
+      "blocker": "U21.4:GND",
+      "dir": "N",
+      "end_mm": [
+        58.5,
+        38.55
+      ],
+      "free": false,
+      "have_mm": -0.0875,
+      "owe_mm": 0.275,
+      "short_mm": 0.3625,
+      "slack_mm": 0.8,
+      "width_mm": 0.15
+    },
+    {
+      "blocker": "U21.6:/01_POWER_TREE/ACC_5V_RAW",
+      "dir": "S",
+      "end_mm": [
+        58.5,
+        40.6
+      ],
+      "free": false,
+      "have_mm": -0.0875,
+      "owe_mm": 0.275,
+      "short_mm": 0.3625,
+      "slack_mm": 0.15,
+      "width_mm": 0.15
+    },
+    {
+      "blocker": "U21.6:/01_POWER_TREE/ACC_5V_RAW",
+      "dir": "S",
+      "end_mm": [
+        58.5,
+        40.75
+      ],
+      "free": false,
+      "have_mm": -0.0875,
+      "owe_mm": 0.275,
+      "short_mm": 0.3625,
+      "slack_mm": 0.3,
+      "width_mm": 0.15
+    },
+    {
+      "blocker": "U21.6:/01_POWER_TREE/ACC_5V_RAW",
+      "dir": "S",
+      "end_mm": [
+        58.5,
+        40.95
+      ],
+      "free": false,
+      "have_mm": -0.0875,
+      "owe_mm": 0.275,
+      "short_mm": 0.3625,
+      "slack_mm": 0.5,
+      "width_mm": 0.15
+    },
+    {
+      "blocker": "U21.6:/01_POWER_TREE/ACC_5V_RAW",
+      "dir": "S",
+      "end_mm": [
+        58.5,
+        41.25
+      ],
+      "free": false,
+      "have_mm": -0.0875,
+      "owe_mm": 0.275,
+      "short_mm": 0.3625,
+      "slack_mm": 0.8,
+      "width_mm": 0.15
+    }
+  ]
+}

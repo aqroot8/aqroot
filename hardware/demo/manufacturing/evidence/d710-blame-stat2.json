@@ -1,0 +1,761 @@
+{
+  "a": "U11.3",
+  "b": "U2.10",
+  "banned_nets": [],
+  "board": "/home/aqroot8/aqroot-demo/hardware/demo/kicad/aqroot-demo/aqroot-Beta-v2.kicad_pcb",
+  "board_is_authority": true,
+  "board_sha256": "4414da3161517861c91711093a0aeb103ee78e41eeb8845d717cfa68607b24c8",
+  "complete": true,
+  "grid_nm": 50000,
+  "instrument": "maze3d.offcentre_route under screen_corridor_blockers.Without",
+  "layers": [
+    "F",
+    "B",
+    "I2"
+  ],
+  "margin_mm": 3.0,
+  "max_mm": null,
+  "net": "/BQ25185_STAT2",
+  "q2": "RUN",
+  "rows": [
+    {
+      "accepted": false,
+      "layers": null,
+      "mm": null,
+      "ok": false,
+      "reason": "NO_LEGAL_ESCAPE",
+      "step": "BASE",
+      "vias": null,
+      "why": "U11.3: NO OFF-CENTRE LAUNCH at 0.150 mm from any of 41 anchors x 24 directions x 17 lengths; blocked by U11.2 (x5552), U11.4 (x4864), U11.1 (x2845), landing still on the land (x890)"
+    },
+    {
+      "accepted": true,
+      "layers": [
+        "B"
+      ],
+      "mm": 15.0646,
+      "nets": [
+        "+3V3",
+        "/01_POWER_TREE/BAT_PROTECTED_P",
+        "/01_POWER_TREE/BQ25185_SYS",
+        "/01_POWER_TREE/ISET",
+        "/01_POWER_TREE/USB_VBUS_CHG",
+        "/01_POWER_TREE/V3V3_FB",
+        "/08_BUTTONS_EXPANDERS/BTN_A_N",
+        "/08_BUTTONS_EXPANDERS/BTN_B_N",
+        "/08_BUTTONS_EXPANDERS/BTN_DOWN_N",
+        "/08_BUTTONS_EXPANDERS/BTN_LEFT_N",
+        "/08_BUTTONS_EXPANDERS/BTN_RIGHT_N",
+        "/08_BUTTONS_EXPANDERS/BTN_UP_N",
+        "/08_BUTTONS_EXPANDERS/FRONT_RGB_B_N",
+        "/08_BUTTONS_EXPANDERS/FRONT_RGB_G_N",
+        "/08_BUTTONS_EXPANDERS/FRONT_RGB_R_N",
+        "/09_COMMUNITY_HEADER/NATIVE_A_HDR",
+        "/09_COMMUNITY_HEADER/NATIVE_B_HDR",
+        "/09_COMMUNITY_HEADER/WAKE_GATE_S",
+        "/ACC_3V3_EN",
+        "/ACC_5V_BOOST_EN",
+        "/ACC_5V_SW_EN",
+        "/ACC_DETECT_N",
+        "/ACC_POWER_FAULT_N",
+        "/AMP_SD_MODE",
+        "/DISP_RST_N",
+        "/I2C_SCL_INT",
+        "/I2C_SDA_INT",
+        "/NFC_5V_EN",
+        "/SD_CARD_DETECT_N",
+        "/SX1262_RXEN",
+        "/TOUCH_INT_N",
+        "/TOUCH_RST_N",
+        "/WAKE_INT_N",
+        "/XGPIO4",
+        "/XGPIO5",
+        "GND",
+        "Net-(SW9-A)",
+        "Net-(U11-TS_MR)"
+      ],
+      "ok": true,
+      "reason": null,
+      "step": "Q1_UPPER_BOUND",
+      "vias": 0,
+      "why": null
+    },
+    {
+      "accepted": false,
+      "layers": null,
+      "mm": null,
+      "net": "+3V3",
+      "ok": false,
+      "reason": "NO_LEGAL_ESCAPE",
+      "step": "Q2_SINGLE_NET",
+      "vias": null
+    },
+    {
+      "accepted": false,
+      "layers": null,
+      "mm": null,
+      "net": "/01_POWER_TREE/BAT_PROTECTED_P",
+      "ok": false,
+      "reason": "NO_PATH",
+      "step": "Q2_SINGLE_NET",
+      "vias": null
+    },
+    {
+      "accepted": false,
+      "layers": null,
+      "mm": null,
+      "net": "/01_POWER_TREE/BQ25185_SYS",
+      "ok": false,
+      "reason": "NO_LEGAL_ESCAPE",
+      "step": "Q2_SINGLE_NET",
+      "vias": null
+    },
+    {
+      "accepted": false,
+      "layers": null,
+      "mm": null,
+      "net": "/01_POWER_TREE/ISET",
+      "ok": false,
+      "reason": "NO_LEGAL_ESCAPE",
+      "step": "Q2_SINGLE_NET",
+      "vias": null
+    },
+    {
+      "accepted": false,
+      "layers": null,
+      "mm": null,
+      "net": "/01_POWER_TREE/USB_VBUS_CHG",
+      "ok": false,
+      "reason": "NO_LEGAL_ESCAPE",
+      "step": "Q2_SINGLE_NET",
+      "vias": null
+    },
+    {
+      "accepted": false,
+      "layers": null,
+      "mm": null,
+      "net": "/01_POWER_TREE/V3V3_FB",
+      "ok": false,
+      "reason": "NO_LEGAL_ESCAPE",
+      "step": "Q2_SINGLE_NET",
+      "vias": null
+    },
+    {
+      "accepted": false,
+      "layers": null,
+      "mm": null,
+      "net": "/08_BUTTONS_EXPANDERS/BTN_A_N",
+      "ok": false,
+      "reason": "NO_LEGAL_ESCAPE",
+      "step": "Q2_SINGLE_NET",
+      "vias": null
+    },
+    {
+      "accepted": false,
+      "layers": null,
+      "mm": null,
+      "net": "/08_BUTTONS_EXPANDERS/BTN_B_N",
+      "ok": false,
+      "reason": "NO_LEGAL_ESCAPE",
+      "step": "Q2_SINGLE_NET",
+      "vias": null
+    },
+    {
+      "accepted": false,
+      "layers": null,
+      "mm": null,
+      "net": "/08_BUTTONS_EXPANDERS/BTN_DOWN_N",
+      "ok": false,
+      "reason": "NO_LEGAL_ESCAPE",
+      "step": "Q2_SINGLE_NET",
+      "vias": null
+    },
+    {
+      "accepted": false,
+      "layers": null,
+      "mm": null,
+      "net": "/08_BUTTONS_EXPANDERS/BTN_LEFT_N",
+      "ok": false,
+      "reason": "NO_LEGAL_ESCAPE",
+      "step": "Q2_SINGLE_NET",
+      "vias": null
+    },
+    {
+      "accepted": false,
+      "layers": null,
+      "mm": null,
+      "net": "/08_BUTTONS_EXPANDERS/BTN_RIGHT_N",
+      "ok": false,
+      "reason": "NO_LEGAL_ESCAPE",
+      "step": "Q2_SINGLE_NET",
+      "vias": null
+    },
+    {
+      "accepted": false,
+      "layers": null,
+      "mm": null,
+      "net": "/08_BUTTONS_EXPANDERS/BTN_UP_N",
+      "ok": false,
+      "reason": "NO_LEGAL_ESCAPE",
+      "step": "Q2_SINGLE_NET",
+      "vias": null
+    },
+    {
+      "accepted": false,
+      "layers": null,
+      "mm": null,
+      "net": "/08_BUTTONS_EXPANDERS/FRONT_RGB_B_N",
+      "ok": false,
+      "reason": "NO_LEGAL_ESCAPE",
+      "step": "Q2_SINGLE_NET",
+      "vias": null
+    },
+    {
+      "accepted": false,
+      "layers": null,
+      "mm": null,
+      "net": "/08_BUTTONS_EXPANDERS/FRONT_RGB_G_N",
+      "ok": false,
+      "reason": "NO_LEGAL_ESCAPE",
+      "step": "Q2_SINGLE_NET",
+      "vias": null
+    },
+    {
+      "accepted": false,
+      "layers": null,
+      "mm": null,
+      "net": "/08_BUTTONS_EXPANDERS/FRONT_RGB_R_N",
+      "ok": false,
+      "reason": "NO_LEGAL_ESCAPE",
+      "step": "Q2_SINGLE_NET",
+      "vias": null
+    },
+    {
+      "accepted": false,
+      "layers": null,
+      "mm": null,
+      "net": "/09_COMMUNITY_HEADER/NATIVE_A_HDR",
+      "ok": false,
+      "reason": "NO_LEGAL_ESCAPE",
+      "step": "Q2_SINGLE_NET",
+      "vias": null
+    },
+    {
+      "accepted": false,
+      "layers": null,
+      "mm": null,
+      "net": "/09_COMMUNITY_HEADER/NATIVE_B_HDR",
+      "ok": false,
+      "reason": "NO_LEGAL_ESCAPE",
+      "step": "Q2_SINGLE_NET",
+      "vias": null
+    },
+    {
+      "accepted": false,
+      "layers": null,
+      "mm": null,
+      "net": "/09_COMMUNITY_HEADER/WAKE_GATE_S",
+      "ok": false,
+      "reason": "NO_LEGAL_ESCAPE",
+      "step": "Q2_SINGLE_NET",
+      "vias": null
+    },
+    {
+      "accepted": false,
+      "layers": null,
+      "mm": null,
+      "net": "/ACC_3V3_EN",
+      "ok": false,
+      "reason": "NO_LEGAL_ESCAPE",
+      "step": "Q2_SINGLE_NET",
+      "vias": null
+    },
+    {
+      "accepted": false,
+      "layers": null,
+      "mm": null,
+      "net": "/ACC_5V_BOOST_EN",
+      "ok": false,
+      "reason": "NO_LEGAL_ESCAPE",
+      "step": "Q2_SINGLE_NET",
+      "vias": null
+    },
+    {
+      "accepted": false,
+      "layers": null,
+      "mm": null,
+      "net": "/ACC_5V_SW_EN",
+      "ok": false,
+      "reason": "NO_LEGAL_ESCAPE",
+      "step": "Q2_SINGLE_NET",
+      "vias": null
+    },
+    {
+      "accepted": false,
+      "layers": null,
+      "mm": null,
+      "net": "/ACC_DETECT_N",
+      "ok": false,
+      "reason": "NO_LEGAL_ESCAPE",
+      "step": "Q2_SINGLE_NET",
+      "vias": null
+    },
+    {
+      "accepted": false,
+      "layers": null,
+      "mm": null,
+      "net": "/ACC_POWER_FAULT_N",
+      "ok": false,
+      "reason": "NO_LEGAL_ESCAPE",
+      "step": "Q2_SINGLE_NET",
+      "vias": null
+    },
+    {
+      "accepted": false,
+      "layers": null,
+      "mm": null,
+      "net": "/AMP_SD_MODE",
+      "ok": false,
+      "reason": "NO_LEGAL_ESCAPE",
+      "step": "Q2_SINGLE_NET",
+      "vias": null
+    },
+    {
+      "accepted": false,
+      "layers": null,
+      "mm": null,
+      "net": "/DISP_RST_N",
+      "ok": false,
+      "reason": "NO_LEGAL_ESCAPE",
+      "step": "Q2_SINGLE_NET",
+      "vias": null
+    },
+    {
+      "accepted": false,
+      "layers": null,
+      "mm": null,
+      "net": "/I2C_SCL_INT",
+      "ok": false,
+      "reason": "NO_LEGAL_ESCAPE",
+      "step": "Q2_SINGLE_NET",
+      "vias": null
+    },
+    {
+      "accepted": false,
+      "layers": null,
+      "mm": null,
+      "net": "/I2C_SDA_INT",
+      "ok": false,
+      "reason": "NO_LEGAL_ESCAPE",
+      "step": "Q2_SINGLE_NET",
+      "vias": null
+    },
+    {
+      "accepted": false,
+      "layers": null,
+      "mm": null,
+      "net": "/NFC_5V_EN",
+      "ok": false,
+      "reason": "NO_LEGAL_ESCAPE",
+      "step": "Q2_SINGLE_NET",
+      "vias": null
+    },
+    {
+      "accepted": false,
+      "layers": null,
+      "mm": null,
+      "net": "/SD_CARD_DETECT_N",
+      "ok": false,
+      "reason": "NO_LEGAL_ESCAPE",
+      "step": "Q2_SINGLE_NET",
+      "vias": null
+    },
+    {
+      "accepted": false,
+      "layers": null,
+      "mm": null,
+      "net": "/SX1262_RXEN",
+      "ok": false,
+      "reason": "NO_LEGAL_ESCAPE",
+      "step": "Q2_SINGLE_NET",
+      "vias": null
+    },
+    {
+      "accepted": false,
+      "layers": null,
+      "mm": null,
+      "net": "/TOUCH_INT_N",
+      "ok": false,
+      "reason": "NO_LEGAL_ESCAPE",
+      "step": "Q2_SINGLE_NET",
+      "vias": null
+    },
+    {
+      "accepted": false,
+      "layers": null,
+      "mm": null,
+      "net": "/TOUCH_RST_N",
+      "ok": false,
+      "reason": "NO_LEGAL_ESCAPE",
+      "step": "Q2_SINGLE_NET",
+      "vias": null
+    },
+    {
+      "accepted": false,
+      "layers": null,
+      "mm": null,
+      "net": "/WAKE_INT_N",
+      "ok": false,
+      "reason": "NO_LEGAL_ESCAPE",
+      "step": "Q2_SINGLE_NET",
+      "vias": null
+    },
+    {
+      "accepted": false,
+      "layers": null,
+      "mm": null,
+      "net": "/XGPIO4",
+      "ok": false,
+      "reason": "NO_LEGAL_ESCAPE",
+      "step": "Q2_SINGLE_NET",
+      "vias": null
+    },
+    {
+      "accepted": false,
+      "layers": null,
+      "mm": null,
+      "net": "/XGPIO5",
+      "ok": false,
+      "reason": "NO_LEGAL_ESCAPE",
+      "step": "Q2_SINGLE_NET",
+      "vias": null
+    },
+    {
+      "accepted": false,
+      "layers": null,
+      "mm": null,
+      "net": "GND",
+      "ok": false,
+      "reason": "NO_LEGAL_ESCAPE",
+      "step": "Q2_SINGLE_NET",
+      "vias": null
+    },
+    {
+      "accepted": false,
+      "layers": null,
+      "mm": null,
+      "net": "Net-(SW9-A)",
+      "ok": false,
+      "reason": "NO_LEGAL_ESCAPE",
+      "step": "Q2_SINGLE_NET",
+      "vias": null
+    },
+    {
+      "accepted": false,
+      "layers": null,
+      "mm": null,
+      "net": "Net-(U11-TS_MR)",
+      "ok": false,
+      "reason": "NO_LEGAL_ESCAPE",
+      "step": "Q2_SINGLE_NET",
+      "vias": null
+    },
+    {
+      "mm": 17.5076,
+      "net": "+3V3",
+      "remaining": 37,
+      "step": "Q3_DROPPED"
+    },
+    {
+      "net": "/01_POWER_TREE/BAT_PROTECTED_P",
+      "reason": "NO_LEGAL_ESCAPE",
+      "remaining": 37,
+      "step": "Q3_REQUIRED"
+    },
+    {
+      "mm": 17.5076,
+      "net": "/01_POWER_TREE/BQ25185_SYS",
+      "remaining": 36,
+      "step": "Q3_DROPPED"
+    },
+    {
+      "mm": 17.5076,
+      "net": "/01_POWER_TREE/ISET",
+      "remaining": 35,
+      "step": "Q3_DROPPED"
+    },
+    {
+      "mm": 16.0007,
+      "net": "/01_POWER_TREE/USB_VBUS_CHG",
+      "remaining": 34,
+      "step": "Q3_DROPPED"
+    },
+    {
+      "mm": 16.0007,
+      "net": "/01_POWER_TREE/V3V3_FB",
+      "remaining": 33,
+      "step": "Q3_DROPPED"
+    },
+    {
+      "mm": 16.0007,
+      "net": "/08_BUTTONS_EXPANDERS/BTN_A_N",
+      "remaining": 32,
+      "step": "Q3_DROPPED"
+    },
+    {
+      "mm": 16.0007,
+      "net": "/08_BUTTONS_EXPANDERS/BTN_B_N",
+      "remaining": 31,
+      "step": "Q3_DROPPED"
+    },
+    {
+      "mm": 16.0007,
+      "net": "/08_BUTTONS_EXPANDERS/BTN_DOWN_N",
+      "remaining": 30,
+      "step": "Q3_DROPPED"
+    },
+    {
+      "mm": 16.0007,
+      "net": "/08_BUTTONS_EXPANDERS/BTN_LEFT_N",
+      "remaining": 29,
+      "step": "Q3_DROPPED"
+    },
+    {
+      "mm": 16.0007,
+      "net": "/08_BUTTONS_EXPANDERS/BTN_RIGHT_N",
+      "remaining": 28,
+      "step": "Q3_DROPPED"
+    },
+    {
+      "mm": 16.0007,
+      "net": "/08_BUTTONS_EXPANDERS/BTN_UP_N",
+      "remaining": 27,
+      "step": "Q3_DROPPED"
+    },
+    {
+      "mm": 16.0007,
+      "net": "/08_BUTTONS_EXPANDERS/FRONT_RGB_B_N",
+      "remaining": 26,
+      "step": "Q3_DROPPED"
+    },
+    {
+      "mm": 16.0007,
+      "net": "/08_BUTTONS_EXPANDERS/FRONT_RGB_G_N",
+      "remaining": 25,
+      "step": "Q3_DROPPED"
+    },
+    {
+      "mm": 16.0007,
+      "net": "/08_BUTTONS_EXPANDERS/FRONT_RGB_R_N",
+      "remaining": 24,
+      "step": "Q3_DROPPED"
+    },
+    {
+      "mm": 16.0007,
+      "net": "/09_COMMUNITY_HEADER/NATIVE_A_HDR",
+      "remaining": 23,
+      "step": "Q3_DROPPED"
+    },
+    {
+      "mm": 16.0007,
+      "net": "/09_COMMUNITY_HEADER/NATIVE_B_HDR",
+      "remaining": 22,
+      "step": "Q3_DROPPED"
+    },
+    {
+      "mm": 15.7217,
+      "net": "/09_COMMUNITY_HEADER/WAKE_GATE_S",
+      "remaining": 21,
+      "step": "Q3_DROPPED"
+    },
+    {
+      "mm": 15.7217,
+      "net": "/ACC_3V3_EN",
+      "remaining": 20,
+      "step": "Q3_DROPPED"
+    },
+    {
+      "mm": 15.7217,
+      "net": "/ACC_5V_BOOST_EN",
+      "remaining": 19,
+      "step": "Q3_DROPPED"
+    },
+    {
+      "mm": 19.153,
+      "net": "/ACC_5V_SW_EN",
+      "remaining": 18,
+      "step": "Q3_DROPPED"
+    },
+    {
+      "mm": 19.153,
+      "net": "/ACC_DETECT_N",
+      "remaining": 17,
+      "step": "Q3_DROPPED"
+    },
+    {
+      "mm": 19.153,
+      "net": "/ACC_POWER_FAULT_N",
+      "remaining": 16,
+      "step": "Q3_DROPPED"
+    },
+    {
+      "mm": 19.153,
+      "net": "/AMP_SD_MODE",
+      "remaining": 15,
+      "step": "Q3_DROPPED"
+    },
+    {
+      "mm": 19.153,
+      "net": "/DISP_RST_N",
+      "remaining": 14,
+      "step": "Q3_DROPPED"
+    },
+    {
+      "mm": 19.1345,
+      "net": "/I2C_SCL_INT",
+      "remaining": 13,
+      "step": "Q3_DROPPED"
+    },
+    {
+      "mm": 23.9318,
+      "net": "/I2C_SDA_INT",
+      "remaining": 12,
+      "step": "Q3_DROPPED"
+    },
+    {
+      "mm": 23.9318,
+      "net": "/NFC_5V_EN",
+      "remaining": 11,
+      "step": "Q3_DROPPED"
+    },
+    {
+      "net": "/SD_CARD_DETECT_N",
+      "reason": "NO_PATH",
+      "remaining": 11,
+      "step": "Q3_REQUIRED"
+    },
+    {
+      "mm": 24.1202,
+      "net": "/SX1262_RXEN",
+      "remaining": 10,
+      "step": "Q3_DROPPED"
+    },
+    {
+      "mm": 24.1202,
+      "net": "/TOUCH_INT_N",
+      "remaining": 9,
+      "step": "Q3_DROPPED"
+    },
+    {
+      "mm": 24.1202,
+      "net": "/TOUCH_RST_N",
+      "remaining": 8,
+      "step": "Q3_DROPPED"
+    },
+    {
+      "net": "/WAKE_INT_N",
+      "reason": "NO_PATH",
+      "remaining": 8,
+      "step": "Q3_REQUIRED"
+    },
+    {
+      "mm": 135.5256,
+      "net": "/XGPIO4",
+      "remaining": 7,
+      "step": "Q3_DROPPED"
+    },
+    {
+      "mm": 135.5256,
+      "net": "/XGPIO5",
+      "remaining": 6,
+      "step": "Q3_DROPPED"
+    },
+    {
+      "net": "GND",
+      "reason": "NO_PATH",
+      "remaining": 6,
+      "step": "Q3_REQUIRED"
+    },
+    {
+      "mm": 135.5256,
+      "net": "Net-(SW9-A)",
+      "remaining": 5,
+      "step": "Q3_DROPPED"
+    },
+    {
+      "mm": 135.5256,
+      "net": "Net-(U11-TS_MR)",
+      "remaining": 4,
+      "step": "Q3_DROPPED"
+    },
+    {
+      "accepted": true,
+      "layers": [
+        "B",
+        "I2",
+        "F",
+        "B",
+        "I2",
+        "B",
+        "F",
+        "B",
+        "I2",
+        "F",
+        "B"
+      ],
+      "mm": 135.5256,
+      "n": 4,
+      "nets": [
+        "/01_POWER_TREE/BAT_PROTECTED_P",
+        "/SD_CARD_DETECT_N",
+        "/WAKE_INT_N",
+        "GND"
+      ],
+      "ok": true,
+      "step": "Q3_MINIMAL_SET",
+      "vias": 10
+    }
+  ],
+  "schema": 1,
+  "seconds": 1668.9,
+  "window_nets": [
+    "+3V3",
+    "/01_POWER_TREE/BAT_PROTECTED_P",
+    "/01_POWER_TREE/BQ25185_SYS",
+    "/01_POWER_TREE/ISET",
+    "/01_POWER_TREE/USB_VBUS_CHG",
+    "/01_POWER_TREE/V3V3_FB",
+    "/08_BUTTONS_EXPANDERS/BTN_A_N",
+    "/08_BUTTONS_EXPANDERS/BTN_B_N",
+    "/08_BUTTONS_EXPANDERS/BTN_DOWN_N",
+    "/08_BUTTONS_EXPANDERS/BTN_LEFT_N",
+    "/08_BUTTONS_EXPANDERS/BTN_RIGHT_N",
+    "/08_BUTTONS_EXPANDERS/BTN_UP_N",
+    "/08_BUTTONS_EXPANDERS/FRONT_RGB_B_N",
+    "/08_BUTTONS_EXPANDERS/FRONT_RGB_G_N",
+    "/08_BUTTONS_EXPANDERS/FRONT_RGB_R_N",
+    "/09_COMMUNITY_HEADER/NATIVE_A_HDR",
+    "/09_COMMUNITY_HEADER/NATIVE_B_HDR",
+    "/09_COMMUNITY_HEADER/WAKE_GATE_S",
+    "/ACC_3V3_EN",
+    "/ACC_5V_BOOST_EN",
+    "/ACC_5V_SW_EN",
+    "/ACC_DETECT_N",
+    "/ACC_POWER_FAULT_N",
+    "/AMP_SD_MODE",
+    "/DISP_RST_N",
+    "/I2C_SCL_INT",
+    "/I2C_SDA_INT",
+    "/NFC_5V_EN",
+    "/SD_CARD_DETECT_N",
+    "/SX1262_RXEN",
+    "/TOUCH_INT_N",
+    "/TOUCH_RST_N",
+    "/WAKE_INT_N",
+    "/XGPIO4",
+    "/XGPIO5",
+    "GND",
+    "Net-(SW9-A)",
+    "Net-(U11-TS_MR)"
+  ]
+}

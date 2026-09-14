@@ -66,6 +66,64 @@
 > `verify_promotion` PASS and `protected_copper` showing exactly one protected
 > net moved.  `U14.7` is on the bus.  This board has **no open owner decision**.
 
+- **Demo D-710 (`/BQ25185_STAT1` ROUTES TO `U2.9` AND THREE ADJACENT `U2` PINS
+  SHARE ONE CONDUCTOR'S WORTH OF CORRIDOR; AND `U21.4`'s MISSING GROUND WAS
+  NEVER A FILL GAP OR A BARREL — IT WAS THE BOARD'S OWN `SYS` POUR):**  **NO
+  COPPER PROMOTED.**  Authority **UNCHANGED** at `4414da31`; 15 -> 15.
+  ***`/BQ25185_STAT1` ROUTES:*** `U11.9 -> U2.9` in **26.128 mm, 3 barrels,
+  `B -> In2 -> F -> B`**, reproduced in two gate runs, and the corridor has a
+  **UNIQUE single opener** — `screen_pair_corridor_blame` swept all 41 window
+  nets one at a time and only `/SD_CARD_DETECT_N` opens it (31.313 mm / 2 vias
+  against a 21.257 mm zero-via upper bound).  ***AND IT IS NOT PROMOTABLE:***
+  `U2.9`, `U2.10` and `U2.11` are THREE ADJACENT `PCAL9535A` pins in one column
+  at `x 54.138` and their corridor admits EXACTLY ONE conductor.  Six gate runs
+  price the trade — STAT1 first and `/SD_CARD_DETECT_N` is `NO_PATH`; SD first
+  and STAT1 is `NO_PATH`; SD's long way round (78.816 mm, DRC clean,
+  `nets_regressed []`) **still uses the same channel**; and SD's TAP was ASKED
+  THREE TIMES and answered `NO_PATH` at 0.200 mm, so the refusal is not a
+  `--tap-max-mm` artefact.  **So this is a FAN-OUT problem at `U2`, not a
+  corridor search**, and the transaction that closes it closes `STAT1` AND
+  `STAT2` together — three of the fifteen edges.  `/BQ25185_STAT2` confirms it:
+  its `TP7.1 <-> U2.10` leg has a TWO-net minimal cut
+  (`{/NFC_5V_EN, /TOUCH_RST_N}`) and even then opens only at **177.521 mm / 11
+  vias** against a 17.865 mm zero-via bound, and its `U11.3` leg needs
+  `BAT_PROTECTED_P`, which no authorization covers.
+  ***AND D-702/D-703's `ACC_5V` FRAMING IS REFUTED:*** D-702 ruled `U21.4` has
+  no ground because the `B GND` fill stops **0.109 mm** short, and D-703 spent
+  FIVE gate runs on the bond barrel that was meant to give it one, closing at a
+  0.025 mm conflict.  **The blocker was neither.  It was the board's OWN
+  `B /01_POWER_TREE/BQ25185_SYS POUR 2`** — pull its east edge
+  **60.000 -> 58.400** and `B.Cu GND` floods the pocket and reaches `U21.4`
+  directly.  `evidence/d710-build-boost-base.sh` rebuilds it in ONE command
+  (pour narrowed, `C65` +0.300 mm east, the 6.3 mm "inert" `GND` chain
+  **REMOVED**) and **real refilled KiCad DRC is the inherited baseline with 31
+  unconnected items and the ledger is EXACTLY the authority's 15 edges over the
+  same 10 nets.**  No peninsula, no barrel, and D-703's 0.025 mm conflict does
+  not arise.  ***THE REAL WALL IS `U21.5` AND THE ARITHMETIC IS EXACT:***
+  `QBoard.escape` casts its ray from the PAD CENTRE, so the escape is a TRACK
+  down the land's spine and owes the full routed clearance to the flanking
+  lands (`verify_laid` says so in its own docstring and names `U21.4` as one of
+  the three pads that taught it).  The distance is ALWAYS **0.325 mm** (0.175 mm
+  land half-height + the 0.150 mm inter-land gap of a 0.500 mm-pitch `SOT-563`)
+  and the requirement is `w/2 + 0.200`, so **`w <= 0.250 mm`** — and the first
+  point east of `U21.4` where a **0.400 mm** `SWITCH_NODE` trunk can legally
+  exist is `x = 59.083`, while `U21`'s courtyard, where the `.kicad_dru`
+  ALREADY licenses a 0.200 mm neck, ends at `x = 59.000`.  **EIGHTY-THREE
+  MICRONS.**  All 96 escape trials are published in
+  `evidence/d710-u21-escape-trials.json` and **ZERO are free.**  ***FOUR
+  REMEDIES BUILT AND REFUSED:*** `C65` further east (at +0.300 the 0.400 mm
+  trial is short **0.0072 mm** — seven microns — and at +0.500 `C65` is clear
+  and `U21.4` binds at 0.075); extending `U21.5`'s `SW` land 0.675 -> 1.425 mm
+  (NO EFFECT — the ray still starts at the pad centre); widening `U21`'s
+  courtyard to IPC nominal so the board's own neck licence reaches the first
+  legal trunk point (`pad_escapes` still returns ZERO); and evicting
+  `ACC_5V_RAW` whole (137.851 mm / 8 vias, `GND` regressed, `pour_partition`
+  REFUSED).  ***AND THE WIDTH THAT WOULD FIT IS REFUSED ON THE MERITS:***
+  section 5 publishes a **2.19 A peak inductor current** for this boost (D-185)
+  and 0.200 mm carries **0.742 A**, so a `PAD_ESCAPE_RUN_U21_5` licence at
+  0.200 mm would be a knowing derating of the accessory 5 V switch node and is
+  NOT taken.  **`ACC_5V_LX` is now a PACKAGE question — D-703 option 4
+  (`cc9f356`), already owner-authorized.**
 - **Demo D-709 (THE EXPANSION, THE `J8` MOVE AND THE `R36` MOVE ARE
   PROMOTED; THE CLAUSE THAT HELD THEM WAS CHARGING ONE PAD'S CURRENT TO ANOTHER
   PAD'S COPPER):**  **COPPER PROMOTED.**  Authority `eca81247` -> `4414da31`;

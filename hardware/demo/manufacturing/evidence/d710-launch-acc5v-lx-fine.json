@@ -1,0 +1,158 @@
+{
+ "authoritative_unchanged": true,
+ "board": "w/d710/c1/aqroot-Beta-v2.kicad_pcb",
+ "board_sha256": "6ed7af597633426f6c978ad594b921402473605b708d14f7a01dd89f3b9269af",
+ "grid": 10000,
+ "method": "read-only; every trial laid on a scratch QBoard and REVERTED, every candidate proved by maze3d.verify_laid (exact analytic clearance, never a lattice); zones invisible to QBoard, so a closure is a licence question and never copper",
+ "nets": [
+  {
+   "board_track_min": 150000,
+   "contract": 600000,
+   "dru_floor": 400000,
+   "islands": 2,
+   "lands": [
+    {
+     "best_centre": 300000,
+     "best_offcentre": 300000,
+     "centre_width": {
+      "B": 300000
+     },
+     "gained": false,
+     "layers": [
+      "B"
+     ],
+     "offcentre_width": {
+      "B": 300000
+     },
+     "pad": "L4.2",
+     "rungs": [
+      {
+       "a_xy": [
+        60.085,
+        36.2
+       ],
+       "b_xy": [
+        60.6,
+        36.2
+       ],
+       "base_dir": true,
+       "centre": true,
+       "centre_why": null,
+       "escape_formula": false,
+       "exit_mm": 0.49,
+       "layer": "B",
+       "n": 8,
+       "offcentre": true,
+       "offcentre_mm": 0.0,
+       "offcentre_why": null,
+       "reach_mm": 0.025,
+       "seconds": 0.09,
+       "support_mm": 0.49,
+       "width": 300000
+      }
+     ]
+    },
+    {
+     "best_centre": null,
+     "best_offcentre": null,
+     "centre_width": {
+      "B": null
+     },
+     "gained": false,
+     "layers": [
+      "B"
+     ],
+     "offcentre_width": {
+      "B": null
+     },
+     "pad": "U21.5",
+     "rungs": [
+      {
+       "a_xy": null,
+       "b_xy": null,
+       "base_dir": null,
+       "centre": false,
+       "centre_why": "U21.5: NO LEGAL ESCAPE at >= 0.300 mm; blocked by U21.4 (x30), C65.1 (x14), U21.1 (x11), U21.3 (x7)",
+       "escape_formula": null,
+       "exit_mm": null,
+       "layer": "B",
+       "n": 0,
+       "offcentre": false,
+       "offcentre_mm": null,
+       "offcentre_why": "U21.5: NO OFF-CENTRE LAUNCH at 0.300 mm from any of 41 anchors x 24 directions x 17 lengths; blocked by U21.4 (x8710), U21.6 (x2332), C65.1 (x1498), U21.1 (x1022)",
+       "reach_mm": null,
+       "seconds": 0.59,
+       "support_mm": null,
+       "width": 300000
+      },
+      {
+       "a_xy": null,
+       "b_xy": null,
+       "base_dir": null,
+       "centre": false,
+       "centre_why": "U21.5: NO LEGAL ESCAPE at >= 0.250 mm; blocked by U21.4 (x22), U21.6 (x17), C65.1 (x14), U21.2 (x9)",
+       "escape_formula": null,
+       "exit_mm": null,
+       "layer": "B",
+       "n": 0,
+       "offcentre": false,
+       "offcentre_mm": null,
+       "offcentre_why": "U21.5: NO OFF-CENTRE LAUNCH at 0.250 mm from any of 41 anchors x 24 directions x 17 lengths; blocked by U21.4 (x8087), U21.6 (x3846), C65.1 (x1398), U21.1 (x977)",
+       "reach_mm": null,
+       "seconds": 0.65,
+       "support_mm": null,
+       "width": 250000
+      },
+      {
+       "a_xy": null,
+       "b_xy": null,
+       "base_dir": null,
+       "centre": false,
+       "centre_why": "U21.5: NO LEGAL ESCAPE at >= 0.200 mm; blocked by U21.4 (x27), U21.6 (x17), C65.1 (x13), U21.2 (x9)",
+       "escape_formula": null,
+       "exit_mm": null,
+       "layer": "B",
+       "n": 0,
+       "offcentre": false,
+       "offcentre_mm": null,
+       "offcentre_why": "U21.5: NO OFF-CENTRE LAUNCH at 0.200 mm from any of 41 anchors x 24 directions x 17 lengths; blocked by U21.4 (x8120), U21.6 (x3949), C65.1 (x1314), U21.1 (x927)",
+       "reach_mm": null,
+       "seconds": 0.63,
+       "support_mm": null,
+       "width": 200000
+      },
+      {
+       "a_xy": null,
+       "b_xy": null,
+       "base_dir": null,
+       "centre": false,
+       "centre_why": "U21.5: NO LEGAL ESCAPE at >= 0.150 mm; blocked by U21.4 (x27), U21.6 (x18), C65.1 (x12), U21.2 (x9)",
+       "escape_formula": null,
+       "exit_mm": null,
+       "layer": "B",
+       "n": 0,
+       "offcentre": false,
+       "offcentre_mm": null,
+       "offcentre_why": "U21.5: NO OFF-CENTRE LAUNCH at 0.150 mm from any of 41 anchors x 24 directions x 17 lengths; blocked by U21.4 (x7128), U21.6 (x4768), C65.1 (x1235), U21.2 (x814)",
+       "reach_mm": null,
+       "seconds": 0.64,
+       "support_mm": null,
+       "width": 150000
+      }
+     ]
+    }
+   ],
+   "net": "/01_POWER_TREE/ACC_5V_LX",
+   "netclass": "SWITCH_NODE",
+   "pairs": [],
+   "widths": [
+    300000,
+    250000,
+    200000,
+    150000
+   ]
+  }
+ ],
+ "question": "does an OFF-CENTRE LAUNCH -- a stub anchored anywhere on the land's own copper, in any of 24 directions -- open the lands and the island pairs that a CENTRE-ANCHORED escape refuses at every width this board can fabricate",
+ "schema": 1
+}
