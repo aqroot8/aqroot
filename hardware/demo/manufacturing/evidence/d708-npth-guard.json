@@ -1,0 +1,264 @@
+{
+  "board": "/home/aqroot8/aqroot-demo/hardware/demo/kicad/aqroot-demo/aqroot-Beta-v2.kicad_pcb",
+  "board_sha256": "eca812476fbcc6277462ca4e37c0aaa9ee3562bcc5955ba32491b6522832b82c",
+  "clearance_mm": 0.25,
+  "cluster_mm": null,
+  "exempt": [
+    "/01_POWER_TREE/BAT_RAW"
+  ],
+  "family": [
+    "/01_POWER_TREE/BAT_RAW"
+  ],
+  "guards": [
+    {
+      "ends": [
+        "lane 1",
+        "66.7000,83.1000"
+      ],
+      "exempt": [
+        "/01_POWER_TREE/BAT_RAW"
+      ],
+      "index": 0,
+      "keepout_radius": 700000,
+      "kind": "corridor",
+      "label": "SW9_NPTH",
+      "layer": "F.Cu",
+      "lkey": "F",
+      "mm": 0.0,
+      "mode": "stated",
+      "net": "/01_POWER_TREE/BAT_RAW",
+      "ok": true,
+      "points": [
+        [
+          66700000,
+          83100000
+        ]
+      ]
+    },
+    {
+      "ends": [
+        "lane 1",
+        "66.7000,83.1000"
+      ],
+      "exempt": [
+        "/01_POWER_TREE/BAT_RAW"
+      ],
+      "index": 1,
+      "keepout_radius": 700000,
+      "kind": "corridor",
+      "label": "SW9_NPTH",
+      "layer": "B.Cu",
+      "lkey": "B",
+      "mm": 0.0,
+      "mode": "stated",
+      "net": "/01_POWER_TREE/BAT_RAW",
+      "ok": true,
+      "points": [
+        [
+          66700000,
+          83100000
+        ]
+      ]
+    },
+    {
+      "ends": [
+        "lane 1",
+        "66.7000,83.1000"
+      ],
+      "exempt": [
+        "/01_POWER_TREE/BAT_RAW"
+      ],
+      "index": 2,
+      "keepout_radius": 700000,
+      "kind": "corridor",
+      "label": "SW9_NPTH",
+      "layer": "In2.Cu",
+      "lkey": "I2",
+      "mm": 0.0,
+      "mode": "stated",
+      "net": "/01_POWER_TREE/BAT_RAW",
+      "ok": true,
+      "points": [
+        [
+          66700000,
+          83100000
+        ]
+      ]
+    },
+    {
+      "ends": [
+        "lane 1",
+        "66.7000,83.1000"
+      ],
+      "exempt": [
+        "/01_POWER_TREE/BAT_RAW"
+      ],
+      "index": 3,
+      "keepout_radius": 700000,
+      "kind": "corridor",
+      "label": "SW9_NPTH",
+      "layer": "In3.Cu",
+      "lkey": "I3",
+      "mm": 0.0,
+      "mode": "stated",
+      "net": "/01_POWER_TREE/BAT_RAW",
+      "ok": true,
+      "points": [
+        [
+          66700000,
+          83100000
+        ]
+      ]
+    },
+    {
+      "ends": [
+        "lane 2",
+        "66.7000,89.9000"
+      ],
+      "exempt": [
+        "/01_POWER_TREE/BAT_RAW"
+      ],
+      "index": 4,
+      "keepout_radius": 700000,
+      "kind": "corridor",
+      "label": "SW9_NPTH",
+      "layer": "F.Cu",
+      "lkey": "F",
+      "mm": 0.0,
+      "mode": "stated",
+      "net": "/01_POWER_TREE/BAT_RAW",
+      "ok": true,
+      "points": [
+        [
+          66700000,
+          89900000
+        ]
+      ]
+    },
+    {
+      "ends": [
+        "lane 2",
+        "66.7000,89.9000"
+      ],
+      "exempt": [
+        "/01_POWER_TREE/BAT_RAW"
+      ],
+      "index": 5,
+      "keepout_radius": 700000,
+      "kind": "corridor",
+      "label": "SW9_NPTH",
+      "layer": "B.Cu",
+      "lkey": "B",
+      "mm": 0.0,
+      "mode": "stated",
+      "net": "/01_POWER_TREE/BAT_RAW",
+      "ok": true,
+      "points": [
+        [
+          66700000,
+          89900000
+        ]
+      ]
+    },
+    {
+      "ends": [
+        "lane 2",
+        "66.7000,89.9000"
+      ],
+      "exempt": [
+        "/01_POWER_TREE/BAT_RAW"
+      ],
+      "index": 6,
+      "keepout_radius": 700000,
+      "kind": "corridor",
+      "label": "SW9_NPTH",
+      "layer": "In2.Cu",
+      "lkey": "I2",
+      "mm": 0.0,
+      "mode": "stated",
+      "net": "/01_POWER_TREE/BAT_RAW",
+      "ok": true,
+      "points": [
+        [
+          66700000,
+          89900000
+        ]
+      ]
+    },
+    {
+      "ends": [
+        "lane 2",
+        "66.7000,89.9000"
+      ],
+      "exempt": [
+        "/01_POWER_TREE/BAT_RAW"
+      ],
+      "index": 7,
+      "keepout_radius": 700000,
+      "kind": "corridor",
+      "label": "SW9_NPTH",
+      "layer": "In3.Cu",
+      "lkey": "I3",
+      "mm": 0.0,
+      "mode": "stated",
+      "net": "/01_POWER_TREE/BAT_RAW",
+      "ok": true,
+      "points": [
+        [
+          66700000,
+          89900000
+        ]
+      ]
+    }
+  ],
+  "half_width_mm": 0.45,
+  "keepout_radius": 700000,
+  "kind": "corridor-reservation",
+  "label": "SW9_NPTH",
+  "lanes": [
+    {
+      "layers": [
+        "F.Cu",
+        "B.Cu",
+        "In2.Cu",
+        "In3.Cu"
+      ],
+      "points": [
+        [
+          66.7,
+          83.1
+        ]
+      ]
+    },
+    {
+      "layers": [
+        "F.Cu",
+        "B.Cu",
+        "In2.Cu",
+        "In3.Cu"
+      ],
+      "points": [
+        [
+          66.7,
+          89.9
+        ]
+      ]
+    }
+  ],
+  "layers": [
+    "F.Cu",
+    "B.Cu",
+    "In2.Cu",
+    "In3.Cu"
+  ],
+  "merged_from": null,
+  "mode": "stated",
+  "schema": 1,
+  "step_mm": 0.1,
+  "summary": {
+    "corridors": 8,
+    "merged_guards": 0,
+    "mm": 0.0,
+    "points": 8
+  }
+}
