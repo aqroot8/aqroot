@@ -4184,11 +4184,49 @@ def stitch_net(qb, net, width=200000, clr_pad=200000, clr_trk=200000,
 # orphaned just as before.  Redundancy that survives the cut has to be attached
 # to the PAD.  That is also why `bridge_islands` cannot be extended to do this
 # -- it answers an island question, and this is a pad question.
-def bond_pads(qb, net, field, refs, max_mm=8.0, escape_limit=12):
+def site_disc(field, x, y, r):
+    """Lattice cells within `r` nm of (x, y): a `land_ok` mask for ONE site.
+
+    D-708.  `stitch_pad` takes the FIRST via-legal cell by distance and cannot
+    prefer one over another, and `body_landing` narrows that to "on the plane
+    body" -- which on this board is every cell in a 2254 mm2 pour.  Neither can
+    say WHERE, and where is sometimes the whole content of the move: `C5.2`'s
+    bond lands at (61.125, 72.600), 4.383 mm of widest path from its pad, and
+    `pour_partition` PP2 then prices that fragment at 2.295 A against a 3.125 A
+    bar, while a site about 0.9 mm away inside the same continuous 1.5-1.9 mm
+    wide fill would price it above 5 A.
+
+    This is a RESTRICTION and never a licence, exactly as `body_landing` is:
+    the mask is AND-ed into `Field.via_ok`, so a named site that is not already
+    legal stays refused and no geometry the board would not otherwise admit
+    becomes admissible.  It can only make a stitch fail that would have
+    succeeded somewhere worse.
+    """
+    mask = np.zeros((field.ny, field.nx), dtype=bool)
+    i0, j0 = field.cell(x - r, y - r)
+    i1, j1 = field.cell(x + r, y + r)
+    i0, j0 = max(0, i0), max(0, j0)
+    i1, j1 = min(field.nx - 1, i1), min(field.ny - 1, j1)
+    if i1 < i0 or j1 < j0:
+        return mask
+    ii = np.arange(i0, i1 + 1)
+    jj = np.arange(j0, j1 + 1)
+    X = field.ox + ii * field.G
+    Y = field.oy + jj * field.G
+    XX, YY = np.meshgrid(X, Y)
+    mask[j0:j1 + 1, i0:i1 + 1] = ((XX - x) ** 2 + (YY - y) ** 2) <= r * r
+    return mask
+
+
+def bond_pads(qb, net, field, refs, max_mm=8.0, escape_limit=12, at=None):
     """Give each NAMED pad of a pour-served net its OWN stub-and-barrel bond.
 
-    `refs` are 'REF.NUM' strings.  Returns dict(ok, bonds, failures); on success
-    the copper is on `qb` and the caller's gate owns the verdict.
+    `refs` are 'REF.NUM' strings.  `at` optionally maps a ref to an
+    (x_nm, y_nm, r_nm) disc the barrel site must fall in -- see `site_disc`;
+    it narrows the landing test for that pad alone and nothing else, so a call
+    without it is byte-identical to every bond this board has promoted.
+    Returns dict(ok, bonds, failures); on success the copper is on `qb` and the
+    caller's gate owns the verdict.
     """
     if not has_plane(qb, net):
         return dict(ok=False, net=net, reason='NO_PLANE', bonds=[],
@@ -4203,9 +4241,17 @@ def bond_pads(qb, net, field, refs, max_mm=8.0, escape_limit=12):
                                why='%s carries no pad %s' % (net, ref)))
             continue
         m = qb.mark()
+        want_at = (at or {}).get(ref)
         r = stitch_pad(qb, field, pad, max_mm=max_mm,
-                       escape_limit=escape_limit)
+                       escape_limit=escape_limit,
+                       land_ok=(site_disc(field, *want_at)
+                                if want_at else None))
         if r.get('ok'):
+            # recorded ONLY when a site was named, so every report written
+            # before this flag existed keeps its exact shape
+            if want_at:
+                r['at'] = [want_at[0] / 1e6, want_at[1] / 1e6,
+                           want_at[2] / 1e6]
             done.append(r)
         else:
             qb.revert(m)

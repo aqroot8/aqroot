@@ -103,6 +103,33 @@ minimises `PP2`'s own metric.  **The next step is therefore a TOOL step:** let
 `--bond-pad` be told WHERE, or let its search rank sites by the fragment price
 they buy.
 
+## 2b. THE INSTRUMENT WAS BUILT, AND IT ANSWERED THE QUESTION BY REFUSING
+
+§2a said the next step was a TOOL step, so it was taken.  `--bond-at
+REF.NUM:X,Y[,R]` hands `maze3d.bond_pads` a disc the barrel site must fall in,
+AND-ed into `Field.via_ok` exactly as `body_landing`'s mask is — **a
+RESTRICTION and never a licence**: a named site that is not already legal stays
+refused, and the flag can only make a stitch FAIL that would have succeeded
+somewhere worse.
+
+**FOUR CONTROLS, all behaved** (`evidence/d708-bond-at-controls.json`).  Three
+discs — the corridor south of `C5.2`, the space east of it, the space
+south-west of it, each 0.55 mm in radius — every one returns
+`NO_BODY_VIA_SITE`.  The fourth names the site the unconstrained search already
+chooses and still bonds, with the requested disc recorded beside the barrel.
+
+**And that is the answer to the `C5.2` question, arrived at by measurement
+rather than by another guess: the `+3V3` decoupling pocket admits EXACTLY ONE
+legal 0.500 mm barrel, at `(61.125, 72.600)`, and it is 4.383 mm of widest path
+from `C5.2`'s pad.**  That fragment cannot be priced above 2.295 A with this
+board's geometry at this barrel size, and no routing lever will change it.
+What is left is a **0.350/0.200 mm barrel under a `.kicad_dru` licence** — a
+geometry this board already grants BY NAME in several places over the same
+plated through-hole process — or **moving `C5` / `R40`** so the pad-to-barrel
+path shortens, or **re-floorplanning the pocket**.  All three are rule or
+placement decisions with their own argument to make, and none of them is a
+routing question.
+
 ## 3. AND `U11` CANNOT MOVE AT ALL — IN ANY DIRECTION, INTO ANY AMOUNT OF AREA
 
 D-706 §7 named the `U11` relocation as the next transaction on the strength of

@@ -108,8 +108,21 @@
   distance from `C5.2` — roughly `(62.0, 73.5)`, inside the fill and clear of
   both same-net pads — and `maze3d.bond_pads` takes the FIRST legal site, not
   the one that minimises `PP2`'s own metric.  So the next step is a TOOL step:
-  let `--bond-pad` be told WHERE, or let its search rank sites by the fragment
-  price they buy.**
+  let `--bond-pad` be told WHERE.**  ***AND IT WAS BUILT AND IT ANSWERED BY
+  REFUSING:*** `route_maze_batch --bond-at REF.NUM:X,Y[,R]` hands
+  `maze3d.bond_pads` a disc the barrel site must fall in, AND-ed into
+  `Field.via_ok` exactly as `body_landing`'s mask is — a RESTRICTION and never
+  a licence.  **Four controls, all behaved:** three 0.55 mm discs covering the
+  corridor south of `C5.2`, the space east of it and the space south-west of it
+  each return `NO_BODY_VIA_SITE`, and naming the site the unconstrained search
+  already chooses still bonds.  **So the `+3V3` decoupling pocket admits
+  EXACTLY ONE legal 0.500 mm barrel, at `(61.125, 72.600)`, 4.383 mm of widest
+  path from `C5.2` — that fragment cannot be priced above 2.295 A with this
+  board's geometry at this barrel size, and NO ROUTING LEVER WILL CHANGE IT.**
+  What is left is a 0.350/0.200 mm barrel under a `.kicad_dru` licence (a
+  geometry this board already grants by name over the same plated
+  through-hole process), or moving `C5`/`R40`, or re-floorplanning the pocket —
+  a RULE or PLACEMENT decision, not a routing one.
   ***AND `U11` IS REFUTED IN BOTH DIRECTIONS:*** run `b2` (`U11` -> the empty
   `B.Cu` under `SW9`) is 23 -> 22 with both pours regressed, and run `u6`
   (`U11` -> `(71.500, 77.800)` INSIDE the new area with `R36`/`R37`/`R38` at

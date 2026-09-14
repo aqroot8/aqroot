@@ -1,0 +1,76 @@
+{
+ "schema": 1,
+ "decision": "D-708",
+ "what": "controls for route_maze_batch --bond-at, and what they measure about the +3V3 decoupling pocket",
+ "board": "w/d708/t3/aqroot-Beta-v2.kicad_pcb",
+ "pad": "C5.2",
+ "barrel_nm": [
+  500000,
+  250000
+ ],
+ "probes": [
+  {
+   "probe": "A",
+   "disc_mm": [
+    61.95,
+    73.55,
+    0.55
+   ],
+   "expected_bond": false,
+   "bonded": false,
+   "behaved": true,
+   "via_xy_mm": null,
+   "run_mm": null,
+   "reason": "NO_BODY_VIA_SITE"
+  },
+  {
+   "probe": "B",
+   "disc_mm": [
+    62.45,
+    74.3,
+    0.55
+   ],
+   "expected_bond": false,
+   "bonded": false,
+   "behaved": true,
+   "via_xy_mm": null,
+   "run_mm": null,
+   "reason": "NO_BODY_VIA_SITE"
+  },
+  {
+   "probe": "C",
+   "disc_mm": [
+    61.5,
+    73.9,
+    0.55
+   ],
+   "expected_bond": false,
+   "bonded": false,
+   "behaved": true,
+   "via_xy_mm": null,
+   "run_mm": null,
+   "reason": "NO_BODY_VIA_SITE"
+  },
+  {
+   "probe": "D",
+   "disc_mm": [
+    61.125,
+    72.6,
+    0.1
+   ],
+   "expected_bond": true,
+   "bonded": true,
+   "behaved": true,
+   "via_xy_mm": [
+    61.125,
+    72.6
+   ],
+   "run_mm": 2.117,
+   "reason": null
+  }
+ ],
+ "ok": true,
+ "verdict": "PASS",
+ "finding": "--bond-at is a RESTRICTION and behaves as one in BOTH directions: three discs covering the corridor south of C5.2, the space east of it and the space south-west of it each return NO_BODY_VIA_SITE -- the flag invents nothing -- and naming the site the unconstrained search already chooses still bonds, with the requested disc recorded beside the barrel.  AND THAT IS THE ANSWER TO THE C5.2 QUESTION: the +3V3 decoupling pocket admits EXACTLY ONE legal 0.500 mm barrel, at (61.125, 72.600), and it is 4.383 mm of widest path from C5.2's pad.  The fragment cannot be priced above 2.295 A with this board's geometry at this barrel size.",
+ "what_is_left": "a 0.350/0.200 mm barrel under a .kicad_dru licence -- a geometry this board already grants BY NAME in several places over the same plated through-hole process -- or moving C5 / R40 so the pad-to-barrel path shortens, or re-floorplanning the pocket.  All three are rule or placement decisions with their own argument to make."
+}

@@ -2291,7 +2291,7 @@ def propose(path, nets, grid, via_cost_mm, stitch_width=0, stitch_via=None,
             escape_floor=False, bridge_pads=False,
             bridge_pad_max_mm=BRIDGE_PAD_MAX_MM, trunk_floor=False,
             tap=False, tap_max_mm=0.0, tap_pairs=3, tap_first=False,
-            neck_reach_mm=0.0):
+            neck_reach_mm=0.0, bond_at=None):
     import pcbnew
     import qrouter as qr
     import incremental_router as ir
@@ -2476,7 +2476,10 @@ def propose(path, nets, grid, via_cost_mm, stitch_width=0, stitch_via=None,
         field = mz.Field(qb, net, c["width"], c["clr_pad"], c["clr"],
                          c["via_dia"], c["via_drill"], G=grid,
                          layers=c["layers"], guard=gb)
-        r = mz.bond_pads(qb, net, field, bond_by_net[net], max_mm=bond_max_mm)
+        r = mz.bond_pads(qb, net, field, bond_by_net[net],
+                         max_mm=bond_max_mm,
+                         at={k: v for k, v in (bond_at or {}).items()
+                             if k in bond_by_net[net]})
         r["via"] = [c["via_dia"], c["via_drill"]]
         r["seconds"] = round(time.time() - t0, 1)
         r["contract"] = {k: c[k] for k in ("netclass", "width", "clr",
@@ -3320,7 +3323,7 @@ def gate(nets, grid, via_cost_mm, workdir, promote=False, candidate=None,
          evict=(), evict_margin_mm=EVICT_MARGIN_MM, evict_whole=False,
          evict_window=None,
          guard=None,
-         bridge=False, bond_pads=(), bond_max_mm=BOND_MAX_MM,
+         bridge=False, bond_pads=(), bond_max_mm=BOND_MAX_MM, bond_at=None,
          bond_via=None, join_islands=False, join_island_max_mm=0.0,
          join_island_via=None, join_island_width=0, maze_via=None,
          escape_relief=False, relief_via=None, detour_spec=None,
@@ -3613,6 +3616,9 @@ def gate(nets, grid, via_cost_mm, workdir, promote=False, candidate=None,
             if bond_via:
                 cmd += ["--bond-via", "%d:%d" % bond_via]
             cmd += [x for r in bond_pads for x in ("--bond-pad", r)]
+            cmd += [x for k, v in (bond_at or {}).items()
+                    for x in ("--bond-at", "%s:%g,%g,%g"
+                              % (k, v[0] / 1e6, v[1] / 1e6, v[2] / 1e6))]
         # The repair is a STITCH and a BOUNDED LOCAL RE-BOND, and nothing else.
         # `--partial` is a search lever for the primary proposal; handing it to
         # the repair would let it lay whole-board tracks of its own, which is a
@@ -4659,6 +4665,26 @@ def main():
                          "smallest barrel the board licenses outright "
                          "(500000:250000) reaches pads the netclass via "
                          "cannot")
+    ap.add_argument("--bond-at", action="append", default=[],
+                    metavar="REF.NUM:X,Y[,R]",
+                    help="D-708: the BARREL SITE a --bond-pad stitch must use, "
+                         "in millimetres, within an optional radius R (default "
+                         "0.15 mm).  `maze3d.stitch_pad` takes the FIRST "
+                         "via-legal cell by distance and cannot prefer one "
+                         "over another, and `--body-landing` narrows that only "
+                         "to 'somewhere on the plane body', which on this "
+                         "board is a 2254 mm2 pour.  Neither can say WHERE, "
+                         "and where is sometimes the whole move: C5.2's bond "
+                         "lands 4.383 mm of widest path from its own pad and "
+                         "pour_partition PP2 then prices that fragment at "
+                         "2.295 A against a 3.125 A bar, while a site 0.9 mm "
+                         "away inside the same continuous fill prices it above "
+                         "5 A.  THIS IS A RESTRICTION AND NEVER A LICENCE: the "
+                         "disc is AND-ed into Field.via_ok, so a named site "
+                         "that is not already legal stays refused and nothing "
+                         "the board would not otherwise admit becomes "
+                         "admissible -- it can only make a stitch FAIL that "
+                         "would have succeeded somewhere worse.  Repeatable")
     ap.add_argument("--bond-max-mm", type=float, default=BOND_MAX_MM,
                     help="window in millimetres for ONE bond stitch; the "
                          "default is the 8 mm locality window `stitch_pad` "
@@ -4954,6 +4980,21 @@ def main():
                      "machinery, so the gate would refuse the run.  Screen it "
                      "with screen_bond_stitch.py --via instead"
                      % (bond_via[0], BOARD_VIA_DIA_MIN))
+    bond_at = {}
+    for spec in a.bond_at:
+        try:
+            ref, rest = spec.split(":", 1)
+            vals = [float(v) for v in rest.split(",")]
+            if len(vals) == 2:
+                vals.append(0.15)
+            x, y, r = vals
+        except Exception:
+            ap.error("--bond-at wants REF.NUM:X,Y[,R] in mm, got %r" % spec)
+        if ref not in a.bond_pad:
+            ap.error("--bond-at names %s, which is not a --bond-pad" % ref)
+        bond_at[ref] = (int(round(x * 1e6)), int(round(y * 1e6)),
+                        int(round(r * 1e6)))
+
     if a.propose:
         # the child is always given a RESOLVED pitch by its parent
         propose(a.propose, a.nets, int(a.grid), a.via_cost, a.stitch_width, via,
@@ -4972,7 +5013,7 @@ def main():
                 load_run_areas(a.relief_run_area), a.escape_floor,
                 a.bridge_pads, a.bridge_pad_max_mm, a.trunk_floor,
                 a.tap, a.tap_max_mm, a.tap_pairs, a.tap_first,
-                a.neck_reach_mm)
+                a.neck_reach_mm, bond_at)
         return 0
     evict_window_nm = None
     if a.evict_window:
@@ -5039,6 +5080,7 @@ def main():
                  evict_whole=a.evict_whole, evict_window=a.evict_window,
                  guard=a.guard, bridge=a.bridge,
                  bond_pads=tuple(a.bond_pad), bond_max_mm=a.bond_max_mm,
+                 bond_at=bond_at,
                  bond_via=bond_via, join_islands=a.join_islands,
                  join_island_max_mm=a.join_island_max_mm,
                  join_island_via=join_island_via,
