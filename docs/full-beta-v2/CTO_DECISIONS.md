@@ -28592,3 +28592,135 @@ is the SAME copper as `U12.12`'s only escape.
    `evidence/d714-build-u21-cell.py` for `/01_POWER_TREE/ACC_5V_LX`.
 4. **`U11.3` and `U21.5` have NO ESCAPE AT ANY WIDTH** (D-716's census): they
    are package/placement questions and no router flag will open them.
+
+## D-717 — THE `U21` ACCESSORY-BOOST CELL IS A GAP-ARITHMETIC PROBLEM, AND THE NUMBER IS 0.160 mm. `/ACC_5V_LX` ROUTES; `U21.4`'s GROUND IS THE PRICE AND THE CUT IS ITS OWN COPPER
+
+**NO COPPER PROMOTED.**  Authority UNCHANGED at `2a3a9888`; 10 -> 10.
+`hardware/beta-v2` UNTOUCHED.
+
+### 1. THE CELL IS REBUILT AND THE SWITCH NODE ROUTES
+
+`evidence/d716-build-u21-cell-nospine.py` is D-714's cell without its edit 4
+(the hand-drawn `GND` spine): D-714's own note says the spine *"does NOT survive
+the LX route"*, and measured here it also **blocks `U21.5`'s own escape** — with
+the spine present the run reports `U21.5: NO LEGAL ESCAPE at >= 0.600 mm`.
+Without it the base carries `GND` at **ZERO** open edges — the trimmed
+`BQ25185_SYS` pour alone gives `U21.4` its ground — and
+`/01_POWER_TREE/ACC_5V_LX` **routes in 3.412 mm with ZERO vias** on the
+`.kicad_dru`'s own licensed pad-escape neck.
+
+**AND THE FLAG D-714 USED WAS NEVER WRITTEN DOWN.**  D-714's join record carries
+`"necks": [{"pad": "U21.5", "stub_mm": 0.475, "outside_courtyard_mm": 0.225}]`,
+so the route needs **`--neck --neck-reach-mm >= 0.225`** — D-680's flag, whose
+default is strict containment.  With plain `--neck` the same base answers
+`NO LEGAL ESCAPE at >= 0.600 mm` and reads exactly like a wall.
+
+### 2. THE CUT IS THE ROUTE'S OWN COPPER, AND IT IS IRREDUCIBLE
+
+    python3 screen_pour_cut_blame.py GND 56.0 32.0 64.0 43.5 \
+        --board CAND.kicad_pcb --free U21.4=R100.2 -o OUT.json          # 425 s
+
+`Q1` — drop all **43** foreign objects of **12** nets in the window — joins
+`U21.4` to `GND`, so it is not an absolute wall.  `Q2` finds exactly ONE
+alone-sufficient net and it is **`/01_POWER_TREE/ACC_5V_LX` itself**.  `Q3`
+minimises to **TWO OBJECTS, both the LX route's own tracks**:
+
+    trk B.Cu (59.175,38.825)->(60.250,37.775) 0.600 mm   1.503 mm
+    trk B.Cu (59.175,38.825)->(59.650,39.500) 0.600 mm   0.825 mm
+
+**No foreign copper is at fault.**  D-681's topological finding is now a
+minimal-set result: the switch node and the ground pin cross, and nothing that
+can be removed changes it.
+
+### 3. SO IT IS ARITHMETIC, AND THE NUMBER IS 0.160 mm
+
+`L4`'s two lands are 0.980 mm wide on 2.370 mm centres, so its pad gap — the
+only channel between `U21` and the inductor — is
+
+    59.595 - 58.205 = 1.390 mm
+
+and the two conductors that must share it need, at the widths and clearances
+this board publishes:
+
+    0.200  clearance to L4.1's land      (routed clearance excludes PADS)
+    0.250  U21.4's GND conductor
+    0.300  SWITCH_NODE routed clearance  (track to track)
+    0.600  /ACC_5V_LX at its netclass
+    0.200  clearance to L4.2's land
+    -----
+    1.550 mm  against 1.390 mm available   SHORT BY 0.160 mm
+
+**At `SWITCH_NODE`'s own `.kicad_dru` MINIMUM of 0.400 mm the sum is 1.350 mm
+and it FITS with 0.040 mm to spare** — so the transaction was re-run with
+`--escape-floor --trunk-floor`.  **`trunk_floor_price` REFUSED it, and its
+reason is the finding:**
+
+    {"netclass": "SWITCH_NODE", "from_nm": 600000, "floor_nm": 400000,
+     "to_nm": 600000, "admitted": false, "amps": 1.226,
+     "required_amps": null, "why": "NET_CARRIES_NO_PUBLISHED_CURRENT"}
+
+`.kicad_dru` section 5 prices nine classes and `SWITCH_NODE` is not one of
+them.  **AND THE FIGURE EXISTS IN THIS REPOSITORY:** section 5's own `SYS_MAIN`
+comment states *"the U21 accessory boost draws a 2.19 A peak inductor current
+from SYS (D-185)"*.  It is a PEAK, not an RMS, and IPC-2221B is an RMS rule —
+this boost's inductor current is continuous with ripple, so the heating figure
+is the ~1.15 A average, not 2.19 A.  **0.400 mm carries 1.212 A and 0.600 mm
+carries 1.632 A**, so 0.400 mm passes the average by 5 % and 0.600 mm by 42 %.
+**Descending this switch node to 0.400 mm to win 0.160 mm of channel is a
+derating taken to buy geometry, and it is refused here deliberately.**
+(`/01_POWER_TREE/ACC_5V_RAW` in the same run DID descend — `ACC_5V` is priced
+at 0.7 A and `trunk_floor_price` admitted it `PRICED_AT_THE_PUBLISHED_BAR`.)
+
+### 4. THEREFORE THE NEXT MOVE IS NOT A ROUTE
+
+Two candidates, in order of cost:
+
+1. **GIVE `U21.4` A BARREL TO THE `GND` PLANES.**  It is what a converter's
+   ground pin should have had from the start and it takes the ground out of the
+   gap entirely.  D-714 measured a 0.500/0.250 through via failing real DRC at
+   three sites: at `(58.850, 38.950)` it SHORTS `/XGPIO4` on `In2` and clears
+   `/01_POWER_TREE/ACC_5V_RAW` on `In3` by 0.0793 mm.  **Both are single
+   segments of ordinary signal nets and both relay.**  That is the transaction:
+   relay those two inner runs, then one barrel — or two, licensed at 0.350/0.200
+   under section 12's pad-escape relief, whose rule already names `U21`'s
+   courtyard.
+2. **SUBSTITUTE `L4`** for an inductor whose pad gap is >= 1.550 mm (D-703
+   option 4 covers it).  More expensive, and it does not fix the fact that a
+   converter ground pin is on a pour corridor.
+
+### 5. AND THE ACCESSORY 5 V RAIL HAS A SECOND, LARGER BLOCKER
+
+Closing `/ACC_5V_LX` does not make the boost work.  Its INPUT,
+`/01_POWER_TREE/BQ25185_SYS`'s `{L4.1, U21.3}` island, is still open, and
+measured this session it is `NO_PATH` at 0.500 mm from any other cluster of the
+net with a **45 mm** budget at 0.05 mm and again with a **70 mm** budget at
+0.1 mm.  The geometry is the reason: the cell is at `y ~ 38` and the rail's body
+is at `y >= 72`, and between them stands `J5`, whose **24 through-hole contacts
+occupy every layer** in a single column at `x = 65.900` from `y = 10.0` to
+`y = 68.42`.  The only crossings are between two contacts — a 0.940 mm
+edge-to-edge gap that admits a **0.500 mm** conductor with 0.220 mm to each pin,
+which is `SYS_MAIN`'s published minimum and no more — or south of contact 24,
+which is the congested `y 42..72` band.  **This is the accessory 5 V rail's real
+blocker and it is an architecture question, not a routing one.**
+
+### 6. ALSO MEASURED, NO COPPER
+
+- `/SX1262_DIO1` `U2.9 <-> U8.13`: both lands launch at 0.200 mm, 76.098 mm
+  apart, **`NO_PATH`** with the whole board available.
+- `/BQ25185_STAT2`: `U2.19` is `NO_PATH` at 9.474 mm from `{R128.2, TP7.1}`, and
+  `U11.3` is `NO_LEGAL_ESCAPE` — *"blocked by `U11.1` (x27), `U11.4` (x18),
+  `U11.8` (x5), `R37.2` (x4)"* — confirming D-716's census: it has no escape at
+  any width and is a package question.
+- `/01_POWER_TREE/BQ25185_SYS` `{U12.10, U12.11}` is `NO_ANCHOR` for a jumper at
+  0.500 mm: the fragment is 0.7488 mm2 and admits no conductor centred 0.350 mm
+  inside it.
+
+### 7. NEXT, IN ORDER
+
+1. **`U21.4`'s barrel** — relay `/XGPIO4` on `In2` and `/ACC_5V_RAW` on `In3`
+   at `(58.850, 38.950)`, then the via.  That promotes `/ACC_5V_LX`.
+2. **`/ACC_PWR_EN` out of the `U16` west pocket** (D-715) — it carries
+   `/I2C_SCL_INT` `U16.3` with it.
+3. **`U12` north 0.300 mm with its two relays**, then `Net-(SW9-A)`'s escape.
+4. **`SYS` to the accessory cell** — the `J5.12`/`J5.13` crossing at 0.500 mm,
+   or move the cell.  Architecture.

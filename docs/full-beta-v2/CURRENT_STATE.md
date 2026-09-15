@@ -66,6 +66,61 @@
 > `verify_promotion` PASS and `protected_copper` showing exactly one protected
 > net moved.  `U14.7` is on the bus.  This board has **no open owner decision**.
 
+- **Demo D-717 (THE `U21` ACCESSORY-BOOST CELL IS GAP ARITHMETIC AND THE NUMBER
+  IS 0.160 mm; `/ACC_5V_LX` ROUTES AND `U21.4`'s GROUND IS THE PRICE):**  **NO
+  COPPER PROMOTED.**  Authority UNCHANGED at `2a3a9888`; 10 -> 10.
+  ***THE CELL IS REBUILT AND THE SWITCH NODE ROUTES:***
+  `evidence/d716-build-u21-cell-nospine.py` is D-714's cell WITHOUT its edit 4,
+  the hand-drawn `GND` spine — measured here, that spine **blocks `U21.5`'s own
+  escape** (`NO LEGAL ESCAPE at >= 0.600 mm` with it present), and without it the
+  base carries `GND` at **ZERO** open edges because the trimmed `BQ25185_SYS`
+  pour alone grounds `U21.4`.  `/01_POWER_TREE/ACC_5V_LX` then **routes in
+  3.412 mm with ZERO vias**.  **And the flag D-714 used was never written down:**
+  its join record carries `necks: [{pad: U21.5, stub_mm: 0.475,
+  outside_courtyard_mm: 0.225}]`, so the route needs **`--neck --neck-reach-mm
+  >= 0.225`** (D-680's flag, default STRICT containment); with plain `--neck` the
+  same base reads exactly like a wall.  ***THE CUT IS THE ROUTE'S OWN COPPER:***
+  `screen_pour_cut_blame GND ... --free U21.4=R100.2` drops all **43** foreign
+  objects of **12** nets and `U21.4` joins, so it is not absolute — but the only
+  alone-sufficient net is **`/ACC_5V_LX` ITSELF**, and `Q3` minimises to **TWO
+  OBJECTS, both the LX route's own 0.600 mm tracks**.  D-681's topological
+  finding is now a minimal-set result.  ***SO IT IS ARITHMETIC:*** `L4`'s pad gap
+  is `59.595 - 58.205 = ` **1.390 mm**, and the two conductors need
+  `0.200 + 0.250 + 0.300 + 0.600 + 0.200 = ` **1.550 mm** — **SHORT BY
+  0.160 mm**.  At `SWITCH_NODE`'s own `.kicad_dru` MINIMUM of 0.400 mm the sum
+  is 1.350 and it FITS — and `trunk_floor_price` **REFUSED** the descent, with
+  the reason that is the finding: `{"netclass": "SWITCH_NODE", "admitted":
+  false, "why": "NET_CARRIES_NO_PUBLISHED_CURRENT"}`.  Section 5 prices nine
+  classes and `SWITCH_NODE` is not one; the figure exists in the repo (section
+  5's own `SYS_MAIN` comment: *"the U21 accessory boost draws a 2.19 A peak
+  inductor current from SYS (D-185)"*) but it is a PEAK and IPC-2221B is an RMS
+  rule, so the heating figure is the ~1.15 A average.  **0.400 mm carries
+  1.212 A and 0.600 mm carries 1.632 A** — 0.400 passes by 5 %, 0.600 by 42 %.
+  **Descending this switch node to win 0.160 mm of channel is a derating taken
+  to buy geometry and it is refused here deliberately.**  (`/ACC_5V_RAW` in the
+  same run DID descend: `ACC_5V` is priced at 0.7 A and the bar admitted it.)
+  ***THEREFORE THE NEXT MOVE IS NOT A ROUTE:*** give `U21.4` a BARREL to the
+  `In1`/`In4` `GND` planes — what a converter's ground pin should have had —
+  which takes the ground out of the gap entirely.  D-714 measured a 0.500/0.250
+  through via failing real DRC at three sites; at (58.850, 38.950) it SHORTS
+  `/XGPIO4` on `In2` and clears `/ACC_5V_RAW` on `In3` by 0.0793 mm, and **both
+  are single segments of ordinary signal nets and both relay**.  Second choice:
+  substitute `L4` for an inductor whose pad gap is >= 1.550 mm (D-703 option 4).
+  ***AND THE ACCESSORY 5 V RAIL HAS A LARGER BLOCKER:*** closing `/ACC_5V_LX`
+  does not make the boost work — its INPUT, `BQ25185_SYS`'s `{L4.1, U21.3}`
+  island, is `NO_PATH` at 0.500 mm from any other cluster with a **45 mm** budget
+  at 0.05 mm and again with a **70 mm** budget at 0.1 mm.  The cell is at
+  `y ~ 38` and the rail's body at `y >= 72`, and between them stands `J5`, whose
+  **24 through-hole contacts occupy EVERY layer** in one column at `x = 65.900`
+  from `y = 10.0` to `y = 68.42`.  The only crossings are between two contacts —
+  a **0.940 mm** edge-to-edge gap admitting a **0.500 mm** conductor with
+  0.220 mm to each pin, which is `SYS_MAIN`'s published minimum and no more — or
+  south of contact 24, the congested `y 42..72` band.  **This is the accessory
+  5 V rail's real blocker and it is an architecture question.**  ***ALSO
+  MEASURED:*** `/SX1262_DIO1` `U2.9 <-> U8.13` is `NO_PATH` with the whole board
+  available (both lands launch, 76.098 mm apart); `/BQ25185_STAT2` `U2.19` is
+  `NO_PATH` at 9.474 mm and `U11.3` is `NO_LEGAL_ESCAPE`; and `{U12.10, U12.11}`
+  is `NO_ANCHOR` for a 0.500 mm jumper — its fragment is 0.7488 mm2.
 - **Demo D-716 (THE `BQ25185`'s OWN `SYS` OUTPUT REACHES THE SYSTEM RAIL FOR
   THE FIRST TIME, AND IT COST ONE ISLAND JUMPER):**  **COPPER PROMOTED.**
   Authority `1a2aa44d` -> `2a3a9888`; **12 -> 10 retained open edges**;
