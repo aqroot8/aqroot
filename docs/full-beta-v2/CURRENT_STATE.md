@@ -86,7 +86,12 @@
   channel is 4.47 mm wide at 1.50 mm out and ZERO at 1.55, sealed by **two
   `/NFC_VDD_A` BARRELS**; `U9.10`'s is 2.43 mm at 1.0 mm out and **0.1318 mm at
   2.00 mm**, bound by an `/NFC_VDD_AM` TRACK and `C45.2`'s `GND` land.  Neither
-  is a package-pitch problem past the first half-millimetre.  ***AND THE PATTERN
+  is a package-pitch problem past the first half-millimetre -- **and `U9.14`'s
+  barrels are not the wall EITHER: a windowed `--evict` re-laid `NFC_VDD_A` and
+  the refusal was UNCHANGED, while `screen_offcentre_launch` says `U9.14`
+  OFF-CENTRE OPENS at 0.200 mm ON `B`, and the tap's own message says it asked
+  on `F` -- for a `B.Cu`-ONLY land.  THE LAUNCHERS DISAGREE, and resolving that
+  is worth one edge without moving any copper.**  ***AND THE PATTERN
   UNDER ALL OF IT:*** `R43` (the `EN` pull-down) is **47 mm** from `U12.12` and
   is why `Net-(SW9-A)` is board-spanning; `R127`/`R128` are 10 and 20 mm from
   `U11`.  Bringing the straps home is the same move that closed `C26.2`.
