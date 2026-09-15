@@ -1,5 +1,54 @@
 # AQROOT Demo manufacturing preflight
 
+## A LAND WITH NO ESCAPE AT ANY WIDTH IS A POUR QUESTION, NOT A ROUTING ONE (D-715)
+
+    python3 screen_offcentre_launch.py NET --only-lands REF.NUM --lands-only -o OUT.json
+    python3 evidence/d715-u5-gnd-restitch.py BOARD.kicad_pcb        # replays it
+
+`+3V3` `U5.2` is the `MAX98357A`'s `GAIN_SLOT`.  `screen_offcentre_launch`
+refuses it at **all ten rungs from 0.600 down to 0.150 mm** -- blocked by
+`U5.1`, `U5.3`, `U5.17` and `R15.2`, all PADS -- so no router will ever reach
+it and no width licence would have helped.  **When the launcher refuses a land
+at the board's own `min_track_width`, stop asking the router and ask the
+fill.**  `U5.2` was already sitting inside a `0.183 mm2` scrap of the `F +3V3
+PLANE`, `0.337 mm` from a `3407 mm2` body, and what held the two apart was
+eight `F.Cu` `GND` stitch objects laid before the pours existed.
+
+**MINIMISE THE REMOVAL BY REVERSE GREEDY, NOT BY EYE.**  Thirteen objects lie
+in the window and all thirteen open it; putting each back one at a time, with a
+real `ZONE_FILLER` refill and `GetConnectedItems` read from the pad each time,
+says **eight** are load-bearing and five are not.  The predicate matters: a
+land that is alone still returns ONE connected pad -- itself -- so `n > 0` calls
+every trial a success and the greedy accepts the first put-back it tries.  Ask
+`n > 1`.
+
+**AND THE SET OWES WHAT IT TOOK.**  One of the eight was `R15.2`'s only barrel,
+so the transaction pays a 1.208 mm `F.Cu` track to the barrel that survives;
+`GND` ends at zero open edges.  **A removal also leaves ANTENNAE**: the first
+candidate was DRC-clean but for one `track_dangling`, a stub whose only
+neighbour the set had taken.  Remove the chain, then re-run DRC.
+
+## THE POCKET HOLDS TWO, AND THE THIRD LANE HAS A PRICE (D-715)
+
+    python3 screen_pair_corridor_blame.py --board CAND.kicad_pcb NET A.n B.m 3.0 50000 OUT.json
+
+`U16`'s west column carries three conductors -- `/ACC_PWR_EN`,
+`EXT_SCL_BUF`, `/I2C_SCL_INT` -- and **seven transactions in every request
+order, two eviction windows and a stated lane reservation each closed exactly
+TWO of them.**  A run that closes two and opens one is not a router failure and
+re-ordering will not fix it; measure the pocket instead.  `Q1` -- drop all
+routed copper of the eleven foreign nets -- opens the loser in **7.508 mm with
+zero vias**, so it is a corridor, and `Q2` names the three single nets that
+open it alone with their prices.  **Spend the cheapest, in the SAME transaction
+as its own open edge if they share the band.**
+
+**A `--guard` LANE FROM `reserve_corridor.py` DID NOT BIND THE MAZE.**  A
+stated `/I2C_SCL_INT` lane of half-width 0.15 mm and 0.20 mm clearance was
+authored and passed to `route_maze_batch --guard`; the run laid
+`EXT_SCL_BUF` **0.04 mm from its centreline**.  The guard is a pour-bond
+instrument; do not read a `--guard` run as a reservation of an ordinary route.
+
+
 Status: **BLOCKED** at board CONNECTIVITY.  Every fabrication CONTRACT on this
 board passes -- package (`FAB1-FAB8`), BOM sourcing (100 % orderable, D-615),
 population (`POP1-POP4`), land patterns (`LAND1-LAND6`, 311/311), keep-out

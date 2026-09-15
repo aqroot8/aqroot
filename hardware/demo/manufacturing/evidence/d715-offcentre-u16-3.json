@@ -1,0 +1,85 @@
+{
+ "authoritative_unchanged": true,
+ "board": "/home/aqroot8/aqroot-demo/hardware/demo/kicad/aqroot-demo/aqroot-Beta-v2.kicad_pcb",
+ "board_sha256": "2e8ef9edf28681c46495a9ed5b35b6c11dbf116f5504e6e4e17c4b48e8b6e016",
+ "grid": 25000,
+ "method": "read-only; every trial laid on a scratch QBoard and REVERTED, every candidate proved by maze3d.verify_laid (exact analytic clearance, never a lattice); zones invisible to QBoard, so a closure is a licence question and never copper",
+ "nets": [
+  {
+   "board_track_min": 150000,
+   "contract": 200000,
+   "dru_floor": 150000,
+   "islands": 2,
+   "lands": [
+    {
+     "best_centre": null,
+     "best_offcentre": 200000,
+     "centre_width": {
+      "B": null
+     },
+     "gained": true,
+     "layers": [
+      "B"
+     ],
+     "offcentre_width": {
+      "B": 200000
+     },
+     "pad": "U16.3",
+     "rungs": [
+      {
+       "a_xy": [
+        57.1375,
+        54.425
+       ],
+       "b_xy": [
+        57.975,
+        54.425
+       ],
+       "base_dir": true,
+       "centre": false,
+       "centre_why": "U16.3: NO LEGAL ESCAPE at >= 0.200 mm; blocked by U16.4 (x27), U16.1 (x23), track (x15), U16.6 (x3)",
+       "escape_formula": false,
+       "exit_mm": 0.8125,
+       "layer": "B",
+       "n": 8,
+       "offcentre": true,
+       "offcentre_mm": 0.0,
+       "offcentre_why": null,
+       "reach_mm": 0.025,
+       "seconds": 0.46,
+       "support_mm": 0.8125,
+       "width": 200000
+      },
+      {
+       "a_xy": null,
+       "b_xy": null,
+       "base_dir": null,
+       "centre": false,
+       "centre_why": "U16.3: NO LEGAL ESCAPE at >= 0.150 mm; blocked by U16.4 (x27), U16.1 (x23), track (x15), U16.6 (x3)",
+       "escape_formula": null,
+       "exit_mm": null,
+       "layer": "B",
+       "n": 0,
+       "offcentre": false,
+       "offcentre_mm": null,
+       "offcentre_why": null,
+       "reach_mm": null,
+       "seconds": 0.03,
+       "support_mm": null,
+       "width": 150000
+      }
+     ]
+    }
+   ],
+   "net": "/I2C_SCL_INT",
+   "netclass": "I2C",
+   "pairs": [],
+   "widths": [
+    200000,
+    150000
+   ]
+  }
+ ],
+ "question": "does an OFF-CENTRE LAUNCH -- a stub anchored anywhere on the land's own copper, in any of 24 directions -- open the lands and the island pairs that a CENTRE-ANCHORED escape refuses at every width this board can fabricate",
+ "schema": 1
+}

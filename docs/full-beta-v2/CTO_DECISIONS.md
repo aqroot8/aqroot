@@ -28312,3 +28312,173 @@ name, every other top-level key equal.
    the same transaction; the two edges share the band.
 4. `U11.3` is an OWNER question about `BAT_PROTECTED_P`, not a routing one.
 
+
+## D-715 — `+3V3` `U5.2` WAS NEVER A ROUTING PROBLEM: THE AMPLIFIER'S GAIN STRAP IS A POUR CUT, AND EIGHT STALE `GND` STITCH OBJECTS ARE THE WHOLE OF IT. AND THE `U16` WEST POCKET HOLDS EXACTLY TWO OF ITS THREE CONDUCTORS
+
+**COPPER PROMOTED.**  Authority `2e8ef9ed` -> `1a2aa44d`; **13 -> 12 retained
+open edges**, over 9 -> 8 nets; raw ratsnest 29 -> 28.
+`hardware/beta-v2` UNTOUCHED.
+
+### 1. THE EDGE THAT CLOSED
+
+`U5.2` is the `MAX98357A`'s **`GAIN_SLOT`** pin, strapped to `+3V3` for 6 dB —
+sheet 06's own note in its own words: *"GAIN_SLOT -> VDD = 6 dB (WAS GND =
+12 dB).  AT 12 dB A 0 dBFS SAMPLE ASKS FOR 5.07 Vrms AND THE RAIL ONLY GIVES
+2.33 Vrms"*.  It has been an island of ONE land since the fork, and with it
+open the amplifier's gain/slot select floats: the part's own default is 9 dB in
+a LEFT+RIGHT (mono-mix) slot, not the 6 dB LEFT the firmware and the clipping
+budget are written against.
+
+**IT CANNOT BE ROUTED, AT ANY WIDTH.**  `screen_offcentre_launch` over the ten
+rungs 0.600 .. 0.150 mm reports **NO LEGAL ESCAPE at every one of them** —
+blocked by `U5.1`, `U5.3`, `U5.17` (the part's own thermal pad) and `R15.2`.
+The land is boxed by its own package.  `evidence/d715-offcentre-u5-2.json`.
+
+**SO THE ONLY CONDUCTOR THAT CAN REACH IT IS THE POUR, AND THE POUR ALREADY
+DOES — ALMOST.**  `U5.2` sits inside filled outline 12 of the `F +3V3 PLANE`:
+a scrap of **0.183 mm2**, its nearest vertex **0.337 mm** from the 3407 mm2
+body.  What holds the scrap apart is the local `F.Cu` `GND` stitch mesh that
+carries `U5.3` and `R15.2` to their barrels — copper laid before the pours
+existed and never revisited.
+
+**THE SET IS MINIMAL, BY REVERSE GREEDY.**  Thirteen `GND` objects lie in the
+`26.5,113.5 - 29.15,117.0` window.  Remove all thirteen and `U5.2` joins the
+**82-land** `+3V3` body.  Put each back one at a time, re-filling with KiCad's
+own `ZONE_FILLER` each time and re-reading `GetConnectedItems` from the pad:
+**five go back and eight do not.**  The eight are seven `F.Cu` 0.300 mm tracks
+and the 0.600/0.300 barrel at `(28.500, 115.800)`.
+
+    -  F.Cu GND  (27.725,115.087)->(28.500,115.800)   R15.2 -> the barrel
+    -  F.Cu GND  (28.600,115.100)->(27.500,113.900)   mesh SW leg
+    -  F.Cu GND  (28.600,115.650)->(28.600,115.100)   mesh N spur
+    -  F.Cu GND  (28.875,116.125)->(27.600,115.800)   mesh W leg
+    -  F.Cu GND  (28.875,116.125)->(28.000,115.300)   mesh NW leg
+    -  F.Cu GND  (28.875,116.125)->(28.600,115.650)   mesh N leg
+    -  F.Cu GND  (29.075,116.250)->(28.875,116.125)   U5.3 corner   x3
+    -  F.Cu GND  (27.600,115.800)->(27.300,115.300)   the stub the mesh left
+    -  VIA  GND  (28.500,115.800) 0.600/0.300
+    +  F.Cu GND  (27.725,115.087)->(27.500,113.900) 0.300 mm, 1.208 mm
+
+**THE TRANSACTION OWES `R15.2` A TIE AND PAYS IT.**  The removed barrel was
+`R15.2`'s only one, so one 0.300 mm `F.Cu` track, **1.208 mm**, carries it to
+the 0.600/0.300 barrel at `(27.500, 113.900)` that survives.  `R15.2` is the
+`SD_MODE` 100 k pull-down's ground; the routing ledger reads `GND` at **ZERO**
+open edges afterwards and every other `GND` land in the pocket — `U5.3`,
+`U5.11`, `U5.15`, `U5.17`, `C8.2` — keeps its own path.
+
+**AND THE EIGHTH OBJECT IS ONLY THERE BECAUSE OF THE OTHER SEVEN.**  The first
+candidate left `(27.600,115.800)->(27.300,115.300)` behind and real DRC
+returned one `track_dangling`: with the mesh gone that track's only neighbour
+was gone too.  It is removed in the same transaction and DRC is clean.
+
+`evidence/d715-u5-gnd-restitch.py` replays the whole thing in one command.
+
+### 2. PROOF
+
+| check | result |
+|---|---|
+| routing ledger | **13 -> 12** retained open edges, 9 -> 8 nets, ratsnest 29 -> 28; `+3V3` CLOSED, nothing else moved |
+| real KiCad DRC (refilled, `--severity-all`) | `{solder_mask_bridge: 1, lib_footprint_issues: 199}` — **byte-for-byte the inherited baseline**; unconnected **29 -> 28** |
+| schematic parity | 246 warnings, **ZERO errors** (unchanged) |
+| `verify_promotion.py --ref HEAD --nets +3V3,GND --evicted GND --track-width 300000` | **PASS**, 16/16 checks, `fill_stable`, `pour_partition_intact`, `unconnected_not_increased` |
+| `protected_copper.py --ref HEAD` | `identical: true` — 15 protected nets, 406 objects, **NO protected net changed** |
+| standing contract suite (`contract_regression.py --baseline d712`) | **14 / 14 PASS** |
+| fab package | regenerated, `FAB1`-`FAB8` **PASS**, provenance sha matches the promoted board, fill stable |
+| `hardware/beta-v2` | untouched |
+
+`PP2` records the gain the other way round: the `+3V3` `F.Cu` island
+`8c612136…` goes from **33 to 34** bonded lands.
+
+### 3. THE `U16` WEST POCKET HOLDS EXACTLY TWO OF ITS THREE CONDUCTORS
+
+`/I2C_SCL_INT`'s `U16.3` — the `TCA4307`'s internal-side `SCLIN`, one of the
+board's five highest-value open edges (D-652) — is **NOT a corridor problem**,
+and D-714's *"both `U16` lands LAUNCH, so both remaining `U16` edges are
+corridor problems in one band"* is SUPERSEDED.
+
+**IT IS FENCED BY ITS OWN NEIGHBOURS' ESCAPES.**  `U16.2`'s `EXT_SCL_BUF` arm
+turns north at `x = 55.900` and its diagonal `(56.075,54.850)->(54.500,53.200)`
+crosses `U16.3`'s lane; with those two evicted `U16.3` launches **due west from
+its own CENTRE at the full 0.200 mm**, not off-centre and not necked, and the
+tap branches it onto the net's own `F.Cu` run at `(55.700,60.300)` in
+**9.31 - 11.08 mm with ONE barrel** — against the 15.585 mm to the nearest PAD
+the maze may aim at.  Reproduced in five independent runs.
+
+**AND THE THIRD CONDUCTOR NEVER FITS.**  Seven transactions, every request
+order, two eviction windows and a stated lane reservation:
+
+| run | order | outcome |
+|---|---|---|
+| a5 | SCL, EXT, ACC (narrow) | SCL + ACC close, **EXT open** |
+| a6 | SCL, EXT, ACC (wide) | SCL closes, EXT + ACC open |
+| a7 | ACC, EXT, SCL (wide) | ACC + EXT close, **SCL open** |
+| a8 | a7 + a reserved `U16.3` lane | identical to a7 — the lane was crossed |
+| a9 | SCL, ACC, EXT (wider) | SCL closes, ACC + EXT open |
+| a11 | EXT, SCL, ACC (maze before tap) | EXT closes, SCL + ACC open |
+| a12 | ACC, EXT, SCL + `WAKE_GATE_S` evicted | EXT closes, the rest open |
+
+**AND THE PRICE OF THE THIRD LANE IS MEASURED.**
+`screen_pair_corridor_blame` on the a5 board, `U16.2 -> R50.2`, 11 foreign nets
+in the window: `BASE NO_PATH`; **Q1 — drop ALL routed copper of all eleven —
+OPENS in 7.508 mm with ZERO vias**, so it is a corridor, not a placement wall.
+Q2 names exactly three single nets that open it alone:
+
+    /ACC_PWR_EN                      OPENS  8.695 mm     <- cheapest
+    /I2C_SCL_INT                     OPENS 13.717 mm
+    /09_COMMUNITY_HEADER/WAKE_GATE_S OPENS 18.744 mm
+
+`evidence/d715-blame-u16-2.json`, `evidence/d715-u16-fanout-orders.json`.
+**The transaction that closes `U16.3` is therefore the one that takes
+`/ACC_PWR_EN` out of the pocket entirely** — and its own remaining edge,
+`U3.20`, is 20.242 mm of `NO_PATH` in the same band, so the two are ONE
+transaction, not two.  `R17`, the 100 k `EN` pull-down `ACC_PWR_EN` hauls
+3.6 mm west to reach, has **no free slot** in the 3.35 mm-pitch resistor bank
+south of `U16`; the only open ground near `U16` is NORTH of it
+(`x 55.0 - 59.5, y 50.3 - 52.9`, **zero pads**) and `U16.1` is the SOUTH pin, so
+that ground is reachable only by moving `U16` itself.
+
+### 4. `BQ25185_SYS` `U12.10`/`U12.11` IS A FIVE-OBJECT CUT AND A TOPOLOGICAL WALL IN THE SAME BREATH
+
+`screen_pour_cut_blame --free U12.10=U12.1` over `63.0,96.0 - 71.5,104.5`
+returns **`MINIMAL_SET_FOUND`, 5 objects / 4 units, `edges_closed: 1`**, and
+every one of them is `Net-(SW9-A)` in `U12`'s south band — no `GND`, no
+`+3V3`, nothing protected:
+
+    trk B.Cu (66.100,103.650)->(69.150,103.425) 0.200      the 20 mm east loop's first leg
+    trk B.Cu (66.100,102.800)->(66.100,103.650) 0.200  x2  U12.12's escape stub
+    trk B.Cu (66.100,103.650)->(66.350,103.650) 0.200      its dogleg
+    via      (66.350,103.650) 0.600/0.300                  its barrel
+
+Removed by hand and refilled, `BQ25185_SYS` goes **4 -> 3** on two boards.
+**BUT THE CUT AND `U12.12`'s ESCAPE ARE THE SAME COPPER.**  `U12.12` is a
+MIDDLE pin of the south row: north of it is `U12.15`, the thermal pad, and its
+0.240 mm pad has 0.260 mm to `U12.11` and `U12.13`, so its only escape is a
+VERTICAL stub south into the band — and the band is exactly where the `SYS`
+pour must pass, from the WEST, to reach `U12.10`/`U12.11`.  Measured, on the
+band-cleared board: a bare barrel at `x` 68.6 / 69.0 / 69.5 / 70.0 leaves
+`U12.10` joined; at `x` 64.4 / 64.8 / 65.2 it does not; and **the vertical stub
+at `x = 66.100` severs it at every `y` tried**, at 0.450 mm and at 0.600 mm.
+
+**AND MOVING `U12` NORTH DOES NOT LIFT IT.**  D-713's named rung applies
+cleanly — `apply_part_shift --ref U12 --dy-nm -300000 --release --release-net
+GND --release-bare-pad U12.2 --release-bare-pad U12.13 --release-point
+GND:65.5,100.5 … --allow-via-in-pad` is **`PASS`**, 13 `GND` tracks released,
+and the routing ledger afterwards is **UNCHANGED at 13**: the `B.Cu` `GND` pour
+holds `U12.2`, `U12.13` and `U12.15` by itself, so all thirteen tracks were
+redundant.  It buys a 1.200 mm band instead of 0.900 — and it is still not
+enough, because the crossing is topological and not a width.  It also costs
+**two new real-DRC clearance errors** (`U12.5` vs a `Net-(L1-Pad2)` track at
+0.1804 mm, and the `/01_POWER_TREE/V3V3_FB` barrel at `(66.100,99.250)` vs
+`U12.2` at 0.1482 mm), so the move owes those two objects a relay.
+
+### 5. NEXT, IN ORDER
+
+1. **One transaction for `/ACC_PWR_EN` and `/I2C_SCL_INT`.**  Take
+   `/ACC_PWR_EN` out of the `U16` west pocket — `U3.20` and `U16.3` are the
+   same 8.695 mm of corridor — and `U16.3` closes behind it with a 9.3 mm tap.
+2. **`U12` north 0.300 mm WITH the two relays it owes**, then `Net-(SW9-A)`'s
+   `U12.12` escape EAST of `U12.8` at `y ~ 103.8` with a 0.450/0.200 barrel —
+   the only quadrant the sweep leaves open.  Bring `R43` home first.
+3. **`/09_COMMUNITY_HEADER/EXT_SDA_BUF`'s barrel out of `L4`'s pad gap**, then
+   replay `evidence/d714-build-u21-cell.py` for `/01_POWER_TREE/ACC_5V_LX`.
+4. **Publish the ST25R3916 `VDD`/`VDD_TX` current**, then `/NFC_SUPPLY`.

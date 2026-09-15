@@ -1,0 +1,550 @@
+{
+ "authoritative_unchanged": true,
+ "banned": [],
+ "board": "/home/aqroot8/aqroot-demo/hardware/demo/kicad/aqroot-demo/aqroot-Beta-v2.kicad_pcb",
+ "board_sha256": "2e8ef9edf28681c46495a9ed5b35b6c11dbf116f5504e6e4e17c4b48e8b6e016",
+ "board_sha256_at_write": "2e8ef9edf28681c46495a9ed5b35b6c11dbf116f5504e6e4e17c4b48e8b6e016",
+ "candidates": 53,
+ "decision": "D-657",
+ "edges_closed": 1,
+ "free": [
+  "U12.10=U12.1"
+ ],
+ "goal": "join U12.10=U12.1",
+ "layers": [
+  "B.Cu"
+ ],
+ "method": "pcbnew.ZONE_FILLER (KiCad's own filler) over the whole board per probe, partition read off GetConnectivity; one LoadBoard per child process; authoritative board never written",
+ "net": "/01_POWER_TREE/BQ25185_SYS",
+ "q0_baseline": {
+  "clusters": 7,
+  "partition": [
+   [
+    "C24.1",
+    "C26.2",
+    "C28.1",
+    "C33.1",
+    "C64.1",
+    "L2.1",
+    "SW9.2",
+    "U12.1"
+   ],
+   [
+    "C27.1"
+   ],
+   [
+    "L4.1",
+    "U21.3"
+   ],
+   [
+    "R68.1"
+   ],
+   [
+    "U11.1"
+   ],
+   [
+    "U12.10",
+    "U12.11"
+   ],
+   [
+    "U13.3"
+   ]
+  ]
+ },
+ "q1_upper_bound": {
+  "clusters": 6,
+  "freed": true,
+  "partition": [
+   [
+    "C24.1",
+    "C26.2",
+    "C28.1",
+    "C33.1",
+    "C64.1",
+    "L2.1",
+    "SW9.2",
+    "U12.1",
+    "U12.10",
+    "U12.11"
+   ],
+   [
+    "C27.1"
+   ],
+   [
+    "L4.1",
+    "U21.3"
+   ],
+   [
+    "R68.1"
+   ],
+   [
+    "U11.1"
+   ],
+   [
+    "U13.3"
+   ]
+  ],
+  "removed_objects": 61,
+  "removed_units": 53
+ },
+ "q2_per_net": {
+  "+3V3": {
+   "alone_sufficient": false,
+   "clusters": 7,
+   "partition": [
+    [
+     "C24.1",
+     "C26.2",
+     "C28.1",
+     "C33.1",
+     "C64.1",
+     "L2.1",
+     "SW9.2",
+     "U12.1"
+    ],
+    [
+     "C27.1"
+    ],
+    [
+     "L4.1",
+     "U21.3"
+    ],
+    [
+     "R68.1"
+    ],
+    [
+     "U11.1"
+    ],
+    [
+     "U12.10",
+     "U12.11"
+    ],
+    [
+     "U13.3"
+    ]
+   ],
+   "units": 13
+  },
+  "/01_POWER_TREE/V3V3_FB": {
+   "alone_sufficient": false,
+   "clusters": 7,
+   "partition": [
+    [
+     "C24.1",
+     "C26.2",
+     "C28.1",
+     "C33.1",
+     "C64.1",
+     "L2.1",
+     "SW9.2",
+     "U12.1"
+    ],
+    [
+     "C27.1"
+    ],
+    [
+     "L4.1",
+     "U21.3"
+    ],
+    [
+     "R68.1"
+    ],
+    [
+     "U11.1"
+    ],
+    [
+     "U12.10",
+     "U12.11"
+    ],
+    [
+     "U13.3"
+    ]
+   ],
+   "units": 2
+  },
+  "/BQ25185_STAT1": {
+   "alone_sufficient": false,
+   "clusters": 7,
+   "partition": [
+    [
+     "C24.1",
+     "C26.2",
+     "C28.1",
+     "C33.1",
+     "C64.1",
+     "L2.1",
+     "SW9.2",
+     "U12.1"
+    ],
+    [
+     "C27.1"
+    ],
+    [
+     "L4.1",
+     "U21.3"
+    ],
+    [
+     "R68.1"
+    ],
+    [
+     "U11.1"
+    ],
+    [
+     "U12.10",
+     "U12.11"
+    ],
+    [
+     "U13.3"
+    ]
+   ],
+   "units": 4
+  },
+  "GND": {
+   "alone_sufficient": false,
+   "clusters": 7,
+   "partition": [
+    [
+     "C24.1",
+     "C26.2",
+     "C28.1",
+     "C33.1",
+     "C64.1",
+     "L2.1",
+     "SW9.2",
+     "U12.1"
+    ],
+    [
+     "C27.1"
+    ],
+    [
+     "L4.1",
+     "U21.3"
+    ],
+    [
+     "R68.1"
+    ],
+    [
+     "U11.1"
+    ],
+    [
+     "U12.10",
+     "U12.11"
+    ],
+    [
+     "U13.3"
+    ]
+   ],
+   "units": 21
+  },
+  "Net-(L1-Pad1)": {
+   "alone_sufficient": false,
+   "clusters": 7,
+   "partition": [
+    [
+     "C24.1",
+     "C26.2",
+     "C28.1",
+     "C33.1",
+     "C64.1",
+     "L2.1",
+     "SW9.2",
+     "U12.1"
+    ],
+    [
+     "C27.1"
+    ],
+    [
+     "L4.1",
+     "U21.3"
+    ],
+    [
+     "R68.1"
+    ],
+    [
+     "U11.1"
+    ],
+    [
+     "U12.10",
+     "U12.11"
+    ],
+    [
+     "U13.3"
+    ]
+   ],
+   "units": 2
+  },
+  "Net-(L1-Pad2)": {
+   "alone_sufficient": false,
+   "clusters": 7,
+   "partition": [
+    [
+     "C24.1",
+     "C26.2",
+     "C28.1",
+     "C33.1",
+     "C64.1",
+     "L2.1",
+     "SW9.2",
+     "U12.1"
+    ],
+    [
+     "C27.1"
+    ],
+    [
+     "L4.1",
+     "U21.3"
+    ],
+    [
+     "R68.1"
+    ],
+    [
+     "U11.1"
+    ],
+    [
+     "U12.10",
+     "U12.11"
+    ],
+    [
+     "U13.3"
+    ]
+   ],
+   "units": 4
+  },
+  "Net-(SW9-A)": {
+   "alone_sufficient": true,
+   "clusters": 6,
+   "partition": [
+    [
+     "C24.1",
+     "C26.2",
+     "C28.1",
+     "C33.1",
+     "C64.1",
+     "L2.1",
+     "SW9.2",
+     "U12.1",
+     "U12.10",
+     "U12.11"
+    ],
+    [
+     "C27.1"
+    ],
+    [
+     "L4.1",
+     "U21.3"
+    ],
+    [
+     "R68.1"
+    ],
+    [
+     "U11.1"
+    ],
+    [
+     "U13.3"
+    ]
+   ],
+   "units": 6
+  },
+  "Net-(U12-PG)": {
+   "alone_sufficient": false,
+   "clusters": 7,
+   "partition": [
+    [
+     "C24.1",
+     "C26.2",
+     "C28.1",
+     "C33.1",
+     "C64.1",
+     "L2.1",
+     "SW9.2",
+     "U12.1"
+    ],
+    [
+     "C27.1"
+    ],
+    [
+     "L4.1",
+     "U21.3"
+    ],
+    [
+     "R68.1"
+    ],
+    [
+     "U11.1"
+    ],
+    [
+     "U12.10",
+     "U12.11"
+    ],
+    [
+     "U13.3"
+    ]
+   ],
+   "units": 1
+  }
+ },
+ "q3_minimal_set": {
+  "clusters": 6,
+  "detour_spec": [
+   {
+    "count": 1,
+    "end_mm": [
+     69.15,
+     103.425
+    ],
+    "layer": "B.Cu",
+    "net": "Net-(SW9-A)",
+    "start_mm": [
+     66.1,
+     103.65
+    ],
+    "width_mm": 0.2
+   },
+   {
+    "count": 2,
+    "end_mm": [
+     66.1,
+     103.65
+    ],
+    "layer": "B.Cu",
+    "net": "Net-(SW9-A)",
+    "start_mm": [
+     66.1,
+     102.8
+    ],
+    "width_mm": 0.2
+   },
+   {
+    "count": 1,
+    "end_mm": [
+     66.35,
+     103.65
+    ],
+    "layer": "B.Cu",
+    "net": "Net-(SW9-A)",
+    "start_mm": [
+     66.1,
+     103.65
+    ],
+    "width_mm": 0.2
+   },
+   {
+    "barrel": {
+     "at_mm": [
+      66.35,
+      103.65
+     ],
+     "dia_mm": 0.6,
+     "drill_mm": 0.3
+    },
+    "net": "Net-(SW9-A)"
+   }
+  ],
+  "freed": true,
+  "matches_upper_bound": true,
+  "objects": 5,
+  "objects_detail": [
+   {
+    "count": 1,
+    "end_mm": [
+     69.15,
+     103.425
+    ],
+    "kind": "trk",
+    "layer": "B.Cu",
+    "length_mm": 3.058,
+    "net": "Net-(SW9-A)",
+    "start_mm": [
+     66.1,
+     103.65
+    ],
+    "width_mm": 0.2
+   },
+   {
+    "count": 2,
+    "end_mm": [
+     66.1,
+     103.65
+    ],
+    "kind": "trk",
+    "layer": "B.Cu",
+    "length_mm": 0.85,
+    "net": "Net-(SW9-A)",
+    "start_mm": [
+     66.1,
+     102.8
+    ],
+    "width_mm": 0.2
+   },
+   {
+    "count": 1,
+    "end_mm": [
+     66.35,
+     103.65
+    ],
+    "kind": "trk",
+    "layer": "B.Cu",
+    "length_mm": 0.25,
+    "net": "Net-(SW9-A)",
+    "start_mm": [
+     66.1,
+     103.65
+    ],
+    "width_mm": 0.2
+   },
+   {
+    "at_mm": [
+     66.35,
+     103.65
+    ],
+    "count": 1,
+    "dia_mm": 0.6,
+    "drill_mm": 0.3,
+    "kind": "via",
+    "length_mm": 0.0,
+    "net": "Net-(SW9-A)"
+   }
+  ],
+  "partition": [
+   [
+    "C24.1",
+    "C26.2",
+    "C28.1",
+    "C33.1",
+    "C64.1",
+    "L2.1",
+    "SW9.2",
+    "U12.1",
+    "U12.10",
+    "U12.11"
+   ],
+   [
+    "C27.1"
+   ],
+   [
+    "L4.1",
+    "U21.3"
+   ],
+   [
+    "R68.1"
+   ],
+   [
+    "U11.1"
+   ],
+   [
+    "U13.3"
+   ]
+  ],
+  "units": 4
+ },
+ "question": "which FOREIGN objects cut this pour into pieces, and what is the SMALLEST set whose absence lets KiCad's own filler pour it back into one",
+ "schema": 1,
+ "seconds": 603.9,
+ "verdict": "MINIMAL_SET_FOUND",
+ "window_mm": [
+  63.0,
+  96.0,
+  71.5,
+  104.5
+ ]
+}

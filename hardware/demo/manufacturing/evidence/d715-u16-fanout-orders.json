@@ -1,0 +1,197 @@
+{
+ "schema": 1,
+ "question": "how many of U16's three west-column conductors can the pocket hold, and in what order",
+ "finding": "TWO.  Every order closes exactly two of {/I2C_SCL_INT U16.3, /09_COMMUNITY_HEADER/EXT_SCL_BUF U16.2, /ACC_PWR_EN U16.1} at 0.200 mm",
+ "runs": [
+  {
+   "run": "a5",
+   "request_order": "SCL,EXT,ACC",
+   "evict_window_mm": "54.3,53.0,56.6,55.8",
+   "grid_nm": 50000,
+   "improved": [
+    "/I2C_SCL_INT"
+   ],
+   "regressed": [
+    "/09_COMMUNITY_HEADER/EXT_SCL_BUF"
+   ],
+   "edges_before": 13,
+   "edges_after": 13,
+   "per_net": {
+    "/I2C_SCL_INT": [
+     true,
+     null
+    ],
+    "/09_COMMUNITY_HEADER/EXT_SCL_BUF": [
+     true,
+     "NO_PATH"
+    ],
+    "/ACC_PWR_EN": [
+     true,
+     "NO_PATH"
+    ]
+   }
+  },
+  {
+   "run": "a6",
+   "request_order": "SCL,EXT,ACC",
+   "evict_window_mm": "51.2,53.0,56.6,59.8",
+   "grid_nm": 50000,
+   "improved": [
+    "/I2C_SCL_INT"
+   ],
+   "regressed": [
+    "/09_COMMUNITY_HEADER/EXT_SCL_BUF",
+    "/ACC_PWR_EN"
+   ],
+   "edges_before": 13,
+   "edges_after": 14,
+   "per_net": {
+    "/I2C_SCL_INT": [
+     true,
+     null
+    ],
+    "/09_COMMUNITY_HEADER/EXT_SCL_BUF": [
+     true,
+     "NO_PATH"
+    ],
+    "/ACC_PWR_EN": [
+     false,
+     "NO_PATH"
+    ]
+   }
+  },
+  {
+   "run": "a7",
+   "request_order": "ACC,EXT,SCL",
+   "evict_window_mm": "51.2,53.0,56.6,59.8",
+   "grid_nm": 50000,
+   "improved": [],
+   "regressed": [],
+   "edges_before": 13,
+   "edges_after": 13,
+   "per_net": {
+    "/ACC_PWR_EN": [
+     true,
+     "NO_PATH"
+    ],
+    "/09_COMMUNITY_HEADER/EXT_SCL_BUF": [
+     true,
+     null
+    ],
+    "/I2C_SCL_INT": [
+     false,
+     "NO_PATH"
+    ]
+   }
+  },
+  {
+   "run": "a8",
+   "request_order": "ACC,EXT,SCL + guard",
+   "evict_window_mm": "51.2,53.0,56.6,59.8",
+   "grid_nm": 50000,
+   "improved": [],
+   "regressed": [],
+   "edges_before": 13,
+   "edges_after": 13,
+   "per_net": {
+    "/ACC_PWR_EN": [
+     true,
+     "NO_PATH"
+    ],
+    "/09_COMMUNITY_HEADER/EXT_SCL_BUF": [
+     true,
+     null
+    ],
+    "/I2C_SCL_INT": [
+     false,
+     "NO_PATH"
+    ]
+   }
+  },
+  {
+   "run": "a9",
+   "request_order": "SCL,ACC,EXT",
+   "evict_window_mm": "48.5,52.3,56.6,59.8",
+   "grid_nm": 50000,
+   "improved": [
+    "/I2C_SCL_INT"
+   ],
+   "regressed": [
+    "/09_COMMUNITY_HEADER/EXT_SCL_BUF",
+    "/ACC_PWR_EN"
+   ],
+   "edges_before": 13,
+   "edges_after": 14,
+   "per_net": {
+    "/I2C_SCL_INT": [
+     true,
+     null
+    ],
+    "/ACC_PWR_EN": [
+     false,
+     "NO_PATH"
+    ],
+    "/09_COMMUNITY_HEADER/EXT_SCL_BUF": [
+     true,
+     "NO_PATH"
+    ]
+   }
+  },
+  {
+   "run": "a11",
+   "request_order": "EXT,SCL,ACC (maze first)",
+   "evict_window_mm": "51.2,53.0,56.6,59.8",
+   "grid_nm": 50000,
+   "improved": [],
+   "regressed": [
+    "/ACC_PWR_EN"
+   ],
+   "edges_before": 13,
+   "edges_after": 14,
+   "per_net": {
+    "/09_COMMUNITY_HEADER/EXT_SCL_BUF": [
+     true,
+     null
+    ],
+    "/I2C_SCL_INT": [
+     false,
+     "NO_PATH"
+    ],
+    "/ACC_PWR_EN": [
+     false,
+     "NO_PATH"
+    ]
+   }
+  },
+  {
+   "run": "a12",
+   "request_order": "ACC,EXT,SCL,WAKE",
+   "evict_window_mm": "48.5,46.6,58.6,59.8",
+   "grid_nm": 50000,
+   "improved": [],
+   "regressed": [
+    "/09_COMMUNITY_HEADER/WAKE_GATE_S"
+   ],
+   "edges_before": 13,
+   "edges_after": 14,
+   "per_net": {
+    "/ACC_PWR_EN": [
+     true,
+     "NO_PATH"
+    ],
+    "/09_COMMUNITY_HEADER/EXT_SCL_BUF": [
+     true,
+     null
+    ],
+    "/I2C_SCL_INT": [
+     false,
+     "NO_PATH"
+    ],
+    "/09_COMMUNITY_HEADER/WAKE_GATE_S": [
+     true,
+     "NO_PATH"
+    ]
+   }
+  }
+ ]
+}
