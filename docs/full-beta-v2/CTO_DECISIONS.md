@@ -28482,3 +28482,113 @@ enough, because the crossing is topological and not a width.  It also costs
 3. **`/09_COMMUNITY_HEADER/EXT_SDA_BUF`'s barrel out of `L4`'s pad gap**, then
    replay `evidence/d714-build-u21-cell.py` for `/01_POWER_TREE/ACC_5V_LX`.
 4. **Publish the ST25R3916 `VDD`/`VDD_TX` current**, then `/NFC_SUPPLY`.
+
+## D-716 — THE `BQ25185`'s OWN `SYS` OUTPUT REACHES THE SYSTEM RAIL FOR THE FIRST TIME, AND IT COST ONE ISLAND JUMPER: `C27.1` AND `U11.1` TOGETHER, 6.137 mm
+
+**COPPER PROMOTED.**  Authority `1a2aa44d` -> `2a3a9888`; **12 -> 10 retained
+open edges**; `/01_POWER_TREE/BQ25185_SYS` **4 -> 2**; raw ratsnest 28 -> 26.
+`hardware/beta-v2` UNTOUCHED.
+
+### 1. THE MEASUREMENT THAT NAMED IT
+
+D-715's lesson generalised: run `screen_offcentre_launch` over EVERY remaining
+open land at all ten width rungs and sort them into lands that launch (corridor
+questions) and lands that do not (pour or placement questions).
+
+    land       netclass    best centre    best off-centre
+    C27.1      SYS_MAIN    0.800 mm       0.800 mm      <- the FULL contract width
+    L4.1       SYS_MAIN    0.750 mm       0.800 mm
+    U21.3      SYS_MAIN    0.250 mm       0.500 mm
+    U11.1      SYS_MAIN    --             0.200 mm
+    U12.10     SYS_MAIN    --             0.400 mm
+    U12.11     SYS_MAIN    --             0.500 mm
+    U2.19      Default     0.200 mm       0.200 mm
+    U3.20      Default     0.200 mm       0.200 mm
+    U2.9       Default     0.200 mm       0.200 mm
+    U8.13      Default     0.200 mm       0.200 mm
+    U11.3      Default     --             --            <- NO ESCAPE AT ANY WIDTH
+    U21.5      SWITCH_NODE --             --            <- NO ESCAPE AT ANY WIDTH
+
+**`C27.1` LAUNCHES AT THE FULL 0.800 mm `SYS_MAIN` CONTRACT WIDTH, FROM ITS OWN
+CENTRE.**  D-663 had priced it at eight objects on three DC set-point straps and
+D-715's re-run of the same cut-blame with `BAT_PROTECTED_P` banned came back
+`WINDOW_DOES_NOT_HOLD_THE_CUT` — but neither question was the right one.  The
+land did not need a cut; it needed a JUMPER.
+
+### 2. THE TRANSACTION
+
+    python3 route_maze_batch.py /01_POWER_TREE/BQ25185_SYS \
+        --join-islands --join-island-max-mm 14 --join-island-width 700000 \
+        --grid 50000 --promote                                        # 8 min
+
+**ONE island jumper, `C27.1`'s filled fragment to the pour BODY, 6.137 mm of
+0.700 mm conductor and three 0.800/0.400 through barrels:**
+
+    B.Cu   (67.200,76.300)->(67.200,76.400)  0.700   inside C27.1's fragment
+    VIA    (67.200,76.400)  0.800/0.400
+    In2.Cu (67.200,76.400)->(65.800,78.300)  0.700
+    In2.Cu (65.800,78.300)->(66.750,79.250)  0.700
+    VIA    (66.750,79.250)  0.800/0.400
+    F.Cu   (66.750,79.250)->(68.350,80.850)  0.700
+    VIA    (68.350,80.850)  0.800/0.400
+    B.Cu   (68.350,80.850)->(68.400,80.900)  0.700   inside the body
+
+**AND IT CLOSED TWO EDGES, NOT ONE.**  `C27.1` was the cluster asked for.  The
+refill then bonded **`U11.1`** — the `BQ25185`'s own `SYS` OUTPUT, an island of
+one since the fork and the land D-663 called *"a THEOREM"* — to the same
+piece through the `(66.750,79.250)` barrel's own `B.Cu` pour.  The charger's
+`SYS` pin is on the system rail for the first time on this board.
+
+**THE WIDTH IS THE POINT AND IT WAS SWEPT.**  At the 0.800 mm netclass
+contract the jumper is `NO_ANCHOR` — *"no cell of this cluster's filled copper
+admits a 0.800 mm track centred 0.450 mm inside it"* — C27.1's fragment is only
+5.83 mm2.  At the `.kicad_dru`'s own `SYS_MAIN` **minimum of 0.500 mm** it
+anchors and routes; at **0.600** and **0.700 mm** it also does.  **0.700 mm is
+taken**, and the reason is the `In2` stretch: section 5 says in its own words
+*"If a SYS segment on In2 ever proves unavoidable, size it separately at 0.5 oz
+- never inherit the outer-layer width"*, and at 0.5 oz / dT 10 K a 0.700 mm
+inner conductor carries **1.099 A** against the `SYS_MAIN` row's published
+**1.0 A** design current, where 0.500 mm carries only 0.853 A.  The outer
+stretches carry 1.839 A.  **The 0.514 mm of extra copper buys the inner-layer
+ampacity outright, so no derating is taken and none has to be argued.**
+
+**AND THE RAIL'S SERIES PATH IS OUTER ANYWAY.**  Read off KiCad's own fill on
+the promoted board: `U11.1` bonds to `B.Cu` `SYS` outline 3, which holds the
+`(66.750,79.250)` barrel; that barrel carries the rail on **`F.Cu` at 0.700 mm**
+to the `(68.350,80.850)` barrel and into outline 2, the body.  The `In2`
+stretch reaches outline 4, which holds `C27.1` — a 10 uF SHUNT bypass — so the
+inner conductor is a decoupling tie and not the distribution path.  It is sized
+for the rail regardless.
+
+### 3. PROOF
+
+| check | result |
+|---|---|
+| gate | `promotion_candidate` TRUE, **15 clauses, `refused: []`** |
+| routing ledger | **12 -> 10** retained open edges; `BQ25185_SYS` **4 -> 2**; ratsnest 28 -> 26 |
+| real KiCad DRC (refilled, `--severity-all`) | `{solder_mask_bridge: 1, lib_footprint_issues: 199}` — the inherited baseline; **zero attributable**; unconnected **28 -> 26** |
+| schematic parity | 246 warnings, **ZERO errors** |
+| `verify_promotion --nets /01_POWER_TREE/BQ25185_SYS --track-width 700000 --via-drill 400000 --annular 200000` | **PASS**, 16/16; 8 objects added, **0 removed** |
+| `protected_copper --ref HEAD` | `identical: true` — 15 nets, 406 objects |
+| pour partition | `PP1`-`PP4` all OK |
+| standing contract suite (`--baseline d715`) | **14 / 14 PASS**; `keepout_stackup` records the only physical change, `In1.Cu` reference plane 9515.951 -> 9512.339 mm2 (**0.04 %**, the three new antipads) |
+| fab package | regenerated, provenance sha matches, `FAB1`-`FAB8` PASS |
+
+### 4. WHAT IS LEFT ON THIS NET, AND WHY
+
+`BQ25185_SYS`'s two remaining edges are `{L4.1, U21.3}` — the accessory boost's
+input, `NO_PATH` at 0.500 mm to any other cluster, 33 mm away and on the far
+side of `J5`'s 24 through-hole contacts — and `{U12.10, U12.11}`, the
+`TPS63020`'s power `VIN` pins, which D-715 measured as a five-object cut that
+is the SAME copper as `U12.12`'s only escape.
+
+### 5. NEXT, IN ORDER
+
+1. **`U12.10`/`U12.11`** — `U12` north 0.300 mm with the two relays it owes,
+   then `Net-(SW9-A)`'s escape EAST of `U12.8` with a 0.450/0.200 barrel.
+2. **`/ACC_PWR_EN` out of the `U16` west pocket** — `U3.20` and `/I2C_SCL_INT`
+   `U16.3` are the same 8.695 mm of corridor (D-715).
+3. **`/09_COMMUNITY_HEADER/EXT_SDA_BUF`'s barrel out of `L4`'s pad gap**, then
+   `evidence/d714-build-u21-cell.py` for `/01_POWER_TREE/ACC_5V_LX`.
+4. **`U11.3` and `U21.5` have NO ESCAPE AT ANY WIDTH** (D-716's census): they
+   are package/placement questions and no router flag will open them.

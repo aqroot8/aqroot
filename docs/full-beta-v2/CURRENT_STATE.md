@@ -66,6 +66,50 @@
 > `verify_promotion` PASS and `protected_copper` showing exactly one protected
 > net moved.  `U14.7` is on the bus.  This board has **no open owner decision**.
 
+- **Demo D-716 (THE `BQ25185`'s OWN `SYS` OUTPUT REACHES THE SYSTEM RAIL FOR
+  THE FIRST TIME, AND IT COST ONE ISLAND JUMPER):**  **COPPER PROMOTED.**
+  Authority `1a2aa44d` -> `2a3a9888`; **12 -> 10 retained open edges**;
+  `/01_POWER_TREE/BQ25185_SYS` **4 -> 2**; raw ratsnest 28 -> 26.
+  ***THE MEASUREMENT THAT NAMED IT*** is D-715's lesson generalised: run
+  `screen_offcentre_launch` over EVERY remaining open land at all ten rungs and
+  sort them into lands that LAUNCH (corridor questions) and lands that do not
+  (pour or placement questions).  `C27.1` launches at the **FULL 0.800 mm
+  `SYS_MAIN` contract width from its own centre**; `L4.1` at 0.750; `U21.3` at
+  0.250/0.500; `U11.1`, `U12.10`, `U12.11` off-centre at 0.200/0.400/0.500;
+  `U2.19`, `U3.20`, `U2.9`, `U8.13` at 0.200 — and **`U11.3` and `U21.5` have
+  NO ESCAPE AT ANY WIDTH**, so those two are package/placement questions and no
+  router flag opens them.  D-663 had priced `C27.1` at eight objects on three
+  DC set-point straps; the land never needed a CUT, it needed a JUMPER.
+  ***ONE ISLAND JUMPER, `C27.1`'s FRAGMENT TO THE POUR BODY:*** 6.137 mm of
+  0.700 mm conductor, `B` -> `In2` -> `F` -> `B`, three 0.800/0.400 through
+  barrels at (67.200,76.400), (66.750,79.250) and (68.350,80.850).  **And it
+  closed TWO edges, not one:** the refill then bonded **`U11.1`** — the
+  `BQ25185`'s own `SYS` OUTPUT, an island of one since the fork and the land
+  D-663 called *"a THEOREM"* — to the same piece through the (66.750,79.250)
+  barrel's own `B.Cu` pour.  ***THE WIDTH IS THE POINT AND IT WAS SWEPT:*** at
+  the 0.800 mm netclass contract the jumper is `NO_ANCHOR` (C27.1's fragment is
+  5.83 mm2 and admits no 0.800 mm track centred 0.450 mm inside it); at the
+  `.kicad_dru`'s own `SYS_MAIN` MINIMUM of 0.500 it anchors, and at 0.600 and
+  0.700 too.  **0.700 is taken because of the `In2` stretch** — section 5 says
+  *"if a SYS segment on In2 ever proves unavoidable, size it separately at
+  0.5 oz"*, and 0.700 mm of 0.5 oz inner copper carries **1.099 A** against the
+  `SYS_MAIN` row's published **1.0 A** where 0.500 mm carries only 0.853 A, so
+  0.514 mm of extra copper buys the inner ampacity outright and no derating is
+  argued.  The rail's SERIES path is outer anyway: `U11.1` bonds to `B.Cu` `SYS`
+  outline 3, the (66.750,79.250) barrel carries it on **`F.Cu` at 0.700 mm**
+  (1.839 A) to the body, and the `In2` stretch reaches only outline 4, which
+  holds `C27.1`, a 10 uF SHUNT bypass.  **PROOF:** gate `refused: []`, 15
+  clauses; real refilled DRC `{solder_mask_bridge: 1, lib_footprint_issues:
+  199}` with ZERO attributable and unconnected 28 -> 26; parity 246 warnings /
+  ZERO errors; `verify_promotion` **PASS 16/16** (8 objects added, **0
+  removed**); `protected_copper` identical; `PP1`-`PP4` OK; the standing
+  **14-contract suite ALL PASS**, with `keepout_stackup` recording the only
+  physical change — `In1.Cu` reference plane 9515.951 -> 9512.339 mm2, **0.04 %**,
+  the three new antipads; fab package regenerated and `FAB1`-`FAB8` PASS.
+  **WHAT IS LEFT ON THIS NET:** `{L4.1, U21.3}`, the accessory boost's input,
+  `NO_PATH` at 0.500 mm and 33 mm away on the far side of `J5`'s 24 through-hole
+  contacts; and `{U12.10, U12.11}`, the `TPS63020`'s power `VIN` pins, D-715's
+  five-object cut that is the SAME copper as `U12.12`'s only escape.
 - **Demo D-715 (`+3V3` `U5.2` IS A POUR CUT, NOT A ROUTE: THE AMPLIFIER'S GAIN
   STRAP CLOSES ON EIGHT STALE `GND` STITCH OBJECTS; AND THE `U16` WEST POCKET
   HOLDS EXACTLY TWO OF ITS THREE CONDUCTORS):**  **COPPER PROMOTED.**
