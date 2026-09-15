@@ -1,0 +1,206 @@
+{
+ "authoritative_unchanged": true,
+ "board": "/home/aqroot8/aqroot-demo/hardware/demo/kicad/aqroot-demo/aqroot-Beta-v2.kicad_pcb",
+ "board_sha256": "2e8ef9edf28681c46495a9ed5b35b6c11dbf116f5504e6e4e17c4b48e8b6e016",
+ "grid": 25000,
+ "method": "read-only; every trial laid on a scratch QBoard and REVERTED, every candidate proved by maze3d.verify_laid (exact analytic clearance, never a lattice); zones invisible to QBoard, so a closure is a licence question and never copper",
+ "nets": [
+  {
+   "board_track_min": 150000,
+   "contract": 200000,
+   "dru_floor": 150000,
+   "islands": 2,
+   "lands": [
+    {
+     "best_centre": 150000,
+     "best_offcentre": 200000,
+     "centre_width": {
+      "B": 150000
+     },
+     "gained": true,
+     "layers": [
+      "B"
+     ],
+     "offcentre_width": {
+      "B": 200000
+     },
+     "pad": "U9.14",
+     "rungs": [
+      {
+       "a_xy": [
+        34.75,
+        27.725
+       ],
+       "b_xy": [
+        34.75,
+        27.325
+       ],
+       "base_dir": true,
+       "centre": false,
+       "centre_why": "U9.14: NO LEGAL ESCAPE at >= 0.200 mm; blocked by U9.15 (x27), U9.13 (x16), U9.33 (x8), U9.10 (x5)",
+       "escape_formula": false,
+       "exit_mm": 0.375,
+       "layer": "B",
+       "n": 5,
+       "offcentre": true,
+       "offcentre_mm": 0.0,
+       "offcentre_why": null,
+       "reach_mm": 0.025,
+       "seconds": 0.54,
+       "support_mm": 0.375,
+       "width": 200000
+      },
+      {
+       "a_xy": null,
+       "b_xy": null,
+       "base_dir": null,
+       "centre": true,
+       "centre_why": null,
+       "escape_formula": null,
+       "exit_mm": null,
+       "layer": "B",
+       "n": 0,
+       "offcentre": false,
+       "offcentre_mm": null,
+       "offcentre_why": null,
+       "reach_mm": null,
+       "seconds": 0.01,
+       "support_mm": null,
+       "width": 150000
+      }
+     ]
+    }
+   ],
+   "net": "/04_SPI_B_RADIOS_NFC/NFC_VDD_RF",
+   "netclass": "Default",
+   "pairs": [
+    {
+     "a": "U9.9",
+     "b": "U9.14",
+     "closed_at": null,
+     "gap_mm": 2.5,
+     "launches": [],
+     "layer": "B",
+     "licensed_unconditionally": false,
+     "reason": "NO_PATH",
+     "rungs": [
+      {
+       "launches": [
+        {
+         "a_xy": [
+          34.75,
+          27.725
+         ],
+         "b_xy": [
+          34.75,
+          27.325
+         ],
+         "base_dir": true,
+         "layer": "B",
+         "mm": 0.4,
+         "necked": false,
+         "offcentre_mm": 0.0,
+         "pad": "U9.14",
+         "trunk_width": 200000,
+         "width": 200000
+        }
+       ],
+       "mm": 0.0,
+       "ok": false,
+       "pad": null,
+       "profile": null,
+       "reason": "NO_PATH",
+       "seconds": 1.25,
+       "stub_mm": null,
+       "stub_widths": [
+        200000
+       ],
+       "why": "no legal corridor at 0.200 mm from U9.9 to U9.14 at 0.05 or 0.025 mm",
+       "width": 200000
+      },
+      {
+       "launches": [],
+       "mm": 0.0,
+       "ok": false,
+       "pad": null,
+       "profile": null,
+       "reason": "NO_PATH",
+       "seconds": 1.6,
+       "stub_mm": null,
+       "stub_widths": [],
+       "why": "no legal corridor at 0.150 mm from U9.9 to U9.14 at 0.05 or 0.025 mm",
+       "width": 150000
+      }
+     ],
+     "why": "no legal corridor at 0.150 mm from U9.9 to U9.14 at 0.05 or 0.025 mm"
+    },
+    {
+     "a": "C49.1",
+     "b": "U9.14",
+     "closed_at": null,
+     "gap_mm": 7.3144,
+     "launches": [],
+     "layer": "B",
+     "licensed_unconditionally": false,
+     "reason": "NO_PATH",
+     "rungs": [
+      {
+       "launches": [
+        {
+         "a_xy": [
+          34.75,
+          27.725
+         ],
+         "b_xy": [
+          34.75,
+          27.325
+         ],
+         "base_dir": true,
+         "layer": "B",
+         "mm": 0.4,
+         "necked": false,
+         "offcentre_mm": 0.0,
+         "pad": "U9.14",
+         "trunk_width": 200000,
+         "width": 200000
+        }
+       ],
+       "mm": 0.0,
+       "ok": false,
+       "pad": null,
+       "profile": null,
+       "reason": "NO_PATH",
+       "seconds": 1.27,
+       "stub_mm": null,
+       "stub_widths": [
+        200000
+       ],
+       "why": "no legal corridor at 0.200 mm from C49.1 to U9.14 at 0.05 or 0.025 mm",
+       "width": 200000
+      },
+      {
+       "launches": [],
+       "mm": 0.0,
+       "ok": false,
+       "pad": null,
+       "profile": null,
+       "reason": "NO_PATH",
+       "seconds": 1.75,
+       "stub_mm": null,
+       "stub_widths": [],
+       "why": "no legal corridor at 0.150 mm from C49.1 to U9.14 at 0.05 or 0.025 mm",
+       "width": 150000
+      }
+     ],
+     "why": "no legal corridor at 0.150 mm from C49.1 to U9.14 at 0.05 or 0.025 mm"
+    }
+   ],
+   "widths": [
+    200000,
+    150000
+   ]
+  }
+ ],
+ "question": "does an OFF-CENTRE LAUNCH -- a stub anchored anywhere on the land's own copper, in any of 24 directions -- open the lands and the island pairs that a CENTRE-ANCHORED escape refuses at every width this board can fabricate",
+ "schema": 1
+}

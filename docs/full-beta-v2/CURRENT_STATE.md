@@ -106,7 +106,21 @@
   escape on the same rail at `U9.8`** (0.742 A against the same bar).
   `DEVICE_SPEC` says in its own words that *"the ST25R3916 tank current is not a
   number this repository holds"*, so this is a DATA GAP: publish `VDD`/`VDD_TX`,
-  then price the floor.  ***`/BQ25185_STAT2` ON `U3.13` IS REFUSED BY `U11.3`:***
+  then price the floor.  ***AND `U9.14` IS NOT A LATTICE PROBLEM ANY MORE:*** D-713 called
+  `/04_SPI_B_RADIOS_NFC/NFC_VDD_RF` `LATTICE_EXACT` and *"a ROUTER question, not
+  a copper one"* -- SUPERSEDED.  `screen_offcentre_launch` says the land
+  launches from its own CENTRE at **0.150 mm**, the net is `Default` class which
+  section 5 deliberately does not price, and a per-net 0.150 mm floor plus
+  `--escape-floor --trunk-floor` MOVES the refusal from `NO_LEGAL_ESCAPE_DST` to
+  **`NO_PATH`** with real DRC still the inherited baseline.  **And the two
+  `/NFC_VDD_A` barrels are NOT the corridor wall**: `--evict-whole` takes the
+  entire net off the board before the maze runs, it re-lays cleanly
+  (8.354 mm / 2 vias and 11.313 mm / 2 vias, nothing regressed), and `U9.14` is
+  still `NO_PATH` at 0.150 mm.  A THIRD object holds it and
+  `screen_pair_corridor_blame` cannot name it -- its own launcher is the
+  0.200 mm one, so it answers `BASE NO_LEGAL_ESCAPE`.  **The instrument owed is
+  an escape-floor argument on that screen.**
+  ***`/BQ25185_STAT2` ON `U3.13` IS REFUSED BY `U11.3`:***
   the migration applies cleanly and the run fails on the OTHER land --
   `screen_fanout_channel` gives `U11.3` `NO_CHANNEL`, `widest 0.100`, admitting
   0.200 with ZERO margin between `U11.2`/`U11.4` and **0.000 at 0.525 mm out on

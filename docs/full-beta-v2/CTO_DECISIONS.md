@@ -28185,6 +28185,41 @@ that current is published, a per-net floor for `/NFC_SUPPLY` cannot be priced --
 and the EXISTING `U9.8` escape is un-priced copper on the same rail, which is a
 DFM item this board should close either way.
 
+### 3b. `/04_SPI_B_RADIOS_NFC/NFC_VDD_RF` `U9.14` IS NOT A LATTICE PROBLEM ANY MORE — ITS ESCAPE OPENS AT A LICENSED 0.150 mm, AND WHAT IS LEFT IS A CORRIDOR
+
+D-713 classified `U9.14` as D-630's `LATTICE_EXACT` -- *"a launch that is
+EXACTLY legal and that the lattice router cannot step off ... a ROUTER
+question, not a copper one."*  **That classification is SUPERSEDED.**
+`screen_offcentre_launch --widths 200000,150000` on the authority says the land
+launches from its own CENTRE at **0.150 mm** (`centre: true`, zero off-centre
+gain) and that the 0.200 mm rung fails only `escape_formula` -- `QBoard.escape`
+demands `extent + clearance + width/2 + slack` = 0.825 mm where the exact stub
+is 0.400 mm.  The net is `Default` class, which section 5 deliberately does not
+price, so the D-690/D-706 shape applies unchanged:
+
+    (rule "D-714 NFC_VDD_RF regulator output - width floor"
+        (constraint track_width (min 0.15mm))
+        (condition "A.NetName == '/04_SPI_B_RADIOS_NFC/NFC_VDD_RF'"))
+
+With that rule and `--escape-floor --trunk-floor` the refusal MOVES, and moving
+it is the result: `NO_LEGAL_ESCAPE_DST` becomes **`NO_PATH`** -- *"no all-layer
+corridor at 0.150 mm between the islands"* -- with `width 150000`,
+`escape_floor 150000` and real DRC still the inherited baseline.  `QBoard.escape`
+refuses any launch point where the TRUNK is not also legal, which is why
+`--escape-floor` ALONE does nothing here and why the two levers are one move.
+
+**AND THE TWO `/NFC_VDD_A` BARRELS ARE NOT THE CORRIDOR WALL.**  D-713 named
+them from a straight northward probe that pinches to ZERO at 2.00 mm.
+`--evict /04_SPI_B_RADIOS_NFC/NFC_VDD_A --evict-whole` with both nets requested
+takes every one of that net's objects off the board BEFORE the maze runs, and
+`U9.14` is STILL `NO_PATH` at 0.150 mm.  The evicted net re-lays cleanly
+(`C47.1 -> U9.7` 8.354 mm / 2 vias, `C48.1 -> C47.1` 11.313 mm / 2 vias) and
+nothing regresses.  So the wall is a THIRD object and it has not been named;
+`screen_pair_corridor_blame` cannot name it either, because its own launcher is
+the 0.200 mm one -- the same launcher-disagreement D-713 recorded, now on the
+other side.  **The next instrument owed is an escape-floor argument on that
+screen.**
+
 ### 4. `/BQ25185_STAT2` ON `U3.13` IS REFUSED BY `U11.3`, AND THE WALL IS THE PROTECTED TAPER
 
 D-713 item 3 said `U3.13`/`U3.14` were UNTRIED.  Tried: the PCB-side channel
