@@ -28215,10 +28215,33 @@ takes every one of that net's objects off the board BEFORE the maze runs, and
 `U9.14` is STILL `NO_PATH` at 0.150 mm.  The evicted net re-lays cleanly
 (`C47.1 -> U9.7` 8.354 mm / 2 vias, `C48.1 -> C47.1` 11.313 mm / 2 vias) and
 nothing regresses.  So the wall is a THIRD object and it has not been named;
-`screen_pair_corridor_blame` cannot name it either, because its own launcher is
-the 0.200 mm one -- the same launcher-disagreement D-713 recorded, now on the
-other side.  **The next instrument owed is an escape-floor argument on that
-screen.**
+`screen_pair_corridor_blame` could not name it either, because its own launcher
+was the 0.200 mm one -- the same launcher-disagreement D-713 recorded, now on
+the other side.
+
+**THE SCREEN NOW HAS BOTH LEVERS, AND THE ANSWER IS FINAL.**  Two more defects
+of the same family were fixed: the screen's `Field` had no `escape_floor`
+argument at all (`AQROOT_ESCAPE_FLOOR=1`, env-gated, byte-identical unset), and
+`--board` rebound only the screen's OWN `BOARD` -- `net_contract`,
+`trunk_floor_price` and `net_width_licence` all read
+`route_maze_batch.BOARD` at CALL time, so a candidate was priced against the
+AUTHORITY's `.kicad_dru` (D-668, one import away).  With both, the screen
+reaches the corridor and answers:
+
+    BASE  NO_PATH   no all-layer corridor at 0.150 mm from U9.9 on B to U9.14
+    Q1    NO_PATH   drop ALL routed copper of TEN foreign nets in the window
+                    -- NFC_AGDC, NFC_RFO1, NFC_RFO2, NFC_VDD_A, NFC_VDD_AM,
+                    NFC_VDD_D, NFC_XIN, NFC_XOUT, NFC_SUPPLY and GND -- and it
+                    is STILL NO_PATH.  1656 s.
+
+**`U9.14` IS A PLACEMENT WALL, NOT A ROUTING ONE.**  Q1 is the upper bound of
+every containment-bounded rip-up on these layers, so what remains is PADS, HOLES
+and the package: `U9.10`-`U9.13` stand between the two lands in the row, and the
+NFC matching network's own lands stand north of it.  D-713's *"worth one edge,
+and it is a ROUTER question, not a copper one"* is answered: it is neither.
+**It is the NFC front-end floorplan**, and the only moves that reach it are
+moving the matching-network parts or re-assigning which `U9` `VDD_RF` pin the
+net is taken from.
 
 ### 4. `/BQ25185_STAT2` ON `U3.13` IS REFUSED BY `U11.3`, AND THE WALL IS THE PROTECTED TAPER
 

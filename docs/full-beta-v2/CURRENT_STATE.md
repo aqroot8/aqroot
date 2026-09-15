@@ -117,9 +117,18 @@
   entire net off the board before the maze runs, it re-lays cleanly
   (8.354 mm / 2 vias and 11.313 mm / 2 vias, nothing regressed), and `U9.14` is
   still `NO_PATH` at 0.150 mm.  A THIRD object holds it and
-  `screen_pair_corridor_blame` cannot name it -- its own launcher is the
-  0.200 mm one, so it answers `BASE NO_LEGAL_ESCAPE`.  **The instrument owed is
-  an escape-floor argument on that screen.**
+  and with TWO more defects of the same family fixed --
+  `screen_pair_corridor_blame` had no `escape_floor` argument at all, and
+  `--board` rebound only the SCREEN's `BOARD` while `net_contract`,
+  `trunk_floor_price` and `net_width_licence` read
+  `route_maze_batch.BOARD` (D-668, one import away) -- the screen reaches the
+  corridor and gives the FINAL answer: **`Q1` drops ALL routed copper of TEN
+  foreign nets in the window and `U9.9 -> U9.14` is STILL `NO_PATH` at
+  0.150 mm.**  Q1 is the upper bound of every containment-bounded rip-up on
+  these layers, so **`U9.14` is a PLACEMENT wall** -- `U9.10`-`U9.13` stand
+  between the two lands in the row and the NFC matching network's own lands
+  stand north of it.  D-713's *"a ROUTER question, not a copper one"* is
+  answered: it is NEITHER.  It is the NFC front-end floorplan.
   ***`/BQ25185_STAT2` ON `U3.13` IS REFUSED BY `U11.3`:***
   the migration applies cleanly and the run fails on the OTHER land --
   `screen_fanout_channel` gives `U11.3` `NO_CHANNEL`, `widest 0.100`, admitting

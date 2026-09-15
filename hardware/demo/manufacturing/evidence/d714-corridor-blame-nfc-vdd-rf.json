@@ -1,0 +1,68 @@
+{
+  "a": "U9.9",
+  "b": "U9.14",
+  "banned_nets": [],
+  "board": "/home/aqroot8/aqroot-demo/hardware/demo/manufacturing/w/d714/nvddrf/aqroot-Beta-v2.kicad_pcb",
+  "board_is_authority": false,
+  "board_sha256": "2e8ef9edf28681c46495a9ed5b35b6c11dbf116f5504e6e4e17c4b48e8b6e016",
+  "complete": true,
+  "grid_nm": 25000,
+  "instrument": "maze3d.offcentre_route under screen_corridor_blockers.Without",
+  "layers": [
+    "F",
+    "B",
+    "I2"
+  ],
+  "margin_mm": 3.0,
+  "max_mm": null,
+  "net": "/04_SPI_B_RADIOS_NFC/NFC_VDD_RF",
+  "q2": "RUN",
+  "rows": [
+    {
+      "accepted": false,
+      "layers": null,
+      "mm": null,
+      "ok": false,
+      "reason": "NO_PATH",
+      "step": "BASE",
+      "vias": null,
+      "why": "no all-layer corridor at 0.150 mm from U9.9 on B to U9.14 on B"
+    },
+    {
+      "accepted": false,
+      "layers": null,
+      "mm": null,
+      "nets": [
+        "/04_SPI_B_RADIOS_NFC/NFC_AGDC",
+        "/04_SPI_B_RADIOS_NFC/NFC_RFO1",
+        "/04_SPI_B_RADIOS_NFC/NFC_RFO2",
+        "/04_SPI_B_RADIOS_NFC/NFC_VDD_A",
+        "/04_SPI_B_RADIOS_NFC/NFC_VDD_AM",
+        "/04_SPI_B_RADIOS_NFC/NFC_VDD_D",
+        "/04_SPI_B_RADIOS_NFC/NFC_XIN",
+        "/04_SPI_B_RADIOS_NFC/NFC_XOUT",
+        "/NFC_SUPPLY",
+        "GND"
+      ],
+      "ok": false,
+      "reason": "NO_PATH",
+      "step": "Q1_UPPER_BOUND",
+      "vias": null,
+      "why": "no all-layer corridor at 0.150 mm from U9.9 on B to U9.14 on B"
+    }
+  ],
+  "schema": 1,
+  "seconds": 1656.6,
+  "window_nets": [
+    "/04_SPI_B_RADIOS_NFC/NFC_AGDC",
+    "/04_SPI_B_RADIOS_NFC/NFC_RFO1",
+    "/04_SPI_B_RADIOS_NFC/NFC_RFO2",
+    "/04_SPI_B_RADIOS_NFC/NFC_VDD_A",
+    "/04_SPI_B_RADIOS_NFC/NFC_VDD_AM",
+    "/04_SPI_B_RADIOS_NFC/NFC_VDD_D",
+    "/04_SPI_B_RADIOS_NFC/NFC_XIN",
+    "/04_SPI_B_RADIOS_NFC/NFC_XOUT",
+    "/NFC_SUPPLY",
+    "GND"
+  ]
+}

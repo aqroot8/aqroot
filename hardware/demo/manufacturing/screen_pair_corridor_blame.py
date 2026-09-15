@@ -107,7 +107,8 @@ import qrouter as qr             # noqa: E402
 import incremental_router as ir  # noqa: E402
 import maze3d as mz              # noqa: E402
 from route_maze_batch import (net_contract, reserved_inner_planes,  # noqa: E402
-                              permitted_layers)
+                              permitted_layers, net_width_licence,
+                              DRU_CLASS, BOARD_TRACK_MIN)
 from screen_corridor_blockers import (Without, WithoutObjects,  # noqa: E402
                                       corridor_nets)
 
@@ -164,6 +165,16 @@ if BOARD_ARG is not None:
             "clearance and via floor this screen prices would be one the board "
             "does not carry" % (BOARD_ARG, " / ".join(_missing)))
     BOARD = _b
+    # D-714.  AND THE IMPORTED MODULE HAS ITS OWN `BOARD`.  `net_contract`,
+    # `trunk_floor_price` and `net_width_licence` all read
+    # `route_maze_batch.BOARD` at CALL time, so a screen that rebinds only its
+    # OWN name prices the candidate against the AUTHORITY's `.kicad_dru` -- the
+    # D-668 defect, one import away.  Measured: with `--board` pointed at a
+    # scratch carrying a per-net `/04_SPI_B_RADIOS_NFC/NFC_VDD_RF` width floor,
+    # `AQROOT_TRUNK_FLOOR=1` did not descend and the screen answered
+    # `BASE NO_LEGAL_ESCAPE` for a land the gate launches.
+    import route_maze_batch as _rmb
+    _rmb.BOARD = _b
 
 NET = sys.argv[1]
 A_REF, B_REF = sys.argv[2], sys.argv[3]
@@ -189,8 +200,28 @@ M = qr.MM
 box = (min(pa["x"], pb["x"]) - MARGIN * M, min(pa["y"], pb["y"]) - MARGIN * M,
        max(pa["x"], pb["x"]) + MARGIN * M, max(pa["y"], pb["y"]) + MARGIN * M)
 
+# D-714.  THE SCREEN'S LAUNCHER MUST BE THE GATE'S LAUNCHER, OR IT BLAMES THE
+# WRONG CORRIDOR -- OR, AS ON `U9.14`, DOES NOT REACH A CORRIDOR AT ALL.
+# `route_maze_batch --escape-floor` hands the escape ladder the width the
+# `.kicad_dru` publishes for this CLASS, or -- D-690, widened by D-714 -- for
+# this NET by name where that is NARROWER.  Without it this screen asks at the
+# netclass width and answers `BASE NO_LEGAL_ESCAPE` for every land whose whole
+# point is that it launches narrow: `/04_SPI_B_RADIOS_NFC/NFC_VDD_RF` `U9.14`
+# launches from its own centre at 0.150 mm and the screen could not see it.
+# Env-gated, so every run before this one reproduces byte for byte.
+_ef = None
+if os.environ.get("AQROOT_ESCAPE_FLOOR"):
+    _ef = DRU_CLASS.get(c["netclass"], {}).get("width")
+    _lic = net_width_licence(NET, dru=str(BOARD.with_suffix(".kicad_dru")))
+    if _lic:
+        _w = max(_lic["width"], BOARD_TRACK_MIN)
+        if _ef is None or _w < _ef:
+            _ef = _w
+    if _ef is not None and _ef >= c["width"]:
+        _ef = None
 field = mz.Field(qb, NET, c["width"], c["clr_pad"], c["clr"],
-                 c["via_dia"], c["via_drill"], G=GRID, layers=far)
+                 c["via_dia"], c["via_drill"], G=GRID, layers=far,
+                 escape_floor=_ef)
 
 t0 = time.time()
 rows = []
