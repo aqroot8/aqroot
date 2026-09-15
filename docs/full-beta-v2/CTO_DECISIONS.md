@@ -28768,3 +28768,44 @@ that the cell's `SYS` input is `NO_PATH` at 0.500 mm with a 70 mm budget because
 move anyway should move to where its supply is, not stay where its supply
 cannot reach.  **That is one transaction, not two, and it is the accessory 5 V
 rail's whole remaining cost.**
+
+## D-717 ADDENDUM 2 — AND THE RAIL IS PRICED: FIVE NETS AND **169.4 mm** OF CONDUCTOR. THE ACCESSORY 5 V CELL MUST MOVE, AND THAT IS THE RULING
+
+    python3 screen_pair_corridor_blame.py /01_POWER_TREE/BQ25185_SYS \
+        L4.1 C28.1 3.0 100000 OUT.json                                 # 1347 s
+
+`BASE NO_PATH`.  **`Q1` — drop ALL routed copper of the FIFTY foreign nets in
+the window — OPENS in 68.848 mm with 3 vias**, so the rail is a corridor
+problem and not a placement wall.  **`Q2` finds NO single net that opens it.**
+`Q3`'s reverse greedy over all fifty lands on a minimal set of **FIVE**:
+
+    /09_COMMUNITY_HEADER/EXT_SDA_BUF
+    /ACC_5V_SW
+    /I2C_SDA_INT
+    /NFC_5V_EN
+    Net-(U11-TS_MR)
+    -> OPENS 169.4162 mm, 9 vias, across B / In2 / F
+
+**169.4 mm of `SYS_MAIN` conductor and nine barrels, bought by evicting five
+nets — one of which is the accessory 5 V output the rail exists to make.**
+For comparison the straight-line distance is 57.1 mm and the all-out `Q1`
+answer is 68.8 mm, so the minimal cut does not buy a SHORT path; it buys a
+tortuous one that has to go the long way round `J5` anyway.
+
+**THIS IS THE RULING.**  A 169 mm switched-mode input rail is not a candidate at
+any price: the DC drop at 1.06 A through 0.500 mm of 1 oz copper is ~0.9 V
+before the nine barrels, which is most of the boost's input headroom, and the
+loop area it encloses is the whole board.  **`/01_POWER_TREE/BQ25185_SYS` cannot
+reach `L4.1`/`U21.3` where they stand, and no routing flag, eviction or licence
+changes that.**
+
+Together with D-717 and its first addendum — the switch node and the ground pin
+need 1.550 mm of a 1.390 mm channel, and `U21.4` has no usable barrel site at
+any manufacturable size because four layers cross `U21`'s footprint and every
+one is occupied — **the accessory 5 V boost cell is a FLOORPLAN item and it is
+now the board's largest single piece of remaining work.**  It is ordinary CTO
+scope under D-703: move `U21`, `L4`, `C65`, `C66`, `R99` and `R100` to the
+south of `J5`, where `BQ25185_SYS`'s pour body already is, and let the cell's
+`ACC_5V_RAW` output take the long run instead of its input — an output that
+already travels 25 mm on `In3` today and is a DC rail behind a 22 uF bulk cap,
+not a 2.19 A-peak switching input.

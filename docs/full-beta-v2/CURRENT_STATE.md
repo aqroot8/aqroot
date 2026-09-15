@@ -66,6 +66,30 @@
 > `verify_promotion` PASS and `protected_copper` showing exactly one protected
 > net moved.  `U14.7` is on the bus.  This board has **no open owner decision**.
 
+- **Demo D-717 ADDENDUM 2 (THE RAIL IS PRICED AT FIVE NETS AND 169.4 mm — THE
+  ACCESSORY 5 V CELL MUST MOVE):**  **NO COPPER.**
+  `screen_pair_corridor_blame /01_POWER_TREE/BQ25185_SYS L4.1 C28.1 3.0 100000`
+  (1347 s): `BASE NO_PATH`; **`Q1` — drop ALL routed copper of the FIFTY foreign
+  nets in the window — OPENS in 68.848 mm with 3 vias**, so it is a corridor and
+  not a placement wall; **`Q2` finds NO single net that opens it**; and `Q3`
+  lands on a minimal set of **FIVE nets** — `EXT_SDA_BUF`, `/ACC_5V_SW`,
+  `/I2C_SDA_INT`, `/NFC_5V_EN`, `Net-(U11-TS_MR)` — **for 169.4162 mm of
+  conductor and NINE barrels** across `B`/`In2`/`F`.  One of the five is the
+  accessory 5 V output the rail exists to make.  Straight-line is 57.1 mm and
+  the all-out `Q1` answer is 68.8 mm, so the minimal cut does not buy a SHORT
+  path — it buys a tortuous one that still goes the long way round `J5`.
+  **A 169 mm switched-mode INPUT rail is not a candidate at any price:** ~0.9 V
+  of DC drop at 1.06 A through 0.500 mm of 1 oz copper before the nine barrels,
+  which is most of the boost's input headroom, and a loop area the size of the
+  board.  **`BQ25185_SYS` cannot reach `L4.1`/`U21.3` where they stand, and no
+  flag, eviction or licence changes that.**  With D-717's 1.550-vs-1.390 mm
+  channel arithmetic and the closed barrel answer, **the accessory 5 V boost
+  cell is a FLOORPLAN item and the board's largest single piece of remaining
+  work** — ordinary CTO scope under D-703: move `U21`, `L4`, `C65`, `C66`,
+  `R99`, `R100` SOUTH of `J5` where the `SYS` pour body already is, and let the
+  cell's `ACC_5V_RAW` OUTPUT take the long run instead of its input (it already
+  travels 25 mm on `In3` today, and it is a DC rail behind a 22 uF bulk cap,
+  not a 2.19 A-peak switching input).
 - **Demo D-717 ADDENDUM (THE BARREL ANSWER IS CLOSED TOO):**  **NO COPPER.**
   D-717 named a `GND` barrel to the `In1`/`In4` planes as the cheapest of two
   candidates for `U21.4`.  **It is measured and it is closed.**
