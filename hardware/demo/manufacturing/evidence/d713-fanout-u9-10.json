@@ -1,0 +1,244 @@
+{
+ "authoritative_unchanged": true,
+ "board": "/home/aqroot8/aqroot-demo/hardware/demo/kicad/aqroot-demo/aqroot-Beta-v2.kicad_pcb",
+ "board_is_authority": true,
+ "board_sha256": "2e8ef9edf28681c46495a9ed5b35b6c11dbf116f5504e6e4e17c4b48e8b6e016",
+ "counts": {
+  "PACKAGE_PITCH_WALL": 1
+ },
+ "grid_nm": 50000,
+ "ladder_mm": [
+  0.8,
+  0.6,
+  0.5,
+  0.4,
+  0.35,
+  0.3,
+  0.25,
+  0.2,
+  0.15,
+  0.1
+ ],
+ "max_island": 8,
+ "method": "read-only.  The ladder is the ROUTER's own `maze3d.pad_escapes` -- launch, pocket and off-centre sources -- so it cannot disagree with the gate.  The channel is EXACT geometry walked outward in 25 um stations with no lattice; a track is its segment inflated by w/2, a via and a pad their bounding box.  The board's sha256 is re-read at exit",
+ "probe_mm": 2.0,
+ "question": "how wide a conductor does this land's EXIT CHANNEL admit, which two objects bind it, and which of the widths this board licenses would open it",
+ "rows": [
+  {
+   "board_min_track_mm": 0.15,
+   "body_lands_skipped": 0,
+   "channels": {
+    "B": {
+     "axis_chosen_by": "PAD_SHAPE",
+     "outward": [
+      0.0,
+      -1.0
+     ],
+     "outward_axis": "y",
+     "pinch": {
+      "admits_mm": 0.1318,
+      "at_mm": 2.0,
+      "clearance_hi_mm": 0.2,
+      "clearance_lo_mm": 0.2,
+      "gap_mm": 0.5318,
+      "hi": {
+       "kind": "track",
+       "land": null,
+       "net": "/04_SPI_B_RADIOS_NFC/NFC_VDD_AM"
+      },
+      "lo": {
+       "kind": "pad",
+       "land": "C45.2",
+       "net": "GND"
+      }
+     },
+     "profile": [
+      {
+       "admits_mm": 0.3,
+       "at_mm": 0.0,
+       "clearance_hi_mm": 0.2,
+       "clearance_lo_mm": 0.2,
+       "gap_mm": 0.7,
+       "hi": {
+        "kind": "pad",
+        "land": "U9.11",
+        "net": "/04_SPI_B_RADIOS_NFC/NFC_VDD_AM"
+       },
+       "lo": {
+        "kind": "pad",
+        "land": "U9.9",
+        "net": "/04_SPI_B_RADIOS_NFC/NFC_VDD_RF"
+       }
+      },
+      {
+       "admits_mm": 0.35,
+       "at_mm": 0.25,
+       "clearance_hi_mm": 0.2,
+       "clearance_lo_mm": 0.2,
+       "gap_mm": 0.75,
+       "hi": {
+        "kind": "track",
+        "land": null,
+        "net": "/04_SPI_B_RADIOS_NFC/NFC_VDD_AM"
+       },
+       "lo": {
+        "kind": "via",
+        "land": null,
+        "net": "/04_SPI_B_RADIOS_NFC/NFC_VDD_RF"
+       }
+      },
+      {
+       "admits_mm": 0.35,
+       "at_mm": 0.5,
+       "clearance_hi_mm": 0.2,
+       "clearance_lo_mm": 0.2,
+       "gap_mm": 0.75,
+       "hi": {
+        "kind": "track",
+        "land": null,
+        "net": "/04_SPI_B_RADIOS_NFC/NFC_VDD_AM"
+       },
+       "lo": {
+        "kind": "via",
+        "land": null,
+        "net": "/04_SPI_B_RADIOS_NFC/NFC_VDD_RF"
+       }
+      },
+      {
+       "admits_mm": 2.4273,
+       "at_mm": 1.0,
+       "clearance_hi_mm": 0.2,
+       "clearance_lo_mm": 0.2,
+       "gap_mm": 2.8273,
+       "hi": {
+        "kind": "track",
+        "land": null,
+        "net": "/04_SPI_B_RADIOS_NFC/NFC_VDD_AM"
+       },
+       "lo": {
+        "kind": "via",
+        "land": null,
+        "net": "/04_SPI_B_RADIOS_NFC/NFC_VDD_D"
+       }
+      },
+      {
+       "admits_mm": 0.3045,
+       "at_mm": 1.5,
+       "clearance_hi_mm": 0.2,
+       "clearance_lo_mm": 0.2,
+       "gap_mm": 0.7045,
+       "hi": {
+        "kind": "track",
+        "land": null,
+        "net": "/04_SPI_B_RADIOS_NFC/NFC_VDD_AM"
+       },
+       "lo": {
+        "kind": "via",
+        "land": null,
+        "net": "GND"
+       }
+      },
+      {
+       "admits_mm": 0.1318,
+       "at_mm": 2.0,
+       "clearance_hi_mm": 0.2,
+       "clearance_lo_mm": 0.2,
+       "gap_mm": 0.5318,
+       "hi": {
+        "kind": "track",
+        "land": null,
+        "net": "/04_SPI_B_RADIOS_NFC/NFC_VDD_AM"
+       },
+       "lo": {
+        "kind": "pad",
+        "land": "C45.2",
+        "net": "GND"
+       }
+      }
+     ],
+     "row": {
+      "admits_mm": 0.3,
+      "at_mm": -0.75,
+      "clearance_hi_mm": 0.2,
+      "clearance_lo_mm": 0.2,
+      "gap_mm": 0.7,
+      "hi": {
+       "kind": "pad",
+       "land": "U9.11",
+       "net": "/04_SPI_B_RADIOS_NFC/NFC_VDD_AM"
+      },
+      "lo": {
+       "kind": "pad",
+       "land": "U9.9",
+       "net": "/04_SPI_B_RADIOS_NFC/NFC_VDD_RF"
+      }
+     },
+     "stations": 111
+    }
+   },
+   "class_floor_admitted": true,
+   "class_floor_why": "PRICED_AT_THE_PUBLISHED_BAR",
+   "dru_class_floor_mm": 0.4,
+   "footprint": "U9",
+   "island": 1,
+   "ladder": [
+    {
+     "escapes": 0,
+     "seconds": 0.54,
+     "width_mm": 0.8
+    },
+    {
+     "escapes": 0,
+     "seconds": 0.46,
+     "width_mm": 0.6
+    },
+    {
+     "escapes": 0,
+     "seconds": 0.45,
+     "width_mm": 0.5
+    },
+    {
+     "escapes": 0,
+     "seconds": 0.47,
+     "width_mm": 0.4
+    },
+    {
+     "escapes": 0,
+     "seconds": 0.46,
+     "width_mm": 0.35
+    },
+    {
+     "escapes": 0,
+     "seconds": 0.52,
+     "width_mm": 0.3
+    },
+    {
+     "escapes": 0,
+     "seconds": 0.54,
+     "width_mm": 0.25
+    },
+    {
+     "escapes": 1,
+     "seconds": 0.11,
+     "width_mm": 0.2
+    }
+   ],
+   "land": "U9.10",
+   "narrow_price": {
+    "amps_at_dt10": 0.742,
+    "class_required_amps": 1.0,
+    "ok": false,
+    "why": "UNDER_PRICED",
+    "width_mm": 0.2
+   },
+   "neck_min_mm": 0.2,
+   "net": "/NFC_SUPPLY",
+   "netclass": "P3V3",
+   "netclass_width_mm": 0.6,
+   "target": "U9.8",
+   "verdict": "PACKAGE_PITCH_WALL",
+   "widest_launch_mm": 0.2
+  }
+ ],
+ "schema": 1
+}

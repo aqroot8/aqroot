@@ -27946,3 +27946,107 @@ caught a real one — `R42.1`'s orphaned 0.965 mm `GND` stub, now removed.
     /I2C_SCL_INT                 1   U16.3
     /NFC_SUPPLY                  1   U9.10
     /SX1262_DIO1                 1   U2.9 <-> U8.13, now on the RIGHT column
+
+## D-713 — THE THIRTEEN REMAINING EDGES, MEASURED AND NAMED: `U2` IS FULL, `U3` HAS FOUR FREE CHANNELS, AND BOTH `U9` WALLS ARE MOVABLE OBJECTS
+
+**NO COPPER PROMOTED.**  Authority UNCHANGED at `2e8ef9ed`; 13 -> 13.
+`hardware/beta-v2` UNTOUCHED.  Seven gate runs and three screens, all against
+the promoted authority.
+
+### 1. `/01_POWER_TREE/BQ25185_SYS` 4 -> 3 IS ONE OBJECT AWAY, AND THE OBJECT IS `U12.12`'s ESCAPE
+
+Remove `Net-(SW9-A)`'s `U12` band copper (the 0.600/0.300 barrel at
+(66.350, 103.650), its two stubs and its `In2` stub) **and its 20 mm east loop**
+— eleven `B.Cu` tracks that run from that junction round the east of the board
+to `TP13.1`, every millimetre of it inside the `SYS` pour — refill, and the pour
+**reaches `U12.10` and `U12.11`**: 4 -> 3 open edges, DRC still the inherited
+baseline.  Reproduced on two independently built boards.
+
+**WHAT STOPS IT IS THAT `U12.12` STILL NEEDS AN ESCAPE.**  The band is `y`
+103.100 (the pad row's bottom edge) to 104.000 (the `WROOM ANTENNA KEEPOUT`,
+which forbids ZONE FILL as well as copper) = **0.900 mm**, and the escape must
+start at `y >= 103.400` to clear `U12.13`/`U12.14` by 0.200 mm.  A westward
+TRACK at `y 103.400` and NOTHING ELSE leaves a 0.300 mm lane and the pour still
+reaches `VIN` — **measured** — but the track must end in a BARREL, and every
+barrel tried pinches the lane below KiCad's 0.200 mm minimum zone width:
+0.600/0.300, 0.500/0.250 and 0.450/0.200 at `x` 65.55, 65.60, 65.85, 66.10 and
+66.30, all REFUSED by measurement.  The westward exit dead-ends at `x ~ 64.0`
+on `C24.2`'s `GND` land (`x` 62.825..63.725, `y` 102.775..103.725), and the
+eastward exit crosses the pour's own dive column at `x` 66.4..67.2.
+
+**SO `U12` MOVES NORTH, AND 0.300 mm IS THE CHEAP RUNG:** at `dy = -0.300 mm`
+`apply_part_shift` strands **2** endpoints (both `GND`); at -0.350 and -0.400 it
+strands **11**, including the switch node and the `+3V3` output.  `L1`'s
+courtyard is 0.415 mm away, so -0.300 does not need `L1` to move.  The band
+becomes 1.200 mm, the escape sits at `y 103.100`, and the `VIN` pour lane is
+**0.425 mm** instead of 0.250.
+
+### 2. `U2` IS FULL AND BOTH ITS COLUMNS ARE ONE-CONDUCTOR WALLS
+
+All sixteen `PCAL9535A` channels on `U2` are assigned.  D-712 spent D-711's swap
+and closed `/BQ25185_STAT1`; the wall did not go away, it MOVED:
+
+    WEST column (U2.9/10/11)   /SX1262_DIO1 and /TOUCH_INT_N are MUTUALLY
+                               EXCLUSIVE.  Evict /TOUCH_INT_N and DIO1 ROUTES
+                               (closed 1); /TOUCH_INT_N is then NO_PATH at
+                               0.200 mm over 33.35 mm.  The column holds TWO of
+                               {SX1262_DIO1, TOUCH_INT_N, SD_CARD_DETECT_N}.
+    EAST column (U2.19/20)     /BQ25185_STAT1's promoted escape runs B.Cu
+                               (59.862,88.975)->(61.025,88.975) and vias at
+                               (60.925,88.875).  /BQ25185_STAT2 at U2.19 is
+                               then NO_PATH from TP7.1 (8.678 mm), from U11.3
+                               (12.390 mm) AND from R128.2 (19.443 mm) -- FOUR
+                               dst escapes and no corridor.  Moving TP7 to
+                               (60.100, 97.000) does not change it.
+
+**`U3` HAS FOUR FREE CHANNELS** — `P06` (pin 10), `P07` (pin 11), `P10`
+(pin 13), `P11` (pin 14) — on the SAME `I2C` bus and the SAME `/WAKE_INT_N`
+interrupt line, so a channel migration costs nothing electrically.  But the
+first one tried is REFUSED: `/SX1262_DIO1` on `U3.11` is `NO_PATH` to `U8.13`
+over 84.807 mm with only **3** source escapes, so `U3`'s west column at that pin
+is congested too.  `evidence/d713-move-dio1-to-u3.py` replays it.
+**`U3.13`/`U3.14`, the EAST column pins 6.6 mm from `U11.3`, are UNTRIED and are
+the obvious next candidates for `/BQ25185_STAT2`.**
+
+### 3. BOTH `U9` WALLS ARE NAMED, MOVABLE OBJECTS — NOT PACKAGE LIMITS
+
+`screen_fanout_channel` on the promoted authority:
+
+    /NFC_SUPPLY      U9.10   P3V3      PACKAGE_PITCH_WALL
+        the land admits 0.300 mm and the channel is 0.350 mm at 0.25..0.50 mm
+        out and 2.427 mm at 1.0 mm out -- then PINCHES to 0.1318 mm AT 2.00 mm,
+        bound by an /NFC_VDD_AM TRACK and C45.2's GND LAND
+    /04_SPI_B_RADIOS_NFC/NFC_VDD_RF   U9.14   Default   NO_CHANNEL
+        the channel is 0.600 mm at 0.25..0.50 mm out and 4.4705 mm at 1.50 mm
+        -- then ZERO at 1.55 mm, sealed by TWO /NFC_VDD_A BARRELS, one on each
+        side
+
+A track and a pair of barrels are exactly what `--detour-spec` relays and
+`--detour-spec` barrel-MOVES (D-653, D-658).  Neither refusal is a package
+pitch problem past the first half-millimetre.
+
+### 4. THE OTHER TWO ARE CORRIDORS, AND BOTH LANDS LAUNCH
+
+    /ACC_PWR_EN    U16.1/R17.1 -> U3.20    20.24 mm  NO_PATH  src 10  dst 4
+    /I2C_SCL_INT   (8 lands)   -> U16.3    15.59 mm  NO_PATH  src 35  dst 2
+
+### 5. THE PATTERN UNDER ALL OF IT
+
+D-712 found `R42` — `U12`'s `PS/SYNC` `0R` — fifty millimetres from the pin it
+straps.  It is not alone.  `R43`, the 100 k pull-down on the same converter's
+`EN` line, sits at (20.015, 120.335), **47 mm** from `U12.12`, and its haul is
+why `Net-(SW9-A)` is a board-spanning net that a `--partial` re-lay rebuilds
+from `x 19` to `x 74` (measured: one run did exactly that and took
+`BQ25185_SYS` from 3 open edges to 7).  `R127` and `R128`, the `BQ25185` status
+pull-ups, are 10 and 20 mm from `U11`.  **Bringing the straps home is the same
+move that closed `C26.2`, and it is cheap: none of them carries a signal.**
+
+### 6. NEXT, IN ORDER
+
+1. **`U12` north 0.300 mm + the `Net-(SW9-A)` rework** -> `BQ25185_SYS` 4 -> 3
+   and a 0.425 mm `VIN` pour lane instead of nothing.  Bring `R43` home first so
+   `Net-(SW9-A)` stops being board-spanning.
+2. **`U9.14`'s two `/NFC_VDD_A` barrels** -> `/04_SPI_B_RADIOS_NFC/NFC_VDD_RF`.
+3. **`/BQ25185_STAT2` onto `U3.13` or `U3.14`**, 6.6 mm from `U11.3`.
+4. `/NFC_SUPPLY`'s `/NFC_VDD_AM` track relay, with a per-net width floor for
+   `U9.10`'s 0.300 mm land priced against the published `NFC` supply current.

@@ -66,6 +66,30 @@
 > `verify_promotion` PASS and `protected_copper` showing exactly one protected
 > net moved.  `U14.7` is on the bus.  This board has **no open owner decision**.
 
+- **Demo D-713 (THE THIRTEEN REMAINING EDGES, MEASURED AND NAMED):**  **NO
+  COPPER PROMOTED.**  Authority UNCHANGED at `2e8ef9ed`; 13 -> 13.  Seven gate
+  runs and three screens.  ***`BQ25185_SYS` 4 -> 3 IS ONE OBJECT AWAY:*** remove
+  `Net-(SW9-A)`'s `U12` band barrel AND its 20 mm east loop and the pour REACHES
+  `U12.10`/`U12.11`, reproduced on two boards — what stops it is that `U12.12`
+  still needs an escape, and every barrel that could end one pinches the
+  0.900 mm band's pour lane below KiCad's 0.200 mm minimum (0.600/0.500/0.450 mm
+  at five `x` positions, all measured REFUSED).  **`U12` north `dy = -0.300 mm`
+  is the cheap rung** — 2 stranded endpoints, both `GND`, against 11 at -0.350 —
+  and it buys a **0.425 mm** `VIN` lane.  ***`U2` IS FULL AND BOTH COLUMNS ARE
+  ONE-CONDUCTOR WALLS:*** west holds TWO of
+  {`SX1262_DIO1`, `TOUCH_INT_N`, `SD_CARD_DETECT_N`} (evict one and the other
+  routes, and back); east is now owned by `/BQ25185_STAT1`'s promoted escape and
+  `U2.19` is `NO_PATH` from all THREE of its partners.  **`U3` has FOUR free
+  channels** on the same bus and the same `/WAKE_INT_N` — `U3.11` is refused for
+  `/SX1262_DIO1` (3 source escapes), but `U3.13`/`U3.14`, **6.6 mm from
+  `U11.3`**, are UNTRIED.  ***BOTH `U9` WALLS ARE MOVABLE OBJECTS:*** `U9.14`'s
+  channel is 4.47 mm wide at 1.50 mm out and ZERO at 1.55, sealed by **two
+  `/NFC_VDD_A` BARRELS**; `U9.10`'s is 2.43 mm at 1.0 mm out and **0.1318 mm at
+  2.00 mm**, bound by an `/NFC_VDD_AM` TRACK and `C45.2`'s `GND` land.  Neither
+  is a package-pitch problem past the first half-millimetre.  ***AND THE PATTERN
+  UNDER ALL OF IT:*** `R43` (the `EN` pull-down) is **47 mm** from `U12.12` and
+  is why `Net-(SW9-A)` is board-spanning; `R127`/`R128` are 10 and 20 mm from
+  `U11`.  Bringing the straps home is the same move that closed `C26.2`.
 - **Demo D-712 (THE `U2` CHANNEL SWAP IS SPENT AND `/BQ25185_STAT1` IS CLOSED;
   AND THE `TPS63020`'s `PS/SYNC` STRAP COMES HOME FROM FIFTY MILLIMETRES
   AWAY):**  **COPPER PROMOTED.**  Authority `4414da31` -> `2e8ef9ed`;
