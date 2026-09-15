@@ -1,0 +1,9 @@
+./kicad/include/properties/property.h(607): assert "m_choices.GetCount() > 0" failed in PROPERTY_ENUM(): No enum choices defined
+./kicad/include/properties/property.h(607): assert "m_choices.GetCount() > 0" failed in PROPERTY_ENUM(): No enum choices defined
+./kicad/include/properties/property.h(607): assert "m_choices.GetCount() > 0" failed in PROPERTY_ENUM(): No enum choices defined
+BASE NO_PATH
+Q1 drop ALL routed copper of 20 foreign nets in the window -> OPENS 11.798 mm, 0 via
+  Q2 +3V3                                       -> NO_PATH
+  Q2 /01_POWER_TREE/BQ25185_SYS                 -> NO_PATH
+  Q2 /08_BUTTONS_EXPANDERS/BTN_A_N              -> NO_PATH
+  Q2 /08_BUTTONS_EXPANDERS/BTN_B_N              -> NO_PATH

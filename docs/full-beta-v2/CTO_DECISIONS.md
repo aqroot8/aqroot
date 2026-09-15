@@ -28809,3 +28809,23 @@ south of `J5`, where `BQ25185_SYS`'s pour body already is, and let the cell's
 `ACC_5V_RAW` output take the long run instead of its input — an output that
 already travels 25 mm on `In3` today and is a DC rail behind a 22 uF bulk cap,
 not a 2.19 A-peak switching input.
+
+## D-717 ADDENDUM 3 — `/BQ25185_STAT2` `U2.19` IS A CORRIDOR TOO, AND ITS `Q1` IS CHEAP: 11.798 mm, ZERO VIAS
+
+    python3 screen_pair_corridor_blame.py /BQ25185_STAT2 U2.19 TP7.1 3.0 50000 OUT.json
+
+`BASE NO_PATH`; **`Q1` — drop ALL routed copper of the TWENTY foreign nets in
+the window — OPENS in 11.798 mm with ZERO vias.**  The straight-line gap is
+9.474 mm, so `Q1`'s answer is only 1.24x direct: this is a genuinely tight
+corridor, not a long way round, and it is the cheapest `Q1` of any open edge
+measured this session.  **`Q2` was RUN TO FOUR OF TWENTY NETS AND STOPPED** —
+`+3V3`, `BQ25185_SYS`, `BTN_A_N`, `BTN_B_N`, all `NO_PATH` — so **no opener is
+known yet and the minimal set is NOT measured.**  The partial log is
+`evidence/d717-blame-bq25185-stat2-u2-19-PARTIAL.log`; finishing it is ~2 hours
+and it is the cheapest unmeasured edge on the board.
+
+The net's OTHER edge, `U11.3`, is settled and is not a corridor: D-716's census
+and this session's run both report `NO LEGAL ESCAPE at >= 0.200 mm` — *"blocked
+by `U11.1` (x27), `U11.4` (x18), `U11.8` (x5), `R37.2` (x4)"* — a `BQ25185`
+DFN-10 middle pin on 0.400 mm pitch with 0.200 mm-tall lands. It is a package
+question.

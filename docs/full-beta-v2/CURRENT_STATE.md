@@ -66,6 +66,18 @@
 > `verify_promotion` PASS and `protected_copper` showing exactly one protected
 > net moved.  `U14.7` is on the bus.  This board has **no open owner decision**.
 
+- **Demo D-717 ADDENDUM 3 (`/BQ25185_STAT2` `U2.19` IS A CORRIDOR AND ITS `Q1`
+  IS THE CHEAPEST ON THE BOARD):**  **NO COPPER.**  `BASE NO_PATH`; **`Q1` —
+  drop ALL routed copper of the TWENTY foreign nets in the window — OPENS in
+  11.798 mm with ZERO vias** against a 9.474 mm straight line, so it is 1.24x
+  direct: a genuinely tight corridor, not a long way round, and the cheapest
+  `Q1` of any open edge measured this session.  **`Q2` ran to FOUR of twenty
+  nets and was STOPPED** (`+3V3`, `BQ25185_SYS`, `BTN_A_N`, `BTN_B_N`, all
+  `NO_PATH`), so **no opener is known and the minimal set is NOT measured** —
+  `evidence/d717-blame-bq25185-stat2-u2-19-PARTIAL.log`, ~2 hours to finish, and
+  it is the cheapest unmeasured edge on the board.  The net's OTHER edge,
+  `U11.3`, is settled: `NO LEGAL ESCAPE at >= 0.200 mm`, a `BQ25185` DFN-10
+  middle pin on 0.400 mm pitch with 0.200 mm-tall lands — a package question.
 - **Demo D-717 ADDENDUM 2 (THE RAIL IS PRICED AT FIVE NETS AND 169.4 mm — THE
   ACCESSORY 5 V CELL MUST MOVE):**  **NO COPPER.**
   `screen_pair_corridor_blame /01_POWER_TREE/BQ25185_SYS L4.1 C28.1 3.0 100000`
