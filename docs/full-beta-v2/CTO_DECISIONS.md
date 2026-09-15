@@ -28025,6 +28025,27 @@ A track and a pair of barrels are exactly what `--detour-spec` relays and
 `--detour-spec` barrel-MOVES (D-653, D-658).  Neither refusal is a package
 pitch problem past the first half-millimetre.
 
+**AND `U9.14`'s BARRELS ARE NOT THE WALL EITHER — THE LAUNCHERS DISAGREE.**  A
+windowed `--evict` of `/04_SPI_B_RADIOS_NFC/NFC_VDD_A` over
+`33.5,23.9 - 35.6,26.5` took SIX objects, the net RE-LAID (`closed 1`), and
+`U9.14` reported the SAME refusal: *"NO LEGAL ESCAPE at >= 0.200 mm; blocked by
+U9.15 (x27), U9.13 (x16), U9.33 (x8), U9.10 (x5)"* — its own neighbouring
+LANDS.  But `screen_offcentre_launch` on the same board says:
+
+    land U9.14   OFF-CENTRE OPENS at 0.200 mm on B (anchor 0.000 mm off centre,
+                 base ray, reach 0.025 mm past its own edge); centre-anchored
+                 only reaches 0.150 mm
+
+and the geometry agrees — the land is 0.300 mm wide on a 0.500 mm pitch, so a
+0.200 mm track down its spine clears `U9.13` and `U9.15` by **0.250 mm** against
+the 0.200 mm the board's own *"Pad-escape necking - clearance, fine-pitch power
+packages"* rule already grants inside `U9`'s courtyard.  `--tap --tap-first
+--tap-max-mm 4` refuses it too, and its message names the layer: *"NO OFF-CENTRE
+LAUNCH at 0.200 mm from any of 41 anchors x 24 directions x 17 lengths"* **on
+`F`** — while the land is `B.Cu` ONLY and the screen's opening is on `B`.
+**So the next instrument question is why the join and the tap ask about `F` for
+a `B`-only land, and that is worth one edge without moving any copper.**
+
 ### 4. THE OTHER TWO ARE CORRIDORS, AND BOTH LANDS LAUNCH
 
     /ACC_PWR_EN    U16.1/R17.1 -> U3.20    20.24 mm  NO_PATH  src 10  dst 4
