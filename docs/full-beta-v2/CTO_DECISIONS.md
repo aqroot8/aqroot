@@ -28084,3 +28084,173 @@ move that closed `C26.2`, and it is cheap: none of them carries a signal.**
 3. **`/BQ25185_STAT2` onto `U3.13` or `U3.14`**, 6.6 mm from `U11.3`.
 4. `/NFC_SUPPLY`'s `/NFC_VDD_AM` track relay, with a per-net width floor for
    `U9.10`'s 0.300 mm land priced against the published `NFC` supply current.
+## D-714 — THE `U21` ACCESSORY-BOOST CELL ROUTES ITS SWITCH NODE FOR THE FIRST TIME AND ITS GROUND PIN IS THE WHOLE RESIDUAL; `/NFC_SUPPLY` IS A PRICING WALL, NOT A ROUTING ONE; AND TWO ROUTER DEFECTS WERE FOUND AND FIXED
+
+**NO COPPER PROMOTED.**  Authority UNCHANGED at `2e8ef9ed`; 13 -> 13.
+`hardware/beta-v2` UNTOUCHED.  Fifteen router runs, six screens, three real
+KiCad DRC passes on candidate bases, and two source fixes proved BYTE-IDENTICAL
+on the authority.
+
+### 1. `/01_POWER_TREE/ACC_5V_LX` HAS NEVER ROUTED AND NOW IT DOES — 3.065 mm, ZERO VIAS, DRC-CLEAN
+
+`evidence/d714-build-u21-cell.py` replays the cell in one command.  **FIVE
+EDITS**, and every one of them was measured, not guessed:
+
+    0  U21.6's OWN 0.250 mm RAW NECK IS THE FOURTH WALL.  It runs east at
+       y = 40.400, so its copper stops at y = 40.275, and `/01_POWER_TREE/
+       ACC_5V_LX` -- netclass SWITCH_NODE, ROUTED clearance 0.300 mm -- cannot
+       put a 0.200 mm necked escape down U21.5's spine at y = 39.900 beside it:
+       0.275 mm of gap against 0.300 mm of rule.  Measured BOTH WAYS on one
+       base: with the neck present `U21.5` is NO_LEGAL_ESCAPE_DST, without it
+       the switch node routes.
+    1  C65, the 22 uF ACC_5V output cap, sits 0.7345 mm due east of U21's east
+       pad row and `screen_fanout_channel` says U21.5's channel PINCHES TO ZERO
+       at 0.75 mm ON C65.1's OWN LAND.  C65 -> (60.700, 42.200), D-681's site.
+    2  U21.4's east GND escape -- a DUPLICATE PAIR of 0.300 mm B.Cu tracks
+       (58.700,39.375)->(60.600,38.425) -- fences U21.5 off from L4.2 to the
+       south.  `screen_inert_copper` over 56.5,37.0-64.0,42.5: ALL TWENTY GND
+       chains there are INERT, 25.496 mm.
+    3  **THE SMALL `BQ25185_SYS` POUR IS WHY `U21.4` HAS NO GROUND.**  It is a
+       plain rectangle (55,33)-(60,42) that blankets U21 on BOTH sides -- the
+       shape D-710 already measured once, a FOREIGN POUR starving a pad of its
+       own plane.  With edit 2 alone GND LOSES `U21.4`.  Trim the rectangle's
+       east edge 60.000 -> 58.600 and the B.Cu GND pour reaches `U21.4`'s land
+       while `L4.1 <-> U21.3` stays ONE island.  Measured at 58.0, 58.4 and
+       58.9; at 59.3 GND opens again.  The pour serves exactly two lands.
+    4  a 0.250/0.300 mm GND spine from `U21.4` north through L4's own pad gap.
+
+On that base (`w/d714/c13`, sha `12d0e6bc...`) real KiCad DRC is the INHERITED
+BASELINE EXACTLY -- 199 `lib_footprint_issues` + 1 `solder_mask_bridge`, nothing
+else -- GND has ZERO open edges, and the run closes BOTH open nets:
+
+    /01_POWER_TREE/ACC_5V_LX   L4.2 -> U21.5   3.065 mm, 0 vias, B.Cu,
+                               0.475 mm 0.200 mm neck, 0.225 mm past U21's
+                               courtyard, `--neck-reach-mm`
+    /01_POWER_TREE/ACC_5V_RAW  C65.1 -> U21.6  2.495 mm, 0 vias + one TAP
+    15 -> 13 on that base, ZERO attributable DRC, `refused []` but for two
+    clauses -- and both of them are the SAME fact.
+
+### 2. AND THE RESIDUAL IS ONE PIN: `U21.4`
+
+The 3.065 mm switch node climbs at `x = 59.675` and the refill then cuts the
+L4-gap strip (x 58.15..59.34, y 34.26..39.47) off the eastern GND body, leaving
+`U21.4` an island of one.  **This is D-681's topological finding restated and it
+survives the whole cell opening:** `U21.4` is the NORTH pad of U21's east
+column, `U21.5` the MIDDLE and `U21.6` the SOUTH; a SOT-563 middle pin can only
+leave PERPENDICULAR, and whatever it does next divides north from south.  Three
+exits from that strip were measured and all three are sealed:
+
+    SOUTH   R48's own via-in-pad -- the 0.600/0.300 `/09_COMMUNITY_HEADER/
+            EXT_SDA_BUF` barrel at (58.700, 34.000) -- sits in L4's pad gap and
+            leaves 0.195 mm west of it and 0.595 mm east.  0.595 mm holds a
+            0.150 mm conductor, which prices at 0.602 A against a converter
+            ground return.
+    EAST    is the LX route itself.
+    WEST    is the `BQ25185_SYS` pour and `L4.1`'s own land.
+    CHANNEL U21's inter-column channel is 0.751 mm and `/ACC_DETECT_N` already
+            has it -- a 0.200 mm GND track there SHORTS it in three places.
+    BARREL  fits NOWHERE.  A 0.500/0.250 through via was tried at three sites:
+            (58.850, 38.950) SHORTS `/XGPIO4` on In2 and clears
+            `/01_POWER_TREE/ACC_5V_RAW` on In3 by 0.0793 mm; (58.800, 37.000)
+            and (58.800, 37.200) both fail real DRC against
+            `/09_COMMUNITY_HEADER/ACC_DETECT_N_HDR` on F.Cu.  Four layers cross
+            this footprint and every one of them is occupied.
+
+**SO THE NEXT MOVE IS NAMED AND IT IS SMALL:** get the `EXT_SDA_BUF` barrel out
+of L4's pad gap.  `R48`'s F.Cu LANDS are not obstacles to a B.Cu pour -- only
+its THROUGH VIA is -- so moving `R48` (or just its barrel, with an F.Cu stub)
+opens the gap's south exit to 1.39 mm, the pour flows from `U21.4` north to
+`R100.2`'s own GND land, and the LX route keeps the east.
+
+### 3. `/NFC_SUPPLY` `U9.10` IS A PRICING WALL, NOT A ROUTING WALL
+
+`screen_fanout_channel`: the land is **0.300 mm WIDE** (ST25R3916 UFQFPN-32,
+0.500 mm pitch), the pad gap is 0.700 mm and the channel is 0.750 mm for the
+first millimetre.  The `P3V3` class floor the `.kicad_dru` publishes is
+**0.400 mm**, which needs 0.800 mm of channel.  **The vendor land pattern caps
+this pin below its own class floor.**  A per-net `track_width` rule was authored
+at 0.300 and at 0.250 and BOTH were correctly refused by the board's own
+pricing: section 5 prices `P3V3` at **1.0 A design current**, `trunk_floor_price`
+weighs the descent by IPC-2221B at this board's copper, and 0.250 mm carries
+0.873 A.  **AND THE BOARD ALREADY CARRIES THE SAME CONDUCTOR:** `U9.8`, the
+other `/NFC_SUPPLY` land on the same package, is escaped by an ACCEPTED
+**0.200 mm** B.Cu track (31.45, 28.2), 0.8246 mm long -- 0.742 A against the
+same 1.0 A bar.
+
+**THIS IS A DATA GAP, AND `DEVICE_SPEC.md` ALREADY SAYS SO IN ITS OWN WORDS:**
+*"the ST25R3916 tank current is not a number this repository holds."*  The 1.0 A
+figure is the WHOLE `+3V3` rail's design current; `/NFC_SUPPLY` is one branch of
+it behind the `R106` 0 R link and carries only `U9`'s `VDD` + `VDD_TX`.  Until
+that current is published, a per-net floor for `/NFC_SUPPLY` cannot be priced --
+and the EXISTING `U9.8` escape is un-priced copper on the same rail, which is a
+DFM item this board should close either way.
+
+### 4. `/BQ25185_STAT2` ON `U3.13` IS REFUSED BY `U11.3`, AND THE WALL IS THE PROTECTED TAPER
+
+D-713 item 3 said `U3.13`/`U3.14` were UNTRIED.  Tried: the PCB-side channel
+migration `U2.19 (P16) -> U3.13 (P10)` applies cleanly (no stranded copper --
+`/BQ25185_STAT2`'s only tracks join `R128.2` to `TP7.1`), and the run still
+fails, now on the OTHER land.  `screen_fanout_channel` on `U11.3`:
+
+    U11.3   Default   widest=0.100   NO_CHANNEL
+      at 0.000  gap 0.600  admits 0.200   U11.2 / U11.4 pads (ZERO MARGIN)
+      at 0.525  gap 0.000  admits 0.000   /01_POWER_TREE/BAT_PROTECTED_P
+                                          TRACK, both sides
+
+`U11`'s west pads are 0.750 x 0.200 mm on a 0.400 mm pitch, so the only exit is
+WEST -- and 0.525 mm west the `BAT_PROTECTED_P` nine-step hand taper turns south
+down `x = 65.500` at 0.600-1.200 mm wide.  Between the taper's east edge
+(65.800) and `U11`'s west pad edge (66.025) there is **0.225 mm**, and a
+0.150 mm track at 0.200 mm clearance needs 0.550.  **`U11.3` is unreachable
+without moving PROTECTED copper**, which `/home/aqroot8/.aqroot-owner-
+authorization-d655.txt` forbids in its own words (*"No other `BAT_*` protected
+net may be changed under this authorization"*) and which D-693 raised and D-707
+answered only for the J8/expansion half.  Two of the thirteen edges are behind
+this one object.
+
+### 5. `/ACC_PWR_EN`'s CORRIDOR HAS A MINIMAL CUT AND IT IS FOUR NETS
+
+`screen_pair_corridor_blame /ACC_PWR_EN U16.1 U3.20`, complete: BASE `NO_PATH`;
+**Q1 opens in 27.705 mm on `B.Cu` with ZERO vias** with all 28 window nets
+dropped; Q2 -- **no single net opens it**; Q3 minimal set
+**{`/BQ25185_STAT1`, `/I2C_SCL_INT`, `/SX1262_RXEN`, `GND`}**, 37.646 mm,
+5 vias, `B -> F -> I2 -> F -> I2 -> B`.  Both `U16` lands LAUNCH
+(`U16.1` widest 0.600, `U16.3` widest 0.250), so both remaining `U16` edges are
+corridor problems in the same band and one transaction can hold them.
+
+### 6. TWO ROUTER DEFECTS, FOUND AND FIXED, BYTE-IDENTICAL ON THE AUTHORITY
+
+    route_maze_batch.py  --propose NEVER REBOUND `BOARD`.  D-668 moved the
+      PARENT onto a stated base; the CHILD that actually proposes the copper was
+      handed only the scratch path, so every module-global reader keyed on
+      `BOARD` -- `net_width_licence` among them -- answered about
+      `hardware/demo/kicad/aqroot-demo`.  That is D-668's defect one level down.
+      The scratch always carries its own `.kicad_pro`/`.kicad_dru`, and when the
+      base IS the authority those are a copy of the authority's.
+
+    route_maze_batch.py  --escape-floor READ THE CLASS FIGURE AND STOPPED.
+      D-690's per-net licence fired only where the class was UNPRICED, so a
+      RAIL-class net could never spend a rule the `.kicad_dru` publishes for it
+      by name -- and the only lands that need one are on rails.  Now a DESCENT
+      ONLY: the per-net figure is taken only when it is strictly BELOW the class
+      figure, so `/01_POWER_TREE/BAT_PROTECTED_P`'s RAISING 1.200 mm rule is
+      ignored exactly as before.  On the promoted `.kicad_dru` NO net carries
+      both a priced class and a narrower per-net rule.
+
+**PROOF:** `/ACC_PWR_EN` + `/I2C_SCL_INT` re-run on the authority before and
+after: `routed` IDENTICAL, `pour_partition` identical but for the temp-directory
+name, every other top-level key equal.
+
+### 7. NEXT, IN ORDER
+
+1. **Move the `/09_COMMUNITY_HEADER/EXT_SDA_BUF` barrel out of L4's pad gap**
+   and re-run `evidence/d714-build-u21-cell.py` -- that is `/01_POWER_TREE/
+   ACC_5V_LX` closed and the accessory boost's switch node alive.
+2. **Publish the ST25R3916 `VDD`/`VDD_TX` supply current** (datasheet read, then
+   `DEVICE_SPEC` + `.kicad_dru` section 5), then a per-net `/NFC_SUPPLY` width
+   floor priced against it -- that is `U9.10`, and it also re-prices the
+   ACCEPTED 0.200 mm `U9.8` escape the board already ships.
+3. **Spend the `/ACC_PWR_EN` four-net cut** -- and ask `/I2C_SCL_INT` `U16.3` in
+   the same transaction; the two edges share the band.
+4. `U11.3` is an OWNER question about `BAT_PROTECTED_P`, not a routing one.
+

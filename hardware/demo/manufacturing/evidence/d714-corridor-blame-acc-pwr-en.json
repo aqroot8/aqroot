@@ -1,0 +1,576 @@
+{
+  "a": "U16.1",
+  "b": "U3.20",
+  "banned_nets": [],
+  "board": "/home/aqroot8/aqroot-demo/hardware/demo/kicad/aqroot-demo/aqroot-Beta-v2.kicad_pcb",
+  "board_is_authority": true,
+  "board_sha256": "2e8ef9edf28681c46495a9ed5b35b6c11dbf116f5504e6e4e17c4b48e8b6e016",
+  "complete": true,
+  "grid_nm": 50000,
+  "instrument": "maze3d.offcentre_route under screen_corridor_blockers.Without",
+  "layers": [
+    "F",
+    "B",
+    "I2"
+  ],
+  "margin_mm": 3.0,
+  "max_mm": null,
+  "net": "/ACC_PWR_EN",
+  "q2": "RUN",
+  "rows": [
+    {
+      "accepted": false,
+      "layers": null,
+      "mm": null,
+      "ok": false,
+      "reason": "NO_PATH",
+      "step": "BASE",
+      "vias": null,
+      "why": "no all-layer corridor at 0.200 mm from U16.1 on B to U3.20 on B"
+    },
+    {
+      "accepted": true,
+      "layers": [
+        "B"
+      ],
+      "mm": 27.7046,
+      "nets": [
+        "+3V3",
+        "/01_POWER_TREE/BAT_PROTECTED_P",
+        "/01_POWER_TREE/ISET",
+        "/01_POWER_TREE/USB_VBUS_CHG",
+        "/01_POWER_TREE/V3V3_FB",
+        "/05_I2C_DEVICES/BMI270_INT1_RAW",
+        "/05_I2C_DEVICES/BMI270_SDO_ADDR",
+        "/08_BUTTONS_EXPANDERS/BTN_UP_N",
+        "/09_COMMUNITY_HEADER/EXT_SCL_BUF",
+        "/09_COMMUNITY_HEADER/EXT_SDA_BUF",
+        "/09_COMMUNITY_HEADER/NATIVE_A_HDR",
+        "/09_COMMUNITY_HEADER/TCA4307_READY",
+        "/09_COMMUNITY_HEADER/WAKE_GATE_S",
+        "/ACC_3V3_EN",
+        "/ACC_3V3_SW",
+        "/ACC_5V_BOOST_EN",
+        "/ACC_5V_SW_EN",
+        "/ACC_DETECT_N",
+        "/ACC_POWER_FAULT_N",
+        "/BQ25185_STAT1",
+        "/I2C_SCL_INT",
+        "/I2C_SDA_INT",
+        "/NFC_5V_EN",
+        "/SX1262_RXEN",
+        "/XGPIO4",
+        "/XGPIO5",
+        "GND",
+        "Net-(U11-TS_MR)"
+      ],
+      "ok": true,
+      "reason": null,
+      "step": "Q1_UPPER_BOUND",
+      "vias": 0,
+      "why": null
+    },
+    {
+      "accepted": false,
+      "layers": null,
+      "mm": null,
+      "net": "+3V3",
+      "ok": false,
+      "reason": "NO_PATH",
+      "step": "Q2_SINGLE_NET",
+      "vias": null
+    },
+    {
+      "accepted": false,
+      "layers": null,
+      "mm": null,
+      "net": "/01_POWER_TREE/BAT_PROTECTED_P",
+      "ok": false,
+      "reason": "NO_PATH",
+      "step": "Q2_SINGLE_NET",
+      "vias": null
+    },
+    {
+      "accepted": false,
+      "layers": null,
+      "mm": null,
+      "net": "/01_POWER_TREE/ISET",
+      "ok": false,
+      "reason": "NO_PATH",
+      "step": "Q2_SINGLE_NET",
+      "vias": null
+    },
+    {
+      "accepted": false,
+      "layers": null,
+      "mm": null,
+      "net": "/01_POWER_TREE/USB_VBUS_CHG",
+      "ok": false,
+      "reason": "NO_PATH",
+      "step": "Q2_SINGLE_NET",
+      "vias": null
+    },
+    {
+      "accepted": false,
+      "layers": null,
+      "mm": null,
+      "net": "/01_POWER_TREE/V3V3_FB",
+      "ok": false,
+      "reason": "NO_PATH",
+      "step": "Q2_SINGLE_NET",
+      "vias": null
+    },
+    {
+      "accepted": false,
+      "layers": null,
+      "mm": null,
+      "net": "/05_I2C_DEVICES/BMI270_INT1_RAW",
+      "ok": false,
+      "reason": "NO_PATH",
+      "step": "Q2_SINGLE_NET",
+      "vias": null
+    },
+    {
+      "accepted": false,
+      "layers": null,
+      "mm": null,
+      "net": "/05_I2C_DEVICES/BMI270_SDO_ADDR",
+      "ok": false,
+      "reason": "NO_PATH",
+      "step": "Q2_SINGLE_NET",
+      "vias": null
+    },
+    {
+      "accepted": false,
+      "layers": null,
+      "mm": null,
+      "net": "/08_BUTTONS_EXPANDERS/BTN_UP_N",
+      "ok": false,
+      "reason": "NO_PATH",
+      "step": "Q2_SINGLE_NET",
+      "vias": null
+    },
+    {
+      "accepted": false,
+      "layers": null,
+      "mm": null,
+      "net": "/09_COMMUNITY_HEADER/EXT_SCL_BUF",
+      "ok": false,
+      "reason": "NO_PATH",
+      "step": "Q2_SINGLE_NET",
+      "vias": null
+    },
+    {
+      "accepted": false,
+      "layers": null,
+      "mm": null,
+      "net": "/09_COMMUNITY_HEADER/EXT_SDA_BUF",
+      "ok": false,
+      "reason": "NO_PATH",
+      "step": "Q2_SINGLE_NET",
+      "vias": null
+    },
+    {
+      "accepted": false,
+      "layers": null,
+      "mm": null,
+      "net": "/09_COMMUNITY_HEADER/NATIVE_A_HDR",
+      "ok": false,
+      "reason": "NO_PATH",
+      "step": "Q2_SINGLE_NET",
+      "vias": null
+    },
+    {
+      "accepted": false,
+      "layers": null,
+      "mm": null,
+      "net": "/09_COMMUNITY_HEADER/TCA4307_READY",
+      "ok": false,
+      "reason": "NO_PATH",
+      "step": "Q2_SINGLE_NET",
+      "vias": null
+    },
+    {
+      "accepted": false,
+      "layers": null,
+      "mm": null,
+      "net": "/09_COMMUNITY_HEADER/WAKE_GATE_S",
+      "ok": false,
+      "reason": "NO_PATH",
+      "step": "Q2_SINGLE_NET",
+      "vias": null
+    },
+    {
+      "accepted": false,
+      "layers": null,
+      "mm": null,
+      "net": "/ACC_3V3_EN",
+      "ok": false,
+      "reason": "NO_PATH",
+      "step": "Q2_SINGLE_NET",
+      "vias": null
+    },
+    {
+      "accepted": false,
+      "layers": null,
+      "mm": null,
+      "net": "/ACC_3V3_SW",
+      "ok": false,
+      "reason": "NO_PATH",
+      "step": "Q2_SINGLE_NET",
+      "vias": null
+    },
+    {
+      "accepted": false,
+      "layers": null,
+      "mm": null,
+      "net": "/ACC_5V_BOOST_EN",
+      "ok": false,
+      "reason": "NO_PATH",
+      "step": "Q2_SINGLE_NET",
+      "vias": null
+    },
+    {
+      "accepted": false,
+      "layers": null,
+      "mm": null,
+      "net": "/ACC_5V_SW_EN",
+      "ok": false,
+      "reason": "NO_PATH",
+      "step": "Q2_SINGLE_NET",
+      "vias": null
+    },
+    {
+      "accepted": false,
+      "layers": null,
+      "mm": null,
+      "net": "/ACC_DETECT_N",
+      "ok": false,
+      "reason": "NO_PATH",
+      "step": "Q2_SINGLE_NET",
+      "vias": null
+    },
+    {
+      "accepted": false,
+      "layers": null,
+      "mm": null,
+      "net": "/ACC_POWER_FAULT_N",
+      "ok": false,
+      "reason": "NO_PATH",
+      "step": "Q2_SINGLE_NET",
+      "vias": null
+    },
+    {
+      "accepted": false,
+      "layers": null,
+      "mm": null,
+      "net": "/BQ25185_STAT1",
+      "ok": false,
+      "reason": "NO_PATH",
+      "step": "Q2_SINGLE_NET",
+      "vias": null
+    },
+    {
+      "accepted": false,
+      "layers": null,
+      "mm": null,
+      "net": "/I2C_SCL_INT",
+      "ok": false,
+      "reason": "NO_PATH",
+      "step": "Q2_SINGLE_NET",
+      "vias": null
+    },
+    {
+      "accepted": false,
+      "layers": null,
+      "mm": null,
+      "net": "/I2C_SDA_INT",
+      "ok": false,
+      "reason": "NO_PATH",
+      "step": "Q2_SINGLE_NET",
+      "vias": null
+    },
+    {
+      "accepted": false,
+      "layers": null,
+      "mm": null,
+      "net": "/NFC_5V_EN",
+      "ok": false,
+      "reason": "NO_PATH",
+      "step": "Q2_SINGLE_NET",
+      "vias": null
+    },
+    {
+      "accepted": false,
+      "layers": null,
+      "mm": null,
+      "net": "/SX1262_RXEN",
+      "ok": false,
+      "reason": "NO_PATH",
+      "step": "Q2_SINGLE_NET",
+      "vias": null
+    },
+    {
+      "accepted": false,
+      "layers": null,
+      "mm": null,
+      "net": "/XGPIO4",
+      "ok": false,
+      "reason": "NO_PATH",
+      "step": "Q2_SINGLE_NET",
+      "vias": null
+    },
+    {
+      "accepted": false,
+      "layers": null,
+      "mm": null,
+      "net": "/XGPIO5",
+      "ok": false,
+      "reason": "NO_PATH",
+      "step": "Q2_SINGLE_NET",
+      "vias": null
+    },
+    {
+      "accepted": false,
+      "layers": null,
+      "mm": null,
+      "net": "GND",
+      "ok": false,
+      "reason": "NO_PATH",
+      "step": "Q2_SINGLE_NET",
+      "vias": null
+    },
+    {
+      "accepted": false,
+      "layers": null,
+      "mm": null,
+      "net": "Net-(U11-TS_MR)",
+      "ok": false,
+      "reason": "NO_PATH",
+      "step": "Q2_SINGLE_NET",
+      "vias": null
+    },
+    {
+      "mm": 32.4617,
+      "net": "+3V3",
+      "remaining": 27,
+      "step": "Q3_DROPPED"
+    },
+    {
+      "mm": 32.4617,
+      "net": "/01_POWER_TREE/BAT_PROTECTED_P",
+      "remaining": 26,
+      "step": "Q3_DROPPED"
+    },
+    {
+      "mm": 32.4617,
+      "net": "/01_POWER_TREE/ISET",
+      "remaining": 25,
+      "step": "Q3_DROPPED"
+    },
+    {
+      "mm": 32.4617,
+      "net": "/01_POWER_TREE/USB_VBUS_CHG",
+      "remaining": 24,
+      "step": "Q3_DROPPED"
+    },
+    {
+      "mm": 32.4617,
+      "net": "/01_POWER_TREE/V3V3_FB",
+      "remaining": 23,
+      "step": "Q3_DROPPED"
+    },
+    {
+      "mm": 32.4617,
+      "net": "/05_I2C_DEVICES/BMI270_INT1_RAW",
+      "remaining": 22,
+      "step": "Q3_DROPPED"
+    },
+    {
+      "mm": 32.4617,
+      "net": "/05_I2C_DEVICES/BMI270_SDO_ADDR",
+      "remaining": 21,
+      "step": "Q3_DROPPED"
+    },
+    {
+      "mm": 31.9582,
+      "net": "/08_BUTTONS_EXPANDERS/BTN_UP_N",
+      "remaining": 20,
+      "step": "Q3_DROPPED"
+    },
+    {
+      "mm": 31.9582,
+      "net": "/09_COMMUNITY_HEADER/EXT_SCL_BUF",
+      "remaining": 19,
+      "step": "Q3_DROPPED"
+    },
+    {
+      "mm": 31.9582,
+      "net": "/09_COMMUNITY_HEADER/EXT_SDA_BUF",
+      "remaining": 18,
+      "step": "Q3_DROPPED"
+    },
+    {
+      "mm": 32.4791,
+      "net": "/09_COMMUNITY_HEADER/NATIVE_A_HDR",
+      "remaining": 17,
+      "step": "Q3_DROPPED"
+    },
+    {
+      "mm": 32.4791,
+      "net": "/09_COMMUNITY_HEADER/TCA4307_READY",
+      "remaining": 16,
+      "step": "Q3_DROPPED"
+    },
+    {
+      "mm": 32.2611,
+      "net": "/09_COMMUNITY_HEADER/WAKE_GATE_S",
+      "remaining": 15,
+      "step": "Q3_DROPPED"
+    },
+    {
+      "mm": 32.2611,
+      "net": "/ACC_3V3_EN",
+      "remaining": 14,
+      "step": "Q3_DROPPED"
+    },
+    {
+      "mm": 35.1538,
+      "net": "/ACC_3V3_SW",
+      "remaining": 13,
+      "step": "Q3_DROPPED"
+    },
+    {
+      "mm": 33.1367,
+      "net": "/ACC_5V_BOOST_EN",
+      "remaining": 12,
+      "step": "Q3_DROPPED"
+    },
+    {
+      "mm": 33.1367,
+      "net": "/ACC_5V_SW_EN",
+      "remaining": 11,
+      "step": "Q3_DROPPED"
+    },
+    {
+      "mm": 33.1079,
+      "net": "/ACC_DETECT_N",
+      "remaining": 10,
+      "step": "Q3_DROPPED"
+    },
+    {
+      "mm": 37.6456,
+      "net": "/ACC_POWER_FAULT_N",
+      "remaining": 9,
+      "step": "Q3_DROPPED"
+    },
+    {
+      "net": "/BQ25185_STAT1",
+      "reason": "NO_PATH",
+      "remaining": 9,
+      "step": "Q3_REQUIRED"
+    },
+    {
+      "net": "/I2C_SCL_INT",
+      "reason": "NO_PATH",
+      "remaining": 9,
+      "step": "Q3_REQUIRED"
+    },
+    {
+      "mm": 37.6456,
+      "net": "/I2C_SDA_INT",
+      "remaining": 8,
+      "step": "Q3_DROPPED"
+    },
+    {
+      "mm": 37.6456,
+      "net": "/NFC_5V_EN",
+      "remaining": 7,
+      "step": "Q3_DROPPED"
+    },
+    {
+      "net": "/SX1262_RXEN",
+      "reason": "NO_PATH",
+      "remaining": 7,
+      "step": "Q3_REQUIRED"
+    },
+    {
+      "mm": 37.6456,
+      "net": "/XGPIO4",
+      "remaining": 6,
+      "step": "Q3_DROPPED"
+    },
+    {
+      "mm": 37.6456,
+      "net": "/XGPIO5",
+      "remaining": 5,
+      "step": "Q3_DROPPED"
+    },
+    {
+      "net": "GND",
+      "reason": "NO_PATH",
+      "remaining": 5,
+      "step": "Q3_REQUIRED"
+    },
+    {
+      "mm": 37.6456,
+      "net": "Net-(U11-TS_MR)",
+      "remaining": 4,
+      "step": "Q3_DROPPED"
+    },
+    {
+      "accepted": true,
+      "layers": [
+        "B",
+        "F",
+        "I2",
+        "F",
+        "I2",
+        "B"
+      ],
+      "mm": 37.6456,
+      "n": 4,
+      "nets": [
+        "/BQ25185_STAT1",
+        "/I2C_SCL_INT",
+        "/SX1262_RXEN",
+        "GND"
+      ],
+      "ok": true,
+      "step": "Q3_MINIMAL_SET",
+      "vias": 5
+    }
+  ],
+  "schema": 1,
+  "seconds": 1185.7,
+  "window_nets": [
+    "+3V3",
+    "/01_POWER_TREE/BAT_PROTECTED_P",
+    "/01_POWER_TREE/ISET",
+    "/01_POWER_TREE/USB_VBUS_CHG",
+    "/01_POWER_TREE/V3V3_FB",
+    "/05_I2C_DEVICES/BMI270_INT1_RAW",
+    "/05_I2C_DEVICES/BMI270_SDO_ADDR",
+    "/08_BUTTONS_EXPANDERS/BTN_UP_N",
+    "/09_COMMUNITY_HEADER/EXT_SCL_BUF",
+    "/09_COMMUNITY_HEADER/EXT_SDA_BUF",
+    "/09_COMMUNITY_HEADER/NATIVE_A_HDR",
+    "/09_COMMUNITY_HEADER/TCA4307_READY",
+    "/09_COMMUNITY_HEADER/WAKE_GATE_S",
+    "/ACC_3V3_EN",
+    "/ACC_3V3_SW",
+    "/ACC_5V_BOOST_EN",
+    "/ACC_5V_SW_EN",
+    "/ACC_DETECT_N",
+    "/ACC_POWER_FAULT_N",
+    "/BQ25185_STAT1",
+    "/I2C_SCL_INT",
+    "/I2C_SDA_INT",
+    "/NFC_5V_EN",
+    "/SX1262_RXEN",
+    "/XGPIO4",
+    "/XGPIO5",
+    "GND",
+    "Net-(U11-TS_MR)"
+  ]
+}

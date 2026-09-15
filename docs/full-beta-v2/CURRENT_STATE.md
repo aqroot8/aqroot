@@ -66,6 +66,65 @@
 > `verify_promotion` PASS and `protected_copper` showing exactly one protected
 > net moved.  `U14.7` is on the bus.  This board has **no open owner decision**.
 
+- **Demo D-714 (THE `U21` ACCESSORY-BOOST CELL ROUTES ITS SWITCH NODE FOR THE
+  FIRST TIME AND ITS GROUND PIN IS THE WHOLE RESIDUAL; `/NFC_SUPPLY` IS A
+  PRICING WALL; AND TWO ROUTER DEFECTS ARE FIXED):**  **NO COPPER PROMOTED.**
+  Authority UNCHANGED at `2e8ef9ed`; 13 -> 13.  ***`/01_POWER_TREE/ACC_5V_LX`
+  HAS NEVER ROUTED AND NOW IT DOES:*** `L4.2 -> U21.5`, **3.065 mm, ZERO vias**,
+  on the `.kicad_dru`'s own 0.200 mm neck, with `/01_POWER_TREE/ACC_5V_RAW` back
+  in 2.495 mm and a tap -- **15 -> 13 on the candidate base, ZERO attributable
+  DRC**.  `evidence/d714-build-u21-cell.py` replays the cell in one command and
+  its base (`w/d714/c13`, sha `12d0e6bc...`) is real-DRC IDENTICAL to the
+  inherited baseline.  **FIVE EDITS**, each measured: `U21.6`'s OWN 0.250 mm
+  `RAW` neck is the fourth wall (its copper stops at `y` 40.275 and
+  `SWITCH_NODE`'s 0.300 mm ROUTED clearance then forbids a 0.200 mm escape down
+  `U21.5`'s spine at 39.900 -- measured BOTH WAYS on one base); `C65` PINCHES
+  `U21.5`'s channel TO ZERO at 0.75 mm on its own land and moves to
+  (60.700, 42.200); `U21.4`'s east `GND` escape is a DUPLICATE PAIR and all
+  twenty `GND` chains in that 7.5 x 5.5 mm window are INERT; **and the small
+  `BQ25185_SYS` pour is why `U21.4` has no ground** -- a plain (55,33)-(60,42)
+  rectangle blanketing `U21` on BOTH sides, D-710's foreign-pour-starves-a-pad
+  shape again, trimmed east 60.000 -> 58.600 (measured at 58.0/58.4/58.9; at
+  59.3 `GND` opens again).  ***AND THE RESIDUAL IS ONE PIN.***  The switch node
+  climbs at `x 59.675` and the refill cuts the L4-gap strip off the eastern
+  `GND` body, leaving `U21.4` an island of one -- D-681's TOPOLOGICAL finding,
+  intact: a SOT-563 middle pin leaves PERPENDICULAR and then divides north from
+  south.  All four exits measured and sealed: SOUTH is `R48`'s own via-in-pad
+  (the 0.600/0.300 `EXT_SDA_BUF` barrel at (58.700, 34.000), leaving 0.195 mm
+  west and 0.595 mm east, and 0.595 mm holds 0.150 mm = 0.602 A); EAST is the
+  LX route; WEST is the pour and `L4.1`; `U21`'s 0.751 mm inter-column channel
+  already belongs to `/ACC_DETECT_N`; and a 0.500/0.250 THROUGH VIA fails real
+  DRC at three sites (`/XGPIO4` on In2, `ACC_5V_RAW` on In3 by 0.0793 mm,
+  `ACC_DETECT_N_HDR` on F.Cu twice).  **NEXT IS SMALL AND NAMED: `R48`'s F.Cu
+  LANDS are not obstacles to a B.Cu pour -- only its THROUGH VIA is.**
+  ***`/NFC_SUPPLY` `U9.10` IS A PRICING WALL, NOT A ROUTING ONE:*** the
+  ST25R3916 land is **0.300 mm WIDE** and the `P3V3` class floor is 0.400 mm, so
+  the vendor land pattern caps the pin BELOW its own class floor; per-net
+  `track_width` rules at 0.300 and 0.250 were authored and both were correctly
+  refused by the board's own `trunk_floor_price` against section 5's 1.0 A
+  `P3V3` design current -- **and the board ALREADY ships a 0.200 mm accepted
+  escape on the same rail at `U9.8`** (0.742 A against the same bar).
+  `DEVICE_SPEC` says in its own words that *"the ST25R3916 tank current is not a
+  number this repository holds"*, so this is a DATA GAP: publish `VDD`/`VDD_TX`,
+  then price the floor.  ***`/BQ25185_STAT2` ON `U3.13` IS REFUSED BY `U11.3`:***
+  the migration applies cleanly and the run fails on the OTHER land --
+  `screen_fanout_channel` gives `U11.3` `NO_CHANNEL`, `widest 0.100`, admitting
+  0.200 with ZERO margin between `U11.2`/`U11.4` and **0.000 at 0.525 mm out on
+  the `/01_POWER_TREE/BAT_PROTECTED_P` nine-step hand taper**, which leaves
+  **0.225 mm** between its east edge and `U11`'s west pad column.  Two of the
+  thirteen edges are behind one PROTECTED object.  ***`/ACC_PWR_EN`'s CORRIDOR
+  HAS A MINIMAL CUT:*** Q1 opens in 27.705 mm / 0 vias, NO single net opens it,
+  and Q3's minimal set is **four nets** -- `{/BQ25185_STAT1, /I2C_SCL_INT,
+  /SX1262_RXEN, GND}`, 37.646 mm, 5 vias.  Both `U16` lands LAUNCH, so both
+  remaining `U16` edges are corridor problems in one band.  ***TWO ROUTER
+  DEFECTS, FIXED, BYTE-IDENTICAL ON THE AUTHORITY:*** `--propose` NEVER REBOUND
+  `BOARD`, so the child that proposes the copper read the AUTHORITY's
+  `.kicad_dru` even under `--board` (D-668's defect one level down); and
+  `--escape-floor` read the CLASS figure and stopped, so a rail-class net could
+  never spend a per-net rule -- now a DESCENT ONLY, so
+  `BAT_PROTECTED_P`'s RAISING 1.200 mm rule is ignored exactly as before.
+  Proved by an A/B re-run on the authority: `routed` IDENTICAL, every other key
+  equal but the temp-directory name.
 - **Demo D-713 (THE THIRTEEN REMAINING EDGES, MEASURED AND NAMED):**  **NO
   COPPER PROMOTED.**  Authority UNCHANGED at `2e8ef9ed`; 13 -> 13.  Seven gate
   runs and three screens.  ***`BQ25185_SYS` 4 -> 3 IS ONE OBJECT AWAY:*** remove

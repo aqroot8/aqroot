@@ -1,0 +1,254 @@
+{
+ "authoritative_unchanged": true,
+ "board": "/home/aqroot8/aqroot-demo/hardware/demo/kicad/aqroot-demo/aqroot-Beta-v2.kicad_pcb",
+ "board_is_authority": true,
+ "board_sha256": "2e8ef9edf28681c46495a9ed5b35b6c11dbf116f5504e6e4e17c4b48e8b6e016",
+ "counts": {
+  "PACKAGE_PITCH_WALL": 1
+ },
+ "grid_nm": 50000,
+ "ladder_mm": [
+  0.8,
+  0.6,
+  0.5,
+  0.4,
+  0.35,
+  0.3,
+  0.25,
+  0.2,
+  0.15,
+  0.1
+ ],
+ "max_island": 8,
+ "method": "read-only.  The ladder is the ROUTER's own `maze3d.pad_escapes` -- launch, pocket and off-centre sources -- so it cannot disagree with the gate.  The channel is EXACT geometry walked outward in 25 um stations with no lattice; a track is its segment inflated by w/2, a via and a pad their bounding box.  The board's sha256 is re-read at exit",
+ "probe_mm": 2.0,
+ "question": "how wide a conductor does this land's EXIT CHANNEL admit, which two objects bind it, and which of the widths this board licenses would open it",
+ "rows": [
+  {
+   "board_min_track_mm": 0.15,
+   "body_lands_skipped": 0,
+   "channels": {
+    "B": {
+     "axis_chosen_by": "PAD_SHAPE",
+     "outward": [
+      1.0,
+      0.0
+     ],
+     "outward_axis": "x",
+     "pinch": {
+      "admits_mm": 0.0,
+      "at_mm": 0.75,
+      "clearance_hi_mm": 0.2,
+      "clearance_lo_mm": 0.2,
+      "gap_mm": 0.0,
+      "hi": {
+       "kind": "pad",
+       "land": "C65.1",
+       "net": "/01_POWER_TREE/ACC_5V_RAW"
+      },
+      "lo": {
+       "kind": "pad",
+       "land": "C65.1",
+       "net": "/01_POWER_TREE/ACC_5V_RAW"
+      }
+     },
+     "profile": [
+      {
+       "admits_mm": 0.25,
+       "at_mm": 0.0,
+       "clearance_hi_mm": 0.2,
+       "clearance_lo_mm": 0.2,
+       "gap_mm": 0.65,
+       "hi": {
+        "kind": "pad",
+        "land": "U21.6",
+        "net": "/01_POWER_TREE/ACC_5V_RAW"
+       },
+       "lo": {
+        "kind": "pad",
+        "land": "U21.4",
+        "net": "GND"
+       }
+      },
+      {
+       "admits_mm": 0.6305,
+       "at_mm": 0.25,
+       "clearance_hi_mm": 0.3,
+       "clearance_lo_mm": 0.3,
+       "gap_mm": 1.2305,
+       "hi": {
+        "kind": "track",
+        "land": null,
+        "net": "/01_POWER_TREE/ACC_5V_RAW"
+       },
+       "lo": {
+        "kind": "track",
+        "land": null,
+        "net": "GND"
+       }
+      },
+      {
+       "admits_mm": 0.7731,
+       "at_mm": 0.5,
+       "clearance_hi_mm": 0.3,
+       "clearance_lo_mm": 0.3,
+       "gap_mm": 1.3731,
+       "hi": {
+        "kind": "track",
+        "land": null,
+        "net": "/01_POWER_TREE/ACC_5V_RAW"
+       },
+       "lo": {
+        "kind": "track",
+        "land": null,
+        "net": "GND"
+       }
+      },
+      {
+       "admits_mm": 0.0,
+       "at_mm": 1.0,
+       "clearance_hi_mm": 0.2,
+       "clearance_lo_mm": 0.2,
+       "gap_mm": 0.0,
+       "hi": {
+        "kind": "pad",
+        "land": "C65.1",
+        "net": "/01_POWER_TREE/ACC_5V_RAW"
+       },
+       "lo": {
+        "kind": "pad",
+        "land": "C65.1",
+        "net": "/01_POWER_TREE/ACC_5V_RAW"
+       }
+      },
+      {
+       "admits_mm": 0.0,
+       "at_mm": 1.5,
+       "clearance_hi_mm": 0.2,
+       "clearance_lo_mm": 0.2,
+       "gap_mm": 0.0,
+       "hi": {
+        "kind": "pad",
+        "land": "C65.1",
+        "net": "/01_POWER_TREE/ACC_5V_RAW"
+       },
+       "lo": {
+        "kind": "pad",
+        "land": "C65.1",
+        "net": "/01_POWER_TREE/ACC_5V_RAW"
+       }
+      },
+      {
+       "admits_mm": 4.975,
+       "at_mm": 2.0,
+       "clearance_hi_mm": 0.3,
+       "clearance_lo_mm": 0.3,
+       "gap_mm": 5.575,
+       "hi": {
+        "kind": "track",
+        "land": null,
+        "net": "/ACC_5V_BOOST_EN"
+       },
+       "lo": {
+        "kind": "via",
+        "land": null,
+        "net": "/01_POWER_TREE/ACC_5V_RAW"
+       }
+      }
+     ],
+     "row": {
+      "admits_mm": 0.25,
+      "at_mm": -0.675,
+      "clearance_hi_mm": 0.2,
+      "clearance_lo_mm": 0.2,
+      "gap_mm": 0.65,
+      "hi": {
+       "kind": "pad",
+       "land": "U21.6",
+       "net": "/01_POWER_TREE/ACC_5V_RAW"
+      },
+      "lo": {
+       "kind": "pad",
+       "land": "U21.4",
+       "net": "GND"
+      }
+     },
+     "stations": 108
+    }
+   },
+   "class_floor_admitted": false,
+   "class_floor_why": "NET_CARRIES_NO_PUBLISHED_CURRENT",
+   "dru_class_floor_mm": 0.4,
+   "footprint": "U21",
+   "island": 1,
+   "ladder": [
+    {
+     "escapes": 0,
+     "seconds": 0.73,
+     "width_mm": 0.8
+    },
+    {
+     "escapes": 0,
+     "seconds": 0.78,
+     "width_mm": 0.6
+    },
+    {
+     "escapes": 0,
+     "seconds": 0.75,
+     "width_mm": 0.5
+    },
+    {
+     "escapes": 0,
+     "seconds": 0.7,
+     "width_mm": 0.4
+    },
+    {
+     "escapes": 0,
+     "seconds": 0.73,
+     "width_mm": 0.35
+    },
+    {
+     "escapes": 0,
+     "seconds": 0.68,
+     "width_mm": 0.3
+    },
+    {
+     "escapes": 0,
+     "seconds": 0.73,
+     "width_mm": 0.25
+    },
+    {
+     "escapes": 0,
+     "seconds": 0.7,
+     "width_mm": 0.2
+    },
+    {
+     "escapes": 0,
+     "seconds": 0.72,
+     "width_mm": 0.15
+    },
+    {
+     "escapes": 2,
+     "seconds": 0.74,
+     "width_mm": 0.1
+    }
+   ],
+   "land": "U21.5",
+   "narrow_price": {
+    "amps_at_dt10": 0.449,
+    "class_required_amps": null,
+    "ok": null,
+    "why": "CLASS_CARRIES_NO_PUBLISHED_CURRENT",
+    "width_mm": 0.1
+   },
+   "neck_min_mm": 0.2,
+   "net": "/01_POWER_TREE/ACC_5V_LX",
+   "netclass": "SWITCH_NODE",
+   "netclass_width_mm": 0.6,
+   "target": "L4.2",
+   "verdict": "PACKAGE_PITCH_WALL",
+   "widest_launch_mm": 0.1
+  }
+ ],
+ "schema": 1
+}

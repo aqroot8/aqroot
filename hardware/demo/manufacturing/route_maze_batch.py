@@ -2578,13 +2578,27 @@ def propose(path, nets, grid, via_cost_mm, stitch_width=0, stitch_via=None,
         # ladder is owed.  `net_width_licence` accepts only the exact
         # `A.NetName == '<net>'` condition and the result is clamped up to board
         # setup's own `min_track_width`, so nothing here can be illegal.
-        if escape_floor and floor is None:
+        # D-714.  AND A PER-NET FLOOR BEATS THE CLASS FLOOR WHEN IT IS
+        # NARROWER, WHICH IS KICAD'S OWN PRECEDENCE.  The D-690 form above
+        # fired only where the class was UNPRICED, so a rail-class net could
+        # never spend a rule the `.kicad_dru` publishes for it by name -- and
+        # the only lands that need one are on rails: `U9.10` is
+        # `/NFC_SUPPLY` on the `P3V3` class, its ST25R3916 land is 0.300 mm
+        # WIDE, and the class floor asks 0.400.  A DESCENT ONLY: the per-net
+        # figure is taken only when it is strictly BELOW the class figure, so
+        # `/01_POWER_TREE/BAT_PROTECTED_P`'s RAISING 1.200 mm rule is ignored
+        # here exactly as it was before, and on the promoted `.kicad_dru` no
+        # net carries both a priced class and a narrower per-net rule, so this
+        # is byte-identical until such a rule is authored.
+        if escape_floor:
             lic = net_width_licence(net)
             if lic:
-                floor = max(lic["width"], BOARD_TRACK_MIN)
-                c["escape_floor_licence"] = dict(
-                    rule=lic["rule"], width_nm=floor,
-                    amps_at_dt10=island_join_ampacity(floor)["track_amps"])
+                w_lic = max(lic["width"], BOARD_TRACK_MIN)
+                if floor is None or w_lic < floor:
+                    floor = w_lic
+                    c["escape_floor_licence"] = dict(
+                        rule=lic["rule"], width_nm=floor,
+                        amps_at_dt10=island_join_ampacity(floor)["track_amps"])
         c["escape_floor"] = min(c["width"], floor or c["width"])
         field = mz.Field(qb, net, c["width"], c["clr_pad"], c["clr"],
                          c["via_dia"], c["via_drill"], G=grid,
@@ -4996,6 +5010,18 @@ def main():
                         int(round(r * 1e6)))
 
     if a.propose:
+        # D-714.  THE CHILD READS ITS OWN BASE'S RULES, NOT THE AUTHORITY'S.
+        # `--propose` is handed the SCRATCH path and nothing else, so every
+        # module-global reader keyed on `BOARD` -- `net_width_licence` among
+        # them -- answered about `hardware/demo/kicad/aqroot-demo` even when
+        # the parent had been moved onto a stated base by `--board`.  That is
+        # D-668's defect one level down: a question about a candidate coming
+        # back as an answer about the authority.  The scratch always carries
+        # its own `.kicad_pro`/`.kicad_dru` (the parent copies all four files
+        # beside it), and when the base IS the authority those files are a copy
+        # of the authority's, so this rebind is byte-identical for every run
+        # before it.
+        BOARD = a.propose.resolve()
         # the child is always given a RESOLVED pitch by its parent
         propose(a.propose, a.nets, int(a.grid), a.via_cost, a.stitch_width, via,
                 a.join_residual, a.join_max_mm, a.neck, a.neck_max_mm,
