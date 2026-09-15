@@ -2,7 +2,7 @@
  "all_pass": true,
  "base_rev": "8572ade",
  "board": "/home/aqroot8/aqroot-demo/hardware/demo/kicad/aqroot-demo/aqroot-Beta-v2.kicad_pcb",
- "board_sha256": "eeb9a848bd5902b3e31c0f7dad601a1cc5d0b20404764523729e07d8a1182b83",
+ "board_sha256": "2e8ef9edf28681c46495a9ed5b35b6c11dbf116f5504e6e4e17c4b48e8b6e016",
  "dru": "/home/aqroot8/aqroot-demo/hardware/demo/kicad/aqroot-demo/aqroot-Beta-v2.kicad_dru",
  "results": {
   "TF1": {

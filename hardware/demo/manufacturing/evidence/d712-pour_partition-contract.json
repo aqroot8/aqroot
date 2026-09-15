@@ -3,7 +3,7 @@
  "ok": true,
  "pre_board": null,
  "ref": "HEAD",
- "ref_commit": "387f28816a07f46d67e88650281620cbbf511fb8",
+ "ref_commit": "019fc772bd04de144b4fcb089ef7288f927a02e2",
  "results": {
   "PP1": {
    "newly_unresolved": [],
@@ -127,11 +127,11 @@
      1
     ],
     "/01_POWER_TREE/BQ25185_SYS|B|da11f1b0-6501-5c41-b2b6-d6199a789ea9": [
-     6,
+     5,
      5
     ],
     "GND|B|38685722-44ee-566f-b52b-89a56220a9e0": [
-     69,
+     64,
      64
     ]
    },
