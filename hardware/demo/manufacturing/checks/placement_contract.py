@@ -17,7 +17,21 @@ SINGLE-LAYER net (`NFC_XIN`, `NFC_XOUT`, `NFC_RFO2`, all `layers_allowed =
 cannot move, the wall must -- and `U9.7`'s escape band was short by FIFTY
 MICRONS.  So this file is the invariant that makes moving a part reviewable:
 
-    PL1  the board holds exactly the same footprint REFERENCES it held before
+    PL1  the board holds exactly the same footprint REFERENCES it held before,
+         EXCEPT the ones this promotion DECLARES it removed (`--remove REF`).
+         D-712: a strap resistor whose only job is to tie a pin to a rail is
+         an implementation detail, and `U12`'s `PS/SYNC` 0R sat FIFTY
+         MILLIMETRES from the pin it strapped, hauling thirty-three objects
+         across the densest corner of the board to get there.  Deleting it and
+         tying the pin at the pin is the same circuit and a better one -- but
+         a contract that cannot express "this part left on purpose" leaves the
+         only guard against a part leaving BY ACCIDENT no choice but to refuse
+         both.  So a removal is DECLARED, exactly as a move is: the reference
+         set must differ from the PRE set by exactly the declared removals,
+         nothing may be ADDED, and an undeclared removal still FAILS.
+    PL10 a DECLARED REMOVAL STRANDED NOTHING: no copper endpoint that was
+         attached to a removed part's land before is still on the board.  A
+         part may leave; its net's copper may not stay behind dangling.
     PL2  exactly the CLAIMED references moved, each by exactly the claimed
          (dx, dy) in nanometres AND by exactly the claimed ROTATION in degrees
          (D-678), and every other footprint's position, orientation and layer
@@ -335,7 +349,7 @@ def overlaps(fps):
     return out
 
 
-def judge(pre, post, claimed, released=()):
+def judge(pre, post, claimed, released=(), removed=()):
     """claimed: {ref: (dx_nm, dy_nm)}; released: ("REF.PIN", ...).
 
     Returns (checks, detail).
@@ -343,7 +357,9 @@ def judge(pre, post, claimed, released=()):
     fpre, bpre, epre, npre, _vpre = pre
     fpost, bpost, epost, npost, vpost = post
 
-    pl1 = sorted(fpre) == sorted(fpost)
+    removed = tuple(removed)
+    pl1 = (sorted(set(fpost)) == sorted(set(fpre) - set(removed))
+           and all(r in fpre for r in removed))
 
     wrong, unclaimed_moved = [], []
     for ref in sorted(set(fpre) & set(fpost)):
@@ -414,20 +430,33 @@ def judge(pre, post, claimed, released=()):
                                       at_mm=[x / 1e6, y / 1e6],
                                       dia_mm=dia / 1e6))
 
+    # PL10: a declared removal left no copper endpoint on its former lands.
+    left_behind = []
+    for ref in sorted(set(removed)):
+        for net, x, y, lay in epost:
+            if any(attached(box, net, x, y, lay) for box in bpre.get(ref, [])):
+                left_behind.append(dict(
+                    ref=ref, net=net, at_mm=[x / 1e6, y / 1e6],
+                    layers=sorted(lay) if isinstance(lay, (set, frozenset))
+                    else lay))
+
     checks = dict(
-        PL1_reference_set_unchanged=pl1,
+        PL1_reference_set_as_declared=pl1,
         PL2_only_claimed_parts_moved=pl2,
         PL3_land_patterns_travelled_whole=not pl3,
         PL4_no_new_courtyard_overlap=not new_overlap,
         PL5_nothing_stranded=not stranded,
         PL8_released_pads_reconnected=not orphan_pads,
         PL9_no_via_under_a_moved_land=not swallowed,
+        PL10_removals_stranded_nothing=not left_behind,
     )
     detail = dict(
         claimed={k: list(v) for k, v in sorted(claimed.items())},
         footprints_pre=len(fpre), footprints_post=len(fpost),
         references_added=sorted(set(fpost) - set(fpre)),
         references_removed=sorted(set(fpre) - set(fpost)),
+        removals_declared=sorted(set(removed)),
+        removal_endpoints_left_behind=left_behind,
         claimed_moves_wrong=wrong,
         unclaimed_footprints_moved=unclaimed_moved,
         land_patterns_changed=pl3,
@@ -477,6 +506,12 @@ def main():
                          "calling its endpoint stranded, and PL8 requires the "
                          "copper to be GONE from the board and the land to "
                          "have a NEW escape.  Repeatable")
+    ap.add_argument("--remove", action="append", default=[], metavar="REF",
+                    help="a reference this promotion claims to have REMOVED "
+                         "from the board.  PL1 then requires the reference set "
+                         "to differ by exactly these, and PL10 requires the "
+                         "removed part's copper to be gone with it.  "
+                         "Repeatable (D-712)")
     ap.add_argument("--decoy", default=None,
                     help="reference PL6 perturbs; default is the first "
                          "footprint that is not claimed")
@@ -501,15 +536,18 @@ def main():
     tmp = Path(tempfile.mkdtemp(prefix="aqroot-demo-placement-"))
     pre_path, post_path = stage(a.ref, tmp / "pre"), stage(None, tmp / "post")
     pre, post = read(pre_path), read(post_path)
-    checks, detail = judge(pre, post, claimed, tuple(a.release))
+    checks, detail = judge(pre, post, claimed, tuple(a.release),
+                           tuple(a.remove))
 
-    decoy = a.decoy or next(r for r in sorted(pre[0]) if r not in claimed)
+    decoy = a.decoy or next(r for r in sorted(pre[0])
+                        if r not in claimed and r not in a.remove)
     probe = tmp / "pl6" / BOARD.name
     probe.parent.mkdir(parents=True, exist_ok=True)
     probe.write_bytes(post_path.read_bytes())
     subprocess.run([sys.executable, "-c", PERTURB, str(probe), decoy],
                    check=True, capture_output=True)
-    pchecks, _ = judge(pre, read(probe), claimed, tuple(a.release))
+    pchecks, _ = judge(pre, read(probe), claimed, tuple(a.release),
+                       tuple(a.remove))
     checks["PL6_screen_is_not_vacuous"] = not pchecks["PL2_only_claimed_parts_moved"]
     detail["pl6_decoy"] = decoy
 

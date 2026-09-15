@@ -9296,7 +9296,7 @@
 	)
 	(hierarchical_label "TOUCH_INT_N"
 		(shape input)
-		(at 101.6 92.71 0)
+		(at 101.6 69.85 0)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -9305,9 +9305,29 @@
 		)
 		(uuid "fb080008-0808-4808-9808-000000000004")
 	)
+	(label "BQ25185_STAT1"
+		(at 101.6 95.25 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "d7100108-0801-4b08-9b08-000000000101")
+	)
+	(label "BQ25185_STAT2"
+		(at 101.6 92.71 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "d7100108-0801-4b08-9b08-000000000102")
+	)
 	(hierarchical_label "SX1262_DIO1"
 		(shape input)
-		(at 101.6 95.25 0)
+		(at 101.6 67.31 0)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -10104,16 +10124,6 @@
 		(uuid "fb080008-0808-4808-9808-000000000014")
 	)
 
-	(wire
-		(pts
-			(xy 101.6 67.31) (xy 113.03 67.31)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "fb080108-0801-4b08-9b08-000000000001")
-	)
 
 	(hierarchical_label "BQ25185_STAT1"
 		(shape input)
@@ -10388,16 +10398,6 @@
 		)
 	)
 
-	(wire
-		(pts
-			(xy 101.6 69.85) (xy 129.54 69.85)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "fb080108-0801-4b08-9b08-00000000000a")
-	)
 
 	(hierarchical_label "BQ25185_STAT2"
 		(shape input)

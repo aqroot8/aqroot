@@ -6178,26 +6178,6 @@
 	)
 	(wire
 		(pts
-			(xy 224.79 90.17) (xy 219.71 90.17)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "5188cc6d-34fb-421d-b4b5-b379807d3a54")
-	)
-	(wire
-		(pts
-			(xy 219.71 90.17) (xy 219.71 72.39)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "90b84a7f-ed0d-4c49-99da-1f74d211094f")
-	)
-	(wire
-		(pts
 			(xy 91.44 71.12) (xy 91.44 76.2)
 		)
 		(stroke
@@ -6318,7 +6298,7 @@
 	)
 	(wire
 		(pts
-			(xy 213.36 72.39) (xy 228.6 72.39)
+			(xy 223.52 72.39) (xy 228.6 72.39)
 		)
 		(stroke
 			(width 0)
@@ -7528,16 +7508,6 @@
 	)
 	(wire
 		(pts
-			(xy 204.47 76.2) (xy 205.74 76.2)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "dc620ffd-274d-433c-aa3c-23529169020f")
-	)
-	(wire
-		(pts
 			(xy 219.71 27.94) (xy 219.71 29.21)
 		)
 		(stroke
@@ -7695,16 +7665,6 @@
 			(type default)
 		)
 		(uuid "f06a4b99-07a5-4a2e-8adc-4a2aae0c11c0")
-	)
-	(wire
-		(pts
-			(xy 213.36 76.2) (xy 213.36 72.39)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "f1a80b6d-7671-4535-a461-7f64eb9ab9a5")
 	)
 	(wire
 		(pts
@@ -8537,85 +8497,6 @@
 	)
 	(symbol
 		(lib_id "Connector:TestPoint")
-		(at 224.79 90.17 0)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "eab8ef8a-0a74-4746-be9b-c9eefbe874fa")
-		(property "Reference" "TP14"
-			(at 227.33 85.5979 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Value" "TestPoint"
-			(at 227.33 88.1379 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Footprint" "TestPoint:TestPoint_Pad_D1.0mm"
-			(at 229.87 90.17 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 229.87 90.17 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "test point"
-			(at 224.79 90.17 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "b921b237-6231-4156-a3c1-83feadc54d4e")
-		)
-		(instances
-			(project "aqroot-Beta-v2"
-				(path "/8a0ad1ee-a49e-4cff-9a78-44823e373405/83b1880a-0a3b-496a-bce6-0dc4c72d8ece"
-					(reference "TP14")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "Connector:TestPoint")
 		(at 91.44 71.12 0)
 		(unit 1)
 		(body_style 1)
@@ -8842,129 +8723,6 @@
 			(project "aqroot-Beta-v2"
 				(path "/8a0ad1ee-a49e-4cff-9a78-44823e373405/83b1880a-0a3b-496a-bce6-0dc4c72d8ece"
 					(reference "#FLG0102")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "Device:R")
-		(at 209.55 76.2 90)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(uuid "016e0953-34f8-4f4b-9f30-3ee95616b0f3")
-		(property "Reference" "R42"
-			(at 209.55 72.136 90)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "0R"
-			(at 209.55 73.914 90)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
-			(at 209.55 77.978 90)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 209.55 76.2 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Manufacturer" "UNI-ROYAL(Uniroyal Elec)"
-			(at 209.55 76.2 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "MPN" "0603WAF0000T5E"
-			(at 209.55 76.2 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "LCSC" "C21189"
-			(at 209.55 76.2 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Note_Sourcing" "SOURCING D-614. EXACT_PRIOR from the beta-dm audit line '0R' (ACCEPTED); manufacturer derived from the UNI-ROYAL(Uniroyal Elec) part-number family and corroborated by the audit text; identical specification."
-			(at 209.55 76.2 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "Resistor"
-			(at 209.55 76.2 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "8de633de-137c-48b5-8e6a-0beadcbda455")
-		)
-		(pin "2"
-			(uuid "6694c842-1ec4-4aec-b0e1-83544ae5920b")
-		)
-		(instances
-			(project "aqroot-Beta-v2"
-				(path "/8a0ad1ee-a49e-4cff-9a78-44823e373405/83b1880a-0a3b-496a-bce6-0dc4c72d8ece"
-					(reference "R42")
 					(unit 1)
 				)
 			)
@@ -13169,7 +12927,7 @@
 	)
 	(symbol
 		(lib_id "power:GND")
-		(at 204.47 76.2 270)
+		(at 223.52 72.39 270)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -13179,7 +12937,7 @@
 		(dnp no)
 		(uuid "844a3e66-ae27-4ea0-b4e4-77198f6fb3b4")
 		(property "Reference" "#PWR0146"
-			(at 198.12 76.2 0)
+			(at 217.17 72.39 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -13190,7 +12948,7 @@
 			)
 		)
 		(property "Value" "GND"
-			(at 203.2 74.422 90)
+			(at 222.25 70.612 90)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -13201,7 +12959,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 204.47 76.2 0)
+			(at 223.52 72.39 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -13212,7 +12970,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 204.47 76.2 0)
+			(at 223.52 72.39 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -13223,7 +12981,7 @@
 			)
 		)
 		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
-			(at 204.47 76.2 0)
+			(at 223.52 72.39 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
