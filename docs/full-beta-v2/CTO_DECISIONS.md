@@ -28040,11 +28040,24 @@ and the geometry agrees — the land is 0.300 mm wide on a 0.500 mm pitch, so a
 0.200 mm track down its spine clears `U9.13` and `U9.15` by **0.250 mm** against
 the 0.200 mm the board's own *"Pad-escape necking - clearance, fine-pitch power
 packages"* rule already grants inside `U9`'s courtyard.  `--tap --tap-first
---tap-max-mm 4` refuses it too, and its message names the layer: *"NO OFF-CENTRE
-LAUNCH at 0.200 mm from any of 41 anchors x 24 directions x 17 lengths"* **on
-`F`** — while the land is `B.Cu` ONLY and the screen's opening is on `B`.
-**So the next instrument question is why the join and the tap ask about `F` for
-a `B`-only land, and that is worth one edge without moving any copper.**
+--tap-max-mm 4` refuses it too — three probes, and the THIRD one is on `B`:
+*"NO OFF-CENTRE LAUNCH at 0.200 mm from any of 41 anchors x 24 directions x
+17 lengths; blocked by U9.13 (x6302), U9.15 (x5888)"*.
+
+**SO THE DISAGREEMENT IS REAL AND IT IS ABOUT THE STUB, NOT THE LAYER.**  The
+screen's own record says the opening is **centre-anchored** (`offcentre_mm`
+0.0, `base_dir` true): a 0.400 mm stub from (34.750, 27.725) to
+(34.750, 27.325) that leaves the land by **0.025 mm** and is proved by
+`maze3d.verify_laid`, exact analytic clearance, no lattice.  The gate's
+off-centre source offers the same class of candidate but hands it
+`goal_ok=_lattice_free` — *"the launch has to be a cell the WHOLE-BOARD lattice
+already calls free, because that lattice is what the trunk wavefront walks"* —
+and `QBoard.escape`'s own fixed-length ray reaches only 0.150 mm.  **This is
+D-630's `LATTICE_EXACT` class: a launch that is EXACTLY legal and that the
+lattice router cannot step off.**  It is worth one edge and it is a ROUTER
+question, not a copper one; the honest alternatives are a pocket-opening
+transaction that widens the band past 0.025 mm of reach, or a hand-laid stub
+and barrel named to `--detour-spec`.
 
 ### 4. THE OTHER TWO ARE CORRIDORS, AND BOTH LANDS LAUNCH
 

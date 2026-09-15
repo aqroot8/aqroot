@@ -89,9 +89,14 @@
   is a package-pitch problem past the first half-millimetre -- **and `U9.14`'s
   barrels are not the wall EITHER: a windowed `--evict` re-laid `NFC_VDD_A` and
   the refusal was UNCHANGED, while `screen_offcentre_launch` says `U9.14`
-  OFF-CENTRE OPENS at 0.200 mm ON `B`, and the tap's own message says it asked
-  on `F` -- for a `B.Cu`-ONLY land.  THE LAUNCHERS DISAGREE, and resolving that
-  is worth one edge without moving any copper.**  ***AND THE PATTERN
+  OPENS at 0.200 mm on `B` with a CENTRE-ANCHORED 0.400 mm stub that leaves the
+  land by **0.025 mm**, proved by `verify_laid` with exact analytic clearance.
+  The gate's own off-centre source hands its candidates
+  `goal_ok=_lattice_free` -- the landing cell must be free in the WHOLE-BOARD
+  lattice the trunk walks -- and `QBoard.escape`'s fixed ray reaches only
+  0.150 mm.  **This is D-630's `LATTICE_EXACT` class: a launch that is EXACTLY
+  legal and that the lattice router cannot step off.  Worth one edge, and it is
+  a ROUTER question, not a copper one.**  ***AND THE PATTERN
   UNDER ALL OF IT:*** `R43` (the `EN` pull-down) is **47 mm** from `U12.12` and
   is why `Net-(SW9-A)` is board-spanning; `R127`/`R128` are 10 and 20 mm from
   `U11`.  Bringing the straps home is the same move that closed `C26.2`.
