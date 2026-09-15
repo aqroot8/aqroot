@@ -66,6 +66,29 @@
 > `verify_promotion` PASS and `protected_copper` showing exactly one protected
 > net moved.  `U14.7` is on the bus.  This board has **no open owner decision**.
 
+- **Demo D-717 ADDENDUM (THE BARREL ANSWER IS CLOSED TOO):**  **NO COPPER.**
+  D-717 named a `GND` barrel to the `In1`/`In4` planes as the cheapest of two
+  candidates for `U21.4`.  **It is measured and it is closed.**
+  `evidence/d717-via-sweep-u21-4.py` sweeps `58.0-60.1 x 38.0-40.8 mm` at
+  0.05 mm with exact analytic clearance to every non-`GND` track, via and
+  RECTANGULAR pad, at 0.200 mm and at 0.300 where the neighbour is a
+  `SWITCH_NODE` track: the best site is **(58.900, 38.000)** and it is SHORT at
+  every manufacturable size — **-0.1373 mm at 0.600, -0.0623 at 0.450 and
+  -0.0123 mm at 0.350**, the smallest barrel section 12's pad-escape relief
+  grants — all binding on `/09_COMMUNITY_HEADER/ACC_DETECT_N_HDR`'s `F.Cu`
+  track.  0.250 mm clears by +0.0377 and is below every via floor the board
+  carries.  **And the 0.350 site could not be used even if it cleared:** it is
+  1.24 mm from `U21.4`'s land and a 0.250 mm stub to it passes within
+  **0.101 mm** of `/ACC_5V_LX` against that class's 0.300 mm routed clearance.
+  **FOUR LAYERS CROSS `U21`'s FOOTPRINT AND EVERY ONE IS OCCUPIED** — `/XGPIO4`
+  on `In2`, `/ACC_5V_RAW` on `In3`, `/ACC_DETECT_N_HDR` on `F.Cu`, the switch
+  node on `B.Cu`.  **Both candidates are spent and the `U21` cell is a
+  PLACEMENT decision** — move `U21` or `L4`, or substitute `L4` for an inductor
+  whose pad gap is >= 1.550 mm (D-703 option 4) — **and it should be done
+  together with the rail**, because the cell's `SYS` input is `NO_PATH` at
+  0.500 mm with a 70 mm budget behind `J5`'s 24 through-hole contacts.  A cell
+  that must move anyway should move to where its supply is.  **One transaction,
+  not two, and it is the accessory 5 V rail's whole remaining cost.**
 - **Demo D-717 (THE `U21` ACCESSORY-BOOST CELL IS GAP ARITHMETIC AND THE NUMBER
   IS 0.160 mm; `/ACC_5V_LX` ROUTES AND `U21.4`'s GROUND IS THE PRICE):**  **NO
   COPPER PROMOTED.**  Authority UNCHANGED at `2a3a9888`; 10 -> 10.

@@ -28724,3 +28724,47 @@ blocker and it is an architecture question, not a routing one.**
 3. **`U12` north 0.300 mm with its two relays**, then `Net-(SW9-A)`'s escape.
 4. **`SYS` to the accessory cell** — the `J5.12`/`J5.13` crossing at 0.500 mm,
    or move the cell.  Architecture.
+
+## D-717 ADDENDUM — AND THE BARREL ANSWER IS CLOSED TOO: `U21.4` HAS NO USABLE `GND` VIA SITE AT ANY MANUFACTURABLE SIZE, AND THE ONE THAT CLEARS CANNOT BE REACHED
+
+D-717 section 4 named a barrel to the `In1`/`In4` `GND` planes as the cheapest
+of two candidates.  **It is measured and it is closed.**
+
+    python3 evidence/d717-via-sweep-u21-4.py CAND.kicad_pcb 0.600 | 0.450 | 0.350 | 0.250
+
+Exact analytic clearance — segment/point distance from a candidate centre to
+EVERY non-`GND` track, via and rectangular pad on the board, at 0.200 mm, and at
+0.300 mm where the neighbour is a `SWITCH_NODE` TRACK — swept over
+`58.0 - 60.1 x 38.0 - 40.8 mm` at 0.05 mm, on the board that carries the routed
+`/ACC_5V_LX`:
+
+    diameter   best site            margin      binds on
+    0.600      (58.900, 38.000)   -0.1373 mm   /09_COMMUNITY_HEADER/ACC_DETECT_N_HDR  F.Cu trk
+    0.450      (58.900, 38.000)   -0.0623 mm   the same track
+    0.350      (58.900, 38.000)   -0.0123 mm   the same track
+    0.250      (58.900, 38.000)   +0.0377 mm   the same track
+
+**0.350/0.200 is the smallest barrel this board's own section-12 pad-escape
+relief grants, and it misses by 12 micrometres.**  0.250 mm clears, and is below
+every via floor the board carries — and could not carry a boost converter's
+ground return in any case.
+
+**AND THE 0.350 SITE COULD NOT BE USED EVEN IF IT CLEARED.**  It sits 1.24 mm
+north-east of `U21.4`'s land, and a 0.250 mm stub between them passes within
+**0.101 mm** of the `/ACC_5V_LX` route against that class's 0.300 mm routed
+clearance.  The switch node owns the only corridor out of that land.
+
+**FOUR LAYERS CROSS `U21`'s FOOTPRINT AND EVERY ONE IS OCCUPIED** — `/XGPIO4`
+on `In2`, `/01_POWER_TREE/ACC_5V_RAW` on `In3`, `/ACC_DETECT_N_HDR` on `F.Cu`
+and the switch node on `B.Cu`.  **So both of D-717's candidates are spent and
+the `U21` cell is a PLACEMENT decision:** move `U21` or `L4` so the switch node
+and the ground pin stop sharing a 1.390 mm channel, or substitute `L4` for an
+inductor whose pad gap is >= 1.550 mm.  D-703 option 4 already covers the
+substitution; the move is ordinary CTO scope.
+
+**AND IT SHOULD BE DONE TOGETHER WITH THE RAIL.**  D-717 section 5 measured
+that the cell's `SYS` input is `NO_PATH` at 0.500 mm with a 70 mm budget because
+`J5`'s 24 through-hole contacts wall it off at `x = 65.900`.  A cell that must
+move anyway should move to where its supply is, not stay where its supply
+cannot reach.  **That is one transaction, not two, and it is the accessory 5 V
+rail's whole remaining cost.**

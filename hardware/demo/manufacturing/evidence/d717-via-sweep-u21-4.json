@@ -1,0 +1,33 @@
+{
+ "schema": 1,
+ "question": "is there a legal GND barrel site for U21.4 anywhere in 58.0-60.1 x 38.0-40.8 mm, at any barrel size",
+ "board": "w/d716/cellr4 -- D-714's cell without the spine, with /ACC_5V_LX routed at 0.600 mm",
+ "method": "exact analytic clearance: segment/point distance to every non-GND track, via and rectangular pad on the board; 0.200 mm clearance, 0.300 mm where the neighbour is a SWITCH_NODE TRACK",
+ "finding": "NONE USABLE.  The best site is (58.900, 38.000) and it is SHORT AT EVERY MANUFACTURABLE SIZE -- 0.1373 mm at 0.600, 0.0623 at 0.450 and 0.0123 mm at 0.350, the smallest barrel this board's own section-12 pad-escape relief grants.  A 0.250 mm barrel clears by +0.0377 mm but is below every via floor on this board and could not carry a converter's ground return in any case.  And even the 0.350 site cannot be REACHED: a 0.250 mm stub from U21.4's land to it clears /ACC_5V_LX by 0.101 mm against the 0.300 mm SWITCH_NODE routed clearance.",
+ "best_by_diameter": {
+  "0.600": [
+   "margin -0.1373 at (58.900,38.000)  binds on ('/09_COMMUNITY_HEADER/ACC_DETECT_N_HDR', 'trk', 0.3627)",
+   "margin -0.1557 at (58.900,38.050)  binds on ('/01_POWER_TREE/ACC_5V_LX', 'trk', 0.4443)",
+   "margin -0.1606 at (58.850,38.000)  binds on ('/XGPIO4', 'trk', 0.3394)",
+   "margin -0.1708 at (58.850,38.050)  binds on ('/XGPIO4', 'trk', 0.3292)"
+  ],
+  "0.450": [
+   "margin -0.0623 at (58.900,38.000)  binds on ('/09_COMMUNITY_HEADER/ACC_DETECT_N_HDR', 'trk', 0.3627)",
+   "margin -0.0807 at (58.900,38.050)  binds on ('/01_POWER_TREE/ACC_5V_LX', 'trk', 0.4443)",
+   "margin -0.0856 at (58.850,38.000)  binds on ('/XGPIO4', 'trk', 0.3394)",
+   "margin -0.0958 at (58.850,38.050)  binds on ('/XGPIO4', 'trk', 0.3292)"
+  ],
+  "0.350": [
+   "margin -0.0123 at (58.900,38.000)  binds on ('/09_COMMUNITY_HEADER/ACC_DETECT_N_HDR', 'trk', 0.3627)",
+   "margin -0.0307 at (58.900,38.050)  binds on ('/01_POWER_TREE/ACC_5V_LX', 'trk', 0.4443)",
+   "margin -0.0356 at (58.850,38.000)  binds on ('/XGPIO4', 'trk', 0.3394)",
+   "margin -0.0458 at (58.850,38.050)  binds on ('/XGPIO4', 'trk', 0.3292)"
+  ],
+  "0.250": [
+   "margin +0.0377 at (58.900,38.000)  binds on ('/09_COMMUNITY_HEADER/ACC_DETECT_N_HDR', 'trk', 0.3627)",
+   "margin +0.0193 at (58.900,38.050)  binds on ('/01_POWER_TREE/ACC_5V_LX', 'trk', 0.4443)",
+   "margin +0.0144 at (58.850,38.000)  binds on ('/XGPIO4', 'trk', 0.3394)",
+   "margin +0.0042 at (58.850,38.050)  binds on ('/XGPIO4', 'trk', 0.3292)"
+  ]
+ }
+}
