@@ -66,6 +66,50 @@
 > `verify_promotion` PASS and `protected_copper` showing exactly one protected
 > net moved.  `U14.7` is on the bus.  This board has **no open owner decision**.
 
+- **Demo D-711 (THE `U2` FAN-OUT IS A PIN ASSIGNMENT, NOT A CORRIDOR: FOUR
+  `PCAL9535A` CHANNELS SIT ON THE WRONG SIDE OF THE PACKAGE):**  **NO COPPER
+  PROMOTED.**  Authority **UNCHANGED** at `4414da31`; 15 -> 15.  D-710 called
+  `U2.9`/`U2.10`/`U2.11`'s shared corridor a fan-out problem.  It is, and the
+  cause is upstream of any router: `U2` is a TSSOP-24 whose pins 1-12 are its
+  WEST column and 13-24 its EAST, and **`/BQ25185_STAT1` (partners at x 67.3)
+  and `/BQ25185_STAT2` (x 59.4) were landed on the WEST column while
+  `/TOUCH_INT_N` (`J1.46` at x 22.4) and `/SX1262_DIO1` (`U8.13` at x 3.0) were
+  landed on the EAST.**  All four CROSS the package.  The repair is a
+  permutation -- **`P05 <-> P17` and `P06 <-> P16`** -- and it costs NOTHING
+  electrically: all four channels are INPUTS and all four targets were already
+  inputs, so `06h = E0h` and `07h = FFh` are UNCHANGED, every `PCAL9535A`
+  channel is interrupt-capable, no part moves, no footprint or BOM changes, and
+  `Firmware/` carries no `U2` channel map at all.  ***THE ECO IS AUTHORED AND
+  VERIFIED:*** `evidence/d711-eco-u2-channel-swap.py` replays it in one command;
+  the exported netlist reads `STAT1 = {R127.2, TP6.1, U11.9, U2.20}`,
+  `STAT2 = {R128.2, TP7.1, U11.3, U2.19}`, `DIO1 = {U2.9, U8.13}`,
+  `TOUCH_INT_N = {J1.46, U2.10}` with every other channel unchanged, and **ERC
+  is BYTE-IDENTICAL before and after** (978 violations, same counts in every
+  category).  It is REVERTED in the worktree because a schematic ECO whose PCB
+  half is not promotable would break parity.  ***WHAT IT BUYS, FIVE INDEPENDENT
+  RUNS:*** `/BQ25185_STAT1` **ROUTES in 25.981 mm / 4 barrels**,
+  `/BQ25185_STAT2` goes **2 -> 1** in 12.071 mm / 2 barrels, `/TOUCH_INT_N`
+  comes back SHORTER than it went (44.518 mm / 1 via), `failed_nets []`,
+  **16 -> 14** — against the authority, **15 -> 14**.  ***THE ONE CLAUSE THAT
+  REFUSES IT:*** `no_regression`, `/01_POWER_TREE/BQ25185_SYS` 5 -> 6.  It is
+  NOT a removal — `no_unlicensed_removal` passes, the `SYS` copper is
+  byte-identical, and `screen_pour_arm_path` reports `C24.1 -> U12.1`
+  **`NOT_ONE_ISLAND`**, so the link is the `B.Cu` FILL and what moves is the
+  REFILL retreating around new vias.  Four remedies refused
+  (`--repair-planes` plants a **0.025 mm-stub DANGLING via** at
+  `(66.375, 75.525)` in every run; requesting `SYS` is `NO_VIA_SITE`;
+  `--join-islands` reports `joined 0` because neither half is an ORPHAN; and two
+  reserve geometries made it the same or worse) — **and `STAT1` is not the
+  cause**: run `s9` drops it entirely and `SYS` still regresses with the same
+  split.  ***AND THE CUT IS BLAMED BY NAME:*** `screen_pour_cut_blame` gives
+  Q0 = NINE clusters, Q1 = SEVEN with all 73 foreign objects dropped, and a
+  **Q3 MINIMAL SET OF FOUR OBJECTS THAT MATCHES THE UPPER BOUND** — two
+  `Net-(U12-PS_SYNC)` `B.Cu` tracks and two 0.60/0.30 barrels,
+  `/BQ25185_STAT2` at `(63.200, 99.800)` and `GND` at `(64.100, 99.700)` —
+  **worth TWO `SYS` edges**, so it also takes `BQ25185_SYS` from FIVE open
+  edges to THREE.  ***NEXT IS ONE TRANSACTION AND ITS ARITHMETIC IS `15 -> 11`:***
+  replay the ECO, apply the PCB pad swap, evict `/TOUCH_INT_N` whole, spend the
+  four-object cut spec, and request `STAT1 + STAT2 + TOUCH_INT_N`.
 - **Demo D-710 (`/BQ25185_STAT1` ROUTES TO `U2.9` AND THREE ADJACENT `U2` PINS
   SHARE ONE CONDUCTOR'S WORTH OF CORRIDOR; AND `U21.4`'s MISSING GROUND WAS
   NEVER A FILL GAP OR A BARREL — IT WAS THE BOARD'S OWN `SYS` POUR):**  **NO

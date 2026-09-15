@@ -1,0 +1,13 @@
+{
+  "schema": 1,
+  "detours": [],
+  "reserve": [
+    {"x_mm": 62.300, "y_mm": 99.500, "r_mm": 1.0,
+     "exempt": ["/01_POWER_TREE/BQ25185_SYS"]},
+    {"x_mm": 63.200, "y_mm": 99.700, "r_mm": 1.0,
+     "exempt": ["/01_POWER_TREE/BQ25185_SYS"]},
+    {"x_mm": 64.100, "y_mm": 99.900, "r_mm": 1.0,
+     "exempt": ["/01_POWER_TREE/BQ25185_SYS"]}
+  ],
+  "note": "D-710: screen_pour_arm_path reports C24.1 -> U12.1 NOT_ONE_ISLAND, so the two are joined by the B.Cu BQ25185_SYS FILL running east from the chain end at (61.850, 99.325) to U12.1 at (65.100, 100.000).  /BQ25185_STAT1's route to R127.2 drops a through via at (63.525, 101.000) into that fill and the refill then reads SYS 5 -> 6 with NOTHING removed.  These three discs reserve that fill corridor for its own net."
+}

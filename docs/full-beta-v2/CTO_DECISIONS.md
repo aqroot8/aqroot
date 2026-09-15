@@ -27731,3 +27731,119 @@ reports each one.
 3. `/01_POWER_TREE/BQ25185_SYS` remains the largest single open net at **five**
    edges, behind the `BAT_PROTECTED_P` hand taper D-708 named; a
    **tapered-trunk primitive** is still the one lever that unlocks `U11`.
+
+## D-711 — THE `U2` FAN-OUT IS A PIN ASSIGNMENT, NOT A CORRIDOR: FOUR `PCAL9535A` CHANNELS SIT ON THE WRONG SIDE OF THE PACKAGE
+
+**NO COPPER PROMOTED.**  Authority **UNCHANGED** at `4414da31`; 15 → 15.
+`hardware/beta-v2` UNTOUCHED.
+
+D-710 measured that `U2.9`, `U2.10` and `U2.11` share one conductor's worth of
+corridor and called it a fan-out problem.  It is, and the reason is upstream of
+any router: **four of `U2`'s sixteen GPIO channels are landed on the wrong side
+of the package.**
+
+### 1. THE FINDING
+
+`U2` is a TSSOP-24 whose pins 1–12 are its WEST column and 13–24 its EAST.
+Resolving every `U2` GPIO net's far-end centroid:
+
+    P05 pin 9   /BQ25185_STAT1   partners at x 67.3   landed WEST
+    P06 pin 10  /BQ25185_STAT2   partners at x 59.4   landed WEST
+    P16 pin 19  /TOUCH_INT_N     partner  at x 22.4   landed EAST
+    P17 pin 20  /SX1262_DIO1     partner  at x  3.0   landed EAST
+
+All four **cross the package**, and that crossing is the congestion.  The
+repair is a permutation: **P05 ↔ P17 and P06 ↔ P16.**
+
+**IT COSTS NOTHING ELECTRICALLY.**  All four channels are INPUTS and all four
+targets were already inputs, so `06h = E0h` and `07h = FFh` are UNCHANGED;
+every `PCAL9535A` channel is interrupt-capable; no part moves, no footprint or
+BOM changes, and no net gains or loses a member.  Only the bit position
+firmware reads moves — and `Firmware/` carries no `U2` channel map at all.
+
+### 2. THE ECO IS AUTHORED AND VERIFIED
+
+`evidence/d711-eco-u2-channel-swap.py` replays it in one command: delete the
+two wires joining `P05`/`P06` to `R127`'s and `R128`'s pull-up chains, move the
+`SX1262_DIO1` and `TOUCH_INT_N` hierarchical labels onto `P05`'s and `P06`'s
+stubs, and add local `BQ25185_STAT1` / `BQ25185_STAT2` labels on `P17`'s and
+`P16`'s — which join `R127`'s and `R128`'s chains BY NAME, so every net keeps
+exactly ONE hierarchical label and the sheet's ports are unchanged.
+
+    netlist   /BQ25185_STAT1 = {R127.2, TP6.1, U11.9, U2.20}
+              /BQ25185_STAT2 = {R128.2, TP7.1, U11.3, U2.19}
+              /SX1262_DIO1   = {U2.9, U8.13}
+              /TOUCH_INT_N   = {J1.46, U2.10}
+              every other U2 channel unchanged, 231 nets
+    ERC       BYTE-IDENTICAL before and after -- 978 violations, same counts
+              in every category, including the five PRE-EXISTING label_dangling
+
+It is **REVERTED in the worktree**, because a schematic ECO whose PCB half is
+not promotable would break schematic/PCB parity.  The script replays it.
+
+### 3. WHAT IT BUYS, MEASURED FIVE TIMES
+
+One swap is not enough (`s1`: `U11.9 → U2.20` still `NO_PATH`) — but the blame
+on that board shows the corridor going from ONE single opener to **TWO**, and
+one of them is `/TOUCH_INT_N`, the net the SECOND swap moves west anyway.  With
+**both** swaps and `/TOUCH_INT_N` evicted whole and re-laid:
+
+    /BQ25185_STAT1  ROUTES  25.981 mm, 4 barrels
+    /BQ25185_STAT2  2 -> 1  12.071 mm, 2 barrels
+    /TOUCH_INT_N    comes back SHORTER than it went, 44.518 mm / 1 via
+    failed_nets []          16 -> 14   (against the authority, 15 -> 14)
+
+Five independent gate runs, identical figures.
+
+### 4. THE ONE CLAUSE THAT REFUSES IT
+
+`no_regression`: `/01_POWER_TREE/BQ25185_SYS` **5 → 6**.  The pre-island
+`{C24.1, C28.1, C33.1, C64.1, SW9.2, U12.1}` splits into
+`{C24.1, C33.1, C64.1}` and `{C28.1, SW9.2, U12.1}`.
+
+**IT IS NOT A REMOVAL.**  `no_unlicensed_removal` PASSES and the `SYS` copper
+near the cut is byte-identical before and after; `screen_pour_arm_path` reports
+`C24.1 → U12.1` **`NOT_ONE_ISLAND`**, so the two are joined by the `B.Cu` FILL
+and what moves is the REFILL retreating around new vias.
+
+Four remedies measured and refused: `--repair-planes` (plants a via at
+`(66.375, 75.525)` with a **0.025 mm stub** — a DANGLING via — in every run and
+does not close the split); requesting `BQ25185_SYS` in the same transaction
+(`NO_VIA_SITE`, lays nothing); `--join-islands` (`joined 0` — both halves carry
+barrels so neither is an ORPHAN and the lever never sees them); and two reserve
+geometries (the first left `STAT1`'s route BYTE-IDENTICAL and broke
+`/TOUCH_INT_N`; the second moved `STAT1` to 32.603 mm / 2 vias and made `SYS`
+regress TWICE with `pour_partition` REFUSED).
+
+**AND `STAT1` IS NOT THE CAUSE:** run `s9` drops it entirely and keeps only
+`/BQ25185_STAT2` + `/TOUCH_INT_N`, and `SYS` still regresses 5 → 6 with the
+SAME split and the SAME dangling via.  The fill there is already on a knife
+edge.
+
+### 5. AND THE CUT IS NOW BLAMED BY NAME
+
+`screen_pour_cut_blame.py /01_POWER_TREE/BQ25185_SYS 59 95 68 105` on the
+pin-swap candidate:
+
+    Q0  baseline            NINE clusters
+    Q1  upper bound         SEVEN, with ALL 73 foreign objects dropped
+    Q3  MINIMAL SET         FOUR objects -- and it MATCHES the upper bound
+
+        Net-(U12-PS_SYNC)  B.Cu  (62.900,104.050) -> (64.250,104.050)  0.200 mm
+        Net-(U12-PS_SYNC)  B.Cu  (62.325,104.575) -> (62.900,104.050)  0.200 mm
+        /BQ25185_STAT2     barrel 0.60/0.30 at (63.200, 99.800)
+        GND                barrel 0.60/0.30 at (64.100, 99.700)
+
+**Worth TWO `SYS` edges** — so the transaction that unblocks the pin swap also
+takes `/01_POWER_TREE/BQ25185_SYS` from FIVE open edges to THREE.  The spec is
+on disk at `evidence/d711-sys-cut-detours.json`.
+
+### 6. NEXT — ONE TRANSACTION, AND ITS ARITHMETIC IS `15 → 11`
+
+Replay the ECO, apply the matching PCB pad swap, evict `/TOUCH_INT_N` whole,
+spend the four-object `SYS` cut spec, and request
+`/BQ25185_STAT1 + /BQ25185_STAT2 + /TOUCH_INT_N`:
+**`STAT1` −1, `STAT2` −1, `SYS` −2 ⇒ 15 → 11.**  Two mechanical details first:
+the blame emits `start_mm`/`end_mm` where `--detour-spec` wants `a_mm`/`b_mm`,
+and the `/BQ25185_STAT2` barrel at `(63.200, 99.800)` is that net's own copper,
+so it belongs in its re-lay rather than in a bare removal.

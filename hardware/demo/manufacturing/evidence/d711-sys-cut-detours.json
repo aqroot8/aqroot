@@ -1,0 +1,56 @@
+{
+ "schema": 1,
+ "detours": [
+  {
+   "count": 1,
+   "end_mm": [
+    64.25,
+    104.05
+   ],
+   "layer": "B.Cu",
+   "net": "Net-(U12-PS_SYNC)",
+   "start_mm": [
+    62.9,
+    104.05
+   ],
+   "width_mm": 0.2
+  },
+  {
+   "count": 1,
+   "end_mm": [
+    62.9,
+    104.05
+   ],
+   "layer": "B.Cu",
+   "net": "Net-(U12-PS_SYNC)",
+   "start_mm": [
+    62.325,
+    104.575
+   ],
+   "width_mm": 0.2
+  },
+  {
+   "barrel": {
+    "at_mm": [
+     63.2,
+     99.8
+    ],
+    "dia_mm": 0.6,
+    "drill_mm": 0.3
+   },
+   "net": "/BQ25185_STAT2"
+  },
+  {
+   "barrel": {
+    "at_mm": [
+     64.1,
+     99.7
+    ],
+    "dia_mm": 0.6,
+    "drill_mm": 0.3
+   },
+   "net": "GND"
+  }
+ ],
+ "note": "D-710: screen_pour_cut_blame's own Q3 minimal set for /01_POWER_TREE/BQ25185_SYS over the window 59,95 - 68,105 on the pin-swap candidate.  FOUR objects -- two Net-(U12-PS_SYNC) B.Cu tracks and two barrels -- and removing them takes the pour from NINE clusters to SEVEN, which MATCHES Q1's upper bound with all 73 foreign objects in the window dropped.  Two SYS edges."
+}

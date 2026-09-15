@@ -1,0 +1,56 @@
+{
+  "schema": 1,
+  "decision": "D-711",
+  "headline": "THE U2 FAN-OUT IS A PIN ASSIGNMENT, NOT A CORRIDOR: FOUR PCAL9535A CHANNELS SIT ON THE WRONG SIDE OF THE PACKAGE, AND EXCHANGING TWO PAIRS CLOSES /BQ25185_STAT1 AND HALVES /BQ25185_STAT2 IN EVERY RUN.  IT IS HELD BY A KNIFE-EDGE BQ25185_SYS FILL WHOSE CUT IS NOW BLAMED ON FOUR PRE-EXISTING OBJECTS.",
+  "authority_unchanged": "4414da3161517861c91711093a0aeb103ee78e41eeb8845d717cfa68607b24c8",
+  "copper_promoted": false,
+  "retained_open_edges": "15 -> 15",
+
+  "1_the_finding": {
+    "what": "U2 is a TSSOP-24 PCAL9535A: pins 1-12 are its WEST column, 13-24 its EAST.  /BQ25185_STAT1 and /BQ25185_STAT2 arrive from U11/TP6/TP7 in the EAST (partner centroids x 67.3 and 59.4) and were landed on P05/P06, the WEST column; /SX1262_DIO1 (U8.13 at x 3.000) and /TOUCH_INT_N (J1.46 at x 22.410) arrive from the WEST and were landed on P17/P16, the EAST column.  ALL FOUR CROSS THE PACKAGE, and that crossing is why D-710 measured U2.9/U2.10/U2.11 sharing one conductor's worth of corridor.",
+    "the_permutation": "P05 <-> P17 and P06 <-> P16",
+    "why_it_is_free": "all four channels are INPUTS and all four targets were already inputs, so the direction registers 06h = E0h and 07h = FFh are UNCHANGED; every PCAL9535A channel is interrupt-capable; no part moves, no footprint changes, no BOM changes and no net gains or loses a member.  Only the bit position firmware reads moves, and the Demo firmware in Firmware/ carries no U2 channel map at all."
+  },
+
+  "2_the_eco_is_authored_and_verified": {
+    "script": "evidence/d711-eco-u2-channel-swap.py -- re-applies it to 08_buttons_expanders.kicad_sch in one command: delete the two wires joining P05/P06 to R127's and R128's pull-up chains, move the SX1262_DIO1 and TOUCH_INT_N hierarchical labels onto P05's and P06's stubs, and add local BQ25185_STAT1 / BQ25185_STAT2 labels on P17's and P16's, which join R127's and R128's chains BY NAME so each net keeps exactly ONE hierarchical label",
+    "netlist": "kicad-cli export confirms /BQ25185_STAT1 = {R127.2, TP6.1, U11.9, U2.20}, /BQ25185_STAT2 = {R128.2, TP7.1, U11.3, U2.19}, /SX1262_DIO1 = {U2.9, U8.13}, /TOUCH_INT_N = {J1.46, U2.10}, every other U2 channel unchanged, 231 nets (evidence/d711-eco-netlist.net)",
+    "erc": "BYTE-IDENTICAL before and after -- 978 violations, same counts in every category, including the five PRE-EXISTING label_dangling errors (evidence/d711-erc-before-eco.json vs d711-erc-after-eco.json)",
+    "status": "REVERTED in the worktree, because a schematic ECO whose PCB half is not promotable would break schematic/PCB parity.  The script replays it."
+  },
+
+  "3_what_it_buys_measured": {
+    "s1": "PCB pad swap 9<->20 only: STAT1 U11.9 -> U2.20 still NO_PATH -- ONE swap is not enough",
+    "blame_after_one_swap": "with STAT1 on U2.20 the corridor has TWO single openers where it had one: /TOUCH_INT_N (34.311 mm / 2 vias) and /ACC_5V_SW_EN (37.998 mm / 5 vias, PROTECTED so not that one).  /TOUCH_INT_N is the net the SECOND swap moves to the west column anyway.",
+    "s2_s3_s4_s5_s6": "BOTH swaps, /TOUCH_INT_N evicted whole and re-laid: /BQ25185_STAT1 ROUTES U11.9/R127.2 -> U2.20 in 25.981 mm / 4 vias, /BQ25185_STAT2 goes 2 -> 1 in 12.071 mm / 2 vias, /TOUCH_INT_N comes back SHORTER than it went (44.518 mm / 1 via against about 48 mm), failed_nets [], and the board reads 16 -> 14.  FIVE independent runs, identical figures.",
+    "against_the_authority": "15 -> 14"
+  },
+
+  "4_the_one_clause_that_refuses_it": {
+    "clause": "no_regression -- /01_POWER_TREE/BQ25185_SYS 5 -> 6",
+    "where": "the pre-island {C24.1, C28.1, C33.1, C64.1, SW9.2, U12.1} splits into {C24.1, C33.1, C64.1} and {C28.1, SW9.2, U12.1}",
+    "why_it_is_not_a_removal": "no_unlicensed_removal PASSES and the SYS copper near the cut is BYTE-IDENTICAL before and after.  screen_pour_arm_path reports C24.1 -> U12.1 NOT_ONE_ISLAND, so the two are joined by the B.Cu FILL, and what moves is the REFILL retreating around new vias.",
+    "four_remedies_measured_and_refused": [
+      "--repair-planes: plants a via at (66.375, 75.525) with a 0.025 mm stub -- a DANGLING via -- in every run, and does not close the split",
+      "requesting /01_POWER_TREE/BQ25185_SYS in the same transaction: NO_VIA_SITE, lays nothing",
+      "--join-islands --join-island-max-mm 8 --join-island-via 650000:400000: joined 0, nets [] -- both halves carry barrels, so neither is an ORPHAN island and this lever never sees them",
+      "two reserve geometries: the first (three discs on the SYS chain at 61.85,99.325 / 61.40,103.50 / 61.75,103.725) left STAT1's route BYTE-IDENTICAL and broke /TOUCH_INT_N; the second (three discs along the fill corridor to U12.1) moved STAT1 to 32.603 mm / 2 vias and made SYS regress TWICE with pour_partition REFUSED"
+    ],
+    "and_STAT1_is_not_the_cause": "run s9 drops /BQ25185_STAT1 entirely and keeps only /BQ25185_STAT2 + /TOUCH_INT_N, and SYS STILL regresses 5 -> 6 with the SAME split and the SAME dangling via.  So the cut is not one route's fault; the fill there is already on a knife edge."
+  },
+
+  "5_and_the_cut_IS_now_blamed_by_name": {
+    "instrument": "screen_pour_cut_blame.py /01_POWER_TREE/BQ25185_SYS 59 95 68 105 on the pin-swap candidate",
+    "q0": "NINE clusters",
+    "q1_upper_bound": "SEVEN clusters with ALL 73 foreign objects in the window dropped",
+    "q3_minimal_set": "FOUR objects, and it MATCHES the upper bound -- two `Net-(U12-PS_SYNC)` B.Cu tracks ((62.900,104.050)->(64.250,104.050) and (62.325,104.575)->(62.900,104.050), both 0.200 mm) and two 0.60/0.30 barrels, `/BQ25185_STAT2` at (63.200, 99.800) and `GND` at (64.100, 99.700)",
+    "worth": "TWO SYS edges -- so the transaction that unblocks the pin swap also takes /01_POWER_TREE/BQ25185_SYS from FIVE open edges to THREE",
+    "spec_on_disk": "evidence/d711-sys-cut-detours.json (the blame's own Q3 spec; note the router's --detour-spec wants a_mm/b_mm where the blame emits start_mm/end_mm)"
+  },
+
+  "6_next": [
+    "ONE transaction: replay evidence/d711-eco-u2-channel-swap.py, apply the matching PCB pad swap, evict /TOUCH_INT_N whole, spend the FOUR-object SYS cut spec, and request /BQ25185_STAT1 + /BQ25185_STAT2 + /TOUCH_INT_N.  Arithmetic: STAT1 -1, STAT2 -1, SYS -2 => 15 -> 11.",
+    "It needs the barrel entries re-keyed to the router's a_mm/b_mm form and the /BQ25185_STAT2 barrel at (63.200, 99.800) handled as part of that net's own re-lay rather than a bare removal.",
+    "Everything else D-710 named still stands: U21's SOT-563 middle land for ACC_5V_LX (a PACKAGE question under D-703 option 4), and the BAT_PROTECTED_P hand taper for U11."
+  ]
+}

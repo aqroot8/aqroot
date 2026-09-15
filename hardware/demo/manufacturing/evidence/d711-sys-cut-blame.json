@@ -1,0 +1,658 @@
+{
+ "authoritative_unchanged": true,
+ "banned": [],
+ "board": "w/d710/s9/aqroot-Beta-v2.kicad_pcb",
+ "board_sha256": "51a6b5ef95662b97b2cd680fd28f1a3787b281261e967fb061185ce472d73a1f",
+ "board_sha256_at_write": "51a6b5ef95662b97b2cd680fd28f1a3787b281261e967fb061185ce472d73a1f",
+ "candidates": 65,
+ "decision": "D-657",
+ "edges_closed": 2,
+ "free": [],
+ "goal": "pour the whole net back into one piece",
+ "layers": [
+  "B.Cu"
+ ],
+ "method": "pcbnew.ZONE_FILLER (KiCad's own filler) over the whole board per probe, partition read off GetConnectivity; one LoadBoard per child process; authoritative board never written",
+ "net": "/01_POWER_TREE/BQ25185_SYS",
+ "q0_baseline": {
+  "clusters": 9,
+  "partition": [
+   [
+    "C24.1",
+    "C33.1",
+    "C64.1",
+    "L2.1"
+   ],
+   [
+    "C26.2"
+   ],
+   [
+    "C27.1"
+   ],
+   [
+    "C28.1",
+    "SW9.2",
+    "U12.1"
+   ],
+   [
+    "L4.1",
+    "U21.3"
+   ],
+   [
+    "R68.1"
+   ],
+   [
+    "U11.1"
+   ],
+   [
+    "U12.10",
+    "U12.11"
+   ],
+   [
+    "U13.3"
+   ]
+  ]
+ },
+ "q1_upper_bound": {
+  "clusters": 7,
+  "partition": [
+   [
+    "C24.1",
+    "C26.2",
+    "C28.1",
+    "C33.1",
+    "C64.1",
+    "L2.1",
+    "SW9.2",
+    "U12.1"
+   ],
+   [
+    "C27.1"
+   ],
+   [
+    "L4.1",
+    "U21.3"
+   ],
+   [
+    "R68.1"
+   ],
+   [
+    "U11.1"
+   ],
+   [
+    "U12.10",
+    "U12.11"
+   ],
+   [
+    "U13.3"
+   ]
+  ],
+  "removed_objects": 73,
+  "removed_units": 65
+ },
+ "q2_per_net": {
+  "+3V3": {
+   "alone_sufficient": false,
+   "clusters": 9,
+   "partition": [
+    [
+     "C24.1",
+     "C33.1",
+     "C64.1",
+     "L2.1"
+    ],
+    [
+     "C26.2"
+    ],
+    [
+     "C27.1"
+    ],
+    [
+     "C28.1",
+     "SW9.2",
+     "U12.1"
+    ],
+    [
+     "L4.1",
+     "U21.3"
+    ],
+    [
+     "R68.1"
+    ],
+    [
+     "U11.1"
+    ],
+    [
+     "U12.10",
+     "U12.11"
+    ],
+    [
+     "U13.3"
+    ]
+   ],
+   "units": 13
+  },
+  "/01_POWER_TREE/V3V3_FB": {
+   "alone_sufficient": false,
+   "clusters": 9,
+   "partition": [
+    [
+     "C24.1",
+     "C33.1",
+     "C64.1",
+     "L2.1"
+    ],
+    [
+     "C26.2"
+    ],
+    [
+     "C27.1"
+    ],
+    [
+     "C28.1",
+     "SW9.2",
+     "U12.1"
+    ],
+    [
+     "L4.1",
+     "U21.3"
+    ],
+    [
+     "R68.1"
+    ],
+    [
+     "U11.1"
+    ],
+    [
+     "U12.10",
+     "U12.11"
+    ],
+    [
+     "U13.3"
+    ]
+   ],
+   "units": 2
+  },
+  "/08_BUTTONS_EXPANDERS/BTN_UP_N": {
+   "alone_sufficient": false,
+   "clusters": 9,
+   "partition": [
+    [
+     "C24.1",
+     "C33.1",
+     "C64.1",
+     "L2.1"
+    ],
+    [
+     "C26.2"
+    ],
+    [
+     "C27.1"
+    ],
+    [
+     "C28.1",
+     "SW9.2",
+     "U12.1"
+    ],
+    [
+     "L4.1",
+     "U21.3"
+    ],
+    [
+     "R68.1"
+    ],
+    [
+     "U11.1"
+    ],
+    [
+     "U12.10",
+     "U12.11"
+    ],
+    [
+     "U13.3"
+    ]
+   ],
+   "units": 3
+  },
+  "/ACC_5V_SW_EN": {
+   "alone_sufficient": false,
+   "clusters": 9,
+   "partition": [
+    [
+     "C24.1",
+     "C33.1",
+     "C64.1",
+     "L2.1"
+    ],
+    [
+     "C26.2"
+    ],
+    [
+     "C27.1"
+    ],
+    [
+     "C28.1",
+     "SW9.2",
+     "U12.1"
+    ],
+    [
+     "L4.1",
+     "U21.3"
+    ],
+    [
+     "R68.1"
+    ],
+    [
+     "U11.1"
+    ],
+    [
+     "U12.10",
+     "U12.11"
+    ],
+    [
+     "U13.3"
+    ]
+   ],
+   "units": 2
+  },
+  "/BQ25185_STAT2": {
+   "alone_sufficient": false,
+   "clusters": 8,
+   "partition": [
+    [
+     "C24.1",
+     "C28.1",
+     "C33.1",
+     "C64.1",
+     "L2.1",
+     "SW9.2",
+     "U12.1"
+    ],
+    [
+     "C26.2"
+    ],
+    [
+     "C27.1"
+    ],
+    [
+     "L4.1",
+     "U21.3"
+    ],
+    [
+     "R68.1"
+    ],
+    [
+     "U11.1"
+    ],
+    [
+     "U12.10",
+     "U12.11"
+    ],
+    [
+     "U13.3"
+    ]
+   ],
+   "units": 6
+  },
+  "GND": {
+   "alone_sufficient": false,
+   "clusters": 8,
+   "partition": [
+    [
+     "C24.1",
+     "C28.1",
+     "C33.1",
+     "C64.1",
+     "L2.1",
+     "SW9.2",
+     "U12.1"
+    ],
+    [
+     "C26.2"
+    ],
+    [
+     "C27.1"
+    ],
+    [
+     "L4.1",
+     "U21.3"
+    ],
+    [
+     "R68.1"
+    ],
+    [
+     "U11.1"
+    ],
+    [
+     "U12.10",
+     "U12.11"
+    ],
+    [
+     "U13.3"
+    ]
+   ],
+   "units": 26
+  },
+  "Net-(L1-Pad2)": {
+   "alone_sufficient": false,
+   "clusters": 9,
+   "partition": [
+    [
+     "C24.1",
+     "C33.1",
+     "C64.1",
+     "L2.1"
+    ],
+    [
+     "C26.2"
+    ],
+    [
+     "C27.1"
+    ],
+    [
+     "C28.1",
+     "SW9.2",
+     "U12.1"
+    ],
+    [
+     "L4.1",
+     "U21.3"
+    ],
+    [
+     "R68.1"
+    ],
+    [
+     "U11.1"
+    ],
+    [
+     "U12.10",
+     "U12.11"
+    ],
+    [
+     "U13.3"
+    ]
+   ],
+   "units": 3
+  },
+  "Net-(SW9-A)": {
+   "alone_sufficient": false,
+   "clusters": 9,
+   "partition": [
+    [
+     "C24.1",
+     "C33.1",
+     "C64.1",
+     "L2.1"
+    ],
+    [
+     "C26.2"
+    ],
+    [
+     "C27.1"
+    ],
+    [
+     "C28.1",
+     "SW9.2",
+     "U12.1"
+    ],
+    [
+     "L4.1",
+     "U21.3"
+    ],
+    [
+     "R68.1"
+    ],
+    [
+     "U11.1"
+    ],
+    [
+     "U12.10",
+     "U12.11"
+    ],
+    [
+     "U13.3"
+    ]
+   ],
+   "units": 3
+  },
+  "Net-(U12-PG)": {
+   "alone_sufficient": false,
+   "clusters": 9,
+   "partition": [
+    [
+     "C24.1",
+     "C33.1",
+     "C64.1",
+     "L2.1"
+    ],
+    [
+     "C26.2"
+    ],
+    [
+     "C27.1"
+    ],
+    [
+     "C28.1",
+     "SW9.2",
+     "U12.1"
+    ],
+    [
+     "L4.1",
+     "U21.3"
+    ],
+    [
+     "R68.1"
+    ],
+    [
+     "U11.1"
+    ],
+    [
+     "U12.10",
+     "U12.11"
+    ],
+    [
+     "U13.3"
+    ]
+   ],
+   "units": 2
+  },
+  "Net-(U12-PS_SYNC)": {
+   "alone_sufficient": false,
+   "clusters": 8,
+   "partition": [
+    [
+     "C24.1",
+     "C26.2",
+     "C33.1",
+     "C64.1",
+     "L2.1"
+    ],
+    [
+     "C27.1"
+    ],
+    [
+     "C28.1",
+     "SW9.2",
+     "U12.1"
+    ],
+    [
+     "L4.1",
+     "U21.3"
+    ],
+    [
+     "R68.1"
+    ],
+    [
+     "U11.1"
+    ],
+    [
+     "U12.10",
+     "U12.11"
+    ],
+    [
+     "U13.3"
+    ]
+   ],
+   "units": 5
+  }
+ },
+ "q3_minimal_set": {
+  "clusters": 7,
+  "detour_spec": [
+   {
+    "count": 1,
+    "end_mm": [
+     64.25,
+     104.05
+    ],
+    "layer": "B.Cu",
+    "net": "Net-(U12-PS_SYNC)",
+    "start_mm": [
+     62.9,
+     104.05
+    ],
+    "width_mm": 0.2
+   },
+   {
+    "count": 1,
+    "end_mm": [
+     62.9,
+     104.05
+    ],
+    "layer": "B.Cu",
+    "net": "Net-(U12-PS_SYNC)",
+    "start_mm": [
+     62.325,
+     104.575
+    ],
+    "width_mm": 0.2
+   },
+   {
+    "barrel": {
+     "at_mm": [
+      63.2,
+      99.8
+     ],
+     "dia_mm": 0.6,
+     "drill_mm": 0.3
+    },
+    "net": "/BQ25185_STAT2"
+   },
+   {
+    "barrel": {
+     "at_mm": [
+      64.1,
+      99.7
+     ],
+     "dia_mm": 0.6,
+     "drill_mm": 0.3
+    },
+    "net": "GND"
+   }
+  ],
+  "freed": null,
+  "matches_upper_bound": true,
+  "objects": 4,
+  "objects_detail": [
+   {
+    "count": 1,
+    "end_mm": [
+     64.25,
+     104.05
+    ],
+    "kind": "trk",
+    "layer": "B.Cu",
+    "length_mm": 1.35,
+    "net": "Net-(U12-PS_SYNC)",
+    "start_mm": [
+     62.9,
+     104.05
+    ],
+    "width_mm": 0.2
+   },
+   {
+    "count": 1,
+    "end_mm": [
+     62.9,
+     104.05
+    ],
+    "kind": "trk",
+    "layer": "B.Cu",
+    "length_mm": 0.779,
+    "net": "Net-(U12-PS_SYNC)",
+    "start_mm": [
+     62.325,
+     104.575
+    ],
+    "width_mm": 0.2
+   },
+   {
+    "at_mm": [
+     63.2,
+     99.8
+    ],
+    "count": 1,
+    "dia_mm": 0.6,
+    "drill_mm": 0.3,
+    "kind": "via",
+    "length_mm": 0.0,
+    "net": "/BQ25185_STAT2"
+   },
+   {
+    "at_mm": [
+     64.1,
+     99.7
+    ],
+    "count": 1,
+    "dia_mm": 0.6,
+    "drill_mm": 0.3,
+    "kind": "via",
+    "length_mm": 0.0,
+    "net": "GND"
+   }
+  ],
+  "partition": [
+   [
+    "C24.1",
+    "C26.2",
+    "C28.1",
+    "C33.1",
+    "C64.1",
+    "L2.1",
+    "SW9.2",
+    "U12.1"
+   ],
+   [
+    "C27.1"
+   ],
+   [
+    "L4.1",
+    "U21.3"
+   ],
+   [
+    "R68.1"
+   ],
+   [
+    "U11.1"
+   ],
+   [
+    "U12.10",
+    "U12.11"
+   ],
+   [
+    "U13.3"
+   ]
+  ],
+  "units": 4
+ },
+ "question": "which FOREIGN objects cut this pour into pieces, and what is the SMALLEST set whose absence lets KiCad's own filler pour it back into one",
+ "schema": 1,
+ "seconds": 573.9,
+ "verdict": "MINIMAL_SET_FOUND",
+ "window_mm": [
+  59.0,
+  95.0,
+  68.0,
+  105.0
+ ]
+}

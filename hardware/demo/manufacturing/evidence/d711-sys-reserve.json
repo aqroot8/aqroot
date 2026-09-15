@@ -1,0 +1,13 @@
+{
+  "schema": 1,
+  "detours": [],
+  "reserve": [
+    {"x_mm": 61.850, "y_mm": 99.325, "r_mm": 1.1,
+     "exempt": ["/01_POWER_TREE/BQ25185_SYS"]},
+    {"x_mm": 61.400, "y_mm": 103.500, "r_mm": 1.1,
+     "exempt": ["/01_POWER_TREE/BQ25185_SYS"]},
+    {"x_mm": 61.750, "y_mm": 103.725, "r_mm": 0.9,
+     "exempt": ["/01_POWER_TREE/BQ25185_SYS"]}
+  ],
+  "note": "D-710: /BQ25185_STAT1's route to R127.2 squeezes the ONE chain that carries /01_POWER_TREE/BQ25185_SYS from C24.1 to U12.1 -- B.Cu 61.85,99.325 -> via -> F.Cu 61.675,99.5 -> 62.25,100.25 -> 61.2,102.55 -> 61.425,103.4 -> 61.75,103.725 -> via -> B.Cu.  Nothing is REMOVED (no_unlicensed_removal passes); the refill retreats and the ledger reads SYS 5 -> 6.  These three discs reserve that chain for its own net."
+}
