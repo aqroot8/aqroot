@@ -66,6 +66,40 @@
 > `verify_promotion` PASS and `protected_copper` showing exactly one protected
 > net moved.  `U14.7` is on the bus.  This board has **no open owner decision**.
 
+- **Demo D-712 (THE `U2` CHANNEL SWAP IS SPENT AND `/BQ25185_STAT1` IS CLOSED;
+  AND THE `TPS63020`'s `PS/SYNC` STRAP COMES HOME FROM FIFTY MILLIMETRES
+  AWAY):**  **COPPER PROMOTED.**  Authority `4414da31` -> `2e8ef9ed`;
+  **15 -> 13 retained open edges** over 9 nets.  D-711's `P05 <-> P17` /
+  `P06 <-> P16` `PCAL9535A` swap is applied to schematic AND PCB -- the
+  netlist diff is EXACTLY the four nets D-711 named plus `GND`, ERC gains
+  nothing -- and **`/BQ25185_STAT1` ROUTES to `U2.20`, 1 -> 0**, with
+  `/TOUCH_INT_N` evicted whole and back CLOSED.  ***AND THE `C26.2` ISLAND WAS
+  A STRAP RESISTOR PARKED FIFTY MILLIMETRES FROM ITS PIN:*** `R42` is a `0R`
+  tying `U12.13` (`PS/SYNC` on the `TPS63020`) to `GND` and it sat at
+  `(16.665, 120.335)`, hauling **33 `B.Cu` objects** across the board, with its
+  last two segments in the `C24`/`C26` gate D-649 measured as SINGLE-FILE.  A
+  `0R` to `GND` and a tie to `GND` are the same circuit, so `U12.13` is tied to
+  `U12.15` -- `U12`'s own thermal ground pad, **0.610 mm** away -- and `R42` and
+  `TP14` come off the board: **`/01_POWER_TREE/BQ25185_SYS` 5 -> 4**.
+  ***AND THE `U12` POCKET IS NOW UNDERSTOOD EXACTLY:*** `U12` sits **0.505 mm**
+  north of the `WROOM ANTENNA KEEPOUT` (no track, via, pad OR ZONE FILL for
+  `x >= 64.500, y >= 104.000`), so its whole south pad row has a **0.900 mm**
+  band, and that band must hold `U12.12`'s `EN` escape, `U12.13`'s `PS/SYNC`
+  escape AND the `SYS` pour's only path to `U12.10`/`U12.11`, the converter's
+  `VIN` pins.  It holds TWO.  **Measured:** with the band empty `SYS` reaches
+  `VIN` and goes to **3** edges; with a barrel in it at 0.600/0.500/0.450 mm at
+  any of five `x` positions, it does not.  **`U12` must move north, and that is
+  the next transaction.**  ***ALSO:*** `TP7` moves out of the `SYS` pour neck
+  (every `STAT2` re-route through it severed the rail), and
+  `evidence/d712-guard-spine.json` reserves the rail's own 0.2-1.2 mm `B.Cu`
+  thread during the run -- without it the same request cut `SYS` TWICE.
+  **PROOF:** gate `promotion_candidate` TRUE / 15 clauses / `refused []`;
+  `verify_promotion` PASS / 16 checks; real refilled DRC is the inherited
+  baseline ALONE with unconnected 31 -> 29; parity 247 -> 246 warnings, ZERO
+  errors; `protected_copper` NO protected net changed; the standing 14-contract
+  suite ALL PASS; fab package regenerated (BOM `0R` 6 -> 5, test points
+  35 -> 34).  `checks/placement_contract.py` gains `--remove REF` and `PL10`,
+  and `PL10` caught a real leftover (`R42.1`'s orphaned 0.965 mm `GND` stub).
 - **Demo D-711 (THE `U2` FAN-OUT IS A PIN ASSIGNMENT, NOT A CORRIDOR: FOUR
   `PCAL9535A` CHANNELS SIT ON THE WRONG SIDE OF THE PACKAGE):**  **NO COPPER
   PROMOTED.**  Authority **UNCHANGED** at `4414da31`; 15 -> 15.  D-710 called

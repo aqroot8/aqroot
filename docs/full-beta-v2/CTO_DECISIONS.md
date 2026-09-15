@@ -27847,3 +27847,102 @@ spend the four-object `SYS` cut spec, and request
 the blame emits `start_mm`/`end_mm` where `--detour-spec` wants `a_mm`/`b_mm`,
 and the `/BQ25185_STAT2` barrel at `(63.200, 99.800)` is that net's own copper,
 so it belongs in its re-lay rather than in a bare removal.
+
+## D-712 — THE `U2` CHANNEL SWAP IS SPENT AND `/BQ25185_STAT1` IS CLOSED; AND THE `TPS63020`'s `PS/SYNC` STRAP COMES HOME FROM FIFTY MILLIMETRES AWAY
+
+**COPPER PROMOTED.**  Authority `4414da31` -> `2e8ef9ed`; **15 -> 13 retained
+open edges** over 9 nets.  `hardware/beta-v2` UNTOUCHED.
+
+### 1. D-711's `U2` CHANNEL SWAP, SPENT
+
+`P05 <-> P17` and `P06 <-> P16` on the `PCAL9535A`, schematic and PCB together
+(`evidence/d711-eco-u2-channel-swap.py`, `evidence/d712-apply-pcb-pad-swap.py`).
+The exported-netlist diff is EXACTLY the four nets D-711 named plus `GND`;
+ERC drops 4 (the two removed parts' library links) and gains NOTHING.
+
+    /BQ25185_STAT1  1 -> 0 open edges   ROUTED to U2.20
+    /TOUCH_INT_N    evicted whole, comes back CLOSED
+    /BQ25185_STAT2  2 -> 2              (its U11.3 leg still needs BAT_PROTECTED_P)
+
+### 2. THE `PS/SYNC` STRAP, AND WHY IT WAS THE `C26.2` ISLAND
+
+`R42` is a `0R` tying `U12.13` (`PS/SYNC` on the `TPS63020`) to `GND`, and it
+sat at **(16.665, 120.335) — FIFTY MILLIMETRES from the pin it straps** — with
+`TP14` at (40.500, 124.500) on the way, hauling **33 `B.Cu` objects** across the
+board.  Its last two segments lay in the `C24`/`C26` gate, which **D-649**
+measured as a SINGLE-FILE corridor that the `/01_POWER_TREE/BQ25185_SYS` pour
+and that net cannot share — which is why `C26.2`, a 10 uF bulk capacitor on the
+system rail, was an ISLAND on the authority.
+
+A `0R` to `GND` and a tie to `GND` are the same circuit — `TPS63020`
+`PS/SYNC` low selects power-save mode either way, and the resistor existed only
+as a depopulate-to-choose option AQROOT Demo does not exercise.  So `U12.13` is
+tied to `U12.15`, `U12`'s own thermal ground pad, **0.610 mm away**, and `R42`
+and `TP14` come off the board.  `evidence/d712-eco-ps-sync-strap.py` replays the
+schematic half; `evidence/d712-build-b3.py` replays the PCB half.
+
+    /01_POWER_TREE/BQ25185_SYS  5 -> 4 open edges
+
+### 3. WHY THE `U12` POCKET IS THE SHAPE IT IS
+
+`U12` sits **0.505 mm** north of the `WROOM ANTENNA KEEPOUT`, which forbids
+tracks, vias, pads AND ZONE FILL on every layer for `x >= 64.500,
+y >= 104.000`.  Its south pad row's bottom edge is `y 103.100`, so **the whole
+row has a 0.900 mm band to escape into** — and that band has to hold `U12.12`'s
+`EN` escape, `U12.13`'s `PS/SYNC` escape AND the `SYS` pour's only path to
+`U12.10` and `U12.11`, the converter's two `VIN` pins.  It cannot hold all
+three, which is why `VIN` is still an island.  Measured, not guessed: with the
+band EMPTY the pour reaches `VIN` and `SYS` goes to **3** open edges; with any
+barrel in it at 0.600, 0.500 or 0.450 mm, at `x` 65.55, 65.60, 65.85, 66.10 or
+66.30, it does NOT.  `Net-(SW9-A)`'s own escape is the third conductor and it
+cannot be given up — nothing turns the 3.3 V rail on without it.  **`U12` has to
+move north, and that is the next transaction, not this one.**
+
+### 4. `TP7` OUT OF THE POWER POUR
+
+`/BQ25185_STAT2`'s test point sat at (62.750, 98.500), INSIDE the `B.Cu`
+`BQ25185_SYS` pour, in the ~0.4 mm neck that is the rail's only north-south
+conductor.  Every `STAT2` re-route through it severed the pour.  `TP7` moves to
+(57.500, 97.500), clear of the pour; `placement_contract` `PL1-PL10` PASS.
+
+### 5. THE `SYS` SPINE IS RESERVED DURING THE RUN
+
+The rail's `B.Cu` delivery path between `y 93` and `y 105` is a **0.2 .. 1.2 mm
+pour thread**.  `evidence/d712-guard-spine.json` samples the refilled pour's own
+fill at 0.200 mm and reserves it at 0.300 mm on `B.Cu`, exempting `SYS`.
+WITHOUT it the same request cut the rail TWICE (`/BQ25185_STAT1` at
+(63.700, 95.200) and `/BQ25185_STAT2` at (62.750, 98.500)) and `SYS` went
+3 -> 5.  WITH it, `nets_regressed []`.
+
+### 6. THE PROOF
+
+    gate                promotion_candidate TRUE, all 15 clauses, refused []
+                        failed_nets [], nets_regressed [], attributable_drc []
+    verify_promotion    PASS, all 16 checks
+    real refilled DRC   the inherited baseline ALONE -- 1 solder_mask_bridge,
+                        199 lib_footprint_issues -- unconnected 31 -> 29
+    schematic parity    247 -> 246 warnings, ZERO errors
+    protected_copper    NO protected net changed
+    pour_partition      PP1-PP4 ok
+    standing suite      14 contracts, ALL PASS against 2e8ef9ed
+    fab package         regenerated; BOM 0R 6 -> 5, test points 35 -> 34
+
+### 7. TOOLING
+
+`checks/placement_contract.py` gains **`--remove REF`** (a DECLARED removal) and
+**`PL10`** (a declared removal stranded nothing).  `PL1` could not express
+"this part left on purpose", so the only guard against a part leaving BY
+ACCIDENT had to refuse both; an UNDECLARED removal still FAILS, and `PL10`
+caught a real one — `R42.1`'s orphaned 0.965 mm `GND` stub, now removed.
+
+### 8. WHAT IS LEFT — 13 EDGES OVER 9 NETS
+
+    /01_POWER_TREE/BQ25185_SYS   4   C27.1 / {L4.1,U21.3} / U11.1 / {U12.10,U12.11}
+    /BQ25185_STAT2               2   U11.3 (BAT_PROTECTED_P) and the U2.19 leg
+    +3V3                         1   U5.2
+    /01_POWER_TREE/ACC_5V_LX     1   U21.5 -- a PACKAGE question (D-710)
+    /04_SPI_B_RADIOS_NFC/NFC_VDD_RF 1   U9.14
+    /ACC_PWR_EN                  1   U3.20
+    /I2C_SCL_INT                 1   U16.3
+    /NFC_SUPPLY                  1   U9.10
+    /SX1262_DIO1                 1   U2.9 <-> U8.13, now on the RIGHT column
