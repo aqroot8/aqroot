@@ -1,3 +1,89 @@
+## D-722 ADDENDUM — PM-3 IS SPECIFIED: WHAT HAS TO MOVE, WHERE TO, AND WHY IT CLOSES BOTH `U9` EDGES
+
+    authority  d566ef54  UNCHANGED.  NO COPPER.
+    measured on the authority; every courtyard and land box below is read off
+    the board, not estimated.
+
+### 1. THE BAND IS 1.28 mm AND FIVE CONDUCTORS HAVE TO FAN OUT IN IT
+
+`U9`'s courtyard is `(31.05,27.05)-(36.95,32.95)` and its SUPPLY/RF row -- pins
+9..16, `VDD_RF, VDD_TX, VDD_AM, GND_DR, RFO1, VDD_DR, RFO2, GND_DR` -- faces
+NORTH at y = 27.725 on 0.500 mm pitch.  The first obstacle north of it is the
+decoupling farm:
+
+    C45 VDD_D   courtyard (29.50,23.82)-(32.90,25.77)
+    C47 VDD_A   courtyard (33.30,23.82)-(36.70,25.77)
+    C51 VDD_AM  courtyard (29.50,21.52)-(32.90,23.48)
+    C53 AGDC    courtyard (33.52,21.77)-(36.48,23.23)
+
+**So the fan-out band is y 25.77 .. 27.05 -- 1.280 mm** -- and FIVE conductors
+(`VDD_RF`, `VDD_TX`, `VDD_AM`, `RFO1`, `VDD_DR`, `RFO2`) have to turn in it.
+That is the whole of PM-3 in one number.
+
+### 2. THE FOUR MOVES THAT OPEN IT
+
+    C51  (31.20,22.50) -> (31.20,20.60)    -1.90 mm   frees C45's destination
+    C53  (35.00,22.50) -> (35.00,20.60)    -1.90 mm   frees C47's destination
+    C45  (31.20,24.80) -> (31.20,22.70)    -2.10 mm
+    C47  (35.00,24.80) -> (35.00,22.70)    -2.10 mm
+
+New courtyards `C45' (29.50,21.72)-(32.90,23.67)` and
+`C47' (33.30,21.72)-(36.70,23.67)` clear `C51'` and `C53'` by 0.14 mm and
+0.39 mm, and **the band becomes y 23.67 .. 27.05 = 3.380 mm**, 2.6x what it is.
+Nothing else lies between y 19.6 and 23.7 at x 29.5..36.7.
+
+### 3. AND THEN BOTH ESCAPES EXIST, IN THE RIGHT ORDER
+
+**`U9.10` `VDD_TX`.**  The two conductors that must go WEST are pin 9
+(`VDD_RF`, x = 32.250) and pin 10 (`VDD_TX`, x = 32.750), and ORDER IS THE
+WHOLE TRICK: the WESTERN one turns first.
+
+    VDD_RF  north from 27.350 to y = 26.60, then WEST
+    VDD_TX  north from 27.350 to y = 25.50, then WEST to NFC_SUPPLY's own
+            0.400 mm trunk at x ~ 31.23, which runs y 23.75..27.40 already
+
+`VDD_TX`'s westward run at y = 25.50 crosses x = 32.250 NORTH of where
+`VDD_RF` left it, so the two never meet.  Both of the barrels that box the
+channel today go with the move: `GND`'s stitch at (32.200,26.000) is `C45.2`'s
+own ground tie and travels with `C45`, and `NFC_VDD_RF`'s barrel at
+(32.200,26.900) is not needed once `C49` is beside pin 9.  **`C45`'s land, the
+wall the channel dead-ends against below y = 25.7, is gone.**
+
+**`U9.14` `VDD_DR`.**  It cannot go west (pins 11,12,13 are in the way) and it
+cannot go east (pin 15).  It takes a BARREL, which it may: `NFC_VDD_RF` is
+netclass `Default`, so the `.kicad_dru`'s "NFC transmit arms carry no via" rule
+-- which binds `NFC_RF` -- does not reach it.  The barrel needs 0.650 mm from
+each arm's centre and the arms are 0.500 mm away, so **the arms splay**:
+
+    RFO1  north at x = 34.250 to y = 26.50, then angle WEST to x = 33.90
+    RFO2  north at x = 35.250 to y = 26.50, then angle EAST to x = 35.60
+    VDD_DR  north at x = 34.750 to a 0.50/0.25 barrel at (34.750,25.500)
+
+At y = 25.50 the arms are then 1.700 mm apart and the barrel has 0.850 mm to
+each.  **The splay is SYMMETRIC, which is what `NFC_RF` actually asks for** --
+the `.kicad_dru` says in its own words that the arm width rule "is about
+SYMMETRY, not heat" -- and it costs each arm the same length.  `RFO1` splays
+over `U9.12` and `RFO2` over `U9.16`, both `GND_DR` lands served by the pour
+with no escape track of their own, so the splay crosses nothing.
+
+### 4. AND THE SAME TRANSACTION FIXES THE DECOUPLING
+
+With the band open, `C49` (2.2 uF, `VDD_RF`) and `C55` (2.2 uF, the `VDD`/
+`VDD_TX` rail) come to their pins from 7.1 mm and 9.1 mm away.  That is not a
+bonus: ST's own guidance puts them within about 2 mm because that loop carries
+the 13.56 MHz transmit current, and D-719 and D-721 found the identical defect
+at the `TPS63020` and the `TPS61023`.
+
+### 5. WHAT IT COSTS AND WHAT JUDGES IT
+
+Four part moves, two more if `C49`/`C55` come along, and local re-lays of
+`NFC_VDD_D`, `NFC_VDD_A`, `NFC_VDD_AM`, `NFC_AGDC`, `GND`, `NFC_VDD_RF`,
+`NFC_SUPPLY`, `NFC_RFO1` and `NFC_RFO2`.  `checks/rf_symmetry_contract.py`
+judges the two arms and `placement_contract` the moves; `NFC_RF` stays on B.Cu
+and via-free throughout, which both rules require.  **It buys TWO of the nine
+remaining edges and it is the difference between an NFC front end that
+transmits and one that does not.**
+
 ## D-722 — BOTH OF THE ST25R3916's TRANSMITTER SUPPLY PINS ARE UNCONNECTED. `U9.10` IS `VDD_TX` AND `U9.14` IS `VDD_DR`, AND WITHOUT THEM THE NFC TRANSMITTER HAS NO SUPPLY AT ALL
 
     authority  d566ef54  UNCHANGED.
