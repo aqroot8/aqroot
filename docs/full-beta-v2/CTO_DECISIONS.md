@@ -1,3 +1,48 @@
+## D-724 ADDENDUM 3 — MOVING THE BARREL 0.65 mm WEST CLEARS THE BAR ON **BOTH** LEGS WITH **NO COMPONENT MOVES**. THE RESIDUAL IS A CROSSING PROBLEM, NOT A WIDTH ONE
+
+    authority  a405b06f  UNCHANGED
+
+Addendum 2 priced the feed through the barrel site NEAREST `L4.1`,
+(55.250,36.440), and got 0.918 mm on the F.Cu leg -- 2.24 A, 2 % over the bar,
+held there by `TP43`'s pad.  **Nearest is the wrong criterion.**  The same
+sweep's next site, **(54.600,35.900)**, is 0.65 mm further out and prices
+BETTER on BOTH legs:
+
+    barrel at (55.250,36.440)        barrel at (54.600,35.900)
+      F.Cu leg  0.918 mm  2.24 A       F.Cu leg  **1.032 mm  2.46 A**  (TP43.1)
+      B.Cu leg  1.470 mm  2.90 A       B.Cu leg  **1.561 mm  3.00 A**  (C66.2)
+
+So the 2.19 A feed has **12 % margin on the F.Cu leg and 37 % on the B.Cu leg,
+and NO component has to move** -- not `TP43`, not `C66`, not `R100`.  The three
+nets of addendum 2 still have to: `/ACC_5V_BOOST_EN` (dive to In2, 3.837 mm of
+room), `/01_POWER_TREE/ACC_5V_FB` and `/09_COMMUNITY_HEADER/EXT_SCL_BUF`.
+
+### THE RESIDUAL, STATED EXACTLY
+
+`ACC_5V_FB` and `EXT_SCL_BUF` are not *width* problems -- they are **crossing**
+problems.  Both run north-south through the patch and the new SYS B.Cu leg runs
+west-east through it, so each must cross, and a crossing needs a free layer at
+about x = 56.1 .. 56.8, y = 35 .. 37.  Every layer there is taken:
+
+    F.Cu   ACC_DETECT_N_HDR's horizontal (57.550,36.000) -> (56.400,36.000)
+    In2    ACC_3V3_SW (56.975,36.750) -> (54.300,22.175), x = 56.837 at y = 36.0
+    B.Cu   the new SYS leg itself
+    In1/In4  GND references; In3  +3V3 plane
+
+`ACC_5V_FB` cannot go around either end: it runs `R100.1 (57.675,33.000)` ->
+`U21.1 (57.087,40.400)`, both EAST of the leg's landing, and `L4.1`'s pad
+(57.225..58.205, 34.350..38.050) blocks 3.7 mm of the only gap.  Its remaining
+route is EAST of `L4.1`, down the `L4.1`<->`L4.2` channel -- which is where
+D-724's own package puts the GND fill and the `XGPIO4` / `EXT_SDA_BUF` In2 bows.
+
+**That is the whole remaining problem, and it is a three-dimensional packing
+problem in a 4 mm square, not a routing one.**  The local re-floorplan named in
+addendum 2 is still the answer; what addendum 3 removes is the belief that it
+has to buy WIDTH.  It has to buy a CROSSING -- one free layer through
+(56.1..56.8, 35..37) -- and the cheapest way to buy that is to move
+`ACC_DETECT_N_HDR`'s F.Cu horizontal off y = 36.000 or `ACC_3V3_SW`'s In2 run
+off x = 56.8, either of which is one ordinary signal.
+
 ## D-724 ADDENDUM 2 (CORRECTION) — THE RECIPE IS SMALLER AND SHARPER THAN ADDENDUM 1 SAID: **THREE** NETS, AND `ACC_5V_FB`'s ONE VIA IS THE PINCH ON **BOTH** LEGS
 
     authority  a405b06f  UNCHANGED

@@ -66,6 +66,24 @@
 > `verify_promotion` PASS and `protected_copper` showing exactly one protected
 > net moved.  `U14.7` is on the bus.  This board has **no open owner decision**.
 
+- **Demo D-724 ADDENDUM 3 (BETTER BARREL, AND THE RESIDUAL IS A CROSSING, NOT A
+  WIDTH):**  Authority `a405b06f` unchanged.  Addendum 2 priced the feed
+  through the barrel site NEAREST `L4.1`; **nearest is the wrong criterion**.
+  The next site out, **(54.600,35.900)**, prices BETTER on both legs --
+  **F.Cu 1.032 mm / 2.46 A** (was 0.918 / 2.24) and **B.Cu 1.561 mm / 3.00 A**
+  (was 1.470 / 2.90) -- so the 2.19 A feed has **12 % and 37 % margin with NO
+  component move at all**: not `TP43`, not `C66`, not `R100`.  The three nets
+  still have to move.  ***AND THE RESIDUAL IS NOW EXACT:*** `ACC_5V_FB` and
+  `EXT_SCL_BUF` run north-south while the new SYS B.Cu leg runs west-east, so
+  each must CROSS it, and a crossing needs a free layer at about
+  **(56.1..56.8, 35..37)** where every layer is taken -- F.Cu by
+  `ACC_DETECT_N_HDR`'s horizontal at y = 36.000, In2 by `ACC_3V3_SW` at
+  x = 56.837, B.Cu by the new leg, In1/In4 GND and In3 +3V3.  `ACC_5V_FB`
+  cannot go round either end (`R100.1` and `U21.1` are both east of the
+  landing and `L4.1`'s pad blocks 3.7 mm of the gap).  **The cheapest fix is to
+  buy the CROSSING, not width: move `ACC_DETECT_N_HDR`'s F.Cu horizontal off
+  y = 36.000, or `ACC_3V3_SW`'s In2 run off x = 56.8 -- either is one ordinary
+  signal.**
 - **Demo D-724 ADDENDUM 2 (CORRECTION):**  Authority `a405b06f` unchanged.
   Addendum 1 measured the F.Cu approach all the way to `L4.1` and named FOUR
   nets; **the trunk cannot reach `L4.1` on F.Cu at all** -- addendum 1's own
