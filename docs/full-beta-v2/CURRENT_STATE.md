@@ -95,8 +95,14 @@
   (32.200,26.900)** (and the rule that fires is the necking clearance, which
   proves the package-local licence is already live), and `U9.14` **0.2096 vs
   0.2500 against `RFO1`'s DOGLEG (34.250,26.800)->(34.825,26.225)**.
-  ***`U9.10` IS CLOSABLE WITH SMALL MOVES*** -- one barrel 0.100 mm west buys
-  its escape 0.250 mm where it has 0.150.  ***`U9.14` IS NOT:*** pushing the
+  ***AND `U9.10` IS NOT CLOSABLE BY MOVING ONE OBJECT EITHER:*** moving that
+  barrel clears the DRC error but not the route.  The free channel for a
+  0.200 mm conductor north of `U9.10` was mapped at 0.01 mm resolution and the
+  escape lane (x ~ 32.7) and `NFC_SUPPLY`'s own trunk lane (x ~ 31.2) **never
+  meet** -- at y = 26.5 `NFC_VDD_RF`'s barrel separates them, at y = 26.6
+  `GND`'s stitch barrel at (32.200,26.000) does, the two are 0.900 mm apart
+  where a 0.200 mm conductor needs 0.600 mm from each, and below y = 25.7 the
+  escape lane has closed entirely against `C45.2`'s land.  ***`U9.14` IS NOT:*** pushing the
   dogleg 1.000 mm south was BUILT and DRC'd and it lands on `C47`, the `VDD_A`
   decoupling capacitor -- four shorts, six clearance errors -- and it cannot
   stay either, because `RFO1` must leave pin 13 southward and reach `L5` in the
@@ -112,8 +118,14 @@
   10 nF **11.2 mm**, `C55` 2.2 uF **9.1 mm** from `U9.10` and `C19` 100 nF
   **14.0 mm** -- ST puts that decoupling within about 2 mm because the loop
   carries the 13.56 MHz transmit current.  Same defect, same fix, as D-719
-  found at the `TPS63020` and D-721 at the `TPS61023`.  **THIS IS NOW THE
-  HIGHEST-PRIORITY FUNCTIONAL BLOCKER ON THE BOARD.**
+  found at the `TPS63020` and D-721 at the `TPS61023` -- and here **EVERY ONE
+  of the ST25R3916's supply decoupling capacitors is 4 to 14 mm from its pin
+  (`C45` 3.9, `C47` 4.5, `C51` 6.0, `C49` 7.1, `C55` 9.1, `C50` 11.2, `C19`
+  14.0 mm), and the ones nearest the part are the objects standing in the two
+  escapes.**  **BOTH EDGES LAND ON ONE TRANSACTION -- PM-3, THE NFC FRONT-END
+  RE-FLOORPLAN THE `.kicad_dru` ITSELF CALLS A PLACEMENT PRECONDITION -- AND IT
+  BUYS TWO OF THE NINE REMAINING EDGES AND A TRANSMITTER THAT WORKS.  THIS IS
+  NOW THE HIGHEST-PRIORITY FUNCTIONAL BLOCKER ON THE BOARD.**
 - **Demo D-721 ADDENDUM (THE BOARD'S LAST INHERITED DRC VIOLATION IS RESOLVED;
   THE `SYS` POURS ARE RE-SHAPED TO WHAT THEY SERVE AT ZERO COST TO THE RAIL;
   `/BQ25185_STAT2`'s `U2.19` EDGE GETS THE FIRST CHEAP OPENER ON THIS BOARD;

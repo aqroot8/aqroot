@@ -108,11 +108,27 @@ publishes.
 **SO NEITHER IS A CORRIDOR PROBLEM AND NEITHER IS A RULE PROBLEM.**  Both are
 the LOCAL FAN-OUT of `U9`'s south row.
 
-  * **`U9.10` (`VDD_TX`) IS CLOSABLE WITH SMALL MOVES.**  Its blockers are
-    `NFC_VDD_RF`'s barrel at (32.200,26.900), `GND`'s stitch barrel at
-    (32.200,26.000) and `VDD_AM`'s escape diagonal -- all ordinary copper.
-    Moving the first barrel 0.100 mm west already buys the escape 0.250 mm of
-    clearance where it has 0.150 now.
+  * **`U9.10` (`VDD_TX`) IS NOT CLOSABLE BY MOVING ONE OBJECT EITHER -- THE
+    CHANNEL DEAD-ENDS.**  Moving `NFC_VDD_RF`'s barrel clears the ONE DRC error
+    the hand escape reports, and that is not the same thing as a route.  The
+    free channel for a 0.200 mm conductor north of `U9.10` was mapped at 0.01 mm
+    resolution against every pad, track and barrel on B.Cu:
+
+        y = 27.30   free x  31.00-31.43   32.70-32.80
+        y = 27.00   free x  31.00-31.60                 33.71-33.80
+        y = 26.50   free x  31.00-31.75   32.65-32.78   33.69-33.91
+        y = 26.20   free x  31.00-31.63                 33.68-34.20
+        y = 25.70   free x  31.00-31.40
+        y = 25.50   free x  31.05-31.34
+
+    The escape lane (x ~ 32.7) and `NFC_SUPPLY`'s own trunk lane (x ~ 31.2)
+    NEVER MEET: at y = 26.5 they are separated by `NFC_VDD_RF`'s barrel, at
+    y = 26.6 by `GND`'s stitch barrel at (32.200,26.000), and below y = 25.7
+    the escape lane has closed entirely against `C45.2`'s land.  The two
+    barrels are 0.900 mm apart centre to centre and a 0.200 mm conductor needs
+    0.600 mm from each, so **no y exists between them**, and moving either one
+    puts it where the other constraint bites.  Below them the wall is `C45` --
+    the `VDD_D` decoupling capacitor, itself 3.9 mm from the pin it decouples.
   * **`U9.14` (`VDD_DR`) IS NOT, AND THAT IS A PLACEMENT VERDICT.**  It needs
     the NFC front end re-floorplanned -- which the `.kicad_dru`'s own section 7
     already records as **PM-3, "NOT ENCODABLE, AND THEREFORE A PLACEMENT
@@ -137,12 +153,30 @@ matching network.  Whatever closes these two edges should bring `C49` and
 ### 5. NEXT
 
 This is now the HIGHEST-PRIORITY functional blocker on the board, ahead of the
-`U21` boost block, because it is a Kickstarter-visible feature that is dead
-rather than merely un-routed.  The transaction is a bounded re-floorplan of
-`U9`'s SOUTH FAN-OUT: move `C49` and `C55` beside the pins they decouple, push
-`RFO1`'s dogleg south (which `rf_symmetry` should welcome), move the one GND
-stitch barrel at (32.200,26.000), and lay both escapes at the 0.200 mm the
-board's own necking rule already grants inside `U9`'s courtyard.
+`U21` boost block, because it is a Kickstarter-visible feature that is DEAD
+rather than merely un-routed.
+
+**AND BOTH EDGES LAND ON THE SAME TRANSACTION: PM-3.**  Neither is a corridor
+and neither is a rule; both are the LOCAL FLOORPLAN of `U9`'s supply row, and
+the objects in the way are the FIVE DECOUPLING CAPACITORS THAT ARE THEMSELVES
+IN THE WRONG PLACE:
+
+    C45  2.2 uF  VDD_D      (31.20,24.80)   3.9 mm from U9.3
+    C47  2.2 uF  VDD_A      (35.00,24.80)   4.5 mm from U9.7
+    C51  2.2 uF  VDD_AM     (31.20,22.50)   6.0 mm from U9.11
+    C49  2.2 uF  VDD_RF     (38.80,21.10)   7.1 mm from U9.14, 7.5 from U9.9
+    C55  2.2 uF  VDD_TX/VDD (41.83,21.10)   9.1 mm from U9.10
+    C50  10 nF   VDD_RF     (39.30,38.90)  11.2 mm from U9.14
+    C19  100 nF  VDD_TX/VDD (42.12,38.90)  14.0 mm from U9.10
+
+**Every one of the ST25R3916's supply decoupling capacitors is 4 to 14 mm from
+the pin it decouples**, and the ones nearest the part are the ones standing in
+the two escapes.  The transaction is: bring `C45`, `C47`, `C49`, `C51` and
+`C55` to their pins, which is what the datasheet asks for anyway; relieve
+`RFO1`'s dogleg with the room that frees; and lay both escapes at the 0.200 mm
+the board's own necking rule already grants inside `U9`'s courtyard.  That is
+PM-3, and it buys TWO of the nine remaining edges AND a transmitter that
+works.
 
 ## D-721 ADDENDUM — THE INHERITED `solder_mask_bridge` IS RESOLVED, THE SYS RAIL'S POURS ARE RE-SHAPED TO WHAT THEY SERVE, `/BQ25185_STAT2`'s `U2.19` EDGE HAS ITS FIRST SINGLE-NET OPENERS, AND `/SX1262_DIO1`'s CORRIDOR IS CROSSED BY SEVENTY-NINE NETS
 
