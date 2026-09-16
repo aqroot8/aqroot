@@ -66,6 +66,51 @@
 > `verify_promotion` PASS and `protected_copper` showing exactly one protected
 > net moved.  `U14.7` is on the bus.  This board has **no open owner decision**.
 
+- **Demo D-728 (ALL FOUR REMAINING EDGES ARE MEASURED TO THE OBJECT AND ALL
+  FOUR ARE THE SAME SHAPE -- A FAN-OUT ROW THAT HOLDS N-1 OF N):**  **NO
+  COPPER.**  Authority `7431e6af` UNCHANGED; 5 -> 5.  D-727's instrument was put
+  to the other four edges and **every one of them OPENS** -- none is a package
+  wall, none is a launch wall -- **and every one of them closes by taking a lane
+  its neighbour cannot then get back.**  `/ACC_PWR_EN`: Q1 25.710 mm ZERO vias,
+  Q3 minimal set `{BQ25185_STAT1, I2C_SCL_INT, SX1262_RXEN}` 41.999 mm / 3
+  barrels; SPENT it CLOSES in **33.455 mm** and `I2C_SCL_INT` re-closes, but
+  `STAT1` is then NO_PATH at `U2.20` and `SX1262_RXEN` at `U3.19` -- **one in,
+  two out**.  ***AND THE PIN IS NOT THE VARIABLE:*** `U3` has FOUR unconnected
+  pins and **all four were probed on the board and all four are NO_PATH**.
+  ***AND NEITHER IS THE LAYER:*** `AQROOT_PLANE_SIGNAL` cannot reach `In1`/`In4`
+  because `route_maze_batch.ROUTABLE` excludes them before the licence is read
+  -- a POLICY, and the slot it would need is **23 mm long under 6-8 B.Cu
+  conductors**, which is not a trade to take for one DC enable.
+  `/BQ25185_STAT2`'s `U2.19`: Q1 10.4496 mm ZERO vias, single openers `BTN_B_N`
+  **15.8512 mm / 2 barrels** (cheapest, and never offered before),
+  `BTN_DOWN_N` 24.4822/4, `BQ25185_STAT1` 26.0998/4; SPENT, `U2.19` CLOSES in
+  13.646 mm and `BTN_B_N` is then NO_PATH at `U2.18`, the pin **0.650 mm away
+  on the same row**.  `NFC_VDD_RF`'s `U9.14`: Q1 **4.150 mm ZERO vias**, Q3
+  minimal `{NFC_RFO2, NFC_SUPPLY}` 6.783 mm / 2 barrels; SPENT it CLOSES in
+  **6.507 mm** and `NFC_RFO2` is then NO_LEGAL_ESCAPE at `U9.15`.  ***AND THE
+  GEOMETRY SAYS WHY:*** `U9.13` is `RFO1`, `U9.15` is `RFO2` and `U9.14` --
+  `VDD_DR` -- is BETWEEN THEM on 0.500 mm pitch; the two 0.300 mm arms leave
+  `VDD_DR` exactly **0.200 mm**, which the board's own necking rule grants, and
+  what closes it is that **`RFO1` turns EAST at (34.250,26.800) across that
+  lane** while `NFC_RF`'s class rules forbid In2, forbid F.Cu and **forbid a
+  via anywhere on the net**.  **That is PM-3, and it is the only one of the four
+  that is a FUNCTIONAL blocker: until it is fixed the ST25R3916's antenna
+  driver has no supply and NFC cannot transmit.**  ***AND THE SYS TRUNK D-725
+  ASKED FOR IS NOW MEASURED:*** widest corridor from (52.000,36.700) to the
+  pour body is **0.658 mm**, so the trunk is **0.600 mm = 1.645 A** against the
+  1.373 A owed, **50.5 mm, 15 vertices, and ZERO new barrels** because it lands
+  on the SYS via already at (68.350,80.850) -- but it costs **four ordinary
+  nets**, and with `/ACC_5V_SW_EN` declared untouchable there is **NO PATH AT
+  ALL** because its 22.4 mm F.Cu diagonal IS the corridor.  ***WHAT STOPPED
+  IT:*** **the maze has no pour in its obstacle model**, so every whole-net
+  re-lay across this board's middle carved `SYS POUR 1` or the `B GND PLANE`
+  and `pour_partition` refused each arm.  That one fact decided all four of
+  these transactions.  New read-only screens committed:
+  `evidence/d728-screen-corridor2.py` (per-object clearance field --
+  rectangular pads, pads at 0.200 mm because every routed-clearance rule
+  excludes them -- plus a least-crossings search that names the MINIMAL set of
+  nets standing in a trunk of a stated width) and
+  `evidence/d728-screen-conflicts.py`.
 - **Demo D-727 (THE `U16` WEST POCKET IS OPENED BY SPENDING ITS OWN MEASURED
   OPENER: `/I2C_SCL_INT` CLOSES AT `U16.3` AND THE BOARD'S CRITICAL-PATH NET IS
   WHOLE):**  **COPPER PROMOTED.**  Authority `6748a9bc` -> `7431e6af`;

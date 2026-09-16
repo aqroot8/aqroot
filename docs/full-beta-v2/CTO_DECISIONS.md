@@ -1,3 +1,155 @@
+## D-728 — ALL FOUR REMAINING EDGES ARE MEASURED TO THE OBJECT, AND ALL FOUR ARE THE SAME SHAPE: A FAN-OUT ROW THAT HOLDS **N-1 OF N**. EACH ONE'S OPENER CLOSES IT AND OPENS ANOTHER
+
+    authority  7431e6af  UNCHANGED.  **NO COPPER.**  5 -> 5.
+    `evidence/d728-*`
+
+D-727 spent `/I2C_SCL_INT`'s opener and closed it.  The same instrument was
+then put to the other four edges.  **Every one of them opens** -- none is a
+package wall, none is a launch wall -- **and every one of them closes by
+taking a lane that its neighbour cannot then get back.**  The measurements are
+recorded here so the next transaction does not re-derive them.
+
+### 1. `/ACC_PWR_EN` — `{U16.1,R17.1} <-> U3.20`, 20.242 mm
+
+    BASE            NO_PATH, 11 source escapes, 5 destination escapes
+    Q1 UPPER BOUND  25.710 mm, ZERO vias, dropping all 29 foreign nets
+    Q2 SINGLE NET   only `+3V3`, at 83.698 mm / 7 barrels -- over the 45 mm bound
+    Q3 MINIMAL SET  {`/BQ25185_STAT1`, `/I2C_SCL_INT`, `/SX1262_RXEN`}
+                    41.999 mm, 3 barrels
+
+**SPENT, WINDOWED, WITH In3 LICENSED FOR ALL FOUR:** `/ACC_PWR_EN` CLOSES in
+**33.455 mm with 4 barrels** and `/I2C_SCL_INT` re-closes in 79.967 mm -- and
+`/BQ25185_STAT1` is then `NO_PATH` at `U2.20` (13.872 mm) and `/SX1262_RXEN`
+`NO_PATH` at `U3.19` (58.048 mm).  **One in, two out.**
+
+**AND THE PIN IS NOT THE VARIABLE.**  `U3` has FOUR unconnected pins --
+`U3.10`, `U3.11` on the west column and `U3.13` (P10), `U3.14` (P11) at the
+SOUTH end of the east column, nearest the accessory cluster.  Every PCAL9535A
+GPIO is identical and `R17` is a 100 k pull-down, so the reset state is the
+same on any of them; the pin is a free variable and the independent review
+asks for exactly this move.  **All four were probed on the board and all four
+are `NO_PATH`** (`evidence/d728-probe-acc-pwr-en-u3-1[34].json`).
+
+**AND NEITHER IS THE LAYER.**  `AQROOT_PLANE_SIGNAL='I1:...;I3:...;I4:...'`
+was put to it: the run's own contract comes back `layers ['F','B','I2','I3']`
+-- `route_maze_batch.ROUTABLE` excludes `In1` and `In4` before the licence is
+read, so the two GND reference planes cannot be asked for at all.  That is a
+POLICY, not a defect, and lifting it is a stackup decision (D-703 option 3),
+not a routing one.  **Measured cost if it were lifted:** the slot
+`/ACC_PWR_EN` would need is about **23 mm long and 0.6 mm wide** through
+`In4`, the reference plane for every `B.Cu` trace above it, and 6-8 `B.Cu`
+conductors cross that band at every y between 62 and 73.  A 23 mm slot under
+eight traces is not a trade this board should take for one DC enable.
+
+### 2. `/BQ25185_STAT2` — `U2.19 <-> TP7.1`, and the OTHER edge is an owner decision
+
+    Q1 UPPER BOUND  10.4496 mm, ZERO vias
+    Q2 SINGLE NETS  BTN_B_N      15.8512 mm, 2 barrels   <- cheapest
+                    BTN_DOWN_N   24.4822 mm, 4 barrels   (D-721 named this one)
+                    BQ25185_STAT1 26.0998 mm, 4 barrels
+
+**SPENT:** with `BTN_B_N` out, `/BQ25185_STAT2` CLOSES `U2.19` in 13.646 mm
+with 2 barrels -- and `BTN_B_N` is then `NO_PATH` at `U2.18`, the pin 0.650 mm
+away on the same row.  With `BTN_DOWN_N` taken out as well all three close,
+but `BTN_DOWN_N` comes back at **178.61 mm with ELEVEN barrels** and the
+`B GND PLANE` splits four ways; `pour_partition` refuses it, correctly.
+
+`U11.3`, the net's other edge, remains sealed by D-269 (D-721 §3) and is an
+OWNER decision that has been raised and not taken.
+
+### 3. `/04_SPI_B_RADIOS_NFC/NFC_VDD_RF` — `U9.14` `VDD_DR`, and PM-3 IS CONFIRMED AT THE OBJECT LEVEL
+
+    Q1 UPPER BOUND  4.150 mm, ZERO vias
+    Q2 SINGLE NET   none of the twelve opens it alone
+    Q3 MINIMAL SET  {NFC_RFO2, NFC_SUPPLY}   6.783 mm, 2 barrels
+
+**SPENT, WINDOWED:** `NFC_VDD_RF` CLOSES `U9.14` in **6.507 mm with 2
+barrels** and `/NFC_SUPPLY` re-closes at 15.926 mm -- and `NFC_RFO2` is then
+**`NO_LEGAL_ESCAPE` at `U9.15`**, blocked by `U9.16`, `U9.14` and the thermal
+pad `U9.33`.
+
+***AND THE GEOMETRY SAYS WHY, EXACTLY.***  `U9`'s north row is eight
+0.300 x 0.750 mm lands on 0.500 mm pitch; `U9.13` is `RFO1`, `U9.15` is
+`RFO2`, and `U9.14` — `VDD_DR` — is BETWEEN THEM.  Their two 0.300 mm escapes
+leave 34.400 .. 35.100 mm of free width, so `VDD_DR` has exactly **0.200 mm**,
+which the `.kicad_dru`'s own pad-escape necking rule already grants inside
+`U9`'s courtyard.  What closes it is that `NFC_RFO1` turns EAST at
+(34.250,26.800) and crosses that lane, and `NFC_RF`'s class rules -- **B.Cu
+only, In2 forbidden, NO VIA AT ALL, 0.300 mm minimum** -- mean neither arm can
+step aside and `VDD_DR` cannot dive under.  The nearest legal barrel site for
+`VDD_DR` is 0.100 mm short of the 0.200 mm the necking rule needs, at every via
+size the board publishes.  **`U9.14` is therefore not a routing problem: it is
+PM-3, and PM-3 is `L5` and `L6` sitting on OPPOSITE SIDES of `U9` with 24.18 mm
+and 34.21 mm arms.  Until it is done the ST25R3916's antenna driver has no
+supply and NFC CANNOT TRANSMIT.**
+
+### 4. `/SX1262_DIO1` — untouched
+
+76.098 mm, `U2.9 <-> U8.13`, 79 nets across its corridor (D-721 §5).  Not
+re-measured here.
+
+### 5. THE SYS TRUNK D-725 ASKED FOR IS MEASURED AND IS A FOUR-NET TRANSACTION
+
+D-725 §9 named the next transaction: a real `BQ25185_SYS` trunk from
+`SYS POUR 1` to the accessory cell, because `U21` is fed through 59.5 mm of
+0.800 mm In2 at 0.5 oz = **0.613 A** against the **1.373 A** the boost draws at
+the `ACC_5V` class ILIM -- **2.2x under-rated**.  D-725 also recorded that
+first probes returned 0.0 mm and needed real start points.  They now exist.
+
+A new per-object clearance field (`evidence/d728-screen-corridor2.py`: tracks
+at their 0.250 mm routed clearance, pads at 0.200 mm because every "routed
+clearance" rule in the file excludes pads, rectangular pads as rectangles) plus
+a least-crossings search answers it:
+
+    widest corridor (52.000,36.700) -> the pour body   0.658 mm
+    trunk taken                                        0.600 mm = 1.645 A,
+                                                       20 % over the 1.373 A
+    length                                             50.5 mm, 15 vertices
+    barrels                                            NONE -- the trunk lands
+                                                       on the 0.800/0.400 SYS
+                                                       via already at
+                                                       (68.350,80.850)
+
+**AND IT COSTS FOUR ORDINARY NETS.**  With `/ACC_5V_SW_EN` declared
+untouchable there is **NO PATH AT ALL** -- its 22.4 mm F.Cu diagonal
+(53.750,52.500) -> (66.000,71.250) IS the corridor -- and the invocation
+authorises that net's reroute by name.  The cheapest admissible set that also
+leaves `/ACC_POWER_FAULT_N`, the whole `U16` pocket and `/ACC_5V_BOOST_EN`
+alone is
+
+    {/01_POWER_TREE/ISET, /ACC_5V_SW_EN, /ACC_DETECT_N, Net-(U11-TS_MR)}
+
+**WHAT STOPPED IT:** the four relays are not local.  Ripped whole, the maze
+rebuilt `/ACC_5V_SW_EN` at 77 mm and `/ACC_POWER_FAULT_N` at 90 mm and both
+hauls carved new `B.Cu` lanes through `SYS POUR 1` and the `B GND PLANE`;
+`pour_partition` refused every arm.  Ripped in the blame's own WINDOW instead,
+the local clusters survive but the maze cannot re-enter them.  **The maze has
+no pour in its obstacle model, so every whole-net re-lay across this board's
+middle is a lottery on plane integrity** -- that is the single fact that
+decided all four of these transactions, and it is worth more than any of them.
+
+### 6. WHAT THIS MEANS
+
+Four edges, four different fan-out rows -- `U2`'s east column, `U3`'s east
+column, `U9`'s north row, `U11`'s package -- and the same answer at each:
+**the row holds one conductor fewer than it is asked for.**  No lattice, no
+licence, no pin swap and no inner-plane slot changes that; they are all ways of
+asking the same row for the same lane.  What changes it is SUPPLY:
+
+  1. **PM-3, the NFC front-end re-floorplan** -- `U9.14` is the only one of the
+     four that is a FUNCTIONAL blocker (no NFC transmit) and the only one whose
+     fix is named and bounded.  **Highest leverage.**
+  2. **A fan-out re-floorplan of the `U2`/`U3` expander pair and the accessory
+     control cluster** -- `/ACC_PWR_EN`, `/SX1262_RXEN`, `/BQ25185_STAT1` and
+     `/BQ25185_STAT2` are all on the two east columns and all four of their
+     partners are 14 .. 58 mm away.  `Net-(U11-TS_MR)`'s resistor `R38` is
+     **60 mm from the pin it biases** and its 47 mm `B.Cu` run crosses the same
+     band; so do `R127`/`R128`.
+  3. **The D-269 exception or an approved NC for `U11.3`** -- raised by D-721,
+     still open, still the owner's.
+  4. **A pour-aware obstacle model for the maze**, or the discipline of never
+     re-laying a net across a plane without `pour_partition` in the loop.
+
 ## D-727 — THE `U16` WEST POCKET IS OPENED BY SPENDING ITS OWN MEASURED OPENER: `/I2C_SCL_INT` CLOSES AT `U16.3`, THE BOARD'S CRITICAL-PATH NET IS WHOLE, 6 -> 5 EDGES
 
     authority  6748a9bc -> 7431e6af  **COPPER PROMOTED**
