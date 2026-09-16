@@ -1,0 +1,52 @@
+{
+ "nets": [
+  "Net-(SW9-A)"
+ ],
+ "removed": [
+  {
+   "net": "Net-(SW9-A)",
+   "object": "B.Cu (71.375,100.975)-(71.050,95.100)",
+   "why": "end (71.375,100.975) unsupported"
+  },
+  {
+   "net": "Net-(SW9-A)",
+   "object": "B.Cu (71.050,95.100)-(69.900,94.050)",
+   "why": "end (71.050,95.100) unsupported"
+  },
+  {
+   "net": "Net-(SW9-A)",
+   "object": "B.Cu (69.900,94.050)-(69.475,94.050)",
+   "why": "end (69.900,94.050) unsupported"
+  },
+  {
+   "net": "Net-(SW9-A)",
+   "object": "B.Cu (69.175,93.750)-(69.475,94.050)",
+   "why": "end (69.475,94.050) unsupported"
+  },
+  {
+   "net": "Net-(SW9-A)",
+   "object": "B.Cu (69.175,92.925)-(69.175,93.750)",
+   "why": "end (69.175,93.750) unsupported"
+  },
+  {
+   "net": "Net-(SW9-A)",
+   "object": "B.Cu (69.150,92.800)-(69.175,92.925)",
+   "why": "end (69.175,92.925) unsupported"
+  },
+  {
+   "net": "Net-(SW9-A)",
+   "object": "B.Cu (69.650,92.275)-(69.150,92.800)",
+   "why": "end (69.150,92.800) unsupported"
+  },
+  {
+   "net": "Net-(SW9-A)",
+   "object": "B.Cu (68.225,90.825)-(69.650,92.275)",
+   "why": "end (69.650,92.275) unsupported"
+  },
+  {
+   "net": "Net-(SW9-A)",
+   "object": "B.Cu (65.500,93.000)-(68.225,90.825)",
+   "why": "end (68.225,90.825) unsupported"
+  }
+ ]
+}

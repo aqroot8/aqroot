@@ -29024,3 +29024,22 @@ candidates, in the order I would try them:
 3. **`Net-(L1-Pad1)`'s 9.2 mm vertical.**  A buck-boost switch node has no
    business being 9.2 mm long at 0.400 mm; shortening it is right on its own
    terms and it opens the east wall.
+
+**MEASURED AFTER THE ADDENDUM WAS WRITTEN, AND IT NARROWS THE ANSWER TO ONE
+PART.**  Two of `Net-(SW9-A)`'s `B.Cu` segments — (66.100,103.650)-(69.150,
+103.425) and (69.150,103.425)-(71.375,100.975) — **can be cut without opening
+anything**: `routing_ledger` on that board reads `Net-(SW9-A)` ONE island, all
+four pads, ZERO open edges, raw ratsnest 26, retained open edges 10, because
+`U12.12` already reaches the net through its own `In2` barrel at (66.350,
+103.650).  (Cutting the other nine of that loop DOES open one — the chain from
+`TP13` east is load-bearing, and trimming it costs a ratsnest.)  **With the
+band free, `{U12.10, U12.11}` is STILL `NO_PATH` — at 0.800 mm and again at
+`SYS_MAIN`'s own 0.500 mm minimum with `--join-island-width 500000`** —
+because the band's WEST end is `C24`'s `GND` land, x 62.875..63.675, and the
+only way round it is `y >= 103.975`, which is 0.030 mm from the `WROOM`
+keep-out at `y = 104.005`.
+
+**SO THE FIRST CANDIDATE IS THE ONLY ONE THAT MATTERS: `C24` MUST MOVE.**  It
+is the 10 uF `SYS` bulk for `U12`, it sits 5.4 mm from the pins it decouples,
+its `GND` land is BETWEEN its `SYS` land and those pins, and it is the object
+standing in the one door.  `evidence/d719-island-join-0p500-nopath.json`.

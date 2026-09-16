@@ -83,11 +83,18 @@
   0.500 mm holds **EXACTLY ONE CONDUCTOR** — which `EN` is using.  `--evict`
   with a stated window returns `closure_count 0` (every object
   `dangling_unevictable`); `--evict-whole` costs 44 objects and did not finish
-  in 40 minutes.  **Three candidates, in order: `C24` is in the wrong place (a
-  10 uF bulk with its `GND` land BETWEEN its `SYS` land and the pins it
-  decouples, 5.4 mm from them); `EN`'s `In2` barrel at (66.350, 103.650) is IN
-  the band and can leave it; and `Net-(L1-Pad1)`'s 9.2 mm switch node is wrong
-  on its own terms.**
+  in 40 minutes.  **AND IT NARROWS TO ONE PART.**  Two of `Net-(SW9-A)`'s `B.Cu`
+  segments — (66.100,103.650)-(69.150,103.425) and (69.150,103.425)-(71.375,
+  100.975) — **can be cut with nothing opening** (`Net-(SW9-A)` stays ONE
+  island, four pads, zero open edges, ratsnest 26, retained edges 10) because
+  `U12.12` already reaches the net through its own `In2` barrel at
+  (66.350, 103.650).  **With the band free `{U12.10, U12.11}` is STILL
+  `NO_PATH` — at 0.800 mm and again at `SYS_MAIN`'s 0.500 mm minimum — because
+  the band's WEST end is `C24`'s `GND` land (x 62.875..63.675) and the only
+  way round it is `y >= 103.975`, 0.030 mm from the `WROOM` keep-out.**  SO
+  **`C24` MUST MOVE**: a 10 uF `SYS` bulk 5.4 mm from the pins it decouples,
+  with its `GND` land BETWEEN its `SYS` land and them, standing in the one
+  door.  That is the next transaction.
 - **Demo D-718 (THE CELL MOVES AND THE EAST POCKET IS REFUTED AS ITS HOME —
   FOUR OF FIVE CROSSINGS AT EVERY RESERVATION WIDTH; AND THE THREE CONTRACT
   CLAUSES THAT REFUSED A PART MOVE ARE REPAIRED):**  **NO COPPER PROMOTED.**
