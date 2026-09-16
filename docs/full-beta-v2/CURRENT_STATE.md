@@ -66,6 +66,59 @@
 > `verify_promotion` PASS and `protected_copper` showing exactly one protected
 > net moved.  `U14.7` is on the bus.  This board has **no open owner decision**.
 
+- **Demo D-721 ADDENDUM (THE BOARD'S LAST INHERITED DRC VIOLATION IS RESOLVED;
+  THE `SYS` POURS ARE RE-SHAPED TO WHAT THEY SERVE AT ZERO COST TO THE RAIL;
+  `/BQ25185_STAT2`'s `U2.19` EDGE GETS THE FIRST CHEAP OPENER ON THIS BOARD;
+  `/SX1262_DIO1` IS CROSSED BY SEVENTY-NINE NETS AND THE MCU-GPIO ECO IS
+  DEAD):**  **NO COPPER.**  Authority UNCHANGED at `d566ef54`; 9 -> 9.
+  ***THE `solder_mask_bridge` EVERY DECISION SINCE D-597 HAS "INHERITED" IS
+  NAMED AND FIXED:*** it is `MK1`'s ACOUSTIC PORT -- a 1.050 mm NPTH with NO
+  NET, concentric inside the `DMM-4026-B-I2S`'s own 1.650 mm GND land, sharing
+  one mask aperture with it BY DESIGN -- and KiCad's footprint attribute
+  `allow_soldermask_bridges` exists for exactly that.  With it set the board's
+  real DRC is **`{lib_footprint_issues: 199}` AND NOTHING ELSE**, and those 199
+  are the headless `kicad-cli`'s own missing-footprint-library warnings,
+  measured IDENTICAL on the authority in place beside its own `fp-lib-table`.
+  **THIS BOARD NOW HAS ZERO REAL DRC VIOLATIONS.**  No mask aperture moves, so
+  no fabrication output changes.  ***THE `SYS` POURS ARE OVERSIZED AND THAT IS
+  WHY THE RAIL KEEPS REGRESSING:*** `POUR 1` is a 12.5 x 36.5 mm rectangle over
+  `U2`/`U3`'s east fan-out and `POUR 2` a 5.0 x 9.0 mm one over the whole boost
+  block, so every new B.Cu route inside them re-partitions the rail.  Re-shaped
+  to `POUR 1` west edge **58.500 -> 61.000** and `POUR 2`
+  **(56.30,34.00)-(58.40,40.20)**, and it costs the rail NOTHING, measured:
+  the narrowest total SYS cross-section is **0.76 mm at y = 93.00 before AND
+  after**, both pours' FILLED AREA is unchanged to 0.01 mm2, real DRC and the
+  edge count are unchanged.  These, with the `MK1` attribute, are
+  **EDGE-NEUTRAL BY CONSTRUCTION and therefore cannot be promoted alone** --
+  clause 4 -- and are kept as `evidence/d721b-riders.py` to ride with the next
+  edge-closing route.  ***`/BQ25185_STAT2`'s OTHER EDGE HAS THE FIRST CHEAP
+  OPENER ON THIS BOARD:*** `U2.19 <-> TP7.1` `BASE NO_PATH`, `Q1` opens in
+  **11.798 mm with ZERO vias on B.Cu alone**, and **`/08_..._/BTN_DOWN_N`
+  ALONE opens it (24.482 mm) and `/BQ25185_STAT1` ALONE opens it (26.100 mm)**;
+  `U2.19 <-> R128.2` likewise falls to `BTN_DOWN_N` alone at 32.464 mm.  A run
+  that evicts `BTN_DOWN_N` in the corridor CLOSES the edge -- 2 -> 1 in the
+  mid-run ledger -- and the eastern detour it takes cuts `SYS POUR 1` in half,
+  taking `BQ25185_SYS` 1 -> 2.  **The cut is EAST of the `POUR 1` reshape:**
+  what would pay for it is a SYS TRUNK reaching `U12.1`, and that corridor
+  (x 62..68, y 96..99.5) is crossed by `Net-(SW9-A)`'s own vertical at
+  x = 64.900.  ***`/SX1262_DIO1` IS A BOARD-SCALE QUESTION:*** `Q1` -- drop the
+  routed copper of ALL SEVENTY-NINE foreign nets in its corridor -- opens it in
+  78.393 mm with ZERO vias, and **twenty single-net evictions open NOTHING**.
+  **AND THE OBVIOUS ECO IS DEAD:** `U1` is an **ESP32-S3-WROOM-1-N16R8** and
+  its only three unassigned pins, 28/29/30, are **IO35/IO36/IO37, the OCTAL
+  PSRAM bus**, which Espressif says are not available for external use -- the
+  board is RIGHT to leave them NC and there is no free MCU GPIO to move `DIO1`
+  to.  ***AND ONE RELIABILITY FINDING WITH A SITE AND A PRICE:*** D-188's four
+  `TPD4E1B06DRLR` arrays are the right parts, but **`D5` protects `J5.20` and
+  `J5.21` from 36.5 mm and 40.0 mm away** -- `U3`, the PCAL9535A those two
+  lines run to, is about 17 mm from the contact, so **the victim is closer to
+  the pin than the clamp is**.  A free site is measured at **(63.600,63.200)**,
+  3.3 mm from `J5.21` and 5.5 mm from `J5.20`, and moving `D5` there also
+  deletes the 17.17 mm F.Cu diagonal that crowds the `U16` east plaza.
+  ***D-186 SURVIVES THE DEMO's `U23` REMOVAL*** -- `ACC_5V_SW_EN` is on `U3.7`,
+  `ACC_5V_BOOST_EN` on `U3.16`, `R102`/`R131` both fitted, `TP47` present, both
+  series disconnects intact -- **with one consequence recorded: both enables
+  now come from ONE expander**, where D-186 arranged that they could not.
 - **Demo D-721 (`/01_POWER_TREE/ACC_5V_LX` IS ROUTABLE AND DRC-CLEAN AT 9 -> 8,
   AND THE ONE CLAUSE THAT REFUSES IT NAMES THE BOOST BLOCK'S FLOORPLAN;
   `U11.3` IS SEALED BY D-269 AND IS AN OWNER DECISION; THE `U16` WEST POCKET

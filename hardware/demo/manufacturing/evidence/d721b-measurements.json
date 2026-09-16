@@ -1,0 +1,92 @@
+{
+ "schema": 1,
+ "decision": "D-721 ADDENDUM",
+ "sys_pour_cross_section_mm": {
+  "authority": {
+   "narrowest_total_mm": 0.76,
+   "y": 93.0
+  },
+  "reshaped": {
+   "narrowest_total_mm": 0.76,
+   "y": 93.0
+  },
+  "method": "sampled every 0.25 mm from y 80 to 104 across x 58..72 on B.Cu"
+ },
+ "sys_pour_filled_area_mm2": {
+  "authority": {
+   "POUR 1": 146.27,
+   "POUR 2": 10.81
+  },
+  "reshaped": {
+   "POUR 1": 146.27,
+   "POUR 2": 10.81
+  }
+ },
+ "gnd_b_cu_fill_mm2": {
+  "authority": 6247.4,
+  "reshaped": 6247.4,
+  "islands": 63
+ },
+ "esd_array_distance_mm": {
+  "D2": {
+   "NATIVE_A": 7.0,
+   "NATIVE_B": 7.3,
+   "EXT_SDA": 9.5,
+   "EXT_SCL": 7.0
+  },
+  "D4": {
+   "XGPIO4": 13.5,
+   "XGPIO5": 14.8
+  },
+  "D5": {
+   "WAKE_ATTN_N_HDR": 36.5,
+   "ACC_DETECT_N_HDR": 40.0
+  }
+ },
+ "d5_proposed_site_mm": {
+  "origin": [
+   63.6,
+   63.2
+  ],
+  "courtyard": [
+   62.405,
+   62.255,
+   64.795,
+   64.145
+  ],
+  "to_J5_21_mm": 3.32,
+  "to_J5_20_mm": 5.45,
+  "clear_of": [
+   "C39",
+   "C25",
+   "TP25",
+   "J5",
+   "R49",
+   "R102"
+  ]
+ },
+ "u1_free_pins": {
+  "module": "ESP32-S3-WROOM-1-N16R8",
+  "pins": [
+   28,
+   29,
+   30
+  ],
+  "gpios": [
+   "IO35",
+   "IO36",
+   "IO37"
+  ],
+  "verdict": "OCTAL PSRAM bus on R8 modules; not available for external use"
+ },
+ "d186_on_demo": {
+  "ACC_5V_BOOST_EN": "U3.16",
+  "ACC_5V_SW_EN": "U3.7",
+  "pulldowns": {
+   "R102": "100k",
+   "R131": "100k"
+  },
+  "TP47": "present",
+  "note": "U23 is removed by Demo scope, so both enables now come from ONE expander"
+ }
+}
