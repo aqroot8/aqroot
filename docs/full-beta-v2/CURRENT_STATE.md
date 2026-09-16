@@ -66,6 +66,38 @@
 > `verify_promotion` PASS and `protected_copper` showing exactly one protected
 > net moved.  `U14.7` is on the bus.  This board has **no open owner decision**.
 
+- **Demo D-724 ADDENDUM (THE SYS FEED TO `U21` IS **DELIVERABLE**, AND EVERY LEG
+  OF IT IS NOW MEASURED):**  Authority `a405b06f` unchanged.  New screen
+  **`screen_widest_corridor.py`** -- a maximin (bottleneck) search over a
+  Euclidean distance transform that answers *how wide can this trunk get
+  between two points, and WHICH OBJECT pinches it*.  ***THE BOOST BLOCK IS A
+  SMALLER TRANSACTION THAN D-724 FEARED:*** the 2.19 A feed fits if **four
+  ordinary signals** move.  `BQ25185_SYS`'s trunk already passes within
+  **5.652 mm** of `L4.1` at the F.Cu vertex **(52.000,36.700)**, and from there
+  the corridor is **0.000 mm** as it stands (pinched by `/ACC_5V_BOOST_EN`),
+  still 0.000 with that freed (`ACC_DETECT_N_HDR`), and **1.621 mm with both
+  freed**.  `ACC_5V_BOOST_EN` needs no cleverness -- **on In2 the same span is
+  3.837 mm wide** and that net already uses In2, so two vias retire its whole
+  `(49.500,31.000) -> (53.900,35.500) -> (48.000,43.800)` V.
+  `ACC_DETECT_N_HDR` cannot dive (`ACC_3V3_SW` owns In2 across that band) and
+  re-routes on F.Cu east of the turn-in.  ***THE LANDING IS THE REAL WALL:***
+  `L4.1` is a B.Cu pad and the **nearest legal 0.800 mm `SYS_MAIN` barrel site
+  is (55.250,36.440), 2.477 mm short of it**, so the feed finishes on B.Cu --
+  a leg that is 0.000 mm as it stands (`C66.1`), **0.824 mm** with
+  `EXT_SCL_BUF` freed and **1.470 mm** with `ACC_5V_FB`'s via freed as well.
+  IPC-2221B at 1 oz / dT 10 K: **0.900 mm is the floor that carries 2.19 A**
+  (0.824 mm is 2.070 A -- **6 % short**; 1.470 mm is 2.9 A).  ***AND THE BLOCK
+  CLOSES TOGETHER OR NOT AT ALL:*** SYS delivered by TRACK lets `SYS POUR 2` be
+  RETIRED; a retired POUR 2 lets the `B GND PLANE` fill to `U21.4`; `U21.4` on
+  the plane BODY means no fragment for `PP2` to price; and with no fragment
+  D-724's `ACC_5V_LX` geometry -- already proved at **zero real DRC, 8 -> 7
+  edges** -- becomes legal.  D-724's candidate failed for exactly one reason,
+  that `POUR 2` had to stay because it is `L4.1`'s and `U21.3`'s only supply.
+  **Closing this closes TWO edges (8 -> 6) and brings the switched 5 V
+  accessory rail alive.**  ***ALSO MEASURED:*** `/ACC_PWR_EN` (`U3.20` -> the
+  `U16`/`R17` cluster, 23.966 mm) is **NO_PATH at 0.200 mm** plain and with
+  `--escape-floor --trunk-floor --maze-via 0.6:0.3` -- *"no all-layer corridor
+  at 0.200 mm between the islands"*: a genuine corridor problem, untouched.
 - **Demo D-724 (THE SWITCHED 5 V ACCESSORY RAIL HAS **NO SOURCE**, AND THE
   TPS61023 BLOCK IS A PLACEMENT TRANSACTION, NOT A ROUTING ONE):**  **NOTHING
   PROMOTED.**  Authority `a405b06f` UNCHANGED; retained open edges stay **8**.

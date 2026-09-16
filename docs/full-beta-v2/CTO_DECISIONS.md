@@ -1,3 +1,89 @@
+## D-724 ADDENDUM — THE SYS FEED TO `U21` IS **DELIVERABLE**, AND EVERY LEG OF IT IS NOW MEASURED. FOUR ORDINARY SIGNALS STAND IN IT, AND RETIRING `SYS POUR 2` IS WHAT MAKES `ACC_5V_LX` LEGAL
+
+    authority  a405b06f  UNCHANGED
+    NEW SCREEN  `screen_widest_corridor.py` -- maximin (bottleneck) search over a
+                Euclidean distance transform: *how wide can this trunk get between
+                two points, and WHICH OBJECT pinches it*
+    `evidence/d724a-*.json`
+
+D-724 said the boost block is a placement transaction.  This measures exactly
+WHICH placement, and the answer is smaller than "re-floorplan the block": the
+2.19 A feed fits if **four ordinary signals** get out of its way.
+
+### 1. THE F.Cu APPROACH — 1.621 mm, BEHIND TWO SIGNALS
+
+`BQ25185_SYS`'s trunk already passes within **5.652 mm** of `L4.1`, at the F.Cu
+vertex **(52.000,36.700)**.  From there to `L4.1`, at 0.25 mm clearance:
+
+    as it stands                                   0.000 mm  (/ACC_5V_BOOST_EN)
+    with /ACC_5V_BOOST_EN freed                    0.000 mm  (/..../ACC_DETECT_N_HDR)
+    with BOTH freed                              **1.621 mm**  (pinch: ACC_5V_RAW's via)
+
+Neither is hard to move.  **`ACC_5V_BOOST_EN` can simply DIVE**: on In2 the same
+span is **3.837 mm** wide, and that net already uses In2 elsewhere, so two vias
+retire its whole `(49.500,31.000) -> (53.900,35.500) -> (48.000,43.800)` V.
+`ACC_DETECT_N_HDR` cannot dive -- `ACC_3V3_SW` owns In2 across that band -- so
+it re-routes on F.Cu, east of where the trunk turns in.
+
+### 2. THE LANDING — THE TRUNK CANNOT REACH `L4.1` ON F.Cu
+
+`L4.1` is a B.Cu pad, so the trunk needs a barrel, and the nearest **legal
+0.800 mm `SYS_MAIN` via site is (55.250,36.440) -- 2.477 mm short of `L4.1`'s
+centre** (0.650 mm barrels get no closer: (55.400,36.360), 2.321 mm).  So the
+feed lands ~2 mm west and finishes on B.Cu, and that leg is the real wall:
+
+    as it stands                                   0.000 mm  (C66.1's pad)
+    with /09_COMMUNITY_HEADER/EXT_SCL_BUF freed    0.824 mm  (ACC_5V_FB's via)
+    with EXT_SCL_BUF **and** ACC_5V_FB freed     **1.470 mm**
+
+### 3. THE NUMBER THAT DECIDES IT
+
+IPC-2221B, 1 oz outer, dT = 10 K -- the board's own arithmetic:
+
+    0.570 mm -> 1.584 A      0.900 mm -> 2.206 A   <- the floor for this segment
+    0.680 mm -> 1.801 A      0.990 mm -> 2.364 A
+    0.824 mm -> 2.070 A      1.470 mm -> 2.9   A   <- what leg 2 becomes
+
+**0.900 mm is the minimum width that carries the 2.19 A the `.kicad_dru`
+publishes for this boost**, against `SYS_MAIN`'s 0.800 mm `opt` (2.026 A) --
+which is why the `.kicad_dru` records the U21 feed as an OPEN width finding.
+At 0.824 mm the feed is **6 % short**; at 1.470 mm it has 32 % margin.
+
+### 4. THE COUPLING — WHY THE WHOLE BLOCK CLOSES TOGETHER OR NOT AT ALL
+
+    SYS delivered by TRACK  ->  SYS POUR 2 can be RETIRED
+    POUR 2 retired          ->  the B GND PLANE fills to U21.4
+    U21.4 on the plane BODY ->  no fragment, so PP2 has nothing to price
+    no fragment             ->  ACC_5V_LX is legal, and D-724 already proved
+                                its geometry at ZERO real DRC, 8 -> 7 edges
+
+D-724's candidate failed **only** because `POUR 2` had to stay (it is `L4.1`'s
+and `U21.3`'s only supply), which forced the GND fill into a 4.457 mm2 fragment
+anchored on a 0.350 mm land.  Feed `L4.1` with copper and that reason is gone.
+
+### 5. THE TRANSACTION, COSTED
+
+    /ACC_5V_BOOST_EN            dive to In2, 2 vias          (3.837 mm of room)
+    /..../ACC_DETECT_N_HDR      re-route east of the turn-in
+    /..../EXT_SCL_BUF           out of the B.Cu landing leg
+    /01_POWER_TREE/ACC_5V_FB    its via out of the landing leg
+    BQ25185_SYS                 (52.000,36.700) -> 0.900+ mm F.Cu -> barrel at
+                                ~(55.250,36.440) -> 1.470 mm B.Cu -> L4.1
+                                plus a short L4.1 -> U21.3 link
+    SYS POUR 2                  RETIRED (`--pour-removed`)
+    then D-724's candidate verbatim: C65 +0.250 east, R64 -0.400 north,
+    XGPIO4 / EXT_SDA_BUF In2 bows, U21.4's haul removed, ACC_5V_LX laid
+
+Closes **two** edges (`BQ25185_SYS` and `ACC_5V_LX`), 8 -> 6, and **brings the
+switched 5 V accessory rail alive** -- which is the point.
+
+### 6. ALSO MEASURED THIS PASS
+
+`/ACC_PWR_EN` (`U3.20` -> the `U16`/`R17` cluster, 23.966 mm) is **NO_PATH at
+0.200 mm** on the plain arm and with `--escape-floor --trunk-floor
+--maze-via 0.6:0.3`: *"no all-layer corridor at 0.200 mm between the islands"*.
+It is a genuine corridor problem, not a launch one, and it is untouched.
+
 ## D-724 — THE SWITCHED 5 V ACCESSORY RAIL HAS **NO SOURCE**, AND THE TPS61023 BLOCK CANNOT BE CLOSED BY ROUTING. `ACC_5V_LX` IS BUILT, PASSES REAL DRC AT 8 -> 7 EDGES, AND IS REFUSED BY `PP2` ON AN ARITHMETIC NO LAYOUT IN THIS FLOORPLAN CAN BEAT
 
     authority  a405b06f  **UNCHANGED -- NOTHING PROMOTED**

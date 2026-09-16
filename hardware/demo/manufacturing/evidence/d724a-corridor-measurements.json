@@ -1,0 +1,187 @@
+{
+ "schema": 1,
+ "decision": "D-724 ADDENDUM",
+ "board_sha256": "a405b06f077417c24a3c272e9e5062d6583029d7bf5b595bc24f69fce3ad9c89",
+ "screen": "hardware/demo/manufacturing/screen_widest_corridor.py",
+ "note": "every row reproduces with: screen_widest_corridor.py --board <authority> --net /01_POWER_TREE/BQ25185_SYS --clearance 0.25 --grid 0.05 --layer <layer> --from <from> --to <to> [--free NET ...]",
+ "required_amps": 2.19,
+ "required_width_mm_at_1oz_10K": 0.9,
+ "legs": [
+  {
+   "leg": "F.Cu approach",
+   "layer": "F.Cu",
+   "from": [
+    52.0,
+    36.7
+   ],
+   "to": [
+    57.7,
+    36.2
+   ],
+   "free": [],
+   "widest_mm": 0.0,
+   "pinch_by": [
+    "trk",
+    "/ACC_5V_BOOST_EN"
+   ]
+  },
+  {
+   "leg": "F.Cu approach",
+   "layer": "F.Cu",
+   "from": [
+    52.0,
+    36.7
+   ],
+   "to": [
+    57.7,
+    36.2
+   ],
+   "free": [
+    "/ACC_5V_BOOST_EN"
+   ],
+   "widest_mm": 0.0,
+   "pinch_by": [
+    "trk",
+    "/09_COMMUNITY_HEADER/ACC_DETECT_N_HDR"
+   ]
+  },
+  {
+   "leg": "F.Cu approach",
+   "layer": "F.Cu",
+   "from": [
+    52.0,
+    36.7
+   ],
+   "to": [
+    57.7,
+    36.2
+   ],
+   "free": [
+    "/ACC_5V_BOOST_EN",
+    "/09_COMMUNITY_HEADER/ACC_DETECT_N_HDR"
+   ],
+   "widest_mm": 1.621,
+   "pinch_by": [
+    "via",
+    "/01_POWER_TREE/ACC_5V_RAW"
+   ]
+  },
+  {
+   "leg": "ACC_5V_BOOST_EN can dive",
+   "layer": "In2.Cu",
+   "net": "/ACC_5V_BOOST_EN",
+   "from": [
+    49.5,
+    31.0
+   ],
+   "to": [
+    48.0,
+    43.8
+   ],
+   "widest_mm": 3.837,
+   "pinch_by": [
+    "via",
+    "GND"
+   ]
+  },
+  {
+   "leg": "ACC_DETECT_N_HDR cannot dive",
+   "layer": "In2.Cu",
+   "net": "/09_COMMUNITY_HEADER/ACC_DETECT_N_HDR",
+   "from": [
+    55.15,
+    30.55
+   ],
+   "to": [
+    59.675,
+    37.2
+   ],
+   "widest_mm": 0.0,
+   "pinch_by": [
+    "trk",
+    "/ACC_3V3_SW"
+   ]
+  },
+  {
+   "leg": "B.Cu landing",
+   "layer": "B.Cu",
+   "from": [
+    55.25,
+    36.44
+   ],
+   "to": [
+    57.225,
+    36.2
+   ],
+   "free": [],
+   "widest_mm": 0.0,
+   "pinch_by": [
+    "pad",
+    "C66.1"
+   ]
+  },
+  {
+   "leg": "B.Cu landing",
+   "layer": "B.Cu",
+   "from": [
+    55.25,
+    36.44
+   ],
+   "to": [
+    57.225,
+    36.2
+   ],
+   "free": [
+    "/09_COMMUNITY_HEADER/EXT_SCL_BUF"
+   ],
+   "widest_mm": 0.824,
+   "pinch_by": [
+    "via",
+    "/01_POWER_TREE/ACC_5V_FB"
+   ]
+  },
+  {
+   "leg": "B.Cu landing",
+   "layer": "B.Cu",
+   "from": [
+    55.25,
+    36.44
+   ],
+   "to": [
+    57.225,
+    36.2
+   ],
+   "free": [
+    "/09_COMMUNITY_HEADER/EXT_SCL_BUF",
+    "/01_POWER_TREE/ACC_5V_FB"
+   ],
+   "widest_mm": 1.47
+  }
+ ],
+ "via_landing": {
+  "note": "nearest LEGAL SYS_MAIN barrel site to L4.1's centre (57.715,36.200), 0.25 mm clearance, swept at 0.05 x 0.01 mm over x 50..62, y 33..39",
+  "dia_0.80": {
+   "xy": [
+    55.25,
+    36.44
+   ],
+   "dist_mm": 2.477
+  },
+  "dia_0.65": {
+   "xy": [
+    55.4,
+    36.36
+   ],
+   "dist_mm": 2.321
+  }
+ },
+ "ampacity_table_1oz_10K": {
+  "0.570": 1.584,
+  "0.680": 1.801,
+  "0.824": 2.07,
+  "0.900": 2.206,
+  "0.990": 2.364,
+  "1.000": 2.382,
+  "1.470": 2.9
+ }
+}
