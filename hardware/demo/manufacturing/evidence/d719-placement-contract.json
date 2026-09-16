@@ -1,0 +1,613 @@
+{
+  "checks": {
+    "PL10_removals_stranded_nothing": true,
+    "PL1_reference_set_as_declared": true,
+    "PL2_only_claimed_parts_moved": true,
+    "PL3_land_patterns_travelled_whole": true,
+    "PL4_no_new_courtyard_overlap": true,
+    "PL5_nothing_stranded": true,
+    "PL6_screen_is_not_vacuous": true,
+    "PL7_moved_pads_clear_foreign_copper": true,
+    "PL8_released_pads_reconnected": true,
+    "PL9_no_via_under_a_moved_land": true
+  },
+  "detail": {
+    "claimed": {
+      "C28": [
+        925000,
+        8155000,
+        270.0
+      ],
+      "C31": [
+        49375000,
+        -29455000,
+        90.0
+      ],
+      "C32": [
+        47085000,
+        -30005000,
+        90.0
+      ],
+      "L1": [
+        7500000,
+        1000000,
+        90.0
+      ],
+      "R39": [
+        900000,
+        22150000,
+        90.0
+      ],
+      "R40": [
+        7900000,
+        16450000,
+        90.0
+      ],
+      "R41": [
+        59685000,
+        -17735000,
+        180.0
+      ],
+      "R43": [
+        52985000,
+        -19435000,
+        0.0
+      ],
+      "TP6": [
+        4750000,
+        -7500000,
+        0.0
+      ],
+      "TP8": [
+        37700000,
+        -22800000,
+        0.0
+      ],
+      "U12": [
+        3000000,
+        -3800000,
+        0.0
+      ]
+    },
+    "claimed_moves_wrong": [],
+    "clearance_nm": 200000,
+    "courtyard_overlaps_new": [],
+    "endpoints_checked": 41,
+    "endpoints_released": [
+      {
+        "at_mm": [
+          69.95,
+          93.245
+        ],
+        "net": "GND",
+        "pad": "C28.2",
+        "removed_from_board": true
+      },
+      {
+        "at_mm": [
+          70.175,
+          93.0
+        ],
+        "net": "GND",
+        "pad": "C28.2",
+        "removed_from_board": true
+      },
+      {
+        "at_mm": [
+          18.85,
+          122.605
+        ],
+        "net": "+3V3",
+        "pad": "C31.1",
+        "removed_from_board": true
+      },
+      {
+        "at_mm": [
+          21.8,
+          122.605
+        ],
+        "net": "GND",
+        "pad": "C31.2",
+        "removed_from_board": true
+      },
+      {
+        "at_mm": [
+          23.84,
+          122.605
+        ],
+        "net": "+3V3",
+        "pad": "C32.1",
+        "removed_from_board": true
+      },
+      {
+        "at_mm": [
+          26.79,
+          122.605
+        ],
+        "net": "GND",
+        "pad": "C32.2",
+        "removed_from_board": true
+      },
+      {
+        "at_mm": [
+          65.415,
+          96.6
+        ],
+        "net": "Net-(L1-Pad1)",
+        "pad": "L1.1",
+        "removed_from_board": true
+      },
+      {
+        "at_mm": [
+          67.785,
+          96.6
+        ],
+        "net": "Net-(L1-Pad2)",
+        "pad": "L1.2",
+        "removed_from_board": true
+      },
+      {
+        "at_mm": [
+          65.675,
+          71.75
+        ],
+        "net": "+3V3",
+        "pad": "R39.1",
+        "removed_from_board": true
+      },
+      {
+        "at_mm": [
+          67.325,
+          71.75
+        ],
+        "net": "/01_POWER_TREE/V3V3_FB",
+        "pad": "R39.2",
+        "removed_from_board": true
+      },
+      {
+        "at_mm": [
+          59.675,
+          72.75
+        ],
+        "net": "/01_POWER_TREE/V3V3_FB",
+        "pad": "R40.1",
+        "removed_from_board": true
+      },
+      {
+        "at_mm": [
+          61.1,
+          72.7
+        ],
+        "net": "GND",
+        "pad": "R40.2",
+        "removed_from_board": true
+      },
+      {
+        "at_mm": [
+          61.125,
+          72.6
+        ],
+        "net": "GND",
+        "pad": "R40.2",
+        "removed_from_board": true
+      },
+      {
+        "at_mm": [
+          61.125,
+          72.6
+        ],
+        "net": "GND",
+        "pad": "R40.2",
+        "removed_from_board": true
+      },
+      {
+        "at_mm": [
+          12.49,
+          120.335
+        ],
+        "net": "+3V3",
+        "pad": "R41.1",
+        "removed_from_board": true
+      },
+      {
+        "at_mm": [
+          14.14,
+          120.335
+        ],
+        "net": "Net-(U12-PG)",
+        "pad": "R41.2",
+        "removed_from_board": true
+      },
+      {
+        "at_mm": [
+          20.84,
+          120.335
+        ],
+        "net": "GND",
+        "pad": "R43.2",
+        "removed_from_board": true
+      },
+      {
+        "at_mm": [
+          19.19,
+          120.335
+        ],
+        "net": "Net-(SW9-A)",
+        "pad": "R43.1",
+        "removed_from_board": true
+      },
+      {
+        "at_mm": [
+          70.25,
+          95.5
+        ],
+        "net": "/BQ25185_STAT1",
+        "pad": "TP6.1",
+        "removed_from_board": true
+      },
+      {
+        "at_mm": [
+          38.0,
+          124.5
+        ],
+        "net": "Net-(U12-PG)",
+        "pad": "TP8.1",
+        "removed_from_board": true
+      },
+      {
+        "at_mm": [
+          66.6,
+          99.825
+        ],
+        "net": "+3V3",
+        "pad": "U12.4",
+        "removed_from_board": true
+      },
+      {
+        "at_mm": [
+          66.6,
+          100.0
+        ],
+        "net": "+3V3",
+        "pad": "U12.4",
+        "removed_from_board": true
+      },
+      {
+        "at_mm": [
+          67.1,
+          100.0
+        ],
+        "net": "+3V3",
+        "pad": "U12.5",
+        "removed_from_board": true
+      },
+      {
+        "at_mm": [
+          66.1,
+          100.0
+        ],
+        "net": "/01_POWER_TREE/V3V3_FB",
+        "pad": "U12.3",
+        "removed_from_board": true
+      },
+      {
+        "at_mm": [
+          65.275,
+          100.675
+        ],
+        "net": "GND",
+        "pad": "U12.15",
+        "removed_from_board": true
+      },
+      {
+        "at_mm": [
+          65.6,
+          100.0
+        ],
+        "net": "GND",
+        "pad": "U12.2",
+        "removed_from_board": true
+      },
+      {
+        "at_mm": [
+          65.6,
+          100.3
+        ],
+        "net": "GND",
+        "pad": "U12.2",
+        "removed_from_board": true
+      },
+      {
+        "at_mm": [
+          65.6,
+          102.19
+        ],
+        "net": "GND",
+        "pad": "U12.15",
+        "removed_from_board": true
+      },
+      {
+        "at_mm": [
+          65.6,
+          102.8
+        ],
+        "net": "GND",
+        "pad": "U12.13",
+        "removed_from_board": true
+      },
+      {
+        "at_mm": [
+          66.6,
+          101.4
+        ],
+        "net": "GND",
+        "pad": "U12.15",
+        "removed_from_board": true
+      },
+      {
+        "at_mm": [
+          67.7,
+          101.7
+        ],
+        "net": "GND",
+        "pad": "U12.15",
+        "removed_from_board": true
+      },
+      {
+        "at_mm": [
+          67.8,
+          100.9
+        ],
+        "net": "GND",
+        "pad": "U12.15",
+        "removed_from_board": true
+      },
+      {
+        "at_mm": [
+          67.8,
+          100.9
+        ],
+        "net": "GND",
+        "pad": "U12.15",
+        "removed_from_board": true
+      },
+      {
+        "at_mm": [
+          67.875,
+          100.8
+        ],
+        "net": "GND",
+        "pad": "U12.15",
+        "removed_from_board": true
+      },
+      {
+        "at_mm": [
+          67.9,
+          100.8
+        ],
+        "net": "GND",
+        "pad": "U12.15",
+        "removed_from_board": true
+      },
+      {
+        "at_mm": [
+          67.6,
+          102.8
+        ],
+        "net": "Net-(L1-Pad1)",
+        "pad": "U12.9",
+        "removed_from_board": true
+      },
+      {
+        "at_mm": [
+          68.1,
+          102.8
+        ],
+        "net": "Net-(L1-Pad1)",
+        "pad": "U12.8",
+        "removed_from_board": true
+      },
+      {
+        "at_mm": [
+          67.6,
+          100.0
+        ],
+        "net": "Net-(L1-Pad2)",
+        "pad": "U12.6",
+        "removed_from_board": true
+      },
+      {
+        "at_mm": [
+          68.1,
+          100.0
+        ],
+        "net": "Net-(L1-Pad2)",
+        "pad": "U12.7",
+        "removed_from_board": true
+      },
+      {
+        "at_mm": [
+          66.1,
+          102.8
+        ],
+        "net": "Net-(SW9-A)",
+        "pad": "U12.12",
+        "removed_from_board": true
+      },
+      {
+        "at_mm": [
+          65.1,
+          102.8
+        ],
+        "net": "Net-(U12-PG)",
+        "pad": "U12.14",
+        "removed_from_board": true
+      }
+    ],
+    "endpoints_stranded": [],
+    "footprints_post": 309,
+    "footprints_pre": 309,
+    "foreign_copper_hits": [],
+    "land_patterns_changed": [],
+    "pl6_decoy": "BOSS1",
+    "references_added": [],
+    "references_removed": [],
+    "released_claimed": [
+      "C28.2",
+      "C31.1",
+      "C31.2",
+      "C32.1",
+      "C32.2",
+      "L1.1",
+      "L1.2",
+      "R39.1",
+      "R39.2",
+      "R40.1",
+      "R40.2",
+      "R41.1",
+      "R41.2",
+      "R43.1",
+      "R43.2",
+      "TP6.1",
+      "TP8.1",
+      "U12.12",
+      "U12.13",
+      "U12.14",
+      "U12.15",
+      "U12.2",
+      "U12.3",
+      "U12.4",
+      "U12.5",
+      "U12.6",
+      "U12.7",
+      "U12.8",
+      "U12.9"
+    ],
+    "released_pads_orphaned": [],
+    "released_pads_reconnected": [
+      {
+        "pad": "C28.2",
+        "post_endpoints": 1
+      },
+      {
+        "pad": "C31.1",
+        "post_endpoints": 3
+      },
+      {
+        "pad": "C31.2",
+        "post_endpoints": 1
+      },
+      {
+        "pad": "C32.1",
+        "post_endpoints": 2
+      },
+      {
+        "pad": "C32.2",
+        "post_endpoints": 1
+      },
+      {
+        "pad": "L1.1",
+        "post_endpoints": 1
+      },
+      {
+        "pad": "L1.2",
+        "post_endpoints": 1
+      },
+      {
+        "pad": "R39.1",
+        "post_endpoints": 1
+      },
+      {
+        "pad": "R39.2",
+        "post_endpoints": 2
+      },
+      {
+        "pad": "R40.1",
+        "post_endpoints": 1
+      },
+      {
+        "pad": "R40.2",
+        "post_endpoints": 1
+      },
+      {
+        "pad": "R41.1",
+        "post_endpoints": 1
+      },
+      {
+        "pad": "R41.2",
+        "post_endpoints": 1
+      },
+      {
+        "pad": "R43.1",
+        "post_endpoints": 1
+      },
+      {
+        "pad": "R43.2",
+        "post_endpoints": 1
+      },
+      {
+        "pad": "TP6.1",
+        "post_endpoints": 1
+      },
+      {
+        "pad": "TP8.1",
+        "post_endpoints": 1
+      },
+      {
+        "pad": "U12.12",
+        "post_endpoints": 1
+      },
+      {
+        "pad": "U12.13",
+        "post_endpoints": 1
+      },
+      {
+        "pad": "U12.14",
+        "post_endpoints": 1
+      },
+      {
+        "pad": "U12.15",
+        "post_endpoints": 6
+      },
+      {
+        "pad": "U12.2",
+        "post_endpoints": 1
+      },
+      {
+        "pad": "U12.3",
+        "post_endpoints": 1
+      },
+      {
+        "pad": "U12.4",
+        "post_endpoints": 1
+      },
+      {
+        "pad": "U12.5",
+        "post_endpoints": 1
+      },
+      {
+        "pad": "U12.6",
+        "post_endpoints": 1
+      },
+      {
+        "pad": "U12.7",
+        "post_endpoints": 1
+      },
+      {
+        "pad": "U12.8",
+        "post_endpoints": 1
+      },
+      {
+        "pad": "U12.9",
+        "post_endpoints": 1
+      }
+    ],
+    "removal_endpoints_left_behind": [],
+    "removals_declared": [],
+    "unclaimed_footprints_moved": [],
+    "vias_under_moved_lands": []
+  },
+  "ref": "HEAD",
+  "schema": 2,
+  "verdict": "PASS"
+}

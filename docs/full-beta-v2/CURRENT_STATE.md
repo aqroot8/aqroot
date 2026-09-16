@@ -66,6 +66,72 @@
 > `verify_promotion` PASS and `protected_copper` showing exactly one protected
 > net moved.  `U14.7` is on the bus.  This board has **no open owner decision**.
 
+- **Demo D-719 (THE `TPS63020` IS REBUILT AS A CONVERTER BLOCK AND ITS OWN
+  `VIN` REACHES THE `SYS` RAIL FOR THE FIRST TIME):**  **COPPER PROMOTED.**
+  Authority `2a3a9888` -> `d566ef54`; **10 -> 9 retained open edges**;
+  `/01_POWER_TREE/BQ25185_SYS` **2 -> 1**; raw ratsnest 26 -> 25.  ***D-718's
+  DOOR WAS A SYMPTOM.***  Measured on the authority the main 3.3 V buck-boost
+  had FOUR defects, and they share one cause -- it was never floorplanned as a
+  converter: **(1)** `VIN` (`U12.10`/`U12.11`) unconnected, only `VINA` on the
+  rail; **(2)** a **15.34 mm** switch node -- `Net-(L1-Pad1)` out of `U12.8`
+  east to x 68.875, 8.4 mm SOUTH to y 94.400 and back west to `L1.1`, whose
+  9.2 mm vertical was also the fence walling `U12`'s east side off from the
+  `SYS` pour; **(3)** **NO output capacitance** -- C29/C30/C31/C32, the four
+  22 uF, were 46..60 mm away and `U12.4` was **52.83 mm** from the nearest;
+  **(4)** the 1 M / 180 k feedback divider **28 mm** away with `V3V3_FB`
+  crossing the board on In2 and In3.  Plus `R41` (PG) 53.89 mm and `R43` (EN)
+  50.08 mm from their pins, their two-pad nets spending **103.02 mm / 44
+  objects** and **102.80 mm / 16 objects**.  ***ELEVEN PARTS MOVE:*** `L1`
+  rotates 90 to (74.100,97.600) so both terminals face `U12`'s east column;
+  `U12` moves into the space it left plus the empty D-709 step, to
+  (69.600,97.600), which turns D-718's **0.900 mm** south band into a
+  **4.7 mm** one; `C28` (100 nF) lands **1.70 mm** from `VIN`, `C31`/`C32`
+  (2 x 22 uF) **1.58 mm** from `VOUT`, `R39`/`R40` **3.56 mm** from `FB`,
+  `R41`/`R43` beside the pins they bias, and `TP6`/`TP8` out of the way.
+  **C29/C30 STAY** as the radios' bulk; **C24 does NOT move** -- its land is
+  the junction of the only F.Cu link between two pieces of the pour.
+  ***THE EDGE CLOSES THROUGH THE POUR:*** with the band 4.7 mm tall the fill
+  reaches `U12.10`/`U12.11` directly, and `EN`/`PG` cross the band **on In2**,
+  under the pour instead of through it -- `R41` sits SOUTH of `R43` exactly so
+  the two In2 lanes need not swap sides.  `EN`'s branch to `SW9.1` is the one
+  hand-drawn join: `--partial` closed it in 14.5 mm of `B.Cu` through the
+  pour's west passage (`pour_partition` refused, and it routed a DNP island),
+  leaving the band at y 103.300 walls the VIN pocket (pour in 4 pieces,
+  `U11.1` severed), descending at x 63.300 seals the pour's own corridor
+  against `/ACC_5V_SW_EN`'s diagonal (2 pieces) -- **y = 100.250 is the one
+  that works**, 0.95 mm below the pad row and above everything else.
+  ***MEASURED GAIN:*** switch node **15.34 -> 2.56 mm**; `Net-(SW9-A)`
+  103.02 -> 24.75 mm; `Net-(U12-PG)` 102.80 -> 9.83 mm; `V3V3_FB`
+  61.35 -> 7.67 mm; **about 251 mm of routed conductor comes OUT of the middle
+  of the board** across F/B/In2/In3.  **AND THE RAIL IS WIDER**: sampling the
+  `SYS` pour every 0.25 mm from y 80 to 103.5, the narrowest place the net gets
+  is **two parallel lanes of 0.35 and 0.42 mm** at y 93.00, each above the
+  **0.300 mm** the `.kicad_dru` publishes for `SYS_MAIN`'s 1.0 A -- before it
+  was a **single 0.480 mm lane** in a pour that was in THREE pieces and did not
+  reach `VIN` at all.  ***PROOF:*** real KiCad DRC `{solder_mask_bridge: 1,
+  lib_footprint_issues: 199}` **BYTE-FOR-BYTE the inherited baseline** with
+  unconnected 26 -> 25; parity 246 warnings / ZERO errors; `verify_promotion`
+  **PASS 16/16**; `placement_contract` **PASS PL1..PL10** with eleven `--move`
+  and 29 `--release` claims; `pour_partition` **PP1-PP4 PASS**;
+  `protected_copper` **identical** (15 nets, 406 objects); the standing suite
+  **14 contracts, ALL RAN, ALL PASS**; fab package regenerated, `FAB1`-`FAB8`
+  PASS; `hardware/beta-v2` untouched.  ***TWO INSTRUMENT REPAIRS PAID FOR:***
+  `contract_regression.py` invoked `placement_contract` and
+  `pour_partition_contract` **with NO arguments**, so any decision that moved a
+  part reported FAIL however sound the board was and the real verdict could
+  only be read OUTSIDE the suite -- **`--claim CONTRACT:ARG`** forwards it, and
+  a wrong claim still fails `PL2` (measured: `R40`'s first delta did); and the
+  `BOND_GUARD` constant is re-cut on the promoted board because the guard names
+  its tubes by LAND, with the stale d709 guard STILL FAILING as the
+  non-vacuity control.  ***WHAT IS LEFT -- NINE EDGES OVER EIGHT NETS:***
+  `/BQ25185_STAT2` 2 (`U11.3` package, `U2.19` corridor), `BQ25185_SYS`
+  `{L4.1,U21.3}`, `ACC_5V_LX`, `NFC_VDD_RF`, `ACC_PWR_EN`, `I2C_SCL_INT`,
+  `NFC_SUPPLY`, `SX1262_DIO1`.  **RE-ASK THEM BEFORE PLANNING ANYTHING ELSE**:
+  every one was refused for corridor reasons in territory the 251 mm this
+  transaction removed used to occupy -- `Net-(SW9-A)`'s In3 diagonal from
+  (38.900,110.200) to (54.600,100.000) and `Net-(U12-PG)`'s 37.38 mm `B.Cu` run
+  from (15.175,119.750) to (44.675,96.800) among them.  `/SX1262_DIO1` and
+  `/BQ25185_STAT2` `U2.19` are the cheapest.
 - **Demo D-718 ADDENDUM (THE MOST IMPORTANT OPEN EDGE IS THE `TPS63020`'s OWN
   `VIN`, AND IT IS A BOX WITH ONE 0.9 mm DOOR):**  **NO COPPER.**  Authority
   UNCHANGED at `2a3a9888`.  `/01_POWER_TREE/BQ25185_SYS`'s third island is

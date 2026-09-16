@@ -85,7 +85,13 @@ EVIDENCE = MFG / "evidence"
 # 52 tubes (three of them new, over the admitted split), ZERO off copper.  The
 # STALE d656 guard still FAILS on that board, which is this bump's own
 # non-vacuity control.
-BOND_GUARD = "evidence/d709-pour-bond-guard-next.json"
+# D-719 -- THE GUARD IS RE-CUT WHENEVER THE POUR MOVES, AND THIS TRANSACTION
+# MOVED ELEVEN PARTS.  The d709 guard names its tubes by LAND, and U12.1,
+# U12.2, U12.10, U12.11, U12.15 and R40.2 are all somewhere else now, so P2
+# reported six `misplaced_ends`, one `off_copper` tube and `NO_SUCH_ISLAND`.
+# NON-VACUITY CONTROL: the stale d709 guard STILL FAILS on this board -- which
+# is the same control D-709 recorded when it retired d656.
+BOND_GUARD = "evidence/d719-pour-bond-guard-next.json"
 
 # name -> (script, extra argv, baseline evidence basename WITHOUT the decision
 #          prefix, verdict field).  The verdict field is read only for the
@@ -253,8 +259,39 @@ def main():
                          "--baseline PREFIX has something real to diff; "
                          "refused when PREFIX is the baseline being compared "
                          "against")
+    # D-719 -- A PART-MOVING TRANSACTION COULD NOT RUN THIS SUITE HONESTLY.
+    # `placement_contract.py` and `pour_partition_contract.py` each gained a
+    # way to STATE a move (D-678 `--move`, D-718 `--moved`) precisely because
+    # a land that is somewhere else carries no evidence about the copper that
+    # used to join it.  This harness invoked both with NO arguments, so the
+    # moment a decision moved a part the suite reported `placement FAIL` and
+    # `pour_partition False` no matter how sound the board was -- and the only
+    # way to read the real verdict was to run those two by hand OUTSIDE the
+    # suite, which is the failure mode this file exists to prevent.
+    #
+    # `--claim CONTRACT:ARG` forwards one argument to one named contract.  It
+    # is a pass-through and nothing else: the claim still has to be TRUE, the
+    # contracts still measure it against the same PRE board, and a claim for a
+    # part that did not move still fails `PL2`.  Repeatable.
+    ap.add_argument("--claim", action="append", default=[],
+                    metavar="CONTRACT:ARG",
+                    help="D-719: forward one argument to one named contract, "
+                         "e.g. --claim placement:--move --claim "
+                         "placement:U12:3000000:-3800000 or --claim "
+                         "pour_partition:--moved --claim pour_partition:U12. "
+                         "Repeatable; order is preserved")
     ap.add_argument("-o", "--out", type=Path)
     a = ap.parse_args()
+    claims = {}
+    for spec in a.claim:
+        if ":" not in spec:
+            ap.error("--claim wants CONTRACT:ARG, got %r" % spec)
+        name, arg = spec.split(":", 1)
+        claims.setdefault(name, []).append(arg)
+    known = {c[0] for c in CONTRACTS}
+    for name in claims:
+        if name not in known:
+            ap.error("--claim names no contract in this suite: %r" % name)
     if a.emit_baseline and a.emit_baseline == a.baseline:
         ap.error("--emit-baseline %s is also --baseline %s: a run that wrote "
                  "its own baseline and then diffed against it would prove "
@@ -266,9 +303,11 @@ def main():
         if a.only and name not in a.only:
             continue
         out = tmp / ("%s.json" % name)
-        cmd = [sys.executable, str(MFG / script), "-o", str(out)] + list(extra)
+        cmd = ([sys.executable, str(MFG / script), "-o", str(out)]
+               + list(extra) + claims.get(name, []))
         p = subprocess.run(cmd, cwd=str(MFG), capture_output=True, text=True)
-        row = dict(contract=name, ran=out.exists(), returncode=p.returncode)
+        row = dict(contract=name, ran=out.exists(), returncode=p.returncode,
+                   claimed=claims.get(name, []))
         if not out.exists():
             row["error"] = (p.stderr or p.stdout or "")[-400:]
             rows.append(row)

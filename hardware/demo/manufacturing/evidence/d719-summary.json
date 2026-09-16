@@ -1,0 +1,248 @@
+{
+ "schema": 1,
+ "decision": "D-719",
+ "title": "The TPS63020 buck-boost is rebuilt as a converter block; its VIN reaches the SYS rail for the first time",
+ "authority_before": "2a3a98882dadba6f2ea19231a56aa44d31f311909b4aed1058c65b3f60b4e770",
+ "authority_after": "d566ef54e792b47d7ee6df117bc3cd5195942de45b82269f8f48665ffe300385",
+ "retained_open_edges": {
+  "before": 10,
+  "after": 9
+ },
+ "open_retained_nets": {
+  "before": 8,
+  "after": 8
+ },
+ "raw_board_ratsnest": {
+  "before": 26,
+  "after": 25
+ },
+ "edges_closed": [
+  "/01_POWER_TREE/BQ25185_SYS {U12.10,U12.11} -- the TPS63020's POWER VIN"
+ ],
+ "parts_moved": {
+  "U12": [
+   [
+    66.6,
+    101.4,
+    0
+   ],
+   [
+    69.6,
+    97.6,
+    0
+   ]
+  ],
+  "L1": [
+   [
+    66.6,
+    96.6,
+    0
+   ],
+   [
+    74.1,
+    97.6,
+    90
+   ]
+  ],
+  "C28": [
+   [
+    69.175,
+    93.245,
+    0
+   ],
+   [
+    70.1,
+    101.4,
+    270
+   ]
+  ],
+  "C31": [
+   [
+    20.32,
+    122.61,
+    0
+   ],
+   [
+    69.7,
+    93.15,
+    90
+   ]
+  ],
+  "C32": [
+   [
+    25.32,
+    122.61,
+    0
+   ],
+   [
+    72.4,
+    92.6,
+    90
+   ]
+  ],
+  "R39": [
+   [
+    66.5,
+    71.75,
+    0
+   ],
+   [
+    67.4,
+    93.9,
+    90
+   ]
+  ],
+  "R40": [
+   [
+    60.5,
+    72.75,
+    0
+   ],
+   [
+    68.4,
+    89.2,
+    90
+   ]
+  ],
+  "R41": [
+   [
+    13.315,
+    120.335,
+    0
+   ],
+   [
+    73.0,
+    102.6,
+    180
+   ]
+  ],
+  "R43": [
+   [
+    20.015,
+    120.335,
+    0
+   ],
+   [
+    73.0,
+    100.9,
+    0
+   ]
+  ],
+  "TP6": [
+   [
+    70.25,
+    95.5,
+    0
+   ],
+   [
+    75.0,
+    88.0,
+    0
+   ]
+  ],
+  "TP8": [
+   [
+    38.0,
+    124.5,
+    0
+   ],
+   [
+    75.7,
+    101.7,
+    0
+   ]
+  ]
+ },
+ "routed_copper_mm": {
+  "Net-(L1-Pad1) switch node": {
+   "before": 15.34,
+   "after": 2.56
+  },
+  "Net-(L1-Pad2) switch node": {
+   "before": 3.98,
+   "after": 2.56
+  },
+  "Net-(SW9-A) EN": {
+   "before": 103.02,
+   "after": 24.75
+  },
+  "Net-(U12-PG) PG": {
+   "before": 102.8,
+   "after": 9.83
+  },
+  "/01_POWER_TREE/V3V3_FB": {
+   "before": 61.35,
+   "after": 7.67
+  },
+  "+3V3": {
+   "before": 113.55,
+   "after": 101.46
+  }
+ },
+ "land_to_land_mm": {
+  "U12.3 FB -> R39.2": {
+   "before": 28.28,
+   "after": 3.56
+  },
+  "U12.4 VOUT -> C31.1 22uF": {
+   "before": 52.83,
+   "after": 1.58
+  },
+  "U12.11 VIN -> C28.1 100nF": {
+   "before": 9.72,
+   "after": 1.7
+  },
+  "U12.12 EN -> R43.1": {
+   "before": 50.08,
+   "after": 3.61
+  },
+  "U12.14 PG -> R41.2": {
+   "before": 53.89,
+   "after": 5.44
+  }
+ },
+ "sys_pour_min_cross_section_mm": {
+  "before": {
+   "total": 0.48,
+   "lanes": [
+    "63.39-63.87"
+   ],
+   "y": 101.25,
+   "note": "one lane, in a pour that was in THREE pieces and did not reach VIN at all"
+  },
+  "after": {
+   "total": 0.773,
+   "lanes": [
+    "64.20-64.55",
+    "66.25-66.67"
+   ],
+   "y": 93.0,
+   "note": "two parallel lanes of 0.35 and 0.42 mm, each above the 0.300 mm the .kicad_dru publishes for SYS_MAIN's 1.0 A"
+  }
+ },
+ "verification": {
+  "kicad_drc": {
+   "solder_mask_bridge": 1,
+   "lib_footprint_issues": 199,
+   "identical_to_inherited_baseline": true,
+   "unconnected": {
+    "before": 26,
+    "after": 25
+   }
+  },
+  "schematic_parity": {
+   "warnings": 246,
+   "errors": 0
+  },
+  "verify_promotion": "PASS 16/16",
+  "placement_contract": "PASS 10/10 (PL1..PL10)",
+  "pour_partition_contract": "PP1 PP2 PP3 PP4 PASS",
+  "protected_copper": "identical: 15 nets, 406 objects, none changed",
+  "contract_regression": "14 contracts, all ran, all PASS (baseline d718)",
+  "fab_package_contract": "FAB1..FAB8 PASS"
+ },
+ "instrument_repairs": [
+  "contract_regression.py --claim CONTRACT:ARG -- the suite invoked placement_contract and pour_partition_contract with NO arguments, so any decision that MOVED a part reported FAIL no matter how sound the board was",
+  "checks/contract_regression.py BOND_GUARD d709 -> d719 -- the guard names its tubes by LAND and eleven lands moved; the stale d709 guard STILL FAILS on this board, which is the non-vacuity control"
+ ]
+}

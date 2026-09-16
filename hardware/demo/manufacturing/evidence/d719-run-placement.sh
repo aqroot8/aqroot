@@ -1,0 +1,12 @@
+timeout 900 python3 hardware/demo/manufacturing/checks/placement_contract.py --ref HEAD \
+  --move U12:3000000:-3800000 --move L1:7500000:1000000:90 --move C28:925000:8155000:270 \
+  --move C31:49375000:-29455000:90 --move C32:47085000:-30005000:90 \
+  --move R39:900000:22150000:90 --move R40:7900000:16450000:90 \
+  --move R41:59685000:-17735000:180 --move R43:52985000:-19435000:0 \
+  --move TP6:4750000:-7500000 --move TP8:37700000:-22800000 \
+  --release C28.2 --release C31.1 --release C31.2 --release C32.1 --release C32.2 \
+  --release L1.1 --release L1.2 --release R39.1 --release R39.2 --release R40.1 --release R40.2 \
+  --release R41.1 --release R41.2 --release R43.1 --release R43.2 --release TP6.1 --release TP8.1 \
+  --release U12.2 --release U12.3 --release U12.4 --release U12.5 --release U12.6 --release U12.7 \
+  --release U12.8 --release U12.9 --release U12.12 --release U12.13 --release U12.14 --release U12.15 \
+  -o w/d719/d719-placement.json

@@ -1,3 +1,173 @@
+## D-719 — THE `TPS63020` IS REBUILT AS A CONVERTER BLOCK, AND ITS OWN `VIN` REACHES THE `SYS` RAIL FOR THE FIRST TIME
+
+    authority  2a3a9888 -> d566ef54            COPPER PROMOTED
+    retained open edges 10 -> 9                raw ratsnest 26 -> 25
+    /01_POWER_TREE/BQ25185_SYS 2 -> 1          Net-(SW9-A), Net-(U12-PG), /BQ25185_STAT1 stay CLOSED
+    ELEVEN PARTS MOVED: U12 L1 C28 C31 C32 R39 R40 R41 R43 TP6 TP8
+    `evidence/d719-summary.json`, `evidence/d719-build-u12-block.py`,
+    `evidence/d719-lay-u12-copper.py`, `evidence/d719-lay-signals.py`
+
+### 1. FOUR DEFECTS, NOT ONE, AND THEY ARE ONE BLOCK
+
+D-718's addendum named `{U12.10, U12.11}` — the `TPS63020`'s **POWER `VIN`
+pins** — the one open edge that stops the product working, and priced it as a
+0.7488 mm² island in a box with one 0.9 mm door.  It is that, and the door is
+real; but the door is a *symptom*.  Measured on the authority, the main 3.3 V
+buck-boost had **four** defects and they share a cause — the converter was
+never floorplanned as a converter:
+
+    1  VIN unconnected.  Only VINA (pin 1) was on the rail.
+    2  SWITCH NODE 15.34 mm.  `Net-(L1-Pad1)` left `U12.8` east to x = 68.875,
+       ran 8.4 mm SOUTH to y = 94.400 and came back west to `L1.1` -- a 9.2 mm
+       vertical of 0.400 mm switch node 1.2 mm from the WROOM antenna keep-out,
+       and the fence that walled U12's whole east side off from the SYS pour.
+    3  NO OUTPUT CAPACITANCE.  C29/C30/C31/C32, the four 22 uF +3V3 bulk caps,
+       were 46..60 mm away at y = 122.61.  `U12.4` to the nearest: 52.83 mm.
+    4  FEEDBACK 28 mm.  R39/R40, a 1 M / 180 k divider, sat at y ~ 72 and
+       `/01_POWER_TREE/V3V3_FB` crossed the board on In2 and In3.
+
+    plus  R41 (PG pull-up) 53.89 mm from `U12.14` and R43 (EN pull-down)
+          50.08 mm from `U12.12`; their two two-pad nets spent **103.02 mm /
+          44 objects** and **102.80 mm / 16 objects** crossing the middle of
+          the board to get there.
+
+### 2. WHAT MOVED, AND WHY EACH ONE
+
+`L1` rotates 90 degrees and moves to **(74.100, 97.600)** so BOTH inductor
+terminals face `U12`'s east column: the switch node becomes two ~1.1 mm stubs.
+`U12` moves into the space `L1` vacated plus the empty D-709 east step, to
+**(69.600, 97.600)** — which turns the 0.900 mm south band that D-718 measured
+into a **4.7 mm** one.  Then the bypassing comes to the pins it bypasses:
+
+    L1   (66.600, 96.600)   -> (74.100, 97.600) rot 90    switch node 15.34 -> 2.56 mm
+    U12  (66.600,101.400)   -> (69.600, 97.600)           band 0.900 -> 4.7 mm
+    C28  (69.175, 93.245)   -> (70.100,101.400) rot 270   100 nF: 9.72 -> 1.70 mm from VIN
+    C31  (20.320,122.610)   -> (69.700, 93.150) rot 90    22 uF: 52.83 -> 1.58 mm from VOUT
+    C32  (25.320,122.610)   -> (72.400, 92.600) rot 90    the second 22 uF
+    R39  (66.500, 71.750)   -> (67.400, 93.900) rot 90    FB node 28.28 -> 3.56 mm
+    R40  (60.500, 72.750)   -> (68.400, 89.200) rot 90
+    R41  (13.315,120.335)   -> (73.000,102.600) rot 180   PG 53.89 -> 5.44 mm
+    R43  (20.015,120.335)   -> (73.000,100.900)           EN 50.08 -> 3.61 mm
+    TP6  (70.250, 95.500)   -> (75.000, 88.000)           out of the SYS channel
+    TP8  (38.000,124.500)   -> (75.700,101.700)           follows R41
+
+**C29 and C30 STAY at x 10.35 / 15.34.**  Two of the four 22 uF remain as the
+radios' local bulk; two come to the converter, which is what the TPS63020
+datasheet asks for and what the converter had none of.
+
+**C24 DOES NOT MOVE.**  Its land is the junction where the F.Cu `SYS` trunk
+from `(61.675, 99.500)` meets the `B.Cu` run west to `(57.500, 105.200)` — the
+only F.Cu link between two pieces of the pour — and a `--release` there walks
+that chain.  The 100 nF at 1.70 mm is the bypass that matters; C24 and C26 stay
+where the pour already holds them.
+
+### 3. THE EDGE CLOSES THROUGH THE POUR, NOT THROUGH A JUMPER
+
+With the band 4.7 mm tall the `B /01_POWER_TREE/BQ25185_SYS POUR 1` fill
+reaches `U12.10` and `U12.11` directly.  `EN` and `PG` still have to cross that
+band out of `U12`'s south row, and both do it **on In2** — a 0.200 mm B.Cu stub
+off the land, one barrel, and the crossing runs UNDER the pour instead of
+through it.  `R41` (PG) sits SOUTH of `R43` (EN) in the east cluster for
+exactly one reason: it lets the two In2 lanes reach their destinations without
+swapping sides.
+
+`EN`'s second branch, to `SW9.1`/`TP13.1`, is the one thing here that had to be
+drawn by hand rather than routed.  `route_maze_batch --partial` closed it in
+14.5 mm of `B.Cu` straight through the pour's west passage — `pour_partition`
+refused, and it also routed a DNP island (`R68`).  Two more hand-drawn
+geometries were measured and refused for the same reason: leaving the band at
+y = 103.300 walls the VIN pocket on the west (pour in 4 pieces, `U11.1`
+severed from `VIN`), and descending at x = 63.300 seals the pour's own
+south-to-north corridor against `/ACC_5V_SW_EN`'s diagonal (pour in 2 pieces).
+**The one that works leaves at y = 100.250** — 0.95 mm below the pad row and
+ABOVE everything else in the band — so the pour keeps the whole 3.6 mm strip
+south of it and the VIN pocket stays open to the east, where `C28.1` is.
+
+### 4. WHAT IT BUYS, MEASURED
+
+    routed copper        before      after
+    Net-(L1-Pad1)        15.34 mm    2.56 mm      switch node
+    Net-(L1-Pad2)         3.98 mm    2.56 mm
+    Net-(SW9-A)         103.02 mm   24.75 mm      44 -> 14 objects
+    Net-(U12-PG)        102.80 mm    9.83 mm      16 ->  7 objects
+    /01_POWER_TREE/V3V3_FB 61.35 mm   7.67 mm     13 ->  6 objects
+    +3V3                113.55 mm  101.46 mm
+                        ------------------------
+                        about 251 mm of routed conductor comes OUT of the
+                        middle of the board, across F / B / In2 / In3
+
+**AND THE RAIL ITSELF IS WIDER.**  Sampling the `SYS` pour's cross-section
+every 0.25 mm from y = 80 to y = 103.5, the narrowest place the net gets is
+**two parallel lanes of 0.35 mm and 0.42 mm at y = 93.00** — each above the
+**0.300 mm** the `.kicad_dru` section 5 table publishes for `SYS_MAIN`'s 1.0 A
+design current.  Before it was a **single 0.480 mm lane at y = 101.25**, in a
+pour that was in THREE pieces and did not reach `VIN` at all.
+
+### 5. PROOF
+
+    real KiCad DRC   {solder_mask_bridge: 1, lib_footprint_issues: 199}
+                     BYTE-FOR-BYTE the inherited baseline; unconnected 26 -> 25
+    parity           246 warnings / ZERO errors (the inherited figure)
+    verify_promotion PASS -- 16/16 checks true
+    placement        PASS -- PL1..PL10, eleven --move claims and 29 --release
+    pour_partition   PP1 PP2 PP3 PP4 PASS, with the eleven --moved claims
+    protected_copper identical: 15 nets, 406 objects, none changed
+    contract suite   14 contracts, ALL RAN, ALL PASS (--baseline d718)
+    fab package      regenerated; FAB1..FAB8 PASS
+    hardware/beta-v2 untouched
+
+### 6. TWO INSTRUMENT REPAIRS THIS TRANSACTION PAID FOR
+
+**(a) A PART-MOVING TRANSACTION COULD NOT RUN THE STANDING SUITE HONESTLY.**
+`placement_contract.py` and `pour_partition_contract.py` each gained a way to
+STATE a move (D-678 `--move`, D-718 `--moved`) precisely because a land that is
+somewhere else carries no evidence about the copper that used to join it.
+`contract_regression.py` invoked BOTH WITH NO ARGUMENTS — so the moment a
+decision moved a part the suite reported `placement FAIL` and `pour_partition
+False` no matter how sound the board was, and the only way to read the real
+verdict was to run those two BY HAND OUTSIDE THE SUITE.  That is the failure
+mode the suite exists to prevent.  **`--claim CONTRACT:ARG`** forwards one
+argument to one named contract.  It is a pass-through and nothing else: the
+claim still has to be TRUE, the contracts still measure it against the same PRE
+board, and a claim for a part that did not move still fails `PL2` — measured,
+because the first run of this transaction's claims had `R40`'s delta wrong and
+`PL2` said so.
+
+**(b) THE BOND GUARD IS RE-CUT WHENEVER THE POUR MOVES.**  `BOND_GUARD` was
+still D-709's, and that file names its tubes by LAND: `U12.1`, `U12.2`,
+`U12.10`, `U12.11`, `U12.15` and `R40.2` are all somewhere else now, so `P2`
+reported six `misplaced_ends`, one `off_copper` tube and one `NO_SUCH_ISLAND`.
+`evidence/d719-pour-bond-guard-next.json` is cut on the promoted board (45
+guards, 1686 points, 170.509 mm) and `pour_bond_contract` then reads
+`P1 P2 P3 P4` all true.  **NON-VACUITY CONTROL: the stale d709 guard STILL
+FAILS on this board** — the same control D-709 recorded when it retired d656.
+
+### 7. WHAT IS LEFT — NINE EDGES OVER EIGHT NETS
+
+    /BQ25185_STAT2      2   U11.3 (a BQ25185 DFN-10 middle pin, NO LEGAL
+                            ESCAPE at >= 0.200 mm -- a package question) and
+                            U2.19 (a corridor; D-717's Q1 opens it in 11.798 mm
+                            with ZERO vias, 1.24x direct, and the minimal set
+                            is STILL NOT MEASURED -- the cheapest unmeasured
+                            edge on the board)
+    /01_POWER_TREE/BQ25185_SYS 1   {L4.1, U21.3} -- the accessory boost's own
+                            input, still on the far side of J5
+    /01_POWER_TREE/ACC_5V_LX   1   L4.2 <-> U21.5, the 0.160 mm gap arithmetic
+    /04_SPI_B_RADIOS_NFC/NFC_VDD_RF 1   U9.14
+    /ACC_PWR_EN         1   U3.20
+    /I2C_SCL_INT        1   U16.3
+    /NFC_SUPPLY         1   U9.10
+    /SX1262_DIO1        1   U2.9 <-> U8.13
+
+**AND THE NEXT MOVE IS NOT A ROUTE EITHER.**  251 mm of routed conductor left
+the middle of the board with this transaction — `Net-(SW9-A)`'s In3 diagonal
+from (38.900, 110.200) to (54.600, 100.000), `Net-(U12-PG)`'s 37.38 mm B.Cu
+run from (15.175, 119.750) to (44.675, 96.800), and the rest.  Every one of the
+eight nets above was refused for corridor reasons in territory some of that
+copper occupied.  **Re-ask them before planning anything else**: the cheapest
+are `/SX1262_DIO1` (`U2.9` <-> `U8.13`, whose corridor the `U12-PG` B.Cu
+diagonal crossed end to end) and `/BQ25185_STAT2` `U2.19`.
+
 # D-708 · 2026-09-14 · Demo — **THE OWNER-APPROVED EXPANSION AND `J8` MOVE WERE BUILT AND GATED AND THE BOARD REACHES 15 EDGES WITH ALL FIFTEEN CLAUSES TRUE. IT IS HELD OUT OF PROMOTION BY ONE PRE-EXISTING GROUND PATH, AND `U11` IS REFUTED IN BOTH DIRECTIONS BY ONE THING: ITS BATTERY PIN'S HAND TAPER**
 
     authority  eca812476fbcc6277462ca4e37c0aaa9ee3562bcc5955ba32491b6522832b82c  UNCHANGED
