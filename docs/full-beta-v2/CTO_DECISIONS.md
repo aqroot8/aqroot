@@ -43,6 +43,23 @@ has to buy WIDTH.  It has to buy a CROSSING -- one free layer through
 `ACC_DETECT_N_HDR`'s F.Cu horizontal off y = 36.000 or `ACC_3V3_SW`'s In2 run
 off x = 56.8, either of which is one ordinary signal.
 
+### ADDENDUM 3, POSTSCRIPT — THE RESIDUAL IS **ONE CROSSING LAYER**, AND D-703 ALREADY AUTHORISES BUYING IT
+
+The patch at (56.1..56.8, 35..37) needs **one** free layer and has none.  This
+board routes on **three** layers -- `F`, `In2`, `B` -- because `In1` (GND),
+`In3` (+3V3) and `In4` (GND) all carry filled pours, which D-703 recorded as
+the reason sixteen edges were corridor problems.  The owner's D-703 authority
+names **"a 6 -> 8 LAYER MIGRATION where analysis shows it is a faster, safer or
+more reliable path"** as option (3), needing no further approval.
+
+This is the first place on the board where the requirement is that specific:
+not "more room" but ONE signal layer through ONE 0.7 x 2.0 mm window, to let
+`ACC_5V_FB` and `EXT_SCL_BUF` cross a 2.19 A power leg they cannot go around.
+An 8-layer stack supplies it outright.  So does moving `ACC_DETECT_N_HDR`'s
+F.Cu horizontal off y = 36.000, which is one ordinary signal and costs nothing
+-- **that is the cheap experiment, and it should be tried first.**  Recording
+both so the next pass does not re-derive the choice.
+
 ## D-724 ADDENDUM 2 (CORRECTION) — THE RECIPE IS SMALLER AND SHARPER THAN ADDENDUM 1 SAID: **THREE** NETS, AND `ACC_5V_FB`'s ONE VIA IS THE PINCH ON **BOTH** LEGS
 
     authority  a405b06f  UNCHANGED
