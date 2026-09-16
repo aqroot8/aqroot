@@ -66,6 +66,29 @@
 > `verify_promotion` PASS and `protected_copper` showing exactly one protected
 > net moved.  `U14.7` is on the bus.  This board has **no open owner decision**.
 
+- **Demo D-720 ADDENDUM (`/I2C_SCL_INT` `U16.3` CLOSES IN 40.724 mm WITH THREE
+  BARRELS, AND THE `U16` WEST POCKET HOLDS EXACTLY TWO OF ITS THREE
+  CONDUCTORS):**  **NO COPPER.**  Authority UNCHANGED at `d566ef54`; 9 -> 9.
+  The run itself measures 9 -> 11 and is REFUSED -- what it proves is the
+  CAPACITY.  With `EXT_SCL_BUF` and `ACC_PWR_EN` evicted in a stated window
+  (13 objects), **`/I2C_SCL_INT` ROUTES: `U4.13` -> `U16.3`, 40.724 mm, THREE
+  barrels at (57.300,71.975) (56.475,64.875) (53.450,54.050), B -> In2 -> F ->
+  B** -- the first time this edge has ever been closed -- and then **neither
+  `EXT_SCL_BUF` nor `ACC_PWR_EN` can be re-laid** (`NO_PATH`, 9/3 and 5/5
+  escapes).  The pocket held those two before the run and holds
+  `I2C_SCL_INT` and nothing else after it: **which two is a matter of routing
+  ORDER, not of geometry the router can improve.**  `U16` is a `TCA4307DGKR`
+  in VSSOP-8 on 0.65 mm pitch whose WEST column carries THREE signals with
+  THREE different destinations -- `EN` south-west to `R17.1`/`U3.20`, `SCLOUT`
+  NORTH past pins 3 and 4 to its barrel at (56.400,52.800), `SCLIN` SOUTH to
+  `U4.13` -- through about 0.325 mm of clear width, while its EAST column faces
+  `J5`'s through-hole wall at x = 62.952.  **THE REMEDY IS PLACEMENT AND IT IS
+  THE REVIEW'S PRIORITY 6:** rotate/re-floorplan the accessory control cluster
+  (`U16`, `R129`, `R63`, `R17`, `R46`, `R49`, `R102`, `C37`, `C39`, `TP12`) so
+  the two pins that must go SOUTH -- `SCLIN` and `EN`, two of the board's nine
+  remaining edges -- face south.  **THAT IS THE NEXT TRANSACTION ON THIS
+  BOARD.**  (Also met again: `--evict-window` is a BOUNDING BOX, so the three
+  `track_dangling` this run reports are ends that survived outside it.)
 - **Demo D-720 (THE NINE REMAINING EDGES ARE RE-ASKED AND RE-CLASSIFIED:
   `U11.3` IS THE ONLY SEALED LAND ON THE BOARD, `U9`'s TWO ARE RF GEOMETRY,
   AND `/I2C_SCL_INT` IS PRICED AT TWO NETS):**  **NO COPPER.**  Authority

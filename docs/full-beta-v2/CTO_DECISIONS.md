@@ -1,3 +1,56 @@
+## D-720 ADDENDUM — `/I2C_SCL_INT` `U16.3` CLOSES IN 40.724 mm WITH THREE BARRELS, AND THE `U16` WEST POCKET HOLDS EXACTLY TWO OF ITS THREE CONDUCTORS. IT IS A PLACEMENT PROBLEM, NOT A CORRIDOR ONE
+
+    authority  d566ef54  UNCHANGED.  NO COPPER.  9 -> 9.
+    the run itself measures 9 -> 11 and is REFUSED; what it proves is the
+    capacity, and that is the finding.
+    `evidence/d720-u16-west-fanout-two-of-three.json`
+
+D-720 §4 named `U16`'s own two neighbours as `U16.3`'s fence and §6 said to
+re-lay all three west pins as one transaction.  That run is made
+(`--evict /09_COMMUNITY_HEADER/EXT_SCL_BUF --evict /ACC_PWR_EN --evict-window
+54.0,52.0,57.2,56.8`, 0.025 mm lattice, `AQROOT_OFFCENTRE_LAUNCH=1`, 73 min):
+
+    evicted   13 objects -- 10 EXT_SCL_BUF, 3 ACC_PWR_EN -- inside the stated
+              window, leaving 9 dangling ends outside it
+    /I2C_SCL_INT       ROUTED.  U4.13 -> U16.3, 40.724 mm, THREE barrels at
+                       (57.300,71.975) (56.475,64.875) (53.450,54.050),
+                       layers B -> In2 -> F -> B
+    /09_..._/EXT_SCL_BUF   NO_PATH, 9 src escapes, 3 dst
+    /ACC_PWR_EN            NO_PATH, 5 src escapes, 5 dst
+
+**`U16.3` IS ROUTABLE.**  It has never been routed on this board and the whole
+question of whether it can be is now answered: 40.724 mm and three barrels, the
+moment it gets the pocket.  **AND THE POCKET HOLDS TWO.**  It held
+`EXT_SCL_BUF` and `ACC_PWR_EN` before this run and it holds `I2C_SCL_INT` and
+nothing else after it; which two is a matter of routing ORDER, not of geometry
+the router can improve.
+
+    U16 is a TCA4307DGKR I2C hot-swap buffer in VSSOP-8, 0.65 mm pitch, and
+    its WEST column carries THREE signals and a ground:
+       1 EN     /ACC_PWR_EN                -> R17.1 and U3.20, SOUTH-WEST
+       2 SCLOUT /09_..._/EXT_SCL_BUF       -> its barrel at (56.400,52.800),
+                                              NORTH, past pins 3 and 4
+       3 SCLIN  /I2C_SCL_INT               -> U4.13 at (56.587,70.000), SOUTH
+       4 GND
+    while the EAST column -- facing `J5`'s through-hole wall at x = 62.952 --
+    carries READY, SDAIN, SDAOUT and VCC.  Three destinations in three
+    different directions leave one 0.65 mm-pitch column through about 0.325 mm
+    of clear width, and the fan-out has nowhere to diverge before it must turn.
+
+**SO THE REMEDY IS PLACEMENT AND IT IS THE REVIEW'S PRIORITY 6.**  The
+candidate is `U16` ROTATED so the pins that must go SOUTH -- `SCLIN` and `EN`,
+which are two of this board's nine remaining edges -- face south, with
+`SCLOUT`/`SDAOUT` left facing `J5`.  That is a re-floorplan of the accessory
+control cluster (`U16`, `R129`, `R63`, `R17`, `R46`, `R49`, `R102`, `C37`,
+`C39`, `TP12`), exactly the shape D-719 used on `U12`, and it is the next
+transaction on this board.
+
+**WHAT THIS RUN IS NOT.**  It is refused and nothing is promoted: `no_regression`
+(two closed nets lost their copper), `board_improved` (9 -> 11) and
+`attributable_drc` (three `track_dangling` at the eviction window's edge --
+`--evict-window` cuts objects at the boundary and the ends outside it survive,
+which is the D-679 `--evict-window is a bounding box` lesson met again).
+
 ## D-720 — THE NINE REMAINING EDGES ARE RE-ASKED AGAINST D-719'S FREED CORRIDORS AND RE-CLASSIFIED: `U11.3` IS THE ONLY SEALED LAND ON THE BOARD, `U9`'s TWO ARE RF GEOMETRY, AND `/I2C_SCL_INT` IS PRICED AT TWO NETS FOR THE FIRST TIME
 
     authority  d566ef54  UNCHANGED.  NO COPPER.
