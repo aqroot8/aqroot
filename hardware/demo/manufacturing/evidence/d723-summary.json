@@ -1,0 +1,111 @@
+{
+ "schema": 1,
+ "decision": "D-723",
+ "title": "The ST25R3916's VDD_TX pin gets its copper; /NFC_SUPPLY closes and the board's real DRC reaches zero violations",
+ "authority_before": "d566ef54e792b47d7ee6df117bc3cd5195942de45b82269f8f48665ffe300385",
+ "authority_after": "a405b06f077417c24a3c272e9e5062d6583029d7bf5b595bc24f69fce3ad9c89",
+ "retained_open_edges": {
+  "before": 9,
+  "after": 8
+ },
+ "open_retained_nets": {
+  "before": 8,
+  "after": 7
+ },
+ "raw_board_ratsnest": {
+  "before": 25,
+  "after": 24
+ },
+ "edges_closed": [
+  "/NFC_SUPPLY  U9.10 -- the ST25R3916's VDD_TX, the transmitter's external supply pin"
+ ],
+ "copper": {
+  "added_tracks": 4,
+  "added_vias": 0,
+  "removed_objects": 5,
+  "escape": {
+   "net": "/NFC_SUPPLY",
+   "from": "U9.10 (32.750,27.725)",
+   "segments": [
+    [
+     32.75,
+     27.725,
+     32.6,
+     26.2,
+     0.2
+    ],
+    [
+     32.6,
+     26.2,
+     31.23,
+     25.95,
+     0.4
+    ]
+   ],
+   "to": "NFC_SUPPLY's own 0.400 mm trunk at (31.230,25.950)",
+   "barrels": 0,
+   "layer": "B.Cu"
+  },
+  "barrels": {
+   "removed": {
+    "net": "GND",
+    "at": [
+     32.2,
+     26.0
+    ],
+    "why": "C45.2's ground tie; its land sits inside the B GND PLANE fill, so the barrel was redundant"
+   },
+   "moved": {
+    "net": "/04_SPI_B_RADIOS_NFC/NFC_VDD_RF",
+    "from": [
+     32.2,
+     26.9
+    ],
+    "to": [
+     31.95,
+     26.85
+    ],
+    "why": "it boxed the only channel out of U9.10"
+   }
+  }
+ },
+ "width_justification": {
+  "netclass": "P3V3",
+  "dru_floor_mm": 0.4,
+  "land_width_mm": 0.3,
+  "licence": "Pad-escape necking - width, fine-pitch power packages: 0.200 mm for any track intersecting U9's courtyard; it sits AFTER the P3V3 rule in the file and already won there",
+  "current": {
+   "source": "ST DS12484 Rev 3, VDD_RF regulator section",
+   "quote": "limits the regulator current to 350 mArms in normal operation",
+   "ipc2221b_width_mm_for_0_35A_1oz_outer_dT10K": 0.085,
+   "margin": "0.200 mm carries 0.35 A with better than 2x margin"
+  }
+ },
+ "solder_mask_bridge": {
+  "resolved": true,
+  "object": "MK1 acoustic port: 1.05 mm NPTH, no net, concentric inside the DMM-4026-B-I2S's own 1.65 mm GND land",
+  "fix": "allow_soldermask_bridges set on the LIBRARY footprint so instance and AQROOT_Beta.pretty agree",
+  "fabrication_impact": "none -- no mask aperture moves"
+ },
+ "verification": {
+  "verify_promotion": "PASS 16/16, attributable DRC []",
+  "kicad_drc": {
+   "attributable": {},
+   "total": {
+    "lib_footprint_issues": 199
+   },
+   "note": "the 199 are the headless kicad-cli's own missing-footprint-library warnings, identical on the authority in place beside its own fp-lib-table"
+  },
+  "unconnected": {
+   "before": 25,
+   "after": 24
+  },
+  "schematic_parity": {
+   "warnings": 246,
+   "errors": 0
+  },
+  "protected_copper": "IDENTICAL -- 15 nets, 406 objects",
+  "fab_package_contract": "PASS",
+  "beta_v2": "untouched"
+ }
+}

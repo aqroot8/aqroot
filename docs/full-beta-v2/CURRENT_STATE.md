@@ -66,6 +66,54 @@
 > `verify_promotion` PASS and `protected_copper` showing exactly one protected
 > net moved.  `U14.7` is on the bus.  This board has **no open owner decision**.
 
+- **Demo D-723 (THE ST25R3916's `VDD_TX` PIN GETS ITS COPPER: `/NFC_SUPPLY`
+  CLOSES, 9 -> 8 EDGES, AND THE BOARD'S REAL DRC REACHES **ZERO VIOLATIONS**
+  FOR THE FIRST TIME):**  **COPPER PROMOTED.**  Authority `d566ef54` ->
+  `a405b06f`; **retained open edges 9 -> 8**, open retained nets 8 -> 7, raw
+  ratsnest 25 -> 24.  ***D-722 FOUND THAT BOTH OF THE ST25R3916's TRANSMITTER
+  SUPPLY PINS WERE OPEN.  ONE OF THEM IS NOW CONNECTED.***  `U9.10` is
+  **`VDD_TX`, "External positive supply for the TX part"** (DS12484 Rev 3,
+  Table 2), and it reaches `/NFC_SUPPLY`'s own 0.400 mm trunk at
+  `(31.230,25.950)` in **two segments and ZERO barrels** -- 0.200 mm out of the
+  land, 0.400 mm the moment it is clear of the package.  ***THE 0.200 mm IS THE
+  BOARD'S OWN LICENCE AND ST'S OWN NUMBER:*** `/NFC_SUPPLY` is `P3V3`, whose
+  floor is 0.400 mm, and `U9.10`'s LAND IS 0.300 mm WIDE, so that floor has
+  been unsatisfiable at this pin since the class was written -- but the
+  `.kicad_dru`'s **`Pad-escape necking - width, fine-pitch power packages`**
+  rule already grants 0.200 mm to any track intersecting `U9`'s courtyard and
+  sits AFTER the `P3V3` rule in the file, and **DS12484 says the `VDD_RF`
+  regulator "limits the regulator current to 350 mArms"**, against which
+  IPC-2221B asks **0.085 mm** at this board's copper.  0.200 mm carries it with
+  better than 2x margin.  D-249's ruling one part over: **at `U9.10` the
+  PACKAGE is the bottleneck, not the rule** -- no rule changed, no number
+  invented.  ***TWO BARRELS WERE THE WHOLE OBSTRUCTION:*** `GND`'s stitch at
+  `(32.200,26.000)` is REMOVED (it is `C45.2`'s tie and that land sits inside
+  the `B GND PLANE` fill, so it was redundant) and `NFC_VDD_RF`'s at
+  `(32.200,26.900)` MOVED to `(31.950,26.850)` with `U9.9`'s escape and its
+  F.Cu stub re-laid to follow.  **No component moved, no pour outline changed.**
+  ***AND THE LAST INHERITED DRC VIOLATION IS RESOLVED WITH IT:*** the
+  `solder_mask_bridge` every decision since D-597 has "inherited" is `MK1`'s
+  **ACOUSTIC PORT** -- a 1.05 mm NPTH with no net, concentric inside the
+  `DMM-4026-B-I2S`'s own 1.65 mm GND land, sharing one mask aperture with it BY
+  DESIGN, as that footprint's own description has said since FBV2-S2-002 --
+  and `allow_soldermask_bridges` is now set **on the library footprint**, so the
+  instance and `AQROOT_Beta.pretty` agree.  No mask aperture moves, so no
+  fabrication output changes.  **REAL KiCad DRC, ATTRIBUTABLE: `{}`.  TOTAL:
+  `{lib_footprint_issues: 199}`, the headless CLI's own missing-library
+  warnings, identical on the authority in place beside its own `fp-lib-table`.
+  THIS IS THE FIRST BOARD STATE IN THE PROGRAMME WITH NO REAL DRC VIOLATION.**
+  ***PROOF:*** `verify_promotion` **PASS 16/16** with attributable DRC `[]`;
+  unconnected 25 -> 24; parity 246 warnings / **ZERO errors**;
+  `protected_copper` **IDENTICAL** (15 nets, 406 objects);
+  `fab_package_contract` **PASS** at board `a405b06f`, 29 files;
+  `contract_regression` **14 contracts, ALL RAN, ALL PASS**;
+  `hardware/beta-v2` untouched.  ***WHAT IS LEFT -- EIGHT EDGES OVER SEVEN
+  NETS:*** `/BQ25185_STAT2` 2 (`U11.3` sealed by D-269 -- an owner decision;
+  `U2.19` has `BTN_DOWN_N` as a single-net opener but the route cuts
+  `SYS POUR 1`), `NFC_VDD_RF` 1 (`U9.14` `VDD_DR` -- PM-3), `ACC_5V_LX` 1 (the
+  switch node is ROUTABLE and DRC-clean; only PP2's fragment price refuses it),
+  `BQ25185_SYS` 1, `ACC_PWR_EN` 1, `I2C_SCL_INT` 1 (the `U16` pocket holds two
+  of three), `SX1262_DIO1` 1 (79 nets cross its corridor).
 - **Demo D-722 (BOTH OF THE ST25R3916's TRANSMITTER SUPPLY PINS ARE
   UNCONNECTED: `U9.10` IS `VDD_TX` AND `U9.14` IS `VDD_DR`, SO THE NFC
   TRANSMITTER HAS NO SUPPLY AT ALL):**  **NO COPPER.**  Authority UNCHANGED at
