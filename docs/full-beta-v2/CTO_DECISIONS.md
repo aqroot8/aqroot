@@ -1,3 +1,142 @@
+## D-720 — THE NINE REMAINING EDGES ARE RE-ASKED AGAINST D-719'S FREED CORRIDORS AND RE-CLASSIFIED: `U11.3` IS THE ONLY SEALED LAND ON THE BOARD, `U9`'s TWO ARE RF GEOMETRY, AND `/I2C_SCL_INT` IS PRICED AT TWO NETS FOR THE FIRST TIME
+
+    authority  d566ef54  UNCHANGED.  NO COPPER.
+    retained open edges 9 -> 9
+    `evidence/d720-offcentre-launch-ladder.json`,
+    `evidence/d720-blame-i2c-scl-int-u16-3.json`,
+    `evidence/d720-reask-*.json`, `evidence/d720-u9-fanout-refused-drc.json`
+
+### 1. D-719 FREED 251 mm AND IT OPENED NOTHING BY ITSELF
+
+D-719's own NEXT list said to re-ask every remaining edge before planning
+anything else, because 251 mm of routed conductor had just come out of the
+middle of the board.  Five runs did that, and the honest answer is that none of
+the nine edges closes on `F`/`B`/`In2` at the contract width:
+
+    /SX1262_DIO1                 NO_PATH   6 src escapes, 8 dst, 165.7 s
+    /ACC_PWR_EN                  NO_PATH   10 src, 5 dst
+    /I2C_SCL_INT                 NO_PATH   46 src, 2 dst
+    /BQ25185_STAT2               NO_PATH   16 src, 4 dst
+    /NFC_SUPPLY                  NO_LEGAL_ESCAPE_DST  U9.10 at >= 0.600 mm
+    /04_..._NFC/NFC_VDD_RF       NO_LEGAL_ESCAPE_DST  U9.14 at >= 0.200 mm
+
+`--escape-floor --trunk-floor` takes `U9.10` from 0.600 to 0.400 and no
+further; `--neck` does not engage; `AQROOT_OFFCENTRE_LAUNCH=1` changes
+`/I2C_SCL_INT`'s source escape count from 46 to 35 and nothing else.  **The
+251 mm was not spent in these corridors.**
+
+### 2. THE OFF-CENTRE LADDER SORTS THE NINE INTO THREE CLASSES
+
+`screen_offcentre_launch --lands-only` over all six open nets:
+
+    U11.3      SEALED at every rung, centre AND off-centre
+    U16.3      OFF-CENTRE OPENS at 0.200 mm on B -- but reach 0.025 mm past
+               its own edge; centre-anchored refuses at every rung
+    U9.14      OFF-CENTRE OPENS at 0.200 mm on B -- reach 0.025 mm
+    U9.10      OFF-CENTRE OPENS at 0.250 mm on B (P3V3's floor is 0.400)
+    U9.8       OFF-CENTRE OPENS at 0.450 mm (anchor 0.120 mm off centre)
+    every other land -- U2.9, U8.13, U2.19, U3.20, U16.1, R17.1, C49.1,
+    C50.1, U9.9, U1.38, TP5.1, R20.2, J1.44, U2.22, U14.7, U4.13, U3.22,
+    R128.2, TP7.1 -- escapes FROM ITS CENTRE at the contract width.
+
+**`U11.3` is the only land on this board that has no launch at any width in
+any direction.**  It is a `BQ25185` DFN-10 middle pin on 0.400 mm pitch with
+0.200 mm-tall lands and it is settled: no router flag opens it, and D-708 and
+the `U11` memory record that `U11` cannot move because `U11.2`'s 3.125 A feed
+is a nine-step hand taper.  **`/BQ25185_STAT2` needs an ECO, not a route** --
+and the independent review's PRIORITY 2 (`STAT1`/`STAT2` -> `U3.13`/`U3.14`)
+does NOT fix it either, because the sealed land is the CHARGER's pin, not the
+expander's.  What that ECO would fix is `U2.19`, the net's other edge.
+
+**A 0.025 mm reach is not a launch.**  `U16.3` and `U9.14` "open" off-centre
+by less than one lattice cell at any pitch this board can raster, which is why
+`route_maze_batch` still reports `NO LEGAL ESCAPE` for them with the gate set.
+
+### 3. `U9`'s TWO EDGES ARE RF GEOMETRY, MEASURED
+
+The textbook answer for a 0.500 mm-pitch QFN land with no in-plane escape is a
+fan-out barrel just outside the pad row.  It is drawn, DRC'd and REFUSED
+(`evidence/d720-probe-u9-fanout.py`, `evidence/d720-u9-fanout-refused-drc.json`):
+0.600/0.300 barrels at `(34.750, 26.900)` for `U9.14` and `(32.750, 26.900)`
+for `U9.10`, on 0.200 and 0.300 mm stubs, return
+
+    drill_out_of_range   the P3V3 barrel against "POWER-class vias use the
+                         0.40 mm drill"
+    clearance x5         against /04_.../NFC_RFO1's transmit arm at 0.1743 mm
+                         (its own 0.25 mm routed-clearance rule), against the
+                         "Pad-escape necking - clearance" rule at 0.0500,
+                         0.1000 and 0.0610 mm, and against NFC_VDD_A's In2 run
+    shorting_items x4    the two barrels to each other's nets
+
+**The copper immediately north of `U9`'s pin row is the NFC transmit matching
+network**, which `rf_symmetry_contract` protects and `AQROOT_DEMO_SCOPE` keeps
+as a required feature.  `U9.10` and `U9.14` are second pins of supplies whose
+first pins (`U9.8`, `U9.9`) are already fed; closing them means either a width
+licence plus a barrel site the RF geometry does not have, or moving the NFC
+matching network.  **Neither is a routing question.**
+
+### 4. `/I2C_SCL_INT` IS PRICED, AND `U16`'s OWN TWO NEIGHBOURS ARE THE FENCE
+
+`screen_pair_corridor_blame /I2C_SCL_INT U16.3 U4.13 3.0 50000` (569 s):
+
+    BASE   NO_LEGAL_ESCAPE -- "U16.3: NO OFF-CENTRE LAUNCH at 0.200 mm from
+           any of 41 anchors x 24 directions x 17 lengths; blocked by
+           U16.2 (x6297), U16.4 (x5870), U16.1 (x2158), track (x1041)"
+    Q1     drop ALL routed copper of the SIXTEEN foreign nets in the window
+           -> OPENS in 18.996 mm with ZERO vias, against a 15.6 mm straight
+           line: 1.22x direct, a genuinely tight corridor
+    Q2     no single net opens it (EXT_SCL_BUF alone frees the ESCAPE and
+           returns NO_PATH; every other net returns NO_LEGAL_ESCAPE)
+    Q3     MINIMAL SET = TWO NETS, /09_COMMUNITY_HEADER/WAKE_GATE_S and GND,
+           -> OPENS in 30.953 mm
+
+    the set, enumerated: WAKE_GATE_S 11 objects / 18.9 mm, four of them the
+    In3 run (58.600,64.500)->(58.100,64.100)->(54.900,59.000)->(57.300,56.600);
+    GND 34 objects / 9.22 mm of stitch and SIXTEEN barrels.
+
+**AND THE GEOMETRY SAYS WHY.**  `U16` is a VSSOP-8 whose three west pins all
+escape west, and pins 1 and 2 have taken the room:
+
+    U16.1  /ACC_PWR_EN      escapes (56.450,55.650)->(56.300,55.650)->
+                            (56.075,55.500)->(55.100,54.500)->(51.500,54.900)
+    U16.2  /EXT_SCL_BUF     escapes (56.450,55.000)->(56.300,55.000)->
+                            (56.075,54.850)->(55.900,54.375)->(55.900,53.600)
+    U16.3  /I2C_SCL_INT     has 0.150 mm of pad gap above and below and a ray
+                            west that both of the above cross
+
+`EXT_SCL_BUF`'s corner at `(55.900, 54.375)` sits on `U16.3`'s westward ray,
+and `ACC_PWR_EN`'s diagonal takes what is left.  **`U16.3` is not fenced by
+the board; it is fenced by its own two neighbours' escapes**, which is a
+different and much cheaper problem than the corridor price above: the three
+pads are on 0.65 mm pitch and three 0.200 mm conductors need 0.60 mm.
+
+### 5. `/ACC_PWR_EN` IS PRICED TOO, AND ITS ONLY SINGLE-NET OPENER IS `+3V3`
+
+`screen_pair_corridor_blame /ACC_PWR_EN U3.20 U16.1 3.0 50000`:
+
+    BASE   NO_PATH
+    Q1     drop ALL routed copper of the TWENTY-SEVEN foreign nets in the
+           window -> OPENS in 27.163 mm with ZERO vias
+    Q2     +3V3 ALONE OPENS IT -- in 132.595 mm, a 6.7x tour of a 19.8 mm
+           straight line, so it is not a candidate at that price; no other
+           net opened it in the fifteen swept before the run was stopped
+
+### 6. NEXT, IN ORDER OF LEVERAGE
+
+  1. **`U16`'s WEST FAN-OUT, RE-LAID AS ONE TRANSACTION.**  Rip `U16.1`'s and
+     `U16.2`'s local escapes and lay all THREE west pins together.  It is the
+     independent review's PRIORITY 6 "U16 `I2C_SCL_INT` + `ACC_PWR_EN` as a
+     coordinated local transaction" with the measurement now behind it, and it
+     is the only place on the board where one bounded rip-up is in front of
+     TWO retained edges.
+  2. **`/BQ25185_STAT2` IS AN ECO.**  `U11.3` is sealed at every width; the
+     net cannot be closed by routing.  Escalate the pin reallocation (or a
+     `BQ25185` package/placement change) as a product decision.
+  3. **`U9.10`/`U9.14` ARE AN RF-BLOCK DECISION**, not a route: either a
+     bounded 0.300 mm width licence plus a barrel site the transmit matching
+     network does not currently leave, or move that network.
+  4. `/SX1262_DIO1` remains the one long-haul corridor and is unpriced.
+
 ## D-719 — THE `TPS63020` IS REBUILT AS A CONVERTER BLOCK, AND ITS OWN `VIN` REACHES THE `SYS` RAIL FOR THE FIRST TIME
 
     authority  2a3a9888 -> d566ef54            COPPER PROMOTED

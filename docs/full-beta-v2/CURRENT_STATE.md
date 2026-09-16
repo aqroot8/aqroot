@@ -66,6 +66,50 @@
 > `verify_promotion` PASS and `protected_copper` showing exactly one protected
 > net moved.  `U14.7` is on the bus.  This board has **no open owner decision**.
 
+- **Demo D-720 (THE NINE REMAINING EDGES ARE RE-ASKED AND RE-CLASSIFIED:
+  `U11.3` IS THE ONLY SEALED LAND ON THE BOARD, `U9`'s TWO ARE RF GEOMETRY,
+  AND `/I2C_SCL_INT` IS PRICED AT TWO NETS):**  **NO COPPER.**  Authority
+  UNCHANGED at `d566ef54`; 9 -> 9.  ***D-719 FREED 251 mm AND IT OPENED
+  NOTHING BY ITSELF:*** five runs re-asked every remaining edge and all six
+  nets refuse -- `/SX1262_DIO1`, `/ACC_PWR_EN`, `/I2C_SCL_INT` and
+  `/BQ25185_STAT2` `NO_PATH`, `/NFC_SUPPLY` and `NFC_VDD_RF`
+  `NO_LEGAL_ESCAPE_DST`.  `--escape-floor --trunk-floor` takes `U9.10` from
+  0.600 to 0.400 mm and no further; `AQROOT_OFFCENTRE_LAUNCH=1` moves
+  `/I2C_SCL_INT`'s source escapes 46 -> 35 and nothing else.  ***THE OFF-CENTRE
+  LADDER SORTS THEM INTO THREE CLASSES:*** **`U11.3` is SEALED at every rung,
+  centre AND off-centre -- the ONLY land on this board with no launch at any
+  width in any direction**, so `/BQ25185_STAT2` needs an ECO and not a route
+  (and the review's `STAT1`/`STAT2` -> `U3.13`/`U3.14` reallocation does NOT
+  fix it, because the sealed land is the CHARGER's pin); `U16.3` and `U9.14`
+  "open" off-centre at 0.200 mm but reach **0.025 mm past their own edge**,
+  which is less than one lattice cell at any pitch this board can raster;
+  `U9.10` opens at 0.250 mm against P3V3's 0.400 floor; and **every other open
+  land escapes from its CENTRE at the contract width**, so those edges are
+  corridor problems.  ***`U9`'s TWO EDGES ARE RF GEOMETRY, MEASURED:*** the
+  textbook fan-out barrel just outside the pad row is drawn and DRC'd and
+  REFUSED -- `drill_out_of_range` on the P3V3 barrel, FIVE clearance violations
+  including 0.1743 mm against `/04_.../NFC_RFO1`'s transmit arm and its own
+  0.25 mm rule, and four shorts.  The copper north of `U9`'s pin row is the NFC
+  transmit matching network that `rf_symmetry` protects.  ***`/I2C_SCL_INT` IS
+  PRICED FOR THE FIRST TIME:*** `BASE NO_LEGAL_ESCAPE`; **`Q1` -- drop all
+  routed copper of the SIXTEEN foreign nets in the window -- OPENS in
+  18.996 mm with ZERO vias**, 1.22x the 15.6 mm straight line; no single net
+  opens it; and **`Q3`'s MINIMAL SET is TWO NETS, `/09_COMMUNITY_HEADER/
+  WAKE_GATE_S` (11 objects, 18.9 mm, four of them the In3 run) and `GND` (34
+  objects, 9.22 mm and SIXTEEN barrels), for 30.953 mm**.  ***AND THE GEOMETRY
+  SAYS WHY:*** `U16` is a VSSOP-8 whose three WEST pins all escape west and
+  pins 1 and 2 have taken the room -- `EXT_SCL_BUF` turns down at
+  `(55.900, 54.375)` across `U16.3`'s ray and `ACC_PWR_EN`'s own diagonal
+  `(56.075,55.500)-(55.100,54.500)` takes what is left.  **`U16.3` is fenced by
+  its own two neighbours' escapes, not by the board**, and the three pads are
+  on 0.65 mm pitch where three 0.200 mm conductors need 0.60 mm.
+  ***`/ACC_PWR_EN` TOO:*** `BASE NO_PATH`, `Q1` opens in 27.163 mm with ZERO
+  vias, and the only single-net opener in the fifteen swept is **`+3V3` alone
+  at 132.595 mm** -- a 6.7x tour, not a candidate at that price.  **NEXT, IN
+  ORDER OF LEVERAGE: (1) re-lay `U16`'s WEST FAN-OUT as one transaction** --
+  the only place on the board where one bounded rip-up stands in front of TWO
+  retained edges; (2) `/BQ25185_STAT2` is an ECO; (3) `U9.10`/`U9.14` are an
+  RF-block decision; (4) `/SX1262_DIO1` is still unpriced.
 - **Demo D-719 (THE `TPS63020` IS REBUILT AS A CONVERTER BLOCK AND ITS OWN
   `VIN` REACHES THE `SYS` RAIL FOR THE FIRST TIME):**  **COPPER PROMOTED.**
   Authority `2a3a9888` -> `d566ef54`; **10 -> 9 retained open edges**;

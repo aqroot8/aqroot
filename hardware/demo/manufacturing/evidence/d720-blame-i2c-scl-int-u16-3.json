@@ -1,0 +1,355 @@
+{
+  "a": "U16.3",
+  "b": "U4.13",
+  "banned_nets": [],
+  "board": "/home/aqroot8/aqroot-demo/hardware/demo/kicad/aqroot-demo/aqroot-Beta-v2.kicad_pcb",
+  "board_is_authority": true,
+  "board_sha256": "d566ef54e792b47d7ee6df117bc3cd5195942de45b82269f8f48665ffe300385",
+  "complete": true,
+  "grid_nm": 50000,
+  "instrument": "maze3d.offcentre_route under screen_corridor_blockers.Without",
+  "layers": [
+    "F",
+    "B",
+    "I2"
+  ],
+  "margin_mm": 3.0,
+  "max_mm": null,
+  "net": "/I2C_SCL_INT",
+  "q2": "RUN",
+  "rows": [
+    {
+      "accepted": false,
+      "layers": null,
+      "mm": null,
+      "ok": false,
+      "reason": "NO_LEGAL_ESCAPE",
+      "step": "BASE",
+      "vias": null,
+      "why": "U16.3: NO OFF-CENTRE LAUNCH at 0.200 mm from any of 41 anchors x 24 directions x 17 lengths; blocked by U16.2 (x6297), U16.4 (x5870), U16.1 (x2158), track (x1041)"
+    },
+    {
+      "accepted": true,
+      "layers": [
+        "B"
+      ],
+      "mm": 18.9957,
+      "nets": [
+        "+3V3",
+        "/05_I2C_DEVICES/BMI270_INT1_RAW",
+        "/05_I2C_DEVICES/BMI270_SDO_ADDR",
+        "/09_COMMUNITY_HEADER/EXT_SCL_BUF",
+        "/09_COMMUNITY_HEADER/NATIVE_A_HDR",
+        "/09_COMMUNITY_HEADER/TCA4307_READY",
+        "/09_COMMUNITY_HEADER/WAKE_GATE_S",
+        "/ACC_3V3_EN",
+        "/ACC_3V3_SW",
+        "/ACC_DETECT_N",
+        "/ACC_POWER_FAULT_N",
+        "/ACC_PWR_EN",
+        "/BQ25185_STAT1",
+        "/I2C_SDA_INT",
+        "GND",
+        "Net-(U11-TS_MR)"
+      ],
+      "ok": true,
+      "reason": null,
+      "step": "Q1_UPPER_BOUND",
+      "vias": 0,
+      "why": null
+    },
+    {
+      "accepted": false,
+      "layers": null,
+      "mm": null,
+      "net": "+3V3",
+      "ok": false,
+      "reason": "NO_LEGAL_ESCAPE",
+      "step": "Q2_SINGLE_NET",
+      "vias": null
+    },
+    {
+      "accepted": false,
+      "layers": null,
+      "mm": null,
+      "net": "/05_I2C_DEVICES/BMI270_INT1_RAW",
+      "ok": false,
+      "reason": "NO_LEGAL_ESCAPE",
+      "step": "Q2_SINGLE_NET",
+      "vias": null
+    },
+    {
+      "accepted": false,
+      "layers": null,
+      "mm": null,
+      "net": "/05_I2C_DEVICES/BMI270_SDO_ADDR",
+      "ok": false,
+      "reason": "NO_LEGAL_ESCAPE",
+      "step": "Q2_SINGLE_NET",
+      "vias": null
+    },
+    {
+      "accepted": false,
+      "layers": null,
+      "mm": null,
+      "net": "/09_COMMUNITY_HEADER/EXT_SCL_BUF",
+      "ok": false,
+      "reason": "NO_PATH",
+      "step": "Q2_SINGLE_NET",
+      "vias": null
+    },
+    {
+      "accepted": false,
+      "layers": null,
+      "mm": null,
+      "net": "/09_COMMUNITY_HEADER/NATIVE_A_HDR",
+      "ok": false,
+      "reason": "NO_LEGAL_ESCAPE",
+      "step": "Q2_SINGLE_NET",
+      "vias": null
+    },
+    {
+      "accepted": false,
+      "layers": null,
+      "mm": null,
+      "net": "/09_COMMUNITY_HEADER/TCA4307_READY",
+      "ok": false,
+      "reason": "NO_LEGAL_ESCAPE",
+      "step": "Q2_SINGLE_NET",
+      "vias": null
+    },
+    {
+      "accepted": false,
+      "layers": null,
+      "mm": null,
+      "net": "/09_COMMUNITY_HEADER/WAKE_GATE_S",
+      "ok": false,
+      "reason": "NO_PATH",
+      "step": "Q2_SINGLE_NET",
+      "vias": null
+    },
+    {
+      "accepted": false,
+      "layers": null,
+      "mm": null,
+      "net": "/ACC_3V3_EN",
+      "ok": false,
+      "reason": "NO_LEGAL_ESCAPE",
+      "step": "Q2_SINGLE_NET",
+      "vias": null
+    },
+    {
+      "accepted": false,
+      "layers": null,
+      "mm": null,
+      "net": "/ACC_3V3_SW",
+      "ok": false,
+      "reason": "NO_LEGAL_ESCAPE",
+      "step": "Q2_SINGLE_NET",
+      "vias": null
+    },
+    {
+      "accepted": false,
+      "layers": null,
+      "mm": null,
+      "net": "/ACC_DETECT_N",
+      "ok": false,
+      "reason": "NO_LEGAL_ESCAPE",
+      "step": "Q2_SINGLE_NET",
+      "vias": null
+    },
+    {
+      "accepted": false,
+      "layers": null,
+      "mm": null,
+      "net": "/ACC_POWER_FAULT_N",
+      "ok": false,
+      "reason": "NO_LEGAL_ESCAPE",
+      "step": "Q2_SINGLE_NET",
+      "vias": null
+    },
+    {
+      "accepted": false,
+      "layers": null,
+      "mm": null,
+      "net": "/ACC_PWR_EN",
+      "ok": false,
+      "reason": "NO_LEGAL_ESCAPE",
+      "step": "Q2_SINGLE_NET",
+      "vias": null
+    },
+    {
+      "accepted": false,
+      "layers": null,
+      "mm": null,
+      "net": "/BQ25185_STAT1",
+      "ok": false,
+      "reason": "NO_LEGAL_ESCAPE",
+      "step": "Q2_SINGLE_NET",
+      "vias": null
+    },
+    {
+      "accepted": false,
+      "layers": null,
+      "mm": null,
+      "net": "/I2C_SDA_INT",
+      "ok": false,
+      "reason": "NO_LEGAL_ESCAPE",
+      "step": "Q2_SINGLE_NET",
+      "vias": null
+    },
+    {
+      "accepted": false,
+      "layers": null,
+      "mm": null,
+      "net": "GND",
+      "ok": false,
+      "reason": "NO_LEGAL_ESCAPE",
+      "step": "Q2_SINGLE_NET",
+      "vias": null
+    },
+    {
+      "accepted": false,
+      "layers": null,
+      "mm": null,
+      "net": "Net-(U11-TS_MR)",
+      "ok": false,
+      "reason": "NO_LEGAL_ESCAPE",
+      "step": "Q2_SINGLE_NET",
+      "vias": null
+    },
+    {
+      "mm": 19.9318,
+      "net": "+3V3",
+      "remaining": 15,
+      "step": "Q3_DROPPED"
+    },
+    {
+      "mm": 19.9318,
+      "net": "/05_I2C_DEVICES/BMI270_INT1_RAW",
+      "remaining": 14,
+      "step": "Q3_DROPPED"
+    },
+    {
+      "mm": 19.9318,
+      "net": "/05_I2C_DEVICES/BMI270_SDO_ADDR",
+      "remaining": 13,
+      "step": "Q3_DROPPED"
+    },
+    {
+      "mm": 21.3968,
+      "net": "/09_COMMUNITY_HEADER/EXT_SCL_BUF",
+      "remaining": 12,
+      "step": "Q3_DROPPED"
+    },
+    {
+      "mm": 29.4855,
+      "net": "/09_COMMUNITY_HEADER/NATIVE_A_HDR",
+      "remaining": 11,
+      "step": "Q3_DROPPED"
+    },
+    {
+      "mm": 29.3738,
+      "net": "/09_COMMUNITY_HEADER/TCA4307_READY",
+      "remaining": 10,
+      "step": "Q3_DROPPED"
+    },
+    {
+      "net": "/09_COMMUNITY_HEADER/WAKE_GATE_S",
+      "reason": "NO_LEGAL_ESCAPE",
+      "remaining": 10,
+      "step": "Q3_REQUIRED"
+    },
+    {
+      "mm": 29.3738,
+      "net": "/ACC_3V3_EN",
+      "remaining": 9,
+      "step": "Q3_DROPPED"
+    },
+    {
+      "mm": 30.9525,
+      "net": "/ACC_3V3_SW",
+      "remaining": 8,
+      "step": "Q3_DROPPED"
+    },
+    {
+      "mm": 30.9525,
+      "net": "/ACC_DETECT_N",
+      "remaining": 7,
+      "step": "Q3_DROPPED"
+    },
+    {
+      "mm": 30.9525,
+      "net": "/ACC_POWER_FAULT_N",
+      "remaining": 6,
+      "step": "Q3_DROPPED"
+    },
+    {
+      "mm": 30.9525,
+      "net": "/ACC_PWR_EN",
+      "remaining": 5,
+      "step": "Q3_DROPPED"
+    },
+    {
+      "mm": 30.9525,
+      "net": "/BQ25185_STAT1",
+      "remaining": 4,
+      "step": "Q3_DROPPED"
+    },
+    {
+      "mm": 30.9525,
+      "net": "/I2C_SDA_INT",
+      "remaining": 3,
+      "step": "Q3_DROPPED"
+    },
+    {
+      "net": "GND",
+      "reason": "NO_PATH",
+      "remaining": 3,
+      "step": "Q3_REQUIRED"
+    },
+    {
+      "mm": 30.9525,
+      "net": "Net-(U11-TS_MR)",
+      "remaining": 2,
+      "step": "Q3_DROPPED"
+    },
+    {
+      "accepted": true,
+      "layers": [
+        "B",
+        "I2",
+        "B"
+      ],
+      "mm": 30.9525,
+      "n": 2,
+      "nets": [
+        "/09_COMMUNITY_HEADER/WAKE_GATE_S",
+        "GND"
+      ],
+      "ok": true,
+      "step": "Q3_MINIMAL_SET",
+      "vias": 2
+    }
+  ],
+  "schema": 1,
+  "seconds": 569.0,
+  "window_nets": [
+    "+3V3",
+    "/05_I2C_DEVICES/BMI270_INT1_RAW",
+    "/05_I2C_DEVICES/BMI270_SDO_ADDR",
+    "/09_COMMUNITY_HEADER/EXT_SCL_BUF",
+    "/09_COMMUNITY_HEADER/NATIVE_A_HDR",
+    "/09_COMMUNITY_HEADER/TCA4307_READY",
+    "/09_COMMUNITY_HEADER/WAKE_GATE_S",
+    "/ACC_3V3_EN",
+    "/ACC_3V3_SW",
+    "/ACC_DETECT_N",
+    "/ACC_POWER_FAULT_N",
+    "/ACC_PWR_EN",
+    "/BQ25185_STAT1",
+    "/I2C_SDA_INT",
+    "GND",
+    "Net-(U11-TS_MR)"
+  ]
+}
