@@ -1,0 +1,160 @@
+{
+  "closure_count": 0,
+  "corridor_layers": [
+    "B",
+    "F",
+    "I2"
+  ],
+  "corridors": {
+    "/01_POWER_TREE/BQ25185_SYS": {
+      "area_mm2": 7241.152,
+      "box_mm": [
+        5.795,
+        15.4,
+        71.4,
+        125.775
+      ]
+    },
+    "Net-(SW9-A)": {
+      "area_mm2": 2895.719,
+      "box_mm": [
+        16.19,
+        68.606,
+        69.1,
+        123.335
+      ]
+    }
+  },
+  "dangling_unevictable": [
+    {
+      "kind": "track",
+      "layer": "B.Cu",
+      "net": "Net-(SW9-A)",
+      "xy_mm": [
+        69.15,
+        103.425
+      ]
+    },
+    {
+      "kind": "track",
+      "layer": "In2.Cu",
+      "net": "Net-(SW9-A)",
+      "xy_mm": [
+        66.2,
+        101.4
+      ]
+    },
+    {
+      "kind": "track",
+      "layer": "B.Cu",
+      "net": "Net-(SW9-A)",
+      "xy_mm": [
+        71.375,
+        100.975
+      ]
+    },
+    {
+      "kind": "track",
+      "layer": "In2.Cu",
+      "net": "Net-(SW9-A)",
+      "xy_mm": [
+        69.8,
+        98.1
+      ]
+    },
+    {
+      "kind": "track",
+      "layer": "B.Cu",
+      "net": "Net-(SW9-A)",
+      "xy_mm": [
+        71.05,
+        95.1
+      ]
+    },
+    {
+      "kind": "track",
+      "layer": "B.Cu",
+      "net": "Net-(SW9-A)",
+      "xy_mm": [
+        69.9,
+        94.05
+      ]
+    },
+    {
+      "kind": "track",
+      "layer": "B.Cu",
+      "net": "Net-(SW9-A)",
+      "xy_mm": [
+        69.175,
+        93.75
+      ]
+    },
+    {
+      "kind": "track",
+      "layer": "B.Cu",
+      "net": "Net-(SW9-A)",
+      "xy_mm": [
+        69.175,
+        92.925
+      ]
+    },
+    {
+      "kind": "track",
+      "layer": "B.Cu",
+      "net": "Net-(SW9-A)",
+      "xy_mm": [
+        69.15,
+        92.8
+      ]
+    },
+    {
+      "kind": "track",
+      "layer": "B.Cu",
+      "net": "Net-(SW9-A)",
+      "xy_mm": [
+        69.65,
+        92.275
+      ]
+    },
+    {
+      "kind": "track",
+      "layer": "B.Cu",
+      "net": "Net-(SW9-A)",
+      "xy_mm": [
+        68.225,
+        90.825
+      ]
+    },
+    {
+      "kind": "track",
+      "layer": "B.Cu",
+      "net": "Net-(SW9-A)",
+      "xy_mm": [
+        65.5,
+        93.0
+      ]
+    }
+  ],
+  "evicted_nets": [
+    "Net-(SW9-A)"
+  ],
+  "margin_mm": 3.0,
+  "removed_by_net": {
+    "Net-(SW9-A)": 5
+  },
+  "removed_count": 5,
+  "removed_signatures": [
+    "('T', 'Net-(SW9-A)', 2, (66100000, 102800000), (66100000, 103650000), 200000)",
+    "('T', 'Net-(SW9-A)', 2, (66100000, 102800000), (66100000, 103650000), 200000)",
+    "('T', 'Net-(SW9-A)', 2, (66100000, 103650000), (66350000, 103650000), 200000)",
+    "('T', 'Net-(SW9-A)', 2, (66100000, 103650000), (69150000, 103425000), 200000)",
+    "('V', 'Net-(SW9-A)', (66350000, 103650000), 600000, 300000)"
+  ],
+  "stated_window_mm": [
+    64.0,
+    102.3,
+    71.6,
+    104.3
+  ],
+  "whole_net": false
+}

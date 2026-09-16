@@ -66,6 +66,28 @@
 > `verify_promotion` PASS and `protected_copper` showing exactly one protected
 > net moved.  `U14.7` is on the bus.  This board has **no open owner decision**.
 
+- **Demo D-718 ADDENDUM (THE MOST IMPORTANT OPEN EDGE IS THE `TPS63020`'s OWN
+  `VIN`, AND IT IS A BOX WITH ONE 0.9 mm DOOR):**  **NO COPPER.**  Authority
+  UNCHANGED at `2a3a9888`.  `/01_POWER_TREE/BQ25185_SYS`'s third island is
+  `{U12.10, U12.11}` and the schematic symbol names those pins: **`TPS63020`
+  pin 10 `VIN`, pin 11 `VIN`**.  Pin 1 `VINA`, the ANALOG supply, is on the
+  rail; **the main 3.3 V buck-boost's POWER input is not.**  Of the ten
+  remaining retained open edges **this is the one that stops the product
+  working**, and it outranks the accessory 5 V rail.  The four walls are
+  measured and named: NORTH `U12.15`'s `PGND_EP` (0.310 mm gap, usable only by
+  same-net copper); WEST `U12.12` (`EN`)'s own escape at x 66.000..66.200 plus
+  `C24`'s body; EAST `U12.9`'s escape and **`Net-(L1-Pad1)`'s 0.400 mm vertical
+  at x = 68.875 from y 94.400 to 102.800**, 9.2 mm of buck-boost switch node
+  fencing the whole side; SOUTH `Net-(SW9-A)`'s run and the `WROOM` keep-out at
+  `y >= 104.005`, leaving a band `y 103.100..104.000` that at `SYS_MAIN`'s
+  0.500 mm holds **EXACTLY ONE CONDUCTOR** — which `EN` is using.  `--evict`
+  with a stated window returns `closure_count 0` (every object
+  `dangling_unevictable`); `--evict-whole` costs 44 objects and did not finish
+  in 40 minutes.  **Three candidates, in order: `C24` is in the wrong place (a
+  10 uF bulk with its `GND` land BETWEEN its `SYS` land and the pins it
+  decouples, 5.4 mm from them); `EN`'s `In2` barrel at (66.350, 103.650) is IN
+  the band and can leave it; and `Net-(L1-Pad1)`'s 9.2 mm switch node is wrong
+  on its own terms.**
 - **Demo D-718 (THE CELL MOVES AND THE EAST POCKET IS REFUTED AS ITS HOME —
   FOUR OF FIVE CROSSINGS AT EVERY RESERVATION WIDTH; AND THE THREE CONTRACT
   CLAUSES THAT REFUSED A PART MOVE ARE REPAIRED):**  **NO COPPER PROMOTED.**

@@ -28969,3 +28969,58 @@ authority -> candidate with all three claims stated,
    own right and it is what unlocks (1).
 3. `R38` -> (72.800, 73.200) is measured, reproducible and worth **79 mm of
    corridor**; it must ride with an edge-closing route (clause 4) and it will.
+
+## D-718 ADDENDUM — AND THE MOST IMPORTANT OPEN EDGE ON THIS BOARD IS THE `TPS63020`'s OWN `VIN`: `U12.10`/`U12.11` ARE A 0.7488 mm² ISLAND IN A BOX WITH ONE 0.9 mm DOOR, AND `EN` IS STANDING IN IT
+
+**NO COPPER.**  Authority UNCHANGED at `2a3a9888`.
+
+`/01_POWER_TREE/BQ25185_SYS`'s third island is **`{U12.10, U12.11}`**, and the
+schematic symbol says what those pins are: `TPS63020` **pin 10 `VIN`, pin 11
+`VIN`**.  Pin 1 `VINA` — the ANALOG supply — is on the rail; **the main 3.3 V
+buck-boost's POWER input is not.**  Of the ten remaining retained open edges
+this is the one that stops the product working, and it outranks the accessory
+5 V rail that D-717 and D-718 spent themselves on.
+
+**IT IS A BOX, AND THE FOUR WALLS ARE NAMED.**  The pads are 0.240 x 0.600 mm
+on 0.500 mm pitch at (67.100, 102.800) and (66.600, 102.800):
+
+  * **NORTH** `U12.15`, the `PGND_EP` thermal pad, (65.175, 100.610)-(68.025,
+    102.190).  The gap to the bottom row is **0.310 mm** — a 0.200 mm track
+    centred in it clears the EP by 0.205 mm but overlaps every OTHER pad of
+    the row at zero, so only same-net copper can stand there.
+  * **WEST** `U12.12` (`EN`)'s own `B.Cu` escape, x 66.000..66.200 from
+    y 102.800 to 103.650, and then `C24`'s body (60.975, 102.475)-(64.025,
+    104.025) with its `GND` land at x 62.875..63.675.
+  * **EAST** `U12.9`'s escape (68.100,102.800)-(68.875,102.800) and
+    `Net-(L1-Pad1)`'s **0.400 mm vertical at x = 68.875 from y 94.400 to
+    102.800** — the buck-boost's own switch node, 9.2 mm of it, fencing the
+    whole east side.
+  * **SOUTH** `Net-(SW9-A)`'s `B.Cu` run (66.100,103.650)-(69.150,103.425),
+    and below it the `WROOM` antenna keep-out at `y >= 104.005` for
+    `x >= 64.500`.  What is left is a band **y 103.100 .. 104.000**, 0.9 mm
+    tall, and at `SYS_MAIN`'s 0.500 mm plus 0.200 mm to the lands it holds
+    **EXACTLY ONE CONDUCTOR** — which `EN` is using.
+
+**AND THE EVICTION PRIMITIVE CANNOT REACH IT.**  `--evict Net-(SW9-A)
+--evict-window 64.0,102.3,71.6,104.3` returns `closure_count: 0`: every object
+in the window is `dangling_unevictable`, because removing any one of them
+strands the chain (`evidence/d719-evict-window-refuses.json`).  `--evict-whole`
+takes **44 objects** — the whole net, `SW9.1`/`TP13.1`/`U12.12` — and the
+re-proposal did not complete in 40 minutes of whole-board `--partial` search;
+it was stopped rather than left running.
+
+**SO THIS IS A FLOORPLAN QUESTION TOO, AND IT IS THE FIRST ONE.**  The
+candidates, in the order I would try them:
+
+1. **`C24` IS IN THE WRONG PLACE.**  It is the 10 uF `SYS` bulk for `U12` and
+   it sits at (62.500, 103.250) with its `GND` land BETWEEN its `SYS` land and
+   the pins it decouples.  A bulk cap belongs across `VIN`/`PGND`, and from
+   there it feeds `U12.10`/`U12.11` directly instead of across 5.4 mm of
+   pour.
+2. **`EN` out of the band.**  `U12.12` needs one barrel to `In2`, which it
+   already uses; the barrel is at (66.350, 103.650), IN the band.  Moved west
+   of `U12.14`'s escape or east of `Net-(L1-Pad1)`'s vertical, the band is
+   free for `SYS`.
+3. **`Net-(L1-Pad1)`'s 9.2 mm vertical.**  A buck-boost switch node has no
+   business being 9.2 mm long at 0.400 mm; shortening it is right on its own
+   terms and it opens the east wall.
