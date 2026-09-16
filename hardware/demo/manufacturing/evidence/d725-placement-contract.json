@@ -1,0 +1,185 @@
+{
+  "checks": {
+    "PL10_removals_stranded_nothing": true,
+    "PL1_reference_set_as_declared": true,
+    "PL2_only_claimed_parts_moved": true,
+    "PL3_land_patterns_travelled_whole": true,
+    "PL4_no_new_courtyard_overlap": true,
+    "PL5_nothing_stranded": true,
+    "PL6_screen_is_not_vacuous": true,
+    "PL7_moved_pads_clear_foreign_copper": true,
+    "PL8_released_pads_reconnected": true,
+    "PL9_no_via_under_a_moved_land": true
+  },
+  "detail": {
+    "claimed": {
+      "C65": [
+        250000,
+        0,
+        0.0
+      ],
+      "R100": [
+        300000,
+        9500000,
+        0.0
+      ],
+      "R64": [
+        1643462,
+        7880708,
+        0.0
+      ],
+      "R99": [
+        -4200000,
+        10800000,
+        180.0
+      ],
+      "TP43": [
+        5869390,
+        8069640,
+        0.0
+      ]
+    },
+    "claimed_moves_wrong": [],
+    "clearance_nm": 200000,
+    "courtyard_overlaps_new": [],
+    "endpoints_checked": 17,
+    "endpoints_released": [
+      {
+        "at_mm": [
+          57.875,
+          32.725
+        ],
+        "net": "/01_POWER_TREE/ACC_5V_FB",
+        "pad": "R100.1",
+        "removed_from_board": true
+      },
+      {
+        "at_mm": [
+          59.1,
+          32.7
+        ],
+        "net": "GND",
+        "pad": "R100.2",
+        "removed_from_board": true
+      },
+      {
+        "at_mm": [
+          59.1,
+          32.7
+        ],
+        "net": "GND",
+        "pad": "R100.2",
+        "removed_from_board": true
+      },
+      {
+        "at_mm": [
+          59.125,
+          32.725
+        ],
+        "net": "GND",
+        "pad": "R100.2",
+        "removed_from_board": true
+      },
+      {
+        "at_mm": [
+          59.681538,
+          38.119292
+        ],
+        "net": "/09_COMMUNITY_HEADER/ACC_DETECT_N_HDR",
+        "pad": "R64.2",
+        "removed_from_board": true
+      },
+      {
+        "at_mm": [
+          58.031538,
+          38.119292
+        ],
+        "net": "/ACC_DETECT_N",
+        "pad": "R64.1",
+        "removed_from_board": true
+      },
+      {
+        "at_mm": [
+          63.625,
+          33.225
+        ],
+        "net": "/01_POWER_TREE/ACC_5V_FB",
+        "pad": "R99.2",
+        "removed_from_board": true
+      },
+      {
+        "at_mm": [
+          62.175,
+          33.5
+        ],
+        "net": "/01_POWER_TREE/ACC_5V_RAW",
+        "pad": "R99.1",
+        "removed_from_board": true
+      },
+      {
+        "at_mm": [
+          55.73061,
+          35.33036
+        ],
+        "net": "/09_COMMUNITY_HEADER/ACC_DETECT_N_HDR",
+        "pad": "TP43.1",
+        "removed_from_board": true
+      }
+    ],
+    "endpoints_stranded": [],
+    "footprints_post": 309,
+    "footprints_pre": 309,
+    "foreign_copper_hits": [],
+    "land_patterns_changed": [],
+    "pl6_decoy": "BOSS1",
+    "references_added": [],
+    "references_removed": [],
+    "released_claimed": [
+      "R100.1",
+      "R100.2",
+      "R64.1",
+      "R64.2",
+      "R99.1",
+      "R99.2",
+      "TP43.1"
+    ],
+    "released_pads_orphaned": [],
+    "released_pads_reconnected": [
+      {
+        "pad": "R100.1",
+        "post_endpoints": 1
+      },
+      {
+        "pad": "R100.2",
+        "post_endpoints": 2
+      },
+      {
+        "pad": "R64.1",
+        "post_endpoints": 1
+      },
+      {
+        "pad": "R64.2",
+        "post_endpoints": 2
+      },
+      {
+        "pad": "R99.1",
+        "post_endpoints": 1
+      },
+      {
+        "pad": "R99.2",
+        "post_endpoints": 1
+      },
+      {
+        "pad": "TP43.1",
+        "post_endpoints": 1
+      }
+    ],
+    "removal_endpoints_left_behind": [],
+    "removals_declared": [],
+    "unclaimed_footprints_moved": [],
+    "vias_under_moved_lands": []
+  },
+  "ref": "HEAD",
+  "schema": 2,
+  "verdict": "PASS"
+}

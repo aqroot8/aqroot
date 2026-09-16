@@ -66,6 +66,62 @@
 > `verify_promotion` PASS and `protected_copper` showing exactly one protected
 > net moved.  `U14.7` is on the bus.  This board has **no open owner decision**.
 
+- **Demo D-725 (THE SWITCHED 5 V ACCESSORY RAIL IS **ALIVE**: THE TPS61023 GETS
+  ITS INPUT SUPPLY AND ITS SWITCH NODE, AND BOTH EDGES CLOSE):**  **COPPER
+  PROMOTED.**  Authority `a405b06f` -> `6748a9bc`; **retained open edges
+  8 -> 6**, open retained nets 7 -> 5, raw ratsnest 24 -> 22.  ***D-724 FOUND
+  THE BOOST DEAD AT THE SOURCE; IT IS NOW FED.***  `BQ25185_SYS` reaches `L4.1`
+  on **1.000 mm F.Cu from the trunk vertex (52.000,36.700), two 0.800/0.400 mm
+  barrels at (55.000,36.200) and (56.000,36.200), and 1.000 mm B.Cu** --
+  **2.392 A** track and **4.423 A** of barrel against the 2.19 A peak inductor
+  current, 9 % and 102 % of margin -- plus a 0.500 mm `SYS_MAIN`-class-minimum
+  leg to `U21.3`, which is the controller's BIAS pin and not the power path.
+  `ACC_5V_LX` runs `U21.5 -> L4.2` in **three segments and ZERO barrels**.
+  ***THE POCKET WAS EMPTIED FIRST:*** `ACC_DETECT_N_HDR`'s 28 mm F.Cu wall (a
+  17 mm straight line routed the long way, plus a second wall to reach a TEST
+  POINT), `ACC_5V_FB`'s 12 mm double crossing, `EXT_SCL_BUF`'s x = 56.75 B.Cu
+  descent and its 20 mm redundant tail, and `ACC_5V_BOOST_EN`'s F.Cu V all came
+  OUT -- **122.5 mm of track and 45 objects leave the board** -- and the three
+  ordinary signals were re-laid by the maze at 30.1 / 33.3 / 11.9 mm.
+  ***AND THE CONVERTER IS REBUILT AS A BLOCK:*** `R99` and `R100` move onto
+  `U21`'s own south face, so the **88 k feedback node goes from about 20 mm to
+  4.1 mm**; `R64` -- a 100R DETECT resistor sitting ON TOP of a 2 A switcher,
+  and the reason no POWER-class barrel fitted in the `L4.1`<->`L4.2` channel --
+  leaves the converter; `U21.4` gets a 0.800/0.400 GND barrel 1.6 mm from the
+  pad (**2.211 A**) and its land sits on the **202.333 mm2** `B GND PLANE`
+  body, up from 44.270 mm2 because `SYS POUR 2` is RETIRED.  ***`PP2` REFUSED
+  D-724 AND ADMITS THIS:*** D-724 was right that no geometry beats a fragment
+  price anchored on a 0.350 mm SOT-563 land; the answer was to stop having a
+  fragment.  What severed it was **one 0.098 mm gap at (59.293,34.276)** closed
+  by the zone's own 0.200 mm minimum thickness, and `EXT_SDA_BUF`'s barrel
+  dropping 0.600/0.300 -> 0.500/0.250 opens it to 0.265 mm.  ***TWO GATE
+  DEFECTS REPAIRED, EACH WITH ITS OWN CONTROL:*** `PP1` refused a pour
+  retirement that replaced a pour with BETTER copper (it now excuses a claimed
+  retirement when KiCad's own connectivity puts the pad on its net's largest
+  group), and **KiCad re-assigns a newly added VIA's net to whatever track it
+  lands on at SAVE time** -- `SetNet`, `SetNetCode`, `SetIsFree(False)`,
+  `thisown = 0` and duplicating an existing via all make no difference -- so
+  the build is three stages with a save between.  ***PROOF:***
+  `verify_promotion` **PASS**, attributable DRC **`[]`**; real DRC total
+  `{lib_footprint_issues: 199}`; parity 246 warnings / **ZERO errors**;
+  `protected_copper` **IDENTICAL** (15 nets, 406 objects -- `ACC_3V3_SW` and
+  `XGPIO4` were both RESTORED untouched after two earlier candidates moved
+  them); `placement_contract` **10/10**; `pour_partition` **PP1-PP4 PASS**;
+  `pour_bond` **P1-P4 PASS** on a guard re-cut for the fourth time with its
+  stale-guard control; `fab_package_contract` **PASS** at `6748a9bc`, 29 files;
+  `contract_regression` **14 contracts, ALL RAN, ALL PASS**; `hardware/beta-v2`
+  untouched.  ***WHAT IS LEFT -- SIX EDGES OVER FIVE NETS:*** `/BQ25185_STAT2`
+  2, `NFC_VDD_RF` 1 (PM-3), `ACC_PWR_EN` 1, `I2C_SCL_INT` 1, `SX1262_DIO1` 1.
+  ***AND THE NEXT BLOCKER IS A WIDTH, NOT AN EDGE:*** closing this feed made a
+  pre-existing defect load-bearing.  `U21` is fed from the SYS rail's **west
+  arm**, whose long leg is **59.5 mm of 0.800 mm track on In2 at 0.5 oz =
+  0.613 A** against the **1.373 A** average the boost draws at the `ACC_5V`
+  class ILIM -- **2.2x under-rated**, over a path from `U11.1` of about 135 mm,
+  because that arm exists for `L2`, `U13` and `R68`, all three DNP, and until
+  now carried nothing.  **The next transaction is a real SYS trunk from
+  `SYS POUR 1` to the accessory cell, about 36 mm of >= 0.600 mm OUTER copper.**
+  Until it is built the switched 5 V accessory port is FUNCTIONAL BUT
+  CURRENT-LIMITED.
 - **Demo D-724 ADDENDUM 4 (THE CHEAP EXPERIMENT WAS RUN):**  Authority
   `a405b06f` unchanged.  ***`ACC_DETECT_N_HDR`'s TP43 HORIZONTAL CHAIN IS
   VERIFIED REDUNDANT:*** `TP43` reaches `R64.2` twice -- along `y = 36.000` and

@@ -1050,6 +1050,65 @@ def severed_neck(pre_isl, frag_pads, body_pads):
                      "why it is published and not charged")
 
 
+def routed_body_pads(path):
+    """D-725 -- (net, "REF.PAD") for every pad that sits on the LARGEST copper
+    group of its own net, as KiCad's OWN connectivity reports it.
+
+    This is the fact PP1 actually wants when a pour is retired.  PP1's bar is
+    "a pad that resolved before and resolves NOWHERE after has had its pour
+    taken away", and D-718 implemented "resolves" as "lands on some island of
+    some pour of its own net".  That is the right test while pours are the only
+    thing that can carry a pad -- and it is the WRONG test the moment the
+    transaction replaces a pour with ROUTED COPPER, which is what retiring an
+    UNFED pour and feeding its lands from the rail instead does.  The injury
+    PP1 exists to catch is a land left with no conductor.  This function
+    measures that directly, on the post board, with the same union-find over
+    `GetConnectedItems` the routing ledger uses.
+    """
+    import pcbnew
+    from collections import defaultdict
+    board = pcbnew.LoadBoard(str(path))
+    board.BuildConnectivity()
+    cn = board.GetConnectivity()
+    by_net = defaultdict(list)
+    for fp in board.GetFootprints():
+        for q in fp.Pads():
+            if q.GetNetCode() > 0:
+                by_net[q.GetNetname()].append(
+                    ("%s.%s" % (fp.GetReference(), q.GetNumber()), q))
+    out = set()
+    for net, pads in by_net.items():
+        ids = {r for r, _ in pads}
+        parent = {r: r for r in ids}
+
+        def find(a):
+            while parent[a] != a:
+                parent[a] = parent[parent[a]]
+                a = parent[a]
+            return a
+
+        for r, q in pads:
+            for item in cn.GetConnectedItems(q):
+                if item.GetClass() != "PAD":
+                    continue
+                owner = item.GetParentFootprint()
+                if owner is None:
+                    continue
+                other = "%s.%s" % (owner.GetReference(), item.GetNumber())
+                if other in ids:
+                    ra, rb = find(r), find(other)
+                    if ra != rb:
+                        parent[ra] = rb
+        groups = defaultdict(list)
+        for r in ids:
+            groups[find(r)].append(r)
+        if not groups:
+            continue
+        for r in max(groups.values(), key=len):
+            out.add((net, r))
+    return out
+
+
 def compare(pre_path, post_path, moved=(), pours_removed=()):
     """D-718 -- `moved` is the set of REFERENCES this transaction claims to
     have MOVED, and a pad on one of them carries no evidence about pre-existing
@@ -1109,12 +1168,53 @@ def compare(pre_path, post_path, moved=(), pours_removed=()):
     # name.  The per-pour movement is still reported, as `moved_pour`, and PP2
     # below still measures every partition change inside every pour.
     new_bad = sorted(pre_ok - post_ok)
+    # D-725 -- A RETIRED POUR MAY BE REPLACED BY ROUTED COPPER, AND THAT IS
+    # NOT AN INJURY.
+    #
+    # `B /01_POWER_TREE/BQ25185_SYS POUR 2` was a 5 x 9 mm island drawn for
+    # `L4.1` and `U21.3` that the SYS network NEVER REACHED -- the TPS61023
+    # accessory boost had no input supply at all.  D-725 feeds those two lands
+    # from the rail on a measured 1.000 mm F.Cu trunk, two 0.800/0.400 mm
+    # POWER-class barrels and a 1.000 mm B.Cu leg, and then retires the pour so
+    # the `B GND PLANE` can fill to `U21.4`.  Under D-718's expression both
+    # lands "resolve NOWHERE after" and PP1 refuses -- against strictly BETTER
+    # copper than it had.
+    #
+    # The excuse is narrow and it is keyed on a fact, not on a claim: the pad's
+    # pour must have been named in `--pour-removed` AND the pad must, on the
+    # POST board, sit on the LARGEST copper group of its own net.  A land that
+    # loses its pour and is left stranded is still named; the control below
+    # withholds each excused pad from that connectivity fact and requires the
+    # residual to name it again.
+    body = routed_body_pads(post_path)
+    retired_pads = set()
+    for _k, _v in pre.items():
+        if _v["zone_name"] in pours_removed:
+            for _ref in _v["pads"]:
+                retired_pads.add((_v["net"], _v["layer"], _ref))
+
+    def _excusable(item, carried):
+        return item in retired_pads and (item[0], item[2]) in carried
+
+    excused = [x for x in new_bad if _excusable(x, body)]
+    excuse_control = dict(
+        ok=all(not _excusable(x, body - {(x[0], x[2])}) for x in excused),
+        probe=[list(x) for x in excused],
+        why="each excused pad, withheld from the POST connectivity fact the "
+            "excuse is keyed on, is named again by the same expression")
+    new_bad = [x for x in new_bad if x not in excused]
     # NON-VACUITY.  A clause that cannot refuse is not a clause: take one pad
     # that genuinely resolves on BOTH boards, withhold it from the POST set,
     # and the bar must name it.
     probe = sorted(pre_ok & post_ok)[:1]
+    # D-725 -- the control must be read through the SAME expression the clause
+    # is judged on, which now includes the routed-copper excuse above.  A
+    # control evaluated on the raw difference reports the excused pads and
+    # fails on a board where the clause itself is satisfied.
+    _ctl_residual = [x for x in sorted(pre_ok - (post_ok - set(probe)))
+                     if not _excusable(x, body)]
     control = dict(
-        ok=bool(probe) and sorted(pre_ok - (post_ok - set(probe))) == probe,
+        ok=bool(probe) and _ctl_residual == probe,
         probe=[list(x) for x in probe],
         why="a pad resolved on BOTH boards, withheld from the POST set, is "
             "reported by the same expression the clause is judged on")
@@ -1124,7 +1224,10 @@ def compare(pre_path, post_path, moved=(), pours_removed=()):
                             and k not in set(retired))
     res["PP1"] = dict(ok=(not new_bad and not unclaimed_gone
                           and len(post) >= len(pre) - len(retired)
-                          and control["ok"]),
+                          and control["ok"] and excuse_control["ok"]),
+                      excused_by_routed_copper=[dict(net=n, layer=l, pad=r)
+                                                for (n, l, r) in excused],
+                      excuse_control=excuse_control,
                       pours_retired_as_claimed=retired,
                       pours_gone_unclaimed=unclaimed_gone,
                       newly_unresolved=[dict(net=n, layer=l, pad=r)

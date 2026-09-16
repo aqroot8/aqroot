@@ -1,3 +1,180 @@
+## D-725 — THE SWITCHED 5 V ACCESSORY RAIL IS **ALIVE**: THE TPS61023 GETS ITS INPUT SUPPLY AND ITS SWITCH NODE, `BQ25185_SYS` AND `ACC_5V_LX` BOTH CLOSE, 8 -> 6 EDGES
+
+    authority  a405b06f -> 6748a9bc  **COPPER PROMOTED**
+    retained open edges 8 -> 6; open retained nets 7 -> 5
+    raw board ratsnest 24 -> 22
+    `evidence/d725-*`
+
+### 1. WHAT CLOSED, AND WHY IT IS NOT AN EDGE COUNT
+
+D-724 measured that `U21` (TPS61023) had **neither of its two power
+connections**: `U21.3` (`VIN`) and `L4.1` sat on `SYS POUR 2`, an island the
+SYS network never reached, and `U21.5` (`SW`) never met `L4.2`.  With no input
+and no switch node the boost cannot run, so `ACC_5V_RAW` had no source and
+`ACC_5V_SW` — `J5.1` / `J5.24`, the switched 5 V the Demo scope REQUIRES —
+was dead at the source.  **Both are now built.**
+
+    BQ25185_SYS  (52.000,36.700) -> 1.000 mm F.Cu -> two 0.800/0.400 barrels
+                 at (55.000,36.200) and (56.000,36.200) -> 1.000 mm B.Cu
+                 -> L4.1, plus a 0.500 mm leg L4.1 -> U21.3
+    ACC_5V_LX    U21.5 -> L4.2, 0.200 mm out of the land then 0.400 mm,
+                 THREE segments, ZERO barrels
+
+**AMPACITY, IPC-2221B at this board's 1 oz outer copper and dT = 10 K, against
+the 2.19 A peak inductor current D-185 publishes for this boost:**
+
+    1.000 mm outer track        2.392 A      9 % margin
+    two 0.400 mm barrels        4.423 A     102 % margin
+    0.800 mm SYS_MAIN `opt`     2.034 A     (what the rest of the rail is)
+
+`U21.3` is the controller's BIAS pin, not the power path — on the TPS61023 the
+inductor current flows VIN-rail -> `L4` -> `SW` externally — so `L4.1` owes the
+2.19 A and `U21.3` owes only the IC's own supply.  It gets the `SYS_MAIN` class
+MINIMUM, 0.500 mm.  No width licence is asked for and none is granted.
+
+### 2. THE POCKET WAS EMPTIED BEFORE ANYTHING WAS BUILT IN IT
+
+Five addenda to D-724 threaded one more conductor through (55..60, 32..41) and
+each found the next wall.  This pass **emptied it**:
+
+    ACC_DETECT_N_HDR   a 28 mm F.Cu WALL across the whole pocket, D5.6 -> R64.2,
+                       for a 17 mm straight line, plus a second wall to reach a
+                       TEST POINT.  All of it out; re-laid at 30.1 mm.
+    ACC_5V_FB          a 12 mm loop from R100.1 that crossed the pocket TWICE
+                       and a 10 mm loop south of U21.1.  Out.
+    EXT_SCL_BUF        the B.Cu descent at x = 56.7..56.8 that every SYS leg
+                       since addendum 2 has hit, plus 20 mm of redundant tail.
+                       Out; re-laid at 33.3 mm.
+    ACC_5V_BOOST_EN    its F.Cu V crossed the SYS approach at (53.900,35.500);
+                       it dives at the barrel it ALREADY had at (53.100,27.400)
+                       and runs In2, where there is no pour at all on this board.
+    ACC_DETECT_N       R64.1's leg, which followed R64 out of the converter.
+
+**122.5 mm of track and 45 objects LEAVE the board net.**
+
+### 3. THE TPS61023 IS REBUILT AS A CONVERTER BLOCK, NOT A ROUTING PROBLEM
+
+    R99  732k  (63.000,33.500) -> (58.800,44.300) rot 180
+    R100 100k  (58.500,33.000) -> (58.800,42.500)
+    R64  100R  (58.857,38.119) -> (60.500,46.000)
+    TP43       (55.731,35.330) -> (61.600,43.400)
+    C65  22uF  +0.250 mm east
+
+The FEEDBACK DIVIDER was 6.7 mm and 7.6 mm from the FB pin with a **14 mm
+high-impedance node** (R99||R100 = 88 k) wired across the top of a switching
+converter — and that node is what forced `ACC_5V_FB` through the pocket the SYS
+feed needs.  Both resistors now sit on `U21`'s own south face:
+
+    U21.1 -> R100.1   2.280 mm        R100.1 -> R99.2   1.800 mm
+    whole FB node     4.1 mm          (was about 20 mm)
+
+`R64` — a 100R DETECT-signal resistor — sat ON TOP of the converter, and its
+land is why no POWER-class barrel fitted in the `L4.1`<->`L4.2` channel that is
+`U21.4`'s widest ground return.  It is out of the converter entirely.
+
+`U21.4` now carries a 0.800/0.400 mm GND barrel 1.6 mm from the pad
+(**2.211 A**, against the 2.19 A this pin owes through the low-side FET) and
+its land sits on the **202.333 mm2** `B GND PLANE` body — up from 44.270 mm2,
+because retiring `SYS POUR 2` hands that copper back to the plane.
+
+### 4. `PP2` REFUSED D-724 AND ADMITS THIS, FOR A REASON WORTH KEEPING
+
+D-724's candidate left `U21.4` on a **4.457 mm2 FRAGMENT** priced at 1.335 A
+against a 2.190 A `RETURN_NEIGHBOUR_RAIL` bar, and D-724 recorded that NO
+GEOMETRY BEATS IT — correctly: `bond_price` anchors the internal tube on the
+pad, and a SOT-563 land is 0.350 mm tall, so the tube can never be worth more
+than about 1.1 A whatever is built around it.  **The answer was not to widen
+the fragment; it was to stop having one.**  What severed it was found and
+measured: a 0.098 mm gap at (59.293,34.276), between `L4.2`'s land and
+`EXT_SDA_BUF`'s F->In2 barrel, closed by the zone's own 0.200 mm minimum
+thickness.  That barrel drops from 0.600/0.300 to **0.500/0.250 mm** — a size
+this board already carries in thirty places, at the 0.125 mm annular-ring
+floor — the mouth opens to 0.265 mm, and `U21.4` is on the BODY, which `PP2`
+exempts.  `PP1-PP4` **PASS**.
+
+### 5. TWO GATE DEFECTS FOUND AND REPAIRED, BOTH WITH THEIR OWN CONTROL
+
+**`PP1` REFUSED A POUR RETIREMENT THAT REPLACED A POUR WITH BETTER COPPER.**
+D-718 implemented "a pad that resolved before and resolves NOWHERE after has
+had its pour taken away" as "lands on some island of some pour of its own
+net".  That is the right test while pours are the only thing that can carry a
+pad and the WRONG one the moment a transaction replaces an UNFED pour with a
+measured 1.000 mm trunk.  `PP1` now excuses a pad whose pour was named in
+`--pour-removed` AND which, on the POST board, sits on the LARGEST copper group
+of its own net — KiCad's own connectivity, the same union-find the routing
+ledger uses.  **CONTROL:** each excused pad, withheld from that connectivity
+fact, is named again by the same expression; and the clause's original
+non-vacuity probe is now read through the same expression it judges.
+
+**KiCad RE-ASSIGNS A NEWLY ADDED VIA'S NET TO WHATEVER TRACK IT LANDS ON, AT
+SAVE TIME.**  `SetNet`, `SetNetCode`, `SetIsFree(False)`, `thisown = 0` and
+duplicating an existing via all make no difference; the via reads back correct
+in memory and is WRITTEN with the other net's name.  A GND barrel at
+(58.900,35.000) came back as `EXT_SDA_BUF` because that net's OLD In2 run
+passes 0.034 mm away on the board the stage LOADS.  The build is therefore
+three stages with a save between, and `evidence/d725-build-3-*.py` says why.
+
+### 6. `pour_bond`'s GUARD IS RE-CUT, FOR THE FOURTH TIME AND THE SAME REASON
+
+`BOND_GUARD` moves d719 -> d725.  Against the d719 spec this board reads
+`NO_SUCH_ISLAND` on the `{L4.1,U21.3}` tube — a guard over the pour this
+transaction RETIRED — plus `off_copper` on the two `U21.4` tubes and eight
+renumbered `B.Cu` `GND` islands.  **THE BOND DID NOT MOVE:** `U21.4` shares one
+island with `C65.2` and `C38.2` on both boards, `misplaced_ends` is EMPTY, and
+the guard re-emitted on the promoted board reads `P1-P4 PASS`, 42 tubes, ZERO
+off copper, ZERO renumbered.  **NON-VACUITY CONTROL:** the stale d719 guard
+STILL FAILS on this board (`evidence/d725-pour-bond-contract-d619guard-superseded.json`).
+
+### 7. PROOF
+
+    verify_promotion            PASS, attributable DRC []
+    routing_ledger              retained open edges 8 -> 6, open nets 7 -> 5
+    unconnected items           24 -> 22
+    real KiCad DRC              attributable {} -- total {lib_footprint_issues: 199},
+                                the headless CLI's own missing-library warnings
+    schematic parity            246 warnings, ZERO errors
+    protected_copper            IDENTICAL -- 15 nets, 406 objects, none changed
+                                (ACC_3V3_SW and XGPIO4 were both RESTORED
+                                untouched when the first two candidates moved
+                                them; the SYS barrels went west of ACC_3V3_SW's
+                                In2 run and the GND stitch north of XGPIO4's)
+    placement_contract          PASS 10/10, five moves and seven releases claimed
+    pour_partition_contract     PP1-PP4 PASS
+    pour_bond_contract          P1-P4 PASS on the re-cut guard
+    fab_package_contract        PASS, board 6748a9bc, 29 files (24 deterministic)
+    contract_regression         14 contracts, ALL RAN, ALL PASS
+    hardware/beta-v2            untouched
+
+### 8. WHAT IS LEFT — SIX EDGES OVER FIVE NETS
+
+    /BQ25185_STAT2      2   U11.3 sealed by D-269 (an OWNER decision);
+                            U2.19 has BTN_DOWN_N as a single-net opener
+    NFC_VDD_RF          1   U9.14 VDD_DR -- PM-3, the NFC front-end re-floorplan
+    ACC_PWR_EN          1   the U16 west pocket holds two of three
+    I2C_SCL_INT         1   the same pocket
+    SX1262_DIO1         1   79 nets cross its corridor; no single-net opener
+
+### 9. AND THE NEXT BLOCKER IS NOT AN EDGE — IT IS THE SYS ARM'S **WIDTH**
+
+Closing this feed made a pre-existing defect LOAD-BEARING and it must be said
+plainly.  `U21` is now fed from the SYS rail's **west arm**, and that arm's
+long leg is **59.5 mm of 0.800 mm track on In2 at 0.5 oz**:
+
+    In2 0.800 mm at 0.5 oz, dT 10 K        0.613 A        73.5 mOhm
+    U21 input at Vin 3.0 V, Vout 5 V,
+      Iout 0.70 A (the ACC_5V class ILIM)  1.373 A average
+
+The arm is **2.2x under-rated** for the load now hanging on it, and the path
+from `U11.1` runs about 135 mm — POUR 1 south-west to `C64.1`, then back
+north-east on In2 — because the west arm exists for `L2`, `U13` and `R68`,
+all THREE of which are DNP.  Until D-725 it carried nothing.  **The next
+transaction is a real SYS trunk from `SYS POUR 1` to the accessory cell**,
+about 36 mm of >= 0.600 mm OUTER copper (1.645 A), through the x 50..64,
+y 40..72 band.  First corridor probes from `POUR 1` return 0.0 mm on F.Cu and
+B.Cu and will need real start points inside the pour, not a bbox corner.
+Until it is built the switched 5 V accessory port is **functional but
+current-limited**, and that is an engineering fact, not a routing one.
+
 ## D-724 ADDENDUM 4 — THE CHEAP EXPERIMENT WAS RUN. `ACC_DETECT_N_HDR`'s TP43 CHAIN IS **VERIFIED REDUNDANT** AND FREES `y = 36.000` FOR NOTHING; `TP43`'s **PAD** IS WHAT STILL CLOSES THE CROSSING, AND IT IS THE ONLY COMPONENT THAT MUST MOVE
 
     authority  a405b06f  UNCHANGED

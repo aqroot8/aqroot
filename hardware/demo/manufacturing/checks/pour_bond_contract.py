@@ -91,8 +91,20 @@ def main():
     # did.  Both readings are kept: `d619-pour-bond-contract-d610guard.json`
     # is the stale spec stating its one true complaint, this default is the
     # spec in force.
+    # D-725 re-derived it a THIRD time, for the third time for the same
+    # reason and with the same evidence.  The accessory-boost transaction
+    # retired `B /01_POWER_TREE/BQ25185_SYS POUR 2` (claimed, and PP1 admits
+    # it because both its lands are now carried by ROUTED COPPER), moved
+    # `C65` 0.250 mm east and took two GND stitch barrels out from under
+    # `C65.2`'s land.  Against the D-619 spec that reads as P2 `off_copper`
+    # on the two `U21.4` tubes and `NO_SUCH_ISLAND` on the `{L4.1,U21.3}`
+    # guard -- true statements about a stale centreline and a retired pour,
+    # and false alarms about the bond: `U21.4` shares B.Cu `GND` island 48
+    # with `C65.2` and `C38.2` exactly as it shared island 49 before, and the
+    # island GREW from 44.270 to 202.333 mm2.  The stale reading is kept as
+    # `evidence/d725-pour-bond-contract-d619guard-superseded.json`.
     ap.add_argument("--guard", type=Path,
-                    default=MANU / "evidence/d619-pour-bond-guard-bonded.json")
+                    default=MANU / "evidence/d725-pour-bond-guard-next.json")
     ap.add_argument("-o", "--out", type=Path)
     a = ap.parse_args()
 

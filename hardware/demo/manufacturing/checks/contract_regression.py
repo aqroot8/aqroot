@@ -91,7 +91,21 @@ EVIDENCE = MFG / "evidence"
 # reported six `misplaced_ends`, one `off_copper` tube and `NO_SUCH_ISLAND`.
 # NON-VACUITY CONTROL: the stale d709 guard STILL FAILS on this board -- which
 # is the same control D-709 recorded when it retired d656.
-BOND_GUARD = "evidence/d719-pour-bond-guard-next.json"
+# D-725 -- FOURTH BUMP, SAME REASON, AND THIS TIME A POUR WAS RETIRED.
+# The accessory-boost transaction retired `B /01_POWER_TREE/BQ25185_SYS
+# POUR 2`, moved `C65`, `R99`, `R100`, `R64` and `TP43`, and took two GND
+# stitch barrels out from under `C65.2`'s land.  Against the d719 guard that
+# reads `NO_SUCH_ISLAND` on the `{L4.1,U21.3}` tube -- a guard over the pour
+# that no longer exists -- plus `off_copper` on the two `U21.4` tubes and
+# eight renumbered `B.Cu` `GND` islands.  THE BOND DID NOT MOVE: `U21.4`
+# shares one `B.Cu` `GND` island with `C65.2` and `C38.2` on both boards, and
+# that island GREW from 44.270 to 202.333 mm2 because the retired pour handed
+# its copper back to the plane.  `misplaced_ends` is EMPTY, `PP1-PP4` PASS and
+# `verify_promotion.py`'s `pour_partition_intact` PASSES.  The guard re-emitted
+# on the promoted board reads `P1-P4 PASS`, 42 tubes, ZERO off copper, ZERO
+# renumbered.  NON-VACUITY CONTROL: the stale d719 guard STILL FAILS on this
+# board (`evidence/d725-pour-bond-contract-d619guard-superseded.json`).
+BOND_GUARD = "evidence/d725-pour-bond-guard-next.json"
 
 # name -> (script, extra argv, baseline evidence basename WITHOUT the decision
 #          prefix, verdict field).  The verdict field is read only for the

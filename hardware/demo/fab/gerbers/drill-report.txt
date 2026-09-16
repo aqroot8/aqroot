@@ -1,5 +1,5 @@
 Drill report for aqroot-Beta-v2.kicad_pcb
-Created on 2026-09-16T11:45:49
+Created on 2026-09-16T15:24:55
 
 Copper Layer Stackup:
     =============================================================
@@ -16,9 +16,9 @@ Drill file 'aqroot-Beta-v2-PTH.drl' contains
     =============================================================
     T1  0.200mm  0.0079"  (56 holes))
     T2  0.200mm  0.0079"  (12 holes))
-    T3  0.250mm  0.0098"  (55 holes))
-    T4  0.300mm  0.0118"  (633 holes))
-    T5  0.400mm  0.0157"  (151 holes))
+    T3  0.250mm  0.0098"  (56 holes))
+    T4  0.300mm  0.0118"  (630 holes))
+    T5  0.400mm  0.0157"  (153 holes))
     T6  0.600mm  0.0236"  (4 holes)  (with 4 slots)
     T7  0.750mm  0.0295"  (4 holes))
     T8  0.900mm  0.0354"  (2 holes))
