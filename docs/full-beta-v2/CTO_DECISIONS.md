@@ -63,11 +63,45 @@ that cannot see the contract.**  The budget for it is already published:
 may GROW up to 2.870 mm and the mismatch only IMPROVES, and the probe's own
 7.051 mm re-lay lands inside that budget.
 
-**NEXT, AND IT IS THE HIGHEST-LEVERAGE ITEM ON THE BOARD:** move `C47` by
-0.500 mm, hand-lay `NFC_RFO1` west-then-north-then-east around `VDD_DR`'s
-barrel site, hand-lay `NFC_VDD_A`'s escape, take the maze's `NFC_VDD_RF` and
-`NFC_VDD_AM` routes, and gate the lot with `rf_symmetry_contract` as the
-deciding clause.  **It is worth one edge and the NFC transmitter.**
+### 4. AND THAT TRANSACTION IS HALF BUILT, DRC-CLEAN, AND LEFT AT A NAMED RESIDUAL
+
+`evidence/d729-build-pm3-handlaid-arm.py` is the whole thing in one script:
+`C47` y 24.800 -> 24.300; `NFC_VDD_A`'s branch to `U9.7` moved off the lane on
+to In2 from the barrel `C47.1` ALREADY has inside its own land;
+`NFC_VDD_AM`'s (33.250,27.725)..(37.100,22.475) run freed; and **`NFC_RFO1`
+re-laid BY HAND in seven segments, 8.40 mm**:
+
+    (34.250,27.725) (34.250,26.900) (33.800,26.450) (33.800,25.400)
+    (36.400,25.400) (37.725,26.725) (37.725,27.025) (38.513,27.800)
+
+Every coordinate is a measured clearance, not a sketch: the turn is at
+y = 26.900 because the maze's own barrel site for `VDD_DR` is (34.675,26.350)
+and a 0.600/0.300 barrel owes it 0.650 mm (at 26.800 it is 0.656 -- legal to
+the micron and not worth building); the east run is at y = 25.400 because
+`C47`'s moved lands owe 0.350 mm and the barrel owes 0.650 mm; and it turns
+south at x = 36.400 because `GND`'s barrel at (37.000,24.800) owes 0.700 mm.
+**That board's real KiCad DRC is `{lib_footprint_issues: 199}` and NOTHING
+ELSE** (`evidence/d729-drc-pm3-base-zero-violations.json`), and an all-layer
+via-site sweep puts a legal 0.600/0.300 `GENERAL_SIGNAL` barrel at
+(34.750,26.200) with **0.108 mm** of margin.  `arm_a` goes 6.0744 -> 8.40 mm
+against `arm_b` 8.9446, so `rf_symmetry` RF2's mismatch falls from 2.870 mm
+to **0.545 mm**.
+
+**THE RESIDUAL IS TWO NETS THE MAZE STILL REFUSES:** on that base
+`NFC_VDD_RF` and `NFC_VDD_AM` both come back `no all-layer corridor at
+0.200 mm` (`evidence/d729-route-pm3-residual.json`), so the candidate stands at
+SIX retained open edges against the authority's five and is NOT promotable.
+The barrel site is proven legal and `NFC_VDD_AM` routed at 12.959 mm on the
+previous arm geometry, so this is a fit inside a 0.8 mm channel, not a wall --
+**but it is a fit, and it wants the same hand treatment the arm got, not
+another maze request.**
+
+**NEXT, AND IT IS THE HIGHEST-LEVERAGE ITEM ON THE BOARD:** take
+`d729-build-pm3-handlaid-arm.py` as it stands and hand-lay the last two --
+`VDD_DR` from `U9.14` north to the barrel at (34.750,26.200) and on to
+`NFC_VDD_RF`'s F.Cu diagonal, and `NFC_VDD_AM` from `U9.11` -- then gate the
+lot with `rf_symmetry_contract` as the deciding clause.  **It is worth one edge
+and the NFC transmitter.**
 
 ## D-728 ADDENDUM — `U9.14` `VDD_DR` IS A **TOPOLOGICAL** WALL, NOT A CORRIDOR: IT SITS BETWEEN TWO CONDUCTORS THAT BOTH MUST CROSS ITS LANE ON A LAYER NEITHER MAY LEAVE. THE PRICE OF EACH WAY OUT IS NOW EXACT, AND ONE OF THEM IS AN OWNER DECISION
 
