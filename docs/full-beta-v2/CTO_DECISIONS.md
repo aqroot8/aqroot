@@ -1,3 +1,214 @@
+## D-721 — /01_POWER_TREE/ACC_5V_LX IS ROUTABLE AND DRC-CLEAN AT 9 -> 8 EDGES, AND THE ONE CLAUSE THAT REFUSES IT NAMES THE BOOST BLOCK'S FLOORPLAN. U11.3 IS SEALED BY D-269, NOT BY A CORRIDOR. THE U16 WEST POCKET HOLDS EXACTLY TWO, MEASURED THREE WAYS
+
+    authority  d566ef54  UNCHANGED.  NO COPPER PROMOTED.  9 -> 9.
+    `evidence/d721-*.json`, `evidence/d721-build-boost-acc5vlx.py`
+
+### 1. THE 5 V ACCESSORY BOOST HAS NO SWITCH NODE, AND THE SWITCH NODE ROUTES
+
+`/01_POWER_TREE/ACC_5V_LX` -- `U21.5` (`SW`) to `L4.2` -- has never been routed
+on this board.  The `TPS61023` therefore has no inductor, and the Demo's
+REQUIRED switched 5 V accessory rail cannot work at all.  It is not a corridor
+problem: the two lands are **4.02 mm apart** and the only B.Cu object between
+them was **`GND`'s own escape from `U21.4`, `(58.700,39.375)->(60.600,38.425)`,
+which is REDUNDANT** -- that land lies inside the `B GND PLANE` fill.
+
+A candidate is built (`evidence/d721-build-boost-acc5vlx.py`) and it WORKS:
+
+    GND's redundant U21.4 escape          removed (2 duplicate objects)
+    C65 (22 uF boost output cap)          + 1.000 mm SOUTH
+    TP10 (/NFC_5V_EN)                     + 0.150 / + 3.250 mm, onto its own run
+    B /01_POWER_TREE/BQ25185_SYS POUR 2   5 x 9 mm rectangle -> 1.55 x 5.10 strip
+    ACC_5V_LX   U21.5 -> L4.2   3 segments, 0.200 mm inside U21's courtyard
+                (the .kicad_dru's own pad-escape necking licence, the one
+                U21.6's 0.250 mm escape has used since D-597) widening to the
+                0.400 mm SWITCH_NODE floor the moment it clears the package
+    ACC_5V_RAW  U21.6 -> C65.1 -> its In3 barrel, re-laid for C65's new place
+
+    real KiCad DRC   {solder_mask_bridge: 1, lib_footprint_issues: 199}
+                     BYTE-FOR-BYTE the inherited baseline
+    unconnected      25 -> 24
+    routing_ledger   retained open edges 9 -> 8,  open nets 7
+    verify_promotion 15 of 16 clauses PASS
+
+**THE 0.200 mm NECK IS PRICED FROM FIRST PRINCIPLES, AS THE REVIEW'S PRIORITY 5
+ASKS.**  0.64 mm long, `L/w` = 3.2, R = 1.6 mOhm, 2.6 mV at the **2.19 A peak
+inductor current D-185 publishes**, about 2 mW at its ~1.1 A rms -- and it is
+anchored at both ends by copper an order of magnitude wider, so IPC-2221B's
+long-isolated-trace model does not govern it.
+
+### 2. THE ONE REFUSAL IS `pour_partition`/PP2, AND IT IS RIGHT
+
+    fragment  U21.4 (the TPS61023's GND pin)   4.19 mm2
+    required  2.19 A          (RETURN_NEIGHBOUR_RAIL: the SYS rail at U21)
+    barrel    0.9/0.5 at (58.900,35.250)       2.693 A   ENOUGH
+    fragment copper                            1.335 A   NOT ENOUGH
+    bottleneck FRAGMENT_COPPER, widest tube 0.45 mm over 3.989 mm
+
+**The switch node severs the B.Cu ground plane.**  `SW` is the MIDDLE pin of
+`U21`'s east column with `GND` (pin 4) directly north of it, and `L4` sits
+NORTH of `U21`, so every path from `SW` to `L4.2` crosses the 1.175 mm band
+between `L4`'s lands and `U21`'s pad row -- and that band is the GND pin's only
+way to the plane body.
+
+**FOUR REMEDIES WERE BUILT AND MEASURED, AND ALL FOUR FAIL:**
+
+  * a **0.900 mm GND track** up the 1.39 mm inductor canyon: PP2 prices the
+    POUR, and a 0.9 mm track in a 1.39 mm canyon pushes the pour aside.  The
+    figure does not move: 0.45 mm before and after.
+  * a **FULL (solid) zone connection** on `U21.4` instead of the plane's
+    0.400 mm thermal spoke: 0.45 mm, unchanged.
+  * a **0.9/0.5 barrel** instead of the class 0.6/0.3: the BARREL goes
+    1.902 -> 2.693 A and the bottleneck moves to the fragment copper.
+  * **`SYS POUR 2` reshaped** from the 5 x 9 mm rectangle to a 1.55 x 5.10 mm
+    strip, so the plane could reach round the inductor canyon and keep `U21.4`
+    on the BODY (where PP2 exempts it).  The canyon and the plane body come to
+    **0.07 mm** of each other at `y ~ 34.2` and no closer: `L4`'s two 3.7 mm
+    lands and `EXT_SDA_BUF`'s 0.6 mm barrel at `(58.700,34.000)` pinch the only
+    crossing, and the 0.595 mm that is left admits no 0.200 mm conductor
+    (0.200 + 0.200 + 0.200 = 0.600).
+
+**AND THE ARITHMETIC SAYS WHY NO LAYOUT INSIDE THE PRESENT FLOORPLAN CAN PASS
+IT.**  `U21.4`'s land is **0.750 x 0.200 mm** and its CENTRE sits **0.100 mm**
+from the pour boundary the SWITCH_NODE 0.300 mm routed clearance draws under
+the `LX` escape, which itself cannot move: `SW`'s escape is pinned to
+y = 39.900 by 0.500 mm pitch between `U21.4` and `U21.6`.  Even with the
+anchor disc taken as the land's HALF-LENGTH rather than
+`min(w,h)/2` -- `pour_bond_guard.assign` uses the inscribed radius, 0.100 mm
+here -- the tube is about 0.6 mm, 1.65 A, still under the 2.19 A bar.
+
+***THE BLOCKER IS THE BLOCK'S FLOORPLAN, NOT THE SWITCH NODE.***  `L4` must sit
+so that `SW` reaches it WITHOUT crossing the ground pin's band -- lateral to
+`U21`'s east column, not north of it.  That is the review's PRIORITY 5 and it
+is the next transaction on this board.  It needs `C65`, `TP10` and `TP29` out
+of the way and it is bounded by `U22`'s courtyard to the west
+`(52.9,41.3)-(57.1,44.7)` and `J5`'s to the east.
+
+### 3. `U11.3` IS SEALED BY D-269, AND THAT IS AN OWNER DECISION, NOT A ROUTE
+
+D-720 recorded `U11.3` as "the only land on this board with no launch at any
+width in any direction" and left it there.  It is now NAMED.  A 0.200 mm escape
+is drawn by hand from `U11.3` westward and DRC'd
+(`evidence/d721-u11-3-escape-drc-d269.json`): **eight clearance errors and one
+short, every one of them against `BAT_MAIN routed clearance - current path role
+- D-269`, 0.300 mm**, because `U11.2` -- `/01_POWER_TREE/BAT_PROTECTED_P` --
+is the ADJACENT PIN on the `BQ25185`'s 0.400 mm pitch.
+
+    U11.2 BAT escape  y = 78.200     U11.3 STAT2       y = 77.800
+    U11.4 GND pad     y 77.300..77.500
+
+    STAT2's centreline must be <= 78.100 - 0.300 - 0.100 - 0.100 = 77.700
+    STAT2's centreline must be >= 77.500 + 0.200 + 0.100 = 77.800
+    THE WINDOW IS EMPTY BY 0.100 mm, AT EVERY WIDTH AND ON EVERY LATTICE.
+
+Narrowing either conductor does not open it: at 0.150 mm the window is still
+empty by 0.075 mm.  **No placement of `U11` changes it either** -- the seal is
+PIN ADJACENCY inside the package, and `BAT` is always pin 2 and `STAT2` always
+pin 3.  D-697's authorized `BAT_PROTECTED_P` re-floorplan does NOT reach it:
+the offending object is `U11.2`'s own escape, which must leave its own land.
+
+**THE OPTIONS ARE THEREFORE THREE, AND TWO OF THEM ARE OWNER DECISIONS:**
+
+  1. **A SCOPED D-269 EXCEPTION** bounded to `U11`'s courtyard, where the
+     VENDOR LAND PATTERN already holds `BAT_PROTECTED_P` and `/BQ25185_STAT2`
+     **0.200 mm** apart and no rule can change that.  D-269's own ruling reads
+     *"BAT_MAIN 0.300 mm routed clearance is a CURRENT-PATH-ROLE requirement,
+     not an entire-net-name requirement"* and its own exclusions say *"inside
+     them the EXISTING board rules govern -- the board default of 0.200 mm.  No
+     new clearance number was invented anywhere."*  It also says, in the same
+     entry, **"THE 0.300 mm REQUIREMENT IS UNTOUCHED ON EVERY CURRENT-CARRYING
+     ROLE"**, and `U11.2`'s escape IS the current path.  **RECOMMENDED, and
+     RAISED rather than taken**: 0.200 mm at 4.2 V over 0.5 mm of escape, beside
+     pads the package already holds 0.200 mm apart, adds no physical risk that
+     the land pattern has not already added -- but narrowing a named safety
+     ruling is the owner's call, not mine.
+  2. **`/BQ25185_STAT2` BECOMES AN APPROVED NC at `U11.3`** and firmware decodes
+     charge state from `STAT1` alone plus the MAX17048.  Costs one bit of
+     charger state.
+  3. **SUBSTITUTE `U11`** for a charger whose STAT pin is not adjacent to `BAT`.
+     D-703 option 4 permits it; it is the most expensive of the three.
+
+Closing `U11.3` closes ONE of `/BQ25185_STAT2`'s two edges.  The other,
+`{R128.2,TP7.1} <-> U2.19`, is separately `NO_PATH` at 9.474 mm with 15 source
+and 4 destination escapes and is a corridor question, not a package one.
+
+### 4. THE `U16` WEST POCKET HOLDS EXACTLY TWO OF ITS THREE, MEASURED THREE WAYS
+
+D-720 ADDENDUM measured this once.  Three more runs measure it from three
+different starting points and agree:
+
+    armA  evict EXT_SCL_BUF + ACC_PWR_EN whole, ask SCL_INT first
+          /I2C_SCL_INT ROUTES   U4.13 -> U16.3, 23.496 mm, 2 barrels, B-I2-B
+          EXT_SCL_BUF re-laid whole (10.470 + 30.675 mm)
+          /ACC_PWR_EN  NO_PATH on ALL THREE of its pairs
+    armB  the same board, /ACC_PWR_EN alone at 0.025 mm     NO_PATH x3
+    armC  the same, with AQROOT_PLANE_SIGNAL='I3:/ACC_PWR_EN'  NO_PATH x3, 19 s
+    armD  evict EXT_SCL_BUF only, keep ACC_PWR_EN's copper
+          /I2C_SCL_INT ROUTES   U4.13 -> U16.3, 26.376 mm, 2 barrels, B-F-B
+          EXT_SCL_BUF comes back 86.022 mm with NINE barrels but LOSES U16.2
+    armE  evict both, ask /ACC_PWR_EN FIRST, In3 licensed
+          /ACC_PWR_EN ROUTES    R17.1 -> U16.1, 8.288 mm, 2 barrels, B-I3-B
+          /I2C_SCL_INT then NO_PATH, and EXT_SCL_BUF again loses U16.2
+
+**EVERY ONE OF THE THREE IS ROUTABLE ALONE AND NO TWO OF THEM PLUS THE THIRD
+FIT.**  Which two get the pocket is the order they are asked in, and the net
+count never improves: D-720's finding is now measured from both ends.
+`AQROOT_PLANE_SIGNAL` on `In3` buys nothing here -- the refusal is at the
+escape, not the haul.
+
+**AND ONE MEASUREMENT CORRECTS D-720.**  D-720 ADDENDUM named "`J5`'s
+through-hole wall at x = 62.952" as the east bound of `U16`'s fan-out.  That
+figure is `J5`'s BOUNDING BOX.  `J5`'s **COURTYARD** is
+`(65.00,7.98)-(72.92,70.44)`, so the plaza east of `U16` is **2.83 mm wide, not
+0.87 mm** -- `U16` rotated 180 degrees would face it.  The plaza is not empty
+(`NATIVE_A_HDR`'s B.Cu trunk at x 64.4-64.7, `ACC_5V_BOOST_EN`'s meander,
+`EXT_SDA_BUF`, `I2C_SDA_INT` and a GND stitch cluster all cross it) but it is
+three times the room D-720 priced, and no transaction has been offered it.
+
+### 5. THE OTHER FOUR EDGES, RE-PRICED
+
+    /SX1262_DIO1        U2.9 <-> U8.13, 76.098 mm.  NO_PATH at 0.200 mm even
+                        with In3 licensed (216 s, 6 source / 8 destination
+                        escapes).  Still the least-explored edge on the board.
+    BQ25185_SYS         {L4.1,U21.3} island join at the 0.500 mm SYS_MAIN
+                        CLASS MINIMUM: "no all-layer corridor at 0.500 mm from
+                        this island to any other cluster of the net".  The rail
+                        has TWO pours 30 mm apart and nothing between them.
+    NFC_SUPPLY,
+    NFC_VDD_RF          unchanged: D-720's RF-geometry finding stands.
+
+### 6. TWO THINGS CHECKED AND FOUND SOUND, AND TWO FOUND WANTING
+
+  * **`U16`'s pin mapping is CORRECT.**  The repo's symbol and the board both
+    carry `1 EN, 2 SCLOUT, 3 SCLIN, 4 GND, 5 READY, 6 SDAIN, 7 SDAOUT, 8 VCC`,
+    and TI **SCPS270B** section 4 publishes exactly that for the DGK-8.  (The
+    LTC4307 this part is often equated with does NOT share it; that is what
+    made the check worth making.)
+  * **`U21.4`'s GND escape was redundant** with the `B GND PLANE` fill, so
+    removing it costs nothing -- verified by the fill, not assumed.
+  * **`/09_COMMUNITY_HEADER/ACC_DETECT_N_HDR` spends 65.71 mm of copper on FOUR
+    pads**, and `D5.6` -- the ESD diode that protects `J5.21` -- is **39.6 mm
+    from the contact it protects**.  A TVS 40 mm from its connector pin is not
+    ESD protection.  FLAGGED for the pre-fab list.
+  * **`R64`** (100 Ohm, `/ACC_DETECT_N`, F.Cu) sits at `(58.857,38.119)`, its
+    two lands straddling the inductor canyon directly over the boost
+    converter's ground return, 20 mm from BOTH nets it joins.  It is the single
+    object whose removal opens the canyon to a barrel; it should move with the
+    PRIORITY 5 re-floorplan.
+
+### 7. NEXT, IN ORDER OF LEVERAGE
+
+  1. **RE-FLOORPLAN THE `U21`/`L4` BOOST BLOCK** so `SW` reaches the inductor
+     laterally and `U21.4` keeps the ground plane.  The switch node is proven
+     routable and DRC-clean; only PP2's fragment price stands, and only the
+     floorplan answers it.  Worth ONE edge and the accessory 5 V rail itself.
+  2. **RAISE THE `U11.3` / D-269 DECISION** (section 3) -- worth ONE edge now
+     and a second when `U2.19`'s corridor is opened.
+  3. **RE-FLOORPLAN THE `U16` ACCESSORY CONTROL CLUSTER** into the 2.83 mm east
+     plaza section 4 measures -- worth TWO edges, and nothing short of
+     placement moves it.
+  4. `/SX1262_DIO1` and the `BQ25185_SYS` pour-to-pour trunk are both
+     board-scale power/signal distribution questions and belong after those.
+
 ## D-720 ADDENDUM — `/I2C_SCL_INT` `U16.3` CLOSES IN 40.724 mm WITH THREE BARRELS, AND THE `U16` WEST POCKET HOLDS EXACTLY TWO OF ITS THREE CONDUCTORS. IT IS A PLACEMENT PROBLEM, NOT A CORRIDOR ONE
 
     authority  d566ef54  UNCHANGED.  NO COPPER.  9 -> 9.
