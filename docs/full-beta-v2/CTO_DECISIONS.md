@@ -28829,3 +28829,143 @@ and this session's run both report `NO LEGAL ESCAPE at >= 0.200 mm` — *"blocke
 by `U11.1` (x27), `U11.4` (x18), `U11.8` (x5), `R37.2` (x4)"* — a `BQ25185`
 DFN-10 middle pin on 0.400 mm pitch with 0.200 mm-tall lands. It is a package
 question.
+
+## D-718 — THE ACCESSORY 5 V CELL MOVES, AND THE EAST POCKET IS REFUTED AS ITS HOME: FOUR OF FIVE CROSSINGS, MEASURED AT FOUR RESERVATION WIDTHS. THE THREE CONTRACT CLAUSES THAT REFUSED A PART MOVE ARE REPAIRED
+
+**NO COPPER PROMOTED.**  Authority UNCHANGED at `2a3a9888`; 10 -> 10.  What is
+promoted is the INSTRUMENT: three clauses that could not express a part move,
+repaired against their own stated claims, with controls and the standing suite.
+
+### 1. THE CELL WORKS.  IT IS THE POCKET THAT DOES NOT
+
+D-717 ADDENDUM 2 ruled that the accessory 5 V boost cell must move to where
+`BQ25185_SYS`'s pour body already is.  It was built: **ten parts** --
+`U21` `L4` `C65` `C66` `R99` `R100` `TP28` `U22` `R101`, and `R38` (below) --
+into `x 67.3..76.4, y 76.4..94`, the least congested region on the board
+(17 `B.Cu` track objects, and between `y 81.5` and `90.8` exactly ONE).
+`evidence/d718-build-accessory-cell.py` is the whole transaction and it is
+reproducible from the authority.  Measured on that base
+(`evidence/d718-run-cell-local-nets.json`):
+
+  * **`/01_POWER_TREE/BQ25185_SYS`'s `{L4.1, U21.3}` island CLOSES WITH ZERO
+    COPPER** -- both lands sit inside `POUR 1` and the refill bonds them.  The
+    rail that has never reached the boost reaches it by placement alone.
+  * **`/01_POWER_TREE/ACC_5V_LX` routes in 5.031 mm with ZERO vias**, on the
+    `.kicad_dru`'s licensed neck with `--neck-reach-mm 0.25`.
+  * `ACC_5V_RAW` 18.2 mm / 0 vias, `ACC_5V_FB` 5.1 mm, `ACC_5V_ILIM` 4.0 mm.
+  * Real KiCad DRC is the INHERITED BASELINE EXACTLY -- `{solder_mask_bridge:
+    1, lib_footprint_issues: 199}`, `attributable_drc []` -- and the run's own
+    gate reads **`promotion_candidate: true`, every clause PASS**.
+
+### 2. AND THEN `/ACC_5V_SW` CANNOT LEAVE
+
+`U22.5` -> `J5.24` is **13.881 mm** and it is **`NO_PATH` at 0.400 mm**, the
+figure `--trunk-floor` descends `ACC_5V` to and `trunk_floor_price` admits:
+*"no all-layer corridor at 0.400 mm between the islands"*, 63 source escapes,
+re-asked at a 0.0125 mm lattice (`evidence/d718-acc5vsw-nopath.json`).  The
+corridor is fenced on every routable layer by long diagonals that were there
+before this session: `/ACC_3V3_SW` `F.Cu` (70.050,76.900)-(66.900,64.925),
+`+3V3` `B.Cu` (65.675,71.750)-(70.650,67.550), and on `In2`
+`/09_COMMUNITY_HEADER/EXT_SCL`, `NATIVE_B_HDR`, `/I2C_SDA_INT` and
+`/IR_RX_GPIO44`.  **So `U22` cannot live in the pocket** -- and `U22` cannot
+stay behind either, because `/01_POWER_TREE/ACC_5V_RAW` would then have to
+haul 45 mm through worse congestion than the 14 mm that already refuses.
+**THE EAST POCKET IS NOT THE CELL'S HOME, AND D-717 ADDENDUM 2's DIRECTION IS
+REFUTED IN THIS FORM.**
+
+### 3. FIVE CROSSINGS, FOUR OF THEM, AT EVERY RESERVATION WIDTH
+
+The pocket owes FIVE conductors to the west: `ACC_5V_SW`, `ACC_5V_SW_EN`,
+`ACC_POWER_FAULT_N`, `ACC_5V_BOOST_EN` and `Net-(U11-TS_MR)`.  Each arm below
+reserved the `BQ25185_SYS` pour spine at a different keep-out and re-ran all
+nine nets; **every arm closed FOUR and left 10 retained open edges**:
+
+| keep-out | `BQ25185_SYS` | what failed |
+|---|---|---|
+| 0.400 mm | intact | `+3V3` severed (2 `isolated_copper`), `BOOST_EN` 137.5 mm |
+| 0.350 mm | intact | `ACC_5V_BOOST_EN`, `ACC_5V_SW` |
+| 0.300 mm | severed | `ACC_5V_SW` |
+| 0.275 mm | severed | `ACC_5V_SW` |
+
+This is not a search failure.  **The corridor holds four of the five and the
+`SYS` pour thread and `BOOST_EN` want the same 0.05 mm.**
+
+### 4. THE `SYS` RAIL IS A 0.150 mm THREAD, AND THAT IS A FABRICATION FINDING
+
+`pour_bond_guard.geodesic` on the routed candidate: `U21.3 -> C28.1` is
+**0.150 mm** over 11.944 mm and `C28.1 -> U12.1` is **0.150 mm** over
+10.808 mm, against `SYS_MAIN`'s 0.500 mm section-5 floor.  D-656 recorded
+0.197 mm; it is narrower now.  Routing three ordinary 0.200 mm signals across
+it took `BQ25185_SYS` from **1 to 4 open edges** in one run.  **The system rail
+is delivered by pour, the pour is a thread, and every route across
+`x 62..71, y 75..100` on `B.Cu` cuts it.**  The real repair is a ROUTED
+`SYS_MAIN` trunk from the `U11.1`/`C27.1` node to `U12.1`, which this board
+does not have; `evidence/d718-sys-pour-spine-lanes.txt` is the spine, drawn.
+
+### 5. `R38` COMES HOME FROM SIXTY MILLIMETRES
+
+`R38`, the `BQ25185`'s **10 k TS/MR bias resistor**, sat at (9.525, 85.985) --
+**60 mm from `U11.6`**, its only other pad on `GND` -- and `Net-(U11-TS_MR)`
+spent **88.84 mm over 22 objects** meandering through the exact corridor
+`/ACC_5V_SW` needs.  Moved to **(72.800, 73.200)** the net routes in
+**9.758 mm with ZERO vias**.  A high-impedance thermistor-bias node does not
+belong on a 60 mm antenna.  It is measured, it is in the builder, and it did
+NOT open `/ACC_5V_SW`: the fences in section 2 are elsewhere.
+
+### 6. `U21.4` HAS A CEILING, AND IT IS THE PACKAGE
+
+`pour_partition` PP2 charges a `GND` pad the largest section-5 rail published
+for a net sharing its FOOTPRINT: `U21.3` is `SYS_MAIN`, so `U21.4` owes
+**2.19 A**.  A `SOT-563` pad is **0.350 mm** tall on 0.500 mm pitch, and a grid
+search over EVERY barrel site in `U21.4`'s island
+(`evidence/d718-tube-probe.py`) returns a maximum tube of **0.450 mm ->
+1.335 A**.  **`U21.4` can therefore never be priced as a FRAGMENT and must
+stay on the BODY island.**  That is a layout constraint on every future
+accessory-cell candidate, not a tooling defect.
+
+### 7. THE THREE CLAUSES THAT REFUSED A PART MOVE, REPAIRED
+
+These were written for transactions that only lay copper, and this board's
+remaining work is FLOORPLAN work, so they are on the critical path.
+
+  * **PP1** compared per **(POUR, pad)**.  Its own docstring says the bar is
+    *"a pad that resolved before and resolves NOWHERE after"*; a net owning two
+    bounded pours reports every pad of one as unresolved against the other by
+    construction, so moving a part off a LOCAL pour onto its net's OTHER pour
+    read as an injury.  The code now measures the set the prose names, the
+    per-pour movement is still reported as `moved_pour`, and the clause carries
+    a **non-vacuity control**: one pad that resolves on BOTH boards, withheld
+    from the POST set, must be named by the same expression the clause is
+    judged on.
+  * **PP2** infers *"copper that used to join two lands does not"* from the
+    partition -- exact only while the lands STAND STILL.  `C65.2` shared the
+    board-wide `B.Cu` `GND` island with `C38.2` and shares the pocket's island
+    50 mm away **because the capacitor moved**.  `--moved REF` (forwarded by
+    `verify_promotion.py --moved`) drops that reference's pads from the PRE
+    partition ONLY; `checks/placement_contract.py --move REF:DX:DY[:ROT]`
+    re-proves every delta against the same PRE board, so this can silence
+    nothing that did not move.
+  * **A POUR MAY BE RETIRED.**  `B /01_POWER_TREE/BQ25185_SYS POUR 2` is a
+    5 x 9 mm rectangle drawn for exactly two lands; when they move it has
+    nothing to connect and KiCad calls what is left `isolated_copper` -- a NEW
+    DRC class -- so LEAVING it is not the conservative choice.
+    `--pour-removed ZONE_NAME` / `verify_promotion.py --zone-removed` take the
+    claim by name; PP1 above is what makes it safe.
+
+**PROVED:** `checks/contract_regression.py --baseline d716` -- **14 contracts,
+all_ran true, 13 IDENTICAL**, `pour_partition` PASS and INCOMPARABLE only by
+the `ref_commit` D-676 already documents plus the new claim field.  And on
+authority -> candidate with all three claims stated,
+`evidence/d718-pour-partition-claims.log`: **PP1 PASS, PP2 PASS (one split,
+`{C27.2, R36.2}`, ADMITTED and priced), PP3 PASS, PP4 PASS.**
+
+### 8. NEXT
+
+1. **The accessory 5 V cell needs a home that is BOTH on the `SYS` pour AND
+   inside `J5`'s reach.**  The east pocket is the first and it is refuted; the
+   candidates left are the `C27`/`U11` band (`x 64..68, y 72..80`, full today)
+   and a `SYS_MAIN` TRUNK that makes the pour irrelevant (section 4).
+2. **Build the `SYS_MAIN` trunk.**  It is an open fabrication finding in its
+   own right and it is what unlocks (1).
+3. `R38` -> (72.800, 73.200) is measured, reproducible and worth **79 mm of
+   corridor**; it must ride with an edge-closing route (clause 4) and it will.

@@ -143,14 +143,24 @@ def board_at(rev, tmp):
 
 
 def partition(path):
-    """{key: {islands, pads:{ref: island}, geometry}} for every OUTER pour."""
+    """{key: {islands, pads:{ref: island}, geometry}} for every OUTER pour,
+    the per-pour UNRESOLVED list, and the set of pads that resolved SOMEWHERE.
+
+    D-718 adds the third return value and nothing else about this function
+    changes.  `unresolved` is per (pour, pad) and always was: a net owning two
+    bounded pours reports every pad of the first as unresolved against the
+    second, by construction.  PP1's CLAIM, in its own words above, is about a
+    pad "that resolved before and resolves NOWHERE after" -- so the set this
+    now also returns, (net, layer, ref) for every pad on SOME island of SOME
+    pour of its own net and layer, is the one the clause is written against.
+    """
     import pcbnew
     import pour_bond_guard as pg
     board = pcbnew.LoadBoard(str(path))
     pours = pg.read_pours(board)
     for p in pours:
         pg.assign(board, p)
-    out, unresolved = {}, []
+    out, unresolved, resolved = {}, [], set()
     for p in pours:
         key = "%s|%s|%s" % (p["net"], p["lkey"], p["zone"])
         pads, isl = {}, {}
@@ -160,6 +170,7 @@ def partition(path):
                           vias=[(v["x"], v["y"]) for v in e["vias"]])
             for q in e["pads"]:
                 pads[q["ref"]] = i
+                resolved.add((p["net"], p["layer"], q["ref"]))
         out[key] = dict(net=p["net"], lkey=p["lkey"], layer=p["layer"],
                         zone_name=p["zone_name"], n_islands=len(p["islands"]),
                         pads=pads, islands=isl)
@@ -174,7 +185,7 @@ def partition(path):
                 ref = "%s.%s" % (fp.GetReference(), q.GetNumber())
                 if ref not in pads:
                     unresolved.append(dict(pour=key, pad=ref))
-    return out, unresolved
+    return out, unresolved, resolved
 
 
 def reserved_plane_zones(path):
@@ -1039,31 +1050,108 @@ def severed_neck(pre_isl, frag_pads, body_pads):
                      "why it is published and not charged")
 
 
-def compare(pre_path, post_path):
-    pre, pre_bad = partition(pre_path)
-    post, post_bad = partition(post_path)
+def compare(pre_path, post_path, moved=(), pours_removed=()):
+    """D-718 -- `moved` is the set of REFERENCES this transaction claims to
+    have MOVED, and a pad on one of them carries no evidence about pre-existing
+    copper.
+
+    PP2's injury, in its own words, is "copper that used to join two lands does
+    not".  It is read off the PARTITION: two pads that shared an island before
+    and do not share one after.  That inference is exact while the lands stand
+    still and is simply WRONG when one of them is somewhere else -- `C65.2`
+    shared the board-wide `B.Cu` `GND` island with `C38.2` at (60.085, 40.475)
+    and shares the accessory pocket's island at (73.350, 84.000), 50 mm away,
+    because the CAPACITOR MOVED.  No copper was severed and none of the
+    geometry between them changed.
+
+    A claim, not a licence: every reference named here is independently
+    re-proved by `checks/placement_contract.py --move REF:DX:DY[:ROT]`, which
+    measures the exact delta against the same PRE board, so a transaction
+    cannot silence this clause for a part that did not move.  The pads are
+    dropped from the PRE partition ONLY; every clause still measures where they
+    land on the POST board, and the routing gate that proposed the copper
+    measures them against a base that already carries the move.
+    """
+    moved = {r for r in moved}
+    # D-718 -- A POUR MAY BE RETIRED, AND SAYING SO IS THE WHOLE OF THE CLAIM.
+    #
+    # `B /01_POWER_TREE/BQ25185_SYS POUR 2` was a 5 x 9 mm rectangle drawn for
+    # exactly two lands, `L4.1` and `U21.3`.  When those lands move the pour has
+    # nothing left to connect: KiCad's own DRC calls what remains
+    # `isolated_copper`, which is a NEW class this board does not carry, so
+    # LEAVING it is not the conservative choice.  Removing it read here as
+    # `POUR_DISAPPEARED` and as a drop in the pour COUNT, with no way to say so.
+    # A named claim is the way to say so, and PP1 above is what makes it safe:
+    # it still requires every pad of that pour's net to resolve on SOME pour
+    # after, which is exactly what "the copper is still there" means.
+    pours_removed = {n for n in pours_removed}
+    pre, pre_bad, pre_ok = partition(pre_path)
+    post, post_bad, post_ok = partition(post_path)
     planes, reserved = reserved_plane_zones(post_path)
 
     res = {}
     was = {(x["pour"], x["pad"]) for x in pre_bad}
     now = {(x["pour"], x["pad"]) for x in post_bad}
-    new_bad = sorted(now - was)
-    res["PP1"] = dict(ok=not new_bad and len(post) >= len(pre),
-                      newly_unresolved=[dict(pour=k, pad=v) for k, v in new_bad],
+    moved_pour = sorted(now - was)
+    # D-718 -- PP1's BAR IS "RESOLVES NOWHERE", WHICH IS WHAT IT ALWAYS SAID.
+    #
+    # The clause's own words above are: "a pad that resolved before and
+    # resolves NOWHERE after has had its pour taken away".  The set it was
+    # measured on was per (POUR, pad), which is a different and strictly
+    # larger claim: it also refuses a pad that resolves on ANOTHER pour of its
+    # own net on the same layer.  That is not the injury.  A net owning two
+    # bounded pours -- `/01_POWER_TREE/BQ25185_SYS` owns `POUR 1` and `POUR 2`
+    # on `B.Cu` -- has every pad of one reported unresolved against the other
+    # by construction, so MOVING A PART out of a LOCAL pour and onto the
+    # net's OTHER pour read as an injury when the pad never lost any copper.
+    # D-717 ruled the accessory 5 V cell must move; this is the clause that
+    # refused to let it, and it refused on a set its own docstring does not
+    # name.  The per-pour movement is still reported, as `moved_pour`, and PP2
+    # below still measures every partition change inside every pour.
+    new_bad = sorted(pre_ok - post_ok)
+    # NON-VACUITY.  A clause that cannot refuse is not a clause: take one pad
+    # that genuinely resolves on BOTH boards, withhold it from the POST set,
+    # and the bar must name it.
+    probe = sorted(pre_ok & post_ok)[:1]
+    control = dict(
+        ok=bool(probe) and sorted(pre_ok - (post_ok - set(probe))) == probe,
+        probe=[list(x) for x in probe],
+        why="a pad resolved on BOTH boards, withheld from the POST set, is "
+            "reported by the same expression the clause is judged on")
+    retired = sorted(k for k, v in pre.items()
+                     if k not in post and v["zone_name"] in pours_removed)
+    unclaimed_gone = sorted(k for k in pre if k not in post
+                            and k not in set(retired))
+    res["PP1"] = dict(ok=(not new_bad and not unclaimed_gone
+                          and len(post) >= len(pre) - len(retired)
+                          and control["ok"]),
+                      pours_retired_as_claimed=retired,
+                      pours_gone_unclaimed=unclaimed_gone,
+                      newly_unresolved=[dict(net=n, layer=l, pad=r)
+                                        for n, l, r in new_bad],
+                      moved_pour=[dict(pour=k, pad=v) for k, v in moved_pour],
+                      resolved_pre=len(pre_ok), resolved_post=len(post_ok),
                       unresolved_pre=len(pre_bad), unresolved_post=len(post_bad),
                       unresolved_inherited=sorted("%s %s" % (k.split("|")[0], v)
                                                   for k, v in sorted(was & now)),
+                      control=control,
                       pours_pre=len(pre), pours_post=len(post))
 
     splits, fragments, body_bonded = [], [], {}
+    dropped = []
     for key, a in sorted(pre.items()):
         c = post.get(key)
         if c is None:
+            if a["zone_name"] in pours_removed:
+                continue
             splits.append(dict(pour=key, why="POUR_DISAPPEARED"))
             continue
         # group the PRE pads by their PRE island, then look at where they went
         groups = {}
         for ref, i in a["pads"].items():
+            if ref.split(".")[0] in moved:
+                dropped.append(dict(pour=key, pad=ref, pre_island=i))
+                continue
             groups.setdefault(i, set()).add(ref)
         for i, refs in sorted(groups.items()):
             landed = {}
@@ -1253,6 +1341,9 @@ def compare(pre_path, post_path):
                           k: v["amps"] for k, v in sorted(table.items())},
                       published_table_source=table_src,
                       controls=controls,
+                      moved_refs_claimed=sorted(moved),
+                      pours_removed_claimed=sorted(pours_removed),
+                      pre_pads_dropped_as_moved=dropped,
                       return_nets=returns,
                       netclass_conductors={
                           k: v for k, v in sorted(classes.items())},
@@ -1350,11 +1441,30 @@ def main():
                          "so it must sit beside them")
     ap.add_argument("--board", default=str(BOARD),
                     help="the POST board (default: the authoritative one)")
+    ap.add_argument("--moved", action="append", default=[], metavar="REF",
+                    help="D-718: a REFERENCE this transaction claims to have "
+                         "MOVED.  Its pads are dropped from the PRE partition "
+                         "-- a land that is somewhere else carries no evidence "
+                         "about the copper that used to join it to anything -- "
+                         "and nothing else changes: every clause still measures "
+                         "where they land on the POST board.  Independently "
+                         "re-proved by placement_contract.py --move, which "
+                         "measures the exact delta against the same PRE board.  "
+                         "Repeatable; empty is the pre-D-718 behaviour exactly")
+    ap.add_argument("--pour-removed", action="append", default=[],
+                    metavar="ZONE_NAME",
+                    help="D-718: a POUR this transaction claims to have "
+                         "RETIRED, by zone name.  PP1 stops counting it as a "
+                         "missing pour and PP2 stops calling it "
+                         "POUR_DISAPPEARED -- and PP1's own bar, that every "
+                         "pad which resolved before resolves SOMEWHERE after, "
+                         "is what makes that safe.  Repeatable")
     ap.add_argument("-o", "--out", type=Path)
     a = ap.parse_args()
     with tempfile.TemporaryDirectory(prefix="aqroot-pp-") as tmp:
         pre = a.pre_board if a.pre_board else board_at(a.ref, tmp)
-        res = compare(pre, Path(a.board))
+        res = compare(pre, Path(a.board), moved=a.moved,
+                      pours_removed=a.pour_removed)
     ok = all(res[k]["ok"] for k in ("PP1", "PP2", "PP3", "PP4"))
     # D-676.  `ref` RECORDS THE SYMBOL AND THE SYMBOL MOVES.  This contract is
     # the only one in the standing suite whose PRE input is a git revision, and
@@ -1375,7 +1485,8 @@ def main():
         except Exception:
             ref_commit = None
     doc = dict(schema=1, ref=(str(a.pre_board) if a.pre_board else a.ref),
-               ref_commit=ref_commit,
+               ref_commit=ref_commit, moved_refs_claimed=sorted(a.moved),
+               pours_removed_claimed=sorted(a.pour_removed),
                pre_board=str(a.pre_board) if a.pre_board else None,
                board=str(a.board), ok=ok, results=res)
     text = json.dumps(doc, indent=1, sort_keys=True, default=str)

@@ -66,6 +66,46 @@
 > `verify_promotion` PASS and `protected_copper` showing exactly one protected
 > net moved.  `U14.7` is on the bus.  This board has **no open owner decision**.
 
+- **Demo D-718 (THE CELL MOVES AND THE EAST POCKET IS REFUTED AS ITS HOME —
+  FOUR OF FIVE CROSSINGS AT EVERY RESERVATION WIDTH; AND THE THREE CONTRACT
+  CLAUSES THAT REFUSED A PART MOVE ARE REPAIRED):**  **NO COPPER PROMOTED.**
+  Authority UNCHANGED at `2a3a9888`; 10 -> 10.  ***THE CELL ITSELF WORKS:***
+  ten parts into `x 67.3..76.4, y 76.4..94` (the least congested region on the
+  board — between `y 81.5` and `90.8` there is exactly ONE `B.Cu` track object)
+  and `/01_POWER_TREE/BQ25185_SYS`'s `{L4.1, U21.3}` island **CLOSES WITH ZERO
+  COPPER** because both lands land inside `POUR 1`; `/01_POWER_TREE/ACC_5V_LX`
+  **routes in 5.031 mm with ZERO vias**; `ACC_5V_RAW`/`FB`/`ILIM` all local;
+  real DRC is the inherited baseline EXACTLY and that run's own gate reads
+  `promotion_candidate: true`, every clause PASS
+  (`evidence/d718-run-cell-local-nets.json`).  ***AND THEN THE OUTPUT CANNOT
+  LEAVE:*** `/ACC_5V_SW` `U22.5 -> J5.24` is 13.881 mm and **`NO_PATH` at
+  0.400 mm** — *"no all-layer corridor"*, 63 escapes, re-asked at a 0.0125 mm
+  lattice — fenced by `/ACC_3V3_SW`'s `F.Cu` diagonal, `+3V3`'s `B.Cu` `R39`
+  feed and four long `In2` verticals.  `U22` cannot live in the pocket, and it
+  cannot stay behind either (`ACC_5V_RAW` would owe 45 mm through worse
+  congestion).  ***FIVE CROSSINGS, FOUR OF THEM, AT EVERY WIDTH:*** reserving
+  the `SYS` pour spine at 0.400 / 0.350 / 0.300 / 0.275 mm keep-out each closed
+  FOUR of the five and left **10 retained open edges** — at 0.400 `+3V3` is
+  severed and `BOOST_EN` takes 137.5 mm, at 0.350 `BOOST_EN` and `SW` fail, at
+  0.300 and below the `SYS` thread is cut.  ***AND THE `SYS` RAIL IS A 0.150 mm
+  THREAD:*** `U21.3 -> C28.1` 0.150 mm over 11.944 mm and `C28.1 -> U12.1`
+  0.150 mm over 10.808 mm against a 0.500 mm floor (D-656 recorded 0.197 mm) —
+  three ordinary 0.200 mm signals across it took `BQ25185_SYS` from 1 to 4 open
+  edges.  **A ROUTED `SYS_MAIN` TRUNK IS THE REPAIR AND THIS BOARD DOES NOT
+  HAVE ONE.**  ***ALSO MEASURED:*** `R38`, the `BQ25185`'s 10 k TS/MR bias
+  resistor, sat **60 mm from `U11.6`** and its net spent 88.84 mm over 22
+  objects in the corridor; at (72.800, 73.200) it routes in **9.758 mm with
+  zero vias**.  And `U21.4` has a PACKAGE ceiling: a `SOT-563` pad is 0.350 mm
+  tall, a grid search over every barrel site in its island returns a maximum
+  PP2 tube of **0.450 mm / 1.335 A** against the 2.19 A `SYS_MAIN` bar, so
+  **`U21.4` can never be priced as a fragment and must stay on the BODY
+  island**.  ***THE INSTRUMENT IS WHAT IS PROMOTED:*** `pour_partition` PP1 now
+  measures the set its own docstring names (*"resolves NOWHERE after"*) with a
+  non-vacuity control; `--moved REF` states a part move so PP2 stops reading a
+  50 mm relocation as severed copper; `--pour-removed` / `--zone-removed` state
+  a retired local pour.  `contract_regression --baseline d716`: **14 contracts,
+  all ran, 13 IDENTICAL**, `pour_partition` PASS; and authority -> candidate
+  with all three claims reads **PP1/PP2/PP3/PP4 all PASS**.
 - **Demo D-717 ADDENDUM 3 (`/BQ25185_STAT2` `U2.19` IS A CORRIDOR AND ITS `Q1`
   IS THE CHEAPEST ON THE BOARD):**  **NO COPPER.**  `BASE NO_PATH`; **`Q1` —
   drop ALL routed copper of the TWENTY foreign nets in the window — OPENS in

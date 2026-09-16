@@ -605,7 +605,7 @@ def resolved_fp_lib_table():
     return "(fp_lib_table\n  (version 7)\n%s\n)\n" % rows
 
 
-def pour_partition_proof(pre, post, out):
+def pour_partition_proof(pre, post, out, moved=(), pours_removed=()):
     """CLAUSE 15 -- an outer pour's PAD PARTITION, re-asked INDEPENDENTLY.
 
     D-623 wired `checks/pour_partition_contract.py` into `route_maze_batch.py`
@@ -650,10 +650,17 @@ def pour_partition_proof(pre, post, out):
             target = Path(cell) / prl.name
             if target.resolve() != prl.resolve():
                 shutil.copyfile(prl, target)
-    run = subprocess.run(
-        [sys.executable, str(POUR_PARTITION), "--pre-board", str(pre),
-         "--board", str(post), "-o", str(out)],
-        text=True, capture_output=True)
+    cmd = [sys.executable, str(POUR_PARTITION), "--pre-board", str(pre),
+           "--board", str(post), "-o", str(out)]
+    # D-718 -- the MOVED claim is forwarded, not invented here.  A pad that is
+    # 50 mm from where it was carries no evidence about the copper that used to
+    # join it to anything; `checks/placement_contract.py --move` re-proves each
+    # reference's exact delta against this same PRE board.
+    for ref in moved:
+        cmd += ["--moved", ref]
+    for name in pours_removed:
+        cmd += ["--pour-removed", name]
+    run = subprocess.run(cmd, text=True, capture_output=True)
     if not Path(out).exists():
         return False, dict(ok=False, ran=False, returncode=run.returncode,
                            stderr=run.stderr[-2000:])
@@ -799,6 +806,24 @@ def main():
                          "gives up returns to the global planes, and PP1-PP4 "
                          "still measure what that did to every pad partition. "
                          "Repeatable")
+    ap.add_argument("--zone-removed", action="append", default=[],
+                    metavar="ZONE_NAME",
+                    help="D-718: a POUR this promotion claims to have RETIRED, "
+                         "by zone name.  A local pour drawn for two lands has "
+                         "nothing to connect once those lands move, and what "
+                         "is left is `isolated_copper` in real DRC -- a NEW "
+                         "class -- so retiring it is the clean direction and "
+                         "not the risky one.  Admitted on ONE term besides the "
+                         "claim: `pour_partition_contract` PP1 must still "
+                         "resolve every pad of that pour's net to SOME pour of "
+                         "its net on its layer.  Repeatable")
+    ap.add_argument("--moved", action="append", default=[], metavar="REF",
+                    help="D-718: a reference this promotion claims to have "
+                         "MOVED.  Forwarded to the pour-partition clause, whose "
+                         "PARTITION inference is exact only while the lands "
+                         "stand still.  Re-prove every one of them with "
+                         "checks/placement_contract.py --move; nothing here "
+                         "measures the delta.  Repeatable")
     ap.add_argument("--out", type=Path)
     a = ap.parse_args()
 
@@ -900,6 +925,9 @@ def main():
     _moved = zshrunk_keys | zgrown_keys
     zadded = [z for z in zpost if z not in zpre and z[:7] not in _moved]
     zlost = [z for z in zpre if z not in zpost and z[:7] not in _moved]
+    # D-718 -- and a pour may be RETIRED, by name, as a stated claim.
+    zretired = [z for z in zlost if z[2] in set(a.zone_removed)]
+    zlost = [z for z in zlost if z not in zretired]
     zclaim = sorted((z[0], z[1][0]) for z in zadded)
 
     removed_nets = sorted({x[1] for x in (before - after)})
@@ -917,7 +945,9 @@ def main():
     # refilled copper, and after `fill_stable` is known, because that is the
     # fact this clause's use of an unrefilled `pre` leans on.
     pp_ok, pp_detail = pour_partition_proof(pre, post,
-                                            tmp / "pour-partition.json")
+                                            tmp / "pour-partition.json",
+                                            moved=a.moved,
+                                            pours_removed=a.zone_removed)
 
     dru = (post.with_suffix(".kicad_dru")).read_text(encoding="utf-8")
     contracts = {k: (v in dru) for k, v in DRU_CONTRACTS.items()}
@@ -1017,6 +1047,9 @@ def main():
         added_via_dia_drill_nm=[list(v) for v in vdims],
         pad_escape_neck=neck_detail, pad_escape_run=run_detail,
         pour_bridge=bridge_detail,
+        claimed_moved_refs=sorted(a.moved),
+        claimed_removed_zones=sorted(a.zone_removed),
+        zones_retired=[dict(net=z[0], name=z[2]) for z in zretired],
         rule_areas_added=radded, rule_areas_removed=rlost,
         rule_areas_widened=rwidened,
         rule_areas_narrowed=rnarrowed,
