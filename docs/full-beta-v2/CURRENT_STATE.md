@@ -66,6 +66,54 @@
 > `verify_promotion` PASS and `protected_copper` showing exactly one protected
 > net moved.  `U14.7` is on the bus.  This board has **no open owner decision**.
 
+- **Demo D-722 (BOTH OF THE ST25R3916's TRANSMITTER SUPPLY PINS ARE
+  UNCONNECTED: `U9.10` IS `VDD_TX` AND `U9.14` IS `VDD_DR`, SO THE NFC
+  TRANSMITTER HAS NO SUPPLY AT ALL):**  **NO COPPER.**  Authority UNCHANGED at
+  `d566ef54`; 9 -> 9.  ***D-720 CALLED `U9`'s TWO EDGES "RF GEOMETRY".  THEY
+  ARE THE TRANSMITTER'S POWER.***  Read against ST **DS12484 Rev 3** Table 2 --
+  the datasheet is IN THIS REPOSITORY at
+  `hardware/beta/kicad/aqroot-beta/vendor/ST25R3916/` -- the four supply pins
+  on `U9`'s south row are `8 VDD` (connected), `9 VDD_RF` (connected),
+  **`10 VDD_TX`, "External positive supply FOR THE TX PART" (OPEN)** and
+  **`14 VDD_DR`, "Antenna driver positive supply INPUT" (OPEN)**.  With pin 10
+  and pin 14 open **the NFC front end cannot transmit -- no field, no reader,
+  no card emulation** -- and NFC is on the charter's non-negotiable list.  The
+  SCHEMATIC is right: `ST25R3916-AQET`'s symbol matches the datasheet pin for
+  pin and tying `VDD_DR` to `VDD_RF` is ST's own arrangement; the defect is
+  entirely in the copper.  ***AND THE DATUM THE PRICING WALL WAS MISSING IS IN
+  THIS REPOSITORY:*** `/NFC_SUPPLY` is `P3V3`, whose floor is **0.400 mm**, and
+  `U9.10`'s LAND IS **0.300 mm WIDE** -- unsatisfiable since the class was
+  written.  DS12484 says the `VDD_RF` regulator **"limits the regulator current
+  to 350 mArms"**, so the transmitter branch is hard-limited BY THE CHIP;
+  IPC-2221B at this board's copper needs **0.085 mm** for 0.35 A, and
+  **0.200 mm -- which the board's OWN pad-escape necking rule already licenses
+  inside `U9`'s courtyard -- carries it with better than 2x margin**.  D-249's
+  ruling, one part over: at `U9.10` THE PACKAGE IS THE BOTTLENECK, NOT THE
+  RULE.  ***AND REAL DRC NAMES ONE OBJECT FOR EACH EDGE:*** both escapes drawn
+  by hand at 0.200 mm give the whole board exactly TWO new errors --
+  `U9.10` **0.1523 vs 0.2000 against `NFC_VDD_RF`'s 0.6 mm BARREL at
+  (32.200,26.900)** (and the rule that fires is the necking clearance, which
+  proves the package-local licence is already live), and `U9.14` **0.2096 vs
+  0.2500 against `RFO1`'s DOGLEG (34.250,26.800)->(34.825,26.225)**.
+  ***`U9.10` IS CLOSABLE WITH SMALL MOVES*** -- one barrel 0.100 mm west buys
+  its escape 0.250 mm where it has 0.150.  ***`U9.14` IS NOT:*** pushing the
+  dogleg 1.000 mm south was BUILT and DRC'd and it lands on `C47`, the `VDD_A`
+  decoupling capacitor -- four shorts, six clearance errors -- and it cannot
+  stay either, because `RFO1` must leave pin 13 southward and reach `L5` in the
+  east, so it crosses x = 34.750 at some y and `VDD_DR`'s only escape is
+  straight down that line.  A barrel at the land is out too: the widest that
+  clears `U9.13`'s land is 0.30 mm outside diameter, below every via class this
+  board publishes.  **`U9.14` NEEDS THE NFC FRONT END RE-FLOORPLANNED -- WHICH
+  THE `.kicad_dru`'s OWN SECTION 7 ALREADY RECORDS AS PM-3, "NOT ENCODABLE, AND
+  THEREFORE A PLACEMENT PRECONDITION" (arms 24.18 mm against 34.21 mm, `L5` and
+  `L6` 19.8 mm apart on OPPOSITE sides of `U9`).  PM-3 IS NOT AN RF REFINEMENT;
+  IT IS WHY THE TRANSMITTER HAS NO DRIVER SUPPLY.**  ***AND THE DECOUPLING IS
+  IN THE WRONG PLACE TOO:*** `C49` 2.2 uF is **7.1 mm** from `U9.14`, `C50`
+  10 nF **11.2 mm**, `C55` 2.2 uF **9.1 mm** from `U9.10` and `C19` 100 nF
+  **14.0 mm** -- ST puts that decoupling within about 2 mm because the loop
+  carries the 13.56 MHz transmit current.  Same defect, same fix, as D-719
+  found at the `TPS63020` and D-721 at the `TPS61023`.  **THIS IS NOW THE
+  HIGHEST-PRIORITY FUNCTIONAL BLOCKER ON THE BOARD.**
 - **Demo D-721 ADDENDUM (THE BOARD'S LAST INHERITED DRC VIOLATION IS RESOLVED;
   THE `SYS` POURS ARE RE-SHAPED TO WHAT THEY SERVE AT ZERO COST TO THE RAIL;
   `/BQ25185_STAT2`'s `U2.19` EDGE GETS THE FIRST CHEAP OPENER ON THIS BOARD;

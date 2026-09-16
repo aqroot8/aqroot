@@ -1,3 +1,149 @@
+## D-722 — BOTH OF THE ST25R3916's TRANSMITTER SUPPLY PINS ARE UNCONNECTED. `U9.10` IS `VDD_TX` AND `U9.14` IS `VDD_DR`, AND WITHOUT THEM THE NFC TRANSMITTER HAS NO SUPPLY AT ALL
+
+    authority  d566ef54  UNCHANGED.
+    `evidence/d722-*.json`
+    ST25R3916 datasheet DS12484 Rev 3, IN THIS REPOSITORY at
+    `hardware/beta/kicad/aqroot-beta/vendor/ST25R3916/`
+
+### 1. WHAT THE TWO REMAINING `U9` EDGES ACTUALLY ARE
+
+D-720 classified `U9`'s two open edges as "RF geometry" and left them there.
+They are named now, against ST's own pin table (DS12484 Rev 3, Table 2,
+VFQFPN32):
+
+    pin  8  VDD      External positive supply                 /NFC_SUPPLY      CONNECTED
+    pin  9  VDD_RF   Regulated driver supply (AO)             NFC_VDD_RF       CONNECTED
+    pin 10  VDD_TX   External positive supply FOR THE TX PART /NFC_SUPPLY      *** OPEN ***
+    pin 14  VDD_DR   Antenna driver positive supply INPUT     NFC_VDD_RF       *** OPEN ***
+
+**BOTH OF THE TRANSMITTER'S SUPPLY PINS ARE UNCONNECTED.**  `VDD_TX` is the
+external supply the transmitter is fed from and `VDD_DR` is the antenna
+driver's own supply input; the ST25R3916's internal `VDD_RF` regulator sits
+between them and is brought out on pin 9 precisely so that pin 9 and pin 14 are
+tied externally with the driver decoupling between them.  With pin 10 and
+pin 14 open, **the NFC front end cannot transmit -- no field, no reader, no
+card emulation.**  This is not a routing-quality question and it is not
+deferrable: NFC is a Kickstarter-visible feature and the charter's
+non-negotiable list says RF and NFC must remain functional.
+
+**THE SCHEMATIC IS RIGHT.**  `AQROOT_Beta:ST25R3916-AQET`'s symbol carries
+`1 VDD_IO, 8 VDD, 9 VDD_RF, 10 VDD_TX, 11 VDD_AM, 12 GND_DR, 13 RFO1,
+14 VDD_DR, 15 RFO2, 16 GND_DR`, matched pin for pin against DS12484 Rev 3.
+Tying `VDD_DR` to `VDD_RF` is ST's own arrangement.  The defect is entirely in
+the copper.
+
+### 2. AND THE DATUM THE PRICING WALL WAS MISSING IS IN THIS REPOSITORY
+
+`/NFC_SUPPLY` is netclass `P3V3`, whose `.kicad_dru` floor is **0.400 mm on
+the outer layers** -- and `U9.10`'s LAND IS 0.300 mm WIDE.  A 0.400 mm
+conductor cannot leave a 0.300 mm pad, so the floor has been unsatisfiable at
+that pin since the class was written, and every previous decision recorded it
+as "the ST25R3916 supply current the narrower floor needs is not in this
+repo."  **It is in this repo**, in `hardware/beta/kicad/aqroot-beta/vendor/`:
+
+    DS12484 Rev 3, section on the VDD_RF regulator:
+      "The VDD_RF regulator includes a current limiter that limits the
+       regulator current to 350 mArms in normal operation."
+    Table (electrical characteristics):
+      IAL  supply current all active   16 mA typ / 23 mA max   (VDD, not TX)
+
+So the transmitter branch is hard-limited BY THE CHIP to **350 mA rms**, and
+`U9.10` is a LEAF: no current beyond that can enter it.  IPC-2221B at this
+board's 1 oz outer copper and dT = 10 K needs **0.085 mm** for 0.35 A -- the
+same arithmetic the `.kicad_dru`'s own section 5 uses for `ACC_3V3`'s 0.40 A.
+**0.200 mm carries 0.35 A with better than a 2x margin**, and 0.200 mm is what
+the board's OWN `Pad-escape necking - width, fine-pitch power packages` rule
+already licenses inside `U9`'s courtyard -- `U9` is one of the ten courtyards
+that rule names, and it sits AFTER the `P3V3` rule in the file, so it already
+wins there.  This is D-249's ruling applied one part over: **width is a PATH
+ROLE, and at `U9.10` the PACKAGE is the bottleneck, not the rule.**
+
+### 3. THE GEOMETRY, MEASURED
+
+`U9` is a VFQFPN32 whose south row is `9 VDD_RF, 10 VDD_TX, 11 VDD_AM,
+12 GND_DR, 13 RFO1, 14 VDD_DR, 15 RFO2, 16 GND_DR` on **0.500 mm pitch with
+0.300 x 0.750 mm lands**, so neighbouring lands are 0.200 mm apart and no rule
+can change that.
+
+    U9.10 VDD_TX at x = 32.750, between VDD_RF's 0.200 mm escape at x = 32.250
+          and VDD_AM's 0.300 mm escape at x = 33.250.  CLEAR GAP 0.750 mm.
+          At the 0.200 mm the necking rule licenses inside U9's courtyard a
+          0.200 mm escape has 0.300 and 0.250 mm of clearance: IT FITS.
+          What it then meets is GND's stitch barrel at (32.200,26.000) and
+          VDD_AM's own diagonal, which leave 0.56 mm where 0.60 is needed.
+
+    U9.14 VDD_DR at x = 34.750, between RFO1's 0.300 mm escape at x = 34.250
+          and RFO2's at x = 35.250.  CLEAR GAP 0.700 mm, and at 0.200 mm
+          clearance a 0.200 mm escape has 0.250 mm each side: IT FITS -- for
+          0.925 mm.  Then RFO1 turns south-west at (34.250,26.800) ->
+          (34.825,26.225) -> east at y = 26.225, and that dogleg crosses the
+          escape's only path.  NFC_RF's own 0.250 mm routed clearance boxes it
+          at 0.500 mm from each arm, which is EXACTLY the pitch: zero margin,
+          which is why every lattice has reported NO LEGAL ESCAPE.
+
+**AND REAL KiCad DRC NAMES ONE OBJECT FOR EACH.**  Both escapes are drawn by
+hand at 0.200 mm and DRC'd (`evidence/d722-nfc-escapes-drc.json`).  The whole
+board reports exactly TWO clearance errors and nothing else new:
+
+    U9.10's escape   0.1523 vs 0.2000, rule "Pad-escape necking - clearance"
+                     against NFC_VDD_RF's 0.6 mm BARREL at (32.200,26.900)
+    U9.14's escape   0.2096 vs 0.2500, rule "NFC transmit arm routed clearance"
+                     against RFO1's DOGLEG (34.250,26.800)->(34.825,26.225)
+
+**ONE ORDINARY BARREL AND ONE DOGLEG.**  And the necking clearance rule FIRING
+on the first of them is the proof that the board's own 0.200 mm package-local
+licence is already live inside `U9`'s courtyard.
+
+**THE DOGLEG WAS THEN PUSHED 1.000 mm SOUTH AND MEASURED**
+(`evidence/d722-rfo1-dogleg-push-drc.json`): it lands on `C47`, the `VDD_A`
+decoupling capacitor -- four shorts and six clearance errors, including
+`RFO1` through `C47.1`'s land.  **So the dogleg cannot simply move: the
+decoupling farm south of `U9` is where it would go.**  And it cannot stay:
+`RFO1` leaves pin 13 southward and must reach `L5` in the east, so it crosses
+x = 34.750 at SOME y, and `VDD_DR`'s only escape is straight down that line.
+A barrel at the land does not answer it either -- the widest that clears
+`U9.13`'s land is 0.30 mm outside diameter, below every via class this board
+publishes.
+
+**SO NEITHER IS A CORRIDOR PROBLEM AND NEITHER IS A RULE PROBLEM.**  Both are
+the LOCAL FAN-OUT of `U9`'s south row.
+
+  * **`U9.10` (`VDD_TX`) IS CLOSABLE WITH SMALL MOVES.**  Its blockers are
+    `NFC_VDD_RF`'s barrel at (32.200,26.900), `GND`'s stitch barrel at
+    (32.200,26.000) and `VDD_AM`'s escape diagonal -- all ordinary copper.
+    Moving the first barrel 0.100 mm west already buys the escape 0.250 mm of
+    clearance where it has 0.150 now.
+  * **`U9.14` (`VDD_DR`) IS NOT, AND THAT IS A PLACEMENT VERDICT.**  It needs
+    the NFC front end re-floorplanned -- which the `.kicad_dru`'s own section 7
+    already records as **PM-3, "NOT ENCODABLE, AND THEREFORE A PLACEMENT
+    PRECONDITION"**, measuring the two arms at 24.18 mm against 34.21 mm with
+    `L5` and `L6` 19.8 mm apart on OPPOSITE sides of `U9`.  **PM-3 is not an RF
+    refinement.  It is why the transmitter has no driver supply.**
+
+### 4. AND THE DECOUPLING IS IN THE WRONG PLACE TOO
+
+    C49  2.2 uF  NFC_VDD_RF  at (38.80,21.10)   7.1 mm from U9.14, 7.5 from U9.9
+    C50  10 nF   NFC_VDD_RF  at (39.30,38.90)  11.2 mm from U9.14
+    C55  2.2 uF  NFC_SUPPLY  at (41.83,21.10)   9.1 mm from U9.10
+    C19  100 nF  NFC_SUPPLY  at (42.12,38.90)  14.0 mm from U9.10
+
+ST's layout guidance puts the `VDD_RF`/`VDD_TX` decoupling within about 2 mm of
+the pins, because that loop carries the 13.56 MHz transmit current.  **The
+transmitter's supply decoupling is 7 to 14 mm away**, on the far side of the
+matching network.  Whatever closes these two edges should bring `C49` and
+`C55` with it -- the same defect, and the same fix, as D-719 found at the
+`TPS63020` and D-721 found at the `TPS61023`.
+
+### 5. NEXT
+
+This is now the HIGHEST-PRIORITY functional blocker on the board, ahead of the
+`U21` boost block, because it is a Kickstarter-visible feature that is dead
+rather than merely un-routed.  The transaction is a bounded re-floorplan of
+`U9`'s SOUTH FAN-OUT: move `C49` and `C55` beside the pins they decouple, push
+`RFO1`'s dogleg south (which `rf_symmetry` should welcome), move the one GND
+stitch barrel at (32.200,26.000), and lay both escapes at the 0.200 mm the
+board's own necking rule already grants inside `U9`'s courtyard.
+
 ## D-721 ADDENDUM — THE INHERITED `solder_mask_bridge` IS RESOLVED, THE SYS RAIL'S POURS ARE RE-SHAPED TO WHAT THEY SERVE, `/BQ25185_STAT2`'s `U2.19` EDGE HAS ITS FIRST SINGLE-NET OPENERS, AND `/SX1262_DIO1`'s CORRIDOR IS CROSSED BY SEVENTY-NINE NETS
 
     authority  d566ef54  UNCHANGED.
