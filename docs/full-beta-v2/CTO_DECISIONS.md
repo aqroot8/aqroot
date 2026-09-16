@@ -1,3 +1,74 @@
+## D-729 — PM-3 IS **ONE CAPACITOR AND HALF A MILLIMETRE**: WITH `C47` 0.500 mm NORTH, `U9.14` `VDD_DR` CLOSES IN 8.5 mm WITH TWO ORDINARY BARRELS. THE RESIDUAL IS TWO ARMS THE MAZE SHOULD NOT BE ASKED FOR
+
+    authority  7431e6af  UNCHANGED.  NO COPPER.
+    `evidence/d729-*`
+
+D-722 filed `U9.14` as *"PM-3, the NFC front-end re-floorplan"* -- an unbounded
+task.  D-728's addendum proved WHY it is closed (a topological trap between two
+antenna arms) and measured the small-via way out to death.  This bounds the
+remaining way out.
+
+### 1. THE SHAPE, AND THE PROBE THAT PROVED IT
+
+`VDD_DR` escapes the moment ONE arm stops crossing its lane, and `RFO1` can
+stop crossing it by turning WEST at its existing turn (34.250,26.800), running
+north OUTSIDE `VDD_DR`'s barrel site and coming back east ABOVE it.  The only
+object in that northern lane is **`C47`** -- `NFC_VDD_A`'s 2.2 uF, which D-722
+already flagged as sitting 4.5 mm from the pin it decouples.
+
+**PROBE** (`evidence/d729-probe-c47-parked.json`): park `C47` 4 mm away, free
+the local copper of `RFO1` and `NFC_VDD_A`, ask the maze.  All three route --
+`NFC_VDD_RF` **8.478 mm / 2 barrels**, `RFO1` **7.051 mm / ZERO barrels**,
+`NFC_VDD_A` 32.315 mm -- and the board goes **8 -> 4 retained open edges**.
+The shape is real.
+
+### 2. AND THE REAL MOVE IS 0.500 mm, NOT 4
+
+`evidence/d729-screen-placescan.py` sweeps every position for `C47` in
+(28..46, 17..40) against every same-side courtyard and every hole on the board:
+**the NFC block has no other home for it.**  It does not need one.  `C47`'s
+lands are 1.0 x 1.45 mm, so at **y 24.800 -> 24.300** its pads clear to
+y = 25.025 and the lane `RFO1` needs at y = 25.375 .. 25.925 opens -- and the
+move takes the capacitor 0.500 mm CLOSER to `U9.7`, the pin it decouples.
+`apply_part_shift` PASSES the move (`--allow-via-in-pad`: `NFC_VDD_A`'s barrel
+at (33.900,24.400) is ALREADY inside `C47.1`'s land and stays inside after it).
+
+**MEASURED AT THE REAL 0.500 mm, TWICE, at 0.050 mm and 0.025 mm lattices:**
+
+    /04_SPI_B_RADIOS_NFC/NFC_VDD_RF   CLOSES   8.548 mm / 2 barrels  (25 um)
+                                      CLOSES   8.826 mm / 2 barrels  (50 um)
+    /04_SPI_B_RADIOS_NFC/NFC_VDD_AM   re-laid  25.7 mm / 2 barrels
+
+**`U9.14` -- the ST25R3916's antenna-driver supply, the board's one FUNCTIONAL
+blocker -- closes with ORDINARY `GENERAL_SIGNAL` barrels, no rule change, no
+licence and no fabricator conversation.  PM-3 is one capacitor and half a
+millimetre.**
+
+### 3. WHAT IS LEFT, AND WHY IT IS NOT A ROUTING JOB
+
+With `C47` moved, `NFC_RFO1` and `NFC_VDD_A` must be re-laid, and the maze
+refuses both -- `RFO1` `NO_PATH at 0.300 mm` from `L5.1` to `U9.13` over a
+4.263 mm gap with ONE destination escape, `NFC_VDD_A` `NO_PATH at 0.200 mm`
+over 5.021 mm -- **at BOTH lattices and with `RFO1` requested FIRST**, so it is
+not a request-order problem.
+
+That is the right answer from the wrong instrument.  `NFC_RFO1` is half of a
+differential antenna driver pair: `.kicad_dru` says **B.Cu only, In2 forbidden,
+F.Cu forbidden, no via anywhere on the net, 0.300 mm minimum**, and
+`rf_symmetry_contract` RF2 judges it on ARM LENGTH MISMATCH, which the maze
+does not model at all.  Its existing route is a hand-tuned five-segment dogleg.
+**An RF arm is laid by hand against its own contract, not proposed by a maze
+that cannot see the contract.**  The budget for it is already published:
+`arm_a` 6.0744 mm, `arm_b` 8.9446 mm, `arm_mismatch_growth_mm` 0.0 -- `RFO1`
+may GROW up to 2.870 mm and the mismatch only IMPROVES, and the probe's own
+7.051 mm re-lay lands inside that budget.
+
+**NEXT, AND IT IS THE HIGHEST-LEVERAGE ITEM ON THE BOARD:** move `C47` by
+0.500 mm, hand-lay `NFC_RFO1` west-then-north-then-east around `VDD_DR`'s
+barrel site, hand-lay `NFC_VDD_A`'s escape, take the maze's `NFC_VDD_RF` and
+`NFC_VDD_AM` routes, and gate the lot with `rf_symmetry_contract` as the
+deciding clause.  **It is worth one edge and the NFC transmitter.**
+
 ## D-728 ADDENDUM — `U9.14` `VDD_DR` IS A **TOPOLOGICAL** WALL, NOT A CORRIDOR: IT SITS BETWEEN TWO CONDUCTORS THAT BOTH MUST CROSS ITS LANE ON A LAYER NEITHER MAY LEAVE. THE PRICE OF EACH WAY OUT IS NOW EXACT, AND ONE OF THEM IS AN OWNER DECISION
 
     authority  7431e6af  UNCHANGED.  NO COPPER.
