@@ -66,6 +66,68 @@
 > `verify_promotion` PASS and `protected_copper` showing exactly one protected
 > net moved.  `U14.7` is on the bus.  This board has **no open owner decision**.
 
+- **Demo D-724 (THE SWITCHED 5 V ACCESSORY RAIL HAS **NO SOURCE**, AND THE
+  TPS61023 BLOCK IS A PLACEMENT TRANSACTION, NOT A ROUTING ONE):**  **NOTHING
+  PROMOTED.**  Authority `a405b06f` UNCHANGED; retained open edges stay **8**.
+  ***THE HEADLINE IS NOT AN EDGE COUNT.***  `U21` (TPS61023) has **neither of
+  its two power connections**: `U21.3` (`VIN`) sits on `SYS POUR 2` with
+  `L4.1`, an island the SYS network never reaches, and `U21.5` (`SW`) is
+  unconnected to `L4.2`, its own inductor **2.143 mm away**.  With no `VIN` and
+  no switch node the boost cannot run, so **`ACC_5V_RAW` has no source** -- and
+  `ACC_5V_RAW` feeds `U22` (TPS22950C) whose output is `ACC_5V_SW`, i.e.
+  `J5.1` / `J5.24`.  **The switched 5 V accessory supply the Demo scope
+  REQUIRES is dead at the source, not at the switch.**  D-186's enables are
+  intact (`ACC_5V_SW_EN` on `U3.7`, `ACC_5V_BOOST_EN` on `U3.16`, `R102`/`R131`
+  fitted) and have nothing to enable.  Two of the eight open edges --
+  `ACC_5V_LX` and `BQ25185_SYS`'s second island -- are this one dead block.
+  ***NO ROUTER CAN ATTEMPT `U21.5`:*** it is the middle land of a SOT-563
+  column, 0.675 x **0.350 mm** on 0.500 mm pitch, so the gap to `U21.4` /
+  `U21.6` is 0.150 mm and the widest track that can leave it is **0.250 mm**
+  (exactly what `U21.6`'s own escape already uses) against `SWITCH_NODE`'s
+  0.400 mm minimum.  Every arm returned `NO LEGAL ESCAPE at >= 0.600 mm`, and
+  `>= 0.400 mm` with `--escape-floor --trunk-floor`.  `--neck` is INERT here
+  and that is a TOOLING fact: **`maze3d.route_join` calls `pad_escapes` without
+  the neck rule**, so on any net routed as an ISLAND JOIN the `.kicad_dru`
+  pad-escape licence is not in the search at all.  ***THE CANDIDATE WAS BUILT
+  AND IT WORKS*** (`evidence/d724-build-boost-lx.py`, rebuilt from the authority by that script -- its GEOMETRY reproduces
+  exactly, its sha256 does not, because KiCad mints a fresh UUID per added
+  object):
+  `SYS POUR 2`'s east edge 60.000 -> 57.750 so the `B GND PLANE` can reach
+  `U21.4`, `U21.4`'s redundant 1.9 mm B.Cu ground haul removed (it is the whole
+  of `ACC_5V_LX`'s corridor), `C65` +0.250 mm east, `R64` -0.400 mm north out
+  of the ground pocket, minimal In2 bows on `XGPIO4` and `EXT_SDA_BUF` (both
+  rejoin their original lines exactly), a 0.500/0.250 GND barrel 0.55 mm from
+  `U21.4`, and `ACC_5V_LX` laid `U21.5 -> L4.2` with **zero barrels**.  **Real
+  DRC attributable `{}`, ratsnest 24 -> 23, retained open edges 8 -> 7.**
+  ***AND `PP2` REFUSES IT, CORRECTLY:*** lifting the pour lets the GND plane
+  fill to the pin, and `ACC_5V_LX` itself severs that fill into a **4.457 mm2
+  FRAGMENT** priced at **1.335 A against a 2.190 A `RETURN_NEIGHBOUR_RAIL`
+  bar** (`bottleneck FRAGMENT_COPPER`; the 2.19 A is the `.kicad_dru`'s own
+  D-185 figure for this exact boost).  **NO GEOMETRY BEATS IT:** `bond_price`
+  anchors the internal tube on the pad at `min(w,h)/2`, and `U21.4` is
+  0.350 mm tall, so the tube starts 0.350 mm wide (~1.0 A); widening the stub
+  to 0.450 mm and setting the pad's zone connection to `FULL` moved the price
+  **not at all**, and even the clear `L4.1`<->`L4.2` channel
+  (1.390 - 2 x 0.200 = **0.990 mm**) is 2.19 A with *zero* margin before the
+  barrel and the switch node take their share.  ***THEREFORE THE BOOST BLOCK
+  MUST BE RE-FLOORPLANNED*** -- `U21`, `L4`, `C65`, `R64`, `R99`/`R100` and the
+  SYS approach together -- owing three things at once: `U21.5` reaching `L4.2`
+  without crossing `U21.4`'s ground return; `U21.4` on CONTINUOUS plane, not a
+  fragment; and SYS actually arriving, from its nearest main-network copper at
+  the F.Cu trunk vertex **(52.000,36.700), 5.652 mm away**, on copper the board
+  has no rule for (`SYS_MAIN`'s 0.800 mm `opt` carries 2.026 A against the
+  2.19 A owed -- already an open width finding in the `.kicad_dru`).  D-703's
+  standing authority covers the move: *"no further approval is needed to move
+  or rotate parts, re-floorplan blocks"*.  ***TWO GAPS RECORDED, NEITHER
+  SHIPPED:*** `route_join`'s missing neck rule (above), and D-680's
+  `NECK_REACH_MM` -- written **for `U21.5` by name** -- being wired into the
+  router but not into `verify_promotion.neck_proof`, which still calls
+  `Neck.outside()`.  It is needed exactly here: `U21`'s courtyard stops at
+  x = 59.045 and the first x a 0.400 mm `SWITCH_NODE` trunk can legally exist
+  at is **59.084**, so the licence is **0.039 mm** short.  A patched
+  `verify_promotion --neck-reach-mm` was written and **REVERTED unshipped** --
+  a gate relaxation must ride with the promotion that spends it, and this
+  transaction is refused on `PP2` regardless.
 - **Demo D-723 (THE ST25R3916's `VDD_TX` PIN GETS ITS COPPER: `/NFC_SUPPLY`
   CLOSES, 9 -> 8 EDGES, AND THE BOARD'S REAL DRC REACHES **ZERO VIOLATIONS**
   FOR THE FIRST TIME):**  **COPPER PROMOTED.**  Authority `d566ef54` ->

@@ -1,3 +1,150 @@
+## D-724 — THE SWITCHED 5 V ACCESSORY RAIL HAS **NO SOURCE**, AND THE TPS61023 BLOCK CANNOT BE CLOSED BY ROUTING. `ACC_5V_LX` IS BUILT, PASSES REAL DRC AT 8 -> 7 EDGES, AND IS REFUSED BY `PP2` ON AN ARITHMETIC NO LAYOUT IN THIS FLOORPLAN CAN BEAT
+
+    authority  a405b06f  **UNCHANGED -- NOTHING PROMOTED**
+    candidate  rebuilt from the authority by `evidence/d724-build-boost-lx.py`.
+               Its GEOMETRY reproduces exactly; its sha256 does NOT, because
+               KiCad mints a fresh UUID per added object.  Every figure below
+               was re-measured on a fresh rebuild.
+    `evidence/d724-drc-candidate.json` real DRC attributable **{}**
+    `evidence/d724-routing-ledger-candidate.json` retained open edges 8 -> **7**
+    `evidence/d724-pour-partition-refusal.json` **PP2 FAIL**, and it is right
+    `evidence/d724-router-u21p5-no-legal-escape.json`
+
+### 1. THE FINDING THAT MATTERS MORE THAN THE EDGE COUNT
+
+`U21` is the TPS61023 that makes the accessory 5 V rail.  **Neither of its two
+power connections exists on this board:**
+
+    U21.3  VIN  -- on SYS POUR 2 with L4.1, an island the SYS network never reaches
+    U21.5  SW   -- unconnected to L4.2, its own inductor, 2.143 mm away
+
+With no `VIN` and no switch node the boost cannot run, so **`ACC_5V_RAW` has no
+source** -- and `ACC_5V_RAW` is the input of `U22`, the TPS22950C load switch
+whose output is `ACC_5V_SW`.  `ACC_5V_SW` is `J5.1` and `J5.24`.  **The
+switched 5 V accessory supply the Demo scope requires is dead at the source,
+not at the switch**, and `ACC_5V_SW_EN` / `ACC_5V_BOOST_EN` are both fine:
+D-186's enables are intact and have nothing to enable.
+
+This is not an edge-count finding.  Two of the eight retained open edges --
+`ACC_5V_LX` and `BQ25185_SYS`'s second island -- are the same dead block.
+
+### 2. NO ROUTER CAN EVEN ATTEMPT `U21.5`, AND THE REASON IS THE PACKAGE
+
+Every arm answered the same sentence:
+
+    U21.5: NO LEGAL ESCAPE at >= 0.600 mm; blocked by U21.4 (x21), C65.1 (x18) ...
+    U21.5: NO LEGAL ESCAPE at >= 0.400 mm   (with --escape-floor --trunk-floor)
+
+`U21.5` is the middle land of a SOT-563 column: 0.675 x **0.350 mm** on a
+0.500 mm pitch, so the gap to `U21.4` and `U21.6` is **0.150 mm** each side and
+the widest track that can leave it at all is
+
+    0.500 - 0.350 = 0.150 gap;  0.325 - 0.200 clearance = 0.125 half-width
+    => 0.250 mm, which is EXACTLY what U21.6's own escape already uses
+
+against `SWITCH_NODE`'s published 0.400 mm minimum / 0.600 mm `opt`.  `--neck`
+does not help and that is a TOOLING FACT, not a board fact: `maze3d.route_join`
+calls `pad_escapes` **without the neck rule**, so on any net that is routed as
+an ISLAND JOIN -- which every unstarted net is -- the `.kicad_dru` pad-escape
+necking licence is not in the search at all.  Recorded, not fixed here.
+
+### 3. `U21.4`'s GROUND IS THE WHOLE OF THE CORRIDOR
+
+`SYS POUR 2` is a 5 x 9 mm `BQ25185_SYS` pour at (55,33)-(60,42) that **has
+never been fed**.  It covers `U21` entirely, so it displaces the `B GND PLANE`
+from `U21.4`, and `U21.4`'s ground is therefore a **1.9 mm B.Cu haul east** --
+(58.700,39.375) -> (60.600,38.425) -- which is the only lane `ACC_5V_LX` can
+use.  A local barrel would free it, and there is none to be had:
+
+    nearest legal GND barrel to U21.4, authority board, 0.20 mm clearance
+      0.35 mm dia   2.982 mm away
+      0.50 mm dia   3.052 mm
+      0.60 mm dia   3.162 mm
+
+because `XGPIO4` (In2), `EXT_SDA_BUF` (In2), `ACC_DETECT_N_HDR` (F.Cu) and
+`R64`'s pads all cross the `L4.1` <-> `L4.2` channel end to end.
+
+### 4. THE CANDIDATE: IT WORKS, AND REAL DRC AGREES
+
+`evidence/d724-build-boost-lx.py` builds it.  Seven moves, none of them large:
+
+    SYS POUR 2 east edge  60.000 -> 57.750   (L4.1 and U21.3 stay inside it)
+    GND haul U21.4 -> east                   removed, x2 (it is duplicated)
+    C65                   +0.250 mm east     opens the U21.4/C65.1 gate 0.755 -> 0.999
+    R64                   -0.400 mm north    out of the ground pocket and the L4 channel
+    XGPIO4     In2        minimal bow, rejoins the original line at both ends
+    EXT_SDA_BUF In2       minimal bow, same
+    GND        U21.4 -> 0.500/0.250 barrel 0.55 mm from the pad, into In1/In4
+
+    ACC_5V_LX  U21.5 -> L4.2, 0.200 mm neck then 0.400 mm, B.Cu, 0 barrels
+
+    real DRC attributable   {}          (199 headless lib_footprint warnings only)
+    raw ratsnest            24 -> 23
+    retained open edges      8 -> 7
+
+### 5. WHY IT IS REFUSED, AND WHY THE REFUSAL IS CORRECT
+
+Lifting the pour off `U21.4` lets the `B GND PLANE` fill to the pin -- and that
+fill is a **4.457 mm2 FRAGMENT**, because `ACC_5V_LX` itself severs it from the
+body.  `PP2` prices it:
+
+    fragment            4.457 mm2, pads [U21.4], post island 51
+    body                42.253 mm2, pads [C38.2], post island 49   (exempt)
+    barrels             1 x 0.250 mm drill  ->  1.685 A
+    internal tube       0.450 mm wide x 0.402 mm long  ->  1.335 A
+    priced              1.335 A        bottleneck FRAGMENT_COPPER
+    required            2.190 A        bar_from RETURN_NEIGHBOUR_RAIL
+    verdict             RETURN_BOUNDARY_UNDER_PRICED
+
+The 2.19 A is the `.kicad_dru`'s own number for this exact block -- *"the `U21`
+accessory boost draws a 2.19 A peak inductor current from SYS (D-185), so the
+SYS segment that feeds `U21` must be sized from that peak"* -- and a boost's
+GND pin carries that same current when the low-side switch conducts.  `PP2` is
+charging the right rail.
+
+**AND NO GEOMETRY BEATS IT.**  `bond_price` measures the internal tube with
+`pour_bond_guard.geodesic` anchored on the pad at `min(w,h)/2`.  `U21.4` is
+0.675 x **0.350 mm**, so the anchor radius is **0.175 mm** and the tube starts
+0.350 mm wide -- about 1.0 A.  Widening the stub to 0.450 mm and setting
+`U21.4`'s zone connection to `FULL` moved the price **not at all** (1.335 A
+both times).  Even the best case is no better: the clear channel between
+`L4.1`'s and `L4.2`'s pads is
+
+    1.390 mm - 2 x 0.200 clearance = 0.990 mm  ->  2.19 A at 1 oz, dT 10 K
+
+which is the bar EXACTLY, with zero margin, before the barrel and the switch
+node take their share.  **A GND fragment anchored on `U21.4` can never be
+priced at 2.19 A.**  The only passing shape is one where `U21.4` sits on the
+pour's BODY -- and the switch node is what cuts it off from the body.
+
+### 6. THEREFORE: THE BOOST BLOCK IS A PLACEMENT TRANSACTION
+
+`U21`, `L4`, `C65`, `R64`, `R99`/`R100` and the SYS approach have to move
+together.  The re-floorplan owes three things at once:
+
+  1. `U21.5` must reach `L4.2` **without crossing `U21.4`'s ground return**;
+  2. `U21.4` must sit on CONTINUOUS ground plane, not a fragment;
+  3. SYS must actually arrive.  Its nearest main-network copper is the F.Cu
+     trunk vertex at **(52.000,36.700), 5.652 mm away**, and the feed owes
+     2.19 A on copper the board has no rule for: `SYS_MAIN`'s own 0.800 mm
+     `opt` carries **2.026 A**, which the `.kicad_dru` already records as an
+     open width finding.
+
+### 7. TWO GAPS RECORDED, NEITHER SHIPPED
+
+  * `maze3d.route_join` ignores the neck rule (section 2).  Every island join
+    on this board is searched at the class floor.
+  * D-680 wrote `NECK_REACH_MM` and `maze3d.Neck.licensed` **for `U21.5` by
+    name** -- *"the wall D-679 measured at `U21.5`"* -- and wired it into the
+    ROUTER only.  `verify_promotion.neck_proof` still calls `Neck.outside()`,
+    so no promotion can spend the allowance the board already wrote down.  It
+    is needed here and nowhere else: `U21`'s courtyard stops at x = 59.045 and
+    the first x a 0.400 mm `SWITCH_NODE` trunk can legally exist at is
+    **59.084** -- the licence is **0.039 mm** short.  A patched
+    `verify_promotion --neck-reach-mm` was written and REVERTED unshipped: a
+    gate relaxation must ride with the promotion that spends it, and this
+    transaction is refused on PP2 regardless.
+
 ## D-723 — THE ST25R3916's `VDD_TX` PIN GETS ITS COPPER. `/NFC_SUPPLY` CLOSES, 9 -> 8 EDGES, AND THE BOARD'S REAL DRC REACHES **ZERO VIOLATIONS** FOR THE FIRST TIME
 
     authority  d566ef54 -> a405b06f  **COPPER PROMOTED**

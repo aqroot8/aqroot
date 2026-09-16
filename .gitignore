@@ -55,3 +55,6 @@ hardware/beta-v2/checks/probe_002w_prefix.json
 # ...and the same workspace when the driver is invoked FROM the
 # manufacturing directory, which is how the README's own commands read.
 hardware/demo/manufacturing/w/
+
+# Per-decision router/scratch work directories (large, reproducible)
+hardware/demo/manufacturing/w1*/
