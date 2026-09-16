@@ -1,3 +1,65 @@
+## D-724 ADDENDUM 4 — THE CHEAP EXPERIMENT WAS RUN. `ACC_DETECT_N_HDR`'s TP43 CHAIN IS **VERIFIED REDUNDANT** AND FREES `y = 36.000` FOR NOTHING; `TP43`'s **PAD** IS WHAT STILL CLOSES THE CROSSING, AND IT IS THE ONLY COMPONENT THAT MUST MOVE
+
+    authority  a405b06f  UNCHANGED
+    `evidence/d724c-probe-tp43-chain-redundant.py`
+    `evidence/d724c-drc-tp43-chain-removed.json`
+
+Addendum 3's postscript named the cheap experiment: get `ACC_DETECT_N_HDR`'s
+F.Cu horizontal off `y = 36.000`.  It was run.
+
+### 1. THE CHAIN IS REDUNDANT, AND THE PROBE PROVES IT
+
+`TP43` reaches `R64.2` **twice** -- once along `y = 36.000` and once along the
+net's own `(56.000,33.525) -> (59.675,37.200)` diagonal.  Four segments come
+out and ONE 1.47 mm stub from `TP43` onto that diagonal goes in:
+
+    removed  (55.731,35.330)->(56.400,36.000)   (56.400,36.000)->(57.550,36.000)
+             (57.550,36.000)->(58.975,37.425)   (59.682,38.119)->(58.975,37.425)
+    added    (55.731,35.330)->(56.700,34.225)   0.200 mm F.Cu
+
+    raw board ratsnest   24 -> **24**      (nothing was holding anything)
+    real DRC attributable  **{}**
+
+So `y = 36.000` is free across `x = 56.4 .. 58.975` **at no cost at all**, and
+a future transaction should take it.  It closes no edge on its own, so by the
+gate's own clause it must RIDE WITH the SYS feed rather than be promoted alone.
+
+### 2. AND IT IS NOT ENOUGH, FOR A REASON WORTH WRITING DOWN
+
+`ACC_5V_FB` must still get from B.Cu (north) to F.Cu (south) across
+`ACC_DETECT_N_HDR`'s **diagonal** -- that is what its via at (56.100,36.900) is
+FOR -- and now also clear the new SYS B.Cu leg.  Those two pincer the via into
+a narrow band.  With the leg run `(54.600,35.900) -> (57.225,36.200)` at
+1.000 mm, a 0.600 mm barrel needs 0.600 mm from the diagonal and 1.050 mm from
+the leg's centreline, which leaves:
+
+    x = 56.100    via window  y = 34.474 .. 35.020    (0.546 mm)
+    x = 56.500    via window  y = 34.874 .. 35.067    (0.193 mm)
+    x = 56.750    EMPTY -- the diagonal has climbed to y = 34.275
+
+and **`TP43`'s pad occupies (55.231..56.231, 34.830..35.830)**, which covers the
+x = 56.100 window outright and leaves only 0.269 mm of the x = 56.500 one
+against the 0.500 mm a 0.600 barrel needs.
+
+### 3. THEREFORE
+
+**`TP43` is the only component that must move**, which is what addendum 2
+suspected and this measures.  It is a TEST POINT.  The full transaction is now:
+
+    1  remove ACC_DETECT_N_HDR's TP43 horizontal chain   (verified redundant)
+    2  move TP43 out of (55.2..56.3, 34.8..35.9)
+    3  ACC_5V_BOOST_EN dives to In2                      (3.837 mm of room)
+    4  ACC_5V_FB's via into the window section 2 opens
+    5  EXT_SCL_BUF out of the B.Cu landing leg
+    6  SYS  (52.000,36.700) -> 1.000 mm F.Cu -> 0.800/0.400 barrel at
+           (54.600,35.900) -> 1.000 mm B.Cu -> L4.1, plus L4.1 -> U21.3
+    7  retire SYS POUR 2
+    8  D-724's candidate verbatim (C65, R64, the two In2 bows, ACC_5V_LX)
+
+Closes `BQ25185_SYS` and `ACC_5V_LX`: **8 -> 6 edges, and the switched 5 V
+accessory rail comes alive.**  Every width it must hit is measured and every
+blocker is named.
+
 ## D-724 ADDENDUM 3 — MOVING THE BARREL 0.65 mm WEST CLEARS THE BAR ON **BOTH** LEGS WITH **NO COMPONENT MOVES**. THE RESIDUAL IS A CROSSING PROBLEM, NOT A WIDTH ONE
 
     authority  a405b06f  UNCHANGED

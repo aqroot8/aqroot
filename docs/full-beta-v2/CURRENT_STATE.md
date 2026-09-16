@@ -66,6 +66,30 @@
 > `verify_promotion` PASS and `protected_copper` showing exactly one protected
 > net moved.  `U14.7` is on the bus.  This board has **no open owner decision**.
 
+- **Demo D-724 ADDENDUM 4 (THE CHEAP EXPERIMENT WAS RUN):**  Authority
+  `a405b06f` unchanged.  ***`ACC_DETECT_N_HDR`'s TP43 HORIZONTAL CHAIN IS
+  VERIFIED REDUNDANT:*** `TP43` reaches `R64.2` twice -- along `y = 36.000` and
+  along the net's own `(56.000,33.525) -> (59.675,37.200)` diagonal -- so four
+  segments come out, ONE 1.47 mm stub goes in, and the raw ratsnest stays at
+  **24** with real DRC attributable **`{}`**
+  (`evidence/d724c-probe-tp43-chain-redundant.py`).  `y = 36.000` is free
+  across `x = 56.4..58.975` **for nothing**; it closes no edge alone, so it must
+  RIDE WITH the SYS feed.  ***AND IT IS NOT ENOUGH:*** `ACC_5V_FB` must still
+  cross `ACC_DETECT_N_HDR`'s DIAGONAL (that is what its via at (56.100,36.900)
+  is for) AND clear the new SYS B.Cu leg, and those two pincer its barrel into
+  `y = 34.474..35.020` at x = 56.100, `34.874..35.067` at x = 56.500, and
+  nothing at x = 56.750 -- while **`TP43`'s pad occupies
+  (55.231..56.231, 34.830..35.830)**, covering the first window outright and
+  leaving 0.269 mm of the second against the 0.500 mm a 0.600 barrel needs.
+  **`TP43` -- a TEST POINT -- is the only component that must move.**  Full
+  transaction, all widths measured: (1) remove the redundant chain, (2) move
+  `TP43`, (3) `ACC_5V_BOOST_EN` dives to In2, (4) `ACC_5V_FB`'s via into the
+  opened window, (5) `EXT_SCL_BUF` out of the B.Cu leg, (6) SYS
+  `(52.000,36.700)` -> 1.000 mm F.Cu -> 0.800/0.400 barrel at
+  `(54.600,35.900)` -> 1.000 mm B.Cu -> `L4.1`, plus `L4.1 -> U21.3`,
+  (7) retire `SYS POUR 2`, (8) D-724's candidate verbatim.  **Closes
+  `BQ25185_SYS` and `ACC_5V_LX`: 8 -> 6 edges, and the switched 5 V accessory
+  rail comes alive.**
 - **Demo D-724 ADDENDUM 3 (BETTER BARREL, AND THE RESIDUAL IS A CROSSING, NOT A
   WIDTH):**  Authority `a405b06f` unchanged.  Addendum 2 priced the feed
   through the barrel site NEAREST `L4.1`; **nearest is the wrong criterion**.
