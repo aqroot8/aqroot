@@ -66,6 +66,29 @@
 > `verify_promotion` PASS and `protected_copper` showing exactly one protected
 > net moved.  `U14.7` is on the bus.  This board has **no open owner decision**.
 
+- **Demo D-724 ADDENDUM 2 (CORRECTION):**  Authority `a405b06f` unchanged.
+  Addendum 1 measured the F.Cu approach all the way to `L4.1` and named FOUR
+  nets; **the trunk cannot reach `L4.1` on F.Cu at all** -- addendum 1's own
+  barrel sweep puts the nearest legal `SYS_MAIN` site at **(55.250,36.440)** --
+  so the F.Cu leg STOPS 2.5 mm short and `ACC_DETECT_N_HDR` never enters it.
+  Re-measured to the real endpoint the recipe is **THREE nets**, and
+  **`ACC_5V_FB`'s single via at (56.100,36.900) is the pinch on BOTH legs**:
+  F.Cu `(52.000,36.700) -> (55.250,36.440)` is 0.000 mm as it stands, 0.833 mm
+  with `/ACC_5V_BOOST_EN` freed and **0.918 mm** with `ACC_5V_FB` freed too
+  (pinch: **`TP43`'s pad** -- a TEST POINT, and the cheapest width on the
+  board); B.Cu `(55.250,36.440) -> (57.225,36.200)` is 0.000 mm, 0.000 mm with
+  `ACC_5V_FB` freed (`EXT_SCL_BUF`) and **1.470 mm / 2.9 A** with both.  At
+  0.918 mm the F.Cu leg carries 2.24 A against the 2.19 A bar -- legal on 2 %
+  of margin.  ***WHAT STOPPED THIS PASS:*** point-fixing `ACC_5V_FB` does not
+  converge -- its via must cross `ACC_DETECT_N_HDR`'s F.Cu diagonal on B.Cu,
+  and every B.Cu site that does so and clears the new SYS leg is taken
+  ((56.100,34.900) is inside `TP43`'s pad; (56.500,34.900) is 0.269 mm from it
+  against 0.500 needed; (56.700,34.900) is 0.041 mm from `EXT_SCL_BUF`'s B.Cu
+  vertical).  `EXT_SCL_BUF`, `ACC_5V_FB`, `ACC_DETECT_N_HDR`, `TP43` and the
+  SYS feed all want the same **2 x 4 mm** patch at (55.2..57.2, 33.5..38.1).
+  **The next transaction is a LOCAL RE-FLOORPLAN of the accessory-power support
+  cluster** -- `TP43`, `TP28`, `C66`, `R100`, `R48`, `R64` -- and every width it
+  must hit is tabulated in `CTO_DECISIONS.md`.
 - **Demo D-724 ADDENDUM (THE SYS FEED TO `U21` IS **DELIVERABLE**, AND EVERY LEG
   OF IT IS NOW MEASURED):**  Authority `a405b06f` unchanged.  New screen
   **`screen_widest_corridor.py`** -- a maximin (bottleneck) search over a

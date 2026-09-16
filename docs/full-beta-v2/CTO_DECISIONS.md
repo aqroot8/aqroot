@@ -1,3 +1,48 @@
+## D-724 ADDENDUM 2 (CORRECTION) — THE RECIPE IS SMALLER AND SHARPER THAN ADDENDUM 1 SAID: **THREE** NETS, AND `ACC_5V_FB`'s ONE VIA IS THE PINCH ON **BOTH** LEGS
+
+    authority  a405b06f  UNCHANGED
+    `evidence/d724a-corridor-measurements.json` (addendum 1) measured the F.Cu
+    approach all the way to `L4.1`.  IT DOES NOT HAVE TO GO THERE.
+
+Addendum 1 measured the F.Cu approach `(52.000,36.700) -> L4.1` and concluded
+that `ACC_5V_BOOST_EN` **and** `ACC_DETECT_N_HDR` both had to move.  But the
+trunk cannot reach `L4.1` on F.Cu at all -- addendum 1's own section 2 says the
+nearest legal barrel is at **(55.250,36.440)** -- so the F.Cu leg STOPS THERE,
+2.5 mm short, and `ACC_DETECT_N_HDR` never enters it.  Re-measured to the real
+endpoint:
+
+    F.Cu  (52.000,36.700) -> (55.250,36.440)
+      nothing freed                          0.000 mm   /ACC_5V_BOOST_EN
+      /ACC_5V_BOOST_EN freed                 0.833 mm   ACC_5V_FB's via
+      + /01_POWER_TREE/ACC_5V_FB freed     **0.918 mm** TP43.1's pad
+
+    B.Cu  (55.250,36.440) -> L4.1 west edge (57.225,36.200)
+      nothing freed                          0.000 mm   C66.1's pad
+      /01_POWER_TREE/ACC_5V_FB freed         0.000 mm   /..../EXT_SCL_BUF
+      + /..../EXT_SCL_BUF freed            **1.470 mm** (2.9 A)
+
+**THREE nets, not four**, and `ACC_5V_FB`'s single via at **(56.100,36.900)**
+is the pinch on BOTH legs.  At 0.918 mm the F.Cu leg carries **2.24 A** against
+the 2.19 A bar -- legal, but only 2 % of margin, and the thing holding it there
+is **`TP43`, a TEST POINT**, whose 1.0 mm pad sits at (55.731,35.330).  Moving
+it is the cheapest width on the board.
+
+### WHAT STOPPED THIS PASS
+
+Point-fixing `ACC_5V_FB` does not converge.  Its via must cross
+`ACC_DETECT_N_HDR`'s F.Cu diagonal on B.Cu (that is what the via is FOR), and
+every B.Cu site that does so and clears the new SYS leg is taken:
+
+    via (56.100,34.900)  inside TP43.1's pad (55.231..56.231, 34.830..35.830)
+    via (56.500,34.900)  0.269 mm to that pad, needs 0.500
+    via (56.700,34.900)  0.041 mm to /..../EXT_SCL_BUF's B.Cu vertical at x 56.741
+
+`EXT_SCL_BUF`, `ACC_5V_FB`, `ACC_DETECT_N_HDR`, `TP43` and the SYS feed all
+want the same **2 x 4 mm** patch at (55.2..57.2, 33.5..38.1).  That is a LOCAL
+RE-FLOORPLAN of the accessory-power support cluster -- `TP43`, `TP28`, `C66`,
+`R100`, `R48`, `R64` -- and it is the next transaction, not another reroute.
+Every width it has to hit is in the table above.
+
 ## D-724 ADDENDUM — THE SYS FEED TO `U21` IS **DELIVERABLE**, AND EVERY LEG OF IT IS NOW MEASURED. FOUR ORDINARY SIGNALS STAND IN IT, AND RETIRING `SYS POUR 2` IS WHAT MAKES `ACC_5V_LX` LEGAL
 
     authority  a405b06f  UNCHANGED
