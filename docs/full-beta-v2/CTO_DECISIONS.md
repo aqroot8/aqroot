@@ -1,3 +1,93 @@
+## D-727 — THE `U16` WEST POCKET IS OPENED BY SPENDING ITS OWN MEASURED OPENER: `/I2C_SCL_INT` CLOSES AT `U16.3`, THE BOARD'S CRITICAL-PATH NET IS WHOLE, 6 -> 5 EDGES
+
+    authority  6748a9bc -> 7431e6af  **COPPER PROMOTED**
+    retained open edges 6 -> 5; open retained nets 5 -> 4
+    raw board ratsnest 22 -> 21
+    `evidence/d727-*`
+
+### 1. THE MEASUREMENT WAS ALREADY ON DISK AND HAD NEVER BEEN SPENT
+
+D-715 measured the `U16` west pocket and D-721 measured it four more ways:
+three conductors -- `/ACC_PWR_EN`, `EXT_SCL_BUF`, `/I2C_SCL_INT` -- want one
+channel and **every request order, eviction window and stated lane closes
+exactly TWO**.  D-715 also recorded the way out, in its own words: *"Q1 --
+drop all routed copper of the eleven foreign nets -- opens the loser in
+7.508 mm with zero vias, so it is a CORRIDOR, and Q2 names the three single
+nets that open it alone with their prices.  Spend the cheapest, in the SAME
+transaction as its own open edge if they share the band."*
+
+`evidence/d715-blame-u16-2.json` names those three:
+
+    /09_COMMUNITY_HEADER/WAKE_GATE_S   opens it in 18.744 mm, 0 vias
+    /ACC_PWR_EN                        opens it in  8.695 mm, 0 vias
+    /I2C_SCL_INT                       opens it in 13.717 mm, 0 vias
+
+Two of the three ARE the open edges.  The third, `WAKE_GATE_S`, is an
+ordinary three-pad control net (`R66.1` at y = 15.0, `Q10.2` at y = 116.7,
+`R63.2` at y = 57.7) that **already lives on In3 for both of its long hauls**
+and whose only business in this pocket is one B.Cu detour -- (58.200,56.300)
+-> (58.500,55.800) -> (58.300,52.500) -> (54.300,48.100) -> (54.900,46.700) --
+carrying `R63.2` south-west to the barrel where it joins In3 anyway.  **That
+net had never been offered as the price.**
+
+### 2. WHAT WAS DONE, AND WHAT IT COST
+
+`WAKE_GATE_S` is removed WHOLE and re-laid by the maze with In3 licensed for
+it (`AQROOT_PLANE_SIGNAL='I3:/09_COMMUNITY_HEADER/WAKE_GATE_S'`), and
+`/I2C_SCL_INT` and `/ACC_PWR_EN` are asked for in the pocket it vacates:
+
+    /I2C_SCL_INT        U16.3 -> the bus   61.851 mm, 3 barrels   CLOSED
+    WAKE_GATE_S         re-laid            119.401 mm, 4 barrels  (was ~131 mm,
+                                                                  6 barrels)
+    /ACC_PWR_EN         NO_PATH -- see 4
+
+The relay is SHORTER than what it replaced and uses TWO FEWER barrels.  The
+partial removal was tried first and refused for the right reason: it left the
+`(54.900,46.700)` barrel *"connected on only one layer"*, and taking the
+barrel alone left the In3 line dangling.  A two-pad chain is one object; the
+whole net comes out or none of it does.
+
+### 3. WHY THIS EDGE IS WORTH MORE THAN ONE
+
+D-652 measured which open edges strand what: **five of the then thirty-seven
+stranded four parts and thirty-seven nets, and FOUR OF THE FIVE were on
+`/I2C_SCL_INT`**, which is why that entry calls it *"this board's critical
+path"*.  `U16.3` was the last of them.  The `TCA4307` Qwiic/STEMMA-QT
+hot-swap buffer now has both of its bus inputs.
+
+### 4. WHAT DID NOT CLOSE, AND WHAT IT IS
+
+`/ACC_PWR_EN`'s open edge is NOT the `U16` escape -- `screen_fanout_channel`
+says `U16.1` LAUNCHES_AT_CLASS at 0.600 mm -- it is
+`{U16.1,R17.1} <-> U3.20`, a 20.242 mm gap with **11 source and 5 destination
+escapes and no all-layer corridor at 0.200 mm**, re-asked at 0.025 mm with
+`AQROOT_OFFCENTRE_LAUNCH=1 --escape-floor --trunk-floor` and refused again.
+It is a corridor between the accessory-control cluster and the `U3` expander,
+and it shares that corridor with everything else that crosses y = 60..78.
+
+### 5. PROOF
+
+    route_maze_batch gate      15/15 clauses, refused_clauses []
+    verify_promotion           PASS, attributable DRC []
+    routing_ledger             retained open edges 6 -> 5, open nets 5 -> 4
+    unconnected items          22 -> 21
+    real KiCad DRC             {lib_footprint_issues: 199} -- the headless
+                               CLI's own missing-library warnings, nothing else
+    schematic parity           246 warnings, ZERO errors
+    protected_copper           IDENTICAL -- 15 nets, 406 objects
+    pour_partition             PP1-PP4 PASS
+    fab_package_contract       PASS, board 7431e6af, 29 files (24 deterministic)
+    contract_regression        14 contracts, ALL RAN, ALL PASS
+    hardware/beta-v2           untouched
+
+### 6. WHAT IS LEFT — FIVE EDGES OVER FOUR NETS
+
+    /BQ25185_STAT2      2   U11.3 sealed by D-269 (an OWNER decision);
+                            U2.19 is a corridor
+    NFC_VDD_RF          1   U9.14 VDD_DR -- PM-3, the NFC front-end re-floorplan
+    ACC_PWR_EN          1   {U16.1,R17.1} <-> U3.20, section 4
+    SX1262_DIO1         1   79 nets cross its corridor
+
 ## D-725 — THE SWITCHED 5 V ACCESSORY RAIL IS **ALIVE**: THE TPS61023 GETS ITS INPUT SUPPLY AND ITS SWITCH NODE, `BQ25185_SYS` AND `ACC_5V_LX` BOTH CLOSE, 8 -> 6 EDGES
 
     authority  a405b06f -> 6748a9bc  **COPPER PROMOTED**

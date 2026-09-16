@@ -66,6 +66,44 @@
 > `verify_promotion` PASS and `protected_copper` showing exactly one protected
 > net moved.  `U14.7` is on the bus.  This board has **no open owner decision**.
 
+- **Demo D-727 (THE `U16` WEST POCKET IS OPENED BY SPENDING ITS OWN MEASURED
+  OPENER: `/I2C_SCL_INT` CLOSES AT `U16.3` AND THE BOARD'S CRITICAL-PATH NET IS
+  WHOLE):**  **COPPER PROMOTED.**  Authority `6748a9bc` -> `7431e6af`;
+  **retained open edges 6 -> 5**, open retained nets 5 -> 4, raw ratsnest
+  22 -> 21.  ***THE MEASUREMENT WAS ALREADY ON DISK AND HAD NEVER BEEN
+  SPENT.***  D-715 and D-721 measured the pocket seven ways and always found
+  *"three conductors, two fit"*; D-715 ALSO recorded the three single nets that
+  open it alone (`evidence/d715-blame-u16-2.json`) --
+  `/09_COMMUNITY_HEADER/WAKE_GATE_S` 18.744 mm, `/ACC_PWR_EN` 8.695 mm,
+  `/I2C_SCL_INT` 13.717 mm, all with ZERO vias -- and said *"spend the
+  cheapest, in the SAME transaction as its own open edge"*.  Two of the three
+  ARE the open edges; the third, `WAKE_GATE_S`, is an ordinary three-pad
+  control net that **already lives on In3 for both of its long hauls** and
+  whose only business in the pocket is one B.Cu detour carrying `R63.2`
+  south-west to the barrel where it joins In3 anyway.  It came out WHOLE and
+  was re-laid at **119.401 mm with 4 barrels against about 131 mm with 6** --
+  shorter copper, two fewer holes -- and `/I2C_SCL_INT` then closed
+  `U16.3 -> the bus` in **61.851 mm with 3 barrels**.  ***AND THAT EDGE IS
+  WORTH MORE THAN ONE:*** D-652 measured that four of this board's five
+  strand-causing edges were on `/I2C_SCL_INT`; `U16.3` was the last of them, so
+  the `TCA4307` Qwiic/STEMMA-QT hot-swap buffer now has both bus inputs.
+  ***THE PARTIAL REMOVAL WAS TRIED FIRST AND REFUSED CORRECTLY:*** taking only
+  the five B.Cu segments left the `(54.900,46.700)` barrel *"connected on only
+  one layer"*, and taking the barrel too left the In3 line dangling -- **a
+  two-pad chain is one object.**  ***PROOF:*** router gate **15/15**,
+  `refused_clauses` `[]`; `verify_promotion` **PASS** with attributable DRC
+  `[]`; real DRC total `{lib_footprint_issues: 199}` and nothing else; parity
+  246 warnings / **ZERO errors**; `protected_copper` **IDENTICAL** (15 nets,
+  406 objects); `pour_partition` PP1-PP4 PASS; `fab_package_contract` **PASS**
+  at `7431e6af`, 29 files; `contract_regression` **14 contracts, ALL RAN, ALL
+  PASS**; `hardware/beta-v2` untouched.  ***WHAT IS LEFT -- FIVE EDGES OVER
+  FOUR NETS:*** `/BQ25185_STAT2` 2 (`U11.3` sealed by D-269, an OWNER decision;
+  `U2.19` a corridor), `NFC_VDD_RF` 1 (`U9.14` `VDD_DR` -- PM-3), `ACC_PWR_EN`
+  1, `SX1262_DIO1` 1.  ***AND `/ACC_PWR_EN` IS NOT THE POCKET:***
+  `screen_fanout_channel` says `U16.1` LAUNCHES_AT_CLASS at 0.600 mm; the open
+  edge is `{U16.1,R17.1} <-> U3.20`, 20.242 mm with 11 source and 5 destination
+  escapes and no all-layer corridor at 0.200 mm, re-asked at 0.025 mm with
+  `AQROOT_OFFCENTRE_LAUNCH=1 --escape-floor --trunk-floor` and refused again.
 - **Demo D-725 (THE SWITCHED 5 V ACCESSORY RAIL IS **ALIVE**: THE TPS61023 GETS
   ITS INPUT SUPPLY AND ITS SWITCH NODE, AND BOTH EDGES CLOSE):**  **COPPER
   PROMOTED.**  Authority `a405b06f` -> `6748a9bc`; **retained open edges
