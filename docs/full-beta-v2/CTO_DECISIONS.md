@@ -1,3 +1,117 @@
+## D-728 ADDENDUM — `U9.14` `VDD_DR` IS A **TOPOLOGICAL** WALL, NOT A CORRIDOR: IT SITS BETWEEN TWO CONDUCTORS THAT BOTH MUST CROSS ITS LANE ON A LAYER NEITHER MAY LEAVE. THE PRICE OF EACH WAY OUT IS NOW EXACT, AND ONE OF THEM IS AN OWNER DECISION
+
+    authority  7431e6af  UNCHANGED.  NO COPPER.
+
+D-722 filed `U9.14` as PM-3 on the evidence that a hand-drawn escape gives one
+DRC error and that no barrel fits at the land.  The reason is sharper than
+that, and it is not a density argument.
+
+### 1. THE PROOF
+
+`U9`'s north row is eight 0.300 x 0.750 mm lands on 0.500 mm pitch and the
+package body and its 3.45 mm thermal pad are SOUTH of them, so **every one of
+the eight can only escape NORTH**.  Three of them matter:
+
+    U9.13  x = 34.250   NFC_RFO1    ->  L5 at (38.513,27.800)   EAST
+    U9.14  x = 34.750   VDD_DR      ->  the net's own copper     WEST
+    U9.15  x = 35.250   NFC_RFO2    ->  L6 at (38.513,32.200)   EAST
+
+`VDD_DR` is BETWEEN the two antenna arms, and `NFC_RF`'s class rules -- which
+are correct and were written for good RF reasons -- say **B.Cu only, In2
+forbidden, F.Cu forbidden, and NO VIA ANYWHERE ON THE NET**.  So neither arm
+can step aside onto another layer, and both must cross `x = 34.750` to reach
+an inductor that is east.  `VDD_DR` must cross `x = 34.250` to reach copper
+that is west.  **Three conductors, two required crossings, one layer, and only
+one of the three is allowed a via.**  Therefore `VDD_DR`'s barrel must sit in
+the channel between the two arms, north of the pads and south of wherever
+`RFO1` turns -- and wherever `RFO1` turns, its own vertical is still beside
+that barrel at 0.500 mm centres.  Moving `RFO1`'s turn north does not help:
+the barrel then has to cross `RFO1`'s horizontal instead.  **There is no
+position for it at any arm geometry.**
+
+### 2. SO THE CHANNEL IS THE WHOLE QUESTION, AND IT IS 0.700 mm WIDE
+
+    arms at their 0.300 mm class width   free channel 34.400 .. 35.100 = 0.700
+    arms necked to 0.200 mm              free channel 34.350 .. 35.150 = 0.800
+    arms necked to 0.150 mm              free channel 34.325 .. 35.175 = 0.850
+
+The 0.200 mm width and the 0.200 mm pair clearance are ALREADY licensed --
+`.kicad_dru` section 9's "Pad-escape necking" rules name `U9`'s courtyard and
+sit after the `NFC_RF` block, so they win -- and no new rule is needed for the
+arms.  What the barrel then needs, centred at x = 34.750, is
+`diameter/2 + 0.200 <= half-channel`:
+
+    channel 0.700   ->  via diameter <= 0.300 mm
+    channel 0.800   ->  via diameter <= 0.400 mm   (ZERO margin)
+    channel 0.850   ->  via diameter <= 0.425 mm   (0.025 mm margin at 0.400)
+
+### 3. AND THE FABRICATOR'S OWN NUMBERS, FROM THIS FILE
+
+`.kicad_dru` section 10 records, verified live against JLCPCB's multilayer
+capability table: **minimum via hole 0.15 mm**, ring floor about 0.1275 mm, and
+*"surcharge applies only to 0.2 mm or 0.25 mm hole size WITH a via diameter
+LESS THAN 0.45 mm"*.  Against that:
+
+    0.400 / 0.200   ring 0.100   below the fab's ~0.1275 ring floor, AND
+                                 inside the surcharge band
+    0.400 / 0.150   ring 0.125   at the board's own annular floor; hole at the
+                                 fab minimum
+    0.450 / 0.200   ring 0.125   too WIDE for the channel by 0.025 mm
+
+**AND IT WAS BUILT AND MEASURED, NOT ARGUED.**  The scoped licence was
+written (`evidence/d728a-mkdru.py` -- one net, one pad-sized rule area
+`NFC_VDD_DR_ESCAPE` at (34.425,26.775)-(35.075,27.425), global floors
+untouched), both arms were necked to the 0.200 mm section 9 already grants
+(`evidence/d728a-build-neck-the-arms.py`), and an all-layer via-site sweep was
+run over the channel at the 0.200 mm pair clearance:
+
+    via 0.400 mm OD    **ZERO legal sites in the whole channel**
+    via 0.350 mm OD    3 legal sites; the best is (34.750,27.100) with
+                       **0.025 mm** of margin -- and 0.350 / 0.150 is a
+                       **0.100 mm annular ring**
+
+0.100 mm is below the board's own `min_via_annular_width` of 0.125 mm AND
+below the ~0.1275 mm ring floor section 10 of this file records as JLCPCB's
+verified multilayer minimum.  **Option A is therefore NOT AVAILABLE at this
+fabricator's published capability**: the only barrel that fits is one the fab
+does not make.  The router agrees independently -- with the licence live and
+`--maze-via 400000:150000` it returns `NO_PATH`, `refused_clauses
+['board_changed','board_improved']`, no copper laid.
+
+### 4. THE FOUR WAYS OUT, PRICED, AND WHAT I WOULD DO
+
+  **A. SCOPED SMALL-VIA LICENCE -- BUILT, MEASURED, AND RULED OUT.**  See
+  section 3: the widest barrel the channel admits is 0.350 mm, whose ring at
+  the fab's minimum 0.15 mm hole is 0.100 mm -- below JLCPCB's own ~0.1275 mm
+  floor.  **Not available.  Do not revisit without a different fabricator.**
+
+  **B. PM-3, THE REAL ONE: MOVE `L5` SO `RFO1` LEAVES WESTWARD.**  With one arm
+  going west the channel is no longer crossed and `VDD_DR` escapes north at
+  0.200 mm with an ordinary `GENERAL_SIGNAL` barrel and no rule change at all.
+  **Cost: the NFC front-end re-floorplan -- `L5`, `C69`, `TP37` and the antenna
+  feed -- and an RF re-tune.  `rf_symmetry_contract` RF2 allows `RFO1` to GROW
+  by up to 2.870 mm before the arm mismatch exceeds today's, so there is real
+  budget; the west side is occupied by `Y1`, `C79` and `C80` and they move
+  too.**  Risk: RF, and it cannot be validated on this bench.
+
+  **C. SUBSTITUTE `U9`'s PACKAGE.**  D-703 option 4 permits it.  Most
+  expensive; changes the NFC front end wholesale.
+
+  **D. `VDD_DR` BECOMES AN APPROVED NC.**  It is the antenna DRIVER supply:
+  with it open the ST25R3916 cannot transmit.  **This removes a promised
+  Kickstarter capability and is an OWNER decision, not mine.**
+
+**WHAT I WOULD CHOOSE IF I WERE SHIPPING AQROOT:** **B.**  With A measured
+out, B is the only option that leaves the board with ordinary geometry,
+ordinary vias and no fabricator conversation, and the arm-length budget to pay
+for it ALREADY EXISTS -- `rf_symmetry_contract` reports `arm_a` 6.0744 mm,
+`arm_b` 8.9446 mm and `arm_mismatch_growth_mm` 0.0, so `RFO1` may grow by up
+to 2.870 mm and the mismatch only IMPROVES.  C is the same work plus a part
+change.  **D removes the NFC transmitter from a Kickstarter prototype that
+promises NFC and is the owner's call, not mine -- and it is the only one of
+the four that can be taken today.**  B is the recommendation; D is the
+schedule fallback and needs an owner decision to exist.
+
 ## D-728 — ALL FOUR REMAINING EDGES ARE MEASURED TO THE OBJECT, AND ALL FOUR ARE THE SAME SHAPE: A FAN-OUT ROW THAT HOLDS **N-1 OF N**. EACH ONE'S OPENER CLOSES IT AND OPENS ANOTHER
 
     authority  7431e6af  UNCHANGED.  **NO COPPER.**  5 -> 5.

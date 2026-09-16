@@ -66,6 +66,37 @@
 > `verify_promotion` PASS and `protected_copper` showing exactly one protected
 > net moved.  `U14.7` is on the bus.  This board has **no open owner decision**.
 
+- **Demo D-728 ADDENDUM (`U9.14` `VDD_DR` IS A **TOPOLOGICAL** WALL, AND THE
+  SMALL-VIA WAY OUT IS MEASURED OUT AT THE FABRICATOR'S OWN RING FLOOR):**
+  **NO COPPER.**  Authority `7431e6af` UNCHANGED.  `U9`'s north row escapes
+  NORTH only -- body and 3.45 mm thermal pad are south -- and on 0.500 mm pitch
+  `U9.13` is `RFO1` (bound EAST), `U9.15` is `RFO2` (bound EAST) and `U9.14`
+  `VDD_DR` is BETWEEN THEM (bound WEST).  `NFC_RF`'s class rules say **B.Cu
+  only, In2 forbidden, F.Cu forbidden, NO VIA ANYWHERE ON THE NET**, so neither
+  arm can step aside and **both must cross `VDD_DR`'s lane while `VDD_DR` must
+  cross `RFO1`'s**: three conductors, two required crossings, one layer, one
+  net allowed a via.  `VDD_DR`'s barrel can therefore only sit in the channel
+  BETWEEN the arms, and wherever `RFO1` turns its own vertical is still beside
+  that barrel at 0.500 mm centres.  ***THE CHANNEL WAS THEN PRICED, BUILT AND
+  SWEPT:*** with both arms necked to the 0.200 mm the `.kicad_dru`'s own
+  pad-escape rule ALREADY grants inside `U9`'s courtyard the channel is
+  0.800 mm, so the barrel may be at most 0.400 mm at the 0.200 mm pair
+  clearance -- and an all-layer via-site sweep finds **ZERO legal sites at
+  0.400 mm** and three at 0.350 mm, the best with **0.025 mm** of margin and a
+  **0.100 mm annular ring**.  0.100 mm is below the board's own 0.125 mm floor
+  AND below the ~0.1275 mm ring floor this file's section 10 records as
+  JLCPCB's verified minimum.  **The only barrel that fits is one the fabricator
+  does not make.**  The scoped licence, the necked arms and the refused router
+  run are all committed as `evidence/d728a-*` so the result is reproducible and
+  the option does not get re-tried.  ***SO THE WAYS OUT ARE THREE:*** **(B)
+  PM-3 -- move `L5` so `RFO1` leaves WESTWARD, after which `VDD_DR` escapes
+  north at 0.200 mm with an ordinary barrel and NO rule change; `rf_symmetry`
+  reports `arm_a` 6.0744 mm against `arm_b` 8.9446 mm with growth budget 0.0,
+  so `RFO1` may GROW 2.870 mm and the mismatch only improves**; (C) substitute
+  `U9`'s package (D-703 option 4); (D) `VDD_DR` becomes an approved NC, which
+  removes NFC TRANSMIT from a prototype that promises NFC and **is an OWNER
+  decision**.  **RECOMMENDATION: B.  D is the schedule fallback and needs an
+  owner decision to exist.**
 - **Demo D-728 (ALL FOUR REMAINING EDGES ARE MEASURED TO THE OBJECT AND ALL
   FOUR ARE THE SAME SHAPE -- A FAN-OUT ROW THAT HOLDS N-1 OF N):**  **NO
   COPPER.**  Authority `7431e6af` UNCHANGED; 5 -> 5.  D-727's instrument was put
