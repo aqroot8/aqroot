@@ -21,14 +21,24 @@ import sys, json, math, pcbnew
 
 BOARD = sys.argv[1]
 WIDTHS = [float(w) for w in sys.argv[2:]] or [0.200, 0.150, 0.120, 0.100, 0.090]
-NET = '/BQ25185_STAT2'
-LAND = (66.400, 77.800)          # U11.3
-# the pocket: west of the land column, north to south of U11's courtyard
-X0, X1, Y0, Y1 = 63.000, 67.200, 75.200, 80.400
+import os as _os
+NET = _os.environ.get('AQROOT_ESC_NET', '/BQ25185_STAT2')
+LAND = tuple(float(v) for v in
+             _os.environ.get('AQROOT_ESC_LAND', '66.400,77.800').split(','))
+X0, Y0, X1, Y1 = (float(v) for v in
+                  _os.environ.get('AQROOT_ESC_WINDOW',
+                                  '63.000,75.200,67.200,80.400').split(','))
+LANDBOX = tuple(float(v) for v in
+                _os.environ.get('AQROOT_ESC_LANDBOX',
+                                '66.025,77.700,66.775,77.900').split(','))
+CHANBOX = tuple(float(v) for v in
+                _os.environ.get('AQROOT_ESC_CHANNEL',
+                                '65.800,76.900,66.025,78.300').split(','))
+LAYER = _os.environ.get('AQROOT_ESC_LAYER', 'B.Cu')
 G = 0.010                         # 10 micron sweep -- finer than any lattice
 
 b = pcbnew.LoadBoard(BOARD)
-BCU = b.GetLayerID('B.Cu')
+BCU = b.GetLayerID(LAYER)
 
 BAT = '/01_POWER_TREE/BAT_PROTECTED_P'
 import os
@@ -117,7 +127,7 @@ for j in range(ny):
     for i in range(nx):
         S[j][i], W[j][i] = slack(X0 + i*G, py)
 
-out = {'schema': 1, 'board': BOARD, 'net': NET, 'land': LAND,
+out = {'schema': 1, 'board': BOARD, 'net': NET, 'land': LAND, 'layer': LAYER,
        'window_mm': [X0, Y0, X1, Y1], 'grid_mm': G,
        'clearance_model': {'pad': 0.200, 'BAT_MAIN_track': 0.300, 'other': 0.200,
                            'same_net': 'nothing owed'},
@@ -133,10 +143,10 @@ for w in WIDTHS:
     seeds = []
     for i in range(nx):
         x = X0 + i*G
-        if 66.025 <= x <= 66.775:
+        if LANDBOX[0] <= x <= LANDBOX[2]:
             for j in range(ny):
                 y = Y0 + j*G
-                if 77.700 <= y <= 77.900 and free[j][i]:
+                if LANDBOX[1] <= y <= LANDBOX[3] and free[j][i]:
                     seeds.append((j, i))
     seen = set(seeds); stack = list(seeds)
     while stack:
@@ -152,7 +162,7 @@ for w in WIDTHS:
     for j in range(ny):
         for i in range(nx):
             x, y = X0+i*G, Y0+j*G
-            if 65.800 <= x <= 66.025 and 76.900 <= y <= 78.300:
+            if CHANBOX[0] <= x <= CHANBOX[2] and CHANBOX[1] <= y <= CHANBOX[3]:
                 if S[j][i] > bestslack:
                     bestslack, bestwho, bestxy = S[j][i], W[j][i], (round(x,4), round(y,4))
     out['widths']['%.3f' % w] = {

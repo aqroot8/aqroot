@@ -1,0 +1,101 @@
+{
+ "schema": 1,
+ "decision": "D-735",
+ "net": "/SX1262_DIO1",
+ "question": "U2.9 <-> U8.13, 76.098 mm.  Where exactly is it stuck, and is it one net or the corridor?",
+ "both_ends_launch_and_go_far": {
+  "method": "evidence/d734-screen-u11-3-escape.py, generalised: a 10 micron direct sweep of the legal-centre set for a track of width W, flooded from the land, on one layer",
+  "U8.13_on_B_Cu": {
+   "window": [
+    1.6,
+    124.0,
+    22.0,
+    147.4
+   ],
+   "width_mm": [
+    0.2,
+    0.15
+   ],
+   "escapes_the_pocket": true,
+   "reachable_cells": 1331586,
+   "channel_east_of_the_land_admits_mm": 3.0911,
+   "note": "U8's castellated west column is 1.800 x 0.900 mm lands on 1.270 mm pitch -- a 0.370 mm inter-pad gap and a 1.240 mm escape lane.  U8's fan-out is NOT the wall."
+  },
+  "U2.9_on_B_Cu": {
+   "window": [
+    42.0,
+    78.0,
+    56.0,
+    96.0
+   ],
+   "width_mm": [
+    0.2,
+    0.15
+   ],
+   "escapes_the_pocket": true,
+   "reachable_cells": 67477,
+   "channel_west_of_the_land_admits_mm": 0.7078,
+   "bound_by": "pad:R8.1"
+  }
+ },
+ "so_the_wall_is_mid_corridor_and_it_is_named": {
+  "B.Cu": {
+   "minimal_free_set": [
+    "/08_BUTTONS_EXPANDERS/BTN_DOWN_N",
+    "/08_BUTTONS_EXPANDERS/BTN_UP_N",
+    "/SPI_B_SCK",
+    "/TOUCH_INT_N"
+   ],
+   "trunk_mm": 0.314
+  },
+  "B.Cu_alternate_cut": {
+   "with SPI_B_SCK and TOUCH_INT_N declared HARD": [
+    "+3V3",
+    "/08_BUTTONS_EXPANDERS/BTN_DOWN_N",
+    "/AMP_SD_MODE",
+    "/DISP_RST_N",
+    "/I2S_LRCLK"
+   ],
+   "trunk_mm": 0.404
+  },
+  "F.Cu": {
+   "minimal_free_set": [
+    "/08_BUTTONS_EXPANDERS/BTN_LEFT_N",
+    "/ACC_PWR_EN"
+   ],
+   "trunk_mm": 0.7,
+   "note": "before D-733 this set was {BTN_LEFT_N, BQ25185_STAT1}; ACC_PWR_EN inherited STAT1's lane, so this is the SAME single F.Cu channel three nets have now wanted in turn"
+  },
+  "In2.Cu": {
+   "minimal_free_set": [
+    "/ACC_3V3_SW",
+    "/WAKE_INT_N",
+    "Net-(U1-EN)"
+   ],
+   "trunk_mm": 0.205
+  },
+  "In3.Cu": {
+   "minimal_free_set": [
+    "/SX1262_RXEN"
+   ],
+   "trunk_mm": 1.54,
+   "note": "the widest and cheapest by far -- ONE net -- and it still does not route, because the BARRELS that would reach In3 have no site at either end"
+  }
+ },
+ "eight_attempts_all_NO_PATH": [
+  "0.200 mm and 0.150 mm widths (CONTROL_FINE netclass)",
+  "0.600/0.300 and 0.500/0.250 barrels",
+  "50 micron and 25 micron lattices",
+  "with /BQ25185_STAT1's 115 mm western loop deleted (D-733)",
+  "with /08_BUTTONS_EXPANDERS/BTN_LEFT_N evicted and re-laid -- it re-lays in 3 joins",
+  "with /SX1262_RXEN evicted (22 objects) and re-laid, In3 licensed",
+  "with /SX1262_RST_N evicted (24 objects) and DIO1 requested FIRST, In3 licensed for BOTH -- RST_N re-lays SHORTER (92.7 mm vs 100.2) and DIO1 still refuses",
+  "with /SPI_B_MISO (9 objects) and /SPI_B_SCK (17) evicted in a 1.5,124 - 22,148 window"
+ ],
+ "verdict": "NOT a one-net problem.  Every single-net lever has been spent.  The cheapest outer-layer cut-set is FOUR nets and there is a second five-net cut-set; the corridor is four to five conductors over capacity along DIO1's path, and In3 -- the one layer where a single net would do it -- cannot be entered.",
+ "recommendation": "This is a FLOORPLAN problem and the change with the right shape is already on the table: D-731's D-pad move EAST.  Two of the four B.Cu blockers are D-pad button hauls, and the diamond at x = 13.5 sends four ~40 mm runs through exactly this corridor.  Moving it to x ~ 25 takes 11.5 mm off each and takes them out of the far-west lane.  It costs an ENCLOSURE APERTURE POSITION and is an OWNER / INDUSTRIAL-DESIGN decision.",
+ "also_measured_and_worth_recording": {
+  "U2_pin_assignment_is_systematically_inverted": "fifteen of U2's sixteen I/O have their partner WEST or SOUTH-WEST of the package, and the SIX button nets all land on the EAST column while their pull-ups R4-R9 sit at x ~ 52 -- six 8-9 mm WRAPS around the package.  Rotating U2 180 degrees does not fix it: it converts six short button wraps into seven long-haul wraps (DIO1 76 mm, SD_CARD_DETECT_N 59, SX1262_RST_N 47, NFC_5V_EN 46, AMP_SD_MODE 38, TOUCH_INT_N 33).  U2 simply has more west-wanting signals than it has west pins.",
+  "U8_cannot_be_rotated": "the footprint's own description locks it -- 'ANTENNA END is +Y (pins 1-3, 20-22 and the IPEX connector)'.  U8 sits at (10,136) with +Y toward the board's bottom edge at y = 148, which is where the antenna must face.  A 180 degree rotation would point the RF end INTO the board."
+ }
+}

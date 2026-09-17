@@ -1,3 +1,99 @@
+## D-735 — `/SX1262_DIO1` IS NOT A ONE-NET PROBLEM. BOTH ENDS LAUNCH AND REACH FAR; THE CORRIDOR IS FOUR TO FIVE CONDUCTORS OVER CAPACITY, AND THE ONE LAYER WHERE A SINGLE NET WOULD DO IT CANNOT BE ENTERED
+
+    authority  71c4326e  UNCHANGED.  NO COPPER.
+    `evidence/d735-dio1-corridor.json`
+    `evidence/d734-screen-u11-3-escape.py`  (generalised; now takes any net /
+                                             land / window / layer by env var)
+
+### 1. BOTH ENDS ARE FINE
+
+The D-734 sweep was generalised and pointed at `DIO1`'s two lands.  It does not
+search -- it computes the legal-centre set for a track of width W at a
+**10 micron** lattice and floods from the land:
+
+    U8.13 on B.Cu   window 1.6,124.0 - 22.0,147.4
+                    escapes the pocket YES, 1 331 586 reachable cells,
+                    channel east of the land admits 3.0911 mm
+    U2.9  on B.Cu   window 42.0,78.0 - 56.0,96.0
+                    escapes the pocket YES, 67 477 reachable cells,
+                    channel west of the land admits 0.7078 mm, bound by R8.1
+
+`U8`'s castellated west column is 1.800 x 0.900 mm lands on 1.270 mm pitch --
+a 0.370 mm inter-pad gap and a **1.240 mm** escape lane.  **`U8`'s fan-out is
+NOT the wall**, which is what six earlier decisions assumed.
+
+### 2. THE WALL IS MID-CORRIDOR AND IT IS NAMED
+
+    layer     minimal free set                                     trunk
+    B.Cu      BTN_DOWN_N, BTN_UP_N, SPI_B_SCK, TOUCH_INT_N          0.314 mm
+    B.Cu      (SCK and TOUCH_INT_N declared HARD) +3V3, BTN_DOWN_N,
+              AMP_SD_MODE, DISP_RST_N, I2S_LRCLK                    0.404 mm
+    F.Cu      BTN_LEFT_N, ACC_PWR_EN                                0.700 mm
+    In2.Cu    ACC_3V3_SW, WAKE_INT_N, Net-(U1-EN)                   0.205 mm
+    In3.Cu    SX1262_RXEN                                           1.540 mm
+
+Two independent B.Cu cut-sets of FOUR and FIVE nets.  **The corridor is four to
+five conductors over capacity along this path.**
+
+F.Cu's set was `{BTN_LEFT_N, BQ25185_STAT1}` before D-733 and is
+`{BTN_LEFT_N, ACC_PWR_EN}` after: `ACC_PWR_EN` inherited `STAT1`'s lane.  **It
+is ONE F.Cu channel and three nets have now wanted it in turn.**
+
+In3 is the cheapest by a wide margin -- ONE net, 1.540 mm -- and it still does
+not route, because the **BARRELS** that would reach In3 have no site at either
+end.  That is why licensing the plane changed nothing.
+
+### 3. EIGHT ATTEMPTS, ALL NO_PATH
+
+    0.200 mm and 0.150 mm widths (a CONTROL_FINE netclass was built for it)
+    0.600/0.300 and 0.500/0.250 barrels
+    50 micron and 25 micron lattices
+    with BQ25185_STAT1's 115 mm western loop DELETED (D-733)
+    with BTN_LEFT_N evicted and re-laid -- it re-lays in 3 joins
+    with SX1262_RXEN evicted (22 objects) and re-laid, In3 licensed
+    with SX1262_RST_N evicted (24 objects), DIO1 requested FIRST, In3 licensed
+        for BOTH -- RST_N re-lays SHORTER (92.7 mm against 100.2) and DIO1
+        still refuses
+    with SPI_B_MISO (9) and SPI_B_SCK (17) evicted in a 1.5,124 - 22,148 window
+
+Every single-net lever is spent.
+
+### 4. RECOMMENDATION -- IT IS A FLOORPLAN CHANGE AND IT IS ALREADY ON THE TABLE
+
+**D-731's D-pad move EAST.**  Two of the four B.Cu blockers are D-pad button
+hauls, and the diamond at x = 13.5 sends four ~40 mm runs through exactly this
+corridor; x -> ~25 takes 11.5 mm off each and takes them out of the far-west
+lane.  It costs an ENCLOSURE APERTURE POSITION -- an **OWNER / INDUSTRIAL-DESIGN
+decision**, and the one I would take.
+
+`F-11` locks the PART and the REGION ("front lower-left") and records the
+ARRANGEMENT as a TARGET; neither rib bounds the diamond in x, and at x = 25 it
+spans 17.5..32.5 on a 72 mm board, still left of centre.
+
+**IF THE DECISION IS NO:** `DIO1` is the SX1262's IRQ line.  Leaving it
+unrouted forces the LoRa driver to POLL `GetIrqStatus()` over SPI instead of
+taking an interrupt.  That works and is a supported RadioLib mode, but it costs
+latency and idle current, and it should be an explicit product decision rather
+than a silent consequence -- so it is recorded here as one.
+
+### 5. TWO THINGS MEASURED ALONG THE WAY THAT CLOSE OFF OBVIOUS IDEAS
+
+**`U2`'s pin assignment is systematically inverted, and rotating it does not
+help.**  FIFTEEN of `U2`'s sixteen I/O have their partner WEST or SOUTH-WEST of
+the package, and the SIX button nets all land on the EAST column while their
+pull-ups `R4`-`R9` sit at x ~ 52 -- six 8-9 mm WRAPS around the part.  Rotating
+`U2` 180 degrees converts six SHORT button wraps into seven LONG-haul wraps
+(`DIO1` 76 mm, `SD_CARD_DETECT_N` 59, `SX1262_RST_N` 47, `NFC_5V_EN` 46,
+`AMP_SD_MODE` 38, `TOUCH_INT_N` 33).  `U2` simply has more west-wanting signals
+than it has west pins; no permutation fixes that.
+
+**`U8` cannot be rotated.**  Its own footprint description locks the
+orientation: *"ANTENNA END is +Y (pins 1-3, 20-22 and the IPEX connector)."*
+`U8` sits at (10,136) with +Y toward the board's bottom edge at y = 148, which
+is where the antenna must face.  A 180-degree rotation -- which would have put
+the seven-conductor signal column on the inboard side -- points the RF end INTO
+the board and is refused on that ground alone.
+
 ## D-734 — **`/BQ25185_STAT2` CANNOT LEAVE `U11.3` AT ANY MANUFACTURABLE WIDTH, AND NOT BECAUSE OF D-269.** THE POCKET IS TOPOLOGICALLY CLOSED. OWNER DECISION RAISED WITH A RECOMMENDATION
 
     authority  71c4326e  UNCHANGED.  NO COPPER.

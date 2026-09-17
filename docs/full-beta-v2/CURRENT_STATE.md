@@ -66,6 +66,54 @@
 > `verify_promotion` PASS and `protected_copper` showing exactly one protected
 > net moved.  `U14.7` is on the bus.  This board has **no open owner decision**.
 
+- **Demo D-735 (`/SX1262_DIO1` IS **NOT A ONE-NET PROBLEM**.  BOTH ENDS LAUNCH
+  AND REACH FAR; THE CORRIDOR IS FOUR TO FIVE CONDUCTORS OVER CAPACITY, AND THE
+  ONE LAYER WHERE A SINGLE NET WOULD DO IT CANNOT BE ENTERED):**  **NO COPPER.
+  Authority `71c4326e` UNCHANGED.**  D-734's sweep was generalised (it now takes
+  any net / land / window / layer) and pointed at `DIO1`'s two lands.  ***BOTH
+  ENDS ARE FINE:*** `U8.13` on B.Cu **escapes** with 1 331 586 reachable cells
+  and a **3.0911 mm** channel east of the land -- `U8`'s castellated west column
+  is 1.800 x 0.900 mm lands on 1.270 mm pitch, a 0.370 mm inter-pad gap and a
+  **1.240 mm** escape lane, so **`U8`'s fan-out is NOT the wall**, which six
+  earlier decisions had assumed; `U2.9` on B.Cu **escapes** with a 0.708 mm
+  channel bound by `R8.1`.  ***THE WALL IS MID-CORRIDOR AND IT IS NAMED:*** B.Cu
+  needs `{BTN_DOWN_N, BTN_UP_N, SPI_B_SCK, TOUCH_INT_N}` for a 0.314 mm trunk,
+  and with `SCK`/`TOUCH_INT_N` declared HARD a SECOND five-net cut exists
+  (`{+3V3, BTN_DOWN_N, AMP_SD_MODE, DISP_RST_N, I2S_LRCLK}`, 0.404 mm); F.Cu
+  needs `{BTN_LEFT_N, ACC_PWR_EN}` for 0.700 mm -- that set was
+  `{BTN_LEFT_N, BQ25185_STAT1}` before D-733, so **it is ONE F.Cu channel and
+  three nets have now wanted it in turn**; In2 needs three; **In3 needs only
+  `SX1262_RXEN` and gives 1.540 mm -- and still does not route, because the
+  BARRELS that would reach In3 have no site at either end.**  That is why
+  licensing the plane changed nothing, and it is also why an 8-layer migration
+  would not have helped.  ***EIGHT ATTEMPTS, ALL NO_PATH:*** both widths, both
+  barrel sizes, both lattices, with `STAT1`'s 115 mm loop deleted, with
+  `BTN_LEFT_N` evicted and re-laid, with `SX1262_RXEN` evicted (22 objects) and
+  In3 licensed, with **`SX1262_RST_N` evicted (24 objects) and `DIO1` requested
+  FIRST with In3 licensed for BOTH** -- `RST_N` re-lays SHORTER (92.7 mm against
+  100.2) and `DIO1` still refuses -- and with `SPI_B_MISO` (9) and `SPI_B_SCK`
+  (17) evicted in the `U8` pocket.  **Every single-net lever is spent.**
+  ***RECOMMENDATION -- IT IS A FLOORPLAN CHANGE AND IT IS ALREADY ON THE
+  TABLE:*** D-731's **D-pad move EAST**.  Two of the four B.Cu blockers ARE
+  D-pad button hauls, and the diamond at x = 13.5 sends four ~40 mm runs through
+  exactly this corridor; x -> ~25 takes 11.5 mm off each and takes them out of
+  the far-west lane.  `F-11` locks the PART and the REGION and records the
+  ARRANGEMENT as a TARGET, neither rib bounds the diamond in x, and at x = 25 it
+  spans 17.5..32.5 on a 72 mm board -- still left of centre.  It costs an
+  ENCLOSURE APERTURE POSITION, so it is an **OWNER / INDUSTRIAL-DESIGN
+  decision**, and it is the one I would take.  **IF THE ANSWER IS NO:** `DIO1`
+  is the SX1262's IRQ line, so the LoRa driver must POLL `GetIrqStatus()` over
+  SPI -- supported, but it costs latency and idle current, and it is recorded
+  here as an explicit product consequence rather than a silent one.  ***TWO
+  OBVIOUS IDEAS CLOSED OFF:*** rotating `U2` 180 degrees does NOT help --
+  FIFTEEN of its sixteen I/O have their partner west or south-west and the six
+  button nets all land EAST while `R4`-`R9` sit at x ~ 52, so a rotation
+  converts six SHORT button wraps into seven LONG-haul ones (`DIO1` 76 mm,
+  `SD_CARD_DETECT_N` 59, `SX1262_RST_N` 47, `NFC_5V_EN` 46, `AMP_SD_MODE` 38,
+  `TOUCH_INT_N` 33); and **`U8` cannot be rotated at all** -- its own footprint
+  says *"ANTENNA END is +Y (pins 1-3, 20-22 and the IPEX connector)"* and +Y
+  faces the board's bottom edge, so 180 degrees points the RF end INTO the
+  board.
 - **Demo D-734 (**`/BQ25185_STAT2` CANNOT LEAVE `U11.3` AT ANY MANUFACTURABLE
   WIDTH -- AND IT IS NOT D-269.  THE POCKET IS TOPOLOGICALLY CLOSED.  ONE OPEN
   OWNER DECISION, RAISED WITH A RECOMMENDATION**):**  **NO COPPER.  Authority
