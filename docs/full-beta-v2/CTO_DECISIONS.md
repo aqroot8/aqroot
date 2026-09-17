@@ -143,6 +143,24 @@ touching the promised feature set.
     the only lever is D-697's bounded `BAT_PROTECTED_P` exception plus an `R37`
     move.  Not spent.
 
+### 8. `/SX1262_DIO1` RE-MEASURED, AND D-721's VERDICT STANDS
+
+`/SX1262_RST_N` runs the SAME `U2` -> `U8` corridor `DIO1` needs, in 100.196 mm
+and 6 barrels, so the corridor demonstrably EXISTS.  Ripped, with `DIO1`
+requested FIRST and 130 mm of budget: **`DIO1` is still `NO_PATH` at 0.200 mm**
+and `RST_N` simply re-lays at 104.760 mm / 6 barrels
+(`evidence/d731-route-dio1-rstn-pair.json`).  So the blocker is not `RST_N`'s
+copper -- it is D-721's seventy-nine crossing nets, unchanged.
+
+**AND THE SHORT-HAUL ECO IS DEAD TOO.**  The obvious repair is to read `DIO1`
+at something near `U8` instead of at `U2`, 76 mm away.  There is nothing to
+read it with: the only device beside `U8` is **`U7`, an `E07-400M10S`
+sub-GHz radio MODULE** -- its seven unconnected pins are module pins, not
+general-purpose inputs -- and D-721 already measured that the MCU has no free
+GPIO because `IO35/36/37` are the octal PSRAM bus.  `DIO1` stays a board-scale
+distribution problem and is downstream of the same west-corridor congestion as
+the D-pad.
+
 **NEXT: D-731 is the board's top blocker and it needs the owner's answer on the
 D-pad aperture before the PCB work is worth doing.  Every other open edge is
 downstream of the same fact -- `U2` reads six buttons that live 45 mm away.**
