@@ -151,6 +151,30 @@ Passive movement is routine engineering authority under the charter; it needs
 `placement`, `pour_partition` PP1/PP2 and the full gate, and it does **not**
 need an owner.
 
+***THE FIRST TWO STEPS OF IT ARE ALREADY MEASURED, SO THE NEXT SESSION DOES NOT
+REPEAT THEM.***  `apply_part_shift.py` was run on `R5` alone against the
+finalist, swept over `dx = -1.0 .. -3.5 mm`:
+
+    dx        verdict  why
+    -1.0 mm   FAIL     +3V3 endpoint (50.100,87.050) STRANDED off R5.1
+    -1.5 mm   FAIL     that endpoint now lands UNDER the moved R5.2
+    -2.0 mm   FAIL     same -- endpoints_swept_under_moved_land, R5.2 carries
+                       BTN_UP_N and the swept endpoint is +3V3.  A short.
+    -2.5 mm   FAIL     STRANDED again
+    -3.5 mm   FAIL     STRANDED, and a 0.70 mm +3V3 via at (47.100,87.200)
+                       lands INSIDE R5.1 -- via-in-pad, refused, and after
+                       D-738 it should stay refused
+
+and `--release --release-net +3V3` at `dx = -2.0 mm` refuses one step further
+in: `RELEASE_WOULD_STRAND` at **(48.300, 87.400)**, one surviving track.  **The
+`+3V3` copper around `R5` is a CHAIN, and releasing it cascades** -- which is
+the board's own recorded lesson about `--release`.  So the move is a
+MULTI-STEP transaction: release the chain, re-bond `R5.1` to the `+3V3` plane
+with `--bond-pad` (it is on `B.Cu` and `+3V3`'s pours are `F.Cu` and `In3`, so
+it needs a barrel, not a pour edge), then route `BTN_UP_N`.  That is where the
+next session starts, and moving all six of `R4`-`R9` is the same transaction
+six times.
+
 **IF IT DOES NOT WORK**, the honest fallback is the one section 5 prices: take
 `s5` and retire the `U2.6` leg of `/NFC_5V_EN`, which is a **scope** question
 (the Demo does not fit `U13`) rather than a routing one, and is therefore a
