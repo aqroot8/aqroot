@@ -66,6 +66,61 @@
 > `verify_promotion` PASS and `protected_copper` showing exactly one protected
 > net moved.  `U14.7` is on the bus.  This board has **no open owner decision**.
 
+- **Demo D-731 (**THE D-PAD IS WIRED ONE POSITION OUT** -- THE TOP OF THE D-PAD
+  SENDS `DOWN`, ITS RIGHT ARM SENDS `A`, AND `UP` IS A STRAY BUTTON 51 mm AWAY
+  BESIDE `B`.  INHERITED FROM `beta-v2`.  **THIS IS THE BOARD'S TOP BLOCKER AND
+  IT OUTRANKS EVERY OPEN EDGE**):**  **NO COPPER.  Authority `a4200434`
+  UNCHANGED.**  `DEVICE_SPEC` marks *"D-pad (4) + A/B (2)"* MARKETING-SAFE and
+  `MECHANICAL_INTERFACE_SPEC` 610 puts the **D-pad LOWER LEFT and A + B LOWER
+  RIGHT**.  The board puts six identical `PTS645SM43SMTR92LFS` in exactly those
+  two clusters -- a 15 mm diamond centred (13.500,115.000) and a pair at
+  y = 99.000 -- so **the clusters are right and the FUNCTIONS are one position
+  out around the cycle**: diamond TOP holds `DOWN`, BOTTOM holds `LEFT`, LEFT
+  holds `RIGHT`, RIGHT holds `A_SELECT`, and `UP` sits in the A/B pair.  ***THE
+  BOARD'S OWN LOCKED GEOMETRY CORROBORATES IT:*** D-232's `RIB_R1`
+  (`y_mech` 24.00..44.00) and `RIB_B1` (21.20..23.30) are recorded as bracketing
+  **THE D-PAD** and bracket the diamond (25.5..40.5), while `RIB_R2`
+  (45.00..64.00) is recorded as bearing behind **THE A/B CONTROL AREA** and the
+  pair sits at 49.0.  ***INHERITED:*** `hardware/beta-v2`'s board carries the
+  byte-identical six positions, values and rotations -- the Demo did not break
+  this and beta-v2 (READ-ONLY here, untouched) needs the same repair.
+  ***THE CORRECTION IS GEOMETRICALLY FREE:*** a pure 5-cycle of position and
+  rotation, `SW2`->`SW3`->`SW4`->`SW5`->`SW6`->`SW2`'s seat, in which **every
+  pad lands exactly where an identical pad was** -- courtyards, holes and the
+  `GND` pad-2 lands unchanged to the micron, no schematic edit, no firmware
+  constant, no BOM/CPL line -- and real KiCad DRC on the corrected placement is
+  `{lib_footprint_issues: 199}` and NOTHING ELSE.  ***AND IT DOES NOT ROUTE:***
+  it frees 433.719 mm on five nets and, at three request orders, the best is
+  **FOUR OF FIVE** (`BTN_A_N` 32.4 mm, `BTN_LEFT_N` 94.1, `BTN_DOWN_N` 104.7,
+  `BTN_RIGHT_N` 124.8 all CLOSED; `BTN_UP_N` 2 of 3 joins and `BQ25185_SYS`'s
+  pour cut).  **WHY, AND IT IS NOT THE ROUTER:** the correction puts FOUR ~40 mm
+  hauls into the west-to-`U2` corridor where the board carried THREE --
+  `BTN_UP_N`'s switch was the one sitting beside `U2`, which is exactly why it
+  was the cheapest button at 54.3 mm while `BTN_DOWN_N` cost 125.1 mm and 7
+  barrels.  **The defect was hiding behind the very shortcut that made the board
+  route.**  And moving `U2` is NOT the unlock: scored over its 19 netted signal
+  pins, total nearest-partner haul is 438.6 mm now and 383.2 mm at its best site
+  (48,92) -- 12.6 %, not four hauls' worth.  **RECOMMENDATION: move the D-pad
+  diamond EAST within "front lower left" (F-11 locks the PART and the REGION and
+  records the ARRANGEMENT as TARGET; neither rib bounds it in x).  x 13.5 -> ~25
+  takes 11.5 mm off each of four hauls.  It costs an ENCLOSURE APERTURE
+  POSITION, so it is an OWNER / INDUSTRIAL-DESIGN DECISION -- and it is the one
+  I would take.**  Alternatives priced in the D-731 entry: ship with `UP`
+  unrouted (not shippable), ship as-is (not shippable), re-floorplan the whole
+  west corridor (largest PCB transaction on the board, not measured to succeed),
+  or put a small expander beside the D-pad (electrically trivial, but the Demo
+  scope deleted `U23`).  ***ALSO MEASURED WHILE THE FAN-OUT WAS OPEN:***
+  `/BQ25185_STAT1` reaches `U11.9` and `U2.20` -- 12 mm apart -- by looping WEST
+  to x = 46.5 and back, **115.638 mm and 45 objects**; ripped, **`/ACC_PWR_EN`
+  CLOSES in 65.081 mm / 5 barrels** and `STAT2`'s `U2.19` closes, but `U2`'s
+  east row then holds N-1 and `STAT1`'s own `U2.20` will not re-close.  And
+  `/BQ25185_STAT2`'s `U11.3` is a **TOPOLOGICAL TRAP**: the channel is 8.25 mm
+  wide at 0.25 mm out and **gap 0.0 at 0.525 mm, bound HIGH AND LOW by
+  `BAT_PROTECTED_P`** -- one 0.200 mm battery track crosses the lane half a
+  millimetre from the land, the 0.400 mm-pitch WSON leaves a 0.600 mm lane and
+  the board's own 0.500/0.250 via floor needs 0.900 mm.  Unlike `U9.14` there is
+  no capacitor to move: the crossing partner is the battery net itself, and the
+  only lever is D-697's bounded exception plus an `R37` move.  Not spent.
 - **Demo D-730 (PM-3 IS **COMPLETE AND PROMOTED**: `U9.14` `VDD_DR` IS ROUTED,
   THE BOARD'S ONE FUNCTIONAL BLOCKER IS GONE, 5 -> 4 RETAINED OPEN EDGES):**
   **COPPER PROMOTED.  Authority `7431e6af` -> `a4200434`.**  D-729 built PM-3

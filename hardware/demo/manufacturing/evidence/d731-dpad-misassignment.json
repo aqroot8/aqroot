@@ -1,0 +1,168 @@
+{
+  "schema": 1,
+  "question": "does the front control cluster wire each switch position to the function that position means",
+  "verdict": "DEFECT_CONFIRMED_AND_INHERITED",
+  "authority_board_sha256": "a4200434099f5f621d8b2e7d8131cec4c7a507afda3233c6e811e0bb3782083c",
+  "specification": [
+    "DEVICE_SPEC.md 9: 'User buttons (6) SW2-SW7 ... UP / DOWN / LEFT / RIGHT / A_SELECT / B_BACK - FITTED - EXTERNAL (front) - MARKETING-SAFE (D-pad + A/B)'",
+    "DEVICE_SPEC.md FRONT: 'D-pad (4) + A/B (2) buttons'",
+    "mechanical/MECHANICAL_INTERFACE_SPEC.md 610: 'Front: Display/touch (upper), D-pad (lower left), A + B (lower right), microphone aperture (bottom)'",
+    "mechanical/P1_FLOORPLAN_INPUTS.md F-11: 'D-pad - 4 x PTS645SM43SMTR92LFS ... Front lower-left. LOCKED (part), arrangement TARGET'",
+    "CTO_DECISIONS D-012: 'Keep the D-pad.'  D-070: 'Front: display/touch, D-pad, A, B, mic aperture.  Six-face layout LOCKED.'"
+  ],
+  "geometry": {
+    "note": "the board places six identical PTS645SM43SMTR92LFS in exactly the two clusters the spec names: a 15 mm diamond centred (13.500,115.000) lower-left, and a pair at y=99.000 lower-right.  y_mech = 148 - y_pcb, so larger y_mech is higher on the device; USB-C J3 at y_pcb 142.700 (y_mech 5.3) is the bottom edge and the display is upper.",
+    "corroboration": "the LOCKED D-232 support ribs confirm which cluster is which: RIB_R1 (y_mech 24.00..44.00) and RIB_B1 (y_mech 21.20..23.30) bracket the diamond and are recorded as bracketing THE D-PAD; RIB_R2 (y_mech 45.00..64.00) is recorded as bearing behind THE A/B CONTROL AREA and the pair sits at y_mech 49.0",
+    "positions": {
+      "diamond TOP    (13.500,107.500)": {
+        "holds": "SW3 DOWN",
+        "should_hold": "UP"
+      },
+      "diamond BOTTOM (13.500,122.500)": {
+        "holds": "SW4 LEFT",
+        "should_hold": "DOWN"
+      },
+      "diamond LEFT   ( 6.000,115.000)": {
+        "holds": "SW5 RIGHT",
+        "should_hold": "LEFT"
+      },
+      "diamond RIGHT  (21.000,115.000)": {
+        "holds": "SW6 A_SELECT",
+        "should_hold": "RIGHT"
+      },
+      "pair OUTER     (64.200, 99.000)": {
+        "holds": "SW2 UP",
+        "should_hold": "A_SELECT"
+      },
+      "pair INNER     (53.500, 99.000)": {
+        "holds": "SW7 B_BACK",
+        "should_hold": "B_BACK  (correct)"
+      }
+    }
+  },
+  "demo_board": {
+    "SW2": {
+      "value": "UP",
+      "x": 64.2,
+      "y": 99.0,
+      "rot": 0.0,
+      "y_mech": 49.0
+    },
+    "SW3": {
+      "value": "DOWN",
+      "x": 13.5,
+      "y": 107.5,
+      "rot": 90.0,
+      "y_mech": 40.5
+    },
+    "SW4": {
+      "value": "LEFT",
+      "x": 13.5,
+      "y": 122.5,
+      "rot": 90.0,
+      "y_mech": 25.5
+    },
+    "SW5": {
+      "value": "RIGHT",
+      "x": 6.0,
+      "y": 115.0,
+      "rot": 90.0,
+      "y_mech": 33.0
+    },
+    "SW6": {
+      "value": "A_SELECT",
+      "x": 21.0,
+      "y": 115.0,
+      "rot": 90.0,
+      "y_mech": 33.0
+    },
+    "SW7": {
+      "value": "B_BACK",
+      "x": 53.5,
+      "y": 99.0,
+      "rot": 0.0,
+      "y_mech": 49.0
+    }
+  },
+  "beta_v2_board": {
+    "SW2": {
+      "value": "UP",
+      "x": 64.2,
+      "y": 99.0,
+      "rot": 0.0,
+      "y_mech": 49.0
+    },
+    "SW3": {
+      "value": "DOWN",
+      "x": 13.5,
+      "y": 107.5,
+      "rot": 90.0,
+      "y_mech": 40.5
+    },
+    "SW4": {
+      "value": "LEFT",
+      "x": 13.5,
+      "y": 122.5,
+      "rot": 90.0,
+      "y_mech": 25.5
+    },
+    "SW5": {
+      "value": "RIGHT",
+      "x": 6.0,
+      "y": 115.0,
+      "rot": 90.0,
+      "y_mech": 33.0
+    },
+    "SW6": {
+      "value": "A_SELECT",
+      "x": 21.0,
+      "y": 115.0,
+      "rot": 90.0,
+      "y_mech": 33.0
+    },
+    "SW7": {
+      "value": "B_BACK",
+      "x": 53.5,
+      "y": 99.0,
+      "rot": 0.0,
+      "y_mech": 49.0
+    }
+  },
+  "inherited": true,
+  "consequence": "pressing the TOP of the D-pad sends DOWN; pressing its RIGHT arm sends A_SELECT; UP is a stray button 51 mm away beside B.  The device does not have a D-pad.",
+  "fix": {
+    "shape": "a pure 5-cycle of position AND rotation among six identical footprints",
+    "moves": {
+      "SW2 UP": "(64.200,99.000) rot 0 -> (13.500,107.500) rot 90",
+      "SW3 DOWN": "(13.500,107.500) -> (13.500,122.500) rot 90",
+      "SW4 LEFT": "(13.500,122.500) -> ( 6.000,115.000) rot 90",
+      "SW5 RIGHT": "( 6.000,115.000) -> (21.000,115.000) rot 90",
+      "SW6 A_SELECT": "(21.000,115.000) rot 90 -> (64.200,99.000) rot 0",
+      "SW7 B_BACK": "unchanged"
+    },
+    "why_free": "every pad lands EXACTLY where an identical pad was, so courtyards, holes and the GND pad-2 lands are unchanged to the micron; only the pad-1 net identities move.  No schematic edit and no firmware constant changes -- each reference keeps its own function.",
+    "placement_drc": "real KiCad DRC on the corrected placement: {lib_footprint_issues: 199} and NOTHING ELSE -- zero clearance, zero shorts (evidence/d731-drc-dpad-placement.json)"
+  },
+  "routing_cost": {
+    "copper_freed_mm": 433.719,
+    "nets_ripped": 5,
+    "best_measured": "4 of 5 re-lay (BTN_A_N 32.412 mm/4 vias, BTN_LEFT_N 94.133/5, BTN_DOWN_N 104.651/9, BTN_RIGHT_N 124.799/12); BTN_UP_N closes 2 of 3 joins and /01_POWER_TREE/BQ25185_SYS's pour is cut",
+    "orders_tried": 3,
+    "verdict": "THE CORRECTION DOES NOT ROUTE IN THE CURRENT FLOORPLAN",
+    "why": "the correction puts FOUR ~40 mm hauls into the west-to-U2 corridor where the board previously carried THREE -- BTN_UP_N's switch was the one sitting beside U2.  The corridor holds N-1 of N."
+  },
+  "u2_placement_score": {
+    "method": "total nearest-partner haul over U2's 19 netted signal pins, swept on a 2 mm lattice",
+    "current_mm": 438.6,
+    "current_at": [
+      57.0,
+      88.0
+    ],
+    "best_mm": 383.2,
+    "best_at": [
+      48.0,
+      92.0
+    ],
+    "reading": "moving U2 west buys ~12.6 % of haul and is NOT on its own an unlock: the D-pad sits at x 6..21 and no reachable U2 position removes the four long hauls."
+  }
+}

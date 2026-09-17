@@ -1,3 +1,152 @@
+## D-731 — **THE D-PAD IS WIRED ONE POSITION OUT.** THE TOP OF THE D-PAD SENDS `DOWN`, ITS RIGHT ARM SENDS `A`, AND `UP` IS A STRAY BUTTON 51 mm AWAY BESIDE `B`. THE DEFECT IS INHERITED FROM `beta-v2`, THE CORRECTION IS A FREE 5-CYCLE, AND IT DOES NOT ROUTE IN THIS FLOORPLAN
+
+    authority  a4200434  UNCHANGED.  NO COPPER.
+    `evidence/d731-*`
+
+This is not a routing finding.  It was found while ripping the button fan-out
+to relieve `U2`, and it outranks every open edge on the board.
+
+### 1. WHAT THE SPECIFICATION SAYS
+
+    DEVICE_SPEC 9      "D-pad + A/B"  MARKETING-SAFE
+    DEVICE_SPEC FRONT  "D-pad (4) + A/B (2) buttons"
+    MECHANICAL 610     "Front: Display/touch (upper), D-pad (LOWER LEFT),
+                        A + B (LOWER RIGHT), microphone aperture (bottom)"
+    P1 F-11            "D-pad - 4 x PTS645SM43SMTR92LFS ... Front lower-left"
+    D-070              six-face layout LOCKED;  D-012  "Keep the D-pad."
+
+### 2. WHAT THE BOARD DOES
+
+Six identical `PTS645SM43SMTR92LFS` sit in exactly the two clusters the spec
+names -- a 15 mm diamond centred (13.500,115.000) and a pair at y = 99.000.
+The CLUSTERS are right.  The FUNCTIONS are one position out around the cycle:
+
+    diamond TOP     (13.500,107.500)   SW3  DOWN        should be UP
+    diamond BOTTOM  (13.500,122.500)   SW4  LEFT        should be DOWN
+    diamond LEFT    ( 6.000,115.000)   SW5  RIGHT       should be LEFT
+    diamond RIGHT   (21.000,115.000)   SW6  A_SELECT    should be RIGHT
+    pair OUTER      (64.200, 99.000)   SW2  UP          should be A_SELECT
+    pair INNER      (53.500, 99.000)   SW7  B_BACK      correct
+
+`y_mech = 148 - y_pcb`, so larger `y_mech` is higher on the device -- `J3`
+USB-C at `y_mech` 5.3 is the bottom edge and the display is upper.  **And the
+LOCKED D-232 ribs say which cluster is which in the board's own file:**
+`RIB_R1` (`y_mech` 24.00 .. 44.00) and `RIB_B1` (21.20 .. 23.30) are recorded
+as bracketing **THE D-PAD** and they bracket the diamond (`y_mech` 25.5 ..
+40.5); `RIB_R2` (45.00 .. 64.00) is recorded as bearing behind **THE A/B
+CONTROL AREA** and the pair sits at `y_mech` 49.0.
+
+**So pressing the top of the D-pad sends `DOWN`, pressing its right arm sends
+`A_SELECT`, and `UP` is a stray button 51 mm away beside `B`.  This device does
+not have a D-pad.**  `P1` F-11 records the D-pad's *arrangement* as **TARGET,
+not LOCKED**, which is consistent with an arrangement that was never finished.
+
+### 3. IT IS INHERITED, NOT INTRODUCED
+
+`hardware/beta-v2/kicad/aqroot-beta-v2/aqroot-Beta-v2.kicad_pcb` carries the
+**byte-identical** six positions, values and rotations.  The Demo did not break
+this; it was in the parent design and has survived the whole programme.
+`hardware/beta-v2` is READ-ONLY here and was not touched -- **its owner should
+repair it the same way.**
+
+### 4. THE CORRECTION IS GEOMETRICALLY FREE
+
+A pure 5-cycle of position AND rotation:
+
+    SW2 UP        (64.200,99.000) rot 0  ->  (13.500,107.500) rot 90
+    SW3 DOWN      (13.500,107.500)       ->  (13.500,122.500) rot 90
+    SW4 LEFT      (13.500,122.500)       ->  ( 6.000,115.000) rot 90
+    SW5 RIGHT     ( 6.000,115.000)       ->  (21.000,115.000) rot 90
+    SW6 A_SELECT  (21.000,115.000) rot 90 -> (64.200, 99.000) rot 0
+    SW7 B_BACK    unchanged
+
+All six are the same footprint, the four diamond switches all sit at rot 90 and
+the two pair switches at rot 0, so **every pad lands exactly where an identical
+pad was**: courtyards, holes and the `GND` pad-2 lands are unchanged to the
+micron and only the pad-1 net identities move.  No schematic edit, no firmware
+constant, no BOM or CPL line changes -- each reference keeps its own function.
+**Real KiCad DRC on the corrected placement is `{lib_footprint_issues: 199}`
+and NOTHING ELSE** (`evidence/d731-drc-dpad-placement.json`): zero clearance,
+zero shorts.
+
+### 5. AND IT DOES NOT ROUTE
+
+The correction frees 433.719 mm on five nets and needs all five back.  Measured
+at three request orders, the best is FOUR OF FIVE:
+
+    BTN_A_N       32.412 mm /  4 barrels   CLOSED
+    BTN_LEFT_N    94.133 mm /  5 barrels   CLOSED
+    BTN_DOWN_N   104.651 mm /  9 barrels   CLOSED
+    BTN_RIGHT_N  124.799 mm / 12 barrels   CLOSED
+    BTN_UP_N     2 of 3 joins              OPEN, and `BQ25185_SYS`'s pour is cut
+
+**WHY, AND IT IS NOT THE ROUTER.**  The correction puts **FOUR** ~40 mm hauls
+into the west-to-`U2` corridor where the board previously carried **THREE** --
+`BTN_UP_N`'s switch was the one sitting beside `U2`, which is exactly why it
+was the cheapest button on the board at 54.3 mm while `BTN_DOWN_N` cost 125.1
+mm and 7 barrels.  The corridor holds N-1 of N, the same shape as `U2`'s east
+fan-out and `U9`'s north row.  **The defect was hiding behind the very
+shortcut that made the board route.**
+
+***AND MOVING `U2` IS NOT THE UNLOCK.***  Scored over `U2`'s 19 netted signal
+pins on a 2 mm lattice, the total nearest-partner haul is **438.6 mm at the
+current (57.000,88.000) and 383.2 mm at its best site (48.000,92.000)** -- 12.6
+%, worth having but not four hauls' worth.  The D-pad sits at x 6 .. 21 and no
+reachable `U2` position removes them.
+
+### 6. WHAT THIS COSTS AND WHAT I RECOMMEND
+
+**This is a MUST-FIX.**  A board that is 100 % routed and sends `DOWN` when the
+user presses up is not a Kickstarter prototype.  It outranks all three
+remaining open edges and it should be closed before any of them.
+
+**RECOMMENDATION -- move the D-pad diamond EAST within "front lower left".**
+`P1` F-11 locks the PART and the LOWER-LEFT region, and records the
+ARRANGEMENT as TARGET; the D-232 ribs bound the D-pad in `y_mech` only and
+neither rib is near x 6 .. 21.  Shifting the diamond centre from x = 13.500
+toward x = 25 takes ~11.5 mm off each of the four hauls -- 46 mm of corridor,
+against the ~40 mm the fourth haul needs -- and it can ride with the ~55 mm
+that moving `U2` to (48,92) also buys.  It costs an ENCLOSURE APERTURE
+POSITION, so it is an **owner/industrial-design decision, and it is the one I
+would take**: it is the only option that fixes the control layout without
+touching the promised feature set.
+
+**ALTERNATIVES, PRICED.**
+  * **Ship the 5-cycle with `BTN_UP_N` unrouted.**  Correct controls, one dead
+    direction.  Not shippable.
+  * **Ship as-is.**  Scrambled D-pad.  Not shippable.
+  * **Re-floorplan the west-to-`U2` corridor to admit a fourth haul** without
+    moving the D-pad.  No enclosure change; the largest PCB transaction on the
+    board and not measured to succeed.
+  * **Put a small expander beside the D-pad.**  Removes all four long hauls at
+    once and is electrically trivial -- but the Demo scope deleted `U23` and
+    adding a part back is a scope decision.
+
+### 7. ALSO MEASURED WHILE THE FAN-OUT WAS OPEN
+
+  * ***`STAT1`'s 115 mm LOOP IS THE OPENER FOR TWO OTHER EDGES.***
+    `/BQ25185_STAT1` reaches `U11.9` and `U2.20` -- 12 mm apart in a straight
+    line -- by running WEST to x = 46.5 and back, 115.638 mm and 45 objects.
+    Ripped, **`/ACC_PWR_EN` CLOSES (65.081 mm, 5 barrels)** and `STAT2`'s
+    `U2.19` closes (12.83 mm on one probe, 23.55 mm on another).  But `U2`'s
+    east row then holds N-1: with `STAT2` laid first, `STAT1`'s own `U2.20`
+    will not re-close.
+  * ***`/BQ25185_STAT2`'s `U11.3` IS A TOPOLOGICAL TRAP, NOT A CORRIDOR.***
+    `screen_fanout_channel` walks the land outward and finds **8.25 mm of open
+    channel at 0.25 mm out, 8.175 mm at 0.50 mm -- and gap 0.0 at 0.525 mm,
+    bound HIGH AND LOW by `/01_POWER_TREE/BAT_PROTECTED_P`**: a single 0.200 mm
+    battery track crosses the lane half a millimetre from the land.  The
+    BQ25185's 0.400 mm-pitch WSON leaves `U11.3` a 0.600 mm lane between
+    `U11.2`'s `BAT` escape and `U11.4`'s `GND`, and a 0.500/0.250 barrel -- the
+    board's own via floor -- needs 0.900 mm.  Unlike `U9.14` there is no
+    capacitor to move: **the crossing partner is the battery net itself**, and
+    the only lever is D-697's bounded `BAT_PROTECTED_P` exception plus an `R37`
+    move.  Not spent.
+
+**NEXT: D-731 is the board's top blocker and it needs the owner's answer on the
+D-pad aperture before the PCB work is worth doing.  Every other open edge is
+downstream of the same fact -- `U2` reads six buttons that live 45 mm away.**
+
 ## D-730 — PM-3 IS **COMPLETE AND PROMOTED**: `U9.14` `VDD_DR` IS ROUTED, THE BOARD'S ONE FUNCTIONAL BLOCKER IS GONE, AND 5 -> 4 RETAINED OPEN EDGES. TWO GATES WERE ASKING THE WRONG QUESTION AND ARE FIXED WITH THEIR OWN NON-VACUITY CONTROLS
 
     authority  7431e6af -> a4200434  PROMOTED.
