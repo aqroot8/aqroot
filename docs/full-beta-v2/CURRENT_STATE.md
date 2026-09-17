@@ -66,6 +66,59 @@
 > `verify_promotion` PASS and `protected_copper` showing exactly one protected
 > net moved.  `U14.7` is on the bus.  This board has **no open owner decision**.
 
+> **TWO OPEN OWNER DECISIONS AS OF D-736, BOTH RAISED WITH A RECOMMENDATION AND
+> NEITHER BLOCKING ANY OTHER WORK.**  **(1) D-734** -- `/BQ25185_STAT2` cannot
+> leave `U11.3`; proved closed at 10 microns at every width down to 0.030 mm AND
+> with D-269 relaxed, so it is a PACKAGE wall and not a safety-rule one.
+> *Recommendation: fit as it stands, leave `U11.3` unconnected, keep `R128` and
+> `TP7`.*  **(2) D-735** -- `/SX1262_DIO1`'s corridor is four to five conductors
+> over capacity and every single-net lever is spent.  *Recommendation: take
+> D-731's D-pad move EAST, which is an enclosure-aperture / industrial-design
+> call; if it is refused, the LoRa driver polls `GetIrqStatus()` instead of
+> taking an interrupt, and that becomes an explicit product decision.*
+> **`DEMO_READY_FOR_FAB` IS NOT DECLARED WHILE EITHER STANDS.**
+
+- **Demo D-736 (THE INDEPENDENT REVIEW'S **PRIORITY 1 WAS ALREADY EXECUTED** AND
+  IS CONFIRMED HERE BY INDEPENDENT MEASUREMENT; FOUR PRE-FAB CHECKLIST ITEMS
+  CLOSED):**  **NO COPPER.  Authority `71c4326e` UNCHANGED.**
+  ***PRIORITY 1 -- `U12` AS A REAL CONVERTER BLOCK:*** D-718 already
+  re-floorplanned it and the numbers hold when re-measured.  Switch node: `L1`
+  at (74.100,97.600), `L1.1` 3.008 mm from `U12.8` and `L1.2` 3.008 mm from
+  `U12.7` pad-centre to pad-centre, against D-718's recorded **2.56 mm of
+  routed copper**.  Output: `C31` 22 uF at **1.578 mm** from `U12.4` and `C32`
+  at 3.52 mm -- 44 uF, which is what the TPS63020 asks for.  Input bypass:
+  `C28` 100 nF at **1.625 mm**.  ***THE ONE THING THAT LOOKS WRONG IS A RECORDED
+  DECISION:*** the nearest 10 uF is `C24` at 9.39 mm -- because D-718 states
+  that `C24`'s land is the junction where the F.Cu `SYS` trunk meets the B.Cu
+  run west, and that `VIN` is fed by the **`B BQ25185_SYS POUR` reaching
+  `U12.10`/`U12.11` DIRECTLY**, not by a trace.  The bulk is plane-coupled; only
+  the bypass had to come to the pin.  Feedback: `FB` is `U12.3`, and
+  `V3V3_FB` is six B.Cu segments totalling ~7.6 mm running **WEST and SOUTH**,
+  away from a switch node that is entirely EAST at x 70.6..74.1.  Divider
+  arithmetic checks: `R39` 1 M / `R40` 180 k on a 0.5 V reference gives
+  **3.278 V** and draws 2.8 uA.  ***RESIDUAL, STATED HONESTLY:*** the divider is
+  1.18 Mohm with **no feed-forward capacitor**.  Defensible for a low-Iq battery
+  product with a short FB run, and it is the first thing a bench bring-up should
+  look at in this block.  ***LAND PATTERNS ARE VERIFIED AND THE 199
+  `lib_footprint_issues` ARE AN ENVIRONMENT ARTEFACT:*** `land_parity` LAND1-
+  LAND6 all TRUE, **309 footprints, `verdicts {MATCH: 309}`**, `drc_counts {}`
+  -- with the libraries resolved KiCad reports **ZERO** `lib_footprint_issues`
+  -- and the comparison is proved non-vacuous by an `R75` one-micron control
+  that reports MISMATCH.  One identity is honestly tier `2_OPEN`:
+  `Connector_JST:JST_SH_SM04B-SRSS-TB_1x04-1MP_P1.00mm_Horizontal`, a stock
+  footprint whose manufacturer drawing has not been read.  ***`LS1` IS NOT A
+  DEFECT:*** the ledger's `fitted_references_missing_from_board: ['LS1']` is
+  intended -- `LS1` is the PUI `AS02008MR-LW152-R`, an **OFF-BOARD** 20 mm 8 ohm
+  speaker on 152 mm leads, carried in `aqroot-Demo-OFF-BOARD.csv`.  ***THE
+  SOLDER-MASK BRIDGE IS RESOLVED AT BOTH LEVELS:*** `allow_soldermask_bridges`
+  is set on `MK1` in the `.kicad_pcb` AND on its library master, so it is a
+  declared footprint attribute rather than an inherited DRC exception.
+  ***THE F.Cu `+3V3` POUR HAS NO ORPHANS:*** one zone, **29 filled outlines,
+  6003.30 mm2**, and EVERY outline has at least one `+3V3` pad, via or track
+  endpoint inside it -- zero anchorless islands, with `pour_partition` PP1
+  independently resolving 196 pads.  That is 56 % of the front face on a board
+  that also carries a full In3 `+3V3` plane, which is a lot of copper but is not
+  a routing obstacle and is named by none of the corridor blame sets.
 - **Demo D-735 (`/SX1262_DIO1` IS **NOT A ONE-NET PROBLEM**.  BOTH ENDS LAUNCH
   AND REACH FAR; THE CORRIDOR IS FOUR TO FIVE CONDUCTORS OVER CAPACITY, AND THE
   ONE LAYER WHERE A SINGLE NET WOULD DO IT CANNOT BE ENTERED):**  **NO COPPER.

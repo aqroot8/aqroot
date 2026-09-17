@@ -1,0 +1,37 @@
+{
+ "schema": 1,
+ "decision": "D-736",
+ "question": "the independent review's PRIORITY 1 and four pre-fab checklist items -- are they real, and are they open?",
+ "results": {
+  "PRIORITY_1_U12_converter_layout": {
+   "verdict": "ALREADY EXECUTED (D-718) AND INDEPENDENTLY CONFIRMED HERE",
+   "measured_now": {
+    "switch_node": "L1 at (74.100,97.600); L1.1 3.008 mm from U12.8 and L1.2 3.008 mm from U12.7, pad centre to pad centre -- D-718 records 2.56 mm of routed copper, which matches",
+    "output_capacitance": "C31 22 uF at 1.578 mm from U12.4 and C32 22 uF at 3.52 mm -- 44 uF, which is what the TPS63020 asks for",
+    "input_bypass": "C28 100 nF, pad 1.625 mm from U12.10",
+    "input_bulk": "nearest 10 uF is C24 at 9.39 mm and C26 at 9.46 mm -- and this is a RECORDED DECISION, not an oversight: D-718 states C24 does not move because its land is the junction where the F.Cu SYS trunk meets the B.Cu run west, and VIN is fed by the B BQ25185_SYS POUR reaching U12.10/U12.11 DIRECTLY rather than by a trace, so the bulk is plane-coupled and only the 100 nF bypass had to come to the pin",
+    "feedback": "FB is U12.3 at (69.100,96.200); the V3V3_FB run is six B.Cu segments totalling ~7.6 mm going WEST and SOUTH to R39.2 and R40.1 -- AWAY from the switch node, which is entirely EAST at x 70.6..74.1",
+    "divider_arithmetic": "R39 1 M top, R40 180 k bottom, TPS63020 VFB = 0.5 V: 0.5 x (1 + 1000/180) = 3.278 V.  Correct for 3.3 V, and 2.8 uA of divider current."
+   },
+   "residual_noted": "the divider is 1.18 Mohm and carries no feed-forward capacitor.  It is defensible for a low-Iq battery product and the FB run is short and routed away from the switch node, but it is the one item in this block a bench bring-up should look at first."
+  },
+  "land_patterns": {
+   "verdict": "VERIFIED, and the 199 lib_footprint_issues are an ENVIRONMENT artefact",
+   "evidence": "land_parity_contract LAND1-LAND6 all true; 309 footprints, verdicts {MATCH: 309}; drc_counts {} -- with the libraries resolved KiCad reports ZERO lib_footprint_issues; the comparison is proven non-vacuous by an R75 one-micron control that reports MISMATCH.",
+   "one_open_identity": "Connector_JST:JST_SH_SM04B-SRSS-TB_1x04-1MP_P1.00mm_Horizontal is tier 2_OPEN -- a stock KiCad footprint whose manufacturer drawing has not been read.  Declared OPEN in the ledger rather than quietly passed."
+  },
+  "LS1_population": {
+   "verdict": "NOT A DEFECT",
+   "why": "the ledger's fitted_references_missing_from_board: ['LS1'] is correct and intended.  LS1 is the PUI AS02008MR-LW152-R, an OFF-BOARD 20 mm 8 ohm speaker on 152 mm leads, and it is carried in aqroot-Demo-OFF-BOARD.csv.  It has no board footprint because it is not on the board."
+  },
+  "solder_mask_bridge": {
+   "verdict": "RESOLVED AT BOTH LEVELS",
+   "why": "allow_soldermask_bridges is set on MK1 (PUI DMM-4026-B-I2S) in the .kicad_pcb AND on the library master PUI_DMM-4026-B-I2S_4.0x3.0mm.kicad_mod, so it is a declared footprint attribute rather than an inherited DRC exception.  Real DRC reports no solder_mask_bridge violation."
+  },
+  "F_Cu_3V3_pour": {
+   "verdict": "NO ORPHANS",
+   "measured": "one zone, 29 filled outlines, 6003.30 mm2 total; EVERY outline has at least one +3V3 pad, via or track endpoint inside its bounding box -- zero anchorless islands.  pour_partition PP1 independently resolves 196 pads with the only 8 unresolved being the inherited BQ25185_SYS set and GND MK1.4.",
+   "note": "6003 mm2 is 56 % of the 72 x 148 mm front face, on a board that ALSO carries a full In3 +3V3 plane.  That is a lot of front copper, but it is not a routing obstacle -- the maze routes through a pour and pour_partition judges the severance -- and none of the corridor blame sets names it."
+  }
+ }
+}

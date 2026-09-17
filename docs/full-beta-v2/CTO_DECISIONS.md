@@ -1,3 +1,86 @@
+## D-736 — THE INDEPENDENT REVIEW'S **PRIORITY 1 WAS ALREADY EXECUTED**, AND IS CONFIRMED HERE BY INDEPENDENT MEASUREMENT. FOUR PRE-FAB CHECKLIST ITEMS CLOSED
+
+    authority  71c4326e  UNCHANGED.  NO COPPER.
+    `evidence/d736-prefab-verification-sweep.json`
+
+### 1. PRIORITY 1 — `U12` AS A REAL CONVERTER BLOCK
+
+The reviewer asked that `U12` + `L1` + its capacitors + `R39`/`R40` be
+re-floorplanned as one coherent block if the placement violated converter
+practice.  **D-718 already did exactly that**, and every figure holds when
+re-measured from the board rather than read from the decision:
+
+    switch node        L1 at (74.100,97.600); L1.1 3.008 mm from U12.8 and
+                       L1.2 3.008 mm from U12.7, pad centre to pad centre,
+                       against D-718's recorded 2.56 mm of routed copper
+    output             C31 22 uF at 1.578 mm from U12.4, C32 at 3.52 mm
+                       -- 44 uF, which is what the TPS63020 asks for
+    input bypass       C28 100 nF, pad at 1.625 mm from U12.10
+    feedback           V3V3_FB is six B.Cu segments, ~7.6 mm, running WEST
+                       and SOUTH -- away from a switch node that is entirely
+                       EAST at x 70.6..74.1
+    divider            R39 1 M / R40 180 k on a 0.5 V reference
+                       = 0.5 x (1 + 1000/180) = 3.278 V, drawing 2.8 uA
+
+**THE ONE THING THAT LOOKS WRONG IS A RECORDED DECISION.**  The nearest bulk
+10 uF is `C24` at **9.39 mm**, which reads as a missing input capacitor.  It is
+not.  D-718 states that `C24`'s land is the junction where the F.Cu `SYS` trunk
+meets the B.Cu run west -- the only F.Cu link between two pieces of the pour --
+and that with the south band opened to 4.7 mm the **`B BQ25185_SYS POUR` fill
+reaches `U12.10` and `U12.11` DIRECTLY.**  `VIN` is plane-fed, not trace-fed, so
+the bulk is plane-coupled and only the 100 nF bypass had to come to the pin.
+
+**RESIDUAL, STATED HONESTLY.**  The divider is 1.18 Mohm and carries **no
+feed-forward capacitor**.  That is defensible for a low-quiescent-current
+battery product with a 7.6 mm FB run routed away from the switch node, and it is
+not a fabrication blocker -- but it is the first thing a bench bring-up should
+look at in this block, and it is written down here so that it is looked at.
+
+### 2. THE 199 `lib_footprint_issues` ARE AN ENVIRONMENT ARTEFACT, NOT A GAP
+
+This matters because a first board must have correct land patterns and the DRC
+line item reads like nobody checked.  They were checked:
+
+    land_parity_contract   LAND1-LAND6 all TRUE
+    footprints             309,  verdicts {MATCH: 309}
+    drc_counts             {}   -- with the libraries RESOLVED, KiCad reports
+                                   ZERO lib_footprint_issues
+    non-vacuity control    a one-micron perturbation of R75 reports MISMATCH
+
+The 199 appear only in a bare `kicad-cli` run because this machine has no global
+`fp-lib-table`.  **One identity is honestly OPEN** and is marked so in the
+ledger rather than passed: `Connector_JST:JST_SH_SM04B-SRSS-TB_1x04-1MP_
+P1.00mm_Horizontal`, a stock KiCad footprint whose manufacturer drawing has not
+been read.  It is the Qwiic connector land and is the one land pattern a
+reviewer should ask about.
+
+### 3. `LS1` IS NOT A DEFECT
+
+The ledger's `fitted_references_missing_from_board: ['LS1']` is correct and
+intended.  `LS1` is the PUI `AS02008MR-LW152-R`, an **OFF-BOARD** 20 mm 8 ohm
+voice-band speaker on 152 mm leads, carried in `aqroot-Demo-OFF-BOARD.csv`.  It
+has no board footprint because it is not on the board.
+
+### 4. THE SOLDER-MASK BRIDGE IS RESOLVED AT BOTH LEVELS
+
+`allow_soldermask_bridges` is set on `MK1` (PUI `DMM-4026-B-I2S`) in the
+`.kicad_pcb` **and** on its library master
+`PUI_DMM-4026-B-I2S_4.0x3.0mm.kicad_mod`.  It is a declared footprint attribute,
+not an inherited DRC exception, and real DRC reports no `solder_mask_bridge`.
+
+### 5. THE F.Cu `+3V3` POUR HAS NO ORPHANS
+
+One zone, **29 filled outlines, 6003.30 mm2**, and every outline has at least
+one `+3V3` pad, via or track endpoint inside it -- **zero anchorless islands**.
+`pour_partition` PP1 independently resolves 196 pads, with the only 8 unresolved
+being the inherited `BQ25185_SYS` set and `GND MK1.4`.
+
+6003 mm2 is 56 % of the 72 x 148 mm front face on a board that ALSO carries a
+full In3 `+3V3` plane.  That is a lot of front copper.  It is **not** a routing
+obstacle -- the maze routes through a pour and `pour_partition` judges the
+severance afterwards -- and it is named by none of D-735's corridor blame sets,
+so it is recorded as an observation and not as work.
+
 ## D-735 — `/SX1262_DIO1` IS NOT A ONE-NET PROBLEM. BOTH ENDS LAUNCH AND REACH FAR; THE CORRIDOR IS FOUR TO FIVE CONDUCTORS OVER CAPACITY, AND THE ONE LAYER WHERE A SINGLE NET WOULD DO IT CANNOT BE ENTERED
 
     authority  71c4326e  UNCHANGED.  NO COPPER.
