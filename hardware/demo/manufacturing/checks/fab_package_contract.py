@@ -50,6 +50,10 @@ CPL has rows", it is "every row places the part where `pcbnew` says it is".
                      finished BOM.
   FAB8  OUTLINE      the `Edge.Cuts` Gerber's profile is the board's own
                      outline: same extent, to the micron.
+  FAB9  VIA-IN-PAD   every via whose drilled hole opens into a solderable land
+                     is named in the package, and the notes state the fill/cap
+                     process those lands require.  KiCad has no rule for this
+                     and the vias are same-net, so nothing else can see them.
 
 Read-only.  `hardware/demo/kicad/aqroot-demo/` is copied to a temporary
 directory before the refill test touches anything.
@@ -597,6 +601,70 @@ def fab8(pkg, board):
                          round((board_box[3] - board_box[1]) / 1e6, 3)])
 
 
+# D-738.  A VIA WHOSE HOLE OPENS INTO A SOLDER LAND IS A PROCESS REQUIREMENT,
+# AND NOTHING IN THIS REPOSITORY COULD SEE ONE.
+#
+# KiCad has no via-in-pad rule, and on this board the vias in question carry
+# the SAME NET as the land they sit in -- they are the router's own escapes --
+# so every clearance check is silent by construction.  The package now names
+# them, and this clause re-derives the set FROM THE BOARD and refuses a package
+# that under-reports it.  The failure mode it exists for is a stale package: a
+# route promoted after the last export puts a new barrel in a land and the
+# shipped note still says the old number.
+#
+# The test is a SUBSET test on purpose.  Every land this clause finds must be
+# in the manifest; the manifest may carry more (a grazing overlap this sampler
+# rounds away), and the note must be present and must state the process.
+def fab9(pkg, manifest):
+    import math
+    b = pcbnew.LoadBoard(str(BOARD))
+    vias = [(t, t.GetPosition(), t.GetDrill() / 2.0)
+            for t in b.GetTracks() if t.GetClass() == "PCB_VIA"]
+    found = set()
+    for fp in b.GetFootprints():
+        for pad in fp.Pads():
+            if pad.GetAttribute() not in (pcbnew.PAD_ATTRIB_SMD,
+                                          pcbnew.PAD_ATTRIB_CONN):
+                continue
+            bb = pad.GetBoundingBox()
+            for lay in (pcbnew.F_Cu, pcbnew.B_Cu):
+                if not pad.IsOnLayer(lay):
+                    continue
+                if pad.GetSolderMaskExpansion(lay):
+                    continue          # aperture is not the copper; not modelled
+                for (v, pt, hr) in vias:
+                    if not v.IsOnLayer(lay):
+                        continue
+                    if not (bb.GetLeft() - hr <= pt.x <= bb.GetRight() + hr
+                            and bb.GetTop() - hr <= pt.y <= bb.GetBottom() + hr):
+                        continue
+                    pts = [(pt.x, pt.y)] + [
+                        (pt.x + hr * math.cos(2 * math.pi * i / 16),
+                         pt.y + hr * math.sin(2 * math.pi * i / 16))
+                        for i in range(16)]
+                    # a rim point strictly inside the land is an open barrel
+                    if any(pad.HitTest(pcbnew.VECTOR2I(int(x), int(y)), 0)
+                           for (x, y) in pts):
+                        found.add(("%s.%s" % (fp.GetReference(),
+                                              pad.GetNumber()),
+                                   pcbnew.LayerName(lay),
+                                   round(pt.x / 1e6, 4), round(pt.y / 1e6, 4)))
+
+    block = manifest.get("via_in_pad") or {}
+    listed = {(h["land"], h["layer"], round(h["x"], 4), round(h["y"], 4))
+              for h in block.get("lands", [])}
+    missing = sorted(found - listed)
+    notes = (pkg / "aqroot-Demo-FAB-NOTES.md").read_text(encoding="utf-8")
+    stated = ("PLUGGED / RESIN-FILLED AND CAP-PLATED" in notes
+              if found else True)
+    return dict(ok=(not missing) and stated and bool(block.get("measured")),
+                board_lands_with_an_open_barrel=len(found),
+                manifest_lands=len(listed),
+                missing_from_the_package=missing[:20],
+                required_process_stated_in_the_notes=stated,
+                measured=bool(block.get("measured")))
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--package", type=Path, default=PACKAGE)
@@ -643,6 +711,7 @@ def main():
             "FAB6_bom": fab6(pkg, board, fitted, dnp),
             "FAB7_sourcing": fab7(pkg, board),
             "FAB8_outline": fab8(pkg, board),
+            "FAB9_via_in_pad": fab9(pkg, manifest),
         }
     doc = dict(schema=1, package=str(pkg.relative_to(ROOT))
                if pkg.is_relative_to(ROOT) else str(pkg),

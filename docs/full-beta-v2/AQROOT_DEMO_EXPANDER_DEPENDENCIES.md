@@ -23,7 +23,117 @@ physical 1x24 port, switched 3.3 V, one usable 5 V output, accessory I2C, two
 native GPIOs, Accessory Detect, and approximately 2–4 XGPIOs. A channel is not
 treated as removable merely because it is not itself exposed at the port.
 
-## Complete pin maps
+---
+
+## AS-BUILT PIN MAP — READ THIS ONE (D-738)
+
+> **EVERYTHING BELOW THIS SECTION IS THE PRE-ECO PLANNING ANALYSIS AND IS
+> SUPERSEDED.**  It is kept because its *reasoning* — which channels are
+> Demo-required and what breaks without them — is still the record of why the
+> allocation is what it is.  Its **pin numbers are not**.  It describes a board
+> with `U23` fitted and ten public XGPIO, and its `U2` table predates **D-732**
+> (which corrected the port-1 D-pad seat order AND an inverted `P05`/`P06`/
+> `P16`/`P17` naming) and **D-733** (which swapped `/ACC_PWR_EN` and
+> `/BQ25185_STAT1` between `U2.P17` and `U3.P17`).  **Nine of the sixteen `U2`
+> rows below and one `U3` row are wrong against the board.**
+>
+> D-732 recorded that reading the stale map would have masked
+> `4Ah` bit 6 — which it believed was `BQ25185_STAT2` but which is in fact
+> `TOUCH_INT_N` — silencing the touch interrupt while leaving `STAT2` free to
+> wake the MCU forever.  That defect is exactly what an out-of-date pin map
+> costs, so the live map is now published here and is generated from the board.
+
+**Provenance.**  The two tables below are read pin by pin out of
+`hardware/demo/kicad/aqroot-demo/aqroot-Beta-v2.kicad_pcb`
+(`sha256 71c4326e8cd704db50f0893b8dc0e2490c8f365aaa826d9b05a37c90a3f535b2`)
+using the `AQROOT_Beta:PCAL9535APW` symbol's own pin numbering — pins **4..11 =
+`P00`..`P07`**, pins **13..20 = `P10`..`P17`** — and they agree pin for pin with
+the notes drawn on `08_buttons_expanders.kicad_sch`, which remain the
+schematic-side authority.  **Firmware must use this table or the schematic note,
+and no earlier one.**
+
+### `U2` — internal controls and inputs, I2C `0x20` (A0=A1=A2=GND)
+
+| bit | pin | net | dir | function |
+|---|---|---|---|---|
+| `P00` | 4 | `/TOUCH_RST_N` | OUT | capacitive-touch controller reset (active low) |
+| `P01` | 5 | `/SX1262_RST_N` | OUT | LoRa transceiver reset (active low) |
+| `P02` | 6 | `/NFC_5V_EN` | OUT | optional NFC 5 V boost enable -- DNP path on Demo |
+| `P03` | 7 | `/AMP_SD_MODE` | OUT | class-D amplifier shutdown / mode |
+| `P04` | 8 | `/DISP_RST_N` | OUT | display reset (active low) |
+| `P05` | 9 | `/SX1262_DIO1` | IN | LoRa interrupt -- **UNROUTED, see D-735** |
+| `P06` | 10 | `/TOUCH_INT_N` | IN | touch interrupt, FT6236 (active low) |
+| `P07` | 11 | `/SD_CARD_DETECT_N` | IN | microSD card detect, R113 100 k pull-up |
+| `P10` | 13 | `/08_BUTTONS_EXPANDERS/BTN_A_N` | IN | A / Select, R4 10 k pull-up |
+| `P11` | 14 | `/08_BUTTONS_EXPANDERS/BTN_UP_N` | IN | D-pad Up, R5 10 k pull-up |
+| `P12` | 15 | `/08_BUTTONS_EXPANDERS/BTN_DOWN_N` | IN | D-pad Down, R6 10 k pull-up |
+| `P13` | 16 | `/08_BUTTONS_EXPANDERS/BTN_LEFT_N` | IN | D-pad Left, R7 10 k pull-up |
+| `P14` | 17 | `/08_BUTTONS_EXPANDERS/BTN_RIGHT_N` | IN | D-pad Right, R8 10 k pull-up |
+| `P15` | 18 | `/08_BUTTONS_EXPANDERS/BTN_B_N` | IN | B / Back, R9 10 k pull-up |
+| `P16` | 19 | `/BQ25185_STAT2` | IN | charger status 2 -- R128 10 k pull-up; **`U11.3` UNROUTABLE, see D-734** |
+| `P17` | 20 | `/ACC_PWR_EN` | OUT | `U16` TCA4307 community-port I2C buffer enable, R17 100 k pull-down |
+
+### `U3` — front RGB, accessory power, public XGPIO, I2C `0x21` (A0=+3V3)
+
+| bit | pin | net | dir | function |
+|---|---|---|---|---|
+| `P00` | 4 | `/08_BUTTONS_EXPANDERS/FRONT_RGB_R_N` | OUT | front RGB red cathode sink, R70/R73 |
+| `P01` | 5 | `/08_BUTTONS_EXPANDERS/FRONT_RGB_G_N` | OUT | front RGB green cathode sink |
+| `P02` | 6 | `/08_BUTTONS_EXPANDERS/FRONT_RGB_B_N` | OUT | front RGB blue cathode sink |
+| `P03` | 7 | `/ACC_5V_SW_EN` | OUT | `U22` TPS22950C 5 V load-switch enable, R131 100 k pull-down |
+| `P04` | 8 | `/XGPIO4` | I/O | Community Port expansion GPIO 4 (public) |
+| `P05` | 9 | `/XGPIO5` | I/O | Community Port expansion GPIO 5 (public) |
+| `P06` | 10 | — | — | **NC-DEMO**, unused spare |
+| `P07` | 11 | — | — | **NC-DEMO**, unused spare |
+| `P10` | 13 | — | — | **NC-DEMO**, unused spare |
+| `P11` | 14 | — | — | **NC-DEMO**, unused spare |
+| `P12` | 15 | `/ACC_3V3_EN` | OUT | `U20` switched 3.3 V enable, R98 100 k pull-down |
+| `P13` | 16 | `/ACC_5V_BOOST_EN` | OUT | `U21` TPS61023 5 V boost enable, R102 100 k pull-down |
+| `P14` | 17 | `/ACC_DETECT_N` | IN | accessory present, R129 100 k pull-up |
+| `P15` | 18 | `/ACC_POWER_FAULT_N` | IN | wire-OR fault from `U20`/`U22`, R103 100 k pull-up |
+| `P16` | 19 | `/SX1262_RXEN` | OUT | LoRa RF receive-path enable, R74 pull-down |
+| `P17` | 20 | `/BQ25185_STAT1` | IN | charger status 1, R127 10 k pull-up |
+
+### Interrupt mask policy, as built
+
+Both `/INT` pins are open-drain and wire-OR onto `WAKE_INT_N` (R3 10 k to
+`+3V3`, into `GPIO21`).  The PCAL9535A powers up with **every interrupt masked**
+(`4Ah`/`4Bh` = `FFh`).
+
+- **UNMASKED on `U2`:** the six buttons (`P10`–`P15`), `TOUCH_INT_N` (`P06`)
+  and `SD_CARD_DETECT_N` (`P07`).  `SX1262_DIO1` (`P05`) is unmaskable in
+  principle and is what the schematic note lists, but see fact 1 below — while
+  the net is unrouted it must stay MASKED and internally pulled.
+- **UNMASKED on `U3`:** `ACC_DETECT_N` (`P14`) and `ACC_POWER_FAULT_N` (`P15`).
+- **MASKED, deliberately:** `BQ25185_STAT2` — it is **`4Bh` bit 6 (`P16`)**, not
+  `4Ah` bit 6 — because SLUSF65A §7.3.10 says it toggles continuously with no
+  battery fitted; and both public XGPIO, which is **MX-9** (an accessory must not
+  be able to hold the shared wake line and starve the buttons).
+
+### Two as-built facts firmware must not assume away
+
+1. **`/SX1262_DIO1` (`U2.P05`) is NOT ROUTED.**  D-735 measured the corridor as
+   four to five conductors over capacity and the residual is an owner /
+   industrial-design decision.  Until it is closed, the LoRa driver must poll
+   `GetIrqStatus()` over SPI rather than wait on this bit, and the bit must be
+   treated as undefined.  **`/SX1262_DIO1` carries exactly two pads — `U2.9` and
+   `U8.13` — and NO pull resistor**, so with the net unrouted `U2.P05` is a
+   FLOATING CMOS input.  Firmware must therefore enable the PCAL9535A's own
+   **internal 100 k pull-up** on that bit (pull-enable `46h`, pull-selection
+   `48h`) and keep its interrupt masked.  The same applies to `U3`'s four
+   NC-DEMO channels `P06`, `P07`, `P10` and `P11`, which have no external part
+   at all.  This capability is one of the reasons D-061 made the PCAL9535A
+   load-bearing; the TCA9535 it replaced has no internal pulls.
+2. **`/BQ25185_STAT2` reaches `U2.P16` only through `R128`'s pull-up.**  D-734
+   proved `U11.3` cannot be escaped at any manufacturable width — the pocket is
+   topologically closed by the package's own geometry — so the charger does not
+   drive this bit.  Charge-state decode must use `STAT1` (`U3.P17`) and the
+   **MAX17048 fuel gauge** on the same internal bus, and must NOT infer a fault
+   from `STAT2`.
+
+---
+
+## Complete pin maps (PRE-ECO PLANNING ANALYSIS — SUPERSEDED, KEPT AS HISTORY)
 
 All three devices also connect to `+3V3`, GND, `I2C_SDA_INT`, `I2C_SCL_INT`,
 and the shared active-low `WAKE_INT_N`. Their address straps are `U2=0x20`,

@@ -37,3 +37,30 @@ The profile has **2 INSIDE (reflex) corners**.  A profile router cannot cut a sh
 - inside corner at **(72.000, 70.500)** -- nearest copper is **0.726 mm** away, edge to edge (track, `Net-(U11-TS_MR)`).  A corner relief must stay under 0.726 mm of radius; **a 1.0 mm relief would reach copper here**.
 
 Board copper-to-edge minimum in force: **0.500 mm**, and KiCad DRC on this board reports ZERO `copper_edge_clearance` violations.
+
+## Vias in solderable lands -- VIA PROTECTION IS REQUIRED
+
+Solder-mask expansion on this board is **0.000 mm**, so a pad's mask aperture IS its copper.  **128 via barrels open directly into 134 solderable lands across 75 components**, on hole sizes 0.20 mm / 0.25 mm / 0.30 mm / 0.40 mm.  134 of those lands carry the SAME net as the via, which is why no clearance check and no KiCad DRC rule reports them -- KiCad has no via-in-pad rule at all.
+
+**REQUIRED PROCESS: these vias must be PLUGGED / RESIN-FILLED AND CAP-PLATED (via-in-pad / POFV), or filled by an equivalent process that leaves a planar, solderable land.**  Applying the process to every via on the board is acceptable and is the simpler instruction; what is NOT acceptable is shipping these barrels open.
+
+Why it is not optional, in this board's own numbers: the largest hole in a land is **0.40 mm**, and through 1.60 mm of finished board that barrel holds **0.201 mm3**.  A 0.12 mm stencil over the 0.560 x 0.620 mm land it sits in deposits about **0.042 mm3** of paste.  **The barrel can swallow the whole deposit.**
+
+The ten worst lands, by how much of the land is open hole:
+
+| land | layer | land size (mm) | hole | open area | % of land | net |
+| --- | --- | --- | --- | --- | --- | --- |
+| `C18.1` | B.Cu | 0.560 x 0.620 | 0.40 mm | 0.1255 mm2 | **38.2 %** | `+3V3` |
+| `D8.1` | B.Cu | 0.600 x 0.450 | 0.30 mm | 0.0625 mm2 | **24.2 %** | `/03_SPI_A_DISPLAY_SD/LED_BOOST` |
+| `J1.8` | F.Cu | 0.300 x 1.230 | 0.40 mm | 0.0786 mm2 | **21.3 %** | `+3V3` |
+| `J1.25` | F.Cu | 0.300 x 1.230 | 0.30 mm | 0.0699 mm2 | **18.9 %** | `GND` |
+| `J1.31` | F.Cu | 0.300 x 1.230 | 0.30 mm | 0.0653 mm2 | **17.7 %** | `GND` |
+| `R25.1` | F.Cu | 0.800 x 0.950 | 0.40 mm | 0.1253 mm2 | **17.3 %** | `+3V3` |
+| `R91.1` | B.Cu | 0.800 x 0.950 | 0.40 mm | 0.1158 mm2 | **16.0 %** | `/01_POWER_TREE/USB_VBUS_CHG` |
+| `C56.1` | F.Cu | 0.900 x 0.950 | 0.40 mm | 0.1255 mm2 | **15.5 %** | `+3V3` |
+| `C8.1` | F.Cu | 0.900 x 0.950 | 0.40 mm | 0.1255 mm2 | **15.5 %** | `+3V3` |
+| `C39.1` | B.Cu | 0.900 x 0.950 | 0.40 mm | 0.1097 mm2 | **13.6 %** | `/ACC_3V3_SW` |
+
+**31 of the 134 lands are FINE-PITCH** (one land dimension at or below 0.500 mm) -- including D8.1, J1.12, J1.14, J1.16, J1.18, J1.22, J1.23, J1.25.  On those the hole is a large fraction of the land's width and an unfilled barrel does not merely starve the joint, it removes the land.
+
+The complete list of barrel centres is in `MANIFEST.json` under `via_in_pad`.

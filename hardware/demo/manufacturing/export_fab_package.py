@@ -347,9 +347,11 @@ def export_fab_notes(out):
     if not rules:
         lines += ["No footprint-scoped `hole_clearance` rule is in force.", ""]
     lines += outline_notes(board)
+    vlines, vrows = via_in_pad_notes(board)
+    lines += vlines
     (out / "aqroot-Demo-FAB-NOTES.md").write_text("\n".join(lines),
                                                   encoding="utf-8")
-    return [r[0] for r in rules]
+    return [r[0] for r in rules], vrows
 
 
 # D-737.  THE PROFILE IS NOT A RECTANGLE AND THE PACKAGE NEVER SAID SO.
@@ -487,6 +489,168 @@ def outline_notes(board):
     return lines
 
 
+# D-738.  THE PACKAGE NEVER TOLD THE FABRICATOR THE BOARD USES VIA-IN-PAD.
+#
+# `pad_to_mask_clearance` on this board is 0, so a pad's SOLDER-MASK APERTURE
+# IS ITS COPPER.  A via whose drilled hole lies inside that aperture is an open
+# barrel in the middle of a solder land: there is no mask over it, and at
+# reflow the paste deposit drains into it.  KiCad DRC cannot see this -- it has
+# no via-in-pad rule -- and on this board it is additionally invisible to the
+# CLEARANCE checks, because almost every one of these vias carries the SAME NET
+# as the land it sits in (they are the router's own pad escapes and the
+# decoupling fan-outs), so nothing is ever too close to anything.
+#
+# This measures it rather than asserting it: for every SMD / connector pad on a
+# solderable layer it intersects each nearby via's DRILLED-HOLE disc with the
+# pad's own mask aperture polygon and reports the overlap.  It refuses to emit
+# the note if the board carries a non-zero solder-mask expansion it has not
+# been taught to model, rather than reporting an aperture it did not compute.
+def via_in_pad_notes(board):
+    """Find every via whose hole is exposed inside a solderable land."""
+    import math
+    import pcbnew
+
+    thickness = board.GetDesignSettings().GetBoardThickness() / 1e6
+    vias = [t for t in board.GetTracks() if t.Type() == pcbnew.PCB_VIA_T]
+    vpos = [(v, v.GetPosition(), int(v.GetDrill() / 2), int(v.GetWidth() / 2))
+            for v in vias]
+
+    def disc(cx, cy, r, n=64):
+        ps = pcbnew.SHAPE_POLY_SET()
+        pts = pcbnew.VECTOR_VECTOR2I()
+        for i in range(n):
+            a = 2 * math.pi * i / n
+            pts.append(pcbnew.VECTOR2I(int(cx + r * math.cos(a)),
+                                       int(cy + r * math.sin(a))))
+        ps.AddOutline(pcbnew.SHAPE_LINE_CHAIN(pts, True))
+        return ps
+
+    hits = []
+    for f in board.GetFootprints():
+        for pad in f.Pads():
+            if pad.GetAttribute() not in (pcbnew.PAD_ATTRIB_SMD,
+                                          pcbnew.PAD_ATTRIB_CONN):
+                continue
+            bb = pad.GetBoundingBox()
+            near = [q for q in vpos
+                    if bb.GetLeft() - q[3] <= q[1].x <= bb.GetRight() + q[3]
+                    and bb.GetTop() - q[3] <= q[1].y <= bb.GetBottom() + q[3]]
+            if not near:
+                continue
+            for lay in (pcbnew.F_Cu, pcbnew.B_Cu):
+                if not pad.IsOnLayer(lay):
+                    continue
+                exp = pad.GetSolderMaskExpansion(lay)
+                if exp:                       # not modelled -- refuse to guess
+                    return (["## Vias in solderable lands", "",
+                             "This board carries a non-zero solder-mask "
+                             "expansion (%.4f mm on %s.%s); the via-in-pad "
+                             "note is NOT emitted rather than measured against "
+                             "an aperture this generator did not compute."
+                             % (exp / 1e6, f.GetReference(), pad.GetNumber()),
+                             ""], None)
+                aperture = pcbnew.SHAPE_POLY_SET(pad.GetEffectivePolygon(lay))
+                area = aperture.Area() / 1e12
+                sz = pad.GetSize()
+                for (v, pt, hr, _ar) in near:
+                    if not v.IsOnLayer(lay):
+                        continue
+                    inter = pcbnew.SHAPE_POLY_SET(aperture)
+                    inter.BooleanIntersection(disc(pt.x, pt.y, hr))
+                    a = inter.Area() / 1e12
+                    if a <= 1e-9:
+                        continue
+                    hits.append(dict(
+                        ref="%s.%s" % (f.GetReference(), pad.GetNumber()),
+                        layer=pcbnew.LayerName(lay), net=pad.GetNetname(),
+                        x=pt.x / 1e6, y=pt.y / 1e6,
+                        dia=v.GetWidth() / 1e6, drill=v.GetDrill() / 1e6,
+                        pad_x=sz.x / 1e6, pad_y=sz.y / 1e6,
+                        pad_area=area, open_area=a,
+                        pct=100.0 * a / area if area else 0.0,
+                        same_net=(v.GetNetname() == pad.GetNetname())))
+
+    seen, rows = set(), []
+    for h in hits:
+        k = (h["ref"], h["layer"], round(h["x"], 4), round(h["y"], 4))
+        if k in seen:
+            continue
+        seen.add(k)
+        rows.append(h)
+    rows.sort(key=lambda h: -h["pct"])
+
+    lines = ["## Vias in solderable lands -- VIA PROTECTION IS REQUIRED", ""]
+    if not rows:
+        lines += ["No via's drilled hole lies inside any solder-mask aperture "
+                  "on this board.  Standard tenting is sufficient.", ""]
+        return lines, []
+
+    barrels = len({(round(h["x"], 4), round(h["y"], 4)) for h in rows})
+    refs = len({h["ref"].split(".")[0] for h in rows})
+    worst = rows[0]
+    biggest = max(rows, key=lambda h: h["drill"])
+    vol = math.pi * (biggest["drill"] / 2.0) ** 2 * thickness
+
+    lines += [
+        "Solder-mask expansion on this board is **0.000 mm**, so a pad's mask "
+        "aperture IS its copper.  **%d via barrel%s open directly into %d "
+        "solderable land%s across %d component%s**, on hole sizes %s.  %d of "
+        "those land%s carr%s the SAME net as the via, which is why no "
+        "clearance check and no KiCad DRC rule reports them -- KiCad has no "
+        "via-in-pad rule at all."
+        % (barrels, "" if barrels == 1 else "s",
+           len(rows), "" if len(rows) == 1 else "s",
+           refs, "" if refs == 1 else "s",
+           " / ".join("%.2f mm" % d for d in
+                      sorted({h["drill"] for h in rows})),
+           sum(1 for h in rows if h["same_net"]),
+           "" if sum(1 for h in rows if h["same_net"]) == 1 else "s",
+           "ies" if sum(1 for h in rows if h["same_net"]) == 1 else "y"),
+        "",
+        "**REQUIRED PROCESS: these vias must be PLUGGED / RESIN-FILLED AND "
+        "CAP-PLATED (via-in-pad / POFV), or filled by an equivalent process "
+        "that leaves a planar, solderable land.**  Applying the process to "
+        "every via on the board is acceptable and is the simpler instruction; "
+        "what is NOT acceptable is shipping these barrels open.",
+        "",
+        "Why it is not optional, in this board's own numbers: the largest hole "
+        "in a land is **%.2f mm**, and through %.2f mm of finished board that "
+        "barrel holds **%.3f mm3**.  A 0.12 mm stencil over the %0.3f x %0.3f "
+        "mm land it sits in deposits about **%.3f mm3** of paste.  **The "
+        "barrel can swallow the whole deposit.**"
+        % (biggest["drill"], thickness, vol,
+           biggest["pad_x"], biggest["pad_y"],
+           biggest["pad_x"] * biggest["pad_y"] * 0.12),
+        "",
+        "The ten worst lands, by how much of the land is open hole:",
+        "",
+        "| land | layer | land size (mm) | hole | open area | % of land | net |",
+        "| --- | --- | --- | --- | --- | --- | --- |",
+    ]
+    for h in rows[:10]:
+        lines.append("| `%s` | %s | %.3f x %.3f | %.2f mm | %.4f mm2 | "
+                     "**%.1f %%** | `%s` |"
+                     % (h["ref"], h["layer"], h["pad_x"], h["pad_y"],
+                        h["drill"], h["open_area"], h["pct"],
+                        h["net"] or "no net"))
+    fine = [h for h in rows if min(h["pad_x"], h["pad_y"]) <= 0.5]
+    lines += [
+        "",
+        "**%d of the %d lands are FINE-PITCH** (one land dimension at or below "
+        "0.500 mm)%s.  On those the hole is a large fraction of the land's "
+        "width and an unfilled barrel does not merely starve the joint, it "
+        "removes the land."
+        % (len(fine), len(rows),
+           " -- including %s" % ", ".join(
+               sorted({h["ref"] for h in fine})[:8]) if fine else ""),
+        "",
+        "The complete list of barrel centres is in `MANIFEST.json` under "
+        "`via_in_pad`.",
+        "",
+    ]
+    return lines, rows
+
+
 def manifest(out, extra):
     files = []
     for path in sorted(p for p in out.rglob("*") if p.is_file()
@@ -544,11 +708,28 @@ def main():
     export_positions(out)
     bom = export_bom(out)
     export_assembly(out)
-    notes = export_fab_notes(out)
+    notes, via_in_pad = export_fab_notes(out)
 
     fitted, dnp = rl.schematic_population()
     doc = manifest(out, dict(population=dict(
         schematic_fitted=len(fitted), schematic_dnp=sorted(dnp), bom=bom),
+        via_in_pad=dict(
+            measured=via_in_pad is not None,
+            solderable_lands_with_an_open_barrel=(
+                len(via_in_pad) if via_in_pad is not None else None),
+            distinct_barrels=(
+                len({(round(h["x"], 4), round(h["y"], 4))
+                     for h in via_in_pad}) if via_in_pad else 0),
+            required_process=("plugged / resin-filled and cap-plated "
+                              "(via-in-pad, POFV)") if via_in_pad else None,
+            lands=[dict(land=h["ref"], layer=h["layer"], net=h["net"],
+                        x=round(h["x"], 4), y=round(h["y"], 4),
+                        via_dia_mm=h["dia"], drill_mm=h["drill"],
+                        land_mm=[round(h["pad_x"], 4), round(h["pad_y"], 4)],
+                        open_area_mm2=round(h["open_area"], 5),
+                        pct_of_land=round(h["pct"], 2),
+                        same_net=h["same_net"])
+                   for h in (via_in_pad or [])]),
         fabrication_notes=dict(
             file="aqroot-Demo-FAB-NOTES.md",
             hole_clearance_rules=notes,
