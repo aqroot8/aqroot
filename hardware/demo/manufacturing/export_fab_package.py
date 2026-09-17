@@ -349,9 +349,11 @@ def export_fab_notes(out):
     lines += outline_notes(board)
     vlines, vrows = via_in_pad_notes(board)
     lines += vlines
+    glines, grows = via_geometry_notes(board, dru)
+    lines += glines
     (out / "aqroot-Demo-FAB-NOTES.md").write_text("\n".join(lines),
                                                   encoding="utf-8")
-    return [r[0] for r in rules], vrows
+    return [r[0] for r in rules], vrows, grows
 
 
 # D-737.  THE PROFILE IS NOT A RECTANGLE AND THE PACKAGE NEVER SAID SO.
@@ -651,6 +653,82 @@ def via_in_pad_notes(board):
     return lines, rows
 
 
+# D-738.  THIRTY-FIVE VIAS SIT BELOW THE BOARD'S OWN GLOBAL FLOORS AND THE
+# PACKAGE NEVER SAID SO.
+#
+# The `.kicad_dru` floor is `annular_width (min 0.125mm)`, and the board setup
+# asks 0.500 mm for a via.  Four families of named, net-scoped, area-enclosed
+# rules license 0.35 mm / 0.20 mm -- a 0.075 mm annular ring -- for specific
+# fine-pitch escapes and POFV sites.  That is exactly the right internal
+# discipline and KiCad passes it, but it is an INTERNAL licence: the fabricator
+# is never shown it, and 0.35 mm of via pad on a 0.20 mm hole is below the
+# 0.4 mm / 0.2 mm minimum via most quick-turn houses publish.  A concession the
+# fabricator has not been asked about is not a concession.
+def via_geometry_notes(board, dru_text):
+    import re
+    import pcbnew
+
+    floors = [float(m) for m in re.findall(
+        r"\(constraint annular_width \(min ([0-9.]+)mm\)\)\s*\)", dru_text)]
+    # the GLOBAL floor is the one whose rule carries no condition
+    glob = None
+    for m in re.finditer(r'\(rule "([^"]+)"\s*\n\s*\(constraint annular_width '
+                         r'\(min ([0-9.]+)mm\)\)\)', dru_text):
+        glob = float(m.group(2))
+    if glob is None:
+        return (["## Via geometry", "",
+                 "The `.kicad_dru` publishes no unconditional `annular_width` "
+                 "floor, so the sub-floor note is NOT emitted rather than "
+                 "measured against a floor this generator guessed.", ""], None)
+
+    setup_via = board.GetDesignSettings().m_ViasMinSize / 1e6
+    rows = {}
+    for t in board.GetTracks():
+        if t.Type() != pcbnew.PCB_VIA_T:
+            continue
+        dia, drl = t.GetWidth() / 1e6, t.GetDrill() / 1e6
+        ring = (dia - drl) / 2.0
+        if ring < glob - 1e-9 or dia < setup_via - 1e-9:
+            k = (round(dia, 3), round(drl, 3), round(ring, 4), t.GetNetname())
+            rows[k] = rows.get(k, 0) + 1
+
+    lines = ["## Via geometry -- SUB-FLOOR VIAS, PLEASE CONFIRM", ""]
+    if not rows:
+        lines += ["Every via on this board meets the board's own global floors "
+                  "(annular ring >= %.3f mm, diameter >= %.3f mm).  No via "
+                  "concession is requested." % (glob, setup_via), ""]
+        return lines, []
+
+    total = sum(rows.values())
+    rings = sorted({k[2] for k in rows})
+    lines += [
+        "This board's own `.kicad_dru` floor is **annular ring >= %.3f mm** and "
+        "its board setup asks **>= %.3f mm of via diameter**.  **%d vias sit "
+        "below one or both**, at annular ring%s %s.  Each is licensed inside "
+        "the design by a NAMED, net-scoped, area-enclosed `.kicad_dru` rule "
+        "(the `FINE_ESC_*`, `*_POFV`, `*_KELVIN` and `BAT_PROT_TAP_*` rule "
+        "areas), so real KiCad DRC passes them -- but that is an INTERNAL "
+        "licence and it is not a fabricator's agreement.  **Please confirm you "
+        "can hold these, and advise if your process needs the pads grown.**"
+        % (glob, setup_via, total, "" if len(rings) == 1 else "s",
+           " / ".join("%.3f mm" % r for r in rings)),
+        "",
+        "| count | via dia | drill | annular ring | net |",
+        "| --- | --- | --- | --- | --- |",
+    ]
+    for k in sorted(rows, key=lambda q: (q[2], q[3])):
+        lines.append("| %d | %.2f mm | %.2f mm | **%.3f mm** | `%s` |"
+                     % (rows[k], k[0], k[1], k[2], k[3] or "no net"))
+    lines += ["",
+              "All of them are ORDINARY THROUGH vias -- this board carries no "
+              "blind via, no buried via and no laser microvia, and its "
+              "`.kicad_dru` disallows all three explicitly.",
+              ""]
+    return lines, [dict(via_dia_mm=k[0], drill_mm=k[1], annular_ring_mm=k[2],
+                        net=k[3], count=rows[k])
+                   for k in sorted(rows, key=lambda q: (q[2], q[3]))]
+
+
 def manifest(out, extra):
     files = []
     for path in sorted(p for p in out.rglob("*") if p.is_file()
@@ -708,7 +786,7 @@ def main():
     export_positions(out)
     bom = export_bom(out)
     export_assembly(out)
-    notes, via_in_pad = export_fab_notes(out)
+    notes, via_in_pad, sub_floor_vias = export_fab_notes(out)
 
     fitted, dnp = rl.schematic_population()
     doc = manifest(out, dict(population=dict(
@@ -730,6 +808,11 @@ def main():
                         pct_of_land=round(h["pct"], 2),
                         same_net=h["same_net"])
                    for h in (via_in_pad or [])]),
+        sub_floor_vias=dict(
+            measured=sub_floor_vias is not None,
+            families=len(sub_floor_vias or []),
+            vias=sum(r["count"] for r in (sub_floor_vias or [])),
+            rows=sub_floor_vias or []),
         fabrication_notes=dict(
             file="aqroot-Demo-FAB-NOTES.md",
             hole_clearance_rules=notes,

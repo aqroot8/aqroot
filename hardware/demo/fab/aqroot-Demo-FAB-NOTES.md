@@ -64,3 +64,26 @@ The ten worst lands, by how much of the land is open hole:
 **31 of the 134 lands are FINE-PITCH** (one land dimension at or below 0.500 mm) -- including D8.1, J1.12, J1.14, J1.16, J1.18, J1.22, J1.23, J1.25.  On those the hole is a large fraction of the land's width and an unfilled barrel does not merely starve the joint, it removes the land.
 
 The complete list of barrel centres is in `MANIFEST.json` under `via_in_pad`.
+
+## Via geometry -- SUB-FLOOR VIAS, PLEASE CONFIRM
+
+This board's own `.kicad_dru` floor is **annular ring >= 0.125 mm** and its board setup asks **>= 0.500 mm of via diameter**.  **38 vias sit below one or both**, at annular rings 0.075 mm / 0.125 mm.  Each is licensed inside the design by a NAMED, net-scoped, area-enclosed `.kicad_dru` rule (the `FINE_ESC_*`, `*_POFV`, `*_KELVIN` and `BAT_PROT_TAP_*` rule areas), so real KiCad DRC passes them -- but that is an INTERNAL licence and it is not a fabricator's agreement.  **Please confirm you can hold these, and advise if your process needs the pads grown.**
+
+| count | via dia | drill | annular ring | net |
+| --- | --- | --- | --- | --- |
+| 6 | 0.35 mm | 0.20 mm | **0.075 mm** | `+3V3` |
+| 2 | 0.35 mm | 0.20 mm | **0.075 mm** | `/01_POWER_TREE/BAT_PROTECTED_P` |
+| 2 | 0.35 mm | 0.20 mm | **0.075 mm** | `/01_POWER_TREE/BAT_SENSE` |
+| 4 | 0.35 mm | 0.20 mm | **0.075 mm** | `/01_POWER_TREE/LTC_GATE` |
+| 2 | 0.35 mm | 0.20 mm | **0.075 mm** | `/01_POWER_TREE/LTC_SHDN` |
+| 2 | 0.35 mm | 0.20 mm | **0.075 mm** | `/01_POWER_TREE/N_POL` |
+| 2 | 0.35 mm | 0.20 mm | **0.075 mm** | `/01_POWER_TREE/Q3_CS` |
+| 2 | 0.35 mm | 0.20 mm | **0.075 mm** | `/01_POWER_TREE/REF_HO` |
+| 2 | 0.35 mm | 0.20 mm | **0.075 mm** | `/01_POWER_TREE/REF_POL` |
+| 2 | 0.35 mm | 0.20 mm | **0.075 mm** | `/01_POWER_TREE/USB_VBUS_RAW` |
+| 4 | 0.35 mm | 0.20 mm | **0.075 mm** | `/01_POWER_TREE/VREC_VCC` |
+| 5 | 0.35 mm | 0.20 mm | **0.075 mm** | `GND` |
+| 1 | 0.45 mm | 0.20 mm | **0.125 mm** | `GND` |
+| 2 | 0.45 mm | 0.20 mm | **0.125 mm** | `Net-(U11-TS_MR)` |
+
+All of them are ORDINARY THROUGH vias -- this board carries no blind via, no buried via and no laser microvia, and its `.kicad_dru` disallows all three explicitly.

@@ -54,6 +54,11 @@ CPL has rows", it is "every row places the part where `pcbnew` says it is".
                      is named in the package, and the notes state the fill/cap
                      process those lands require.  KiCad has no rule for this
                      and the vias are same-net, so nothing else can see them.
+  FAB10 VIA GEOMETRY every via below the board's OWN `.kicad_dru` annular-ring
+                     floor or below its board-setup minimum via diameter is
+                     named in the package and the notes ASK the fabricator to
+                     confirm it.  DRC passes them on an internal licence; a
+                     concession nobody was asked about is not a concession.
 
 Read-only.  `hardware/demo/kicad/aqroot-demo/` is copied to a temporary
 directory before the refill test touches anything.
@@ -665,6 +670,45 @@ def fab9(pkg, manifest):
                 measured=bool(block.get("measured")))
 
 
+# D-738.  A VIA BELOW THE BOARD'S OWN FLOORS IS A CONCESSION, AND A CONCESSION
+# THE FABRICATOR HAS NOT BEEN ASKED ABOUT IS NOT A CONCESSION.
+#
+# The `.kicad_dru` licenses 0.35 mm / 0.20 mm vias -- a 0.075 mm annular ring --
+# for named nets inside named rule areas.  DRC passes them because the licence
+# exists; the fabricator has no idea they are there.  This clause re-derives the
+# set from the board and refuses a package that does not name every one.
+def fab10(pkg, manifest):
+    b = pcbnew.LoadBoard(str(BOARD))
+    dru = (BOARD.parent / "aqroot-Beta-v2.kicad_dru").read_text(encoding="utf-8")
+    glob = None
+    for m in re.finditer(r'\(rule "([^"]+)"\s*\n\s*\(constraint annular_width '
+                         r'\(min ([0-9.]+)mm\)\)\)', dru):
+        glob = float(m.group(2))
+    setup_via = b.GetDesignSettings().m_ViasMinSize / 1e6
+    found = {}
+    if glob is not None:
+        for t in b.GetTracks():
+            if t.GetClass() != "PCB_VIA":
+                continue
+            dia, drl = t.GetWidth() / 1e6, t.GetDrill() / 1e6
+            ring = (dia - drl) / 2.0
+            if ring < glob - 1e-9 or dia < setup_via - 1e-9:
+                k = (round(dia, 3), round(drl, 3), round(ring, 4), t.GetNetname())
+                found[k] = found.get(k, 0) + 1
+    block = manifest.get("sub_floor_vias") or {}
+    listed = {(r["via_dia_mm"], r["drill_mm"], r["annular_ring_mm"], r["net"]): r["count"]
+              for r in block.get("rows", [])}
+    notes = (pkg / "aqroot-Demo-FAB-NOTES.md").read_text(encoding="utf-8")
+    asked = ("SUB-FLOOR VIAS, PLEASE CONFIRM" in notes) if found else True
+    return dict(ok=(found == listed) and asked and bool(block.get("measured")),
+                dru_annular_floor_mm=glob,
+                setup_min_via_diameter_mm=setup_via,
+                board_sub_floor_vias=sum(found.values()),
+                package_sub_floor_vias=sum(listed.values()),
+                families_agree=(found == listed),
+                concession_requested_in_the_notes=asked)
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--package", type=Path, default=PACKAGE)
@@ -712,6 +756,7 @@ def main():
             "FAB7_sourcing": fab7(pkg, board),
             "FAB8_outline": fab8(pkg, board),
             "FAB9_via_in_pad": fab9(pkg, manifest),
+            "FAB10_via_geometry": fab10(pkg, manifest),
         }
     doc = dict(schema=1, package=str(pkg.relative_to(ROOT))
                if pkg.is_relative_to(ROOT) else str(pkg),
