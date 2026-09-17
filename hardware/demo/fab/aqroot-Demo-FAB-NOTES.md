@@ -26,3 +26,14 @@ KiCad DRC on this board reports **ZERO** `hole_clearance` violations.  3 named, 
 - accepted minimum: **0.200mm**
 - scope: `(A.Pad_Type == 'NPTH, mechanical' && A.memberOfFootprint('J3') && !B.memberOfFootprint('J3')) || (B.Pad_Type == 'NPTH, mechanical' && B.memberOfFootprint('J3') && !A.memberOfFootprint('J3'))`
 - Routed GND copper approaches J3's NPTH pegs no closer than 0.2100 mm (tracks) and 0.2412 mm (one 0.50/0.20 mm via), i.e. at or above the published 0.200 mm NPTH-to-track figure.  The peg is the receptacle's metal shell leg and the shell is tied to GND through R32 (0 ohm), so this copper is already at the peg's own potential.
+
+## Board outline -- STEPPED PROFILE, READ THIS BEFORE ROUTING
+
+Profile extents: **77.000 x 148.000 mm** (x 0.000 .. 77.000, y 0.000 .. 148.000), 8 segments.
+
+The profile has **2 INSIDE (reflex) corners**.  A profile router cannot cut a sharp inside corner: it leaves a fillet of its own tool radius, which means **MATERIAL REMAINS** and the board is very slightly LARGER there than drawn.  **That is the correct and accepted treatment -- any tool radius is fine and the enclosure clears it.**  What is NOT accepted is squaring the corner by plunging, drilling a relief or otherwise OVER-CUTTING, because that removes material toward the copper.  The number below bounds such a relief if one is ever cut:
+
+- inside corner at **(72.000, 104.005)** -- nearest copper is **0.941 mm** away, edge to edge (pad R41.2, `Net-(U12-PG)`).  A corner relief must stay under 0.941 mm of radius; **a 1.0 mm relief would reach copper here**.
+- inside corner at **(72.000, 70.500)** -- nearest copper is **0.726 mm** away, edge to edge (track, `Net-(U11-TS_MR)`).  A corner relief must stay under 0.726 mm of radius; **a 1.0 mm relief would reach copper here**.
+
+Board copper-to-edge minimum in force: **0.500 mm**, and KiCad DRC on this board reports ZERO `copper_edge_clearance` violations.

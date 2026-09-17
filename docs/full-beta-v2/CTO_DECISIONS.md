@@ -1,3 +1,71 @@
+## D-737 — THE FAB PACKAGE NEVER TOLD THE FABRICATOR THE PROFILE IS STEPPED, AND THE MECHANICAL BLOCK STILL PUBLISHED THE RETIRED 72 mm OUTLINE
+
+    authority  71c4326e  UNCHANGED.  NO COPPER.
+    fab package re-exported at 71c4326e, 29 files, `fab_package_contract` PASS
+
+### 1. WHAT WAS WRONG
+
+`Edge.Cuts` is a STEPPED profile -- 72.000 mm wide except an east bump to
+**x = 77.000 between y = 70.500 and y = 104.005** -- and it has been since D-709
+took owner authority D-703 option 2.  `DEVICE_SPEC` section 12 records it
+correctly and says it supersedes the older figures.
+
+Two things did not follow it:
+
+**(a) `aqroot-Demo-FAB-NOTES.md` said NOTHING about the profile.**  The fab
+package carried three footprint-clearance concessions and no word about the
+shape of the board.  A stepped outline has INSIDE (reflex) corners, and how a
+fabricator treats an inside corner is a real decision that was being left to
+them silently.
+
+**(b) `MECHANICAL_INTERFACE_SPEC`'s machine-readable block still published
+`FBV2_PCB_OUTLINE_MM: 72.0 x 148.0 ... LOCKED` and `FBV2_PCB_WALL_GAP_MM: 1.5
+both sides - the >= 1.5 rule met EXACTLY`.**  Read on its own that says the
+board is 72 mm and the enclosure wall clearance is met EXACTLY -- from which a
+77 mm board looks like a 3.5 mm collision with the case.  It is not: the
+enclosure was widened to **85 x 160 x 23 mm** under owner approval D-707 to
+follow the board.  Both lines are now marked SUPERSEDED in place, with the
+reason and the pointer to `DEVICE_SPEC` section 12, rather than deleted.
+
+### 2. THE NOTE IS GENERATED, NOT WRITTEN
+
+`export_fab_package.py` gains `outline_notes()`, which reads the profile off the
+board every time the package is exported -- in keeping with that file's own
+contract that *"every number below is read out of the board"*.  It chains the
+`Edge.Cuts` segments into a loop, finds the REFLEX vertices by the sign of the
+turn against the loop's own winding, and measures the nearest copper to each --
+tracks, vias and pads, all layers, **edge to edge** rather than centre to
+centre.  If the profile is not segments, or does not chain into one closed
+loop, it emits a refusal instead of a guess.
+
+### 3. WHAT IT NOW SAYS, AND IT IS THE RIGHT WAY ROUND
+
+A profile router cannot cut a sharp inside corner: it leaves a fillet of its own
+tool radius, so **MATERIAL REMAINS** and the board is slightly LARGER there than
+drawn.  That is the correct treatment, any tool radius is fine, and the
+enclosure clears it.  The hazard is the OPPOSITE one -- squaring the corner by
+plunging or drilling a relief REMOVES material toward the copper -- and that is
+what the note forbids and then bounds:
+
+    inside corner (72.000,104.005)   nearest copper 0.941 mm, pad R41.2
+                                     Net-(U12-PG)
+    inside corner (72.000, 70.500)   nearest copper 0.726 mm, track
+                                     Net-(U11-TS_MR)
+
+**Both are under 1.0 mm, so the note says in terms that a 1.0 mm relief would
+reach copper at either corner.**  That is the sentence this package was missing.
+
+### 4. PROOF
+
+    fab_package_contract   PASS -- FAB1 provenance (29 artifacts, manifest sha
+                           == authoritative sha), FAB2 fill stable, FAB3 layers,
+                           FAB4 drill (952 holes, 14 tools, max residual 500 nm
+                           against a 1000 nm tolerance, control fires),
+                           FAB5 CPL, FAB6 BOM, FAB7 sourcing 246/246,
+                           FAB8 outline -- gerber extent 0,0 -> 77,148 matches
+                           the board to 0 nm, 16 profile operations
+    board                  71c4326e UNCHANGED -- this decision moves no copper
+
 ## D-736 — THE INDEPENDENT REVIEW'S **PRIORITY 1 WAS ALREADY EXECUTED**, AND IS CONFIRMED HERE BY INDEPENDENT MEASUREMENT. FOUR PRE-FAB CHECKLIST ITEMS CLOSED
 
     authority  71c4326e  UNCHANGED.  NO COPPER.

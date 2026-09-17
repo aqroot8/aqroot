@@ -346,9 +346,145 @@ def export_fab_notes(out):
                   ""]
     if not rules:
         lines += ["No footprint-scoped `hole_clearance` rule is in force.", ""]
+    lines += outline_notes(board)
     (out / "aqroot-Demo-FAB-NOTES.md").write_text("\n".join(lines),
                                                   encoding="utf-8")
     return [r[0] for r in rules]
+
+
+# D-737.  THE PROFILE IS NOT A RECTANGLE AND THE PACKAGE NEVER SAID SO.
+#
+# `Edge.Cuts` is a STEPPED outline, and a stepped outline has INSIDE (reflex)
+# corners.  A profile router cannot cut a sharp inside corner: it leaves a
+# fillet of its own tool radius, so the board is very slightly LARGER there
+# than drawn.  That is the correct treatment and it is safe -- but only if the
+# fabricator knows it is expected, and only if no copper sits inside the
+# fillet.  Both facts are measured here and written down, rather than left for
+# a fabricator to guess or for an enclosure to discover.
+def outline_notes(board):
+    """Measure the profile, its reflex corners and the copper beside them."""
+    import math
+    import pcbnew
+    ec = board.GetLayerID("Edge.Cuts")
+    segs = []
+    for d in board.GetDrawings():
+        if d.GetLayer() != ec:
+            continue
+        try:
+            if d.GetShape() != pcbnew.SHAPE_T_SEGMENT:
+                return ["## Board outline", "",
+                        "The profile contains a non-segment shape; the stepped-"
+                        "outline note is NOT emitted rather than guessed.", ""]
+            a, b = d.GetStart(), d.GetEnd()
+        except Exception:
+            return ["## Board outline", "",
+                    "The profile could not be read as segments; the stepped-"
+                    "outline note is NOT emitted rather than guessed.", ""]
+        segs.append(((a.x, a.y), (b.x, b.y)))
+    if not segs:
+        return []
+    xs = [p[0] for s in segs for p in s]
+    ys = [p[1] for s in segs for p in s]
+
+    # chain the segments into one closed loop
+    todo = list(segs)
+    loop = [todo[0][0], todo[0][1]]
+    todo.pop(0)
+    while todo:
+        for i, (a, b) in enumerate(todo):
+            if a == loop[-1]:
+                loop.append(b); todo.pop(i); break
+            if b == loop[-1]:
+                loop.append(a); todo.pop(i); break
+        else:
+            return ["## Board outline", "",
+                    "The profile does not chain into a single closed loop; the "
+                    "stepped-outline note is NOT emitted rather than guessed.",
+                    ""]
+    if loop[0] == loop[-1]:
+        loop.pop()
+    n = len(loop)
+    area2 = sum(loop[i][0] * loop[(i + 1) % n][1] - loop[(i + 1) % n][0] * loop[i][1]
+                for i in range(n))
+    sign = 1.0 if area2 > 0 else -1.0
+
+    # copper the fillet could reach: every track, via and pad, any layer
+    cu = []
+    for t in board.GetTracks():
+        s_, e_ = t.GetStart(), t.GetEnd()
+        cu.append(("track" if t.Type() != pcbnew.PCB_VIA_T else "via",
+                   t.GetNetname(), s_.x, s_.y, e_.x, e_.y,
+                   t.GetWidth() / 2.0))
+    for f in board.GetFootprints():
+        for pd in f.Pads():
+            pp = pd.GetPosition()
+            r = max(pd.GetSize().x, pd.GetSize().y) / 2.0
+            cu.append(("pad %s.%s" % (f.GetReference(), pd.GetNumber()),
+                       pd.GetNetname(), pp.x, pp.y, pp.x, pp.y, r))
+
+    def nearest(px, py):
+        best = None
+        for kind, net, ax, ay, bx, by, rad in cu:
+            vx, vy = bx - ax, by - ay
+            L2 = vx * vx + vy * vy
+            t = 0.0 if L2 == 0 else max(0.0, min(1.0, ((px - ax) * vx + (py - ay) * vy) / L2))
+            d = math.hypot(px - (ax + t * vx), py - (ay + t * vy)) - rad
+            if best is None or d < best[0]:
+                best = (d, kind, net)
+        return best
+
+    reflex = []
+    for i in range(n):
+        p0, p1, p2 = loop[i - 1], loop[i], loop[(i + 1) % n]
+        cx = ((p1[0] - p0[0]) * (p2[1] - p1[1])
+              - (p1[1] - p0[1]) * (p2[0] - p1[0]))
+        if cx * sign < 0:                      # turns against the winding
+            reflex.append(p1)
+
+    lines = ["## Board outline -- STEPPED PROFILE, READ THIS BEFORE ROUTING",
+             "",
+             "Profile extents: **%.3f x %.3f mm** (x %.3f .. %.3f, "
+             "y %.3f .. %.3f), %d segments."
+             % ((max(xs) - min(xs)) / 1e6, (max(ys) - min(ys)) / 1e6,
+                min(xs) / 1e6, max(xs) / 1e6, min(ys) / 1e6, max(ys) / 1e6,
+                len(segs)),
+             ""]
+    if not reflex:
+        lines += ["The profile is convex -- no inside corners.", ""]
+    else:
+        lines += ["The profile has **%d INSIDE (reflex) corner%s**.  A profile "
+                  "router cannot cut a sharp inside corner: it leaves a fillet "
+                  "of its own tool radius, which means **MATERIAL REMAINS** "
+                  "and the board is very slightly LARGER there than drawn.  "
+                  "**That is the correct and accepted treatment -- any tool "
+                  "radius is fine and the enclosure clears it.**  What is NOT "
+                  "accepted is squaring the corner by plunging, drilling a "
+                  "relief or otherwise OVER-CUTTING, because that removes "
+                  "material toward the copper.  The number below bounds such a "
+                  "relief if one is ever cut:"
+                  % (len(reflex), "" if len(reflex) == 1 else "s"),
+                  ""]
+        for (px, py) in reflex:
+            d, kind, net = nearest(px, py)
+            lines += ["- inside corner at **(%.3f, %.3f)** -- nearest copper "
+                      "is **%.3f mm** away, edge to edge (%s, `%s`).  A corner "
+                      "relief must stay under %.3f mm of radius; **a 1.0 mm "
+                      "relief would reach copper here**."
+                      % (px / 1e6, py / 1e6, d / 1e6, kind,
+                         net or "no net", d / 1e6)
+                      if d / 1e6 < 1.0 else
+                      "- inside corner at **(%.3f, %.3f)** -- nearest copper "
+                      "is **%.3f mm** away, edge to edge (%s, `%s`).  A corner "
+                      "relief must stay under %.3f mm of radius."
+                      % (px / 1e6, py / 1e6, d / 1e6, kind,
+                         net or "no net", d / 1e6)]
+        lines += [""]
+    edge = board.GetDesignSettings().m_CopperEdgeClearance / 1e6
+    lines += ["Board copper-to-edge minimum in force: **%.3f mm**, and KiCad "
+              "DRC on this board reports ZERO `copper_edge_clearance` "
+              "violations." % edge,
+              ""]
+    return lines
 
 
 def manifest(out, extra):

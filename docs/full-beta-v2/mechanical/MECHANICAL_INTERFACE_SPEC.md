@@ -689,8 +689,21 @@ FBV2_SMA_IR_CENTRE_MM:   15.0 min c-c      LOCKED (FBV2-MECH-001, restated M-13)
 FBV2_SMA_IR_EDGE_MM:      8.0 min edge     LOCKED (D-120, restated M-13)
 FBV2_SPEAKER_Z_COLUMN:   12.6 of 23.0 (10.4 spare)   TARGET
 FBV2_MANUAL_ASSY_REFS:   J5, D1            LOCKED (D-206/D-207)
-FBV2_PCB_OUTLINE_MM:     72.0 x 148.0 x 1.6            LOCKED (D-239, FBV2-EXP-002)
-FBV2_PCB_WALL_GAP_MM:    1.5 both sides - the >= 1.5 rule met EXACTLY   LOCKED (D-239)
+FBV2_PCB_OUTLINE_MM:     72.0 x 148.0 x 1.6     *** SUPERSEDED - DO NOT USE ***
+                         D-709, under owner authority D-703 option 2, made the
+                         profile STEPPED: 72.000 mm wide EXCEPT an east bump to
+                         x = 77.000 between y = 70.500 and y = 104.005, so the
+                         board measures 77.000 x 148.000 mm MAXIMUM.  The
+                         authoritative dimension is DEVICE_SPEC section 12,
+                         which says so and says it supersedes the older
+                         Enclosure Field Slate figures.  Verified against the
+                         board's own Edge.Cuts by D-737 (8 segments, extents
+                         0,0 -> 77,148, two inside corners).
+FBV2_PCB_WALL_GAP_MM:    1.5 both sides - the >= 1.5 rule met EXACTLY
+                         *** SUPERSEDED WITH THE OUTLINE ***  the enclosure was
+                         widened to 85 x 160 x 23 mm under owner approval D-707
+                         to follow the stepped board; the 1.5 mm figure belongs
+                         to the retired 72 mm profile.
 FBV2_PCB_DATUM:          lower-left, X right, Y up     LOCKED (D-220)
 FBV2_SIDE_CONVENTION:    F.Cu = FRONT, B.Cu = REAR     LOCKED (D-214)
 FBV2_MIC_SIDE:           MK1 on B.Cu, listens forward  LOCKED (D-214)

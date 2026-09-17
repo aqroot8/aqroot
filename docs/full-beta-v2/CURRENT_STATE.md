@@ -78,6 +78,39 @@
 > taking an interrupt, and that becomes an explicit product decision.*
 > **`DEMO_READY_FOR_FAB` IS NOT DECLARED WHILE EITHER STANDS.**
 
+- **Demo D-737 (THE FAB PACKAGE NEVER TOLD THE FABRICATOR THE PROFILE IS
+  STEPPED, AND THE MECHANICAL BLOCK STILL PUBLISHED THE RETIRED 72 mm
+  OUTLINE):**  **NO COPPER.  Authority `71c4326e` UNCHANGED.**  `Edge.Cuts` has
+  been a STEPPED profile since D-709 -- 72.000 mm wide except an east bump to
+  **x = 77.000 between y = 70.500 and y = 104.005** -- and `DEVICE_SPEC` section
+  12 records it correctly.  Two things did not follow.  **(a)
+  `aqroot-Demo-FAB-NOTES.md` said NOTHING about the profile**: the package
+  carried three footprint concessions and not one word about the SHAPE of the
+  board, so how a fabricator treats an inside corner was being left to them
+  silently.  **(b) `MECHANICAL_INTERFACE_SPEC`'s machine-readable block still
+  published `FBV2_PCB_OUTLINE_MM: 72.0 x 148.0 ... LOCKED` and
+  `FBV2_PCB_WALL_GAP_MM: 1.5 both sides - met EXACTLY`** -- which, read alone,
+  makes a 77 mm board look like a **3.5 mm collision with the case**.  It is
+  not: the enclosure was widened to 85 x 160 x 23 mm under owner approval D-707
+  to follow the board.  Both lines are now marked SUPERSEDED **in place**, with
+  the reason and the pointer, rather than deleted.  ***THE NOTE IS GENERATED,
+  NOT WRITTEN:*** `export_fab_package.py` gains `outline_notes()`, which chains
+  the `Edge.Cuts` segments into a loop, finds the REFLEX vertices by the sign of
+  the turn against the loop's own winding, and measures the nearest copper --
+  tracks, vias and pads, all layers, **edge to edge** -- refusing rather than
+  guessing if the profile is not segments or does not close.  ***AND IT IS THE
+  RIGHT WAY ROUND:*** a router cannot cut a sharp inside corner, so it leaves a
+  fillet and **MATERIAL REMAINS** -- the board is slightly LARGER there, which
+  is correct and which the enclosure clears.  The hazard is the OPPOSITE:
+  squaring the corner by plunging or drilling a relief REMOVES material toward
+  the copper.  The note forbids that and then bounds it: **(72.000,104.005)
+  nearest copper 0.941 mm (`R41.2`, `Net-(U12-PG)`); (72.000,70.500) nearest
+  copper 0.726 mm (track, `Net-(U11-TS_MR)`)** -- both under 1 mm, so the note
+  says in terms that **a 1.0 mm relief would reach copper at either corner.**
+  ***PROOF:*** fab package re-exported at `71c4326e`, 29 files,
+  `fab_package_contract` **PASS** on all eight clauses including FAB8, whose
+  gerber extent `0,0 -> 77,148` matches the board to **0 nm** over 16 profile
+  operations.
 - **Demo D-736 (THE INDEPENDENT REVIEW'S **PRIORITY 1 WAS ALREADY EXECUTED** AND
   IS CONFIRMED HERE BY INDEPENDENT MEASUREMENT; FOUR PRE-FAB CHECKLIST ITEMS
   CLOSED):**  **NO COPPER.  Authority `71c4326e` UNCHANGED.**
