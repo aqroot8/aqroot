@@ -59,6 +59,10 @@ CPL has rows", it is "every row places the part where `pcbnew` says it is".
                      named in the package and the notes ASK the fabricator to
                      confirm it.  DRC passes them on an internal licence; a
                      concession nobody was asked about is not a concession.
+  FAB11 MASK DAMS    every solder-mask web below the package's stated floor is
+                     named in the package.  `solder_mask_min_width` is 0.000 mm
+                     on this board, so KiCad's `solder_mask_bridge` test is OFF
+                     and a clean DRC report carries no information here.
 
 Read-only.  `hardware/demo/kicad/aqroot-demo/` is copied to a temporary
 directory before the refill test touches anything.
@@ -709,6 +713,76 @@ def fab10(pkg, manifest):
                 concession_requested_in_the_notes=asked)
 
 
+# D-738.  KICAD'S MASK-BRIDGE TEST IS OFF ON THIS BOARD, SO THE PACKAGE IS THE
+# ONLY PLACE A TIGHT MASK WEB IS EVER NAMED.
+#
+# `solder_mask_min_width` is 0.000 mm.  That is not an oversight this clause
+# fixes -- changing it is a board-setup change and belongs to a copper
+# promotion -- but it does mean a clean DRC report carries no information about
+# mask dams, and a package that is silent about them is silent for the wrong
+# reason.  This re-derives the tight ones from the board and refuses a package
+# that under-reports them.
+def fab11(pkg, manifest):
+    b = pcbnew.LoadBoard(str(BOARD))
+    FLOOR = (manifest.get("solder_mask_dams") or {}).get("floor_mm", 0.125)
+    items = []
+    for f in b.GetFootprints():
+        allow = (f.AllowSolderMaskBridges()
+                 if hasattr(f, "AllowSolderMaskBridges") else False)
+        for pad in f.Pads():
+            for cu, ml in ((pcbnew.F_Cu, pcbnew.F_Mask),
+                           (pcbnew.B_Cu, pcbnew.B_Mask)):
+                if not pad.IsOnLayer(ml):
+                    continue
+                bb = pad.GetBoundingBox()
+                exp = pad.GetSolderMaskExpansion(ml)
+                items.append((pcbnew.LayerName(ml), f.GetReference(),
+                              pad.GetNumber(), pad,
+                              cu if pad.IsOnLayer(cu) else ml, exp,
+                              pad.GetNetname(), allow,
+                              bb.GetLeft() - exp, bb.GetTop() - exp,
+                              bb.GetRight() + exp, bb.GetBottom() + exp))
+    CUT = int(FLOOR * 2e6)
+    found = {}
+    for i, a in enumerate(items):
+        for c in items[i + 1:]:
+            if a[0] != c[0]:
+                continue
+            if max(0, a[8] - c[10], c[8] - a[10]) > CUT:
+                continue
+            if max(0, a[9] - c[11], c[9] - a[11]) > CUT:
+                continue
+            if a[1] == c[1] and a[2] == c[2]:
+                continue
+            A = pcbnew.SHAPE_POLY_SET(a[3].GetEffectivePolygon(a[4]))
+            B = pcbnew.SHAPE_POLY_SET(c[3].GetEffectivePolygon(c[4]))
+            best = None
+            for P, Q in ((A, B), (B, A)):
+                o = P.Outline(0)
+                for k in range(o.PointCount()):
+                    v = o.CPoint(k)
+                    d = Q.Distance(pcbnew.VECTOR2I(v.x, v.y))
+                    best = d if best is None else min(best, d)
+            g = (best - a[5] - c[5]) / 1e6
+            if g < FLOOR:
+                found["%s|%s.%s|%s.%s" % (a[0], a[1], a[2], c[1], c[2])] = round(g, 4)
+    block = manifest.get("solder_mask_dams") or {}
+    listed = {"%s|%s|%s" % (r["layer"], r["a"], r["b"]): r["dam_mm"]
+              for r in block.get("rows", [])}
+    missing = sorted(k for k in found if k not in listed)
+    notes = (pkg / "aqroot-Demo-FAB-NOTES.md").read_text(encoding="utf-8")
+    stated = ("MEASURED HERE, NOT BY DRC" in notes) if found else True
+    return dict(ok=(not missing) and stated and bool(block.get("measured")),
+                floor_mm=FLOOR,
+                kicad_solder_mask_min_width_mm=(
+                    b.GetDesignSettings().m_SolderMaskMinWidth / 1e6),
+                board_dams_below_floor=len(found),
+                package_dams_below_floor=len(listed),
+                missing_from_the_package=missing[:20],
+                tightest_mm=min(found.values()) if found else None,
+                named_in_the_notes=stated)
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--package", type=Path, default=PACKAGE)
@@ -757,6 +831,7 @@ def main():
             "FAB8_outline": fab8(pkg, board),
             "FAB9_via_in_pad": fab9(pkg, manifest),
             "FAB10_via_geometry": fab10(pkg, manifest),
+            "FAB11_mask_dams": fab11(pkg, manifest),
         }
     doc = dict(schema=1, package=str(pkg.relative_to(ROOT))
                if pkg.is_relative_to(ROOT) else str(pkg),

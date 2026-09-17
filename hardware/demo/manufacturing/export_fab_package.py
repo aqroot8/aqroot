@@ -351,9 +351,11 @@ def export_fab_notes(out):
     lines += vlines
     glines, grows = via_geometry_notes(board, dru)
     lines += glines
+    mlines, mrows = solder_mask_notes(board)
+    lines += mlines
     (out / "aqroot-Demo-FAB-NOTES.md").write_text("\n".join(lines),
                                                   encoding="utf-8")
-    return [r[0] for r in rules], vrows, grows
+    return [r[0] for r in rules], vrows, grows, mrows
 
 
 # D-737.  THE PROFILE IS NOT A RECTANGLE AND THE PACKAGE NEVER SAID SO.
@@ -729,6 +731,127 @@ def via_geometry_notes(board, dru_text):
                    for k in sorted(rows, key=lambda q: (q[2], q[3]))]
 
 
+# D-738.  KICAD HAS NOT CHECKED A SINGLE SOLDER-MASK WEB ON THIS BOARD.
+#
+# `solder_mask_min_width` in board setup is 0.000 mm, which switches the
+# `solder_mask_bridge` test off by construction -- so "DRC is clean" says
+# nothing about mask dams.  Measured instead: with `pad_to_mask_clearance` also
+# 0, a pad's aperture IS its copper, so the dam between two apertures is the gap
+# between two pads.  Reported exactly (polygon to polygon, not bounding box,
+# because the tight ones on this board are the DIAGONAL corner pairs of a QFN
+# and a bounding box reads those as zero).
+def solder_mask_notes(board, floor_mm=0.125):
+    import pcbnew
+
+    setup = board.GetDesignSettings()
+    checked = setup.m_SolderMaskMinWidth / 1e6
+    items = []
+    for f in board.GetFootprints():
+        allow = (f.AllowSolderMaskBridges()
+                 if hasattr(f, "AllowSolderMaskBridges") else False)
+        for pad in f.Pads():
+            for cu, ml in ((pcbnew.F_Cu, pcbnew.F_Mask),
+                           (pcbnew.B_Cu, pcbnew.B_Mask)):
+                if not pad.IsOnLayer(ml):
+                    continue
+                bb = pad.GetBoundingBox()
+                exp = pad.GetSolderMaskExpansion(ml)
+                items.append(dict(lay=pcbnew.LayerName(ml), ref=f.GetReference(),
+                                  num=pad.GetNumber(), pad=pad,
+                                  cu=cu if pad.IsOnLayer(cu) else ml, exp=exp,
+                                  net=pad.GetNetname(), allow=allow,
+                                  x0=bb.GetLeft() - exp, y0=bb.GetTop() - exp,
+                                  x1=bb.GetRight() + exp, y1=bb.GetBottom() + exp))
+
+    def dam(a, c):
+        A = pcbnew.SHAPE_POLY_SET(a["pad"].GetEffectivePolygon(a["cu"]))
+        B = pcbnew.SHAPE_POLY_SET(c["pad"].GetEffectivePolygon(c["cu"]))
+        best = None
+        for P, Q in ((A, B), (B, A)):
+            o = P.Outline(0)
+            for i in range(o.PointCount()):
+                v = o.CPoint(i)
+                d = Q.Distance(pcbnew.VECTOR2I(v.x, v.y))
+                best = d if best is None else min(best, d)
+        return (best - a["exp"] - c["exp"]) / 1e6
+
+    CUT = int(floor_mm * 2e6)
+    rows = []
+    for i, a in enumerate(items):
+        for c in items[i + 1:]:
+            if a["lay"] != c["lay"]:
+                continue
+            dx = max(0, a["x0"] - c["x1"], c["x0"] - a["x1"])
+            dy = max(0, a["y0"] - c["y1"], c["y0"] - a["y1"])
+            if dx > CUT or dy > CUT:
+                continue
+            if a["ref"] == c["ref"] and a["num"] == c["num"]:
+                continue
+            g = dam(a, c)
+            if g >= floor_mm:
+                continue
+            rows.append(dict(dam_mm=round(g, 4), layer=a["lay"],
+                             a="%s.%s" % (a["ref"], a["num"]),
+                             b="%s.%s" % (c["ref"], c["num"]),
+                             same_net=(a["net"] == c["net"]),
+                             declared_bridge=bool(a["allow"] or c["allow"]),
+                             net_a=a["net"], net_b=c["net"]))
+    rows.sort(key=lambda r: (r["dam_mm"], r["a"]))
+
+    lines = ["## Solder-mask dams -- MEASURED HERE, NOT BY DRC", "",
+             "**`solder_mask_min_width` in this board's setup is %.3f mm, which "
+             "switches KiCad's `solder_mask_bridge` test OFF.**  A clean DRC "
+             "report therefore says NOTHING about mask webs on this board, and "
+             "the webs below were measured for this note instead -- polygon to "
+             "polygon, not bounding box.  `pad_to_mask_clearance` is 0.000 mm, "
+             "so an aperture is its pad and a dam is a pad-to-pad gap."
+             % checked, ""]
+    if not rows:
+        lines += ["No two apertures come within %.3f mm of each other."
+                  % floor_mm, ""]
+        return lines, []
+    lines += ["Every dam below **%.3f mm** on the board:" % floor_mm, "",
+              "| dam | layer | A | B | same net | declared bridge |",
+              "| --- | --- | --- | --- | --- | --- |"]
+    for r in rows:
+        lines.append("| **%.4f mm** | %s | `%s` | `%s` | %s | %s |"
+                     % (r["dam_mm"], r["layer"], r["a"], r["b"],
+                        "yes" if r["same_net"] else "**no**",
+                        "yes" if r["declared_bridge"] else "no"))
+    live = [r for r in rows if not r["same_net"] and not r["declared_bridge"]]
+    lines += ["",
+              "**What each group is, and what is being asked.**",
+              "",
+              "- Rows marked *same net* are vendor land patterns whose two "
+              "contacts are one node -- the USB-C receptacle's A/B pairs are "
+              "the whole of that group.  A merged aperture there is harmless "
+              "and no action is requested.",
+              "- Rows marked *declared bridge* carry "
+              "`allow_soldermask_bridges` on the footprint AND on its library "
+              "master; the microphone's port ring is the whole of that group "
+              "and the merge is the design.",
+              "- **The remaining %d row%s are DIFFERENT NETS, and they split "
+              "in two.**  All of them are MANUFACTURER LAND PATTERNS, not "
+              "routing.  **%d are at or under 0.100 mm and are not printable "
+              "as a web by any process we would order** -- the four DIAGONAL "
+              "CORNER pairs of `U9`'s UFQFPN32, which come straight from ST's "
+              "own recommended land (0.30 x 0.75 lands, centres at +/-2.275 on "
+              "a 0.50 mm pitch); the board's `.kicad_dru` already licenses "
+              "their COPPER clearance by a named, footprint-scoped rule.  "
+              "**Please gang those four -- one window per corner -- rather "
+              "than attempting a web.**  The other %d are `U12`'s TPS63020 "
+              "land at **0.120 mm**, which is AT the usual 0.100-0.130 mm "
+              "limit rather than under it: **print the web if you can hold it, "
+              "gang the row if you cannot, and tell us which.**  Assembly "
+              "control at both pitches is the PASTE stencil, which is per-pad "
+              "and is unaffected either way."
+              % (len(live), "" if len(live) == 1 else "s",
+                 sum(1 for r in live if r["dam_mm"] <= 0.100),
+                 sum(1 for r in live if r["dam_mm"] > 0.100)),
+              ""]
+    return lines, rows
+
+
 def manifest(out, extra):
     files = []
     for path in sorted(p for p in out.rglob("*") if p.is_file()
@@ -786,7 +909,7 @@ def main():
     export_positions(out)
     bom = export_bom(out)
     export_assembly(out)
-    notes, via_in_pad, sub_floor_vias = export_fab_notes(out)
+    notes, via_in_pad, sub_floor_vias, mask_dams = export_fab_notes(out)
 
     fitted, dnp = rl.schematic_population()
     doc = manifest(out, dict(population=dict(
@@ -813,6 +936,14 @@ def main():
             families=len(sub_floor_vias or []),
             vias=sum(r["count"] for r in (sub_floor_vias or [])),
             rows=sub_floor_vias or []),
+        solder_mask_dams=dict(
+            measured=mask_dams is not None,
+            floor_mm=0.125,
+            below_floor=len(mask_dams or []),
+            undeclared_different_net=sum(
+                1 for r in (mask_dams or [])
+                if not r["same_net"] and not r["declared_bridge"]),
+            rows=mask_dams or []),
         fabrication_notes=dict(
             file="aqroot-Demo-FAB-NOTES.md",
             hole_clearance_rules=notes,

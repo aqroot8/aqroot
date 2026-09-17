@@ -87,3 +87,39 @@ This board's own `.kicad_dru` floor is **annular ring >= 0.125 mm** and its boar
 | 2 | 0.45 mm | 0.20 mm | **0.125 mm** | `Net-(U11-TS_MR)` |
 
 All of them are ORDINARY THROUGH vias -- this board carries no blind via, no buried via and no laser microvia, and its `.kicad_dru` disallows all three explicitly.
+
+## Solder-mask dams -- MEASURED HERE, NOT BY DRC
+
+**`solder_mask_min_width` in this board's setup is 0.000 mm, which switches KiCad's `solder_mask_bridge` test OFF.**  A clean DRC report therefore says NOTHING about mask webs on this board, and the webs below were measured for this note instead -- polygon to polygon, not bounding box.  `pad_to_mask_clearance` is 0.000 mm, so an aperture is its pad and a dam is a pad-to-pad gap.
+
+Every dam below **0.125 mm** on the board:
+
+| dam | layer | A | B | same net | declared bridge |
+| --- | --- | --- | --- | --- | --- |
+| **-0.0500 mm** | B.Mask | `MK1.` | `MK1.4` | **no** | yes |
+| **0.0000 mm** | F.Mask | `J3.A1` | `J3.B12` | yes | no |
+| **0.0000 mm** | F.Mask | `J3.A12` | `J3.B1` | yes | no |
+| **0.0000 mm** | F.Mask | `J3.A4` | `J3.B9` | yes | no |
+| **0.0000 mm** | F.Mask | `J3.A9` | `J3.B4` | yes | no |
+| **0.0621 mm** | B.Mask | `U9.1` | `U9.32` | **no** | no |
+| **0.0621 mm** | B.Mask | `U9.16` | `U9.17` | **no** | no |
+| **0.0621 mm** | B.Mask | `U9.24` | `U9.25` | **no** | no |
+| **0.0621 mm** | B.Mask | `U9.8` | `U9.9` | **no** | no |
+| **0.1200 mm** | B.Mask | `U12.1` | `U12.2` | **no** | no |
+| **0.1200 mm** | B.Mask | `U12.10` | `U12.11` | yes | no |
+| **0.1200 mm** | B.Mask | `U12.11` | `U12.12` | **no** | no |
+| **0.1200 mm** | B.Mask | `U12.12` | `U12.13` | **no** | no |
+| **0.1200 mm** | B.Mask | `U12.13` | `U12.14` | **no** | no |
+| **0.1200 mm** | B.Mask | `U12.2` | `U12.3` | **no** | no |
+| **0.1200 mm** | B.Mask | `U12.3` | `U12.4` | **no** | no |
+| **0.1200 mm** | B.Mask | `U12.4` | `U12.5` | yes | no |
+| **0.1200 mm** | B.Mask | `U12.5` | `U12.6` | **no** | no |
+| **0.1200 mm** | B.Mask | `U12.6` | `U12.7` | yes | no |
+| **0.1200 mm** | B.Mask | `U12.8` | `U12.9` | yes | no |
+| **0.1200 mm** | B.Mask | `U12.9` | `U12.10` | **no** | no |
+
+**What each group is, and what is being asked.**
+
+- Rows marked *same net* are vendor land patterns whose two contacts are one node -- the USB-C receptacle's A/B pairs are the whole of that group.  A merged aperture there is harmless and no action is requested.
+- Rows marked *declared bridge* carry `allow_soldermask_bridges` on the footprint AND on its library master; the microphone's port ring is the whole of that group and the merge is the design.
+- **The remaining 12 rows are DIFFERENT NETS, and they split in two.**  All of them are MANUFACTURER LAND PATTERNS, not routing.  **4 are at or under 0.100 mm and are not printable as a web by any process we would order** -- the four DIAGONAL CORNER pairs of `U9`'s UFQFPN32, which come straight from ST's own recommended land (0.30 x 0.75 lands, centres at +/-2.275 on a 0.50 mm pitch); the board's `.kicad_dru` already licenses their COPPER clearance by a named, footprint-scoped rule.  **Please gang those four -- one window per corner -- rather than attempting a web.**  The other 8 are `U12`'s TPS63020 land at **0.120 mm**, which is AT the usual 0.100-0.130 mm limit rather than under it: **print the web if you can hold it, gang the row if you cannot, and tell us which.**  Assembly control at both pitches is the PASTE stencil, which is per-pad and is unaffected either way.
