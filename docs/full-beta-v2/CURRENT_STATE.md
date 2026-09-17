@@ -66,6 +66,68 @@
 > `verify_promotion` PASS and `protected_copper` showing exactly one protected
 > net moved.  `U14.7` is on the bus.  This board has **no open owner decision**.
 
+- **Demo D-733 (**`/ACC_PWR_EN` IS ROUTED -- THE COMMUNITY PORT'S I2C BUFFER HAS
+  ITS ENABLE.  WHAT WAS HOLDING IT WAS `/BQ25185_STAT1`'s 115 mm WESTERN LOOP,
+  AND THE WAY PAST IT WAS A PIN 1.025 mm AWAY**):**  **COPPER PROMOTED.
+  Authority `fa0ad669` -> `71c4326e`.  Retained open edges 4 -> 3, open retained
+  nets 3 -> 2, raw ratsnest 20 -> 19.**  D-728 named `/ACC_PWR_EN`'s minimal
+  blocking set and D-731 measured that ripping `/BQ25185_STAT1` CLOSES it; both
+  stopped because `STAT1` then could not re-lay -- a clean ONE-IN, ONE-OUT.
+  ***THE CORRIDOR IS REAL AND SO IS THE LOOP:*** one channel runs from the
+  `U16`/community region into the `U2`-`U3` pair and `STAT1` was holding it with
+  a **115.638 mm, 45-object** detour out of `U11.9`, west to x = 46.5 and back
+  into `U2.20`; `/ACC_PWR_EN`'s route re-uses three of its four via sites.
+  ***AND D-732's LEVER IS WHAT OPENS IT:*** an expander pin is a FREE VARIABLE,
+  and `STAT1`'s own surviving copper already passes **1.175 mm from `U3.20`**.
+  So **`STAT1` takes `U3.20`, `/ACC_PWR_EN` takes the `U2.20` that releases**,
+  and the loop is deleted.  `U2` and `U3` are both `PCAL9535APW` on the same
+  internal bus, both on `+3V3`, both wire-OR `/INT` onto `WAKE_INT_N`, so the
+  swap changes NO behaviour; `U2` `P17` becomes that port's only output
+  (`07h` `FFh` -> `7Fh`) and the safe state is unchanged because the part powers
+  up all-inputs and `R17`'s 100 k holds the `TCA4307` disabled.  ***THE HAND
+  LAY IS 1.025 mm AND IT IS NOT THE STRAIGHT LINE:*** B.Cu 0.150 mm,
+  (60.900,79.525) -> (60.900,79.000) -> (60.400,79.000), ZERO vias -- NORTH
+  first, because `U3`'s lands are 1.475 mm long and end at x = 60.600, so a
+  0.150 mm track at x = 60.900 clears them by 0.225 mm while the straight
+  45-degree continuation passes **0.066 mm from `U3.21`'s corner**.  The maze
+  cannot produce it: asked pad-to-pad it refuses `UNPROVED_GEOMETRY` at every
+  pitch because it re-lays `U11.9`'s EXISTING 0.150 mm escape and measures its
+  gap to `USB_VBUS_CHG` at 0.247 against 0.250 -- copper that is already on the
+  board and that KiCad passes.  ***`/ACC_PWR_EN`:*** `U16.1` -> `U2.20`,
+  **54.57 mm, 4 barrels**, `B/In2/B/F/B`.  ***AND THE LATTICE DECIDED IT:*** at
+  `--grid 50000` the same route is 54.10 mm and introduces ONE `copper_sliver`
+  on In2.Cu that the gate refuses; at `--grid 25000` it is 0.47 mm LONGER and
+  DRC is CLEAN.  The sliver was a pitch artefact, not a corridor property.
+  ***WHY IT MATTERS:*** `R17` is a 100 k pull-DOWN on the `TCA4307`'s `EN`, so
+  with this net open the buffer was held disabled and **the community port's
+  Qwiic/STEMMA-QT I2C was dead**.  `U3`'s note claimed *"`ACC_PWR_EN` ... drives
+  only `U15` and `U16`, which are both DNP"* -- **stale and wrong: `U16` IS
+  FITTED** and D-727 promoted `/I2C_SCL_INT` to `U16.3`.  Corrected.
+  ***PROOF:*** router gate every clause TRUE, `refused_clauses` `[]`;
+  `verify_promotion` **PASS** with 28 added / 21 removed; real KiCad DRC
+  `{lib_footprint_issues: 199}` and NOTHING ELSE; parity **246 / ZERO errors**;
+  `contract_regression` **14/14 ALL PASS**; `protected_copper` **IDENTICAL**;
+  fab package re-exported; `hardware/beta-v2` untouched.  ***MEASURED AND
+  REJECTED, SO IT IS NOT RE-TRIED:*** `U3`'s four free pins (`10/11/13/14`) were
+  probed for three different nets, with and without the loop, at 0.200 and
+  0.150 mm -- **ALL NO_PATH**, because their escapes open into a pocket closed by
+  the 1.300 mm F.Cu `BAT_PROTECTED_P` trunk, which passes y = 74.08 at
+  x = 59.862, **0.35 mm from `U3.13`'s own land**.  `AQROOT_PLANE_SIGNAL`
+  `I3:/ACC_PWR_EN` and `I3:/BQ25185_STAT1` were both asked and both stayed
+  NO_PATH, so **the wall is not routing-layer capacity and an 8-layer migration
+  would not have opened it**.  A `CONTROL_FINE` 0.150/0.500-0.250 netclass was
+  built and run: the router honours it and KiCad then reports three
+  `track_width` errors against *"Pad-escape necking - width, fine-pitch power
+  packages"*, whose 0.200 mm minimum binds inside TEN named courtyards -- so the
+  class cannot carry any net that must escape one of those packages.  Reverted.
+  **NEXT: three edges over two nets.  `/BQ25185_STAT2`'s `U11.3` is a PACKAGE
+  WALL measured to the micron in D-732 -- 0.100 mm of window for a 0.150 mm
+  track, short by 50 microns in every direction, at every lattice, on every
+  layer, independent of where `U11` sits -- and it is not closable without
+  relaxing D-269's battery clearance; `U2.19` is cosmetic while it is open.
+  `/SX1262_DIO1` survived the loop's removal, a `BTN_LEFT_N` eviction, both
+  widths and an In3 licence: `U8`'s west column carries seven conductors and
+  DIO1 is the seventh.**
 - **Demo D-732 (**THE D-PAD DEFECT IS CLOSED, AND IT COST NOTHING**: THE WIRING
   WAS ALWAYS RIGHT -- WHAT WAS WRONG WAS WHICH EXPANDER BIT WAS DECLARED TO
   CARRY WHICH FUNCTION.  **ZERO COPPER.**  AND A SECOND, INVERTED PIN MAP WAS

@@ -1,0 +1,71 @@
+{
+ "schema": 1,
+ "decision": "D-733",
+ "question": "/ACC_PWR_EN has been NO_PATH for six decisions.  What actually holds it?",
+ "finding": [
+  "ONE corridor runs from the U16 / community region into the U2-U3 expander pair,",
+  "and /BQ25185_STAT1 was holding it with a 115.638 mm, 45-object WESTERN LOOP that",
+  "left U11.9, crossed the whole middle of the board to x = 46.5, and came back east",
+  "to U2.20.  Ripping that loop closes /ACC_PWR_EN every time; the loop then cannot",
+  "re-lay and the board is no better off.  That is what D-728 and D-731 both measured.",
+  "The way out is that AN EXPANDER PIN IS A FREE VARIABLE (D-732), and BQ25185_STAT1's",
+  "own copper already passes 1.175 mm from U3.20.  So STAT1 does not need the corridor",
+  "at all -- it needs a DIFFERENT PIN, 1.025 mm away, and that releases U2.20 for",
+  "/ACC_PWR_EN, which its 54.57 mm route reaches through the freed channel."
+ ],
+ "transaction": {
+  "pin_swap": "/BQ25185_STAT1 U2.20 (U2 P17)  <->  /ACC_PWR_EN U3.20 (U3 P17)",
+  "why_it_is_neutral": [
+   "U2 and U3 are both PCAL9535APW on the SAME internal I2C bus (0x20 / 0x21), both",
+   "powered from +3V3, and both wire-OR their open-drain INT onto WAKE_INT_N, so which",
+   "device owns a bit changes no behaviour.",
+   "U2 P17 becomes this port's only OUTPUT: 07h goes FFh -> 7Fh.  Safe state is",
+   "unchanged -- the PCAL9535A powers up with every pin an input and R17's 100 k holds",
+   "the TCA4307 disabled until firmware drives it.",
+   "U3 P17 becomes an INPUT with R127's 10 k pull-up, exactly as it was on U2."
+  ],
+  "copper_removed": "21 objects -- BQ25185_STAT1's western loop, from the via at (61.050,79.250) to U2.20",
+  "copper_added": "28 objects -- 24 tracks + 4 vias",
+  "stat1_hand_lay": [
+   "B.Cu 0.150 mm (60.900,79.525) -> (60.900,79.000) -> (60.400,79.000), 1.025 mm, ZERO vias.",
+   "It continues BQ25185_STAT1's own surviving B.Cu at (64.675,83.325)->(60.900,79.525)",
+   "and lands inside U3.20.  It runs NORTH first, at x = 60.900, because U3's lands are",
+   "1.475 mm long and end at x = 60.600: a 0.150 mm track centred there clears them by",
+   "0.225 mm, while the straight 45-degree continuation passes 0.066 mm from U3.21's",
+   "corner and is illegal.  The westward leg at y = 79.000 sits 0.350 mm from U3.19 and",
+   "0.350 mm from U3.21."
+  ],
+  "acc_pwr_en_route": "U16.1 -> U2.20, 54.57 mm, 4 barrels, B/In2/B/F/B"
+ },
+ "why_the_lattice_mattered": [
+  "At --grid 50000 the same route is 54.10 mm and introduces ONE copper_sliver on",
+  "In2.Cu, which the gate refuses as attributable DRC.  At --grid 25000 the route is",
+  "54.57 mm -- 0.47 mm LONGER -- and DRC is clean.  The sliver was a lattice artefact",
+  "of the coarse pitch, not a property of the corridor."
+ ],
+ "measured_and_rejected": {
+  "U3_free_pins": "U3.10 / U3.11 / U3.13 / U3.14 were probed for /ACC_PWR_EN, /BQ25185_STAT1 and /ACC_POWER_FAULT_N, with and without the western loop present, at 0.200 mm and at 0.150 mm: ALL NO_PATH.  Their escapes exist but open into a pocket closed by the 1.300 mm F.Cu BAT_PROTECTED_P trunk, which passes y = 74.08 at x = 59.862 -- 0.35 mm from U3.13's own land.",
+  "In3_licence": "AQROOT_PLANE_SIGNAL=I3:/ACC_PWR_EN and I3:/BQ25185_STAT1 were both asked.  Both stayed NO_PATH, so the wall is not routing-layer capacity.",
+  "CONTROL_FINE_netclass": "a 0.150 mm / 0.500-0.250 mm netclass for the four control nets was built and run.  The router honours it, but real KiCad DRC then reports three track_width errors against the .kicad_dru rule 'Pad-escape necking - width, fine-pitch power packages', whose 0.200 mm minimum binds inside the U9/U11/U12/U13/U14/U16/U17/U20/U21/U22 courtyards -- so the class cannot carry any net that must escape one of those ten packages.  Reverted.",
+  "SX1262_DIO1": "still NO_PATH with the western loop gone, with BTN_LEFT_N evicted and re-laid, at 0.150 mm and at 0.200 mm, and with In3 licensed.  U8's west column carries seven conductors and DIO1 is the seventh."
+ },
+ "proof": {
+  "board_sha256_before": "fa0ad66971b7ab98ba241ac1c2a5e5de646a3cbc84b1d76b13238b6ee41fbfc1",
+  "board_sha256_after": "71c4326e8cd704db50f0893b8dc0e2490c8f365aaa826d9b05a37c90a3f535b2",
+  "retained_open_edges": "4 -> 3",
+  "open_retained_nets": "3 -> 2",
+  "raw_board_ratsnest": "20 -> 19",
+  "router_gate": "every clause TRUE, refused_clauses []",
+  "verify_promotion": "PASS, all 16 clauses, 28 added / 21 removed",
+  "kicad_drc": {
+   "lib_footprint_issues": 199,
+   "everything_else": 0
+  },
+  "schematic_parity": {
+   "errors": 0,
+   "warnings": 246
+  },
+  "contract_regression": "14 contracts, ALL RAN, ALL PASS; protected_copper IDENTICAL",
+  "fab_package": "re-exported at 71c4326e, 29 files"
+ }
+}
