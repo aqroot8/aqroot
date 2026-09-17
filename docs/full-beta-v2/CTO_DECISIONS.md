@@ -1,3 +1,358 @@
+## D-738 — **FIVE THINGS THE FABRICATOR AND THE FIRMWARE WERE NEVER TOLD.** THE BOARD USES VIA-IN-PAD IN 134 LANDS, 38 VIAS SIT BELOW ITS OWN FLOORS, KICAD'S MASK-BRIDGE TEST IS SWITCHED OFF, THE PUBLISHED CAVITY WAS NARROWER THAN THE BOARD, AND THE EXPANDER PIN MAP WAS TWO ECOs OUT OF DATE
+
+    authority  71c4326e  UNCHANGED.  NO COPPER.
+    fab package re-exported at 71c4326e, 29 files
+    `fab_package_contract` PASS, FAB1 .. FAB11 (three clauses are new)
+    `contract_regression` 14 contracts, ALL RAN, ALL PASS, `--emit-baseline d738`
+    KiCad DRC `{lib_footprint_issues: 199}` and nothing else; 19 unconnected
+    schematic parity 246 warnings / ZERO errors
+
+### 0. WHAT THIS DECISION IS
+
+D-736 and D-737 worked the independent review's pre-fab checklist and closed
+five items.  This closes seven more, and the pattern that connects every one of
+them is the same: **a fact that is true inside the design and has never left
+it.**  A licence in the `.kicad_dru`.  A concession in a footprint's own land
+pattern.  A DRC class that is switched off.  A dimension corrected in one
+document and not in the one CAD reads.  In each case the design is *right* and
+the *package* is silent, and a silent package is how a correct board gets built
+wrong.
+
+Nothing here touches copper.  Everything here is measured from the board and
+re-derived by a contract, so it cannot go stale the way the things it fixes did.
+
+### 1. THE BOARD USES VIA-IN-PAD IN 134 SOLDERABLE LANDS AND SAID SO NOWHERE
+
+`pad_to_mask_clearance` on this board is **0**, so a pad's solder-mask aperture
+IS its copper.  A via whose drilled hole lies inside that aperture is an open
+barrel in the middle of a solder land.
+
+**128 via barrels open into 134 solderable lands across 75 components**, on
+0.20 / 0.25 / 0.30 / 0.40 mm holes.  ***AND NOTHING IN THIS REPOSITORY COULD SEE
+THEM:*** KiCad has no via-in-pad rule at all, and on this board every one of
+those vias carries the **SAME NET** as the land it sits in — they are the
+router's own pad escapes and the decoupling fan-outs — so no clearance check is
+violated either.
+
+    land     layer  land size      hole     open area  % of land  net
+    C18.1    B.Cu   0.560 x 0.620  0.40 mm  0.1255 mm2   38.2 %   +3V3
+    D8.1     B.Cu   0.600 x 0.450  0.30 mm  0.0625 mm2   24.2 %   LED_BOOST
+    J1.8     F.Cu   0.300 x 1.230  0.40 mm  0.0786 mm2   21.3 %   +3V3
+    J1.25    F.Cu   0.300 x 1.230  0.30 mm  0.0699 mm2   18.9 %   GND
+    J1.31    F.Cu   0.300 x 1.230  0.30 mm  0.0653 mm2   17.7 %   GND
+
+**31 of the 134 lands are FINE-PITCH** (one dimension at or below 0.500 mm),
+and ten of those are contacts of **`J1`, the 50-pin display FPC connector,
+whose lands are 0.300 mm wide** — a 0.30–0.40 mm hole is as wide as the land.
+
+***WHY IT IS NOT OPTIONAL, IN THE BOARD'S OWN NUMBERS:*** the largest hole in a
+land is 0.40 mm, and through 1.60 mm of finished board that barrel holds
+**0.201 mm3**.  A 0.12 mm stencil over `C18`'s 0.56 x 0.62 mm land deposits
+about **0.042 mm3**.  **The barrel can swallow the whole deposit.**
+
+***THE PROCESS WAS ALREADY RULED — ONLY ITS SCOPE WAS WRONG.***
+`FBV2_SIXLAYER_STACKUP.md` section 4 has ordered **resin-filled, capped and
+plated (POFV)** since D-258/D-259(c), and says in terms that a via inside a pad
+which is merely tented, mask-plugged or left open *"wicks solder out of the
+joint"*.  It scoped that order to **one pad**, `Q3.3`.  The board has been
+routed since.  The order now covers every via in a land; applying it to all 896
+is acceptable and is the simpler instruction to give.
+
+`export_fab_package.py` gains `via_in_pad_notes()`, which intersects each via's
+**drilled-hole disc** with the pad's own **mask-aperture polygon** and refuses
+to emit the section at all if the board ever carries a mask expansion it has not
+been taught to model.  `MANIFEST.json` carries every barrel centre.
+`fab_package_contract` gains **FAB9**, which re-derives the set by a DIFFERENT
+algorithm — sixteen rim points per hole against `PAD::HitTest`, not a polygon
+boolean — and refuses a package that under-reports it.  **Both methods return
+exactly 134.**
+
+### 2. THIRTY-EIGHT VIAS SIT BELOW THE BOARD'S OWN FLOORS, ON AN INTERNAL LICENCE
+
+The `.kicad_dru` publishes an unconditional `annular_width (min 0.125mm)` and
+the board setup asks 0.500 mm of via diameter.  Four families of **named,
+net-scoped, area-enclosed** rules — `FINE_ESC_0..10`, `USB_VBUS_J3_A4/A9_POFV`,
+`BAT_SENSE_KELVIN`, `BAT_PROT_TAP_U18` — license **0.35 mm on a 0.20 mm drill,
+a 0.075 mm annular ring**.  That is the right internal discipline and real DRC
+passes all of it.
+
+**35 vias carry that 0.075 mm ring** (`+3V3` x6, `GND` x5, `LTC_GATE` x4,
+`VREC_VCC` x4, pairs on `BAT_PROTECTED_P`, `BAT_SENSE`, `LTC_SHDN`, `N_POL`,
+`Q3_CS`, `REF_HO`, `REF_POL`, `USB_VBUS_RAW`) and 3 more are 0.45 mm diameter
+against a 0.500 mm setup minimum.  0.35 mm of via pad on a 0.20 mm hole is under
+the 0.4 / 0.2 mm minimum via most quick-turn houses publish, and the package
+said nothing.  **A concession nobody was asked about is not a concession.**
+
+`via_geometry_notes()` reads the UNCONDITIONAL floor out of the `.kicad_dru`
+rather than assuming one — and refuses the section if the file publishes none —
+then lists every via below it and **asks the fabricator to confirm or advise**.
+**FAB10** re-derives it: 38 on the board, 38 in the package, family by family.
+
+### 3. KICAD HAS NEVER CHECKED A SOLDER-MASK WEB ON THIS BOARD
+
+`solder_mask_min_width` in board setup is **0.000 mm**, which switches the
+`solder_mask_bridge` test OFF by construction.  **Every "DRC is clean" this
+programme has recorded therefore carries ZERO information about mask dams**, and
+nothing else here looked.
+
+Measured — polygon to polygon, because the tight ones are DIAGONAL corner pairs
+of a QFN and a bounding box reads those as 0.0000 mm when they are not —
+**twenty-one dams sit below 0.125 mm**, in three groups:
+
+    -0.0500  MK1 port ring vs its own land.  The apertures OVERLAP and this is
+             the DECLARED bridge: `allow_soldermask_bridges` on the footprint
+             AND on its library master (D-721, confirmed D-736).  It is design.
+     0.0000  J3.A1/B12, A12/B1, A4/B9, A9/B4 -- the USB-C receptacle's A/B
+             contact pairs, SAME NET by the vendor land pattern.  Harmless.
+     0.0621  U9.1/32, U9.8/9, U9.16/17, U9.24/25 -- DIFFERENT NETS, the four
+             diagonal corners of the ST25R3916's UFQFPN32.  NOT PRINTABLE.
+     0.1200  eleven pairs on U12's TPS63020 DSJ land, seven different-net.
+             AT the usual 0.100-0.130 mm limit, not under it.
+
+The `U9` corners are **ST's own recommended land** (0.30 x 0.75 lands, centres
+at +/-2.275 on 0.50 mm pitch) and the `.kicad_dru` already licenses their
+**copper** clearance by a named footprint-scoped rule (`FP-U9`, min 0.05 mm).
+What was never asked is the **mask**.  The note asks the right question per
+group — **gang** the four `U9` corners into one window per corner; **print or
+gang** `U12`'s 0.120 mm row and say which — and states the thing that actually
+controls assembly at these pitches: the **paste stencil**, which is per-pad and
+unaffected either way.  **FAB11** re-derives all 21.
+
+***RECORDED AS THE NEXT PROMOTION'S WORK, NOT DONE HERE:*** raising
+`solder_mask_min_width` to a real figure so KiCad checks this itself.  That is a
+board-setup change, it will raise `solder_mask_bridge` errors on exactly the
+`U9` and `U12` lands above, and each will then need a named rule the way their
+copper clearances already do.  It belongs to a decision that touches the board.
+
+### 4. THE PUBLISHED ENCLOSURE CAVITY WAS 2.0 mm NARROWER THAN THE BOARD
+
+D-709 made the profile stepped and **77.000 mm** wide at its east bump under
+owner approval D-707.  D-737 marked the retired 72 mm outline SUPERSEDED where
+it was published.  **It did not follow the change into the two lines that
+decide whether the board fits.**  `MECHANICAL_INTERFACE_SPEC` still carried
+`EXTERNAL_ENCLOSURE 80 x 160 x 23 LOCKED`, derived
+`INTERNAL_CAVITY_X = 80 - 2(2.0 wall) - 1.0 = 75.0 mm`, and published that 75.0
+in the **machine-readable block CAD reads**.  `DEVICE_SPEC`'s own overview line
+still said 80 while its section 12 said 85.
+
+A 77.000 mm board does not enter a 75.0 mm cavity.  That is a **2.0 mm hard
+interference**, not a tight fit.  The shell is **85 x 160 x 23**, which is that
+document's own item-17 rule (`PCB edge to cavity wall >= 1.5 mm`) solved for a
+77 mm board: `77 + 2(1.5) = 80.0` cavity, `80.0 + 2(2.0) + 1.0 = 85` shell.
+
+New section 3.3 computes the fit, and the symmetric arithmetic that was there
+before would have hidden what it found: **the board is ASYMMETRIC.**  Datumed
+1.500 mm off the WEST wall it is at **1.500 mm on the WEST for its whole 148 mm
+length AND at 1.500 mm on the EAST over the 33.505 mm the bump spans**.  TWO
+faces are at the minimum, not one, and the only slack is the 6.500 mm of east
+wall outside the bump — **which is where `J5` exits**.
+
+***AND THE DIMENSION TABLE NAMED A CONNECTOR THAT IS NOT FITTED.***  Item 11 and
+the height census still described the community port as a 2 x 12 Samtec
+`BCS-112-S-D-HE`, 30.48 x 8.13 x 5.33 mm.  D-237/D-240 replaced it with the
+**1 x 24 right-angle `SSQ-124-02-G-S-RA`** on 2026-08-24; section 5 carried the
+supersession banner and **section 1, the DIMENSION AUTHORITY TABLE, did not.**
+The board carries `AQROOT_Beta:Samtec_SSQ-124-02-G-S-RA`.  Corrected from the
+footprint master's own figures: **61.47 long, 6.53 tail row to mating face,
+8.50 tall**.
+
+***`M-09` IS REOPENED AND RAISED TO MEDIUM.***  Its Z column was computed with
+the 5.33 mm of the part that is not fitted.  Re-run with 8.50 it reads
+`2.0 + 8.50 + 1.6 + 8.0 + 0.6 + 2.0 = ` **22.70 of 23.0** — still fits, but
+**0.30 mm spare instead of 3.47**, and the connector governs the column again.
+Whether that 8.50 mm is normal to the board or along the mating axis is
+genuinely ambiguous in the drawing the footprint is built from, so it is raised
+as a question rather than asserted.
+
+### 5. THE EXPANDER PIN MAP FIRMWARE WOULD HAVE READ WAS TWO ECOs OUT OF DATE
+
+`AQROOT_DEMO_EXPANDER_DEPENDENCIES.md` still published the PRE-ECO map: `U23`
+fitted, ten public XGPIO, and a `U2` table that predates **D-732** (the port-1
+D-pad seat cycle AND an inverted `P05`/`P06`/`P16`/`P17` naming) and **D-733**
+(the `ACC_PWR_EN` / `BQ25185_STAT1` swap).  **NINE of its sixteen `U2` rows and
+one `U3` row are wrong against the board.**
+
+D-732 recorded exactly what that costs: the stale map tells firmware to mask
+`4Ah` bit 6 believing it is `BQ25185_STAT2`, when `4Ah` bit 6 is
+**`TOUCH_INT_N`** — the touch interrupt silenced and `STAT2`, which toggles
+forever with no battery fitted, left free to wake the MCU.  D-732 fixed the
+SCHEMATIC note.  This document was never touched.
+
+It now opens with an **AS-BUILT map read pin by pin out of the board**, using the
+`AQROOT_Beta:PCAL9535APW` symbol's own numbering (pins 4..11 = `P00`..`P07`,
+13..20 = `P10`..`P17`, confirmed independently by KiCad's own
+`unconnected-(U3-P06-Pad10)` net names), and the planning analysis is marked
+SUPERSEDED in place rather than deleted.
+
+***A DEFECT FOUND WHILE WRITING IT.***  Both sheet-08 notes instructed firmware
+to **UNMASK `SX1262_DIO1` on `U2` `P05`**.  That net has exactly two pads,
+`U2.9` and `U8.13`, and **NO pull resistor**, and it is UNROUTED (D-735) — so
+`P05` is a **floating CMOS input on an open-drain wire-OR wake line**.  Unmasking
+it is the **MX-9 hazard by name**: it chatters and starves the buttons.  Both
+notes are corrected — `P05` stays MASKED and firmware must enable the
+PCAL9535A's own **internal 100 k pull-up** (`46h`/`48h`) until the net is routed.
+The same applies to `U3`'s four NC-DEMO channels.
+
+### 6. THE IMPEDANCE REGISTER IS CLOSED: THERE IS NO CONTROLLED-IMPEDANCE NET
+
+`FBV2_SIXLAYER_STACKUP.md` section 5 left its whole register `PENDING` on the
+stated grounds that *"no impedance-sensitive net was routed in 002M or 002N"*.
+The board has been routed since.  Re-asked against the finished copper it closes
+without a single width recalculation:
+
+***`USB D+/D-` — CLOSED, NOT CONTROLLED, AND CORRECT ANYWAY.***  0.250 mm on
+`F.Cu` over the `In1` GND plane at 0.2104 mm of 7628, 1 oz: `Z0 = 60.6 ohm`
+single-ended.  **But the pair is NOT COUPLED** — measured segment to segment on
+the same layer the two nets never come closer than **1.173 mm centre to centre**,
+a 0.923 mm edge gap against a 0.2104 mm reference height (`s/h = 4.39`), so the
+coupling term is 1.5 % and `Zdiff` is about **120 ohm**.  That is two independent
+60 ohm lines, and it would FAIL a High-Speed requirement.  ***It is acceptable
+for one reason and it is worth saying plainly:*** the `ESP32-S3-WROOM-1-N16R8`
+has **NO High-Speed USB** — both its USB-Serial-JTAG and its USB-OTG blocks are
+**FULL SPEED, 12 Mbit/s**.  The 90 ohm +/- 15 % rule is a 480 Mbit/s rule.  At
+12 Mbit/s the 28 mm run is ~190 ps against an 83 ns unit interval and the
+measured **2.97 mm P/N length mismatch is ~20 ps**.  **Impedance control need
+not be ordered.**
+
+***RETURN PATH, MEASURED AND RECORDED HONESTLY.***  Each MCU-side net changes
+layer twice, so its return hands off between the two solid GND planes.  Nearest
+GND via to each transition: **2.476 / 6.836 mm** on `N`, **3.821 / 5.825 mm** on
+`P`, 2.347 / 2.535 mm on the connector side.  A High-Speed design wants a stitch
+inside ~1 mm.  At Full Speed the few nH is low single digits of a 60 ohm line and
+is not a functional risk — but it is **the first Rev-B improvement in this
+block** and is recorded as one rather than left for the bench to find.
+
+***`915 MHz` AND `433 MHz` — THE NETS DO NOT EXIST.***  `U8` (`E22-900M22S`) and
+`U7` (`E07-400M10S`) are MODULES carrying their own antenna connectors.  Not one
+board net on either part has `ANT` or `RF` in its name; **the only `ANT` nets on
+the whole board are `NFC_ANT_A` and `NFC_ANT_B`**.  There is no board-level
+50 ohm structure to control, so two rows of the register were scheduling work on
+nets that are not there.
+
+***`NFC` ARMS — CLOSED BY CONSTRUCTION.***  The row called itself *"the largest
+change in this table"*.  At 13.56 MHz the arms are electrically nothing; what
+the closer plane changes is stray capacitance, of order 0.15 pF/mm with
+fringing — a few pF against `C71`/`C72` at 300 pF and `C73`/`C74` at 1.5 nF.
+Every part in the ladder is already marked **`TUNE`** — twelve C0G capacitors,
+`L5`/`L6`, `R114`-`R117`, with `TP37`/`TP38` on the two arms — so the bench tune
+is this row's closure.
+
+### 7. NFC DECOUPLING, VERIFIED AGAINST THE VENDOR DATASHEET IN THIS REPO
+
+`ST25R3916 DS12484 Rev 3` section 5 asks for **2.2 uF in parallel with 10 nF**
+per regulator, **1 uF || 10 nF for `AGDC`**, and **2.2 uF + 1 nF at `VDD_AM`**.
+The board has exactly that, **including both exceptions**:
+
+    VDD_D   C45 2.2uF + C46 10nF      2.21 mm from the package edge
+    VDD_A   C47 2.2uF + C48 10nF      2.70 / 2.21 mm
+    VDD_RF  C49 2.2uF + C50 10nF      6.17 mm
+    VDD_AM  C51 2.2uF + C52 1nF       4.50 / 4.51 mm
+    AGDC    C53 1uF   + C54 10nF      4.50 / 4.51 mm
+    VDD     C55 2.2uF + C19 100nF     8.14 mm
+
+Placed as flanking rows above and below `U9`.  The matching ladder is twelve C0G
+`TUNE` parts plus `L5`/`L6`, `R114`-`R117` and `TP37`/`TP38`, all rear side and
+symmetric; tuning access requires lifting the antenna flex, which is normal.
+**No change required.**
+
+### 8. EVERY THERMAL LAND ALREADY CARRIES A WINDOWED PASTE PATTERN
+
+Checked because a single full-size aperture on a large land floats the part.
+Every exposed-pad device on this board has its paste drawn as separate windows,
+not as the land:
+
+    U1  ESP32-S3-WROOM-1  15.21 mm2 land, 9 apertures  ~48 %
+    U9  ST25R3916          11.90 mm2 land, 4 apertures  ~66 %
+    U5  MAX98357A           1.51 mm2 land, 4 apertures  ~66 %
+    U14 MAX17048            1.10 mm2 land, 4 apertures  ~76 %
+    U11 BQ25185             1.35 mm2 land, 1 aperture
+    MK1 port ring           the documented 0.10 mm PASTE PULLBACK, ID 1.25 /
+                            OD 1.65, so molten solder cannot wick into the port
+
+**No change required.**  This is the one thing checked today that was already
+right everywhere.
+
+### 9. DRC RE-RUN WITH EVERY IGNORED RULE PROMOTED TO ERROR
+
+On a copy of the project with `missing_courtyard`, `footprint_type_mismatch`,
+`footprint_filters_mismatch`, `track_not_centered_on_via` and
+`tuning_profile_track_geometries` all switched from `ignore` to `error`:
+**7 new hits and no more.**
+
+* **2 `missing_courtyard`** on `BOSS1`/`BOSS2`, which are enclosure-boss keep-out
+  markers whose keep-out is a named rule area, not a courtyard.  Correctly
+  ignored.
+* **5 `track_not_centered_on_via`** on `In2.Cu` — four on `USB_VBUS_CHG`, one on
+  `Q3_CS` — offset 23 to 249 microns.  The board sets `remove_unused_layers no`,
+  so every via keeps a full inner pad and the endpoints land well inside it;
+  KiCad reports **ZERO `track_dangling`** and **ZERO `via_dangling`** and
+  resolves them as connected.  **Cosmetic, recorded, not fixed.**
+* **ZERO** `footprint_type_mismatch`, `footprint_filters_mismatch`,
+  `starved_thermal`, `annular_width`, `courtyards_overlap`, `creepage`,
+  `shorting_items`, `solder_mask_bridge`, `silk_over_copper`, `copper_sliver`,
+  `isolated_copper`, `connection_width`, `hole_to_hole`.
+
+### 10. `U3`'s FOUR FREE PINS ARE NOT UNREACHABLE — D-733 SECTION 6 IS CORRECTED
+
+D-733 filed them as *"UNREACHABLE and that is a geometry fact, not a search
+failure"*, blaming a 1.300 mm **F.Cu** `BAT_PROTECTED_P` trunk.  D-734's own
+doctrine applies to it: that was FOUR `NO_PATH` results for three particular
+nets, and **a search that refuses is not a proof.**
+
+The D-734/D-735 sweep pointed at the lands says otherwise:
+
+    U3.10 (P06)  B.Cu  escapes at 0.200 mm, 12 317 reachable cells,
+                       channel 0.7200 mm, bound by pad U3.9
+    U3.13 (P10)  B.Cu  escapes at 0.200 mm, 57 810 reachable cells,
+                       channel 0.5000 mm, bound by a track on ACC_3V3_EN
+
+Both at 0.150 mm too.  **The blamed trunk is on `F.Cu` and `U3`'s lands are on
+`B.Cu`**, so it cannot close a `B.Cu` pocket; it can only cost a barrel site.
+`U3`'s free pins are **LANDS THAT LAUNCH**, and whether a given net reaches one
+is a corridor question per net, not a package wall.  That correction is recorded
+because four future decisions would otherwise inherit the wrong premise.
+
+### 11. ONE FUNCTIONAL CONSEQUENCE IS ADDED TO D-734's OPEN OWNER DECISION
+
+With `/BQ25185_STAT2` unreachable, **the charger's FAULT state is not observable
+by firmware at all.**  TI's decode needs `STAT1 HIGH + STAT2 LOW` to say fault;
+`STAT1` alone distinguishes only charging from not-charging, and *both high* is
+one combined state covering charge-complete, sleep and charge-disabled.
+
+And there is no second source for it on this board: **`VBUS_PRESENT` lands on
+`TP31`/`R104`/`R105`/`C68` and `MAX17048_ALRT_N` on `TP11`/`U14.5` — both
+TEST-POINT ONLY.**  Neither reaches the MCU or an expander.
+
+So a fault has to be **INFERRED**: host-side USB attach (the ESP32-S3's own USB
+peripheral sees the bus), `STAT1` stuck HIGH, and MAX17048 state-of-charge not
+rising over a timeout.  **Safety is unaffected** — the BQ25185's safety timer and
+thermal protections act in hardware and D-269/D-186 are independent — so this is
+a **diagnostics gap, not a safety one**.  It belongs in the owner's decision
+rather than in a firmware footnote, and D-734's recommendation is unchanged by
+it.
+
+### 12. PROOF
+
+    fab_package_contract   PASS, FAB1..FAB11.  FAB9 134 == 134 by two
+                           independent algorithms; FAB10 38 == 38 family by
+                           family; FAB11 21 == 21, tightest -0.0500 mm
+    contract_regression    14 contracts, ALL RAN, ALL PASS; --emit-baseline d738
+                           written, so the next decision has a real baseline --
+                           d736 emitted none, which is why every row of this
+                           run reads NO BASELINE
+    KiCad DRC              {lib_footprint_issues: 199} and NOTHING else,
+                           19 unconnected, identical to the D-736 baseline
+    schematic parity       246 warnings / ZERO errors, identical
+    board sha256           71c4326e... UNCHANGED -- no copper was touched
+    hardware/beta-v2       untouched
+
+### 13. WHAT IS LEFT
+
+Three retained open edges over two nets, both behind the two open owner
+decisions: `/BQ25185_STAT2` (`U11.3`, D-734; and its `U2.19` leg, which is
+cosmetic while `U11.3` is open) and `/SX1262_DIO1` (D-735).  **`DEMO_READY_FOR_FAB`
+is not declared while either stands.**
+
 ## D-737 — THE FAB PACKAGE NEVER TOLD THE FABRICATOR THE PROFILE IS STEPPED, AND THE MECHANICAL BLOCK STILL PUBLISHED THE RETIRED 72 mm OUTLINE
 
     authority  71c4326e  UNCHANGED.  NO COPPER.

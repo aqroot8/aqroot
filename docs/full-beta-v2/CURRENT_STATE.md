@@ -78,6 +78,92 @@
 > taking an interrupt, and that becomes an explicit product decision.*
 > **`DEMO_READY_FOR_FAB` IS NOT DECLARED WHILE EITHER STANDS.**
 
+- **Demo D-738 (SEVEN PRE-FAB ITEMS CLOSED, AND EVERY ONE OF THEM WAS A FACT
+  THAT WAS TRUE INSIDE THE DESIGN AND HAD NEVER LEFT IT):**  **NO COPPER.
+  Authority `71c4326e` UNCHANGED.**  ***THE BOARD USES VIA-IN-PAD IN 134
+  SOLDERABLE LANDS AND SAID SO NOWHERE.***  `pad_to_mask_clearance` is **0**, so
+  a pad's mask aperture IS its copper: **128 barrels open into 134 lands across
+  75 components** on 0.20/0.25/0.30/0.40 mm holes.  Nothing here could see them
+  -- KiCad has **no via-in-pad rule at all**, and every one of those vias carries
+  the **SAME NET** as its land (they are the router's own escapes and the
+  decoupling fan-outs), so no clearance check fires either.  Worst: **`C18.1`,
+  a 0.40 mm hole occupying 38.2 % of a 0.56 x 0.62 mm land**; `D8.1` 24.2 %; and
+  ten contacts of **`J1`, the 50-pin display FPC, whose lands are 0.300 mm
+  wide** -- the hole is as wide as the land.  Through 1.6 mm a 0.40 mm barrel
+  holds **0.201 mm3** against the **0.042 mm3** a 0.12 mm stencil puts on
+  `C18`'s land: **the barrel can swallow the whole deposit.**  The process was
+  already ruled in `FBV2_SIXLAYER_STACKUP` section 4 (resin-filled, capped,
+  plated) and scoped to **one pad**; the scope is now every via in a land.
+  ***38 VIAS SIT BELOW THE BOARD'S OWN FLOORS*** -- the `.kicad_dru`'s
+  unconditional `annular_width (min 0.125mm)` -- on four families of named,
+  net-scoped, area-enclosed licences; 35 carry a **0.075 mm ring** on a 0.35/0.20
+  barrel, under the 0.4/0.2 minimum via most houses publish, and the package had
+  never asked.  ***KICAD HAS NEVER CHECKED A SOLDER-MASK WEB HERE:***
+  `solder_mask_min_width` is **0.000 mm**, so the `solder_mask_bridge` test is
+  OFF and every "DRC is clean" in this programme carries zero information about
+  dams.  Measured polygon-to-polygon (a bounding box reads the tight ones as
+  zero because they are DIAGONAL QFN corners): **21 dams below 0.125 mm**, of
+  which the four `U9` UFQFPN32 corners are **0.0621 mm between DIFFERENT NETS**
+  -- ST's own recommended land, copper already licensed by `FP-U9`, mask never
+  asked -- and eleven are `U12`'s 0.120 mm.  All three are now **generated**
+  notes with `MANIFEST` rows and three new contract clauses, **FAB9 / FAB10 /
+  FAB11**, each re-deriving the set from the board; FAB9 uses a *different*
+  algorithm from the generator and both return exactly 134.
+  ***THE PUBLISHED CAVITY WAS 2.0 mm NARROWER THAN THE BOARD.***  D-737 struck
+  the retired outline but not the lines that decide fit:
+  `MECHANICAL_INTERFACE_SPEC` still carried `80 x 160 x 23 LOCKED` and derived
+  `INTERNAL_CAVITY_X = 75.0`, and published that 75.0 in the machine-readable
+  block **CAD reads**, while `DEVICE_SPEC`'s overview said 80 and its section 12
+  said 85.  A 77.000 mm board does not enter a 75.0 mm cavity.  The shell is
+  **85 x 160 x 23**, which is the document's own `>= 1.5 mm` rule solved
+  (`77 + 2(1.5) = 80.0` cavity, `+ 2(2.0) + 1.0 = 85`), and new section 3.3
+  finds what the old symmetric arithmetic hid: **the board is ASYMMETRIC, so TWO
+  faces sit at 1.500 mm** -- the WEST wall for the whole 148 mm and the EAST wall
+  over the 33.505 mm of the bump.  The same table named a connector **that is not
+  fitted** (`BCS-112-S-D-HE` 2x12, replaced by the 1x24 `SSQ-124-02-G-S-RA` at
+  D-237/D-240), so **`M-09` IS REOPENED**: its Z column used that part's 5.33 mm,
+  and the fitted part's 8.50 mm takes the column from 19.53/3.47 spare to
+  **22.70 of 23.0, 0.30 mm spare**.
+  ***THE EXPANDER PIN MAP FIRMWARE WOULD HAVE READ WAS TWO ECOs STALE:***
+  `AQROOT_DEMO_EXPANDER_DEPENDENCIES.md` still published the pre-ECO map and
+  **NINE of its sixteen `U2` rows are wrong**; it now opens with an AS-BUILT map
+  read pin by pin off the board.  ***AND WRITING IT FOUND A DEFECT:*** both
+  sheet-08 notes told firmware to **UNMASK `SX1262_DIO1` on `U2` `P05`** -- a net
+  with two pads, **no pull resistor**, and UNROUTED, i.e. a **floating CMOS input
+  on an open-drain wire-OR wake line**, which is the MX-9 hazard by name.  Both
+  notes are corrected: `P05` stays masked and firmware must enable the
+  PCAL9535A's internal 100 k pull-up.
+  ***THE IMPEDANCE REGISTER IS CLOSED -- THERE IS NO CONTROLLED-IMPEDANCE NET.***
+  The USB pair is `0.250 mm` on F.Cu over In1 at 0.2104 mm, `Z0 = 60.6 ohm`, but
+  **it is not a pair**: the two nets never come closer than **1.173 mm** centre to
+  centre, `s/h = 4.39`, so `Zdiff` is about **120 ohm**.  That is acceptable for
+  exactly one reason -- the **ESP32-S3 has no High-Speed USB**; both blocks are
+  FULL SPEED 12 Mbit/s, the 90 ohm rule is a 480 Mbit/s rule, and the measured
+  2.97 mm skew is ~20 ps against an 83 ns UI.  **Impedance control need not be
+  ordered.**  Return-path stitches are 2.3-6.8 mm from the layer changes, fine at
+  FS and recorded as the first Rev-B item here.  The `915 MHz` and `433 MHz` rows
+  were scheduling work on **nets that do not exist** -- `U7` and `U8` are modules
+  with their own connectors and the only `ANT` nets on the board are the two NFC
+  arms.  ***NFC DECOUPLING VERIFIED AGAINST `ST25R3916 DS12484 Rev 3`:*** it asks
+  2.2 uF || 10 nF per regulator, 1 uF || 10 nF for `AGDC`, 2.2 uF + 1 nF for
+  `VDD_AM`, and the board has **exactly that including both exceptions**.
+  ***EVERY THERMAL LAND ALREADY HAS WINDOWED PASTE*** (U1 48 %, U9 66 %, U5 66 %,
+  U14 76 %, MK1's documented 0.10 mm pullback) -- the one thing checked today
+  that was right everywhere.  ***DRC RE-RUN WITH EVERY IGNORED RULE PROMOTED TO
+  ERROR:*** 7 new hits total -- 2 expected `missing_courtyard` on the enclosure
+  bosses and 5 cosmetic `track_not_centered_on_via` on In2 where
+  `remove_unused_layers no` keeps a full inner pad -- and **ZERO** of
+  `footprint_type_mismatch`, `starved_thermal`, `courtyards_overlap`,
+  `shorting_items`, `solder_mask_bridge`, `silk_over_copper`, `copper_sliver`,
+  `isolated_copper`, `connection_width`, `hole_to_hole`.  ***AND ONE PREMISE
+  CORRECTED:*** D-733 section 6 filed `U3`'s four free pins as *"UNREACHABLE, a
+  geometry fact"* on the strength of four `NO_PATH` results -- a search refusing.
+  The sweep says **`U3.10` escapes at 0.200 mm into a 0.720 mm channel and
+  `U3.13` into 0.500 mm**; the trunk blamed for closing them is on **F.Cu** while
+  `U3`'s lands are on **B.Cu**.  ***PROOF:*** `fab_package_contract` **PASS
+  FAB1-FAB11**; `contract_regression` **14 contracts ALL RAN ALL PASS** with
+  `--emit-baseline d738`; DRC `{lib_footprint_issues: 199}` and nothing else;
+  parity 246 warnings / ZERO errors; board sha256 UNCHANGED.
 - **Demo D-737 (THE FAB PACKAGE NEVER TOLD THE FABRICATOR THE PROFILE IS
   STEPPED, AND THE MECHANICAL BLOCK STILL PUBLISHED THE RETIRED 72 mm
   OUTLINE):**  **NO COPPER.  Authority `71c4326e` UNCHANGED.**  `Edge.Cuts` has
