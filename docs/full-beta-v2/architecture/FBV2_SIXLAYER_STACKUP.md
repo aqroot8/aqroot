@@ -85,11 +85,30 @@ The one figure that carries over from four layers is the **outer dielectric**:
 JLC04161H-7628. That is the geometry the outer-layer routing plans depend on,
 and it is unchanged.
 
-## 4. POFV — the Q3.3 via-in-pad fabrication note
+## 4. POFV — the via-in-pad fabrication note
 
 **THIS IS A PROCESS ORDER, NOT A GEOMETRY.** Gerbers alone do not force a
 fabricator to select it, and a via inside a pad that is merely tented,
 mask-plugged or left open **wicks solder out of the joint**.
+
+> **D-738 — THE SCOPE OF THIS ORDER IS NO LONGER ONE PAD.**  This section was
+> written when `Q3.3` was the only ruled site and it still says the process is
+> "applied to **one pad**".  The board has been routed since.  Measured on the
+> finished copper — `pad_to_mask_clearance` is 0, so a pad's mask aperture IS
+> its copper — **128 via barrels open into 134 solderable lands across 75
+> components**, on 0.20 / 0.25 / 0.30 / 0.40 mm holes, and almost every one of
+> them carries the SAME net as the land it sits in (they are the router's own
+> pad escapes and the decoupling fan-outs), which is why no clearance rule and
+> no KiCad DRC class reports them.  **The process order below now applies to
+> every via in a solderable land, not to `Q3.3` alone.**  Applying it to every
+> via on the board is acceptable and is the simpler instruction to give.
+> `aqroot-Demo-FAB-NOTES.md` states it, `MANIFEST.json` lists every barrel
+> centre under `via_in_pad`, and `fab_package_contract` **FAB9** re-derives the
+> set from the board and refuses a package that under-reports it.  The worst
+> single site is not `Q3.3`: it is **`C18.1`, where a 0.40 mm hole occupies
+> 38.2 % of a 0.56 x 0.62 mm land**, followed by `D8.1` at 24.2 % and the
+> **0.300 mm-wide FPC lands of `J1`**, the 50-pin display connector, where a
+> 0.30-0.40 mm hole is as wide as the land itself.
 
 | field | value |
 |---|---|
@@ -110,9 +129,10 @@ they had to: a via needs a landing site, a landing site must be **reached** from
 the pad, and no via size helps a pad that cannot emit copper at all.
 
 Six layers alone do **not** fix this — `Q3.3` still has no B.Cu escape from
-which to reach an external via. The POFV is what closes it, and it is applied to
-**one pad**. `Q3.1` keeps an ordinary external via: it has four escape
-directions and does not need a premium process.
+which to reach an external via. The POFV is what closes it.  ***`Q3.1` keeps an ordinary
+external via*** was true of the process SCOPE when this was written; D-738's
+note above supersedes the scope, not the `Q3.3` reasoning, which stands exactly
+as measured.
 
 Measured on scratch: `Q3_CS Q3.3 → Q3.1` routes **4.626 mm at 0.25 mm on
 In2.Cu**, two 0.35/0.20 vias, and `LTC_GATE Q3.2 → Q3.4` gets the B.Cu slot back
@@ -121,7 +141,64 @@ the reason one premium via is worth buying.
 
 ---
 
-## 5. Impedance impact register — PUBLISHED-STACKUP INPUTS
+## 5. Impedance impact register — **CLOSED BY D-738: THIS BOARD HAS NO CONTROLLED-IMPEDANCE NET**
+
+> **D-738 — READ THIS BEFORE THE TABLE.**  Every row below was left `PENDING`
+> when the six-layer migration was ruled, and the board has since been routed.
+> Re-asked against the finished copper, the register closes without a single
+> width recalculation, because **not one net on this board is impedance-
+> controlled**, and three of the rows describe nets that do not exist.
+>
+> **`USB D+/D-` — CLOSED, NOT CONTROLLED, AND CORRECT ANYWAY.**  The pair is
+> `0.250 mm` on `F.Cu` over the `In1.Cu` GND plane at `0.2104 mm` of 7628, 1 oz.
+> Edge-coupled microstrip on those inputs gives `Z0 = 60.6 ohm` single-ended.
+> **But the pair is not coupled**: the closest the two nets come, measured
+> segment to segment on the same layer, is **1.173 mm centre to centre**, a
+> **0.923 mm edge gap against a 0.2104 mm reference height** (`s/h = 4.39`), so
+> the coupling term is 1.5 % and `Zdiff` is about **120 ohm** — two independent
+> 60 ohm lines, not a 90 ohm pair.  ***THAT IS ACCEPTABLE HERE AND ONLY
+> BECAUSE OF THE SPEED GRADE:*** the `ESP32-S3-WROOM-1-N16R8` has **no
+> High-Speed USB**.  Both its USB blocks — the USB-Serial-JTAG controller and
+> the USB-OTG peripheral — are **USB 1.1 / 2.0 FULL SPEED, 12 Mbit/s**.  The
+> 90 ohm +/- 15 % differential requirement is a HIGH-SPEED (480 Mbit/s) rule;
+> at Full Speed the 28 mm run is electrically short (~190 ps against an 83 ns
+> unit interval) and the measured **2.97 mm P/N length mismatch is ~20 ps**, four
+> thousand times shorter than the UI.  **Impedance control need not be ordered**,
+> and `JLC06161H-7628` is bought for its construction, not for a controlled-
+> impedance order.
+>
+> **RETURN PATH, MEASURED AND RECORDED HONESTLY.**  `USB_D_MCU_N` and
+> `USB_D_MCU_P` each change layer twice (`F.Cu <-> B.Cu`, `0.55/0.25` barrels),
+> so their return hands off between the two solid GND planes.  The nearest GND
+> via to each transition is **2.476 / 6.836 mm** (`N`) and **3.821 / 5.825 mm**
+> (`P`); the connector-side `USB_D_CONN_P` transitions are better at 2.347 and
+> 2.535 mm.  A High-Speed design would want a stitch inside ~1 mm.  At Full
+> Speed the few nH of detour is a low-single-digit percentage of a 60 ohm line
+> and is not a functional risk — but it is the **first Rev-B improvement in this
+> block** and is recorded as one rather than left to be rediscovered.
+>
+> **`915 MHz feed` and `433 MHz controlled traces` — THE NETS DO NOT EXIST.**
+> `U8` (`E22-900M22S`) and `U7` (`E07-400M10S`) are MODULES that carry their own
+> antenna connectors; neither has a single board net whose name contains `ANT`
+> or `RF`.  The only `ANT` nets on the whole board are
+> `NFC_ANT_A` and `NFC_ANT_B`.  **There is no board-level 50 ohm structure to
+> control.**
+>
+> **`NFC transmit arms` — CLOSED BY CONSTRUCTION, NOT BY CALCULATION.**  This
+> row called itself "the largest change in this table" because the reference
+> moved from the far side of a 1.065 mm core to `0.2104 mm`.  At 13.56 MHz the
+> arms are electrically nothing (`lambda/2` is 11 m); what the closer plane
+> changes is STRAY CAPACITANCE, of order 0.15 pF/mm including fringing — a few
+> pF across an arm, against `C71`/`C72` at 300 pF and `C73`/`C74` at 1.5 nF.
+> That is inside the C0G tolerance stack, and **every part in the ladder is
+> already marked `TUNE`** — twelve C0G capacitors, `L5`/`L6`, `R114`-`R117`, with
+> `TP37`/`TP38` on the two arms.  The network is designed to be tuned on
+> hardware and that bench tune is this row's closure.
+>
+> **`Display / high-speed SPI` and `internal signals on In2 / In3` — both rows
+> already said "none is today", and that is still true.**
+
+### 5.1 The original register, retained
 
 **No impedance-sensitive net was routed in 002M or 002N.** The inputs below are
 now the published JLC06161H-7628 values; every width remains **pending
@@ -160,7 +237,14 @@ What changes is the numeric width, and that is what this register schedules.
 
 ## 6. Board-outline datum
 
-**The design datum is 72.000 × 148.000 mm.**
+> **SUPERSEDED IN ITS NUMBER BY D-709, CORRECTED HERE AT D-738.**  The datum is
+> now **77.000 × 148.000 mm MAXIMUM** — a STEPPED profile, 72.000 mm wide except
+> an east bump to `x = 77.000` between `y = 70.500` and `y = 104.005`, made under
+> owner authority D-703 option 2 and owner approval D-707.  DEVICE_SPEC section
+> 12 is the dimension authority.  **The API artefact described below is
+> unaffected and is still the point of this section.**
+
+**The design datum was 72.000 × 148.000 mm when this was written.**
 
 `GetBoardEdgesBoundingBox()` measures to the **outside** of the Edge.Cuts
 stroke, so with a 0.100 mm outline stroke it reports **72.100 × 148.100 mm**.
