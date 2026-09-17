@@ -66,9 +66,11 @@ What the finalist opens instead is **`BTN_UP_N`'s PULL-UP LEG**: `R5.2` at
 **2 escapes** against a 8.099 mm gap, and the reason is geometric and was
 already on the record -- D-735 wrote that `U2`'s six buttons land on the EAST
 column while their pull-ups `R4`-`R9` sit at x ~ 52, *"six 8-9 mm WRAPS around
-the part"*.  The resistor column's east edge is **x = 52.77** and `U2`'s west
-lands begin at **x = 53.10**: a **0.33 mm** gap carrying eight fan-outs, six
-wraps, and now `DIO1`.
+the part"*.  The resistor column's east PAD edge is **x = 52.475** and `U2`'s
+west LANDS begin at **x = 53.400**: a **0.925 mm** channel.  At this board's
+0.200 mm clearance one 0.200 mm track needs `0.200 + 0.200 + 0.200 = 0.600 mm`
+of it and two need 1.000 mm, so it is a **ONE-CONDUCTOR wall** -- which is
+exactly the N-1-of-N behaviour the table below shows.
 
 Eleven transactions were run against that pocket.  The pocket holds **N-1 of N**
 and the identity of the loser moves with the request order:
@@ -119,18 +121,35 @@ this.**  The finalist is recorded, not promoted.
 
 ### 6. THE FIX IS A PLACEMENT CHANGE, IT IS INSIDE MY AUTHORITY, AND IT IS THE NEXT THING TO DO
 
-The pocket is short by one conductor because **six pull-ups sit on the wrong
-side of `U2`**.  `R4`-`R9` are at `x 49.60 .. 52.77`, west of a part whose six
-button pins are all on the EAST column, so every one of them wraps 8-9 mm
-through the 0.33 mm channel that `DIO1` now also needs.
+The pocket is short by one conductor because the channel west of `U2` is a
+**ONE-CONDUCTOR wall**: `R4`-`R9`'s pads end at `x = 52.475` and `U2`'s west
+lands begin at `x = 53.400`, leaving **0.925 mm** for EIGHT fan-outs, one of
+which is now `DIO1`.
 
-**Move `R4`-`R9` EAST of `U2`.**  The strip at `x 61.2 .. 63.3, y 80.8 .. 95.0`
-on `B.Cu` is clear between `TP33` (ends y 80.80) and `TP47` (starts y 94.95) --
-2.1 x 14.2 mm, and six 0603 lands on ~2.0 mm pitch need 12 mm of it.  That
-turns six 8-9 mm wraps into six 1-2 mm hops, removes six conductors from the
-west pocket, and gives `/NFC_5V_EN` back its lane.  Passive movement is routine
-engineering authority under the charter; it needs `placement`, `pour_partition`
-PP1/PP2 and the full gate, and it does **not** need an owner.
+**Move `R4`-`R9` WEST by about 3 mm**, from `x ~ 51` to `x ~ 48`.  That is
+the change that acts directly on the measured constraint: the **0.925 mm**
+channel between the resistor column's east pad edge (`x = 52.475`) and `U2`'s
+west lands (`x = 53.400`) is a ONE-CONDUCTOR wall, and it is what every one of
+the EIGHT west-column fan-outs --
+`TOUCH_RST_N`, `SX1262_RST_N`, `NFC_5V_EN`, `AMP_SD_MODE`, `DISP_RST_N`,
+`SX1262_DIO1`, `TOUCH_INT_N`, `SD_CARD_DETECT_N` -- has to squeeze through.
+Moving the column 3 mm west opens that channel to about **3.925 mm**, which
+admits roughly EIGHT 0.200 mm conductors where it now admits ONE.  The band
+`x 36 .. 49.6, y 76 .. 96` on `B.Cu` carries **NO FOOTPRINT AT ALL** (measured),
+so the room is there.  The cost is about 3 mm on each of six pull-up legs.
+
+***A CORRECTION TO AN OBVIOUS-LOOKING ALTERNATIVE.***  "Move them EAST of `U2`
+so the six wraps disappear" is the wrong move and the geometry says why: the six
+button nets arrive from the D-pad in the FAR WEST, so the wrap belongs to the
+SWITCH haul, not to the pull-up, and it stays wherever the pull-up goes.  The
+wraps also pass around `U2`'s NORTH and SOUTH ends, not through the 0.925 mm
+west channel, so removing them does not widen the channel that is actually
+short.
+**Widening the channel is the fix; shortening the pull-up legs is not.**
+
+Passive movement is routine engineering authority under the charter; it needs
+`placement`, `pour_partition` PP1/PP2 and the full gate, and it does **not**
+need an owner.
 
 **IF IT DOES NOT WORK**, the honest fallback is the one section 5 prices: take
 `s5` and retire the `U2.6` leg of `/NFC_5V_EN`, which is a **scope** question

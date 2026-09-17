@@ -118,9 +118,10 @@
   ledger **raw ratsnest 19, retained open edges 3, and `/SX1262_DIO1` GONE FROM
   THE OPEN LIST**.  ***THE RESIDUAL IS EXACTLY ONE CONDUCTOR AND IT IS NAMED:***
   `BTN_UP_N`'s PULL-UP leg -- `R5.2` has **2 escapes** against an 8.099 mm gap,
-  because the `R4`-`R9` column's east edge is `x = 52.77` and `U2`'s west lands
-  begin at `x = 53.10`, a **0.33 mm** channel already carrying eight fan-outs and
-  six button wraps.  **Eleven transactions** were run at that pocket; it holds
+  because the `R4`-`R9` column's east PAD edge is `x = 52.475` and `U2`'s west
+  LANDS begin at `x = 53.400` -- a **0.925 mm** channel, which at 0.200 mm
+  clearance is a **ONE-CONDUCTOR wall** (one 0.200 mm track needs 0.600 mm of
+  it, two need 1.000 mm).  **Eleven transactions** were run at that pocket; it holds
   **N-1 of N** and the loser moves with the request order.  The best (`s5`)
   closes `BTN_UP_N` 54.575/4, `DISP_RST_N` 18.153/1, `AMP_SD_MODE` 55.881/5,
   `TOUCH_INT_N` 44.583/1 and `SD_CARD_DETECT_N` 78.309/1, and loses only
@@ -131,11 +132,16 @@
   gate counts EDGES, `DIO1` closes (-1) and `NFC_5V_EN` opens (+1), so
   **3 -> 3** and clause 4 refuses.  **That clause is not relaxed for this.**
   ***THE FIX IS A PLACEMENT CHANGE INSIDE MY OWN AUTHORITY AND IT IS THE NEXT
-  THING TO DO:*** move `R4`-`R9` **EAST** of `U2` into the clear B.Cu strip
-  `x 61.2..63.3, y 80.8..95.0` (2.1 x 14.2 mm between `TP33` and `TP47`; six
-  0603 lands on ~2.0 mm pitch need 12 mm).  Six 8-9 mm wraps become six 1-2 mm
-  hops, six conductors leave the west pocket, and `/NFC_5V_EN` gets its lane
-  back.  ***WHAT THIS DOES TO THE OWNER DECISIONS:*** **D-735's is WITHDRAWN** --
+  THING TO DO:*** move `R4`-`R9` **WEST by about 3 mm**, `x ~ 51 -> ~ 48`.  The
+  **0.925 mm** channel between the resistor column's east pad edge
+  (`x = 52.475`) and `U2`'s west lands (`x = 53.400`) is a ONE-CONDUCTOR wall,
+  and ALL EIGHT west-column fan-outs squeeze through it; 3 mm west opens it to
+  about **3.925 mm**, roughly eight conductors where there is now one, and the
+  band `x 36..49.6, y 76..96` on B.Cu carries **no footprint at all**.  **Moving them EAST instead would be
+  wrong** -- the six wraps belong to the SWITCH hauls arriving from the far
+  west, they pass round `U2`'s north and south ENDS rather than through the west
+  channel, and they follow the pull-up wherever it goes.  Widening the channel
+  is the fix; shortening the pull-up legs is not.  ***WHAT THIS DOES TO THE OWNER DECISIONS:*** **D-735's is WITHDRAWN** --
   do not move the D-pad and do not accept the `GetIrqStatus()` polling fallback.
   **D-734's `U11.3` is untouched and remains the board's ONE open owner
   decision.**
