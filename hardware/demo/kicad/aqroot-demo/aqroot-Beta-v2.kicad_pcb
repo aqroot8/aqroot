@@ -5988,7 +5988,7 @@
 				)
 			)
 		)
-		(property "Value" "RIGHT"
+		(property "Value" "LEFT"
 			(at 0 4.15 90)
 			(layer "F.Fab")
 			(hide yes)
@@ -6215,7 +6215,7 @@
 			(size 1.55 1.3)
 			(layers "F.Cu" "F.Mask" "F.Paste")
 			(roundrect_rratio 0.1923076923)
-			(net "/08_BUTTONS_EXPANDERS/BTN_RIGHT_N")
+			(net "/08_BUTTONS_EXPANDERS/BTN_LEFT_N")
 			(uuid "8d7618b2-cdbd-41d1-b93d-93e0adfaa1dc")
 		)
 		(pad "1" smd roundrect
@@ -6223,7 +6223,7 @@
 			(size 1.55 1.3)
 			(layers "F.Cu" "F.Mask" "F.Paste")
 			(roundrect_rratio 0.1923076923)
-			(net "/08_BUTTONS_EXPANDERS/BTN_RIGHT_N")
+			(net "/08_BUTTONS_EXPANDERS/BTN_LEFT_N")
 			(uuid "68f45076-d2f2-49c6-9f73-87bb29438b69")
 		)
 		(pad "2" smd roundrect
@@ -8515,7 +8515,7 @@
 				)
 			)
 		)
-		(property "Value" "LEFT"
+		(property "Value" "DOWN"
 			(at 0 4.15 90)
 			(layer "F.Fab")
 			(hide yes)
@@ -8742,7 +8742,7 @@
 			(size 1.55 1.3)
 			(layers "F.Cu" "F.Mask" "F.Paste")
 			(roundrect_rratio 0.1923076923)
-			(net "/08_BUTTONS_EXPANDERS/BTN_LEFT_N")
+			(net "/08_BUTTONS_EXPANDERS/BTN_DOWN_N")
 			(uuid "b9a36ca9-d7a3-4b18-8b2e-ee72b0e3ebad")
 		)
 		(pad "1" smd roundrect
@@ -8750,7 +8750,7 @@
 			(size 1.55 1.3)
 			(layers "F.Cu" "F.Mask" "F.Paste")
 			(roundrect_rratio 0.1923076923)
-			(net "/08_BUTTONS_EXPANDERS/BTN_LEFT_N")
+			(net "/08_BUTTONS_EXPANDERS/BTN_DOWN_N")
 			(uuid "c03df01c-8f92-4dc0-90fa-b5af0eb83281")
 		)
 		(pad "2" smd roundrect
@@ -14512,7 +14512,7 @@
 				)
 			)
 		)
-		(property "Value" "A_SELECT"
+		(property "Value" "RIGHT"
 			(at 0 4.15 90)
 			(layer "F.Fab")
 			(hide yes)
@@ -14739,7 +14739,7 @@
 			(size 1.55 1.3)
 			(layers "F.Cu" "F.Mask" "F.Paste")
 			(roundrect_rratio 0.1923076923)
-			(net "/08_BUTTONS_EXPANDERS/BTN_A_N")
+			(net "/08_BUTTONS_EXPANDERS/BTN_RIGHT_N")
 			(uuid "97b06173-926a-4562-81d5-b58c19652549")
 		)
 		(pad "1" smd roundrect
@@ -14747,7 +14747,7 @@
 			(size 1.55 1.3)
 			(layers "F.Cu" "F.Mask" "F.Paste")
 			(roundrect_rratio 0.1923076923)
-			(net "/08_BUTTONS_EXPANDERS/BTN_A_N")
+			(net "/08_BUTTONS_EXPANDERS/BTN_RIGHT_N")
 			(uuid "8c841e21-fc99-43cc-956e-b900a858d52a")
 		)
 		(pad "2" smd roundrect
@@ -15925,7 +15925,7 @@
 				)
 			)
 		)
-		(property "Value" "DOWN"
+		(property "Value" "UP"
 			(at 0 4.15 90)
 			(layer "F.Fab")
 			(hide yes)
@@ -16152,7 +16152,7 @@
 			(size 1.55 1.3)
 			(layers "F.Cu" "F.Mask" "F.Paste")
 			(roundrect_rratio 0.1923076923)
-			(net "/08_BUTTONS_EXPANDERS/BTN_DOWN_N")
+			(net "/08_BUTTONS_EXPANDERS/BTN_UP_N")
 			(uuid "891d576c-8a64-4c67-9122-bda8d7dac205")
 		)
 		(pad "1" smd roundrect
@@ -16160,7 +16160,7 @@
 			(size 1.55 1.3)
 			(layers "F.Cu" "F.Mask" "F.Paste")
 			(roundrect_rratio 0.1923076923)
-			(net "/08_BUTTONS_EXPANDERS/BTN_DOWN_N")
+			(net "/08_BUTTONS_EXPANDERS/BTN_UP_N")
 			(uuid "c99f2bf3-1ee6-48c0-a9fa-d8938de93fe2")
 		)
 		(pad "2" smd roundrect
@@ -19222,7 +19222,7 @@
 				)
 			)
 		)
-		(property "Value" "UP"
+		(property "Value" "A_SELECT"
 			(at 0 4.15 0)
 			(layer "F.Fab")
 			(hide yes)
@@ -19449,7 +19449,7 @@
 			(size 1.55 1.3)
 			(layers "F.Cu" "F.Mask" "F.Paste")
 			(roundrect_rratio 0.1923076923)
-			(net "/08_BUTTONS_EXPANDERS/BTN_UP_N")
+			(net "/08_BUTTONS_EXPANDERS/BTN_A_N")
 			(uuid "84539c92-2575-4612-b334-d6bc5b1cb039")
 		)
 		(pad "1" smd roundrect
@@ -19457,7 +19457,7 @@
 			(size 1.55 1.3)
 			(layers "F.Cu" "F.Mask" "F.Paste")
 			(roundrect_rratio 0.1923076923)
-			(net "/08_BUTTONS_EXPANDERS/BTN_UP_N")
+			(net "/08_BUTTONS_EXPANDERS/BTN_A_N")
 			(uuid "0d43c8de-7c60-4989-998d-c55ca757b2ff")
 		)
 		(pad "2" smd roundrect
@@ -27355,7 +27355,7 @@
 			(size 0.8 0.95)
 			(layers "B.Cu" "B.Mask" "B.Paste")
 			(roundrect_rratio 0.25)
-			(net "/08_BUTTONS_EXPANDERS/BTN_DOWN_N")
+			(net "/08_BUTTONS_EXPANDERS/BTN_UP_N")
 			(uuid "1e5fdd3a-0dff-466a-b7f2-dd5c116f84e0")
 		)
 		(embedded_fonts no)
@@ -28335,7 +28335,7 @@
 			(size 1.475 0.4)
 			(layers "B.Cu" "B.Mask" "B.Paste")
 			(roundrect_rratio 0.25)
-			(net "/08_BUTTONS_EXPANDERS/BTN_UP_N")
+			(net "/08_BUTTONS_EXPANDERS/BTN_A_N")
 			(uuid "52d7d364-793a-4861-a2c6-c74ff34c7c9f")
 		)
 		(pad "14" smd roundrect
@@ -28343,7 +28343,7 @@
 			(size 1.475 0.4)
 			(layers "B.Cu" "B.Mask" "B.Paste")
 			(roundrect_rratio 0.25)
-			(net "/08_BUTTONS_EXPANDERS/BTN_DOWN_N")
+			(net "/08_BUTTONS_EXPANDERS/BTN_UP_N")
 			(uuid "49c2b9f1-45f7-4567-8010-5a14a942630a")
 		)
 		(pad "15" smd roundrect
@@ -28351,7 +28351,7 @@
 			(size 1.475 0.4)
 			(layers "B.Cu" "B.Mask" "B.Paste")
 			(roundrect_rratio 0.25)
-			(net "/08_BUTTONS_EXPANDERS/BTN_LEFT_N")
+			(net "/08_BUTTONS_EXPANDERS/BTN_DOWN_N")
 			(uuid "02c7f078-b827-466e-aec5-e3d0d3396f1c")
 		)
 		(pad "16" smd roundrect
@@ -28359,7 +28359,7 @@
 			(size 1.475 0.4)
 			(layers "B.Cu" "B.Mask" "B.Paste")
 			(roundrect_rratio 0.25)
-			(net "/08_BUTTONS_EXPANDERS/BTN_RIGHT_N")
+			(net "/08_BUTTONS_EXPANDERS/BTN_LEFT_N")
 			(uuid "0c80bb92-f9ea-4ecb-8255-b2a2c845fc91")
 		)
 		(pad "17" smd roundrect
@@ -28367,7 +28367,7 @@
 			(size 1.475 0.4)
 			(layers "B.Cu" "B.Mask" "B.Paste")
 			(roundrect_rratio 0.25)
-			(net "/08_BUTTONS_EXPANDERS/BTN_A_N")
+			(net "/08_BUTTONS_EXPANDERS/BTN_RIGHT_N")
 			(uuid "29866feb-4670-4059-8533-3d5c39c957c8")
 		)
 		(pad "18" smd roundrect
@@ -35228,7 +35228,7 @@
 			(size 0.8 0.95)
 			(layers "B.Cu" "B.Mask" "B.Paste")
 			(roundrect_rratio 0.25)
-			(net "/08_BUTTONS_EXPANDERS/BTN_LEFT_N")
+			(net "/08_BUTTONS_EXPANDERS/BTN_DOWN_N")
 			(uuid "aaab2002-11e0-49b3-a3da-2219a327e71d")
 		)
 		(embedded_fonts no)
@@ -39262,7 +39262,7 @@
 			(size 0.8 0.95)
 			(layers "B.Cu" "B.Mask" "B.Paste")
 			(roundrect_rratio 0.25)
-			(net "/08_BUTTONS_EXPANDERS/BTN_A_N")
+			(net "/08_BUTTONS_EXPANDERS/BTN_RIGHT_N")
 			(uuid "19d170eb-1edc-4fd8-8ddc-e86bd6978581")
 		)
 		(embedded_fonts no)
@@ -47575,7 +47575,7 @@
 			(size 0.8 0.95)
 			(layers "B.Cu" "B.Mask" "B.Paste")
 			(roundrect_rratio 0.25)
-			(net "/08_BUTTONS_EXPANDERS/BTN_UP_N")
+			(net "/08_BUTTONS_EXPANDERS/BTN_A_N")
 			(uuid "3d49a09e-f2c5-4d7f-bb0e-4ed79deb7f65")
 		)
 		(embedded_fonts no)
@@ -51509,7 +51509,7 @@
 			(size 0.8 0.95)
 			(layers "B.Cu" "B.Mask" "B.Paste")
 			(roundrect_rratio 0.25)
-			(net "/08_BUTTONS_EXPANDERS/BTN_RIGHT_N")
+			(net "/08_BUTTONS_EXPANDERS/BTN_LEFT_N")
 			(uuid "261b99d7-552b-4256-b4c9-c8dbae0e0dbd")
 		)
 		(embedded_fonts no)
@@ -77505,7 +77505,7 @@
 		(end 3.75 112.25)
 		(width 0.2)
 		(layer "F.Cu")
-		(net "/08_BUTTONS_EXPANDERS/BTN_RIGHT_N")
+		(net "/08_BUTTONS_EXPANDERS/BTN_LEFT_N")
 		(uuid "134293ff-ca85-433e-8947-92950456006f")
 	)
 	(segment
@@ -77513,7 +77513,7 @@
 		(end 52.35 82.9)
 		(width 0.2)
 		(layer "F.Cu")
-		(net "/08_BUTTONS_EXPANDERS/BTN_RIGHT_N")
+		(net "/08_BUTTONS_EXPANDERS/BTN_LEFT_N")
 		(uuid "210c42c5-c7ae-4a5c-92e1-3c7f4e2870b5")
 	)
 	(segment
@@ -77521,7 +77521,7 @@
 		(end 3.75 117.75)
 		(width 0.2)
 		(layer "F.Cu")
-		(net "/08_BUTTONS_EXPANDERS/BTN_RIGHT_N")
+		(net "/08_BUTTONS_EXPANDERS/BTN_LEFT_N")
 		(uuid "2514832c-b562-4011-988b-51a967ddefd7")
 	)
 	(segment
@@ -77529,7 +77529,7 @@
 		(end 35.85 79.75)
 		(width 0.2)
 		(layer "F.Cu")
-		(net "/08_BUTTONS_EXPANDERS/BTN_RIGHT_N")
+		(net "/08_BUTTONS_EXPANDERS/BTN_LEFT_N")
 		(uuid "3b5fc314-4060-46b6-8732-a0652f8405de")
 	)
 	(segment
@@ -77537,7 +77537,7 @@
 		(end 57.75 85.7)
 		(width 0.2)
 		(layer "F.Cu")
-		(net "/08_BUTTONS_EXPANDERS/BTN_RIGHT_N")
+		(net "/08_BUTTONS_EXPANDERS/BTN_LEFT_N")
 		(uuid "5ab414d3-809e-40c3-a97e-ff99b7c9325b")
 	)
 	(segment
@@ -77545,7 +77545,7 @@
 		(end 10.45 102.5)
 		(width 0.2)
 		(layer "F.Cu")
-		(net "/08_BUTTONS_EXPANDERS/BTN_RIGHT_N")
+		(net "/08_BUTTONS_EXPANDERS/BTN_LEFT_N")
 		(uuid "69a76cde-deb5-4b38-86f9-833b4e6dfbd3")
 	)
 	(segment
@@ -77553,7 +77553,7 @@
 		(end 3.75 117.75)
 		(width 0.2)
 		(layer "F.Cu")
-		(net "/08_BUTTONS_EXPANDERS/BTN_RIGHT_N")
+		(net "/08_BUTTONS_EXPANDERS/BTN_LEFT_N")
 		(uuid "98f3cd0a-da43-4a52-901f-638928ea7ee6")
 	)
 	(segment
@@ -77561,7 +77561,7 @@
 		(end 52.35 82.1)
 		(width 0.2)
 		(layer "F.Cu")
-		(net "/08_BUTTONS_EXPANDERS/BTN_RIGHT_N")
+		(net "/08_BUTTONS_EXPANDERS/BTN_LEFT_N")
 		(uuid "a35f46a8-2a4e-41de-927e-6464a355324d")
 	)
 	(segment
@@ -77569,7 +77569,7 @@
 		(end 4.7 110.05)
 		(width 0.2)
 		(layer "F.Cu")
-		(net "/08_BUTTONS_EXPANDERS/BTN_RIGHT_N")
+		(net "/08_BUTTONS_EXPANDERS/BTN_LEFT_N")
 		(uuid "ab3793ea-2d41-467c-8b91-e58f83d33ba2")
 	)
 	(segment
@@ -77577,7 +77577,7 @@
 		(end 55.15 85.7)
 		(width 0.2)
 		(layer "F.Cu")
-		(net "/08_BUTTONS_EXPANDERS/BTN_RIGHT_N")
+		(net "/08_BUTTONS_EXPANDERS/BTN_LEFT_N")
 		(uuid "baee9061-debe-4d3c-94e7-00802279a3fa")
 	)
 	(segment
@@ -77585,7 +77585,7 @@
 		(end 57.95 85.9)
 		(width 0.2)
 		(layer "F.Cu")
-		(net "/08_BUTTONS_EXPANDERS/BTN_RIGHT_N")
+		(net "/08_BUTTONS_EXPANDERS/BTN_LEFT_N")
 		(uuid "d4a0c938-e8d6-4e06-9474-0bb54ccf8a9a")
 	)
 	(segment
@@ -77593,7 +77593,7 @@
 		(end 52.75 81.7)
 		(width 0.2)
 		(layer "F.Cu")
-		(net "/08_BUTTONS_EXPANDERS/BTN_RIGHT_N")
+		(net "/08_BUTTONS_EXPANDERS/BTN_LEFT_N")
 		(uuid "fa934848-cdff-4621-b495-e074c55e41db")
 	)
 	(via
@@ -77601,7 +77601,7 @@
 		(size 0.6)
 		(drill 0.3)
 		(layers "F.Cu" "B.Cu")
-		(net "/08_BUTTONS_EXPANDERS/BTN_RIGHT_N")
+		(net "/08_BUTTONS_EXPANDERS/BTN_LEFT_N")
 		(uuid "19dd756c-a98a-4b02-8593-d56a2829df10")
 	)
 	(via
@@ -77609,7 +77609,7 @@
 		(size 0.6)
 		(drill 0.3)
 		(layers "F.Cu" "B.Cu")
-		(net "/08_BUTTONS_EXPANDERS/BTN_RIGHT_N")
+		(net "/08_BUTTONS_EXPANDERS/BTN_LEFT_N")
 		(uuid "5e87eede-e920-4b73-94c9-001c12b2c8e0")
 	)
 	(segment
@@ -77617,7 +77617,7 @@
 		(end 52.75 81.7)
 		(width 0.2)
 		(layer "B.Cu")
-		(net "/08_BUTTONS_EXPANDERS/BTN_RIGHT_N")
+		(net "/08_BUTTONS_EXPANDERS/BTN_LEFT_N")
 		(uuid "30d58270-5f09-45f1-8f61-e53ab43b2ef2")
 	)
 	(segment
@@ -77625,7 +77625,7 @@
 		(end 58.7 86.4)
 		(width 0.2)
 		(layer "B.Cu")
-		(net "/08_BUTTONS_EXPANDERS/BTN_RIGHT_N")
+		(net "/08_BUTTONS_EXPANDERS/BTN_LEFT_N")
 		(uuid "60c178b2-919e-48d1-baeb-6b2db0460176")
 	)
 	(segment
@@ -77633,7 +77633,7 @@
 		(end 57.95 85.9)
 		(width 0.2)
 		(layer "B.Cu")
-		(net "/08_BUTTONS_EXPANDERS/BTN_RIGHT_N")
+		(net "/08_BUTTONS_EXPANDERS/BTN_LEFT_N")
 		(uuid "a71968f7-a6fb-4a33-9733-21ee788423d4")
 	)
 	(segment
@@ -77641,7 +77641,7 @@
 		(end 58.2 85.9)
 		(width 0.2)
 		(layer "B.Cu")
-		(net "/08_BUTTONS_EXPANDERS/BTN_RIGHT_N")
+		(net "/08_BUTTONS_EXPANDERS/BTN_LEFT_N")
 		(uuid "ee7ce40c-ce77-41f2-9323-22df5b9b3b10")
 	)
 	(segment
@@ -77993,7 +77993,7 @@
 		(end 11.7 119)
 		(width 0.2)
 		(layer "F.Cu")
-		(net "/08_BUTTONS_EXPANDERS/BTN_LEFT_N")
+		(net "/08_BUTTONS_EXPANDERS/BTN_DOWN_N")
 		(uuid "126407e1-3962-4002-a29f-c28d0a457231")
 	)
 	(segment
@@ -78001,7 +78001,7 @@
 		(end 56.25 88.65)
 		(width 0.2)
 		(layer "F.Cu")
-		(net "/08_BUTTONS_EXPANDERS/BTN_LEFT_N")
+		(net "/08_BUTTONS_EXPANDERS/BTN_DOWN_N")
 		(uuid "137d8e37-7acd-4e3e-a941-cf586f43405e")
 	)
 	(segment
@@ -78009,7 +78009,7 @@
 		(end 11.6 119)
 		(width 0.2)
 		(layer "F.Cu")
-		(net "/08_BUTTONS_EXPANDERS/BTN_LEFT_N")
+		(net "/08_BUTTONS_EXPANDERS/BTN_DOWN_N")
 		(uuid "16d12b4b-042b-478c-8a7a-238ed609fc3d")
 	)
 	(segment
@@ -78017,7 +78017,7 @@
 		(end 12.2 117.6)
 		(width 0.2)
 		(layer "F.Cu")
-		(net "/08_BUTTONS_EXPANDERS/BTN_LEFT_N")
+		(net "/08_BUTTONS_EXPANDERS/BTN_DOWN_N")
 		(uuid "2a221680-c965-4ba9-b84b-516e7b3e8950")
 	)
 	(segment
@@ -78025,7 +78025,7 @@
 		(end 56.8 89.2)
 		(width 0.2)
 		(layer "F.Cu")
-		(net "/08_BUTTONS_EXPANDERS/BTN_LEFT_N")
+		(net "/08_BUTTONS_EXPANDERS/BTN_DOWN_N")
 		(uuid "310f59d4-2f1d-49d1-aff1-df8b9e4b61e0")
 	)
 	(segment
@@ -78033,7 +78033,7 @@
 		(end 29.5 99.7)
 		(width 0.2)
 		(layer "F.Cu")
-		(net "/08_BUTTONS_EXPANDERS/BTN_LEFT_N")
+		(net "/08_BUTTONS_EXPANDERS/BTN_DOWN_N")
 		(uuid "66d24d04-0ff1-43cf-a249-91f4843841e0")
 	)
 	(segment
@@ -78041,7 +78041,7 @@
 		(end 11.2 125.3)
 		(width 0.2)
 		(layer "F.Cu")
-		(net "/08_BUTTONS_EXPANDERS/BTN_LEFT_N")
+		(net "/08_BUTTONS_EXPANDERS/BTN_DOWN_N")
 		(uuid "70696093-547c-4672-93b4-ed901e1cf14c")
 	)
 	(segment
@@ -78049,7 +78049,7 @@
 		(end 17.7 110.1)
 		(width 0.2)
 		(layer "F.Cu")
-		(net "/08_BUTTONS_EXPANDERS/BTN_LEFT_N")
+		(net "/08_BUTTONS_EXPANDERS/BTN_DOWN_N")
 		(uuid "87774096-760a-42f1-a38b-4b529fe6ed65")
 	)
 	(segment
@@ -78057,7 +78057,7 @@
 		(end 31.1 101.3)
 		(width 0.2)
 		(layer "F.Cu")
-		(net "/08_BUTTONS_EXPANDERS/BTN_LEFT_N")
+		(net "/08_BUTTONS_EXPANDERS/BTN_DOWN_N")
 		(uuid "878af4fd-b2bb-4a66-9a61-f3758b188221")
 	)
 	(segment
@@ -78065,7 +78065,7 @@
 		(end 57.1 89.5)
 		(width 0.2)
 		(layer "F.Cu")
-		(net "/08_BUTTONS_EXPANDERS/BTN_LEFT_N")
+		(net "/08_BUTTONS_EXPANDERS/BTN_DOWN_N")
 		(uuid "b4b3945c-b039-46eb-b9e4-0b17614dd8ea")
 	)
 	(segment
@@ -78073,7 +78073,7 @@
 		(end 17.7 111.5)
 		(width 0.2)
 		(layer "F.Cu")
-		(net "/08_BUTTONS_EXPANDERS/BTN_LEFT_N")
+		(net "/08_BUTTONS_EXPANDERS/BTN_DOWN_N")
 		(uuid "fd4c2efe-df04-409c-8e98-2a860650180b")
 	)
 	(via
@@ -78081,7 +78081,7 @@
 		(size 0.6)
 		(drill 0.3)
 		(layers "F.Cu" "B.Cu")
-		(net "/08_BUTTONS_EXPANDERS/BTN_LEFT_N")
+		(net "/08_BUTTONS_EXPANDERS/BTN_DOWN_N")
 		(uuid "262433b5-a830-4bcb-a1d4-f3c8ca6a2613")
 	)
 	(via
@@ -78089,7 +78089,7 @@
 		(size 0.6)
 		(drill 0.3)
 		(layers "F.Cu" "B.Cu")
-		(net "/08_BUTTONS_EXPANDERS/BTN_LEFT_N")
+		(net "/08_BUTTONS_EXPANDERS/BTN_DOWN_N")
 		(uuid "2d42ac61-f711-4029-9783-8b09eaa1b316")
 	)
 	(via
@@ -78097,7 +78097,7 @@
 		(size 0.6)
 		(drill 0.3)
 		(layers "F.Cu" "B.Cu")
-		(net "/08_BUTTONS_EXPANDERS/BTN_LEFT_N")
+		(net "/08_BUTTONS_EXPANDERS/BTN_DOWN_N")
 		(uuid "53eaede7-657e-429a-bd94-a7ea3f1d7b93")
 	)
 	(via
@@ -78105,7 +78105,7 @@
 		(size 0.6)
 		(drill 0.3)
 		(layers "F.Cu" "B.Cu")
-		(net "/08_BUTTONS_EXPANDERS/BTN_LEFT_N")
+		(net "/08_BUTTONS_EXPANDERS/BTN_DOWN_N")
 		(uuid "64cab472-f59b-4c61-9a36-28c60c01e22b")
 	)
 	(via
@@ -78113,7 +78113,7 @@
 		(size 0.6)
 		(drill 0.3)
 		(layers "F.Cu" "B.Cu")
-		(net "/08_BUTTONS_EXPANDERS/BTN_LEFT_N")
+		(net "/08_BUTTONS_EXPANDERS/BTN_DOWN_N")
 		(uuid "73c3fd44-e3a9-4ee0-9210-8ad6aa7e864c")
 	)
 	(via
@@ -78121,7 +78121,7 @@
 		(size 0.6)
 		(drill 0.3)
 		(layers "F.Cu" "B.Cu")
-		(net "/08_BUTTONS_EXPANDERS/BTN_LEFT_N")
+		(net "/08_BUTTONS_EXPANDERS/BTN_DOWN_N")
 		(uuid "dd863e0e-03c5-4a58-85d3-adde8c016341")
 	)
 	(via
@@ -78129,7 +78129,7 @@
 		(size 0.6)
 		(drill 0.3)
 		(layers "F.Cu" "B.Cu")
-		(net "/08_BUTTONS_EXPANDERS/BTN_LEFT_N")
+		(net "/08_BUTTONS_EXPANDERS/BTN_DOWN_N")
 		(uuid "f137a6d7-6605-4c62-b17d-b53e13f7cef3")
 	)
 	(segment
@@ -78137,7 +78137,7 @@
 		(end 58.35 84.95)
 		(width 0.2)
 		(layer "B.Cu")
-		(net "/08_BUTTONS_EXPANDERS/BTN_LEFT_N")
+		(net "/08_BUTTONS_EXPANDERS/BTN_DOWN_N")
 		(uuid "01025036-9925-40a7-9d27-9ed34ac3f4ab")
 	)
 	(segment
@@ -78145,7 +78145,7 @@
 		(end 57.35 87.3)
 		(width 0.2)
 		(layer "B.Cu")
-		(net "/08_BUTTONS_EXPANDERS/BTN_LEFT_N")
+		(net "/08_BUTTONS_EXPANDERS/BTN_DOWN_N")
 		(uuid "12d9750a-cbdd-4e48-b57b-7a120e610819")
 	)
 	(segment
@@ -78153,7 +78153,7 @@
 		(end 52.4 94.3)
 		(width 0.2)
 		(layer "B.Cu")
-		(net "/08_BUTTONS_EXPANDERS/BTN_LEFT_N")
+		(net "/08_BUTTONS_EXPANDERS/BTN_DOWN_N")
 		(uuid "28ebc216-386c-49d5-9eb0-82dcf8c2ed64")
 	)
 	(segment
@@ -78161,7 +78161,7 @@
 		(end 58.25 84.85)
 		(width 0.2)
 		(layer "B.Cu")
-		(net "/08_BUTTONS_EXPANDERS/BTN_LEFT_N")
+		(net "/08_BUTTONS_EXPANDERS/BTN_DOWN_N")
 		(uuid "4b512d1a-24e5-47d0-9b97-ee535f5e7b26")
 	)
 	(segment
@@ -78169,7 +78169,7 @@
 		(end 58.3 84.9)
 		(width 0.2)
 		(layer "B.Cu")
-		(net "/08_BUTTONS_EXPANDERS/BTN_LEFT_N")
+		(net "/08_BUTTONS_EXPANDERS/BTN_DOWN_N")
 		(uuid "5ff51058-ccb9-4d14-a0b9-8d9bad5c780e")
 	)
 	(segment
@@ -78177,7 +78177,7 @@
 		(end 49.5 96.2)
 		(width 0.2)
 		(layer "B.Cu")
-		(net "/08_BUTTONS_EXPANDERS/BTN_LEFT_N")
+		(net "/08_BUTTONS_EXPANDERS/BTN_DOWN_N")
 		(uuid "7305d691-0c72-4dc5-a600-318e9418c56e")
 	)
 	(segment
@@ -78185,7 +78185,7 @@
 		(end 57.3 85.55)
 		(width 0.2)
 		(layer "B.Cu")
-		(net "/08_BUTTONS_EXPANDERS/BTN_LEFT_N")
+		(net "/08_BUTTONS_EXPANDERS/BTN_DOWN_N")
 		(uuid "768efcc6-9246-4482-9536-f746cd50087f")
 	)
 	(segment
@@ -78193,7 +78193,7 @@
 		(end 48.3 97.9)
 		(width 0.2)
 		(layer "B.Cu")
-		(net "/08_BUTTONS_EXPANDERS/BTN_LEFT_N")
+		(net "/08_BUTTONS_EXPANDERS/BTN_DOWN_N")
 		(uuid "78eb3fc9-2955-4f84-93a0-3482c34fa3e4")
 	)
 	(segment
@@ -78201,7 +78201,7 @@
 		(end 45.7 95.3)
 		(width 0.2)
 		(layer "B.Cu")
-		(net "/08_BUTTONS_EXPANDERS/BTN_LEFT_N")
+		(net "/08_BUTTONS_EXPANDERS/BTN_DOWN_N")
 		(uuid "7aeba44d-d484-431c-9cf5-effebfca1704")
 	)
 	(segment
@@ -78209,7 +78209,7 @@
 		(end 54 95.9)
 		(width 0.2)
 		(layer "B.Cu")
-		(net "/08_BUTTONS_EXPANDERS/BTN_LEFT_N")
+		(net "/08_BUTTONS_EXPANDERS/BTN_DOWN_N")
 		(uuid "83bf591a-5fac-4d0f-9cf8-65795f353c7b")
 	)
 	(segment
@@ -78217,7 +78217,7 @@
 		(end 58.35 84.95)
 		(width 0.2)
 		(layer "B.Cu")
-		(net "/08_BUTTONS_EXPANDERS/BTN_LEFT_N")
+		(net "/08_BUTTONS_EXPANDERS/BTN_DOWN_N")
 		(uuid "9d55404c-9953-4f67-83d5-0897f77a9b33")
 	)
 	(segment
@@ -78225,7 +78225,7 @@
 		(end 42.5 97.7)
 		(width 0.2)
 		(layer "B.Cu")
-		(net "/08_BUTTONS_EXPANDERS/BTN_LEFT_N")
+		(net "/08_BUTTONS_EXPANDERS/BTN_DOWN_N")
 		(uuid "9e70e38c-2f4c-4afb-bbda-33ccc0ba6c33")
 	)
 	(segment
@@ -78233,7 +78233,7 @@
 		(end 52.8 89.2)
 		(width 0.2)
 		(layer "B.Cu")
-		(net "/08_BUTTONS_EXPANDERS/BTN_LEFT_N")
+		(net "/08_BUTTONS_EXPANDERS/BTN_DOWN_N")
 		(uuid "a8a12f8b-90f5-4fc7-a6fb-4fff82ddb35a")
 	)
 	(segment
@@ -78241,7 +78241,7 @@
 		(end 58.3 84.9)
 		(width 0.2)
 		(layer "B.Cu")
-		(net "/08_BUTTONS_EXPANDERS/BTN_LEFT_N")
+		(net "/08_BUTTONS_EXPANDERS/BTN_DOWN_N")
 		(uuid "ad40e6bc-9fbd-4b2c-94b6-cb4cd31b3904")
 	)
 	(segment
@@ -78249,7 +78249,7 @@
 		(end 52.85 89.2)
 		(width 0.2)
 		(layer "B.Cu")
-		(net "/08_BUTTONS_EXPANDERS/BTN_LEFT_N")
+		(net "/08_BUTTONS_EXPANDERS/BTN_DOWN_N")
 		(uuid "ae142b7d-ad4b-408a-94a1-902a9ef9fc29")
 	)
 	(segment
@@ -78257,7 +78257,7 @@
 		(end 58.975 85.55)
 		(width 0.2)
 		(layer "B.Cu")
-		(net "/08_BUTTONS_EXPANDERS/BTN_LEFT_N")
+		(net "/08_BUTTONS_EXPANDERS/BTN_DOWN_N")
 		(uuid "c5069f0f-8d0d-4bc0-90b2-0dd10e5db7a8")
 	)
 	(segment
@@ -78265,7 +78265,7 @@
 		(end 49.5 96.5)
 		(width 0.2)
 		(layer "B.Cu")
-		(net "/08_BUTTONS_EXPANDERS/BTN_LEFT_N")
+		(net "/08_BUTTONS_EXPANDERS/BTN_DOWN_N")
 		(uuid "c9e42d9d-76c7-4b88-9131-c3480719c9c3")
 	)
 	(segment
@@ -78273,7 +78273,7 @@
 		(end 57.3 87.3)
 		(width 0.2)
 		(layer "B.Cu")
-		(net "/08_BUTTONS_EXPANDERS/BTN_LEFT_N")
+		(net "/08_BUTTONS_EXPANDERS/BTN_DOWN_N")
 		(uuid "cc2e84b6-1939-4d86-9255-5fe4b0aa8639")
 	)
 	(segment
@@ -78281,7 +78281,7 @@
 		(end 58.8875 85.4375)
 		(width 0.2)
 		(layer "B.Cu")
-		(net "/08_BUTTONS_EXPANDERS/BTN_LEFT_N")
+		(net "/08_BUTTONS_EXPANDERS/BTN_DOWN_N")
 		(uuid "d0ad9e43-95fb-4cf4-81f8-92df74bdccd3")
 	)
 	(segment
@@ -78289,7 +78289,7 @@
 		(end 57.2 85.5)
 		(width 0.2)
 		(layer "B.Cu")
-		(net "/08_BUTTONS_EXPANDERS/BTN_LEFT_N")
+		(net "/08_BUTTONS_EXPANDERS/BTN_DOWN_N")
 		(uuid "e3ed2b15-0a78-42c9-8964-1c9fc586380f")
 	)
 	(segment
@@ -78297,7 +78297,7 @@
 		(end 59.0125 85.5375)
 		(width 0.2)
 		(layer "B.Cu")
-		(net "/08_BUTTONS_EXPANDERS/BTN_LEFT_N")
+		(net "/08_BUTTONS_EXPANDERS/BTN_DOWN_N")
 		(uuid "e60f1893-5160-40f5-8cdc-7d6b3402f2b6")
 	)
 	(segment
@@ -78305,7 +78305,7 @@
 		(end 11.2 125.3)
 		(width 0.2)
 		(layer "In2.Cu")
-		(net "/08_BUTTONS_EXPANDERS/BTN_LEFT_N")
+		(net "/08_BUTTONS_EXPANDERS/BTN_DOWN_N")
 		(uuid "68bfde79-3f60-48df-9110-9ce72131421c")
 	)
 	(segment
@@ -80577,7 +80577,7 @@
 		(end 18.8 117.8)
 		(width 0.2)
 		(layer "F.Cu")
-		(net "/08_BUTTONS_EXPANDERS/BTN_A_N")
+		(net "/08_BUTTONS_EXPANDERS/BTN_RIGHT_N")
 		(uuid "0aa1d0fd-6c47-49f7-9946-0397751625f6")
 	)
 	(segment
@@ -80585,7 +80585,7 @@
 		(end 30.9 100)
 		(width 0.2)
 		(layer "F.Cu")
-		(net "/08_BUTTONS_EXPANDERS/BTN_A_N")
+		(net "/08_BUTTONS_EXPANDERS/BTN_RIGHT_N")
 		(uuid "2d7603dc-74a0-4bfe-8f1f-11afb2c2a568")
 	)
 	(segment
@@ -80593,7 +80593,7 @@
 		(end 58 87.6)
 		(width 0.2)
 		(layer "F.Cu")
-		(net "/08_BUTTONS_EXPANDERS/BTN_A_N")
+		(net "/08_BUTTONS_EXPANDERS/BTN_RIGHT_N")
 		(uuid "393a03ac-154f-4981-bf10-9c9978e7b773")
 	)
 	(segment
@@ -80601,7 +80601,7 @@
 		(end 19.8 111)
 		(width 0.2)
 		(layer "F.Cu")
-		(net "/08_BUTTONS_EXPANDERS/BTN_A_N")
+		(net "/08_BUTTONS_EXPANDERS/BTN_RIGHT_N")
 		(uuid "3a776e4c-e0b3-4d41-9d6c-4f494f6fba5e")
 	)
 	(segment
@@ -80609,7 +80609,7 @@
 		(end 18.8 117.8)
 		(width 0.2)
 		(layer "F.Cu")
-		(net "/08_BUTTONS_EXPANDERS/BTN_A_N")
+		(net "/08_BUTTONS_EXPANDERS/BTN_RIGHT_N")
 		(uuid "4d941585-1ac9-4b4c-8a63-fd95b4325221")
 	)
 	(segment
@@ -80617,7 +80617,7 @@
 		(end 59.8 89.4)
 		(width 0.2)
 		(layer "F.Cu")
-		(net "/08_BUTTONS_EXPANDERS/BTN_A_N")
+		(net "/08_BUTTONS_EXPANDERS/BTN_RIGHT_N")
 		(uuid "5c8ed56f-d93d-4a69-939a-452f172a10c3")
 	)
 	(segment
@@ -80625,7 +80625,7 @@
 		(end 55 95.2)
 		(width 0.2)
 		(layer "F.Cu")
-		(net "/08_BUTTONS_EXPANDERS/BTN_A_N")
+		(net "/08_BUTTONS_EXPANDERS/BTN_RIGHT_N")
 		(uuid "81edbfd4-a4c4-4e6f-bfb1-cc2a13b3df17")
 	)
 	(segment
@@ -80633,7 +80633,7 @@
 		(end 50.3 91.5)
 		(width 0.2)
 		(layer "F.Cu")
-		(net "/08_BUTTONS_EXPANDERS/BTN_A_N")
+		(net "/08_BUTTONS_EXPANDERS/BTN_RIGHT_N")
 		(uuid "b553be4a-5194-40ce-ae7c-5aa93f83aece")
 	)
 	(segment
@@ -80641,7 +80641,7 @@
 		(end 18.8 112.2)
 		(width 0.2)
 		(layer "F.Cu")
-		(net "/08_BUTTONS_EXPANDERS/BTN_A_N")
+		(net "/08_BUTTONS_EXPANDERS/BTN_RIGHT_N")
 		(uuid "cbfde70c-8c02-455a-81dd-9e7e821a12ed")
 	)
 	(segment
@@ -80649,7 +80649,7 @@
 		(end 51.5 92.7)
 		(width 0.2)
 		(layer "F.Cu")
-		(net "/08_BUTTONS_EXPANDERS/BTN_A_N")
+		(net "/08_BUTTONS_EXPANDERS/BTN_RIGHT_N")
 		(uuid "d91fcb0e-de0a-4081-83e9-4aa5ee25556a")
 	)
 	(segment
@@ -80657,7 +80657,7 @@
 		(end 19.8 111)
 		(width 0.2)
 		(layer "F.Cu")
-		(net "/08_BUTTONS_EXPANDERS/BTN_A_N")
+		(net "/08_BUTTONS_EXPANDERS/BTN_RIGHT_N")
 		(uuid "e5311b80-a237-4958-8425-e5fc811b7e8a")
 	)
 	(segment
@@ -80665,7 +80665,7 @@
 		(end 50.4 89.7)
 		(width 0.2)
 		(layer "F.Cu")
-		(net "/08_BUTTONS_EXPANDERS/BTN_A_N")
+		(net "/08_BUTTONS_EXPANDERS/BTN_RIGHT_N")
 		(uuid "e72f3483-5082-43ab-9a4e-99678c6af119")
 	)
 	(via
@@ -80673,7 +80673,7 @@
 		(size 0.6)
 		(drill 0.3)
 		(layers "F.Cu" "B.Cu")
-		(net "/08_BUTTONS_EXPANDERS/BTN_A_N")
+		(net "/08_BUTTONS_EXPANDERS/BTN_RIGHT_N")
 		(uuid "09750dee-60c3-4d8d-88bc-2c8bafcd30a0")
 	)
 	(via
@@ -80681,7 +80681,7 @@
 		(size 0.6)
 		(drill 0.3)
 		(layers "F.Cu" "B.Cu")
-		(net "/08_BUTTONS_EXPANDERS/BTN_A_N")
+		(net "/08_BUTTONS_EXPANDERS/BTN_RIGHT_N")
 		(uuid "16976ac3-ca66-4116-98a7-da3eeb59017a")
 	)
 	(via
@@ -80689,7 +80689,7 @@
 		(size 0.6)
 		(drill 0.3)
 		(layers "F.Cu" "B.Cu")
-		(net "/08_BUTTONS_EXPANDERS/BTN_A_N")
+		(net "/08_BUTTONS_EXPANDERS/BTN_RIGHT_N")
 		(uuid "24c35215-b835-4f18-89bc-fc54aee74c39")
 	)
 	(via
@@ -80697,7 +80697,7 @@
 		(size 0.6)
 		(drill 0.3)
 		(layers "F.Cu" "B.Cu")
-		(net "/08_BUTTONS_EXPANDERS/BTN_A_N")
+		(net "/08_BUTTONS_EXPANDERS/BTN_RIGHT_N")
 		(uuid "3f142110-3940-497a-8b80-d140d0485085")
 	)
 	(via
@@ -80705,7 +80705,7 @@
 		(size 0.6)
 		(drill 0.3)
 		(layers "F.Cu" "B.Cu")
-		(net "/08_BUTTONS_EXPANDERS/BTN_A_N")
+		(net "/08_BUTTONS_EXPANDERS/BTN_RIGHT_N")
 		(uuid "6affdd47-df5f-494d-a7de-8d494aea2acf")
 	)
 	(via
@@ -80713,7 +80713,7 @@
 		(size 0.6)
 		(drill 0.3)
 		(layers "F.Cu" "B.Cu")
-		(net "/08_BUTTONS_EXPANDERS/BTN_A_N")
+		(net "/08_BUTTONS_EXPANDERS/BTN_RIGHT_N")
 		(uuid "6eeef197-539f-454c-9ec1-bba04f068eb3")
 	)
 	(via
@@ -80721,7 +80721,7 @@
 		(size 0.6)
 		(drill 0.3)
 		(layers "F.Cu" "B.Cu")
-		(net "/08_BUTTONS_EXPANDERS/BTN_A_N")
+		(net "/08_BUTTONS_EXPANDERS/BTN_RIGHT_N")
 		(uuid "c9e235f4-a536-4146-8c0d-919e149ea2a5")
 	)
 	(via
@@ -80729,7 +80729,7 @@
 		(size 0.6)
 		(drill 0.3)
 		(layers "F.Cu" "B.Cu")
-		(net "/08_BUTTONS_EXPANDERS/BTN_A_N")
+		(net "/08_BUTTONS_EXPANDERS/BTN_RIGHT_N")
 		(uuid "dd4a7168-10af-481d-8941-1ad96ad19e8e")
 	)
 	(via
@@ -80737,7 +80737,7 @@
 		(size 0.6)
 		(drill 0.3)
 		(layers "F.Cu" "B.Cu")
-		(net "/08_BUTTONS_EXPANDERS/BTN_A_N")
+		(net "/08_BUTTONS_EXPANDERS/BTN_RIGHT_N")
 		(uuid "ef467949-cf05-45ed-a32b-5ff86eee79ba")
 	)
 	(segment
@@ -80745,7 +80745,7 @@
 		(end 58.5 87.3)
 		(width 0.2)
 		(layer "B.Cu")
-		(net "/08_BUTTONS_EXPANDERS/BTN_A_N")
+		(net "/08_BUTTONS_EXPANDERS/BTN_RIGHT_N")
 		(uuid "07d9415b-7f76-4eb2-89c8-f69b97b4c885")
 	)
 	(segment
@@ -80753,7 +80753,7 @@
 		(end 49.3 85.2)
 		(width 0.2)
 		(layer "B.Cu")
-		(net "/08_BUTTONS_EXPANDERS/BTN_A_N")
+		(net "/08_BUTTONS_EXPANDERS/BTN_RIGHT_N")
 		(uuid "1d44662e-7715-4726-8362-03c36cff8157")
 	)
 	(segment
@@ -80761,7 +80761,7 @@
 		(end 51.3 85.5)
 		(width 0.2)
 		(layer "B.Cu")
-		(net "/08_BUTTONS_EXPANDERS/BTN_A_N")
+		(net "/08_BUTTONS_EXPANDERS/BTN_RIGHT_N")
 		(uuid "33f323fb-a29a-463c-b1f2-1a707de00500")
 	)
 	(segment
@@ -80769,7 +80769,7 @@
 		(end 58.2 87.4)
 		(width 0.2)
 		(layer "B.Cu")
-		(net "/08_BUTTONS_EXPANDERS/BTN_A_N")
+		(net "/08_BUTTONS_EXPANDERS/BTN_RIGHT_N")
 		(uuid "44d33129-acd4-4510-84ba-356d40c994e3")
 	)
 	(segment
@@ -80777,7 +80777,7 @@
 		(end 51.3 85.5)
 		(width 0.2)
 		(layer "B.Cu")
-		(net "/08_BUTTONS_EXPANDERS/BTN_A_N")
+		(net "/08_BUTTONS_EXPANDERS/BTN_RIGHT_N")
 		(uuid "516d7f35-c29f-4650-a735-70c667f03c9c")
 	)
 	(segment
@@ -80785,7 +80785,7 @@
 		(end 58.975 87.2)
 		(width 0.2)
 		(layer "B.Cu")
-		(net "/08_BUTTONS_EXPANDERS/BTN_A_N")
+		(net "/08_BUTTONS_EXPANDERS/BTN_RIGHT_N")
 		(uuid "5b19364d-a3ef-4504-831c-86289a44b295")
 	)
 	(segment
@@ -80793,7 +80793,7 @@
 		(end 50.2 85.9)
 		(width 0.2)
 		(layer "B.Cu")
-		(net "/08_BUTTONS_EXPANDERS/BTN_A_N")
+		(net "/08_BUTTONS_EXPANDERS/BTN_RIGHT_N")
 		(uuid "5fcdd3de-4beb-471c-a7fb-eac56f5b3368")
 	)
 	(segment
@@ -80801,7 +80801,7 @@
 		(end 54.6 95.2)
 		(width 0.2)
 		(layer "B.Cu")
-		(net "/08_BUTTONS_EXPANDERS/BTN_A_N")
+		(net "/08_BUTTONS_EXPANDERS/BTN_RIGHT_N")
 		(uuid "8686ca9c-94be-433a-a223-ce1711aa26cf")
 	)
 	(segment
@@ -80809,7 +80809,7 @@
 		(end 44 86.9)
 		(width 0.2)
 		(layer "B.Cu")
-		(net "/08_BUTTONS_EXPANDERS/BTN_A_N")
+		(net "/08_BUTTONS_EXPANDERS/BTN_RIGHT_N")
 		(uuid "ae974495-1486-4cc1-ad30-4c68f9d86f1a")
 	)
 	(segment
@@ -80817,7 +80817,7 @@
 		(end 23.7 107.1)
 		(width 0.2)
 		(layer "B.Cu")
-		(net "/08_BUTTONS_EXPANDERS/BTN_A_N")
+		(net "/08_BUTTONS_EXPANDERS/BTN_RIGHT_N")
 		(uuid "b409d639-30c0-40f2-a4ff-268c4a06b838")
 	)
 	(segment
@@ -80825,7 +80825,7 @@
 		(end 58.2 87.4)
 		(width 0.2)
 		(layer "B.Cu")
-		(net "/08_BUTTONS_EXPANDERS/BTN_A_N")
+		(net "/08_BUTTONS_EXPANDERS/BTN_RIGHT_N")
 		(uuid "b52803f4-72e9-444b-83bf-6386bcb0e15f")
 	)
 	(segment
@@ -80833,7 +80833,7 @@
 		(end 56.1 96.5)
 		(width 0.2)
 		(layer "B.Cu")
-		(net "/08_BUTTONS_EXPANDERS/BTN_A_N")
+		(net "/08_BUTTONS_EXPANDERS/BTN_RIGHT_N")
 		(uuid "dc0654b0-5559-47f4-b33e-b6c84d1e13a2")
 	)
 	(segment
@@ -80841,7 +80841,7 @@
 		(end 48.7 84.5)
 		(width 0.2)
 		(layer "B.Cu")
-		(net "/08_BUTTONS_EXPANDERS/BTN_A_N")
+		(net "/08_BUTTONS_EXPANDERS/BTN_RIGHT_N")
 		(uuid "dcef8d9c-40ed-4fc7-93c0-f1a150d5a379")
 	)
 	(segment
@@ -80849,7 +80849,7 @@
 		(end 50.2 85.9)
 		(width 0.2)
 		(layer "B.Cu")
-		(net "/08_BUTTONS_EXPANDERS/BTN_A_N")
+		(net "/08_BUTTONS_EXPANDERS/BTN_RIGHT_N")
 		(uuid "f13ef705-3a26-4664-9046-77d144bce3f2")
 	)
 	(segment
@@ -80857,7 +80857,7 @@
 		(end 39.1 91.7)
 		(width 0.2)
 		(layer "B.Cu")
-		(net "/08_BUTTONS_EXPANDERS/BTN_A_N")
+		(net "/08_BUTTONS_EXPANDERS/BTN_RIGHT_N")
 		(uuid "f698a364-c934-48b2-a556-d95a4f7eabf0")
 	)
 	(segment
@@ -80865,7 +80865,7 @@
 		(end 34.2 97.7)
 		(width 0.2)
 		(layer "In2.Cu")
-		(net "/08_BUTTONS_EXPANDERS/BTN_A_N")
+		(net "/08_BUTTONS_EXPANDERS/BTN_RIGHT_N")
 		(uuid "5891e9fd-b530-45cb-84b1-3de22da2e4a9")
 	)
 	(segment
@@ -80873,7 +80873,7 @@
 		(end 33.7 97.2)
 		(width 0.2)
 		(layer "In2.Cu")
-		(net "/08_BUTTONS_EXPANDERS/BTN_A_N")
+		(net "/08_BUTTONS_EXPANDERS/BTN_RIGHT_N")
 		(uuid "e102f9f2-ab83-43f3-8c4c-63ddca2197c6")
 	)
 	(segment
@@ -80881,7 +80881,7 @@
 		(end 49.3 88.8)
 		(width 0.2)
 		(layer "In2.Cu")
-		(net "/08_BUTTONS_EXPANDERS/BTN_A_N")
+		(net "/08_BUTTONS_EXPANDERS/BTN_RIGHT_N")
 		(uuid "ea0c5183-f0f2-4b16-8b13-da5339b7d965")
 	)
 	(segment
@@ -81105,7 +81105,7 @@
 		(end 28.5 99.7)
 		(width 0.2)
 		(layer "F.Cu")
-		(net "/08_BUTTONS_EXPANDERS/BTN_DOWN_N")
+		(net "/08_BUTTONS_EXPANDERS/BTN_UP_N")
 		(uuid "022b4c58-f028-439b-b25a-bcfbbc274066")
 	)
 	(segment
@@ -81113,7 +81113,7 @@
 		(end 11.2 110.3)
 		(width 0.2)
 		(layer "F.Cu")
-		(net "/08_BUTTONS_EXPANDERS/BTN_DOWN_N")
+		(net "/08_BUTTONS_EXPANDERS/BTN_UP_N")
 		(uuid "20d8fb34-a02f-4e1e-93a2-48ff14adb27f")
 	)
 	(segment
@@ -81121,7 +81121,7 @@
 		(end 12.4 103.5)
 		(width 0.2)
 		(layer "F.Cu")
-		(net "/08_BUTTONS_EXPANDERS/BTN_DOWN_N")
+		(net "/08_BUTTONS_EXPANDERS/BTN_UP_N")
 		(uuid "40678944-d9b7-4a89-a4f7-fb11355af138")
 	)
 	(segment
@@ -81129,7 +81129,7 @@
 		(end 15.3 100.6)
 		(width 0.2)
 		(layer "F.Cu")
-		(net "/08_BUTTONS_EXPANDERS/BTN_DOWN_N")
+		(net "/08_BUTTONS_EXPANDERS/BTN_UP_N")
 		(uuid "69a3be73-a6ee-458c-b600-dffad8644001")
 	)
 	(segment
@@ -81137,7 +81137,7 @@
 		(end 11.2 110.3)
 		(width 0.2)
 		(layer "F.Cu")
-		(net "/08_BUTTONS_EXPANDERS/BTN_DOWN_N")
+		(net "/08_BUTTONS_EXPANDERS/BTN_UP_N")
 		(uuid "7cfe889b-cdb9-4ff0-9a2a-ba2328d24f35")
 	)
 	(segment
@@ -81145,7 +81145,7 @@
 		(end 18.1 103.4)
 		(width 0.2)
 		(layer "F.Cu")
-		(net "/08_BUTTONS_EXPANDERS/BTN_DOWN_N")
+		(net "/08_BUTTONS_EXPANDERS/BTN_UP_N")
 		(uuid "a22547eb-e518-49bf-a459-d69841a8809a")
 	)
 	(segment
@@ -81153,7 +81153,7 @@
 		(end 11.2 104.7)
 		(width 0.2)
 		(layer "F.Cu")
-		(net "/08_BUTTONS_EXPANDERS/BTN_DOWN_N")
+		(net "/08_BUTTONS_EXPANDERS/BTN_UP_N")
 		(uuid "d218adf3-ada9-4996-bf12-f2b6d44ef205")
 	)
 	(segment
@@ -81161,7 +81161,7 @@
 		(end 12.4 103.5)
 		(width 0.2)
 		(layer "F.Cu")
-		(net "/08_BUTTONS_EXPANDERS/BTN_DOWN_N")
+		(net "/08_BUTTONS_EXPANDERS/BTN_UP_N")
 		(uuid "f3db4506-1aae-4cee-8e83-10a9f429c12a")
 	)
 	(via
@@ -81169,7 +81169,7 @@
 		(size 0.6)
 		(drill 0.3)
 		(layers "F.Cu" "B.Cu")
-		(net "/08_BUTTONS_EXPANDERS/BTN_DOWN_N")
+		(net "/08_BUTTONS_EXPANDERS/BTN_UP_N")
 		(uuid "10d37ba1-c82d-417b-b624-a9c5f675ccda")
 	)
 	(via
@@ -81177,7 +81177,7 @@
 		(size 0.6)
 		(drill 0.3)
 		(layers "F.Cu" "B.Cu")
-		(net "/08_BUTTONS_EXPANDERS/BTN_DOWN_N")
+		(net "/08_BUTTONS_EXPANDERS/BTN_UP_N")
 		(uuid "5fe34ac7-56f9-48b2-a173-6e6df240110f")
 	)
 	(via
@@ -81185,7 +81185,7 @@
 		(size 0.6)
 		(drill 0.3)
 		(layers "F.Cu" "B.Cu")
-		(net "/08_BUTTONS_EXPANDERS/BTN_DOWN_N")
+		(net "/08_BUTTONS_EXPANDERS/BTN_UP_N")
 		(uuid "8fe009b3-50ad-4a30-89e5-61cce0319d68")
 	)
 	(via
@@ -81193,7 +81193,7 @@
 		(size 0.6)
 		(drill 0.3)
 		(layers "F.Cu" "B.Cu")
-		(net "/08_BUTTONS_EXPANDERS/BTN_DOWN_N")
+		(net "/08_BUTTONS_EXPANDERS/BTN_UP_N")
 		(uuid "963eabe1-13a3-48a2-b0d0-9eb37134c47e")
 	)
 	(via
@@ -81201,7 +81201,7 @@
 		(size 0.6)
 		(drill 0.3)
 		(layers "F.Cu" "B.Cu")
-		(net "/08_BUTTONS_EXPANDERS/BTN_DOWN_N")
+		(net "/08_BUTTONS_EXPANDERS/BTN_UP_N")
 		(uuid "9baa0e2f-42f6-41d1-aad7-58dd42351d0c")
 	)
 	(via
@@ -81209,7 +81209,7 @@
 		(size 0.6)
 		(drill 0.3)
 		(layers "F.Cu" "B.Cu")
-		(net "/08_BUTTONS_EXPANDERS/BTN_DOWN_N")
+		(net "/08_BUTTONS_EXPANDERS/BTN_UP_N")
 		(uuid "9ee0e9fa-d567-4b0f-a414-182fd1035bc0")
 	)
 	(via
@@ -81217,7 +81217,7 @@
 		(size 0.6)
 		(drill 0.3)
 		(layers "F.Cu" "B.Cu")
-		(net "/08_BUTTONS_EXPANDERS/BTN_DOWN_N")
+		(net "/08_BUTTONS_EXPANDERS/BTN_UP_N")
 		(uuid "e9214cd8-79be-4fca-94a7-f2f013a51e8e")
 	)
 	(segment
@@ -81225,7 +81225,7 @@
 		(end 32 98.9)
 		(width 0.2)
 		(layer "B.Cu")
-		(net "/08_BUTTONS_EXPANDERS/BTN_DOWN_N")
+		(net "/08_BUTTONS_EXPANDERS/BTN_UP_N")
 		(uuid "0de0ec03-0d9d-49c7-be68-48b9e31f5cbc")
 	)
 	(segment
@@ -81233,7 +81233,7 @@
 		(end 64.1005 109.222)
 		(width 0.2)
 		(layer "B.Cu")
-		(net "/08_BUTTONS_EXPANDERS/BTN_DOWN_N")
+		(net "/08_BUTTONS_EXPANDERS/BTN_UP_N")
 		(uuid "12d80da1-f15a-4c71-a86b-625cacccc594")
 	)
 	(segment
@@ -81241,7 +81241,7 @@
 		(end 48.9157 88.243)
 		(width 0.2)
 		(layer "B.Cu")
-		(net "/08_BUTTONS_EXPANDERS/BTN_DOWN_N")
+		(net "/08_BUTTONS_EXPANDERS/BTN_UP_N")
 		(uuid "217fe54b-3e50-488c-98fc-7f25739abbbe")
 	)
 	(segment
@@ -81249,7 +81249,7 @@
 		(end 63.268 110.221)
 		(width 0.2)
 		(layer "B.Cu")
-		(net "/08_BUTTONS_EXPANDERS/BTN_DOWN_N")
+		(net "/08_BUTTONS_EXPANDERS/BTN_UP_N")
 		(uuid "276a175a-5c29-4552-b880-9d45cbef499a")
 	)
 	(segment
@@ -81257,7 +81257,7 @@
 		(end 36.2 94.7)
 		(width 0.2)
 		(layer "B.Cu")
-		(net "/08_BUTTONS_EXPANDERS/BTN_DOWN_N")
+		(net "/08_BUTTONS_EXPANDERS/BTN_UP_N")
 		(uuid "320b0784-a9d9-4268-b7b7-bd48244d5637")
 	)
 	(segment
@@ -81265,7 +81265,7 @@
 		(end 44.9197 93.7708)
 		(width 0.2)
 		(layer "B.Cu")
-		(net "/08_BUTTONS_EXPANDERS/BTN_DOWN_N")
+		(net "/08_BUTTONS_EXPANDERS/BTN_UP_N")
 		(uuid "33d67d25-36e5-48b4-999b-6b64e87c2319")
 	)
 	(segment
@@ -81273,7 +81273,7 @@
 		(end 52.612 103.9939)
 		(width 0.2)
 		(layer "B.Cu")
-		(net "/08_BUTTONS_EXPANDERS/BTN_DOWN_N")
+		(net "/08_BUTTONS_EXPANDERS/BTN_UP_N")
 		(uuid "34598d95-702f-4068-b6e1-85309a505d0e")
 	)
 	(segment
@@ -81281,7 +81281,7 @@
 		(end 51.2 87.5)
 		(width 0.2)
 		(layer "B.Cu")
-		(net "/08_BUTTONS_EXPANDERS/BTN_DOWN_N")
+		(net "/08_BUTTONS_EXPANDERS/BTN_UP_N")
 		(uuid "496ec702-a351-4b37-9ea4-c1346e86d8da")
 	)
 	(segment
@@ -81289,7 +81289,7 @@
 		(end 44.8531 93.7042)
 		(width 0.2)
 		(layer "B.Cu")
-		(net "/08_BUTTONS_EXPANDERS/BTN_DOWN_N")
+		(net "/08_BUTTONS_EXPANDERS/BTN_UP_N")
 		(uuid "64ad5b19-e390-4cf5-9a80-02da6de74f26")
 	)
 	(segment
@@ -81297,7 +81297,7 @@
 		(end 49.4485 101.3632)
 		(width 0.2)
 		(layer "B.Cu")
-		(net "/08_BUTTONS_EXPANDERS/BTN_DOWN_N")
+		(net "/08_BUTTONS_EXPANDERS/BTN_UP_N")
 		(uuid "7641360f-0132-4681-bb34-429602c6820c")
 	)
 	(segment
@@ -81305,7 +81305,7 @@
 		(end 62.4688 109.4551)
 		(width 0.2)
 		(layer "B.Cu")
-		(net "/08_BUTTONS_EXPANDERS/BTN_DOWN_N")
+		(net "/08_BUTTONS_EXPANDERS/BTN_UP_N")
 		(uuid "87ff3f00-9acf-4f91-865f-bac5300b1a18")
 	)
 	(segment
@@ -81313,7 +81313,7 @@
 		(end 36.1 94.8)
 		(width 0.2)
 		(layer "B.Cu")
-		(net "/08_BUTTONS_EXPANDERS/BTN_DOWN_N")
+		(net "/08_BUTTONS_EXPANDERS/BTN_UP_N")
 		(uuid "88aa2716-4c63-4dbf-864d-64cda807d630")
 	)
 	(segment
@@ -81321,7 +81321,7 @@
 		(end 35.9 94.9)
 		(width 0.2)
 		(layer "B.Cu")
-		(net "/08_BUTTONS_EXPANDERS/BTN_DOWN_N")
+		(net "/08_BUTTONS_EXPANDERS/BTN_UP_N")
 		(uuid "91052149-eb75-4add-b0cc-3f7e39a70fc0")
 	)
 	(segment
@@ -81329,7 +81329,7 @@
 		(end 51.2467 87.4771)
 		(width 0.2)
 		(layer "B.Cu")
-		(net "/08_BUTTONS_EXPANDERS/BTN_DOWN_N")
+		(net "/08_BUTTONS_EXPANDERS/BTN_UP_N")
 		(uuid "992ff2a4-a5c8-4538-8004-1f403b97aaad")
 	)
 	(segment
@@ -81337,7 +81337,7 @@
 		(end 61.0369 85.0795)
 		(width 0.2)
 		(layer "B.Cu")
-		(net "/08_BUTTONS_EXPANDERS/BTN_DOWN_N")
+		(net "/08_BUTTONS_EXPANDERS/BTN_UP_N")
 		(uuid "9b8a0e4f-f0e1-49cf-a957-4dbe2cd8e362")
 	)
 	(segment
@@ -81345,7 +81345,7 @@
 		(end 61.5697 87.7102)
 		(width 0.2)
 		(layer "B.Cu")
-		(net "/08_BUTTONS_EXPANDERS/BTN_DOWN_N")
+		(net "/08_BUTTONS_EXPANDERS/BTN_UP_N")
 		(uuid "b24760da-e244-4a55-95aa-82ca94a5b902")
 	)
 	(segment
@@ -81353,7 +81353,7 @@
 		(end 60.937 86.8444)
 		(width 0.2)
 		(layer "B.Cu")
-		(net "/08_BUTTONS_EXPANDERS/BTN_DOWN_N")
+		(net "/08_BUTTONS_EXPANDERS/BTN_UP_N")
 		(uuid "b7303a73-2296-4c5a-8547-491d69a44d7b")
 	)
 	(segment
@@ -81361,7 +81361,7 @@
 		(end 48.6 88.3)
 		(width 0.2)
 		(layer "B.Cu")
-		(net "/08_BUTTONS_EXPANDERS/BTN_DOWN_N")
+		(net "/08_BUTTONS_EXPANDERS/BTN_UP_N")
 		(uuid "bad345b7-a75c-4ad3-9203-84dd55a5027d")
 	)
 	(segment
@@ -81369,7 +81369,7 @@
 		(end 64.1671 109.2886)
 		(width 0.2)
 		(layer "B.Cu")
-		(net "/08_BUTTONS_EXPANDERS/BTN_DOWN_N")
+		(net "/08_BUTTONS_EXPANDERS/BTN_UP_N")
 		(uuid "c200b967-6e8c-4efa-af27-a0646a771f6e")
 	)
 	(segment
@@ -81377,7 +81377,7 @@
 		(end 61.0369 85.0795)
 		(width 0.2)
 		(layer "B.Cu")
-		(net "/08_BUTTONS_EXPANDERS/BTN_DOWN_N")
+		(net "/08_BUTTONS_EXPANDERS/BTN_UP_N")
 		(uuid "e039c461-96ec-410f-aad6-200d70cd2ef5")
 	)
 	(segment
@@ -81385,7 +81385,7 @@
 		(end 31.2 98.1)
 		(width 0.2)
 		(layer "B.Cu")
-		(net "/08_BUTTONS_EXPANDERS/BTN_DOWN_N")
+		(net "/08_BUTTONS_EXPANDERS/BTN_UP_N")
 		(uuid "ff735447-3694-4288-b5ca-31c838165893")
 	)
 	(segment
@@ -81393,7 +81393,7 @@
 		(end 46.1518 98.7658)
 		(width 0.2)
 		(layer "In2.Cu")
-		(net "/08_BUTTONS_EXPANDERS/BTN_DOWN_N")
+		(net "/08_BUTTONS_EXPANDERS/BTN_UP_N")
 		(uuid "0aabb699-d2c7-4937-b083-7a779537e888")
 	)
 	(segment
@@ -81401,7 +81401,7 @@
 		(end 46.3183 98.9323)
 		(width 0.2)
 		(layer "In2.Cu")
-		(net "/08_BUTTONS_EXPANDERS/BTN_DOWN_N")
+		(net "/08_BUTTONS_EXPANDERS/BTN_UP_N")
 		(uuid "6f3cb257-bb62-446c-96fb-536301395b32")
 	)
 	(segment
@@ -81409,7 +81409,7 @@
 		(end 62.5354 92.2057)
 		(width 0.2)
 		(layer "In2.Cu")
-		(net "/08_BUTTONS_EXPANDERS/BTN_DOWN_N")
+		(net "/08_BUTTONS_EXPANDERS/BTN_UP_N")
 		(uuid "6f44a262-c8a6-420c-8afd-750aacdc2c0d")
 	)
 	(segment
@@ -81417,7 +81417,7 @@
 		(end 55.7089 106.7578)
 		(width 0.2)
 		(layer "In2.Cu")
-		(net "/08_BUTTONS_EXPANDERS/BTN_DOWN_N")
+		(net "/08_BUTTONS_EXPANDERS/BTN_UP_N")
 		(uuid "aa455c4b-0983-4325-b303-2245c8cbc1e9")
 	)
 	(segment
@@ -81425,7 +81425,7 @@
 		(end 62.7685 103.6942)
 		(width 0.2)
 		(layer "In2.Cu")
-		(net "/08_BUTTONS_EXPANDERS/BTN_DOWN_N")
+		(net "/08_BUTTONS_EXPANDERS/BTN_UP_N")
 		(uuid "b9edadc7-17e0-45ab-b174-bcf84408ea44")
 	)
 	(segment
@@ -81433,7 +81433,7 @@
 		(end 60.7705 101.4631)
 		(width 0.2)
 		(layer "In2.Cu")
-		(net "/08_BUTTONS_EXPANDERS/BTN_DOWN_N")
+		(net "/08_BUTTONS_EXPANDERS/BTN_UP_N")
 		(uuid "c298ceb9-b6c9-4408-bee0-7c81a6b2f1ee")
 	)
 	(segment
@@ -81441,7 +81441,7 @@
 		(end 60.1045 111.7195)
 		(width 0.2)
 		(layer "In2.Cu")
-		(net "/08_BUTTONS_EXPANDERS/BTN_DOWN_N")
+		(net "/08_BUTTONS_EXPANDERS/BTN_UP_N")
 		(uuid "cc23a315-3a2c-44c8-b92c-9ae929a9b7fc")
 	)
 	(segment
@@ -81449,7 +81449,7 @@
 		(end 62.5687 99.5983)
 		(width 0.2)
 		(layer "In2.Cu")
-		(net "/08_BUTTONS_EXPANDERS/BTN_DOWN_N")
+		(net "/08_BUTTONS_EXPANDERS/BTN_UP_N")
 		(uuid "fa3d9f3f-bdff-4798-a67c-6673ff219839")
 	)
 	(segment
@@ -81457,7 +81457,7 @@
 		(end 61.0036 105.9253)
 		(width 0.2)
 		(layer "In2.Cu")
-		(net "/08_BUTTONS_EXPANDERS/BTN_DOWN_N")
+		(net "/08_BUTTONS_EXPANDERS/BTN_UP_N")
 		(uuid "fabe2f0d-9c03-405e-a336-09559591965a")
 	)
 	(segment
@@ -81905,7 +81905,7 @@
 		(end 61.2 95.8)
 		(width 0.2)
 		(layer "F.Cu")
-		(net "/08_BUTTONS_EXPANDERS/BTN_UP_N")
+		(net "/08_BUTTONS_EXPANDERS/BTN_A_N")
 		(uuid "031da35e-be57-4db0-8c02-a97813a686c7")
 	)
 	(segment
@@ -81913,7 +81913,7 @@
 		(end 61.1 95.7)
 		(width 0.2)
 		(layer "F.Cu")
-		(net "/08_BUTTONS_EXPANDERS/BTN_UP_N")
+		(net "/08_BUTTONS_EXPANDERS/BTN_A_N")
 		(uuid "0dbb1a49-7545-479f-a39b-16b32940b618")
 	)
 	(segment
@@ -81921,7 +81921,7 @@
 		(end 66.95 96.75)
 		(width 0.2)
 		(layer "F.Cu")
-		(net "/08_BUTTONS_EXPANDERS/BTN_UP_N")
+		(net "/08_BUTTONS_EXPANDERS/BTN_A_N")
 		(uuid "4cdded66-4370-4c23-b168-30b67b192009")
 	)
 	(segment
@@ -81929,7 +81929,7 @@
 		(end 61.45 96.75)
 		(width 0.2)
 		(layer "F.Cu")
-		(net "/08_BUTTONS_EXPANDERS/BTN_UP_N")
+		(net "/08_BUTTONS_EXPANDERS/BTN_A_N")
 		(uuid "76afa7d3-1cdd-4239-9e05-d252cb6c5252")
 	)
 	(segment
@@ -81937,7 +81937,7 @@
 		(end 61.1 95.4)
 		(width 0.2)
 		(layer "F.Cu")
-		(net "/08_BUTTONS_EXPANDERS/BTN_UP_N")
+		(net "/08_BUTTONS_EXPANDERS/BTN_A_N")
 		(uuid "8baf3d43-5018-4184-9793-72feefafd7b6")
 	)
 	(segment
@@ -81945,7 +81945,7 @@
 		(end 66.95 96.75)
 		(width 0.2)
 		(layer "F.Cu")
-		(net "/08_BUTTONS_EXPANDERS/BTN_UP_N")
+		(net "/08_BUTTONS_EXPANDERS/BTN_A_N")
 		(uuid "b0c52e45-c16d-4f2b-9f00-c2bb8b148657")
 	)
 	(via
@@ -81953,7 +81953,7 @@
 		(size 0.6)
 		(drill 0.3)
 		(layers "F.Cu" "B.Cu")
-		(net "/08_BUTTONS_EXPANDERS/BTN_UP_N")
+		(net "/08_BUTTONS_EXPANDERS/BTN_A_N")
 		(uuid "338c28c5-5bcc-4c66-9d38-7b07207639d0")
 	)
 	(segment
@@ -81961,7 +81961,7 @@
 		(end 53.75 73.45)
 		(width 0.2)
 		(layer "B.Cu")
-		(net "/08_BUTTONS_EXPANDERS/BTN_UP_N")
+		(net "/08_BUTTONS_EXPANDERS/BTN_A_N")
 		(uuid "06a5b732-6af3-4dde-b59b-d1252304dce8")
 	)
 	(segment
@@ -81969,7 +81969,7 @@
 		(end 49.8 81.7)
 		(width 0.2)
 		(layer "B.Cu")
-		(net "/08_BUTTONS_EXPANDERS/BTN_UP_N")
+		(net "/08_BUTTONS_EXPANDERS/BTN_A_N")
 		(uuid "1068857e-291c-4c46-8a61-46223a760368")
 	)
 	(segment
@@ -81977,7 +81977,7 @@
 		(end 58.7 84.4)
 		(width 0.2)
 		(layer "B.Cu")
-		(net "/08_BUTTONS_EXPANDERS/BTN_UP_N")
+		(net "/08_BUTTONS_EXPANDERS/BTN_A_N")
 		(uuid "1c8625cc-00f8-4887-99d8-f56120a23ab3")
 	)
 	(segment
@@ -81985,7 +81985,7 @@
 		(end 61.35 95.15)
 		(width 0.2)
 		(layer "B.Cu")
-		(net "/08_BUTTONS_EXPANDERS/BTN_UP_N")
+		(net "/08_BUTTONS_EXPANDERS/BTN_A_N")
 		(uuid "1e3cf29d-c8fa-4a9c-b802-7beb90708c82")
 	)
 	(segment
@@ -81993,7 +81993,7 @@
 		(end 52.1 83.9)
 		(width 0.2)
 		(layer "B.Cu")
-		(net "/08_BUTTONS_EXPANDERS/BTN_UP_N")
+		(net "/08_BUTTONS_EXPANDERS/BTN_A_N")
 		(uuid "2458c60c-0d5c-41da-a4a5-6629c595505f")
 	)
 	(segment
@@ -82001,7 +82001,7 @@
 		(end 53.2 73.2)
 		(width 0.2)
 		(layer "B.Cu")
-		(net "/08_BUTTONS_EXPANDERS/BTN_UP_N")
+		(net "/08_BUTTONS_EXPANDERS/BTN_A_N")
 		(uuid "3737131c-4a2c-42dd-b2fa-9edac41fe609")
 	)
 	(segment
@@ -82009,7 +82009,7 @@
 		(end 58.7 84.4)
 		(width 0.2)
 		(layer "B.Cu")
-		(net "/08_BUTTONS_EXPANDERS/BTN_UP_N")
+		(net "/08_BUTTONS_EXPANDERS/BTN_A_N")
 		(uuid "3efda06b-9ee4-4738-b2cf-7ec4cbaa6285")
 	)
 	(segment
@@ -82017,7 +82017,7 @@
 		(end 55.1 73.95)
 		(width 0.2)
 		(layer "B.Cu")
-		(net "/08_BUTTONS_EXPANDERS/BTN_UP_N")
+		(net "/08_BUTTONS_EXPANDERS/BTN_A_N")
 		(uuid "41657739-ab35-4c12-b8ad-d64c16a6eab3")
 	)
 	(segment
@@ -82025,7 +82025,7 @@
 		(end 57.8 78.45)
 		(width 0.2)
 		(layer "B.Cu")
-		(net "/08_BUTTONS_EXPANDERS/BTN_UP_N")
+		(net "/08_BUTTONS_EXPANDERS/BTN_A_N")
 		(uuid "436509f9-1614-4df4-9a24-102649b4e3c2")
 	)
 	(segment
@@ -82033,7 +82033,7 @@
 		(end 61.1 95.4)
 		(width 0.2)
 		(layer "B.Cu")
-		(net "/08_BUTTONS_EXPANDERS/BTN_UP_N")
+		(net "/08_BUTTONS_EXPANDERS/BTN_A_N")
 		(uuid "5b214a9a-4906-49a8-8d59-ffbc79ecfcc2")
 	)
 	(segment
@@ -82041,7 +82041,7 @@
 		(end 61.05 84.4)
 		(width 0.2)
 		(layer "B.Cu")
-		(net "/08_BUTTONS_EXPANDERS/BTN_UP_N")
+		(net "/08_BUTTONS_EXPANDERS/BTN_A_N")
 		(uuid "5fe01186-87c9-4d0c-80f4-e867b827f65e")
 	)
 	(segment
@@ -82049,7 +82049,7 @@
 		(end 48.45 78.7)
 		(width 0.2)
 		(layer "B.Cu")
-		(net "/08_BUTTONS_EXPANDERS/BTN_UP_N")
+		(net "/08_BUTTONS_EXPANDERS/BTN_A_N")
 		(uuid "719bf479-8667-44b1-bca3-34b96ae54e6d")
 	)
 	(segment
@@ -82057,7 +82057,7 @@
 		(end 63.85 87.2)
 		(width 0.2)
 		(layer "B.Cu")
-		(net "/08_BUTTONS_EXPANDERS/BTN_UP_N")
+		(net "/08_BUTTONS_EXPANDERS/BTN_A_N")
 		(uuid "8a3b357c-27f6-4cdc-ab82-b8d34e2dfc11")
 	)
 	(segment
@@ -82065,7 +82065,7 @@
 		(end 49.1 77.2)
 		(width 0.2)
 		(layer "B.Cu")
-		(net "/08_BUTTONS_EXPANDERS/BTN_UP_N")
+		(net "/08_BUTTONS_EXPANDERS/BTN_A_N")
 		(uuid "90b0abbb-2c68-49da-9727-810f3e15a25d")
 	)
 	(segment
@@ -82073,7 +82073,7 @@
 		(end 51 82.25)
 		(width 0.2)
 		(layer "B.Cu")
-		(net "/08_BUTTONS_EXPANDERS/BTN_UP_N")
+		(net "/08_BUTTONS_EXPANDERS/BTN_A_N")
 		(uuid "9cf5c28c-399c-45d1-a24d-9e30aa9c959c")
 	)
 	(segment
@@ -82081,7 +82081,7 @@
 		(end 62.6 95.15)
 		(width 0.2)
 		(layer "B.Cu")
-		(net "/08_BUTTONS_EXPANDERS/BTN_UP_N")
+		(net "/08_BUTTONS_EXPANDERS/BTN_A_N")
 		(uuid "cab81b95-84c2-4392-86ae-d9f7d88a5d67")
 	)
 	(segment
@@ -82089,7 +82089,7 @@
 		(end 63.85 93.9)
 		(width 0.2)
 		(layer "B.Cu")
-		(net "/08_BUTTONS_EXPANDERS/BTN_UP_N")
+		(net "/08_BUTTONS_EXPANDERS/BTN_A_N")
 		(uuid "cece7812-66ac-43a3-b4a1-f393edc65539")
 	)
 	(segment

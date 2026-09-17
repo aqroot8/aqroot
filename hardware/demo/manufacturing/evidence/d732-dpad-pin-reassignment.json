@@ -1,0 +1,123 @@
+{
+ "schema": 1,
+ "decision": "D-732",
+ "question": "the D-pad is wired one position out (D-731).  What is the cheapest correct repair?",
+ "verdict": "EXPANDER PIN REASSIGNMENT, NOT A PART MOVE.  Zero copper changed.",
+ "why": [
+  "D-731 proposed a 5-cycle of SWITCH POSITIONS.  That is geometrically free but it",
+  "does NOT route: it puts a fourth ~40 mm haul into the west-to-U2 corridor and",
+  "BTN_UP_N was left open at every request order.",
+  "The copper as built is CORRECT: every switch reaches a distinct PCAL9535A port-1",
+  "input with an identical 10k pull-up.  What was wrong was only WHICH FUNCTION each",
+  "expander bit was declared to carry.  All eight port-1 pins are inputs, all are",
+  "interrupt-capable and all power up masked, so the function-to-pin assignment is a",
+  "free variable -- an implementation detail, not a product decision.",
+  "Renaming the five nets therefore corrects the defect with ZERO copper, ZERO part",
+  "moves, ZERO BOM lines and no enclosure/industrial-design decision."
+ ],
+ "front_face_frame": "doc coords: x_doc = x_pcb, y_doc = 148 - y_pcb (FBV2_PCB_DATUM lower-left, X right, Y up; F.Cu = FRONT)",
+ "seats": {
+  "SW3": {
+   "doc": [
+    13.5,
+    40.5
+   ],
+   "seat": "D-pad TOP",
+   "was": "BTN_DOWN_N",
+   "now": "BTN_UP_N",
+   "u2_pin": 14,
+   "port_bit": "P11"
+  },
+  "SW4": {
+   "doc": [
+    13.5,
+    25.5
+   ],
+   "seat": "D-pad BOTTOM",
+   "was": "BTN_LEFT_N",
+   "now": "BTN_DOWN_N",
+   "u2_pin": 15,
+   "port_bit": "P12"
+  },
+  "SW5": {
+   "doc": [
+    6.0,
+    33.0
+   ],
+   "seat": "D-pad LEFT",
+   "was": "BTN_RIGHT_N",
+   "now": "BTN_LEFT_N",
+   "u2_pin": 16,
+   "port_bit": "P13"
+  },
+  "SW6": {
+   "doc": [
+    21.0,
+    33.0
+   ],
+   "seat": "D-pad RIGHT",
+   "was": "BTN_A_N",
+   "now": "BTN_RIGHT_N",
+   "u2_pin": 17,
+   "port_bit": "P14"
+  },
+  "SW2": {
+   "doc": [
+    64.2,
+    49.0
+   ],
+   "seat": "A/B pair, RIGHT",
+   "was": "BTN_UP_N",
+   "now": "BTN_A_N",
+   "u2_pin": 13,
+   "port_bit": "P10"
+  },
+  "SW7": {
+   "doc": [
+    53.5,
+    49.0
+   ],
+   "seat": "A/B pair, LEFT",
+   "was": "BTN_B_N",
+   "now": "BTN_B_N",
+   "u2_pin": 18,
+   "port_bit": "P15"
+  }
+ },
+ "second_defect_found_and_fixed": {
+  "what": "the U2 sheet-08 note named P05/P06/P16/P17 WRONG",
+  "note_claimed": {
+   "P05": "BQ25185_STAT1",
+   "P06": "BQ25185_STAT2",
+   "P16": "TOUCH_INT_N",
+   "P17": "SX1262_DIO1"
+  },
+  "board_actually_has": {
+   "P05": "/SX1262_DIO1",
+   "P06": "/TOUCH_INT_N",
+   "P16": "/BQ25185_STAT2",
+   "P17": "/BQ25185_STAT1"
+  },
+  "consequence_if_shipped": "the note tells firmware to leave 4Ah bit 6 masked.  4Ah bit 6 is P06 = TOUCH_INT_N, so the TOUCH INTERRUPT would have been masked and BQ25185_STAT2 -- which toggles continuously with no battery fitted -- would have been left UNMASKED and would have woken the MCU forever.  Exactly inverted.",
+  "fixed_in": "08_buttons_expanders.kicad_sch U2 note, rewritten pin by pin from the board"
+ },
+ "firmware_impact": "NONE BROKEN.  Firmware/src/config.h carries only the Wokwi simulation buttons and a stale TCA9535 comment; no physical D-pad bit map exists in the repository yet.  The corrected table in the schematic is now the only one.",
+ "proof": {
+  "board_sha256_before": "a4200434099f5f621d8b2e7d8131cec4c7a507afda3233c6e811e0bb3782083c",
+  "board_sha256_after": "fa0ad66971b7ab98ba241ac1c2a5e5de646a3cbc84b1d76b13238b6ee41fbfc1",
+  "retained_open_edges": "4 -> 4 (unchanged: the change is topology-neutral by construction)",
+  "raw_board_ratsnest": "20 -> 20",
+  "kicad_drc": {
+   "lib_footprint_issues": 199,
+   "everything_else": 0
+  },
+  "schematic_parity": {
+   "errors": 0,
+   "warnings": 246,
+   "note": "identical to the D-727 baseline; zero switch-related entries"
+  },
+  "contract_regression": "14 contracts, ALL RAN, ALL PASS (fab_provenance PASS after re-export)",
+  "netclass_risk_checked": "no netclass_pattern and no .kicad_dru rule mentions BTN_*, so all six nets are Default class before and after",
+  "fab_package": "re-exported, 29 files; the only gerber deltas are timestamps and %TO.N net attributes -- zero geometry change"
+ }
+}

@@ -2884,7 +2884,7 @@
 		)
 		(uuid "ffc3ad33-b41e-484f-ac10-b6f159b214c3")
 	)
-	(label "BTN_UP_N"
+	(label "BTN_A_N"
 		(at 36.83 144.78 180)
 		(effects
 			(font
@@ -2894,7 +2894,7 @@
 		)
 		(uuid "01c41d50-4ab2-47fb-828b-88039ea6f04c")
 	)
-	(label "BTN_A_N"
+	(label "BTN_RIGHT_N"
 		(at 124.46 144.78 180)
 		(effects
 			(font
@@ -2904,7 +2904,7 @@
 		)
 		(uuid "1326f7f3-adbb-4459-859a-ee1521a7b7ce")
 	)
-	(label "BTN_DOWN_N"
+	(label "BTN_UP_N"
 		(at 58.42 144.78 180)
 		(effects
 			(font
@@ -2954,7 +2954,7 @@
 		)
 		(uuid "7a7bff79-f37a-4800-8f78-9ba618f2d9de")
 	)
-	(label "BTN_LEFT_N"
+	(label "BTN_DOWN_N"
 		(at 81.28 144.78 180)
 		(effects
 			(font
@@ -2994,7 +2994,7 @@
 		)
 		(uuid "ac7af67d-17a0-466f-a72f-38d7ea885ea9")
 	)
-	(label "BTN_RIGHT_N"
+	(label "BTN_LEFT_N"
 		(at 101.6 144.78 180)
 		(effects
 			(font
@@ -3099,7 +3099,7 @@
 		)
 		(uuid "5db9e45f-a7c7-4b5d-94c0-c7d74e086a7e")
 	)
-	(label "BTN_UP_N"
+	(label "BTN_A_N"
 		(at 101.6 77.47 0)
 		(effects
 			(font
@@ -3120,7 +3120,7 @@
 		)
 		(uuid "7c890b48-e646-472e-8888-dda3a1d3594c")
 	)
-	(label "BTN_RIGHT_N"
+	(label "BTN_LEFT_N"
 		(at 101.6 85.09 0)
 		(effects
 			(font
@@ -3200,7 +3200,7 @@
 		)
 		(uuid "b096c4ca-6e04-409a-b4b7-93e6555f61d0")
 	)
-	(label "BTN_LEFT_N"
+	(label "BTN_DOWN_N"
 		(at 101.6 82.55 0)
 		(effects
 			(font
@@ -3221,7 +3221,7 @@
 		)
 		(uuid "b528d0af-b94f-4c94-8a95-6f8df4005a5d")
 	)
-	(label "BTN_DOWN_N"
+	(label "BTN_UP_N"
 		(at 101.6 80.01 0)
 		(effects
 			(font
@@ -3231,7 +3231,7 @@
 		)
 		(uuid "b5aed7bf-2735-411e-8566-e9d76a8aabd0")
 	)
-	(label "BTN_A_N"
+	(label "BTN_RIGHT_N"
 		(at 101.6 87.63 0)
 		(effects
 			(font
@@ -4123,7 +4123,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "A_SELECT"
+		(property "Value" "RIGHT"
 			(at 129.54 154.9399 90)
 			(show_name no)
 			(do_not_autoplace no)
@@ -4946,7 +4946,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "RIGHT"
+		(property "Value" "LEFT"
 			(at 106.68 154.9399 90)
 			(show_name no)
 			(do_not_autoplace no)
@@ -7430,7 +7430,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "LEFT"
+		(property "Value" "DOWN"
 			(at 86.36 154.9399 90)
 			(show_name no)
 			(do_not_autoplace no)
@@ -7689,7 +7689,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "UP"
+		(property "Value" "A_SELECT"
 			(at 41.91 154.9399 90)
 			(show_name no)
 			(do_not_autoplace no)
@@ -8466,7 +8466,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "DOWN"
+		(property "Value" "UP"
 			(at 63.5 154.9399 90)
 			(show_name no)
 			(do_not_autoplace no)
@@ -11144,7 +11144,7 @@
 
 	
 
-	(text "U2 INTERNAL EXPANDER - MIGRATED FBV2-S1-008\nNXP PCAL9535APW,118   I2C ADDRESS 0x20\nA0 = A1 = A2 = GND\n\nPORT 0 = P00-P04 OUT, P05-P07 IN  (06h = E0h)\nPORT 1 = 8 INPUTS                 (07h = FFh)\n16 / 16 USED - ZERO SPARE\n\nP00 TOUCH_RST_N       OUT  ACTIVE LOW\nP01 SX1262_RST_N      OUT  ACTIVE LOW\nP02 NFC_5V_EN         OUT  ACTIVE HIGH\nP03 AMP_SD_MODE       OUT  ACTIVE HIGH\nP04 DISP_RST_N        OUT  ACTIVE LOW\nP05 BQ25185_STAT1     IN   R127 10k UP\nP06 BQ25185_STAT2     IN   R128 10k UP\nP07 SD_CARD_DETECT_N  IN   R113 100k UP, SHEET 03\nP10-P13 D-PAD UP/DOWN/LEFT/RIGHT  IN  10k UP\nP14 BTN_A_N   P15 BTN_B_N         IN  10k UP\nP16 TOUCH_INT_N       IN   FT6236, ACTIVE LOW\nP17 SX1262_DIO1       IN   ACTIVE HIGH\n\nEVERY P05-P17 INPUT IS INTERRUPT-CAPABLE AND EVERY\nONE POWERS UP MASKED (4Ah/4Bh = FFh). FIRMWARE\nUNMASKS THE SIX BUTTONS, TOUCH_INT_N, SX1262_DIO1\nAND SD_CARD_DETECT_N, AND LEAVES BQ25185_STAT2\nMASKED - IT TOGGLES CONTINUOUSLY WHEN NO BATTERY IS\nFITTED AND WOULD OTHERWISE WAKE THE MCU FOREVER."
+	(text "U2 INTERNAL EXPANDER - MIGRATED FBV2-S1-008\nNXP PCAL9535APW,118   I2C ADDRESS 0x20\nA0 = A1 = A2 = GND\n\nPORT 0 = P00-P04 OUT, P05-P07 IN  (06h = E0h)\nPORT 1 = 8 INPUTS                 (07h = FFh)\n16 / 16 USED - ZERO SPARE\n\nP00 TOUCH_RST_N       OUT  ACTIVE LOW\nP01 SX1262_RST_N      OUT  ACTIVE LOW\nP02 NFC_5V_EN         OUT  ACTIVE HIGH\nP03 AMP_SD_MODE       OUT  ACTIVE HIGH\nP04 DISP_RST_N        OUT  ACTIVE LOW\nP05 SX1262_DIO1       IN   ACTIVE HIGH\nP06 TOUCH_INT_N       IN   FT6236, ACTIVE LOW\nP07 SD_CARD_DETECT_N  IN   R113 100k UP, SHEET 03\nP10 BTN_A_N           IN   R4  10k UP\nP11 BTN_UP_N          IN   R5  10k UP\nP12 BTN_DOWN_N        IN   R6  10k UP\nP13 BTN_LEFT_N        IN   R7  10k UP\nP14 BTN_RIGHT_N       IN   R8  10k UP\nP15 BTN_B_N           IN   R9  10k UP\nP16 BQ25185_STAT2     IN   R128 10k UP\nP17 BQ25185_STAT1     IN   R127 10k UP\n\n*** D-732 CORRECTED THIS MAP TWICE. ***  (1) THE PORT-1\nD-PAD / A ASSIGNMENT WAS CYCLED ONE SEAT SO EACH EXPANDER\nBIT MATCHES THE SWITCH ACTUALLY SEATED UNDER ITS ENCLOSURE\nAPERTURE.  THE PCB PLACED SW2..SW6 ONE POSITION OUT AND\nTHE COPPER IS CORRECT AS BUILT, SO THE PIN ASSIGNMENT\nMOVED, NOT THE PARTS.  THE D-PAD IS P11..P14, NOT\nP10..P13.  (2) P05 / P06 / P16 / P17 WERE NAMED WRONG IN\nTHE PREVIOUS NOTE: STAT1 AND STAT2 ARE ON PORT 1, NOT\nPORT 0.  FIRMWARE MUST USE THIS TABLE, NOT ANY EARLIER\nONE.\n\nEVERY P05-P17 INPUT IS INTERRUPT-CAPABLE AND EVERY\nONE POWERS UP MASKED (4Ah/4Bh = FFh). FIRMWARE\nUNMASKS THE SIX BUTTONS, TOUCH_INT_N, SX1262_DIO1\nAND SD_CARD_DETECT_N, AND LEAVES BQ25185_STAT2\nMASKED - IT IS 4Bh BIT 6 (P16), NOT 4Ah BIT 6.  IT\nTOGGLES CONTINUOUSLY WHEN NO BATTERY IS FITTED AND\nWOULD OTHERWISE WAKE THE MCU FOREVER."
 		(exclude_from_sim no)
 		(at 82.804 33.782 0)
 		(effects

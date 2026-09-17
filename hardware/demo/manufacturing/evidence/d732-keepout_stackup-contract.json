@@ -1,0 +1,51 @@
+{
+  "board": "/home/aqroot8/aqroot-demo/hardware/demo/kicad/aqroot-demo/aqroot-Beta-v2.kicad_pcb",
+  "board_copper_layers": [
+    "F.Cu",
+    "In1.Cu",
+    "In2.Cu",
+    "In3.Cu",
+    "In4.Cu",
+    "B.Cu"
+  ],
+  "checks": {
+    "KO1_every_keepout_claims_the_stackup": true,
+    "KO2_no_keepout_holds_copper": true,
+    "KO3_kicad_reports_no_items_not_allowed": true,
+    "KO4_screen_is_not_vacuous": true,
+    "KO5_gnd_reference_planes_are_the_same_copper": true
+  },
+  "control": {
+    "caught": true,
+    "layer": "B.Cu",
+    "uuid": "1a871c37-64b9-52ac-aa07-8f2cc6711ff9"
+  },
+  "drc_counts": {},
+  "forbidding_copper": 8,
+  "holding_copper": [],
+  "items_not_allowed": [],
+  "ok": true,
+  "reference_planes": {
+    "In1.Cu": {
+      "area_mm2": 9512.67003,
+      "net": [
+        "GND"
+      ],
+      "tracks": 0
+    },
+    "In4.Cu": {
+      "area_mm2": 9512.67003,
+      "net": [
+        "GND"
+      ],
+      "tracks": 0
+    }
+  },
+  "rule_areas": 66,
+  "schema": 1,
+  "scopes": [
+    "board",
+    "footprint"
+  ],
+  "under_declared": []
+}

@@ -1,3 +1,143 @@
+## D-732 — **THE D-PAD DEFECT IS CLOSED FOR ZERO COPPER.** D-731 MEASURED IT RIGHT AND PRICED THE WRONG REPAIR: THE WIRING WAS NEVER WRONG, ONLY THE DECLARATION OF WHICH EXPANDER BIT CARRIES WHICH FUNCTION. AND THE SAME NOTE CARRIED A SECOND, INVERTED PIN MAP THAT WOULD HAVE SHIPPED AS A FIRMWARE BUG
+
+    authority  a4200434 -> fa0ad669.  SCHEMATIC + PCB NET NAMES.  ZERO COPPER.
+    `evidence/d732-dpad-pin-reassignment.json`
+    `evidence/d732-drc-dpad-pin-reassignment.json`
+    `evidence/d732-contract-regression.json`
+    `evidence/d732-routing-ledger.json`
+
+### 1. WHY D-731's REPAIR WAS THE WRONG ONE
+
+D-731 proposed a 5-cycle of SWITCH POSITIONS -- move `SW2` into `SW3`'s seat and
+so on around the cycle.  Every pad lands where an identical pad was, so it is
+geometrically free and DRC-clean.  It is also, by D-731's own measurement, NOT
+ROUTABLE: it puts a fourth ~40 mm haul into the west-to-`U2` corridor where the
+board carried three, `BTN_UP_N` stays open at every request order, and D-731
+therefore ended by recommending that the D-PAD APERTURE MOVE 11.5 mm east -- an
+owner / industrial-design decision, on a LOCKED, MARKETING-SAFE outline.
+
+That is a large price for a defect whose copper is already correct.
+
+### 2. THE COPPER WAS NEVER WRONG
+
+Every one of the six switches already reaches a DISTINCT `PCAL9535A` port-1
+input through an identical 10 k pull-up:
+
+    SW2 -> U2.13 (P10)    SW3 -> U2.14 (P11)    SW4 -> U2.15 (P12)
+    SW5 -> U2.16 (P13)    SW6 -> U2.17 (P14)    SW7 -> U2.18 (P15)
+
+Port 1 is EIGHT INPUTS (`07h = FFh`).  Every one of `P05`..`P17` is
+interrupt-capable and every one powers up masked (`4Ah`/`4Bh = FFh`).  There is
+no electrical, timing, boot-strap or interrupt reason why `UP` must be `P10`.
+
+**Which bit carries which function is a free variable.**  It is an
+implementation-detail pin assignment -- explicitly inside routine engineering
+authority -- not a product decision.
+
+### 3. THE REPAIR
+
+A pure 5-cycle of the five NET NAMES, applied identically in
+`08_buttons_expanders.kicad_sch` (10 label instances) and in the `.kicad_pcb`
+(211 net-name instances), plus the matching 5-cycle of each switch's `Value`
+field so silk, BOM and CPL read the function actually under the aperture.
+
+It maps EXACTLY, because the placement error was a clean off-by-one in the
+`SW2..SW6` seat order.  In the front-face frame
+(`x_doc = x_pcb`, `y_doc = 148 - y_pcb`; `FBV2_PCB_DATUM` lower-left, X right,
+Y up; `F.Cu` = FRONT):
+
+    seat              doc coords     ref   was          now          U2 pin / bit
+    D-pad TOP         (13.5, 40.5)   SW3   BTN_DOWN_N   BTN_UP_N     14 / P11
+    D-pad BOTTOM      (13.5, 25.5)   SW4   BTN_LEFT_N   BTN_DOWN_N   15 / P12
+    D-pad LEFT        ( 6.0, 33.0)   SW5   BTN_RIGHT_N  BTN_LEFT_N   16 / P13
+    D-pad RIGHT       (21.0, 33.0)   SW6   BTN_A_N      BTN_RIGHT_N  17 / P14
+    A/B pair, RIGHT   (64.2, 49.0)   SW2   BTN_UP_N     BTN_A_N      13 / P10
+    A/B pair, LEFT    (53.5, 49.0)   SW7   BTN_B_N      BTN_B_N      18 / P15
+
+The D-pad is now `P11`..`P14`, not `P10`..`P13`, and `A` is `P10`.  Still
+contiguous; firmware shifts port 1 by one bit instead of none.
+
+ZERO copper moved.  ZERO parts moved.  ZERO BOM lines.  No owner decision, no
+enclosure change, no aperture move.
+
+### 4. THE SECOND DEFECT, FOUND IN THE SAME NOTE
+
+The `U2` note in sheet 08 -- the table a firmware engineer would write from --
+named four signals WRONG:
+
+    note claimed              board actually has
+    P05 BQ25185_STAT1         P05 /SX1262_DIO1
+    P06 BQ25185_STAT2         P06 /TOUCH_INT_N
+    P16 TOUCH_INT_N           P16 /BQ25185_STAT2
+    P17 SX1262_DIO1           P17 /BQ25185_STAT1
+
+The note also says firmware *"leaves `BQ25185_STAT2` masked -- it toggles
+continuously when no battery is fitted and would otherwise wake the MCU
+forever."*  Following the note, firmware masks `4Ah` bit 6.  **`4Ah` bit 6 is
+`P06`, which is `TOUCH_INT_N`.**  The touch-panel interrupt would have been
+masked and `STAT2` left unmasked to wake the MCU forever -- exactly inverted,
+and it would have presented as "the touchscreen does not wake the device and
+the battery gauge hangs the UI".
+
+The note is rewritten pin by pin from the board, marked as corrected, and told
+to be the only table firmware uses.  `Firmware/src/config.h` carries only the
+Wokwi simulation buttons and a stale `TCA9535` comment, so no physical bit map
+existed to invalidate.
+
+### 5. PROOF
+
+    ledger                 4 -> 4 retained open edges, 20 -> 20 raw ratsnest
+                           (topology-neutral by construction)
+    KiCad DRC              {lib_footprint_issues: 199} and NOTHING ELSE
+    schematic parity       246 warnings / ZERO errors, identical to the D-727
+                           baseline, ZERO switch-related entries
+    contract_regression    14 contracts, ALL RAN, ALL PASS
+    netclass risk          no netclass_pattern and no .kicad_dru rule mentions
+                           BTN_*: all six nets are Default before and after
+    fab package            re-exported at fa0ad669, 29 files; the only gerber
+                           deltas are timestamps and %TO.N net attributes
+    hardware/beta-v2       untouched
+
+`hardware/beta-v2` carries the same six positions and needs the same repair; it
+is READ-ONLY here and is not touched.
+
+### 6. WHAT THIS UNLOCKS
+
+The lever that closed this -- **an expander pin assignment is a free variable** --
+is the same lever the three remaining open edges need.  `/BQ25185_STAT1` and
+`/BQ25185_STAT2` sit on `U2` `P17`/`P16`, in the FULL east row that D-728
+measured as *"a fan-out row that holds N-1 of N"*, while **`U3` has four
+unconnected pins and `U3.13`/`U3.14` sit 7.1 mm from `U11.3`**.  D-731 already
+measured that ripping `STAT1`'s 115.638 mm / 45-object western loop CLOSES
+`/ACC_PWR_EN` in 65.081 mm / 5 barrels and CLOSES `STAT2`'s `U2.19`, and fails
+only because `STAT1` cannot then get back into `U2.20`.  Move both status nets
+to `U3` and `STAT1` never needs `U2.20` again.
+
+### 7. `U11.3`, MEASURED TO THE MICRON HERE
+
+The residual on `/BQ25185_STAT2` is the `U11.3` escape, and this is its exact
+arithmetic on the DLH0010A land:
+
+    U11 west-column lands   0.750 mm (x) x 0.200 mm (y), pitch 0.400 mm
+    U11.4 GND land          y 77.300 .. 77.500
+    U11.3 STAT2 land        y 77.700 .. 77.900
+    U11.2 BAT land          y 78.100 .. 78.300
+    BAT_PROTECTED_P escape  0.200 mm track PINNED at y = 78.200, because pad 1
+                            (BQ25185_SYS, y 78.500) allows no southward room and
+                            the rule floor forbids going narrower
+
+    window between the GND land edge and the battery track edge   0.600 mm
+    owed to the GND land (pad clearance)                        - 0.200 mm
+    owed to the battery track (D-269 routed clearance)          - 0.300 mm
+    left for the track                                         = 0.100 mm
+    board minimum track width                                    0.150 mm
+
+Short by 50 microns.  The northward channel between the land column
+(west edge x 66.025) and the `BAT_PROTECTED_P` spine (east edge x 65.800) is
+0.225 mm and owes 0.200 + 0.150 + 0.300 = 0.650 mm; the spine would have to move
+0.425 mm west, which needs `R37` and its GND bond via moved first.  D-269 is a
+battery-safety clearance and is NOT a candidate for relaxation.
+
 ## D-731 — **THE D-PAD IS WIRED ONE POSITION OUT.** THE TOP OF THE D-PAD SENDS `DOWN`, ITS RIGHT ARM SENDS `A`, AND `UP` IS A STRAY BUTTON 51 mm AWAY BESIDE `B`. THE DEFECT IS INHERITED FROM `beta-v2`, THE CORRECTION IS A FREE 5-CYCLE, AND IT DOES NOT ROUTE IN THIS FLOORPLAN
 
     authority  a4200434  UNCHANGED.  NO COPPER.

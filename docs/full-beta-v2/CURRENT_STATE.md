@@ -66,6 +66,62 @@
 > `verify_promotion` PASS and `protected_copper` showing exactly one protected
 > net moved.  `U14.7` is on the bus.  This board has **no open owner decision**.
 
+- **Demo D-732 (**THE D-PAD DEFECT IS CLOSED, AND IT COST NOTHING**: THE WIRING
+  WAS ALWAYS RIGHT -- WHAT WAS WRONG WAS WHICH EXPANDER BIT WAS DECLARED TO
+  CARRY WHICH FUNCTION.  **ZERO COPPER.**  AND A SECOND, INVERTED PIN MAP WAS
+  FOUND IN THE SAME NOTE AND FIXED):**  **SCHEMATIC + PCB NET NAMES.  Authority
+  `a4200434` -> `fa0ad669`.**  D-731 measured the defect correctly and then
+  priced the WRONG repair.  It proposed a 5-cycle of SWITCH POSITIONS, which is
+  geometrically free but **does not route** -- it puts a fourth ~40 mm haul into
+  the west-to-`U2` corridor and leaves `BTN_UP_N` open at every request order --
+  and it ended by recommending an ENCLOSURE APERTURE MOVE, an owner/ID decision.
+  ***THE COPPER WAS NEVER WRONG.***  Every one of the six switches already
+  reaches a distinct `PCAL9535A` port-1 input through an identical 10 k pull-up;
+  **all eight port-1 pins are inputs, all are interrupt-capable and all power up
+  masked**, so which bit carries which function is a FREE VARIABLE and an
+  implementation detail, not a product decision.  **A pure 5-cycle of the five
+  NET NAMES therefore corrects the defect with zero copper, zero part moves,
+  zero BOM lines and no owner decision** -- and it maps EXACTLY, because the
+  placement error was a clean off-by-one in the `SW2..SW6` seat order.  Front
+  face (`x_doc = x_pcb`, `y_doc = 148 - y_pcb`): `SW3` TOP -> `BTN_UP_N` (P11),
+  `SW4` BOTTOM -> `BTN_DOWN_N` (P12), `SW5` LEFT -> `BTN_LEFT_N` (P13), `SW6`
+  RIGHT -> `BTN_RIGHT_N` (P14), `SW2` A/B-right -> `BTN_A_N` (P10), `SW7`
+  A/B-left `BTN_B_N` (P15) unchanged.  The D-pad is P11..P14, not P10..P13.
+  Each switch's `Value` field was cycled with its net, so silk, BOM and CPL all
+  read the function actually under the aperture.  ***AND THE SAME NOTE CARRIED A
+  SECOND DEFECT, WHICH WOULD HAVE SHIPPED AS A FIRMWARE BUG:*** it named
+  `P05 = BQ25185_STAT1`, `P06 = BQ25185_STAT2`, `P16 = TOUCH_INT_N`,
+  `P17 = SX1262_DIO1`.  **The board has the opposite**: `P05` is `SX1262_DIO1`,
+  `P06` is `TOUCH_INT_N`, `P16` is `STAT2` and `P17` is `STAT1`.  The note tells
+  firmware to *"leave `BQ25185_STAT2` masked"* -- at `4Ah` bit 6, which is
+  **`P06` = `TOUCH_INT_N`** -- so the TOUCH INTERRUPT would have been masked and
+  `STAT2`, which toggles continuously with no battery fitted, left UNMASKED to
+  wake the MCU forever.  Exactly inverted.  The note is rewritten pin by pin
+  from the board and says so.  **No firmware breaks: `Firmware/src/config.h`
+  holds only the Wokwi simulation buttons and a stale `TCA9535` comment, so no
+  physical D-pad bit map existed to invalidate.**  ***PROOF:*** ledger **4 -> 4**
+  retained open edges and 20 -> 20 raw ratsnest (topology-neutral by
+  construction); real KiCad DRC `{lib_footprint_issues: 199}` and NOTHING ELSE;
+  schematic parity **246 warnings / ZERO errors**, identical to the D-727
+  baseline, with **zero switch-related entries**; `contract_regression`
+  **14 contracts, ALL RAN, ALL PASS**; no `netclass_pattern` and no `.kicad_dru`
+  rule mentions `BTN_*`, so all six nets are `Default` class before and after;
+  fab package re-exported at the new sha, 29 files, and the ONLY gerber deltas
+  are timestamps and `%TO.N` net attributes -- **zero geometry changed anywhere
+  on the board**.  ***NEXT:*** three edges over three nets, and the pin-is-a-free-
+  variable lever that closed this one is now aimed at them: `/BQ25185_STAT1` and
+  `/BQ25185_STAT2` are on `U2` P17/P16 -- the FULL east row -- while **`U3` has
+  four unconnected pins and `U3.13`/`U3.14` sit 7.1 mm from `U11.3`**.  D-731
+  measured that ripping `STAT1`'s 115.638 mm / 45-object western loop CLOSES
+  `/ACC_PWR_EN` in 65.081 mm and CLOSES `STAT2`'s `U2.19`, and fails only
+  because `STAT1` cannot get back into `U2.20`.  **Move both status nets to `U3`
+  and `STAT1` never needs `U2.20` again.**  The residual is `U11.3`'s escape,
+  measured here to the micron: the land is 0.750 x 0.200 mm on 0.400 mm pitch,
+  and between `U11.4`'s land edge (y 77.500) and `BAT_PROTECTED_P`'s pinned
+  0.200 mm escape track (y 78.100) there is a 0.600 mm window that owes 0.200 mm
+  to the GND land and **0.300 mm to the battery track under D-269**, leaving
+  **0.100 mm for a track whose floor is 0.150** -- short by 50 microns, and the
+  northward channel past `U11.4`/`U11.5` owes 0.650 mm and has 0.225.
 - **Demo D-731 (**THE D-PAD IS WIRED ONE POSITION OUT** -- THE TOP OF THE D-PAD
   SENDS `DOWN`, ITS RIGHT ARM SENDS `A`, AND `UP` IS A STRAY BUTTON 51 mm AWAY
   BESIDE `B`.  INHERITED FROM `beta-v2`.  **THIS IS THE BOARD'S TOP BLOCKER AND
