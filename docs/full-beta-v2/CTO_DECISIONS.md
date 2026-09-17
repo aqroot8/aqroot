@@ -1,3 +1,154 @@
+## D-739 — **`/SX1262_DIO1` IS ROUTABLE. D-735's "FLOORPLAN CHANGE" IS OVERTURNED AND THE D-PAD DOES NOT HAVE TO MOVE.** THE WHOLE `U2` WEST POCKET RE-LAYS AROUND IT EXCEPT **ONE** CONDUCTOR, AND THAT CONDUCTOR IS THE ENABLE OF A PART THAT IS NOT FITTED
+
+    authority  71c4326e  UNCHANGED.  NO COPPER PROMOTED -- the finalist is
+                                     REFUSED by clause 4 and is not relaxed.
+    `evidence/d739-dio1-routed-proof.json`   the route, segment by segment
+    `evidence/d739-dio1-finalist.kicad_pcb`  sha256 `af1e3747...`, DIO1 CLOSED
+    `evidence/d739-{dio1_fcu2,s3a..s3g,s4a,s4b,s5,btn_stage2,btn_stage3,dio1_f50}.json`
+
+### 1. WHAT D-735 CONCLUDED, AND WHY IT WAS WRONG
+
+D-735 spent eight attempts on `/SX1262_DIO1`, reported *"every single-net lever
+is spent"*, and recommended **D-731's D-pad move EAST** -- an enclosure-aperture
+change, therefore an **owner / industrial-design decision**, with the fallback
+that the LoRa driver polls `GetIrqStatus()` instead of taking an interrupt.
+
+Its own screen had named the price correctly and the reading of it was wrong.
+The screen reported a minimal free set of **four** nets on `B.Cu`
+(`BTN_DOWN_N`, `BTN_UP_N`, `SPI_B_SCK`, `TOUCH_INT_N`) for a 0.314 mm trunk.
+**Two of those four are enough**, and the eviction has to be the right SHAPE:
+
+***THE SHAPE IS THE WHOLE POINT.***  Every earlier attempt used `--evict-whole`,
+which deletes a net's copper BOARD-WIDE.  That is what made the problem look
+impossible: `D-738`'s own re-run of the F.Cu two-net cut
+(`{BTN_LEFT_N, ACC_PWR_EN}`, which D-735 measured at 0.700 mm) with
+`--evict-whole` returned `DIO1` **NO_PATH** *and* left `/ACC_PWR_EN` unable to
+re-lay -- a 54-object deletion for nothing.  A **CORRIDOR-WINDOWED** `--evict`
+deletes only what lies inside the requested net's own window and leaves the rest
+of each net standing, so the re-lay is a local repair instead of a board-wide
+re-route.
+
+### 2. THE ROUTE
+
+With **only `BTN_DOWN_N` (26 objects) and `BTN_UP_N` (28 objects)** removed from
+`DIO1`'s own corridor window, at a **25 micron** lattice:
+
+    /SX1262_DIO1   U2.9 (54.138,86.375) -> U8.13 (3.000,142.730)
+                   82.428 mm, 2 vias (0.60/0.30)
+                   B.Cu 73.456 mm + F.Cu 8.973 mm
+                   vias at (7.600,134.100) and (5.000,142.075)
+
+Real KiCad DRC on that board: **`lib_footprint_issues: 199` and
+`track_dangling` only** -- and every dangling end belongs to one of the evicted
+nets' surviving stubs.  **Zero `clearance`, zero new class attributable to
+`DIO1`'s copper.**  The route is legal.
+
+**The lattice decides it.**  The same transaction at `--grid 50000` returns
+`DIO1` NO_PATH.  This is the board's own recorded lesson (D-733 §4) applying
+again in the other direction.
+
+### 3. THE D-PAD COMES BACK
+
+Both evicted button nets re-lay on the board that has `DIO1` in it:
+
+    /08_BUTTONS_EXPANDERS/BTN_UP_N     97.773 mm, 6 vias
+    /08_BUTTONS_EXPANDERS/BTN_DOWN_N   88.741 mm, 8 vias
+    real KiCad DRC  {lib_footprint_issues: 199} and NOTHING ELSE
+
+That board is preserved as `evidence/d739-dio1-finalist.kicad_pcb`
+(`sha256 af1e3747...`).  Its ledger: **raw ratsnest 19, retained open edges 3,
+and `/SX1262_DIO1` IS GONE FROM THE OPEN LIST.**
+
+### 4. THE RESIDUAL IS EXACTLY ONE CONDUCTOR, AND IT IS NAMED
+
+What the finalist opens instead is **`BTN_UP_N`'s PULL-UP LEG**: `R5.2` at
+(51.948, 86.792) no longer reaches the rest of its net.  `R5.2` reports only
+**2 escapes** against a 8.099 mm gap, and the reason is geometric and was
+already on the record -- D-735 wrote that `U2`'s six buttons land on the EAST
+column while their pull-ups `R4`-`R9` sit at x ~ 52, *"six 8-9 mm WRAPS around
+the part"*.  The resistor column's east edge is **x = 52.77** and `U2`'s west
+lands begin at **x = 53.10**: a **0.33 mm** gap carrying eight fan-outs, six
+wraps, and now `DIO1`.
+
+Eleven transactions were run against that pocket.  The pocket holds **N-1 of N**
+and the identity of the loser moves with the request order:
+
+    run   evicted inside the U2 west window            what closed / what did not
+    s3a   DISP_RST_N                                   BTN_UP_N ok; DISP_RST_N no
+    s3b   + AMP_SD_MODE                                BTN_UP_N, DISP_RST_N ok;
+                                                       AMP_SD_MODE no
+    s3d   + SD_CARD_DETECT_N, NFC_5V_EN, TOUCH_INT_N   4 ok; NFC_5V_EN no
+    s3g   same, NFC_5V_EN requested 2nd                5 ok; AMP_SD_MODE no
+    s3f   + SX1262_RST_N, TOUCH_RST_N                  6 ok; 2 no, + a sliver
+    s4a   + BTN_RIGHT_N                                6 ok; 2 no, + 3 slivers
+    s4b   + BTN_A_N                                    4 ok; 4 no
+    s5    s3d's set, NFC_5V_EN requested LAST          **5 ok; only NFC_5V_EN no**
+
+    s5 in full:  BTN_UP_N 54.575/4  DISP_RST_N 18.153/1  AMP_SD_MODE 55.881/5
+                 TOUCH_INT_N 44.583/1  SD_CARD_DETECT_N 78.309/1
+                 NFC_5V_EN   NO_PATH
+                 DRC {lib_footprint_issues: 199, track_dangling: 4}
+
+Evicting MORE is measurably WORSE: `s3f`, `s4a` and `s4b` each add nets and each
+end with more failures, slivers or a `GND` regression.  The pocket is one
+conductor short, not five.
+
+### 5. WHICH CONDUCTOR LOSES, AND WHY THAT MATTERS
+
+`s5`'s casualty is **`/NFC_5V_EN`**, and its pads are:
+
+    U2.6    PCAL9535APW      FITTED
+    TP10.1  test point       FITTED
+    R14.1   100 k pull-down  FITTED
+    U13.2   TPS61023         **DNP ON DEMO**
+
+`/NFC_5V_EN` is the enable of the **optional NFC 5 V boost**, which the Demo does
+not fit -- `U13` is in the schematic DNP list and the expander analysis already
+calls `P02` the *"Demo-DNP path"*.  Its safe state is held locally by `R14`'s
+100 k regardless of whether the `U2.6` leg exists.
+
+***SO THE ENGINEERING TRADE ON THE TABLE IS:*** a routed interrupt on a FITTED
+LoRa transceiver, in exchange for an unrouted enable on a part that **is not on
+the board**.
+
+***AND IT IS STILL REFUSED HERE, DELIBERATELY.***  The promotion gate counts
+EDGES: `DIO1` closes (-1), `NFC_5V_EN` opens (+1), so retained open edges go
+**3 -> 3** and clause 4 (`board_improved`) refuses.  That clause exists so that
+robustness-only copper cannot ride in on a rename, and **it is not relaxed for
+this.**  The finalist is recorded, not promoted.
+
+### 6. THE FIX IS A PLACEMENT CHANGE, IT IS INSIDE MY AUTHORITY, AND IT IS THE NEXT THING TO DO
+
+The pocket is short by one conductor because **six pull-ups sit on the wrong
+side of `U2`**.  `R4`-`R9` are at `x 49.60 .. 52.77`, west of a part whose six
+button pins are all on the EAST column, so every one of them wraps 8-9 mm
+through the 0.33 mm channel that `DIO1` now also needs.
+
+**Move `R4`-`R9` EAST of `U2`.**  The strip at `x 61.2 .. 63.3, y 80.8 .. 95.0`
+on `B.Cu` is clear between `TP33` (ends y 80.80) and `TP47` (starts y 94.95) --
+2.1 x 14.2 mm, and six 0603 lands on ~2.0 mm pitch need 12 mm of it.  That
+turns six 8-9 mm wraps into six 1-2 mm hops, removes six conductors from the
+west pocket, and gives `/NFC_5V_EN` back its lane.  Passive movement is routine
+engineering authority under the charter; it needs `placement`, `pour_partition`
+PP1/PP2 and the full gate, and it does **not** need an owner.
+
+**IF IT DOES NOT WORK**, the honest fallback is the one section 5 prices: take
+`s5` and retire the `U2.6` leg of `/NFC_5V_EN`, which is a **scope** question
+(the Demo does not fit `U13`) rather than a routing one, and is therefore a
+decision to raise rather than to take at the end of a session.
+
+### 7. WHAT THIS DOES TO D-735's OWNER DECISION
+
+**It removes it.**  D-735 asked the owner to move the D-pad aperture 11.5 mm
+east, on a locked, marketing-safe outline, because `/SX1262_DIO1` was believed
+unroutable without it.  `/SX1262_DIO1` is routable with the D-pad exactly where
+it is.  The recommendation is now: **do not move the D-pad**, and do not accept
+the polling fallback.  D-735's entry stands as the record of how the question
+was asked; its ANSWER is superseded by measurement.
+
+`/BQ25185_STAT2`'s `U11.3` (D-734) is untouched by any of this and remains the
+board's one genuinely open owner decision.
+
 ## D-738 — **FIVE THINGS THE FABRICATOR AND THE FIRMWARE WERE NEVER TOLD.** THE BOARD USES VIA-IN-PAD IN 134 LANDS, 38 VIAS SIT BELOW ITS OWN FLOORS, KICAD'S MASK-BRIDGE TEST IS SWITCHED OFF, THE PUBLISHED CAVITY WAS NARROWER THAN THE BOARD, AND THE EXPANDER PIN MAP WAS TWO ECOs OUT OF DATE
 
     authority  71c4326e  UNCHANGED.  NO COPPER.

@@ -66,6 +66,18 @@
 > `verify_promotion` PASS and `protected_copper` showing exactly one protected
 > net moved.  `U14.7` is on the bus.  This board has **no open owner decision**.
 
+> **ONE OPEN OWNER DECISION AS OF D-739.  D-735's WAS WITHDRAWN BY
+> MEASUREMENT.**  `/SX1262_DIO1` **IS ROUTABLE** -- 82.428 mm, 2 vias, DRC-clean
+> -- with the D-pad exactly where it is, so the aperture move D-735 asked the
+> owner for is **not needed** and neither is the `GetIrqStatus()` polling
+> fallback.  The price is a two-net, CORRIDOR-WINDOWED eviction of
+> `BTN_DOWN_N`/`BTN_UP_N`, both of which then re-lay; the residual is ONE
+> conductor in `U2`'s west pocket and the fix for it is a **passive move inside
+> ordinary engineering authority** (`R4`-`R9` east of `U2`).  See D-739.
+> **What remains open is D-734 alone: `/BQ25185_STAT2` cannot leave `U11.3`.**
+> The paragraph below is the PREVIOUS state of that question and is left
+> standing as history.
+>
 > **TWO OPEN OWNER DECISIONS AS OF D-736, BOTH RAISED WITH A RECOMMENDATION AND
 > NEITHER BLOCKING ANY OTHER WORK.**  **(1) D-734** -- `/BQ25185_STAT2` cannot
 > leave `U11.3`; proved closed at 10 microns at every width down to 0.030 mm AND
@@ -76,8 +88,57 @@
 > D-731's D-pad move EAST, which is an enclosure-aperture / industrial-design
 > call; if it is refused, the LoRa driver polls `GetIrqStatus()` instead of
 > taking an interrupt, and that becomes an explicit product decision.*
-> **`DEMO_READY_FOR_FAB` IS NOT DECLARED WHILE EITHER STANDS.**
+> **`DEMO_READY_FOR_FAB` IS NOT DECLARED WHILE EITHER STANDS.**  *(D-739: the
+> second of the two, D-735's, is withdrawn -- see the block above.)*
 
+- **Demo D-739 (`/SX1262_DIO1` IS ROUTABLE -- D-735's FLOORPLAN CONCLUSION IS
+  OVERTURNED AND THE D-PAD DOES NOT HAVE TO MOVE.  ONE OF THE TWO OPEN OWNER
+  DECISIONS IS WITHDRAWN):**  **NO COPPER PROMOTED.  Authority `71c4326e`
+  UNCHANGED -- the finalist is REFUSED by clause 4 and the clause is NOT
+  relaxed.**  D-735 spent eight attempts, reported *"every single-net lever is
+  spent"* and asked the owner to move the D-pad aperture 11.5 mm east on a
+  locked, marketing-safe outline.  ***ITS OWN SCREEN HAD THE PRICE RIGHT AND THE
+  READING WRONG.***  The screen named a four-net minimal free set on B.Cu;
+  **TWO of those four are enough** -- and the eviction has to be the right
+  SHAPE.  Every earlier attempt used `--evict-whole`, which deletes copper
+  BOARD-WIDE: re-run here, the F.Cu two-net cut D-735 priced at 0.700 mm returns
+  `DIO1` **NO_PATH** *and* strands `/ACC_PWR_EN`, 54 objects deleted for nothing.
+  A **CORRIDOR-WINDOWED** `--evict` leaves the rest of each net standing and
+  makes the re-lay a local repair.  ***THE ROUTE:*** with only `BTN_DOWN_N`
+  (26 objects) and `BTN_UP_N` (28) out of `DIO1`'s own window, at **25 micron**,
+  `U2.9 -> U8.13` closes in **82.428 mm with 2 vias** (B.Cu 73.456 + F.Cu 8.973,
+  barrels at (7.600,134.100) and (5.000,142.075)).  Real KiCad DRC on that
+  board is `{lib_footprint_issues: 199}` plus `track_dangling` **only from the
+  evicted stubs** -- zero `clearance`, **zero new class attributable to `DIO1`'s
+  copper**.  The same transaction at `--grid 50000` is NO_PATH: **the lattice
+  decides it.**  ***AND THE D-PAD COMES BACK:*** on the board that has `DIO1` in
+  it, `BTN_UP_N` re-lays in 97.773 mm / 6 vias and `BTN_DOWN_N` in 88.741 mm /
+  8 vias with DRC `{lib_footprint_issues: 199}` **and nothing else**.  That board
+  is preserved as `evidence/d739-dio1-finalist.kicad_pcb`, `sha256 af1e3747...`,
+  ledger **raw ratsnest 19, retained open edges 3, and `/SX1262_DIO1` GONE FROM
+  THE OPEN LIST**.  ***THE RESIDUAL IS EXACTLY ONE CONDUCTOR AND IT IS NAMED:***
+  `BTN_UP_N`'s PULL-UP leg -- `R5.2` has **2 escapes** against an 8.099 mm gap,
+  because the `R4`-`R9` column's east edge is `x = 52.77` and `U2`'s west lands
+  begin at `x = 53.10`, a **0.33 mm** channel already carrying eight fan-outs and
+  six button wraps.  **Eleven transactions** were run at that pocket; it holds
+  **N-1 of N** and the loser moves with the request order.  The best (`s5`)
+  closes `BTN_UP_N` 54.575/4, `DISP_RST_N` 18.153/1, `AMP_SD_MODE` 55.881/5,
+  `TOUCH_INT_N` 44.583/1 and `SD_CARD_DETECT_N` 78.309/1, and loses only
+  **`/NFC_5V_EN`** -- whose load `U13` (TPS61023 NFC 5 V boost) is **DNP ON
+  DEMO** and whose safe state `R14`'s 100 k holds anyway.  Evicting MORE is
+  measurably WORSE (`s3f`, `s4a`, `s4b` each add nets and each end with more
+  failures, copper slivers or a GND regression).  ***REFUSED ON PURPOSE:*** the
+  gate counts EDGES, `DIO1` closes (-1) and `NFC_5V_EN` opens (+1), so
+  **3 -> 3** and clause 4 refuses.  **That clause is not relaxed for this.**
+  ***THE FIX IS A PLACEMENT CHANGE INSIDE MY OWN AUTHORITY AND IT IS THE NEXT
+  THING TO DO:*** move `R4`-`R9` **EAST** of `U2` into the clear B.Cu strip
+  `x 61.2..63.3, y 80.8..95.0` (2.1 x 14.2 mm between `TP33` and `TP47`; six
+  0603 lands on ~2.0 mm pitch need 12 mm).  Six 8-9 mm wraps become six 1-2 mm
+  hops, six conductors leave the west pocket, and `/NFC_5V_EN` gets its lane
+  back.  ***WHAT THIS DOES TO THE OWNER DECISIONS:*** **D-735's is WITHDRAWN** --
+  do not move the D-pad and do not accept the `GetIrqStatus()` polling fallback.
+  **D-734's `U11.3` is untouched and remains the board's ONE open owner
+  decision.**
 - **Demo D-738 (SEVEN PRE-FAB ITEMS CLOSED, AND EVERY ONE OF THEM WAS A FACT
   THAT WAS TRUE INSIDE THE DESIGN AND HAD NEVER LEFT IT):**  **NO COPPER.
   Authority `71c4326e` UNCHANGED.**  ***THE BOARD USES VIA-IN-PAD IN 134
