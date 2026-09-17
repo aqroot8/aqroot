@@ -43,11 +43,23 @@ is the measurement, so the abstention can stop.
          `U9` land, and those two distances already differ; routing may not be
          blamed for that, but it may not exceed it either.  This is a bound the
          board's own geometry states, so it needs no tuning.
-    RF5  THE SCREEN IS NOT VACUOUS: a synthetic 1.000 mm extension of the
-         LONGER transmit arm on a throwaway copy must break RF2.  It has to be
-         the longer one -- lengthening the SHORTER arm makes the mismatch
-         smaller and proves nothing, which is what the first run of this probe
-         did (2.5999 -> 2.1627 mm on `NFC_RFO1`).
+    RF5  THE SCREEN IS NOT VACUOUS: a synthetic extension of the LONGER
+         transmit arm on a throwaway copy must break RF2.  It has to be the
+         longer one -- lengthening the SHORTER arm makes the mismatch smaller
+         and proves nothing, which is what the first run of this probe did
+         (2.5999 -> 2.1627 mm on `NFC_RFO1`).
+
+         AND THE STIMULUS IS SIZED AGAINST THE ALLOWANCE IT IS TESTING, which
+         until D-730 it was not.  RF2's threshold is `arm_pre + budget`, so a
+         FIXED 1.000 mm probe is swallowed whenever the promotion left more
+         than 1.000 mm of slack under that threshold -- which is exactly what
+         a promotion that IMPROVES the arms does.  The probe therefore failed
+         hardest on the best candidates and passed on the ones that spent the
+         whole budget: an inverted signal, and a self-test that stopped
+         testing.  The extension is now `slack + 1.000 mm`, so it crosses the
+         threshold by a known 1.000 mm whatever the candidate did, and RF5
+         once again asks the only question it was written to ask -- does the
+         RF2 comparator react to arm copper at all.
 
     python3 hardware/demo/manufacturing/checks/rf_symmetry_contract.py \\
         --ref HEAD [--arm-mismatch-budget-mm 0.3] [-o REPORT.json]
@@ -132,7 +144,7 @@ def placement_bound(pads):
 PERTURB = """
 import sys
 import pcbnew
-path, net = sys.argv[1], sys.argv[2]
+path, net, grow_nm = sys.argv[1], sys.argv[2], int(sys.argv[3])
 b = pcbnew.LoadBoard(path)
 t = [x for x in b.GetTracks()
      if x.GetClass() == 'PCB_TRACK' and x.GetNetname() == net]
@@ -146,8 +158,8 @@ s0, e = x.GetStart(), x.GetEnd()
 import math
 dx, dy = e.x - s0.x, e.y - s0.y
 n = math.hypot(dx, dy) or 1.0
-x.SetEnd(pcbnew.VECTOR2I(int(round(e.x + 1000000 * dx / n)),
-                         int(round(e.y + 1000000 * dy / n))))
+x.SetEnd(pcbnew.VECTOR2I(int(round(e.x + grow_nm * dx / n)),
+                         int(round(e.y + grow_nm * dy / n))))
 pcbnew.SaveBoard(path, b)
 """
 
@@ -220,11 +232,21 @@ def main():
     probe.parent.mkdir(parents=True, exist_ok=True)
     probe.write_bytes(post_path.read_bytes())
     longer = ARM_A if post[0][ARM_A]["mm"] >= post[0][ARM_B]["mm"] else ARM_B
-    subprocess.run([sys.executable, "-c", PERTURB, str(probe), longer],
+    # Cross RF2's threshold by a known 1.000 mm, whatever slack the candidate
+    # left under it.  A fixed 1.000 mm probe is vacuous on any promotion that
+    # improved the arms by more than that.
+    slack = (detail["arm_mismatch_mm_was"] + a.arm_mismatch_budget_mm
+             - detail["arm_mismatch_mm_now"])
+    grow_mm = round(max(0.0, slack) + 1.0, 4)
+    subprocess.run([sys.executable, "-c", PERTURB, str(probe), longer,
+                    str(int(round(grow_mm * 1e6)))],
                    check=True, capture_output=True)
     pchecks, pdetail = judge(pre, read(probe), a.arm_mismatch_budget_mm)
     checks["RF5_screen_is_not_vacuous"] = not pchecks["RF2_arm_mismatch_within_budget"]
     detail["rf5_probe_arm"] = longer
+    detail["rf5_probe_extension_mm"] = grow_mm
+    detail["rf5_probe_threshold_mm"] = round(
+        detail["arm_mismatch_mm_was"] + a.arm_mismatch_budget_mm, 4)
     detail["rf5_probe_arm_mismatch_mm"] = pdetail["arm_mismatch_mm_now"]
 
     doc = dict(schema=1, ref=a.ref, checks=checks, detail=detail,

@@ -1,3 +1,133 @@
+## D-730 — PM-3 IS **COMPLETE AND PROMOTED**: `U9.14` `VDD_DR` IS ROUTED, THE BOARD'S ONE FUNCTIONAL BLOCKER IS GONE, AND 5 -> 4 RETAINED OPEN EDGES. TWO GATES WERE ASKING THE WRONG QUESTION AND ARE FIXED WITH THEIR OWN NON-VACUITY CONTROLS
+
+    authority  7431e6af -> a4200434  PROMOTED.
+    `evidence/d730-*`
+
+D-729 built PM-3 stage 1 -- `C47` 0.500 mm north and `NFC_RFO1` re-laid by hand
+-- and left a named residual: `NFC_VDD_RF` and `NFC_VDD_AM`, both of which the
+maze refuses at both lattices.  This lays them by hand, gates the lot, and
+promotes.
+
+### 1. `U9.14` `VDD_DR` -- THE ST25R3916's ANTENNA-DRIVER SUPPLY
+
+    B.Cu  (34.750,27.725) -> (34.750,26.200)   0.200 mm
+    VIA   (34.750,26.200)                       0.600 / 0.300  GENERAL_SIGNAL
+    F.Cu  (34.750,26.200) -> (33.000,26.200)   0.200 mm
+
+The stub leaves the land in the **0.250 mm** the two re-laid arms leave at
+0.500 mm pitch -- `NFC_RF`'s routed clearance is 0.250 mm, the arms are 0.300 mm
+and the stub is 0.200 mm, so 0.500 - 0.150 - 0.100 = 0.250 EXACTLY, on both
+sides.  The barrel sits in the window the arms vacate: `RFO1`'s vertical ends at
+y 26.900 and `RFO2`'s at 26.800, and `RFO1`'s east run is at 25.400, which puts
+the legal band at **y 26.100 .. 26.310** and 26.200 in the middle of it.  The
+F.Cu run west lands on the net's OWN existing F.Cu diagonal, which passes
+through (33.100,26.200) -- no new corridor is spent at all.
+
+### 2. `NFC_AGDC`'s BARREL STEPS ASIDE, AND THAT IS THE WHOLE `NFC_VDD_AM` FIX
+
+`C47` 0.500 mm north closes the channel `NFC_VDD_AM` used: its (33.925,23.350)
+-> (36.275,23.350) run ends up **0.075 mm** from `C47`'s moved lands.  The
+channel that is left between `C53`'s lands (top y 22.975) and `C47`'s (bottom
+y 23.575) is **0.600 mm** -- exactly a 0.200 mm track with 0.200 mm either side
+-- and the ONLY object standing in it is `NFC_AGDC`'s F->B barrel at
+(33.300,22.900), whose 0.600 mm body spans x 33.000 .. 33.600 and y 22.600 ..
+23.200.  It is ordinary copper on an ordinary net and it owes `C53.1` no
+clearance because it is the same net, so it moves 0.440 mm south-east to
+**(33.500,22.500)**, beside the land it already feeds, and its F.Cu diagonal
+re-lands on it.  `NFC_VDD_AM` then runs `U9.11` -> (33.250,26.850) ->
+(33.125,24.100) at its existing 0.300 mm, necks to the board's own 0.200 mm
+Default floor for the 3.2 mm `C47` and `C53` pinch, and comes back out at
+(37.100,22.475) -- the node the old route already used.
+
+### 3. WHAT THE GATE SAYS
+
+    routing ledger          5 -> 4 retained open edges, 21 -> 20 raw ratsnest
+    real KiCad DRC          ZERO attributable; {lib_footprint_issues: 199} only
+    verify_promotion        PASS 16/16, fill stable, pour partition intact
+    rf_symmetry  RF1-RF5    PASS -- arm mismatch 2.8702 -> 0.5541 mm
+    pour_partition PP1-PP4  PASS
+    protected_copper        IDENTICAL to d727
+    contract_regression     14/14, no verdict regression
+    fab package             re-exported, FAB1-FAB3 PASS at a4200434
+
+**The NFC transmitter has its supply.**  `U9.14` was the board's one FUNCTIONAL
+open edge; what remains is three edges of status/enable plumbing.
+
+### 4. TWO GATES WERE ASKING THE WRONG QUESTION
+
+Both were found by this promotion, both are FIXED WITH THEIR OWN NON-VACUITY
+CONTROL, and neither fix is a relaxation.
+
+**`rf_symmetry_contract` RF5 was INVERTED.**  RF2's threshold is
+`arm_pre + budget`; RF5 perturbed the longer arm by a FIXED 1.000 mm and judged
+the result against that same threshold.  So RF5 was swallowed whenever the
+promotion left more than 1.000 mm of slack under the threshold -- which is
+exactly what a promotion that IMPROVES the arms does.  PM-3 took the mismatch
+2.870 -> 0.554, the probe landed at 1.554 against a 2.870 threshold, and the
+self-test reported the best RF result this board has ever had as FAIL.  **The
+probe now extends by `slack + 1.000 mm`**, so it crosses the threshold by a
+known 1.000 mm whatever the candidate did: 3.8702 against 2.8702, REFUSED.
+RF5 PASSES, and it is testing again.
+
+**`placement_contract` PL9 was asking about the BOARD, not the MOVE.**  It read
+"is a barrel under this land NOW", and it can only ever be asked of a part a
+promotion DECLARES -- so an INHERITED via-in-land surfaces as a FAIL the first
+time anybody moves the part sitting on top of it.  `NFC_VDD_A`'s barrel at
+(33.900,24.400) was inside `C47.1`'s land BEFORE the move, is inside it after,
+and did not move.  A board-wide census then showed the condition is not `C47`'s
+at all: **this board carries 107 same-net via-in-land instances, 106 of them in
+SMD lands, and PM-3 adds and removes ZERO** (`evidence/d730-via-in-pad-census.json`;
+the five that read "foreign net" are the unnumbered paste sub-apertures of the
+`U5`/`U9`/`U11` thermal pads with GND thermal vias under them, which is the
+intended construction).  PL9 now asks its own question -- a barrel under the
+land now that was NOT under that part's land before -- and REPORTS the inherited
+ones in `vias_inherited_under_moved_lands` instead of swallowing them.
+**NON-VACUITY CONTROL: a 0.095 mm `C65` shift that genuinely swallows the GND
+barrel at (62.800,40.100) is REFUSED** (`evidence/d730-placement-pl9-nonvacuity-control.json`).
+
+**`BOND_GUARD` is bumped d725 -> d730, the fifth time and the same reason.**
+`C47` is a bond END, so `P2` read `misplaced_ends: C47.2`, one `off_copper` tube
+and eleven renumbered `B.Cu` `GND` islands.  THE BOND DID NOT MOVE, measured pad
+by pad either side (`evidence/d730-gnd-bond-islands-unmoved.json`): every
+guarded island carries EXACTLY the same pads before and after.  The re-cut guard
+reads P1-P4 PASS, 42 tubes, ZERO renumbered, ZERO misplaced, ZERO off copper;
+the stale d725 guard STILL FAILS on this board
+(`evidence/d730-pour-bond-contract-d725guard-superseded.json`).
+
+### 5. ONE HAZARD FOUND, AND IT IS NOT THE BOARD'S
+
+`pcbnew.SaveBoard()` into `hardware/demo/kicad/aqroot-demo/` **rewrites the
+sibling `.kicad_pro` and deleted all 18 netclasses and all 57 netclass patterns**
+during this session.  The board sha was unaffected, so nothing flagged it; the
+symptom was `pour_partition` PP2 failing with
+`NO_NETCLASS_TRACK_WIDTH_FOR_THE_RETURN_NET` and `netclass_source.classes ==
+['Default']`, while `verify_promotion` -- which stages its own copy -- kept
+passing.  The project file was restored from git, every artifact taken while it
+was damaged was discarded and re-taken, and the rule is now: build every
+candidate and every synthetic control in a scratch directory holding its own
+`.kicad_pro`/`.kicad_dru`/`fp-lib-table`/`libraries`, and `cp` only the
+`.kicad_pcb` into place.
+
+### 6. NEXT
+
+Three edges remain, and all three are status/enable plumbing on the `U2`/`U3`
+expander pair:
+
+    /BQ25185_STAT2   2   U11.3 and U2.19 -- pull-up R128 and TP7 sit 30 mm away
+    /ACC_PWR_EN      1   U3.20 -> U16.1
+    /SX1262_DIO1     1   U2.9 <-> U8.13, 76 mm, 79 nets across its corridor
+
+`STAT2` is the live candidate and it is a RE-FLOORPLAN, not a route: `R128`, the
+10 k pull-up, sits at (48.294,104.530) and `TP7` at (57.500,97.500) while the
+two open lands are at (66.400,77.800) and (59.862,88.325).  Moved into the free
+`U2`/`U11` pocket (597 legal sites measured for `R128` alone) the `TP7` <-> `R128`
+join closes in 1.876 mm.  TWO WALLS REMAIN AND ARE MEASURED: `U11.3` is
+**LATTICE_EXACT, widest escape 0.2000 mm at a 0.200 mm contract, margin
+0.0000** -- the BQ25185's 0.400 mm pitch leaves exactly one track width between
+`U11.2`'s `BAT_PROTECTED_P` taper and `U11.4`, so it is a HAND-LAY, not a maze
+request -- and `R128.2` <-> `U2.19` is still `NO_PATH`, which is D-728's `U2` east
+fan-out wall unchanged.
+
 ## D-729 — PM-3 IS **ONE CAPACITOR AND HALF A MILLIMETRE**: WITH `C47` 0.500 mm NORTH, `U9.14` `VDD_DR` CLOSES IN 8.5 mm WITH TWO ORDINARY BARRELS. THE RESIDUAL IS TWO ARMS THE MAZE SHOULD NOT BE ASKED FOR
 
     authority  7431e6af  UNCHANGED.  NO COPPER.

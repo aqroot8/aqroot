@@ -1,0 +1,189 @@
+{
+  "question": "did any guarded B.Cu GND bond change which pads share its island across the PM-3 promotion",
+  "pre_board_sha256": "7431e6af29882d1055699a46ee794477b0036a0978b884da5014eb68cff7a5b9",
+  "pre": {
+    "33": {
+      "area_mm2": 2.093,
+      "pads": [
+        "U11.4",
+        "U11.5",
+        "U11.11"
+      ]
+    },
+    "34": {
+      "area_mm2": 13.0213,
+      "pads": [
+        "C36.2",
+        "C5.2",
+        "C7.2",
+        "R37.2"
+      ]
+    },
+    "51": {
+      "area_mm2": 13.0607,
+      "pads": [
+        "C47.2",
+        "C69.2"
+      ]
+    },
+    "53": {
+      "area_mm2": 27.5469,
+      "pads": [
+        "C76.2",
+        "C73.2"
+      ]
+    },
+    "54": {
+      "area_mm2": 0.3487,
+      "pads": [
+        "U9.16"
+      ]
+    },
+    "56": {
+      "area_mm2": 10.5635,
+      "pads": [
+        "C51.2",
+        "C53.2",
+        "C45.2"
+      ]
+    },
+    "57": {
+      "area_mm2": 10.3917,
+      "pads": [
+        "R88.2",
+        "C61.2"
+      ]
+    }
+  },
+  "post": {
+    "33": {
+      "area_mm2": 2.093,
+      "pads": [
+        "U11.4",
+        "U11.5",
+        "U11.11"
+      ]
+    },
+    "34": {
+      "area_mm2": 13.0213,
+      "pads": [
+        "C36.2",
+        "C5.2",
+        "C7.2",
+        "R37.2"
+      ]
+    },
+    "52": {
+      "area_mm2": 27.5469,
+      "pads": [
+        "C76.2",
+        "C73.2"
+      ]
+    },
+    "53": {
+      "area_mm2": 0.3487,
+      "pads": [
+        "U9.16"
+      ]
+    },
+    "55": {
+      "area_mm2": 9.8959,
+      "pads": [
+        "C47.2",
+        "C69.2"
+      ]
+    },
+    "56": {
+      "area_mm2": 10.3243,
+      "pads": [
+        "C51.2",
+        "C53.2",
+        "C45.2"
+      ]
+    },
+    "57": {
+      "area_mm2": 10.3915,
+      "pads": [
+        "R88.2",
+        "C61.2"
+      ]
+    }
+  },
+  "same_pad_groups": true,
+  "groups": [
+    {
+      "pads": [
+        "C36.2",
+        "C5.2",
+        "C7.2",
+        "R37.2"
+      ],
+      "pre_island": "34",
+      "post_island": "34",
+      "pre_area_mm2": 13.0213,
+      "post_area_mm2": 13.0213
+    },
+    {
+      "pads": [
+        "C45.2",
+        "C51.2",
+        "C53.2"
+      ],
+      "pre_island": "56",
+      "post_island": "56",
+      "pre_area_mm2": 10.5635,
+      "post_area_mm2": 10.3243
+    },
+    {
+      "pads": [
+        "C47.2",
+        "C69.2"
+      ],
+      "pre_island": "51",
+      "post_island": "55",
+      "pre_area_mm2": 13.0607,
+      "post_area_mm2": 9.8959
+    },
+    {
+      "pads": [
+        "C61.2",
+        "R88.2"
+      ],
+      "pre_island": "57",
+      "post_island": "57",
+      "pre_area_mm2": 10.3917,
+      "post_area_mm2": 10.3915
+    },
+    {
+      "pads": [
+        "C73.2",
+        "C76.2"
+      ],
+      "pre_island": "53",
+      "post_island": "52",
+      "pre_area_mm2": 27.5469,
+      "post_area_mm2": 27.5469
+    },
+    {
+      "pads": [
+        "U11.11",
+        "U11.4",
+        "U11.5"
+      ],
+      "pre_island": "33",
+      "post_island": "33",
+      "pre_area_mm2": 2.093,
+      "post_area_mm2": 2.093
+    },
+    {
+      "pads": [
+        "U9.16"
+      ],
+      "pre_island": "54",
+      "post_island": "53",
+      "pre_area_mm2": 0.3487,
+      "post_area_mm2": 0.3487
+    }
+  ],
+  "verdict": "BOND_UNMOVED"
+}

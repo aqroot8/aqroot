@@ -1,0 +1,823 @@
+{
+  "added_object_nets": [
+    "/04_SPI_B_RADIOS_NFC/NFC_AGDC",
+    "/04_SPI_B_RADIOS_NFC/NFC_RFO1",
+    "/04_SPI_B_RADIOS_NFC/NFC_VDD_A",
+    "/04_SPI_B_RADIOS_NFC/NFC_VDD_AM",
+    "/04_SPI_B_RADIOS_NFC/NFC_VDD_RF"
+  ],
+  "added_track_layers": [
+    "B.Cu",
+    "F.Cu",
+    "In2.Cu"
+  ],
+  "added_track_widths_nm": [
+    200000,
+    300000
+  ],
+  "added_tracks": 17,
+  "added_via_dia_drill_nm": [
+    [
+      600000,
+      300000
+    ]
+  ],
+  "added_vias": 2,
+  "board_outline_changed": false,
+  "board_outline_extents_mm_after": [
+    0.0,
+    0.0,
+    77.0,
+    148.0
+  ],
+  "board_outline_extents_mm_before": [
+    0.0,
+    0.0,
+    77.0,
+    148.0
+  ],
+  "board_outline_grown": false,
+  "checks": {
+    "added_only_on_claimed_nets": true,
+    "annular_floor_met": true,
+    "beta_v2_untouched": true,
+    "board_outline_as_claimed": true,
+    "drc_inherited_within_baseline": true,
+    "drc_zero_attributable": true,
+    "dru_contracts_live": true,
+    "fill_stable": true,
+    "nothing_removed": true,
+    "pour_partition_intact": true,
+    "rule_areas_as_claimed": true,
+    "schematic_parity_within_baseline": true,
+    "track_width_floor_met": true,
+    "unconnected_not_increased": true,
+    "via_drill_floor_met": true,
+    "zone_inventory_as_claimed": true
+  },
+  "claimed_board_outline_grown": false,
+  "claimed_evicted_nets": [
+    "/04_SPI_B_RADIOS_NFC/NFC_AGDC",
+    "/04_SPI_B_RADIOS_NFC/NFC_RFO1",
+    "/04_SPI_B_RADIOS_NFC/NFC_VDD_A",
+    "/04_SPI_B_RADIOS_NFC/NFC_VDD_AM"
+  ],
+  "claimed_grown_zones": [],
+  "claimed_keepout_rule_areas": [],
+  "claimed_moved_refs": [
+    "C47"
+  ],
+  "claimed_narrowed_rule_areas": [],
+  "claimed_nets": [
+    "/04_SPI_B_RADIOS_NFC/NFC_VDD_RF",
+    "/04_SPI_B_RADIOS_NFC/NFC_VDD_AM",
+    "/04_SPI_B_RADIOS_NFC/NFC_VDD_A",
+    "/04_SPI_B_RADIOS_NFC/NFC_RFO1",
+    "/04_SPI_B_RADIOS_NFC/NFC_AGDC"
+  ],
+  "claimed_planes": [],
+  "claimed_removed_zones": [],
+  "claimed_rule_areas": [],
+  "claimed_widened_rule_areas": [],
+  "drc": {
+    "attributable": [],
+    "counts": {},
+    "schematic_parity": {
+      "counts": {
+        "extra_footprint": 2,
+        "footprint_symbol_field_mismatch": 199,
+        "footprint_symbol_mismatch": 45
+      },
+      "errors": [],
+      "severities": {
+        "warning": 246
+      },
+      "total": 246
+    },
+    "unconnected_items": 20
+  },
+  "drc_pre": {
+    "attributable": [],
+    "counts": {},
+    "schematic_parity": {
+      "counts": {
+        "extra_footprint": 2,
+        "footprint_symbol_field_mismatch": 199,
+        "footprint_symbol_mismatch": 45
+      },
+      "errors": [],
+      "severities": {
+        "warning": 246
+      },
+      "total": 246
+    },
+    "unconnected_items": 21
+  },
+  "drc_second_pass": {
+    "attributable": [],
+    "counts": {},
+    "schematic_parity": {
+      "counts": {
+        "extra_footprint": 2,
+        "footprint_symbol_field_mismatch": 199,
+        "footprint_symbol_mismatch": 45
+      },
+      "errors": [],
+      "severities": {
+        "warning": 246
+      },
+      "total": 246
+    },
+    "unconnected_items": 20
+  },
+  "dru_contracts": {
+    "D-186_bat_main_class": true,
+    "D-269_bat_main_routed_clearance": true,
+    "annular_ring_floor": true,
+    "power_via_drill_floor": true
+  },
+  "objects_added": 19,
+  "objects_removed": 16,
+  "pad_escape_neck": null,
+  "pad_escape_run": null,
+  "pour_bridge": null,
+  "pour_partition": {
+    "detail": {
+      "PP1": {
+        "control": {
+          "ok": true,
+          "probe": [
+            [
+              "+3V3",
+              "F.Cu",
+              "C10.1"
+            ]
+          ],
+          "why": "a pad resolved on BOTH boards, withheld from the POST set, is reported by the same expression the clause is judged on"
+        },
+        "excuse_control": {
+          "ok": true,
+          "probe": [],
+          "why": "each excused pad, withheld from the POST connectivity fact the excuse is keyed on, is named again by the same expression"
+        },
+        "excused_by_routed_copper": [],
+        "moved_pour": [],
+        "newly_unresolved": [],
+        "ok": true,
+        "pours_gone_unclaimed": [],
+        "pours_post": 3,
+        "pours_pre": 3,
+        "pours_retired_as_claimed": [],
+        "resolved_post": 196,
+        "resolved_pre": 196,
+        "unresolved_inherited": [
+          "/01_POWER_TREE/BQ25185_SYS C33.1",
+          "/01_POWER_TREE/BQ25185_SYS C64.1",
+          "/01_POWER_TREE/BQ25185_SYS L2.1",
+          "/01_POWER_TREE/BQ25185_SYS L4.1",
+          "/01_POWER_TREE/BQ25185_SYS U11.1",
+          "/01_POWER_TREE/BQ25185_SYS U13.3",
+          "/01_POWER_TREE/BQ25185_SYS U21.3",
+          "GND MK1.4"
+        ],
+        "unresolved_post": 8,
+        "unresolved_pre": 8
+      },
+      "PP2": {
+        "admitted": [],
+        "controls": {
+          "ok": true,
+          "probes": [
+            {
+              "behaved": true,
+              "control": "min_thickness_sliver_refused",
+              "expected": false,
+              "got": false,
+              "priced_amps": 0.742,
+              "required_amps": 1.0,
+              "verdict": "BONDED",
+              "why": "BOND_UNDER_PRICED"
+            },
+            {
+              "behaved": true,
+              "control": "one_class_width_track_refused",
+              "expected": false,
+              "got": false,
+              "priced_amps": 0.995,
+              "required_amps": 1.0,
+              "verdict": "BONDED",
+              "why": "BOND_UNDER_PRICED"
+            },
+            {
+              "behaved": true,
+              "control": "four_barrel_bond_admitted",
+              "expected": true,
+              "got": true,
+              "priced_amps": 9.244,
+              "required_amps": 1.0,
+              "verdict": "BONDED",
+              "why": "BOND_PRICED_AT_OR_ABOVE_THE_PUBLISHED_RAIL_CURRENT"
+            },
+            {
+              "behaved": true,
+              "control": "stranded_refused_however_priced",
+              "expected": false,
+              "got": false,
+              "priced_amps": 9.244,
+              "required_amps": 1.0,
+              "verdict": "STRANDED",
+              "why": "PP3_NOT_BONDED"
+            },
+            {
+              "behaved": true,
+              "control": "unpriced_net_refused",
+              "expected": false,
+              "got": false,
+              "priced_amps": 9.244,
+              "required_amps": null,
+              "verdict": "BONDED",
+              "why": "NET_CARRIES_NO_PUBLISHED_CURRENT"
+            },
+            {
+              "behaved": true,
+              "control": "bar_located_one_ppm_below",
+              "expected": false,
+              "got": false,
+              "priced_amps": 0.999999,
+              "required_amps": 1.0,
+              "verdict": "BONDED",
+              "why": "BOND_UNDER_PRICED"
+            },
+            {
+              "behaved": true,
+              "control": "bar_located_at_equality",
+              "expected": true,
+              "got": true,
+              "priced_amps": 1.0,
+              "required_amps": 1.0,
+              "verdict": "BONDED",
+              "why": "BOND_PRICED_AT_OR_ABOVE_THE_PUBLISHED_RAIL_CURRENT"
+            }
+          ],
+          "reference_amps": {
+            "four_0p400mm_barrels": 9.244,
+            "outer_track_0p300mm": 0.995,
+            "zone_min_thickness_0p200mm": 0.742
+          }
+        },
+        "islands": {
+          "+3V3|F|8c612136-d173-58bf-87cf-c0b97bedd2e0": [
+            29,
+            29
+          ],
+          "/01_POWER_TREE/BQ25185_SYS|B|da11f1b0-6501-5c41-b2b6-d6199a789ea9": [
+            3,
+            3
+          ],
+          "GND|B|38685722-44ee-566f-b52b-89a56220a9e0": [
+            60,
+            60
+          ]
+        },
+        "moved_refs_claimed": [
+          "C47"
+        ],
+        "netclass_conductors": {
+          "ACC_3V3": {
+            "track_width_mm": 0.5,
+            "via_diameter_mm": 0.8,
+            "via_drill_mm": 0.4
+          },
+          "ACC_5V": {
+            "track_width_mm": 0.6,
+            "via_diameter_mm": 0.8,
+            "via_drill_mm": 0.4
+          },
+          "BAT_MAIN": {
+            "track_width_mm": 1.0,
+            "via_diameter_mm": 0.8,
+            "via_drill_mm": 0.4
+          },
+          "Default": {
+            "track_width_mm": 0.2,
+            "via_diameter_mm": 0.6,
+            "via_drill_mm": 0.3
+          },
+          "GND": {
+            "track_width_mm": 0.3,
+            "via_diameter_mm": 0.6,
+            "via_drill_mm": 0.3
+          },
+          "I2C": {
+            "track_width_mm": 0.2,
+            "via_diameter_mm": 0.6,
+            "via_drill_mm": 0.3
+          },
+          "I2S": {
+            "track_width_mm": 0.2,
+            "via_diameter_mm": 0.6,
+            "via_drill_mm": 0.3
+          },
+          "LED_BOOST": {
+            "track_width_mm": 0.3,
+            "via_diameter_mm": 0.6,
+            "via_drill_mm": 0.3
+          },
+          "NFC_5V_PA": {
+            "track_width_mm": 0.6,
+            "via_diameter_mm": 0.8,
+            "via_drill_mm": 0.4
+          },
+          "NFC_OSC": {
+            "track_width_mm": 0.2,
+            "via_diameter_mm": 0.6,
+            "via_drill_mm": 0.3
+          },
+          "NFC_RF": {
+            "track_width_mm": 0.4,
+            "via_diameter_mm": 0.8,
+            "via_drill_mm": 0.4
+          },
+          "NFC_RX": {
+            "track_width_mm": 0.2,
+            "via_diameter_mm": 0.6,
+            "via_drill_mm": 0.3
+          },
+          "P3V3": {
+            "track_width_mm": 0.6,
+            "via_diameter_mm": 0.8,
+            "via_drill_mm": 0.4
+          },
+          "SPK_OUT": {
+            "track_width_mm": 0.3,
+            "via_diameter_mm": 0.6,
+            "via_drill_mm": 0.3
+          },
+          "SWITCH_NODE": {
+            "track_width_mm": 0.6,
+            "via_diameter_mm": 0.8,
+            "via_drill_mm": 0.4
+          },
+          "SYS_MAIN": {
+            "track_width_mm": 0.8,
+            "via_diameter_mm": 0.8,
+            "via_drill_mm": 0.4
+          },
+          "USB_D": {
+            "track_width_mm": 0.25,
+            "via_diameter_mm": 0.55,
+            "via_drill_mm": 0.25
+          },
+          "VBUS_CHG": {
+            "track_width_mm": 0.5,
+            "via_diameter_mm": 0.8,
+            "via_drill_mm": 0.4
+          }
+        },
+        "netclass_source": {
+          "classes": [
+            "ACC_3V3",
+            "ACC_5V",
+            "BAT_MAIN",
+            "Default",
+            "GND",
+            "I2C",
+            "I2S",
+            "LED_BOOST",
+            "NFC_5V_PA",
+            "NFC_OSC",
+            "NFC_RF",
+            "NFC_RX",
+            "P3V3",
+            "SPK_OUT",
+            "SWITCH_NODE",
+            "SYS_MAIN",
+            "USB_D",
+            "VBUS_CHG"
+          ],
+          "found": true,
+          "sha256": "e5af7cdf0a05f0c0778099c21aea9bb6cbbbe92e89fb5f79e11f0907ad5c52f1",
+          "source": "/tmp/aqroot-demo-verify-uj1785xf/post/aqroot-Beta-v2.kicad_pro"
+        },
+        "ok": true,
+        "pours_removed_claimed": [],
+        "pre_pads_dropped_as_moved": [
+          {
+            "pad": "C47.2",
+            "pour": "GND|B|38685722-44ee-566f-b52b-89a56220a9e0",
+            "pre_island": 51
+          }
+        ],
+        "priced": [],
+        "published_rail_currents": {
+          "ACC_3V3": 0.76,
+          "ACC_5V": 0.7,
+          "BAT_MAIN": 3.125,
+          "LED_BOOST": 0.09,
+          "NFC_5V_PA_PENDING": 0.5,
+          "P3V3": 1.0,
+          "SPK_OUT": 0.41,
+          "SYS_MAIN": 2.19,
+          "VBUS_CHG": 0.5
+        },
+        "published_table_source": {
+          "classes": [
+            "ACC_3V3",
+            "ACC_5V",
+            "BAT_MAIN",
+            "LED_BOOST",
+            "NFC_5V_PA_PENDING",
+            "P3V3",
+            "SPK_OUT",
+            "SYS_MAIN",
+            "VBUS_CHG"
+          ],
+          "found": true,
+          "sha256": "150ad37b6f13a3bdf4bea5278e71b09bc780b0a21d74b6ecf896d4a8aba80451",
+          "source": "/tmp/aqroot-demo-verify-uj1785xf/post/aqroot-Beta-v2.kicad_dru"
+        },
+        "refused": [],
+        "return_controls": {
+          "netclass_floor": {
+            "amps": 0.995,
+            "dT_K": 10.0,
+            "netclass": "GND",
+            "track_width_mm": 0.3
+          },
+          "ok": true,
+          "probes": [
+            {
+              "bar_from": "RETURN_FLOOR_ONE_NETCLASS_TRACK",
+              "behaved": true,
+              "control": "unpriced_neighbours_fall_to_the_floor",
+              "expected": 0.995,
+              "floor_amps": 0.995,
+              "got": 0.995,
+              "track_width_mm": 0.3
+            },
+            {
+              "bar_from": "RETURN_NEIGHBOUR_RAIL",
+              "behaved": true,
+              "control": "battery_neighbour_raises_the_bar",
+              "expected": 3.125,
+              "got": 3.125,
+              "neighbour": [
+                "BAT_MAIN"
+              ]
+            },
+            {
+              "behaved": true,
+              "control": "priced_neighbour_below_the_floor_does_not_lower_it",
+              "expected": 1.0,
+              "got": 1.0
+            },
+            {
+              "behaved": true,
+              "control": "the_largest_neighbour_is_the_one_charged",
+              "expected": 3.125,
+              "got": 3.125,
+              "n_neighbours": 2
+            },
+            {
+              "behaved": true,
+              "control": "a_net_with_no_netclass_conductor_has_no_floor",
+              "expected": null,
+              "got": null
+            },
+            {
+              "behaved": true,
+              "boundary": {
+                "bond_amps_parallel": 14.348,
+                "note": "KCL at the fragment boundary: everything entering through the pads leaves through the barrels",
+                "ok": true,
+                "sum_of_pad_bars": 4.125
+              },
+              "control": "the_battery_pad_on_its_own_barrel_does_not_condemn_its_neighbour",
+              "expected": true,
+              "got": true,
+              "per_pad": [
+                {
+                  "bar_amps": 3.125,
+                  "ok": true,
+                  "pad": "C36.2",
+                  "path_amps": 5.282
+                },
+                {
+                  "bar_amps": 1.0,
+                  "ok": true,
+                  "pad": "C5.2",
+                  "path_amps": 2.295
+                }
+              ],
+              "why": "BOND_PRICED_PER_PAD_AND_AT_THE_RETURN_BOUNDARY"
+            },
+            {
+              "behaved": true,
+              "boundary": {
+                "bond_amps_parallel": 14.348,
+                "note": "KCL at the fragment boundary: everything entering through the pads leaves through the barrels",
+                "ok": true,
+                "sum_of_pad_bars": 4.125
+              },
+              "control": "battery_pad_on_the_weak_path_is_REFUSED",
+              "expected": false,
+              "got": false,
+              "per_pad": [
+                {
+                  "bar_amps": 3.125,
+                  "ok": false,
+                  "pad": "C36.2",
+                  "path_amps": 2.295
+                },
+                {
+                  "bar_amps": 1.0,
+                  "ok": true,
+                  "pad": "C5.2",
+                  "path_amps": 5.282
+                }
+              ],
+              "why": "PAD_RETURN_UNDER_PRICED"
+            },
+            {
+              "behaved": true,
+              "boundary": {
+                "bond_amps_parallel": 14.348,
+                "note": "KCL at the fragment boundary: everything entering through the pads leaves through the barrels",
+                "ok": true,
+                "sum_of_pad_bars": 0.995
+              },
+              "control": "a_signal_pad_below_the_floor_is_refused",
+              "expected": false,
+              "got": false,
+              "per_pad": [
+                {
+                  "bar_amps": 0.995,
+                  "ok": false,
+                  "pad": "C45.2",
+                  "path_amps": 0.742
+                }
+              ],
+              "why": "PAD_RETURN_UNDER_PRICED"
+            },
+            {
+              "behaved": true,
+              "boundary": {
+                "bond_amps_parallel": 14.348,
+                "note": "KCL at the fragment boundary: everything entering through the pads leaves through the barrels",
+                "ok": true,
+                "sum_of_pad_bars": 0.995
+              },
+              "control": "a_signal_pad_at_the_floor_is_admitted",
+              "expected": true,
+              "got": true,
+              "per_pad": [
+                {
+                  "bar_amps": 0.995,
+                  "ok": true,
+                  "pad": "C45.2",
+                  "path_amps": 0.995
+                }
+              ],
+              "why": "BOND_PRICED_PER_PAD_AND_AT_THE_RETURN_BOUNDARY"
+            },
+            {
+              "behaved": true,
+              "boundary": {
+                "bond_amps_parallel": 14.348,
+                "note": "KCL at the fragment boundary: everything entering through the pads leaves through the barrels",
+                "ok": true,
+                "sum_of_pad_bars": 0.995
+              },
+              "control": "pad_bar_located_one_ppm_below",
+              "expected": false,
+              "got": false,
+              "per_pad": [
+                {
+                  "bar_amps": 0.995,
+                  "ok": false,
+                  "pad": "C45.2",
+                  "path_amps": 0.9949990049999999
+                }
+              ],
+              "why": "PAD_RETURN_UNDER_PRICED"
+            },
+            {
+              "behaved": true,
+              "boundary": {
+                "bond_amps_parallel": 3.0,
+                "note": "KCL at the fragment boundary: everything entering through the pads leaves through the barrels",
+                "ok": false,
+                "sum_of_pad_bars": 5.0
+              },
+              "control": "the_boundary_sum_refuses_a_bond_every_pad_passes",
+              "expected": false,
+              "got": false,
+              "per_pad": [
+                {
+                  "bar_amps": 1.0,
+                  "ok": true,
+                  "pad": "C60.2",
+                  "path_amps": 5.282
+                },
+                {
+                  "bar_amps": 1.0,
+                  "ok": true,
+                  "pad": "C61.2",
+                  "path_amps": 5.282
+                },
+                {
+                  "bar_amps": 1.0,
+                  "ok": true,
+                  "pad": "C62.2",
+                  "path_amps": 5.282
+                },
+                {
+                  "bar_amps": 1.0,
+                  "ok": true,
+                  "pad": "C63.2",
+                  "path_amps": 5.282
+                },
+                {
+                  "bar_amps": 1.0,
+                  "ok": true,
+                  "pad": "C64.2",
+                  "path_amps": 5.282
+                }
+              ],
+              "why": "RETURN_BOUNDARY_UNDER_PRICED"
+            },
+            {
+              "behaved": true,
+              "boundary": {
+                "bond_amps_parallel": 5.0,
+                "note": "KCL at the fragment boundary: everything entering through the pads leaves through the barrels",
+                "ok": true,
+                "sum_of_pad_bars": 5.0
+              },
+              "control": "the_same_pads_are_admitted_when_the_boundary_carries_the_sum",
+              "expected": true,
+              "got": true,
+              "per_pad": [
+                {
+                  "bar_amps": 1.0,
+                  "ok": true,
+                  "pad": "C60.2",
+                  "path_amps": 5.282
+                },
+                {
+                  "bar_amps": 1.0,
+                  "ok": true,
+                  "pad": "C61.2",
+                  "path_amps": 5.282
+                },
+                {
+                  "bar_amps": 1.0,
+                  "ok": true,
+                  "pad": "C62.2",
+                  "path_amps": 5.282
+                },
+                {
+                  "bar_amps": 1.0,
+                  "ok": true,
+                  "pad": "C63.2",
+                  "path_amps": 5.282
+                },
+                {
+                  "bar_amps": 1.0,
+                  "ok": true,
+                  "pad": "C64.2",
+                  "path_amps": 5.282
+                }
+              ],
+              "why": "BOND_PRICED_PER_PAD_AND_AT_THE_RETURN_BOUNDARY"
+            },
+            {
+              "behaved": true,
+              "boundary": null,
+              "control": "stranded_refused_however_priced_on_a_return_net",
+              "expected": false,
+              "got": false,
+              "per_pad": [],
+              "why": "PP3_NOT_BONDED"
+            },
+            {
+              "behaved": true,
+              "boundary": null,
+              "control": "an_unmeasurable_pad_refuses",
+              "expected": false,
+              "got": false,
+              "per_pad": [],
+              "why": "BOND_NOT_MEASURABLE"
+            }
+          ],
+          "reference_amps": {
+            "d619_real_fragment": 2.552,
+            "zone_min_thickness_0p200mm": 0.742
+          }
+        },
+        "return_nets": {
+          "GND": {
+            "netclass": "GND",
+            "plane_area_mm2": 19025.34,
+            "reserved_layers": [
+              "I1",
+              "I4"
+            ]
+          }
+        },
+        "splits": []
+      },
+      "PP3": {
+        "fragments": [],
+        "ok": true,
+        "reserved_inner_planes": {
+          "I1": [
+            "GND"
+          ],
+          "I3": [
+            "+3V3"
+          ],
+          "I4": [
+            "GND"
+          ]
+        }
+      },
+      "PP4": {
+        "condemned_fragments_skipped": [],
+        "ok": true,
+        "probes": [
+          {
+            "flips": true,
+            "pads": [
+              "C12.2",
+              "R123.2",
+              "R21.1",
+              "R24.2"
+            ],
+            "post_island": 22,
+            "pour": "+3V3|F|8c612136-d173-58bf-87cf-c0b97bedd2e0",
+            "with_barrels": "BONDED",
+            "without_barrels": "STRANDED"
+          },
+          {
+            "flips": true,
+            "pads": [
+              "C16.2",
+              "C17.2",
+              "C18.2",
+              "C25.2",
+              "C34.1",
+              "C35.2"
+            ],
+            "post_island": 31,
+            "pour": "GND|B|38685722-44ee-566f-b52b-89a56220a9e0",
+            "with_barrels": "BONDED",
+            "without_barrels": "STRANDED"
+          }
+        ]
+      }
+    },
+    "failed_clauses": [],
+    "ok": true,
+    "post_board": "/tmp/aqroot-demo-verify-uj1785xf/post/aqroot-Beta-v2.kicad_pcb",
+    "pre_board": "/tmp/aqroot-demo-verify-uj1785xf/pre/aqroot-Beta-v2.kicad_pcb",
+    "ran": true,
+    "results": {
+      "PP1": true,
+      "PP2": true,
+      "PP3": true,
+      "PP4": true
+    }
+  },
+  "pre_board_sha256": "7431e6af29882d1055699a46ee794477b0036a0978b884da5014eb68cff7a5b9",
+  "promoted_board_sha256": "a4200434099f5f621d8b2e7d8131cec4c7a507afda3233c6e811e0bb3782083c",
+  "ref": "HEAD",
+  "removed_object_nets": [
+    "/04_SPI_B_RADIOS_NFC/NFC_AGDC",
+    "/04_SPI_B_RADIOS_NFC/NFC_RFO1",
+    "/04_SPI_B_RADIOS_NFC/NFC_VDD_A",
+    "/04_SPI_B_RADIOS_NFC/NFC_VDD_AM"
+  ],
+  "removed_sample": [
+    "('trk', '/04_SPI_B_RADIOS_NFC/NFC_AGDC', 'B.Cu', 33500000, 23000000, 33300000, 22900000, 200000)",
+    "('trk', '/04_SPI_B_RADIOS_NFC/NFC_AGDC', 'B.Cu', 34000000, 22750000, 33500000, 23000000, 200000)",
+    "('trk', '/04_SPI_B_RADIOS_NFC/NFC_AGDC', 'F.Cu', 33300000, 22900000, 30900000, 26600000, 200000)",
+    "('trk', '/04_SPI_B_RADIOS_NFC/NFC_RFO1', 'B.Cu', 34250000, 26800000, 34825000, 26225000, 300000)",
+    "('trk', '/04_SPI_B_RADIOS_NFC/NFC_RFO1', 'B.Cu', 34250000, 27725000, 34250000, 26800000, 300000)",
+    "('trk', '/04_SPI_B_RADIOS_NFC/NFC_RFO1', 'B.Cu', 34825000, 26225000, 36925000, 26225000, 300000)",
+    "('trk', '/04_SPI_B_RADIOS_NFC/NFC_RFO1', 'B.Cu', 36925000, 26225000, 37725000, 27025000, 300000)",
+    "('trk', '/04_SPI_B_RADIOS_NFC/NFC_RFO1', 'B.Cu', 38512500, 27800000, 37725000, 27025000, 300000)"
+  ],
+  "rule_areas_added": [],
+  "rule_areas_narrowed": [],
+  "rule_areas_otherwise_changed": [],
+  "rule_areas_removed": [],
+  "rule_areas_widened": [],
+  "schema": 1,
+  "verdict": "PASS",
+  "zones_added": [],
+  "zones_grown": [],
+  "zones_removed": [],
+  "zones_reshaped": [],
+  "zones_retired": []
+}

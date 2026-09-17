@@ -105,7 +105,27 @@ EVIDENCE = MFG / "evidence"
 # on the promoted board reads `P1-P4 PASS`, 42 tubes, ZERO off copper, ZERO
 # renumbered.  NON-VACUITY CONTROL: the stale d719 guard STILL FAILS on this
 # board (`evidence/d725-pour-bond-contract-d619guard-superseded.json`).
-BOND_GUARD = "evidence/d725-pour-bond-guard-next.json"
+# D-730 -- FIFTH BUMP, SAME REASON, AND THIS TIME THE PART THAT MOVED IS A
+# BOND END.  PM-3 moved `C47` 0.500 mm north and re-laid `NFC_VDD_AM` down the
+# C53/C47 channel, so against the d725 guard `P2` reads `misplaced_ends:
+# C47.2` -- the tube end is pinned at the land's OLD coordinate -- one
+# `off_copper` tube (`{C51.2,C53.2}`, 5 of 32 points inside the new
+# `NFC_VDD_AM` neck's antipad) and eleven renumbered `B.Cu` `GND` islands.
+# THE BOND DID NOT MOVE, measured pad-by-pad either side of the promotion
+# (`evidence/d730-gnd-bond-islands-unmoved.json`): every guarded `B.Cu` `GND`
+# island carries EXACTLY the same pads before and after --
+# `{U11.4,U11.5,U11.11}` 2.0930 mm2 unchanged, `{C36.2,C5.2,C7.2,R37.2}`
+# 13.0213 mm2 unchanged, `{C76.2,C73.2}` 27.5469 unchanged, `{U9.16}` 0.3487
+# unchanged, `{R88.2,C61.2}` 10.3917 -> 10.3915, `{C47.2,C69.2}` 13.0607 ->
+# 9.8959 and `{C51.2,C53.2,C45.2}` 10.5635 -> 10.3243, the last two smaller
+# only because the moved land and the new neck took copper back.  No pad
+# changed companions; the INDEX drift is enumeration order.  `PP1-PP4` PASS
+# and `verify_promotion.py`'s `pour_partition_intact` PASSES.  The guard
+# re-emitted on the promoted board reads `P1-P4 PASS`, 42 tubes, ZERO
+# renumbered, ZERO misplaced, ZERO off copper.  NON-VACUITY CONTROL: the stale
+# d725 guard STILL FAILS on this board
+# (`evidence/d730-pour-bond-contract-d725guard-superseded.json`).
+BOND_GUARD = "evidence/d730-pour-bond-guard-next.json"
 
 # name -> (script, extra argv, baseline evidence basename WITHOUT the decision
 #          prefix, verdict field).  The verdict field is read only for the

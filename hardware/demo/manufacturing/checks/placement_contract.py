@@ -98,11 +98,31 @@ clauses that keep it reviewable:
          dangling in space -- and (b) that at least one POST track endpoint
          lies inside that pad.  PL5 stops treating a released endpoint as
          stranded, and only for the pads named here.
-    PL9  NO BARREL ENDED UP UNDER A MOVED LAND.  D-620 measured that a `C17`
+    PL9  NO BARREL WAS SWALLOWED BY A MOVED LAND.  D-620 measured that a `C17`
          east shift past `+0.225 mm` swallows the `GND` stitch barrel at
          `40.500, 30.200` into `C17.2`'s land.  A plated hole under a solder
          land is an assembly defect that no clearance rule reports, because the
          barrel and the pad are the same net; this clause reports it by name.
+
+         D-730 FIXED WHAT IT WAS ASKING.  The clause read "is a barrel under
+         this land NOW", which is a question about the BOARD and not about the
+         MOVE -- and because it can only ever be asked of a part a promotion
+         DECLARES, an INHERITED via-in-land surfaced as a FAIL the first time
+         anybody moved the part sitting on top of it.  PM-3's `C47` 0.500 mm
+         shift is exactly that: `NFC_VDD_A`'s barrel at `33.900, 24.400` was
+         inside `C47.1`'s land BEFORE the move, is inside it after, and did not
+         move.  A board-wide scan then showed the condition is not `C47`'s at
+         all -- this board carries **107 same-net via-in-land instances, 106 of
+         them in SMD lands**, and PM-3 adds and removes ZERO
+         (`evidence/d730-via-in-pad-census.json`).  Blaming one promotion for
+         one of 107 while saying nothing about the other 106 is not a stricter
+         gate, it is a noisier one.  So PL9 now asks its own question -- a
+         barrel under the land now that was NOT under that part's land before,
+         measured on the PRE board's own lands and barrels, which still catches
+         D-620's `C17` case exactly and also catches a barrel this promotion
+         ADDS under a moved land -- and the inherited ones are REPORTED in
+         `vias_inherited_under_moved_lands` so the board-wide condition stays
+         visible instead of being swallowed.
 
     python3 hardware/demo/manufacturing/checks/placement_contract.py \
         --ref HEAD --move Y1:-300000:0 [-o REPORT.json]
@@ -354,7 +374,7 @@ def judge(pre, post, claimed, released=(), removed=()):
 
     Returns (checks, detail).
     """
-    fpre, bpre, epre, npre, _vpre = pre
+    fpre, bpre, epre, npre, vpre = pre
     fpost, bpost, epost, npost, vpost = post
 
     removed = tuple(removed)
@@ -421,14 +441,34 @@ def judge(pre, post, claimed, released=(), removed=()):
         (reconnected if hits else orphan_pads).append(
             dict(pad=pad, post_endpoints=len(hits)))
 
-    # PL9: no barrel under a moved land.
-    swallowed = []
+    # PL9: no barrel was SWALLOWED by a moved land.  D-730: the clause asked
+    # "is a barrel under this land NOW", which is a question about the BOARD,
+    # not about the MOVE -- and it can only ever be asked of a part a
+    # promotion DECLARES, so an INHERITED via-in-land is reported the first
+    # time anybody moves the part that has been sitting on top of it.  That is
+    # the wrong verdict twice over: it blames a promotion for copper it did
+    # not lay, and it says nothing at all about the 106 other lands on this
+    # board that carry a barrel and whose parts nobody moved.  The clause now
+    # asks the question its own name states -- did the move put a barrel under
+    # a land that did not have one -- and the inherited ones are REPORTED
+    # rather than swallowed, so the board-wide condition stays visible.
+    def _in_pre_land(ref, x, y):
+        return any(inside(box, x, y) for box in bpre.get(ref, []))
+
+    swallowed, inherited = [], []
     for ref in sorted(claimed):
         for net, x, y, dia in vpost:
-            if any(inside(box, x, y) for box in bpost.get(ref, [])):
-                swallowed.append(dict(ref=ref, net=net,
-                                      at_mm=[x / 1e6, y / 1e6],
-                                      dia_mm=dia / 1e6))
+            if not any(inside(box, x, y) for box in bpost.get(ref, [])):
+                continue
+            entry = dict(ref=ref, net=net, at_mm=[x / 1e6, y / 1e6],
+                         dia_mm=dia / 1e6)
+            # A barrel the move swallowed is one that is under the land now
+            # and was NOT under that part's land before -- measured on the PRE
+            # board's own lands and the PRE board's own barrels, so a barrel
+            # this promotion ADDED under a moved land is swallowed too.
+            was = any(abs(x - px) <= 1 and abs(y - py) <= 1
+                      for _pn, px, py, _pd in vpre) and _in_pre_land(ref, x, y)
+            (inherited if was else swallowed).append(entry)
 
     # PL10: a declared removal left no copper endpoint on its former lands.
     left_behind = []
@@ -447,7 +487,7 @@ def judge(pre, post, claimed, released=(), removed=()):
         PL4_no_new_courtyard_overlap=not new_overlap,
         PL5_nothing_stranded=not stranded,
         PL8_released_pads_reconnected=not orphan_pads,
-        PL9_no_via_under_a_moved_land=not swallowed,
+        PL9_no_via_swallowed_by_a_moved_land=not swallowed,
         PL10_removals_stranded_nothing=not left_behind,
     )
     detail = dict(
@@ -471,7 +511,8 @@ def judge(pre, post, claimed, released=(), removed=()):
         endpoints_released=releases,
         released_pads_reconnected=reconnected,
         released_pads_orphaned=orphan_pads,
-        vias_under_moved_lands=swallowed,
+        vias_swallowed_by_moved_lands=swallowed,
+        vias_inherited_under_moved_lands=inherited,
     )
     return checks, detail
 
