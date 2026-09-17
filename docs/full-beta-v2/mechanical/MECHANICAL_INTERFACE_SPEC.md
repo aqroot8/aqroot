@@ -93,24 +93,24 @@ value is TARGET, however confident the arithmetic.
 
 | # | key | value | status | source |
 |---|---|---|---|---|
-| 1 | **EXTERNAL_ENCLOSURE** | **80 × 160 × 23 mm** (X × Y × Z, portrait) | **LOCKED** | CTO ruling. *External only — not PCB, not cavity* |
+| 1 | **EXTERNAL_ENCLOSURE** | **85 × 160 × 23 mm** (X × Y × Z, portrait).  ***~~80 × 160 × 23~~ SUPERSEDED D-738: D-709 made the board 77.000 mm wide at its east bump under owner approval D-707, and 77 mm cannot enter an 80 mm shell at the ≥ 1.5 mm wall gap this document's own item 17 requires.  85 mm is that rule solved: 77 + 2(1.5) cavity + 2(2.0) wall + 1.0 seam.*** | **REVISED** D-709 / D-707 | CTO ruling, revised by owner approval **D-707**; DEVICE_SPEC §12. *External only — not PCB, not cavity* |
 | 2 | **WALL_THICKNESS** | **2.0 mm** nominal, all faces | **TARGET** | §3 |
-| 3 | **INTERNAL_CAVITY** | **75.0 × 155.0 × 18.5 mm** nominal envelope | **TARGET** | §3 |
-| 4 | **PCB_MAX** | **72.0 × 152.0 mm** | **TARGET** | §4 |
-| 5 | **PCB_TARGET** | **70.0 × 148.0 mm** | **TARGET** | §4 — recommended outline |
+| 3 | **INTERNAL_CAVITY** | **80.0 × 155.0 × 18.5 mm** nominal envelope.  ***~~75.0~~ in X SUPERSEDED D-738 — it followed the 80 mm shell and would not admit the board.*** | **TARGET** | §3 |
+| 4 | **PCB_MAX** | **80.0 × 152.0 mm** (what the cavity admits at the ≥ 1.5 mm gap in X; Y is unchanged).  ***~~72.0~~ SUPERSEDED D-738 — it was the old cavity's number, not a design limit.*** | **TARGET** | §4 |
+| 5 | **PCB_TARGET** | **AS BUILT: 77.000 × 148.000 mm MAXIMUM, stepped** — 72.000 mm wide except an east bump to `x = 77.000` between `y = 70.500` and `y = 104.005`.  ***~~70.0 × 148.0~~ SUPERSEDED D-709/D-738.*** | **MEASURED** | D-709; DEVICE_SPEC §12; `Edge.Cuts` verified by D-737 |
 | 6 | **PCB_THICKNESS** | **1.6 mm** | **LOCKED** | carried from Beta-DM; measured |
 | 7 | **BATTERY_ENVELOPE** | **60 × 75 × 8.0 mm**, ~2500–3000 mAh | **LOCKED** | **D-071** (2026-08-22) |
 | 8 | **DISPLAY_ENVELOPE** | module ≤ **60 × 90 mm**, stack ≤ **4.5 mm**. **Fitted part `ER-TFT035IPS-6` + `ER-TPC035-6`: 56.54 × 84.96 × 3.95 ± 0.25 mm (4.20 max)**, active 48.96 × 73.44 | **LOCKED** | **D-072 / D-074.** Locked by FBV2-DISP-002; supersedes the 52 × 71 × 3.0 figure derived from the 2.8″ keepout |
 | 9 | **NFC_ZONE** | **48 × 48 mm** minimum clear region, metal-free, rear upper third | **LOCKED** | **D-127 / D-128 / D-131** (FBV2-S1-004B/C) — 46 mm `FXC.46.52.0075X.B.dg` plus installation tolerance. ***The 45 × 45 mm figure carried here until FBV2-MECH-002 was STALE and is SUPERSEDED.*** §6 |
 | 10 | **SPEAKER_ENVELOPE** | **Ø20 × 3.0 mm** + **1.5–2.0 cm³** rear cavity | **LOCKED** | **D-148.** Fitted part **PUI `AS02008MR-LW152-R`**, Ø20 ± 0.2 × 3 ± 0.2 mm. Supersedes the Ø20 × 4.0 / 15 × 11 × 3.5 targets and **releases 1 mm of Z** in the speaker column. The rear-cavity requirement is unchanged |
-| 11 | **COMMUNITY_CONNECTOR_ENVELOPE** | **30.48 × 8.13 × 5.33 mm** body; **2×12 @ 2.54 mm**, FEMALE, horizontal entry, right wall. Samtec **`BCS-112-S-D-HE`** | **LOCKED** | §5. **D-081/D-093.** Harwin `M20-7881242` **REJECTED as obsolete** |
+| 11 | **COMMUNITY_CONNECTOR_ENVELOPE** | **61.47 mm long body, 6.53 mm tail-row → mating face, 8.50 mm tall**; **1 × 24 @ 2.54 mm**, FEMALE, right-angle, right wall. Samtec **`SSQ-124-02-G-S-RA`** — the part actually on the board.  ***~~30.48 × 8.13 × 5.33 mm, 2×12, `BCS-112-S-D-HE`~~ SUPERSEDED 2026-08-24 by D-237/D-240 and left standing HERE, unmarked, until D-738.***  Dimensions are the footprint master's own, from the Sullins 1-row right-angle recommended layout it is drawn to | **REVISED** D-237/D-240 | §5 (which already carried the supersession banner); footprint `AQROOT_Beta:Samtec_SSQ-124-02-G-S-RA`. Harwin `M20-7881242` **REJECTED as obsolete** |
 | 12 | **ANTENNA_CONNECTOR_LOCATION** | top edge, **left half**; **Ø6.5 mm bulkhead clearance hole**; ***P1 FINDING (D-218): with `U8` at the bottom rear the routed coax run is ≈ 190 mm, so neither the 100 mm nor the 150 mm assembly reaches, and a top-LEFT SMA forces the coax across the NFC zone. OPEN for CTO ruling.***; **≥15 mm centre-to-centre from either IR window** *and* **≥8 mm edge-to-edge between the SMA body and either IR aperture**. **Both rules are current — see §8.1** | **LOCKED** (both rules) | **§8.1.** 15 mm: FBV2-MECH-001. 8 mm: **D-120**, restated by **M-13** (FBV2-S2-001) |
 | 13 | **USB_LOCATION** | bottom edge, centred ±5 mm | **TARGET** | CTO layout |
 | 14 | **MICROSD_LOCATION** | bottom edge, left of USB-C, ≥8 mm centre-to-centre clearance | **TARGET** | CTO layout |
 | 15 | **IR_ZONE** | top edge, **right half**; emitter and receiver ≥**15 mm** apart with an opaque barrier | **TARGET** | §8 |
 | 16 | **MOUNTING_BOSSES** | **6 × M2**, Ø6.0 mm keepout, 4 corners + 2 mid-span | **TARGET** | §4 |
 | 17 | **REQUIRED_CLEARANCES** | PCB edge→cavity wall **≥1.5 mm**; component→shell **≥0.5 mm**; connector→wall **≥0.3 mm** | **TARGET** | §3, §4 |
-| 18 | Device orientation | **portrait** — 80 wide × 160 tall | **LOCKED** | Implied by the CTO face assignment and confirmed by the Beta-DM 74 × 155 outline mapping |
+| 18 | Device orientation | **portrait** — **85** wide × 160 tall (***~~80~~ SUPERSEDED D-738 with item 1***) | **LOCKED** | Implied by the CTO face assignment and confirmed by the Beta-DM 74 × 155 outline mapping |
 | 19 | Display size | **3.5 inch** | **LOCKED** | **D-072** |
 | 20 | Display panel MPN / FPC | **`ER-TFT035IPS-6` + `ER-TPC035-6`** — one **50-pin, 0.50 mm pitch, bottom-contact** FPC, **0.30 ± 0.03 mm** thick, 25.5 ± 0.15 mm wide, 30 ± 0.5 mm free length; CTP **FT6236 @ 0x38** on pins 44–47 of the same tail | **LOCKED** | **D-074 / D-075.** M-06 closed |
 | 21 | J1 mating connector | **Hirose `FH69-50S-0.5SH`** — 0.5 mm, 50 pos, **top *and* bottom contact**, FPC **0.30 ± 0.05 mm**, height **2.3 mm**, right-angle, backflip ZIF. **`J1` sits on a DEDICATED FH69 LAND PATTERN. There is NO drop-in second source: `FH52E-50S-0.5SH` does NOT share the FH69 land pattern and is NOT a second source. Single-source connector architecture.** **JLC stocks the genuine Hirose part and `J1` is MACHINE-PLACEABLE — re-check stock before ordering.** | **LOCKED** | **D-076.** ***D-077's "FH12 / FH52E standard land pattern, second source FH52E-50S-0.5SH, mating proven from both drawings" is SUPERSEDED — B-47 resolved NOT COMPATIBLE (D-194); machine-placement per D-206 / D-207.*** |
@@ -137,7 +137,7 @@ for interface freeze and must be replaced by vendor drawings at CAD time.
 | **IR emitter** | **Vishay `TSAL6100`** | T-1¾, **Ø5 mm** leaded, 2.54 mm lead pitch, **±10° half-angle** | Top edge. **LOCKED D-154.** Beam is **narrower** than the ±17° the layout was first written against and **2.4× brighter on axis** — see §8. Fallback **TSAL6200** (±17°) is a drop-in in the same footprint (**B-66**). Consider a side-view SMD emitter to reduce Z |
 | **IR receiver** | **Vishay `TSOP38238`** (AGC2; `TSOP38438` is a documented same-package fallback, D-163) | ~6.0 × 5.6 × **4.7 mm** (typical), minicast, ±45° FOV | Top edge. **Tallest top-side component overall.** **LOCKED D-160**; same package and pinning as the TSOP38238 it replaces |
 | **Radios** | E07-400M10S, E22-900M22S | ~3.5 mm (typical) incl. shield | Both carry **IPEX/u.FL** ports |
-| **Community connector** | **2×12, 24 active contacts, 2.54 mm, FEMALE** — Samtec `BCS-112-S-D-HE` | body **30.48 × 8.13 × 5.33 mm**, horizontal entry | §5. Keying and shroud come from the **enclosure recess** |
+| **Community connector** | **1 × 24, 24 active contacts, 2.54 mm, FEMALE** — Samtec `SSQ-124-02-G-S-RA` (***~~2×12 `BCS-112-S-D-HE`~~ SUPERSEDED D-237/D-240, corrected here D-738***) | body **61.47 long × 6.53 deep × 8.50 tall mm**, right-angle | §5. Keying and shroud come from the **enclosure recess** |
 | Expanders / protection | PCAL9535APW (TSSOP24), LTC4368 (MSOP-10), 2 × dual FET (SOIC-8) | ≤1.2 mm | All low-profile; no Z impact |
 
 ### 2.1 Height census
@@ -163,10 +163,55 @@ above 2.5 mm the cavity loses volume for no structural gain.
 ### 3.2 Cavity
 
 ```
-INTERNAL_CAVITY_X = 80  − 2(2.0 wall) − 1.0 (seam/assembly tol) = 75.0 mm
+INTERNAL_CAVITY_X = 85  − 2(2.0 wall) − 1.0 (seam/assembly tol) = 80.0 mm
 INTERNAL_CAVITY_Y = 160 − 2(2.0 wall) − 1.0                     = 155.0 mm
 INTERNAL_CAVITY_Z = 23  − 2(2.0 wall) − 0.5                     = 18.5 mm
 ```
+
+***D-738 — THE X COLUMN WAS NOT RE-DERIVED WHEN THE BOARD GREW, AND IT IS THE
+ONE THAT MATTERS.***  This block read `80 → 75.0` until D-738.  D-709 had already
+made the board **77.000 mm** wide at its east bump under owner approval D-707,
+so the published cavity was **2.0 mm NARROWER THAN THE BOARD** — a hard
+interference that CAD would have built.  The external shell is therefore
+**85 mm**, which is item 17's own `≥ 1.5 mm` PCB-edge-to-cavity-wall rule solved
+for a 77 mm board: `77 + 2(1.5) = 80.0` cavity, `80.0 + 2(2.0) + 1.0 = 85` shell.
+Y and Z were already correct and do not move.
+
+### 3.3 PCB fit, computed
+
+**The board is NOT symmetric in X and the cavity clearance is therefore not
+symmetric either.**  The bump is on the EAST only, so datum the board with its
+WEST edge (`x = 0`) 1.500 mm off the west cavity wall; the cavity then runs
+`-1.500 .. 78.500` in board coordinates and every figure below follows.
+
+| where | cavity face | board edge | gap | rule (item 17) | verdict |
+|---|---|---|---|---|---|
+| WEST wall, **whole board length** | -1.500 | `x = 0.000` | **1.500** | ≥ 1.5 | **MET EXACTLY** |
+| EAST wall, at the bump (`y 70.500 .. 104.005`) | 78.500 | `x = 77.000` | **1.500** | ≥ 1.5 | **MET EXACTLY** |
+| EAST wall, everywhere else | 78.500 | `x = 72.000` | 6.500 | ≥ 1.5 | MET |
+| Y, both ends | — | 0.000 / 148.000 | 3.500 each | ≥ 1.5 | MET |
+| Z | — | — | governed by the **connector column**, not by this table — see **M-09**, which D-738 REOPENED | component→shell ≥ 0.5 | **UNCHANGED by D-738 in X terms; UNRESOLVED in Z** |
+
+**Two faces are at the minimum, not one.**  The WEST wall is at 1.500 mm for the
+whole 148 mm length, and the EAST wall is at 1.500 mm over the 33.505 mm the
+bump spans.  **CAD must treat 1.500 mm as a hard number on both**: an inward
+lip, a tongue-and-groove seam or wall draft on either face eats into it
+directly.  The only place there is room to spend is the east wall OUTSIDE the
+bump, where there is 6.500 mm — and that is also where `J5`, the community
+port, exits, so that budget is already spoken for.
+
+**`J5` NEEDS A SEPARATE CHECK AND DOES NOT GET ONE HERE.**  It sits at
+`x = 65.900` on the 72 mm-wide section (`y 27.9 .. 53.2`), and the footprint
+master gives **6.53 mm from the tail row to the mating face**, putting that face
+at `x ≈ 72.43` — **past the board edge**, which is correct for a right-angle
+socket that mates through a wall recess, but it means the recess geometry, not
+the board, decides whether the port is usable.  That was last reasoned about
+when the board was 72 mm wide and symmetric.  **Re-check it against the 85 mm
+shell before the tool is cut.**
+
+The board's own `Edge.Cuts` is the source for `77.000`, `72.000`, `70.500` and
+`104.005`; D-737 verified all four against the profile (8 segments, extents
+`0,0 → 77,148`, two inside corners) and the fab package re-states them.
 
 **This is the nominal envelope only.** Local intrusions reduce it:
 
@@ -628,7 +673,7 @@ manufacturer drawing at FBV2-P1 / enclosure CAD. If the real body proves smaller
 | ~~M-07~~ | ~~Backlight driver re-derivation~~ | **CLOSED 2026-08-23 by D-079.** TPS61169 retained from `+3V3`; `R69` = 1.87 R, `R70`–`R73` = 4 × 33 R |
 | **M-08** | **Connector placement below the display** | The 2.3 mm `J1` competes with the D-pad, A/B and the mic aperture for the 70.04 mm of cavity height under the panel. **Blocks nothing before FBV2-P1** (B-33) |
 | ~~M-03~~ | ~~Community connector MPN~~ | **CLOSED 2026-08-23 by D-093** — Samtec `BCS-112-S-D-HE`. *(The D-083 Harwin selection was rejected as obsolete and replaced.)* |
-| **M-09** | Confirm the connector body height | **DOWNGRADED to LOW 2026-08-23.** With `BCS-112-S-D-HE` the column is 2.0 shell + **5.33 connector** + 1.6 PCB + 8.0 battery + 0.6 + 2.0 shell = **19.53 mm of 23.0 external, 3.47 mm spare** — level with the control region and **no longer the sole governing column**. The 5.33 mm figure is read from the Samtec series print and cross-checked three ways; **confirm against the individual 3D model at FBV2-P1** |
+| **M-09** | Confirm the connector body height | ***REOPENED and RAISED BACK TO MEDIUM by D-738.***  The 2026-08-23 column below was computed for `BCS-112-S-D-HE`, a **2×12 part that is not fitted**: D-237/D-240 replaced it with the **1 × 24 right-angle `SSQ-124-02-G-S-RA`**, and the Z column was never re-derived.  The footprint master records that part as **8.50 mm tall** (Sullins 1-row right-angle recommended layout, drawing 10493, which the AQROOT footprint is drawn to), against the 5.33 mm used below.  Re-running the same column with 8.50: `2.0 shell + 8.50 connector + 1.6 PCB + 8.0 battery + 0.6 + 2.0 shell = ` **22.70 mm of 23.0 external, 0.30 mm spare** — it still fits, but the margin falls from 3.47 mm to 0.30 mm and the connector becomes the **governing column again**.  ***WHAT MUST BE CONFIRMED:*** whether that 8.50 mm is the dimension NORMAL to the board or along the mating axis — for a right-angle socket the drawing's "body tall" is ambiguous, and the same drawing separately gives **6.53 mm tail row → mating face** and a **2.54 mm socket-axis height above the PCB**, which do not obviously add to 8.50 in the same direction.  **Read it off the Samtec 3D model or a sample before the enclosure tool is cut.**  *(Previous text, retained: "DOWNGRADED to LOW 2026-08-23. With `BCS-112-S-D-HE` the column is 2.0 + 5.33 + 1.6 + 8.0 + 0.6 + 2.0 = 19.53 mm of 23.0, 3.47 mm spare.")* |
 | **M-10** | **Insertion load path** | **~33 N average** (24 contacts × 1.39 N avg), **peak higher** — Samtec publishes averages, and its own note states the peak occurs during the spreading stage. The enclosure must carry it on a boss or rib (D-097) |
 | **M-11** | **Front RGB status-light aperture — NEW 2026-08-23 (FBV2-S1-008)** | **The requirement is FRONT-FACING and visible; the exact front position is deliberately NOT locked.** Upper bezel, lower bezel, beside the display or near the controls are all acceptable. **It is NOT a top-edge part** — the top crown is the IR and antenna region. `D13` is a **surface-mount PLCC-4, 3.50 × 2.80 × 1.85 mm, 120° emission, water-clear lens** on the **front-facing PCB surface**, so the enclosure must provide a **diffuser or light pipe: no protruding bare LED, and no direct line of sight to the die.** A water-clear 120° source behind a bare hole is a point glare source; the diffuser is what makes it read as a status light. **Delivered output is roughly 80 / 87 / 42 mcd (R/G/B)** at 1.0–1.7 mA per channel, so the optical path must not be lossy — budget for a short pipe or a thin diffuser, not a deep light guide. **Placement and CAD own the final position.** Does not block FBV2-A2 |
 | **M-12** | **Community connector land field — NEW 2026-08-23 (FBV2-S1-009)** | The footprint is verified against the manufacturer drawing (§5), so this is **not** a dimensional unknown. It is a **floorplanning constraint**: **24 × Ø0.71 mm plated through-holes in a 27.94 × 7.87 mm field**, the only THT field on the board, blocking routing on every layer beneath it, on the **right edge** where the recess and its asymmetric key also live. Combined with M-10's ~33 N insertion load and M-08's contest for the space under the display, **the right-hand strip is now the most constrained region of the PCB.** Does not block FBV2-A2; **must be resolved first at FBV2-P1** |
@@ -651,11 +696,15 @@ this task had no authority to touch them. Reconciling the guard script and the
 Field Slate block is a follow-up task requiring authority over those files.
 
 ```
-FBV2_EXTERNAL_MM:        80 x 160 x 23     LOCKED
+FBV2_EXTERNAL_MM:        85 x 160 x 23     REVISED (D-709/D-707; was 80 x 160
+                         x 23, which a 77 mm board does not enter)
 FBV2_WALL_MM:            2.0               TARGET
-FBV2_INTERNAL_CAVITY_MM: 75.0 x 155.0 x 18.5   TARGET
-FBV2_PCB_MAX_MM:         72.0 x 152.0      TARGET
-FBV2_PCB_TARGET_MM:      72.0 x 148.0      LOCKED (D-239)
+FBV2_INTERNAL_CAVITY_MM: 80.0 x 155.0 x 18.5   TARGET (D-738 re-derived X from
+                         the 85 mm shell; 75.0 was 2.0 mm NARROWER than the
+                         board and was a hard interference)
+FBV2_PCB_MAX_MM:         80.0 x 152.0      TARGET (what the cavity admits)
+FBV2_PCB_TARGET_MM:      77.0 x 148.0      MEASURED (D-709 stepped profile;
+                         D-239's 72.0 x 148.0 is SUPERSEDED)
 FBV2_PCB_THICKNESS_MM:   1.6               LOCKED
 FBV2_BATTERY_MM:         57 x 75 x 8.0 MAX  LOCKED (D-239, supersedes D-071 width)
 FBV2_BATTERY_CANDIDATES: PKCELL LP785060 7.3x50x60 2500mAh PCM+JST-PH;
@@ -673,7 +722,9 @@ FBV2_DISPLAY_CONN_ASSY:  MACHINE-PLACED at JLC          LOCKED (D-206/D-207)
 FBV2_COMM_CONTACTS:      24 active (1 x 24, one pin per line)  LOCKED (D-237)
 FBV2_COMM_PITCH_MM:      2.54                          LOCKED (D-083)
 FBV2_COMM_CONNECTOR:     Samtec SSQ-124-02-G-S-RA (1x24 female RA)  LOCKED (D-237)
-FBV2_COMM_BODY_MM:       61.47 long, mates .025in square post  LOCKED (D-237)
+FBV2_COMM_BODY_MM:       61.47 long x 6.53 deep x 8.50 tall, mates .025in
+                         square post  LOCKED (D-237); the 8.50 is UNCONFIRMED
+                         in direction - see M-09, reopened D-738
 FBV2_COMM_FOOTPRINT:     1x24 PTH, 2.54 pitch, 1.02 drill, 58.42 pin span   LOCKED (D-237)
 FBV2_COMM_KEYING:        CLOSED-END recess 62.5 mm vs 60.96 male body =
                          1.54 mm play on a 2.54 pitch; shift IMPOSSIBLE.
@@ -683,7 +734,12 @@ FBV2_QWIIC:              JST SM04B-SRSS-TB, 1 GND/2 3V3/3 SDA/4 SCL   LOCKED (D-
 FBV2_QWIIC_POWER:        ACC_3V3_SW - never ACC_5V_SW              LOCKED (D-238)
 FBV2_BOOT_POS:           doc (28.300, 6.000) FRONT face, front-wall tool hole  LOCKED (D-242)
 FBV2_POWER_SW_POS:       doc (66.700, 61.500) right wall           LOCKED (D-242)
-FBV2_Z_CONNECTOR_COLUMN: 19.53 of 23.0 (3.47 spare)    TARGET (M-09)
+FBV2_Z_CONNECTOR_COLUMN: 22.70 of 23.0 (0.30 spare)    UNCONFIRMED (M-09,
+                         REOPENED D-738).  19.53/3.47 was computed for the
+                         BCS-112 2x12, which is NOT the fitted part; the fitted
+                         SSQ-124-02-G-S-RA is recorded at 8.50 mm tall, not
+                         5.33.  Confirm the direction of that 8.50 before the
+                         enclosure tool is cut.
 FBV2_NFC_ZONE_MM:        48 x 48           LOCKED (D-127/D-128/D-131)
 FBV2_SMA_IR_CENTRE_MM:   15.0 min c-c      LOCKED (FBV2-MECH-001, restated M-13)
 FBV2_SMA_IR_EDGE_MM:      8.0 min edge     LOCKED (D-120, restated M-13)
@@ -699,11 +755,14 @@ FBV2_PCB_OUTLINE_MM:     72.0 x 148.0 x 1.6     *** SUPERSEDED - DO NOT USE ***
                          Enclosure Field Slate figures.  Verified against the
                          board's own Edge.Cuts by D-737 (8 segments, extents
                          0,0 -> 77,148, two inside corners).
-FBV2_PCB_WALL_GAP_MM:    1.5 both sides - the >= 1.5 rule met EXACTLY
-                         *** SUPERSEDED WITH THE OUTLINE ***  the enclosure was
-                         widened to 85 x 160 x 23 mm under owner approval D-707
-                         to follow the stepped board; the 1.5 mm figure belongs
-                         to the retired 72 mm profile.
+FBV2_PCB_WALL_GAP_MM:    1.500 at the east bump (y 70.500..104.005), 4.000
+                         elsewhere in X, 3.500 in Y   COMPUTED (D-738, MIS 3.3)
+                         *** The 1.500 mm is met EXACTLY, with ZERO margin, over
+                         33.505 mm of the right wall.  Any inward seam lip or
+                         draft there breaks it.  The earlier note on this line --
+                         that 1.5 belonged only to the retired 72 mm profile --
+                         was right that the OLD derivation was dead and wrong to
+                         leave no live number in its place. ***
 FBV2_PCB_DATUM:          lower-left, X right, Y up     LOCKED (D-220)
 FBV2_SIDE_CONVENTION:    F.Cu = FRONT, B.Cu = REAR     LOCKED (D-214)
 FBV2_MIC_SIDE:           MK1 on B.Cu, listens forward  LOCKED (D-214)

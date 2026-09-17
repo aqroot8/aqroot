@@ -40,8 +40,14 @@ expansion port** plus a **Qwiic / STEMMA QT** accessory connector. It runs from 
 single-cell Li-ion battery with USB-C charging and a reverse-/over-voltage protection
 front end.
 
-- **Form factor:** portrait handheld. **PCB 72 × 148 × 1.6 mm, 6-layer** (LOCKED).
-  **Enclosure 80 × 160 × 23 mm** external (LOCKED, ENGINEERING TARGET for CAD).
+- **Form factor:** portrait handheld. **PCB 77 × 148 × 1.6 mm maximum, 6-layer**
+  — the profile is STEPPED: 72.000 mm wide except an east bump to `x = 77.000`
+  between `y = 70.500` and `y = 104.005` (REVISED D-709 under owner authority
+  D-703 option 2; ~~72 × 148~~ superseded).  **Enclosure 85 × 160 × 23 mm**
+  external (REVISED D-709, width only, under owner approval D-707; ~~80 × 160 ×
+  23~~ superseded — a 77 mm board does not enter an 80 mm shell at the ≥ 1.5 mm
+  wall gap).  **Section 12 is the dimension authority and this summary now
+  agrees with it.**
 - **Radios:** 4 (Wi-Fi/BLE, 433 MHz, 915 MHz LoRa, NFC). **Antennas: 4 total — 1
   external (915 MHz SMA whip), 3 internal** (Wi-Fi/BLE module PCB antenna, 433 MHz
   internal flex, NFC internal flex). MARKETING-SAFE.
