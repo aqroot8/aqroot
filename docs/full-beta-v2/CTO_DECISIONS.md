@@ -140,8 +140,26 @@ touching the promised feature set.
     `U11.2`'s `BAT` escape and `U11.4`'s `GND`, and a 0.500/0.250 barrel -- the
     board's own via floor -- needs 0.900 mm.  Unlike `U9.14` there is no
     capacitor to move: **the crossing partner is the battery net itself**, and
-    the only lever is D-697's bounded `BAT_PROTECTED_P` exception plus an `R37`
-    move.  Not spent.
+    the only lever is D-697's bounded `BAT_PROTECTED_P` exception.
+
+    ***AND THAT LEVER IS NOW PRICED EXACTLY, WHICH IT WAS NOT WHEN THIS
+    PARAGRAPH WAS FIRST WRITTEN.***  The spine can be pushed west only until
+    its own clearance to `R37.2`'s `GND` land runs out -- `BAT_MAIN`'s netclass
+    clearance is 0.200 mm and D-269's 0.300 mm figure does NOT apply there,
+    because that rule states `B.Type != 'Pad'` -- which puts the limit at
+    **x = 65.275, a 0.225 mm move of protected copper**.  That leaves `STAT2` a
+    slot of **0.650 mm**, and `STAT2` needs 0.075 + **0.300 (D-269, which DOES
+    apply track-to-track)** + 0.075 + 0.200 = **0.650 mm**.
+
+    **It fits with EXACTLY ZERO MARGIN.**  So `U11.3` is not impossible -- it is
+    legal to the micron and hand-layable, since no lattice can express zero
+    (D-690's own finding about this land) -- but it costs a 0.225 mm move of the
+    battery feed for a result with no margin, and **it still does not close the
+    net**: `STAT2` then has to reach `U2.19`, which `STAT1`'s `U2.20` is already
+    holding.  If it is ever attempted, move `R37` first -- it is an ordinary
+    `ISET` resistor and it is the only thing bounding the spine, so moving it
+    buys the slot real margin instead of none.  **NOT SPENT, and it should not
+    be spent for one status bit while D-731 is open.**
 
 ### 8. `/SX1262_DIO1` RE-MEASURED, AND D-721's VERDICT STANDS
 
