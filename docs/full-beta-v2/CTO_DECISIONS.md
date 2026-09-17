@@ -1,3 +1,120 @@
+## D-734 — **`/BQ25185_STAT2` CANNOT LEAVE `U11.3` AT ANY MANUFACTURABLE WIDTH, AND NOT BECAUSE OF D-269.** THE POCKET IS TOPOLOGICALLY CLOSED. OWNER DECISION RAISED WITH A RECOMMENDATION
+
+    authority  71c4326e  UNCHANGED.  NO COPPER.
+    `evidence/d734-screen-u11-3-escape.py`
+    `evidence/d734-u11-3-escape-sweep.json`
+    `evidence/d734-u11-3-escape-sweep-d269-relaxed.json`
+
+### 1. WHY THIS WAS ASKED AGAIN
+
+D-727 filed `U11.3` as *"sealed by D-269, an OWNER decision"*.  D-730 filed it as
+`LATTICE_EXACT` at margin 0.0000.  D-731 priced *"the authorized way out"* at
+0.225 mm of battery-feed movement for ZERO margin.  All three are SEARCH results
+-- a router refusing -- and a search that refuses is not a proof.
+
+### 2. WHAT WAS MEASURED INSTEAD
+
+`evidence/d734-screen-u11-3-escape.py` does not search.  It sweeps the pocket at
+a **10 micron** lattice and asks, for every cell, whether a track of width W
+centred there is legal against EVERY B.Cu obstacle at the clearance that
+obstacle is actually owed --
+
+    a PAD                   0.200 mm   (the pad-escape figure inside U11)
+    a BAT_MAIN TRACK        0.300 mm   (D-269; its condition is
+                                        A.Type != 'Pad' && B.Type != 'Pad')
+    anything else           0.200 mm
+    same-net copper         nothing
+
+-- then floods from `U11.3`'s own land and reports whether the legal set ever
+leaves the window.
+
+### 3. THE ANSWER
+
+    width      escapes the pocket     widest track the west channel admits
+    0.200 mm   NO                     -0.160 mm
+    0.150 mm   NO                     -0.160 mm
+    0.120 mm   NO                     -0.160 mm
+    0.100 mm   NO                     -0.160 mm
+    0.090 mm   NO                     -0.160 mm   <- JLCPCB's own 1 oz floor
+    0.060 mm   NO                     -0.160 mm
+    0.030 mm   NO                     -0.160 mm
+
+At 0.200 mm there is not one legal cell even ON `U11.3`'s own land.  Below that
+the land itself becomes legal -- 60 cells at 0.150, 485 at 0.060 -- and the
+reachable set **still never leaves**.  The channel is over-subscribed by
+0.160 mm and the figure does not move with width, because **the pocket is
+CLOSED, not narrow.**
+
+### 4. AND IT IS NOT D-269
+
+Re-run with the battery clearance relaxed to the ordinary 0.200 mm --
+`AQROOT_D269_MM=0.200`, which is the safety rule switched OFF:
+
+    width      escapes the pocket     widest track the channel admits
+    0.150 mm   NO                     +0.040 mm
+    0.090 mm   NO                     +0.040 mm
+    0.060 mm   NO                     +0.040 mm
+    0.030 mm   NO                     +0.040 mm
+
+The channel goes from -0.160 mm to +0.040 mm and **still does not escape.**
+Two obstacles bind at the same point to within 0.0001 mm: a
+`/01_POWER_TREE/BAT_PROTECTED_P` track at -0.0800 and **`U11.4`'s GND LAND at
+-0.0799**.  So:
+
+* relaxing D-269 does NOT open it -- the GND land binds at the same micron;
+* moving `BAT_PROTECTED_P`'s copper west under D-697 does NOT open it either,
+  for the same reason;
+* and neither does moving `U11`, because both binding objects are `U11`'s own
+  package geometry and its own pin-2 escape, which travel WITH it.
+
+**`U11.3` is a PACKAGE WALL.**  TI's DLH0010A puts `STAT2`'s 0.200 mm land
+between the `BAT` land and a `GND` land on 0.400 mm pitch, and the `BAT` escape
+is itself pinned at y = 78.200 by the `SYS` land on its far side -- 0.200 mm of
+clearance to `U11.3` above and 0.200 mm to `U11.1` below, on a 0.400 mm window,
+with a 0.200 mm track.  Nothing in AQROOT's control changes any of those five
+numbers.
+
+### 5. OWNER DECISION — RAISED WITH A RECOMMENDATION
+
+**THE PROBLEM.**  `/BQ25185_STAT2` cannot be connected.  `ARCHITECTURE.md` item
+13 records that landing `STAT1` and `STAT2` *"half closed"* the no-telemetry gap
+so *"the product can report that it is charging"*.  With `STAT2` unreachable the
+charger's two-pin state code degrades to `STAT1` alone.
+
+**WHAT I RECOMMEND.**  **Fit the board as it stands and leave `U11.3`
+unconnected**, with `R128` and `TP7` retained.  Reasons:
+
+1. `STAT2` is an OPEN-DRAIN OUTPUT.  Leaving it floating is electrically inert
+   -- no current path, no latch-up path, no leakage into the charger.
+2. The Demo already carries a **MAX17048 fuel gauge on the internal I2C bus**,
+   which reports pack voltage and state-of-charge directly.  Charge PROGRESS is
+   observable without the charger's status pins.
+3. `STAT1` is routed and working (D-733), so the charger still reports.
+4. `R128` and `TP7` stay fitted, so `STAT2` remains **benchable**: the pin is
+   dead at the package, but the net, its pull-up and its test point are on the
+   board and cost nothing, and a Rev-B that re-floorplans `U11` inherits them.
+5. The alternative costs are all disproportionate: a charger PART CHANGE is a
+   power-subsystem re-validation for one status bit; relaxing D-269 is a
+   battery-safety compromise that **has been measured NOT to work anyway**.
+
+**WHAT I WOULD CHOOSE IF I WERE SHIPPING AQROOT:** exactly that.  Ship it.  The
+one thing I would NOT do is relax a battery clearance to chase it, because
+section 4 proves that buys nothing.
+
+**COST / SCHEDULE / RISK.**  Zero cost, zero schedule, zero fabrication risk.
+The residual is a firmware note: charge-state decode must not assume `STAT2`.
+
+**WHAT MUST CHANGE IF THE OWNER SAYS NO.**  Only one path remains and it is a
+Rev-B item: rotate or re-floorplan `U11` so `STAT2` lands on the east column,
+which moves the 3.125 A `BAT` feed to the east side of the package and is a
+power-block redesign, not a routing change.
+
+### 6. WHAT THE BOARD DOES IN THE MEANTIME
+
+Nothing changes.  `/BQ25185_STAT2`'s two retained open edges stay on the ledger
+and are counted honestly.  **The board is NOT declared fabrication-ready while
+an open owner decision stands.**
+
 ## D-733 — **`/ACC_PWR_EN` IS ROUTED AND THE COMMUNITY PORT'S I2C BUFFER HAS ITS ENABLE.** THE NET THAT WAS HOLDING IT WAS `/BQ25185_STAT1`'s 115 mm WESTERN LOOP, AND THE WAY PAST IT WAS NOT A CORRIDOR -- IT WAS A PIN 1.025 mm AWAY
 
     authority  fa0ad669 -> 71c4326e.  COPPER PROMOTED.

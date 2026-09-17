@@ -66,6 +66,48 @@
 > `verify_promotion` PASS and `protected_copper` showing exactly one protected
 > net moved.  `U14.7` is on the bus.  This board has **no open owner decision**.
 
+- **Demo D-734 (**`/BQ25185_STAT2` CANNOT LEAVE `U11.3` AT ANY MANUFACTURABLE
+  WIDTH -- AND IT IS NOT D-269.  THE POCKET IS TOPOLOGICALLY CLOSED.  ONE OPEN
+  OWNER DECISION, RAISED WITH A RECOMMENDATION**):**  **NO COPPER.  Authority
+  `71c4326e` UNCHANGED.**  D-727, D-730 and D-731 all filed `U11.3` from a
+  ROUTER REFUSING, and a search that refuses is not a proof.  `evidence/
+  d734-screen-u11-3-escape.py` does not search: it sweeps the pocket at a
+  **10 micron** lattice and asks, cell by cell, whether a track of width W is
+  legal against every B.Cu obstacle at the clearance that obstacle is actually
+  owed -- 0.200 mm to a PAD, **0.300 mm to a `BAT_MAIN` TRACK** because D-269's
+  own condition says `A.Type != 'Pad' && B.Type != 'Pad'`, 0.200 mm to anything
+  else, nothing to same-net copper -- then floods from `U11.3`'s own land.
+  ***THE ANSWER IS THE SAME AT EVERY WIDTH:*** 0.200, 0.150, 0.120, 0.100,
+  **0.090 (JLCPCB's own 1 oz floor)**, 0.060 and 0.030 mm all report
+  `escapes_the_pocket: false`, and the west channel admits **-0.160 mm** at
+  every one of them -- the number does not move with width because **THE POCKET
+  IS CLOSED, NOT NARROW.**  At 0.200 mm there is not one legal cell even ON the
+  land; below that the land becomes legal (60 cells at 0.150, 485 at 0.060) and
+  the reachable set still never leaves.  ***AND IT IS NOT THE SAFETY RULE:***
+  re-run with D-269 switched off -- battery clearance relaxed to the ordinary
+  0.200 mm -- the channel goes -0.160 -> **+0.040 mm and STILL DOES NOT
+  ESCAPE**, because two objects bind at the same point to within 0.0001 mm: a
+  `BAT_PROTECTED_P` track at -0.0800 and **`U11.4`'s GND LAND at -0.0799**.  So
+  relaxing D-269 does not open it, moving `BAT_PROTECTED_P` west under D-697
+  does not open it, and **moving `U11` does not open it either**, because both
+  binding objects are `U11`'s own package geometry and its own pin-2 escape and
+  they travel WITH the part.  TI's DLH0010A puts `STAT2`'s 0.200 mm land between
+  the `BAT` land and a `GND` land on 0.400 mm pitch, and the `BAT` escape is
+  itself pinned at y = 78.200 by the `SYS` land on its far side.  **Nothing in
+  AQROOT's control changes any of those five numbers.**  ***OWNER DECISION,
+  RECOMMENDATION GIVEN:*** **fit the board as it stands and leave `U11.3`
+  unconnected**, keeping `R128` and `TP7`.  `STAT2` is an OPEN-DRAIN OUTPUT, so
+  floating it is electrically inert; the **MAX17048 fuel gauge on the internal
+  I2C bus** reports pack voltage and state-of-charge directly, so charge
+  PROGRESS is observable without the charger's status pins; `STAT1` is routed
+  and working since D-733; and the pull-up and test point stay fitted so the net
+  is benchable and a Rev-B inherits it.  The alternatives are all
+  disproportionate -- a charger PART CHANGE is a power-subsystem re-validation
+  for one status bit, and relaxing D-269 is a battery-safety compromise that is
+  **measured not to work anyway**.  Cost, schedule and fabrication risk of the
+  recommendation are all ZERO; the residual is a firmware note that the
+  charge-state decode must not assume `STAT2`.  **The board is NOT declared
+  fabrication-ready while this decision is open.**
 - **Demo D-733 (**`/ACC_PWR_EN` IS ROUTED -- THE COMMUNITY PORT'S I2C BUFFER HAS
   ITS ENABLE.  WHAT WAS HOLDING IT WAS `/BQ25185_STAT1`'s 115 mm WESTERN LOOP,
   AND THE WAY PAST IT WAS A PIN 1.025 mm AWAY**):**  **COPPER PROMOTED.

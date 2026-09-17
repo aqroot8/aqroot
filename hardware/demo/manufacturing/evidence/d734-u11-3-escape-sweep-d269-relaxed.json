@@ -1,0 +1,164 @@
+{
+ "schema": 1,
+ "board": "hardware/demo/kicad/aqroot-demo/aqroot-Beta-v2.kicad_pcb",
+ "net": "/BQ25185_STAT2",
+ "land": [
+  66.4,
+  77.8
+ ],
+ "window_mm": [
+  63.0,
+  75.2,
+  67.2,
+  80.4
+ ],
+ "grid_mm": 0.01,
+ "clearance_model": {
+  "pad": 0.2,
+  "BAT_MAIN_track": 0.3,
+  "other": 0.2,
+  "same_net": "nothing owed"
+ },
+ "widths": {
+  "0.150": {
+   "legal_seed_cells": 350,
+   "reachable_cells": 350,
+   "escapes_the_pocket": false,
+   "widest_half_slack_in_the_west_channel_mm": 0.02,
+   "widest_track_the_west_channel_admits_mm": 0.04,
+   "at": [
+    66.02,
+    77.72
+   ],
+   "bound_by": "trk:/01_POWER_TREE/BAT_PROTECTED_P",
+   "five_tightest_at_that_point": [
+    [
+     0.02,
+     "trk:/01_POWER_TREE/BAT_PROTECTED_P"
+    ],
+    [
+     0.0201,
+     "pad:U11.4"
+    ],
+    [
+     0.1216,
+     "trk:/01_POWER_TREE/BAT_PROTECTED_P"
+    ],
+    [
+     0.1364,
+     "trk:/01_POWER_TREE/BAT_PROTECTED_P"
+    ],
+    [
+     0.1634,
+     "trk:/01_POWER_TREE/BAT_PROTECTED_P"
+    ]
+   ],
+   "d269_clearance_used_mm": 0.2
+  },
+  "0.090": {
+   "legal_seed_cells": 803,
+   "reachable_cells": 836,
+   "escapes_the_pocket": false,
+   "widest_half_slack_in_the_west_channel_mm": 0.02,
+   "widest_track_the_west_channel_admits_mm": 0.04,
+   "at": [
+    66.02,
+    77.72
+   ],
+   "bound_by": "trk:/01_POWER_TREE/BAT_PROTECTED_P",
+   "five_tightest_at_that_point": [
+    [
+     0.02,
+     "trk:/01_POWER_TREE/BAT_PROTECTED_P"
+    ],
+    [
+     0.0201,
+     "pad:U11.4"
+    ],
+    [
+     0.1216,
+     "trk:/01_POWER_TREE/BAT_PROTECTED_P"
+    ],
+    [
+     0.1364,
+     "trk:/01_POWER_TREE/BAT_PROTECTED_P"
+    ],
+    [
+     0.1634,
+     "trk:/01_POWER_TREE/BAT_PROTECTED_P"
+    ]
+   ],
+   "d269_clearance_used_mm": 0.2
+  },
+  "0.060": {
+   "legal_seed_cells": 1049,
+   "reachable_cells": 1124,
+   "escapes_the_pocket": false,
+   "widest_half_slack_in_the_west_channel_mm": 0.02,
+   "widest_track_the_west_channel_admits_mm": 0.04,
+   "at": [
+    66.02,
+    77.72
+   ],
+   "bound_by": "trk:/01_POWER_TREE/BAT_PROTECTED_P",
+   "five_tightest_at_that_point": [
+    [
+     0.02,
+     "trk:/01_POWER_TREE/BAT_PROTECTED_P"
+    ],
+    [
+     0.0201,
+     "pad:U11.4"
+    ],
+    [
+     0.1216,
+     "trk:/01_POWER_TREE/BAT_PROTECTED_P"
+    ],
+    [
+     0.1364,
+     "trk:/01_POWER_TREE/BAT_PROTECTED_P"
+    ],
+    [
+     0.1634,
+     "trk:/01_POWER_TREE/BAT_PROTECTED_P"
+    ]
+   ],
+   "d269_clearance_used_mm": 0.2
+  },
+  "0.030": {
+   "legal_seed_cells": 1275,
+   "reachable_cells": 1394,
+   "escapes_the_pocket": false,
+   "widest_half_slack_in_the_west_channel_mm": 0.02,
+   "widest_track_the_west_channel_admits_mm": 0.04,
+   "at": [
+    66.02,
+    77.72
+   ],
+   "bound_by": "trk:/01_POWER_TREE/BAT_PROTECTED_P",
+   "five_tightest_at_that_point": [
+    [
+     0.02,
+     "trk:/01_POWER_TREE/BAT_PROTECTED_P"
+    ],
+    [
+     0.0201,
+     "pad:U11.4"
+    ],
+    [
+     0.1216,
+     "trk:/01_POWER_TREE/BAT_PROTECTED_P"
+    ],
+    [
+     0.1364,
+     "trk:/01_POWER_TREE/BAT_PROTECTED_P"
+    ],
+    [
+     0.1634,
+     "trk:/01_POWER_TREE/BAT_PROTECTED_P"
+    ]
+   ],
+   "d269_clearance_used_mm": 0.2
+  }
+ }
+}

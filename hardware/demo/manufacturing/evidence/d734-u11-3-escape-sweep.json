@@ -1,0 +1,269 @@
+{
+ "schema": 1,
+ "board": "hardware/demo/kicad/aqroot-demo/aqroot-Beta-v2.kicad_pcb",
+ "net": "/BQ25185_STAT2",
+ "land": [
+  66.4,
+  77.8
+ ],
+ "window_mm": [
+  63.0,
+  75.2,
+  67.2,
+  80.4
+ ],
+ "grid_mm": 0.01,
+ "clearance_model": {
+  "pad": 0.2,
+  "BAT_MAIN_track": 0.3,
+  "other": 0.2,
+  "same_net": "nothing owed"
+ },
+ "widths": {
+  "0.200": {
+   "legal_seed_cells": 0,
+   "reachable_cells": 0,
+   "escapes_the_pocket": false,
+   "widest_half_slack_in_the_west_channel_mm": -0.08,
+   "widest_track_the_west_channel_admits_mm": -0.16,
+   "at": [
+    66.02,
+    77.62
+   ],
+   "bound_by": "trk:/01_POWER_TREE/BAT_PROTECTED_P",
+   "five_tightest_at_that_point": [
+    [
+     -0.08,
+     "trk:/01_POWER_TREE/BAT_PROTECTED_P"
+    ],
+    [
+     -0.0799,
+     "pad:U11.4"
+    ],
+    [
+     0.1017,
+     "trk:/01_POWER_TREE/BAT_PROTECTED_P"
+    ],
+    [
+     0.1071,
+     "trk:/01_POWER_TREE/BAT_PROTECTED_P"
+    ],
+    [
+     0.12,
+     "trk:/01_POWER_TREE/BAT_PROTECTED_P"
+    ]
+   ],
+   "d269_clearance_used_mm": 0.3
+  },
+  "0.150": {
+   "legal_seed_cells": 60,
+   "reachable_cells": 60,
+   "escapes_the_pocket": false,
+   "widest_half_slack_in_the_west_channel_mm": -0.08,
+   "widest_track_the_west_channel_admits_mm": -0.16,
+   "at": [
+    66.02,
+    77.62
+   ],
+   "bound_by": "trk:/01_POWER_TREE/BAT_PROTECTED_P",
+   "five_tightest_at_that_point": [
+    [
+     -0.08,
+     "trk:/01_POWER_TREE/BAT_PROTECTED_P"
+    ],
+    [
+     -0.0799,
+     "pad:U11.4"
+    ],
+    [
+     0.1017,
+     "trk:/01_POWER_TREE/BAT_PROTECTED_P"
+    ],
+    [
+     0.1071,
+     "trk:/01_POWER_TREE/BAT_PROTECTED_P"
+    ],
+    [
+     0.12,
+     "trk:/01_POWER_TREE/BAT_PROTECTED_P"
+    ]
+   ],
+   "d269_clearance_used_mm": 0.3
+  },
+  "0.120": {
+   "legal_seed_cells": 131,
+   "reachable_cells": 140,
+   "escapes_the_pocket": false,
+   "widest_half_slack_in_the_west_channel_mm": -0.08,
+   "widest_track_the_west_channel_admits_mm": -0.16,
+   "at": [
+    66.02,
+    77.62
+   ],
+   "bound_by": "trk:/01_POWER_TREE/BAT_PROTECTED_P",
+   "five_tightest_at_that_point": [
+    [
+     -0.08,
+     "trk:/01_POWER_TREE/BAT_PROTECTED_P"
+    ],
+    [
+     -0.0799,
+     "pad:U11.4"
+    ],
+    [
+     0.1017,
+     "trk:/01_POWER_TREE/BAT_PROTECTED_P"
+    ],
+    [
+     0.1071,
+     "trk:/01_POWER_TREE/BAT_PROTECTED_P"
+    ],
+    [
+     0.12,
+     "trk:/01_POWER_TREE/BAT_PROTECTED_P"
+    ]
+   ],
+   "d269_clearance_used_mm": 0.3
+  },
+  "0.100": {
+   "legal_seed_cells": 159,
+   "reachable_cells": 181,
+   "escapes_the_pocket": false,
+   "widest_half_slack_in_the_west_channel_mm": -0.08,
+   "widest_track_the_west_channel_admits_mm": -0.16,
+   "at": [
+    66.02,
+    77.62
+   ],
+   "bound_by": "trk:/01_POWER_TREE/BAT_PROTECTED_P",
+   "five_tightest_at_that_point": [
+    [
+     -0.08,
+     "trk:/01_POWER_TREE/BAT_PROTECTED_P"
+    ],
+    [
+     -0.0799,
+     "pad:U11.4"
+    ],
+    [
+     0.1017,
+     "trk:/01_POWER_TREE/BAT_PROTECTED_P"
+    ],
+    [
+     0.1071,
+     "trk:/01_POWER_TREE/BAT_PROTECTED_P"
+    ],
+    [
+     0.12,
+     "trk:/01_POWER_TREE/BAT_PROTECTED_P"
+    ]
+   ],
+   "d269_clearance_used_mm": 0.3
+  },
+  "0.090": {
+   "legal_seed_cells": 245,
+   "reachable_cells": 278,
+   "escapes_the_pocket": false,
+   "widest_half_slack_in_the_west_channel_mm": -0.08,
+   "widest_track_the_west_channel_admits_mm": -0.16,
+   "at": [
+    66.02,
+    77.62
+   ],
+   "bound_by": "trk:/01_POWER_TREE/BAT_PROTECTED_P",
+   "five_tightest_at_that_point": [
+    [
+     -0.08,
+     "trk:/01_POWER_TREE/BAT_PROTECTED_P"
+    ],
+    [
+     -0.0799,
+     "pad:U11.4"
+    ],
+    [
+     0.1017,
+     "trk:/01_POWER_TREE/BAT_PROTECTED_P"
+    ],
+    [
+     0.1071,
+     "trk:/01_POWER_TREE/BAT_PROTECTED_P"
+    ],
+    [
+     0.12,
+     "trk:/01_POWER_TREE/BAT_PROTECTED_P"
+    ]
+   ],
+   "d269_clearance_used_mm": 0.3
+  },
+  "0.060": {
+   "legal_seed_cells": 485,
+   "reachable_cells": 560,
+   "escapes_the_pocket": false,
+   "widest_half_slack_in_the_west_channel_mm": -0.08,
+   "widest_track_the_west_channel_admits_mm": -0.16,
+   "at": [
+    66.02,
+    77.62
+   ],
+   "bound_by": "trk:/01_POWER_TREE/BAT_PROTECTED_P",
+   "five_tightest_at_that_point": [
+    [
+     -0.08,
+     "trk:/01_POWER_TREE/BAT_PROTECTED_P"
+    ],
+    [
+     -0.0799,
+     "pad:U11.4"
+    ],
+    [
+     0.1017,
+     "trk:/01_POWER_TREE/BAT_PROTECTED_P"
+    ],
+    [
+     0.1071,
+     "trk:/01_POWER_TREE/BAT_PROTECTED_P"
+    ],
+    [
+     0.12,
+     "trk:/01_POWER_TREE/BAT_PROTECTED_P"
+    ]
+   ],
+   "d269_clearance_used_mm": 0.3
+  },
+  "0.030": {
+   "legal_seed_cells": 651,
+   "reachable_cells": 755,
+   "escapes_the_pocket": false,
+   "widest_half_slack_in_the_west_channel_mm": -0.08,
+   "widest_track_the_west_channel_admits_mm": -0.16,
+   "at": [
+    66.02,
+    77.62
+   ],
+   "bound_by": "trk:/01_POWER_TREE/BAT_PROTECTED_P",
+   "five_tightest_at_that_point": [
+    [
+     -0.08,
+     "trk:/01_POWER_TREE/BAT_PROTECTED_P"
+    ],
+    [
+     -0.0799,
+     "pad:U11.4"
+    ],
+    [
+     0.1017,
+     "trk:/01_POWER_TREE/BAT_PROTECTED_P"
+    ],
+    [
+     0.1071,
+     "trk:/01_POWER_TREE/BAT_PROTECTED_P"
+    ],
+    [
+     0.12,
+     "trk:/01_POWER_TREE/BAT_PROTECTED_P"
+    ]
+   ],
+   "d269_clearance_used_mm": 0.3
+  }
+ }
+}
