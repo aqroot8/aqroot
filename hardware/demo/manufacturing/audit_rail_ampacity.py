@@ -166,20 +166,26 @@ RAILS = (
     # rail with a source, a sink and a number.
     dict(name="SYS_TO_ACC5V_BOOST", net="/01_POWER_TREE/BQ25185_SYS",
          src=("U12.1", "U12.10", "U12.11", "C24.1", "C26.2", "C28.1"),
-         snk=("L4.1",), amps=1.21,
+         snk=("L4.1",), amps=0.925,
          accept=(dict(layer="In2.Cu", reason="dru-5c", max_length_mm=80.0),),
          accept_reason="D-750 / .kicad_dru section 5c.  The SYS trunk's three "
                "In2 legs run 0.800 mm, where IPC-2221B's INTERNAL curve asks "
-               "2.232 mm for 1.21 A and returns a 58.6 K rise.  That curve is "
+               "1.585 mm for 0.925 A and returns a 31.8 K rise.  That curve is "
                "an isolated coupon in still air and IPC-2152 superseded it; "
                "the PLANE-COUPLED rise this file derives from the board's own "
                "declared stackup -- In2 between In1 across 0.4000 mm of core "
-               "and In3 across 0.2028 mm of prepreg -- is 1.16 K, and the whole "
-               "rail dissipates 0.268 W.  The ELECTRICAL cost is accepted with "
-               "its number: 183 mOhm and 222 mV at the published ACC_5V "
+               "and In3 across 0.2028 mm of prepreg -- is 0.68 K, and the whole "
+               "rail dissipates 0.157 W.  The ELECTRICAL cost is accepted with "
+               "its number: 183 mOhm and 169 mV at the enforced ACC_5V "
                "maximum, against a TPS61023 input range of 0.5-5.5 V.",
-         basis="U21 TPS61023 INPUT current at the published ACC_5V maximum: "
-               "0.70 A x 5.0 V / (0.88 efficiency x 3.3 V VBAT) = 1.21 A rms. "
+         basis="U21 TPS61023 INPUT current at the ENFORCED ACC_5V maximum: "
+               "0.537 A x 5.0 V / (0.88 efficiency x 3.3 V VBAT) = 0.925 A rms. "
+               "D-753 RETUNED R101 1.65 kOhm -> 2.7 kOhm, so the number that "
+               "sizes this trunk is no longer a PUBLISHED figure but the load "
+               "switch's own worst-case limit: TI SLVSFJ2B equation 1 gives "
+               "0.407 A typ at 2.7 kOhm and the EC table's widest ratio (1.32x) "
+               "gives 0.537 A over -40..+125 C.  It WAS 1.21 A, from the 0.70 A "
+               "the old 1.65 kOhm allowed. "
                "The 2.19 A the section 5 note quotes is the PEAK INDUCTOR "
                "current (D-185), which the input capacitor C83 supplies "
                "locally; the trunk carries the average.  THE SINK IS L4.1, NOT "

@@ -287,37 +287,61 @@ power/NFC review, and CTO decisions.
 | **ACC_5V_SW** load switch | `U22` | TPS22950CDDCR | FITTED | `01_power_tree.kicad_sch:U22` |
 | Accessory I²C hot-swap buffer | `U16` | TCA4307DGKR | FITTED | `08/09` |
 
-### 6.3a Accessory-power CONCURRENCY POLICY (D-750) — ENGINEERING-ONLY, firmware-enforced
+### 6.3a Accessory-power ENVELOPE (D-753) — ENGINEERING-ONLY, **bounded by hardware**
 
-The per-rail figures in `.kicad_dru` section 5 — **0.40 A on `ACC_3V3`, 0.70 A
-on `ACC_5V`** — are **EACH-ALONE maxima, not a simultaneous budget**.
-`ACC_3V3_SW` is a load switch off `+3V3`, so it is part of the `+3V3` draw;
-`ACC_5V_SW` is a boost off `SYS`.  At 90 % (buck-boost) and 88 % (boost) the
-battery current is:
+**D-750 answered the external first-spin review's combined-load item with a
+POLICY; D-753 replaced it with a LIMIT the silicon enforces.**  The policy read
+*"firmware must not raise both accessory rails to their per-rail maxima
+together"* — and this board has **no accessory current measurement**.  Firmware
+can choose whether a rail is ON; it cannot know what an arbitrary external
+accessory then draws.  The only thing that actually bounds an accessory is the
+`TPS22950C`'s own current limit, and at the values D-750 shipped those limits
+sat far ABOVE what the policy permitted.
 
-| mode | I(SYS) @ 3.0 V | @ 3.7 V | @ 4.2 V |
-|---|---|---|---|
-| internal only, full 1.0 A on `+3V3` | 1.22 A | 0.99 A | 0.87 A |
-| internal + 3.3 V accessory at 0.40 A | 1.71 A | 1.39 A | 1.22 A |
-| internal + 5 V accessory at 0.70 A | 2.55 A | 2.07 A | 1.82 A |
-| **all three at published maxima** | **3.04 A** | 2.46 A | 2.17 A |
+**BOTH `ILIM` RESISTORS ARE NOW 2.7 kΩ** (`R97` was 1.5 kΩ, `R101` was
+1.65 kΩ; LCSC `C13167`, JLCPCB BASIC).  TI `SLVSFJ2B` equation 1 —
+`ILIM = 1.18 × (R[kΩ])^−1.072` — gives **0.407 A typ**, and the widest tolerance
+ratio the part's own EC table publishes (0.68× / 1.32× of typ over −40…+125 °C)
+brackets each rail at **0.277 A guaranteed / 0.537 A worst case**.
 
-**THE BOARD CANNOT SUPPORT ALL THREE AT THEIR MAXIMA SIMULTANEOUSLY FROM THE
-BATTERY AND WAS NEVER DESIGNED TO.**  `.kicad_dru` section 5 publishes
-`BAT_MAIN` at **1.5 A sustained**, which is what the protection path, `Q2`/`Q3`
-and the battery trunk are sized for; 3.04 A is also at the `BQ25185`
-`IBAT_OCP` trip (3.125 A typical, ±18 %).
+Modelled at the 3.0 V cell corner with the full 1.0 A internal `+3V3` load,
+`U12` at 90 % and `U21` at 88 % into 4.95 V:
 
-> **POLICY.**  Total accessory draw is bounded by `BAT_MAIN` 1.5 A sustained.
-> At 3.0 V that is 4.5 W: full internal load (3.67 W) leaves **0.83 W** for
-> accessories — **0.15 A at 5 V _or_ 0.23 A at 3.3 V**.  At 3.7 V the allowance
-> is 1.88 W — **0.33 A at 5 V _or_ 0.51 A at 3.3 V**.  Firmware owns both
-> enables through `U3` (`ACC_5V_BOOST_EN`, `ACC_5V_SW_EN`, `ACC_3V3_EN`) and
-> must not raise both accessory rails to their per-rail maxima together.
-> `ACC_POWER_FAULT_N` already drops both on a fault.
+| state the Community Port can reach | WAS (1.5 k / 1.65 k) | NOW (2.7 k / 2.7 k) |
+|---|---|---|
+| 3.3 V rail alone at its limiter | 2.455 A | **1.879 A** (+27 %) |
+| 5 V rail alone at its limiter | **2.930 A — TRIPS** | **2.229 A** (+13 %) |
+| both rails at their GUARANTEED currents | **2.737 A — TRIPS** | **2.079 A** (+19 %) |
+| both limiters in fault (double fault) | 4.162 A — past the LTC4368 | 2.886 A — charger OCP, auto-retry |
 
-This is the answer to the external first-spin review's item 9.  It is a LIMIT,
-not a defect: no copper changes, and the per-rail floors in section 5 stand.
+against a `BQ25185` `IBAT_OCP` **MINIMUM of 2.5625 A** (3.125 A typ ± 18 %,
+`SLUSF65B`), the `LTC4368` trip at **3.33 A** (50 mV across `R75` 15 mΩ) and
+`F1` at 5 A.
+
+> **ENVELOPE.**  No state a user can reach with conforming accessories exceeds
+> the pack protection's minimum trip; the worst is **2.229 A, 13 % under it**.
+> A *simultaneous double limiter fault* — two accessories each in overcurrent at
+> once — reaches 2.886 A, which trips the charger's own `IBAT_OCP` and
+> **auto-retries**, below the `LTC4368` and far below the one-shot fuse.  Each
+> rail GUARANTEES **0.277 A**, which is MORE than the superseded policy
+> permitted at this corner (0.15 A at 5 V / 0.23 A at 3.3 V).
+> `checks/demo_feature_contract.py` **F6** recomputes all of this from the two
+> resistors the board actually carries, with four live negative controls —
+> including two that put the D-750 values back.
+
+**RESIDUAL, NAMED NOT HIDDEN.**  `.kicad_dru` section 5 sizes `BAT_MAIN` copper
+for **1.5 A sustained**.  The new worst *sustained* case — both accessories at
+their guaranteed current with the full internal load — is **1.69 A at 3.7 V**
+and **2.08 A at the 3.0 V cutoff corner**, so it still exceeds that sizing
+point at the low-battery end, on one unavoidable 5.525 mm × 0.200 mm segment:
+`U11`'s `DLH0010A` pin-2 `BAT` land, which nothing wider can land on (D-269,
+D-708).  The plane-coupled model this repository uses puts that segment's
+ceiling at ≈ 37 K over the adjacent `In4` plane at 2.08 A (≈ 19 K at 1.5 A),
+and the model explicitly ignores lateral spreading, conduction along the copper
+and convection from an OUTER layer, so it is a ceiling and not a prediction.
+**This is a FIRST-ARTICLE THERMAL MEASUREMENT**, not a pre-order blocker: the
+electrical envelope above is closed by hardware, and D-753 moves every number in
+this table DOWN from what D-750 shipped.
 
 ### 6.4 Safety floors (governing routing rules — ENGINEERING-ONLY)
 - **BAT_MAIN** netclass (1.5 A design): trunk 1.00 mm, min **0.60 mm** (LOCKED).

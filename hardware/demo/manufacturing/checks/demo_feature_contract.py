@@ -29,7 +29,7 @@ something a backer was promised.
 
     python3 checks/demo_feature_contract.py [-o OUT.json]
 """
-import argparse, json, sys
+import argparse, json, re, sys
 from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
@@ -277,6 +277,95 @@ def judge_backlight(nets_by_contact, values):
     return f["ok"], f
 
 
+# --------------------------------------------------------------------------
+# F6 -- THE ACCESSORY RAILS MAY NOT PULL THE PACK INTO ITS OWN PROTECTION.
+# D-753.
+#
+# D-750 answered the external first-spin review's combined-load item with a
+# POLICY: *"firmware must not raise both accessory rails to their per-rail
+# maxima together"*.  A policy is not an enforcement mechanism.  THIS BOARD HAS
+# NO ACCESSORY CURRENT MEASUREMENT -- firmware can choose whether a rail is ON,
+# and cannot know what an arbitrary external accessory then draws.  The only
+# thing that actually bounds an accessory is the load switch's own current
+# limit, and at the values D-750 shipped those limits were far ABOVE what the
+# policy permitted.
+#
+# So this clause computes the envelope from the two resistors that set it, and
+# refuses the board if any state the Community Port can reach exceeds the pack
+# protection's MINIMUM trip.  TI SLVSFJ2B equation 1 for the TPS22950C:
+#
+#     ILIM = 1.18 x (R_ILIM[kOhm]) ^ -1.072            (amps, kilohms)
+#
+# and the part's own EC table brackets that typ at 0.68x / 1.32x over
+# -40..+125 C (the widest ratio it publishes, read off the 19.2 kOhm row).
+# --------------------------------------------------------------------------
+ILIM_R = {"ACC_3V3": "R97", "ACC_5V": "R101"}
+ILIM_LO, ILIM_HI = 0.68, 1.32          # SLVSFJ2B EC table, widest published
+VBAT_CORNER = 3.0                      # 1S Li-ion working floor
+V_3V3, ETA_U12 = 3.3, 0.90             # TPS63020 buck-boost
+V_ACC5V, ETA_U21 = 4.95, 0.88          # TPS61023 boost, R99/R100 divider
+I_INTERNAL = 1.0                       # the published internal +3V3 budget
+IBAT_OCP_MIN = 3.125 * 0.82            # BQ25185 SLUSF65B, 3.125 A typ +/-18 %
+LTC4368_TRIP = 0.050 / 0.015           # 50 mV across R75 15 mOhm
+FUSE_A = 5.0                           # F1 0466005 one-shot
+
+
+def _ohms(value):
+    m = re.match(r"\s*([\d.]+)\s*([kKmM]?)", value or "")
+    if not m:
+        return None
+    n = float(m.group(1))
+    return n * {"": 1.0, "k": 1e3, "K": 1e3, "m": 1e6, "M": 1e6}[m.group(2)]
+
+
+def judge_accessory_envelope(values):
+    """Pure over {ref: value}; returns (ok, detail).  D-753."""
+    d, rails = {}, {}
+    for rail, ref in ILIM_R.items():
+        r = _ohms(values.get(ref))
+        if not r:
+            return False, dict(error="%s value unreadable: %r" % (ref, values.get(ref)))
+        typ = 1.18 * ((r / 1000.0) ** -1.072)
+        rails[rail] = dict(ref=ref, r_ohms=r, ilim_min=typ * ILIM_LO,
+                           ilim_typ=typ, ilim_max=typ * ILIM_HI)
+
+    def ibat(i3, i5):
+        return ((I_INTERNAL + i3) * V_3V3 / ETA_U12
+                + i5 * V_ACC5V / ETA_U21) / VBAT_CORNER
+
+    a3, a5 = rails["ACC_3V3"], rails["ACC_5V"]
+    modes = dict(
+        acc3v3_alone_at_its_limiter=ibat(a3["ilim_max"], 0.0),
+        acc5v_alone_at_its_limiter=ibat(0.0, a5["ilim_max"]),
+        both_at_their_guaranteed_currents=ibat(a3["ilim_min"], a5["ilim_min"]),
+        both_limiters_in_fault=ibat(a3["ilim_max"], a5["ilim_max"]))
+    d.update(rails_A={k: {kk: round(vv, 4) for kk, vv in v.items() if kk != "ref"}
+                      for k, v in rails.items()},
+             ilim_resistors={k: v["ref"] for k, v in rails.items()},
+             modes_I_bat_A={k: round(v, 4) for k, v in modes.items()},
+             ibat_ocp_min_A=round(IBAT_OCP_MIN, 4),
+             ltc4368_trip_A=round(LTC4368_TRIP, 4), fuse_A=FUSE_A,
+             vbat_corner_V=VBAT_CORNER, internal_3v3_A=I_INTERNAL)
+    # Every state a USER can reach with conforming accessories must stay under
+    # the pack protection's MINIMUM trip ...
+    d["no_reachable_state_trips_the_pack"] = all(
+        modes[k] < IBAT_OCP_MIN for k in
+        ("acc3v3_alone_at_its_limiter", "acc5v_alone_at_its_limiter",
+         "both_at_their_guaranteed_currents"))
+    # ... and the DOUBLE limiter fault must still land inside the protection
+    # chain rather than on the copper or the one-shot fuse.
+    d["double_fault_stays_inside_the_protection_chain"] = (
+        modes["both_limiters_in_fault"] < LTC4368_TRIP
+        and modes["both_limiters_in_fault"] < FUSE_A)
+    d["margin_to_ocp_min_pct"] = round(
+        (IBAT_OCP_MIN - max(modes[k] for k in
+         ("acc3v3_alone_at_its_limiter", "acc5v_alone_at_its_limiter",
+          "both_at_their_guaranteed_currents"))) / IBAT_OCP_MIN * 100.0, 2)
+    ok = (d["no_reachable_state_trips_the_pack"]
+          and d["double_fault_stays_inside_the_protection_chain"])
+    return ok, d
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("-o", dest="out", type=Path)
@@ -383,6 +472,25 @@ def main():
         _control("f5c_refuses_a_schottky_in_the_charge_path", _schottky),
         _control("f5d_refuses_a_silently_retuned_hold", _wrong_tau)))
 
+    # ---- F6: the accessory envelope, and four live controls ---------------
+    env_ok, env = judge_accessory_envelope(values)
+
+    def _env_control(name, mutate):
+        v2 = dict(values)
+        mutate(v2)
+        ok, _ = judge_accessory_envelope(v2)
+        return name, not ok
+
+    env_controls = dict(x for x in (
+        _env_control("f6a_refuses_the_d750_acc3v3_ilim",
+                     lambda v: v.__setitem__("R97", "1.5k 1%")),
+        _env_control("f6b_refuses_the_d750_acc5v_ilim",
+                     lambda v: v.__setitem__("R101", "1.65k 1%")),
+        _env_control("f6c_refuses_a_1k_ilim_on_either_rail",
+                     lambda v: v.__setitem__("R101", "1k")),
+        _env_control("f6d_refuses_an_unreadable_ilim_value",
+                     lambda v: v.__setitem__("R97", "DNP"))))
+
     nc = ledger["approved_demo_nc"]
     checks = {
         "F1_every_scope_part_fitted": dict(
@@ -414,6 +522,14 @@ def main():
                    "way of losing it back",
             controls_refused=bl_controls,
             **{k: v for k, v in bl.items() if k != "ok"}),
+        "F6_accessory_envelope_is_bounded_by_hardware": dict(
+            ok=env_ok and all(env_controls.values()),
+            method="TI SLVSFJ2B eq.1 over the two ILIM resistors the board "
+                   "actually carries, against the BQ25185 IBAT_OCP MINIMUM, "
+                   "the LTC4368 trip and F1 -- because the board has no "
+                   "accessory current measurement and a policy cannot bound "
+                   "what an external accessory draws (D-753)",
+            controls_refused=env_controls, **env),
         "F3_approved_nc_exactly_as_scoped": dict(
             ok=(set(nc["observed"]) == EXPECTED_NC
                 and not nc["missing"] and not nc["unexpected"]),

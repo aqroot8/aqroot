@@ -66,6 +66,70 @@
 > `verify_promotion` PASS and `protected_copper` showing exactly one protected
 > net moved.  `U14.7` is on the bus.  This board has **no open owner decision**.
 
+> # **D-753 CLOSED THE LAST OPEN PRE-ORDER ENGINEERING ITEM.**
+>
+> **Board authority `6f2fc8b6`.**  The accessory-load concurrency item that the
+> block below named as OPEN is closed — **by two resistors, not by prose**.
+> D-750 had answered the external review's item 9 with a POLICY (*"firmware must
+> not raise both accessory rails to their per-rail maxima together"*), and the
+> re-review answered that a policy is not an enforcement mechanism.  It is not:
+> **this board has no accessory current measurement.**  Firmware can choose
+> whether a rail is ON; it cannot know what an arbitrary accessory then draws.
+>
+> ***AND THE BOARD WAS WORSE THAN THE REVIEW SAID.***  At the 3.0 V cell corner
+> with the full 1.0 A internal `+3V3` load, **two states a user could reach with
+> conforming accessories already tripped the pack protection**: the 5 V rail
+> alone at its limiter (**2.930 A**) and both rails merely at the current each
+> one GUARANTEES (**2.737 A**), against a `BQ25185` `IBAT_OCP` **minimum of
+> 2.5625 A**.  Not a thermal failure — a reset — but nothing on the board
+> prevented it.
+>
+> **`R97` 1.5 kΩ → 2.7 kΩ and `R101` 1.65 kΩ → 2.7 kΩ.**  TI `SLVSFJ2B`
+> equation 1 gives 0.407 A typ, and the part's own widest published tolerance
+> ratio brackets each rail at **0.277 A guaranteed / 0.537 A worst case**.  The
+> same four states become **1.879 / 2.229 / 2.079 / 2.886 A**: nothing a user
+> can reach exceeds the minimum trip (worst is 13 % under it), and only a
+> *simultaneous double limiter fault* reaches 2.886 A, which trips the charger's
+> own OCP and auto-retries — below the `LTC4368`'s 3.33 A and far below `F1`.
+> ***The rails got MORE usable, not less***: 0.277 A guaranteed each against the
+> 0.15 A at 5 V / 0.23 A at 3.3 V the superseded policy permitted at this
+> corner.  **No copper moved** (`objects_added 0, removed 0`), section 5's
+> required widths FELL, and the BOM did not grow — both resistors fold into one
+> new JLCPCB **BASIC** line (LCSC `C13167`) while `R101`'s superseded
+> `ERJ-PA3F1651V` was an EXTENDED part with 2 763 in stock.
+>
+> **`F6` COMPUTES IT RATHER THAN TRANSCRIBING IT.**  The clause reads the two
+> resistors off the board, applies TI equation 1 and the published tolerance
+> ratios, and refuses any board where a reachable state trips the pack or the
+> double fault escapes the protection chain — with four live controls, two of
+> which put the D-750 values back.
+>
+> **AND THE `.kicad_dru` COMMENT TABLE IS MACHINE-READ.**  Section 5 is parsed by
+> `published_rail_currents()`, and `trunk_floor_price()` and `PP2` charge against
+> the result.  The first draft of this decision wrote its narrative under the
+> `ACC_5V` row and mentioned *"`F1`'s 5 A"*; that class's published bar silently
+> became **5 A** and `trunk_floor_contract` **TF4 failed**.  The narrative now
+> lives in a new **section 5d** at column 2, and the table is numeric only.
+>
+> **RESIDUAL, NAMED:** `BAT_MAIN` copper is sized for 1.5 A sustained and the new
+> worst *sustained* case is **1.69 A at 3.7 V / 2.08 A at the 3.0 V corner**, on
+> one unavoidable 5.525 mm × 0.200 mm segment — `U11`'s `DLH0010A` pin-2 `BAT`
+> land, which nothing wider can land on.  Plane-coupled ceiling ≈ 37 K over the
+> adjacent `In4` plane at 2.08 A (≈ 19 K at 1.5 A), from a model that ignores
+> lateral spreading, conduction and convection.  **FIRST-ARTICLE THERMAL
+> MEASUREMENT, not a pre-order blocker** — and every number fell from what D-750
+> shipped.
+>
+> **Verification on `6f2fc8b6`:** promotion **16/16** with zero objects added or
+> removed; **174** retained nets, 173 connected, **0 unapproved opens**; DRC 199
+> `lib_footprint_issues`, all WARNING, zero of every other class; parity 0
+> errors; protected copper **IDENTICAL**; `audit_rail_ampacity` **all_ok** with
+> `SYS_TO_ACC5V_BOOST` re-based on the ENFORCED limit (1.21 → 0.925 A, worst
+> rise 58.6 → 31.8 K, plane-coupled 1.16 → 0.68 K); **FAB1–FAB12 PASS** with
+> seven controls refused and sourcing 252/252; **17 of 17** contracts;
+> firmware **H1–H6** with 11 controls refused and all four PlatformIO builds;
+> `hardware/beta-v2` untouched.
+
 > # **THE D-751 DECLARATION WAS HELD, AND D-752 CLOSED WHAT HELD IT.**
 >
 > **Board authority `7f133e64`.**  An independent CTO re-review read the D-751

@@ -29133,7 +29133,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "1.5k 1%"
+		(property "Value" "2.7k 1%"
 			(at 422.37 258.52 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -29179,7 +29179,7 @@
 				)
 			)
 		)
-		(property "MPN" "0603WAF1501T5E"
+		(property "MPN" "0603WAF2701T5E"
 			(at 422.37 255.52 0)
 			(hide yes)
 			(show_name no)
@@ -29190,7 +29190,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C22843"
+		(property "LCSC" "C13167"
 			(at 422.37 255.52 0)
 			(hide yes)
 			(show_name no)
@@ -29201,7 +29201,7 @@
 				)
 			)
 		)
-		(property "Note_Sourcing" "SOURCING D-615 LIVE_RECORD. JLCPCB record read 2026-09-05T00:59:59Z: base library, stock 3722075, land 0603, Operating Temperature -55℃~+155℃; Power(Watts) 100mW; Resistance 1.5kΩ; Temperature Coefficient ±100ppm/℃; Tolerance ±1%; Type Thick Film Resistor; Voltage-Supply(Max) 75V. Gates: land working voltage vs the highest node; 2x the strict over-bound."
+		(property "Note_Sourcing" "SOURCING D-753 2026-09-18, verified live per D-096 through the JLCPCB parts API: LCSC C13167, UNI-ROYAL(Uniroyal Elec) 0603WAF2701T5E, 2.7 kOhm +/-1 %, 0603, 100 mW, +/-100 ppm/C, -55..+155 C, componentLibraryType = BASE (no extended-part fee), stock 1406950.  Same 0603WAF series as most of this board's 1 %% resistors.  R101's superseded ERJ-PA3F1651V was an EXTENDED part with 2763 in stock, so this also removes a sourcing risk."
 			(at 422.37 255.52 0)
 			(hide yes)
 			(show_name no)
@@ -29224,7 +29224,7 @@
 				(justify left)
 			)
 		)
-		(property "Note" "ILIM = 1.18 x R[kOhm]^-1.072 = 0.76 A typ (0.57-0.96 A)"
+		(property "Note" "D-753 THE ACCESSORY CONCURRENCY LIMIT BECOMES HARDWARE.  WAS 1.5 kOhm = 0.76 A typ, up to 1.01 A at the same tolerance.  TI SLVSFJ2B equation 1: ILIM = 1.18 x R[kOhm]^-1.072, so 2.7 kOhm sets 0.407 A typ; applying the WIDEST published tolerance ratio in the part's own EC table (min 0.68x / max 1.32x of typ over -40..+125 C, read off the 19.2 kOhm row) gives a guaranteed 0.277 A and a worst-case 0.537 A.  WHY IT MOVED: DEVICE_SPEC 6.3a answered the external first-spin review's combined-load item with a POLICY -- 'firmware must not raise both accessory rails to their per-rail maxima together' -- and a policy is not an enforcement mechanism.  THIS BOARD HAS NO ACCESSORY CURRENT MEASUREMENT: firmware can choose whether a rail is ON, and cannot know what an arbitrary external accessory then draws.  At the old values the hardware permitted far more than the policy did.  Modelled at the 3.0 V cell corner with the full 1.0 A internal +3V3 load, U12 at 90 % and U21 at 88 % into 4.95 V: the 5 V rail ALONE at its limiter drew 2.93 A and both rails at their GUARANTEED currents drew 2.74 A, against a BQ25185 IBAT_OCP MINIMUM of 2.5625 A (3.125 A typ, +/-18 %) -- so loads the Community Port invites could trip the pack protection and reset the device.  At 2.7 kOhm on both rails: 3V3 alone 1.88 A (+27 % margin), 5V alone 2.23 A (+13 %), BOTH at their guaranteed currents 2.08 A (+19 %).  Only a SIMULTANEOUS DOUBLE LIMITER FAULT reaches 2.89 A, which trips the BQ25185 OCP and auto-retries -- below the LTC4368's 3.33 A (50 mV / R75 15 mOhm) and far below F1's 5 A. THE ENVELOPE IS NOW BOUNDED BY SILICON AND NOT BY A DOCUMENT.  The rail still guarantees 0.277 A, which is MORE than the superseded policy permitted at this corner (0.15 A at 5 V / 0.23 A at 3.3 V).  Pinned by checks/demo_feature_contract.py F6."
 			(at 422.37 252.52 0)
 			(hide yes)
 			(show_name no)
@@ -33237,7 +33237,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "1.65k 1%"
+		(property "Value" "2.7k 1%"
 			(at 510.0 344.88 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -33272,7 +33272,7 @@
 				(justify left)
 			)
 		)
-		(property "Manufacturer" "PANASONIC"
+		(property "Manufacturer" "UNI-ROYAL(Uniroyal Elec)"
 			(at 510.0 341.88 0)
 			(hide yes)
 			(show_name no)
@@ -33283,7 +33283,7 @@
 				)
 			)
 		)
-		(property "MPN" "ERJ-PA3F1651V"
+		(property "MPN" "0603WAF2701T5E"
 			(at 510.0 341.88 0)
 			(hide yes)
 			(show_name no)
@@ -33294,7 +33294,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C4088673"
+		(property "LCSC" "C13167"
 			(at 510.0 341.88 0)
 			(hide yes)
 			(show_name no)
@@ -33305,7 +33305,7 @@
 				)
 			)
 		)
-		(property "Note_Sourcing" "SOURCING D-615 LIVE_RECORD. JLCPCB record read 2026-09-05T00:59:59Z: expand library, stock 2763, land 0603, Operating Temperature -55℃~+155℃; Power(Watts) 250mW; Resistance 1.65kΩ; Temperature Coefficient ±100ppm/℃; Tolerance ±1%; Type Thick Film Resistor. Gates: land working voltage vs the highest node; 2x the strict over-bound."
+		(property "Note_Sourcing" "SOURCING D-753 2026-09-18, verified live per D-096 through the JLCPCB parts API: LCSC C13167, UNI-ROYAL(Uniroyal Elec) 0603WAF2701T5E, 2.7 kOhm +/-1 %, 0603, 100 mW, +/-100 ppm/C, -55..+155 C, componentLibraryType = BASE (no extended-part fee), stock 1406950.  Same 0603WAF series as most of this board's 1 %% resistors.  R101's superseded ERJ-PA3F1651V was an EXTENDED part with 2763 in stock, so this also removes a sourcing risk."
 			(at 510.0 341.88 0)
 			(hide yes)
 			(show_name no)
@@ -33328,7 +33328,7 @@
 				(justify left)
 			)
 		)
-		(property "Note" "ILIM = 0.69 A typ (0.52-0.86 A)"
+		(property "Note" "D-753 THE ACCESSORY CONCURRENCY LIMIT BECOMES HARDWARE.  WAS 1.65 kOhm = 0.69 A typ, up to 0.91 A at the same tolerance.  TI SLVSFJ2B equation 1: ILIM = 1.18 x R[kOhm]^-1.072, so 2.7 kOhm sets 0.407 A typ; applying the WIDEST published tolerance ratio in the part's own EC table (min 0.68x / max 1.32x of typ over -40..+125 C, read off the 19.2 kOhm row) gives a guaranteed 0.277 A and a worst-case 0.537 A.  WHY IT MOVED: DEVICE_SPEC 6.3a answered the external first-spin review's combined-load item with a POLICY -- 'firmware must not raise both accessory rails to their per-rail maxima together' -- and a policy is not an enforcement mechanism.  THIS BOARD HAS NO ACCESSORY CURRENT MEASUREMENT: firmware can choose whether a rail is ON, and cannot know what an arbitrary external accessory then draws.  At the old values the hardware permitted far more than the policy did.  Modelled at the 3.0 V cell corner with the full 1.0 A internal +3V3 load, U12 at 90 % and U21 at 88 % into 4.95 V: the 5 V rail ALONE at its limiter drew 2.93 A and both rails at their GUARANTEED currents drew 2.74 A, against a BQ25185 IBAT_OCP MINIMUM of 2.5625 A (3.125 A typ, +/-18 %) -- so loads the Community Port invites could trip the pack protection and reset the device.  At 2.7 kOhm on both rails: 3V3 alone 1.88 A (+27 % margin), 5V alone 2.23 A (+13 %), BOTH at their guaranteed currents 2.08 A (+19 %).  Only a SIMULTANEOUS DOUBLE LIMITER FAULT reaches 2.89 A, which trips the BQ25185 OCP and auto-retries -- below the LTC4368's 3.33 A (50 mV / R75 15 mOhm) and far below F1's 5 A. THE ENVELOPE IS NOW BOUNDED BY SILICON AND NOT BY A DOCUMENT.  The rail still guarantees 0.277 A, which is MORE than the superseded policy permitted at this corner (0.15 A at 5 V / 0.23 A at 3.3 V).  Pinned by checks/demo_feature_contract.py F6."
 			(at 510.0 338.88 0)
 			(hide yes)
 			(show_name no)

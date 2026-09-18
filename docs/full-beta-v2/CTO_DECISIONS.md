@@ -1,3 +1,133 @@
+## D-753 — **A POLICY IS NOT AN ENFORCEMENT MECHANISM: THE ACCESSORY ENVELOPE IS SILICON NOW**
+
+    authority  7f133e64 -> 6f2fc8b6   R97 1.5k -> 2.7k, R101 1.65k -> 2.7k
+    board      174 retained nets, 173 connected, 1 owner-approved open (U11.3),
+               0 unapproved; no copper added or removed (objects_added 0, removed 0)
+    changed    01_power_tree.kicad_sch, aqroot-Beta-v2.kicad_pcb (two Value fields),
+               aqroot-Beta-v2.kicad_dru (section 5 table + new section 5d),
+               audit_rail_ampacity.py, checks/demo_feature_contract.py (F6),
+               DEVICE_SPEC.md 6.3a, Firmware/src/hw/aqroot_demo_board.{h,json},
+               hardware/demo/fab/* regenerated
+    evidence   d753-{verify-promotion,routing-ledger,protected-copper,rail-ampacity,
+               fab-package-contract,contract-regression}.json and a d753-* baseline set
+
+### 1. THE REVIEW WAS RIGHT, AND THE BOARD WAS WORSE THAN IT SAID
+
+D-750 closed the external first-spin review's item 9 — combined-load
+concurrency — as a **published limit**: *"Total accessory draw is bounded by
+`BAT_MAIN` 1.5 A sustained … Firmware owns both enables through `U3` and must
+not raise both accessory rails to their per-rail maxima together."*  The
+independent re-review answered that this is not an enforcement mechanism, and
+it is not: **this board has no accessory current measurement**.  Firmware can
+choose whether a rail is ON; it cannot know what an arbitrary external accessory
+then draws.  The only thing that bounds an accessory is the `TPS22950C`'s own
+current limit — and at the values D-750 shipped those limits sat far ABOVE what
+the policy permitted.
+
+**QUANTIFIED, AT THE 3.0 V CELL CORNER**, with the full 1.0 A internal `+3V3`
+budget, `U12` at 90 % and `U21` at 88 % into 4.95 V, against a `BQ25185`
+`IBAT_OCP` **MINIMUM of 2.5625 A** (3.125 A typ ± 18 %, `SLUSF65B`):
+
+| state the Community Port can reach | WAS (1.5 k / 1.65 k) | NOW (2.7 k / 2.7 k) |
+|---|---|---|
+| 3.3 V rail alone at its limiter | 2.455 A | **1.879 A** (+27 %) |
+| 5 V rail alone at its limiter | **2.930 A — TRIPS** | **2.229 A** (+13 %) |
+| both rails at their GUARANTEED currents | **2.737 A — TRIPS** | **2.079 A** (+19 %) |
+| both limiters in fault | 4.162 A — past the LTC4368 | 2.886 A — charger OCP, auto-retry |
+
+***TWO STATES A USER COULD REACH WITH CONFORMING ACCESSORIES ALREADY TRIPPED THE
+PACK PROTECTION*** — the 5 V rail alone at its limiter, and both rails merely at
+the current each one GUARANTEES.  Not a thermal or copper failure; a reset.  But
+"plug in two accessories and the device turns off" is a defect, and nothing on
+the board prevented it.
+
+### 2. THE FIX IS TWO RESISTORS, AND IT COSTS NO CAPABILITY
+
+TI `SLVSFJ2B` equation 1: `ILIM = 1.18 × (R[kΩ])^−1.072`.  At **2.7 kΩ** that is
+**0.407 A typ**, and the widest tolerance ratio the part's own EC table
+publishes — 0.68× / 1.32× of typ over −40…+125 °C, read off its 19.2 kΩ row —
+brackets each rail at **0.277 A guaranteed / 0.537 A worst case**.  The
+ILIM range is certified from 66 mA to 2.46 A, so 2.7 kΩ is well inside it.
+
+  * **No state a user can reach exceeds the minimum trip.**  The worst is
+    2.229 A, **13 % under it**.
+  * **The double fault stays inside the protection chain.**  Two accessories
+    each in overcurrent at once reaches 2.886 A, which trips the charger's own
+    `IBAT_OCP` and **auto-retries** (the `C` variant is auto-retry, not latch),
+    below the `LTC4368`'s 3.33 A — 50 mV across `R75` 15 mΩ — and far below
+    `F1`'s 5 A one-shot.
+  * **THE RAILS GOT MORE USABLE, NOT LESS.**  Each now GUARANTEES 0.277 A.  The
+    superseded policy permitted **0.15 A at 5 V / 0.23 A at 3.3 V** at this same
+    corner.  A limit the silicon holds is worth more than a larger one a
+    document asks for.
+  * **The BOM did not grow.**  `R97` and `R101` fold into ONE new line — LCSC
+    `C13167`, UNI-ROYAL `0603WAF2701T5E`, 2.7 kΩ ±1 %, JLCPCB **BASIC**, stock
+    1 406 950, verified live per D-096 — and `R101`'s superseded
+    `ERJ-PA3F1651V` was an **EXTENDED** part with 2 763 in stock, so this
+    removes a sourcing risk as well.  123 assembly lines before and after.
+  * **No copper moved.**  `verify_promotion` reports `objects_added 0`,
+    `objects_removed 0`; section 5's required widths FELL (0.128 mm outer /
+    0.763 mm inner at the new worst case, against 0.185 / 1.100 before), so
+    every width rule in the `.kicad_dru` remains valid and none was relaxed.
+
+### 3. F6, AND WHY IT COMPUTES INSTEAD OF TRANSCRIBING
+
+`demo_feature_contract.py` **F6** reads `R97` and `R101` off the board, applies
+TI equation 1 and the published tolerance ratios, and recomputes all four modes
+against `IBAT_OCP` min, the `LTC4368` trip and `F1`.  It refuses the board if any
+reachable state trips the pack, or if the double fault escapes the protection
+chain.  Four live controls, all refused:
+
+    f6a  R97 back to 1.5 k  (the D-750 value)      REFUSED
+    f6b  R101 back to 1.65 k (the D-750 value)     REFUSED
+    f6c  a 1 k ILIM on either rail                 REFUSED
+    f6d  an unreadable ILIM value                  REFUSED
+
+### 4. THE `.kicad_dru` COMMENT TABLE IS MACHINE-READ, AND THIS EDIT PROVED IT
+
+Section 5's table is not documentation: `published_rail_currents()` parses it,
+and `trunk_floor_price()` and `PP2` charge against the result.  A class row is
+`#` + three spaces + an UPPERCASE name; its continuation lines are `#` + five
+spaces; **every `<n> A` in a class's own rows is collected and the LARGEST
+becomes that class's design current**.  The first draft of this decision wrote
+its narrative under the `ACC_5V` row and mentioned *"`F1`'s 5 A"* — `ACC_5V`'s
+published bar silently became **5 A**, no trunk could meet it, and
+`trunk_floor_contract` **TF4 failed** with `TRUNK_UNDER_PRICED`.  The narrative
+now lives in a new **section 5d** whose body sits at column 2, which matches
+neither the class-row pattern nor the continuation test, and the table carries
+two numeric rows per class and nothing else.
+
+### 5. THE RESIDUAL, NAMED
+
+`BAT_MAIN` copper is sized for **1.5 A sustained**.  The new worst *sustained*
+case — both accessories at their guaranteed current with the full internal load
+— is **1.69 A at 3.7 V** and **2.08 A at the 3.0 V cutoff corner**, so it still
+exceeds that sizing point at the low-battery end, on one unavoidable
+**5.525 mm × 0.200 mm** segment: `U11`'s `DLH0010A` pin-2 `BAT` land, which
+nothing wider can land on (D-269, D-708).  The plane-coupled model this
+repository uses puts that segment's ceiling near **37 K** over the adjacent
+`In4` plane at 2.08 A (≈ 19 K at 1.5 A), and the model ignores lateral
+spreading, conduction along the copper and convection from an OUTER layer, so it
+is a ceiling and not a prediction.  **FIRST-ARTICLE THERMAL MEASUREMENT, not a
+pre-order blocker**: the electrical envelope is closed by hardware, and every
+number in the table above FELL from what D-750 shipped.
+
+### 6. VERIFICATION ON `6f2fc8b6`
+
+    promotion        16 of 16 clauses PASS; 0 objects added, 0 removed
+    connectivity     174 retained nets, 173 connected, 0 unapproved opens
+    KiCad DRC        199 lib_footprint_issues, ALL WARNING, zero of every other
+                     class; parity 0 errors
+    protected copper 15 nets / 406 objects IDENTICAL, differences {}
+    ampacity         all_ok; SYS_TO_ACC5V_BOOST re-based on the ENFORCED limit,
+                     1.21 -> 0.925 A, worst rise 58.6 -> 31.8 K, plane-coupled
+                     1.16 -> 0.68 K, IR drop 222 -> 170 mV
+    FAB1..FAB12      ALL PASS, 7 controls refused, sourcing 252/252
+    contracts        17 run, 17 pass
+    firmware         H1-H6 PASS, 11 controls refused; 4 PlatformIO builds
+    hardware/beta-v2 UNTOUCHED
+
+
 ## D-752 — **THE BACKLIGHT DISCONNECT COULD NOT SHARE THE PWM PIN, AND THE DATASHEET SAID SO ALL ALONG**
 
     authority  bdf1376c -> 7f133e64   D14/R132/C85 fitted; Q11's gate leaves /DISP_BL_CTL

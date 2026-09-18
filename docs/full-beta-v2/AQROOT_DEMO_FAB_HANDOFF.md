@@ -359,6 +359,25 @@ can only be confirmed by eye. `MK1` and `U5` share one `/I2S_BCLK` and one
    **A revision that wants to PWM `Q11` independently must re-rate it to at
    least 40 V `VDS` first.**
 
+11. **THE ACCESSORY ENVELOPE IS NOW BOUNDED BY SILICON, AND ONE THERMAL
+   RESIDUAL IS NAMED** (D-753). Both `TPS22950C` `ILIM` resistors are **2.7 kΩ**
+   (`R97` was 1.5 kΩ, `R101` 1.65 kΩ), so each accessory rail guarantees
+   **0.277 A** and cannot pass more than **0.537 A** over −40…+125 °C. At the
+   3.0 V cell corner with the full 1.0 A internal `+3V3` load, no state a user
+   can reach exceeds the `BQ25185` `IBAT_OCP` **minimum of 2.5625 A** — the
+   worst is 2.229 A, 13 % under — and a *simultaneous double limiter fault*
+   reaches 2.886 A, which trips the charger's own OCP and **auto-retries**,
+   below the `LTC4368`'s 3.33 A and far below `F1`. `demo_feature_contract.py`
+   **F6** recomputes this from the two resistors with four live controls.
+   **THE RESIDUAL:** `BAT_MAIN` copper is sized for 1.5 A sustained, and the new
+   worst *sustained* case — both accessories at their guaranteed current with
+   the full internal load — is 1.69 A at 3.7 V and 2.08 A at the 3.0 V corner,
+   on one unavoidable 5.525 mm × 0.200 mm segment (`U11`'s `DLH0010A` pin-2
+   `BAT` land). The plane-coupled ceiling is ≈ 37 K over the adjacent `In4`
+   plane at 2.08 A, from a model that ignores lateral spreading, conduction and
+   convection. **Measure that segment at first article with both accessory rails
+   loaded and the cell at 3.3 V.**
+
 ## 9. Recommended post-Kickstarter improvements
 
 1. **Charger input as a star, not a daisy chain** — a direct `R35` → `U11.10`
