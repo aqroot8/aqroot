@@ -49,7 +49,7 @@
 | Charge current / input limit | not previously fixed anywhere | **`ICHG` 769 mA (`R37` 390 Ω), input limit 1100 mA (`R36` 13 kΩ), `VBATREG` 4.2 V** | D-743 |
 | Charging source | not previously stated | **charge from a 1 A or better USB source.**  A 500 mA-class port charges more slowly and will not complete a cycle inside the charger's 360 min safety timer | D-743 |
 | Speaker `LS1` | on the BOM | **OFF-BOARD**, 152 mm flying leads (`aqroot-Demo-OFF-BOARD.csv`) | fab package |
-| Battery capacity | 2500–3000 mAh envelope, SKU deferred | **still deferred, but fit toward the 2500 mAh end** — see §6.1 | D-743 |
+| Battery capacity | 2500–3000 mAh envelope | **2500 mAh first-five pack SELECTED: Adafruit Product 328**, protected 1S LiPo with genuine JST-PH. Supplier-linked 785060 specification permits ≤2C discharge (5 A for 2500 mAh); CTO-BAT-01 contract requires ≥2.675 A against the live D-753 2.229 A board envelope plus 20 % margin | CTO-BAT-01 |
 
 > Everything else in the Demo — ESP32-S3, 16 MB flash / 8 MB PSRAM, the 3.5-inch
 > touchscreen, D-pad and A/B, power switch, recessed BOOT, RGB indicator, Wi-Fi,
@@ -259,7 +259,7 @@ sockets); the only on-board RF network is the 13.56 MHz NFC differential front e
 | Cell | 1S Li-ion / LiPo pouch | LOCKED (chemistry) · INTERNAL | `01_power_tree.kicad_sch`; OFF_BOARD_BOM.md |
 | Battery connector | `J4` **JST-PH-2** (B2B-PH-K-S(LF)(SN)) | FITTED · INTERNAL | `01_power_tree.kicad_sch:J4` |
 | Envelope | ≈ **2500–3000 mAh** target; cell envelope 57 × 75 × 8.0 mm MAX (D-243) | TARGET · CAD-TO-VERIFY | CTO_DECISIONS D-071/D-243; OFF_BOARD_BOM.md |
-| **Exact fitted capacity** | **UNRESOLVED** — SKU deferred to procurement (M-04).  **D-743 adds an engineering preference: fit toward the 2500 mAh end.**  The charger's 360 min `tMAXCHG` safety timer gives ≈34 % margin at 2500 mAh and ≈21 % at 3000 mAh, and the 3000 mAh worst case at 40 °C ambient is the least-margin corner | TBD | **Do NOT claim a single mAh publicly.** Candidates named but not baselined (PKCELL LP785060 / LP755070) |
+| **Exact fitted capacity** | **2500 mAh — Adafruit Product 328 selected for the first five (CTO-BAT-01).** Current supplier page specifies a protected pack with genuine JST-PH; its linked `785060` pack specification is pinned in-repo at SHA-256 `826149da…ecd3`, max pack 7.9 × 50.5 × 60.5 mm, max charge 1C and operating discharge current ≤2C. The supplier's conservative charge recommendation is 1.2 A, above this board's 0.855 A worst programmed envelope. Incoming polarity must be meter-verified before J4 connection. | **SELECTED · ENGINEERING-ONLY** | `assembly/SELECTED_BATTERY.json`; `checks/battery_pack_contract.py` |
 | Charger | `U11` **BQ25185DLHR** (1S Li-ion linear charger) | FITTED · INTERNAL | `01_power_tree.kicad_sch:U11` |
 | Charge current (ICHG) | **769 mA** — `R37` 390 Ω on ISET, `ICHG = KISET / RISET` with `KISET` 300 AΩ (SLUSF65B §6.1.1.4).  Input limit **1100 mA** and `VBATREG` **4.2 V** from `R36` 13 kΩ (Table 6-1).  Full cycle ≈ 240–290 min against the part's **360 min** `tMAXCHG` safety timer | **RESOLVED at D-743** · ENGINEERING-ONLY | `01_power_tree.kicad_sch:R36,R37`; CTO_DECISIONS D-743; `evidence/d743-rail-ampacity.json` |
 | Charge source requirement | **1 A or better.**  The USB-C port is a plain 5.1 kΩ Rd sink and does not read the source's Rp advertisement; a 500 mA-class port is folded back by the charger's VINDPM and will not complete a cycle inside `tMAXCHG` | MARKETING-SAFE (state it as "charge from a 1 A USB adapter") | D-743 |
@@ -556,7 +556,7 @@ Qwiic/STEMMA QT I²C accessory port; RGB status indicator.
 
 ## 16. Known UNRESOLVED items (verify or omit before any public claim)
 
-1. **Battery fitted capacity (mAh)** — envelope 2500–3000 mAh only; SKU deferred (M-04).
+1. ~~**Battery fitted capacity (mAh)** — envelope 2500–3000 mAh only; SKU deferred (M-04).~~ **CLOSED at CTO-BAT-01:** first-five pack is Adafruit Product 328, 2500 mAh, protected, genuine JST-PH; exact supplier-linked battery specification and electrical/load-margin contract are pinned in `assembly/SELECTED_BATTERY.json`.
 2. ~~**Charge current (ICHG)** — programmed value not fixed.~~  **CLOSED at D-743:** 769 mA from `R37` 390 Ω, input limit 1100 mA and `VBATREG` 4.2 V from `R36` 13 kΩ.  The old 1 kΩ / 18 kΩ pair programmed 300 mA against a 360 min safety timer and could not complete a charge.
 3. **microSD max card capacity** — not stated.
 4. **Touch controller silicon** — FT6236 vs CST026 (interface locked; PO must specify).
