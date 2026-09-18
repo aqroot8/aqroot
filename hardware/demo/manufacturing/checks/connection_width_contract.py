@@ -30,7 +30,7 @@ merely because their pads overlap.  If the component count rises when that
 assumption is dropped, the contact is carrying the net.
 
     C1  every `connection_width` finding at the probe width is classified,
-        and the DISTINCT object pairs below the strict floor are enumerated
+        and stable electrical signatures below the strict floor are enumerated
     C2  no net's connectivity depends on a contact below the strict floor
     C3  the graph is not vacuous: it must reproduce the board's own
         connectivity on a net known to be whole AND stay split on the net
@@ -118,9 +118,21 @@ def classify(report, strict_mm):
     # alone and reported a spurious DIFFERS on `below[2].at[0][0]`, 59.7 versus
     # 71.8, between two identical 0.0790 mm rows.  A non-deterministic artifact
     # cannot be a baseline.
-    below = sorted((e for e in pairs.values() if e["width_mm"] < strict_mm),
-                   key=lambda e: (e["width_mm"], e["layers"], e["nets"],
-                                  e["kinds"], e["at"]))
+    below_pairs = [e for e in pairs.values() if e["width_mm"] < strict_mm]
+    # D-761 CTO hardening: KiCad can choose a different adjacent Track/Track
+    # pair to represent the SAME acute connection-width throat between runs.
+    # The pair UUID/coordinates are therefore diagnostic, not release-stable
+    # evidence.  On this board every below-floor finding is uniquely identified
+    # by the electrical signature below; emit that stable signature instead of
+    # pretending KiCad's representative pair is deterministic.
+    signatures = {}
+    for e in below_pairs:
+        key = (e["width_mm"], tuple(e["layers"]), tuple(e["nets"]), tuple(e["kinds"]))
+        signatures[key] = dict(width_mm=e["width_mm"], layers=e["layers"],
+                               nets=e["nets"], kinds=e["kinds"])
+    if len(signatures) != len(below_pairs):
+        raise RuntimeError("below-floor connection signatures are not unique; add a deterministic discriminator")
+    below = [signatures[k] for k in sorted(signatures)]
     return rows, list(pairs.values()), below
 
 
