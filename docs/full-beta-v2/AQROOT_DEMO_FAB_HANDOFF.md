@@ -54,6 +54,10 @@ track and footprint counts move with them.)*
 | approved Demo NC | `J5.9`–`J5.12`, `J5.15`–`J5.18` — expected == observed |
 | approved unrouted | `U11.3` only, under the 2026-09-17 owner decision |
 | open owner decisions | **none** |
+| board authority `sha256` | **`1a06b058…`** (D-759) |
+| standing contracts | **18 run, 18 pass** |
+| mechanical keep-out contract | **MK1–MK9 pass, 7 live controls** |
+| open CAD items | **2** — rear component profile, §5b |
 
 The single unrouted contact is `/BQ25185_STAT2` at `U11.3`. The owner approved
 shipping it bare on 2026-09-17; `routing_ledger.py` re-proves that declaration
@@ -62,6 +66,43 @@ still carry `/BQ25185_STAT2`, it must still be stranded, and `R128` and `TP7`
 must still be fitted — and **fails if any of those stops being true**.
 
 ## 2. Major design changes in this cycle
+
+**BOARD AUTHORITY `1a06b058` (D-759).**  The `D-757`…`D-761` cycle laid **no new
+routed copper at all** — it moved one solder-mask state, one mounting hole, and a
+great many claims that nothing had ever checked.
+
+**THE `D-757` … `D-761` CYCLE, IN ONE PARAGRAPH EACH:**
+
+* **`D-757`** — the **NFC first-article tuning terminals were printed over**.
+  `D-755` measured a 0.325 mm pad-to-via bridge on both match arms and concluded
+  *"no mask removal"*; it never asked whether the two `GND` via caps were
+  EXPOSED, and this board's setup tents every via on both masks.  POFV
+  copper-capping happens BEFORE solder mask and does not help a tented via.  Both
+  terminals are now B.Mask exposed / F.Mask tented, the released bottom-mask
+  Gerber opens a 0.600 mm window at each, and **`FAB13`** holds it with four live
+  controls.  See §8b.
+* **`D-758`** — **WRONG, AND REVERTED IN FULL BY `D-759`.**  It read
+  `FBV2_P1_KEEPOUTS.md` §1 as the current register when that file's own header
+  says every section-1 X gains **+1.000 mm**, and moved both boss keep-outs and
+  `BOSS2` onto the superseded datum.  What survives from it is the
+  `--rule-area-recentred` declaration in `verify_promotion` and the probe of the
+  five DRC rules this board sets to `ignore` — which is the thread that found the
+  real defect.
+* **`D-759`** — **`BOSS1`'s HOLE was the one object on this board that never took
+  the `FBV2-EXP-002` re-base.**  It sat 1.000 mm west of its own keep-out, so four
+  pours stood **0.2505 mm from the edge of a 2.200 mm NPTH**; it now stands
+  **1.1505 mm**.  One footprint moved; `verify_promotion` reads 16/16 with **zero
+  objects added and zero removed**.  `mechanical_keepout_contract` is the
+  eighteenth standing contract and the first that looks at the enclosure; it
+  refuses both the board that came before it and `D-758`'s mistake.  See §5a.
+* **`D-760`** — **three height rules that had never been compared with a part**,
+  two of them not met; the off-board cell dimension wrong by 3 mm; `RIB_R2`
+  retired because `D-719` re-floorplanned a converter into it; and a contract
+  caught emitting a non-deterministic field.  See §5b.
+* **`D-761`** — a board-to-cavity clearance stale by two revisions (**1.500 mm,
+  not 2.500 mm — the rule met exactly**), a milestone coordinate snapshot that
+  read like a live source, and the **≥ 15 mm IR TX↔RX rule met by 0.133 mm** with
+  nothing watching it.  `MK9` watches it now.
 
 **THREE PARTS WERE FITTED AND THE COPPER MOVED** (D-750 and D-751); the
 D-742…D-745 entries below are retained as the history of the previous cycle.
