@@ -173,8 +173,18 @@ three ways, and `FAB5` mutates one row of the real `pos-fitted` file four ways
 `protected_copper` **IDENTICAL to the `d746` baseline** — the fifteen protected
 nets and their 406 objects did not move through any of this.
 
+**THE VIA-IN-PAD COUNT MOVED 135 → 136 AND THE ONE THAT MOVED IT IS NAMED.**
+`Q11.3`'s tap put a 0.600/0.300 barrel at `(10.950, 112.800)`, half inside the
+drain land — it could not go north, where `SW3.1`'s F.Cu pad blocks a through
+hole. It is an ordinary member of the declared population and is measured as
+one: **same net**, 0.300 mm drill (one of the four already in use), and
+**4.08 % of the land open** against a mean of 6.89 % and a maximum of 38.16 %.
+It is filled, capped and plated by the same process the other 129 barrels
+already require, and it is in the `MANIFEST` and the fab notes like every other.
+The mask-dam population is **unchanged at 21**.
+
 The package declares, in generated notes with `MANIFEST` rows: **via-in-pad in
-135 solderable lands** (resin-filled, capped, plated), **38 vias below the
+136 solderable lands** (resin-filled, capped, plated), **38 vias below the
 board's own annular floor** on named net- and area-scoped licences, and **21
 solder-mask dams below 0.125 mm**, of which four `U9` corners are 0.0621 mm
 between different nets.
@@ -283,8 +293,8 @@ can only be confirmed by eye. `MK1` and `U5` share one `/I2S_BCLK` and one
    directly observed fault but recoverable versus non-recoverable is not
    distinguishable, and charging versus charge-complete is an **inference**.
 8. **Fabricator acceptance still to be obtained at order time** — the `J3` NPTH
-   concession, the `MK1` acoustic mask opening, the POFV process for 135 lands,
-   the 35 sub-floor via rings and the 21 sub-0.125 mm mask dams are all declared
+   concession, the `MK1` acoustic mask opening, the POFV process for 136 lands,
+   the 38 sub-floor via rings and the 21 sub-0.125 mm mask dams are all declared
    in the fab notes and must be confirmed in writing before the order is placed.
 8a. **THE DISPLAY PANEL'S TAIL ORIENTATION MUST BE MEASURED BEFORE ANY PANEL IS
    MATED** (first-spin review item 5). The `ER-TFT035IPS-6` mechanical drawing

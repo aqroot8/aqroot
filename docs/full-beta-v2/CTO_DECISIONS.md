@@ -159,6 +159,24 @@ controls** in `firmware_hw_map_contract.py`: the contract puts each one back
 and requires `T10` to catch it.  **Nine controls, nine caught, 81 claims over
 two host tests.**
 
+### 6a. THE VIA-IN-PAD COUNT MOVED, AND IT IS NAMED RATHER THAN LEFT TO A DIFF
+
+`Q11.3`'s tap put a 0.600/0.300 barrel at `(10.950, 112.800)`, **half inside the
+drain land**.  It could not go north: `SW3.1`'s F.Cu pad spans
+`(10.475 … 12.025, 110.830 … 112.130)` and a through hole cannot pass it.
+`FAB9` therefore reports **135 → 136** solderable lands with an open barrel, and
+the number is measured rather than merely counted: **same net**, 0.300 mm drill
+— one of the four sizes already in use — and **4.08 % of the land open**,
+against a population mean of 6.89 % and a maximum of 38.16 % (`C18.1`).  It is
+filled, capped and plated by the process the other 129 barrels already require,
+and the mask-dam population is **unchanged at 21**.  Moving it would cost either
+a via under `Q11`'s own body or a 2.5 mm detour east of `SW3`, and would buy
+nothing this measurement does not already establish.
+
+***THE HANDOFF'S OWN NUMBERS WERE STALE IN A SECOND PLACE.***  §8's fabricator
+list said "the 35 sub-floor via rings"; the board and the package have both said
+**38** since before this cycle.  Corrected.
+
 ### 7. RELEASE-GRADE VERIFICATION, WHOLE, ON `bdf1376c`
 
     connectivity     173 retained nets, 172 connected, 1 open
