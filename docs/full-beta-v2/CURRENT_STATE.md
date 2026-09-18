@@ -66,6 +66,42 @@
 > `verify_promotion` PASS and `protected_copper` showing exactly one protected
 > net moved.  `U14.7` is on the bus.  This board has **no open owner decision**.
 
+> # **D-754 CLOSED THE DISPLAY-ORIENTATION ITEM FROM THE VENDOR DRAWING, AND CORRECTED THE EXPANDER'S RESET VALUE.**
+>
+> **Board authority `6f2fc8b6`, unchanged — no copper, no symbol, no BOM line,
+> no fabrication output.**
+>
+> **THE `ER-TFT035IPS-6` DRAWING WAS REACHABLE AFTER ALL.**  The external
+> review's item 5 wanted ONE external fact — the tail's PHYSICAL pin-1 end —
+> and D-746 and D-751 both recorded the drawing as unobtainable.
+> `buydisplay.com` returns **HTTP 403 to every non-browser client**; the Wayback
+> Machine's 2025-01-09 snapshot serves the identical 24-page PDF
+> (`sha256 f8822bd3…a371`).  **Section 3.3 settles it in two mutually-confirming
+> views**: the module FRONT view shows the tail leaving the bottom edge with
+> `50` on the LEFT and `1` on the RIGHT; the REAR view on the same sheet, with
+> the component-area callout and the `FPC+PI` 0.3 mm stiffener dimension, labels
+> `1` LEFT and `50` RIGHT.  A single label would be ambiguous; a consistent
+> mirror pair is not.  **Pin 1 is the RIGHT-hand end viewed from the display
+> face, tail down** — and `J1` is on `F.Cu` with pin 1 at `x = 44.910`, the
+> right-hand end of its row in the board's own front view, reached by a bend
+> about a HORIZONTAL axis that preserves left/right.  ***PIN 1 MEETS PIN 1.***
+> The same sheet's backlight schematic — one common `LED-A`, **six diodes in
+> parallel**, cathodes grouped onto tail pins 2 and 3, 2.9–3.2 V at 120 mA —
+> puts D-079, the D-750 true-off calculation and the D-752 open-LED argument on
+> the manufacturer's own drawing instead of an inherited figure.
+>
+> **AND THE PCAL9535A OUTPUT PORTS RESET TO `FFh`, NOT `00h`.**  NXP Rev. 2
+> tables 7/8.  Three places said `00h`, and an independent CTO check had raised
+> it against D-750 on a side branch that D-751 superseded for a different
+> commit.  ***The correction makes the safe order matter MORE***: under the false
+> `00h` an active-high enable was safe by accident if direction went first;
+> under the real `FFh` it is DRIVEN HIGH, and all six of this board's safe-at-0
+> expander outputs are enables.  The mechanism was already right and already
+> controlled; the stated reason was not.  A new per-device claim now asserts that
+> at least one OUTPUT bit's safe latch DISAGREES with the `0xFF` power-on value,
+> so the rule is non-vacuous against the part's real default — **61 claims, 0
+> failures**, `H1`–`H6` PASS, all four PlatformIO environments build.
+
 > # **D-753 CLOSED THE LAST OPEN PRE-ORDER ENGINEERING ITEM.**
 >
 > **Board authority `6f2fc8b6`.**  The accessory-load concurrency item that the

@@ -80,13 +80,23 @@ class Pcal9535a {
 
   // SAFE BRING-UP ORDER -- this is the whole reason the class exists.
   //
-  // The part resets with CONFIG = FFh (all inputs) and the OUTPUT latches at
-  // 00h.  Half this board's expander outputs have a safe level of 0 and three
-  // (the RGB cathodes) have a safe level of 1, so clearing a direction bit
-  // before the latch holds the right value drives the wrong level for as long
-  // as it takes to issue the next transaction.  On ACC_5V_SW_EN or
-  // ACC_5V_BOOST_EN that is a live accessory rail; on AMP_SD_MODE it is a pop
-  // into the speaker; on NFC_5V_EN it is an enable into a DNP boost.
+  // The part resets with CONFIG = FFh (all inputs) and THE OUTPUT LATCHES AT
+  // FFh TOO.  NXP PCAL9535A Rev. 2 tables 7 and 8 give Output port 0 (02h) and
+  // Output port 1 (03h) a power-on default of 1111 1111.
+  //
+  // D-753 CORRECTED THIS COMMENT, WHICH SAID 00h, AND THE CORRECTION MAKES THE
+  // ORDERING MATTER MORE, NOT LESS.  Under the false 00h model an active-HIGH
+  // enable was safe by accident if the direction bit went first; under the real
+  // FFh it is DRIVEN HIGH.  Six of this board's expander outputs have a safe
+  // level of 0 -- ACC_5V_SW_EN, ACC_5V_BOOST_EN, ACC_3V3_EN, AMP_SD_MODE,
+  // NFC_5V_EN, ACC_PWR_EN -- and every one of them is an enable whose POR latch
+  // value is the UNSAFE one.  Clearing a direction bit before the latch holds
+  // the right value therefore drives the wrong level for as long as it takes to
+  // issue the next transaction: on ACC_5V_SW_EN or ACC_5V_BOOST_EN that is a
+  // live accessory rail; on AMP_SD_MODE it is a pop into the speaker; on
+  // NFC_5V_EN it is an enable into a DNP boost.  The three RGB cathodes are
+  // safe at 1 and happen to agree with the POR value; they are not what this
+  // order exists for.
   //
   // So: pulls and mask first (they only affect inputs), then the OUTPUT latch,
   // then -- last -- the direction.  `apply()` issues them in that order and in

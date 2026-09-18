@@ -299,21 +299,39 @@ can only be confirmed by eye. `MK1` and `U5` share one `/I2S_BCLK` and one
    concession, the `MK1` acoustic mask opening, the POFV process for 136 lands,
    the 38 sub-floor via rings and the 21 sub-0.125 mm mask dams are all declared
    in the fab notes and must be confirmed in writing before the order is placed.
-8a. **THE DISPLAY PANEL'S TAIL ORIENTATION MUST BE MEASURED BEFORE ANY PANEL IS
-   MATED** (first-spin review item 5). The `ER-TFT035IPS-6` mechanical drawing
-   is not in this repository and the vendor site could not be reached from the
-   build environment, and the `FH69`'s dual-contact feature does not by itself
-   prevent a mirrored tail. **The consequence of getting it wrong is
-   destructive, not merely dark**: mapping pin *N* ↔ pin *51 − N* gives sixteen
-   power-to-signal collisions, including the backlight anode — which the
-   `TPS61169` drives to ~4.2 V normally and up to 39 V into an open string —
-   onto panel `GND`. **The incoming test settles it without the drawing**: the
-   panel's own pins 1/2/3 are `LED_A`/`LED_K`/`LED_K` and its pins 48/49/50 are
-   `GND`, so a meter in diode mode reads an **LED forward drop of ~2.5–2.9 V**
-   between the outermost contact and its two neighbours at the pin-1 end, and a
-   **dead short** at the other. `J1` pin 1 is at board `(44.910, 96.000)`, the
-   EAST end, and is marked on silkscreen. Not a PCB-order blocker: `J1`'s land
-   pattern and pin map are correct for the datasheet pin table either way.
+8a. **THE DISPLAY TAIL'S PIN-1 END IS NOW PROVED FROM THE VENDOR DRAWING**
+   (first-spin review item 5 — **CLOSED**, superseding the "must be settled
+   before the panel is mated" text this entry used to carry). Earlier sessions
+   recorded the `ER-TFT035IPS-6` drawing as unobtainable; `buydisplay.com`
+   returns **HTTP 403 to non-browser clients**, and the Wayback Machine's
+   2025-01-09 snapshot serves the identical 24-page PDF
+   (`sha256 f8822bd3…a371`). **Section 3.3, the capacitive-touch outline
+   drawing, settles it in two mutually-confirming views**: the module FRONT view
+   — the one labelled *3.5" 320×480 Pixels* — shows the tail leaving the BOTTOM
+   edge with **`50` on the LEFT and `1` on the RIGHT**, and the REAR view on the
+   same sheet, carrying the component-area callout and the `FPC+PI` 0.3 ± 0.03 mm
+   stiffener dimension, labels **`1` on the LEFT and `50` on the RIGHT** — the
+   consistent mirror. **Pin 1 is the RIGHT-hand end of the tail viewed from the
+   display face, tail down.**
+   `J1` is on `F.Cu`; KiCad's top view IS the front view and `+x` is to the
+   right, so **`J1` pin 1 at `x = 44.910` is the RIGHT-hand end** and pin 50 at
+   `x = 20.410` the left. The panel mounts on the front face and its tail bends
+   about a **horizontal** axis down to board level into `J1` below the display
+   band (§21, 6 mm bend corridor); a horizontal-axis bend **preserves
+   left/right**, and no route around a board edge and up the rear is specified.
+   **PIN 1 MEETS PIN 1 — no mirror, and `J1` is correctly oriented for this
+   panel.** The same sheet's backlight schematic — one common `LED-A`, **six
+   diodes in parallel** with cathodes grouped `LED-K1`/`LED-K2` onto tail pins 2
+   and 3, `U = 2.9–3.2 V`, `I = 120 mA` — independently corroborates D-079, the
+   D-750 true-off analysis and the D-752 open-LED argument.
+   **The incoming diode-mode test is RETAINED**, not because the orientation is
+   open but because it costs nothing and catches a mis-built tail or a
+   substituted module: the panel's own pins 1/2/3 are `LEDA`/`LEDK`/`LEDK` and
+   48/49/50 are `GND`, so a meter reads an LED forward drop of ~2.5–2.9 V
+   between the outermost contact and its two neighbours at the pin-1 end and a
+   dead short at the other. Evidence:
+   `evidence/d754-display-tail-orientation.json`.
+
 8b. **NFC MATCHING MUST BE RE-DERIVED FROM THE PRIMARY SOURCE** (item 6). There
    is no dedicated shunt position between the series capacitors and the
    antenna, and ST `AN5276` and the ST matching tool could not be retrieved

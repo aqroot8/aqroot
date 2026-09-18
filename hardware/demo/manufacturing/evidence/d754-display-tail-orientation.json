@@ -1,0 +1,111 @@
+{
+ "board": {
+  "assembly": "the panel mounts on the FRONT face, its tail leaves the bottom edge and bends about a HORIZONTAL axis down to board level into J1, which sits below the display band (MECHANICAL_INTERFACE_SPEC item 21, 6 mm bend corridor).  A bend about a horizontal axis PRESERVES left/right; only a route around a board edge and up the rear would mirror it, and no such route is specified.",
+  "j1_layer": "F.Cu",
+  "j1_origin_mm": [
+   32.66,
+   96.0
+  ],
+  "j1_pin1_mm": [
+   44.91,
+   96.0
+  ],
+  "j1_pin50_mm": [
+   20.41,
+   96.0
+  ],
+  "j1_reference": "J1",
+  "orientation": "KiCad's top view IS the F.Cu/front view and +x is to the RIGHT, so J1 pin 1 at x = 44.910 is the RIGHT-hand end of the row and pin 50 at x = 20.410 the LEFT",
+  "verdict": "PIN 1 MEETS PIN 1.  No mirror; J1 is correctly oriented for this panel."
+ },
+ "decision": "D-754",
+ "finding": {
+  "backlight": "the same sheet carries the backlight schematic: ONE common LED-A and SIX diodes in parallel, cathodes grouped as LED-K1 (3) and LED-K2 (3) to tail pins 2 and 3, U = 2.9-3.2 V, I = 120 mA.  This independently corroborates D-079, the D-750 true-off analysis and the D-752 open-LED argument.",
+  "conclusion": "PIN 1 IS AT THE RIGHT-HAND END OF THE TAIL WHEN THE MODULE IS VIEWED FROM ITS DISPLAY FACE WITH THE TAIL AT THE BOTTOM.  The contacts are on the same face as the component/rear side, i.e. they face the PCB.",
+  "front_view": "section 3.3, the CTP outline drawing: the module FRONT view -- the one labelled 3.5\" 320x480 Pixels with the CTP O.D / BL O.D / AA dimension stack -- shows the 50-way tail leaving the BOTTOM edge and labels its ends '50' on the LEFT and '1' on the RIGHT",
+  "rear_view": "the REAR view on the same sheet, the one carrying the component-area callout and the FPC+PI stiffener dimension 0.3 +/- 0.03 mm, labels '1' on the LEFT and '50' on the RIGHT -- the consistent mirror of the front view, which is what confirms the reading rather than a single ambiguous label"
+ },
+ "pin_correspondence": [
+  {
+   "board_net": "/03_SPI_A_DISPLAY_SD/LED_A",
+   "board_x_mm": 44.91,
+   "board_y_mm": 96.0,
+   "panel_function": "LEDA",
+   "pin": 1
+  },
+  {
+   "board_net": "/03_SPI_A_DISPLAY_SD/LED_K_PANEL",
+   "board_x_mm": 44.41,
+   "board_y_mm": 96.0,
+   "panel_function": "LEDK",
+   "pin": 2
+  },
+  {
+   "board_net": "/03_SPI_A_DISPLAY_SD/LED_K_PANEL",
+   "board_x_mm": 43.91,
+   "board_y_mm": 96.0,
+   "panel_function": "LEDK",
+   "pin": 3
+  },
+  {
+   "board_net": "/I2C_SCL_INT",
+   "board_x_mm": 23.41,
+   "board_y_mm": 96.0,
+   "panel_function": "XR(X+)/SCL",
+   "pin": 44
+  },
+  {
+   "board_net": "/I2C_SDA_INT",
+   "board_x_mm": 22.91,
+   "board_y_mm": 96.0,
+   "panel_function": "YD(Y+)/SDA",
+   "pin": 45
+  },
+  {
+   "board_net": "/TOUCH_INT_N",
+   "board_x_mm": 22.41,
+   "board_y_mm": 96.0,
+   "panel_function": "XL(X-)/IRQ",
+   "pin": 46
+  },
+  {
+   "board_net": "/TOUCH_RST_N",
+   "board_x_mm": 21.91,
+   "board_y_mm": 96.0,
+   "panel_function": "YU(Y-)/RST",
+   "pin": 47
+  },
+  {
+   "board_net": "GND",
+   "board_x_mm": 21.41,
+   "board_y_mm": 96.0,
+   "panel_function": "GND",
+   "pin": 48
+  },
+  {
+   "board_net": "GND",
+   "board_x_mm": 20.91,
+   "board_y_mm": 96.0,
+   "panel_function": "GND",
+   "pin": 49
+  },
+  {
+   "board_net": "GND",
+   "board_x_mm": 20.41,
+   "board_y_mm": 96.0,
+   "panel_function": "GND",
+   "pin": 50
+  }
+ ],
+ "question": "external first-spin review item 5: prove the ER-TFT035IPS-6 tail's PHYSICAL pin-1 end, which the FH69's dual-contact feature does NOT settle",
+ "residual": "the incoming diode-mode test is RETAINED, not because the orientation is still open but because it costs nothing and catches a mis-built tail or a substituted module: the panel's own pins 1/2/3 are LEDA/LEDK/LEDK and 48/49/50 are GND, so a meter reads an LED forward drop of ~2.5-2.9 V between the outermost contact and its two neighbours at the PIN-1 end and a dead short at the other.",
+ "schema": 1,
+ "source": {
+  "document": "EastRising / buydisplay TFT LCD Display Datasheet ER-TFT035IPS-6, REV A, DWN JIM, Feb-22-2022",
+  "note": "buydisplay.com returns HTTP 403 to non-browser clients, which is why earlier sessions recorded the drawing as unobtainable; the Wayback Machine snapshot of 2025-01-09 serves the identical PDF",
+  "pages": "6 (no touch), 7 (RTP), 8 (CTP outline drawing), 9-10 (pin configuration)",
+  "pdf_pages": 24,
+  "sha256": "f8822bd3a335c610fa1862de58173020e76ac6cdaf9da744a71e3a50a620a371",
+  "url": "https://web.archive.org/web/20250109140024/https://www.buydisplay.com/download/manual/ER-TFT035IPS-6_Datasheet.pdf"
+ }
+}

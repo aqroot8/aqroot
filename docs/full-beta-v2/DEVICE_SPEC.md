@@ -114,6 +114,7 @@ GPIO19/20); there is **no USB-UART bridge IC** (by design). See §9, §16.
 | Display driver | **ILI9488** (COG) | LOCKED (per ARCH/BOM & D-074…D-078) | ARCHITECTURE.md; OFF_BOARD_BOM.md — see conflict note |
 | Interface | 4-wire **SPI** (SPI-A bus) | LOCKED | `03_spi_a_display_sd.kicad_sch` |
 | On-board FPC connector | `J1` **Hirose FH69-50S-0.5SH** (50-pin, 0.5 mm) | FITTED · MANUAL ASSEMBLY | `03_spi_a_display_sd.kicad_sch:J1` |
+| Tail **pin-1 end** | **RIGHT-hand end viewed from the display face, tail down** — and `J1` pin 1 is the right-hand end of its row (`x = 44.910`, `F.Cu`). **Pin 1 meets pin 1; no mirror** | **RESOLVED at D-754** from the vendor outline drawing | `evidence/d754-display-tail-orientation.json` |
 | Touch panel | EastRising **ER-TPC035-6** capacitive | LOCKED · FITTED · INTERNAL | OFF_BOARD_BOM.md |
 | Touch controller | **FocalTech FT6236** @ I²C **0x38** | LOCKED (interface); **silicon identity CAD-TO-VERIFY** | `architecture/I2C_ADDRESS_REGISTRY.md`; ARCHITECTURE.md |
 | Backlight driver | `U17` **TPS61169DCKR** (WLED boost) | FITTED | `03_spi_a_display_sd.kicad_sch:U17` |
@@ -125,7 +126,9 @@ GPIO19/20); there is **no USB-UART bridge IC** (by design). See §9, §16.
 > that the `TPS61169` retains a DC path from `VIN` through the inductor and
 > Schottky to the LEDs in shutdown, and guarantees OFF only when the LED
 > array's minimum forward voltage exceeds the maximum `VIN`.  This panel's
-> backlight is **2.9–3.2 V at 120 mA** (D-079) on a **3.3 V** rail, so the
+> backlight is **2.9–3.2 V at 120 mA** (D-079) on a **3.3 V** rail — **six diodes in
+> parallel from one common `LED-A`, cathodes grouped `LED-K1`/`LED-K2` onto tail
+> pins 2 and 3, read off the vendor outline drawing at D-754** — so the
 > condition FAILS: solving the shutdown network converges at **≈ 25 mA**, about
 > a fifth of full brightness and plainly visible in the dark.  There is no
 > firmware mitigation, because `+3V3` is switched by the `SW9` slide switch.

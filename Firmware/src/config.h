@@ -141,8 +141,12 @@ define AQROOT_ACK_PLACEHOLDER_PINS to build the legacy application anyway."
 // TCA9535 register set — this is the COMPLETE set. There are eight registers and no others.
 #define TCA9535_REG_INPUT_0    0x00   // read-only; reading deasserts /INT for Port 0
 #define TCA9535_REG_INPUT_1    0x01   // read-only; reading deasserts /INT for Port 1
-#define TCA9535_REG_OUTPUT_0   0x02   // output latch, resets to 0x00
-#define TCA9535_REG_OUTPUT_1   0x03   // output latch, resets to 0x00
+// D-753: these two comments said "resets to 0x00" and that is wrong for this
+// register pair on the TCA9535 AND on the PCAL9535A this board actually fits
+// (NXP Rev.2 tables 7/8: Output port 0/1 power up at 1111 1111).  RETIRED
+// PROSE -- the Demo expander layer is Firmware/src/hw/pcal9535a.h, not this.
+#define TCA9535_REG_OUTPUT_0   0x02   // output latch, resets to 0xFF
+#define TCA9535_REG_OUTPUT_1   0x03   // output latch, resets to 0xFF
 #define TCA9535_REG_POLARITY_0 0x04   // keep at 0x00 — invert in firmware, not in hardware
 #define TCA9535_REG_POLARITY_1 0x05   // keep at 0x00 — invert in firmware, not in hardware
 #define TCA9535_REG_CONFIG_0   0x06   // direction: 1 = input, 0 = output; resets to 0xFF

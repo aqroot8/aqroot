@@ -1,3 +1,107 @@
+## D-754 — **THE VENDOR DRAWING WAS REACHABLE AFTER ALL, AND THE EXPANDER'S RESET VALUE WAS THE OPPOSITE OF WHAT THE DRIVER SAID**
+
+    authority  6f2fc8b6 unchanged -- NO COPPER, NO SCHEMATIC SYMBOL, NO BOM CHANGE
+    changed    Firmware/src/hw/pcal9535a.h, Firmware/test/test_expander_order.cpp,
+               Firmware/src/config.h, DEVICE_SPEC.md, AQROOT_DEMO_FAB_HANDOFF.md
+    evidence   d754-display-tail-orientation.json, d754-firmware-hw-map-contract.json
+
+### 1. ITEM 5 WAS OPEN ONLY BECAUSE A WEB SERVER SAID 403
+
+The external first-spin review's item 5 asked for ONE external fact: the
+`ER-TFT035IPS-6` tail's PHYSICAL pin-1 end.  `FH69`'s top-and-bottom contact
+does not settle it, and the consequence of getting it wrong is destructive —
+mapping pin *N* ↔ pin *51 − N* puts the backlight anode, which the `TPS61169`
+drives to 4.2 V normally and toward 39 V into an open string, onto panel `GND`.
+D-746 and D-751 both recorded the drawing as unobtainable from this environment
+and parked the question on an incoming diode-mode test.
+
+**`buydisplay.com` returns HTTP 403 to every non-browser client** — the PDF URL,
+the product page and the mirrors alike.  The Wayback Machine's 2025-01-09
+snapshot serves the identical 24-page document
+(`sha256 f8822bd3a335c610fa1862de58173020e76ac6cdaf9da744a71e3a50a620a371`).
+
+**SECTION 3.3 SETTLES IT IN TWO MUTUALLY-CONFIRMING VIEWS.**  The module FRONT
+view — the one labelled *3.5" 320×480 Pixels*, carrying the `CTP O.D` / `BL O.D`
+/ `AA` dimension stack — shows the 50-way tail leaving the BOTTOM edge with
+**`50` on the LEFT and `1` on the RIGHT**.  The REAR view on the same sheet,
+carrying the component-area callout and the `FPC+PI` stiffener dimension
+`0.3 ± 0.03 mm`, labels **`1` on the LEFT and `50` on the RIGHT**.  A single
+label would have been ambiguous; a consistent MIRROR PAIR is not.
+
+> **Pin 1 is the RIGHT-hand end of the tail, viewed from the display face with
+> the tail at the bottom**, and the contacts sit on the same face as the
+> component side — they face the PCB.
+
+**AND THE BOARD AGREES.**  `J1` is on `F.Cu`; KiCad's top view IS the front view
+and `+x` is to the RIGHT, so `J1` pin 1 at `x = 44.910` is the right-hand end of
+the row and pin 50 at `x = 20.410` the left.  The panel mounts on the front face
+and its tail bends about a **horizontal** axis down to board level into `J1`,
+which sits below the display band with the 6 mm bend corridor
+`MECHANICAL_INTERFACE_SPEC` item 21 retains.  A horizontal-axis bend PRESERVES
+left/right; only a route around a board edge and up the rear would mirror it,
+and no such route is specified anywhere in the mechanical authority.
+**PIN 1 MEETS PIN 1.**  The ten pins that carry the question read:
+
+    panel 1  LEDA          -> J1.1  /03_SPI_A_DISPLAY_SD/LED_A        x 44.910
+    panel 2  LEDK          -> J1.2  /03_SPI_A_DISPLAY_SD/LED_K_PANEL  x 44.410
+    panel 3  LEDK          -> J1.3  /03_SPI_A_DISPLAY_SD/LED_K_PANEL  x 43.910
+    panel 44 XR(X+)/SCL    -> J1.44 /I2C_SCL_INT                      x 23.410
+    panel 45 YD(Y+)/SDA    -> J1.45 /I2C_SDA_INT                      x 22.910
+    panel 46 XL(X-)/IRQ    -> J1.46 /TOUCH_INT_N                      x 22.410
+    panel 47 YU(Y-)/RST    -> J1.47 /TOUCH_RST_N                      x 21.910
+    panel 48 GND           -> J1.48 GND                               x 21.410
+    panel 49 GND           -> J1.49 GND                               x 20.910
+    panel 50 GND           -> J1.50 GND                               x 20.410
+
+**A THIRD THING FELL OUT OF THE SAME SHEET.**  Its backlight schematic shows one
+common `LED-A` and **SIX diodes in parallel**, cathodes grouped `LED-K1` (3) and
+`LED-K2` (3) onto tail pins 2 and 3, at `U = 2.9–3.2 V`, `I = 120 mA`.  That is
+the arrangement D-079 recorded from a procurement note, and it is the premise of
+the D-750 true-off calculation and the D-752 open-LED argument — **all three now
+rest on the manufacturer's own drawing** rather than on an inherited figure.
+The board ties `J1.2` and `J1.3` together on `LED_K_PANEL`, which is what a
+two-group common-anode array wants.
+
+**THE INCOMING TEST IS RETAINED**, not because the orientation is open but
+because it costs nothing and catches a mis-built tail or a substituted module:
+pins 1/2/3 are `LEDA`/`LEDK`/`LEDK` and 48/49/50 are `GND`, so a meter in diode
+mode reads an LED forward drop of ~2.5–2.9 V between the outermost contact and
+its two neighbours at the pin-1 end and a dead short at the other.
+
+### 2. THE PCAL9535A OUTPUT PORTS RESET TO FFh, NOT 00h
+
+An independent CTO check raised this against D-750 and pushed a correction on a
+side branch; D-751 superseded that branch for its *semantic-gate* commit and the
+reset-model commit was not taken with it.  **The claim is correct.**  NXP
+`PCAL9535A` Rev. 2, tables 7 and 8: Output port 0 (`02h`) and Output port 1
+(`03h`) both power up at **`1111 1111`**.  Three places in this repository said
+`00h` — `Firmware/src/hw/pcal9535a.h`'s bring-up comment, the opening comment of
+`Firmware/test/test_expander_order.cpp`, and the retired `TCA9535` prose in
+`Firmware/src/config.h`.
+
+***THE CORRECTION MAKES THE ORDERING MATTER MORE, NOT LESS.***  Under the false
+`00h` model an active-HIGH enable was safe by accident if the direction bit went
+first.  Under the real `FFh` it is **DRIVEN HIGH**.  Six of this board's expander
+outputs are safe at 0 — `ACC_5V_SW_EN`, `ACC_5V_BOOST_EN`, `ACC_3V3_EN`,
+`AMP_SD_MODE`, `NFC_5V_EN`, `ACC_PWR_EN` — and every one is an ENABLE whose POR
+latch value is the unsafe one.  The mechanism was already right (`apply()` writes
+pulls, mask, polarity, **latch**, then direction, and a live control reorders it
+and requires the host test to catch it); what was wrong was the stated reason,
+and a wrong reason is what a future "harmless" reorder cites.
+
+**A CLAIM NOW TIES THE RULE TO THE REAL DEFAULT.**  `test_expander_order.cpp`
+asserts, per device, that at least one bit configured as an OUTPUT has a safe
+latch value of 0 and therefore DISAGREES with the `0xFF` power-on latch — so the
+ordering is non-vacuous against the value the part actually has.  **61 claims on
+that test (was 59), 0 failures**, `firmware_hw_map_contract` `H1`–`H6` PASS with
+its 11 policy controls and 9 host controls unchanged, and all four PlatformIO
+environments build.
+
+### 3. NOTHING PHYSICAL CHANGED
+
+No copper, no schematic symbol, no BOM line, no fabrication output.  Board
+authority stays at `6f2fc8b6` and the released package is byte-identical.
+
 ## D-753 — **A POLICY IS NOT AN ENFORCEMENT MECHANISM: THE ACCESSORY ENVELOPE IS SILICON NOW**
 
     authority  7f133e64 -> 6f2fc8b6   R97 1.5k -> 2.7k, R101 1.65k -> 2.7k

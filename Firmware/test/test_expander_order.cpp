@@ -1,12 +1,16 @@
 // AQROOT Demo -- the safe-ordering test.
 //
-// The PCAL9535A resets with every pin an INPUT and every output latch at 0x00.
+// The PCAL9535A resets with every pin an INPUT and -- D-753, corrected from
+// 0x00 -- EVERY OUTPUT LATCH AT 0xFF.  NXP Rev. 2 tables 7 and 8 give Output
+// port 0 (02h) and Output port 1 (03h) a power-on default of 1111 1111.
 // Six of this board's expander outputs are safe at 0 and three -- the RGB
 // cathodes -- are safe at 1, so a bring-up that clears a direction bit before
 // the latch holds the right value drives the wrong level onto a real load for
-// as long as the next I2C transaction takes.  On ACC_5V_SW_EN or
-// ACC_5V_BOOST_EN that is a live accessory rail; on AMP_SD_MODE it is a pop
-// into the speaker; on NFC_5V_EN it is an enable into a DNP boost.
+// as long as the next I2C transaction takes.  THE REAL DEFAULT MAKES THIS
+// WORSE: every one of the six safe-at-0 outputs is an ENABLE, and 0xFF is the
+// unsafe value for all six.  On ACC_5V_SW_EN or ACC_5V_BOOST_EN that is a live
+// accessory rail; on AMP_SD_MODE it is a pop into the speaker; on NFC_5V_EN it
+// is an enable into a DNP boost.
 //
 // That ordering is not visible in a compile and it is not visible in DRC.  It
 // is visible HERE, on a host build with no ESP32 present, because `I2cBus` is
@@ -168,6 +172,21 @@ int main() {
     std::snprintf(claim, sizeof(claim),
                   "0x%02X: pulls and mask are set before the latch", address);
     check(claim, pull_enable < latch && mask >= 0 && mask < latch);
+
+    // D-753.  THE ORDERING IS NON-VACUOUS AGAINST THE PART'S REAL POR VALUE.
+    // NXP tables 7/8: both output ports power up at 0xFF.  So for every output
+    // bit whose safe latch is 0, the direction bit going first would drive it
+    // HIGH -- and this asserts that such a bit EXISTS on each device, which is
+    // what makes "latch before direction" a requirement rather than a habit.
+    const uint16_t kPorOutput = 0xFFFF;      // NXP PCAL9535A Rev.2, tables 7/8
+    const uint16_t latch_value = bus.valueWritten(address, Pcal9535a::kRegOutput0);
+    const uint16_t direction_value =
+        bus.valueWritten(address, Pcal9535a::kRegConfig0);
+    const uint16_t outputs = uint16_t(~direction_value);
+    std::snprintf(claim, sizeof(claim),
+                  "0x%02X: at least one OUTPUT is safe at 0 and so disagrees "
+                  "with the 0xFF power-on latch", address);
+    check(claim, (outputs & uint16_t(kPorOutput & ~latch_value)) != 0);
 
     std::snprintf(claim, sizeof(claim),
                   "0x%02X: polarity inversion is left at 0 (invert in firmware)",
