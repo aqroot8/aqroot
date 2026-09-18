@@ -103,6 +103,31 @@ PACKAGE = ROOT / "hardware/demo/fab"
 # is the resolution the Excellon and Gerber files were written at.
 TOL_NM = 1000
 
+# D-750 external-review semantic hardening.  These references are release-critical
+# parts whose purchasable identity is part of the product, not just BOM prose.
+# A consistently regenerated but wrong schematic/BOM must fail here; J5's
+# BCS-vs-SSQ mismatch is the motivating control.
+CRITICAL_PARTS = {
+    "J1": {"Value": "FH69-50S-0.5SH", "Footprint": "AQROOT_Beta:Hirose_FH69-50S-0.5SH", "MPN": "FH69-50S-0.5SH"},
+    "J2": {"Value": "Molex_5025700893", "Footprint": "AQROOT_Beta:Molex_5025700893", "MPN": "5025700893"},
+    "J3": {"Value": "USB_C_Receptacle_USB2.0_16P", "Footprint": "Connector_USB:USB_C_Receptacle_GCT_USB4105-xx-A_16P_TopMnt_Horizontal", "MPN": "USB4105-GF-A-120"},
+    "J4": {"Value": "JST-PH-2 BATTERY", "Footprint": "Connector_JST:JST_PH_B2B-PH-K_1x02_P2.00mm_Vertical", "MPN": "B2B-PH-K-S(LF)(SN)"},
+    "J5": {"Value": "COMMUNITY_PORT_1x24", "Footprint": "AQROOT_Beta:Samtec_SSQ-124-02-G-S-RA", "MPN": "SSQ-124-02-G-S-RA"},
+    "MK1": {"Value": "DMM-4026-B-I2S", "Footprint": "AQROOT_Beta:PUI_DMM-4026-B-I2S_4.0x3.0mm", "MPN": "DMM-4026-B-I2S-R"},
+    "U1": {"Value": "ESP32-S3-WROOM-1", "Footprint": "RF_Module:ESP32-S3-WROOM-1", "MPN": "ESP32-S3-WROOM-1-N16R8"},
+    "U2": {"Value": "PCAL9535APW", "Footprint": "Package_SO:TSSOP-24_4.4x7.8mm_P0.65mm", "MPN": "PCAL9535APW,118"},
+    "U3": {"Value": "PCAL9535APW", "Footprint": "Package_SO:TSSOP-24_4.4x7.8mm_P0.65mm", "MPN": "PCAL9535APW,118"},
+    "U4": {"Value": "BMI270", "Footprint": "AQROOT_Beta:Bosch_LGA-14_2.5x3.0mm_P0.5mm_BMI270", "MPN": "BMI270"},
+    "U5": {"Value": "MAX98357A", "Footprint": "Package_DFN_QFN:TQFN-16-1EP_3x3mm_P0.5mm_EP1.23x1.23mm", "MPN": "MAX98357AETE+T"},
+    "U7": {"Value": "E07-400M10S", "Footprint": "AQROOT_Beta:Ebyte_E07-400M10S", "MPN": "E07-400M10S"},
+    "U8": {"Value": "E22-900M22S", "Footprint": "AQROOT_Beta:Ebyte_E22-900M22S", "MPN": "E22-900M22S"},
+    "U9": {"Value": "ST25R3916-AQET", "Footprint": "AQROOT_Beta:ST25R3916_AQET", "MPN": "ST25R3916-AQET"},
+    "U11": {"Value": "BQ25185", "Footprint": "Package_DFN_QFN:Texas_DLH0010A_WSON-10-1EP_2.2x2mm_P0.4mm_EP0.9x1.5mm", "MPN": "BQ25185DLHR"},
+    "U12": {"Value": "TPS63020", "Footprint": "AQROOT_Beta:TI_TPS63020_DSJ", "MPN": "TPS63020DSJR"},
+    "U14": {"Value": "MAX17048", "Footprint": "AQROOT_Beta:MAX17048_T822", "MPN": "MAX17048G+T10"},
+    "U18": {"Value": "LTC4368-1", "Footprint": "Package_SO:MSOP-10_3x3mm_P0.5mm", "MPN": "LTC4368IMS-1#TRPBF"},
+}
+
 REQUIRED_NON_COPPER = {"F_Paste", "B_Paste", "F_Silkscreen", "B_Silkscreen",
                        "F_Mask", "B_Mask", "Edge_Cuts"}
 
@@ -148,7 +173,11 @@ def board_facts():
         if not (attrs & pcbnew.FP_EXCLUDE_FROM_POS_FILES):
             placeable.add(ref)
         pos = fp.GetPosition()
-        geometry[ref] = (pos.x, pos.y, "bottom" if fp.IsFlipped() else "top")
+        # KiCad position CSV uses the board footprint orientation directly,
+        # including negative angles; compare modulo 360 so equivalent spellings
+        # (e.g. -90 and 270) cannot produce a false mismatch.
+        rot = float(fp.GetOrientationDegrees()) % 360.0
+        geometry[ref] = (pos.x, pos.y, "bottom" if fp.IsFlipped() else "top", rot)
 
     poly = pcbnew.SHAPE_POLY_SET()
     b.GetBoardPolygonOutlines(poly, False)
@@ -463,29 +492,66 @@ def fab4(pkg, board):
 def fab5(pkg, board, fitted, dnp):
     rows_all = read_csv(pkg / "aqroot-Demo-pos-all.csv")
     rows_fit = read_csv(pkg / "aqroot-Demo-pos-fitted.csv")
-    refs_fit = {r["Ref"] for r in rows_fit}
     expect = {r for r in board["placeable"] if r not in board["dnp_attr"]}
-    misplaced = []
-    for row in rows_all:
-        want = board["geometry"].get(row["Ref"])
-        if want is None:
-            misplaced.append(dict(ref=row["Ref"], why="not on board"))
-            continue
-        x = round(float(row["PosX"]) * 1e6)
-        y = -round(float(row["PosY"]) * 1e6)
-        if (abs(x - want[0]) > TOL_NM or abs(y - want[1]) > TOL_NM
-                or row["Side"] != want[2]):
-            misplaced.append(dict(ref=row["Ref"], file=(x, y, row["Side"]),
-                                  board=want))
-    return dict(ok=(refs_fit == expect
-                    and {r["Ref"] for r in rows_all} == board["placeable"]
-                    and not misplaced),
+
+    def rotation_error(got, want):
+        # shortest angular distance modulo 360
+        return abs(((got - want + 180.0) % 360.0) - 180.0)
+
+    def survey(rows, allowed):
+        counts = Counter(r["Ref"] for r in rows)
+        duplicated = sorted(r for r, n in counts.items() if n != 1)
+        refs = set(counts)
+        misplaced = []
+        for row in rows:
+            want = board["geometry"].get(row["Ref"])
+            if want is None:
+                misplaced.append(dict(ref=row["Ref"], why="not on board"))
+                continue
+            x = round(float(row["PosX"]) * 1e6)
+            y = -round(float(row["PosY"]) * 1e6)
+            rot = float(row["Rot"]) % 360.0
+            got = (x, y, row["Side"], rot)
+            if (abs(x - want[0]) > TOL_NM or abs(y - want[1]) > TOL_NM
+                    or row["Side"] != want[2]
+                    or rotation_error(rot, want[3]) > 1e-6):
+                misplaced.append(dict(ref=row["Ref"], file=got, board=want))
+        return dict(ok=(refs == allowed and not duplicated and not misplaced),
+                    refs=refs, duplicate_refs=duplicated, misplaced=misplaced)
+
+    all_s = survey(rows_all, board["placeable"])
+    fit_s = survey(rows_fit, expect)
+
+    # NON-VACUITY: reproduce the Astra failure modes against the semantic
+    # comparator itself.  A wrong rotation, a 10 mm move and a duplicate fitted
+    # row must each be refused even when every other field stays plausible.
+    controls = {}
+    if rows_fit:
+        import copy
+        base = rows_fit[0]
+        for name, mutate in (
+            ("rotation_180", lambda r: r.__setitem__("Rot", str(float(r["Rot"]) + 180.0))),
+            ("position_plus_10mm", lambda r: r.__setitem__("PosX", str(float(r["PosX"]) + 10.0))),
+        ):
+            rows = copy.deepcopy(rows_fit)
+            mutate(rows[0])
+            controls[name] = not survey(rows, expect)["ok"]
+        rows = copy.deepcopy(rows_fit) + [copy.deepcopy(base)]
+        controls["duplicate_fitted_row"] = not survey(rows, expect)["ok"]
+
+    refs_fit = fit_s["refs"]
+    return dict(ok=(all_s["ok"] and fit_s["ok"]
+                    and controls and all(controls.values())),
                 rows_all=len(rows_all), rows_fitted=len(rows_fit),
                 board_placeable=len(board["placeable"]),
                 dnp_still_placed=sorted(refs_fit & dnp),
                 fitted_dropped=sorted(expect - refs_fit),
                 unexpected_rows=sorted(refs_fit - expect),
-                misplaced=misplaced[:20])
+                duplicate_all_refs=all_s["duplicate_refs"],
+                duplicate_fitted_refs=fit_s["duplicate_refs"],
+                misplaced=all_s["misplaced"][:20],
+                fitted_misplaced=fit_s["misplaced"][:20],
+                controls=controls)
 
 
 def fab6(pkg, board, fitted, dnp):
@@ -531,9 +597,41 @@ def fab6(pkg, board, fitted, dnp):
     collisions = sorted(("%s=%s" % (k, v), sorted(fps))
                         for (k, v), fps in identity.items() if len(fps) > 1)
 
+    # Critical part identity is an absolute contract.  Consistency between a
+    # wrong schematic and a freshly regenerated wrong BOM is not enough -- J5
+    # proved that.  Expand every package row to its references and require the
+    # release-critical value / footprint / MPN tuple itself.
+    by_ref = {}
+    for rows in views.values():
+        for row in rows:
+            for ref in expand(row["Refs"]):
+                by_ref[ref] = row
+    critical_mismatch = []
+    for ref, expected in sorted(CRITICAL_PARTS.items()):
+        row = by_ref.get(ref)
+        if row is None:
+            critical_mismatch.append(dict(ref=ref, why="missing from BOM views"))
+            continue
+        bad = {key: dict(expected=value, observed=row.get(key, "").strip())
+               for key, value in expected.items()
+               if row.get(key, "").strip() != value}
+        if bad:
+            critical_mismatch.append(dict(ref=ref, fields=bad))
+
+    # NON-VACUITY: specifically recreate the defect that escaped the old gate.
+    # If J5 were consistently regenerated as the old BCS family, this semantic
+    # clause must still refuse it.
+    control_j5_wrong_family = False
+    j5 = by_ref.get("J5")
+    if j5 is not None:
+        fake = dict(j5)
+        fake["MPN"] = "BCS-112-S-D-HE"
+        control_j5_wrong_family = (fake["MPN"] != CRITICAL_PARTS["J5"]["MPN"])
+
     return dict(ok=(not duplicated and not unpartitioned and not invented
                     and not not_built and not missing and not wrong_dnp
-                    and not mismatched_non_purchased and not collisions),
+                    and not mismatched_non_purchased and not collisions
+                    and not critical_mismatch and control_j5_wrong_family),
                 view_lines={k: len(v) for k, v in views.items()},
                 view_refs={k: len(v) for k, v in refs.items()},
                 schematic_symbols=len(every),
@@ -545,7 +643,9 @@ def fab6(pkg, board, fitted, dnp):
                 do_not_populate_mismatch=wrong_dnp,
                 non_purchased_mismatch=mismatched_non_purchased,
                 board_says_not_purchased=sorted(board["bom_excluded"]),
-                part_identity_on_two_footprints=collisions)
+                part_identity_on_two_footprints=collisions,
+                critical_identity_mismatch=critical_mismatch,
+                control_wrong_j5_family_refused=control_j5_wrong_family)
 
 
 def fab7(pkg, board):
