@@ -1,0 +1,51 @@
+{
+  "checks": {
+    "PL10_removals_stranded_nothing": true,
+    "PL1_reference_set_as_declared": true,
+    "PL2_only_claimed_parts_moved": true,
+    "PL3_land_patterns_travelled_whole": true,
+    "PL4_no_new_courtyard_overlap": true,
+    "PL5_nothing_stranded": true,
+    "PL6_screen_is_not_vacuous": true,
+    "PL7_moved_pads_clear_foreign_copper": true,
+    "PL8_released_pads_reconnected": true,
+    "PL9_no_via_swallowed_by_a_moved_land": true
+  },
+  "detail": {
+    "additions_declared": [],
+    "claimed": {
+      "BOSS1": [
+        1000000,
+        0,
+        0.0
+      ]
+    },
+    "claimed_moves_wrong": [],
+    "clearance_nm": 200000,
+    "courtyard_overlaps_new": [],
+    "endpoints_checked": 0,
+    "endpoints_released": [],
+    "endpoints_stranded": [],
+    "footprints_post": 315,
+    "footprints_pre": 315,
+    "foreign_copper_hits": [],
+    "land_patterns_changed": [],
+    "pl6_decoy": "BOSS2",
+    "pl6_perturbation_named": [
+      "BOSS2"
+    ],
+    "references_added": [],
+    "references_removed": [],
+    "released_claimed": [],
+    "released_pads_orphaned": [],
+    "released_pads_reconnected": [],
+    "removal_endpoints_left_behind": [],
+    "removals_declared": [],
+    "unclaimed_footprints_moved": [],
+    "vias_inherited_under_moved_lands": [],
+    "vias_swallowed_by_moved_lands": []
+  },
+  "ref": "542ac49",
+  "schema": 2,
+  "verdict": "PASS"
+}

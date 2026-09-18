@@ -22,6 +22,14 @@
 **P1 doc datum**: origin at the **lower-left board corner**, X → right, Y → **up**, millimetres.
 `Y_kicad = 148.000 − Y_doc`.
 
+> ### ⚠ READ THE RE-BASE HEADER BEFORE USING ANY COORDINATE IN SECTION 1 (D-759)
+> Every X coordinate in section 1 is **PRE-REBASE** and gains **+1.000 mm**. The board is on
+> the re-based datum and proves it: `U6` fits only the re-based `IR_RX_OPTICAL`, `J3` only the
+> re-based `USB_APERTURE`, `MK1` only the re-based `MIC_ACOUSTIC`. Reading section 1 as current
+> is not hypothetical — **D-758 did exactly that and corrected a real defect into a different
+> one.** `mechanical_keepout_contract` MK1 now re-proves the datum against the board before any
+> other clause is allowed to ask its question.
+
 Regions marked **rule area** are real KiCad copper keepouts and are enforced by DRC. Regions
 marked **mechanical** are enclosure-only and are drawn on user layers for review — **no copper was
 created merely to visualise a zone, and none was created for plastic support.**
@@ -49,10 +57,11 @@ created merely to visualise a zone, and none was created for plastic support.**
 | **K** | `SMA_APPROACH` | X −1.00 … 11.00, Y 134.00 … 148.00 | `User.4` | mechanical | **Ø6.5 mm bulkhead hole at doc (5.000, 148.000)**, top panel, left half. Ø10.2 washer envelope drawn. **Bend radius ≥ 5 mm, service loop ≥ 15 mm, must not cross the IR path.** **MOVED from x 12.000 at P1-002** |
 | **N** | `COAX_915_CHANNEL` | X −1.50 … 6.00, Y 24.00 … 110.00 | `User.4` | mechanical | **NEW at P1-002.** The reserved lane for the 915 MHz assembly between the board's left edge and the battery. **No boss, no rib and no edge-capture rail may occupy it.** The route polyline itself is drawn on the same layer |
 | **M** | `MIC_ACOUSTIC` | X 0.50 … 5.50, Y 46.50 … 53.50 | `User.1` | **rule area** | gasket footprint on the **FRONT** face; **no tracks, vias or pours on any copper layer**; Ø1.05 mm NPTH carried by the `MK1` footprint |
-| **L** | `BOSS1_KEEPOUT` | **Ø4.500 circle, centre doc (40.000, 12.000)** → X 37.75 … 42.25, Y 9.75 … 14.25 | `User.3` | **rule area** | M2, Ø2.2 NPTH at doc (40.000, 12.000). **D-758: the board carried this square 1.000 mm EAST of the boss**, leaving the west of the required region unprotected; re-cut as the Ø4.500 circle the footprint actually specifies, on the boss, as `NFC_METAL_D58` was re-cut from its 58 × 51 rectangle — only the four corners are reclaimed |
-| **L** | `BOSS2_KEEPOUT` | **Ø4.500 circle, centre doc (59.000, 145.000)** → X 56.75 … 61.25, Y 142.75 … 147.25 | `User.3` | **rule area** | M2, Ø2.2 NPTH at doc (59.000, 145.000), inside the IR barrier. **D-758: the board carried BOSS2 and this area at x = 60.000**, 0.750 mm into `IR_RX_OPTICAL`; both moved back to the locked 59.000 |
+| **L** | `BOSS1_KEEPOUT` | X 37.75 … 42.25, Y 9.75 … 14.25 — **RE-BASED: X 38.75 … 43.25** | `User.3` | **rule area** | M2, Ø2.2 NPTH at doc (40.000, 12.000) — **RE-BASED: (41.000, 12.000)**. **D-759: the board's rule area was already at the re-based 38.75 … 43.25; its HOLE was the one object on this board that never took the re-base** and sat at 40.000, so four pours stood 0.2505 mm from the edge of a 2.200 mm NPTH. The hole moved +1.000 mm; the pour now stands 1.1505 mm off it. Machine-checked by `mechanical_keepout_contract` MK2 |
+| **L** | `BOSS2_KEEPOUT` | X 56.75 … 61.25, Y 142.75 … 147.25 — **RE-BASED: X 57.75 … 62.25** | `User.3` | **rule area** | M2, Ø2.2 NPTH at doc (59.000, 145.000) — **RE-BASED: (60.000, 145.000)**, inside the re-based IR barrier (X 57.50 … 62.50). **D-759: the board was already correct here and D-758 was wrong to move it** — 59.000 is the PRE-REBASE figure and at 59.000 the keep-out runs 0.750 mm into `IR_TX_OPTICAL`. Machine-checked by `mechanical_keepout_contract` MK2 and MK6 |
 | **P** | `RIB_R1` | X 66.20 … 69.70, Y 24.00 … 44.00 | `User.3` | mechanical | rear non-metallic support pad. **Component-free, verified** |
-| **P** | `RIB_R2` | X 66.20 … 69.70, Y 45.00 … 64.00 | `User.3` | mechanical | rear support pad, behind the A/B control area |
+| **P** | ~~`RIB_R2`~~ **RETIRED at D-759** | ~~X 66.20 … 69.70, Y 45.00 … 64.00~~ | `User.3` | mechanical | ~~rear support pad, behind the A/B control area~~ **NO LONGER COMPONENT-FREE.** D-719 re-floorplanned the `TPS63020` block into it: on the re-based footprint (X 67.20 … 70.70) `C28`, `C31`, `R39`, `R40` and `U12` are inside. A moulded rib there lands on a 3 × 3 mm QFN. **Replaced by `RIB_R2A`** |
+| **P** | `RIB_R2A` — **NEW at D-759** | **X 65.50 … 69.00, Y 36.00 … 48.00** (re-based datum, stated directly) | `User.3` | mechanical | rear non-metallic support pad, **12.00 mm long, its top edge 1.00 mm from the A/B control row at Y 49.000** — closer to the load than the retired rib's centre was. Measured component-free on the back with 0.25 mm of margin, east of the re-based `BATTERY_SHADOW` (X 7.00 … 64.00), outside the Ø58 metal exclusion. A second bearing is available at **X 70.00 … 73.50, Y 58.00 … 71.50** (13.50 mm) if CAD wants the row bracketed. Machine-checked by `mechanical_keepout_contract` MK3 |
 | **P** | `RIB_R3` | X 66.20 … 69.70, Y 76.00 … 97.00 | `User.3` | mechanical | rear support pad, mid-upper right margin |
 | **P** | `RIB_B1` | X 44.00 … 47.60, Y 21.20 … 23.30 | `User.3` | mechanical | rear support pad, bottom strip below the battery |
 

@@ -1,0 +1,273 @@
+{
+ "all_pass": true,
+ "board": "/home/aqroot8/aqroot-demo/hardware/demo/kicad/aqroot-demo/aqroot-Beta-v2.kicad_pcb",
+ "board_sha256": "1a06b058912b4c37e25d0acd9314f9542671efa852a162cc8b1dc6533e25668b",
+ "checks": {
+  "MK1_datum_proved_by_the_board": {
+   "at_least_one_does_not_fit_section_1": true,
+   "every_datum_part_fits_the_rebased_window": true,
+   "ok": true,
+   "parts": [
+    {
+     "fits_rebased": true,
+     "fits_section1": false,
+     "part": "U6",
+     "part_x_mm": [
+      62.955,
+      70.545
+     ],
+     "present": true,
+     "rebased_window_x_mm": [
+      62.5,
+      71.0
+     ],
+     "region": "IR_RX_OPTICAL",
+     "section1_window_x_mm": [
+      61.5,
+      70.0
+     ]
+    },
+    {
+     "fits_rebased": true,
+     "fits_section1": true,
+     "part": "D1",
+     "part_x_mm": [
+      49.765,
+      56.285
+     ],
+     "present": true,
+     "rebased_window_x_mm": [
+      49.0,
+      57.5
+     ],
+     "region": "IR_TX_OPTICAL",
+     "section1_window_x_mm": [
+      48.0,
+      56.5
+     ]
+    },
+    {
+     "fits_rebased": true,
+     "fits_section1": false,
+     "part": "J3",
+     "part_x_mm": [
+      37.635,
+      48.365
+     ],
+     "present": true,
+     "rebased_window_x_mm": [
+      37.0,
+      49.0
+     ],
+     "region": "USB_APERTURE",
+     "section1_window_x_mm": [
+      36.0,
+      48.0
+     ]
+    },
+    {
+     "fits_rebased": true,
+     "fits_section1": false,
+     "part": "MK1",
+     "part_x_mm": [
+      2.205,
+      5.795
+     ],
+     "present": true,
+     "rebased_window_x_mm": [
+      1.5,
+      6.5
+     ],
+     "region": "MIC_ACOUSTIC",
+     "section1_window_x_mm": [
+      0.5,
+      5.5
+     ]
+    }
+   ],
+   "rebase_mm": 1.0
+  },
+  "MK2_boss_retention": {
+   "bosses": [
+    {
+     "components_inside_the_circle": [],
+     "copper_inside_the_circle": [],
+     "covers_the_required_diameter": true,
+     "hole_as_registered": true,
+     "hole_doc_mm": [
+      41.0,
+      12.0
+     ],
+     "keepout_as_registered": true,
+     "keepout_doc_y_mm": [
+      9.75,
+      14.25
+     ],
+     "keepout_inradius_about_the_hole_mm": 2.25,
+     "keepout_present": true,
+     "keepout_x_mm": [
+      38.75,
+      43.25
+     ],
+     "ok": true,
+     "pour_inside_the_circle": [],
+     "present": true,
+     "ref": "BOSS1",
+     "register_hole_doc_mm": [
+      41.0,
+      12.0
+     ]
+    },
+    {
+     "components_inside_the_circle": [],
+     "copper_inside_the_circle": [],
+     "covers_the_required_diameter": true,
+     "hole_as_registered": true,
+     "hole_doc_mm": [
+      60.0,
+      145.0
+     ],
+     "keepout_as_registered": true,
+     "keepout_doc_y_mm": [
+      142.75,
+      147.25
+     ],
+     "keepout_inradius_about_the_hole_mm": 2.25,
+     "keepout_present": true,
+     "keepout_x_mm": [
+      57.75,
+      62.25
+     ],
+     "ok": true,
+     "pour_inside_the_circle": [],
+     "present": true,
+     "ref": "BOSS2",
+     "register_hole_doc_mm": [
+      60.0,
+      145.0
+     ]
+    }
+   ],
+   "ok": true,
+   "required_keepout_diameter_mm": 4.5
+  },
+  "MK3_rear_support_ribs_component_free": {
+   "ok": true,
+   "retired": {
+    "RIB_R2": "D-759: the D-719 TPS63020 re-floorplan occupies it; replaced by RIB_R2A"
+   },
+   "ribs": {
+    "RIB_B1": [],
+    "RIB_R1": [],
+    "RIB_R2A": [],
+    "RIB_R3": []
+   }
+  },
+  "MK4_speaker_cavity_has_no_rear_part": {
+   "back_side_occupants": [],
+   "ok": true
+  },
+  "MK5_no_through_hole_lead_in_the_battery_volume": {
+   "ok": true,
+   "region_mm": [
+    7.0,
+    64.0,
+    49.5,
+    124.5
+   ],
+   "through_hole_leads_inside": []
+  },
+  "MK6_boss2_is_inside_the_ir_barrier": {
+   "boss2_keepout_x_mm": [
+    57.75,
+    62.25
+   ],
+   "into_ir_rx_optical_mm": 0.0,
+   "into_ir_tx_optical_mm": 0.0,
+   "ir_barrier_x_mm": [
+    57.5,
+    62.5
+   ],
+   "ok": true
+  },
+  "MK7_not_vacuous": {
+   "controls": {
+    "a_boss_nudged_0_100_mm_is_refused": true,
+    "a_lead_in_the_battery_volume_is_refused": true,
+    "reading_the_pre_rebase_datum_is_visible": true,
+    "the_retired_RIB_R2_footprint_is_refused": true
+   },
+   "ok": true
+  }
+ },
+ "datum": "FBV2-EXP-002 RE-BASED: section-1 X + 1.000 mm; Y_kicad = 148.000 - Y_doc",
+ "regions": {
+  "BATTERY_SHADOW": [
+   7.0,
+   64.0,
+   49.5,
+   124.5
+  ],
+  "IR_BARRIER": [
+   57.5,
+   62.5,
+   0.0,
+   8.0
+  ],
+  "IR_RX_OPTICAL": [
+   62.5,
+   71.0,
+   0.0,
+   8.0
+  ],
+  "IR_TX_OPTICAL": [
+   49.0,
+   57.5,
+   0.0,
+   8.0
+  ],
+  "MIC_ACOUSTIC": [
+   1.5,
+   6.5,
+   94.5,
+   101.5
+  ],
+  "RIB_B1": [
+   45.0,
+   48.6,
+   124.7,
+   126.8
+  ],
+  "RIB_R1": [
+   67.2,
+   70.7,
+   104.0,
+   124.0
+  ],
+  "RIB_R2A": [
+   65.5,
+   69.0,
+   100.0,
+   112.0
+  ],
+  "RIB_R3": [
+   67.2,
+   70.7,
+   51.0,
+   72.0
+  ],
+  "SPEAKER_ZONE": [
+   49.0,
+   69.0,
+   127.0,
+   147.0
+  ],
+  "USB_APERTURE": [
+   37.0,
+   49.0,
+   146.8,
+   151.5
+  ]
+ },
+ "schema": 1
+}

@@ -88,12 +88,19 @@ J1 FH69                                X 17.375..47.945  Y 43.655..53.795
 FPC consumed of the 29.5 mm worst case 14.94 mm                       <= 29.5                   PASS
 
 -- retention ---------------------------------------------------------------------------------------------------------
-BOSS1                                  doc (40.000, 12.000)   Oe4.5 mm keep-out, Oe2.2 NPTH
-BOSS2                                  doc (59.000, 145.000)   Oe4.5 mm keep-out, Oe2.2 NPTH
-   [D-758 CORRECTION: this line read (60.000, 145.000) and the BOARD was built from it.
-    D-226/D-232 lock 59.000 and FBV2_P1_KEEPOUTS.md always said 59.000; at 60.000 the
-    Oe4.5 keep-out runs 0.750 mm into IR_RX_OPTICAL instead of sitting inside the 5.0 mm
-    IR barrier that carries it.  The board is corrected; this line is corrected with it.]
+BOSS1                                  doc (41.000, 12.000)   Oe4.5 mm keep-out, Oe2.2 NPTH  [D-759 RE-BASED, was 40.000]
+BOSS2                                  doc (60.000, 145.000)   Oe4.5 mm keep-out, Oe2.2 NPTH
+   [D-759: this line is RIGHT and D-758 was wrong to change it.  It is the POST-REBASE
+    value.  D-226/D-232's 59.000 and FBV2_P1_KEEPOUTS.md section 1 are PRE-REBASE: that
+    file's own header (FBV2-EXP-002, 70.000 -> 72.000 mm grown SYMMETRICALLY) says every
+    section-1 X gains +1.000 mm, and the board proves it -- U6, J3 and MK1 each fit only
+    the re-based window.  The re-based IR barrier is X 57.500..62.500 and a boss at
+    60.000 sits wholly inside it.  evidence/d759-mechanical-datum.json.]
+BOSS1                                  doc (41.000,  12.000)   RE-BASED; the board carried
+   [D-759: 40.000 until D-759.  BOSS1's hole is the ONE object that never took the
+    FBV2-EXP-002 re-base -- its own BOSS1_KEEPOUT was already at the re-based
+    38.750..43.250, centred on 41.000 -- so four pours stood 0.2505 mm from the edge of a
+    2.200 mm NPTH.  Moved +1.000 mm; the pour now stands 1.1505 mm off it.]
 SEARCH RESULT                          Oe6.0: 0 legal sites   Oe4.5: 2 legal sites
 SUPPORT REGIONS (User.3, no copper)    RIB_R1 RIB_R2 RIB_R3 RIB_B1
 

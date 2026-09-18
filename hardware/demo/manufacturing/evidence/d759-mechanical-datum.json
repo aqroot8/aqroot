@@ -1,0 +1,85 @@
+{
+ "answer": "RE-BASED.  Three parts fit only the re-based window and one fits both; none fits section 1 alone.  The board is on the re-based datum and every mechanical region must be read with the +1.000 mm applied.",
+ "board_sha256": "1a06b058912b4c37e25d0acd9314f9542671efa852a162cc8b1dc6533e25668b",
+ "consequence": "BOSS1's HOLE was the one object on this board that never took the re-base: it sat at doc x = 40.000 while its own BOSS1_KEEPOUT sat at 38.750 .. 43.250, the re-based value, centred on 41.000.  BOSS2 and BOSS2_KEEPOUT were both already re-based and both correct.  D-758 read the section-1 coordinates as current, moved both keep-outs onto the PRE-REBASE centres and moved BOSS2 1.000 mm west; this decision reverts all of that and moves the one object that was actually wrong.",
+ "question": "which mechanical datum is this board actually built on -- the coordinates printed in FBV2_P1_KEEPOUTS.md section 1, or those coordinates plus the +1.000 mm in X that the file's own RE-BASE header (FBV2-EXP-002, 70.000 -> 72.000 mm grown SYMMETRICALLY) instructs every one of them to take?",
+ "schema": 1,
+ "tests": [
+  {
+   "part": "U6",
+   "part_fits_rebased": true,
+   "part_fits_section1": false,
+   "part_x_mm": [
+    62.955,
+    70.545
+   ],
+   "rebased_x_mm": [
+    62.5,
+    71.0
+   ],
+   "region": "IR_RX_OPTICAL",
+   "section1_x_mm": [
+    61.5,
+    70.0
+   ],
+   "why": "the TSOP38238 receiver's own optical window"
+  },
+  {
+   "part": "D1",
+   "part_fits_rebased": true,
+   "part_fits_section1": true,
+   "part_x_mm": [
+    49.765,
+    56.285
+   ],
+   "rebased_x_mm": [
+    49.0,
+    57.5
+   ],
+   "region": "IR_TX_OPTICAL",
+   "section1_x_mm": [
+    48.0,
+    56.5
+   ],
+   "why": "the TSAL6100 emitter's own optical window"
+  },
+  {
+   "part": "J3",
+   "part_fits_rebased": true,
+   "part_fits_section1": false,
+   "part_x_mm": [
+    37.635,
+    48.365
+   ],
+   "rebased_x_mm": [
+    37.0,
+    49.0
+   ],
+   "region": "USB_APERTURE",
+   "section1_x_mm": [
+    36.0,
+    48.0
+   ],
+   "why": "the USB-C receptacle's shell aperture"
+  },
+  {
+   "part": "MK1",
+   "part_fits_rebased": true,
+   "part_fits_section1": false,
+   "part_x_mm": [
+    2.205,
+    5.795
+   ],
+   "rebased_x_mm": [
+    1.5,
+    6.5
+   ],
+   "region": "MIC_ACOUSTIC",
+   "section1_x_mm": [
+    0.5,
+    5.5
+   ],
+   "why": "the microphone gasket footprint -- a RULE AREA"
+  }
+ ]
+}

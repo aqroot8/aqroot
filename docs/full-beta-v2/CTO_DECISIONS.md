@@ -1,3 +1,169 @@
+## D-759 — **D-758 WAS WRONG, AND THE FILE IT READ SAYS SO IN ITS OWN HEADER.** THE REAL DEFECT WAS ONE FOOTPRINT THAT NEVER TOOK A RE-BASE
+
+    authority  1a06b058   (was f66c7896; D-758's board changes are REVERTED WHOLE
+                           and this board differs from D-757's 78a68921 by
+                           EXACTLY ONE LINE)
+    changed    BOSS1 +1.000 mm in X to the re-based doc (41.000, 12.000).
+               Zero copper objects added, zero removed.
+    added      checks/mechanical_keepout_contract.py -- MK1-MK7, the eighteenth
+               standing contract and the first that looks at the ENCLOSURE
+    evidence   d759-{release-verification,mechanical-datum,boss-clearance,
+               mechanical_keepout-contract,
+               mechanical-contract-refuses-both-predecessors,verify-promotion,
+               contract-diff-digest-only,package-delta}.json and a d759-* set
+
+### 1. WHAT D-758 GOT WRONG
+
+`D-758` read `FBV2_P1_KEEPOUTS.md` section 1 — `BOSS1_KEEPOUT X 37.75 … 42.25`,
+`BOSS2_KEEPOUT X 56.75 … 61.25`, `IR_BARRIER X 56.50 … 61.50` — as the current
+register, found the board's rule areas 1.000 mm east of all three, and "corrected"
+them.
+
+**The same file's own header says every one of those coordinates gains
++1.000 mm.**  `FBV2-EXP-002` grew the board **symmetrically** from 70.000 to
+72.000 mm, and the header states it in exactly those words: *"every X coordinate
+below gains +1.0 mm"*, restating by hand only the handful of regions that changed
+by more than the shift.  The re-based `IR_BARRIER` is `X 57.50 … 62.50`, which
+the header also states explicitly and which D-758 did not read.
+
+**THE BOARD DECIDES THE DATUM, AND IT IS UNANIMOUS**
+(`evidence/d759-mechanical-datum.json`).  Four parts whose mechanical window is
+their own reason for existing:
+
+    U6  TSOP38238   X 62.955..70.545  section-1 61.50..70.00 NO   re-based 62.50..71.00 YES
+    J3  USB-C       X 37.635..48.365  section-1 36.00..48.00 NO   re-based 37.00..49.00 YES
+    MK1 microphone  X  2.205.. 5.795  section-1  0.50.. 5.50 NO   re-based  1.50.. 6.50 YES
+    D1  TSAL6100    X 49.765..56.285  section-1 48.00..56.50 YES  re-based 49.00..57.50 YES
+
+Three fit ONLY the re-based window.  **The board is on the re-based datum**, and
+D-758 moved both keep-outs and `BOSS2` onto the superseded one.  At `x = 59.000`
+`BOSS2`'s Ø4.500 mm keep-out runs **0.750 mm into `IR_TX_OPTICAL`** — the mirror
+image of the defect D-758 believed it was removing.  *`DEVICE_SPEC` had carried
+`BOSS2 X (59 vs 60)` as UNRESOLVED since `D-226`; the 1 mm was never a preference
+between two opinions, it was the re-base, and the metrics file had the right one.*
+
+### 2. WHAT THE REAL DEFECT WAS
+
+**`BOSS1`'s HOLE was the one object on this board that never took the re-base.**
+It sat at doc `(40.000, 12.000)` while its own `BOSS1_KEEPOUT` sat at the
+re-based `38.750 … 43.250`, centred on `41.000`.  `BOSS2` and `BOSS2_KEEPOUT`
+were both already re-based and both correct.  So the SYMPTOM D-758 measured was
+real and the CAUSE was the other object:
+
+                                        before          now
+    pour fill to the BOSS1 hole centre  1.3505 mm       2.2500 mm
+    pour to the edge of the 2.200 NPTH  0.2505 mm       1.1505 mm
+    routed copper inside the Ø4.500     3 (/SX1262_RXEN)  none
+    nearest routed copper               —               2.3000 mm  F.Cu /SD_CS_N
+
+Against this board's own published **0.200 mm** NPTH-to-copper figure that is
+**5.75× the margin instead of 1.25×**.  `BOSS2` measures the same 2.2500 /
+1.1505 mm and has no routed copper within 3.200 mm.
+
+**The fix is ONE FOOTPRINT.**  `verify_promotion` against `D-757`: **16 of 16,
+zero objects added, zero objects removed**.  The board file differs from D-757 by
+exactly one line — `(at 40 136)` → `(at 41 136)` — plus the pour refill that
+follows the hole.  Of the shipped package, the CPL, all four BOM files, both
+pastes, both silks, the outline, the drill report, `In2.Cu` and the PTH drill are
+byte-identical; what moved is the **NPTH drill** and the layers whose clearance
+follows it.
+
+### 3. THE EIGHTEENTH CONTRACT, AND IT REFUSES BOTH ITS PREDECESSORS
+
+`FBV2_P1_KEEPOUTS.md` is marked **NORMATIVE for the enclosure CAD**, and until
+now **not one of its statements was checked against the board**.  That is what
+both of these decisions are.  `mechanical_keepout_contract.py`:
+
+    MK1  THE DATUM IS PROVED BY THE BOARD before any other clause is allowed to
+         ask its question -- the four parts above, and at least one of them must
+         NOT fit section 1
+    MK2  BOSS RETENTION: each hole at its registered doc position, its keep-out
+         the registered rectangle, that rectangle covering Ø4.500 mm ABOUT THE
+         HOLE, and no copper, pour, pad or courtyard inside that circle
+    MK3  REAR SUPPORT RIBS are component-free on the back
+    MK4  SPEAKER_ZONE carries no back-side component -- it is a sealed cavity
+    MK5  BATTERY_SHADOW carries no through-hole lead
+    MK6  BOSS2's Ø4.500 lies WHOLLY INSIDE the opaque IR_BARRIER
+    MK7  NOT VACUOUS -- four live controls
+
+**It refuses both boards that came before it**
+(`evidence/d759-mechanical-contract-refuses-both-predecessors.json`):
+
+    D-757  MK2 FAIL   BOSS1's hole not as registered; 3 copper + 4 pours inside
+    D-758  MK2 FAIL   both holes and both keep-outs off the register
+           MK6 FAIL   BOSS2's keep-out no longer inside the IR barrier
+
+The second row is this contract catching **my own** error, which is the only
+reason to trust the first.
+
+### 4. AND `RIB_R2` IS RETIRED, BECAUSE A CONVERTER IS SITTING ON IT
+
+`MK3` found the second thing nobody was checking.  `RIB_R2` — a moulded rear
+support pad the register calls ***"component-free, verified"*** and D-232 locked
+as bearing *"directly behind the A/B control area"* — is where **D-719
+re-floorplanned the `TPS63020`**.  On the re-based footprint `X 67.20 … 70.70`,
+doc `Y 45 … 64`, the parts inside it are **`C28`, `C31`, `R39`, `R40` and
+`U12`**.  A rib moulded there lands on a 3 × 3 mm QFN: either the shell does not
+close or the part carries the load.
+
+It is RETIRED and replaced by a window that is **measured**, not asserted:
+
+    RIB_R2A          X 65.500..69.000  doc Y 36.000..48.000  12.00 mm
+                     top edge 1.000 mm from the A/B row at doc Y 49.000
+    second bearing   X 70.000..73.500  doc Y 58.000..71.500  13.50 mm
+
+Both clear every back-side part with 0.25 mm of margin, both east of the
+re-based `BATTERY_SHADOW` (`X 7.00 … 64.00`) so no support compresses the LiPo,
+both far outside the Ø58 metal exclusion.  `RIB_R1`, `RIB_R3` and `RIB_B1` are
+re-measured and still component-free, and `SPEAKER_ZONE` still carries no rear
+part.  **`MK5` also retires a scare of my own**: read on the superseded
+`X 6.00 … 66.00`, `J5`'s leads 17–24 looked 0.100 mm inside the battery volume;
+on the re-based, restated `X 7.00 … 64.00` there are **zero** through-hole leads
+inside it.
+
+### 5. WHAT IS KEPT FROM D-758
+
+Two things, and they are what found all of this.  **The probe of the five DRC
+tests this board sets to `ignore`** — `missing_courtyard` on `BOSS1`/`BOSS2` is
+the thread that led here — and **`--rule-area-recentred`**, the declaration
+`verify_promotion` gained so that re-centring a keep-out is reviewable rather
+than refused, with its four live negative controls.  Neither is on the board.
+
+### 6. RELEASE-GRADE VERIFICATION, WHOLE, ON `1a06b058`
+
+    connectivity     174 retained multi-pad nets, 173 connected, 1 open
+                     approved_unrouted 1 (U11.3, owner decision D-742)
+                     unapproved_open_edges 0
+    approved NC      EXACTLY the 8 J5 positions Demo scope allows
+    KiCad DRC 10.0.5 199 lib_footprint_issues, EVERY ONE severity WARNING
+                     ZERO of every other class
+    parity           246 warnings, 0 ERRORS
+    promotion        16 of 16 against D-757; 0 objects added, 0 removed
+    mechanical       MK1-MK7 PASS, 4 controls; refuses D-757 and D-758
+    protected copper 15 nets IDENTICAL, differences {}
+    ampacity         all_ok; stackup self-check PASS
+    features         F1-F6 PASS
+    FAB1..FAB13      ALL PASS
+    contracts        18 run, 18 pass, 14 IDENTICAL to d757 apart from the board
+                     digest; three moved by exactly the BOSS1 claim and the
+                     0.071 mm2 of plane the NPTH's clearance cut handed back,
+                     and the fourth is the new contract itself
+    firmware         H1-H6 PASS, 4 PlatformIO environments built
+    hardware/beta-v2 UNTOUCHED
+
+**There is no open owner decision and no unresolved Demo fabrication blocker.**
+
+### 7. THE LESSON, STATED ONCE
+
+D-758 said *"a keep-out is a claim about a PLACE, and nothing had checked it was
+the right place."*  That was true.  What it missed is the sentence before it:
+**a coordinate is a claim about a DATUM, and a document that has been re-based
+carries both.**  Section 1 of that register has been superseded-in-part since
+2026-08-24 and every number in it still reads like a current one.  The board was
+the only witness that could settle it, and asking the board is now `MK1` — the
+first clause, ahead of every other question, because if the datum is wrong every
+answer after it is confidently wrong too.
+
 ## D-758 — **THE KEEP-OUT WAS NOT ON THE BOSS, AND THE BOSS WAS NOT WHERE TWO DECISIONS LOCKED IT.** BOTH WERE OUT BY EXACTLY 1.000 mm, IN THE SAME DIRECTION
 
     authority  f66c7896   (was 78a68921)

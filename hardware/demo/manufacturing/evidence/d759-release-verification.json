@@ -1,0 +1,382 @@
+{
+ "approved_demo_nc": {
+  "expected": [
+   "J5.10",
+   "J5.11",
+   "J5.12",
+   "J5.15",
+   "J5.16",
+   "J5.17",
+   "J5.18",
+   "J5.9"
+  ],
+  "missing": [],
+  "observed": [
+   "J5.10",
+   "J5.11",
+   "J5.12",
+   "J5.15",
+   "J5.16",
+   "J5.17",
+   "J5.18",
+   "J5.9"
+  ],
+  "unexpected": []
+ },
+ "approved_unrouted": [
+  "U11.3"
+ ],
+ "beta_v2_untouched": true,
+ "board_sha256": "1a06b058912b4c37e25d0acd9314f9542671efa852a162cc8b1dc6533e25668b",
+ "boss_clearance": {
+  "BOSS1": {
+   "covers_required_2_250": true,
+   "hole_doc_mm": [
+    41.0,
+    12.0
+   ],
+   "hole_kicad_mm": [
+    41.0,
+    136.0
+   ],
+   "hole_matches_register": true,
+   "keepout_doc_y_mm": [
+    9.75,
+    14.25
+   ],
+   "keepout_inradius_about_the_hole_mm": 2.25,
+   "keepout_matches_register": true,
+   "keepout_x_mm": [
+    38.75,
+    43.25
+   ],
+   "nearest_component": [
+    [
+     2.525,
+     "J3"
+    ],
+    [
+     2.525,
+     "R74"
+    ],
+    [
+     2.5303,
+     "R20"
+    ]
+   ],
+   "nearest_pour_fill": [
+    [
+     2.25,
+     "B.Cu",
+     "GND"
+    ],
+    [
+     2.25,
+     "In1.Cu",
+     "GND"
+    ],
+    [
+     2.25,
+     "In3.Cu",
+     "+3V3"
+    ]
+   ],
+   "nearest_routed_copper": [
+    [
+     2.3,
+     "F.Cu",
+     "/SD_CS_N"
+    ],
+    [
+     2.5833,
+     "F.Cu",
+     "/SD_CS_N"
+    ],
+    [
+     2.6732,
+     "via",
+     "/SX1262_RXEN"
+    ]
+   ],
+   "pour_to_npth_hole_edge_mm": 1.15,
+   "register_hole_doc_mm": [
+    41.0,
+    12.0
+   ],
+   "register_keepout_doc_y_mm": [
+    9.75,
+    14.25
+   ],
+   "register_keepout_x_mm": [
+    38.75,
+    43.25
+   ]
+  },
+  "BOSS2": {
+   "covers_required_2_250": true,
+   "hole_doc_mm": [
+    60.0,
+    145.0
+   ],
+   "hole_kicad_mm": [
+    60.0,
+    3.0
+   ],
+   "hole_matches_register": true,
+   "keepout_doc_y_mm": [
+    142.75,
+    147.25
+   ],
+   "keepout_inradius_about_the_hole_mm": 2.25,
+   "keepout_matches_register": true,
+   "keepout_x_mm": [
+    57.75,
+    62.25
+   ],
+   "nearest_component": [
+    [
+     2.695,
+     "C11"
+    ],
+    [
+     3.005,
+     "U6"
+    ]
+   ],
+   "nearest_pour_fill": [
+    [
+     2.25,
+     "B.Cu",
+     "GND"
+    ],
+    [
+     2.25,
+     "F.Cu",
+     "+3V3"
+    ],
+    [
+     2.25,
+     "In1.Cu",
+     "GND"
+    ]
+   ],
+   "nearest_routed_copper": [],
+   "pour_to_npth_hole_edge_mm": 1.15,
+   "register_hole_doc_mm": [
+    60.0,
+    145.0
+   ],
+   "register_keepout_doc_y_mm": [
+    142.75,
+    147.25
+   ],
+   "register_keepout_x_mm": [
+    57.75,
+    62.25
+   ]
+  }
+ },
+ "connectivity": {
+  "approved_unrouted_edges": 1,
+  "connected_retained_nets": 173,
+  "open_retained_nets": 1,
+  "raw_board_ratsnest": 17,
+  "retained_multi_pad_nets": 174,
+  "retained_open_edges": 1,
+  "unapproved_open_edges": 0,
+  "unapproved_open_retained_nets": 0
+ },
+ "contract_regression": {
+  "all_ran": true,
+  "contracts": 18,
+  "failing": [],
+  "identical_to_d757_apart_from_the_board_digest": 14,
+  "the_four_that_moved": {
+   "keepout_stackup": "In1.Cu GND reference plane 9491.008 -> 9491.079 mm2, +0.071 mm2: the BOSS1 NPTH's own clearance cut moved 1.000 mm east with the hole, and the plane reclaimed the sliver it left behind",
+   "mechanical_keepout": "new at D-759; no d757 baseline exists",
+   "placement": "the BOSS1 move is CLAIMED here and was not claimed in d757",
+   "pour_partition": "moved_refs_claimed 1 vs 0 -- the same BOSS1 claim"
+  }
+ },
+ "decision": "D-759",
+ "declaration": "DEMO_READY_FOR_FAB",
+ "fab_package": {
+  "artwork_unchanged": 17,
+  "clauses": {
+   "FAB10_via_geometry": true,
+   "FAB11_mask_dams": true,
+   "FAB12_identity": true,
+   "FAB13_nfc_tuning_access": true,
+   "FAB1_provenance": true,
+   "FAB2_fill": true,
+   "FAB3_layers": true,
+   "FAB4_drill": true,
+   "FAB5_cpl": true,
+   "FAB6_bom": true,
+   "FAB7_sourcing": true,
+   "FAB8_outline": true,
+   "FAB9_via_in_pad": true
+  },
+  "failing": [],
+  "verdict": "PASS"
+ },
+ "feature_contract": {
+  "all_pass": true,
+  "clauses": {
+   "F1_every_scope_part_fitted": true,
+   "F2_every_scope_net_whole": true,
+   "F3_approved_nc_exactly_as_scoped": true,
+   "F4_every_exposed_signal_contact_has_esd": true,
+   "F5_backlight_disconnect_control_is_independent": true,
+   "F6_accessory_envelope_is_bounded_by_hardware": true
+  }
+ },
+ "firmware": {
+  "clauses": {
+   "H1_generated_tree_is_fresh": "PASS",
+   "H2_board_digest": "PASS",
+   "H3_policy_corroborated": "PASS",
+   "H4_owner_decisions_are_machine_checked": "PASS",
+   "H5_firmware_layer_uses_the_map": "PASS",
+   "H6_host_tests_prove_the_orderings": "PASS"
+  },
+  "platformio_environments_built": [
+   "esp32-s3-aqroot",
+   "wokwi",
+   "esp32-s3-aqroot-dm",
+   "aqroot-demo"
+  ],
+  "verdict": "PASS"
+ },
+ "kicad_drc": {
+  "classes_other_than_lib_footprint_issues": [],
+  "every_violation_is_a_warning": true,
+  "kicad": "10.0.5",
+  "total": 199,
+  "unconnected_items": 17,
+  "violations": {
+   "lib_footprint_issues": 199
+  }
+ },
+ "mechanical_keepout_contract": {
+  "all_pass": true,
+  "clauses": {
+   "MK1_datum_proved_by_the_board": true,
+   "MK2_boss_retention": true,
+   "MK3_rear_support_ribs_component_free": true,
+   "MK4_speaker_cavity_has_no_rear_part": true,
+   "MK5_no_through_hole_lead_in_the_battery_volume": true,
+   "MK6_boss2_is_inside_the_ir_barrier": true,
+   "MK7_not_vacuous": true
+  },
+  "controls": {
+   "a_boss_nudged_0_100_mm_is_refused": true,
+   "a_lead_in_the_battery_volume_is_refused": true,
+   "reading_the_pre_rebase_datum_is_visible": true,
+   "the_retired_RIB_R2_footprint_is_refused": true
+  },
+  "refuses_both_predecessors": {
+   "d757": {
+    "MK2": false
+   },
+   "d758": {
+    "MK2": false,
+    "MK6": false
+   }
+  }
+ },
+ "owner_decisions_open": [],
+ "predecessor_authority": "78a68921f7986b9b4afbd6a5fa97b227d26ddfd20c75c99a8e90987ac02910e1",
+ "promotion": {
+  "clauses": 16,
+  "clauses_pass": 16,
+  "objects_added": 0,
+  "objects_removed": 0,
+  "verdict": "PASS"
+ },
+ "protected_copper": {
+  "counts": {
+   "/01_POWER_TREE/BAT_CONNECTOR_P": 7,
+   "/01_POWER_TREE/BAT_MID": 12,
+   "/01_POWER_TREE/BAT_PROTECTED_P": 84,
+   "/01_POWER_TREE/BAT_PROT_SHDN_CTL": 18,
+   "/01_POWER_TREE/BAT_RAW": 70,
+   "/01_POWER_TREE/BAT_SENSE": 22,
+   "/08_BUTTONS_EXPANDERS/FRONT_RGB_B_N": 18,
+   "/08_BUTTONS_EXPANDERS/FRONT_RGB_G_N": 13,
+   "/08_BUTTONS_EXPANDERS/FRONT_RGB_R_N": 20,
+   "/09_COMMUNITY_HEADER/XGPIO4_HDR": 9,
+   "/09_COMMUNITY_HEADER/XGPIO5_HDR": 12,
+   "/ACC_3V3_SW": 83,
+   "/ACC_5V_SW_EN": 23,
+   "/XGPIO4": 9,
+   "/XGPIO5": 6
+  },
+  "differences": {},
+  "identical": true
+ },
+ "rail_ampacity": {
+  "all_ok": true,
+  "rails": {
+   "BAT_PROTECTED_P": "OK_WITH_DECLARED_EXCEPTION",
+   "BQ25185_SYS": "POUR_DELIVERED",
+   "SYS_TO_ACC5V_BOOST": "OK_WITH_DECLARED_EXCEPTION",
+   "SYS_TO_NFC5V_BOOST": "OK_WITH_DECLARED_EXCEPTION",
+   "USB_VBUS_CHG": "OK_WITH_DECLARED_EXCEPTION",
+   "USB_VBUS_RAW": "OK"
+  },
+  "stackup_selfcheck": true
+ },
+ "ref_commit": "1f8fa91234109e51720cabc61e79e6c15752362d",
+ "rib_r2_retired": {
+  "optional_second": "X 70.000..73.500, doc Y 58.000..71.500, 13.500 mm",
+  "replacement": "RIB_R2A X 65.500..69.000, doc Y 36.000..48.000, 12.000 mm, top edge 1.000 mm from the A/B control row",
+  "why": "D-719 re-floorplanned the TPS63020 into the rib the register calls 'component-free, verified': C28, C31, R39, R40 and U12 are inside it"
+ },
+ "schema": 1,
+ "schematic_parity": {
+  "by_severity": {
+   "warning": 246
+  },
+  "by_type": {
+   "extra_footprint": 2,
+   "footprint_symbol_field_mismatch": 199,
+   "footprint_symbol_mismatch": 45
+  },
+  "errors": 0,
+  "total": 246
+ },
+ "the_correction": {
+  "kept": "the --rule-area-recentred declaration D-758 added to verify_promotion, with its four negative controls, and D-758's probe of the five DRC tests this board sets to 'ignore' -- which is what found all of this",
+  "proof": "evidence/d759-mechanical-datum.json -- U6, J3 and MK1 each fit ONLY the re-based window; D1 fits both; none fits section 1 alone",
+  "reverted": "BOSS2 back to doc (60.000, 145.000); both keep-out rule areas back to their registered rectangles; the /SX1262_RXEN barrel back to (38.200, 135.000).  The board now differs from D-757 by exactly one line.",
+  "what": "D-758 read FBV2_P1_KEEPOUTS.md section 1 as current.  That file's own header says every section-1 X coordinate gains +1.000 mm (FBV2-EXP-002, 70.000 -> 72.000 mm grown symmetrically).  D-758 therefore moved both boss keep-outs and BOSS2 onto the PRE-REBASE datum, correcting a real defect into a different one: at x = 59.000 BOSS2's keep-out runs 0.750 mm into IR_TX_OPTICAL."
+ },
+ "the_real_defect": {
+  "after": {
+   "pour_to_hole_centre_mm": 2.25,
+   "pour_to_npth_edge_mm": 1.1505,
+   "routed_copper_inside_the_required_circle": 0
+  },
+  "before": {
+   "pour_to_hole_centre_mm": 1.3505,
+   "pour_to_npth_edge_mm": 0.2505,
+   "routed_copper_inside_the_required_circle": 3
+  },
+  "published_npth_to_copper_figure_mm": 0.2,
+  "what": "BOSS1's HOLE was the one object on this board that never took the re-base.  It sat at doc x = 40.000 while its own BOSS1_KEEPOUT sat at the re-based 38.750 .. 43.250, centred on 41.000."
+ },
+ "what_changed": {
+  "board": "ONE footprint: BOSS1 +1.000 mm in X to the re-based doc (41.000, 12.000).  Zero copper objects added, zero removed.  D-758's board changes are reverted whole.",
+  "shipped_artwork_that_moved": [
+   "gerbers/aqroot-Beta-v2-B_Cu.gbr",
+   "gerbers/aqroot-Beta-v2-B_Mask.gbr",
+   "gerbers/aqroot-Beta-v2-F_Cu.gbr",
+   "gerbers/aqroot-Beta-v2-F_Mask.gbr",
+   "gerbers/aqroot-Beta-v2-In1_Cu.gbr",
+   "gerbers/aqroot-Beta-v2-In3_Cu.gbr",
+   "gerbers/aqroot-Beta-v2-In4_Cu.gbr",
+   "gerbers/aqroot-Beta-v2-NPTH.drl"
+  ]
+ }
+}

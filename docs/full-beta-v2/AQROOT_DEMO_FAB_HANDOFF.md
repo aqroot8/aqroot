@@ -133,43 +133,62 @@ controls proving none of them is vacuous.
 `solder_mask_min_width`. It is probed in a scratch copy and the board setup is
 deliberately left alone; the measurement is the deliverable.
 
-## 5a. Mechanical retention — the two M2 bosses (D-758)
+## 5a. Mechanical retention — the two M2 bosses and the rear ribs (D-759)
 
-Both mounting bosses were out of position by exactly 1.000 mm, in the same
-direction, and both are corrected on the fabrication candidate.
+**Read every mechanical coordinate on the RE-BASED datum.** `FBV2_P1_KEEPOUTS.md`
+section 1 is written on the pre-`FBV2-EXP-002` 70.000 mm board; the file's own
+header says the board grew symmetrically to 72.000 mm and that **every section-1
+X coordinate gains +1.000 mm**. The board proves it: `U6` fits only the re-based
+`IR_RX_OPTICAL`, `J3` only the re-based `USB_APERTURE`, `MK1` only the re-based
+`MIC_ACOUSTIC`. `mechanical_keepout_contract` clause **MK1** re-proves this
+against the board before any other clause asks its question.
 
-| | as declared at D-756 | now |
+| | registered (re-based) | as built |
 |---|---|---|
-| `BOSS1` hole | doc (40.000, 12.000) — correct | unchanged |
-| `BOSS1_KEEPOUT` | 4.500 mm square centred on **41.000** | **Ø4.500 mm circle on the boss** |
-| `BOSS2` hole | doc **(60.000, 145.000)** | doc **(59.000, 145.000)** — the `D-226`/`D-232` locked value |
-| `BOSS2_KEEPOUT` | 4.500 mm square centred on 60.000 | **Ø4.500 mm circle on the boss** |
+| `BOSS1` hole | doc **(41.000, 12.000)** | 41.000, 12.000 — **moved +1.000 mm at D-759** |
+| `BOSS1_KEEPOUT` | X 38.75 … 43.25, Y 9.75 … 14.25 | as registered, unchanged |
+| `BOSS2` hole | doc **(60.000, 145.000)** | 60.000, 145.000 — unchanged |
+| `BOSS2_KEEPOUT` | X 57.75 … 62.25, Y 142.75 … 147.25 | as registered, unchanged |
 
-**Why `BOSS2` had to move.** `D-226` widened the mandatory opaque `IR_BARRIER`
-**3.0 → 5.0 mm (X 56.500 … 61.500) specifically so that it would carry `BOSS2`**,
-and withdrew P1-001's (59.500, 145.000) as *"never legal"* because its Ø4.500 mm
-keep-out ran 0.250 mm into `IR_RX_OPTICAL`. At the as-built 60.000 that overlap
-was **0.750 mm**. At the locked 59.000 it is **0.000 mm** and the keep-out lies
-wholly inside the barrier. The correction cost **no copper**: nothing was inside
-the corrected region.
+**`BOSS1`'s hole was the one object on this board that never took the re-base.**
+It sat at doc `x = 40.000` while its own keep-out sat at the re-based
+38.75 … 43.25, centred on 41.000 — so the west of the Ø4.500 mm region the
+footprint requires was unprotected:
 
-**What `BOSS1`'s misplaced keep-out had let in.** Four pour fills reached
-**1.3505 mm from the boss centre — 0.2505 mm from the edge of a 2.200 mm
-non-plated hole**, against this board's own published 0.200 mm NPTH-to-copper
-figure, and `/SX1262_RXEN` had a via 1.7591 mm from it. On the corrected board:
-
-| | `BOSS1` | `BOSS2` |
+| | before D-759 | now |
 |---|---|---|
-| nearest routed copper | 2.3000 mm (`F.Cu` `/SD_CS_N`) | none within 3.200 mm |
-| nearest pour fill | **2.2505 mm** (was 1.3505) | 2.2505 mm |
-| nearest component | 2.5250 mm (`J3` courtyard) | 2.6950 mm (`C11` courtyard) |
-| pour to NPTH hole edge | **1.1505 mm** (was 0.2505) | 1.1505 mm |
+| nearest pour fill to the `BOSS1` hole centre | **1.3505 mm** | **2.2500 mm** |
+| pour to the edge of the 2.200 mm NPTH | **0.2505 mm** | **1.1505 mm** |
+| routed copper inside Ø4.500 | 3 objects (`/SX1262_RXEN`) | **none** |
+| nearest routed copper | — | 2.3000 mm (`F.Cu` `/SD_CS_N`) |
+
+Against this board's own published **0.200 mm** NPTH-to-copper figure that is
+5.75× the margin instead of 1.25×. `BOSS2` measures the same 2.2500 mm / 1.1505 mm
+and has no routed copper within 3.200 mm. Its Ø4.500 mm keep-out lies **wholly
+inside** the re-based opaque `IR_BARRIER` (X 57.500 … 62.500) that D-226 widened
+3.0 → 5.0 mm specifically to carry it, and **0.000 mm** into either optical
+window.
+
+**`RIB_R2` IS RETIRED.** The rear support rib registered at X 66.20 … 69.70
+(67.20 … 70.70 re-based), doc Y 45 … 64 and described as *"component-free,
+verified"* is where D-719 re-floorplanned the `TPS63020`: `C28`, `C31`, `R39`,
+`R40` and `U12` are inside it. **Do not mould a rib there** — it would land on a
+3 × 3 mm QFN. Its replacement is measured and component-free:
+
+| rib | region (re-based doc datum) | length | note |
+|---|---|---|---|
+| `RIB_R2A` | **X 65.50 … 69.00, Y 36.00 … 48.00** | 12.00 mm | top edge **1.00 mm** from the A/B control row at Y 49.000 |
+| optional second bearing | X 70.00 … 73.50, Y 58.00 … 71.50 | 13.50 mm | brackets the A/B row from above, in the D-709 east step |
+
+Both are clear of every back-side part with 0.25 mm of margin, east of the
+re-based `BATTERY_SHADOW` (X 7.00 … 64.00) so no support compresses the LiPo, and
+far outside the Ø58 metal exclusion. `RIB_R1`, `RIB_R3` and `RIB_B1` are
+re-measured and still component-free.
 
 **FIRST ARTICLE:** confirm both Ø2.2 mm NPTH positions against the enclosure CAD
-before tooling the bosses — the enclosure is designed from these coordinates, and
-`BOSS2`'s moulded boss must land inside the opaque IR barrier, not beside it.
-Evidence: `evidence/d758-boss-clearance.json`,
-`evidence/d758-boss2-ir-barrier.json`.
+before tooling the bosses. Evidence: `evidence/d759-mechanical-datum.json`,
+`evidence/d759-boss-clearance.json`,
+`evidence/d759-mechanical_keepout-contract.json`.
 
 ## 5. Safety and power
 

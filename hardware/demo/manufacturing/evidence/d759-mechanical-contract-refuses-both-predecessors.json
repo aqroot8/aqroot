@@ -1,0 +1,136 @@
+{
+ "cases": {
+  "d757_before_this_fix": {
+   "MK1": true,
+   "MK2_bosses": [
+    {
+     "copper_inside_the_circle": [
+      [
+       1.7591,
+       "/SX1262_RXEN"
+      ],
+      [
+       1.9591,
+       "/SX1262_RXEN"
+      ],
+      [
+       1.9591,
+       "/SX1262_RXEN"
+      ]
+     ],
+     "covers_the_required_diameter": false,
+     "hole_as_registered": false,
+     "hole_doc_mm": [
+      40.0,
+      12.0
+     ],
+     "keepout_as_registered": true,
+     "ok": false,
+     "pour_inside_the_circle": [
+      [
+       1.3505,
+       "B.Cu",
+       "GND"
+      ],
+      [
+       1.3505,
+       "In1.Cu",
+       "GND"
+      ],
+      [
+       1.3505,
+       "In3.Cu",
+       "+3V3"
+      ],
+      [
+       1.3505,
+       "In4.Cu",
+       "GND"
+      ]
+     ],
+     "ref": "BOSS1"
+    },
+    {
+     "copper_inside_the_circle": [],
+     "covers_the_required_diameter": true,
+     "hole_as_registered": true,
+     "hole_doc_mm": [
+      60.0,
+      145.0
+     ],
+     "keepout_as_registered": true,
+     "ok": true,
+     "pour_inside_the_circle": [],
+     "ref": "BOSS2"
+    }
+   ],
+   "MK2_ok": false,
+   "MK3_ok": true,
+   "MK5_ok": true,
+   "MK6": {
+    "boss2_keepout_x_mm": [
+     57.75,
+     62.25
+    ],
+    "into_ir_rx_optical_mm": 0.0,
+    "into_ir_tx_optical_mm": 0.0,
+    "ir_barrier_x_mm": [
+     57.5,
+     62.5
+    ],
+    "ok": true
+   },
+   "rev": "542ac49"
+  },
+  "d758_my_own_mistake": {
+   "MK1": true,
+   "MK2_bosses": [
+    {
+     "copper_inside_the_circle": [],
+     "covers_the_required_diameter": true,
+     "hole_as_registered": false,
+     "hole_doc_mm": [
+      40.0,
+      12.0
+     ],
+     "keepout_as_registered": false,
+     "ok": false,
+     "pour_inside_the_circle": [],
+     "ref": "BOSS1"
+    },
+    {
+     "copper_inside_the_circle": [],
+     "covers_the_required_diameter": true,
+     "hole_as_registered": false,
+     "hole_doc_mm": [
+      59.0,
+      145.0
+     ],
+     "keepout_as_registered": false,
+     "ok": false,
+     "pour_inside_the_circle": [],
+     "ref": "BOSS2"
+    }
+   ],
+   "MK2_ok": false,
+   "MK3_ok": true,
+   "MK5_ok": true,
+   "MK6": {
+    "boss2_keepout_x_mm": [
+     56.75,
+     61.25
+    ],
+    "into_ir_rx_optical_mm": 0.0,
+    "into_ir_tx_optical_mm": 0.75,
+    "ir_barrier_x_mm": [
+     57.5,
+     62.5
+    ],
+    "ok": false
+   },
+   "rev": "1f8fa91"
+  }
+ },
+ "schema": 1,
+ "what": "the MECHANICAL KEEP-OUT contract asked of the two boards that came before it: D-757, which carried BOSS1's hole 1.000 mm west of its own keep-out, and D-758, which moved the two keep-outs and BOSS2 onto the PRE-REBASE datum.  Both are refused, for different reasons."
+}

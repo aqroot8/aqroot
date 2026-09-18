@@ -66,7 +66,69 @@
 > `verify_promotion` PASS and `protected_copper` showing exactly one protected
 > net moved.  `U14.7` is on the bus.  This board has **no open owner decision**.
 
-> # **DEMO_READY_FOR_FAB IS DECLARED (2026-09-18, D-758).**
+> # **DEMO_READY_FOR_FAB IS DECLARED (2026-09-18, D-759).**
+>
+> **Board authority `1a06b058`.**  D-758's board changes are **REVERTED WHOLE**
+> and this board differs from D-757's `78a68921` by **exactly one line**.
+>
+> **D-758 WAS WRONG, AND THE FILE IT READ SAYS SO IN ITS OWN HEADER.**  It read
+> `FBV2_P1_KEEPOUTS.md` section 1 as the current register.  That file's own
+> `FBV2-EXP-002` header says the board grew **symmetrically** 70.000 → 72.000 mm
+> and that *"every X coordinate below gains +1.0 mm"*, and restates the re-based
+> `IR_BARRIER` as `X 57.50 … 62.50`.  **The board decides the datum and it is
+> unanimous**: `U6` fits only the re-based `IR_RX_OPTICAL`, `J3` only the
+> re-based `USB_APERTURE`, `MK1` only the re-based `MIC_ACOUSTIC`; `D1` fits
+> both; none fits section 1 alone.  So D-758 moved both boss keep-outs and
+> `BOSS2` onto the SUPERSEDED datum — at `x = 59.000` `BOSS2`'s Ø4.500 mm
+> keep-out runs **0.750 mm into `IR_TX_OPTICAL`**, the mirror of the defect it
+> believed it was removing.  *`DEVICE_SPEC`'s long-unresolved `BOSS2 X (59 vs
+> 60)` was never two opinions — it was the re-base, and the metrics file had the
+> right one.*
+>
+> **THE REAL DEFECT WAS ONE FOOTPRINT.**  `BOSS1`'s HOLE is the one object on
+> this board that never took the re-base: it sat at doc `(40.000, 12.000)` while
+> its own `BOSS1_KEEPOUT` sat at the re-based `38.750 … 43.250`, centred on
+> `41.000`.  So the symptom D-758 measured was real and the cause was the other
+> object.  Moved `+1.000 mm`: the pour now stands **2.2500 mm** from the hole
+> centre instead of 1.3505, i.e. **1.1505 mm from the edge of a 2.200 mm NPTH
+> instead of 0.2505 mm** — against this board's own published 0.200 mm
+> NPTH-to-copper figure, 5.75× the margin instead of 1.25×.  `verify_promotion`
+> against D-757 is **16/16 with ZERO objects added and ZERO removed**.
+>
+> **THE EIGHTEENTH CONTRACT, AND IT REFUSES BOTH ITS PREDECESSORS.**
+> `FBV2_P1_KEEPOUTS.md` is marked NORMATIVE for the enclosure CAD and not one of
+> its statements had ever been checked against the board.
+> `mechanical_keepout_contract` (**MK1–MK7**) does it now, and **MK1 proves the
+> DATUM against the board before any other clause is allowed to ask its
+> question**.  It reads `MK2 FAIL` on D-757 and `MK2 + MK6 FAIL` on D-758 — the
+> second being the contract catching my own error, which is the only reason to
+> trust the first.
+>
+> **AND `RIB_R2` IS RETIRED, BECAUSE A CONVERTER IS SITTING ON IT.**  The moulded
+> rear support pad the register calls *"component-free, verified"* is where
+> **D-719 re-floorplanned the `TPS63020`**: `C28`, `C31`, `R39`, `R40` and `U12`
+> are inside it.  Replaced by **`RIB_R2A` (X 65.500 … 69.000, doc Y 36.000 …
+> 48.000, 12.00 mm)**, whose top edge stands **1.000 mm** from the A/B control
+> row, measured component-free with 0.25 mm of margin and east of the re-based
+> `BATTERY_SHADOW` so no support compresses the LiPo.  `MK5` also retires a scare
+> of my own: read on the superseded `X 6.00 … 66.00` `J5`'s leads looked 0.100 mm
+> inside the battery volume; on the re-based, restated `X 7.00 … 64.00` there are
+> **zero**.
+>
+> **RELEASE-GRADE VERIFICATION, WHOLE, ON `1a06b058`**
+> (`evidence/d759-release-verification.json`): `unapproved_open_edges` **0**;
+> **173 of 174** retained nets connected, the one open edge `U11.3` under owner
+> decision D-742; approved-NC set EXACTLY the eight `J5` positions; real KiCad
+> DRC **199 `lib_footprint_issues`, every one a WARNING and ZERO of every other
+> class**; parity **0 errors**; `verify_promotion` **16/16**; **MK1–MK7 PASS**;
+> `protected_copper` **IDENTICAL**; `audit_rail_ampacity` **all_ok**; **F1–F6**;
+> **`FAB1`–`FAB13` all PASS**; `contract_regression` **18 run, 18 pass, 14
+> byte-identical to `d757` apart from the board digest**; firmware **H1–H6** with
+> all four PlatformIO environments building; `hardware/beta-v2` **untouched**.
+>
+> **There is no open owner decision and no unresolved Demo fabrication blocker.**
+
+> # **D-758's DECLARATION IS SUPERSEDED — ITS BOARD CHANGES WERE WRONG AND ARE REVERTED. LEFT STANDING AS HISTORY.**
 >
 > **Board authority `f66c7896`.**  Two mechanical defects, both exactly
 > **1.000 mm east**, and the thing that found them was a DRC test this board has

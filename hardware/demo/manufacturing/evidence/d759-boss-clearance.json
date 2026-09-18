@@ -1,0 +1,153 @@
+{
+ "board_sha256": "1a06b058912b4c37e25d0acd9314f9542671efa852a162cc8b1dc6533e25668b",
+ "bosses": {
+  "BOSS1": {
+   "covers_required_2_250": true,
+   "hole_doc_mm": [
+    41.0,
+    12.0
+   ],
+   "hole_kicad_mm": [
+    41.0,
+    136.0
+   ],
+   "hole_matches_register": true,
+   "keepout_doc_y_mm": [
+    9.75,
+    14.25
+   ],
+   "keepout_inradius_about_the_hole_mm": 2.25,
+   "keepout_matches_register": true,
+   "keepout_x_mm": [
+    38.75,
+    43.25
+   ],
+   "nearest_component": [
+    [
+     2.525,
+     "J3"
+    ],
+    [
+     2.525,
+     "R74"
+    ],
+    [
+     2.5303,
+     "R20"
+    ]
+   ],
+   "nearest_pour_fill": [
+    [
+     2.25,
+     "B.Cu",
+     "GND"
+    ],
+    [
+     2.25,
+     "In1.Cu",
+     "GND"
+    ],
+    [
+     2.25,
+     "In3.Cu",
+     "+3V3"
+    ]
+   ],
+   "nearest_routed_copper": [
+    [
+     2.3,
+     "F.Cu",
+     "/SD_CS_N"
+    ],
+    [
+     2.5833,
+     "F.Cu",
+     "/SD_CS_N"
+    ],
+    [
+     2.6732,
+     "via",
+     "/SX1262_RXEN"
+    ]
+   ],
+   "pour_to_npth_hole_edge_mm": 1.15,
+   "register_hole_doc_mm": [
+    41.0,
+    12.0
+   ],
+   "register_keepout_doc_y_mm": [
+    9.75,
+    14.25
+   ],
+   "register_keepout_x_mm": [
+    38.75,
+    43.25
+   ]
+  },
+  "BOSS2": {
+   "covers_required_2_250": true,
+   "hole_doc_mm": [
+    60.0,
+    145.0
+   ],
+   "hole_kicad_mm": [
+    60.0,
+    3.0
+   ],
+   "hole_matches_register": true,
+   "keepout_doc_y_mm": [
+    142.75,
+    147.25
+   ],
+   "keepout_inradius_about_the_hole_mm": 2.25,
+   "keepout_matches_register": true,
+   "keepout_x_mm": [
+    57.75,
+    62.25
+   ],
+   "nearest_component": [
+    [
+     2.695,
+     "C11"
+    ],
+    [
+     3.005,
+     "U6"
+    ]
+   ],
+   "nearest_pour_fill": [
+    [
+     2.25,
+     "B.Cu",
+     "GND"
+    ],
+    [
+     2.25,
+     "F.Cu",
+     "+3V3"
+    ],
+    [
+     2.25,
+     "In1.Cu",
+     "GND"
+    ]
+   ],
+   "nearest_routed_copper": [],
+   "pour_to_npth_hole_edge_mm": 1.15,
+   "register_hole_doc_mm": [
+    60.0,
+    145.0
+   ],
+   "register_keepout_doc_y_mm": [
+    142.75,
+    147.25
+   ],
+   "register_keepout_x_mm": [
+    57.75,
+    62.25
+   ]
+  }
+ },
+ "datum": "FBV2-EXP-002 RE-BASED: section-1 X + 1.000 mm; KiCad Y = 148 - doc Y",
+ "schema": 1
+}

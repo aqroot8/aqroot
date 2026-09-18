@@ -252,6 +252,20 @@ CONTRACTS = (
     # board and this contract re-runs the generator and fails on any difference.
     ("firmware_hw_map", "checks/firmware_hw_map_contract.py", (),
      "firmware-hw-map-contract", "verdict"),
+    # D-759.  THE EIGHTEENTH, AND THE FIRST THAT LOOKS AT THE ENCLOSURE.
+    # `FBV2_P1_KEEPOUTS.md` is marked NORMATIVE for the enclosure CAD and until
+    # now not one of its statements was checked against the board.  That is not
+    # a hypothetical gap: `BOSS1`'s hole was the one object that never took the
+    # FBV2-EXP-002 re-base and sat 1.000 mm west of its own keep-out for the
+    # whole programme, so four pours stood 0.2505 mm from the edge of a
+    # 2.200 mm NPTH; `RIB_R2`, a moulded rear support pad the register calls
+    # "component-free, verified", is where D-719 re-floorplanned the TPS63020;
+    # and D-758 read the register's section-1 coordinates as current when the
+    # file's own header says they all gain +1.000 mm, and corrected a real
+    # defect into a different one.  MK1 proves the datum against the board
+    # before any other clause is allowed to ask its question.
+    ("mechanical_keepout", "checks/mechanical_keepout_contract.py", (),
+     "mechanical_keepout-contract", "all_pass"),
 )
 BY_BASENAME = ("board", "schematic", "guard", "pre_board")
 
