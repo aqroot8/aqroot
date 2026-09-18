@@ -1,0 +1,27 @@
+{
+ "question": "does the APPROVED_UNROUTED clause FAIL when the declaration is not true of the board?",
+ "control_connected_pad": {
+  "stale": [
+   "U11.1"
+  ],
+  "stranded": false,
+  "unapproved_open_edges": 1
+ },
+ "control_absent_pad": {
+  "stale": [
+   "U11.99"
+  ],
+  "pad_on_board": false
+ },
+ "control_dnp_rework_part": {
+  "rework_parts_missing": [
+   "U11.3:U13"
+  ]
+ },
+ "control_wrong_net": {
+  "stale": [
+   "U11.3"
+  ],
+  "net_matches": false
+ }
+}

@@ -45,7 +45,7 @@ treated as removable merely because it is not itself exposed at the port.
 
 **Provenance.**  The two tables below are read pin by pin out of
 `hardware/demo/kicad/aqroot-demo/aqroot-Beta-v2.kicad_pcb`
-(`sha256 71c4326e8cd704db50f0893b8dc0e2490c8f365aaa826d9b05a37c90a3f535b2`)
+(`sha256 23ee647e5e99ef2aa5f02ab0e3ef7e8ed178fde74ca618b52d35e94ddff47e6c`, re-read pin by pin at D-742)
 using the `AQROOT_Beta:PCAL9535APW` symbol's own pin numbering — pins **4..11 =
 `P00`..`P07`**, pins **13..20 = `P10`..`P17`** — and they agree pin for pin with
 the notes drawn on `08_buttons_expanders.kicad_sch`, which remain the
@@ -70,7 +70,7 @@ and no earlier one.**
 | `P13` | 16 | `/08_BUTTONS_EXPANDERS/BTN_LEFT_N` | IN | D-pad Left, R7 10 k pull-up |
 | `P14` | 17 | `/08_BUTTONS_EXPANDERS/BTN_RIGHT_N` | IN | D-pad Right, R8 10 k pull-up |
 | `P15` | 18 | `/08_BUTTONS_EXPANDERS/BTN_B_N` | IN | B / Back, R9 10 k pull-up |
-| `P16` | 19 | `/BQ25185_STAT2` | IN | charger status 2 -- **`U2.19` ROUTED to R128 / TP7, D-741**, so the pin is held HIGH by R128's 10 k; **`U11.3` remains UNROUTABLE (D-734), so the charger does not drive it** |
+| `P16` | 19 | `/BQ25185_STAT2` | IN | charger status 2 -- **`U2.19` ROUTED to R128 / TP7, D-741**, so the pin is held HIGH by R128's 10 k; **`U11.3` SHIPS UNCONNECTED by owner decision D-742**, so the charger never drives it and the bit carries no information |
 | `P17` | 20 | `/ACC_PWR_EN` | OUT | `U16` TCA4307 community-port I2C buffer enable, R17 100 k pull-down |
 
 ### `U3` — front RGB, accessory power, public XGPIO, I2C `0x21` (A0=+3V3)
@@ -106,9 +106,13 @@ Both `/INT` pins are open-drain and wire-OR onto `WAKE_INT_N` (R3 10 k to
   DIO1 and a pull fights it).  See fact 1 below.
 - **UNMASKED on `U3`:** `ACC_DETECT_N` (`P14`) and `ACC_POWER_FAULT_N` (`P15`).
 - **MASKED, deliberately:** `BQ25185_STAT2` — it is **`4Bh` bit 6 (`P16`)**, not
-  `4Ah` bit 6 — because SLUSF65A §7.3.10 says it toggles continuously with no
-  battery fitted; and both public XGPIO, which is **MX-9** (an accessory must not
-  be able to hold the shared wake line and starve the buttons).
+  `4Ah` bit 6 — because **the charger does not drive it at all on this revision**
+  (`U11.3` ships unconnected, owner decision D-742) and `R128` holds it at a
+  static HIGH, so the bit carries no information.  *This reason SUPERSEDES the
+  earlier one*, which was the no-battery limit cycle of SLUSF65B §6.3.10; that
+  toggle is not observable on Demo either, so it can neither inform firmware nor
+  wake it.  Also MASKED: both public XGPIO, which is **MX-9** (an accessory must
+  not be able to hold the shared wake line and starve the buttons).
 
 ### Two as-built facts firmware must not assume away
 
@@ -125,16 +129,53 @@ Both `/INT` pins are open-drain and wire-OR onto `WAKE_INT_N` (R3 10 k to
    at all; that capability is one of the reasons D-061 made the PCAL9535A
    load-bearing.
 2. **`/BQ25185_STAT2` reaches `U2.P16` through `R128` — D-741 — but the charger
-   still does not drive it.**  Before D-741 `U2.19` was an ISLAND and `P16` was a
-   second floating input; it is now routed to `R128` and `TP7` (23.266 mm, 4
-   vias) and reads a deterministic HIGH.  `U11.3` is unchanged: D-734 proved the
-   charger's `STAT2` land cannot be escaped at any manufacturable width, and
-   D-741's addendum re-measured the window as **exactly 0.100 mm** between
-   D-269's clearance to `U11.2`'s `BAT` escape and `U11.4`'s `GND` land.  **Keep
-   `P16` MASKED** — not because it chatters (it cannot, with nothing driving it)
-   but because it carries no information.  Charge-state decode must use `STAT1`
-   (`U3.P17`) and the **MAX17048 fuel gauge** on the same internal bus, and must
-   NOT infer a fault from `STAT2`.
+   does not drive it, and by OWNER DECISION D-742 (2026-09-17) it never will on
+   this revision.**  Before D-741 `U2.19` was an ISLAND and `P16` was a second
+   floating input; it is now routed to `R128` and `TP7` (23.266 mm, 4 vias) and
+   reads a deterministic HIGH.  `U11.3` is unchanged: D-734 proved the charger's
+   `STAT2` land cannot be escaped at any manufacturable width, and D-741's
+   addendum re-measured the window as **exactly 0.100 mm** between D-269's
+   clearance to `U11.2`'s `BAT` escape and `U11.4`'s `GND` land — a window fixed
+   by the DLH0010A pinout (`BAT` is pin 2, `STAT2` pin 3), so it moves with
+   neither placement nor rotation.  **Keep `P16` MASKED** — not because it
+   chatters (it cannot, with nothing driving it) but because it carries no
+   information.
+
+3. **THE CHARGE-STATE DECODE THIS PROGRAMME CARRIED WAS INVERTED ON `STAT1`, AND
+   D-742 CORRECTED IT.**  The schematic notes on `R127` and `R128` stated
+   *"`STAT1` LOW = charging; `STAT1` HIGH with `STAT2` LOW = fault"* and cited a
+   "SLUSF65A Table 7-2" that is not a status table.  The authority is **SLUSF65B
+   (August 2026) §6.3.10 Table 6-2**, a copy of which is now in the repository at
+   `hardware/demo/kicad/aqroot-demo/vendor/BQ25185/ti-bq25185-slusf65b-2026-08.pdf`:
+
+   | `STAT1` | `STAT2` | charger state |
+   |---|---|---|
+   | HIGH | HIGH | charge completed, charger in sleep mode, or charge disabled (including `VBAT` > `VRCH`) |
+   | HIGH | LOW | **normal charging in progress** (including automatic recharge) |
+   | LOW | HIGH | **recoverable fault** — `VIN_OVP`, `TS` HOT, `TS` COLD, `TSHUT`, system short protection |
+   | LOW | LOW | **non-recoverable / latch-off fault** — `ILIM`/`ISET` pin short, `BATOCP`, safety timer expired |
+
+   Two rows were exactly backwards.  The datasheet confirms the table twice more:
+   §6.3.7.1 gives `VIN` overvoltage as *"`STAT1` = LOW, `STAT2` = HIGH"*, and the
+   charger flow diagram marks *Charge Done* as *"`STAT1` and `STAT2` to 1"*.
+   `POWER_FAULT_STATE_TABLE.md` had it right all along; the schematic did not.
+
+   **Collapsed onto `STAT1` alone — which is all this revision has:**
+
+   | `STAT1` (`U3.P17`) | what it proves on AQROOT Demo |
+   |---|---|
+   | **LOW** | **charger FAULT, directly observed.**  Recoverable versus non-recoverable is *not* distinguishable without `STAT2` |
+   | **HIGH** | not faulted; **ambiguous** between *charging* and *charge complete / sleep / charge disabled* |
+
+   So the Demo **keeps fault detection and loses the charging-versus-complete
+   distinction** — the opposite way round from what D-734 and the owner decision
+   assumed while working from the inverted table.  Firmware must treat `STAT1`
+   LOW as a real charger fault and surface it; and it must label any
+   charging-versus-complete claim as an **INFERENCE** drawn from `VBUS_PRESENT`
+   and the **MAX17048** voltage and state-of-charge trend.  The no-battery limit
+   cycle toggles `STAT2` while `STAT1` stays HIGH, so it is not observable here
+   either.  `R128` and `TP7` are retained so `STAT2` stays probeable at `TP7` for
+   bench bring-up and a Rev-B respin; they must not be depopulated.
 
 ---
 

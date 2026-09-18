@@ -7,6 +7,61 @@ Task: FBV2-ARCH-002, revised FBV2-PWR-001
 Scope: analysis only. No schematic, PCB or hardware file was created or modified
 **by this document**.
 
+> ## AQROOT DEMO DELTA — `STAT2` IS NOT LANDED, AND THE SCHEMATIC'S DECODE WAS INVERTED (D-742, 2026-09-18)
+>
+> **This document analyses the Full Beta v2 topology, in which BOTH `BQ25185`
+> status pins are landed.  On the AQROOT Demo board that is not true.**
+>
+> `U11.3` (`STAT2`) ships **UNCONNECTED** on AQROOT Demo by owner decision of
+> 2026-09-17.  D-734 proved the land has no escape at any manufacturable width
+> and D-741 re-measured the binding window as **exactly 0.100 mm** — between
+> D-269's clearance to `U11.2`'s `BAT` escape and `U11.4`'s `GND` land — against
+> this board's published 0.200 mm minimum width.  The window is set by the
+> DLH0010A pinout (`BAT` is pin 2, `STAT2` pin 3), so it moves with neither
+> placement nor rotation.  `R128` and `TP7` are retained so the signal stays
+> probeable for bench work and a Rev-B respin.
+>
+> **THIS TABLE HAD THE DECODE RIGHT AND THE SCHEMATIC DID NOT.**  Row 189 here
+> reads *"charging; `STAT1` HIGH, `STAT2` LOW"*, which matches **SLUSF65B
+> (August 2026) §6.3.10 Table 6-2** exactly.  The `R127`/`R128` schematic notes
+> claimed the opposite — *"`STAT1` LOW = charging; `STAT1` HIGH with `STAT2` LOW
+> = fault"* — citing a "Table 7-2" that is not a status table.  D-742 corrected
+> the schematic to agree with this document.  The datasheet is now in the
+> repository at
+> `hardware/demo/kicad/aqroot-demo/vendor/BQ25185/ti-bq25185-slusf65b-2026-08.pdf`.
+>
+> **What is UNCHANGED by the NC.**  Nothing in the protection architecture.
+> `STAT2` is an open-drain *status* output and SLUSF65B Table 4-1 explicitly
+> permits leaving it floating when unused.  Charge control, power path, `TS`
+> bias, `ILIM`/`VSET`, the `LTC4368`/`Q2`/`Q3` reverse-protection stage, `F1`,
+> the dead-cell recovery branch and every D-269 / D-186 requirement are
+> untouched.  `STAT1` **is** routed, to `U3.P17`.
+>
+> **What the Demo can and cannot observe.**
+>
+> | `STAT1` alone | AQROOT Demo verdict |
+> |---|---|
+> | **LOW** | **charger FAULT — directly observed.**  Recoverable (`VIN_OVP`, `TS` HOT/COLD, `TSHUT`, system short) versus non-recoverable (`ILIM`/`ISET` short, `BATOCP`, safety-timer expiry) is **not** distinguishable |
+> | **HIGH** | not faulted; **ambiguous** between *charging* and *charge complete / sleep / charge disabled* |
+>
+> So the Demo **keeps fault detection and loses the charging-versus-complete
+> distinction** — the opposite way round from the assumption D-734 and the owner
+> decision were written under, because both were working from the inverted table.
+>
+> **Case 3 (no battery + USB)** below says `STAT2` toggles while `STAT1` stays
+> stable.  On Demo that toggle is **not observable**; `STAT1` simply stays HIGH,
+> which is the same thing it does when charging or complete.
+>
+> **Firmware rule.**  Surface `STAT1` LOW as a charger fault.  Label any
+> charging-versus-complete claim — built from `VBUS_PRESENT`, `STAT1` history,
+> `MAX17048` voltage-and-SOC trend or elapsed time — as an **INFERENCE**.
+>
+> **Open item 4 of the unresolved list below — "No-battery `STAT2` toggle rate"
+> — is CLOSED FOR DEMO as un-measurable on this revision** and is carried to
+> Rev-B with the `STAT2` routing item.  Rev-B needs a charger whose `STAT2` pin
+> is not adjacent to `BAT`, or a package with a land taller than 0.200 mm.
+
+
 > ## Capture note — FBV2-S1-001 (2026-08-23)
 >
 > **The topology this table analyses is now CAPTURED**, in

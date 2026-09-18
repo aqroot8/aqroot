@@ -66,6 +66,35 @@
 > `verify_promotion` PASS and `protected_copper` showing exactly one protected
 > net moved.  `U14.7` is on the bus.  This board has **no open owner decision**.
 
+> **THE OWNER DECISION IS ANSWERED AND THE BOARD HAS NO UNAPPROVED OPEN EDGE --
+> BUT `DEMO_READY_FOR_FAB` IS *NOT* DECLARED, BECAUSE READING THE CHARGER
+> DATASHEET TURNED UP TWO REAL DEFECTS (D-742, D-743, 2026-09-18).**
+> `authority 23ee647e`.  The owner APPROVED leaving `/BQ25185_STAT2`'s `U11.3`
+> unconnected (`/home/aqroot8/.aqroot-owner-decision-stat2.txt`, 2026-09-17) and
+> **D-742 SPENT it**: `routing_ledger.py` now publishes
+> `unapproved_open_edges: 0` beside an unchanged `retained_open_edges: 1`, with
+> the declaration re-proved against the board on every run and four non-vacuity
+> controls showing it FAILS when it stops being true.  **There is no open owner
+> decision.**
+>
+> **AND THEN THE DATASHEET WAS READ.**  The independent review's pre-fab item
+> *"validate `BQ25185` `STAT1`/`STAT2` decoding against the current TI truth
+> table"* was not a formality.  **(1) D-742: the decode this board carried was
+> INVERTED on `STAT1`.**  `R127`/`R128`'s schematic notes and D-170 all said
+> *"`STAT1` LOW = charging, `STAT1` HIGH + `STAT2` LOW = fault"*, citing a
+> "Table 7-2" that is not a status table.  SLUSF65B Table 6-2 says the opposite
+> on both rows: `STAT1` LOW is a **fault**; `STAT1` HIGH with `STAT2` LOW is
+> **charging**.  `POWER_FAULT_STATE_TABLE.md` had it right for four weeks and
+> nothing compared the two.  Corrected in both schematic sheets and four
+> documents; the effect on the owner decision is *favourable* -- the Demo keeps
+> FAULT DETECTION on `STAT1` alone and loses only the charging-versus-complete
+> distinction.  **(2) D-743: `tMAXCHG` is now 360 min and `R37` programs 300 mA,
+> so the board as built CANNOT COMPLETE A CHARGE.**  See the D-743 entry.  The
+> datasheet is in the repository at
+> `hardware/demo/kicad/aqroot-demo/vendor/BQ25185/ti-bq25185-slusf65b-2026-08.pdf`.
+> The paragraph below is the PREVIOUS state of that question and is left standing
+> as history.
+>
 > **THE BOARD HAS ONE RETAINED OPEN EDGE AND ONE OPEN OWNER DECISION, AND THEY
 > ARE THE SAME THING (D-740, D-741, 2026-09-18).**  `authority 23ee647e`.
 > `/SX1262_DIO1` IS ROUTED (D-740) and `/BQ25185_STAT2`'s `U2.19` IS ROUTED

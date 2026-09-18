@@ -1,0 +1,1698 @@
+                                                                                                                                                      BQ25185
+                                                                                                 SLUSF65B – OCTOBER 2023 – REVISED AUGUST 2026
+
+    BQ25185 1-Cell, 1A Standalone Linear Battery Charger With Power Path, Factory
+                         Mode, and Battery Tracking VINDPM
+1 Features                                                             2 Applications
+•   1A linear battery charger                                          •     TWS headset and charging case
+    – 3.0V to 18V input voltage operating range                        •     Smart glasses, AR and VR
+    – 25V tolerant input voltage                                       •     Smart watches and other wearable devices
+    – External resistor programmable operation                         •     Retail automation and payment
+       • ILIM/VSET pin sets battery regulation                         •     Building automation
+           voltage to 3.6V, 3.65V, 4.02V, 4.1V, 4.2V,                  3 Description
+           4.35V, or 4.4V
+       • ILIM/VSET pin sets input current limit to                     The BQ25185 is a linear battery charger IC optimized
+           100mA, 500mA, or 1100mA                                     for small design size and low quiescent current to
+       • ISET pin sets charge current from 5mA to                      extend battery life. The device is available in a
+           1A                                                          small leadless package with a thermal pad for heat
+    – Supports Li-ion, Li-poly, and LiFePO4                            dissipation. The device supports up to 1A charging
+       chemistries                                                     and system loads up to 3.125A.
+    – 115mΩ battery FET on-resistance
+                                                                                                        Package Information
+    – Supports up to 3.125A discharge current for
+                                                                            PART                                           PACKAGE             BODY SIZE
+       high system loads                                                                    PACKAGE(1)
+                                                                           NUMBER                                           SIZE(2)              (NOM)
+•   Power path management for powering the system
+                                                                       BQ25185            DLH (WSON, 10) 2.2mm × 2.0mm 2.2mm × 2.0mm
+    and charging the battery
+    – Regulated system voltage (SYS) at 4.5V                           (1)     For more information, see Section 10.
+    – Configurable input current limit                                 (2)     The package size (length × width) is a nominal value and
+                                                                               includes pins, where applicable.
+    – Supports USB suspend mode
+    – Battery tracking input voltage dynamic power
+       management (VINDPM) for high-impedance                                                                                   SYS
+                                                                                                   IN                                                Regulated
+       input sources                                                         VBUS
+                                                                                                                                        10uF
+                                                                                                                                                       Load
+                                                                                          1uF
+    – Dynamic power path management optimizes
+       charging from weak adapters
+                                                                                             STAT1
+
+•   Ultra-low quiescent current                                              Host
+                                                                                             STAT2         Device
+                                                                                                           Control
+                                                                                                 /CE
+    – 4μA in battery-only mode
+                                                                                                                                BAT
+
+                                                                                                                                               1uF
+    – 30μA input adapter IQ in sleep mode                                                 ILIM/VSET
+
+    – 3.2μA battery discharge current in factory mode                                           ISET                            TS/MR                             +
+                                                                                                                                                                  ±
+                                                                                    5kŸ      1kŸ
+•   Integrated fault protection                                                                                                                             NTC
+                                                                                                             BQ25185
+    – Input overvoltage protection (VIN_OVP)
+    – Battery undervoltage protection (BUVLO)                                                                        GND
+
+
+    – Battery short protection (BATSC)
+    – Battery overcurrent protection (BATOCP)
+                                                                                                       Simplified Schematic
+    – Input current limit protection (ILIM)
+    – Thermal regulation (TREG) and thermal
+        shutdown (TSHUT)
+    – Battery thermal fault protection (TS)
+    – Safety timer fault
+    – System short protection
+    – System overvoltage protection
+    – Short and open protection on the ISET and
+        ILIM/VSET pins
+
+
+
+
+     An IMPORTANT NOTICE at the end of this data sheet addresses availability, warranty, changes, use in safety-critical applications,
+     intellectual property matters and other important disclaimers. PRODUCTION DATA.
+BQ25185
+SLUSF65B – OCTOBER 2023 – REVISED AUGUST 2026                                                                    www.ti.com
+
+
+The battery is charged using a standard Li-ion or LiFePO4 charging profile with three phases: precharge,
+constant current, and constant voltage. Thermal regulation provides the maximum charge current while
+managing the device temperature. The charger is optimized for battery-to-battery charging with 3V minimum
+input voltage operation and can withstand 25V absolute maximum line transients. The device integrates a single
+pushbutton input to reduce the total design footprint.
+
+
+
+
+2     Submit Document Feedback                                                  Copyright © 2026 Texas Instruments Incorporated
+
+                                                Product Folder Links: BQ25185
+                                                                                                                                                                   BQ25185
+www.ti.com                                                                                                     SLUSF65B – OCTOBER 2023 – REVISED AUGUST 2026
+
+
+
+                                                                        Table of Contents
+1 Features............................................................................1     6.4 Device Functional Modes..........................................19
+2 Applications..................................................................... 1     7 Application and Implementation.................................. 20
+3 Description.......................................................................1       7.1 Application Information............................................. 20
+4 Pin Configuration and Functions ..................................4                       7.2 Typical Application.................................................... 20
+5 Specifications.................................................................. 5        7.3 Power Supply Recommendations.............................23
+  5.1 Absolute Maximum Ratings........................................ 5                    7.4 Layout....................................................................... 23
+  5.2 ESD Ratings............................................................... 5        8 Device and Documentation Support............................24
+  5.3 Thermal Information....................................................5              8.1 Device Support......................................................... 24
+  5.4 Recommended Operating Conditions.........................5                            8.2 Receiving Notification of Documentation Updates....24
+  5.5 Electrical Characteristics.............................................6              8.3 Support Resources................................................... 24
+  5.6 Timing Requirements.................................................. 8               8.4 Trademarks............................................................... 24
+  5.7 Typical Characteristics................................................ 9             8.5 Electrostatic Discharge Caution................................24
+6 Detailed Description......................................................10              8.6 Glossary....................................................................24
+  6.1 Overview................................................................... 10      9 Revision History............................................................ 24
+  6.2 Functional Block Diagram......................................... 14                10 Mechanical, Packaging, and Orderable
+  6.3 Feature Description...................................................14              Information.................................................................... 25
+
+
+
+
+Copyright © 2026 Texas Instruments Incorporated                                                                                    Submit Document Feedback                    3
+                                                                      Product Folder Links: BQ25185
+BQ25185
+SLUSF65B – OCTOBER 2023 – REVISED AUGUST 2026                                                                                       www.ti.com
+
+4 Pin Configuration and Functions
+
+                                      SYS        1                                         10    IN
+
+
+
+                                     BAT                                                         STAT1
+
+                                                                 THERMAL
+                                  STAT2                            PAD                           ISET
+
+
+
+                                      /CE                                                        ILIM/VSET
+
+
+
+                                      GND        5                                         6     TS/MR
+
+
+                                      Figure 4-1. DLH Package 10-Pin WSON (Top View)
+
+                                                       Table 4-1. Pin Functions
+               PIN
+                                       TYPE(1)                                             DESCRIPTION
+       NAME            NO.
+                                                        DC input power supply. Connect IN to the external DC supply. Bypass IN to GND
+         IN             10                  P
+                                                        with at least 1µF of capacitance using a ceramic capacitor.
+                                                        Regulated system output. Connect at least a 10µF ceramic capacitor (at least 1µF
+        SYS             1                   P           of capacitance after DC bias derating) from SYS to GND as close as possible to the
+                                                        SYS and GND pins.
+                                                        Battery connection. Connect BAT to the positive terminal of the battery. Bypass BAT
+        BAT             2                   P
+                                                        to GND with at least 1µF of capacitance using a ceramic capacitor.
+        GND             5                 —             Ground connection. Connect to the ground plane of the circuit.
+                                                        Input current limit and battery regulation voltage program input. See also Section
+      ILIM/VSET         7                 I/O
+                                                        8.3.6 ILIM/VSET Control.
+                                                        Fast charge current program input. An RC is recommended for low charge current
+        ISET            8                 I/O           values. Using only one resistor on the ISET pin is preferred. See also Section 8.1.1.4
+                                                        ISET Pin Detection.
+                                                        Open-drain status output. Can be pulled up with a 1kΩ to 20kΩ resistor. Typical
+       STAT1            9                   O           pull-up voltage = 1.8V. Maximum pull-up voltage = 5V. See also Section 8.3.10
+                                                        Status Pins. Can be left floating if unused.
+                                                        Manual reset input and NTC thermistor input. TS/MR is a general-purpose input
+                                                        that must be held low for longer than tLPRESS to enter factory mode. TS/MR can be
+       TS/MR            6                 I/O           driven by a momentary pushbutton or a MOSFET. The TS/MR pin can also have an
+                                                        NTC thermistor connected to the TS/MR pin. See also Section 8.3.9 External NTC
+                                                        Monitoring (TS).
+                                                        Charge enable active-low input. Connect CE to a high logic level to disable charging.
+         CE             4                   I
+                                                        Connect CE to a low logic level to enable charging.
+                                                        Open-drain status output. Can be pulled up with a 1kΩ to 20kΩ resistor. Typical
+       STAT2            3                   O           pull-up voltage = 1.8V. Maximum pull-up voltage = 5V. See also Section 8.3.10
+                                                        Status Pins. Can be left floating if unused.
+
+(1)    I = Input, O = Output, I/O = Input or Output, G = Ground, P = Power.
+
+
+
+
+4      Submit Document Feedback                                                                    Copyright © 2026 Texas Instruments Incorporated
+
+                                                       Product Folder Links: BQ25185
+                                                                                                                                        BQ25185
+www.ti.com                                                                                    SLUSF65B – OCTOBER 2023 – REVISED AUGUST 2026
+
+
+5 Specifications
+
+5.1 Absolute Maximum Ratings
+over operating free-air temperature range (unless otherwise noted)(1)
+                                                                                                    MIN                 MAX            UNIT
+ Input voltage                              IN                                                      -0.3                 25             V
+ Voltage                                    All other pins                                          -0.3                 5.5            V
+ Input current (DC)                         IN                                                                           1.1            A
+ SYS discharge current (DC)                 SYS                                                                      3.125              A
+ Output sink current                        STAT1, STAT2                                                                 20            mA
+ TJ                                         Junction temperature                                    -40                 150             °C
+ Tstg                                       Storage temperature                                     -65                 150             °C
+
+(1)     Stresses beyond those listed under Absolute Maximum Rating may cause permanent damage to the device. These are stress
+        ratings only, which do not imply functional operation of the device at these or any other conditions beyond those indicated
+        under Recommended Operating Condition. Exposure to absolute-maximum-rated conditions for extended periods may affect device
+        reliability.
+
+
+5.2 ESD Ratings
+                                                                                                                         VALUE              UNIT
+                                                                     Human body model (HBM), per ANSI/ESDA/
+                                                                                                                          ±2500
+                                                                     JEDEC JS-001, all pins(1)
+ V(ESD)        Electrostatic discharge                                                                                                        V
+                                                                     Charged device model (CDM), per ANSI/ESDA/
+                                                                                                                          ±1500
+                                                                     JEDEC JS-002, all pins(2)
+
+(1)     JEDEC document JEP155 states that 500-V HBM allows safe manufacturing with a standard ESD control process.
+(2)     JEDEC document JEP157 states that 250-V CDM allows safe manufacturing with a standard ESD control process.
+
+
+5.3 Thermal Information
+                                                                                                           BQ25185
+                                     THERMAL METRIC(1)                                                      DLH                        UNIT
+                                                                                                             10
+ RθJA               Junction-to-ambient thermal resistance (JEDEC(1))                        68.3                                      °C/W
+ RθJC(top)          Junction-to-case (top) thermal resistance                                77.2                                      °C/W
+ RθJB               Junction-to-board thermal resistance                                     34.7                                      °C/W
+ ΨJT                Junction-to-top characterization parameter                               2.0                                       °C/W
+ ΨJB                Junction-to-board characterization parameter                             34.7                                      °C/W
+ RθJC(bot)          Junction-to-case (bottom) thermal resistance                             10.7                                      °C/W
+
+(1)     For more information about traditional and new thermal metrics, see the Semiconductor and IC Package Thermal Metrics application
+        report.
+
+
+5.4 Recommended Operating Conditions
+over operating free-air temperature range (unless otherwise noted)
+                                                                                                     MIN          NOM          MAX          UNIT
+ VBAT          Battery voltage range                                                                  2.2                        4.6          V
+ VIN           Input voltage range                                                                    2.7                        5.5          V
+ IIN           Input current range (IN to SYS)                                                                                   1.1          A
+ IBAT          Battery discharge current (BAT to SYS)                                                                          3.125          A
+
+
+
+Copyright © 2026 Texas Instruments Incorporated                                                               Submit Document Feedback             5
+                                                             Product Folder Links: BQ25185
+BQ25185
+SLUSF65B – OCTOBER 2023 – REVISED AUGUST 2026                                                                                              www.ti.com
+
+5.4 Recommended Operating Conditions (continued)
+over operating free-air temperature range (unless otherwise noted)
+                                                                                                         MIN         NOM           MAX         UNIT
+    TJ            Operating junction temperature range                                                   -40                        125         °C
+
+
+5.5 Electrical Characteristics
+VIN = 5 V, VBAT = 3.6 V. -40°C < TJ < 125°C unless otherwise noted. Typical data at TJ = 25°C
+                          PARAMETER                                            TEST CONDITIONS                   MIN        TYP       MAX      UNIT
+    INPUT CURRENTS
+                                                                  VBAT = 3.6V, VIN = 5V, Charge enabled,
+    IQ_IN              Input supply quiescent current                                                                       0.75           1    mA
+                                                                  ICHG = 0mA, SYSREG = 4.5V
+    ISLEEP_IN          Sleep mode input current                   VIN = 3.6V, VBAT = 3.7V                                    30                 µA
+                                                                  VIN < VUVLO, VBAT = 3.6V, 0°C < TJ <
+    IQ_BAT             Battery quiescent current                                                                               4           5    µA
+                                                                  85°C
+                       Battery discharge current in factory
+    IBAT_FACT                                                     VBAT = 3.6V, 0°C < TJ < 85°C                               3.2           5    µA
+                       mode
+    POWER-PATH MANAGEMENT AND INPUT
+    VIN_OP             Input voltage operating range                                                              3.6                     18     V
+    VIN_UVLOZ          Exit input undervoltage lockout            VIN rising                                                               3     V
+    VIN_UVLO           Enter input undervoltage lockout           VIN falling                                                           2.7      V
+    VIN_LOWV           VIN threshold to start charging            VIN rising                                                   3      3.15       V
+    VIN_LOWVZ          VIN threshold to stop charging             VIN falling                                               2.95        3.1      V
+    VIN_PORZ           VIN threshold to enter factory mode        VIN falling                                   1.09         1.3      1.66       V
+                                                                  VIN rising, VIN - VBAT, VBAT = 4V,
+    VSLEEPZ            Exit sleep mode threshold                                                                 122        152        188      mV
+                                                                  VINDPM_ACTIVE = 1
+                                                                  VIN rising, VIN - VBAT, VBAT = 4V,
+    VSLEEPZ            Exit sleep mode threshold                                                                 168        208        262      mV
+                                                                  VINDPM_ACTIVE = 0
+                                                                  VIN falling, VIN - VBAT, VBAT = 4V,
+    VSLEEP             Enter sleep mode threshold                                                                            82                 mV
+                                                                  VINDPM_ACTIVE = 1
+                                                                  VIN falling, VIN - VBAT, VBAT = 4V,
+    VSLEEP             Enter sleep mode threshold                                                                            82                 mV
+                                                                  VINDPM_ACTIVE = 0
+    VSLEEP             Enter sleep mode threshold                 VIN falling, VIN - VBAT, VBAT = 4V                         82                 mV
+    VSLEEPZ            Exit sleep mode threshold                  VIN rising, VIN - VBAT, VBAT = 4V              110        152        188      mV
+    VIN_OVP            VIN overvoltage rising threshold           VIN rising                                      18        18.5          19     V
+    VIN_OVP_HYS        VIN overvoltage hysteresis                 VIN falling                                               500                 mV
+    IBAT_OCP           BATOCP (reverse OCP only)                  VBAT = 4V                                                 3.13                 A
+    IBAT_OCPACC        BATOCP accuracy                            IBAT = 3.125A, TJ = 27°C                                                18     %
+                                                                  VBAT = 3.6V, VBAT > VBUVLO, VSYS <
+    VBSUP1             Enter supplement mode threshold                                                                       40                 mV
+                                                                  VBAT - VBSUP1
+    VBSUP2             Exit supplement mode threshold             VBAT > VBUVLO, VSYS > VBAT - VBSUP2                        20                 mV
+                                                                  VIN = 5V, ILIM = 100mA                          80         90           98    mA
+    ILIM               Input current limit                        VIN = 5V, ILIM = 500mA                         450        475        498      mA
+                                                                  VIN = 5V, ILIM = 1050mA                        995       1050       1100      mA
+                                                                                                                          VBAT +
+                       VIN threshold when input current is
+    VINDPM                                                                                                              VINDPM_T                 V
+                       reduced
+                                                                                                                           RACK
+
+                       VIN threshold offset for when input
+    VINDPM_TRACK       current is reduced and when VBAT >         VINDPM target = VBAT + VINDPM_TRACK                       330                 mV
+                       3.5V
+
+
+
+
+6           Submit Document Feedback                                                                     Copyright © 2026 Texas Instruments Incorporated
+
+                                                              Product Folder Links: BQ25185
+                                                                                                                                   BQ25185
+www.ti.com                                                                                   SLUSF65B – OCTOBER 2023 – REVISED AUGUST 2026
+
+5.5 Electrical Characteristics (continued)
+VIN = 5 V, VBAT = 3.6 V. -40°C < TJ < 125°C unless otherwise noted. Typical data at TJ = 25°C
+                         PARAMETER                                       TEST CONDITIONS                  MIN      TYP     MAX      UNIT
+                     VSYS threshold when charge current is     VBAT = 3.6V, VSYS = VDPPM + VBAT
+ VDPPM                                                                                                              0.1              V
+                     reduced                                   before charge current is reduced
+ VSYS_REG            SYS regulation voltage                    VIN = 5V, VBATREG ≤ 4.3V                             4.5              V
+ VSYS_REG_ACC        SYS regulation accuracy                   VIN = 5V, VBAT = 3.6V, RSYS = 100Ω           -2                2      %
+                     Minimum VSYS when in battery tracking
+ VMINSYS                                                   VBAT < 3.6V                                              3.8              V
+                     mode
+ RSYS_PD             SYS pull-down resistance                  VSYS = 3.6V                                          20               Ω
+                     VSYS threshold for detecting
+ VSYS_SHORT                                                    200mV hysteresis                                     1.6              V
+                     SYS_SHORT condition has occurred
+ BATTERY CHARGER
+ RON_BAT             Battery FET on-resistance                 VBAT = 4.5V, IBAT = 400mA                           115      140      mΩ
+ RON_IN              Input FET on-resistance                   VIN = 5V, IIN = 1A                                  330      470      mΩ
+                     Typical BAT charge voltage regulation
+ VREG_RANGE                                                                                                3.6               4.4     V
+                     range
+                     BAT charge voltage accuracy,              All VBATREG settings, typical
+ VREG_ACC                                                                                                 –0.5               0.5     %
+                     summary for all settings                  measurement at VBATREG = 4.2V
+ ICHG_RANGE          Typical charge current regulation range VBAT > VLOWV                                   5              1000      mA
+ VISET               ISET pin voltage when in regulation       IBAT = ICHG                                           1               V
+                     Charge current setting factor, ICHG =
+ KISET                                                         10mA < ICHG < 1000mA                       285      300      315      AΩ
+                     KISET / RISET
+ ICHG_ACC            Charge current accuracy                   VIN = 5V, fast charge current ≥ 40mA       –10                10      %
+                     Charge current accuracy at 800 mA         RISET = 375Ω, VBAT = 3.8V                  720      800      880      mA
+                     Charge current accuracy at 500 mA         RISET = 600Ω, VBAT = 3.8V                  450      500      550      mA
+ ICHG
+                     Charge current accuracy at 150 mA         RISET = 2.0kΩ, VBAT = 3.8V                 135      150      165      mA
+                     Charge current accuracy at 10 mA          RISET = 30kΩ, VBAT = 3.8V                    9       10       11      mA
+                     Typical precharge current, as
+ IPRECHG                                                       VBAT < VLOWV                                         20               %
+                     percentage of ICHG
+ IPRECHG_ACC         Precharge current accuracy                Fast charge current ≥ 40mA                 –10                10      %
+                     Precharge current accuracy at ICHG =
+ IPRECHG_ACC                                                   RISET = 375Ω, VBAT = 2.5V                  144      160      176      mA
+                     800 mA
+                     Precharge current accuracy at ICHG =
+ IPRECHG_ACC                                                   RISET = 600Ω, VBAT = 2.5V                   90      100      110      mA
+                     500 mA
+                     Precharge current accuracy at ICHG =
+ IPRECHG_ACC                                                   RISET = 2.0kΩ, VBAT = 2.5V                 26.5      30      34.5     mA
+                     150 mA
+                     Precharge current accuracy at ICHG =
+ IPRECHG_ACC                                                   RISET = 30kΩ, VBAT = 2.5V                   1.6       2       2.4     mA
+                     10 mA
+                     Typical termination current, as
+ ITERM                                                         VBAT = VBATREG                                       10               %
+                     percentage of ICHG
+ ITERM_ACC           Termination current accuracy              IBAT = 3mA (ICHG = 150mA) TJ = 25°C        –15                10      %
+                     Precharge to fast charge transition
+ VLOWV                                                         VBAT rising                                 2.9       3       3.1     V
+                     threshold
+ VLOWV_HYS           Battery LOWV hysteresis                                                                       100               mV
+ VBUVLO              Battery UVLO                              VBAT falling                                          3               V
+ VBUVLO_HYS          Battery UVLO hysteresis                   VBAT rising, VIN = 5V                      110      150      190      mV
+ VBUVLO_HYS          Battery UVLO hysteresis                   VBAT rising, VIN = 0V                       90      150      210      mV
+                                                               VIN = 5V, Charge enabled, VBAT falling
+ VRCH                Battery recharge threshold                                                                    100               mV
+                                                               from VBATREG
+
+
+
+
+Copyright © 2026 Texas Instruments Incorporated                                                           Submit Document Feedback         7
+                                                           Product Folder Links: BQ25185
+BQ25185
+SLUSF65B – OCTOBER 2023 – REVISED AUGUST 2026                                                                                              www.ti.com
+
+5.5 Electrical Characteristics (continued)
+VIN = 5 V, VBAT = 3.6 V. -40°C < TJ < 125°C unless otherwise noted. Typical data at TJ = 25°C
+                         PARAMETER                                        TEST CONDITIONS                        MIN       TYP        MAX      UNIT
+                      Short on battery threshold for trickle
+    VBATSC                                                                                                        1.6          1.8      2.0      V
+                      charge, VBAT rising
+    VBATSC_HYS        Battery short circuit voltage hysteresis                                                              200                 mV
+    IBATSC            Trickle charge current                     VBAT < VBATSC                                                  7               mA
+                                                                 RISET below this range at startup,
+    RISET_SHORT       Resistor value considered short            charger does not initiate charge, power                               264       Ω
+                                                                 cycle or CE toggle to reset
+    TEMPERATURE REGULATION AND TEMPERATURE SHUTDOWN
+    TREG              Typical junction temperature regulation                                                               100                 °C
+    TSHUT_RISING      Thermal shutdown rising threshold          Temperature increasing                                     150                 °C
+    TSHUT_FALLING     Thermal shutdown falling threshold         Temperature decreasing                                     135                 °C
+    BATTERY NTC MONITOR
+    VHOT_ENTRY        High temperature trip point                Battery charging, VTS/MR falling             0.1050     0.1150      0.1250      V
+    VCOLD_ENTRY       Low temperature trip point                 Battery charging, VTS/MR rising              0.9575     1.0075      1.0575      V
+                                                                 Battery charging, VTS/MR rising from
+    VHOT_EXIT         Hysteresis on high trip point                                                           0.1250     0.1350      0.1450      V
+                                                                 VHOT_ENTRY
+                                                                 Battery charging, VTS/MR falling from
+    VCOLD_EXIT        Hysteresis on low trip point                                                            0.7775     0.8200      0.8600      V
+                                                                 VCOLD_ENTRY
+    PUSHBUTTON TIMERS AND THRESHOLDS
+    ITSMR             Adapter present                                                                            36.5          38      39.5     µA
+                      TSMR voltage to detect a button press
+    VTSMR                                                                                                                               90      mV
+                      event, adapter present
+                      Long press timer. Time from button
+    tLPRESS                                                                                                                    10                s
+                      press detection to long press action.
+    BATTERY CHARGING TIMERS
+    tMAXCHG           Charge safety timer                                                                                   360                 min
+    tPRECHG           Precharge safety timer                                                                       0.25 * tMAXCHG
+    LOGIC PINS
+    VIL               Input low threshold level                  VPULLUP = 1.8V, CE pin                                                 0.4      V
+    VIH               Input high threshold level                 VPULLUP = 1.8V, CE pin                           1.3                            V
+                                                                 IL = 5mA, sink current, VPULLUP = 3.3V,
+    VOL               Output low threshold level                                                                                        0.4      V
+                                                                 STAT1, STAT2 pins
+    ILKG              High-level leakage current                 VPULLUP = 3.3V, STAT1, STAT2 pins                                         1    µA
+
+
+5.6 Timing Requirements
+                                                                                                           MIN          NOM          MAX       UNIT
+    INPUT
+    tVIN_OVPZ_DGL                    VIN_OVP deglitch, VIN falling                                                        30                   ms
+    BATTERY CHARGER
+    tREC_SC                          Recovery time, BATOCP during battery discharge                                     250                    ms
+                                     Retry window for SYS or BAT short circuit recovery
+    tRETRY_SC                                                                                                              2                    s
+                                     (BATOCP)
+                                     Deglitch time to disconnect the BATFET when VBAT <
+    tBUVLO                                                                                                                60                    µs
+                                     VBUVLO setting
+
+
+
+
+8           Submit Document Feedback                                                                     Copyright © 2026 Texas Instruments Incorporated
+
+                                                           Product Folder Links: BQ25185
+                                                                                                                                                                                          BQ25185
+www.ti.com                                                                                                                                 SLUSF65B – OCTOBER 2023 – REVISED AUGUST 2026
+
+
+5.7 Typical Characteristics
+VIN = 5V, CIN = 2.2µF, COUT = 10µF, CBAT = 1µF (unless otherwise specified)
+
+                           0.25                                                                                     5
+                                                                                   -40 °C                                                                                               -40 °C
+                             0.2                                                   25 °C                            4                                                                   0 °C
+                           0.15                                                    85 °C                                                                                                25 °C
+                                                                                                                    3
+                                                                                   105 °C                                                                                               85 °C
+                             0.1                                                                                    2                                                                   105 °C
+                           0.05                                                                                     1
+   Error (%)
+
+
+
+
+                                                                                                  Error (%)
+                                 0                                                                                  0
+                           -0.05
+                                                                                                                    -1
+                            -0.1
+                                                                                                                    -2
+                           -0.15
+                                                                                                                    -3
+                            -0.2
+                                                                                                                    -4
+                           -0.25
+                                3.6    3.68 3.76 3.84 3.92  4    4.08 4.16 4.24 4.32        4.4                     -5
+                                                        VBATREG (V)                                                      0         100   200   300 400 500 600 700              800     900 1000
+                                                                                                                                                 Fast Charge ICHG (mA)
+                                            VIN = 5V
+                                                                                                                                         VIN = 5V           VBAT = 3.7V
+      Figure 5-1. Battery Regulation Voltage Accuracy vs VBATREG
+                                Setting                                                                             Figure 5-2. Charge Current Accuracy vs ICHG Setting
+
+                            4                                                                                            4.7
+                                                                                                                                                                                          -40 °C
+                          3.2                                                                                        4.65                                                                 0 °C
+                          2.4                                                                                            4.6                                                              25 °C
+                                                                                                                                                                                          85 °C
+   Pre-Charge Error (%)
+
+
+
+
+                          1.6                                                                                        4.55                                                                 105 °C
+                                                                                                  SYS Voltage (V)
+
+
+
+
+                          0.8                                                                                            4.5
+                            0                                                                                        4.45
+                          -0.8                                                                                           4.4
+                          -1.6                                                     -40 °C                            4.35
+                                                                                   0 °C
+                          -2.4                                                     25 °C                                 4.3
+                          -3.2                                                     85 °C
+                                                                                                                     4.25
+                                                                                   105 °C
+                           -4                                                                                            4.2
+                                 0    100    200    300 400 500 600 700 800        900 1000                                    0     0.1    0.2     0.3   0.4 0.5 0.6     0.7     0.8     0.9      1
+                                                   Fast Charge Current ICHG (mA)                                                                           SYS Load (A)
+                                            VIN = 5V         VBAT = 3.7V                                                                 VIN = 5V           VBAT = 3.7V
+
+                           Figure 5-3. Precharge Accuracy vs Battery Voltage                                                             Figure 5-4. SYS Load Regulation
+
+
+
+
+Copyright © 2026 Texas Instruments Incorporated                                                                                                             Submit Document Feedback                   9
+                                                                              Product Folder Links: BQ25185
+BQ25185
+SLUSF65B – OCTOBER 2023 – REVISED AUGUST 2026                                                                    www.ti.com
+
+6 Detailed Description
+6.1 Overview
+The BQ25185 integrates a linear charger that allows the battery to be charged with a resistor-configurable
+charge current up to 1A. In addition to the charge current, other charging parameters can be programmed
+through external resistors, such as the battery regulation voltage and input current limit.
+The power path allows the system to be powered from the regulated SYS output, even when the battery is empty
+or charging, by drawing power from the IN pin. The power path also prioritizes the system load on SYS, reducing
+the charging current, if necessary, to support the load when input power is limited. If the input supply is removed
+and the battery voltage is above VBUVLO, SYS automatically and seamlessly switches to battery power.
+Charging occurs through the internal battery MOSFET. There are several loops that influence the charge current:
+constant current loop (CC), constant voltage loop (CV), input current limit, thermal regulation, VDPPM, and
+VINDPM. During the charging process, all loops are enabled, and the dominant loop takes control.
+The device supports multiple battery chemistries for single-cell applications through adjustable battery regulation
+voltage (VBATREG) and charge current (ICHG) settings.
+6.1.1 Battery Charging Process
+When a valid input source is connected (VIN > VINDPM and VBAT + VSLEEP < VIN < VIN_OVP), the state of the
+CE pin and the TS/MR pin determines whether a charge cycle is initiated. When the CE pin is set to disable
+charging, VHOT < VTS/MR < VCOLD, and a valid input source is connected, the battery FET is turned off, preventing
+any charging of the battery. Note that supplement behavior is independent of the CE pin. The device can charge
+a battery as long as VIN is higher than the VINDPM threshold. This threshold allows VIN to be considered "power
+good" with a very low battery voltage or a 0V battery.
+The following figure shows a typical charge cycle.
+
+
+
+
+10    Submit Document Feedback                                                  Copyright © 2026 Texas Instruments Incorporated
+
+                                                Product Folder Links: BQ25185
+                                                                                                                               BQ25185
+www.ti.com                                                                                  SLUSF65B – OCTOBER 2023 – REVISED AUGUST 2026
+
+
+
+                                      Connect VIN
+
+
+
+
+                          No         VBAT < VLOWV
+                                          &
+                                     VBAT > VBATSC
+
+
+
+                                                                    No
+                                       Yes
+
+
+                                                             Precharge safety timer
+                                    Start Precharge
+                                                                   expired?
+
+
+
+                                                                                                          Yes
+
+                                                                         Yes
+
+                                                                 Stop Charging.               Charge enabled by VIN
+                               No    VBAT > VLOWV                Update STAT1                 or /CE pulled toggle to
+                                                                   and STAT2                           low
+
+                                              Yes
+
+                                                                                                           No
+                                    Start FastCharge
+                                     Icharge set by
+                                           RISET
+
+                                                                         Yes
+
+                                                                  Fast Charge                      Maintain not
+                                      IBAT < ITERM                safety timer
+                                                                                                    charging.
+                                                                   expired?
+                                              Yes
+                                                                         No
+                                      Charge Done
+                                       (STAT1 and
+                                    STAT2 to 1) and
+                                    turn off BATFET)
+
+
+
+                                                       No
+                            Yes
+                                     VBAT < VRCH
+
+
+
+                                                     Figure 6-1. Charger Flow Diagram
+
+6.1.1.1 Trickle Charge
+To prevent damage to the battery, the device charges the battery at a much lower current level known as trickle
+charge (IBATSC) when the battery voltage (VBAT) is below the VBATSC threshold. During trickle charge, the device
+still counts against the precharge safety timer. Rather, trickle charge and precharge are counted against the
+same duration of 25% of the fast charge timer.
+
+
+
+Copyright © 2026 Texas Instruments Incorporated                                                            Submit Document Feedback   11
+                                                            Product Folder Links: BQ25185
+BQ25185
+SLUSF65B – OCTOBER 2023 – REVISED AUGUST 2026                                                                        www.ti.com
+
+6.1.1.2 Precharge
+When the battery voltage is above the VBATSC threshold but lower than the VLOWV threshold, the battery is
+charged with the precharge current (IPRECHG). The precharge current is 2x the termination current (Section
+8.1.1.5 Termination). As a result, the precharge current is 20% of the fast charge current (ICHG).
+
+When the battery voltage reaches the precharge to fast charge transition threshold (VLOWV), the device charges
+the battery at the fast charge current. If the device does not exit precharge within 25% of the fast charge safety
+timer, the device stops charging. See also Section 8.3.7.7 Safety Timer.
+6.1.1.3 Fast Charge
+The charger has two main control loops that control charging when VBAT > VLOWV: the constant current (CC) and
+constant voltage (CV) loops. When the CC loop is dominant, typically when VBAT < VBATREG – VRCH, the battery
+is charged at the maximum charge current level ICHG, unless there is a TS fault condition, VINDPM, thermal
+regulation, or DPPM is active (see respective sections for details on these modes of operation). Once the battery
+voltage approaches the VBATREG level, the CV loop becomes more dominant and the charging current starts
+tapering off as shown in Typical Charging Profile of a Battery. Once the charging current reaches the termination
+current (ITERM), charging is done, and the STAT1 and STAT2 pins change to indicate charge complete.
+6.1.1.4 ISET Pin Detection
+After a valid VIN is applied and the CE pin is pulled LOW, the device checks the resistor on the ISET pin for a
+short circuit (RISET < RISET_SHORT). If a short is detected, the charger remains in the fault state until VIN or the
+CE pin is toggled. If the ISET pin is an open circuit, the charger charges with a very low charging current on the
+order of 1.5mA. This pin is monitored during charging, and changes in RISET while charging immediately affect
+the charge current. An external pull-down resistor (±1% or better recommended to minimize charge current
+error) from the ISET pin to GND sets the charge current as:
+
+     ICHG = (KISET) / (RISET)                                                                                           (1)
+•    ICHG is the desired fast charge current
+•    KISET is a gain factor found in the Electrical Characteristics table (typically 300AΩ)
+•    RISET is the pull-down resistor from the ISET pin to GND
+For charge currents below 50mA, an extra RC circuit using 50pF capacitance is recommended on the ISET
+pin to improve signal stability. The ISET pin can also be used to monitor device current when the device is not
+in ICHG regulation. The voltage on the ISET pin is proportional to the charging current. To measure the charge
+current while charging, the following formula can be used:
+
+     ICHG = (KISET VISET) / (RISET)                                                                                     (2)
+•    VISET is the measured voltage on the ISET pin in volts
+•    ICHG is the calculated charge current
+6.1.1.5 Termination
+
+As the CV loop becomes dominant over the CC loop during fast charge, the charge current begins to taper and
+approaches the ITERM threshold. The device terminates at 10% of ICHG.
+When ITERM is reached during the CV phase, the charger automatically terminates charging by disabling the
+BATFET (disconnecting the battery from SYS) to enter high impedance mode. If a regulation loop such as
+VINDPM, DPPM, or thermal regulation is active during the CV taper, termination does not occur. Charge current
+continues to taper due to the active regulation loop and CV, but the device does not terminate charging.
+Termination only occurs when the CV loop is dominant and no other regulation loop is actively reducing the
+charge current. After termination, the battery FET is disabled and the device monitors the BAT pin voltage. If the
+BAT pin voltage drops below the battery regulation voltage (VBATREG) by the recharge threshold (VRCH), a new
+charge cycle is started and the safety timers are reset.
+During charging, or after charging is complete, a higher SYS load is supported through supplement mode.
+
+12    Submit Document Feedback                                                      Copyright © 2026 Texas Instruments Incorporated
+
+                                                Product Folder Links: BQ25185
+                                                                                                                                     BQ25185
+www.ti.com                                                                                    SLUSF65B – OCTOBER 2023 – REVISED AUGUST 2026
+
+
+                      Regulation Voltage
+                                  VSET
+                                    VRCH
+                                                                                               Battery Voltage
+
+                         Charge Current
+                                  ISET
+
+
+                                                                                               Charge Current
+
+
+
+                                VLOWV
+
+
+
+                                 VBATSC
+
+                              IPRECHG
+
+                                 ITERM
+                                  IBATSC
+
+
+                                           Trickle Charge    Pre-charge    Fast-Charge   Taper-Charge              Charge   Re-
+                                                                           CC            CV                        Done     charge
+
+                                                  Precharge Timer              Safety Timer
+
+
+
+
+                                           Figure 6-2. Typical Charging Profile of a Battery
+
+
+
+
+Copyright © 2026 Texas Instruments Incorporated                                                                  Submit Document Feedback   13
+                                                             Product Folder Links: BQ25185
+BQ25185
+SLUSF65B – OCTOBER 2023 – REVISED AUGUST 2026                                                                                   www.ti.com
+
+6.2 Functional Block Diagram
+                                                                                                       SYS
+
+
+                                                             Q1/Q2
+
+
+
+
+        IN
+
+
+
+      GND
+
+                    VIN_DPM                      Power Path and Charge Control
+
+                                                                     IBATREG        BUVLO VBATREG
+
+
+
+                     VIN
+
+
+
+
+ILIM/VSET            Battery        Charge Control
+                     Charge
+       /CE
+                     and ILIM         SYS Control
+      ISET           settings
+                                                                                                                  Q3
+
+                                                               Thermal
+                                                              Shutdown
+                             Device Control
+                                                                                                                                      BAT
+
+                                                                                                          –
+
+     STAT1                                                                                                +
+                                                                                                              VBUVLO
+
+
+
+                                                                                                       Digital
+     STAT2          Status                                                                          Pushbutton
+                                         Battery Temp
+                                    For Charge Control                                                 and TS                         TS/MR
+                                                                                                      Inteface
+                                                                                                     Controller
+
+
+
+
+6.3 Feature Description
+
+6.3.1 Input Voltage Based Dynamic Power Management (VINDPM)
+The VINDPM loop prevents the input voltage from collapsing to a level that can interrupt charging. The loop
+reduces the current drawn by the charger to maintain the input voltage above the VINDPM threshold (VINDPM).
+During normal charging, if the input power source cannot support the programmed or default charging current
+and system load, the supply voltage decreases. When the supply drops to the VINDPM threshold, the input DPM
+current and voltage loops reduce the input current through the blocking FETs to prevent further drop of the
+supply voltage.
+
+The VINDPM threshold is typically 300mV above VBAT. If the device is not operating in battery tracking VINDPM
+due to battery voltage, the input is regulated to 3.6V. Termination is disabled when VINDPM is active.
+6.3.2 Dynamic Power Path Management Mode (DPPM)
+With a valid input source connected, the power-path management circuitry monitors the input voltage and
+current continuously. The current into IN is shared at SYS between charging the battery and powering the
+
+
+14     Submit Document Feedback                                                                Copyright © 2026 Texas Instruments Incorporated
+
+                                                         Product Folder Links: BQ25185
+                                                                                                                     BQ25185
+www.ti.com                                                                        SLUSF65B – OCTOBER 2023 – REVISED AUGUST 2026
+
+
+system load at SYS. If the sum of the charging and load currents exceeds the preset maximum input current,
+the input DPM loop reduces the input current. If SYS drops below the DPPM voltage threshold, the charging
+current is reduced by the DPPM loop through the BATFET. If SYS falls below the supplement mode threshold
+after the charging current is reduced to zero, the device enters supplement mode. SYS voltage is maintained
+above battery voltage when the DPPM loop is in control. Termination is disabled when the DPPM loop is active.
+The VDPPM threshold is typically 100mV above VBAT.
+6.3.3 Battery Supplement Mode
+While in DPPM mode, if the charging current falls to zero and the system load current increases beyond
+the programmed input current limit, the voltage at SYS decreases. When the SYS voltage drops below the
+battery voltage to VBSUP1, the battery supplements the input in supplying the system load. The battery stops
+supplementing the input in supplying the system load when the voltage on the SYS pin rises within the battery
+voltage to VBSUP2. During supplement mode, the battery supplement current is not regulated, but the BATOCP
+protection circuit is active. Battery termination is disabled while in supplement mode. Battery voltage must be
+higher than the battery undervoltage lockout threshold (VBUVLO) to supplement the input in supplying the system
+load.
+6.3.4 Sleep Mode
+The device enters the low-power sleep mode if VIN falls below the sleep mode entry threshold and VIN is higher
+than the undervoltage lockout threshold. In sleep mode, the input is isolated from the battery. This feature
+prevents draining the battery when VIN is absent. Once VIN > VBAT + VSLEEP and VIN exceeds the VINDPM
+threshold, the device initiates a new charge cycle.
+
+
+6.3.5 SYS Regulation
+The BQ25185 includes a SYS voltage regulation loop. By regulating the SYS voltage, the device prevents
+downstream devices connected to SYS from being exposed to voltages as high as VIN_OVP. SYS regulation is
+active only when VIN > VUVLO, VIN > VBAT + VSLEEP and VIN < VIN_OVP.
+If the ILIM/VSET pin is configured for a VBATREG setting higher than 4.3V, the device regulates the SYS
+voltage in battery tracking mode. As the battery voltage increases, VSYS is regulated to 225mV above the battery
+voltage. If the battery voltage is less than 3.6V, VSYS is regulated to VMINSYS. This regulation ensures proper
+termination of the battery even if VDPPM is active.
+
+6.3.6 ILIM/VSET Control
+The input current limit can be controlled by an external programmable resistor as indicated below.
+The ILIM/VSET pin is checked under the following conditions:
+•    A valid adapter is present on VIN (VIN is considered power good).
+•    The CE pin state is changed to enable charging.
+     – Toggle the CE pin when the TS/MR pin is not LOW to avoid charging during pin detection.
+•    The TS/MR pushbutton is not pressed.
+If an open is detected on the ILIM/VSET pin, the device disables charging but continues to regulate the SYS pin
+and limits the input current to 500mA.
+If a short is detected on the ILIM/VSET pin, the device stays in battery-only mode.
+
+
+
+
+Copyright © 2026 Texas Instruments Incorporated                                                Submit Document Feedback     15
+                                                  Product Folder Links: BQ25185
+BQ25185
+SLUSF65B – OCTOBER 2023 – REVISED AUGUST 2026                                                                              www.ti.com
+
+                                    Table 6-1. ILIM and VBATREG Resistor Map
+        RESISTOR (kΩ)                  CURRENT LIMIT                     VBATREG (V)                           VLOWV (V)
+             > 180                         ILIM500                                     Charge Disabled
+              130                          ILIM500
+                                                                                4.1
+              100                         ILIM1100
+              75                           ILIM500
+                                                                                4.4
+              56                          ILIM1100
+              43                           ILIM500
+                                                                            4.35
+              33                          ILIM1100
+              24                           ILIM100
+                                                                                                                   3.0
+              18                           ILIM500                              4.2
+              13                          ILIM1100
+              9.1                          ILIM500
+                                                                            4.05
+              6.8                         ILIM1100
+              5.1                         ILIM1100                          3.65
+              3.6                          ILIM500
+                                                                                3.6
+              2.4                         ILIM1100
+             < 1.5                                                    Battery-Only Mode
+
+
+
+6.3.7 Protection Mechanisms
+
+6.3.7.1 Input Overvoltage Protection
+The input overvoltage protection protects the device and downstream components connected to SYS and
+BAT against damage from overvoltage on the input supply. When VIN > VIN_OVP, a VIN overvoltage condition
+is detected. During the VIN overvoltage condition, the device turns on the battery discharge FET and the
+STAT1 and STAT2 pins update to indicate a recoverable fault (STAT1 = LOW, STAT2 = HIGH). Once the VIN
+overvoltage condition is removed, the STAT1 and STAT2 pins update to indicate normal operation after the
+startup routine has finished due to a VIN power good detection. Thereafter, a VIN power good condition is
+determined if VIN > VBAT + VSLEEP.
+6.3.7.2 Battery Undervoltage Lockout
+To prevent deep discharge of the battery, the device integrates a battery undervoltage lockout feature that
+disconnects BAT from SYS when the battery voltage drops below the BUVLO threshold.
+6.3.7.3 Battery Overcurrent Protection
+To protect the device from overcurrent and prevent excessive battery discharge current, the device detects if the
+current from the battery through the battery FET exceeds the IBAT_OCP threshold. If the BATOCP limit is reached,
+the battery discharge FET is turned off, and the device enters hiccup mode, re-enabling the BATFET tREC_SC
+(250ms) after being turned off by the overcurrent condition. If the overcurrent condition is triggered upon retry 4
+to 7 consecutive times within a 2s window, the BATFET remains off until a valid VIN is connected (VIN is power
+good). If the overcurrent condition and hiccup operation occur while in supplement mode, where VIN is already
+present, VIN must be toggled for the BATFET to be enabled and for a new detection cycle to begin.
+
+6.3.7.4 System Overvoltage Protection
+The system overvoltage protection prevents the SYS voltage from overshooting to a high voltage due to the
+input supply. The SYS_OVP momentarily disconnects the blocking FETs and re-engages them when the SYS
+voltage drops below the SYS_OVP_FALLING threshold.
+The SYS_OVP_RISING threshold is 104% to 106% of the target SYS voltage, and the SYS_OVP_FALLING
+threshold is 101.5% to 103.5% of the target SYS voltage.
+
+
+16    Submit Document Feedback                                                            Copyright © 2026 Texas Instruments Incorporated
+
+                                                Product Folder Links: BQ25185
+                                                                                                                     BQ25185
+www.ti.com                                                                        SLUSF65B – OCTOBER 2023 – REVISED AUGUST 2026
+
+
+6.3.7.5 System Short Protection
+System short protection is triggered when the following conditions are met: an adapter is connected, and the
+device turns on the input FET for 5ms and detects that the SYS pin is shorted (VSYS < VSYS_SHORT). In this
+scenario, the device turns off the input FET for 200μs and turns the input back on for 5ms to allow VSYS to rise
+above the VSYS_SHORT threshold. If, after 10 attempts, VSYS does not rise above the VSYS_SHORT threshold, the
+device disables both the input and BATFET paths and waits for adapter insertion before turning the paths on
+again. A 2s timer is implemented to refresh the retry counter. After 2s, the device checks again for a system
+short and repeats the 10 attempts if there is a system short.
+6.3.7.6 Thermal Protection and Thermal Regulation
+During operation, to protect the device from damage due to overheating, the junction temperature of the die,
+TJ, is monitored. When TJ reaches TSHUT_RISING, the device stops charging and shuts down VSYS. If TJ >
+TSHUT_RISING before power is applied to the device (from either the battery or adapter), the input FET and
+BATFET remain off, regardless of the TS/MR pin. When TJ falls below TSHUT_FALLING, the device automatically
+powers up if VIN is present or if operating in battery-only mode.
+During charging, to prevent the device from overheating, the device monitors the junction temperature of the die
+and reduces the charge current when TJ reaches the thermal regulation threshold (TREG). If the charge current is
+reduced to 0, the battery supplies the current needed by the SYS output.
+To maintain that the system power dissipation remains within the limits of the device, the power dissipated by the
+device can be calculated using the following equation:
+PDISS = PSYS + PBAT Where:
+PSYS = (VIN – VSYS) × IIN
+PBAT = (VSYS – VBAT) × IBAT
+The die junction temperature, TJ, can be estimated based on the expected board performance using the
+following equation:
+TJ = TA + θJA × PDISS
+The θJA is largely driven by the board layout, board layers, copper thickness and the layout. For more
+information about traditional and new thermal metrics, see the Semiconductor and IC Package Thermal Metrics
+application note. Under typical conditions, the time spent in this state is very short.
+6.3.7.7 Safety Timer
+At the beginning of each charge cycle mode (precharge or fast charge), the device starts the respective
+safety timer. If charging does not terminate before the safety timer, tMAXCHG, expires, or if the device does
+not exit precharge mode before tPRECHG expires, charging is disabled. The precharge safety timer, tPRECHG,
+is 25% of tMAXCHG. When a safety timer fault occurs, the STAT1 and STAT2 pins change state to indicate a
+non-recoverable fault. To clear the safety timer, toggle the CE pin or the input power.
+6.3.8 Pushbutton Long Press Function
+The pushbutton function implemented through the TS/MR pin enables the device to enter factory mode after a
+long button press. When VIN is present, holding the TS/MR pin LOW for a duration tLPRESS initiates factory mode
+entry. After this duration, removing VIN places the device into factory mode. When VIN is present, toggling the
+CE pin restarts the long press timer. Connect a valid VIN to wake the device from factory mode. The pushbutton
+cannot be used to wake the device from factory mode.
+
+
+
+
+Copyright © 2026 Texas Instruments Incorporated                                                Submit Document Feedback     17
+                                                  Product Folder Links: BQ25185
+BQ25185
+SLUSF65B – OCTOBER 2023 – REVISED AUGUST 2026                                                                                       www.ti.com
+
+                                              tLPRESS
+
+
+         TS/MR
+
+     Button Press
+
+            VIN
+
+          VSYS
+
+     Device State             Charger/Adapter Mode                       Ready for Factory mode                    Factory Mode
+
+
+                                                  Figure 6-3. Enter Factory Mode
+
+         TS/MR
+
+     Button Press
+
+            VIN
+
+          VSYS
+
+     Device State                  Factory Mode                                                   Adapter/Charger Mode
+
+
+                                                  Figure 6-4. Exit Factory Mode
+
+6.3.9 External NTC Monitoring (TS)
+
+6.3.9.1 TS Biasing and Function
+The device supports hot and cold battery temperature monitoring. Two temperature thresholds are monitored:
+the cold battery threshold and the hot battery threshold. These temperature thresholds correspond to the VCOLD
+and VHOT thresholds in the Electrical Characteristics table. Charging and safety timers are suspended when VTS
+< VHOT or VTS > VCOLD.
+The TS function is configured for use with an NTC thermistor with a resistance of 10kΩ at 25°C and a beta value
+of β(25/85) = 3435K. If a different NTC is used, compensating resistors can be required on the TS/MR pin.
+If the TS function is not required, connect a 10kΩ resistor from the TS/MR pin to GND.
+An active voltage clamp prevents the voltage on the TS/MR pin from exceeding the VTS_CLAMP threshold. This
+clamp is active when the TS/MR pin is floating.
+
+When a button press is detected during charging, charging is temporarily suspended until the button is released.
+If charging is disabled due to a TS fault, trickle charging is also disabled.
+6.3.10 Status Pins
+The device includes two open-drain configuration status pins (STAT1 and STAT2), which can be externally pulled
+up and connected to an LED or an I/O pin of an MCU to indicate the charger status to the host or user. These
+pins can be left floating if unused.
+When no battery is present, the device charges the capacitor on the BAT pin and toggles between charging
+and charge completed states. During this condition, the STAT1 pin remains stable, while the STAT2 pin toggles
+between HIGH and LOW.
+
+
+
+
+18      Submit Document Feedback                                                                   Copyright © 2026 Texas Instruments Incorporated
+
+                                                        Product Folder Links: BQ25185
+                                                                                                                                 BQ25185
+www.ti.com                                                                                    SLUSF65B – OCTOBER 2023 – REVISED AUGUST 2026
+
+                                                   Table 6-2. Status Pins State Table
+               CHARGING STATE                                   STAT1 PIN STATE                              STAT2 PIN STATE
+ Charge completed, charger in sleep mode or
+                                                                         HIGH                                      HIGH
+ charge disabled (including VBAT > VRCH)
+
+ Normal charging in progress (including
+                                                                         HIGH                                      LOW
+ automatic recharge)
+
+ Recoverable fault (VIN_OVP, TS HOT, TS
+                                                                         LOW                                       HIGH
+ COLD, TSHUT, system short protection)
+
+ Non-recoverable or latch-off fault (ILIM/ISET
+                                                                         LOW                                       LOW
+ pin short, BATOCP, safety timer expired)
+
+
+6.4 Device Functional Modes
+The BQ25185 has three main modes of operation: adapter mode (when a supply is connected to IN), battery-
+only mode (when only the battery is connected), and factory mode (when only the battery is connected and VSYS
+is disabled). The following table summarizes the functions that are active in each mode of operation.
+                                                  ADAPTER
+             FUNCTION                                                           BATTERY-ONLY MODE                  FACTORY MODE
+                                                   MODE
+          Input Overvoltage                           Yes                              Yes                                No
+         Input Undervoltage                           Yes                              Yes                                Yes
+         Battery Overcurrent                          Yes                              Yes                                Yes
+              Input DPM                               Yes                                No                               Yes
+        Dynamic Power Path
+                                                      Yes                                No                               No
+           Management
+               BATFET                                 Yes                              Yes                                No
+          TS Measurement                              Yes                                No                               No
+          Battery Charging                            Yes                                No                               No
+         Input Current Limit              Yes (Selected by RILIM/VSET)                   No                               No
+          Pushbutton Input                            Yes                                No                               No
+              Status Pin                              Yes                              Yes                                No
+
+
+
+
+Copyright © 2026 Texas Instruments Incorporated                                                            Submit Document Feedback     19
+                                                         Product Folder Links: BQ25185
+BQ25185
+SLUSF65B – OCTOBER 2023 – REVISED AUGUST 2026                                                                                    www.ti.com
+
+7 Application and Implementation
+                                                                     Note
+      Information in the following applications sections is not part of the TI component specification,
+      and TI does not warrant its accuracy or completeness. TI’s customers are responsible for
+      determining suitability of components for their purposes, as well as validating and testing their design
+      implementation to confirm system functionality.
+
+7.1 Application Information
+A typical application of the BQ25185 is a standalone, single-cell Li-ion battery charger and power path
+manager for battery-powered systems such as smartwatches and wireless headsets. A battery thermistor can be
+connected to the TS/MR pin to allow the device to monitor battery temperature and control charging accordingly.
+The TS/MR pin can also be connected to a pushbutton that can be used to place the device into factory mode.
+7.2 Typical Application
+
+
+
+                                               IN                                SYS                   Regulated
+                       VBUS
+                                                                                                         Load
+                                     1uF                                                 10uF
+
+
+
+
+                                         STAT1
+                                                         Device
+                                         STAT2
+                      Host                               Control
+                                              /CE                                BAT
+
+                                                                                                1uF
+                                    ILIM/VSET
+                                           ISET                                  TS/MR                                +
+                                                                                                                      –
+                             5kΩ         1kΩ
+                                                                                                               NTC
+                                                           BQ25185
+
+                                                                   GND
+
+
+
+
+                                                    Figure 7-1. Typical Application
+
+7.2.1 Design Requirements
+The design requirements for the design example in Figure 9-1 are listed in Table 7-1.
+                                                    Table 7-1. Design Parameters
+                         PARAMETER                                                                  VALUE
+                        IN supply voltage                                                             5V
+
+                    Battery regulation voltage                                                        4.2V
+
+                       Fast charge current                                                          300mA
+
+                        Input current limit                                                         500mA
+
+
+
+
+20    Submit Document Feedback                                                                  Copyright © 2026 Texas Instruments Incorporated
+
+                                                       Product Folder Links: BQ25185
+                                                                                                                           BQ25185
+www.ti.com                                                                             SLUSF65B – OCTOBER 2023 – REVISED AUGUST 2026
+
+
+7.2.2 Detailed Design Procedure
+
+7.2.2.1 Input Current and Battery Regulation Voltage - ILIM/VSET
+To configure the device for a battery regulation voltage (VBATREG) of 4.2V and an input current limit of 500mA, set
+the RILIM/VSET resistor to 18kΩ. This resistor value is listed in Table 6-1.
+7.2.2.2 Fast Charge Current- ISET
+To configure the device for a fast charge current of 300mA, set the RISET resistor to 1kΩ. This resistor value is
+calculated using the equations provided in Section 8.1.1.4 ISET Pin Detection.
+7.2.2.3 Recommended Passive Components
+Low ESR ceramic capacitors, such as X7R or X5R, are preferred for input decoupling capacitors and must be
+placed as close as possible to the supply and ground pins of the IC. Due to voltage derating of the capacitors,
+TI recommends that 25V rated capacitors are used for the IN and SYS pins, which normally operate at 5V. After
+derating, the minimum capacitance must be greater than 1µF.
+                                                                                         MIN           NOM        MAX     UNIT
+         CSYS          Capacitance on SYS pin                                               1             10      100       μF
+         CBAT          Capacitance on BAT pin                                               1                 1     -       μF
+          CIN          Capacitance on IN pin (tVIN_PRESENT > 25ms)                          1                               μF
+
+
+7.2.3 Application Curves
+CIN = 1µF, COUT = 10µF, VIN = 5V, VBAT = 3.7V, ICHG = 100mA (unless otherwise specified)
+
+
+
+
+       VIN = 5V               VBAT = Floating                              VIN = 5V             VBAT = 3.7V
+
+  Figure 7-2. Power Up with IN Supply Insertion with                  Figure 7-3. Power Up with IN Supply Insertion with
+                     No Battery                                                            Battery
+
+
+
+
+Copyright © 2026 Texas Instruments Incorporated                                                        Submit Document Feedback   21
+                                                       Product Folder Links: BQ25185
+BQ25185
+SLUSF65B – OCTOBER 2023 – REVISED AUGUST 2026                                                                             www.ti.com
+
+
+
+
+      VIN = 5V → 0V       VBAT = 3.7V                                 VIN = 0V → 5V      VBAT = 3.7V
+
+             Figure 7-4. Enter Factory Mode                           Figure 7-5. Wake Up from Factory Mode with
+                                                                                   Adapter Insertion
+
+
+
+
+      VIN = 5V            VBAT = 3.7V         ICHG = 100mA            ISET Short While Charging
+      Input Source Current Limit = 50mA
+                                                                             Figure 7-7. ISET Short Protection
+          Figure 7-6. Battery Tracking VINDPM
+
+
+
+
+                                                             VIN = 5V → 0V
+                                                              VBAT = 3.7V
+
+                                        Figure 7-8. VIN Power Down with VBAT Present
+
+
+
+
+22    Submit Document Feedback                                                           Copyright © 2026 Texas Instruments Incorporated
+
+                                                  Product Folder Links: BQ25185
+                                                                                                                                      BQ25185
+www.ti.com                                                                                     SLUSF65B – OCTOBER 2023 – REVISED AUGUST 2026
+
+
+7.3 Power Supply Recommendations
+The BQ25185 requires the adapter or IN supply to be between 3.3V and 18V. The battery voltage must be
+greater than 3.15V or VBUVLO to ensure proper operation.
+7.4 Layout
+7.4.1 Layout Guidelines
+•    To obtain optimal performance, the decoupling capacitor from IN to GND, the capacitor from SYS to GND,
+     and the capacitor from BAT to GND must be placed as close as possible to the device.
+•    A solid ground plane tied to the GND pin and thermal pad must be used.
+•    The pushbutton GND must be connected as close to the device as possible.
+•    The high-current charge paths into IN, SYS, and BAT must be sized appropriately for the maximum charge
+     current to avoid voltage drops in these traces.
+7.4.2 Layout Example
+                                         Boom                Top
+                                          Layer              Layer
+                                                                 GND
+
+
+
+                                              0402                            0402
+
+                                                  SYS                            IN
+
+                                                                                                                                   GND
+                                        SYS       1                               10   IN
+           0402
+                                        BAT                                            STAT1
+             BAT                                                                                                            0402
+
+                                                               THERMAL
+                                      STAT2                      PAD                   ISET
+                                                                                                                           RISET
+
+
+    GND                                 /CE                                            ILIM/VSET
+                                                                                                                            0402
+
+
+                                        GND        5                              6    TS/MR
+                                                                                                                         RILIM/VSET
+
+                                                                 GND
+
+
+
+                                                        Figure 7-9. Board Layout Example
+
+
+
+
+Copyright © 2026 Texas Instruments Incorporated                                                             Submit Document Feedback       23
+                                                            Product Folder Links: BQ25185
+BQ25185
+SLUSF65B – OCTOBER 2023 – REVISED AUGUST 2026                                                                                                www.ti.com
+
+8 Device and Documentation Support
+
+8.1 Device Support
+
+8.1.1 Third-Party Products Disclaimer
+TI'S PUBLICATION OF INFORMATION REGARDING THIRD-PARTY PRODUCTS OR SERVICES DOES NOT
+CONSTITUTE AN ENDORSEMENT REGARDING THE SUITABILITY OF SUCH PRODUCTS OR SERVICES
+OR A WARRANTY, REPRESENTATION OR ENDORSEMENT OF SUCH PRODUCTS OR SERVICES, EITHER
+ALONE OR IN COMBINATION WITH ANY TI PRODUCT OR SERVICE.
+8.2 Receiving Notification of Documentation Updates
+To receive notification of documentation updates, navigate to the device product folder on ti.com. Click on
+Notifications to register and receive a weekly digest of any product information that has changed. For change
+details, review the revision history included in any revised document.
+8.3 Support Resources
+TI E2E™ support forums are an engineer's go-to source for fast, verified answers and design help — straight
+from the experts. Search existing answers or ask your own question to get the quick design help you need.
+Linked content is provided "AS IS" by the respective contributors. They do not constitute TI specifications and do
+not necessarily reflect TI's views; see TI's Terms of Use.
+8.4 Trademarks
+TI E2E™ is a trademark of Texas Instruments.
+All trademarks are the property of their respective owners.
+8.5 Electrostatic Discharge Caution
+                   This integrated circuit can be damaged by ESD. Texas Instruments recommends that all integrated circuits be handled
+                   with appropriate precautions. Failure to observe proper handling and installation procedures can cause damage.
+                   ESD damage can range from subtle performance degradation to complete device failure. Precision integrated circuits may
+                   be more susceptible to damage because very small parametric changes could cause the device not to meet its published
+                   specifications.
+
+
+8.6 Glossary
+ TI Glossary             This glossary lists and explains terms, acronyms, and definitions.
+
+9 Revision History
+NOTE: Page numbers for previous revisions may differ from page numbers in the current version.
+Changes from Revision A (January 2026) to Revision B (August 2026)                                                                        Page
+• Changed tMAXCHG from 720 min to 360 min....................................................................................................... 6
+
+
+
+Changes from Revision * (October 2023) to Revision A (January 2026)                                                                                Page
+• Added that the STAT1 and STAT2 pins can be left floating if unused................................................................ 4
+• Changed VSLEEPZ minimum, typical, and maximum values............................................................................... 6
+• Changed ITERM_ACC range from ±10% to -15% to 10% and its ICHG test condition from 30 mA to 150 mA....... 6
+• Updated pushbutton functionality......................................................................................................................17
+• Added details about the NTC thermistor type that the TS feature is configured for......................................... 18
+
+
+
+
+24    Submit Document Feedback                                                                             Copyright © 2026 Texas Instruments Incorporated
+
+                                                           Product Folder Links: BQ25185
+                                                                                                                     BQ25185
+www.ti.com                                                                        SLUSF65B – OCTOBER 2023 – REVISED AUGUST 2026
+
+
+10 Mechanical, Packaging, and Orderable Information
+The following pages include mechanical, packaging, and orderable information. This information is the most
+current data available for the designated devices. This data is subject to change without notice and revision of
+this document. For browser-based versions of this data sheet, refer to the left-hand navigation.
+
+
+
+
+Copyright © 2026 Texas Instruments Incorporated                                                Submit Document Feedback     25
+                                                  Product Folder Links: BQ25185
+                                                                                                                                                                      PACKAGE OPTION ADDENDUM
+
+       www.ti.com                                                                                                                                                                                                    17-Jul-2026
+
+
+
+
+PACKAGING INFORMATION
+
+       Orderable part number          Status     Material type      Package | Pins      Package qty | Carrier        RoHS             Lead finish/              MSL rating/               Op temp (°C)          Part marking
+                                        (1)            (2)                                                             (3)            Ball material             Peak reflow                                           (6)
+                                                                                                                                            (4)                      (5)
+
+           BQ25185DLHR                Active      Production       WSON (DLH) | 10       3000 | LARGE T&R             Yes                NIPDAU            Level-1-260C-UNLIM              -40 to 125               B185
+          BQ25185DLHR.A               Active      Production       WSON (DLH) | 10       3000 | LARGE T&R             Yes                NIPDAU            Level-1-260C-UNLIM              -40 to 125               B185
+
+(1)
+      Status: For more details on status, see our product life cycle.
+
+(2)
+   Material type: When designated, preproduction parts are prototypes/experimental devices, and are not yet approved or released for full production. Testing and final process, including without limitation quality assurance,
+reliability performance testing, and/or process qualification, may not yet be complete, and this item is subject to further changes or possible discontinuation. If available for ordering, purchases will be subject to an additional
+waiver at checkout, and are intended for early internal evaluation purposes only. These items are sold without warranties of any kind.
+
+(3)
+      RoHS values: Yes, No, RoHS Exempt. See the TI RoHS Statement for additional information and value definition.
+
+(4)
+   Lead finish/Ball material: Parts may have multiple material finish options. Finish options are separated by a vertical ruled line. Lead finish/Ball material values may wrap to two lines if the finish value exceeds the maximum
+column width.
+
+(5)
+  MSL rating/Peak reflow: The moisture sensitivity level ratings and peak solder (reflow) temperatures. In the event that a part has multiple moisture sensitivity ratings, only the lowest level per JEDEC standards is shown.
+Refer to the shipping label for the actual reflow temperature that will be used to mount the part to the printed circuit board.
+
+(6)
+      Part marking: There may be an additional marking, which relates to the logo, the lot trace code information, or the environmental category of the part.
+
+Multiple part markings will be inside parentheses. Only one part marking contained in parentheses and separated by a "~" will appear on a part. If a line is indented then it is a continuation of the previous line and the two
+combined represent the entire part marking for that device.
+
+Important Information and Disclaimer:The information provided on this page represents TI's knowledge and belief as of the date that it is provided. TI bases its knowledge and belief on information provided by third parties, and
+makes no representation or warranty as to the accuracy of such information. Efforts are underway to better integrate information from third parties. TI has taken and continues to take reasonable steps to provide representative
+and accurate information but may not have conducted destructive testing or chemical analysis on incoming materials and chemicals. TI and TI suppliers consider certain information to be proprietary, and thus CAS numbers
+and other limited information may not be available for release.
+
+In no event shall TI's liability arising out of such information exceed the total purchase price of the TI part(s) at issue in this document sold by TI to Customer on an annual basis.
+
+
+
+
+                                                                                                          Addendum-Page 1
+                                                                              PACKAGE MATERIALS INFORMATION
+
+www.ti.com                                                                                                                                        17-Jul-2026
+
+
+
+TAPE AND REEL INFORMATION
+
+       REEL DIMENSIONS                                                                     TAPE DIMENSIONS
+                                                                                      K0         P1
+
+
+
+                                                                                                                       B0 W
+                                       Reel
+                                     Diameter
+                                                                                   Cavity             A0
+                                                               A0   Dimension designed to accommodate the component width
+                                                               B0   Dimension designed to accommodate the component length
+                                                               K0   Dimension designed to accommodate the component thickness
+                                                               W    Overall width of the carrier tape
+                                                               P1   Pitch between successive cavity centers
+
+
+                                      Reel Width (W1)
+                              QUADRANT ASSIGNMENTS FOR PIN 1 ORIENTATION IN TAPE
+
+                                                                                                      Sprocket Holes
+
+
+                                                Q1        Q2          Q1    Q2
+
+                                                Q3        Q4          Q3    Q4                    User Direction of Feed
+
+
+
+                                                           Pocket Quadrants
+
+
+*All dimensions are nominal
+             Device           Package Package Pins             SPQ       Reel   Reel   A0                    B0         K0     P1     W     Pin1
+                               Type Drawing                            Diameter Width (mm)                  (mm)       (mm)   (mm)   (mm) Quadrant
+                                                                         (mm) W1 (mm)
+      BQ25185DLHR             WSON     DLH           10        3000        180.0           8.4        2.3   2.55       1.2    4.0    8.0     Q2
+
+
+
+
+                                                                     Pack Materials-Page 1
+                                                                PACKAGE MATERIALS INFORMATION
+
+www.ti.com                                                                                                              17-Jul-2026
+
+
+
+ TAPE AND REEL BOX DIMENSIONS
+
+
+
+
+                                                               Width (mm)
+                                                                              H
+                      W
+
+
+
+
+                                                          L
+
+
+
+
+*All dimensions are nominal
+             Device           Package Type   Package Drawing   Pins         SPQ    Length (mm)   Width (mm)   Height (mm)
+      BQ25185DLHR                WSON             DLH           10          3000      210.0        185.0         35.0
+
+
+
+
+                                                        Pack Materials-Page 2
+                                                                                                    PACKAGE OUTLINE
+DLH0010A                                                                                    WSON - 0.8 mm max height
+                                                                                         PLASTIC QUAD FLATPACK- NO LEAD
+
+
+                                        B                        2.3                        A
+                                                                 2.1
+
+
+
+
+                                                                                            2.1
+                   PIN 1 INDEX AREA                                                         1.9
+
+
+
+
+                                     0.8 MAX
+                                                                                                    C
+
+                                                                                                        SEATING PLANE
+                                     0.05
+                                     0.00                                                               0.08 C
+
+                                                                 1.0
+                                                                 0.8
+                                                                                                                     (0.1) TYP
+
+                            8X 0.4
+                                             5                                          6
+
+
+
+
+                                      SYMM                         11
+                             1.6                                                                  1.6
+                                                                                                  1.4
+
+
+
+
+                                             1                                         10
+
+                                                                                                  10X 0.25
+                                                                                                      0.15
+                                                                        0.35
+                                                               SYMM 10X 0.25                        0.1      C A B
+                                                                                                    0.05      C
+                                                                                                                       4226298/A 10/2020
+
+NOTES:
+
+ 1.   All linear dimensions are in millimeters. Any dimensions in parenthesis are for reference only. Dimensioning and tolerancing
+      per ASME Y14.5M.
+ 2.   This drawing is subject to change without notice.
+ 3.   The package thermal pad must be soldered to the printed circuit board for optimal thermal and mechanical performance.
+
+
+
+
+                                                               www.ti.com
+                                                                                    EXAMPLE BOARD LAYOUT
+DLH0010A                                                                                     WSON - 0.8 mm max height
+                                                                                          PLASTIC QUAD FLATPACK- NO LEAD
+
+
+
+
+                                                                   (2.1)
+
+                                  10X (0.5)
+                                                                   (0.9)
+                             10X (0.2)
+                                              1
+                                                                                                10
+
+
+
+                       8X (0.4)                                                                  2X (0.5)
+                                    SYMM                              11
+                                                                                                            (1.5)
+
+
+
+
+                      (R0.05) TYP             5                                                 6
+
+
+                                  (Ø 0.2) VIA                      SYMM
+                                     TYP
+
+
+                                                       LAND PATTERN EXAMPLE
+                                                          EXPOSED METAL SHOWN
+                                                               SCALE: 25X
+
+
+
+
+                       0.05 MAX                                                    0.05 MIN
+                     ALL AROUND                                                  ALL AROUND
+                                                                                                                    METAL UNDER
+                                                                                                                    SOLDER MASK
+                                                     METAL
+
+
+                                                                                                                    SOLDER MASK
+           EXPOSED METAL                             SOLDER MASK                                                    OPENING
+                                                                           EXPOSED METAL
+                                                     OPENING
+
+
+                                  NON SOLDER MASK                                             SOLDER MASK
+                                      DEFINED                                                   DEFINED
+                                    (PREFERRED)
+                                                         SOLDER MASK DETAILS                                         4226298/A 10/2020
+
+NOTES: (continued)
+
+ 4.   This package is designed to be soldered to a thermal pad on the board. For more information, see Texas Instruments literature
+      number SLUA271 (www.ti.com/lit/slua271) .
+ 5.   Vias are optional depending on application, refer to device data sheet. If any vias are implemented, refer to their locations shown
+      on this view. It is recommended that vias under paste be filled, plugged or tented.
+
+
+
+
+                                                                www.ti.com
+                                                                                EXAMPLE STENCIL DESIGN
+DLH0010A                                                                                  WSON - 0.8 mm max height
+                                                                                       PLASTIC QUAD FLATPACK- NO LEAD
+
+
+
+
+                                                                  (2.1)
+
+                                  10X (0.5)
+                                                                 (0.85)
+                            10X (0.2)
+                                              1
+                                                                                             10
+
+
+
+                       8X (0.4)
+                                    SYMM                             11
+                                                                                                       (1.38)
+
+
+
+
+                     (R0.05) TYP              5                                              6
+
+
+                                                                 SYMM
+
+
+
+
+                                                    SOLDER PASTE EXAMPLE
+                                                  BASED ON 0.125 mm THICK STENCIL
+
+                                                           EXPOSED PAD
+                                                  88% PRINTED COVERAGE BY AREA
+                                                            SCALE: 25X
+
+
+
+
+                                                                                                                 4226298/A 10/2020
+
+NOTES: (continued)
+
+ 6.   Laser cutting apertures with trapezoidal walls and rounded corners may offer better paste release. IPC-7525 may have alternate
+      design recommendations.
+
+
+
+
+                                                              www.ti.com
+                                         IMPORTANT NOTICE AND DISCLAIMER
+TI PROVIDES TECHNICAL AND RELIABILITY DATA (INCLUDING DATASHEETS), DESIGN RESOURCES (INCLUDING REFERENCE
+DESIGNS), APPLICATION OR OTHER DESIGN ADVICE, WEB TOOLS, SAFETY INFORMATION, AND OTHER RESOURCES “AS IS”
+AND WITH ALL FAULTS, AND DISCLAIMS ALL WARRANTIES, EXPRESS AND IMPLIED, INCLUDING WITHOUT LIMITATION ANY
+IMPLIED WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE OR NON-INFRINGEMENT OF THIRD
+PARTY INTELLECTUAL PROPERTY RIGHTS.
+These resources are intended for skilled developers designing with TI products. You are solely responsible for (1) selecting the appropriate
+TI products for your application, (2) designing, validating and testing your application, and (3) ensuring your application meets applicable
+standards, and any other safety, security, regulatory or other requirements.
+These resources are subject to change without notice. TI grants you permission to use these resources only for development of an
+application that uses the TI products described in the resource. Other reproduction and display of these resources is prohibited. No license
+is granted to any other TI intellectual property right or to any third party intellectual property right. TI disclaims responsibility for, and you fully
+indemnify TI and its representatives against any claims, damages, costs, losses, and liabilities arising out of your use of these resources.
+TI’s products are provided subject to TI’s Terms of Sale, TI’s General Quality Guidelines, or other applicable terms available either on
+ti.com or provided in conjunction with such TI products. TI’s provision of these resources does not expand or otherwise alter TI’s applicable
+warranties or warranty disclaimers for TI products. Unless TI explicitly designates a product as custom or customer-specified, TI products
+are standard, catalog, general purpose devices.
+TI objects to and rejects any additional or different terms you may propose.
+IMPORTANT NOTICE
+
+                                                Copyright © 2026, Texas Instruments Incorporated
+                                                                Last updated 10/2025
+

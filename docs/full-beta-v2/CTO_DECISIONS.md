@@ -1,3 +1,165 @@
+## D-742 — **THE ONE OPEN OWNER DECISION IS ANSWERED, AND ANSWERING IT EXPOSED A SECOND DEFECT THAT MATTERS MORE: THIS BOARD'S CHARGER STATUS DECODE WAS INVERTED ON `STAT1`**
+
+    authority  23ee647e  UNCHANGED.  NO COPPER.
+    owner decision      /home/aqroot8/.aqroot-owner-decision-stat2.txt (APPROVED 2026-09-17)
+    primary source      hardware/demo/kicad/aqroot-demo/vendor/BQ25185/
+                        ti-bq25185-slusf65b-2026-08.pdf
+                        sha256 c73ed7d63e6532bb05e26df30edd37c6ac2de310c1222a84a77625e15e133684
+    real KiCad DRC      199 lib_footprint_issues, 17 unconnected_items,
+                        246 schematic parity warnings, 0 parity errors
+                        -- IDENTICAL to the D-741 baseline in every class
+    evidence/d742-{routing-ledger,drc-schematic-parity,contract-regression}.json
+
+### 1. THE OWNER DECISION IS TAKEN, AND THE LEDGER NOW STATES IT INSTEAD OF HIDING IT
+
+The owner approved leaving `/BQ25185_STAT2`'s `U11.3` unconnected, with `STAT1`
+functionality, `BQ25185` protection behaviour, `R128` and `TP7` all preserved, and
+with firmware and documentation required to record that full `STAT1`+`STAT2`
+charge-state decoding is unavailable and that a charger fault must not be falsely
+reported as directly observed.
+
+`routing_ledger.py` gains `APPROVED_UNROUTED`, and **it is deliberately not
+`APPROVED_NC`.**  A contact in `APPROVED_NC` carries no net at all -- `J5`'s eight
+Community-Port positions -- and the ledger simply does not count it.  `U11.3`
+carries a real net on a fitted part and is genuinely unrouted, so folding it into
+`APPROVED_NC` would have done two harmful things: it would have deleted the
+board's own record of *why* the pin is bare, and it would have made
+`neck_contract` `N2` **VACUOUS**, because `U11.3` is the only pad on this whole
+board that `N2` compares.  So the pad stays on its net, `nets[]` keeps telling the
+copper truth, and the GOVERNANCE verdict is published beside it:
+
+    retained_open_edges          1   physical, unchanged
+    approved_unrouted_edges      1   covered by the owner decision
+    unapproved_open_edges        0   <- the release criterion
+    connected_retained_nets    171 of 172
+
+The declaration is checked against the board on every run and is not allowed to go
+stale: the pad must exist, its part must be fitted, it must still carry
+`/BQ25185_STAT2`, it must still be stranded, and `R128` and `TP7` -- the rework
+path the owner decision requires -- must both still be fitted.  Any of those
+failing returns exit 2.  If a future revision routes `U11.3`, the declaration
+FAILS rather than silently excusing nothing.
+
+### 2. AND THEN THE DATASHEET WAS READ, WHICH NOBODY IN THIS PROGRAMME HAD DONE SINCE 2026-08
+
+The independent review's pre-fab list said *"validate `BQ25185` `STAT1`/`STAT2`
+decoding against current TI truth table and fix schematic notes + firmware
+together if needed."*  It was needed.
+
+**THE DECODE THIS BOARD CARRIED WAS INVERTED ON `STAT1`.**  `R127`'s and `R128`'s
+schematic notes, and D-170 itself, all said:
+
+    STAT1 LOW = charging
+    STAT1 HIGH + STAT2 LOW = fault
+    both HIGH = charge complete / sleep / charge disabled
+
+citing *"SLUSF65A Table 7-2"* -- a table that does not exist; section 7 of that
+datasheet is *Application and Implementation*.  The status table is **SLUSF65B
+(August 2026) section 6.3.10, Table 6-2**, and it reads:
+
+    STAT1  STAT2   state
+    HIGH   HIGH    charge completed, charger in sleep mode, or charge disabled
+                   (including VBAT > VRCH)
+    HIGH   LOW     NORMAL CHARGING IN PROGRESS (including automatic recharge)
+    LOW    HIGH    RECOVERABLE FAULT -- VIN_OVP, TS HOT, TS COLD, TSHUT,
+                   system short protection
+    LOW    LOW     NON-RECOVERABLE OR LATCH-OFF FAULT -- ILIM/ISET pin short,
+                   BATOCP, safety timer expired
+
+Two of the four rows were exactly backwards.  The datasheet confirms its own table
+twice more: section 6.3.7.1 gives `VIN` overvoltage as *"`STAT1` = LOW, `STAT2` =
+HIGH"*, and the charger flow diagram marks *Charge Done* as *"`STAT1` and `STAT2`
+to 1"*.  The revision history shows the table was never changed by TI -- `*` to
+`A` added only "the pins can be left floating if unused", and `A` to `B` changed
+only `tMAXCHG`.  **This was never a datasheet revision; it was a reading error,
+made in FBV2-S1-008 and carried by every document that copied it.**
+
+***AND `POWER_FAULT_STATE_TABLE.md` HAD IT RIGHT THE WHOLE TIME.***  Its row 189
+reads *"charging; `STAT1` HIGH, `STAT2` LOW"*, and the independent power/NFC review
+of 2026-08-22 lists *"Non-recoverable / latch-off fault ... LOW | LOW"*.  The
+architecture documents and the schematic disagreed for four weeks and nothing in
+the programme compared them, because every check this board owns is geometric.
+
+### 3. WHAT THE CORRECTION DOES TO THE OWNER DECISION -- IT MAKES IT *BETTER*, NOT WORSE
+
+D-734, D-741 and the owner decision were all written under the inverted table, and
+all three therefore assumed that losing `STAT2` costs **fault visibility**.  It
+does not.  Collapsing the real table onto `STAT1` alone:
+
+    STAT1 LOW    CHARGER FAULT, DIRECTLY OBSERVED.
+                 Recoverable vs non-recoverable is not distinguishable.
+    STAT1 HIGH   NOT FAULTED; ambiguous between charging and
+                 charge-complete / sleep / charge-disabled.
+
+**AQROOT Demo keeps fault detection and loses the charging-versus-complete
+distinction** -- the opposite way round from the assumption.  The owner's condition
+*"charger fault state must not be falsely reported as directly observed"* is
+therefore satisfied with room to spare: the fault genuinely **is** directly
+observed, and what must now be labelled an INFERENCE is the *charging* claim, built
+from `VBUS_PRESENT` and the `MAX17048` voltage and state-of-charge trend.  The
+no-battery limit cycle toggles `STAT2` while `STAT1` stays HIGH, so it is not
+observable here either.
+
+### 4. WHERE THE CORRECTION LANDED
+
+Every live authority firmware or a reviewer can read:
+
+  * `01_power_tree.kicad_sch` -- a new `U11` note carrying both the NC decision and
+    the full corrected table, with the in-repository datasheet path and hash.
+  * `08_buttons_expanders.kicad_sch` -- `R127`'s and `R128`'s notes rewritten, the
+    `U2` map note and the expander-interrupts note corrected.
+  * `AQROOT_DEMO_EXPANDER_DEPENDENCIES.md` -- the `P16` row, the mask-policy
+    reason, and a third as-built fact carrying both tables in full.
+  * `architecture/POWER_FAULT_STATE_TABLE.md` -- a Demo delta block that records
+    the NC, records that **this document was the one that had it right**, and
+    closes its own unresolved item 4 (no-battery `STAT2` toggle rate) as
+    un-measurable on this revision.
+  * `architecture/GPIO_LEDGER.md` -- the charger row, which also still carried the
+    pre-ECO `U2` P05/P06 pins that D-732 and D-733 had already moved, and the touch
+    row beside it for the same reason.
+
+**D-170's decode paragraph is SUPERSEDED by this entry.**  Its pull-up sizing
+argument -- 1 k to 20 k from SLUSF65B Table 4-1, 10 k chosen over 20 k against
+1 uA of expander leakage -- is re-checked against the current datasheet and stands
+unchanged.  Its pin assignment was already superseded by D-732 and D-733.
+
+### 5. THE BOARD IS UNTOUCHED AND THE SUITE IS UNMOVED
+
+No copper, no footprint, no value, no netlist.  Real KiCad DRC with
+`--severity-all --schematic-parity` returns 199 `lib_footprint_issues`, 17
+`unconnected_items` and 246 parity warnings with **zero parity errors** -- every
+count identical to D-741's.  All 17 `unconnected_items` are accounted for: 16 are
+pads of the sixteen schematic-DNP references, and the seventeenth is `U11.3`.
+
+### 6. WHAT THIS LEAVES OPEN
+
+**No open owner decision.**  But reading the datasheet for section 2 turned up a
+second finding on the same part, and it is larger than either of the first two,
+because it stops the product working.  It is stated here so this entry stands on
+its own, and it is executed in D-743.
+
+***THE CHARGER CANNOT COMPLETE A CHARGE CYCLE AS THE BOARD IS BUILT.***
+`R37` is 1 kOhm, and SLUSF65B section 6.1.1.4 gives `ICHG = KISET / RISET` with
+`KISET` = 300 AOhm typical, so the programmed fast-charge current is **300 mA** --
+which is also TI's own worked example in section 7.2.2.2.  `R36` is 18 kOhm, which
+Table 6-1 maps to **ILIM500** and `VBATREG` 4.2 V.  And **SLUSF65B revision B
+(August 2026) changed `tMAXCHG` from 720 min to 360 min** -- it is the single
+line in its revision history.
+
+    300 mA x 360 min = 1800 mAh delivered before the safety timer expires
+    fitted cell       2500 .. 3000 mAh (DEVICE_SPEC section 6.1 envelope)
+
+So the charger reaches roughly **60 to 72 % state of charge** and then, per
+section 6.3.7.7, *"charging is disabled"* and the pins indicate a
+**non-recoverable fault** -- which, by the table corrected in section 2 above,
+is exactly what `STAT1` LOW will show.  Section 6.3.7.7 clears it only by
+*"toggling the CE pin or the input power"*, and **`U11.4` `/CE` is hard-tied to
+GND on this board**, so firmware cannot clear it: the user must unplug and
+replug the USB cable.  The design was correct against SLUSF65A, where
+`tMAXCHG` was 720 min and 300 mA x 12 h = 3600 mAh covered the whole envelope.
+**A vendor documentation change invalidated it, and nothing in this programme
+re-read the datasheet until now.**  D-743 takes it.
+
 ## D-741 ADDENDUM — THE FAB PACKAGE IS REGENERATED AT `23ee647e` AND THE WHOLE STANDING SUITE IS GREEN, AND **D-734's REASON FOR `U11.3` IS WRONG IN ONE SPECIFIC WAY THAT MATTERS FOR REV-B**
 
     authority  23ee647e  UNCHANGED.  NO COPPER.

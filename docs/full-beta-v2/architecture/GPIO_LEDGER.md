@@ -184,9 +184,9 @@ pull-down and must not be used on this pin.
 | LoRa `DIO1` | `SX1262_DIO1` | **no longer the MCU** — routes to the internal expander `U2` (D-089) | n/a |
 | sub-GHz (`CC1101`) | `CC1101_GDO0` | GPIO15 | none |
 | IMU (`BMI270`) | `BMI270_INT1_STRAP` | GPIO3 | **strap pin** — defined by `R110`, and the IMU is high-Z at reset |
-| touch (`FT6236`) | **`TOUCH_INT_N`** — panel pin 46 | **`U2` P16**, landed FBV2-S1-008 | **captured 2026-08-23 (FBV2-S1-003).** Not represented at all on Beta-DM |
+| touch (`FT6236`) | **`TOUCH_INT_N`** — panel pin 46 | **AQROOT DEMO AS BUILT: `U2` P06.**  *The `U2` P16 in this row is the pre-ECO map corrected by D-732.* | **captured 2026-08-23 (FBV2-S1-003).** Not represented at all on Beta-DM |
 | microSD card detect | **`SD_CARD_DETECT_N`** — `J2.10` | **`U2` P07**, landed FBV2-S1-008 | D-117 required a PCAL input; it now has one. `R113` 100 k pull-up on sheet `03`. Polarity assumed (B-46) |
-| charger (`BQ25185`) | **`BQ25185_STAT1` / `STAT2`** | **`U2` P05 / P06**, landed FBV2-S1-008 | Ruling G / D-170. 10 k pull-ups. **`STAT2` stays interrupt-MASKED** — it toggles forever with no battery fitted |
+| charger (`BQ25185`) | **`BQ25185_STAT1` / `STAT2`** | **AQROOT DEMO AS BUILT: `STAT1` → `U3` P17; `STAT2` → `U2` P16, but `U11.3` SHIPS UNCONNECTED** (owner decision D-742). *The `U2` P05 / P06 in this row is the pre-ECO map and is wrong — D-732 corrected the port, D-733 swapped `STAT1` to `U3`.* | Ruling G / D-170, **decode SUPERSEDED by D-742**: SLUSF65B Table 6-2 is `STAT1` LOW = **fault**, `STAT1` HIGH + `STAT2` LOW = **charging** — D-170 had those two rows inverted. With `STAT2` unlanded, `STAT1` LOW is a directly observed fault and `STAT1` HIGH is ambiguous between charging and complete. 10 k pull-ups. **`P16` stays interrupt-MASKED** — it carries no information, not because it chatters |
 | accessory detect / fault | `ACC_DETECT_N`, `ACC_POWER_FAULT_N` | **`U3` P14 / P15**, landed FBV2-S1-008 | the only two `U3` interrupts left unmasked; the ten XGPIO are masked by MX-9 |
 
 **LoRa deep-sleep packet wake remains NOT REQUIRED** (D-041). No GPIO was remapped
