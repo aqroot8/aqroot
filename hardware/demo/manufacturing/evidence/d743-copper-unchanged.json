@@ -1,0 +1,24 @@
+{
+ "question": "did the D-743 value-field edit change any COPPER or PLACEMENT?",
+ "pre": {
+  "tracks": 3516,
+  "vias": 904,
+  "zones": 71,
+  "footprints": 309,
+  "track_sig": "c4d37e043fbd98334fdad67d7a8835c0adae63f9cf7c6764e2c488ffeb3acff8",
+  "zone_sig": "867aa26088b3fe5ab22f07368baa8686743435df3b258e06a25303177c2a8db2",
+  "placement_sig": "0e11b870860056291ce88baa886a10e7076ad6dbd9005241c232e570b3d0670e"
+ },
+ "post": {
+  "tracks": 3516,
+  "vias": 904,
+  "zones": 71,
+  "footprints": 309,
+  "track_sig": "c4d37e043fbd98334fdad67d7a8835c0adae63f9cf7c6764e2c488ffeb3acff8",
+  "zone_sig": "867aa26088b3fe5ab22f07368baa8686743435df3b258e06a25303177c2a8db2",
+  "placement_sig": "0e11b870860056291ce88baa886a10e7076ad6dbd9005241c232e570b3d0670e"
+ },
+ "copper_identical": true,
+ "zones_identical": true,
+ "placement_identical": true
+}

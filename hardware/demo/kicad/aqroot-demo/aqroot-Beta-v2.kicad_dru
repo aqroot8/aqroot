@@ -363,10 +363,28 @@
 #   ACC_3V3            0.40 A published     0.085 mm    0.443 mm
 #                      0.76 A typ ILIM      0.196 mm    1.021 mm
 #   ACC_5V             0.70 A ILIM          0.184 mm    0.958 mm
-#   VBUS_CHG           0.5 A (ILIM500)      0.115 mm    0.601 mm
+#   VBUS_CHG           1.1 A (ILIM1100)     0.343 mm    1.793 mm
+#     D-743 RAISED THIS FROM THE FORMER ILIM500 SETTING, AND THE OUTER
+#     FLOOR STILL
+#     COVERS IT -- 0.343 mm required against the 0.35 mm min / 0.50 mm opt
+#     below.  THE INNER FIGURE DOES NOT, AND CANNOT: see the named
+#     exception in section 5a.  R36 is 13 kOhm, which SLUSF65B table 6-1
+#     maps to ILIM1100 with VBATREG unchanged at 4.2 V; R37 is 390 Ohm,
+#     which programs ICHG = 769 mA.  Both moved because SLUSF65B rev B
+#     halved tMAXCHG to 360 min and the old 300 mA could not terminate.
 #   NFC_5V_PA_PENDING  0.5 A TX burst       0.115 mm    0.601 mm
 #     Its inherited pattern "/NFC_5V_PA_PENDING" also matched nothing.
-#   SPK_OUT            0.29 A rms/0.41 pk   0.070 mm    0.365 mm
+#   SPK_OUT            0.41 A peak          0.088 mm    0.460 mm
+#                      0.29 A rms           0.055 mm    0.285 mm
+#     D-743 CORRECTED THIS ROW.  It read "0.29 A rms/0.41 pk" against
+#     0.070/0.365 mm, and those widths are neither current: they are the
+#     IPC-2221B figures for 0.347 amps.  The row now prints BOTH currents
+#     with their own widths, and the floor below -- 0.25 mm min on a net
+#     routed entirely on F.Cu and B.Cu -- covers the 0.41 A PEAK with
+#     2.8x margin either way, so no rule changes.  Found by
+#     `audit_rail_ampacity.py`, whose method self-check re-derives this
+#     whole table before it is allowed to rule on any copper; SPK_OUT was
+#     the one row of seven it could not reproduce.
 #   LED_BOOST          0.09 A at up to 39 V clearance-driven, not width
 #
 # The floors below sit well above the thermal minimum, and BAT_MAIN and
@@ -375,6 +393,7 @@
 # In2 at all.  If a SYS segment on In2 ever proves unavoidable, size it
 # separately at 0.5 oz - never inherit the outer-layer width.
 # ---------------------------------------------------------------------
+
 
 (rule "BAT_MAIN minimum width"
 	(constraint track_width (min 0.60mm) (opt 1.00mm))
@@ -448,6 +467,71 @@
 	(constraint clearance (min 0.25mm))
 	(condition "A.hasNetclass('NFC_5V_PA') && A.Type != 'Pad' && B.Type != 'Pad'"))
 
+
+# ---------------------------------------------------------------------
+# 5a. THE ONE NAMED AMPACITY EXCEPTION ON THIS BOARD - D-743
+#
+# `/01_POWER_TREE/USB_VBUS_CHG` CARRIES 1.1 A OVER 163.0 mm OF In2 --
+# 158.9 mm of it at 0.500 mm and one 4.1 mm segment at 0.350 mm -- AND
+# SECTION 5's OWN INNER-LAYER FIGURE ASKS 1.793 mm.
+# This is stated here rather than quietly passing, because it passes
+# KiCad DRC either way: the `track_width` rule below has no layer
+# qualifier, the copper is 0.35 mm or wider everywhere outside U11's
+# licensed courtyard neck, and nothing in KiCad checks ampacity at all.
+#
+# WHAT WAS MEASURED BEFORE ACCEPTING IT, and it is all reproducible:
+#
+#   * `audit_rail_ampacity.py` walks the R35.2 -> U11.10 CARRYING path -
+#     not the net, which has eleven pads and nine telemetry branches -
+#     and reports 250.8 mm, 440 mOhm, 484 mV of drop at 1.1 A.
+#   * `screen_widest_corridor.py` was run for a shorter trunk on F.Cu,
+#     B.Cu and In2.Cu, at the 0.20 mm clearance the routed-clearance
+#     rules actually leave beside pads.  EVERY probe returns
+#     `widest_trunk_mm 0.0`: there is no corridor for a new conductor of
+#     ANY width between the J3/R35 pocket and U11.  The board is full.
+#   * `w/d743/widen_plan.py` samples all 25 segments of the carrying path
+#     at 0.05 mm against every foreign object on each segment's own layer.
+#     The two long In2 legs have 0.539 mm and 0.558 mm of room against
+#     the 0.500 mm they already use.  In-place widening is worth under
+#     5 % of the resistance.  THE PATH IS AT ITS GEOMETRIC LIMIT.
+#
+# WHY IT IS NEVERTHELESS SAFE, and this is the part that is a judgement
+# and is therefore written down in full:
+#
+#   * IPC-2221B's internal derating - k = 0.024 against 0.048 external -
+#     was measured on isolated coupons in still air and was SUPERSEDED by
+#     IPC-2152 (2009), whose central result is that an internal trace in a
+#     real board is not half as capable; with adjacent planes it equals or
+#     exceeds an external one, because the board conducts heat and air
+#     does not.  Section 5 above keeps k = 0.024 as a conservative
+#     FLOOR-SETTING model and that is correct for setting floors.  It is
+#     not a description of this stackup.
+#   * THIS conductor sits on In2, between In1 (GND plane) and In3 (+3V3
+#     plane), about 0.15 mm of FR4 from solid copper on BOTH faces.  At
+#     1.1 A a 0.500 mm x 0.5 oz trace dissipates 2.39 W/m; two-sided
+#     conduction through 0.15 mm of FR4 at k = 0.3 W/m.K over an
+#     effective 0.8 mm gives about 0.31 m.K/W, so the rise over the
+#     planes is of order 1 K.  The 82 K IPC-2221B returns is an artifact
+#     of the wrong boundary condition, not a prediction.
+#   * The ELECTRICAL cost is real and is accepted with its number: 440
+#     mOhm drops 484 mV at 1.1 A and wastes 0.53 W.  The charger still
+#     works, because VINDPM tracks VBAT + 330 mV: at the worst point of
+#     the cycle (VBAT 4.15 V, end of CC) VIN at U11.10 is 4.64 V from a
+#     5.0 V source against a 4.48 V VINDPM target, and any foldback is a
+#     stable regulating point on a tapering current, not a stall.
+#
+# SCOPE.  This exception is for `/01_POWER_TREE/USB_VBUS_CHG` on In2.Cu
+# ONLY.  It licenses NO other net and NO other layer, and it does not
+# change any rule below - there is nothing to relax, because the copper
+# already passes every rule this file states.  It is a recorded
+# engineering acceptance, not a waiver.
+#
+# CARRIED FORWARD.  Rev-B must give the charger input a direct trunk -
+# R35 to U11.10 is 65 mm in a straight line and the board routes it in
+# 250 mm because the net was laid as a minimum spanning tree through the
+# north-west recovery cluster.  A star, not a daisy chain.  And the first
+# article must have VIN measured at U11.10 while charging.
+# ---------------------------------------------------------------------
 
 # ---------------------------------------------------------------------
 # 5b. BATTERY PATH-ROLE WIDTHS  (D-249, 2026-08-24, FBV2-P2-002C)

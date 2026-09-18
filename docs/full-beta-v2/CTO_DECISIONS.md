@@ -1,3 +1,201 @@
+## D-743 — **THE CHARGER COULD NOT COMPLETE A CHARGE.** TI HALVED `tMAXCHG` IN AUGUST AND THIS BOARD'S `ICHG` HAD BEEN CHOSEN AGAINST THE OLD NUMBER. TWO RESISTORS, AND THE FIRST ABSOLUTE POWER AUDIT THIS BOARD HAS EVER HAD
+
+    authority  23ee647e -> c7f5c618   NO COPPER -- two footprint VALUE fields
+    primary source      hardware/demo/kicad/aqroot-demo/vendor/BQ25185/
+                        ti-bq25185-slusf65b-2026-08.pdf
+    real KiCad DRC      199 lib_footprint_issues, 17 unconnected_items,
+                        246 parity warnings, 0 parity errors -- UNCHANGED
+    evidence/d743-{rail-ampacity,ampacity-gate-controls,copper-unchanged,
+                   routing-ledger,contract-regression,fab-package-contract}.json
+    w/d743/{widen_plan,gate_controls}.py
+
+### 1. THE DEFECT
+
+`R37` was 1 kOhm.  SLUSF65B section 6.1.1.4 gives `ICHG = KISET / RISET` with
+`KISET` = 300 AOhm typical, so the programmed fast-charge current was **300 mA**
+-- also TI's own worked example in section 7.2.2.2, which is presumably where it
+came from.  `R36` was 18 kOhm, which Table 6-1 maps to **ILIM500** with
+`VBATREG` 4.2 V.
+
+**And SLUSF65B revision B, August 2026, changed `tMAXCHG` from 720 min to
+360 min.**  It is the only line in that revision's history.
+
+    300 mA x 360 min = 1800 mAh delivered before the fast-charge timer expires
+    fitted cell       = 2500 .. 3000 mAh
+
+So the charger stops at roughly **60 to 72 %** state of charge and section
+6.3.7.7 *"disables charging"* with a **non-recoverable fault**, clearable only
+*"by toggling the CE pin or the input power"*.  **`U11.4` `/CE` is hard-tied to
+GND on this board**, so firmware cannot clear it; the user must unplug the USB
+cable.  The failure is deterministic, happens on every full charge, and by the
+table D-742 corrected it presents as `STAT1` LOW -- a fault.
+
+**The design was CORRECT against SLUSF65A**, where `tMAXCHG` was 720 min and
+300 mA x 12 h = 3600 mAh covered the whole envelope.  A vendor documentation
+change invalidated it and nothing in this programme re-read the datasheet for
+four weeks.  That is the general lesson: every geometric check this board owns
+is exact, and not one of them reads a datasheet.
+
+### 2. THE FIX, AND WHY THESE TWO VALUES
+
+    R37   1 kOhm  -> 390 Ohm   ICHG 300 mA -> 769 mA typ (714..808 over KISET)
+    R36  18 kOhm  -> 13 kOhm   ILIM500 -> ILIM1100;  VBATREG 4.2 V UNCHANGED
+
+`R36` is not a trim -- Table 6-1 is a **lookup**, and 13 kOhm is the row that
+keeps `VBATREG` at 4.2 V and `VLOWV` at 3.0 V while moving only the input limit.
+**The battery regulation voltage and the precharge threshold are therefore
+untouched, and D-269 / D-186 are untouched with them.**  `R36` had to move at
+all because the BQ25185 is LINEAR: input current and charge current are the same
+current, so ILIM500 caps `ICHG` plus the system load at 500 mA and no `R37` can
+beat the timer underneath it.
+
+`R37` = 390 Ohm was chosen over the arithmetically nearer 374 Ohm on the **live
+distributor record** (D-096): `0603WAF3740T5E` is JLC **EXTENDED with stock 1**,
+while `0603WAF3900T5E` (`C23151`) is **BASIC with stock 353 079**.  `0603WAF1302T5E`
+(`C22797`) is likewise BASIC, stock 500 493.  Both are the same UNI-ROYAL family
+already on the board, so D-614's manufacturer and land-pattern reasoning carries
+over untouched.  390 Ohm is also well clear of `RISET_SHORT`, whose maximum is
+264 Ohm and below which the charger latches a fault at startup.
+
+***MARGIN.***  A 1S CC/CV cycle terminating at `ITERM` = 10 % of `ICHG` takes
+about `1.22 x C / ICHG`:
+
+    3000 mAh at 769 mA   286 min   21 % margin on 360 min
+    3000 mAh at 714 mA   308 min   14 %   (KISET minimum)
+    2500 mAh at 769 mA   238 min   34 %
+
+***THERMAL, AND WHY `ICHG` IS SET WHERE THE PACKAGE WANTS IT.***  The part is
+linear: `PDISS = (VIN - VSYS) x IIN + (VSYS - VBAT) x IBAT` with `VSYS`
+regulated to 4.5 V.  At 769 mA, `VBAT` 3.7 V and a 50 mA system load that is
+about 1.03 W, and at `RthetaJA` 68.3 K/W it is about 70 K of rise.  `TREG` is
+**100 C**, so in a 40 C enclosure the part **thermally regulates below about
+`VBAT` 3.9 V** -- it reduces its own charge current rather than overheating --
+and runs open-loop above it.  `TSHUT` is 150 C and is not approached.  This is
+deliberate: `ICHG` is set at what the package sustains for most of the cycle and
+`TREG` governs the low-`VBAT` corner, where the cell holds least charge anyway.
+It also answers the 2026-08-22 pre-design audit's *"start at <= 500 mA charge
+current, raise only after enclosure thermal test"* in the way that audit
+actually wanted -- the gate is now the silicon's own junction-temperature loop
+rather than a fixed ceiling -- but **first-article case-temperature and
+charge-time measurement is still required** and is recorded as such.
+
+***THE SOURCE.***  This board's USB-C is a plain 5.1 kOhm Rd sink (`R30`/`R31`)
+and does not read the source's Rp advertisement, so at ILIM1100 it can draw more
+than a legacy 500 mA port offers.  The BQ25185's battery-tracking **VINDPM**
+(target `VBAT` + 330 mV) is the designed mitigation and folds the input back as
+`VIN` sags.  Consequence, stated plainly and published in `DEVICE_SPEC`:
+**charge from a 1 A or better source**; a 500 mA-class port charges more slowly
+and will not finish inside `tMAXCHG`.  Reading the Type-C Rp advertisement is a
+Rev-B item.
+
+### 3. THE CONDUCTOR, WHICH IS WHERE THIS STOPPED BEING A TWO-RESISTOR CHANGE
+
+Doubling the input limit doubles what `/01_POWER_TREE/USB_VBUS_CHG` must carry,
+and **no instrument on this board could say whether it could.**  Every ampacity
+tool here is a DIFF -- `audit_bond_ampacity.py`, `audit_narrow_copper.py` -- and
+answers *"did this transaction make anything worse"*, which is the wrong question
+at release.  `audit_rail_ampacity.py` is new and answers the absolute one.
+
+It needs three things a diff does not have.  **An absolute design current per
+rail.**  **The PATH**, because a power net is not uniformly a power conductor:
+`USB_VBUS_CHG` has eleven pads and nine of them are telemetry -- two dividers,
+two Schottky steering diodes, a gate resistor, a 1 M pull -- carrying microamps
+over 200 mm, so judging the net by its narrowest track anywhere condemns copper
+that carries nothing AND lets a starved carrying path hide behind a wide stub.
+And **`dT`, not pass/fail**, because a 0.10 mm neck inside a courtyard and a
+33 mm haul are not the same object at the same width.  It self-checks by
+re-deriving `.kicad_dru` section 5's own published table before it is allowed to
+rule on any copper, and it finds the path by a **maximin (widest-bottleneck)
+search**, which is the honest conservative bound: real current divides over every
+parallel path, so if the single BEST path has a segment too narrow, no division
+saves it.
+
+***WHAT IT FOUND.***  The charger-input path from `R35.2` to `U11.10` is
+**250.8 mm, 440 mOhm, 484 mV of drop at 1.1 A** -- against a 65 mm straight
+line.  The net was laid as a minimum spanning tree, so the current runs from the
+USB connector at `y` 136 all the way NORTH to the dead-cell recovery cluster at
+`y` 31 and back SOUTH-EAST to `U11` at `y` 78.  **163.0 mm of it is on In2 at
+0.5 oz**, and section 5's own inner-layer figure at 1.1 A asks **1.793 mm**
+against the 0.500 mm that is there.  It was already 17 % under its own figure at
+the OLD 0.5 A, and nobody could see it.
+
+***BOTH REPAIRS WERE MEASURED AND BOTH ARE UNAVAILABLE.***  `screen_widest_corridor.py`
+was run for a shorter trunk on `F.Cu`, `B.Cu` and `In2.Cu`, at the **0.20 mm**
+clearance the routed-clearance rules actually leave beside pads -- the first
+probes used 0.25 mm and were wrong, because every elevated routed-clearance rule
+on this board excludes pads by its own condition.  **Every probe returns
+`widest_trunk_mm 0.0`: there is no corridor for a new conductor of ANY width
+between the `J3`/`R35` pocket and `U11`.**  And `w/d743/widen_plan.py` samples
+all 25 segments of the carrying path at 0.05 mm against every foreign object on
+each segment's own layer: the two long In2 legs have **0.539 mm and 0.558 mm** of
+room against the 0.500 mm they already use, and the 33 mm `F.Cu` leg has 0.405 mm
+against 0.35 mm.  **In-place widening is worth under 5 % of the resistance.  The
+path is at its geometric limit.**
+
+***SO IT IS ACCEPTED, WITH ITS NUMBER AND ITS REASON, AS THE ONE NAMED AMPACITY
+EXCEPTION ON THIS BOARD*** -- `.kicad_dru` section 5a, written in full.  The
+judgement, stated so it can be argued with: IPC-2221B's internal `k` = 0.024 was
+measured on isolated coupons in still air and was **superseded by IPC-2152
+(2009)**, whose central result is that an internal trace in a real board is not
+half as capable -- with adjacent planes it equals or exceeds an external one.
+This conductor sits on In2 between **In1 (GND plane) and In3 (+3V3 plane)**,
+about 0.15 mm of FR4 from solid copper on both faces; at 1.1 A it dissipates
+2.39 W/m, and two-sided conduction through that dielectric gives about
+0.31 m.K/W, so the rise over the planes is **of order 1 K**.  The 82 K
+IPC-2221B returns is the wrong boundary condition, not a prediction.  Section 5
+keeps `k` = 0.024 as a conservative FLOOR-SETTING model, which is right for
+setting floors and is not a description of this stackup.
+
+The **electrical** cost is real and is accepted with its number: 484 mV and
+0.53 W at 1.1 A.  The charger still works, and this was checked rather than
+assumed -- VINDPM targets `VBAT` + 330 mV, so at the worst point of the cycle
+(`VBAT` 4.15 V, end of CC) `VIN` at `U11.10` is 4.64 V from a 5.0 V source
+against a 4.48 V target, and any foldback is a stable regulating point on an
+already-tapering current, not a stall.
+
+***THE EXCEPTION IS BOUNDED AND THE BOUND IS TESTED.***  It names ONE net, ONE
+layer and a **165 mm length budget**, and `w/d743/gate_controls.py` shows the
+gate returns `HOT` when the exception is removed (9 undeclared segments), when
+its budget is shrunk to 100 mm (163.0 used), and when it is declared on the wrong
+layer.  A second exception covers `BAT_PROTECTED_P`'s **5.5 mm of 0.200 mm
+B.Cu**, which is the PACKAGE and not the layout -- `U11.2`'s land is
+0.750 x 0.200 mm, so no conductor wider than 0.200 mm can land on it in any
+layout -- bounded at 6.0 mm and 0.200 mm, and tightening the width bound to
+0.15 mm makes it FAIL.  `BQ25185_SYS` is declared **POUR_DELIVERED** with a
+pointer to `pour_partition_contract` PP2, so the gap is visible instead of
+silent.
+
+### 4. AND THE SELF-CHECK CAUGHT A THIRD THING
+
+The method re-derives `.kicad_dru` section 5's seven published rows before
+ruling.  Six reproduce to under 1 %.  **`SPK_OUT` does not:** the line reads
+*"0.29 A rms/0.41 pk"* against 0.070 / 0.365 mm, and those widths are neither
+current -- they are the IPC-2221B figures for **0.347 A**.  The row now prints
+both currents with their own widths (0.088 / 0.460 mm at the 0.41 A peak).  **No
+rule changes**: `SPK_OUT`'s floor is 0.25 mm min and the net is routed entirely
+on `F.Cu` and `B.Cu`, so the peak is covered with 2.8x margin.  A documentation
+defect, found because the instrument was made to prove itself first.
+
+### 5. WHAT WAS CHECKED AFTERWARDS
+
+`evidence/d743-copper-unchanged.json` proves the edit touched **no copper**: the
+track signature, the zone signature and the placement signature are byte-identical
+across the two board revisions (3516 tracks, 904 vias, 71 zones, 309 footprints).
+Only two footprint `Value` text fields moved, which is why the board `sha256`
+moved at all.  Real KiCad DRC with `--severity-all --schematic-parity` is
+unchanged in every class.  `routing_ledger` is unchanged: 171 of 172 retained
+nets connected, `unapproved_open_edges` **0**.  The fab package is regenerated
+and `FAB1..FAB11` pass with the new BOM rows.
+
+### 6. CARRIED FORWARD
+
+**Rev-B:** give the charger input a direct trunk -- a star from `R35`, not a
+daisy chain through the north-west recovery cluster -- and read the Type-C Rp
+advertisement.  **First article:** measure `VIN` at `U11.10`, the charge current,
+the total charge time and `U11`'s case temperature, in the enclosure, at the
+fitted cell capacity; prefer the 2500 mAh end of the `DEVICE_SPEC` envelope,
+because the 3000 mAh corner at 40 C ambient has the least margin.
+
 ## D-742 — **THE ONE OPEN OWNER DECISION IS ANSWERED, AND ANSWERING IT EXPOSED A SECOND DEFECT THAT MATTERS MORE: THIS BOARD'S CHARGER STATUS DECODE WAS INVERTED ON `STAT1`**
 
     authority  23ee647e  UNCHANGED.  NO COPPER.

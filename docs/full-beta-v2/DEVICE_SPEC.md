@@ -29,6 +29,40 @@
 
 ---
 
+## 0a. AQROOT **DEMO** DELTA — READ THIS BEFORE ANY KICKSTARTER CLAIM (D-743, 2026-09-18)
+
+> **THIS DOCUMENT DESCRIBES FULL BETA v2, THE PRODUCTION DESIGN.  THE BOARD BEING
+> FABRICATED AND DEMONSTRATED FOR KICKSTARTER IS AQROOT *DEMO*, WHICH IS DERIVED
+> FROM IT AND IS NOT IDENTICAL.**  `AQROOT_DEMO_SCOPE.md` is explicit: *"Do not
+> claim that an electrically unimplemented Demo connector pin is functional"*, and
+> production capabilities may be described as *planned/final-production* only when
+> clearly distinguished from the prototype actually being shown.  Every row below
+> is a place where copy written from this document alone would overstate the unit
+> in the demonstrator's hand.  Demo evidence lives under `hardware/demo/`.
+
+| capability | Full Beta v2 (this document) | **AQROOT Demo as fabricated** | ruling |
+|---|---|---|---|
+| Community Port expansion GPIO | 10 public `XGPIO0`–`XGPIO9` | **TWO — `XGPIO4` and `XGPIO5` only.**  `J5.9`–`J5.12` and `J5.15`–`J5.18` are **electrically NC** | Demo scope; `routing_ledger.py` `APPROVED_NC` |
+| GPIO expanders | three PCAL9535A — `U2`, `U3`, `U23` | **two.  `U23` is REMOVED** | Demo scope |
+| NFC 5 V PA boost `U13` | fitted (§6.3 of this document still says FITTED — **that row is wrong even for Demo**) | **DNP.  NFC runs from the 3.3 V path** | Demo scope "Already unnecessary / DNP" |
+| Charger status decode | `STAT1` + `STAT2` both landed, full four-state decode | **`STAT2` (`U11.3`) UNCONNECTED.**  `STAT1` LOW = fault is directly observed; charging-versus-complete is an INFERENCE | owner decision 2026-09-17, D-742 |
+| Charge current / input limit | not previously fixed anywhere | **`ICHG` 769 mA (`R37` 390 Ω), input limit 1100 mA (`R36` 13 kΩ), `VBATREG` 4.2 V** | D-743 |
+| Charging source | not previously stated | **charge from a 1 A or better USB source.**  A 500 mA-class port charges more slowly and will not complete a cycle inside the charger's 360 min safety timer | D-743 |
+| Speaker `LS1` | on the BOM | **OFF-BOARD**, 152 mm flying leads (`aqroot-Demo-OFF-BOARD.csv`) | fab package |
+| Battery capacity | 2500–3000 mAh envelope, SKU deferred | **still deferred, but fit toward the 2500 mAh end** — see §6.1 | D-743 |
+
+> Everything else in the Demo — ESP32-S3, 16 MB flash / 8 MB PSRAM, the 3.5-inch
+> touchscreen, D-pad and A/B, power switch, recessed BOOT, RGB indicator, Wi-Fi,
+> BLE, 433 MHz with its internal antenna, 915 MHz LoRa with its external antenna,
+> NFC with its internal antenna, IR transmit and receive, speaker, microphone,
+> BMI270, microSD, USB-C data and charging, battery, charger, the battery-safety
+> architecture, the fuel gauge, the physical 1×24 Community Port with its GND
+> contacts, 3.3 V accessory power, one usable 5 V accessory output, software
+> switched 3.3 V and 5 V, SDA, SCL, both native GPIO and Accessory Detect, and the
+> Qwiic / STEMMA QT connector — **is retained and is fabricated on the Demo board.**
+
+---
+
 ## 0. Product summary (MARKETING-SAFE unless a row says otherwise)
 
 AQROOT Full Beta v2 is a portable, battery-powered, multi-radio wireless / RF /
@@ -160,9 +194,10 @@ sockets); the only on-board RF network is the 13.56 MHz NFC differential front e
 | Cell | 1S Li-ion / LiPo pouch | LOCKED (chemistry) · INTERNAL | `01_power_tree.kicad_sch`; OFF_BOARD_BOM.md |
 | Battery connector | `J4` **JST-PH-2** (B2B-PH-K-S(LF)(SN)) | FITTED · INTERNAL | `01_power_tree.kicad_sch:J4` |
 | Envelope | ≈ **2500–3000 mAh** target; cell envelope 57 × 75 × 8.0 mm MAX (D-243) | TARGET · CAD-TO-VERIFY | CTO_DECISIONS D-071/D-243; OFF_BOARD_BOM.md |
-| **Exact fitted capacity** | **UNRESOLVED** — SKU deferred to procurement (M-04) | TBD | **Do NOT claim a single mAh publicly.** Candidates named but not baselined (PKCELL LP785060 / LP755070) |
+| **Exact fitted capacity** | **UNRESOLVED** — SKU deferred to procurement (M-04).  **D-743 adds an engineering preference: fit toward the 2500 mAh end.**  The charger's 360 min `tMAXCHG` safety timer gives ≈34 % margin at 2500 mAh and ≈21 % at 3000 mAh, and the 3000 mAh worst case at 40 °C ambient is the least-margin corner | TBD | **Do NOT claim a single mAh publicly.** Candidates named but not baselined (PKCELL LP785060 / LP755070) |
 | Charger | `U11` **BQ25185DLHR** (1S Li-ion linear charger) | FITTED · INTERNAL | `01_power_tree.kicad_sch:U11` |
-| Charge current (ICHG) | **UNRESOLVED** — ISET/ILIM nets exist, programmed value not fixed in any doc | TBD · ENGINEERING-ONLY | `01_power_tree.kicad_sch` |
+| Charge current (ICHG) | **769 mA** — `R37` 390 Ω on ISET, `ICHG = KISET / RISET` with `KISET` 300 AΩ (SLUSF65B §6.1.1.4).  Input limit **1100 mA** and `VBATREG` **4.2 V** from `R36` 13 kΩ (Table 6-1).  Full cycle ≈ 240–290 min against the part's **360 min** `tMAXCHG` safety timer | **RESOLVED at D-743** · ENGINEERING-ONLY | `01_power_tree.kicad_sch:R36,R37`; CTO_DECISIONS D-743; `evidence/d743-rail-ampacity.json` |
+| Charge source requirement | **1 A or better.**  The USB-C port is a plain 5.1 kΩ Rd sink and does not read the source's Rp advertisement; a 500 mA-class port is folded back by the charger's VINDPM and will not complete a cycle inside `tMAXCHG` | MARKETING-SAFE (state it as "charge from a 1 A USB adapter") | D-743 |
 | Fuel gauge | `U14` **MAX17048G+T10** @ I²C 0x36 | FITTED | `01_power_tree.kicad_sch:U14` |
 | Power switch | `SW9` **JS102011SAQN** SPDT slide (hard rail off) | FITTED · EXTERNAL (right wall) | `01_power_tree.kicad_sch:SW9`; `R68` 0 Ω bypass must stay DNP |
 
@@ -184,7 +219,7 @@ power/NFC review, and CTO decisions.
 | Rail / role | Designator | MPN | Label | Evidence |
 |---|---|---|---|---|
 | **+3V3** main (buck-boost) | `U12` | **TPS63020DSJR** | FITTED | `01_power_tree.kicad_sch:U12` |
-| ~5 V boost (NFC/LED) | `U13` | TPS61023DRLR | FITTED | `01_power_tree.kicad_sch:U13` |
+| ~5 V boost (NFC/LED) | `U13` | TPS61023DRLR | **DNP on AQROOT Demo** (D-743 corrected this row; it read FITTED).  NFC runs from the 3.3 V path — see §0a | `01_power_tree.kicad_sch:U13`; `aqroot-Demo-DO-NOT-POPULATE.csv` |
 | **ACC_5V_RAW** ~5 V boost (accessory) | `U21` | TPS61023DRLR | FITTED | `01_power_tree.kicad_sch:U21` |
 | **ACC_3V3_SW** load switch | `U20` | TPS22950CDDCR | FITTED | `01_power_tree.kicad_sch:U20` |
 | **ACC_5V_SW** load switch | `U22` | TPS22950CDDCR | FITTED | `01_power_tree.kicad_sch:U22` |
@@ -236,7 +271,7 @@ MARKETING-SAFE: speaker audio out, microphone in, IR transmit + receive.
 | BOOT button | `SW1` (recovery/download strap) | FITTED · EXTERNAL (recessed, tool-only) | `02_mcu_core.kicad_sch:SW1` |
 | Power slide switch | `SW9` (see §6) | FITTED · EXTERNAL (right wall) | `01_power_tree.kicad_sch:SW9` |
 | RGB status LED | `D13` **MHPA3528RGBCT** (PLCC-4, driven by R124/R125/R126) | FITTED · EXTERNAL (front, diffuser/light-pipe) | `08_buttons_expanders.kicad_sch:D13` |
-| GPIO expanders (3) | `U2` (0x20), `U3` (0x21), `U23` (0x22) **NXP PCAL9535APW,118** | FITTED | `08_...`; I2C registry |
+| GPIO expanders (3) | `U2` (0x20), `U3` (0x21), `U23` (0x22) **NXP PCAL9535APW,118** | FITTED on Full Beta v2; **`U23` REMOVED on AQROOT Demo — see §0a** | `08_...`; I2C registry |
 
 HOME (SW8) and both Volume buttons were **REMOVED** and must not reappear. Do not
 claim a HOME or Volume button.
@@ -390,7 +425,7 @@ Qwiic/STEMMA QT I²C accessory port; RGB status indicator.
 ## 16. Known UNRESOLVED items (verify or omit before any public claim)
 
 1. **Battery fitted capacity (mAh)** — envelope 2500–3000 mAh only; SKU deferred (M-04).
-2. **Charge current (ICHG)** — programmed value not fixed.
+2. ~~**Charge current (ICHG)** — programmed value not fixed.~~  **CLOSED at D-743:** 769 mA from `R37` 390 Ω, input limit 1100 mA and `VBATREG` 4.2 V from `R36` 13 kΩ.  The old 1 kΩ / 18 kΩ pair programmed 300 mA against a 360 min safety timer and could not complete a charge.
 3. **microSD max card capacity** — not stated.
 4. **Touch controller silicon** — FT6236 vs CST026 (interface locked; PO must specify).
 5. **Display driver symbol metadata** — stale ILI9341/CH280QV10 text vs locked ILI9488.

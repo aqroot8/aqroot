@@ -203,7 +203,7 @@ USB-C 5V ─> USBLC6 ESD ─> USB_VBUS_RAW ─> [0R] ─> USB_VBUS_CHG
 
 | block | part | notes |
 |---|---|---|
-| Charger / power path | `U11` BQ25185DLHR | Linear. Thermals matter in a sealed enclosure; start at 500 mA charge current. |
+| Charger / power path | `U11` BQ25185DLHR | Linear. Thermals matter in a sealed enclosure. **The "start at 500 mA" guidance here is SUPERSEDED by D-743:** SLUSF65B rev B (2026-08) halved the fast-charge safety timer `tMAXCHG` to **360 min**, and at any current a 500 mA input limit permits, a 2500–3000 mAh cell cannot terminate before it expires. As built: `R37` 390 Ω → **ICHG 769 mA**, `R36` 13 kΩ → **ILIM1100 / VBATREG 4.2 V**. The thermal concern is answered by the part's own **TREG = 100 °C** regulation rather than by a fixed current ceiling; first-article case-temperature measurement is still required. |
 | 3V3 rail | `U12` TPS63020DSJR | Buck-boost, FB 1M / 180k = 3.28 V. EN driven by the physical switch, **never firmware** — the MCU cannot restore its own disabled rail. |
 | Fuel gauge | `U14` MAX17048G+T10 | On internal I2C at 0x36 (**carried, not datasheet-cited — B-60**). ALRT reaches a test point only. |
 | **Reverse polarity (main path)** | **LTC4368-1 + P2: TWO back-to-back N-FET stages in TWO SEPARATE PACKAGES** (4 FETs) + R_SENSE 15 mΩ + R_GATE 22 kΩ + **C_GATE 4.7 nF** + OV divider + RETRY→GND + SHDN pull-up to VIN + FAULT + **≈5 A backstop fuse** + secondary clamp | **Single-FET-short tolerant by isolation** (D-068 met). VIN on the **cell side**. `-1` suffix load-bearing: `-2` trips at −3 mV and blocks charging. **UV deliberately UNUSED** (510 kΩ to VIN) — using it would deepen the dead-cell lockout. Stages must not share a package: two die on one leadframe are not independent. |

@@ -11335,7 +11335,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "18k 1%"
+		(property "Value" "13k 1%"
 			(at 48.26 171.4499 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -11379,7 +11379,7 @@
 				)
 			)
 		)
-		(property "MPN" "0603WAF1802T5E"
+		(property "MPN" "0603WAF1302T5E"
 			(at 45.72 170.18 0)
 			(hide yes)
 			(show_name no)
@@ -11390,7 +11390,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C25810"
+		(property "LCSC" "C22797"
 			(at 45.72 170.18 0)
 			(hide yes)
 			(show_name no)
@@ -11401,7 +11401,7 @@
 				)
 			)
 		)
-		(property "Note_Sourcing" "SOURCING D-614. EXACT_PRIOR from the beta-dm audit line '18k 1%' (REJECTED - JLC match wrong); manufacturer derived from the UNI-ROYAL(Uniroyal Elec) part-number family and corroborated by the audit text; tolerance 1.0% meets 1.0%."
+		(property "Note_Sourcing" "SOURCING D-743, live JLCPCB record refreshed 2026-09-18 and archived in hardware/demo/manufacturing/evidence/jlc-live/. C22797, UNI-ROYAL 0603WAF1302T5E, 13 kOhm +-1% 100 mW 0603, JLCPCB BASIC library, stock 500493, RoHS. Replaces C25810 / 0603WAF1802T5E (18 kOhm), which is retained in git history only. The part FAMILY is unchanged, so the D-614 manufacturer and land-pattern reasoning carries over unaltered; only the resistance moved."
 			(at 45.72 170.18 0)
 			(hide yes)
 			(show_name no)
@@ -11414,6 +11414,17 @@
 		)
 		(property "Description" "Resistor"
 			(at 45.72 170.18 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Note" "D-743 CHANGED THIS VALUE FROM 18 kOhm TO 13 kOhm, AND IT IS NOT A TRIM - IT SELECTS A DIFFERENT ROW OF THE BQ25185's ILIM/VSET RESISTOR MAP. SLUSF65B Table 6-1 is a lookup, not a formula: 18 kOhm = ILIM500 + VBATREG 4.2 V + VLOWV 3.0 V; 13 kOhm = ILIM1100 + VBATREG 4.2 V + VLOWV 3.0 V. *** THE BATTERY REGULATION VOLTAGE AND THE PRECHARGE THRESHOLD ARE THEREFORE UNCHANGED AT 4.2 V AND 3.0 V. Only the INPUT CURRENT LIMIT moves, 500 mA to 1100 mA. D-269 and D-186 battery-safety requirements are untouched by this change. *** WHY IT HAD TO MOVE: the BQ25185 is a linear charger, so input current and charge current are the same current. ILIM500 caps ICHG + system load at 500 mA, and SLUSF65B revision B (August 2026) halved the fast-charge safety timer tMAXCHG from 720 min to 360 min. At any charge current ILIM500 permits, a 2500-3000 mAh cell cannot reach termination before the timer expires, and section 6.3.7.7 then DISABLES CHARGING with a non-recoverable fault that only a CE or VIN toggle clears - and CE is hard-tied to GND on this board, so only unplugging the USB cable clears it. See R37's note for the charge-current half of the same decision and for the arithmetic. CONSEQUENCE ON THE SOURCE: this board's USB-C is a plain 5.1 kOhm Rd sink (R30/R31) and does not read the source's Rp advertisement, so at ILIM1100 it may draw more than a legacy 500 mA USB 2.0 port offers. The BQ25185's battery-tracking VINDPM (target VBAT + 330 mV, SLUSF65B section 5.5) is the designed mitigation and folds the input current back as VIN sags. A 500 mA-class source therefore charges more slowly and will not complete a cycle inside tMAXCHG; charge from a 1 A or better source. Reading the Type-C Rp advertisement is a Rev-B item."
+			(at 0 0 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -12253,7 +12264,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "1k 1%"
+		(property "Value" "390R 1%"
 			(at 31.75 167.6399 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -12297,7 +12308,7 @@
 				)
 			)
 		)
-		(property "MPN" "0603WAF1001T5E"
+		(property "MPN" "0603WAF3900T5E"
 			(at 29.21 166.37 0)
 			(hide yes)
 			(show_name no)
@@ -12308,7 +12319,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C21190"
+		(property "LCSC" "C23151"
 			(at 29.21 166.37 0)
 			(hide yes)
 			(show_name no)
@@ -12319,7 +12330,7 @@
 				)
 			)
 		)
-		(property "Note_Sourcing" "SOURCING D-614. EXACT_PRIOR from the beta-dm audit line '1k 1%' (REJECTED - JLC match wrong); manufacturer derived from the UNI-ROYAL(Uniroyal Elec) part-number family and corroborated by the audit text; tolerance 1.0% meets 1.0%."
+		(property "Note_Sourcing" "SOURCING D-743, live JLCPCB record refreshed 2026-09-18 and archived in hardware/demo/manufacturing/evidence/jlc-live/. C23151, UNI-ROYAL 0603WAF3900T5E, 390 Ohm +-1% 100 mW 0603, JLCPCB BASIC library, stock 353079, RoHS. Replaces C21190 / 0603WAF1001T5E (1 kOhm). The nearer arithmetic value 374 Ohm (0603WAF3740T5E, C23149) was REJECTED on the live record: EXTENDED library and stock 1. The part FAMILY is unchanged, so D-614's manufacturer and land-pattern reasoning carries over; only the resistance moved."
 			(at 29.21 166.37 0)
 			(hide yes)
 			(show_name no)
@@ -12332,6 +12343,17 @@
 		)
 		(property "Description" "Resistor"
 			(at 29.21 166.37 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Note" "D-743 CHANGED THIS VALUE FROM 1 kOhm TO 390 Ohm. IT PROGRAMS THE BQ25185 FAST-CHARGE CURRENT AND THE OLD VALUE COULD NOT FINISH A CHARGE. SLUSF65B section 6.1.1.4: ICHG = KISET / RISET with KISET = 300 AOhm typical (285 to 315 over the range 10 mA < ICHG < 1000 mA, Table 5-1). 1 kOhm gave ICHG = 300 mA; 390 Ohm gives ICHG = 769 mA typical, 714 to 808 mA over the KISET range. *** THE DEFECT: SLUSF65B revision B (August 2026) changed tMAXCHG from 720 min to 360 min - the only line in its revision history. At 300 mA the charger delivers 300 mA x 360 min = 1800 mAh before the fast-charge safety timer expires, against a fitted cell of 2500 to 3000 mAh, so it stops at roughly 60 to 72 percent state of charge and section 6.3.7.7 DISABLES CHARGING with a non-recoverable fault. The design was correct against SLUSF65A, where tMAXCHG was 720 min and 300 mA x 12 h = 3600 mAh covered the whole envelope. A vendor documentation change invalidated it. *** THE NEW MARGIN: a 1S CC/CV cycle to 4.2 V terminating at ITERM = 10 percent of ICHG takes about 1.22 x C / ICHG. At 769 mA that is 286 min for 3000 mAh and 238 min for 2500 mAh, against 360 min - 21 and 34 percent margin. At the KISET minimum of 714 mA it is 308 min for 3000 mAh, still inside. THERMAL: the BQ25185 is linear and dissipates PSYS + PBAT = (VIN - VSYS) x IIN + (VSYS - VBAT) x IBAT with VSYS regulated to 4.5 V. At 769 mA, VBAT 3.7 V, VIN 5.0 V and a 50 mA system load that is about 1.03 W, and at RthetaJA 68.3 K/W (SLUSF65B section 5.3) about 70 K of rise. TREG is 100 C, so the part THERMALLY REGULATES - it reduces charge current itself rather than overheating - below roughly VBAT 3.9 V in a 40 C enclosure, which is where the cell holds least charge. TSHUT is 150 C and is not approached. This is deliberate: ICHG is set at the value the package can sustain for most of the cycle and TREG governs the rest. RISET_SHORT is 264 Ohm maximum, so 390 Ohm is well clear of the short-detect threshold that would latch a fault at startup. FIRST-ARTICLE MEASUREMENT REQUIRED: measure charge current, total charge time and U11 case temperature on the first assembled unit, in the enclosure, at the fitted cell capacity. Prefer the 2500 mAh end of the DEVICE_SPEC envelope; the 3000 mAh end at 40 C ambient has the least margin."
+			(at 0 0 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)

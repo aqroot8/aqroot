@@ -1,0 +1,45 @@
+{
+ "question": "does the D-743 ampacity gate FAIL when an exception is removed, mis-scoped, or overrun?",
+ "vbus_as_declared": {
+  "verdict": "OK_WITH_DECLARED_EXCEPTION",
+  "hot": 9,
+  "undeclared": 0,
+  "over_budget": []
+ },
+ "control_exception_removed": {
+  "verdict": "HOT",
+  "hot": 9,
+  "undeclared": 9,
+  "over_budget": []
+ },
+ "control_budget_shrunk_to_100mm": {
+  "verdict": "HOT",
+  "hot": 9,
+  "undeclared": 0,
+  "over_budget": [
+   {
+    "reason": "dru-5a",
+    "budget_mm": 100.0,
+    "used_mm": 163.018
+   }
+  ]
+ },
+ "control_exception_on_wrong_layer": {
+  "verdict": "HOT",
+  "hot": 9,
+  "undeclared": 9,
+  "over_budget": []
+ },
+ "bat_as_declared": {
+  "verdict": "OK_WITH_DECLARED_EXCEPTION",
+  "hot": 3,
+  "undeclared": 0,
+  "over_budget": []
+ },
+ "control_bat_width_bound_tightened": {
+  "verdict": "HOT",
+  "hot": 3,
+  "undeclared": 3,
+  "over_budget": []
+ }
+}

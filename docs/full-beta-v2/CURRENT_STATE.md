@@ -66,6 +66,43 @@
 > `verify_promotion` PASS and `protected_copper` showing exactly one protected
 > net moved.  `U14.7` is on the bus.  This board has **no open owner decision**.
 
+> **D-743 FIXED A CHARGER THAT COULD NOT COMPLETE A CHARGE, AND BUILT THE FIRST
+> ABSOLUTE POWER AUDIT THIS BOARD HAS EVER HAD (2026-09-18).**  `authority
+> 23ee647e -> c7f5c618`, **NO COPPER** -- two footprint `Value` fields, proved
+> byte-identical in track, zone and placement signature
+> (`evidence/d743-copper-unchanged.json`).  `R37` 1 k -> **390 R** takes `ICHG`
+> from 300 mA to **769 mA**; `R36` 18 k -> **13 k** takes the input limit from
+> ILIM500 to **ILIM1100** while leaving `VBATREG` at 4.2 V and `VLOWV` at 3.0 V,
+> so D-269 / D-186 are untouched.  Both parts are JLC **BASIC** with six-figure
+> stock on the live record; the arithmetically nearer 374 R was refused on it
+> (EXTENDED, stock 1).  **Why:** SLUSF65B rev B halved `tMAXCHG` to 360 min, and
+> 300 mA x 6 h = 1800 mAh against a 2500-3000 mAh cell, so the board as built
+> stopped at 60-72 % SoC with a non-recoverable fault that `/CE` -- hard-tied to
+> GND -- cannot clear.  New margin: **286 min at 3000 mAh, 238 at 2500**, against
+> 360.
+>
+> **AND DOUBLING THE INPUT LIMIT FORCED A QUESTION NO INSTRUMENT HERE COULD
+> ANSWER.**  Every ampacity tool on this board is a DIFF.  `audit_rail_ampacity.py`
+> is absolute, walks the CARRYING path (`USB_VBUS_CHG` has eleven pads and nine of
+> them are microamp telemetry), self-checks by re-deriving `.kicad_dru` section
+> 5's own table, and reports `dT` rather than pass/fail.  It found the charger
+> input runs **250.8 mm / 440 mOhm / 484 mV at 1.1 A** against a 65 mm straight
+> line, 163 mm of it on 0.5 oz In2.  **Both repairs were measured and both are
+> unavailable**: every `screen_widest_corridor` probe on `F.Cu`, `B.Cu` and
+> `In2.Cu` returns `0.0 mm` -- no corridor at ANY width -- and `w/d743/widen_plan.py`
+> shows in-place widening is worth under 5 %.  So it is accepted as the board's
+> **one named ampacity exception** (`.kicad_dru` section 5a), scoped to one net,
+> one layer and a 165 mm budget, justified by IPC-2152 against IPC-2221B's
+> still-air internal curve plus a first-principles two-sided-conduction figure of
+> order 1 K, with the VINDPM headroom checked rather than assumed.  Five controls
+> show the gate FAILS when the exception is removed, mis-scoped or overrun.  The
+> self-check also caught `.kicad_dru`'s `SPK_OUT` row publishing widths for
+> 0.347 amps against a line naming 0.29 A rms and 0.41 A peak -- corrected, no
+> rule change.  **Real KiCad DRC unchanged in every class, all 14 contracts PASS
+> (the only diffs are `board_sha256` and one known `ref_commit`), FAB1..FAB11
+> PASS, `unapproved_open_edges` 0.**  `DEVICE_SPEC` gains section 0a, the Demo
+> delta every Kickstarter claim must read.
+>
 > **THE OWNER DECISION IS ANSWERED AND THE BOARD HAS NO UNAPPROVED OPEN EDGE --
 > BUT `DEMO_READY_FOR_FAB` IS *NOT* DECLARED, BECAUSE READING THE CHARGER
 > DATASHEET TURNED UP TWO REAL DEFECTS (D-742, D-743, 2026-09-18).**
