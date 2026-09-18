@@ -59,7 +59,6 @@ thing, and that decision stands from FBV2-S2-001.
 |---|---|---|---|---|
 | `ESP32-S3-WROOM-1-N16R8` | `U1` | `C2913202` | 53,139 | 5 |
 | `MAX98357AETE+T` | `U5` | `C910544` | 18,844 | 5 |
-| `TSOP38238` | `U6` | `C141632` | 22,529 | 5 |
 | `E07-400M10S` | `U7` | `C2965513` | 803 | 5 |
 | `E22-900M22S` | `U8` | `C411293` | **24** | 5 |
 | `USBLC6-2SC6` | `U10` | `C7519` | 41,662 | 5 |
@@ -83,7 +82,6 @@ thing, and that decision stands from FBV2-S2-001.
 | `JS102011SAQN` | `SW9` | `C221660` | 931 | 5 |
 | `USB4105-GF-A-120` | `J3` | `C5184243` | 2,454 | 5 |
 | `5025700893` | `J2` | `C429846` | 11,005 | 5 |
-| `B2B-PH-K-S(LF)(SN)` | `J4`, `J6` | `C131337` | 378,913 | 10 |
 | `BM02B-ACHSS-GAN-ETF(LF)(SN)` | `J7` | `C5118738` | 16,260 | 5 |
 | `TXM27.12M0004322DBBDO00T` | `Y1` | `C362365` | 3,421 | 5 |
 | `FH69-50S-0.5SH` | `J1` | JLC library, no public LCSC code | **1,072** | 5 |
@@ -102,6 +100,14 @@ from **B-47** — there is no drop-in second source — but it does not follow t
 it. **JLC carries the genuine Hirose `FH69-50S-0.5SH` with 1,072 in stock.** `J1` is
 **machine-placed**, and the single-source risk stays exactly what D-194 says it is.
 
+**D-764 corrects a category error that survived D-763:** catalog availability does not turn a
+through-hole part into an SMT placement. `U6`, `J4` and `J6` were still listed in Class B even
+though the same file's Class E correctly requires all three to be hand-soldered after reflow.
+They are now Class E only. Their LCSC identities remain useful for purchasing (`U6` `C141632`;
+`J4`/`J6` `C131337`), but **the route to the board is hand soldering, not pick-and-place**.
+Likewise the stale Class-C `BCS-112-S-D-HE / C5575816` line is deleted: that is the superseded
+2x12 part. Current `J5` is `SSQ-124-02-G-S-RA / C3323671` and is Class E only.
+
 ---
 
 ## 4. Class C — in the library, but stock is short of the build
@@ -117,7 +123,6 @@ broadline distributor and **consigned to JLC**, so it stays machine-placed.
 | **`TLV7032DDFR`** TI | `U19` | `C2871498` | **0** | 5 | −5 |
 | **`74438357010`** Würth | `L4` (`L2` **DNP**) | `C5542269` | **0** | **5** | **−5** |
 | **`DMM-4026-B-I2S-R`** PUI | `MK1` | `C3171792` | **0** | 5 | −5 |
-| **`BCS-112-S-D-HE`** Samtec | `J5` | `C5575816` | **0** | 5 | −5 (also class E) |
 | **`LTC4368IDD-1#PBF`** ADI | `U18` | `C688397` | **4** | 5 | **−1** |
 | **`ST25R3916-AQET`** ST | `U9` | `C5267441` | **6** | 5 | +1 spare only |
 | **`NSR0240HT1G`** onsemi | `D8` | `C152519` | **7** | 5 | +2 spare only |
@@ -155,14 +160,13 @@ against a need of five is a build with **one** spare; **buy spares independently
 
 | part | ref | through-hole work | why |
 |---|---|---|---|
-| **`SSQ-124-02-G-S-RA` Samtec** (***~~`BCS-112-S-D-HE`~~ SUPERSEDED D-237/D-240, corrected D-738***) | `J5` | 24 × Ø0.71 mm | 1 × 24 right-angle community header. **Kept and marked manual/secondary assembly by CTO ruling at FBV2-S1-009 — the connector architecture is not compromised for SMT.** RA tail `(2.54) .100 in` |
+| **`SSQ-124-02-G-S-RA` Samtec** (`C3323671`; ***~~`BCS-112-S-D-HE`~~ SUPERSEDED D-237/D-240, corrected D-750***) | `J5` | **24 × Ø1.02 mm PTH** | 1 × 24 right-angle community header. **Hand-solder after reflow.** The current board land is 1.60 mm pad / **1.02 mm drill** at 2.54 mm pitch; the old 0.71 mm figure belonged to the superseded BCS footprint. RA tail `(2.54) .100 in` |
 | `TSAL6100` | `D1` | 2 leads | 5 mm through-hole IR emitter, `C111836`. **LEAD-FORMED 90° AND TRIMMED — [`IR_LEAD_FORMING.md`](IR_LEAD_FORMING.md), NORMATIVE** |
-| `TSOP38238` | `U6` | 3 leads | minicast IR receiver. **LEAD-FORMED 90° AND TRIMMED — [`IR_LEAD_FORMING.md`](IR_LEAD_FORMING.md), NORMATIVE.** Was missing from this table |
-| `B2B-PH-K-S(LF)(SN)` JST PH | **`J4`** | 2 leads, **body on the REAR** | **BATTERY connector. THE ONLY THROUGH-HOLE PART MOUNTED ON `B.Cu`.** Its 3.4 mm leads emerge on `F.Cu` **1.826 mm proud** and both pads are inside `DISPLAY_SHADOW`, allowance **0.80 mm**. **TRIM REQUIRED — [`THT_LEAD_TRIM.md`](THT_LEAD_TRIM.md) J4-T1/J4-T2, NORMATIVE**, gated by `mechanical_keepout_contract` MK10. Was missing from this table |
-| `B2B-PH-K-S(LF)(SN)` JST PH | `J6` | 2 leads | SPEAKER connector, body on `F.Cu`; its leads emerge on the rear **3.5 mm clear of `BATTERY_SHADOW`**, so no trim requirement. Was missing from this table |
+| `TSOP38238` (`C141632`) | `U6` | 3 leads | minicast IR receiver. **Hand-solder after reflow; LEAD-FORMED 90° AND TRIMMED — [`IR_LEAD_FORMING.md`](IR_LEAD_FORMING.md), NORMATIVE.** Was incorrectly also listed as machine-placed Class B until D-764 |
+| `B2B-PH-K-S(LF)(SN)` JST PH (`C131337`) | **`J4`** | 2 leads, **body on the REAR** | **BATTERY connector. THE ONLY THROUGH-HOLE PART MOUNTED ON `B.Cu`.** Its 3.4 mm leads emerge on `F.Cu` **1.826 mm proud** and both pads are inside `DISPLAY_SHADOW`, allowance **0.80 mm**. **TRIM REQUIRED — [`THT_LEAD_TRIM.md`](THT_LEAD_TRIM.md) J4-T1/J4-T2, NORMATIVE**, gated by `mechanical_keepout_contract` MK10. Was missing from this table |
+| `B2B-PH-K-S(LF)(SN)` JST PH (`C131337`) | `J6` | 2 leads | SPEAKER connector, body on `F.Cu`; its leads emerge on the rear **3.5 mm clear of `BATTERY_SHADOW`**, so no trim requirement. Was missing from this table |
 
-**FIVE through-hole parts per board, three of them with a NORMATIVE hand
-operation.** That is the manual scope.
+**FIVE through-hole parts per board, all five hand-soldered after reflow; three of them have a NORMATIVE forming/trim operation beyond soldering.** That is the manual scope.
 
 **Also PTH but not a lead:** `J3`'s four `SH` shell stakes (GCT USB4105 is a
 top-mount SMT receptacle — the stakes are mechanical anchors, pin-in-paste or
@@ -221,15 +225,14 @@ the quote stage. **`L2`/`L4` also carried two spellings of "Würth"** and were n
 | question | answer |
 |---|---|
 | how many distinct MPNs? | **46** (43 after the two duplicate-string merges and one manufacturer-spelling merge) |
-| how many parts machine-placed? | **all but two per board** |
-| how many hand-soldered per board? | **2** — `J5` (24-pin THT) and `D1` (5 mm THT LED) |
+| how many parts machine-placed? | **all fitted parts except the five Class-E through-hole parts per board** |
+| how many hand-soldered per board? | **5** — `J4`, `J5`, `J6`, `D1`, `U6`; `J4`/`D1`/`U6` also have normative trim/forming instructions |
 | how many fine-pitch/QFN parts hand-placed? | **zero** |
-| how many parts need consignment? | **9 (class C) + 0 (class D)** — **down from 11 at FBV2-MECH-002**, i.e. **4 fewer consigned placements per board, 20 across the first five**. **Class D is empty.** |
+| how many part identities need consignment? | **8 (class C) + 0 (class D)** after deleting the superseded J5/BCS line at D-764. **Class D is empty.** Re-check stock at order time. |
 | DNP parts with no recorded reason | **zero** — eight were still undocumented at the start of FBV2-S2-002 and all eight now carry one |
 | does the build close today? | **Yes, via consignment.** It does **not** close as a pure LCSC turnkey order |
 
-**Do not optimise cents. Optimise first-build success.** The consignment fee on eleven part
-numbers is trivial against one failed board or one wrong-part respin.
+**Do not optimise cents. Optimise first-build success.** The consignment fee on the current eight Class-C part identities is trivial against one failed board or one wrong-part respin.
 
 ---
 

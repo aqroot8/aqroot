@@ -1,26 +1,24 @@
 # AQROOT Demo — FABRICATION HANDOFF
 
 
-> **STATUS: `DEMO_READY_FOR_FAB` — DECLARED AT D-763, 2026-09-18, ON BOARD
-> AUTHORITY `1a06b058`.**  This supersedes every earlier readiness declaration.
-> D-757…D-763 reopened the handoff repeatedly for manufacturability, mechanical,
-> land-pattern and assembly checks that the earlier gates did not ask.  The PCB
-> itself has been unchanged since D-759; D-763 changes no board copper, fab
-> artwork or firmware.  It closes a real assembly interference instead: the
-> rear-mounted `J4` battery connector's through-hole leads protrude **1.8256 mm**
-> onto the front face under the display, against a **0.80 mm** allowance.  The
-> released assembly process now requires a measured post-solder trim to ≤0.80 mm,
-> and `MK10` machine-checks the requirement and its source geometry.  Release-grade
-> verification was re-run on the unchanged authority and package:
-> `evidence/d763-release-verification.json`.
-> **No open owner decision and no unresolved PCB/fab-data blocker.**  §8 below
-> separates order-time fabricator confirmations, first-article validation and
-> enclosure-CAD closure from the frozen PCB release.
+> **STATUS: `DEMO_READY_FOR_FAB` — DECLARED AT D-764, 2026-09-18, ON BOARD
+> AUTHORITY `1a06b058`.** This supersedes every earlier readiness declaration.
+> The PCB itself is unchanged since D-759. D-764 closes release/assembly ambiguity:
+> all five leaded THT refs (`J4`, `J5`, `J6`, `D1`, `U6`) are now unambiguously
+> hand-soldered after reflow, the current 1×24 J5 identity/drill is the only current
+> assembly authority, and the released top/bottom assembly PDFs carry **D-764, full
+> board SHA256, side/mirror convention, pin-1/polarity and manual-operation notes**.
+> `FAB14` reads those facts back from the PDFs and `FAB15` checks the board-derived
+> manual THT route. `MK11` additionally pins SW1/SW9/J5 board-side enclosure
+> geometry. Fresh release verification is `evidence/d764-release-verification.json`.
+> **No open owner decision and no unresolved PCB/fab-data blocker.** §8 separates
+> order-time fabricator confirmations, first-article validation and enclosure-CAD
+> closure from the frozen PCB release.
 
 **Board:** `hardware/demo/kicad/aqroot-demo/aqroot-Beta-v2.kicad_pcb`
 **Authority:** `sha256 1a06b058912b4c37e25d0acd9314f9542671efa852a162cc8b1dc6533e25668b`
-**Package:** `hardware/demo/fab/` — 29 files, unchanged from the D-759 board authority and provenance re-proved at D-763
-**Date:** 2026-09-18 · **Decisions:** D-742 … D-763 · **Prepared for:** independent CTO review / first-five prototype order
+**Package:** `hardware/demo/fab/` — board-derived fabrication geometry remains D-759 authority; D-764 regenerates it deterministically and replaces the assembly PDFs/manifest with release-identified versions
+**Date:** 2026-09-18 · **Decisions:** D-742 … D-764 · **Prepared for:** independent CTO review / first-five prototype order
 
 > **THIS HANDOFF HAS BEEN REOPENED AND RE-ISSUED TWICE.**  It was first written
 > at `c7f5c618`.  An external first-spin review (Fable 5.1 + Astra) found four
@@ -62,7 +60,7 @@ track and footprint counts move with them.)*
 | open owner decisions | **none** |
 | board authority `sha256` | **`1a06b058…`** (D-759) |
 | standing contracts | **19 run, 19 pass** |
-| mechanical keep-out contract | **MK1–MK10 pass, 11 live controls** |
+| mechanical keep-out contract | **MK1–MK11 pass, 14 live controls** |
 | open CAD items | **2** — rear component profile, §5b |
 
 The single unrouted contact is `/BQ25185_STAT2` at `U11.3`. The owner approved
@@ -77,7 +75,7 @@ must still be fitted — and **fails if any of those stops being true**.
 routed copper at all** — it moved one solder-mask state, one mounting hole, and a
 great many claims that nothing had ever checked.
 
-**THE `D-757` … `D-763` CYCLE, IN ONE PARAGRAPH EACH:**
+**THE `D-757` … `D-764` CYCLE, IN ONE PARAGRAPH EACH:**
 
 * **`D-757`** — the **NFC first-article tuning terminals were printed over**.
   `D-755` measured a 0.325 mm pad-to-via bridge on both match arms and concluded
@@ -123,6 +121,16 @@ great many claims that nothing had ever checked.
   checks every opposite-face THT lead in every height-limited region and has four
   dedicated destructive controls.  The board, Gerbers, drills, BOM/CPL and
   firmware remain byte-for-byte on the D-759 authority.
+* **`D-764`** — release instructions were made as strict as the PCB. The normative
+  first-five plan no longer sends `U6`/`J4`/`J6` through a machine-placement class
+  or carries the retired BCS J5. `FAB15` derives the five leaded THT refs from the
+  board and refuses stale/manual-routing regressions. Assembly drawings now print
+  release, authoritative board SHA, explicit top/bottom mirror convention, pin-1
+  and manual-operation notes; `FAB14` reads the PDFs back and its critical-reference
+  check was strengthened during CTO review so worksheet text cannot satisfy it by
+  itself. `MK11` pins SW1, SW9 and current J5 board-side enclosure geometry.
+  Fabrication artwork geometry is unchanged; regenerated Gerber/drill normalized
+  hashes are identical.
 
 **THREE PARTS WERE FITTED AND THE COPPER MOVED** (D-750 and D-751); the
 D-742…D-745 entries below are retained as the history of the previous cycle.

@@ -66,6 +66,52 @@
 > `verify_promotion` PASS and `protected_copper` showing exactly one protected
 > net moved.  `U14.7` is on the bus.  This board has **no open owner decision**.
 
+> # **DEMO_READY_FOR_FAB IS DECLARED (2026-09-18, D-764).**
+>
+> **Board authority `1a06b058`, UNCHANGED since D-759.** D-764 changes no PCB,
+> schematic or firmware. It closes a release/assembly failure mode the electrical
+> gates could not see: the first-five plan still routed three leaded THT parts
+> (`U6`, `J4`, `J6`) through a machine-placement class, retained the superseded
+> 2×12 BCS J5 consignment identity, and described only two hand-soldered parts.
+> The current manual set is exactly **`J4`, `J5`, `J6`, `D1`, `U6`**, all
+> hand-soldered after reflow; `J4` and `D1/U6` retain their normative trim/form
+> operations. `FAB15` derives that set from the board, rejects any leaded ref in a
+> machine class and rejects the old J5 0.71 mm drill.
+>
+> **Assembly drawings are now release artifacts rather than anonymous plots.** A
+> custom worksheet prints D-764, the full authoritative PCB SHA, explicit top and
+> mirrored-bottom view rules, J1/J5 pin-1 convention and J4/D1/U6 manual-operation
+> notes into the released PDFs. `FAB14` reads those PDFs back and has four live
+> controls. During the CTO pass its initial critical-reference test was found
+> optimistic because the worksheet itself named the refs; the accepted version
+> requires a second exact-token occurrence, proving the reference also exists in
+> the plotted Fab drawing.
+>
+> **`MK11` makes the external-interface facts executable.** `SW1` is front/F.Cu
+> doc `(28.300,6.000)`, `SW9` is right-wall/F.Cu doc `(66.700,61.500)`, and
+> `J5` is the current 1×24 `SSQ-124-02-G-S-RA`, 24 × 1.02 mm PTH, 2.54 mm pitch,
+> 58.420 mm pin span, mating face x=72.430. The enclosure must implement the
+> **62.5 mm closed-end Community-Port recess** following the stepped east wall;
+> the historic 34×10 mm aperture belongs to the retired 2×12 BCS part. M-09 is
+> bounded conservatively at **22.71 mm of 23.0 mm, >=0.29 mm spare**, while exact
+> sample/CAD clearance remains an enclosure-tooling check.
+>
+> **Fresh verification:** routing 173/174 with only owner-approved U11.3 and
+> **zero unapproved opens**; KiCad DRC **199 `lib_footprint_issues`, all warnings,
+> zero other classes**; 17 unconnected items; parity 246 warnings / **0 errors**;
+> rail ampacity `all_ok` with actual **15.2 um** inner copper; **MK1–MK11 PASS,
+> 14 live controls**; **FAB1–FAB15 PASS**; all **19 standing contracts run with
+> no failing verdict**; protected copper unchanged; battery and firmware contracts
+> PASS. Gerber/drill normalized content is unchanged; raw files differ only by
+> regeneration timestamps. `hardware/beta-v2` is untouched.
+>
+> **There is no open owner decision and no unresolved PCB/fab-data blocker.**
+> Paid order remains conditional on written fabricator acceptance of the declared
+> special processes and final CAM/placement review. First-article measurements
+> remain validation, not a substitute for a known pre-order defect.
+>
+> # **D-763's DECLARATION STANDS BELOW AS HISTORY.**
+>
 > # **DEMO_READY_FOR_FAB IS DECLARED (2026-09-18, D-763).**
 >
 > **Board authority `1a06b058`, UNCHANGED since D-759.**  D-763 touches no board

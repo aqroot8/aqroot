@@ -1,0 +1,360 @@
+{
+ "approved_demo_nc": {
+  "expected": [
+   "J5.10",
+   "J5.11",
+   "J5.12",
+   "J5.15",
+   "J5.16",
+   "J5.17",
+   "J5.18",
+   "J5.9"
+  ],
+  "missing": [],
+  "observed": [
+   "J5.10",
+   "J5.11",
+   "J5.12",
+   "J5.15",
+   "J5.16",
+   "J5.17",
+   "J5.18",
+   "J5.9"
+  ],
+  "unexpected": []
+ },
+ "approved_unrouted": [
+  "U11.3"
+ ],
+ "authoritative_files": {
+  "deterministic_artifacts_compared": 24,
+  "deterministic_normalized_artifacts_identical": 24,
+  "deterministic_normalized_differences": [],
+  "fab_geometry_regenerated_from_same_board": true,
+  "firmware_unchanged": true,
+  "intentional_release_artifact_changes": [
+   "assembly PDFs now carry D-764 release identity/hash/view/pin-1/manual notes",
+   "MANIFEST assembly_drawings metadata"
+  ],
+  "pcb_unchanged": true,
+  "production_hardware_beta_v2_untouched": true,
+  "schematic_unchanged": true
+ },
+ "battery": {
+  "checks": {
+   "B1_exact_first_five_identity": true,
+   "B2_datasheet_is_pinned": true,
+   "B3_capacity_is_the_selected_low_timer_margin_option": true,
+   "B4_pack_fits_reserved_envelope": true,
+   "B5_pack_discharge_covers_live_D753_envelope": true,
+   "B6_pack_charge_rating_covers_BQ25185_envelope": true,
+   "B7_protection_connector_and_polarity_are_explicit": true,
+   "B8_no_thermistor_requires_supervised_prototype_charging": true
+  },
+  "verdict": "PASS"
+ },
+ "board_sha256": "1a06b058912b4c37e25d0acd9314f9542671efa852a162cc8b1dc6533e25668b",
+ "board_unchanged_since": "D-759",
+ "connectivity": {
+  "approved_unrouted_edges": 1,
+  "connected_retained_nets": 173,
+  "open_retained_nets": 1,
+  "raw_board_ratsnest": 17,
+  "retained_multi_pad_nets": 174,
+  "retained_open_edges": 1,
+  "unapproved_open_edges": 0,
+  "unapproved_open_retained_nets": 0
+ },
+ "decision": "D-764",
+ "declaration": "DEMO_READY_FOR_FAB",
+ "fab_package": {
+  "clauses": {
+   "FAB10_via_geometry": true,
+   "FAB11_mask_dams": true,
+   "FAB12_identity": true,
+   "FAB13_nfc_tuning_access": true,
+   "FAB14_assembly_drawing_identity": true,
+   "FAB15_manual_THT_route": true,
+   "FAB1_provenance": true,
+   "FAB2_fill": true,
+   "FAB3_layers": true,
+   "FAB4_drill": true,
+   "FAB5_cpl": true,
+   "FAB6_bom": true,
+   "FAB7_sourcing": true,
+   "FAB8_outline": true,
+   "FAB9_via_in_pad": true
+  },
+  "fab14_controls": {
+   "critical_ref_missing_from_drawing_is_refused": true,
+   "missing_bottom_mirror_statement_is_refused": true,
+   "missing_pin1_polarity_statement_is_refused": true,
+   "wrong_board_hash_is_refused": true
+  },
+  "fab15_controls": {
+   "a_leaded_part_in_a_machine_class_is_refused": true,
+   "a_missing_THT_manual_route_is_refused": true,
+   "the_superseded_J5_drill_is_refused": true
+  },
+  "failing": [],
+  "verdict": "PASS"
+ },
+ "firmware": {
+  "board_sha256": "1a06b058912b4c37e25d0acd9314f9542671efa852a162cc8b1dc6533e25668b",
+  "clauses": null,
+  "contract_verdict": "PASS",
+  "platformio": {
+   "aqroot-demo": {
+    "flash_bytes": 319781,
+    "ram_bytes": 19388,
+    "status": "SUCCESS"
+   },
+   "esp32-s3-aqroot": {
+    "flash_bytes": 673145,
+    "ram_bytes": 111172,
+    "status": "SUCCESS"
+   },
+   "esp32-s3-aqroot-dm": {
+    "flash_bytes": 673145,
+    "ram_bytes": 111172,
+    "status": "SUCCESS"
+   },
+   "wokwi": {
+    "flash_bytes": 614969,
+    "ram_bytes": 110748,
+    "status": "SUCCESS"
+   }
+  }
+ },
+ "first_article_validation_not_a_preorder_pcb_blocker": [
+  "measure charger current, VIN at U11.10, full-charge time and U11/cell temperature in enclosure",
+  "measure BAT_MAIN pin-2 thermal residual at low battery with both accessory rails loaded",
+  "NFC VNA/ST-tool tune; populate Cp bridge only if measured antenna requires it",
+  "RF range/output verification for 433 MHz, 915 MHz and Wi-Fi/BLE in final enclosure",
+  "incoming display diode-mode/orientation check and visual backlight true-off test",
+  "confirm both M2 bosses, revised rear ribs, J5 recess and exact M-09 sample clearance against enclosure CAD before tooling"
+ ],
+ "kicad_drc": {
+  "kicad_version": "10.0.5",
+  "schematic_parity_errors": 0,
+  "schematic_parity_total": 246,
+  "schematic_parity_types": {
+   "extra_footprint": 2,
+   "footprint_symbol_field_mismatch": 199,
+   "footprint_symbol_mismatch": 45
+  },
+  "unconnected_accounted_for": "16 belong to DNP circuitry; seventeenth is owner-approved U11.3 /BQ25185_STAT2; routing ledger reports zero unapproved opens.",
+  "unconnected_items": 17,
+  "violation_severity": {
+   "warning": 199
+  },
+  "violation_types": {
+   "lib_footprint_issues": 199
+  },
+  "violations_total": 199
+ },
+ "land_chain": {
+  "checks": {
+   "LAND1_every_footprint_resolves_a_master": true,
+   "LAND2_board_land_equals_master": true,
+   "LAND3_comparison_not_vacuous": true,
+   "LAND4_kicad_agrees": true,
+   "LAND5_index_covers_the_board": true,
+   "LAND6_every_identity_is_in_the_ledger": true,
+   "LAND7_no_open_identity_and_every_read_drawing_is_cited": true
+  },
+  "footprints": 315,
+  "open_items": [],
+  "tier_census": {
+   "1": 25,
+   "2A": 15,
+   "2_OPEN": 0,
+   "3": 275
+  },
+  "verdict": "PASS"
+ },
+ "mechanical": {
+  "all_pass": true,
+  "clauses": {
+   "MK10_through_hole_lead_on_the_opposite_face": true,
+   "MK11_external_interface_authority": true,
+   "MK1_datum_proved_by_the_board": true,
+   "MK2_boss_retention": true,
+   "MK3_rear_support_ribs_component_free": true,
+   "MK4_speaker_cavity_has_no_rear_part": true,
+   "MK5_no_through_hole_lead_in_the_battery_volume": true,
+   "MK6_boss2_is_inside_the_ir_barrier": true,
+   "MK7_not_vacuous": true,
+   "MK8_component_height_in_the_limited_regions": true,
+   "MK9_ir_pair_separation_and_barrier": true
+  },
+  "external_interface": {
+   "datum": "doc origin lower-left; Y_kicad = 148 - Y_doc",
+   "interfaces": {
+    "J5": {
+     "doc_mm": [
+      65.9,
+      108.79
+     ],
+     "expected_doc_mm": [
+      65.9,
+      108.79
+     ],
+     "expected_rotation_deg": -90.0,
+     "expected_side": "F",
+     "ok": true,
+     "present": true,
+     "rotation_deg": -90.0,
+     "side": "F"
+    },
+    "SW1": {
+     "doc_mm": [
+      28.3,
+      6.0
+     ],
+     "expected_doc_mm": [
+      28.3,
+      6.0
+     ],
+     "expected_rotation_deg": 0.0,
+     "expected_side": "F",
+     "ok": true,
+     "present": true,
+     "rotation_deg": 0.0,
+     "side": "F"
+    },
+    "SW9": {
+     "doc_mm": [
+      66.7,
+      61.5
+     ],
+     "expected_doc_mm": [
+      66.7,
+      61.5
+     ],
+     "expected_rotation_deg": 90.0,
+     "expected_side": "F",
+     "ok": true,
+     "present": true,
+     "rotation_deg": 90.0,
+     "side": "F"
+    }
+   },
+   "j5": {
+    "body_y_mm": [
+     8.475,
+     69.945
+    ],
+    "closed_end_recess_mm": 62.5,
+    "conservative_largest_body_mm": 8.51,
+    "contacts": 24,
+    "drill_mm": [
+     1.02
+    ],
+    "footprint": "AQROOT_Beta:Samtec_SSQ-124-02-G-S-RA",
+    "mating_face_x_mm": 72.43,
+    "note": "62.5 mm is an enclosure requirement; the board-side geometry that drives it is measured here",
+    "ok": true,
+    "pin_row_x_mm": 65.9,
+    "pin_span_mm": 58.42,
+    "pitch_mm": [
+     2.54
+    ],
+    "z_bound_mm": 22.71,
+    "z_spare_mm": 0.29
+   },
+   "ok": true
+  },
+  "live_control_count": 14,
+  "live_controls": {
+   "a_0_100_mm_BOOT_nudge_is_refused": true,
+   "a_0_100_mm_J5_nudge_is_refused": true,
+   "a_0_100_mm_POWER_nudge_is_refused": true,
+   "a_boss_nudged_0_100_mm_is_refused": true,
+   "a_footprint_with_no_height_figure_is_refused": true,
+   "a_lead_in_the_battery_volume_is_refused": true,
+   "a_part_over_its_region_allowance_is_refused": true,
+   "a_through_hole_part_with_no_lead_figure_is_refused": true,
+   "a_trim_that_does_not_meet_the_allowance_is_refused": true,
+   "an_undeclared_lead_over_the_allowance_is_refused": true,
+   "moving_J4_clear_of_the_region_removes_the_finding": true,
+   "reading_the_pre_rebase_datum_is_visible": true,
+   "the_ir_pair_nudged_0_200_mm_together_is_refused": true,
+   "the_retired_RIB_R2_footprint_is_refused": true
+  },
+  "open_enclosure_cad_items": {
+   "BATTERY_SHADOW": {
+    "required_cad_profile_mm": 1.8,
+    "retained_old_limit_mm": 1.2
+   },
+   "NFC_CLEAR_D48": {
+    "required_cad_profile_mm": 1.4,
+    "retained_old_limit_mm": 1.0
+   }
+  }
+ },
+ "order_time_fabricator_confirmations_required_before_paid_order": [
+  "POFV fill/cap and required planarity on the 136 declared via-in-pad lands",
+  "acceptance of 38 sub-floor annular-ring vias and exact drill/annular geometry",
+  "acceptance of 21 sub-0.125 mm solder-mask dams/merges named by FAB11",
+  "J3 NPTH concession",
+  "MK1 microphone acoustic port remains open/unplated/unfilled as specified",
+  "77x148 stepped outline/corner radii and exact six-layer stackup/copper weights",
+  "bare-board electrical test plus final manufacturer CAM/placement preview"
+ ],
+ "owner_decisions_open": [],
+ "predecessor_release_commit": "b3b18c1aa46101b22df3315d654cb6f1cb2caeda",
+ "protected_copper": {
+  "differences": {},
+  "identical": true
+ },
+ "rail_ampacity": {
+  "actual_inner_copper_mm": 0.0152,
+  "all_ok": true,
+  "rail_verdicts": {
+   "BAT_PROTECTED_P": null,
+   "BQ25185_SYS": null,
+   "SYS_TO_ACC5V_BOOST": null,
+   "SYS_TO_NFC5V_BOOST": null,
+   "USB_VBUS_CHG": null,
+   "USB_VBUS_RAW": null
+  },
+  "stackup_selfcheck": {
+   "board_copper_mm": {
+    "B.Cu": 0.035,
+    "F.Cu": 0.035,
+    "In1.Cu": 0.0152,
+    "In2.Cu": 0.0152,
+    "In3.Cu": 0.0152,
+    "In4.Cu": 0.0152
+   },
+   "inner_declared": [
+    0.0152
+   ],
+   "inner_used_mm": 0.0152,
+   "note": "the constants this tool rules with must equal the board's own declared stackup (D-750)",
+   "ok": true,
+   "outer_declared": [
+    0.035
+   ],
+   "outer_used_mm": 0.0348
+  }
+ },
+ "release_distinction": {
+  "fab_data": "PASS \u2014 corrected PCB/manufacturing data may remain frozen",
+  "first_article": "required after boards arrive; does not excuse any known pre-order PCB defect",
+  "purchase_order": "CONDITIONAL \u2014 written fabricator special-process acceptance and final CAM/placement approval required"
+ },
+ "schema": 1,
+ "standing_contracts": {
+  "all_ran": true,
+  "baseline": "d763",
+  "expected_d764_differences": [
+   "mechanical_keepout: MK11 added and passes",
+   "pour_partition: ref_commit input changed only; electrical verdict passes"
+  ],
+  "failing": [],
+  "ran": 19
+ },
+ "unresolved_pcb_or_fab_data_blocker": null
+}

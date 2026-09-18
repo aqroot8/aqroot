@@ -472,7 +472,7 @@ dimension source and supersedes older Enclosure Field Slate v3/v4/v5 dimensions.
 | Internal cavity | 80.0 × 155.0 × 18.5 mm nominal | REVISED D-709 (width only) · TARGET · CAD-TO-VERIFY | mech spec; D-709 |
 | Board→cavity clearance | **≥1.5 mm — actual MINIMUM 1.500 mm X, 3.500 mm Y** | LOCKED (rule) · **CORRECTED at D-760** | measured on board `1a06b058`: outline X 0.000 … 72.000 with the D-709 step to 77.000 between Y 70.500 … 104.005, against an 80.000 × 155.000 mm cavity placed to the locked 1.500 mm west gap. **East gap 6.500 mm at the 72 mm sections and 1.500 mm AT THE STEP.** The row read *"actual 2.5 mm X"*, which is the pre-`FBV2-EXP-002` figure from the 70 mm board and was stale by two revisions — D-239 itself says the gap *"falls 2.5 → 1.5 mm on both sides, the ≥ 1.5 mm rule met EXACTLY, with nothing to spare"* |
 
-**Conflicts flagged / UNRESOLVED (CAD-TO-VERIFY):**
+**Mechanical CAD authority / remaining CAD-to-verify items:**
 - ~~**BOSS2 X:** spec/floorplan say **59.000**; the metrics file says 60.000 (1 mm
   discrepancy) — use 59.000 (spec is declared authority), verify in CAD.~~
   **CLOSED at D-759, and the METRICS FILE had the right one.** The 1 mm is the
@@ -486,11 +486,22 @@ dimension source and supersedes older Enclosure Field Slate v3/v4/v5 dimensions.
   re-base** and moved +1.000 mm to 41.000 at D-759. `evidence/d759-mechanical-datum.json`.
   *(D-758 read the section-1 figures as current and moved the keep-outs and `BOSS2` the
   wrong way; that is reverted.)*
-- **BOOT access face/position:** conflicting right-wall vs front-bottom placements —
-  UNRESOLVED.
-- **Power-switch position:** two slightly different coordinates — UNRESOLVED.
-- **Community-port wall aperture** for the current 1×24 socket (62.5 mm recess) not
-  restated (34×10 mm was for the superseded 2×12 body) — UNRESOLVED.
+- ~~**BOOT access face/position:** conflicting right-wall vs front-bottom placements.~~
+  **CLOSED D-242 / re-verified D-764:** `SW1` is on `F.Cu` at doc **(28.300, 6.000)**
+  (KiCad **(28.300, 142.000)**), in the measured gap between the microSD shell and USB-C.
+  The enclosure provides a **Ø2 mm recessed tool hole in the FRONT wall**, not the right or
+  bottom wall.
+- ~~**Power-switch position:** two slightly different coordinates.~~ **CLOSED D-242 /
+  re-verified D-764:** `SW9` remains on the **RIGHT wall** at doc **(66.700, 61.500)**
+  (KiCad **(66.700, 86.500)**), `F.Cu`, 90°.
+- ~~**Community-port wall aperture not restated for the current 1×24 socket.**~~
+  **PCB-side geometry CLOSED / enclosure execution CAD-TO-VERIFY (D-745/D-764):** current
+  `J5` is `SSQ-124-02-G-S-RA`, 1×24 at 2.54 mm, with **58.420 mm pin span** and
+  **61.47 mm body length**.  The body occupies board Y **8.475 … 69.945 mm** and the
+  mating face is **x = 72.430 mm**.  With the current east cavity face at **x = 78.500 mm**
+  there is **6.070 mm of air**, so the east wall MUST step inward over the full J5 span
+  and carry the **62.5 mm closed-end recess**.  The historical **34 × 10 mm** aperture was
+  for the superseded 2×12 BCS body and is **NOT CURRENT AUTHORITY**.
 - Corner radii/chamfers, surface finish, texture, branding = **M-05**, not dimensioned.
 - **D-709 EAST STEP (CAD-TO-VERIFY):** the 5.00 mm east bump runs `y 70.500 .. 104.005`
   only.  It is BELOW the `WROOM` antenna keep-out (starts `y = 104.005`) and BELOW `J5`'s
@@ -507,13 +518,15 @@ dimension source and supersedes older Enclosure Field Slate v3/v4/v5 dimensions.
 - **FRONT:** 3.5″ display + capacitive touch window; **D-pad (4)** + **A/B (2)**
   buttons; **RGB status light** aperture (diffuser/light-pipe, no bare LED; exact
   position not locked — M-11); **microphone** acoustic opening (Ø0.8–1.0 mm or 3–5×
-  Ø0.5 mm, mesh behind).
+  Ø0.5 mm, mesh behind); **recessed Ø2 mm BOOT/recovery tool hole** at the D-242
+  front-wall location for `SW1`.
 - **TOP edge:** **915 MHz SMA bulkhead** (Ø6.5 mm hole, left half); **IR TX window**
   and **IR RX window** with a **mandatory opaque IR barrier** between them (emitter↔
   receiver ≥15 mm).
-- **RIGHT wall:** **community expansion port** recess (keyed, labelled "COMMUNITY PORT —
-  3V3 LOGIC ONLY / 5V PIN IS POWER OUTPUT ONLY"); **power slide switch**; **Qwiic /
-  STEMMA QT** connector; **recessed BOOT** access (tool-only).
+- **RIGHT wall:** **community expansion port** **62.5 mm closed-end recess** following the
+  stepped board profile over the full `J5` body span (labelled "COMMUNITY PORT — 3V3 LOGIC
+  ONLY / 5V PIN IS POWER OUTPUT ONLY"); **power slide switch** at `SW9`; **Qwiic / STEMMA
+  QT** connector. **BOOT is NOT on this wall; it is a front-wall tool hole (D-242/D-764).**
 - **BOTTOM edge:** **USB-C** opening (centred ±5 mm); **microSD** opening (reserve
   +18 mm insertion travel).
 - **REAR:** **speaker grille** (≥25 % open, Ø0.8–1.0 mm holes, mesh); **NFC tap target**

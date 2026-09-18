@@ -67,6 +67,11 @@ DRU = PROJECT / "aqroot-Beta-v2.kicad_dru"
 PRO = PROJECT / "aqroot-Beta-v2.kicad_pro"
 SCHEMATIC = PROJECT / "aqroot-Beta-v2.kicad_sch"
 OUT = ROOT / "hardware/demo/fab"
+ASSEMBLY_SHEET = HERE / "aqroot_assembly.kicad_wks"
+# The assembly drawing is a RELEASE ARTIFACT, not a generic KiCad plot.  The
+# revision is intentionally explicit so a regenerated PDF cannot silently look
+# current while carrying an older review authority.
+ASSEMBLY_RELEASE = "D-764"
 
 # The board's own enabled copper layers, in stackup order, plus every
 # non-copper layer a fabricator and an assembler actually need.  The contract
@@ -270,17 +275,41 @@ def export_bom(out):
 
 
 def export_assembly(out):
-    """F.Fab / B.Fab, with D-612's sixteen DNP parts crossed out."""
+    """Release-identified F.Fab / B.Fab assembly drawings.
+
+    D-764 closes the external-review release-document gap: the old PDFs carried
+    a blank KiCad title block.  A human could not tell which frozen board/review
+    they belonged to, which side was mirrored, or where the critical pin-1 /
+    hand-assembly conventions lived.  The board itself does NOT move.  A custom
+    drawing sheet prints the board SHA and release ID into each PDF and the
+    package contract reads those strings back out.
+    """
+    board_sha = sha256(BOARD)
+    if not ASSEMBLY_SHEET.is_file():
+        raise SystemExit("assembly drawing sheet missing: %s" % ASSEMBLY_SHEET)
+    rows = {}
     for layer, side, mirror in (("F.Fab", "top", False),
                                 ("B.Fab", "bottom", True)):
         cmd = ["kicad-cli", "pcb", "export", "pdf", "--mode-single",
                "--layers", "%s,Edge.Cuts" % layer,
                "--crossout-DNP-footprints-on-fab-layers",
                "--sketch-pads-on-fab-layers", "--black-and-white",
-               "--include-border-title"]
+               "--include-border-title", "--drawing-sheet", ASSEMBLY_SHEET,
+               "--define-var", "ASSEMBLY_SIDE=%s" % side.upper(),
+               "--define-var", "RELEASE=%s" % ASSEMBLY_RELEASE,
+               "--define-var", "BOARD_SHA=%s" % board_sha]
         if mirror:
             cmd.append("--mirror")
-        run(cmd + ["-o", out / ("aqroot-Demo-assembly-%s.pdf" % side), BOARD])
+        pdf = out / ("aqroot-Demo-assembly-%s.pdf" % side)
+        run(cmd + ["-o", pdf, BOARD])
+        rows[side] = dict(file=pdf.name, layer=layer, mirrored=mirror)
+    return dict(release=ASSEMBLY_RELEASE,
+                board_sha256=board_sha,
+                drawing_sheet=str(ASSEMBLY_SHEET.relative_to(ROOT)),
+                drawing_sheet_sha256=sha256(ASSEMBLY_SHEET),
+                pin1_polarity_note=True,
+                manual_assembly_note=True,
+                sides=rows)
 
 
 # D-677.  A FAB NOTE THAT DOES NOT TRAVEL WITH THE GERBERS IS A NOTE THE SHOP
@@ -1022,11 +1051,11 @@ def main():
     export_drills(gerbers, gerbers / "drill-report.txt")
     export_positions(out)
     bom = export_bom(out)
-    export_assembly(out)
+    assembly = export_assembly(out)
     notes, via_in_pad, sub_floor_vias, mask_dams, nfc_tune = export_fab_notes(out)
 
     fitted, dnp = rl.schematic_population()
-    doc = manifest(out, dict(population=dict(
+    doc = manifest(out, dict(assembly_drawings=assembly, population=dict(
         schematic_fitted=len(fitted), schematic_dnp=sorted(dnp), bom=bom),
         via_in_pad=dict(
             measured=via_in_pad is not None,

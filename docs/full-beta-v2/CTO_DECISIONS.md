@@ -1,3 +1,76 @@
+## D-764 — **THE PCB WAS RIGHT, BUT THE RELEASE COULD STILL TELL AN ASSEMBLER TO BUILD IT WRONG**
+
+    authority  1a06b058, UNCHANGED since D-759 (no PCB/schematic/firmware change)
+    changed    release-identified assembly drawings; FAB14/FAB15; MK11 external-interface
+               authority; first-five assembly routing; current J5/SW1/SW9 mechanical contract
+    evidence   d764-{fab-package,mechanical-keepout,contract-regression,routing-ledger,
+               rail-ampacity,kicad-drc-parity,release-verification}.json
+
+### 1. FIVE LEADED PARTS EXIST; THE PLAN STILL SENT THREE OF THEM TO PICK-AND-PLACE
+
+D-763 correctly counted five fitted leaded through-hole footprints (`J4`, `J5`, `J6`,
+`D1`, `U6`) but the normative first-five plan still listed `U6`, `J4` and `J6` in a
+machine-placement class, still carried the superseded `BCS-112-S-D-HE / C5575816`
+`J5` consignment row, and still summarized the job as two hand-soldered parts.  The
+board and BOM could therefore be correct while the work instruction was wrong.
+
+The plan now has exactly the board-derived leaded set in Class E and none in machine
+classes.  Current `J5` is `SSQ-124-02-G-S-RA / C3323671`, **24 × Ø1.02 mm PTH** at
+2.54 mm pitch.  `FAB15` derives the leaded set from the board and the same positive
+lead model used by `MK10`; it refuses a leaded part placed back in a machine class, a
+missing manual route, and the old 0.71 mm J5 drill.
+
+### 2. THE ASSEMBLY PDF HAD NO WAY TO PROVE WHICH RELEASE IT WAS
+
+The D-763 F.Fab/B.Fab PDFs were valid plots but their title block did not identify the
+release, authoritative board hash, mirror convention, or the critical pin-1/manual
+assembly rules.  A custom KiCad worksheet now prints **D-764**, full board SHA256,
+TOP=front/F.Cu/not mirrored, BOTTOM=rear/B.Cu/mirrored-as-seen-by-assembler, the J1/J5
+pin-1 convention, and the `J4 <=0.80 mm` plus `D1/U6` trim instructions.  `FAB14` reads
+the released PDFs back with `pdftotext`; it does not trust the generator that wrote
+them.
+
+During this CTO pass I found one weakness in the draft `FAB14`: every critical ref was
+also named once in the worksheet note, so a missing plotted reference could have passed
+by string presence alone.  I tightened the clause to require a **second exact-token
+occurrence** for each critical reference (`J1`, `J5`, `D1`, `U6` top; `J4` bottom) and
+added a live destructive control that removes one J4 occurrence.  The corrected gate
+passes and all four FAB14 controls are refused.
+
+### 3. THREE ENCLOSURE INPUTS WERE STILL PROSE-AMBIGUOUS
+
+`DEVICE_SPEC` still called BOOT and power-switch placement unresolved even though D-242
+and the live board agree.  `MK11` now pins them and current Community-Port geometry:
+
+- `SW1`: front/F.Cu, doc `(28.300, 6.000)`, 0°; front-wall recessed tool hole.
+- `SW9`: front/F.Cu, doc `(66.700, 61.500)`, 90°; right wall.
+- `J5`: front/F.Cu, doc `(65.900, 108.790)`, -90°; 1×24 SSQ, 1.02 mm drill, 2.54 mm
+  pitch, 58.420 mm pin span, mating face `x=72.430`.
+
+The enclosure requirement is the current **62.5 mm closed-end recess** following the
+stepped east wall over the J5 body span; the historical 34×10 mm / 2×12 BCS aperture is
+explicitly retired.  M-09 is closed as a conservative PCB-fit bound: using Samtec's
+largest 8.51 mm body dimension gives 22.71 mm of the 23.0 mm external stack, >=0.29 mm
+spare. Exact CAD/sample clearance remains mandatory before enclosure tooling.  Three
+0.100 mm nudge controls prove `MK11` is live.
+
+### 4. RELEASE VERIFICATION
+
+The authoritative PCB remains SHA256
+`1a06b058912b4c37e25d0acd9314f9542671efa852a162cc8b1dc6533e25668b`; no board,
+schematic or firmware file changed.  Fresh D-764 checks report **173/174 retained nets
+connected, one owner-approved U11.3 open, zero unapproved opens; KiCad DRC 199
+`lib_footprint_issues`, all warnings, zero other violation classes; 17 unconnected items;
+246 parity warnings and zero parity errors; rail ampacity `all_ok` with 0.0152 mm inner
+copper; MK1–MK11 PASS with 14 live controls; FAB1–FAB15 PASS; all 19 standing
+contracts run with no failing verdict; protected copper unchanged; battery and firmware
+contracts PASS.  Gerber/drill regeneration changes timestamps only; deterministic
+normalized hashes remain unchanged. `hardware/beta-v2` remains untouched.
+
+**No owner decision is open and no PCB/fab-data blocker is introduced by D-764.**  The
+paid-order condition remains written fabricator acceptance of the declared special
+processes plus final CAM/placement review.
+
 ## D-763 — **A THROUGH-HOLE LEAD STANDS 1.826 mm UNDER THE DISPLAY, AND THE HEIGHT CENSUS CAD READS NAMED THE WRONG PART ON THE WRONG FACE**
 
     authority  1a06b058, UNCHANGED   (no board file, no fab output, no firmware)

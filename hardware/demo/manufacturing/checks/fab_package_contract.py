@@ -98,6 +98,7 @@ ROOT = HERE.parents[3]
 sys.path[:0] = [str(HERE.parent)]
 
 import routing_ledger as rl                                # noqa: E402
+import checks.mechanical_keepout_contract as mech          # noqa: E402
 import pcbnew                                              # noqa: E402
 
 PROJECT = ROOT / "hardware/demo/kicad/aqroot-demo"
@@ -1261,6 +1262,197 @@ def fab13(pkg, manifest):
                 problems=problems)
 
 
+
+
+# D-764. AN ASSEMBLY DRAWING WITHOUT RELEASE IDENTITY IS NOT A RELEASE DRAWING.
+#
+# The D-763 PDFs were valid KiCad F.Fab/B.Fab plots but their title block was
+# blank: no release, no board hash, no explicit top-vs-mirrored-bottom statement
+# and no pin-1/polarity convention.  That is exactly how an assembler can be
+# handed the right PDF from the wrong board revision.  The exporter now embeds
+# those facts and this clause reads the RELEASED PDFs back, rather than trusting
+# the generator source that was supposed to write them.
+def _fab14_survey(pkg, manifest, text_override=None):
+    block = manifest.get("assembly_drawings") or {}
+    problems, rows = [], {}
+    board_sha = sha256(BOARD)
+    release = block.get("release")
+    if block.get("board_sha256") != board_sha:
+        problems.append("manifest assembly board SHA does not match authority")
+    if not release:
+        problems.append("manifest assembly release is missing")
+    if not block.get("pin1_polarity_note"):
+        problems.append("manifest does not declare pin-1/polarity note")
+    if not block.get("manual_assembly_note"):
+        problems.append("manifest does not declare manual-assembly note")
+    sides = block.get("sides") or {}
+    for side, want in (("top", dict(layer="F.Fab", mirrored=False,
+                                      critical=("J1", "J5", "D1", "U6"))),
+                       ("bottom", dict(layer="B.Fab", mirrored=True,
+                                         critical=("J4",)))):
+        meta = sides.get(side) or {}
+        path = pkg / meta.get("file", "")
+        text = None
+        if text_override and side in text_override:
+            text = text_override[side]
+        elif path.is_file():
+            proc = subprocess.run(["pdftotext", "-layout", str(path), "-"],
+                                  text=True, capture_output=True)
+            if proc.returncode == 0:
+                text = proc.stdout
+        if text is None:
+            problems.append("%s assembly PDF missing or unreadable" % side)
+            text = ""
+        checks = {
+            "file_present": path.is_file(),
+            "layer_matches": meta.get("layer") == want["layer"],
+            "mirror_matches": meta.get("mirrored") is want["mirrored"],
+            "release_printed": bool(release and ("RELEASE %s" % release) in text),
+            "board_sha_printed": board_sha in text,
+            "side_printed": ("AQROOT DEMO ASSEMBLY - %s" % side.upper()) in text,
+            "pin1_polarity_printed": "PIN-1/POLARITY" in text,
+            "j1_orientation_printed": "J1 PIN1 RIGHT FROM DISPLAY FRONT" in text,
+            "manual_note_printed": "J4 LEADS <=0.80 mm BEFORE DISPLAY" in text,
+            "view_is_explicit": ("TOP=FRONT/F.Cu NOT MIRRORED" in text
+                                 and "BOTTOM=REAR/B.Cu MIRRORED AS ASSEMBLER SEES IT" in text),
+            # Every critical reference is also named once in the worksheet note.
+            # Require a SECOND exact-token occurrence so the check proves the
+            # footprint reference is present in the plotted Fab drawing itself,
+            # not merely repeated in the release title block.
+            "critical_refs_visible": all(
+                len(re.findall(r"(?<![A-Z0-9])" + re.escape(r) + r"(?![A-Z0-9])", text)) >= 2
+                for r in want["critical"]),
+        }
+        if not all(checks.values()):
+            problems.append("%s assembly identification/orientation is incomplete" % side)
+        rows[side] = dict(file=meta.get("file"), checks=checks,
+                          critical_refs=list(want["critical"]))
+    return rows, problems
+
+
+def fab14(pkg, manifest):
+    rows, problems = _fab14_survey(pkg, manifest)
+
+    # NON-VACUITY: alter the extracted release text, not the PDF file.  Each
+    # mutation removes one load-bearing fact and the same survey must refuse it.
+    text = {}
+    for side, meta in (manifest.get("assembly_drawings") or {}).get("sides", {}).items():
+        p = pkg / meta.get("file", "")
+        if p.is_file():
+            x = subprocess.run(["pdftotext", "-layout", str(p), "-"],
+                               text=True, capture_output=True)
+            if x.returncode == 0:
+                text[side] = x.stdout
+    controls = {}
+    if text.get("top") and text.get("bottom"):
+        bad = dict(text)
+        bad["top"] = bad["top"].replace(sha256(BOARD), "0" * 64)
+        controls["wrong_board_hash_is_refused"] = bool(_fab14_survey(pkg, manifest, bad)[1])
+        bad = dict(text)
+        bad["bottom"] = bad["bottom"].replace("MIRRORED AS ASSEMBLER SEES IT", "VIEW")
+        controls["missing_bottom_mirror_statement_is_refused"] = bool(
+            _fab14_survey(pkg, manifest, bad)[1])
+        bad = dict(text)
+        bad["top"] = bad["top"].replace("PIN-1/POLARITY", "ORIENTATION")
+        controls["missing_pin1_polarity_statement_is_refused"] = bool(
+            _fab14_survey(pkg, manifest, bad)[1])
+        # The worksheet itself names J4 once.  Remove one exact J4 occurrence
+        # from the bottom extraction; the count must fall from two to one and
+        # prove that the plotted reference cannot disappear behind a green title.
+        bad = dict(text)
+        bad["bottom"] = re.sub(r"(?<![A-Z0-9])J4(?![A-Z0-9])", "JX",
+                               bad["bottom"], count=1)
+        controls["critical_ref_missing_from_drawing_is_refused"] = bool(
+            _fab14_survey(pkg, manifest, bad)[1])
+    return dict(ok=(not problems and bool(controls) and all(controls.values())),
+                release=(manifest.get("assembly_drawings") or {}).get("release"),
+                board_sha256=sha256(BOARD), drawings=rows,
+                controls_refused=controls, problems=problems)
+
+
+
+# D-764. CATALOG AVAILABILITY IS NOT AN ASSEMBLY METHOD.
+#
+# D-763 had already counted five real leaded THT footprints, but the normative
+# FIRST_FIVE_ASSEMBLY_PLAN still put U6, J4 and J6 in the machine-placement
+# class, left the superseded BCS J5 in the consignment class, and summarized the
+# build as only two hand-soldered parts.  That can send a correct BOM/CPL to an
+# assembler with the wrong work instructions.  Derive the leaded set from the
+# board + the same positive lead/no-lead table MK10 uses, then require the plan
+# to route every leaded part through Class E and through no machine class.
+def _fab15_survey(board, text):
+    leaded = set()
+    for f in board.GetFootprints():
+        fid = f.GetFPIDAsString().split(":")[-1]
+        lead = mech.THT_LEAD_MM.get(fid)
+        if not lead or lead[1] == "no_lead":
+            continue
+        if any(p.GetAttribute() == pcbnew.PAD_ATTRIB_PTH for p in f.Pads()):
+            leaded.add(f.GetReference())
+
+    # Current plan sections.  This makes the categories mutually exclusive in
+    # the human document, which the BOM/CPL contracts cannot express.
+    def section(a, b):
+        try:
+            return text[text.index(a):text.index(b)]
+        except ValueError:
+            return ""
+    machine = section("## 2. Class A", "## 6. Class E")
+    manual = section("## 6. Class E", "## 7. Class F")
+    def table_has_ref(block, ref):
+        return any(line.lstrip().startswith("|") and ("`%s`" % ref) in line
+                   for line in block.splitlines())
+    in_manual = sorted(r for r in leaded if table_has_ref(manual, r))
+    in_machine = sorted(r for r in leaded if table_has_ref(machine, r))
+    missing_manual = sorted(leaded - set(in_manual))
+
+    stale = []
+    for token in ("BCS-112-S-D-HE`** Samtec | `J5` | `C5575816`",
+                  "24 × Ø0.71 mm",
+                  "how many hand-soldered per board? | **2**",
+                  "how many parts machine-placed? | **all but two"):
+        if token in text:
+            stale.append(token)
+
+    j5 = board.FindFootprintByReference("J5")
+    j5_drills = sorted({round(p.GetDrillSize().x / 1e6, 3) for p in j5.Pads()}) if j5 else []
+    j5_live = (j5 is not None and j5.GetFPIDAsString() == mech.J5_FPID
+               and j5_drills == [1.02]
+               and "24 × Ø1.02 mm PTH" in manual)
+    return dict(ok=(leaded == {"J4", "J5", "J6", "D1", "U6"}
+                    and not missing_manual and not in_machine and not stale
+                    and j5_live),
+                board_leaded_tHT=sorted(leaded),
+                class_E_refs_seen=in_manual,
+                leaded_refs_in_machine_classes=in_machine,
+                missing_from_class_E=missing_manual,
+                stale_release_phrases=stale,
+                j5=dict(ok=j5_live, footprint=j5.GetFPIDAsString() if j5 else None,
+                        drill_mm=j5_drills,
+                        current_drill_written_in_class_E="24 × Ø1.02 mm PTH" in manual))
+
+
+def fab15(board_facts_unused):
+    board = pcbnew.LoadBoard(str(BOARD))
+    plan = ROOT / "docs/full-beta-v2/assembly/FIRST_FIVE_ASSEMBLY_PLAN.md"
+    text = plan.read_text(encoding="utf-8") if plan.is_file() else ""
+    row = _fab15_survey(board, text)
+    controls = {}
+    if text:
+        # Put one of the exact D-763 contradictions back: U6 appears in the
+        # machine class while remaining Class E.
+        bad = text.replace("## 3. Class B", "## 3. Class B\n| `TSOP38238` | `U6` | `C141632` | 1 | 5 |")
+        controls["a_leaded_part_in_a_machine_class_is_refused"] = not _fab15_survey(board, bad)["ok"]
+        # Put the superseded J5 drill figure back in the current Class-E row.
+        bad = text.replace("24 × Ø1.02 mm PTH", "24 × Ø0.71 mm PTH", 1)
+        controls["the_superseded_J5_drill_is_refused"] = not _fab15_survey(board, bad)["ok"]
+        # Remove one manual ref so the table cannot undercount leaded work.
+        bad = text.replace("| `TSOP38238` (`C141632`) | `U6` |", "| `TSOP38238` (`C141632`) | `U6X` |", 1)
+        controls["a_missing_THT_manual_route_is_refused"] = not _fab15_survey(board, bad)["ok"]
+    return dict(ok=(row["ok"] and bool(controls) and all(controls.values())),
+                plan=str(plan.relative_to(ROOT)), survey=row,
+                controls_refused=controls)
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--package", type=Path, default=PACKAGE)
@@ -1312,6 +1504,8 @@ def main():
             "FAB12_identity": fab12(pkg, board),
             "FAB11_mask_dams": fab11(pkg, manifest),
             "FAB13_nfc_tuning_access": fab13(pkg, manifest),
+            "FAB14_assembly_drawing_identity": fab14(pkg, manifest),
+            "FAB15_manual_THT_route": fab15(board),
         }
     doc = dict(schema=1, package=str(pkg.relative_to(ROOT))
                if pkg.is_relative_to(ROOT) else str(pkg),

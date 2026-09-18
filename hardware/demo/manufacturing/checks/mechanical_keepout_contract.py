@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""AQROOT Demo -- the MECHANICAL KEEP-OUT contract (MK1-MK10).
+"""AQROOT Demo -- the MECHANICAL KEEP-OUT contract (MK1-MK11).
 
 WHY THIS FILE EXISTS.  `FBV2_P1_KEEPOUTS.md` is marked **NORMATIVE for FBV2-P2
 and for the enclosure CAD**, and until D-759 not one of its statements was
@@ -67,6 +67,16 @@ PRE-REBASE positions -- correcting a real defect into a different one.
          allowance must be DECLARED in `assembly/THT_LEAD_TRIM.md` with a trim
          that meets the allowance, and a through-hole part inside a region
          with NO vendor lead figure is REFUSED rather than skipped.
+
+
+    MK11 EXTERNAL INTERFACE AUTHORITY.  D-764 found that DEVICE_SPEC still
+         called BOOT and POWER positions "UNRESOLVED" even though D-242 and
+         the live board agree, while the mechanical spec still carried the
+         superseded 2x12 J5 drill/aperture as current in several places.  Pin
+         the board-side facts that enclosure CAD and manual assembly consume:
+         SW1 front-wall tool-hole datum, SW9 right-wall datum, and the current
+         1x24 J5 identity/position/drill/pitch/mating-face geometry plus the
+         conservative M-09 Z bound.
 
     python3 hardware/demo/manufacturing/checks/mechanical_keepout_contract.py \
         [--board B.kicad_pcb] [-o REPORT.json]
@@ -691,6 +701,87 @@ def mk9(board, reg=None):
                 barrier_stands_between_them=between)
 
 
+
+# D-764. EXTERNAL INTERFACES THAT ENCLOSURE CAD CONSUMES.
+# Doc datum is lower-left, +Y up.  The board is KiCad top-view coordinates.
+EXTERNAL = {
+    "SW1": dict(doc=(28.300, 6.000), side="F", rotation=0.0),
+    "SW9": dict(doc=(66.700, 61.500), side="F", rotation=90.0),
+    "J5": dict(doc=(65.900, 108.790), side="F", rotation=-90.0),
+}
+J5_FPID = "AQROOT_Beta:Samtec_SSQ-124-02-G-S-RA"
+J5_DRILL_MM = 1.020
+J5_PITCH_MM = 2.540
+J5_PIN_SPAN_MM = 58.420
+J5_TAIL_TO_MATING_FACE_MM = 6.530
+J5_BODY_LENGTH_MM = 61.470
+J5_RECESS_MM = 62.500
+J5_BODY_MAX_MM = 8.510
+ENCLOSURE_EXTERNAL_Z_MM = 23.000
+
+
+def mk11(board):
+    rows, ok = {}, True
+    for ref, spec in EXTERNAL.items():
+        f = board.FindFootprintByReference(ref)
+        if f is None:
+            rows[ref] = dict(ok=False, present=False)
+            ok = False
+            continue
+        p = f.GetPosition()
+        doc = (p.x / 1e6, BOARD_H - p.y / 1e6)
+        side = "B" if f.IsFlipped() else "F"
+        row = dict(present=True,
+                   doc_mm=[round(doc[0], 3), round(doc[1], 3)],
+                   expected_doc_mm=list(spec["doc"]), side=side,
+                   expected_side=spec["side"],
+                   rotation_deg=round(f.GetOrientationDegrees(), 3),
+                   expected_rotation_deg=spec["rotation"])
+        row["ok"] = (abs(doc[0] - spec["doc"][0]) <= 1e-4
+                     and abs(doc[1] - spec["doc"][1]) <= 1e-4
+                     and side == spec["side"]
+                     and abs(f.GetOrientationDegrees() - spec["rotation"]) <= 1e-4)
+        rows[ref] = row
+        ok = ok and row["ok"]
+
+    j5 = board.FindFootprintByReference("J5")
+    geo = dict(ok=False)
+    if j5 is not None:
+        pads = sorted(j5.Pads(), key=lambda p: int(p.GetNumber()))
+        xs = [p.GetPosition().x / 1e6 for p in pads]
+        ys = [p.GetPosition().y / 1e6 for p in pads]
+        drills = [p.GetDrillSize().x / 1e6 for p in pads]
+        pitches = [round(ys[i + 1] - ys[i], 6) for i in range(len(ys) - 1)]
+        pin_span = max(ys) - min(ys) if ys else 0.0
+        row_x = sum(xs) / len(xs) if xs else 0.0
+        mating_x = row_x + J5_TAIL_TO_MATING_FACE_MM
+        body_y = [min(ys) - (J5_BODY_LENGTH_MM - J5_PIN_SPAN_MM) / 2.0,
+                  max(ys) + (J5_BODY_LENGTH_MM - J5_PIN_SPAN_MM) / 2.0]
+        z_bound = 2.0 + J5_BODY_MAX_MM + 1.6 + 8.0 + 0.6 + 2.0
+        geo = dict(
+            ok=(j5.GetFPIDAsString() == J5_FPID and len(pads) == 24
+                and all(abs(d - J5_DRILL_MM) <= 1e-6 for d in drills)
+                and all(abs(q - J5_PITCH_MM) <= 1e-6 for q in pitches)
+                and abs(pin_span - J5_PIN_SPAN_MM) <= 1e-6
+                and abs(mating_x - 72.430) <= 1e-6
+                and z_bound <= ENCLOSURE_EXTERNAL_Z_MM + 1e-9),
+            footprint=j5.GetFPIDAsString(), contacts=len(pads),
+            drill_mm=sorted(set(round(d, 3) for d in drills)),
+            pitch_mm=sorted(set(round(q, 3) for q in pitches)),
+            pin_span_mm=round(pin_span, 3), pin_row_x_mm=round(row_x, 3),
+            body_y_mm=[round(v, 3) for v in body_y],
+            mating_face_x_mm=round(mating_x, 3),
+            closed_end_recess_mm=J5_RECESS_MM,
+            conservative_largest_body_mm=J5_BODY_MAX_MM,
+            z_bound_mm=round(z_bound, 3),
+            z_spare_mm=round(ENCLOSURE_EXTERNAL_Z_MM - z_bound, 3),
+            note="62.5 mm is an enclosure requirement; the board-side geometry "
+                 "that drives it is measured here")
+        ok = ok and geo["ok"]
+    return dict(ok=ok, interfaces=rows, j5=geo,
+                datum="doc origin lower-left; Y_kicad = 148 - Y_doc")
+
+
 def mk7(board):
     """Live negative controls: each puts a specific defect back."""
     reg = regions()
@@ -784,6 +875,25 @@ def mk7(board):
         board, reg)["leads_in_a_limited_region"]
     j4.SetPosition(was4)
 
+    # D-764.  External-interface authority must be live rather than prose.
+    sw1 = board.FindFootprintByReference("SW1")
+    was_sw1 = sw1.GetPosition()
+    sw1.SetPosition(pcbnew.VECTOR2I(was_sw1.x + 100000, was_sw1.y))
+    ctl["a_0_100_mm_BOOT_nudge_is_refused"] = not mk11(board)["ok"]
+    sw1.SetPosition(was_sw1)
+
+    sw9 = board.FindFootprintByReference("SW9")
+    was_sw9 = sw9.GetPosition()
+    sw9.SetPosition(pcbnew.VECTOR2I(was_sw9.x, was_sw9.y + 100000))
+    ctl["a_0_100_mm_POWER_nudge_is_refused"] = not mk11(board)["ok"]
+    sw9.SetPosition(was_sw9)
+
+    j5c = board.FindFootprintByReference("J5")
+    was_j5 = j5c.GetPosition()
+    j5c.SetPosition(pcbnew.VECTOR2I(was_j5.x + 100000, was_j5.y))
+    ctl["a_0_100_mm_J5_nudge_is_refused"] = not mk11(board)["ok"]
+    j5c.SetPosition(was_j5)
+
     return dict(ok=all(ctl.values()), controls=ctl)
 
 
@@ -806,6 +916,7 @@ def main():
         "MK9_ir_pair_separation_and_barrier": mk9(board, reg),
         "MK10_through_hole_lead_on_the_opposite_face":
             mk10(board, reg, a.board),
+        "MK11_external_interface_authority": mk11(board),
     }
     doc = dict(schema=1, board=str(a.board), board_sha256=sha256(a.board),
                datum="FBV2-EXP-002 RE-BASED: section-1 X + %.3f mm; "
