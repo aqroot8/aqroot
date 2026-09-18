@@ -1,0 +1,28 @@
+{
+  "decision": "D-763",
+  "environments": {
+    "aqroot-demo": {
+      "flash_bytes": 319781,
+      "ram_bytes": 19388,
+      "status": "SUCCESS"
+    },
+    "esp32-s3-aqroot": {
+      "flash_bytes": 673145,
+      "ram_bytes": 111172,
+      "status": "SUCCESS"
+    },
+    "esp32-s3-aqroot-dm": {
+      "flash_bytes": 673145,
+      "ram_bytes": 111172,
+      "status": "SUCCESS"
+    },
+    "wokwi": {
+      "flash_bytes": 614969,
+      "ram_bytes": 110748,
+      "status": "SUCCESS"
+    }
+  },
+  "note": "All four PlatformIO environments rebuilt from the D-763 worktree using /home/aqroot8/.piovenv/bin/pio; firmware source and generated board map are unchanged from D-762.",
+  "schema": 1,
+  "verdict": "PASS"
+}

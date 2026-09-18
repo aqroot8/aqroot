@@ -136,19 +136,51 @@ for interface freeze and must be replaced by vendor drawings at CAD time.
 | **Speaker** | **LS1 PUI `AS02008MR-LW152-R`**, off-board | **Ø20 ± 0.2 × 3 ± 0.2 mm**, 8 Ω ±15 %, 0.5 W rated / 0.8 W max | §7. **LOCKED D-148.** 152 mm AWG #32 leads to `J6`; Nd-Fe-B magnet |
 | **IR emitter** | **Vishay `TSAL6100`** | T-1¾, **Ø5 mm** leaded, 2.54 mm lead pitch, **±10° half-angle** | Top edge. **LOCKED D-154.** Beam is **narrower** than the ±17° the layout was first written against and **2.4× brighter on axis** — see §8. Fallback **TSAL6200** (±17°) is a drop-in in the same footprint (**B-66**). Consider a side-view SMD emitter to reduce Z |
 | **IR receiver** | **Vishay `TSOP38238`** (AGC2; `TSOP38438` is a documented same-package fallback, D-163) | ~6.0 × 5.6 × **4.7 mm** (typical), minicast, ±45° FOV | Top edge. **Tallest top-side component overall.** **LOCKED D-160**; same package and pinning as the TSOP38238 it replaces |
-| **Radios** | E07-400M10S, E22-900M22S | ~3.5 mm (typical) incl. shield | Both carry **IPEX/u.FL** ports |
+| **Radios** | E07-400M10S, E22-900M22S | **3.00 ± 0.10 mm** — MEASURED at D-762 from each vendor manual (Ebyte E07 §3; E22-M §3.2), archived `vendor/Ebyte/`. *This row read "~3.5 mm (typical) incl. shield" until D-763.* The 3.00 figure is the whole module including its shield | **REAR (`B.Cu`)** — `U8` doc (10.000, 12.000)… `U7` doc (27.000, 12.000). Both carry **IPEX/u.FL** ports |
 | **Community connector** | **1 × 24, 24 active contacts, 2.54 mm, FEMALE** — Samtec `SSQ-124-02-G-S-RA` (***~~2×12 `BCS-112-S-D-HE`~~ SUPERSEDED D-237/D-240, corrected here D-738***) | body **61.47 long × 6.53 deep × 8.50 tall mm**, right-angle | §5. Keying and shroud come from the **enclosure recess** |
 | Expanders / protection | PCAL9535APW (TSSOP24), LTC4368 (MSOP-10), 2 × dual FET (SOIC-8) | ≤1.2 mm | All low-profile; no Z impact |
 
-### 2.1 Height census
+### 2.1 Height census — **REWRITTEN AT D-763.  THE PREVIOUS TABLE NAMED THE WRONG PART ON THE WRONG FACE.**
 
-| side | tallest | height | constraint |
-|---|---|---|---|
-| **Top** | **TSOP38238** IR receiver (`TSOP38438` same-package fallback) | **4.7 mm** | Must sit **outside the display shadow**. Top edge only |
-| Top (display shadow) | passives only | **≤0.8 mm** | **measured** Beta-DM limit — retain |
-| Top (control area) | PTS645 tact switch | **4.3 mm** | |
-| **Bottom** | Molex microSD | **1.85 mm** | |
-| Bottom (battery shadow) | — | **≤1.2 mm** | **measured** Beta-DM limit — retain |
+> **WHAT IT SAID, AND WHY IT WAS WRONG.**  The row read
+> `| **Bottom** | Molex microSD | **1.85 mm** |`.
+> **The microSD is on the TOP face** — `J2` is an `F.Cu` footprint on the
+> board — and the rear's tallest fitted part is **`J4`, the battery connector,
+> at 6.0 mm**.  The top row read **4.7 mm** for the IR receiver while **§2 of
+> this same document, two rows above, states `J5` at 8.50 mm tall** and `J6`
+> is the same 6.0 mm JST PH header as `J4`.  Neither face figure had ever been
+> held up against the board.  Machine-checked from here on by
+> `mechanical_keepout_contract` **MK8** (component bodies inside the three
+> height-limited regions) and **MK10** (through-hole leads on the face they
+> emerge on).
+
+| side | tallest fitted part | height | source | constraint |
+|---|---|---|---|---|
+| **TOP (`F.Cu`)** | **`J5`** Samtec `SSQ-124-02-G-S-RA` right-angle socket | **8.50 mm** | **CARRIED from §2, NOT re-read** — the one figure in this table still second-hand | right wall only, `x = 65.900`; clear of the display |
+| TOP, next | **`J6`** JST `B2B-PH-K-S` speaker header | **6.00 mm** | **vendor** — JST `ePH.pdf`, *Header (Through-hole type)*, top entry, archived `vendor/JST/` | doc (38.000, 20.000), bottom band |
+| TOP, next | **`U6`** TSOP38238 IR receiver | **4.7 mm** standing | carried (§2); **lead-formed 90°**, `IR_LEAD_FORMING.md` | top edge, outside the display shadow |
+| TOP (control area) | PTS645 tact switch | **4.3 mm** | carried (§2, C&K part code `…43…`) | needs ~1.0 mm of plunger stack |
+| TOP, next | **`U1`** ESP32-S3-WROOM-1 | **3.1 mm** | **vendor** — Espressif datasheet §10.1, archived `vendor/Espressif/` | 18.0 × 25.5 × 3.1 |
+| TOP, next | `J3` USB-C · `J8` Qwiic | **3.26 / 2.90 mm** | carried (§2) · **vendor** (JST `eSH.pdf`, D-762) | bottom edge · right wall |
+| TOP (display shadow) | passives, `D2`/`D4`/`D5` SOT-563 | **0.60 mm measured** against a **≤0.8 mm** retained limit | **MK8** | 0.20 mm spare. **`J4`'s LEADS are the exception — see MK10 and `assembly/THT_LEAD_TRIM.md`** |
+| **BOTTOM (`B.Cu`)** | **`J4`** JST `B2B-PH-K-S` battery header | **6.00 mm** | **vendor** — JST `ePH.pdf`, archived `vendor/JST/` | doc (7.000, 113.000), **north of the battery shadow**, 0.7 mm clear of the 915 coax (D-241) |
+| BOTTOM, next | **`L4`** Würth WE-MAPI 4030 `74438357010` | **3.1 mm max** | **vendor** — Würth datasheet, archived `vendor/Wurth/` | boost inductor |
+| BOTTOM, next | **`U7`**, **`U8`** Ebyte radio modules | **3.00 ± 0.10 mm** | **vendor** — D-762, archived `vendor/Ebyte/` | lower rear band |
+| BOTTOM, next | `L1`, `L3` Coilcraft XFL4020 | **~2.1 mm** | **CARRIED, not re-read** | converter inductors |
+| BOTTOM (battery shadow) | `C26`/`C29`/`C30` 1206 bulk MLCC | **1.80 mm measured** against a **≤1.2 mm** retained limit | **MK8**; Murata `GRM31C` | **+0.60 mm — OPEN CAD ITEM (D-760)**, mitigated by the 0.5 mm compliant sheet |
+| BOTTOM (NFC Ø48 clear) | `J7` JST ACH | **1.40 mm measured** against a **≤1.0 mm** retained limit | **MK8**; JST `eACH` | **+0.40 mm — OPEN CAD ITEM (D-760)** |
+
+**WHAT CAD MUST TAKE FROM THIS.**  The **front** cavity must clear **8.50 mm at
+the right wall** (`J5`) and **6.00 mm in the bottom band** (`J6`), not 4.7 mm.
+The **rear** cavity must clear **6.00 mm at doc (7.000, 113.000)** (`J4`), not
+1.85 mm — and that is *outside* the 8.0 mm battery reserve, in the band the 915
+coax runs through, so it is additive to nothing but must not be ribbed over.
+
+**STILL CARRIED, NOT RE-READ — an enumerated open item, not silence:** `J5`
+8.50, `U6` 4.7, PTS645 4.3, `J3` 3.26, `J1` 2.3, `SW9` 2.0 + actuator, `D13`
+1.85, `J2` 1.85, `L1`/`L3` 2.1.  Each is plausible and each comes from a §2 row
+that names its vendor; none has been held against the vendor drawing the way
+`J4`, `J6`, `U1`, `U7`, `U8`, `L4`, `J7`, `J8` and the 1206 bulk now have been.
 
 ---
 

@@ -40,7 +40,7 @@ created merely to visualise a zone, and none was created for plastic support.**
 
 | id | name | extent | layer | kind | rule |
 |---|---|---|---|---|---|
-| **A** | `DISPLAY_SHADOW` | X 3.39 … 59.93, Y 55.04 … 140.00 | `User.1` | mechanical | **F.Cu component height ≤ 0.8 mm.** No `J1`, no switches, no module |
+| **A** | `DISPLAY_SHADOW` | X 3.39 … 59.93, Y 55.04 … 140.00 | `User.1` | mechanical | **F.Cu component height ≤ 0.8 mm.** No `J1`, no switches, no module. **AND NO UNTRIMMED THROUGH-HOLE LEAD — ADDED AT D-763.** The rule was worded for *components* and `J4` is a `B.Cu` part, so neither `MK5` (which asks the lead question for `BATTERY_SHADOW` only) nor `MK8` (which measures bodies and filters by face) could see that `J4`'s 3.4 mm leads stand **1.826 mm** proud of `F.Cu` here — **1.026 mm over**, under the panel. Trim required by `assembly/THT_LEAD_TRIM.md` J4-T1; gated by `MK10` |
 | — | `DISPLAY_ACTIVE` | X 7.18 … 56.14, Y 60.80 … 134.24 | `User.1` | mechanical | 48.96 × 73.44 active area, for the front aperture |
 | **B** | `BATTERY_SHADOW` | X 6.00 … 66.00, Y 23.50 … 98.50 | `User.2` | mechanical | **B.Cu height ≤ 1.2 mm. No through-hole lead may protrude into it.** 60 × 75 × 8.0 mm. **UNCHANGED at P1-002** |
 | **C** | `NFC_CLEAR_D48` | **Ø48 circle, centre 30.800, 124.500** → X 6.80 … 54.80, Y 100.50 … 148.50 | `User.2` | mechanical | **Ø48 metal-free CLEAR region.** No boss, screw, shielding can, battery, speaker or cable. **B.Cu height ≤ 1.0 mm.** F.Cu copper is permitted — the reverse ferrite faces the PCB |

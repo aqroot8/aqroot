@@ -1,0 +1,473 @@
+{
+  "approved_demo_nc": {
+    "expected": [
+      "J5.10",
+      "J5.11",
+      "J5.12",
+      "J5.15",
+      "J5.16",
+      "J5.17",
+      "J5.18",
+      "J5.9"
+    ],
+    "missing": [],
+    "observed": [
+      "J5.10",
+      "J5.11",
+      "J5.12",
+      "J5.15",
+      "J5.16",
+      "J5.17",
+      "J5.18",
+      "J5.9"
+    ],
+    "unexpected": []
+  },
+  "approved_unrouted": [
+    "U11.3 /BQ25185_STAT2"
+  ],
+  "authoritative_files_unchanged": {
+    "fab_package": true,
+    "firmware": true,
+    "pcb": true,
+    "production_hardware_beta_v2": true
+  },
+  "battery": {
+    "checks": {
+      "B1_exact_first_five_identity": true,
+      "B2_datasheet_is_pinned": true,
+      "B3_capacity_is_the_selected_low_timer_margin_option": true,
+      "B4_pack_fits_reserved_envelope": true,
+      "B5_pack_discharge_covers_live_D753_envelope": true,
+      "B6_pack_charge_rating_covers_BQ25185_envelope": true,
+      "B7_protection_connector_and_polarity_are_explicit": true,
+      "B8_no_thermistor_requires_supervised_prototype_charging": true
+    },
+    "verdict": "PASS"
+  },
+  "board_sha256": "1a06b058912b4c37e25d0acd9314f9542671efa852a162cc8b1dc6533e25668b",
+  "board_unchanged_since": "D-759",
+  "connectivity": {
+    "approved_unrouted_edges": 1,
+    "connected_retained_nets": 173,
+    "open_retained_nets": 1,
+    "raw_board_ratsnest": 17,
+    "retained_multi_pad_nets": 174,
+    "retained_open_edges": 1,
+    "unapproved_open_edges": 0,
+    "unapproved_open_retained_nets": 0
+  },
+  "decision": "D-763",
+  "declaration": "DEMO_READY_FOR_FAB",
+  "fab_package": {
+    "clauses": {
+      "FAB10_via_geometry": true,
+      "FAB11_mask_dams": true,
+      "FAB12_identity": true,
+      "FAB13_nfc_tuning_access": true,
+      "FAB1_provenance": true,
+      "FAB2_fill": true,
+      "FAB3_layers": true,
+      "FAB4_drill": true,
+      "FAB5_cpl": true,
+      "FAB6_bom": true,
+      "FAB7_sourcing": true,
+      "FAB8_outline": true,
+      "FAB9_via_in_pad": true
+    },
+    "failing": [],
+    "verdict": "PASS"
+  },
+  "firmware": {
+    "H1": {
+      "files": [
+        "Firmware/src/hw/aqroot_demo_board.h",
+        "Firmware/src/hw/aqroot_demo_board.json"
+      ],
+      "stale": [],
+      "verdict": "PASS"
+    },
+    "H2": {
+      "board_sha256": "1a06b058912b4c37e25d0acd9314f9542671efa852a162cc8b1dc6533e25668b",
+      "published_in_header": "1a06b058912b4c37e25d0acd9314f9542671efa852a162cc8b1dc6533e25668b",
+      "verdict": "PASS"
+    },
+    "H3": {
+      "expander_bits_mapped": 32,
+      "mcu_pins_mapped": 30,
+      "problems": [],
+      "verdict": "PASS"
+    },
+    "H4": {
+      "approved_nc_absent": true,
+      "approved_nc_contacts": [
+        "J5.10",
+        "J5.11",
+        "J5.12",
+        "J5.15",
+        "J5.16",
+        "J5.17",
+        "J5.18",
+        "J5.9"
+      ],
+      "approved_nc_nets_on_board": [
+        "unconnected-(J5-Pin_10-Pad10)",
+        "unconnected-(J5-Pin_11-Pad11)",
+        "unconnected-(J5-Pin_12-Pad12)",
+        "unconnected-(J5-Pin_15-Pad15)",
+        "unconnected-(J5-Pin_16-Pad16)",
+        "unconnected-(J5-Pin_17-Pad17)",
+        "unconnected-(J5-Pin_18-Pad18)",
+        "unconnected-(J5-Pin_9-Pad9)"
+      ],
+      "approved_unrouted": [
+        {
+          "contact": "U11.3",
+          "expander_bits": [
+            "U2.P16"
+          ],
+          "masked": true,
+          "net": "/BQ25185_STAT2"
+        }
+      ],
+      "leaked_into_firmware_map": [],
+      "problems": [],
+      "verdict": "PASS"
+    },
+    "H5": {
+      "roles_unreferenced_by_the_layer": [],
+      "sources": [
+        "Firmware/src/hw/aqroot_demo_display.h",
+        "Firmware/src/hw/aqroot_demo_expanders.h",
+        "Firmware/src/hw/aqroot_demo_peripherals.h",
+        "Firmware/src/hw/aqroot_demo_pins.h",
+        "Firmware/src/hw/aqroot_demo_radios.h",
+        "Firmware/src/hw/aqroot_i2c.h",
+        "Firmware/src/hw/aqroot_i2c_arduino.h",
+        "Firmware/src/hw/aqroot_spi_bus_b.h",
+        "Firmware/src/hw/pcal9535a.h"
+      ],
+      "symbols_emitted": 84,
+      "symbols_the_generator_never_emitted": [],
+      "verdict": "PASS"
+    },
+    "H6": {
+      "tests": [
+        {
+          "claims": 67,
+          "compiled": true,
+          "controls": [
+            {
+              "caught": true,
+              "compiled": true,
+              "control": "direction is written before the output latch",
+              "exit_code": 1,
+              "first_failed_claim": "[FAIL] 0x20: output configuration is PUSH-PULL before direction"
+            },
+            {
+              "caught": true,
+              "compiled": true,
+              "control": "a fresh MCU invents a valid zero output shadow after warm reset",
+              "exit_code": 1,
+              "first_failed_claim": "[FAIL] fresh PCAL software shadow is explicitly INVALID"
+            },
+            {
+              "caught": true,
+              "compiled": true,
+              "control": "Output Port Configuration is changed to open-drain before outputs",
+              "exit_code": 1,
+              "first_failed_claim": "[FAIL] 0x20: output configuration is PUSH-PULL before direction"
+            },
+            {
+              "caught": true,
+              "compiled": true,
+              "control": "warm reset skips the immediate U3 complete safe-latch write",
+              "exit_code": 1,
+              "first_failed_claim": "[FAIL] warm reset: second bus write forces U3 safe latch before policy traffic"
+            },
+            {
+              "caught": true,
+              "compiled": true,
+              "control": "the RGB cathodes boot at 0, lighting the LED at power-on",
+              "exit_code": 1,
+              "first_failed_claim": "[FAIL] the RGB cathodes are HIGH (dark) at boot -- D13's anode is +3V3"
+            },
+            {
+              "caught": true,
+              "compiled": true,
+              "control": "the 5 V load switch is closed before the boost is enabled",
+              "exit_code": 1,
+              "first_failed_claim": "[FAIL] 5 V up: the BOOST enable leads the LOAD SWITCH (D-186)"
+            },
+            {
+              "caught": true,
+              "compiled": true,
+              "control": "a U2 bus failure leaves U3 unconfigured (begin short-circuits)",
+              "exit_code": 1,
+              "first_failed_claim": "[FAIL] begin(): U3's direction is written ANYWAY after U2 fails"
+            },
+            {
+              "caught": true,
+              "compiled": true,
+              "control": "a U2 read error stops U3 being serviced (service short-circuits)",
+              "exit_code": 1,
+              "first_failed_claim": "[FAIL] service(): U3's input port is read ANYWAY after U2 fails"
+            },
+            {
+              "caught": true,
+              "compiled": true,
+              "control": "a NACKed load-switch write leaves the switch commanded ON",
+              "exit_code": 1,
+              "first_failed_claim": "[FAIL] 5 V down: one SURVIVING write takes the boost AND the switch down"
+            }
+          ],
+          "exit_code": 0,
+          "failed_claims": [],
+          "test": "Firmware/test/test_expander_order.cpp",
+          "verdict": "PASS"
+        },
+        {
+          "claims": 22,
+          "compiled": true,
+          "controls": [
+            {
+              "caught": true,
+              "compiled": true,
+              "control": "the bus accepts a second concurrent chip select",
+              "exit_code": 1,
+              "first_failed_claim": "[FAIL] re-selecting the SAME device while held is REFUSED"
+            },
+            {
+              "caught": true,
+              "compiled": true,
+              "control": "a second radio may key while the first is transmitting",
+              "exit_code": 1,
+              "first_failed_claim": "[FAIL] re-keying the SAME transmitter is REFUSED -- same re-entrancy rule"
+            },
+            {
+              "caught": true,
+              "compiled": true,
+              "control": "Hold stops releasing the bus when it leaves scope",
+              "exit_code": 1,
+              "first_failed_claim": "[FAIL] the outer Hold still owned the bus when the inner scopes ended"
+            }
+          ],
+          "exit_code": 0,
+          "failed_claims": [],
+          "test": "Firmware/test/test_spi_bus_b.cpp",
+          "verdict": "PASS"
+        }
+      ],
+      "verdict": "PASS"
+    },
+    "contract_verdict": "PASS",
+    "platformio": {
+      "aqroot-demo": {
+        "flash_bytes": 319781,
+        "ram_bytes": 19388,
+        "status": "SUCCESS"
+      },
+      "esp32-s3-aqroot": {
+        "flash_bytes": 673145,
+        "ram_bytes": 111172,
+        "status": "SUCCESS"
+      },
+      "esp32-s3-aqroot-dm": {
+        "flash_bytes": 673145,
+        "ram_bytes": 111172,
+        "status": "SUCCESS"
+      },
+      "wokwi": {
+        "flash_bytes": 614969,
+        "ram_bytes": 110748,
+        "status": "SUCCESS"
+      }
+    }
+  },
+  "first_article_validation_not_a_preorder_pcb_blocker": [
+    "measure charger current, VIN at U11.10, full-charge time and U11/cell temperature in enclosure",
+    "measure BAT_MAIN pin-2 thermal residual at low battery with both accessory rails loaded",
+    "NFC VNA/ST tool tune; populate Cp bridge only if measured antenna requires it",
+    "RF range/output verification for 433 MHz, 915 MHz, Wi-Fi/BLE in final enclosure",
+    "incoming display diode-mode/orientation check and visual backlight true-off test",
+    "confirm both M2 bosses and revised rear ribs against enclosure CAD before tooling"
+  ],
+  "kicad_drc": {
+    "kicad_version": "10.0.5",
+    "schematic_parity_errors": 0,
+    "schematic_parity_total": 246,
+    "schematic_parity_types": {
+      "extra_footprint": 2,
+      "footprint_symbol_field_mismatch": 199,
+      "footprint_symbol_mismatch": 45
+    },
+    "unconnected_accounted_for": "16 belong to DNP circuitry; the seventeenth is owner-approved U11.3 /BQ25185_STAT2. routing_ledger reports 0 unapproved open edges.",
+    "unconnected_items": 17,
+    "violation_severity": {
+      "warning": 199
+    },
+    "violation_types": {
+      "lib_footprint_issues": 199
+    },
+    "violations_total": 199
+  },
+  "land_chain": {
+    "checks": {
+      "LAND1_every_footprint_resolves_a_master": true,
+      "LAND2_board_land_equals_master": true,
+      "LAND3_comparison_not_vacuous": true,
+      "LAND4_kicad_agrees": true,
+      "LAND5_index_covers_the_board": true,
+      "LAND6_every_identity_is_in_the_ledger": true,
+      "LAND7_no_open_identity_and_every_read_drawing_is_cited": true
+    },
+    "footprints": 315,
+    "open_items": [],
+    "pending_tier1_source_rechecks": [
+      "AQROOT_Beta:Bosch_LGA-14_2.5x3.0mm_P0.5mm_BMI270",
+      "AQROOT_Beta:Coilcraft_XFL4020",
+      "AQROOT_Beta:Hirose_FH69-50S-0.5SH",
+      "AQROOT_Beta:MAX17048_T822",
+      "AQROOT_Beta:MEIHUA_MHPA3528RGBCT_PLCC4_3.5x2.8mm",
+      "AQROOT_Beta:Molex_5025700893",
+      "AQROOT_Beta:MountingBoss_M2_NPTH",
+      "AQROOT_Beta:PUI_DMM-4026-B-I2S_4.0x3.0mm",
+      "AQROOT_Beta:ST25R3916_AQET",
+      "AQROOT_Beta:Samtec_SSQ-124-02-G-S-RA",
+      "AQROOT_Beta:TI_TPS63020_DSJ",
+      "AQROOT_Beta:Vishay_TSOP382xx_Minicast_3Pin_P2.54mm",
+      "Package_DFN_QFN:Texas_DLH0010A_WSON-10-1EP_2.2x2mm_P0.4mm_EP0.9x1.5mm"
+    ],
+    "tier_census": {
+      "1": 25,
+      "2A": 15,
+      "2_OPEN": 0,
+      "3": 275
+    },
+    "verdict": "PASS"
+  },
+  "mechanical": {
+    "all_pass": true,
+    "clauses": {
+      "MK10_through_hole_lead_on_the_opposite_face": true,
+      "MK1_datum_proved_by_the_board": true,
+      "MK2_boss_retention": true,
+      "MK3_rear_support_ribs_component_free": true,
+      "MK4_speaker_cavity_has_no_rear_part": true,
+      "MK5_no_through_hole_lead_in_the_battery_volume": true,
+      "MK6_boss2_is_inside_the_ir_barrier": true,
+      "MK7_not_vacuous": true,
+      "MK8_component_height_in_the_limited_regions": true,
+      "MK9_ir_pair_separation_and_barrier": true
+    },
+    "j4_display_interference": {
+      "closure": "Normative first-five assembly requirement J4-T1/J4-T2: solder first, trim both lead/fillet profiles to <=0.80 mm above F.Cu, inspect, then fit display.",
+      "finding": {
+        "allowance_mm": 0.8,
+        "board_thickness_mm": 1.5744,
+        "body_face": "B",
+        "declared": {
+          "doc": "docs/full-beta-v2/assembly/THT_LEAD_TRIM.md",
+          "requirement": "J4-T1",
+          "trim_to_mm": 0.8
+        },
+        "footprint": "JST_PH_B2B-PH-K_1x02_P2.00mm_Vertical",
+        "lead_basis": "JST ePH, Header (Through-hole type), top entry, 2 circuits: body 6.0 mm, lead (3.4) mm below the seating plane",
+        "lead_mm": 3.4,
+        "lead_source": "vendor",
+        "over_mm": 1.0256,
+        "pads": [
+          "1",
+          "2"
+        ],
+        "protrusion_mm": 1.8256,
+        "ref": "J4",
+        "region": "DISPLAY_SHADOW",
+        "region_face": "F"
+      },
+      "pcb_eco_required": false
+    },
+    "live_controls": {
+      "a_boss_nudged_0_100_mm_is_refused": true,
+      "a_footprint_with_no_height_figure_is_refused": true,
+      "a_lead_in_the_battery_volume_is_refused": true,
+      "a_part_over_its_region_allowance_is_refused": true,
+      "a_through_hole_part_with_no_lead_figure_is_refused": true,
+      "a_trim_that_does_not_meet_the_allowance_is_refused": true,
+      "an_undeclared_lead_over_the_allowance_is_refused": true,
+      "moving_J4_clear_of_the_region_removes_the_finding": true,
+      "reading_the_pre_rebase_datum_is_visible": true,
+      "the_ir_pair_nudged_0_200_mm_together_is_refused": true,
+      "the_retired_RIB_R2_footprint_is_refused": true
+    },
+    "open_enclosure_cad_items": {
+      "BATTERY_SHADOW": {
+        "measured_profile_mm": 1.8,
+        "required_cad_profile_mm": 1.8,
+        "retained_limit_mm": 1.2
+      },
+      "NFC_CLEAR_D48": {
+        "measured_profile_mm": 1.4,
+        "required_cad_profile_mm": 1.4,
+        "retained_limit_mm": 1.0
+      }
+    }
+  },
+  "order_time_fabricator_confirmations_required_before_paid_order": [
+    "POFV fill/cap and required planarity on the 136 declared via-in-pad lands",
+    "acceptance of 38 sub-floor annular-ring vias and the exact drill/annular geometry",
+    "acceptance of 21 sub-0.125 mm solder-mask dams/merges named by FAB11",
+    "J3 NPTH concession",
+    "MK1 microphone acoustic port remains open/unplated/unfilled as specified",
+    "77x148 stepped outline/corner radii and exact six-layer stackup/copper weights",
+    "bare-board electrical test plus final manufacturer CAM/placement preview"
+  ],
+  "owner_decisions_open": [],
+  "predecessor_release_commit": "9a24967a8f7ad66ca7d5a2ce5f91c0e199025462",
+  "protected_copper": {
+    "differences": {},
+    "identical": true
+  },
+  "rail_ampacity": {
+    "actual_inner_copper_mm": 0.0152,
+    "all_ok": true,
+    "stackup_selfcheck": {
+      "board_copper_mm": {
+        "B.Cu": 0.035,
+        "F.Cu": 0.035,
+        "In1.Cu": 0.0152,
+        "In2.Cu": 0.0152,
+        "In3.Cu": 0.0152,
+        "In4.Cu": 0.0152
+      },
+      "inner_declared": [
+        0.0152
+      ],
+      "inner_used_mm": 0.0152,
+      "note": "the constants this tool rules with must equal the board's own declared stackup (D-750)",
+      "ok": true,
+      "outer_declared": [
+        0.035
+      ],
+      "outer_used_mm": 0.0348
+    }
+  },
+  "release_distinction": {
+    "fab_data": "PASS \u2014 PCB/manufacturing data can be frozen",
+    "first_article": "required after boards arrive; does not justify changing frozen PCB data without a measured failure",
+    "purchase_order": "CONDITIONAL \u2014 do not approve paid fabrication until the listed fabricator process confirmations/CAM review are accepted"
+  },
+  "schema": 1,
+  "standing_contracts": {
+    "all_ran": true,
+    "baseline": "d762",
+    "expected_d763_differences": [
+      "land_parity: tier-1 pending list shrank 14 -> 13 after Wurth L4 vendor land confirmation",
+      "mechanical_keepout: MK10 added to close opposite-face THT lead interference",
+      "pour_partition: ref_commit input moved; electrical result otherwise identical"
+    ],
+    "failing": [],
+    "ran": 19
+  },
+  "unresolved_pcb_or_fab_data_blocker": null
+}

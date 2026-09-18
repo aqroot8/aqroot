@@ -1,20 +1,26 @@
 # AQROOT Demo — FABRICATION HANDOFF
 
 
-> **STATUS: `DEMO_READY_FOR_FAB` — DECLARED AT D-756, 2026-09-18, ON BOARD
-> AUTHORITY `6f2fc8b6`.**  This supersedes the D-748 and D-751 declarations.
-> The D-751 package was HELD by an independent re-review on one named blocker;
-> closing it uncovered four more (D-752, D-753, D-754) and two further items
-> proved retrievable after all (D-754, D-755).  Release-grade verification was
-> re-run WHOLE on the final board: `evidence/d756-release-verification.json`.
-> **No open owner decision, no unresolved pre-order blocker.**  §8 below
-> separates first-article and procurement work from anything that could block
-> the order.
+> **STATUS: `DEMO_READY_FOR_FAB` — DECLARED AT D-763, 2026-09-18, ON BOARD
+> AUTHORITY `1a06b058`.**  This supersedes every earlier readiness declaration.
+> D-757…D-763 reopened the handoff repeatedly for manufacturability, mechanical,
+> land-pattern and assembly checks that the earlier gates did not ask.  The PCB
+> itself has been unchanged since D-759; D-763 changes no board copper, fab
+> artwork or firmware.  It closes a real assembly interference instead: the
+> rear-mounted `J4` battery connector's through-hole leads protrude **1.8256 mm**
+> onto the front face under the display, against a **0.80 mm** allowance.  The
+> released assembly process now requires a measured post-solder trim to ≤0.80 mm,
+> and `MK10` machine-checks the requirement and its source geometry.  Release-grade
+> verification was re-run on the unchanged authority and package:
+> `evidence/d763-release-verification.json`.
+> **No open owner decision and no unresolved PCB/fab-data blocker.**  §8 below
+> separates order-time fabricator confirmations, first-article validation and
+> enclosure-CAD closure from the frozen PCB release.
 
 **Board:** `hardware/demo/kicad/aqroot-demo/aqroot-Beta-v2.kicad_pcb`
-**Authority:** `sha256 6f2fc8b6fdb10052efd5068707d76e8d1a8eae9b8cf990e0daf74b18d0a5682d`
-**Package:** `hardware/demo/fab/` — 29 files, regenerated at this authority
-**Date:** 2026-09-18 · **Decisions:** D-742 … D-756 · **Prepared for:** independent CTO review
+**Authority:** `sha256 1a06b058912b4c37e25d0acd9314f9542671efa852a162cc8b1dc6533e25668b`
+**Package:** `hardware/demo/fab/` — 29 files, unchanged from the D-759 board authority and provenance re-proved at D-763
+**Date:** 2026-09-18 · **Decisions:** D-742 … D-763 · **Prepared for:** independent CTO review / first-five prototype order
 
 > **THIS HANDOFF HAS BEEN REOPENED AND RE-ISSUED TWICE.**  It was first written
 > at `c7f5c618`.  An external first-spin review (Fable 5.1 + Astra) found four
@@ -55,8 +61,8 @@ track and footprint counts move with them.)*
 | approved unrouted | `U11.3` only, under the 2026-09-17 owner decision |
 | open owner decisions | **none** |
 | board authority `sha256` | **`1a06b058…`** (D-759) |
-| standing contracts | **18 run, 18 pass** |
-| mechanical keep-out contract | **MK1–MK9 pass, 7 live controls** |
+| standing contracts | **19 run, 19 pass** |
+| mechanical keep-out contract | **MK1–MK10 pass, 11 live controls** |
 | open CAD items | **2** — rear component profile, §5b |
 
 The single unrouted contact is `/BQ25185_STAT2` at `U11.3`. The owner approved
@@ -71,7 +77,7 @@ must still be fitted — and **fails if any of those stops being true**.
 routed copper at all** — it moved one solder-mask state, one mounting hole, and a
 great many claims that nothing had ever checked.
 
-**THE `D-757` … `D-761` CYCLE, IN ONE PARAGRAPH EACH:**
+**THE `D-757` … `D-763` CYCLE, IN ONE PARAGRAPH EACH:**
 
 * **`D-757`** — the **NFC first-article tuning terminals were printed over**.
   `D-755` measured a 0.325 mm pad-to-via bridge on both match arms and concluded
@@ -103,6 +109,20 @@ great many claims that nothing had ever checked.
   not 2.500 mm — the rule met exactly**), a milestone coordinate snapshot that
   read like a live source, and the **≥ 15 mm IR TX↔RX rule met by 0.133 mm** with
   nothing watching it.  `MK9` watches it now.
+* **`D-762`** — the last `2_OPEN` land-pattern identity (`J8`, the Qwiic /
+  STEMMA QT side-entry JST SH) was closed against JST's own drawing, the two
+  Ebyte radio-module lands were re-proved independently from their vendor manuals,
+  and `LAND7` now refuses any open land identity, missing cited drawing, changed
+  drawing hash or tier-1 row with no recorded dimensions.  The PCB did not move.
+* **`D-763`** — the assembly/enclosure interface was checked across faces rather
+  than only by component body.  `J4` is mounted on `B.Cu`, but its 3.4 mm THT
+  leads emerge under the display on `F.Cu`; after the 1.5744 mm board they stand
+  **1.8256 mm proud**, 1.0256 mm above the display-shadow allowance.  The first
+  five therefore carry a NORMATIVE `J4-T1/J4-T2` operation: solder, trim both
+  leads/fillets to **≤0.80 mm above F.Cu**, inspect, then fit the panel.  `MK10`
+  checks every opposite-face THT lead in every height-limited region and has four
+  dedicated destructive controls.  The board, Gerbers, drills, BOM/CPL and
+  firmware remain byte-for-byte on the D-759 authority.
 
 **THREE PARTS WERE FITTED AND THE COPPER MOVED** (D-750 and D-751); the
 D-742…D-745 entries below are retained as the history of the previous cycle.
@@ -147,7 +167,7 @@ D-742…D-745 entries below are retained as the history of the previous cycle.
 
 ## 3. Connectivity
 
-`routing_ledger.py`: 172 of 173 retained nets connected, `unapproved_open_edges`
+`routing_ledger.py`: 173 of 174 retained multi-pad nets connected, `unapproved_open_edges`
 **0**. KiCad reports 17 unconnected items and **every one is accounted for**: 16
 are pads of the sixteen schematic-DNP references (`U13` and its NFC-5 V boost
 network, the DNP 0 Ω bypasses, the DNP speaker-filter caps) and the seventeenth
@@ -441,8 +461,9 @@ can only be confirmed by eye. `MK1` and `U5` share one `/I2S_BCLK` and one
    thermal risk — the part reduces its own charge current rather than
    overheating — and `TSHUT` at 150 °C is not approached. **First article must
    measure charge current, total charge time and `U11` case temperature, in the
-   enclosure, at the fitted cell capacity.** Prefer the **2500 mAh** end of the
-   envelope; 3000 mAh at 40 °C ambient is the least-margin corner.
+   enclosure, with the frozen first-five pack: **Adafruit Product 328, protected
+   2500 mAh JST-PH**.  The 3000 mAh alternative is no longer the first-five
+   build because it is the least-margin timer/thermal corner.
 2. **Charger input trunk is 189.8 mm / 216 mΩ** against a 65 mm straight line,
    **improved at D-750 from 250.8 mm / 440 mΩ** by a parallel anchor-to-anchor
    conductor and one widened In2 segment. 237 mV of drop and 0.26 W at 1.1 A.
@@ -611,6 +632,16 @@ can only be confirmed by eye. `MK1` and `U5` share one `/I2S_BCLK` and one
    convection. **Measure that segment at first article with both accessory rails
    loaded and the cell at 3.3 V.**
 
+12. **`J4` BATTERY-CONNECTOR LEAD TRIM IS A RELEASE ASSEMBLY REQUIREMENT,
+   NOT AN OPTIONAL REWORK** (D-763).  `J4` is the only through-hole part whose
+   body is on `B.Cu`.  JST's `ePH.pdf` gives a 3.4 mm lead below the seating
+   plane; the board is 1.5744 mm thick, leaving **1.8256 mm** above `F.Cu` under
+   the display where only **0.80 mm** is allowed.  On every first-five unit:
+   solder `J4` from the front, trim both leads/fillets to **≤0.80 mm above the
+   F.Cu surface**, inspect the profile, and only then install the display.  The
+   governing instruction is `assembly/THT_LEAD_TRIM.md`; `MK10` refuses an
+   undeclared or insufficient trim.  This is an assembly closure, not a PCB ECO.
+
 ## 9. Recommended post-Kickstarter improvements
 
 1. **Charger input as a star, not a daisy chain** — a direct `R35` → `U11.10`
@@ -628,11 +659,13 @@ can only be confirmed by eye. `MK1` and `U5` share one `/I2S_BCLK` and one
 
 ## 10. What a reviewer should read, in order
 
-1. `CTO_DECISIONS.md` — **D-748, D-747, D-745, D-744, D-743, D-742** at the top.
+1. `CTO_DECISIONS.md` — **D-763 through D-750** at the top; these entries are
+   the external-review closure and the later mechanical/manufacturing re-checks.
 2. `CURRENT_STATE.md` §1.
-3. `hardware/demo/manufacturing/evidence/d74[2-8]-*.json`, and in particular
-   `d748-release-verification.json` — connectivity, DRC, `FAB1`–`FAB11`, the
-   17-contract regression and the firmware contract in one document.
+3. `hardware/demo/manufacturing/evidence/d763-release-verification.json` — the
+   current connectivity, DRC/parity, `FAB1`–`FAB13`, 19-contract regression,
+   battery, firmware and mechanical release summary.  Read the referenced
+   `d763-*` contract artifacts beside it for the live negative controls.
 3a. `Firmware/src/hw/aqroot_demo_board.h` — the generated as-built map, and the
    only pin map that describes this board.
 4. `hardware/demo/kicad/aqroot-demo/aqroot-Beta-v2.kicad_dru` **section 5a** — the

@@ -66,6 +66,80 @@
 > `verify_promotion` PASS and `protected_copper` showing exactly one protected
 > net moved.  `U14.7` is on the bus.  This board has **no open owner decision**.
 
+> # **DEMO_READY_FOR_FAB IS DECLARED (2026-09-18, D-763).**
+>
+> **Board authority `1a06b058`, UNCHANGED since D-759.**  D-763 touches no board
+> file, no fabrication output and no firmware.  It found a **physical** defect in
+> the enclosure interface and three documents that describe it wrongly.
+>
+> **A THROUGH-HOLE LEAD STANDS 1.826 mm UNDER THE DISPLAY.**  `J4`, the battery
+> connector, is **the only through-hole part on this board whose body is on
+> `B.Cu`**.  JST's own `ePH.pdf` gives the `B2B-PH-K-S` body **6.0 mm** and the
+> lead **(3.4) mm** below the seating plane; this board's own stackup totals
+> **1.5744 mm**; so the leads emerge **1.826 mm proud of `F.Cu`** — and **both
+> pads are inside `DISPLAY_SHADOW`, where the allowance is 0.80 mm**.  That is
+> **1.026 mm over**, with `J4.2` also 0.82 mm inside `DISPLAY_ACTIVE`.
+> **Untrimmed, the 3.5-inch panel does not seat.**
+>
+> **IT FELL BETWEEN TWO CORRECT QUESTIONS.**  `MK5` asks the lead question for
+> `BATTERY_SHADOW` only — the one region whose rule text mentions leads.  `MK8`
+> measures component bodies and filters by face, and **a component on `B.Cu` is
+> not an `F.Cu` component**.  `J4` was invisible to both for the whole programme.
+>
+> **THE FIX IS AN ASSEMBLY OPERATION AND THAT IS A JUDGEMENT.**  JST's SMT PH
+> header would remove the protrusion; **considered and declined**, because `J4`
+> is the one connector a user or repairer plugs and unplugs and a through-hole
+> header's retention comes from soldered leads in plated barrels.  `J4`'s
+> position is not available either (D-241 placed it 0.7 mm clear of the 915
+> coax).  `assembly/THT_LEAD_TRIM.md` is **NORMATIVE** now — **J4-T1** trim both
+> leads and fillets to ≤ 0.80 mm and inspect before fitting the display,
+> **J4-T2** solder → trim → inspect in that order.  `FBV2_P1_KEEPOUTS.md` row A
+> now says **no untrimmed through-hole lead**, which is what *"≤ 0.8 mm"* always
+> meant.  **`MK10`** asks it for every height-limited region, on the board's own
+> stackup thickness rather than a constant, with four `no_lead` POSITIVE
+> declarations (`J3` shell stakes, `U1` thermal vias, `SW9` locating pegs, `MK1`
+> acoustic port) and a refusal for any through-hole part in a region with
+> neither a figure nor a declaration.  **`MK1`–`MK10`, eleven live controls**,
+> four of them new — including *move `J4` out and the finding must disappear*,
+> which is what proves the clause measures rather than asserts.
+>
+> **AND THE HEIGHT CENSUS CAD READS NAMED THE WRONG PART ON THE WRONG FACE.**
+> `MECHANICAL_INTERFACE_SPEC` §2.1 read `| **Bottom** | Molex microSD |
+> **1.85 mm** |`.  **The microSD is on the TOP face.**  The rear's tallest fitted
+> part is **`J4` at 6.00 mm**, then `L4` **3.1**, then `U7`/`U8` **3.00 ± 0.10**.
+> The top row read **4.7 mm** while **§2 of the same document states `J5` at
+> 8.50 mm** and `J6` is the same 6.00 mm header as `J4`.  Rewritten per face with
+> a `source` column — and the **nine rows still CARRIED and not re-read are
+> ENUMERATED**, because an open item with names is not the same thing as a wrong
+> number.
+>
+> **TWO MORE DOCUMENTS WERE CARRYING IT.**  `FBV2_P1_FLOORPLAN` §12.1 — the
+> **FRONT** table — still listed `J4` at doc `(63.500, 102.000)`; D-241 moved it
+> to the **REAR** at `(7.000, 113.000)` and the row never followed, surviving
+> because the file's own supersession header covers *"X, the battery and `J5`"*
+> and **a FACE is none of those**.  `FIRST_FIVE_ASSEMBLY_PLAN` §6 closed with
+> *"Two through-hole parts per board. That is the entire manual scope."* — the
+> board has **five** (`J4`, `J5`, `J6`, `D1`, `U6`), **three with a normative
+> hand operation**, and its `J5` row still named the part number D-738 corrected.
+>
+> **ONE MORE LAND, FOR FREE.**  The Würth `74438357010` sheet was open for the
+> height, so its *Recommended Land Pattern* was read too: **0.98 × 3.7**, a
+> **1.39** resist strip, **3.35** overall → centres **±1.185**, against the
+> board's **0.98 × 3.70 at ±1.1850**.  Four figures, four exact.  `L4` is `U21`'s
+> boost inductor.  **`LAND7`'s pending list 14 → 13**, which is the behaviour
+> that made it an equality rather than a note.
+>
+> **VERIFICATION.** Board / fab / firmware ZERO modified files, `sha256`
+> unchanged.  `MK1`–`MK10` PASS with 11 controls refused.  `contract_regression`
+> **19 run, 19 PASS**.  Land chain **315/315 MATCH, zero open**.
+> `hardware/beta-v2` UNTOUCHED.
+>
+> **There is no open owner decision, no open land identity and no unresolved
+> Demo fabrication blocker.**  The two OPEN CAD items stand unchanged:
+> `BATTERY_SHADOW` **1.80 mm**, `NFC_CLEAR_D48` **1.40 mm**.
+
+> # **D-762's DECLARATION STANDS AND IS LEFT BELOW AS HISTORY.**
+>
 > # **DEMO_READY_FOR_FAB IS DECLARED (2026-09-18, D-762).**
 >
 > **Board authority `1a06b058`, UNCHANGED since D-759.**  D-762 touches no board

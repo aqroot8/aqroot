@@ -26,7 +26,6 @@
       "AQROOT_Beta:Samtec_SSQ-124-02-G-S-RA",
       "AQROOT_Beta:TI_TPS63020_DSJ",
       "AQROOT_Beta:Vishay_TSOP382xx_Minicast_3Pin_P2.54mm",
-      "AQROOT_Beta:Wurth_WE-MAPI_4030_74438357010",
       "Package_DFN_QFN:Texas_DLH0010A_WSON-10-1EP_2.2x2mm_P0.4mm_EP0.9x1.5mm"
     ]
   },
@@ -142,7 +141,26 @@
     },
     "AQROOT_Beta:Wurth_WE-MAPI_4030_74438357010": {
       "tier": "1",
-      "drawing": "Wurth 74438357010 rev 003.001 (2024-02-27) Recommended Land Pattern"
+      "drawing": "Wurth Elektronik 74438357010 datasheet (WE-MAPI 4030), 'Recommended Land Pattern: [mm]' panel; same sheet gives the body 4.1 +/- 0.2 square and '3.1 max.' height",
+      "drawing_file": "hardware/demo/kicad/aqroot-demo/vendor/Wurth/wurth-74438357010-WE-MAPI-4030.pdf",
+      "drawing_sha256": "ba46a9f10dea209a8bc5734200de7a586ce501f744c07424abef18b9333239ee",
+      "ruled": "D-241 / rev 003.001; drawing RE-READ and archived at D-763",
+      "confirmed": {
+        "why_this_one": "L4 is the inductor of U21's switched 5 V accessory boost, which Demo scope REQUIRES, and D-763 had the sheet open to read the module HEIGHT for the rear-face census.  Reading the land off the same page costs nothing and takes this row off the pending list.",
+        "drawing_states": {
+          "land_width_mm": "0.98",
+          "land_length_mm": "3.7",
+          "gap_between_lands_mm": "1.39  (the solder-resist strip)",
+          "overall_span_mm": "3.35",
+          "consistency": "0.98 + 1.39 + 0.98 = 3.35, and the pad centres are therefore at +/- (1.39/2 + 0.98/2) = +/- 1.185",
+          "note": "the sheet also states 'No vias and traces underneath the inductor'"
+        },
+        "board_and_master": {
+          "lands": "2 x 0.98 x 3.70 mm at x = +/- 1.1850",
+          "verdict": "FOUR FIGURES ASKED FOR, FOUR EXACT MATCHES"
+        },
+        "height_read_from_the_same_sheet": "3.1 mm max -- which is what made L4 the second-tallest fitted part on the rear face in the D-763 census, behind J4"
+      }
     },
     "Package_DFN_QFN:Texas_DLH0010A_WSON-10-1EP_2.2x2mm_P0.4mm_EP0.9x1.5mm": {
       "tier": "1",

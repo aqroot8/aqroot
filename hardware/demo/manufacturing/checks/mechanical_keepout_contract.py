@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""AQROOT Demo -- the MECHANICAL KEEP-OUT contract (MK1-MK7).
+"""AQROOT Demo -- the MECHANICAL KEEP-OUT contract (MK1-MK10).
 
 WHY THIS FILE EXISTS.  `FBV2_P1_KEEPOUTS.md` is marked **NORMATIVE for FBV2-P2
 and for the enclosure CAD**, and until D-759 not one of its statements was
@@ -41,8 +41,32 @@ PRE-REBASE positions -- correcting a real defect into a different one.
          that D-226 widened 3.0 -> 5.0 mm specifically to carry it, and clear
          of both optical windows.
     MK7  NOT VACUOUS.  Synthetic perturbations of the board -- a boss nudged,
-         a rib region slid onto a part, a lead planted in the battery volume --
-         must each be caught by the clause that owns them.
+         a rib region slid onto a part, a lead planted in the battery volume,
+         a declaration removed, a trim that does not meet its own allowance --
+         must each be caught by the clause that owns them, and moving `J4`
+         clear of `DISPLAY_SHADOW` must make MK10's finding DISAPPEAR, so the
+         clause is measuring membership rather than asserting a reference.
+    MK10 A THROUGH-HOLE LEAD PROTRUDES ON THE FACE ITS BODY IS NOT ON, AND
+         THAT FACE MAY BE HEIGHT-LIMITED.  `MK5` asks this question for
+         `BATTERY_SHADOW` ONLY, because the register writes the words there
+         and nowhere else.  `MK8` measures COMPONENT bodies, and a component
+         on `B.Cu` is not an `F.Cu` component -- so between them the two
+         clauses left `J4` unexamined for the whole programme.
+
+         `J4`, the BATTERY CONNECTOR, is the ONLY through-hole part on this
+         board whose body is on `B.Cu`.  It is a JST `B2B-PH-K-S`: JST's own
+         `ePH.pdf` gives the body **6.0 mm** and the lead **(3.4) mm** below
+         the seating plane.  The board's OWN stackup totals **1.5744 mm**, so
+         the lead stands **1.826 mm proud of `F.Cu`** -- and both of `J4`'s
+         pads are inside `DISPLAY_SHADOW`, where the register's rule is
+         **F.Cu height <= 0.80 mm**.  That is **1.026 mm over**, directly
+         under the 3.5-inch panel, and untrimmed it stops the display seating.
+
+         So MK10 asks it for EVERY height-limited region, on the board's own
+         stackup thickness rather than a constant: a lead over the region's
+         allowance must be DECLARED in `assembly/THT_LEAD_TRIM.md` with a trim
+         that meets the allowance, and a through-hole part inside a region
+         with NO vendor lead figure is REFUSED rather than skipped.
 
     python3 hardware/demo/manufacturing/checks/mechanical_keepout_contract.py \
         [--board B.kicad_pcb] [-o REPORT.json]
@@ -73,6 +97,81 @@ import pcbnew  # noqa: E402
 # Doc datum: origin at the lower-left board corner, Y up.  Y_kicad = 148 - Y_doc.
 REBASE_X = 1.000
 BOARD_H = 148.000
+
+# D-763.  Vendor LEAD LENGTH below the seating plane, per footprint identity --
+# the figure that decides how far a through-hole part protrudes through the
+# board.  `no_lead` is a positive declaration, not an absence: a mounting boss
+# is a hole, a locating peg is moulded plastic that does not pass through, and
+# a via-in-thermal-land is not a lead.  MK10 refuses a through-hole footprint
+# inside a height-limited region that has neither a figure nor a declaration.
+THT_LEAD_MM = {
+    "JST_PH_B2B-PH-K_1x02_P2.00mm_Vertical":
+        (3.4, "vendor", "JST ePH, Header (Through-hole type), top entry, "
+                        "2 circuits: body 6.0 mm, lead (3.4) mm below the "
+                        "seating plane"),
+    # Lead-formed 90 degrees at assembly under assembly/IR_LEAD_FORMING.md,
+    # which is NORMATIVE and specifies the trim; the unformed lead length is
+    # not what reaches the board.
+    "LED_D5.0mm": (0.0, "assembly", "TSAL6100 lead-formed 90 deg and trimmed, "
+                                    "assembly/IR_LEAD_FORMING.md"),
+    "Vishay_TSOP382xx_Minicast_3Pin_P2.54mm":
+        (0.0, "assembly", "TSOP38238 lead-formed 90 deg and trimmed, "
+                          "assembly/IR_LEAD_FORMING.md"),
+    "Samtec_SSQ-124-02-G-S-RA":
+        (2.54, "vendor", "Samtec SSW/SSQ .100 in series, RIGHT-ANGLE lead "
+                         "style -02: tail B = (2.54) .100 in"),
+    "USB_C_Receptacle_GCT_USB4105-xx-A_16P_TopMnt_Horizontal":
+        (0.0, "no_lead", "the PTH entries are SHELL ground tabs and NPTH "
+                         "locating pins of a TOP-MOUNT receptacle: neither "
+                         "passes a lead through the board"),
+    "ESP32-S3-WROOM-1":
+        (0.0, "no_lead", "the PTH entries on pad 41 are THERMAL VIAS inside "
+                         "the module's own thermal land, not leads"),
+    "MountingBoss_M2_NPTH": (0.0, "no_lead", "an M2 NPTH is a hole"),
+    "SW_SPDT_CK_JS102011SAQN":
+        (0.0, "no_lead", "the two NPTH entries are moulded locating pegs on "
+                         "an SMD switch; the terminals are surface-mount"),
+    "PUI_DMM-4026-B-I2S_4.0x3.0mm":
+        (0.0, "no_lead", "the NPTH entry is the microphone's acoustic port"),
+}
+
+
+def board_thickness_mm(path):
+    """The board's OWN stackup total, not a constant.
+
+    D-760 and D-761 were both a retained figure that had stopped being true.
+    A lead protrusion is (lead - board), so reading the thickness from
+    anywhere but the board would put this clause in the same family.
+    """
+    import re
+    src = Path(path).read_text(encoding="utf-8")
+    i = src.index("(stackup")
+    depth = 0
+    for j in range(i - 1, len(src)):
+        if src[j] == "(":
+            depth += 1
+        elif src[j] == ")":
+            depth -= 1
+            if depth == 0:
+                break
+    blk = src[i - 1:j + 1]
+    total, k = 0.0, 0
+    while True:
+        k = blk.find('(layer "', k + 1)
+        if k < 0:
+            break
+        d2 = 0
+        for j2 in range(k - 1, len(blk)):
+            if blk[j2] == "(":
+                d2 += 1
+            elif blk[j2] == ")":
+                d2 -= 1
+                if d2 == 0:
+                    break
+        m = re.search(r"\(thickness ([\d.]+)\)", blk[k - 1:j2 + 1])
+        if m:
+            total += float(m.group(1))
+    return round(total, 4)
 
 
 def doc_box(x0, x1, dy0, dy1):
@@ -474,6 +573,103 @@ def mk8(board, reg=None):
 IR_TX_RX_MIN_MM = 15.000
 
 
+
+# ---------------------------------------------------------------------------
+# D-763.  THE LEAD THAT PROTRUDES ON THE OTHER FACE.
+#
+# MK5 asks this for BATTERY_SHADOW because the register writes the words there.
+# MK8 measures COMPONENT bodies and filters by face.  `J4` -- the battery
+# connector, the ONLY through-hole part on this board with its body on B.Cu --
+# is invisible to both: its leads stand 3.4 - 1.5744 = 1.826 mm proud of F.Cu
+# and both its pads are inside DISPLAY_SHADOW, whose allowance is 0.80 mm.
+TRIM_DOC = ROOT / "docs/full-beta-v2/assembly/THT_LEAD_TRIM.md"
+
+# A protrusion over a region's allowance must be DECLARED here AND carried by
+# the normative assembly document, with a trim that meets the allowance.
+DECLARED_LEAD_TRIM = {
+    ("J4", "DISPLAY_SHADOW"): dict(
+        requirement="J4-T1", trim_to_mm=0.80,
+        doc="docs/full-beta-v2/assembly/THT_LEAD_TRIM.md"),
+}
+
+
+def mk10(board, reg=None, board_path=None):
+    """Through-hole leads against the allowance of the face they emerge on."""
+    reg = reg or regions()
+    thick = board_thickness_mm(board_path or BOARD)
+    dnp = set()
+    for f in board.GetFootprints():
+        try:
+            if f.IsDNP():
+                dnp.add(f.GetReference())
+        except Exception:
+            pass
+    findings, unknown, undeclared, bad_trim = [], [], [], []
+    doc = TRIM_DOC.read_text(encoding="utf-8") if TRIM_DOC.is_file() else ""
+    for name, spec in HEIGHT_REGIONS.items():
+        side = spec["side"]
+        for f in board.GetFootprints():
+            if f.GetReference() in dnp:
+                continue
+            tht = [q for q in f.Pads()
+                   if q.GetAttribute() in (pcbnew.PAD_ATTRIB_PTH,
+                                           pcbnew.PAD_ATTRIB_NPTH)]
+            if not tht:
+                continue
+            body = "B" if f.IsFlipped() else "F"
+            # A body ON the region's face is a COMPONENT; MK8 owns it.  This
+            # clause owns the LEAD, which emerges on the OTHER face.
+            if body == side:
+                continue
+            if name == "NFC_CLEAR_D48":
+                cx, cy = NFC_CLEAR_CENTRE_DOC[0], BOARD_H - NFC_CLEAR_CENTRE_DOC[1]
+                inside = [q for q in tht
+                          if math.hypot(q.GetPosition().x / 1e6 - cx,
+                                        q.GetPosition().y / 1e6 - cy)
+                          <= NFC_CLEAR_R]
+            else:
+                x0, x1, y0, y1 = reg[name]
+                inside = [q for q in tht
+                          if x0 <= q.GetPosition().x / 1e6 <= x1
+                          and y0 <= q.GetPosition().y / 1e6 <= y1]
+            if not inside:
+                continue
+            ref = f.GetReference()
+            fid = f.GetFPIDAsString().split(":")[-1]
+            lead = THT_LEAD_MM.get(fid)
+            if lead is None:
+                unknown.append([ref, fid, name])
+                continue
+            proud = round(max(0.0, lead[0] - thick), 4)
+            row = dict(ref=ref, footprint=fid, region=name, region_face=side,
+                       body_face=body, pads=sorted(q.GetNumber() for q in inside),
+                       lead_mm=lead[0], lead_source=lead[1], lead_basis=lead[2],
+                       board_thickness_mm=thick, protrusion_mm=proud,
+                       allowance_mm=spec["allowance_mm"],
+                       over_mm=round(max(0.0, proud - spec["allowance_mm"]), 4))
+            if row["over_mm"] > 1e-9:
+                d = DECLARED_LEAD_TRIM.get((ref, name))
+                if not d:
+                    undeclared.append([ref, name, row["over_mm"]])
+                elif (d["trim_to_mm"] > spec["allowance_mm"] + 1e-9
+                      or d["requirement"] not in doc or ref not in doc):
+                    bad_trim.append([ref, name, d["requirement"]])
+                else:
+                    row["declared"] = d
+            findings.append(row)
+    return dict(ok=(not unknown and not undeclared and not bad_trim),
+                board_thickness_mm=thick,
+                trim_doc_present=bool(doc),
+                leads_in_a_limited_region=sorted(
+                    findings, key=lambda r: (-r["protrusion_mm"], r["ref"])),
+                through_hole_without_a_lead_figure=sorted(unknown),
+                over_the_allowance_and_undeclared=sorted(undeclared),
+                declared_but_the_trim_does_not_meet_the_allowance=sorted(bad_trim),
+                note="a body ON the region's face is a COMPONENT and MK8 owns "
+                     "it; this clause owns the LEAD, which emerges on the "
+                     "OTHER face")
+
+
 def mk9(board, reg=None):
     reg = reg or regions()
     d1 = board.FindFootprintByReference("D1")
@@ -555,6 +751,39 @@ def mk7(board):
     ctl["the_ir_pair_nudged_0_200_mm_together_is_refused"] = not mk9(board, reg)["ok"]
     d1.SetPosition(was)
 
+    # D-763.  Four controls on MK10, the clause that owns the lead rather than
+    # the body.  Each puts back a different way J4 could have gone unnoticed.
+
+    # 1. the declaration removed -- a 1.026 mm overshoot with nothing behind it
+    saved3 = dict(DECLARED_LEAD_TRIM)
+    DECLARED_LEAD_TRIM.clear()
+    ctl["an_undeclared_lead_over_the_allowance_is_refused"] = not mk10(board, reg)["ok"]
+    DECLARED_LEAD_TRIM.update(saved3)
+
+    # 2. a declaration whose TRIM does not meet the allowance it is declared
+    #    against -- a mitigation that does not mitigate
+    DECLARED_LEAD_TRIM[("J4", "DISPLAY_SHADOW")] = dict(
+        saved3[("J4", "DISPLAY_SHADOW")], trim_to_mm=1.50)
+    ctl["a_trim_that_does_not_meet_the_allowance_is_refused"] = not mk10(board, reg)["ok"]
+    DECLARED_LEAD_TRIM.clear()
+    DECLARED_LEAD_TRIM.update(saved3)
+
+    # 3. a through-hole part in a limited region with NO vendor lead figure
+    saved4 = THT_LEAD_MM.pop("JST_PH_B2B-PH-K_1x02_P2.00mm_Vertical")
+    ctl["a_through_hole_part_with_no_lead_figure_is_refused"] = (
+        not mk10(board, reg)["ok"])
+    THT_LEAD_MM["JST_PH_B2B-PH-K_1x02_P2.00mm_Vertical"] = saved4
+
+    # 4. MEMBERSHIP IS LIVE, NOT A HARD-CODED REFERENCE.  Move J4 clear of
+    #    DISPLAY_SHADOW and the finding must DISAPPEAR -- otherwise the clause
+    #    is asserting J4 rather than measuring it.
+    j4 = board.FindFootprintByReference("J4")
+    was4 = j4.GetPosition()
+    j4.SetPosition(pcbnew.VECTOR2I(was4.x, int(5.0 * 1e6)))
+    ctl["moving_J4_clear_of_the_region_removes_the_finding"] = not mk10(
+        board, reg)["leads_in_a_limited_region"]
+    j4.SetPosition(was4)
+
     return dict(ok=all(ctl.values()), controls=ctl)
 
 
@@ -575,6 +804,8 @@ def main():
         "MK7_not_vacuous": mk7(board),
         "MK8_component_height_in_the_limited_regions": mk8(board, reg),
         "MK9_ir_pair_separation_and_barrier": mk9(board, reg),
+        "MK10_through_hole_lead_on_the_opposite_face":
+            mk10(board, reg, a.board),
     }
     doc = dict(schema=1, board=str(a.board), board_sha256=sha256(a.board),
                datum="FBV2-EXP-002 RE-BASED: section-1 X + %.3f mm; "

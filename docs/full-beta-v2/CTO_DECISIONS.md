@@ -1,3 +1,177 @@
+## D-763 — **A THROUGH-HOLE LEAD STANDS 1.826 mm UNDER THE DISPLAY, AND THE HEIGHT CENSUS CAD READS NAMED THE WRONG PART ON THE WRONG FACE**
+
+    authority  1a06b058, UNCHANGED   (no board file, no fab output, no firmware)
+    changed    mechanical_keepout_contract gains MK10 (+4 controls, MK7 now 11);
+               MECHANICAL_INTERFACE_SPEC s2.1 REWRITTEN; FBV2_P1_KEEPOUTS row A;
+               FBV2_P1_FLOORPLAN s12.1/s12.2; FIRST_FIVE_ASSEMBLY_PLAN s6;
+               land_citations Wurth row RE-READ
+    added      assembly/THT_LEAD_TRIM.md (NORMATIVE); vendor/JST/ePH,
+               vendor/Wurth/, vendor/Espressif/ -- three more drawings archived
+    evidence   d763-{mechanical_keepout-contract,contract-regression,
+               release-verification}.json + a FULL d763-* baseline
+
+### 1. THE PART THAT FELL BETWEEN TWO CLAUSES
+
+`MK5` asks *"does a through-hole lead protrude into the battery volume?"* — for
+`BATTERY_SHADOW` only, because that is the one region where the register writes
+the words *"no through-hole lead may protrude into it"*.  `MK8` asks *"is every
+component in a height-limited region inside its allowance?"* — and it filters by
+face, because **a component on `B.Cu` is not an `F.Cu` component.**
+
+`J4` is invisible to both.
+
+**`J4` IS THE BATTERY CONNECTOR AND THE ONLY THROUGH-HOLE PART ON THIS BOARD
+WHOSE BODY IS ON `B.Cu`.**  Measured:
+
+    part                JST B2B-PH-K-S(LF)(SN), PH 2.00 mm, 2 circuits, top entry
+    body                6.0 mm   above the rear face   (JST ePH.pdf)
+    lead below seating  (3.4) mm                       (same drawing)
+    board thickness     1.5744 mm                      (THIS board's stackup)
+    protrusion on F.Cu  1.8256 mm  + the solder fillet
+    pads                J4.1 (7.000, 35.000) and J4.2 (7.000, 33.000) kicad
+    region              DISPLAY_SHADOW, kicad x 4.390..60.930  y 8.000..92.960
+    allowance there     0.80 mm
+    OVER BY             1.0256 mm
+
+`J4.2` also lies **0.82 mm inside the west edge of `DISPLAY_ACTIVE`**.  The
+3.5-inch panel is over it.  **Untrimmed, the display does not seat.**
+
+**THE FIX IS AN ASSEMBLY OPERATION, NOT A BOARD CHANGE**, and that is a
+judgement, not a shortcut.  JST's PH series has an SMT top-entry header
+(`B2B-PH-SM4-TB`) that removes the protrusion — **considered and declined**:
+`J4` is the one connector on this product a user or a repairer plugs and
+unplugs, and a through-hole header's retention comes from soldered leads in
+plated barrels rather than from pads.  **Retention on a repeatedly-mated
+battery connector is worth more than avoiding one assembly operation**, and
+substituting it would change a land pattern on the battery path and re-open the
+whole release suite on a frozen board.  `J4`'s position is not available
+either: D-241 placed it at doc `(7.000, 113.000)` as the one part of the
+protection chain that could not join the column, *"0.7 mm clear of the cable"*.
+
+So `assembly/THT_LEAD_TRIM.md` is NORMATIVE now, with two requirements —
+**J4-T1** trim both leads and fillets to ≤ 0.80 mm above `F.Cu` and inspect
+before fitting the display; **J4-T2** solder, then trim, then inspect, in that
+order.  And `FBV2_P1_KEEPOUTS.md` row A no longer says only *"component
+height"*: it says **no untrimmed through-hole lead**, which is what it meant.
+
+### 2. `MK10`, AND THE FOUR OTHER THROUGH-HOLE PARTS THAT NEED NOTHING
+
+`MK10` asks the lead question for **every** height-limited region, on **the
+board's own stackup total** rather than a constant — because a protrusion is
+`lead − board`, and D-760 and D-761 were both a retained figure that had
+stopped being true.  A body ON the region's face is a component and `MK8` owns
+it; this clause owns the lead, which emerges on the other face.
+
+    J6  JST PH, body F.Cu    leads emerge on the REAR at kicad y 128.000,
+                             3.5 mm clear of BATTERY_SHADOW (y <= 124.5)
+    J5  Samtec SSQ RA, F.Cu  tail (2.54) .100 in, x = 65.900, east of
+                             BATTERY_SHADOW (x <= 64.0)
+    D1  TSAL6100, F.Cu       formed 90 deg and trimmed, IR_LEAD_FORMING.md
+    U6  TSOP38238, F.Cu      formed 90 deg and trimmed, IR_LEAD_FORMING.md
+
+and four positive `no_lead` declarations, which are statements rather than
+absences: `J3`'s PTH are SHELL STAKES on a top-mount receptacle, `U1`'s pad-41
+PTH are THERMAL VIAS inside its own thermal land, `SW9`'s two NPTH are moulded
+LOCATING PEGS on a surface-mount switch, `MK1`'s NPTH is the ACOUSTIC PORT.
+**A through-hole footprint inside a limited region with neither a vendor figure
+nor a declaration is REFUSED**, so a part moved into one later cannot be
+skipped.
+
+**FOUR NEW LIVE CONTROLS, `MK7` NOW ELEVEN.**  Remove the declaration → refused.
+Declare a trim of 1.50 mm against a 0.80 mm allowance — a mitigation that does
+not mitigate → refused.  Take away the JST lead figure → refused.  And **move
+`J4` clear of `DISPLAY_SHADOW` and the finding must DISAPPEAR**, which is the
+one that proves the clause measures membership instead of asserting `J4`.
+
+### 3. THE HEIGHT CENSUS NAMED THE WRONG PART ON THE WRONG FACE
+
+`mechanical/MECHANICAL_INTERFACE_SPEC.md` §2.1 is titled *"Height census"* and
+is what an enclosure designer sets the cavity depths from.  It read:
+
+    | **Bottom** | Molex microSD | **1.85 mm** |
+    | **Top**    | TSOP38238     | **4.7 mm**  |
+
+**THE microSD IS ON THE TOP FACE.**  `J2` is an `F.Cu` footprint on the board.
+And the rear's tallest fitted part is **`J4` at 6.00 mm** — the part §1 is
+about — followed by **`L4` at 3.1 mm** and **`U7`/`U8` at 3.00 ± 0.10**.
+
+The top row is wrong too, and it is contradicted by **§2 of the same document,
+two rows above**, which states `J5` at **8.50 mm tall**; and `J6` is the same
+**6.00 mm** JST PH header as `J4`.  So the front figure is understated by
+3.8 mm and the rear figure by 4.15 mm, in a table nobody had ever held against
+the board.
+
+Rewritten, per face, with a `source` column and **vendor figures where the
+drawing has now been read**: `J4`/`J6` 6.00 (JST `ePH.pdf`), `U1` 3.1
+(Espressif §10.1), `L4` 3.1 max (Würth), `U7`/`U8` 3.00 ± 0.10 (Ebyte, D-762),
+`J8` 2.90 (JST `eSH.pdf`, D-762), `J7` 1.40, the 1206 bulk 1.80.  **Nine rows
+are still CARRIED and NOT re-read and they are ENUMERATED as such** — `J5`
+8.50, `U6` 4.7, PTS645 4.3, `J3` 3.26, `J1` 2.3, `SW9` 2.0, `D13` 1.85, `J2`
+1.85, `L1`/`L3` 2.1.  **An open item with names is not the same thing as a
+wrong number.**
+
+What CAD must take from it: the **front** cavity clears **8.50 mm at the right
+wall** and **6.00 mm in the bottom band**, not 4.7; the **rear** clears
+**6.00 mm at doc (7.000, 113.000)**, not 1.85 — and that point is *outside* the
+8.0 mm battery reserve, in the band the 915 coax runs through, so it is
+additive to nothing but must not be ribbed over.
+
+### 4. AND THE FLOORPLAN HAD `J4` ON THE WRONG FACE IN THE WRONG PLACE
+
+`pcb/FBV2_P1_FLOORPLAN.md` §12.1 — the **FRONT** table — carried
+
+    | `J4` | JST B2B-PH-K (battery) | 63.500 | 102.000 | 0 | clear of the battery ... |
+
+`J4` is on the **REAR** at doc **(7.000, 113.000)**.  D-241 moved it there and
+the row never followed.  **It survived because the file's own supersession
+header covers *"X, the battery and `J5`"*** — and a FACE is none of those, and
+neither is `Y`.  Struck from §12.1, added to §12.2 with the lead-trim
+requirement beside it.  *That is the third document in five decisions found
+carrying a superseded coordinate as a current one.*
+
+### 5. THE ASSEMBLY PLAN UNDERCOUNTED ITS OWN MANUAL SCOPE BY THREE
+
+`assembly/FIRST_FIVE_ASSEMBLY_PLAN.md` §6 listed two parts and closed with
+*"**Two through-hole parts per board.** That is the entire manual scope."*
+Counted from the board: **five** footprints carry plated through-hole leads —
+`J4`, `J5`, `J6`, `D1`, `U6` — and **three of the five carry a NORMATIVE hand
+operation** (`D1` and `U6` lead-formed, `J4` trimmed).  Its `J5` row also still
+named `BCS-112-S-D-HE`, the part number **D-237/D-240 superseded and D-738
+corrected elsewhere**.  Corrected, with the PTH-but-not-a-lead features listed
+separately so the count cannot drift again.
+
+### 6. ONE MORE LAND OFF THE PENDING LIST, FOR FREE
+
+D-763 had the Würth `74438357010` sheet open to read the module height, so the
+*Recommended Land Pattern* panel on the same page was read too: lands
+**0.98 × 3.7** with a **1.39** resist strip and **3.35** overall, so centres at
+**±(1.39/2 + 0.98/2) = ±1.185**.  The board is **0.98 × 3.70 at ±1.1850** —
+**four figures, four exact**.  `L4` is `U21`'s boost inductor, so this is not an
+incidental row.  **`LAND7`'s pending list 14 → 13**, which is the behaviour that
+made it an equality rather than a note.
+
+### 7. VERIFICATION
+
+    board / fab package / firmware   ZERO modified files
+    board sha256                     1a06b058, UNCHANGED
+    mechanical                       MK1-MK10 PASS, 11 live controls refused
+    MK10                             1 finding: J4 / DISPLAY_SHADOW, 1.8256 mm
+                                     proud, 1.0256 mm over, DECLARED with a
+                                     0.80 mm trim in a normative document
+    contracts                        19 run, 19 PASS
+    land chain                       315/315 MATCH, 0 open, pending 14 -> 13
+    hardware/beta-v2                 UNTOUCHED
+
+### 8. THE LESSON, STATED ONCE
+
+Two clauses each did their job.  `MK5` asked about leads in the one region whose
+rule text mentions leads.  `MK8` asked about components on the face they stand
+on.  **The defect lived in the gap between two correct questions** — and the gap
+was created by a rule that was WORDED for components when what it protects
+against is anything physical.  The register now says *no untrimmed through-hole
+lead* because that is what *"≤ 0.8 mm"* always meant, and `MK10` asks the
+question for every region rather than the one that happened to say so.
+
 ## D-762 — **THE LAST OPEN LAND IS CLOSED, THE WEAKEST CITATION ON THE BOARD WAS A TIER-1 ROW FOR A RADIO, AND A VENDOR PAGE SAYS THIS BOARD IS DEAD**
 
     authority  1a06b058, UNCHANGED   (no board file, no fab output, no firmware)

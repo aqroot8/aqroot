@@ -28,7 +28,7 @@ so the evidence travels with the library rather than living only here.
 | `AQROOT_Beta:MAX17048_T822` | `U14` | Maxim **RECOMMENDED PACKAGE LAND PATTERN, DOC 90-0065 REV. E**, mapped to package code T822+3 via the datasheet package table |
 | `AQROOT_Beta:TI_TPS63020_DSJ` | `U12` | TI **4210895-2/E 02/16** land pattern + **4208549-3/G 04/15** thermal pad. Lands 0.24 × 0.60, 0.5 pitch, EP 2.85 × 1.58 |
 | `AQROOT_Beta:Coilcraft_XFL4020` | `L1`, `L3` | Coilcraft **doc 745-3 rev 03/10/26** "Recommended Land Pattern". Pad 0.98 × 3.4 at 2.37 c/c |
-| `AQROOT_Beta:Wurth_WE-MAPI_4030_74438357010` | `L2`, `L4` | Würth **74438357010 datasheet rev 003.001 (2024-02-27)** "Recommended Land Pattern" |
+| `AQROOT_Beta:Wurth_WE-MAPI_4030_74438357010` | `L2`, `L4` | **RE-READ AND ARCHIVED AT D-763.** Würth **74438357010** *Recommended Land Pattern* panel, archived `vendor/Wurth/`. Lands **0.98 × 3.7** with a **1.39** resist strip and **3.35** overall → centres **±1.185**; the board is **0.98 × 3.70 at ±1.1850**. **Four figures, four exact.** Same sheet: body 4.1 ± 0.2 square, **3.1 mm max height**, *"no vias and traces underneath the inductor"* |
 | `AQROOT_Beta:PUI_DMM-4026-B-I2S_4.0x3.0mm` | `MK1` | PUI Audio **DMM-4026-B-I2S-R Rev A, 5/26/2021** land pattern page. Six 0.60 × 0.40 pads + the GND ring around the port |
 | `AQROOT_Beta:Vishay_TSOP382xx_Minicast_3Pin_P2.54mm` | `U6` | Vishay **doc 82491 rev 2.1**, drawing 6.550-5263.01-4 issue 12 |
 | `AQROOT_Beta:MEIHUA_MHPA3528RGBCT_PLCC4_3.5x2.8mm` | `D13` | MEIHUA **Issue LPDS-0001719 Rev.2, 2018-09-25** recommended solder pad panel |

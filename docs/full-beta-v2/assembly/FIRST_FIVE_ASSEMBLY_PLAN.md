@@ -146,12 +146,31 @@ against a need of five is a build with **one** spare; **buy spares independently
 
 ## 6. Class E — manual by construction
 
-| part | ref | why |
-|---|---|---|
-| `BCS-112-S-D-HE` Samtec | `J5` | 24 × Ø0.71 mm through-hole community header. **Kept and marked manual/secondary assembly by CTO ruling at FBV2-S1-009 — the connector architecture is not compromised for SMT** |
-| `TSAL6100` | `D1` | 5 mm through-hole IR emitter, `C111836`, 14,817 in stock |
+> **CORRECTED AT D-763.  THIS TABLE LISTED TWO PARTS AND THE BOARD HAS FIVE**,
+> and it still named the `J5` part number D-738 superseded.  Counted from the
+> board: five footprints carry plated through-hole **leads** — `J4`, `J5`, `J6`,
+> `D1`, `U6`.  Three of the five need a specified hand operation beyond
+> soldering, and **one of those is why this table matters**: `J4`'s leads land
+> inside `DISPLAY_SHADOW` and must be trimmed or the display will not seat.
 
-**Two through-hole parts per board.** That is the entire manual scope.
+| part | ref | through-hole work | why |
+|---|---|---|---|
+| **`SSQ-124-02-G-S-RA` Samtec** (***~~`BCS-112-S-D-HE`~~ SUPERSEDED D-237/D-240, corrected D-738***) | `J5` | 24 × Ø0.71 mm | 1 × 24 right-angle community header. **Kept and marked manual/secondary assembly by CTO ruling at FBV2-S1-009 — the connector architecture is not compromised for SMT.** RA tail `(2.54) .100 in` |
+| `TSAL6100` | `D1` | 2 leads | 5 mm through-hole IR emitter, `C111836`. **LEAD-FORMED 90° AND TRIMMED — [`IR_LEAD_FORMING.md`](IR_LEAD_FORMING.md), NORMATIVE** |
+| `TSOP38238` | `U6` | 3 leads | minicast IR receiver. **LEAD-FORMED 90° AND TRIMMED — [`IR_LEAD_FORMING.md`](IR_LEAD_FORMING.md), NORMATIVE.** Was missing from this table |
+| `B2B-PH-K-S(LF)(SN)` JST PH | **`J4`** | 2 leads, **body on the REAR** | **BATTERY connector. THE ONLY THROUGH-HOLE PART MOUNTED ON `B.Cu`.** Its 3.4 mm leads emerge on `F.Cu` **1.826 mm proud** and both pads are inside `DISPLAY_SHADOW`, allowance **0.80 mm**. **TRIM REQUIRED — [`THT_LEAD_TRIM.md`](THT_LEAD_TRIM.md) J4-T1/J4-T2, NORMATIVE**, gated by `mechanical_keepout_contract` MK10. Was missing from this table |
+| `B2B-PH-K-S(LF)(SN)` JST PH | `J6` | 2 leads | SPEAKER connector, body on `F.Cu`; its leads emerge on the rear **3.5 mm clear of `BATTERY_SHADOW`**, so no trim requirement. Was missing from this table |
+
+**FIVE through-hole parts per board, three of them with a NORMATIVE hand
+operation.** That is the manual scope.
+
+**Also PTH but not a lead:** `J3`'s four `SH` shell stakes (GCT USB4105 is a
+top-mount SMT receptacle — the stakes are mechanical anchors, pin-in-paste or
+selective solder at the assembler's choice), `U1`'s pad-41 thermal vias inside
+its own thermal land, and the NPTH features `BOSS1`, `BOSS2`, `SW9`'s two
+locating pegs and `MK1`'s acoustic port.  **None of these passes a lead through
+the board**, which is a positive declaration in `MK10`'s table, not an
+omission.
 
 ---
 

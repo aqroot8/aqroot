@@ -378,7 +378,7 @@ Only the rows that changed at FBV2-P1-002 are marked. Full data:
 | `J2` | Molex 5025700893 microSD | 14.000 | 11.200 | 0 | card enters the bottom edge |
 | `J3` | GCT USB4105-GF-A-120 | 42.000 | 5.300 | 180 | mouth at the bottom edge |
 | `J5` | Samtec BCS-112-S-D-HE | **64.900** | 121.000 | 270 | **moved 0.070 mm west** — copper now 0.515 mm inside the board edge |
-| `J4` | JST B2B-PH-K (battery) | 63.500 | 102.000 | 0 | clear of the battery and the NFC clear region |
+| ~~`J4`~~ | ~~JST B2B-PH-K (battery)~~ | ~~63.500~~ | ~~102.000~~ | ~~0~~ | **MOVED AND ON THE OTHER FACE. SUPERSEDED BY D-241, CORRECTED HERE AT D-763.** `J4` is on the **REAR (`B.Cu`)** at doc **(7.000, 113.000)** — see §12.2. D-241 put it at the top of the battery-protection column, *"north of the coax's western excursion, 8.59 mm from `F1` and 0.7 mm clear of the cable"*. This row survived because the FBV2-EXP-002 header above supersedes *X, the battery and `J5`* — and a **FACE** is none of those |
 | `J6` | JST B2B-PH-K (speaker) | 37.000 | 20.000 | 0 | 29.3 mm routed on a 152 mm lead |
 | `SW9` | JS102011SAQN power | 64.920 | 70.000 | 90 | right wall, lower-middle |
 | `SW1` | PTS645 **BOOT** | 64.920 | 84.000 | 90 | recessed service-tool access |
@@ -400,6 +400,7 @@ Only the rows that changed at FBV2-P1-002 are marked. Full data:
 | **`U7`** | **Ebyte E07-400M10S (433)** | **26.000** | **12.000** | **SWAPPED** — IPEX at (26.00, 16.60), still rear-facing and serviceable (A-6) |
 | `U9`, `Y1` | ST25R3916-AQET + 27.12 MHz | 30.000, 36.500 | 112.000 | inside the NFC clear region, ≤ 1.0 mm, matching network short |
 | `J7` | JST BM02B-ACHSS (NFC) | 52.000 | 102.000 | outside both circles, top-entry clearance in the rear cavity |
+| **`J4`** | **JST B2B-PH-K-S (battery)** | **7.000** | **113.000** | **ADDED HERE AT D-763**, where D-241 actually put it. **6.00 mm tall (JST `ePH.pdf`) — the tallest part on the rear face**, north of `BATTERY_SHADOW`, 0.7 mm clear of the 915 coax. **Its 3.4 mm leads emerge inside `DISPLAY_SHADOW` and MUST be trimmed — `assembly/THT_LEAD_TRIM.md`, gated by `mechanical_keepout_contract` MK10** |
 | `U12`, `U14` | TPS63020, MAX17048 | 12.000, 26.000 | 96.000 | main rail cluster above the battery |
 | `U11` | BQ25185 charger | 56.000 | 32.000 | near the USB input |
 | `U2`, `U3`, `U23` | PCAL9535A × 3 | 56.000 | 60 / 70 / 50 | 0x20 / 0x21 / 0x22 |
