@@ -145,7 +145,8 @@ class DemoExpanders {
   DemoExpanders()
       : u2_(AQROOT_EXP_U2_ADDR), u3_(AQROOT_EXP_U3_ADDR),
         u2_inputs_(0xFFFF), u3_inputs_(0xFFFF),
-        u2_irq_(0), u3_irq_(0), ready_(false) {}
+        u2_irq_(0), u3_irq_(0), ready_(false),
+        fault_shutdown_seen_(false), fault_shutdown_ok_(false) {}
 
   // Probe both devices, drive both into their safe state, then take the first
   // input snapshot -- which also deasserts /INT on both, so WAKE_INT_N is
@@ -158,7 +159,16 @@ class DemoExpanders {
                                   kU2PullUp, uint16_t(~kU2IrqUnmasked)};
     const Pcal9535a::Config u3 = {kU3SafeLatch, kU3Inputs, kU3PullEnable,
                                   kU3PullUp, uint16_t(~kU3IrqUnmasked)};
-    if (!u2_.apply(bus, u2) || !u3_.apply(bus, u3)) return false;
+    // D-750.  THESE TWO DEVICES ARE INDEPENDENT AND `||` IS NOT.  The old line
+    // short-circuited: if U2's configuration NACKed, U3 was never driven into
+    // its safe state at all -- and U3 owns NFC_5V_EN, the SX1262 and CC1101
+    // resets and both radio transmit enables, every one of which the PCAL9535A
+    // leaves at a 00h latch that its fitted pull-down already holds.  A bus
+    // fault on ONE device must not leave the OTHER unconfigured.  Both are
+    // attempted, in order, and the verdict is taken afterwards.
+    const bool u2_ok = u2_.apply(bus, u2);
+    const bool u3_ok = u3_.apply(bus, u3);
+    if (!u2_ok || !u3_ok) return false;
 
     // Read the direction back.  A PCAL9535A that NACKed a write mid-sequence
     // would otherwise leave half this board's control lines as inputs and every
@@ -182,18 +192,37 @@ class DemoExpanders {
   // second overlapping assertion.  Status is read before the input port
   // because the input read is what clears the condition.
   bool service(I2cBus &bus) {
-    if (!u2_.readInterruptStatus(bus, &u2_irq_)) return false;
-    if (!u3_.readInterruptStatus(bus, &u3_irq_)) return false;
-    if (!u2_.readInputs(bus, &u2_inputs_)) return false;
-    if (!u3_.readInputs(bus, &u3_inputs_)) return false;
+    // D-750.  THE TWO DEVICES ARE SERVICED INDEPENDENTLY.  A `||` chain here
+    // meant a U2 read error skipped U3 entirely, and U3 is the device whose
+    // input port carries ACC_POWER_FAULT_N -- so the one bus error that
+    // mattered most was also the one that stopped the fault from being seen.
+    // Every read is attempted; the verdict is taken at the end; and the fault
+    // response below runs on whatever WAS read.
+    const bool a = u2_.readInterruptStatus(bus, &u2_irq_);
+    const bool b = u3_.readInterruptStatus(bus, &u3_irq_);
+    const bool c = u2_.readInputs(bus, &u2_inputs_);
+    const bool d = u3_.readInputs(bus, &u3_inputs_);
     // An accessory power fault must drop both series disconnects immediately
-    // and without waiting for a caller to notice.
-    if (accessoryFault()) {
-      (void)setAccessory5v(bus, false);
-      (void)setAccessory3v3(bus, false);
+    // and without waiting for a caller to notice.  BOTH are attempted even if
+    // the first write fails -- they are separate registers on the same device
+    // and a NACK on one says nothing about the other -- and the outcome is
+    // RECORDED rather than discarded, so a caller cannot read "serviced" as
+    // "the accessory rails are off".
+    if (d && accessoryFault()) {
+      const bool off5 = setAccessory5v(bus, false);
+      const bool off3 = setAccessory3v3(bus, false);
+      fault_shutdown_ok_ = off5 && off3;
+      fault_shutdown_seen_ = true;
+      return a && b && c && d && fault_shutdown_ok_;
     }
-    return true;
+    return a && b && c && d;
   }
+
+  // Did a fault shutdown ever run, and did every write in it succeed?  A
+  // diagnostic that prints success without asking this is printing the absence
+  // of information (D-750).
+  bool faultShutdownSeen() const { return fault_shutdown_seen_; }
+  bool faultShutdownOk() const { return fault_shutdown_ok_; }
 
   // ---- inputs ----------------------------------------------------------
   bool pressed(Button button) const {
@@ -268,13 +297,29 @@ class DemoExpanders {
   // switch.  Bringing them up boost-first and tearing them down switch-first
   // means the switch is never the thing holding back a live boost output, and
   // a fault at any point leaves at least one disconnect open.
+  // TURNING ON IS ORDERED; TURNING OFF IS UNCONDITIONAL.  D-750.  Bringing the
+  // rail up must stop at the first failure, because enabling the load switch
+  // before the boost is a sequence error.  Bringing it DOWN must not: the load
+  // switch and the boost enable are separate registers, a NACK on one says
+  // nothing about the other, and a shutdown that gives up halfway leaves the
+  // accessory rail live during exactly the fault it was called for.  Both
+  // writes are attempted, still in the safe order, and the AND of them is the
+  // verdict.
   bool setAccessory5v(I2cBus &bus, bool on) {
     if (on) {
       if (!u3_.writeBit(bus, AQROOT_U3_ACC_5V_BOOST_EN, true)) return false;
       return u3_.writeBit(bus, AQROOT_U3_ACC_5V_SW_EN, true);
     }
-    if (!u3_.writeBit(bus, AQROOT_U3_ACC_5V_SW_EN, false)) return false;
-    return u3_.writeBit(bus, AQROOT_U3_ACC_5V_BOOST_EN, false);
+    // The SAFE ORDER is still switch-then-boost, so the first write clears
+    // ACC_5V_SW_EN alone.  The second clears BOTH (D-751 `clearBits`): if the
+    // first NACKed, the shadow still holds ACC_5V_SW_EN high and a plain
+    // single-bit boost write would command the load switch back on.  This way
+    // ONE surviving write takes the whole rail down.
+    const bool sw = u3_.writeBit(bus, AQROOT_U3_ACC_5V_SW_EN, false);
+    const bool boost = u3_.clearBits(
+        bus, uint16_t(bitmask(AQROOT_U3_ACC_5V_SW_EN) |
+                      bitmask(AQROOT_U3_ACC_5V_BOOST_EN)));
+    return sw && boost;
   }
 
   // U16's B-side supply IS ACC_3V3_SW, so the accessory I2C buffer can only be
@@ -282,8 +327,11 @@ class DemoExpanders {
   // goes away.
   bool setAccessory3v3(I2cBus &bus, bool on) {
     if (on) return u3_.writeBit(bus, AQROOT_U3_ACC_3V3_EN, true);
-    if (!u2_.writeBit(bus, AQROOT_U2_ACC_PWR_EN, false)) return false;
-    return u3_.writeBit(bus, AQROOT_U3_ACC_3V3_EN, false);
+    // Same rule as setAccessory5v, and here the two writes are on DIFFERENT
+    // DEVICES: a U2 bus error must not leave U3's switched 3.3 V rail on.
+    const bool buf = u2_.writeBit(bus, AQROOT_U2_ACC_PWR_EN, false);
+    const bool rail = u3_.writeBit(bus, AQROOT_U3_ACC_3V3_EN, false);
+    return buf && rail;
   }
 
   bool setAccessoryI2cBuffer(I2cBus &bus, bool on) {
@@ -315,6 +363,8 @@ class DemoExpanders {
   uint16_t u2_irq_;
   uint16_t u3_irq_;
   bool ready_;
+  bool fault_shutdown_seen_;
+  bool fault_shutdown_ok_;
 };
 
 }  // namespace aqroot

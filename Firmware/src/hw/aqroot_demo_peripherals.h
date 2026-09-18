@@ -225,9 +225,20 @@ struct MicCapture {
   int32_t peak_right;
 };
 
+// D-750 RAISED THE CAPTURE RATE, AND IT IS A CLOCK REQUIREMENT, NOT A QUALITY
+// PREFERENCE.  An I2S MEMS microphone selects its operating mode from the BIT
+// CLOCK it is given: below roughly 0.7 MHz the PUI DMM-4026 family sleeps,
+// between there and about 1.4 MHz it runs a reduced-performance low-power
+// mode, and NORMAL mode wants a clock comfortably above that.  This capture
+// uses 32-bit slots on two channels, so BCLK = rate x 64: the old 16 kHz gave
+// 1.024 MHz -- inside the low-power band, where a bring-up test that "worked"
+// would have proved the wrong thing about the fitted part.  48 kHz gives
+// 3.072 MHz, which is normal mode for every device in this class.  FIRST
+// ARTICLE: confirm the exact band against the DMM-4026-B-I2S-R datasheet; the
+// number here is chosen to be inside it rather than on its edge.
 inline MicCapture captureMicrophone(uint32_t ms = 200) {
   MicCapture result = {false, 0, 0, 0};
-  const uint32_t rate = 16000;
+  const uint32_t rate = 48000;
 
   i2s_config_t config = {};
   config.mode = i2s_mode_t(I2S_MODE_MASTER | I2S_MODE_RX);

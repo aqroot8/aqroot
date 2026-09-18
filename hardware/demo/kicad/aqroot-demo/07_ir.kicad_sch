@@ -3123,6 +3123,28 @@
 				)
 			)
 		)
+		(property "LCSC" "C20917"
+			(at 196.85 46.99 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Note_Sourcing" "SOURCING D-751 2026-09-18. The AO3400A was the ONLY line on the assembly BOM with no distributor identity (121 of 122 rows carried one), and D-750 made it a two-piece line by adding Q11, the display-backlight true-off disconnect. Verified live 2026-09-18 per D-096 through the JLCPCB parts API; record committed at evidence/jlc-live/ao3400a-568c27aa.json: LCSC C20917, Alpha & Omega Semicon, AO3400A, SOT-23, componentLibraryType = BASE (no extended-part fee, no feeder setup), stock 812570, 0.0847 USD at 1 / 0.0479 at 6000, 30 V, Id 5.7 A continuous, RDS(on) 48 mOhm at VGS 2.5 V, VGS(th) 1.45 V, Pd 1.4 W, -55 to +150 C, RoHS. BOTH FITTED USES ARE FAR INSIDE THAT ENVELOPE: Q1 sinks the IR LED and Q11 carries the 109 mA panel backlight cathode return, where even the worst-case 48 mOhm at a 2.5 V gate costs 5.2 mV. Stock is a snapshot, not a guarantee."
+			(at 196.85 46.99 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(property "Note" "IR LED low-side driver, RETAINED after audit in FBV2-S1-007 against AOS document AO3400A Rev 3.1, July 2023. PINOUT VERIFICATION CLOSED: the datasheet SOT-23 top and bottom views show the lone pin as Drain and the paired pins as Gate then Source, i.e. 1 = G, 2 = S, 3 = D, which is exactly what Transistor_FET:Q_NMOS_GSD maps and what the existing wiring uses. VGS(th) 0.65 / 1.05 / 1.45 V, so it is fully enhanced by a 3.3 V gate. RDS(on) under 48 mOhm at VGS = 2.5 V, giving about 5 mV at 150 mA - negligible against the LED VF. ID 5.7 A and IDM 30 A, so the part is roughly 38 times over-specified for this job; it is kept because it is already in the design on sheet 01 and is a jellybean. Switching loss at 38 kHz is negligible: with R22 100 R and Ciss of a few hundred pF the edge is well under 100 ns, about 0.3 percent of the carrier period, and conduction loss is 0.15^2 x 0.036 = 0.8 mW. SAFE OFF STATE IS PROVEN, NOT ASSUMED: R23 100 k to GND with IGSS 100 nA maximum gives at most 10 mV on the gate, far below the 650 mV minimum threshold, so there is no IR emission during boot, reset, GPIO high-impedance or a firmware crash. FOOTPRINT: AOS publishes no recommended land pattern in this datasheet, so the industry-standard IPC SOT-23 pattern applies and Package_TO_SOT_SMD:SOT-23 is the IPC-7351 derived KiCad footprint. That makes it an ordinary FBV2-S2 footprint-audit item rather than a blocker."
 			(at 196.85 46.99 0)
 			(hide yes)

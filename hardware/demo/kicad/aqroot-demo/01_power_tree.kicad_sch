@@ -6118,9 +6118,25 @@
 		(at 76.2 58.42)
 		(uuid "b22c0002-4e12-4c22-9a11-0d1e2f3a4b5d")
 	)
-	(no_connect
-		(at 130.81 87.63)
-		(uuid "712b2378-a06a-4b7d-be79-66e9d8b4be7a")
+	(wire
+		(pts
+			(xy 130.81 87.63) (xy 133.35 87.63)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "9217b226-201b-4a60-9939-eddb06c2c266")
+	)
+	(wire
+		(pts
+			(xy 133.35 87.63) (xy 133.35 91.44)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "c6dd420a-5a51-4c58-a6bc-72f6f717cfa3")
 	)
 	(no_connect
 		(at 45.72 59.69)
@@ -11151,6 +11167,84 @@
 			(project "aqroot-Beta-v2"
 				(path "/8a0ad1ee-a49e-4cff-9a78-44823e373405/83b1880a-0a3b-496a-bce6-0dc4c72d8ece"
 					(reference "#PWR0135")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "power:GND")
+		(at 133.35 91.44 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "63b53558-f3c5-49f7-b25a-d60bc2b2e4c2")
+		(property "Reference" "#PWR0732"
+			(at 133.35 97.79 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "GND"
+			(at 133.35 96.52 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 133.35 91.44 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 133.35 91.44 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
+			(at 133.35 91.44 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "b1b3ab3c-1d2e-4ace-8727-98f0ee41726a")
+		)
+		(instances
+			(project "aqroot-Beta-v2"
+				(path "/8a0ad1ee-a49e-4cff-9a78-44823e373405/83b1880a-0a3b-496a-bce6-0dc4c72d8ece"
+					(reference "#PWR0732")
 					(unit 1)
 				)
 			)
@@ -31602,6 +31696,506 @@
 			(project "aqroot-Beta-v2"
 				(path "/8a0ad1ee-a49e-4cff-9a78-44823e373405/83b1880a-0a3b-496a-bce6-0dc4c72d8ece"
 					(reference "C64")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:C")
+		(at 436.88 360.68 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "3d6257d1-39f8-470c-ae0b-4ac3e7a1d72b")
+		(property "Reference" "C83"
+			(at 438.88 359.08 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.0 1.0)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "10uF 10V X7R"
+			(at 438.88 357.58 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.0 1.0)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "Capacitor_SMD:C_0805_2012Metric"
+			(at 438.88 356.08 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.0 1.0)
+				)
+				(justify left)
+			)
+		)
+		(property "Datasheet" ""
+			(at 438.88 354.58 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.0 1.0)
+				)
+				(justify left)
+			)
+		)
+		(property "Manufacturer" "YAGEO"
+			(at 438.88 354.58 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "CC0805KKX7R7BB106"
+			(at 438.88 354.58 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "LCSC" "C326595"
+			(at 438.88 354.58 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Note_Sourcing" "SOURCING D-750. SAME LINE as C33/C64 (YAGEO CC0805KKX7R7BB106, LCSC C326595, 10 uF 10 V X7R 0805) - this adds two pieces to an existing BOM line and creates no new purchasing identity."
+			(at 438.88 354.58 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Note" "D-750 LOCAL INPUT CAPACITOR for the U21 TPS61023 ACC_5V accessory boost. TI SLVSF01 requires the input capacitor as close as possible to VIN/GND. Before D-750 the nearest BQ25185_SYS capacitor to U21 was C27 at 36.552 mm and the named 10 uF input capacitor C64 was 93.482 mm away at the far end of a ~150 mm SYS trunk; C64 and C33 could not simply be moved because both sit ON that trunk as pass-through junctions. This part is the local bypass U21 never had. SAME LINE as C33/C64."
+			(at 438.88 354.58 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" ""
+			(at 438.88 353.08 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.0 1.0)
+				)
+				(justify left)
+			)
+		)
+		(pin "1"
+			(uuid "aa800263-6153-4ae7-b202-9c13541af123")
+		)
+		(pin "2"
+			(uuid "c2a0d298-9b98-44ac-868f-c67ea45a9ff5")
+		)
+		(instances
+			(project "aqroot-Beta-v2"
+				(path "/8a0ad1ee-a49e-4cff-9a78-44823e373405/83b1880a-0a3b-496a-bce6-0dc4c72d8ece"
+					(reference "C83")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(wire
+		(pts
+			(xy 436.88 356.87) (xy 436.88 353.06)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "f607cffd-a186-4fed-a5a8-98c40385f4f6")
+	)
+	(label "BQ25185_SYS"
+		(at 436.88 353.06 0)
+		(fields_autoplaced yes)
+		(effects
+			(font
+				(size 1.0 1.0)
+			)
+			(justify left bottom)
+		)
+		(uuid "e28f1156-c446-42c5-ac95-f25db99bd9ad")
+	)
+	(wire
+		(pts
+			(xy 436.88 364.49) (xy 436.88 368.3)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "05c96c4a-e4c1-4064-958a-b0fb26ddc6a6")
+	)
+	(symbol
+		(lib_id "power:GND")
+		(at 436.88 368.3 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "6588102c-9ed8-4b0b-9c25-0d703a4f0086")
+		(property "Reference" "#PWR0733"
+			(at 438.88 366.7 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.0 1.0)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "GND"
+			(at 438.88 365.2 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.0 1.0)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" ""
+			(at 436.88 368.3 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 436.88 368.3 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
+			(at 436.88 368.3 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "6eef4f2a-ed89-41fc-96e8-49ef68a5eb8d")
+		)
+		(instances
+			(project "aqroot-Beta-v2"
+				(path "/8a0ad1ee-a49e-4cff-9a78-44823e373405/83b1880a-0a3b-496a-bce6-0dc4c72d8ece"
+					(reference "#PWR0733")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:C")
+		(at 452.12 360.68 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "a19e4e00-846d-4f8d-a119-31b0d3895353")
+		(property "Reference" "C84"
+			(at 454.12 359.08 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.0 1.0)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "10uF 10V X7R"
+			(at 454.12 357.58 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.0 1.0)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "Capacitor_SMD:C_0805_2012Metric"
+			(at 454.12 356.08 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.0 1.0)
+				)
+				(justify left)
+			)
+		)
+		(property "Datasheet" ""
+			(at 454.12 354.58 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.0 1.0)
+				)
+				(justify left)
+			)
+		)
+		(property "Manufacturer" "YAGEO"
+			(at 454.12 354.58 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "CC0805KKX7R7BB106"
+			(at 454.12 354.58 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "LCSC" "C326595"
+			(at 454.12 354.58 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Note_Sourcing" "SOURCING D-750. SAME LINE as C33/C64 (YAGEO CC0805KKX7R7BB106, LCSC C326595, 10 uF 10 V X7R 0805) - this adds two pieces to an existing BOM line and creates no new purchasing identity."
+			(at 454.12 354.58 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Note" "D-750 LOCAL INPUT CAPACITOR for the U13 TPS61023 NFC 5 V boost, for the same reason and by the same measurement as C83 - the nearest BQ25185_SYS capacitor to U13 was C27 at 56 mm and its named input capacitor C33 was 88 mm away on the SYS trunk it cannot leave. SAME LINE as C33/C64."
+			(at 454.12 354.58 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" ""
+			(at 454.12 353.08 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.0 1.0)
+				)
+				(justify left)
+			)
+		)
+		(pin "1"
+			(uuid "beefec96-bd0a-472d-8947-942c79976603")
+		)
+		(pin "2"
+			(uuid "ef44f216-1669-4e38-8906-c9e94b73a683")
+		)
+		(instances
+			(project "aqroot-Beta-v2"
+				(path "/8a0ad1ee-a49e-4cff-9a78-44823e373405/83b1880a-0a3b-496a-bce6-0dc4c72d8ece"
+					(reference "C84")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(wire
+		(pts
+			(xy 452.12 356.87) (xy 452.12 353.06)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "2ae49055-bb7c-4626-9a79-064007894bbc")
+	)
+	(label "BQ25185_SYS"
+		(at 452.12 353.06 0)
+		(fields_autoplaced yes)
+		(effects
+			(font
+				(size 1.0 1.0)
+			)
+			(justify left bottom)
+		)
+		(uuid "7b5a5e31-f9c1-4fdc-8024-1a39dac11c95")
+	)
+	(wire
+		(pts
+			(xy 452.12 364.49) (xy 452.12 368.3)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "5b3d52ed-a837-4a97-9a90-a79b5c1b896c")
+	)
+	(symbol
+		(lib_id "power:GND")
+		(at 452.12 368.3 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "13aadd56-c6e3-492a-9838-80880ce085b5")
+		(property "Reference" "#PWR0734"
+			(at 454.12 366.7 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.0 1.0)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "GND"
+			(at 454.12 365.2 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.0 1.0)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" ""
+			(at 452.12 368.3 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 452.12 368.3 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
+			(at 452.12 368.3 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "ee940289-e5d8-48c8-9efd-31b6206fc91d")
+		)
+		(instances
+			(project "aqroot-Beta-v2"
+				(path "/8a0ad1ee-a49e-4cff-9a78-44823e373405/83b1880a-0a3b-496a-bce6-0dc4c72d8ece"
+					(reference "#PWR0734")
 					(unit 1)
 				)
 			)

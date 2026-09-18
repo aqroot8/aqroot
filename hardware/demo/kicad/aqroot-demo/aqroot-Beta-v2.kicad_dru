@@ -11,13 +11,22 @@
 # against the CURRENT board and the CURRENT 224-net project by
 # checks/dru_probe.py, which is part of the validation set.
 #
-# Fabrication: JLCPCB JLC04161H-7628, 4 layer, 1.6 mm finished,
-#              1 oz outer / 0.5 oz (H) inner, 7628 prepreg 0.2104 mm
-#              L1->L2 and L3->L4, 1.065 mm core.
-#              NOTE: the board file carries NO physical stackup object.
-#              The geometry above is documentary until the stackup is
-#              declared in the board and impedance control is ordered.
-#              See FBV2_P2_ROUTING_PLAN.md section 3.
+# Fabrication: JLCPCB JLC06161H-7628, 6 layer, 1.6 mm finished,
+#              1 oz outer / 0.5 oz inner.  CORRECTED AT D-750: this block
+#              still said "JLC04161H-7628, 4 layer" and "the board file
+#              carries NO physical stackup object" long after D-263 locked
+#              the six-layer stack AND the board declared it.  The board's
+#              own (stackup) object is now the authority and is read back
+#              by audit_rail_ampacity.py before it rules on any copper:
+#                F.Cu  0.0350   prepreg 7628 0.2104
+#                In1   0.0152   core FR4    0.4000
+#                In2   0.0152   prepreg 7628 0.2028
+#                In3   0.0152   core FR4    0.4000
+#                In4   0.0152   prepreg 7628 0.2104
+#                B.Cu  0.0350
+#              THE INNER FOIL IS 0.0152 mm, NOT THE NOMINAL 0.0174 mm OF A
+#              HALF-OUNCE FOIL.  Every inner-layer width in section 5 is
+#              14.5 % wider than the figure this file used to print.
 #
 # Layer architecture - FROZEN AT FBV2-P2-000
 #   F.Cu    FRONT.  Signals + components.  USB pair, SPI-A, display and
@@ -339,12 +348,20 @@
 # ---------------------------------------------------------------------
 # 5. POWER RAILS - WIDTH FLOORS FROM IPC-2221B AT THE REAL COPPER
 #
-# 1 oz outer (35 um), 0.5 oz inner (17.4 um), dT = 10 K.  The method
-# reproduces every figure the Beta-DM file carried, so the two sets are
-# directly comparable:
+# 1 oz outer (34.8 um), 0.5 oz inner (15.2 um), dT = 10 K.
+#
+# D-750 CORRECTED THE INNER COLUMN.  It was computed at 17.4 um -- the
+# NOMINAL thickness of a half-ounce foil -- while the board is ordered
+# against JLCPCB's published JLC06161H-7628 stack, whose inner foil is
+# 15.2 um and which the board file has DECLARED since D-263.  Every
+# inner figure below is therefore 14.5 % wider than this table used to
+# print, and `audit_rail_ampacity.py` now reads the thickness back off
+# the board and FAILS ITSELF if the two disagree.  No OUTER figure moved
+# and no rule below changes: every width rule in this file is an outer
+# figure and each still covers its rail.
 #
 #   net / class        design current      outer min   inner min
-#   BAT_MAIN           1.5 A sustained      0.525 mm    2.734 mm
+#   BAT_MAIN           1.5 A sustained      0.529 mm    3.148 mm
 #     IBAT_OCP = 3.125 A is a FAULT TRIP THRESHOLD, not a routing
 #     design current (CTO ruling 2026-08-11, retained).
 #     THE CLASS NOW ALSO CARRIES BAT_RAW, BAT_MID AND BAT_SENSE.  All
@@ -353,29 +370,31 @@
 #     inherited pattern was the root-sheet path "/BAT_PROTECTED_P"
 #     while every v2 net is "/01_POWER_TREE/...".  The pattern matched
 #     NOTHING.  This was the single worst netclass defect on the board.
-#   SYS_MAIN           1.0 A                0.300 mm    1.563 mm
+#   SYS_MAIN           1.0 A                0.302 mm    1.799 mm
 #     LOCAL EXCEPTION, NOT ENCODABLE: the U21 accessory boost draws a
 #     2.19 A peak inductor current from SYS (D-185), so the SYS segment
 #     that feeds U21 must be sized from that peak, not from 1.0 A.
-#   P3V3               1.0 A design         0.300 mm    1.563 mm
-#                      0.64 A measured pk   0.162 mm    0.844 mm
+#   P3V3               1.0 A design         0.302 mm    1.799 mm
+#                      0.64 A measured pk   0.163 mm    0.972 mm
 #     The class now also carries NFC_SUPPLY, U9's VDD/VDD_TX rail.
-#   ACC_3V3            0.40 A published     0.085 mm    0.443 mm
-#                      0.76 A typ ILIM      0.196 mm    1.021 mm
-#   ACC_5V             0.70 A ILIM          0.184 mm    0.958 mm
-#   VBUS_CHG           1.1 A (ILIM1100)     0.343 mm    1.793 mm
+#   ACC_3V3            0.40 A published     0.085 mm    0.508 mm
+#                      0.76 A typ ILIM      0.207 mm    1.232 mm
+#     D-750 ALSO CORRECTED THE 0.76 A ROW: its old 0.196/1.021 mm pair
+#     is the IPC-2221B answer for 0.731 A, not for 0.760 A.
+#   ACC_5V             0.70 A ILIM          0.185 mm    1.100 mm
+#   VBUS_CHG           1.1 A (ILIM1100)     0.345 mm    2.052 mm
 #     D-743 RAISED THIS FROM THE FORMER ILIM500 SETTING, AND THE OUTER
 #     FLOOR STILL
-#     COVERS IT -- 0.343 mm required against the 0.35 mm min / 0.50 mm opt
+#     COVERS IT -- 0.345 mm required against the 0.35 mm min / 0.50 mm opt
 #     below.  THE INNER FIGURE DOES NOT, AND CANNOT: see the named
 #     exception in section 5a.  R36 is 13 kOhm, which SLUSF65B table 6-1
 #     maps to ILIM1100 with VBATREG unchanged at 4.2 V; R37 is 390 Ohm,
 #     which programs ICHG = 769 mA.  Both moved because SLUSF65B rev B
 #     halved tMAXCHG to 360 min and the old 300 mA could not terminate.
-#   NFC_5V_PA_PENDING  0.5 A TX burst       0.115 mm    0.601 mm
+#   NFC_5V_PA_PENDING  0.5 A TX burst       0.116 mm    0.692 mm
 #     Its inherited pattern "/NFC_5V_PA_PENDING" also matched nothing.
-#   SPK_OUT            0.41 A peak          0.088 mm    0.460 mm
-#                      0.29 A rms           0.055 mm    0.285 mm
+#   SPK_OUT            0.41 A peak          0.088 mm    0.526 mm
+#                      0.29 A rms           0.055 mm    0.326 mm
 #     D-743 CORRECTED THIS ROW.  It read "0.29 A rms/0.41 pk" against
 #     0.070/0.365 mm, and those widths are neither current: they are the
 #     IPC-2221B figures for 0.347 amps.  The row now prints BOTH currents
@@ -389,9 +408,12 @@
 #
 # The floors below sit well above the thermal minimum, and BAT_MAIN and
 # SYS_MAIN are OUTER-LAYER BY POLICY.  Do NOT distribute BAT_MAIN on
-# In2: at 0.5 oz, 1.5 A needs 2.73 mm, which defeats the point of using
-# In2 at all.  If a SYS segment on In2 ever proves unavoidable, size it
-# separately at 0.5 oz - never inherit the outer-layer width.
+# In2: at this board's real inner foil, 1.5 A needs 3.15 mm, which
+# defeats the point of using In2 at all.  If a SYS segment on In2 ever
+# proves unavoidable, size it separately at the inner figure - never
+# inherit the outer-layer width.  D-750 found one that already had:
+# the SYS trunk to the two southern boosts, three In2 legs at 0.800 mm.
+# It is not hidden any more; see section 5c.
 # ---------------------------------------------------------------------
 
 
@@ -469,56 +491,80 @@
 
 
 # ---------------------------------------------------------------------
-# 5a. THE ONE NAMED AMPACITY EXCEPTION ON THIS BOARD - D-743
+# 5a. THE NAMED INNER-LAYER AMPACITY EXCEPTIONS ON THIS BOARD
+#     D-743, REWRITTEN AND RE-MEASURED AT D-750
 #
-# `/01_POWER_TREE/USB_VBUS_CHG` CARRIES 1.1 A OVER 163.0 mm OF In2 --
-# 158.9 mm of it at 0.500 mm and one 4.1 mm segment at 0.350 mm -- AND
-# SECTION 5's OWN INNER-LAYER FIGURE ASKS 1.793 mm.
-# This is stated here rather than quietly passing, because it passes
-# KiCad DRC either way: the `track_width` rule below has no layer
-# qualifier, the copper is 0.35 mm or wider everywhere outside U11's
-# licensed courtyard neck, and nothing in KiCad checks ampacity at all.
+# `/01_POWER_TREE/USB_VBUS_CHG` CARRIES 1.1 A AND SECTION 5's INNER-LAYER
+# FIGURE ASKS 2.052 mm.  It is stated here rather than quietly passing,
+# because it passes KiCad DRC either way: the `track_width` rule below
+# has no layer qualifier, the copper is 0.35 mm or wider everywhere
+# outside U11's licensed courtyard neck, and nothing in KiCad checks
+# ampacity at all.
 #
-# WHAT WAS MEASURED BEFORE ACCEPTING IT, and it is all reproducible:
+# WHAT D-750 CHANGED, AND WHY THE OLD TEXT COULD NOT STAND:
 #
-#   * `audit_rail_ampacity.py` walks the R35.2 -> U11.10 CARRYING path -
-#     not the net, which has eleven pads and nine telemetry branches -
-#     and reports 250.8 mm, 440 mOhm, 484 mV of drop at 1.1 A.
-#   * `screen_widest_corridor.py` was run for a shorter trunk on F.Cu,
-#     B.Cu and In2.Cu, at the 0.20 mm clearance the routed-clearance
-#     rules actually leave beside pads.  EVERY probe returns
-#     `widest_trunk_mm 0.0`: there is no corridor for a new conductor of
-#     ANY width between the J3/R35 pocket and U11.  The board is full.
-#   * `w/d743/widen_plan.py` samples all 25 segments of the carrying path
-#     at 0.05 mm against every foreign object on each segment's own layer.
-#     The two long In2 legs have 0.539 mm and 0.558 mm of room against
-#     the 0.500 mm they already use.  In-place widening is worth under
-#     5 % of the resistance.  THE PATH IS AT ITS GEOMETRIC LIMIT.
+#   * THE COPPER THICKNESS WAS WRONG.  The instrument computed at
+#     0.0174 mm and the board is 0.0152 mm, so every number D-743
+#     published for this rail was 14.5 % optimistic.
+#   * THE STACKUP PREMISE WAS WRONG.  The old text said this conductor
+#     sits "about 0.15 mm of FR4 from solid copper on BOTH faces".  The
+#     board's own stackup says In2 is 0.4000 mm of CORE from In1 and
+#     0.2028 mm of PREPREG from In3 -- wrong by more than 2x on one face.
+#   * "NO CORRIDOR EXISTS AT ANY WIDTH" WAS THE ANSWER TO THE WRONG
+#     QUESTION.  D-743 asked for a REPLACEMENT TRUNK between two pockets.
+#     D-750 asked for a PARALLEL CONDUCTOR between two points already on
+#     the net -- an anchor-to-anchor route, which adds copper and removes
+#     none, so it cannot strand a tap or open an edge -- and one exists:
+#     115.319 mm at 0.800 mm with 7 barrels, from the `R35` via at
+#     (36.800, 135.100) to the F.Cu diagonal at (28.625, 48.525).
 #
-# WHY IT IS NEVERTHELESS SAFE, and this is the part that is a judgement
-# and is therefore written down in full:
+# WHAT THE RAIL MEASURES NOW (`audit_rail_ampacity.py`, R35.2 -> U11.10):
+#
+#                              D-743 (as published)   D-750
+#     carrying path length      250.784 mm            189.819 mm
+#     series resistance         440.2 mOhm *          215.6 mOhm
+#     drop at 1.1 A             484.2 mV *            237.2 mV
+#     dissipation at 1.1 A      0.533 W *             0.261 W
+#     worst IPC-2221B rise       82 K / 147.6 K *      66.5 K
+#     bottleneck at 10 K          0.337 A *            0.478 A
+#     * at the WRONG 0.0174 mm copper; at 0.0152 mm the same board was
+#       487.4 mOhm, 536.1 mV, 0.589 W and 184.4 K.
+#
+# The 0.350 mm In2 segment at (52.850, 76.625)-(51.750, 72.675), which
+# was the single worst object on the rail, is widened to 0.650 mm -- the
+# figure `w/d743/widen_plan.py` had already measured as available.
+#
+# WHY THE RESIDUAL IS SAFE, DERIVED AND NOT ASSERTED:
 #
 #   * IPC-2221B's internal derating - k = 0.024 against 0.048 external -
 #     was measured on isolated coupons in still air and was SUPERSEDED by
 #     IPC-2152 (2009), whose central result is that an internal trace in a
 #     real board is not half as capable; with adjacent planes it equals or
 #     exceeds an external one, because the board conducts heat and air
-#     does not.  Section 5 above keeps k = 0.024 as a conservative
-#     FLOOR-SETTING model and that is correct for setting floors.  It is
-#     not a description of this stackup.
-#   * THIS conductor sits on In2, between In1 (GND plane) and In3 (+3V3
-#     plane), about 0.15 mm of FR4 from solid copper on BOTH faces.  At
-#     1.1 A a 0.500 mm x 0.5 oz trace dissipates 2.39 W/m; two-sided
-#     conduction through 0.15 mm of FR4 at k = 0.3 W/m.K over an
-#     effective 0.8 mm gives about 0.31 m.K/W, so the rise over the
-#     planes is of order 1 K.  The 82 K IPC-2221B returns is an artifact
-#     of the wrong boundary condition, not a prediction.
-#   * The ELECTRICAL cost is real and is accepted with its number: 440
-#     mOhm drops 484 mV at 1.1 A and wastes 0.53 W.  The charger still
-#     works, because VINDPM tracks VBAT + 330 mV: at the worst point of
-#     the cycle (VBAT 4.15 V, end of CC) VIN at U11.10 is 4.64 V from a
-#     5.0 V source against a 4.48 V VINDPM target, and any foldback is a
-#     stable regulating point on a tapering current, not a stall.
+#     does not.  Section 5 keeps k = 0.024 as a conservative FLOOR-SETTING
+#     model and that is correct for setting floors.  It is not a
+#     description of this stackup.
+#   * `audit_rail_ampacity.py` now COMPUTES the plane-coupled rise from
+#     the board's own declared dielectrics instead of asserting one:
+#         dT = I^2 rho / ( k_FR4 w^2 t (1/d_up + 1/d_down) )
+#     with d_up = 0.4000 mm to In1 and d_down = 0.2028 mm to In3, k_FR4
+#     = 0.3 W/m.K.  THE LENGTH CANCELS, which is the physical content: a
+#     long inner trace between planes does not get hotter than a short
+#     one, it heats more board.  For this rail's worst segment the answer
+#     is 1.45 K against IPC-2221B's 66.5 K.  The model ignores lateral
+#     spreading, conduction along the copper and the outer layers, so it
+#     is a floor on the cooling and a ceiling on the rise.
+#   * THE ELECTRICAL COST IS ACCEPTED WITH ITS NUMBER AND ITS CONSEQUENCE.
+#     216 mOhm (VBUS_CHG) + 19 mOhm (VBUS_RAW) = 235 mOhm at 20 C, 259
+#     mOhm at 45 C.  The charge SAFETY TIMER is what that has to satisfy,
+#     because VINDPM tracks VBAT + 330 mV and a charger held in VINDPM
+#     charges slowly: with the ORIGINAL 506 mOhm the 360 min tMAXCHG was
+#     EXCEEDED on an ordinary 4.65-4.75 V source at a 150-300 mA system
+#     load.  At 235 mOhm every case in the source envelope terminates
+#     with at least 65 min to spare.  That calculation is the reason this
+#     transaction laid copper at all, and it is reproducible from the
+#     BQ25185 SLUSF65B VINDPM_TRACK = 330 mV, ICHG = 769 mA, tMAXCHG =
+#     360 min and a 3000 mAh cell.
 #
 # SCOPE.  This exception is for `/01_POWER_TREE/USB_VBUS_CHG` on In2.Cu
 # ONLY.  It licenses NO other net and NO other layer, and it does not
@@ -526,11 +572,82 @@
 # already passes every rule this file states.  It is a recorded
 # engineering acceptance, not a waiver.
 #
-# CARRIED FORWARD.  Rev-B must give the charger input a direct trunk -
-# R35 to U11.10 is 65 mm in a straight line and the board routes it in
-# 250 mm because the net was laid as a minimum spanning tree through the
-# north-west recovery cluster.  A star, not a daisy chain.  And the first
-# article must have VIN measured at U11.10 while charging.
+# CARRIED FORWARD.  Rev-B should still give the charger input a direct
+# trunk: R35 to U11.10 is 65.8 mm in a straight line and the board still
+# takes 189.8 mm, because the net was laid as a minimum spanning tree
+# through the north-west recovery cluster.  A star, not a daisy chain.
+# And the first article must have VIN measured at U11.10 while charging.
+# ---------------------------------------------------------------------
+
+# ---------------------------------------------------------------------
+# 5c. THE SYS TRUNK TO THE TWO SOUTHERN BOOSTS - D-750
+#
+# Section 5's SYS_MAIN row has carried this sentence since D-185:
+# "LOCAL EXCEPTION, NOT ENCODABLE: the U21 accessory boost draws a
+# 2.19 A peak inductor current from SYS, so the SYS segment that feeds
+# U21 must be sized from that peak, not from 1.0 A."  NOTHING EVER
+# CHECKED IT.  `audit_rail_ampacity.py`'s only SYS entry was
+# U11.1 -> U12.1, which is POUR-DELIVERED and answers a different
+# question; U21 and U13 sit about 40 mm OUTSIDE that pour and are fed by
+# a real trunk that no instrument had ever walked.
+#
+# D-750 declares both feeds as rails and measures them:
+#
+#     rail                 design A   length     R        drop    IPC    plane
+#     SYS -> U21/L4 (5 V)    1.21    201.8 mm  183.3 mO  222 mV  58.6 K  1.16 K
+#     SYS -> U13/L2 (NFC)    0.86    222.1 mm  196.5 mO  169 mV  27.0 K  0.59 K
+#
+# THE DESIGN CURRENT IS THE INPUT AVERAGE, NOT THE PEAK.  0.70 A out of
+# U21 at 5.0 V, 88 % efficient, from a 3.3 V SYS node, is 1.21 A into
+# VIN.  The 2.19 A figure is the PEAK INDUCTOR current, and D-750 gave
+# U21 the local input capacitor it never had (C83, 10 uF, 5.8 mm from
+# U21.3 through 0.8-1.0 mm copper, against 93.5 mm before) precisely so
+# that the trunk carries the average and the capacitor carries the peak.
+# U13 gets the same treatment from C84 at 3.5 mm.  C64 and C33, the two
+# capacitors an external review proposed moving, are NOT moved: both are
+# PASS-THROUGH JUNCTIONS on this trunk -- the copper enters their SYS
+# land and leaves it -- so moving either would have cut the rail.
+#
+# ACCEPTED, with the same derivation as 5a and the same scope discipline:
+# three In2 legs at 0.800 mm where section 5 asks 2.232 mm at 1.21 A.
+# The plane-coupled rise is 1.16 K and the whole rail dissipates 0.268 W.
+# The 222 mV drop is accepted against a TPS61023 input range of
+# 0.5-5.5 V and a U12 TPS63020 input range of 1.8-5.5 V on the same node.
+#
+# SCOPE.  `/01_POWER_TREE/BQ25185_SYS` on In2.Cu, between the SYS pour
+# and L4.1 / L2.1, and nothing else.
+#
+# WHY C83 IS 5 mm AWAY AND NOT 2 - D-751, and it is DERIVED, not assumed.
+# An independent review asked for a shorter input loop if geometry allows
+# one.  It does not, cheaply: the only free B.Cu between C83 and U21 is
+# TP28's ACC_5V_RAW test land at (54.750,38.000), and C83's 0805 pad
+# cannot pass it without a clearance violation.  The relevant question is
+# what the extra millimetres COST, and on this topology the answer is
+# almost nothing, because U21.3 IS THE CONTROLLER'S BIAS PIN, NOT THE
+# POWER PATH (D-725): the inductor current runs SYS-rail -> L4 -> SW
+# EXTERNALLY, so the node C83 supports carries the inductor's TRIANGULAR
+# ripple and not a switching edge.
+#
+#   as built   C83.1 (52.738,37.000) -> 2.399 mm of 0.800 mm B.Cu
+#              -> junction (55.000,36.200) -> 2.400 mm of 1.000 mm B.Cu
+#              -> L4.1 (57.715,36.200).  U21.3 hangs off the same
+#              junction through 1.350 mm of 0.500 mm B.Cu.
+#   loop L     B.Cu sits 0.2104 mm over the In4 GND plane, so
+#              L ~ mu0 h / w = 0.29 nH/mm; 5.1 mm plus one barrel is
+#              about 1.8 nH, against roughly 0.7 nH of ESL inside the
+#              0805 itself.
+#   dI/dt      V/L across the inductor = 3.3 V / 1.0 uH = 3.3 A/us.
+#              (No switching frequency is needed for this, and none is
+#              asserted: the datasheet is not in this repository.)
+#   V = L dI/dt = 1.8 nH x 3.3e6 A/s = 6 mV on a 3.3 V rail, 0.2 %.
+#              Moving C83 2 mm closer would buy about 2 mV -- less than
+#              the capacitor's own package inductance contributes.
+#
+# The HIGH-dI/dt loop on this converter is the OUTPUT one, and it is
+# already short: C65.1 (60.335,40.475) is 1.82 mm from U21.6, with the
+# GND return on the B.Cu plane under both.  C66 is the bulk part and is
+# allowed to be further out.  U13's block is the same shape with C84 at
+# 3.5 mm.
 # ---------------------------------------------------------------------
 
 # ---------------------------------------------------------------------

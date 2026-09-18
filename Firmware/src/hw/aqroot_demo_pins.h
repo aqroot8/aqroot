@@ -16,6 +16,17 @@
 //   GPIO46 DISP_BL_PWM     must be LOW at reset (R108 10k to GND), which also
 //                          leaves the backlight boost disabled.  Park it LOW
 //                          and only then attach PWM.
+//                          D-750 MADE LOW MEAN DARK.  The TPS61169 retains a
+//                          DC path from +3V3 through L3/D8 to the panel LEDs
+//                          in shutdown, and TI guarantees OFF only when the
+//                          array's minimum Vf exceeds the maximum VIN -- this
+//                          panel is 2.9-3.2 V on a 3.3 V rail, so it did not.
+//                          Q11 (AO3400A) now sits in the panel cathode return
+//                          with its gate on this same line and R108 holding it
+//                          low, so a firmware crash, a GPIO left in
+//                          high-impedance and a reset all leave the screen
+//                          dark.  PWM on this pin gates the LED current
+//                          directly instead of restarting the converter.
 //   GPIO45 VDD_SPI strap   has NO firmware role and is deliberately absent
 //                          from this table.  R111 and TP1 are its only load.
 

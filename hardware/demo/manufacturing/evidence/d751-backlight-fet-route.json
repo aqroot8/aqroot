@@ -1,0 +1,1618 @@
+{
+  "attributable_drc": [],
+  "authoritative_board_sha256": "22ed0ac4c2f6a2dfd12cfe7d82c2e2be3e466475d1497f6dea3ad92cac321686",
+  "authoritative_unchanged": true,
+  "base_board": "/home/aqroot8/aqroot-demo/hardware/demo/kicad/aqroot-demo/aqroot-Beta-v2.kicad_pcb",
+  "base_board_sha256": "22ed0ac4c2f6a2dfd12cfe7d82c2e2be3e466475d1497f6dea3ad92cac321686",
+  "base_is_authority": true,
+  "bonds": null,
+  "bridges": null,
+  "candidate_sha256": "bdf1376cf95289452ca24150eb0738f7a9dacddf40bb422f2575869b05cf1ce6",
+  "connectivity": {
+    "nets_improved": [
+      "/03_SPI_A_DISPLAY_SD/LED_K",
+      "/03_SPI_A_DISPLAY_SD/LED_K_PANEL",
+      "/DISP_BL_CTL"
+    ],
+    "nets_regressed": [],
+    "open_retained_nets_after": 1,
+    "open_retained_nets_before": 4,
+    "retained_open_edges_after": 1,
+    "retained_open_edges_before": 4
+  },
+  "detour": null,
+  "drc_exit": 0,
+  "drc_types": {
+    "lib_footprint_issues": 199
+  },
+  "escape_relief": null,
+  "eviction": null,
+  "exact_relay": [],
+  "failed_nets": [],
+  "gate_clauses": {
+    "attributable_drc": true,
+    "authority_unchanged": true,
+    "barrel_move_licensed": true,
+    "board_changed": true,
+    "board_improved": true,
+    "every_detour_relaid": true,
+    "inert_removal_priced": true,
+    "inherited_within_baseline": true,
+    "no_foreign_copper": true,
+    "no_open_relief_licence": true,
+    "no_regression": true,
+    "no_unlicensed_removal": true,
+    "pour_partition": true,
+    "rebond_priced": true,
+    "zones_and_rule_areas": true
+  },
+  "guard": null,
+  "inherited_within_baseline": true,
+  "island_joins": null,
+  "lattice": {
+    "any_too_coarse": false,
+    "any_unlaunchable": false,
+    "grid_nm": 50000,
+    "nets": {
+      "/03_SPI_A_DISPLAY_SD/LED_K": {
+        "binding_pad": "U17.3",
+        "grid_mm": 0.05,
+        "lands": 3,
+        "no_lattice_at_any_pitch": false,
+        "required_lattice_mm": 0.6,
+        "too_coarse": false,
+        "unlaunchable_lands": [],
+        "verdict": "CLEAR"
+      },
+      "/03_SPI_A_DISPLAY_SD/LED_K_PANEL": {
+        "binding_pad": "J1.2",
+        "grid_mm": 0.05,
+        "lands": 3,
+        "no_lattice_at_any_pitch": false,
+        "required_lattice_mm": 0.2,
+        "too_coarse": false,
+        "unlaunchable_lands": [],
+        "verdict": "CLEAR"
+      },
+      "/DISP_BL_CTL": {
+        "binding_pad": "U17.4",
+        "grid_mm": 0.05,
+        "lands": 3,
+        "no_lattice_at_any_pitch": false,
+        "required_lattice_mm": 1.1653,
+        "too_coarse": false,
+        "unlaunchable_lands": [],
+        "verdict": "CLEAR"
+      }
+    },
+    "schema": 1,
+    "tightest_required_mm": null
+  },
+  "pad_bridges": null,
+  "plane": null,
+  "plane_repair": null,
+  "pour_partition": {
+    "detail": {
+      "PP1": {
+        "control": {
+          "ok": true,
+          "probe": [
+            [
+              "+3V3",
+              "F.Cu",
+              "C10.1"
+            ]
+          ],
+          "why": "a pad resolved on BOTH boards, withheld from the POST set, is reported by the same expression the clause is judged on"
+        },
+        "excuse_control": {
+          "ok": true,
+          "probe": [],
+          "why": "each excused pad, withheld from the POST connectivity fact the excuse is keyed on, is named again by the same expression"
+        },
+        "excused_by_routed_copper": [],
+        "moved_pour": [
+          {
+            "pad": "C83.1",
+            "pour": "/01_POWER_TREE/BQ25185_SYS|B|da11f1b0-6501-5c41-b2b6-d6199a789ea9"
+          },
+          {
+            "pad": "C84.1",
+            "pour": "/01_POWER_TREE/BQ25185_SYS|B|da11f1b0-6501-5c41-b2b6-d6199a789ea9"
+          }
+        ],
+        "newly_unresolved": [],
+        "ok": true,
+        "pours_gone_unclaimed": [],
+        "pours_post": 3,
+        "pours_pre": 3,
+        "pours_retired_as_claimed": [],
+        "resolved_post": 199,
+        "resolved_pre": 196,
+        "unresolved_inherited": [
+          "/01_POWER_TREE/BQ25185_SYS C33.1",
+          "/01_POWER_TREE/BQ25185_SYS C64.1",
+          "/01_POWER_TREE/BQ25185_SYS L2.1",
+          "/01_POWER_TREE/BQ25185_SYS L4.1",
+          "/01_POWER_TREE/BQ25185_SYS U11.1",
+          "/01_POWER_TREE/BQ25185_SYS U13.3",
+          "/01_POWER_TREE/BQ25185_SYS U21.3",
+          "GND MK1.4"
+        ],
+        "unresolved_post": 10,
+        "unresolved_pre": 8
+      },
+      "PP2": {
+        "admitted": [
+          "GND|B|38685722-44ee-566f-b52b-89a56220a9e0"
+        ],
+        "controls": {
+          "ok": true,
+          "probes": [
+            {
+              "behaved": true,
+              "control": "min_thickness_sliver_refused",
+              "expected": false,
+              "got": false,
+              "priced_amps": 0.742,
+              "required_amps": 1.0,
+              "verdict": "BONDED",
+              "why": "BOND_UNDER_PRICED"
+            },
+            {
+              "behaved": true,
+              "control": "one_class_width_track_refused",
+              "expected": false,
+              "got": false,
+              "priced_amps": 0.995,
+              "required_amps": 1.0,
+              "verdict": "BONDED",
+              "why": "BOND_UNDER_PRICED"
+            },
+            {
+              "behaved": true,
+              "control": "four_barrel_bond_admitted",
+              "expected": true,
+              "got": true,
+              "priced_amps": 9.244,
+              "required_amps": 1.0,
+              "verdict": "BONDED",
+              "why": "BOND_PRICED_AT_OR_ABOVE_THE_PUBLISHED_RAIL_CURRENT"
+            },
+            {
+              "behaved": true,
+              "control": "stranded_refused_however_priced",
+              "expected": false,
+              "got": false,
+              "priced_amps": 9.244,
+              "required_amps": 1.0,
+              "verdict": "STRANDED",
+              "why": "PP3_NOT_BONDED"
+            },
+            {
+              "behaved": true,
+              "control": "unpriced_net_refused",
+              "expected": false,
+              "got": false,
+              "priced_amps": 9.244,
+              "required_amps": null,
+              "verdict": "BONDED",
+              "why": "NET_CARRIES_NO_PUBLISHED_CURRENT"
+            },
+            {
+              "behaved": true,
+              "control": "bar_located_one_ppm_below",
+              "expected": false,
+              "got": false,
+              "priced_amps": 0.999999,
+              "required_amps": 1.0,
+              "verdict": "BONDED",
+              "why": "BOND_UNDER_PRICED"
+            },
+            {
+              "behaved": true,
+              "control": "bar_located_at_equality",
+              "expected": true,
+              "got": true,
+              "priced_amps": 1.0,
+              "required_amps": 1.0,
+              "verdict": "BONDED",
+              "why": "BOND_PRICED_AT_OR_ABOVE_THE_PUBLISHED_RAIL_CURRENT"
+            }
+          ],
+          "reference_amps": {
+            "four_0p400mm_barrels": 9.244,
+            "outer_track_0p300mm": 0.995,
+            "zone_min_thickness_0p200mm": 0.742
+          }
+        },
+        "islands": {
+          "+3V3|F|8c612136-d173-58bf-87cf-c0b97bedd2e0": [
+            28,
+            28
+          ],
+          "/01_POWER_TREE/BQ25185_SYS|B|da11f1b0-6501-5c41-b2b6-d6199a789ea9": [
+            3,
+            3
+          ],
+          "GND|B|38685722-44ee-566f-b52b-89a56220a9e0": [
+            60,
+            63
+          ]
+        },
+        "moved_refs_claimed": [],
+        "netclass_conductors": {
+          "ACC_3V3": {
+            "track_width_mm": 0.5,
+            "via_diameter_mm": 0.8,
+            "via_drill_mm": 0.4
+          },
+          "ACC_5V": {
+            "track_width_mm": 0.6,
+            "via_diameter_mm": 0.8,
+            "via_drill_mm": 0.4
+          },
+          "BAT_MAIN": {
+            "track_width_mm": 1.0,
+            "via_diameter_mm": 0.8,
+            "via_drill_mm": 0.4
+          },
+          "Default": {
+            "track_width_mm": 0.2,
+            "via_diameter_mm": 0.6,
+            "via_drill_mm": 0.3
+          },
+          "GND": {
+            "track_width_mm": 0.3,
+            "via_diameter_mm": 0.6,
+            "via_drill_mm": 0.3
+          },
+          "I2C": {
+            "track_width_mm": 0.2,
+            "via_diameter_mm": 0.6,
+            "via_drill_mm": 0.3
+          },
+          "I2S": {
+            "track_width_mm": 0.2,
+            "via_diameter_mm": 0.6,
+            "via_drill_mm": 0.3
+          },
+          "LED_BOOST": {
+            "track_width_mm": 0.3,
+            "via_diameter_mm": 0.6,
+            "via_drill_mm": 0.3
+          },
+          "NFC_5V_PA": {
+            "track_width_mm": 0.6,
+            "via_diameter_mm": 0.8,
+            "via_drill_mm": 0.4
+          },
+          "NFC_OSC": {
+            "track_width_mm": 0.2,
+            "via_diameter_mm": 0.6,
+            "via_drill_mm": 0.3
+          },
+          "NFC_RF": {
+            "track_width_mm": 0.4,
+            "via_diameter_mm": 0.8,
+            "via_drill_mm": 0.4
+          },
+          "NFC_RX": {
+            "track_width_mm": 0.2,
+            "via_diameter_mm": 0.6,
+            "via_drill_mm": 0.3
+          },
+          "P3V3": {
+            "track_width_mm": 0.6,
+            "via_diameter_mm": 0.8,
+            "via_drill_mm": 0.4
+          },
+          "SPK_OUT": {
+            "track_width_mm": 0.3,
+            "via_diameter_mm": 0.6,
+            "via_drill_mm": 0.3
+          },
+          "SWITCH_NODE": {
+            "track_width_mm": 0.6,
+            "via_diameter_mm": 0.8,
+            "via_drill_mm": 0.4
+          },
+          "SYS_MAIN": {
+            "track_width_mm": 0.8,
+            "via_diameter_mm": 0.8,
+            "via_drill_mm": 0.4
+          },
+          "USB_D": {
+            "track_width_mm": 0.25,
+            "via_diameter_mm": 0.55,
+            "via_drill_mm": 0.25
+          },
+          "VBUS_CHG": {
+            "track_width_mm": 0.5,
+            "via_diameter_mm": 0.8,
+            "via_drill_mm": 0.4
+          }
+        },
+        "netclass_source": {
+          "classes": [
+            "ACC_3V3",
+            "ACC_5V",
+            "BAT_MAIN",
+            "Default",
+            "GND",
+            "I2C",
+            "I2S",
+            "LED_BOOST",
+            "NFC_5V_PA",
+            "NFC_OSC",
+            "NFC_RF",
+            "NFC_RX",
+            "P3V3",
+            "SPK_OUT",
+            "SWITCH_NODE",
+            "SYS_MAIN",
+            "USB_D",
+            "VBUS_CHG"
+          ],
+          "found": true,
+          "sha256": "9b758a753f771b953ae3871b3ed2dc596153f2dc414759686c2cd8b3507e926b",
+          "source": "/tmp/aqroot-demo-maze-tbgafo8g/aqroot-Beta-v2.kicad_pro"
+        },
+        "ok": true,
+        "pours_removed_claimed": [],
+        "pre_pads_dropped_as_moved": [],
+        "priced": [
+          {
+            "admit": true,
+            "body": {
+              "area_mm2": 161.735,
+              "exempt": true,
+              "pads": [
+                "C38.2",
+                "C65.2",
+                "C66.2",
+                "R100.2",
+                "U16.4",
+                "U21.4"
+              ],
+              "post_island": 50,
+              "why": null
+            },
+            "fragments": [
+              {
+                "admit": true,
+                "area_mm2": 39.33,
+                "margin_x": 1.743,
+                "pads": [
+                  "C19.2",
+                  "C78.2"
+                ],
+                "post_island": 51,
+                "pp3_verdict": "BONDED",
+                "price": {
+                  "barrels": [
+                    {
+                      "amps": 1.902,
+                      "drill_mm": 0.3,
+                      "wall_mm2": 0.025525,
+                      "xy_mm": [
+                        43.88,
+                        37.7
+                      ]
+                    },
+                    {
+                      "amps": 1.902,
+                      "drill_mm": 0.3,
+                      "wall_mm2": 0.025525,
+                      "xy_mm": [
+                        48.84,
+                        36.8
+                      ]
+                    },
+                    {
+                      "amps": 1.902,
+                      "drill_mm": 0.3,
+                      "wall_mm2": 0.025525,
+                      "xy_mm": [
+                        50.98,
+                        33.6
+                      ]
+                    },
+                    {
+                      "amps": 1.902,
+                      "drill_mm": 0.3,
+                      "wall_mm2": 0.025525,
+                      "xy_mm": [
+                        43.7,
+                        38.3
+                      ]
+                    },
+                    {
+                      "amps": 1.902,
+                      "drill_mm": 0.3,
+                      "wall_mm2": 0.025525,
+                      "xy_mm": [
+                        51.2,
+                        34.3
+                      ]
+                    }
+                  ],
+                  "barrels_into_plane": 5,
+                  "barrels_without_drill": [],
+                  "bond_amps_parallel": 9.51,
+                  "bottleneck": "FRAGMENT_COPPER",
+                  "dT_K": 10.0,
+                  "internal": [
+                    {
+                      "amps": 3.573,
+                      "mm": 0.402,
+                      "mohm": 0.114,
+                      "pad": "C78.2",
+                      "width_mm": 1.75
+                    },
+                    {
+                      "amps": 3.499,
+                      "mm": 2.455,
+                      "mohm": 0.715,
+                      "pad": "C83.2",
+                      "width_mm": 1.7
+                    },
+                    {
+                      "amps": 1.743,
+                      "mm": 1.124,
+                      "mohm": 0.857,
+                      "pad": "C19.2",
+                      "width_mm": 0.65
+                    }
+                  ],
+                  "internal_min_amps": 1.743,
+                  "internal_min_width_mm": 0.65,
+                  "priced_amps": 1.743,
+                  "unmeasurable_pads": []
+                },
+                "required_amps": 1.0,
+                "return_fragment_bar": {
+                  "bar_amps": 1.0,
+                  "bar_from": "RETURN_NEIGHBOUR_RAIL",
+                  "boundary": {
+                    "bond_amps_parallel": 9.51,
+                    "note": "KCL at the fragment boundary: everything entering through the pads leaves through the barrels",
+                    "ok": true,
+                    "sum_of_pad_bars": 4.185
+                  },
+                  "floor": {
+                    "amps": 0.995,
+                    "dT_K": 10.0,
+                    "netclass": "GND",
+                    "note": "one track of the net's OWN netclass width at this board's copper -- what the board publishes as an adequate conductor for this net",
+                    "track_width_mm": 0.3
+                  },
+                  "limits": "a neighbour on a class section 5 does not price contributes nothing; the MAXIMUM neighbour is charged, not the sum",
+                  "neighbour_max_amps": 1.0,
+                  "neighbour_rails": [
+                    {
+                      "gnd_pad": "C19.2",
+                      "other_net": "/NFC_SUPPLY",
+                      "other_netclass": "P3V3",
+                      "other_pad": "1",
+                      "part": "C19",
+                      "published_amps": 1.0
+                    }
+                  ],
+                  "note": "D-709: the ADMISSION is the per-pad clause below; `bar_amps` is the fragment-wide MAXIMUM, reported for continuity",
+                  "per_pad": [
+                    {
+                      "bar_amps": 1.0,
+                      "bar_from": "RETURN_NEIGHBOUR_RAIL",
+                      "ok": true,
+                      "pad": "C19.2",
+                      "path_amps": 1.743
+                    },
+                    {
+                      "bar_amps": 0.995,
+                      "bar_from": "RETURN_FLOOR_ONE_NETCLASS_TRACK",
+                      "ok": true,
+                      "pad": "C78.2",
+                      "path_amps": 3.573
+                    },
+                    {
+                      "bar_amps": 2.19,
+                      "bar_from": "RETURN_NEIGHBOUR_RAIL",
+                      "ok": true,
+                      "pad": "C83.2",
+                      "path_amps": 3.499
+                    }
+                  ]
+                },
+                "severed_neck": {
+                  "amps": 1.335,
+                  "note": "the narrowest place on the widest PRE path from the fragment's pads to the body's; under-stated by a geodesic that reaches its own search window, which is why it is published and not charged",
+                  "probes": [
+                    {
+                      "body_pad": "C65.2",
+                      "frag_pad": "C78.2",
+                      "mm": 20.196,
+                      "width_mm": 0.45
+                    },
+                    {
+                      "body_pad": "R100.2",
+                      "frag_pad": "C78.2",
+                      "mm": 20.176,
+                      "width_mm": 0.15
+                    },
+                    {
+                      "body_pad": "C65.2",
+                      "frag_pad": "C19.2",
+                      "mm": 28.015,
+                      "width_mm": 0.4
+                    },
+                    {
+                      "body_pad": "R100.2",
+                      "frag_pad": "C19.2",
+                      "mm": 28.068,
+                      "width_mm": 0.15
+                    }
+                  ],
+                  "width_mm": 0.45
+                },
+                "why": "BOND_PRICED_PER_PAD_AND_AT_THE_RETURN_BOUNDARY"
+              }
+            ],
+            "layer": "B.Cu",
+            "net": "GND",
+            "netclass": "GND",
+            "pour": "GND|B|38685722-44ee-566f-b52b-89a56220a9e0",
+            "pre_area_mm2": 205.12,
+            "pre_island": 48,
+            "published_amps": null,
+            "published_figures": null
+          }
+        ],
+        "published_rail_currents": {
+          "ACC_3V3": 0.76,
+          "ACC_5V": 0.7,
+          "BAT_MAIN": 3.125,
+          "LED_BOOST": 0.09,
+          "NFC_5V_PA_PENDING": 0.5,
+          "P3V3": 1.0,
+          "SPK_OUT": 0.41,
+          "SYS_MAIN": 2.19,
+          "VBUS_CHG": 1.1
+        },
+        "published_table_source": {
+          "classes": [
+            "ACC_3V3",
+            "ACC_5V",
+            "BAT_MAIN",
+            "LED_BOOST",
+            "NFC_5V_PA_PENDING",
+            "P3V3",
+            "SPK_OUT",
+            "SYS_MAIN",
+            "VBUS_CHG"
+          ],
+          "found": true,
+          "sha256": "912a34459f36d8122b7d138fa0a8811a10257c4bf1df952dfe270f5d8aefd727",
+          "source": "/tmp/aqroot-demo-maze-tbgafo8g/aqroot-Beta-v2.kicad_dru"
+        },
+        "refused": [],
+        "return_controls": {
+          "netclass_floor": {
+            "amps": 0.995,
+            "dT_K": 10.0,
+            "netclass": "GND",
+            "track_width_mm": 0.3
+          },
+          "ok": true,
+          "probes": [
+            {
+              "bar_from": "RETURN_FLOOR_ONE_NETCLASS_TRACK",
+              "behaved": true,
+              "control": "unpriced_neighbours_fall_to_the_floor",
+              "expected": 0.995,
+              "floor_amps": 0.995,
+              "got": 0.995,
+              "track_width_mm": 0.3
+            },
+            {
+              "bar_from": "RETURN_NEIGHBOUR_RAIL",
+              "behaved": true,
+              "control": "battery_neighbour_raises_the_bar",
+              "expected": 3.125,
+              "got": 3.125,
+              "neighbour": [
+                "BAT_MAIN"
+              ]
+            },
+            {
+              "behaved": true,
+              "control": "priced_neighbour_below_the_floor_does_not_lower_it",
+              "expected": 1.0,
+              "got": 1.0
+            },
+            {
+              "behaved": true,
+              "control": "the_largest_neighbour_is_the_one_charged",
+              "expected": 3.125,
+              "got": 3.125,
+              "n_neighbours": 2
+            },
+            {
+              "behaved": true,
+              "control": "a_net_with_no_netclass_conductor_has_no_floor",
+              "expected": null,
+              "got": null
+            },
+            {
+              "behaved": true,
+              "boundary": {
+                "bond_amps_parallel": 14.348,
+                "note": "KCL at the fragment boundary: everything entering through the pads leaves through the barrels",
+                "ok": true,
+                "sum_of_pad_bars": 4.125
+              },
+              "control": "the_battery_pad_on_its_own_barrel_does_not_condemn_its_neighbour",
+              "expected": true,
+              "got": true,
+              "per_pad": [
+                {
+                  "bar_amps": 3.125,
+                  "ok": true,
+                  "pad": "C36.2",
+                  "path_amps": 5.282
+                },
+                {
+                  "bar_amps": 1.0,
+                  "ok": true,
+                  "pad": "C5.2",
+                  "path_amps": 2.295
+                }
+              ],
+              "why": "BOND_PRICED_PER_PAD_AND_AT_THE_RETURN_BOUNDARY"
+            },
+            {
+              "behaved": true,
+              "boundary": {
+                "bond_amps_parallel": 14.348,
+                "note": "KCL at the fragment boundary: everything entering through the pads leaves through the barrels",
+                "ok": true,
+                "sum_of_pad_bars": 4.125
+              },
+              "control": "battery_pad_on_the_weak_path_is_REFUSED",
+              "expected": false,
+              "got": false,
+              "per_pad": [
+                {
+                  "bar_amps": 3.125,
+                  "ok": false,
+                  "pad": "C36.2",
+                  "path_amps": 2.295
+                },
+                {
+                  "bar_amps": 1.0,
+                  "ok": true,
+                  "pad": "C5.2",
+                  "path_amps": 5.282
+                }
+              ],
+              "why": "PAD_RETURN_UNDER_PRICED"
+            },
+            {
+              "behaved": true,
+              "boundary": {
+                "bond_amps_parallel": 14.348,
+                "note": "KCL at the fragment boundary: everything entering through the pads leaves through the barrels",
+                "ok": true,
+                "sum_of_pad_bars": 0.995
+              },
+              "control": "a_signal_pad_below_the_floor_is_refused",
+              "expected": false,
+              "got": false,
+              "per_pad": [
+                {
+                  "bar_amps": 0.995,
+                  "ok": false,
+                  "pad": "C45.2",
+                  "path_amps": 0.742
+                }
+              ],
+              "why": "PAD_RETURN_UNDER_PRICED"
+            },
+            {
+              "behaved": true,
+              "boundary": {
+                "bond_amps_parallel": 14.348,
+                "note": "KCL at the fragment boundary: everything entering through the pads leaves through the barrels",
+                "ok": true,
+                "sum_of_pad_bars": 0.995
+              },
+              "control": "a_signal_pad_at_the_floor_is_admitted",
+              "expected": true,
+              "got": true,
+              "per_pad": [
+                {
+                  "bar_amps": 0.995,
+                  "ok": true,
+                  "pad": "C45.2",
+                  "path_amps": 0.995
+                }
+              ],
+              "why": "BOND_PRICED_PER_PAD_AND_AT_THE_RETURN_BOUNDARY"
+            },
+            {
+              "behaved": true,
+              "boundary": {
+                "bond_amps_parallel": 14.348,
+                "note": "KCL at the fragment boundary: everything entering through the pads leaves through the barrels",
+                "ok": true,
+                "sum_of_pad_bars": 0.995
+              },
+              "control": "pad_bar_located_one_ppm_below",
+              "expected": false,
+              "got": false,
+              "per_pad": [
+                {
+                  "bar_amps": 0.995,
+                  "ok": false,
+                  "pad": "C45.2",
+                  "path_amps": 0.9949990049999999
+                }
+              ],
+              "why": "PAD_RETURN_UNDER_PRICED"
+            },
+            {
+              "behaved": true,
+              "boundary": {
+                "bond_amps_parallel": 3.0,
+                "note": "KCL at the fragment boundary: everything entering through the pads leaves through the barrels",
+                "ok": false,
+                "sum_of_pad_bars": 5.0
+              },
+              "control": "the_boundary_sum_refuses_a_bond_every_pad_passes",
+              "expected": false,
+              "got": false,
+              "per_pad": [
+                {
+                  "bar_amps": 1.0,
+                  "ok": true,
+                  "pad": "C60.2",
+                  "path_amps": 5.282
+                },
+                {
+                  "bar_amps": 1.0,
+                  "ok": true,
+                  "pad": "C61.2",
+                  "path_amps": 5.282
+                },
+                {
+                  "bar_amps": 1.0,
+                  "ok": true,
+                  "pad": "C62.2",
+                  "path_amps": 5.282
+                },
+                {
+                  "bar_amps": 1.0,
+                  "ok": true,
+                  "pad": "C63.2",
+                  "path_amps": 5.282
+                },
+                {
+                  "bar_amps": 1.0,
+                  "ok": true,
+                  "pad": "C64.2",
+                  "path_amps": 5.282
+                }
+              ],
+              "why": "RETURN_BOUNDARY_UNDER_PRICED"
+            },
+            {
+              "behaved": true,
+              "boundary": {
+                "bond_amps_parallel": 5.0,
+                "note": "KCL at the fragment boundary: everything entering through the pads leaves through the barrels",
+                "ok": true,
+                "sum_of_pad_bars": 5.0
+              },
+              "control": "the_same_pads_are_admitted_when_the_boundary_carries_the_sum",
+              "expected": true,
+              "got": true,
+              "per_pad": [
+                {
+                  "bar_amps": 1.0,
+                  "ok": true,
+                  "pad": "C60.2",
+                  "path_amps": 5.282
+                },
+                {
+                  "bar_amps": 1.0,
+                  "ok": true,
+                  "pad": "C61.2",
+                  "path_amps": 5.282
+                },
+                {
+                  "bar_amps": 1.0,
+                  "ok": true,
+                  "pad": "C62.2",
+                  "path_amps": 5.282
+                },
+                {
+                  "bar_amps": 1.0,
+                  "ok": true,
+                  "pad": "C63.2",
+                  "path_amps": 5.282
+                },
+                {
+                  "bar_amps": 1.0,
+                  "ok": true,
+                  "pad": "C64.2",
+                  "path_amps": 5.282
+                }
+              ],
+              "why": "BOND_PRICED_PER_PAD_AND_AT_THE_RETURN_BOUNDARY"
+            },
+            {
+              "behaved": true,
+              "boundary": null,
+              "control": "stranded_refused_however_priced_on_a_return_net",
+              "expected": false,
+              "got": false,
+              "per_pad": [],
+              "why": "PP3_NOT_BONDED"
+            },
+            {
+              "behaved": true,
+              "boundary": null,
+              "control": "an_unmeasurable_pad_refuses",
+              "expected": false,
+              "got": false,
+              "per_pad": [],
+              "why": "BOND_NOT_MEASURABLE"
+            }
+          ],
+          "reference_amps": {
+            "d619_real_fragment": 2.552,
+            "zone_min_thickness_0p200mm": 0.742
+          }
+        },
+        "return_nets": {
+          "GND": {
+            "netclass": "GND",
+            "plane_area_mm2": 18982.016,
+            "reserved_layers": [
+              "I1",
+              "I4"
+            ]
+          }
+        },
+        "splits": [
+          {
+            "layer": "B.Cu",
+            "net": "GND",
+            "parts": [
+              {
+                "area_mm2": 161.735,
+                "body": true,
+                "pads": [
+                  "C38.2",
+                  "C65.2",
+                  "C66.2",
+                  "R100.2",
+                  "U16.4",
+                  "U21.4"
+                ],
+                "post_island": 50
+              },
+              {
+                "area_mm2": 39.33,
+                "body": false,
+                "pads": [
+                  "C19.2",
+                  "C78.2"
+                ],
+                "post_island": 51
+              }
+            ],
+            "pour": "GND|B|38685722-44ee-566f-b52b-89a56220a9e0",
+            "pre_area_mm2": 205.12,
+            "pre_island": 48,
+            "pre_pads": 8
+          }
+        ]
+      },
+      "PP3": {
+        "fragments": [
+          {
+            "area_mm2": 39.33,
+            "barrels": 5,
+            "barrels_into_reserved_planes": 5,
+            "detail": [
+              {
+                "planes": [
+                  {
+                    "area_mm2": 9491.008,
+                    "layer": "In1.Cu",
+                    "zone": "In1 GND REFERENCE"
+                  },
+                  {
+                    "area_mm2": 9491.008,
+                    "layer": "In4.Cu",
+                    "zone": "In1 GND REFERENCE_1"
+                  }
+                ],
+                "xy_mm": [
+                  43.88,
+                  37.7
+                ]
+              },
+              {
+                "planes": [
+                  {
+                    "area_mm2": 9491.008,
+                    "layer": "In1.Cu",
+                    "zone": "In1 GND REFERENCE"
+                  },
+                  {
+                    "area_mm2": 9491.008,
+                    "layer": "In4.Cu",
+                    "zone": "In1 GND REFERENCE_1"
+                  }
+                ],
+                "xy_mm": [
+                  48.84,
+                  36.8
+                ]
+              },
+              {
+                "planes": [
+                  {
+                    "area_mm2": 9491.008,
+                    "layer": "In1.Cu",
+                    "zone": "In1 GND REFERENCE"
+                  },
+                  {
+                    "area_mm2": 9491.008,
+                    "layer": "In4.Cu",
+                    "zone": "In1 GND REFERENCE_1"
+                  }
+                ],
+                "xy_mm": [
+                  50.98,
+                  33.6
+                ]
+              },
+              {
+                "planes": [
+                  {
+                    "area_mm2": 9491.008,
+                    "layer": "In1.Cu",
+                    "zone": "In1 GND REFERENCE"
+                  },
+                  {
+                    "area_mm2": 9491.008,
+                    "layer": "In4.Cu",
+                    "zone": "In1 GND REFERENCE_1"
+                  }
+                ],
+                "xy_mm": [
+                  43.7,
+                  38.3
+                ]
+              },
+              {
+                "planes": [
+                  {
+                    "area_mm2": 9491.008,
+                    "layer": "In1.Cu",
+                    "zone": "In1 GND REFERENCE"
+                  },
+                  {
+                    "area_mm2": 9491.008,
+                    "layer": "In4.Cu",
+                    "zone": "In1 GND REFERENCE_1"
+                  }
+                ],
+                "xy_mm": [
+                  51.2,
+                  34.3
+                ]
+              }
+            ],
+            "layer": "B.Cu",
+            "net": "GND",
+            "pads": [
+              "C19.2",
+              "C78.2"
+            ],
+            "post_island": 51,
+            "pour": "GND|B|38685722-44ee-566f-b52b-89a56220a9e0",
+            "unbonded_body": false,
+            "verdict": "BONDED"
+          }
+        ],
+        "ok": true,
+        "reserved_inner_planes": {
+          "I1": [
+            "GND"
+          ],
+          "I3": [
+            "+3V3"
+          ],
+          "I4": [
+            "GND"
+          ]
+        }
+      },
+      "PP4": {
+        "condemned_fragments_skipped": [],
+        "ok": true,
+        "probes": [
+          {
+            "flips": true,
+            "pads": [
+              "C19.2",
+              "C78.2"
+            ],
+            "post_island": 51,
+            "pour": "GND|B|38685722-44ee-566f-b52b-89a56220a9e0",
+            "with_barrels": "BONDED",
+            "without_barrels": "STRANDED"
+          }
+        ]
+      }
+    },
+    "failed_clauses": [],
+    "ok": true,
+    "pre_board": "/home/aqroot8/aqroot-demo/hardware/demo/kicad/aqroot-demo/aqroot-Beta-v2.kicad_pcb",
+    "report": "/tmp/aqroot-demo-maze-tbgafo8g/pour-partition.json",
+    "results": {
+      "PP1": true,
+      "PP2": true,
+      "PP3": true,
+      "PP4": true
+    }
+  },
+  "preservation": {
+    "added_object_nets": [
+      "/03_SPI_A_DISPLAY_SD/LED_K",
+      "/03_SPI_A_DISPLAY_SD/LED_K_PANEL",
+      "/DISP_BL_CTL"
+    ],
+    "foreign_added_nets": [],
+    "licensed_removals": 0,
+    "removed_objects": [],
+    "reverted_failures_clean": true,
+    "rule_area_inventory_ok": true,
+    "rule_areas_added": [],
+    "rule_areas_removed": [],
+    "unlicensed_removals": [],
+    "zone_inventory_ok": true,
+    "zones_added": [],
+    "zones_removed": []
+  },
+  "promoted": true,
+  "promoted_sha256": "bdf1376cf95289452ca24150eb0738f7a9dacddf40bb422f2575869b05cf1ce6",
+  "promotion_candidate": true,
+  "refused_clauses": [],
+  "requested_nets": [
+    "/03_SPI_A_DISPLAY_SD/LED_K",
+    "/03_SPI_A_DISPLAY_SD/LED_K_PANEL",
+    "/DISP_BL_CTL"
+  ],
+  "routed": [
+    {
+      "already": true,
+      "contract": {
+        "clr": 300000,
+        "clr_pad": 200000,
+        "escape_floor": 300000,
+        "guarded_layers": {},
+        "layers": [
+          "F",
+          "B",
+          "I2"
+        ],
+        "netclass": "LED_BOOST",
+        "reserved_inner_planes": {
+          "I1": [
+            "GND"
+          ],
+          "I3": [
+            "+3V3"
+          ],
+          "I4": [
+            "GND"
+          ]
+        },
+        "trunk_floor": null,
+        "via_dia": 600000,
+        "via_drill": 300000,
+        "width": 300000
+      },
+      "joins": [],
+      "mm": 0.0,
+      "mode": "maze+tapfirst",
+      "net": "/03_SPI_A_DISPLAY_SD/LED_K",
+      "ok": true,
+      "seconds": 9.1,
+      "tap": {
+        "asked": 1,
+        "declined": [],
+        "declined_n": 0,
+        "emitted": true,
+        "failures": [],
+        "first": true,
+        "joined": 1,
+        "max_mm": 12.0,
+        "mm": 2.3875,
+        "net": "/03_SPI_A_DISPLAY_SD/LED_K",
+        "ok": true,
+        "taps": [
+          {
+            "at": [
+              9.27,
+              111.15
+            ],
+            "gap_mm": 0.4106,
+            "island": 0,
+            "land": "Q11.2",
+            "launches": [
+              {
+                "a_xy": [
+                  9.3625,
+                  111.55
+                ],
+                "b_xy": [
+                  10.25,
+                  110.65
+                ],
+                "base_dir": true,
+                "centre": true,
+                "layer": "B",
+                "mm": 1.264,
+                "necked": false,
+                "offcentre_mm": 0.0,
+                "pad": "Q11.2",
+                "trunk_width": 300000,
+                "width": 300000
+              }
+            ],
+            "layer": "I2",
+            "layers": [
+              "B",
+              "I2"
+            ],
+            "mm": 2.3875,
+            "stub_mm": 1.264,
+            "target": "I2 9.270,111.150-4.020,105.940",
+            "target_island": 1,
+            "via_xy": [
+              [
+                9.45,
+                110.95
+              ]
+            ],
+            "vias": 1
+          }
+        ],
+        "vias": 1
+      },
+      "vias": 0
+    },
+    {
+      "already": true,
+      "contract": {
+        "clr": 300000,
+        "clr_pad": 200000,
+        "escape_floor": 300000,
+        "guarded_layers": {},
+        "layers": [
+          "F",
+          "B",
+          "I2"
+        ],
+        "netclass": "LED_BOOST",
+        "reserved_inner_planes": {
+          "I1": [
+            "GND"
+          ],
+          "I3": [
+            "+3V3"
+          ],
+          "I4": [
+            "GND"
+          ]
+        },
+        "trunk_floor": null,
+        "via_dia": 600000,
+        "via_drill": 300000,
+        "width": 300000
+      },
+      "joins": [],
+      "mm": 0.0,
+      "mode": "maze+tapfirst",
+      "net": "/03_SPI_A_DISPLAY_SD/LED_K_PANEL",
+      "ok": true,
+      "seconds": 9.8,
+      "tap": {
+        "asked": 1,
+        "declined": [],
+        "declined_n": 0,
+        "emitted": true,
+        "failures": [],
+        "first": true,
+        "joined": 1,
+        "max_mm": 12.0,
+        "mm": 3.55,
+        "net": "/03_SPI_A_DISPLAY_SD/LED_K_PANEL",
+        "ok": true,
+        "taps": [
+          {
+            "at": [
+              10.2901,
+              111.5506
+            ],
+            "gap_mm": 1.3412,
+            "island": 1,
+            "land": "Q11.3",
+            "launches": [
+              {
+                "a_xy": [
+                  11.2375,
+                  112.5
+                ],
+                "b_xy": [
+                  11.25,
+                  111.6
+                ],
+                "base_dir": true,
+                "centre": true,
+                "layer": "B",
+                "mm": 0.9001,
+                "necked": false,
+                "offcentre_mm": 0.0,
+                "pad": "Q11.3",
+                "trunk_width": 300000,
+                "width": 300000
+              }
+            ],
+            "layer": "I2",
+            "layers": [
+              "B",
+              "I2"
+            ],
+            "mm": 3.55,
+            "stub_mm": 0.9001,
+            "target": "I2 19.340,102.520-10.290,111.551",
+            "target_island": 0,
+            "via_xy": [
+              [
+                10.95,
+                112.8
+              ]
+            ],
+            "vias": 1
+          }
+        ],
+        "vias": 1
+      },
+      "vias": 0
+    },
+    {
+      "already": true,
+      "contract": {
+        "clr": 200000,
+        "clr_pad": 200000,
+        "escape_floor": 200000,
+        "guarded_layers": {},
+        "layers": [
+          "F",
+          "B",
+          "I2"
+        ],
+        "netclass": "Default",
+        "reserved_inner_planes": {
+          "I1": [
+            "GND"
+          ],
+          "I3": [
+            "+3V3"
+          ],
+          "I4": [
+            "GND"
+          ]
+        },
+        "trunk_floor": null,
+        "via_dia": 600000,
+        "via_drill": 300000,
+        "width": 200000
+      },
+      "joins": [],
+      "mm": 0.0,
+      "mode": "maze+tapfirst",
+      "net": "/DISP_BL_CTL",
+      "ok": true,
+      "seconds": 15.1,
+      "tap": {
+        "asked": 1,
+        "declined": [],
+        "declined_n": 0,
+        "emitted": true,
+        "failures": [],
+        "first": true,
+        "joined": 1,
+        "max_mm": 12.0,
+        "mm": 10.3244,
+        "net": "/DISP_BL_CTL",
+        "ok": true,
+        "taps": [
+          {
+            "at": [
+              4.0,
+              121.95
+            ],
+            "gap_mm": 10.0502,
+            "island": 0,
+            "land": "Q11.1",
+            "launches": [
+              {
+                "a_xy": [
+                  9.3625,
+                  113.45
+                ],
+                "b_xy": [
+                  8.55,
+                  114.25
+                ],
+                "base_dir": true,
+                "centre": true,
+                "layer": "B",
+                "mm": 1.1402,
+                "necked": false,
+                "offcentre_mm": 0.0,
+                "pad": "Q11.1",
+                "trunk_width": 200000,
+                "width": 200000
+              }
+            ],
+            "layer": "B",
+            "layers": [
+              "B",
+              "I2",
+              "B"
+            ],
+            "mm": 10.3244,
+            "stub_mm": 1.1402,
+            "target": "B 3.038,121.950-4.000,121.950",
+            "target_island": 1,
+            "via_xy": [
+              [
+                6.95,
+                119.0
+              ],
+              [
+                4.45,
+                121.5
+              ]
+            ],
+            "vias": 2
+          }
+        ],
+        "vias": 2
+      },
+      "vias": 0
+    }
+  ],
+  "routed_nets": [
+    "/03_SPI_A_DISPLAY_SD/LED_K",
+    "/03_SPI_A_DISPLAY_SD/LED_K_PANEL",
+    "/DISP_BL_CTL"
+  ],
+  "schema": 1,
+  "taps": {
+    "first": true,
+    "joined": 3,
+    "max_mm": 12.0,
+    "nets": [
+      {
+        "asked": 1,
+        "declined": [],
+        "declined_n": 0,
+        "emitted": true,
+        "failures": [],
+        "first": true,
+        "joined": 1,
+        "max_mm": 12.0,
+        "mm": 2.3875,
+        "net": "/03_SPI_A_DISPLAY_SD/LED_K",
+        "ok": true,
+        "taps": [
+          {
+            "at": [
+              9.27,
+              111.15
+            ],
+            "gap_mm": 0.4106,
+            "island": 0,
+            "land": "Q11.2",
+            "launches": [
+              {
+                "a_xy": [
+                  9.3625,
+                  111.55
+                ],
+                "b_xy": [
+                  10.25,
+                  110.65
+                ],
+                "base_dir": true,
+                "centre": true,
+                "layer": "B",
+                "mm": 1.264,
+                "necked": false,
+                "offcentre_mm": 0.0,
+                "pad": "Q11.2",
+                "trunk_width": 300000,
+                "width": 300000
+              }
+            ],
+            "layer": "I2",
+            "layers": [
+              "B",
+              "I2"
+            ],
+            "mm": 2.3875,
+            "stub_mm": 1.264,
+            "target": "I2 9.270,111.150-4.020,105.940",
+            "target_island": 1,
+            "via_xy": [
+              [
+                9.45,
+                110.95
+              ]
+            ],
+            "vias": 1
+          }
+        ],
+        "vias": 1
+      },
+      {
+        "asked": 1,
+        "declined": [],
+        "declined_n": 0,
+        "emitted": true,
+        "failures": [],
+        "first": true,
+        "joined": 1,
+        "max_mm": 12.0,
+        "mm": 3.55,
+        "net": "/03_SPI_A_DISPLAY_SD/LED_K_PANEL",
+        "ok": true,
+        "taps": [
+          {
+            "at": [
+              10.2901,
+              111.5506
+            ],
+            "gap_mm": 1.3412,
+            "island": 1,
+            "land": "Q11.3",
+            "launches": [
+              {
+                "a_xy": [
+                  11.2375,
+                  112.5
+                ],
+                "b_xy": [
+                  11.25,
+                  111.6
+                ],
+                "base_dir": true,
+                "centre": true,
+                "layer": "B",
+                "mm": 0.9001,
+                "necked": false,
+                "offcentre_mm": 0.0,
+                "pad": "Q11.3",
+                "trunk_width": 300000,
+                "width": 300000
+              }
+            ],
+            "layer": "I2",
+            "layers": [
+              "B",
+              "I2"
+            ],
+            "mm": 3.55,
+            "stub_mm": 0.9001,
+            "target": "I2 19.340,102.520-10.290,111.551",
+            "target_island": 0,
+            "via_xy": [
+              [
+                10.95,
+                112.8
+              ]
+            ],
+            "vias": 1
+          }
+        ],
+        "vias": 1
+      },
+      {
+        "asked": 1,
+        "declined": [],
+        "declined_n": 0,
+        "emitted": true,
+        "failures": [],
+        "first": true,
+        "joined": 1,
+        "max_mm": 12.0,
+        "mm": 10.3244,
+        "net": "/DISP_BL_CTL",
+        "ok": true,
+        "taps": [
+          {
+            "at": [
+              4.0,
+              121.95
+            ],
+            "gap_mm": 10.0502,
+            "island": 0,
+            "land": "Q11.1",
+            "launches": [
+              {
+                "a_xy": [
+                  9.3625,
+                  113.45
+                ],
+                "b_xy": [
+                  8.55,
+                  114.25
+                ],
+                "base_dir": true,
+                "centre": true,
+                "layer": "B",
+                "mm": 1.1402,
+                "necked": false,
+                "offcentre_mm": 0.0,
+                "pad": "Q11.1",
+                "trunk_width": 200000,
+                "width": 200000
+              }
+            ],
+            "layer": "B",
+            "layers": [
+              "B",
+              "I2",
+              "B"
+            ],
+            "mm": 10.3244,
+            "stub_mm": 1.1402,
+            "target": "B 3.038,121.950-4.000,121.950",
+            "target_island": 1,
+            "via_xy": [
+              [
+                6.95,
+                119.0
+              ],
+              [
+                4.45,
+                121.5
+              ]
+            ],
+            "vias": 2
+          }
+        ],
+        "vias": 2
+      }
+    ],
+    "pairs": 3,
+    "requested": true,
+    "stub_forbidden": [
+      "USB_D",
+      "NFC_RF",
+      "NFC_RX",
+      "SWITCH_NODE",
+      "SPK_OUT"
+    ]
+  }
+}

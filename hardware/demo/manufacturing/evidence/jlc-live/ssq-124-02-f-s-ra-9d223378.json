@@ -1,0 +1,99 @@
+{
+ "endpoint": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
+ "exhausted": true,
+ "fetched_utc": "2026-09-18T06:54:57Z",
+ "keyword": "SSQ-124-02-F-S-RA",
+ "page_size": 25,
+ "pages": 2,
+ "records": [
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-55℃~+125℃"
+    },
+    {
+     "attribute_name_en": "Number of Rows",
+     "attribute_value_name": "1"
+    },
+    {
+     "attribute_name_en": "Voltage Rating (Max)",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Insulation Height",
+     "attribute_value_name": "2.41mm"
+    },
+    {
+     "attribute_name_en": "Number of Positions",
+     "attribute_value_name": "24P"
+    },
+    {
+     "attribute_name_en": "Contact Plating",
+     "attribute_value_name": "Tin"
+    },
+    {
+     "attribute_name_en": "Pitch",
+     "attribute_value_name": "2.54mm"
+    },
+    {
+     "attribute_name_en": "Mounting Type",
+     "attribute_value_name": "Right Angle"
+    }
+   ],
+   "componentBrandEn": "Samtec",
+   "componentCode": "C6686579",
+   "componentLibraryType": "expand",
+   "componentModelEn": "SSQ-124-02-F-S-RA",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 10.952,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 29,
+     "productPrice": 10.952,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 10.952,
+     "startNumber": 30
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 4.3707,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 4.2242,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 4.1526,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "Push-Pull,P=2.54mm",
+   "componentTypeEn": "Female Headers",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2312231001_Samtec-SSQ-124-02-F-S-RA_C6686579.pdf",
+   "describe": "-55℃~+125℃ 1 2.41mm 2.54mm 24P Right Angle Tin Push-Pull,P=2.54mm Female Headers ROHS",
+   "erpComponentName": "间距:2.54mm 弯插",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/female-headers_samtec-ssq-124-02-f-s-ra_C6686579.html",
+   "leastPatchNumber": 0,
+   "lossNumber": 0,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  }
+ ],
+ "returned": 1,
+ "schema": 1,
+ "total_matches": 1
+}

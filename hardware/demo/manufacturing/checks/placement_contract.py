@@ -272,7 +272,8 @@ def _turn(lands, deg):
 
 
 def foreign_copper_hits(path, refs, clearance_nm):
-    """PL7: copper of a FOREIGN net inside a moved pad's clearance envelope."""
+    """PL7: copper of a FOREIGN net inside a MOVED-or-ADDED pad's clearance
+    envelope (D-751 added the ADDED half)."""
     import pcbnew
     board = pcbnew.LoadBoard(str(path))
     hits = []
@@ -369,7 +370,7 @@ def overlaps(fps):
     return out
 
 
-def judge(pre, post, claimed, released=(), removed=()):
+def judge(pre, post, claimed, released=(), removed=(), added=()):
     """claimed: {ref: (dx_nm, dy_nm)}; released: ("REF.PIN", ...).
 
     Returns (checks, detail).
@@ -377,9 +378,23 @@ def judge(pre, post, claimed, released=(), removed=()):
     fpre, bpre, epre, npre, vpre = pre
     fpost, bpost, epost, npost, vpost = post
 
-    removed = tuple(removed)
-    pl1 = (sorted(set(fpost)) == sorted(set(fpre) - set(removed))
-           and all(r in fpre for r in removed))
+    # D-751 GAVE THIS CONTRACT A WORD FOR "ADDED".  D-712 taught it `--remove`
+    # and nothing ever taught it the opposite, so a transaction that FITS a new
+    # part -- D-750 fitted three: `C83` and `C84`, the local input capacitors
+    # the two boost converters never had, and `Q11`, the backlight's true-off
+    # disconnect -- failed PL1 and PL2 no matter how correct the placement was.
+    # A gate with no way to pass a legitimate act is a gate that gets
+    # overridden, and an override is how an UNdeclared addition would have got
+    # through beside the declared ones.  So the addition is DECLARED, and the
+    # declaration buys nothing: PL4 already measured a new courtyard overlap
+    # board-wide, and PL7 -- which only ever looked at MOVED pads -- now looks
+    # at the added ones too, because a pad that arrives next to foreign copper
+    # is the same defect as a pad that is moved next to it.
+    removed, added = tuple(removed), tuple(added)
+    pl1 = (sorted(set(fpost))
+           == sorted((set(fpre) - set(removed)) | set(added))
+           and all(r in fpre for r in removed)
+           and all(r not in fpre for r in added))
 
     wrong, unclaimed_moved = [], []
     for ref in sorted(set(fpre) & set(fpost)):
@@ -496,6 +511,7 @@ def judge(pre, post, claimed, released=(), removed=()):
         references_added=sorted(set(fpost) - set(fpre)),
         references_removed=sorted(set(fpre) - set(fpost)),
         removals_declared=sorted(set(removed)),
+        additions_declared=sorted(set(added)),
         removal_endpoints_left_behind=left_behind,
         claimed_moves_wrong=wrong,
         unclaimed_footprints_moved=unclaimed_moved,
@@ -553,6 +569,12 @@ def main():
                          "to differ by exactly these, and PL10 requires the "
                          "removed part's copper to be gone with it.  "
                          "Repeatable (D-712)")
+    ap.add_argument("--add", action="append", default=[], metavar="REF",
+                    help="a reference this promotion claims to have ADDED to "
+                         "the board.  PL1 then requires the reference set to "
+                         "differ by exactly these, and PL7 holds the new "
+                         "part's pads to the same foreign-copper clearance a "
+                         "MOVED part's pads get.  Repeatable (D-751)")
     ap.add_argument("--decoy", default=None,
                     help="reference PL6 perturbs; default is the first "
                          "footprint that is not claimed")
@@ -578,7 +600,7 @@ def main():
     pre_path, post_path = stage(a.ref, tmp / "pre"), stage(None, tmp / "post")
     pre, post = read(pre_path), read(post_path)
     checks, detail = judge(pre, post, claimed, tuple(a.release),
-                           tuple(a.remove))
+                           tuple(a.remove), tuple(a.add))
 
     decoy = a.decoy or next(r for r in sorted(pre[0])
                         if r not in claimed and r not in a.remove)
@@ -587,12 +609,22 @@ def main():
     probe.write_bytes(post_path.read_bytes())
     subprocess.run([sys.executable, "-c", PERTURB, str(probe), decoy],
                    check=True, capture_output=True)
-    pchecks, _ = judge(pre, read(probe), claimed, tuple(a.release),
-                       tuple(a.remove))
-    checks["PL6_screen_is_not_vacuous"] = not pchecks["PL2_only_claimed_parts_moved"]
+    pchecks, pdetail = judge(pre, read(probe), claimed, tuple(a.release),
+                             tuple(a.remove), tuple(a.add))
+    # D-751 CLOSED A VACUITY IN THE VACUITY SCREEN.  PL6 read `not
+    # pchecks["PL2"]`, and PL2 is an AND over PL1, so ANY unrelated PL1 failure
+    # -- an undeclared addition, say -- made the perturbed board fail PL2 for a
+    # reason that has nothing to do with the perturbation, and PL6 "passed"
+    # while proving nothing.  It must now NAME the decoy: the 1000 nm nudge has
+    # to appear in the perturbed run's own `unclaimed_footprints_moved` list.
+    named = [m["ref"] for m in pdetail["unclaimed_footprints_moved"]]
+    checks["PL6_screen_is_not_vacuous"] = (
+        not pchecks["PL2_only_claimed_parts_moved"] and decoy in named)
     detail["pl6_decoy"] = decoy
+    detail["pl6_perturbation_named"] = sorted(named)
 
-    hits = foreign_copper_hits(post_path, set(claimed), a.clearance_nm)
+    hits = foreign_copper_hits(post_path, set(claimed) | set(a.add),
+                               a.clearance_nm)
     checks["PL7_moved_pads_clear_foreign_copper"] = not hits
     detail["clearance_nm"] = a.clearance_nm
     detail["foreign_copper_hits"] = hits

@@ -1,21 +1,31 @@
 # AQROOT Demo — FABRICATION HANDOFF
 
 **Board:** `hardware/demo/kicad/aqroot-demo/aqroot-Beta-v2.kicad_pcb`
-**Authority:** `sha256 c7f5c61896269276ecf680266adf23b36b9adc1f3d89bc93be311174498b7406`
+**Authority:** `sha256 bdf1376cf95289452ca24150eb0738f7a9dacddf40bb422f2575869b05cf1ce6`
 **Package:** `hardware/demo/fab/` — 29 files, regenerated at this authority
-**Date:** 2026-09-18 · **Decisions:** D-742 … D-745 · **Prepared for:** independent CTO review
+**Date:** 2026-09-18 · **Decisions:** D-742 … D-751 · **Prepared for:** independent CTO review
+
+> **THIS HANDOFF WAS REOPENED AND RE-ISSUED.**  It was first written at
+> `c7f5c618`.  An external first-spin review (Fable 5.1 + Astra) then found
+> four real defects in that package — a `J5` BOM identity naming the superseded
+> 2×12 `BCS-112-S-D-HE`, a physically floating `U14` `QSTRT`, a charger-input
+> audit computed at the wrong inner-copper thickness, and two boost converters
+> with no local input capacitor.  **D-750 closed all four and dispositioned the
+> other nine items; D-751 finished the transaction and re-ran the whole
+> release suite.**  Read
+> `audits/2026-09-18-d750-first-spin-review-dispositions.md` beside this file.
 
 ---
 
 ## 1. Final board status
 
-77.000 × 148.000 mm stepped outline, 6 copper layers, 3516 tracks, 904 vias,
-71 zones, 309 footprints, 292 fitted references and 16 schematic-DNP.
+77.000 × 148.000 mm stepped outline, 6 copper layers, 3550 tracks, 918 vias,
+71 zones, 312 footprints, 295 fitted references and 16 schematic-DNP.
 
 | measure | value |
 |---|---|
-| retained multi-pad nets | **172** |
-| connected retained nets | **171** |
+| retained multi-pad nets | **173** |
+| connected retained nets | **172** |
 | retained open edges | 1 |
 | **unapproved open edges** | **0** |
 | approved Demo NC | `J5.9`–`J5.12`, `J5.15`–`J5.18` — expected == observed |
@@ -30,9 +40,30 @@ must still be fitted — and **fails if any of those stops being true**.
 
 ## 2. Major design changes in this cycle
 
-**No copper changed.** The board's track, zone and placement signatures are
-byte-identical to the previous authority (`evidence/d743-copper-unchanged.json`);
-the hash moved only because two footprint `Value` fields did.
+**THREE PARTS WERE FITTED AND THE COPPER MOVED** (D-750 and D-751); the
+D-742…D-745 entries below are retained as the history of the previous cycle.
+
+0. **THE FOUR FIRST-SPIN-REVIEW DEFECTS** (D-750, full disposition in
+   `audits/2026-09-18-d750-first-spin-review-dispositions.md`):
+   **`J5`** now names Samtec `SSQ-124-02-G-S-RA` / LCSC `C3323671` in every
+   derived field, not the 2×12 part D-237 superseded eight months ago;
+   **`U14.6` `QSTRT`** is wired to `GND` — it was floating behind a deliberate
+   `no_connect`, and on a 3 µA part that is both a quiescent-current and a
+   state-of-charge defect; **`audit_rail_ampacity.py`** computes at the board's
+   own declared **0.0152 mm** inner foil and the charger input was re-laid
+   **250.8 → 189.8 mm, 440 → 216 mΩ**, which is what buys the 360 min
+   `tMAXCHG` its margin; and **`C83`/`C84`**, two 10 µF parts on the existing
+   `C33`/`C64` BOM line, give `U21` and `U13` the local input capacitance they
+   never had (nearest was 36.6 mm, *named* input part 93.5 mm).
+0a. **`Q11` — THE BACKLIGHT CAN BE TURNED OFF NOW.** TI guarantees the
+   `TPS61169` OFF only when the LED array's minimum Vf exceeds the maximum
+   VIN; this panel is **2.9–3.2 V on a 3.3 V rail**, so the shutdown DC path
+   converged at **≈ 25 mA** — a fifth of full brightness and 82 mW, with no
+   firmware mitigation because `+3V3` is switched by the `SW9` slide switch.
+   One `AO3400A` (same BOM line as `Q1`, LCSC `C20917`) in the panel cathode
+   return, gate on `DISP_BL_CTL`, held off by `R108`.  Outside the regulation
+   loop by construction, so the 109 mA setpoint is unchanged.  **D-751 routed
+   its three nets** — D-750 had fitted it and left them open.
 
 1. **The charger could not complete a charge, and now can.** `R37` 1 kΩ → **390 Ω**
    (`ICHG` 300 mA → **769 mA**) and `R36` 18 kΩ → **13 kΩ** (input limit ILIM500 →
@@ -49,7 +80,7 @@ the hash moved only because two footprint `Value` fields did.
 
 ## 3. Connectivity
 
-`routing_ledger.py`: 171 of 172 retained nets connected, `unapproved_open_edges`
+`routing_ledger.py`: 172 of 173 retained nets connected, `unapproved_open_edges`
 **0**. KiCad reports 17 unconnected items and **every one is accounted for**: 16
 are pads of the sixteen schematic-DNP references (`U13` and its NFC-5 V boost
 network, the DNP 0 Ω bypasses, the DNP speaker-filter caps) and the seventeenth
@@ -66,7 +97,7 @@ controls proving none of them is vacuous.
 
 | run | result |
 |---|---|
-| `--severity-all --schematic-parity` | 199 `lib_footprint_issues` (warning), 17 unconnected, 246 parity warnings, **0 parity errors** |
+| `--severity-all --schematic-parity` | 199 `lib_footprint_issues` — **every one severity WARNING** — 17 unconnected, 246 parity warnings, **0 parity errors**, and **zero** of every other violation class |
 | all five IGNORED rules promoted to error | 2 `missing_courtyard` (`BOSS1`/`BOSS2` mounting bosses), 5 `track_not_centered_on_via`, **zero new** |
 | `connection_width`, probed at 0.20 mm | 81 distinct pairs, 74 benign acute throats, 7 below 0.15 mm, **none load-bearing** |
 | pour islands | 95 filled islands over six layers, **zero orphans** |
@@ -88,11 +119,22 @@ deliberately left alone; the measurement is the deliverable.
 * **`VBATREG` is unchanged at 4.2 V.** The charger ECO moved only the input
   current limit and the charge current; nothing in the protection architecture
   moved.
-* **First absolute power audit.** `audit_rail_ampacity.py` walks each rail's
-  *carrying path* — not its net — self-checks by re-deriving `.kicad_dru`
-  section 5's published table, and reports temperature rise rather than
-  pass/fail. All rails pass; two carry **named, length-bounded exceptions** with
-  controls that fail when they are removed, mis-scoped or overrun.
+* **Absolute power audit, CORRECTED AT D-750 AND RE-JUSTIFIED AT D-751.**
+  `audit_rail_ampacity.py` walks each rail's *carrying path* — not its net —
+  self-checks by re-deriving `.kicad_dru` section 5's published table, and
+  reports temperature rise rather than pass/fail. It now also **reads the
+  board's own `(stackup)` back and fails itself if its constants disagree**:
+  the inner foil is **0.0152 mm**, not the nominal half-ounce 0.0174 mm the
+  tool used to assume, so every inner figure it published before D-750 was
+  14.5 % optimistic. **Six rails, all pass**; four carry **named,
+  length-bounded exceptions** with controls that fail when they are removed,
+  mis-scoped or overrun, and two of those four — the SYS trunk to the southern
+  boosts — are rails **nothing had ever measured**, against a section 5 note
+  that had asked for them since D-185.
+  Each exception's residual is now DERIVED from the board's real dielectrics
+  (`In2.Cu` is 0.4000 mm of core from `In1` and 0.2028 mm of prepreg from
+  `In3`) rather than from a remembered stackup: **1.45 K** on the charger
+  input against the isolated-coupon curve's 66.5 K.
 
 ## 6. USB / RF / NFC
 
@@ -111,9 +153,25 @@ deliberately left alone; the measurement is the deliverable.
 
 `FAB1` provenance · `FAB2` fill · `FAB3` layers · `FAB4` drill · `FAB5` CPL ·
 `FAB6` BOM · `FAB7` sourcing · `FAB8` outline · `FAB9` via-in-pad ·
-`FAB10` via geometry · `FAB11` mask dams — **all PASS** at this authority.
-`contract_regression` runs **16 contracts: all ran, all PASS,
-`all_identical_where_comparable` TRUE, `vacuous` FALSE.**
+`FAB10` via geometry · `FAB11` mask dams · **`FAB12` identity** — **all PASS**
+at this authority, with **seven live negative controls refused inside the
+gate**.
+
+**`FAB12` IS NEW AT D-750 AND IS THE ANSWER TO HOW `J5` SURVIVED.** Every
+other check in the package asks whether the package is internally CONSISTENT,
+and a consistently regenerated *wrong identity* is invisible to a consistency
+check. `FAB12a` reads each BOM row's OWN WORDS — a stated `A × B` geometry, a
+contact count, a pitch — against the footprint's OWN PADS; run against the
+stale released package it reports exactly the real defect and nothing else
+(*`J5` row says `2x12`, footprint is `1 × 24`*). `FAB12b` pins **41 critical
+identities** by name against both the BOM and the board. D-751 added the
+controls that prove neither half is vacuous: they **put the `J5` defect back**
+three ways, and `FAB5` mutates one row of the real `pos-fitted` file four ways
+(180° rotation, +10 mm, flipped side, duplicated row).
+
+`contract_regression` runs **17 contracts: all ran, all PASS**, with
+`protected_copper` **IDENTICAL to the `d746` baseline** — the fifteen protected
+nets and their 406 objects did not move through any of this.
 
 The package declares, in generated notes with `MANIFEST` rows: **via-in-pad in
 135 solderable lands** (resin-filled, capped, plated), **38 vias below the
@@ -143,10 +201,28 @@ bit 6 believing it was `BQ25185_STAT2` when it is `TOUCH_INT_N`.
 | claim | result |
 |---|---|
 | `firmware_hw_map` contract, H1–H6 | **all PASS**, 11 policy controls all REFUSED |
-| expander safe-ordering host test | **40 claims PASS**, 3 controls all caught |
+| expander safe-ordering host test | **59 claims PASS**, **6** controls all caught |
 | SPI-B arbiter host test | **22 claims PASS**, 3 controls all caught |
-| `pio run` over all four environments | **4 SUCCESS**; the Demo image is 320 KB / 4.8 % flash |
-| tracked hardware artifacts vs `HEAD` | **69 of 69 byte-identical** |
+| `pio run` over all four environments | **4 SUCCESS** |
+
+**D-750 AND D-751 CHANGED THE FIRMWARE'S FAULT BEHAVIOUR, AND THE SECOND ONE
+FOUND A BUG THE FIRST HAD LEFT HALF-FIXED.** An external review observed that
+shutdown must attempt every reachable independent control even after one I2C
+error. It was right in three places: `begin()` and `service()` each
+short-circuited on `||`, so a NACK from `U2` meant `U3` — which owns
+`NFC_5V_EN`, both radio resets and both transmit enables, and whose input port
+carries `ACC_POWER_FAULT_N` — was never configured or never serviced; and each
+accessory shutdown gave up after its first failed write. All repaired at
+D-750. ***D-751 then wrote the test, and the test found the rest***:
+`writeOutputs` only moves the driver's shadow when the bus ACKs, so a NACKed
+load-switch write left `ACC_5V_SW_EN` HIGH in the shadow and the following
+unconditional boost-disable **re-sent that stale bit** — one NACK would have
+left the accessory load switch commanded ON during exactly the fault the
+shutdown was called for. `Pcal9535a::clearBits` takes both bits down in one
+transaction, so a shutdown needs **one** surviving write rather than all of
+them. The bus in the host test can now refuse a chosen transaction and still
+log it, and all four failure modes are **mechanised controls** the contract
+puts back on every run.
 
 **What the first board's operator gets.** At boot: every pin parked, both
 expanders brought up latch-before-direction and their direction registers read
@@ -177,12 +253,17 @@ can only be confirmed by eye. `MK1` and `U5` share one `/I2S_BCLK` and one
    measure charge current, total charge time and `U11` case temperature, in the
    enclosure, at the fitted cell capacity.** Prefer the **2500 mAh** end of the
    envelope; 3000 mAh at 40 °C ambient is the least-margin corner.
-2. **Charger input trunk is 250.8 mm / 440 mΩ** against a 65 mm straight line,
-   because the net was laid as a minimum spanning tree through the north-west
-   recovery cluster. 484 mV of drop and 0.53 W at 1.1 A. Measured: no shorter
-   path exists on any layer at any width, and in-place widening is worth under
-   5 %. Accepted as `.kicad_dru` section 5a, the board's one named ampacity
-   exception. **Measure `VIN` at `U11.10` while charging.**
+2. **Charger input trunk is 189.8 mm / 216 mΩ** against a 65 mm straight line,
+   **improved at D-750 from 250.8 mm / 440 mΩ** by a parallel anchor-to-anchor
+   conductor and one widened In2 segment. 237 mV of drop and 0.26 W at 1.1 A.
+   The earlier figures were also computed at the wrong inner-copper thickness;
+   at the real 0.0152 mm the pre-D-750 board was **487 mΩ and 536 mV**, and at
+   that resistance the charger **exceeded the 360 min `tMAXCHG`** on an
+   ordinary 4.65–4.75 V source at a 150–300 mA system load. At 235 mΩ every
+   case in the source envelope terminates with at least **65 min to spare**.
+   Still accepted as `.kicad_dru` section 5a — a residual, not a defect, and
+   its 1.45 K plane-coupled rise is derived from the board's own dielectrics.
+   **Measure `VIN` at `U11.10` while charging.**
 3. **Charging from a 500 mA-class source will not complete a cycle** inside
    `tMAXCHG`. The USB-C port is a plain 5.1 kΩ Rd sink and does not read the
    source's Rp advertisement; VINDPM folds the input back as `VIN` sags.
@@ -205,6 +286,33 @@ can only be confirmed by eye. `MK1` and `U5` share one `/I2S_BCLK` and one
    concession, the `MK1` acoustic mask opening, the POFV process for 135 lands,
    the 35 sub-floor via rings and the 21 sub-0.125 mm mask dams are all declared
    in the fab notes and must be confirmed in writing before the order is placed.
+8a. **THE DISPLAY PANEL'S TAIL ORIENTATION MUST BE MEASURED BEFORE ANY PANEL IS
+   MATED** (first-spin review item 5). The `ER-TFT035IPS-6` mechanical drawing
+   is not in this repository and the vendor site could not be reached from the
+   build environment, and the `FH69`'s dual-contact feature does not by itself
+   prevent a mirrored tail. **The consequence of getting it wrong is
+   destructive, not merely dark**: mapping pin *N* ↔ pin *51 − N* gives sixteen
+   power-to-signal collisions, including the backlight anode — which the
+   `TPS61169` drives to ~4.2 V normally and up to 39 V into an open string —
+   onto panel `GND`. **The incoming test settles it without the drawing**: the
+   panel's own pins 1/2/3 are `LED_A`/`LED_K`/`LED_K` and its pins 48/49/50 are
+   `GND`, so a meter in diode mode reads an **LED forward drop of ~2.5–2.9 V**
+   between the outermost contact and its two neighbours at the pin-1 end, and a
+   **dead short** at the other. `J1` pin 1 is at board `(44.910, 96.000)`, the
+   EAST end, and is marked on silkscreen. Not a PCB-order blocker: `J1`'s land
+   pattern and pin map are correct for the datasheet pin table either way.
+8b. **NFC MATCHING MUST BE RE-DERIVED FROM THE PRIMARY SOURCE** (item 6). There
+   is no dedicated shunt position between the series capacitors and the
+   antenna, and ST `AN5276` and the ST matching tool could not be retrieved
+   from this environment — so the topology was **not** changed on a
+   recollection. It is not a pre-order blocker because the tune position is
+   **fittable by construction**: `NFC_MATCH_A` and `NFC_MATCH_B` each sit
+   **0.500 mm** from B.Cu `GND` fill, on the same layer, symmetrically, so a
+   parallel element is an ordinary 0402 tacked across a measured gap at first
+   article — no rework, no cut track, no symmetry loss. Obtain `AN5276`,
+   re-derive `C_s`/`C_p`/`R_q` from the MEASURED antenna and ferrite with the
+   rear shell and battery installed, and record the final values before any
+   second article.
 9. **Demo firmware is a BRING-UP LAYER, not the application** (D-747, D-748).
    The as-built hardware definition, the PCAL9535A driver, the safe bring-up
    sequence, the SPI-B arbiter, the identity probes and the console exercises all
@@ -218,6 +326,16 @@ can only be confirmed by eye. `MK1` and `U5` share one `/I2S_BCLK` and one
    EastRising's sequence for this exact module at first article. **None of these
    is a fabrication blocker**; all are application work that continues during
    fabrication.
+
+10. **`Q11` AND `U17` SHARE ONE CONTROL NET, AND THAT IS LOAD-BEARING** (D-751).
+   The state that must never occur is *converter switching with `Q11` off*: an
+   open LED path drives the `TPS61169` output to its overvoltage clamp near
+   **38 V**, and the panel cathode — `Q11`'s drain — follows the anode while
+   `R69` holds the source at 0 V. **The `AO3400A` is a 30 V part.** One net
+   driving both gates makes that state unreachable, and PWM on `DISP_BL_CTL`
+   correctly shuts the converter down and opens `Q11` together. **Any revision
+   that separates the two controls in order to PWM `Q11` alone must re-rate
+   `Q11` to at least 40 V `VDS`.**
 
 ## 9. Recommended post-Kickstarter improvements
 

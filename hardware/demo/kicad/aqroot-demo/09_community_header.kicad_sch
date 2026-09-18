@@ -2524,7 +2524,7 @@
 				)
 			)
 		)
-		(property "Description" "Samtec BCS-112-S-D-HE 2x12 24-contact 2.54 mm female horizontal pass-through socket strip"
+		(property "Note_Sourcing" "SOURCING D-750 2026-09-18. CORRECTION, not a selection: D-237 (FBV2-EXP-002) replaced the 2x12 Samtec BCS-112-S-D-HE with the 1x24 Samtec SSQ-124-02-G-S-RA and moved the Footprint and Datasheet properties, but left MPN, LCSC, Description, Alternate, Note and Note2 on the superseded part, so every released BOM named a 2x12 2-row socket against a PCB carrying one row of 24 pads at x = 65.900. Re-verified live 2026-09-18 per D-096 through the JLCPCB parts API: SSQ-124-02-G-S-RA = LCSC C3323671, Samtec, 1 row, 24P, 2.54 mm, right angle, square hole, gold, stock 0, expand library."
 			(at 120.65 140.97 0)
 			(hide yes)
 			(show_name no)
@@ -2535,7 +2535,7 @@
 				)
 			)
 		)
-		(property "Note2" "SOURCING 2026-08-23 (FBV2-S2-002) (B-71). Samtec BCS-112-S-D-HE is LCSC C5575816 with STOCK 0 at $15.54. It is a 24-contact through-hole strip and was already MANUAL/SECONDARY ASSEMBLY by CTO ruling at FBV2-S1-009; buy direct from Samtec or a broadline distributor. The connector architecture is NOT compromised for SMT assembly. LCSC/JLC library state verified live on 2026-08-23 through the JLCPCB parts API (D-096). Stock is a snapshot, not a guarantee."
+		(property "Description" "Samtec SSQ-124-02-G-S-RA 1x24 24-contact 2.54 mm female right-angle square-post socket strip, 20 uin gold, through-hole"
 			(at 120.65 140.97 0)
 			(hide yes)
 			(show_name no)
@@ -2546,7 +2546,18 @@
 				)
 			)
 		)
-		(property "LCSC" "C5575816"
+		(property "Note2" "SOURCING 2026-09-18 (D-750). Samtec SSQ-124-02-G-S-RA is LCSC C3323671, expand library, STOCK 0. It is a 24-contact through-hole strip and is MANUAL/SECONDARY ASSEMBLY by CTO ruling at FBV2-S1-009; buy direct from Samtec or a broadline distributor. The connector architecture is NOT compromised for SMT assembly. LCSC/JLC library state verified live on 2026-09-18 through the JLCPCB parts API (D-096); the record is committed at evidence/jlc-live/ssq-124-02-g-s-ra-b06f80e6.json. Stock is a snapshot, not a guarantee. THIS LINE SUPERSEDES THE FBV2-S2-002 BCS-112-S-D-HE SOURCING: D-237 replaced the 2x12 BCS with the 1x24 SSQ and moved the footprint and the datasheet URL, but the MPN, the LCSC code, the Description, the Alternate and this note were left on the superseded part, so the released BOM named a 2x12 against a 1x24 PCB."
+			(at 120.65 140.97 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "LCSC" "C3323671"
 			(at 120.65 140.97 0)
 			(hide yes)
 			(show_name no)
@@ -2568,7 +2579,7 @@
 				)
 			)
 		)
-		(property "MPN" "BCS-112-S-D-HE"
+		(property "MPN" "SSQ-124-02-G-S-RA"
 			(at 0 0 0)
 			(hide yes)
 			(show_name no)
@@ -2579,7 +2590,7 @@
 				)
 			)
 		)
-		(property "Alternate" "BCS-112-L-D-HE (10 uin gold, 100 mating cycles - plating-only alternate)"
+		(property "Alternate" "SSQ-124-02-F-S-RA (LCSC C6686579, verified live 2026-09-18 per D-096: Samtec, 1 row, 24P, 2.54 mm, right angle, stock 0, expand library). SAME BODY AND SAME FOOTPRINT - it differs only in the plating suffix. Samtec's own scheme makes -F gold flash on contact with matte tin on tail, while the LCSC record lists contact plating as Tin; that disagreement is NOT resolved here, so -F is a plating-only fallback that must be confirmed with Samtec before it is substituted. SSQ-124-02-L-S-RA (10 uin gold) is a valid datasheet configuration but has NO distributor record (0 rows, 2026-09-18) and is therefore NOT baselined - D-096."
 			(at 0 0 0)
 			(hide yes)
 			(show_name no)
@@ -2590,7 +2601,7 @@
 				)
 			)
 		)
-		(property "Note" "AQROOT FBV2-S1-008... superseded; FBV2-S1-009 final lock. Samtec BCS-112-S-D-HE, verified live 2026-08-23 per D-096: ACTIVE, 385 pieces ship tomorrow, $7.314 @1 / $5.667 @100, UL E111594, RoHS, halogen free, MSL 1, probable COO Malaysia. 2 x 12 = 24 ACTIVE CONTACTS, .100 in / 2.54 mm pitch, FEMALE Tiger Claw dual-beam pass-through socket strip, HORIZONTAL (right-angle) entry, through-hole, 30 uin selective gold in the contact area. FOOTPRINT RE-VERIFIED AGAINST THE SAMTEC RECOMMENDED PCB LAYOUT DRAWING, REVISION B, FIG 3 (BCS-1XX-XXX-D-HE-XXX): 2.54 mm within a row, ROW-TO-ROW .310 +/-.002 in = 7.87 +/-0.05 mm, hole .028 in = 0.71 mm PTH, pin field 27.94 mm for 12 positions. NOT INTERCHANGEABLE with a vertical 2x12 pattern, whose rows are 2.54 mm apart. ODD = ROW A, EVEN = ROW B (D-084). EVERY POWER CONTACT IS VERTICALLY PAIRED WITH GND - 3/4, 9/10, 15/16, 21/22 - so a row-swap mis-insertion can only make a current-limited rail-to-ground short, never 5 V on a logic pin; ALL 3.3 V IS IN ROW A AND ALL 5 V IN ROW B. NO NC CONTACT, NO KEY CONTACT: the enclosure supplies polarisation and keying (D-097) with a >= 1.5 mm recess, an asymmetric upper rib and CLOSED ENDS that make a one-column offset mechanically impossible. Mates with any 0.64 mm square-post header whose mating post is 4.34-6.35 mm; reference TSW-112-07-L-D. BCS-112-L-D-HE is a plating-only cost-down alternate with an identical footprint but only 100 mating cycles against 2500 for -S (Samtec 187544 Rev 1), which is why -S is locked. THE HARWIN M20-7881242 IS REJECTED AS OBSOLETE AND MUST NEVER REAPPEAR (D-083 struck by D-093). ASSEMBLY: if the JLC service cannot place this through-hole part automatically, it is a MANUAL/SECONDARY assembly operation for the first five boards - the connector architecture is not compromised for SMT convenience."
+		(property "Note" "AQROOT J5 COMMUNITY PORT. FBV2-S1-008/S1-009 locked a Samtec BCS-112-S-D-HE 2 x 12; FBV2-EXP-002 / D-237 SUPERSEDED it with the Samtec SSQ-124-02-G-S-RA, a 1 x 24, 2.54 mm, FEMALE, RIGHT-ANGLE square-post socket strip presenting one pin per line down the right wall and mating an ordinary male header or Dupont jumper. VERIFIED LIVE 2026-09-18 per D-096 (JLCPCB parts API, record committed at evidence/jlc-live/ssq-124-02-g-s-ra-b06f80e6.json): LCSC C3323671, Samtec, Number of Rows 1, Number of Positions 24P, pitch 2.54 mm, Circular/Square Hole = Square Hole, Mounting Type = Right Angle, contact plating Gold, contact material phosphor bronze, -55 to +125 C, insulation height 2.41 mm, expand library, stock 0. CONFIGURATION per the Samtec SSW/SSQ through-hole datasheet held at vendor/Samtec/samtec-ssw-ssq-through-hole.pdf: SSQ = square tail, 124 = 24 positions per row, 02 = standard-insertion-force lead style, G = 20 uin gold on contact, S = single row, RA = right angle. Body 61.47 mm = 24 x 2.54 + 0.51; pin 1 to pin 24 span 58.42 mm; mates .025 in (0.635 mm) square post; 6.3 A per pin with 2 pins powered; 465 VAC / 655 VDC; 100 mating cycles at 10 uin Au. FOOTPRINT AQROOT_Beta:Samtec_SSQ-124-02-G-S-RA, hole pattern 1.02 mm on 2.54 mm, tail row 6.53 mm inboard of the mating face - that 6.53 mm is the dimension the whole right-wall fit turns on. ORDER-B pin order is SAFE UNDER 180 DEGREE REVERSAL BY CONSTRUCTION: 5V to 5V, GND to GND, 3V3 to 3V3, 3.3 V logic to 3.3 V logic everywhere else - power-to-signal maps under reversal: ZERO (D-238/D-240). The enclosure supplies polarisation: a closed-end 62.5 mm recess against a 60.96 mm male body leaves 1.54 mm of play against a 2.54 mm pitch, so a one-position lateral shift is physically impossible; no electrical key contact and no proprietary shroud. J5.9-12 and J5.15-18 are INTENTIONALLY NC on AQROOT Demo by approved scope. ASSEMBLY: through-hole, MANUAL / SECONDARY assembly for the first five boards - the connector architecture is not compromised for SMT convenience. THE HARWIN M20-7881242 IS REJECTED AS OBSOLETE AND MUST NEVER REAPPEAR (D-083 struck by D-093). The BCS-112-S-D-HE footprint is RETAINED in the library, not deleted, because Beta-DM still uses it."
 			(at 0 0 0)
 			(hide yes)
 			(show_name no)

@@ -195,10 +195,34 @@ void setup() {
              status, (status & 0x0F) == 1 ? "init_ok" : "not initialised");
     report("BMI270 U4 init state", read, detail);
   }
-  // The MAX17048 VERSION register is a silicon revision; report it rather than
-  // assert a value this repository has no datasheet for.
-  probeI2cDevice("MAX17048 U14 version", AQROOT_I2C_ADDR_FUEL_GAUGE, 0x08, 0x00,
-                 false);
+  // D-750.  THE MAX17048 IS A 16-BIT-REGISTER PART AND THIS READ WAS ONE BYTE.
+  // Every MAX17048 register -- VCELL 0x02, SOC 0x04, MODE 0x06, VERSION 0x08 --
+  // is 16 bits, MSB first, and the device auto-increments within the pair.  A
+  // one-byte read returns the MSB alone and leaves the transaction ended in the
+  // middle of a register.  Worse for a DIAGNOSTIC: VERSION reads 0x001x on
+  // every part ADI has shipped, so the MSB is 0x00 -- and the generic
+  // "report only" predicate below treats 0x00 as a FAILURE.  The old line
+  // therefore reported a healthy fuel gauge as broken.  Read the pair.
+  {
+    uint8_t raw[2] = {0xFF, 0xFF};
+    char detail[96];
+    if (!g_bus.probe(AQROOT_I2C_ADDR_FUEL_GAUGE)) {
+      snprintf(detail, sizeof(detail), "0x%02X did not ACK",
+               AQROOT_I2C_ADDR_FUEL_GAUGE);
+      report("MAX17048 U14 version", false, detail);
+    } else if (!g_bus.readRegister(AQROOT_I2C_ADDR_FUEL_GAUGE, 0x08, raw, 2)) {
+      snprintf(detail, sizeof(detail), "0x%02X ACKed, VERSION read failed",
+               AQROOT_I2C_ADDR_FUEL_GAUGE);
+      report("MAX17048 U14 version", false, detail);
+    } else {
+      const uint16_t version = uint16_t(raw[0]) << 8 | raw[1];
+      snprintf(detail, sizeof(detail),
+               "VERSION = 0x%04X (silicon revision, reported not asserted)",
+               version);
+      report("MAX17048 U14 version", version != 0x0000 && version != 0xFFFF,
+             detail);
+    }
+  }
   // Only reachable once TOUCH_RST_N is released, which bringUpExpanders() did.
   probeI2cDevice("touch controller (J1 FPC)", AQROOT_I2C_ADDR_TOUCH, 0xA3, 0x00,
                  false);

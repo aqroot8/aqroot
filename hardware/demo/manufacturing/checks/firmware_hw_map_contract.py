@@ -115,6 +115,34 @@ ORDER_CONTROLS = [
       return u3_.writeBit(bus, AQROOT_U3_ACC_5V_SW_EN, true);""",
      """      if (!u3_.writeBit(bus, AQROOT_U3_ACC_5V_SW_EN, true)) return false;
       return u3_.writeBit(bus, AQROOT_U3_ACC_5V_BOOST_EN, true);"""),
+    # D-751 -- THE THREE INDEPENDENT-FAILURE CONTROLS.  D-750 repaired three
+    # `||` short circuits that an external review named, and nothing proved the
+    # repair: a bus that always ACKs cannot tell an independent sequence from a
+    # short-circuiting one, which is exactly why the bug lived so long.  These
+    # put each short circuit BACK; the host test's T10 must refuse all three.
+    ("a U2 bus failure leaves U3 unconfigured (begin short-circuits)",
+     "aqroot_demo_expanders.h",
+     """    const bool u2_ok = u2_.apply(bus, u2);
+    const bool u3_ok = u3_.apply(bus, u3);
+    if (!u2_ok || !u3_ok) return false;""",
+     """    if (!u2_.apply(bus, u2) || !u3_.apply(bus, u3)) return false;"""),
+    ("a U2 read error stops U3 being serviced (service short-circuits)",
+     "aqroot_demo_expanders.h",
+     """    const bool a = u2_.readInterruptStatus(bus, &u2_irq_);
+    const bool b = u3_.readInterruptStatus(bus, &u3_irq_);
+    const bool c = u2_.readInputs(bus, &u2_inputs_);
+    const bool d = u3_.readInputs(bus, &u3_inputs_);""",
+     """    if (!u2_.readInterruptStatus(bus, &u2_irq_)) return false;
+    if (!u3_.readInterruptStatus(bus, &u3_irq_)) return false;
+    if (!u2_.readInputs(bus, &u2_inputs_)) return false;
+    if (!u3_.readInputs(bus, &u3_inputs_)) return false;
+    const bool a = true, b = true, c = true, d = true;"""),
+    ("a NACKed load-switch write leaves the switch commanded ON",
+     "aqroot_demo_expanders.h",
+     """    const bool boost = u3_.clearBits(
+        bus, uint16_t(bitmask(AQROOT_U3_ACC_5V_SW_EN) |
+                      bitmask(AQROOT_U3_ACC_5V_BOOST_EN)));""",
+     """    const bool boost = u3_.writeBit(bus, AQROOT_U3_ACC_5V_BOOST_EN, false);"""),
 ]
 
 

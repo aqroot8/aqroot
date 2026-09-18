@@ -117,7 +117,30 @@ GPIO19/20); there is **no USB-UART bridge IC** (by design). See §9, §16.
 | Touch panel | EastRising **ER-TPC035-6** capacitive | LOCKED · FITTED · INTERNAL | OFF_BOARD_BOM.md |
 | Touch controller | **FocalTech FT6236** @ I²C **0x38** | LOCKED (interface); **silicon identity CAD-TO-VERIFY** | `architecture/I2C_ADDRESS_REGISTRY.md`; ARCHITECTURE.md |
 | Backlight driver | `U17` **TPS61169DCKR** (WLED boost) | FITTED | `03_spi_a_display_sd.kicad_sch:U17` |
+| Backlight **true-off disconnect** | `Q11` **AO3400A** (LCSC C20917) in the panel cathode return, gate on `DISP_BL_CTL`, held off by `R108` | FITTED (added D-750) | `03_spi_a_display_sd.kicad_sch:Q11`; D-750 item 7 |
 | Display SDO isolation | `R112` 0 Ω = **DNP** | DNP | population matrix |
+
+> **WHY `Q11` EXISTS (D-750, external first-spin review item 7).**  TI states
+> that the `TPS61169` retains a DC path from `VIN` through the inductor and
+> Schottky to the LEDs in shutdown, and guarantees OFF only when the LED
+> array's minimum forward voltage exceeds the maximum `VIN`.  This panel's
+> backlight is **2.9–3.2 V at 120 mA** (D-079) on a **3.3 V** rail, so the
+> condition FAILS: solving the shutdown network converges at **≈ 25 mA**, about
+> a fifth of full brightness and plainly visible in the dark.  There is no
+> firmware mitigation, because `+3V3` is switched by the `SW9` slide switch.
+> `Q11` is outside the regulation loop by construction (`U17`'s LED pin and
+> `R69` both sit on its SOURCE), so the 109 mA setpoint and its 100.5–117.6 mA
+> band are unchanged.
+>
+> **`Q11`'s GATE AND `U17`'s `CTRL` ARE ONE NET, AND THAT IS A CONSTRAINT
+> (D-751).**  PWM on `DISP_BL_CTL` shuts the converter down and opens `Q11`
+> together.  The combination that must never occur is *converter switching with
+> `Q11` off*: an open LED path drives the `TPS61169` output to its overvoltage
+> clamp near **38 V**, and the panel cathode — `Q11`'s DRAIN — follows the
+> anode to within the string's sub-threshold drop while `R69` holds the SOURCE
+> at 0 V.  **The `AO3400A` is a 30 V part.**  One net driving both gates makes
+> that state unreachable.  Any future revision that separates the two controls
+> in order to PWM `Q11` alone **must re-rate `Q11` to at least 40 V `VDS`**.
 
 **Conflicts flagged (do not carry stale values into public copy):**
 - **Display driver:** ARCHITECTURE/OFF_BOARD_BOM lock **ILI9488** (320×480); the KiCad
@@ -225,6 +248,38 @@ power/NFC review, and CTO decisions.
 | **ACC_5V_SW** load switch | `U22` | TPS22950CDDCR | FITTED | `01_power_tree.kicad_sch:U22` |
 | Accessory I²C hot-swap buffer | `U16` | TCA4307DGKR | FITTED | `08/09` |
 
+### 6.3a Accessory-power CONCURRENCY POLICY (D-750) — ENGINEERING-ONLY, firmware-enforced
+
+The per-rail figures in `.kicad_dru` section 5 — **0.40 A on `ACC_3V3`, 0.70 A
+on `ACC_5V`** — are **EACH-ALONE maxima, not a simultaneous budget**.
+`ACC_3V3_SW` is a load switch off `+3V3`, so it is part of the `+3V3` draw;
+`ACC_5V_SW` is a boost off `SYS`.  At 90 % (buck-boost) and 88 % (boost) the
+battery current is:
+
+| mode | I(SYS) @ 3.0 V | @ 3.7 V | @ 4.2 V |
+|---|---|---|---|
+| internal only, full 1.0 A on `+3V3` | 1.22 A | 0.99 A | 0.87 A |
+| internal + 3.3 V accessory at 0.40 A | 1.71 A | 1.39 A | 1.22 A |
+| internal + 5 V accessory at 0.70 A | 2.55 A | 2.07 A | 1.82 A |
+| **all three at published maxima** | **3.04 A** | 2.46 A | 2.17 A |
+
+**THE BOARD CANNOT SUPPORT ALL THREE AT THEIR MAXIMA SIMULTANEOUSLY FROM THE
+BATTERY AND WAS NEVER DESIGNED TO.**  `.kicad_dru` section 5 publishes
+`BAT_MAIN` at **1.5 A sustained**, which is what the protection path, `Q2`/`Q3`
+and the battery trunk are sized for; 3.04 A is also at the `BQ25185`
+`IBAT_OCP` trip (3.125 A typical, ±18 %).
+
+> **POLICY.**  Total accessory draw is bounded by `BAT_MAIN` 1.5 A sustained.
+> At 3.0 V that is 4.5 W: full internal load (3.67 W) leaves **0.83 W** for
+> accessories — **0.15 A at 5 V _or_ 0.23 A at 3.3 V**.  At 3.7 V the allowance
+> is 1.88 W — **0.33 A at 5 V _or_ 0.51 A at 3.3 V**.  Firmware owns both
+> enables through `U3` (`ACC_5V_BOOST_EN`, `ACC_5V_SW_EN`, `ACC_3V3_EN`) and
+> must not raise both accessory rails to their per-rail maxima together.
+> `ACC_POWER_FAULT_N` already drops both on a fault.
+
+This is the answer to the external first-spin review's item 9.  It is a LIMIT,
+not a defect: no copper changes, and the per-rail floors in section 5 stand.
+
 ### 6.4 Safety floors (governing routing rules — ENGINEERING-ONLY)
 - **BAT_MAIN** netclass (1.5 A design): trunk 1.00 mm, min **0.60 mm** (LOCKED).
 - **BAT_PROTECTED_P (BPP)** high-current trunk **≥ 1.20 mm** (D-249, LOCKED).
@@ -283,7 +338,7 @@ claim a HOME or Volume button.
 ### 10.1 Community expansion port `J5` — 24-contact
 | Item | Value | Label | Evidence |
 |---|---|---|---|
-| Connector | `J5` **1 × 24, 2.54 mm right-angle female** receptacle (Samtec **SSQ-124-02-G-S-RA** baseline; superseded the 2×12 BCS-112-S-D-HE) | FITTED · MANUAL/SECONDARY ASSEMBLY · EXTERNAL (right edge) · MARKETING-SAFE (24-pin expansion) | `09_community_header.kicad_sch:J5`; `EXPANSION_ECOSYSTEM_PROPOSAL.md` (D-237/D-240) |
+| Connector | `J5` **1 × 24, 2.54 mm right-angle female** receptacle (Samtec **SSQ-124-02-G-S-RA**, LCSC **C3323671**, verified live 2026-09-18 per D-096; superseded the 2×12 BCS-112-S-D-HE at D-237 — **D-750 corrected the MPN/LCSC/description, which the released BOM had left on the superseded part**) | FITTED · MANUAL/SECONDARY ASSEMBLY · EXTERNAL (right edge) · MARKETING-SAFE (24-pin expansion) | `09_community_header.kicad_sch:J5`; `EXPANSION_ECOSYSTEM_PROPOSAL.md` (D-237/D-240); `evidence/jlc-live/ssq-124-02-g-s-ra-b06f80e6.json` |
 | Contact count | **24** (one contact per line) | LOCKED | audit `2026-08-24-expansion-and-refloorplan-implementation.md` |
 | Logic level | **3.3 V logic only**; the 5 V pins are **power output only** | LOCKED · MARKETING-SAFE (labelled on enclosure) | mechanical spec; expansion proposal |
 

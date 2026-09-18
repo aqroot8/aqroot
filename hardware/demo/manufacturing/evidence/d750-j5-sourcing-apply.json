@@ -1,0 +1,83 @@
+{
+ "added": [
+  {
+   "property": "Note_Sourcing",
+   "ref": "J5",
+   "sheet": "09_community_header.kicad_sch",
+   "value": "SOURCING D-750 2026-09-18. CORRECTION, not a selection: D-237 (FBV2-EXP-002) replaced the 2x12 Samtec BCS-112-S-D-HE with the 1x24 Samtec SSQ-124-02-G-S-RA and moved the Footprint and Datasheet properties, but left MPN, LCSC, Description, Alternate, Note and Note2 on the superseded part, so every released BOM named a 2x12 2-row socket against a PCB carrying one row of 24 pads at x = 65.900. Re-verified live 2026-09-18 per D-096 through the JLCPCB parts API: SSQ-124-02-G-S-RA = LCSC C3323671, Samtec, 1 row, 24P, 2.54 mm, right angle, square hole, gold, stock 0, expand library."
+  }
+ ],
+ "applied": true,
+ "conflicts": [],
+ "plan": "evidence/d750-j5-sourcing-plan.json",
+ "properties_added": 1,
+ "properties_already_correct": [
+  "J5.Manufacturer"
+ ],
+ "properties_rewritten": [
+  {
+   "property": "MPN",
+   "ref": "J5",
+   "sheet": "09_community_header.kicad_sch",
+   "value": "SSQ-124-02-G-S-RA",
+   "was": "BCS-112-S-D-HE"
+  },
+  {
+   "property": "LCSC",
+   "ref": "J5",
+   "sheet": "09_community_header.kicad_sch",
+   "value": "C3323671",
+   "was": "C5575816"
+  }
+ ],
+ "references_found": 1,
+ "references_in_plan": 1,
+ "references_not_in_any_sheet": [],
+ "schema": 1,
+ "sha256_after": {
+  "01_power_tree.kicad_sch": "4893c924035b49cc80031a189825b508a64a447d66c7d591f544bb9354ffb1c7",
+  "02_mcu_core.kicad_sch": "62cbc53b5d165f6dd6946ab5a53fdd51ae5eacb3acbed4814d9be85e30dad4d1",
+  "03_spi_a_display_sd.kicad_sch": "9eb9cafc70a6afcd61c61fcd9111f0bd6c605aa188ea53e6b70293871ba4bfaa",
+  "04_spi_b_radios_nfc.kicad_sch": "07b195de8bc9c68bcd8b4416def81a2334a81894c9ccf55762b1861d212c4be8",
+  "05_i2c_devices.kicad_sch": "ab183831cc7b39a606ac1d45641adee8070242a6922cd9ada2a139a27493461a",
+  "06_audio.kicad_sch": "d49ada5071e8498fc74cb09239b8df187859e9fbe6a02377981109cd46a55d61",
+  "07_ir.kicad_sch": "4123770847540d6f1208386159f22bcf820da8c7f0e7f91515a8f2979723bda5",
+  "08_buttons_expanders.kicad_sch": "9390c766d79f022cad74ffb52e4c54b8e0ebc0c0383097359ce6f0f7a6b293a8",
+  "09_community_header.kicad_sch": "9caa50d067d3807284ad8746dde5de66b7d2080b3a9e51da10730c553202ea89",
+  "aqroot-Beta-v2.kicad_sch": "195a985ca49cd03d88b006776f31ef6fa929d23d6a9eb3c29e37581307d31603"
+ },
+ "sha256_before": {
+  "01_power_tree.kicad_sch": "4893c924035b49cc80031a189825b508a64a447d66c7d591f544bb9354ffb1c7",
+  "02_mcu_core.kicad_sch": "62cbc53b5d165f6dd6946ab5a53fdd51ae5eacb3acbed4814d9be85e30dad4d1",
+  "03_spi_a_display_sd.kicad_sch": "9eb9cafc70a6afcd61c61fcd9111f0bd6c605aa188ea53e6b70293871ba4bfaa",
+  "04_spi_b_radios_nfc.kicad_sch": "07b195de8bc9c68bcd8b4416def81a2334a81894c9ccf55762b1861d212c4be8",
+  "05_i2c_devices.kicad_sch": "ab183831cc7b39a606ac1d45641adee8070242a6922cd9ada2a139a27493461a",
+  "06_audio.kicad_sch": "d49ada5071e8498fc74cb09239b8df187859e9fbe6a02377981109cd46a55d61",
+  "07_ir.kicad_sch": "4123770847540d6f1208386159f22bcf820da8c7f0e7f91515a8f2979723bda5",
+  "08_buttons_expanders.kicad_sch": "9390c766d79f022cad74ffb52e4c54b8e0ebc0c0383097359ce6f0f7a6b293a8",
+  "09_community_header.kicad_sch": "dcf6b5f3dd7a4df51177c4c11e47427b457f1be41a8b9ebd4ab2cbe216384230",
+  "aqroot-Beta-v2.kicad_sch": "195a985ca49cd03d88b006776f31ef6fa929d23d6a9eb3c29e37581307d31603"
+ },
+ "sheets_touched": [
+  "09_community_header.kicad_sch",
+  "09_community_header.kicad_sch"
+ ],
+ "text_replaces": [
+  {
+   "file": "hardware/demo/kicad/aqroot-demo/09_community_header.kicad_sch",
+   "why": "BOM Description named the superseded 2x12 BCS against a 1x24 PCB footprint"
+  },
+  {
+   "file": "hardware/demo/kicad/aqroot-demo/09_community_header.kicad_sch",
+   "why": "the alternate named a plating variant of the superseded part"
+  },
+  {
+   "file": "hardware/demo/kicad/aqroot-demo/09_community_header.kicad_sch",
+   "why": "sourcing note named the superseded part, its LCSC code and its price"
+  },
+  {
+   "file": "hardware/demo/kicad/aqroot-demo/09_community_header.kicad_sch",
+   "why": "engineering note described a 2 x 12 two-row part, its row-to-row pitch and its row-swap mis-insertion analysis, none of which describes the fitted 1 x 24"
+  }
+ ]
+}

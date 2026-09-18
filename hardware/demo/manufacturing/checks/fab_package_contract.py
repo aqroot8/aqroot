@@ -80,6 +80,7 @@ import argparse
 import csv
 import hashlib
 import json
+import math
 import re
 import shutil
 import subprocess
@@ -148,16 +149,73 @@ def board_facts():
         if not (attrs & pcbnew.FP_EXCLUDE_FROM_POS_FILES):
             placeable.add(ref)
         pos = fp.GetPosition()
-        geometry[ref] = (pos.x, pos.y, "bottom" if fp.IsFlipped() else "top")
+        # D-750.  ROTATION IS PART OF A PLACEMENT.  Before D-750 this tuple was
+        # (x, y, side) and FAB5 compared only those three, so a CPL row with a
+        # 180-degrees-wrong rotation on a polarised part passed the release
+        # gate -- a scrapped board that every check in this repository called
+        # correct.  The convention is measured, not assumed: on the released
+        # package all 262 rows satisfy `Rot == GetOrientationDegrees()`
+        # normalised to (-180, 180], on BOTH sides.
+        rot = ((fp.GetOrientationDegrees() + 180.0) % 360.0) - 180.0
+        geometry[ref] = (pos.x, pos.y, "bottom" if fp.IsFlipped() else "top",
+                         round(rot, 3), fp.GetFPIDAsString())
 
     poly = pcbnew.SHAPE_POLY_SET()
     b.GetBoardPolygonOutlines(poly, False)
     box = poly.BBox()
     outline = (box.GetLeft(), box.GetTop(), box.GetRight(), box.GetBottom())
 
+    # D-750.  FAB12 needs the PHYSICAL shape of every land pattern, because
+    # the J5 defect was a BOM row whose own words -- "2x12 24-contact 2.54 mm"
+    # -- contradicted the footprint it shipped on, which is one row of 24.
+    # Nothing in this file could see that, because every other check asks only
+    # whether the package is INTERNALLY consistent.
+    lands = {}
+    for fp in b.GetFootprints():
+        xs, ys, pts, pad_area = set(), set(), [], []
+        for pad in fp.Pads():
+            n = pad.GetNumber()
+            if not n or not n.strip():
+                continue                      # unnamed mechanical land
+            sz = pad.GetSize()
+            pad_area.append(sz.x / 1e6 * sz.y / 1e6)
+            q = pad.GetPosition() - fp.GetPosition()
+            # de-rotate into the footprint's own frame
+            th = math.radians(fp.GetOrientationDegrees())
+            lx = q.x * math.cos(th) - q.y * math.sin(th)
+            ly = q.x * math.sin(th) + q.y * math.cos(th)
+            xs.add(round(lx / 1e3)); ys.add(round(ly / 1e3))
+            pts.append((lx / 1e6, ly / 1e6))
+        if not pts:
+            continue
+        pitch = None
+        for axis in (0, 1):
+            vals = sorted({round(v[axis], 3) for v in pts})
+            gaps = [round(b_ - a_, 4) for a_, b_ in zip(vals, vals[1:])]
+            gaps = [g for g in gaps if g > 0.05]
+            if gaps:
+                cand = min(gaps)
+                pitch = cand if pitch is None else min(pitch, cand)
+        # A DATASHEET PIN COUNT EXCLUDES THE THERMAL PAD.  `U11` is a
+        # "10-pin WSON" with eleven numbered lands, `U12` a "14-pin VSON"
+        # with fifteen and `U14` an "8-pin TDFN" with nine; a contact-count
+        # claim must be allowed to mean either.  The exposed pad is found by
+        # AREA, not by number: it is several times the size of a signal land.
+        areas = sorted(a for a in pad_area if a > 0)
+        med = areas[len(areas) // 2] if areas else 0.0
+        ep = sum(1 for a in pad_area if med and a > 3.0 * med)
+        lands[fp.GetReference()] = dict(
+            pads=len(pts), pads_without_exposed_pad=len(pts) - ep,
+            exposed_pads=ep,
+            distinct_x=len(xs), distinct_y=len(ys),
+            rows=min(len(xs), len(ys)), cols=max(len(xs), len(ys)),
+            pitch_mm=(round(pitch, 4) if pitch else None),
+            footprint=fp.GetFPIDAsString())
+
     return dict(copper=copper, holes=holes, placeable=placeable,
                 bom_excluded=bom_excluded, dnp_attr=dnp_attr,
-                geometry=geometry, refs=set(geometry), outline=outline)
+                geometry=geometry, refs=set(geometry), outline=outline,
+                lands=lands)
 
 
 # --------------------------------------------------------------------------
@@ -460,33 +518,268 @@ def fab4(pkg, board):
                              for k, v in sorted(gf.items())})
 
 
+ROT_TOL_DEG = 0.01
+
+
+def _fab5_survey(board, name, rows):
+    """Geometry verdict for ONE placement file: every row placed where the
+    board says, at the rotation the board says, exactly once."""
+    misplaced = []
+    seen = Counter(r["Ref"] for r in rows)
+    duplicated = ["%s:%s x%d" % (name, r, n)
+                  for r, n in sorted(seen.items()) if n > 1]
+    for row in rows:
+        want = board["geometry"].get(row["Ref"])
+        if want is None:
+            misplaced.append(dict(file=name, ref=row["Ref"],
+                                  why="not on board"))
+            continue
+        x = round(float(row["PosX"]) * 1e6)
+        y = -round(float(row["PosY"]) * 1e6)
+        rot = ((float(row["Rot"]) + 180.0) % 360.0) - 180.0
+        why = []
+        if abs(x - want[0]) > TOL_NM or abs(y - want[1]) > TOL_NM:
+            why.append("position")
+        if row["Side"] != want[2]:
+            why.append("side")
+        if abs(((rot - want[3] + 180.0) % 360.0) - 180.0) > ROT_TOL_DEG:
+            why.append("rotation")
+        if why:
+            misplaced.append(dict(file=name, ref=row["Ref"],
+                                  why="/".join(why),
+                                  file_row=(x, y, row["Side"], rot),
+                                  board=list(want[:4])))
+    return misplaced, duplicated
+
+
 def fab5(pkg, board, fitted, dnp):
+    """Every placement row places the part where the board says, at the
+    ROTATION the board says, exactly once.
+
+    D-750 strengthened this on an external review's negative controls.  The
+    old form compared X/Y/side only, and compared reference SETS, so three
+    different corruptions passed: a wrong rotation, a duplicated row, and a
+    corrupted `pos-fitted` file (only `pos-all` was ever geometry-checked).
+
+    D-751 ADDS THE CONTROLS.  A strengthened comparator that is never shown
+    to REFUSE anything is indistinguishable from a comparator with a typo in
+    it, and this one was written against defects nobody could reproduce on
+    the released package -- every row is correct, so every clause passes
+    vacuously.  The three corruptions the review named are therefore
+    injected into a COPY of the real rows and each must be refused."""
     rows_all = read_csv(pkg / "aqroot-Demo-pos-all.csv")
     rows_fit = read_csv(pkg / "aqroot-Demo-pos-fitted.csv")
     refs_fit = {r["Ref"] for r in rows_fit}
     expect = {r for r in board["placeable"] if r not in board["dnp_attr"]}
-    misplaced = []
-    for row in rows_all:
-        want = board["geometry"].get(row["Ref"])
-        if want is None:
-            misplaced.append(dict(ref=row["Ref"], why="not on board"))
-            continue
-        x = round(float(row["PosX"]) * 1e6)
-        y = -round(float(row["PosY"]) * 1e6)
-        if (abs(x - want[0]) > TOL_NM or abs(y - want[1]) > TOL_NM
-                or row["Side"] != want[2]):
-            misplaced.append(dict(ref=row["Ref"], file=(x, y, row["Side"]),
-                                  board=want))
+    misplaced, duplicated = [], []
+    for name, rows in (("pos-all", rows_all), ("pos-fitted", rows_fit)):
+        m, d = _fab5_survey(board, name, rows)
+        misplaced += m
+        duplicated += d
+
+    # NON-VACUITY.  Each control mutates ONE field of ONE row of the REAL
+    # `pos-fitted` file and asks this same comparator; a control that is not
+    # refused means the clause it exercises is not doing anything.
+    controls = {}
+    if rows_fit:
+        def refused(rows, key=None):
+            m, d = _fab5_survey(board, "control", rows)
+            if key == "duplicate":
+                return bool(d)
+            return bool(m)
+        r = [dict(x) for x in rows_fit]
+        r[0]["Rot"] = "%.4f" % (float(r[0]["Rot"]) + 180.0)
+        controls["rotation_180"] = refused(r)
+        r = [dict(x) for x in rows_fit]
+        r[0]["PosX"] = "%.4f" % (float(r[0]["PosX"]) + 10.0)
+        controls["position_plus_10mm"] = refused(r)
+        r = [dict(x) for x in rows_fit]
+        r[0]["Side"] = "bottom" if r[0]["Side"] == "top" else "top"
+        controls["side_flipped"] = refused(r)
+        r = [dict(x) for x in rows_fit] + [dict(rows_fit[0])]
+        controls["duplicate_fitted_row"] = refused(r, "duplicate")
+
     return dict(ok=(refs_fit == expect
                     and {r["Ref"] for r in rows_all} == board["placeable"]
-                    and not misplaced),
+                    and not misplaced and not duplicated
+                    and bool(controls) and all(controls.values())),
                 rows_all=len(rows_all), rows_fitted=len(rows_fit),
                 board_placeable=len(board["placeable"]),
                 dnp_still_placed=sorted(refs_fit & dnp),
                 fitted_dropped=sorted(expect - refs_fit),
                 unexpected_rows=sorted(refs_fit - expect),
+                duplicated_rows=duplicated,
+                controls_refused=controls,
+                checks="position, side and ROTATION, on BOTH placement files,"
+                       " with per-file reference uniqueness and four live"
+                       " negative controls (D-750, controls D-751)",
                 misplaced=misplaced[:20])
 
+
+
+# --------------------------------------------------------------------------
+# FAB12 -- D-750.  DOES THE BOM ROW DESCRIBE THE PART IT SHIPS ON?
+#
+# Every other check in this file asks whether the package is INTERNALLY
+# consistent: the CPL agrees with the board, the BOM views partition the
+# schematic, the manifest hashes match.  All of that was TRUE of the release
+# that shipped `J5` as "Samtec BCS-112-S-D-HE 2x12 24-contact 2.54 mm female
+# horizontal pass-through socket strip" against a footprint that is ONE ROW OF
+# TWENTY-FOUR.  A consistently regenerated wrong identity is invisible to a
+# consistency check, and that is the class of defect this closes.
+#
+#   FAB12a  THE ROW'S OWN WORDS vs THE LAND PATTERN.  A description or MPN
+#           that states a row x column geometry, a contact count or a pitch is
+#           a CLAIM ABOUT COPPER, and the copper is right here.  A claim that
+#           contradicts the footprint's own pads FAILS.
+#   FAB12b  CRITICAL IDENTITIES ARE PINNED BY NAME.  A curated table of the
+#           references whose package identity is load-bearing -- every
+#           connector, every converter, every radio, the fuel gauge, the
+#           charger, the microphone -- each with the MPN and the footprint the
+#           authoritative documents name.  This is a REGRESSION pin, not an
+#           independent truth: it cannot find a wrong identity that was wrong
+#           when the table was written, which is exactly why FAB12a exists
+#           beside it.
+# --------------------------------------------------------------------------
+CRITICAL_IDENTITY = Path(__file__).resolve().parent.parent / \
+    "evidence/d750-critical-identity.json"
+
+_GEOM = re.compile(r"(?<![\d.])(\d{1,3})\s*[xX\u00d7]\s*(\d{1,3})(?![\d.])")
+_COUNT = re.compile(r"(?<![\d.])(\d{1,3})[\s-]*(?:contact|position|pos\b|pin)",
+                    re.I)
+_PITCH = re.compile(r"([\d.]+)\s*mm\s*pitch|pitch\s*([\d.]+)\s*mm", re.I)
+
+
+def _fab12a_scan(views, lands):
+    """FAB12a: every BOM row's OWN WORDS against the pads it ships on."""
+    contradictions, examined = [], 0
+    for view, rows in sorted(views.items()):
+        for row in rows:
+            text = " ".join(filter(None, (row.get("Description"),
+                                          row.get("MPN"), row.get("Value"))))
+            for ref in sorted(expand(row["Refs"])):
+                land = lands.get(ref)
+                if land is None:
+                    continue
+                examined += 1
+                claims = []
+                for m in _GEOM.finditer(text):
+                    a, b_ = int(m.group(1)), int(m.group(2))
+                    if not (1 <= a <= 100 and 1 <= b_ <= 100):
+                        continue
+                    if a * b_ != land["pads"]:
+                        continue        # not a pin-field claim; e.g. "3.5 x 2"
+                    claims.append(("geometry", "%dx%d" % (a, b_),
+                                   sorted((a, b_)),
+                                   sorted((land["rows"], land["cols"]))))
+                for m in _COUNT.finditer(text):
+                    n = int(m.group(1))
+                    ok_counts = {land["pads"],
+                                 land["pads_without_exposed_pad"]}
+                    if n not in ok_counts and 2 <= n <= 200:
+                        claims.append(("contacts", n, n,
+                                       sorted(ok_counts)))
+                for m in _PITCH.finditer(text):
+                    v = float(m.group(1) or m.group(2))
+                    if land["pitch_mm"] and abs(v - land["pitch_mm"]) > 0.05 * v:
+                        claims.append(("pitch", v, v, land["pitch_mm"]))
+                for kind, said, want, got in claims:
+                    if want != got:
+                        contradictions.append(dict(
+                            view=view, ref=ref, kind=kind, row_says=said,
+                            row_value=want, footprint_value=got,
+                            footprint=land["footprint"],
+                            text=text[:160]))
+    return contradictions, examined
+
+
+def _fab12b_drift(views, lands, pinned):
+    """FAB12b: the curated identity pin, against BOM row AND board."""
+    drift = []
+    seen = {}
+    for rows in views.values():
+        for row in rows:
+            for ref in expand(row["Refs"]):
+                seen[ref] = row
+    for ref, want in sorted(pinned.items()):
+        row = seen.get(ref)
+        if row is None:
+            drift.append(dict(ref=ref, why="no BOM row"))
+            continue
+        got = dict(MPN=(row.get("MPN") or "").strip(),
+                   Footprint=(row.get("Footprint") or "").strip(),
+                   Value=(row.get("Value") or "").strip())
+        for key in ("MPN", "Footprint", "Value"):
+            if want.get(key) is not None and got[key] != want[key]:
+                drift.append(dict(ref=ref, field=key,
+                                  pinned=want[key], package=got[key]))
+        land = lands.get(ref)
+        if land and want.get("Footprint") not in (None, land["footprint"]):
+            drift.append(dict(ref=ref, field="board_footprint",
+                              pinned=want["Footprint"],
+                              board=land["footprint"]))
+    return drift
+
+
+def fab12(pkg, board):
+    views = {name: read_csv(pkg / ("aqroot-Demo-%s.csv" % name))
+             for name in ("BOM-assembly", "BOM-full", "DO-NOT-POPULATE",
+                          "NON-PURCHASED", "OFF-BOARD")}
+    lands = board["lands"]
+    contradictions, examined = _fab12a_scan(views, lands)
+    pinned, drift, unpinned = {}, [], []
+    if CRITICAL_IDENTITY.exists():
+        pinned = json.loads(CRITICAL_IDENTITY.read_text())["identities"]
+        drift = _fab12b_drift(views, lands, pinned)
+    else:
+        unpinned.append(str(CRITICAL_IDENTITY))
+
+    # NON-VACUITY -- D-751.  On a CORRECTED package both halves of FAB12 pass
+    # with empty lists, which is exactly the shape a broken check has.  The
+    # controls put the DEFECT BACK: `J5` is restored to the superseded
+    # BCS-112-S-D-HE 2x12 identity that survived eight months of gates, and
+    # both halves must refuse it -- FAB12a because "2x12" contradicts a
+    # one-row-of-24 land pattern, FAB12b because the MPN is not the pinned
+    # one.  A third control moves a footprint, which only the board-side
+    # clause can see.
+    controls = {}
+    if pinned and "J5" in pinned and "J5" in lands:
+        def mutate(field, value):
+            out = {}
+            for name, rows in views.items():
+                new_rows = []
+                for row in rows:
+                    if "J5" in expand(row["Refs"]):
+                        row = dict(row)
+                        row[field] = value
+                    new_rows.append(row)
+                out[name] = new_rows
+            return out
+        bad = mutate("Description",
+                     "2x12 24-contact 2.54 mm female pass-through socket strip")
+        controls["fab12a_refuses_2x12_on_a_1x24_land"] = \
+            bool(_fab12a_scan(bad, lands)[0])
+        bad = mutate("MPN", "BCS-112-S-D-HE")
+        controls["fab12b_refuses_superseded_j5_mpn"] = \
+            bool(_fab12b_drift(bad, lands, pinned))
+        bad = mutate("Footprint", "AQROOT_Beta:Samtec_BCS-112-S-D-HE")
+        controls["fab12b_refuses_footprint_the_board_does_not_carry"] = \
+            bool(_fab12b_drift(bad, lands, pinned))
+
+    return dict(ok=(not contradictions and not drift and not unpinned
+                    and bool(controls) and all(controls.values())),
+                rows_examined=examined,
+                critical_identities=len(pinned),
+                contradictions=contradictions[:30],
+                contradiction_count=len(contradictions),
+                identity_drift=drift[:30],
+                missing_pin_file=unpinned,
+                controls_refused=controls,
+                method="FAB12a: the row's stated geometry/contact-count/pitch "
+                       "against the footprint's own pads.  FAB12b: a curated "
+                       "pin of the identities whose package is load-bearing "
+                       "(D-750); three live negative controls that put the J5 "
+                       "defect back (D-751)")
 
 def fab6(pkg, board, fitted, dnp):
     """The four BOM views must PARTITION the schematic, exactly once each."""
@@ -831,6 +1124,7 @@ def main():
             "FAB8_outline": fab8(pkg, board),
             "FAB9_via_in_pad": fab9(pkg, manifest),
             "FAB10_via_geometry": fab10(pkg, manifest),
+            "FAB12_identity": fab12(pkg, board),
             "FAB11_mask_dams": fab11(pkg, manifest),
         }
     doc = dict(schema=1, package=str(pkg.relative_to(ROOT))

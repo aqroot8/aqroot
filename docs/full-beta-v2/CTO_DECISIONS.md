@@ -1,3 +1,273 @@
+## D-751 — **THE BACKLIGHT DISCONNECT IS COPPER NOW, AND THREE GATES THAT COULD NOT EXPRESS WHAT D-750 DID WERE TAUGHT TO**
+
+    authority  c7f5c618 -> bdf1376c   Q11's three nets routed; one dangling In2 stub trimmed
+    board      172/173 retained nets, 1 owner-approved open (U11.3), 0 unapproved
+    DRC        199 lib_footprint_issues, EVERY ONE A WARNING; 0 parity errors
+    changed    Firmware/src/hw/{pcal9535a.h,aqroot_demo_expanders.h,aqroot_demo_pins.h,
+               aqroot_demo_board.h,aqroot_demo_board.json}
+               Firmware/test/test_expander_order.cpp  (T10, 59 claims)
+               checks/{placement_contract.py,fab_package_contract.py,firmware_hw_map_contract.py}
+               audit_rail_ampacity.py, DEVICE_SPEC.md, aqroot-Beta-v2.kicad_dru (5c)
+               07_ir/03_spi_a_display_sd schematics (AO3400A sourcing identity)
+               hardware/demo/fab/*  regenerated
+    evidence   d751-{backlight-fet-route,routing-ledger,placement-contract,
+               fab-package-contract,contract-regression,firmware-hw-map-contract,
+               rail-ampacity,release-verification}.json, plus a full d751-* baseline set
+
+### 1. D-750 FITTED `Q11` AND NEVER CONNECTED IT
+
+The session that closed the external first-spin review added the backlight
+true-off disconnect, cut the panel-cathode In2 run in two to make room for it,
+and stopped.  The live ledger carried **three unapproved open edges** —
+`LED_K`, `LED_K_PANEL` and `DISP_BL_CTL`, all three of them `Q11`'s own pins —
+so the repair the review asked for was on the board as a *symbol* and as a
+*BOM line* and not as a circuit.  That is the worst of the three states to
+freeze: every identity gate passes and the screen still glows.
+
+    python3 route_maze_batch.py /03_SPI_A_DISPLAY_SD/LED_K \
+        /03_SPI_A_DISPLAY_SD/LED_K_PANEL /DISP_BL_CTL \
+        --tap --tap-first --tap-max-mm 12 --grid 50000 --promote     # 34 s
+
+**Three taps, 16.26 mm of conductor, four barrels**, and the D-669 `--tap-first`
+order is what made it cheap: each of `Q11`'s pins is within a few millimetres of
+its own net's existing copper, and the whole-board maze would have hauled to a
+PAD.
+
+    LED_K        Q11.2 -> B 1.264 mm -> via (9.450,110.950) -> I2  2.388 mm total
+    LED_K_PANEL  Q11.3 -> B 0.900 mm -> via (10.950,112.800) -> I2  3.550 mm
+    DISP_BL_CTL  Q11.1 -> B 1.140 mm -> 2 vias -> B (4.000,121.950) 10.324 mm
+
+**THE FIRST RUN WAS REFUSED, AND FOR THE RIGHT REASON.**  `LED_K_PANEL`'s tap
+landed on the *side* of the In2 run rather than at its end, leaving 0.44 mm of
+copper hanging past the T — one `track_dangling` warning, and the gate's
+`attributable_drc` clause said no.  The stub was trimmed to the tap point
+`(10.2901,111.5506)` first; the re-run is clean at **199 `lib_footprint_issues`
+and nothing else**, and promoted.
+
+### 2. THREE GATES COULD NOT SAY WHAT D-750 HAD DONE
+
+**`placement_contract.py` HAD NO WORD FOR "ADDED".**  D-712 taught it
+`--remove`; nothing ever taught it the opposite.  D-750 fitted `C83`, `C84` and
+`Q11`, so `PL1` and `PL2` failed no matter how correct the placement was, and
+the whole standing suite reported `placement FAIL`.  **A gate with no way to
+pass a legitimate act is a gate that gets overridden**, and the override is how
+an *undeclared* addition would have travelled beside the declared ones.  There
+is now `--add REF`, and the declaration buys nothing:
+
+  * `PL1` requires the reference set to differ by **exactly** the declared adds
+    and removes — declaring an add for a part that already existed FAILS, and
+    omitting one of the three real ones FAILS.  Both controls run.
+  * **`PL7` NOW LOOKS AT ADDED PADS.**  It had only ever looked at MOVED ones,
+    and a pad that ARRIVES next to foreign copper is the same defect as a pad
+    that is moved next to it.  Zero hits on all three.
+
+***AND THE VACUITY SCREEN WAS ITSELF VACUOUS.***  `PL6` read `not
+pchecks["PL2"]`, and `PL2` is an AND over `PL1` — so any unrelated `PL1`
+failure (an undeclared addition, say) made the perturbed board fail `PL2` for a
+reason that had nothing to do with the perturbation, and `PL6` "passed" while
+proving nothing.  It must now **name the decoy**: the 1000 nm nudge has to
+appear in the perturbed run's own `unclaimed_footprints_moved` list.
+
+**`FAB5` AND `FAB12` WERE STRENGTHENED AGAINST DEFECTS NOBODY COULD
+REPRODUCE.**  D-750 wrote them against an external review's negative controls
+and then ran them on a package where every row is correct — so every new clause
+passed *vacuously*, which is the shape a comparator with a typo in it also has.
+Seven live controls now run inside the gate: `FAB5` mutates one row of the real
+`pos-fitted` file four ways (180° rotation, +10 mm, flipped side, duplicated
+row) and `FAB12` **puts the `J5` defect back** — the superseded
+`BCS-112-S-D-HE` MPN, the "2x12" description against a one-row-of-24 land, and
+a footprint the board does not carry.  All seven are refused.
+
+This also settles the independently-pushed `cto/d750-semantic-gates` branch
+(`e89aa36`): its 18 pinned identities are a strict **subset** of `FAB12b`'s 41,
+field for field, and its `FAB5` rotation/duplicate clauses are the same ones
+D-750 wrote.  Its contribution — *live controls inside the gate* — is taken.
+Nothing is cherry-picked; the branch is superseded.
+
+### 3. THE ONE LCSC GAP ON THE ASSEMBLY BOM, AND WHY IT MATTERED MORE AFTER D-750
+
+121 of 122 assembly BOM lines carried a distributor identity.  The exception was
+`AO3400A` — and D-750 had just made it a **two-piece line** by adding `Q11`.
+Verified live per D-096 (`evidence/jlc-live/ao3400a-568c27aa.json`): LCSC
+**`C20917`**, Alpha & Omega Semicon, SOT-23, `componentLibraryType` **`base`**
+(no extended-part fee, no feeder setup), stock 812 570, 30 V, 5.7 A, RDS(on)
+48 mΩ at VGS 2.5 V.  Both fitted uses are far inside that envelope: `Q1` sinks
+the IR LED and `Q11` carries the 109 mA panel cathode return, where even the
+worst-case 48 mΩ costs **5.2 mV**.  **122 of 122.**
+
+### 4. THE D-743 THERMAL EXCEPTION STILL CITED A STACKUP THIS BOARD DOES NOT HAVE
+
+D-750 corrected the inner-copper thickness and recomputed every number on
+`/01_POWER_TREE/USB_VBUS_CHG`, and **left the sentence that justifies the
+exception standing**: *"not a 0.5 oz trace 0.15 mm from solid GND and +3V3
+planes on both faces."*  The board's own `(stackup)` says `In2.Cu` is
+**0.4000 mm of core** below `In1.Cu` (GND) and **0.2028 mm of prepreg** above
+`In3.Cu` (+3V3) — asymmetric, and wrong by more than 2× on one face.  The
+`.kicad_dru` had already been rewritten; the machine-checkable half had not.
+`accept_reason` is now the number the tool DERIVES from those two distances —
+**1.45 K against the isolated-coupon curve's 66.5 K** — and not a remembered
+premise.
+
+### 5. WHY `C83` IS 5 mm FROM `U21` AND IS NOT MOVED
+
+An independent check asked for a shorter input loop if geometry allows one.  It
+does not, cheaply — `TP28`'s `ACC_5V_RAW` land sits in the only free B.Cu
+between them — and the measurement says it does not matter, because **`U21.3`
+is the controller's BIAS pin, not the power path** (D-725): the inductor
+current runs SYS-rail → `L4` → SW *externally*, so the node `C83` supports
+carries the inductor's **triangular ripple**, not a switching edge.
+
+    as built   C83.1 -> 2.399 mm of 0.800 mm B.Cu -> junction (55.000,36.200)
+               -> 2.400 mm of 1.000 mm B.Cu -> L4.1.  U21.3 hangs off the same
+               junction through 1.350 mm of 0.500 mm B.Cu.
+    loop L     B.Cu is 0.2104 mm over the In4 GND plane: mu0.h/w = 0.29 nH/mm,
+               so 5.1 mm + one barrel is about 1.8 nH -- against roughly 0.7 nH
+               of ESL inside the 0805 itself.
+    dI/dt      V/L across the inductor = 3.3 V / 1.0 uH = 3.3 A/us.  No
+               switching frequency is needed for this, and none is asserted:
+               the TPS61023 datasheet is not in this repository.
+    V          1.8 nH x 3.3e6 A/s = 6 mV on a 3.3 V rail -- 0.2 %.  Moving C83
+               2 mm closer buys about 2 mV, less than its own package adds.
+
+The HIGH-dI/dt loop on this converter is the OUTPUT one and it is already
+short: `C65.1` is **1.82 mm** from `U21.6` with the GND return on the B.Cu
+plane under both.  Recorded in `.kicad_dru` section 5c so the next reader does
+not have to re-derive it.
+
+### 6. THE FIRMWARE FIXES D-750 MADE HAD NO TEST, AND ONE OF THEM WAS INCOMPLETE
+
+D-750 repaired three `||` short circuits — `begin()`, `service()` and the two
+accessory shutdowns — and **nothing proved the repair**, because a recording
+bus that always ACKs cannot tell an independent sequence from a short-circuiting
+one.  *That is exactly why the bug lived so long.*  `RecordingBus` now takes a
+**selective NACK** (by address, optionally by register, optionally once only)
+and still LOGS the refused transaction, because the whole question is whether
+the firmware ATTEMPTED the other device.  `T10` is 19 new claims.
+
+***AND WRITING THE TEST FOUND THE REMAINING HALF OF THE BUG.***
+`writeOutputs` only updates the shadow when the bus ACKs — which is right — so
+a NACKed write leaves `shadow_` holding `ACC_5V_SW_EN` **high**, and D-750's
+now-unconditional second write (`writeBit(ACC_5V_BOOST_EN, false)`) re-sent
+that stale bit: **one NACK on the load-switch write would have left the load
+switch commanded ON during the very fault the shutdown was called for.**  New
+`Pcal9535a::clearBits` takes both bits down in one transaction, so a shutdown
+needs ONE write to survive rather than all of them.  The safe order is
+unchanged and `T5` still proves it.
+
+All three short circuits and the stale-shadow bug are now **mechanised
+controls** in `firmware_hw_map_contract.py`: the contract puts each one back
+and requires `T10` to catch it.  **Nine controls, nine caught, 81 claims over
+two host tests.**
+
+### 7. RELEASE-GRADE VERIFICATION, WHOLE, ON `bdf1376c`
+
+    connectivity     173 retained nets, 172 connected, 1 open
+                     approved_unrouted 1 (U11.3, owner decision D-742)
+                     unapproved_open_edges 0
+    approved NC      exactly the 8 J5 positions Demo scope allows
+    KiCad DRC        199 lib_footprint_issues, ALL severity WARNING
+                     0 clearance / track_width / track_dangling / anything else
+    parity           0 ERRORS (246 warnings, the standing field/attr classes)
+    ampacity         all_ok, stackup self-check PASS at the board's own 0.0152 mm
+    FAB1..FAB12      ALL PASS, 7 live negative controls refused
+    contracts        17 run, 17 pass, protected_copper IDENTICAL to d746
+    firmware         H1-H6 PASS, 11 policy controls refused, 81 host claims,
+                     9 host controls caught; all four PlatformIO targets build
+    hardware/beta-v2 UNTOUCHED
+
+**NOTE FOR THE DIFF READER.**  `03_spi_a_display_sd.kicad_sch` shows ~19 000
+changed lines.  **568 of them are content** — the `Q11` symbol, its cached
+library symbol, three labels and three wires — and the rest is a CRLF→LF
+normalisation the D-750 edit performed on a file that was already mixed.
+Verified by diffing with line endings stripped.
+
+
+## D-750 — **THE EXTERNAL FIRST-SPIN REVIEW REOPENED `DEMO_READY_FOR_FAB`, AND FOUR OF ITS FINDINGS WERE REAL**
+
+    authority  c7f5c618 -> (this transaction; completed and released at D-751)
+    full item-by-item disposition, all thirteen:
+      docs/full-beta-v2/audits/2026-09-18-d750-first-spin-review-dispositions.md
+    evidence   d750-{critical-identity,j5-sourcing-plan,j5-sourcing-apply}.json
+               evidence/jlc-live/ssq-124-02-*.json  (D-096, live, 2026-09-18)
+
+An independent review (Fable 5.1 + Astra) held the D-745/D-748 readiness
+declaration and named thirteen items.  **Four were confirmed defects, and the
+common shape of three of them is a claim that nobody had ever checked against
+the thing it described.**
+
+  1. **`J5` SHIPPED THE WRONG PART NUMBER FOR EIGHT MONTHS.**  D-237 replaced
+     the 2×12 `BCS-112-S-D-HE` with the 1×24 Samtec `SSQ-124-02-G-S-RA`, moved
+     the `Footprint` and `Datasheet` properties, and **left `MPN`, `LCSC`,
+     `Description`, `Alternate`, `Note` and `Note2` on the superseded part**.
+     Every gate asked only whether the package was internally CONSISTENT, and
+     it was.  Corrected everywhere it is derived, re-verified live per D-096
+     (LCSC `C3323671`, Number of Rows **1**, 24P).  The `-L` 10 µin variant is
+     a valid datasheet configuration with **zero distributor records** and is
+     therefore NOT baselined — the third time D-096 has refused a configured
+     part number on this project.
+  2. **`U14` `QSTRT` WAS PHYSICALLY FLOATING** behind a deliberate `no_connect`,
+     which is why ERC passed.  On a part whose headline number is 3 µA
+     quiescent, a floating CMOS input can sit in the crossover region and
+     dominate the whole device; a rising edge on it discards the ModelGauge
+     state.  Wired to `GND`; **it needed no new copper** — the B.Cu `GND` pour
+     already reaches the land.
+  3. **THE CHARGER-INPUT AUDIT USED THE WRONG COPPER.**  `INNER_MM` was
+     0.0174 mm, the NOMINAL half-ounce foil; the board's own `(stackup)` has
+     said **0.0152 mm** since D-263.  Every inner figure was 14.5 % optimistic.
+     The rail was also re-laid: **250.8 → 189.8 mm, 440 → 216 mΩ, 484 → 237 mV
+     at 1.1 A** — which is what moves the charge SAFETY TIMER from *exceeded*
+     on an ordinary 4.65–4.75 V source to **65 min of margin**.  The tool now
+     reads the stackup back and fails itself if the two disagree.
+  4. **NEITHER BOOST HAD A LOCAL INPUT CAPACITOR.**  The nearest capacitor on
+     `BQ25185_SYS` to `U21` was 36.6 mm and its *named* 10 µF input part `C64`
+     was **93.5 mm** away; `U13` was the same.  **The review's suggested fix
+     would have cut the rail** — `C64` and `C33` are PASS-THROUGH JUNCTIONS on
+     the SYS trunk and `apply_part_shift.py` refused the move with
+     `RELEASE_WOULD_STRAND`.  `C83` (5.8 mm from `U21.3`) and `C84` (3.5 mm
+     from `U13.3`) are added instead, on the SAME BOM line as `C33`/`C64`.
+     **And the trunk itself is now measured**: section 5's "LOCAL EXCEPTION,
+     NOT ENCODABLE" note about the 2.19 A peak had stood since D-185 with
+     nothing checking it.  Two rails, `.kicad_dru` section 5c.
+  7. **THE BACKLIGHT COULD NOT BE TURNED OFF.**  TI guarantees the TPS61169
+     OFF only when the LED array's minimum Vf exceeds the maximum VIN; this
+     panel is **2.9–3.2 V on a 3.3 V rail**, so the condition fails and the
+     shutdown DC path converges at **≈ 25 mA** — a fifth of full brightness,
+     plainly visible in the dark, 82 mW of continuous drain, and **no firmware
+     mitigation exists** because `+3V3` is switched by the `SW9` slide switch.
+     `Q11`, one `AO3400A` on the same BOM line as `Q1`, in the panel cathode
+     return, gate on `DISP_BL_CTL`, held off by `R108` through boot, reset,
+     GPIO high-impedance and firmware crash.  Outside the regulation loop by
+     construction, so the 109 mA setpoint is unchanged.
+  9. **COMBINED-LOAD CONCURRENCY IS A PUBLISHED LIMIT, NOT A DEFECT.**  All
+     three loads at their per-rail maxima is 3.04 A at 3.0 V, against a
+     `BAT_MAIN` of 1.5 A sustained and an `IBAT_OCP` trip at 3.125 A.  The
+     per-rail figures are EACH-ALONE maxima; the policy is in `DEVICE_SPEC`
+     §6.3a and is enforceable, because firmware owns both enables through `U3`.
+ 11. **THE RELEASE GATES WERE STRENGTHENED**: `FAB5` gained rotation,
+     per-file reference uniqueness and the `pos-fitted` geometry check it had
+     never had; **`FAB12` is new** and asks whether a BOM row's own words
+     describe the pads it ships on, beside a 41-identity pin.
+ 12. **FIRMWARE**: the MAX17048 `VERSION` probe read one byte of a 16-bit
+     register and **reported a healthy fuel gauge as broken**; the microphone
+     capture clocked BCLK at 1.024 MHz, inside the low-power band; and three
+     `||` short circuits meant one I2C error could leave `U3` unconfigured,
+     unserviced, or an accessory rail live during the fault that called for its
+     shutdown.
+
+Items 5, 6, 8, 10 and 13 are adjudicated as FIRST-ARTICLE or PROCUREMENT with
+their reasons, as the review's own release rule requires.  **Item 6 deserves
+naming**: the review is right that there is no dedicated shunt position between
+the series capacitors and the antenna, and the primary source it conditions the
+change on (ST `AN5276` and the matching tool) could not be retrieved from this
+environment — so the topology is NOT changed on a recollection.  It is closed
+instead because the tune position is **fittable by construction**:
+`NFC_MATCH_A` and `NFC_MATCH_B` each sit **0.500 mm** from B.Cu `GND` fill on
+the same layer, symmetrically, so a parallel element is an ordinary 0402 tacked
+across a measured gap at first article.
+
+**`Q11`, `C83` and `C84` were fitted here and CONNECTED at D-751**, which also
+taught `placement_contract.py` the word for an added part.
+
 ## D-748 — **A DISCIPLINE THAT ONLY EXISTS IN A COMMENT CANNOT REFUSE.** THE SHARED SPI-B RULES ARE NOW A MECHANISM, AND THE TEST THAT PROVED IT FOUND A RE-ENTRANCY BUG IN IT
 
     authority  c7f5c618  UNCHANGED.  NO COPPER, NO SCHEMATIC, NO FAB PACKAGE.

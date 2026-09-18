@@ -1,0 +1,111 @@
+{
+ "endpoint": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
+ "exhausted": true,
+ "fetched_utc": "2026-09-18T06:46:07Z",
+ "keyword": "SSQ-124-02-G-S-RA",
+ "page_size": 25,
+ "pages": 2,
+ "records": [
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Circular Hole / Square Hole",
+     "attribute_value_name": "Square Hole"
+    },
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-55℃~+125℃"
+    },
+    {
+     "attribute_name_en": "Number of Rows",
+     "attribute_value_name": "1"
+    },
+    {
+     "attribute_name_en": "Voltage Rating (Max)",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Insulation Height",
+     "attribute_value_name": "2.41mm"
+    },
+    {
+     "attribute_name_en": "Number of Positions",
+     "attribute_value_name": "24P"
+    },
+    {
+     "attribute_name_en": "Contact Plating",
+     "attribute_value_name": "Gold"
+    },
+    {
+     "attribute_name_en": "Pitch",
+     "attribute_value_name": "2.54mm"
+    },
+    {
+     "attribute_name_en": "Contact Material",
+     "attribute_value_name": "Phosphor bronze"
+    },
+    {
+     "attribute_name_en": "Current Rating",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Mounting Type",
+     "attribute_value_name": "Right Angle"
+    }
+   ],
+   "componentBrandEn": "Samtec",
+   "componentCode": "C3323671",
+   "componentLibraryType": "expand",
+   "componentModelEn": "SSQ-124-02-G-S-RA",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 5.6339,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 29,
+     "productPrice": 5.6339,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 5.6339,
+     "startNumber": 30
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 2.1813,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 2.1032,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 2.0657,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "Push-Pull,P=2.54mm",
+   "componentTypeEn": "Female Headers",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2404031713_Samtec-SSQ-124-02-G-S-RA_C3323671.pdf",
+   "describe": "-55℃~+125℃ 1 2.41mm 2.54mm 24P Gold Phosphor bronze Right Angle Square Hole 弯插,P=2.54mm Female Headers ROHS",
+   "erpComponentName": "间距:2.54mm 弯插",
+   "isBuyComponent": "0",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/female-headers_samtec-ssq-124-02-g-s-ra_C3323671.html",
+   "leastPatchNumber": 0,
+   "lossNumber": 0,
+   "minPurchaseNum": 2,
+   "noBuyReason": "This product is no longer manufactured.",
+   "rohsFlag": 1,
+   "stockCount": 0
+  }
+ ],
+ "returned": 1,
+ "schema": 1,
+ "total_matches": 1
+}

@@ -40,7 +40,7 @@ Board copper-to-edge minimum in force: **0.500 mm**, and KiCad DRC on this board
 
 ## Vias in solderable lands -- VIA PROTECTION IS REQUIRED
 
-Solder-mask expansion on this board is **0.000 mm**, so a pad's mask aperture IS its copper.  **129 via barrels open directly into 135 solderable lands across 76 components**, on hole sizes 0.20 mm / 0.25 mm / 0.30 mm / 0.40 mm.  135 of those lands carry the SAME net as the via, which is why no clearance check and no KiCad DRC rule reports them -- KiCad has no via-in-pad rule at all.
+Solder-mask expansion on this board is **0.000 mm**, so a pad's mask aperture IS its copper.  **130 via barrels open directly into 136 solderable lands across 77 components**, on hole sizes 0.20 mm / 0.25 mm / 0.30 mm / 0.40 mm.  136 of those lands carry the SAME net as the via, which is why no clearance check and no KiCad DRC rule reports them -- KiCad has no via-in-pad rule at all.
 
 **REQUIRED PROCESS: these vias must be PLUGGED / RESIN-FILLED AND CAP-PLATED (via-in-pad / POFV), or filled by an equivalent process that leaves a planar, solderable land.**  Applying the process to every via on the board is acceptable and is the simpler instruction; what is NOT acceptable is shipping these barrels open.
 
@@ -61,7 +61,7 @@ The ten worst lands, by how much of the land is open hole:
 | `C8.1` | F.Cu | 0.900 x 0.950 | 0.40 mm | 0.1255 mm2 | **15.5 %** | `+3V3` |
 | `C39.1` | B.Cu | 0.900 x 0.950 | 0.40 mm | 0.1097 mm2 | **13.6 %** | `/ACC_3V3_SW` |
 
-**31 of the 135 lands are FINE-PITCH** (one land dimension at or below 0.500 mm) -- including D8.1, J1.12, J1.14, J1.16, J1.18, J1.22, J1.23, J1.25.  On those the hole is a large fraction of the land's width and an unfilled barrel does not merely starve the joint, it removes the land.
+**31 of the 136 lands are FINE-PITCH** (one land dimension at or below 0.500 mm) -- including D8.1, J1.12, J1.14, J1.16, J1.18, J1.22, J1.23, J1.25.  On those the hole is a large fraction of the land's width and an unfilled barrel does not merely starve the joint, it removes the land.
 
 The complete list of barrel centres is in `MANIFEST.json` under `via_in_pad`.
 

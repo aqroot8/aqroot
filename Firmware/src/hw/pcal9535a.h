@@ -139,6 +139,20 @@ class Pcal9535a {
     return writeOutputs(bus, next);
   }
 
+  // D-751.  A FAILED WRITE DOES NOT MOVE THE SHADOW, AND THAT TURNS A RETRY
+  // INTO A RE-ASSERTION.  `writeOutputs` only updates `shadow_` when the bus
+  // ACKs -- which is right, because a NACKed write did not reach the device --
+  // but it means the NEXT single-bit write re-sends the bit the failed one was
+  // trying to clear.  On the accessory shutdown path, where D-750 made both
+  // writes unconditional, one NACK on the load-switch bit would otherwise let
+  // the following boost-disable write command the load switch back ON.
+  // `clearBits` collapses that: whatever the shadow holds, every bit in `mask`
+  // goes to 0 in one transaction, so a shutdown needs ONE write to succeed
+  // rather than all of them.
+  bool clearBits(I2cBus &bus, uint16_t mask) {
+    return writeOutputs(bus, uint16_t(shadow_ & uint16_t(~mask)));
+  }
+
   static bool bitOf(uint16_t word, uint8_t index) {
     return (word & uint16_t(1u << index)) != 0;
   }

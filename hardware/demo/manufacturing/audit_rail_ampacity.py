@@ -50,7 +50,7 @@ saves it.  Parallel paths only ever help, so this under-states the board.
 
     python3 audit_rail_ampacity.py [--board B] [-o OUT.json]
 """
-import argparse, json, math, sys
+import argparse, json, math, re, sys
 from collections import defaultdict
 from pathlib import Path
 
@@ -65,7 +65,17 @@ BOARD = ROOT / "hardware/demo/kicad/aqroot-demo/aqroot-Beta-v2.kicad_pcb"
 # This board's stackup, transcribed from the fab notes it is ordered against
 # and identical to the constants `audit_bond_ampacity.py` already uses.
 OUTER_MM = 0.0348               # 1 oz finished outer copper
-INNER_MM = 0.0174               # 0.5 oz finished inner copper
+# D-750 CORRECTED THIS FROM 0.0174.  0.0174 mm is the NOMINAL thickness of a
+# half-ounce foil; it is not what this board is ordered against.  The board
+# file's own stackup object declares In1..In4 at 0.0152 mm, which is the
+# thickness JLCPCB publishes for the 0.5 oz inner foil of JLC06161H-7628, and
+# `audits/2026-08-27-p2-002r-sixlayer-lock-d263.md` locked that stackup with
+# those four numbers written out.  The old constant over-stated every inner
+# conductor's cross-section by 14.5 %, which under-states its rise and its
+# resistance.  THE BOARD'S OWN STACKUP IS THE AUTHORITY; a self-check against
+# it now runs before any rail is judged.
+INNER_MM = 0.0152               # 0.5 oz inner foil, JLC06161H-7628 as declared
+                                # in the board's own (stackup) object
 PLATING_MM = 0.025              # JLCPCB plated barrel wall, minimum
 MIL2_PER_MM2 = 1.0 / 0.00064516
 K_EXT, K_INT = 0.048, 0.024
@@ -90,12 +100,29 @@ RAILS = (
          # scoped to ONE net on ONE layer, and a hot segment anywhere else --
          # or on an outer layer of this same net -- still FAILS.
          accept=(dict(layer="In2.Cu", reason="dru-5a", max_length_mm=165.0),),
-         accept_reason="D-743 / .kicad_dru section 5a: IPC-2221B's internal k "
-               "describes an isolated coupon in still air, not a 0.5 oz trace "
-               "0.15 mm from solid GND and +3V3 planes on both faces.  Measured "
-               "alternatives are exhausted: no corridor exists on any layer at "
-               "any width (screen_widest_corridor, 3 layers) and in-place "
-               "widening is worth under 5 % (w/d743/widen_plan.py, 25 segments)."),
+         # D-751 REPAIRED THIS PROSE.  D-743 wrote "0.15 mm from solid GND and
+         # +3V3 planes on both faces" from a stackup this board does not have,
+         # and D-750's inner-copper correction left the sentence standing while
+         # every number around it changed.  The real geometry is asymmetric and
+         # is read back from the board's own (stackup): In2.Cu sits 0.4000 mm
+         # of core below In1.Cu (GND) and 0.2028 mm of prepreg above In3.Cu
+         # (+3V3).  The plane-coupled rise this file DERIVES from those two
+         # distances is 1.45 K; the justification is now that number rather
+         # than a remembered one.
+         accept_reason="D-743, re-derived at D-751 / .kicad_dru section 5a: "
+               "IPC-2221B's internal k describes an isolated coupon in still "
+               "air, and it is superseded by IPC-2152.  This board's In2.Cu is "
+               "not an isolated coupon: its own declared stackup puts it "
+               "0.4000 mm of core from the In1.Cu GND plane and 0.2028 mm of "
+               "prepreg from the In3.Cu +3V3 plane, and the plane-coupled rise "
+               "computed from those distances is 1.45 K against the 66.5 K the "
+               "isolated-coupon curve returns.  Measured alternatives are "
+               "exhausted: no corridor exists on any layer at any width "
+               "(screen_widest_corridor, 3 layers) and in-place widening is "
+               "worth under 5 % (w/d743/widen_plan.py, 25 segments).  The "
+               "ELECTRICAL cost is accepted with its number: 216 mOhm and "
+               "237 mV at 1.1 A, which D-750's charge-timer margin is computed "
+               "against."),
     dict(name="USB_VBUS_RAW", net="/01_POWER_TREE/USB_VBUS_RAW",
          src=("J3.A4", "J3.B4", "J3.A9", "J3.B9"), snk=("R35.1",), amps=1.10,
          basis="same charger input current, upstream of the R35 0 R link"),
@@ -129,7 +156,128 @@ RAILS = (
          pour_delivered="checks/pour_partition_contract.py PP2 -- this rail is "
                "delivered by its In/B.Cu pour, not by a trunk; a track-graph "
                "NO_PATH is the expected answer and is not a defect"),
+    # D-750 ADDED THESE TWO.  The SYS rail is POUR-DELIVERED only between U11
+    # and U12; the two SOUTHERN boosts are 40 mm outside that pour and are fed
+    # by a real trunk, and no instrument in this repository had ever measured
+    # it.  The .kicad_dru section 5 SYS_MAIN row says in its own words "LOCAL
+    # EXCEPTION, NOT ENCODABLE: the U21 accessory boost draws a 2.19 A peak
+    # inductor current from SYS (D-185), so the SYS segment that feeds U21 must
+    # be sized from that peak" -- a requirement nothing checked.  Now it is a
+    # rail with a source, a sink and a number.
+    dict(name="SYS_TO_ACC5V_BOOST", net="/01_POWER_TREE/BQ25185_SYS",
+         src=("U12.1", "U12.10", "U12.11", "C24.1", "C26.2", "C28.1"),
+         snk=("L4.1",), amps=1.21,
+         accept=(dict(layer="In2.Cu", reason="dru-5c", max_length_mm=80.0),),
+         accept_reason="D-750 / .kicad_dru section 5c.  The SYS trunk's three "
+               "In2 legs run 0.800 mm, where IPC-2221B's INTERNAL curve asks "
+               "2.232 mm for 1.21 A and returns a 58.6 K rise.  That curve is "
+               "an isolated coupon in still air and IPC-2152 superseded it; "
+               "the PLANE-COUPLED rise this file derives from the board's own "
+               "declared stackup -- In2 between In1 across 0.4000 mm of core "
+               "and In3 across 0.2028 mm of prepreg -- is 1.16 K, and the whole "
+               "rail dissipates 0.268 W.  The ELECTRICAL cost is accepted with "
+               "its number: 183 mOhm and 222 mV at the published ACC_5V "
+               "maximum, against a TPS61023 input range of 0.5-5.5 V.",
+         basis="U21 TPS61023 INPUT current at the published ACC_5V maximum: "
+               "0.70 A x 5.0 V / (0.88 efficiency x 3.3 V VBAT) = 1.21 A rms. "
+               "The 2.19 A the section 5 note quotes is the PEAK INDUCTOR "
+               "current (D-185), which the input capacitor C83 supplies "
+               "locally; the trunk carries the average.  THE SINK IS L4.1, NOT "
+               "U21.3: the two share one node and U21.3 hangs off it through "
+               "1.35 mm of 0.5 mm B.Cu (1.3 mOhm), but that stub's far END "
+               "lies 0.075 mm outside L4.1's land and OVERLAPS it as copper, "
+               "which KiCad's connectivity resolves and this file's "
+               "endpoint-in-pad graph does not."),
+    dict(name="SYS_TO_NFC5V_BOOST", net="/01_POWER_TREE/BQ25185_SYS",
+         src=("U12.1", "U12.10", "U12.11", "C24.1", "C26.2", "C28.1"),
+         snk=("L2.1",), amps=0.86,
+         accept=(dict(layer="In2.Cu", reason="dru-5c", max_length_mm=80.0),),
+         accept_reason="D-750 / .kicad_dru section 5c, same trunk and same "
+               "derivation as SYS_TO_ACC5V_BOOST; at 0.86 A the IPC-2221B "
+               "internal rise is 27.0 K and the plane-coupled rise is 0.59 K.",
+         basis="U13 TPS61023 INPUT current at the published NFC_5V_PA 0.50 A "
+               "TX burst: 0.50 A x 5.0 V / (0.88 x 3.3 V) = 0.86 A.  U13 is "
+               "DNP on AQROOT Demo (the NFC front end runs from +3V3), so this "
+               "is the FITTED-VARIANT number and is measured so the trunk is "
+               "not sized by accident."),
 )
+
+
+
+# --------------------------------------------------------------------------
+# D-750: THE PLANE-COUPLED RISE, DERIVED FROM THE BOARD'S OWN STACKUP.
+#
+# IPC-2221B's internal curve (k = 0.024) was measured on isolated coupons in
+# still air and IPC-2152 (2009) superseded it: an internal trace in a real
+# board with adjacent planes is not half as capable, because the board
+# conducts heat and air does not.  Section 5 keeps k = 0.024 as a
+# conservative FLOOR-SETTING model, which is the right thing for setting
+# floors and the wrong thing for predicting a temperature.
+#
+# So the prediction is computed instead of asserted, and it is computed from
+# the dielectric thicknesses the BOARD declares rather than from a
+# remembered number.  D-750 found the previous prose claiming In2 sits
+# "about 0.15 mm of FR4 from solid copper on BOTH faces"; the board's own
+# stackup says In1 is 0.4000 mm of core away and In3 is 0.2028 mm of prepreg
+# away.  That premise was wrong by more than 2x on one face.
+#
+# THE MODEL.  One-dimensional conduction from the conductor into the two
+# nearest copper layers, treated as isothermal:
+#
+#     dT = I^2 * rho / ( k_fr4 * w^2 * t_cu * (1/d_up + 1/d_down) )
+#
+# The LENGTH CANCELS, which is the physical content: a long trace between
+# planes does not get hotter than a short one, it just heats more board.  It
+# is conservative three ways -- it ignores lateral spreading in the
+# dielectric, conduction along the copper itself, and the outer layers --
+# and it reports the rise OVER THE ADJACENT PLANES, not over ambient, so the
+# rail's total dissipation is reported beside it.
+# --------------------------------------------------------------------------
+K_FR4 = 3.0e-4                  # W/(mm.K), FR4/7628 through-plane, conservative
+
+
+def stackup_dielectrics(board_path):
+    """Ordered copper layers with the dielectric thickness on each side."""
+    text = Path(board_path).read_text(encoding="utf-8", errors="replace")
+    block = text[text.find("(stackup"):]
+    end = block.find('(layer "B.SilkS"')
+    block = block[:end] if end > 0 else block[:20000]
+    order, name = [], None
+    for line in block.splitlines():
+        m = re.search(r'\(layer "([^"]+)"', line)
+        if m:
+            name = m.group(1)
+            continue
+        m = re.search(r"\(thickness ([\d.]+)\)", line)
+        if m and name:
+            order.append((name, float(m.group(1))))
+            name = None
+    cu = [i for i, (n, _) in enumerate(order) if n.endswith(".Cu")]
+    out = {}
+    for k, i in enumerate(cu):
+        up = sum(t for n, t in order[cu[k - 1] + 1:i]) if k > 0 else None
+        dn = (sum(t for n, t in order[i + 1:cu[k + 1]])
+              if k + 1 < len(cu) else None)
+        out[order[i][0]] = dict(thickness_mm=order[i][1],
+                                dielectric_up_mm=up, dielectric_down_mm=dn,
+                                neighbour_up=order[cu[k - 1]][0] if k > 0 else None,
+                                neighbour_down=(order[cu[k + 1]][0]
+                                                if k + 1 < len(cu) else None))
+    return out
+
+
+def plane_coupled_rise(stack, layer, width_mm, amps):
+    """Rise over the ADJACENT COPPER LAYERS, in kelvin.  None for an outer
+    layer, where there is copper on only one face and the still-air term the
+    external IPC curve already models is the honest one."""
+    row = stack.get(layer)
+    if not row or row["dielectric_up_mm"] is None or row["dielectric_down_mm"] is None:
+        return None
+    cond = K_FR4 * (width_mm ** 2) * row["thickness_mm"] * (
+        1.0 / row["dielectric_up_mm"] + 1.0 / row["dielectric_down_mm"])
+    if cond <= 0:
+        return None
+    return (amps ** 2) * RHO_CU / cond
 
 
 def ampacity(area_mm2, dT, external):
@@ -154,13 +302,46 @@ def width_for(amps, dT, external):
     return a_mil2 / MIL2_PER_MM2 / (OUTER_MM if external else INNER_MM)
 
 
+def stackup_selfcheck(board_path):
+    """The copper thickness this file rules with must be the copper thickness
+    the board is ORDERED with.  D-750 found it was not: `INNER_MM` was the
+    nominal 0.5 oz foil, 0.0174 mm, while the board's own `(stackup)` object
+    declares 0.0152 mm on all four inner layers -- the JLC06161H-7628 published
+    figure D-263 locked.  A hand-typed constant drifts from the board silently,
+    so it is read back and compared here, and a mismatch is a FAIL of this tool
+    before it is allowed to judge any copper."""
+    text = Path(board_path).read_text(encoding="utf-8", errors="replace")
+    block = text[text.find("(stackup"):]
+    block = block[:block.find('(layer "B.SilkS"')] or block[:20000]
+    found, name = {}, None
+    for line in block.splitlines():
+        m = re.search(r'\(layer "([^"]+)"', line)
+        if m:
+            name = m.group(1)
+            continue
+        m = re.search(r"\(thickness ([\d.]+)\)", line)
+        if m and name and name.endswith(".Cu"):
+            found[name] = float(m.group(1))
+            name = None
+    outer = sorted({found.get("F.Cu"), found.get("B.Cu")} - {None})
+    inner = sorted({found.get(k) for k in ("In1.Cu", "In2.Cu", "In3.Cu",
+                                           "In4.Cu")} - {None})
+    ok = (len(outer) == 1 and len(inner) == 1
+          and abs(outer[0] - OUTER_MM) <= 0.0005
+          and abs(inner[0] - INNER_MM) <= 0.0005)
+    return dict(board_copper_mm=found, outer_declared=outer, inner_declared=inner,
+                outer_used_mm=OUTER_MM, inner_used_mm=INNER_MM, ok=ok,
+                note="the constants this tool rules with must equal the board's "
+                     "own declared stackup (D-750)")
+
+
 def selfcheck():
     """Re-derive `.kicad_dru` section 5's published table before ruling."""
     published = (
-        ("BAT_MAIN", 1.5, 0.525, 2.734), ("SYS_MAIN", 1.0, 0.300, 1.563),
-        ("P3V3", 1.0, 0.300, 1.563), ("ACC_3V3", 0.40, 0.085, 0.443),
-        ("ACC_5V", 0.70, 0.184, 0.958), ("VBUS_CHG", 0.5, 0.115, 0.601),
-        ("SPK_OUT", 0.29, 0.070, 0.365),
+        ("BAT_MAIN", 1.5, 0.529, 3.148), ("SYS_MAIN", 1.0, 0.302, 1.799),
+        ("P3V3", 1.0, 0.302, 1.799), ("ACC_3V3", 0.40, 0.085, 0.508),
+        ("ACC_5V", 0.70, 0.185, 1.100), ("VBUS_CHG", 1.1, 0.345, 2.052),
+        ("SPK_OUT", 0.29, 0.055, 0.326),
     )
     rows, worst, mismatched = [], 0.0, []
     for name, amps, outer, inner in published:
@@ -339,6 +520,8 @@ def main():
     board = pcbnew.LoadBoard(str(args.board.resolve()))
     board.BuildConnectivity()
     check = selfcheck()
+    stack = stackup_selfcheck(args.board.resolve())
+    diel = stackup_dielectrics(args.board.resolve())
 
     pad_index = {}
     for fp in board.GetFootprints():
@@ -377,6 +560,15 @@ def main():
                        required_mm_at_10K=round(
                            width_for(rail["amps"], DT_REF, ed["external"]), 3)
                        if ed["kind"] == "track" else None,
+                       plane_coupled_rise_K=(
+                           round(plane_coupled_rise(diel, ed["layer"],
+                                                    ed["width_mm"],
+                                                    rail["amps"]), 2)
+                           if ed["kind"] == "track" and ed["width_mm"]
+                           and plane_coupled_rise(diel, ed["layer"],
+                                                  ed["width_mm"],
+                                                  rail["amps"]) is not None
+                           else None),
                        at=[ed.get("x"), ed.get("y")])
             segs.append(seg)
             if dT > args.dt_limit:
@@ -386,7 +578,14 @@ def main():
         undeclared = [h for h in hot if not h.get("accepted_by")]
         accepted_len = round(sum(h["length_mm"] for h in hot
                                  if h.get("accepted_by")), 3)
+        worst_pc = [x["plane_coupled_rise_K"] for x in segs
+                    if x.get("plane_coupled_rise_K") is not None]
         row.update(connected=True,
+                   worst_plane_coupled_rise_K=(round(max(worst_pc), 2)
+                                               if worst_pc else None),
+                   dissipation_W=round((rail["amps"] ** 2) * sum(
+                       RHO_CU * e["length_mm"] / e["area_mm2"]
+                       for e in path if e["kind"] != "pad" and e["area_mm2"]), 4),
                    path_segments=len(segs),
                    path_length_mm=round(sum(s["length_mm"] for s in segs), 3),
                    series_resistance_mohm=round(
@@ -419,8 +618,13 @@ def main():
             row["verdict"] = "HOT"
 
     report = dict(schema=1, board=str(args.board), dt_limit_K=args.dt_limit,
+                  stackup_selfcheck=stack, stackup_dielectrics=diel,
+                  plane_coupled_model=dict(
+                      k_fr4_W_per_mmK=K_FR4,
+                      form="dT = I^2 rho / (k w^2 t (1/d_up + 1/d_down))",
+                      reports="rise over the ADJACENT COPPER LAYERS, not over ambient; length-independent by construction; ignores lateral spreading, conduction along the copper and the outer layers, so it is a floor on the cooling and a ceiling on the rise"),
                   method_selfcheck=check, rails=out,
-                  all_ok=(check["method_reproduces_dru"]
+                  all_ok=(check["method_reproduces_dru"] and stack["ok"]
                           and all(r.get("verdict") in
                                   ("OK", "OK_WITH_DECLARED_EXCEPTION",
                                    "POUR_DELIVERED") for r in out)))

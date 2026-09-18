@@ -31,6 +31,7 @@ struct Txn {
   uint8_t reg;
   uint16_t value;   // 16-bit for port-pair writes, 8-bit widened otherwise
   bool is_read;
+  bool nacked = false;   // D-751: the transaction was ATTEMPTED and refused
 };
 
 class RecordingBus : public I2cBus {
@@ -41,6 +42,26 @@ class RecordingBus : public I2cBus {
   uint16_t u2_config = 0xFFFF;
   uint16_t u3_config = 0xFFFF;
 
+  // ---- D-751: SELECTIVE NACK -------------------------------------------
+  // T10 exists because an independent-failure bug is invisible to a bus that
+  // always ACKs: the `||` short circuits that D-750 repaired all passed every
+  // test in this file, because no test had ever refused a transaction.  A
+  // failed transaction is still LOGGED -- the whole question is whether the
+  // firmware ATTEMPTED the other device, so an attempt that was refused must
+  // remain visible.
+  int fail_address = -1;         // -1 = never fail
+  int fail_reg = -1;             // -1 = any register at that address
+  bool fail_once = false;        // fail only the FIRST match, then behave
+  int failures_injected = 0;
+
+  bool shouldFail(uint8_t address, uint8_t reg) {
+    if (fail_address < 0 || int(address) != fail_address) return false;
+    if (fail_reg >= 0 && int(reg) != fail_reg) return false;
+    if (fail_once && failures_injected > 0) return false;
+    ++failures_injected;
+    return true;
+  }
+
   bool write(uint8_t address, const uint8_t *data, size_t length) override {
     Txn txn{address, data[0], 0, false};
     if (length == 3) {
@@ -48,16 +69,21 @@ class RecordingBus : public I2cBus {
     } else if (length == 2) {
       txn.value = data[1];
     }
+    const bool nack = shouldFail(address, txn.reg);
+    txn.nacked = nack;
+    log.push_back(txn);
+    if (nack) return false;
     if (txn.reg == Pcal9535a::kRegConfig0) {
       (address == AQROOT_EXP_U2_ADDR ? u2_config : u3_config) = txn.value;
     }
-    log.push_back(txn);
     return true;
   }
 
   bool readRegister(uint8_t address, uint8_t reg, uint8_t *data,
                     size_t length) override {
-    log.push_back(Txn{address, reg, 0, true});
+    const bool nack = shouldFail(address, reg);
+    log.push_back(Txn{address, reg, 0, true, nack});
+    if (nack) return false;
     uint16_t value = 0;
     if (reg == Pcal9535a::kRegInput0) {
       value = (address == AQROOT_EXP_U2_ADDR) ? u2_inputs : u3_inputs;
@@ -71,6 +97,14 @@ class RecordingBus : public I2cBus {
   }
 
   bool probe(uint8_t) override { return true; }
+
+  int countWrites(uint8_t address, uint8_t reg, size_t from = 0) const {
+    int n = 0;
+    for (size_t i = from; i < log.size(); ++i) {
+      if (!log[i].is_read && log[i].address == address && log[i].reg == reg) ++n;
+    }
+    return n;
+  }
 
   // Index of the first write of `reg` to `address`, or -1.
   int indexOfWrite(uint8_t address, uint8_t reg) const {
@@ -313,6 +347,134 @@ int main() {
     high.begin(ok);
     check("STAT1 HIGH decodes as NOT-FAULTED, not as charging",
           high.charger() == ChargerState::NotFaulted);
+  }
+
+  // ---- T10: ONE DEVICE'S BUS ERROR MUST NOT SILENCE THE OTHER --------
+  // D-750 repaired three `||` short circuits and D-751 proves them.  Each
+  // claim below is stated twice: once against a bus that REFUSES a chosen
+  // transaction, and once against the same bus with nothing injected, so the
+  // control cannot pass because the sequence never ran.
+  {
+    // T10a: begin().  U2's very first configuration write NACKs.  U3 owns
+    // NFC_5V_EN, both radio resets and both transmit enables; it must still be
+    // driven into its safe state.
+    RecordingBus hurt;
+    hurt.fail_address = AQROOT_EXP_U2_ADDR;   // every U2 transaction
+    DemoExpanders local;
+    const bool ok = local.begin(hurt);
+    check("begin(): a U2 bus failure is REPORTED", !ok);
+    check("begin(): U3's safe latch is written ANYWAY after U2 fails",
+          hurt.indexOfWrite(AQROOT_EXP_U3_ADDR, Pcal9535a::kRegOutput0) >= 0);
+    check("begin(): U3's direction is written ANYWAY after U2 fails",
+          hurt.indexOfWrite(AQROOT_EXP_U3_ADDR, Pcal9535a::kRegConfig0) >= 0);
+    check("begin(): U3's latch is still the as-built safe word",
+          hurt.valueWritten(AQROOT_EXP_U3_ADDR, Pcal9535a::kRegOutput0) ==
+              kU3SafeLatch);
+    check("begin(): the U2 write really was refused (control is not vacuous)",
+          hurt.failures_injected > 0);
+
+    RecordingBus well;
+    DemoExpanders healthy;
+    check("begin(): the same sequence SUCCEEDS with nothing injected",
+          healthy.begin(well) && well.failures_injected == 0);
+  }
+  {
+    // T10b: service().  U2's input read NACKs.  U3 is the device whose input
+    // port carries ACC_POWER_FAULT_N.
+    RecordingBus hurt;
+    DemoExpanders local;
+    local.begin(hurt);
+    hurt.log.clear();
+    hurt.fail_address = AQROOT_EXP_U2_ADDR;
+    hurt.fail_reg = Pcal9535a::kRegInput0;
+    const bool ok = local.service(hurt);
+    check("service(): a U2 input-read failure is REPORTED", !ok);
+    check("service(): U3's input port is read ANYWAY after U2 fails",
+          hurt.indexOfRead(AQROOT_EXP_U3_ADDR, Pcal9535a::kRegInput0) >= 0);
+    check("service(): U3's interrupt status is read ANYWAY",
+          hurt.indexOfRead(AQROOT_EXP_U3_ADDR, Pcal9535a::kRegIrqStatus0) >= 0);
+    check("service(): the U2 read really was refused", hurt.failures_injected > 0);
+  }
+  {
+    // T10c: the 5 V shutdown.  The FIRST output write to U3 NACKs; the second
+    // must still be attempted AND must take both bits down, because a failed
+    // write leaves the driver's shadow holding ACC_5V_SW_EN high (D-751
+    // `clearBits`).
+    RecordingBus hurt;
+    DemoExpanders local;
+    local.begin(hurt);
+    local.setAccessory5v(hurt, true);
+    const size_t mark = hurt.log.size();
+    hurt.fail_address = AQROOT_EXP_U3_ADDR;
+    hurt.fail_reg = Pcal9535a::kRegOutput0;
+    hurt.fail_once = true;
+    const bool ok = local.setAccessory5v(hurt, false);
+    check("5 V down: a NACK on the first write is REPORTED", !ok);
+    check("5 V down: the SECOND write is attempted anyway",
+          hurt.countWrites(AQROOT_EXP_U3_ADDR, Pcal9535a::kRegOutput0, mark) >= 2);
+    bool both_down = false;
+    for (size_t i = mark; i < hurt.log.size(); ++i) {
+      const Txn &t = hurt.log[i];
+      if (t.is_read || t.nacked || t.address != AQROOT_EXP_U3_ADDR) continue;
+      if (t.reg != Pcal9535a::kRegOutput0) continue;
+      if (!(t.value & bitmask(AQROOT_U3_ACC_5V_BOOST_EN)) &&
+          !(t.value & bitmask(AQROOT_U3_ACC_5V_SW_EN))) {
+        both_down = true;
+      }
+    }
+    check("5 V down: one SURVIVING write takes the boost AND the switch down",
+          both_down);
+  }
+  {
+    // T10d: the 3.3 V shutdown spans TWO DEVICES.  A U2 failure must not leave
+    // U3's switched rail on.
+    RecordingBus hurt;
+    DemoExpanders local;
+    local.begin(hurt);
+    local.setAccessory3v3(hurt, true);
+    const size_t mark = hurt.log.size();
+    hurt.fail_address = AQROOT_EXP_U2_ADDR;
+    hurt.fail_reg = Pcal9535a::kRegOutput0;
+    const bool ok = local.setAccessory3v3(hurt, false);
+    check("3.3 V down: a U2 NACK is REPORTED", !ok);
+    bool rail_down = false;
+    for (size_t i = mark; i < hurt.log.size(); ++i) {
+      const Txn &t = hurt.log[i];
+      if (t.is_read || t.nacked || t.address != AQROOT_EXP_U3_ADDR) continue;
+      if (t.reg != Pcal9535a::kRegOutput0) continue;
+      if (!(t.value & bitmask(AQROOT_U3_ACC_3V3_EN))) rail_down = true;
+    }
+    check("3.3 V down: U3 drops ACC_3V3_EN even though U2 failed", rail_down);
+  }
+  {
+    // T10e: a fault shutdown whose writes fail must SAY SO.  D-750 replaced
+    // two `(void)` discards with a recorded outcome precisely so a diagnostic
+    // cannot print success after throwing the answer away.
+    RecordingBus hurt;
+    DemoExpanders local;
+    local.begin(hurt);
+    local.setAccessory3v3(hurt, true);
+    local.setAccessory5v(hurt, true);
+    hurt.u3_inputs = uint16_t(0xFFFF & ~bitmask(AQROOT_U3_ACC_POWER_FAULT_N));
+    hurt.log.clear();
+    hurt.fail_address = AQROOT_EXP_U3_ADDR;
+    hurt.fail_reg = Pcal9535a::kRegOutput0;
+    const bool ok = local.service(hurt);
+    check("fault shutdown: service() returns FALSE when its writes fail", !ok);
+    check("fault shutdown: it is RECORDED as having run",
+          local.faultShutdownSeen());
+    check("fault shutdown: it is RECORDED as having FAILED",
+          !local.faultShutdownOk());
+
+    RecordingBus clean;
+    DemoExpanders good;
+    good.begin(clean);
+    good.setAccessory3v3(clean, true);
+    good.setAccessory5v(clean, true);
+    clean.u3_inputs = uint16_t(0xFFFF & ~bitmask(AQROOT_U3_ACC_POWER_FAULT_N));
+    check("fault shutdown: the SAME path reports OK on a healthy bus",
+          good.service(clean) && good.faultShutdownSeen() &&
+              good.faultShutdownOk());
   }
 
   std::printf("\n%s -- %d failure(s)\n", g_failures ? "FAIL" : "PASS", g_failures);

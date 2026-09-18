@@ -1,0 +1,4448 @@
+{
+ "endpoint": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
+ "exhausted": false,
+ "fetched_utc": "2026-09-18T06:54:58Z",
+ "keyword": "SSQ-124",
+ "page_size": 25,
+ "pages": 2,
+ "records": [
+  {
+   "assemblyComponentFlag": false,
+   "attributes": null,
+   "componentBrandEn": "Samtec",
+   "componentCode": "C5760848",
+   "componentLibraryType": "expand",
+   "componentModelEn": "SSQ-124-23-G-D",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 13.117,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 11,
+     "productPrice": 12.723,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 13,
+     "productPrice": 12.723,
+     "startNumber": 12
+    },
+    {
+     "endNumber": 15,
+     "productPrice": 12.723,
+     "startNumber": 14
+    },
+    {
+     "endNumber": 17,
+     "productPrice": 12.723,
+     "startNumber": 16
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 12.723,
+     "startNumber": 18
+    }
+   ],
+   "componentSpecificationEn": "Plugin,P=2.54mm",
+   "componentTypeEn": "Female Headers",
+   "dataManualUrl": null,
+   "describe": "插件,P=2.54mm Female Headers ROHS",
+   "erpComponentName": "间距:2.54mm 直插",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": null,
+   "leastPatchNumber": 2,
+   "lossNumber": 0,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 5
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Circular Hole / Square Hole",
+     "attribute_value_name": "Square Hole"
+    },
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-55℃~+125℃"
+    },
+    {
+     "attribute_name_en": "Number of Rows",
+     "attribute_value_name": "2"
+    },
+    {
+     "attribute_name_en": "Voltage Rating (Max)",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Insulation Height",
+     "attribute_value_name": "8.51mm"
+    },
+    {
+     "attribute_name_en": "Number of Positions",
+     "attribute_value_name": "48P"
+    },
+    {
+     "attribute_name_en": "Contact Plating",
+     "attribute_value_name": "Tin"
+    },
+    {
+     "attribute_name_en": "Pitch",
+     "attribute_value_name": "2.54mm"
+    },
+    {
+     "attribute_name_en": "Contact Material",
+     "attribute_value_name": "Phosphor bronze"
+    },
+    {
+     "attribute_name_en": "Current Rating",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Row Spacing",
+     "attribute_value_name": "2.54mm"
+    },
+    {
+     "attribute_name_en": "Mounting Type",
+     "attribute_value_name": "Through Hole"
+    }
+   ],
+   "componentBrandEn": "Samtec",
+   "componentCode": "C3323258",
+   "componentLibraryType": "expand",
+   "componentModelEn": "SSQ-124-03-S-D",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 9.1972,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 29,
+     "productPrice": 9.1972,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 9.1972,
+     "startNumber": 30
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 3.5601,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 3.4347,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 3.3729,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "Plugin,P=2.54mm",
+   "componentTypeEn": "Female Headers",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2404031710_Samtec-SSQ-124-03-S-D_C3323258.pdf",
+   "describe": "-55℃~+125℃ 2 2.54mm 2.54mm 48P 8.51mm Phosphor bronze Square Hole Through Hole Tin 插件,P=2.54mm Female Headers ROHS",
+   "erpComponentName": "间距:2.54mm 直插",
+   "isBuyComponent": "0",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/female-headers_samtec-ssq-124-03-s-d_C3323258.html",
+   "leastPatchNumber": 0,
+   "lossNumber": 0,
+   "minPurchaseNum": 1,
+   "noBuyReason": "This product is no longer manufactured.",
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Circular Hole / Square Hole",
+     "attribute_value_name": "Square Hole"
+    },
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-55℃~+105℃"
+    },
+    {
+     "attribute_name_en": "Number of Rows",
+     "attribute_value_name": "1"
+    },
+    {
+     "attribute_name_en": "Voltage Rating (Max)",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Insulation Height",
+     "attribute_value_name": "8.51mm"
+    },
+    {
+     "attribute_name_en": "Number of Positions",
+     "attribute_value_name": "24P"
+    },
+    {
+     "attribute_name_en": "Contact Plating",
+     "attribute_value_name": "Tin"
+    },
+    {
+     "attribute_name_en": "Pitch",
+     "attribute_value_name": "2.54mm"
+    },
+    {
+     "attribute_name_en": "Contact Material",
+     "attribute_value_name": "Phosphor bronze"
+    },
+    {
+     "attribute_name_en": "Current Rating",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Mounting Type",
+     "attribute_value_name": "Through Hole"
+    }
+   ],
+   "componentBrandEn": "Samtec",
+   "componentCode": "C3323599",
+   "componentLibraryType": "expand",
+   "componentModelEn": "SSQ-124-02-T-S",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 2.8731,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 29,
+     "productPrice": 2.8731,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 2.8731,
+     "startNumber": 30
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 1.1118,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 1.0728,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 1.0549,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "Plugin,P=2.54mm",
+   "componentTypeEn": "Female Headers",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2404031713_Samtec-SSQ-124-02-T-S_C3323599.pdf",
+   "describe": "-55℃~+105℃ 1 2.54mm 24P 8.51mm Phosphor bronze Square Hole Through Hole Tin 插件,P=2.54mm Female Headers ROHS",
+   "erpComponentName": "间距:2.54mm 直插",
+   "isBuyComponent": "0",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/female-headers_samtec-ssq-124-02-t-s_C3323599.html",
+   "leastPatchNumber": 0,
+   "lossNumber": 0,
+   "minPurchaseNum": 4,
+   "noBuyReason": "This product is no longer manufactured.",
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Circular Hole / Square Hole",
+     "attribute_value_name": "Square Hole"
+    },
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-55℃~+125℃"
+    },
+    {
+     "attribute_name_en": "Number of Rows",
+     "attribute_value_name": "1"
+    },
+    {
+     "attribute_name_en": "Voltage Rating (Max)",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Insulation Height",
+     "attribute_value_name": "8.51mm"
+    },
+    {
+     "attribute_name_en": "Number of Positions",
+     "attribute_value_name": "24P"
+    },
+    {
+     "attribute_name_en": "Contact Plating",
+     "attribute_value_name": "Tin"
+    },
+    {
+     "attribute_name_en": "Pitch",
+     "attribute_value_name": "2.54mm"
+    },
+    {
+     "attribute_name_en": "Contact Material",
+     "attribute_value_name": "Phosphor bronze"
+    },
+    {
+     "attribute_name_en": "Current Rating",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Mounting Type",
+     "attribute_value_name": "Through Hole"
+    }
+   ],
+   "componentBrandEn": "Samtec",
+   "componentCode": "C3323616",
+   "componentLibraryType": "expand",
+   "componentModelEn": "SSQ-124-02-S-S",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 5.3425,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 29,
+     "productPrice": 5.3425,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 5.3425,
+     "startNumber": 30
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 2.0674,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 1.9957,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 1.9599,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "Plugin,P=2.54mm",
+   "componentTypeEn": "Female Headers",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2404031713_Samtec-SSQ-124-02-S-S_C3323616.pdf",
+   "describe": "-55℃~+125℃ 1 2.54mm 24P 8.51mm Phosphor bronze Square Hole Through Hole Tin 插件,P=2.54mm Female Headers ROHS",
+   "erpComponentName": "间距:2.54mm 直插",
+   "isBuyComponent": "0",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/female-headers_samtec-ssq-124-02-s-s_C3323616.html",
+   "leastPatchNumber": 0,
+   "lossNumber": 0,
+   "minPurchaseNum": 2,
+   "noBuyReason": "This product is no longer manufactured.",
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Circular Hole / Square Hole",
+     "attribute_value_name": "Square Hole"
+    },
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-55℃~+125℃"
+    },
+    {
+     "attribute_name_en": "Number of Rows",
+     "attribute_value_name": "3"
+    },
+    {
+     "attribute_name_en": "Voltage Rating (Max)",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Insulation Height",
+     "attribute_value_name": "8.51mm"
+    },
+    {
+     "attribute_name_en": "Number of Positions",
+     "attribute_value_name": "72P"
+    },
+    {
+     "attribute_name_en": "Contact Plating",
+     "attribute_value_name": "Gold"
+    },
+    {
+     "attribute_name_en": "Pitch",
+     "attribute_value_name": "2.54mm"
+    },
+    {
+     "attribute_name_en": "Contact Material",
+     "attribute_value_name": "Phosphor bronze"
+    },
+    {
+     "attribute_name_en": "Current Rating",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Row Spacing",
+     "attribute_value_name": "2.54mm"
+    },
+    {
+     "attribute_name_en": "Mounting Type",
+     "attribute_value_name": "Through Hole"
+    }
+   ],
+   "componentBrandEn": "Samtec",
+   "componentCode": "C3323791",
+   "componentLibraryType": "expand",
+   "componentModelEn": "SSQ-124-24-G-T",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 24.6565,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 29,
+     "productPrice": 24.6565,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 24.6565,
+     "startNumber": 30
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 9.5423,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 9.207,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 9.0409,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "Plugin,P=2.54mm",
+   "componentTypeEn": "Female Headers",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2404031714_Samtec-SSQ-124-24-G-T_C3323791.pdf",
+   "describe": "-55℃~+125℃ 2.54mm 2.54mm 3 72P 8.51mm Gold Phosphor bronze Square Hole Through Hole 插件,P=2.54mm Female Headers ROHS",
+   "erpComponentName": "间距:2.54mm 直插",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/female-headers_samtec-ssq-124-24-g-t_C3323791.html",
+   "leastPatchNumber": 0,
+   "lossNumber": 0,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-55℃~+125℃"
+    },
+    {
+     "attribute_name_en": "Number of Rows",
+     "attribute_value_name": "1"
+    },
+    {
+     "attribute_name_en": "Voltage Rating (Max)",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Insulation Height",
+     "attribute_value_name": "8.51mm"
+    },
+    {
+     "attribute_name_en": "Number of Positions",
+     "attribute_value_name": "24P"
+    },
+    {
+     "attribute_name_en": "Contact Plating",
+     "attribute_value_name": "Tin"
+    },
+    {
+     "attribute_name_en": "Pitch",
+     "attribute_value_name": "2.54mm"
+    },
+    {
+     "attribute_name_en": "Mounting Type",
+     "attribute_value_name": "Through Hole"
+    }
+   ],
+   "componentBrandEn": "Samtec",
+   "componentCode": "C5760828",
+   "componentLibraryType": "expand",
+   "componentModelEn": "SSQ-124-01-F-S",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 9.6432,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 29,
+     "productPrice": 9.6432,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 9.6432,
+     "startNumber": 30
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 3.8482,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 3.7196,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 3.6561,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "Plugin,P=2.54mm",
+   "componentTypeEn": "Female Headers",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2312021800_Samtec-SSQ-124-01-F-S_C5760828.pdf",
+   "describe": "-55℃~+125℃ 1 2.54mm 24P 8.51mm Through Hole Tin Plugin,P=2.54mm Female Headers ROHS",
+   "erpComponentName": "间距:2.54mm 直插",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/female-headers_samtec-ssq-124-01-f-s_C5760828.html",
+   "leastPatchNumber": 0,
+   "lossNumber": 0,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-55℃~+125℃"
+    },
+    {
+     "attribute_name_en": "Number of Rows",
+     "attribute_value_name": "3"
+    },
+    {
+     "attribute_name_en": "Voltage Rating (Max)",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Insulation Height",
+     "attribute_value_name": "8.51mm"
+    },
+    {
+     "attribute_name_en": "Number of Positions",
+     "attribute_value_name": "72P"
+    },
+    {
+     "attribute_name_en": "Contact Plating",
+     "attribute_value_name": "Gold"
+    },
+    {
+     "attribute_name_en": "Pitch",
+     "attribute_value_name": "2.54mm"
+    },
+    {
+     "attribute_name_en": "Row Spacing",
+     "attribute_value_name": "2.54mm"
+    },
+    {
+     "attribute_name_en": "Mounting Type",
+     "attribute_value_name": "Through Hole"
+    }
+   ],
+   "componentBrandEn": "Samtec",
+   "componentCode": "C5760830",
+   "componentLibraryType": "expand",
+   "componentModelEn": "SSQ-124-01-G-Q",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 26.8508,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 29,
+     "productPrice": 26.8508,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 26.8508,
+     "startNumber": 30
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 10.7143,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 10.3562,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 10.1788,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "Plugin,P=2.54mm",
+   "componentTypeEn": "Female Headers",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2312021800_Samtec-SSQ-124-01-G-Q_C5760830.pdf",
+   "describe": "-55℃~+125℃ 2.54mm 2.54mm 3 72P 8.51mm Gold Through Hole Plugin,P=2.54mm Female Headers ROHS",
+   "erpComponentName": "间距:2.54mm 直插",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/female-headers_samtec-ssq-124-01-g-q_C5760830.html",
+   "leastPatchNumber": 0,
+   "lossNumber": 0,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-55℃~+125℃"
+    },
+    {
+     "attribute_name_en": "Number of Rows",
+     "attribute_value_name": "3"
+    },
+    {
+     "attribute_name_en": "Voltage Rating (Max)",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Insulation Height",
+     "attribute_value_name": "8.51mm"
+    },
+    {
+     "attribute_name_en": "Number of Positions",
+     "attribute_value_name": "72P"
+    },
+    {
+     "attribute_name_en": "Contact Plating",
+     "attribute_value_name": "Gold"
+    },
+    {
+     "attribute_name_en": "Pitch",
+     "attribute_value_name": "2.54mm"
+    },
+    {
+     "attribute_name_en": "Row Spacing",
+     "attribute_value_name": "2.54mm"
+    },
+    {
+     "attribute_name_en": "Mounting Type",
+     "attribute_value_name": "Through Hole"
+    }
+   ],
+   "componentBrandEn": "Samtec",
+   "componentCode": "C5760834",
+   "componentLibraryType": "expand",
+   "componentModelEn": "SSQ-124-02-G-T",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 35.895,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 29,
+     "productPrice": 35.895,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 35.895,
+     "startNumber": 30
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 14.3232,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 13.8446,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 13.6086,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "Plugin,P=2.54mm",
+   "componentTypeEn": "Female Headers",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2312021800_Samtec-SSQ-124-02-G-T_C5760834.pdf",
+   "describe": "-55℃~+125℃ 2.54mm 2.54mm 3 72P 8.51mm Gold Through Hole Plugin,P=2.54mm Female Headers ROHS",
+   "erpComponentName": "间距:2.54mm 直插",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/female-headers_samtec-ssq-124-02-g-t_C5760834.html",
+   "leastPatchNumber": 0,
+   "lossNumber": 0,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-55℃~+125℃"
+    },
+    {
+     "attribute_name_en": "Number of Rows",
+     "attribute_value_name": "2"
+    },
+    {
+     "attribute_name_en": "Voltage Rating (Max)",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Insulation Height",
+     "attribute_value_name": "8.51mm"
+    },
+    {
+     "attribute_name_en": "Number of Positions",
+     "attribute_value_name": "48P"
+    },
+    {
+     "attribute_name_en": "Contact Plating",
+     "attribute_value_name": "Tin"
+    },
+    {
+     "attribute_name_en": "Pitch",
+     "attribute_value_name": "2.54mm"
+    },
+    {
+     "attribute_name_en": "Row Spacing",
+     "attribute_value_name": "2.54mm"
+    },
+    {
+     "attribute_name_en": "Mounting Type",
+     "attribute_value_name": "Through Hole"
+    }
+   ],
+   "componentBrandEn": "Samtec",
+   "componentCode": "C5760836",
+   "componentLibraryType": "expand",
+   "componentModelEn": "SSQ-124-02-L-D",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 18.8306,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 29,
+     "productPrice": 18.8306,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 18.8306,
+     "startNumber": 30
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 7.514,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 7.2634,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 7.138,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "Plugin,P=2.54mm",
+   "componentTypeEn": "Female Headers",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2312021800_Samtec-SSQ-124-02-L-D_C5760836.pdf",
+   "describe": "-55℃~+125℃ 2 2.54mm 2.54mm 48P 8.51mm Through Hole Tin Plugin,P=2.54mm Female Headers ROHS",
+   "erpComponentName": "间距:2.54mm 直插",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/female-headers_samtec-ssq-124-02-l-d_C5760836.html",
+   "leastPatchNumber": 0,
+   "lossNumber": 0,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-55℃~+125℃"
+    },
+    {
+     "attribute_name_en": "Number of Rows",
+     "attribute_value_name": "3"
+    },
+    {
+     "attribute_name_en": "Voltage Rating (Max)",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Insulation Height",
+     "attribute_value_name": "8.51mm"
+    },
+    {
+     "attribute_name_en": "Number of Positions",
+     "attribute_value_name": "72P"
+    },
+    {
+     "attribute_name_en": "Contact Plating",
+     "attribute_value_name": "Gold"
+    },
+    {
+     "attribute_name_en": "Pitch",
+     "attribute_value_name": "2.54mm"
+    },
+    {
+     "attribute_name_en": "Row Spacing",
+     "attribute_value_name": "2.54mm"
+    },
+    {
+     "attribute_name_en": "Mounting Type",
+     "attribute_value_name": "Through Hole"
+    }
+   ],
+   "componentBrandEn": "Samtec",
+   "componentCode": "C5760838",
+   "componentLibraryType": "expand",
+   "componentModelEn": "SSQ-124-03-G-T",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 38.2276,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 29,
+     "productPrice": 38.2276,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 38.2276,
+     "startNumber": 30
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 15.2543,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 14.7432,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 14.4925,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "Plugin,P=2.54mm",
+   "componentTypeEn": "Female Headers",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2312021801_Samtec-SSQ-124-03-G-T_C5760838.pdf",
+   "describe": "-55℃~+125℃ 2.54mm 2.54mm 3 72P 8.51mm Gold Through Hole Plugin,P=2.54mm Female Headers ROHS",
+   "erpComponentName": "间距:2.54mm 直插",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/female-headers_samtec-ssq-124-03-g-t_C5760838.html",
+   "leastPatchNumber": 0,
+   "lossNumber": 0,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-55℃~+105℃"
+    },
+    {
+     "attribute_name_en": "Number of Rows",
+     "attribute_value_name": "1"
+    },
+    {
+     "attribute_name_en": "Voltage Rating (Max)",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Insulation Height",
+     "attribute_value_name": "8.51mm"
+    },
+    {
+     "attribute_name_en": "Number of Positions",
+     "attribute_value_name": "24P"
+    },
+    {
+     "attribute_name_en": "Contact Plating",
+     "attribute_value_name": "Tin"
+    },
+    {
+     "attribute_name_en": "Pitch",
+     "attribute_value_name": "2.54mm"
+    },
+    {
+     "attribute_name_en": "Mounting Type",
+     "attribute_value_name": "Through Hole"
+    }
+   ],
+   "componentBrandEn": "Samtec",
+   "componentCode": "C5760840",
+   "componentLibraryType": "expand",
+   "componentModelEn": "SSQ-124-03-T-S",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 5.3588,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 29,
+     "productPrice": 5.3588,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 5.3588,
+     "startNumber": 30
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 2.139,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 2.0674,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 2.0316,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "Plugin,P=2.54mm",
+   "componentTypeEn": "Female Headers",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2312021801_Samtec-SSQ-124-03-T-S_C5760840.pdf",
+   "describe": "-55℃~+105℃ 1 2.54mm 24P 8.51mm Through Hole Tin Plugin,P=2.54mm Female Headers ROHS",
+   "erpComponentName": "间距:2.54mm 直插",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/female-headers_samtec-ssq-124-03-t-s_C5760840.html",
+   "leastPatchNumber": 0,
+   "lossNumber": 0,
+   "minPurchaseNum": 2,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-55℃~+125℃"
+    },
+    {
+     "attribute_name_en": "Number of Rows",
+     "attribute_value_name": "1"
+    },
+    {
+     "attribute_name_en": "Voltage Rating (Max)",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Insulation Height",
+     "attribute_value_name": "8.51mm"
+    },
+    {
+     "attribute_name_en": "Number of Positions",
+     "attribute_value_name": "24P"
+    },
+    {
+     "attribute_name_en": "Contact Plating",
+     "attribute_value_name": "Tin"
+    },
+    {
+     "attribute_name_en": "Pitch",
+     "attribute_value_name": "2.54mm"
+    },
+    {
+     "attribute_name_en": "Mounting Type",
+     "attribute_value_name": "Through Hole"
+    }
+   ],
+   "componentBrandEn": "Samtec",
+   "componentCode": "C5760844",
+   "componentLibraryType": "expand",
+   "componentModelEn": "SSQ-124-04-S-S",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 17.4649,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 29,
+     "productPrice": 17.4649,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 17.4649,
+     "startNumber": 30
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 6.9687,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 6.7359,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 6.6204,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "Plugin,P=2.54mm",
+   "componentTypeEn": "Female Headers",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2312021801_Samtec-SSQ-124-04-S-S_C5760844.pdf",
+   "describe": "-55℃~+125℃ 1 2.54mm 24P 8.51mm Through Hole Tin Plugin,P=2.54mm Female Headers ROHS",
+   "erpComponentName": "间距:2.54mm 直插",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/female-headers_samtec-ssq-124-04-s-s_C5760844.html",
+   "leastPatchNumber": 0,
+   "lossNumber": 0,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-55℃~+125℃"
+    },
+    {
+     "attribute_name_en": "Number of Rows",
+     "attribute_value_name": "1"
+    },
+    {
+     "attribute_name_en": "Voltage Rating (Max)",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Insulation Height",
+     "attribute_value_name": "8.51mm"
+    },
+    {
+     "attribute_name_en": "Number of Positions",
+     "attribute_value_name": "24P"
+    },
+    {
+     "attribute_name_en": "Contact Plating",
+     "attribute_value_name": "Tin"
+    },
+    {
+     "attribute_name_en": "Pitch",
+     "attribute_value_name": "2.54mm"
+    },
+    {
+     "attribute_name_en": "Mounting Type",
+     "attribute_value_name": "Through Hole"
+    }
+   ],
+   "componentBrandEn": "Samtec",
+   "componentCode": "C5760846",
+   "componentLibraryType": "expand",
+   "componentModelEn": "SSQ-124-23-F-S",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 11.7187,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 29,
+     "productPrice": 11.7187,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 11.7187,
+     "startNumber": 30
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 4.6768,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 4.5205,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 4.4424,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "Plugin,P=2.54mm",
+   "componentTypeEn": "Female Headers",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2312021801_Samtec-SSQ-124-23-F-S_C5760846.pdf",
+   "describe": "-55℃~+125℃ 1 2.54mm 24P 8.51mm Through Hole Tin Plugin,P=2.54mm Female Headers ROHS",
+   "erpComponentName": "间距:2.54mm 直插",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/female-headers_samtec-ssq-124-23-f-s_C5760846.html",
+   "leastPatchNumber": 0,
+   "lossNumber": 0,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-55℃~+125℃"
+    },
+    {
+     "attribute_name_en": "Number of Rows",
+     "attribute_value_name": "3"
+    },
+    {
+     "attribute_name_en": "Voltage Rating (Max)",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Insulation Height",
+     "attribute_value_name": "8.51mm"
+    },
+    {
+     "attribute_name_en": "Number of Positions",
+     "attribute_value_name": "72P"
+    },
+    {
+     "attribute_name_en": "Contact Plating",
+     "attribute_value_name": "Gold"
+    },
+    {
+     "attribute_name_en": "Pitch",
+     "attribute_value_name": "2.54mm"
+    },
+    {
+     "attribute_name_en": "Row Spacing",
+     "attribute_value_name": "2.54mm"
+    },
+    {
+     "attribute_name_en": "Mounting Type",
+     "attribute_value_name": "Through Hole"
+    }
+   ],
+   "componentBrandEn": "Samtec",
+   "componentCode": "C5760850",
+   "componentLibraryType": "expand",
+   "componentModelEn": "SSQ-124-23-G-T",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 42.0107,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 29,
+     "productPrice": 42.0107,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 42.0107,
+     "startNumber": 30
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 16.7633,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 16.2033,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 15.9266,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "Plugin,P=2.54mm",
+   "componentTypeEn": "Female Headers",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2312021801_Samtec-SSQ-124-23-G-T_C5760850.pdf",
+   "describe": "-55℃~+125℃ 2.54mm 2.54mm 3 72P 8.51mm Gold Through Hole Plugin,P=2.54mm Female Headers ROHS",
+   "erpComponentName": "间距:2.54mm 直插",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/female-headers_samtec-ssq-124-23-g-t_C5760850.html",
+   "leastPatchNumber": 0,
+   "lossNumber": 0,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-55℃~+125℃"
+    },
+    {
+     "attribute_name_en": "Number of Rows",
+     "attribute_value_name": "1"
+    },
+    {
+     "attribute_name_en": "Voltage Rating (Max)",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Insulation Height",
+     "attribute_value_name": "8.51mm"
+    },
+    {
+     "attribute_name_en": "Number of Positions",
+     "attribute_value_name": "24P"
+    },
+    {
+     "attribute_name_en": "Contact Plating",
+     "attribute_value_name": "Tin"
+    },
+    {
+     "attribute_name_en": "Pitch",
+     "attribute_value_name": "2.54mm"
+    },
+    {
+     "attribute_name_en": "Mounting Type",
+     "attribute_value_name": "Through Hole"
+    }
+   ],
+   "componentBrandEn": "Samtec",
+   "componentCode": "C5760852",
+   "componentLibraryType": "expand",
+   "componentModelEn": "SSQ-124-23-S-S",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 17.3216,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 29,
+     "productPrice": 17.3216,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 17.3216,
+     "startNumber": 30
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 6.9117,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 6.6806,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 6.5666,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "Plugin,P=2.54mm",
+   "componentTypeEn": "Female Headers",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2312021801_Samtec-SSQ-124-23-S-S_C5760852.pdf",
+   "describe": "-55℃~+125℃ 1 2.54mm 24P 8.51mm Through Hole Tin Plugin,P=2.54mm Female Headers ROHS",
+   "erpComponentName": "间距:2.54mm 直插",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/female-headers_samtec-ssq-124-23-s-s_C5760852.html",
+   "leastPatchNumber": 0,
+   "lossNumber": 0,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-55℃~+105℃"
+    },
+    {
+     "attribute_name_en": "Number of Rows",
+     "attribute_value_name": "1"
+    },
+    {
+     "attribute_name_en": "Voltage Rating (Max)",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Insulation Height",
+     "attribute_value_name": "8.51mm"
+    },
+    {
+     "attribute_name_en": "Number of Positions",
+     "attribute_value_name": "24P"
+    },
+    {
+     "attribute_name_en": "Contact Plating",
+     "attribute_value_name": "Tin"
+    },
+    {
+     "attribute_name_en": "Pitch",
+     "attribute_value_name": "2.54mm"
+    },
+    {
+     "attribute_name_en": "Mounting Type",
+     "attribute_value_name": "Through Hole"
+    }
+   ],
+   "componentBrandEn": "Samtec",
+   "componentCode": "C5909008",
+   "componentLibraryType": "expand",
+   "componentModelEn": "SSQ-124-01-T-S",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 4.9437,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 29,
+     "productPrice": 4.9437,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 4.9437,
+     "startNumber": 30
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 1.973,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 1.9078,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 1.8753,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "Plugin,P=2.54mm",
+   "componentTypeEn": "Female Headers",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2312040002_Samtec-SSQ-124-01-T-S_C5909008.pdf",
+   "describe": "-55℃~+105℃ 1 2.54mm 24P 8.51mm Through Hole Tin Plugin,P=2.54mm Female Headers ROHS",
+   "erpComponentName": "间距:2.54mm 直插",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/female-headers_samtec-ssq-124-01-t-s_C5909008.html",
+   "leastPatchNumber": 0,
+   "lossNumber": 0,
+   "minPurchaseNum": 2,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-55℃~+125℃"
+    },
+    {
+     "attribute_name_en": "Number of Rows",
+     "attribute_value_name": "2"
+    },
+    {
+     "attribute_name_en": "Voltage Rating (Max)",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Insulation Height",
+     "attribute_value_name": "8.51mm"
+    },
+    {
+     "attribute_name_en": "Number of Positions",
+     "attribute_value_name": "48P"
+    },
+    {
+     "attribute_name_en": "Contact Plating",
+     "attribute_value_name": "Tin"
+    },
+    {
+     "attribute_name_en": "Pitch",
+     "attribute_value_name": "2.54mm"
+    },
+    {
+     "attribute_name_en": "Row Spacing",
+     "attribute_value_name": "2.54mm"
+    },
+    {
+     "attribute_name_en": "Mounting Type",
+     "attribute_value_name": "Through Hole"
+    }
+   ],
+   "componentBrandEn": "Samtec",
+   "componentCode": "C5909010",
+   "componentLibraryType": "expand",
+   "componentModelEn": "SSQ-124-02-F-D",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 16.9814,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 29,
+     "productPrice": 16.9814,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 16.9814,
+     "startNumber": 30
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 6.7766,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 6.5504,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 6.4381,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "Plugin,P=2.54mm",
+   "componentTypeEn": "Female Headers",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2312040002_Samtec-SSQ-124-02-F-D_C5909010.pdf",
+   "describe": "-55℃~+125℃ 2 2.54mm 2.54mm 48P 8.51mm Through Hole Tin Plugin,P=2.54mm Female Headers ROHS",
+   "erpComponentName": "间距:2.54mm 直插",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/female-headers_samtec-ssq-124-02-f-d_C5909010.html",
+   "leastPatchNumber": 0,
+   "lossNumber": 0,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-55℃~+125℃"
+    },
+    {
+     "attribute_name_en": "Number of Rows",
+     "attribute_value_name": "1"
+    },
+    {
+     "attribute_name_en": "Voltage Rating (Max)",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Insulation Height",
+     "attribute_value_name": "8.51mm"
+    },
+    {
+     "attribute_name_en": "Number of Positions",
+     "attribute_value_name": "24P"
+    },
+    {
+     "attribute_name_en": "Contact Plating",
+     "attribute_value_name": "Gold"
+    },
+    {
+     "attribute_name_en": "Pitch",
+     "attribute_value_name": "2.54mm"
+    },
+    {
+     "attribute_name_en": "Mounting Type",
+     "attribute_value_name": "Through Hole"
+    }
+   ],
+   "componentBrandEn": "Samtec",
+   "componentCode": "C5909011",
+   "componentLibraryType": "expand",
+   "componentModelEn": "SSQ-124-04-G-S",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 16.7535,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 29,
+     "productPrice": 16.7535,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 16.7535,
+     "startNumber": 30
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 6.6855,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 6.4625,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 6.3518,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "Plugin,P=2.54mm",
+   "componentTypeEn": "Female Headers",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2312040002_Samtec-SSQ-124-04-G-S_C5909011.pdf",
+   "describe": "-55℃~+125℃ 1 2.54mm 24P 8.51mm Gold Through Hole Plugin,P=2.54mm Female Headers ROHS",
+   "erpComponentName": "间距:2.54mm 直插",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/female-headers_samtec-ssq-124-04-g-s_C5909011.html",
+   "leastPatchNumber": 0,
+   "lossNumber": 0,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-55℃~+125℃"
+    },
+    {
+     "attribute_name_en": "Number of Rows",
+     "attribute_value_name": "2"
+    },
+    {
+     "attribute_name_en": "Voltage Rating (Max)",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Insulation Height",
+     "attribute_value_name": "8.51mm"
+    },
+    {
+     "attribute_name_en": "Number of Positions",
+     "attribute_value_name": "48P"
+    },
+    {
+     "attribute_name_en": "Contact Plating",
+     "attribute_value_name": "Tin"
+    },
+    {
+     "attribute_name_en": "Pitch",
+     "attribute_value_name": "2.54mm"
+    },
+    {
+     "attribute_name_en": "Row Spacing",
+     "attribute_value_name": "2.54mm"
+    },
+    {
+     "attribute_name_en": "Mounting Type",
+     "attribute_value_name": "Through Hole"
+    }
+   ],
+   "componentBrandEn": "Samtec",
+   "componentCode": "C5909013",
+   "componentLibraryType": "expand",
+   "componentModelEn": "SSQ-124-04-S-D",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 28.3012,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 29,
+     "productPrice": 28.3012,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 28.3012,
+     "startNumber": 30
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 11.2922,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 10.9162,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 10.729,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "Plugin,P=2.54mm",
+   "componentTypeEn": "Female Headers",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2312040002_Samtec-SSQ-124-04-S-D_C5909013.pdf",
+   "describe": "-55℃~+125℃ 2 2.54mm 2.54mm 48P 8.51mm Through Hole Tin Plugin,P=2.54mm Female Headers ROHS",
+   "erpComponentName": "间距:2.54mm 直插",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/female-headers_samtec-ssq-124-04-s-d_C5909013.html",
+   "leastPatchNumber": 0,
+   "lossNumber": 0,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-55℃~+105℃"
+    },
+    {
+     "attribute_name_en": "Number of Rows",
+     "attribute_value_name": "1"
+    },
+    {
+     "attribute_name_en": "Voltage Rating (Max)",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Insulation Height",
+     "attribute_value_name": "8.51mm"
+    },
+    {
+     "attribute_name_en": "Number of Positions",
+     "attribute_value_name": "24P"
+    },
+    {
+     "attribute_name_en": "Contact Plating",
+     "attribute_value_name": "Tin"
+    },
+    {
+     "attribute_name_en": "Pitch",
+     "attribute_value_name": "2.54mm"
+    },
+    {
+     "attribute_name_en": "Mounting Type",
+     "attribute_value_name": "Through Hole"
+    }
+   ],
+   "componentBrandEn": "Samtec",
+   "componentCode": "C5909015",
+   "componentLibraryType": "expand",
+   "componentModelEn": "SSQ-124-04-T-S",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 11.805,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 29,
+     "productPrice": 11.805,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 11.805,
+     "startNumber": 30
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 4.7109,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 4.553,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 4.4749,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "Plugin,P=2.54mm",
+   "componentTypeEn": "Female Headers",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2312040002_Samtec-SSQ-124-04-T-S_C5909015.pdf",
+   "describe": "-55℃~+105℃ 1 2.54mm 24P 8.51mm Through Hole Tin Plugin,P=2.54mm Female Headers ROHS",
+   "erpComponentName": "间距:2.54mm 直插",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/female-headers_samtec-ssq-124-04-t-s_C5909015.html",
+   "leastPatchNumber": 0,
+   "lossNumber": 0,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-55℃~+125℃"
+    },
+    {
+     "attribute_name_en": "Number of Rows",
+     "attribute_value_name": "1"
+    },
+    {
+     "attribute_name_en": "Voltage Rating (Max)",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Insulation Height",
+     "attribute_value_name": "8.51mm"
+    },
+    {
+     "attribute_name_en": "Number of Positions",
+     "attribute_value_name": "24P"
+    },
+    {
+     "attribute_name_en": "Contact Plating",
+     "attribute_value_name": "Tin"
+    },
+    {
+     "attribute_name_en": "Pitch",
+     "attribute_value_name": "2.54mm"
+    },
+    {
+     "attribute_name_en": "Mounting Type",
+     "attribute_value_name": "Through Hole"
+    }
+   ],
+   "componentBrandEn": "Samtec",
+   "componentCode": "C5930960",
+   "componentLibraryType": "expand",
+   "componentModelEn": "SSQ-124-01-L-S",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 11.3785,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 29,
+     "productPrice": 11.3785,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 11.3785,
+     "startNumber": 30
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 4.54,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 4.3886,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 4.3138,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "Plugin,P=2.54mm",
+   "componentTypeEn": "Female Headers",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2312040506_Samtec-SSQ-124-01-L-S_C5930960.pdf",
+   "describe": "-55℃~+125℃ 1 2.54mm 24P 8.51mm Through Hole Tin Plugin,P=2.54mm Female Headers ROHS",
+   "erpComponentName": "间距:2.54mm 直插",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/female-headers_samtec-ssq-124-01-l-s_C5930960.html",
+   "leastPatchNumber": 0,
+   "lossNumber": 0,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-55℃~+105℃"
+    },
+    {
+     "attribute_name_en": "Number of Rows",
+     "attribute_value_name": "2"
+    },
+    {
+     "attribute_name_en": "Voltage Rating (Max)",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Insulation Height",
+     "attribute_value_name": "8.51mm"
+    },
+    {
+     "attribute_name_en": "Number of Positions",
+     "attribute_value_name": "48P"
+    },
+    {
+     "attribute_name_en": "Contact Plating",
+     "attribute_value_name": "Tin"
+    },
+    {
+     "attribute_name_en": "Pitch",
+     "attribute_value_name": "2.54mm"
+    },
+    {
+     "attribute_name_en": "Row Spacing",
+     "attribute_value_name": "2.54mm"
+    },
+    {
+     "attribute_name_en": "Mounting Type",
+     "attribute_value_name": "Through Hole"
+    }
+   ],
+   "componentBrandEn": "Samtec",
+   "componentCode": "C5930966",
+   "componentLibraryType": "expand",
+   "componentModelEn": "SSQ-124-03-T-D",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 8.6812,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 29,
+     "productPrice": 8.6812,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 8.6812,
+     "startNumber": 30
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 3.464,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 3.3485,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 3.2915,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "Plugin,P=2.54mm",
+   "componentTypeEn": "Female Headers",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2312040506_Samtec-SSQ-124-03-T-D_C5930966.pdf",
+   "describe": "-55℃~+105℃ 2 2.54mm 2.54mm 48P 8.51mm Through Hole Tin Plugin,P=2.54mm Female Headers ROHS",
+   "erpComponentName": "间距:2.54mm 直插",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/female-headers_samtec-ssq-124-03-t-d_C5930966.html",
+   "leastPatchNumber": 0,
+   "lossNumber": 0,
+   "minPurchaseNum": 2,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-55℃~+125℃"
+    },
+    {
+     "attribute_name_en": "Number of Rows",
+     "attribute_value_name": "2"
+    },
+    {
+     "attribute_name_en": "Voltage Rating (Max)",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Insulation Height",
+     "attribute_value_name": "8.51mm"
+    },
+    {
+     "attribute_name_en": "Number of Positions",
+     "attribute_value_name": "48P"
+    },
+    {
+     "attribute_name_en": "Contact Plating",
+     "attribute_value_name": "Gold"
+    },
+    {
+     "attribute_name_en": "Pitch",
+     "attribute_value_name": "2.54mm"
+    },
+    {
+     "attribute_name_en": "Row Spacing",
+     "attribute_value_name": "2.54mm"
+    },
+    {
+     "attribute_name_en": "Mounting Type",
+     "attribute_value_name": "Through Hole"
+    }
+   ],
+   "componentBrandEn": "Samtec",
+   "componentCode": "C5930968",
+   "componentLibraryType": "expand",
+   "componentModelEn": "SSQ-124-24-G-D",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 29.8379,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 29,
+     "productPrice": 29.8379,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 29.8379,
+     "startNumber": 30
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 11.9059,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 11.5087,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 11.3117,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "Plugin,P=2.54mm",
+   "componentTypeEn": "Female Headers",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2312040506_Samtec-SSQ-124-24-G-D_C5930968.pdf",
+   "describe": "-55℃~+125℃ 2 2.54mm 2.54mm 48P 8.51mm Gold Through Hole Plugin,P=2.54mm Female Headers ROHS",
+   "erpComponentName": "间距:2.54mm 直插",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/female-headers_samtec-ssq-124-24-g-d_C5930968.html",
+   "leastPatchNumber": 0,
+   "lossNumber": 0,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-55℃~+125℃"
+    },
+    {
+     "attribute_name_en": "Number of Rows",
+     "attribute_value_name": "3"
+    },
+    {
+     "attribute_name_en": "Voltage Rating (Max)",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Insulation Height",
+     "attribute_value_name": "8.51mm"
+    },
+    {
+     "attribute_name_en": "Number of Positions",
+     "attribute_value_name": "72P"
+    },
+    {
+     "attribute_name_en": "Contact Plating",
+     "attribute_value_name": "Tin"
+    },
+    {
+     "attribute_name_en": "Pitch",
+     "attribute_value_name": "2.54mm"
+    },
+    {
+     "attribute_name_en": "Row Spacing",
+     "attribute_value_name": "2.54mm"
+    },
+    {
+     "attribute_name_en": "Mounting Type",
+     "attribute_value_name": "Through Hole"
+    }
+   ],
+   "componentBrandEn": "Samtec",
+   "componentCode": "C6235822",
+   "componentLibraryType": "expand",
+   "componentModelEn": "SSQ-124-02-S-T",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 37.4023,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 29,
+     "productPrice": 37.4023,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 37.4023,
+     "startNumber": 30
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 14.9238,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 14.4257,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 14.1799,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "Plugin,P=2.54mm",
+   "componentTypeEn": "Female Headers",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2312090713_Samtec-SSQ-124-02-S-T_C6235822.pdf",
+   "describe": "-55℃~+125℃ 2.54mm 2.54mm 3 72P 8.51mm Through Hole Tin Plugin,P=2.54mm Female Headers ROHS",
+   "erpComponentName": "间距:2.54mm 直插",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/female-headers_samtec-ssq-124-02-s-t_C6235822.html",
+   "leastPatchNumber": 0,
+   "lossNumber": 0,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-55℃~+125℃"
+    },
+    {
+     "attribute_name_en": "Number of Rows",
+     "attribute_value_name": "2"
+    },
+    {
+     "attribute_name_en": "Voltage Rating (Max)",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Insulation Height",
+     "attribute_value_name": "8.51mm"
+    },
+    {
+     "attribute_name_en": "Number of Positions",
+     "attribute_value_name": "48P"
+    },
+    {
+     "attribute_name_en": "Contact Plating",
+     "attribute_value_name": "Tin"
+    },
+    {
+     "attribute_name_en": "Pitch",
+     "attribute_value_name": "2.54mm"
+    },
+    {
+     "attribute_name_en": "Row Spacing",
+     "attribute_value_name": "2.54mm"
+    },
+    {
+     "attribute_name_en": "Mounting Type",
+     "attribute_value_name": "Through Hole"
+    }
+   ],
+   "componentBrandEn": "Samtec",
+   "componentCode": "C6235824",
+   "componentLibraryType": "expand",
+   "componentModelEn": "SSQ-124-03-F-D",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 18.0899,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 29,
+     "productPrice": 18.0899,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 18.0899,
+     "startNumber": 30
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 7.2194,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 6.9769,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 6.858,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "Plugin,P=2.54mm",
+   "componentTypeEn": "Female Headers",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2312090713_Samtec-SSQ-124-03-F-D_C6235824.pdf",
+   "describe": "-55℃~+125℃ 2 2.54mm 2.54mm 48P 8.51mm Through Hole Tin Plugin,P=2.54mm Female Headers ROHS",
+   "erpComponentName": "间距:2.54mm 直插",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/female-headers_samtec-ssq-124-03-f-d_C6235824.html",
+   "leastPatchNumber": 0,
+   "lossNumber": 0,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-55℃~+125℃"
+    },
+    {
+     "attribute_name_en": "Number of Rows",
+     "attribute_value_name": "2"
+    },
+    {
+     "attribute_name_en": "Voltage Rating (Max)",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Insulation Height",
+     "attribute_value_name": "8.51mm"
+    },
+    {
+     "attribute_name_en": "Number of Positions",
+     "attribute_value_name": "48P"
+    },
+    {
+     "attribute_name_en": "Contact Plating",
+     "attribute_value_name": "Gold"
+    },
+    {
+     "attribute_name_en": "Pitch",
+     "attribute_value_name": "2.54mm"
+    },
+    {
+     "attribute_name_en": "Row Spacing",
+     "attribute_value_name": "2.54mm"
+    },
+    {
+     "attribute_name_en": "Mounting Type",
+     "attribute_value_name": "Through Hole"
+    }
+   ],
+   "componentBrandEn": "Samtec",
+   "componentCode": "C6235826",
+   "componentLibraryType": "expand",
+   "componentModelEn": "SSQ-124-03-G-D",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 15.7101,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 29,
+     "productPrice": 15.7101,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 15.7101,
+     "startNumber": 30
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 6.2688,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 6.0604,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 5.9562,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "Plugin,P=2.54mm",
+   "componentTypeEn": "Female Headers",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2312090713_Samtec-SSQ-124-03-G-D_C6235826.pdf",
+   "describe": "-55℃~+125℃ 2 2.54mm 2.54mm 48P 8.51mm Gold Through Hole Plugin,P=2.54mm Female Headers ROHS",
+   "erpComponentName": "间距:2.54mm 直插",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/female-headers_samtec-ssq-124-03-g-d_C6235826.html",
+   "leastPatchNumber": 0,
+   "lossNumber": 0,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-55℃~+125℃"
+    },
+    {
+     "attribute_name_en": "Number of Rows",
+     "attribute_value_name": "3"
+    },
+    {
+     "attribute_name_en": "Voltage Rating (Max)",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Insulation Height",
+     "attribute_value_name": "8.51mm"
+    },
+    {
+     "attribute_name_en": "Number of Positions",
+     "attribute_value_name": "72P"
+    },
+    {
+     "attribute_name_en": "Contact Plating",
+     "attribute_value_name": "Tin"
+    },
+    {
+     "attribute_name_en": "Pitch",
+     "attribute_value_name": "2.54mm"
+    },
+    {
+     "attribute_name_en": "Row Spacing",
+     "attribute_value_name": "2.54mm"
+    },
+    {
+     "attribute_name_en": "Mounting Type",
+     "attribute_value_name": "Through Hole"
+    }
+   ],
+   "componentBrandEn": "Samtec",
+   "componentCode": "C6235828",
+   "componentLibraryType": "expand",
+   "componentModelEn": "SSQ-124-03-S-T",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 39.8212,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 29,
+     "productPrice": 39.8212,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 39.8212,
+     "startNumber": 30
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 15.8891,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 15.3585,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 15.0964,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "Plugin,P=2.54mm",
+   "componentTypeEn": "Female Headers",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2312090713_Samtec-SSQ-124-03-S-T_C6235828.pdf",
+   "describe": "-55℃~+125℃ 2.54mm 2.54mm 3 72P 8.51mm Through Hole Tin Plugin,P=2.54mm Female Headers ROHS",
+   "erpComponentName": "间距:2.54mm 直插",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/female-headers_samtec-ssq-124-03-s-t_C6235828.html",
+   "leastPatchNumber": 0,
+   "lossNumber": 0,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-55℃~+105℃"
+    },
+    {
+     "attribute_name_en": "Number of Rows",
+     "attribute_value_name": "3"
+    },
+    {
+     "attribute_name_en": "Voltage Rating (Max)",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Insulation Height",
+     "attribute_value_name": "8.51mm"
+    },
+    {
+     "attribute_name_en": "Number of Positions",
+     "attribute_value_name": "72P"
+    },
+    {
+     "attribute_name_en": "Contact Plating",
+     "attribute_value_name": "Tin"
+    },
+    {
+     "attribute_name_en": "Pitch",
+     "attribute_value_name": "2.54mm"
+    },
+    {
+     "attribute_name_en": "Row Spacing",
+     "attribute_value_name": "2.54mm"
+    },
+    {
+     "attribute_name_en": "Mounting Type",
+     "attribute_value_name": "Through Hole"
+    }
+   ],
+   "componentBrandEn": "Samtec",
+   "componentCode": "C6303041",
+   "componentLibraryType": "expand",
+   "componentModelEn": "SSQ-124-01-T-T",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 19.8822,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 29,
+     "productPrice": 19.8822,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 19.8822,
+     "startNumber": 30
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 7.934,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 7.6687,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 7.5368,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "Plugin,P=2.54mm",
+   "componentTypeEn": "Female Headers",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2312100402_Samtec-SSQ-124-01-T-T_C6303041.pdf",
+   "describe": "-55℃~+105℃ 2.54mm 2.54mm 3 72P 8.51mm Through Hole Tin Plugin,P=2.54mm Female Headers ROHS",
+   "erpComponentName": "间距:2.54mm 直插",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/female-headers_samtec-ssq-124-01-t-t_C6303041.html",
+   "leastPatchNumber": 0,
+   "lossNumber": 0,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-55℃~+125℃"
+    },
+    {
+     "attribute_name_en": "Number of Rows",
+     "attribute_value_name": "2"
+    },
+    {
+     "attribute_name_en": "Voltage Rating (Max)",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Insulation Height",
+     "attribute_value_name": "8.51mm"
+    },
+    {
+     "attribute_name_en": "Number of Positions",
+     "attribute_value_name": "48P"
+    },
+    {
+     "attribute_name_en": "Contact Plating",
+     "attribute_value_name": "Gold"
+    },
+    {
+     "attribute_name_en": "Pitch",
+     "attribute_value_name": "2.54mm"
+    },
+    {
+     "attribute_name_en": "Row Spacing",
+     "attribute_value_name": "2.54mm"
+    },
+    {
+     "attribute_name_en": "Mounting Type",
+     "attribute_value_name": "Through Hole"
+    }
+   ],
+   "componentBrandEn": "Samtec",
+   "componentCode": "C6303043",
+   "componentLibraryType": "expand",
+   "componentModelEn": "SSQ-124-02-G-D",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 14.7887,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 29,
+     "productPrice": 14.7887,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 14.7887,
+     "startNumber": 30
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 5.9009,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 5.7039,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 5.6062,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "Plugin,P=2.54mm",
+   "componentTypeEn": "Female Headers",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2312100402_Samtec-SSQ-124-02-G-D_C6303043.pdf",
+   "describe": "-55℃~+125℃ 2 2.54mm 2.54mm 48P 8.51mm Gold Through Hole Plugin,P=2.54mm Female Headers ROHS",
+   "erpComponentName": "间距:2.54mm 直插",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/female-headers_samtec-ssq-124-02-g-d_C6303043.html",
+   "leastPatchNumber": 0,
+   "lossNumber": 0,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-55℃~+125℃"
+    },
+    {
+     "attribute_name_en": "Number of Rows",
+     "attribute_value_name": "3"
+    },
+    {
+     "attribute_name_en": "Voltage Rating (Max)",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Insulation Height",
+     "attribute_value_name": "8.51mm"
+    },
+    {
+     "attribute_name_en": "Number of Positions",
+     "attribute_value_name": "72P"
+    },
+    {
+     "attribute_name_en": "Contact Plating",
+     "attribute_value_name": "Gold"
+    },
+    {
+     "attribute_name_en": "Pitch",
+     "attribute_value_name": "2.54mm"
+    },
+    {
+     "attribute_name_en": "Row Spacing",
+     "attribute_value_name": "2.54mm"
+    },
+    {
+     "attribute_name_en": "Mounting Type",
+     "attribute_value_name": "Through Hole"
+    }
+   ],
+   "componentBrandEn": "Samtec",
+   "componentCode": "C6303045",
+   "componentLibraryType": "expand",
+   "componentModelEn": "SSQ-124-04-G-T",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 42.2955,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 29,
+     "productPrice": 42.2955,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 42.2955,
+     "startNumber": 30
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 16.8772,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 16.3124,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 16.034,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "Plugin,P=2.54mm",
+   "componentTypeEn": "Female Headers",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2312100402_Samtec-SSQ-124-04-G-T_C6303045.pdf",
+   "describe": "-55℃~+125℃ 2.54mm 2.54mm 3 72P 8.51mm Gold Through Hole Plugin,P=2.54mm Female Headers ROHS",
+   "erpComponentName": "间距:2.54mm 直插",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/female-headers_samtec-ssq-124-04-g-t_C6303045.html",
+   "leastPatchNumber": 0,
+   "lossNumber": 0,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-55℃~+105℃"
+    },
+    {
+     "attribute_name_en": "Number of Rows",
+     "attribute_value_name": "2"
+    },
+    {
+     "attribute_name_en": "Voltage Rating (Max)",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Insulation Height",
+     "attribute_value_name": "8.51mm"
+    },
+    {
+     "attribute_name_en": "Number of Positions",
+     "attribute_value_name": "48P"
+    },
+    {
+     "attribute_name_en": "Contact Plating",
+     "attribute_value_name": "Tin"
+    },
+    {
+     "attribute_name_en": "Pitch",
+     "attribute_value_name": "2.54mm"
+    },
+    {
+     "attribute_name_en": "Row Spacing",
+     "attribute_value_name": "2.54mm"
+    },
+    {
+     "attribute_name_en": "Mounting Type",
+     "attribute_value_name": "Through Hole"
+    }
+   ],
+   "componentBrandEn": "Samtec",
+   "componentCode": "C6303047",
+   "componentLibraryType": "expand",
+   "componentModelEn": "SSQ-124-04-T-D",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 15.474,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 29,
+     "productPrice": 15.474,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 15.474,
+     "startNumber": 30
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 6.1743,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 5.9676,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 5.8667,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "Plugin,P=2.54mm",
+   "componentTypeEn": "Female Headers",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2312100402_Samtec-SSQ-124-04-T-D_C6303047.pdf",
+   "describe": "-55℃~+105℃ 2 2.54mm 2.54mm 48P 8.51mm Through Hole Tin Plugin,P=2.54mm Female Headers ROHS",
+   "erpComponentName": "间距:2.54mm 直插",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/female-headers_samtec-ssq-124-04-t-d_C6303047.html",
+   "leastPatchNumber": 0,
+   "lossNumber": 0,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-55℃~+125℃"
+    },
+    {
+     "attribute_name_en": "Number of Rows",
+     "attribute_value_name": "3"
+    },
+    {
+     "attribute_name_en": "Voltage Rating (Max)",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Insulation Height",
+     "attribute_value_name": "8.51mm"
+    },
+    {
+     "attribute_name_en": "Number of Positions",
+     "attribute_value_name": "72P"
+    },
+    {
+     "attribute_name_en": "Contact Plating",
+     "attribute_value_name": "Tin"
+    },
+    {
+     "attribute_name_en": "Pitch",
+     "attribute_value_name": "2.54mm"
+    },
+    {
+     "attribute_name_en": "Row Spacing",
+     "attribute_value_name": "2.54mm"
+    },
+    {
+     "attribute_name_en": "Mounting Type",
+     "attribute_value_name": "Through Hole"
+    }
+   ],
+   "componentBrandEn": "Samtec",
+   "componentCode": "C6303049",
+   "componentLibraryType": "expand",
+   "componentModelEn": "SSQ-124-22-F-T",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 30.0641,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 29,
+     "productPrice": 30.0641,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 30.0641,
+     "startNumber": 30
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 11.997,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 11.595,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 11.398,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "Plugin,P=2.54mm",
+   "componentTypeEn": "Female Headers",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2312100402_Samtec-SSQ-124-22-F-T_C6303049.pdf",
+   "describe": "-55℃~+125℃ 2.54mm 2.54mm 3 72P 8.51mm Through Hole Tin Plugin,P=2.54mm Female Headers ROHS",
+   "erpComponentName": "间距:2.54mm 直插",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/female-headers_samtec-ssq-124-22-f-t_C6303049.html",
+   "leastPatchNumber": 0,
+   "lossNumber": 0,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-55℃~+125℃"
+    },
+    {
+     "attribute_name_en": "Number of Rows",
+     "attribute_value_name": "2"
+    },
+    {
+     "attribute_name_en": "Voltage Rating (Max)",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Insulation Height",
+     "attribute_value_name": "8.51mm"
+    },
+    {
+     "attribute_name_en": "Number of Positions",
+     "attribute_value_name": "48P"
+    },
+    {
+     "attribute_name_en": "Contact Plating",
+     "attribute_value_name": "Gold"
+    },
+    {
+     "attribute_name_en": "Pitch",
+     "attribute_value_name": "2.54mm"
+    },
+    {
+     "attribute_name_en": "Row Spacing",
+     "attribute_value_name": "2.54mm"
+    },
+    {
+     "attribute_name_en": "Mounting Type",
+     "attribute_value_name": "Through Hole"
+    }
+   ],
+   "componentBrandEn": "Samtec",
+   "componentCode": "C6303051",
+   "componentLibraryType": "expand",
+   "componentModelEn": "SSQ-124-22-G-D",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 25.3435,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 29,
+     "productPrice": 25.3435,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 25.3435,
+     "startNumber": 30
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 10.112,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 9.7751,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 9.6074,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "Plugin,P=2.54mm",
+   "componentTypeEn": "Female Headers",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2312100402_Samtec-SSQ-124-22-G-D_C6303051.pdf",
+   "describe": "-55℃~+125℃ 2 2.54mm 2.54mm 48P 8.51mm Gold Through Hole Plugin,P=2.54mm Female Headers ROHS",
+   "erpComponentName": "间距:2.54mm 直插",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/female-headers_samtec-ssq-124-22-g-d_C6303051.html",
+   "leastPatchNumber": 0,
+   "lossNumber": 0,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-55℃~+125℃"
+    },
+    {
+     "attribute_name_en": "Number of Rows",
+     "attribute_value_name": "1"
+    },
+    {
+     "attribute_name_en": "Voltage Rating (Max)",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Insulation Height",
+     "attribute_value_name": "8.51mm"
+    },
+    {
+     "attribute_name_en": "Number of Positions",
+     "attribute_value_name": "24P"
+    },
+    {
+     "attribute_name_en": "Contact Plating",
+     "attribute_value_name": "Gold"
+    },
+    {
+     "attribute_name_en": "Pitch",
+     "attribute_value_name": "2.54mm"
+    },
+    {
+     "attribute_name_en": "Mounting Type",
+     "attribute_value_name": "Through Hole"
+    }
+   ],
+   "componentBrandEn": "Samtec",
+   "componentCode": "C6496681",
+   "componentLibraryType": "expand",
+   "componentModelEn": "SSQ-124-01-H-S",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 20.281,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 29,
+     "productPrice": 20.281,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 20.281,
+     "startNumber": 30
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 8.0919,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 7.8217,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 7.6882,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "Plugin,P=2.54mm",
+   "componentTypeEn": "Female Headers",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2312121538_Samtec-SSQ-124-01-H-S_C6496681.pdf",
+   "describe": "-55℃~+125℃ 1 2.54mm 24P 8.51mm Gold Through Hole Plugin,P=2.54mm Female Headers ROHS",
+   "erpComponentName": "间距:2.54mm 直插",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/female-headers_samtec-ssq-124-01-h-s_C6496681.html",
+   "leastPatchNumber": 0,
+   "lossNumber": 0,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-55℃~+125℃"
+    },
+    {
+     "attribute_name_en": "Number of Rows",
+     "attribute_value_name": "2"
+    },
+    {
+     "attribute_name_en": "Voltage Rating (Max)",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Insulation Height",
+     "attribute_value_name": "8.51mm"
+    },
+    {
+     "attribute_name_en": "Number of Positions",
+     "attribute_value_name": "48P"
+    },
+    {
+     "attribute_name_en": "Contact Plating",
+     "attribute_value_name": "Tin"
+    },
+    {
+     "attribute_name_en": "Pitch",
+     "attribute_value_name": "2.54mm"
+    },
+    {
+     "attribute_name_en": "Row Spacing",
+     "attribute_value_name": "2.54mm"
+    },
+    {
+     "attribute_name_en": "Mounting Type",
+     "attribute_value_name": "Through Hole"
+    }
+   ],
+   "componentBrandEn": "Samtec",
+   "componentCode": "C6496687",
+   "componentLibraryType": "expand",
+   "componentModelEn": "SSQ-124-04-F-D",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 18.9999,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 29,
+     "productPrice": 18.9999,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 18.9999,
+     "startNumber": 30
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 7.5824,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 7.3285,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 7.2031,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "Plugin,P=2.54mm",
+   "componentTypeEn": "Female Headers",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2312121538_Samtec-SSQ-124-04-F-D_C6496687.pdf",
+   "describe": "-55℃~+125℃ 2 2.54mm 2.54mm 48P 8.51mm Through Hole Tin Plugin,P=2.54mm Female Headers ROHS",
+   "erpComponentName": "间距:2.54mm 直插",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/female-headers_samtec-ssq-124-04-f-d_C6496687.html",
+   "leastPatchNumber": 0,
+   "lossNumber": 0,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-55℃~+125℃"
+    },
+    {
+     "attribute_name_en": "Number of Rows",
+     "attribute_value_name": "3"
+    },
+    {
+     "attribute_name_en": "Voltage Rating (Max)",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Insulation Height",
+     "attribute_value_name": "8.51mm"
+    },
+    {
+     "attribute_name_en": "Number of Positions",
+     "attribute_value_name": "72P"
+    },
+    {
+     "attribute_name_en": "Contact Plating",
+     "attribute_value_name": "Gold"
+    },
+    {
+     "attribute_name_en": "Pitch",
+     "attribute_value_name": "2.54mm"
+    },
+    {
+     "attribute_name_en": "Row Spacing",
+     "attribute_value_name": "2.54mm"
+    },
+    {
+     "attribute_name_en": "Mounting Type",
+     "attribute_value_name": "Through Hole"
+    }
+   ],
+   "componentBrandEn": "Samtec",
+   "componentCode": "C6496689",
+   "componentLibraryType": "expand",
+   "componentModelEn": "SSQ-124-21-G-T",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 38.2276,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 29,
+     "productPrice": 38.2276,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 38.2276,
+     "startNumber": 30
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 15.2543,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 14.7432,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 14.4925,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "Plugin,P=2.54mm",
+   "componentTypeEn": "Female Headers",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2312121538_Samtec-SSQ-124-21-G-T_C6496689.pdf",
+   "describe": "-55℃~+125℃ 2.54mm 2.54mm 3 72P 8.51mm Gold Through Hole Plugin,P=2.54mm Female Headers ROHS",
+   "erpComponentName": "间距:2.54mm 直插",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/female-headers_samtec-ssq-124-21-g-t_C6496689.html",
+   "leastPatchNumber": 0,
+   "lossNumber": 0,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-55℃~+125℃"
+    },
+    {
+     "attribute_name_en": "Number of Rows",
+     "attribute_value_name": "1"
+    },
+    {
+     "attribute_name_en": "Voltage Rating (Max)",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Insulation Height",
+     "attribute_value_name": "8.51mm"
+    },
+    {
+     "attribute_name_en": "Number of Positions",
+     "attribute_value_name": "24P"
+    },
+    {
+     "attribute_name_en": "Contact Plating",
+     "attribute_value_name": "Tin"
+    },
+    {
+     "attribute_name_en": "Pitch",
+     "attribute_value_name": "2.54mm"
+    },
+    {
+     "attribute_name_en": "Mounting Type",
+     "attribute_value_name": "Through Hole"
+    }
+   ],
+   "componentBrandEn": "Samtec",
+   "componentCode": "C6496691",
+   "componentLibraryType": "expand",
+   "componentModelEn": "SSQ-124-22-S-S",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 16.6965,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 29,
+     "productPrice": 16.6965,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 16.6965,
+     "startNumber": 30
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 6.6627,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 6.4397,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 6.3306,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "Plugin,P=2.54mm",
+   "componentTypeEn": "Female Headers",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2312121538_Samtec-SSQ-124-22-S-S_C6496691.pdf",
+   "describe": "-55℃~+125℃ 1 2.54mm 24P 8.51mm Through Hole Tin Plugin,P=2.54mm Female Headers ROHS",
+   "erpComponentName": "间距:2.54mm 直插",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/female-headers_samtec-ssq-124-22-s-s_C6496691.html",
+   "leastPatchNumber": 0,
+   "lossNumber": 0,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-55℃~+125℃"
+    },
+    {
+     "attribute_name_en": "Number of Rows",
+     "attribute_value_name": "2"
+    },
+    {
+     "attribute_name_en": "Voltage Rating (Max)",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Insulation Height",
+     "attribute_value_name": "8.51mm"
+    },
+    {
+     "attribute_name_en": "Number of Positions",
+     "attribute_value_name": "48P"
+    },
+    {
+     "attribute_name_en": "Contact Plating",
+     "attribute_value_name": "Tin"
+    },
+    {
+     "attribute_name_en": "Pitch",
+     "attribute_value_name": "2.54mm"
+    },
+    {
+     "attribute_name_en": "Row Spacing",
+     "attribute_value_name": "2.54mm"
+    },
+    {
+     "attribute_name_en": "Mounting Type",
+     "attribute_value_name": "Through Hole"
+    }
+   ],
+   "componentBrandEn": "Samtec",
+   "componentCode": "C6686565",
+   "componentLibraryType": "expand",
+   "componentModelEn": "SSQ-124-01-S-D",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 14.9222,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 29,
+     "productPrice": 14.9222,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 14.9222,
+     "startNumber": 30
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 5.9546,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 5.756,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 5.6583,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "Plugin,P=2.54mm",
+   "componentTypeEn": "Female Headers",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2312231001_Samtec-SSQ-124-01-S-D_C6686565.pdf",
+   "describe": "-55℃~+125℃ 2 2.54mm 2.54mm 48P 8.51mm Through Hole Tin 插件,P=2.54mm Female Headers ROHS",
+   "erpComponentName": "间距:2.54mm 直插",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/female-headers_samtec-ssq-124-01-s-d_C6686565.html",
+   "leastPatchNumber": 0,
+   "lossNumber": 0,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-55℃~+105℃"
+    },
+    {
+     "attribute_name_en": "Number of Rows",
+     "attribute_value_name": "2"
+    },
+    {
+     "attribute_name_en": "Voltage Rating (Max)",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Insulation Height",
+     "attribute_value_name": "8.51mm"
+    },
+    {
+     "attribute_name_en": "Number of Positions",
+     "attribute_value_name": "48P"
+    },
+    {
+     "attribute_name_en": "Contact Plating",
+     "attribute_value_name": "Tin"
+    },
+    {
+     "attribute_name_en": "Pitch",
+     "attribute_value_name": "2.54mm"
+    },
+    {
+     "attribute_name_en": "Row Spacing",
+     "attribute_value_name": "2.54mm"
+    },
+    {
+     "attribute_name_en": "Mounting Type",
+     "attribute_value_name": "Through Hole"
+    }
+   ],
+   "componentBrandEn": "Samtec",
+   "componentCode": "C6686569",
+   "componentLibraryType": "expand",
+   "componentModelEn": "SSQ-124-01-T-D",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 7.9324,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 29,
+     "productPrice": 7.9324,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 7.9324,
+     "startNumber": 30
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 3.1661,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 3.0603,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 3.0066,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "Plugin,P=2.54mm",
+   "componentTypeEn": "Female Headers",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2312231001_Samtec-SSQ-124-01-T-D_C6686569.pdf",
+   "describe": "-55℃~+105℃ 2 2.54mm 2.54mm 48P 8.51mm Through Hole Tin Plugin,P=2.54mm Female Headers ROHS",
+   "erpComponentName": "间距:2.54mm 直插",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/female-headers_samtec-ssq-124-01-t-d_C6686569.html",
+   "leastPatchNumber": 0,
+   "lossNumber": 0,
+   "minPurchaseNum": 2,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-55℃~+125℃"
+    },
+    {
+     "attribute_name_en": "Number of Rows",
+     "attribute_value_name": "1"
+    },
+    {
+     "attribute_name_en": "Voltage Rating (Max)",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Insulation Height",
+     "attribute_value_name": "8.51mm"
+    },
+    {
+     "attribute_name_en": "Number of Positions",
+     "attribute_value_name": "24P"
+    },
+    {
+     "attribute_name_en": "Contact Plating",
+     "attribute_value_name": "Tin"
+    },
+    {
+     "attribute_name_en": "Pitch",
+     "attribute_value_name": "2.54mm"
+    },
+    {
+     "attribute_name_en": "Mounting Type",
+     "attribute_value_name": "Through Hole"
+    }
+   ],
+   "componentBrandEn": "Samtec",
+   "componentCode": "C6686584",
+   "componentLibraryType": "expand",
+   "componentModelEn": "SSQ-124-03-F-S",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 10.6101,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 29,
+     "productPrice": 10.6101,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 10.6101,
+     "startNumber": 30
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 4.234,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 4.0924,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 4.0224,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "Plugin,P=2.54mm",
+   "componentTypeEn": "Female Headers",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2312231001_Samtec-SSQ-124-03-F-S_C6686584.pdf",
+   "describe": "-55℃~+125℃ 1 2.54mm 24P 8.51mm Through Hole Tin 插件,P=2.54mm Female Headers ROHS",
+   "erpComponentName": "间距:2.54mm 直插",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/female-headers_samtec-ssq-124-03-f-s_C6686584.html",
+   "leastPatchNumber": 0,
+   "lossNumber": 0,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-55℃~+125℃"
+    },
+    {
+     "attribute_name_en": "Number of Rows",
+     "attribute_value_name": "3"
+    },
+    {
+     "attribute_name_en": "Voltage Rating (Max)",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Insulation Height",
+     "attribute_value_name": "8.51mm"
+    },
+    {
+     "attribute_name_en": "Number of Positions",
+     "attribute_value_name": "72P"
+    },
+    {
+     "attribute_name_en": "Contact Plating",
+     "attribute_value_name": "Gold"
+    },
+    {
+     "attribute_name_en": "Pitch",
+     "attribute_value_name": "2.54mm"
+    },
+    {
+     "attribute_name_en": "Row Spacing",
+     "attribute_value_name": "2.54mm"
+    },
+    {
+     "attribute_name_en": "Mounting Type",
+     "attribute_value_name": "Through Hole"
+    }
+   ],
+   "componentBrandEn": "Samtec",
+   "componentCode": "C6686589",
+   "componentLibraryType": "expand",
+   "componentModelEn": "SSQ-124-22-G-T",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 39.4794,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 29,
+     "productPrice": 39.4794,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 39.4794,
+     "startNumber": 30
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 15.7524,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 15.2266,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 14.9662,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "Plugin,P=2.54mm",
+   "componentTypeEn": "Female Headers",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2312231001_Samtec-SSQ-124-22-G-T_C6686589.pdf",
+   "describe": "-55℃~+125℃ 2.54mm 2.54mm 3 72P 8.51mm Gold Through Hole Plugin,P=2.54mm Female Headers ROHS",
+   "erpComponentName": "间距:2.54mm 直插",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/female-headers_samtec-ssq-124-22-g-t_C6686589.html",
+   "leastPatchNumber": 0,
+   "lossNumber": 0,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-55℃~+125℃"
+    },
+    {
+     "attribute_name_en": "Number of Rows",
+     "attribute_value_name": "1"
+    },
+    {
+     "attribute_name_en": "Voltage Rating (Max)",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Insulation Height",
+     "attribute_value_name": "8.51mm"
+    },
+    {
+     "attribute_name_en": "Number of Positions",
+     "attribute_value_name": "24P"
+    },
+    {
+     "attribute_name_en": "Contact Plating",
+     "attribute_value_name": "Gold"
+    },
+    {
+     "attribute_name_en": "Pitch",
+     "attribute_value_name": "2.54mm"
+    },
+    {
+     "attribute_name_en": "Mounting Type",
+     "attribute_value_name": "Through Hole"
+    }
+   ],
+   "componentBrandEn": "Samtec",
+   "componentCode": "C6825138",
+   "componentLibraryType": "expand",
+   "componentModelEn": "SSQ-124-21-G-S",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 15.1322,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 29,
+     "productPrice": 15.1322,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 15.1322,
+     "startNumber": 30
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 6.0376,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 5.8374,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 5.7365,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "Plugin,P=2.54mm",
+   "componentTypeEn": "Female Headers",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2312271156_Samtec-SSQ-124-21-G-S_C6825138.pdf",
+   "describe": "-55℃~+125℃ 1 2.54mm 24P 8.51mm Gold Through Hole Plugin,P=2.54mm Female Headers ROHS",
+   "erpComponentName": "间距:2.54mm 直插",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/female-headers_samtec-ssq-124-21-g-s_C6825138.html",
+   "leastPatchNumber": 0,
+   "lossNumber": 0,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-55℃~+125℃"
+    },
+    {
+     "attribute_name_en": "Number of Rows",
+     "attribute_value_name": "1"
+    },
+    {
+     "attribute_name_en": "Voltage Rating (Max)",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Insulation Height",
+     "attribute_value_name": "8.51mm"
+    },
+    {
+     "attribute_name_en": "Number of Positions",
+     "attribute_value_name": "24P"
+    },
+    {
+     "attribute_name_en": "Contact Plating",
+     "attribute_value_name": "Gold"
+    },
+    {
+     "attribute_name_en": "Pitch",
+     "attribute_value_name": "2.54mm"
+    },
+    {
+     "attribute_name_en": "Mounting Type",
+     "attribute_value_name": "Through Hole"
+    }
+   ],
+   "componentBrandEn": "Samtec",
+   "componentCode": "C6825140",
+   "componentLibraryType": "expand",
+   "componentModelEn": "SSQ-124-24-G-S",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 18.4025,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 29,
+     "productPrice": 18.4025,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 18.4025,
+     "startNumber": 30
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 7.3431,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 7.0989,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 6.9769,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "Plugin,P=2.54mm",
+   "componentTypeEn": "Female Headers",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2312271156_Samtec-SSQ-124-24-G-S_C6825140.pdf",
+   "describe": "-55℃~+125℃ 1 2.54mm 24P 8.51mm Gold Through Hole Plugin,P=2.54mm Female Headers ROHS",
+   "erpComponentName": "间距:2.54mm 直插",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/female-headers_samtec-ssq-124-24-g-s_C6825140.html",
+   "leastPatchNumber": 0,
+   "lossNumber": 0,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-55℃~+125℃"
+    },
+    {
+     "attribute_name_en": "Number of Rows",
+     "attribute_value_name": "2"
+    },
+    {
+     "attribute_name_en": "Voltage Rating (Max)",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Insulation Height",
+     "attribute_value_name": "8.51mm"
+    },
+    {
+     "attribute_name_en": "Number of Positions",
+     "attribute_value_name": "48P"
+    },
+    {
+     "attribute_name_en": "Contact Plating",
+     "attribute_value_name": "Tin"
+    },
+    {
+     "attribute_name_en": "Pitch",
+     "attribute_value_name": "2.54mm"
+    },
+    {
+     "attribute_name_en": "Row Spacing",
+     "attribute_value_name": "2.54mm"
+    },
+    {
+     "attribute_name_en": "Mounting Type",
+     "attribute_value_name": "Through Hole"
+    }
+   ],
+   "componentBrandEn": "Samtec",
+   "componentCode": "C7018449",
+   "componentLibraryType": "expand",
+   "componentModelEn": "SSQ-124-01-F-D",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 16.441,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 29,
+     "productPrice": 16.441,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 16.441,
+     "startNumber": 30
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 6.5601,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 6.342,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 6.2329,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "Plugin,P=2.54mm",
+   "componentTypeEn": "Female Headers",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2312271358_Samtec-SSQ-124-01-F-D_C7018449.pdf",
+   "describe": "-55℃~+125℃ 2 2.54mm 2.54mm 48P 8.51mm Through Hole Tin 插件,P=2.54mm Female Headers ROHS",
+   "erpComponentName": "间距:2.54mm 直插",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/female-headers_samtec-ssq-124-01-f-d_C7018449.html",
+   "leastPatchNumber": 0,
+   "lossNumber": 0,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-55℃~+125℃"
+    },
+    {
+     "attribute_name_en": "Number of Rows",
+     "attribute_value_name": "1"
+    },
+    {
+     "attribute_name_en": "Voltage Rating (Max)",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Insulation Height",
+     "attribute_value_name": "8.51mm"
+    },
+    {
+     "attribute_name_en": "Number of Positions",
+     "attribute_value_name": "24P"
+    },
+    {
+     "attribute_name_en": "Contact Plating",
+     "attribute_value_name": "Gold"
+    },
+    {
+     "attribute_name_en": "Pitch",
+     "attribute_value_name": "2.54mm"
+    },
+    {
+     "attribute_name_en": "Mounting Type",
+     "attribute_value_name": "Through Hole"
+    }
+   ],
+   "componentBrandEn": "Samtec",
+   "componentCode": "C7018451",
+   "componentLibraryType": "expand",
+   "componentModelEn": "SSQ-124-01-G-S",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 8.5461,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 29,
+     "productPrice": 8.5461,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 8.5461,
+     "startNumber": 30
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 3.4103,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 3.2964,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 3.241,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "Plugin,P=2.54mm",
+   "componentTypeEn": "Female Headers",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2312271358_Samtec-SSQ-124-01-G-S_C7018451.pdf",
+   "describe": "-55℃~+125℃ 1 2.54mm 24P 8.51mm Gold Through Hole 插件,P=2.54mm Female Headers ROHS",
+   "erpComponentName": "间距:2.54mm 直插",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/female-headers_samtec-ssq-124-01-g-s_C7018451.html",
+   "leastPatchNumber": 0,
+   "lossNumber": 0,
+   "minPurchaseNum": 2,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-55℃~+125℃"
+    },
+    {
+     "attribute_name_en": "Number of Rows",
+     "attribute_value_name": "1"
+    },
+    {
+     "attribute_name_en": "Voltage Rating (Max)",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Insulation Height",
+     "attribute_value_name": "8.51mm"
+    },
+    {
+     "attribute_name_en": "Number of Positions",
+     "attribute_value_name": "24P"
+    },
+    {
+     "attribute_name_en": "Contact Plating",
+     "attribute_value_name": "Tin"
+    },
+    {
+     "attribute_name_en": "Pitch",
+     "attribute_value_name": "2.54mm"
+    },
+    {
+     "attribute_name_en": "Mounting Type",
+     "attribute_value_name": "Through Hole"
+    }
+   ],
+   "componentBrandEn": "Samtec",
+   "componentCode": "C7018453",
+   "componentLibraryType": "expand",
+   "componentModelEn": "SSQ-124-02-F-S",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 9.9558,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 29,
+     "productPrice": 9.9558,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 9.9558,
+     "startNumber": 30
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 3.9735,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 3.8401,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 3.7749,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "Plugin,P=2.54mm",
+   "componentTypeEn": "Female Headers",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2312271358_Samtec-SSQ-124-02-F-S_C7018453.pdf",
+   "describe": "-55℃~+125℃ 1 2.54mm 24P 8.51mm Through Hole Tin 插件,P=2.54mm Female Headers ROHS",
+   "erpComponentName": "间距:2.54mm 直插",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/female-headers_samtec-ssq-124-02-f-s_C7018453.html",
+   "leastPatchNumber": 0,
+   "lossNumber": 0,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-55℃~+125℃"
+    },
+    {
+     "attribute_name_en": "Number of Rows",
+     "attribute_value_name": "3"
+    },
+    {
+     "attribute_name_en": "Voltage Rating (Max)",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Insulation Height",
+     "attribute_value_name": "8.51mm"
+    },
+    {
+     "attribute_name_en": "Number of Positions",
+     "attribute_value_name": "72P"
+    },
+    {
+     "attribute_name_en": "Contact Plating",
+     "attribute_value_name": "Tin"
+    },
+    {
+     "attribute_name_en": "Pitch",
+     "attribute_value_name": "2.54mm"
+    },
+    {
+     "attribute_name_en": "Row Spacing",
+     "attribute_value_name": "2.54mm"
+    },
+    {
+     "attribute_name_en": "Mounting Type",
+     "attribute_value_name": "Through Hole"
+    }
+   ],
+   "componentBrandEn": "Samtec",
+   "componentCode": "C7018455",
+   "componentLibraryType": "expand",
+   "componentModelEn": "SSQ-124-03-F-T",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 28.2735,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 29,
+     "productPrice": 28.2735,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 28.2735,
+     "startNumber": 30
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 11.2808,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 10.9048,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 10.7176,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "Plugin,P=2.54mm",
+   "componentTypeEn": "Female Headers",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2312271358_Samtec-SSQ-124-03-F-T_C7018455.pdf",
+   "describe": "-55℃~+125℃ 2.54mm 2.54mm 3 72P 8.51mm Through Hole Tin 插件,P=2.54mm Female Headers ROHS",
+   "erpComponentName": "间距:2.54mm 直插",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/female-headers_samtec-ssq-124-03-f-t_C7018455.html",
+   "leastPatchNumber": 0,
+   "lossNumber": 0,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-55℃~+125℃"
+    },
+    {
+     "attribute_name_en": "Number of Rows",
+     "attribute_value_name": "2"
+    },
+    {
+     "attribute_name_en": "Voltage Rating (Max)",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Insulation Height",
+     "attribute_value_name": "8.51mm"
+    },
+    {
+     "attribute_name_en": "Number of Positions",
+     "attribute_value_name": "48P"
+    },
+    {
+     "attribute_name_en": "Contact Plating",
+     "attribute_value_name": "Gold"
+    },
+    {
+     "attribute_name_en": "Pitch",
+     "attribute_value_name": "2.54mm"
+    },
+    {
+     "attribute_name_en": "Row Spacing",
+     "attribute_value_name": "2.54mm"
+    },
+    {
+     "attribute_name_en": "Mounting Type",
+     "attribute_value_name": "Through Hole"
+    }
+   ],
+   "componentBrandEn": "Samtec",
+   "componentCode": "C7018457",
+   "componentLibraryType": "expand",
+   "componentModelEn": "SSQ-124-04-G-D",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 27.1357,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 29,
+     "productPrice": 27.1357,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 27.1357,
+     "startNumber": 30
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 10.8283,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 10.4653,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 10.2878,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "Plugin,P=2.54mm",
+   "componentTypeEn": "Female Headers",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2312271358_Samtec-SSQ-124-04-G-D_C7018457.pdf",
+   "describe": "-55℃~+125℃ 2 2.54mm 2.54mm 48P 8.51mm Gold Through Hole 插件,P=2.54mm Female Headers ROHS",
+   "erpComponentName": "间距:2.54mm 直插",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/female-headers_samtec-ssq-124-04-g-d_C7018457.html",
+   "leastPatchNumber": 0,
+   "lossNumber": 0,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-55℃~+125℃"
+    },
+    {
+     "attribute_name_en": "Number of Rows",
+     "attribute_value_name": "1"
+    },
+    {
+     "attribute_name_en": "Voltage Rating (Max)",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Insulation Height",
+     "attribute_value_name": "8.51mm"
+    },
+    {
+     "attribute_name_en": "Number of Positions",
+     "attribute_value_name": "24P"
+    },
+    {
+     "attribute_name_en": "Contact Plating",
+     "attribute_value_name": "Tin"
+    },
+    {
+     "attribute_name_en": "Pitch",
+     "attribute_value_name": "2.54mm"
+    },
+    {
+     "attribute_name_en": "Mounting Type",
+     "attribute_value_name": "Through Hole"
+    }
+   ],
+   "componentBrandEn": "Samtec",
+   "componentCode": "C7018467",
+   "componentLibraryType": "expand",
+   "componentModelEn": "SSQ-124-24-S-S",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 19.1708,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 29,
+     "productPrice": 19.1708,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 19.1708,
+     "startNumber": 30
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 7.6491,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 7.3936,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 7.2682,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "Plugin,P=2.54mm",
+   "componentTypeEn": "Female Headers",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2312271358_Samtec-SSQ-124-24-S-S_C7018467.pdf",
+   "describe": "-55℃~+125℃ 1 2.54mm 24P 8.51mm Through Hole Tin 插件,P=2.54mm Female Headers ROHS",
+   "erpComponentName": "间距:2.54mm 直插",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/female-headers_samtec-ssq-124-24-s-s_C7018467.html",
+   "leastPatchNumber": 0,
+   "lossNumber": 0,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-55℃~+125℃"
+    },
+    {
+     "attribute_name_en": "Number of Rows",
+     "attribute_value_name": "2"
+    },
+    {
+     "attribute_name_en": "Voltage Rating (Max)",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Insulation Height",
+     "attribute_value_name": "8.51mm"
+    },
+    {
+     "attribute_name_en": "Number of Positions",
+     "attribute_value_name": "48P"
+    },
+    {
+     "attribute_name_en": "Contact Plating",
+     "attribute_value_name": "Tin"
+    },
+    {
+     "attribute_name_en": "Pitch",
+     "attribute_value_name": "2.54mm"
+    },
+    {
+     "attribute_name_en": "Row Spacing",
+     "attribute_value_name": "2.54mm"
+    },
+    {
+     "attribute_name_en": "Mounting Type",
+     "attribute_value_name": "Through Hole"
+    }
+   ],
+   "componentBrandEn": "Samtec",
+   "componentCode": "C7088517",
+   "componentLibraryType": "expand",
+   "componentModelEn": "SSQ-124-02-S-D",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 15.4268,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 29,
+     "productPrice": 15.4268,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 15.4268,
+     "startNumber": 30
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 6.1564,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 5.9497,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 5.8488,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "Plugin,P=2.54mm",
+   "componentTypeEn": "Female Headers",
+   "dataManualUrl": "https://www.lcsc.com/datasheet/lcsc_datasheet_2312271510_Samtec-SSQ-124-02-S-D_C7088517.pdf",
+   "describe": "-55℃~+125℃ 2 2.54mm 2.54mm 48P 8.51mm Through Hole Tin Plugin,P=2.54mm Female Headers ROHS",
+   "erpComponentName": "间距:2.54mm 直插",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/female-headers_samtec-ssq-124-02-s-d_C7088517.html",
+   "leastPatchNumber": 0,
+   "lossNumber": 0,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  }
+ ],
+ "returned": 50,
+ "schema": 1,
+ "total_matches": 76
+}

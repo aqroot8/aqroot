@@ -66,6 +66,83 @@
 > `verify_promotion` PASS and `protected_copper` showing exactly one protected
 > net moved.  `U14.7` is on the bus.  This board has **no open owner decision**.
 
+> # **DEMO_READY_FOR_FAB IS RE-DECLARED (2026-09-18, after D-751).**
+>
+> **Board authority `bdf1376c`.**  The D-748 declaration below is
+> **SUPERSEDED and left standing as history**: an external first-spin review
+> (Fable 5.1 + Astra) REOPENED it on 2026-09-18 and named thirteen items, and
+> **four of them were real defects on the frozen `b593b97` package** — a `J5`
+> BOM identity that had named the superseded 2×12 `BCS-112-S-D-HE` since
+> D-237, a physically floating `U14` `QSTRT`, a charger-input audit computed at
+> the wrong inner-copper thickness, and two boost converters with no local
+> input capacitor.  **D-750 closed all four and dispositioned the other nine**
+> (`audits/2026-09-18-d750-first-spin-review-dispositions.md`, item by item,
+> with FIRST-ARTICLE and PROCUREMENT items explicitly separated from pre-order
+> blockers as the review's own release rule requires).  **D-751 finished the
+> transaction**: D-750 had fitted `Q11`, the backlight true-off disconnect, and
+> left its three nets UNROUTED — the worst state to freeze, because every
+> identity gate passes and the screen still glows.
+>
+> **THE FIVE THINGS D-751 ADDED, AND WHY EACH IS NOT COSMETIC**
+> — `Q11`'s `LED_K`, `LED_K_PANEL` and `DISP_BL_CTL` are **routed** (three
+> taps, 16.26 mm, four barrels), and the first run was REFUSED for a 0.44 mm
+> dangling In2 stub that the tap left behind, which was trimmed before the
+> re-run;
+> — `placement_contract.py` **had no word for an ADDED part**, so the whole
+> standing suite read `placement FAIL` for a legitimate act; `--add` exists,
+> `PL7` now holds an added pad to the same foreign-copper clearance a moved one
+> gets, and ***`PL6`, the vacuity screen, was itself vacuous*** — it read `not
+> PL2`, and `PL2` is an AND over `PL1`, so any unrelated `PL1` failure made it
+> "pass"; it must now NAME the decoy;
+> — `FAB5` and `FAB12` were written against defects nobody could reproduce and
+> so passed **vacuously**; **seven live negative controls** now run inside the
+> gate, including one that puts the `J5` `BCS-112-S-D-HE` identity back;
+> — the D-743 thermal exception still justified itself with *"0.15 mm from
+> solid GND and +3V3 planes on both faces"* — a stackup this board does not
+> have; `accept_reason` is now the **1.45 K** the tool DERIVES from the board's
+> own 0.4000 mm core and 0.2028 mm prepreg;
+> — the `AO3400A` was the **only one of 122 assembly BOM lines with no
+> distributor identity**, and D-750 had just made it a two-piece line; LCSC
+> `C20917`, JLCPCB **BASIC** part, verified live per D-096.  **122 of 122.**
+>
+> ***AND WRITING THE FIRMWARE TEST FOUND THE REMAINING HALF OF A BUG D-750
+> THOUGHT IT HAD FIXED.***  `writeOutputs` only moves the shadow when the bus
+> ACKs, so a NACKed write left `shadow_` holding `ACC_5V_SW_EN` HIGH and the
+> following unconditional boost-disable **re-sent that stale bit** — one NACK
+> would have left the accessory load switch commanded ON during the very fault
+> the shutdown was called for.  `Pcal9535a::clearBits` takes both bits down in
+> one transaction.  All three of D-750's `||` repairs plus this one are now
+> **mechanised controls**: the contract puts each back and requires the host
+> test to catch it.  **Nine controls, nine caught.**
+>
+> **RELEASE-GRADE VERIFICATION, RE-RUN WHOLE ON `bdf1376c`**
+> (`evidence/d751-release-verification.json`): `unapproved_open_edges` **0**;
+> **172 of 173** retained nets connected and the one open edge is `U11.3`,
+> covered by owner decision D-742; the approved-NC set is EXACTLY the eight
+> `J5` positions Demo scope allows; real KiCad DRC is **199
+> `lib_footprint_issues`, every one severity WARNING, and ZERO of every other
+> class** — no `clearance`, no `track_width`, no `track_dangling`; schematic
+> parity **0 errors**; `audit_rail_ampacity` **all_ok** with its stackup
+> self-check passing at the board's own 0.0152 mm; **`FAB1`–`FAB12` all PASS**
+> with seven controls refused; `contract_regression` runs **17 contracts, all
+> 17 pass**, with `protected_copper` **IDENTICAL to `d746`**; the firmware
+> contract passes H1–H6 with **11 policy controls refused, 81 host claims over
+> two tests and nine host controls caught**; all four PlatformIO environments
+> build; `hardware/beta-v2` **untouched**.
+>
+> **There is no open owner decision and no unresolved Demo fabrication
+> blocker.**  What remains is FIRST-ARTICLE and PROCUREMENT, and it is listed
+> as such: the panel-tail pin-1 incoming test (a decisive diode-mode
+> measurement, no drawing needed), the NFC re-derivation from `AN5276` with the
+> tune position proved **fittable at 0.500 mm**, freezing and qualifying the
+> cell, fabricator acceptance of the named special processes, the first-flash
+> image hash, and the mechanical-documentation contract.
+>
+> **NOTE FOR THE DIFF READER.**  `03_spi_a_display_sd.kicad_sch` shows ~19 000
+> changed lines.  **568 of them are content** — the `Q11` symbol, its cached
+> library symbol, three labels and three wires — and the rest is a CRLF→LF
+> normalisation.
+
 > # **DEMO_READY_FOR_FAB IS DECLARED (2026-09-18, after D-748).**
 >
 > **Board authority `c7f5c618`, unchanged since D-743.**  D-746 released the

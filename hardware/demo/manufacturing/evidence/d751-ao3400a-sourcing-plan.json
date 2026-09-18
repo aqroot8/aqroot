@@ -1,0 +1,15 @@
+{
+ "decision": "D-751",
+ "graft": [
+  {
+   "refs": ["Q1", "Q11"],
+   "value": "AO3400A",
+   "Manufacturer": "Alpha & Omega Semiconductor",
+   "MPN": "AO3400A",
+   "LCSC": "C20917",
+   "how": "ADDED",
+   "basis": {},
+   "note": "SOURCING D-751 2026-09-18. The AO3400A was the ONLY line on the assembly BOM with no distributor identity (121 of 122 rows carried one), and D-750 made it a two-piece line by adding Q11, the display-backlight true-off disconnect. Verified live 2026-09-18 per D-096 through the JLCPCB parts API; record committed at evidence/jlc-live/ao3400a-568c27aa.json: LCSC C20917, Alpha & Omega Semicon, AO3400A, SOT-23, componentLibraryType = BASE (no extended-part fee, no feeder setup), stock 812570, 0.0847 USD at 1 / 0.0479 at 6000, 30 V, Id 5.7 A continuous, RDS(on) 48 mOhm at VGS 2.5 V, VGS(th) 1.45 V, Pd 1.4 W, -55 to +150 C, RoHS. BOTH FITTED USES ARE FAR INSIDE THAT ENVELOPE: Q1 sinks the IR LED and Q11 carries the 109 mA panel backlight cathode return, where even the worst-case 48 mOhm at a 2.5 V gate costs 5.2 mV. Stock is a snapshot, not a guarantee."
+  }
+ ]
+}

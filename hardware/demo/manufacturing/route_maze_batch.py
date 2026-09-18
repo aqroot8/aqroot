@@ -4117,11 +4117,22 @@ def gate(nets, grid, via_cost_mm, workdir, promote=False, candidate=None,
     # 44 -> 44 with `all_relaid: true`.  The clause also still fails in its own
     # right: a run with no plane, nothing routed, nothing repaired, no bond and
     # no detour is exactly the vacuous promotion it was written to refuse.
+    # D-750 ADDED THE TAP TERM, AND IT IS A REPAIR, NOT A RELAXATION.
+    # D-669's `--tap-first` offers the T-junction BEFORE the whole-board maze.
+    # When it succeeds the maze then finds the net already one island and
+    # reports `already`, so a run that closed every requested edge WITH REAL
+    # COPPER read here as "nothing happened" and clause 8 refused it.  The
+    # clause exists to refuse a VACUOUS promotion; a tap that laid millimetres
+    # of track and a barrel is not vacuous.  Every tap is already named, with
+    # its land, its target object and its copper, in `taps.nets` below, and
+    # clause 4 still independently demands the board IMPROVE.
+    tapped = sum(len((r.get("tap") or {}).get("taps", ())) for r in routed)
     changed = (bool(plane)
                or any(r.get("ok") and not r.get("already") for r in routed)
                or any(not r.get("already") for r in repaired)
                or bool(bond_nets)
-               or bool(detour_nets))
+               or bool(detour_nets)
+               or bool(tapped))
     # CLAUSE 7 -- A LICENCE MAY NOT BE SPENT ON COPPER THAT CONNECTS NOTHING.
     # D-606.  `--escape-relief` is the only lever on this board that lays a
     # barrel the ordinary floors forbid, and it pays for it with a permanent

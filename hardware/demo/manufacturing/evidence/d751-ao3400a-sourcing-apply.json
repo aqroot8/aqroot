@@ -1,0 +1,72 @@
+{
+ "added": [
+  {
+   "property": "LCSC",
+   "ref": "Q11",
+   "sheet": "03_spi_a_display_sd.kicad_sch",
+   "value": "C20917"
+  },
+  {
+   "property": "Note_Sourcing",
+   "ref": "Q11",
+   "sheet": "03_spi_a_display_sd.kicad_sch",
+   "value": "SOURCING D-751 2026-09-18. The AO3400A was the ONLY line on the assembly BOM with no distributor identity (121 of 122 rows carried one), and D-750 made it a two-piece line by adding Q11, the display-backlight true-off disconnect. Verified live 2026-09-18 per D-096 through the JLCPCB parts API; record committed at evidence/jlc-live/ao3400a-568c27aa.json: LCSC C20917, Alpha & Omega Semicon, AO3400A, SOT-23, componentLibraryType = BASE (no extended-part fee, no feeder setup), stock 812570, 0.0847 USD at 1 / 0.0479 at 6000, 30 V, Id 5.7 A continuous, RDS(on) 48 mOhm at VGS 2.5 V, VGS(th) 1.45 V, Pd 1.4 W, -55 to +150 C, RoHS. BOTH FITTED USES ARE FAR INSIDE THAT ENVELOPE: Q1 sinks the IR LED and Q11 carries the 109 mA panel backlight cathode return, where even the worst-case 48 mOhm at a 2.5 V gate costs 5.2 mV. Stock is a snapshot, not a guarantee."
+  },
+  {
+   "property": "LCSC",
+   "ref": "Q1",
+   "sheet": "07_ir.kicad_sch",
+   "value": "C20917"
+  },
+  {
+   "property": "Note_Sourcing",
+   "ref": "Q1",
+   "sheet": "07_ir.kicad_sch",
+   "value": "SOURCING D-751 2026-09-18. The AO3400A was the ONLY line on the assembly BOM with no distributor identity (121 of 122 rows carried one), and D-750 made it a two-piece line by adding Q11, the display-backlight true-off disconnect. Verified live 2026-09-18 per D-096 through the JLCPCB parts API; record committed at evidence/jlc-live/ao3400a-568c27aa.json: LCSC C20917, Alpha & Omega Semicon, AO3400A, SOT-23, componentLibraryType = BASE (no extended-part fee, no feeder setup), stock 812570, 0.0847 USD at 1 / 0.0479 at 6000, 30 V, Id 5.7 A continuous, RDS(on) 48 mOhm at VGS 2.5 V, VGS(th) 1.45 V, Pd 1.4 W, -55 to +150 C, RoHS. BOTH FITTED USES ARE FAR INSIDE THAT ENVELOPE: Q1 sinks the IR LED and Q11 carries the 109 mA panel backlight cathode return, where even the worst-case 48 mOhm at a 2.5 V gate costs 5.2 mV. Stock is a snapshot, not a guarantee."
+  }
+ ],
+ "applied": true,
+ "conflicts": [],
+ "plan": "evidence/d751-ao3400a-sourcing-plan.json",
+ "properties_added": 4,
+ "properties_already_correct": [
+  "Q1.MPN",
+  "Q1.Manufacturer",
+  "Q11.MPN",
+  "Q11.Manufacturer"
+ ],
+ "properties_rewritten": [],
+ "references_found": 2,
+ "references_in_plan": 2,
+ "references_not_in_any_sheet": [],
+ "schema": 1,
+ "sha256_after": {
+  "01_power_tree.kicad_sch": "ded49f8af5b6fc5ca379fae0d6f8c2c2f3f103f43240d7b2cee2f35d1909c654",
+  "02_mcu_core.kicad_sch": "62cbc53b5d165f6dd6946ab5a53fdd51ae5eacb3acbed4814d9be85e30dad4d1",
+  "03_spi_a_display_sd.kicad_sch": "0e241fda899a6c16b784194572d58fe2be854c4e655f2f7d034c697a05880235",
+  "04_spi_b_radios_nfc.kicad_sch": "07b195de8bc9c68bcd8b4416def81a2334a81894c9ccf55762b1861d212c4be8",
+  "05_i2c_devices.kicad_sch": "ab183831cc7b39a606ac1d45641adee8070242a6922cd9ada2a139a27493461a",
+  "06_audio.kicad_sch": "d49ada5071e8498fc74cb09239b8df187859e9fbe6a02377981109cd46a55d61",
+  "07_ir.kicad_sch": "ead56eb4c5392123894338a4418f7062fadf2bb693b6559d2427dc5993ce8935",
+  "08_buttons_expanders.kicad_sch": "9390c766d79f022cad74ffb52e4c54b8e0ebc0c0383097359ce6f0f7a6b293a8",
+  "09_community_header.kicad_sch": "9caa50d067d3807284ad8746dde5de66b7d2080b3a9e51da10730c553202ea89",
+  "aqroot-Beta-v2.kicad_sch": "195a985ca49cd03d88b006776f31ef6fa929d23d6a9eb3c29e37581307d31603"
+ },
+ "sha256_before": {
+  "01_power_tree.kicad_sch": "ded49f8af5b6fc5ca379fae0d6f8c2c2f3f103f43240d7b2cee2f35d1909c654",
+  "02_mcu_core.kicad_sch": "62cbc53b5d165f6dd6946ab5a53fdd51ae5eacb3acbed4814d9be85e30dad4d1",
+  "03_spi_a_display_sd.kicad_sch": "025c81aa37cce6cf588cb458376a28fcec4482c73537c28c7200e69adf823f1a",
+  "04_spi_b_radios_nfc.kicad_sch": "07b195de8bc9c68bcd8b4416def81a2334a81894c9ccf55762b1861d212c4be8",
+  "05_i2c_devices.kicad_sch": "ab183831cc7b39a606ac1d45641adee8070242a6922cd9ada2a139a27493461a",
+  "06_audio.kicad_sch": "d49ada5071e8498fc74cb09239b8df187859e9fbe6a02377981109cd46a55d61",
+  "07_ir.kicad_sch": "4123770847540d6f1208386159f22bcf820da8c7f0e7f91515a8f2979723bda5",
+  "08_buttons_expanders.kicad_sch": "9390c766d79f022cad74ffb52e4c54b8e0ebc0c0383097359ce6f0f7a6b293a8",
+  "09_community_header.kicad_sch": "9caa50d067d3807284ad8746dde5de66b7d2080b3a9e51da10730c553202ea89",
+  "aqroot-Beta-v2.kicad_sch": "195a985ca49cd03d88b006776f31ef6fa929d23d6a9eb3c29e37581307d31603"
+ },
+ "sheets_touched": [
+  "03_spi_a_display_sd.kicad_sch",
+  "07_ir.kicad_sch"
+ ],
+ "text_replaces": []
+}

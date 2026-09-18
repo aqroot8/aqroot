@@ -5,6 +5,307 @@
 	(uuid "e5ed7088-6df5-494c-ba15-bb4f5334a2b1")
 	(paper "A3")
 	(lib_symbols
+		(symbol "Transistor_FET:Q_NMOS_GSD"
+			(pin_names
+				(offset 0)
+				(hide yes)
+			)
+			(exclude_from_sim no)
+			(in_bom yes)
+			(on_board yes)
+			(in_pos_files yes)
+			(duplicate_pin_numbers_are_jumpers no)
+			(property "Reference" "Q"
+				(at 5.08 1.905 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(justify left)
+				)
+			)
+			(property "Value" "Q_NMOS_GSD"
+				(at 5.08 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(justify left)
+				)
+			)
+			(property "Footprint" ""
+				(at 5.08 2.54 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Datasheet" ""
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Description" "N-MOSFET transistor, gate/source/drain"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "ki_keywords" "transistor NMOS N-MOS N-MOSFET"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(symbol "Q_NMOS_GSD_0_1"
+				(polyline
+					(pts
+						(xy 0.254 1.905) (xy 0.254 -1.905)
+					)
+					(stroke
+						(width 0.254)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy 0.254 0) (xy -2.54 0)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy 0.762 2.286) (xy 0.762 1.27)
+					)
+					(stroke
+						(width 0.254)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy 0.762 0.508) (xy 0.762 -0.508)
+					)
+					(stroke
+						(width 0.254)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy 0.762 -1.27) (xy 0.762 -2.286)
+					)
+					(stroke
+						(width 0.254)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy 0.762 -1.778) (xy 3.302 -1.778) (xy 3.302 1.778) (xy 0.762 1.778)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy 1.016 0) (xy 2.032 0.381) (xy 2.032 -0.381) (xy 1.016 0)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type outline)
+					)
+				)
+				(circle
+					(center 1.651 0)
+					(radius 2.794)
+					(stroke
+						(width 0.254)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy 2.54 2.54) (xy 2.54 1.778)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(circle
+					(center 2.54 1.778)
+					(radius 0.254)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type outline)
+					)
+				)
+				(circle
+					(center 2.54 -1.778)
+					(radius 0.254)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type outline)
+					)
+				)
+				(polyline
+					(pts
+						(xy 2.54 -2.54) (xy 2.54 0) (xy 0.762 0)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy 2.921 0.381) (xy 3.683 0.381)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy 3.302 0.381) (xy 2.921 -0.254) (xy 3.683 -0.254) (xy 3.302 0.381)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+			)
+			(symbol "Q_NMOS_GSD_1_1"
+				(pin input line
+					(at -5.08 0 0)
+					(length 2.54)
+					(name "G"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at 2.54 -5.08 90)
+					(length 2.54)
+					(name "S"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "2"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at 2.54 5.08 270)
+					(length 2.54)
+					(name "D"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "3"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+			)
+			(embedded_fonts no)
+		)
 		(symbol "AQROOT_Beta:ER-TFT035IPS-6_50P"
 			(pin_names
 				(offset 0.508)
@@ -4336,7 +4637,7 @@
 		)
 		(uuid "932fd7de-6398-401d-8dac-9e41e0623b13")
 	)
-	(label "LED_K"
+	(label "LED_K_PANEL"
 		(at 59.69 120.65 180)
 		(effects
 			(font
@@ -4356,7 +4657,7 @@
 		)
 		(uuid "71a49477-c9ae-4836-9df4-9e5767d8e6ce")
 	)
-	(label "LED_K"
+	(label "LED_K_PANEL"
 		(at 59.69 123.19 180)
 		(effects
 			(font
@@ -8225,14 +8526,19 @@
 		(lib_id "power:GND")
 		(at 241.3 162.56 0)
 		(unit 1)
+		(body_style 1)
 		(exclude_from_sim no)
-		(in_bom no)
+		(in_bom yes)
 		(on_board yes)
+		(in_pos_files yes)
 		(dnp no)
 		(fields_autoplaced yes)
-		(uuid "14c6dcb1-0309-42e1-8c7a-66ce30abe91c")
+		(uuid "963745b0-10b0-4ab3-9170-3e2344877de1")
 		(property "Reference" "#PWR141"
-			(at 241.3 162.56 0)
+			(at 241.3 168.91 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -8240,7 +8546,9 @@
 			)
 		)
 		(property "Value" "GND"
-			(at 241.3 162.56 0)
+			(at 241.3 167.64 0)
+			(show_name no)
+			(do_not_autoplace no)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -8250,6 +8558,8 @@
 		(property "Footprint" ""
 			(at 241.3 162.56 0)
 			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -8259,15 +8569,19 @@
 		(property "Datasheet" ""
 			(at 241.3 162.56 0)
 			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
 			)
 		)
-		(property "Description" "Power symbol"
+		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
 			(at 241.3 162.56 0)
 			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -8275,11 +8589,11 @@
 			)
 		)
 		(pin "1"
-			(uuid "c7195ec6-620e-426c-a9b7-195882031789")
+			(uuid "2b14312a-230e-460f-975f-57b12338ce3d")
 		)
 		(instances
 			(project "aqroot-Beta-v2"
-				(path "/e5ed7088-6df5-494c-ba15-bb4f5334a2b1"
+				(path "/8a0ad1ee-a49e-4cff-9a78-44823e373405/e86f9f15-4a7f-4160-bee2-09febc1b0776"
 					(reference "#PWR141")
 					(unit 1)
 				)
@@ -10363,5 +10677,216 @@
 			(justify left top)
 		)
 		(uuid "fb030025-d025-4d25-9d25-000000000025")
+	)
+	(symbol
+		(lib_id "Transistor_FET:Q_NMOS_GSD")
+		(at 241.3 200.66 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "174fc903-da6f-4617-9605-c6de4f912e61")
+		(property "Reference" "Q11"
+			(at 247.65 199.39 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "AO3400A"
+			(at 247.65 201.93 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "Package_TO_SOT_SMD:SOT-23"
+			(at 247.65 203.2 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 241.3 200.66 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "LCSC" "C20917"
+			(at 241.3 200.66 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Note_Sourcing" "SOURCING D-751 2026-09-18. The AO3400A was the ONLY line on the assembly BOM with no distributor identity (121 of 122 rows carried one), and D-750 made it a two-piece line by adding Q11, the display-backlight true-off disconnect. Verified live 2026-09-18 per D-096 through the JLCPCB parts API; record committed at evidence/jlc-live/ao3400a-568c27aa.json: LCSC C20917, Alpha & Omega Semicon, AO3400A, SOT-23, componentLibraryType = BASE (no extended-part fee, no feeder setup), stock 812570, 0.0847 USD at 1 / 0.0479 at 6000, 30 V, Id 5.7 A continuous, RDS(on) 48 mOhm at VGS 2.5 V, VGS(th) 1.45 V, Pd 1.4 W, -55 to +150 C, RoHS. BOTH FITTED USES ARE FAR INSIDE THAT ENVELOPE: Q1 sinks the IR LED and Q11 carries the 109 mA panel backlight cathode return, where even the worst-case 48 mOhm at a 2.5 V gate costs 5.2 mV. Stock is a snapshot, not a guarantee."
+			(at 241.3 200.66 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Manufacturer" "Alpha & Omega Semiconductor"
+			(at 241.3 200.66 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "AO3400A"
+			(at 241.3 200.66 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Package" "SOT-23-3, pin 1 = G, 2 = S, 3 = D (confirmed from the AOS datasheet)"
+			(at 241.3 200.66 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Note" "D-750 BACKLIGHT TRUE-OFF DISCONNECT.  TPS61169 (U17) shutdown does NOT make the panel dark: TI states a DC path remains from VIN through L3 and D8 to the LED string and guarantees OFF only when the LED array MINIMUM forward voltage exceeds the MAXIMUM VIN.  This board boosts from +3V3 and the EastRising ER-TFT035IPS-6 backlight is SIX LEDs IN PARALLEL at 2.9-3.2 V (D-079), so Vf(min) 2.9 V is BELOW the 3.3 V rail and the condition FAILS.  Solving the as-built network (+3V3 - L3 - D8 - R70..R73 8.25 R - six parallel LEDs - R69 1.87 R - GND) with a white-LED forward curve converges at about 25 mA: roughly a fifth of full brightness, plainly visible in a dark room, and about 82 mW of continuous drain whenever +3V3 is up and the backlight is commanded off.  +3V3 is switched by SW9, not by firmware, so there is no software mitigation: the screen would never go dark while the device is on.  Q11 breaks that DC path in the PANEL CATHODE RETURN, between J1 and the LED_K sense node.  IT IS OUTSIDE THE SENSE LOOP BY CONSTRUCTION: U17 LED pin and R69 both sit on Q11 SOURCE, so U17 still regulates exactly I = 200 mV / R69 and Q11 RDS(on) costs only headroom -- at the AO3400A's worst published 48 mOhm at VGS 2.5 V (LCSC C20917, verified live 2026-09-18) that is 5.2 mV at 109 mA, and the gate here is driven to 3.3 V, so the real figure is lower still; the boost makes it up.  THE LED CURRENT SETPOINT IS THEREFORE UNCHANGED at 109 mA typ / 100.5-117.6 mA over the VREF band (D-079), against the panel 120 mA maximum.  GATE IS DISP_BL_CTL, THE SAME SIGNAL THAT ENABLES U17, AND D-751 RECORDS THAT THIS IS A DESIGN CONSTRAINT AND NOT A CONVENIENCE.  PWM on this line shuts the converter down AND opens Q11 TOGETHER, which is the safe combination.  THE UNSAFE ONE IS CONVERTER-SWITCHING-WITH-Q11-OFF: an open LED path drives the TPS61169 output to its overvoltage clamp near 38 V, that node is the panel anode, and the panel cathode -- Q11 DRAIN -- follows it to within the string's sub-threshold drop, while Q11 SOURCE is held at 0 V by R69.  THE AO3400A IS A 30 V PART, so that combination would exceed VDS(max).  It cannot occur on this board because one net drives both gates: whenever U17 switches, Q11 is on and its VDS is the RDS(on) drop; whenever Q11 is off, U17 is in shutdown and the drain sits a few volts below the 3.3 V rail.  ANY FUTURE REVISION THAT SEPARATES THE TWO CONTROLS IN ORDER TO PWM Q11 ALONE MUST RE-RATE Q11 TO AT LEAST 40 V VDS.  SAFE OFF STATE IS PROVEN, NOT ASSUMED: R108 is a 10 k pull-down on DISP_BL_CTL_STRAP and R109 is a 0 R link, so the gate is held low during boot, reset, GPIO high-impedance and firmware crash; in the off state the DRAIN (panel side) is the higher potential so the body diode is reverse-biased, and AO3400A IDSS is under 1 uA at these voltages.  U17 LED pin is pulled to 0 V by R69 whenever Q11 is off, which is the safest of the two series positions.  SAME BOM LINE AS Q1: AO3400A, SOT-23, 1 = G, 2 = S, 3 = D, verified against AOS Rev 3.1 at FBV2-S1-007; this adds one piece to an existing line and creates no new purchasing identity."
+			(at 241.3 200.66 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "N-MOSFET transistor, gate/source/drain"
+			(at 241.3 200.66 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "cdc47dc6-c4ad-4ee8-8692-f5152505e300")
+		)
+		(pin "2"
+			(uuid "b2d3f7be-6732-469c-9834-d528fad6c0fc")
+		)
+		(pin "3"
+			(uuid "96920fb1-287d-473b-9c90-a2c201612300")
+		)
+		(instances
+			(project "aqroot-Beta-v2"
+				(path "/8a0ad1ee-a49e-4cff-9a78-44823e373405/e86f9f15-4a7f-4160-bee2-09febc1b0776"
+					(reference "Q11")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(wire
+		(pts
+			(xy 236.22 200.66) (xy 228.60000000000002 200.66)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "480b5bea-7d32-4895-aac4-ae3de2ea789a")
+	)
+	(label "DISP_BL_CTL"
+		(at 228.60000000000002 200.66 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "9d43816a-6c70-40fe-8673-5923ba47f307")
+	)
+	(wire
+		(pts
+			(xy 243.84 195.58) (xy 243.84 191.77)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "d975d4dd-69c5-4dca-93a8-759b51c283c0")
+	)
+	(label "LED_K_PANEL"
+		(at 243.84 191.77 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "245e92a7-8bf3-468b-8c14-060b70e7e740")
+	)
+	(wire
+		(pts
+			(xy 243.84 205.74) (xy 243.84 209.55)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "ed9972e8-3818-47e9-a638-02241fc02297")
+	)
+	(label "LED_K"
+		(at 243.84 209.55 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "2d954aff-508e-4b8f-b8eb-5c7ee6a2450b")
 	)
 )
