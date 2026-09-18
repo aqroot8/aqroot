@@ -1,0 +1,335 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""AQROOT Demo -- THE SEVENTEENTH STANDING CONTRACT, AND THE FIRST THAT LOOKS
+AT THE FIRMWARE.
+
+Sixteen contracts ask whether the COPPER is sound, whether the INSTRUMENT that
+routes against it is honest, whether the SHIPPABLE package matches the board,
+or -- D-745 -- whether the board still implements the PRODUCT.  Not one of them
+has ever asked whether the software that will be flashed into the assembled
+unit agrees with the board about which pin is which.
+
+That question has already cost this programme once.  D-732 found that the
+then-current expander table had `P05`/`P06` and `P16`/`P17` inverted, and
+recorded what reading it would have done: masked `4Ah` bit 6 believing it was
+`BQ25185_STAT2` when it is `TOUCH_INT_N`, silencing the touch interrupt while
+leaving a second input free to hold the shared wake line forever.  The table
+was corrected by hand.  Hand-corrected tables drift again, and a firmware pin
+map that drifts is not caught by DRC, by the ledger, by parity, or by any gate
+in the fab package -- it is caught by a dead peripheral on an assembled board.
+
+WHAT IS PROVED
+
+  H1  `Firmware/src/hw/aqroot_demo_board.h` and `.json` are byte-identical to
+      what `gen_firmware_hw_map.py` produces from the board AS IT STANDS.  Not
+      "consistent" -- identical.  Any copper, placement or population change
+      that moves a pin, a net or a fitted pull makes this FAIL.
+  H2  the `board_sha256` the header publishes is the board's actual digest.
+  H3  every policy row is corroborated by the board: the net is on the pad the
+      row claims, every expander OUTPUT's safe boot latch equals the level its
+      fitted external pull already holds (or names why there is no pull), every
+      UNMASKED input has a defined idle level, no two firmware roles claim one
+      GPIO, and no expander bit or used `U1` pad is missing from the map.
+  H4  the map agrees with the two governing owner decisions and with the ledger
+      that enforces them: every net in `routing_ledger.APPROVED_UNROUTED` is
+      MASKED and flagged as carrying no information, and every `J5` contact in
+      `routing_ledger.APPROVED_NC` is absent from the firmware map.
+  H5  the firmware layer implements what it was given: every role the generator
+      emits is referenced by the C++ under `Firmware/src/hw/`, and the C++
+      names no `AQROOT_` symbol the generator did not emit.
+  H6  the SAFE-ORDERING TEST compiles and passes on the host.  The PCAL9535A
+      resets to all-inputs with its output latches at 0x00, and six of this
+      board's expander outputs are safe at 0 while three are safe at 1, so the
+      order `pulls -> mask -> latch -> direction` is a SAFETY property and not a
+      style.  It is invisible to a compile and invisible to DRC; the test makes
+      it visible by recording the I2C transactions the layer issues.  Three
+      controls mutate the driver and each must make the test FAIL.
+
+AND IT PROVES IT IS NOT VACUOUS.  Eleven controls mutate the policy table --
+including the exact `P05`/`P06` swap D-732 found -- and each must be REFUSED.
+
+    python3 hardware/demo/manufacturing/checks/firmware_hw_map_contract.py [-o OUT]
+"""
+
+import argparse
+import copy
+import hashlib
+import json
+import re
+import shutil
+import subprocess
+import sys
+import tempfile
+from pathlib import Path
+
+HERE = Path(__file__).resolve().parent
+MFG = HERE.parent
+ROOT = HERE.parents[3]
+sys.path.insert(0, str(MFG))
+
+import gen_firmware_hw_map as gen           # noqa: E402
+import routing_ledger                        # noqa: E402
+
+HW_DIR = ROOT / "Firmware/src/hw"
+ORDER_TEST = ROOT / "Firmware/test/test_expander_order.cpp"
+
+# Each control is (name, file under src/hw, exact text, replacement).  The
+# replacement must be a DEFENSIBLE-LOOKING mistake -- the kind a future edit
+# actually makes -- not a syntax error.
+ORDER_CONTROLS = [
+    ("direction is written before the output latch",
+     "pcal9535a.h",
+     """    if (!writePortPair(bus, address_, kRegOutput0, config.output_latch)) return false;
+    if (!writePortPair(bus, address_, kRegConfig0, config.direction)) return false;""",
+     """    if (!writePortPair(bus, address_, kRegConfig0, config.direction)) return false;
+    if (!writePortPair(bus, address_, kRegOutput0, config.output_latch)) return false;"""),
+    ("the RGB cathodes boot at 0, lighting the LED at power-on",
+     "aqroot_demo_expanders.h",
+     "constexpr uint16_t kU3SafeLatch = kRgbMask;",
+     "constexpr uint16_t kU3SafeLatch = 0x0000;"),
+    ("the 5 V load switch is closed before the boost is enabled",
+     "aqroot_demo_expanders.h",
+     """      if (!u3_.writeBit(bus, AQROOT_U3_ACC_5V_BOOST_EN, true)) return false;
+      return u3_.writeBit(bus, AQROOT_U3_ACC_5V_SW_EN, true);""",
+     """      if (!u3_.writeBit(bus, AQROOT_U3_ACC_5V_SW_EN, true)) return false;
+      return u3_.writeBit(bus, AQROOT_U3_ACC_5V_BOOST_EN, true);"""),
+]
+
+
+def run_order_test(mutation=None):
+    """Compile and run the safe-ordering test, optionally against a mutated
+    copy of the layer.  Returns (compiled, exit_code, stdout)."""
+    with tempfile.TemporaryDirectory(prefix="aqroot-order-") as temporary:
+        work = Path(temporary)
+        shutil.copytree(HW_DIR, work / "hw")
+        shutil.copy(ORDER_TEST, work / ORDER_TEST.name)
+        if mutation is not None:
+            _, filename, before, after = mutation
+            target = work / "hw" / filename
+            body = target.read_text(encoding="utf-8")
+            if before not in body:
+                return (False, -1, "control text not found in %s" % filename)
+            target.write_text(body.replace(before, after, 1), encoding="utf-8")
+        binary = work / "order_test"
+        build = subprocess.run(
+            ["g++", "-std=c++17", "-Wall", "-Wextra", "-Werror",
+             "-I", str(work / "hw"), "-o", str(binary), str(work / ORDER_TEST.name)],
+            capture_output=True, text=True)
+        if build.returncode != 0:
+            return (False, build.returncode, build.stderr[-2000:])
+        run = subprocess.run([str(binary)], capture_output=True, text=True)
+        return (True, run.returncode, run.stdout)
+
+
+def with_policy(mutate):
+    """Run `gen.build()` against a mutated copy of the policy tables."""
+    saved = (copy.deepcopy(gen.MCU_POLICY), copy.deepcopy(gen.EXPANDER_POLICY))
+    try:
+        mutate(gen.MCU_POLICY, gen.EXPANDER_POLICY)
+        _, problems = gen.build()
+        return problems
+    finally:
+        gen.MCU_POLICY.clear()
+        gen.MCU_POLICY.update(saved[0])
+        gen.EXPANDER_POLICY.clear()
+        gen.EXPANDER_POLICY.update(saved[1])
+
+
+def strip_comments(text):
+    """Drop // and /* */ comments so only code is scanned for symbols."""
+    text = re.sub(r"/\*.*?\*/", " ", text, flags=re.S)
+    return re.sub(r"//[^\n]*", " ", text)
+
+
+def swap_nets(bits, left, right):
+    bits[left]["net"], bits[right]["net"] = bits[right]["net"], bits[left]["net"]
+
+
+CONTROLS = [
+    ("D-732 swap: U2 P05 <-> P06",
+     lambda mcu, exp: swap_nets(exp["U2"]["bits"], "P05", "P06")),
+    ("D-733 swap: U2 P17 <-> U3 P17",
+     lambda mcu, exp: exp["U2"]["bits"]["P17"].update(net="/BQ25185_STAT1")),
+    ("ACC_5V_SW_EN safe latch flipped to 1 against R131",
+     lambda mcu, exp: exp["U3"]["bits"]["P03"].update(safe=1)),
+    ("FRONT_RGB_R_N claims an external pull it does not have",
+     lambda mcu, exp: exp["U3"]["bits"]["P00"].update(safe_basis="external_pull")),
+    ("TOUCH_INT_N claims an external pull it does not have",
+     lambda mcu, exp: exp["U2"]["bits"]["P06"].update(
+         idle_basis="external_pull", pull="NONE")),
+    ("SX1262_DIO1 pulls against the module's push-pull driver",
+     lambda mcu, exp: exp["U2"]["bits"]["P05"].update(pull="UP")),
+    ("an expander bit is dropped from the map",
+     lambda mcu, exp: exp["U3"]["bits"].pop("P11")),
+    ("a U1 pad is re-pointed at the wrong net",
+     lambda mcu, exp: mcu[9].update(net="/IR_RX_GPIO44")),
+    ("two firmware roles share one C identifier",
+     lambda mcu, exp: mcu[31].update(role="NATIVE_B")),
+    ("an UNMASKED input is left with an undefined idle level",
+     lambda mcu, exp: exp["U3"]["bits"]["P14"].update(
+         idle_basis="hope", pull="NONE")),
+    ("a strap loses the resistor that holds it",
+     lambda mcu, exp: mcu[26].update(strap_part="R999")),
+]
+
+
+def main():
+    parser = argparse.ArgumentParser()
+    parser.add_argument("-o", "--out", type=Path)
+    args = parser.parse_args()
+
+    report = {"contract": "firmware_hw_map", "board": gen.BOARD.name}
+    doc, problems = gen.build()
+    report["board_sha256"] = doc["board_sha256"]
+
+    # ---- H3 -------------------------------------------------------------
+    report["H3_policy_corroborated"] = {
+        "problems": problems,
+        "mcu_pins_mapped": sum(1 for row in doc["mcu"]["pins"] if row["role"]),
+        "expander_bits_mapped": sum(len(doc["expanders"][ref]["bits"])
+                                    for ref in doc["expanders"]),
+        "verdict": "PASS" if not problems else "FAIL",
+    }
+
+    # ---- H1 / H2 --------------------------------------------------------
+    header = gen.emit_header(doc)
+    payload = json.dumps(doc, indent=2, sort_keys=True) + "\n"
+    stale = []
+    for path, want in ((gen.OUT_H, header), (gen.OUT_JSON, payload)):
+        have = path.read_text(encoding="utf-8") if path.exists() else None
+        if have != want:
+            stale.append(dict(
+                file=path.relative_to(ROOT).as_posix(),
+                state="missing" if have is None else "differs",
+                committed_sha256=hashlib.sha256(have.encode()).hexdigest() if have else None,
+                regenerated_sha256=hashlib.sha256(want.encode()).hexdigest()))
+    report["H1_generated_tree_is_fresh"] = {
+        "files": [gen.OUT_H.relative_to(ROOT).as_posix(),
+                  gen.OUT_JSON.relative_to(ROOT).as_posix()],
+        "stale": stale,
+        "verdict": "PASS" if not stale else "FAIL",
+    }
+    actual = hashlib.sha256(gen.BOARD.read_bytes()).hexdigest()
+    published = re.search(r'AQROOT_DEMO_BOARD_SHA256 "([0-9a-f]{64})"',
+                          gen.OUT_H.read_text(encoding="utf-8") if gen.OUT_H.exists()
+                          else "")
+    report["H2_board_digest"] = {
+        "board_sha256": actual,
+        "published_in_header": published.group(1) if published else None,
+        "verdict": "PASS" if published and published.group(1) == actual else "FAIL",
+    }
+
+    # ---- H4 -------------------------------------------------------------
+    h4 = {"approved_unrouted": [], "approved_nc_absent": True, "problems": []}
+    masked_nets = {}
+    for ref, expander in doc["expanders"].items():
+        for row in expander["bits"]:
+            if row["net"]:
+                masked_nets.setdefault(row["net"], []).append((ref, row))
+    for contact, entry in routing_ledger.APPROVED_UNROUTED.items():
+        net = entry["net"]
+        rows = masked_nets.get(net, [])
+        record = dict(contact=contact, net=net,
+                      expander_bits=["%s.%s" % (ref, row["bit"]) for ref, row in rows])
+        for ref, row in rows:
+            if row["irq"] != "MASKED":
+                h4["problems"].append(
+                    "%s %s carries approved-unrouted %s and is not MASKED"
+                    % (ref, row["bit"], net))
+            if row.get("carries_information") is not False:
+                h4["problems"].append(
+                    "%s %s carries approved-unrouted %s and is not flagged as "
+                    "carrying no information" % (ref, row["bit"], net))
+        record["masked"] = all(row["irq"] == "MASKED" for _, row in rows)
+        h4["approved_unrouted"].append(record)
+    emitted_nets = {row["net"] for expander in doc["expanders"].values()
+                    for row in expander["bits"] if row["net"]}
+    emitted_nets |= {row["net"] for row in doc["mcu"]["pins"] if row["net"]}
+    board = gen.pcbnew.LoadBoard(str(gen.BOARD))
+    nc_nets = set()
+    for footprint in board.GetFootprints():
+        if footprint.GetReference() != "J5":
+            continue
+        for pad in footprint.Pads():
+            contact = "J5.%s" % pad.GetNumber()
+            if contact in routing_ledger.APPROVED_NC and pad.GetNetname():
+                nc_nets.add(pad.GetNetname())
+    leaked = sorted(nc_nets & emitted_nets)
+    h4["approved_nc_contacts"] = sorted(routing_ledger.APPROVED_NC)
+    h4["approved_nc_nets_on_board"] = sorted(nc_nets)
+    h4["leaked_into_firmware_map"] = leaked
+    if leaked:
+        h4["problems"].append("approved-NC nets reached the firmware map: %s" % leaked)
+    h4["verdict"] = "PASS" if not h4["problems"] else "FAIL"
+    report["H4_owner_decisions_are_machine_checked"] = h4
+
+    # ---- H5 -------------------------------------------------------------
+    emitted = set(re.findall(r"#define\s+(AQROOT_\w+)", header))
+    sources = sorted(p for p in HW_DIR.rglob("*")
+                     if p.suffix in (".h", ".cpp") and p.name != gen.OUT_H.name)
+    used = set()
+    for path in sources:
+        # COMMENTS ARE NOT REFERENCES.  H5's claim is about code: the layer
+        # prose names documents and decisions, and `AQROOT_DEMO_EXPANDER_
+        # DEPENDENCIES.md` is a filename, not a symbol the generator owes.
+        body = strip_comments(path.read_text(encoding="utf-8"))
+        used |= set(re.findall(r"\b(AQROOT_\w+)", body))
+    roles = {"AQROOT_PIN_%s" % row["role"] for row in doc["mcu"]["pins"] if row["role"]}
+    roles |= {"AQROOT_%s_%s" % (ref, row["role"])
+              for ref, expander in doc["expanders"].items() for row in expander["bits"]}
+    unreferenced = sorted(roles - used)
+    invented = sorted(used - emitted)
+    report["H5_firmware_layer_uses_the_map"] = {
+        "sources": [p.relative_to(ROOT).as_posix() for p in sources],
+        "symbols_emitted": len(emitted),
+        "roles_unreferenced_by_the_layer": unreferenced,
+        "symbols_the_generator_never_emitted": invented,
+        "verdict": "PASS" if not unreferenced and not invented else "FAIL",
+    }
+
+    # ---- H6 -------------------------------------------------------------
+    compiled, code, output = run_order_test()
+    claims = [line for line in output.splitlines() if line.startswith("[")]
+    h6 = {
+        "test": ORDER_TEST.relative_to(ROOT).as_posix(),
+        "compiled": compiled,
+        "exit_code": code,
+        "claims": len(claims),
+        "failed_claims": [line for line in claims if line.startswith("[FAIL")],
+        "controls": [],
+    }
+    for control in ORDER_CONTROLS:
+        c_compiled, c_code, c_output = run_order_test(control)
+        c_claims = [line for line in c_output.splitlines() if line.startswith("[FAIL")]
+        h6["controls"].append(dict(
+            control=control[0], compiled=c_compiled, exit_code=c_code,
+            caught=(c_code != 0),
+            first_failed_claim=c_claims[0] if c_claims else None))
+    h6["verdict"] = ("PASS" if compiled and code == 0 and claims
+                     and all(entry["caught"] for entry in h6["controls"])
+                     else "FAIL")
+    report["H6_safe_ordering_is_proved_on_the_host"] = h6
+
+    # ---- controls -------------------------------------------------------
+    controls = []
+    for name, mutate in CONTROLS:
+        refused = with_policy(mutate)
+        controls.append(dict(control=name, refused=bool(refused),
+                             first_reason=refused[0] if refused else None))
+    report["controls"] = controls
+    report["controls_verdict"] = (
+        "PASS" if all(entry["refused"] for entry in controls) else "FAIL")
+
+    verdicts = [report[key]["verdict"] for key in report if key.startswith("H")]
+    verdicts.append(report["controls_verdict"])
+    report["verdict"] = "PASS" if all(v == "PASS" for v in verdicts) else "FAIL"
+
+    text = json.dumps(report, indent=2)
+    if args.out:
+        args.out.write_text(text + "\n", encoding="utf-8")
+    print(text)
+    return 0 if report["verdict"] == "PASS" else 1
+
+
+if __name__ == "__main__":
+    sys.exit(main())

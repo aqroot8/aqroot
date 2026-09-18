@@ -1,0 +1,1051 @@
+{
+  "board": "aqroot-Beta-v2.kicad_pcb",
+  "board_sha256": "c7f5c61896269276ecf680266adf23b36b9adc1f3d89bc93be311174498b7406",
+  "expanders": {
+    "U2": {
+      "addr": 32,
+      "addr_strap": {
+        "A0": {
+          "bit": 0,
+          "net": "GND",
+          "pad": 21
+        },
+        "A1": {
+          "bit": 0,
+          "net": "GND",
+          "pad": 2
+        },
+        "A2": {
+          "bit": 0,
+          "net": "GND",
+          "pad": 3
+        }
+      },
+      "bits": [
+        {
+          "active": "LOW",
+          "bit": "P00",
+          "dir": "OUT",
+          "external_pull": {
+            "level": 0,
+            "part": "R12",
+            "rail": "GND",
+            "value": "100k"
+          },
+          "irq": "MASKED",
+          "net": "/TOUCH_RST_N",
+          "note": "capacitive touch controller reset, through J1.47.  R12 100k to GND holds the panel in reset until firmware releases it",
+          "pad": 4,
+          "pull": "NONE",
+          "role": "TOUCH_RST_N",
+          "safe": 0,
+          "safe_basis": "external_pull"
+        },
+        {
+          "active": "LOW",
+          "bit": "P01",
+          "dir": "OUT",
+          "external_pull": {
+            "level": 0,
+            "part": "R13",
+            "rail": "GND",
+            "value": "100k"
+          },
+          "irq": "MASKED",
+          "net": "/SX1262_RST_N",
+          "note": "E22/SX1262 reset.  R13 100k to GND holds the LoRa module in reset at boot",
+          "pad": 5,
+          "pull": "NONE",
+          "role": "SX1262_RST_N",
+          "safe": 0,
+          "safe_basis": "external_pull"
+        },
+        {
+          "active": "HIGH",
+          "bit": "P02",
+          "dir": "OUT",
+          "external_pull": {
+            "level": 0,
+            "part": "R14",
+            "rail": "GND",
+            "value": "100k"
+          },
+          "hold_safe": true,
+          "irq": "MASKED",
+          "net": "/NFC_5V_EN",
+          "note": "U13 NFC 5 V boost enable.  U13 IS DNP ON DEMO -- NFC runs from +3V3 through R106 0R -- so R14 100k to GND is the ONLY thing defining this node and firmware must never assert it",
+          "pad": 6,
+          "pull": "NONE",
+          "role": "NFC_5V_EN",
+          "safe": 0,
+          "safe_basis": "external_pull"
+        },
+        {
+          "active": "HIGH",
+          "bit": "P03",
+          "dir": "OUT",
+          "external_pull": {
+            "level": 0,
+            "part": "R15",
+            "rail": "GND",
+            "value": "100k"
+          },
+          "irq": "MASKED",
+          "net": "/AMP_SD_MODE",
+          "note": "MAX98357A SD_MODE.  R15 100k to GND = amplifier SHUT DOWN at boot.  Driven to +3V3 the part leaves shutdown and selects a SINGLE I2S slot (MAX98357A Table 1 top band); write the mono sample into BOTH slots so the channel decision cannot silence the speaker",
+          "pad": 7,
+          "pull": "NONE",
+          "role": "AMP_SD_MODE",
+          "safe": 0,
+          "safe_basis": "external_pull"
+        },
+        {
+          "active": "LOW",
+          "bit": "P04",
+          "dir": "OUT",
+          "external_pull": {
+            "level": 0,
+            "part": "R16",
+            "rail": "GND",
+            "value": "100k"
+          },
+          "irq": "MASKED",
+          "net": "/DISP_RST_N",
+          "note": "display reset, through J1.10.  R16 100k to GND holds the panel in reset at boot",
+          "pad": 8,
+          "pull": "NONE",
+          "role": "DISP_RST_N",
+          "safe": 0,
+          "safe_basis": "external_pull"
+        },
+        {
+          "active": "HIGH",
+          "bit": "P05",
+          "dir": "IN",
+          "idle_basis": "push_pull_driver",
+          "irq": "UNMASKED",
+          "net": "/SX1262_DIO1",
+          "note": "LoRa interrupt, ROUTED at D-740 (U2.9 -> U8.13).  The SX1262 drives DIO1 PUSH-PULL, so the internal 100k must stay OFF -- a pull only fights it.  The driver takes the interrupt and does NOT poll GetIrqStatus()",
+          "pad": 9,
+          "pull": "NONE",
+          "role": "SX1262_DIO1"
+        },
+        {
+          "active": "LOW",
+          "bit": "P06",
+          "dir": "IN",
+          "idle_basis": "internal_pull",
+          "irq": "UNMASKED",
+          "net": "/TOUCH_INT_N",
+          "note": "touch interrupt through J1.46.  NOTHING ON THIS BOARD pulls this net -- the only other pad is the display FPC -- so the internal 100k pull-up is REQUIRED: with the panel unplugged an unmasked floating input would hold the shared wake line and starve the buttons",
+          "pad": 10,
+          "pull": "UP",
+          "role": "TOUCH_INT_N"
+        },
+        {
+          "active": "LOW",
+          "bit": "P07",
+          "dir": "IN",
+          "external_pull": {
+            "level": 1,
+            "part": "R113",
+            "rail": "+3V3",
+            "value": "100k"
+          },
+          "idle_basis": "external_pull",
+          "irq": "UNMASKED",
+          "net": "/SD_CARD_DETECT_N",
+          "note": "microSD card detect, R113 100k pull-up",
+          "pad": 11,
+          "pull": "NONE",
+          "role": "SD_CARD_DETECT_N"
+        },
+        {
+          "active": "LOW",
+          "bit": "P10",
+          "dir": "IN",
+          "external_pull": {
+            "level": 1,
+            "part": "R4",
+            "rail": "+3V3",
+            "value": "10k"
+          },
+          "idle_basis": "external_pull",
+          "irq": "UNMASKED",
+          "net": "/08_BUTTONS_EXPANDERS/BTN_A_N",
+          "note": "A / Select, SW6, R4 10k pull-up",
+          "pad": 13,
+          "pull": "NONE",
+          "role": "BTN_A_N"
+        },
+        {
+          "active": "LOW",
+          "bit": "P11",
+          "dir": "IN",
+          "external_pull": {
+            "level": 1,
+            "part": "R5",
+            "rail": "+3V3",
+            "value": "10k"
+          },
+          "idle_basis": "external_pull",
+          "irq": "UNMASKED",
+          "net": "/08_BUTTONS_EXPANDERS/BTN_UP_N",
+          "note": "D-pad Up, R5 10k pull-up",
+          "pad": 14,
+          "pull": "NONE",
+          "role": "BTN_UP_N"
+        },
+        {
+          "active": "LOW",
+          "bit": "P12",
+          "dir": "IN",
+          "external_pull": {
+            "level": 1,
+            "part": "R6",
+            "rail": "+3V3",
+            "value": "10k"
+          },
+          "idle_basis": "external_pull",
+          "irq": "UNMASKED",
+          "net": "/08_BUTTONS_EXPANDERS/BTN_DOWN_N",
+          "note": "D-pad Down, R6 10k pull-up",
+          "pad": 15,
+          "pull": "NONE",
+          "role": "BTN_DOWN_N"
+        },
+        {
+          "active": "LOW",
+          "bit": "P13",
+          "dir": "IN",
+          "external_pull": {
+            "level": 1,
+            "part": "R7",
+            "rail": "+3V3",
+            "value": "10k"
+          },
+          "idle_basis": "external_pull",
+          "irq": "UNMASKED",
+          "net": "/08_BUTTONS_EXPANDERS/BTN_LEFT_N",
+          "note": "D-pad Left, R7 10k pull-up",
+          "pad": 16,
+          "pull": "NONE",
+          "role": "BTN_LEFT_N"
+        },
+        {
+          "active": "LOW",
+          "bit": "P14",
+          "dir": "IN",
+          "external_pull": {
+            "level": 1,
+            "part": "R8",
+            "rail": "+3V3",
+            "value": "10k"
+          },
+          "idle_basis": "external_pull",
+          "irq": "UNMASKED",
+          "net": "/08_BUTTONS_EXPANDERS/BTN_RIGHT_N",
+          "note": "D-pad Right, R8 10k pull-up",
+          "pad": 17,
+          "pull": "NONE",
+          "role": "BTN_RIGHT_N"
+        },
+        {
+          "active": "LOW",
+          "bit": "P15",
+          "dir": "IN",
+          "external_pull": {
+            "level": 1,
+            "part": "R9",
+            "rail": "+3V3",
+            "value": "10k"
+          },
+          "idle_basis": "external_pull",
+          "irq": "UNMASKED",
+          "net": "/08_BUTTONS_EXPANDERS/BTN_B_N",
+          "note": "B / Back, SW7, R9 10k pull-up",
+          "pad": 18,
+          "pull": "NONE",
+          "role": "BTN_B_N"
+        },
+        {
+          "active": "LOW",
+          "bit": "P16",
+          "carries_information": false,
+          "dir": "IN",
+          "external_pull": {
+            "level": 1,
+            "part": "R128",
+            "rail": "+3V3",
+            "value": "10k"
+          },
+          "idle_basis": "external_pull",
+          "irq": "MASKED",
+          "net": "/BQ25185_STAT2",
+          "note": "charger STAT2.  U2.19 is routed to R128/TP7 and reads a static HIGH, but U11.3 SHIPS UNCONNECTED by owner decision D-742 -- the charger never drives it, so the bit carries NO INFORMATION.  MASKED, and firmware must not decode it",
+          "pad": 19,
+          "pull": "NONE",
+          "role": "BQ25185_STAT2"
+        },
+        {
+          "active": "HIGH",
+          "bit": "P17",
+          "dir": "OUT",
+          "external_pull": {
+            "level": 0,
+            "part": "R17",
+            "rail": "GND",
+            "value": "100k"
+          },
+          "irq": "MASKED",
+          "net": "/ACC_PWR_EN",
+          "note": "U16 TCA4307 Community-Port I2C buffer enable.  R17 100k to GND keeps the accessory bus isolated at boot",
+          "pad": 20,
+          "pull": "NONE",
+          "role": "ACC_PWR_EN",
+          "safe": 0,
+          "safe_basis": "external_pull"
+        }
+      ],
+      "ref": "U2",
+      "role": "internal controls, front buttons and internal status inputs"
+    },
+    "U3": {
+      "addr": 33,
+      "addr_strap": {
+        "A0": {
+          "bit": 1,
+          "net": "+3V3",
+          "pad": 21
+        },
+        "A1": {
+          "bit": 0,
+          "net": "GND",
+          "pad": 2
+        },
+        "A2": {
+          "bit": 0,
+          "net": "GND",
+          "pad": 3
+        }
+      },
+      "bits": [
+        {
+          "active": "LOW",
+          "bit": "P00",
+          "dir": "OUT",
+          "irq": "MASKED",
+          "net": "/08_BUTTONS_EXPANDERS/FRONT_RGB_R_N",
+          "note": "D13 red cathode through R124 1k; anode is +3V3, so the LED is dark at 1 and dark again while the expander is high-Z",
+          "pad": 4,
+          "pull": "NONE",
+          "role": "FRONT_RGB_R_N",
+          "safe": 1,
+          "safe_basis": "load_off"
+        },
+        {
+          "active": "LOW",
+          "bit": "P01",
+          "dir": "OUT",
+          "irq": "MASKED",
+          "net": "/08_BUTTONS_EXPANDERS/FRONT_RGB_G_N",
+          "note": "D13 green cathode through R125 680R",
+          "pad": 5,
+          "pull": "NONE",
+          "role": "FRONT_RGB_G_N",
+          "safe": 1,
+          "safe_basis": "load_off"
+        },
+        {
+          "active": "LOW",
+          "bit": "P02",
+          "dir": "OUT",
+          "irq": "MASKED",
+          "net": "/08_BUTTONS_EXPANDERS/FRONT_RGB_B_N",
+          "note": "D13 blue cathode through R126 390R",
+          "pad": 6,
+          "pull": "NONE",
+          "role": "FRONT_RGB_B_N",
+          "safe": 1,
+          "safe_basis": "load_off"
+        },
+        {
+          "active": "HIGH",
+          "bit": "P03",
+          "dir": "OUT",
+          "external_pull": {
+            "level": 0,
+            "part": "R131",
+            "rail": "GND",
+            "value": "100k"
+          },
+          "irq": "MASKED",
+          "net": "/ACC_5V_SW_EN",
+          "note": "U22 TPS22950C 5 V accessory load-switch ON.  D-186 makes R131 100k to GND MANDATORY: the TPS22950C's internal 500k smart pull-down is not sufficient on its own and the PCAL powers up high-impedance.  This is the SECOND of D-186's two independent series disconnects; the first is ACC_5V_BOOST_EN on U3.P13",
+          "pad": 7,
+          "pull": "NONE",
+          "role": "ACC_5V_SW_EN",
+          "safe": 0,
+          "safe_basis": "external_pull"
+        },
+        {
+          "active": "HIGH",
+          "bit": "P04",
+          "dir": "IN",
+          "idle_basis": "internal_pull",
+          "irq": "MASKED",
+          "net": "/XGPIO4",
+          "note": "public Community-Port expansion GPIO, J5.13 through R55 100R, D4 ESD.  Boots as an INPUT with the internal 100k pull-up so an empty header reads a defined 1.  MASKED is MX-9: an accessory must not be able to hold the shared wake line and starve the buttons",
+          "pad": 8,
+          "pull": "UP",
+          "role": "XGPIO4"
+        },
+        {
+          "active": "HIGH",
+          "bit": "P05",
+          "dir": "IN",
+          "idle_basis": "internal_pull",
+          "irq": "MASKED",
+          "net": "/XGPIO5",
+          "note": "public Community-Port expansion GPIO, J5.14 through R56 100R, D4 ESD.  See XGPIO4",
+          "pad": 9,
+          "pull": "UP",
+          "role": "XGPIO5"
+        },
+        {
+          "active": "HIGH",
+          "bit": "P06",
+          "dir": "IN",
+          "idle_basis": "internal_pull",
+          "irq": "MASKED",
+          "net": null,
+          "note": "NC-DEMO spare.  No external part at all, so the internal pull-up is what keeps a CMOS input from floating",
+          "pad": 10,
+          "pull": "UP",
+          "role": "SPARE_U3_P06"
+        },
+        {
+          "active": "HIGH",
+          "bit": "P07",
+          "dir": "IN",
+          "idle_basis": "internal_pull",
+          "irq": "MASKED",
+          "net": null,
+          "note": "NC-DEMO spare -- see SPARE_U3_P06",
+          "pad": 11,
+          "pull": "UP",
+          "role": "SPARE_U3_P07"
+        },
+        {
+          "active": "HIGH",
+          "bit": "P10",
+          "dir": "IN",
+          "idle_basis": "internal_pull",
+          "irq": "MASKED",
+          "net": null,
+          "note": "NC-DEMO spare -- see SPARE_U3_P06",
+          "pad": 13,
+          "pull": "UP",
+          "role": "SPARE_U3_P10"
+        },
+        {
+          "active": "HIGH",
+          "bit": "P11",
+          "dir": "IN",
+          "idle_basis": "internal_pull",
+          "irq": "MASKED",
+          "net": null,
+          "note": "NC-DEMO spare -- see SPARE_U3_P06",
+          "pad": 14,
+          "pull": "UP",
+          "role": "SPARE_U3_P11"
+        },
+        {
+          "active": "HIGH",
+          "bit": "P12",
+          "dir": "OUT",
+          "external_pull": {
+            "level": 0,
+            "part": "R98",
+            "rail": "GND",
+            "value": "100k"
+          },
+          "irq": "MASKED",
+          "net": "/ACC_3V3_EN",
+          "note": "U20 TPS22950C switched 3.3 V accessory rail ON.  R98 100k to GND",
+          "pad": 15,
+          "pull": "NONE",
+          "role": "ACC_3V3_EN",
+          "safe": 0,
+          "safe_basis": "external_pull"
+        },
+        {
+          "active": "HIGH",
+          "bit": "P13",
+          "dir": "OUT",
+          "external_pull": {
+            "level": 0,
+            "part": "R102",
+            "rail": "GND",
+            "value": "100k"
+          },
+          "irq": "MASKED",
+          "net": "/ACC_5V_BOOST_EN",
+          "note": "U21 TPS61023 5 V accessory boost ON.  R102 100k to GND is MANDATORY per D-186.  FIRST of the two independent series disconnects; ACC_5V_SW_EN is the second, and the 5 V rail requires BOTH",
+          "pad": 16,
+          "pull": "NONE",
+          "role": "ACC_5V_BOOST_EN",
+          "safe": 0,
+          "safe_basis": "external_pull"
+        },
+        {
+          "active": "LOW",
+          "bit": "P14",
+          "dir": "IN",
+          "external_pull": {
+            "level": 1,
+            "part": "R129",
+            "rail": "+3V3",
+            "value": "100k"
+          },
+          "idle_basis": "external_pull",
+          "irq": "UNMASKED",
+          "net": "/ACC_DETECT_N",
+          "note": "accessory present at J5.21, R129 100k pull-up, R64 100R series, D5 ESD",
+          "pad": 17,
+          "pull": "NONE",
+          "role": "ACC_DETECT_N"
+        },
+        {
+          "active": "LOW",
+          "bit": "P15",
+          "dir": "IN",
+          "external_pull": {
+            "level": 1,
+            "part": "R103",
+            "rail": "+3V3",
+            "value": "100k"
+          },
+          "idle_basis": "external_pull",
+          "irq": "UNMASKED",
+          "net": "/ACC_POWER_FAULT_N",
+          "note": "wire-OR fault flag from U20 and U22, R103 100k pull-up.  A fault here must drop BOTH accessory enables",
+          "pad": 18,
+          "pull": "NONE",
+          "role": "ACC_POWER_FAULT_N"
+        },
+        {
+          "active": "HIGH",
+          "bit": "P16",
+          "dir": "OUT",
+          "external_pull": {
+            "level": 0,
+            "part": "R74",
+            "rail": "GND",
+            "value": "100k"
+          },
+          "irq": "MASKED",
+          "net": "/SX1262_RXEN",
+          "note": "E22 RF receive-path enable, R74 100k to GND.  TXEN is NOT an MCU pin: U8.7/U8.8 are driven by the SX1262's own DIO2, so firmware must enable DIO2-as-RF-switch",
+          "pad": 19,
+          "pull": "NONE",
+          "role": "SX1262_RXEN",
+          "safe": 0,
+          "safe_basis": "external_pull"
+        },
+        {
+          "active": "LOW",
+          "bit": "P17",
+          "dir": "IN",
+          "external_pull": {
+            "level": 1,
+            "part": "R127",
+            "rail": "+3V3",
+            "value": "10k"
+          },
+          "idle_basis": "external_pull",
+          "irq": "MASKED",
+          "net": "/BQ25185_STAT1",
+          "note": "charger STAT1, R127 10k pull-up.  SLUSF65B Table 6-2: LOW = CHARGER FAULT, DIRECTLY OBSERVED.  HIGH is AMBIGUOUS between charging and complete because STAT2 is unconnected.  MASKED and POLLED rather than wired to the wake line: STAT1 only moves on fault entry/exit, and the board carries no NTC (R38 10k to GND is SLUSF65B's own 'TS function not required' network), so there is no temperature-boundary source of chatter to wake on",
+          "pad": 20,
+          "pull": "NONE",
+          "role": "BQ25185_STAT1"
+        }
+      ],
+      "ref": "U3",
+      "role": "front RGB, accessory power tree and the two public XGPIO"
+    }
+  },
+  "generated_by": "hardware/demo/manufacturing/gen_firmware_hw_map.py",
+  "i2c": {
+    "devices": [
+      {
+        "addr": 32,
+        "note": "PCAL9535A, internal controls",
+        "ref": "U2",
+        "role": "EXPANDER_U2"
+      },
+      {
+        "addr": 33,
+        "note": "PCAL9535A, accessory + RGB",
+        "ref": "U3",
+        "role": "EXPANDER_U3"
+      },
+      {
+        "addr": 54,
+        "note": "MAX17048G+T10.  ALRT (U14.5) reaches TP11 ONLY -- it is NOT wired to the MCU or to either expander, so the gauge must be POLLED",
+        "ref": "U14",
+        "role": "FUEL_GAUGE"
+      },
+      {
+        "addr": 104,
+        "note": "BMI270.  R118 0R to GND is FITTED and R119 is DNP, so SDO is low and the address is 0x68.  INT1 arrives on GPIO3 through R18 220R",
+        "ref": "U4",
+        "role": "IMU"
+      },
+      {
+        "addr": 56,
+        "note": "FT6236-family on the display FPC.  INT on U2.P06, RST on U2.P00",
+        "ref": "J1",
+        "role": "TOUCH"
+      }
+    ],
+    "scl_gpio": 2,
+    "sda_gpio": 1
+  },
+  "limits": [
+    {
+      "evidence": "U11.3 carries /BQ25185_STAT2 and is UNROUTED (owner decision 2026-09-17, D-742)",
+      "firmware": "STAT1 LOW is a directly observed charger fault.  STAT1 HIGH is AMBIGUOUS.  Any charging-versus-complete claim must be labelled an INFERENCE from VBUS presence plus the MAX17048 trend.",
+      "key": "CHARGER_STAT2_UNCONNECTED",
+      "value": true
+    },
+    {
+      "evidence": "R112 0R is DNP, so /03_SPI_A_DISPLAY_SD/DISP_SDO never reaches /SPI_A_MISO",
+      "firmware": "The panel is WRITE-ONLY.  Never read back a display register; SPI-A MISO belongs to the microSD alone.",
+      "key": "DISPLAY_SDO_ISOLATED",
+      "value": true
+    },
+    {
+      "evidence": "/01_POWER_TREE/MAX17048_ALRT_N reaches TP11 and U14.5 only",
+      "firmware": "Poll the MAX17048.  There is no alert interrupt path.",
+      "key": "FUEL_GAUGE_ALRT_NOT_WIRED",
+      "value": true
+    },
+    {
+      "evidence": "/09_COMMUNITY_HEADER/TCA4307_READY reaches TP44 and U16.5 only",
+      "firmware": "The accessory-bus READY flag is a bench probe, not a readable signal.  Confirm the accessory bus by addressing it.",
+      "key": "ACC_BUS_READY_NOT_WIRED",
+      "value": true
+    },
+    {
+      "evidence": "R106 0R FIT ties /NFC_SUPPLY to +3V3; R107 and U13 are DNP",
+      "firmware": "NFC runs from the 3.3 V path.  Never assert NFC_5V_EN.",
+      "key": "NFC_ON_3V3",
+      "value": true
+    },
+    {
+      "evidence": "U8.7/U8.8 carry /04_SPI_B_RADIOS_NFC/DIO2_TXEN, which no MCU or expander pin touches",
+      "firmware": "Configure the SX1262 to drive DIO2 as the RF switch; only RXEN is under firmware control (U3.P16).",
+      "key": "SX1262_TXEN_IS_DIO2",
+      "value": true
+    },
+    {
+      "evidence": "only /CC1101_GDO0 leaves U7 to the MCU",
+      "firmware": "Route every CC1101 status assertion through GDO0.",
+      "key": "CC1101_GDO2_NOT_WIRED",
+      "value": true
+    },
+    {
+      "evidence": "U7, U8 and U9 share /SPI_B_SCK, /SPI_B_MOSI and /SPI_B_MISO",
+      "firmware": "One transceiver transmits at a time; deselect the other two before any transmit.",
+      "key": "SHARED_SPI_B_ONE_TX",
+      "value": true
+    },
+    {
+      "evidence": "U11.6 TS/MR carries only R38 10k to GND -- SLUSF65B section 8.3.9's 'TS function not required' network",
+      "firmware": "The charger does not measure pack temperature.  Do not report a battery temperature, and do not expect TS faults.",
+      "key": "NO_BATTERY_NTC",
+      "value": true
+    }
+  ],
+  "mcu": {
+    "module": "ESP32-S3-WROOM-1-N16R8",
+    "pins": [
+      {
+        "gpio": null,
+        "kind": "FIXED",
+        "net": "Net-(U1-EN)",
+        "note": "module EN / reset; RC only, no firmware access",
+        "pad": 3,
+        "role": null,
+        "symbol": "EN"
+      },
+      {
+        "gpio": 4,
+        "kind": "BUS",
+        "net": "/SPI_B_SCK",
+        "note": "shared SPI-B: CC1101 + SX1262 + ST25R3916",
+        "pad": 4,
+        "role": "SPI_B_SCK",
+        "symbol": "IO4"
+      },
+      {
+        "gpio": 5,
+        "kind": "BUS",
+        "net": "/SPI_B_MOSI",
+        "note": "shared SPI-B",
+        "pad": 5,
+        "role": "SPI_B_MOSI",
+        "symbol": "IO5"
+      },
+      {
+        "gpio": 6,
+        "kind": "BUS",
+        "net": "/SPI_B_MISO",
+        "note": "shared SPI-B",
+        "pad": 6,
+        "role": "SPI_B_MISO",
+        "symbol": "IO6"
+      },
+      {
+        "gpio": 7,
+        "kind": "PIN",
+        "net": "/CC1101_CS_N",
+        "note": "433 MHz E07 chip select, active low",
+        "pad": 7,
+        "role": "CC1101_CS_N",
+        "symbol": "IO7"
+      },
+      {
+        "gpio": 15,
+        "kind": "PIN",
+        "net": "/CC1101_GDO0",
+        "note": "433 MHz packet/sync interrupt; GDO2 is NOT wired on this board",
+        "pad": 8,
+        "role": "CC1101_GDO0",
+        "symbol": "IO15"
+      },
+      {
+        "gpio": 16,
+        "kind": "PIN",
+        "net": "/IR_TX_GPIO16",
+        "note": "drives Q1 gate through R22 100R; R23 100k gate pull-down; ACTIVE HIGH",
+        "pad": 9,
+        "role": "IR_TX",
+        "symbol": "IO16"
+      },
+      {
+        "gpio": 17,
+        "kind": "PIN",
+        "net": "/SX1262_CS_N",
+        "note": "915 MHz E22 chip select, active low",
+        "pad": 10,
+        "role": "SX1262_CS_N",
+        "symbol": "IO17"
+      },
+      {
+        "gpio": 18,
+        "kind": "PIN",
+        "net": "/NFC_IRQ",
+        "note": "ST25R3916 IRQ, push-pull, ACTIVE HIGH; no external pull",
+        "pad": 11,
+        "role": "NFC_IRQ",
+        "symbol": "IO18"
+      },
+      {
+        "gpio": 8,
+        "kind": "PIN",
+        "net": "/SX1262_BUSY",
+        "note": "SX1262 BUSY; must be low before any command",
+        "pad": 12,
+        "role": "SX1262_BUSY",
+        "symbol": "IO8"
+      },
+      {
+        "alias_note": "native USB D- (USB Serial/JTAG)",
+        "gpio": 19,
+        "kind": "FIXED",
+        "net": "/USB_D_MCU_N",
+        "note": "native USB D-, 22R series; owned by the USB Serial/JTAG peripheral",
+        "pad": 13,
+        "role": null,
+        "symbol": "USB_D-"
+      },
+      {
+        "alias_note": "native USB D+ (USB Serial/JTAG)",
+        "gpio": 20,
+        "kind": "FIXED",
+        "net": "/USB_D_MCU_P",
+        "note": "native USB D+, 22R series; owned by the USB Serial/JTAG peripheral",
+        "pad": 14,
+        "role": null,
+        "symbol": "USB_D+"
+      },
+      {
+        "gpio": 3,
+        "kind": "STRAP",
+        "net": "/BMI270_INT1_STRAP",
+        "note": "BMI270 INT1, push-pull from the IMU, ACTIVE HIGH",
+        "pad": 15,
+        "role": "BMI270_INT1",
+        "strap_level": 0,
+        "strap_part": "R110",
+        "strap_pull": {
+          "level": 0,
+          "part": "R110",
+          "rail": "GND",
+          "value": "10k"
+        },
+        "strap_why": "GPIO3 is the JTAG-source strap.  R110 10k to GND holds it low through reset; R18 220R isolates the BMI270 INT1 driver so the IMU cannot fight the strap at boot",
+        "symbol": "IO3"
+      },
+      {
+        "gpio": 46,
+        "kind": "STRAP",
+        "net": "/02_MCU_CORE/DISP_BL_CTL_STRAP",
+        "note": "U17 TPS61169 WLED boost enable / PWM brightness through R109 0R",
+        "pad": 16,
+        "role": "DISP_BL_PWM",
+        "strap_level": 0,
+        "strap_part": "R108",
+        "strap_pull": {
+          "level": 0,
+          "part": "R108",
+          "rail": "GND",
+          "value": "10k"
+        },
+        "strap_why": "GPIO46 must be LOW at reset.  R108 10k to GND does that AND leaves the backlight boost U17 disabled until firmware drives it",
+        "symbol": "IO46"
+      },
+      {
+        "gpio": 9,
+        "kind": "PIN",
+        "net": "/NFC_CS_N",
+        "note": "ST25R3916 chip select, active low",
+        "pad": 17,
+        "role": "NFC_CS_N",
+        "symbol": "IO9"
+      },
+      {
+        "gpio": 10,
+        "kind": "PIN",
+        "net": "/DISP_CS_N",
+        "note": "display chip select, active low",
+        "pad": 18,
+        "role": "DISP_CS_N",
+        "symbol": "IO10"
+      },
+      {
+        "gpio": 11,
+        "kind": "BUS",
+        "net": "/SPI_A_MOSI",
+        "note": "shared SPI-A: display + microSD",
+        "pad": 19,
+        "role": "SPI_A_MOSI",
+        "symbol": "IO11"
+      },
+      {
+        "gpio": 12,
+        "kind": "BUS",
+        "net": "/SPI_A_SCK",
+        "note": "shared SPI-A",
+        "pad": 20,
+        "role": "SPI_A_SCK",
+        "symbol": "IO12"
+      },
+      {
+        "gpio": 13,
+        "kind": "BUS",
+        "net": "/SPI_A_MISO",
+        "note": "shared SPI-A -- reaches the microSD ONLY.  R112 0R is DNP, so the display SDO is ISOLATED and the panel CANNOT be read back",
+        "pad": 21,
+        "role": "SPI_A_MISO",
+        "symbol": "IO13"
+      },
+      {
+        "gpio": 14,
+        "kind": "PIN",
+        "net": "/DISP_DC",
+        "note": "display data/command",
+        "pad": 22,
+        "role": "DISP_DC",
+        "symbol": "IO14"
+      },
+      {
+        "gpio": 21,
+        "kind": "PIN",
+        "net": "/WAKE_INT_N",
+        "note": "shared open-drain wake line: U2./INT, U3./INT and the accessory attention path through Q10.  R3 10k pull-up.  LEVEL sensitive, ACTIVE LOW, RTC-capable for deep-sleep wake",
+        "pad": 23,
+        "role": "WAKE_INT_N",
+        "symbol": "IO21"
+      },
+      {
+        "gpio": 47,
+        "kind": "PIN",
+        "net": "/NATIVE_B",
+        "note": "Community Port native GPIO B, J5.8 through R62 100R, D2 ESD",
+        "pad": 24,
+        "role": "NATIVE_B",
+        "symbol": "IO47"
+      },
+      {
+        "gpio": 48,
+        "kind": "PIN",
+        "net": "/SD_CS_N",
+        "note": "microSD chip select, active low",
+        "pad": 25,
+        "role": "SD_CS_N",
+        "symbol": "IO48"
+      },
+      {
+        "gpio": 45,
+        "kind": "STRAP",
+        "net": "/02_MCU_CORE/GPIO45_VDDSPI_STRAP",
+        "note": "VDD_SPI strap -- NOT A FIRMWARE PIN",
+        "pad": 26,
+        "role": null,
+        "strap_level": 0,
+        "strap_part": "R111",
+        "strap_pull": {
+          "level": 0,
+          "part": "R111",
+          "rail": "GND",
+          "value": "10k"
+        },
+        "strap_why": "GPIO45 selects VDD_SPI.  R111 10k to GND is the ONLY load besides TP1.  Firmware must never claim this pin",
+        "symbol": "IO45"
+      },
+      {
+        "gpio": 0,
+        "kind": "STRAP",
+        "net": "/02_MCU_CORE/BOOT_N",
+        "note": "recessed BOOT/recovery button SW1; readable as a user button after boot, ACTIVE LOW",
+        "pad": 27,
+        "role": "BOOT_N",
+        "strap_level": 1,
+        "strap_part": "R2",
+        "strap_pull": {
+          "level": 1,
+          "part": "R2",
+          "rail": "+3V3",
+          "value": "10k"
+        },
+        "strap_why": "GPIO0 download strap.  R2 10k to +3V3; SW1 pulls it to GND",
+        "symbol": "IO0"
+      },
+      {
+        "gpio": 35,
+        "kind": "NC",
+        "net": null,
+        "note": "IO35 -- octal PSRAM, unusable, left NC",
+        "pad": 28,
+        "role": null,
+        "symbol": "IO35"
+      },
+      {
+        "gpio": 36,
+        "kind": "NC",
+        "net": null,
+        "note": "IO36 -- octal PSRAM, unusable, left NC",
+        "pad": 29,
+        "role": null,
+        "symbol": "IO36"
+      },
+      {
+        "gpio": 37,
+        "kind": "NC",
+        "net": null,
+        "note": "IO37 -- octal PSRAM, unusable, left NC",
+        "pad": 30,
+        "role": null,
+        "symbol": "IO37"
+      },
+      {
+        "gpio": 38,
+        "kind": "PIN",
+        "net": "/NATIVE_A",
+        "note": "Community Port native GPIO A, J5.7 through R61 100R, D2 ESD",
+        "pad": 31,
+        "role": "NATIVE_A",
+        "symbol": "IO38"
+      },
+      {
+        "gpio": 39,
+        "kind": "BUS",
+        "net": "/I2S_BCLK",
+        "note": "shared I2S bit clock: MAX98357A out + DMM-4026 mic in",
+        "pad": 32,
+        "role": "I2S_BCLK",
+        "symbol": "IO39"
+      },
+      {
+        "gpio": 40,
+        "kind": "BUS",
+        "net": "/I2S_LRCLK",
+        "note": "shared I2S word clock",
+        "pad": 33,
+        "role": "I2S_LRCLK",
+        "symbol": "IO40"
+      },
+      {
+        "gpio": 41,
+        "kind": "PIN",
+        "net": "/I2S_SPK_DOUT",
+        "note": "I2S data to the MAX98357A",
+        "pad": 34,
+        "role": "I2S_SPK_DOUT",
+        "symbol": "IO41"
+      },
+      {
+        "gpio": 42,
+        "kind": "PIN",
+        "net": "/I2S_MIC_DIN",
+        "note": "I2S data from the DMM-4026-B-I2S MEMS microphone",
+        "pad": 35,
+        "role": "I2S_MIC_DIN",
+        "symbol": "IO42"
+      },
+      {
+        "alias_note": "UART0 RX",
+        "gpio": 44,
+        "kind": "PIN",
+        "net": "/IR_RX_GPIO44",
+        "note": "TSOP38238 demodulated output, ACTIVE LOW, internally pulled up; Vs fed through R21 100R + C11",
+        "pad": 36,
+        "role": "IR_RX",
+        "symbol": "RXD0"
+      },
+      {
+        "alias_note": "UART0 TX",
+        "gpio": 43,
+        "kind": "FIXED",
+        "net": "/02_MCU_CORE/UART0_TXD_DBG",
+        "note": "debug UART TX to TP35 only -- there is NO USB-UART bridge; the console is the native USB CDC",
+        "pad": 37,
+        "role": "UART0_TXD",
+        "symbol": "TXD0"
+      },
+      {
+        "gpio": 2,
+        "kind": "BUS",
+        "net": "/I2C_SCL_INT",
+        "note": "internal I2C clock, R20 2.2k pull-up",
+        "pad": 38,
+        "role": "I2C_SCL",
+        "symbol": "IO2"
+      },
+      {
+        "gpio": 1,
+        "kind": "BUS",
+        "net": "/I2C_SDA_INT",
+        "note": "internal I2C data, R19 2.2k pull-up",
+        "pad": 39,
+        "role": "I2C_SDA",
+        "symbol": "IO1"
+      }
+    ],
+    "ref": "U1"
+  }
+}

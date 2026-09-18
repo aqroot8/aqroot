@@ -238,6 +238,20 @@ CONTRACTS = (
     # approved-NC set is EXACTLY the eight J5 positions Demo scope allows.
     ("demo_feature", "checks/demo_feature_contract.py", (),
      "demo-feature-contract", "all_pass"),
+    # D-747.  THE SEVENTEENTH, AND THE FIRST THAT LOOKS AT THE FIRMWARE.
+    # Sixteen contracts ask about copper, about the instrument that routes
+    # against it, about the shippable package, or -- D-745 -- about the product.
+    # None of them asks whether the SOFTWARE that will be flashed into the
+    # assembled unit agrees with the board about which pin is which, and that
+    # question has already cost this programme once: D-732 found the expander
+    # table inverted on P05/P06 and P16/P17, and reading it would have masked
+    # `4Ah` bit 6 believing it was BQ25185_STAT2 when it is TOUCH_INT_N.  A
+    # firmware pin map that drifts is caught by no DRC, no ledger, no parity
+    # check and no fab gate -- it is caught by a dead peripheral on an assembled
+    # board.  So `Firmware/src/hw/aqroot_demo_board.h` is GENERATED from the
+    # board and this contract re-runs the generator and fails on any difference.
+    ("firmware_hw_map", "checks/firmware_hw_map_contract.py", (),
+     "firmware-hw-map-contract", "verdict"),
 )
 BY_BASENAME = ("board", "schematic", "guard", "pre_board")
 

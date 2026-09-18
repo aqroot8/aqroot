@@ -1,0 +1,320 @@
+#pragma once
+// AQROOT Demo -- the U2/U3 policy layer.
+//
+// `pcal9535a.h` knows the part.  THIS file knows the BOARD: which bit is which
+// signal, which way each one is active, what level is safe before the rail is
+// trusted, which inputs may wake the MCU, and the order the accessory power
+// tree has to be operated in.
+//
+// Every mask below is COMPUTED from `aqroot_demo_board.h`, which is generated
+// from `aqroot-Beta-v2.kicad_pcb` and re-checked by
+// `checks/firmware_hw_map_contract.py`.  Nothing here is a transcribed bit
+// number, so a board revision that moves a channel moves these masks with it
+// and the static_asserts below are what catch a move that does not add up.
+
+#include <stdint.h>
+
+#include "aqroot_demo_board.h"
+#include "aqroot_i2c.h"
+#include "pcal9535a.h"
+
+namespace aqroot {
+
+constexpr uint16_t bitmask(int index) { return uint16_t(1u << index); }
+
+// ---------------------------------------------------------------------------
+// U2 -- internal controls, front buttons, internal status
+// ---------------------------------------------------------------------------
+constexpr uint16_t kU2Outputs =
+    bitmask(AQROOT_U2_TOUCH_RST_N) | bitmask(AQROOT_U2_SX1262_RST_N) |
+    bitmask(AQROOT_U2_NFC_5V_EN) | bitmask(AQROOT_U2_AMP_SD_MODE) |
+    bitmask(AQROOT_U2_DISP_RST_N) | bitmask(AQROOT_U2_ACC_PWR_EN);
+
+constexpr uint16_t kU2Inputs =
+    bitmask(AQROOT_U2_SX1262_DIO1) | bitmask(AQROOT_U2_TOUCH_INT_N) |
+    bitmask(AQROOT_U2_SD_CARD_DETECT_N) | bitmask(AQROOT_U2_BTN_A_N) |
+    bitmask(AQROOT_U2_BTN_UP_N) | bitmask(AQROOT_U2_BTN_DOWN_N) |
+    bitmask(AQROOT_U2_BTN_LEFT_N) | bitmask(AQROOT_U2_BTN_RIGHT_N) |
+    bitmask(AQROOT_U2_BTN_B_N) | bitmask(AQROOT_U2_BQ25185_STAT2);
+
+constexpr uint16_t kButtonMask =
+    bitmask(AQROOT_U2_BTN_A_N) | bitmask(AQROOT_U2_BTN_B_N) |
+    bitmask(AQROOT_U2_BTN_UP_N) | bitmask(AQROOT_U2_BTN_DOWN_N) |
+    bitmask(AQROOT_U2_BTN_LEFT_N) | bitmask(AQROOT_U2_BTN_RIGHT_N);
+
+// Safe boot latch.  Every U2 output is safe LOW and every one of them is
+// already held there by an external 100k while the expander is high-impedance
+// (R12, R13, R14, R15, R16, R17) -- so this word agrees with the copper, and
+// the generator refuses to emit the map if it ever stops agreeing.
+constexpr uint16_t kU2SafeLatch = 0x0000;
+
+// TOUCH_INT_N is the only U2 input with no external pull: its sole partner is
+// the display FPC.  Unmasked and floating, an absent panel would hold
+// WAKE_INT_N down forever and starve the buttons.
+constexpr uint16_t kU2PullEnable = bitmask(AQROOT_U2_TOUCH_INT_N);
+constexpr uint16_t kU2PullUp = bitmask(AQROOT_U2_TOUCH_INT_N);
+
+// UNMASKED: six buttons, touch, card-detect, and the LoRa interrupt D-740
+// routed.  MASKED: BQ25185_STAT2 -- U11.3 ships unconnected (owner decision
+// D-742), so R128 holds the bit at a static HIGH and it carries no information.
+constexpr uint16_t kU2IrqUnmasked =
+    kButtonMask | bitmask(AQROOT_U2_TOUCH_INT_N) |
+    bitmask(AQROOT_U2_SD_CARD_DETECT_N) | bitmask(AQROOT_U2_SX1262_DIO1);
+
+// ---------------------------------------------------------------------------
+// U3 -- front RGB, accessory power tree, public XGPIO
+// ---------------------------------------------------------------------------
+constexpr uint16_t kU3Outputs =
+    bitmask(AQROOT_U3_FRONT_RGB_R_N) | bitmask(AQROOT_U3_FRONT_RGB_G_N) |
+    bitmask(AQROOT_U3_FRONT_RGB_B_N) | bitmask(AQROOT_U3_ACC_5V_SW_EN) |
+    bitmask(AQROOT_U3_ACC_3V3_EN) | bitmask(AQROOT_U3_ACC_5V_BOOST_EN) |
+    bitmask(AQROOT_U3_SX1262_RXEN);
+
+constexpr uint16_t kU3Inputs =
+    bitmask(AQROOT_U3_XGPIO4) | bitmask(AQROOT_U3_XGPIO5) |
+    bitmask(AQROOT_U3_SPARE_U3_P06) | bitmask(AQROOT_U3_SPARE_U3_P07) |
+    bitmask(AQROOT_U3_SPARE_U3_P10) | bitmask(AQROOT_U3_SPARE_U3_P11) |
+    bitmask(AQROOT_U3_ACC_DETECT_N) | bitmask(AQROOT_U3_ACC_POWER_FAULT_N) |
+    bitmask(AQROOT_U3_BQ25185_STAT1);
+
+constexpr uint16_t kRgbMask =
+    bitmask(AQROOT_U3_FRONT_RGB_R_N) | bitmask(AQROOT_U3_FRONT_RGB_G_N) |
+    bitmask(AQROOT_U3_FRONT_RGB_B_N);
+
+// The RGB cathodes are the board's only outputs whose safe level is 1: D13's
+// anode is +3V3, so a 1 is a dark LED.  Every accessory enable is safe at 0 and
+// externally pulled there (R98, R102, R131, R74).
+constexpr uint16_t kU3SafeLatch = kRgbMask;
+
+// The two public XGPIO and the four NC-DEMO spares have no external part, so
+// the internal 100k is what stops six CMOS inputs from floating.
+constexpr uint16_t kU3SpareMask =
+    bitmask(AQROOT_U3_SPARE_U3_P06) | bitmask(AQROOT_U3_SPARE_U3_P07) |
+    bitmask(AQROOT_U3_SPARE_U3_P10) | bitmask(AQROOT_U3_SPARE_U3_P11);
+constexpr uint16_t kU3PullEnable =
+    kU3SpareMask | bitmask(AQROOT_U3_XGPIO4) | bitmask(AQROOT_U3_XGPIO5);
+constexpr uint16_t kU3PullUp = kU3PullEnable;
+
+// UNMASKED: accessory present and accessory power fault.  The public XGPIO are
+// MASKED on purpose (MX-9) -- an accessory must not be able to hold the shared
+// wake line and starve the buttons.  BQ25185_STAT1 is masked and polled: it
+// moves only on fault entry/exit, and the board carries no NTC, so there is no
+// temperature-boundary chatter to wake on.
+constexpr uint16_t kU3IrqUnmasked =
+    bitmask(AQROOT_U3_ACC_DETECT_N) | bitmask(AQROOT_U3_ACC_POWER_FAULT_N);
+
+// ---------------------------------------------------------------------------
+// Arithmetic that must hold for the map to be self-consistent.  These are the
+// cheapest possible guard against a future board revision that moves a channel
+// and leaves one of the words above behind.
+static_assert((kU2Outputs & kU2Inputs) == 0, "U2 bit is both input and output");
+static_assert((kU2Outputs | kU2Inputs) == 0xFFFF, "U2 bit unaccounted for");
+static_assert((kU3Outputs & kU3Inputs) == 0, "U3 bit is both input and output");
+static_assert((kU3Outputs | kU3Inputs) == 0xFFFF, "U3 bit unaccounted for");
+static_assert((kU2SafeLatch & kU2Inputs) == 0, "U2 safe latch touches an input");
+static_assert((kU3SafeLatch & kU3Inputs) == 0, "U3 safe latch touches an input");
+static_assert((kU2PullEnable & kU2Outputs) == 0, "U2 pulls an output");
+static_assert((kU3PullEnable & kU3Outputs) == 0, "U3 pulls an output");
+static_assert((kU2IrqUnmasked & kU2Outputs) == 0, "U2 unmasks an output");
+static_assert((kU3IrqUnmasked & kU3Outputs) == 0, "U3 unmasks an output");
+// The one bit on this board that is routed, readable, and carries nothing.
+static_assert((kU2IrqUnmasked & bitmask(AQROOT_U2_BQ25185_STAT2)) == 0,
+              "BQ25185_STAT2 must stay masked -- U11.3 is unconnected (D-742)");
+static_assert(AQROOT_CHARGER_STAT2_UNCONNECTED == 1,
+              "this layer decodes STAT1 alone; re-derive it if STAT2 is landed");
+static_assert((kU3IrqUnmasked &
+               (bitmask(AQROOT_U3_XGPIO4) | bitmask(AQROOT_U3_XGPIO5))) == 0,
+              "MX-9: a public XGPIO must not reach the shared wake line");
+static_assert(AQROOT_NFC_ON_3V3 == 1, "NFC_5V_EN is only safe while U13 is DNP");
+
+// ---------------------------------------------------------------------------
+enum class Button : uint8_t { Up, Down, Left, Right, A, B };
+
+// What STAT1 alone can prove on this revision.  SLUSF65B Table 6-2 collapsed
+// onto one pin -- see AQROOT_DEMO_EXPANDER_DEPENDENCIES.md.
+enum class ChargerState : uint8_t {
+  Unknown,       // not read yet
+  Fault,         // STAT1 LOW -- DIRECTLY OBSERVED.  Recoverable vs latched is
+                 // NOT distinguishable without STAT2.
+  NotFaulted,    // STAT1 HIGH -- AMBIGUOUS between charging, complete, sleep
+                 // and charge-disabled.  Never report this as "charging".
+};
+
+class DemoExpanders {
+ public:
+  DemoExpanders()
+      : u2_(AQROOT_EXP_U2_ADDR), u3_(AQROOT_EXP_U3_ADDR),
+        u2_inputs_(0xFFFF), u3_inputs_(0xFFFF),
+        u2_irq_(0), u3_irq_(0), ready_(false) {}
+
+  // Probe both devices, drive both into their safe state, then take the first
+  // input snapshot -- which also deasserts /INT on both, so WAKE_INT_N is
+  // released before anything attaches an interrupt to it.
+  bool begin(I2cBus &bus) {
+    ready_ = false;
+    if (!u2_.probe(bus) || !u3_.probe(bus)) return false;
+
+    const Pcal9535a::Config u2 = {kU2SafeLatch, kU2Inputs, kU2PullEnable,
+                                  kU2PullUp, uint16_t(~kU2IrqUnmasked)};
+    const Pcal9535a::Config u3 = {kU3SafeLatch, kU3Inputs, kU3PullEnable,
+                                  kU3PullUp, uint16_t(~kU3IrqUnmasked)};
+    if (!u2_.apply(bus, u2) || !u3_.apply(bus, u3)) return false;
+
+    // Read the direction back.  A PCAL9535A that NACKed a write mid-sequence
+    // would otherwise leave half this board's control lines as inputs and every
+    // later write would appear to succeed.
+    uint16_t u2_dir = 0, u3_dir = 0;
+    if (!u2_.readConfig(bus, &u2_dir) || !u3_.readConfig(bus, &u3_dir)) return false;
+    if (u2_dir != kU2Inputs || u3_dir != kU3Inputs) return false;
+
+    if (!u2_.readInputs(bus, &u2_inputs_)) return false;
+    if (!u3_.readInputs(bus, &u3_inputs_)) return false;
+    u2_irq_ = 0;
+    u3_irq_ = 0;
+    ready_ = true;
+    return true;
+  }
+
+  bool ready() const { return ready_; }
+
+  // Service BOTH devices.  Call on every WAKE_INT_N assertion AND poll it --
+  // the line is level sensitive and shared, so an edge-only handler misses a
+  // second overlapping assertion.  Status is read before the input port
+  // because the input read is what clears the condition.
+  bool service(I2cBus &bus) {
+    if (!u2_.readInterruptStatus(bus, &u2_irq_)) return false;
+    if (!u3_.readInterruptStatus(bus, &u3_irq_)) return false;
+    if (!u2_.readInputs(bus, &u2_inputs_)) return false;
+    if (!u3_.readInputs(bus, &u3_inputs_)) return false;
+    // An accessory power fault must drop both series disconnects immediately
+    // and without waiting for a caller to notice.
+    if (accessoryFault()) {
+      (void)setAccessory5v(bus, false);
+      (void)setAccessory3v3(bus, false);
+    }
+    return true;
+  }
+
+  // ---- inputs ----------------------------------------------------------
+  bool pressed(Button button) const {
+    return !Pcal9535a::bitOf(u2_inputs_, buttonBit(button));  // active low
+  }
+  bool touchInterrupt() const {
+    return !Pcal9535a::bitOf(u2_inputs_, AQROOT_U2_TOUCH_INT_N);
+  }
+  bool sdCardPresent() const {
+    return !Pcal9535a::bitOf(u2_inputs_, AQROOT_U2_SD_CARD_DETECT_N);
+  }
+  bool loraIrq() const {
+    return Pcal9535a::bitOf(u2_inputs_, AQROOT_U2_SX1262_DIO1);  // active high
+  }
+  bool accessoryPresent() const {
+    return !Pcal9535a::bitOf(u3_inputs_, AQROOT_U3_ACC_DETECT_N);
+  }
+  bool accessoryFault() const {
+    return !Pcal9535a::bitOf(u3_inputs_, AQROOT_U3_ACC_POWER_FAULT_N);
+  }
+  bool xgpio4() const { return Pcal9535a::bitOf(u3_inputs_, AQROOT_U3_XGPIO4); }
+  bool xgpio5() const { return Pcal9535a::bitOf(u3_inputs_, AQROOT_U3_XGPIO5); }
+
+  ChargerState charger() const {
+    if (!ready_) return ChargerState::Unknown;
+    return Pcal9535a::bitOf(u3_inputs_, AQROOT_U3_BQ25185_STAT1)
+               ? ChargerState::NotFaulted
+               : ChargerState::Fault;
+  }
+
+  uint16_t u2Inputs() const { return u2_inputs_; }
+  uint16_t u3Inputs() const { return u3_inputs_; }
+  uint16_t u2InterruptStatus() const { return u2_irq_; }
+  uint16_t u3InterruptStatus() const { return u3_irq_; }
+
+  // ---- outputs ---------------------------------------------------------
+  bool setDisplayReset(I2cBus &bus, bool asserted) {
+    return u2_.writeBit(bus, AQROOT_U2_DISP_RST_N, !asserted);   // active low
+  }
+  bool setTouchReset(I2cBus &bus, bool asserted) {
+    return u2_.writeBit(bus, AQROOT_U2_TOUCH_RST_N, !asserted);  // active low
+  }
+  bool setLoraReset(I2cBus &bus, bool asserted) {
+    return u2_.writeBit(bus, AQROOT_U2_SX1262_RST_N, !asserted); // active low
+  }
+  bool setLoraRxEnable(I2cBus &bus, bool on) {
+    // TXEN is NOT ours: U8.7/U8.8 are driven by the SX1262's own DIO2.
+    return u3_.writeBit(bus, AQROOT_U3_SX1262_RXEN, on);
+  }
+  bool setAmplifier(I2cBus &bus, bool on) {
+    return u2_.writeBit(bus, AQROOT_U2_AMP_SD_MODE, on);
+  }
+  bool setRgb(I2cBus &bus, bool red, bool green, bool blue) {
+    uint16_t next = u3_.outputShadow() | kRgbMask;               // all dark
+    if (red) next &= uint16_t(~bitmask(AQROOT_U3_FRONT_RGB_R_N));
+    if (green) next &= uint16_t(~bitmask(AQROOT_U3_FRONT_RGB_G_N));
+    if (blue) next &= uint16_t(~bitmask(AQROOT_U3_FRONT_RGB_B_N));
+    return u3_.writeOutputs(bus, next);
+  }
+
+  // NFC_5V_EN exists on the board and must never be asserted while U13 is DNP.
+  // It is exposed only as an explicit de-assert so no caller can reach the
+  // enable by accident.
+  bool holdNfcBoostOff(I2cBus &bus) {
+    return u2_.writeBit(bus, AQROOT_U2_NFC_5V_EN, false);
+  }
+
+  // ---- accessory power tree -------------------------------------------
+  //
+  // ORDER IS THE SAFETY PROPERTY.  D-186 requires TWO independent series
+  // disconnects on the 5 V accessory output: U21's boost enable and U22's load
+  // switch.  Bringing them up boost-first and tearing them down switch-first
+  // means the switch is never the thing holding back a live boost output, and
+  // a fault at any point leaves at least one disconnect open.
+  bool setAccessory5v(I2cBus &bus, bool on) {
+    if (on) {
+      if (!u3_.writeBit(bus, AQROOT_U3_ACC_5V_BOOST_EN, true)) return false;
+      return u3_.writeBit(bus, AQROOT_U3_ACC_5V_SW_EN, true);
+    }
+    if (!u3_.writeBit(bus, AQROOT_U3_ACC_5V_SW_EN, false)) return false;
+    return u3_.writeBit(bus, AQROOT_U3_ACC_5V_BOOST_EN, false);
+  }
+
+  // U16's B-side supply IS ACC_3V3_SW, so the accessory I2C buffer can only be
+  // enabled after the switched 3.3 V rail is up, and must be disabled before it
+  // goes away.
+  bool setAccessory3v3(I2cBus &bus, bool on) {
+    if (on) return u3_.writeBit(bus, AQROOT_U3_ACC_3V3_EN, true);
+    if (!u2_.writeBit(bus, AQROOT_U2_ACC_PWR_EN, false)) return false;
+    return u3_.writeBit(bus, AQROOT_U3_ACC_3V3_EN, false);
+  }
+
+  bool setAccessoryI2cBuffer(I2cBus &bus, bool on) {
+    if (on && !Pcal9535a::bitOf(u3_.outputShadow(), AQROOT_U3_ACC_3V3_EN)) {
+      return false;  // U16 is powered from ACC_3V3_SW; bring that up first
+    }
+    return u2_.writeBit(bus, AQROOT_U2_ACC_PWR_EN, on);
+  }
+
+  Pcal9535a &u2() { return u2_; }
+  Pcal9535a &u3() { return u3_; }
+
+ private:
+  static uint8_t buttonBit(Button button) {
+    switch (button) {
+      case Button::Up: return AQROOT_U2_BTN_UP_N;
+      case Button::Down: return AQROOT_U2_BTN_DOWN_N;
+      case Button::Left: return AQROOT_U2_BTN_LEFT_N;
+      case Button::Right: return AQROOT_U2_BTN_RIGHT_N;
+      case Button::A: return AQROOT_U2_BTN_A_N;
+      case Button::B: default: return AQROOT_U2_BTN_B_N;
+    }
+  }
+
+  Pcal9535a u2_;
+  Pcal9535a u3_;
+  uint16_t u2_inputs_;
+  uint16_t u3_inputs_;
+  uint16_t u2_irq_;
+  uint16_t u3_irq_;
+  bool ready_;
+};
+
+}  // namespace aqroot

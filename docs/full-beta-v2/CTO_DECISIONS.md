@@ -1,3 +1,232 @@
+## D-747 — **SEVENTEEN CONTRACTS, AND THE SEVENTEENTH IS THE FIRST ONE THE SOFTWARE HAS TO PASS.** THE FIRMWARE PIN MAP IS NOW GENERATED FROM THE BOARD, AND THE BOARD IS UNTOUCHED
+
+    authority  c7f5c618  UNCHANGED.  NO COPPER, NO SCHEMATIC, NO FAB PACKAGE.
+    new        hardware/demo/manufacturing/gen_firmware_hw_map.py
+               hardware/demo/manufacturing/checks/firmware_hw_map_contract.py  -- the SEVENTEENTH contract
+               Firmware/src/hw/{aqroot_demo_board.h,.json}  -- GENERATED
+               Firmware/src/hw/{pcal9535a.h,aqroot_demo_expanders.h,aqroot_demo_pins.h,
+                                aqroot_demo_radios.h,aqroot_demo_peripherals.h,
+                                aqroot_i2c.h,aqroot_i2c_arduino.h}
+               Firmware/src/demo/main.cpp  -- the as-built bring-up target
+               Firmware/test/test_expander_order.cpp
+               platformio.ini [env:aqroot-demo]
+    evidence/d747-{firmware-hw-map-contract,firmware-only-and-builds,contract-regression}.json
+
+### 1. WHY THIS AND NOT COPPER
+
+D-746 released the fab package and the handoff, and the independent CTO
+re-review held the `DEMO_READY_FOR_FAB` stop on ONE item: the repository
+contains no firmware that matches the board well enough to catch a
+hardware/firmware mapping error before the order goes out.  Checked against the
+repository, every part of that finding is TRUE:
+
+    Firmware/src/config.h  says its pins are PLACEHOLDER, in its own words
+                           names a 2.8-inch 240x320 ILI9341 as "THE REAL PART"
+                           against DEVICE_SPEC section 2's 3.5-inch ILI9488
+                           describes TCA9535 expanders and says NO DRIVER EXISTS
+                           carries a PN532/I2C NFC driver, labelled WRONG PART
+                           names the retired ICS-43434 microphone
+
+**Those placeholder pins are not merely stale -- they COLLIDE.**  `config.h`
+puts I2C on GPIO17/18, where this board has SPI-A MOSI and the NFC IRQ, and puts
+the display on GPIO10/11/12/13, where this board has `DISP_CS_N`, SPI-A MOSI,
+SPI-A SCK and SPI-A MISO.  An image built from that file and flashed onto an
+assembled Demo board drives the wrong pins.
+
+### 2. THE MAP IS GENERATED, BECAUSE THE HAND-CORRECTED ONE ALREADY DRIFTED ONCE
+
+`AQROOT_DEMO_EXPANDER_DEPENDENCIES.md` records what a stale expander table costs.
+**D-732** found the then-current table inverted on `P05`/`P06` and `P16`/`P17`,
+and recorded the consequence of reading it: firmware would have masked `4Ah`
+bit 6 believing it was `BQ25185_STAT2` when it is **`TOUCH_INT_N`**, silencing
+the touch interrupt while leaving a second input free to hold the shared wake
+line forever.  That table was then corrected **by hand**.
+
+A hand-corrected table drifts again, and a firmware pin map that drifts is
+caught by no DRC, no ledger, no parity check and no gate in the fab package.  It
+is caught by a dead peripheral on an assembled board.
+
+So `Firmware/src/hw/aqroot_demo_board.h` is **not written**.  It is generated,
+pad by pad, out of `aqroot-Beta-v2.kicad_pcb` and the `RF_Module:ESP32-S3-WROOM-1`
+symbol cached inside `aqroot-Beta-v2.kicad_sch` -- **83 symbols**: 31 MCU GPIO by
+role, 5 I2C addresses derived from the `A0`/`A1`/`A2` strap pads rather than
+typed, 32 expander bits, and 9 as-built limits.  The four module pads whose
+symbol name is not their GPIO number (`USB_D-`, `USB_D+`, `RXD0`, `TXD0`) are the
+only hand-entered aliases, and three of the four are corroborated by this board's
+own net names (`/IR_RX_GPIO44` on `RXD0`, `/USB_D_MCU_N`/`_P` on the USB pair).
+
+### 3. WHAT IS *NOT* IN THE COPPER, AND HOW IT IS CHECKED ANYWAY
+
+Direction, active level, safe boot latch, interrupt mask and internal-pull
+policy are ENGINEERING INTENT.  They live in the generator's policy table, and
+**the generator refuses to emit unless the board corroborates every row**:
+
+    * the row's net is on the exact pad the row claims;
+    * every expander OUTPUT's safe boot latch equals the level its FITTED
+      external pull already holds -- and this board is built so that it does.
+      `R12`, `R13`, `R14`, `R15`, `R16`, `R17`, `R74`, `R98`, `R102` and `R131`
+      are ten 100k pull-downs that hold ten control lines safe while the PCAL is
+      still high-impedance, and all ten safe latch values are 0 to match;
+    * the three RGB cathodes are the ONE exception and they name it:
+      `safe_basis: load_off`, because `D13`'s anode is `+3V3` and there is no
+      pull at all.  The generator FAILS if a `load_off` row turns out to have a
+      pull, or an `external_pull` row turns out not to;
+    * every UNMASKED input has a defined idle level -- an external pull, an
+      internal 100k, or a named push-pull driver;
+    * no two firmware roles share a C identifier, and no expander bit or used
+      `U1` pad is missing from the map.
+
+### 4. THE CONTRACT, AND ITS ELEVEN REFUSALS
+
+`checks/firmware_hw_map_contract.py`, the seventeenth standing contract, proves
+six claims and **all six PASS**:
+
+    H1  the committed header and JSON are BYTE-IDENTICAL to what the generator
+        produces from the board as it stands -- not "consistent", identical
+    H2  the board_sha256 the header publishes is the board's actual digest
+    H3  every policy row is corroborated by the board (section 3)
+    H4  the map agrees with the owner decisions the LEDGER enforces: every net
+        in `routing_ledger.APPROVED_UNROUTED` is MASKED and flagged as carrying
+        no information, and no `APPROVED_NC` contact's net reaches the map
+    H5  every role the generator emits is referenced by the C++ under
+        `Firmware/src/hw/`, and the C++ names no `AQROOT_` symbol the generator
+        never emitted -- comments excluded, because a comment is not a reference
+    H6  the host safe-ordering test compiles under `-Wall -Wextra -Werror` and
+        its 40 claims pass
+
+**And it proves it is not vacuous.**  Eleven controls mutate the policy table and
+every one is REFUSED, including the exact defect D-732 found:
+
+    D-732 swap, U2 P05 <-> P06                          REFUSED
+    D-733 swap, U2 P17 <-> U3 P17                       REFUSED
+    ACC_5V_SW_EN safe latch flipped to 1 against R131    REFUSED
+    FRONT_RGB_R_N claims a pull it does not have         REFUSED
+    TOUCH_INT_N claims a pull it does not have           REFUSED
+    SX1262_DIO1 pulls against a push-pull driver         REFUSED
+    an expander bit dropped from the map                 REFUSED
+    a U1 pad re-pointed at the wrong net                 REFUSED
+    two firmware roles sharing one C identifier          REFUSED
+    an UNMASKED input with an undefined idle level       REFUSED
+    a strap losing the resistor that holds it            REFUSED
+
+### 5. THE ORDER IS A SAFETY PROPERTY, AND IT IS PROVED ON THE HOST
+
+The PCAL9535A resets with every pin an INPUT and every output latch at `00h`.
+Six of this board's expander outputs are safe at 0 and **three are safe at 1**,
+so a bring-up that clears a direction bit before the latch holds the right value
+drives the wrong level onto a real load for as long as the next I2C transaction
+takes.  On `ACC_5V_SW_EN` or `ACC_5V_BOOST_EN` that is a live accessory rail; on
+`AMP_SD_MODE` a pop into the speaker; on `NFC_5V_EN` an enable into a DNP boost.
+
+That ordering is invisible to a compile and invisible to DRC.  `I2cBus` is
+therefore an interface rather than `Wire`, and `Firmware/test/test_expander_order.cpp`
+implements a RECORDING one: it runs the real bring-up against a fake bus and
+asserts the transaction order.  **40 claims, all PASS**, including that the latch
+precedes the direction on both devices, that every accessory enable is low after
+bring-up, that the three resets are ASSERTED by the safe latch, that
+`BQ25185_STAT2` is masked and both public XGPIO are masked, that the 5 V boost
+leads the load switch going up and the load switch leads the boost coming down
+(D-186's two independent series disconnects, in the only order that keeps one of
+them open at every instant), that `ACC_PWR_EN` is REFUSED while `ACC_3V3_SW` is
+down because `U16` is fed from it, and that a reported accessory fault drops both
+rails without being asked.
+
+***THE FIRST VERSION OF THAT TEST HAD A TAUTOLOGY AND THE CONTROLS FOUND IT.***
+The claim "U3 latch is the safe word" compared the bus against `kU3SafeLatch`,
+so the control that sets `kU3SafeLatch = 0x0000` -- lighting the RGB at power-on
+-- moved both sides and was NOT caught.  The repair is a claim stated
+independently of the constant: the cathode bits must be HIGH at boot **because
+D13's anode is +3V3**, which is a fact about the board.  Three ordering controls,
+all now caught.
+
+### 6. THE CHARGER DECODE, RESTATED WHERE IT WILL BE READ
+
+`ChargerState` has three values and **none of them is "charging"**.  SLUSF65B
+Table 6-2 collapsed onto the one pin this revision has:
+
+    STAT1 LOW   -> Fault        DIRECTLY OBSERVED.  Recoverable versus latched
+                                is NOT distinguishable without STAT2.
+    STAT1 HIGH  -> NotFaulted   AMBIGUOUS between charging, complete, sleep and
+                                charge-disabled.
+
+The console prints that ambiguity in words rather than resolving it, and a
+`static_assert` ties the decode to `AQROOT_CHARGER_STAT2_UNCONNECTED` so a future
+revision that lands `U11.3` cannot leave the one-pin decode in place silently.
+
+### 7. THE BRING-UP TARGET
+
+`[env:aqroot-demo]` compiles `src/demo/` + `src/hw/` **only**, with **no external
+libraries** -- Arduino core alone, because a bring-up image that cannot build
+because a UI dependency moved is not there when the first board arrives.  It
+builds clean for the ESP32-S3 at 316 KB / 4.8 % flash, 19 KB RAM, with
+`qio_opi` and a 16 MB partition table to match the N16R8's 16 MB quad flash and
+8 MB octal PSRAM.
+
+At boot it parks every pin, opens I2C at 100 kHz, scans the bus, brings both
+expanders up safely and **reads the direction registers back** (a PCAL that
+NACKed mid-sequence would otherwise leave half the board's control lines as
+inputs while every later write appeared to succeed), releases the three resets,
+identifies the BMI270 by `CHIP_ID = 0x24`, reports the MAX17048 and touch IDs,
+raises the bus to 400 kHz **only after** every device has answered, and then
+identifies all three SPI-B devices.
+
+    CC1101 U7      PARTNUM/VERSION through a BURST-flagged header.  Address 0x30
+                   WITHOUT the burst bit is the SRES strobe -- reading PARTNUM
+                   the obvious way RESETS the radio instead of identifying it.
+    SX1262 U8      the LoRa sync word at 0x0740, which resets to 0x1424.  A
+                   two-byte constant is a far stronger pin-map proof than a
+                   status byte whose every bit pattern looks plausible.
+    ST25R3916 U9   SPI MODE 1, not mode 0 like its two bus neighbours.  The
+                   identity byte is REPORTED, not asserted: this repository has
+                   no ST25R3916 datasheet, and D-742 is a standing reminder of
+                   what carrying a decode from memory costs.
+
+Console commands exercise the rest: `d` runs a raw CMD0/CMD8 microSD sequence --
+**the only test on this board that proves SPI-A MISO**, because `R112` is DNP and
+the display SDO never reaches the MCU, leaving the card the sole reader on that
+net -- `l` ramps the backlight on GPIO46, `x` runs a 38 kHz IR loopback through
+the shared top window, `t` plays a tone, and `3`/`5`/`i` operate the accessory
+power tree in its required order.  **Nothing energises at boot.**
+
+### 8. THE WRONG-PART GATE
+
+`src/config.h` now carries an `#error` for any real-hardware build that has not
+explicitly acknowledged its placeholder pins, and `[env:esp32-s3-aqroot]` states
+that acknowledgement in its own build flags with the hazard named.  Proved both
+ways: without the flag the compile fails with the message naming
+`pio run -e aqroot-demo`; with it, it compiles.  The three statements of fact
+that were simply wrong are corrected in place -- the display is the 3.5-inch
+320x480 ILI9488, the expanders are PCAL9535A and not TCA9535, the microphone is
+the DMM-4026-B-I2S-R and not the retired ICS-43434.  `DISPLAY_WIDTH`/`HEIGHT` are
+deliberately NOT changed: the file documents that `diagram.json` is wired to
+them, and the Demo panel geometry belongs to the Demo display driver, not to the
+simulator.
+
+### 9. THE BOARD DID NOT MOVE
+
+`evidence/d747-firmware-only-and-builds.json`: **69 tracked hardware artifacts,
+every one byte-identical** to what `HEAD` carries -- the board, the `.kicad_dru`,
+all nine schematic sheets, and all twelve files of the fab package.
+`git status --porcelain` over `hardware/demo/kicad` and `hardware/demo/fab` is
+EMPTY.  `board_sha256` is `c7f5c618...`, unchanged.  `contract_regression`
+against the `d746` baseline: **17 contracts, all ran, sixteen IDENTICAL**,
+`pour_partition` INCOMPARABLE on `ref_commit` alone (the documented D-676
+reading), and `firmware_hw_map` reported `NO BASELINE` because it is new -- which
+is the harness's own honest answer for a contract whose baseline does not exist,
+and is not a fabricated one.  All four firmware environments build.
+
+### 10. WHAT THIS DOES NOT CLAIM
+
+This is a bring-up layer, not the product's application firmware.  There is no
+display driver, no LVGL UI, no LoRa or sub-GHz protocol stack, no NFC stack, no
+BMI270 configuration blob and no file system.  The independent review's own
+words set that boundary -- *"the pre-fab gate is a compileable, safe, as-built
+Demo hardware layer/bring-up target"*, with *"full UX/feature refinement"*
+continuing during fabrication -- and this meets it and stops there.  Three
+values in the map are REPORT-ONLY and are marked as such in the code: the
+MAX17048 version register, the touch controller ID and the ST25R3916 identity
+byte, none of which this repository holds a datasheet for.
+
 ## D-745 — **SIXTEEN CONTRACTS, AND UNTIL NOW NOT ONE OF THEM KNEW WHAT THE PRODUCT WAS.** EVERY DEMO-SCOPE FEATURE IS NOW ASSERTED ABSOLUTELY, PART BY PART AND NET BY NET
 
     authority  c7f5c618  UNCHANGED.  NO COPPER, NO SCHEMATIC.

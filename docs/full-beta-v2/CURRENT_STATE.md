@@ -66,6 +66,74 @@
 > `verify_promotion` PASS and `protected_copper` showing exactly one protected
 > net moved.  `U14.7` is on the bus.  This board has **no open owner decision**.
 
+> **D-747: SEVENTEEN CONTRACTS, AND THE SEVENTEENTH IS THE FIRST ONE THE
+> SOFTWARE HAS TO PASS (2026-09-18).**  `authority c7f5c618` UNCHANGED, NO
+> COPPER, NO SCHEMATIC, NO FAB PACKAGE -- **69 tracked hardware artifacts, every
+> one byte-identical to `HEAD`**, and `contract_regression` against `d746` runs
+> 17 contracts with sixteen IDENTICAL (`pour_partition` INCOMPARABLE on
+> `ref_commit` alone, the documented D-676 reading; `firmware_hw_map` reports
+> `NO BASELINE` because it is new).  D-746 released the package and the
+> independent CTO re-review held `DEMO_READY_FOR_FAB` on one item: **no firmware
+> in this repository matched the board well enough to catch a hardware/firmware
+> mapping error before the order went out**, and checking it against the
+> repository confirmed every part of it.  `Firmware/src/config.h`'s placeholder
+> pins do not merely go stale, **they COLLIDE** -- I2C on GPIO17/18 where this
+> board has SPI-A MOSI and the NFC IRQ, the display on GPIO10/11/12/13 where it
+> has `DISP_CS_N`, SPI-A MOSI, SPI-A SCK and SPI-A MISO.
+>
+> **SO THE MAP IS NOT WRITTEN, IT IS GENERATED.**  `Firmware/src/hw/aqroot_demo_board.h`
+> is emitted pad by pad out of `aqroot-Beta-v2.kicad_pcb` and the cached
+> `RF_Module:ESP32-S3-WROOM-1` symbol -- 83 symbols: 31 MCU GPIO by role, 5 I2C
+> addresses derived from the `A0`/`A1`/`A2` STRAP PADS rather than typed, 32
+> expander bits and 9 as-built limits.  **`AQROOT_DEMO_EXPANDER_DEPENDENCIES.md`
+> already records why**: D-732 found that table inverted on `P05`/`P06` and
+> `P16`/`P17`, and reading it would have masked `4Ah` bit 6 believing it was
+> `BQ25185_STAT2` when it is `TOUCH_INT_N` -- silencing touch while leaving a
+> second input free to hold the shared wake line forever.  It was then corrected
+> **by hand**, and a hand-corrected table drifts again.  Direction, active level,
+> safe latch, mask and pull policy are engineering intent and stay in the
+> generator, which **refuses to emit unless the copper corroborates every row**:
+> every expander OUTPUT's safe latch must equal the level its fitted external
+> pull already holds, and this board is built so it does -- `R12`, `R13`, `R14`,
+> `R15`, `R16`, `R17`, `R74`, `R98`, `R102`, `R131`, ten 100 k pull-downs holding
+> ten control lines safe while the PCAL is still high-impedance.  The three RGB
+> cathodes are the one exception and they NAME it (`load_off`, because `D13`'s
+> anode is `+3V3`).
+>
+> **THE SEVENTEENTH CONTRACT PROVES SIX CLAIMS AND ELEVEN CONTROLS REFUSE**,
+> including the exact D-732 swap: the committed header is BYTE-IDENTICAL to what
+> the board says today, the published digest is the board's, every policy row is
+> corroborated, every `routing_ledger.APPROVED_UNROUTED` net is MASKED and
+> flagged as carrying no information while no `APPROVED_NC` net reaches the map,
+> every emitted role is referenced by the C++ and the C++ invents nothing, and
+> the **host safe-ordering test** compiles under `-Wall -Wextra -Werror` with
+> **40 claims passing**.  That test exists because the PCAL9535A resets to
+> all-inputs with its latches at `00h` while six of this board's outputs are safe
+> at 0 and **three are safe at 1** -- an order that is invisible to a compile and
+> invisible to DRC, so `I2cBus` is an interface and the test implements a
+> RECORDING one.  ***ITS FIRST VERSION HAD A TAUTOLOGY AND THE CONTROLS FOUND
+> IT***: "U3 latch is the safe word" compared the bus against the same constant
+> the control mutated, so lighting the RGB at power-on was NOT caught.  Repaired
+> with a claim tied to the board instead -- the cathodes must be HIGH because
+> `D13`'s anode is `+3V3`.
+>
+> **THE BRING-UP TARGET BUILDS FOR THE REAL PART.**  `[env:aqroot-demo]` compiles
+> `src/demo/` + `src/hw/` with **no external libraries**, 316 KB / 4.8 % flash,
+> `qio_opi` and a 16 MB partition table for the N16R8.  It parks every pin,
+> brings both expanders up safely **and reads the direction registers back**,
+> releases the three resets, identifies the BMI270 at `CHIP_ID 0x24`, raises I2C
+> to 400 kHz only after every device answers, and identifies all three SPI-B
+> devices -- the CC1101 through a BURST-flagged header (address `0x30` without
+> the burst bit is the `SRES` strobe and would RESET the radio instead of
+> identifying it), the SX1262 by its `0x1424` sync word, the ST25R3916 in SPI
+> MODE 1 with its identity byte REPORTED rather than asserted because this
+> repository holds no datasheet for it.  `d` runs a raw microSD `CMD0`/`CMD8` --
+> **the only test on this board that proves SPI-A MISO**, since `R112` is DNP and
+> the card is the sole reader on that net.  Nothing energises at boot.
+> `ChargerState` has three values and **none of them is "charging"**.  And
+> `src/config.h` now `#error`s for any real-hardware build that has not
+> explicitly acknowledged its placeholder pins -- proved both ways.
+>
 > **D-745: SIXTEEN CONTRACTS, AND UNTIL NOW NOT ONE OF THEM KNEW WHAT THE
 > PRODUCT WAS (2026-09-18).**  `authority c7f5c618` UNCHANGED, no copper.  Every
 > other contract on this board is a no-regression check and **all fifteen would

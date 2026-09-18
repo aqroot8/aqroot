@@ -1,5 +1,36 @@
 # AQROOT firmware
 
+> ## READ THIS FIRST IF YOU ARE PROGRAMMING AN AQROOT **DEMO** BOARD
+>
+> The AQROOT Demo board being fabricated for Kickstarter has its own environment
+> and its own, **generated**, pin map:
+>
+> ```bash
+> cd Firmware
+> pio run -e aqroot-demo                 # build the as-built bring-up image
+> pio run -e aqroot-demo -t upload       # flash over USB-C (native USB, no bridge)
+> pio device monitor -b 115200
+> ```
+>
+> `src/hw/aqroot_demo_board.h` is **generated from the board file**, not written:
+>
+> ```bash
+> python3 hardware/demo/manufacturing/gen_firmware_hw_map.py            # regenerate
+> python3 hardware/demo/manufacturing/checks/firmware_hw_map_contract.py  # 17th contract
+> g++ -std=c++17 -I Firmware/src/hw -o /tmp/t Firmware/test/test_expander_order.cpp && /tmp/t
+> ```
+>
+> **Everything below this banner describes the legacy Beta application**, whose
+> pins in `src/config.h` are PLACEHOLDERS and which collide with real Demo
+> functions (I2C on GPIO17/18 where the Demo board has SPI-A MOSI and the NFC
+> IRQ; the display on GPIO10/11/12/13 where it has `DISP_CS_N`, SPI-A MOSI,
+> SPI-A SCK and SPI-A MISO).  `src/config.h` raises a compile `#error` for any
+> real-hardware build that has not explicitly acknowledged that.  **Do not flash
+> `esp32-s3-aqroot` onto an assembled AQROOT Demo board.**
+>
+> See `docs/full-beta-v2/CTO_DECISIONS.md` D-747.
+
+
 Full working firmware stack for the AQROOT handheld: driver abstraction layer + an
 LVGL touch UI (app launcher + tool screens), built on the **Arduino core for ESP32-S3**.
 It compiles and runs today — on real hardware once parts arrive, and **right now in the

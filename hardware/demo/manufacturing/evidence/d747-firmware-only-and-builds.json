@@ -1,0 +1,51 @@
+{
+  "decision": "D-747",
+  "claim": "FIRMWARE-ONLY.  Every tracked hardware artifact is byte-identical to the one D-746 released at authority c7f5c618, and all four firmware environments build.",
+  "head": "8d215199bd48fa8aab73103d82d7063157653329",
+  "tracked_hardware_files": 69,
+  "moved_files": [],
+  "git_porcelain_hardware": "",
+  "board_sha256": "c7f5c61896269276ecf680266adf23b36b9adc1f3d89bc93be311174498b7406",
+  "builds": [
+    {
+      "env": "aqroot-demo",
+      "built": true,
+      "firmware_bin_sha256": "7bbc8c509af07f08bdb3a0dd29722358ce91480eb0250457187698ca41bc3b74",
+      "bytes": 316304
+    },
+    {
+      "env": "esp32-s3-aqroot",
+      "built": true,
+      "firmware_bin_sha256": "11effb5e99875fdc10032dae80496a27d1e424e32ca75eba36020a73ecab1c82",
+      "bytes": 673504
+    },
+    {
+      "env": "wokwi",
+      "built": true,
+      "firmware_bin_sha256": "974fe040f6934b2625730e958ce097c45101fc37c8ce8fb74ca06ba49a6d9e2e",
+      "bytes": 615328
+    },
+    {
+      "env": "esp32-s3-aqroot-dm",
+      "built": true,
+      "firmware_bin_sha256": "ee8cd86c597854985812dd37de8ba5fdf2913883e3025e230e8e1301d70e67bb",
+      "bytes": 673504
+    }
+  ],
+  "host_safe_ordering_test": {
+    "compiled": true,
+    "warnings": null,
+    "exit_code": 0,
+    "claims": 40,
+    "failed": []
+  },
+  "placeholder_pin_gate": {
+    "without_acknowledgement_exit": 1,
+    "fires": true,
+    "message": [
+      "Firmware/src/config.h:23:2: error: #error \"src/config.h carries Beta-era PLACEHOLDER pins and is NOT the AQROOT Demo map. Build the Demo board with `pio run -e aqroot-demo` (src/hw/aqroot_demo_board.h), or define AQROOT_ACK_PLACEHOLDER_PINS to build the legacy application anyway.\""
+    ],
+    "with_acknowledgement_exit": 0
+  },
+  "verdict": "PASS"
+}

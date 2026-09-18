@@ -25,6 +25,29 @@ treated as removable merely because it is not itself exposed at the port.
 
 ---
 
+## THE MAP FIRMWARE READS IS NOW GENERATED — D-747
+
+> **The two tables below remain the human-readable, schematic-side authority and
+> they are correct.  They are no longer what the FIRMWARE reads.**  D-747 made
+> `Firmware/src/hw/aqroot_demo_board.h` a GENERATED artifact, emitted pad by pad
+> out of `aqroot-Beta-v2.kicad_pcb` by
+> `hardware/demo/manufacturing/gen_firmware_hw_map.py`, and
+> `hardware/demo/manufacturing/checks/firmware_hw_map_contract.py` -- the
+> seventeenth standing contract -- fails if the committed header is not
+> byte-identical to what the board says today.
+>
+> The reason is written three paragraphs below this one: **D-732 found this very
+> table inverted on `P05`/`P06` and `P16`/`P17`, and it was corrected BY HAND.**
+> A hand-corrected table drifts again.  Direction, active level, safe boot latch,
+> interrupt mask and internal-pull policy are engineering intent and live in the
+> generator's policy table, where each row is refused unless the copper
+> corroborates it -- every OUTPUT's safe latch must equal the level its fitted
+> external pull already holds, and every UNMASKED input must have a defined idle
+> level.
+>
+> If these tables and the generated header ever disagree, the contract has
+> already failed and **the board is the authority.**
+
 ## AS-BUILT PIN MAP — READ THIS ONE (D-738)
 
 > **EVERYTHING BELOW THIS SECTION IS THE PRE-ECO PLANNING ANALYSIS AND IS
@@ -77,9 +100,9 @@ and no earlier one.**
 
 | bit | pin | net | dir | function |
 |---|---|---|---|---|
-| `P00` | 4 | `/08_BUTTONS_EXPANDERS/FRONT_RGB_R_N` | OUT | front RGB red cathode sink, R70/R73 |
-| `P01` | 5 | `/08_BUTTONS_EXPANDERS/FRONT_RGB_G_N` | OUT | front RGB green cathode sink |
-| `P02` | 6 | `/08_BUTTONS_EXPANDERS/FRONT_RGB_B_N` | OUT | front RGB blue cathode sink |
+| `P00` | 4 | `/08_BUTTONS_EXPANDERS/FRONT_RGB_R_N` | OUT | front RGB red cathode sink, **R124 1 k** (D-747 corrected this cell: it read `R70/R73`, which are not on this net) |
+| `P01` | 5 | `/08_BUTTONS_EXPANDERS/FRONT_RGB_G_N` | OUT | front RGB green cathode sink, R125 680 R |
+| `P02` | 6 | `/08_BUTTONS_EXPANDERS/FRONT_RGB_B_N` | OUT | front RGB blue cathode sink, R126 390 R |
 | `P03` | 7 | `/ACC_5V_SW_EN` | OUT | `U22` TPS22950C 5 V load-switch enable, R131 100 k pull-down |
 | `P04` | 8 | `/XGPIO4` | I/O | Community Port expansion GPIO 4 (public) |
 | `P05` | 9 | `/XGPIO5` | I/O | Community Port expansion GPIO 5 (public) |

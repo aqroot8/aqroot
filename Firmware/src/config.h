@@ -1,6 +1,30 @@
 #pragma once
 // AQROOT — central hardware configuration.
 //
+// ===================================================================================
+// THIS FILE DOES NOT DESCRIBE THE AQROOT **DEMO** BOARD BEING FABRICATED.
+//
+// Demo's as-built pin, expander and address map is GENERATED from the board itself and
+// lives at `src/hw/aqroot_demo_board.h`.  Build the Demo board's firmware with
+//
+//     pio run -e aqroot-demo
+//
+// Every pin below is a Beta-era PLACEHOLDER and several of them collide with real Demo
+// functions (this file puts I2C on 17/18 where the Demo board has SPI-A MOSI and NFC
+// IRQ; it puts the display on 10/11/12/13 where the Demo board has DISP_CS, SPI-A MOSI,
+// SPI-A SCK and SPI-A MISO).  Flashing an image built from this file onto an assembled
+// Demo board drives the wrong pins.
+//
+// The `#error` below is what stops that happening by accident: a real-hardware build
+// has to say, in its own environment, that it accepts placeholder pins.
+// ===================================================================================
+#if !defined(SIMULATION_MODE) && !defined(CONFIG_AQROOT_DM) && \
+    !defined(AQROOT_ACK_PLACEHOLDER_PINS)
+#error "src/config.h carries Beta-era PLACEHOLDER pins and is NOT the AQROOT Demo map. \
+Build the Demo board with `pio run -e aqroot-demo` (src/hw/aqroot_demo_board.h), or \
+define AQROOT_ACK_PLACEHOLDER_PINS to build the legacy application anyway."
+#endif
+//
 // ONE source of truth for pin assignments and display geometry. The Wokwi diagram.json
 // is wired to match the DISPLAY_* and BTN_* pins below, so the simulation and the driver
 // code never drift apart.
@@ -13,14 +37,29 @@
 // ============================== PART DECISIONS (LOCKED) ==============================
 // This file predates several locked part decisions. The CORRECT parts are:
 //
-//   Display : ILI9341 2.8" IPS, 240x320, 4-wire SPI  <- THE REAL PART (not a placeholder)
+//   Display : ER-TFT035IPS-6, 3.5" IPS, 320x480, ILI9488 COG, 4-wire SPI
+//             <- CORRECTED.  This file previously named an ILI9341 2.8" 240x320 as
+//                "THE REAL PART"; DEVICE_SPEC.md section 2 locks the 3.5" ILI9488, and
+//                the KiCad symbol's ILI9341 text is stale placeholder text.  The
+//                DISPLAY_WIDTH/DISPLAY_HEIGHT below are STILL 240x320 because the Wokwi
+//                diagram.json is wired to them; the Demo panel geometry belongs to the
+//                Demo display driver, not to the simulator.
 //   Touch   : FT6236-family @ I2C 0x38               <- NOT CST816 @ 0x15
 //   NFC     : ST25R3916 over SPI                     <- NOT PN532 over I2C
 //   Radio   : DUAL — CC1101 *and* SX1262 on shared SPI Bus B, one-TX-at-a-time
 //   IMU     : BMI270 @ I2C 0x68 (needs a config-blob upload before data works)
-//   Audio   : ICS-43434 mic + MAX98357A amp over I2S
+//   Audio   : PUI DMM-4026-B-I2S-R mic + MAX98357A amp over I2S
+//             <- CORRECTED.  The ICS-43434 is RETIRED; DEVICE_SPEC.md section 8 fits
+//                the DMM-4026-B-I2S-R bottom-port MEMS part.
+//   Expanders: NXP PCAL9535APW,118 x2 (U2 @ 0x20, U3 @ 0x21)
+//             <- CORRECTED.  The TCA9535 block further down this file is the WRONG
+//                PART: it has no internal pull-up/pull-down registers, no interrupt
+//                mask and no interrupt-status register, and the AQROOT Demo bring-up
+//                depends on all three.  The real driver is src/hw/pcal9535a.h.
 //
-// See "05 - Design Decisions Log.md" and "11 - Beta Pin Map v0.2.md".
+// See "05 - Design Decisions Log.md", "11 - Beta Pin Map v0.2.md", and -- for anything
+// that will be flashed onto an assembled AQROOT Demo board --
+// docs/full-beta-v2/DEVICE_SPEC.md plus the generated src/hw/aqroot_demo_board.h.
 //
 // OUTSTANDING FIRMWARE WORK (tracked in "07 - Build TODO Tracker.md" — deliberately NOT
 // done as part of a docs cleanup): replace the PN532/I2C NFC driver with an ST25R3916 SPI
@@ -62,7 +101,14 @@
 #define IMU_I2C_ADDR    0x68     // BMI270 — Alpha-validated, LOCKED
 
 // ---------------------------------------------------------------------------------------
-// I2C GPIO EXPANDERS — 2x Texas Instruments TCA9535PWR (LOCKED 2026-07-27; replaced the
+// I2C GPIO EXPANDERS — *** WRONG PART FOR AQROOT DEMO. ***  The fitted devices are two
+// NXP PCAL9535APW,118 (U2 @ 0x20, U3 @ 0x21), not TCA9535PWR, and the Demo bring-up
+// uses three registers the TCA9535 does not have: 46h/47h + 48h/49h internal pulls,
+// 4Ah/4Bh interrupt mask, 4Ch/4Dh interrupt status.  The Demo driver and the as-built
+// bit map are `src/hw/pcal9535a.h` and `src/hw/aqroot_demo_board.h`; nothing below this
+// line describes the board being fabricated.
+//
+// 2x Texas Instruments TCA9535PWR (LOCKED 2026-07-27; replaced the
 // MCP23017). U60 = internal (buttons + control), U61 = external (community header).
 // 16 genuinely bidirectional I/O each: Port 0 = P00..P07, Port 1 = P10..P17.
 //
