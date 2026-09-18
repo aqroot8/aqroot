@@ -25,7 +25,7 @@ not capture reliably, because they are not placed on the board. Authority:
 
 | item | spec | qty | notes |
 |---|---|---|---|
-| Li-ion pouch cell with JST-PH-2 lead | **60 × 75 × 8.0 mm, ≈ 2500–3000 mAh**, 1S | 1 | Envelope frozen by **D-071**; **SKU chosen at procurement (M-04)**. Must mate `J4` `B2B-PH-K-S`. **Protection-circuit-module cells are acceptable and preferred**; the board's own reverse-polarity path does not replace a cell PCM |
+| **First-five LiPo pack** | **Adafruit Product 328 — 3.7 V / 2500 mAh**, genuine 2-pin JST-PH, protection circuitry | 1 | **SELECTED CTO-BAT-01.** Supplier page is the purchasing identity; its linked `785060` specification is archived at `hardware/demo/kicad/aqroot-demo/vendor/BATTERY/adafruit-328-785060-specification.pdf` (SHA-256 `826149da…ecd3`). Datasheet max pack is 7.9 × 50.5 × 60.5 mm and permits discharge current ≤2C; supplier recommends ≤1.2 A charging. **Meter-verify JST polarity before J4 connection; do not substitute a generic LP785060 solely by family name.** |
 
 ---
 
@@ -123,5 +123,5 @@ Mates `J7` **`BM02B-ACHSS-GAN-ETF`** on the board.
 | # | item |
 |---|---|
 | ~~**O-8**~~ | **CLOSED 2026-08-23 (FBV2-S2-002).** Taoglas **`TI.92.2113`** locked by CTO ruling and verified live against the manufacturer data sheet. **No hardware or schematic change was required** — the panel connector is SMA **female** on the Amphenol pigtail and the antenna is SMA **male**, so the interface was already correct |
-| **M-04** | Battery SKU — envelope frozen, SKU at procurement |
+| ~~**M-04**~~ | **CLOSED CTO-BAT-01 — Adafruit Product 328 selected for first five; incoming pack must pass `battery_pack_contract.py` identity/spec envelope and polarity QC.** |
 | — | Enclosure-side hardware beyond the SMA nut is **mechanical CAD scope**, deliberately not listed here |
