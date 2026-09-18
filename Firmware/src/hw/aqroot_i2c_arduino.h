@@ -10,6 +10,7 @@
 #include "aqroot_i2c.h"
 
 #ifdef ARDUINO
+#include <Arduino.h>
 #include <Wire.h>
 
 #include "aqroot_demo_board.h"
@@ -18,7 +19,42 @@ namespace aqroot {
 
 class ArduinoI2cBus : public I2cBus {
  public:
+  // D-765 / round-2 review: an MCU reset can occur while a slave is halfway
+  // through a read.  The slave may then hold SDA low while the new firmware
+  // instance is trying to write the safety latches.  Recover the bus BEFORE
+  // Wire owns the pins: release SDA/SCL, clock up to nine bits, then emit a
+  // STOP.  If either line is still stuck, begin() fails closed.
+  bool recoverStuckBus() {
+    pinMode(AQROOT_I2C_SDA_GPIO, INPUT_PULLUP);
+    pinMode(AQROOT_I2C_SCL_GPIO, INPUT_PULLUP);
+    delayMicroseconds(5);
+
+    if (digitalRead(AQROOT_I2C_SCL_GPIO) == LOW) return false;
+    if (digitalRead(AQROOT_I2C_SDA_GPIO) == LOW) {
+      for (int i = 0; i < 9 && digitalRead(AQROOT_I2C_SDA_GPIO) == LOW; ++i) {
+        pinMode(AQROOT_I2C_SCL_GPIO, OUTPUT_OPEN_DRAIN);
+        digitalWrite(AQROOT_I2C_SCL_GPIO, LOW);
+        delayMicroseconds(5);
+        pinMode(AQROOT_I2C_SCL_GPIO, INPUT_PULLUP);
+        delayMicroseconds(5);
+        if (digitalRead(AQROOT_I2C_SCL_GPIO) == LOW) return false;
+      }
+
+      // STOP: SDA low while SCL is released high, then release SDA.
+      pinMode(AQROOT_I2C_SDA_GPIO, OUTPUT_OPEN_DRAIN);
+      digitalWrite(AQROOT_I2C_SDA_GPIO, LOW);
+      delayMicroseconds(5);
+      pinMode(AQROOT_I2C_SCL_GPIO, INPUT_PULLUP);
+      delayMicroseconds(5);
+      pinMode(AQROOT_I2C_SDA_GPIO, INPUT_PULLUP);
+      delayMicroseconds(5);
+    }
+    return digitalRead(AQROOT_I2C_SDA_GPIO) == HIGH &&
+           digitalRead(AQROOT_I2C_SCL_GPIO) == HIGH;
+  }
+
   bool begin(uint32_t hz = AQROOT_I2C_BRINGUP_HZ) {
+    if (!recoverStuckBus()) return false;
     return Wire.begin(AQROOT_I2C_SDA_GPIO, AQROOT_I2C_SCL_GPIO, hz);
   }
 

@@ -63,6 +63,15 @@ class RecordingBus : public I2cBus {
   bool fail_once = false;        // fail only the FIRST match, then behave
   int failures_injected = 0;
 
+  // D-766: model the nastier failure a boolean NACK cannot express.  The
+  // PCAL9535A output pair is two consecutive data bytes; a transaction can
+  // fail after port 0 changed but before port 1 did.  In that case the caller
+  // must treat its software shadow as unknown and recover with an absolute
+  // full safe-latch write.
+  int partial_output_address = -1;
+  bool partial_output_once = false;
+  int partial_output_failures = 0;
+
   bool shouldFail(uint8_t address, uint8_t reg) {
     if (fail_address < 0 || int(address) != fail_address) return false;
     if (fail_reg >= 0 && int(reg) != fail_reg) return false;
@@ -77,6 +86,19 @@ class RecordingBus : public I2cBus {
       txn.value = uint16_t(data[1]) | uint16_t(uint16_t(data[2]) << 8);
     } else if (length == 2) {
       txn.value = data[1];
+    }
+    const bool partial =
+        length == 3 && txn.reg == Pcal9535a::kRegOutput0 &&
+        partial_output_address >= 0 && int(address) == partial_output_address &&
+        (!partial_output_once || partial_output_failures == 0);
+    if (partial) {
+      txn.nacked = true;  // visible as a failed transaction to the caller
+      log.push_back(txn);
+      uint16_t &physical =
+          (address == AQROOT_EXP_U2_ADDR ? u2_output : u3_output);
+      physical = uint16_t((physical & 0xFF00u) | data[1]);  // port 0 changed
+      ++partial_output_failures;
+      return false;  // port 1 retained its previous state
     }
     const bool nack = shouldFail(address, txn.reg);
     txn.nacked = nack;
@@ -538,6 +560,86 @@ int main() {
     check("fault shutdown: the SAME path reports OK on a healthy bus",
           good.service(clean) && good.faultShutdownSeen() &&
               good.faultShutdownOk());
+  }
+  {
+    // T10f / D-765: Astra round-2 reproduced the missing case.  U3's input
+    // register is the ONLY observation of ACC_POWER_FAULT_N.  If that read
+    // fails while output writes still work, loss of observability must itself
+    // force both accessory rails down and block re-enable until a good read.
+    RecordingBus hurt;
+    DemoExpanders local;
+    local.begin(hurt);
+    check("lost-fault-read setup: 3.3 V can be enabled",
+          local.setAccessory3v3(hurt, true));
+    check("lost-fault-read setup: 5 V can be enabled",
+          local.setAccessory5v(hurt, true));
+    const size_t mark = hurt.log.size();
+    hurt.fail_address = AQROOT_EXP_U3_ADDR;
+    hurt.fail_reg = Pcal9535a::kRegInput0;
+    hurt.fail_once = true;
+    check("lost U3 fault-input read is REPORTED", !local.service(hurt));
+    check("lost U3 fault-input read is LATCHED as unknown",
+          local.faultObservabilityLost());
+    check("lost U3 fault-input read ATTEMPTS shutdown writes",
+          hurt.countWrites(AQROOT_EXP_U3_ADDR, Pcal9535a::kRegOutput0, mark) >= 2);
+    check("lost U3 fault-input read leaves all accessory enables LOW",
+          !(hurt.u3_output & bitmask(AQROOT_U3_ACC_3V3_EN)) &&
+          !(hurt.u3_output & bitmask(AQROOT_U3_ACC_5V_SW_EN)) &&
+          !(hurt.u3_output & bitmask(AQROOT_U3_ACC_5V_BOOST_EN)));
+    check("re-enable is REFUSED while fault observability is lost",
+          !local.setAccessory3v3(hurt, true) &&
+          !local.setAccessory5v(hurt, true));
+
+    hurt.fail_address = -1;
+    hurt.fail_reg = -1;
+    hurt.fail_once = false;
+    check("a later clean U3 read restores fault observability",
+          local.service(hurt) && !local.faultObservabilityLost());
+    check("accessory re-enable is allowed only after recovery",
+          local.setAccessory3v3(hurt, true));
+  }
+  {
+    // T10g / D-766: a port-pair write can fail AFTER port 0 changed and BEFORE
+    // port 1 did.  This is worse than a clean NACK: the old shadow describes
+    // neither guaranteed physical state.  A 5 V shutdown must invalidate that
+    // shadow and recover with an absolute U3 safe-latch write, which clears the
+    // high-byte BOOST even if the low-byte switch clear was the partial write.
+    RecordingBus hurt;
+    DemoExpanders local;
+    local.begin(hurt);
+    check("partial-write setup: 5 V can be enabled",
+          local.setAccessory5v(hurt, true));
+    const size_t mark = hurt.log.size();
+    hurt.partial_output_address = AQROOT_EXP_U3_ADDR;
+    hurt.partial_output_once = true;
+    const bool ok = local.setAccessory5v(hurt, false);
+    check("partial output-pair failure is REPORTED", !ok);
+    check("partial output-pair failure was actually injected",
+          hurt.partial_output_failures == 1);
+    check("partial failure triggers an absolute fallback output write",
+          hurt.countWrites(AQROOT_EXP_U3_ADDR, Pcal9535a::kRegOutput0, mark) >= 2);
+    check("absolute fallback leaves every U3 accessory enable LOW",
+          !(hurt.u3_output & bitmask(AQROOT_U3_ACC_3V3_EN)) &&
+          !(hurt.u3_output & bitmask(AQROOT_U3_ACC_5V_SW_EN)) &&
+          !(hurt.u3_output & bitmask(AQROOT_U3_ACC_5V_BOOST_EN)));
+    check("successful absolute fallback re-establishes a valid safe shadow",
+          local.u3().outputShadowValid() &&
+          local.u3().outputShadow() == kU3SafeLatch);
+  }
+  {
+    // T10h: prove the low-level invariant directly.  The PCAL object must not
+    // advertise a valid cached latch after a transaction that may have updated
+    // only one of the two hardware output-port bytes.
+    RecordingBus hurt;
+    Pcal9535a raw(AQROOT_EXP_U3_ADDR);
+    check("raw shadow setup succeeds", raw.writeOutputs(hurt, kU3SafeLatch));
+    hurt.partial_output_address = AQROOT_EXP_U3_ADDR;
+    hurt.partial_output_once = true;
+    check("raw partial output write reports failure",
+          !raw.writeOutputs(hurt, uint16_t(kU3SafeLatch |
+              bitmask(AQROOT_U3_ACC_5V_BOOST_EN))));
+    check("raw partial output write INVALIDATES the cached shadow",
+          !raw.outputShadowValid());
   }
 
   std::printf("\n%s -- %d failure(s)\n", g_failures ? "FAIL" : "PASS", g_failures);

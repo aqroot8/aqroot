@@ -37,17 +37,23 @@ WHAT IS PROVED
   H5  the firmware layer implements what it was given: every role the generator
       emits is referenced by the C++ under `Firmware/src/hw/`, and the C++
       names no `AQROOT_` symbol the generator did not emit.
-  H6  TWO HOST TESTS compile under `-Wall -Wextra -Werror` and pass, and six
-      controls -- three each -- must make them FAIL.
+  H6  TWO HOST TESTS compile under `-Wall -Wextra -Werror` and pass, and live
+      destructive controls must make them FAIL.
         * the EXPANDER SAFE-ORDERING test.  The PCAL9535A resets to all-inputs
-          with its output latches at 0x00, and six of this board's expander
-          outputs are safe at 0 while three are safe at 1, so the order
-          `pulls -> mask -> latch -> direction` is a SAFETY property, not a
-          style.  It is invisible to a compile and invisible to DRC; the test
-          makes it visible by recording the I2C transactions the layer issues.
+          with its output latches at 0xFF, while six of this board's expander
+          outputs are safe at 0.  A warm MCU reset can also inherit arbitrary
+          old output commands.  The complete SAFE LATCH must therefore be the
+          first write, direction last, independent failures must not suppress
+          the other shutdown path, and an ambiguous partial port-pair write
+          must invalidate the software shadow and fall back to an absolute
+          safe-latch write.  The test records those I2C transactions directly.
         * the SPI BUS B ARBITER test.  U7, U8 and U9 share one bus and the two
           rules over it -- one chip select at a time, one transmitter at a time
           -- were comments until D-748.  A comment cannot refuse.
+  H7  the actual Demo `setup()` establishes I2C and the complete PCAL safe
+      state BEFORE `Serial.begin`, the optional three-second console wait, I2C
+      scanning or peripheral discovery.  This closes the round-2 warm-reset
+      integration defect that was invisible inside the driver-level H6 test.
 
 AND IT PROVES IT IS NOT VACUOUS.  Eleven controls mutate the policy table --
 including the exact `P05`/`P06` swap D-732 found -- and each must be REFUSED.
@@ -79,6 +85,8 @@ HOST_TESTS = [
     ROOT / "Firmware/test/test_expander_order.cpp",
     ROOT / "Firmware/test/test_spi_bus_b.cpp",
 ]
+DEMO_MAIN = ROOT / "Firmware/src/demo/main.cpp"
+I2C_ARDUINO = ROOT / "Firmware/src/hw/aqroot_i2c_arduino.h"
 
 # Each control is (name, file under src/hw, exact text, replacement).  The
 # replacement must be a DEFENSIBLE-LOOKING mistake -- the kind a future edit
@@ -151,12 +159,19 @@ ORDER_CONTROLS = [
     if (!u2_.readInputs(bus, &u2_inputs_)) return false;
     if (!u3_.readInputs(bus, &u3_inputs_)) return false;
     const bool a = true, b = true, c = true, d = true;"""),
-    ("a NACKed load-switch write leaves the switch commanded ON",
+    ("a failed output-pair write keeps a stale software shadow",
+     "pcal9535a.h",
+     """      shadow_valid_ = false;
+      return false;
+    }
+    shadow_ = value;""",
+     """      return false;
+    }
+    shadow_ = value;"""),
+    ("a failed 5 V shutdown skips the absolute safe-latch fallback",
      "aqroot_demo_expanders.h",
-     """    const bool boost = u3_.clearBits(
-        bus, uint16_t(bitmask(AQROOT_U3_ACC_5V_SW_EN) |
-                      bitmask(AQROOT_U3_ACC_5V_BOOST_EN)));""",
-     """    const bool boost = u3_.writeBit(bus, AQROOT_U3_ACC_5V_BOOST_EN, false);"""),
+     "    if (!sw || !clear) fallback = u3_.writeOutputs(bus, kU3SafeLatch);",
+     "    if (false) fallback = u3_.writeOutputs(bus, kU3SafeLatch);"),
 ]
 
 
@@ -203,6 +218,24 @@ def strip_comments(text):
     """Drop // and /* */ comments so only code is scanned for symbols."""
     text = re.sub(r"/\*.*?\*/", " ", text, flags=re.S)
     return re.sub(r"//[^\n]*", " ", text)
+
+
+def setup_safety_order(text):
+    """D-766: prove integration order in the real Demo entry point, not merely
+    inside the expander driver.  The first Serial/logging/discovery action must
+    come after I2C open and the complete PCAL safe-state transaction."""
+    code = strip_comments(text)
+    markers = {
+        "i2c_open": "const bool i2c_open = g_bus.begin(AQROOT_I2C_BRINGUP_HZ);",
+        "expanders_safe": "const bool expanders_safe = i2c_open && g_expanders.begin(g_bus);",
+        "serial_begin": "Serial.begin(115200);",
+        "i2c_scan": "scanI2c();",
+    }
+    positions = {k: code.find(v) for k, v in markers.items()}
+    present = all(v >= 0 for v in positions.values())
+    ordered = (present and positions["i2c_open"] < positions["expanders_safe"] <
+               positions["serial_begin"] < positions["i2c_scan"])
+    return ordered, positions
 
 
 def swap_nets(bits, left, right):
@@ -379,6 +412,24 @@ def main():
             h6["verdict"] = "FAIL"
         h6["tests"].append(entry)
     report["H6_host_tests_prove_the_orderings"] = h6
+
+    # ---- H7 -------------------------------------------------------------
+    main_text = DEMO_MAIN.read_text(encoding="utf-8")
+    ordered, positions = setup_safety_order(main_text)
+    recovery = "if (!recoverStuckBus()) return false;" in strip_comments(
+        I2C_ARDUINO.read_text(encoding="utf-8"))
+    # Live negative control: insert an early Serial.begin immediately before
+    # the I2C-open marker.  The same checker must refuse that realistic
+    # regression even though the later safe initialization still exists.
+    marker = "  const bool i2c_open = g_bus.begin(AQROOT_I2C_BRINGUP_HZ);"
+    mutated = main_text.replace(marker, "  Serial.begin(115200);\n" + marker, 1)
+    control_ordered, _ = setup_safety_order(mutated)
+    report["H7_warm_reset_safe_state_precedes_console_and_discovery"] = {
+        "positions": positions,
+        "i2c_bus_recovery_precedes_Wire_begin": recovery,
+        "early_serial_control_refused": not control_ordered,
+        "verdict": "PASS" if ordered and recovery and not control_ordered else "FAIL",
+    }
 
     # ---- controls -------------------------------------------------------
     controls = []

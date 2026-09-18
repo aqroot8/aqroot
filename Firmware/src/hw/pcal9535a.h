@@ -146,7 +146,14 @@ class Pcal9535a {
   }
 
   bool writeOutputs(I2cBus &bus, uint16_t value) {
-    if (!writePortPair(bus, address_, kRegOutput0, value)) return false;
+    if (!writePortPair(bus, address_, kRegOutput0, value)) {
+      // A failed two-byte output write leaves the physical latch state UNKNOWN:
+      // some I2C controllers/slaves can accept the first data byte before the
+      // transaction fails on the second.  Never keep using the pre-write shadow
+      // for read-modify-write after that ambiguity.
+      shadow_valid_ = false;
+      return false;
+    }
     shadow_ = value;
     shadow_valid_ = true;
     return true;
@@ -160,16 +167,13 @@ class Pcal9535a {
     return writeOutputs(bus, next);
   }
 
-  // D-751.  A FAILED WRITE DOES NOT MOVE THE SHADOW, AND THAT TURNS A RETRY
-  // INTO A RE-ASSERTION.  `writeOutputs` only updates `shadow_` when the bus
-  // ACKs -- which is right, because a NACKed write did not reach the device --
-  // but it means the NEXT single-bit write re-sends the bit the failed one was
-  // trying to clear.  On the accessory shutdown path, where D-750 made both
-  // writes unconditional, one NACK on the load-switch bit would otherwise let
-  // the following boost-disable write command the load switch back ON.
-  // `clearBits` collapses that: whatever the shadow holds, every bit in `mask`
-  // goes to 0 in one transaction, so a shutdown needs ONE write to succeed
-  // rather than all of them.
+  // D-751/D-766.  A FAILED WRITE MAKES THE SHADOW UNKNOWN.  D-751 first
+  // prevented a refused load-switch clear from being reasserted by a later
+  // single-bit write.  Round-2 review adds the byte-boundary case: a failed
+  // two-byte transaction can have changed only one output-port byte.  In that
+  // case no software shadow is trustworthy, so writeOutputs() invalidates it.
+  // `clearBits` is therefore only usable while the shadow is valid; safety
+  // callers must fall back to an ABSOLUTE full safe-latch write after failure.
   bool clearBits(I2cBus &bus, uint16_t mask) {
     if (!shadow_valid_) return false;  // warm reset: full safe latch first
     return writeOutputs(bus, uint16_t(shadow_ & uint16_t(~mask)));

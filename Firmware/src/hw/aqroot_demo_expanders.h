@@ -146,7 +146,8 @@ class DemoExpanders {
       : u2_(AQROOT_EXP_U2_ADDR), u3_(AQROOT_EXP_U3_ADDR),
         u2_inputs_(0xFFFF), u3_inputs_(0xFFFF),
         u2_irq_(0), u3_irq_(0), ready_(false),
-        fault_shutdown_seen_(false), fault_shutdown_ok_(false) {}
+        fault_shutdown_seen_(false), fault_shutdown_ok_(false),
+        fault_observability_lost_(false) {}
 
   // Probe both devices, drive both into their safe state, then take the first
   // input snapshot -- which also deasserts /INT on both, so WAKE_INT_N is
@@ -188,6 +189,7 @@ class DemoExpanders {
     if (!u3_.readInputs(bus, &u3_inputs_)) return false;
     u2_irq_ = 0;
     u3_irq_ = 0;
+    fault_observability_lost_ = false;
     ready_ = true;
     return true;
   }
@@ -209,20 +211,34 @@ class DemoExpanders {
     const bool b = u3_.readInterruptStatus(bus, &u3_irq_);
     const bool c = u2_.readInputs(bus, &u2_inputs_);
     const bool d = u3_.readInputs(bus, &u3_inputs_);
-    // An accessory power fault must drop both series disconnects immediately
-    // and without waiting for a caller to notice.  BOTH are attempted even if
-    // the first write fails -- they are separate registers on the same device
-    // and a NACK on one says nothing about the other -- and the outcome is
-    // RECORDED rather than discarded, so a caller cannot read "serviced" as
-    // "the accessory rails are off".
-    if (d && accessoryFault()) {
+
+    // D-765 / round-2 review: losing the U3 INPUT read is itself a loss of
+    // safety observability, because ACC_POWER_FAULT_N lives there.  The old
+    // code returned false but issued ZERO shutdown writes, so an accessory
+    // rail could remain enabled indefinitely while the caller merely knew that
+    // service() failed.  Fail closed: if the fault cannot be observed, attempt
+    // both independent shutdown paths anyway and forbid re-enable until a
+    // later successful U3 input read restores observability.
+    if (!d) {
+      fault_observability_lost_ = true;
       const bool off5 = setAccessory5v(bus, false);
       const bool off3 = setAccessory3v3(bus, false);
       fault_shutdown_ok_ = off5 && off3;
       fault_shutdown_seen_ = true;
-      return a && b && c && d && fault_shutdown_ok_;
+      return false;
     }
-    return a && b && c && d;
+
+    fault_observability_lost_ = false;
+
+    // An observed accessory power fault follows the same fail-closed path.
+    if (accessoryFault()) {
+      const bool off5 = setAccessory5v(bus, false);
+      const bool off3 = setAccessory3v3(bus, false);
+      fault_shutdown_ok_ = off5 && off3;
+      fault_shutdown_seen_ = true;
+      return a && b && c && fault_shutdown_ok_;
+    }
+    return a && b && c;
   }
 
   // Did a fault shutdown ever run, and did every write in it succeed?  A
@@ -230,6 +246,7 @@ class DemoExpanders {
   // of information (D-750).
   bool faultShutdownSeen() const { return fault_shutdown_seen_; }
   bool faultShutdownOk() const { return fault_shutdown_ok_; }
+  bool faultObservabilityLost() const { return fault_observability_lost_; }
 
   // ---- inputs ----------------------------------------------------------
   bool pressed(Button button) const {
@@ -315,31 +332,49 @@ class DemoExpanders {
   // verdict.
   bool setAccessory5v(I2cBus &bus, bool on) {
     if (on) {
+      if (!ready_ || fault_observability_lost_ || accessoryFault()) return false;
       if (!u3_.writeBit(bus, AQROOT_U3_ACC_5V_BOOST_EN, true)) return false;
       return u3_.writeBit(bus, AQROOT_U3_ACC_5V_SW_EN, true);
     }
-    // The SAFE ORDER is still switch-then-boost, so the first write clears
-    // ACC_5V_SW_EN alone.  The second clears BOTH (D-751 `clearBits`): if the
-    // first NACKed, the shadow still holds ACC_5V_SW_EN high and a plain
-    // single-bit boost write would command the load switch back on.  This way
-    // ONE surviving write takes the whole rail down.
+    // The SAFE ORDER is still switch-then-boost.  First request the switch
+    // open, then clear BOTH switch and boost while the shadow is trustworthy.
+    // A failed write now invalidates that shadow (D-766), so the fallback below
+    // uses the absolute board-safe latch rather than another read/modify/write.
     const bool sw = u3_.writeBit(bus, AQROOT_U3_ACC_5V_SW_EN, false);
-    const bool boost = u3_.clearBits(
+    const bool clear = u3_.clearBits(
         bus, uint16_t(bitmask(AQROOT_U3_ACC_5V_SW_EN) |
                       bitmask(AQROOT_U3_ACC_5V_BOOST_EN)));
-    return sw && boost;
+    // D-766: a failed port-pair write invalidates the software shadow because
+    // one byte may have reached the PCAL before the bus error.  Do not stop at
+    // a now-impossible read/modify/write: make one absolute full-latch attempt
+    // at the board-safe word.  It is intentionally broader than the requested
+    // rail shutdown; after an uncertain bus transaction, safety outranks RGB or
+    // radio-control state.  We still return false so the fault is not hidden.
+    bool fallback = true;
+    if (!sw || !clear) fallback = u3_.writeOutputs(bus, kU3SafeLatch);
+    return sw && clear && fallback;
   }
 
   // U16's B-side supply IS ACC_3V3_SW, so the accessory I2C buffer can only be
   // enabled after the switched 3.3 V rail is up, and must be disabled before it
   // goes away.
   bool setAccessory3v3(I2cBus &bus, bool on) {
-    if (on) return u3_.writeBit(bus, AQROOT_U3_ACC_3V3_EN, true);
+    if (on) {
+      if (!ready_ || fault_observability_lost_ || accessoryFault()) return false;
+      return u3_.writeBit(bus, AQROOT_U3_ACC_3V3_EN, true);
+    }
     // Same rule as setAccessory5v, and here the two writes are on DIFFERENT
     // DEVICES: a U2 bus error must not leave U3's switched 3.3 V rail on.
     const bool buf = u2_.writeBit(bus, AQROOT_U2_ACC_PWR_EN, false);
     const bool rail = u3_.writeBit(bus, AQROOT_U3_ACC_3V3_EN, false);
-    return buf && rail;
+    // Same byte-boundary ambiguity as the 5 V path, but across two devices.
+    // Independently recover each expander to its absolute safe latch if its
+    // requested write failed.  Never let a failure on U2 suppress the U3
+    // shutdown attempt, or vice versa.
+    bool u2_fallback = true, u3_fallback = true;
+    if (!buf) u2_fallback = u2_.writeOutputs(bus, kU2SafeLatch);
+    if (!rail) u3_fallback = u3_.writeOutputs(bus, kU3SafeLatch);
+    return buf && rail && u2_fallback && u3_fallback;
   }
 
   bool setAccessoryI2cBuffer(I2cBus &bus, bool on) {
@@ -374,6 +409,7 @@ class DemoExpanders {
   bool ready_;
   bool fault_shutdown_seen_;
   bool fault_shutdown_ok_;
+  bool fault_observability_lost_;
 };
 
 }  // namespace aqroot

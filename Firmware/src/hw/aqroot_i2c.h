@@ -37,8 +37,10 @@ inline bool writeRegister(I2cBus &bus, uint8_t address, uint8_t reg,
 }
 
 // Convenience: 16-bit port write.  The PCAL9535A auto-increments between the
-// two registers of a port pair, so port 0 and port 1 go out in one transaction
-// and cannot be observed half-applied.
+// two registers of a port pair, so both bytes are issued in one transaction.
+// A transport failure still makes the physical result UNKNOWN: the first byte
+// may have reached the device before the second byte or STOP failed.  Callers
+// must invalidate any cached output state when this function returns false.
 inline bool writePortPair(I2cBus &bus, uint8_t address, uint8_t reg,
                           uint16_t value) {
   const uint8_t frame[3] = {reg, uint8_t(value & 0xFF), uint8_t(value >> 8)};

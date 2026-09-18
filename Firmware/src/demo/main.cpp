@@ -48,6 +48,12 @@ static SpiBusB g_spi_b(g_selects);
 static Ili9488 g_display;
 static bool g_display_up = false;
 static bool g_ok = true;
+static bool g_acc3v3 = false;
+static bool g_acc5v = false;
+static bool g_accessory_i2c = false;
+static uint32_t g_last_battery_guard_ms = 0;
+
+static constexpr float kAccessoryBatteryFloorV = 3.50f;
 
 static void report(const char *stage, bool ok, const char *detail = nullptr) {
   Serial.printf("[%-4s] %-34s %s\n", ok ? "PASS" : "FAIL", stage,
@@ -58,6 +64,34 @@ static void report(const char *stage, bool ok, const char *detail = nullptr) {
 // ---------------------------------------------------------------------------
 static bool i2cReadByte(uint8_t address, uint8_t reg, uint8_t *value) {
   return g_bus.readRegister(address, reg, value, 1);
+}
+
+static bool readFuelCellVoltage(float *volts) {
+  uint8_t raw[2] = {0, 0};
+  if (!volts || !g_bus.readRegister(AQROOT_I2C_ADDR_FUEL_GAUGE, 0x02, raw, 2)) {
+    return false;
+  }
+  const uint16_t counts = (uint16_t(raw[0]) << 4) | (raw[1] >> 4);
+  *volts = float(counts) * 0.000078125f;
+  return true;
+}
+
+static bool accessoryBatteryOk(float *volts = nullptr) {
+  float v = 0.0f;
+  const bool read = readFuelCellVoltage(&v);
+  if (volts) *volts = v;
+  return read && v >= kAccessoryBatteryFloorV;
+}
+
+static void forceAccessoriesOff(const char *why) {
+  const bool off5 = g_expanders.setAccessory5v(g_bus, false);
+  const bool off3 = g_expanders.setAccessory3v3(g_bus, false);
+  const bool offbuf = g_expanders.setAccessoryI2cBuffer(g_bus, false);
+  g_acc5v = false;
+  g_acc3v3 = false;
+  g_accessory_i2c = false;
+  Serial.printf("ACCESSORY FAIL-CLOSED: %s; 5V=%d 3V3=%d I2C=%d\n",
+                why, off5, off3, offbuf);
 }
 
 static void scanI2c() {
@@ -99,17 +133,16 @@ static void probeI2cDevice(const char *name, uint8_t address, uint8_t reg,
 }
 
 // ---------------------------------------------------------------------------
-static void bringUpExpanders() {
-  const bool ok = g_expanders.begin(g_bus);
-  char detail[96];
-  snprintf(detail, sizeof(detail), "U2 0x%02X U3 0x%02X", AQROOT_EXP_U2_ADDR,
-           AQROOT_EXP_U3_ADDR);
-  report("PCAL9535A safe bring-up", ok, detail);
-  if (!ok) return;
+static void releaseExpanderResetLines() {
+  if (!g_expanders.ready()) {
+    report("reset-line release", false,
+           "expanders were not safely initialised; resets remain asserted");
+    return;
+  }
 
-  // Everything the board holds safe with an external 100k is now held safe by
-  // the expander's own latch instead.  Release the three resets in the order
-  // the parts want them: display and touch first (they are slow), LoRa last.
+  // Safe latches and directions were already committed at the very start of
+  // setup(), before USB/Serial waiting or bus discovery.  Only now release the
+  // three downstream resets in the order the parts want them.
   g_expanders.holdNfcBoostOff(g_bus);
   g_expanders.setDisplayReset(g_bus, true);
   g_expanders.setTouchReset(g_bus, true);
@@ -166,6 +199,13 @@ static const char *chargerText(ChargerState state) {
 void setup() {
   parkAllPins();
 
+  // D-765 / round-2 review: a warm MCU reset does NOT reset the powered
+  // PCAL9535As.  Safety therefore cannot wait for USB CDC, logging, an I2C scan
+  // or peripheral discovery.  Recover/open the bus and write both complete
+  // safe latches first.  No Serial call precedes these transactions.
+  const bool i2c_open = g_bus.begin(AQROOT_I2C_BRINGUP_HZ);
+  const bool expanders_safe = i2c_open && g_expanders.begin(g_bus);
+
   Serial.begin(115200);
   const uint32_t deadline = millis() + 3000;
   while (!Serial && millis() < deadline) {
@@ -175,10 +215,15 @@ void setup() {
   Serial.printf("board_sha256 %s\n", AQROOT_DEMO_BOARD_SHA256);
   Serial.println("---------------------------------------------------------------");
   report("pins parked", true);
+  report("i2c recovered/open at bring-up speed", i2c_open);
+  report("PCAL9535A safe latches before console wait", expanders_safe);
+  if (!expanders_safe) {
+    Serial.println("FATAL: accessory/reset safety state could not be established.");
+    return;
+  }
 
-  report("i2c open at bring-up speed", g_bus.begin(AQROOT_I2C_BRINGUP_HZ));
   scanI2c();
-  bringUpExpanders();
+  releaseExpanderResetLines();
 
   probeI2cDevice("BMI270 U4 chip id", AQROOT_I2C_ADDR_IMU, 0x00, 0x24, true);
   // INTERNAL_STATUS.message[3:0]: 0 = not initialised, 1 = init_ok.  The BMI270
@@ -299,6 +344,11 @@ void loop() {
   if (asserted || millis() - last_poll > 200) {
     last_poll = millis();
     if (g_expanders.service(g_bus)) {
+      if (g_expanders.accessoryFault()) {
+        g_acc3v3 = false;
+        g_acc5v = false;
+        g_accessory_i2c = false;
+      }
       if (g_expanders.u2Inputs() != g_last_u2 ||
           g_expanders.u3Inputs() != g_last_u3) {
         g_last_u2 = g_expanders.u2Inputs();
@@ -308,36 +358,81 @@ void loop() {
                       g_expanders.u3InterruptStatus());
         printStatus();
       }
+    } else {
+      static uint32_t last_service_error = 0;
+      if (g_expanders.faultObservabilityLost()) {
+        g_acc3v3 = false;
+        g_acc5v = false;
+        g_accessory_i2c = false;
+      }
+      if (millis() - last_service_error > 1000) {
+        last_service_error = millis();
+        Serial.printf("I2C service FAILED; accessory fault observability=%s\n",
+                      g_expanders.faultObservabilityLost() ? "LOST (rails forced off)"
+                                                           : "available");
+      }
+    }
+  }
+
+  if ((g_acc3v3 || g_acc5v) &&
+      millis() - g_last_battery_guard_ms >= 500) {
+    g_last_battery_guard_ms = millis();
+    float vcell = 0.0f;
+    if (!accessoryBatteryOk(&vcell)) {
+      char why[96];
+      if (vcell > 0.0f) {
+        snprintf(why, sizeof(why), "VCELL %.3f V below %.2f V Demo floor",
+                 vcell, kAccessoryBatteryFloorV);
+      } else {
+        snprintf(why, sizeof(why),
+                 "MAX17048 VCELL unreadable; accessory load not permitted");
+      }
+      forceAccessoriesOff(why);
     }
   }
 
   if (Serial.available()) {
-    static bool acc3v3 = false, acc5v = false, buffer_on = false;
     switch (Serial.read()) {
       case 'r': g_expanders.setRgb(g_bus, true, false, false); break;
       case 'g': g_expanders.setRgb(g_bus, false, true, false); break;
       case 'b': g_expanders.setRgb(g_bus, false, false, true); break;
       case 'w': g_expanders.setRgb(g_bus, true, true, true); break;
       case 'o': g_expanders.setRgb(g_bus, false, false, false); break;
-      case '3':
-        acc3v3 = !acc3v3;
-        Serial.printf("ACC_3V3_SW %s -> %d\n", acc3v3 ? "on" : "off",
-                      g_expanders.setAccessory3v3(g_bus, acc3v3));
+      case '3': {
+        const bool want = !g_acc3v3;
+        float vcell = 0.0f;
+        if (want && !accessoryBatteryOk(&vcell)) {
+          Serial.printf("ACC_3V3_SW REFUSED: VCELL %.3f V / floor %.2f V\n",
+                        vcell, kAccessoryBatteryFloorV);
+          break;
+        }
+        const bool ok = g_expanders.setAccessory3v3(g_bus, want);
+        if (ok) g_acc3v3 = want;
+        Serial.printf("ACC_3V3_SW %s -> %d\n", want ? "on" : "off", ok);
         break;
-      case '5':
-        acc5v = !acc5v;
+      }
+      case '5': {
+        const bool want = !g_acc5v;
+        float vcell = 0.0f;
+        if (want && !accessoryBatteryOk(&vcell)) {
+          Serial.printf("ACC_5V_SW REFUSED: VCELL %.3f V / floor %.2f V\n",
+                        vcell, kAccessoryBatteryFloorV);
+          break;
+        }
         // Boost first, switch second, and the reverse on the way down.  Both
         // disconnects are required by D-186 and neither is optional.
-        Serial.printf("ACC_5V_SW %s -> %d\n", acc5v ? "on" : "off",
-                      g_expanders.setAccessory5v(g_bus, acc5v));
+        const bool ok = g_expanders.setAccessory5v(g_bus, want);
+        if (ok) g_acc5v = want;
+        Serial.printf("ACC_5V_SW %s -> %d\n", want ? "on" : "off", ok);
         break;
-      case 'i':
-        buffer_on = !buffer_on;
-        // Refuses unless the switched 3.3 V rail is already up: U16 is powered
-        // from ACC_3V3_SW.
-        Serial.printf("ACC_PWR_EN %s -> %d\n", buffer_on ? "on" : "off",
-                      g_expanders.setAccessoryI2cBuffer(g_bus, buffer_on));
+      }
+      case 'i': {
+        const bool want = !g_accessory_i2c;
+        const bool ok = g_expanders.setAccessoryI2cBuffer(g_bus, want);
+        if (ok) g_accessory_i2c = want;
+        Serial.printf("ACC_PWR_EN %s -> %d\n", want ? "on" : "off", ok);
         break;
+      }
       case 'm': {
         const MicCapture mic = captureMicrophone();
         Serial.printf("mic  %s, %lu frames, peak L=%ld R=%ld (24-bit)\n",
