@@ -121,8 +121,8 @@ What exists in the file:
 * **Autonomous dead-cell recovery** — `U19` TLV7032, ratiometric polarity bridge, handoff
   comparator, `Q6`/`Q7`/`Q8` series 3-input AND, `Q9` FAULT inverter, `Q5` recovery P-FET,
   `R95` limit, `D12` unidirectional. USB-powered and firmware-independent
-* **Accessory power** — `+3V3` -> `U20` TPS22950C -> `ACC_3V3_SW`; `BQ25185_SYS` -> `U21`
-  TPS61023 -> `U22` TPS22950C -> `ACC_5V_SW`; both `FLT` pins wire-ORed to `ACC_POWER_FAULT_N`
+* **Accessory power** — `+3V3` -> `U20` TPS22950-Q1 -> `ACC_3V3_SW`; `BQ25185_SYS` -> `U21`
+  TPS61023 -> `U22` TPS22950-Q1 -> `ACC_5V_SW`; both `FLT` pins wire-ORed to `ACC_POWER_FAULT_N`
 * **NFC no-respin source select** — `R106` 0R **FIT** from `+3V3`, `R107` 0R **DNP** from the
   boost, mutually exclusive by fit state
 * **Telemetry** — `VBUS_PRESENT` divided to 2.97 V at VBUS 5.0 V, `LTC4368_FAULT_N`,

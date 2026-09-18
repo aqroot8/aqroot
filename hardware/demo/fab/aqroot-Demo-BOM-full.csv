@@ -141,5 +141,5 @@
 "U17","TPS61169DCKR","Package_TO_SOT_SMD:SOT-353_SC-70-5","Texas Instruments","TPS61169DCKR","C71045","38V high current-boost WLED driver with PWM control","1",""
 "U18","LTC4368-1","Package_SO:MSOP-10_3x3mm_P0.5mm","Analog Devices","LTC4368IMS-1#TRPBF","C688401","","1",""
 "U19","TLV7032","Package_TO_SOT_SMD:SOT-23-8","Texas Instruments","TLV7032DDFR","C2871498","","1",""
-"U20,U22","TPS22950C","Package_TO_SOT_SMD:SOT-23-6","Texas Instruments","TPS22950CDDCR","C7587833","","2",""
+"U20,U22","TPS22950-Q1","Package_TO_SOT_SMD:SOT-23-6","Texas Instruments","TPS22950CQDDCRQ1","C17349276","","2",""
 "Y1","27.12MHz 10pF 3225-4P","Crystal:Crystal_SMD_3225-4Pin_3.2x2.5mm","Yajingxin","TXM27.12M0004322DBBDO00T","C362365","","1",""

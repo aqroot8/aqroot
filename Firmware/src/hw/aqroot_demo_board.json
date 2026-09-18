@@ -1,6 +1,6 @@
 {
   "board": "aqroot-Beta-v2.kicad_pcb",
-  "board_sha256": "1a06b058912b4c37e25d0acd9314f9542671efa852a162cc8b1dc6533e25668b",
+  "board_sha256": "9e4728aebc8d449b32fe0d45f1fb81d4e00bf91baf1f61924048763168b7b7fd",
   "expanders": {
     "U2": {
       "addr": 32,
@@ -381,7 +381,7 @@
           },
           "irq": "MASKED",
           "net": "/ACC_5V_SW_EN",
-          "note": "U22 TPS22950C 5 V accessory load-switch ON.  D-186 makes R131 100k to GND MANDATORY: the TPS22950C's internal 500k smart pull-down is not sufficient on its own and the PCAL powers up high-impedance.  This is the SECOND of D-186's two independent series disconnects; the first is ACC_5V_BOOST_EN on U3.P13",
+          "note": "U22 TPS22950-Q1 5 V accessory load-switch ON.  D-186 makes R131 100k to GND MANDATORY: the TPS22950-Q1's internal 500k smart pull-down is not sufficient on its own and the PCAL powers up high-impedance.  This is the SECOND of D-186's two independent series disconnects; the first is ACC_5V_BOOST_EN on U3.P13",
           "pad": 7,
           "pull": "NONE",
           "role": "ACC_5V_SW_EN",
@@ -472,7 +472,7 @@
           },
           "irq": "MASKED",
           "net": "/ACC_3V3_EN",
-          "note": "U20 TPS22950C switched 3.3 V accessory rail ON.  R98 100k to GND",
+          "note": "U20 TPS22950-Q1 switched 3.3 V accessory rail ON.  R98 100k to GND",
           "pad": 15,
           "pull": "NONE",
           "role": "ACC_3V3_EN",

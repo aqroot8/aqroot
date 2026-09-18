@@ -298,8 +298,8 @@ EXPANDER_POLICY = {
             "P03": dict(role="ACC_5V_SW_EN", net="/ACC_5V_SW_EN", dir="OUT",
                         active="HIGH", safe=0, safe_basis="external_pull",
                         pull="NONE", irq="MASKED",
-                        note="U22 TPS22950C 5 V accessory load-switch ON.  D-186 makes "
-                             "R131 100k to GND MANDATORY: the TPS22950C's internal "
+                        note="U22 TPS22950-Q1 5 V accessory load-switch ON.  D-186 makes "
+                             "R131 100k to GND MANDATORY: the TPS22950-Q1's internal "
                              "500k smart pull-down is not sufficient on its own and "
                              "the PCAL powers up high-impedance.  This is the SECOND "
                              "of D-186's two independent series disconnects; the "
@@ -333,7 +333,7 @@ EXPANDER_POLICY = {
             "P12": dict(role="ACC_3V3_EN", net="/ACC_3V3_EN", dir="OUT",
                         active="HIGH", safe=0, safe_basis="external_pull",
                         pull="NONE", irq="MASKED",
-                        note="U20 TPS22950C switched 3.3 V accessory rail ON.  "
+                        note="U20 TPS22950-Q1 switched 3.3 V accessory rail ON.  "
                              "R98 100k to GND"),
             "P13": dict(role="ACC_5V_BOOST_EN", net="/ACC_5V_BOOST_EN", dir="OUT",
                         active="HIGH", safe=0, safe_basis="external_pull",

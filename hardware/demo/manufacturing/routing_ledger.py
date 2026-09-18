@@ -18,6 +18,9 @@ ROOT = Path(__file__).resolve().parents[3]
 PROJECT = ROOT / "hardware/demo/kicad/aqroot-demo"
 BOARD = PROJECT / "aqroot-Beta-v2.kicad_pcb"
 SCHEMATIC = PROJECT / "aqroot-Beta-v2.kicad_sch"
+# The only legitimate asymmetries between the schematic and the board.
+BOARD_ONLY_REFS = {"BOSS1", "BOSS2"}        # mechanical bosses, no symbol
+SCHEMATIC_ONLY_REFS = {"LS1"}               # off-board wired speaker, no footprint
 APPROVED_NC = {"J5.9", "J5.10", "J5.11", "J5.12", "J5.15", "J5.16", "J5.17", "J5.18"}
 
 # ---------------------------------------------------------------------------
@@ -170,6 +173,24 @@ def generate(board_path: Path = BOARD) -> dict:
     connectivity = board.GetConnectivity()
 
     board_refs = {footprint.GetReference() for footprint in board.GetFootprints()}
+    # D-765.  `kicad-cli sch export bom` EXITS 0 AND SILENTLY OMITS AN ENTIRE
+    # SHEET when one symbol in it is unparseable.  A library symbol renamed
+    # without renaming its unit children removed every `01_POWER_TREE` part
+    # from the population set, and this ledger simply reported 114 nets instead
+    # of 174 -- a SMALLER, GREENER answer to a broken question.  The population
+    # set is therefore reconciled against the board it is about to judge, and
+    # the only tolerated differences are named.
+    population = fitted | dnp
+    board_only = board_refs - population - BOARD_ONLY_REFS
+    schematic_only = population - board_refs - SCHEMATIC_ONLY_REFS
+    if board_only or schematic_only:
+        raise SystemExit(
+            "routing_ledger: schematic population does not cover the board -- "
+            "%d reference(s) on the board with no schematic symbol %s and "
+            "%d schematic reference(s) absent from the board %s.  A sheet very "
+            "likely failed to load; kicad-cli exits 0 when it drops one."
+            % (len(board_only), sorted(board_only),
+               len(schematic_only), sorted(schematic_only)))
     pads_by_net = defaultdict(list)
     nc_observed = set()
     # An APPROVED_UNROUTED contact is NOT skipped -- it stays on its net so the

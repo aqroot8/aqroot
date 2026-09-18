@@ -1,0 +1,83 @@
+{
+ "all_pass": true,
+ "board": "/home/aqroot8/w-opus-d765/hardware/demo/kicad/aqroot-demo/aqroot-Beta-v2.kicad_pcb",
+ "board_min_connection_setting": 0.0,
+ "checks": {
+  "C1_classified": {
+   "all_probe_nets": [
+    "+3V3",
+    "/01_POWER_TREE/BAT_PROTECTED_P",
+    "/01_POWER_TREE/ILIM_VSET",
+    "/01_POWER_TREE/ISET",
+    "/01_POWER_TREE/LTC4368_FAULT_N",
+    "/01_POWER_TREE/LTC_OV",
+    "/01_POWER_TREE/N_BATDIV",
+    "/01_POWER_TREE/REC_BAT_LOW",
+    "/01_POWER_TREE/REC_FAULT_B",
+    "/01_POWER_TREE/REC_GATE_N",
+    "/01_POWER_TREE/REC_POL_OK",
+    "/01_POWER_TREE/VREF_TOP",
+    "/04_SPI_B_RADIOS_NFC/NFC_VDD_AM",
+    "/09_COMMUNITY_HEADER/ACC_DETECT_N_HDR",
+    "/09_COMMUNITY_HEADER/EXT_SDA_BUF",
+    "/ACC_PWR_EN",
+    "/BQ25185_STAT1",
+    "/BQ25185_STAT2",
+    "/I2C_SCL_INT",
+    "/I2C_SDA_INT",
+    "/I2S_BCLK",
+    "GND"
+   ],
+   "nets_below_strict": [
+    "/04_SPI_B_RADIOS_NFC/NFC_VDD_AM",
+    "/I2C_SCL_INT",
+    "/I2C_SDA_INT",
+    "GND"
+   ],
+   "note": "KiCad's connection_width object-pair representative is not deterministic on byte-identical copper; pair UUIDs/coordinates/counts are diagnostic only. C2 proves connectivity on every net reported below the strict floor.",
+   "ok": true,
+   "probe_fired": true,
+   "probe_mm": 0.2,
+   "strict_mm": 0.15
+  },
+  "C2_none_load_bearing": {
+   "nets": [
+    {
+     "components_with_via_tangency": 1,
+     "components_without_via_tangency": 1,
+     "load_bearing": false,
+     "net": "/04_SPI_B_RADIOS_NFC/NFC_VDD_AM"
+    },
+    {
+     "components_with_via_tangency": 1,
+     "components_without_via_tangency": 1,
+     "load_bearing": false,
+     "net": "/I2C_SCL_INT"
+    },
+    {
+     "components_with_via_tangency": 1,
+     "components_without_via_tangency": 1,
+     "load_bearing": false,
+     "net": "/I2C_SDA_INT"
+    },
+    {
+     "components_with_via_tangency": 217,
+     "components_without_via_tangency": 217,
+     "load_bearing": false,
+     "net": "GND"
+    }
+   ],
+   "ok": true
+  },
+  "C3_graph_not_vacuous": {
+   "control_split_components": 2,
+   "control_split_net": "/BQ25185_STAT2",
+   "control_whole_components": 1,
+   "control_whole_net": "/I2C_SCL_INT",
+   "note": "the whole net must resolve to ONE component, matching the board's own connectivity, and the approved-unrouted net must stay at TWO -- a graph that cannot tell them apart proves nothing about the ones in between",
+   "ok": true
+  }
+ },
+ "schema": 1,
+ "why": "board setup carries min_connection 0.0, so KiCad never runs this test; the probe turns it on in a scratch copy only"
+}

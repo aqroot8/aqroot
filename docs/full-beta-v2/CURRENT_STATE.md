@@ -66,6 +66,70 @@
 > `verify_promotion` PASS and `protected_copper` showing exactly one protected
 > net moved.  `U14.7` is on the bus.  This board has **no open owner decision**.
 
+> # **READINESS IS WITHDRAWN AND ONE OF ITS TWO CAUSES IS CLOSED (2026-09-18, D-765).**
+>
+> **D-764's `DEMO_READY_FOR_FAB` WAS WITHDRAWN BY EXTERNAL REVIEW ROUND 2 FOR TWO
+> ITEMS: an unsupported `TPS22950C` `ILIM` setting, and firmware fault /
+> warm-reset handling.  D-765 CLOSES THE FIRST, INDEPENDENTLY CONFIRMED FROM THE
+> PRIMARY SOURCE.  THE SECOND IS STILL OPEN, SO READINESS IS NOT RE-DECLARED.**
+>
+> **Board authority `9e4728ae`; copper byte-identical to `1a06b058`.**  D-753
+> was right that only the load switch's own current limit can bound an external
+> accessory on a board with no accessory current measurement, and its 2.7 kΩ /
+> **0.407 A** setting is retained unchanged.  What was wrong was the **part**.
+> TI `SLVSFJ2B` **section 5 — the Device Comparison Table of the very datasheet
+> D-753 cited — gives the fitted `TPS22950C` an `ILIM` range of 0.5–3.5 A**.
+> The 0.05 A floor and the *"certified from 66 mA"* UL note D-753 reasoned from
+> belong to the base `TPS22950`, **which TI sells only in a WCSP package this
+> board cannot use**.  The accessory limiters were therefore programmed **19 %
+> below their own recommended operating condition**, on the one element between
+> a user's accessory and the pack.
+>
+> **THREE PLACES IN THIS REPOSITORY ALREADY HELD THE RIGHT NUMBER.**
+> `architecture/POWER_FAULT_STATE_TABLE.md` says *"0.5 A – 3.5 A … treat 500 mA
+> as the floor, not the target"* — and D-753 then set 407 mA; the 2026-08-22
+> architecture reconciliation tabulates the variants correctly; and the
+> schematic symbol's own `Description` field read `ILIM 0.5-3.5 A`.  **And `F6`
+> had no clause that could express the act at all** — it never read the
+> limiter's part number.
+>
+> **`U20`/`U22` are now the `TPS22950-Q1`** (`SLVSGP6A`, orderable
+> **`TPS22950CQDDCRQ1`**, LCSC `C17349276`, Active/Production, 4 050 in stock),
+> whose single specified `ILIM` range is **0.05–3.5 A**.  Same **`DDC0006A`**
+> land pattern, same pinout, same `ILIM` equation and EC rows, same auto-retry,
+> same always-on true RCB, same `FLT` semantics, same 170 °C TSD — plus
+> AEC-Q100 grade 1, for about **US$0.03** per device.  **No resistor, no copper
+> and no envelope number changes**: `F6` reproduces D-753's four modes to the
+> digit (1.8786 / 2.2292 / 2.0791 / 2.8857 A, **13.01 %** margin) and the
+> `.kicad_dru` **parsed** class table is proven byte-identical.  `F6` gained
+> three clauses and now runs **eight** controls; `f6e` is the board D-753
+> shipped and is refused by the new range clause **alone**.
+>
+> **A TOOL DEFECT WAS FOUND BY WALKING INTO IT.**  `kicad-cli sch export bom`
+> **exits 0 and silently omits an entire sheet** when one symbol is
+> unparseable, so `routing_ledger` reported **114 nets instead of 174** — a
+> smaller, greener answer to a broken question.  `routing_ledger.generate()`
+> now reconciles the population set against the board, tolerating only
+> `BOSS1`/`BOSS2` and `LS1` by name; re-broken deliberately it names all 138
+> dropped references.  `d750-critical-identity.json` had pinned `U22` and not
+> `U20` — both halves of the same one-MPN pair are pinned now.
+>
+> **Fresh verification on `9e4728ae`:** promotion **16/16**, 0 objects added or
+> removed; routing **173/174** with only owner-approved `U11.3` and **zero
+> unapproved opens**; DRC **199 `lib_footprint_issues`, all warnings, zero other
+> classes**, 17 unconnected, parity **246 warnings / 0 errors with no new Value
+> or MPN item**; protected copper **15 nets / 406 objects identical**; ampacity
+> `all_ok`; **F1–F6 PASS**; **FAB1–FAB15 PASS**, sourcing **252/252**; assembly
+> PDFs print `RELEASE D-765` and the full board SHA; firmware map **H1–H6 PASS**
+> and **all four PlatformIO builds SUCCESS**; `hardware/beta-v2` untouched.
+>
+> **STILL OPEN, AND THE REASON READINESS IS NOT RE-DECLARED:** the external
+> review's **firmware fault / warm-reset** item.  That work is proceeding
+> separately and is NOT part of this transaction.  There is **no open owner
+> decision**.
+>
+> # **D-764's DECLARATION STANDS BELOW AS HISTORY, WITHDRAWN.**
+>
 > # **DEMO_READY_FOR_FAB IS DECLARED (2026-09-18, D-764).**
 >
 > **Board authority `1a06b058`, UNCHANGED since D-759.** D-764 changes no PCB,

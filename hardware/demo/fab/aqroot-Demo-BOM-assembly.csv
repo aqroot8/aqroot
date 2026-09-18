@@ -113,7 +113,7 @@
 "U18","LTC4368-1","Package_SO:MSOP-10_3x3mm_P0.5mm","Analog Devices","LTC4368IMS-1#TRPBF","C688401","","1",""
 "U19","TLV7032","Package_TO_SOT_SMD:SOT-23-8","Texas Instruments","TLV7032DDFR","C2871498","","1",""
 "U2,U3","PCAL9535APW","Package_SO:TSSOP-24_4.4x7.8mm_P0.65mm","NXP Semiconductors","PCAL9535APW,118","C2669683","Low-voltage 16-bit I2C-bus I/O port with interrupt and Agile I/O, TSSOP-24","2",""
-"U20,U22","TPS22950C","Package_TO_SOT_SMD:SOT-23-6","Texas Instruments","TPS22950CDDCR","C7587833","","2",""
+"U20,U22","TPS22950-Q1","Package_TO_SOT_SMD:SOT-23-6","Texas Instruments","TPS22950CQDDCRQ1","C17349276","","2",""
 "U21","TPS61023","Package_TO_SOT_SMD:SOT-563","Texas Instruments","TPS61023DRLR","C919459","","1",""
 "U4","BMI270","AQROOT_Beta:Bosch_LGA-14_2.5x3.0mm_P0.5mm_BMI270","Bosch Sensortec","BMI270","C2836813","6-axis IMU, I2C/SPI, 14-pin LGA, 2.5 x 3.0 mm","1",""
 "U5","MAX98357A","Package_DFN_QFN:TQFN-16-1EP_3x3mm_P0.5mm_EP1.23x1.23mm","Analog Devices (Maxim)","MAX98357AETE+T","C910544","Mono DAC with amplifier, I2S, PCM, TDM, 32-bit, 96khz, 3.2W, TQFP-16","1",""

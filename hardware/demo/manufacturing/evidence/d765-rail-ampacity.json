@@ -1,0 +1,975 @@
+{
+ "all_ok": true,
+ "board": "../kicad/aqroot-demo/aqroot-Beta-v2.kicad_pcb",
+ "dt_limit_K": 20.0,
+ "method_selfcheck": {
+  "dru_rows_not_reproduced": [],
+  "method_reproduces_dru": true,
+  "ok": true,
+  "rows": [
+   {
+    "amps": 1.5,
+    "derived_inner_mm": 3.1478,
+    "derived_outer_mm": 0.5285,
+    "dru_inner_mm": 3.148,
+    "dru_outer_mm": 0.529,
+    "rail": "BAT_MAIN"
+   },
+   {
+    "amps": 1.0,
+    "derived_inner_mm": 1.7994,
+    "derived_outer_mm": 0.3021,
+    "dru_inner_mm": 1.799,
+    "dru_outer_mm": 0.302,
+    "rail": "SYS_MAIN"
+   },
+   {
+    "amps": 1.0,
+    "derived_inner_mm": 1.7994,
+    "derived_outer_mm": 0.3021,
+    "dru_inner_mm": 1.799,
+    "dru_outer_mm": 0.302,
+    "rail": "P3V3"
+   },
+   {
+    "amps": 0.4,
+    "derived_inner_mm": 0.5084,
+    "derived_outer_mm": 0.0854,
+    "dru_inner_mm": 0.508,
+    "dru_outer_mm": 0.085,
+    "rail": "ACC_3V3"
+   },
+   {
+    "amps": 0.7,
+    "derived_inner_mm": 1.1002,
+    "derived_outer_mm": 0.1847,
+    "dru_inner_mm": 1.1,
+    "dru_outer_mm": 0.185,
+    "rail": "ACC_5V"
+   },
+   {
+    "amps": 1.1,
+    "derived_inner_mm": 2.0522,
+    "derived_outer_mm": 0.3446,
+    "dru_inner_mm": 2.052,
+    "dru_outer_mm": 0.345,
+    "rail": "VBUS_CHG"
+   },
+   {
+    "amps": 0.29,
+    "derived_inner_mm": 0.3263,
+    "derived_outer_mm": 0.0548,
+    "dru_inner_mm": 0.326,
+    "dru_outer_mm": 0.055,
+    "rail": "SPK_OUT"
+   }
+  ],
+  "worst_relative_residual": 0.00431
+ },
+ "plane_coupled_model": {
+  "form": "dT = I^2 rho / (k w^2 t (1/d_up + 1/d_down))",
+  "k_fr4_W_per_mmK": 0.0003,
+  "reports": "rise over the ADJACENT COPPER LAYERS, not over ambient; length-independent by construction; ignores lateral spreading, conduction along the copper and the outer layers, so it is a floor on the cooling and a ceiling on the rise"
+ },
+ "rails": [
+  {
+   "accepted_hot_length_mm": 72.018,
+   "accepted_reason": "D-743, re-derived at D-751 / .kicad_dru section 5a: IPC-2221B's internal k describes an isolated coupon in still air, and it is superseded by IPC-2152.  This board's In2.Cu is not an isolated coupon: its own declared stackup puts it 0.4000 mm of core from the In1.Cu GND plane and 0.2028 mm of prepreg from the In3.Cu +3V3 plane, and the plane-coupled rise computed from those distances is 1.45 K against the 66.5 K the isolated-coupon curve returns.  Measured alternatives are exhausted: no corridor exists on any layer at any width (screen_widest_corridor, 3 layers) and in-place widening is worth under 5 % (w/d743/widen_plan.py, 25 segments).  The ELECTRICAL cost is accepted with its number: 216 mOhm and 237 mV at 1.1 A, which D-750's charge-timer margin is computed against.",
+   "basis": "BQ25185 ILIM/VSET = R36 13 kOhm -> ILIM1100 (SLUSF65B table 6-1). D-743 raised it from ILIM500 so R37's 390 Ohm ICHG = 769 mA can terminate inside the 360 min tMAXCHG safety timer.",
+   "bottleneck_amps_at_10K": 0.478,
+   "connected": true,
+   "design_amps": 1.1,
+   "dissipation_W": 0.2609,
+   "hot_segments": [
+    {
+     "accepted_by": "dru-5a",
+     "area_mm2": 0.01216,
+     "at": [
+      36.8,
+      135.1
+     ],
+     "drill_mm": null,
+     "kind": "track",
+     "layer": "In2.Cu",
+     "length_mm": 3.132,
+     "plane_coupled_rise_K": 0.96,
+     "required_mm_at_10K": 2.052,
+     "rise_K": 47.2,
+     "width_mm": 0.8
+    },
+    {
+     "accepted_by": "dru-5a",
+     "area_mm2": 0.01216,
+     "at": [
+      33.8,
+      136.0
+     ],
+     "drill_mm": null,
+     "kind": "track",
+     "layer": "In2.Cu",
+     "length_mm": 1.607,
+     "plane_coupled_rise_K": 0.96,
+     "required_mm_at_10K": 2.052,
+     "rise_K": 47.2,
+     "width_mm": 0.8
+    },
+    {
+     "accepted_by": "dru-5a",
+     "area_mm2": 0.01216,
+     "at": [
+      32.2,
+      136.15
+     ],
+     "drill_mm": null,
+     "kind": "track",
+     "layer": "In2.Cu",
+     "length_mm": 0.885,
+     "plane_coupled_rise_K": 0.96,
+     "required_mm_at_10K": 2.052,
+     "rise_K": 47.2,
+     "width_mm": 0.8
+    },
+    {
+     "accepted_by": "dru-5a",
+     "area_mm2": 0.01216,
+     "at": [
+      31.6,
+      135.5
+     ],
+     "drill_mm": null,
+     "kind": "track",
+     "layer": "In2.Cu",
+     "length_mm": 0.25,
+     "plane_coupled_rise_K": 0.96,
+     "required_mm_at_10K": 2.052,
+     "rise_K": 47.2,
+     "width_mm": 0.8
+    },
+    {
+     "accepted_by": "dru-5a",
+     "area_mm2": 0.01216,
+     "at": [
+      27.65,
+      128.5
+     ],
+     "drill_mm": null,
+     "kind": "track",
+     "layer": "In2.Cu",
+     "length_mm": 6.428,
+     "plane_coupled_rise_K": 0.96,
+     "required_mm_at_10K": 2.052,
+     "rise_K": 47.2,
+     "width_mm": 0.8
+    },
+    {
+     "accepted_by": "dru-5a",
+     "area_mm2": 0.01216,
+     "at": [
+      26.65,
+      122.15
+     ],
+     "drill_mm": null,
+     "kind": "track",
+     "layer": "In2.Cu",
+     "length_mm": 5.188,
+     "plane_coupled_rise_K": 0.96,
+     "required_mm_at_10K": 2.052,
+     "rise_K": 47.2,
+     "width_mm": 0.8
+    },
+    {
+     "accepted_by": "dru-5a",
+     "area_mm2": 0.01216,
+     "at": [
+      29.05,
+      117.55
+     ],
+     "drill_mm": null,
+     "kind": "track",
+     "layer": "In2.Cu",
+     "length_mm": 2.7,
+     "plane_coupled_rise_K": 0.96,
+     "required_mm_at_10K": 2.052,
+     "rise_K": 47.2,
+     "width_mm": 0.8
+    },
+    {
+     "accepted_by": "dru-5a",
+     "area_mm2": 0.01216,
+     "at": [
+      29.0,
+      114.85
+     ],
+     "drill_mm": null,
+     "kind": "track",
+     "layer": "In2.Cu",
+     "length_mm": 0.814,
+     "plane_coupled_rise_K": 0.96,
+     "required_mm_at_10K": 2.052,
+     "rise_K": 47.2,
+     "width_mm": 0.8
+    },
+    {
+     "accepted_by": "dru-5a",
+     "area_mm2": 0.01216,
+     "at": [
+      28.45,
+      114.25
+     ],
+     "drill_mm": null,
+     "kind": "track",
+     "layer": "In2.Cu",
+     "length_mm": 0.206,
+     "plane_coupled_rise_K": 0.96,
+     "required_mm_at_10K": 2.052,
+     "rise_K": 47.2,
+     "width_mm": 0.8
+    },
+    {
+     "accepted_by": "dru-5a",
+     "area_mm2": 0.01216,
+     "at": [
+      28.5,
+      114.05
+     ],
+     "drill_mm": null,
+     "kind": "track",
+     "layer": "In2.Cu",
+     "length_mm": 1.703,
+     "plane_coupled_rise_K": 0.96,
+     "required_mm_at_10K": 2.052,
+     "rise_K": 47.2,
+     "width_mm": 0.8
+    },
+    {
+     "accepted_by": "dru-5a",
+     "area_mm2": 0.01216,
+     "at": [
+      28.4,
+      112.35
+     ],
+     "drill_mm": null,
+     "kind": "track",
+     "layer": "In2.Cu",
+     "length_mm": 3.889,
+     "plane_coupled_rise_K": 0.96,
+     "required_mm_at_10K": 2.052,
+     "rise_K": 47.2,
+     "width_mm": 0.8
+    },
+    {
+     "accepted_by": "dru-5a",
+     "area_mm2": 0.01216,
+     "at": [
+      25.65,
+      109.6
+     ],
+     "drill_mm": null,
+     "kind": "track",
+     "layer": "In2.Cu",
+     "length_mm": 2.051,
+     "plane_coupled_rise_K": 0.96,
+     "required_mm_at_10K": 2.052,
+     "rise_K": 47.2,
+     "width_mm": 0.8
+    },
+    {
+     "accepted_by": "dru-5a",
+     "area_mm2": 0.01216,
+     "at": [
+      27.1,
+      108.15
+     ],
+     "drill_mm": null,
+     "kind": "track",
+     "layer": "In2.Cu",
+     "length_mm": 1.344,
+     "plane_coupled_rise_K": 0.96,
+     "required_mm_at_10K": 2.052,
+     "rise_K": 47.2,
+     "width_mm": 0.8
+    },
+    {
+     "accepted_by": "dru-5a",
+     "area_mm2": 0.01216,
+     "at": [
+      27.95,
+      104.3
+     ],
+     "drill_mm": null,
+     "kind": "track",
+     "layer": "In2.Cu",
+     "length_mm": 6.333,
+     "plane_coupled_rise_K": 0.96,
+     "required_mm_at_10K": 2.052,
+     "rise_K": 47.2,
+     "width_mm": 0.8
+    },
+    {
+     "accepted_by": "dru-5a",
+     "area_mm2": 0.01216,
+     "at": [
+      23.65,
+      99.65
+     ],
+     "drill_mm": null,
+     "kind": "track",
+     "layer": "In2.Cu",
+     "length_mm": 1.077,
+     "plane_coupled_rise_K": 0.96,
+     "required_mm_at_10K": 2.052,
+     "rise_K": 47.2,
+     "width_mm": 0.8
+    },
+    {
+     "accepted_by": "dru-5a",
+     "area_mm2": 0.01216,
+     "at": [
+      21.2,
+      83.85
+     ],
+     "drill_mm": null,
+     "kind": "track",
+     "layer": "In2.Cu",
+     "length_mm": 30.311,
+     "plane_coupled_rise_K": 0.96,
+     "required_mm_at_10K": 2.052,
+     "rise_K": 47.2,
+     "width_mm": 0.8
+    },
+    {
+     "accepted_by": "dru-5a",
+     "area_mm2": 0.00988,
+     "at": [
+      52.85,
+      76.625
+     ],
+     "drill_mm": null,
+     "kind": "track",
+     "layer": "In2.Cu",
+     "length_mm": 4.1,
+     "plane_coupled_rise_K": 1.45,
+     "required_mm_at_10K": 2.052,
+     "rise_K": 66.5,
+     "width_mm": 0.65
+    }
+   ],
+   "ir_drop_mV": 237.2,
+   "net": "/01_POWER_TREE/USB_VBUS_CHG",
+   "pads_not_on_board": [],
+   "path_length_mm": 189.819,
+   "path_segments": 45,
+   "rail": "USB_VBUS_CHG",
+   "series_resistance_mohm": 215.635,
+   "sink": [
+    "U11.10"
+   ],
+   "source": [
+    "R35.2"
+   ],
+   "undeclared_hot_segments": [],
+   "verdict": "OK_WITH_DECLARED_EXCEPTION",
+   "worst_plane_coupled_rise_K": 1.45,
+   "worst_rise_K": 66.5,
+   "worst_three": [
+    {
+     "accepted_by": "dru-5a",
+     "area_mm2": 0.00988,
+     "at": [
+      52.85,
+      76.625
+     ],
+     "drill_mm": null,
+     "kind": "track",
+     "layer": "In2.Cu",
+     "length_mm": 4.1,
+     "plane_coupled_rise_K": 1.45,
+     "required_mm_at_10K": 2.052,
+     "rise_K": 66.5,
+     "width_mm": 0.65
+    },
+    {
+     "accepted_by": "dru-5a",
+     "area_mm2": 0.01216,
+     "at": [
+      36.8,
+      135.1
+     ],
+     "drill_mm": null,
+     "kind": "track",
+     "layer": "In2.Cu",
+     "length_mm": 3.132,
+     "plane_coupled_rise_K": 0.96,
+     "required_mm_at_10K": 2.052,
+     "rise_K": 47.2,
+     "width_mm": 0.8
+    },
+    {
+     "accepted_by": "dru-5a",
+     "area_mm2": 0.01216,
+     "at": [
+      33.8,
+      136.0
+     ],
+     "drill_mm": null,
+     "kind": "track",
+     "layer": "In2.Cu",
+     "length_mm": 1.607,
+     "plane_coupled_rise_K": 0.96,
+     "required_mm_at_10K": 2.052,
+     "rise_K": 47.2,
+     "width_mm": 0.8
+    }
+   ]
+  },
+  {
+   "accepted_hot_length_mm": 0,
+   "accepted_reason": null,
+   "basis": "same charger input current, upstream of the R35 0 R link",
+   "bottleneck_amps_at_10K": 1.441,
+   "connected": true,
+   "design_amps": 1.1,
+   "dissipation_W": 0.0276,
+   "hot_segments": [],
+   "ir_drop_mV": 25.1,
+   "net": "/01_POWER_TREE/USB_VBUS_RAW",
+   "pads_not_on_board": [],
+   "path_length_mm": 23.876,
+   "path_segments": 13,
+   "rail": "USB_VBUS_RAW",
+   "series_resistance_mohm": 22.82,
+   "sink": [
+    "R35.1"
+   ],
+   "source": [
+    "J3.A4",
+    "J3.B4",
+    "J3.A9",
+    "J3.B9"
+   ],
+   "undeclared_hot_segments": [],
+   "verdict": "OK",
+   "worst_plane_coupled_rise_K": null,
+   "worst_rise_K": 5.4,
+   "worst_three": [
+    {
+     "area_mm2": 0.0174,
+     "at": [
+      45.4,
+      146.38
+     ],
+     "drill_mm": null,
+     "kind": "track",
+     "layer": "B.Cu",
+     "length_mm": 4.4,
+     "plane_coupled_rise_K": null,
+     "required_mm_at_10K": 0.345,
+     "rise_K": 5.4,
+     "width_mm": 0.5
+    },
+    {
+     "area_mm2": 0.0174,
+     "at": [
+      41.0,
+      146.38
+     ],
+     "drill_mm": null,
+     "kind": "track",
+     "layer": "B.Cu",
+     "length_mm": 3.38,
+     "plane_coupled_rise_K": null,
+     "required_mm_at_10K": 0.345,
+     "rise_K": 5.4,
+     "width_mm": 0.5
+    },
+    {
+     "area_mm2": 0.0174,
+     "at": [
+      35.55,
+      143.0
+     ],
+     "drill_mm": null,
+     "kind": "track",
+     "layer": "B.Cu",
+     "length_mm": 5.45,
+     "plane_coupled_rise_K": null,
+     "required_mm_at_10K": 0.345,
+     "rise_K": 5.4,
+     "width_mm": 0.5
+    }
+   ]
+  },
+  {
+   "accepted_hot_length_mm": 5.525,
+   "accepted_reason": "U11 DLH0010A pin-2 land is 0.200 mm tall; nothing wider can land on it.  Licensed by the .kicad_dru pad-escape neck rule and bounded here to 6.0 mm of 0.200 mm copper.",
+   "basis": "BAT_MAIN 1.5 A sustained design current (.kicad_dru section 5); IBAT_OCP 3.125 A is a fault trip, not a routing current",
+   "bottleneck_amps_at_10K": 0.742,
+   "connected": true,
+   "design_amps": 1.5,
+   "dissipation_W": 0.097,
+   "hot_segments": [
+    {
+     "accepted_by": "package-land-neck",
+     "area_mm2": 0.00696,
+     "at": [
+      65.5,
+      76.05
+     ],
+     "drill_mm": null,
+     "kind": "track",
+     "layer": "B.Cu",
+     "length_mm": 2.475,
+     "plane_coupled_rise_K": null,
+     "required_mm_at_10K": 0.529,
+     "rise_K": 49.6,
+     "width_mm": 0.2
+    },
+    {
+     "accepted_by": "package-land-neck",
+     "area_mm2": 0.00696,
+     "at": [
+      65.5,
+      78.2
+     ],
+     "drill_mm": null,
+     "kind": "track",
+     "layer": "B.Cu",
+     "length_mm": 2.15,
+     "plane_coupled_rise_K": null,
+     "required_mm_at_10K": 0.529,
+     "rise_K": 49.6,
+     "width_mm": 0.2
+    },
+    {
+     "accepted_by": "package-land-neck",
+     "area_mm2": 0.00696,
+     "at": [
+      66.4,
+      78.2
+     ],
+     "drill_mm": null,
+     "kind": "track",
+     "layer": "B.Cu",
+     "length_mm": 0.9,
+     "plane_coupled_rise_K": null,
+     "required_mm_at_10K": 0.529,
+     "rise_K": 49.6,
+     "width_mm": 0.2
+    }
+   ],
+   "ir_drop_mV": 64.67,
+   "net": "/01_POWER_TREE/BAT_PROTECTED_P",
+   "pads_not_on_board": [
+    "R75.4"
+   ],
+   "path_length_mm": 81.709,
+   "path_segments": 12,
+   "rail": "BAT_PROTECTED_P",
+   "series_resistance_mohm": 43.116,
+   "sink": [
+    "U11.2"
+   ],
+   "source": [
+    "R75.2",
+    "R75.4"
+   ],
+   "undeclared_hot_segments": [],
+   "verdict": "OK_WITH_DECLARED_EXCEPTION",
+   "worst_plane_coupled_rise_K": null,
+   "worst_rise_K": 49.6,
+   "worst_three": [
+    {
+     "accepted_by": "package-land-neck",
+     "area_mm2": 0.00696,
+     "at": [
+      65.5,
+      76.05
+     ],
+     "drill_mm": null,
+     "kind": "track",
+     "layer": "B.Cu",
+     "length_mm": 2.475,
+     "plane_coupled_rise_K": null,
+     "required_mm_at_10K": 0.529,
+     "rise_K": 49.6,
+     "width_mm": 0.2
+    },
+    {
+     "accepted_by": "package-land-neck",
+     "area_mm2": 0.00696,
+     "at": [
+      65.5,
+      78.2
+     ],
+     "drill_mm": null,
+     "kind": "track",
+     "layer": "B.Cu",
+     "length_mm": 2.15,
+     "plane_coupled_rise_K": null,
+     "required_mm_at_10K": 0.529,
+     "rise_K": 49.6,
+     "width_mm": 0.2
+    },
+    {
+     "accepted_by": "package-land-neck",
+     "area_mm2": 0.00696,
+     "at": [
+      66.4,
+      78.2
+     ],
+     "drill_mm": null,
+     "kind": "track",
+     "layer": "B.Cu",
+     "length_mm": 0.9,
+     "plane_coupled_rise_K": null,
+     "required_mm_at_10K": 0.529,
+     "rise_K": 49.6,
+     "width_mm": 0.2
+    }
+   ]
+  },
+  {
+   "basis": "SYS_MAIN 1.0 A (.kicad_dru section 5)",
+   "connected": false,
+   "design_amps": 1.0,
+   "net": "/01_POWER_TREE/BQ25185_SYS",
+   "pads_not_on_board": [],
+   "pour_delivered": "checks/pour_partition_contract.py PP2 -- this rail is delivered by its In/B.Cu pour, not by a trunk; a track-graph NO_PATH is the expected answer and is not a defect",
+   "rail": "BQ25185_SYS",
+   "sink": [
+    "U12.1"
+   ],
+   "source": [
+    "U11.1"
+   ],
+   "verdict": "POUR_DELIVERED"
+  },
+  {
+   "accepted_hot_length_mm": 76.28,
+   "accepted_reason": "D-750 / .kicad_dru section 5c.  The SYS trunk's three In2 legs run 0.800 mm, where IPC-2221B's INTERNAL curve asks 1.585 mm for 0.925 A and returns a 31.8 K rise.  That curve is an isolated coupon in still air and IPC-2152 superseded it; the PLANE-COUPLED rise this file derives from the board's own declared stackup -- In2 between In1 across 0.4000 mm of core and In3 across 0.2028 mm of prepreg -- is 0.68 K, and the whole rail dissipates 0.157 W.  The ELECTRICAL cost is accepted with its number: 183 mOhm and 169 mV at the enforced ACC_5V maximum, against a TPS61023 input range of 0.5-5.5 V.",
+   "basis": "U21 TPS61023 INPUT current at the ENFORCED ACC_5V maximum: 0.537 A x 5.0 V / (0.88 efficiency x 3.3 V VBAT) = 0.925 A rms. D-753 RETUNED R101 1.65 kOhm -> 2.7 kOhm, so the number that sizes this trunk is no longer a PUBLISHED figure but the load switch's own worst-case limit: TI SLVSFJ2B equation 1 gives 0.407 A typ at 2.7 kOhm and the EC table's widest ratio (1.32x) gives 0.537 A over -40..+125 C.  It WAS 1.21 A, from the 0.70 A the old 1.65 kOhm allowed. The 2.19 A the section 5 note quotes is the PEAK INDUCTOR current (D-185), which the input capacitor C83 supplies locally; the trunk carries the average.  THE SINK IS L4.1, NOT U21.3: the two share one node and U21.3 hangs off it through 1.35 mm of 0.5 mm B.Cu (1.3 mOhm), but that stub's far END lies 0.075 mm outside L4.1's land and OVERLAPS it as copper, which KiCad's connectivity resolves and this file's endpoint-in-pad graph does not.",
+   "bottleneck_amps_at_10K": 0.556,
+   "connected": true,
+   "design_amps": 0.925,
+   "dissipation_W": 0.1568,
+   "hot_segments": [
+    {
+     "accepted_by": "dru-5c",
+     "area_mm2": 0.01216,
+     "at": [
+      14.0,
+      106.6
+     ],
+     "drill_mm": null,
+     "kind": "track",
+     "layer": "In2.Cu",
+     "length_mm": 15.985,
+     "plane_coupled_rise_K": 0.68,
+     "required_mm_at_10K": 1.616,
+     "rise_K": 31.8,
+     "width_mm": 0.8
+    },
+    {
+     "accepted_by": "dru-5c",
+     "area_mm2": 0.01216,
+     "at": [
+      5.6,
+      93.0
+     ],
+     "drill_mm": null,
+     "kind": "track",
+     "layer": "In2.Cu",
+     "length_mm": 51.195,
+     "plane_coupled_rise_K": 0.68,
+     "required_mm_at_10K": 1.616,
+     "rise_K": 31.8,
+     "width_mm": 0.8
+    },
+    {
+     "accepted_by": "dru-5c",
+     "area_mm2": 0.01216,
+     "at": [
+      41.6,
+      56.6
+     ],
+     "drill_mm": null,
+     "kind": "track",
+     "layer": "In2.Cu",
+     "length_mm": 9.1,
+     "plane_coupled_rise_K": 0.68,
+     "required_mm_at_10K": 1.616,
+     "rise_K": 31.8,
+     "width_mm": 0.8
+    }
+   ],
+   "ir_drop_mV": 169.56,
+   "net": "/01_POWER_TREE/BQ25185_SYS",
+   "pads_not_on_board": [],
+   "path_length_mm": 201.821,
+   "path_segments": 42,
+   "rail": "SYS_TO_ACC5V_BOOST",
+   "series_resistance_mohm": 183.309,
+   "sink": [
+    "L4.1"
+   ],
+   "source": [
+    "U12.1",
+    "U12.10",
+    "U12.11",
+    "C24.1",
+    "C26.2",
+    "C28.1"
+   ],
+   "undeclared_hot_segments": [],
+   "verdict": "OK_WITH_DECLARED_EXCEPTION",
+   "worst_plane_coupled_rise_K": 0.68,
+   "worst_rise_K": 31.8,
+   "worst_three": [
+    {
+     "accepted_by": "dru-5c",
+     "area_mm2": 0.01216,
+     "at": [
+      14.0,
+      106.6
+     ],
+     "drill_mm": null,
+     "kind": "track",
+     "layer": "In2.Cu",
+     "length_mm": 15.985,
+     "plane_coupled_rise_K": 0.68,
+     "required_mm_at_10K": 1.616,
+     "rise_K": 31.8,
+     "width_mm": 0.8
+    },
+    {
+     "accepted_by": "dru-5c",
+     "area_mm2": 0.01216,
+     "at": [
+      5.6,
+      93.0
+     ],
+     "drill_mm": null,
+     "kind": "track",
+     "layer": "In2.Cu",
+     "length_mm": 51.195,
+     "plane_coupled_rise_K": 0.68,
+     "required_mm_at_10K": 1.616,
+     "rise_K": 31.8,
+     "width_mm": 0.8
+    },
+    {
+     "accepted_by": "dru-5c",
+     "area_mm2": 0.01216,
+     "at": [
+      41.6,
+      56.6
+     ],
+     "drill_mm": null,
+     "kind": "track",
+     "layer": "In2.Cu",
+     "length_mm": 9.1,
+     "plane_coupled_rise_K": 0.68,
+     "required_mm_at_10K": 1.616,
+     "rise_K": 31.8,
+     "width_mm": 0.8
+    }
+   ]
+  },
+  {
+   "accepted_hot_length_mm": 76.28,
+   "accepted_reason": "D-750 / .kicad_dru section 5c, same trunk and same derivation as SYS_TO_ACC5V_BOOST; at 0.86 A the IPC-2221B internal rise is 27.0 K and the plane-coupled rise is 0.59 K.",
+   "basis": "U13 TPS61023 INPUT current at the published NFC_5V_PA 0.50 A TX burst: 0.50 A x 5.0 V / (0.88 x 3.3 V) = 0.86 A.  U13 is DNP on AQROOT Demo (the NFC front end runs from +3V3), so this is the FITTED-VARIANT number and is measured so the trunk is not sized by accident.",
+   "bottleneck_amps_at_10K": 0.556,
+   "connected": true,
+   "design_amps": 0.86,
+   "dissipation_W": 0.1454,
+   "hot_segments": [
+    {
+     "accepted_by": "dru-5c",
+     "area_mm2": 0.01216,
+     "at": [
+      14.0,
+      106.6
+     ],
+     "drill_mm": null,
+     "kind": "track",
+     "layer": "In2.Cu",
+     "length_mm": 15.985,
+     "plane_coupled_rise_K": 0.59,
+     "required_mm_at_10K": 1.461,
+     "rise_K": 27.0,
+     "width_mm": 0.8
+    },
+    {
+     "accepted_by": "dru-5c",
+     "area_mm2": 0.01216,
+     "at": [
+      5.6,
+      93.0
+     ],
+     "drill_mm": null,
+     "kind": "track",
+     "layer": "In2.Cu",
+     "length_mm": 51.195,
+     "plane_coupled_rise_K": 0.59,
+     "required_mm_at_10K": 1.461,
+     "rise_K": 27.0,
+     "width_mm": 0.8
+    },
+    {
+     "accepted_by": "dru-5c",
+     "area_mm2": 0.01216,
+     "at": [
+      41.6,
+      56.6
+     ],
+     "drill_mm": null,
+     "kind": "track",
+     "layer": "In2.Cu",
+     "length_mm": 9.1,
+     "plane_coupled_rise_K": 0.59,
+     "required_mm_at_10K": 1.461,
+     "rise_K": 27.0,
+     "width_mm": 0.8
+    }
+   ],
+   "ir_drop_mV": 169.02,
+   "net": "/01_POWER_TREE/BQ25185_SYS",
+   "pads_not_on_board": [],
+   "path_length_mm": 222.133,
+   "path_segments": 45,
+   "rail": "SYS_TO_NFC5V_BOOST",
+   "series_resistance_mohm": 196.53,
+   "sink": [
+    "L2.1"
+   ],
+   "source": [
+    "U12.1",
+    "U12.10",
+    "U12.11",
+    "C24.1",
+    "C26.2",
+    "C28.1"
+   ],
+   "undeclared_hot_segments": [],
+   "verdict": "OK_WITH_DECLARED_EXCEPTION",
+   "worst_plane_coupled_rise_K": 0.59,
+   "worst_rise_K": 27.0,
+   "worst_three": [
+    {
+     "accepted_by": "dru-5c",
+     "area_mm2": 0.01216,
+     "at": [
+      14.0,
+      106.6
+     ],
+     "drill_mm": null,
+     "kind": "track",
+     "layer": "In2.Cu",
+     "length_mm": 15.985,
+     "plane_coupled_rise_K": 0.59,
+     "required_mm_at_10K": 1.461,
+     "rise_K": 27.0,
+     "width_mm": 0.8
+    },
+    {
+     "accepted_by": "dru-5c",
+     "area_mm2": 0.01216,
+     "at": [
+      5.6,
+      93.0
+     ],
+     "drill_mm": null,
+     "kind": "track",
+     "layer": "In2.Cu",
+     "length_mm": 51.195,
+     "plane_coupled_rise_K": 0.59,
+     "required_mm_at_10K": 1.461,
+     "rise_K": 27.0,
+     "width_mm": 0.8
+    },
+    {
+     "accepted_by": "dru-5c",
+     "area_mm2": 0.01216,
+     "at": [
+      41.6,
+      56.6
+     ],
+     "drill_mm": null,
+     "kind": "track",
+     "layer": "In2.Cu",
+     "length_mm": 9.1,
+     "plane_coupled_rise_K": 0.59,
+     "required_mm_at_10K": 1.461,
+     "rise_K": 27.0,
+     "width_mm": 0.8
+    }
+   ]
+  }
+ ],
+ "schema": 1,
+ "stackup_dielectrics": {
+  "B.Cu": {
+   "dielectric_down_mm": null,
+   "dielectric_up_mm": 0.2104,
+   "neighbour_down": null,
+   "neighbour_up": "In4.Cu",
+   "thickness_mm": 0.035
+  },
+  "F.Cu": {
+   "dielectric_down_mm": 0.2104,
+   "dielectric_up_mm": null,
+   "neighbour_down": "In1.Cu",
+   "neighbour_up": null,
+   "thickness_mm": 0.035
+  },
+  "In1.Cu": {
+   "dielectric_down_mm": 0.4,
+   "dielectric_up_mm": 0.2104,
+   "neighbour_down": "In2.Cu",
+   "neighbour_up": "F.Cu",
+   "thickness_mm": 0.0152
+  },
+  "In2.Cu": {
+   "dielectric_down_mm": 0.2028,
+   "dielectric_up_mm": 0.4,
+   "neighbour_down": "In3.Cu",
+   "neighbour_up": "In1.Cu",
+   "thickness_mm": 0.0152
+  },
+  "In3.Cu": {
+   "dielectric_down_mm": 0.4,
+   "dielectric_up_mm": 0.2028,
+   "neighbour_down": "In4.Cu",
+   "neighbour_up": "In2.Cu",
+   "thickness_mm": 0.0152
+  },
+  "In4.Cu": {
+   "dielectric_down_mm": 0.2104,
+   "dielectric_up_mm": 0.4,
+   "neighbour_down": "B.Cu",
+   "neighbour_up": "In3.Cu",
+   "thickness_mm": 0.0152
+  }
+ },
+ "stackup_selfcheck": {
+  "board_copper_mm": {
+   "B.Cu": 0.035,
+   "F.Cu": 0.035,
+   "In1.Cu": 0.0152,
+   "In2.Cu": 0.0152,
+   "In3.Cu": 0.0152,
+   "In4.Cu": 0.0152
+  },
+  "inner_declared": [
+   0.0152
+  ],
+  "inner_used_mm": 0.0152,
+  "note": "the constants this tool rules with must equal the board's own declared stackup (D-750)",
+  "ok": true,
+  "outer_declared": [
+   0.035
+  ],
+  "outer_used_mm": 0.0348
+ }
+}

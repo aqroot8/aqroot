@@ -48,7 +48,8 @@ exact MPN — 0 missing** (six were added at FBV2-S2-001, see §4).
 | **E22-900M22S** | `U8` | **B** | LCSC **C411293** |
 | **TXM27.12M0004322DBBDO00T** | `Y1` | **B** | LCSC **C362365** |
 | **XFL4020-152MEC** | `L1` | **B** | LCSC **C3033018**; Coilcraft doc 745-1 rev 03/10/26 |
-| **TPS22950CDDCR** | `U20`, `U22` | **B/D** | TI product page 2026-08-23: **ACTIVE**, DDC SOT-23-THN 6-pin |
+| ~~**TPS22950CDDCR**~~ | ~~`U20`, `U22`~~ | **B/D** | **SUPERSEDED BY D-765.** The `C` variant's own specified `ILIM` range is 0.5-3.5 A (`SLVSFJ2B` s.5) and this board programs 0.407 A. |
+| **TPS22950CQDDCRQ1** (TPS22950-Q1) | `U20`, `U22` | **B/D** | **D-765.** LCSC `C17349276`, 4 050 in stock 2026-09-18; TI orderable addendum `SLVSGP6A`: **Active / Production**, RoHS, MSL-1-260C-UNLIM, -40..125 C, marking `950Q`. Same **DDC0006A** SOT-23-THN 6-pin land pattern and pinout; `ILIM` specified **0.05-3.5 A**; AEC-Q100 grade 1. |
 | **PTS645SM43SMTR92LFS** | `SW1`–`SW7` | **B** | Littelfuse/C&K PTS645 datasheet orderable table: 1.6 N ±0.3, 100 000 ops, 0.30 mm travel |
 | **TSOP38238** | `U6` | **B** | Vishay doc 82491 Rev 2.1; **TSOP38438 retained as a same-footprint fallback** (D-163) |
 | **74438357010** | `L4` (`L2` DNP) | **B** | Würth datasheet rev 003.001: 1 µH ±20 %, **Isat 6.2 A / 12.5 A**, RDC 11.6 mΩ |

@@ -5399,7 +5399,7 @@
 				)
 			)
 		)
-		(symbol "AQROOT_Beta:TPS22950C"
+		(symbol "AQROOT_Beta:TPS22950-Q1"
 			(pin_names
 				(offset 0.508)
 			)
@@ -5414,7 +5414,7 @@
 					)
 				)
 			)
-			(property "Value" "TPS22950C"
+			(property "Value" "TPS22950-Q1"
 				(at -15.24 -12.065 0)
 				(effects
 					(font
@@ -5440,7 +5440,7 @@
 					)
 				)
 			)
-			(property "Description" "TI TPS22950C: 5.5 V, 3.2 A, 34 mOhm adjustable current-limited load switch. VIN 1.8-5.5 V. ILIM 0.5-3.5 A set by R_ILIM (ILIM = 1.18 x R[kOhm]^-1.072). ALWAYS-ON reverse current blocking. Auto-retry overcurrent response. Thermal shutdown 170 C. Open-drain FLT asserts on THERMAL SHUTDOWN and REVERSE CURRENT ONLY - a plain current-limit event leaves FLT Hi-Z. 500 kOhm smart pull-down on ON, but the datasheet still requires an external pull-down. DDC SOT-23-thin 6-pin."
+			(property "Description" "TI TPS22950-Q1 (SLVSGP6A, orderable TPS22950CQDDCRQ1): 5.5 V, 2.7 A, 34 mOhm AEC-Q100 grade-1 adjustable current-limited load switch. VIN 1.8-5.5 V. ILIM 0.05-3.5 A set by R_ILIM (ILIM = 1.18 x R[kOhm]^-1.072); UL 2367 recognised from 66 mA to 2.46 A. ALWAYS-ON true reverse current blocking (44 mV / 3 us / 38 uA). Auto-retry overcurrent response. Thermal shutdown 170 C rising, 150 C falling. Open-drain FLT asserts on THERMAL SHUTDOWN and REVERSE CURRENT ONLY - a plain current-limit event leaves FLT Hi-Z. 500 kOhm smart pull-down on ON, and an external pull-down is fitted regardless. DDC SOT-23-thin 6-pin - the SAME DDC0006A land pattern and the SAME ON/VIN/GND/ILIM/VOUT/FLT pinout as the TPS22950C it replaces. D-765 REPLACED THE TPS22950C BECAUSE THAT PART'S OWN SPECIFIED ILIM RANGE IS 0.5-3.5 A (SLVSFJ2B section 5) AND THE FITTED 2.7 kOhm / 0.407 A SETTING IS BELOW IT; the -Q1 is specified from 0.05 A, so the D-753 envelope becomes an in-specification setting."
 				(at 0 0 0)
 				(hide yes)
 				(effects
@@ -5458,7 +5458,7 @@
 					)
 				)
 			)
-			(property "MPN" "TPS22950CDDCR"
+			(property "MPN" "TPS22950CQDDCRQ1"
 				(at 0 0 0)
 				(hide yes)
 				(effects
@@ -5476,7 +5476,7 @@
 					)
 				)
 			)
-			(property "ki_keywords" "load switch current limit reverse current blocking TPS22950 accessory AQROOT"
+			(property "ki_keywords" "load switch current limit reverse current blocking TPS22950 TPS22950-Q1 automotive AEC-Q100 accessory AQROOT"
 				(at 0 0 0)
 				(hide yes)
 				(effects
@@ -5485,7 +5485,7 @@
 					)
 				)
 			)
-			(symbol "TPS22950C_0_1"
+			(symbol "TPS22950-Q1_0_1"
 				(rectangle
 					(start -15.24 10.16)
 					(end 15.24 -10.16)
@@ -5498,7 +5498,7 @@
 					)
 				)
 			)
-			(symbol "TPS22950C_1_1"
+			(symbol "TPS22950-Q1_1_1"
 				(pin passive line
 					(at -15.24 5.08 0)
 					(length 5.08)
@@ -28678,7 +28678,7 @@
 		)
 		(uuid "6665b24d-8275-5635-9add-ce41bfd16273")
 	)
-	(text "=== C. COMMUNITY ACCESSORY POWER (D-086 / D-087 / D-088) - ONE TPS22950C FAMILY ON BOTH RAILS, FLT WIRE-OR (D-094) ==="
+	(text "=== C. COMMUNITY ACCESSORY POWER (D-086 / D-087 / D-088) - ONE TPS22950-Q1 MPN ON BOTH RAILS (D-765), FLT WIRE-OR (D-094) ==="
 		(exclude_from_sim no)
 		(at 330 232.0 0)
 		(effects
@@ -28690,7 +28690,7 @@
 		)
 		(uuid "918daf74-3a10-1710-d2a7-c9d033f6eae9")
 	)
-	(text "ACC_3V3: +3V3 -> TPS22950C -> ACC_3V3_SW. R_ILIM 1.5k ~ 0.76 A typ; PUBLISHED LIMIT 400 mA TOTAL across both connector contacts."
+	(text "ACC_3V3: +3V3 -> TPS22950-Q1 -> ACC_3V3_SW. R_ILIM 2.7k ~ 0.407 A typ, 0.277 A GUARANTEED / 0.537 A worst case (D-753). There is no accessory current measurement, so the LIMITER is the envelope and the GUARANTEE is the published figure."
 		(exclude_from_sim no)
 		(at 330 236.0 0)
 		(effects
@@ -28702,7 +28702,7 @@
 		)
 		(uuid "345ef912-135a-506f-3019-a6ae55310e8f")
 	)
-	(text "ACC_5V: BQ25185_SYS -> dedicated TPS61023 (5.0 V) -> dedicated TPS22950C -> ACC_5V_SW. R_ILIM 1.65k ~ 0.69 A typ; PUBLISHED LIMIT 300 mA TOTAL. NOT USB VBUS. NOT the NFC fallback boost (O-3 REJECTED)."
+	(text "ACC_5V: BQ25185_SYS -> dedicated TPS61023 (5.0 V) -> dedicated TPS22950-Q1 -> ACC_5V_SW. R_ILIM 2.7k ~ 0.407 A typ, 0.277 A GUARANTEED / 0.537 A worst case (D-753). NOT USB VBUS. NOT the NFC fallback boost (O-3 REJECTED)."
 		(exclude_from_sim no)
 		(at 330 239.5 0)
 		(effects
@@ -28715,7 +28715,7 @@
 		(uuid "9e530007-9351-3e5b-5ba7-b8b7eb8d2121")
 	)
 	(symbol
-		(lib_id "AQROOT_Beta:TPS22950C")
+		(lib_id "AQROOT_Beta:TPS22950-Q1")
 		(at 359.41 261.62 0)
 		(unit 1)
 		(body_style 1)
@@ -28736,7 +28736,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "TPS22950C"
+		(property "Value" "TPS22950-Q1"
 			(at 361.41 258.52 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -28759,7 +28759,7 @@
 				(justify left)
 			)
 		)
-		(property "Datasheet" ""
+		(property "Datasheet" "https://www.ti.com/lit/ds/symlink/tps22950-q1.pdf"
 			(at 361.41 255.52 0)
 			(hide yes)
 			(show_name no)
@@ -28783,7 +28783,7 @@
 				(justify left)
 			)
 		)
-		(property "LCSC" "C7587833"
+		(property "LCSC" "C17349276"
 			(at 361.41 254.02 0)
 			(hide yes)
 			(show_name no)
@@ -28806,7 +28806,7 @@
 				(justify left)
 			)
 		)
-		(property "MPN" "TPS22950CDDCR"
+		(property "MPN" "TPS22950CQDDCRQ1"
 			(at 361.41 251.02 0)
 			(hide yes)
 			(show_name no)
@@ -30278,7 +30278,7 @@
 				(justify left)
 			)
 		)
-		(property "Note" "single pull-up for the wired-OR of both TPS22950C FLT outputs (D-094)"
+		(property "Note" "single pull-up for the wired-OR of both TPS22950-Q1 FLT outputs (D-094)"
 			(at 510.0 252.52 0)
 			(hide yes)
 			(show_name no)
@@ -31063,7 +31063,7 @@
 		)
 	)
 	(symbol
-		(lib_id "AQROOT_Beta:TPS22950C")
+		(lib_id "AQROOT_Beta:TPS22950-Q1")
 		(at 430.53 320.04 0)
 		(unit 1)
 		(body_style 1)
@@ -31084,7 +31084,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "TPS22950C"
+		(property "Value" "TPS22950-Q1"
 			(at 432.53 316.94 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -31107,7 +31107,7 @@
 				(justify left)
 			)
 		)
-		(property "Datasheet" ""
+		(property "Datasheet" "https://www.ti.com/lit/ds/symlink/tps22950-q1.pdf"
 			(at 432.53 313.94 0)
 			(hide yes)
 			(show_name no)
@@ -31131,7 +31131,7 @@
 				(justify left)
 			)
 		)
-		(property "LCSC" "C7587833"
+		(property "LCSC" "C17349276"
 			(at 432.53 312.44 0)
 			(hide yes)
 			(show_name no)
@@ -31154,7 +31154,7 @@
 				(justify left)
 			)
 		)
-		(property "MPN" "TPS22950CDDCR"
+		(property "MPN" "TPS22950CQDDCRQ1"
 			(at 432.53 309.44 0)
 			(hide yes)
 			(show_name no)
@@ -36179,7 +36179,7 @@
 				)
 			)
 		)
-		(property "Note" "ACC_5V_SW_EN safe-state pull-down, ADDED FBV2-S1-009. The CTO split the single ACC_5V_EN into ACC_5V_BOOST_EN (U3 P13 -> U21 EN) and ACC_5V_SW_EN (U3 P03 -> U22 ON), so the new net needs its own 100 k to ground. THE PULL-DOWN IS MANDATORY, NOT A CONVENIENCE: SLVSFJ2B specifies a 500 kOhm smart pull-down inside the TPS22950C and STILL REQUIRES AN EXTERNAL ONE, and the PCAL9535A powers up with every pin high-impedance - so without this resistor the 5 V accessory contact would be defined only by leakage between power-on and the first firmware write. 100 k matches R98 and R102 and costs 33 uA when the pin is driven high."
+		(property "Note" "ACC_5V_SW_EN safe-state pull-down, ADDED FBV2-S1-009. The CTO split the single ACC_5V_EN into ACC_5V_BOOST_EN (U3 P13 -> U21 EN) and ACC_5V_SW_EN (U3 P03 -> U22 ON), so the new net needs its own 100 k to ground. THE PULL-DOWN IS MANDATORY, NOT A CONVENIENCE: SLVSGP6A specifies a 500 kOhm smart pull-down inside the TPS22950-Q1 and it is not a substitute for an external one, and the PCAL9535A powers up with every pin high-impedance - so without this resistor the 5 V accessory contact would be defined only by leakage between power-on and the first firmware write. 100 k matches R98 and R102 and costs 33 uA when the pin is driven high."
 			(at 0 0 0)
 			(hide yes)
 			(show_name no)

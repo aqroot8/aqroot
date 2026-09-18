@@ -143,8 +143,8 @@ Scope: analysis only. No schematic, PCB or hardware file was created or modified
 | 9 | **Recovery switch stuck on + reversed battery + USB** | `R_LIM` bounds to **≈13 mA (~0.007 C)**; `D_REC` keeps the branch unidirectional; self-annunciating | **BOUNDED — not a high-current path** |
 | 10 | Battery inserted while USB present | 32 ms turn-on delay debounces; C_GATE 4.7 nF bounds inrush to ~35 mA against a 3.33 A trip | **OK** |
 | 11 | **USB removed during dead-cell recovery** | VBUS collapses → `Q_REC` source at 0 V → V_GS = 0 → **OFF**; `D_REC` independently blocks any pack drain | **OK — clean stop** |
-| 12 | Accessory short while enabled | TPS22950C current limit + auto-retry + thermal shutdown; core `+3V3` holds | **OK** |
-| 13 | Externally powered accessory, AQROOT off | TPS22950C reverse blocking active while disabled; TCA9517A high-Z when unpowered; **no permanent raw `+3V3` pin exists** | **OK** |
+| 12 | Accessory short while enabled | TPS22950-Q1 current limit + auto-retry + thermal shutdown; core `+3V3` holds | **OK** |
+| 13 | Externally powered accessory, AQROOT off | TPS22950-Q1 reverse blocking active while disabled; TCA9517A high-Z when unpowered; **no permanent raw `+3V3` pin exists** | **OK** |
 
 **13 of 13 defined. No case is architecture-undefined.**
 
@@ -179,7 +179,7 @@ experiment, not a schematic decision.** Do not close one by reasoning about it.
                                                                                  │
                                                                               +3V3
                                                                                  │
-                                                              TPS22950C ──── ACC_3V3_SW
+                                                            TPS22950-Q1 ──── ACC_3V3_SW
 ```
 
 Elements marked in that diagram are **proposed**, not approved. The fuse, the
@@ -384,7 +384,7 @@ CTO decisions (**P-11**, **P-12**).
 | node | state |
 |---|---|
 | `ACC_3V3_SW` | shorted to GND by the accessory |
-| TPS22950C | current limit engages at R<sub>ILIM</sub>-set threshold; **auto-retry**; thermal shutdown at 170 °C; `FLT` pulled low |
+| TPS22950-Q1 | current limit engages at R<sub>ILIM</sub>-set threshold; **auto-retry**; thermal shutdown at 170 °C; `FLT` pulled low |
 | `+3V3` | **holds.** The switch limits before the TPS63020's 2 A limit is reached |
 | Core rail | **OK — does not collapse** |
 | Expander | `FLT` on an input (recommended) lets firmware report "accessory fault" |
@@ -401,13 +401,24 @@ CTO decisions (**P-11**, **P-12**).
 > **extreme bottom of the range**. The base TPS22950 goes down to 0.05 A but is
 > WCSP-only, which fails the leaded-package requirement. **Recommend 600–800 mA**
 > and treat 500 mA as the floor, not the target.
+>
+> **D-765 — THIS PARAGRAPH WAS RIGHT AND WAS NOT READ.** D-753 later programmed
+> **0.407 A**, below the 500 mA this note calls *the floor*, on the `C` variant,
+> citing the same `SLVSFJ2B`. The paragraph is retained verbatim above because it
+> is the primary-source record. What it did not consider is the **`TPS22950-Q1`**
+> (`SLVSGP6A`, orderable `TPS22950CQDDCRQ1`): specified `ILIM` **0.05–3.5 A**
+> *and* **leaded** — the same `DDC0006A` SOT-23-THIN package — so it satisfies
+> both constraints this note treated as mutually exclusive. `U20`/`U22` are the
+> `-Q1` now, the 2.7 kΩ / 0.407 A setting is in specification, and
+> `demo_feature_contract.py` **F6** refuses any `ILIM` outside the fitted part's
+> own published range.
 
 ### Case 9 — Externally powered accessory while AQROOT is off
 
 | node | state |
 |---|---|
 | `ACC_3V3_SW` | driven to ~3.3 V (or higher) by the accessory |
-| TPS22950C | **reverse current blocking, always active including while disabled** (SLVSFJ2B §5 Device Comparison Table: TPS22950C RCB = **Yes**). Comparator opens the pass FET. |
+| TPS22950-Q1 | **reverse current blocking, always active including while disabled** (SLVSGP6A §1: always-on TRUE RCB; 44 mV activation, 16 mV release, 3 µs, 38 µA reverse leakage). Comparator opens the pass FET. |
 | `+3V3` | **not back-powered** |
 | AQROOT | stays off. **Correct.** |
 | Residual | RCB is a comparator (~44 mV / ~900 mA, ~3 µs response), **not** a back-to-back blocking pair. A back-powering accessory can push a few hundred mA for a few microseconds before it acts. Reverse leakage while off is specified at 38 µA. |
@@ -581,7 +592,8 @@ datasheet can answer:
 ## Sources
 
 - TI **BQ25185**, SLUSF65A (Oct 2023, rev. Jan 2026) — §7.3.10, Table 7-2, §6.1
-- TI **TPS22950/C**, SLVSFJ2B (Dec 2020, rev. Feb 2023) — §5 Device Comparison Table, §6 Pin Functions, Features
+- TI **TPS22950/C/L**, SLVSFJ2B (Dec 2020, rev. Feb 2023) — §5 Device Comparison Table, §6 Pin Functions, Features
+- TI **TPS22950-Q1**, SLVSGP6A (Sep 2022, rev. Dec 2022) — §5 Pin Functions, §6.3 Recommended Operating Conditions, §6.5 EC, §8.4 Functional Modes, orderable addendum **(THE FITTED PART, D-765)**
 - TI **TCA9517A**, SCPS245E (Dec 2012, rev. Oct 2025) — Features, §3, §9
 - TI **TPS63020** — 2 A buck-boost
 - ADI **LTC4368**, Rev. C — operating range 2.5–60 V, V<sub>IN(UVLO)</sub> 1.8–2.4 V, 80 µA operating / 5 µA shutdown, −40 V withstand, reverse-VIN gate mechanism

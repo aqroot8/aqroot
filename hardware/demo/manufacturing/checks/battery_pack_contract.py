@@ -47,14 +47,19 @@ def resistor_ohms(text):
 def board_requirements():
     board = pcbnew.LoadBoard(str(BOARD))
     values = {}
-    for ref in ("R97", "R101"):
+    # D-765: the envelope is a function of the two programming resistors AND the
+    # two limiter part numbers -- an ILIM setting outside the fitted part's own
+    # published range is not an envelope, so U20/U22 are read here as well.
+    for ref in ("R97", "R101", "U20", "U22"):
         fp = board.FindFootprintByReference(ref)
         if not fp:
             raise RuntimeError("missing %s" % ref)
         values[ref] = fp.GetValue()
     env_ok, env = dfc.judge_accessory_envelope(values)
     if not env_ok:
-        raise RuntimeError("D-753 accessory envelope itself does not pass")
+        failed = sorted(k for k, v in env.items() if isinstance(v, bool) and not v)
+        raise RuntimeError("D-753/D-765 accessory envelope itself does not pass: %s"
+                           % (failed or env.get("error")))
     modes = env["modes_I_bat_A"]
     reachable = (
         "acc3v3_alone_at_its_limiter",

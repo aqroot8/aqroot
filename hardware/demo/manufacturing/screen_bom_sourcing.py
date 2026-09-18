@@ -181,9 +181,9 @@ NET_MAX_DC = {
                              " ACC_5V_SW, the rail it feeds through U22"),
     "ACC_5V_FB": (0.6, 5.5, "U21 feedback node, VREF 0.595 V (D-185);"
                             " bounded from above by ACC_5V_RAW"),
-    "ACC_5V_ILIM": (1.0, 5.5, "U22 TPS22950 ILIM programming pin (D-185"
-                              " R101 1.65k -> 0.69 A); bounded by its own"
-                              " ACC_5V_RAW supply"),
+    "ACC_5V_ILIM": (1.0, 5.5, "U22 TPS22950-Q1 ILIM programming pin"
+                              " (D-753 R101 2.7k -> 0.407 A typ); bounded by"
+                              " its own ACC_5V_RAW supply"),
     "BAT_SENSE": (4.2, 4.35, "the cell side of the R75 15 mOhm sense; the"
                              " LTC4368-1 trips at +/-50 mV, so this node is"
                              " within 50 mV of BAT_PROTECTED_P"),

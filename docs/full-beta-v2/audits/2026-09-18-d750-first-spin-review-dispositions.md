@@ -313,6 +313,27 @@ accessory rails are switched by the MCU through `U3` (`ACC_5V_BOOST_EN`,
 `ACC_5V_SW_EN`, `ACC_3V3_EN`), and `ACC_POWER_FAULT_N` already drops both on a
 fault.  Recorded in `DEVICE_SPEC.md` and the fabrication notes.
 
+> ### **SUPERSEDED — READ D-753 AND D-765 INSTEAD.  THE PARAGRAPH ABOVE IS WRONG ON THE POINT IT RESTS ON.**
+>
+> **It is NOT enforceable.**  The independent re-review answered that firmware can
+> choose whether a rail is ON and **cannot know what an arbitrary external
+> accessory then draws** — this board has **no accessory current measurement** —
+> and it is right.  **D-753** replaced the policy with a limit the silicon
+> enforces: both `ILIM` resistors to **2.7 kΩ**, so each rail's own limiter
+> guarantees **0.277 A** and caps at 0.537 A.  It also measured that at the
+> values this disposition shipped, **two states a user could reach with
+> conforming accessories already tripped the pack protection** (2.930 A and
+> 2.737 A against an `IBAT_OCP` minimum of 2.5625 A).  The per-rail figures
+> quoted above (0.40 A / 0.70 A) are retired, and the "0.15 A at 5 V or 0.23 A
+> at 3.3 A" allowance is **smaller than what the silicon now guarantees**.
+>
+> **D-765** then found that the chosen setting was outside the fitted part's own
+> specified `ILIM` range (`TPS22950C`: 0.5–3.5 A, `SLVSFJ2B` §5) and replaced
+> `U20`/`U22` with the **`TPS22950-Q1`**, specified from 0.05 A, with no
+> resistor, copper or envelope change.  The live envelope is
+> `checks/demo_feature_contract.py` **F6** and `DEVICE_SPEC` §6.3a; this section
+> is retained only as the record of what was closed wrongly.
+
 ## 10. SPECIAL FAB PROCESSES — **FABRICATOR CONFIRMATION, already asked by name**
 
 `aqroot-Demo-FAB-NOTES.md` is generated from the board and already NAMES every

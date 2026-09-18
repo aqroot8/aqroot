@@ -1,3 +1,205 @@
+## D-765 — **THE ACCESSORY ENVELOPE WAS RIGHT AND THE SILICON COULD NOT LEGALLY HOLD IT: THREE PLACES IN THIS REPOSITORY HAD THE NUMBER**
+
+    authority  1a06b058 -> 9e4728ae   U20/U22 TPS22950C -> TPS22950-Q1; NO copper,
+               NO resistor, NO envelope number changes
+    board      174 retained nets, 173 connected, 1 owner-approved open (U11.3),
+               0 unapproved; objects_added 0, objects_removed 0
+    changed    01_power_tree.kicad_sch + libraries/AQROOT_Beta.kicad_sym (part identity),
+               aqroot-Beta-v2.kicad_pcb (two descr + two Value), aqroot-Beta-v2.kicad_dru
+               (new section 5e; PARSED TABLE PROVEN IDENTICAL),
+               checks/demo_feature_contract.py (F6: three new clauses, eight controls),
+               routing_ledger.py (population/board reconciliation guard),
+               screen_bom_sourcing.py, gen_firmware_hw_map.py,
+               evidence/d750-critical-identity.json (U22 corrected, U20 PINNED AT LAST),
+               DEVICE_SPEC 6.3a, SOURCING_LEDGER, POWER_FAULT_STATE_TABLE, ARCHITECTURE,
+               FIRST_FIVE_ASSEMBLY_PLAN, FAB_HANDOFF, EXPANDER_DEPENDENCIES,
+               MECHANICAL_INTERFACE_SPEC, two READMEs, Firmware board map
+    vendor     ti-tps22950-slvsfj2b-DDC0006A.pdf and ti-tps22950-q1-slvsgp6a-DDC0006A.pdf
+               ARCHIVED -- neither datasheet had ever been committed to this repository
+    evidence   d765-{verify-promotion,routing-ledger,protected-copper,rail-ampacity,
+               demo-feature-contract,fab-package-contract,contract-regression}.json,
+               evidence/jlc-live/c17349276-*.json
+
+### 1. WHAT WAS ACTUALLY WRONG
+
+D-753 was correct engineering and it is retained in full. *A policy is not an
+enforcement mechanism*: this board has no accessory current measurement, so the
+only thing that bounds an external accessory is the load switch's own current
+limit. D-753 moved both `ILIM` resistors to **2.7 kΩ**, which programs
+**0.407 A typ**, and brought every user-reachable state under the `BQ25185`
+`IBAT_OCP` minimum. Two states a user could reach with conforming accessories
+had been tripping the pack before it.
+
+**The part could not legally be set that low.** TI `SLVSFJ2B` **section 5, the
+Device Comparison Table of the very datasheet D-753 cited**, gives the variant
+this board fits:
+
+| device | ILIM range | IMAX | response | RCB |
+|---|---|---|---|---|
+| TPS22950 | 0.05–3.5 A | 2.7 A | auto-retry | yes — **WCSP only** |
+| TPS22950L | 0.5–3.5 A | 2.7 A | latch off | no |
+| **TPS22950C** | **0.5–3.5 A** | 3.2 A | auto-retry | yes — **the fitted part** |
+
+The 0.05 A floor and the *"UL 2367 certified from ILIM = 66 mA"* note D-753
+reasoned from belong to the **base `TPS22950`**, which TI sells only in a WCSP
+package. §7.3 Recommended Operating Conditions lists an `ILIM` row for
+`TPS22950` and for `TPS22950L` and **none for the `C`**; §5 is the authority for
+it. So the accessory limiters were programmed **19 % below their own recommended
+operating condition** — the region where the datasheet warrants nothing — on the
+one element standing between a user's accessory and the pack.
+
+### 2. THIS REPOSITORY ALREADY HELD THE NUMBER, IN THREE PLACES
+
+Not one of them was read:
+
+* **`architecture/POWER_FAULT_STATE_TABLE.md`** says it outright and in bold:
+  *"TPS22950**C**'s adjustable I_LIM range is **0.5 A – 3.5 A** (SLVSFJ2B §5). A
+  500 mA setting therefore sits at the extreme bottom of the range. The base
+  TPS22950 goes down to 0.05 A but is WCSP-only, which fails the leaded-package
+  requirement. **Recommend 600–800 mA** and treat 500 mA as the floor, not the
+  target."* **D-753 then set 407 mA.**
+* **`audits/2026-08-22-architecture-reconciliation.md`** tabulates the three
+  variants with `TPS22950C | 0.5–3.5 A` correctly.
+* **The schematic symbol's own `Description` field** read `ILIM 0.5-3.5 A`, and
+  D-753 edited that symbol's rail notes without reading its description.
+
+That paragraph is retained **verbatim** in `POWER_FAULT_STATE_TABLE.md` with a
+D-765 note beneath it, because it is the primary-source record and deleting it
+would erase the finding.
+
+### 3. AND THE GATE HAD NO WORD FOR THE ACT
+
+`F6` recomputed the whole envelope from the two resistors and refused four
+mutations — and **not one of its clauses could express "this setting is outside
+the part's specified range."** It never read the limiter's part number at all.
+A contract that measures amperes cannot see a datasheet boundary it was never
+told about.
+
+### 4. THE FIX IS THE SILICON, AND IT COSTS THREE CENTS
+
+`U20`/`U22` are now the **`TPS22950-Q1`** — TI `SLVSGP6A`, orderable
+**`TPS22950CQDDCRQ1`**, LCSC `C17349276`, **Active / Production**, 4 050 in
+stock, marking `950Q`, verified live per D-096. **A single-variant part whose
+specified `ILIM` range is 0.05–3.5 A.** Compared row by row against the
+`TPS22950C` from both datasheets:
+
+| | TPS22950C | TPS22950-Q1 |
+|---|---|---|
+| package / land pattern | DDC (SOT-23-THIN), **DDC0006A** | **identical DDC0006A** |
+| pinout | ON/VIN/GND/ILIM/VOUT/FLT 1–6 | **identical** |
+| **ILIM specified range** | **0.5–3.5 A** | **0.05–3.5 A** |
+| ILIM equation, EC rows | `1.18 × R^−1.072`; 610 Ω/1.15 k/2.21 k/19.2 k | **identical, same numbers** |
+| overcurrent response | auto-retry | **auto-retry** |
+| reverse current blocking | always-on, 44 mV / 3 µs / 38 µA | **identical, called "true RCB"** |
+| FLT | open-drain; TSD + reverse **only** | **identical** |
+| thermal shutdown | 170 °C | **170 °C / 150 °C hyst.** |
+| RON @5 V, IQ, ISD, smart pulldown | 34 mΩ, 40 µA, 0.2 µA, 500 kΩ | **identical** |
+| tON @5 V | 800 µs | 1 037 µs — **softer inrush** |
+| IMAX continuous | 3.2 A | 2.7 A — against 0.537 A worst use |
+| qualification | industrial | **AEC-Q100 grade 1** |
+| LCSC 1–9 unit price | $0.6626 | **$0.6577** |
+
+**Nothing else moved.** `R97` and `R101` stay at 2.7 kΩ. No copper was added or
+removed. Every number in `DEVICE_SPEC` §6.3a and in `.kicad_dru` section 5d is
+reproduced to the digit by the new `F6` — 1.8786 / 2.2292 / 2.0791 / 2.8857 A
+and **13.01 %** margin to `IBAT_OCP` min — and the `.kicad_dru` **parsed** class
+table is proven byte-identical, which is the trap D-753 itself fell into when a
+stray *"5 A"* in prose silently became `ACC_5V`'s design current. The setting
+also sits inside the **UL 2367** recognised window, 66 mA–2.46 A.
+
+`POWER_FAULT_STATE_TABLE` had treated *"0.05 A capable"* and *"leaded"* as
+mutually exclusive. The `-Q1` is both; it simply had not been looked for.
+
+### 5. F6 NOW HAS THE WORDS, AND EIGHT CONTROLS
+
+D-753's two clauses are **unchanged, unweakened, and still first**:
+`no_reachable_state_trips_the_pack` and
+`double_fault_stays_inside_the_protection_chain`. Three are added:
+
+* `limiter_silicon_is_a_part_with_a_published_range` — refuses a limiter this
+  contract has no datasheet range for, rather than assuming one;
+* `ilim_setting_is_inside_the_parts_own_spec_range` — over the programming
+  resistor's **whole tolerance band**, against a per-part table carrying all
+  four `TPS22950` variants and the `-Q1`;
+* `one_limiter_mpn_on_both_rails` — D-088's consolidation, now enforced;
+* plus `ilim_band_is_inside_ul2367_recognition`.
+
+Eight live controls, all refused. Four are D-753's, including the two that put
+the D-750 1.5 k / 1.65 k values back — **so the gate still refuses a limit set
+too HIGH, which the envelope clauses are the only thing that catches.**
+**`f6e` is the load-bearing new one: it changes nothing but the silicon, leaves
+every D-753 mode passing, and is refused by the range clause ALONE. `f6e` is
+the board D-753 shipped.**
+
+### 6. A TOOL DEFECT FOUND BY WALKING INTO IT
+
+Renaming the library symbol broke the sheet, because its **unit children**
+(`TPS22950C_0_1`, `TPS22950C_1_1`) still carried the old parent name.
+**`kicad-cli sch export bom` then EXITED 0 AND SILENTLY OMITTED THE ENTIRE
+`01_power_tree` SHEET.** `routing_ledger.schematic_population()` runs that
+command with `check=True`, so it saw success — and the ledger reported **114
+nets instead of 174**, every `01_POWER_TREE` part counted as not fitted. A
+**smaller, greener answer to a broken question**; only `F2` happened to name
+some of the vanished nets.
+
+`routing_ledger.generate()` now reconciles the population set against the board
+it is about to judge, tolerating exactly two named asymmetries — `BOSS1`/`BOSS2`
+(mechanical, no symbol) and `LS1` (off-board wired speaker, no footprint) — and
+refusing anything else by name. Re-broken deliberately, it fires and lists all
+138 dropped references.
+
+`d750-critical-identity.json` had pinned `U22` and **not `U20`** — the two
+halves of the same one-MPN accessory pair, one watched and one not. Both are
+pinned now.
+
+### 7. VERIFICATION
+On board `9e4728ae` (copper byte-identical to `1a06b058`; only footprint
+`descr`/`Value` text and the `.kicad_dru` comment changed):
+
+    promotion        verify_promotion 16 of 16 clauses PASS;
+                     objects_added 0, objects_removed 0; beta_v2_untouched;
+                     drc_zero_attributable; fill_stable;
+                     schematic_parity_within_baseline
+    connectivity     174 retained nets, 173 connected, 1 owner-approved open
+                     (U11.3), 0 unapproved open edges, raw ratsnest 17
+    KiCad DRC        199 violations, ALL lib_footprint_issues, ALL WARNING,
+                     ZERO of every other class; 17 unconnected items;
+                     parity 246 warnings / 0 ERRORS -- and NO new Value or MPN
+                     parity item, which is what proves the schematic and the
+                     PCB were changed together
+    protected copper 15 nets / 406 objects IDENTICAL, differences {}
+    ampacity         all_ok, unchanged (worst rise 66.5 K USB_VBUS_CHG,
+                     49.6 K BAT_PROTECTED_P, both declared exceptions)
+    features         F1-F6 PASS; F6 with EIGHT controls all refused, and f6e
+                     -- the board D-753 shipped -- refused by the new range
+                     clause ALONE
+    fab package      29 files (24 deterministic); FAB1-FAB15 PASS, verdict
+                     PASS; sourcing 252/252, coverage 1.0; released BOM
+                     carries TPS22950CQDDCRQ1 / C17349276 on ONE line for both
+                     refs; assembly PDFs print RELEASE D-765 and the full SHA
+    contracts        19 standing contracts run against the d764 baseline
+    firmware         firmware_hw_map H1-H6 PASS, controls PASS; all FOUR
+                     PlatformIO environments SUCCESS (aqroot-demo 319 781 B
+                     flash / 19 388 B RAM, unchanged)
+    dru              section 5's PARSED class table proven byte-identical to
+                     HEAD across all nine classes, so no width rule moved
+    hardware/beta-v2 UNTOUCHED
+
+### 8. WHAT IS NOT CLOSED BY THIS DECISION
+
+* The `BAT_MAIN` sustained-current residual D-753 named is unchanged and still
+  a **first-article thermal measurement**: 2.08 A at the 3.0 V corner across
+  `U11`'s 5.525 mm x 0.200 mm `DLH0010A` pin-2 land, ceiling near 37 K.
+* The `-Q1` is an **EXTENDED** JLCPCB line, as the `C` was; 4 050 in stock
+  against a need of 10. No BASIC/EXTENDED class change, no new fee tier.
+* `IMAX` continuous falls 3.2 A -> 2.7 A. The worst use is 0.537 A, so this is
+  a 5x margin, but it is a REDUCTION and it is recorded here rather than
+  omitted.
+* First-article bring-up must still confirm the accessory limiters actually
+  fold back at the programmed current and that `FLT` behaves as the truth
+  table says, because 0.407 A is near the low end of any measurement.
+
+
 ## D-764 — **THE PCB WAS RIGHT, BUT THE RELEASE COULD STILL TELL AN ASSEMBLER TO BUILD IT WRONG**
 
     authority  1a06b058, UNCHANGED since D-759 (no PCB/schematic/firmware change)

@@ -588,7 +588,7 @@
 # THIS BOARD HAS NO ACCESSORY CURRENT MEASUREMENT - firmware can choose
 # whether a rail is ON, and cannot know what an arbitrary external
 # accessory then draws.  The only thing that bounds an accessory is the
-# TPS22950C's own current limit, and at the values D-750 shipped those
+# accessory limiter's own current limit, and at the values D-750 shipped
 # limits sat far ABOVE what the policy permitted.
 #
 # BOTH ILIM RESISTORS ARE NOW 2.7 kOhm.  R97 was 1.5 kOhm, R101 was
@@ -618,8 +618,41 @@
 # below the one-shot fuse.  Each rail still GUARANTEES 0.277 amps, which
 # is MORE than the superseded policy permitted at this corner.
 # checks/demo_feature_contract.py F6 recomputes all of it from the two
-# resistors the board actually carries, with four live negative controls
-# - two of which put the D-750 values back.
+# resistors AND the two limiter part numbers the board actually carries,
+# with eight live negative controls - two of which put the D-750 values
+# back, and one of which is the board D-753 itself shipped.
+#
+# 5e. AND THE SILICON D-753 CHOSE COULD NOT LEGALLY BE SET THAT LOW
+#     - D-765
+#
+# Every number in 5d survives D-765 unchanged.  What was wrong was the
+# PART.  D-753 set 0.407 amps typical on a TPS22950C, and section 5 of
+# TI SLVSFJ2B - the Device Comparison Table of the very datasheet D-753
+# cited - gives the C variant an ILIM range of 0.5 to 3.5 amps.  The
+# 0.05 amp floor and the "certified from 66 mA" UL note that D-753
+# reasoned from belong to the BASE TPS22950, which TI sells only in a
+# WCSP package this board cannot use.  So the accessory limiters were
+# programmed BELOW their own recommended operating condition, where the
+# datasheet warrants nothing - on the one element that stands between a
+# user's accessory and the pack.  This repository's own 2026-08-22
+# architecture reconciliation had recorded 0.5 to 3.5 amps for the C
+# variant correctly, and the schematic symbol's own description said so
+# too; the decision simply did not read them.
+#
+# THE FIX CHANGES NO RESISTOR, NO COPPER AND NO ENVELOPE.  U20 and U22
+# are now the TPS22950-Q1, TI SLVSGP6A, orderable TPS22950CQDDCRQ1,
+# whose single specified ILIM range is 0.05 to 3.5 amps.  It is the SAME
+# DDC0006A land pattern, the SAME ON/VIN/GND/ILIM/VOUT/FLT pinout, the
+# SAME 1.18 x R^-1.072 equation with the SAME published EC rows, the
+# SAME auto-retry overcurrent response, the SAME always-on reverse
+# current blocking at 44 mV / 3 us / 38 uA, the SAME FLT semantics that
+# assert on thermal shutdown and reverse current only, and the SAME
+# 170 C / 150 C thermal shutdown - and it is AEC-Q100 grade 1.  At the
+# 2.7 kOhm the board carries, the setting is inside the UL 2367
+# recognised window as well.  F6 now refuses any limiter whose ILIM
+# setting falls outside that part's OWN published range, over the
+# programming resistor's whole tolerance band, and refuses a limiter
+# this contract has no published range for at all.
 #
 # RESIDUAL, NAMED NOT HIDDEN: BAT_MAIN copper is sized for 1.5 amps
 # sustained, and the new worst SUSTAINED case - both accessories at

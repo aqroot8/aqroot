@@ -103,7 +103,7 @@ and no earlier one.**
 | `P00` | 4 | `/08_BUTTONS_EXPANDERS/FRONT_RGB_R_N` | OUT | front RGB red cathode sink, **R124 1 k** (D-747 corrected this cell: it read `R70/R73`, which are not on this net) |
 | `P01` | 5 | `/08_BUTTONS_EXPANDERS/FRONT_RGB_G_N` | OUT | front RGB green cathode sink, R125 680 R |
 | `P02` | 6 | `/08_BUTTONS_EXPANDERS/FRONT_RGB_B_N` | OUT | front RGB blue cathode sink, R126 390 R |
-| `P03` | 7 | `/ACC_5V_SW_EN` | OUT | `U22` TPS22950C 5 V load-switch enable, R131 100 k pull-down |
+| `P03` | 7 | `/ACC_5V_SW_EN` | OUT | `U22` TPS22950-Q1 5 V load-switch enable, R131 100 k pull-down |
 | `P04` | 8 | `/XGPIO4` | I/O | Community Port expansion GPIO 4 (public) |
 | `P05` | 9 | `/XGPIO5` | I/O | Community Port expansion GPIO 5 (public) |
 | `P06` | 10 | — | — | **NC-DEMO**, unused spare |

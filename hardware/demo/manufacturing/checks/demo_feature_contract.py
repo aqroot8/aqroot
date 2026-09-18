@@ -300,7 +300,24 @@ def judge_backlight(nets_by_contact, values):
 # -40..+125 C (the widest ratio it publishes, read off the 19.2 kOhm row).
 # --------------------------------------------------------------------------
 ILIM_R = {"ACC_3V3": "R97", "ACC_5V": "R101"}
-ILIM_LO, ILIM_HI = 0.68, 1.32          # SLVSFJ2B EC table, widest published
+ILIM_SWITCH = {"ACC_3V3": "U20", "ACC_5V": "U22"}
+ILIM_LO, ILIM_HI = 0.68, 1.32          # SLVSFJ2B/SLVSGP6A EC table, widest row
+# D-765.  EACH PART'S OWN SPECIFIED ILIM PROGRAMMING RANGE, from its own
+# datasheet -- because D-753 set 0.407 A on a part specified from 0.5 A and
+# NOTHING IN THIS CONTRACT COULD SAY THE WORD FOR THAT ACT.  The range is a
+# RECOMMENDED OPERATING CONDITION: outside it the datasheet warrants nothing,
+# and this is a user-accessible protection element.
+ILIM_SPEC_RANGE = {
+    # SLVSGP6A section 6.3, single variant, DDC (SOT-23-6) -- THE FITTED PART
+    "TPS22950-Q1": (0.05, 3.5),
+    # SLVSFJ2B section 5 Device Comparison Table -- the C variant is 0.5 A up,
+    # NOT the 0.05 A that belongs to the WCSP-only base TPS22950
+    "TPS22950C": (0.50, 3.5),
+    "TPS22950": (0.05, 3.5),    # WCSP YBH only; not a leaded option here
+    "TPS22950L": (0.50, 3.5),   # latch-off, no RCB; rejected 2026-08-22
+}
+# UL 2367 recognition, file E169910, stated identically by both datasheets.
+UL2367_ILIM_RANGE = (0.066, 2.46)
 VBAT_CORNER = 3.0                      # 1S Li-ion working floor
 V_3V3, ETA_U12 = 3.3, 0.90             # TPS63020 buck-boost
 V_ACC5V, ETA_U21 = 4.95, 0.88          # TPS61023 boost, R99/R100 divider
@@ -318,15 +335,55 @@ def _ohms(value):
     return n * {"": 1.0, "k": 1e3, "K": 1e3, "m": 1e6, "M": 1e6}[m.group(2)]
 
 
+def _tol(value):
+    """Fractional tolerance written on the part, defaulting PESSIMISTICALLY.
+
+    A resistor whose value string does not state a tolerance is assumed 5 %,
+    so an untoleranced ILIM programming resistor is judged over a WIDER band
+    rather than a narrower one.
+    """
+    m = re.search(r"([\d.]+)\s*%", value or "")
+    return float(m.group(1)) / 100.0 if m else 0.05
+
+
+def _ilim_typ(r_ohms):
+    """TI equation 1, identical in SLVSFJ2B and SLVSGP6A.  Amps from ohms."""
+    return 1.18 * ((r_ohms / 1000.0) ** -1.072)
+
+
 def judge_accessory_envelope(values):
-    """Pure over {ref: value}; returns (ok, detail).  D-753."""
-    d, rails = {}, {}
+    """Pure over {ref: value}; returns (ok, detail).  D-753 + D-765.
+
+    D-753's four modes and its two refusal clauses are UNCHANGED.  D-765 adds
+    the three clauses that were missing, and whose absence let a 0.407 A
+    setting ship on a part specified from 0.5 A:
+
+      * the limiter silicon must be a part this contract has a range for;
+      * the ILIM setting must sit inside THAT part's own specified range,
+        over the programming resistor's whole tolerance band;
+      * both rails must carry the same MPN (D-088).
+    """
+    d, rails, parts = {}, {}, {}
     for rail, ref in ILIM_R.items():
+        switch = ILIM_SWITCH[rail]
+        part = (values.get(switch) or "").strip()
+        rng = ILIM_SPEC_RANGE.get(part)
         r = _ohms(values.get(ref))
         if not r:
             return False, dict(error="%s value unreadable: %r" % (ref, values.get(ref)))
-        typ = 1.18 * ((r / 1000.0) ** -1.072)
-        rails[rail] = dict(ref=ref, r_ohms=r, ilim_min=typ * ILIM_LO,
+        tol = _tol(values.get(ref))
+        typ = _ilim_typ(r)
+        # The setting is judged over the RESISTOR's band, because a 1 % part at
+        # its unlucky corner is still the part that gets fitted.  A smaller
+        # resistor programs a LARGER limit.
+        typ_hi, typ_lo = _ilim_typ(r * (1 - tol)), _ilim_typ(r * (1 + tol))
+        parts[rail] = dict(
+            ref=switch, value=part, known_part=rng is not None,
+            spec_range_A=list(rng) if rng else None,
+            setting_band_A=[round(typ_lo, 4), round(typ_hi, 4)],
+            setting_inside_spec_range=bool(
+                rng and rng[0] <= typ_lo and typ_hi <= rng[1]))
+        rails[rail] = dict(ref=ref, r_ohms=r, r_tol=tol, ilim_min=typ * ILIM_LO,
                            ilim_typ=typ, ilim_max=typ * ILIM_HI)
 
     def ibat(i3, i5):
@@ -361,8 +418,27 @@ def judge_accessory_envelope(values):
         (IBAT_OCP_MIN - max(modes[k] for k in
          ("acc3v3_alone_at_its_limiter", "acc5v_alone_at_its_limiter",
           "both_at_their_guaranteed_currents"))) / IBAT_OCP_MIN * 100.0, 2)
+    # ---- D-765: the three clauses that had no words before -----------------
+    d["limiter_parts"] = parts
+    d["ul2367_ilim_range_A"] = list(UL2367_ILIM_RANGE)
+    d["limiter_silicon_is_a_part_with_a_published_range"] = all(
+        p["known_part"] for p in parts.values())
+    d["ilim_setting_is_inside_the_parts_own_spec_range"] = all(
+        p["setting_inside_spec_range"] for p in parts.values())
+    d["one_limiter_mpn_on_both_rails"] = (
+        len({p["value"] for p in parts.values()}) == 1)
+    # The UL 2367 recognition range is a narrower, safety-credential bound on
+    # the same quantity.  Its LOWER bound is exercised by the f6h control; any
+    # setting that breaches its UPPER bound also breaches the pack clause.
+    d["ilim_band_is_inside_ul2367_recognition"] = all(
+        UL2367_ILIM_RANGE[0] <= v["ilim_min"]
+        and v["ilim_max"] <= UL2367_ILIM_RANGE[1] for v in rails.values())
     ok = (d["no_reachable_state_trips_the_pack"]
-          and d["double_fault_stays_inside_the_protection_chain"])
+          and d["double_fault_stays_inside_the_protection_chain"]
+          and d["limiter_silicon_is_a_part_with_a_published_range"]
+          and d["ilim_setting_is_inside_the_parts_own_spec_range"]
+          and d["one_limiter_mpn_on_both_rails"]
+          and d["ilim_band_is_inside_ul2367_recognition"])
     return ok, d
 
 
@@ -482,6 +558,8 @@ def main():
         return name, not ok
 
     env_controls = dict(x for x in (
+        # D-753's four.  These prove the ENVELOPE arithmetic still refuses a
+        # limit set too HIGH -- the defect D-753 itself existed to remove.
         _env_control("f6a_refuses_the_d750_acc3v3_ilim",
                      lambda v: v.__setitem__("R97", "1.5k 1%")),
         _env_control("f6b_refuses_the_d750_acc5v_ilim",
@@ -489,7 +567,19 @@ def main():
         _env_control("f6c_refuses_a_1k_ilim_on_either_rail",
                      lambda v: v.__setitem__("R101", "1k")),
         _env_control("f6d_refuses_an_unreadable_ilim_value",
-                     lambda v: v.__setitem__("R97", "DNP"))))
+                     lambda v: v.__setitem__("R97", "DNP")),
+        # D-765's four.  f6e and f6f are the LOAD-BEARING ones: they change
+        # NOTHING but the silicon, leave every D-753 mode passing, and are
+        # refused only by the new spec-range clause.  f6e IS the board D-753
+        # shipped.
+        _env_control("f6e_refuses_the_board_d753_actually_shipped",
+                     lambda v: v.update(U20="TPS22950C", U22="TPS22950C")),
+        _env_control("f6f_refuses_two_different_limiter_mpns",
+                     lambda v: v.__setitem__("U22", "TPS22950C")),
+        _env_control("f6g_refuses_a_limiter_with_no_published_ilim_range",
+                     lambda v: v.__setitem__("U20", "TPS22918")),
+        _env_control("f6h_refuses_an_ilim_under_the_parts_own_floor",
+                     lambda v: v.__setitem__("R97", "20k 1%"))))
 
     nc = ledger["approved_demo_nc"]
     checks = {
@@ -524,11 +614,18 @@ def main():
             **{k: v for k, v in bl.items() if k != "ok"}),
         "F6_accessory_envelope_is_bounded_by_hardware": dict(
             ok=env_ok and all(env_controls.values()),
-            method="TI SLVSFJ2B eq.1 over the two ILIM resistors the board "
-                   "actually carries, against the BQ25185 IBAT_OCP MINIMUM, "
-                   "the LTC4368 trip and F1 -- because the board has no "
+            method="TI equation 1 over the two ILIM resistors AND the two "
+                   "limiter part numbers the board actually carries.  D-753: "
+                   "no state a user can reach may exceed the BQ25185 "
+                   "IBAT_OCP MINIMUM, and the double limiter fault must stay "
+                   "inside the protection chain, because the board has no "
                    "accessory current measurement and a policy cannot bound "
-                   "what an external accessory draws (D-753)",
+                   "what an external accessory draws.  D-765: the setting "
+                   "must ALSO sit inside the fitted part's OWN specified ILIM "
+                   "range over the programming resistor's tolerance band -- "
+                   "TPS22950-Q1 is specified 0.05-3.5 A (SLVSGP6A), the "
+                   "TPS22950C it replaces only 0.5-3.5 A (SLVSFJ2B s.5), and "
+                   "the fitted 2.7 kOhm programs 0.407 A",
             controls_refused=env_controls, **env),
         "F3_approved_nc_exactly_as_scoped": dict(
             ok=(set(nc["observed"]) == EXPECTED_NC

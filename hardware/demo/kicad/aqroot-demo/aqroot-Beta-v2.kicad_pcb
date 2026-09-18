@@ -28751,7 +28751,7 @@
 		(layer "B.Cu")
 		(uuid "4ad705f5-145a-4b29-8653-e201558612f0")
 		(at 55 43)
-		(descr "TI TPS22950C: 5.5 V, 3.2 A, 34 mOhm adjustable current-limited load switch. VIN 1.8-5.5 V. ILIM 0.5-3.5 A set by R_ILIM (ILIM = 1.18 x R[kOhm]^-1.072). ALWAYS-ON reverse current blocking. Auto-retry overcurrent response. Thermal shutdown 170 C. Open-drain FLT asserts on THERMAL SHUTDOWN and REVERSE CURRENT ONLY - a plain current-limit event leaves FLT Hi-Z. 500 kOhm smart pull-down on ON, but the datasheet still requires an external pull-down. DDC SOT-23-thin 6-pin.")
+		(descr "TI TPS22950-Q1 (SLVSGP6A, orderable TPS22950CQDDCRQ1): 5.5 V, 2.7 A, 34 mOhm AEC-Q100 grade-1 adjustable current-limited load switch. VIN 1.8-5.5 V. ILIM 0.05-3.5 A set by R_ILIM (ILIM = 1.18 x R[kOhm]^-1.072); UL 2367 recognised from 66 mA to 2.46 A. ALWAYS-ON true reverse current blocking (44 mV / 3 us / 38 uA). Auto-retry overcurrent response. Thermal shutdown 170 C rising, 150 C falling. Open-drain FLT asserts on THERMAL SHUTDOWN and REVERSE CURRENT ONLY - a plain current-limit event leaves FLT Hi-Z. 500 kOhm smart pull-down on ON, and an external pull-down is fitted regardless. DDC SOT-23-thin 6-pin - the SAME DDC0006A land pattern and the SAME ON/VIN/GND/ILIM/VOUT/FLT pinout as the TPS22950C it replaces. D-765 REPLACED THE TPS22950C BECAUSE THAT PART'S OWN SPECIFIED ILIM RANGE IS 0.5-3.5 A (SLVSFJ2B section 5) AND THE FITTED 2.7 kOhm / 0.407 A SETTING IS BELOW IT; the -Q1 is specified from 0.05 A, so the D-753 envelope becomes an in-specification setting.")
 		(tags "SOT TO_SOT_SMD")
 		(property "Reference" "U22"
 			(at 0 2.4 180)
@@ -28766,7 +28766,7 @@
 				(justify mirror)
 			)
 		)
-		(property "Value" "TPS22950C"
+		(property "Value" "TPS22950-Q1"
 			(at 0 -2.4 180)
 			(layer "B.Fab")
 			(hide yes)
@@ -41864,7 +41864,7 @@
 		(layer "B.Cu")
 		(uuid "8dfa64e5-8e2d-40b1-bde9-25b3e497e33c")
 		(at 52.25 64.75 180)
-		(descr "TI TPS22950C: 5.5 V, 3.2 A, 34 mOhm adjustable current-limited load switch. VIN 1.8-5.5 V. ILIM 0.5-3.5 A set by R_ILIM (ILIM = 1.18 x R[kOhm]^-1.072). ALWAYS-ON reverse current blocking. Auto-retry overcurrent response. Thermal shutdown 170 C. Open-drain FLT asserts on THERMAL SHUTDOWN and REVERSE CURRENT ONLY - a plain current-limit event leaves FLT Hi-Z. 500 kOhm smart pull-down on ON, but the datasheet still requires an external pull-down. DDC SOT-23-thin 6-pin.")
+		(descr "TI TPS22950-Q1 (SLVSGP6A, orderable TPS22950CQDDCRQ1): 5.5 V, 2.7 A, 34 mOhm AEC-Q100 grade-1 adjustable current-limited load switch. VIN 1.8-5.5 V. ILIM 0.05-3.5 A set by R_ILIM (ILIM = 1.18 x R[kOhm]^-1.072); UL 2367 recognised from 66 mA to 2.46 A. ALWAYS-ON true reverse current blocking (44 mV / 3 us / 38 uA). Auto-retry overcurrent response. Thermal shutdown 170 C rising, 150 C falling. Open-drain FLT asserts on THERMAL SHUTDOWN and REVERSE CURRENT ONLY - a plain current-limit event leaves FLT Hi-Z. 500 kOhm smart pull-down on ON, and an external pull-down is fitted regardless. DDC SOT-23-thin 6-pin - the SAME DDC0006A land pattern and the SAME ON/VIN/GND/ILIM/VOUT/FLT pinout as the TPS22950C it replaces. D-765 REPLACED THE TPS22950C BECAUSE THAT PART'S OWN SPECIFIED ILIM RANGE IS 0.5-3.5 A (SLVSFJ2B section 5) AND THE FITTED 2.7 kOhm / 0.407 A SETTING IS BELOW IT; the -Q1 is specified from 0.05 A, so the D-753 envelope becomes an in-specification setting.")
 		(tags "SOT TO_SOT_SMD")
 		(property "Reference" "U20"
 			(at 0 2.4 0)
@@ -41879,7 +41879,7 @@
 				(justify mirror)
 			)
 		)
-		(property "Value" "TPS22950C"
+		(property "Value" "TPS22950-Q1"
 			(at 0 -2.4 0)
 			(layer "B.Fab")
 			(hide yes)

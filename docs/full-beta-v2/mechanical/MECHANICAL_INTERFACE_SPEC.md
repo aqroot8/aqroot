@@ -376,7 +376,7 @@ Not merely "needs reduction". Two independent reasons:
    changes both expanders, changes the community connector to **24 contacts in 2 × 12
    at 2.54 mm** *(D-081 / D-083 — the earlier "26 to 20 pins" figure is **SUPERSEDED**)*, adds the
    P2 four-FET protection stage plus the dead-cell recovery branch, adds the NFC
-   crystal, matching network and antenna, restores IR TX/RX, and adds the TPS22950C
+   crystal, matching network and antenna, restores IR TX/RX, and adds the TPS22950-Q1
    accessory switch. Reusing a floorplan built around a different component set
    would inherit the very constraints that made IR TX and IR RX unroutable on
    Beta-DM.

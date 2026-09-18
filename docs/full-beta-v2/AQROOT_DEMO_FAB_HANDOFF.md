@@ -1,8 +1,36 @@
 # AQROOT Demo — FABRICATION HANDOFF
 
 
-> **STATUS: `DEMO_READY_FOR_FAB` — DECLARED AT D-764, 2026-09-18, ON BOARD
-> AUTHORITY `1a06b058`.** This supersedes every earlier readiness declaration.
+> # **STATUS: NOT READY — READINESS WITHDRAWN, ONE OF TWO CAUSES CLOSED (D-765, 2026-09-18).**
+>
+> **BOARD AUTHORITY `9e4728ae`** (copper byte-identical to `1a06b058`; only the two
+> accessory-limiter footprint `descr`/`Value` fields and a `.kicad_dru` comment
+> section changed).  External review round 2 withdrew D-764's declaration for **two**
+> items:
+>
+> 1. **An unsupported `TPS22950C` `ILIM` setting — CLOSED BY D-765.**  D-753's
+>    0.407 A envelope is retained in full, but the `TPS22950C`'s OWN specified
+>    `ILIM` range is **0.5–3.5 A** (`SLVSFJ2B` §5 Device Comparison Table), so the
+>    setting sat 19 % below its recommended operating condition.  `U20`/`U22` are
+>    now the **`TPS22950-Q1`** (`SLVSGP6A`, orderable **`TPS22950CQDDCRQ1`**, LCSC
+>    **`C17349276`**), specified **0.05–3.5 A**, on the **same `DDC0006A` land
+>    pattern and pinout**, with the same auto-retry, RCB, `FLT` semantics and TSD,
+>    plus AEC-Q100 grade 1.  **No resistor, no copper and no envelope number
+>    changed.**  `F6` now refuses any `ILIM` outside the fitted part's own published
+>    range and runs eight controls.
+> 2. **Firmware fault / warm-reset handling — STILL OPEN.**  Not part of the D-765
+>    transaction.  **This is why readiness is NOT re-declared here.**
+>
+> Full D-765 verification: promotion 16/16 with 0 objects added or removed; routing
+> 173/174 with only owner-approved `U11.3`; DRC 199 `lib_footprint_issues` all
+> warnings; parity 246 warnings / 0 errors; protected copper identical; F1–F6 and
+> FAB1–FAB15 PASS; assembly PDFs now print `RELEASE D-765`.  There is **no open
+> owner decision** and **no unresolved PCB or fab-data blocker**.
+>
+> **D-764's declaration text is retained below as history.**
+>
+> **STATUS WAS: `DEMO_READY_FOR_FAB` — DECLARED AT D-764, 2026-09-18, ON BOARD
+> AUTHORITY `1a06b058`.** This superseded every earlier readiness declaration.
 > The PCB itself is unchanged since D-759. D-764 closes release/assembly ambiguity:
 > all five leaded THT refs (`J4`, `J5`, `J6`, `D1`, `U6`) are now unambiguously
 > hand-soldered after reflow, the current 1×24 J5 identity/drill is the only current
@@ -16,9 +44,9 @@
 > closure from the frozen PCB release.
 
 **Board:** `hardware/demo/kicad/aqroot-demo/aqroot-Beta-v2.kicad_pcb`
-**Authority:** `sha256 1a06b058912b4c37e25d0acd9314f9542671efa852a162cc8b1dc6533e25668b`
+**Authority:** `sha256 9e4728aebc8d449b32fe0d45f1fb81d4e00bf91baf1f61924048763168b7b7fd` (D-765; copper byte-identical to D-759's `1a06b058…`)
 **Package:** `hardware/demo/fab/` — board-derived fabrication geometry remains D-759 authority; D-764 regenerates it deterministically and replaces the assembly PDFs/manifest with release-identified versions
-**Date:** 2026-09-18 · **Decisions:** D-742 … D-764 · **Prepared for:** independent CTO review / first-five prototype order
+**Date:** 2026-09-18 · **Decisions:** D-742 … D-765 · **Prepared for:** independent CTO review / first-five prototype order
 
 > **THIS HANDOFF HAS BEEN REOPENED AND RE-ISSUED TWICE.**  It was first written
 > at `c7f5c618`.  An external first-spin review (Fable 5.1 + Astra) found four
@@ -58,7 +86,7 @@ track and footprint counts move with them.)*
 | approved Demo NC | `J5.9`–`J5.12`, `J5.15`–`J5.18` — expected == observed |
 | approved unrouted | `U11.3` only, under the 2026-09-17 owner decision |
 | open owner decisions | **none** |
-| board authority `sha256` | **`1a06b058…`** (D-759) |
+| board authority `sha256` | **`9e4728ae…`** (D-765; copper byte-identical to D-759's `1a06b058…`) |
 | standing contracts | **19 run, 19 pass** |
 | mechanical keep-out contract | **MK1–MK11 pass, 14 live controls** |
 | open CAD items | **2** — rear component profile, §5b |
@@ -75,7 +103,7 @@ must still be fitted — and **fails if any of those stops being true**.
 routed copper at all** — it moved one solder-mask state, one mounting hole, and a
 great many claims that nothing had ever checked.
 
-**THE `D-757` … `D-764` CYCLE, IN ONE PARAGRAPH EACH:**
+**THE `D-757` … `D-765` CYCLE, IN ONE PARAGRAPH EACH:**
 
 * **`D-757`** — the **NFC first-article tuning terminals were printed over**.
   `D-755` measured a 0.325 mm pad-to-via bridge on both match arms and concluded
@@ -131,6 +159,25 @@ great many claims that nothing had ever checked.
   itself. `MK11` pins SW1, SW9 and current J5 board-side enclosure geometry.
   Fabrication artwork geometry is unchanged; regenerated Gerber/drill normalized
   hashes are identical.
+* **`D-765`** — **the accessory limiter silicon was corrected, and the gate learned
+  the word for the act.** D-753's envelope is retained to the digit, but the
+  `TPS22950C` it ran on is specified `ILIM` **0.5–3.5 A** (`SLVSFJ2B` §5) and the
+  board programs **0.407 A** — below its own recommended operating condition, on
+  the one element between a user's accessory and the pack. The 0.05 A floor D-753
+  reasoned from belongs to the base `TPS22950`, **WCSP-only**. `U20`/`U22` are now
+  the **`TPS22950-Q1`** / **`TPS22950CQDDCRQ1`** / LCSC **`C17349276`** — same
+  `DDC0006A` land pattern, same pinout, same `ILIM` equation and EC rows, same
+  auto-retry, same always-on true RCB, same `FLT` semantics, same 170 °C TSD,
+  `ILIM` specified **0.05–3.5 A**, AEC-Q100 grade 1, ≈ US$0.03/device. **No
+  resistor, no copper, no envelope number changed**; the `.kicad_dru` **parsed**
+  class table is proven byte-identical. `F6` gained three clauses — including
+  "the setting must be inside the fitted part's own published range" over the
+  resistor's whole tolerance band — and now runs **eight** controls, one of which
+  is the board D-753 shipped. Both TPS22950 datasheets are now ARCHIVED in
+  `vendor/TI/`; neither had ever been committed. `routing_ledger` also gained a
+  population/board reconciliation guard after `kicad-cli sch export bom` was found
+  to **exit 0 while silently dropping an entire sheet**, which had made the ledger
+  report 114 nets instead of 174. Assembly PDFs print `RELEASE D-765`.
 
 **THREE PARTS WERE FITTED AND THE COPPER MOVED** (D-750 and D-751); the
 D-742…D-745 entries below are retained as the history of the previous cycle.
@@ -622,7 +669,8 @@ can only be confirmed by eye. `MK1` and `U5` share one `/I2S_BCLK` and one
    least 40 V `VDS` first.**
 
 11. **THE ACCESSORY ENVELOPE IS NOW BOUNDED BY SILICON, AND ONE THERMAL
-   RESIDUAL IS NAMED** (D-753). Both `TPS22950C` `ILIM` resistors are **2.7 kΩ**
+   RESIDUAL IS NAMED** (D-753; limiter silicon corrected by D-765 to the
+   `TPS22950-Q1`, which is specified from 0.05 A). Both `ILIM` resistors are **2.7 kΩ**
    (`R97` was 1.5 kΩ, `R101` 1.65 kΩ), so each accessory rail guarantees
    **0.277 A** and cannot pass more than **0.537 A** over −40…+125 °C. At the
    3.0 V cell corner with the full 1.0 A internal `+3V3` load, no state a user

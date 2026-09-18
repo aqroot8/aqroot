@@ -286,11 +286,11 @@ power/NFC review, and CTO decisions.
 | **+3V3** main (buck-boost) | `U12` | **TPS63020DSJR** | FITTED | `01_power_tree.kicad_sch:U12` |
 | ~5 V boost (NFC/LED) | `U13` | TPS61023DRLR | **DNP on AQROOT Demo** (D-743 corrected this row; it read FITTED).  NFC runs from the 3.3 V path — see §0a | `01_power_tree.kicad_sch:U13`; `aqroot-Demo-DO-NOT-POPULATE.csv` |
 | **ACC_5V_RAW** ~5 V boost (accessory) | `U21` | TPS61023DRLR | FITTED | `01_power_tree.kicad_sch:U21` |
-| **ACC_3V3_SW** load switch | `U20` | TPS22950CDDCR | FITTED | `01_power_tree.kicad_sch:U20` |
-| **ACC_5V_SW** load switch | `U22` | TPS22950CDDCR | FITTED | `01_power_tree.kicad_sch:U22` |
+| **ACC_3V3_SW** load switch | `U20` | TPS22950CQDDCRQ1 (TPS22950-Q1, D-765) | FITTED | `01_power_tree.kicad_sch:U20` |
+| **ACC_5V_SW** load switch | `U22` | TPS22950CQDDCRQ1 (TPS22950-Q1, D-765) | FITTED | `01_power_tree.kicad_sch:U22` |
 | Accessory I²C hot-swap buffer | `U16` | TCA4307DGKR | FITTED | `08/09` |
 
-### 6.3a Accessory-power ENVELOPE (D-753) — ENGINEERING-ONLY, **bounded by hardware**
+### 6.3a Accessory-power ENVELOPE (D-753, silicon corrected D-765) — ENGINEERING-ONLY, **bounded by hardware**
 
 **D-750 answered the external first-spin review's combined-load item with a
 POLICY; D-753 replaced it with a LIMIT the silicon enforces.**  The policy read
@@ -298,11 +298,11 @@ POLICY; D-753 replaced it with a LIMIT the silicon enforces.**  The policy read
 together"* — and this board has **no accessory current measurement**.  Firmware
 can choose whether a rail is ON; it cannot know what an arbitrary external
 accessory then draws.  The only thing that actually bounds an accessory is the
-`TPS22950C`'s own current limit, and at the values D-750 shipped those limits
-sat far ABOVE what the policy permitted.
+accessory limiter's own current limit, and at the values D-750 shipped those
+limits sat far ABOVE what the policy permitted.
 
-**BOTH `ILIM` RESISTORS ARE NOW 2.7 kΩ** (`R97` was 1.5 kΩ, `R101` was
-1.65 kΩ; LCSC `C13167`, JLCPCB BASIC).  TI `SLVSFJ2B` equation 1 —
+**BOTH `ILIM` RESISTORS ARE 2.7 kΩ** (`R97` was 1.5 kΩ, `R101` was
+1.65 kΩ; LCSC `C13167`, JLCPCB BASIC).  TI equation 1 —
 `ILIM = 1.18 × (R[kΩ])^−1.072` — gives **0.407 A typ**, and the widest tolerance
 ratio the part's own EC table publishes (0.68× / 1.32× of typ over −40…+125 °C)
 brackets each rail at **0.277 A guaranteed / 0.537 A worst case**.
@@ -329,8 +329,40 @@ against a `BQ25185` `IBAT_OCP` **MINIMUM of 2.5625 A** (3.125 A typ ± 18 %,
 > rail GUARANTEES **0.277 A**, which is MORE than the superseded policy
 > permitted at this corner (0.15 A at 5 V / 0.23 A at 3.3 V).
 > `checks/demo_feature_contract.py` **F6** recomputes all of this from the two
-> resistors the board actually carries, with four live negative controls —
-> including two that put the D-750 values back.
+> resistors AND the two limiter part numbers the board actually carries, with
+> **eight** live negative controls — two that put the D-750 values back, and one
+> that is the board D-753 itself shipped.
+
+> **D-765 — THE ENVELOPE WAS RIGHT AND THE SILICON COULD NOT LEGALLY HOLD IT.**
+> Every number in the table above is unchanged.  What was wrong was the part.
+> D-753 programmed **0.407 A typ on a `TPS22950C`**, and **section 5 of the very
+> datasheet it cited (`SLVSFJ2B`, Device Comparison Table) gives the `C` variant
+> an `ILIM` range of 0.5–3.5 A**.  The 0.05 A floor and the *"certified from
+> 66 mA"* UL note D-753 reasoned from belong to the **base `TPS22950`, which TI
+> sells only in a WCSP package this board cannot use**.  The accessory limiters
+> were therefore programmed **below their own recommended operating condition**,
+> where the datasheet warrants nothing — on the one element standing between a
+> user's accessory and the pack.  This repository's own 2026-08-22 architecture
+> reconciliation had the `C` variant's 0.5–3.5 A recorded correctly, and so did
+> the schematic symbol's own description.
+>
+> **`U20` and `U22` are now the `TPS22950-Q1`** (`SLVSGP6A`, orderable
+> **`TPS22950CQDDCRQ1`**, LCSC `C17349276`, Active/Production, 4 050 in stock),
+> whose single specified `ILIM` range is **0.05–3.5 A**.  **No resistor, no
+> copper and no envelope number changes.**  It is the same **`DDC0006A`** land
+> pattern, the same `ON`/`VIN`/`GND`/`ILIM`/`VOUT`/`FLT` pinout, the same
+> `1.18 × R^−1.072` equation with the same published EC rows, the same
+> **auto-retry** overcurrent response, the same always-on **true reverse-current
+> blocking** (44 mV / 3 µs / 38 µA), the same `FLT` semantics (thermal shutdown
+> and reverse current only), the same **170 °C / 150 °C** thermal shutdown — and
+> it is **AEC-Q100 grade 1**.  Turn-on is slower (1 037 µs vs 800 µs at 5 V),
+> which only softens accessory inrush.  `IMAX` falls 3.2 A → 2.7 A, against a
+> 0.537 A worst-case use.  Prototype cost delta ≈ **US$0.03 per device**.  At
+> 2.7 kΩ the setting also sits inside the **UL 2367** recognised window
+> (66 mA–2.46 A).  **F6 now refuses any limiter whose `ILIM` setting falls
+> outside that part's OWN published range** over the programming resistor's
+> whole tolerance band, refuses a limiter it has no published range for, and
+> refuses two different limiter MPNs across the two rails.
 
 **RESIDUAL, NAMED NOT HIDDEN.**  `.kicad_dru` section 5 sizes `BAT_MAIN` copper
 for **1.5 A sustained**.  The new worst *sustained* case — both accessories at

@@ -161,6 +161,11 @@
    "MPN": "PCAL9535APW,118",
    "Value": "PCAL9535APW"
   },
+  "U20": {
+   "Footprint": "Package_TO_SOT_SMD:SOT-23-6",
+   "MPN": "TPS22950CQDDCRQ1",
+   "Value": "TPS22950-Q1"
+  },
   "U21": {
    "Footprint": "Package_TO_SOT_SMD:SOT-563",
    "MPN": "TPS61023DRLR",
@@ -168,8 +173,8 @@
   },
   "U22": {
    "Footprint": "Package_TO_SOT_SMD:SOT-23-6",
-   "MPN": "TPS22950CDDCR",
-   "Value": "TPS22950C"
+   "MPN": "TPS22950CQDDCRQ1",
+   "Value": "TPS22950-Q1"
   },
   "U3": {
    "Footprint": "Package_SO:TSSOP-24_4.4x7.8mm_P0.65mm",
@@ -209,5 +214,5 @@
  },
  "schema": 1,
  "source": "hardware/demo/kicad/aqroot-demo/*.kicad_sch instance properties, at D-750",
- "why": "FAB12b.  The references whose PACKAGE IDENTITY is load-bearing: every connector, every converter, every radio, the charger, the fuel gauge, the microphone, the protection FETs and the crystal.  Pinned here so a later regeneration cannot silently change one, which is the defect D-750 found on J5: D-237 moved the footprint and the datasheet URL to the 1x24 SSQ-124-02-G-S-RA and left the MPN, the LCSC code and the description on the superseded 2x12 BCS-112-S-D-HE, and every release BOM carried the wrong purchasing identity for eight months of decisions.  A pin is a REGRESSION instrument and cannot find an identity that was already wrong when it was written -- FAB12a, which reads the row's own words against the footprint's own pads, is the one that finds those."
+ "why": "FAB12b.  The references whose PACKAGE IDENTITY is load-bearing: every connector, every converter, every radio, the charger, the fuel gauge, the microphone, the protection FETs and the crystal.  Pinned here so a later regeneration cannot silently change one, which is the defect D-750 found on J5: D-237 moved the footprint and the datasheet URL to the 1x24 SSQ-124-02-G-S-RA and left the MPN, the LCSC code and the description on the superseded 2x12 BCS-112-S-D-HE, and every release BOM carried the wrong purchasing identity for eight months of decisions.  A pin is a REGRESSION instrument and cannot find an identity that was already wrong when it was written -- FAB12a, which reads the row's own words against the footprint's own pads, is the one that finds those. D-765: U22 was pinned and U20 -- THE OTHER HALF OF THE SAME ONE-MPN ACCESSORY PAIR -- was not, so a divergence between the two accessory limiters could not be seen here at all.  Both are pinned now, on the TPS22950-Q1 that replaced the TPS22950C."
 }
