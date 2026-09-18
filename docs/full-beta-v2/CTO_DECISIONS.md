@@ -152,6 +152,43 @@ refusing anything else by name. Re-broken deliberately, it fires and lists all
 halves of the same one-MPN accessory pair, one watched and one not. Both are
 pinned now.
 
+### 6a. A PARALLEL F6 REWRITE ACCEPTS EVERYTHING D-753 EXISTED TO REFUSE
+
+A second, uncommitted `F6` rewrite was found live in the main worktree while this
+decision was being built.  It reaches the same conclusion about the silicon and
+adds a useful exact-variant clause — **and it DELETES D-753's two fault-envelope
+clauses**, replacing them with a fixed 250 mA per-rail "budget" screened at an
+assumed 3.50 V accessory-shed floor.  **Neither assumption is enforced by anything
+on this board**: there is no accessory current measurement and no gated
+cell-voltage accessory shed.  That is the D-750 policy D-753 explicitly refuted,
+restored as the only remaining test.
+
+**Measured, not argued** — `evidence/d765-f6-rewrite-accepts-what-d753-refuses.json`
+loads that exact file and asks it four questions:
+
+| setting fed to the rewritten F6 | what it means | its verdict |
+|---|---|---|
+| `R97` = 610 Ω | `ILIM` 2.0 A typ, **2.46 A worst case on the 3.3 V rail** | **ACCEPTED** |
+| `R101` = 610 Ω | `ILIM` 2.0 A typ on the 5 V rail | **ACCEPTED** |
+| `R97` = 1.5 kΩ | the D-750 value D-753 removed | **ACCEPTED** |
+| `R101` = 1.65 kΩ | the D-750 value D-753 removed | **ACCEPTED** |
+
+D-753 **measured** that the 1.5 k / 1.65 k pair put two states a user can reach
+with conforming accessories **over** the `BQ25185` `IBAT_OCP` minimum — 2.930 A
+and 2.737 A against 2.5625 A — and `SLUSF65B` §6.3.7.3 says a sustained `BATOCP`
+hiccup repeated 4–7 times in a 2 s window **latches the `BATFET` off until a valid
+`VIN` is connected**.  A gate that accepts that board is not a gate.  Its
+`upstream_protection_is_ordered` clause is vacuous as well: `2.5625 < 3.3333 < 5.0`
+reads no board value and cannot fail.
+
+**THIS DECISION'S `F6` IS A STRICT SUPERSET, SO NOTHING IS LOST BY TAKING IT.**
+D-753's two clauses are unchanged and still first; the three identity/range
+clauses are added; eight controls are refused; and the parallel proposal's
+normal-operation screen is **retained as a REPORTED figure** —
+`normal_operation_screen_REPORT_ONLY`, **2.2698 A, 11.42 % under `IBAT_OCP` min** —
+beside the fault envelope rather than instead of it, with the reason it is not a
+clause written into the field itself.
+
 ### 7. VERIFICATION
 On board `9e4728ae` (copper byte-identical to `1a06b058`; only footprint
 `descr`/`Value` text and the `.kicad_dru` comment changed):
