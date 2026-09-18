@@ -48,6 +48,7 @@ import argparse
 import csv
 import hashlib
 import json
+import math
 import re
 import shutil
 import subprocess
@@ -81,6 +82,17 @@ BOM_FIELDS = ("Reference,Value,Footprint,Manufacturer,MPN,LCSC,"
               "Description,${QUANTITY},${DNP}")
 BOM_LABELS = "Refs,Value,Footprint,Manufacturer,MPN,LCSC,Description,Qty,DNP"
 BOM_GROUP = "Value,Footprint,MPN,LCSC,DNP"
+
+# D-755. Two intentionally exposed, copper-capped GND vias are the solder-side
+# terminals for optional first-article ST25R3916 parallel-match capacitors.
+# These are NOT generic test points: their exact geometry and mask state are a
+# manufacturing requirement, because a tented via cannot accept the 0402 bridge.
+NFC_TUNE_SITES = (
+    dict(name="A", ref="C71", pad="2", match_net="/04_SPI_B_RADIOS_NFC/NFC_MATCH_A",
+         via_x=43.5, via_y=26.7),
+    dict(name="B", ref="C72", pad="2", match_net="/04_SPI_B_RADIOS_NFC/NFC_MATCH_B",
+         via_x=43.5, via_y=33.3),
+)
 
 # Lines whose only content is when or by what the file was generated.  Removing
 # them makes a Gerber/Excellon/gbrjob byte-comparable across runs.
@@ -353,9 +365,11 @@ def export_fab_notes(out):
     lines += glines
     mlines, mrows = solder_mask_notes(board)
     lines += mlines
+    nlines, nrows = nfc_tuning_access_notes(board)
+    lines += nlines
     (out / "aqroot-Demo-FAB-NOTES.md").write_text("\n".join(lines),
                                                   encoding="utf-8")
-    return [r[0] for r in rules], vrows, grows, mrows
+    return [r[0] for r in rules], vrows, grows, mrows, nrows
 
 
 # D-737.  THE PROFILE IS NOT A RECTANGLE AND THE PACKAGE NEVER SAID SO.
@@ -757,15 +771,49 @@ def solder_mask_notes(board, floor_mm=0.125):
                 bb = pad.GetBoundingBox()
                 exp = pad.GetSolderMaskExpansion(ml)
                 items.append(dict(lay=pcbnew.LayerName(ml), ref=f.GetReference(),
-                                  num=pad.GetNumber(), pad=pad,
-                                  cu=cu if pad.IsOnLayer(cu) else ml, exp=exp,
+                                  num=pad.GetNumber(),
+                                  poly=pad.GetEffectivePolygon(
+                                      cu if pad.IsOnLayer(cu) else ml),
+                                  exp=exp,
                                   net=pad.GetNetname(), allow=allow,
                                   x0=bb.GetLeft() - exp, y0=bb.GetTop() - exp,
                                   x1=bb.GetRight() + exp, y1=bb.GetBottom() + exp))
 
+    # D-757.  AN UNTENTED VIA IS AN APERTURE AND THIS SURVEY COULD NOT SEE ONE.
+    # Until D-757 every via on this board was tented on both masks, so a
+    # pad-only survey was complete by accident rather than by construction.
+    # D-757 opens two GND via caps on B.Mask as the NFC first-article tuning
+    # terminals, and the next one -- a probe point, a heatsink cap, a rework
+    # land -- would have been measured by nothing.  A via carries no
+    # `allow_soldermask_bridges` attribute, so it can never be a DECLARED
+    # bridge; if one ever sits inside the floor of a foreign net, that has to
+    # be read as a real question rather than silently omitted.
+    for t in board.GetTracks():
+        if not isinstance(t, pcbnew.PCB_VIA):
+            continue
+        for cu, ml in ((pcbnew.F_Cu, pcbnew.F_Mask),
+                       (pcbnew.B_Cu, pcbnew.B_Mask)):
+            if t.IsTented(ml):
+                continue
+            exp = t.GetSolderMaskExpansion()
+            r = t.GetWidth(cu) // 2
+            pos = t.GetPosition()
+            circle = pcbnew.SHAPE_POLY_SET()
+            circle.NewOutline()
+            for i in range(64):
+                ang = 2.0 * math.pi * i / 64.0
+                circle.Append(int(pos.x + r * math.cos(ang)),
+                              int(pos.y + r * math.sin(ang)))
+            items.append(dict(lay=pcbnew.LayerName(ml),
+                              ref="via@%.3f,%.3f" % (pos.x / 1e6, pos.y / 1e6),
+                              num="cap", poly=circle, exp=exp,
+                              net=t.GetNetname(), allow=False,
+                              x0=pos.x - r - exp, y0=pos.y - r - exp,
+                              x1=pos.x + r + exp, y1=pos.y + r + exp))
+
     def dam(a, c):
-        A = pcbnew.SHAPE_POLY_SET(a["pad"].GetEffectivePolygon(a["cu"]))
-        B = pcbnew.SHAPE_POLY_SET(c["pad"].GetEffectivePolygon(c["cu"]))
+        A = pcbnew.SHAPE_POLY_SET(a["poly"])
+        B = pcbnew.SHAPE_POLY_SET(c["poly"])
         best = None
         for P, Q in ((A, B), (B, A)):
             o = P.Outline(0)
@@ -804,7 +852,9 @@ def solder_mask_notes(board, floor_mm=0.125):
              "report therefore says NOTHING about mask webs on this board, and "
              "the webs below were measured for this note instead -- polygon to "
              "polygon, not bounding box.  `pad_to_mask_clearance` is 0.000 mm, "
-             "so an aperture is its pad and a dam is a pad-to-pad gap."
+             "so an aperture is its pad.  UNTENTED VIA CAPS are apertures "
+             "too and are surveyed here as well (D-757); every other via on "
+             "this board is tented on both masks."
              % checked, ""]
     if not rows:
         lines += ["No two apertures come within %.3f mm of each other."
@@ -851,6 +901,70 @@ def solder_mask_notes(board, floor_mm=0.125):
               ""]
     return lines, rows
 
+
+
+# D-755. ST25R3916 FIRST-ARTICLE PARALLEL-MATCH ACCESS MUST SURVIVE CAM.
+#
+# The authoritative PCB deliberately exposes exactly two B-side GND via caps
+# beside the C71/C72 match-node pads.  A 0402 capacitor can then be bridged from
+# each match pad to its adjacent GND cap after VNA/ST-tool tuning.  Global board
+# policy tents vias on both masks, so these two exceptions must be explicit and
+# machine-checked; otherwise a regenerated package silently removes the tuning
+# terminal while every electrical connectivity gate still passes.
+def nfc_tuning_access_notes(board):
+    import math
+    import pcbnew
+
+    rows = []
+    lines = ["## NFC first-article parallel-match access -- DO NOT TENT", "",
+             "Two GND vias are intentional **solderable tuning terminals** for "
+             "optional 0402 parallel-match capacitors from the ST25R3916 match "
+             "nodes.  These two vias MUST receive the same **RESIN-FILL, "
+             "PLANARIZE, COPPER-CAP** process as POFV lands and their **B.Mask "
+             "openings MUST remain exposed**.  F.Mask remains tented.  Do not "
+             "retent them during CAM cleanup.", ""]
+
+    for site in NFC_TUNE_SITES:
+        fp = board.FindFootprintByReference(site["ref"])
+        if fp is None:
+            raise RuntimeError("NFC tune source %s missing" % site["ref"])
+        pad = next((q for q in fp.Pads() if q.GetNumber() == site["pad"]), None)
+        if pad is None or pad.GetNetname() != site["match_net"]:
+            raise RuntimeError("NFC tune source %s.%s net mismatch" %
+                               (site["ref"], site["pad"]))
+        want = pcbnew.VECTOR2I(int(round(site["via_x"] * 1e6)), int(round(site["via_y"] * 1e6)))
+        via = next((t for t in board.GetTracks()
+                    if isinstance(t, pcbnew.PCB_VIA)
+                    and t.GetPosition() == want), None)
+        if via is None or via.GetNetname() != "GND":
+            raise RuntimeError("NFC tune GND via %s missing" % site["name"])
+        dia = via.GetWidth(pcbnew.B_Cu) / 1e6
+        drill = via.GetDrill() / 1e6
+        if abs(dia - 0.600) > 1e-6 or abs(drill - 0.300) > 1e-6:
+            raise RuntimeError("NFC tune via %s geometry drift" % site["name"])
+        b_open = not via.IsTented(pcbnew.B_Mask)
+        f_tented = via.IsTented(pcbnew.F_Mask)
+        if not b_open or not f_tented:
+            raise RuntimeError("NFC tune via %s mask state drift" % site["name"])
+        poly = pad.GetEffectivePolygon(pcbnew.B_Cu)
+        gap = poly.Distance(via.GetPosition()) / 1e6 - dia / 2.0
+        rows.append(dict(name=site["name"], source="%s.%s" %
+                         (site["ref"], site["pad"]), match_net=site["match_net"],
+                         via_net="GND", x=site["via_x"], y=site["via_y"],
+                         via_dia_mm=round(dia, 3), drill_mm=round(drill, 3),
+                         b_mask_exposed=b_open, f_mask_tented=f_tented,
+                         copper_edge_gap_mm=round(gap, 4)))
+
+    for r in rows:
+        lines += ["- **%s side:** `%s` (`%s`) -> GND via at "
+                  "**(%.3f, %.3f) mm**, %.2f/%.2f mm via, copper-edge gap "
+                  "**%.3f mm**; B.Mask OPEN, F.Mask tented."
+                  % (r["name"], r["source"], r["match_net"], r["x"], r["y"],
+                     r["via_dia_mm"], r["drill_mm"], r["copper_edge_gap_mm"])]
+    lines += ["", "Assembly tuning is optional; **manufacturing access is not**. "
+              "The board must arrive with both capped GND terminals solderable "
+              "even if no parallel capacitor is fitted initially.", ""]
+    return lines, rows
 
 def manifest(out, extra):
     files = []
@@ -909,7 +1023,7 @@ def main():
     export_positions(out)
     bom = export_bom(out)
     export_assembly(out)
-    notes, via_in_pad, sub_floor_vias, mask_dams = export_fab_notes(out)
+    notes, via_in_pad, sub_floor_vias, mask_dams, nfc_tune = export_fab_notes(out)
 
     fitted, dnp = rl.schematic_population()
     doc = manifest(out, dict(population=dict(
@@ -944,6 +1058,10 @@ def main():
                 1 for r in (mask_dams or [])
                 if not r["same_net"] and not r["declared_bridge"]),
             rows=mask_dams or []),
+        nfc_tuning_access=dict(
+            measured=True,
+            required_process="resin-filled, planarized, copper-capped; B.Mask exposed",
+            sites=nfc_tune),
         fabrication_notes=dict(
             file="aqroot-Demo-FAB-NOTES.md",
             hole_clearance_rules=notes,

@@ -1,0 +1,51 @@
+{
+ "board_sha256": "78a68921f7986b9b4afbd6a5fa97b227d26ddfd20c75c99a8e90987ac02910e1",
+ "probe_floor_mm": 0.4,
+ "probe_rows": 423,
+ "probe_via_rows": [
+  {
+   "a": "C73.2",
+   "b": "via@43.500,26.700.cap",
+   "dam_mm": 0.225,
+   "declared_bridge": false,
+   "layer": "B.Mask",
+   "net_a": "GND",
+   "net_b": "GND",
+   "same_net": true
+  },
+  {
+   "a": "C74.2",
+   "b": "via@43.500,33.300.cap",
+   "dam_mm": 0.225,
+   "declared_bridge": false,
+   "layer": "B.Mask",
+   "net_a": "GND",
+   "net_b": "GND",
+   "same_net": true
+  },
+  {
+   "a": "C71.2",
+   "b": "via@43.500,26.700.cap",
+   "dam_mm": 0.325,
+   "declared_bridge": false,
+   "layer": "B.Mask",
+   "net_a": "/04_SPI_B_RADIOS_NFC/NFC_MATCH_A",
+   "net_b": "GND",
+   "same_net": false
+  },
+  {
+   "a": "C72.2",
+   "b": "via@43.500,33.300.cap",
+   "dam_mm": 0.325,
+   "declared_bridge": false,
+   "layer": "B.Mask",
+   "net_a": "/04_SPI_B_RADIOS_NFC/NFC_MATCH_B",
+   "net_b": "GND",
+   "same_net": false
+  }
+ ],
+ "schema": 1,
+ "shipped_floor_mm": 0.125,
+ "shipped_rows": 21,
+ "what": "D-757 non-vacuity: the mask-dam survey now sees untented via caps.  At the shipped 0.125 mm floor no via web qualifies; raising the floor to 0.400 mm makes the four real via webs appear, which proves the survey is looking at them rather than silently omitting them."
+}

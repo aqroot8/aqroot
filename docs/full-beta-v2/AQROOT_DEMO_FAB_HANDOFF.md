@@ -395,8 +395,22 @@ can only be confirmed by eye. `MK1` and `U5` share one `/I2S_BCLK` and one
    edge-to-edge gap of **0.325 mm on both arms, mirror-exact about
    `y = 30.000`**. An 0402 bridges that with ≈0.34 mm of overlap at each end;
    both vias are on the fill-and-cap-plate instruction already in the fab notes,
-   so each presents a planar solderable land. **No mask removal, no cut track,
-   no symmetry loss.** Obtain the measured antenna equivalent circuit, run the
+   so each presents a planar solderable land. **No cut track, no symmetry loss.**
+   ***AND THE MASK STATE IS NOW PART OF THE DESIGN, WHICH IT WAS NOT WHEN THIS
+   ITEM WAS FIRST WRITTEN*** (**D-757**). This board's setup tents every via on
+   both masks, so on the package D-756 declared, both of those via caps were
+   PRINTED OVER and the bridge above was geometrically right and physically
+   impossible — copper-capping happens before solder mask and does not help a
+   tented via. Both terminals are now explicitly **B.Mask exposed / F.Mask
+   tented** in the board file, the released bottom-mask Gerber carries a
+   0.600 mm opening at each, the fab notes carry a **DO NOT TENT** instruction
+   naming both coordinates, and `fab_package_contract` clause **FAB13** holds
+   all of it with four live negative controls — one of which puts the tented
+   via back. The foreign-net solder-mask web at each terminal is **0.325 mm**,
+   2.6× the 0.125 mm floor. Evidence:
+   `evidence/d757-fab13-pre-declared-package-refused.json`,
+   `evidence/d757-fab-package-contract.json`.
+   Obtain the measured antenna equivalent circuit, run the
    ST25R matching tool, and record the final `Cs`/`Cp`/`R` values in
    `CTO_DECISIONS.md` before any second article. Evidence:
    `evidence/d755-nfc-matching-adjudication.json`.

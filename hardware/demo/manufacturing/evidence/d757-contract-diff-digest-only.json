@@ -1,0 +1,41 @@
+{
+ "baseline": "d756",
+ "contracts": 17,
+ "current": "d757",
+ "digest_fields_ignored": [
+  "authoritative_board_sha256",
+  "board_sha256",
+  "manifest_board_sha256",
+  "published_in_header",
+  "ref_commit"
+ ],
+ "expected_non_digest_difference": {
+  "contract": "firmware_hw_map",
+  "d756": 61,
+  "d757": 67,
+  "field": "$.H6_host_tests_prove_the_orderings.tests[0].claims",
+  "why": "commits 2edabd5 and 2165489 -- PCAL9535A warm-reset fail-safe and non-vacuous ordering controls -- landed after the d756 baseline and add six host-test claims.  Firmware only; the board is untouched by them."
+ },
+ "first_difference": {
+  "connection_width": null,
+  "demo_feature": null,
+  "fab_provenance": null,
+  "firmware_hw_map": "$.H6_host_tests_prove_the_orderings.tests[0].claims: 67 vs 61",
+  "keepout_stackup": null,
+  "land_parity": null,
+  "leaf_land": null,
+  "neck": null,
+  "obstacle_model": null,
+  "placement": null,
+  "population": null,
+  "pour_bond": null,
+  "pour_partition": null,
+  "protected_copper": null,
+  "rf_symmetry": null,
+  "tap": null,
+  "trunk_floor": null
+ },
+ "identical_apart_from_the_digest": 16,
+ "schema": 1,
+ "what": "every standing contract's d757 report against its d756 report with the board-digest fields removed.  D-757 adds two solder-mask openings and no copper, so nothing else about the board may move."
+}

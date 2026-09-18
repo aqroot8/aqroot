@@ -63,6 +63,10 @@ CPL has rows", it is "every row places the part where `pcbnew` says it is".
                      named in the package.  `solder_mask_min_width` is 0.000 mm
                      on this board, so KiCad's `solder_mask_bridge` test is OFF
                      and a clean DRC report carries no information here.
+  FAB13 NFC TUNE      the two D-755 first-article parallel-match GND terminals
+                     exist at the exact coordinates, are copper-capped process
+                     sites, remain exposed on B.Mask / tented on F.Mask, and the
+                     shipped bottom-mask Gerber actually opens both terminals.
 
 Read-only.  `hardware/demo/kicad/aqroot-demo/` is copied to a temporary
 directory before the refill test touches anything.
@@ -106,6 +110,13 @@ TOL_NM = 1000
 
 REQUIRED_NON_COPPER = {"F_Paste", "B_Paste", "F_Silkscreen", "B_Silkscreen",
                        "F_Mask", "B_Mask", "Edge_Cuts"}
+
+NFC_TUNE_SITES = (
+    dict(name="A", ref="C71", pad="2", match_net="/04_SPI_B_RADIOS_NFC/NFC_MATCH_A",
+         via_x=43.5, via_y=26.7),
+    dict(name="B", ref="C72", pad="2", match_net="/04_SPI_B_RADIOS_NFC/NFC_MATCH_B",
+         via_x=43.5, via_y=33.3),
+)
 
 
 def sha256(path):
@@ -1076,6 +1087,180 @@ def fab11(pkg, manifest):
                 named_in_the_notes=stated)
 
 
+
+# D-755. THE OPTIONAL NFC Cp BRIDGE IS ONLY REAL IF ITS GND TERMINAL IS
+# PHYSICALLY SOLDERABLE.  POFV copper cap happens before solder mask; a capped
+# but tented via is still inaccessible.  This clause therefore checks both the
+# design intent and the RELEASED B.Mask artwork instead of trusting a prose note.
+# THE FLASH IS ONLY AN OPENING IF ITS APERTURE IS THE WINDOW WE ASKED FOR.
+# A `D03` at the right coordinate proves something was flashed there; it does
+# not prove the aperture in force was the via's own 0.600 mm circle.  This
+# resolves the aperture that is actually selected at each flash.
+def _gerber_flashes(text):
+    apertures, current, out = {}, None, {}
+    for line in text.splitlines():
+        line = line.strip()
+        if line.startswith("%ADD") and line.endswith("*%"):
+            body = line[4:-2]
+            num, _, shape = body.partition(",")
+            num = num.rstrip("CROP")
+            for i, ch in enumerate(body):
+                if not ch.isdigit():
+                    num, shape = body[:i], body[i:]
+                    break
+            if num.isdigit():
+                apertures[int(num)] = shape
+        elif (line.startswith("D") and line.endswith("*")
+              and line[1:-1].isdigit()):
+            current = int(line[1:-1])
+        elif line.endswith("D03*") and line.startswith("X"):
+            out[line] = apertures.get(current)
+    return out
+
+
+def _fab13_survey(board, mask_text, block, notes):
+    """(rows, gerber, problems) for one board / one Gerber / one manifest."""
+    found, problems = [], []
+    for site in NFC_TUNE_SITES:
+        fp = board.FindFootprintByReference(site["ref"])
+        pad = (next((q for q in fp.Pads() if q.GetNumber() == site["pad"]), None)
+               if fp else None)
+        if pad is None or pad.GetNetname() != site["match_net"]:
+            problems.append("%s source pad/net missing" % site["name"])
+            continue
+        want = pcbnew.VECTOR2I(int(round(site["via_x"] * 1e6)),
+                               int(round(site["via_y"] * 1e6)))
+        via = next((t for t in board.GetTracks()
+                    if isinstance(t, pcbnew.PCB_VIA)
+                    and t.GetPosition() == want), None)
+        if via is None:
+            problems.append("%s GND terminal via missing" % site["name"])
+            continue
+        dia = via.GetWidth(pcbnew.B_Cu) / 1e6
+        drill = via.GetDrill() / 1e6
+        row = dict(name=site["name"], source="%s.%s" %
+                   (site["ref"], site["pad"]), match_net=pad.GetNetname(),
+                   via_net=via.GetNetname(), x=round(site["via_x"], 4),
+                   y=round(site["via_y"], 4), via_dia_mm=round(dia, 3),
+                   drill_mm=round(drill, 3),
+                   b_mask_exposed=not via.IsTented(pcbnew.B_Mask),
+                   f_mask_tented=via.IsTented(pcbnew.F_Mask))
+        poly = pad.GetEffectivePolygon(pcbnew.B_Cu)
+        row["copper_edge_gap_mm"] = round(
+            poly.Distance(via.GetPosition()) / 1e6 - dia / 2.0, 4)
+        found.append(row)
+        if row["via_net"] != "GND":
+            problems.append("%s tuning via is not GND" % site["name"])
+        if abs(dia - 0.600) > 1e-6 or abs(drill - 0.300) > 1e-6:
+            problems.append("%s tuning via geometry drift" % site["name"])
+        if not row["b_mask_exposed"] or not row["f_mask_tented"]:
+            problems.append("%s tuning via mask state drift" % site["name"])
+        if row["copper_edge_gap_mm"] > 0.400:
+            problems.append("%s tuning bridge gap exceeds 0.400 mm"
+                            % site["name"])
+
+    listed = block.get("sites") or []
+    process_stated = (
+        "NFC first-article parallel-match access -- DO NOT TENT" in notes
+        and "RESIN-FILL, PLANARIZE, COPPER-CAP" in notes
+        and "B.Mask openings MUST remain exposed" in notes)
+    if not process_stated:
+        problems.append("FAB notes do not state the DO-NOT-TENT process")
+    if found != listed:
+        problems.append("manifest NFC tuning sites differ from board")
+    if not block.get("measured"):
+        problems.append("manifest NFC tuning block is not measured")
+    process = (block.get("required_process") or "").lower()
+    if not all(k in process for k in ("resin-filled", "planarized",
+                                      "copper-capped", "b.mask exposed")):
+        problems.append("manifest NFC tuning process incomplete")
+
+    flashes = _gerber_flashes(mask_text)
+    gerber = {}
+    for site in NFC_TUNE_SITES:
+        # Gerber is Original coordinates in 4.6 mm format; KiCad writes board
+        # +Y as Gerber -Y for this bottom-mask export.
+        token = "X%dY%dD03*" % (round(site["via_x"] * 1e6),
+                                -round(site["via_y"] * 1e6))
+        ap = flashes.get(token)
+        ok = ap is not None and ap.startswith("C,") and \
+            abs(float(ap.split(",")[1].rstrip("*")) - 0.600) <= 1e-6
+        gerber[site["name"]] = dict(flashed=ap is not None, aperture=ap,
+                                    opens_the_via_cap=ok)
+        if not ok:
+            problems.append("%s B.Mask Gerber does not open the via cap"
+                            % site["name"])
+
+    return found, gerber, problems
+
+
+# D-757. THE OPTIONAL NFC Cp BRIDGE IS ONLY REAL IF ITS GND TERMINAL IS
+# PHYSICALLY SOLDERABLE.  D-755 measured the fit -- 0.325 mm edge to edge from
+# each match pad to an adjacent GND via cap, mirror-exact on both arms -- and
+# concluded "no mask removal".  IT NEVER ASKED WHETHER THE CAP WAS EXPOSED.
+# This board's setup tents every via on BOTH masks, so the two terminals the
+# handoff instructs a first article to solder to were printed over: the fit was
+# geometrically right and physically impossible.  POFV copper-capping happens
+# before solder mask and does not help a tented via.
+#
+# The clause therefore checks the DESIGN INTENT (the two vias exist, are GND,
+# are 0.600/0.300, are B.Mask exposed and F.Mask tented, and are within bridge
+# reach of their match pad), the MANIFEST, the FAB NOTES, and the RELEASED
+# B.Mask ARTWORK -- the aperture actually in force at each flash, not merely a
+# D03 at the right coordinate.  Four live negative controls put the defect back.
+def fab13(pkg, manifest):
+    board = pcbnew.LoadBoard(str(BOARD))
+    block = manifest.get("nfc_tuning_access") or {}
+    notes = (pkg / "aqroot-Demo-FAB-NOTES.md").read_text(encoding="utf-8")
+    mask = next((pkg / "gerbers").glob("*B_Mask.gbr"), None)
+    mask_text = mask.read_text(encoding="utf-8") if mask else ""
+    found, gerber, problems = _fab13_survey(board, mask_text, block, notes)
+
+    # NON-VACUITY.  Each control restores ONE specific defect and asks this
+    # same survey.  A control that is not refused makes the clause FAIL.
+    controls = {}
+
+    site = NFC_TUNE_SITES[0]
+    want = pcbnew.VECTOR2I(int(round(site["via_x"] * 1e6)),
+                           int(round(site["via_y"] * 1e6)))
+    via = next((t for t in board.GetTracks()
+                if isinstance(t, pcbnew.PCB_VIA) and t.GetPosition() == want),
+               None)
+    if via is not None:
+        was = via.GetBackTentingMode()
+        via.SetBackTentingMode(pcbnew.TENTING_MODE_TENTED)
+        controls["a_retented_via_refused"] = bool(
+            _fab13_survey(board, mask_text, block, notes)[2])
+        via.SetBackTentingMode(was)
+
+    stripped = "\n".join(
+        l for l in mask_text.splitlines()
+        if l.strip() != "X%dY%dD03*" % (round(site["via_x"] * 1e6),
+                                        -round(site["via_y"] * 1e6)))
+    controls["b_mask_gerber_without_the_opening_refused"] = bool(
+        _fab13_survey(board, stripped, block, notes)[2])
+
+    drifted = json.loads(json.dumps(block))
+    if drifted.get("sites"):
+        drifted["sites"][0]["y"] = round(drifted["sites"][0]["y"] + 0.1, 4)
+    controls["c_manifest_coordinate_drift_refused"] = bool(
+        _fab13_survey(board, mask_text, drifted, notes)[2])
+
+    controls["d_notes_without_the_do_not_tent_instruction_refused"] = bool(
+        _fab13_survey(board, mask_text, block,
+                      notes.replace("DO NOT TENT", "tenting optional"))[2])
+
+    return dict(ok=(not problems and len(found) == len(NFC_TUNE_SITES)
+                    and bool(controls) and all(controls.values())),
+                board_sites=found, manifest_sites=block.get("sites") or [],
+                required_process_stated_in_notes=(
+                    "NFC first-article parallel-match access -- DO NOT TENT"
+                    in notes),
+                gerber_bottom_mask=gerber,
+                controls_refused=controls,
+                problems=problems)
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--package", type=Path, default=PACKAGE)
@@ -1126,6 +1311,7 @@ def main():
             "FAB10_via_geometry": fab10(pkg, manifest),
             "FAB12_identity": fab12(pkg, board),
             "FAB11_mask_dams": fab11(pkg, manifest),
+            "FAB13_nfc_tuning_access": fab13(pkg, manifest),
         }
     doc = dict(schema=1, package=str(pkg.relative_to(ROOT))
                if pkg.is_relative_to(ROOT) else str(pkg),

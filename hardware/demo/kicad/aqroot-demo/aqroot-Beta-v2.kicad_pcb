@@ -62016,6 +62016,10 @@
 		(size 0.6)
 		(drill 0.3)
 		(layers "F.Cu" "B.Cu")
+		(tenting
+			(front none)
+			(back no)
+		)
 		(net "GND")
 		(uuid "04e55492-5b1c-4619-bbe2-13d32e6f2f8d")
 	)
@@ -62064,6 +62068,10 @@
 		(size 0.6)
 		(drill 0.3)
 		(layers "F.Cu" "B.Cu")
+		(tenting
+			(front none)
+			(back no)
+		)
 		(net "GND")
 		(uuid "08bd2272-c241-4041-893e-cb369892bb77")
 	)

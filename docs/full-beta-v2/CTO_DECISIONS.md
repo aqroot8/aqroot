@@ -1,3 +1,137 @@
+## D-757 — **THE FIRST-ARTICLE TUNE D-755 MEASURED WAS PRINTED OVER.** A GEOMETRY THAT IS RIGHT AND A TERMINAL THAT IS INACCESSIBLE LOOK THE SAME TO EVERY GATE ON THIS BOARD
+
+    authority  78a68921   (was 6f2fc8b6; NO COPPER -- 3552 tracks, 918 vias,
+                           71 zones and 1357 footprint/pad records identical)
+    changed    two B.Cu GND via caps go B.Mask EXPOSED / F.Mask tented; the fab
+               package regains them as artwork; FAB13 is new; the mask-dam
+               survey learns what a via is
+    evidence   d757-{release-verification,fab13-pre-declared-package-refused,
+               board-change-is-mask-only,contract-diff-digest-only,
+               mask-dam-sees-vias,fab-package-contract,contract-regression,
+               drc-parity,routing-ledger}.json and a d757-* baseline set
+
+### 1. THE DEFECT
+
+`D-755` adjudicated the `ST25R3916` matching network against `AN5276` Figure 2,
+found `Cp1`/`Cp2` genuinely absent, and ruled the parallel match a FIRST-ARTICLE
+activity rather than a board change.  It then measured the fit and recorded it
+as the thing a first article would do:
+
+    A arm   C71.2 pad (NFC_MATCH_A) -> GND via (43.500, 26.700)   gap 0.3250 mm
+    B arm   C72.2 pad (NFC_MATCH_B) -> GND via (43.500, 33.300)   gap 0.3250 mm
+
+and concluded, in its own words, ***"No mask removal, no cut track"***.
+
+**IT NEVER ASKED WHETHER THE VIA CAPS WERE EXPOSED.**  This board's setup is
+`(tenting (front yes) (back yes))` and until now EVERY one of its 918 vias
+inherited it.  Both terminals of the bridge the handoff instructs a first
+article to solder were **printed over** on the package `D-756` declared ready
+for fabrication.  The POFV instruction D-755 leaned on does not help: resin
+fill, planarisation and copper cap all happen BEFORE solder mask, so a capped
+via under mask is a planar, solderable land with a lid on it.
+
+The geometry was right.  The terminal did not exist.
+
+`FAB13` asked of the DECLARED board and the DECLARED package
+(`evidence/d757-fab13-pre-declared-package-refused.json`, board `6f2fc8b6`):
+
+    b_mask_exposed          false, false
+    B.Mask Gerber opening   absent, absent
+    problems                8
+
+### 2. WHY NOTHING SAW IT, AND WHAT NOW DOES
+
+Two blind spots, both now closed.
+
+  * **KiCad could not see it.** `solder_mask_min_width` is `0.000 mm` on this
+    board, which switches the `solder_mask_bridge` test OFF — the same zeroed
+    threshold `D-738` found and `D-744` generalised.  The tenting state of a via
+    is not a DRC question at all in any case.
+  * **The package's own mask survey could not see it.**  `solder_mask_notes`
+    enumerated PADS.  An untented via is an APERTURE, and the survey had no word
+    for one — complete by accident, because until this decision no via on this
+    board was untented.  It now enumerates untented via caps on both masks
+    (**D-757**).  At the shipped `0.125 mm` floor the answer does not move: 21
+    dams, 12 undeclared different-net, the same rows as `d756`.  Raising the
+    probe floor to `0.400 mm` makes the four real via webs appear, which is the
+    proof the survey is LOOKING at them rather than omitting them
+    (`evidence/d757-mask-dam-sees-vias.json`):
+
+        0.225 mm  C73.2 <-> via@43.500,26.700    GND  <-> GND   same net
+        0.225 mm  C74.2 <-> via@43.500,33.300    GND  <-> GND   same net
+        0.325 mm  C71.2 <-> via@43.500,26.700    NFC_MATCH_A <-> GND
+        0.325 mm  C72.2 <-> via@43.500,33.300    NFC_MATCH_B <-> GND
+
+    The tightest web is SAME-NET and therefore harmless; the tightest
+    foreign-net web is **0.325 mm, 2.6× the 0.125 mm floor**.
+
+`FAB13` is the fourteenth clause of the fab-package contract and it checks the
+DESIGN, the MANIFEST, the NOTES and the RELEASED ARTWORK in one place: both vias
+exist at their exact coordinates on `GND` at `0.600/0.300 mm`, are B.Mask
+exposed and F.Mask tented, sit within bridge reach of their match pad, are
+described identically in `MANIFEST.json`, are named with a **DO NOT TENT**
+instruction in `aqroot-Demo-FAB-NOTES.md`, and — the part that matters —
+**the shipped `B_Mask.gbr` flashes a `0.600 mm` circular aperture at each**.
+A `D03` at the right coordinate is not enough; the clause resolves the aperture
+actually in force at the flash.
+
+**FOUR LIVE NEGATIVE CONTROLS, and the first of them puts this defect back:**
+
+    a_retented_via_refused                                REFUSED
+    b_mask_gerber_without_the_opening_refused             REFUSED
+    c_manifest_coordinate_drift_refused                   REFUSED
+    d_notes_without_the_do_not_tent_instruction_refused   REFUSED
+
+### 3. WHAT MOVED, AND HOW LITTLE
+
+The change is **solder mask only**, proved three ways
+(`evidence/d757-board-change-is-mask-only.json`):
+
+  * the board file's text diff is **8 added lines, 0 removed** — two
+    `(tenting (front none) (back no))` blocks, `front` inheriting the board
+    default;
+  * a structural census of **3552 tracks, 918 vias, 71 zones and 1357
+    footprint/pad records** is IDENTICAL either side;
+  * of the shipped package, with generation stamps normalised, **exactly two
+    files moved**: `gerbers/aqroot-Beta-v2-B_Mask.gbr` and
+    `aqroot-Demo-FAB-NOTES.md`.  Every copper layer, both drills, both pastes,
+    both silks, the outline, the CPL and all four BOM files are byte-identical.
+
+That is a stronger statement than `verify_promotion` can make about a
+transaction that lays no copper, and it is why every copper-derived number below
+is unchanged rather than merely re-passing.
+
+### 4. RELEASE-GRADE VERIFICATION, WHOLE, ON `78a68921`
+
+    connectivity     174 retained multi-pad nets, 173 connected, 1 open
+                     approved_unrouted 1 (U11.3, owner decision D-742)
+                     unapproved_open_edges 0
+    approved NC      EXACTLY the 8 J5 positions Demo scope allows
+    KiCad DRC 10.0.5 199 lib_footprint_issues, EVERY ONE severity WARNING
+                     ZERO of every other class
+    parity           246 warnings, 0 ERRORS
+    protected copper 15 nets IDENTICAL, differences {}
+    ampacity         all_ok; stackup self-check PASS
+    features         F1-F6 PASS
+    FAB1..FAB13      ALL PASS, 11 live negative controls refused
+    contracts        17 run, 17 pass, 16 IDENTICAL to d756 apart from the board
+                     digest; the 17th moved by exactly the six host-test claims
+                     commits 2edabd5 and 2165489 added to the firmware
+    firmware         H1-H6 PASS, 4 PlatformIO environments built
+    hardware/beta-v2 UNTOUCHED
+
+**There is no open owner decision and no unresolved Demo fabrication blocker.**
+
+### 5. THE LESSON, STATED ONCE
+
+`D-755` did the hard half — it found the primary source, adjudicated the
+topology element by element, and replaced an unquantified bodge with a measured
+`0.325 mm` fit on both arms.  What it did not do was ask whether the thing it
+had measured could be REACHED.  **A dimension between two pieces of copper is
+not an access statement.**  On this board the difference between the two was a
+single inherited board default that no gate was pointed at, and the first
+article would have discovered it with a soldering iron and a scalpel.
+
 ## D-756 — **DEMO_READY_FOR_FAB, ON A BOARD THAT SURVIVED FIVE MORE DEFECTS THAN THE LAST DECLARATION KNEW ABOUT**
 
     authority  6f2fc8b6   (D-752 fitted D14/R132/C85; D-753 retuned R97/R101;

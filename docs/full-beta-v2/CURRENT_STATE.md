@@ -66,7 +66,63 @@
 > `verify_promotion` PASS and `protected_copper` showing exactly one protected
 > net moved.  `U14.7` is on the bus.  This board has **no open owner decision**.
 
-> # **DEMO_READY_FOR_FAB IS DECLARED (2026-09-18, D-756).**
+> # **DEMO_READY_FOR_FAB IS DECLARED (2026-09-18, D-757).**
+>
+> **Board authority `78a68921`.**  The D-756 declaration below stands in every
+> electrical and copper respect — `D-757` changes **no copper at all** — but the
+> package it shipped carried a real fabrication defect, and it was in the one
+> item D-755 had just closed.
+>
+> **THE FIRST-ARTICLE NFC TUNE WAS PRINTED OVER.**  D-755 measured the parallel
+> match as a **0.325 mm pad-to-via bridge, mirror-exact on both arms**, and
+> concluded *"no mask removal"*.  It never asked whether the two `GND` via caps
+> it named were EXPOSED.  This board's setup tents every via on both masks, so
+> both terminals of that bridge were under solder mask on the declared package —
+> and POFV does not help, because resin fill, planarisation and copper cap all
+> happen BEFORE mask.  **The geometry was right and the terminal did not exist.**
+> `FAB13` asked of board `6f2fc8b6` and the package D-756 shipped returns
+> `b_mask_exposed false` on both arms and no bottom-mask opening on either
+> (`evidence/d757-fab13-pre-declared-package-refused.json`).
+>
+> **TWO BLIND SPOTS CLOSED.**  KiCad could not see it — `solder_mask_min_width`
+> is `0.000 mm`, so the `solder_mask_bridge` test is OFF, and via tenting is not
+> a DRC question in any case.  And the package's own mask-dam survey enumerated
+> **PADS**: an untented via was not an aperture to it, complete by accident
+> because until now no via on this board was untented.  It now enumerates
+> untented via caps too; at the shipped `0.125 mm` floor the answer does not move
+> (21 dams, 12 undeclared different-net, the same rows as `d756`), and raising
+> the probe floor to `0.400 mm` makes the four real via webs appear — tightest
+> foreign-net web **0.325 mm, 2.6× the floor**.
+>
+> **THE CHANGE IS SOLDER MASK ONLY, PROVED THREE WAYS**
+> (`evidence/d757-board-change-is-mask-only.json`): the board file's text diff is
+> **8 added lines, 0 removed**; a structural census of **3552 tracks, 918 vias,
+> 71 zones and 1357 footprint/pad records** is IDENTICAL either side; and of the
+> shipped package, with generation stamps normalised, **exactly two files moved**
+> — `B_Mask.gbr` and the fab notes.  Every copper layer, both drills, both
+> pastes, both silks, the outline, the CPL and all four BOM files are
+> byte-identical.
+>
+> **RELEASE-GRADE VERIFICATION, WHOLE, ON `78a68921`**
+> (`evidence/d757-release-verification.json`): `unapproved_open_edges` **0**;
+> **173 of 174** retained nets connected, the one open edge `U11.3` covered by
+> owner decision D-742; the approved-NC set is EXACTLY the eight `J5` positions;
+> real KiCad DRC **199 `lib_footprint_issues`, every one severity WARNING and
+> ZERO of every other class**; schematic parity **0 errors**; `protected_copper`
+> **IDENTICAL**, 15 nets, differences `{}`; `audit_rail_ampacity` **all_ok**;
+> features **F1–F6**; **`FAB1`–`FAB13` all PASS with 11 live negative controls
+> refused**, four of them `FAB13`'s own and the first of those putting the tented
+> via back; `contract_regression` runs **17 contracts, all 17 pass, 16
+> byte-identical to `d756` apart from the board digest** and the 17th moved by
+> exactly the six host-test claims commits `2edabd5` and `2165489` added;
+> firmware **H1–H6** with all four PlatformIO environments building;
+> `hardware/beta-v2` **untouched**.
+>
+> **There is no open owner decision and no unresolved Demo fabrication blocker.**
+> What remains is FIRST-ARTICLE and PROCUREMENT, in
+> `AQROOT_DEMO_FAB_HANDOFF.md` §8.
+
+> # **DEMO_READY_FOR_FAB WAS DECLARED AT D-756 AND IS LEFT STANDING AS HISTORY.**
 >
 > **Board authority `6f2fc8b6`.**  The D-751 declaration below was HELD by an
 > independent re-review on one named blocker; closing it uncovered four more,

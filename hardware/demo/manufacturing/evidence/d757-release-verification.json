@@ -1,0 +1,195 @@
+{
+ "approved_demo_nc": {
+  "expected": [
+   "J5.10",
+   "J5.11",
+   "J5.12",
+   "J5.15",
+   "J5.16",
+   "J5.17",
+   "J5.18",
+   "J5.9"
+  ],
+  "missing": [],
+  "observed": [
+   "J5.10",
+   "J5.11",
+   "J5.12",
+   "J5.15",
+   "J5.16",
+   "J5.17",
+   "J5.18",
+   "J5.9"
+  ],
+  "unexpected": []
+ },
+ "approved_unrouted": [
+  "U11.3"
+ ],
+ "beta_v2_untouched": true,
+ "board": "../kicad/aqroot-demo/aqroot-Beta-v2.kicad_pcb",
+ "board_sha256": "78a68921f7986b9b4afbd6a5fa97b227d26ddfd20c75c99a8e90987ac02910e1",
+ "connectivity": {
+  "approved_unrouted_edges": 1,
+  "connected_retained_nets": 173,
+  "open_retained_nets": 1,
+  "raw_board_ratsnest": 17,
+  "retained_multi_pad_nets": 174,
+  "retained_open_edges": 1,
+  "unapproved_open_edges": 0,
+  "unapproved_open_retained_nets": 0
+ },
+ "contract_regression": {
+  "all_ran": true,
+  "contracts": 17,
+  "failing": [],
+  "identical_to_d756_apart_from_the_board_digest": 16,
+  "the_one_that_moved": {
+   "contract": "firmware_hw_map",
+   "d756": 61,
+   "d757": 67,
+   "field": "$.H6_host_tests_prove_the_orderings.tests[0].claims",
+   "why": "commits 2edabd5 and 2165489 -- PCAL9535A warm-reset fail-safe and non-vacuous ordering controls -- landed after the d756 baseline and add six host-test claims.  Firmware only; the board is untouched by them."
+  }
+ },
+ "decision": "D-757",
+ "declaration": "DEMO_READY_FOR_FAB",
+ "defect_closed": {
+  "proof": "evidence/d757-fab13-pre-declared-package-refused.json -- FAB13 asked of board 6f2fc8b6 and the package D-756 shipped: b_mask_exposed false on both arms, no B.Mask Gerber opening on either, 8 problems",
+  "what": "D-755 measured a 0.325 mm pad-to-via first-article tuning bridge on both NFC match arms and concluded 'no mask removal'.  It never asked whether the via caps were EXPOSED.  This board's setup tents every via on both masks, so the two terminals the D-756 handoff instructs a first article to solder were printed over on the declared package.",
+  "why_no_gate_saw_it": "solder_mask_min_width is 0.000 mm so KiCad's solder_mask_bridge test is OFF, and the package's own mask-dam survey read PADS only -- an untented via was not an aperture to it (closed here: evidence/d757-mask-dam-sees-vias.json)"
+ },
+ "fab_package": {
+  "clauses": {
+   "FAB10_via_geometry": true,
+   "FAB11_mask_dams": true,
+   "FAB12_identity": true,
+   "FAB13_nfc_tuning_access": true,
+   "FAB1_provenance": true,
+   "FAB2_fill": true,
+   "FAB3_layers": true,
+   "FAB4_drill": true,
+   "FAB5_cpl": true,
+   "FAB6_bom": true,
+   "FAB7_sourcing": true,
+   "FAB8_outline": true,
+   "FAB9_via_in_pad": true
+  },
+  "controls_refused": {
+   "FAB12_identity": {
+    "fab12a_refuses_2x12_on_a_1x24_land": true,
+    "fab12b_refuses_footprint_the_board_does_not_carry": true,
+    "fab12b_refuses_superseded_j5_mpn": true
+   },
+   "FAB13_nfc_tuning_access": {
+    "a_retented_via_refused": true,
+    "b_mask_gerber_without_the_opening_refused": true,
+    "c_manifest_coordinate_drift_refused": true,
+    "d_notes_without_the_do_not_tent_instruction_refused": true
+   },
+   "FAB5_cpl": {
+    "duplicate_fitted_row": true,
+    "position_plus_10mm": true,
+    "rotation_180": true,
+    "side_flipped": true
+   }
+  },
+  "failing": [],
+  "verdict": "PASS"
+ },
+ "feature_contract": {
+  "all_pass": true,
+  "clauses": {
+   "F1_every_scope_part_fitted": true,
+   "F2_every_scope_net_whole": true,
+   "F3_approved_nc_exactly_as_scoped": true,
+   "F4_every_exposed_signal_contact_has_esd": true,
+   "F5_backlight_disconnect_control_is_independent": true,
+   "F6_accessory_envelope_is_bounded_by_hardware": true
+  }
+ },
+ "firmware": {
+  "clauses": {
+   "H1_generated_tree_is_fresh": "PASS",
+   "H2_board_digest": "PASS",
+   "H3_policy_corroborated": "PASS",
+   "H4_owner_decisions_are_machine_checked": "PASS",
+   "H5_firmware_layer_uses_the_map": "PASS",
+   "H6_host_tests_prove_the_orderings": "PASS"
+  },
+  "platformio_environments_built": [
+   "esp32-s3-aqroot",
+   "wokwi",
+   "esp32-s3-aqroot-dm",
+   "aqroot-demo"
+  ],
+  "verdict": "PASS"
+ },
+ "kicad_drc": {
+  "classes_other_than_lib_footprint_issues": [],
+  "every_violation_is_a_warning": true,
+  "kicad": "10.0.5",
+  "total": 199,
+  "unconnected_items": 17,
+  "violations": {
+   "lib_footprint_issues": 199
+  }
+ },
+ "owner_decisions_open": [],
+ "predecessor_authority": "6f2fc8b6fdb10052efd5068707d76e8d1a8eae9b8cf990e0daf74b18d0a5682d",
+ "protected_copper": {
+  "counts": {
+   "/01_POWER_TREE/BAT_CONNECTOR_P": 7,
+   "/01_POWER_TREE/BAT_MID": 12,
+   "/01_POWER_TREE/BAT_PROTECTED_P": 84,
+   "/01_POWER_TREE/BAT_PROT_SHDN_CTL": 18,
+   "/01_POWER_TREE/BAT_RAW": 70,
+   "/01_POWER_TREE/BAT_SENSE": 22,
+   "/08_BUTTONS_EXPANDERS/FRONT_RGB_B_N": 18,
+   "/08_BUTTONS_EXPANDERS/FRONT_RGB_G_N": 13,
+   "/08_BUTTONS_EXPANDERS/FRONT_RGB_R_N": 20,
+   "/09_COMMUNITY_HEADER/XGPIO4_HDR": 9,
+   "/09_COMMUNITY_HEADER/XGPIO5_HDR": 12,
+   "/ACC_3V3_SW": 83,
+   "/ACC_5V_SW_EN": 23,
+   "/XGPIO4": 9,
+   "/XGPIO5": 6
+  },
+  "differences": {},
+  "identical": true
+ },
+ "rail_ampacity": {
+  "all_ok": true,
+  "rails": {
+   "BAT_PROTECTED_P": "OK_WITH_DECLARED_EXCEPTION",
+   "BQ25185_SYS": "POUR_DELIVERED",
+   "SYS_TO_ACC5V_BOOST": "OK_WITH_DECLARED_EXCEPTION",
+   "SYS_TO_NFC5V_BOOST": "OK_WITH_DECLARED_EXCEPTION",
+   "USB_VBUS_CHG": "OK_WITH_DECLARED_EXCEPTION",
+   "USB_VBUS_RAW": "OK"
+  },
+  "stackup_selfcheck": true
+ },
+ "ref_commit": "2165489579d5567a720a9885b105360ccce09aa1",
+ "schema": 1,
+ "schematic_parity": {
+  "by_severity": {
+   "warning": 246
+  },
+  "by_type": {
+   "extra_footprint": 2,
+   "footprint_symbol_field_mismatch": 199,
+   "footprint_symbol_mismatch": 45
+  },
+  "errors": 0,
+  "total": 246
+ },
+ "what_changed": {
+  "copper": "NONE -- 3552 tracks, 918 vias, 71 zones and 1357 footprint/pad records identical to the predecessor board",
+  "shipped_artwork_that_moved": [
+   "aqroot-Demo-FAB-NOTES.md",
+   "gerbers/aqroot-Beta-v2-B_Mask.gbr"
+  ],
+  "solder_mask": "two B.Mask openings added, at the GND via caps (43.500, 26.700) and (43.500, 33.300) -- the D-755 NFC first-article parallel-match terminals"
+ }
+}

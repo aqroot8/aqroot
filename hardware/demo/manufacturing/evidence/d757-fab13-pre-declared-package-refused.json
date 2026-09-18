@@ -1,0 +1,69 @@
+{
+ "board": "/tmp/d757pre/hardware/demo/kicad/aqroot-demo/aqroot-Beta-v2.kicad_pcb",
+ "board_sha256": "6f2fc8b6fdb10052efd5068707d76e8d1a8eae9b8cf990e0daf74b18d0a5682d",
+ "package": "/tmp/d757pre/hardware/demo/fab",
+ "ref_commit": "2165489579d5567a720a9885b105360ccce09aa1",
+ "result": {
+  "board_sites": [
+   {
+    "b_mask_exposed": false,
+    "copper_edge_gap_mm": 0.325,
+    "drill_mm": 0.3,
+    "f_mask_tented": true,
+    "match_net": "/04_SPI_B_RADIOS_NFC/NFC_MATCH_A",
+    "name": "A",
+    "source": "C71.2",
+    "via_dia_mm": 0.6,
+    "via_net": "GND",
+    "x": 43.5,
+    "y": 26.7
+   },
+   {
+    "b_mask_exposed": false,
+    "copper_edge_gap_mm": 0.325,
+    "drill_mm": 0.3,
+    "f_mask_tented": true,
+    "match_net": "/04_SPI_B_RADIOS_NFC/NFC_MATCH_B",
+    "name": "B",
+    "source": "C72.2",
+    "via_dia_mm": 0.6,
+    "via_net": "GND",
+    "x": 43.5,
+    "y": 33.3
+   }
+  ],
+  "controls_refused": {
+   "a_retented_via_refused": true,
+   "b_mask_gerber_without_the_opening_refused": true,
+   "c_manifest_coordinate_drift_refused": true,
+   "d_notes_without_the_do_not_tent_instruction_refused": true
+  },
+  "gerber_bottom_mask": {
+   "A": {
+    "aperture": null,
+    "flashed": false,
+    "opens_the_via_cap": false
+   },
+   "B": {
+    "aperture": null,
+    "flashed": false,
+    "opens_the_via_cap": false
+   }
+  },
+  "manifest_sites": [],
+  "ok": false,
+  "problems": [
+   "A tuning via mask state drift",
+   "B tuning via mask state drift",
+   "FAB notes do not state the DO-NOT-TENT process",
+   "manifest NFC tuning sites differ from board",
+   "manifest NFC tuning block is not measured",
+   "manifest NFC tuning process incomplete",
+   "A B.Mask Gerber does not open the via cap",
+   "B B.Mask Gerber does not open the via cap"
+  ],
+  "required_process_stated_in_notes": false
+ },
+ "schema": 1,
+ "what": "FAB13 asked of the board and package D-756 DECLARED READY FOR FAB"
+}

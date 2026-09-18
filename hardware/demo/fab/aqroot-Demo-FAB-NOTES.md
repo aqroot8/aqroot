@@ -90,7 +90,7 @@ All of them are ORDINARY THROUGH vias -- this board carries no blind via, no bur
 
 ## Solder-mask dams -- MEASURED HERE, NOT BY DRC
 
-**`solder_mask_min_width` in this board's setup is 0.000 mm, which switches KiCad's `solder_mask_bridge` test OFF.**  A clean DRC report therefore says NOTHING about mask webs on this board, and the webs below were measured for this note instead -- polygon to polygon, not bounding box.  `pad_to_mask_clearance` is 0.000 mm, so an aperture is its pad and a dam is a pad-to-pad gap.
+**`solder_mask_min_width` in this board's setup is 0.000 mm, which switches KiCad's `solder_mask_bridge` test OFF.**  A clean DRC report therefore says NOTHING about mask webs on this board, and the webs below were measured for this note instead -- polygon to polygon, not bounding box.  `pad_to_mask_clearance` is 0.000 mm, so an aperture is its pad.  UNTENTED VIA CAPS are apertures too and are surveyed here as well (D-757); every other via on this board is tented on both masks.
 
 Every dam below **0.125 mm** on the board:
 
@@ -123,3 +123,12 @@ Every dam below **0.125 mm** on the board:
 - Rows marked *same net* are vendor land patterns whose two contacts are one node -- the USB-C receptacle's A/B pairs are the whole of that group.  A merged aperture there is harmless and no action is requested.
 - Rows marked *declared bridge* carry `allow_soldermask_bridges` on the footprint AND on its library master; the microphone's port ring is the whole of that group and the merge is the design.
 - **The remaining 12 rows are DIFFERENT NETS, and they split in two.**  All of them are MANUFACTURER LAND PATTERNS, not routing.  **4 are at or under 0.100 mm and are not printable as a web by any process we would order** -- the four DIAGONAL CORNER pairs of `U9`'s UFQFPN32, which come straight from ST's own recommended land (0.30 x 0.75 lands, centres at +/-2.275 on a 0.50 mm pitch); the board's `.kicad_dru` already licenses their COPPER clearance by a named, footprint-scoped rule.  **Please gang those four -- one window per corner -- rather than attempting a web.**  The other 8 are `U12`'s TPS63020 land at **0.120 mm**, which is AT the usual 0.100-0.130 mm limit rather than under it: **print the web if you can hold it, gang the row if you cannot, and tell us which.**  Assembly control at both pitches is the PASTE stencil, which is per-pad and is unaffected either way.
+
+## NFC first-article parallel-match access -- DO NOT TENT
+
+Two GND vias are intentional **solderable tuning terminals** for optional 0402 parallel-match capacitors from the ST25R3916 match nodes.  These two vias MUST receive the same **RESIN-FILL, PLANARIZE, COPPER-CAP** process as POFV lands and their **B.Mask openings MUST remain exposed**.  F.Mask remains tented.  Do not retent them during CAM cleanup.
+
+- **A side:** `C71.2` (`/04_SPI_B_RADIOS_NFC/NFC_MATCH_A`) -> GND via at **(43.500, 26.700) mm**, 0.60/0.30 mm via, copper-edge gap **0.325 mm**; B.Mask OPEN, F.Mask tented.
+- **B side:** `C72.2` (`/04_SPI_B_RADIOS_NFC/NFC_MATCH_B`) -> GND via at **(43.500, 33.300) mm**, 0.60/0.30 mm via, copper-edge gap **0.325 mm**; B.Mask OPEN, F.Mask tented.
+
+Assembly tuning is optional; **manufacturing access is not**. The board must arrive with both capped GND terminals solderable even if no parallel capacitor is fitted initially.

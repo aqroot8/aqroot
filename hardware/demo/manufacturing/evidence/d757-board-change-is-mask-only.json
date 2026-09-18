@@ -1,0 +1,55 @@
+{
+ "artwork_that_moved": [
+  "aqroot-Demo-FAB-NOTES.md",
+  "gerbers/aqroot-Beta-v2-B_Mask.gbr"
+ ],
+ "board_text_diff": "8 added lines, 0 removed: two (tenting (front none) (back no)) blocks",
+ "pdfs_excluded": "the two assembly PDFs carry an embedded generation date and are not byte-comparable",
+ "ref_commit": "2165489579d5567a720a9885b105360ccce09aa1",
+ "schema": 1,
+ "shipped_artwork": {
+  "aqroot-Demo-BOM-assembly.csv": "IDENTICAL",
+  "aqroot-Demo-BOM-full.csv": "IDENTICAL",
+  "aqroot-Demo-DO-NOT-POPULATE.csv": "IDENTICAL",
+  "aqroot-Demo-FAB-NOTES.md": "DIFFERS",
+  "aqroot-Demo-NON-PURCHASED.csv": "IDENTICAL",
+  "aqroot-Demo-OFF-BOARD.csv": "IDENTICAL",
+  "aqroot-Demo-pos-all.csv": "IDENTICAL",
+  "aqroot-Demo-pos-fitted.csv": "IDENTICAL",
+  "gerbers/aqroot-Beta-v2-B_Cu.gbr": "IDENTICAL",
+  "gerbers/aqroot-Beta-v2-B_Mask.gbr": "DIFFERS",
+  "gerbers/aqroot-Beta-v2-B_Paste.gbr": "IDENTICAL",
+  "gerbers/aqroot-Beta-v2-B_Silkscreen.gbr": "IDENTICAL",
+  "gerbers/aqroot-Beta-v2-Edge_Cuts.gbr": "IDENTICAL",
+  "gerbers/aqroot-Beta-v2-F_Cu.gbr": "IDENTICAL",
+  "gerbers/aqroot-Beta-v2-F_Mask.gbr": "IDENTICAL",
+  "gerbers/aqroot-Beta-v2-F_Paste.gbr": "IDENTICAL",
+  "gerbers/aqroot-Beta-v2-F_Silkscreen.gbr": "IDENTICAL",
+  "gerbers/aqroot-Beta-v2-In1_Cu.gbr": "IDENTICAL",
+  "gerbers/aqroot-Beta-v2-In2_Cu.gbr": "IDENTICAL",
+  "gerbers/aqroot-Beta-v2-In3_Cu.gbr": "IDENTICAL",
+  "gerbers/aqroot-Beta-v2-In4_Cu.gbr": "IDENTICAL",
+  "gerbers/aqroot-Beta-v2-NPTH.drl": "IDENTICAL",
+  "gerbers/aqroot-Beta-v2-PTH.drl": "IDENTICAL",
+  "gerbers/aqroot-Beta-v2-job.gbrjob": "IDENTICAL",
+  "gerbers/drill-report.txt": "IDENTICAL"
+ },
+ "stamp_lines_ignored": [
+  "%TF.CreationDate",
+  "G04 Created by KiCad ... date",
+  "Created on <ISO8601>"
+ ],
+ "structural_census_counts": {
+  "parts": 1357,
+  "tracks": 3552,
+  "vias": 918,
+  "zones": 71
+ },
+ "structural_census_identical": {
+  "parts": true,
+  "tracks": true,
+  "vias": true,
+  "zones": true
+ },
+ "what": "D-757 changes the solder-mask state of two GND vias and nothing else.  Proved three ways: the text diff of the board file, a structural census of every track, via, zone, footprint and pad, and a stamp-normalised byte comparison of every shipped artwork file against HEAD."
+}

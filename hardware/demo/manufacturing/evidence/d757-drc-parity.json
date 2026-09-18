@@ -1,0 +1,27 @@
+{
+ "board": "aqroot-Beta-v2.kicad_pcb",
+ "board_sha256": "78a68921f7986b9b4afbd6a5fa97b227d26ddfd20c75c99a8e90987ac02910e1",
+ "by_severity": {
+  "warning": 199
+ },
+ "classes_other_than_lib_footprint_issues": [],
+ "every_violation_is_a_warning": true,
+ "kicad": "10.0.5",
+ "schema": 1,
+ "schematic_parity": {
+  "by_severity": {
+   "warning": 246
+  },
+  "by_type": {
+   "extra_footprint": 2,
+   "footprint_symbol_field_mismatch": 199,
+   "footprint_symbol_mismatch": 45
+  },
+  "errors": 0,
+  "total": 246
+ },
+ "unconnected_items": 17,
+ "violations": {
+  "lib_footprint_issues": 199
+ }
+}
