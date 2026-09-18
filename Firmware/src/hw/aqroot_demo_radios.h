@@ -8,10 +8,12 @@
 // distinguishable here in a few microseconds.
 //
 // SHARED BUS, ONE TRANSACTION AT A TIME.  U7 (CC1101), U8 (SX1262) and U9
-// (ST25R3916) share SCK/MOSI/MISO.  Every probe below asserts exactly one chip
-// select and releases it before returning.  They also use three DIFFERENT SPI
-// modes and clock rates, so each probe re-states the settings it needs rather
-// than inheriting whatever the last caller left behind.
+// (ST25R3916) share SCK/MOSI/MISO.  Every probe below goes through
+// `SpiBusB::Hold`, which REFUSES a second concurrent select rather than
+// trusting each caller to release -- see `aqroot_spi_bus_b.h`.  They also use
+// three DIFFERENT SPI modes and clock rates, so each probe re-states the
+// settings it needs rather than inheriting whatever the last caller left
+// behind.
 
 #include <stdint.h>
 
@@ -20,6 +22,7 @@
 #include <SPI.h>
 
 #include "aqroot_demo_board.h"
+#include "aqroot_spi_bus_b.h"
 
 namespace aqroot {
 
@@ -40,13 +43,24 @@ static const uint32_t kIdentityReportOnly = 0xFFFFFFFFu;
 // Address 0x30 with BURST CLEAR is the SRES command strobe; address 0x30 with
 // BURST SET is the PARTNUM status register.  Reading PARTNUM without the burst
 // bit RESETS the radio instead of identifying it.
-inline DeviceIdentity probeCc1101() {
+inline DeviceIdentity probeCc1101(SpiBusB &bus) {
   const uint8_t kReadBurst = 0xC0;
   const uint8_t kPartnum = 0x30;
   const uint8_t kVersion = 0x31;
 
+  DeviceIdentity refused;
+  refused.device = "CC1101 U7";
+  refused.raw = 0;
+  refused.expected = kIdentityReportOnly;
+  refused.alive = false;
+  refused.matches = false;
+
   SPI.beginTransaction(SPISettings(4000000, MSBFIRST, SPI_MODE0));
-  digitalWrite(AQROOT_PIN_CC1101_CS_N, LOW);
+  SpiBusB::Hold hold(bus, SpiBDevice::Cc1101);
+  if (!hold.ok()) {
+    SPI.endTransaction();
+    return refused;
+  }
   // The CC1101 holds SO high until its crystal is stable; the datasheet's own
   // access sequence is to wait for it to fall before the first header byte.
   const uint32_t deadline = millis() + 10;
@@ -56,7 +70,6 @@ inline DeviceIdentity probeCc1101() {
   const uint8_t partnum = SPI.transfer(0x00);
   SPI.transfer(uint8_t(kReadBurst | kVersion));
   const uint8_t version = SPI.transfer(0x00);
-  digitalWrite(AQROOT_PIN_CC1101_CS_N, HIGH);
   SPI.endTransaction();
 
   DeviceIdentity id;
@@ -86,7 +99,7 @@ inline bool sx1262WaitBusy(uint32_t timeout_ms = 20) {
   return true;
 }
 
-inline DeviceIdentity probeSx1262() {
+inline DeviceIdentity probeSx1262(SpiBusB &bus) {
   DeviceIdentity id;
   id.device = "SX1262 U8";
   id.expected = 0x1424;
@@ -96,14 +109,17 @@ inline DeviceIdentity probeSx1262() {
   if (!sx1262WaitBusy()) return id;
 
   SPI.beginTransaction(SPISettings(8000000, MSBFIRST, SPI_MODE0));
-  digitalWrite(AQROOT_PIN_SX1262_CS_N, LOW);
+  SpiBusB::Hold hold(bus, SpiBDevice::Sx1262);
+  if (!hold.ok()) {
+    SPI.endTransaction();
+    return id;
+  }
   SPI.transfer(0x1D);          // ReadRegister
   SPI.transfer(0x07);          // address 0x0740
   SPI.transfer(0x40);
   SPI.transfer(0x00);          // one NOP status byte before the data
   const uint8_t msb = SPI.transfer(0x00);
   const uint8_t lsb = SPI.transfer(0x00);
-  digitalWrite(AQROOT_PIN_SX1262_CS_N, HIGH);
   SPI.endTransaction();
 
   id.raw = uint32_t(msb) << 8 | lsb;
@@ -124,21 +140,28 @@ inline DeviceIdentity probeSx1262() {
 // what happens when a decode is carried from memory.  Liveness is the claim --
 // a value that is neither 0x00 nor 0xFF proves SCK, MOSI, MISO and NFC_CS_N are
 // all where the map says.  Confirm the exact identity at first article.
-inline DeviceIdentity probeSt25r3916() {
+inline DeviceIdentity probeSt25r3916(SpiBusB &bus) {
   const uint8_t kReadRegister = 0x40;
   const uint8_t kIcIdentity = 0x3F;
 
-  SPI.beginTransaction(SPISettings(4000000, MSBFIRST, SPI_MODE1));
-  digitalWrite(AQROOT_PIN_NFC_CS_N, LOW);
-  SPI.transfer(uint8_t(kReadRegister | (kIcIdentity & 0x3F)));
-  const uint8_t identity = SPI.transfer(0x00);
-  digitalWrite(AQROOT_PIN_NFC_CS_N, HIGH);
-  SPI.endTransaction();
-
   DeviceIdentity id;
   id.device = "ST25R3916 U9";
-  id.raw = identity;
+  id.raw = 0;
   id.expected = kIdentityReportOnly;
+  id.alive = false;
+  id.matches = false;
+
+  SPI.beginTransaction(SPISettings(4000000, MSBFIRST, SPI_MODE1));
+  SpiBusB::Hold hold(bus, SpiBDevice::St25r3916);
+  if (!hold.ok()) {
+    SPI.endTransaction();
+    return id;
+  }
+  SPI.transfer(uint8_t(kReadRegister | (kIcIdentity & 0x3F)));
+  const uint8_t identity = SPI.transfer(0x00);
+  SPI.endTransaction();
+
+  id.raw = identity;
   id.alive = (identity != 0x00) && (identity != 0xFF);
   id.matches = id.alive;
   return id;

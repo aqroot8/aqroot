@@ -1,3 +1,118 @@
+## D-748 — **A DISCIPLINE THAT ONLY EXISTS IN A COMMENT CANNOT REFUSE.** THE SHARED SPI-B RULES ARE NOW A MECHANISM, AND THE TEST THAT PROVED IT FOUND A RE-ENTRANCY BUG IN IT
+
+    authority  c7f5c618  UNCHANGED.  NO COPPER, NO SCHEMATIC, NO FAB PACKAGE.
+    new        Firmware/src/hw/aqroot_spi_bus_b.h
+               Firmware/src/hw/aqroot_demo_display.h  -- ILI9488, the retained 3.5" panel
+               Firmware/test/test_spi_bus_b.cpp
+    changed    Firmware/src/hw/{aqroot_demo_radios.h,aqroot_demo_peripherals.h}
+               Firmware/src/demo/main.cpp, gen_firmware_hw_map.py,
+               checks/firmware_hw_map_contract.py (H6 now runs TWO host tests)
+    evidence/d748-{firmware-hw-map-contract,firmware-only-and-builds,contract-regression}.json
+
+### 1. WHAT D-747 LEFT AS PROSE
+
+D-747 closed the pin map.  Three things in the independent review's list were
+still only *described*:
+
+  * the **one-TX-at-a-time** discipline the retained dual-radio Demo scope
+    requires -- a comment in `aqroot_demo_radios.h`;
+  * the **display**, which the review names explicitly ("compile against the
+    actual display") and which D-747 exercised only as far as its backlight;
+  * the **microphone**, whose part identity D-747 corrected in `config.h` but
+    which nothing exercised.
+
+### 2. THE ARBITER, AND THE BUG ITS OWN TEST FOUND
+
+`U7` (CC1101), `U8` (SX1262) and `U9` (ST25R3916) share `/SPI_B_SCK`,
+`/SPI_B_MOSI` and `/SPI_B_MISO`.  Two rules govern that bus:
+
+    BUS RULE   exactly one chip select asserted at a time.  Two SELECTED devices
+               drive MISO against each other, and the symptom is intermittent
+               corruption that gets blamed on a marginal trace.
+    RF RULE    exactly one transceiver KEYED at a time.  The two radios have
+               separate antennas but share a supply and a ground return, and the
+               915 MHz module is a +22 dBm part.  The NFC front end counts: its
+               field is a transmitter too.
+
+`SpiBusB` enforces both, with an RAII `Hold` so a probe that returns early still
+releases.  It is deliberately Arduino-free -- `ChipSelects` is the seam -- so the
+refusals are testable on the host, exactly as D-747 made the expander ordering
+testable.
+
+***AND THE FIRST VERSION WAS WRONG.***  `select()` originally treated a repeat
+select of the SAME device as idempotent.  The host test caught what that costs:
+a nested `Hold` on the same device would SUCCEED, and then **release the bus at
+the inner scope's exit**, leaving the outer scope transacting against a
+deselected part -- a silent corruption whose signature is identical to a bad
+solder joint on a chip select.  Repaired: `select()` and `beginTransmit()` now
+refuse while ANY device holds, including the same one.  One holder, one release,
+no re-entrancy.  Two claims were added to pin it: a nested `Hold` on the SAME
+device is refused, and the outer `Hold` still owned the bus when the inner
+scopes ended.
+
+**22 claims, all PASS**, and three controls -- the bus accepting a second
+concurrent select, a second radio keying while the first transmits, and `Hold`
+no longer releasing -- are each CAUGHT.
+
+### 3. THE DISPLAY, AND THE TWO FACTS THAT SHAPE IT
+
+`aqroot_demo_display.h` is an ILI9488 path for the retained **ER-TFT035IPS-6,
+3.5-inch, 320x480** panel -- the part `DEVICE_SPEC` section 2 locks and the one
+D-747 corrected `config.h`'s "ILI9341 2.8-inch ... THE REAL PART" claim to.  Two
+as-built facts shape the whole file:
+
+  1. **THE PANEL IS WRITE-ONLY.**  `R112` 0R is DNP, so `DISP_SDO` never reaches
+     `SPI_A_MISO`.  There is no device ID to read, no register to verify and no
+     framebuffer to read back.  Every claim this file can make is made by the
+     operator's eyes, which is why the exercise is a four-quadrant R/G/B/W test
+     pattern rather than a flat fill: a flat fill cannot tell a working panel
+     from one whose `CASET`/`PASET` are being ignored.
+  2. **ILI9488 OVER 4-WIRE SPI IS 18 BITS PER PIXEL.**  `COLMOD` must be `0x66`
+     and every pixel is three bytes; the part does NOT accept the 16-bit RGB565
+     its ILI9341 cousin does.  Writing RGB565 produces a rolling colour mess
+     that gets blamed on the panel.
+
+**GAMMA AND POWER TABLES ARE DELIBERATELY ABSENT.**  `0xE0`/`0xE1`/`0xC0`/`0xC1`/
+`0xC5` are panel-specific and belong to EastRising's sequence for this exact
+module; copying a generic ILI9488 breakout's values would produce an image that
+looks plausible and is wrong.  Without them the panel still lights with the right
+geometry, which is all a pin-map proof needs.  Fit them at first article.  Reset
+is not an MCU pin -- `U2.P04` owns it -- so the console command pulses it through
+the expander before a single SPI byte is sent.
+
+### 4. THE MICROPHONE, AND A LIMIT THE BOARD ITSELF PUBLISHES
+
+`MK1.6` and `U5.16` both sit on `/I2S_BCLK`; `MK1.5` and `U5.14` both sit on
+`/I2S_LRCLK`.  **One clock pair, two devices** -- so a second I2S controller
+brought up as a master on the same pins puts two drivers on each clock.  That is
+a fact about the copper, so it is now a GENERATED limit,
+`AQROOT_I2S_CLOCKS_ARE_SHARED`, read out of the board like every other row.  The
+application's answer is full duplex on one peripheral; bring-up's answer is one
+direction at a time, and `captureMicrophone()` installs a master RX driver on its
+own and tears it down after.  It reports the peak on BOTH slots, which also tells
+the operator which one `MK1` selected.
+
+### 5. THE BMI270 IS REPORTED, NOT CLAIMED
+
+`CHIP_ID = 0x24` proves the bus and the address.  It does not prove the sensor
+works: the BMI270 needs a multi-kilobyte configuration file uploaded before accel
+or gyro data exists, and this bring-up image deliberately does not carry one.  So
+the console also reads `INTERNAL_STATUS` (`0x21`) and prints it with its meaning
+-- `0x00` is *not initialised*, `0x01` is *init_ok* -- rather than asserting a
+pass.  **Loading the BMI270 configuration file is a named remaining item**, and it
+is application work, not a fabrication blocker.
+
+### 6. VERIFICATION
+
+`checks/firmware_hw_map_contract.py` H6 now runs **both** host tests: **62 claims
+across the two, all PASS**, with **six controls, all caught**.  H1-H5 unchanged
+and PASS, with the eleven policy controls still refused -- seventeen refusals in
+all.  `evidence/d748-firmware-only-and-builds.json`: **69 tracked hardware
+artifacts, every one byte-identical** to `HEAD`, `git status --porcelain` over
+`hardware/demo/kicad` and `hardware/demo/fab` EMPTY, `board_sha256` `c7f5c618...`
+unchanged, and all four firmware environments build.  The placeholder-pin gate is
+re-proved both ways.
+
 ## D-747 — **SEVENTEEN CONTRACTS, AND THE SEVENTEENTH IS THE FIRST ONE THE SOFTWARE HAS TO PASS.** THE FIRMWARE PIN MAP IS NOW GENERATED FROM THE BOARD, AND THE BOARD IS UNTOUCHED
 
     authority  c7f5c618  UNCHANGED.  NO COPPER, NO SCHEMATIC, NO FAB PACKAGE.
@@ -209,7 +324,7 @@ every one byte-identical** to what `HEAD` carries -- the board, the `.kicad_dru`
 all nine schematic sheets, and all twelve files of the fab package.
 `git status --porcelain` over `hardware/demo/kicad` and `hardware/demo/fab` is
 EMPTY.  `board_sha256` is `c7f5c618...`, unchanged.  `contract_regression`
-against the `d746` baseline: **17 contracts, all ran, sixteen IDENTICAL**,
+against the `d746` baseline: **17 contracts, all ran, fifteen IDENTICAL**,
 `pour_partition` INCOMPARABLE on `ref_commit` alone (the documented D-676
 reading), and `firmware_hw_map` reported `NO BASELINE` because it is new -- which
 is the harness's own honest answer for a contract whose baseline does not exist,

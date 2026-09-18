@@ -121,6 +121,53 @@ board's own annular floor** on named net- and area-scoped licences, and **21
 solder-mask dams below 0.125 mm**, of which four `U9` corners are 0.0621 mm
 between different nets.
 
+## 7a. Demo firmware — the as-built hardware layer (D-747, D-748)
+
+**The board is programmed with `pio run -e aqroot-demo`, and nothing else.**
+`Firmware/src/config.h` is the legacy Beta application's map; its placeholder
+pins do not merely go stale, they **collide** with real Demo functions (I2C on
+GPIO17/18 where this board has SPI-A MOSI and the NFC IRQ; the display on
+GPIO10/11/12/13 where it has `DISP_CS_N`, SPI-A MOSI, SPI-A SCK and SPI-A MISO).
+That file now raises a compile `#error` for any real-hardware build that has not
+explicitly acknowledged it.
+
+**The pin map is GENERATED, not written.** `Firmware/src/hw/aqroot_demo_board.h`
+is emitted pad by pad out of `aqroot-Beta-v2.kicad_pcb` and the cached
+`ESP32-S3-WROOM-1` symbol — 84 symbols, with the I2C addresses derived from the
+`A0`/`A1`/`A2` strap pads rather than typed — and the seventeenth standing
+contract fails if the committed header is not byte-identical to what the board
+says today. The reason is in the record: D-732 found the hand-maintained
+expander table inverted on `P05`/`P06`, and reading it would have masked `4Ah`
+bit 6 believing it was `BQ25185_STAT2` when it is `TOUCH_INT_N`.
+
+| claim | result |
+|---|---|
+| `firmware_hw_map` contract, H1–H6 | **all PASS**, 11 policy controls all REFUSED |
+| expander safe-ordering host test | **40 claims PASS**, 3 controls all caught |
+| SPI-B arbiter host test | **22 claims PASS**, 3 controls all caught |
+| `pio run` over all four environments | **4 SUCCESS**; the Demo image is 320 KB / 4.8 % flash |
+| tracked hardware artifacts vs `HEAD` | **69 of 69 byte-identical** |
+
+**What the first board's operator gets.** At boot: every pin parked, both
+expanders brought up latch-before-direction and their direction registers read
+back, the three resets released through `U2`, the BMI270 identified at
+`CHIP_ID 0x24`, I2C raised to 400 kHz only after every device answers, and all
+three SPI-B devices identified — the CC1101 through a BURST-flagged header
+(address `0x30` *without* the burst bit is the `SRES` strobe and would reset the
+radio instead of identifying it), the SX1262 by its `0x1424` sync word, the
+ST25R3916 in SPI **mode 1**. On the console: `d` runs a raw microSD `CMD0`/`CMD8`
+— **the only test on this board that proves SPI-A MISO**, since `R112` is DNP and
+the card is the sole reader on that net — plus backlight, IR loopback, tone,
+microphone, display test pattern, and the accessory power tree operated in its
+required order. **Nothing energises at boot.**
+
+**Three as-built facts the assembly and test team must know.**
+`ChargerState` has three values and **none of them is "charging"**: `STAT1` LOW
+is a directly observed fault, `STAT1` HIGH is ambiguous, and the console prints
+that ambiguity in words. The panel is **write-only** (`R112` DNP) so the display
+can only be confirmed by eye. `MK1` and `U5` share one `/I2S_BCLK` and one
+`/I2S_LRCLK`, so exactly one I2S controller may master them.
+
 ## 8. Significant remaining prototype risks
 
 1. **Charge-current ECO is unverified in hardware.** Derived from SLUSF65B and
@@ -158,10 +205,19 @@ between different nets.
    concession, the `MK1` acoustic mask opening, the POFV process for 135 lands,
    the 35 sub-floor via rings and the 21 sub-0.125 mm mask dams are all declared
    in the fab notes and must be confirmed in writing before the order is placed.
-9. **Demo firmware does not exist yet** for the charger and expanders. The
-   hardware documentation it must be written from is now correct — in particular
-   the corrected `STAT1` polarity, which a driver written from the old note would
-   have inverted.
+9. **Demo firmware is a BRING-UP LAYER, not the application** (D-747, D-748).
+   The as-built hardware definition, the PCAL9535A driver, the safe bring-up
+   sequence, the SPI-B arbiter, the identity probes and the console exercises all
+   exist and are machine-checked — see §7a. What does **not** exist is the
+   application: no LVGL UI, no LoRa or sub-GHz protocol stack, no NFC stack, no
+   file system, and **no BMI270 configuration file**, so the IMU proves its bus
+   and address but returns no motion data yet. Three values in the map are
+   REPORT-ONLY because this repository holds no datasheet for them: the MAX17048
+   version register, the touch controller ID and the ST25R3916 identity byte.
+   The ILI9488 gamma and power tables are deliberately absent and must come from
+   EastRising's sequence for this exact module at first article. **None of these
+   is a fabrication blocker**; all are application work that continues during
+   fabrication.
 
 ## 9. Recommended post-Kickstarter improvements
 
@@ -180,9 +236,13 @@ between different nets.
 
 ## 10. What a reviewer should read, in order
 
-1. `CTO_DECISIONS.md` — **D-745, D-744, D-743, D-742** at the top.
+1. `CTO_DECISIONS.md` — **D-748, D-747, D-745, D-744, D-743, D-742** at the top.
 2. `CURRENT_STATE.md` §1.
-3. `hardware/demo/manufacturing/evidence/d74[2-6]-*.json`.
+3. `hardware/demo/manufacturing/evidence/d74[2-8]-*.json`, and in particular
+   `d748-release-verification.json` — connectivity, DRC, `FAB1`–`FAB11`, the
+   17-contract regression and the firmware contract in one document.
+3a. `Firmware/src/hw/aqroot_demo_board.h` — the generated as-built map, and the
+   only pin map that describes this board.
 4. `hardware/demo/kicad/aqroot-demo/aqroot-Beta-v2.kicad_dru` **section 5a** — the
    one named ampacity exception, written in full with its measurements.
 5. `DEVICE_SPEC.md` **§0a** — the Demo delta every Kickstarter claim must read.

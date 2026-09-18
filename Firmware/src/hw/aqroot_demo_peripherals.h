@@ -203,5 +203,77 @@ inline bool playTone(uint32_t hz, uint32_t ms, uint16_t amplitude = 6000) {
   return true;
 }
 
+// ---------------------------------------------------------------------------
+// Microphone (MK1, PUI DMM-4026-B-I2S-R) -- bottom-port I2S MEMS.
+//
+// ONE I2S PERIPHERAL OWNS THE CLOCKS.  MK1.6 and U5.16 both sit on /I2S_BCLK,
+// and MK1.5 and U5.14 both sit on /I2S_LRCLK -- see
+// AQROOT_I2S_CLOCKS_ARE_SHARED.  So this capture installs a MASTER RX driver
+// on its own and tears it down afterwards; it must never run while `playTone`
+// has a master TX driver up, or two controllers drive each clock.  The
+// application's answer is full duplex on one peripheral; bring-up's answer is
+// one direction at a time.
+//
+// The part is a 24-bit device in 32-bit slots, left-justified, and it selects
+// its slot from the L/R pin -- so the capture reads 32-bit frames and reports
+// the peak it sees on each slot, which also tells the operator which one MK1
+// is wired to.
+struct MicCapture {
+  bool installed;
+  uint32_t frames;
+  int32_t peak_left;
+  int32_t peak_right;
+};
+
+inline MicCapture captureMicrophone(uint32_t ms = 200) {
+  MicCapture result = {false, 0, 0, 0};
+  const uint32_t rate = 16000;
+
+  i2s_config_t config = {};
+  config.mode = i2s_mode_t(I2S_MODE_MASTER | I2S_MODE_RX);
+  config.sample_rate = rate;
+  config.bits_per_sample = I2S_BITS_PER_SAMPLE_32BIT;
+  config.channel_format = I2S_CHANNEL_FMT_RIGHT_LEFT;
+  config.communication_format = I2S_COMM_FORMAT_STAND_I2S;
+  config.intr_alloc_flags = 0;
+  config.dma_buf_count = 4;
+  config.dma_buf_len = 256;
+  config.use_apll = false;
+
+  i2s_pin_config_t pins = {};
+  pins.bck_io_num = AQROOT_PIN_I2S_BCLK;
+  pins.ws_io_num = AQROOT_PIN_I2S_LRCLK;
+  pins.data_out_num = I2S_PIN_NO_CHANGE;
+  pins.data_in_num = AQROOT_PIN_I2S_MIC_DIN;
+
+  if (i2s_driver_install(I2S_NUM_0, &config, 0, nullptr) != ESP_OK) return result;
+  if (i2s_set_pin(I2S_NUM_0, &pins) != ESP_OK) {
+    i2s_driver_uninstall(I2S_NUM_0);
+    return result;
+  }
+  result.installed = true;
+
+  const uint32_t want = (rate * ms) / 1000;
+  int32_t block[128 * 2];
+  const uint32_t deadline = millis() + ms + 200;
+  while (result.frames < want && millis() < deadline) {
+    size_t bytes = 0;
+    if (i2s_read(I2S_NUM_0, block, sizeof(block), &bytes, 100) != ESP_OK) break;
+    const size_t frames = bytes / (sizeof(int32_t) * 2);
+    for (size_t i = 0; i < frames; ++i) {
+      // 24 bits left-justified in 32: shift down before comparing magnitudes.
+      const int32_t left = block[i * 2] >> 8;
+      const int32_t right = block[i * 2 + 1] >> 8;
+      const int32_t abs_left = left < 0 ? -left : left;
+      const int32_t abs_right = right < 0 ? -right : right;
+      if (abs_left > result.peak_left) result.peak_left = abs_left;
+      if (abs_right > result.peak_right) result.peak_right = abs_right;
+    }
+    result.frames += uint32_t(frames);
+  }
+  i2s_driver_uninstall(I2S_NUM_0);
+  return result;
+}
+
 }  // namespace aqroot
 #endif  // ARDUINO

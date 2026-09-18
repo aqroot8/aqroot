@@ -680,6 +680,13 @@ def build():
         dict(key="CC1101_GDO2_NOT_WIRED", value=True,
              evidence="only /CC1101_GDO0 leaves U7 to the MCU",
              firmware="Route every CC1101 status assertion through GDO0."),
+        dict(key="I2S_CLOCKS_ARE_SHARED", value=True,
+             evidence="MK1.6 and U5.16 both sit on /I2S_BCLK, and MK1.5 and U5.14 both "
+                      "sit on /I2S_LRCLK -- one clock pair, two devices",
+             firmware="ONE I2S peripheral must own BCLK and LRCLK.  Running a second "
+                      "controller as a master on the same pins puts two drivers on "
+                      "each clock.  Use full-duplex master (TX to U5, RX from MK1) in "
+                      "the application, or one direction at a time in bring-up."),
         dict(key="SHARED_SPI_B_ONE_TX", value=True,
              evidence="U7, U8 and U9 share /SPI_B_SCK, /SPI_B_MOSI and /SPI_B_MISO",
              firmware="One transceiver transmits at a time; deselect the other two "

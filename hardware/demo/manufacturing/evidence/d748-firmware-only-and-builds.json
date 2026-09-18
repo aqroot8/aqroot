@@ -1,0 +1,61 @@
+{
+  "decision": "D-748",
+  "claim": "FIRMWARE-ONLY.  Every tracked hardware artifact is byte-identical to the one D-746 released at authority c7f5c618; both host tests and all four firmware environments pass.",
+  "head": "0513b56ed35145c90de1162231533c275882ba1b",
+  "tracked_hardware_files": 69,
+  "moved_files": [],
+  "git_porcelain_hardware": "",
+  "board_sha256": "c7f5c61896269276ecf680266adf23b36b9adc1f3d89bc93be311174498b7406",
+  "builds": [
+    {
+      "env": "aqroot-demo",
+      "built": true,
+      "firmware_bin_sha256": "1f9ee975093fcc9f8c915a8d3a62052518101dc4f7b8a3b8860ece7a236226e5",
+      "bytes": 319712
+    },
+    {
+      "env": "esp32-s3-aqroot",
+      "built": true,
+      "firmware_bin_sha256": "11effb5e99875fdc10032dae80496a27d1e424e32ca75eba36020a73ecab1c82",
+      "bytes": 673504
+    },
+    {
+      "env": "wokwi",
+      "built": true,
+      "firmware_bin_sha256": "974fe040f6934b2625730e958ce097c45101fc37c8ce8fb74ca06ba49a6d9e2e",
+      "bytes": 615328
+    },
+    {
+      "env": "esp32-s3-aqroot-dm",
+      "built": true,
+      "firmware_bin_sha256": "ee8cd86c597854985812dd37de8ba5fdf2913883e3025e230e8e1301d70e67bb",
+      "bytes": 673504
+    }
+  ],
+  "host_tests": [
+    {
+      "test": "Firmware/test/test_expander_order.cpp",
+      "compiled": true,
+      "warnings": null,
+      "exit_code": 0,
+      "claims": 40,
+      "failed": []
+    },
+    {
+      "test": "Firmware/test/test_spi_bus_b.cpp",
+      "compiled": true,
+      "warnings": null,
+      "exit_code": 0,
+      "claims": 22,
+      "failed": []
+    }
+  ],
+  "placeholder_pin_gate": {
+    "without_acknowledgement_exit": 1,
+    "with_acknowledgement_exit": 0,
+    "message": [
+      "Firmware/src/config.h:23:2: error: #error \"src/config.h carries Beta-era PLACEHOLDER pins and is NOT the AQROOT Demo map. Build the Demo board with `pio run -e aqroot-demo` (src/hw/aqroot_demo_board.h), or define AQROOT_ACK_PLACEHOLDER_PINS to build the legacy application anyway.\""
+    ]
+  },
+  "verdict": "PASS"
+}

@@ -397,6 +397,13 @@
 //   FIRMWARE: Route every CC1101 status assertion through GDO0.
 #define AQROOT_CC1101_GDO2_NOT_WIRED              1
 
+//   EVIDENCE: MK1.6 and U5.16 both sit on /I2S_BCLK, and MK1.5 and U5.14 both sit on
+//   /I2S_LRCLK -- one clock pair, two devices
+//   FIRMWARE: ONE I2S peripheral must own BCLK and LRCLK. Running a second controller as a
+//   master on the same pins puts two drivers on each clock. Use full-duplex master (TX to
+//   U5, RX from MK1) in the application, or one direction at a time in bring-up.
+#define AQROOT_I2S_CLOCKS_ARE_SHARED              1
+
 //   EVIDENCE: U7, U8 and U9 share /SPI_B_SCK, /SPI_B_MOSI and /SPI_B_MISO
 //   FIRMWARE: One transceiver transmits at a time; deselect the other two before any
 //   transmit.

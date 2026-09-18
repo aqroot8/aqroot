@@ -66,11 +66,43 @@
 > `verify_promotion` PASS and `protected_copper` showing exactly one protected
 > net moved.  `U14.7` is on the bus.  This board has **no open owner decision**.
 
+> **D-748: A DISCIPLINE THAT ONLY EXISTS IN A COMMENT CANNOT REFUSE
+> (2026-09-18).**  `authority c7f5c618` UNCHANGED, no copper -- 69 tracked
+> hardware artifacts byte-identical, all four firmware environments build.
+> D-747 closed the pin map and left three things as prose: the
+> **one-TX-at-a-time** discipline the retained dual-radio scope requires, the
+> **display** the independent review names explicitly, and the **microphone**.
+> `SpiBusB` makes the first a mechanism -- one chip select at a time on the bus
+> `U7`/`U8`/`U9` share, one transmitter keyed at a time, with an RAII `Hold` so a
+> probe that returns early still releases.  ***AND ITS OWN TEST FOUND A BUG IN
+> IT***: `select()` first treated a repeat select of the SAME device as
+> idempotent, so a nested `Hold` would succeed and then **release the bus at the
+> inner scope's exit**, leaving the outer scope transacting against a deselected
+> part -- a corruption whose signature is identical to a bad solder joint on a
+> chip select.  Repaired to refuse while ANY device holds.  **22 claims, three
+> controls, all caught.**
+>
+> The display path is ILI9488 for the retained 3.5-inch 320x480 panel, shaped by
+> two as-built facts: **it is WRITE-ONLY** (`R112` DNP, so `DISP_SDO` never
+> reaches `SPI_A_MISO`) which is why the exercise is a four-quadrant test pattern
+> and not a flat fill, and **ILI9488 over 4-wire SPI is 18 bits per pixel**
+> (`COLMOD 0x66`), not the RGB565 its ILI9341 cousin takes.  Gamma and power
+> tables are deliberately absent -- they are EastRising's for this module, and a
+> generic breakout's values would produce an image that looks plausible and is
+> wrong.  The microphone capture exists because the board publishes a new
+> generated limit, `AQROOT_I2S_CLOCKS_ARE_SHARED`: `MK1` and `U5` sit on ONE
+> `/I2S_BCLK` and ONE `/I2S_LRCLK`, so exactly one I2S controller may master
+> them.  And the BMI270 is REPORTED, not claimed -- `CHIP_ID 0x24` proves the
+> bus, `INTERNAL_STATUS` prints `not initialised` because the configuration file
+> is application work this bring-up image deliberately does not carry.
+> **H6 now runs two host tests: 62 claims, six controls, seventeen refusals in
+> all across the contract.**
+>
 > **D-747: SEVENTEEN CONTRACTS, AND THE SEVENTEENTH IS THE FIRST ONE THE
 > SOFTWARE HAS TO PASS (2026-09-18).**  `authority c7f5c618` UNCHANGED, NO
 > COPPER, NO SCHEMATIC, NO FAB PACKAGE -- **69 tracked hardware artifacts, every
 > one byte-identical to `HEAD`**, and `contract_regression` against `d746` runs
-> 17 contracts with sixteen IDENTICAL (`pour_partition` INCOMPARABLE on
+> 17 contracts with fifteen IDENTICAL (`pour_partition` INCOMPARABLE on
 > `ref_commit` alone, the documented D-676 reading; `firmware_hw_map` reports
 > `NO BASELINE` because it is new).  D-746 released the package and the
 > independent CTO re-review held `DEMO_READY_FOR_FAB` on one item: **no firmware

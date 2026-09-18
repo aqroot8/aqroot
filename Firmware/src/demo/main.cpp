@@ -29,11 +29,13 @@
 #include <SPI.h>
 
 #include "../hw/aqroot_demo_board.h"
+#include "../hw/aqroot_demo_display.h"
 #include "../hw/aqroot_demo_expanders.h"
 #include "../hw/aqroot_demo_peripherals.h"
 #include "../hw/aqroot_demo_pins.h"
 #include "../hw/aqroot_demo_radios.h"
 #include "../hw/aqroot_i2c_arduino.h"
+#include "../hw/aqroot_spi_bus_b.h"
 
 using namespace aqroot;
 
@@ -41,6 +43,10 @@ static ArduinoI2cBus g_bus;
 static DemoExpanders g_expanders;
 static uint16_t g_last_u2 = 0xFFFF;
 static uint16_t g_last_u3 = 0xFFFF;
+static BoardChipSelects g_selects;
+static SpiBusB g_spi_b(g_selects);
+static Ili9488 g_display;
+static bool g_display_up = false;
 static bool g_ok = true;
 
 static void report(const char *stage, bool ok, const char *detail = nullptr) {
@@ -118,10 +124,14 @@ static void bringUpExpanders() {
 }
 
 static void probeRadios() {
+  g_selects.begin();
   SPI.begin(AQROOT_PIN_SPI_B_SCK, AQROOT_PIN_SPI_B_MISO, AQROOT_PIN_SPI_B_MOSI,
             -1);
   char detail[96];
-  const DeviceIdentity ids[] = {probeCc1101(), probeSx1262(), probeSt25r3916()};
+  // Each probe takes a SpiBusB::Hold, so a second concurrent select is REFUSED
+  // rather than quietly driving MISO from two devices.
+  const DeviceIdentity ids[] = {probeCc1101(g_spi_b), probeSx1262(g_spi_b),
+                                probeSt25r3916(g_spi_b)};
   for (size_t i = 0; i < sizeof(ids) / sizeof(ids[0]); ++i) {
     if (ids[i].expected == kIdentityReportOnly) {
       snprintf(detail, sizeof(detail), "id 0x%04lX (liveness only)",
@@ -171,6 +181,20 @@ void setup() {
   bringUpExpanders();
 
   probeI2cDevice("BMI270 U4 chip id", AQROOT_I2C_ADDR_IMU, 0x00, 0x24, true);
+  // INTERNAL_STATUS.message[3:0]: 0 = not initialised, 1 = init_ok.  The BMI270
+  // needs a multi-kilobyte configuration file uploaded before accel or gyro
+  // data exists, and this bring-up image deliberately does not carry one -- so
+  // the honest report is the register, not a claim.  Expect 0x00 here and read
+  // it as "bus and address proven, sensor not yet configured".
+  {
+    uint8_t status = 0xFF;
+    const bool read = i2cReadByte(AQROOT_I2C_ADDR_IMU, 0x21, &status);
+    char detail[96];
+    snprintf(detail, sizeof(detail),
+             "INTERNAL_STATUS = 0x%02X (%s) -- config file NOT loaded by this image",
+             status, (status & 0x0F) == 1 ? "init_ok" : "not initialised");
+    report("BMI270 U4 init state", read, detail);
+  }
   // The MAX17048 VERSION register is a silicon revision; report it rather than
   // assert a value this repository has no datasheet for.
   probeI2cDevice("MAX17048 U14 version", AQROOT_I2C_ADDR_FUEL_GAUGE, 0x08, 0x00,
@@ -214,7 +238,9 @@ void setup() {
   Serial.println("console: r/g/b/w/o = RGB, 3 = ACC 3V3 toggle, 5 = ACC 5V toggle,");
   Serial.println("         i = accessory I2C buffer toggle, s = status,");
   Serial.println("         d = microSD probe, l = backlight ramp, x = IR self-test,");
-  Serial.println("         t = 1 kHz tone (energises the speaker)");
+  Serial.println("         t = 1 kHz tone (energises the speaker),");
+  Serial.println("         p = display init + test pattern (lights the backlight),");
+  Serial.println("         m = microphone capture (200 ms, reports peak per slot)");
 }
 
 // ---------------------------------------------------------------------------
@@ -231,7 +257,8 @@ static void printStatus() {
                 g_expanders.accessoryPresent(), g_expanders.accessoryFault(),
                 g_expanders.xgpio4(), g_expanders.xgpio5());
   Serial.printf("  charger  %s\n", chargerText(g_expanders.charger()));
-  Serial.printf("  BOOT_N (SW1) = %d\n", digitalRead(AQROOT_PIN_BOOT_N));
+  Serial.printf("  BOOT_N (SW1) = %d   display initialised = %d\n",
+                digitalRead(AQROOT_PIN_BOOT_N), g_display_up);
 }
 
 void loop() {
@@ -287,6 +314,18 @@ void loop() {
         Serial.printf("ACC_PWR_EN %s -> %d\n", buffer_on ? "on" : "off",
                       g_expanders.setAccessoryI2cBuffer(g_bus, buffer_on));
         break;
+      case 'm': {
+        const MicCapture mic = captureMicrophone();
+        Serial.printf("mic  %s, %lu frames, peak L=%ld R=%ld (24-bit)\n",
+                      mic.installed ? "I2S RX up" : "I2S RX FAILED",
+                      (unsigned long)mic.frames, (long)mic.peak_left,
+                      (long)mic.peak_right);
+        // The slot carrying signal tells the operator which one MK1 selected.
+        report("microphone MK1 (I2S RX)",
+               mic.installed && mic.frames > 0 &&
+                   (mic.peak_left > 0 || mic.peak_right > 0));
+        break;
+      }
       case 's': printStatus(); break;
       case 'd': {
         // The ONLY test on this board that proves SPI-A MISO: R112 is DNP, so
@@ -303,6 +342,27 @@ void loop() {
         Serial.println("backlight ramp on GPIO46 (U17 TPS61169)");
         backlightRamp();
         break;
+      case 'p': {
+        // RESET IS NOT AN MCU PIN.  U2.P04 owns it, so the pulse goes through
+        // the expander before a single SPI byte is sent.
+        Serial.println("display: pulsing DISP_RST_N via U2.P04, then ILI9488 init");
+        g_expanders.setDisplayReset(g_bus, true);
+        delay(20);
+        g_expanders.setDisplayReset(g_bus, false);
+        delay(20);
+        g_display.begin();
+        g_display.testPattern();
+        g_display.end();
+        g_display_up = true;
+        // The panel is WRITE-ONLY -- R112 is DNP -- so nothing here can confirm
+        // the init took.  The backlight is raised so the operator can.
+        pinMode(AQROOT_PIN_DISP_BL_PWM, OUTPUT);
+        digitalWrite(AQROOT_PIN_DISP_BL_PWM, HIGH);
+        Serial.println("display: four quadrants R/G/B/W, backlight ON.");
+        Serial.println("  expect 320 wide x 480 tall, portrait, red top-left.");
+        Serial.println("  R112 is DNP: there is NO read-back path -- confirm by eye.");
+        break;
+      }
       case 'x': {
         const IrSelfTest ir = irSelfTest();
         Serial.printf("IR  %u/%u samples low during a 38 kHz burst -- %s\n",

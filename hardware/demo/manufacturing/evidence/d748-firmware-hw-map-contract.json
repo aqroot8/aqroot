@@ -66,40 +66,77 @@
       "Firmware/src/hw/aqroot_demo_radios.h",
       "Firmware/src/hw/aqroot_i2c.h",
       "Firmware/src/hw/aqroot_i2c_arduino.h",
+      "Firmware/src/hw/aqroot_spi_bus_b.h",
       "Firmware/src/hw/pcal9535a.h"
     ],
-    "symbols_emitted": 83,
+    "symbols_emitted": 84,
     "roles_unreferenced_by_the_layer": [],
     "symbols_the_generator_never_emitted": [],
     "verdict": "PASS"
   },
-  "H6_safe_ordering_is_proved_on_the_host": {
-    "test": "Firmware/test/test_expander_order.cpp",
-    "compiled": true,
-    "exit_code": 0,
-    "claims": 40,
-    "failed_claims": [],
-    "controls": [
+  "H6_host_tests_prove_the_orderings": {
+    "tests": [
       {
-        "control": "direction is written before the output latch",
+        "test": "Firmware/test/test_expander_order.cpp",
         "compiled": true,
-        "exit_code": 1,
-        "caught": true,
-        "first_failed_claim": "[FAIL] 0x20: output latch is written BEFORE direction"
+        "exit_code": 0,
+        "claims": 40,
+        "failed_claims": [],
+        "controls": [
+          {
+            "control": "direction is written before the output latch",
+            "compiled": true,
+            "exit_code": 1,
+            "caught": true,
+            "first_failed_claim": "[FAIL] 0x20: output latch is written BEFORE direction"
+          },
+          {
+            "control": "the RGB cathodes boot at 0, lighting the LED at power-on",
+            "compiled": true,
+            "exit_code": 1,
+            "caught": true,
+            "first_failed_claim": "[FAIL] the RGB cathodes are HIGH (dark) at boot -- D13's anode is +3V3"
+          },
+          {
+            "control": "the 5 V load switch is closed before the boost is enabled",
+            "compiled": true,
+            "exit_code": 1,
+            "caught": true,
+            "first_failed_claim": "[FAIL] 5 V up: the BOOST enable leads the LOAD SWITCH (D-186)"
+          }
+        ],
+        "verdict": "PASS"
       },
       {
-        "control": "the RGB cathodes boot at 0, lighting the LED at power-on",
+        "test": "Firmware/test/test_spi_bus_b.cpp",
         "compiled": true,
-        "exit_code": 1,
-        "caught": true,
-        "first_failed_claim": "[FAIL] the RGB cathodes are HIGH (dark) at boot -- D13's anode is +3V3"
-      },
-      {
-        "control": "the 5 V load switch is closed before the boost is enabled",
-        "compiled": true,
-        "exit_code": 1,
-        "caught": true,
-        "first_failed_claim": "[FAIL] 5 V up: the BOOST enable leads the LOAD SWITCH (D-186)"
+        "exit_code": 0,
+        "claims": 22,
+        "failed_claims": [],
+        "controls": [
+          {
+            "control": "the bus accepts a second concurrent chip select",
+            "compiled": true,
+            "exit_code": 1,
+            "caught": true,
+            "first_failed_claim": "[FAIL] re-selecting the SAME device while held is REFUSED"
+          },
+          {
+            "control": "a second radio may key while the first is transmitting",
+            "compiled": true,
+            "exit_code": 1,
+            "caught": true,
+            "first_failed_claim": "[FAIL] re-keying the SAME transmitter is REFUSED -- same re-entrancy rule"
+          },
+          {
+            "control": "Hold stops releasing the bus when it leaves scope",
+            "compiled": true,
+            "exit_code": 1,
+            "caught": true,
+            "first_failed_claim": "[FAIL] the outer Hold still owned the bus when the inner scopes ended"
+          }
+        ],
+        "verdict": "PASS"
       }
     ],
     "verdict": "PASS"

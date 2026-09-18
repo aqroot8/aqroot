@@ -37,13 +37,17 @@ WHAT IS PROVED
   H5  the firmware layer implements what it was given: every role the generator
       emits is referenced by the C++ under `Firmware/src/hw/`, and the C++
       names no `AQROOT_` symbol the generator did not emit.
-  H6  the SAFE-ORDERING TEST compiles and passes on the host.  The PCAL9535A
-      resets to all-inputs with its output latches at 0x00, and six of this
-      board's expander outputs are safe at 0 while three are safe at 1, so the
-      order `pulls -> mask -> latch -> direction` is a SAFETY property and not a
-      style.  It is invisible to a compile and invisible to DRC; the test makes
-      it visible by recording the I2C transactions the layer issues.  Three
-      controls mutate the driver and each must make the test FAIL.
+  H6  TWO HOST TESTS compile under `-Wall -Wextra -Werror` and pass, and six
+      controls -- three each -- must make them FAIL.
+        * the EXPANDER SAFE-ORDERING test.  The PCAL9535A resets to all-inputs
+          with its output latches at 0x00, and six of this board's expander
+          outputs are safe at 0 while three are safe at 1, so the order
+          `pulls -> mask -> latch -> direction` is a SAFETY property, not a
+          style.  It is invisible to a compile and invisible to DRC; the test
+          makes it visible by recording the I2C transactions the layer issues.
+        * the SPI BUS B ARBITER test.  U7, U8 and U9 share one bus and the two
+          rules over it -- one chip select at a time, one transmitter at a time
+          -- were comments until D-748.  A comment cannot refuse.
 
 AND IT PROVES IT IS NOT VACUOUS.  Eleven controls mutate the policy table --
 including the exact `P05`/`P06` swap D-732 found -- and each must be REFUSED.
@@ -71,11 +75,29 @@ import gen_firmware_hw_map as gen           # noqa: E402
 import routing_ledger                        # noqa: E402
 
 HW_DIR = ROOT / "Firmware/src/hw"
-ORDER_TEST = ROOT / "Firmware/test/test_expander_order.cpp"
+HOST_TESTS = [
+    ROOT / "Firmware/test/test_expander_order.cpp",
+    ROOT / "Firmware/test/test_spi_bus_b.cpp",
+]
 
 # Each control is (name, file under src/hw, exact text, replacement).  The
 # replacement must be a DEFENSIBLE-LOOKING mistake -- the kind a future edit
 # actually makes -- not a syntax error.
+BUS_CONTROLS = [
+    ("the bus accepts a second concurrent chip select",
+     "aqroot_spi_bus_b.h",
+     "    if (selected_ != SpiBDevice::None) return false;",
+     "    if (selected_ != SpiBDevice::None && selected_ != device) return false;"),
+    ("a second radio may key while the first is transmitting",
+     "aqroot_spi_bus_b.h",
+     "    if (transmitting_ != SpiBDevice::None) return false;",
+     "    if (transmitting_ != SpiBDevice::None && transmitting_ != device) return false;"),
+    ("Hold stops releasing the bus when it leaves scope",
+     "aqroot_spi_bus_b.h",
+     "    ~Hold() { if (ok_) bus_.release(); }",
+     "    ~Hold() {}"),
+]
+
 ORDER_CONTROLS = [
     ("direction is written before the output latch",
      "pcal9535a.h",
@@ -96,13 +118,13 @@ ORDER_CONTROLS = [
 ]
 
 
-def run_order_test(mutation=None):
-    """Compile and run the safe-ordering test, optionally against a mutated
-    copy of the layer.  Returns (compiled, exit_code, stdout)."""
-    with tempfile.TemporaryDirectory(prefix="aqroot-order-") as temporary:
+def run_host_test(test, mutation=None):
+    """Compile and run one host test, optionally against a mutated copy of the
+    layer.  Returns (compiled, exit_code, stdout)."""
+    with tempfile.TemporaryDirectory(prefix="aqroot-host-") as temporary:
         work = Path(temporary)
         shutil.copytree(HW_DIR, work / "hw")
-        shutil.copy(ORDER_TEST, work / ORDER_TEST.name)
+        shutil.copy(test, work / test.name)
         if mutation is not None:
             _, filename, before, after = mutation
             target = work / "hw" / filename
@@ -110,10 +132,10 @@ def run_order_test(mutation=None):
             if before not in body:
                 return (False, -1, "control text not found in %s" % filename)
             target.write_text(body.replace(before, after, 1), encoding="utf-8")
-        binary = work / "order_test"
+        binary = work / "host_test"
         build = subprocess.run(
             ["g++", "-std=c++17", "-Wall", "-Wextra", "-Werror",
-             "-I", str(work / "hw"), "-o", str(binary), str(work / ORDER_TEST.name)],
+             "-I", str(work / "hw"), "-o", str(binary), str(work / test.name)],
             capture_output=True, text=True)
         if build.returncode != 0:
             return (False, build.returncode, build.stderr[-2000:])
@@ -288,27 +310,33 @@ def main():
     }
 
     # ---- H6 -------------------------------------------------------------
-    compiled, code, output = run_order_test()
-    claims = [line for line in output.splitlines() if line.startswith("[")]
-    h6 = {
-        "test": ORDER_TEST.relative_to(ROOT).as_posix(),
-        "compiled": compiled,
-        "exit_code": code,
-        "claims": len(claims),
-        "failed_claims": [line for line in claims if line.startswith("[FAIL")],
-        "controls": [],
-    }
-    for control in ORDER_CONTROLS:
-        c_compiled, c_code, c_output = run_order_test(control)
-        c_claims = [line for line in c_output.splitlines() if line.startswith("[FAIL")]
-        h6["controls"].append(dict(
-            control=control[0], compiled=c_compiled, exit_code=c_code,
-            caught=(c_code != 0),
-            first_failed_claim=c_claims[0] if c_claims else None))
-    h6["verdict"] = ("PASS" if compiled and code == 0 and claims
-                     and all(entry["caught"] for entry in h6["controls"])
-                     else "FAIL")
-    report["H6_safe_ordering_is_proved_on_the_host"] = h6
+    h6 = {"tests": [], "verdict": "PASS"}
+    for test, controls in zip(HOST_TESTS, (ORDER_CONTROLS, BUS_CONTROLS)):
+        compiled, code, output = run_host_test(test)
+        claims = [line for line in output.splitlines() if line.startswith("[")]
+        entry = {
+            "test": test.relative_to(ROOT).as_posix(),
+            "compiled": compiled,
+            "exit_code": code,
+            "claims": len(claims),
+            "failed_claims": [line for line in claims if line.startswith("[FAIL")],
+            "controls": [],
+        }
+        for control in controls:
+            c_compiled, c_code, c_output = run_host_test(test, control)
+            c_claims = [line for line in c_output.splitlines()
+                        if line.startswith("[FAIL")]
+            entry["controls"].append(dict(
+                control=control[0], compiled=c_compiled, exit_code=c_code,
+                caught=(c_code != 0),
+                first_failed_claim=c_claims[0] if c_claims else None))
+        entry["verdict"] = ("PASS" if compiled and code == 0 and claims
+                            and all(c["caught"] for c in entry["controls"])
+                            else "FAIL")
+        if entry["verdict"] != "PASS":
+            h6["verdict"] = "FAIL"
+        h6["tests"].append(entry)
+    report["H6_host_tests_prove_the_orderings"] = h6
 
     # ---- controls -------------------------------------------------------
     controls = []
