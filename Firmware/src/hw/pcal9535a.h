@@ -71,10 +71,12 @@ class Pcal9535a {
     uint16_t irq_mask;       // 1 = masked
   };
 
-  explicit Pcal9535a(uint8_t address) : address_(address), shadow_(0) {}
+  explicit Pcal9535a(uint8_t address)
+      : address_(address), shadow_(0xFFFF), shadow_valid_(false) {}
 
   uint8_t address() const { return address_; }
   uint16_t outputShadow() const { return shadow_; }
+  bool outputShadowValid() const { return shadow_valid_; }
 
   bool probe(I2cBus &bus) { return bus.probe(address_); }
 
@@ -98,17 +100,24 @@ class Pcal9535a {
   // safe at 1 and happen to agree with the POR value; they are not what this
   // order exists for.
   //
-  // So: pulls and mask first (they only affect inputs), then the OUTPUT latch,
-  // then -- last -- the direction.  `apply()` issues them in that order and in
-  // no other.
+  // Cold POR and MCU-only warm reset need the SAME first action.  On cold POR
+  // CONFIG is FFh so changing OUTPUT is electrically inert; on a warm MCU reset
+  // the expander can still be driving the PREVIOUS application's outputs, so the
+  // first transaction must overwrite the complete output latch with the board's
+  // safe word.  Only then is it safe to spend bus transactions on pulls/masks.
+  // NXP also recommends programming Output Port Configuration (4Fh) before
+  // making pins outputs; AQROOT uses push-pull, therefore 4Fh = 00h explicitly.
+  // Direction remains LAST so a cold-POR input can never expose the reset FFh
+  // latch as an active-high enable.
   bool apply(I2cBus &bus, const Config &config) {
+    shadow_valid_ = false;
+    if (!writeOutputs(bus, config.output_latch)) return false;
     if (!writePortPair(bus, address_, kRegPullSelect0, config.pull_up)) return false;
     if (!writePortPair(bus, address_, kRegPullEnable0, config.pull_enable)) return false;
     if (!writePortPair(bus, address_, kRegIrqMask0, config.irq_mask)) return false;
     if (!writePortPair(bus, address_, kRegPolarity0, 0x0000)) return false;
-    if (!writePortPair(bus, address_, kRegOutput0, config.output_latch)) return false;
+    if (!writeRegister(bus, address_, kRegOutputConfig, 0x00)) return false;
     if (!writePortPair(bus, address_, kRegConfig0, config.direction)) return false;
-    shadow_ = config.output_latch;
     return true;
   }
 
@@ -139,10 +148,12 @@ class Pcal9535a {
   bool writeOutputs(I2cBus &bus, uint16_t value) {
     if (!writePortPair(bus, address_, kRegOutput0, value)) return false;
     shadow_ = value;
+    shadow_valid_ = true;
     return true;
   }
 
   bool writeBit(I2cBus &bus, uint8_t index, bool level) {
+    if (!shadow_valid_) return false;  // refuse a blind read-modify-write
     const uint16_t mask = uint16_t(1u << index);
     const uint16_t next = level ? uint16_t(shadow_ | mask)
                                 : uint16_t(shadow_ & uint16_t(~mask));
@@ -160,6 +171,7 @@ class Pcal9535a {
   // goes to 0 in one transaction, so a shutdown needs ONE write to succeed
   // rather than all of them.
   bool clearBits(I2cBus &bus, uint16_t mask) {
+    if (!shadow_valid_) return false;  // warm reset: full safe latch first
     return writeOutputs(bus, uint16_t(shadow_ & uint16_t(~mask)));
   }
 
@@ -170,6 +182,7 @@ class Pcal9535a {
  private:
   uint8_t address_;
   uint16_t shadow_;
+  bool shadow_valid_;
 };
 
 }  // namespace aqroot

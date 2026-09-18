@@ -45,6 +45,11 @@ class RecordingBus : public I2cBus {
   uint16_t u3_inputs = 0xFFFF;
   uint16_t u2_config = 0xFFFF;
   uint16_t u3_config = 0xFFFF;
+  // Warm MCU reset model: the PCALs remain powered and may retain arbitrary
+  // previous output commands.  Start HIGH to make stale active-high enables
+  // maximally visible until firmware overwrites the complete safe latch.
+  uint16_t u2_output = 0xFFFF;
+  uint16_t u3_output = 0xFFFF;
 
   // ---- D-751: SELECTIVE NACK -------------------------------------------
   // T10 exists because an independent-failure bug is invisible to a bus that
@@ -79,6 +84,8 @@ class RecordingBus : public I2cBus {
     if (nack) return false;
     if (txn.reg == Pcal9535a::kRegConfig0) {
       (address == AQROOT_EXP_U2_ADDR ? u2_config : u3_config) = txn.value;
+    } else if (txn.reg == Pcal9535a::kRegOutput0) {
+      (address == AQROOT_EXP_U2_ADDR ? u2_output : u3_output) = txn.value;
     }
     return true;
   }
@@ -91,6 +98,8 @@ class RecordingBus : public I2cBus {
     uint16_t value = 0;
     if (reg == Pcal9535a::kRegInput0) {
       value = (address == AQROOT_EXP_U2_ADDR) ? u2_inputs : u3_inputs;
+    } else if (reg == Pcal9535a::kRegOutput0) {
+      value = (address == AQROOT_EXP_U2_ADDR) ? u2_output : u3_output;
     } else if (reg == Pcal9535a::kRegConfig0) {
       value = (address == AQROOT_EXP_U2_ADDR) ? u2_config : u3_config;
     }
@@ -148,10 +157,33 @@ int main() {
   std::printf("AQROOT Demo -- expander safe-ordering test\n");
   std::printf("board_sha256 %s\n\n", AQROOT_DEMO_BOARD_SHA256);
 
+  // ---- T0: a fresh MCU must not invent the retained PCAL latch --------
+  // On an MCU-only reset the expanders remain powered.  The software object is
+  // new but the hardware output latch is whatever the old firmware left there,
+  // so a read-modify-write against an invented shadow is unsafe.
+  {
+    RecordingBus blind;
+    Pcal9535a fresh(AQROOT_EXP_U3_ADDR);
+    check("fresh PCAL software shadow is explicitly INVALID",
+          !fresh.outputShadowValid());
+    check("blind writeBit before safe-latch synchronization is REFUSED",
+          !fresh.writeBit(blind, AQROOT_U3_ACC_5V_SW_EN, false) && blind.log.empty());
+  }
+
   // ---- T1: the bring-up order itself ---------------------------------
   RecordingBus bus;
   DemoExpanders expanders;
   check("begin() succeeds against a bus that ACKs", expanders.begin(bus));
+  check("warm reset: first bus write forces U2 safe latch",
+        bus.log.size() >= 2 && !bus.log[0].is_read &&
+            bus.log[0].address == AQROOT_EXP_U2_ADDR &&
+            bus.log[0].reg == Pcal9535a::kRegOutput0 &&
+            bus.log[0].value == kU2SafeLatch);
+  check("warm reset: second bus write forces U3 safe latch before policy traffic",
+        bus.log.size() >= 2 && !bus.log[1].is_read &&
+            bus.log[1].address == AQROOT_EXP_U3_ADDR &&
+            bus.log[1].reg == Pcal9535a::kRegOutput0 &&
+            bus.log[1].value == kU3SafeLatch);
 
   for (uint8_t address : {uint8_t(AQROOT_EXP_U2_ADDR), uint8_t(AQROOT_EXP_U3_ADDR)}) {
     char claim[128];
@@ -160,18 +192,30 @@ int main() {
     const int pull_enable = bus.indexOfWrite(address, Pcal9535a::kRegPullEnable0);
     const int pull_select = bus.indexOfWrite(address, Pcal9535a::kRegPullSelect0);
     const int mask = bus.indexOfWrite(address, Pcal9535a::kRegIrqMask0);
+    const int output_config = bus.indexOfWrite(address, Pcal9535a::kRegOutputConfig);
 
     std::snprintf(claim, sizeof(claim),
-                  "0x%02X: output latch is written BEFORE direction", address);
-    check(claim, latch >= 0 && direction >= 0 && latch < direction);
+                  "0x%02X: safe output latch is the FIRST write to this device", address);
+    check(claim, latch >= 0 &&
+          (pull_select < 0 || latch < pull_select) &&
+          (pull_enable < 0 || latch < pull_enable) &&
+          (mask < 0 || latch < mask) &&
+          (output_config < 0 || latch < output_config) &&
+          (direction < 0 || latch < direction));
 
     std::snprintf(claim, sizeof(claim),
                   "0x%02X: pull select precedes pull enable", address);
     check(claim, pull_select >= 0 && pull_enable >= 0 && pull_select < pull_enable);
 
     std::snprintf(claim, sizeof(claim),
-                  "0x%02X: pulls and mask are set before the latch", address);
-    check(claim, pull_enable < latch && mask >= 0 && mask < latch);
+                  "0x%02X: output configuration is PUSH-PULL before direction", address);
+    check(claim, output_config >= 0 && direction >= 0 && output_config < direction &&
+                     bus.valueWritten(address, Pcal9535a::kRegOutputConfig) == 0x0000);
+
+    std::snprintf(claim, sizeof(claim),
+                  "0x%02X: direction is LAST among safety configuration writes", address);
+    check(claim, direction > latch && direction > pull_enable && direction > mask &&
+                     direction > output_config);
 
     // D-753.  THE ORDERING IS NON-VACUOUS AGAINST THE PART'S REAL POR VALUE.
     // NXP tables 7/8: both output ports power up at 0xFF.  So for every output
