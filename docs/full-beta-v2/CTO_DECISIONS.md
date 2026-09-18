@@ -1,3 +1,85 @@
+## D-740 — **`/SX1262_DIO1` IS PROMOTED.** D-739's FINALIST IS PAID FOR BY MOVING **ONE** PASSIVE, NOT SIX: `R5` LEAVES THE `U2` WEST COLUMN ALTOGETHER AND `BTN_UP_N`'s PULL-UP TAPS ITS OWN NET IN OPEN COPPER
+
+    authority  71c4326e -> ab557744.  COPPER PROMOTED.
+    retained open edges  3 -> 2.  `/SX1262_DIO1` CLOSED.
+    `verify_promotion` PASS, 16/16 clauses, DRC ZERO attributable, PP1-PP4 ok
+    `evidence/d740-{gate,verify-promotion,shift-r5,tap-census-before}.json`
+
+### 1. WHAT D-739 LEFT, AND WHAT IT ASKED FOR
+
+D-739 proved `/SX1262_DIO1` routable (82.428 mm, 2 vias, `U2.9 -> U8.13`) at the
+price of ONE residual conductor: `BTN_UP_N`'s pull-up leg, `R5.2`, which no
+longer reached its own net.  It refused the finalist on purpose -- clause 4
+counts edges and 3 -> 3 is not an improvement -- and named the fix as
+*"move `R4`-`R9` WEST by about 3 mm"*, a SIX-part transaction whose first two
+steps its addendum had already measured as refusals.
+
+***THE SIX-PART TRANSACTION WAS NOT NEEDED.***  The channel-widening argument is
+sound but it answers a question this board no longer has to ask.  The residual
+is ONE land on ONE net, and the cheapest thing that closes it is to take that
+land OUT of the contested pocket entirely.
+
+### 2. THE MEASUREMENT THAT CHANGED THE MOVE
+
+`screen_net_tap.py --census` on the finalist:
+
+    R5.2   nearest PAD        8.0988 mm   (U2.14, back across the 0.925 mm channel)
+           nearest OWN COPPER 9.2022 mm   gain -1.1034 mm
+
+Both numbers point back INTO the pocket, which is why eleven pocket
+transactions could only ever hold N-1 of N.  But `R5` is a **10 k pull-up on a
+button line**: its position is electrically free, and the band
+`x 39 .. 49.6, y 86 .. 94` on `B.Cu` carries **no footprint at all**.
+
+### 3. THE TRANSACTION
+
+    apply_part_shift.py --ref R5 --dx-nm -3123000 --dy-nm 5508000
+        --release --release-net +3V3
+        --release-point +3V3:48.300,87.400
+        --release-via   +3V3:47.100,87.200
+
+`R5` moves from `(51.123, 86.792)` to `(48.000, 92.300)`, still `B.Cu`, still
+rot 0, **zero new courtyard overlaps**.  Three `+3V3` objects are released -- the
+two-track chain `R5.1 -> (50.100,87.050) -> (48.300,87.400) -> (47.100,87.200)`
+and the `0.70/0.40` barrel at its end.  D-739's addendum found that chain
+refuses `--release` alone with `RELEASE_WOULD_STRAND`; `--release-point` states
+the next link and `--release-via` states the barrel, and the move then PASSES.
+
+Then ONE router run closes both legs the move owed:
+
+    route_maze_batch.py --grid 25000 --tap --tap-first --tap-max-mm 10
+        --partial --bond-pad R5.1 --body-landing
+        /08_BUTTONS_EXPANDERS/BTN_UP_N
+
+    +3V3       R5.1 bonded, 1.125 mm escape + 0.80/0.40 barrel at (47.175,93.425)
+               into the In3.Cu +3V3 pour  (P3V3 contract, 0.600 mm width)
+    BTN_UP_N   R5.2 TAPS its own net at (47.000,98.200) -- 8.2655 mm,
+               2 vias, B -> I2 -> B, stub 0.9248 mm
+
+**The tap is the whole point.**  `R5.2`'s gap to its net's own copper fell from
+9.2022 mm INSIDE the pocket to 6.1756 mm in open `B.Cu`, and the T-junction
+needs no pad to aim at.
+
+### 4. THE RESULT
+
+    retained open edges      3 -> 2      open retained nets 3 -> 1
+    nets improved            +3V3, /08_BUTTONS_EXPANDERS/BTN_UP_N
+    nets regressed           none
+    gate clauses             15/15 TRUE, refused_clauses []
+    real KiCad DRC           ZERO violations of any class, before and after
+    fill stable              second refill changes nothing
+    schematic parity         246 warnings, 0 errors -- the recorded baseline
+
+`verify_promotion --ref HEAD` re-derives it independently from the two board
+files: **PASS, 16/16**, 99 objects added on exactly the four claimed nets, 52
+removed on exactly the three evicted ones, `unconnected_items` 19 -> 18, zones
+and rule areas untouched, `PP1`-`PP4` ok.
+
+### 5. WHAT IS LEFT
+
+`/BQ25185_STAT2` alone: `U11.3` (D-734, the package wall, an OPEN OWNER
+DECISION) and `U2.19`.
+
 ## D-739 — **`/SX1262_DIO1` IS ROUTABLE. D-735's "FLOORPLAN CHANGE" IS OVERTURNED AND THE D-PAD DOES NOT HAVE TO MOVE.** THE WHOLE `U2` WEST POCKET RE-LAYS AROUND IT EXCEPT **ONE** CONDUCTOR, AND THAT CONDUCTOR IS THE ENABLE OF A PART THAT IS NOT FITTED
 
     authority  71c4326e  UNCHANGED.  NO COPPER PROMOTED -- the finalist is
