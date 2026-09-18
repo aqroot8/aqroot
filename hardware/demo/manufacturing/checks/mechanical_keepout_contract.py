@@ -462,6 +462,39 @@ def mk8(board, reg=None):
                      "and the gap between them is an OPEN CAD ITEM (D-760)")
 
 
+
+# D-761.  THE IR PAIR, WHICH IS A FUNCTIONAL RULE WITH 0.133 mm OF MARGIN.
+#
+# `FBV2_P1_KEEPOUTS.md` §4 cites "the >= 15 mm IR TX<->RX rule" as the reason
+# `D1` cannot move, and `D-226` widened `IR_BARRIER` 3.0 -> 5.0 mm to stand
+# between them.  Neither statement was checked by anything.  The pair measures
+# 15.1327 mm centre to centre -- the rule is MET, and by 0.133 mm, which is
+# exactly the kind of margin that a 0.2 mm placement nudge spends without
+# anybody noticing.
+IR_TX_RX_MIN_MM = 15.000
+
+
+def mk9(board, reg=None):
+    reg = reg or regions()
+    d1 = board.FindFootprintByReference("D1")
+    u6 = board.FindFootprintByReference("U6")
+    if d1 is None or u6 is None:
+        return dict(ok=False, why="D1 or U6 missing")
+    a, b2 = d1.GetPosition(), u6.GetPosition()
+    sep = math.hypot(a.x - b2.x, a.y - b2.y) / 1e6
+    bar = reg["IR_BARRIER"]
+    d1_east = max(q.GetPosition().x / 1e6 for q in d1.Pads())
+    u6_west = min(q.GetPosition().x / 1e6 for q in u6.Pads())
+    between = d1_east <= bar[0] + 1e-6 and u6_west >= bar[1] - 1e-6
+    return dict(ok=sep >= IR_TX_RX_MIN_MM - 1e-6 and between,
+                separation_mm=round(sep, 4), rule_min_mm=IR_TX_RX_MIN_MM,
+                margin_mm=round(sep - IR_TX_RX_MIN_MM, 4),
+                ir_barrier_x_mm=[bar[0], bar[1]],
+                d1_easternmost_pad_x_mm=round(d1_east, 3),
+                u6_westernmost_pad_x_mm=round(u6_west, 3),
+                barrier_stands_between_them=between)
+
+
 def mk7(board):
     """Live negative controls: each puts a specific defect back."""
     reg = regions()
@@ -514,6 +547,14 @@ def mk7(board):
     ctl["a_footprint_with_no_height_figure_is_refused"] = not mk8(board, reg)["ok"]
     MAX_HEIGHT_MM["R_0603_1608Metric"] = saved2
 
+    # the IR pair nudged 0.200 mm together must be refused -- the rule has
+    # 0.133 mm of margin, so 0.200 mm spends it
+    d1 = board.FindFootprintByReference("D1")
+    was = d1.GetPosition()
+    d1.SetPosition(pcbnew.VECTOR2I(was.x + 200000, was.y))
+    ctl["the_ir_pair_nudged_0_200_mm_together_is_refused"] = not mk9(board, reg)["ok"]
+    d1.SetPosition(was)
+
     return dict(ok=all(ctl.values()), controls=ctl)
 
 
@@ -533,6 +574,7 @@ def main():
         "MK6_boss2_is_inside_the_ir_barrier": mk6(board, reg),
         "MK7_not_vacuous": mk7(board),
         "MK8_component_height_in_the_limited_regions": mk8(board, reg),
+        "MK9_ir_pair_separation_and_barrier": mk9(board, reg),
     }
     doc = dict(schema=1, board=str(a.board), board_sha256=sha256(a.board),
                datum="FBV2-EXP-002 RE-BASED: section-1 X + %.3f mm; "

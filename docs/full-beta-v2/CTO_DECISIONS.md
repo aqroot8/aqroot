@@ -1,3 +1,80 @@
+## D-761 — **A CLEARANCE THAT WAS STALE BY TWO REVISIONS, A SNAPSHOT THAT READS LIKE A SOURCE, AND A FUNCTIONAL RULE WITH 0.133 mm OF MARGIN**
+
+    authority  1a06b058, UNCHANGED   (no board file, no fab output, no firmware)
+    changed    DEVICE_SPEC's board-to-cavity clearance row; a SNAPSHOT header on
+               FBV2_P1_COORDINATES.csv; mechanical_keepout_contract gains MK9
+    evidence   d761-{release-verification,mechanical_keepout-contract,
+               contract-regression}.json
+
+### 1. THE BOARD-TO-CAVITY CLEARANCE WAS THE 70 mm BOARD'S NUMBER
+
+`DEVICE_SPEC`'s mechanical table carried
+
+    | Board→cavity clearance | ≥1.5 mm (actual 2.5 mm X, 3.5 mm Y) | LOCKED (rule) |
+
+**`2.5 mm` is the pre-`FBV2-EXP-002` figure**, from a 70.000 mm board in a
+75.000 mm cavity.  `EXP-002` grew the board to 72.000 mm and `D-709` put a
+5.000 mm step out to 77.000 mm between `Y 70.500 … 104.005`, and the cavity grew
+with it to 80.000 mm.  Measured on `1a06b058` against the locked 1.500 mm west
+gap:
+
+    west gap, everywhere                     1.500 mm
+    east gap at the 72.000 mm sections       6.500 mm
+    east gap AT THE D-709 STEP               1.500 mm
+    Y gap, each end                          3.500 mm
+
+`D-239` says it in its own words: the gap *"falls 2.5 → 1.5 mm on both sides —
+the ≥ 1.5 mm rule met EXACTLY, with nothing to spare."*  **"2.5 mm of clearance"
+and "the rule met exactly with nothing to spare" are not the same instruction to
+an enclosure designer**, and the spec was giving the first one.  Corrected, with
+the measurement and where each number comes from.
+
+### 2. A MILESTONE SNAPSHOT THAT READS LIKE A COORDINATE SOURCE
+
+`FBV2_P1_COORDINATES.csv` is a machine-generated part list from `FBV2-P1-002`.
+Nothing on it says so.  Measured against `1a06b058`:
+
+    104 of its 324 rows no longer match the board
+     14 references in it are no longer on the board
+          D3  R42  R51-R54  R57-R60  R130  TP14  TP41  U23
+      5 board references are not in it
+          C84  C85  D14  Q11  R132
+
+and `BOSS1`'s row still carried the pre-`D-759` `40.000`.  It now opens with a
+header that says SNAPSHOT, prints those counts, and names the board and the
+generated CPL as the coordinate authority.  **`D-758` is what happens when a
+superseded coordinate is read as a current one**, and that is the second
+document in three decisions to have been carrying one.
+
+### 3. THE IR PAIR IS MET BY 0.133 mm, AND NOTHING WAS WATCHING IT
+
+`FBV2_P1_KEEPOUTS.md` §4 cites *"the ≥ 15 mm IR TX↔RX rule"* as the reason `D1`
+cannot move, and `D-226` widened `IR_BARRIER` **3.0 → 5.0 mm** to stand between
+the two.  Neither statement had a gate.  Measured:
+
+    D1 (TSAL6100) doc (51.750, 141.400)   U6 (TSOP38238) doc (66.750, 143.400)
+    centre to centre            15.1327 mm      rule >= 15.000 mm   MET
+    margin                       0.1327 mm
+    D1 easternmost pad  x 54.290   IR_BARRIER 57.500 .. 62.500   U6 westernmost pad x 64.210
+
+The rule is met and the barrier stands cleanly between them — **by 0.133 mm**,
+which is what a routine 0.2 mm placement nudge spends without anybody noticing.
+`MK9` holds both halves, with a control that moves the pair **0.200 mm** together
+— more than the whole margin — and is refused.
+
+`mechanical_keepout_contract` is now **MK1–MK9 with seven live negative
+controls**.
+
+### 4. VERIFICATION
+
+The board did not move.  `contract_regression`: **18 run, 18 pass, 16
+byte-identical to `d760`**, and the one that moved is `mechanical_keepout` by
+exactly `MK9` and its control.  `connection_width` now reads IDENTICAL, which is
+`D-760`'s determinism fix proving itself on the next run.  Everything else is
+carried forward from `D-760` unchanged and recorded.
+
+**There is no open owner decision and no unresolved Demo fabrication blocker.**
+
 ## D-760 — **THREE HEIGHT RULES, NEVER ONCE COMPARED WITH A PART, AND TWO OF THEM ARE NOT MET.** THE BOARD'S REAL REAR PROFILE IS NOW A NUMBER
 
     authority  1a06b058, UNCHANGED   (no board file, no fab output, no firmware;

@@ -468,7 +468,7 @@ dimension source and supersedes older Enclosure Field Slate v3/v4/v5 dimensions.
 | Enclosure external | **85 × 160 × 23 mm** (portrait) | REVISED D-709 (width only; follows the PCB outline and owner approval D-707 `ac9d333`) · MARKETING-SAFE (with rounding to CAD) | mech spec; D-709 |
 | Enclosure wall | 2.0 mm nominal | TARGET · CAD-TO-VERIFY | mech spec |
 | Internal cavity | 80.0 × 155.0 × 18.5 mm nominal | REVISED D-709 (width only) · TARGET · CAD-TO-VERIFY | mech spec; D-709 |
-| Board→cavity clearance | ≥1.5 mm (actual 2.5 mm X, 3.5 mm Y) | LOCKED (rule) | mech spec |
+| Board→cavity clearance | **≥1.5 mm — actual MINIMUM 1.500 mm X, 3.500 mm Y** | LOCKED (rule) · **CORRECTED at D-760** | measured on board `1a06b058`: outline X 0.000 … 72.000 with the D-709 step to 77.000 between Y 70.500 … 104.005, against an 80.000 × 155.000 mm cavity placed to the locked 1.500 mm west gap. **East gap 6.500 mm at the 72 mm sections and 1.500 mm AT THE STEP.** The row read *"actual 2.5 mm X"*, which is the pre-`FBV2-EXP-002` figure from the 70 mm board and was stale by two revisions — D-239 itself says the gap *"falls 2.5 → 1.5 mm on both sides, the ≥ 1.5 mm rule met EXACTLY, with nothing to spare"* |
 
 **Conflicts flagged / UNRESOLVED (CAD-TO-VERIFY):**
 - ~~**BOSS2 X:** spec/floorplan say **59.000**; the metrics file says 60.000 (1 mm

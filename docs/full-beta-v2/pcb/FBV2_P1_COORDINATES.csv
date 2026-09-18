@@ -1,3 +1,21 @@
+# ================================================================================
+# FBV2-P1 MILESTONE SNAPSHOT -- NOT A CURRENT COORDINATE SOURCE.  (D-760)
+#
+# This file records where the parts were at FBV2-P1-002 (2026-08-24).  The board
+# has moved on through every decision since.  MEASURED at D-760 against board
+# 1a06b058:
+#
+#     104 of the 324 rows below no longer match the board
+#      14 references here are no longer on the board
+#           (D3 R42 R51-R54 R57-R60 R130 TP14 TP41 U23)
+#       5 references on the board are not here
+#           (C84 C85 D14 Q11 R132)
+#
+# THE BOARD IS THE COORDINATE AUTHORITY.  Read positions from
+# hardware/demo/kicad/aqroot-demo/aqroot-Beta-v2.kicad_pcb, or from the CPL in
+# hardware/demo/fab/, which is generated from it.  D-758 is what happens when a
+# superseded coordinate is read as a current one.
+# ================================================================================
 ref,side,x_doc,y_doc,rot,footprint,value,sheet,crt_x0,crt_y0,crt_x1,crt_y1
 BOSS1,F.Cu,40.000,12.000,0.0,AQROOT_Beta:MountingBoss_M2_NPTH,M2,,37.700,9.700,42.300,14.300
 BOSS2,F.Cu,60.000,145.000,0.0,AQROOT_Beta:MountingBoss_M2_NPTH,M2,,57.700,142.700,62.300,147.300

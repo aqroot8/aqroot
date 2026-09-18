@@ -66,7 +66,41 @@
 > `verify_promotion` PASS and `protected_copper` showing exactly one protected
 > net moved.  `U14.7` is on the bus.  This board has **no open owner decision**.
 
-> # **DEMO_READY_FOR_FAB IS DECLARED (2026-09-18, D-760).**
+> # **DEMO_READY_FOR_FAB IS DECLARED (2026-09-18, D-761).**
+>
+> **Board authority `1a06b058`, UNCHANGED since D-759.**  Three more statements
+> that nothing was checking.
+>
+> **THE BOARD-TO-CAVITY CLEARANCE WAS THE 70 mm BOARD'S NUMBER.**  `DEVICE_SPEC`
+> said *"actual 2.5 mm X"*; that is the pre-`FBV2-EXP-002` figure and it was
+> stale by two revisions.  Measured on `1a06b058`: **west gap 1.500 mm
+> everywhere, east gap 6.500 mm at the 72 mm sections and 1.500 mm AT THE D-709
+> STEP**, Y 3.500 mm each end.  `D-239` says it plainly — the gap *"falls
+> 2.5 → 1.5 mm on both sides, the ≥ 1.5 mm rule met EXACTLY, with nothing to
+> spare"* — and **"2.5 mm of clearance" is not the same instruction to an
+> enclosure designer as "met exactly with nothing to spare"**.
+>
+> **A MILESTONE SNAPSHOT THAT READS LIKE A COORDINATE SOURCE.**
+> `FBV2_P1_COORDINATES.csv` says nothing about being one. Measured: **104 of its
+> 324 rows no longer match the board**, 14 references in it are gone from the
+> board and 5 board references are missing from it. It now opens with a header
+> that says SNAPSHOT, prints those counts, and names the board and the generated
+> CPL as the authority.
+>
+> **AND THE IR PAIR IS MET BY 0.133 mm.**  `FBV2_P1_KEEPOUTS.md` cites the
+> *"≥ 15 mm IR TX↔RX rule"* as the reason `D1` cannot move and `D-226` widened
+> `IR_BARRIER` 3.0 → 5.0 mm to stand between them; neither had a gate.
+> **15.1327 mm centre to centre, barrier cleanly between the two pad rows** —
+> and 0.133 mm is what a routine placement nudge spends. `MK9` holds both, with
+> a control that moves the pair 0.200 mm together and is refused.
+> `mechanical_keepout_contract` is now **MK1–MK9 with seven live controls**.
+>
+> **VERIFICATION.** `contract_regression`: **18 run, 18 pass, 16 byte-identical
+> to `d760`**, the one that moved being `MK9` and its control.
+> `connection_width` reads IDENTICAL, which is D-760's determinism fix proving
+> itself. Everything else carries forward from D-760 unchanged.
+
+> # **D-760's DECLARATION STANDS AND IS LEFT BELOW AS HISTORY.**
 >
 > **Board authority `1a06b058`, UNCHANGED.**  D-760 touches no board file, no
 > fabrication output and no firmware — git reports zero modified files under

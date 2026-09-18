@@ -1,0 +1,271 @@
+{
+ "all_pass": true,
+ "board": "/home/aqroot8/aqroot-demo/hardware/demo/kicad/aqroot-demo/aqroot-Beta-v2.kicad_pcb",
+ "board_min_connection_setting": 0.0,
+ "checks": {
+  "C1_classified": {
+   "below": [
+    {
+     "at": [
+      [
+       32.9,
+       99.9
+      ],
+      [
+       33.5,
+       99.85
+      ]
+     ],
+     "kinds": [
+      "Via",
+      "Via"
+     ],
+     "layers": [
+      "F.Cu",
+      "In1.Cu",
+      "In3.Cu",
+      "In4.Cu"
+     ],
+     "nets": [
+      "/I2C_SCL_INT"
+     ],
+     "width_mm": 0.029
+    },
+    {
+     "at": [
+      [
+       42.2,
+       120.5
+      ],
+      [
+       42.4,
+       121.1
+      ]
+     ],
+     "kinds": [
+      "Via",
+      "Via"
+     ],
+     "layers": [
+      "F.Cu"
+     ],
+     "nets": [
+      "/I2C_SDA_INT"
+     ],
+     "width_mm": 0.0668
+    },
+    {
+     "at": [
+      [
+       60.3,
+       83.65
+      ],
+      [
+       60.3,
+       83.65
+      ]
+     ],
+     "kinds": [
+      "Track",
+      "Via"
+     ],
+     "layers": [
+      "B.Cu"
+     ],
+     "nets": [
+      "/I2C_SCL_INT"
+     ],
+     "width_mm": 0.079
+    },
+    {
+     "at": [
+      [
+       59.7,
+       83.65
+      ],
+      [
+       61.625,
+       85.875
+      ]
+     ],
+     "kinds": [
+      "Track",
+      "Via"
+     ],
+     "layers": [
+      "F.Cu"
+     ],
+     "nets": [
+      "/I2C_SCL_INT"
+     ],
+     "width_mm": 0.079
+    },
+    {
+     "at": [
+      [
+       71.8,
+       97.3
+      ],
+      [
+       71.8,
+       97.9
+      ]
+     ],
+     "kinds": [
+      "Via",
+      "Via"
+     ],
+     "layers": [
+      "F.Cu",
+      "In2.Cu",
+      "In3.Cu"
+     ],
+     "nets": [
+      "GND"
+     ],
+     "width_mm": 0.079
+    },
+    {
+     "at": [
+      [
+       59.7,
+       83.65
+      ],
+      [
+       60.3,
+       83.65
+      ]
+     ],
+     "kinds": [
+      "Via",
+      "Via"
+     ],
+     "layers": [
+      "In1.Cu",
+      "In3.Cu",
+      "In4.Cu"
+     ],
+     "nets": [
+      "/I2C_SCL_INT"
+     ],
+     "width_mm": 0.079
+    },
+    {
+     "at": [
+      [
+       59.7,
+       83.65
+      ],
+      [
+       59.7,
+       83.65
+      ]
+     ],
+     "kinds": [
+      "Track",
+      "Via"
+     ],
+     "layers": [
+      "In2.Cu"
+     ],
+     "nets": [
+      "/I2C_SCL_INT"
+     ],
+     "width_mm": 0.079
+    },
+    {
+     "at": [
+      [
+       30.9,
+       22.15
+      ],
+      [
+       33.775,
+       19.25
+      ]
+     ],
+     "kinds": [
+      "Track",
+      "Track"
+     ],
+     "layers": [
+      "B.Cu"
+     ],
+     "nets": [
+      "/04_SPI_B_RADIOS_NFC/NFC_VDD_AM"
+     ],
+     "width_mm": 0.1167
+    },
+    {
+     "at": [
+      [
+       30.25,
+       22.5
+      ],
+      [
+       30.9,
+       22.15
+      ]
+     ],
+     "kinds": [
+      "Track",
+      "Track"
+     ],
+     "layers": [
+      "B.Cu"
+     ],
+     "nets": [
+      "/04_SPI_B_RADIOS_NFC/NFC_VDD_AM"
+     ],
+     "width_mm": 0.1432
+    }
+   ],
+   "benign_acute_throats": 75,
+   "distinct_pairs": 84,
+   "ok": true,
+   "pairs_below_strict": 9,
+   "probe_mm": 0.2,
+   "strict_mm": 0.15,
+   "violations": 96
+  },
+  "C2_none_load_bearing": {
+   "nets": [
+    {
+     "components_with_via_tangency": 1,
+     "components_without_via_tangency": 1,
+     "load_bearing": false,
+     "net": "/04_SPI_B_RADIOS_NFC/NFC_VDD_AM"
+    },
+    {
+     "components_with_via_tangency": 1,
+     "components_without_via_tangency": 1,
+     "load_bearing": false,
+     "net": "/I2C_SCL_INT"
+    },
+    {
+     "components_with_via_tangency": 1,
+     "components_without_via_tangency": 1,
+     "load_bearing": false,
+     "net": "/I2C_SDA_INT"
+    },
+    {
+     "components_with_via_tangency": 217,
+     "components_without_via_tangency": 217,
+     "load_bearing": false,
+     "net": "GND"
+    }
+   ],
+   "ok": true
+  },
+  "C3_graph_not_vacuous": {
+   "control_split_components": 2,
+   "control_split_net": "/BQ25185_STAT2",
+   "control_whole_components": 1,
+   "control_whole_net": "/I2C_SCL_INT",
+   "note": "the whole net must resolve to ONE component, matching the board's own connectivity, and the approved-unrouted net must stay at TWO -- a graph that cannot tell them apart proves nothing about the ones in between",
+   "ok": true
+  }
+ },
+ "schema": 1,
+ "why": "board setup carries min_connection 0.0, so KiCad never runs this test; the probe turns it on in a scratch copy only"
+}
