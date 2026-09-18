@@ -43,5 +43,81 @@
   "missing": 0,
   "dnp": 0,
   "bad_nets": 0
+ },
+ "F4_esd_coverage": {
+  "question": "does F4 FAIL when a Community-Port ESD array is dropped?",
+  "as_built": [],
+  "control_drop_D2": [
+   [
+    "J5.4",
+    "/09_COMMUNITY_HEADER/EXT_SDA"
+   ],
+   [
+    "J5.5",
+    "/09_COMMUNITY_HEADER/EXT_SCL"
+   ],
+   [
+    "J5.7",
+    "/09_COMMUNITY_HEADER/NATIVE_A_HDR"
+   ],
+   [
+    "J5.8",
+    "/09_COMMUNITY_HEADER/NATIVE_B_HDR"
+   ]
+  ],
+  "control_drop_D4": [
+   [
+    "J5.13",
+    "/09_COMMUNITY_HEADER/XGPIO4_HDR"
+   ],
+   [
+    "J5.14",
+    "/09_COMMUNITY_HEADER/XGPIO5_HDR"
+   ]
+  ],
+  "control_drop_D5": [
+   [
+    "J5.20",
+    "/09_COMMUNITY_HEADER/WAKE_ATTN_N_HDR"
+   ],
+   [
+    "J5.21",
+    "/09_COMMUNITY_HEADER/ACC_DETECT_N_HDR"
+   ]
+  ],
+  "control_drop_all": [
+   [
+    "J5.4",
+    "/09_COMMUNITY_HEADER/EXT_SDA"
+   ],
+   [
+    "J5.5",
+    "/09_COMMUNITY_HEADER/EXT_SCL"
+   ],
+   [
+    "J5.7",
+    "/09_COMMUNITY_HEADER/NATIVE_A_HDR"
+   ],
+   [
+    "J5.8",
+    "/09_COMMUNITY_HEADER/NATIVE_B_HDR"
+   ],
+   [
+    "J5.13",
+    "/09_COMMUNITY_HEADER/XGPIO4_HDR"
+   ],
+   [
+    "J5.14",
+    "/09_COMMUNITY_HEADER/XGPIO5_HDR"
+   ],
+   [
+    "J5.20",
+    "/09_COMMUNITY_HEADER/WAKE_ATTN_N_HDR"
+   ],
+   [
+    "J5.21",
+    "/09_COMMUNITY_HEADER/ACC_DETECT_N_HDR"
+   ]
+  ]
  }
 }

@@ -135,8 +135,19 @@ FEATURES = (
     dict(scope="Community Port: software-switched 3.3 V accessory power",
          refs=("U20",), nets=("/ACC_3V3_EN",)),
     dict(scope="Community Port: software-switched 5 V accessory power",
-         refs=("U22",), nets=("/ACC_5V_SW_EN", "/ACC_5V_BOOST_EN"),
-         note="ACC_5V_SW_EN connectivity is a named Demo requirement"),
+         refs=("U21", "U22", "R102", "R131", "TP47"),
+         nets=("/ACC_5V_SW_EN", "/ACC_5V_BOOST_EN"),
+         note="ACC_5V_SW_EN connectivity is a named Demo requirement.  D-186 "
+              "SPLIT the single ACC_5V_EN into two independent series "
+              "disconnects -- ACC_5V_BOOST_EN to U21's EN and ACC_5V_SW_EN to "
+              "U22's ON -- each with its OWN external pull-down, because "
+              "SLVSFJ2B specifies a 500 kOhm smart pull-down inside the part "
+              "AND STILL REQUIRES AN EXTERNAL ONE while the PCAL powers up "
+              "high-impedance.  R102 and R131 are therefore MANDATORY, not a "
+              "convenience, and this row is what fails if either is ever "
+              "dropped.  On Demo the ACC_5V_SW_EN bit sits on U3 P03 rather "
+              "than the U23 P04 of D-186, because U23 is removed by scope; the "
+              "SPLIT and the pull-downs are what D-186 requires, not the bit."),
     dict(scope="Community Port: SDA and SCL", refs=("U16",),
          nets=("/09_COMMUNITY_HEADER/EXT_SDA", "/09_COMMUNITY_HEADER/EXT_SCL",
                "/ACC_PWR_EN")),
@@ -154,6 +165,28 @@ FEATURES = (
     dict(scope="GPIO expanders retained by the dependency analysis",
          refs=("U2", "U3"), nets=("/WAKE_INT_N",),
          note="U23 is REMOVED on Demo by scope; it is deliberately not required"),
+    dict(scope="safe states that hold while the expanders are high-impedance",
+         refs=("R17", "R14", "R3", "R63"),
+         nets=("/ACC_PWR_EN", "/NFC_5V_EN", "/WAKE_INT_N"),
+         note="R17 100k holds the TCA4307 buffer DISABLED until firmware drives "
+              "it; R14 100k holds NFC_5V_EN low, which matters precisely "
+              "BECAUSE U13 is DNP -- nothing else defines that node; R3 10k is "
+              "the mandatory wire-OR pull-up on WAKE_INT_N and is what makes "
+              "the line deterministic before any register is written; R63 pulls "
+              "the accessory side of D-187's isolation FET to ACC_3V3_SW and "
+              "NOT to +3V3, or the contact stays live with the rail off."),
+    dict(scope="accessory wake isolation (D-187, B-08)",
+         refs=("Q10", "R63", "R66"),
+         nets=("/09_COMMUNITY_HEADER/WAKE_ATTN_N_HDR",
+               "/09_COMMUNITY_HEADER/WAKE_GATE_S", "/WAKE_INT_N"),
+         note="a hostile accessory must not be able to hold the shared wake "
+              "line low and starve the internal buttons"),
+    dict(scope="Community Port ESD protection (D-188)",
+         refs=("D2", "D4", "D5"), nets=(),
+         note="TPD4E1B06DRLR arrays, inherited as DNP and fitted by D-188.  "
+              "D-188 named FOUR arrays for a ten-XGPIO port; Demo retains two "
+              "XGPIO, so three arrays cover every remaining signal contact.  "
+              "F4 derives that coverage from J5 rather than trusting this list"),
 )
 
 # Demo scope: "unused physical connector positions may remain electrically NC".
@@ -204,6 +237,35 @@ def main():
                              for n in nets) and not any(
                              (not n.get("present")) or (not n.get("ok", True)) for n in nets)))
 
+    # ---- F4: every exposed J5 SIGNAL contact must reach an ESD array -------
+    # Derived from the connector, not from a list, so a future revision that
+    # exposes a contact without protection fails here rather than in the field.
+    # D-188's own words: "shipping a user-accessible connector with ten
+    # unprotected signal contacts is not a defensible state".
+    esd_nets = set()
+    for fp in board.GetFootprints():
+        if "TPD4E1B06" in (fp.GetValue() or ""):
+            for pd in fp.Pads():
+                n = pd.GetNetname()
+                if n and n != "GND" and not n.startswith("unconnected-"):
+                    esd_nets.add(n)
+    POWER_OR_GND = {"GND", "/ACC_3V3_SW", "/ACC_5V_SW"}
+    j5 = [f for f in board.GetFootprints() if f.GetReference() == "J5"]
+    j5_rows, unprotected = [], []
+    for pd in (j5[0].Pads() if j5 else ()):
+        contact = "J5.%s" % pd.GetNumber()
+        net = pd.GetNetname()
+        if contact in EXPECTED_NC or not net or net.startswith("unconnected-"):
+            kind = "approved NC"
+        elif net in POWER_OR_GND:
+            kind = "power or ground"
+        else:
+            kind = "signal"
+            if net not in esd_nets:
+                unprotected.append([contact, net])
+        j5_rows.append(dict(contact=contact, net=net, kind=kind,
+                            esd=net in esd_nets))
+
     nc = ledger["approved_demo_nc"]
     checks = {
         "F1_every_scope_part_fitted": dict(
@@ -216,6 +278,16 @@ def main():
             ok=not bad_nets,
             nets=len({n for f in FEATURES for n in f["nets"]}),
             failures=[list(x) for x in bad_nets]),
+        "F4_every_exposed_signal_contact_has_esd": dict(
+            ok=not unprotected and bool(j5) and bool(esd_nets),
+            arrays=sorted({f.GetReference() for f in board.GetFootprints()
+                           if "TPD4E1B06" in (f.GetValue() or "")}),
+            protected_nets=sorted(esd_nets),
+            j5_contacts=j5_rows,
+            unprotected_signal_contacts=unprotected,
+            note="power and ground contacts are deliberately excluded -- D-188 "
+                 "rejected a TVS on either rail because the part's 5.5 V VRWM "
+                 "leaves no working margin against a 5.0 V nominal rail"),
         "F3_approved_nc_exactly_as_scoped": dict(
             ok=(set(nc["observed"]) == EXPECTED_NC
                 and not nc["missing"] and not nc["unexpected"]),

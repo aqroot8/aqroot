@@ -25,7 +25,7 @@ and asks it ABSOLUTELY.  Nothing in this repository could answer it.
 
 `AQROOT_DEMO_SCOPE.md`'s own *"Features that MUST remain functional"* list and
 its *"Community Port -- Demo requirements"* list, transcribed feature by feature
-into **37 features, 59 references and 103 nets**:
+into **40 features, 71 references and 106 nets**:
 
     F1  every named reference EXISTS on the board and is FITTED.  A scope
         feature implemented by a DNP part is NOT implemented, and the check
@@ -37,6 +37,32 @@ into **37 features, 59 references and 103 nets**:
         merely because it is absent.
     F3  the approved-NC contacts are EXACTLY the eight `J5` positions Demo
         scope allows -- no more, and no fewer.
+    F4  every exposed `J5` SIGNAL contact reaches an ESD array, DERIVED from
+        the connector rather than from a list, so a future revision that
+        exposes a contact without protection fails here and not in the field.
+
+`J5`'s twenty-four contacts partition exactly: **8 power or ground, 8 signal,
+8 approved NC**, and all eight signal contacts are protected.  D-188 named FOUR
+`TPD4E1B06DRLR` arrays for a ten-XGPIO port; Demo retains two XGPIO and
+**three arrays -- `D2`, `D4`, `D5` -- cover every remaining signal contact**.
+Power and ground are deliberately excluded, because D-188 rejected a TVS on
+either rail: a 5.5 V `VRWM` against a 5.0 V nominal rail leaves no working
+margin.
+
+***AND THE SAFETY RULINGS THAT LIVE IN PASSIVES ARE NOW MACHINE-CHECKED.***
+D-186's split -- `ACC_5V_BOOST_EN` to `U21`'s `EN` and `ACC_5V_SW_EN` to `U22`'s
+`ON`, **two independent series disconnects** -- depends on `R102` and `R131`,
+and D-186's own words are that they are *"mandatory, not a convenience"*
+because SLVSFJ2B specifies an internal 500 kOhm smart pull-down **and still
+requires an external one** while the PCAL powers up high-impedance.  Both are
+now required by name, with `TP47`.  **On Demo the `ACC_5V_SW_EN` bit sits on
+`U3` P03, not the `U23` P04 of D-186, because `U23` is removed by scope** -- the
+SPLIT and the pull-downs are what D-186 requires, not the bit, and that is
+recorded in the row.  So are D-187's isolation FET `Q10` with `R63` and `R66`,
+and the four safe-state pulls that hold while the expanders are high-impedance:
+`R17` on `/ACC_PWR_EN`, `R3` on `/WAKE_INT_N`, `R63` to `ACC_3V3_SW` rather than
+`+3V3`, and **`R14` on `/NFC_5V_EN`, which matters precisely BECAUSE `U13` is
+DNP -- nothing else defines that node.**
 
 ***ALL THREE PASS ON `c7f5c618`.***  The three RGB replacement nets the charter
 names explicitly -- `FRONT_RGB_R_N`, `_G_N`, `_B_N` -- are present with `D13`
@@ -56,6 +82,13 @@ A contract that passes on its first run has earned nothing.  Five controls,
     require a net that does not exist          F2 FAIL
     empty APPROVED_UNROUTED                    F2 FAIL  <- /BQ25185_STAT2
     add J5.1 to the expected NC set            F3 FAIL
+    drop D2                                    F4 FAIL  <- SDA, SCL, both natives
+    drop D4                                    F4 FAIL  <- XGPIO4, XGPIO5
+    drop D5                                    F4 FAIL  <- WAKE_ATTN, ACC_DETECT
+    drop all three arrays                      F4 FAIL  <- all eight signals
+
+Each ESD control names EXACTLY the contacts its array protects, which is the
+proof that F4 is reading the connector and not a constant.
 
 The fourth is the one that matters most: **`/BQ25185_STAT2` passes F2 ONLY
 because D-742's owner decision covers its edge.**  Withdraw the decision and the

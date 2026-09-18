@@ -71,16 +71,21 @@
 > other contract on this board is a no-regression check and **all fifteen would
 > pass, green, on a board that had never had a microphone.**
 > `checks/demo_feature_contract.py` transcribes `AQROOT_DEMO_SCOPE.md`'s own
-> "Features that MUST remain functional" and Community-Port lists into **37
-> features, 59 references and 103 nets** and asserts them ABSOLUTELY: every part
+> "Features that MUST remain functional" and Community-Port lists into **40
+> features, 71 references and 106 nets** and asserts them ABSOLUTELY: every part
 > on the board AND fitted (a scope feature implemented by a DNP part is not
-> implemented), every net whole or covered by a NAMED owner decision, and the
-> approved-NC set exactly the eight `J5` positions scope allows.  **F1/F2/F3 all
-> PASS**, and five controls prove it is not vacuous -- requiring `U13` (DNP) or
-> `U23` (removed) fails F1, requiring a non-existent net fails F2, adding `J5.1`
-> to the NC set fails F3, and **emptying `APPROVED_UNROUTED` fails F2 on
-> `/BQ25185_STAT2`**, so the board is allowed to ship with `U11.3` bare only
-> because D-742's decision is machine-checked, not remembered.
+> implemented), every net whole or covered by a NAMED owner decision, the
+> approved-NC set exactly the eight `J5` positions scope allows, and **every
+> exposed `J5` signal contact reaching an ESD array, derived from the connector
+> rather than from a list**.  `J5`'s 24 contacts partition exactly: 8 power or
+> ground, 8 signal, 8 approved NC.  **F1/F2/F3/F4 all PASS**, and nine controls
+> prove it is not vacuous -- requiring `U13` (DNP) or `U23` (removed) fails F1,
+> a non-existent net fails F2, adding `J5.1` fails F3, dropping each ESD array
+> fails F4 naming exactly the contacts it protected, and **emptying
+> `APPROVED_UNROUTED` fails F2 on `/BQ25185_STAT2`**, so the board is allowed to
+> ship with `U11.3` bare only because D-742's decision is machine-checked, not
+> remembered.  D-186's mandatory `R102`/`R131` pull-downs, D-187's isolation FET
+> and the four expander safe-state pulls are now required by name.
 >
 > **D-744 CLOSED FOUR PRE-FAB ITEMS BY MEASUREMENT AND FOUND A SECOND
 > SWITCHED-OFF TEST (2026-09-18).**  `authority c7f5c618` UNCHANGED, no copper,
