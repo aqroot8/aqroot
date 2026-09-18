@@ -141,8 +141,8 @@ define AQROOT_ACK_PLACEHOLDER_PINS to build the legacy application anyway."
 // TCA9535 register set — this is the COMPLETE set. There are eight registers and no others.
 #define TCA9535_REG_INPUT_0    0x00   // read-only; reading deasserts /INT for Port 0
 #define TCA9535_REG_INPUT_1    0x01   // read-only; reading deasserts /INT for Port 1
-#define TCA9535_REG_OUTPUT_0   0x02   // output latch, resets to 0x00
-#define TCA9535_REG_OUTPUT_1   0x03   // output latch, resets to 0x00
+#define TCA9535_REG_OUTPUT_0   0x02   // output latch, resets to 0xFF
+#define TCA9535_REG_OUTPUT_1   0x03   // output latch, resets to 0xFF
 #define TCA9535_REG_POLARITY_0 0x04   // keep at 0x00 — invert in firmware, not in hardware
 #define TCA9535_REG_POLARITY_1 0x05   // keep at 0x00 — invert in firmware, not in hardware
 #define TCA9535_REG_CONFIG_0   0x06   // direction: 1 = input, 0 = output; resets to 0xFF
@@ -150,7 +150,7 @@ define AQROOT_ACK_PLACEHOLDER_PINS to build the legacy application anyway."
 
 // SAFE-STATE ORDERING (hard requirement): write the safe value into the OUTPUT register
 // (0x02/0x03) BEFORE clearing the matching CONFIG bit (0x06/0x07) from input to output.
-// Config resets to all-inputs and the output latches reset to 0x00, which is NOT the safe
+// Config resets to all-inputs and the output latches reset to 0xFF, which is NOT the safe
 // state for every net — setting direction first can glitch NFC_5V_EN, AMP_SD_MODE or
 // ACC_PWR_EN at boot. Set the latch, then the direction.
 
