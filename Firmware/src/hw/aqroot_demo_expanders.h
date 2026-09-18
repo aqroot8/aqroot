@@ -153,12 +153,19 @@ class DemoExpanders {
   // released before anything attaches an interrupt to it.
   bool begin(I2cBus &bus) {
     ready_ = false;
-    if (!u2_.probe(bus) || !u3_.probe(bus)) return false;
 
     const Pcal9535a::Config u2 = {kU2SafeLatch, kU2Inputs, kU2PullEnable,
                                   kU2PullUp, uint16_t(~kU2IrqUnmasked)};
     const Pcal9535a::Config u3 = {kU3SafeLatch, kU3Inputs, kU3PullEnable,
                                   kU3PullUp, uint16_t(~kU3IrqUnmasked)};
+
+    // MCU-only reset does NOT reset either PCAL9535A.  Before probing, reading,
+    // or reprogramming policy registers, overwrite BOTH complete output latches
+    // with their board-safe words.  These two independent writes are attempted
+    // unconditionally so one NACK cannot leave the other expander driving stale
+    // enables from the previous firmware instance.
+    const bool u2_safe = u2_.writeOutputs(bus, kU2SafeLatch);
+    const bool u3_safe = u3_.writeOutputs(bus, kU3SafeLatch);
     // D-750.  THESE TWO DEVICES ARE INDEPENDENT AND `||` IS NOT.  The old line
     // short-circuited: if U2's configuration NACKed, U3 was never driven into
     // its safe state at all -- and U3 owns NFC_5V_EN, the SX1262 and CC1101
@@ -168,7 +175,7 @@ class DemoExpanders {
     // attempted, in order, and the verdict is taken afterwards.
     const bool u2_ok = u2_.apply(bus, u2);
     const bool u3_ok = u3_.apply(bus, u3);
-    if (!u2_ok || !u3_ok) return false;
+    if (!u2_safe || !u3_safe || !u2_ok || !u3_ok) return false;
 
     // Read the direction back.  A PCAL9535A that NACKed a write mid-sequence
     // would otherwise leave half this board's control lines as inputs and every
@@ -276,6 +283,7 @@ class DemoExpanders {
     return u2_.writeBit(bus, AQROOT_U2_AMP_SD_MODE, on);
   }
   bool setRgb(I2cBus &bus, bool red, bool green, bool blue) {
+    if (!u3_.outputShadowValid()) return false;
     uint16_t next = u3_.outputShadow() | kRgbMask;               // all dark
     if (red) next &= uint16_t(~bitmask(AQROOT_U3_FRONT_RGB_R_N));
     if (green) next &= uint16_t(~bitmask(AQROOT_U3_FRONT_RGB_G_N));
@@ -335,6 +343,7 @@ class DemoExpanders {
   }
 
   bool setAccessoryI2cBuffer(I2cBus &bus, bool on) {
+    if (!u3_.outputShadowValid()) return false;
     if (on && !Pcal9535a::bitOf(u3_.outputShadow(), AQROOT_U3_ACC_3V3_EN)) {
       return false;  // U16 is powered from ACC_3V3_SW; bring that up first
     }
