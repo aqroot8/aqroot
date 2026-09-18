@@ -318,6 +318,18 @@ ILIM_SPEC_RANGE = {
 }
 # UL 2367 recognition, file E169910, stated identically by both datasheets.
 UL2367_ILIM_RANGE = (0.066, 2.46)
+# D-765, REPORT ONLY -- NOT A CLAUSE AND DELIBERATELY NOT IN `ok`.
+# A parallel proposal screened NORMAL operation instead of the fault envelope: a
+# 250 mA per-rail working budget, accessories shed below a 3.50 V cell, and a
+# sag-aware I*(Vcell - I*R) = P solve instead of putting cell voltage straight on
+# the converter inputs.  That is a USEFUL NUMBER and it is computed below.  It is
+# NOT a clause, because NOTHING ON THIS BOARD ENFORCES EITHER ASSUMPTION: there is
+# no accessory current measurement and no gated cell-voltage accessory shed.  The
+# clauses stay on the FAULT envelope, which is the part the silicon does enforce.
+NORMAL_BUDGET_A = 0.250                # proposed per-rail working budget
+NORMAL_VBAT_FLOOR = 3.50               # proposed accessory-enable cell floor
+NORMAL_PATH_OHM = 0.36                 # conservative common-path resistance
+NORMAL_LOSS_ALLOWANCE_W = 0.10         # loss beyond converter eta
 VBAT_CORNER = 3.0                      # 1S Li-ion working floor
 V_3V3, ETA_U12 = 3.3, 0.90             # TPS63020 buck-boost
 V_ACC5V, ETA_U21 = 4.95, 0.88          # TPS61023 boost, R99/R100 divider
@@ -418,6 +430,30 @@ def judge_accessory_envelope(values):
         (IBAT_OCP_MIN - max(modes[k] for k in
          ("acc3v3_alone_at_its_limiter", "acc5v_alone_at_its_limiter",
           "both_at_their_guaranteed_currents"))) / IBAT_OCP_MIN * 100.0, 2)
+    # ---- D-765 REPORT ONLY: the normal-operation screen --------------------
+    # Reported so the working headroom is visible beside the fault envelope.
+    # It is NOT in `ok`: see the NORMAL_* comment block for why.
+    p_load = ((I_INTERNAL + NORMAL_BUDGET_A) * V_3V3 / ETA_U12
+              + NORMAL_BUDGET_A * V_ACC5V / ETA_U21
+              + NORMAL_LOSS_ALLOWANCE_W)
+    disc = NORMAL_VBAT_FLOOR ** 2 - 4.0 * NORMAL_PATH_OHM * p_load
+    i_budget = (float("inf") if disc <= 0 else
+                (NORMAL_VBAT_FLOOR - disc ** 0.5) / (2.0 * NORMAL_PATH_OHM))
+    d["normal_operation_screen_REPORT_ONLY"] = dict(
+        per_rail_budget_A=NORMAL_BUDGET_A,
+        assumed_accessory_enable_floor_V=NORMAL_VBAT_FLOOR,
+        assumed_common_path_ohm=NORMAL_PATH_OHM,
+        loss_allowance_W=NORMAL_LOSS_ALLOWANCE_W,
+        battery_A=round(i_budget, 4),
+        margin_to_ocp_min_pct=round((IBAT_OCP_MIN - i_budget) / IBAT_OCP_MIN * 100.0, 2),
+        under_ocp_min=i_budget < IBAT_OCP_MIN,
+        each_rail_guarantees_at_least_the_budget=all(
+            v["ilim_min"] >= NORMAL_BUDGET_A for v in rails.values()),
+        why_not_a_clause="no accessory current measurement and no gated "
+                         "cell-voltage accessory shed exist on this board, so "
+                         "neither assumption is enforced; the CLAUSES stay on "
+                         "the fault envelope the silicon does enforce")
+
     # ---- D-765: the three clauses that had no words before -----------------
     d["limiter_parts"] = parts
     d["ul2367_ilim_range_A"] = list(UL2367_ILIM_RANGE)

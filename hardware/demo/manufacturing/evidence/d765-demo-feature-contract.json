@@ -301,6 +301,17 @@
     "both_limiters_in_fault": 2.8857
    },
    "no_reachable_state_trips_the_pack": true,
+   "normal_operation_screen_REPORT_ONLY": {
+    "assumed_accessory_enable_floor_V": 3.5,
+    "assumed_common_path_ohm": 0.36,
+    "battery_A": 2.2698,
+    "each_rail_guarantees_at_least_the_budget": true,
+    "loss_allowance_W": 0.1,
+    "margin_to_ocp_min_pct": 11.42,
+    "per_rail_budget_A": 0.25,
+    "under_ocp_min": true,
+    "why_not_a_clause": "no accessory current measurement and no gated cell-voltage accessory shed exist on this board, so neither assumption is enforced; the CLAUSES stay on the fault envelope the silicon does enforce"
+   },
    "ok": true,
    "one_limiter_mpn_on_both_rails": true,
    "rails_A": {

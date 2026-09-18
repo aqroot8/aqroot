@@ -1,0 +1,31 @@
+{
+ "clauses_deleted_by_subject": [
+  "no_reachable_state_trips_the_pack",
+  "double_fault_stays_inside_the_protection_chain"
+ ],
+ "clauses_present_in_subject": [
+  "demo_budget_below_guaranteed_minimum",
+  "demo_budget_stays_below_bq_ocp_screen",
+  "exact_supported_variant",
+  "ilim_settings_inside_supported_range",
+  "upstream_protection_is_ordered"
+ ],
+ "decision": "D-765",
+ "finding": "the F6 rewrite carried UNCOMMITTED in /home/aqroot8/aqroot-demo at 2026-09-18T21:40Z fixes the ILIM range but DELETES D-753's two fault-envelope clauses, and therefore ACCEPTS every setting D-753 existed to refuse -- including a 610 ohm / 2.0 A typ limiter whose worst case is 2.46 A on one rail, and both D-750 values that D-753 MEASURED as putting two user-reachable states over the BQ25185 IBAT_OCP minimum (2.930 A and 2.737 A against 2.5625 A).",
+ "reproduction": "PYTHONPATH=<manufacturing> python3 -c 'import demo_feature_contract as d; d.judge_accessory_envelope({\"R97\":\"610R 1%\",\"R101\":\"2.7k 1%\",\"U20\":\"TPS22950-Q1\",\"U22\":\"TPS22950-Q1\"})'",
+ "resolution": "take D-765's demo_feature_contract.py.  It is a STRICT SUPERSET: D-753's two clauses unchanged, the three new identity/range clauses, eight controls, and the parallel proposal's normal-operation budget screen retained as a REPORTED figure (2.2698 A, 11.42 % under OCP min) rather than as a replacement clause, because no accessory current measurement and no gated cell-voltage accessory shed exist on this board to enforce its assumptions.",
+ "schema": 1,
+ "subject_accepts_what_D753_refuses": {
+  "R101_1k65_the_D750_value_D753_removed": true,
+  "R101_610R_ILIM_2A_typ_on_5V": true,
+  "R97_1k5_the_D750_value_D753_removed": true,
+  "R97_610R_ILIM_2A_typ_2p46A_worst_on_3V3": true
+ },
+ "subject_as_built_ok": true,
+ "subject_file": "hardware/demo/manufacturing/checks/demo_feature_contract.py (uncommitted, main worktree)",
+ "subject_sha256": "9ae932ec810f7b5243272fdc68c7c7d8b617db8707e537bee56eca12fd969e4e",
+ "vacuous_clause_in_subject": {
+  "name": "upstream_protection_is_ordered",
+  "why": "IBAT_OCP_MIN < LTC4368_TRIP < FUSE_A reads no board value at all; 2.5625 < 3.3333 < 5.0 is a constant comparison that cannot fail"
+ }
+}
