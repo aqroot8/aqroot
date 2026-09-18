@@ -821,18 +821,35 @@ def main():
     # So this clause asserts the locked identity in every place it is written,
     # and refuses any retired panel name anywhere in the display symbol -- with
     # ONE deliberate exception: text that is explicitly ABOUT the retirement.
-    display_ref = "J1"
-    LOCKED_PANEL = "ER-TFT035IPS-6"
-    RETIRED_PANEL_TOKENS = ("CH280QV10", "ILI9341", "2.8in", "2.8-inch", "240x320")
-    RETIREMENT_MARKERS = ("RETIRED", "D-768 corrected", "D-768 CORRECTED",
+    # D-769 GENERALISED THIS CLAUSE.  D-768 closed the display instance of a
+    # class: a RETIRED part's name left in the fields of the part that replaced
+    # it.  The registry below is that class, and every entry is a place this
+    # repository has ALREADY recorded a supersession -- nothing is inferred.
+    IDENTITY_GUARD = {
+        "J1": dict(
+            locked="ER-TFT035IPS-6",
+            lib_id_contains="ER-TFT035IPS-6",
+            retired=("CH280QV10", "ILI9341", "2.8in", "2.8-inch", "240x320"),
+            why="D-074 locked the 3.5in 320x480 ILI9488 panel; D-112 replaced "
+                "the 2.8in CH280QV10-CT pin table because it is DEAD ON "
+                "ARRIVAL here -- LEDA/LEDK reversed, WRX/D-CX swapped"),
+        "U8": dict(
+            locked="TI.92.2113",
+            lib_id_contains=None,
+            retired=("FXP890",),
+            why="D-198 superseded the internal Taoglas FXP890 flex with the "
+                "EXTERNAL TI.92.2113 SMA dipole on a top-panel bulkhead; "
+                "DEVICE_SPEC has flagged the schematic text STALE since"),
+    }
+    RETIREMENT_MARKERS = ("RETIRED", "CORRECTED THIS FIELD", "corrected this field",
                           "DO NOT INSTANTIATE", "which is NOT the locked",
-                          "the RETIRED 2.8-inch")
+                          "the RETIRED 2.8-inch", "superseded")
 
-    def _display_fields():
+    def _symbol_fields(ref):
         out = {}
         for sheet in sorted(rl.PROJECT.glob("*.kicad_sch")):
             text = sheet.read_text(encoding="utf-8", errors="replace")
-            idx = text.find('(property "Reference" "%s"' % display_ref)
+            idx = text.find('(property "Reference" "%s"' % ref)
             if idx < 0:
                 continue
             start = text.rfind("\n\t(symbol", 0, idx)
@@ -868,57 +885,65 @@ def main():
                 out["library_symbol"] = lt[i:j + 1]
         return out
 
-    def judge_display(fields, bom_text):
+    def judge_identity(ref, spec, fields, bom_text):
         bad = []
         for where in ("instance", "library_symbol"):
             blk = fields.get(where) or ""
             for m in re.finditer(r'\(property "([^"]+)" "((?:[^"\\]|\\.)*)"', blk):
                 name, txt = m.group(1), m.group(2)
-                for tok in RETIRED_PANEL_TOKENS:
+                for tok in spec["retired"]:
                     if tok in txt and not any(k in txt for k in RETIREMENT_MARKERS):
                         bad.append([where, name, tok, txt[:120]])
                         break
-        bom_bad = [tok for tok in RETIRED_PANEL_TOKENS
-                   if any(tok in line and display_ref in line
-                          for line in bom_text.splitlines())]
+        bom_bad = sorted({tok for tok in spec["retired"]
+                          for line in bom_text.splitlines()
+                          if tok in line and ('"%s"' % ref) in line})
+        want = spec.get("lib_id_contains")
         d = dict(
-            reference=display_ref,
+            reference=ref, why=spec["why"], locked=spec["locked"],
             lib_id=fields.get("lib_id", ""),
-            locked_panel=LOCKED_PANEL,
-            symbol_is_the_locked_panel=LOCKED_PANEL in fields.get("lib_id", ""),
-            no_retired_panel_name_in_the_display_symbol=not bad,
-            no_retired_panel_name_on_the_released_bom_row=not bom_bad,
-            offending_fields=bad,
-            offending_bom_tokens=bom_bad)
-        d["ok"] = all(d[k] for k in ("symbol_is_the_locked_panel",
-                                     "no_retired_panel_name_in_the_display_symbol",
-                                     "no_retired_panel_name_on_the_released_bom_row"))
+            symbol_is_the_locked_part=(True if not want
+                                       else want in fields.get("lib_id", "")),
+            no_retired_name_in_the_symbol=not bad,
+            no_retired_name_on_the_released_bom_row=not bom_bad,
+            offending_fields=bad, offending_bom_tokens=bom_bad)
+        d["ok"] = all(d[k] for k in ("symbol_is_the_locked_part",
+                                     "no_retired_name_in_the_symbol",
+                                     "no_retired_name_on_the_released_bom_row"))
         return d["ok"], d
 
     bom_path = rl.ROOT / "hardware/demo/fab/aqroot-Demo-BOM-assembly.csv"
     bom_text = bom_path.read_text(encoding="utf-8", errors="replace") \
         if bom_path.exists() else ""
-    disp_fields = _display_fields()
-    disp_ok, disp = judge_display(disp_fields, bom_text)
+    ident_rows, ident_ok = {}, True
+    for ref, spec in sorted(IDENTITY_GUARD.items()):
+        f = _symbol_fields(ref)
+        ok, row = judge_identity(ref, spec, f, bom_text)
+        ident_rows[ref] = row
+        ident_ok = ident_ok and ok
 
-    def _disp_control(name, fields=None, bom=None):
-        ok, _ = judge_display(fields if fields is not None else disp_fields,
-                              bom if bom is not None else bom_text)
-        return name, not ok
-
-    _stale_instance = dict(disp_fields)
-    _stale_instance["instance"] = (_stale_instance.get("instance", "")
-                                   + '\n(property "Description" "CH280QV10-CT '
-                                     'Rev.D 2.8in 240x320 IPS TFT + CTP")')
-    _wrong_symbol = dict(disp_fields, lib_id="AQROOT_Beta:CH280QV10_CT_50P")
-    disp_controls = dict(x for x in (
-        _disp_control("f7a_refuses_the_retired_panel_name_in_the_symbol",
-                      fields=_stale_instance),
-        _disp_control("f7b_refuses_the_retired_panel_symbol_being_placed",
-                      fields=_wrong_symbol),
-        _disp_control("f7c_refuses_the_retired_panel_name_on_the_released_bom",
-                      bom='"J1","FH69-50S-0.5SH","x","Hirose","FH69-50S-0.5SH",'
-                          '"C25955556","CH280QV10-CT Rev.D 2.8in 240x320",1,')))
+    # LIVE CONTROLS.  Each puts a real, historical defect back.
+    j1 = _symbol_fields("J1")
+    u8 = _symbol_fields("U8")
+    stale_j1 = dict(j1, instance=(j1.get("instance", "")
+                                  + '\n(property "Description" "CH280QV10-CT '
+                                    'Rev.D 2.8in 240x320 IPS TFT + CTP")'))
+    wrong_sym = dict(j1, lib_id="AQROOT_Beta:CH280QV10_CT_50P")
+    stale_u8 = dict(u8, instance=(u8.get("instance", "")
+                                  + '\n(property "Package" "Antenna: module '
+                                    'IPEX/u.FL with Taoglas FXP890.07.0100C")'))
+    stale_bom = ('"J1","FH69-50S-0.5SH","x","Hirose","FH69-50S-0.5SH",'
+                 '"C25955556","CH280QV10-CT Rev.D 2.8in 240x320",1,')
+    ident_controls = {
+        "f7a_refuses_the_retired_panel_name_in_the_symbol":
+            not judge_identity("J1", IDENTITY_GUARD["J1"], stale_j1, bom_text)[0],
+        "f7b_refuses_the_retired_panel_symbol_being_placed":
+            not judge_identity("J1", IDENTITY_GUARD["J1"], wrong_sym, bom_text)[0],
+        "f7c_refuses_the_retired_panel_name_on_the_released_bom":
+            not judge_identity("J1", IDENTITY_GUARD["J1"], j1, stale_bom)[0],
+        "f7d_refuses_the_superseded_fxp890_antenna_on_u8":
+            not judge_identity("U8", IDENTITY_GUARD["U8"], stale_u8, bom_text)[0],
+    }
 
     nc = ledger["approved_demo_nc"]
     checks = {
@@ -978,21 +1003,23 @@ def main():
                    "TPS22950C it replaces only 0.5-3.5 A (SLVSFJ2B s.5), and "
                    "the fitted 2.7 kOhm programs 0.407 A",
             controls_refused=env_controls, **env),
-        "F7_display_identity_is_the_locked_panel_everywhere": dict(
-            ok=disp_ok and all(disp_controls.values()),
-            method="D-074 locked the ER-TFT035IPS-6 (3.5in 320x480, ILI9488) "
-                   "and D-112 replaced the display symbol because the "
-                   "inherited 2.8-inch CH280QV10-CT / ILI9341 pin table was "
-                   "DEAD ON ARRIVAL -- LEDA/LEDK reversed, WRX/D-CX swapped. "
-                   "D-112 fixed the pins and left the retired panel's name in "
-                   "the MPN and in the provenance sentence of the same symbol, "
-                   "and that string reached the RELEASED BOM's J1 row. This "
-                   "clause asserts the locked identity in the placed symbol, "
-                   "in its library definition and on the released BOM row, and "
-                   "refuses any retired panel name that is not explicitly "
-                   "ABOUT the retirement",
-            controls_refused=disp_controls,
-            **{k: v for k, v in disp.items() if k != "ok"}),
+        "F7_no_retired_part_name_survives_on_the_part_that_replaced_it": dict(
+            ok=ident_ok and all(ident_controls.values()),
+            method="D-768 found 'CH280QV10-CT Rev.D 2.8in 240x320' on J1's row "
+                   "of the RELEASED BOM, and the ER-TFT035IPS-6 symbol's own "
+                   "Package field crediting the retired panel's datasheet for "
+                   "a pin table D-112 had transcribed from a different one -- "
+                   "on the connector whose pin table had ALREADY been dead on "
+                   "arrival for exactly that reason. D-769 generalised it: "
+                   "every entry in the registry is a supersession this "
+                   "repository has already recorded, and the clause asserts "
+                   "the locked identity in the placed symbol, in its library "
+                   "definition AND on the released BOM row. Checking the "
+                   "schematic alone would pass a board whose shipped BOM is "
+                   "wrong",
+            references=sorted(IDENTITY_GUARD),
+            controls_refused=ident_controls,
+            findings=ident_rows),
         "F3_approved_nc_exactly_as_scoped": dict(
             ok=(set(nc["observed"]) == EXPECTED_NC
                 and not nc["missing"] and not nc["unexpected"]),

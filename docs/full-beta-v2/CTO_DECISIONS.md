@@ -1,3 +1,97 @@
+## D-769 — **THE OTHER SUPERSEDED PART NAME, AND THE CLAUSE THAT NOW REFUSES THE WHOLE CLASS**
+
+    authority  5849b658, UNCHANGED.  NO PCB change and no copper of any kind
+    changed    04_spi_b_radios_nfc.kicad_sch (U8 Package + the sheet module
+               note), libraries/AQROOT_Beta.kicad_sym (same symbol),
+               architecture/ARCHITECTURE.md (the 915 MHz row),
+               checks/demo_feature_contract.py (F7 generalised into a registry,
+               four controls), DEVICE_SPEC s.16 item 6 and its stale-note bullet
+    evidence   d769-* contract baselines
+
+### 1. THE INSTANCE
+
+D-768 §7 deliberately left this one out rather than bundling it. It is the same
+defect: **`U8`'s `Package` field said**
+
+> *"Antenna: module IPEX/u.FL with Taoglas **FXP890.07.0100C**; pin 21 ANT stamp
+> hole present but NOT routed"*
+
+and the sheet's own module note said **`ANTENNA: MODULE IPEX (TAOGLAS FXP890)`**,
+and `ARCHITECTURE.md`'s 915 MHz row said **`Taoglas FXP890 flex`**.
+
+**D-198 superseded that part.** The locked 915 MHz path is module IPEX →
+`CBA-UFLSMA20IP` pigtail → top-panel SMA(F) bulkhead → **EXTERNAL Taoglas
+`TI.92.2113` SMA(M) dipole**, and `DEVICE_SPEC` has carried an explicit *"This is
+**STALE**"* note about these exact fields as an open item.
+
+**The consequence if believed is concrete**: an `FXP890` is an INTERNAL flex
+antenna with a u.FL/MHF-I connector. Procuring it instead of the SMA whip and
+its pigtail leaves the 915 MHz radio with **no antenna path this product
+supports** — the enclosure has a Ø6.5 mm top-panel bulkhead hole for a screw-on
+whip, and there is no internal volume or mounting provision for a flex.
+
+All three now name the locked selection, with the supersession stated in place.
+
+### 2. THE CLASS
+
+D-768 built `F7` for one reference. That is the mistake D-767 named: **a fix that
+closes one instance and leaves the class open is half a fix.** `F7` is now a
+registry —
+
+    J1   locked ER-TFT035IPS-6   retires CH280QV10 / ILI9341 / 2.8in / 240x320
+    U8   locked TI.92.2113       retires FXP890
+
+— and **every entry is a supersession this repository has ALREADY recorded**
+(D-074 + D-112 for the panel, D-198 for the antenna). Nothing is inferred, and a
+part with no recorded supersession is simply not in scope, which the report says.
+
+For each reference the clause asserts the locked identity in **three places**:
+the placed symbol's `lib_id` where one is specified, **every property of the
+instance and of its library definition**, and **the released BOM row**. Text that
+is explicitly *about* the retirement is exempt, which is what lets the two
+`RETIRED -- DO NOT INSTANTIATE` annotations coexist with the rule.
+
+**Four live controls, all refused**: the stale panel description put back on the
+symbol; the retired panel symbol placed; the stale panel string put back on the
+BOM row **alone**, with the schematic clean; and the `FXP890` antenna sentence
+put back on `U8`.
+
+### 3. WHY THE BOM-ROW LEG IS THE LOAD-BEARING ONE
+
+It was proved load-bearing by walking into it in D-768: after the schematic was
+fully corrected, `F7` **still failed**, naming `CH280QV10` / `2.8in` / `240x320`
+on the BOM row, until the package was regenerated. A clause that read only the
+schematic would have reported a clean board while the fabrication package in the
+repository still told a human to buy a 2.8-inch panel.
+
+### 4. VERIFICATION
+
+    board            5849b658 UNCHANGED, zero copper objects touched
+    features         F1-F7 PASS; F7 covers J1 and U8 with four live controls,
+                     all refused; F5 keeps its ten, F6 its eight
+    KiCad DRC        199 lib_footprint_issues all WARNING, zero other classes,
+                     17 unconnected, parity 246 warnings / 0 errors -- sets
+                     element-for-element identical to D-765..D-768
+    contracts        19 standing contracts run, none failing
+    fab package      FAB1-FAB15 PASS, sourcing 252/252
+    firmware         unchanged; four PlatformIO builds SUCCESS
+    hardware/beta-v2 UNTOUCHED
+
+**`DEVICE_SPEC` §16 item 6 is CLOSED**, and with it the last of that section's
+board-adjacent documentation items.
+
+### 5. WHAT IS NOT CLOSED
+
+* **§16 item 3** (microSD maximum card capacity) and **item 4** (touch silicon,
+  `CST026` vs `FT6236`) remain open. Neither is a board question: item 3 is a
+  claim nobody should make publicly, item 4 is a **purchase-order** requirement
+  already stated in `J1`'s own note and in `OFF_BOARD_BOM.md`.
+* **§16 item 7** (BOOT face, power-switch position, 1×24 wall aperture, corner
+  radii) is enclosure CAD, not PCB.
+* **§16 item 9** is a purchasing brief — nine BOM lines under 10× the first-five
+  need on the assembler's catalogue — not a design defect.
+
+
 ## D-768 — **THE RELEASED BOM NAMED THE WRONG DISPLAY, ON THE ONE CONNECTOR WHOSE PIN TABLE HAD ALREADY BEEN DEAD ON ARRIVAL FOR EXACTLY THAT REASON**
 
     authority  5849b658, UNCHANGED.  NO PCB change and no copper of any kind

@@ -304,9 +304,11 @@ sockets); the only on-board RF network is the 13.56 MHz NFC differential front e
   AAT_A, AAT_B, CSI, MCU_CLK. ENGINEERING-ONLY.
 
 **Conflicts flagged:**
-- **915 antenna:** the `U8` schematic package note and a stale ARCHITECTURE row name an
-  internal `Taoglas FXP890.07.0100C` flex. This is **STALE**. The locked selection (CTO
-  D-198) is the **EXTERNAL SMA `Taoglas TI.92.2113`** dipole on a top-panel bulkhead.
+- **915 antenna:** ~~the `U8` schematic package note and a stale ARCHITECTURE row name an
+  internal `Taoglas FXP890.07.0100C` flex.~~ **CORRECTED at D-769 — both now name the locked
+  selection.** The locked selection (CTO D-198) is the **EXTERNAL SMA `Taoglas TI.92.2113`**
+  dipole on a top-panel bulkhead, reached through the module IPEX, a `CBA-UFLSMA20IP` pigtail
+  and the top-panel SMA(F) bulkhead. `F7` refuses the retired name returning.
 - **NFC antenna variant:** the authoritative part is the **`.B.dg` (reverse-ferrite)**
   variant (D-131); any `.A.dg` reference is superseded.
 
@@ -669,7 +671,7 @@ Qwiic/STEMMA QT I²C accessory port; RGB status indicator.
 3. **microSD max card capacity** — not stated.
 4. **Touch controller silicon** — FT6236 vs CST026 (interface locked; PO must specify).
 5. ~~**Display driver symbol metadata** — stale ILI9341/CH280QV10 text vs locked ILI9488.~~ **CLOSED at D-768.**  It was worse than metadata: the stale string was on the `J1` **instance**, so *"CH280QV10-CT Rev.D 2.8in 240x320 IPS TFT + CTP"* was a column in the **released BOM**, and the `ER-TFT035IPS-6_50P` symbol's own `Package` field still credited *"SPEC-CH280QV10-CT_Rev.D pages 6-7. TFT driver ILI9341V"* for a pin table D-112 had transcribed from a different datasheet — on the one connector whose pin table had already been **dead on arrival** for exactly that reason (LEDA/LEDK reversed, WRX/D-CX swapped).  The board was and is correct; every place that names the panel now says `ER-TFT035IPS-6` / ILI9488, the two retired display symbols are annotated `RETIRED -- DO NOT INSTANTIATE`, and **`F7`** asserts the locked identity in the placed symbol, its library definition **and the released BOM row**, with three live controls.
-6. **915 antenna doc residue** — stale FXP890 vs locked external TI.92.2113 SMA.
+6. ~~**915 antenna doc residue** — stale FXP890 vs locked external TI.92.2113 SMA.~~ **CLOSED at D-769.**  `U8`'s `Package` field, the sheet-level module note and the `ARCHITECTURE.md` row all named the internal `Taoglas FXP890.07.0100C` flex that D-198 superseded; all three now name the **external `TI.92.2113` SMA(M) dipole** reached through the module IPEX → `CBA-UFLSMA20IP` pigtail → top-panel SMA(F) bulkhead.  **`F7`** — generalised from D-768's display clause into a registry of recorded supersessions — now refuses a retired part name anywhere in the fields of the part that replaced it, `J1` and `U8` alike, with four live controls.
 7. **Mechanical:** ~~BOSS2 X (59 vs 60),~~ **CLOSED at D-759 — it was the FBV2-EXP-002
    +1.000 mm re-base, the board is on the re-based datum, and `BOSS2` at 60.000 is right**;
    BOOT face, power-switch position, 1×24 wall aperture, corner radii — CAD-TO-VERIFY.

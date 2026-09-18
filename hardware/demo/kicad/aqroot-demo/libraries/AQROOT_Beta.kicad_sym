@@ -4989,7 +4989,7 @@
 				)
 			)
 		)
-		(property "Package" "20.0 x 14.0 x 3.0 mm castellated SMD module, 22 pads, 1.27 mm pitch with a 5.57 mm gap at the IPEX end. Antenna: module IPEX/u.FL used for Beta with Taoglas FXP890.07.0100C; pin 21 ANT stamp hole present but NOT routed. DIO2 (8) is strapped locally to TXEN (7) - firmware MUST enable SX1262 SetDIO2AsRfSwitchCtrl. RXEN (6) needs an external control; RF DO NOT ROUTE until final RF review."
+		(property "Package" "20.0 x 14.0 x 3.0 mm castellated SMD module, 22 pads, 1.27 mm pitch with a 5.57 mm gap at the IPEX end. Antenna: module IPEX/u.FL -> CBA-UFLSMA20IP pigtail -> top-panel SMA(F) bulkhead -> EXTERNAL Taoglas TI.92.2113 SMA(M) dipole, LOCKED by D-198; pin 21 ANT stamp hole present but NOT routed, and by design NO 433/915 RF signal reaches the main PCB. D-769 CORRECTED THIS FIELD: it named an internal Taoglas FXP890.07.0100C flex, which D-198 superseded and which DEVICE_SPEC has flagged STALE since -- procuring it instead of the SMA whip and pigtail would leave the 915 MHz radio with no antenna path this board supports. DIO2 (8) is strapped locally to TXEN (7) - firmware MUST enable SX1262 SetDIO2AsRfSwitchCtrl. RXEN (6) needs an external control; RF DO NOT ROUTE until final RF review."
 			(at 0 0 0)
 			(hide yes)
 			(effects

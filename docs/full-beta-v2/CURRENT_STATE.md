@@ -66,7 +66,39 @@
 > `verify_promotion` PASS and `protected_copper` showing exactly one protected
 > net moved.  `U14.7` is on the bus.  This board has **no open owner decision**.
 
-> # **THE ROUND-2 CAUSES ARE CLOSED, THEIR DEFECT CLASSES WITH THEM, AND THE RELEASED BOM NO LONGER NAMES THE WRONG DISPLAY (2026-09-18, D-766 · D-767 · D-768).**
+> # **THE ROUND-2 CAUSES ARE CLOSED, AND SO IS EVERY DEFECT CLASS THEY BELONGED TO (2026-09-18, D-766 · D-767 · D-768 · D-769).**
+>
+> **Board authority `5849b658`, unchanged since D-766.  D-765 closed the first
+> round-2 item and D-766 the second; D-767 asked D-766's two defect classes of
+> the whole board; D-768 found that `DEVICE_SPEC` §16 item 5 was not metadata but
+> the RELEASED BOM naming the wrong display; and D-769 closed item 6, the last
+> board-adjacent documentation item in that section, and generalised the clause
+> that catches both.**
+>
+> **D-769: the same defect, one part over.**  `U8`'s `Package` field, the sheet
+> module note and `ARCHITECTURE.md`'s 915 MHz row all named the internal Taoglas
+> **`FXP890.07.0100C`** flex that **D-198 superseded** — and `DEVICE_SPEC` had
+> carried an explicit *"This is STALE"* note about those exact fields as an open
+> item.  The consequence if believed is concrete: an `FXP890` is an INTERNAL flex
+> with a u.FL connector, so buying it instead of the SMA whip and its
+> `CBA-UFLSMA20IP` pigtail leaves the 915 MHz radio with **no antenna path this
+> product supports** — the enclosure has a Ø6.5 mm top-panel bulkhead for a
+> screw-on whip and no provision for a flex.  All three now name the locked
+> **external `TI.92.2113`** dipole.
+>
+> **And `F7` became a registry rather than a special case**, because D-768 built
+> it for one reference and that is precisely the mistake D-767 named.  It now
+> holds `J1` → retires `CH280QV10`/`ILI9341`/`2.8in`/`240x320`, and `U8` →
+> retires `FXP890`; **every entry is a supersession this repository had already
+> recorded**, and for each it asserts the locked identity in the placed symbol,
+> in its library definition **and on the released BOM row**.  **Four live
+> controls, all refused.**  The BOM-row leg is the load-bearing one and was
+> proved so by walking into it: at D-768, after the schematic was fully
+> corrected, `F7` **still failed** until the fabrication package was regenerated.
+>
+> # **D-766, D-767 AND D-768's ENTRIES FOLLOW.**
+>
+> # **THE ROUND-2 CAUSES ARE CLOSED, AND THE RELEASED BOM NO LONGER NAMES THE WRONG DISPLAY (D-766 · D-767 · D-768).**
 >
 > **Board authority `5849b658`, unchanged since D-766.  D-765 closed the first
 > round-2 item, D-766 the second, D-767 generalised both defect classes across

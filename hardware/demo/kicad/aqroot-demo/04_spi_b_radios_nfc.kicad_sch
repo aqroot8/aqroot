@@ -2009,7 +2009,7 @@
 					)
 				)
 			)
-			(property "Package" "20.0 x 14.0 x 3.0 mm castellated SMD module, 22 pads, 1.27 mm pitch with a 5.57 mm gap at the IPEX end. Antenna: module IPEX/u.FL used for Beta with Taoglas FXP890.07.0100C; pin 21 ANT stamp hole present but NOT routed. DIO2 (8) is strapped locally to TXEN (7) - firmware MUST enable SX1262 SetDIO2AsRfSwitchCtrl. RXEN (6) needs an external control; RF DO NOT ROUTE until final RF review."
+			(property "Package" "20.0 x 14.0 x 3.0 mm castellated SMD module, 22 pads, 1.27 mm pitch with a 5.57 mm gap at the IPEX end. Antenna: module IPEX/u.FL -> CBA-UFLSMA20IP pigtail -> top-panel SMA(F) bulkhead -> EXTERNAL Taoglas TI.92.2113 SMA(M) dipole, LOCKED by D-198; pin 21 ANT stamp hole present but NOT routed, and by design NO 433/915 RF signal reaches the main PCB. D-769 CORRECTED THIS FIELD: it named an internal Taoglas FXP890.07.0100C flex, which D-198 superseded and which DEVICE_SPEC has flagged STALE since -- procuring it instead of the SMA whip and pigtail would leave the 915 MHz radio with no antenna path this board supports. DIO2 (8) is strapped locally to TXEN (7) - firmware MUST enable SX1262 SetDIO2AsRfSwitchCtrl. RXEN (6) needs an external control; RF DO NOT ROUTE until final RF review."
 				(at 0 0 0)
 				(hide yes)
 				(effects
@@ -3000,7 +3000,7 @@
 		)
 		(uuid "a558621f-11bd-4a2a-b333-9b5b95aa2aef")
 	)
-	(text "SX1262 FUNCTIONAL PLACEHOLDER\n\nMODULE LOCKED: EBYTE E22-900M22S\nFOOTPRINT PENDING - FROM EBYTE DRAWING\nANTENNA: MODULE IPEX (TAOGLAS FXP890)\nNO BOARD-LEVEL RF AT 915 MHz\n\nCS HAS 10k HARDWARE PULL-UP TO +3V3\nRESET SAFE-STATE CONTROLLED BY U60 P01\n\nNO FOOTPRINT\nDO NOT ROUTE"
+	(text "SX1262 FUNCTIONAL PLACEHOLDER\n\nMODULE LOCKED: EBYTE E22-900M22S\nFOOTPRINT LOCKED: AQROOT_Beta:Ebyte_E22-900M22S\nANTENNA: MODULE IPEX -> PIGTAIL -> SMA BULKHEAD ->\nEXTERNAL TAOGLAS TI.92.2113 (D-198; D-769)\nNO BOARD-LEVEL RF AT 915 MHz\n\nCS HAS 10k HARDWARE PULL-UP TO +3V3\nRESET SAFE-STATE CONTROLLED BY U60 P01\n\nNO FOOTPRINT\nDO NOT ROUTE"
 		(exclude_from_sim no)
 		(at 217.424 112.776 0)
 		(effects
@@ -5592,7 +5592,7 @@
 				)
 			)
 		)
-		(property "Package" "20.0 x 14.0 x 3.0 mm castellated module, 22 pads, 1.27 mm pitch with a 5.57 mm gap at the IPEX end. DIO2 (8) strapped locally to TXEN (7) - firmware MUST enable SX1262 SetDIO2AsRfSwitchCtrl. RXEN (6) driven from SX1262_RXEN on the reclaimed U3.19 expander port with a 100k pulldown for a defined CLOSE state. Antenna: module IPEX/u.FL with Taoglas FXP890.07.0100C; pin 21 ANT stamp hole present but NOT routed - RF DO NOT ROUTE until final RF review. Procurement: Beta units must ship with the IPEX connector populated."
+		(property "Package" "20.0 x 14.0 x 3.0 mm castellated module, 22 pads, 1.27 mm pitch with a 5.57 mm gap at the IPEX end. DIO2 (8) strapped locally to TXEN (7) - firmware MUST enable SX1262 SetDIO2AsRfSwitchCtrl. RXEN (6) driven from SX1262_RXEN on the reclaimed U3.19 expander port with a 100k pulldown for a defined CLOSE state. Antenna: module IPEX/u.FL -> CBA-UFLSMA20IP pigtail -> top-panel SMA(F) bulkhead -> EXTERNAL Taoglas TI.92.2113 SMA(M) dipole, LOCKED by D-198; pin 21 ANT stamp hole present but NOT routed, and by design NO 433/915 RF signal reaches the main PCB. D-769 CORRECTED THIS FIELD: it named an internal Taoglas FXP890.07.0100C flex, which D-198 superseded and which DEVICE_SPEC has flagged STALE since -- procuring it instead of the SMA whip and pigtail would leave the 915 MHz radio with no antenna path this board supports. Procurement: Beta units must ship with the IPEX connector populated."
 			(at 217.17 63.5 0)
 			(hide yes)
 			(effects
