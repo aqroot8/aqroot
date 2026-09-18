@@ -39,7 +39,7 @@
 "D13","MHPA3528RGBCT","AQROOT_Beta:MEIHUA_MHPA3528RGBCT_PLCC4_3.5x2.8mm","MEIHUA","MHPA3528RGBCT","C409779","","1",""
 "D14","1N4148WS","Diode_SMD:D_SOD-323","Jiangsu Changjing Electronics","1N4148WS","C2128","Small-signal switching diode, 75 V, 4 ns","1",""
 "F1","5A one-shot 1206","Fuse:Fuse_1206_3216Metric","Littelfuse","0466005.NRHF","C57525","","1",""
-"J1","FH69-50S-0.5SH","AQROOT_Beta:Hirose_FH69-50S-0.5SH","Hirose","FH69-50S-0.5SH","C25955556","CH280QV10-CT Rev.D 2.8in 240x320 IPS TFT + CTP, 50-pin 0.5mm FPC","1",""
+"J1","FH69-50S-0.5SH","AQROOT_Beta:Hirose_FH69-50S-0.5SH","Hirose","FH69-50S-0.5SH","C25955556","EastRising ER-TFT035IPS-6 + ER-TPC035-6: 3.5in 320x480 IPS TFT (ILI9488) with FT6236 capacitive touch, one 50-pin 0.50mm bottom-contact FPC, mating Hirose FH69-50S-0.5SH","1",""
 "J2","Molex_5025700893","AQROOT_Beta:Molex_5025700893","Molex","5025700893","C429846","Molex 5025700893 microSD card connector, push-push, with mechanical card detect","1",""
 "J3","USB_C_Receptacle_USB2.0_16P","Connector_USB:USB_C_Receptacle_GCT_USB4105-xx-A_16P_TopMnt_Horizontal","GCT (Global Connector Technology)","USB4105-GF-A-120","C5184243","USB 2.0-only 16P Type-C Receptacle connector","1",""
 "J4","JST-PH-2 BATTERY","Connector_JST:JST_PH_B2B-PH-K_1x02_P2.00mm_Vertical","JST","B2B-PH-K-S(LF)(SN)","C131337","Generic connector, single row, 01x02, script generated (kicad-library-utils/schlib/autogen/connector/)","1",""

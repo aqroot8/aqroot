@@ -347,7 +347,7 @@
 						)
 					)
 				)
-				(property "Description" "EastRising ER-TFT035IPS-6 + ER-TPC035-6: 3.5in 320x480 IPS TFT (ILI9488) with FT6236 capacitive touch, one 50-pin 0.50mm bottom-contact FPC. Pin table verbatim from ER-TFT035IPS-6_Datasheet Rev 2.0 sec 4.1"
+				(property "Description" "EastRising ER-TFT035IPS-6 + ER-TPC035-6: 3.5in 320x480 IPS TFT (ILI9488) with FT6236 capacitive touch, one 50-pin 0.50mm bottom-contact FPC, mating Hirose FH69-50S-0.5SH"
 					(at 0 0 0)
 					(hide yes)
 					(effects
@@ -365,7 +365,7 @@
 						)
 					)
 				)
-				(property "MPN" "CH280QV10-CT"
+				(property "MPN" "ER-TFT035IPS-6"
 					(at 0 0 0)
 					(hide yes)
 					(effects
@@ -374,7 +374,7 @@
 						)
 					)
 				)
-				(property "Package" "50-contact 0.5 mm pitch FPC tail, mates with Hirose FH69-50S-0.5SH. All 50 physical contacts represented; pin numbering and names transcribed from SPEC-CH280QV10-CT_Rev.D pages 6-7. TFT driver ILI9341V. Touch controller identity is VERIFY - panel datasheet says CST026, Adafruit material says FT6236/FT6236U-compatible; only the physical I2C/IRQ/RESET interface is locked. Panel FPC tail thickness is not stated in the datasheet - VERIFY it is 0.30 +/-0.05 mm against Hirose FH69 before procurement."
+				(property "Package" "50-contact 0.5 mm pitch FPC tail, mates with Hirose FH69-50S-0.5SH. All 50 physical contacts represented; pin numbering and names transcribed VERBATIM from ER-TFT035IPS-6_Datasheet Rev 2.0 section 4.1 (D-112). TFT driver ILI9488. D-768 CORRECTED THIS FIELD: it credited 'SPEC-CH280QV10-CT_Rev.D pages 6-7' and 'TFT driver ILI9341V', i.e. the RETIRED 2.8-inch panel whose pin table D-112 replaced BECAUSE IT WAS DEAD ON ARRIVAL HERE -- LEDA/LEDK reversed and WRX/D-CX swapped. Touch controller identity is VERIFY: panel datasheet says CST026, Adafruit material says FT6236/FT6236U-compatible; only the physical I2C/IRQ/RESET interface is locked, and the PO must name BOTH ER-TFT035IPS-6 and ER-TPC035-6. Panel FPC tail thickness is not stated in the datasheet - VERIFY it is 0.30 +/-0.05 mm against Hirose FH69 before procurement."
 					(at 0 0 0)
 					(hide yes)
 					(effects
@@ -4600,7 +4600,7 @@
 				)
 			)
 		)
-		(property "Description" "CH280QV10-CT Rev.D 2.8in 240x320 IPS TFT + CTP, 50-pin 0.5mm FPC"
+		(property "Description" "EastRising ER-TFT035IPS-6 + ER-TPC035-6: 3.5in 320x480 IPS TFT (ILI9488) with FT6236 capacitive touch, one 50-pin 0.50mm bottom-contact FPC, mating Hirose FH69-50S-0.5SH"
 			(at 95.25 148.59 0)
 			(hide yes)
 			(effects

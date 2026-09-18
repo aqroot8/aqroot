@@ -1,0 +1,1288 @@
+{
+  "added_object_nets": [],
+  "added_track_layers": [],
+  "added_track_widths_nm": [],
+  "added_tracks": 0,
+  "added_via_dia_drill_nm": [],
+  "added_vias": 0,
+  "board_outline_changed": false,
+  "board_outline_extents_mm_after": [
+    0.0,
+    0.0,
+    77.0,
+    148.0
+  ],
+  "board_outline_extents_mm_before": [
+    0.0,
+    0.0,
+    77.0,
+    148.0
+  ],
+  "board_outline_grown": false,
+  "checks": {
+    "added_only_on_claimed_nets": true,
+    "annular_floor_met": true,
+    "beta_v2_untouched": true,
+    "board_outline_as_claimed": true,
+    "drc_inherited_within_baseline": true,
+    "drc_zero_attributable": true,
+    "dru_contracts_live": true,
+    "fill_stable": true,
+    "nothing_removed": true,
+    "pour_partition_intact": true,
+    "rule_areas_as_claimed": true,
+    "schematic_parity_within_baseline": true,
+    "track_width_floor_met": true,
+    "unconnected_not_increased": true,
+    "via_drill_floor_met": true,
+    "zone_inventory_as_claimed": true
+  },
+  "claimed_board_outline_grown": false,
+  "claimed_evicted_nets": [],
+  "claimed_grown_zones": [],
+  "claimed_keepout_rule_areas": [],
+  "claimed_moved_refs": [],
+  "claimed_narrowed_rule_areas": [],
+  "claimed_nets": [
+    "GND"
+  ],
+  "claimed_planes": [],
+  "claimed_removed_zones": [],
+  "claimed_rule_areas": [],
+  "claimed_widened_rule_areas": [],
+  "drc": {
+    "attributable": [],
+    "counts": {},
+    "schematic_parity": {
+      "by_description": {
+        "extra_footprint | Extra footprint": 2,
+        "footprint_symbol_field_mismatch | Field 'Description' differs (PCB: '', Schematic: 'test point')": 10,
+        "footprint_symbol_field_mismatch | Missing symbol field 'LCSC' in footprint": 19,
+        "footprint_symbol_field_mismatch | Missing symbol field 'Manufacturer' in footprint": 130,
+        "footprint_symbol_field_mismatch | Missing symbol field 'Note' in footprint": 21,
+        "footprint_symbol_field_mismatch | Missing symbol field 'Note2' in footprint": 18,
+        "footprint_symbol_field_mismatch | Missing symbol field 'Note_Sourcing' in footprint": 1,
+        "footprint_symbol_mismatch | Footprint attributes don't match symbol: 'Exclude from bill of materials' settings differ": 45
+      },
+      "counts": {
+        "extra_footprint": 2,
+        "footprint_symbol_field_mismatch": 199,
+        "footprint_symbol_mismatch": 45
+      },
+      "errors": [],
+      "refs": {
+        "extra_footprint": [
+          "BOSS1",
+          "BOSS2"
+        ],
+        "footprint_symbol_field_mismatch": [
+          "C1",
+          "C13",
+          "C14",
+          "C15",
+          "C16",
+          "C17",
+          "C18",
+          "C19",
+          "C2",
+          "C20",
+          "C21",
+          "C22",
+          "C23",
+          "C24",
+          "C25",
+          "C26",
+          "C27",
+          "C28",
+          "C29",
+          "C3",
+          "C30",
+          "C31",
+          "C32",
+          "C33",
+          "C34",
+          "C35",
+          "C36",
+          "C43",
+          "C44",
+          "C45",
+          "C46",
+          "C47",
+          "C48",
+          "C49",
+          "C50",
+          "C51",
+          "C52",
+          "C53",
+          "C54",
+          "C55",
+          "C56",
+          "C57",
+          "C58",
+          "C59",
+          "C6",
+          "C60",
+          "C61",
+          "C62",
+          "C63",
+          "C64",
+          "C65",
+          "C66",
+          "C67",
+          "C68",
+          "C69",
+          "C7",
+          "C70",
+          "C71",
+          "C72",
+          "C73",
+          "C74",
+          "C75",
+          "C76",
+          "C77",
+          "C78",
+          "C79",
+          "C80",
+          "C83",
+          "C84",
+          "C85",
+          "D10",
+          "D11",
+          "D12",
+          "D14",
+          "D8",
+          "D9",
+          "F1",
+          "J1",
+          "J2",
+          "J3",
+          "J4",
+          "J7",
+          "L1",
+          "L2",
+          "L3",
+          "L4",
+          "L5",
+          "L6",
+          "Q11",
+          "Q2",
+          "Q3",
+          "Q4",
+          "Q5",
+          "Q6",
+          "Q7",
+          "Q8",
+          "Q9",
+          "R1",
+          "R100",
+          "R101",
+          "R102",
+          "R103",
+          "R104",
+          "R105",
+          "R106",
+          "R107",
+          "R108",
+          "R109",
+          "R110",
+          "R111",
+          "R112",
+          "R113",
+          "R114",
+          "R115",
+          "R116",
+          "R117",
+          "R131",
+          "R132",
+          "R2",
+          "R25",
+          "R26",
+          "R27",
+          "R28",
+          "R29",
+          "R30",
+          "R31",
+          "R32",
+          "R33",
+          "R34",
+          "R35",
+          "R36",
+          "R37",
+          "R38",
+          "R39",
+          "R40",
+          "R41",
+          "R43",
+          "R44",
+          "R45",
+          "R68",
+          "R69",
+          "R70",
+          "R71",
+          "R72",
+          "R73",
+          "R74",
+          "R75",
+          "R76",
+          "R77",
+          "R78",
+          "R79",
+          "R80",
+          "R81",
+          "R82",
+          "R83",
+          "R84",
+          "R85",
+          "R86",
+          "R87",
+          "R88",
+          "R89",
+          "R90",
+          "R91",
+          "R92",
+          "R93",
+          "R94",
+          "R95",
+          "R96",
+          "R97",
+          "R98",
+          "R99",
+          "SW1",
+          "SW9",
+          "TP1",
+          "TP10",
+          "TP11",
+          "TP13",
+          "TP15",
+          "TP2",
+          "TP6",
+          "TP7",
+          "TP8",
+          "TP9",
+          "U1",
+          "U10",
+          "U11",
+          "U12",
+          "U13",
+          "U14",
+          "U17",
+          "U18",
+          "U19",
+          "U20",
+          "U21",
+          "U22",
+          "U7",
+          "U8",
+          "U9",
+          "Y1"
+        ],
+        "footprint_symbol_mismatch": [
+          "TP1",
+          "TP10",
+          "TP11",
+          "TP12",
+          "TP13",
+          "TP15",
+          "TP16",
+          "TP17",
+          "TP18",
+          "TP19",
+          "TP2",
+          "TP20",
+          "TP21",
+          "TP22",
+          "TP23",
+          "TP24",
+          "TP25",
+          "TP26",
+          "TP27",
+          "TP28",
+          "TP29",
+          "TP3",
+          "TP30",
+          "TP31",
+          "TP32",
+          "TP33",
+          "TP34",
+          "TP35",
+          "TP36",
+          "TP37",
+          "TP38",
+          "TP39",
+          "TP4",
+          "TP40",
+          "TP42",
+          "TP43",
+          "TP44",
+          "TP45",
+          "TP46",
+          "TP47",
+          "TP5",
+          "TP6",
+          "TP7",
+          "TP8",
+          "TP9"
+        ]
+      },
+      "severities": {
+        "warning": 246
+      },
+      "total": 246
+    },
+    "unconnected_items": 17
+  },
+  "drc_pre": null,
+  "drc_second_pass": {
+    "attributable": [],
+    "counts": {},
+    "schematic_parity": {
+      "by_description": {
+        "extra_footprint | Extra footprint": 2,
+        "footprint_symbol_field_mismatch | Field 'Description' differs (PCB: '', Schematic: 'test point')": 10,
+        "footprint_symbol_field_mismatch | Missing symbol field 'LCSC' in footprint": 19,
+        "footprint_symbol_field_mismatch | Missing symbol field 'Manufacturer' in footprint": 130,
+        "footprint_symbol_field_mismatch | Missing symbol field 'Note' in footprint": 21,
+        "footprint_symbol_field_mismatch | Missing symbol field 'Note2' in footprint": 18,
+        "footprint_symbol_field_mismatch | Missing symbol field 'Note_Sourcing' in footprint": 1,
+        "footprint_symbol_mismatch | Footprint attributes don't match symbol: 'Exclude from bill of materials' settings differ": 45
+      },
+      "counts": {
+        "extra_footprint": 2,
+        "footprint_symbol_field_mismatch": 199,
+        "footprint_symbol_mismatch": 45
+      },
+      "errors": [],
+      "refs": {
+        "extra_footprint": [
+          "BOSS1",
+          "BOSS2"
+        ],
+        "footprint_symbol_field_mismatch": [
+          "C1",
+          "C13",
+          "C14",
+          "C15",
+          "C16",
+          "C17",
+          "C18",
+          "C19",
+          "C2",
+          "C20",
+          "C21",
+          "C22",
+          "C23",
+          "C24",
+          "C25",
+          "C26",
+          "C27",
+          "C28",
+          "C29",
+          "C3",
+          "C30",
+          "C31",
+          "C32",
+          "C33",
+          "C34",
+          "C35",
+          "C36",
+          "C43",
+          "C44",
+          "C45",
+          "C46",
+          "C47",
+          "C48",
+          "C49",
+          "C50",
+          "C51",
+          "C52",
+          "C53",
+          "C54",
+          "C55",
+          "C56",
+          "C57",
+          "C58",
+          "C59",
+          "C6",
+          "C60",
+          "C61",
+          "C62",
+          "C63",
+          "C64",
+          "C65",
+          "C66",
+          "C67",
+          "C68",
+          "C69",
+          "C7",
+          "C70",
+          "C71",
+          "C72",
+          "C73",
+          "C74",
+          "C75",
+          "C76",
+          "C77",
+          "C78",
+          "C79",
+          "C80",
+          "C83",
+          "C84",
+          "C85",
+          "D10",
+          "D11",
+          "D12",
+          "D14",
+          "D8",
+          "D9",
+          "F1",
+          "J1",
+          "J2",
+          "J3",
+          "J4",
+          "J7",
+          "L1",
+          "L2",
+          "L3",
+          "L4",
+          "L5",
+          "L6",
+          "Q11",
+          "Q2",
+          "Q3",
+          "Q4",
+          "Q5",
+          "Q6",
+          "Q7",
+          "Q8",
+          "Q9",
+          "R1",
+          "R100",
+          "R101",
+          "R102",
+          "R103",
+          "R104",
+          "R105",
+          "R106",
+          "R107",
+          "R108",
+          "R109",
+          "R110",
+          "R111",
+          "R112",
+          "R113",
+          "R114",
+          "R115",
+          "R116",
+          "R117",
+          "R131",
+          "R132",
+          "R2",
+          "R25",
+          "R26",
+          "R27",
+          "R28",
+          "R29",
+          "R30",
+          "R31",
+          "R32",
+          "R33",
+          "R34",
+          "R35",
+          "R36",
+          "R37",
+          "R38",
+          "R39",
+          "R40",
+          "R41",
+          "R43",
+          "R44",
+          "R45",
+          "R68",
+          "R69",
+          "R70",
+          "R71",
+          "R72",
+          "R73",
+          "R74",
+          "R75",
+          "R76",
+          "R77",
+          "R78",
+          "R79",
+          "R80",
+          "R81",
+          "R82",
+          "R83",
+          "R84",
+          "R85",
+          "R86",
+          "R87",
+          "R88",
+          "R89",
+          "R90",
+          "R91",
+          "R92",
+          "R93",
+          "R94",
+          "R95",
+          "R96",
+          "R97",
+          "R98",
+          "R99",
+          "SW1",
+          "SW9",
+          "TP1",
+          "TP10",
+          "TP11",
+          "TP13",
+          "TP15",
+          "TP2",
+          "TP6",
+          "TP7",
+          "TP8",
+          "TP9",
+          "U1",
+          "U10",
+          "U11",
+          "U12",
+          "U13",
+          "U14",
+          "U17",
+          "U18",
+          "U19",
+          "U20",
+          "U21",
+          "U22",
+          "U7",
+          "U8",
+          "U9",
+          "Y1"
+        ],
+        "footprint_symbol_mismatch": [
+          "TP1",
+          "TP10",
+          "TP11",
+          "TP12",
+          "TP13",
+          "TP15",
+          "TP16",
+          "TP17",
+          "TP18",
+          "TP19",
+          "TP2",
+          "TP20",
+          "TP21",
+          "TP22",
+          "TP23",
+          "TP24",
+          "TP25",
+          "TP26",
+          "TP27",
+          "TP28",
+          "TP29",
+          "TP3",
+          "TP30",
+          "TP31",
+          "TP32",
+          "TP33",
+          "TP34",
+          "TP35",
+          "TP36",
+          "TP37",
+          "TP38",
+          "TP39",
+          "TP4",
+          "TP40",
+          "TP42",
+          "TP43",
+          "TP44",
+          "TP45",
+          "TP46",
+          "TP47",
+          "TP5",
+          "TP6",
+          "TP7",
+          "TP8",
+          "TP9"
+        ]
+      },
+      "severities": {
+        "warning": 246
+      },
+      "total": 246
+    },
+    "unconnected_items": 17
+  },
+  "dru_contracts": {
+    "D-186_bat_main_class": true,
+    "D-269_bat_main_routed_clearance": true,
+    "annular_ring_floor": true,
+    "power_via_drill_floor": true
+  },
+  "objects_added": 0,
+  "objects_removed": 0,
+  "pad_escape_neck": null,
+  "pad_escape_run": null,
+  "pour_bridge": null,
+  "pour_partition": {
+    "detail": {
+      "PP1": {
+        "control": {
+          "ok": true,
+          "probe": [
+            [
+              "+3V3",
+              "F.Cu",
+              "C10.1"
+            ]
+          ],
+          "why": "a pad resolved on BOTH boards, withheld from the POST set, is reported by the same expression the clause is judged on"
+        },
+        "excuse_control": {
+          "ok": true,
+          "probe": [],
+          "why": "each excused pad, withheld from the POST connectivity fact the excuse is keyed on, is named again by the same expression"
+        },
+        "excused_by_routed_copper": [],
+        "moved_pour": [],
+        "newly_unresolved": [],
+        "ok": true,
+        "pours_gone_unclaimed": [],
+        "pours_post": 3,
+        "pours_pre": 3,
+        "pours_retired_as_claimed": [],
+        "resolved_post": 201,
+        "resolved_pre": 201,
+        "unresolved_inherited": [
+          "/01_POWER_TREE/BQ25185_SYS C33.1",
+          "/01_POWER_TREE/BQ25185_SYS C64.1",
+          "/01_POWER_TREE/BQ25185_SYS C83.1",
+          "/01_POWER_TREE/BQ25185_SYS C84.1",
+          "/01_POWER_TREE/BQ25185_SYS L2.1",
+          "/01_POWER_TREE/BQ25185_SYS L4.1",
+          "/01_POWER_TREE/BQ25185_SYS U11.1",
+          "/01_POWER_TREE/BQ25185_SYS U13.3",
+          "/01_POWER_TREE/BQ25185_SYS U21.3",
+          "GND MK1.4"
+        ],
+        "unresolved_post": 10,
+        "unresolved_pre": 10
+      },
+      "PP2": {
+        "admitted": [],
+        "controls": {
+          "ok": true,
+          "probes": [
+            {
+              "behaved": true,
+              "control": "min_thickness_sliver_refused",
+              "expected": false,
+              "got": false,
+              "priced_amps": 0.742,
+              "required_amps": 1.0,
+              "verdict": "BONDED",
+              "why": "BOND_UNDER_PRICED"
+            },
+            {
+              "behaved": true,
+              "control": "one_class_width_track_refused",
+              "expected": false,
+              "got": false,
+              "priced_amps": 0.995,
+              "required_amps": 1.0,
+              "verdict": "BONDED",
+              "why": "BOND_UNDER_PRICED"
+            },
+            {
+              "behaved": true,
+              "control": "four_barrel_bond_admitted",
+              "expected": true,
+              "got": true,
+              "priced_amps": 9.244,
+              "required_amps": 1.0,
+              "verdict": "BONDED",
+              "why": "BOND_PRICED_AT_OR_ABOVE_THE_PUBLISHED_RAIL_CURRENT"
+            },
+            {
+              "behaved": true,
+              "control": "stranded_refused_however_priced",
+              "expected": false,
+              "got": false,
+              "priced_amps": 9.244,
+              "required_amps": 1.0,
+              "verdict": "STRANDED",
+              "why": "PP3_NOT_BONDED"
+            },
+            {
+              "behaved": true,
+              "control": "unpriced_net_refused",
+              "expected": false,
+              "got": false,
+              "priced_amps": 9.244,
+              "required_amps": null,
+              "verdict": "BONDED",
+              "why": "NET_CARRIES_NO_PUBLISHED_CURRENT"
+            },
+            {
+              "behaved": true,
+              "control": "bar_located_one_ppm_below",
+              "expected": false,
+              "got": false,
+              "priced_amps": 0.999999,
+              "required_amps": 1.0,
+              "verdict": "BONDED",
+              "why": "BOND_UNDER_PRICED"
+            },
+            {
+              "behaved": true,
+              "control": "bar_located_at_equality",
+              "expected": true,
+              "got": true,
+              "priced_amps": 1.0,
+              "required_amps": 1.0,
+              "verdict": "BONDED",
+              "why": "BOND_PRICED_AT_OR_ABOVE_THE_PUBLISHED_RAIL_CURRENT"
+            }
+          ],
+          "reference_amps": {
+            "four_0p400mm_barrels": 9.244,
+            "outer_track_0p300mm": 0.995,
+            "zone_min_thickness_0p200mm": 0.742
+          }
+        },
+        "islands": {
+          "+3V3|F|8c612136-d173-58bf-87cf-c0b97bedd2e0": [
+            28,
+            28
+          ],
+          "/01_POWER_TREE/BQ25185_SYS|B|da11f1b0-6501-5c41-b2b6-d6199a789ea9": [
+            3,
+            3
+          ],
+          "GND|B|38685722-44ee-566f-b52b-89a56220a9e0": [
+            63,
+            63
+          ]
+        },
+        "moved_refs_claimed": [],
+        "netclass_conductors": {
+          "ACC_3V3": {
+            "track_width_mm": 0.5,
+            "via_diameter_mm": 0.8,
+            "via_drill_mm": 0.4
+          },
+          "ACC_5V": {
+            "track_width_mm": 0.6,
+            "via_diameter_mm": 0.8,
+            "via_drill_mm": 0.4
+          },
+          "BAT_MAIN": {
+            "track_width_mm": 1.0,
+            "via_diameter_mm": 0.8,
+            "via_drill_mm": 0.4
+          },
+          "Default": {
+            "track_width_mm": 0.2,
+            "via_diameter_mm": 0.6,
+            "via_drill_mm": 0.3
+          },
+          "GND": {
+            "track_width_mm": 0.3,
+            "via_diameter_mm": 0.6,
+            "via_drill_mm": 0.3
+          },
+          "I2C": {
+            "track_width_mm": 0.2,
+            "via_diameter_mm": 0.6,
+            "via_drill_mm": 0.3
+          },
+          "I2S": {
+            "track_width_mm": 0.2,
+            "via_diameter_mm": 0.6,
+            "via_drill_mm": 0.3
+          },
+          "LED_BOOST": {
+            "track_width_mm": 0.3,
+            "via_diameter_mm": 0.6,
+            "via_drill_mm": 0.3
+          },
+          "NFC_5V_PA": {
+            "track_width_mm": 0.6,
+            "via_diameter_mm": 0.8,
+            "via_drill_mm": 0.4
+          },
+          "NFC_OSC": {
+            "track_width_mm": 0.2,
+            "via_diameter_mm": 0.6,
+            "via_drill_mm": 0.3
+          },
+          "NFC_RF": {
+            "track_width_mm": 0.4,
+            "via_diameter_mm": 0.8,
+            "via_drill_mm": 0.4
+          },
+          "NFC_RX": {
+            "track_width_mm": 0.2,
+            "via_diameter_mm": 0.6,
+            "via_drill_mm": 0.3
+          },
+          "P3V3": {
+            "track_width_mm": 0.6,
+            "via_diameter_mm": 0.8,
+            "via_drill_mm": 0.4
+          },
+          "SPK_OUT": {
+            "track_width_mm": 0.3,
+            "via_diameter_mm": 0.6,
+            "via_drill_mm": 0.3
+          },
+          "SWITCH_NODE": {
+            "track_width_mm": 0.6,
+            "via_diameter_mm": 0.8,
+            "via_drill_mm": 0.4
+          },
+          "SYS_MAIN": {
+            "track_width_mm": 0.8,
+            "via_diameter_mm": 0.8,
+            "via_drill_mm": 0.4
+          },
+          "USB_D": {
+            "track_width_mm": 0.25,
+            "via_diameter_mm": 0.55,
+            "via_drill_mm": 0.25
+          },
+          "VBUS_CHG": {
+            "track_width_mm": 0.5,
+            "via_diameter_mm": 0.8,
+            "via_drill_mm": 0.4
+          }
+        },
+        "netclass_source": {
+          "classes": [
+            "ACC_3V3",
+            "ACC_5V",
+            "BAT_MAIN",
+            "Default",
+            "GND",
+            "I2C",
+            "I2S",
+            "LED_BOOST",
+            "NFC_5V_PA",
+            "NFC_OSC",
+            "NFC_RF",
+            "NFC_RX",
+            "P3V3",
+            "SPK_OUT",
+            "SWITCH_NODE",
+            "SYS_MAIN",
+            "USB_D",
+            "VBUS_CHG"
+          ],
+          "found": true,
+          "sha256": "9b758a753f771b953ae3871b3ed2dc596153f2dc414759686c2cd8b3507e926b",
+          "source": "/tmp/aqroot-demo-verify-ciileooy/post/aqroot-Beta-v2.kicad_pro"
+        },
+        "ok": true,
+        "pours_removed_claimed": [],
+        "pre_pads_dropped_as_moved": [],
+        "priced": [],
+        "published_rail_currents": {
+          "ACC_3V3": 0.537,
+          "ACC_5V": 0.537,
+          "BAT_MAIN": 3.125,
+          "LED_BOOST": 0.09,
+          "NFC_5V_PA_PENDING": 0.5,
+          "P3V3": 1.0,
+          "SPK_OUT": 0.41,
+          "SYS_MAIN": 2.19,
+          "VBUS_CHG": 1.1
+        },
+        "published_table_source": {
+          "classes": [
+            "ACC_3V3",
+            "ACC_5V",
+            "BAT_MAIN",
+            "LED_BOOST",
+            "NFC_5V_PA_PENDING",
+            "P3V3",
+            "SPK_OUT",
+            "SYS_MAIN",
+            "VBUS_CHG"
+          ],
+          "found": true,
+          "sha256": "83a763ba3c0e1ebcf1a738af8092397778eae369f80386bbd48940bf8275d142",
+          "source": "/tmp/aqroot-demo-verify-ciileooy/post/aqroot-Beta-v2.kicad_dru"
+        },
+        "refused": [],
+        "return_controls": {
+          "netclass_floor": {
+            "amps": 0.995,
+            "dT_K": 10.0,
+            "netclass": "GND",
+            "track_width_mm": 0.3
+          },
+          "ok": true,
+          "probes": [
+            {
+              "bar_from": "RETURN_FLOOR_ONE_NETCLASS_TRACK",
+              "behaved": true,
+              "control": "unpriced_neighbours_fall_to_the_floor",
+              "expected": 0.995,
+              "floor_amps": 0.995,
+              "got": 0.995,
+              "track_width_mm": 0.3
+            },
+            {
+              "bar_from": "RETURN_NEIGHBOUR_RAIL",
+              "behaved": true,
+              "control": "battery_neighbour_raises_the_bar",
+              "expected": 3.125,
+              "got": 3.125,
+              "neighbour": [
+                "BAT_MAIN"
+              ]
+            },
+            {
+              "behaved": true,
+              "control": "priced_neighbour_below_the_floor_does_not_lower_it",
+              "expected": 1.0,
+              "got": 1.0
+            },
+            {
+              "behaved": true,
+              "control": "the_largest_neighbour_is_the_one_charged",
+              "expected": 3.125,
+              "got": 3.125,
+              "n_neighbours": 2
+            },
+            {
+              "behaved": true,
+              "control": "a_net_with_no_netclass_conductor_has_no_floor",
+              "expected": null,
+              "got": null
+            },
+            {
+              "behaved": true,
+              "boundary": {
+                "bond_amps_parallel": 14.348,
+                "note": "KCL at the fragment boundary: everything entering through the pads leaves through the barrels",
+                "ok": true,
+                "sum_of_pad_bars": 4.125
+              },
+              "control": "the_battery_pad_on_its_own_barrel_does_not_condemn_its_neighbour",
+              "expected": true,
+              "got": true,
+              "per_pad": [
+                {
+                  "bar_amps": 3.125,
+                  "ok": true,
+                  "pad": "C36.2",
+                  "path_amps": 5.282
+                },
+                {
+                  "bar_amps": 1.0,
+                  "ok": true,
+                  "pad": "C5.2",
+                  "path_amps": 2.295
+                }
+              ],
+              "why": "BOND_PRICED_PER_PAD_AND_AT_THE_RETURN_BOUNDARY"
+            },
+            {
+              "behaved": true,
+              "boundary": {
+                "bond_amps_parallel": 14.348,
+                "note": "KCL at the fragment boundary: everything entering through the pads leaves through the barrels",
+                "ok": true,
+                "sum_of_pad_bars": 4.125
+              },
+              "control": "battery_pad_on_the_weak_path_is_REFUSED",
+              "expected": false,
+              "got": false,
+              "per_pad": [
+                {
+                  "bar_amps": 3.125,
+                  "ok": false,
+                  "pad": "C36.2",
+                  "path_amps": 2.295
+                },
+                {
+                  "bar_amps": 1.0,
+                  "ok": true,
+                  "pad": "C5.2",
+                  "path_amps": 5.282
+                }
+              ],
+              "why": "PAD_RETURN_UNDER_PRICED"
+            },
+            {
+              "behaved": true,
+              "boundary": {
+                "bond_amps_parallel": 14.348,
+                "note": "KCL at the fragment boundary: everything entering through the pads leaves through the barrels",
+                "ok": true,
+                "sum_of_pad_bars": 0.995
+              },
+              "control": "a_signal_pad_below_the_floor_is_refused",
+              "expected": false,
+              "got": false,
+              "per_pad": [
+                {
+                  "bar_amps": 0.995,
+                  "ok": false,
+                  "pad": "C45.2",
+                  "path_amps": 0.742
+                }
+              ],
+              "why": "PAD_RETURN_UNDER_PRICED"
+            },
+            {
+              "behaved": true,
+              "boundary": {
+                "bond_amps_parallel": 14.348,
+                "note": "KCL at the fragment boundary: everything entering through the pads leaves through the barrels",
+                "ok": true,
+                "sum_of_pad_bars": 0.995
+              },
+              "control": "a_signal_pad_at_the_floor_is_admitted",
+              "expected": true,
+              "got": true,
+              "per_pad": [
+                {
+                  "bar_amps": 0.995,
+                  "ok": true,
+                  "pad": "C45.2",
+                  "path_amps": 0.995
+                }
+              ],
+              "why": "BOND_PRICED_PER_PAD_AND_AT_THE_RETURN_BOUNDARY"
+            },
+            {
+              "behaved": true,
+              "boundary": {
+                "bond_amps_parallel": 14.348,
+                "note": "KCL at the fragment boundary: everything entering through the pads leaves through the barrels",
+                "ok": true,
+                "sum_of_pad_bars": 0.995
+              },
+              "control": "pad_bar_located_one_ppm_below",
+              "expected": false,
+              "got": false,
+              "per_pad": [
+                {
+                  "bar_amps": 0.995,
+                  "ok": false,
+                  "pad": "C45.2",
+                  "path_amps": 0.9949990049999999
+                }
+              ],
+              "why": "PAD_RETURN_UNDER_PRICED"
+            },
+            {
+              "behaved": true,
+              "boundary": {
+                "bond_amps_parallel": 3.0,
+                "note": "KCL at the fragment boundary: everything entering through the pads leaves through the barrels",
+                "ok": false,
+                "sum_of_pad_bars": 5.0
+              },
+              "control": "the_boundary_sum_refuses_a_bond_every_pad_passes",
+              "expected": false,
+              "got": false,
+              "per_pad": [
+                {
+                  "bar_amps": 1.0,
+                  "ok": true,
+                  "pad": "C60.2",
+                  "path_amps": 5.282
+                },
+                {
+                  "bar_amps": 1.0,
+                  "ok": true,
+                  "pad": "C61.2",
+                  "path_amps": 5.282
+                },
+                {
+                  "bar_amps": 1.0,
+                  "ok": true,
+                  "pad": "C62.2",
+                  "path_amps": 5.282
+                },
+                {
+                  "bar_amps": 1.0,
+                  "ok": true,
+                  "pad": "C63.2",
+                  "path_amps": 5.282
+                },
+                {
+                  "bar_amps": 1.0,
+                  "ok": true,
+                  "pad": "C64.2",
+                  "path_amps": 5.282
+                }
+              ],
+              "why": "RETURN_BOUNDARY_UNDER_PRICED"
+            },
+            {
+              "behaved": true,
+              "boundary": {
+                "bond_amps_parallel": 5.0,
+                "note": "KCL at the fragment boundary: everything entering through the pads leaves through the barrels",
+                "ok": true,
+                "sum_of_pad_bars": 5.0
+              },
+              "control": "the_same_pads_are_admitted_when_the_boundary_carries_the_sum",
+              "expected": true,
+              "got": true,
+              "per_pad": [
+                {
+                  "bar_amps": 1.0,
+                  "ok": true,
+                  "pad": "C60.2",
+                  "path_amps": 5.282
+                },
+                {
+                  "bar_amps": 1.0,
+                  "ok": true,
+                  "pad": "C61.2",
+                  "path_amps": 5.282
+                },
+                {
+                  "bar_amps": 1.0,
+                  "ok": true,
+                  "pad": "C62.2",
+                  "path_amps": 5.282
+                },
+                {
+                  "bar_amps": 1.0,
+                  "ok": true,
+                  "pad": "C63.2",
+                  "path_amps": 5.282
+                },
+                {
+                  "bar_amps": 1.0,
+                  "ok": true,
+                  "pad": "C64.2",
+                  "path_amps": 5.282
+                }
+              ],
+              "why": "BOND_PRICED_PER_PAD_AND_AT_THE_RETURN_BOUNDARY"
+            },
+            {
+              "behaved": true,
+              "boundary": null,
+              "control": "stranded_refused_however_priced_on_a_return_net",
+              "expected": false,
+              "got": false,
+              "per_pad": [],
+              "why": "PP3_NOT_BONDED"
+            },
+            {
+              "behaved": true,
+              "boundary": null,
+              "control": "an_unmeasurable_pad_refuses",
+              "expected": false,
+              "got": false,
+              "per_pad": [],
+              "why": "BOND_NOT_MEASURABLE"
+            }
+          ],
+          "reference_amps": {
+            "d619_real_fragment": 2.552,
+            "zone_min_thickness_0p200mm": 0.742
+          }
+        },
+        "return_nets": {
+          "GND": {
+            "netclass": "GND",
+            "plane_area_mm2": 18982.158,
+            "reserved_layers": [
+              "I1",
+              "I4"
+            ]
+          }
+        },
+        "splits": []
+      },
+      "PP3": {
+        "fragments": [],
+        "ok": true,
+        "reserved_inner_planes": {
+          "I1": [
+            "GND"
+          ],
+          "I3": [
+            "+3V3"
+          ],
+          "I4": [
+            "GND"
+          ]
+        }
+      },
+      "PP4": {
+        "condemned_fragments_skipped": [],
+        "ok": true,
+        "probes": [
+          {
+            "flips": true,
+            "pads": [
+              "C12.2",
+              "R123.2",
+              "R21.1",
+              "R24.2"
+            ],
+            "post_island": 21,
+            "pour": "+3V3|F|8c612136-d173-58bf-87cf-c0b97bedd2e0",
+            "with_barrels": "BONDED",
+            "without_barrels": "STRANDED"
+          },
+          {
+            "flips": true,
+            "pads": [
+              "C16.2",
+              "C17.2",
+              "C18.2",
+              "C25.2",
+              "C34.1",
+              "C35.2"
+            ],
+            "post_island": 33,
+            "pour": "GND|B|38685722-44ee-566f-b52b-89a56220a9e0",
+            "with_barrels": "BONDED",
+            "without_barrels": "STRANDED"
+          }
+        ]
+      }
+    },
+    "failed_clauses": [],
+    "ok": true,
+    "post_board": "/tmp/aqroot-demo-verify-ciileooy/post/aqroot-Beta-v2.kicad_pcb",
+    "pre_board": "/tmp/aqroot-demo-verify-ciileooy/pre/aqroot-Beta-v2.kicad_pcb",
+    "ran": true,
+    "results": {
+      "PP1": true,
+      "PP2": true,
+      "PP3": true,
+      "PP4": true
+    }
+  },
+  "pre_board_sha256": "5849b6587f92b296083ad8f9f23c295e5c7edb8afda85184aeea7334d4132028",
+  "promoted_board_sha256": "5849b6587f92b296083ad8f9f23c295e5c7edb8afda85184aeea7334d4132028",
+  "ref": "HEAD",
+  "removed_object_nets": [],
+  "removed_sample": [],
+  "rule_areas_added": [],
+  "rule_areas_narrowed": [],
+  "rule_areas_otherwise_changed": [],
+  "rule_areas_recentre_refused": [],
+  "rule_areas_recentred": [],
+  "rule_areas_removed": [],
+  "rule_areas_widened": [],
+  "schema": 1,
+  "verdict": "PASS",
+  "zones_added": [],
+  "zones_grown": [],
+  "zones_removed": [],
+  "zones_reshaped": [],
+  "zones_retired": []
+}

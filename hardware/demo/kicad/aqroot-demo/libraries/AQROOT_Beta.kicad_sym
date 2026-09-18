@@ -996,7 +996,7 @@
 				)
 			)
 		)
-		(property "Description" "Functional placeholder for AQROOT Beta 2.8-inch ILI9341 SPI LCD with FT6236 capacitive touch"
+		(property "Description" "RETIRED -- DO NOT INSTANTIATE ON AQROOT DEMO (D-768). This symbol is for the 2.8-inch 240x320 CH280QV10-CT / ILI9341 panel, which is NOT the locked Demo display. D-074 locked the EastRising ER-TFT035IPS-6 (3.5in 320x480, ILI9488) and D-112 replaced this symbol BECAUSE ITS PIN TABLE IS DEAD ON ARRIVAL HERE: panel pin 1 is LEDA with LEDK on 2 and 3 (this symbol has LEDK on 1 and four anodes on 2-5, so the backlight would be REVERSE BIASED), and pins 36/37 are WRX(SCL)/D-CX (this symbol has them reversed, so the panel would never receive a valid command). Use AQROOT_Beta:ER-TFT035IPS-6_50P. Kept, not deleted, so the history of D-112 stays readable. Functional placeholder for AQROOT Beta 2.8-inch ILI9341 SPI LCD with FT6236 capacitive touch"
 			(at 0 0 0)
 			(hide yes)
 			(effects
@@ -3960,7 +3960,7 @@
 					)
 				)
 			)
-			(property "Description" "CH280QV10-CT Rev.D 2.8in 240x320 IPS TFT + CTP module, 50-pin 0.5mm FPC - full physical interface"
+			(property "Description" "RETIRED -- DO NOT INSTANTIATE ON AQROOT DEMO (D-768). 2.8-inch 240x320 CH280QV10-CT / ILI9341 panel, which is NOT the locked Demo display. D-074 locked the EastRising ER-TFT035IPS-6 (3.5in 320x480, ILI9488) and D-112 replaced this symbol BECAUSE ITS PIN TABLE IS DEAD ON ARRIVAL HERE: panel pin 1 is LEDA with LEDK on 2 and 3 (this symbol has LEDK on 1 and four anodes on 2-5, so the backlight would be REVERSE BIASED), and pins 36/37 are WRX(SCL)/D-CX (this symbol has them reversed, so the panel would never receive a valid command). Use AQROOT_Beta:ER-TFT035IPS-6_50P. Kept, not deleted, so D-112 stays readable. ORIGINAL TEXT FOLLOWS: CH280QV10-CT Rev.D 2.8in 240x320 IPS TFT + CTP module, 50-pin 0.5mm FPC - full physical interface"
 				(at 0 0 0)
 				(hide yes)
 				(effects
@@ -7920,7 +7920,7 @@
 					)
 				)
 			)
-			(property "Description" "EastRising ER-TFT035IPS-6 + ER-TPC035-6: 3.5in 320x480 IPS TFT (ILI9488) with FT6236 capacitive touch, one 50-pin 0.50mm bottom-contact FPC. Pin table verbatim from ER-TFT035IPS-6_Datasheet Rev 2.0 sec 4.1"
+			(property "Description" "EastRising ER-TFT035IPS-6 + ER-TPC035-6: 3.5in 320x480 IPS TFT (ILI9488) with FT6236 capacitive touch, one 50-pin 0.50mm bottom-contact FPC, mating Hirose FH69-50S-0.5SH"
 				(at 0 0 0)
 				(hide yes)
 				(effects
@@ -7938,7 +7938,7 @@
 					)
 				)
 			)
-			(property "MPN" "CH280QV10-CT"
+			(property "MPN" "ER-TFT035IPS-6"
 				(at 0 0 0)
 				(hide yes)
 				(effects
@@ -7947,7 +7947,7 @@
 					)
 				)
 			)
-			(property "Package" "50-contact 0.5 mm pitch FPC tail, mates with Hirose FH69-50S-0.5SH. All 50 physical contacts represented; pin numbering and names transcribed from SPEC-CH280QV10-CT_Rev.D pages 6-7. TFT driver ILI9341V. Touch controller identity is VERIFY - panel datasheet says CST026, Adafruit material says FT6236/FT6236U-compatible; only the physical I2C/IRQ/RESET interface is locked. Panel FPC tail thickness is not stated in the datasheet - VERIFY it is 0.30 +/-0.05 mm against Hirose FH69 before procurement."
+			(property "Package" "50-contact 0.5 mm pitch FPC tail, mates with Hirose FH69-50S-0.5SH. All 50 physical contacts represented; pin numbering and names transcribed VERBATIM from ER-TFT035IPS-6_Datasheet Rev 2.0 section 4.1 (D-112). TFT driver ILI9488. D-768 CORRECTED THIS FIELD: it credited 'SPEC-CH280QV10-CT_Rev.D pages 6-7' and 'TFT driver ILI9341V', i.e. the RETIRED 2.8-inch panel whose pin table D-112 replaced BECAUSE IT WAS DEAD ON ARRIVAL HERE -- LEDA/LEDK reversed and WRX/D-CX swapped. Touch controller identity is VERIFY: panel datasheet says CST026, Adafruit material says FT6236/FT6236U-compatible; only the physical I2C/IRQ/RESET interface is locked, and the PO must name BOTH ER-TFT035IPS-6 and ER-TPC035-6. Panel FPC tail thickness is not stated in the datasheet - VERIFY it is 0.30 +/-0.05 mm against Hirose FH69 before procurement."
 				(at 0 0 0)
 				(hide yes)
 				(effects

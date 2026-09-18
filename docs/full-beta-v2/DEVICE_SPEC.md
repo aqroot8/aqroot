@@ -668,7 +668,7 @@ Qwiic/STEMMA QT I²C accessory port; RGB status indicator.
 2. ~~**Charge current (ICHG)** — programmed value not fixed.~~  **CLOSED at D-743:** 769 mA from `R37` 390 Ω, input limit 1100 mA and `VBATREG` 4.2 V from `R36` 13 kΩ.  The old 1 kΩ / 18 kΩ pair programmed 300 mA against a 360 min safety timer and could not complete a charge.
 3. **microSD max card capacity** — not stated.
 4. **Touch controller silicon** — FT6236 vs CST026 (interface locked; PO must specify).
-5. **Display driver symbol metadata** — stale ILI9341/CH280QV10 text vs locked ILI9488.
+5. ~~**Display driver symbol metadata** — stale ILI9341/CH280QV10 text vs locked ILI9488.~~ **CLOSED at D-768.**  It was worse than metadata: the stale string was on the `J1` **instance**, so *"CH280QV10-CT Rev.D 2.8in 240x320 IPS TFT + CTP"* was a column in the **released BOM**, and the `ER-TFT035IPS-6_50P` symbol's own `Package` field still credited *"SPEC-CH280QV10-CT_Rev.D pages 6-7. TFT driver ILI9341V"* for a pin table D-112 had transcribed from a different datasheet — on the one connector whose pin table had already been **dead on arrival** for exactly that reason (LEDA/LEDK reversed, WRX/D-CX swapped).  The board was and is correct; every place that names the panel now says `ER-TFT035IPS-6` / ILI9488, the two retired display symbols are annotated `RETIRED -- DO NOT INSTANTIATE`, and **`F7`** asserts the locked identity in the placed symbol, its library definition **and the released BOM row**, with three live controls.
 6. **915 antenna doc residue** — stale FXP890 vs locked external TI.92.2113 SMA.
 7. **Mechanical:** ~~BOSS2 X (59 vs 60),~~ **CLOSED at D-759 — it was the FBV2-EXP-002
    +1.000 mm re-base, the board is on the re-based datum, and `BOSS2` at 60.000 is right**;

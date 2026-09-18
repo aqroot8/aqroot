@@ -1,3 +1,132 @@
+## D-768 — **THE RELEASED BOM NAMED THE WRONG DISPLAY, ON THE ONE CONNECTOR WHOSE PIN TABLE HAD ALREADY BEEN DEAD ON ARRIVAL FOR EXACTLY THAT REASON**
+
+    authority  5849b658, UNCHANGED.  NO PCB change and no copper of any kind
+    changed    03_spi_a_display_sd.kicad_sch (J1 instance + the embedded
+               ER-TFT035IPS-6_50P definition), libraries/AQROOT_Beta.kicad_sym
+               (the same symbol, plus RETIRED annotations on two dead display
+               symbols), checks/demo_feature_contract.py (F7, three controls),
+               hardware/demo/fab (BOM regenerated), DEVICE_SPEC s.16 item 5
+    evidence   d768-* contract baselines
+
+### 1. WHAT WAS IN THE PACKAGE
+
+`aqroot-Demo-BOM-assembly.csv` and `-full.csv`, the documents a human reads to
+build and buy this board, carried on the `J1` row:
+
+    "CH280QV10-CT Rev.D 2.8in 240x320 IPS TFT + CTP, 50-pin 0.5mm FPC"
+
+**The locked Demo display is the EastRising `ER-TFT035IPS-6` — 3.5 inch,
+320×480, ILI9488** (D-074). The `CH280QV10-CT` is a **2.8 inch 240×320 ILI9341**
+panel that this project **retired**.
+
+### 2. WHY THIS EXACT STRING IS DANGEROUS AND NOT COSMETIC
+
+**D-112 already found what believing it costs.** It replaced the display symbol
+because the inherited `CH280QV10-CT` pin table was **dead on arrival on this
+board in two independent ways**, in its own words:
+
+* panel pin 1 is **`LEDA`** with **`LEDK` on 2 and 3**, while the retired symbol
+  had `LEDK` on 1 and four anodes on 2–5 — **the backlight would have been
+  reverse-biased**;
+* pins **36/37** are **`WRX(SCL)`/`D-CX`**, and the retired symbol had them
+  **reversed** — **the panel would never have received a valid command**.
+
+And D-112 recorded the reason those faults are so dangerous: *"Neither fault is
+visible from a pin count, a connector MPN or an ERC run."* Every automated check
+on this board passes with either pin table fitted.
+
+**D-112 fixed the pins and the `Description`, and left the retired panel's name
+in the `MPN` and in the PROVENANCE SENTENCE of the same symbol.** The
+`ER-TFT035IPS-6_50P` symbol's own `Package` field read *"pin numbering and names
+transcribed from **SPEC-CH280QV10-CT_Rev.D pages 6-7. TFT driver ILI9341V**"* —
+**one field below** a `Description` that correctly said ILI9488 — and its `MPN`
+read `CH280QV10-CT`. A symbol that credits the wrong datasheet for its own pin
+table is an invitation to "correct" it back to the table D-112 removed.
+
+**And the stale `Description` was on the J1 INSTANCE, so it reached the released
+BOM.** Not a library field nobody reads: a column in the fabrication package.
+
+### 3. THE BOARD WAS AND IS RIGHT
+
+Checked pin by pin against D-112's two corrections before changing anything:
+
+    J1.1  = LED_A            J1.36 = SPI_A_SCK   (WRX/SCL)
+    J1.2  = LED_K_PANEL      J1.37 = DISP_DC     (D-CX)
+    J1.3  = LED_K_PANEL      J1.38 = DISP_CS_N
+
+Anode on 1, cathodes on 2 and 3, `WRX`/`D-CX` the right way round. The placed
+symbol is `AQROOT_Beta:ER-TFT035IPS-6_50P` and it is the only display symbol the
+sheet defines. **No copper, no pin and no net changed in this decision.** What
+changed is that the package now says what the board actually is.
+
+### 4. THE FIX, AND THE TWO CORPSES
+
+* `J1`'s instance `Description`, and the symbol definition's in both the sheet
+  and the library, now name the **`ER-TFT035IPS-6`** — **tersely**. The first
+  attempt at this fix wrote the decision history into that field and `F7`
+  refused it, correctly: **a released BOM column is not the place to quote the
+  wrong panel's name**, even to disown it. The history lives in the symbol's
+  `Package` field and here.
+* The symbol's `MPN` is the panel, not `CH280QV10-CT`; its `Package` credits
+  `ER-TFT035IPS-6_Datasheet Rev 2.0 §4.1`, which is where D-112 actually took
+  the pin table from.
+* **Two dead display symbols were still in the library** —
+  `CH280QV10_CT_50P` and `ILI9341_FT6236_MODULE_PLACEHOLDER`. Neither is placed.
+  Both are now marked **`RETIRED -- DO NOT INSTANTIATE ON AQROOT DEMO`** with
+  D-112's two dead-on-arrival faults spelled out in the annotation. **Kept, not
+  deleted**, so the history stays readable.
+
+### 5. `F7`, AND WHY IT CHECKS THE BOM AND NOT JUST THE SCHEMATIC
+
+`F7_display_identity_is_the_locked_panel_everywhere` asserts the locked panel in
+**all three places it is written** — the placed symbol's `lib_id`, every property
+of the instance and of its library definition, and **the released BOM's `J1`
+row** — and refuses any retired panel token (`CH280QV10`, `ILI9341`, `2.8in`,
+`240x320`) that is not explicitly part of a retirement annotation.
+
+**Checking the schematic alone would have passed a board whose shipped BOM was
+wrong**, which is precisely what happened here: after the schematic was
+corrected, `F7` still failed, naming `CH280QV10` / `2.8in` / `240x320` on the BOM
+row, until the package was regenerated. Three live controls, all refused: the
+stale description put back on the symbol, the retired symbol placed, and the
+stale string put back on the BOM row alone.
+
+### 6. VERIFICATION
+
+    board            5849b658 UNCHANGED, zero copper objects touched
+    features         F1-F7 PASS.  F7 is new with three live controls, all
+                     refused; F5 keeps its ten; F6 its eight
+    released BOM     J1 row now names ER-TFT035IPS-6 / ER-TPC035-6 / ILI9488;
+                     MPN column still the Hirose FH69-50S-0.5SH, which is
+                     correct -- the assembler places the connector and the
+                     panel is off-board, in OFF_BOARD_BOM.md, which already
+                     named the right part
+    KiCad DRC        199 lib_footprint_issues all WARNING, zero other classes,
+                     17 unconnected, parity 246 warnings / 0 errors -- sets
+                     element-for-element identical to D-765/D-766/D-767
+    contracts        19 standing contracts run, none failing
+    fab package      FAB1-FAB15 PASS, sourcing 252/252
+    firmware         unchanged; four PlatformIO builds SUCCESS
+    hardware/beta-v2 UNTOUCHED
+
+**`DEVICE_SPEC` §16 item 5 is CLOSED by this decision.**
+
+### 7. WHAT IS NOT CLOSED
+
+* **Touch controller silicon** (`DEVICE_SPEC` §16 item 4) stays open and is a
+  **procurement** item, not a board one: the panel datasheet says `CST026`,
+  Adafruit material says `FT6236`/`FT6236U`, and only the physical I²C / IRQ /
+  RESET interface is locked. The PO must name **both** `ER-TFT035IPS-6` and
+  `ER-TPC035-6`.
+* **Panel FPC tail thickness** must still be verified at 0.30 ± 0.05 mm against
+  the Hirose `FH69` before procurement.
+* The **915 MHz antenna doc residue** (`FXP890` in two `U8` note fields against
+  the locked external SMA, `DEVICE_SPEC` §16 item 6) is the same defect class and
+  is **NOT fixed here**. It is prose in a note field, it does not reach any
+  released artifact, and it is left for a following decision rather than
+  bundled into this one.
+
+
 ## D-767 — **THE SAME TWO DEFECT CLASSES, ASKED OF THE WHOLE BOARD: A SECOND INDUCTOR NOBODY CHECKED, A SECOND SEMICONDUCTOR ON THE 39 V NODE, AND AN ARITHMETIC ERROR IN D-766 ITSELF**
 
     authority  5849b658, UNCHANGED.  NO PCB change.  Every Gerber, drill, CPL and

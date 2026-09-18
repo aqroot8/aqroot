@@ -66,7 +66,40 @@
 > `verify_promotion` PASS and `protected_copper` showing exactly one protected
 > net moved.  `U14.7` is on the bus.  This board has **no open owner decision**.
 
-> # **THE TWO ROUND-2 CAUSES ARE CLOSED, AND THEIR DEFECT CLASSES ARE CLOSED TOO (2026-09-18, D-766 + D-767).**
+> # **THE ROUND-2 CAUSES ARE CLOSED, THEIR DEFECT CLASSES WITH THEM, AND THE RELEASED BOM NO LONGER NAMES THE WRONG DISPLAY (2026-09-18, D-766 · D-767 · D-768).**
+>
+> **Board authority `5849b658`, unchanged since D-766.  D-765 closed the first
+> round-2 item, D-766 the second, D-767 generalised both defect classes across
+> the whole board, and D-768 closed `DEVICE_SPEC` §16 item 5 — which turned out
+> not to be metadata at all.**
+>
+> **D-768: the released BOM named the wrong display.**  `aqroot-Demo-BOM-assembly.csv`
+> and `-full.csv` carried on the `J1` row *"CH280QV10-CT Rev.D 2.8in 240x320 IPS
+> TFT + CTP"* — a **2.8-inch 240×320 ILI9341** panel this project
+> retired — while the locked Demo display is the **3.5-inch 320×480 ILI9488
+> `ER-TFT035IPS-6`** (D-074).  **D-112 had already found what believing that
+> string costs**: it replaced the display symbol because the `CH280QV10-CT` pin
+> table is dead on arrival here in two independent ways — panel pin 1 is `LEDA`
+> with `LEDK` on 2 and 3, so the backlight would have been **reverse-biased**,
+> and pins 36/37 are `WRX(SCL)`/`D-CX` and were **reversed**, so the panel would
+> **never have received a valid command** — and it recorded that *"neither fault
+> is visible from a pin count, a connector MPN or an ERC run."*  D-112 fixed the
+> pins and the `Description` and **left the retired panel's name in the `MPN` and
+> in the provenance sentence of the same symbol**, whose `Package` field credited
+> *"SPEC-CH280QV10-CT_Rev.D pages 6-7. TFT driver ILI9341V"* one field below a
+> `Description` that said ILI9488.  **The board was and is right** — `J1.1` =
+> `LED_A`, `J1.2`/`J1.3` = `LED_K_PANEL`, `J1.36` = `SPI_A_SCK`, `J1.37` =
+> `DISP_DC` — checked pin by pin before anything was touched, and **no copper, no
+> pin and no net changed**.  `F7` now asserts the locked identity in the placed
+> symbol, its library definition **and the released BOM row**; checking the
+> schematic alone would have passed a board whose shipped BOM was wrong, and that
+> is literally what happened — `F7` kept failing after the schematic was fixed
+> until the package was regenerated.  The two dead display symbols left in the
+> library are annotated **`RETIRED -- DO NOT INSTANTIATE`**.
+>
+> # **D-766's AND D-767's ENTRIES FOLLOW.**
+>
+> # **THE TWO ROUND-2 CAUSES ARE CLOSED, AND THEIR DEFECT CLASSES TOO (2026-09-18, D-766 + D-767).**
 >
 > **Board authority `5849b658`.  D-765 closed the first round-2 item (the
 > unsupported `TPS22950C` `ILIM` setting).  D-766 closed the second (firmware
