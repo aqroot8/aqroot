@@ -1,0 +1,242 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""AQROOT Demo -- is every feature `AQROOT_DEMO_SCOPE.md` says MUST REMAIN
+FUNCTIONAL actually on this board and actually wired? D-745.
+
+EVERY OTHER CHECK IN THIS REPOSITORY IS A NO-REGRESSION CHECK.  `routing_ledger`
+counts open edges, `contract_regression` diffs against a prior artifact,
+`verify_promotion` compares a candidate with an authority.  All of them would
+pass, unchanged and green, on a board that had never had a microphone -- because
+none of them has ever been told what the product is supposed to DO.
+
+The engineering charter asks for the opposite question before fabrication:
+*"retained RF/NFC/USB/display/audio/IR/microSD/power features remain intact"*,
+and it asks it ABSOLUTELY.  So this file transcribes `AQROOT_DEMO_SCOPE.md`'s
+own list -- feature by feature, in its own words -- into references and nets,
+and asserts three things per feature:
+
+    F1  every named reference EXISTS on the board and is FITTED
+        (a scope feature implemented by a DNP part is not implemented)
+    F2  every named net is a real multi-pad net whose only open edge, if any,
+        is one an owner decision covers
+    F3  the approved-NC contacts are EXACTLY the eight `J5` positions Demo
+        scope names -- no more, and no fewer
+
+The table below is the deliverable, not the code.  It is deliberately verbose
+and deliberately quotes the scope document, because the failure mode it guards
+against is a board that passes every geometric check while quietly missing
+something a backer was promised.
+
+    python3 checks/demo_feature_contract.py [-o OUT.json]
+"""
+import argparse, json, sys
+from pathlib import Path
+
+HERE = Path(__file__).resolve().parent
+MFG = HERE.parent
+sys.path.insert(0, str(MFG))
+import routing_ledger as rl                                  # noqa: E402
+
+# --------------------------------------------------------------------------
+# `AQROOT_DEMO_SCOPE.md` -> board.  `refs` must be FITTED; `nets` must be whole.
+# --------------------------------------------------------------------------
+FEATURES = (
+    dict(scope="ESP32-S3 main computer", refs=("U1",),
+         nets=("/02_MCU_CORE/BOOT_N",)),
+    dict(scope="16 MB flash / 8 MB PSRAM", refs=("U1",), nets=(),
+         note="in-module on the ESP32-S3-WROOM-1 variant; no separate part"),
+    dict(scope="3.5-inch touchscreen", refs=("J1",),
+         nets=("/DISP_CS_N", "/DISP_DC", "/DISP_RST_N", "/SPI_A_SCK",
+               "/SPI_A_MOSI", "/SPI_A_MISO", "/TOUCH_INT_N", "/TOUCH_RST_N",
+               "/03_SPI_A_DISPLAY_SD/LED_A", "/03_SPI_A_DISPLAY_SD/LED_K",
+               "/DISP_BL_CTL")),
+    dict(scope="D-pad + A/B controls",
+         refs=("SW2", "SW3", "SW4", "SW5", "SW6", "SW7"),
+         nets=("/08_BUTTONS_EXPANDERS/BTN_UP_N", "/08_BUTTONS_EXPANDERS/BTN_DOWN_N",
+               "/08_BUTTONS_EXPANDERS/BTN_LEFT_N", "/08_BUTTONS_EXPANDERS/BTN_RIGHT_N",
+               "/08_BUTTONS_EXPANDERS/BTN_A_N", "/08_BUTTONS_EXPANDERS/BTN_B_N")),
+    dict(scope="physical power switch", refs=("SW9",), nets=()),
+    dict(scope="recessed BOOT / recovery", refs=("SW1",),
+         nets=("/02_MCU_CORE/BOOT_N",)),
+    dict(scope="RGB status indicator", refs=("D13", "R124", "R125", "R126"),
+         nets=("/08_BUTTONS_EXPANDERS/FRONT_RGB_R_N",
+               "/08_BUTTONS_EXPANDERS/FRONT_RGB_G_N",
+               "/08_BUTTONS_EXPANDERS/FRONT_RGB_B_N"),
+         note="the three RGB replacement nets the charter names explicitly"),
+    dict(scope="Wi-Fi / Bluetooth / BLE", refs=("U1",), nets=(),
+         note="in-module radio and antenna on the ESP32-S3-WROOM-1"),
+    dict(scope="433 MHz radio + internal 433 antenna", refs=("U7",),
+         nets=("/CC1101_CS_N", "/CC1101_GDO0", "/SPI_B_SCK", "/SPI_B_MOSI",
+               "/SPI_B_MISO")),
+    dict(scope="915 MHz LoRa + one external 915 antenna", refs=("U8",),
+         nets=("/SX1262_CS_N", "/SX1262_BUSY", "/SX1262_RST_N", "/SX1262_RXEN",
+               "/SX1262_DIO1", "/04_SPI_B_RADIOS_NFC/DIO2_TXEN")),
+    dict(scope="NFC operating from the 3.3 V path + internal NFC antenna",
+         refs=("U9", "Y1", "L5", "L6"),
+         nets=("/NFC_SUPPLY", "/NFC_IRQ", "/NFC_CS_N",
+               "/04_SPI_B_RADIOS_NFC/NFC_ANT_A", "/04_SPI_B_RADIOS_NFC/NFC_ANT_B",
+               "/04_SPI_B_RADIOS_NFC/NFC_VDD_RF", "/04_SPI_B_RADIOS_NFC/NFC_VDD_AM",
+               "/04_SPI_B_RADIOS_NFC/NFC_VDD_A", "/04_SPI_B_RADIOS_NFC/NFC_VDD_D"),
+         note="U13, the optional NFC 5 V PA boost, is DNP by Demo scope and is "
+              "deliberately NOT required here"),
+    dict(scope="IR transmitter", refs=("U17",),
+         nets=("/IR_TX_GPIO16", "/07_IR/IR_LED_A", "/07_IR/IR_LED_K",
+               "/07_IR/IR_GATE")),
+    dict(scope="IR receiver", refs=("U6",),
+         nets=("/IR_RX_GPIO44", "/07_IR/IR_RX_VS_LOCAL")),
+    dict(scope="speaker", refs=("U5",),
+         nets=("/I2S_BCLK", "/I2S_LRCLK", "/I2S_SPK_DOUT", "/AMP_SD_MODE",
+               "/06_AUDIO/SPK_P", "/06_AUDIO/SPK_N"),
+         note="LS1 itself is OFF-BOARD on flying leads -- aqroot-Demo-OFF-BOARD.csv"),
+    dict(scope="microphone", refs=("MK1",),
+         nets=("/I2S_MIC_DIN", "/I2S_BCLK", "/I2S_LRCLK")),
+    dict(scope="BMI270 6-axis IMU", refs=("U4",),
+         nets=("/I2C_SDA_INT", "/I2C_SCL_INT",
+               "/05_I2C_DEVICES/BMI270_SDO_ADDR")),
+    dict(scope="microSD", refs=("J2",),
+         nets=("/SD_CS_N", "/SD_CARD_DETECT_N", "/SPI_A_SCK", "/SPI_A_MOSI",
+               "/SPI_A_MISO")),
+    dict(scope="USB-C data / programming", refs=("J3", "U10"),
+         nets=("/01_POWER_TREE/USB_D_CONN_P", "/01_POWER_TREE/USB_D_CONN_N",
+               "/01_POWER_TREE/USB_D_ESD_P", "/01_POWER_TREE/USB_D_ESD_N",
+               "/USB_D_MCU_P", "/USB_D_MCU_N")),
+    dict(scope="USB-C charging", refs=("J3", "R30", "R31", "R35"),
+         nets=("/01_POWER_TREE/USB_VBUS_RAW", "/01_POWER_TREE/USB_VBUS_CHG",
+               "/01_POWER_TREE/VBUS_PRESENT")),
+    dict(scope="battery + connector", refs=("J4", "F1"),
+         nets=("/01_POWER_TREE/BAT_PROTECTED_P",)),
+    dict(scope="charger", refs=("U11", "R36", "R37", "R38"),
+         nets=("/01_POWER_TREE/BQ25185_SYS", "/01_POWER_TREE/ISET",
+               "/01_POWER_TREE/ILIM_VSET", "/BQ25185_STAT1"),
+         note="/BQ25185_STAT2 is required too and is listed separately below, "
+              "because its U11.3 edge is the one an owner decision covers"),
+    dict(scope="charger status observability (D-742 owner decision)",
+         refs=("R127", "R128", "TP6", "TP7"), nets=("/BQ25185_STAT2",),
+         note="U11.3 ships unconnected; R128 and TP7 are retained so the net "
+              "stays benchable, and THIS contract is what fails if they are "
+              "ever depopulated"),
+    dict(scope="required battery/power safety architecture (D-269, D-186)",
+         refs=("U18", "Q2", "Q3", "R75", "D9", "U19"),
+         nets=("/01_POWER_TREE/BAT_RAW", "/01_POWER_TREE/BAT_MID",
+               "/01_POWER_TREE/BAT_SENSE", "/01_POWER_TREE/LTC4368_FAULT_N")),
+    dict(scope="battery fuel gauge", refs=("U14",),
+         nets=("/I2C_SDA_INT", "/I2C_SCL_INT")),
+    dict(scope="main +3V3 rail", refs=("U12", "L1"), nets=("+3V3",)),
+    dict(scope="Qwiic / STEMMA QT connector", refs=("J8",),
+         nets=("/09_COMMUNITY_HEADER/EXT_SDA", "/09_COMMUNITY_HEADER/EXT_SCL")),
+    # ---- Community Port, Demo requirements, in the scope document's order ----
+    dict(scope="Community Port: the physical 1x24 connector", refs=("J5",), nets=()),
+    dict(scope="Community Port: 3.3 V accessory power", refs=("U20",),
+         nets=("/ACC_3V3_SW", "/ACC_3V3_EN", "/01_POWER_TREE/ACC_3V3_ILIM")),
+    dict(scope="Community Port: ONE usable 5 V accessory output",
+         refs=("U21", "U22", "L4"),
+         nets=("/ACC_5V_SW", "/01_POWER_TREE/ACC_5V_RAW",
+               "/01_POWER_TREE/ACC_5V_ILIM", "/01_POWER_TREE/ACC_5V_FB")),
+    dict(scope="Community Port: software-switched 3.3 V accessory power",
+         refs=("U20",), nets=("/ACC_3V3_EN",)),
+    dict(scope="Community Port: software-switched 5 V accessory power",
+         refs=("U22",), nets=("/ACC_5V_SW_EN", "/ACC_5V_BOOST_EN"),
+         note="ACC_5V_SW_EN connectivity is a named Demo requirement"),
+    dict(scope="Community Port: SDA and SCL", refs=("U16",),
+         nets=("/09_COMMUNITY_HEADER/EXT_SDA", "/09_COMMUNITY_HEADER/EXT_SCL",
+               "/ACC_PWR_EN")),
+    dict(scope="Community Port: Native GPIO A and B", refs=("J5",),
+         nets=("/NATIVE_A", "/NATIVE_B", "/09_COMMUNITY_HEADER/NATIVE_A_HDR",
+               "/09_COMMUNITY_HEADER/NATIVE_B_HDR")),
+    dict(scope="Community Port: Accessory Detect", refs=("J5",),
+         nets=("/ACC_DETECT_N", "/09_COMMUNITY_HEADER/ACC_DETECT_N_HDR")),
+    dict(scope="Community Port: the two retained public XGPIO", refs=("U3",),
+         nets=("/XGPIO4", "/XGPIO5", "/09_COMMUNITY_HEADER/XGPIO4_HDR",
+               "/09_COMMUNITY_HEADER/XGPIO5_HDR"),
+         note="Demo scope keeps XGPIO4 and XGPIO5 public and only those two"),
+    dict(scope="Community Port: accessory fault telemetry", refs=("U3",),
+         nets=("/ACC_POWER_FAULT_N",)),
+    dict(scope="GPIO expanders retained by the dependency analysis",
+         refs=("U2", "U3"), nets=("/WAKE_INT_N",),
+         note="U23 is REMOVED on Demo by scope; it is deliberately not required"),
+)
+
+# Demo scope: "unused physical connector positions may remain electrically NC".
+EXPECTED_NC = {"J5.9", "J5.10", "J5.11", "J5.12",
+               "J5.15", "J5.16", "J5.17", "J5.18"}
+
+
+def main():
+    ap = argparse.ArgumentParser()
+    ap.add_argument("-o", dest="out", type=Path)
+    args = ap.parse_args()
+
+    ledger = rl.generate()
+    by_net = {n["net"]: n for n in ledger["nets"]}
+    fitted = set()
+    import pcbnew
+    board = pcbnew.LoadBoard(str(rl.BOARD.resolve()))
+    on_board = {f.GetReference() for f in board.GetFootprints()}
+    sch_fitted, sch_dnp = rl.schematic_population()
+
+    missing_refs, dnp_refs, bad_nets = [], [], []
+    rows = []
+    for f in FEATURES:
+        miss = [r for r in f["refs"] if r not in on_board]
+        dnp = [r for r in f["refs"] if r in sch_dnp]
+        nets = []
+        for n in f["nets"]:
+            row = by_net.get(n)
+            if row is None:
+                nets.append(dict(net=n, present=False))
+                bad_nets.append((f["scope"], n, "ABSENT or single-pad"))
+                continue
+            ok = row["unapproved_open_edges"] == 0
+            nets.append(dict(net=n, present=True, pads=row["pads"],
+                             open_edges=row["open_edges"],
+                             approved_unrouted_edges=row["approved_unrouted_edges"],
+                             unapproved_open_edges=row["unapproved_open_edges"],
+                             ok=ok))
+            if not ok:
+                bad_nets.append((f["scope"], n, "unapproved open edge"))
+        missing_refs += [(f["scope"], r) for r in miss]
+        dnp_refs += [(f["scope"], r) for r in dnp]
+        rows.append(dict(scope=f["scope"], note=f.get("note"),
+                         refs=list(f["refs"]), missing_refs=miss, dnp_refs=dnp,
+                         nets=nets,
+                         ok=not miss and not dnp and all(
+                             n.get("ok", False) or not n.get("present", False) is False
+                             for n in nets) and not any(
+                             (not n.get("present")) or (not n.get("ok", True)) for n in nets)))
+
+    nc = ledger["approved_demo_nc"]
+    checks = {
+        "F1_every_scope_part_fitted": dict(
+            ok=not missing_refs and not dnp_refs,
+            features=len(FEATURES),
+            references=len({r for f in FEATURES for r in f["refs"]}),
+            missing_from_board=[list(x) for x in missing_refs],
+            populated_as_dnp=[list(x) for x in dnp_refs]),
+        "F2_every_scope_net_whole": dict(
+            ok=not bad_nets,
+            nets=len({n for f in FEATURES for n in f["nets"]}),
+            failures=[list(x) for x in bad_nets]),
+        "F3_approved_nc_exactly_as_scoped": dict(
+            ok=(set(nc["observed"]) == EXPECTED_NC
+                and not nc["missing"] and not nc["unexpected"]),
+            expected=sorted(EXPECTED_NC), observed=nc["observed"],
+            missing=nc["missing"], unexpected=nc["unexpected"]),
+    }
+    out = dict(schema=1, board=ledger["board"],
+               board_sha256=ledger["board_sha256"],
+               source="docs/full-beta-v2/AQROOT_DEMO_SCOPE.md",
+               connectivity=ledger["connectivity"],
+               approved_unrouted=ledger["approved_unrouted"]["expected"],
+               features=rows, checks=checks,
+               all_pass=all(c["ok"] for c in checks.values()))
+    text = json.dumps(out, indent=1, sort_keys=True)
+    if args.out:
+        args.out.write_text(text + "\n", encoding="utf-8")
+    print(text)
+    for k, c in checks.items():
+        print("  %s %s" % (k, "PASS" if c["ok"] else "FAIL"), file=sys.stderr)
+    return 0 if out["all_pass"] else 1
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

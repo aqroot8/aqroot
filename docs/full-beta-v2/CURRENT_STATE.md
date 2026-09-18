@@ -66,6 +66,42 @@
 > `verify_promotion` PASS and `protected_copper` showing exactly one protected
 > net moved.  `U14.7` is on the bus.  This board has **no open owner decision**.
 
+> **D-745: SIXTEEN CONTRACTS, AND UNTIL NOW NOT ONE OF THEM KNEW WHAT THE
+> PRODUCT WAS (2026-09-18).**  `authority c7f5c618` UNCHANGED, no copper.  Every
+> other contract on this board is a no-regression check and **all fifteen would
+> pass, green, on a board that had never had a microphone.**
+> `checks/demo_feature_contract.py` transcribes `AQROOT_DEMO_SCOPE.md`'s own
+> "Features that MUST remain functional" and Community-Port lists into **37
+> features, 59 references and 103 nets** and asserts them ABSOLUTELY: every part
+> on the board AND fitted (a scope feature implemented by a DNP part is not
+> implemented), every net whole or covered by a NAMED owner decision, and the
+> approved-NC set exactly the eight `J5` positions scope allows.  **F1/F2/F3 all
+> PASS**, and five controls prove it is not vacuous -- requiring `U13` (DNP) or
+> `U23` (removed) fails F1, requiring a non-existent net fails F2, adding `J5.1`
+> to the NC set fails F3, and **emptying `APPROVED_UNROUTED` fails F2 on
+> `/BQ25185_STAT2`**, so the board is allowed to ship with `U11.3` bare only
+> because D-742's decision is machine-checked, not remembered.
+>
+> **D-744 CLOSED FOUR PRE-FAB ITEMS BY MEASUREMENT AND FOUND A SECOND
+> SWITCHED-OFF TEST (2026-09-18).**  `authority c7f5c618` UNCHANGED, no copper,
+> no schematic.  **`min_connection` is 0.000 mm, so KiCad's `connection_width`
+> test has never run on this board** -- the same defect class D-738 found in
+> `solder_mask_min_width`.  Probed at 0.200 mm in a scratch copy it returns 95
+> violations over 81 distinct pairs, **74 of them acute-angle throats between
+> 0.200 mm tracks**, and seven below 0.150 mm of which six are TANGENT VIA PADS.
+> The question that matters is whether any of them is LOAD-BEARING -- KiCad
+> treats overlapping via pads as connected, so a net held together by a 0.029 mm
+> tangency reads connected in the ratsnest, the ledger and the gate.  **None is**,
+> and the graph that proves it proves itself first on two controls: the net the
+> ledger calls whole resolves to ONE component and the approved-unrouted net
+> stays at TWO.  It is now the **fifteenth standing contract**.  Also: **zero
+> orphan pour islands** across all 95 filled islands on six layers; NFC
+> decoupling measured at **4.6-7.4 mm on every driver rail** (`VDD_RF` 0.249 ohm
+> at 13.56 MHz, about 62 mV of ripple at the 250 mA peak) with all eighteen TUNE
+> parts and both antenna test points present; and **`M-09` closed as BOUNDED** --
+> 8.51 mm is the connector's largest body dimension so D-738's 22.70 of 23.0 mm
+> is an upper bound and the column fits.
+>
 > **D-743 FIXED A CHARGER THAT COULD NOT COMPLETE A CHARGE, AND BUILT THE FIRST
 > ABSOLUTE POWER AUDIT THIS BOARD HAS EVER HAD (2026-09-18).**  `authority
 > 23ee647e -> c7f5c618`, **NO COPPER** -- two footprint `Value` fields, proved

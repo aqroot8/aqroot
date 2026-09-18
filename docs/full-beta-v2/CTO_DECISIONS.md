@@ -1,3 +1,237 @@
+## D-745 — **SIXTEEN CONTRACTS, AND UNTIL NOW NOT ONE OF THEM KNEW WHAT THE PRODUCT WAS.** EVERY DEMO-SCOPE FEATURE IS NOW ASSERTED ABSOLUTELY, PART BY PART AND NET BY NET
+
+    authority  c7f5c618  UNCHANGED.  NO COPPER, NO SCHEMATIC.
+    new        checks/demo_feature_contract.py -- the SIXTEENTH contract
+    evidence/d745-{demo-feature-contract,feature-contract-controls,
+                   contract-regression}.json
+
+### 1. THE GAP
+
+`routing_ledger.py` counts open edges.  `contract_regression.py` diffs against a
+prior artifact.  `verify_promotion.py` compares a candidate with an authority.
+`pour_bond`, `leaf_land`, `trunk_floor`, `tap`, `neck`, `land_parity`,
+`obstacle_model`, `rf_symmetry`, `keepout_stackup`, `pour_partition`,
+`protected_copper`, `placement`, `population`, `fab_provenance` and D-744's
+`connection_width` are all, in their own ways, the same shape of question:
+*did anything get worse?*
+
+**All fifteen would pass, unchanged and green, on a board that had never had a
+microphone.**  Not one of them has ever been told what AQROOT Demo is supposed
+to DO.  The engineering charter asks the other question before fabrication --
+*"retained RF/NFC/USB/display/audio/IR/microSD/power features remain intact"* --
+and asks it ABSOLUTELY.  Nothing in this repository could answer it.
+
+### 2. WHAT THE CONTRACT ASSERTS
+
+`AQROOT_DEMO_SCOPE.md`'s own *"Features that MUST remain functional"* list and
+its *"Community Port -- Demo requirements"* list, transcribed feature by feature
+into **37 features, 59 references and 103 nets**:
+
+    F1  every named reference EXISTS on the board and is FITTED.  A scope
+        feature implemented by a DNP part is NOT implemented, and the check
+        reads the schematic's own DNP field through the same
+        `routing_ledger.schematic_population()` the BOM is built from.
+    F2  every named net is a real multi-pad retained net whose
+        `unapproved_open_edges` is zero -- so a net passes either because it is
+        whole or because a NAMED OWNER DECISION covers its edge, and never
+        merely because it is absent.
+    F3  the approved-NC contacts are EXACTLY the eight `J5` positions Demo
+        scope allows -- no more, and no fewer.
+
+***ALL THREE PASS ON `c7f5c618`.***  The three RGB replacement nets the charter
+names explicitly -- `FRONT_RGB_R_N`, `_G_N`, `_B_N` -- are present with `D13`
+and `R124`-`R126`.  `ACC_5V_SW_EN`, which the invocation names as a Demo
+requirement, is present and whole.  `U13` is DNP and is DELIBERATELY NOT
+REQUIRED (NFC runs the 3.3 V path); `U23` is removed and is DELIBERATELY NOT
+REQUIRED.  `LS1` is off-board on flying leads and the contract requires `U5`,
+the amplifier, rather than the speaker.
+
+### 3. AND IT PROVES IT IS NOT VACUOUS
+
+A contract that passes on its first run has earned nothing.  Five controls,
+`evidence/d745-feature-contract-controls.json`:
+
+    require a DNP part (U13)                   F1 FAIL
+    require an absent part (U23)               F1 FAIL
+    require a net that does not exist          F2 FAIL
+    empty APPROVED_UNROUTED                    F2 FAIL  <- /BQ25185_STAT2
+    add J5.1 to the expected NC set            F3 FAIL
+
+The fourth is the one that matters most: **`/BQ25185_STAT2` passes F2 ONLY
+because D-742's owner decision covers its edge.**  Withdraw the decision and the
+feature contract fails, which is exactly the coupling a release gate should
+have -- the board is allowed to ship with that pin bare because somebody
+decided it should, and the decision is machine-checked, not remembered.
+
+### 4. WHAT THIS DOES NOT DO
+
+It does not prove the features WORK.  It proves they are fitted and wired, which
+is what a PCB can be held to; behaviour is bring-up.  And it is a transcription,
+so it is only as complete as the transcription -- which is why the table is
+verbose, quotes the scope document in each row, and records what it deliberately
+does NOT require and why.
+
+### 5. AND THE LAST OPEN MECHANICAL QUESTION IS ANSWERED WITH A DISTANCE
+
+`MECHANICAL_INTERFACE_SPEC` section 3.3 carried `J5` as an explicit open item --
+*"the recess geometry, not the board, decides whether the port is usable ... 
+re-check it against the 85 mm shell before the tool is cut"* -- reasoned about
+when the board was 72 mm wide and symmetric.  Measured from the board instead:
+
+    J5 pin span                       58.420 mm, y 10.000 .. 68.420 (24 pads)
+    J5 insulator body                 61.47 mm, y  8.475 .. 69.945
+    tail row                          x = 65.900
+    MATING FACE                       x = 72.430
+    board east edge over that span    x = 72.000   (Edge.Cuts, sampled 3 ways)
+    board east edge at the bump       x = 77.000
+    east gap where the board is 72    6.500 mm = 1.500 + 5.000
+    AIR from mating face to cavity    6.070 mm
+
+***THE 6.500 mm OF EAST-WALL BUDGET OUTSIDE THE BUMP IS NOT SPARE -- IT IS
+`J5`'s, AND ALL OF IT.***  The Samtec `SSQ` insertion depth is 3.68 to 6.35 mm
+and a standard 0.1 in male header presents about 6 mm of pin, so a plug cannot
+cross **6.070 mm of air** plus the wall and still seat.  **The east wall must
+step inward to follow the board's own step** over `y ~ 8.475 .. 69.945`, its
+inner face at `x ~ 72.430` plus assembly clearance, with the recess cut through
+it there.  A straight east wall at the bump line leaves the Community Port
+unusable even though every board-side dimension is correct.
+
+**This is an ENCLOSURE requirement and not a board change**, which is why it
+does not block fabrication -- but it is now a dimension a tool can be cut from
+rather than an instruction to re-check.  Written into
+`MECHANICAL_INTERFACE_SPEC` section 3.3, whose Z row also now records D-744's
+`M-09` closure.
+
+## D-744 — **FOUR PRE-FAB ITEMS CLOSED BY MEASUREMENT, AND ONE OF THEM WAS ANOTHER SWITCHED-OFF TEST.** THE `connection_width` CHECK HAS NEVER RUN ON THIS BOARD EITHER
+
+    authority  c7f5c618  UNCHANGED.  NO COPPER, NO SCHEMATIC.
+    new        checks/connection_width_contract.py -- the FIFTEENTH contract
+    evidence/d744-{connection-width-contract,pour-orphan-census,tangency-check,
+                   nfc-decoupling,contract-regression}.json
+    w/d744/{tangency_check,nfc_decoupling}.py, w/d743/pour_orphan_census.py
+
+### 1. `min_connection` IS 0.000 mm, SO `connection_width` HAS NEVER RUN
+
+D-738 found `solder_mask_min_width` at 0.000 mm and therefore a mask-bridge test
+that had never run behind every *"DRC is clean"* this programme ever recorded.
+**The same is true of `min_connection`**, and with it `connection_width` -- the
+test that measures the narrowest cross-section where two pieces of copper
+actually JOIN.  A zeroed threshold is an ABSENT check, not a passing one, and
+nothing in a violation count can tell the two apart.  The other zeroed settings
+were checked at the same time: `min_clearance` and `min_silk_clearance` are 0
+but their work is done by netclass and `.kicad_dru` rules, `min_groove_width`
+does not apply to this process, and D-741 already re-ran DRC with all five
+IGNORED rules promoted to error and reproduced the inherited result exactly.
+
+***THE RAW COUNT IS NOT THE FINDING.***  Probed at 0.200 mm, KiCad returns **95
+violations over 81 distinct object pairs, and 74 of them are acute-angle
+throats between 0.200 mm tracks** -- the geometry of a V, with continuous copper
+on both sides.  **Seven pairs fall below 0.150 mm**, and six of those are VIAS
+WHOSE PADS ARE TANGENT: 0.600 mm diameter at 0.600 to 0.632 mm spacing, which is
+not overlap at all but KiCad's polygon approximation of two circles that touch.
+
+***THE REAL QUESTION, WHICH NOTHING HERE COULD ASK.***  KiCad's connectivity
+treats two overlapping via pads as CONNECTED.  A net whose only link between its
+two halves is a 0.029 mm tangency therefore reads connected in the ratsnest, in
+`routing_ledger.py` and in the promotion gate -- and would ship as an open
+circuit if the fabricator's etch pinched it.  So the contract rebuilds each
+affected net's graph from EXPLICIT copper coincidence only -- track end to track
+end, **track end on another track's interior, because a T-junction is real
+copper**, track end to via, track end inside a pad, a via spanning its own
+layers -- and never joins two vias merely because their pads overlap.
+
+    net                              with tangency   without   load-bearing
+    /I2C_SCL_INT                           1             1         NO
+    /I2C_SDA_INT                           1             1         NO
+    /04_SPI_B_RADIOS_NFC/NFC_VDD_AM        1             1         NO
+    GND                                  209           209         NO
+
+**Nothing on this board depends on a contact below 0.150 mm.**
+
+***AND THE GRAPH PROVES ITSELF BEFORE IT RULES.***  C3 runs it on two named
+controls: `/I2C_SCL_INT`, which the ledger reports WHOLE, must come back as ONE
+component, and `/BQ25185_STAT2`, which the ledger reports OPEN at `U11.3`, must
+come back as TWO.  It does both.  A graph that cannot tell those two apart
+proves nothing about the nets in between, and the first version of this graph
+could not -- it returned 2 for `/I2C_SCL_INT` until T-junctions were added.
+
+**The board setup is NOT changed.**  Turning `min_connection` on would put 95
+errors on the authoritative board for zero engineering gain and break every
+contract that compares DRC counts.  The probe runs in a scratch copy; the
+measurement is the deliverable.
+
+### 2. THERE IS NO DEAD COPPER ANYWHERE ON THIS BOARD
+
+The pre-fab list asked to *"inspect the F.Cu +3V3 pour for islands and slivers
+and continued necessity"*.  Eyeballing it would have answered about one pour, so
+every pour was asked instead, by the question that matters: **does each filled
+island contain an anchor of its own net?**  `pour_bond` and `PP1` both walk from
+a PAD inwards, so an island with no pad is invisible to both.
+
+    +3V3        F.Cu    28 islands   6008.14 mm2   largest 3487.84
+    +3V3        In3.Cu   2           8777.67       largest 8748.17
+    GND         B.Cu    60           6259.35       largest 2269.36
+    GND         In1.Cu   1           9504.18
+    GND         In4.Cu   1           9504.18
+    BQ25185_SYS B.Cu     3            136.50
+
+**95 filled islands.  ZERO orphans, zero orphan area.**  Every one contains a
+pad, a via or a track endpoint of its own net.  The four smallest `GND` islands
+(0.35 to 0.48 mm2) are anchored and are ordinary via-sized copper, and no island
+on any layer is below 0.30 mm2.
+
+### 3. NFC DECOUPLING, MEASURED RATHER THAN ASSERTED
+
+    rail                pins    nearest cap        distance   L      Z @ 13.56 MHz
+    NFC_VDD_D           3       C46  10nF  0603     4.64 mm   1.86 nH   0.158 ohm
+    NFC_VDD_A           7       C47  2.2uF 0805     5.02 mm   2.01      0.171
+    NFC_VDD_AM          11      C51  2.2uF 0805     6.03 mm   2.41      0.206
+    NFC_AGDC            24      C54  10nF  0603     6.10 mm   2.44      0.208
+    NFC_VDD_RF          9,14    C49  2.2uF 0805     7.31 mm   2.92      0.249
+    +3V3 (VDD_IO)       1       C17  100nF 0603     7.39 mm   2.96      0.252
+    NFC_SUPPLY          8,10    C55  2.2uF 0603    11.24 mm   4.50      0.383
+
+At the driver's 250 mA peak in the 3.3 V configuration, `VDD_RF`'s 0.249 ohm is
+about **62 mV of ripple, 1.9 % of the rail**.  These distances are further than
+ST's reference layout and that is a real inherited weakness -- but it is **4.6 to
+7.4 mm from the pin on every rail the driver uses**, which is a ring of 0603 and
+0805 parts immediately outside a 5 x 5 mm QFN32 that also has to hold the
+crystal and the matching network, and **it cannot be improved without moving
+`U9`'s block on a board where every corridor probe returns 0.0 mm** (D-743).
+`NFC_SUPPLY` at 11.24 mm is the input pin, not a driver rail, and is fed through
+the +3V3 path.  **Accepted, with a first-article read-range measurement.**
+
+***AND THE TUNING ACCESS THE REVIEW ASKED ABOUT IS THERE***: eighteen parts
+carry `TUNE` in their value -- `L5`/`L6` 39 nH, `C69`-`C78` across the matching
+and receiver networks, `C79`/`C80` on the crystal, `R114`-`R117` -- and `TP37`
+and `TP38` land on the antenna nodes.
+
+### 4. `M-09` IS BOUNDED, AND THE BOUND FITS
+
+D-738 reopened `M-09` because the Z column had been computed with the 5.33 mm of
+a connector that is not fitted, and re-ran it at 8.50 mm for the
+`SSQ-124-02-G-S-RA` that is: `2.0 + 8.50 + 1.6 + 8.0 + 0.6 + 2.0 = ` **22.70 of
+23.0 mm**.  It raised, correctly, that *"whether that 8.50 mm is normal to the
+board or along the mating axis is genuinely ambiguous"*.
+
+The Samtec SSW/SSQ through-hole datasheet is now in the repository
+(`vendor/Samtec/samtec-ssw-ssq-through-hole.pdf`).  Its right-angle table gives
+**B = (2.54) .100 for lead style -02 single row**, which is the socket-axis
+height above the PCB, and **(8.51) .335** is the SSW/SSQ insulator dimension.
+**The ambiguity does not need resolving to close the question**: 8.51 mm is the
+part's LARGEST body dimension, so no orientation can put more than that normal
+to the board, and D-738's column already used it.  **22.70 of 23.0 is therefore
+an UPPER BOUND and the column fits.**  The exact figure stays CAD-TO-VERIFY
+against the Samtec 3D model, and `M-09` drops back to LOW.
+
+### 5. WHAT THIS DOES NOT CLOSE
+
+`J5`'s recess geometry against the 85 mm shell (`MECHANICAL_INTERFACE_SPEC`
+section 3.3 asks for it explicitly), the fabricator's written acceptance of the
+`J3` NPTH concession and the `MK1` acoustic mask opening, and Demo firmware
+written against the corrected D-742 decode.  None is a PCB fabrication blocker;
+all three are in the handoff.
+
 ## D-743 — **THE CHARGER COULD NOT COMPLETE A CHARGE.** TI HALVED `tMAXCHG` IN AUGUST AND THIS BOARD'S `ICHG` HAD BEEN CHOSEN AGAINST THE OLD NUMBER. TWO RESISTORS, AND THE FIRST ABSOLUTE POWER AUDIT THIS BOARD HAS EVER HAD
 
     authority  23ee647e -> c7f5c618   NO COPPER -- two footprint VALUE fields

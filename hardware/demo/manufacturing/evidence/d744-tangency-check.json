@@ -1,0 +1,38 @@
+{
+ "schema": 1,
+ "board": "/home/aqroot8/aqroot-demo/hardware/demo/kicad/aqroot-demo/aqroot-Beta-v2.kicad_pcb",
+ "question": "does any net depend on a sub-0.10 mm via-to-via tangency?",
+ "nets": [
+  {
+   "net": "/I2C_SCL_INT",
+   "components_with_via_tangency": 1,
+   "components_without_via_tangency": 1,
+   "tangency_is_load_bearing": false
+  },
+  {
+   "net": "/I2C_SDA_INT",
+   "components_with_via_tangency": 1,
+   "components_without_via_tangency": 1,
+   "tangency_is_load_bearing": false
+  },
+  {
+   "net": "/04_SPI_B_RADIOS_NFC/NFC_VDD_AM",
+   "components_with_via_tangency": 1,
+   "components_without_via_tangency": 1,
+   "tangency_is_load_bearing": false
+  },
+  {
+   "net": "/BQ25185_STAT2",
+   "components_with_via_tangency": 2,
+   "components_without_via_tangency": 2,
+   "tangency_is_load_bearing": false
+  },
+  {
+   "net": "/01_POWER_TREE/REC_BAT_LOW",
+   "components_with_via_tangency": 1,
+   "components_without_via_tangency": 1,
+   "tangency_is_load_bearing": false
+  }
+ ],
+ "any_load_bearing": false
+}

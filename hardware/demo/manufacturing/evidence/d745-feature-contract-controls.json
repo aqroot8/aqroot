@@ -1,0 +1,47 @@
+{
+ "question": "does the Demo feature contract FAIL when a scope feature is absent, DNP, open or NC-mismatched?",
+ "as_declared": {
+  "F1": true,
+  "F2": true,
+  "F3": true,
+  "missing": 0,
+  "dnp": 0,
+  "bad_nets": 0
+ },
+ "control_require_a_DNP_part": {
+  "F1": false,
+  "F2": true,
+  "F3": true,
+  "missing": 0,
+  "dnp": 1,
+  "bad_nets": 0
+ },
+ "control_require_an_absent_part": {
+  "F1": false,
+  "F2": true,
+  "F3": true,
+  "missing": 1,
+  "dnp": 0,
+  "bad_nets": 0
+ },
+ "control_require_an_absent_net": {
+  "F1": true,
+  "F2": false,
+  "F3": true,
+  "missing": 0,
+  "dnp": 0,
+  "bad_nets": 1
+ },
+ "control_owner_decision_withdrawn": {
+  "F2": false,
+  "note": "with APPROVED_UNROUTED emptied, /BQ25185_STAT2 must make F2 FAIL"
+ },
+ "control_nc_set_wrong": {
+  "F1": true,
+  "F2": true,
+  "F3": false,
+  "missing": 0,
+  "dnp": 0,
+  "bad_nets": 0
+ }
+}

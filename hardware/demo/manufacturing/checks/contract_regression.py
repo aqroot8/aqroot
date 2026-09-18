@@ -206,6 +206,38 @@ CONTRACTS = (
     # False vs True` -- and the fix is `export_fab_package.py`, not a comment.
     ("fab_provenance", "checks/fab_package_contract.py",
      ("--provenance-only",), "fab_provenance-contract", "verdict"),
+    # D-744.  THE FIFTEENTH, AND IT EXISTS BECAUSE OF D-738's LESSON RATHER
+    # THAN A NEW SYMPTOM.  D-738 found `solder_mask_min_width` at 0.000 mm and
+    # therefore a mask-bridge test that had NEVER RUN behind every "DRC is
+    # clean" this programme ever recorded.  `min_connection` is 0.000 mm on the
+    # same board, so `connection_width` -- the narrowest cross-section where
+    # two pieces of copper actually JOIN -- had never run either.  A zeroed
+    # threshold is an ABSENT check, not a passing one, and nothing in a
+    # violation count can tell the two apart.
+    #
+    # The contract probes it in a SCRATCH copy, so the authoritative board's
+    # own DRC count is untouched, and it does not judge by the raw number: 74
+    # of 81 distinct pairs are acute-angle throats between 0.200 mm tracks,
+    # which is the geometry of a V and not a defect.  What it judges is whether
+    # any net's connectivity DEPENDS on a contact below the strict floor --
+    # because KiCad treats two overlapping via pads as connected, so a net held
+    # together by a 0.029 mm tangency reads CONNECTED in the ratsnest, in
+    # `routing_ledger.py` and in the gate, and nothing here could have seen it.
+    ("connection_width", "checks/connection_width_contract.py", (),
+     "connection-width-contract", "all_pass"),
+    # D-745.  THE SIXTEENTH, AND THE ONLY ONE THAT KNOWS WHAT THE PRODUCT IS.
+    # Every contract above this line is a NO-REGRESSION check: it counts open
+    # edges, diffs an artifact, or compares a candidate with an authority.  All
+    # fifteen would pass, unchanged and green, on a board that had never had a
+    # microphone -- because none of them has ever been told what AQROOT Demo is
+    # supposed to DO.  This one transcribes `AQROOT_DEMO_SCOPE.md`'s own
+    # "Features that MUST remain functional" list into 59 references and 103
+    # nets and asserts, absolutely: every named part is on the board and is
+    # FITTED (a scope feature implemented by a DNP part is not implemented),
+    # every named net is whole or is covered by a named owner decision, and the
+    # approved-NC set is EXACTLY the eight J5 positions Demo scope allows.
+    ("demo_feature", "checks/demo_feature_contract.py", (),
+     "demo-feature-contract", "all_pass"),
 )
 BY_BASENAME = ("board", "schematic", "guard", "pre_board")
 

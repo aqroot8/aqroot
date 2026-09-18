@@ -1,0 +1,465 @@
+{
+ "schema": 1,
+ "board": "/home/aqroot8/aqroot-demo/hardware/demo/kicad/aqroot-demo/aqroot-Beta-v2.kicad_pcb",
+ "question": "U9 ST25R3916 local decoupling distance and tuning access",
+ "method": {
+  "inductance_nH_per_mm": 0.4,
+  "carrier_Hz": 13560000.0,
+  "driver_peak_A": 0.25,
+  "note": "pad centre to pad centre; the inductance figure is a microstrip-over-close-plane estimate, not a measurement, and is here to size the effect"
+ },
+ "rails": [
+  {
+   "net": "+3V3",
+   "pins": [
+    "1"
+   ],
+   "nearest_mm": 7.39,
+   "nearest": [
+    "C17",
+    "100nF",
+    "C_0603_1608Metric"
+   ],
+   "all_caps": [
+    [
+     7.39,
+     "C17",
+     "100nF",
+     "C_0603_1608Metric"
+    ],
+    [
+     9.25,
+     "C18",
+     "100nF",
+     "C_0402_1005Metric"
+    ],
+    [
+     9.84,
+     "C16",
+     "100nF",
+     "C_0603_1608Metric"
+    ],
+    [
+     32.04,
+     "C12",
+     "22uF",
+     "C_1210_3225Metric"
+    ],
+    [
+     43.68,
+     "C6",
+     "100nF",
+     "C_0603_1608Metric"
+    ],
+    [
+     47.82,
+     "C7",
+     "100nF",
+     "C_0603_1608Metric"
+    ],
+    [
+     50.98,
+     "C4",
+     "100nF",
+     "C_0603_1608Metric"
+    ],
+    [
+     53.53,
+     "C5",
+     "100nF",
+     "C_0603_1608Metric"
+    ],
+    [
+     73.45,
+     "C31",
+     "22uF 10V X7R",
+     "C_1206_3216Metric"
+    ],
+    [
+     74.25,
+     "C15",
+     "10uF",
+     "C_0805_2012Metric"
+    ],
+    [
+     74.42,
+     "C32",
+     "22uF 10V X7R",
+     "C_1206_3216Metric"
+    ],
+    [
+     74.46,
+     "C14",
+     "100nF",
+     "C_0603_1608Metric"
+    ],
+    [
+     76.42,
+     "C13",
+     "100nF",
+     "C_0603_1608Metric"
+    ],
+    [
+     77.37,
+     "C56",
+     "1uF",
+     "C_0603_1608Metric"
+    ],
+    [
+     80.67,
+     "C10",
+     "10uf",
+     "C_0805_2012Metric"
+    ],
+    [
+     84.29,
+     "C9",
+     "100nF",
+     "C_0603_1608Metric"
+    ],
+    [
+     84.5,
+     "C43",
+     "4.7uF 10V X5R",
+     "C_0805_2012Metric"
+    ],
+    [
+     87.56,
+     "C3",
+     "10uF",
+     "C_0805_2012Metric"
+    ],
+    [
+     87.73,
+     "C8",
+     "100nF",
+     "C_0603_1608Metric"
+    ],
+    [
+     88.62,
+     "C62",
+     "1uF 10V X7R",
+     "C_0603_1608Metric"
+    ],
+    [
+     92.59,
+     "C30",
+     "22uF 10V X7R",
+     "C_1206_3216Metric"
+    ],
+    [
+     93.69,
+     "C29",
+     "22uF 10V X7R",
+     "C_1206_3216Metric"
+    ],
+    [
+     111.96,
+     "C2",
+     "100nF",
+     "C_0603_1608Metric"
+    ]
+   ],
+   "path_inductance_nH": 2.96,
+   "Z_at_13p56MHz_ohm": 0.252
+  },
+  {
+   "net": "/04_SPI_B_RADIOS_NFC/NFC_AGDC",
+   "pins": [
+    "24"
+   ],
+   "nearest_mm": 6.1,
+   "nearest": [
+    "C54",
+    "10nF",
+    "C_0603_1608Metric"
+   ],
+   "all_caps": [
+    [
+     6.1,
+     "C54",
+     "10nF",
+     "C_0603_1608Metric"
+    ],
+    [
+     9.47,
+     "C53",
+     "1uF",
+     "C_0603_1608Metric"
+    ]
+   ],
+   "path_inductance_nH": 2.44,
+   "Z_at_13p56MHz_ohm": 0.208
+  },
+  {
+   "net": "/04_SPI_B_RADIOS_NFC/NFC_VDD_A",
+   "pins": [
+    "7"
+   ],
+   "nearest_mm": 5.02,
+   "nearest": [
+    "C47",
+    "2.2uF",
+    "C_0805_2012Metric"
+   ],
+   "all_caps": [
+    [
+     5.02,
+     "C47",
+     "2.2uF",
+     "C_0805_2012Metric"
+    ],
+    [
+     6.92,
+     "C48",
+     "10nF",
+     "C_0603_1608Metric"
+    ]
+   ],
+   "path_inductance_nH": 2.01,
+   "Z_at_13p56MHz_ohm": 0.171
+  },
+  {
+   "net": "/04_SPI_B_RADIOS_NFC/NFC_VDD_AM",
+   "pins": [
+    "11"
+   ],
+   "nearest_mm": 6.03,
+   "nearest": [
+    "C51",
+    "2.2uF",
+    "C_0805_2012Metric"
+   ],
+   "all_caps": [
+    [
+     6.03,
+     "C51",
+     "2.2uF",
+     "C_0805_2012Metric"
+    ],
+    [
+     10.18,
+     "C52",
+     "1nF",
+     "C_0603_1608Metric"
+    ]
+   ],
+   "path_inductance_nH": 2.41,
+   "Z_at_13p56MHz_ohm": 0.206
+  },
+  {
+   "net": "/04_SPI_B_RADIOS_NFC/NFC_VDD_D",
+   "pins": [
+    "3"
+   ],
+   "nearest_mm": 4.64,
+   "nearest": [
+    "C46",
+    "10nF",
+    "C_0603_1608Metric"
+   ],
+   "all_caps": [
+    [
+     4.64,
+     "C46",
+     "10nF",
+     "C_0603_1608Metric"
+    ],
+    [
+     6.13,
+     "C45",
+     "2.2uF",
+     "C_0805_2012Metric"
+    ]
+   ],
+   "path_inductance_nH": 1.86,
+   "Z_at_13p56MHz_ohm": 0.158
+  },
+  {
+   "net": "/04_SPI_B_RADIOS_NFC/NFC_VDD_RF",
+   "pins": [
+    "9",
+    "14"
+   ],
+   "nearest_mm": 7.31,
+   "nearest": [
+    "C49",
+    "2.2uF",
+    "C_0805_2012Metric"
+   ],
+   "all_caps": [
+    [
+     7.31,
+     "C49",
+     "2.2uF",
+     "C_0805_2012Metric"
+    ],
+    [
+     11.65,
+     "C50",
+     "10nF",
+     "C_0603_1608Metric"
+    ]
+   ],
+   "path_inductance_nH": 2.92,
+   "Z_at_13p56MHz_ohm": 0.249
+  },
+  {
+   "net": "/04_SPI_B_RADIOS_NFC/NFC_XIN",
+   "pins": [
+    "5"
+   ],
+   "nearest_mm": 4.72,
+   "nearest": [
+    "C80",
+    "10pF 50V C0G TUNE",
+    "C_0603_1608Metric"
+   ],
+   "all_caps": [
+    [
+     4.72,
+     "C80",
+     "10pF 50V C0G TUNE",
+     "C_0603_1608Metric"
+    ]
+   ],
+   "path_inductance_nH": 1.89,
+   "Z_at_13p56MHz_ohm": 0.161
+  },
+  {
+   "net": "/04_SPI_B_RADIOS_NFC/NFC_XOUT",
+   "pins": [
+    "4"
+   ],
+   "nearest_mm": 4.72,
+   "nearest": [
+    "C79",
+    "10pF 50V C0G TUNE",
+    "C_0603_1608Metric"
+   ],
+   "all_caps": [
+    [
+     4.72,
+     "C79",
+     "10pF 50V C0G TUNE",
+     "C_0603_1608Metric"
+    ]
+   ],
+   "path_inductance_nH": 1.89,
+   "Z_at_13p56MHz_ohm": 0.161
+  },
+  {
+   "net": "/NFC_SUPPLY",
+   "pins": [
+    "8",
+    "10"
+   ],
+   "nearest_mm": 11.24,
+   "nearest": [
+    "C55",
+    "2.2uF",
+    "C_0603_1608Metric"
+   ],
+   "all_caps": [
+    [
+     11.24,
+     "C55",
+     "2.2uF",
+     "C_0603_1608Metric"
+    ],
+    [
+     14.58,
+     "C19",
+     "100nF",
+     "C_0402_1005Metric"
+    ]
+   ],
+   "path_inductance_nH": 4.5,
+   "Z_at_13p56MHz_ohm": 0.383
+  }
+ ],
+ "worst_rail": {
+  "net": "/NFC_SUPPLY",
+  "mm": 11.24
+ },
+ "vdd_rf_ripple_mV": 62.2,
+ "tuning_parts": [
+  [
+   "C69",
+   "100pF 50V C0G TUNE"
+  ],
+  [
+   "C70",
+   "100pF 50V C0G TUNE"
+  ],
+  [
+   "C71",
+   "300pF 50V C0G TUNE"
+  ],
+  [
+   "C72",
+   "300pF 50V C0G TUNE"
+  ],
+  [
+   "C73",
+   "1.5nF 50V C0G TUNE"
+  ],
+  [
+   "C74",
+   "1.5nF 50V C0G TUNE"
+  ],
+  [
+   "C75",
+   "27pF 50V C0G TUNE"
+  ],
+  [
+   "C76",
+   "620pF 50V C0G TUNE"
+  ],
+  [
+   "C77",
+   "27pF 50V C0G TUNE"
+  ],
+  [
+   "C78",
+   "620pF 50V C0G TUNE"
+  ],
+  [
+   "C79",
+   "10pF 50V C0G TUNE"
+  ],
+  [
+   "C80",
+   "10pF 50V C0G TUNE"
+  ],
+  [
+   "L5",
+   "39nH TUNE"
+  ],
+  [
+   "L6",
+   "39nH TUNE"
+  ],
+  [
+   "R114",
+   "1R1 1% TUNE"
+  ],
+  [
+   "R115",
+   "1R1 1% TUNE"
+  ],
+  [
+   "R116",
+   "1k TUNE"
+  ],
+  [
+   "R117",
+   "1k TUNE"
+  ]
+ ],
+ "antenna_test_points": [
+  "TP37",
+  "TP38"
+ ],
+ "tuning_access_present": true
+}

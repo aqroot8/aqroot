@@ -190,7 +190,7 @@ WEST edge (`x = 0`) 1.500 mm off the west cavity wall; the cavity then runs
 | EAST wall, at the bump (`y 70.500 .. 104.005`) | 78.500 | `x = 77.000` | **1.500** | ≥ 1.5 | **MET EXACTLY** |
 | EAST wall, everywhere else | 78.500 | `x = 72.000` | 6.500 | ≥ 1.5 | MET |
 | Y, both ends | — | 0.000 / 148.000 | 3.500 each | ≥ 1.5 | MET |
-| Z | — | — | governed by the **connector column**, not by this table — see **M-09**, which D-738 REOPENED | component→shell ≥ 0.5 | **UNCHANGED by D-738 in X terms; UNRESOLVED in Z** |
+| Z | — | — | governed by the **connector column** — **M-09, which D-744 CLOSED AS BOUNDED**: 8.51 mm is the `SSW`/`SSQ` insulator's LARGEST body dimension, so no orientation puts more than that normal to the board, and D-738's column `2.0 + 8.50 + 1.6 + 8.0 + 0.6 + 2.0 = 22.70 of 23.0 mm` is an UPPER BOUND that fits | component→shell ≥ 0.5 | **FITS at the bound; exact figure CAD-TO-VERIFY against the Samtec 3D model** |
 
 **Two faces are at the minimum, not one.**  The WEST wall is at 1.500 mm for the
 whole 148 mm length, and the EAST wall is at 1.500 mm over the 33.505 mm the
@@ -200,14 +200,39 @@ directly.  The only place there is room to spend is the east wall OUTSIDE the
 bump, where there is 6.500 mm — and that is also where `J5`, the community
 port, exits, so that budget is already spoken for.
 
-**`J5` NEEDS A SEPARATE CHECK AND DOES NOT GET ONE HERE.**  It sits at
-`x = 65.900` on the 72 mm-wide section (`y 27.9 .. 53.2`), and the footprint
-master gives **6.53 mm from the tail row to the mating face**, putting that face
-at `x ≈ 72.43` — **past the board edge**, which is correct for a right-angle
-socket that mates through a wall recess, but it means the recess geometry, not
-the board, decides whether the port is usable.  That was last reasoned about
-when the board was 72 mm wide and symmetric.  **Re-check it against the 85 mm
-shell before the tool is cut.**
+**`J5` NEEDED A SEPARATE CHECK.  D-745 DID IT, AND THE ANSWER IS A NUMBER THE
+TOOL CAN BE CUT FROM.**  It sits at `x = 65.900` on the 72 mm-wide section, and
+the footprint master gives **6.53 mm from the tail row to the mating face**,
+putting that face at `x = 72.430` — **0.430 mm past the board edge**, which is
+correct for a right-angle socket that mates through a wall recess.  Measured
+from the board rather than from the retired 72 mm assumption:
+
+| quantity | value | source |
+|---|---|---|
+| `J5` pin span | **58.420 mm**, `y 10.000 .. 68.420` | 24 pads on the board |
+| `J5` insulator body | **61.47 mm**, `y 8.475 .. 69.945` | footprint master, 1.525 mm overhang per end |
+| tail row | `x = 65.900` | board |
+| **mating face** | **`x = 72.430`** | tail row + 6.53 mm |
+| board east edge over that span | `x = 72.000` | `Edge.Cuts`, sampled at `y` 10.00 / 39.21 / 68.42 |
+| board east edge at the bump | `x = 77.000` | `Edge.Cuts` |
+| east gap where the board is 72 mm wide | **6.500 mm** = 1.500 (bump face) + 5.000 (step) | §3.3 |
+| **air between the mating face and the east cavity face** | **6.070 mm** | derived |
+
+> **THE 6.500 mm OF EAST-WALL BUDGET OUTSIDE THE BUMP IS NOT SPARE — IT IS
+> `J5`'s, AND ALL OF IT.**  The Samtec `SSQ` insertion depth is **3.68 to
+> 6.35 mm**, and a standard 0.1 in male header presents about 6 mm of pin.  A
+> plug cannot cross **6.070 mm of air** *and* the wall thickness and still seat.
+> So the east wall **must step inward to follow the board's own step** over
+> `y ≈ 8.475 .. 69.945`, bringing its inner face to `x ≈ 72.430` plus the
+> assembly clearance, with the recess cut through it there.  A straight east
+> wall at the bump line leaves the Community Port unusable even though every
+> board-side dimension is correct.
+>
+> **This is an ENCLOSURE requirement, not a board change.**  The board-side
+> geometry is verified and is not what decides it — exactly as the earlier text
+> said, but now with the distance stated instead of deferred.  The closed-end
+> recess of D-240 (62.5 mm against a 60.96 mm male body, 1.54 mm of play) is
+> unchanged and still supplies the shift protection.
 
 The board's own `Edge.Cuts` is the source for `77.000`, `72.000`, `70.500` and
 `104.005`; D-737 verified all four against the profile (8 segments, extents
