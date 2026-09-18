@@ -1,3 +1,184 @@
+## D-756 — **DEMO_READY_FOR_FAB, ON A BOARD THAT SURVIVED FIVE MORE DEFECTS THAN THE LAST DECLARATION KNEW ABOUT**
+
+    authority  6f2fc8b6   (D-752 fitted D14/R132/C85; D-753 retuned R97/R101;
+                           D-754 and D-755 changed no hardware at all)
+    board      174 retained nets, 173 connected, 1 owner-approved open (U11.3),
+               0 unapproved; DRC 199 lib_footprint_issues, ALL warnings, ZERO of
+               every other class; schematic parity 0 ERRORS
+    evidence   d756-{release-verification,routing-ledger,protected-copper,
+               fab-package-contract,contract-regression}.json and a d756-* baseline set
+
+### 1. WHAT THIS CYCLE FOUND, IN THE ORDER IT FOUND IT
+
+The D-751 declaration was held by an independent re-review on ONE named
+blocker.  Closing it uncovered four more:
+
+  1. **`Q11`'s gate could not share `U17`'s `CTRL`** (D-752).  The `TPS61169`'s
+     PWM pin is an ANALOG dimming input — `SNVSA40B` §6.3.5, *"only the WLED DC
+     current is modulated"* — so the converter keeps switching through every low
+     phase.  The shared gate opened the LED string under an actively regulating
+     converter on every dimmed frame: `VOVP_SW` 36–39 V across a 30 V `AO3400A`,
+     and the firmware already drove 5 kHz LEDC.  ***D-751 had recorded that
+     arrangement as a safety CONSTRAINT.***
+  2. **`demo_feature_contract`'s "IR transmitter" row named `U17`** (D-752) — the
+     backlight boost — so `F1` passed on every run this repository has made while
+     requiring none of `D1`, `Q1`, `R22`, `R23`, `R24`.
+  3. **Two accessory states a user could reach already tripped the pack
+     protection** (D-753): the 5 V rail alone at its limiter drew 2.930 A and
+     both rails merely at their GUARANTEED currents drew 2.737 A, against a
+     `BQ25185` `IBAT_OCP` minimum of 2.5625 A.  D-750 had answered that item with
+     a policy, and the board has no accessory current measurement.
+  4. **The `PCAL9535A`'s output ports reset to `FFh`, not `00h`** (D-754).  NXP
+     Rev. 2 tables 7/8.  Every one of this board's six safe-at-0 expander outputs
+     is an ENABLE, so the real default makes the latch-before-direction rule
+     matter MORE than the false one did.
+  5. **A stray "`F1`'s 5 A" in a `.kicad_dru` comment silently became a published
+     rail current** (D-753).  Section 5's table is PARSED; `trunk_floor_contract`
+     `TF4` caught it.
+
+**AND TWO ITEMS WERE OPEN ONLY BECAUSE A WEB SERVER SAID NO.**  D-746 and D-751
+recorded the `ER-TFT035IPS-6` outline drawing and ST `AN5276` as unobtainable.
+`buydisplay.com` returns 403 to non-browser clients; `st.com` drops the
+connection; Mouser serves a JavaScript challenge.  **The Wayback Machine serves
+both.**  D-754 closed the display tail's pin-1 end from the vendor's own
+mirror-pair of views — *pin 1 is the RIGHT-hand end viewed from the display face,
+and `J1` pin 1 is the right-hand end of its row: **pin 1 meets pin 1*** — and
+D-755 put the NFC matching network beside `AN5276` Figure 2 element for element.
+
+### 2. THE FOUR THINGS THAT ARE DIFFERENT ABOUT THIS DECLARATION
+
+  * **Two safety invariants moved out of documents and into the circuit.**
+    `Q11` can no longer open before `U17` is in shutdown — not because firmware
+    sequences it but because `D14`/`C85`/`R132` give the gate a 22 ms envelope
+    against a 2.5 ms shutdown timer, **4.6× and waveform-independent**.  And no
+    accessory a user can attach can pull the pack into its own protection,
+    because 2.7 kΩ on both `ILIM` pins bounds it — **and the rails got MORE
+    usable, 0.277 A guaranteed each against the 0.15 A the old policy permitted**.
+  * **Two new contract clauses hold them.**  `F5` requires `Q11`'s gate net and
+    `U17`'s `CTRL` to be distinct, the gate net to carry exactly four named
+    contacts, and the `220k`/`100nF`/`1N4148` identities to stand.  `F6`
+    recomputes the whole accessory envelope from the two resistors the board
+    carries.  **Eight live negative controls between them, and two of those put
+    the superseded values back.**
+  * **Every remaining item is first-article or procurement, and is listed as
+    such** — with the measurements a first article needs, not just its name: the
+    NFC tune is a **0.325 mm pad-to-via bridge, mirror-exact on both arms**; the
+    `BAT_MAIN` thermal residual is **one 5.525 mm × 0.200 mm segment** with its
+    derived ceiling; the panel check is a diode-mode reading with the expected
+    values stated.
+  * **Nothing is claimed that a gate cannot see.**  `contract_regression` ran 17
+    contracts and **15 came back byte-identical** to the previous decision's
+    artifacts; the two that moved, moved by exactly what changed.
+
+### 3. RELEASE-GRADE VERIFICATION, WHOLE, ON `6f2fc8b6`
+
+    connectivity     174 retained multi-pad nets, 173 connected, 1 open
+                     approved_unrouted 1 (U11.3, owner decision D-742)
+                     unapproved_open_edges 0
+    approved NC      EXACTLY the 8 J5 positions Demo scope allows, none missing,
+                     none unexpected
+    KiCad DRC 10.0.5 199 lib_footprint_issues, EVERY ONE severity WARNING
+                     ZERO of every other class -- no clearance, no shorting,
+                     no hole_clearance, no solder_mask_bridge, no track_dangling
+    parity           246 warnings, 0 ERRORS
+    promotion        16 of 16 clauses PASS across D-752 and D-753
+    protected copper 15 nets / 406 objects IDENTICAL, differences {}
+    ampacity         all_ok; stackup self-check PASS at the board's own 0.0152 mm
+    features         F1-F6 PASS, 8 live controls refused
+    FAB1..FAB12      ALL PASS, 7 live controls refused; via-in-pad 136,
+                     mask dams 21, sourcing 252/252 orderable, 123 BOM lines
+    contracts        17 run, 17 pass, 15 IDENTICAL to d753
+    firmware         H1-H6 PASS, 11 policy controls refused, 9 host controls
+                     caught, 83 host claims over two tests, 4 PlatformIO builds
+    hardware/beta-v2 UNTOUCHED
+
+**There is no open owner decision and no unresolved Demo fabrication blocker.**
+
+## D-755 — **AN5276 IS ON THE RECORD, ONE ELEMENT IS GENUINELY ABSENT, AND THE FIT FOR IT IS 0.325 mm ON BOTH ARMS**
+
+    authority  6f2fc8b6 unchanged -- NO COPPER, NO SYMBOL, NO BOM, NO FAB OUTPUT
+    changed    AQROOT_DEMO_FAB_HANDOFF.md 8b, CURRENT_STATE.md
+    evidence   d755-nfc-matching-adjudication.json
+
+### 1. THE NOTE WAS REACHABLE, THE SAME WAY THE PANEL DRAWING WAS
+
+External review item 6 asked for the matching network to be reconstructed
+against current ST material, and the CTO addendum CORROBORATED the concern
+without dispositioning it.  D-746 and D-751 both recorded `AN5276` as
+unobtainable.  `st.com` refuses every direct fetch from this environment — HTTP/2
+`INTERNAL_ERROR`, then a 120 s timeout on HTTP/1.1 — and Mouser serves a
+JavaScript challenge; **the Wayback Machine's 2025-03-23 snapshot of `AN5276`
+Rev 6 (May 2023) does not.**  This is the second review item in two decisions
+that was open only because a web server said no (D-754 was the first).
+
+### 2. THE BOARD MATCHES FIGURE 2 ELEMENT FOR ELEMENT, WITH ONE EXCEPTION
+
+`AN5276` §3.4: *"The matching network in L topology follows the EMC filter and
+consists of one series and two parallel capacitors, in differential topology."*
+Figure 2 draws it:
+
+    RFO1 -> L_EMC1 -> A1 -> Cs1 -> B1 -> R1 -> ANT2  |  C_EMC1: A1->GND  Cp1: B1->GND
+    RFO2 -> L_EMC2 -> A2 -> Cs2 -> B2 -> R2 -> ANT1  |  C_EMC2: A2->GND  Cp2: B2->GND
+
+    L_EMC1/2   -> L5 / L6                                   PRESENT
+    C_EMC1/2   -> C69+C73 on NFC_EMCA, C70+C74 on NFC_EMCB   PRESENT
+    Cs1/Cs2    -> C71 / C72                                  PRESENT
+    Cp1/Cp2    -> (nothing)                                  ABSENT
+    R1/R2      -> R114 / R115, 1.1 ohm                       PRESENT
+
+`NFC_MATCH_A` carries exactly `C71.2` and `R114.1`; `NFC_MATCH_B` exactly
+`C72.2` and `R115.1`.  **The gap the review named is real.**
+
+***AND ONE HALF OF THE CONCERN WAS A MISREADING, WHICH THE FIGURE SETTLES.***
+The addendum took `AN5276`'s `RQ` — the PARALLEL Q-adjust resistor derived in §4
+— as the topology element and read the board's series resistors as a deviation.
+Figure 2 puts **`R1`/`R2` IN SERIES** between the matching node and the antenna,
+which is exactly what `R114`/`R115` are.  The series damping resistors are
+correct.  The receive divider is tapped AFTER them, at the antenna, where
+`AN5276` taps it at the matching node — a real difference, and the consequence is
+that the divider's own capacitance sits at the antenna node and therefore does
+**not** substitute for `Cp`.
+
+### 3. NO BOARD CHANGE, AND THE REASON IS MEASURED RATHER THAN ASSERTED
+
+`Cp`'s VALUE cannot be derived here.  `AN5276` derives `Cs` and `Cp` from the
+MEASURED antenna equivalent circuit — `L_ANT`, `R_P@fres`, `C_ANT` — through the
+ST25R matching tool, and **this antenna has not been built**.  Nothing could be
+baselined onto a BOM even if a position existed.
+
+And no symmetric position exists without re-floorplanning.  The rows either side
+of the matching nodes are FULL: `y = 25.700` carries `C73`, `R116` and `C76`, and
+`y = 34.300` their exact mirrors `C74`, `R117` and `C78`; the inboard space
+carries the `NFC_RFI1`/`NFC_RFI2` runs and their barrels.  Spending the
+`RF1`–`RF5` symmetry budget, the D-224 circular antenna geometry and the pour
+partition on two DNP pads whose NEED is unproven until the antenna is measured is
+a bad trade on a first spin, and the charter's own words apply — *avoid reopening
+already-good RF routes without a concrete gain.*
+
+### 4. WHAT D-755 ACTUALLY BUYS: THE FIT IS 0.325 mm, NOT A MASK SCRAPE
+
+D-751 recorded the tune element as *"an ordinary 0402 tacked across a measured
+0.500 mm gap"* to B.Cu `GND` **FILL** — which would mean removing solder mask
+over a pour, on a 13.56 MHz differential arm, by hand.  **The real geometry is
+better, and it is measured:**
+
+    A arm   C71.2 pad (NFC_MATCH_A) -> GND via (43.500, 26.700)   gap 0.3250 mm
+    B arm   C72.2 pad (NFC_MATCH_B) -> GND via (43.500, 33.300)   gap 0.3250 mm
+
+Both are edge-to-edge, both on `B.Cu`, both at the same `x`, and the two arms
+agree **to the last digit** — mirror-exact about `y = 30.000`, which is the axis
+the whole front end is built on.  An 0402 is 1.0 × 0.5 mm and bridges 0.325 mm
+with ≈0.34 mm of overlap at each end.  Both `GND` targets are plated barrels the
+fab notes ALREADY instruct to fill and cap-plate — *"applying the process to
+every via on the board is acceptable and is the simpler instruction"* — so each
+presents a planar, solderable land rather than an open hole.  **No mask removal,
+no cut track, and the symmetry `RF1`–`RF5` protects is untouched because the two
+fits are geometric mirrors.**
+
+The tune stays a FIRST-ARTICLE activity, as it must.  What changed is that it is
+now a measured 0.325 mm pad-to-via bridge on both arms instead of an
+unquantified bodge, and that the comparison against the note is on the record.
+
 ## D-754 — **THE VENDOR DRAWING WAS REACHABLE AFTER ALL, AND THE EXPANDER'S RESET VALUE WAS THE OPPOSITE OF WHAT THE DRIVER SAID**
 
     authority  6f2fc8b6 unchanged -- NO COPPER, NO SCHEMATIC SYMBOL, NO BOM CHANGE

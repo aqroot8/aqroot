@@ -1,31 +1,54 @@
 # AQROOT Demo — FABRICATION HANDOFF
 
-**Board:** `hardware/demo/kicad/aqroot-demo/aqroot-Beta-v2.kicad_pcb`
-**Authority:** `sha256 bdf1376cf95289452ca24150eb0738f7a9dacddf40bb422f2575869b05cf1ce6`
-**Package:** `hardware/demo/fab/` — 29 files, regenerated at this authority
-**Date:** 2026-09-18 · **Decisions:** D-742 … D-751 · **Prepared for:** independent CTO review
 
-> **THIS HANDOFF WAS REOPENED AND RE-ISSUED.**  It was first written at
-> `c7f5c618`.  An external first-spin review (Fable 5.1 + Astra) then found
-> four real defects in that package — a `J5` BOM identity naming the superseded
-> 2×12 `BCS-112-S-D-HE`, a physically floating `U14` `QSTRT`, a charger-input
-> audit computed at the wrong inner-copper thickness, and two boost converters
-> with no local input capacitor.  **D-750 closed all four and dispositioned the
-> other nine items; D-751 finished the transaction and re-ran the whole
-> release suite.**  Read
-> `audits/2026-09-18-d750-first-spin-review-dispositions.md` beside this file.
+> **STATUS: `DEMO_READY_FOR_FAB` — DECLARED AT D-756, 2026-09-18, ON BOARD
+> AUTHORITY `6f2fc8b6`.**  This supersedes the D-748 and D-751 declarations.
+> The D-751 package was HELD by an independent re-review on one named blocker;
+> closing it uncovered four more (D-752, D-753, D-754) and two further items
+> proved retrievable after all (D-754, D-755).  Release-grade verification was
+> re-run WHOLE on the final board: `evidence/d756-release-verification.json`.
+> **No open owner decision, no unresolved pre-order blocker.**  §8 below
+> separates first-article and procurement work from anything that could block
+> the order.
+
+**Board:** `hardware/demo/kicad/aqroot-demo/aqroot-Beta-v2.kicad_pcb`
+**Authority:** `sha256 6f2fc8b6fdb10052efd5068707d76e8d1a8eae9b8cf990e0daf74b18d0a5682d`
+**Package:** `hardware/demo/fab/` — 29 files, regenerated at this authority
+**Date:** 2026-09-18 · **Decisions:** D-742 … D-756 · **Prepared for:** independent CTO review
+
+> **THIS HANDOFF HAS BEEN REOPENED AND RE-ISSUED TWICE.**  It was first written
+> at `c7f5c618`.  An external first-spin review (Fable 5.1 + Astra) found four
+> real defects in that package — a `J5` BOM identity naming the superseded 2×12
+> `BCS-112-S-D-HE`, a physically floating `U14` `QSTRT`, a charger-input audit
+> computed at the wrong inner-copper thickness, and two boost converters with no
+> local input capacitor.  **D-750 closed all four and dispositioned the other
+> nine; D-751 finished the transaction at `bdf1376c`.**
+>
+> **AN INDEPENDENT RE-REVIEW THEN HELD D-751 ON ONE NAMED BLOCKER, AND CLOSING
+> IT UNCOVERED FOUR MORE.**  `Q11`'s gate could not share `U17`'s `CTRL`
+> (**D-752**); the feature contract's *"IR transmitter"* row named the backlight
+> boost (**D-752**); two accessory states a user could reach already tripped the
+> pack protection (**D-753**); the `PCAL9535A`'s output ports reset to `FFh`, not
+> `00h` (**D-754**); and a stray *"5 A"* in a parsed `.kicad_dru` comment became
+> a published rail current (**D-753**).  Two further items — the panel drawing
+> and ST `AN5276` — proved retrievable after all and are now closed on primary
+> sources (**D-754**, **D-755**).  Read
+> `audits/2026-09-18-d750-first-spin-review-dispositions.md` and the D-752…D-756
+> entries in `CTO_DECISIONS.md` beside this file.
 
 ---
 
 ## 1. Final board status
 
-77.000 × 148.000 mm stepped outline, 6 copper layers, 3550 tracks, 918 vias,
-71 zones, 312 footprints, 295 fitted references and 16 schematic-DNP.
+77.000 × 148.000 mm stepped outline, 6 copper layers, 3552 tracks, 918 vias,
+71 zones, 315 footprints, 298 fitted references and 16 schematic-DNP.
+*(D-752 fitted `D14`, `R132` and `C85`, the backlight-disconnect gate hold; the
+track and footprint counts move with them.)*
 
 | measure | value |
 |---|---|
-| retained multi-pad nets | **173** |
-| connected retained nets | **172** |
+| retained multi-pad nets | **174** |
+| connected retained nets | **173** |
 | retained open edges | 1 |
 | **unapproved open edges** | **0** |
 | approved Demo NC | `J5.9`–`J5.12`, `J5.15`–`J5.18` — expected == observed |
@@ -172,9 +195,19 @@ controls that prove neither half is vacuous: they **put the `J5` defect back**
 three ways, and `FAB5` mutates one row of the real `pos-fitted` file four ways
 (180° rotation, +10 mm, flipped side, duplicated row).
 
-`contract_regression` runs **17 contracts: all ran, all PASS**, with
-`protected_copper` **IDENTICAL to the `d746` baseline** — the fifteen protected
-nets and their 406 objects did not move through any of this.
+`contract_regression` runs **17 contracts: all ran, all PASS**, and at D-756
+**fifteen of them come back byte-identical to the `d753` artifacts** — the two
+that moved, moved by exactly what changed. `protected_copper` is **IDENTICAL**
+throughout: the fifteen protected nets and their 406 objects did not move
+through any of this, across D-750, D-751, D-752, D-753 and D-756.
+
+The assembly BOM carries **123 lines and 252 fitted references, 252 of them
+orderable** (coverage 1.0). D-752 added ONE purchasing identity — `D14`, LCSC
+`C2128`, a JLCPCB **BASIC** `1N4148WS` on the `SOD-323` land pattern the board
+already carries for `D8`/`D10`/`D11`/`D12` — while `C85` and `R132` joined
+existing lines. D-753 then RETIRED one: `R97` and `R101` both became 2.7 kΩ on a
+single new BASIC line (LCSC `C13167`), which also retired `R101`'s superseded
+`ERJ-PA3F1651V`, an EXTENDED part with 2 763 in stock.
 
 **THE VIA-IN-PAD COUNT MOVED 135 → 136 AND THE ONE THAT MOVED IT IS NAMED.**
 `Q11.3`'s tap put a 0.600/0.300 barrel at `(10.950, 112.800)`, half inside the
@@ -332,18 +365,42 @@ can only be confirmed by eye. `MK1` and `U5` share one `/I2S_BCLK` and one
    dead short at the other. Evidence:
    `evidence/d754-display-tail-orientation.json`.
 
-8b. **NFC MATCHING MUST BE RE-DERIVED FROM THE PRIMARY SOURCE** (item 6). There
-   is no dedicated shunt position between the series capacitors and the
-   antenna, and ST `AN5276` and the ST matching tool could not be retrieved
-   from this environment — so the topology was **not** changed on a
-   recollection. It is not a pre-order blocker because the tune position is
-   **fittable by construction**: `NFC_MATCH_A` and `NFC_MATCH_B` each sit
-   **0.500 mm** from B.Cu `GND` fill, on the same layer, symmetrically, so a
-   parallel element is an ordinary 0402 tacked across a measured gap at first
-   article — no rework, no cut track, no symmetry loss. Obtain `AN5276`,
-   re-derive `C_s`/`C_p`/`R_q` from the MEASURED antenna and ferrite with the
-   rear shell and battery installed, and record the final values before any
-   second article.
+8b. **NFC MATCHING: THE PRIMARY SOURCE IS NOW ON THE RECORD, AND THE TUNE IS A
+   MEASURED 0.325 mm FIT** (item 6 — **ADJUDICATED**, superseding the "could not
+   be retrieved" text this entry used to carry). `st.com` refuses every direct
+   fetch from this environment and Mouser serves a JavaScript challenge; the
+   Wayback Machine's 2025-03-23 snapshot of **AN5276 Rev 6 (May 2023)** does not.
+   **Figure 2 is the topology**, and the board matches it element for element
+   with ONE exception:
+   `L5`/`L6` = `L_EMC1/2`; `C69`+`C73` and `C70`+`C74` = `C_EMC1/2`;
+   `C71`/`C72` = `Cs1/Cs2`; **`Cp1`/`Cp2` — ABSENT**; `R114`/`R115` = `R1`/`R2`.
+   ***The 1.1 Ω series resistors are NOT a deviation***: the earlier note read
+   AN5276's `RQ` — the PARALLEL Q-adjust resistor of §4 — as the topology
+   element, and Figure 2 in fact puts `R1`/`R2` **in series** between the
+   matching node and the antenna, which is exactly what `R114`/`R115` are.
+   The receive divider is tapped after them, at the antenna, where AN5276 taps
+   it at the matching node — so the divider's capacitance does **not** substitute
+   for `Cp`.
+   **NO BOARD CHANGE, AND THE REASON IS MEASURED.** The rows either side of the
+   matching nodes are full — `y = 25.700` carries `C73`, `R116`, `C76` and
+   `y = 34.300` their exact mirrors — and the inboard space carries the
+   `NFC_RFI1/2` runs and their barrels; there is no symmetric site for a `Cp`
+   pair, and `Cp`'s VALUE cannot be derived before the antenna is built and
+   measured, so nothing could be baselined anyway.
+   **THE FIT IS BETTER THAN D-751 RECORDED IT.** That entry described "an
+   ordinary 0402 tacked across a measured 0.500 mm gap" to B.Cu `GND` **fill**,
+   which would mean removing solder mask. The real geometry: on each arm the
+   matching node's own SOLDER PAD faces a `GND` **via** at the same `x` —
+   `C71.2` → via `(43.500, 26.700)` and `C72.2` → via `(43.500, 33.300)` — at an
+   edge-to-edge gap of **0.325 mm on both arms, mirror-exact about
+   `y = 30.000`**. An 0402 bridges that with ≈0.34 mm of overlap at each end;
+   both vias are on the fill-and-cap-plate instruction already in the fab notes,
+   so each presents a planar solderable land. **No mask removal, no cut track,
+   no symmetry loss.** Obtain the measured antenna equivalent circuit, run the
+   ST25R matching tool, and record the final `Cs`/`Cp`/`R` values in
+   `CTO_DECISIONS.md` before any second article. Evidence:
+   `evidence/d755-nfc-matching-adjudication.json`.
+
 9. **Demo firmware is a BRING-UP LAYER, not the application** (D-747, D-748).
    The as-built hardware definition, the PCAL9535A driver, the safe bring-up
    sequence, the SPI-B arbiter, the identity probes and the console exercises all

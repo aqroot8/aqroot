@@ -1,0 +1,94 @@
+{
+ "an5276_topology": [
+  "RFO1 -> L_EMC1 -> node A1 -> Cs1 -> node B1 -> R1 -> ANT2 -> antenna",
+  "RFO2 -> L_EMC2 -> node A2 -> Cs2 -> node B2 -> R2 -> ANT1 -> antenna",
+  "C_EMC1: A1 -> GND        C_EMC2: A2 -> GND",
+  "Cp1:    B1 -> GND        Cp2:    B2 -> GND",
+  "C_RFI_1/2 divider taps B1 to RFI1; C_RFI_3/4 taps B2 to RFI2"
+ ],
+ "aqroot_as_built": [
+  {
+   "an5276": "L_EMC1 / L_EMC2",
+   "aqroot": "L5 / L6",
+   "present": true
+  },
+  {
+   "an5276": "C_EMC1 / C_EMC2",
+   "aqroot": "C69+C73 on NFC_EMCA, C70+C74 on NFC_EMCB",
+   "note": "two parts in parallel per arm to reach the value",
+   "present": true
+  },
+  {
+   "an5276": "Cs1 / Cs2 (series matching)",
+   "aqroot": "C71 / C72",
+   "present": true
+  },
+  {
+   "an5276": "Cp1 / Cp2 (parallel matching)",
+   "aqroot": null,
+   "note": "NFC_MATCH_A carries exactly C71.2 and R114.1; NFC_MATCH_B exactly C72.2 and R115.1. THIS IS THE GAP THE REVIEW NAMED AND IT IS REAL.",
+   "present": false
+  },
+  {
+   "an5276": "R1 / R2 (series damping to the antenna)",
+   "aqroot": "R114 / R115, 1.1 ohm each",
+   "note": "the CTO addendum read AN5276's RQ -- a PARALLEL Q-adjust resistor discussed in section 4 -- as the topology element.  Figure 2 shows R1/R2 IN SERIES between the matching node and the antenna, which is exactly what R114/R115 are.  The series damping resistors are NOT a deviation.",
+   "present": true
+  },
+  {
+   "an5276": "C_RFI divider at node B",
+   "aqroot": "C75/C76+R116 and C77/C78+R117 at NFC_ANT_A/B",
+   "note": "AQROOT taps the receive divider AFTER R114/R115, at the antenna, where AN5276 taps it at node B before them.  The consequence is that the divider's own capacitance sits at the antenna node rather than at the matching node, so it does not substitute for Cp.",
+   "present": true
+  }
+ ],
+ "decision": "D-755",
+ "finding": "ONE element of the AN5276 differential topology is absent: the parallel matching capacitor Cp.  Its VALUE cannot be derived here -- AN5276 derives Cs and Cp from the MEASURED antenna equivalent circuit (L_ANT, R_P@fres, C_ANT) with the ST25R antenna matching tool, and this antenna has not been built or measured -- so no component can be baselined and no value can be put on a BOM.",
+ "first_article_fit": [
+  {
+   "arm": "A",
+   "edge_gap_mm": 0.325,
+   "gnd_target": "via (43.500, 26.700), 0.6 mm",
+   "layer": "B.Cu",
+   "node_net": "/04_SPI_B_RADIOS_NFC/NFC_MATCH_A",
+   "node_pad": "C71.2",
+   "node_pad_centre_mm": [
+    43.475,
+    27.8
+   ]
+  },
+  {
+   "arm": "B",
+   "edge_gap_mm": 0.325,
+   "gnd_target": "via (43.500, 33.300), 0.6 mm",
+   "layer": "B.Cu",
+   "node_net": "/04_SPI_B_RADIOS_NFC/NFC_MATCH_B",
+   "node_pad": "C72.2",
+   "node_pad_centre_mm": [
+    43.475,
+    32.2
+   ]
+  }
+ ],
+ "fit_notes": [
+  "0.325 mm is the EDGE-to-EDGE gap and the two arms agree to the last digit: mirror-exact.",
+  "an 0402 is 1.0 x 0.5 mm, so it bridges 0.325 mm with about 0.34 mm of overlap at each end.",
+  "both GND targets are PLATED BARRELS that the fab notes already instruct to fill and cap-plate -- 'applying the process to every via on the board is acceptable and is the simpler instruction' -- so each presents a planar, solderable land rather than an open hole.",
+  "no solder mask is removed, no track is cut, and the symmetry the RF1-RF5 contract protects is untouched because the two fits are geometric mirrors."
+ ],
+ "question": "external first-spin review item 6 / CTO corroboration addendum: reconstruct the ST25R3916 matching network against the CURRENT ST application note and decide whether dedicated parallel tune positions must be added",
+ "residual": "the tune remains a FIRST-ARTICLE activity, as it must be: AN5276 derives Cs and Cp from the measured antenna, and the antenna does not exist yet.  What D-755 changes is that the fit is now a MEASURED 0.325 mm pad-to-via bridge on both arms instead of an unquantified bodge, and that the comparison against the note is on the record.",
+ "resolution": {
+  "action": "NO BOARD CHANGE.  Record the fit; do not re-floorplan the front end.",
+  "fit": "AND IT DOES NOT HAVE TO BE A REWORK.  D-751 recorded the tune element as 'an ordinary 0402 tacked across a measured 0.500 mm gap' to B.Cu GND FILL, which would mean removing solder mask.  The real geometry is better and is measured here: on each arm the matching node's own SOLDER PAD faces a GND VIA at the same x, and the two arms are EXACT MIRRORS about y = 30.000.",
+  "why": "adding dedicated Cp positions means re-floorplanning the most symmetry-critical region on the board.  The outboard rows either side of the matching nodes are FULL -- y = 25.700 carries C73, R116 and C76, and y = 34.300 their exact mirrors C74, R117 and C78 -- and the inboard space carries the NFC_RFI1/RFI2 runs and their barrels.  There is no symmetric site.  Spending the RF1-RF5 symmetry budget, the D-224 circular antenna geometry and the pour partition to add two DNP pads whose NEED is unproven until the antenna is measured is a bad trade on a first spin."
+ },
+ "schema": 1,
+ "source": {
+  "document": "ST AN5276 Rev 6, May 2023 -- Antenna design for ST25R3916, ST25R3917 and ST25R3920 devices",
+  "figure": "Figure 2, Antenna circuit (including EMI filter, matching and varicaps), page 9",
+  "note": "st.com refused every direct fetch from this environment (HTTP/2 INTERNAL_ERROR, then a 120 s timeout on HTTP/1.1) and Mouser served a JavaScript challenge; the Wayback Machine's 2025-03-23 snapshot serves the PDF.  D-746 and D-751 recorded this note as unobtainable, which is why item 6 stayed open.",
+  "section_3_4": "\"The matching network in L topology follows the EMC filter and consists of one series and two parallel capacitors, in differential topology.\"",
+  "url": "http://web.archive.org/web/20250323213452id_/https://www.st.com/resource/en/application_note/an5276-antenna-design-for-st25r3916-st25r3917-and-st25r3920-devices-stmicroelectronics.pdf"
+ }
+}

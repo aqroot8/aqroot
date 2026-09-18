@@ -66,6 +66,96 @@
 > `verify_promotion` PASS and `protected_copper` showing exactly one protected
 > net moved.  `U14.7` is on the bus.  This board has **no open owner decision**.
 
+> # **DEMO_READY_FOR_FAB IS DECLARED (2026-09-18, D-756).**
+>
+> **Board authority `6f2fc8b6`.**  The D-751 declaration below was HELD by an
+> independent re-review on one named blocker; closing it uncovered four more,
+> and two further items turned out to be open only because a web server said no.
+>
+> **WHAT THIS CYCLE FOUND:** `Q11`'s gate could not share `U17`'s `CTRL` — the
+> `TPS61169`'s PWM pin is an ANALOG dimming input, so the converter keeps
+> switching through every low phase and the shared gate put 36 V across a 30 V
+> part on every dimmed frame (**D-752**, and D-751 had recorded that arrangement
+> as a safety *constraint*); `demo_feature_contract`'s *"IR transmitter"* row
+> named `U17`, the backlight boost, so `F1` never required the parts that emit
+> (**D-752**); two accessory states a user could reach ALREADY tripped the pack
+> protection — 2.930 A and 2.737 A against an `IBAT_OCP` minimum of 2.5625 A —
+> because D-750 answered that item with a policy and this board has no accessory
+> current measurement (**D-753**); the `PCAL9535A`'s output ports reset to `FFh`,
+> not `00h`, which makes the latch-before-direction rule matter MORE (**D-754**);
+> and a stray *"`F1`'s 5 A"* in a `.kicad_dru` comment silently became a
+> published rail current, which `trunk_floor_contract` `TF4` caught (**D-753**).
+> **The `ER-TFT035IPS-6` outline drawing and ST `AN5276` were both retrievable
+> from the Wayback Machine**, and closed the display tail's pin-1 end
+> (***pin 1 meets pin 1***, **D-754**) and the NFC matching adjudication
+> (**D-755**).
+>
+> **TWO SAFETY INVARIANTS MOVED OUT OF DOCUMENTS AND INTO THE CIRCUIT.**  `Q11`
+> cannot open before `U17` is in shutdown — 22 ms of gate envelope against a
+> 2.5 ms shutdown timer, **4.6× and waveform-independent**, with no firmware
+> sequencing.  And no accessory a user can attach can pull the pack into its own
+> protection, because 2.7 kΩ on both `ILIM` pins bounds it — ***and the rails got
+> MORE usable***, 0.277 A guaranteed each against the 0.15 A the superseded
+> policy permitted at the same corner.  `F5` and `F6` hold both by measurement,
+> with **eight live negative controls**, two of which put the superseded values
+> back.
+>
+> **RELEASE-GRADE VERIFICATION, WHOLE, ON `6f2fc8b6`**
+> (`evidence/d756-release-verification.json`): `unapproved_open_edges` **0**;
+> **173 of 174** retained nets connected and the one open edge is `U11.3`,
+> covered by owner decision D-742; the approved-NC set is EXACTLY the eight `J5`
+> positions Demo scope allows; real KiCad DRC is **199 `lib_footprint_issues`,
+> every one severity WARNING, and ZERO of every other class**; schematic parity
+> **0 errors**; `verify_promotion` **16/16** on both board transactions;
+> `protected_copper` **IDENTICAL**, 15 nets / 406 objects, differences `{}`;
+> `audit_rail_ampacity` **all_ok**; features **F1–F6** with eight controls
+> refused; **`FAB1`–`FAB12` all PASS** with seven controls refused, via-in-pad
+> **136**, mask dams **21**, sourcing **252/252**, **123** BOM lines;
+> `contract_regression` runs **17 contracts, all 17 pass, 15 byte-identical to
+> `d753`**; firmware **H1–H6** with 11 policy controls refused, 9 host controls
+> caught and 83 host claims; all four PlatformIO environments build;
+> `hardware/beta-v2` **untouched**.
+>
+> **There is no open owner decision and no unresolved Demo fabrication blocker.**
+> What remains is FIRST-ARTICLE and PROCUREMENT, listed in
+> `AQROOT_DEMO_FAB_HANDOFF.md` §8 **with the measurements a first article needs
+> rather than just their names**: the NFC tune is a **0.325 mm pad-to-via bridge,
+> mirror-exact on both arms**; the `BAT_MAIN` thermal residual is **one
+> 5.525 mm × 0.200 mm segment** with its derived ceiling; the panel check is a
+> diode-mode reading with its expected values stated.
+
+> # **D-755 ADJUDICATED THE NFC MATCHING NETWORK AGAINST `AN5276`.**
+>
+> **Board authority `6f2fc8b6`, unchanged — no copper, no symbol, no BOM, no
+> fabrication output.**  The second review item in two decisions that was open
+> only because a web server said no: `st.com` refuses every direct fetch from
+> this environment and Mouser serves a JavaScript challenge, and the Wayback
+> Machine's 2025-03-23 snapshot of **`AN5276` Rev 6** does not.
+>
+> **Figure 2 is the topology, and the board matches it element for element with
+> ONE exception.**  `L5`/`L6` = `L_EMC1/2`; `C69`+`C73` and `C70`+`C74` =
+> `C_EMC1/2`; `C71`/`C72` = `Cs1/Cs2`; **`Cp1`/`Cp2` ABSENT**; `R114`/`R115` =
+> `R1`/`R2`.  ***And half the concern was a misreading the figure settles***: the
+> addendum took `AN5276`'s `RQ` — the PARALLEL Q-adjust resistor of §4 — as the
+> topology element and read the board's series resistors as a deviation, and
+> Figure 2 puts `R1`/`R2` **in series** between the matching node and the
+> antenna, exactly where `R114`/`R115` are.  The receive divider is tapped after
+> them rather than at the matching node, which is a real difference and is why
+> the divider's capacitance does **not** substitute for `Cp`.
+>
+> **NO BOARD CHANGE, AND THE REASON IS MEASURED.**  `Cp`'s value cannot be
+> derived before the antenna is built and measured, so nothing could be
+> baselined; and no symmetric site exists — `y = 25.700` carries `C73`, `R116`,
+> `C76` and `y = 34.300` their exact mirrors, with the `NFC_RFI1/2` runs and
+> barrels inboard.  ***What D-755 buys is the FIT***: D-751 recorded it as an
+> 0402 across a 0.500 mm gap to `GND` **fill**, which means scraping mask on a
+> 13.56 MHz arm.  The real geometry is a matching-node SOLDER PAD facing a `GND`
+> **via** at the same `x` — `C71.2` → `(43.500, 26.700)` and `C72.2` →
+> `(43.500, 33.300)` — at **0.325 mm edge to edge on both arms, agreeing to the
+> last digit**, mirror-exact about `y = 30.000`.  Both vias are already on the
+> fill-and-cap-plate instruction, so each is a planar solderable land.  **No mask
+> removal, no cut track, no symmetry loss.**
+
 > # **D-754 CLOSED THE DISPLAY-ORIENTATION ITEM FROM THE VENDOR DRAWING, AND CORRECTED THE EXPANDER'S RESET VALUE.**
 >
 > **Board authority `6f2fc8b6`, unchanged — no copper, no symbol, no BOM line,

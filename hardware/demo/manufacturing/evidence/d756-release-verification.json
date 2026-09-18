@@ -1,0 +1,196 @@
+{
+ "approved_demo_nc": {
+  "expected": [
+   "J5.10",
+   "J5.11",
+   "J5.12",
+   "J5.15",
+   "J5.16",
+   "J5.17",
+   "J5.18",
+   "J5.9"
+  ],
+  "missing": [],
+  "observed": [
+   "J5.10",
+   "J5.11",
+   "J5.12",
+   "J5.15",
+   "J5.16",
+   "J5.17",
+   "J5.18",
+   "J5.9"
+  ],
+  "unexpected": []
+ },
+ "approved_unrouted": [
+  "U11.3"
+ ],
+ "beta_v2_untouched": true,
+ "board": "../kicad/aqroot-demo/aqroot-Beta-v2.kicad_pcb",
+ "board_sha256": "6f2fc8b6fdb10052efd5068707d76e8d1a8eae9b8cf990e0daf74b18d0a5682d",
+ "connectivity": {
+  "approved_unrouted_edges": 1,
+  "connected_retained_nets": 173,
+  "open_retained_nets": 1,
+  "raw_board_ratsnest": 17,
+  "retained_multi_pad_nets": 174,
+  "retained_open_edges": 1,
+  "unapproved_open_edges": 0,
+  "unapproved_open_retained_nets": 0
+ },
+ "contract_regression": {
+  "all_ran": true,
+  "baseline": "d753",
+  "contracts": 17,
+  "failing": [],
+  "identical_to_baseline": 15
+ },
+ "decision": "D-756",
+ "declaration": "DEMO_READY_FOR_FAB",
+ "fab_package": {
+  "bom_lines": {
+   "BOM-assembly": 123,
+   "DO-NOT-POPULATE": 16,
+   "NON-PURCHASED": 45,
+   "OFF-BOARD": 1
+  },
+  "controls_refused": {
+   "duplicate_fitted_row": true,
+   "fab12a_refuses_2x12_on_a_1x24_land": true,
+   "fab12b_refuses_footprint_the_board_does_not_carry": true,
+   "fab12b_refuses_superseded_j5_mpn": true,
+   "position_plus_10mm": true,
+   "rotation_180": true,
+   "side_flipped": true
+  },
+  "failing": [],
+  "mask_dams_below_floor": 21,
+  "sourcing_coverage": 1.0,
+  "verdict": "PASS",
+  "via_in_pad_lands": 136
+ },
+ "feature_contract": {
+  "F1_every_scope_part_fitted": true,
+  "F2_every_scope_net_whole": true,
+  "F3_approved_nc_exactly_as_scoped": true,
+  "F4_every_exposed_signal_contact_has_esd": true,
+  "F5_backlight_disconnect_control_is_independent": true,
+  "F6_accessory_envelope_is_bounded_by_hardware": true
+ },
+ "firmware": {
+  "clauses": {
+   "H1_generated_tree_is_fresh": "PASS",
+   "H2_board_digest": "PASS",
+   "H3_policy_corroborated": "PASS",
+   "H4_owner_decisions_are_machine_checked": "PASS",
+   "H5_firmware_layer_uses_the_map": "PASS",
+   "H6_host_tests_prove_the_orderings": "PASS"
+  },
+  "controls": "PASS",
+  "host_tests": {
+   "Firmware/test/test_expander_order.cpp": {
+    "claims": 61,
+    "verdict": "PASS"
+   },
+   "Firmware/test/test_spi_bus_b.cpp": {
+    "claims": 22,
+    "verdict": "PASS"
+   }
+  },
+  "platformio_environments_built": [
+   "esp32-s3-aqroot",
+   "wokwi",
+   "esp32-s3-aqroot-dm",
+   "aqroot-demo"
+  ],
+  "verdict": "PASS"
+ },
+ "kicad_drc": {
+  "classes_other_than_lib_footprint_issues": [],
+  "every_violation_is_a_warning": true,
+  "kicad": "10.0.5",
+  "total": 199,
+  "unconnected_items": 17,
+  "violations": {
+   "lib_footprint_issues": 199
+  }
+ },
+ "owner_decisions_open": [],
+ "package_files": [
+  "MANIFEST.json",
+  "aqroot-Demo-BOM-assembly.csv",
+  "aqroot-Demo-BOM-full.csv",
+  "aqroot-Demo-DO-NOT-POPULATE.csv",
+  "aqroot-Demo-FAB-NOTES.md",
+  "aqroot-Demo-NON-PURCHASED.csv",
+  "aqroot-Demo-OFF-BOARD.csv",
+  "aqroot-Demo-assembly-bottom.pdf",
+  "aqroot-Demo-assembly-top.pdf",
+  "aqroot-Demo-pos-all.csv",
+  "aqroot-Demo-pos-fitted.csv"
+ ],
+ "protected_copper": {
+  "differences": {},
+  "identical": true,
+  "nets": 15,
+  "objects": 406
+ },
+ "rail_ampacity": {
+  "all_ok": true,
+  "rails": {
+   "BAT_PROTECTED_P": "OK_WITH_DECLARED_EXCEPTION",
+   "BQ25185_SYS": "POUR_DELIVERED",
+   "SYS_TO_ACC5V_BOOST": "OK_WITH_DECLARED_EXCEPTION",
+   "SYS_TO_NFC5V_BOOST": "OK_WITH_DECLARED_EXCEPTION",
+   "USB_VBUS_CHG": "OK_WITH_DECLARED_EXCEPTION",
+   "USB_VBUS_RAW": "OK"
+  },
+  "stackup_selfcheck": {
+   "board_copper_mm": {
+    "B.Cu": 0.035,
+    "F.Cu": 0.035,
+    "In1.Cu": 0.0152,
+    "In2.Cu": 0.0152,
+    "In3.Cu": 0.0152,
+    "In4.Cu": 0.0152
+   },
+   "inner_declared": [
+    0.0152
+   ],
+   "inner_used_mm": 0.0152,
+   "note": "the constants this tool rules with must equal the board's own declared stackup (D-750)",
+   "ok": true,
+   "outer_declared": [
+    0.035
+   ],
+   "outer_used_mm": 0.0348
+  }
+ },
+ "schema": 1,
+ "schematic_parity": {
+  "by_type": {
+   "extra_footprint": 2,
+   "footprint_symbol_field_mismatch": 199,
+   "footprint_symbol_mismatch": 45
+  },
+  "errors": 0,
+  "total": 246
+ },
+ "separated_from_pre_order": {
+  "first_article": [
+   "panel-tail incoming diode-mode confirmation (orientation itself CLOSED at D-754)",
+   "NFC Cs/Cp/R re-derivation from the MEASURED antenna via the ST25R matching tool; the fit is a measured 0.325 mm pad-to-via bridge on both arms (D-755)",
+   "BAT_MAIN sustained thermal measurement on U11's 5.525 mm x 0.200 mm pin-2 escape with both accessory rails loaded (D-753)",
+   "TPS61169 backlight true-off and PWM dimming exercised on the assembled board (D-752)",
+   "first-flash image hash"
+  ],
+  "procurement": [
+   "freeze and qualify the cell (PKCELL LP755070 / LP785060 envelope)",
+   "fabricator written acceptance of the named special processes: J3 NPTH concession, MK1 acoustic mask opening, POFV on 136 lands, 38 sub-floor via rings, 21 sub-0.125 mm mask dams, stepped profile, stackup and copper weights",
+   "panel and touch procurement contract",
+   "mechanical documentation contract"
+  ]
+ },
+ "unresolved_pre_order_blockers": []
+}
