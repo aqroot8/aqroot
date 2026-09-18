@@ -66,6 +66,93 @@
 > `verify_promotion` PASS and `protected_copper` showing exactly one protected
 > net moved.  `U14.7` is on the bus.  This board has **no open owner decision**.
 
+> # **DEMO_READY_FOR_FAB IS DECLARED (2026-09-18, D-762).**
+>
+> **Board authority `1a06b058`, UNCHANGED since D-759.**  D-762 touches no board
+> file, no fabrication output and no firmware.  What it repairs is the CHAIN
+> BETWEEN THE BOARD AND THE MANUFACTURERS' DRAWINGS.
+>
+> **THE LAST OPEN LAND IS CLOSED, AND IT WAS OPEN BECAUSE THE GATE COUNTED IT.**
+> `land_parity_contract` reported `open_items` as a FIELD, not a clause, so for
+> **146 decisions** every run printed `PASS` beside the name of the one land
+> D-617 itself called *"the one land pattern a reviewer should ask about"* —
+> `J8`, the **Qwiic / STEMMA QT** port.  JST's `eSH.pdf` was never behind a
+> login.  Read, archived at `vendor/JST/` with its sha256 in the index, and the
+> eight figures the ledger demanded are **eight exact matches**.  The two that
+> decide it are **not printed on the drawing**: the land length is `5.55 − 4.0 =
+> 1.55` and the row separation is `5.55 − 1.55/2 − 1.8/2 = 3.875` — and the same
+> page carries a TOP-ENTRY figure with different numbers (`2.65 / 4.2 / (6.3)`),
+> so reading the wrong half moves the mounting row 1.2 mm.  `SM04B` is the
+> **side**-entry member; the port faces EAST out of the right wall, `0.275 mm`
+> inboard of the D-709 step.
+>
+> **AND THE WEAKEST CITATION ON THIS BOARD WAS NOT THE OPEN ONE.**  Two rows at
+> **tier 1 — "manufacturer drawing read, document number and dimensions
+> recorded"** — read `"Ebyte manufacturer drawing, archived"` and `"Ebyte
+> E07-400M10S user manual ch. 3"`.  **No document, no revision, not one
+> figure** — on the lands of the **915 MHz LoRa** and **433 MHz CC1101**
+> modules, which **share one land geometry**, so a single wrong figure takes out
+> both radios.  Both manuals are now read INDEPENDENTLY, archived and
+> hash-pinned, and they agree figure for figure: `14.0 × 20.0 × 3.00` body, 22
+> half-holes, **1.27** pitch, **2.00** top, **1.00** bottom, **5.57** step gap,
+> columns on the body edge.  The land adds a deliberate **0.40 mm outboard toe**.
+> **All 44 pins of the two modules verified against the vendor pin tables.**
+>
+> **ONE SOURCE SAYS THIS BOARD IS DEAD ON ARRIVAL, AND IT IS WRONG.**
+> `cdebyte.com`'s E22-900M22S **web pin table lists `NRST` on pin 12 AND pin
+> 15**.  This board GROUNDS pin 12 — read that way the 915 MHz radio is held in
+> permanent reset.  The current **E22-M Series User Manual §3.2**, archived here,
+> says **pin 12 is `GND`**.  **The manual is the authority, the board is RIGHT**,
+> and it is written down so nobody "fixes" a correct board.
+>
+> **THE MOST LOAD-BEARING TIER-3 ROW WAS A CATEGORY CLAIM.**
+> `Package_TO_SOT_SMD:SOT-563` carries `U21` — the **switched 5 V accessory
+> boost Demo scope REQUIRES** — and three TPD4E1B06 ESD arrays, and its whole
+> citation was `SOT-563 1.6 x 1.2 mm`.  Against TI's own `DRL0006A` land it is
+> **not a match**: `+0.005` length, `+0.050` width, `−0.055` row separation.
+> **ACCEPTED AS A LEGITIMATE IPC-7351 ALTERNATIVE AND RECORDED AS ONE** — TI's
+> note 5 permits it, every delta is ≤ 0.055 mm, and the joint gains heel
+> (`0.225` vs `0.195`) for a little toe (`0.250` vs `0.275`).  Tier census
+> **`20/15/1/276` → `25/15/0/275`**.
+>
+> **TWO GATES STOPPED BEING OPTIMISTIC.**  **`LAND7`** refuses any `2_OPEN`
+> identity, demands a cited `drawing` on every tier-1/2A row, demands recorded
+> figures on a tier-1 row unless it is on an **equality-held, shrink-only**
+> pending list, and **hash-verifies every archived drawing** — *5 live negative
+> controls, 5 refused*.  **`INHERITED_PARITY` became an identity**: it capped
+> `footprint_symbol_mismatch` at `<= 46` while the truth has been **45** since
+> D-741, leaving **one free slot** a real divergence could have walked into while
+> the evidence printed *"45, inside the 46 ceiling"*.  Now pinned by exact count,
+> exact reference set and exact message — *4 perturbations refused, and the old
+> ceiling demonstrated admitting the 46th*.
+>
+> **WHAT THE 45 ARE, AND WHY THEY STAY.**  All 45 are test points whose FOOTPRINT
+> says `exclude_from_bom` and whose SYMBOL says `(in_bom yes)`.  **The board is
+> the authority and the fab package already uses it** — `BOM-assembly.csv` has
+> zero test-point rows, `NON-PURCHASED.csv` has all 45.  What is not repaired is
+> `kicad-cli sch export bom` run by hand.  **Deliberately not repaired at the
+> symbol** this close to fabrication, but NAMED and pinned.  The 199 field
+> mismatches stay for the same reason in reverse: copying `Manufacturer`/`MPN`/
+> `LCSC` onto 130 footprints would create a second copy to go stale — the exact
+> defect class D-759 and D-761 spent themselves repairing.
+>
+> **VERIFICATION.** `contract_regression`: **19 run, 19 PASS, 16 byte-identical
+> to `d761`**; the two that move are `land_parity` (`LAND7`) and
+> `connection_width` (a D-761-CTO C1 hardening found UNCOMMITTED in the worktree
+> and RECOVERED — `ok=True` was a literal, so a probe that found nothing passed;
+> it now refuses a probe that did not fire).  `d761` has not matched the code
+> since `cdd4ac8` and `d761cto` is a 3-file partial: **`d762` is the first FULL
+> 19-contract baseline that matches HEAD.**  `verify_promotion` 16/16,
+> `objects +0/−0`.  Land chain **315/315 MATCH, zero open**.  DRC
+> `{lib_footprint_issues: 199}` only, every one a warning.  Schematic parity
+> **0 errors** and EXACTLY the pinned shape.  `hardware/beta-v2` UNTOUCHED.
+>
+> **There is no open owner decision, no open land identity and no unresolved
+> Demo fabrication blocker.**  The two OPEN CAD items stand unchanged and are
+> still numbers: `BATTERY_SHADOW` **1.80 mm**, `NFC_CLEAR_D48` **1.40 mm**.
+
+> # **D-761's DECLARATION STANDS AND IS LEFT BELOW AS HISTORY.**
+>
 > # **DEMO_READY_FOR_FAB IS DECLARED (2026-09-18, D-761).**
 >
 > **Board authority `1a06b058`, UNCHANGED since D-759.**  Three more statements

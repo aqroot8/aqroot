@@ -29,8 +29,9 @@ end inside a pad, a via spanning its own layers -- and NEVER joins two vias
 merely because their pads overlap.  If the component count rises when that
 assumption is dropped, the contact is carrying the net.
 
-    C1  every `connection_width` finding at the probe width is classified,
-        and stable electrical signatures below the strict floor are enumerated
+    C1  the probe fires and the stable SET OF NETS with a reported contact
+        below the strict floor is enumerated; KiCad's representative object pair
+        for the same acute throat is deliberately diagnostic-only
     C2  no net's connectivity depends on a contact below the strict floor
     C3  the graph is not vacuous: it must reproduce the board's own
         connectivity on a net known to be whole AND stay split on the net
@@ -229,7 +230,13 @@ def main():
     rows, pairs, below = classify(report, args.strict)
     board = pcbnew.LoadBoard(str(args.board.resolve()))
 
+    # KiCad 10 may choose a different adjacent object pair to represent the
+    # same acute throat on byte-identical copper.  Across repeated runs the
+    # object-pair census can therefore move by one even while the electrical
+    # NET set is stable.  The release contract cares which nets need the C2
+    # connectivity proof, not which diagnostic pair KiCad happened to print.
     nets = sorted({n for e in below for n in e["nets"]})
+    all_probe_nets = sorted({n for e in rows for n in e["nets"]})
     tested = []
     for n in nets:
         with_t = components(board, n, True)
@@ -243,11 +250,11 @@ def main():
 
     checks = {
         "C1_classified": dict(
-            ok=True, probe_mm=args.probe, strict_mm=args.strict,
-            violations=len(rows), distinct_pairs=len(pairs),
-            pairs_below_strict=len(below),
-            benign_acute_throats=len(pairs) - len(below),
-            below=below),
+            ok=bool(rows), probe_mm=args.probe, strict_mm=args.strict,
+            probe_fired=bool(rows),
+            all_probe_nets=all_probe_nets,
+            nets_below_strict=nets,
+            note="KiCad's connection_width object-pair representative is not deterministic on byte-identical copper; pair UUIDs/coordinates/counts are diagnostic only. C2 proves connectivity on every net reported below the strict floor."),
         "C2_none_load_bearing": dict(
             ok=not any(t["load_bearing"] for t in tested), nets=tested),
         "C3_graph_not_vacuous": dict(

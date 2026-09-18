@@ -5,10 +5,30 @@
   "ledger": "docs/full-beta-v2/assembly/FOOTPRINT_VERIFICATION_LEDGER.md",
   "declared_master_divergences": {},
   "tiers": {
-    "1": "manufacturer drawing read, document number and dimensions recorded",
+    "1": "manufacturer drawing read, document number and dimensions recorded; a tier-1 row MUST carry `drawing` and `confirmed`",
     "2A": "vendor-specific stock footprint, drawing read at B-03 closure (FBV2-S2-002)",
     "2_OPEN": "vendor-specific stock footprint, drawing NOT re-read -- an OPEN item, not a pass",
     "3": "generic JEDEC / IPC package, correct by package identity"
+  },
+  "confirmed_in_this_index_pending": {
+    "what": "TIER-1 rows whose FIGURES are recorded in the normative ledger's prose (sections 1 / 2A / 2C) rather than in this index's machine-readable `confirmed` block.  LAND7 holds this list as an EQUALITY, so it may SHRINK and a NEW tier-1 row may not join it: a row added from here on must carry its own figures.",
+    "ruled": "D-762",
+    "identities": [
+      "AQROOT_Beta:Bosch_LGA-14_2.5x3.0mm_P0.5mm_BMI270",
+      "AQROOT_Beta:Coilcraft_XFL4020",
+      "AQROOT_Beta:Hirose_FH69-50S-0.5SH",
+      "AQROOT_Beta:MAX17048_T822",
+      "AQROOT_Beta:MEIHUA_MHPA3528RGBCT_PLCC4_3.5x2.8mm",
+      "AQROOT_Beta:Molex_5025700893",
+      "AQROOT_Beta:MountingBoss_M2_NPTH",
+      "AQROOT_Beta:PUI_DMM-4026-B-I2S_4.0x3.0mm",
+      "AQROOT_Beta:ST25R3916_AQET",
+      "AQROOT_Beta:Samtec_SSQ-124-02-G-S-RA",
+      "AQROOT_Beta:TI_TPS63020_DSJ",
+      "AQROOT_Beta:Vishay_TSOP382xx_Minicast_3Pin_P2.54mm",
+      "AQROOT_Beta:Wurth_WE-MAPI_4030_74438357010",
+      "Package_DFN_QFN:Texas_DLH0010A_WSON-10-1EP_2.2x2mm_P0.4mm_EP0.9x1.5mm"
+    ]
   },
   "identities": {
     "AQROOT_Beta:Bosch_LGA-14_2.5x3.0mm_P0.5mm_BMI270": {
@@ -21,11 +41,61 @@
     },
     "AQROOT_Beta:Ebyte_E07-400M10S": {
       "tier": "1",
-      "drawing": "Ebyte E07-400M10S user manual ch. 3"
+      "drawing": "Ebyte E07-400M10S User Manual (cdebyte.com pdf-down id 1824), 11 pp, section 3 'Size and Pin definition' mechanical sheet + section 2.2 parameter table (\"Interface method 1.27mm / Half hole\", \"Size 14*20mm\")",
+      "drawing_file": "hardware/demo/kicad/aqroot-demo/vendor/Ebyte/ebyte-E07-400M10S-usermanual-v1.3.pdf",
+      "drawing_sha256": "c885eb0d7855e4eebefd9f18c5ad2ea6f12040a1bed9015886b60a8b9c0d1374",
+      "ruled": "D-762, replacing the citation that named no document",
+      "confirmed": {
+        "what": "U7 (E07-400M10S, 433 MHz CC1101) and U8 (E22-900M22S, 915 MHz SX1262) share ONE land identity's geometry, and until D-762 the weaker of the two citations read only \"Ebyte manufacturer drawing, archived\" -- no document, no revision, no figure.  Each module's OWN drawing was read INDEPENDENTLY and they agree figure for figure, which is WHY one land serves both.",
+        "drawing_states": {
+          "body_mm": "14.0 +/- 0.1 wide x 20.0 +/- 0.1 tall x 3.00 +/- 0.1 thick",
+          "terminals": "22 castellated half-holes, 11 per long edge",
+          "pitch_mm": "1.27",
+          "top_edge_to_first_terminal_mm": "2.00",
+          "bottom_edge_to_last_terminal_mm": "1.00",
+          "gap_across_the_IPX_step_mm": "5.57  (terminal 19 -> 20, and 3 -> 4)",
+          "module_solder_side_pad_mm": "0.90 inboard x 0.80 in the pitch direction, plus the 0.50 half-hole outboard (E07 sheet: \"Bottom pad: 0.90 / 0.50 / 0.80\")"
+        },
+        "board_and_master": {
+          "terminals": "22 lands, columns at x = +/- 7.000 -- i.e. ON the 14.0 mm body edge, so each land straddles its half-hole",
+          "pitch_mm": 1.27,
+          "land_mm": "1.80 across the body edge x 0.90 in the pitch direction",
+          "first_and_last_terminal_y_mm": "+8.000 and -9.000 about the body centre, i.e. 2.000 from the top edge and 1.000 from the bottom edge of a 20.000 mm body",
+          "gap_mm": "5.57 exactly (pad 19 at -0.890 to pad 20 at -6.460)",
+          "verdict": "EVERY POSITIONAL FIGURE EXACT ON BOTH MODULES.  The land is 0.90 inboard -- the module pad exactly -- plus a DELIBERATE 0.40 mm outboard toe beyond the 0.50 half-hole for the solder fillet, and 0.05 mm per side in the pitch direction (0.90 against the module's 0.80), leaving a 0.37 mm land-to-land gap."
+        },
+        "pin_map_cross_check": "Verified pin by pin on the board against each vendor pin table, 44 pins, all correct.  E07: 1-5/11/12/20/22 GND, 6-8/10/13 NC, 9 VCC = +3V3, 14 GDO2 unused, 15 GDO0, 16 MISO, 17 MOSI, 18 SCK, 19 CSN, 21 ANT unused (the IPEX port carries the antenna).  E22: 6 RXEN, 7 TXEN and 8 DIO2 SHORTED together, 9 VCC, 12 GND, 13 DIO1, 14 BUSY, 15 NRST, 16-19 SPI, 21 ANT unused.  The E22 short is the vendor's own option and its note 1 makes it a FIRMWARE requirement -- carried as policy key SX1262_TXEN_IS_DIO2 in Firmware/src/hw/aqroot_demo_board.json.",
+        "a_source_that_disagrees_with_itself": "cdebyte.com's E22-900M22S web pin table lists NRST on pin 12 AND on pin 15.  This board GROUNDS pin 12, so read that way the 915 MHz radio would be held in permanent reset.  The current E22-M Series User Manual section 3.2 -- archived here -- says pin 12 is GND and NRST is pin 15 only.  THE MANUAL IS THE AUTHORITY AND THE BOARD IS RIGHT; the web table is wrong, and it is written down here so the next reader does not chase it."
+      }
     },
     "AQROOT_Beta:Ebyte_E22-900M22S": {
       "tier": "1",
-      "drawing": "Ebyte manufacturer drawing, archived"
+      "drawing": "Ebyte E22-M Series User Manual (cdebyte.com pdf-down id 4216), section 3.2 'Mechanical Dimensions and Pin Definitions of E22-170/400/900M22S'; the local E22-900M22S_Size.jpg outline agrees with it",
+      "drawing_file": "hardware/demo/kicad/aqroot-demo/vendor/Ebyte/ebyte-E22-M-series-usermanual.pdf",
+      "drawing_sha256": "d782f25790ebb534e91d8e6c14ac6dc1784f1bd03f9ad1fa39c87ec7ccbb3813",
+      "ruled": "D-762, replacing the citation that named no document",
+      "confirmed": {
+        "what": "U7 (E07-400M10S, 433 MHz CC1101) and U8 (E22-900M22S, 915 MHz SX1262) share ONE land identity's geometry, and until D-762 the weaker of the two citations read only \"Ebyte manufacturer drawing, archived\" -- no document, no revision, no figure.  Each module's OWN drawing was read INDEPENDENTLY and they agree figure for figure, which is WHY one land serves both.",
+        "drawing_states": {
+          "body_mm": "14.0 +/- 0.1 wide x 20.0 +/- 0.1 tall x 3.00 +/- 0.1 thick",
+          "terminals": "22 castellated half-holes, 11 per long edge",
+          "pitch_mm": "1.27",
+          "top_edge_to_first_terminal_mm": "2.00",
+          "bottom_edge_to_last_terminal_mm": "1.00",
+          "gap_across_the_IPX_step_mm": "5.57  (terminal 19 -> 20, and 3 -> 4)",
+          "module_solder_side_pad_mm": "0.90 inboard x 0.80 in the pitch direction, plus the 0.50 half-hole outboard (E07 sheet: \"Bottom pad: 0.90 / 0.50 / 0.80\")"
+        },
+        "board_and_master": {
+          "terminals": "22 lands, columns at x = +/- 7.000 -- i.e. ON the 14.0 mm body edge, so each land straddles its half-hole",
+          "pitch_mm": 1.27,
+          "land_mm": "1.80 across the body edge x 0.90 in the pitch direction",
+          "first_and_last_terminal_y_mm": "+8.000 and -9.000 about the body centre, i.e. 2.000 from the top edge and 1.000 from the bottom edge of a 20.000 mm body",
+          "gap_mm": "5.57 exactly (pad 19 at -0.890 to pad 20 at -6.460)",
+          "verdict": "EVERY POSITIONAL FIGURE EXACT ON BOTH MODULES.  The land is 0.90 inboard -- the module pad exactly -- plus a DELIBERATE 0.40 mm outboard toe beyond the 0.50 half-hole for the solder fillet, and 0.05 mm per side in the pitch direction (0.90 against the module's 0.80), leaving a 0.37 mm land-to-land gap."
+        },
+        "pin_map_cross_check": "Verified pin by pin on the board against each vendor pin table, 44 pins, all correct.  E07: 1-5/11/12/20/22 GND, 6-8/10/13 NC, 9 VCC = +3V3, 14 GDO2 unused, 15 GDO0, 16 MISO, 17 MOSI, 18 SCK, 19 CSN, 21 ANT unused (the IPEX port carries the antenna).  E22: 6 RXEN, 7 TXEN and 8 DIO2 SHORTED together, 9 VCC, 12 GND, 13 DIO1, 14 BUSY, 15 NRST, 16-19 SPI, 21 ANT unused.  The E22 short is the vendor's own option and its note 1 makes it a FIRMWARE requirement -- carried as policy key SX1262_TXEN_IS_DIO2 in Firmware/src/hw/aqroot_demo_board.json.",
+        "a_source_that_disagrees_with_itself": "cdebyte.com's E22-900M22S web pin table lists NRST on pin 12 AND on pin 15.  This board GROUNDS pin 12, so read that way the 915 MHz radio would be held in permanent reset.  The current E22-M Series User Manual section 3.2 -- archived here -- says pin 12 is GND and NRST is pin 15 only.  THE MANUAL IS THE AUTHORITY AND THE BOARD IS RIGHT; the web table is wrong, and it is written down here so the next reader does not chase it."
+      }
     },
     "AQROOT_Beta:Hirose_FH69-50S-0.5SH": {
       "tier": "1",
@@ -111,10 +181,37 @@
       "drawing": "Espressif ESP32-S3-WROOM-1 datasheet v1.8 Figure 11-1"
     },
     "Connector_JST:JST_SH_SM04B-SRSS-TB_1x04-1MP_P1.00mm_Horizontal": {
-      "tier": "2_OPEN",
-      "drawing": "JST eSH.pdf, cited by the KiCad master's own descr, NOT re-read here",
-      "must_confirm": "4 signal lands 0.60 x 1.55 at 1.00 mm pitch, pin1-pin4 span 3.00 mm; 2 mounting-peg lands 1.20 x 1.80 at +/-2.80 mm (5.60 mm span), 3.875 mm from the signal row",
-      "ruled": "D-616"
+      "tier": "1",
+      "drawing": "JST eSH.pdf, 'SH CONNECTOR' 1.0 mm pitch crimp-style series, 4 pp, Adobe CreationDate 2024-10-04; p.1 'PC board layout and Assembly layout', SIDE ENTRY TYPE figure; p.3 'Header' table for the side-entry dimension A",
+      "drawing_file": "hardware/demo/kicad/aqroot-demo/vendor/JST/jst-sh-connector-eSH-2024-10.pdf",
+      "drawing_sha256": "ea3071ca5ee5a6069eba534fa39a10f34c9fb742ee42135a69ab4156bfa0f5de",
+      "ruled": "D-762, closing the D-616 open item",
+      "confirmed": {
+        "which_figure": "SM04B-SRSS-TB is the SIDE ENTRY member of the SH family (p.4 model-number allocation: BM = SMT top entry, SM = SMT side entry), so the side-entry figure is the governing one.  The TOP-ENTRY figure on the same page has DIFFERENT numbers -- 2.65 / 4.2 / (6.3) against 5.55 / 4.0 / (6.25) -- and reading the wrong half of the page would have moved the mounting row.",
+        "drawing_states": {
+          "signal_land_width_mm": "0.6 +/- 0.05",
+          "signal_land_pitch_mm": "1.0 +/- 0.05",
+          "pin1_to_pinN_centre_span_mm": "A +/- 0.1, and A = 3.0 for 4 circuits (p.3 side-entry header table)",
+          "outer_signal_centre_to_mount_inner_edge_mm": "0.7 +/- 0.1",
+          "mounting_land_width_mm": "1.2 +/- 0.1",
+          "mounting_land_length_mm": "1.8 +/- 0.1",
+          "signal_far_edge_to_mount_far_edge_mm": "5.55 +/- 0.1",
+          "signal_near_edge_to_mount_far_edge_mm": "4.0 +/- 0.1",
+          "pitch_tolerance_note": "p.1 note 3: PCB pattern pitch tolerance +/-0.05, not to accumulate beyond +/-0.1 -- which is why A carries +/-0.1 and the pitch +/-0.05"
+        },
+        "derivations": {
+          "signal_land_length_mm": "the drawing does not print it: 5.55 - 4.0 = 1.55",
+          "mounting_land_centre_offset_mm": "A/2 + 0.7 + 1.2/2 = 1.5 + 0.7 + 0.6 = 2.80, i.e. a 5.60 mm span",
+          "signal_row_to_mount_row_centre_separation_mm": "5.55 - 1.55/2 - 1.8/2 = 5.55 - 0.775 - 0.9 = 3.875"
+        },
+        "board_and_master": {
+          "signal_lands": "4 x 0.60 x 1.55 mm on 1.00 mm pitch, centres -1.5 .. +1.5 (span 3.00)",
+          "mounting_lands": "2 x 1.20 x 1.80 mm at x = +/- 2.80 (span 5.60)",
+          "row_separation_mm": 3.875,
+          "verdict": "EIGHT FIGURES ASKED FOR, EIGHT EXACT MATCHES"
+        },
+        "body_cross_check": "p.3's side-entry header drawing gives B = 6.0 wide, 4.25 deep, 2.9 tall.  The board's F.Fab outline is 6.00 x 4.25 mm and p.1's MATED ASSEMBLY envelope is 6.25 deep x 2.95 tall -- which is what the courtyard's +Y extension to 3.325 mm carries, and it lands 0.275 mm inboard of the D-709 east step at x = 77.000."
+      }
     },
     "Capacitor_SMD:C_0402_1005Metric": {
       "tier": "3",
@@ -189,8 +286,35 @@
       "drawing": "JEDEC SC-70-5 / SOT-353"
     },
     "Package_TO_SOT_SMD:SOT-563": {
-      "tier": "3",
-      "drawing": "SOT-563 1.6 x 1.2 mm"
+      "tier": "1",
+      "drawing": "TI DRL0006A, drawing 4223266/F 11/2024, LAND PATTERN EXAMPLE (TPS61023 datasheet SLVSF14B section 12); JEDEC registration MO-293 variation UAAD, cited by the same sheet's note 4",
+      "drawing_file": "hardware/demo/kicad/aqroot-demo/vendor/TI/ti-tps61023-slvsf14b-DRL0006A.pdf",
+      "drawing_sha256": "461fe2f17212e9ec0543006d44da034a29c594012e753beae8f1649769434633",
+      "ruled": "D-762, promoted from tier 3 -- it was 'correct by package identity' and nobody had held it against the vendor's own land",
+      "confirmed": {
+        "why_this_one": "SOT-563 is the most load-bearing tier-3 row on the board: it carries U21, the SWITCHED 5 V ACCESSORY BOOST that Demo scope REQUIRES, and D2/D4/D5, the TPD4E1B06 ESD arrays that stand on the USB and community-port contacts.  A 0.5 mm-pitch power package is not a chip resistor, and 'correct by package identity' is a category claim, not a measurement.",
+        "drawing_states": {
+          "land_length_mm": "6X (0.67)  -- outward, across the rows",
+          "land_width_mm": "6X (0.3)   -- along the pitch",
+          "pitch_mm": "4X (0.5)",
+          "row_centre_to_centre_mm": "(1.48)",
+          "corner_radius_mm": "(R0.05) TYP",
+          "package_body_mm": "1.6 +/- 0.1 (pin-row direction) x 1.2 +/- 0.1, 0.6 MAX height; terminal 0.2 +/- 0.1 long, 0.21 +/- 0.06 wide"
+        },
+        "board_and_master": {
+          "land_mm": "0.675 x 0.350",
+          "pitch_mm": 0.5,
+          "row_centre_to_centre_mm": 1.425,
+          "corner_radius_mm": 0.0875
+        },
+        "deltas_measured_not_assumed": {
+          "land_length": "0.675 vs 0.67  -> +0.005",
+          "land_width": "0.350 vs 0.30   -> +0.050, i.e. +0.025 per side, which narrows the land-to-land gap 0.200 -> 0.150 mm",
+          "row_separation": "1.425 vs 1.48 -> -0.055, i.e. each land sits 0.0275 mm further inboard",
+          "net_effect_on_the_joint": "heel 0.225 mm under the 1.2 mm body against TI's 0.195, and toe 0.250 mm past the 0.8 mm terminal tip against TI's 0.275 -- MORE HEEL, SLIGHTLY LESS TOE, same pitch."
+        },
+        "verdict": "ACCEPTED AS A LEGITIMATE ALTERNATIVE, NOT AS A MATCH.  TI's own note 5 on that sheet says 'Publication IPC-7351 may have alternate designs', and the KiCad land IS the IPC-7351 design for SOT-563.  Every divergence is <= 0.055 mm, none of them reduces terminal coverage, the 0.150 mm land-to-land gap is ordinary for 0.5 mm pitch and is above this board's class floor, and real KiCad DRC reports zero clearance violations.  The figures are recorded here so the next reader compares numbers instead of re-deriving them."
+      }
     },
     "Resistor_SMD:R_0603_1608Metric": {
       "tier": "3",

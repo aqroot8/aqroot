@@ -32,9 +32,16 @@ so the evidence travels with the library rather than living only here.
 | `AQROOT_Beta:PUI_DMM-4026-B-I2S_4.0x3.0mm` | `MK1` | PUI Audio **DMM-4026-B-I2S-R Rev A, 5/26/2021** land pattern page. Six 0.60 × 0.40 pads + the GND ring around the port |
 | `AQROOT_Beta:Vishay_TSOP382xx_Minicast_3Pin_P2.54mm` | `U6` | Vishay **doc 82491 rev 2.1**, drawing 6.550-5263.01-4 issue 12 |
 | `AQROOT_Beta:MEIHUA_MHPA3528RGBCT_PLCC4_3.5x2.8mm` | `D13` | MEIHUA **Issue LPDS-0001719 Rev.2, 2018-09-25** recommended solder pad panel |
-| `AQROOT_Beta:Ebyte_E07-400M10S` | `U7` | Ebyte E07-400M10S user manual ch. 3 |
-| `AQROOT_Beta:Ebyte_E22-900M22S` | `U8` | Ebyte manufacturer drawing, archived |
+| `AQROOT_Beta:Ebyte_E07-400M10S` | `U7` | **RE-READ AT D-762.** Ebyte **E07-400M10S User Manual**, §3 *Size and Pin definition* mechanical sheet + §2.2 (*"Interface method 1.27 mm / Half hole"*, *"Size 14\*20 mm"*); archived `vendor/Ebyte/`. Body **14.0 ± 0.1 × 20.0 ± 0.1 × 3.00 ± 0.1**, 22 half-holes, **1.27** pitch, **2.00** top / **1.00** bottom, **5.57** step gap; module solder pad 0.90 × 0.80 + 0.50 half-hole |
+| `AQROOT_Beta:Ebyte_E22-900M22S` | `U8` | **RE-READ AT D-762 — the previous citation named NO document.** Ebyte **E22-M Series User Manual §3.2** *Mechanical Dimensions and Pin Definitions of E22-170/400/900M22S*; archived `vendor/Ebyte/`, and the local `E22-900M22S_Size.jpg` agrees with it. **Same figures as the E07, which is why one land serves both** |
 | **`Package_DFN_QFN:Texas_DLH0010A_WSON-10-1EP_2.2x2mm_P0.4mm_EP0.9x1.5mm`** | **`U11` BQ25185** | **VERIFIED IN THIS TASK** against TI's own EXAMPLE BOARD LAYOUT for **DLH0010A, drawing 4226298/A 10/2020**: pads **10 × (0.2 × 0.5)**, **pitch 8 × (0.4)**, **exposed pad (0.9) × (1.5)**, overall (2.1). The library name encodes exactly those values |
+
+**D-762 ADDED TWO MORE ROWS TO THIS TIER AND THEY ARE RULED IN §6.1, NOT HERE:**
+`Connector_JST:JST_SH_SM04B-SRSS-TB_1x04-1MP_P1.00mm_Horizontal` (`J8`, promoted from
+**2 — OPEN**) and `Package_TO_SOT_SMD:SOT-563` (`U21`, `D2`/`D4`/`D5`, promoted from
+**tier 3**).  §6.1 is the normative Demo table and carries both with their figures; the
+two `Ebyte` rows above were also RE-CITED there and here at D-762 because their previous
+citations named no document.
 
 **Also confirmed in this task:** `Package_SO:TSSOP-24_4.4x7.8mm_P0.65mm` for `U2`/`U3`/`U23` is
 the **SOT355-1** body the NXP PCAL9535A datasheet package table specifies, and
@@ -132,7 +139,8 @@ seven signal pads, one paste-only aperture, one Ø1.05 NPTH.
 ## 3. TIER 3 — generic JEDEC / IPC package, correct by package identity
 
 `Package_TO_SOT_SMD:SOT-23` (`Q1`, `Q4`, `Q5`, `Q6`–`Q10`) · `SOT-23-6` (`U10`, `U20`, `U22`) ·
-`SOT-23-8` (`U19`) · `SOT-353_SC-70-5` (`U17`) · `SOT-563` (`U13`, `U21`, `D2`–`D5`) ·
+`SOT-23-8` (`U19`) · `SOT-353_SC-70-5` (`U17`) · ~~`SOT-563` (`U13`, `U21`, `D2`–`D5`)~~
+**— SOT-563 LEFT TIER 3 AT D-762 and is ruled against TI `DRL0006A` in §6.1** ·
 `Package_SO:MSOP-10_3x3mm_P0.5mm` (`U18`) · `SOIC-8_3.9x4.9mm_P1.27mm` (`Q2`, `Q3`) ·
 `VSSOP-8_3x3mm_P0.65mm` (`U16`) · `TSSOP-24_4.4x7.8mm_P0.65mm` (`U2`, `U3`, `U23`) ·
 `Diode_SMD:D_SOD-123` (`D9`), `D_SOD-323` (`D8`, `D10`–`D12`) · `Fuse:Fuse_1206_3216Metric` (`F1`) ·
@@ -247,7 +255,7 @@ file** — so deleting a row below breaks the gate.
 | `Crystal:Crystal_SMD_3225-4Pin_3.2x2.5mm` | 1 | 2A | Yajingxin TXM27.12M0004322DBBDO00T Suggested Layout |
 | `Package_DFN_QFN:TQFN-16-1EP_3x3mm_P0.5mm_EP1.23x1.23mm` | 1 | 2A | Maxim 21-0136 outline + 90-0032 Rev E land pattern (s2B) |
 | `RF_Module:ESP32-S3-WROOM-1` | 1 | 2A | Espressif ESP32-S3-WROOM-1 datasheet v1.8 Figure 11-1 |
-| `Connector_JST:JST_SH_SM04B-SRSS-TB_1x04-1MP_P1.00mm_Horizontal` | 1 | **2 — OPEN** | JST eSH.pdf, cited by the KiCad master's own descr, NOT re-read here  **OPEN — must confirm:** 4 signal lands 0.60 x 1.55 at 1.00 mm pitch, pin1-pin4 span 3.00 mm; 2 mounting-peg lands 1.20 x 1.80 at +/-2.80 mm (5.60 mm span), 3.875 mm from the signal row |
+| `Connector_JST:JST_SH_SM04B-SRSS-TB_1x04-1MP_P1.00mm_Horizontal` | 1 | **1** | **CLOSED at D-762.** JST `eSH.pdf` (4 pp, 2024-10-04), p.1 *PC board layout and Assembly layout*, **SIDE ENTRY** figure + p.3 header table for `A`; archived `vendor/JST/jst-sh-connector-eSH-2024-10.pdf`, sha256 in the index. **Eight figures asked for, eight exact:** land 0.6±0.05 wide, 1.0±0.05 pitch, `A`=3.00 span, 0.7±0.1 from the outer land centre to the mount inner edge → ±2.80, mount 1.2±0.1 × 1.8±0.1, and 5.55−4.0 = **1.55** land length with 5.55−0.775−0.9 = **3.875** row separation |
 | `Capacitor_SMD:C_0402_1005Metric` | 2 | 3 | IPC-7351 nominal, body IPC-SM-782 p.76; lands 0.56 x 0.62 at +/-0.48 mm |
 | `Capacitor_SMD:C_0603_1608Metric` | 53 | 3 | IPC-7351 nominal, body IPC-SM-782 p.76 |
 | `Capacitor_SMD:C_0805_2012Metric` | 17 | 3 | IPC-7351 nominal, body IPC-SM-782 p.76 |
@@ -266,25 +274,76 @@ file** — so deleting a row below breaks the gate.
 | `Package_TO_SOT_SMD:SOT-23-6` | 3 | 3 | JEDEC SOT-23-6 / TI DDC SOT-23-THIN |
 | `Package_TO_SOT_SMD:SOT-23-8` | 1 | 3 | JEDEC SOT-23-8 |
 | `Package_TO_SOT_SMD:SOT-353_SC-70-5` | 1 | 3 | JEDEC SC-70-5 / SOT-353 |
-| `Package_TO_SOT_SMD:SOT-563` | 5 | 3 | SOT-563 1.6 x 1.2 mm |
+| `Package_TO_SOT_SMD:SOT-563` | 5 | **1** | **PROMOTED FROM TIER 3 AT D-762** (`U21` the required switched-5 V boost, plus `D2`/`D4`/`D5` TPD4E1B06 ESD arrays). TI **DRL0006A, drawing 4223266/F 11/2024** *LAND PATTERN EXAMPLE*; archived `vendor/TI/`. TI: **0.67 × 0.30** at **(1.48)** c/c, 0.5 pitch. Board: **0.675 × 0.350** at **1.425** c/c, 0.5 pitch. **Deltas +0.005 / +0.050 / −0.055** — the IPC-7351 alternative TI's own note 5 permits: 0.225 mm heel vs 0.195, 0.250 mm toe vs 0.275, 0.150 mm land-to-land gap. **ACCEPTED AS AN ALTERNATIVE, NOT AS A MATCH** |
 | `Resistor_SMD:R_0603_1608Metric` | 114 | 3 | IPC-7351 nominal, body IPC-SM-782 p.72 |
 | `Resistor_SMD:R_0805_2012Metric` | 2 | 3 | IPC-7351 nominal, body IPC-SM-782 p.72; lands 1.025 x 1.40 at +/-0.9125 mm |
 | `Resistor_SMD:R_1206_3216Metric` | 1 | 3 | IPC-7351 nominal, body IPC-SM-782 p.72; lands 1.125 x 1.75 at +/-1.4625 mm |
 | `Resistor_SMD:R_2512_6332Metric` | 1 | 3 | IPC-7351 nominal, body IPC-SM-782 p.72; lands 1.225 x 3.35 at +/-2.9625 mm |
 | `TestPoint:TestPoint_Pad_D1.0mm` | 46 | 3 | 1.0 mm round test pad, not a purchased part |
 
-Census by tier over all 311 board footprints: **tier 1 = 19, tier 2A = 15, tier 2 OPEN = 1, tier 3 = 276.**
+Census by tier over all **315** board footprints (D-762): **tier 1 = 25, tier 2A = 15, tier 2 OPEN = 0, tier 3 = 275.**  `LAND7` holds the middle figure at ZERO.
 
-### 6.2 The one OPEN land, and the divergence that is now CLOSED
+### 6.2 THE LAST OPEN LAND IS CLOSED (D-762), AND THE WEAKEST CITATION WAS NOT IT
 
 **`Connector_JST:JST_SH_SM04B-SRSS-TB_1x04-1MP_P1.00mm_Horizontal` (`J8`, Qwiic /
-STEMMA QT) is OPEN.**  It entered the design at D-238, after §1–§3 were written, and no
-row here ever ruled it.  Its KiCad master cites JST's own `eSH.pdf`; that drawing was
-**not re-read**, so by this ledger's own standard it is Tier 2, not a pass.  The land
-to confirm is **4 signal pads 0.60 × 1.55 mm on 1.00 mm pitch, pin 1 → pin 4 span
-3.00 mm, and two mounting-peg lands 1.20 × 1.80 mm at ±2.80 mm (5.60 mm span),
-3.875 mm from the signal row**.  Board-to-master parity for `J8` is PROVEN; only the
-master-to-drawing link is open.
+STEMMA QT) is CLOSED.**  It entered the design at D-238, after §1–§3 were written, no
+row here ever ruled it, and for 146 decisions the gate *reported* it as an open item
+and *passed anyway* — `open_items` was a field in the report, not a clause.  D-762 read
+JST's own `eSH.pdf` and all eight requested figures are exact; the drawing is archived
+in the repository with its sha256 in `land_citations.json`, and **`LAND7` now refuses
+any `2_OPEN` identity at all**, so the same thing cannot stand open again.
+
+**The figure the drawing does NOT print is the land length**, and that is where reading
+the wrong half of the page would have cost a board: the sheet carries a TOP-ENTRY and a
+SIDE-ENTRY figure side by side, and `SM04B` is the *side*-entry member (p.4: `BM` = SMT
+top entry, `SM` = SMT side entry).  Side entry gives 5.55 / 4.0 / (6.25); top entry
+gives 2.65 / 4.2 / (6.3).  `5.55 − 4.0 = 1.55` is the land; `5.55 − 1.55/2 − 1.8/2 =
+3.875` is the row separation.  Both match the board to the nanometre, and the body
+cross-checks too: p.3 gives **6.0 × 4.25 × 2.9** against the board's F.Fab
+**6.00 × 4.25**, and p.1's mated-assembly envelope **6.25 deep × 2.95 tall** is what the
+courtyard's `+Y` extension carries — landing **0.275 mm** inboard of the D-709 east step
+at `x = 77.000`, with the rightmost land **0.825 mm** off it.
+
+**AND THE WEAKEST CITATION ON THIS BOARD WAS A TIER-1 ROW.**  `AQROOT_Beta:Ebyte_
+E22-900M22S` — the **915 MHz LoRa module** — had read tier 1 since B-03 on the strength
+of the words *"Ebyte manufacturer drawing, archived"*: **no document, no revision, not
+one figure.**  `AQROOT_Beta:Ebyte_E07-400M10S` said *"user manual ch. 3"*, and the file
+actually archived beside it (`E07-400M10S-Sch.pdf`) is a **test-board schematic, not a
+mechanical drawing**.  `U7` and `U8` also **share one land geometry**, so a single wrong
+figure would have taken out *both* radios.  Each vendor manual was therefore read
+INDEPENDENTLY, and they agree:
+
+| figure | E07-400M10S manual | E22-M manual §3.2 | board (`U7` and `U8`) |
+|---|---|---|---|
+| body | 14.0 ± 0.1 × 20.0 ± 0.1 × 3.00 ± 0.1 | identical | F.Fab 14.0 × 20.0 |
+| terminals | 22 castellated half-holes | 22 | 22 lands |
+| pitch | **1.27** | **1.27** | **1.27** |
+| top edge → first terminal | **2.00** | **2.00** | `y = +8.000` of a ±10.000 body |
+| bottom edge → last terminal | **1.00** | **1.00** | `y = −9.000` |
+| gap across the IPX step | **5.57** | **5.57** | −0.890 → −6.460 = **5.57** |
+| column | on the 14.0 body edge | same | `x = ±7.000` |
+
+The land is **1.80 × 0.90**: the module's own **0.90** inboard exactly, plus a
+**deliberate 0.40 mm outboard toe** past the 0.50 half-hole for the fillet, and 0.05 mm
+per side in the pitch direction (0.90 against the module pad's 0.80), which leaves a
+**0.37 mm land-to-land gap**.  All 44 pins of the two modules were also checked against
+the vendor pin tables and every one is correct.
+
+**ONE SOURCE CONTRADICTS ITSELF, AND IT IS THE ONE A REVIEWER WILL REACH FOR.**
+`cdebyte.com`'s E22-900M22S web pin table lists **`NRST` on pin 12 *and* on pin 15**.
+**This board grounds pin 12.**  Read that way, the 915 MHz radio is held in permanent
+reset and the board is dead on arrival.  The current **E22-M Series User Manual §3.2**,
+archived here, says pin 12 is **GND** and `NRST` is pin 15 only — which is what the
+board does.  **The manual is the authority, the board is right, and the web table is
+wrong**; it is written down so the next reader does not chase it.
+
+Separately, the E22 manual's note ① makes the board's `TXEN`/`DIO2` short (`U8.7`
+tied to `U8.8`) a **firmware** requirement — *"the DIO2 switch control function needs
+to be enabled in the software"*.  That is already carried as policy key
+`SX1262_TXEN_IS_DIO2` in `Firmware/src/hw/aqroot_demo_board.json`, and RadioLib's
+`SX126x::begin()` / `beginFSK()` both call `setDio2AsRfSwitch(true)` internally.
+`RXEN` (`U8.6`, `R74` 100 k to GND, so it idles disabled) is the half that IS firmware's
+and it is expander-owned — `U3.P16`.
 
 **`U1`'s DECLARED master divergence is CLOSED (D-617), and closing it found four
 more of the same defect.**  KiCad reported `lib_footprint_mismatch` on `U1` after

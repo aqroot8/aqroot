@@ -426,7 +426,9 @@ MARKETING-SAFE.
 | Connector | `J8` **JST SM04B-SRSS-TB(LF)(SN)** SH 1.0 mm 4-pin | FITTED · EXTERNAL (right wall) · MARKETING-SAFE (Qwiic/STEMMA QT) | `09_community_header.kicad_sch:J8` |
 | Pinout | 1 GND · 2 ACC_3V3_SW · 3 EXT_SDA · 4 EXT_SCL | LOCKED | audit 2026-08-24 |
 | Power | **ACC_3V3_SW only** (5 V never present on Qwiic) | LOCKED | expansion proposal |
-| MPN/LCSC in schematic | **MPN WRITTEN** `SM04B-SRSS-TB(LF)(SN)` / Manufacturer `JST` (D-614, the plating-suffixed string D-096 requires); **LCSC still absent** | FITTED · orderable by MPN | `09_...:J8` |
+| MPN/LCSC in schematic | **MPN WRITTEN** `SM04B-SRSS-TB(LF)(SN)` / Manufacturer `JST` (D-614, the plating-suffixed string D-096 requires); **LCSC `C160404` WRITTEN TOO** — this row said *"LCSC still absent"* until **D-762** and had been wrong since **D-615**, which §16 item 8 of this same document already recorded as CLOSED | FITTED · orderable by MPN **and** by LCSC | `09_...:J8`; `aqroot-Demo-BOM-assembly.csv` |
+| Land pattern | **RULED AT D-762 against JST's own `eSH.pdf`** (p.1 *PC board layout*, **SIDE ENTRY** figure; p.3 header table for `A`), archived `vendor/JST/jst-sh-connector-eSH-2024-10.pdf` and hash-pinned. Eight figures asked for, eight exact. Was the board's **last open land identity**; `LAND7` now refuses an open one | VERIFIED | `FOOTPRINT_VERIFICATION_LEDGER` §6.1/§6.2 |
+| Mating access | **SIDE ENTRY: the cable exits EAST**, out of the right wall. Courtyard reaches `x = 76.725`, **0.275 mm** inboard of the D-709 step at `x = 77.000`; rightmost land **0.825 mm** off it. Mated envelope (p.1) **6.25 deep × 2.95 tall** | CAD-TO-VERIFY (the right-wall aperture must follow the step — §12) | board `1a06b058` |
 
 ### 10.3 RootProbe / FAST_IO — RETIRED on beta-v2
 - **RootProbe connector: NOT PRESENT** on the beta-v2 board — the dedicated interface

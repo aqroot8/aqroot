@@ -121,9 +121,71 @@ INHERITED = {"hole_clearance": 0, "solder_mask_bridge": 1}
 # mismatch against symbols that DID name a library -- and, worse, those two
 # lands had no master to be compared against at all.  Both now name their
 # library, both are pad-identical to it, and the baseline drops 48 -> 46.
+#
+# D-762 REPLACES THE CEILING WITH AN IDENTITY.  `<= 46` was never a statement
+# about this board: the real count has been 45 since D-741 removed `TP14` and
+# `TP41`, so the gate carried ONE FREE SLOT -- a genuine symbol/footprint
+# attribute divergence on any part could have appeared and passed, and the
+# release evidence would have printed "45, inside the 46 ceiling" as if that
+# were a pass.  The three classes are now pinned BY CONTENT:
+#
+#   footprint_symbol_mismatch       EXACTLY the 45 test points, BY REFERENCE.
+#                                   All 45 say the same thing -- "'Exclude from
+#                                   bill of materials' settings differ" -- and
+#                                   they do: every `TP*` FOOTPRINT carries
+#                                   `exclude_from_bom` + `exclude_from_pos_files`
+#                                   and every `TP*` SYMBOL says `(in_bom yes)`.
+#                                   THE BOARD IS THE AUTHORITY AND THE PACKAGE
+#                                   USES IT (`export_fab_package.board_bom_
+#                                   authority`), which is why the delivered
+#                                   `BOM-assembly.csv` has zero test-point rows
+#                                   and `NON-PURCHASED.csv` has all 45.  What is
+#                                   NOT fixed is `kicad-cli sch export bom` run
+#                                   by hand: that still returns 45 unbuyable
+#                                   rows.  Not repaired at the symbol this close
+#                                   to fabrication -- 45 symbol edits plus the
+#                                   exporter and its contract, to delete a
+#                                   warning class, on a frozen board -- but
+#                                   NAMED, and pinned so a 46th cannot hide.
+#   extra_footprint                 EXACTLY {BOSS1, BOSS2}: board-only M2
+#                                   retention bosses, no symbol by design.
+#   footprint_symbol_field_mismatch EXACT per-field counts.  Sourcing metadata
+#                                   (Manufacturer / MPN / LCSC / Note*) lives on
+#                                   the SYMBOL and deliberately not on the
+#                                   footprint -- copying it onto the board would
+#                                   manufacture a second copy to go stale, which
+#                                   is the defect class D-759 and D-761 spent
+#                                   themselves repairing.  So the class stays,
+#                                   and its SHAPE is pinned instead.
 INHERITED_PARITY = {"footprint_symbol_field_mismatch": 199,
-                    "footprint_symbol_mismatch": 46,
+                    "footprint_symbol_mismatch": 45,
                     "extra_footprint": 2}
+
+# The references each pinned class is allowed to name -- an equality, not a cap.
+INHERITED_PARITY_REFS = {
+    "footprint_symbol_mismatch": sorted("TP%d" % n for n in range(1, 48)
+                                        if n not in (14, 41)),
+    "extra_footprint": ["BOSS1", "BOSS2"],
+}
+
+# And what each entry is allowed to SAY, with how many say it.
+INHERITED_PARITY_SAYS = {
+    "footprint_symbol_field_mismatch | Missing symbol field 'Manufacturer' in "
+    "footprint": 130,
+    "footprint_symbol_field_mismatch | Missing symbol field 'Note' in "
+    "footprint": 21,
+    "footprint_symbol_field_mismatch | Missing symbol field 'LCSC' in "
+    "footprint": 19,
+    "footprint_symbol_field_mismatch | Missing symbol field 'Note2' in "
+    "footprint": 18,
+    "footprint_symbol_field_mismatch | Field 'Description' differs (PCB: '', "
+    "Schematic: 'test point')": 10,
+    "footprint_symbol_field_mismatch | Missing symbol field 'Note_Sourcing' in "
+    "footprint": 1,
+    "footprint_symbol_mismatch | Footprint attributes don't match symbol: "
+    "'Exclude from bill of materials' settings differ": 45,
+    "extra_footprint | Extra footprint": 2,
+}
 
 # Retained contracts that must still be LIVE RULE TEXT, not merely believed.
 DRU_CONTRACTS = {
@@ -228,13 +290,29 @@ def parity_summary(entries):
     that does not match.  A `warning` here is a metadata divergence between the
     symbol and the footprint.  The gate must distinguish them; counting the
     list was what made the vacuous answer look like a passing one.
+
+    D-762 also makes the baseline EXACT.  A count ceiling cannot tell a fixed
+    defect from a new one: `footprint_symbol_mismatch` was capped at 46 and had
+    read 45 since D-741 removed `TP14`/`TP41`, so ONE unexamined divergence
+    could have appeared at any time and still passed.  So the summary now also
+    reports, per type, WHICH references carry it and WHAT each entry says --
+    and the gate compares those sets, not their size.
     """
-    counts, severities = {}, {}
+    counts, severities, refs, says = {}, {}, {}, {}
     for entry in entries:
         counts[entry["type"]] = counts.get(entry["type"], 0) + 1
         sev = entry.get("severity", "unknown")
         severities[sev] = severities.get(sev, 0) + 1
+        for item in entry.get("items", []) or []:
+            ref = str(item.get("description", "")).replace("Footprint ", "")
+            if ref:
+                refs.setdefault(entry["type"], set()).add(ref)
+        key = (entry["type"], entry.get("description", ""))
+        says[key] = says.get(key, 0) + 1
     return dict(total=len(entries), counts=counts, severities=severities,
+                refs={t: sorted(v) for t, v in sorted(refs.items())},
+                by_description={"%s | %s" % k: n
+                                for k, n in sorted(says.items())},
                 errors=[e for e in entries
                         if e.get("severity") not in ("warning", "ignore")])
 
@@ -1140,10 +1218,14 @@ def main():
             first["counts"].get(k, 0) <= n for k, n in INHERITED.items()),
         schematic_parity_within_baseline=(
             not first["schematic_parity"]["errors"]
-            and all(first["schematic_parity"]["counts"].get(k, 0) <= n
-                    for k, n in INHERITED_PARITY.items())
-            and not (set(first["schematic_parity"]["counts"])
-                     - set(INHERITED_PARITY))),
+            # D-762: EQUALITY, not a ceiling -- by count, by reference and by
+            # what each entry says.  A class that drops must be re-baselined
+            # deliberately; a class that grows or changes shape FAILS.
+            and first["schematic_parity"]["counts"] == INHERITED_PARITY
+            and all(first["schematic_parity"]["refs"].get(k) == v
+                    for k, v in INHERITED_PARITY_REFS.items())
+            and (first["schematic_parity"]["by_description"]
+                 == INHERITED_PARITY_SAYS)),
         fill_stable=fill_stable,
         # D-623.  The fifteenth check, and the one D-619's severed pour would
         # have failed on a report that otherwise read 14/14.

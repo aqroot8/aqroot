@@ -1,0 +1,67 @@
+{
+  "C1_reopen_the_closed_identity": {
+    "land7": false,
+    "refused": true,
+    "open_items": [
+      "Connector_JST:JST_SH_SM04B-SRSS-TB_1x04-1MP_P1.00mm_Horizontal"
+    ],
+    "uncited": [],
+    "unconfirmed": [],
+    "drifted": false,
+    "files": []
+  },
+  "C2_strip_a_tier2A_drawing": {
+    "land7": false,
+    "refused": true,
+    "open_items": [],
+    "uncited": [
+      "Button_Switch_SMD:SW_SPDT_CK_JS102011SAQN"
+    ],
+    "unconfirmed": [],
+    "drifted": false,
+    "files": []
+  },
+  "C3_corrupt_an_archived_drawing_hash": {
+    "land7": false,
+    "refused": true,
+    "open_items": [],
+    "uncited": [],
+    "unconfirmed": [],
+    "drifted": false,
+    "files": [
+      [
+        "Connector_JST:JST_SH_SM04B-SRSS-TB_1x04-1MP_P1.00mm_Horizontal",
+        "SHA256",
+        "hardware/demo/kicad/aqroot-demo/vendor/JST/jst-sh-connector-eSH-2024-10.pdf",
+        "0000000000000000000000000000000000000000000000000000000000000000",
+        "ea3071ca5ee5a6069eba534fa39a10f34c9fb742ee42135a69ab4156bfa0f5de"
+      ]
+    ]
+  },
+  "C4_drop_a_confirmed_block_without_listing_it_pending": {
+    "land7": false,
+    "refused": true,
+    "open_items": [],
+    "uncited": [],
+    "unconfirmed": [
+      "AQROOT_Beta:Ebyte_E22-900M22S"
+    ],
+    "drifted": true,
+    "files": []
+  },
+  "C5_cite_a_file_that_is_not_there": {
+    "land7": false,
+    "refused": true,
+    "open_items": [],
+    "uncited": [],
+    "unconfirmed": [],
+    "drifted": false,
+    "files": [
+      [
+        "Connector_JST:JST_SH_SM04B-SRSS-TB_1x04-1MP_P1.00mm_Horizontal",
+        "MISSING",
+        "hardware/demo/kicad/aqroot-demo/vendor/JST/nope.pdf"
+      ]
+    ]
+  }
+}

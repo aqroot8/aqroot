@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""AQROOT Demo -- the LAND CHAIN contract (LAND1-LAND6).
+"""AQROOT Demo -- the LAND CHAIN contract (LAND1-LAND7).
 
 A land pattern is right when two links both hold:
 
@@ -34,10 +34,39 @@ nothing has ever compared.
            is one the index defines
     LAND6  every identity is written into the normative ledger, and every
            `2_OPEN` identity is marked OPEN there rather than quietly passing
+    LAND7  NO identity is `2_OPEN` at all, and the rows that say a drawing was
+           read can prove it: every tier-1 and tier-2A row cites a `drawing`;
+           every tier-1 row records its `confirmed` figures here UNLESS it is
+           named in `confirmed_in_this_index_pending`, whose figures are in the
+           ledger's own prose -- and that list is an EQUALITY, so it may shrink
+           and a new row may not join it; and every `drawing_file` a row names
+           is present in the repository and hashes to its recorded sha256
 
 LAND6 is why the index cannot be a rubber stamp: deleting a ledger row breaks
 the gate, and an identity whose drawing was not read has to say so in the file
 a reviewer reads.
+
+LAND7 is why closing the last open one is not a promise.  Until D-762 the
+gate COUNTED open items and passed anyway -- `open_items` was a field in the
+report, not a clause -- so `Connector_JST:JST_SH_SM04B-SRSS-TB` (`J8`, the
+Qwiic / STEMMA QT port) stood OPEN for 146 decisions while every run printed
+PASS.  And the tier string alone was the whole claim: flipping `2_OPEN` to
+`1` without opening a PDF would have satisfied every clause LAND1-LAND6.  So a
+tier-1 row now has to carry the document AND the figures, and a tier-2A row at
+least the document.  D-762 read JST's own `eSH.pdf`, confirmed all eight
+figures of the side-entry land, and the tier is `1` because the drawing is in
+the repository under `vendor/JST/` with its sha256 in the index -- not because
+a string was edited.
+
+The same pass found the WEAKEST citation on the board and it was not the open
+one.  `AQROOT_Beta:Ebyte_E22-900M22S` -- the 915 MHz LoRa module -- had stood
+at tier 1 since B-03 on the strength of the words *"Ebyte manufacturer drawing,
+archived"*: no document, no revision, no figure.  `AQROOT_Beta:Ebyte_E07-400M10S`
+said *"user manual ch. 3"*, and the file actually archived beside it is a
+TEST-BOARD SCHEMATIC, not a mechanical drawing.  And the two modules SHARE one
+land geometry, so a single wrong figure would have taken out both radios.  Both
+vendor manuals are now read, archived and hash-pinned, and they agree figure
+for figure.
 
     python3 hardware/demo/manufacturing/checks/land_parity_contract.py \
         [-o REPORT.json] [--skip-drc]
@@ -142,6 +171,41 @@ def main():
         i for i in open_ids
         if not any(i in line and "OPEN" in line for line in ledger.splitlines())]
 
+    # LAND7.  A tier is a CLAIM about a document.  Make the claim carry the
+    # document: a read drawing has a citation, and a tier-1 row -- the tier
+    # that says "dimensions recorded" -- has the dimensions.
+    uncited = sorted(i for i, e in cited.items()
+                     if e["tier"] in ("1", "2A")
+                     and not str(e.get("drawing", "")).strip())
+    # ...and a tier-1 row records its FIGURES, either here or -- for the rows
+    # that predate this index's `confirmed` block -- in the ledger prose the
+    # `confirmed_in_this_index_pending` list names.  That list is an EQUALITY,
+    # so it may shrink and nothing new may join it.
+    pending = index.get("confirmed_in_this_index_pending", {})
+    pending_ids = sorted(pending.get("identities", []))
+    unconfirmed = sorted(i for i, e in cited.items()
+                         if e["tier"] == "1" and not e.get("confirmed")
+                         and i not in set(pending_ids))
+    pending_drifted = (
+        pending_ids != sorted(i for i, e in cited.items()
+                              if e["tier"] == "1" and not e.get("confirmed")))
+    # ...and where a tier-1 row names a file in the repository, that file must
+    # BE there and hash to what the row says.  A citation to a document that
+    # has been moved, replaced or rewritten is the stale-source defect class.
+    filed_bad = []
+    for i, e in sorted(cited.items()):
+        rel = e.get("drawing_file")
+        if not rel:
+            continue
+        f = ROOT / rel
+        if not f.is_file():
+            filed_bad.append([i, "MISSING", rel])
+            continue
+        want = e.get("drawing_sha256")
+        got = __import__("hashlib").sha256(f.read_bytes()).hexdigest()
+        if want and want != got:
+            filed_bad.append([i, "SHA256", rel, want, got])
+
     drc_counts, drc_detail = ({}, []) if a.skip_drc else kicad_drc()
     declared = index.get("declared_master_divergences", {})
     mismatch_refs = sorted({
@@ -161,6 +225,9 @@ def main():
         "LAND5_index_covers_the_board": not missing and not dead and not bad_tier,
         "LAND6_every_identity_is_in_the_ledger":
             not unwritten and not not_marked_open,
+        "LAND7_no_open_identity_and_every_read_drawing_is_cited": (
+            not open_ids and not uncited and not unconfirmed
+            and not pending_drifted and not filed_bad),
     }
 
     report = {
@@ -183,6 +250,11 @@ def main():
         "index_bad_tier": bad_tier,
         "ledger_unwritten": unwritten,
         "open_items": open_ids,
+        "tier_rows_without_a_drawing": uncited,
+        "tier1_rows_without_confirmed_dimensions": unconfirmed,
+        "tier1_figures_in_the_ledger_not_this_index": pending_ids,
+        "tier1_pending_list_drifted": pending_drifted,
+        "cited_files_missing_or_changed": filed_bad,
         "declared_master_divergences": sorted(declared),
         "kicad_mismatch_refs": mismatch_refs if not a.skip_drc else None,
         "open_not_marked": not_marked_open,

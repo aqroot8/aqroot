@@ -1,0 +1,544 @@
+{
+ "beta_v2_untouched": true,
+ "board_sha256": "1a06b058912b4c37e25d0acd9314f9542671efa852a162cc8b1dc6533e25668b",
+ "board_unchanged_since": "D-759",
+ "carried_forward_unchanged_from_d761": {
+  "approved_demo_nc": {
+   "expected": [
+    "J5.10",
+    "J5.11",
+    "J5.12",
+    "J5.15",
+    "J5.16",
+    "J5.17",
+    "J5.18",
+    "J5.9"
+   ],
+   "missing": [],
+   "observed": [
+    "J5.10",
+    "J5.11",
+    "J5.12",
+    "J5.15",
+    "J5.16",
+    "J5.17",
+    "J5.18",
+    "J5.9"
+   ],
+   "unexpected": []
+  },
+  "approved_unrouted": [
+   "U11.3"
+  ],
+  "boss_clearance": {
+   "BOSS1": {
+    "covers_required_2_250": true,
+    "hole_doc_mm": [
+     41.0,
+     12.0
+    ],
+    "hole_kicad_mm": [
+     41.0,
+     136.0
+    ],
+    "hole_matches_register": true,
+    "keepout_doc_y_mm": [
+     9.75,
+     14.25
+    ],
+    "keepout_inradius_about_the_hole_mm": 2.25,
+    "keepout_matches_register": true,
+    "keepout_x_mm": [
+     38.75,
+     43.25
+    ],
+    "nearest_component": [
+     [
+      2.525,
+      "J3"
+     ],
+     [
+      2.525,
+      "R74"
+     ],
+     [
+      2.5303,
+      "R20"
+     ]
+    ],
+    "nearest_pour_fill": [
+     [
+      2.25,
+      "B.Cu",
+      "GND"
+     ],
+     [
+      2.25,
+      "In1.Cu",
+      "GND"
+     ],
+     [
+      2.25,
+      "In3.Cu",
+      "+3V3"
+     ]
+    ],
+    "nearest_routed_copper": [
+     [
+      2.3,
+      "F.Cu",
+      "/SD_CS_N"
+     ],
+     [
+      2.5833,
+      "F.Cu",
+      "/SD_CS_N"
+     ],
+     [
+      2.6732,
+      "via",
+      "/SX1262_RXEN"
+     ]
+    ],
+    "pour_to_npth_hole_edge_mm": 1.15,
+    "register_hole_doc_mm": [
+     41.0,
+     12.0
+    ],
+    "register_keepout_doc_y_mm": [
+     9.75,
+     14.25
+    ],
+    "register_keepout_x_mm": [
+     38.75,
+     43.25
+    ]
+   },
+   "BOSS2": {
+    "covers_required_2_250": true,
+    "hole_doc_mm": [
+     60.0,
+     145.0
+    ],
+    "hole_kicad_mm": [
+     60.0,
+     3.0
+    ],
+    "hole_matches_register": true,
+    "keepout_doc_y_mm": [
+     142.75,
+     147.25
+    ],
+    "keepout_inradius_about_the_hole_mm": 2.25,
+    "keepout_matches_register": true,
+    "keepout_x_mm": [
+     57.75,
+     62.25
+    ],
+    "nearest_component": [
+     [
+      2.695,
+      "C11"
+     ],
+     [
+      3.005,
+      "U6"
+     ]
+    ],
+    "nearest_pour_fill": [
+     [
+      2.25,
+      "B.Cu",
+      "GND"
+     ],
+     [
+      2.25,
+      "F.Cu",
+      "+3V3"
+     ],
+     [
+      2.25,
+      "In1.Cu",
+      "GND"
+     ]
+    ],
+    "nearest_routed_copper": [],
+    "pour_to_npth_hole_edge_mm": 1.15,
+    "register_hole_doc_mm": [
+     60.0,
+     145.0
+    ],
+    "register_keepout_doc_y_mm": [
+     142.75,
+     147.25
+    ],
+    "register_keepout_x_mm": [
+     57.75,
+     62.25
+    ]
+   }
+  },
+  "connectivity": {
+   "approved_unrouted_edges": 1,
+   "connected_retained_nets": 173,
+   "open_retained_nets": 1,
+   "raw_board_ratsnest": 17,
+   "retained_multi_pad_nets": 174,
+   "retained_open_edges": 1,
+   "unapproved_open_edges": 0,
+   "unapproved_open_retained_nets": 0
+  },
+  "fab_package": {
+   "artwork_unchanged": 17,
+   "clauses": {
+    "FAB10_via_geometry": true,
+    "FAB11_mask_dams": true,
+    "FAB12_identity": true,
+    "FAB13_nfc_tuning_access": true,
+    "FAB1_provenance": true,
+    "FAB2_fill": true,
+    "FAB3_layers": true,
+    "FAB4_drill": true,
+    "FAB5_cpl": true,
+    "FAB6_bom": true,
+    "FAB7_sourcing": true,
+    "FAB8_outline": true,
+    "FAB9_via_in_pad": true
+   },
+   "failing": [],
+   "verdict": "PASS"
+  },
+  "feature_contract": {
+   "all_pass": true,
+   "clauses": {
+    "F1_every_scope_part_fitted": true,
+    "F2_every_scope_net_whole": true,
+    "F3_approved_nc_exactly_as_scoped": true,
+    "F4_every_exposed_signal_contact_has_esd": true,
+    "F5_backlight_disconnect_control_is_independent": true,
+    "F6_accessory_envelope_is_bounded_by_hardware": true
+   }
+  },
+  "firmware": {
+   "clauses": {
+    "H1_generated_tree_is_fresh": "PASS",
+    "H2_board_digest": "PASS",
+    "H3_policy_corroborated": "PASS",
+    "H4_owner_decisions_are_machine_checked": "PASS",
+    "H5_firmware_layer_uses_the_map": "PASS",
+    "H6_host_tests_prove_the_orderings": "PASS"
+   },
+   "platformio_environments_built": [
+    "esp32-s3-aqroot",
+    "wokwi",
+    "esp32-s3-aqroot-dm",
+    "aqroot-demo"
+   ],
+   "verdict": "PASS"
+  },
+  "protected_copper": {
+   "counts": {
+    "/01_POWER_TREE/BAT_CONNECTOR_P": 7,
+    "/01_POWER_TREE/BAT_MID": 12,
+    "/01_POWER_TREE/BAT_PROTECTED_P": 84,
+    "/01_POWER_TREE/BAT_PROT_SHDN_CTL": 18,
+    "/01_POWER_TREE/BAT_RAW": 70,
+    "/01_POWER_TREE/BAT_SENSE": 22,
+    "/08_BUTTONS_EXPANDERS/FRONT_RGB_B_N": 18,
+    "/08_BUTTONS_EXPANDERS/FRONT_RGB_G_N": 13,
+    "/08_BUTTONS_EXPANDERS/FRONT_RGB_R_N": 20,
+    "/09_COMMUNITY_HEADER/XGPIO4_HDR": 9,
+    "/09_COMMUNITY_HEADER/XGPIO5_HDR": 12,
+    "/ACC_3V3_SW": 83,
+    "/ACC_5V_SW_EN": 23,
+    "/XGPIO4": 9,
+    "/XGPIO5": 6
+   },
+   "differences": {},
+   "identical": true
+  },
+  "rail_ampacity": {
+   "all_ok": true,
+   "rails": {
+    "BAT_PROTECTED_P": "OK_WITH_DECLARED_EXCEPTION",
+    "BQ25185_SYS": "POUR_DELIVERED",
+    "SYS_TO_ACC5V_BOOST": "OK_WITH_DECLARED_EXCEPTION",
+    "SYS_TO_NFC5V_BOOST": "OK_WITH_DECLARED_EXCEPTION",
+    "USB_VBUS_CHG": "OK_WITH_DECLARED_EXCEPTION",
+    "USB_VBUS_RAW": "OK"
+   },
+   "stackup_selfcheck": true
+  }
+ },
+ "contract_regression": {
+  "all_ran": true,
+  "baseline": "d761",
+  "contracts": 19,
+  "emitted_baseline": "d762",
+  "failing": [],
+  "identical_to_d761": 16,
+  "moved": [
+   {
+    "contract": "land_parity",
+    "declared": true,
+    "difference": "$.checks.LAND7_no_open_identity_and_every_read_drawing_is_cited: missing in baseline"
+   },
+   {
+    "contract": "pour_partition",
+    "declared": true,
+    "difference": "$.ref_commit: 'cdd4ac81dcf7bd4fb747dd8b5ceac072171e3553' vs '8c4992e1d5c572513e74e264d793ca211c942382'"
+   },
+   {
+    "contract": "connection_width",
+    "declared": true,
+    "difference": "$.checks.C1_classified.all_probe_nets: missing in baseline"
+   }
+  ],
+  "note": "d761 has not matched the code since cdd4ac8 and d761cto is a 3-file partial; d762 is the first FULL 19-contract baseline that matches HEAD",
+  "vacuous": false
+ },
+ "decision": "D-762",
+ "gates_tightened": {
+  "INHERITED_PARITY": {
+   "controls": {
+    "C1_a_46th_divergence_appears": false,
+    "C2_same_count_different_reference": false,
+    "C3_same_count_new_message": false,
+    "C4_field_shape_shifts_at_constant_total": false,
+    "C5_the_old_ceiling_ADMITS_a_46th": true,
+    "live_board": true
+   },
+   "now": "EQUALITY by count, by REFERENCE SET and by MESSAGE",
+   "was": "<= {field 199, mismatch 46, extra 2} -- a CEILING with ONE FREE SLOT, because the real mismatch count has been 45 since D-741 removed TP14/TP41"
+  },
+  "LAND7": {
+   "controls": {
+    "C1_reopen_the_closed_identity": {
+     "drifted": false,
+     "files": [],
+     "land7": false,
+     "open_items": [
+      "Connector_JST:JST_SH_SM04B-SRSS-TB_1x04-1MP_P1.00mm_Horizontal"
+     ],
+     "refused": true,
+     "uncited": [],
+     "unconfirmed": []
+    },
+    "C2_strip_a_tier2A_drawing": {
+     "drifted": false,
+     "files": [],
+     "land7": false,
+     "open_items": [],
+     "refused": true,
+     "uncited": [
+      "Button_Switch_SMD:SW_SPDT_CK_JS102011SAQN"
+     ],
+     "unconfirmed": []
+    },
+    "C3_corrupt_an_archived_drawing_hash": {
+     "drifted": false,
+     "files": [
+      [
+       "Connector_JST:JST_SH_SM04B-SRSS-TB_1x04-1MP_P1.00mm_Horizontal",
+       "SHA256",
+       "hardware/demo/kicad/aqroot-demo/vendor/JST/jst-sh-connector-eSH-2024-10.pdf",
+       "0000000000000000000000000000000000000000000000000000000000000000",
+       "ea3071ca5ee5a6069eba534fa39a10f34c9fb742ee42135a69ab4156bfa0f5de"
+      ]
+     ],
+     "land7": false,
+     "open_items": [],
+     "refused": true,
+     "uncited": [],
+     "unconfirmed": []
+    },
+    "C4_drop_a_confirmed_block_without_listing_it_pending": {
+     "drifted": true,
+     "files": [],
+     "land7": false,
+     "open_items": [],
+     "refused": true,
+     "uncited": [],
+     "unconfirmed": [
+      "AQROOT_Beta:Ebyte_E22-900M22S"
+     ]
+    },
+    "C5_cite_a_file_that_is_not_there": {
+     "drifted": false,
+     "files": [
+      [
+       "Connector_JST:JST_SH_SM04B-SRSS-TB_1x04-1MP_P1.00mm_Horizontal",
+       "MISSING",
+       "hardware/demo/kicad/aqroot-demo/vendor/JST/nope.pdf"
+      ]
+     ],
+     "land7": false,
+     "open_items": [],
+     "refused": true,
+     "uncited": [],
+     "unconfirmed": []
+    }
+   },
+   "pending_list_size": 14,
+   "what": "no 2_OPEN identity at all; every tier-1/2A row cites a drawing; every tier-1 row records figures unless named in an EQUALITY-held shrink-only pending list; every drawing_file is present and hashes to its recorded sha256"
+  },
+  "connection_width_C1": {
+   "now": "ok=bool(rows): a probe that did not fire is refused; the stable NET SET is emitted instead of KiCad's non-deterministic representative pair",
+   "recovered_from": "an uncommitted D-761-CTO hardening found in the worktree",
+   "was": "ok=True -- a literal, so a probe that found NOTHING would have passed"
+  }
+ },
+ "kicad_drc": {
+  "classes_other_than_lib_footprint_issues": [],
+  "every_violation_is_a_warning": true,
+  "kicad": "10.0.5",
+  "total": 199,
+  "unconnected_all_accounted": "16 of 17 involve DNP parts (C34 C35 C81 C82 L2 R44 R45 R68 R107 R112 R123 U13); the 17th is U11.3 /BQ25185_STAT2, the owner-approved open edge",
+  "unconnected_items": 17,
+  "violations": {
+   "lib_footprint_issues": 199
+  }
+ },
+ "land_chain": {
+  "checks": {
+   "LAND1_every_footprint_resolves_a_master": true,
+   "LAND2_board_land_equals_master": true,
+   "LAND3_comparison_not_vacuous": true,
+   "LAND4_kicad_agrees": true,
+   "LAND5_index_covers_the_board": true,
+   "LAND6_every_identity_is_in_the_ledger": true,
+   "LAND7_no_open_identity_and_every_read_drawing_is_cited": true
+  },
+  "control": {
+   "diffs": [
+    {
+     "board": 1226000,
+     "issue": "size_x_nm",
+     "land": 0,
+     "master": 1225000,
+     "pad": "1"
+    }
+   ],
+   "ref": "R75",
+   "verdict": "MISMATCH"
+  },
+  "footprints": 315,
+  "open_items": [],
+  "tier_census": {
+   "1": 25,
+   "2A": 15,
+   "2_OPEN": 0,
+   "3": 275
+  },
+  "verdict": "PASS",
+  "verdicts": {
+   "MATCH": 315
+  }
+ },
+ "no_board_fab_or_firmware_file_modified": {
+  "basis": "D-762 changes the CHAIN between the board and the drawings, not the board",
+  "board": false,
+  "fab": true,
+  "firmware": true
+ },
+ "open_cad_items": {
+  "BATTERY_SHADOW": {
+   "gap_mm": 0.6,
+   "measured_mm": 1.8,
+   "register_limit_mm": 1.2
+  },
+  "NFC_CLEAR_D48": {
+   "gap_mm": 0.4,
+   "measured_mm": 1.4,
+   "register_limit_mm": 1.0
+  },
+  "note": "UNCHANGED from D-760; numbers, not silence"
+ },
+ "open_land_identity": null,
+ "open_owner_decision": null,
+ "promotion": {
+  "clauses": 16,
+  "clauses_pass": 16,
+  "objects_added": 0,
+  "objects_removed": 0,
+  "pre_board_sha256": "1a06b058912b4c37e25d0acd9314f9542671efa852a162cc8b1dc6533e25668b",
+  "promoted_board_sha256": "1a06b058912b4c37e25d0acd9314f9542671efa852a162cc8b1dc6533e25668b",
+  "verdict": "PASS"
+ },
+ "schema": 1,
+ "schematic_parity": {
+  "by_type": {
+   "extra_footprint": 2,
+   "footprint_symbol_field_mismatch": 199,
+   "footprint_symbol_mismatch": 45
+  },
+  "errors": 0,
+  "pinned_exactly": true,
+  "total": 246
+ },
+ "the_45_parity_mismatches_named": {
+  "delivered_package_is_correct": "BOM-assembly.csv has ZERO test-point rows; NON-PURCHASED.csv has all 45; pos files have none",
+  "what": "all 45 are test points; every TP FOOTPRINT says exclude_from_bom + exclude_from_pos_files and every TP SYMBOL says (in_bom yes)",
+  "what_is_not_fixed": "kicad-cli sch export bom run BY HAND still returns 45 unbuyable rows",
+  "why_not_fixed_at_the_symbol": "45 symbol edits plus the exporter and its contract, to delete a warning class, on a frozen release-verified board -- NAMED and PINNED instead",
+  "why_the_199_field_mismatches_stay": "sourcing metadata lives on the SYMBOL; copying Manufacturer/MPN/LCSC onto 130 footprints would create a second copy to go stale, the exact defect class D-759 and D-761 repaired"
+ },
+ "unresolved_fabrication_blocker": null,
+ "what_this_decision_closed": {
+  "a_source_that_contradicts_itself": {
+   "adjudication": "E22-M Series User Manual section 3.2 (archived) says pin 12 is GND and NRST is pin 15 only. THE BOARD IS RIGHT; the web table is wrong.",
+   "board": "pin 12 is GND",
+   "consequence_if_believed": "the 915 MHz radio would be read as held in permanent reset",
+   "says": "NRST on pin 12 AND on pin 15",
+   "source": "cdebyte.com E22-900M22S web pin table"
+  },
+  "a_stale_spec_row": {
+   "said": "\"LCSC still absent\" for J8",
+   "truth": "LCSC C160404 has been in the schematic and the BOM since D-615, and s.16 item 8 of the SAME document already recorded it CLOSED",
+   "where": "DEVICE_SPEC s.10.2"
+  },
+  "last_open_land_identity": {
+   "figures_the_drawing_does_not_print": {
+    "land_length_mm": "5.55 - 4.0 = 1.55",
+    "row_separation_mm": "5.55 - 1.55/2 - 1.8/2 = 3.875"
+   },
+   "identity": "Connector_JST:JST_SH_SM04B-SRSS-TB_1x04-1MP_P1.00mm_Horizontal",
+   "now": "tier 1, JST eSH.pdf archived and hash-pinned, eight figures exact",
+   "ref": "J8",
+   "the_trap": "the same page carries a TOP-ENTRY figure with 2.65 / 4.2 / (6.3); SM04B is the SIDE-entry member",
+   "was": "2_OPEN for 146 decisions, REPORTED and PASSED"
+  },
+  "most_load_bearing_tier3_row": {
+   "carries": [
+    "U21 switched 5 V accessory boost (Demo-REQUIRED)",
+    "D2/D4/D5 TPD4E1B06 ESD arrays on USB and community-port contacts"
+   ],
+   "deltas": {
+    "land_length": "+0.005",
+    "land_width": "+0.050",
+    "row_separation": "-0.055"
+   },
+   "identity": "Package_TO_SOT_SMD:SOT-563",
+   "now": "tier 1 against TI DRL0006A 4223266/F 11/2024, archived",
+   "verdict": "ACCEPTED AS A LEGITIMATE IPC-7351 ALTERNATIVE (TI note 5), NOT AS A MATCH; heel 0.225 vs 0.195, toe 0.250 vs 0.275, gap 0.150 mm",
+   "was": "tier 3, \"SOT-563 1.6 x 1.2 mm\""
+  },
+  "two_tier1_rows_that_named_no_document": {
+   "identities": [
+    "AQROOT_Beta:Ebyte_E22-900M22S",
+    "AQROOT_Beta:Ebyte_E07-400M10S"
+   ],
+   "now": "both vendor manuals read INDEPENDENTLY, archived, hash-pinned; every positional figure exact on both: 14.0x20.0x3.00 body, 22 half-holes, 1.27 pitch, 2.00 top, 1.00 bottom, 5.57 step gap, columns on the body edge",
+   "pin_maps": "44 of 44 pins verified against the vendor pin tables",
+   "refs": [
+    "U8 (915 MHz LoRa)",
+    "U7 (433 MHz CC1101)"
+   ],
+   "was": [
+    "\"Ebyte manufacturer drawing, archived\"",
+    "\"Ebyte E07-400M10S user manual ch. 3\""
+   ],
+   "why_it_mattered": "the two modules SHARE one land geometry, so one wrong figure takes out BOTH radios, and the file archived beside U7 is a TEST-BOARD SCHEMATIC, not a mechanical drawing"
+  }
+ }
+}
