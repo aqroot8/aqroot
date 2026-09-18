@@ -66,6 +66,45 @@
 > `verify_promotion` PASS and `protected_copper` showing exactly one protected
 > net moved.  `U14.7` is on the bus.  This board has **no open owner decision**.
 
+> # **DEMO_READY_FOR_FAB IS DECLARED (2026-09-18, after D-748).**
+>
+> **Board authority `c7f5c618`, unchanged since D-743.**  D-746 released the
+> fabrication package and the handoff; the independent CTO re-review held the
+> stop on ONE pre-fab item -- *"the repository does NOT yet contain Demo firmware
+> that matches the fabrication candidate well enough to satisfy the pre-fab
+> firmware-reconciliation item"*.  **D-747 and D-748 close it**, and all six of
+> that review's numbered next actions are done: board authority and package
+> preserved and re-verified whole, a Demo-specific hardware definition reconciled
+> against the FINAL schematic and `DEVICE_SPEC`, the PCAL9535A bring-up layer
+> with its five named specifics (safe latch-before-direction, interrupt
+> mask/status/read-clearing, `U2` `P05` `DIO1` unmasked with no pull, `U2` `P16`
+> `STAT2` masked, `U3` `P17` `STAT1` LOW = directly observed fault), a
+> real-hardware target that compiles against the actual display, buses, pins and
+> retained devices with the wrong-part assumptions gated behind a compile
+> `#error`, and a deterministic firmware/hardware mapping check so the as-built
+> map cannot silently drift again.
+>
+> **RELEASE-GRADE VERIFICATION, RE-RUN WHOLE ON THE FINAL BOARD**
+> (`evidence/d748-release-verification.json`): `unapproved_open_edges` **0**;
+> the one retained open edge is `U11.3`, covered by owner decision D-742; the
+> approved-NC set is EXACTLY the eight `J5` positions Demo scope allows; real
+> KiCad DRC is **199 `lib_footprint_issues` and ZERO of every other class**;
+> schematic parity **0 errors**; **`FAB1`-`FAB11` all PASS**;
+> `contract_regression` runs **17 contracts, all ran**, fifteen IDENTICAL to
+> `d746` with `pour_partition` INCOMPARABLE on `ref_commit` alone and
+> `firmware_hw_map` reporting `NO BASELINE` because it is new; the firmware
+> contract PASSES H1-H6 with **11 policy controls refused and 62 host claims
+> over two tests, six ordering controls all caught**; **69 of 69 tracked hardware
+> artifacts byte-identical**; `hardware/beta-v2` untouched.
+>
+> **There is no open owner decision and no unresolved Demo fabrication blocker.**
+> The nine named prototype risks and six post-Kickstarter improvements are in
+> `AQROOT_DEMO_FAB_HANDOFF.md`, whose §7a now describes the firmware layer and
+> whose risk 9 is rewritten: Demo firmware is a BRING-UP LAYER and the
+> application -- UI, protocol stacks, the BMI270 configuration file, the
+> EastRising gamma tables -- is work that continues DURING fabrication and is not
+> a fabrication blocker.
+
 > **D-748: A DISCIPLINE THAT ONLY EXISTS IN A COMMENT CANNOT REFUSE
 > (2026-09-18).**  `authority c7f5c618` UNCHANGED, no copper -- 69 tracked
 > hardware artifacts byte-identical, all four firmware environments build.
