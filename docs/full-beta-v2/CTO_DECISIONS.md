@@ -1,3 +1,130 @@
+## D-770 — **`DEMO_READY_FOR_FAB` IS RE-DECLARED: BOTH ROUND-2 CAUSES ARE CLOSED, AND SO IS EVERY DEFECT CLASS THEY TURNED OUT TO BELONG TO**
+
+    authority  5849b658.  No PCB, schematic or firmware change in this entry --
+               it declares, it does not modify
+    closes     external review round 2, item 1 (D-765) and item 2 (D-766)
+    evidence   d769-* (the release set this declaration stands on)
+
+### 1. WHAT THE WITHDRAWAL ASKED FOR, AND WHERE IT IS ANSWERED
+
+D-764's `DEMO_READY_FOR_FAB` was withdrawn by external review round 2 for two
+items. Both are closed, each against a primary source rather than an argument:
+
+* **Item 1 — the unsupported `TPS22950C` `ILIM` setting.** **D-765.** `SLVSFJ2B`
+  §5 gives the fitted `C` variant an `ILIM` range of 0.5–3.5 A and the board
+  programmed **0.407 A**. `U20`/`U22` are now the **`TPS22950-Q1`**, specified
+  **0.05–3.5 A**, same `DDC0006A` land, same pinout, same equation, same EC rows,
+  AEC-Q100 grade 1. **No resistor, no copper and no envelope number moved**, and
+  `F6` gained the clause that could express the act at all.
+* **Item 2 — firmware fault / warm-reset handling.** **D-766.** Safe latches now
+  precede the 3 s USB-CDC wait; I²C bus recovery precedes `Wire` and fails
+  closed; and losing the `U3` input read — the **only** observation of
+  `ACC_POWER_FAULT_N` — forces both independent disconnects and blocks re-enable
+  until a clean read returns, where it previously issued **zero** shutdown writes.
+
+### 2. AND FIVE MORE DEFECTS FOUND ON THE WAY, EACH NOW GATED
+
+Closing those two exposed a pattern — *the repository stating a requirement that
+nothing enforced* — and following it produced five more:
+
+| | found | closed by | gate that now catches it |
+|---|---|---|---|
+| `Q11` **30 V part on a 39 V node** this board publishes | D-766 | `AO3422`, 55 V | `F5` rating clause, ceiling **parsed from `.kicad_dru`** |
+| GND barrel **0.200 mm from `L4`'s centre**, where Würth prints *"No vias and traces underneath"* | D-766 | 3 objects removed | `LAND8`, strip derived from the **fitted pads** |
+| `MAX17048` `VCELL` read **16× low** — would have refused accessory power forever | D-766 | fixed before it shipped | proof recorded in source; first-article read-back |
+| `audit_rail_ampacity` **answered differently between runs** — `id(m)`, a memory address, as tie-break | D-766 | deterministic node index | four consecutive runs byte-identical |
+| `LAND8` itself **blind to rotated instances** (`L1` sits at 90°) | D-767 | pad bounding boxes | second live control derives `L1`'s strip |
+| Released **BOM named the wrong display** (`CH280QV10-CT`, 2.8in) | D-768 | every place names `ER-TFT035IPS-6` | `F7`, which reads the **BOM row**, not just the schematic |
+| `U8` named the **superseded `FXP890`** antenna | D-769 | external `TI.92.2113` | `F7` registry, `J1` and `U8` |
+
+**Two of those are corrections to this session's own work** — D-767 corrected
+D-766's headroom arithmetic and D-766's `LAND8` rotation bug — and both are
+marked as corrections rather than silently rewritten.
+
+### 3. WHY THE DECLARATION IS MADE NOW RATHER THAN AFTER ANOTHER SWEEP
+
+Because the sweeps were run and came back clean. The charter's test is not
+"no defect was found this week"; it is that the classes are closed and the
+searches for more are returning nothing:
+
+* **Every `Note` field on all ten sheets** swept for imperative language: **27**
+  imperative sentences, **nine** measurable from the board today, and **all nine
+  checked directly and hold** — the D-186 pull-downs (`R98`/`R102`/`R131`),
+  `R63`'s rail, the BMI270 `ASDx`/`ASCx`, `MK1` `CONFIG`, the IR ballast floor,
+  `R112`'s DNP and `R129`'s single pull-up. `Q11` was the outlier, not the
+  pattern.
+* **Every inductor** tested against the underside restriction: `L1`, `L3`, `L4`,
+  `L5`, `L6` clean; only **`L2`**, which is **DNP**, carries copper in its strip —
+  reported by `LAND8` in every run and **failing the moment its DNP flag comes
+  off**.
+* **Every semiconductor on the 39 V node**: `Q11` re-rated, and `D8` retained
+  because TI's own `SNVSA40B` §7.2.2.2 names it — with its **1.0 V** margin now
+  reported on every run instead of assumed.
+* **Every archived vendor drawing** text-swept for underside/keep-out language:
+  one hit, already gated.
+
+### 4. THE BOARD, AND WHAT IT IS
+
+    authority        5849b658, six layers, 77.0 x 148.0 mm
+    connectivity     174 retained multi-pad nets, 173 connected,
+                     1 owner-approved open (U11.3 /BQ25185_STAT2),
+                     0 UNAPPROVED open edges, raw ratsnest 17
+    KiCad DRC        199 violations, ALL lib_footprint_issues, ALL WARNING,
+                     ZERO of every other class; 17 unconnected items
+    parity           246 warnings, 0 ERRORS
+    protected copper 15 nets / 406 objects, differences {}
+    D-186 / D-269    dru_contracts live and TRUE on this board:
+                     D-186_bat_main_class, D-269_bat_main_routed_clearance,
+                     annular_ring_floor, power_via_drill_floor
+    ampacity         all_ok; worst rise 66.5 K USB_VBUS_CHG and 49.6 K
+                     BAT_PROTECTED_P, both DECLARED exceptions with length
+                     budgets; reproducible byte-for-byte since D-766
+    features         F1-F7 PASS.  F5 ten live controls, F6 eight, F7 four
+    land chain       LAND1-LAND8 PASS, 315/315 MATCH, 0 open identities
+    mechanical       MK1-MK10 PASS
+    fab package      29 files (24 deterministic), FAB1-FAB15 PASS,
+                     sourcing 252/252, coverage 1.0
+    contracts        19 standing contracts, non-vacuous, NONE failing
+    firmware         H1-H6 PASS; host suite PASS incl. T10f; all four
+                     PlatformIO environments SUCCESS
+    RGB replacements FRONT_RGB_R_N / _G_N / _B_N all whole, 0 open edges,
+                     D13 + R124-R126 fitted
+    hardware/beta-v2 UNTOUCHED, 0 modified paths
+
+### 5. RESIDUAL RISKS, NAMED
+
+None of these is a fabrication blocker; all are stated so the first build is not
+surprised by them.
+
+1. **`U11.3` / `BQ25185_STAT2` is intentionally unconnected**, owner-approved at
+   D-742, with `R128`/`TP7` retained so it can be probed or bodged.
+2. **`L2`'s two `/NFC_5V_EN` segments** sit in its restricted strip. `L2` is
+   **DNP** — unreachable on every board this release builds — and `LAND8` fails
+   if it is ever populated without clearing them.
+3. **`D8`'s 1.0 V margin** to the published 39 V, retained on TI's own
+   recommendation.
+4. **`Q11`'s ordering margin is 2.06×**, down from 4.6×, deliberately: with a
+   55 V part a violation costs a **recoverable** `U17` open-LED latch rather than
+   avalanche. `C85` → 220 nF restores 4.5× for a cent if a revision wants it.
+5. **First-article measurements that no board check can replace**: charge current
+   and `U11` case temperature (D-743), the accessory limiter fold-back at
+   0.407 A, the `MAX17048` `VCELL` scale against a metered cell, the NFC antenna
+   tune with `L5`/`L6` fitted, and backlight scope work on the `U17`-before-`Q11`
+   ordering.
+6. **Procurement, not design**: the touch silicon (`CST026` vs `FT6236` — the PO
+   must name **both** `ER-TFT035IPS-6` and `ER-TPC035-6`), the panel FPC tail
+   thickness against the Hirose `FH69`, and nine BOM lines under 10× the
+   first-five need on the assembler's catalogue.
+7. **Enclosure CAD** — BOOT face, power-switch position, 1×24 wall aperture,
+   corner radii — remains CAD-TO-VERIFY and is not PCB work.
+
+### 6. DECLARATION
+
+**There is no open owner decision and no unresolved Demo fabrication blocker.**
+`DEMO_READY_FOR_FAB` is re-declared on board `5849b658`. Independent CTO review
+follows.
+
+
 ## D-769 — **THE OTHER SUPERSEDED PART NAME, AND THE CLAUSE THAT NOW REFUSES THE WHOLE CLASS**
 
     authority  5849b658, UNCHANGED.  NO PCB change and no copper of any kind

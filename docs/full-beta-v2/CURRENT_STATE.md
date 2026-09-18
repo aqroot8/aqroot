@@ -66,7 +66,51 @@
 > `verify_promotion` PASS and `protected_copper` showing exactly one protected
 > net moved.  `U14.7` is on the bus.  This board has **no open owner decision**.
 
-> # **THE ROUND-2 CAUSES ARE CLOSED, AND SO IS EVERY DEFECT CLASS THEY BELONGED TO (2026-09-18, D-766 · D-767 · D-768 · D-769).**
+> # **`DEMO_READY_FOR_FAB` IS RE-DECLARED (2026-09-18, D-770).**
+>
+> **Board authority `5849b658`.  External review round 2 withdrew D-764's
+> readiness for two items.  D-765 closed the first (the unsupported `TPS22950C`
+> `ILIM` setting) and D-766 closed the second (firmware fault / warm-reset
+> handling) — and closing them exposed a pattern, *the repository stating a
+> requirement that nothing enforced*, which D-766 … D-769 followed to five more
+> defects.  All seven are fixed and, more importantly, **all seven classes are
+> now gated**: `F5` for silicon rated below its own node, `LAND8` for
+> manufacturer underside restrictions, `F7` for a retired part's name surviving
+> on the part that replaced it, `MK10` for a lead trim that meets its limit with
+> zero margin, and the firmware's fail-closed accessory path.**
+>
+> **THE DECLARATION IS MADE BECAUSE THE SEARCHES CAME BACK CLEAN, NOT BECAUSE
+> THEY STOPPED.**  Every `Note` field on all ten sheets was swept for imperative
+> language — 27 imperative sentences, nine measurable from the board, **all nine
+> checked and holding**.  Every inductor was tested against the underside
+> restriction — only `L2`, which is **DNP**, carries copper in its strip, and
+> `LAND8` fails the moment that flag comes off.  Every semiconductor on the 39 V
+> node was rated.  Every archived vendor drawing was text-swept.
+>
+>     connectivity     174 retained, 173 connected, 1 owner-approved open
+>                      (U11.3), 0 UNAPPROVED open edges, ratsnest 17
+>     KiCad DRC        199 lib_footprint_issues, ALL WARNING, ZERO other
+>                      classes; 17 unconnected; parity 246 warn / 0 ERRORS
+>     protected copper 15 nets / 406 objects, differences {}
+>     D-186 / D-269    dru_contracts live and TRUE on this board
+>     ampacity         all_ok, and byte-reproducible since D-766
+>     features         F1-F7 PASS (F5 ten controls, F6 eight, F7 four)
+>     land / mech      LAND1-LAND8 and MK1-MK10 PASS, 315/315 MATCH
+>     fab package      FAB1-FAB15 PASS, sourcing 252/252, coverage 1.0
+>     contracts        19 standing contracts, non-vacuous, NONE failing
+>     firmware         H1-H6 PASS, host suite PASS, four builds SUCCESS
+>     RGB replacements FRONT_RGB_R_N/_G_N/_B_N whole, 0 open edges
+>     hardware/beta-v2 UNTOUCHED
+>
+> **There is no open owner decision and no unresolved Demo fabrication blocker.**
+> Residual risks are named in `CTO_DECISIONS.md` **D-770 §5** — the owner-approved
+> `U11.3` NC, `L2`'s DNP strip, `D8`'s 1.0 V margin, `Q11`'s deliberate 2.06×
+> ordering margin, six first-article measurements, the touch-silicon and FPC-tail
+> procurement items, and enclosure CAD.  **Independent CTO review follows.**
+>
+> # **THE ENTRIES BELOW STAND AS HISTORY.**
+>
+> # **THE ROUND-2 CAUSES ARE CLOSED, AND SO IS EVERY DEFECT CLASS THEY BELONGED TO (D-766 · D-767 · D-768 · D-769).**
 >
 > **Board authority `5849b658`, unchanged since D-766.  D-765 closed the first
 > round-2 item and D-766 the second; D-767 asked D-766's two defect classes of
