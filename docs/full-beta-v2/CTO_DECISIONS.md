@@ -1,3 +1,92 @@
+## D-741 ADDENDUM — THE FAB PACKAGE IS REGENERATED AT `23ee647e` AND THE WHOLE STANDING SUITE IS GREEN, AND **D-734's REASON FOR `U11.3` IS WRONG IN ONE SPECIFIC WAY THAT MATTERS FOR REV-B**
+
+    authority  23ee647e  UNCHANGED.  NO COPPER.
+    `contract_regression` 14 contracts, ALL RAN, ALL PASS, `--emit-baseline d741`
+    `fab_package_contract` PASS, FAB1 .. FAB11
+    `evidence/d741-{contract-regression,fab-package-contract,routing-ledger}.json`
+
+### 1. RELEASE-GRADE STATE OF THE BOARD
+
+    retained open edges            1   (/BQ25185_STAT2 U11.3, D-734)
+    connected retained nets      171 of 172
+    approved Demo NC             J5.9-12, J5.15-18 -- expected == observed,
+                                 nothing missing, nothing unexpected
+    real KiCad DRC               ZERO violations of any class
+    schematic parity             0 errors, 246 warnings = the recorded baseline
+    fill                         stable at its fixed point
+    protected_copper             IDENTICAL to the d738 artifact
+    placement / rf_symmetry      IDENTICAL to the d738 artifact
+    fab package                  29 files regenerated, FAB1..FAB11 PASS
+
+### 2. ONE NEW VIA-IN-PAD LAND, DECLARED AND HARMLESS
+
+`FAB9` goes 134 -> 135 solderable lands with an open barrel.  The delta is
+exactly three rows and two of them are the same barrel:
+
+    - SW4.1  F.Cu  (11.600,119.000)   D-740's BTN_DOWN_N re-lay
+    + SW4.1  F.Cu  (11.600,119.150)   the same barrel, moved 0.15 mm
+    + TP7.1  B.Cu  (57.950,97.950)    D-741's STAT2 tap
+
+`TP7.1`'s is a 0.60/0.30 barrel whose HOLE clips a 1.0 mm round test-point land
+by **0.000639 mm2 -- 0.082 % of the pad**, on its OWN net.  `TP7` is a bare test
+point, so no paste is printed on it and there is no deposit for the barrel to
+swallow; the board's declared POFV process covers it like the other 134.
+
+### 3. `U11.3` RE-MEASURED, AND D-734's ANSWER SURVIVES WITH A CORRECTED REASON
+
+D-734 §4 concluded that `U11.3` is a PACKAGE wall because *"both binding objects
+are `U11`'s own package geometry and its own pin-2 escape, which travel WITH
+it"*, and therefore that moving `U11` cannot help.  Its screen was re-run here
+and the FIRST half is confirmed exactly; the SECOND half is not.
+
+***WHAT ACTUALLY BINDS, MEASURED ALONG `U11.3`'s OWN ESCAPE LINE `y = 77.800`:***
+
+    x 66.400 .. 66.200   slack +0.0000   trk BAT_PROTECTED_P (66.400,78.200)-(65.500,78.200) w0.200
+    x 66.100             slack -0.0000   trk BAT_PROTECTED_P (65.500,78.100)-(65.500,76.725) w0.600
+    x 66.025             slack -0.0750   the same 0.600 mm track
+    x 65.500             slack -0.6000   the same 0.600 mm track
+
+So there are TWO walls and only the first is the package:
+
+1. **THE WIDTH WALL IS THE PACKAGE, AND IT IS EXACTLY 0.100 mm.**  `U11.2`'s
+   `BAT` escape leaves at `y = 78.200` because that IS its land's centreline,
+   and it cannot move: 0.200 mm of pad clearance to `U11.1`'s `SYS` land at
+   `y >= 78.500` pins it there.  D-269 then puts `STAT2`'s top edge at
+   `<= 77.800`, and `U11.4`'s `GND` land at `y <= 77.500` puts its bottom edge
+   at `>= 77.700`.  **The window is 0.100 mm wide and nothing in AQROOT's
+   control widens it** -- the board's own published floor is 0.200 mm and
+   JLCPCB's 1 oz floor is 0.090 mm.
+2. **THE CORRIDOR WALL IS ROUTED COPPER AND DOES *NOT* TRAVEL WITH THE
+   PACKAGE.**  It is the `0.600 mm` VERTICAL leg of the battery feed's hand
+   taper at `x = 65.500`, `y 76.725 .. 78.100` -- the segment that carries the
+   3.125 A `BAT_PROTECTED_P` conductor NORTH-WEST across the whole west pin
+   column.  With D-269's 0.300 mm it reaches `x = 66.100`, which is 0.075 mm
+   short of the land edge itself.
+
+***AND A VIA-IN-PAD ESCAPE IS ALSO IMPOSSIBLE*** -- `U11.3`'s land is
+`0.750 x 0.200 mm` and the board's own floors (0.200 mm hole, 0.125 mm annular)
+put the smallest legal barrel at **0.450 mm across**, more than twice the land.
+
+***WHAT THIS CHANGES.***  Nothing today: wall (1) alone closes `U11.3` at every
+width the board will publish, with D-269 enforced, no matter where `U11` sits.
+**D-734's verdict and its recommendation stand unchanged.**  What it changes is
+the REV-B instruction: D-734 said *"rotate or re-floorplan `U11` so `STAT2`
+lands on the east column"*, which cannot work -- `BAT` is pin 2 and `STAT2` is
+pin 3 in every DLH0010A, so they stay adjacent under any rotation.  The Rev-B
+item is **a charger whose `STAT2` pin is not adjacent to `BAT`**, or a package
+with a land taller than 0.200 mm.  Give the battery feed a different departure
+geometry and you remove wall (2) only, which is not enough.
+
+### 4. THE ONE OPEN OWNER DECISION
+
+`/BQ25185_STAT2` `U11.3` (D-734).  **Recommendation unchanged: fit the board as
+it stands and leave `U11.3` unconnected**, with `R128` and `TP7` retained so the
+net stays benchable, and a firmware note that charge-state decode must not
+assume `STAT2`.  `STAT1` is routed and working; the MAX17048 fuel gauge reports
+pack voltage and state-of-charge on the internal I2C bus; `STAT2` is an
+open-drain output and leaving it floating is electrically inert.  Everything
+else on this board is finished.
+
 ## D-741 — **`/BQ25185_STAT2`'s `U2.19` IS CLOSED.** ITS ONE AND ONLY SINGLE-NET OPENER WAS THE NET D-740 HAD JUST RE-LAID, AND RE-LAYING IT WHOLE COSTS NOTHING
 
     authority  ab557744 -> 23ee647e.  COPPER PROMOTED.

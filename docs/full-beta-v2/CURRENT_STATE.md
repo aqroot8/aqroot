@@ -66,6 +66,26 @@
 > `verify_promotion` PASS and `protected_copper` showing exactly one protected
 > net moved.  `U14.7` is on the bus.  This board has **no open owner decision**.
 
+> **THE BOARD HAS ONE RETAINED OPEN EDGE AND ONE OPEN OWNER DECISION, AND THEY
+> ARE THE SAME THING (D-740, D-741, 2026-09-18).**  `authority 23ee647e`.
+> `/SX1262_DIO1` IS ROUTED (D-740) and `/BQ25185_STAT2`'s `U2.19` IS ROUTED
+> (D-741).  **`connected_retained_nets` is 171 of 172**; the single remaining
+> retained open edge is `/BQ25185_STAT2`'s `U11.3`, which D-734 proved is a
+> DLH0010A PACKAGE WALL and raised as an OWNER DECISION with a recommendation to
+> ship it NC.  D-741's addendum re-measured it and confirms the verdict while
+> correcting the reason: the binding width window between D-269's clearance to
+> `U11.2`'s `BAT` escape and `U11.4`'s `GND` land is **exactly 0.100 mm**, below
+> the board's own 0.200 mm floor, and it does not move with `U11`, with the
+> battery feed's geometry, or with any rotation -- `BAT` is pin 2 and `STAT2` is
+> pin 3 in every DLH0010A.  Real KiCad DRC is **ZERO violations of any class**,
+> schematic parity is 0 errors at the recorded baseline, the fill is at its
+> fixed point, `contract_regression` runs 14 contracts and ALL PASS, the fab
+> package is regenerated at `23ee647e` with `FAB1..FAB11` PASS, and
+> `protected_copper`, `placement` and `rf_symmetry` are byte-identical to the
+> `d738` artifacts.  **`DEMO_READY_FOR_FAB` IS NOT DECLARED, and the ONLY thing
+> standing in its way is D-734's owner decision.**  The paragraph below is the
+> PREVIOUS state of that question and is left standing as history.
+>
 > **ONE OPEN OWNER DECISION AS OF D-739.  D-735's WAS WITHDRAWN BY
 > MEASUREMENT.**  `/SX1262_DIO1` **IS ROUTABLE** -- 82.428 mm, 2 vias, DRC-clean
 > -- with the D-pad exactly where it is, so the aperture move D-735 asked the
@@ -91,6 +111,51 @@
 > **`DEMO_READY_FOR_FAB` IS NOT DECLARED WHILE EITHER STANDS.**  *(D-739: the
 > second of the two, D-735's, is withdrawn -- see the block above.)*
 
+- **Demo D-741 (`/BQ25185_STAT2`'s `U2.19` IS CLOSED -- ONE RETAINED OPEN EDGE
+  LEFT ON THE WHOLE BOARD, AND IT IS THE D-734 PACKAGE WALL):**  Authority
+  `ab557744 -> 23ee647e`.  `screen_pair_corridor_blame` re-asked on the board
+  D-740 left: `BASE NO_PATH`, `Q1` (all nineteen window nets dropped) 11.7984 mm
+  with ZERO vias, and of nineteen single-net evictions **EXACTLY ONE opens it**
+  -- `/08_BUTTONS_EXPANDERS/BTN_UP_N`, the net D-740 had just re-laid, whose
+  eastern loop `(62.535,92.206) -> (61.570,87.710) -> (60.937,86.844)` runs
+  straight across `U2.19`'s only escape.  D-721's old openers (`BTN_DOWN_N`,
+  `BQ25185_STAT1`) are gone.  A corridor-WINDOWED evict was tried first and
+  refused twice over -- `/01_POWER_TREE/BQ25185_SYS` REGRESSED (the eastern
+  detour cut `SYS POUR 1`, exactly as D-721 predicted) and two `In2.Cu` stubs
+  DANGLED, because `BTN_UP_N`'s southern loop straddles every window boundary
+  that cuts the wall.  `--evict-whole` strands nothing by construction and
+  `--repair-planes` answers a pour cut with a barrel; with `/BQ25185_STAT2`
+  requested FIRST it takes the corridor and `BTN_UP_N` re-lays whole.
+  `U2.19` **TAPS** `TP7.1`'s copper in **23.2658 mm, 4 vias**, `B -> I2 -> B ->
+  I2 -> B`; `BTN_UP_N` comes back in three joins totalling 107 mm.  Gate 15/15,
+  real KiCad DRC **ZERO violations of any class**, `verify_promotion` PASS
+  16/16, `unconnected_items` 18 -> 17, NO net regressed.  **The addendum then
+  re-measured `U11.3` and corrected D-734's Rev-B instruction**: rotating `U11`
+  cannot work because `BAT` is pin 2 and `STAT2` pin 3 in every DLH0010A, so the
+  Rev-B item is a CHARGER whose `STAT2` is not adjacent to `BAT`, or a package
+  with a land taller than 0.200 mm.  Fab package regenerated, `FAB1..FAB11` PASS
+  (`FAB9` 134 -> 135 lands: `TP7.1`'s new barrel clips its own 1.0 mm test-point
+  land by 0.082 %, on its own net, on a pad that takes no paste).
+- **Demo D-740 (`/SX1262_DIO1` IS PROMOTED -- D-739's FINALIST IS PAID FOR BY
+  MOVING **ONE** PASSIVE, NOT SIX):**  Authority `71c4326e -> ab557744`,
+  retained open edges **3 -> 2**.  D-739 named a SIX-part `R4`-`R9` westward
+  move as the fix for its one residual conductor and its addendum had already
+  measured the first two steps as refusals.  **The six-part move was not
+  needed.**  `screen_net_tap.py --census` showed `R5.2`'s two targets -- nearest
+  pad 8.0988 mm, nearest own copper 9.2022 mm -- BOTH pointing back INTO the
+  contested pocket, which is why eleven pocket transactions could only ever hold
+  N-1 of N.  `R5` is a 10 k pull-up on a button line and its position is
+  ELECTRICALLY FREE, and the band `x 39 .. 49.6, y 86 .. 94` on `B.Cu` carries no
+  footprint at all.  `apply_part_shift` moved it from `(51.123, 86.792)` to
+  `(48.000, 92.300)` with the `+3V3` chain released by `--release-point
+  +3V3:48.300,87.400` and `--release-via +3V3:47.100,87.200` -- the exact
+  refusal D-739's addendum recorded, stated instead of stumbled over -- and ONE
+  router run then bonded `R5.1` into the `In3.Cu` `+3V3` pour with a 0.80/0.40
+  barrel at `(47.175,93.425)` and **TAPPED** `R5.2` onto its own net at
+  `(47.000,98.200)` in **8.2655 mm with 2 vias**.  Gate 15/15,
+  `verify_promotion` PASS 16/16, 99 objects added on the four claimed nets, 52
+  removed on the three evicted ones, `unconnected_items` 19 -> 18, zones and
+  rule areas untouched, `PP1`-`PP4` ok.
 - **Demo D-739 (`/SX1262_DIO1` IS ROUTABLE -- D-735's FLOORPLAN CONCLUSION IS
   OVERTURNED AND THE D-PAD DOES NOT HAVE TO MOVE.  ONE OF THE TWO OPEN OWNER
   DECISIONS IS WITHDRAWN):**  **NO COPPER PROMOTED.  Authority `71c4326e`
