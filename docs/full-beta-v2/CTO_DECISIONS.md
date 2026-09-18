@@ -1,3 +1,73 @@
+## D-741 — **`/BQ25185_STAT2`'s `U2.19` IS CLOSED.** ITS ONE AND ONLY SINGLE-NET OPENER WAS THE NET D-740 HAD JUST RE-LAID, AND RE-LAYING IT WHOLE COSTS NOTHING
+
+    authority  ab557744 -> 23ee647e.  COPPER PROMOTED.
+    retained open edges  2 -> 1.  ONE EDGE LEFT ON THE WHOLE BOARD.
+    `verify_promotion` PASS, 16/16.  DRC ZERO attributable.  PP1-PP4 ok.
+    `evidence/d741-{gate,verify-promotion,stat2-u219-blame,windowed-evict-refused}.json`
+
+### 1. THE BLAME, RE-ASKED ON THE BOARD D-740 LEFT
+
+`screen_pair_corridor_blame.py /BQ25185_STAT2 U2.19 TP7.1 3.0 50000`:
+
+    BASE                NO_PATH  -- no all-layer corridor at 0.200 mm
+    Q1 UPPER BOUND      all 19 window nets dropped: 11.7984 mm, ZERO vias, B.Cu
+    Q2 SINGLE NET       nineteen tried, EXACTLY ONE opens it:
+                        /08_BUTTONS_EXPANDERS/BTN_UP_N  25.8056 mm, 4 vias
+
+D-721's openers (`BTN_DOWN_N`, `BQ25185_STAT1`) are gone -- the board underneath
+them has changed four times since.  The single opener is now the net D-740 had
+just re-laid, whose eastern loop runs `(62.535,92.206) -> (61.570,87.710) ->
+(60.937,86.844)` straight across `U2.19`'s only escape.
+
+### 2. WHY `--evict-whole` AND NOT A WINDOW
+
+A corridor-windowed `--evict` was tried first and refused for two separate
+reasons, both of them real: `/01_POWER_TREE/BQ25185_SYS` **regressed** (the
+eastern detour cut `SYS POUR 1`, exactly as D-721 predicted) and the eviction
+left **two `In2.Cu` stubs dangling** -- `BTN_UP_N`'s southern loop straddles
+every window boundary that cuts the blocking diagonal, so no window removes the
+wall without severing something it cannot put back.  That run is kept as
+`evidence/d741-windowed-evict-refused.json`.
+
+`--evict-whole` strands nothing by construction, and `--repair-planes` answers
+the pour cut with a barrel instead of refusing the run.  With `/BQ25185_STAT2`
+requested FIRST it takes the corridor and `BTN_UP_N` re-lays around it.
+
+### 3. THE TRANSACTION
+
+    route_maze_batch.py --grid 50000 --partial --attempt-cap 2 --tap --tap-first
+        --evict /08_BUTTONS_EXPANDERS/BTN_UP_N --evict-whole --repair-planes
+        /BQ25185_STAT2 /08_BUTTONS_EXPANDERS/BTN_UP_N
+
+    /BQ25185_STAT2   U2.19 TAPS TP7.1's copper, 23.2658 mm, 4 vias,
+                     B -> I2 -> B -> I2 -> B
+                     U11.3 still NO_LEGAL_ESCAPE -- the D-734 package wall
+    BTN_UP_N         60 objects ripped board-wide, re-laid whole:
+                     R5.2 -> U2.14  52.027 mm / 6 vias
+                     SW3.1 -> SW3.1  7.960 mm / 0 vias
+                     R5.2 -> SW3.1  47.020 mm / 2 vias  (plane-repair pass)
+
+### 4. THE RESULT
+
+    retained open edges      2 -> 1
+    nets improved            /BQ25185_STAT2      nets regressed  none
+    gate clauses             15/15 TRUE, refused_clauses []
+    real KiCad DRC           ZERO violations of any class
+    verify_promotion         PASS 16/16, 38 added / 37 removed,
+                             unconnected_items 18 -> 17
+
+### 5. WHAT IS LEFT, AND IT IS NOT A ROUTING PROBLEM
+
+**ONE retained open edge on the whole board: `/BQ25185_STAT2` `U11.3`.**  D-734
+measured it closed at every width from 0.200 mm down to 0.030 mm, with D-269
+relaxed as well as enforced, and both binding objects -- `U11.4`'s `GND` land
+and `U11.2`'s own `BAT` escape -- are the DLH0010A's own geometry.  Re-checked
+here: `U11.3`'s land is **0.750 x 0.200 mm** with 0.200 mm of gap to `U11.2`
+above and `U11.4` below, so a via-in-pad escape is impossible too -- the board's
+own floors put the smallest legal barrel at 0.45 mm across, more than twice the
+land.  **It is an OPEN OWNER DECISION (D-734), raised with a recommendation to
+ship it NC, and `DEMO_READY_FOR_FAB` is not declared while it stands.**
+
 ## D-740 — **`/SX1262_DIO1` IS PROMOTED.** D-739's FINALIST IS PAID FOR BY MOVING **ONE** PASSIVE, NOT SIX: `R5` LEAVES THE `U2` WEST COLUMN ALTOGETHER AND `BTN_UP_N`'s PULL-UP TAPS ITS OWN NET IN OPEN COPPER
 
     authority  71c4326e -> ab557744.  COPPER PROMOTED.
