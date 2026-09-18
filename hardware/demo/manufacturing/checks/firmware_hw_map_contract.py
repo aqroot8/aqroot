@@ -101,10 +101,23 @@ BUS_CONTROLS = [
 ORDER_CONTROLS = [
     ("direction is written before the output latch",
      "pcal9535a.h",
-     """    if (!writePortPair(bus, address_, kRegOutput0, config.output_latch)) return false;
-    if (!writePortPair(bus, address_, kRegConfig0, config.direction)) return false;""",
-     """    if (!writePortPair(bus, address_, kRegConfig0, config.direction)) return false;
-    if (!writePortPair(bus, address_, kRegOutput0, config.output_latch)) return false;"""),
+     """    shadow_valid_ = false;
+    if (!writeOutputs(bus, config.output_latch)) return false;""",
+     """    shadow_valid_ = false;
+    if (!writePortPair(bus, address_, kRegConfig0, config.direction)) return false;
+    if (!writeOutputs(bus, config.output_latch)) return false;"""),
+    ("a fresh MCU invents a valid zero output shadow after warm reset",
+     "pcal9535a.h",
+     "shadow_(0xFFFF), shadow_valid_(false)",
+     "shadow_(0x0000), shadow_valid_(true)"),
+    ("Output Port Configuration is changed to open-drain before outputs",
+     "pcal9535a.h",
+     "if (!writeRegister(bus, address_, kRegOutputConfig, 0x00)) return false;",
+     "if (!writeRegister(bus, address_, kRegOutputConfig, 0xFF)) return false;"),
+    ("warm reset skips the immediate U3 complete safe-latch write",
+     "aqroot_demo_expanders.h",
+     "const bool u3_safe = u3_.writeOutputs(bus, kU3SafeLatch);",
+     "const bool u3_safe = true;"),
     ("the RGB cathodes boot at 0, lighting the LED at power-on",
      "aqroot_demo_expanders.h",
      "constexpr uint16_t kU3SafeLatch = kRgbMask;",
@@ -124,8 +137,9 @@ ORDER_CONTROLS = [
      "aqroot_demo_expanders.h",
      """    const bool u2_ok = u2_.apply(bus, u2);
     const bool u3_ok = u3_.apply(bus, u3);
-    if (!u2_ok || !u3_ok) return false;""",
-     """    if (!u2_.apply(bus, u2) || !u3_.apply(bus, u3)) return false;"""),
+    if (!u2_safe || !u3_safe || !u2_ok || !u3_ok) return false;""",
+     """    if (!u2_safe || !u3_safe) return false;
+    if (!u2_.apply(bus, u2) || !u3_.apply(bus, u3)) return false;"""),
     ("a U2 read error stops U3 being serviced (service short-circuits)",
      "aqroot_demo_expanders.h",
      """    const bool a = u2_.readInterruptStatus(bus, &u2_irq_);
