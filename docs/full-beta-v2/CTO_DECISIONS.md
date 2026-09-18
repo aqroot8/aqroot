@@ -1,3 +1,201 @@
+## D-767 — **THE SAME TWO DEFECT CLASSES, ASKED OF THE WHOLE BOARD: A SECOND INDUCTOR NOBODY CHECKED, A SECOND SEMICONDUCTOR ON THE 39 V NODE, AND AN ARITHMETIC ERROR IN D-766 ITSELF**
+
+    authority  5849b658, UNCHANGED.  NO PCB change.  Every Gerber, drill, CPL and
+               BOM file is IDENTICAL ONCE THE EMBEDDED CreationDate IS NORMALISED
+               -- re-exported, so the raw bytes carry a new timestamp -- and the
+               ONLY semantic change in MANIFEST.json is the recorded sha256 of
+               03_spi_a_display_sd.kicad_sch, the sheet carrying the corrected
+               Q11 note.  FAB1 caught the stale manifest before this was noticed
+    changed    checks/land_parity_contract.py (LAND8 generalised, rotation-safe,
+               second live control), checks/demo_feature_contract.py (F5 gains
+               the boost RECTIFIER, two more controls -- ten in total),
+               03_spi_a_display_sd.kicad_sch (Q11 note: D-766's headroom
+               arithmetic CORRECTED), DEVICE_SPEC, CTO_DECISIONS D-766 s.2
+    evidence   d767-* contract baselines
+
+D-766 fixed four specific defects. Each of them was an INSTANCE of something
+more general, and a fix that closes one instance and leaves the class open is
+half a fix. This decision asks both questions of the whole board, and answers a
+third one against D-766 itself.
+
+### 1. "NO VIAS UNDERNEATH THE INDUCTOR" — ASKED OF EVERY INDUCTOR
+
+`LAND8` as D-766 wrote it tested **`L4` by name**. The board carries **six**
+inductors, and one of them — **`L2`** — is the **same Würth `74438357010`**,
+the same part whose drawing carries the instruction.
+
+**`L2`'s restricted strip has two `/NFC_5V_EN` track segments running the full
+length of it:** `(60.600, 15.000) → (58.600, 17.000)` and
+`(58.600, 17.000) → (58.600, 20.500)`, both 0.200 mm on `B.Cu`.
+
+**`L2` IS `DNP`.** It is the NFC 5 V boost inductor position, not fitted on this
+build, so **no board this release fabricates has a part over that copper** and
+this is not a fabrication blocker. It is a **latent** defect: fitting `L2` in a
+later revision would put a molded power inductor over two tracks its own
+manufacturer forbids.
+
+**Rerouting it now was considered and DECLINED.** `L2`'s own pads bracket the
+channel — pad 1 (`BQ25185_SYS`) ends at `x = 58.205` and pad 2 (`U13-SW`) starts
+at `x = 59.595` — so the 1.39 mm gap is exactly why the net was routed there,
+and clearing it means pushing `NFC_5V_EN` west of `x ≈ 57.0` over a 3.5 mm run.
+Re-routing a live net through a congested pocket, and re-certifying the whole
+release, to cure a defect **on an unpopulated part** is the wrong trade.
+
+**So the gate carries it instead, which is the point.** `LAND8` now:
+
+* enumerates **every instance** of every footprint in an explicit
+  `UNDERSIDE_RESTRICTED` table, rather than one reference by name;
+* **FAILS** on a fitted instance with copper in its strip and **REPORTS** a DNP
+  one, with coordinates — so `L2` is named in every run and populating it cannot
+  happen without confronting the copper;
+* states its own **coverage limit** in the report: only footprints whose
+  **archived drawing was read** are in scope, and no restriction is inferred for
+  any other part. Of the ten vendor datasheets archived here, a text sweep finds
+  this instruction in exactly one.
+
+### 2. AND IT HAD A BUG, WHICH THE SECOND CONTROL NOW GUARDS
+
+D-766's `LAND8` derived the strip from `pad.GetSize()`. **`GetSize()` is in the
+PAD's own frame.** On a rotated instance it measures across the wrong axis and
+returns a rectangle with **negative height**, which then collides with nothing
+and **passes**.
+
+`L1` — the `TPS63020` buck-boost inductor, the highest-current inductor on this
+board — **sits at 90°**. Measured with `GetSize()` it returned a strip of
+`0.980 × −1.030 mm`. Measured correctly from pad **bounding boxes** its strip is
+`3.400 × 1.390 mm`, and it is **clean**, as are `L3`, `L5` and `L6`. The finding
+was a false negative that happened not to matter; the NEXT one might not be.
+
+`_pad_gap_rect()` now works from bounding boxes and detects the gap axis, and a
+**second live control** derives `L1`'s strip every run and requires the gap to be
+found on the **y** axis with both sides positive — a test that fails on the
+implementation D-766 shipped.
+
+### 3. THE 39 V NODE HAS TWO SEMICONDUCTORS ON IT, NOT ONE
+
+D-766 re-rated `Q11` against the ceiling this board publishes. **`D8` stands off
+the same ceiling in reverse**: while the `TPS61169`'s internal switch is on, `SW`
+is pulled near ground and `D8` holds back whatever the output capacitor carries.
+
+**`D8` is RETAINED and is NOT a defect.** It is the `NSR0240`, `VRRM` **40 V** —
+and it is the part **TI's own `SNVSA40B` §7.2.2.2 names for this converter**, so
+the IC vendor chose it knowing its own OVP thresholds. The schematic already
+records *"40 V reverse rating exceeds the 36–39 V open-LED OVP threshold"*.
+
+**But nothing could say it**, and the margin is **1.0 V on an absolute
+maximum** — and `FIRST_FIVE_ASSEMBLY_PLAN` already records a **live substitution
+trap on this exact reference**: a keyword search for `D8` returns FUXINSEMI
+`SD103AWS`, *"a different part number entirely"*. `F5` now reads `D8`'s part
+number against a published-`VRRM` table, refuses a rectifier it has no figure
+for, and **reports the 1.0 V margin on every run so its thinness stays visible**.
+Two more live controls: a 20 V `PMEG2010AEH` — a part this board really carries,
+at `D9` — and an unknown diode. **`F5` now runs TEN live controls**: four
+sequencing, six silicon.
+
+### 4. AND D-766's OWN ARITHMETIC WAS WRONG
+
+D-766 justified `Q11`'s `RDS(on)` as *"≈ 1 Ω, i.e. 0.11 V and 12 mW against
+roughly 10 V of spare headroom."* **There is no 10 V of spare headroom.**
+`LED_BOOST` is **not** a high-voltage node in normal operation — the `.kicad_dru`
+records it at **3.884–4.484 V**, because this backlight is **six LEDs IN
+PARALLEL** at 2.9–3.2 V. The 39 V is the *fault* case, and D-766 borrowed it for
+an operating-case argument.
+
+**The conclusion survives; the reasoning is replaced with a better one.**
+`LED_BOOST` is a **regulated** node: `U17` raises it until `R69` sees 204 mV, and
+its range runs to the 36 V OVP threshold, so the loop absorbs the drop and the
+LED current does not move. And the bound is now anchored on a **published**
+figure instead of a square-law guess: `RDS(on)` ≤ 200 mΩ is published **at
+`VGS` = 2.5 V**, i.e. 0.5 V of overdrive for the worst-case 2.0 V threshold
+part; scaling first-order by 1/overdrive to our **0.396 V** gives ≈ **253 mΩ** —
+**27.6 mV and 3.0 mW** at 109 mA, which moves `LED_BOOST`'s normal band up by
+≈ 22 mV against the `AO3400A`'s 5.2 mV and changes no rule.
+
+**And the design is insensitive even if that estimate is badly wrong**: at a
+pessimistic 10 Ω the drop is 1.09 V, `U17` regulates it out, and `Q11`
+dissipates 0.119 W — an 18 °C rise on the datasheet's 150 °C/W steady-state
+junction-to-ambient. That is the honest form of the argument, and it does not
+depend on a model at all.
+
+D-766 §2, `DEVICE_SPEC` and the `Q11` schematic note all carry the correction
+**marked as one**, not silently rewritten.
+
+### 5. A FOURTH PLACE THIS REPOSITORY TOLD ITSELF TO DO D-766
+
+Worth recording, because it is the same pattern a fourth time. `Q11`'s **D-750**
+schematic note ends:
+
+> *"ANY FUTURE REVISION THAT SEPARATES THE TWO CONTROLS IN ORDER TO PWM `Q11`
+> ALONE MUST RE-RATE `Q11` TO AT LEAST 40 V `VDS`."*
+
+**D-752 separated the two controls.** `Q11` was not re-rated. The instruction was
+in the same property field, a few hundred words above the change that triggered
+it, and it survived D-752, D-753, D-763, D-764 and D-765 unread. **A note is not
+a gate.** That sentence is now `F5`'s rating clause, which cannot be passed over.
+
+### 5a. AND THEN THE SAME QUESTION WAS ASKED OF EVERY NOTE ON THE BOARD
+
+`Q11` was found because a schematic note stated a requirement and **nothing
+enforced it**. That is a defect CLASS too, so every `Note` field on all ten
+sheets was swept for imperative language — `MUST`, `MANDATORY`, `SHALL`,
+`DO NOT`, `NEVER`, `MAY NOT`, `FORBIDDEN` — and the result is **27 imperative
+sentences**. Nine of them assert something measurable from the board today, and
+**all nine were checked directly against it**:
+
+    R98 / R102 / R131  the D-186 MANDATORY accessory safe-state pull-downs
+                       all present, 100 k, one leg on GND ................ PASS
+    R63                pulled to ACC_3V3_SW and NOT to +3V3, so the wake
+                       contact cannot stay live with the rail off (B-08) . PASS
+    U4 pins 2/3        BMI270 ASDx/ASCx at +3V3, Bosch's "MUST NOT be tied
+                       to GND" honoured ................................. PASS
+    MK1 pin 2          microphone CONFIG tied to GND ..................... PASS
+    R24 / R123         IR ballast total 12.000 ohm against the "NEVER
+                       BELOW 10 OHM" repetitive rating ................... PASS
+    R112               display SDO link is DNP, as MX-8 requires ......... PASS
+    R129               exactly ONE pull-up on /ACC_DETECT_N .............. PASS
+
+**Every one holds.** `Q11` was the outlier, not the pattern — which is worth
+recording as a negative result, because it bounds how much of this board rests
+on unenforced prose. Of the remaining eighteen, several are already gated
+(`FAB12` pins `D8`, `Q2`, `Q3`, `Q11`, `J5`, `L2`, `L4`, `U11`, `U13`, `U17`,
+`U20`, `U22` by `Value`/`MPN`/`Footprint`, which is what catches the `Q2`/`Q3`
+VBsemi clone and the struck Harwin `J5`), and the rest are first-article
+measurements or accessory-side rules that no board check can express.
+
+### 6. VERIFICATION
+
+    board            5849b658 UNCHANGED.  Released package proven
+                     timestamp-normalised IDENTICAL across all 17 text
+                     artifacts, 4 PDFs timestamped internally, and MANIFEST
+                     differing ONLY in the sha256 of the one schematic sheet
+                     whose Q11 note was corrected -- FAB1 refused the package
+                     until that manifest entry was regenerated, which is the
+                     clause working exactly as intended
+    land chain       LAND1-LAND8 PASS; LAND8 covers BOTH Wurth instances,
+                     0 fitted offenders, L2 reported with 2 DNP offenders,
+                     both live controls refused
+    features         F1-F6 PASS; F5 with TEN live controls, all refused
+    KiCad DRC        199 lib_footprint_issues all WARNING, zero other classes,
+                     17 unconnected, parity 246 warnings / 0 errors -- sets
+                     element-for-element identical to D-765 and D-766
+    contracts        19 standing contracts run against the d766 baseline,
+                     none failing
+    firmware         unchanged; four PlatformIO builds SUCCESS
+    hardware/beta-v2 UNTOUCHED
+
+### 7. WHAT IS NOT CLOSED BY THIS DECISION
+
+* **`L2`'s two `/NFC_5V_EN` segments.** Named, gated, and left in place because
+  `L2` is `DNP`. **Any revision that populates `L2` must clear that strip first**,
+  and `LAND8` will fail the moment the DNP flag comes off.
+* **`D8`'s 1.0 V margin** to the published 39 V. Retained on TI's own
+  recommendation and now reported every run rather than assumed.
+* **Coverage.** `UNDERSIDE_RESTRICTED` holds one footprint because one archived
+  drawing carries the instruction. Most of this board's land patterns have no
+  archived drawing at all — `LAND6`/`LAND7` track that separately, and this
+  clause deliberately infers nothing.
+
+
 ## D-766 — **FIVE DEFECTS THE RELEASE GATES COULD NOT SEE: A 30 V PART ON A 39 V NODE THIS BOARD ITSELF PUBLISHES, A VIA WHERE THE MANUFACTURER PRINTS "NO VIAS", A WARM RESET THAT OUTLIVED ITS OWN SAFE STATE, AND A TRIM THAT MET ITS LIMIT EXACTLY**
 
     authority  9e4728ae -> 5849b658   objects_added 0, objects_removed 3 (all GND,
@@ -83,9 +281,21 @@ less than half that current** — so at the worst-case 2.00 V threshold against 
 held gate of ≥ 2.60 V (`VGS` ≥ **2.396 V** over `R69`'s 0.204 V) the device is
 already passing more than twice what is asked of it. **`RDS(on)` cannot move the
 LED current**: `U17`'s `FB` senses `LED_K`, which is `Q11`'s **source**, so
-`R69` alone fixes the setpoint and the channel costs only boost headroom — a
-worst-case square-law estimate at 0.396 V of overdrive is ≈ 1 Ω, i.e. **0.11 V
-and 12 mW** against roughly 10 V of spare headroom. **The true-off floor is
+`R69` alone fixes the setpoint and the channel drop is regulated out.
+**[CORRECTED BY D-767.  The text originally published here claimed "roughly
+10 V of spare headroom", and that is WRONG: `LED_BOOST` runs at
+**3.884–4.484 V** in normal operation — the `.kicad_dru` says so — because this
+backlight is six LEDs IN PARALLEL at 2.9–3.2 V.  There is no fixed headroom to
+spend.]**  What absorbs the drop is that `LED_BOOST` is a **regulated** node:
+`U17` raises it until `R69` sees 204 mV, and its range runs to the 36 V OVP
+threshold.  The bound is anchored on a published figure rather than a
+square-law guess — `RDS(on)` ≤ 200 mΩ is published **at `VGS` 2.5 V**, i.e.
+0.5 V of overdrive for the worst-case 2.0 V threshold part, so scaling
+first-order by 1/overdrive to our 0.396 V gives ≈ **253 mΩ**: **27.6 mV and
+3.0 mW** at 109 mA, moving `LED_BOOST`'s normal band up by ≈ 22 mV against the
+`AO3400A`'s 5.2 mV, and changing no rule.  Even at a pessimistic 10 Ω the drop
+is 1.09 V, which `U17` regulates out, and `Q11` dissipates 0.119 W for an 18 °C
+rise on the datasheet's 150 °C/W. **The true-off floor is
 untouched**: the same ±100 nA `IGSS` keeps D-752's **0.242 V** floor, now against
 `VGS(th)` min 0.60 V — **2.48×**.
 

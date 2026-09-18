@@ -1,0 +1,443 @@
+            E07-400M10S
+
+CC1101 410-450MHz 10dBm SPI Wireless Module
+     Chengdu Ebyte Electronic Technology Co.,Ltd                                                                                                     E07-400M10S User Manual
+
+
+                                                                                       Contents
+     Disclaimer .............................................................................................................................................................3
+
+     1. Overview .......................................................................................................................................................... 4
+
+            1.1 Brief Introduction .................................................................................................................................... 4
+
+            1.2 Features ................................................................................................................................................... 4
+
+            1.3 Application .............................................................................................................................................. 4
+
+     2. Specification and parameter ............................................................................................................................. 5
+
+            2.1 Limit parameter ....................................................................................................................................... 5
+
+            2.2 Operating parameter ................................................................................................................................ 5
+
+     3. Size and pin definition ......................................................................................................................................6
+
+     4. Basic operation ................................................................................................................................................. 7
+
+            4.1 Hardware design ......................................................................................................................................7
+
+            4.2 Programming ........................................................................................................................................... 8
+
+     5. Basic application ...............................................................................................................................................8
+
+     6. FAQ ...................................................................................................................................................................8
+
+            6.1 Communication range is too short ...........................................................................................................8
+
+            6.2 Module is easy to damage ....................................................................................................................... 9
+
+            6.3 BER(Bit Error Rate) is high .................................................................................................................... 9
+
+     7. Production guidance ......................................................................................................................................... 9
+
+     8. E07 series ..........................................................................................................................................................9
+
+     9. Antenna guide ................................................................................................................................................. 10
+
+            9.1 Antenna recommendation ......................................................................................................................10
+
+     Revision history ..................................................................................................................................................10
+
+     About us .............................................................................................................................................................................. 11
+
+
+
+
+Copyright ©2012–2021，Chengdu Ebyte Electronic Technology Co.,Ltd.                                                                                                                            2
+                                                               Disclaimer
+
+             The information in this document, including the URL address for reference, is
+     subject to change without notice. The document is provided "as is" without any
+     guarantee responsibility, including any guarantee for marketability, suitability for a
+     specific purpose, or non-infringement, and any guarantee for any proposal,
+     specification or sample mentioned elsewhere. This document does not bear any
+     responsibility, including the responsibility for infringement of any patent rights caused
+     by the use of the information in this document. This document does not grant any
+     license for the use of intellectual property rights in estoppel or other ways, whether
+     express or implied.
+
+             The test data obtained in the article are all obtained by the Ebyte laboratory, and
+     the actual results may vary slightly.
+
+             We hereby declared that all brand names, trademarks and registered trademarks
+     mentioned in this document are the property of their respective owners.
+
+             The final interpretation right belongs to Chengdu Ebyte Electronic Technology
+     Co., Ltd.
+
+
+
+     Notice :
+     Due to product version upgrades or other reasons, the contents of this manual may be changed. Ebyte
+     Electronic Technology Co., Ltd. reserves the right to modify the contents of this manual without any
+     hint or noticet. This manual is only used as a guide. Chengdu Ebyte Electronic Technology Co., Ltd.
+     makes every effort to provide accurate information in this manual. However, we does not guarantee
+     that the contents of the manual are completely free of errors. All statements, information and
+     suggestions in this manual do not constitute any express or implied guarantee.
+
+
+
+
+Copyright ©2012–2021，Chengdu Ebyte Electronic Technology Co.,Ltd.                                       3
+     1       OVERVIEW
+
+
+     1.1 Brief Introduction
+
+             E07-400M10S is an independently developed 410-450MHz SMD
+     wireless module based on the CC1101 chip produced by Texas
+     Instruments (TI), using industrial-grade high-precision 26MHz crystal
+     oscillator.
+             Due to the adoption of the already mature CC1101 chip as the core
+     of the module, its stability has won unanimous praise from users, and
+     there is no need to worry about compatibility. This module is mainly
+     aimed at smart home, industry, scientific research and medical, and
+     short-distance wireless communication equipment. It can provide
+     extensive hardware support for data packet processing, data buffering,
+     burst transmission, received signal strength indicator (RSSI), clear channel assessment (CCA), link quality indicator, and
+     wireless wake-up (WOR).
+             Since the module is a pure RF transceiver module, you need to use the MCU driver or a dedicated SPI debugging
+     tool.
+
+
+     1.2 Features
+
+            The measured communication distance can reach 1500m;
+            Maximum transmission power of 10mW, software multi-level adjustable;
+            Support the license-free ISM 433MHz band;
+            Support air date rate of 0.6k～500kbps;
+            Support multiple modulation modes (OOK、ASK、GFSK、2-FSK、4-FSK and MSK)
+            Independent 64-byte RX FIFO and TX FIFO;
+            Support 2.5～3.6V power supply, power supply over 3.3 V can guarantee the best performance;
+            Industrial grade standard design, support -40 ~ 85 °C for working over a long time;
+            IPEX interface, which can be easily connected to external antenna;
+            Support RSSI (received signal strength indicator) and LQI (link quality indicator)
+            It is connected to the MCU through a 4-wire SPI interface and provides 2 general-purpose digital output pins with
+             programmable functions.
+
+
+     1.3 Application
+
+            Smart home and industrial sensors, etc.;
+            Wireless alarm security system;
+            Home security alarm and remote keyless entry;
+            Wireless industrial-grade remote control;
+
+
+Copyright ©2012–2021，Chengdu Ebyte Electronic Technology Co.,Ltd.                                                            4
+     Chengdu Ebyte Electronic Technology Co.,Ltd                                                                     E07-400M10S User Manual
+
+           Health care products;
+           Advanced Meter Reading Architecture(AMI);
+           Automotive industry applications.
+
+
+
+     2       Specification and Parameter
+
+
+     2.1 Limit Parameter
+
+                                                         Performance
+                  Main parameter                                                                                   Remark
+                                                  Min                       Max
+                                                                                         Voltage over 3.6V will cause permanent damage to
+              Power supply（V）                      0                        3.6
+                                                                                         module
+                                                                                         Chances of burn is slim when modules are used in
+           Blocking power（dBm）                      -                       10
+                                                                                         short distance
+         Operating temperature（℃）                 -40                      +85           Industrial grade
+
+
+
+
+     2.2 Operating Parameter
+
+                                                            Performance
+                    Main parameter                                                                                  Remark
+                                                  Min          Typical            Max
+              Operating voltage（V）                 2.5              3.3           3.6       3.3 V ensures output power
+            Communication level（V）                  -               3.3            -        For 5V TTL, it may be at risk of burning down
+           Operating temperature（℃）                -40               -            +85       Industrial grade
+          Operating frequency（MHz）                 410          433               450       Support ISM band
+       Power            TX current（mA）              -               35             -        Instant power consumption
+     Consump            RX current（mA）              -               18             -                                    -
+         - tion        Sleep current （μA）           -               0.6            -        Shut down by software
+             Max TX power（dBm）                     9.5              10             11                                   -
+          Receiving sensitivity（dBm）              -107          -108              -109      Air data rate is 1.2kbps
+                  Air data rate（bps）              0.6k               -            500k      Controlled via user’s programming
+
+
+
+
+                   Main parameter                Description                                              Remark
+                                                                          Test condition：clear and open area, antenna gain: 5dBi，
+                  Reference distance               1.5km
+                                                                          antenna height: 2.5m，air data rate: 1.2kbps
+                        FIFO                       64Byte                 Maximum length of a single transmission
+                  Crystal Oscillator               26MHz                  10ppm
+                     Modulation             GFSK(recommended)             Support OOK、ASK、GFSK、2-FSK、4-FSK and MSK
+
+
+
+
+Copyright ©2012–2021，Chengdu Ebyte Electronic Technology Co.,Ltd.                                                                           5
+     Chengdu Ebyte Electronic Technology Co.,Ltd                                                              E07-400M10S User Manual
+
+                    Package                         SMD                                                -
+               Interface method                   1.27mm              Half hole
+           Communication Interface                   SPI              0～10Mbps
+                      Size                        14*20mm                                              -
+                    Antenna                    IPEX/STAMP             50 ohm impedance
+                   Net Weight                       1.2g                                               -
+
+
+
+
+     3        Size and Pin definition
+
+
+
+
+            Pin No.               Item             Direction                                    Description
+               1                  GND                               Ground wire, connected to the power reference ground
+               2                  GND                               Ground wire, connected to the power reference ground
+               3                  GND                               Ground wire, connected to the power reference ground
+               4                  GND                               Ground wire, connected to the power reference ground
+               5                  GND                               Ground wire, connected to the power reference ground
+               6                  NC                                No need to connect
+               7                  NC                                No need to connect
+               8                  NC                                No need to connect
+                                                                    Power supply, 2.5~3.6V (It is also recommended to add external
+               9                  VCC
+                                                                    ceramic filter capacitor)
+
+
+
+Copyright ©2012–2021，Chengdu Ebyte Electronic Technology Co.,Ltd.                                                                    6
+     Chengdu Ebyte Electronic Technology Co.,Ltd                                                               E07-400M10S User Manual
+
+               10                 NC                                No need to connect
+               11                GND                                Ground wire, connected to the power reference ground
+               12                GND                                Ground wire, connected to the power reference ground
+               13                 NC                                No need to connect
+               14               GD02                                CC1101 chip pins (see CC1101 official user manual for details)
+               15               GD00                                CC1101 chip pins (see CC1101 official user manual for details)
+               16            MISO/GD01              Output          SPI master output slave input
+               17               MOSI                 Input          SPI master input slave output
+               18                SCK                 Input          Serial Clock Input
+               19                CSN                 Input          SPI Chip select for starting SPI communication
+               20                GND                                Ground wire, connected to the power reference ground
+               21                ANT             Input/Output       Antenna, stamp hole（50 ohm impedance）
+               22                GND                                Ground wire, connected to the power reference ground
+
+
+
+
+     4      Basic operation
+
+
+     4.1         Hardware design
+
+          It is recommended to use a DC stabilized power supply. The power supply ripple factor is as small as possible and
+           the module needs to be reliably grounded;
+          Please pay attention to the correct connection of the positive and negative poles of the power supply,
+           reverse connection may cause permanent damage to the module;
+          Please check the power supply to ensure that between the recommended supply voltage, if exceeding the maximum,
+           the module will be permanently damaged;
+          Please check the stability of the power supply. Voltage can not fluctuate greatly and frequently;
+          When designing the power supply circuit for the module, it is often recommended to reserve more than 30% of the
+           margin, so the whole machine is beneficial for long-term stable operation;
+          The module should be as far away as possible from the power supply, transformers, high-frequency wiring and other
+           parts with large electromagnetic interference;
+          Bottom Layer High-frequency digital routing, high-frequency analog routing, and power routing must be avoided
+           under the module. If it is necessary to pass through the module, assume that the module is soldered to the Top Layer,
+           and the copper is spread on the Top Layer of the module contact part(well grounded), it must be close to the digital
+           part of the module and routed in the Bottom Layer;
+          Assuming the module is soldered or placed over the Top Layer, it is wrong to randomly route over the Bottom Layer
+           or other layers, which will affect the module's spurs and receiving sensitivity to varying degrees;
+          It is assumed that there are devices with large electromagnetic interference around the module that will greatly
+           affect the performance. It is recommended to keep them away from the module according to the strength of the
+           interference. If necessary, appropriate isolation and shielding can be done;
+          Assume that there are traces with large electromagnetic interference (high-frequency digital, high-frequency analog,
+           power traces) around the module that will greatly affect the performance of the module. It is recommended to stay
+           away from the module according to the strength of the interference.If necessary, appropriate isolation and shielding
+
+Copyright ©2012–2021，Chengdu Ebyte Electronic Technology Co.,Ltd.                                                                    7
+     Chengdu Ebyte Electronic Technology Co.,Ltd                                                       E07-400M10S User Manual
+
+           can be done;
+          If the communication line uses a 5V level, a 1k-5.1k resistor must be connected in series (not recommended, there is
+           still a risk of damage);
+          The mounting structure of antenna has a great influence on the performance of the module. It is necessary to ensure
+           that the antenna is exposed, preferably vertically upward. When the module is mounted inside the case, use a good
+           antenna extension cable to extend the antenna to the outside;
+          The antenna must not be installed inside the metal case, which will cause the transmission distance to be greatly
+           weakened.
+
+
+     4.2       Programming
+
+          It can complete the wireless data transceiving by operating its control register and transceiving buffer. Please refer
+           to the latest CC1101 data sheet for the timing operation of module register.
+          GDO0 is a general purpose I/O port，see CC1101 user manual；
+          GDO2 is generally configured as an IRQ-like function, or not connected. SPI query mode can be used to obtain the
+           interrupt status, but it is still recommended to use external interrupt by connecting to a MCU;
+          After CC1101 restores IDLE mode or configured as sleep mode, it is recommended to reinitialize the power
+           configuration table.
+
+
+
+
+     5      Recommended circuit diagram
+
+
+
+
+Copyright ©2012–2021，Chengdu Ebyte Electronic Technology Co.,Ltd.                                                                   8
+     Chengdu Ebyte Electronic Technology Co.,Ltd                                                          E07-400M10S User Manual
+
+
+     6      FAQ
+
+
+     6.1 Communication range is too short
+
+          The communication distance will be affected when obstacle exists;
+          Data lose rate will be affected by temperature, humidity and co-channel interference;
+          The ground will absorb and reflect wireless radio wave, so the performance will be poor when testing near ground;
+          Sea water has great ability in absorbing wireless radio wave, so performance will be poor when testing near the sea;
+          The signal will be seriously affected when the antenna is near metal object or put in a metal case;
+          Power register was set incorrectly or air data rate is set as too high (the higher the air data rate, the shorter the
+           distance);
+          The power supply low voltage under room temperature is lower than our recommendation, the lower the voltage,
+           the lower the transmitting power;
+          Due to antenna quality or poor matching between antenna and module.
+
+
+     6.2 Module is easy to damage
+
+          Please check the power supply source, ensure it is 1.8V~3.6V, voltage higher than 3.6V will damage the module;
+          Please check the stability of power source, the voltage cannot fluctuate too much;
+          Please make sure anti-static operation when installing and using, high frequency devices have electrostatic
+           susceptibility;
+          Please ensure the humidity is within limited range, some parts are sensitive to humidity;
+          Please avoid using modules under too high or too low temperature.
+
+
+     6.3 BER(Bit Error Rate) is high
+
+          There are co-channel signal interference nearby, please be away from interference sources or modify
+           frequency and channel to avoid interference;
+          The clock waveform on SPI is not standard, check whether there is interference on the SPI line, and the SPI bus line
+           should not be too long;
+          Poor power supply may cause messy code. Make sure that the power supply is reliable;
+          The extension line and feeder quality are poor or too long, so the bit error rate is high.
+
+
+
+     7      Production guidance
+
+           This product is a SMD module. When soldering the module, the soldering personnel must work in accordance with
+           the anti-static operation specification;
+           This product is an electrostatic sensitive product. If the module is not welded according to the specification, the
+           module may be permanently damaged.
+
+
+Copyright ©2012–2021，Chengdu Ebyte Electronic Technology Co.,Ltd.                                                                  9
+     Chengdu Ebyte Electronic Technology Co.,Ltd                                                               E07-400M10S User Manual
+
+
+
+
+     8      E07 series
+
+                                                 Frequency          Tx power       Distance
+         Model No.                IC                                                                      Package             Antenna
+                                                      Hz              dBm               m
+
+     E07-400M10S               CC1101                433M             10               1500                SMD                STAMP
+
+     E07-900M10S               CC1101           868M/915M             10               1500                SMD                STAMP
+
+                                          All modules in E07 series can communicate with each other
+
+
+
+
+     9      Antenna Guide
+
+
+     9.1 Antenna recommendation
+
+     The antenna is an important role in the communication process. A good antenna can largely improve the communication
+     system. Therefore, we recommend some antennas for wireless modules with excellent performance and reasonable price.
+
+
+                                             Frequeny        Gain      Size     Feeder
+          Model No.              Type                                                         Interface             Function featur
+                                                Hz           dBi       mm         cm
+     TX433-NP-4310             Flexible        433M          2.0       10x43       -          Welding        FPC soft antenna
+                               antenna
+     TX433-JZ-5                 Rubber         433M          2.0        30         -          SMA-J          Ultra-short and straight,
+                               antenna                                                                       omnidirectional antenna
+     TX433-JZG-6                Rubber         433M          2.5        50         -          SMA-J          Ultra-short and straight,
+                               antenna                                                                       omnidirectional antenna
+     TX433-JW-5                 Rubber         433M          2.0        50         -          SMA-J          Fixed bending,
+                               antenna                                                                       omnidirectional antenna
+     TX433-JWG-7                Rubber         433M          2.5        110        -          SMA-J          Fixed bending,
+                               antenna                                                                       omnidirectional antenna
+     TX433-JK-11                Rubber         433M          2.5        110        -          SMA-J          Bendable rubber antenna,
+                               antenna                                                                       omnidirectional
+     TX433-JK-20                Rubber         433M          3.0        200        -          SMA-J          Bendable rubber antenna,
+                               antenna                                                                       omnidirectional
+     TX433-XPL-100              Sucker         433M          3.5        185       100         SMA-J          Small sucker antenna,
+                               antenna                                                                       cost-effective
+     TX433-XP-200               Sucker         433M          4.0        190       200         SMA-J          Small sucker antenna, low
+                               antenna                                                                       loss
+     TX433-XPH-300              Sucker         433M          6.0        965       300         SMA-J          Small sucker antenna, high
+                               antenna                                                                       gain
+
+
+
+Copyright ©2012–2021，Chengdu Ebyte Electronic Technology Co.,Ltd.                                                                         10
+     Chengdu Ebyte Electronic Technology Co.,Ltd                                                       E07-400M10S User Manual
+
+
+
+
+     Revision history
+
+            Version                                 Date                         Description                        Issued by
+               1.0                               2021-06-18                     Initial version                      Linson
+               1.1                               2022-5-11                        Bug fixes                           Yan
+               1.2                               2022-10-27                       Bug fixes                           Yan
+
+
+
+
+     About us
+
+
+                                       Sales hotline：0086-4000-330-990           Tel：0086-28-61399028
+                                       Technical support：support@cdebyte.com     Website：https://www.cdebyte.com
+                                       Address ： Building B5, Mould Industrial Park, 199# Xi-Qu Ave, West High-tech Zone, Chengdu,
+                                       611731, Sichuan, China
+
+
+
+
+Copyright ©2012–2021，Chengdu Ebyte Electronic Technology Co.,Ltd.                                                               11
+

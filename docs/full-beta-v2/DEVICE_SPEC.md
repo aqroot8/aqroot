@@ -209,9 +209,21 @@ GPIO19/20); there is **no USB-UART bridge IC** (by design). See §9, §16.
 >   of ≥ 2.60 V (`VGS` ≥ **2.396 V** over `R69`'s 0.204 V) the worst-case part is
 >   already passing more than twice what is asked of it.  **`RDS(on)` cannot move
 >   the LED current**: `U17`'s `FB` senses `LED_K`, which is `Q11`'s SOURCE, so
->   `R69` alone fixes the setpoint and the channel only costs boost headroom —
->   a worst-case square-law estimate at 0.396 V of overdrive is ≈ 1 Ω, i.e.
->   **0.11 V and 12 mW** against roughly 10 V of spare headroom.
+>   `R69` alone fixes the setpoint and the channel drop is simply regulated out.
+>   **D-767 corrected the arithmetic D-766 first published here.**  `LED_BOOST`
+>   is **not** a high-voltage node in normal operation — the `.kicad_dru` records
+>   it at **3.884–4.484 V**, because this backlight is six LEDs **in parallel** at
+>   2.9–3.2 V — so there is no fixed "spare headroom" to spend.  What absorbs the
+>   drop is that `LED_BOOST` is a **regulated** node: `U17` raises it until `R69`
+>   sees 204 mV, and its range runs to the 36 V OVP threshold.  The bound is now
+>   anchored on a published figure rather than a square-law guess: `RDS(on)`
+>   ≤ 200 mΩ is published **at `VGS` 2.5 V**, i.e. 0.5 V of overdrive for the
+>   worst-case 2.0 V threshold part, so scaling first-order by 1/overdrive to our
+>   0.396 V gives ≈ **253 mΩ** — **27.6 mV and 3.0 mW** at 109 mA, moving
+>   `LED_BOOST`'s normal band up by ≈ 22 mV against the `AO3400A`'s 5.2 mV.  And
+>   the design is insensitive even if that estimate is badly wrong: at a
+>   pessimistic 10 Ω the drop is 1.09 V, which `U17` regulates out, and `Q11`
+>   dissipates 0.119 W for an 18 °C rise on the datasheet's 150 °C/W.
 > * **the true-off floor is unchanged.**  `IGSS` is the same ±100 nA, so D-752's
 >   **0.242 V** floor now stands against `VGS(th)` min **0.60 V** — **2.48×**.
 > * **one number gets worse, and it is named.**  `VGS(th)` max rises

@@ -1,0 +1,773 @@
+Chengdu Ebyte Electronic Technology Co., Ltd.                  E22-M Series User Manual
+
+
+
+
+                     E22-M Series Product Specifications
+
+          SX126 X LoRa spread spectrum SPI surface mount wireless module
+Chengdu Ebyte Electronic Technology Co., Ltd.                                                                                                                               E22-M Series User Manual
+
+                                                                                        Table of contents
+Disclaimer and Copyright Notice ................................................................................................................................................................. 1
+Chapter 1 Overview ......................................................................................................................................................................................... 1
+     1.1 Introduction ........................................................................................................................................................................................1
+     1.2 Features and Functions ....................................................................................................................................................................1
+     1.3 Application Scenarios ......................................................................................................................................................................1
+Chapter Two Specifications ........................................................................................................................................................................... 2
+     2.1 Comparison of E22-T Series Products ........................................................................................................................................ 2
+     2.2 Basic Parameters ...............................................................................................................................................................................3
+          2.2.1 Basic Parameters ..................................................................................................................................................................3
+Chapter3 Mechanical dimensions and pin definitions .............................................................................................................................5
+     3.1 Mechanical Dimensions and Pin Definitions of E22-400/ 900MM22S ............................................................................. 5
+     3.2 Mechanical Dimensions and Pin Definitions of E22-170/400/900M22S .......................................................................... 6
+     3.3 E22-170/400/900M30S(33S) Mechanical Dimensions and Pin Definitions .....................................................................7
+Chapter 4 Basic Operations ............................................................................................................................................................................8
+     4.1         Hardware Design .....................................................................................................................................................................8
+     4.2 Software Development ....................................................................................................................................................................9
+Chapter 5 Recommended Circuits ............................................................................................................................................................. 11
+     5.2 Recommended circuit diagram for E22-M series .................................................................................................................. 11
+Chapter 6 Frequently Asked Questions .................................................................................................................................................... 11
+     6.1 Transmission distance is not ideal............................................................................................................................................. 11
+     6.2 Module is easily damaged ............................................................................................................................................................12
+     6.3 The error rate is too high. .............................................................................................................................................................12
+Chapter 7 Welding Operation Instructions ...............................................................................................................................................12
+     7.1 Reflow soldering temperature .....................................................................................................................................................12
+     7.2 Reflow Soldering Profile ..............................................................................................................................................................13
+Chapter 8 Related Models ............................................................................................................................................................................13
+Chapter 9 Antenna Guide ............................................................................................................................................................................. 14
+     9.1 Antenna Recommendation ...........................................................................................................................................................14
+Revision History .............................................................................................................................................................................................15
+about Us ............................................................................................................................................................................................................15
+
+
+
+
+Copyright © 2012–2025 , Chengdu Ebyte Electronic Technology Co., Ltd.
+Chengdu Ebyte Electronic Technology Co., Ltd.                                                              E22-M Series User Manual
+
+
+
+
+                        Disclaimer and Copyright Notice
+      The information contained herein, including URLs provided for reference, is subject to change
+without notice. This document is provided "as is" without warranty of any kind, including any
+warranty of merchantability, fitness for a particular purpose, or non-infringement, and any warranty
+of any proposal, specification, or sample mentioned elsewhere. This document assumes no liability
+whatsoever, including liability for any infringement of any patent rights arising from the use of the
+information contained herein. This document does not grant any license to use any intellectual
+property rights herein, whether express or implied, by estoppel or otherwise.
+
+      The test data obtained in this article are all from tests conducted by Ebyte Labs, and the actual
+results may differ slightly.
+
+      All trademark names, trademarks and registered trademarks mentioned in this article are the
+property of their respective owners.
+
+      The final interpretation right belongs to Chengdu Ebyte Electronic Technology Co., Ltd.
+
+    Notice:
+
+
+     Due to product version upgrades or other reasons, the content of this manual may change. E-Best Electronics Technology Co.,
+Ltd. reserves the right to modify the content of this manual without prior notice or warning. This manual is for guidance only. E-Best
+Electronics Technology Co., Ltd. has made every effort to provide accurate information in this manual; however, E-Best Electronics
+Technology Co., Ltd. does not guarantee that the content of this manual is completely error-free, and all statements, information, and
+suggestions in this manual do not constitute any express or implied warranty.
+Chengdu Ebyte Electronic Technology Co., Ltd.                                                            E22-M Series User Manual
+
+
+
+
+Chapter 1 Overview
+
+
+1.1 Introduction
+
+     ultra-small, surface-mount LoRa ™ wireless modules independently developed based on the new generation LoRa ™ RF chip SX126 X ①
+manufactured by Semtech . Using the original imported SX126 X ① as the module core, compared with the previous
+generation LoRa ™ transceiver, its anti-interference performance and communication range have been further improved.
+     Thanks to its adoption of the new LoRa ™ modulation technology, this module far surpasses current products using
+FSK and GFSK modulation methods in terms of anti-interference performance and communication range. It is primarily
+designed for smart homes, wireless meter reading, scientific research and medical applications, and medium- to
+long-range wireless communication devices. This series of products covers the SUB-1GHz frequency band and is
+backward     compatible     with    SX1278      and    SX1276.      An    industrial-grade     high-precision    32MHz       active
+temperature-compensated crystal oscillator (TCXO) is adopted, except for E22-400MM22S and E22-900MM22S, which
+use passive crystal oscillators.
+     The E22-M series products are pure RF transceiver modules , requiring the use of MCU drivers or dedicated SPI
+debugging tools . For a detailed product selection comparison table, please see section 2.1 of this document .
+
+
+1.2 Features and Functions
+
+    SX127 X series modules, the SX126 X ① module has significant advantages in terms of lower power consumption,
+     faster speed, and longer range;
+    Under ideal conditions, the measured communication distance can reach up to 16 km.
+    It offers three different power modules to choose from: 22/30/33dBm , and supports multi-level software
+     adjustment;
+    Supports 170 /433/470/868/915MHz frequency bands ;
+    LoRa ™ mode, it supports data transmission rates from 0.018 to 62.5 kbps;
+    The FIFO has a large capacity and supports 256-byte data caching.
+    Backward compatible with SX1278/SX1276 series RF transceivers;
+    Built-in PA+LNA significantly improves communication range and stability;
+    Equipped with a 32MHz high -precision active temperature-compensated crystal oscillator ,Except for
+     E22-400MM22S and E22-900MM22S;
+    Industrial-grade standard design, supports long-term use in temperatures ranging from -40° C to 85°C;
+    The option of dual antennas (IPEX/stamp hole) facilitates secondary development and integration for users.
+
+
+1.3 Application Scenarios
+
+    Home security alarm and remote keyless entry;
+    Smart home and industrial sensors, etc.;
+    Wireless alarm security system;
+    Building automation solutions;
+                                                                                                                                    1
+Copyright © 2012–2025 , Chengdu Ebyte Electronic Technology Co. , Ltd.
+     Chengdu Ebyte Electronic Technology Co., Ltd.                                                  E22-M Series User Manual
+
+          Wireless industrial-grade remote control;
+          Healthcare products;
+          Advanced Meter Reading Architecture (AMI);
+          Applications in the automotive industry.
+
+
+
+     Note: SX126 X ① generally refers to the two chip models SX1262 and SX1268.
+
+
+
+     Chapter Two Specifications
+
+
+     2.1 Comparison of E22-T Series Products
+
+                                                          Carrier                                   Product
+                        Product              Chip                      Transmit    Test distance
+      category                                         frequency ①                                 dimensions    Antenna type ④
+                         Model             solutions                 power ② dBm      ③
+                                                                                         km
+                                                            Hz                                       (mm)
+                                                                                                                 IPEX -1 / Stamp
+                     E22-170M22S           SX1262        150-170      twenty two        6           2 0 * 14
+                                                                                                                     Hole
+   170MHz band
+                                                                                                                 IPEX -1 / Stamp
+      module         E22-170M30S           SX1262        150-170         30             12          38.5 *24
+                                                                                                                     Hole
+                                                                                                                 IPEX -1 / Stamp
+                     E22-170M33S           SX1262        150-170         33             16          38.5 * 24
+                                                                                                                     Hole
+                     E 2 2- 400 MM
+                                           SX1268      410～4 93M      twenty two        6           1 0 * 10     stamp perforation
+                           22S
+                      E 22 - 400 M                                                                               IPEX -1 / Stamp
+   433MHz band                             SX1268      410～4 93M      twenty two        6           2 0 * 14
+                          22 S                                                                                       Hole
+      module
+                      E 2 2-4 00 M                                                                               IPEX -1 / Stamp
+                                           SX1268      410～4 93M         30             12          38.5 *24
+                           30S                                                                                       Hole
+                     E 22 - 400 M 3                                                                              IPEX -1 / Stamp
+                                           SX1268      410～4 93M         33             16          38.5 *24
+                           3S                                                                                        Hole
+                     E 2 2-900 MM                      850 ～ 930
+                                           SX1262                     twenty two        6           1 0 * 10     stamp perforation
+                          22S                              M
+                      E 22 - 900 M                     850 ～ 930                                                 IPEX -1 / Stamp
+    868/915MHz                             SX1262                     twenty two        6           2 0 * 14
+                          22 S                             M                                                         Hole
+     Frequency
+    band module       E 2 2-900 M                      850 ～ 930                                                 IPEX -1 / Stamp
+                                           SX1262                        30             12          38.5 * 24
+                          30S                              M                                                         Hole
+                       E 22 - 900                      850 ～ 930                                                 IPEX -1 / Stamp
+                                           SX1262                        33             16          38.5 *24
+                         M33S                              M                                                         Hole
+     Note:
+       (1)Carrier frequency ① : Frequency band range can be customized by the user;
+       (2)Transmit power ② : 22dBm=158mW/30dBm=1000mW / 33dBm = 2000mW , error range ±1dBm, power is
+            adjustable in multiple levels, please see Chapter 4 of this article for details of power levels ;
+       (3)Test distance ③ : Clear and open, airspeed 2.4kbps, antenna height 2 meters (for reference only, actual
+            measurement is recommended);
+       (4)Antenna type ④ : Equivalent impedance approximately 50Ω;
+       (5)Modules operating on the same frequency band can communicate with each other.
+
+
+
+                                                                                                                               2
+Copyright © 2012–2026 , Chengdu Ebyte Electronic Technology Co. , Ltd
+     Chengdu Ebyte Electronic Technology Co., Ltd.                                                             E22-M Series User Manual
+
+
+
+     2.2 Basic Parameters
+
+           The E22- M series 22dBm low-power modules are: E22-170M 22 S , E22-400MM22 S , E22-400M22 S ,
+            E22-900MM22 S, and E22-900M22 S.
+           The E22- M series 30dBm high -power modules are: E22-170M 30S , E22-400M 30S , and E22-900M 30S .
+           The E22- M series 30dBm high-power modules are: E22-170M 3 3S , E22-400M 3 3S , and E22-900M 3 3S .
+
+
+
+
+     2.2.1 Basic Parameters
+
+     Conditions: Tc=25℃, VCC=5.0V, 170MHz /433MHz/ 470MHz/ 868MHz/915MHz
+      parameter                                                              describe
+       Modulation
+                        Next-generation LoRa™ modulation technology
+        method
+         Interface
+                        1.27mm stamp perforation
+          method
+      Communicati
+                        SPI
+       on interface
+           FIFO         2 56 bytes , maximum length per transmission
+          Crystal       32MHz high-precision active temperature-compensated crystal oscillator (TCXO) (E22-400MM22S and
+         Oscillator     E22-900MM22S adopt 32MHz passive crystal oscillators)
+         Packaging
+                        patch
+          method
+     Work environment
+       Operating
+                        -40℃～+85℃, industrial grade standard
+      temperature
+         Operating
+                        10-90%RH
+         humidity
+        Storage
+                        -40℃～+125℃
+      temperature
+     RF parameters
+                        22dBm = 158mW, power adjustable in multiple levels. For details on power levels, please see Chapter 4 of this
+                        article.
+         Transmit       30dBm = 1000mW, power adjustable in multiple levels . For details on power levels , please see Chapter 4 of this
+          power         document.
+                        3.3 dBm = 2000mW , power adjustable in multiple levels . For details on power levels , please see Chapter 4 of this
+                        document .
+                        150 MHz ~ 170 MHz , supports frequency band customization
+         Operating
+         frequency      410 MHz ~ 493 MHz, frequency band customization supported
+            band
+                        850MHz～930MHz, frequency band customization supported
+
+
+                                                                                                                                              3
+Copyright © 2012–2026 , Chengdu Ebyte Electronic Technology Co. , Ltd
+     Chengdu Ebyte Electronic Technology Co., Ltd.                                                             E22-M Series User Manual
+
+
+      parameter                                                              describe
+        air speed       0.018～62.5kbps, supports user-programmable control.
+        Blocking
+                        10dBm
+         power
+     Electrical parameters
+                        range is 1.8–3.7 V. When the operating voltage is ≥3V, the output power requirement can be met. Operating voltage
+                        exceeding 3.7V poses a risk of burnout . This module is suitable for the E22-M series 22dBm low-power modules.
+     Power supply       of 3.3 to 5.5 V, and an operating voltage ≥ 5 V, the output power requirement can be met . Operating voltages
+       voltage          exceeding 5.5 V pose a risk of burnout . Suitable for E22-M series 30 dBm low-power modules.
+                        of 3.3 to 5.5 V, and an operating voltage ≥ 5 V, the output power requirement can be met . Operating voltages
+                        exceeding 5.5 V pose a risk of burnout . Suitable for E22-M series 33 dBm low-power modules.
+      Communicati
+                        3.3 V
+        on level
+                        100～140mA, instantaneous power consumption @22dBm, suitable for E22- M series 22dBm low power modules
+        Emission        500 ～620mA, instantaneous power consumption @30dBm, suitable for E22- M series 30dBm high-power modules
+         current
+                        1100–1200 mA, instantaneous power consumption @ 3 3 dBm , suitable for E22 -M series 3 3 dBm high-power
+                        modules
+                        ≈7mA, suitable for E22- M series 22dBm small power modules
+        Received
+                        ≈ 14 mA, suitable for E22 -M series 30 dBm low power modules
+         current
+                        ≈1.5 mA, suitable for E22- M series 3.3 dBm high - power modules
+                        ≈ 0.18 uA , software shutdown , applicable to E22 -M series 22dBm low-power modules
+        Dormant
+                        ≈ 2 uA, software shutdown , applicable to E22- M series 30 dBm high-power modules
+         current
+                        ≈ 2 uA , software shutdown , applicable to E22- M series 3 3 dBm high-power modules
+
+
+
+
+                                                                                                                                            4
+Copyright © 2012–2026 , Chengdu Ebyte Electronic Technology Co. , Ltd
+     Chengdu Ebyte Electronic Technology Co., Ltd.                                                             E22-M Series User Manual
+
+
+
+     Chapter3 Mechanical dimensions and pin definitions
+
+
+     3.1 Mechanical Dimensions and Pin Definitions of E22-400/ 900MM22S
+
+
+
+
+     Pin number        Pin Name        Pin direction                                       Pin Applications
+          1           VCC                    -         Power supply range: 1.8V~3.7V (external ceramic filter capacitor recommended)
+          2           GND                    -         Ground wire, connected to power reference ground
+          3           NRST                 enter       Chip reset trigger input pin, active low.
+          4           NC                     -         -
+          5           NC                     -         -
+          6           ANT                    -         RF interface, stamp hole
+          7           GND                    -         Ground wire, connected to power reference ground
+          8           NC                     -         -
+                                                       The RF switch transmit control pin connects to an external microcontroller's I/O or
+           9          TXEN                  enter
+                                                       DIO2 pin; it is active high.
+                                                       The RF switch receive control pin connects to an external microcontroller I/O pin; it
+          10          RXEN                  enter
+                                                       is active high.
+          11          BUSY                 Output      Used for status indication
+          12          MISO                 Output      SPI data output pin
+          13          MOSI                  enter      SPI data input pin
+          14          NSS                   enter      The module's chip select pin is used to initiate an SPI communication.
+          15          SCK                   enter      SPI clock input pin
+          16          GND                     -        Ground wire, connected to power reference ground
+          17          NC                      -        -
+          18          DIO 3             Input/Output   Configurable general-purpose I/O ports
+          19          DIO2              Input/Output   Configurable general-purpose I/O ports
+          20          DIO1              Input/Output   Configurable general-purpose I/O ports
+
+
+
+
+                                                                                                                                               5
+Copyright © 2012–2026 , Chengdu Ebyte Electronic Technology Co. , Ltd
+     Chengdu Ebyte Electronic Technology Co., Ltd.                                                             E22-M Series User Manual
+
+
+
+     3.2 Mechanical Dimensions and Pin Definitions of E22-170/400/900M22S
+
+
+
+
+     Pin number        Pin Name        Pin direction                                       Pin Applications
+          1              GND                 -         Ground wire, connected to power reference ground
+          2              GND                 -         Ground wire, connected to power reference ground
+          3              GND                 -         Ground wire, connected to power reference ground
+          4              GND                 -         Ground wire, connected to power reference ground
+          5              GND                 -         Ground wire, connected to power reference ground
+                                                       The RF switch receive control pin connects to an external microcontroller I/O pin; it
+           6             RXEN               enter
+                                                       is active high.
+                                                       The RF switch transmit control pin connects to an external microcontroller's I/O or
+           7             TXEN               enter
+                                                       DIO2 pin; it is active high.
+          8              DIO2           Input/Output   Configurable general-purpose I/O ports (see SX126 X manual for details) ①
+          9              VCC                  -        Power supply range: 1.8V~3.7V (external ceramic filter capacitor recommended)
+         10              GND                  -        Ground wire, connected to power reference ground
+         11              GND                  -        Ground wire, connected to power reference ground
+         12              GND                  -        Ground wire, connected to power reference ground
+         13              DIO1           Input/Output   Configurable general-purpose I/O ports (see SX126 X manual for details)
+         14              BUSY              Output      Used for status indication (see SX1262 manual for details).
+         15              NRST               enter      Chip reset trigger input pin, active low.
+         16              MISO              Output      SPI data output pin
+         17              MOSI               enter      SPI data input pin
+         18               SCK               enter      SPI clock input pin
+         19               NSS               enter      The module's chip select pin is used to initiate an SPI communication.
+         20              GND                  -        Ground wire, connected to power reference ground
+     twenty one          ANT                  -        Antenna interface, stamp hole (50 ohms characteristic impedance)
+     twenty two          GND                  -        Ground wire, connected to power reference ground
+    Note ①: If the DIO and TXEN pins are shorted, the DIO2 switch control function needs to be enabled in the software.
+
+
+
+
+                                                                                                                                               6
+Copyright © 2012–2026 , Chengdu Ebyte Electronic Technology Co. , Ltd
+     Chengdu Ebyte Electronic Technology Co., Ltd.                                                             E22-M Series User Manual
+
+
+
+     3.3 E22-170/400/900M30S(33S) Mechanical Dimensions and Pin Definitions
+
+
+
+
+                                            Pin
+     Pin number        Pin Name                                                          Pin Applications
+                                         direction
+           1              GND                -        Ground wire, connected to power reference ground
+           2              GND                -        Ground wire, connected to power reference ground
+           3              GND                -        Ground wire, connected to power reference ground
+           4              GND                -        Ground wire, connected to power reference ground
+           5              GND                -        Ground wire, connected to power reference ground
+                                                      The RF switch receives the control pin, which connects to an external microcontroller
+                                                      I/O pin.
+           6             RXEN              enter
+                                                      Please refer to Table 1 below for logic control , and refer to the DEMO on the EBYTE
+                                                      official website for control routines.
+                                                      The RF switch transmit control pin is connected to an external microcontroller IO or
+                                                      DIO2 (see SX126 X manual for details).
+           7             TXEN              enter
+                                                      Please refer to Table 1 below for logic control , and refer to the DEMO on the EBYTE
+                                                      official website for control routines.
+           8             DIO2          Input/Output   Configurable general-purpose I/O ports (see SX126 X manual for details) ①
+           9             VCC                 -        Power supply range: 2.5V to 5.5V (external ceramic filter capacitor recommended).
+          10             VCC                 -        Power supply range: 2.5V to 5.5V (external ceramic filter capacitor is recommended).
+          11             GND                 -        Ground wire, connected to power reference ground
+          12             GND                 -        Ground wire, connected to power reference ground
+          13             DIO1          Input/Output   Configurable general-purpose I/O ports (see SX126 X manual for details)
+          14             BUSY             Output      Used for status indication (see SX126 X manual for details).
+          15             NRST              enter      Chip reset trigger input pin, active low.
+          16             MISO             Output      SPI data output pin
+          17             MOSI              enter      SPI data input pin
+          18              SCK              enter      SPI clock input pin
+          19              NSS              enter      The module's chip select pin is used to initiate an SPI communication.
+          20             GND                 -        Ground wire, connected to power reference ground
+                                                      Antenna interface, stamp hole (50Ω characteristic impedance).
+                                                      Because the module has a built-in PA, the output power of the SX126 X RF chip
+      twenty one          ANT                 -
+                                                      (preamp) is amplified relative to the actual output power of the module. Please refer to
+                                                      Table 2 below .
+     twenty two           GND                -        Ground wire, connected to power reference ground
+         -                DIO3         Input/Output   Internally used in the module, it powers a 32MHz TCXO crystal oscillator (DIO3
+
+                                                                                                                                             7
+Copyright © 2012–2026 , Chengdu Ebyte Electronic Technology Co. , Ltd
+     Chengdu Ebyte Electronic Technology Co., Ltd.                                                     E22-M Series User Manual
+
+                                            Pin
+     Pin number        Pin Name                                                    Pin Applications
+                                         direction
+                                                     configured to output 2.2V).
+    Note ①: If the DIO and TXEN pins are shorted, the DIO2 switch control function needs to be enabled in the software.
+
+
+
+     Chapter 4 Basic Operations
+
+
+     4.1 Hardware Design
+
+          It is recommended to use a DC regulated power supply to power this module, with the power supply ripple
+           coefficient as small as possible, and the module must be reliably grounded;
+          Please ensure the correct connection of the power supply positive and negative terminals. Reversing the connection
+           may cause permanent damage to the module.
+          Please check the power supply and ensure it is within the recommended voltage range. Exceeding the maximum
+           value will cause permanent damage to the module.
+          Please check the power supply stability; the voltage should not fluctuate significantly or frequently.
+          When designing power supply circuits for modules, it is often recommended to retain a margin of more than 30% to
+           ensure long-term stable operation of the entire unit.
+          The module should be kept as far away as possible from power supplies, transformers, high-frequency traces, and
+           other parts with high electromagnetic interference.
+          High-frequency digital traces, high-frequency analog traces, and power traces must avoid the area under the module.
+           If it is absolutely necessary to run under the module, assuming the module is soldered on the Top Layer, lay ground
+           copper on the Top Layer of the module contact area (all copper and well grounded), and run the traces close to the
+           digital part of the module on the Bottom Layer.
+          Assuming the module is soldered or placed in the Top Layer, it is also wrong to arbitrarily route traces in the
+           Bottom Layer or other layers, as this will affect the module's stray emissions and reception sensitivity to varying
+           degrees.
+          If there are devices around the module that cause significant electromagnetic interference, it will greatly affect the
+           module's performance. Depending on the intensity of the interference, it is recommended to keep them away from
+           the module. If possible, appropriate isolation and shielding can be implemented.
+          If there are traces around the module that cause significant electromagnetic interference (high-frequency digital,
+           high-frequency analog, power supply traces), it will greatly affect the module's performance. Depending on the
+           intensity of the interference, it is recommended to keep them away from the module. If possible, appropriate
+           isolation and shielding can be implemented.
+          If the communication line uses a 5V level, a 1k-5.1k resistor must be connected in series (not recommended, as
+           there is still a risk of damage).
+          The antenna mounting structure has a significant impact on module performance; therefore, it is essential to ensure
+           that the antenna is exposed, ideally vertically upwards. When the module is installed inside the housing, a
+           high-quality antenna extension cable can be used to extend the antenna to the outside of the housing.
+          Antennas should never be installed inside a metal casing, as this will greatly reduce the transmission distance.
+          It is recommended to add a 200Ω protection resistor to the RXD/TXD of the external MCU.
+
+
+
+
+                                                                                                                                    8
+Copyright © 2012–2026 , Chengdu Ebyte Electronic Technology Co. , Ltd
+     Chengdu Ebyte Electronic Technology Co., Ltd.                                                          E22-M Series User Manual
+
+
+
+     4.2 Software Development
+
+          This module has a built-in RF chip , SX126X , and its driving method is completely equivalent to that of SX126X .
+           Users can operate it in strict accordance with the SX126X chip manual .
+          DIO1 and DIO2 are general-purpose I/O ports that can be configured for various functions. DIO2 can be connected to the T/R
+           CTRLbut not to the MCU's I/O port. It is used to control the RF switch transmission. See the SX126 X manual for details. If not
+           used, it can be left floating.
+          DIO3 is used to power a 32MHz TCXO crystal oscillator ( the DIO3 is configured to output 2.2V ) .
+          For E22-400MM20S and E22-900MM20S, please refer to the DEMO provided on the official
+           website:https://www.ebyte.com/pdf-down/3090.html.
+          For more information, please refer to the official SDK programs: https://github.com/Lora-net/sx126x_driver and
+           https://github.com/Lora-net/SWSD003.
+          For more information, please refer to the sample program provided by EBITA : E22-400MBL-SC LORA Module
+           Development Test Board - Compatible Sub-1G Wireless Module Evaluation Kit .
+          Internally, it uses an active temperature-compensated crystal oscillator (TCXO). Note the crystal oscillator
+           configuration in the software driver .
+                                            Table 1 [Truth Table for RF Switch Control Logic]
+                   TX EN                                       RXEN                                             MODE
+                     1                                           0                                               TX
+                     0                                           1                                               RX
+                     0                                           0                                              CLOSE
+                                  Chart 2 [The RF output power control table]
+     Conditions: Tc = 25℃, VCC = 5.0V
+      Module model
+                                                              RF output power comparison curve
+         used
+
+
+
+
+     E22-170M30S
+     E22-400M30S
+     E22-900M30S
+
+
+
+
+                                                                                                                                        9
+Copyright © 2012–2026 , Chengdu Ebyte Electronic Technology Co. , Ltd
+     Chengdu Ebyte Electronic Technology Co., Ltd.                                         E22-M Series User Manual
+
+      Module model
+                                                        RF output power comparison curve
+         used
+
+
+
+
+     E22-170M33S
+     E22-400M33S
+     E22-900M33S
+
+
+
+
+                                                                                                                      10
+Copyright © 2012–2026 , Chengdu Ebyte Electronic Technology Co. , Ltd
+     Chengdu Ebyte Electronic Technology Co., Ltd.                                                       E22-M Series User Manual
+
+
+
+     Chapter 5 Recommended Circuits
+
+
+     5.2 Recommended circuit diagram for E22-M series
+
+
+
+
+     Chapter 6 Frequently Asked Questions
+
+
+     6.1 Transmission distance is not ideal
+
+          When there are obstacles in line-of-sight communication, the communication distance will be reduced accordingly;
+          Temperature, humidity, and co-channel interference can all lead to increased packet loss rates in communications.
+          The ground absorbs and reflects radio waves, and the test results are poor when the ground is close to the ground.
+          Seawater has a strong ability to absorb radio waves, so tests conducted at the seaside are ineffective.
+          If there are metal objects near the antenna, or if it is placed inside a metal casing, the signal attenuation will be very
+           severe.
+          Power register settings are incorrect; air speed is set too high (the higher the air speed, the shorter the distance).
+          At room temperature, the power supply voltage is lower than the recommended value; the lower the voltage, the
+           lower the power output.
+          The antenna may be poorly matched with the module or have quality issues.
+                                                                                                                                    11
+Copyright © 2012–2026 , Chengdu Ebyte Electronic Technology Co. , Ltd
+     Chengdu Ebyte Electronic Technology Co., Ltd.                                                      E22-M Series User Manual
+
+
+
+     6.2 Module is easily damaged
+
+          Please check the power supply and ensure it is within the recommended voltage range. Exceeding the maximum
+           value will cause permanent damage to the module.
+          Please check the power supply stability; the voltage should not fluctuate significantly or frequently.
+          Please ensure anti-static operation during installation and use, as high-frequency devices are sensitive to
+           electrostatic discharge.
+          Please ensure that the humidity is not too high during installation and use, as some components are
+           humidity-sensitive.
+          Unless there are special requirements, it is not recommended to use it at excessively high or low temperatures.
+
+
+     6.3 The error rate is too high.
+
+          If there is interference from a co-channel signal nearby, move away from the source of interference or change the
+           frequency or channel to avoid the interference.
+          If the clock waveform on the SPI is not standard, check for interference on the SPI line and ensure that the SPI bus
+           traces are not too long.
+          An inadequate power supply can also cause garbled characters, so it is essential to ensure the reliability of the power
+           supply.
+          Poor quality or excessive length of extension lines or feeders can also lead to a high bit error rate.
+
+
+
+
+     Chapter 7 Welding Operation Instructions
+
+
+     7.1 Reflow soldering temperature
+
+                     Reflow soldering profile characteristics                   Lead-based assembly           Lead-free assembly
+                                         Minimum temperature ( Tsmin )                  100℃                          150℃
+                                           Maximum temperature (T
+      Preheating/Insulation                                                             150℃                          200℃
+                                               <sub>smax</sub> )
+                                            Time (T smin ~ T smin )               60-120 seconds                60-120 seconds
+                                                                                3℃/second, maximum                3℃/second,
+                         Temperature rise slope ( TL ~ Tp )
+                                                                                       value                    maximum value
+                          Liquid phase temperature ( TL )                             183℃                           217℃
+                            T L above the holding time                            60~ 90 seconds                60~ 90 seconds
+                                                                                                             Users      must     not
+                                                                             Users must not exceed the       exceed              the
+                                                                             temperature specified on        temperature specified
+                           Package peak temperature Tp
+                                                                             the product's "humidity         on the product's
+                                                                             sensitivity" label.             "humidity
+                                                                                                             sensitivity" label.
+         Tp ) within 5°C of the specified grading temperature (Tc) is
+                                                                                      20 seconds                    30 seconds
+                             shown in the figure below.
+                              Cooling slope ( Tp ~ TL )                         6℃/second, maximum                  6℃/second,
+
+                                                                                                                                   12
+Copyright © 2012–2026 , Chengdu Ebyte Electronic Technology Co. , Ltd
+     Chengdu Ebyte Electronic Technology Co., Ltd.                                                     E22-M Series User Manual
+
+                                                                                      value                    maximum value
+                                                                              6 minutes, the longest            8 minutes, the
+               Time from room temperature to peak temperature
+                                                                                                                   longest
+     * The peak temperature (Tp) tolerance of the temperature profile is defined as the user's upper limit.
+
+
+
+
+     7.2 Reflow Soldering Profile
+
+
+
+
+     Chapter 8 Related Models
+
+                                                                                                   Product
+        Product            Chip            carrier      Transmit    Test distance                                   Communicatio
+                                                                                    Packaging     dimensions
+         Model           solutions      frequency Hz   power dBm        (km)                                         n interface
+                                                                                                     (mm)
+     E22-230T22S          SX1262        230M           twenty two         5           patch          16*26               TTL
+     E22-400T22S          SX1262        433/470M       twenty two         5           patch          16*26               TTL
+     E22-900T22S          SX1262        868/915M       twenty two         5           patch          16*26               TTL
+     E22-230T30S          SX1262        230M               30            10           patch         25*40.5              TTL
+     E22-400T30S          SX1262        433/470M           30            10           patch         25*40.5              TTL
+     E22-900T30S          SX1262        868/915M           30            10           patch         25*40.5              TTL
+
+
+                                                                                                                                  13
+Copyright © 2012–2026 , Chengdu Ebyte Electronic Technology Co. , Ltd
+     Chengdu Ebyte Electronic Technology Co., Ltd.                                                  E22-M Series User Manual
+
+
+
+     Chapter 9 Antenna Guide
+
+
+     9.1 Antenna Recommendation
+
+           Antennas play a crucial role in communication, and inferior antennas can often have a significant impact on
+     communication systems. Therefore, our company recommends certain antennas that are high-performing and reasonably
+     priced and compatible with our wireless modules.
+                                             frequency                          Height     feeder
+      Product Model             type                     interface   Gain dBi                                Features
+                                              band Hz                           (mm)         cm
+                              Suction                                                                 Miniature suction cup
+       TX170-XP-200             Cup            170 M      SMA-J       4.0​       5 00       200      antenna, omnidirectional
+                              Antenna                                                                          antenna
+                              Glue rod                                                                Bending a rubber rod,
+      TX170-JKD-20                             170 M      SMA-J        3.0        200        -
+                              antenna                                                                omnidirectional antenna
+                              Glue rod                                                                Bending a rubber rod,
+       TX170-JK-11                             170 M      SMA-J        2.5        110        -
+                              antenna                                                                omnidirectional antenna
+                              Flexible                                                               Built-in flexible FPC soft
+      TX433-NP-4310                            433M      welding       2.0      43.8*9.5     -
+                              antenna                                                                          antenna
+                              Glue rod                                                                  Ultra-short straight
+        TX433-JZ-5                             433M       SMA-J        2.0        52         -
+                              antenna                                                                omnidirectional antenna
+                              Glue rod                                                                  Ultra-short straight
+       TX433-JZG-6                             433M       SMA-J        2.5        62         -
+                              antenna                                                                omnidirectional antenna
+                              Glue rod                                                                Bending a rubber rod,
+        TX433-JW-5                             433M       SMA-J        2.0        50         -
+                              antenna                                                                omnidirectional antenna
+                              Glue rod                                                                Bending a rubber rod,
+       TX433-JWG-7                             433M       SMA-J        2.5        75         -
+                              antenna                                                                omnidirectional antenna
+                              Glue rod                                                                 Bendable rubber rod,
+       TX433-JK-11                             433M       SMA-J        2.5        110        -
+                              antenna                                                                omnidirectional antenna
+                              Glue rod                                                                 Bendable rubber rod,
+       TX433-JK-20                             433M       SMA-J        3.0        210        -
+                              antenna                                                                omnidirectional antenna
+                              Suction
+                                                                                                       Miniature suction cup
+      TX433-XPL-100             Cup            433M       SMA-J        3.5        185       100
+                                                                                                       antenna, cost-effective
+                              Antenna
+                              Suction
+                                                                                                    Neutral suction cup antenna,
+       TX433-XP-200             Cup            433M       SMA-J        4.0        190       200
+                                                                                                              low loss
+                              Antenna
+                              Suction
+                                                                                                     Large suction cup antenna,
+      TX433-XPH-300             Cup            433M       SMA-J        6.0        965       300
+                                                                                                             high gain
+                              Antenna
+                              Glue rod                                                                  Ultra-short straight
+        TX490-JZ-5                           470/490M     SMA-J        2.0        50         -
+                              antenna                                                                 omnidirectional antenna
+                              Suction
+                                                                                                       Miniature suction cup
+      TX490-XPL-100             Cup          470/490M     SMA-J        3.5        120       100
+                                                                                                       antenna, cost-effective
+                              Antenna
+
+
+
+
+                                                                                                                                  14
+Copyright © 2012–2026 , Chengdu Ebyte Electronic Technology Co. , Ltd
+     Chengdu Ebyte Electronic Technology Co., Ltd.                                                                 E22-M Series User Manual
+
+
+
+     Revision History
+
+                           Version                    Revision Date                      Revision Notes               maintainer
+                            V1.0                        2025-10-29                        Initial version                Hao
+                            V1.1                        2026-1-15                   Modified power diagram               Hao
+                                                                                supplementary crystal oscillator
+                            V1.2                         2026-2-6                                                        Hao
+                                                                                           description
+
+
+
+
+     about Us
+
+     Technical support: service@cdebyte.com
+     Documents and RF Setting download link: www.cdebyte.com
+     Thank you for using Ebyte products! Please contact us with any questions or suggestions: info@cdebyte.com
+     -------------------------------------------------------------------------------------------------
+     Web: www.cdebyte.com
+     Address: B5 Mould Park, 199# Xiqu Ave, High-tech District, Sichuan, China
+
+
+
+
+                                                                                                                                              15
+Copyright © 2012–2026 , Chengdu Ebyte Electronic Technology Co. , Ltd
+

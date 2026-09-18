@@ -1,0 +1,438 @@
+                                      Specification No.   Q/WAPL785060-1011
+
+                                      Edition No.                   1.0
+
+
+
+
+        Polymer Lithium-ion Battery
+
+
+Product Specification
+                   Model：785060 2500mAh
+
+                     Hunan Sounddon New Energy Co., Ltd
+Address:No.98, Fuzhou Road,Jinhua Demonstration Area,Xiangtan City,Hunan Province,China.
+                       Tel: (86) 731 - 5856 7126
+                       Fax: (86) 731 - 5823 6346
+                 E-mail:linda.ding@soundnewenergy.com
+
+
+
+
+                       Prepared by：Sunping
+                       Checked by：Zhu Qi
+                                                   Approve by: Jin Gang
+
+
+
+                      All    10        pages
+                                                           Doc. No.     Q/WAPL785060-1011
+    Polymer Lithium-ion battery
+                                                          Edition No.            1.0
+
+          Product Specification                                                  2/10
+1、 Scope
+       This product specification describes polymer lithium-ion battery. Please using the test
+methods that recommend in this specification. If you have any opinions or advices about the test
+items and methods, please contact us. Please read the cautions recommended in the specifications
+first, take the credibility measure of the cell’s using.
+     If the cells should be using at the environment that not preferred in this document, please
+connect with our first and get our authorization. For the reason of stable performance and better
+safety, battery pack with more than 2 cells connected in serial way should be charged with a
+balance charger.
+    It is claimed that we should have no any responsibility with the contingency and loss due to
+the cells’ wrong usage (not preferred in the product specification).
+
+2、 Product Type, Model and Dimension
+2.1 Type：Polymer lithium-ion battery
+2.2 Model：785060(Cell adding Ni Tabs)
+2.3 Cell Dimension(Max, Thickness×Width×Length，mm3)：7.8×50×60
+                                 ×Width×Length，mm3)：7.9*50.5*60.5(with pcm)
+             Pack Dimension(Max, Thickness
+
+
+3、 Specification
+            Item                              Specifications                            Remark
+      Nominal Capacity                         2500mAh                           0.2C5A discharge，25℃
+      Nominal Voltage                             3.75V                       Average Voltage at 0.2C5A discharge
+      Standard Charge Current                    0.2 C5A                      Working temperature：0～40℃
+     Max Charge Current                           1C5A                        Working temperature：0～40℃
+    Charge cut-off Voltage                         4.2V                                    CC/CV
+  Standard Discharge Current                     0.5C5A                         Working temperature：25℃
+   Discharge cut-off Voltage                     2.75V
+         Cell Voltage                           3.7-3.9V                          When leave factory
+          Impedance                             ≤35mΩ                        AC 1KHz after 50% charge,25℃
+            Weight                             Approx:46g
+     Storage        ≤1month                    -10～45℃
+   temperature      ≤3month                     0～30℃                           Best 20±5℃ for long-time
+                    ≤6month                     20±5℃                                      storage
+       Storage humidity                       65±20% RH
+
+
+4. General Performance
+Definition of Standard charging method：At 20±5℃，charging the cell initially with constant
+current 0.2C5A till voltage 4.2V, then with constant voltage4.2 till current declines to 0.05C5A.
+                                                                            Doc. No.         Q/WAPL785060-1011
+             Polymer Lithium-ion battery
+                                                                           Edition No.                1.0
+
+                     Product Specification                                                           3/10
+
+
+
+
+                Item                                              Test Methods                                     Performance
+                                      After    standard     charging,     laying    the    battery   0.5h,     then
+      4.1       0.2C Capacity       discharging    at     0.2C
+                                                             5A     to    voltage   2.75V,     recording      the ≥300min
+                                    discharging time.
+                                      After    standard     charging,     laying    the    battery   0.5h,     then
+      4.2        1C Capacity        discharging at 1C5A to voltage 2.75V, recording the discharging                   ≥54min
+                                    time.
+                                      Constant current 0.5C5A charge to 4.2V, then constant voltage
+                                    charge to current declines to 0.05C      ，constant
+                                                                  5A, stay 5min
+      4.3           Cycle Life                                                                                     ≥400times
+                                    current 0.5C5A discharge to 2.75V，stay 5min. Repeat above
+                                    steps till continuously discharging time less than 36min.
+
+                 Capability of        20±5℃, After standard charging, laying the battery 28days,
+      4.4            keeping        discharging    at     0.2C
+                                                             5A      to    voltage2.75V,     recording       the      ≥240min
+                    electricity     discharging time.
+
+       5. Environment Performance
+
+        Item                                       Test Methods                                      Performance
+                               After standard charging, laying the battery 4h at 60℃,
+             High
+5.1                        then discharging at 0.2C5A to voltage 2.75V, recording the                    ≥270min
+        temperature
+                           discharging time.
+                               After standard charging, laying the battery 4h at -10℃,
+             Low
+5.2                        then discharging at 0.2C5A to voltage 2.75V, recording the                    ≥210min
+        temperature
+                           discharging time.
+            Constant                                                                                 No distortion
+                               After standard charging, laying the battery 48h at 40±
+5.3    humidity and                                                                             No electrolytes leakage
+                           2℃, RH 93±2%. Recording 0.2C5A discharging time
+       temperature                                                                                       ≥270 min
+       Temperature             After standard charging, battery stored at -20℃ for 2
+5.4                                                                                             No electrolytes leakage
+             shock         hours, then stored at 50℃ for 2 hours. Repeat 10 times.
+
+       6. Mechanical Performance
+                                                                                   Doc. No.       Q/WAPL-785060-1011
+             Polymer Lithium-ion battery
+                                                                                  Edition No.              1.0
+
+                  Product Specification                                                                   4/10
+
+
+
+      Item                                        Test Methods                                     Performance
+                        After standard charging, put battery on the vibration
+                                                                           No influence to batteries'
+                   table. 30 min experiment from X,Y ,Z axis. Scan rate: 1
+6.1   Vibration                                                         electrical performance and
+                   oct/min; Frequency 10-30Hz, Swing 0.38mm; Frequency
+                                                                        appearance.
+                   30-55Hz, Swing 0.19mm.
+                        After vibration test, batteries were laying on the vibration
+                                                                             No influence to batteries'
+                   table     about     X,    Y,    Z   axis.     Max   frequency
+                                                                   acceleration:
+6.2   Collision                                                            electrical performance and
+                   100m/s2; collision times per minutes: 40~80; frequency
+                                                                                   appearance.
+                   keeping time 16ms; all collision times 1000±10.
+                           Random drop the battery from 10m height onto concrete
+6.3   Drop                                                                                      No explosion or fire
+                   one times.
+
+      7. Safety Test
+             Test conditions：The following tests must be measured at flowing air and safety protection
+         conditions. All batteries must standard charge and lay 24h.
+         Item                                           Test Methods                                   Performance
+                                  At 20±5℃, charging batteries with constant current
+                             3C5A to voltage5V, then with constant voltage5V till current
+7.1     Over charge                                                                                No explosion or fire
+                             decline to 0. Stop test till batteries’ temperature 10℃ lower
+                             than max temperature.
+                                  At        20± 5 ℃ , discharge         battery    with    0.2C
+                                                                                            5A
+7.2    Over discharge                                                                              No explosion or fire
+                             continuously 12.5h.
+                                  At 20±5℃, connect batteries’ anode and cathode by
+7.3     Short-circuit                                                                              No explosion or fire
+                             wire which impedance less than 50mΩ, keep 6h.
+                                  At 20±5℃, put the battery in two parallel steal broad,
+7.4         Extrusion                                                                              No explosion or fire
+                             add pressure 13kN.
+
+
+
+                                  Put the battery in the oven. The temperature of the oven
+7.5    Thermal shock         is to be raised at 5±1℃ per minute to a temperature of 130            No explosion or fire
+                             ±2℃ and remains 60 minutes.
+
+
+      8. Cautions
+      8.1     Cautions of batteries’ operation
+                                                                      Doc. No.       Q/WAPL785060-1011
+     Polymer Lithium-ion battery
+                                                                    Edition No.               1.0
+
+             Product Specification                                                            5/10
+
+
+      The batteries must be careful of proceed the operation for its soft package.
+     8.1.1 Aluminum packing materials
+          The aluminum packing material was easily damaged by the sharp edge part, such as
+nickel-tabs.
+          ⑴ forbid to use the sharp part touching the battery;
+          ⑵ should cleaning working condition, avoiding the sharp edge part existence;
+          ⑶ forbid to pierce the battery with nail and other sharp items;
+          ⑷ the battery was forbidden with metal, such as necklace, hairpin etc in transportation
+          and storage.
+          8.1.2 Sealed edge
+               Sealing edge is very easily damaged and don’t bend it.
+               The Al interlayer of package has good electric performance. It’s forbidden to
+          connect with exterior component for preventing short-circuits.
+      edge     Folding edge
+                           Sealed edge                                               Package material
+
+
+
+
+      Anode Ni-tab
+
+
+
+
+      Transforming Ni-tab                               Cathode Al-tab
+
+
+
+                         Fig.1. Exterior schematic of polymer lithium-ion cells
+          8.1.3 Folding edge
+               The folding edge is formed in batteries’ processes and passed all hermetic tests,
+          don’t open or deform it. The Al interlayer of package has good electric performance. It’s
+          forbidden to connect with exterior component for preventing short-circuits.
+
+
+A
+                                                                      Doc. No.      Q/WAPL785060-0811
+    Polymer Lithium-ion battery
+                                                                     Edition No.           1.0
+
+             Product Specification                                                        6/10
+
+
+
+
+                                           Al interlayer                                                            R
+
+
+
+
+     Fig.2. Single folding edge schematic of PL cells                                 Fig.3. Reverse folding edge
+schematic of PL cells
+
+
+8.1.4 Tabs
+      ⑴ The batteries’ tabs are not so stubborn especially for aluminum tabs. Don’t bend tabs.
+      ⑵ The tab-tapes are used to isolate The anode /cathode tabs from Aluminum packing
+     materials to prevent short-circuit, so prohibit manicuring of the tab-tapes.
+8.1.5 Mechanical shock
+      ⑴ Don’t fall, hit, bent the batteries’ body.
+      ⑵ Don’t knock on by sinker or trample the batteries.
+      ⑶ Don’t sling the batteries.
+8.1.6 Short-circuit
+      Short-circuit is strictly prohibited. It should damage batteries badly.
+      ⑴ Don’t connect the anode and cathode of the batteries to avoid short-circuit.
+      ⑵ Prohibit short-circuit of the anode (or cathode) and aluminum layer of Aluminum
+packing materials.
+8.2 Standard Test Environment for polymer lithium-ion batteries
+         Environment temperature: 20±5℃            Humidity: 45-85%
+8.3 Cautions of charge & discharge
+8.3.1 charge
+             Charging current should be lower than values that recommend below. Higher current
+     and voltage charging may cause damage to cell electrical, mechanical, safety performance
+     and could lead heat generation or leakage.
+          ⑵      Batteries charger should charging with constant current and constant voltage mode;
+               ⑵ Charging current should be lower than (or equal to )1C5A;
+                                                                       Doc. No.         Q/WAPL785060-1011
+   Polymer Lithium-ion battery
+                                                                      Edition No.                 1.0
+
+            Product Specification                                                                7/10
+
+
+             ⑶ Temperature 0～40℃ is preferred when charging;
+             ⑷ Charging voltage must be lower than 4.25V.
+8.3.2 discharge
+             ⑴ Discharging current must be lower than (or equal to )2C5A;
+             ⑵ Temperature 0～60℃ is preferred when discharging;
+             ⑶ Discharging voltage must not be lower than 2.75V.
+8.3.3 over-discharge
+              It should be noted that the cell would be at an over-discharge state by its self-discharge.
+        In order to prevent over-discharge, the cell shall be charged periodically to keeping voltage
+        between 3.7-3.9V. Over-discharge may cause loss of cell performance. It should be noted that
+        the cell would not discharge till voltage lower than 2.75V.
+8.4 Storage of polymer lithium-ion batteries
+        The environment of long-time storage:
+           Temperature: 20±5℃;
+           Humidity: 45-85%;
+           Batteries were 40～60% charged.
+         In case of over-discharge, batteries should be charged for one time every 3 months while
+storing. Batteries should be discharged and charged after being stored more than a year in order to
+activate it and restore energy. Please charge the battery with constant current 0.5C5A for 1 hour so
+that it has some storage of charge for properly using.
+           Charge and discharge afresh to active and renew battery energy after storage above 1
+year.
+8.5. Transportation of polymer lithium-ion batteries
+         The batteries should transportation with 10～50% charged states.
+8.6. Others
+             Please note cautions below to prevent cells’ leakage, heat generation and explosion.
+             Prohibition of disassembly cells;
+             Prohibition of cells immersion into liquid such as water or seawater;
+             Prohibition of dumping cells into fire;
+             Prohibition of using damaged cells. The cells with a smell of electrolyte or leakage must
+        be placed away from fire to avoid firing.
+          In case of electrolyte leakage contact with skin, eye, physicians shall flush the electrolyte
+immediately with fresh water and medical advise is to be sought.
+9. Notice of Designing Battery Pack
+        9.1 Pack design
+                                                                   Doc. No.     Q/WAPL785060-1011
+   Polymer Lithium-ion battery
+                                                                Edition No.              1.0
+
+         Product Specification                                                          8/10
+
+
+          Battery pack should have sufficient strength and battery should be protected from
+     mechanical shock. No sharp edge components should be inside the pack contains the battery.
+     9.2 PCM design
+          The overcharge threshold voltage should not be exceeding 3.95V.
+          The over-discharge threshold voltage should not be lower than 2.3V.
+          The PCM should have short protection function built inside.
+     9.3 Tab connection
+          Ultrasonic welding or spot welding is recommended to connect battery with PCM or
+other parts.
+          If apply manual solder method to connect tab with PCM, the notice below is very
+     important to ensure battery performance.
+          ⑴ The electric iron should be temperature controlled and ESD safe;
+          ⑵ Soldering temperature should not exceed 350℃;
+          ⑶ Soldering time should not be longer than 3s, keep battery tab cold down before next
+     soldering;
+          ⑷ Soldering times should not exceed 5 times;
+          ⑸ Directly heat cell body is strictly prohibited, battery may be damaged by heat above
+     approx. 100℃.
+     9.4 Cell fixing
+          The battery should be fixed to the battery pack by its large surface area. No cell
+     movement in the battery pack should be allowed.
+     9.5 Cells replacement
+     The cell replacement should be done by professional people.
+     Prohibit short-circuit between cells’ Al package and exterior component.
+                                                               Doc. No.         Q/WAPL785060-1011
+ Polymer Lithium-ion battery
+                                                              Edition No.                       1.0
+
+       Product Specification                                                                    9/10
+
+
+                                    Here is no insulated between
+                                  Sealed edge & protect component
+
+
+
+
+                                Fig.4. Schematic of wrong assembly
+
+
+
+10. Schematic of Battery:
+                L                                                    D   L
+                                                                               black wire
+           b
+                                                                               red wire
+                                                          F
+                      10
+       E
+
+
+
+
+                                                          C
+       A
+
+
+
+
+                                                          A
+
+
+
+
+                B           H                                            B                  H
+
+
+        √Cell or adding Ni tabs                                    □Cell adding wire
+                    D        L
+                                                                      D    L
+                                                                               black wire
+
+                                                                                 red wire
+
+
+
+
+                                                              F
+                                  black wire
+          G
+                                  red wire
+
+
+
+
+                                                              C
+          C
+
+
+
+
+                                                              A
+          A
+
+
+
+
+                                                                           B                 H
+                        B                      H
+
+
+               □Cell adding PCM, wire                               □ Cell adding wire
+        Parameter:√
+                                                                                      Max
+Sign       Item                  Max（mm） Remak      Sign            Item                              Remak
+                                                                                     （mm）
+ A        Length                    60.2            L       Space between Tabs
+ B        Width                     50.5            E      PP membrane Length               2.0
+ H      Thickness                    7.9             b            Tab Width                 3
+       Wire Standard                           /              Plug Standard                       /
+
+
+No         Material                                           Specification
+
+ 1            Battery cell                                 LP785060-2500mAh
+
+ 2       Protection Board                          IC：S-8261AAJMD, MOSFET 8814
+
+ 3         Red wire (+)                                      UL 26AWG
+ 4         Black wire (-)                                    UL 26AWG
+ 5            Connectors                                      JST-PHR-2
+

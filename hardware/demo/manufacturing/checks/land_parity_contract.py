@@ -43,12 +43,15 @@ nothing has ever compared.
            is present in the repository and hashes to its recorded sha256
     LAND8  manufacturer underside restrictions that are load-bearing are
            physical contracts, not prose: Würth 74438357010's recommended land
-           says "No vias and traces underneath the inductor", so L4 has NO B.Cu
-           trace and NO via intersecting the restricted strip BETWEEN ITS OWN
-           FITTED PADS -- derived from the footprint, not hard-coded -- and a
-           live control puts the retired under-inductor via back and must be
-           refused.  Copper under the wider body overhang is REPORTED, because
-           the strip is what the drawing hatches and the overhang is inferred
+           says "No vias and traces underneath the inductor", so EVERY FITTED
+           instance of it has NO track and NO via intersecting the restricted
+           strip between ITS OWN pads -- derived from each instance's pad
+           BOUNDING BOXES, so a rotated instance is measured across the right
+           axis -- and a live control puts the retired under-inductor via back
+           and must be refused.  A DNP instance is REPORTED with coordinates
+           rather than failed, so populating it later cannot happen without
+           confronting the copper.  Only footprints whose ARCHIVED drawing was
+           read are in scope, and the report says so
 
 LAND6 is why the index cannot be a rubber stamp: deleting a ledger row breaks
 the gate, and an identity whose drawing was not read has to say so in the file
@@ -180,104 +183,159 @@ def _circle_hits_rect(x, y, radius, xmin, ymin, xmax, ymax):
     return math.hypot(x - qx, y - qy) <= radius + 1e-12
 
 
-def l4_restricted_area():
-    """D-766: enforce Wurth 74438357010's recommended-land instruction
-    "No vias and traces underneath the inductor", printed on BOTH recommended
-    land patterns of drawing rev 003.002 (2026-09-01), archived at
-    vendor/Wurth/wurth-74438357010-WE-MAPI-4030.pdf.
+# D-766.  Manufacturer underside restrictions, enforced as geometry.
+#
+# Würth 74438357010's recommended land prints "No vias and traces underneath
+# the inductor" under BOTH of its recommended land patterns (drawing rev
+# 003.002, 2026-09-01, archived in vendor/Wurth/).  The board carried a Ø0.8 mm
+# GND barrel 0.200 mm from L4's centre, dead in the hatched strip between L4's
+# own pads.
+#
+# This table is the list of footprints whose ARCHIVED drawing carries such an
+# instruction.  It is deliberately short and deliberately explicit: a part is
+# in it because its drawing was READ, not because the restriction seemed
+# likely.  Everything else on this board is out of scope for this clause and
+# says so in the report, so the coverage limit is visible rather than implied.
+UNDERSIDE_RESTRICTED = {
+    "AQROOT_Beta:Wurth_WE-MAPI_4030_74438357010": dict(
+        drawing="Wurth 74438357010 rev 003.002 2026-09-01, both Recommended "
+                "Land Patterns: 'No vias and traces underneath the inductor'",
+        drawing_file="hardware/demo/kicad/aqroot-demo/vendor/Wurth/"
+                     "wurth-74438357010-WE-MAPI-4030.pdf"),
+}
 
-    THE RESTRICTED AREA IS DERIVED FROM THE FITTED FOOTPRINT, NOT HARD-CODED.
-    The drawing annotates the central SOLDER-RESIST strip between the two
-    recommended pads; the fitted land implements Recommended Land Pattern 1,
-    so that strip is exactly the gap between the two pad rectangles: it spans
-    the pads' inner x edges and their full y height.  Deriving it means the
-    clause follows the footprint if the land is ever revised, instead of
-    asserting a pair of numbers that could silently stop describing the part.
 
-    Through vias are checked whatever layer pair they name, because they
-    physically pierce the assembly surface; B.Cu tracks are checked because
-    this L4 is flipped and B.Cu is its assembly surface.
+def _pad_gap_rect(fp):
+    """The strip BETWEEN a two-pad footprint's pads, from the pads themselves.
 
-    The wider inductor BODY box is measured too and REPORTED, not failed:
-    copper outside the pads but under the 4.1 mm body overhang is a weaker
-    finding than copper in the strip the manufacturer actually hatches, and
-    calling it a failure would make the clause about an inferred boundary
-    rather than a printed one.
+    Derived, never hard-coded, so the clause follows the land if the footprint
+    is revised -- and taken from each pad's BOUNDING BOX rather than its
+    GetSize(), because GetSize() is in the pad's own frame and a rotated
+    instance (L1 sits at 90 deg) would otherwise be measured across the wrong
+    axis and silently return a nonsense rectangle.
+    """
+    boxes = []
+    for pad in fp.Pads():
+        bb = pad.GetBoundingBox()
+        boxes.append((bb.GetLeft() / 1e6, bb.GetTop() / 1e6,
+                      bb.GetRight() / 1e6, bb.GetBottom() / 1e6))
+    if len(boxes) != 2:
+        return None, "expected 2 pads, found %d" % len(boxes)
+    a, c = boxes
+    gx = (min(a[2], c[2]), max(a[0], c[0]))
+    gy = (min(a[3], c[3]), max(a[1], c[1]))
+    if gx[1] - gx[0] > 1e-6:
+        return (gx[0], max(a[1], c[1]), gx[1], min(a[3], c[3])), "x"
+    if gy[1] - gy[0] > 1e-6:
+        return (max(a[0], c[0]), gy[0], min(a[2], c[2]), gy[1]), "y"
+    return None, "pads overlap on both axes"
+
+
+def _scan_rect(board, rect, assembly_layer):
+    found = []
+    for item in board.GetTracks():
+        if isinstance(item, pcbnew.PCB_VIA):
+            pos = item.GetPosition()
+            x, y = pos.x / 1e6, pos.y / 1e6
+            radius = item.GetWidth(pcbnew.B_Cu) / 2e6
+            if _circle_hits_rect(x, y, radius, *rect):
+                found.append({"kind": "via", "net": item.GetNetname(),
+                              "at_mm": [round(x, 6), round(y, 6)],
+                              "diameter_mm": round(radius * 2, 6)})
+        elif item.GetLayer() == assembly_layer:
+            a, z = item.GetStart(), item.GetEnd()
+            x1, y1 = a.x / 1e6, a.y / 1e6
+            x2, y2 = z.x / 1e6, z.y / 1e6
+            radius = item.GetWidth() / 2e6
+            if _segment_hits_rect(x1, y1, x2, y2, *rect, radius=radius):
+                found.append({"kind": "track", "net": item.GetNetname(),
+                              "start_mm": [round(x1, 6), round(y1, 6)],
+                              "end_mm": [round(x2, 6), round(y2, 6)],
+                              "width_mm": round(radius * 2, 6)})
+    return found
+
+
+def underside_restrictions():
+    """LAND8.  Every instance of a restricted footprint, fitted or not.
+
+    A FITTED instance with copper in its strip FAILS.  A DNP instance is
+    REPORTED and does not fail -- the part is not on the board this release
+    builds -- but it is named, with coordinates, so that populating it later
+    cannot happen without confronting the copper first.  That is the whole
+    point of making it a clause instead of a sentence in a document.
+
+    Through vias are judged whatever layer pair they name, because they
+    physically pierce the assembly surface; tracks are judged on the
+    footprint's own side.
     """
     board = pcbnew.LoadBoard(str(BOARD))
-    fp = board.FindFootprintByReference("L4")
-    if not fp:
-        return {"ok": False, "error": "L4 missing"}
-    if "74438357010" not in fp.GetFPIDAsString():
-        return {"ok": False, "error": "L4 is not the 74438357010 land: %s"
-                                      % fp.GetFPIDAsString()}
-    pads = []
-    for pad in fp.Pads():
-        pos, size = pad.GetPosition(), pad.GetSize()
-        pads.append((pos.x / 1e6 - size.x / 2e6, pos.y / 1e6 - size.y / 2e6,
-                     pos.x / 1e6 + size.x / 2e6, pos.y / 1e6 + size.y / 2e6))
-    if len(pads) != 2:
-        return {"ok": False, "error": "expected 2 L4 pads, found %d" % len(pads)}
-    left, right = sorted(pads, key=lambda r: r[0])
-    xmin, xmax = left[2], right[0]                 # between the pads' inner edges
-    ymin = max(left[1], right[1])
-    ymax = min(left[3], right[3])
-    if not (xmax > xmin and ymax > ymin):
-        return {"ok": False, "error": "degenerate L4 restricted strip"}
+    instances, offenders_fitted, offenders_dnp = [], [], []
+    for fp in board.GetFootprints():
+        spec = UNDERSIDE_RESTRICTED.get(fp.GetFPIDAsString())
+        if not spec:
+            continue
+        ref = fp.GetReference()
+        rect, axis = _pad_gap_rect(fp)
+        if rect is None:
+            instances.append({"ref": ref, "ok": False, "error": axis})
+            offenders_fitted.append(ref)
+            continue
+        layer = pcbnew.B_Cu if fp.GetLayerName() == "B.Cu" else pcbnew.F_Cu
+        hits = _scan_rect(board, rect, layer)
+        dnp = bool(fp.IsDNP())
+        row = {"ref": ref, "footprint": fp.GetFPIDAsString(), "dnp": dnp,
+               "side": fp.GetLayerName(),
+               "orientation_deg": round(fp.GetOrientationDegrees(), 3),
+               "gap_axis": axis,
+               "restricted_strip_mm": [round(v, 6) for v in rect],
+               "restricted_strip_size_mm": [round(rect[2] - rect[0], 6),
+                                            round(rect[3] - rect[1], 6)],
+               "derived_from": "bounding boxes of this instance's own two pads",
+               "offenders": hits,
+               "ok": dnp or not hits,
+               **spec}
+        if hits:
+            (offenders_dnp if dnp else offenders_fitted).append(ref)
+        instances.append(row)
 
-    cx = fp.GetPosition().x / 1e6
-    cy = fp.GetPosition().y / 1e6
-    body = (cx - 2.1, cy - 2.1, cx + 2.1, cy + 2.1)
+    # LIVE CONTROL.  Put the barrel D-766 retired back at its own recorded seat
+    # -- Ø0.8 mm, 0.200 mm above L4's centre -- and the clause must refuse it.
+    # Expressed relative to the footprint so the control follows L4 if it moves.
+    control = False
+    l4 = board.FindFootprintByReference("L4")
+    if l4 is not None and l4.GetFPIDAsString() in UNDERSIDE_RESTRICTED:
+        rect, axis = _pad_gap_rect(l4)
+        if rect is not None:
+            cx = l4.GetPosition().x / 1e6
+            cy = l4.GetPosition().y / 1e6
+            control = _circle_hits_rect(cx, cy - 0.2, 0.4, *rect)
 
-    def scan(rect):
-        found = []
-        for item in board.GetTracks():
-            if isinstance(item, pcbnew.PCB_VIA):
-                pos = item.GetPosition()
-                x, y = pos.x / 1e6, pos.y / 1e6
-                radius = item.GetWidth(pcbnew.B_Cu) / 2e6
-                if _circle_hits_rect(x, y, radius, *rect):
-                    found.append({"kind": "via", "net": item.GetNetname(),
-                                  "at_mm": [round(x, 6), round(y, 6)],
-                                  "diameter_mm": round(radius * 2, 6)})
-            elif item.GetLayer() == pcbnew.B_Cu:
-                a, z = item.GetStart(), item.GetEnd()
-                x1, y1 = a.x / 1e6, a.y / 1e6
-                x2, y2 = z.x / 1e6, z.y / 1e6
-                radius = item.GetWidth() / 2e6
-                if _segment_hits_rect(x1, y1, x2, y2, *rect, radius=radius):
-                    found.append({"kind": "B.Cu track", "net": item.GetNetname(),
-                                  "start_mm": [round(x1, 6), round(y1, 6)],
-                                  "end_mm": [round(x2, 6), round(y2, 6)],
-                                  "width_mm": round(radius * 2, 6)})
-        return found
+    # SECOND LIVE CONTROL, and it guards a bug this clause actually had.  The
+    # first implementation took the strip from pad.GetSize(), which is in the
+    # PAD's own frame; on a rotated instance that measures across the wrong
+    # axis and returns a rectangle with negative height, which then collides
+    # with nothing and passes.  L1 is a real two-pad inductor sitting at 90 deg
+    # on this board, so deriving ITS strip is a live test of the rotation path:
+    # the gap must be found on the y axis and both sides must be positive.
+    rot_ok = False
+    l1 = board.FindFootprintByReference("L1")
+    if l1 is not None:
+        r1, ax1 = _pad_gap_rect(l1)
+        rot_ok = (r1 is not None and ax1 == "y"
+                  and r1[2] - r1[0] > 0 and r1[3] - r1[1] > 0
+                  and abs(round(l1.GetOrientationDegrees()) % 180) == 90)
 
-    strip = (xmin, ymin, xmax, ymax)
-    offenders = scan(strip)
-
-    # LIVE CONTROL.  Put the retired D-766 via back at its own recorded seat --
-    # 0.8 mm at (58.900, 36.000), 0.2 mm off the L4 centre -- and the clause
-    # must refuse it.  The seat is expressed relative to the footprint so the
-    # control follows L4 if it ever moves.
-    control_refused = _circle_hits_rect(cx, cy - 0.2, 0.4, *strip)
-
-    body_hits = [h for h in scan(body) if h not in offenders]
     return {
-        "ok": bool(not offenders and control_refused),
-        "reference": "L4",
-        "footprint": fp.GetFPIDAsString(),
-        "drawing": ("Wurth 74438357010 rev 003.002 2026-09-01, both Recommended "
-                    "Land Patterns: 'No vias and traces underneath the inductor'"),
-        "drawing_file": "hardware/demo/kicad/aqroot-demo/vendor/Wurth/"
-                        "wurth-74438357010-WE-MAPI-4030.pdf",
-        "centre_mm": [round(cx, 6), round(cy, 6)],
-        "restricted_strip_mm": [round(v, 6) for v in strip],
-        "restricted_strip_size_mm": [round(xmax - xmin, 6), round(ymax - ymin, 6)],
-        "derived_from": "gap between the two fitted L4 pad rectangles",
-        "offenders": offenders,
-        "control_retired_underbody_via_refused": control_refused,
-        "body_box_mm": [round(v, 6) for v in body],
-        "body_box_copper_REPORT_ONLY": body_hits,
+        "ok": bool(instances and not offenders_fitted and control and rot_ok),
+        "restricted_footprints": sorted(UNDERSIDE_RESTRICTED),
+        "coverage_note": "only footprints whose ARCHIVED vendor drawing was "
+                         "read and carries an underside instruction are in "
+                         "scope; no restriction is inferred for any other part",
+        "instances": instances,
+        "fitted_instances_with_offenders": sorted(offenders_fitted),
+        "dnp_instances_with_offenders_REPORT_ONLY": sorted(offenders_dnp),
+        "control_retired_underbody_via_refused": control,
+        "control_rotated_instance_gap_is_measured_on_the_right_axis": rot_ok,
     }
 
 
@@ -346,7 +404,7 @@ def main():
             filed_bad.append([i, "SHA256", rel, want, got])
 
     drc_counts, drc_detail = ({}, []) if a.skip_drc else kicad_drc()
-    l4_restriction = l4_restricted_area()
+    underside = underside_restrictions()
     declared = index.get("declared_master_divergences", {})
     mismatch_refs = sorted({
         i["description"].split()[-1]
@@ -368,7 +426,7 @@ def main():
         "LAND7_no_open_identity_and_every_read_drawing_is_cited": (
             not open_ids and not uncited and not unconfirmed
             and not pending_drifted and not filed_bad),
-        "LAND8_l4_underside_restriction": l4_restriction["ok"],
+        "LAND8_manufacturer_underside_restrictions": underside["ok"],
     }
 
     report = {
@@ -387,7 +445,7 @@ def main():
                     "diffs": control_row.get("diffs")},
         "drc_counts": drc_counts,
         "drc_land_violations": drc_detail,
-        "l4_underside_restriction": l4_restriction,
+        "underside_restrictions": underside,
         "index_missing": missing, "index_dead_rows": dead,
         "index_bad_tier": bad_tier,
         "ledger_unwritten": unwritten,

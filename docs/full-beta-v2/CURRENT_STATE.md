@@ -66,7 +66,55 @@
 > `verify_promotion` PASS and `protected_copper` showing exactly one protected
 > net moved.  `U14.7` is on the bus.  This board has **no open owner decision**.
 
-> # **BOTH CAUSES OF THE ROUND-2 WITHDRAWAL ARE NOW CLOSED (2026-09-18, D-766).**
+> # **THE TWO ROUND-2 CAUSES ARE CLOSED, AND THEIR DEFECT CLASSES ARE CLOSED TOO (2026-09-18, D-766 + D-767).**
+>
+> **Board authority `5849b658`.  D-765 closed the first round-2 item (the
+> unsupported `TPS22950C` `ILIM` setting).  D-766 closed the second (firmware
+> fault / warm-reset handling) and found three more defects on the way.  D-767
+> then asked D-766's two defect classes of the WHOLE board — because a fix that
+> closes one instance and leaves the class open is half a fix — and found a
+> second inductor, a second semiconductor, a bug in D-766's own new gate, and an
+> arithmetic error in D-766's own text.  D-767 changes NO PCB: every released
+> Gerber, drill, CPL and BOM file is identical once the embedded `CreationDate`
+> is normalised, and the only semantic change in `MANIFEST.json` is the sha256 of
+> the one schematic sheet whose `Q11` note was corrected — which `FAB1` refused
+> the package over until it was regenerated.**
+>
+> **D-767's findings, in one paragraph each.**  `LAND8` tested **`L4` by name**,
+> and this board carries six inductors — one of which, **`L2`, is the same Würth
+> `74438357010`**, with **two `/NFC_5V_EN` segments running the full length of
+> its restricted strip**.  `L2` is **DNP**, so no fabricated board has a part
+> over that copper; rerouting a live net through a 1.39 mm channel bracketed by
+> `L2`'s own pads, and re-certifying the release, to cure a defect on an
+> unpopulated part was **declined** — and `LAND8` now names it in every run and
+> **fails the moment the DNP flag comes off**.  D-766's `LAND8` also had a **bug**:
+> it read the strip from `pad.GetSize()`, which is in the pad's own frame, so a
+> **rotated** instance was measured across the wrong axis — **`L1`, the
+> `TPS63020` inductor, sits at 90°** and returned a negative-height rectangle
+> that collided with nothing and passed.  Measured properly it is clean, and a
+> second live control derives it every run.  **The 39 V node has two
+> semiconductors**: `D8` is **retained and is not a defect** — `VRRM` 40 V, and
+> the part **TI's own `SNVSA40B` §7.2.2.2 names for this converter** — but
+> nothing could say so, the margin is **1.0 V on an absolute maximum**, and there
+> is a recorded substitution trap on that exact reference, so `F5` now reads it
+> against a published table and reports the margin every run.  **`F5` runs ten
+> live controls.**  And **D-766's own arithmetic was wrong**: it claimed *"roughly
+> 10 V of spare headroom"*, but `LED_BOOST` runs at **3.884–4.484 V** because the
+> backlight is six LEDs **in parallel**.  The conclusion survives with better
+> reasoning — `LED_BOOST` is a **regulated** node — and the `RDS(on)` bound is now
+> scaled from the **published** 200 mΩ at `VGS` 2.5 V to our 0.396 V of
+> overdrive: ≈ 253 mΩ, **27.6 mV, 3.0 mW**, and provably harmless even at a
+> pessimistic 10 Ω.  **The correction is marked, not silently rewritten.**
+>
+> **AND IT HAPPENED A FOURTH TIME.**  `Q11`'s **D-750** note already said *"ANY
+> FUTURE REVISION THAT SEPARATES THE TWO CONTROLS … MUST RE-RATE `Q11` TO AT
+> LEAST 40 V `VDS`."*  D-752 separated them.  Nobody re-rated it, through five
+> decisions.  **A note is not a gate** — that sentence is now `F5`'s rating
+> clause.
+>
+> # **D-766's ENTRY FOLLOWS.**
+>
+> # **BOTH CAUSES OF THE ROUND-2 WITHDRAWAL ARE CLOSED (2026-09-18, D-766).**
 >
 > **Board authority `5849b658`.  D-765 closed the first (the unsupported `TPS22950C`
 > `ILIM` setting).  D-766 closes the second (firmware fault / warm-reset handling)

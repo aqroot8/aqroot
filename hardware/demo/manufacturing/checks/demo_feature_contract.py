@@ -299,6 +299,28 @@ FET_PUBLISHED = {
                     source="onsemi 2N7002 as read by D-187: VDSS 60 V, "
                            "VGS(th) max 2.5 V"),
 }
+# D-766.  THE FET IS NOT THE ONLY SEMICONDUCTOR ON THAT NODE.  The boost
+# rectifier sees the SAME ceiling in reverse: while the TPS61169's internal
+# switch is on, SW is pulled near ground and D8 stands off whatever the output
+# capacitor holds.  D8 is RETAINED, not changed -- TI SNVSA40B section 7.2.2.2
+# NAMES the NSR0240 for this converter and its 40 V VRRM does cover the 39 V --
+# but nothing on this board could SAY that, and FIRST_FIVE_ASSEMBLY_PLAN already
+# records a live substitution trap on exactly this reference (a keyword search
+# for D8 returns FUXINSEMI SD103AWS, "a different part number entirely").  The
+# margin is 1.0 V and it is REPORTED on every run so its thinness stays visible.
+BL_RECTIFIER = "D8"
+RECTIFIER_PUBLISHED = {
+    "NSR0240": dict(vrrm_V=40.0,
+                    source="onsemi NSR0240HT1G: VRRM 40 V, IF(AV) 250 mA, "
+                           "SOD-323; named for the TPS61169 by TI SNVSA40B "
+                           "section 7.2.2.2"),
+    "PMEG2010AEH": dict(vrrm_V=20.0, source="Nexperia PMEG2010AEH: VRRM 20 V"),
+    "BAT54WS": dict(vrrm_V=30.0, source="BAT54WS: VRRM 30 V"),
+    "SD103AWS": dict(vrrm_V=40.0,
+                     source="FUXINSEMI SD103AWS: VRRM 40 V -- NOT an approved "
+                            "substitute for D8; see FIRST_FIVE_ASSEMBLY_PLAN"),
+}
+
 # D-752's derived held gate, and the source voltage R69 sits at while U17
 # regulates 109 mA through 1.87 ohm to the TPS61169's 204 mV feedback point.
 BL_HELD_GATE_V = 2.60
@@ -346,12 +368,25 @@ def judge_backlight_fet(values, dru_text):
             f["earliest_disconnect_ms"] = round(t_open_ms, 4)
             f["ordering_margin_ratio"] = round(t_open_ms / BL_TSD_MS, 4)
             f["u17_shuts_down_before_q11_opens"] = t_open_ms > BL_TSD_MS
+    # the rectifier stands off the same ceiling in reverse
+    rect_part = (values.get(BL_RECTIFIER) or "").strip()
+    rp = RECTIFIER_PUBLISHED.get(rect_part)
+    f["rectifier"] = BL_RECTIFIER
+    f["rectifier_fitted_part"] = rect_part
+    f["rectifier_published"] = dict(rp) if rp else None
+    f["rectifier_is_a_part_with_published_ratings"] = rp is not None
+    f["rectifier_vrrm_covers_the_published_fault_ceiling"] = bool(
+        rp and ceiling and rp["vrrm_V"] >= ceiling)
+    f["rectifier_margin_V"] = (round(rp["vrrm_V"] - ceiling, 4)
+                               if rp and ceiling else None)
     f["ok"] = all(bool(f[k]) for k in (
         "fet_is_a_part_with_published_ratings",
         "board_publishes_a_fault_ceiling",
         "fet_vds_covers_the_published_fault_ceiling",
         "gate_hold_enhances_the_fitted_fet",
-        "u17_shuts_down_before_q11_opens"))
+        "u17_shuts_down_before_q11_opens",
+        "rectifier_is_a_part_with_published_ratings",
+        "rectifier_vrrm_covers_the_published_fault_ceiling"))
     return f["ok"], f
 
 
@@ -725,7 +760,12 @@ def main():
                      lambda v: v.__setitem__("C85", "1nF X7R")),
         # and the ceiling must come from the rules file, not from this contract
         _fet_control_dru("f5h_refuses_a_dru_that_no_longer_publishes_a_ceiling",
-                         "no ceiling is stated anywhere in this text")))
+                         "no ceiling is stated anywhere in this text"),
+        # the boost rectifier stands off the same ceiling in reverse
+        _fet_control("f5i_refuses_a_20V_schottky_on_the_boost_rectifier",
+                     lambda v: v.__setitem__(BL_RECTIFIER, "PMEG2010AEH")),
+        _fet_control("f5j_refuses_a_rectifier_with_no_published_rating",
+                     lambda v: v.__setitem__(BL_RECTIFIER, "SOME-DIODE-99"))))
 
     # ---- F6: the accessory envelope, and four live controls ---------------
     env_ok, env = judge_accessory_envelope(values)
