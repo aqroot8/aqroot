@@ -80,10 +80,14 @@ class Pcal9535a {
 
   // SAFE BRING-UP ORDER -- this is the whole reason the class exists.
   //
-  // The part resets with CONFIG = FFh (all inputs) and the OUTPUT latches at
-  // 00h.  Half this board's expander outputs have a safe level of 0 and three
-  // (the RGB cathodes) have a safe level of 1, so clearing a direction bit
-  // before the latch holds the right value drives the wrong level for as long
+  // The part resets with CONFIG = FFh (all inputs) AND OUTPUT = FFh.  The pin is
+  // high-impedance while CONFIG remains input, so the external safe-state pulls
+  // still define the cold-POR pins.  Once a direction bit is cleared, however,
+  // the retained/output latch becomes physically active.  Most of this board's
+  // enables are safe LOW, so direction-first from the documented FFh reset would
+  // assert exactly the loads we are trying to hold off.  Three RGB cathodes are
+  // safe HIGH.  Therefore clearing a direction bit before first loading the
+  // board-specific safe word can drive the wrong level for as long
   // as it takes to issue the next transaction.  On ACC_5V_SW_EN or
   // ACC_5V_BOOST_EN that is a live accessory rail; on AMP_SD_MODE it is a pop
   // into the speaker; on NFC_5V_EN it is an enable into a DNP boost.

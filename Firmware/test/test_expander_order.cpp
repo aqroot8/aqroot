@@ -1,9 +1,11 @@
 // AQROOT Demo -- the safe-ordering test.
 //
-// The PCAL9535A resets with every pin an INPUT and every output latch at 0x00.
-// Six of this board's expander outputs are safe at 0 and three -- the RGB
-// cathodes -- are safe at 1, so a bring-up that clears a direction bit before
-// the latch holds the right value drives the wrong level onto a real load for
+// The PCAL9535A resets with every pin an INPUT and both OUTPUT registers at
+// 0xFF (NXP Rev.2, Tables 7/8).  While the pins are inputs the external pulls
+// define their safe physical level.  If firmware clears a direction bit before
+// first loading the safe word, however, the reset HIGH latch becomes active.
+// Most enable outputs on this board are safe LOW, while the three RGB cathodes
+// are safe HIGH, so direction-first can energize a real load for
 // as long as the next I2C transaction takes.  On ACC_5V_SW_EN or
 // ACC_5V_BOOST_EN that is a live accessory rail; on AMP_SD_MODE it is a pop
 // into the speaker; on NFC_5V_EN it is an enable into a DNP boost.
@@ -143,6 +145,17 @@ void check(const char *claim, bool ok) {
 int main() {
   std::printf("AQROOT Demo -- expander safe-ordering test\n");
   std::printf("board_sha256 %s\n\n", AQROOT_DEMO_BOARD_SHA256);
+
+  // Datasheet authority: PCAL9535A Rev.2 Tables 7/8 specify FFh for both
+  // OUTPUT-port defaults.  Pin direction still resets to input (FFFFh).  Keep
+  // this explicit because the safety reason for latch-before-direction changes
+  // completely if somebody imports the old/incorrect 00h assumption.
+  constexpr uint16_t kPcalOutputReset = 0xFFFF;
+  check("PCAL9535A OUTPUT reset model is FFh/FFh", kPcalOutputReset == 0xFFFF);
+  check("direction-first from reset would assert at least one safe-LOW U3 enable",
+        (kPcalOutputReset & (bitmask(AQROOT_U3_ACC_5V_SW_EN) |
+                             bitmask(AQROOT_U3_ACC_5V_BOOST_EN) |
+                             bitmask(AQROOT_U3_ACC_3V3_EN))) != 0);
 
   // ---- T1: the bring-up order itself ---------------------------------
   RecordingBus bus;
