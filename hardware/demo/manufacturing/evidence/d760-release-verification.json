@@ -1,0 +1,391 @@
+{
+ "beta_v2_untouched": true,
+ "board_sha256": "1a06b058912b4c37e25d0acd9314f9542671efa852a162cc8b1dc6533e25668b",
+ "board_unchanged_since": "D-759 -- this decision changes NO board file, NO fab package output and NO firmware; git reports zero modified files under hardware/demo/kicad, hardware/demo/fab and Firmware",
+ "carried_forward_unchanged_from_d759": {
+  "approved_demo_nc": {
+   "expected": [
+    "J5.10",
+    "J5.11",
+    "J5.12",
+    "J5.15",
+    "J5.16",
+    "J5.17",
+    "J5.18",
+    "J5.9"
+   ],
+   "missing": [],
+   "observed": [
+    "J5.10",
+    "J5.11",
+    "J5.12",
+    "J5.15",
+    "J5.16",
+    "J5.17",
+    "J5.18",
+    "J5.9"
+   ],
+   "unexpected": []
+  },
+  "approved_unrouted": [
+   "U11.3"
+  ],
+  "boss_clearance": {
+   "BOSS1": {
+    "covers_required_2_250": true,
+    "hole_doc_mm": [
+     41.0,
+     12.0
+    ],
+    "hole_kicad_mm": [
+     41.0,
+     136.0
+    ],
+    "hole_matches_register": true,
+    "keepout_doc_y_mm": [
+     9.75,
+     14.25
+    ],
+    "keepout_inradius_about_the_hole_mm": 2.25,
+    "keepout_matches_register": true,
+    "keepout_x_mm": [
+     38.75,
+     43.25
+    ],
+    "nearest_component": [
+     [
+      2.525,
+      "J3"
+     ],
+     [
+      2.525,
+      "R74"
+     ],
+     [
+      2.5303,
+      "R20"
+     ]
+    ],
+    "nearest_pour_fill": [
+     [
+      2.25,
+      "B.Cu",
+      "GND"
+     ],
+     [
+      2.25,
+      "In1.Cu",
+      "GND"
+     ],
+     [
+      2.25,
+      "In3.Cu",
+      "+3V3"
+     ]
+    ],
+    "nearest_routed_copper": [
+     [
+      2.3,
+      "F.Cu",
+      "/SD_CS_N"
+     ],
+     [
+      2.5833,
+      "F.Cu",
+      "/SD_CS_N"
+     ],
+     [
+      2.6732,
+      "via",
+      "/SX1262_RXEN"
+     ]
+    ],
+    "pour_to_npth_hole_edge_mm": 1.15,
+    "register_hole_doc_mm": [
+     41.0,
+     12.0
+    ],
+    "register_keepout_doc_y_mm": [
+     9.75,
+     14.25
+    ],
+    "register_keepout_x_mm": [
+     38.75,
+     43.25
+    ]
+   },
+   "BOSS2": {
+    "covers_required_2_250": true,
+    "hole_doc_mm": [
+     60.0,
+     145.0
+    ],
+    "hole_kicad_mm": [
+     60.0,
+     3.0
+    ],
+    "hole_matches_register": true,
+    "keepout_doc_y_mm": [
+     142.75,
+     147.25
+    ],
+    "keepout_inradius_about_the_hole_mm": 2.25,
+    "keepout_matches_register": true,
+    "keepout_x_mm": [
+     57.75,
+     62.25
+    ],
+    "nearest_component": [
+     [
+      2.695,
+      "C11"
+     ],
+     [
+      3.005,
+      "U6"
+     ]
+    ],
+    "nearest_pour_fill": [
+     [
+      2.25,
+      "B.Cu",
+      "GND"
+     ],
+     [
+      2.25,
+      "F.Cu",
+      "+3V3"
+     ],
+     [
+      2.25,
+      "In1.Cu",
+      "GND"
+     ]
+    ],
+    "nearest_routed_copper": [],
+    "pour_to_npth_hole_edge_mm": 1.15,
+    "register_hole_doc_mm": [
+     60.0,
+     145.0
+    ],
+    "register_keepout_doc_y_mm": [
+     142.75,
+     147.25
+    ],
+    "register_keepout_x_mm": [
+     57.75,
+     62.25
+    ]
+   }
+  },
+  "connectivity": {
+   "approved_unrouted_edges": 1,
+   "connected_retained_nets": 173,
+   "open_retained_nets": 1,
+   "raw_board_ratsnest": 17,
+   "retained_multi_pad_nets": 174,
+   "retained_open_edges": 1,
+   "unapproved_open_edges": 0,
+   "unapproved_open_retained_nets": 0
+  },
+  "fab_package": {
+   "artwork_unchanged": 17,
+   "clauses": {
+    "FAB10_via_geometry": true,
+    "FAB11_mask_dams": true,
+    "FAB12_identity": true,
+    "FAB13_nfc_tuning_access": true,
+    "FAB1_provenance": true,
+    "FAB2_fill": true,
+    "FAB3_layers": true,
+    "FAB4_drill": true,
+    "FAB5_cpl": true,
+    "FAB6_bom": true,
+    "FAB7_sourcing": true,
+    "FAB8_outline": true,
+    "FAB9_via_in_pad": true
+   },
+   "failing": [],
+   "verdict": "PASS"
+  },
+  "feature_contract": {
+   "all_pass": true,
+   "clauses": {
+    "F1_every_scope_part_fitted": true,
+    "F2_every_scope_net_whole": true,
+    "F3_approved_nc_exactly_as_scoped": true,
+    "F4_every_exposed_signal_contact_has_esd": true,
+    "F5_backlight_disconnect_control_is_independent": true,
+    "F6_accessory_envelope_is_bounded_by_hardware": true
+   }
+  },
+  "firmware": {
+   "clauses": {
+    "H1_generated_tree_is_fresh": "PASS",
+    "H2_board_digest": "PASS",
+    "H3_policy_corroborated": "PASS",
+    "H4_owner_decisions_are_machine_checked": "PASS",
+    "H5_firmware_layer_uses_the_map": "PASS",
+    "H6_host_tests_prove_the_orderings": "PASS"
+   },
+   "platformio_environments_built": [
+    "esp32-s3-aqroot",
+    "wokwi",
+    "esp32-s3-aqroot-dm",
+    "aqroot-demo"
+   ],
+   "verdict": "PASS"
+  },
+  "kicad_drc": {
+   "classes_other_than_lib_footprint_issues": [],
+   "every_violation_is_a_warning": true,
+   "kicad": "10.0.5",
+   "total": 199,
+   "unconnected_items": 17,
+   "violations": {
+    "lib_footprint_issues": 199
+   }
+  },
+  "promotion": {
+   "clauses": 16,
+   "clauses_pass": 16,
+   "objects_added": 0,
+   "objects_removed": 0,
+   "verdict": "PASS"
+  },
+  "protected_copper": {
+   "counts": {
+    "/01_POWER_TREE/BAT_CONNECTOR_P": 7,
+    "/01_POWER_TREE/BAT_MID": 12,
+    "/01_POWER_TREE/BAT_PROTECTED_P": 84,
+    "/01_POWER_TREE/BAT_PROT_SHDN_CTL": 18,
+    "/01_POWER_TREE/BAT_RAW": 70,
+    "/01_POWER_TREE/BAT_SENSE": 22,
+    "/08_BUTTONS_EXPANDERS/FRONT_RGB_B_N": 18,
+    "/08_BUTTONS_EXPANDERS/FRONT_RGB_G_N": 13,
+    "/08_BUTTONS_EXPANDERS/FRONT_RGB_R_N": 20,
+    "/09_COMMUNITY_HEADER/XGPIO4_HDR": 9,
+    "/09_COMMUNITY_HEADER/XGPIO5_HDR": 12,
+    "/ACC_3V3_SW": 83,
+    "/ACC_5V_SW_EN": 23,
+    "/XGPIO4": 9,
+    "/XGPIO5": 6
+   },
+   "differences": {},
+   "identical": true
+  },
+  "rail_ampacity": {
+   "all_ok": true,
+   "rails": {
+    "BAT_PROTECTED_P": "OK_WITH_DECLARED_EXCEPTION",
+    "BQ25185_SYS": "POUR_DELIVERED",
+    "SYS_TO_ACC5V_BOOST": "OK_WITH_DECLARED_EXCEPTION",
+    "SYS_TO_NFC5V_BOOST": "OK_WITH_DECLARED_EXCEPTION",
+    "USB_VBUS_CHG": "OK_WITH_DECLARED_EXCEPTION",
+    "USB_VBUS_RAW": "OK"
+   },
+   "stackup_selfcheck": true
+  },
+  "schematic_parity": {
+   "by_severity": {
+    "warning": 246
+   },
+   "by_type": {
+    "extra_footprint": 2,
+    "footprint_symbol_field_mismatch": 199,
+    "footprint_symbol_mismatch": 45
+   },
+   "errors": 0,
+   "total": 246
+  }
+ },
+ "contract_regression": {
+  "all_ran": true,
+  "contracts": 18,
+  "failing": [],
+  "identical_to_d759": 14,
+  "the_four_that_moved": {
+   "connection_width": "the canonicalised `at` pair -- evidence/d760-connection-width-determinism.json",
+   "mechanical_keepout": "MK8 and its two new controls",
+   "placement": "the BOSS1 move was CLAIMED at d759 and nothing moved here",
+   "pour_partition": "the same BOSS1 claim"
+  }
+ },
+ "decision": "D-760",
+ "declaration": "DEMO_READY_FOR_FAB",
+ "mechanical_keepout_contract": {
+  "all_pass": true,
+  "clauses": {
+   "MK1_datum_proved_by_the_board": true,
+   "MK2_boss_retention": true,
+   "MK3_rear_support_ribs_component_free": true,
+   "MK4_speaker_cavity_has_no_rear_part": true,
+   "MK5_no_through_hole_lead_in_the_battery_volume": true,
+   "MK6_boss2_is_inside_the_ir_barrier": true,
+   "MK7_not_vacuous": true,
+   "MK8_component_height_in_the_limited_regions": true
+  },
+  "controls": {
+   "a_boss_nudged_0_100_mm_is_refused": true,
+   "a_footprint_with_no_height_figure_is_refused": true,
+   "a_lead_in_the_battery_volume_is_refused": true,
+   "a_part_over_its_region_allowance_is_refused": true,
+   "reading_the_pre_rebase_datum_is_visible": true,
+   "the_retired_RIB_R2_footprint_is_refused": true
+  },
+  "footprints_with_no_height_figure": []
+ },
+ "open_cad_items": [
+  "BATTERY_SHADOW rear profile 1.80 mm against a retained 1.20 mm rule -- gap 0.60 mm",
+  "NFC_CLEAR_D48 rear profile 1.40 mm against a retained 1.00 mm rule -- gap 0.40 mm"
+ ],
+ "owner_decisions_open": [],
+ "ref_commit": "041633b7511975148ab0e2510a16be4ef4fbfb25",
+ "schema": 1,
+ "what_this_decision_is": {
+  "cell_dimension": "OFF_BOARD_BOM.md told a buyer 60 x 75 x 8.0 mm.  D-239/D-243 narrowed the reserved envelope to 57 mm and the board's BATTERY_SHADOW is 57 mm wide.  Corrected.  Both named candidate cells are 50 mm wide, so the document was wrong and nothing that was going to be ordered is affected.",
+  "determinism": "connection_width_contract emitted a non-deterministic field -- the two endpoints of a pair in DRC-report order, which flipped between d759 and d760 on a byte-identical board.  Canonicalised.",
+  "height_result": {
+   "BATTERY_SHADOW": {
+    "measured_profile_mm": 1.8,
+    "open_cad_gap_mm": 0.6,
+    "parts_over_the_register_limit": [
+     "C26",
+     "C29",
+     "C30",
+     "C33",
+     "C64",
+     "D9"
+    ],
+    "register_limit_mm": 1.2
+   },
+   "DISPLAY_SHADOW": {
+    "measured_profile_mm": 0.6,
+    "open_cad_gap_mm": 0.0,
+    "parts_over_the_register_limit": [],
+    "register_limit_mm": 0.8
+   },
+   "NFC_CLEAR_D48": {
+    "measured_profile_mm": 1.4,
+    "open_cad_gap_mm": 0.4,
+    "parts_over_the_register_limit": [
+     "C45",
+     "C47",
+     "C49",
+     "C51",
+     "C83",
+     "C84",
+     "D10",
+     "D11",
+     "D12",
+     "J7"
+    ],
+    "register_limit_mm": 1.0
+   }
+  },
+  "j7": "recorded in the register's section 4 with its measured intrusion: 0.870 mm inside the \u00d848 CLEAR region and 0.130 mm OUTSIDE the \u00d846 coil.",
+  "mitigation": "OFF_BOARD_BOM.md now REQUIRES a 0.5 mm compliant insulating sheet over the rear face under the pack.  It spreads three 1206 hard points and insulates the cell from rear copper; it does NOT close the 0.60 mm gap and is not offered as if it did.",
+  "mk8": "the three height rules FBV2_P1_KEEPOUTS.md section 3 carries had never been compared with a part.  MK8 measures every fitted part in each region against its package's published maximum height, from a table where every row records WHERE the figure came from.",
+  "why_the_part_and_not_the_family": "TI's own DDC0006A outline says 'SOT-23 - 1.1 max height'.  The SOT-23 FAMILY maximum is 1.45 mm, which would have reported U20 over a limit it meets by 0.100 mm."
+ }
+}

@@ -25,7 +25,8 @@ not capture reliably, because they are not placed on the board. Authority:
 
 | item | spec | qty | notes |
 |---|---|---|---|
-| Li-ion pouch cell with JST-PH-2 lead | **60 × 75 × 8.0 mm, ≈ 2500–3000 mAh**, 1S | 1 | Envelope frozen by **D-071**; **SKU chosen at procurement (M-04)**. Must mate `J4` `B2B-PH-K-S`. **Protection-circuit-module cells are acceptable and preferred**; the board's own reverse-polarity path does not replace a cell PCM |
+| Li-ion pouch cell with JST-PH-2 lead | **57 × 75 × 8.0 mm MAX, ≈ 2500–3000 mAh**, 1S | 1 | Envelope **57 mm** by **D-239 / D-243** — this row read 60 mm until **D-760** and 60 mm is the SUPERSEDED figure; the 3 mm is the price of the `J5` right-angle side header. It is a MAXIMUM reserved envelope, not a minimum cell width: both named candidates are 50 mm wide. Capacity target frozen by **D-071**; **SKU chosen at procurement (M-04)**. Must mate `J4` `B2B-PH-K-S`. **Protection-circuit-module cells are acceptable and preferred**; the board's own reverse-polarity path does not replace a cell PCM |
+| **Pack barrier sheet — NEW at D-760** | **0.5 mm compliant insulating sheet** (polyester film + closed-cell PE foam, or 3M 9448A-backed PET), cut to the `BATTERY_SHADOW` footprint **57 × 75 mm**, adhesive side to the PCB | 1 | **REQUIRED.** The rear face inside `BATTERY_SHADOW` presents a **1.80 mm** maximum component profile against a register rule of **1.20 mm** — three 1206 bulk capacitors (`C26`, `C29`, `C30`) at 1.6 ± 0.2 mm, plus `C33`, `C64` and `D9`. Those are HARD POINTS against a soft pouch. The sheet spreads them and insulates the pack from rear copper; it is not a substitute for closing the 0.60 mm gap in CAD. Measured by `mechanical_keepout_contract` **MK8**; see `AQROOT_DEMO_FAB_HANDOFF.md` §5b |
 
 ---
 

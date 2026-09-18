@@ -91,6 +91,28 @@ it is not a drawn approximation. **Unchanged at P1-002.**
 
 ## 3. Height rules enforced during placement
 
+> **D-760: THESE THREE RULES HAD NEVER BEEN CHECKED AGAINST A PART, AND TWO OF
+> THEM ARE NOT MET.** `mechanical_keepout_contract` **MK8** now measures every
+> fitted part in each region against its package's published maximum height
+> (`vendor` rows from the manufacturer's own document, `eia` rows the worst-case
+> chip maximum for the case code). The measured rear profile is below. The
+> difference between the *retained* limit and the *measured* profile is an
+> **OPEN CAD ITEM**: closing it is a stack calculation that needs the enclosure,
+> which does not exist yet. MK8 enforces the measured profile as a
+> **no-regression ceiling** so the board cannot get taller without a decision.
+
+| region | face | retained limit | **measured profile** | gap | what sets it |
+|---|---|---|---|---|---|
+| `DISPLAY_SHADOW` | F.Cu | ≤ 0.8 mm | **0.60 mm** | **MET, 0.20 mm spare** | `D2`/`D4`/`D5` SOT-563 |
+| `BATTERY_SHADOW` | B.Cu | ≤ 1.2 mm | **1.80 mm** | **+0.60 mm** | `C26`, `C29`, `C30` 1206 bulk MLCC (1.6 ± 0.2 mm); also `C33`, `C64`, `D9` |
+| `NFC_CLEAR_D48` | B.Cu | ≤ 1.0 mm | **1.40 mm** | **+0.40 mm** | `J7` JST ACH (1.4 mm, JST `eACH`); also `C45`/`C47`/`C49`/`C51`/`C83`/`C84` 0805 and `D10`–`D12` SOD-323 |
+
+**MITIGATION IN PLACE FOR THE PACK.** The `BATTERY_SHADOW` parts are hard points
+against a soft pouch, so `OFF_BOARD_BOM.md` now REQUIRES a **0.5 mm compliant
+insulating sheet** over the rear face under the cell. That spreads the load and
+insulates the pack from rear copper; **it does not close the 0.60 mm gap** and is
+not offered as if it did.
+
 | region | face | limit | source |
 |---|---|---|---|
 | `DISPLAY_SHADOW` | F.Cu | **≤ 0.8 mm** | measured Beta-DM limit, retained |
@@ -108,6 +130,7 @@ recorded so no later reader has to rediscover them.
 |---|---|---|
 | battery pouch foil | **3.000 mm** | 1.500 mm inside the superseded rectangle. Zero overlap with the **clear** region (2.000 mm gap) — the locked policy N-5 holds |
 | `D1` `TSAL6100` leadframe | **1.381 mm** | 3.619 mm outside the Ø48 loop perimeter. Was inside the superseded rectangle too. Cannot move without breaking the ≥ 15 mm IR TX↔RX rule |
+| `J7` JST `BM02B-ACHSS-GAN-ETF` — **RECORDED at D-760** | **5.870 mm** inside the Ø58; **0.870 mm inside the Ø48 CLEAR region** | The NFC antenna's own connector, at doc (54.000, 118.000), **23.130 mm from the Ø48 centre — 0.130 mm OUTSIDE the Ø46 coil itself**, so the coil does not sit on it; only the Ø48 margin ring does. It is not a screw, a boss or a shielding can, so it does not breach the Ø58 rule as written. It IS where the antenna's twisted pair lands, and at **1.4 mm** it stands 0.4 mm above the Ø48 rear-air-gap figure — see §3. Recorded so no later reader has to rediscover it |
 
 ## 5. What is deliberately NOT here
 

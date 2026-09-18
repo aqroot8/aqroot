@@ -66,7 +66,66 @@
 > `verify_promotion` PASS and `protected_copper` showing exactly one protected
 > net moved.  `U14.7` is on the bus.  This board has **no open owner decision**.
 
-> # **DEMO_READY_FOR_FAB IS DECLARED (2026-09-18, D-759).**
+> # **DEMO_READY_FOR_FAB IS DECLARED (2026-09-18, D-760).**
+>
+> **Board authority `1a06b058`, UNCHANGED.**  D-760 touches no board file, no
+> fabrication output and no firmware — git reports zero modified files under
+> `hardware/demo/kicad`, `hardware/demo/fab` and `Firmware`.  What it changes is
+> what the repository KNOWS about the board.
+>
+> **THREE HEIGHT RULES, NEVER ONCE COMPARED WITH A PART.**
+> `FBV2_P1_KEEPOUTS.md` §3 is titled *"Height rules enforced during placement"*
+> and two of its three describe themselves as *"measured Beta-DM limit,
+> retained"* — a heuristic carried forward from a previous build. `MK8` measures
+> every fitted part against its package's published maximum:
+>
+> | region | face | retained limit | **measured profile** | gap |
+> |---|---|---|---|---|
+> | `DISPLAY_SHADOW` | F.Cu | ≤ 0.80 mm | **0.60 mm** | **MET**, 0.20 mm spare |
+> | `BATTERY_SHADOW` | B.Cu | ≤ 1.20 mm | **1.80 mm** | **+0.60 mm** |
+> | `NFC_CLEAR_D48` | B.Cu | ≤ 1.00 mm | **1.40 mm** | **+0.40 mm** |
+>
+> **THE TABLE READS THE PART, NOT THE FAMILY, AND THAT CHANGED AN ANSWER.**  The
+> SOT-23 family maximum is 1.45 mm and would have put `U20` over the battery
+> limit; **TI's own `DDC0006A` outline says *"SOT-23 — 1.1 max height"***, so it
+> meets it with 0.10 mm to spare.  The two rows that set the gaps are
+> vendor-sourced for the same reason: `C_1206` is Murata `GRM31C`
+> **T = 1.6 ± 0.2 mm**, and `J7` is JST `eACH` **1.4 mm**.
+>
+> **THESE ARE NOT DEFECTS IN THE COPPER**, and moving ten parts to satisfy a
+> retained heuristic would be the wrong trade.  What the enclosure needs is the
+> REAL profile and it is now stated. **One thing is not deferred**: three 1206
+> bulk capacitors are hard points against a soft pouch, so `OFF_BOARD_BOM.md`
+> now REQUIRES a **0.5 mm compliant insulating sheet** over the rear face under
+> the cell — which spreads the load and insulates the pack, and **does not close
+> the 0.60 mm gap**.  `MK8` holds the measured profile as a no-regression
+> ceiling, with **six live controls**.
+>
+> **AND THE OFF-BOARD CELL DIMENSION WAS WRONG BY 3 mm.**  The document a buyer
+> reads said **60 × 75 × 8.0 mm**; `D-239`/`D-243` narrowed the reserved envelope
+> to **57 mm** — the price of `J5`'s right-angle side header — and the board's
+> `BATTERY_SHADOW` is 57 mm wide.  Corrected.  Both named candidate cells are
+> 50 mm wide, so what was wrong was the document.
+>
+> **`J7` IS RECORDED** in the register's §4 — 0.870 mm inside the Ø48 CLEAR
+> region and **0.130 mm OUTSIDE the Ø46 coil**, so the coil does not sit on it —
+> and **a contract was caught emitting a non-deterministic field**:
+> `connection_width_contract` built each pair's `at` in DRC-report order and one
+> `GND` via pair came back with its endpoints swapped on a board whose `sha256`
+> had not moved.  Canonicalised.
+>
+> **VERIFICATION.**  `contract_regression` runs **18 contracts, 18 pass, 14
+> byte-identical to `d759`**; the four that moved moved by exactly the `BOSS1`
+> claim that is no longer made, the canonicalised pair, and `MK8`.  Everything
+> else — connectivity, DRC, parity, promotion, protected copper, ampacity,
+> features, `FAB1`–`FAB13`, firmware — is carried forward unchanged from D-759
+> and recorded in `evidence/d760-release-verification.json`, because the board
+> did not move.
+>
+> **There is no open owner decision and no unresolved Demo fabrication blocker.
+> There are TWO OPEN CAD ITEMS, and they are now numbers instead of silence.**
+
+> # **D-759's DECLARATION STANDS AND IS LEFT BELOW AS THE BOARD'S LAST COPPER CHANGE.**
 >
 > **Board authority `1a06b058`.**  D-758's board changes are **REVERTED WHOLE**
 > and this board differs from D-757's `78a68921` by **exactly one line**.

@@ -190,6 +190,52 @@ before tooling the bosses. Evidence: `evidence/d759-mechanical-datum.json`,
 `evidence/d759-boss-clearance.json`,
 `evidence/d759-mechanical_keepout-contract.json`.
 
+## 5b. Rear component profile and the battery (D-760) — **OPEN CAD ITEM**
+
+`FBV2_P1_KEEPOUTS.md` §3 carries three height rules and **until D-760 not one of
+them had ever been compared with a part**. Two of the three call themselves
+*"measured Beta-DM limit, retained"* — a heuristic carried forward, not a stack
+calculation. `mechanical_keepout_contract` **MK8** now measures every fitted part
+in each region against its package's published maximum.
+
+| region | face | retained limit | **measured profile** | gap | what sets it |
+|---|---|---|---|---|---|
+| `DISPLAY_SHADOW` | F.Cu | ≤ 0.8 mm | **0.60 mm** | **MET**, 0.20 mm spare | `D2`/`D4`/`D5` SOT-563 |
+| `BATTERY_SHADOW` | B.Cu | ≤ 1.2 mm | **1.80 mm** | **+0.60 mm** | `C26`, `C29`, `C30` 1206 bulk MLCC |
+| `NFC_CLEAR_D48` | B.Cu | ≤ 1.0 mm | **1.40 mm** | **+0.40 mm** | `J7` JST ACH connector |
+
+**Every figure is sourced.** The `C_1206` 1.80 mm is Murata's own `GRM31C`
+T = 1.6 ± 0.2 mm; `J7`'s 1.40 mm is JST's `eACH` *"low profile type, height
+1.4 mm and width 4.3 mm"*; `U20`'s SOT-23-6 is **1.10 mm** from TI's own
+`DDC0006A` outline — **not** the 1.45 mm the SOT-23 family would have given,
+which is why the table reads the PART and not the family.
+
+**WHAT IS BEING ASKED OF CAD.** These are not defects in the copper and moving
+ten parts to satisfy a retained heuristic would be the wrong trade. What the
+enclosure needs is the **real** rear profile, and it is now stated: **1.80 mm
+inside `BATTERY_SHADOW` and 1.40 mm inside `NFC_CLEAR_D48`**. Close the stack
+against those numbers, not against 1.20 / 1.00. The cell envelope has room to
+help: it is **57 × 75 × 8.0 mm MAX** and both named candidates are **7.3 and
+7.5 mm** thick, so 0.5–0.7 mm of the reserved envelope is already unused.
+
+**WHAT IS REQUIRED NOW, NOT DEFERRED.** The `BATTERY_SHADOW` parts are hard
+points against a soft pouch. `OFF_BOARD_BOM.md` now carries a **0.5 mm compliant
+insulating sheet**, cut to the 57 × 75 mm footprint, adhesive to the PCB, as a
+REQUIRED off-board item. It spreads the load and insulates the pack from rear
+copper. **It does not close the 0.60 mm gap and is not offered as if it did.**
+
+`J7` — the NFC antenna's own connector — is recorded in the register's §4 with
+its measured intrusion: **0.870 mm inside the Ø48 CLEAR region and 0.130 mm
+OUTSIDE the Ø46 coil**, so the coil does not sit on it.
+
+**And the off-board cell dimension was wrong.** `OFF_BOARD_BOM.md` told a buyer
+**60 × 75 × 8.0 mm**; D-239/D-243 narrowed the envelope to **57 mm** — the price
+of the `J5` right-angle side header — and the board's `BATTERY_SHADOW` is 57 mm
+wide. Corrected. Both named candidate cells are 50 mm wide, so nothing that was
+going to be ordered is affected; the document was.
+
+Evidence: `evidence/d760-mechanical_keepout-contract.json`.
+
 ## 5. Safety and power
 
 * **D-269 / D-186 proven.** `protected_copper` is byte-identical across every

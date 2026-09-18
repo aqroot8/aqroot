@@ -1,3 +1,134 @@
+## D-760 — **THREE HEIGHT RULES, NEVER ONCE COMPARED WITH A PART, AND TWO OF THEM ARE NOT MET.** THE BOARD'S REAL REAR PROFILE IS NOW A NUMBER
+
+    authority  1a06b058, UNCHANGED   (no board file, no fab output, no firmware;
+                                      git reports zero modified files under
+                                      hardware/demo/kicad, hardware/demo/fab and
+                                      Firmware)
+    changed    mechanical_keepout_contract gains MK8; connection_width_contract
+               stops emitting a non-deterministic field; OFF_BOARD_BOM.md's cell
+               dimension is corrected and a pack barrier sheet is REQUIRED;
+               J7 is recorded in the keep-out register
+    evidence   d760-{release-verification,mechanical_keepout-contract,
+               connection-width-determinism,contract-regression}.json
+
+### 1. THE RULES
+
+`FBV2_P1_KEEPOUTS.md` §3 is titled *"Height rules enforced during placement"*
+and carries three.  **Not one of them had ever been compared with a part**, and
+two of the three describe themselves as *"measured Beta-DM limit, retained"* — a
+heuristic carried forward from a previous build, not a stack calculation.
+`MK8` measures every FITTED part in each region against its package's published
+maximum:
+
+    region           face   retained limit   MEASURED PROFILE   gap
+    DISPLAY_SHADOW   F.Cu        0.80 mm         0.60 mm        MET, 0.20 spare
+    BATTERY_SHADOW   B.Cu        1.20 mm         1.80 mm        +0.60 mm
+    NFC_CLEAR_D48    B.Cu        1.00 mm         1.40 mm        +0.40 mm
+
+`BATTERY_SHADOW` is set by three 1206 bulk capacitors — `C26`, `C29`, `C30` —
+with `C33`, `C64` and `D9` also above the retained figure.  `NFC_CLEAR_D48` is
+set by `J7`, the NFC antenna's own connector, with six 0805s and three SOD-323s
+behind it.
+
+### 2. THE TABLE READS THE PART, NOT THE FAMILY, AND THAT CHANGED AN ANSWER
+
+Every row of `MAX_HEIGHT_MM` records WHERE its figure comes from — `vendor` for
+a manufacturer's own document, `eia` for the worst-case chip maximum of a case
+code.  The distinction is not decorative:
+
+  * the **SOT-23 family** maximum is **1.45 mm**, which would have put `U20`
+    `0.25 mm` over the `BATTERY_SHADOW` limit;
+  * **TI's own `DDC0006A` package outline says *"SOT-23 - 1.1 max height"***,
+    so `U20` meets that limit with `0.10 mm` to spare.
+
+Reading the family would have manufactured a defect.  The rows that decide the
+two gaps are vendor-sourced for the same reason: `C_1206` is **Murata `GRM31C`,
+T = 1.6 ± 0.2 mm**, and `J7` is **JST `eACH`, *"low profile type, height 1.4 mm
+and width 4.3 mm"***.
+
+### 3. WHAT IS ASKED OF CAD, AND WHAT IS NOT DEFERRED
+
+**These are not defects in the copper**, and moving ten parts to satisfy a
+retained heuristic would be the wrong trade — the `BATTERY_SHADOW` group is bulk
+decoupling and `J7` is where the antenna lands.  What the enclosure needs is the
+REAL rear profile, and it is now stated: **1.80 mm and 1.40 mm**.  Close the
+stack against those, not against 1.20 / 1.00.  The envelope has room to help: the
+cell is **57 × 75 × 8.0 mm MAX** and both named candidates are **7.3 and 7.5 mm**
+thick, so 0.5–0.7 mm of the reserved envelope is already unused.
+
+**One thing is NOT deferred.**  Those 1206s are hard points against a soft pouch.
+`OFF_BOARD_BOM.md` now carries a **0.5 mm compliant insulating sheet**, cut to
+the 57 × 75 mm footprint, adhesive to the PCB, as a REQUIRED off-board item.
+**It spreads the load and insulates the pack from rear copper.  It does not close
+the 0.60 mm gap and it is not offered as if it did.**
+
+And `MK8` holds the profile as a **no-regression ceiling**: the board may not get
+taller in these regions without a decision.  **Six live controls**, two of them
+new — a part one micron over its region's allowance is refused, and a footprint
+with NO height figure is refused rather than silently skipped.
+
+### 4. THE OFF-BOARD CELL DIMENSION WAS WRONG BY 3 mm
+
+`OFF_BOARD_BOM.md` — the document a buyer reads — said the cell is
+**60 × 75 × 8.0 mm**.  `D-239` narrowed the reserved envelope to **57 mm** as
+*"the entire price of the header"* (a right-angle socket puts its tails 6.53 mm
+inboard of its mating face), `D-243` confirmed 57 mm as a MAXIMUM rather than a
+minimum, `DEVICE_SPEC` has said 57 mm since, and the board's `BATTERY_SHADOW` is
+57 mm wide.  Only the purchasing document still said 60.  Corrected — **and both
+named candidate cells are 50 mm wide, so what was wrong was the document, not
+anything that was going to be ordered.**
+
+### 5. `J7` IS ON THE RECORD NOW
+
+The register's §4 exists for objects inside the NFC exclusions that do not breach
+the rule as written, *"recorded so no later reader has to rediscover them"*.  It
+listed two.  `J7` is the third: **0.870 mm inside the Ø48 CLEAR region, and
+0.130 mm OUTSIDE the Ø46 coil itself**, so the coil does not sit on it — only the
+Ø48 margin ring does.  It is not a screw, a boss or a shielding can.  It is where
+the antenna's twisted pair lands, and at 1.4 mm it is what sets that region's
+profile.
+
+### 6. AND A CONTRACT WAS EMITTING A NON-DETERMINISTIC FIELD
+
+The standing suite's premise is that a contract's REPORT is byte-identical on a
+byte-identical board.  `connection_width_contract` built each pair's `at` in
+DRC-report item order, and one `GND` via pair came back
+`[[71.8, 97.9], [71.8, 97.3]]` at `d759` and `[[71.8, 97.3], [71.8, 97.9]]` at
+`d760` — **the same pair, the same 0.079 mm, the two endpoints swapped, on a
+board whose `sha256` had not moved.**  That file's own comment records making the
+LIST order total once already; the ENTRY was not.  `at` is now sorted, and with
+it applied the two reports are identical field for field
+(`evidence/d760-connection-width-determinism.json`).
+
+### 7. VERIFICATION
+
+The board did not move, so nothing that depends on it could have:
+
+    board / fab package / firmware   ZERO modified files
+    contracts                        18 run, 18 pass, 14 IDENTICAL to d759
+                                     placement + pour_partition: the d759 BOSS1
+                                       claim is not made here, because nothing
+                                       moved
+                                     connection_width: the canonicalised pair
+                                     mechanical_keepout: MK8 and its 2 controls
+    mechanical                       MK1-MK8 PASS, 6 live controls refused
+    everything else                  carried forward from D-759 unchanged and
+                                     recorded in the release evidence
+
+**There is no open owner decision and no unresolved Demo fabrication blocker.
+There are TWO OPEN CAD ITEMS, and they are now numbers instead of silence.**
+
+### 8. THE LESSON, STATED ONCE
+
+D-759 said a coordinate is a claim about a datum.  This one is the third in the
+family: **a limit is a claim about a measurement that somebody once made, and
+"retained" is not the same as "still true."**  Two of these three rules came from
+a different board, were carried forward verbatim through every revision, were
+printed in a file marked NORMATIVE — and had never once been held up against a
+part.  The board was not wrong to be 1.80 mm tall.  The document was wrong to say
+1.20 mm without anyone ever checking, and the enclosure would have been designed
+from it.
+
 ## D-759 — **D-758 WAS WRONG, AND THE FILE IT READ SAYS SO IN ITS OWN HEADER.** THE REAL DEFECT WAS ONE FOOTPRINT THAT NEVER TOOK A RE-BASE
 
     authority  1a06b058   (was f66c7896; D-758's board changes are REVERTED WHOLE

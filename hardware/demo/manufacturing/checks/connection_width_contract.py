@@ -94,8 +94,20 @@ def classify(report, strict_mm):
         rows.append(dict(width_mm=width, layer=layer, kinds=list(kinds), nets=list(nets)))
         e = pairs.setdefault(uid, dict(width_mm=width, layers=set(), kinds=list(kinds),
                                        nets=list(nets),
-                                       at=[[round(i["pos"]["x"], 3), round(i["pos"]["y"], 3)]
-                                           for i in v.get("items", ())]))
+                                       # D-760: SORTED.  `uid` already sorts the
+                                       # two uuids so the PAIR is stable, but
+                                       # `at` was built in DRC-report item order
+                                       # and that order can flip between
+                                       # processes on a byte-identical board --
+                                       # one GND via pair reported
+                                       # [[71.8,97.9],[71.8,97.3]] at d759 and
+                                       # [[71.8,97.3],[71.8,97.9]] at d760.  The
+                                       # list order was made total once already
+                                       # (below); the ENTRY has to be total too.
+                                       at=sorted(
+                                           [round(i["pos"]["x"], 3),
+                                            round(i["pos"]["y"], 3)]
+                                           for i in v.get("items", ()))))
         e["width_mm"] = min(e["width_mm"], width)
         e["layers"].add(layer)
     for e in pairs.values():

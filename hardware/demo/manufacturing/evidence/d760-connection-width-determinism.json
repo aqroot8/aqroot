@@ -1,0 +1,39 @@
+{
+ "after_the_fix": [
+  [
+   71.8,
+   97.3
+  ],
+  [
+   71.8,
+   97.9
+  ]
+ ],
+ "board_sha256": "1a06b058912b4c37e25d0acd9314f9542671efa852a162cc8b1dc6533e25668b",
+ "d759": [
+  [
+   71.8,
+   97.9
+  ],
+  [
+   71.8,
+   97.3
+  ]
+ ],
+ "d760_before_the_fix": [
+  [
+   71.8,
+   97.3
+  ],
+  [
+   71.8,
+   97.9
+  ]
+ ],
+ "every_other_field_identical_to_d759": true,
+ "fix": "`at` is now sorted, so the entry is canonical regardless of the order KiCad enumerates the two items in",
+ "note": "the same GND via pair, the same 0.079 mm width, the two endpoints in the other order.  The LIST order had already been made total once (the comment in that file records it); the ENTRY had not.",
+ "schema": 1,
+ "the_field": "$.checks.C1_classified.below[4].at",
+ "what": "connection_width_contract emitted a NON-DETERMINISTIC field.  The standing suite's whole premise is that a contract's REPORT is byte-identical on a byte-identical board; this one's `at` pair was built in DRC-report item order and flipped between two runs of the same board."
+}

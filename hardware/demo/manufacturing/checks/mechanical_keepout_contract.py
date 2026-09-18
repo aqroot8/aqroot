@@ -99,6 +99,7 @@ RESTATED = {
 # regions that simply take the +1.000 mm
 SHIFTED = {
     "SPEAKER_ZONE": (48.00, 68.00, 1.00, 21.00),
+    "DISPLAY_SHADOW": (3.39, 59.93, 55.04, 140.00),
     "RIB_R1": (66.20, 69.70, 24.00, 44.00),
     "RIB_R3": (66.20, 69.70, 76.00, 97.00),
     "RIB_B1": (44.00, 47.60, 21.20, 23.30),
@@ -311,6 +312,156 @@ def mk6(board, reg=None):
                 into_ir_tx_optical_mm=round(max(0.0, tx[1] - lo), 4))
 
 
+
+# ---------------------------------------------------------------------------
+# D-760.  THE THREE HEIGHT RULES, WHICH NOTHING HAS EVER CHECKED.
+#
+# `FBV2_P1_KEEPOUTS.md` section 3 carries three of them -- `DISPLAY_SHADOW`
+# F.Cu <= 0.8 mm, `BATTERY_SHADOW` B.Cu <= 1.2 mm, `NFC_CLEAR_D48` B.Cu <=
+# 1.0 mm -- and names the first two "measured Beta-DM limit, retained".  A
+# retained heuristic is not a stack calculation, and no gate has ever compared
+# either of them with a part.
+#
+# MAX_HEIGHT_MM is a package-to-height table.  `src` records WHERE each figure
+# comes from, because the difference matters: the generic SOT-23 maximum is
+# 1.45 mm and TI's own DDC0006A outline says "SOT-23 - 1.1 max height", so
+# reading the family instead of the part would have reported `U20` over a limit
+# it meets.  `vendor` rows are from the manufacturer's own document; `eia` rows
+# are the worst-case chip maximum for that case code across common dielectric
+# builds, which is the conservative direction.
+MAX_HEIGHT_MM = {
+    # passives, by case code -- RESISTORS and CAPACITORS are NOT the same part
+    "R_0402_1005Metric": (0.45, "eia", "thick-film chip resistor, 0402"),
+    "R_0603_1608Metric": (0.55, "eia", "thick-film chip resistor, 0603"),
+    "R_0805_2012Metric": (0.65, "eia", "thick-film chip resistor, 0805"),
+    "R_1206_3216Metric": (0.75, "eia", "thick-film chip resistor, 1206"),
+    "C_0402_1005Metric": (0.55, "eia", "MLCC, 0402"),
+    "C_0603_1608Metric": (0.90, "eia", "MLCC, 0603, high-capacitance build"),
+    "C_0805_2012Metric": (1.25, "eia", "MLCC, 0805, high-capacitance build"),
+    "C_1206_3216Metric": (1.80, "vendor", "Murata GRM31C 1206: T = 1.6 +/- 0.2 mm"),
+    "C_1210_3225Metric": (2.00, "eia", "MLCC, 1210, high-capacitance build"),
+    "L_0603_1608Metric": (0.95, "eia", "chip inductor / ferrite bead, 0603"),
+    "TestPoint_Pad_D1.0mm": (0.00, "geometry", "a bare copper pad has no body"),
+    # discretes
+    "D_SOD-323": (1.10, "eia", "SOD-323 / SC-76 maximum"),
+    "D_SOD-123": (1.35, "eia", "SOD-123 maximum"),
+    "SOT-23": (1.12, "vendor", "Alpha & Omega AO3400A SOT-23: A max 1.12 mm"),
+    "SOT-23-6": (1.10, "vendor", "TI DDC0006A package outline: SOT-23 - 1.1 max height"),
+    "SOT-563": (0.60, "eia", "SOT-563 maximum"),
+    "SOT-353_SC-70-5": (1.10, "eia", "SC-70 maximum"),
+    "SOT-23-8": (1.45, "eia", "SOT-23-8 maximum"),
+    "SOIC-8_3.9x4.9mm_P1.27mm": (1.75, "eia", "JEDEC MS-012 SOIC-8 maximum"),
+    # ICs
+    "TSSOP-24_4.4x7.8mm_P0.65mm": (1.20, "eia", "JEDEC MO-153 TSSOP maximum"),
+    "VSSOP-8_3x3mm_P0.65mm": (1.10, "eia", "TI DGK / JEDEC MO-187 maximum"),
+    "MSOP-10_3x3mm_P0.5mm": (1.10, "eia", "JEDEC MO-187 MSOP maximum"),
+    "Bosch_LGA-14_2.5x3.0mm_P0.5mm_BMI270": (0.83, "vendor", "Bosch BMI270 LGA-14: 0.83 mm max"),
+    "ST25R3916_AQET": (0.60, "eia", "UFQFPN-32 maximum"),
+    "MAX17048_T822": (0.65, "eia", "TDFN-8 maximum"),
+    "Texas_DLH0010A_WSON-10-1EP_2.2x2mm_P0.4mm_EP0.9x1.5mm":
+        (0.80, "eia", "WSON-10 maximum"),
+    # connectors and crystals
+    "JST_ACH_BM02B-ACHSS-GAN-ETF_1x02-1MP_P1.20mm_Vertical":
+        (1.40, "vendor", "JST eACH: low-profile type, height 1.4 mm, width 4.3 mm"),
+    "Crystal_SMD_3225-4Pin_3.2x2.5mm": (0.80, "eia", "3225 4-pad SMD crystal maximum"),
+    # D1 is a T-1 3/4 through-hole emitter that assembly LEAD-FORMS 90 degrees
+    # so its 8.7 mm body lies flat and fires out of the TOP panel
+    # (docs/full-beta-v2/assembly/IR_LEAD_FORMING.md, NORMATIVE).  Its body
+    # therefore leaves DISPLAY_SHADOW entirely; what stands inside the region is
+    # nothing, and its pads are north of the region's own edge, which is why
+    # membership below is decided by PADS and not by an unformed courtyard.
+    "LED_D5.0mm": (5.95, "vendor", "Vishay TSAL6100 doc 81009: package "
+                                   "dia 5.8 +/- 0.15 mm, lead-formed 90 deg"),
+    "Vishay_TSOP382xx_Minicast_3Pin_P2.54mm":
+        (6.95, "vendor", "Vishay doc 82491: minicast 5.0 W x 6.95 H x 4.8 D mm, "
+                         "lead-formed 90 deg"),
+}
+
+# The region allowances MK8 enforces, and the rule each one is measured
+# against.  `allowance_mm` is a NO-REGRESSION CEILING set at the board's own
+# measured profile -- the board may not get taller here without a decision --
+# and `register_limit_mm` is the inherited rule the register still states.
+# Where the two differ the gap is REPORTED, not hidden: it is an open CAD item
+# and closing it is a stack calculation nobody on this repository can do
+# without the enclosure.
+HEIGHT_REGIONS = {
+    "DISPLAY_SHADOW": dict(side="F", register_limit_mm=0.80, allowance_mm=0.80),
+    "BATTERY_SHADOW": dict(side="B", register_limit_mm=1.20, allowance_mm=1.80),
+    "NFC_CLEAR_D48": dict(side="B", register_limit_mm=1.00, allowance_mm=1.40),
+}
+NFC_CLEAR_CENTRE_DOC = (31.800, 124.500)
+NFC_CLEAR_R = 24.000
+
+
+def mk8(board, reg=None):
+    """Every part in a height-limited region, against its package maximum."""
+    reg = reg or regions()
+    dnp = set()
+    for f in board.GetFootprints():
+        try:
+            if f.IsDNP():
+                dnp.add(f.GetReference())
+        except Exception:
+            pass
+    out, ok, unknown = {}, True, set()
+    for name, spec in HEIGHT_REGIONS.items():
+        side = spec["side"]
+        parts = []
+        for f in board.GetFootprints():
+            if (f.IsFlipped() and side != "B") or (not f.IsFlipped() and side != "F"):
+                continue
+            if f.GetReference() in dnp:
+                continue
+            if name == "NFC_CLEAR_D48":
+                cx, cy = NFC_CLEAR_CENTRE_DOC[0], BOARD_H - NFC_CLEAR_CENTRE_DOC[1]
+                if not any(math.hypot(q.GetPosition().x / 1e6 - cx,
+                                      q.GetPosition().y / 1e6 - cy) <= NFC_CLEAR_R
+                           for q in f.Pads()):
+                    continue
+            else:
+                # MEMBERSHIP IS BY PADS, not by courtyard.  A component's mass
+                # stands over its own lands, and `D1` and `U6` are LEAD-FORMED
+                # 90 degrees at assembly so their bodies end up nowhere near
+                # the circle their unformed courtyards draw.
+                x0, x1, y0, y1 = reg[name]
+                if not any(x0 <= q.GetPosition().x / 1e6 <= x1
+                           and y0 <= q.GetPosition().y / 1e6 <= y1
+                           for q in f.Pads()):
+                    continue
+            fid = f.GetFPIDAsString().split(":")[-1]
+            h = MAX_HEIGHT_MM.get(fid)
+            if h is None:
+                unknown.add(fid)
+                parts.append(dict(ref=f.GetReference(), footprint=fid,
+                                  max_height_mm=None, source=None))
+                continue
+            parts.append(dict(ref=f.GetReference(), footprint=fid,
+                              max_height_mm=h[0], source=h[1], basis=h[2]))
+        known = [p for p in parts if p["max_height_mm"] is not None]
+        tallest = max((p["max_height_mm"] for p in known), default=0.0)
+        over_allowance = sorted(p["ref"] for p in known
+                                if p["max_height_mm"] > spec["allowance_mm"] + 1e-9)
+        over_register = sorted(p["ref"] for p in known
+                               if p["max_height_mm"] > spec["register_limit_mm"] + 1e-9)
+        clause_ok = (not over_allowance
+                     and not any(p["max_height_mm"] is None for p in parts))
+        ok = ok and clause_ok
+        out[name] = dict(ok=clause_ok, side=side,
+                         register_limit_mm=spec["register_limit_mm"],
+                         allowance_mm=spec["allowance_mm"],
+                         measured_tallest_mm=round(tallest, 3),
+                         parts_over_the_allowance=over_allowance,
+                         parts_over_the_register_limit=over_register,
+                         open_cad_gap_mm=round(max(0.0, tallest - spec["register_limit_mm"]), 3),
+                         parts=sorted(parts, key=lambda p: (-(p["max_height_mm"] or 0),
+                                                            p["ref"])))
+    return dict(ok=ok, regions=out,
+                footprints_with_no_height_figure=sorted(unknown),
+                note="allowance_mm is a no-regression ceiling at the board's own "
+                     "measured profile; register_limit_mm is the inherited rule "
+                     "and the gap between them is an OPEN CAD ITEM (D-760)")
+
+
 def mk7(board):
     """Live negative controls: each puts a specific defect back."""
     reg = regions()
@@ -349,6 +500,20 @@ def mk7(board):
         fits_x(body_box(board.FindFootprintByReference(r)),
                doc_box(*SECTION1[n])) for n, r in DATUM_PARTS.items())
 
+    # a part one micron taller than its region's allowance must be refused
+    tallest = max(MAX_HEIGHT_MM.values(), key=lambda v: v[0])[0]
+    saved = dict(MAX_HEIGHT_MM)
+    MAX_HEIGHT_MM["C_0603_1608Metric"] = (tallest + 0.001, "control",
+                                          "synthetic: one micron over the ceiling")
+    ctl["a_part_over_its_region_allowance_is_refused"] = not mk8(board, reg)["ok"]
+    MAX_HEIGHT_MM.clear()
+    MAX_HEIGHT_MM.update(saved)
+
+    # a footprint with NO height figure must be refused rather than skipped
+    saved2 = MAX_HEIGHT_MM.pop("R_0603_1608Metric")
+    ctl["a_footprint_with_no_height_figure_is_refused"] = not mk8(board, reg)["ok"]
+    MAX_HEIGHT_MM["R_0603_1608Metric"] = saved2
+
     return dict(ok=all(ctl.values()), controls=ctl)
 
 
@@ -367,6 +532,7 @@ def main():
         "MK5_no_through_hole_lead_in_the_battery_volume": mk5(board, reg),
         "MK6_boss2_is_inside_the_ir_barrier": mk6(board, reg),
         "MK7_not_vacuous": mk7(board),
+        "MK8_component_height_in_the_limited_regions": mk8(board, reg),
     }
     doc = dict(schema=1, board=str(a.board), board_sha256=sha256(a.board),
                datum="FBV2-EXP-002 RE-BASED: section-1 X + %.3f mm; "
