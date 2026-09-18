@@ -117,7 +117,8 @@ GPIO19/20); there is **no USB-UART bridge IC** (by design). See §9, §16.
 | Touch panel | EastRising **ER-TPC035-6** capacitive | LOCKED · FITTED · INTERNAL | OFF_BOARD_BOM.md |
 | Touch controller | **FocalTech FT6236** @ I²C **0x38** | LOCKED (interface); **silicon identity CAD-TO-VERIFY** | `architecture/I2C_ADDRESS_REGISTRY.md`; ARCHITECTURE.md |
 | Backlight driver | `U17` **TPS61169DCKR** (WLED boost) | FITTED | `03_spi_a_display_sd.kicad_sch:U17` |
-| Backlight **true-off disconnect** | `Q11` **AO3400A** (LCSC C20917) in the panel cathode return, gate on `DISP_BL_CTL`, held off by `R108` | FITTED (added D-750) | `03_spi_a_display_sd.kicad_sch:Q11`; D-750 item 7 |
+| Backlight **true-off disconnect** | `Q11` **AO3400A** (LCSC C20917) in the panel cathode return, gate on its OWN net `BL_DISC_G` | FITTED (added D-750, re-controlled D-752) | `03_spi_a_display_sd.kicad_sch:Q11`; D-750 item 7; D-752 |
+| Backlight disconnect **gate hold** | `D14` **1N4148WS** (LCSC C2128) + `C85` 100 nF + `R132` 220 k — charges from `DISP_BL_CTL`, decays with τ = 22 ms | FITTED (added D-752) | `03_spi_a_display_sd.kicad_sch:D14/R132/C85`; D-752 |
 | Display SDO isolation | `R112` 0 Ω = **DNP** | DNP | population matrix |
 
 > **WHY `Q11` EXISTS (D-750, external first-spin review item 7).**  TI states
@@ -132,15 +133,53 @@ GPIO19/20); there is **no USB-UART bridge IC** (by design). See §9, §16.
 > `R69` both sit on its SOURCE), so the 109 mA setpoint and its 100.5–117.6 mA
 > band are unchanged.
 >
-> **`Q11`'s GATE AND `U17`'s `CTRL` ARE ONE NET, AND THAT IS A CONSTRAINT
-> (D-751).**  PWM on `DISP_BL_CTL` shuts the converter down and opens `Q11`
-> together.  The combination that must never occur is *converter switching with
-> `Q11` off*: an open LED path drives the `TPS61169` output to its overvoltage
-> clamp near **38 V**, and the panel cathode — `Q11`'s DRAIN — follows the
-> anode to within the string's sub-threshold drop while `R69` holds the SOURCE
-> at 0 V.  **The `AO3400A` is a 30 V part.**  One net driving both gates makes
-> that state unreachable.  Any future revision that separates the two controls
-> in order to PWM `Q11` alone **must re-rate `Q11` to at least 40 V `VDS`**.
+> **`Q11`'s GATE MAY NOT SHARE `U17`'s `CTRL`, AND D-752 SEPARATED THEM.**
+> D-751 recorded the shared net as a safety CONSTRAINT.  **That was wrong, and
+> the primary source says so.**  TI `SNVSA40B` §6.3.5: the `TPS61169` "chops up
+> the internal 204 mV reference voltage at the duty cycle of the PWM signal",
+> filters it, and therefore *"only the WLED DC current is modulated, which is
+> often referred as analog dimming"* — **the converter keeps switching through
+> every PWM low phase**, and enters shutdown only after `CTRL` has been low for
+> more than `tSD`, **2.5 ms max**.  With one net driving both, every PWM low
+> phase opened the LED string while `U17` regulated: `FB` collapses below the
+> 30 mV open-LED threshold, `SW` ramps to `VOVP_SW` (**36 / 37.5 / 39 V**),
+> §6.3.2 open-LED protection latches the part off after three switching cycles,
+> and the panel cathode — `Q11`'s DRAIN — follows the anode to ≈ 36 V while
+> `R69` holds the SOURCE at 0 V.  **The `AO3400A` is a 30 V part** (AOS Rev 3.1).
+> Firmware already drives `ledcSetup(5000, 8)` on GPIO46, so the board would
+> have latched its backlight off and over-stressed `Q11` on the first
+> brightness ramp.
+>
+> **THE REPAIR IS STRUCTURAL, NOT PROCEDURAL (D-752).**  `Q11`'s gate moved to
+> its own net `/03_SPI_A_DISPLAY_SD/BL_DISC_G`, driven by an ENVELOPE of
+> `DISP_BL_CTL`: `D14` (1N4148WS) charges `C85` (100 nF) from it in
+> microseconds, `R132` (220 k) discharges it with **τ = 22 ms**.  The invariant
+> is waveform-independent — *`Q11` cannot open until the gate has decayed below
+> `VGS(th)`, which takes at least **11.4 ms** at worst-case tolerance, and
+> `U17` is guaranteed to be in shutdown by **2.5 ms***.  The converter
+> therefore always stops first, for ANY `CTRL` waveform, including an
+> out-of-spec PWM frequency or a firmware crash.  **Margin 4.6×**, and no
+> firmware sequencing is relied upon.
+>
+> * **worst-case hold.**  `Vf` ≤ 0.7 V at the 12.5 µA hold current gives a
+>   2.60 V gate; τ at tolerance extremes is 19.6–24.4 ms; `VGS` at 2.5 ms is
+>   **2.29 V**, above the `RDS(on)` spec point.  Droop over the longest low
+>   phase the part specifies (5 kHz at 1 % duty = 199 µs) is **26 mV**.
+> * **turn-on.**  `C85` charges through `D14` from the GPIO in ≈ 25 µs against
+>   `U17`'s **6.5 ms** soft-start, so `Q11` is fully on before the converter
+>   delivers current.
+> * **why silicon and not a Schottky.**  The OFF state is held by `R132`:
+>   `D14`'s worst PUBLISHED reverse leakage (1 µA at 75 V; ours is 2.7 V) plus
+>   the `AO3400A`'s 100 nA `IGSS` across 220 k is **0.242 V**, against
+>   `VGS(th)` min **0.65 V**.  A `BAT54WS` would have rested that floor on an
+>   unpublished leakage curve at temperature.
+> * **cost.**  `RDS(on)` ≤ 48 mΩ at `VGS` 2.5 V is **5.2 mV** at 109 mA; the
+>   109 mA setpoint and its 100.5–117.6 mA band are unchanged.
+> * **mechanised.**  `checks/demo_feature_contract.py` **F5** requires the two
+>   nets to be distinct, the gate net to carry exactly `Q11.1`/`D14.1`/
+>   `R132.1`/`C85.1`, `D14.2` to sit with `U17.4`, both hold legs to return to
+>   `GND`, and the `220k`/`100nF`/`1N4148` identities to hold — with **four
+>   live negative controls**, including one that puts the shared gate back.
 
 **Conflicts flagged (do not carry stale values into public copy):**
 - **Display driver:** ARCHITECTURE/OFF_BOARD_BOM lock **ILI9488** (320×480); the KiCad

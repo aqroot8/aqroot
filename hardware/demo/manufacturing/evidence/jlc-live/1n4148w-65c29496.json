@@ -1,0 +1,4509 @@
+{
+ "endpoint": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
+ "exhausted": false,
+ "fetched_utc": "2026-09-18T10:36:22Z",
+ "keyword": "1N4148W",
+ "page_size": 25,
+ "pages": 2,
+ "records": [
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage - Forward(Vf@If)",
+     "attribute_value_name": "1.25V@150mA"
+    },
+    {
+     "attribute_name_en": "Non-Repetitive Peak Forward Surge Current",
+     "attribute_value_name": "2A"
+    },
+    {
+     "attribute_name_en": "Voltage - DC Reverse(Vr)",
+     "attribute_value_name": "100V"
+    },
+    {
+     "attribute_name_en": "Operating Junction Temperature Range",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Reverse Recovery Time (trr)",
+     "attribute_value_name": "4ns"
+    },
+    {
+     "attribute_name_en": "Diode Configuration",
+     "attribute_value_name": "Standalone"
+    },
+    {
+     "attribute_name_en": "Current - Rectified",
+     "attribute_value_name": "150mA"
+    },
+    {
+     "attribute_name_en": "Pd - Power Dissipation",
+     "attribute_value_name": "500mW"
+    },
+    {
+     "attribute_name_en": "Reverse Leakage Current (Ir)",
+     "attribute_value_name": "1uA@75V"
+    }
+   ],
+   "componentBrandEn": "Jiangsu Changjing Electronics Technology Co., Ltd.",
+   "componentCode": "C2099",
+   "componentLibraryType": "expand",
+   "componentModelEn": "1N4148W",
+   "componentPrices": [
+    {
+     "endNumber": 499,
+     "productPrice": 0.0127,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 2999,
+     "productPrice": 0.0103,
+     "startNumber": 500
+    },
+    {
+     "endNumber": 5999,
+     "productPrice": 0.0093,
+     "startNumber": 3000
+    },
+    {
+     "endNumber": 23999,
+     "productPrice": 0.0085,
+     "startNumber": 6000
+    },
+    {
+     "endNumber": 50999,
+     "productPrice": 0.0082,
+     "startNumber": 24000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0079,
+     "startNumber": 51000
+    }
+   ],
+   "componentSpecificationEn": "SOD-123",
+   "componentTypeEn": "Switching Diodes",
+   "dataManualUrl": "https://www.lcsc.com/datasheet/lcsc_datasheet_1810101111_Jiangsu-Changjing-Electronics-Technology-Co---Ltd--1N4148W_C2099.pdf",
+   "describe": "1.25V@150mA 100V 150mA 1uA@75V 2A 4ns 500mW Independent SOD-123 Switching Diodes ROHS",
+   "erpComponentName": "1N4148W",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/switching-diodes_jiangsu-changjing-electronics-technology-co-ltd-1n4148w_C2099.html",
+   "leastPatchNumber": 15,
+   "lossNumber": 12,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 353525
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage - Forward(Vf@If)",
+     "attribute_value_name": "1.25V@150mA"
+    },
+    {
+     "attribute_name_en": "Non-Repetitive Peak Forward Surge Current",
+     "attribute_value_name": "2A"
+    },
+    {
+     "attribute_name_en": "Voltage - DC Reverse(Vr)",
+     "attribute_value_name": "100V"
+    },
+    {
+     "attribute_name_en": "Operating Junction Temperature Range",
+     "attribute_value_name": "-65℃~+150℃"
+    },
+    {
+     "attribute_name_en": "Reverse Recovery Time (trr)",
+     "attribute_value_name": "4ns"
+    },
+    {
+     "attribute_name_en": "Diode Configuration",
+     "attribute_value_name": "1 Independent"
+    },
+    {
+     "attribute_name_en": "Current - Rectified",
+     "attribute_value_name": "150mA"
+    },
+    {
+     "attribute_name_en": "Pd - Power Dissipation",
+     "attribute_value_name": "400mW"
+    },
+    {
+     "attribute_name_en": "Reverse Leakage Current (Ir)",
+     "attribute_value_name": "1uA@75V"
+    }
+   ],
+   "componentBrandEn": "MCC(Micro Commercial Components)",
+   "componentCode": "C77978",
+   "componentLibraryType": "expand",
+   "componentModelEn": "1N4148W-TP",
+   "componentPrices": [
+    {
+     "endNumber": 499,
+     "productPrice": 0.013,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 2999,
+     "productPrice": 0.0108,
+     "startNumber": 500
+    },
+    {
+     "endNumber": 5999,
+     "productPrice": 0.0075,
+     "startNumber": 3000
+    },
+    {
+     "endNumber": 23999,
+     "productPrice": 0.0068,
+     "startNumber": 6000
+    },
+    {
+     "endNumber": 50999,
+     "productPrice": 0.0062,
+     "startNumber": 24000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0058,
+     "startNumber": 51000
+    }
+   ],
+   "componentSpecificationEn": "SOD-123",
+   "componentTypeEn": "Switching Diodes",
+   "dataManualUrl": "https://www.lcsc.com/datasheet/lcsc_datasheet_1811142111_MCC-Micro-Commercial-Components-1N4148W-TP_C77978.pdf",
+   "describe": "-65℃~+150℃@(Tj) 1.25V@150mA 100V 150mA 1uA@75V 2A 400mW 4ns SOD-123 Switching Diodes ROHS",
+   "erpComponentName": "1N4148W-TP",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/switching-diodes_mcc-micro-commercial-components-1n4148w-tp_C77978.html",
+   "leastPatchNumber": 15,
+   "lossNumber": 10,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 219775
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage - Forward(Vf@If)",
+     "attribute_value_name": "1V@50mA"
+    },
+    {
+     "attribute_name_en": "Non-Repetitive Peak Forward Surge Current",
+     "attribute_value_name": "2A"
+    },
+    {
+     "attribute_name_en": "Voltage - DC Reverse(Vr)",
+     "attribute_value_name": "75V"
+    },
+    {
+     "attribute_name_en": "Operating Junction Temperature Range",
+     "attribute_value_name": "-55℃~+150℃"
+    },
+    {
+     "attribute_name_en": "Reverse Recovery Time (trr)",
+     "attribute_value_name": "4ns"
+    },
+    {
+     "attribute_name_en": "Diode Configuration",
+     "attribute_value_name": "1 Independent"
+    },
+    {
+     "attribute_name_en": "Current - Rectified",
+     "attribute_value_name": "150mA"
+    },
+    {
+     "attribute_name_en": "Pd - Power Dissipation",
+     "attribute_value_name": "200mW"
+    },
+    {
+     "attribute_name_en": "Reverse Leakage Current (Ir)",
+     "attribute_value_name": "1uA@75V"
+    }
+   ],
+   "componentBrandEn": "MCC(Micro Commercial Components)",
+   "componentCode": "C78740",
+   "componentLibraryType": "expand",
+   "componentModelEn": "1N4148WX-TP",
+   "componentPrices": [
+    {
+     "endNumber": 499,
+     "productPrice": 0.0106,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 2999,
+     "productPrice": 0.0083,
+     "startNumber": 500
+    },
+    {
+     "endNumber": 5999,
+     "productPrice": 0.0067,
+     "startNumber": 3000
+    },
+    {
+     "endNumber": 23999,
+     "productPrice": 0.006,
+     "startNumber": 6000
+    },
+    {
+     "endNumber": 50999,
+     "productPrice": 0.0053,
+     "startNumber": 24000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0049,
+     "startNumber": 51000
+    }
+   ],
+   "componentSpecificationEn": "SOD-323",
+   "componentTypeEn": "Switching Diodes",
+   "dataManualUrl": "https://www.lcsc.com/datasheet/lcsc_datasheet_2410010231_MCC-Micro-Commercial-Components-1N4148WX-TP_C78740.pdf",
+   "describe": "-55℃~+150℃@(Tj) 1 Independent 150mA 1V@50mA 1uA@75V 200mW 2A 4ns 75V SOD-323 Switching Diodes ROHS",
+   "erpComponentName": "1N4148WX-TP",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/switching-diodes_mcc-micro-commercial-components-1n4148wx-tp_C78740.html",
+   "leastPatchNumber": 20,
+   "lossNumber": 10,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 194000
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage - Forward(Vf@If)",
+     "attribute_value_name": "1V@50mA"
+    },
+    {
+     "attribute_name_en": "Non-Repetitive Peak Forward Surge Current",
+     "attribute_value_name": "1A"
+    },
+    {
+     "attribute_name_en": "Voltage - DC Reverse(Vr)",
+     "attribute_value_name": "75V"
+    },
+    {
+     "attribute_name_en": "Operating Junction Temperature Range",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Reverse Recovery Time (trr)",
+     "attribute_value_name": "4ns"
+    },
+    {
+     "attribute_name_en": "Diode Configuration",
+     "attribute_value_name": "Standalone"
+    },
+    {
+     "attribute_name_en": "Current - Rectified",
+     "attribute_value_name": "150mA"
+    },
+    {
+     "attribute_name_en": "Pd - Power Dissipation",
+     "attribute_value_name": "400mW"
+    },
+    {
+     "attribute_name_en": "Reverse Leakage Current (Ir)",
+     "attribute_value_name": "1uA@75V"
+    }
+   ],
+   "componentBrandEn": "ST(Semtech)",
+   "componentCode": "C81598",
+   "componentLibraryType": "base",
+   "componentModelEn": "1N4148W",
+   "componentPrices": [
+    {
+     "endNumber": 499,
+     "productPrice": 0.0124,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 2999,
+     "productPrice": 0.0097,
+     "startNumber": 500
+    },
+    {
+     "endNumber": 5999,
+     "productPrice": 0.0075,
+     "startNumber": 3000
+    },
+    {
+     "endNumber": 23999,
+     "productPrice": 0.0066,
+     "startNumber": 6000
+    },
+    {
+     "endNumber": 50999,
+     "productPrice": 0.0062,
+     "startNumber": 24000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.006,
+     "startNumber": 51000
+    }
+   ],
+   "componentSpecificationEn": "SOD-123",
+   "componentTypeEn": "Switching Diodes",
+   "dataManualUrl": "https://www.lcsc.com/datasheet/lcsc_datasheet_1811061725_ST-Semtech-1N4148W_C81598.pdf",
+   "describe": "150mA 1A 1V@50mA 1uA@75V 400mW 4ns 75V Independent SOD-123 Switching Diodes ROHS",
+   "erpComponentName": "1N4148W",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/switching-diodes_st-semtech-1n4148w_C81598.html",
+   "leastPatchNumber": 15,
+   "lossNumber": 10,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 5630906
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage - Forward(Vf@If)",
+     "attribute_value_name": "1.25V@150mA"
+    },
+    {
+     "attribute_name_en": "Non-Repetitive Peak Forward Surge Current",
+     "attribute_value_name": "2A"
+    },
+    {
+     "attribute_name_en": "Voltage - DC Reverse(Vr)",
+     "attribute_value_name": "100V"
+    },
+    {
+     "attribute_name_en": "Operating Junction Temperature Range",
+     "attribute_value_name": "-65℃~+150℃"
+    },
+    {
+     "attribute_name_en": "Reverse Recovery Time (trr)",
+     "attribute_value_name": "4ns"
+    },
+    {
+     "attribute_name_en": "Diode Configuration",
+     "attribute_value_name": "Standalone"
+    },
+    {
+     "attribute_name_en": "Current - Rectified",
+     "attribute_value_name": "300mA"
+    },
+    {
+     "attribute_name_en": "Pd - Power Dissipation",
+     "attribute_value_name": "400mW"
+    },
+    {
+     "attribute_name_en": "Reverse Leakage Current (Ir)",
+     "attribute_value_name": "1uA@75V"
+    }
+   ],
+   "componentBrandEn": "Diodes Incorporated",
+   "componentCode": "C83528",
+   "componentLibraryType": "expand",
+   "componentModelEn": "1N4148W-7-F",
+   "componentPrices": [
+    {
+     "endNumber": 199,
+     "productPrice": 0.0297,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 599,
+     "productPrice": 0.0227,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 2999,
+     "productPrice": 0.0196,
+     "startNumber": 600
+    },
+    {
+     "endNumber": 8999,
+     "productPrice": 0.0173,
+     "startNumber": 3000
+    },
+    {
+     "endNumber": 20999,
+     "productPrice": 0.0163,
+     "startNumber": 9000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0157,
+     "startNumber": 21000
+    }
+   ],
+   "componentSpecificationEn": "SOD-123",
+   "componentTypeEn": "Switching Diodes",
+   "dataManualUrl": "https://www.lcsc.com/datasheet/lcsc_datasheet_1809282109_Diodes-Incorporated-1N4148W-7-F_C83528.pdf",
+   "describe": "-65℃~+150℃@(Tj) 1.25V@150mA 100V 1uA@75V 300mA 4ns Standalone SOD-123 Switching Diodes ROHS",
+   "erpComponentName": "1N4148W-7-F",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/switching-diodes_diodes-incorporated-1n4148w-7-f_C83528.html",
+   "leastPatchNumber": 20,
+   "lossNumber": 10,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 282892
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage - Forward(Vf@If)",
+     "attribute_value_name": "1.25V@150mA"
+    },
+    {
+     "attribute_name_en": "Non-Repetitive Peak Forward Surge Current",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Voltage - DC Reverse(Vr)",
+     "attribute_value_name": "100V"
+    },
+    {
+     "attribute_name_en": "Operating Junction Temperature Range",
+     "attribute_value_name": "-55℃~+150℃"
+    },
+    {
+     "attribute_name_en": "Reverse Recovery Time (trr)",
+     "attribute_value_name": "4ns"
+    },
+    {
+     "attribute_name_en": "Diode Configuration",
+     "attribute_value_name": "Standalone"
+    },
+    {
+     "attribute_name_en": "Current - Rectified",
+     "attribute_value_name": "150mA"
+    },
+    {
+     "attribute_name_en": "Pd - Power Dissipation",
+     "attribute_value_name": "400mW"
+    },
+    {
+     "attribute_name_en": "Reverse Leakage Current (Ir)",
+     "attribute_value_name": "25nA@20V"
+    }
+   ],
+   "componentBrandEn": "MDD(Microdiode Semiconductor)",
+   "componentCode": "C84367",
+   "componentLibraryType": "expand",
+   "componentModelEn": "1N4148W",
+   "componentPrices": [
+    {
+     "endNumber": 499,
+     "productPrice": 0.0102,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 2999,
+     "productPrice": 0.0088,
+     "startNumber": 500
+    },
+    {
+     "endNumber": 5999,
+     "productPrice": 0.0053,
+     "startNumber": 3000
+    },
+    {
+     "endNumber": 23999,
+     "productPrice": 0.0048,
+     "startNumber": 6000
+    },
+    {
+     "endNumber": 50999,
+     "productPrice": 0.0044,
+     "startNumber": 24000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0042,
+     "startNumber": 51000
+    }
+   ],
+   "componentSpecificationEn": "SOD-123",
+   "componentTypeEn": "Switching Diodes",
+   "dataManualUrl": "https://www.lcsc.com/datasheet/lcsc_datasheet_2407291942_MDD-Microdiode-Semiconductor-1N4148W_C84367.pdf",
+   "describe": "-55℃~+150℃ 1.25V@150mA 100V 150mA 25nA@20V 400mW 4ns Independent SOD-123 Switching Diodes ROHS",
+   "erpComponentName": "1N4148W",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/switching-diodes_mdd-microdiode-semiconductor-1n4148w_C84367.html",
+   "leastPatchNumber": 15,
+   "lossNumber": 12,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 1885784
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage - Forward(Vf@If)",
+     "attribute_value_name": "1.25V@150mA"
+    },
+    {
+     "attribute_name_en": "Non-Repetitive Peak Forward Surge Current",
+     "attribute_value_name": "2A"
+    },
+    {
+     "attribute_name_en": "Voltage - DC Reverse(Vr)",
+     "attribute_value_name": "75V"
+    },
+    {
+     "attribute_name_en": "Operating Junction Temperature Range",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Reverse Recovery Time (trr)",
+     "attribute_value_name": "4ns"
+    },
+    {
+     "attribute_name_en": "Diode Configuration",
+     "attribute_value_name": "1 Independent"
+    },
+    {
+     "attribute_name_en": "Current - Rectified",
+     "attribute_value_name": "150mA"
+    },
+    {
+     "attribute_name_en": "Pd - Power Dissipation",
+     "attribute_value_name": "400mW"
+    },
+    {
+     "attribute_name_en": "Reverse Leakage Current (Ir)",
+     "attribute_value_name": "1uA@75V"
+    }
+   ],
+   "componentBrandEn": "Changzhou Starsea Elec",
+   "componentCode": "C89641",
+   "componentLibraryType": "expand",
+   "componentModelEn": "1N4148W",
+   "componentPrices": [
+    {
+     "endNumber": 499,
+     "productPrice": 0.0109,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 2999,
+     "productPrice": 0.0085,
+     "startNumber": 500
+    },
+    {
+     "endNumber": 5999,
+     "productPrice": 0.007,
+     "startNumber": 3000
+    },
+    {
+     "endNumber": 23999,
+     "productPrice": 0.0062,
+     "startNumber": 6000
+    },
+    {
+     "endNumber": 50999,
+     "productPrice": 0.0055,
+     "startNumber": 24000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0051,
+     "startNumber": 51000
+    }
+   ],
+   "componentSpecificationEn": "SOD-123",
+   "componentTypeEn": "Switching Diodes",
+   "dataManualUrl": "https://www.lcsc.com/datasheet/lcsc_datasheet_1809191954_Changzhou-Starsea-Elec-1N4148W_C89641.pdf",
+   "describe": "1 Independent 1.25V@150mA 150mA 1uA@75V 2A 400mW 4ns 75V SOD-123 Switching Diodes ROHS",
+   "erpComponentName": "1N4148W",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/switching-diodes_changzhou-starsea-elec-1n4148w_C89641.html",
+   "leastPatchNumber": 15,
+   "lossNumber": 10,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 1511
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage - Forward(Vf@If)",
+     "attribute_value_name": "1.5V@300mA"
+    },
+    {
+     "attribute_name_en": "Non-Repetitive Peak Forward Surge Current",
+     "attribute_value_name": "4A"
+    },
+    {
+     "attribute_name_en": "Voltage - DC Reverse(Vr)",
+     "attribute_value_name": "100V"
+    },
+    {
+     "attribute_name_en": "Operating Junction Temperature Range",
+     "attribute_value_name": "-55℃~+150℃"
+    },
+    {
+     "attribute_name_en": "Reverse Recovery Time (trr)",
+     "attribute_value_name": "8ns"
+    },
+    {
+     "attribute_name_en": "Diode Configuration",
+     "attribute_value_name": "Standalone"
+    },
+    {
+     "attribute_name_en": "Current - Rectified",
+     "attribute_value_name": "300mA"
+    },
+    {
+     "attribute_name_en": "Pd - Power Dissipation",
+     "attribute_value_name": "400mW"
+    },
+    {
+     "attribute_name_en": "Reverse Leakage Current (Ir)",
+     "attribute_value_name": "1uA@75V"
+    }
+   ],
+   "componentBrandEn": "Shandong Jingdao Microelectronics",
+   "componentCode": "C108804",
+   "componentLibraryType": "expand",
+   "componentModelEn": "1N4148WL",
+   "componentPrices": [
+    {
+     "endNumber": 499,
+     "productPrice": 0.0128,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 2999,
+     "productPrice": 0.0102,
+     "startNumber": 500
+    },
+    {
+     "endNumber": 5999,
+     "productPrice": 0.0087,
+     "startNumber": 3000
+    },
+    {
+     "endNumber": 23999,
+     "productPrice": 0.0078,
+     "startNumber": 6000
+    },
+    {
+     "endNumber": 50999,
+     "productPrice": 0.0071,
+     "startNumber": 24000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0066,
+     "startNumber": 51000
+    }
+   ],
+   "componentSpecificationEn": "SOD-123F",
+   "componentTypeEn": "Switching Diodes",
+   "dataManualUrl": "https://www.lcsc.com/datasheet/lcsc_datasheet_1810181726_Shandong-Jingdao-Microelectronics-1N4148WL_C108804.pdf",
+   "describe": "-55℃~+150℃@(Tj) 1.25V@150mA 100V 1uA@75V 400mW 4A 8ns Independent SOD-123F Switching Diodes ROHS",
+   "erpComponentName": "1N4148WL",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/switching-diodes_shandong-jingdao-microelectronics-1n4148wl_C108804.html",
+   "leastPatchNumber": 20,
+   "lossNumber": 10,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 16096
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage - Forward(Vf@If)",
+     "attribute_value_name": "1.25V@150mA"
+    },
+    {
+     "attribute_name_en": "Non-Repetitive Peak Forward Surge Current",
+     "attribute_value_name": "2A"
+    },
+    {
+     "attribute_name_en": "Voltage - DC Reverse(Vr)",
+     "attribute_value_name": "75V"
+    },
+    {
+     "attribute_name_en": "Operating Junction Temperature Range",
+     "attribute_value_name": "-55℃~+150℃"
+    },
+    {
+     "attribute_name_en": "Reverse Recovery Time (trr)",
+     "attribute_value_name": "4ns"
+    },
+    {
+     "attribute_name_en": "Diode Configuration",
+     "attribute_value_name": "Standalone"
+    },
+    {
+     "attribute_name_en": "Current - Rectified",
+     "attribute_value_name": "150mA"
+    },
+    {
+     "attribute_name_en": "Pd - Power Dissipation",
+     "attribute_value_name": "500mW"
+    },
+    {
+     "attribute_name_en": "Reverse Leakage Current (Ir)",
+     "attribute_value_name": "1uA@75V"
+    }
+   ],
+   "componentBrandEn": "Shikues",
+   "componentCode": "C109203",
+   "componentLibraryType": "expand",
+   "componentModelEn": "1N4148W",
+   "componentPrices": [
+    {
+     "endNumber": 499,
+     "productPrice": 0.0112,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 2999,
+     "productPrice": 0.0091,
+     "startNumber": 500
+    },
+    {
+     "endNumber": 5999,
+     "productPrice": 0.0069,
+     "startNumber": 3000
+    },
+    {
+     "endNumber": 23999,
+     "productPrice": 0.0062,
+     "startNumber": 6000
+    },
+    {
+     "endNumber": 50999,
+     "productPrice": 0.0056,
+     "startNumber": 24000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0053,
+     "startNumber": 51000
+    }
+   ],
+   "componentSpecificationEn": "SOD-123",
+   "componentTypeEn": "Switching Diodes",
+   "dataManualUrl": "https://www.lcsc.com/datasheet/lcsc_datasheet_1811131721_Shikues-1N4148W_C109203.pdf",
+   "describe": "1.25V@150mA 150mA 1uA@75V 2A 4ns 500mW 75V Independent SOD-123 Switching Diodes ROHS",
+   "erpComponentName": "1N4148W",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/switching-diodes_shikues-1n4148w_C109203.html",
+   "leastPatchNumber": 20,
+   "lossNumber": 10,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 129269
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage - Forward(Vf@If)",
+     "attribute_value_name": "1.25V@150mA"
+    },
+    {
+     "attribute_name_en": "Non-Repetitive Peak Forward Surge Current",
+     "attribute_value_name": "2A"
+    },
+    {
+     "attribute_name_en": "Voltage - DC Reverse(Vr)",
+     "attribute_value_name": "100V"
+    },
+    {
+     "attribute_name_en": "Operating Junction Temperature Range",
+     "attribute_value_name": "-65℃~+150℃"
+    },
+    {
+     "attribute_name_en": "Reverse Recovery Time (trr)",
+     "attribute_value_name": "4ns"
+    },
+    {
+     "attribute_name_en": "Diode Configuration",
+     "attribute_value_name": "Standalone"
+    },
+    {
+     "attribute_name_en": "Current - Rectified",
+     "attribute_value_name": "300mA"
+    },
+    {
+     "attribute_name_en": "Pd - Power Dissipation",
+     "attribute_value_name": "400mW"
+    },
+    {
+     "attribute_name_en": "Reverse Leakage Current (Ir)",
+     "attribute_value_name": "1uA@75V"
+    }
+   ],
+   "componentBrandEn": "Diodes Incorporated",
+   "componentCode": "C112342",
+   "componentLibraryType": "expand",
+   "componentModelEn": "1N4148W-13-F",
+   "componentPrices": [
+    {
+     "endNumber": 99,
+     "productPrice": 0.0728,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 299,
+     "productPrice": 0.0588,
+     "startNumber": 100
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.0518,
+     "startNumber": 300
+    },
+    {
+     "endNumber": 4999,
+     "productPrice": 0.0466,
+     "startNumber": 1000
+    },
+    {
+     "endNumber": 9999,
+     "productPrice": 0.0424,
+     "startNumber": 5000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0378,
+     "startNumber": 10000
+    }
+   ],
+   "componentSpecificationEn": "SOD-123",
+   "componentTypeEn": "Switching Diodes",
+   "dataManualUrl": "https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_Diodes-Incorporated-1N4148W-13-F_C112342.pdf",
+   "describe": "-65℃~+150℃@(Tj) 1.25V@150mA 100V 1uA@75V 300mA 4ns Independent SOD-123 Switching Diodes ROHS",
+   "erpComponentName": "1N4148W-13-F",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/switching-diodes_diodes-incorporated-1n4148w-13-f_C112342.html",
+   "leastPatchNumber": 5,
+   "lossNumber": 8,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 1407
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage - Forward(Vf@If)",
+     "attribute_value_name": "1.2V@100mA"
+    },
+    {
+     "attribute_name_en": "Non-Repetitive Peak Forward Surge Current",
+     "attribute_value_name": "2A"
+    },
+    {
+     "attribute_name_en": "Voltage - DC Reverse(Vr)",
+     "attribute_value_name": "75V"
+    },
+    {
+     "attribute_name_en": "Operating Junction Temperature Range",
+     "attribute_value_name": "-55℃~+150℃"
+    },
+    {
+     "attribute_name_en": "Reverse Recovery Time (trr)",
+     "attribute_value_name": "4ns"
+    },
+    {
+     "attribute_name_en": "Diode Configuration",
+     "attribute_value_name": "1 Independent"
+    },
+    {
+     "attribute_name_en": "Current - Rectified",
+     "attribute_value_name": "150mA"
+    },
+    {
+     "attribute_name_en": "Pd - Power Dissipation",
+     "attribute_value_name": "350mW"
+    },
+    {
+     "attribute_name_en": "Reverse Leakage Current (Ir)",
+     "attribute_value_name": "100uA@100V"
+    }
+   ],
+   "componentBrandEn": "Vishay Intertech",
+   "componentCode": "C117823",
+   "componentLibraryType": "expand",
+   "componentModelEn": "1N4148W-HE3-08",
+   "componentPrices": [
+    {
+     "endNumber": 99,
+     "productPrice": 0.0377,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 299,
+     "productPrice": 0.0295,
+     "startNumber": 100
+    },
+    {
+     "endNumber": 2999,
+     "productPrice": 0.0254,
+     "startNumber": 300
+    },
+    {
+     "endNumber": 5999,
+     "productPrice": 0.0224,
+     "startNumber": 3000
+    },
+    {
+     "endNumber": 8999,
+     "productPrice": 0.0199,
+     "startNumber": 6000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0188,
+     "startNumber": 9000
+    }
+   ],
+   "componentSpecificationEn": "SOD-123",
+   "componentTypeEn": "Switching Diodes",
+   "dataManualUrl": "https://www.lcsc.com/datasheet/lcsc_datasheet_2104091804_Vishay-Intertech-1N4148W-HE3-08_C117823.pdf",
+   "describe": "1 Independent 1.2V@100mA 100uA@100V 150mA 2A 350mW 4ns 75V SOD-123 Switching Diodes ROHS",
+   "erpComponentName": "1N4148W-HE3-08",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/switching-diodes_vishay-intertech-1n4148w-he3-08_C117823.html",
+   "leastPatchNumber": 15,
+   "lossNumber": 8,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 358974
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage - Forward(Vf@If)",
+     "attribute_value_name": "1V@10mA"
+    },
+    {
+     "attribute_name_en": "Non-Repetitive Peak Forward Surge Current",
+     "attribute_value_name": "2A"
+    },
+    {
+     "attribute_name_en": "Voltage - DC Reverse(Vr)",
+     "attribute_value_name": "100V"
+    },
+    {
+     "attribute_name_en": "Operating Junction Temperature Range",
+     "attribute_value_name": "-55℃~+150℃"
+    },
+    {
+     "attribute_name_en": "Reverse Recovery Time (trr)",
+     "attribute_value_name": "4ns"
+    },
+    {
+     "attribute_name_en": "Diode Configuration",
+     "attribute_value_name": "1 Independent"
+    },
+    {
+     "attribute_name_en": "Current - Rectified",
+     "attribute_value_name": "150mA"
+    },
+    {
+     "attribute_name_en": "Pd - Power Dissipation",
+     "attribute_value_name": "400mW"
+    },
+    {
+     "attribute_name_en": "Reverse Leakage Current (Ir)",
+     "attribute_value_name": "5uA@75V"
+    }
+   ],
+   "componentBrandEn": "DIYI Elec Tech",
+   "componentCode": "C129869",
+   "componentLibraryType": "expand",
+   "componentModelEn": "1N4148W",
+   "componentPrices": [
+    {
+     "endNumber": 499,
+     "productPrice": 0.0136,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 2999,
+     "productPrice": 0.0111,
+     "startNumber": 500
+    },
+    {
+     "endNumber": 5999,
+     "productPrice": 0.0091,
+     "startNumber": 3000
+    },
+    {
+     "endNumber": 23999,
+     "productPrice": 0.0082,
+     "startNumber": 6000
+    },
+    {
+     "endNumber": 50999,
+     "productPrice": 0.0075,
+     "startNumber": 24000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0071,
+     "startNumber": 51000
+    }
+   ],
+   "componentSpecificationEn": "SOD-123",
+   "componentTypeEn": "Switching Diodes",
+   "dataManualUrl": "https://www.lcsc.com/datasheet/lcsc_datasheet_1809211422_DIYI-Elec-Tech-1N4148W_C129869.pdf",
+   "describe": "-55℃~+150℃ 1 Independent 100V 150mA 1V@10mA 2A 400mW 4ns 5uA@75V SOD-123 Switching Diodes ROHS",
+   "erpComponentName": "1N4148W",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/switching-diodes_diyi-elec-tech-1n4148w_C129869.html",
+   "leastPatchNumber": 20,
+   "lossNumber": 10,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 4
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage - Forward(Vf@If)",
+     "attribute_value_name": "1.25V@150mA"
+    },
+    {
+     "attribute_name_en": "Non-Repetitive Peak Forward Surge Current",
+     "attribute_value_name": "2A"
+    },
+    {
+     "attribute_name_en": "Voltage - DC Reverse(Vr)",
+     "attribute_value_name": "75V"
+    },
+    {
+     "attribute_name_en": "Operating Junction Temperature Range",
+     "attribute_value_name": "-55℃~+125℃"
+    },
+    {
+     "attribute_name_en": "Reverse Recovery Time (trr)",
+     "attribute_value_name": "4ns"
+    },
+    {
+     "attribute_name_en": "Diode Configuration",
+     "attribute_value_name": "Standalone"
+    },
+    {
+     "attribute_name_en": "Current - Rectified",
+     "attribute_value_name": "150mA"
+    },
+    {
+     "attribute_name_en": "Pd - Power Dissipation",
+     "attribute_value_name": "400mW"
+    },
+    {
+     "attribute_name_en": "Reverse Leakage Current (Ir)",
+     "attribute_value_name": "2.5uA@75V"
+    }
+   ],
+   "componentBrandEn": "SMC(Sangdest Microelectronicstronic (Nanjing))",
+   "componentCode": "C176288",
+   "componentLibraryType": "expand",
+   "componentModelEn": "1N4148W",
+   "componentPrices": [
+    {
+     "endNumber": 199,
+     "productPrice": 0.0246,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 599,
+     "productPrice": 0.0194,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 2999,
+     "productPrice": 0.0165,
+     "startNumber": 600
+    },
+    {
+     "endNumber": 8999,
+     "productPrice": 0.0139,
+     "startNumber": 3000
+    },
+    {
+     "endNumber": 20999,
+     "productPrice": 0.0124,
+     "startNumber": 9000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0116,
+     "startNumber": 21000
+    }
+   ],
+   "componentSpecificationEn": "SOD-123",
+   "componentTypeEn": "Switching Diodes",
+   "dataManualUrl": "https://www.lcsc.com/datasheet/lcsc_datasheet_1810191413_SMC-Sangdest-Microelectronicstronic--Nanjing-1N4148W_C176288.pdf",
+   "describe": "-55℃~+125℃@(Tj) 1.25V@150mA 150mA 2.5uA@75V 2A 400mW 4ns 75V Independent SOD-123 Switching Diodes ROHS",
+   "erpComponentName": "1N4148W",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/switching-diodes_smc-sangdest-microelectronicstronic-nanjing-1n4148w_C176288.html",
+   "leastPatchNumber": 15,
+   "lossNumber": 8,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 6771
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage - Forward(Vf@If)",
+     "attribute_value_name": "1.25V@150mA"
+    },
+    {
+     "attribute_name_en": "Non-Repetitive Peak Forward Surge Current",
+     "attribute_value_name": "2A"
+    },
+    {
+     "attribute_name_en": "Voltage - DC Reverse(Vr)",
+     "attribute_value_name": "100V"
+    },
+    {
+     "attribute_name_en": "Operating Junction Temperature Range",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Reverse Recovery Time (trr)",
+     "attribute_value_name": "4ns"
+    },
+    {
+     "attribute_name_en": "Diode Configuration",
+     "attribute_value_name": "Standalone"
+    },
+    {
+     "attribute_name_en": "Current - Rectified",
+     "attribute_value_name": "150mA"
+    },
+    {
+     "attribute_name_en": "Pd - Power Dissipation",
+     "attribute_value_name": "500mW"
+    },
+    {
+     "attribute_name_en": "Reverse Leakage Current (Ir)",
+     "attribute_value_name": "1uA@75V"
+    }
+   ],
+   "componentBrandEn": "HT(Shenzhen Jinyu Semicon)",
+   "componentCode": "C179717",
+   "componentLibraryType": "expand",
+   "componentModelEn": "1N4148W",
+   "componentPrices": [
+    {
+     "endNumber": 499,
+     "productPrice": 0.013,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 2999,
+     "productPrice": 0.0109,
+     "startNumber": 500
+    },
+    {
+     "endNumber": 5999,
+     "productPrice": 0.0097,
+     "startNumber": 3000
+    },
+    {
+     "endNumber": 23999,
+     "productPrice": 0.009,
+     "startNumber": 6000
+    },
+    {
+     "endNumber": 50999,
+     "productPrice": 0.0084,
+     "startNumber": 24000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0081,
+     "startNumber": 51000
+    }
+   ],
+   "componentSpecificationEn": "SOD-123",
+   "componentTypeEn": "Switching Diodes",
+   "dataManualUrl": "https://datasheet.lcsc.com/lcsc/1810201711_HT-Shenzhen-Jinyu-Semicon-1N4148W_C179717.pdf",
+   "describe": "1.25V@150mA 100V 150mA 1uA@75V 2A 4ns 500mW Independent SOD-123 Switching Diodes ROHS",
+   "erpComponentName": "1N4148W",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/switching diode_ht(shenzhen jinyu semicon)_1n4148w_C179717.html",
+   "leastPatchNumber": 15,
+   "lossNumber": 10,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 2985
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage - Forward(Vf@If)",
+     "attribute_value_name": "1.25V@150mA"
+    },
+    {
+     "attribute_name_en": "Non-Repetitive Peak Forward Surge Current",
+     "attribute_value_name": "2A"
+    },
+    {
+     "attribute_name_en": "Voltage - DC Reverse(Vr)",
+     "attribute_value_name": "75V"
+    },
+    {
+     "attribute_name_en": "Operating Junction Temperature Range",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Reverse Recovery Time (trr)",
+     "attribute_value_name": "4ns"
+    },
+    {
+     "attribute_name_en": "Diode Configuration",
+     "attribute_value_name": "Standalone"
+    },
+    {
+     "attribute_name_en": "Current - Rectified",
+     "attribute_value_name": "150mA"
+    },
+    {
+     "attribute_name_en": "Pd - Power Dissipation",
+     "attribute_value_name": "500mW"
+    },
+    {
+     "attribute_name_en": "Reverse Leakage Current (Ir)",
+     "attribute_value_name": "1uA@75V"
+    }
+   ],
+   "componentBrandEn": "Guangdong Hottech",
+   "componentCode": "C181134",
+   "componentLibraryType": "expand",
+   "componentModelEn": "1N4148W-T4",
+   "componentPrices": [
+    {
+     "endNumber": 49,
+     "productPrice": 0.0114,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 149,
+     "productPrice": 0.0093,
+     "startNumber": 50
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.0081,
+     "startNumber": 150
+    },
+    {
+     "endNumber": 2999,
+     "productPrice": 0.0074,
+     "startNumber": 500
+    },
+    {
+     "endNumber": 5999,
+     "productPrice": 0.0062,
+     "startNumber": 3000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0059,
+     "startNumber": 6000
+    }
+   ],
+   "componentSpecificationEn": "SOD-123",
+   "componentTypeEn": "Switching Diodes",
+   "dataManualUrl": "https://www.lcsc.com/datasheet/lcsc_datasheet_1809211232_Guangdong-Hottech-1N4148W-T4_C181134.pdf",
+   "describe": "1.25V@150mA 150mA 1uA@75V 2A 4ns 500mW 75V Standalone SOD-123 Switching Diodes ROHS",
+   "erpComponentName": "1N4148W-T4",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/switching-diodes_guangdong-hottech-1n4148w-t4_C181134.html",
+   "leastPatchNumber": 15,
+   "lossNumber": 10,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 469078
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage - Forward(Vf@If)",
+     "attribute_value_name": "1.2V@100mA"
+    },
+    {
+     "attribute_name_en": "Non-Repetitive Peak Forward Surge Current",
+     "attribute_value_name": "2A"
+    },
+    {
+     "attribute_name_en": "Voltage - DC Reverse(Vr)",
+     "attribute_value_name": "75V"
+    },
+    {
+     "attribute_name_en": "Operating Junction Temperature Range",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Reverse Recovery Time (trr)",
+     "attribute_value_name": "4ns"
+    },
+    {
+     "attribute_name_en": "Diode Configuration",
+     "attribute_value_name": "1 Independent"
+    },
+    {
+     "attribute_name_en": "Current - Rectified",
+     "attribute_value_name": "150mA"
+    },
+    {
+     "attribute_name_en": "Pd - Power Dissipation",
+     "attribute_value_name": "350mW"
+    },
+    {
+     "attribute_name_en": "Reverse Leakage Current (Ir)",
+     "attribute_value_name": "100uA@100V"
+    }
+   ],
+   "componentBrandEn": "Vishay Intertech",
+   "componentCode": "C191428",
+   "componentLibraryType": "expand",
+   "componentModelEn": "1N4148W-E3-18",
+   "componentPrices": [
+    {
+     "endNumber": 49,
+     "productPrice": 0.1363,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 149,
+     "productPrice": 0.112,
+     "startNumber": 50
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.0998,
+     "startNumber": 150
+    },
+    {
+     "endNumber": 2499,
+     "productPrice": 0.0907,
+     "startNumber": 500
+    },
+    {
+     "endNumber": 4999,
+     "productPrice": 0.0834,
+     "startNumber": 2500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0718,
+     "startNumber": 5000
+    }
+   ],
+   "componentSpecificationEn": "SOD-123",
+   "componentTypeEn": "Switching Diodes",
+   "dataManualUrl": "https://www.lcsc.com/datasheet/lcsc_datasheet_1811151440_Vishay-Intertech-1N4148W-E3-18_C191428.pdf",
+   "describe": "1 Independent 1.2V@100mA 100uA@100V 150mA 2A 350mW 4ns 75V SOD-123 Switching Diodes ROHS",
+   "erpComponentName": "1N4148W-E3-18",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/switching-diodes_vishay-intertech-1n4148w-e3-18_C191428.html",
+   "leastPatchNumber": 20,
+   "lossNumber": 8,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 25820
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage - Forward(Vf@If)",
+     "attribute_value_name": "1.2V@100mA"
+    },
+    {
+     "attribute_name_en": "Non-Repetitive Peak Forward Surge Current",
+     "attribute_value_name": "2A"
+    },
+    {
+     "attribute_name_en": "Voltage - DC Reverse(Vr)",
+     "attribute_value_name": "75V"
+    },
+    {
+     "attribute_name_en": "Operating Junction Temperature Range",
+     "attribute_value_name": "-55℃~+150℃"
+    },
+    {
+     "attribute_name_en": "Reverse Recovery Time (trr)",
+     "attribute_value_name": "4ns"
+    },
+    {
+     "attribute_name_en": "Diode Configuration",
+     "attribute_value_name": "1 Independent"
+    },
+    {
+     "attribute_name_en": "Current - Rectified",
+     "attribute_value_name": "150mA"
+    },
+    {
+     "attribute_name_en": "Pd - Power Dissipation",
+     "attribute_value_name": "350mW"
+    },
+    {
+     "attribute_name_en": "Reverse Leakage Current (Ir)",
+     "attribute_value_name": "100uA@100V"
+    }
+   ],
+   "componentBrandEn": "Vishay Intertech",
+   "componentCode": "C241939",
+   "componentLibraryType": "expand",
+   "componentModelEn": "1N4148W-E3-08",
+   "componentPrices": [
+    {
+     "endNumber": 49,
+     "productPrice": 0.0471,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 149,
+     "productPrice": 0.0386,
+     "startNumber": 50
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.0344,
+     "startNumber": 150
+    },
+    {
+     "endNumber": 2999,
+     "productPrice": 0.0313,
+     "startNumber": 500
+    },
+    {
+     "endNumber": 5999,
+     "productPrice": 0.0258,
+     "startNumber": 3000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0245,
+     "startNumber": 6000
+    }
+   ],
+   "componentSpecificationEn": "SOD-123",
+   "componentTypeEn": "Switching Diodes",
+   "dataManualUrl": "https://www.lcsc.com/datasheet/lcsc_datasheet_1811141522_Vishay-Intertech-1N4148W-E3-08_C241939.pdf",
+   "describe": "1 Independent 1.2V@100mA 100uA@100V 150mA 2A 350mW 4ns 75V SOD-123 Switching Diodes ROHS",
+   "erpComponentName": "1N4148W-E3-08",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/switching-diodes_vishay-intertech-1n4148w-e3-08_C241939.html",
+   "leastPatchNumber": 20,
+   "lossNumber": 8,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 66187
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage - Forward(Vf@If)",
+     "attribute_value_name": "1V@10mA"
+    },
+    {
+     "attribute_name_en": "Non-Repetitive Peak Forward Surge Current",
+     "attribute_value_name": "2A"
+    },
+    {
+     "attribute_name_en": "Voltage - DC Reverse(Vr)",
+     "attribute_value_name": "75V"
+    },
+    {
+     "attribute_name_en": "Operating Junction Temperature Range",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Reverse Recovery Time (trr)",
+     "attribute_value_name": "8ns"
+    },
+    {
+     "attribute_name_en": "Diode Configuration",
+     "attribute_value_name": "Standalone"
+    },
+    {
+     "attribute_name_en": "Current - Rectified",
+     "attribute_value_name": "150mA"
+    },
+    {
+     "attribute_name_en": "Pd - Power Dissipation",
+     "attribute_value_name": "400mW"
+    },
+    {
+     "attribute_name_en": "Reverse Leakage Current (Ir)",
+     "attribute_value_name": "25nA@20V"
+    }
+   ],
+   "componentBrandEn": "Foshan Blue Rocket Elec",
+   "componentCode": "C305437",
+   "componentLibraryType": "expand",
+   "componentModelEn": "1N4148W",
+   "componentPrices": [
+    {
+     "endNumber": 499,
+     "productPrice": 0.0129,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 2999,
+     "productPrice": 0.0101,
+     "startNumber": 500
+    },
+    {
+     "endNumber": 5999,
+     "productPrice": 0.0085,
+     "startNumber": 3000
+    },
+    {
+     "endNumber": 23999,
+     "productPrice": 0.0076,
+     "startNumber": 6000
+    },
+    {
+     "endNumber": 50999,
+     "productPrice": 0.0068,
+     "startNumber": 24000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0064,
+     "startNumber": 51000
+    }
+   ],
+   "componentSpecificationEn": "SOD-123",
+   "componentTypeEn": "Switching Diodes",
+   "dataManualUrl": "https://www.lcsc.com/datasheet/lcsc_datasheet_1810311521_Foshan-Blue-Rocket-Elec-1N4148W_C305437.pdf",
+   "describe": "150mA 1V@10mA 25nA@20V 2A 400mW 75V 8ns Independent SOD-123 Switching Diodes ROHS",
+   "erpComponentName": "1N4148W",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/switching-diodes_foshan-blue-rocket-elec-1n4148w_C305437.html",
+   "leastPatchNumber": 15,
+   "lossNumber": 4,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 3733
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage - Forward(Vf@If)",
+     "attribute_value_name": "1.25V@100mA"
+    },
+    {
+     "attribute_name_en": "Non-Repetitive Peak Forward Surge Current",
+     "attribute_value_name": "2A"
+    },
+    {
+     "attribute_name_en": "Voltage - DC Reverse(Vr)",
+     "attribute_value_name": "75V"
+    },
+    {
+     "attribute_name_en": "Operating Junction Temperature Range",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Reverse Recovery Time (trr)",
+     "attribute_value_name": "4ns"
+    },
+    {
+     "attribute_name_en": "Diode Configuration",
+     "attribute_value_name": "Standalone"
+    },
+    {
+     "attribute_name_en": "Current - Rectified",
+     "attribute_value_name": "150mA"
+    },
+    {
+     "attribute_name_en": "Pd - Power Dissipation",
+     "attribute_value_name": "500mW"
+    },
+    {
+     "attribute_name_en": "Reverse Leakage Current (Ir)",
+     "attribute_value_name": "5uA@75V"
+    }
+   ],
+   "componentBrandEn": "BORN",
+   "componentCode": "C306858",
+   "componentLibraryType": "expand",
+   "componentModelEn": "1N4148W-2",
+   "componentPrices": [
+    {
+     "endNumber": 499,
+     "productPrice": 0.0104,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 2999,
+     "productPrice": 0.0081,
+     "startNumber": 500
+    },
+    {
+     "endNumber": 5999,
+     "productPrice": 0.0065,
+     "startNumber": 3000
+    },
+    {
+     "endNumber": 23999,
+     "productPrice": 0.0057,
+     "startNumber": 6000
+    },
+    {
+     "endNumber": 50999,
+     "productPrice": 0.0051,
+     "startNumber": 24000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0047,
+     "startNumber": 51000
+    }
+   ],
+   "componentSpecificationEn": "SOD-123",
+   "componentTypeEn": "Switching Diodes",
+   "dataManualUrl": "https://www.lcsc.com/datasheet/lcsc_datasheet_1810140923_BORN-1N4148W-2_C306858.pdf",
+   "describe": "1.25V@100mA 150mA 2A 4ns 500mW 5uA@75V 75V Independent SOD-123 Switching Diodes ROHS",
+   "erpComponentName": "1N4148W-2",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/switching-diodes_born-1n4148w-2_C306858.html",
+   "leastPatchNumber": 15,
+   "lossNumber": 10,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 6690
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage - Forward(Vf@If)",
+     "attribute_value_name": "1.25V@150mA"
+    },
+    {
+     "attribute_name_en": "Non-Repetitive Peak Forward Surge Current",
+     "attribute_value_name": "2A"
+    },
+    {
+     "attribute_name_en": "Voltage - DC Reverse(Vr)",
+     "attribute_value_name": "100V"
+    },
+    {
+     "attribute_name_en": "Operating Junction Temperature Range",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Reverse Recovery Time (trr)",
+     "attribute_value_name": "4ns"
+    },
+    {
+     "attribute_name_en": "Diode Configuration",
+     "attribute_value_name": "1 Independent"
+    },
+    {
+     "attribute_name_en": "Current - Rectified",
+     "attribute_value_name": "150mA"
+    },
+    {
+     "attribute_name_en": "Pd - Power Dissipation",
+     "attribute_value_name": "500mW"
+    },
+    {
+     "attribute_name_en": "Reverse Leakage Current (Ir)",
+     "attribute_value_name": "1uA@75V"
+    }
+   ],
+   "componentBrandEn": "KEXIN",
+   "componentCode": "C369920",
+   "componentLibraryType": "expand",
+   "componentModelEn": "1N4148W",
+   "componentPrices": [
+    {
+     "endNumber": 499,
+     "productPrice": 0.0093,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 2999,
+     "productPrice": 0.0074,
+     "startNumber": 500
+    },
+    {
+     "endNumber": 5999,
+     "productPrice": 0.0058,
+     "startNumber": 3000
+    },
+    {
+     "endNumber": 23999,
+     "productPrice": 0.0052,
+     "startNumber": 6000
+    },
+    {
+     "endNumber": 50999,
+     "productPrice": 0.0046,
+     "startNumber": 24000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0043,
+     "startNumber": 51000
+    }
+   ],
+   "componentSpecificationEn": "SOD-123FL",
+   "componentTypeEn": "Switching Diodes",
+   "dataManualUrl": "https://www.lcsc.com/datasheet/lcsc_datasheet_1912111437_KEXIN-1N4148W_C369920.pdf",
+   "describe": "1 Independent 1.25V@150mA 100V 150mA 1uA@75V 2A 4ns 500mW SOD-123FL Switching Diodes ROHS",
+   "erpComponentName": "1N4148W",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/switching-diodes_kexin-1n4148w_C369920.html",
+   "leastPatchNumber": 20,
+   "lossNumber": 10,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 443
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage - Forward(Vf@If)",
+     "attribute_value_name": "1.25V@100mA"
+    },
+    {
+     "attribute_name_en": "Non-Repetitive Peak Forward Surge Current",
+     "attribute_value_name": "2A"
+    },
+    {
+     "attribute_name_en": "Voltage - DC Reverse(Vr)",
+     "attribute_value_name": "75V"
+    },
+    {
+     "attribute_name_en": "Operating Junction Temperature Range",
+     "attribute_value_name": "-65℃~+150℃"
+    },
+    {
+     "attribute_name_en": "Reverse Recovery Time (trr)",
+     "attribute_value_name": "4ns"
+    },
+    {
+     "attribute_name_en": "Diode Configuration",
+     "attribute_value_name": "Standalone"
+    },
+    {
+     "attribute_name_en": "Current - Rectified",
+     "attribute_value_name": "150mA"
+    },
+    {
+     "attribute_name_en": "Pd - Power Dissipation",
+     "attribute_value_name": "400mW"
+    },
+    {
+     "attribute_name_en": "Reverse Leakage Current (Ir)",
+     "attribute_value_name": "1uA@75V"
+    }
+   ],
+   "componentBrandEn": "Yangzhou Yangjie Elec Tech",
+   "componentCode": "C388533",
+   "componentLibraryType": "expand",
+   "componentModelEn": "1N4148W",
+   "componentPrices": [
+    {
+     "endNumber": 499,
+     "productPrice": 0.0178,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 2999,
+     "productPrice": 0.0141,
+     "startNumber": 500
+    },
+    {
+     "endNumber": 5999,
+     "productPrice": 0.0115,
+     "startNumber": 3000
+    },
+    {
+     "endNumber": 23999,
+     "productPrice": 0.0103,
+     "startNumber": 6000
+    },
+    {
+     "endNumber": 50999,
+     "productPrice": 0.0092,
+     "startNumber": 24000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0086,
+     "startNumber": 51000
+    }
+   ],
+   "componentSpecificationEn": "SOD-123",
+   "componentTypeEn": "Switching Diodes",
+   "dataManualUrl": "https://www.lcsc.com/datasheet/lcsc_datasheet_1912111437_Yangzhou-Yangjie-Elec-Tech-1N4148W_C388533.pdf",
+   "describe": "-65℃~+150℃@(Tj) 1.25V@100mA 150mA 1uA@75V 2A 400mW 4ns 75V Independent SOD-123 Switching Diodes ROHS",
+   "erpComponentName": "1N4148W",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/switching-diodes_yangzhou-yangjie-elec-tech-1n4148w_C388533.html",
+   "leastPatchNumber": 20,
+   "lossNumber": 10,
+   "minPurchaseNum": 640,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 2581
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage - Forward(Vf@If)",
+     "attribute_value_name": "1.25V@150mA"
+    },
+    {
+     "attribute_name_en": "Non-Repetitive Peak Forward Surge Current",
+     "attribute_value_name": "4A"
+    },
+    {
+     "attribute_name_en": "Voltage - DC Reverse(Vr)",
+     "attribute_value_name": "75V"
+    },
+    {
+     "attribute_name_en": "Operating Junction Temperature Range",
+     "attribute_value_name": "-55℃~+150℃"
+    },
+    {
+     "attribute_name_en": "Reverse Recovery Time (trr)",
+     "attribute_value_name": "4ns"
+    },
+    {
+     "attribute_name_en": "Diode Configuration",
+     "attribute_value_name": "1 Independent"
+    },
+    {
+     "attribute_name_en": "Current - Rectified",
+     "attribute_value_name": "200mA"
+    },
+    {
+     "attribute_name_en": "Pd - Power Dissipation",
+     "attribute_value_name": "410mW"
+    },
+    {
+     "attribute_name_en": "Reverse Leakage Current (Ir)",
+     "attribute_value_name": "2.5uA@75V"
+    }
+   ],
+   "componentBrandEn": "PANJIT International",
+   "componentCode": "C391324",
+   "componentLibraryType": "expand",
+   "componentModelEn": "1N4148W_R1_00001",
+   "componentPrices": [
+    {
+     "endNumber": 499,
+     "productPrice": 0.0147,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 2999,
+     "productPrice": 0.0116,
+     "startNumber": 500
+    },
+    {
+     "endNumber": 5999,
+     "productPrice": 0.0099,
+     "startNumber": 3000
+    },
+    {
+     "endNumber": 23999,
+     "productPrice": 0.0089,
+     "startNumber": 6000
+    },
+    {
+     "endNumber": 50999,
+     "productPrice": 0.008,
+     "startNumber": 24000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0075,
+     "startNumber": 51000
+    }
+   ],
+   "componentSpecificationEn": "SOD-123",
+   "componentTypeEn": "Switching Diodes",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2302061909_PANJIT-International-1N4148W-R1-00001_C391324.pdf",
+   "describe": "-55℃~+150℃ 1 Independent 1.25V@150mA 2.5uA@75V 200mA 410mW 4A 4ns 75V SOD-123 Switching Diodes ROHS",
+   "erpComponentName": "1N4148W_R1_00001",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/diodes-general-purpose_panjit-international-1n4148w-r1-00001_C391324.html",
+   "leastPatchNumber": 20,
+   "lossNumber": 10,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 52006
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage - Forward(Vf@If)",
+     "attribute_value_name": "1.25V@150mA"
+    },
+    {
+     "attribute_name_en": "Non-Repetitive Peak Forward Surge Current",
+     "attribute_value_name": "4A"
+    },
+    {
+     "attribute_name_en": "Voltage - DC Reverse(Vr)",
+     "attribute_value_name": "75V"
+    },
+    {
+     "attribute_name_en": "Operating Junction Temperature Range",
+     "attribute_value_name": "-55℃~+150℃"
+    },
+    {
+     "attribute_name_en": "Reverse Recovery Time (trr)",
+     "attribute_value_name": "4ns"
+    },
+    {
+     "attribute_name_en": "Diode Configuration",
+     "attribute_value_name": "Standalone"
+    },
+    {
+     "attribute_name_en": "Current - Rectified",
+     "attribute_value_name": "200mA"
+    },
+    {
+     "attribute_name_en": "Pd - Power Dissipation",
+     "attribute_value_name": "410mW"
+    },
+    {
+     "attribute_name_en": "Reverse Leakage Current (Ir)",
+     "attribute_value_name": "2.5uA@75V"
+    }
+   ],
+   "componentBrandEn": "PANJIT International",
+   "componentCode": "C393414",
+   "componentLibraryType": "expand",
+   "componentModelEn": "1N4148W-AU_R1_00001",
+   "componentPrices": [
+    {
+     "endNumber": 199,
+     "productPrice": 0.0313,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 599,
+     "productPrice": 0.0261,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 2999,
+     "productPrice": 0.0232,
+     "startNumber": 600
+    },
+    {
+     "endNumber": 8999,
+     "productPrice": 0.0197,
+     "startNumber": 3000
+    },
+    {
+     "endNumber": 20999,
+     "productPrice": 0.0183,
+     "startNumber": 9000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0175,
+     "startNumber": 21000
+    }
+   ],
+   "componentSpecificationEn": "SOD-123",
+   "componentTypeEn": "Switching Diodes",
+   "dataManualUrl": "https://www.lcsc.com/datasheet/lcsc_datasheet_1912111437_PANJIT-International-1N4148W-AU-R1-00001_C393414.pdf",
+   "describe": "-55℃~+150℃@(Tj) 1.25V@150mA 2.5uA@75V 200mA 410mW 4A 4ns 75V Independent SOD-123 Switching Diodes ROHS",
+   "erpComponentName": "1N4148W-AU_R1_00001",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/switching-diodes_panjit-international-1n4148w-au-r1-00001_C393414.html",
+   "leastPatchNumber": 20,
+   "lossNumber": 8,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 1480
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage - Forward(Vf@If)",
+     "attribute_value_name": "1.25V@150mA"
+    },
+    {
+     "attribute_name_en": "Non-Repetitive Peak Forward Surge Current",
+     "attribute_value_name": "2A"
+    },
+    {
+     "attribute_name_en": "Voltage - DC Reverse(Vr)",
+     "attribute_value_name": "75V"
+    },
+    {
+     "attribute_name_en": "Operating Junction Temperature Range",
+     "attribute_value_name": "-65℃~+150℃"
+    },
+    {
+     "attribute_name_en": "Reverse Recovery Time (trr)",
+     "attribute_value_name": "4ns"
+    },
+    {
+     "attribute_name_en": "Diode Configuration",
+     "attribute_value_name": "1 Independent"
+    },
+    {
+     "attribute_name_en": "Current - Rectified",
+     "attribute_value_name": "150mA"
+    },
+    {
+     "attribute_name_en": "Pd - Power Dissipation",
+     "attribute_value_name": "350mW"
+    },
+    {
+     "attribute_name_en": "Reverse Leakage Current (Ir)",
+     "attribute_value_name": "2.5uA@75V"
+    }
+   ],
+   "componentBrandEn": "LGE",
+   "componentCode": "C402213",
+   "componentLibraryType": "expand",
+   "componentModelEn": "1N4148W",
+   "componentPrices": [
+    {
+     "endNumber": 499,
+     "productPrice": 0.0118,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 2999,
+     "productPrice": 0.0092,
+     "startNumber": 500
+    },
+    {
+     "endNumber": 5999,
+     "productPrice": 0.0075,
+     "startNumber": 3000
+    },
+    {
+     "endNumber": 23999,
+     "productPrice": 0.0066,
+     "startNumber": 6000
+    },
+    {
+     "endNumber": 50999,
+     "productPrice": 0.0059,
+     "startNumber": 24000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0055,
+     "startNumber": 51000
+    }
+   ],
+   "componentSpecificationEn": "SOD-123",
+   "componentTypeEn": "Switching Diodes",
+   "dataManualUrl": "https://www.lcsc.com/datasheet/lcsc_datasheet_1912111437_LGE-1N4148W_C402213.pdf",
+   "describe": "-65℃~+150℃@(Tj) 1 Independent 1.25V@150mA 150mA 2.5uA@75V 2A 350mW 4ns 75V SOD-123 Switching Diodes ROHS",
+   "erpComponentName": "1N4148W",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/switching-diodes_lge-1n4148w_C402213.html",
+   "leastPatchNumber": 20,
+   "lossNumber": 10,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 46875
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage - Forward(Vf@If)",
+     "attribute_value_name": "1V"
+    },
+    {
+     "attribute_name_en": "Non-Repetitive Peak Forward Surge Current",
+     "attribute_value_name": "2A"
+    },
+    {
+     "attribute_name_en": "Voltage - DC Reverse(Vr)",
+     "attribute_value_name": "75V"
+    },
+    {
+     "attribute_name_en": "Operating Junction Temperature Range",
+     "attribute_value_name": "-65℃~+150℃"
+    },
+    {
+     "attribute_name_en": "Reverse Recovery Time (trr)",
+     "attribute_value_name": "4ns"
+    },
+    {
+     "attribute_name_en": "Diode Configuration",
+     "attribute_value_name": "1 Independent"
+    },
+    {
+     "attribute_name_en": "Current - Rectified",
+     "attribute_value_name": "150mA"
+    },
+    {
+     "attribute_name_en": "Pd - Power Dissipation",
+     "attribute_value_name": "410mW"
+    },
+    {
+     "attribute_name_en": "Reverse Leakage Current (Ir)",
+     "attribute_value_name": "5uA"
+    }
+   ],
+   "componentBrandEn": "Slkor(SLKORMICRO Elec.)",
+   "componentCode": "C444720",
+   "componentLibraryType": "expand",
+   "componentModelEn": "1N4148W",
+   "componentPrices": [
+    {
+     "endNumber": 999,
+     "productPrice": 0.0088,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 2999,
+     "productPrice": 0.007,
+     "startNumber": 1000
+    },
+    {
+     "endNumber": 8999,
+     "productPrice": 0.0052,
+     "startNumber": 3000
+    },
+    {
+     "endNumber": 50999,
+     "productPrice": 0.0046,
+     "startNumber": 9000
+    },
+    {
+     "endNumber": 98999,
+     "productPrice": 0.0041,
+     "startNumber": 51000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0039,
+     "startNumber": 99000
+    }
+   ],
+   "componentSpecificationEn": "SOD-123",
+   "componentTypeEn": "Switching Diodes",
+   "dataManualUrl": "https://www.lcsc.com/datasheet/lcsc_datasheet_1912111437_Slkor-SLKORMICRO-Elec--1N4148W_C444720.pdf",
+   "describe": "-65℃~+150℃@(Tj) 1 Independent 150mA 1V 2A 410mW 4ns 5uA 75V SOD-123 Switching Diodes ROHS",
+   "erpComponentName": "1N4148W",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/switching-diodes_slkor-slkormicro-elec-1n4148w_C444720.html",
+   "leastPatchNumber": 20,
+   "lossNumber": 10,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 1087029
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage - Forward(Vf@If)",
+     "attribute_value_name": "1.25V@150mA"
+    },
+    {
+     "attribute_name_en": "Non-Repetitive Peak Forward Surge Current",
+     "attribute_value_name": "2A"
+    },
+    {
+     "attribute_name_en": "Voltage - DC Reverse(Vr)",
+     "attribute_value_name": "75V"
+    },
+    {
+     "attribute_name_en": "Operating Junction Temperature Range",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Reverse Recovery Time (trr)",
+     "attribute_value_name": "4ns"
+    },
+    {
+     "attribute_name_en": "Diode Configuration",
+     "attribute_value_name": "Standalone"
+    },
+    {
+     "attribute_name_en": "Current - Rectified",
+     "attribute_value_name": "150mA"
+    },
+    {
+     "attribute_name_en": "Pd - Power Dissipation",
+     "attribute_value_name": "400mW"
+    },
+    {
+     "attribute_name_en": "Reverse Leakage Current (Ir)",
+     "attribute_value_name": "1uA@75V"
+    }
+   ],
+   "componentBrandEn": "High Diode",
+   "componentCode": "C466653",
+   "componentLibraryType": "expand",
+   "componentModelEn": "1N4148W",
+   "componentPrices": [
+    {
+     "endNumber": 499,
+     "productPrice": 0.0083,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 2999,
+     "productPrice": 0.0066,
+     "startNumber": 500
+    },
+    {
+     "endNumber": 5999,
+     "productPrice": 0.0057,
+     "startNumber": 3000
+    },
+    {
+     "endNumber": 23999,
+     "productPrice": 0.0056,
+     "startNumber": 6000
+    },
+    {
+     "endNumber": 50999,
+     "productPrice": 0.0054,
+     "startNumber": 24000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0053,
+     "startNumber": 51000
+    }
+   ],
+   "componentSpecificationEn": "SOD-123",
+   "componentTypeEn": "Switching Diodes",
+   "dataManualUrl": "https://www.lcsc.com/datasheet/lcsc_datasheet_1912161805_High-Diode-1N4148W_C466653.pdf",
+   "describe": "1.25V@150mA 150mA 1uA@75V 2A 400mW 4ns 75V Independent SOD-123 Switching Diodes ROHS",
+   "erpComponentName": "1N4148W",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/switching-diodes_high-diode-1n4148w_C466653.html",
+   "leastPatchNumber": 20,
+   "lossNumber": 10,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 2567
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage - Forward(Vf@If)",
+     "attribute_value_name": "1.25V@150mA"
+    },
+    {
+     "attribute_name_en": "Non-Repetitive Peak Forward Surge Current",
+     "attribute_value_name": "2A"
+    },
+    {
+     "attribute_name_en": "Voltage - DC Reverse(Vr)",
+     "attribute_value_name": "100V"
+    },
+    {
+     "attribute_name_en": "Operating Junction Temperature Range",
+     "attribute_value_name": "-65℃~+150℃"
+    },
+    {
+     "attribute_name_en": "Reverse Recovery Time (trr)",
+     "attribute_value_name": "4ns"
+    },
+    {
+     "attribute_name_en": "Diode Configuration",
+     "attribute_value_name": "Standalone"
+    },
+    {
+     "attribute_name_en": "Current - Rectified",
+     "attribute_value_name": "150mA"
+    },
+    {
+     "attribute_name_en": "Pd - Power Dissipation",
+     "attribute_value_name": "350mW"
+    },
+    {
+     "attribute_name_en": "Reverse Leakage Current (Ir)",
+     "attribute_value_name": "2.5uA@75V"
+    }
+   ],
+   "componentBrandEn": "Taiwan Semiconductor",
+   "componentCode": "C483898",
+   "componentLibraryType": "expand",
+   "componentModelEn": "1N4148W-G RHG",
+   "componentPrices": [
+    {
+     "endNumber": 199,
+     "productPrice": 0.035,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 599,
+     "productPrice": 0.0276,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 2999,
+     "productPrice": 0.0235,
+     "startNumber": 600
+    },
+    {
+     "endNumber": 8999,
+     "productPrice": 0.021,
+     "startNumber": 3000
+    },
+    {
+     "endNumber": 20999,
+     "productPrice": 0.0188,
+     "startNumber": 9000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0176,
+     "startNumber": 21000
+    }
+   ],
+   "componentSpecificationEn": "SOD-123",
+   "componentTypeEn": "Switching Diodes",
+   "dataManualUrl": "https://www.lcsc.com/datasheet/lcsc_datasheet_2001151033_Taiwan-Semiconductor-1N4148W-G-RHG_C483898.pdf",
+   "describe": "-65℃~+150℃@(Tj) 1.25V@150mA 100V 150mA 2.5uA@75V 2A 350mW 4ns Independent SOD-123 Switching Diodes ROHS",
+   "erpComponentName": "1N4148W-G RHG",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/switching-diodes_taiwan-semiconductor-1n4148w-g-rhg_C483898.html",
+   "leastPatchNumber": 20,
+   "lossNumber": 8,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 1506
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage - Forward(Vf@If)",
+     "attribute_value_name": "1.25V@150mA"
+    },
+    {
+     "attribute_name_en": "Voltage - DC Reverse(Vr)",
+     "attribute_value_name": "100V"
+    },
+    {
+     "attribute_name_en": "Operating Junction Temperature Range",
+     "attribute_value_name": "-65℃~+150℃"
+    },
+    {
+     "attribute_name_en": "Reverse Recovery Time (trr)",
+     "attribute_value_name": "4ns"
+    },
+    {
+     "attribute_name_en": "Diode Configuration",
+     "attribute_value_name": "Standalone"
+    },
+    {
+     "attribute_name_en": "Current - Rectified",
+     "attribute_value_name": "300mA"
+    },
+    {
+     "attribute_name_en": "Pd - Power Dissipation",
+     "attribute_value_name": "400mW"
+    },
+    {
+     "attribute_name_en": "Reverse Leakage Current (Ir)",
+     "attribute_value_name": "1uA@75V"
+    }
+   ],
+   "componentBrandEn": "Diodes Incorporated",
+   "componentCode": "C500775",
+   "componentLibraryType": "expand",
+   "componentModelEn": "1N4148WQ-7-F",
+   "componentPrices": [
+    {
+     "endNumber": 49,
+     "productPrice": 0.1677,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 149,
+     "productPrice": 0.1366,
+     "startNumber": 50
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.121,
+     "startNumber": 150
+    },
+    {
+     "endNumber": 2999,
+     "productPrice": 0.1094,
+     "startNumber": 500
+    },
+    {
+     "endNumber": 5999,
+     "productPrice": 0.0972,
+     "startNumber": 3000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0927,
+     "startNumber": 6000
+    }
+   ],
+   "componentSpecificationEn": "SOD-123",
+   "componentTypeEn": "Switching Diodes",
+   "dataManualUrl": "https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_Diodes-Incorporated-1N4148WQ-7-F_C500775.pdf",
+   "describe": "-65℃~+150℃@(Tj) 1.25V@150mA 100V 1uA@75V 300mA 4ns Independent SOD-123 Switching Diodes ROHS",
+   "erpComponentName": "1N4148WQ-7-F",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/switching-diodes_diodes-incorporated-1n4148wq-7-f_C500775.html",
+   "leastPatchNumber": 20,
+   "lossNumber": 8,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 15367
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage - Forward(Vf@If)",
+     "attribute_value_name": "1.25V@150mA"
+    },
+    {
+     "attribute_name_en": "Non-Repetitive Peak Forward Surge Current",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Voltage - DC Reverse(Vr)",
+     "attribute_value_name": "75V"
+    },
+    {
+     "attribute_name_en": "Operating Junction Temperature Range",
+     "attribute_value_name": "-55℃~+150℃"
+    },
+    {
+     "attribute_name_en": "Reverse Recovery Time (trr)",
+     "attribute_value_name": "4ns"
+    },
+    {
+     "attribute_name_en": "Diode Configuration",
+     "attribute_value_name": "Standalone"
+    },
+    {
+     "attribute_name_en": "Current - Rectified",
+     "attribute_value_name": "150mA"
+    },
+    {
+     "attribute_name_en": "Pd - Power Dissipation",
+     "attribute_value_name": "410mW"
+    },
+    {
+     "attribute_name_en": "Reverse Leakage Current (Ir)",
+     "attribute_value_name": "2.5uA@75V"
+    }
+   ],
+   "componentBrandEn": "AnBon",
+   "componentCode": "C541609",
+   "componentLibraryType": "expand",
+   "componentModelEn": "1N4148W",
+   "componentPrices": [
+    {
+     "endNumber": 499,
+     "productPrice": 0.0102,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 2999,
+     "productPrice": 0.0081,
+     "startNumber": 500
+    },
+    {
+     "endNumber": 5999,
+     "productPrice": 0.0071,
+     "startNumber": 3000
+    },
+    {
+     "endNumber": 23999,
+     "productPrice": 0.0065,
+     "startNumber": 6000
+    },
+    {
+     "endNumber": 50999,
+     "productPrice": 0.0059,
+     "startNumber": 24000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0056,
+     "startNumber": 51000
+    }
+   ],
+   "componentSpecificationEn": "SOD-123",
+   "componentTypeEn": "Switching Diodes",
+   "dataManualUrl": "https://www.lcsc.com/datasheet/lcsc_datasheet_2005230007_AnBon-1N4148W_C541609.pdf",
+   "describe": "-55℃~+150℃ 1.25V@150mA 150mA 2.5uA@75V 410mW 4ns 75V Independent SOD-123 Switching Diodes ROHS",
+   "erpComponentName": "1N4148W",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/switching-diodes_anbon-1n4148w_C541609.html",
+   "leastPatchNumber": 20,
+   "lossNumber": 10,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 4817
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage - Forward(Vf@If)",
+     "attribute_value_name": "1.25V@150mA"
+    },
+    {
+     "attribute_name_en": "Non-Repetitive Peak Forward Surge Current",
+     "attribute_value_name": "2A"
+    },
+    {
+     "attribute_name_en": "Voltage - DC Reverse(Vr)",
+     "attribute_value_name": "100V"
+    },
+    {
+     "attribute_name_en": "Operating Junction Temperature Range",
+     "attribute_value_name": "-65℃~+150℃"
+    },
+    {
+     "attribute_name_en": "Reverse Recovery Time (trr)",
+     "attribute_value_name": "4ns"
+    },
+    {
+     "attribute_name_en": "Diode Configuration",
+     "attribute_value_name": "1 Independent"
+    },
+    {
+     "attribute_name_en": "Current - Rectified",
+     "attribute_value_name": "150mA"
+    },
+    {
+     "attribute_name_en": "Pd - Power Dissipation",
+     "attribute_value_name": "400mW"
+    },
+    {
+     "attribute_name_en": "Reverse Leakage Current (Ir)",
+     "attribute_value_name": "1uA@75V"
+    }
+   ],
+   "componentBrandEn": "MCC(Micro Commercial Components)",
+   "componentCode": "C712340",
+   "componentLibraryType": "expand",
+   "componentModelEn": "1N4148WHE3-TP",
+   "componentPrices": [
+    {
+     "endNumber": 499,
+     "productPrice": 0.0204,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 2999,
+     "productPrice": 0.0167,
+     "startNumber": 500
+    },
+    {
+     "endNumber": 5999,
+     "productPrice": 0.0143,
+     "startNumber": 3000
+    },
+    {
+     "endNumber": 23999,
+     "productPrice": 0.0131,
+     "startNumber": 6000
+    },
+    {
+     "endNumber": 50999,
+     "productPrice": 0.012,
+     "startNumber": 24000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0114,
+     "startNumber": 51000
+    }
+   ],
+   "componentSpecificationEn": "SOD-123",
+   "componentTypeEn": "Switching Diodes",
+   "dataManualUrl": "https://www.lcsc.com/datasheet/lcsc_datasheet_2007301809_MCC-Micro-Commercial-Components-1N4148WHE3-TP_C712340.pdf",
+   "describe": "-65℃~+150℃@(Tj) 1 Independent 1.25V@150mA 100V 150mA 1uA@75V 2A 400mW 4ns SOD-123 Switching Diodes ROHS",
+   "erpComponentName": "1N4148WHE3-TP",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/switching-diodes_mcc-micro-commercial-components-1n4148whe3-tp_C712340.html",
+   "leastPatchNumber": 20,
+   "lossNumber": 8,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 4987
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage - Forward(Vf@If)",
+     "attribute_value_name": "1.5V@300mA"
+    },
+    {
+     "attribute_name_en": "Non-Repetitive Peak Forward Surge Current",
+     "attribute_value_name": "4A"
+    },
+    {
+     "attribute_name_en": "Voltage - DC Reverse(Vr)",
+     "attribute_value_name": "100V"
+    },
+    {
+     "attribute_name_en": "Operating Junction Temperature Range",
+     "attribute_value_name": "-55℃~+150℃"
+    },
+    {
+     "attribute_name_en": "Reverse Recovery Time (trr)",
+     "attribute_value_name": "8ns"
+    },
+    {
+     "attribute_name_en": "Diode Configuration",
+     "attribute_value_name": "Standalone"
+    },
+    {
+     "attribute_name_en": "Current - Rectified",
+     "attribute_value_name": "300mA"
+    },
+    {
+     "attribute_name_en": "Pd - Power Dissipation",
+     "attribute_value_name": "400mW"
+    },
+    {
+     "attribute_name_en": "Reverse Leakage Current (Ir)",
+     "attribute_value_name": "1uA"
+    }
+   ],
+   "componentBrandEn": "TWGMC",
+   "componentCode": "C727110",
+   "componentLibraryType": "expand",
+   "componentModelEn": "1N4148W",
+   "componentPrices": [
+    {
+     "endNumber": 999,
+     "productPrice": 0.0094,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 2999,
+     "productPrice": 0.0077,
+     "startNumber": 1000
+    },
+    {
+     "endNumber": 8999,
+     "productPrice": 0.0057,
+     "startNumber": 3000
+    },
+    {
+     "endNumber": 50999,
+     "productPrice": 0.0052,
+     "startNumber": 9000
+    },
+    {
+     "endNumber": 98999,
+     "productPrice": 0.0047,
+     "startNumber": 51000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0044,
+     "startNumber": 99000
+    }
+   ],
+   "componentSpecificationEn": "SOD-123",
+   "componentTypeEn": "Switching Diodes",
+   "dataManualUrl": "https://www.lcsc.com/datasheet/lcsc_datasheet_2008281134_TWGMC-1N4148W_C727110.pdf",
+   "describe": "-55℃~+150℃@(Tj) 100V 1uA 300mA 400mW 4A 8ns Independent SOD-123 Switching Diodes ROHS",
+   "erpComponentName": "1N4148W",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/switching-diodes_twgmc-1n4148w_C727110.html",
+   "leastPatchNumber": 20,
+   "lossNumber": 10,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 263982
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage - Forward(Vf@If)",
+     "attribute_value_name": "1.25V@150mA"
+    },
+    {
+     "attribute_name_en": "Non-Repetitive Peak Forward Surge Current",
+     "attribute_value_name": "2A"
+    },
+    {
+     "attribute_name_en": "Voltage - DC Reverse(Vr)",
+     "attribute_value_name": "75V"
+    },
+    {
+     "attribute_name_en": "Operating Junction Temperature Range",
+     "attribute_value_name": "-55℃~+150℃"
+    },
+    {
+     "attribute_name_en": "Reverse Recovery Time (trr)",
+     "attribute_value_name": "8ns"
+    },
+    {
+     "attribute_name_en": "Diode Configuration",
+     "attribute_value_name": "Standalone"
+    },
+    {
+     "attribute_name_en": "Current - Rectified",
+     "attribute_value_name": "150mA"
+    },
+    {
+     "attribute_name_en": "Pd - Power Dissipation",
+     "attribute_value_name": "400mW"
+    },
+    {
+     "attribute_name_en": "Reverse Leakage Current (Ir)",
+     "attribute_value_name": "2.5uA@75V"
+    }
+   ],
+   "componentBrandEn": "FUXINSEMI",
+   "componentCode": "C908248",
+   "componentLibraryType": "expand",
+   "componentModelEn": "1N4148W",
+   "componentPrices": [
+    {
+     "endNumber": 499,
+     "productPrice": 0.0092,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 2999,
+     "productPrice": 0.0073,
+     "startNumber": 500
+    },
+    {
+     "endNumber": 5999,
+     "productPrice": 0.0059,
+     "startNumber": 3000
+    },
+    {
+     "endNumber": 23999,
+     "productPrice": 0.0053,
+     "startNumber": 6000
+    },
+    {
+     "endNumber": 50999,
+     "productPrice": 0.0047,
+     "startNumber": 24000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0044,
+     "startNumber": 51000
+    }
+   ],
+   "componentSpecificationEn": "SOD-123",
+   "componentTypeEn": "Switching Diodes",
+   "dataManualUrl": "https://www.lcsc.com/datasheet/lcsc_datasheet_2010271837_FUXINSEMI-1N4148W_C908248.pdf",
+   "describe": "-55℃~+150℃@(Tj) 1.25V@150mA 150mA 2.5uA@75V 2A 400mW 75V 8ns Independent SOD-123 Switching Diodes ROHS",
+   "erpComponentName": "1N4148W",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/switching-diodes_fuxinsemi-1n4148w_C908248.html",
+   "leastPatchNumber": 15,
+   "lossNumber": 10,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 63497
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage - Forward(Vf@If)",
+     "attribute_value_name": "1.25V@150mA"
+    },
+    {
+     "attribute_name_en": "Non-Repetitive Peak Forward Surge Current",
+     "attribute_value_name": "4A"
+    },
+    {
+     "attribute_name_en": "Voltage - DC Reverse(Vr)",
+     "attribute_value_name": "100V"
+    },
+    {
+     "attribute_name_en": "Operating Junction Temperature Range",
+     "attribute_value_name": "-55℃~+150℃"
+    },
+    {
+     "attribute_name_en": "Reverse Recovery Time (trr)",
+     "attribute_value_name": "4ns"
+    },
+    {
+     "attribute_name_en": "Diode Configuration",
+     "attribute_value_name": "1 Independent"
+    },
+    {
+     "attribute_name_en": "Current - Rectified",
+     "attribute_value_name": "150mA"
+    },
+    {
+     "attribute_name_en": "Pd - Power Dissipation",
+     "attribute_value_name": "410mW"
+    },
+    {
+     "attribute_name_en": "Reverse Leakage Current (Ir)",
+     "attribute_value_name": "1uA@75V"
+    }
+   ],
+   "componentBrandEn": "GOODWORK",
+   "componentCode": "C909967",
+   "componentLibraryType": "expand",
+   "componentModelEn": "1N4148W",
+   "componentPrices": [
+    {
+     "endNumber": 999,
+     "productPrice": 0.0091,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 2999,
+     "productPrice": 0.0073,
+     "startNumber": 1000
+    },
+    {
+     "endNumber": 8999,
+     "productPrice": 0.0059,
+     "startNumber": 3000
+    },
+    {
+     "endNumber": 44999,
+     "productPrice": 0.0053,
+     "startNumber": 9000
+    },
+    {
+     "endNumber": 104999,
+     "productPrice": 0.0048,
+     "startNumber": 45000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0045,
+     "startNumber": 105000
+    }
+   ],
+   "componentSpecificationEn": "SOD-123",
+   "componentTypeEn": "Switching Diodes",
+   "dataManualUrl": "https://www.lcsc.com/datasheet/lcsc_datasheet_2408201207_GOODWORK-1N4148W_C909967.pdf",
+   "describe": "-55℃~+150℃ 1.25V@150mA 100V 150mA 1uA@100V 410mW 4A 4ns Standalone SOD-123 Switching Diodes ROHS",
+   "erpComponentName": "1N4148W",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/switching-diodes_goodwork-1n4148w_C909967.html",
+   "leastPatchNumber": 20,
+   "lossNumber": 12,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 1972978
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage - Forward(Vf@If)",
+     "attribute_value_name": "1.25V@150mA"
+    },
+    {
+     "attribute_name_en": "Non-Repetitive Peak Forward Surge Current",
+     "attribute_value_name": "4A"
+    },
+    {
+     "attribute_name_en": "Voltage - DC Reverse(Vr)",
+     "attribute_value_name": "100V"
+    },
+    {
+     "attribute_name_en": "Operating Junction Temperature Range",
+     "attribute_value_name": "-55℃~+150℃"
+    },
+    {
+     "attribute_name_en": "Reverse Recovery Time (trr)",
+     "attribute_value_name": "8ns"
+    },
+    {
+     "attribute_name_en": "Diode Configuration",
+     "attribute_value_name": "Standalone"
+    },
+    {
+     "attribute_name_en": "Current - Rectified",
+     "attribute_value_name": "300mA"
+    },
+    {
+     "attribute_name_en": "Pd - Power Dissipation",
+     "attribute_value_name": "400mW"
+    },
+    {
+     "attribute_name_en": "Reverse Leakage Current (Ir)",
+     "attribute_value_name": "1uA@75V"
+    }
+   ],
+   "componentBrandEn": "JSMSEMI",
+   "componentCode": "C917030",
+   "componentLibraryType": "expand",
+   "componentModelEn": "1N4148W",
+   "componentPrices": [
+    {
+     "endNumber": 499,
+     "productPrice": 0.0083,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 2999,
+     "productPrice": 0.0064,
+     "startNumber": 500
+    },
+    {
+     "endNumber": 5999,
+     "productPrice": 0.0052,
+     "startNumber": 3000
+    },
+    {
+     "endNumber": 23999,
+     "productPrice": 0.0046,
+     "startNumber": 6000
+    },
+    {
+     "endNumber": 44999,
+     "productPrice": 0.0043,
+     "startNumber": 24000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0042,
+     "startNumber": 45000
+    }
+   ],
+   "componentSpecificationEn": "SOD-123",
+   "componentTypeEn": "Switching Diodes",
+   "dataManualUrl": "https://www.lcsc.com/datasheet/lcsc_datasheet_2308071513_JSMSEMI-1N4148W_C917030.pdf",
+   "describe": "-55℃~+150℃ 1.25V@150mA 100V 1uA@75V 300mA 400mW 4A 8ns Standalone SOD-123 Switching Diodes ROHS",
+   "erpComponentName": "1N4148W",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/switching-diodes_jsmsemi-1n4148w_C917030.html",
+   "leastPatchNumber": 20,
+   "lossNumber": 12,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 2898431
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage - Forward(Vf@If)",
+     "attribute_value_name": "1.5V@300mA"
+    },
+    {
+     "attribute_name_en": "Non-Repetitive Peak Forward Surge Current",
+     "attribute_value_name": "4A"
+    },
+    {
+     "attribute_name_en": "Voltage - DC Reverse(Vr)",
+     "attribute_value_name": "100V"
+    },
+    {
+     "attribute_name_en": "Operating Junction Temperature Range",
+     "attribute_value_name": "-55℃~+150℃"
+    },
+    {
+     "attribute_name_en": "Reverse Recovery Time (trr)",
+     "attribute_value_name": "4ns"
+    },
+    {
+     "attribute_name_en": "Diode Configuration",
+     "attribute_value_name": "Standalone"
+    },
+    {
+     "attribute_name_en": "Current - Rectified",
+     "attribute_value_name": "300mA"
+    },
+    {
+     "attribute_name_en": "Pd - Power Dissipation",
+     "attribute_value_name": "400mW"
+    },
+    {
+     "attribute_name_en": "Reverse Leakage Current (Ir)",
+     "attribute_value_name": "1uA"
+    }
+   ],
+   "componentBrandEn": "YFW",
+   "componentCode": "C1884539",
+   "componentLibraryType": "expand",
+   "componentModelEn": "1N4148W",
+   "componentPrices": [
+    {
+     "endNumber": 499,
+     "productPrice": 0.0102,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 2999,
+     "productPrice": 0.008,
+     "startNumber": 500
+    },
+    {
+     "endNumber": 5999,
+     "productPrice": 0.0071,
+     "startNumber": 3000
+    },
+    {
+     "endNumber": 23999,
+     "productPrice": 0.0063,
+     "startNumber": 6000
+    },
+    {
+     "endNumber": 50999,
+     "productPrice": 0.0057,
+     "startNumber": 24000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0053,
+     "startNumber": 51000
+    }
+   ],
+   "componentSpecificationEn": "SOD-123",
+   "componentTypeEn": "Switching Diodes",
+   "dataManualUrl": "https://www.lcsc.com/datasheet/lcsc_datasheet_2201280500_YFW-1N4148W_C1884539.pdf",
+   "describe": "-55℃~+150℃@(Tj) 1.5V@300mA 100V 1uA 300mA 400mW 4A 4ns Independent SOD-123 Switching Diodes ROHS",
+   "erpComponentName": "1N4148W",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/switching-diodes_yfw-1n4148w_C1884539.html",
+   "leastPatchNumber": 20,
+   "lossNumber": 10,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 9434
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage - Forward(Vf@If)",
+     "attribute_value_name": "1.25V@150mA"
+    },
+    {
+     "attribute_name_en": "Non-Repetitive Peak Forward Surge Current",
+     "attribute_value_name": "2A"
+    },
+    {
+     "attribute_name_en": "Voltage - DC Reverse(Vr)",
+     "attribute_value_name": "100V"
+    },
+    {
+     "attribute_name_en": "Operating Junction Temperature Range",
+     "attribute_value_name": "-40℃~+150℃"
+    },
+    {
+     "attribute_name_en": "Reverse Recovery Time (trr)",
+     "attribute_value_name": "4ns"
+    },
+    {
+     "attribute_name_en": "Diode Configuration",
+     "attribute_value_name": "1 Independent"
+    },
+    {
+     "attribute_name_en": "Current - Rectified",
+     "attribute_value_name": "150mA"
+    },
+    {
+     "attribute_name_en": "Pd - Power Dissipation",
+     "attribute_value_name": "500mW"
+    },
+    {
+     "attribute_name_en": "Reverse Leakage Current (Ir)",
+     "attribute_value_name": "1uA@70V"
+    }
+   ],
+   "componentBrandEn": "WPMtek(Wei Pan Microelectronics)",
+   "componentCode": "C2688235",
+   "componentLibraryType": "expand",
+   "componentModelEn": "1N4148W",
+   "componentPrices": [
+    {
+     "endNumber": 499,
+     "productPrice": 0.0099,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 2999,
+     "productPrice": 0.008,
+     "startNumber": 500
+    },
+    {
+     "endNumber": 5999,
+     "productPrice": 0.0055,
+     "startNumber": 3000
+    },
+    {
+     "endNumber": 23999,
+     "productPrice": 0.0049,
+     "startNumber": 6000
+    },
+    {
+     "endNumber": 50999,
+     "productPrice": 0.0044,
+     "startNumber": 24000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0041,
+     "startNumber": 51000
+    }
+   ],
+   "componentSpecificationEn": "SOD-123",
+   "componentTypeEn": "Switching Diodes",
+   "dataManualUrl": "https://www.lcsc.com/datasheet/lcsc_datasheet_2401301521_WPMtek-Wei-Pan-Microelectronics-1N4148W_C2688235.pdf",
+   "describe": "1 Independent 1.25V@150mA 100V 150mA 1uA@70V 2A 4ns 500mW SOD-123 Switching Diodes ROHS",
+   "erpComponentName": "1N4148W",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/switching-diodes_wpmtek-wei-pan-microelectronics-1n4148w_C2688235.html",
+   "leastPatchNumber": 20,
+   "lossNumber": 10,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 1756
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage - Forward(Vf@If)",
+     "attribute_value_name": "1.25V@150mA"
+    },
+    {
+     "attribute_name_en": "Non-Repetitive Peak Forward Surge Current",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Voltage - DC Reverse(Vr)",
+     "attribute_value_name": "100V"
+    },
+    {
+     "attribute_name_en": "Operating Junction Temperature Range",
+     "attribute_value_name": "-55℃~+150℃"
+    },
+    {
+     "attribute_name_en": "Reverse Recovery Time (trr)",
+     "attribute_value_name": "4ns"
+    },
+    {
+     "attribute_name_en": "Diode Configuration",
+     "attribute_value_name": "Standalone"
+    },
+    {
+     "attribute_name_en": "Current - Rectified",
+     "attribute_value_name": "150mA"
+    },
+    {
+     "attribute_name_en": "Pd - Power Dissipation",
+     "attribute_value_name": "400mW"
+    },
+    {
+     "attribute_name_en": "Reverse Leakage Current (Ir)",
+     "attribute_value_name": "50uA@75V"
+    }
+   ],
+   "componentBrandEn": "Shandong Jingdao Microelectronics",
+   "componentCode": "C2762206",
+   "componentLibraryType": "expand",
+   "componentModelEn": "T-1N4148WA",
+   "componentPrices": [
+    {
+     "endNumber": 999,
+     "productPrice": 0.0055,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 2999,
+     "productPrice": 0.0054,
+     "startNumber": 1000
+    },
+    {
+     "endNumber": 8999,
+     "productPrice": 0.0049,
+     "startNumber": 3000
+    },
+    {
+     "endNumber": 9199,
+     "productPrice": 0.0049,
+     "startNumber": 9000
+    },
+    {
+     "endNumber": 9399,
+     "productPrice": 0.0049,
+     "startNumber": 9200
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0049,
+     "startNumber": 9400
+    }
+   ],
+   "componentSpecificationEn": "SOD-123W",
+   "componentTypeEn": "Switching Diodes",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2106062011_Shandong-Jingdao-Microelectronics-T-1N4148WA_C2762206.pdf",
+   "describe": "-55℃~+150℃@(Tj) 1.25V@150mA 100V 150mA 400mW 4ns 50uA@75V Independent SOD-123W Switching Diodes ROHS",
+   "erpComponentName": "T-1N4148WA",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/switching-diodes_shandong-jingdao-microelectronics-t-1n4148wa_C2762206.html",
+   "leastPatchNumber": 20,
+   "lossNumber": 10,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 2700
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage - Forward(Vf@If)",
+     "attribute_value_name": "1.25V@150mA"
+    },
+    {
+     "attribute_name_en": "Non-Repetitive Peak Forward Surge Current",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Voltage - DC Reverse(Vr)",
+     "attribute_value_name": "100V"
+    },
+    {
+     "attribute_name_en": "Operating Junction Temperature Range",
+     "attribute_value_name": "-55℃~+150℃"
+    },
+    {
+     "attribute_name_en": "Reverse Recovery Time (trr)",
+     "attribute_value_name": "4ns"
+    },
+    {
+     "attribute_name_en": "Diode Configuration",
+     "attribute_value_name": "Standalone"
+    },
+    {
+     "attribute_name_en": "Current - Rectified",
+     "attribute_value_name": "150mA"
+    },
+    {
+     "attribute_name_en": "Pd - Power Dissipation",
+     "attribute_value_name": "400mW"
+    },
+    {
+     "attribute_name_en": "Reverse Leakage Current (Ir)",
+     "attribute_value_name": "50uA@75V"
+    }
+   ],
+   "componentBrandEn": "Shandong Jingdao Microelectronics",
+   "componentCode": "C2762219",
+   "componentLibraryType": "expand",
+   "componentModelEn": "T-1N4148WB",
+   "componentPrices": [
+    {
+     "endNumber": 999,
+     "productPrice": 0.008,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 2999,
+     "productPrice": 0.0063,
+     "startNumber": 1000
+    },
+    {
+     "endNumber": 8999,
+     "productPrice": 0.0054,
+     "startNumber": 3000
+    },
+    {
+     "endNumber": 50999,
+     "productPrice": 0.0048,
+     "startNumber": 9000
+    },
+    {
+     "endNumber": 98999,
+     "productPrice": 0.0043,
+     "startNumber": 51000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0041,
+     "startNumber": 99000
+    }
+   ],
+   "componentSpecificationEn": "SOD-323W",
+   "componentTypeEn": "Switching Diodes",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2104131637_Shandong-Jingdao-Microelectronics-T-1N4148WB_C2762219.pdf",
+   "describe": "-55℃~+150℃@(Tj) 1.25V@150mA 100V 150mA 400mW 4ns 50uA@75V Independent SOD-323W Switching Diodes ROHS",
+   "erpComponentName": "T-1N4148WB",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/switching-diodes_shandong-jingdao-microelectronics-t-1n4148wb_C2762219.html",
+   "leastPatchNumber": 20,
+   "lossNumber": 6,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 143132
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage - Forward(Vf@If)",
+     "attribute_value_name": "1.25V@150mA"
+    },
+    {
+     "attribute_name_en": "Non-Repetitive Peak Forward Surge Current",
+     "attribute_value_name": "2A"
+    },
+    {
+     "attribute_name_en": "Voltage - DC Reverse(Vr)",
+     "attribute_value_name": "75V"
+    },
+    {
+     "attribute_name_en": "Operating Junction Temperature Range",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Reverse Recovery Time (trr)",
+     "attribute_value_name": "4ns"
+    },
+    {
+     "attribute_name_en": "Diode Configuration",
+     "attribute_value_name": "Standalone"
+    },
+    {
+     "attribute_name_en": "Current - Rectified",
+     "attribute_value_name": "150mA"
+    },
+    {
+     "attribute_name_en": "Pd - Power Dissipation",
+     "attribute_value_name": "400mW"
+    },
+    {
+     "attribute_name_en": "Reverse Leakage Current (Ir)",
+     "attribute_value_name": "1uA@75V"
+    }
+   ],
+   "componentBrandEn": "CBI",
+   "componentCode": "C2828417",
+   "componentLibraryType": "expand",
+   "componentModelEn": "1N4148W",
+   "componentPrices": [
+    {
+     "endNumber": 499,
+     "productPrice": 0.0088,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 2999,
+     "productPrice": 0.007,
+     "startNumber": 500
+    },
+    {
+     "endNumber": 5999,
+     "productPrice": 0.0058,
+     "startNumber": 3000
+    },
+    {
+     "endNumber": 23999,
+     "productPrice": 0.0052,
+     "startNumber": 6000
+    },
+    {
+     "endNumber": 50999,
+     "productPrice": 0.0047,
+     "startNumber": 24000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0044,
+     "startNumber": 51000
+    }
+   ],
+   "componentSpecificationEn": "SOD-123",
+   "componentTypeEn": "Switching Diodes",
+   "dataManualUrl": "https://www.lcsc.com/datasheet/lcsc_datasheet_2105241831_CBI-1N4148W_C2828417.pdf",
+   "describe": "1.25V@150mA 150mA 1uA@75V 2A 400mW 4ns 75V Independent SOD-123 Switching Diodes ROHS",
+   "erpComponentName": "1N4148W",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/switching-diodes_cbi-1n4148w_C2828417.html",
+   "leastPatchNumber": 20,
+   "lossNumber": 10,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 26967
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage - Forward(Vf@If)",
+     "attribute_value_name": "1.25V@150mA"
+    },
+    {
+     "attribute_name_en": "Non-Repetitive Peak Forward Surge Current",
+     "attribute_value_name": "2A"
+    },
+    {
+     "attribute_name_en": "Voltage - DC Reverse(Vr)",
+     "attribute_value_name": "75V"
+    },
+    {
+     "attribute_name_en": "Operating Junction Temperature Range",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Reverse Recovery Time (trr)",
+     "attribute_value_name": "4ns"
+    },
+    {
+     "attribute_name_en": "Diode Configuration",
+     "attribute_value_name": "Standalone"
+    },
+    {
+     "attribute_name_en": "Current - Rectified",
+     "attribute_value_name": "150mA"
+    },
+    {
+     "attribute_name_en": "Pd - Power Dissipation",
+     "attribute_value_name": "400mW"
+    },
+    {
+     "attribute_name_en": "Reverse Leakage Current (Ir)",
+     "attribute_value_name": "1uA@75V"
+    }
+   ],
+   "componentBrandEn": "MSKSEMI",
+   "componentCode": "C2847023",
+   "componentLibraryType": "expand",
+   "componentModelEn": "1N4148W-MS",
+   "componentPrices": [
+    {
+     "endNumber": 499,
+     "productPrice": 0.0206,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 2999,
+     "productPrice": 0.0162,
+     "startNumber": 500
+    },
+    {
+     "endNumber": 5999,
+     "productPrice": 0.0125,
+     "startNumber": 3000
+    },
+    {
+     "endNumber": 23999,
+     "productPrice": 0.011,
+     "startNumber": 6000
+    },
+    {
+     "endNumber": 50999,
+     "productPrice": 0.0098,
+     "startNumber": 24000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0091,
+     "startNumber": 51000
+    }
+   ],
+   "componentSpecificationEn": "SOD-123",
+   "componentTypeEn": "Switching Diodes",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2311090907_MSKSEMI-1N4148W-MS_C2847023.pdf",
+   "describe": "1.25V@150mA 150mA 1uA@75V 2A 400mW 4ns 75V Independent SOD-123 Switching Diodes ROHS",
+   "erpComponentName": "1N4148W-MS",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/switching-diodes_msksemi-1n4148w-ms_C2847023.html",
+   "leastPatchNumber": 15,
+   "lossNumber": 4,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 1055
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage - Forward(Vf@If)",
+     "attribute_value_name": "1.25V@100mA"
+    },
+    {
+     "attribute_name_en": "Non-Repetitive Peak Forward Surge Current",
+     "attribute_value_name": "2A"
+    },
+    {
+     "attribute_name_en": "Voltage - DC Reverse(Vr)",
+     "attribute_value_name": "75V"
+    },
+    {
+     "attribute_name_en": "Operating Junction Temperature Range",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Reverse Recovery Time (trr)",
+     "attribute_value_name": "4ns"
+    },
+    {
+     "attribute_name_en": "Diode Configuration",
+     "attribute_value_name": "1 Independent"
+    },
+    {
+     "attribute_name_en": "Current - Rectified",
+     "attribute_value_name": "150mA"
+    },
+    {
+     "attribute_name_en": "Pd - Power Dissipation",
+     "attribute_value_name": "500mW"
+    },
+    {
+     "attribute_name_en": "Reverse Leakage Current (Ir)",
+     "attribute_value_name": "5uA@75V"
+    }
+   ],
+   "componentBrandEn": "BORN",
+   "componentCode": "C2847222",
+   "componentLibraryType": "expand",
+   "componentModelEn": "1N4148W",
+   "componentPrices": [
+    {
+     "endNumber": 499,
+     "productPrice": 0.0117,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 2999,
+     "productPrice": 0.0092,
+     "startNumber": 500
+    },
+    {
+     "endNumber": 5999,
+     "productPrice": 0.0077,
+     "startNumber": 3000
+    },
+    {
+     "endNumber": 23999,
+     "productPrice": 0.0069,
+     "startNumber": 6000
+    },
+    {
+     "endNumber": 50999,
+     "productPrice": 0.0061,
+     "startNumber": 24000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0057,
+     "startNumber": 51000
+    }
+   ],
+   "componentSpecificationEn": "SOD-123",
+   "componentTypeEn": "Switching Diodes",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2108072330_BORN-1N4148W_C2847222.pdf",
+   "describe": "1 Independent 1.25V@100mA 150mA 2A 4ns 500mW 5uA@75V 75V SOD-123 Switching Diodes ROHS",
+   "erpComponentName": "1N4148W",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/switching-diodes_born-1n4148w_C2847222.html",
+   "leastPatchNumber": 20,
+   "lossNumber": 10,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 17867
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage - Forward(Vf@If)",
+     "attribute_value_name": "1.25V@150mA"
+    },
+    {
+     "attribute_name_en": "Non-Repetitive Peak Forward Surge Current",
+     "attribute_value_name": "2A"
+    },
+    {
+     "attribute_name_en": "Voltage - DC Reverse(Vr)",
+     "attribute_value_name": "75V"
+    },
+    {
+     "attribute_name_en": "Operating Junction Temperature Range",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Reverse Recovery Time (trr)",
+     "attribute_value_name": "4ns"
+    },
+    {
+     "attribute_name_en": "Diode Configuration",
+     "attribute_value_name": "Standalone"
+    },
+    {
+     "attribute_name_en": "Current - Rectified",
+     "attribute_value_name": "150mA"
+    },
+    {
+     "attribute_name_en": "Pd - Power Dissipation",
+     "attribute_value_name": "400mW"
+    },
+    {
+     "attribute_name_en": "Reverse Leakage Current (Ir)",
+     "attribute_value_name": "1uA@75V"
+    }
+   ],
+   "componentBrandEn": "IDCHIP",
+   "componentCode": "C2848200",
+   "componentLibraryType": "expand",
+   "componentModelEn": "1N4148W",
+   "componentPrices": [
+    {
+     "endNumber": 499,
+     "productPrice": 0.0137,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 2999,
+     "productPrice": 0.0108,
+     "startNumber": 500
+    },
+    {
+     "endNumber": 5999,
+     "productPrice": 0.0087,
+     "startNumber": 3000
+    },
+    {
+     "endNumber": 23999,
+     "productPrice": 0.0077,
+     "startNumber": 6000
+    },
+    {
+     "endNumber": 50999,
+     "productPrice": 0.0069,
+     "startNumber": 24000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0064,
+     "startNumber": 51000
+    }
+   ],
+   "componentSpecificationEn": "SOD-123",
+   "componentTypeEn": "Switching Diodes",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2307071734_IDCHIP-1N4148W_C2848200.pdf",
+   "describe": "1.25V@150mA 150mA 1uA@75V 2A 400mW 4ns 75V Independent SOD-123 Switching Diodes ROHS",
+   "erpComponentName": "1N4148W",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/switching-diodes_idchip-1n4148w_C2848200.html",
+   "leastPatchNumber": 20,
+   "lossNumber": 10,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 1155
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage - Forward(Vf@If)",
+     "attribute_value_name": "1.5V@300mA"
+    },
+    {
+     "attribute_name_en": "Non-Repetitive Peak Forward Surge Current",
+     "attribute_value_name": "4A"
+    },
+    {
+     "attribute_name_en": "Voltage - DC Reverse(Vr)",
+     "attribute_value_name": "100V"
+    },
+    {
+     "attribute_name_en": "Operating Junction Temperature Range",
+     "attribute_value_name": "-55℃~+150℃"
+    },
+    {
+     "attribute_name_en": "Reverse Recovery Time (trr)",
+     "attribute_value_name": "8ns"
+    },
+    {
+     "attribute_name_en": "Diode Configuration",
+     "attribute_value_name": "Standalone"
+    },
+    {
+     "attribute_name_en": "Current - Rectified",
+     "attribute_value_name": "300mA"
+    },
+    {
+     "attribute_name_en": "Pd - Power Dissipation",
+     "attribute_value_name": "400mW"
+    },
+    {
+     "attribute_name_en": "Reverse Leakage Current (Ir)",
+     "attribute_value_name": "1uA@75V"
+    }
+   ],
+   "componentBrandEn": "Shandong Jingdao Microelectronics",
+   "componentCode": "C2875079",
+   "componentLibraryType": "expand",
+   "componentModelEn": "1N4148WL(T4)",
+   "componentPrices": [
+    {
+     "endNumber": 499,
+     "productPrice": 0.0111,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 2999,
+     "productPrice": 0.0089,
+     "startNumber": 500
+    },
+    {
+     "endNumber": 5999,
+     "productPrice": 0.0077,
+     "startNumber": 3000
+    },
+    {
+     "endNumber": 23999,
+     "productPrice": 0.007,
+     "startNumber": 6000
+    },
+    {
+     "endNumber": 50999,
+     "productPrice": 0.0063,
+     "startNumber": 24000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.006,
+     "startNumber": 51000
+    }
+   ],
+   "componentSpecificationEn": "SOD-123FL",
+   "componentTypeEn": "Switching Diodes",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2109171130_Shandong-Jingdao-Microelectronics-1N4148WL-T4_C2875079.pdf",
+   "describe": "-55℃~+150℃@(Tj) 1.5V@300mA 100V 1uA@75V 300mA 400mW 4A 8ns Independent SOD-123FL Switching Diodes ROHS",
+   "erpComponentName": "1N4148WL(T4)",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/switching-diodes_shandong-jingdao-microelectronics-1n4148wl-t4_C2875079.html",
+   "leastPatchNumber": 15,
+   "lossNumber": 10,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 118352
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage - Forward(Vf@If)",
+     "attribute_value_name": "1.25V@150mA"
+    },
+    {
+     "attribute_name_en": "Non-Repetitive Peak Forward Surge Current",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Voltage - DC Reverse(Vr)",
+     "attribute_value_name": "100V"
+    },
+    {
+     "attribute_name_en": "Operating Junction Temperature Range",
+     "attribute_value_name": "-55℃~+150℃"
+    },
+    {
+     "attribute_name_en": "Reverse Recovery Time (trr)",
+     "attribute_value_name": "4ns"
+    },
+    {
+     "attribute_name_en": "Diode Configuration",
+     "attribute_value_name": "Standalone"
+    },
+    {
+     "attribute_name_en": "Current - Rectified",
+     "attribute_value_name": "150mA"
+    },
+    {
+     "attribute_name_en": "Pd - Power Dissipation",
+     "attribute_value_name": "400mW"
+    },
+    {
+     "attribute_name_en": "Reverse Leakage Current (Ir)",
+     "attribute_value_name": "1uA@75V"
+    }
+   ],
+   "componentBrandEn": "Shandong Jingdao Microelectronics",
+   "componentCode": "C2890160",
+   "componentLibraryType": "expand",
+   "componentModelEn": "T-1N4148W",
+   "componentPrices": [
+    {
+     "endNumber": 999,
+     "productPrice": 0.0082,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 2999,
+     "productPrice": 0.0066,
+     "startNumber": 1000
+    },
+    {
+     "endNumber": 8999,
+     "productPrice": 0.0057,
+     "startNumber": 3000
+    },
+    {
+     "endNumber": 50999,
+     "productPrice": 0.0052,
+     "startNumber": 9000
+    },
+    {
+     "endNumber": 98999,
+     "productPrice": 0.0047,
+     "startNumber": 51000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0045,
+     "startNumber": 99000
+    }
+   ],
+   "componentSpecificationEn": "SOD-123W",
+   "componentTypeEn": "Switching Diodes",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2112031730_Shandong-Jingdao-Microelectronics-T-1N4148W_C2890160.pdf",
+   "describe": "-55℃~+150℃@(Tj) 1.25V@150mA 100V 150mA 1uA@75V 400mW 4ns Independent SOD-123W Switching Diodes ROHS",
+   "erpComponentName": "T-1N4148W",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/switching-diodes_shandong-jingdao-microelectronics-t-1n4148w_C2890160.html",
+   "leastPatchNumber": 20,
+   "lossNumber": 10,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 6370
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage - Forward(Vf@If)",
+     "attribute_value_name": "1.25V@100mA"
+    },
+    {
+     "attribute_name_en": "Non-Repetitive Peak Forward Surge Current",
+     "attribute_value_name": "2A"
+    },
+    {
+     "attribute_name_en": "Voltage - DC Reverse(Vr)",
+     "attribute_value_name": "100V"
+    },
+    {
+     "attribute_name_en": "Operating Junction Temperature Range",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Reverse Recovery Time (trr)",
+     "attribute_value_name": "4ns"
+    },
+    {
+     "attribute_name_en": "Diode Configuration",
+     "attribute_value_name": "1 Independent"
+    },
+    {
+     "attribute_name_en": "Current - Rectified",
+     "attribute_value_name": "150mA"
+    },
+    {
+     "attribute_name_en": "Pd - Power Dissipation",
+     "attribute_value_name": "500mW"
+    },
+    {
+     "attribute_name_en": "Reverse Leakage Current (Ir)",
+     "attribute_value_name": "5uA@75V"
+    }
+   ],
+   "componentBrandEn": "YONGYUTAI",
+   "componentCode": "C2892570",
+   "componentLibraryType": "expand",
+   "componentModelEn": "1N4148W",
+   "componentPrices": [
+    {
+     "endNumber": 499,
+     "productPrice": 0.0097,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 2999,
+     "productPrice": 0.0078,
+     "startNumber": 500
+    },
+    {
+     "endNumber": 5999,
+     "productPrice": 0.0062,
+     "startNumber": 3000
+    },
+    {
+     "endNumber": 23999,
+     "productPrice": 0.0055,
+     "startNumber": 6000
+    },
+    {
+     "endNumber": 50999,
+     "productPrice": 0.005,
+     "startNumber": 24000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0047,
+     "startNumber": 51000
+    }
+   ],
+   "componentSpecificationEn": "SOD-123",
+   "componentTypeEn": "Switching Diodes",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2109061630_YONGYUTAI-1N4148W_C2892570.pdf",
+   "describe": "1 Independent 1.25V@100mA 100V 150mA 2A 4ns 500mW 5uA@75V SOD-123 Switching Diodes ROHS",
+   "erpComponentName": "1N4148W",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/switching-diodes_yongyutai-1n4148w_C2892570.html",
+   "leastPatchNumber": 20,
+   "lossNumber": 10,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 145039
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage - Forward(Vf@If)",
+     "attribute_value_name": "1.25V@150mA"
+    },
+    {
+     "attribute_name_en": "Non-Repetitive Peak Forward Surge Current",
+     "attribute_value_name": "4A"
+    },
+    {
+     "attribute_name_en": "Voltage - DC Reverse(Vr)",
+     "attribute_value_name": "100V"
+    },
+    {
+     "attribute_name_en": "Operating Junction Temperature Range",
+     "attribute_value_name": "-55℃~+150℃"
+    },
+    {
+     "attribute_name_en": "Reverse Recovery Time (trr)",
+     "attribute_value_name": "8ns"
+    },
+    {
+     "attribute_name_en": "Diode Configuration",
+     "attribute_value_name": "Standalone"
+    },
+    {
+     "attribute_name_en": "Current - Rectified",
+     "attribute_value_name": "150mA"
+    },
+    {
+     "attribute_name_en": "Pd - Power Dissipation",
+     "attribute_value_name": "410mW"
+    },
+    {
+     "attribute_name_en": "Reverse Leakage Current (Ir)",
+     "attribute_value_name": "1uA@75V"
+    }
+   ],
+   "componentBrandEn": "GOODWORK",
+   "componentCode": "C2908120",
+   "componentLibraryType": "expand",
+   "componentModelEn": "1N4148WL",
+   "componentPrices": [
+    {
+     "endNumber": 499,
+     "productPrice": 0.0076,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 2999,
+     "productPrice": 0.006,
+     "startNumber": 500
+    },
+    {
+     "endNumber": 5999,
+     "productPrice": 0.0051,
+     "startNumber": 3000
+    },
+    {
+     "endNumber": 29999,
+     "productPrice": 0.0046,
+     "startNumber": 6000
+    },
+    {
+     "endNumber": 44999,
+     "productPrice": 0.0041,
+     "startNumber": 30000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0038,
+     "startNumber": 45000
+    }
+   ],
+   "componentSpecificationEn": "SOD-123FL",
+   "componentTypeEn": "Switching Diodes",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2110211030_GOODWORK-1N4148WL_C2908120.pdf",
+   "describe": "-55℃~+150℃@(Tj) 1.25V@150mA 100V 150mA 1A 1uA@100V 400mW 8ns Independent SOD-123FL Switching Diodes ROHS",
+   "erpComponentName": "1N4148WL",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/switching-diodes_goodwork-1n4148wl_C2908120.html",
+   "leastPatchNumber": 15,
+   "lossNumber": 10,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 5067
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage - Forward(Vf@If)",
+     "attribute_value_name": "1.25V@150mA"
+    },
+    {
+     "attribute_name_en": "Non-Repetitive Peak Forward Surge Current",
+     "attribute_value_name": "4A"
+    },
+    {
+     "attribute_name_en": "Voltage - DC Reverse(Vr)",
+     "attribute_value_name": "75V"
+    },
+    {
+     "attribute_name_en": "Operating Junction Temperature Range",
+     "attribute_value_name": "-55℃~+150℃"
+    },
+    {
+     "attribute_name_en": "Reverse Recovery Time (trr)",
+     "attribute_value_name": "4ns"
+    },
+    {
+     "attribute_name_en": "Diode Configuration",
+     "attribute_value_name": "1 Independent"
+    },
+    {
+     "attribute_name_en": "Current - Rectified",
+     "attribute_value_name": "200mA"
+    },
+    {
+     "attribute_name_en": "Pd - Power Dissipation",
+     "attribute_value_name": "410mW"
+    },
+    {
+     "attribute_name_en": "Reverse Leakage Current (Ir)",
+     "attribute_value_name": "2.5uA"
+    }
+   ],
+   "componentBrandEn": "PANJIT International",
+   "componentCode": "C2919016",
+   "componentLibraryType": "expand",
+   "componentModelEn": "1N4148W_R1_00101",
+   "componentPrices": [
+    {
+     "endNumber": 499,
+     "productPrice": 0.0128,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 2999,
+     "productPrice": 0.0101,
+     "startNumber": 500
+    },
+    {
+     "endNumber": 5999,
+     "productPrice": 0.0086,
+     "startNumber": 3000
+    },
+    {
+     "endNumber": 23999,
+     "productPrice": 0.0077,
+     "startNumber": 6000
+    },
+    {
+     "endNumber": 50999,
+     "productPrice": 0.007,
+     "startNumber": 24000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0065,
+     "startNumber": 51000
+    }
+   ],
+   "componentSpecificationEn": "SOD-123",
+   "componentTypeEn": "Switching Diodes",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2205091745_PANJIT-International-1N4148W-R1-00101_C2919016.pdf",
+   "describe": "-55℃~+150℃ 1 Independent 1.25V@150mA 2.5uA 200mA 410mW 4A 4ns 75V SOD-123 Switching Diodes ROHS",
+   "erpComponentName": "1N4148W_R1_00101",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/switching-diodes_panjit-international-1n4148w-r1-00101_C2919016.html",
+   "leastPatchNumber": 20,
+   "lossNumber": 10,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 26
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage - Forward(Vf@If)",
+     "attribute_value_name": "1.25V@150mA"
+    },
+    {
+     "attribute_name_en": "Non-Repetitive Peak Forward Surge Current",
+     "attribute_value_name": "2A"
+    },
+    {
+     "attribute_name_en": "Voltage - DC Reverse(Vr)",
+     "attribute_value_name": "75V"
+    },
+    {
+     "attribute_name_en": "Operating Junction Temperature Range",
+     "attribute_value_name": "-55℃~+150℃"
+    },
+    {
+     "attribute_name_en": "Reverse Recovery Time (trr)",
+     "attribute_value_name": "4ns"
+    },
+    {
+     "attribute_name_en": "Diode Configuration",
+     "attribute_value_name": "1 Independent"
+    },
+    {
+     "attribute_name_en": "Current - Rectified",
+     "attribute_value_name": "150mA"
+    },
+    {
+     "attribute_name_en": "Pd - Power Dissipation",
+     "attribute_value_name": "400mW"
+    },
+    {
+     "attribute_name_en": "Reverse Leakage Current (Ir)",
+     "attribute_value_name": "1uA"
+    }
+   ],
+   "componentBrandEn": "Yangzhou Yangjie Elec Tech",
+   "componentCode": "C2942441",
+   "componentLibraryType": "expand",
+   "componentModelEn": "1N4148WQ",
+   "componentPrices": [
+    {
+     "endNumber": 199,
+     "productPrice": 0.0289,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 599,
+     "productPrice": 0.0241,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 2999,
+     "productPrice": 0.0215,
+     "startNumber": 600
+    },
+    {
+     "endNumber": 8999,
+     "productPrice": 0.0191,
+     "startNumber": 3000
+    },
+    {
+     "endNumber": 20999,
+     "productPrice": 0.0178,
+     "startNumber": 9000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.017,
+     "startNumber": 21000
+    }
+   ],
+   "componentSpecificationEn": "SOD-123",
+   "componentTypeEn": "Switching Diodes",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2205051716_Yangzhou-Yangjie-Elec-Tech-1N4148WQ_C2942441.pdf",
+   "describe": "-55℃~+150℃ 1 Independent 1.25V@150mA 150mA 1uA 2A 400mW 4ns 75V SOD-123 Switching Diodes ROHS",
+   "erpComponentName": "1N4148WQ",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/switching-diodes_yangzhou-yangjie-elec-tech-1n4148wq_C2942441.html",
+   "leastPatchNumber": 20,
+   "lossNumber": 8,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 16146
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage - Forward(Vf@If)",
+     "attribute_value_name": "1.25V@150mA"
+    },
+    {
+     "attribute_name_en": "Non-Repetitive Peak Forward Surge Current",
+     "attribute_value_name": "4A"
+    },
+    {
+     "attribute_name_en": "Voltage - DC Reverse(Vr)",
+     "attribute_value_name": "75V"
+    },
+    {
+     "attribute_name_en": "Operating Junction Temperature Range",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Reverse Recovery Time (trr)",
+     "attribute_value_name": "4ns"
+    },
+    {
+     "attribute_name_en": "Diode Configuration",
+     "attribute_value_name": "Standalone"
+    },
+    {
+     "attribute_name_en": "Current - Rectified",
+     "attribute_value_name": "150mA"
+    },
+    {
+     "attribute_name_en": "Pd - Power Dissipation",
+     "attribute_value_name": "400mW"
+    },
+    {
+     "attribute_name_en": "Reverse Leakage Current (Ir)",
+     "attribute_value_name": "1uA"
+    }
+   ],
+   "componentBrandEn": "PJSEMI",
+   "componentCode": "C2977359",
+   "componentLibraryType": "expand",
+   "componentModelEn": "1N4148WA",
+   "componentPrices": [
+    {
+     "endNumber": 499,
+     "productPrice": 0.0128,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 2999,
+     "productPrice": 0.0103,
+     "startNumber": 500
+    },
+    {
+     "endNumber": 5999,
+     "productPrice": 0.0088,
+     "startNumber": 3000
+    },
+    {
+     "endNumber": 23999,
+     "productPrice": 0.0079,
+     "startNumber": 6000
+    },
+    {
+     "endNumber": 50999,
+     "productPrice": 0.0072,
+     "startNumber": 24000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0068,
+     "startNumber": 51000
+    }
+   ],
+   "componentSpecificationEn": "SOD-123W",
+   "componentTypeEn": "Switching Diodes",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2202211730_PJSEMI-1N4148WA_C2977359.pdf",
+   "describe": "1.25V@150mA 150mA 1uA 400mW 4A 4ns 75V Independent SOD-123W Switching Diodes ROHS",
+   "erpComponentName": "1N4148WA",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/switching-diodes_pjsemi-1n4148wa_C2977359.html",
+   "leastPatchNumber": 20,
+   "lossNumber": 10,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 1621
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage - Forward(Vf@If)",
+     "attribute_value_name": "1.25V@150mA"
+    },
+    {
+     "attribute_name_en": "Non-Repetitive Peak Forward Surge Current",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Voltage - DC Reverse(Vr)",
+     "attribute_value_name": "75V"
+    },
+    {
+     "attribute_name_en": "Operating Junction Temperature Range",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Reverse Recovery Time (trr)",
+     "attribute_value_name": "4ns"
+    },
+    {
+     "attribute_name_en": "Diode Configuration",
+     "attribute_value_name": "Standalone"
+    },
+    {
+     "attribute_name_en": "Current - Rectified",
+     "attribute_value_name": "150mA"
+    },
+    {
+     "attribute_name_en": "Pd - Power Dissipation",
+     "attribute_value_name": "400mW"
+    },
+    {
+     "attribute_name_en": "Reverse Leakage Current (Ir)",
+     "attribute_value_name": "1uA"
+    }
+   ],
+   "componentBrandEn": "PJSEMI",
+   "componentCode": "C2977360",
+   "componentLibraryType": "expand",
+   "componentModelEn": "1N4148WB",
+   "componentPrices": [
+    {
+     "endNumber": 499,
+     "productPrice": 0.0163,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 2999,
+     "productPrice": 0.0127,
+     "startNumber": 500
+    },
+    {
+     "endNumber": 5999,
+     "productPrice": 0.0107,
+     "startNumber": 3000
+    },
+    {
+     "endNumber": 23999,
+     "productPrice": 0.0094,
+     "startNumber": 6000
+    },
+    {
+     "endNumber": 50999,
+     "productPrice": 0.0084,
+     "startNumber": 24000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0078,
+     "startNumber": 51000
+    }
+   ],
+   "componentSpecificationEn": "SOD-323W",
+   "componentTypeEn": "Switching Diodes",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2202211730_PJSEMI-1N4148WB_C2977360.pdf",
+   "describe": "1.25V@150mA 150mA 1uA 400mW 4ns 75V Independent SOD-323W Switching Diodes ROHS",
+   "erpComponentName": "1N4148WB",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/switching-diodes_pjsemi-1n4148wb_C2977360.html",
+   "leastPatchNumber": 20,
+   "lossNumber": 10,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 1070
+  }
+ ],
+ "returned": 50,
+ "schema": 1,
+ "total_matches": 436
+}

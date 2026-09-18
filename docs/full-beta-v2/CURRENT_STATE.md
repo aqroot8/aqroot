@@ -66,6 +66,66 @@
 > `verify_promotion` PASS and `protected_copper` showing exactly one protected
 > net moved.  `U14.7` is on the bus.  This board has **no open owner decision**.
 
+> # **THE D-751 DECLARATION WAS HELD, AND D-752 CLOSED WHAT HELD IT.**
+>
+> **Board authority `7f133e64`.**  An independent CTO re-review read the D-751
+> package and named ONE pre-order blocker: *"`Q11` must not share the `TPS61169`
+> PWM `CTRL`"*.  **It was right, and D-751's own safety argument was backwards.**
+> TI `SNVSA40B` §6.3.5 makes `CTRL` an **analog** dimming input — the part chops
+> its internal 204 mV reference at the duty cycle, filters it, and *"only the
+> WLED DC current is modulated"* — so **the converter keeps switching through
+> every PWM low phase** and enters shutdown only after `CTRL` has been low for
+> more than `tSD` (2.5 ms max).  A shared gate therefore opened the LED string
+> under an actively regulating converter on every dimmed frame: `SW` to
+> `VOVP_SW` (36 / 37.5 / 39 V), open-LED latch-off, and ≈ 36 V across a 30 V
+> `AO3400A` — and the firmware already drives `ledcSetup(5000, 8)` on GPIO46.
+> **The first brightness ramp would have latched the backlight off and
+> over-stressed `Q11`.**
+>
+> **D-752 MADE THE ORDERING STRUCTURAL RATHER THAN PROCEDURAL.**  The review
+> proposed a separate static enable from a spare `U3` bit plus a documented
+> sequence; that is a firmware promise on a one-shot board.  Instead `Q11`'s gate
+> moved to its own net `/03_SPI_A_DISPLAY_SD/BL_DISC_G` carrying the ENVELOPE of
+> `DISP_BL_CTL`: `D14` (1N4148WS, LCSC `C2128`, JLCPCB BASIC, the SOD-323 land
+> the board already carries) charges `C85` (100 nF) in ≈ 25 µs against `U17`'s
+> 6.5 ms soft-start, and `R132` (220 k) discharges it with **τ = 22 ms**.
+> ***`Q11` cannot open before 11.4 ms at worst-case tolerance while `U17` is in
+> shutdown by 2.5 ms — 4.6×, for ANY `CTRL` waveform, with no firmware
+> sequencing.***  Silicon and not a Schottky because the OFF floor is
+> `R132` × (published 1 µA leak + 100 nA `IGSS`) = **0.242 V** against
+> `VGS(th)` min 0.65 V.  `C85` and `R132` join existing BOM lines; only `D14` is
+> a new purchasing identity, and it needs no new land pattern.
+>
+> **AND THE GATE THAT SHOULD HAVE CAUGHT IT NAMED THE WRONG PART.**
+> `demo_feature_contract.py`'s *"IR transmitter"* row required **`U17`** — the
+> display backlight boost — so `F1` passed on every run this repository has made
+> while requiring none of `D1`, `Q1`, `R22`, `R23`, `R24`.  Corrected, and the
+> new **`F5`** now holds the disconnect's topology by measurement with **four
+> live negative controls**, one of which puts the D-751 shared gate back.
+>
+> **RELEASE-GRADE VERIFICATION, RE-RUN WHOLE ON `7f133e64`:**
+> `unapproved_open_edges` **0**; **173 of 174** retained nets connected and the
+> one open edge is `U11.3`, covered by owner decision D-742; the approved-NC set
+> is EXACTLY the eight `J5` positions Demo scope allows; real KiCad DRC is **199
+> `lib_footprint_issues`, every one a WARNING, and ZERO of every other class**;
+> schematic parity **0 errors**; `verify_promotion` **16 of 16** with
+> `/DISP_BL_CTL` declared evicted; `protected_copper` **IDENTICAL**, 15 nets /
+> 406 objects, differences `{}`; `audit_rail_ampacity` **all_ok**;
+> **`FAB1`–`FAB12` all PASS** with seven controls refused, via-in-pad **136**
+> and mask dams **21** unchanged, sourcing **252/252**; `contract_regression`
+> runs **17 contracts, all 17 pass**; the firmware contract passes **H1–H6**
+> with 11 policy controls refused; all four PlatformIO environments build;
+> `hardware/beta-v2` **untouched**.
+>
+> **ONE PRE-ORDER ENGINEERING ITEM REMAINS OPEN** and is named rather than
+> closed: the **accessory-load concurrency policy** of `DEVICE_SPEC` §6.3a.
+> D-750 closed external-review item 9 as a *published limit*; the re-review
+> answered that the limit is not an enforcement mechanism — the board has no
+> accessory-current measurement and the load switches' own limits sit far above
+> the published usage figures, so firmware can choose whether a rail is ON but
+> not what an arbitrary accessory then draws.  Everything else outstanding is
+> FIRST-ARTICLE or PROCUREMENT.
+
 > # **DEMO_READY_FOR_FAB IS RE-DECLARED (2026-09-18, after D-751).**
 >
 > **Board authority `bdf1376c`.**  The D-748 declaration below is

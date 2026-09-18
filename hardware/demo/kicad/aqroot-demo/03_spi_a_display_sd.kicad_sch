@@ -2083,6 +2083,194 @@
 			)
 			(embedded_fonts no)
 		)
+		(symbol "Device:D"
+			(pin_numbers
+				(hide yes)
+			)
+			(pin_names
+				(offset 1.016)
+				(hide yes)
+			)
+			(exclude_from_sim no)
+			(in_bom yes)
+			(on_board yes)
+			(in_pos_files yes)
+			(duplicate_pin_numbers_are_jumpers no)
+			(property "Reference" "D"
+				(at 0 2.54 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Value" "D"
+				(at 0 -2.54 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Footprint" ""
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Datasheet" ""
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Description" "Diode"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Sim.Device" "D"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Sim.Pins" "1=K 2=A"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "ki_keywords" "diode"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "ki_fp_filters" "TO-???* *_Diode_* *SingleDiode* D_*"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(symbol "D_0_1"
+				(polyline
+					(pts
+						(xy -1.27 1.27) (xy -1.27 -1.27)
+					)
+					(stroke
+						(width 0.254)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy 1.27 1.27) (xy 1.27 -1.27) (xy -1.27 0) (xy 1.27 1.27)
+					)
+					(stroke
+						(width 0.254)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy 1.27 0) (xy -1.27 0)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+			)
+			(symbol "D_1_1"
+				(pin passive line
+					(at -3.81 0 0)
+					(length 2.54)
+					(name "K"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at 3.81 0 180)
+					(length 2.54)
+					(name "A"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "2"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+			)
+			(embedded_fonts no)
+		)
 		(symbol "Device:D_Schottky"
 			(pin_numbers
 				(hide yes)
@@ -10679,6 +10867,584 @@
 		(uuid "fb030025-d025-4d25-9d25-000000000025")
 	)
 	(symbol
+		(lib_id "Device:D")
+		(at 198.12 200.66 180)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "b8373fca-2f26-5a56-be71-70595900046d")
+		(property "Reference" "D14"
+			(at 202.0 196.0 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "1N4148WS"
+			(at 202.0 198.5 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "Diode_SMD:D_SOD-323"
+			(at 198.12 200.66 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 198.12 200.66 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "LCSC" "C2128"
+			(at 198.12 200.66 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Manufacturer" "Jiangsu Changjing Electronics"
+			(at 198.12 200.66 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "1N4148WS"
+			(at 198.12 200.66 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Package" "SOD-323, pin 1 = K, pin 2 = A -- the same land pattern and numbering as D8 (NSR0240)."
+			(at 198.12 200.66 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Note" "D-752 BACKLIGHT-DISCONNECT GATE HOLD, AND WHY Q11 MAY NOT SHARE U17 CTRL.  D-750/D-751 tied Q11's gate to /DISP_BL_CTL, the same net as U17 CTRL, on the premise that PWM would shut the converter down and open Q11 together.  TI SNVSA40B section 6.3.5 says the opposite: the TPS61169 CHOPS ITS INTERNAL 204 mV REFERENCE at the CTRL duty cycle and filters it, so 'only the WLED DC current is modulated, which is often referred as analog dimming' -- THE CONVERTER KEEPS SWITCHING THROUGH EVERY PWM LOW PHASE.  Shutdown is entered only after CTRL is low for more than tSD (2.5 ms max, EC table).  With the gate shared, every PWM low phase therefore opened the LED string while U17 was actively regulating: FB collapses below 30 mV, SW ramps to VOVP_SW (36/37.5/39 V), open-LED protection (6.3.2) latches the device off after three switching cycles, and Q11's DRAIN -- the panel cathode -- follows the anode to about 36 V while R69 holds its SOURCE at 0 V.  THE AO3400A IS A 30 V PART (AOS Rev 3.1).  Firmware already drives ledcSetup(5000, 8) on GPIO46, so the board would have latched its backlight off and over-stressed Q11 on the first brightness ramp.  D-752 SEPARATES THE TWO FUNCTIONS IN HARDWARE RATHER THAN IN FIRMWARE.  D14 charges C85 from /DISP_BL_CTL through a silicon diode; R132 discharges it.  The gate therefore follows the ENVELOPE of CTRL, not its instantaneous level: it rises in microseconds (C85 charges through D14 from the GPIO against U17's 6.5 ms soft-start) and falls with tau = R132*C85 = 22 ms.  THE INVARIANT IS WAVEFORM-INDEPENDENT: Q11 cannot open until the gate has decayed below VGS(th), which takes at least 11.4 ms at worst-case tolerance, and U17 is guaranteed to be in SHUTDOWN after 2.5 ms.  U17 therefore stops switching FIRST, always, for any CTRL waveform whatsoever -- including an out-of-spec PWM frequency or a firmware crash.  Margin 4.6x.  1N4148WS chosen over a Schottky BECAUSE OF ITS REVERSE LEAKAGE: the true-off state is held by R132, and the worst PUBLISHED leakage of this part (1 uA at 75 V reverse; ours is 2.7 V) plus the AO3400A's 100 nA IGSS across 220 k is 0.242 V, against VGS(th) min 0.65 V.  A BAT54WS would have put that floor near or above threshold at temperature on an UNPUBLISHED number."
+			(at 198.12 200.66 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Note_Sourcing" "SOURCING D-752 2026-09-18, verified live per D-096 through the JLCPCB parts API; record at evidence/jlc-live/1n4148ws-*.json: LCSC C2128, Jiangsu Changjing Electronics, 1N4148WS, SOD-323, componentLibraryType = BASE (no extended-part fee, no feeder setup).  SOD-323 is the land pattern this board already carries for D8/D10/D11/D12, so D-752 adds no new footprint."
+			(at 198.12 200.66 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Small-signal switching diode, 75 V, 4 ns"
+			(at 198.12 200.66 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "42498bd8-d7a6-53e1-8aa7-1260215e24f6")
+		)
+		(pin "2"
+			(uuid "7f825df9-3f04-520d-9b03-803285f7cc36")
+		)
+		(instances
+			(project "aqroot-Beta-v2"
+				(path "/8a0ad1ee-a49e-4cff-9a78-44823e373405/e86f9f15-4a7f-4160-bee2-09febc1b0776"
+					(reference "D14")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:R")
+		(at 209.55 204.47 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "6fbb3fed-571f-55a7-b4c5-689a7271b090")
+		(property "Reference" "R132"
+			(at 211.5 203.0 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "220k 1%"
+			(at 211.5 205.5 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
+			(at 209.55 204.47 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 209.55 204.47 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "LCSC" "C22961"
+			(at 209.55 204.47 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Manufacturer" "UNI-ROYAL(Uniroyal Elec)"
+			(at 209.55 204.47 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "0603WAF2203T5E"
+			(at 209.55 204.47 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Package" "Existing 220k 1% 0603 line, shared with R56/R89 -- no new purchasing identity."
+			(at 209.55 204.47 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Note" "D-752 GATE-HOLD DISCHARGE.  Sets the fall time of Q11's gate with C85: tau = 220 k * 100 nF = 22 ms, against the TPS61169's 2.5 ms max CTRL-low-to-shutdown.  Q11 cannot open before U17 has stopped switching.  ALSO SETS THE TRUE-OFF FLOOR: D14's worst published reverse leakage (1 uA) plus Q11's 100 nA IGSS across 220 k is 0.242 V, below the AO3400A's 0.65 V minimum VGS(th), so the OFF state is held by a published number rather than an assumption.  A larger value would raise that floor; a smaller one would need a larger capacitor for the same tau.  Steady-state cost when the backlight is ON is 12.5 uA."
+			(at 209.55 204.47 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Resistor"
+			(at 209.55 204.47 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "c2025317-90a6-5a86-bf6c-91c5539b0e56")
+		)
+		(pin "2"
+			(uuid "4dd2aec3-15fb-5623-9c21-92b819917002")
+		)
+		(instances
+			(project "aqroot-Beta-v2"
+				(path "/8a0ad1ee-a49e-4cff-9a78-44823e373405/e86f9f15-4a7f-4160-bee2-09febc1b0776"
+					(reference "R132")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:C")
+		(at 217.17 204.47 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "5b313784-d3b4-5aad-98ee-4c79992e6ab1")
+		(property "Reference" "C85"
+			(at 219.0 203.0 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "100nF X7R"
+			(at 219.0 205.5 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric"
+			(at 217.17 204.47 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 217.17 204.47 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "LCSC" "C14663"
+			(at 217.17 204.47 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Manufacturer" "YAGEO"
+			(at 217.17 204.47 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "CC0603KRX7R9BB104"
+			(at 217.17 204.47 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Package" "Existing 100nF X7R 50 V 0603 line -- no new purchasing identity."
+			(at 217.17 204.47 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Note" "D-752 GATE-HOLD RESERVOIR.  Holds Q11's gate up through every TPS61169 PWM low phase.  Worst droop over the longest low phase the part specifies (5 kHz, 1 % duty = 199 us) is 26 mV on a 2.6 V worst-case gate.  With R132 the fall time constant is 22 ms, and the gate is still at 2.29 V at the 2.5 ms by which U17 is guaranteed to be in shutdown.  50 V X7R: the DC bias here is under 3 V, so the derating is negligible and tau is tolerance-bounded to 19.6-24.4 ms."
+			(at 217.17 204.47 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Unpolarized capacitor"
+			(at 217.17 204.47 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "817d71ff-5b92-5213-8722-4dadcb7b1f75")
+		)
+		(pin "2"
+			(uuid "39492fdb-dacd-5718-9a24-2245b99d16e3")
+		)
+		(instances
+			(project "aqroot-Beta-v2"
+				(path "/8a0ad1ee-a49e-4cff-9a78-44823e373405/e86f9f15-4a7f-4160-bee2-09febc1b0776"
+					(reference "C85")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "power:GND")
+		(at 209.55 210.82 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "d09ba500-d896-5839-b621-529c3c3644c7")
+		(property "Reference" "#PWR0735"
+			(at 209.55 217.17 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "GND"
+			(at 209.55 215.9 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 209.55 210.82 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 209.55 210.82 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Power symbol creates a global label with name GND, ground"
+			(at 209.55 210.82 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "57990d5f-20c0-52e9-8cd8-590a19fbaa00")
+		)
+		(instances
+			(project "aqroot-Beta-v2"
+				(path "/8a0ad1ee-a49e-4cff-9a78-44823e373405/e86f9f15-4a7f-4160-bee2-09febc1b0776"
+					(reference "#PWR0735")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "power:GND")
+		(at 217.17 210.82 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "24f84221-dde4-543c-888a-8105aa039775")
+		(property "Reference" "#PWR0736"
+			(at 217.17 217.17 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "GND"
+			(at 217.17 215.9 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 217.17 210.82 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 217.17 210.82 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Power symbol creates a global label with name GND, ground"
+			(at 217.17 210.82 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "657e61db-c6cb-5655-9f26-1df1f679e1e2")
+		)
+		(instances
+			(project "aqroot-Beta-v2"
+				(path "/8a0ad1ee-a49e-4cff-9a78-44823e373405/e86f9f15-4a7f-4160-bee2-09febc1b0776"
+					(reference "#PWR0736")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
 		(lib_id "Transistor_FET:Q_NMOS_GSD")
 		(at 241.3 200.66 0)
 		(unit 1)
@@ -10831,15 +11597,87 @@
 	)
 	(wire
 		(pts
-			(xy 236.22 200.66) (xy 228.60000000000002 200.66)
+			(xy 236.22 200.66) (xy 217.17 200.66)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "480b5bea-7d32-4895-aac4-ae3de2ea789a")
+		(uuid "525b54e9-f99d-5b84-a0d1-bf8f1fb339e3")
+	)
+	(wire
+		(pts
+			(xy 217.17 200.66) (xy 209.55 200.66)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "999a2a92-559c-5233-b63b-239503d94d19")
+	)
+	(wire
+		(pts
+			(xy 209.55 200.66) (xy 201.93 200.66)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "9fb95186-590c-55f3-b9c4-081cb1ad59d6")
+	)
+	(wire
+		(pts
+			(xy 194.31 200.66) (xy 186.69 200.66)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "49ae6063-9d3e-567c-a311-662227191251")
+	)
+	(wire
+		(pts
+			(xy 209.55 208.28) (xy 209.55 210.82)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "dcbab117-21b1-56dd-bcef-c352023f88d0")
+	)
+	(wire
+		(pts
+			(xy 217.17 208.28) (xy 217.17 210.82)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "7f6304c3-8684-551d-8fcf-85ec1cac3e53")
+	)
+	(junction
+		(at 217.17 200.66)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "4c2010c2-0886-5243-a1bd-4b2705590b75")
+	)
+	(junction
+		(at 209.55 200.66)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "57539017-f226-5572-b14b-c32d57903176")
 	)
 	(label "DISP_BL_CTL"
+		(at 186.69 200.66 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right)
+		)
+		(uuid "75fb2712-996d-506d-9d41-fa179f5fa7da")
+	)
+	(label "BL_DISC_G"
 		(at 228.60000000000002 200.66 180)
 		(effects
 			(font

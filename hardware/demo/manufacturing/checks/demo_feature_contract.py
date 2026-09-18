@@ -50,6 +50,24 @@ FEATURES = (
                "/SPI_A_MOSI", "/SPI_A_MISO", "/TOUCH_INT_N", "/TOUCH_RST_N",
                "/03_SPI_A_DISPLAY_SD/LED_A", "/03_SPI_A_DISPLAY_SD/LED_K",
                "/DISP_BL_CTL")),
+    dict(scope="display backlight true-off disconnect and its gate hold "
+               "(D-750 fitted it, D-752 made it safe)",
+         refs=("U17", "Q11", "D14", "R132", "C85",
+               "L3", "D8", "C44", "R69", "R70", "R71", "R72", "R73",
+               "R108", "R109"),
+         nets=("/DISP_BL_CTL", "/03_SPI_A_DISPLAY_SD/BL_DISC_G",
+               "/03_SPI_A_DISPLAY_SD/BL_SW",
+               "/03_SPI_A_DISPLAY_SD/LED_BOOST",
+               "/03_SPI_A_DISPLAY_SD/LED_A",
+               "/03_SPI_A_DISPLAY_SD/LED_K_PANEL",
+               "/03_SPI_A_DISPLAY_SD/LED_K"),
+         note="TI SNVSA40B 6.3.3: the TPS61169 keeps a DC path from VIN "
+              "through L3 and D8 to the LEDs in shutdown, and guarantees OFF "
+              "only when the array's minimum Vf exceeds the maximum VIN.  This "
+              "panel is 2.9-3.2 V on a 3.3 V rail, so the screen glows at "
+              "about 25 mA whenever SW9 is on -- and SW9 is a slide switch, so "
+              "there is no firmware mitigation.  Q11 breaks the panel cathode "
+              "return; F5 below is what holds its CONTROL apart from U17's."),
     dict(scope="D-pad + A/B controls",
          refs=("SW2", "SW3", "SW4", "SW5", "SW6", "SW7"),
          nets=("/08_BUTTONS_EXPANDERS/BTN_UP_N", "/08_BUTTONS_EXPANDERS/BTN_DOWN_N",
@@ -79,9 +97,16 @@ FEATURES = (
                "/04_SPI_B_RADIOS_NFC/NFC_VDD_A", "/04_SPI_B_RADIOS_NFC/NFC_VDD_D"),
          note="U13, the optional NFC 5 V PA boost, is DNP by Demo scope and is "
               "deliberately NOT required here"),
-    dict(scope="IR transmitter", refs=("U17",),
+    dict(scope="IR transmitter", refs=("D1", "Q1", "R22", "R23", "R24"),
          nets=("/IR_TX_GPIO16", "/07_IR/IR_LED_A", "/07_IR/IR_LED_K",
-               "/07_IR/IR_GATE")),
+               "/07_IR/IR_GATE"),
+         note="D-752 CORRECTED THIS ROW.  It named `U17`, which is the display "
+              "BACKLIGHT boost converter and has nothing to do with the IR "
+              "path; `U17` exists and is fitted, so F1 passed while requiring "
+              "none of the parts that actually emit.  The emitter is `D1` "
+              "(TSAL6100), its low-side switch `Q1`, the gate series/pull-down "
+              "pair `R22`/`R23` and the ballast `R24`.  `R123` is the DNP "
+              "second ballast and is deliberately NOT required."),
     dict(scope="IR receiver", refs=("U6",),
          nets=("/IR_RX_GPIO44", "/07_IR/IR_RX_VS_LOCAL")),
     dict(scope="speaker", refs=("U5",),
@@ -194,6 +219,64 @@ EXPECTED_NC = {"J5.9", "J5.10", "J5.11", "J5.12",
                "J5.15", "J5.16", "J5.17", "J5.18"}
 
 
+
+# --------------------------------------------------------------------------
+# F5 -- THE BACKLIGHT DISCONNECT'S CONTROL MAY NOT COLLAPSE BACK ONTO U17's.
+# D-752.
+#
+# D-750 fitted `Q11` in the panel cathode return and put its GATE on
+# `/DISP_BL_CTL`, the same net as `U17` `CTRL`, on the premise that PWM would
+# shut the converter down and open the FET together.  TI SNVSA40B section 6.3.5
+# says the opposite in its own words: the part "chops up the internal 204mV
+# reference voltage at the duty cycle of the PWM signal", filters it, and
+# therefore "only the WLED DC current is modulated, which is often referred as
+# analog dimming".  THE CONVERTER KEEPS SWITCHING THROUGH EVERY PWM LOW PHASE;
+# shutdown needs CTRL low for longer than tSD, 2.5 ms max.  A shared gate
+# therefore opens the LED string while the converter regulates: FB collapses,
+# SW ramps to VOVP_SW (36/37.5/39 V), open-LED protection latches the device
+# off, and `Q11`'s drain follows the anode to about 36 V across a 30 V
+# `AO3400A`.  The firmware already drives 5 kHz LEDC on GPIO46.
+#
+# The repair is structural rather than procedural: `D14` charges `C85` from
+# `/DISP_BL_CTL`, `R132` discharges it, and the gate follows the ENVELOPE of
+# CTRL with tau = 22 ms.  `Q11` cannot open until at least 11.4 ms of CTRL-low
+# at worst-case tolerance, and `U17` is in shutdown by 2.5 ms -- so the
+# converter stops FIRST, for ANY CTRL waveform, including one no firmware ever
+# intended.  That ordering is the thing this clause protects, and it is
+# protected by MEASUREMENT: the four facts below plus three live controls that
+# put each way of losing it back and require F5 to refuse.
+# --------------------------------------------------------------------------
+BL_GATE = "Q11.1"
+BL_HOLD = {"Q11.1", "D14.1", "R132.1", "C85.1"}
+BL_CTRL = {"U17.4", "D14.2", "R109.2"}
+
+
+def judge_backlight(nets_by_contact, values):
+    """Pure over {contact: netname} and {ref: value}; returns (ok, detail)."""
+    gate = nets_by_contact.get(BL_GATE)
+    ctrl = nets_by_contact.get("U17.4")
+    on_gate = {c for c, n in nets_by_contact.items() if n == gate and gate}
+    on_ctrl = {c for c, n in nets_by_contact.items() if n == ctrl and ctrl}
+    f = dict(
+        gate_net=gate, ctrl_net=ctrl,
+        gate_is_not_ctrl=bool(gate) and bool(ctrl) and gate != ctrl,
+        gate_net_is_exactly_the_hold=on_gate == BL_HOLD,
+        ctrl_net_carries_the_diode_anode=on_ctrl == BL_CTRL,
+        hold_returns_to_ground=(nets_by_contact.get("R132.2") == "GND"
+                                and nets_by_contact.get("C85.2") == "GND"),
+        # tau is the whole argument; a silent value change is a silent repeal
+        r132_value_is_220k="220k" in (values.get("R132") or ""),
+        c85_value_is_100nF="100nF" in (values.get("C85") or ""),
+        # and the OFF floor is held by the diode's PUBLISHED reverse leakage
+        d14_is_a_silicon_switching_diode=(values.get("D14") or "").upper()
+                                          .startswith("1N4148"),
+        gate_contacts=sorted(on_gate), ctrl_contacts=sorted(on_ctrl))
+    f["ok"] = all(v for k, v in f.items()
+                  if k.startswith(("gate_is", "gate_net_is", "ctrl_net",
+                                   "hold_", "r132_", "c85_", "d14_")))
+    return f["ok"], f
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("-o", dest="out", type=Path)
@@ -266,6 +349,40 @@ def main():
         j5_rows.append(dict(contact=contact, net=net, kind=kind,
                             esd=net in esd_nets))
 
+    # ---- F5: the backlight disconnect's control, and three live controls --
+    nets_by_contact, values = {}, {}
+    for fp in board.GetFootprints():
+        ref = fp.GetReference()
+        values[ref] = fp.GetValue() or ""
+        for pd in fp.Pads():
+            if pd.GetNumber():
+                nets_by_contact["%s.%s" % (ref, pd.GetNumber())] = pd.GetNetname()
+    bl_ok, bl = judge_backlight(nets_by_contact, values)
+
+    def _control(name, mutate):
+        n2, v2 = dict(nets_by_contact), dict(values)
+        mutate(n2, v2)
+        ok, _ = judge_backlight(n2, v2)
+        return name, not ok            # a control PASSES when F5 REFUSES it
+
+    def _collapse(n, v):
+        n[BL_GATE] = n["U17.4"]
+
+    def _drop_hold_cap(n, v):
+        n["C85.1"] = "Net-(C85-Pad1)"
+
+    def _schottky(n, v):
+        v["D14"] = "BAT54WS"
+
+    def _wrong_tau(n, v):
+        v["R132"] = "10k"
+
+    bl_controls = dict(x for x in (
+        _control("f5a_refuses_the_gate_collapsed_onto_u17_ctrl", _collapse),
+        _control("f5b_refuses_the_hold_capacitor_dropped", _drop_hold_cap),
+        _control("f5c_refuses_a_schottky_in_the_charge_path", _schottky),
+        _control("f5d_refuses_a_silently_retuned_hold", _wrong_tau)))
+
     nc = ledger["approved_demo_nc"]
     checks = {
         "F1_every_scope_part_fitted": dict(
@@ -288,6 +405,15 @@ def main():
             note="power and ground contacts are deliberately excluded -- D-188 "
                  "rejected a TVS on either rail because the part's 5.5 V VRWM "
                  "leaves no working margin against a 5.0 V nominal rail"),
+        "F5_backlight_disconnect_control_is_independent": dict(
+            ok=bl_ok and all(bl_controls.values()),
+            method="TI SNVSA40B 6.3.5 makes CTRL an ANALOG dimming input: the "
+                   "converter keeps switching through every PWM low phase, so "
+                   "Q11's gate may not share it.  The D-752 hold network is "
+                   "what keeps the ordering, and four live controls put each "
+                   "way of losing it back",
+            controls_refused=bl_controls,
+            **{k: v for k, v in bl.items() if k != "ok"}),
         "F3_approved_nc_exactly_as_scoped": dict(
             ok=(set(nc["observed"]) == EXPECTED_NC
                 and not nc["missing"] and not nc["unexpected"]),

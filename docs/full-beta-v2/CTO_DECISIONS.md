@@ -1,3 +1,188 @@
+## D-752 — **THE BACKLIGHT DISCONNECT COULD NOT SHARE THE PWM PIN, AND THE DATASHEET SAID SO ALL ALONG**
+
+    authority  bdf1376c -> 7f133e64   D14/R132/C85 fitted; Q11's gate leaves /DISP_BL_CTL
+    board      173/174 retained nets connected, 1 owner-approved open (U11.3), 0 unapproved
+    DRC        199 lib_footprint_issues, EVERY ONE A WARNING; 0 parity errors
+    changed    03_spi_a_display_sd.kicad_sch, aqroot-Beta-v2.kicad_pcb
+               checks/demo_feature_contract.py  (F5, four live controls; IR row corrected)
+               Firmware/src/hw/{aqroot_demo_peripherals.h,aqroot_demo_board.h,
+                                aqroot_demo_board.json}
+               DEVICE_SPEC.md, AQROOT_DEMO_FAB_HANDOFF.md,
+               audits/2026-09-18-d750-first-spin-review-dispositions.md
+               hardware/demo/fab/*  regenerated
+    evidence   d752-{verify-promotion,routing-ledger,protected-copper,rail-ampacity,
+               fab-package-contract,firmware-hw-map-contract,contract-regression}.json
+               plus a full d752-* baseline set; evidence/jlc-live/1n4148ws-*.json
+
+### 1. D-751 GOT THE PHYSICS BACKWARDS, AND WROTE IT INTO FOUR DOCUMENTS
+
+D-750 fitted `Q11`, the backlight true-off disconnect, with its gate on
+`/DISP_BL_CTL` — **the same net as `U17`'s `CTRL`**.  D-751 noticed the
+consequence and drew the wrong conclusion from it: it recorded the shared net as
+a *safety constraint*, on the reasoning that PWM shuts the converter down and
+opens `Q11` together, so the forbidden state — *converter switching with `Q11`
+off* — is unreachable.  That sentence went into the schematic Note, `DEVICE_SPEC`
+§5, the fabrication handoff's risk list and the disposition audit.
+
+**An independent CTO re-review flagged it, and the primary source settles it
+against D-751.**  TI `SNVSA40B` (TPS61169, Rev. June 2024) §6.3.5:
+
+> the device chops up the internal 204mV reference voltage at the duty cycle of
+> the PWM signal.  The pulse signal is then filtered by an internal low-pass
+> filter. … Therefore, although a PWM signal is used for brightness dimming,
+> **only the WLED DC current is modulated, which is often referred as analog
+> dimming.**
+
+`CTRL` is an **analog** dimming input.  The converter does not stop on the low
+phase; it keeps switching and regulates the LED current to the average.  §6.3.3
+enters shutdown only after `CTRL` has been low for longer than `tSD`, and the EC
+table gives `tSD` as **2.5 ms max** — three to four orders of magnitude longer
+than a low phase at the 5–100 kHz §6.3.5 asks for.
+
+**So the shared gate created the forbidden state on every dimmed frame**, not on
+none of them.  With `Q11` open while `U17` regulates: `FB` falls below the 30 mV
+threshold, `SW` ramps to `VOVP_SW` — **36 / 37.5 / 39 V** — §6.3.2 open-LED
+protection latches the part off after three switching cycles, and the panel
+cathode, which is `Q11`'s DRAIN, follows the anode to ≈ 36 V while `R69` holds
+its SOURCE at 0 V.  **The `AO3400A` is a 30 V part** (AOS Rev 3.1: `VDS` 30 V,
+`VGS(th)` 0.65/1.05/1.45 V, `IGSS` 100 nA).  And this is not hypothetical
+firmware: `Firmware/src/hw/aqroot_demo_peripherals.h` already calls
+`ledcSetup(channel, 5000, 8)` on GPIO46.  **The first brightness ramp would have
+latched the backlight off and over-stressed `Q11`** — on a board where every
+identity gate passed and the screen lit at full duty.
+
+### 2. THE REPAIR IS STRUCTURAL, BECAUSE THE ALTERNATIVE IS A FIRMWARE PROMISE
+
+The review's proposed fix was a separate static enable from a spare `U3`
+expander bit with its own pull-down, plus a documented power-up/shutdown
+sequence.  That works only while the sequence is obeyed: any path that deasserts
+`Q11` while `U17` is out of shutdown is the same 36 V across the same 30 V part,
+and it would then be a firmware bug away, forever, on a one-shot board.  It also
+spends a pin and a route.
+
+`D14`/`C85`/`R132` make the ordering a property of the circuit instead.
+`Q11`'s gate moves to its own net `/03_SPI_A_DISPLAY_SD/BL_DISC_G`, and that net
+carries the **envelope** of `DISP_BL_CTL`:
+
+    D14   1N4148WS SOD-323   anode /DISP_BL_CTL, cathode BL_DISC_G
+    C85   100 nF X7R 50 V    BL_DISC_G -> GND
+    R132  220 k 1 %          BL_DISC_G -> GND        tau = 22.0 ms
+
+  * **HOLD.**  `Vf` ≤ 0.7 V at the 12.5 µA hold current puts the gate at
+    ≥ 2.60 V; τ over tolerance is 19.6–24.4 ms; `VGS` at `tSD` = 2.5 ms is
+    **2.29 V**, still above the `RDS(on)` spec point.  Droop over the longest
+    low phase the part specifies — 5 kHz at 1 % duty, 199 µs — is **26 mV**.
+  * **THE INVARIANT IS WAVEFORM-INDEPENDENT.**  `Q11` cannot open until the gate
+    decays below `VGS(th)`; worst case (highest `VGS(th)` 1.45 V, shortest τ,
+    lowest start) that is **11.4 ms**, against a `tSD` of at most 2.5 ms.  `U17`
+    therefore stops switching FIRST for **any** `CTRL` waveform whatsoever —
+    including an out-of-spec PWM frequency, a stalled duty cycle or a firmware
+    crash.  **Margin 4.6×**, and nothing sequences it.
+  * **TURN-ON IS NOT A RACE EITHER.**  `C85` charges through `D14` from the GPIO
+    in ≈ 25 µs against `U17`'s **6.5 ms** soft-start (§6.3.1), so `Q11` is fully
+    enhanced two orders of magnitude before the converter delivers current.
+  * **SILICON, NOT SCHOTTKY, AND FOR A PUBLISHED REASON.**  The true-off state is
+    held by `R132`, so the diode's reverse leakage sets the floor.  `1N4148WS` is
+    specified at **1 µA at `VR` = 75 V**; ours sees 2.7 V.  That worst published
+    figure plus the `AO3400A`'s 100 nA `IGSS` across 220 k is **0.242 V**, against
+    `VGS(th)` min **0.65 V** — a 2.7× margin on numbers both vendors print.  The
+    board already carries `BAT54WS`, and reusing it would have rested the OFF
+    state on an *unpublished* Schottky leakage curve at temperature.
+  * **IT COSTS NOTHING ELECTRICALLY.**  `RDS(on)` ≤ 48 mΩ at `VGS` 2.5 V is
+    **5.2 mV** at 109 mA; the setpoint and its 100.5–117.6 mA band are unchanged.
+  * **AND ALMOST NOTHING COMMERCIALLY.**  `C85` joins the existing 100 nF line
+    (6 → 7) and `R132` the existing 220 k line (1 → 2), so only `D14` is a new
+    purchasing identity: LCSC **`C2128`**, Jiangsu Changjing, JLCPCB **BASIC**
+    (no extended-part fee), stock 1 759 041, verified live per D-096.  It reuses
+    `Diode_SMD:D_SOD-323`, the land pattern `D8`/`D10`/`D11`/`D12` already carry,
+    so **no new footprint and no new land-pattern verification**.
+
+### 3. WHERE THEY WENT, AND WHAT HAD TO MOVE
+
+The pocket north of `Q11` is walled by three diagonals — the 0.8 mm
+`BQ25185_SYS` trunk, the `LED_BOOST` run and `DISP_BL_CTL`'s own entry — and an
+exhaustive search over `x 4.5…23 / y 104…122` with KiCad's real footprint
+bounding boxes and a 0.20 mm body margin found the three parts fit with a
+**5.13 mm** gate spine:
+
+    D14   (6.800, 117.900) rot 270   K (6.800,116.850)  A (6.800,118.950)
+    R132  (7.000, 114.500) rot  90   1 (7.000,115.325)  2 (7.000,113.675) GND
+    C85   (9.500, 115.200) rot   0   1 (8.725,115.200)  2 (10.275,115.200) GND
+
+**The `DISP_BL_CTL` via had to move, and the first choice was wrong.**  Its old
+seat at `(6.950, 119.000)` lands 0.158 mm from `D14`'s anode pad.  The first
+replacement, `(7.700, 118.600)`, was clear on `B.Cu` — **and a through via is not
+a `B.Cu` object**: it collided with `SW5`'s `F.Cu` `GND` land at
+`(8.250, 118.980)`, and KiCad returned four errors at once (`shorting_items`,
+`clearance` 0.0847, `hole_clearance` 0.000, `solder_mask_bridge`).  The seat that
+holds is **`(5.800, 117.500)`**, chosen by a full-stack sweep over `F`, `B`, `In2`
+and `In3` with a **0.512 mm** worst margin.  It sits under `SW5`'s body, which is
+this board's established practice, not a new one: the `GND` stitch vias at
+`(8.200, 117.700)` and `(8.200, 112.300)` are already there, and `SW5`'s own
+`PTS645` base is plastic.
+
+The In2 leg re-lays `(4.450, 121.500) → (5.800, 117.500)`; `B.Cu` carries
+`(5.800,117.500) → D14.A` and the three spine segments.  **Four objects removed,
+seven added**, and `verify_promotion` passes all sixteen clauses with
+`/DISP_BL_CTL` DECLARED as the evicted net.
+
+### 4. AND THE CONTRACT THAT SHOULD HAVE CAUGHT IT NAMED THE WRONG PART
+
+`demo_feature_contract.py` transcribes `AQROOT_DEMO_SCOPE.md` feature by feature.
+Its **"IR transmitter"** row named **`refs=("U17",)`** — and `U17` is the display
+backlight boost.  `U17` exists and is fitted, so `F1` passed on every run this
+repository has ever made while requiring *none* of the parts that actually emit.
+Corrected to `D1` (TSAL6100), `Q1`, `R22`, `R23`, `R24`; `R123` is the DNP second
+ballast and is deliberately not required.
+
+**`F5` is new and is the clause that makes D-752 hold.**  It asserts, from the
+board and not from a list, that the gate net and `U17`'s `CTRL` net are
+DISTINCT; that the gate net carries **exactly** `Q11.1`, `D14.1`, `R132.1`,
+`C85.1`; that `D14.2` sits on `/DISP_BL_CTL` with `U17.4` and `R109.2`; that both
+hold legs return to `GND`; and that the `220k` / `100nF` / `1N4148` identities
+hold, because **τ is the whole argument and a silent value change is a silent
+repeal**.  Four live negative controls run inside the gate and all four are
+refused:
+
+    f5a  the gate collapsed back onto U17 CTRL      REFUSED   <- the D-751 board
+    f5b  the hold capacitor dropped                 REFUSED
+    f5c  a Schottky in the charge path              REFUSED
+    f5d  a silently retuned hold (220k -> 10k)      REFUSED
+
+A new scope row requires the whole block — `U17`, `Q11`, `D14`, `R132`, `C85`,
+`L3`, `D8`, `C44`, `R69`, `R70`–`R73`, `R108`, `R109` and its seven nets — so the
+disconnect cannot be depopulated into a board that still passes.
+
+### 5. FIRMWARE NEEDED NO SEQUENCING, AND SAYS SO
+
+No ordering code was added, because the point of §2 is that none is needed.
+What changed is the record: `aqroot_demo_peripherals.h` now states that `CTRL` is
+an analog dimming input, that the converter keeps switching through the low
+phase, why `Q11`'s gate is therefore NOT on that pin, and that switching the
+backlight off means *holding the pin low* — the panel goes truly dark ≈ 40 ms
+later.  The PWM frequency became a named constant with a `static_assert` pinning
+it inside TI's 5–100 kHz window, below which §6.3.5 says the internal filter no
+longer smooths the chopped reference.  All four PlatformIO environments build.
+
+### 6. RELEASE-GRADE VERIFICATION, RE-RUN WHOLE ON `7f133e64`
+
+    connectivity     174 retained nets, 173 connected, 1 open
+                     approved_unrouted 1 (U11.3, owner decision D-742)
+                     unapproved_open_edges 0
+    approved NC      exactly the 8 J5 positions Demo scope allows
+    KiCad DRC        199 lib_footprint_issues, ALL severity WARNING
+                     0 clearance / shorting / hole_clearance / solder_mask_bridge
+    parity           0 ERRORS; footprint_symbol_mismatch 45, inside the 46 ceiling
+    promotion        16 of 16 clauses PASS, /DISP_BL_CTL declared evicted
+    protected copper 15 nets / 406 objects IDENTICAL to HEAD, differences {}
+    ampacity         all_ok, stackup self-check PASS at the board's own 0.0152 mm
+    FAB1..FAB12      ALL PASS, 7 live negative controls refused; via-in-pad 136
+                     unchanged, mask dams 21 unchanged, sourcing coverage 252/252
+    contracts        17 run, 17 pass
+    firmware         H1-H6 PASS, 11 policy controls refused; 4 PlatformIO builds
+    hardware/beta-v2 UNTOUCHED
+
+
 ## D-751 — **THE BACKLIGHT DISCONNECT IS COPPER NOW, AND THREE GATES THAT COULD NOT EXPRESS WHAT D-750 DID WERE TAUGHT TO**
 
     authority  c7f5c618 -> bdf1376c   Q11's three nets routed; one dangling In2 stub trimmed

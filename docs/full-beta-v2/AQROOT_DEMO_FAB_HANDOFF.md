@@ -61,9 +61,12 @@ D-742…D-745 entries below are retained as the history of the previous cycle.
    converged at **≈ 25 mA** — a fifth of full brightness and 82 mW, with no
    firmware mitigation because `+3V3` is switched by the `SW9` slide switch.
    One `AO3400A` (same BOM line as `Q1`, LCSC `C20917`) in the panel cathode
-   return, gate on `DISP_BL_CTL`, held off by `R108`.  Outside the regulation
-   loop by construction, so the 109 mA setpoint is unchanged.  **D-751 routed
-   its three nets** — D-750 had fitted it and left them open.
+   return.  Outside the regulation loop by construction, so the 109 mA setpoint
+   is unchanged.  **D-751 routed its three nets** — D-750 had fitted it and left
+   them open — and **D-752 took its gate off `DISP_BL_CTL`**, where a PWM low
+   phase would have opened the string under an actively switching converter
+   (§8 risk 10).  The gate now sits on its own `BL_DISC_G`, held up through
+   every low phase by `D14` + `C85` and pulled down by `R132` (τ = 22 ms).
 
 1. **The charger could not complete a charge, and now can.** `R37` 1 kΩ → **390 Ω**
    (`ICHG` 300 mA → **769 mA**) and `R36` 18 kΩ → **13 kΩ** (input limit ILIM500 →
@@ -337,15 +340,24 @@ can only be confirmed by eye. `MK1` and `U5` share one `/I2S_BCLK` and one
    is a fabrication blocker**; all are application work that continues during
    fabrication.
 
-10. **`Q11` AND `U17` SHARE ONE CONTROL NET, AND THAT IS LOAD-BEARING** (D-751).
-   The state that must never occur is *converter switching with `Q11` off*: an
-   open LED path drives the `TPS61169` output to its overvoltage clamp near
-   **38 V**, and the panel cathode — `Q11`'s drain — follows the anode while
-   `R69` holds the source at 0 V. **The `AO3400A` is a 30 V part.** One net
-   driving both gates makes that state unreachable, and PWM on `DISP_BL_CTL`
-   correctly shuts the converter down and opens `Q11` together. **Any revision
-   that separates the two controls in order to PWM `Q11` alone must re-rate
-   `Q11` to at least 40 V `VDS`.**
+10. **`Q11`'s GATE HOLD IS LOAD-BEARING AND MUST SURVIVE ANY REVISION**
+   (D-752; this entry SUPERSEDES the D-751 text, which had the argument
+   backwards). TI `SNVSA40B` §6.3.5 makes `CTRL` an **analog** dimming input —
+   the part chops its internal 204 mV reference at the duty cycle and filters
+   it, so *"only the WLED DC current is modulated"* and **the converter keeps
+   switching through every PWM low phase**; shutdown needs `CTRL` low for more
+   than `tSD`, 2.5 ms max. The state that must never occur is *converter
+   switching with `Q11` off*: `FB` collapses under the 30 mV open-LED
+   threshold, `SW` ramps to `VOVP_SW` (36 / 37.5 / 39 V), and the panel cathode
+   — `Q11`'s drain — follows the anode to ≈ 36 V across a **30 V** `AO3400A`.
+   `D14`/`C85`/`R132` make that unreachable by construction: the gate follows
+   the ENVELOPE of `DISP_BL_CTL` with **τ = 22 ms**, so `Q11` cannot open
+   before **11.4 ms** at worst-case tolerance while `U17` is in shutdown by
+   2.5 ms — **4.6× margin, waveform-independent, no firmware sequencing**.
+   `demo_feature_contract.py` **F5** refuses any board that collapses the two
+   nets, drops `C85`, substitutes a Schottky for `D14`, or retunes `R132`.
+   **A revision that wants to PWM `Q11` independently must re-rate it to at
+   least 40 V `VDS` first.**
 
 ## 9. Recommended post-Kickstarter improvements
 

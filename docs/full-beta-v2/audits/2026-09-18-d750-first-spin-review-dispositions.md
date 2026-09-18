@@ -234,18 +234,34 @@ off state is proven rather than assumed: `R108` holds the gate low through
 boot, reset, GPIO high-impedance and firmware crash, the body diode is
 reverse-biased, and `IDSS` is under 1 µA.
 
-**D-751 CORRECTED ONE SENTENCE OF THIS ITEM.**  It said PWM "now gates the LED
-current directly instead of restarting the converter every cycle", which cannot
-be true: `Q11`'s gate and `U17`'s `CTRL` are the SAME NET, so PWM does both.
-That is the SAFE arrangement and it is now recorded as a CONSTRAINT.  The state
-that must never occur is *converter switching with `Q11` off* — an open LED path
-drives the `TPS61169` output to its overvoltage clamp near **38 V**, and the
-panel cathode, which is `Q11`'s DRAIN, follows the anode while `R69` holds the
-SOURCE at 0 V.  **The `AO3400A` is a 30 V part.**  One net driving both gates
-makes that state unreachable; a future revision that separates them to PWM
-`Q11` alone must re-rate `Q11` to at least 40 V `VDS`.  The `RDS(on)` headroom
-figure is also corrected: at the worst published 48 mΩ at `VGS` 2.5 V it is
-**5.2 mV at 109 mA**, not 2.4 mV.
+**D-751 CORRECTED ONE SENTENCE OF THIS ITEM, AND CORRECTED IT THE WRONG WAY.**
+D-750 had written that PWM "now gates the LED current directly instead of
+restarting the converter every cycle".  D-751 replaced that with the claim that
+the shared gate is the SAFE arrangement and recorded it as a constraint.
+**D-752 read the primary source and found the opposite.**  TI `SNVSA40B` §6.3.5:
+the `TPS61169` "chops up the internal 204 mV reference voltage at the duty cycle
+of the PWM signal", filters it, and therefore *"only the WLED DC current is
+modulated, which is often referred as analog dimming"*.  **The converter keeps
+switching through every PWM low phase**; §6.3.3 enters shutdown only after
+`CTRL` has been low for longer than `tSD`, 2.5 ms max.  So the shared gate
+created exactly the forbidden state on every dimmed frame: `FB` below the 30 mV
+open-LED threshold, `SW` at `VOVP_SW` (36 / 37.5 / 39 V), §6.3.2 latching the
+part off after three switching cycles, and `Q11`'s DRAIN — the panel cathode —
+at ≈ 36 V while `R69` holds its SOURCE at 0 V.  **The `AO3400A` is a 30 V
+part.**  The firmware already drives `ledcSetup(5000, 8)` on GPIO46; the first
+brightness ramp would have latched the backlight off and over-stressed `Q11`.
+
+**D-752 SEPARATED THE TWO FUNCTIONS IN HARDWARE.**  `Q11`'s gate is now
+`/03_SPI_A_DISPLAY_SD/BL_DISC_G`, driven by an ENVELOPE of `DISP_BL_CTL`:
+`D14` (1N4148WS, LCSC `C2128`, JLCPCB BASIC, the SOD-323 land this board
+already carries) charges `C85` (100 nF) in ≈ 25 µs against `U17`'s 6.5 ms
+soft-start, and `R132` (220 k) discharges it with **τ = 22 ms**.  `Q11` cannot
+open before **11.4 ms** at worst-case tolerance, and `U17` is in shutdown by
+**2.5 ms** — the converter always stops FIRST, for any `CTRL` waveform, with no
+firmware sequencing.  `demo_feature_contract.py` **F5** holds the topology with
+four live negative controls.  The `RDS(on)` headroom figure is also corrected:
+at the worst published 48 mΩ at `VGS` 2.5 V it is **5.2 mV at 109 mA**, not
+2.4 mV.
 
 ## 8. BATTERY MUST BECOME A FROZEN, QUALIFIED PART — **PROCUREMENT + FIRST-ARTICLE**
 
