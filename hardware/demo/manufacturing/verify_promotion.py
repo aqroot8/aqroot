@@ -553,6 +553,66 @@ def poly_is_contained(inner, outer):
     return residue.IsEmpty()
 
 
+# D-758.  A KEEP-OUT THAT DOES NOT SIT ON THE THING IT PROTECTS IS NOT A
+# KEEP-OUT, AND THIS GATE HAD NO WORD FOR MOVING ONE.
+#
+# `--rule-area-narrowed` (D-684) admits a polygon that shrinks WHOLLY INSIDE
+# its old self, and everything else that moved is `rmoved` and a refusal --
+# correctly, because a polygon that merely moved "could protect somewhere new
+# while abandoning somewhere old".  But that is exactly the act a MISPLACED
+# keep-out needs: `BOSS1_KEEPOUT` sat 1.000 mm east of the `M2` boss it names,
+# so the Ø4.5 mm the footprint requires was unprotected on the west and 1.000 mm
+# of copper was needlessly forbidden on the east.
+#
+# The declaration is `--rule-area-recentred NAME:REF:DIA_MM`, and it is not an
+# override.  It is admitted only where the claim MEASURES TRUE:
+#   * every other field of the area is identical -- owner, name, copper layer
+#     set, all four disallow flags;
+#   * the NEW outline wholly COVERS the disc of diameter `DIA_MM` centred on
+#     footprint `REF`'s own position, by real polygon boolean;
+#   * the OLD outline did NOT -- so it cannot be spent on an area that was
+#     already right, which is this declaration's own non-vacuity control;
+#   * and the new outline is NOT LARGER IN AREA than the old one, so
+#     "re-centring" can never be a way to grow a keep-out into new ground.
+def poly_covers_disc(outline, centre_nm, dia_nm, segments=64):
+    """Does `outline` wholly contain the disc of `dia_nm` about `centre_nm`?"""
+    import math
+    import pcbnew
+
+    def mk(pts):
+        poly = pcbnew.SHAPE_POLY_SET()
+        poly.NewOutline()
+        for x, y in pts:
+            poly.Append(int(x), int(y))
+        return poly
+
+    r = dia_nm / 2.0
+    cx, cy = centre_nm
+    # INSCRIBED polygon: every vertex is ON the circle, so containment of this
+    # polygon is the weaker claim and a few more segments only make it tighter.
+    disc = [(cx + r * math.cos(2 * math.pi * i / segments),
+             cy + r * math.sin(2 * math.pi * i / segments))
+            for i in range(segments)]
+    residue = mk(disc)
+    residue.BooleanSubtract(mk(outline))
+    return residue.IsEmpty()
+
+
+def poly_area_nm2(pts):
+    a = 0.0
+    for i, (x, y) in enumerate(pts):
+        x2, y2 = pts[(i + 1) % len(pts)]
+        a += x * y2 - x2 * y
+    return abs(a) / 2.0
+
+
+def footprint_positions(path):
+    import pcbnew
+    board = pcbnew.LoadBoard(str(path))
+    return {f.GetReference(): (f.GetPosition().x, f.GetPosition().y)
+            for f in board.GetFootprints()}
+
+
 def rule_area_sigs(path):
     """uuid -> every rule area's owner, name, layers, flags and outline.
 
@@ -763,6 +823,14 @@ def main():
                          "inside its own former outline, with its owner, name, "
                          "copper layer set and all four disallow flags "
                          "unchanged.  D-684.  Repeatable")
+    ap.add_argument("--rule-area-recentred", action="append", default=[],
+                    metavar="NAME:REF:DIA_MM",
+                    help="D-758: a KEEP-OUT rule area the promotion claims to "
+                         "have RE-CENTRED onto the footprint it protects.  "
+                         "Admitted only when every other field is identical, "
+                         "the NEW outline covers the DIA_MM disc on REF's own "
+                         "position, the OLD outline did NOT, and the new area "
+                         "is no larger than the old one.  Repeatable")
     ap.add_argument("--rule-area-keepout", action="append", default=[],
                     metavar="NAME",
                     help="D-706: name of a KEEP-OUT rule area the promotion "
@@ -849,7 +917,53 @@ def main():
     # repairing that is a change to ONE field -- the copper layer set, and only
     # ever upward.  A promotion must NAME each one; anything else about a rule
     # area that moved is a change nobody reviewed.
-    rwidened, rnarrowed, rmoved = [], [], []
+    # D-758.  Resolve every `--rule-area-recentred NAME:REF:DIA_MM` claim into
+    # the UUID it names and MEASURE it, before the loop that classifies moves.
+    # A claim that does not measure true is simply not recorded, so the area
+    # falls through to `rmoved` and the gate refuses -- the claim can never
+    # weaken the comparison, only satisfy it.
+    fps_post = footprint_positions(post)
+    recentre_by_uuid, recentre_refused = {}, []
+    for spec in a.rule_area_recentred:
+        parts = spec.split(":")
+        if len(parts) != 3:
+            recentre_refused.append(dict(claim=spec, why="want NAME:REF:DIA_MM"))
+            continue
+        name, ref, dia = parts[0], parts[1], float(parts[2])
+        dia_nm = int(round(dia * 1e6))
+        centre = fps_post.get(ref)
+        if centre is None:
+            recentre_refused.append(dict(claim=spec, why="no footprint %s" % ref))
+            continue
+        hit = False
+        for u in sorted(set(rpre) & set(rpost)):
+            was, now = rpre[u], rpost[u]
+            if was == now or (was[1] or was[0]) != name:
+                continue
+            same_but_outline = was[:7] == now[:7]
+            covers_now = poly_covers_disc(now[7], centre, dia_nm)
+            covered_before = poly_covers_disc(was[7], centre, dia_nm)
+            not_larger = poly_area_nm2(now[7]) <= poly_area_nm2(was[7]) + 1
+            row = dict(claim=spec, name=name, ref=ref, diameter_mm=dia,
+                       centre_mm=[centre[0] / 1e6, centre[1] / 1e6],
+                       every_other_field_identical=same_but_outline,
+                       new_outline_covers_the_disc=covers_now,
+                       old_outline_covered_the_disc=covered_before,
+                       old_area_mm2=round(poly_area_nm2(was[7]) / 1e12, 6),
+                       new_area_mm2=round(poly_area_nm2(now[7]) / 1e12, 6),
+                       new_area_not_larger=not_larger)
+            if (same_but_outline and covers_now and not covered_before
+                    and not_larger):
+                recentre_by_uuid[u] = row
+                hit = True
+            else:
+                recentre_refused.append(row)
+        if not hit and not any(r.get("name") == name
+                               for r in recentre_refused):
+            recentre_refused.append(dict(claim=spec, name=name,
+                                         why="no rule area of that name moved"))
+
+    rwidened, rnarrowed, rmoved, rrecentred = [], [], [], []
     for u in sorted(set(rpre) & set(rpost)):
         was, now = rpre[u], rpost[u]
         if was == now:
@@ -867,6 +981,8 @@ def main():
             rnarrowed.append((u, was[1] or was[0],
                               [[c / 1e6 for c in pt] for pt in was[7]],
                               [[c / 1e6 for c in pt] for pt in now[7]]))
+        elif u in recentre_by_uuid:
+            rrecentred.append(recentre_by_uuid[u])
         else:
             rmoved.append((u, was[1] or was[0]))
 
@@ -999,6 +1115,10 @@ def main():
         # NON-RECTANGULAR outline needs them: `qrouter` takes its extents from
         # a bounding box and would otherwise lay copper in the notch.
         rule_areas_as_claimed=(not rlost and not rmoved
+                               and not recentre_refused
+                               and sorted(r["name"] for r in rrecentred)
+                               == sorted(c.split(":")[0]
+                                         for c in a.rule_area_recentred)
                                and sorted(str(z[1]) for z in rnarrowed)
                                == sorted(a.rule_area_narrowed)
                                and sorted(str(z[1]) for z in rwidened)
@@ -1054,6 +1174,8 @@ def main():
         rule_areas_widened=rwidened,
         rule_areas_narrowed=rnarrowed,
         rule_areas_otherwise_changed=rmoved,
+        rule_areas_recentred=rrecentred,
+        rule_areas_recentre_refused=recentre_refused,
         claimed_rule_areas=sorted(a.rule_area),
         claimed_keepout_rule_areas=sorted(a.rule_area_keepout),
         claimed_widened_rule_areas=sorted(a.rule_area_widened),

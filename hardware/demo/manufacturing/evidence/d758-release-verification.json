@@ -1,0 +1,335 @@
+{
+ "approved_demo_nc": {
+  "expected": [
+   "J5.10",
+   "J5.11",
+   "J5.12",
+   "J5.15",
+   "J5.16",
+   "J5.17",
+   "J5.18",
+   "J5.9"
+  ],
+  "missing": [],
+  "observed": [
+   "J5.10",
+   "J5.11",
+   "J5.12",
+   "J5.15",
+   "J5.16",
+   "J5.17",
+   "J5.18",
+   "J5.9"
+  ],
+  "unexpected": []
+ },
+ "approved_unrouted": [
+  "U11.3"
+ ],
+ "beta_v2_untouched": true,
+ "board_sha256": "f66c789667b6eb97fbe733ca94d9fbda8214fd11418afd7452590a906f59cca2",
+ "boss_clearance": {
+  "BOSS1": {
+   "boss_mm": [
+    40.0,
+    136.0
+   ],
+   "covers_the_required_diameter_4_500_mm": true,
+   "keepout_circumradius_mm": 2.251178,
+   "keepout_inradius_mm": 2.250499,
+   "keepout_vertices": 128,
+   "nearest_component": [
+    [
+     2.525,
+     "J3 courtyard"
+    ],
+    [
+     2.525,
+     "R35 courtyard"
+    ],
+    [
+     2.525,
+     "R74 courtyard"
+    ]
+   ],
+   "nearest_pour_fill": [
+    [
+     2.2505,
+     "B.Cu",
+     "GND"
+    ],
+    [
+     2.2505,
+     "In1.Cu",
+     "GND"
+    ],
+    [
+     2.2505,
+     "In3.Cu",
+     "+3V3"
+    ]
+   ],
+   "nearest_routed_copper": [
+    [
+     2.3,
+     "F.Cu",
+     "/SD_CS_N"
+    ],
+    [
+     2.3083,
+     "F.Cu",
+     "/SD_CS_N"
+    ],
+    [
+     2.612,
+     "via",
+     "/I2C_SDA_INT"
+    ]
+   ],
+   "npth_drill_mm": 2.2,
+   "pour_to_npth_hole_edge_mm": 1.1505
+  },
+  "BOSS2": {
+   "boss_mm": [
+    59.0,
+    3.0
+   ],
+   "covers_the_required_diameter_4_500_mm": true,
+   "keepout_circumradius_mm": 2.251178,
+   "keepout_inradius_mm": 2.250499,
+   "keepout_vertices": 128,
+   "nearest_component": [
+    [
+     2.695,
+     "C11 courtyard"
+    ],
+    [
+     2.7931,
+     "D1 courtyard"
+    ],
+    [
+     2.9583,
+     "C11.1"
+    ]
+   ],
+   "nearest_pour_fill": [
+    [
+     2.2505,
+     "B.Cu",
+     "GND"
+    ],
+    [
+     2.2505,
+     "F.Cu",
+     "+3V3"
+    ],
+    [
+     2.2505,
+     "In1.Cu",
+     "GND"
+    ]
+   ],
+   "nearest_routed_copper": [],
+   "npth_drill_mm": 2.2,
+   "pour_to_npth_hole_edge_mm": 1.1505
+  }
+ },
+ "connectivity": {
+  "approved_unrouted_edges": 1,
+  "connected_retained_nets": 173,
+  "open_retained_nets": 1,
+  "raw_board_ratsnest": 17,
+  "retained_multi_pad_nets": 174,
+  "retained_open_edges": 1,
+  "unapproved_open_edges": 0,
+  "unapproved_open_retained_nets": 0
+ },
+ "contract_regression": {
+  "all_ran": true,
+  "contracts": 17,
+  "failing": [],
+  "identical_to_d757_apart_from_the_board_digest": 13,
+  "the_four_that_moved": {
+   "connection_width": "benign_acute_throats 76 vs 75: one more V-geometry throat where the relocated /SX1262_RXEN barrel meets its track.  pairs_below_strict is UNCHANGED at 9 and the SET is identical; C2_none_load_bearing and C3_graph_not_vacuous both still pass",
+   "keepout_stackup": "In1.Cu GND reference plane 9491.008 -> 9499.799 mm2, +8.791 mm2: the copper the two boss keep-outs handed back when a 4.500 x 4.500 mm square became the \u00d84.500 mm circle the footprint always specified (2 x (20.250 - 15.915) = 8.671 mm2, the balance being the pour's own clearance ring following the new outline)",
+   "placement": "the BOSS2 move is CLAIMED here and was not claimed in d757",
+   "pour_partition": "moved_refs_claimed 1 vs 0 -- the same BOSS2 claim"
+  }
+ },
+ "decision": "D-758",
+ "declaration": "DEMO_READY_FOR_FAB",
+ "defects_closed": [
+  {
+   "consequence": "its \u00d84.500 mm keep-out ran 0.750 mm into IR_RX_OPTICAL instead of sitting wholly inside the 5.000 mm opaque IR barrier D-226 widened specifically to carry it -- three times the 0.250 mm overlap D-226 rejected as 'never legal' when it withdrew (59.500, 145.000)",
+   "evidence": "d758-boss2-ir-barrier.json, d758-boss2-shift.json",
+   "fixed_by": "BOSS2 moved -1.000 mm in X to doc (59.000, 145.000)",
+   "name": "BOSS2 is 1.000 mm east of the position D-226 and D-232 LOCKED"
+  },
+  {
+   "consequence": "the west 1.000 mm of the required \u00d84.500 mm region was unprotected: four pours reached 1.3505 mm from the boss centre -- 0.2505 mm from the edge of a 2.200 mm NPTH -- and /SX1262_RXEN put a via 1.759 mm from it",
+   "evidence": "d758-boss-clearance.json, d758-verify-promotion.json",
+   "fixed_by": "both keep-outs re-cut as the \u00d84.500 mm circle the footprint specifies, centred on their own boss; the /SX1262_RXEN barrel relocated (38.200,135.000) -> (37.600,134.200)",
+   "name": "BOSS1_KEEPOUT is 1.000 mm east of the boss it names"
+  },
+  {
+   "consequence": "missing_courtyard and track_not_centered_on_via are set to 'ignore' in board setup, so they had never run.  Probed in a scratch copy they return 2 (BOSS1/BOSS2, which carry no courtyard) and 5 (four USB_VBUS_CHG joins and one Q3_CS).  The courtyard pair is why every courtyard-based check on this board was blind to the mounting bosses.",
+   "evidence": "d758-switched-off-drc-tests.json",
+   "fixed_by": "the boss keep-outs are now measured directly rather than through courtyards; the five off-centre joins are recorded with their measured connection widths and are not defects",
+   "name": "five DRC tests were switched OFF on this board and two of them had something to say"
+  }
+ ],
+ "fab_package": {
+  "artwork_that_moved": [
+   "gerbers/aqroot-Beta-v2-B_Cu.gbr",
+   "gerbers/aqroot-Beta-v2-B_Mask.gbr",
+   "gerbers/aqroot-Beta-v2-F_Cu.gbr",
+   "gerbers/aqroot-Beta-v2-F_Mask.gbr",
+   "gerbers/aqroot-Beta-v2-In1_Cu.gbr",
+   "gerbers/aqroot-Beta-v2-In2_Cu.gbr",
+   "gerbers/aqroot-Beta-v2-In3_Cu.gbr",
+   "gerbers/aqroot-Beta-v2-In4_Cu.gbr",
+   "gerbers/aqroot-Beta-v2-NPTH.drl",
+   "gerbers/aqroot-Beta-v2-PTH.drl"
+  ],
+  "artwork_unchanged": 15,
+  "clauses": {
+   "FAB10_via_geometry": true,
+   "FAB11_mask_dams": true,
+   "FAB12_identity": true,
+   "FAB13_nfc_tuning_access": true,
+   "FAB1_provenance": true,
+   "FAB2_fill": true,
+   "FAB3_layers": true,
+   "FAB4_drill": true,
+   "FAB5_cpl": true,
+   "FAB6_bom": true,
+   "FAB7_sourcing": true,
+   "FAB8_outline": true,
+   "FAB9_via_in_pad": true
+  },
+  "controls_refused": {
+   "FAB12_identity": {
+    "fab12a_refuses_2x12_on_a_1x24_land": true,
+    "fab12b_refuses_footprint_the_board_does_not_carry": true,
+    "fab12b_refuses_superseded_j5_mpn": true
+   },
+   "FAB13_nfc_tuning_access": {
+    "a_retented_via_refused": true,
+    "b_mask_gerber_without_the_opening_refused": true,
+    "c_manifest_coordinate_drift_refused": true,
+    "d_notes_without_the_do_not_tent_instruction_refused": true
+   },
+   "FAB5_cpl": {
+    "duplicate_fitted_row": true,
+    "position_plus_10mm": true,
+    "rotation_180": true,
+    "side_flipped": true
+   }
+  },
+  "failing": [],
+  "verdict": "PASS"
+ },
+ "feature_contract": {
+  "all_pass": true,
+  "clauses": {
+   "F1_every_scope_part_fitted": true,
+   "F2_every_scope_net_whole": true,
+   "F3_approved_nc_exactly_as_scoped": true,
+   "F4_every_exposed_signal_contact_has_esd": true,
+   "F5_backlight_disconnect_control_is_independent": true,
+   "F6_accessory_envelope_is_bounded_by_hardware": true
+  }
+ },
+ "firmware": {
+  "clauses": {
+   "H1_generated_tree_is_fresh": "PASS",
+   "H2_board_digest": "PASS",
+   "H3_policy_corroborated": "PASS",
+   "H4_owner_decisions_are_machine_checked": "PASS",
+   "H5_firmware_layer_uses_the_map": "PASS",
+   "H6_host_tests_prove_the_orderings": "PASS"
+  },
+  "platformio_environments_built": [
+   "esp32-s3-aqroot",
+   "wokwi",
+   "esp32-s3-aqroot-dm",
+   "aqroot-demo"
+  ],
+  "verdict": "PASS"
+ },
+ "kicad_drc": {
+  "classes_other_than_lib_footprint_issues": [],
+  "every_violation_is_a_warning": true,
+  "kicad": "10.0.5",
+  "total": 199,
+  "unconnected_items": 17,
+  "violations": {
+   "lib_footprint_issues": 199
+  }
+ },
+ "owner_decisions_open": [],
+ "predecessor_authority": "78a68921f7986b9b4afbd6a5fa97b227d26ddfd20c75c99a8e90987ac02910e1",
+ "promotion": {
+  "clauses": 16,
+  "clauses_pass": 16,
+  "declaration_controls": [
+   "a_diameter_the_polygon_does_not_cover_refuses",
+   "an_area_that_was_ALREADY_right_refuses",
+   "no_recentred_claim_refuses_the_move",
+   "the_wrong_footprint_refuses"
+  ],
+  "declaration_controls_refused": true,
+  "recentred": [
+   "BOSS2_KEEPOUT",
+   "BOSS1_KEEPOUT"
+  ],
+  "verdict": "PASS"
+ },
+ "protected_copper": {
+  "counts": {
+   "/01_POWER_TREE/BAT_CONNECTOR_P": 7,
+   "/01_POWER_TREE/BAT_MID": 12,
+   "/01_POWER_TREE/BAT_PROTECTED_P": 84,
+   "/01_POWER_TREE/BAT_PROT_SHDN_CTL": 18,
+   "/01_POWER_TREE/BAT_RAW": 70,
+   "/01_POWER_TREE/BAT_SENSE": 22,
+   "/08_BUTTONS_EXPANDERS/FRONT_RGB_B_N": 18,
+   "/08_BUTTONS_EXPANDERS/FRONT_RGB_G_N": 13,
+   "/08_BUTTONS_EXPANDERS/FRONT_RGB_R_N": 20,
+   "/09_COMMUNITY_HEADER/XGPIO4_HDR": 9,
+   "/09_COMMUNITY_HEADER/XGPIO5_HDR": 12,
+   "/ACC_3V3_SW": 83,
+   "/ACC_5V_SW_EN": 23,
+   "/XGPIO4": 9,
+   "/XGPIO5": 6
+  },
+  "differences": {},
+  "identical": true
+ },
+ "rail_ampacity": {
+  "all_ok": true,
+  "rails": {
+   "BAT_PROTECTED_P": "OK_WITH_DECLARED_EXCEPTION",
+   "BQ25185_SYS": "POUR_DELIVERED",
+   "SYS_TO_ACC5V_BOOST": "OK_WITH_DECLARED_EXCEPTION",
+   "SYS_TO_NFC5V_BOOST": "OK_WITH_DECLARED_EXCEPTION",
+   "USB_VBUS_CHG": "OK_WITH_DECLARED_EXCEPTION",
+   "USB_VBUS_RAW": "OK"
+  },
+  "stackup_selfcheck": true
+ },
+ "ref_commit": "542ac49dbf35325bd9369edb9d25c5295014afd7",
+ "schema": 1,
+ "schematic_parity": {
+  "by_severity": {
+   "warning": 246
+  },
+  "by_type": {
+   "extra_footprint": 2,
+   "footprint_symbol_field_mismatch": 199,
+   "footprint_symbol_mismatch": 45
+  },
+  "errors": 0,
+  "total": 246
+ }
+}

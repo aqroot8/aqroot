@@ -1,0 +1,40 @@
+{
+ "baseline": "d757",
+ "contracts": 17,
+ "current": "d758",
+ "digest_fields_ignored": [
+  "authoritative_board_sha256",
+  "board_sha256",
+  "manifest_board_sha256",
+  "published_in_header",
+  "ref_commit"
+ ],
+ "expected_non_digest_differences": {
+  "connection_width": "benign_acute_throats 76 vs 75: one more V-geometry throat where the relocated /SX1262_RXEN barrel meets its track.  pairs_below_strict is UNCHANGED at 9 and the SET is identical; C2_none_load_bearing and C3_graph_not_vacuous both still pass",
+  "keepout_stackup": "In1.Cu GND reference plane 9491.008 -> 9499.799 mm2, +8.791 mm2: the copper the two boss keep-outs handed back when a 4.500 x 4.500 mm square became the \u00d84.500 mm circle the footprint always specified (2 x (20.250 - 15.915) = 8.671 mm2, the balance being the pour's own clearance ring following the new outline)",
+  "placement": "the BOSS2 move is CLAIMED here and was not claimed in d757",
+  "pour_partition": "moved_refs_claimed 1 vs 0 -- the same BOSS2 claim"
+ },
+ "first_difference": {
+  "connection_width": "$.checks.C1_classified.benign_acute_throats: 76 vs 75",
+  "demo_feature": null,
+  "fab_provenance": null,
+  "firmware_hw_map": null,
+  "keepout_stackup": "$.reference_planes.In1.Cu.area_mm2: 9499.798608 vs 9491.00767",
+  "land_parity": null,
+  "leaf_land": null,
+  "neck": null,
+  "obstacle_model": null,
+  "placement": "$.detail.claimed.BOSS2: missing in baseline",
+  "population": null,
+  "pour_bond": null,
+  "pour_partition": "$.moved_refs_claimed: 1 vs 0 entries",
+  "protected_copper": null,
+  "rf_symmetry": null,
+  "tap": null,
+  "trunk_floor": null
+ },
+ "identical_apart_from_the_digest": 13,
+ "schema": 1,
+ "what": "every standing contract's d758 report against its d757 report with the board-digest fields removed.  D-758 re-centres two mechanical keep-outs and moves one signal barrel, so only what those touch may move."
+}

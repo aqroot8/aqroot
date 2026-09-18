@@ -1,0 +1,122 @@
+{
+ "accepted": {
+  "clauses": 16,
+  "clauses_pass": 16,
+  "recentred": [
+   {
+    "centre_mm": [
+     59.0,
+     3.0
+    ],
+    "claim": "BOSS2_KEEPOUT:BOSS2:4.5",
+    "diameter_mm": 4.5,
+    "every_other_field_identical": true,
+    "name": "BOSS2_KEEPOUT",
+    "new_area_mm2": 15.914577,
+    "new_area_not_larger": true,
+    "new_outline_covers_the_disc": true,
+    "old_area_mm2": 20.25,
+    "old_outline_covered_the_disc": false,
+    "ref": "BOSS2"
+   },
+   {
+    "centre_mm": [
+     40.0,
+     136.0
+    ],
+    "claim": "BOSS1_KEEPOUT:BOSS1:4.5",
+    "diameter_mm": 4.5,
+    "every_other_field_identical": true,
+    "name": "BOSS1_KEEPOUT",
+    "new_area_mm2": 15.914577,
+    "new_area_not_larger": true,
+    "new_outline_covers_the_disc": true,
+    "old_area_mm2": 20.25,
+    "old_outline_covered_the_disc": false,
+    "ref": "BOSS1"
+   }
+  ],
+  "verdict": "PASS"
+ },
+ "all_controls_refused": true,
+ "controls": {
+  "a_diameter_the_polygon_does_not_cover_refuses": {
+   "claim": "BOSS1_KEEPOUT:BOSS1:6.0",
+   "otherwise_changed": [
+    "BOSS1_KEEPOUT"
+   ],
+   "refused": [
+    {
+     "claim": "BOSS1_KEEPOUT:BOSS1:6.0",
+     "diameter_mm": 6.0,
+     "every_other_field_identical": true,
+     "name": "BOSS1_KEEPOUT",
+     "new_area_mm2": 15.914577,
+     "new_area_not_larger": true,
+     "new_outline_covers_the_disc": false,
+     "old_area_mm2": 20.25,
+     "old_outline_covered_the_disc": false,
+     "ref": "BOSS1"
+    }
+   ],
+   "rule_areas_as_claimed": false,
+   "verdict": "FAIL"
+  },
+  "an_area_that_was_ALREADY_right_refuses": {
+   "claim": "BOSS1_KEEPOUT:BOSS1:1.0",
+   "otherwise_changed": [
+    "BOSS1_KEEPOUT"
+   ],
+   "refused": [
+    {
+     "claim": "BOSS1_KEEPOUT:BOSS1:1.0",
+     "diameter_mm": 1.0,
+     "every_other_field_identical": true,
+     "name": "BOSS1_KEEPOUT",
+     "new_area_mm2": 15.914577,
+     "new_area_not_larger": true,
+     "new_outline_covers_the_disc": true,
+     "old_area_mm2": 20.25,
+     "old_outline_covered_the_disc": true,
+     "ref": "BOSS1"
+    }
+   ],
+   "rule_areas_as_claimed": false,
+   "verdict": "FAIL"
+  },
+  "no_recentred_claim_refuses_the_move": {
+   "claim": "(none)",
+   "otherwise_changed": [
+    "BOSS2_KEEPOUT",
+    "BOSS1_KEEPOUT"
+   ],
+   "refused": [],
+   "rule_areas_as_claimed": false,
+   "verdict": "FAIL"
+  },
+  "the_wrong_footprint_refuses": {
+   "claim": "BOSS1_KEEPOUT:BOSS2:4.5",
+   "otherwise_changed": [
+    "BOSS1_KEEPOUT"
+   ],
+   "refused": [
+    {
+     "claim": "BOSS1_KEEPOUT:BOSS2:4.5",
+     "diameter_mm": 4.5,
+     "every_other_field_identical": true,
+     "name": "BOSS1_KEEPOUT",
+     "new_area_mm2": 15.914577,
+     "new_area_not_larger": true,
+     "new_outline_covers_the_disc": false,
+     "old_area_mm2": 20.25,
+     "old_outline_covered_the_disc": false,
+     "ref": "BOSS2"
+    }
+   ],
+   "rule_areas_as_claimed": false,
+   "verdict": "FAIL"
+  }
+ },
+ "schema": 1,
+ "what": "D-758 taught verify_promotion the declaration --rule-area-recentred NAME:REF:DIA_MM.  These are its live negative controls: the claim can only be satisfied where it MEASURES true, and it cannot be spent on an area that was already right."
+}

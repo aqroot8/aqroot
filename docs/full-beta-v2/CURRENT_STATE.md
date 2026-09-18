@@ -66,7 +66,70 @@
 > `verify_promotion` PASS and `protected_copper` showing exactly one protected
 > net moved.  `U14.7` is on the bus.  This board has **no open owner decision**.
 
-> # **DEMO_READY_FOR_FAB IS DECLARED (2026-09-18, D-757).**
+> # **DEMO_READY_FOR_FAB IS DECLARED (2026-09-18, D-758).**
+>
+> **Board authority `f66c7896`.**  Two mechanical defects, both exactly
+> **1.000 mm east**, and the thing that found them was a DRC test this board has
+> always had switched off.
+>
+> **FIVE DRC TESTS ARE SET TO `ignore` IN BOARD SETUP AND HAVE THEREFORE NEVER
+> RUN.**  `D-738` read a zeroed `solder_mask_min_width` as an ABSENT test rather
+> than a passing one; the same reading applies to SEVERITY.  Raised to `warning`
+> in a scratch copy, three of the five return zero and two do not:
+> **`missing_courtyard` 2** and **`track_not_centered_on_via` 5**.  The two
+> missing courtyards are `BOSS1` and `BOSS2` — which means **every
+> courtyard-based check on this board had always been blind to the mounting
+> bosses**.
+>
+> **`BOSS1_KEEPOUT` WAS NOT ON `BOSS1`.**  The boss sits at doc
+> `(40.000, 12.000)`; its 4.500 mm square rule area was centred on `41.000`, so
+> the west 1.000 mm of the required Ø4.500 mm region was unprotected — four pours
+> reached **1.3505 mm from the boss centre, 0.2505 mm from the edge of a 2.200 mm
+> NPTH**, and `/SX1262_RXEN` put a via 1.7591 mm from it.  `BOSS2`, whose area IS
+> centred on its boss, held every pour at exactly 2.2500 mm on the same board.
+>
+> **`BOSS2` WAS NOT WHERE `D-226` AND `D-232` LOCKED IT.**  Built at doc
+> `x = 60.000` against a locked `59.000`, its Ø4.500 mm keep-out ran
+> **0.750 mm into `IR_RX_OPTICAL`** instead of sitting wholly inside the 5.000 mm
+> opaque `IR_BARRIER` that `D-226` widened **3.0 → 5.0 mm specifically to carry
+> it** — three times the 0.250 mm overlap `D-226` withdrew as *"never legal"*.
+> `DEVICE_SPEC` had carried `BOSS2 X (59 vs 60)` as UNRESOLVED since `D-226`, and
+> the tie-breaker was never a preference: **only one of the two puts the boss
+> inside the barrier.**
+>
+> **BOTH KEEP-OUTS ARE NOW THE Ø4.500 mm CIRCLE THE FOOTPRINT ALWAYS SPECIFIED**
+> — a 128-gon of inradius 2.250499 mm, on its own boss — exactly the move this
+> board already made once when `NFC_METAL_D58` superseded its 58 × 51 rectangle.
+> The square both over-constrained (corners at 3.182 mm) and under-constrained.
+> `/SX1262_RXEN` is the only conductor evicted; its barrel moved 1.000 mm to
+> `(37.600, 134.200)`, 0.450 mm clear of the requirement.  **The pour now stands
+> 1.1505 mm off the NPTH where it stood 0.2505 mm.**
+>
+> **AND THE GATE WAS TAUGHT THE DECLARATION THIS ACT NEEDED.**
+> `verify_promotion` admits a rule area that widened or narrowed wholly inside
+> itself and refuses everything else that moved — correctly.  The answer was not
+> to override it but to add `--rule-area-recentred NAME:REF:DIA_MM`, admitted
+> only where the new outline covers the stated disc on the named footprint, **the
+> old outline did NOT**, and the area did not grow.  **Four live negative
+> controls, all refused**, including a claim on an area that was already right.
+>
+> **RELEASE-GRADE VERIFICATION, WHOLE, ON `f66c7896`**
+> (`evidence/d758-release-verification.json`): `unapproved_open_edges` **0**;
+> **173 of 174** retained nets connected, the one open edge `U11.3` under owner
+> decision D-742; approved-NC set EXACTLY the eight `J5` positions; real KiCad
+> DRC **199 `lib_footprint_issues`, every one a WARNING and ZERO of every other
+> class**; parity **0 errors**; `verify_promotion` **16/16**; `protected_copper`
+> **IDENTICAL**; `audit_rail_ampacity` **all_ok**; **F1–F6**; **`FAB1`–`FAB13` all
+> PASS with 11 controls refused**; `contract_regression` **17 run, 17 pass, 13
+> byte-identical to `d757` apart from the board digest** and the four that moved
+> moved by exactly what changed; firmware **H1–H6** with all four PlatformIO
+> environments building; `hardware/beta-v2` **untouched**.
+>
+> **There is no open owner decision and no unresolved Demo fabrication blocker,
+> and `DEVICE_SPEC`'s mechanical UNRESOLVED list is one item shorter than it has
+> been since `D-226`.**
+
+> # **DEMO_READY_FOR_FAB WAS DECLARED AT D-757 AND IS LEFT STANDING AS HISTORY.**
 >
 > **Board authority `78a68921`.**  The D-756 declaration below stands in every
 > electrical and copper respect — `D-757` changes **no copper at all** — but the

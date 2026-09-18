@@ -464,15 +464,22 @@ dimension source and supersedes older Enclosure Field Slate v3/v4/v5 dimensions.
 | PCB outline | **77.000 × 148.000 mm maximum** — stepped: 72.000 mm wide except an east bump to **x = 77.000** between `y = 70.500` and `y = 104.005` | REVISED D-709 under owner authority D-703 option 2 (`cc9f356`) · MARKETING-SAFE (board size) | `evidence/d709-verify-promotion.json` (outline extents measured 0,0→77,148); `FBV2_SIXLAYER_STACKUP.md`; mech spec |
 | PCB thickness | **1.6 mm** | LOCKED | mech spec; stackup |
 | PCB stackup | **6 copper layers** (F/In1 GND/In2 sig/In3 sig/In4 GND/B), JLC06161H-7628, 1 oz outer / 0.5 oz inner, no HDI/blind/buried | LOCKED · ENGINEERING-ONLY | `FBV2_SIXLAYER_STACKUP.md` |
-| Mounting holes | **2 × M2**, Ø2.2 mm NPTH, Ø4.5 mm keep-out; BOSS1 (40.000, 12.000), BOSS2 (59.000, 145.000) | LOCKED (D-226/D-232) · CAD-TO-VERIFY | mech spec; floorplan |
+| Mounting holes | **2 × M2**, Ø2.2 mm NPTH, Ø4.5 mm keep-out; BOSS1 (40.000, 12.000), BOSS2 (59.000, 145.000) | LOCKED (D-226/D-232) · **AS-BUILT AND MACHINE-CHECKED (D-758)** | mech spec; floorplan; `evidence/d758-boss-clearance.json` |
 | Enclosure external | **85 × 160 × 23 mm** (portrait) | REVISED D-709 (width only; follows the PCB outline and owner approval D-707 `ac9d333`) · MARKETING-SAFE (with rounding to CAD) | mech spec; D-709 |
 | Enclosure wall | 2.0 mm nominal | TARGET · CAD-TO-VERIFY | mech spec |
 | Internal cavity | 80.0 × 155.0 × 18.5 mm nominal | REVISED D-709 (width only) · TARGET · CAD-TO-VERIFY | mech spec; D-709 |
 | Board→cavity clearance | ≥1.5 mm (actual 2.5 mm X, 3.5 mm Y) | LOCKED (rule) | mech spec |
 
 **Conflicts flagged / UNRESOLVED (CAD-TO-VERIFY):**
-- **BOSS2 X:** spec/floorplan say **59.000**; the metrics file says 60.000 (1 mm
-  discrepancy) — use 59.000 (spec is declared authority), verify in CAD.
+- ~~**BOSS2 X:** spec/floorplan say **59.000**; the metrics file says 60.000 (1 mm
+  discrepancy) — use 59.000 (spec is declared authority), verify in CAD.~~
+  **CLOSED at D-758 — and the BOARD had the wrong one.** `BOSS2` was built at
+  `x = 60.000`, which puts its Ø4.500 mm keep-out at 57.750 … 62.250 and therefore
+  **0.750 mm inside `IR_RX_OPTICAL`** (61.500 … 70.000) instead of wholly inside the
+  5.000 mm `IR_BARRIER` (56.500 … 61.500) that D-226 widened specifically to carry it —
+  three times the 0.250 mm overlap D-226 rejected as *"never legal"* when it withdrew
+  P1-001's (59.500, 145.000). The board is corrected to the locked **59.000**; the
+  keep-out costs no copper there. `evidence/d758-boss2-ir-barrier.json`.
 - **BOOT access face/position:** conflicting right-wall vs front-bottom placements —
   UNRESOLVED.
 - **Power-switch position:** two slightly different coordinates — UNRESOLVED.
@@ -551,8 +558,9 @@ Qwiic/STEMMA QT I²C accessory port; RGB status indicator.
 4. **Touch controller silicon** — FT6236 vs CST026 (interface locked; PO must specify).
 5. **Display driver symbol metadata** — stale ILI9341/CH280QV10 text vs locked ILI9488.
 6. **915 antenna doc residue** — stale FXP890 vs locked external TI.92.2113 SMA.
-7. **Mechanical:** BOSS2 X (59 vs 60), BOOT face, power-switch position, 1×24 wall
-   aperture, corner radii — CAD-TO-VERIFY.
+7. **Mechanical:** ~~BOSS2 X (59 vs 60),~~ **CLOSED at D-758 — the board was moved to the
+   locked 59.000**; BOOT face, power-switch position, 1×24 wall aperture, corner radii —
+   CAD-TO-VERIFY.
 8. ~~**`J8` Qwiic LCSC** absent (the **MPN is now in the schematic**, D-614); **`J1`** display FPC LCSC absent.~~
    **CLOSED at D-615** — both confirmed against a live distributor record (D-096):
    `J8` = JST `SM04B-SRSS-TB(LF)(SN)`, LCSC **`C160404`**, 69 510 in stock;

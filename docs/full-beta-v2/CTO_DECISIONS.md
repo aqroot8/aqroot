@@ -1,3 +1,180 @@
+## D-758 — **THE KEEP-OUT WAS NOT ON THE BOSS, AND THE BOSS WAS NOT WHERE TWO DECISIONS LOCKED IT.** BOTH WERE OUT BY EXACTLY 1.000 mm, IN THE SAME DIRECTION
+
+    authority  f66c7896   (was 78a68921)
+    changed    BOSS2 -1.000 mm in X to the LOCKED doc (59.000, 145.000); both
+               boss keep-outs re-cut as the Ø4.500 mm circle the footprint
+               specifies, on their own boss; /SX1262_RXEN's barrel relocated
+               (38.200,135.000) -> (37.600,134.200); verify_promotion taught
+               --rule-area-recentred
+    evidence   d758-{release-verification,boss-clearance,boss2-ir-barrier,
+               verify-promotion,recentred-declaration-controls,
+               switched-off-drc-tests,contract-diff-digest-only,
+               package-delta,contract-regression}.json and a d758-* baseline set
+
+### 1. HOW IT WAS FOUND: FIVE DRC TESTS THAT HAVE NEVER RUN
+
+`D-738` found `solder_mask_min_width` at `0.000 mm` and therefore a mask-bridge
+test that had never run behind every *"DRC is clean"* this programme had
+recorded; `D-744` generalised it to `min_connection`.  **The same reading applies
+to SEVERITY, not just to a zeroed threshold.**  This board's setup sets five DRC
+tests to `ignore`:
+
+    footprint_filters_mismatch   footprint_type_mismatch   missing_courtyard
+    track_not_centered_on_via    tuning_profile_track_geometries
+
+Raised to `warning` in a scratch copy, three of them return ZERO and two do not:
+**`missing_courtyard` 2** and **`track_not_centered_on_via` 5**
+(`evidence/d758-switched-off-drc-tests.json`).
+
+The two missing courtyards are `BOSS1` and `BOSS2`.  That is not cosmetic: it
+means **every courtyard-based check on this board has always been blind to the
+mounting bosses** — the placement contract, `apply_part_shift`'s own vetting, and
+any question of the form *"is anything sitting on the screw?"*.  Asking the
+question directly is what found the rest.
+
+### 2. TWO DEFECTS, BOTH EXACTLY 1.000 mm EAST
+
+**`BOSS1_KEEPOUT` was not on `BOSS1`.**  The boss is at doc `(40.000, 12.000)`;
+its 4.500 × 4.500 mm rule area spanned `x 38.750 … 43.250`, centred on `41.000`.
+So the **west 1.000 mm of the required Ø4.500 mm region was not protected at
+all**, and something had moved into it:
+
+    B.Cu / In1.Cu / In3.Cu / In4.Cu pour fill   1.3505 mm from the boss centre
+                                               = 0.2505 mm from a 2.200 mm NPTH
+    /SX1262_RXEN via                            1.7591 mm from the boss centre
+    /SX1262_RXEN B.Cu and In2.Cu track          1.9591 mm
+
+`BOSS2`, whose area IS centred on its boss, held every pour at exactly
+`2.2500 mm` on the same board — the control was sitting beside the defect.
+
+**`BOSS2` was not where `D-226` and `D-232` locked it.**  The board built it at
+doc `x = 60.000`; both decisions lock `59.000`.  The consequence is the exact
+failure `D-226` corrected:
+
+    boss x       Ø4.500 keep-out    inside IR_BARRIER 56.500 … 61.500?   into IR_RX_OPTICAL
+    59.000       56.750 … 61.250    YES                                   0.000 mm
+    59.500       57.250 … 61.750    no    (P1-001, WITHDRAWN by D-226)    0.250 mm
+    60.000       57.750 … 62.250    no    (AS BUILT, D-756)               0.750 mm
+
+`D-226` widened the mandatory opaque IR barrier **3.0 → 5.0 mm specifically so
+that it would carry `BOSS2`**, and withdrew `(59.500, 145.000)` in its own words
+as *"never legal"* for a **0.250 mm** overlap.  The board shipped **three times
+that**.  `DEVICE_SPEC` had carried `BOSS2 X (59 vs 60)` as an UNRESOLVED
+CAD-TO-VERIFY conflict since `D-226`; the tie-breaker was never a preference —
+`FBV2_P1_METRICS.txt` said `60.000`, `FBV2_P1_KEEPOUTS.md` and the floorplan said
+`59.000`, and **only one of the two puts the boss inside the barrier**.
+
+### 3. THE KEEP-OUT IS NOW THE CIRCLE IT ALWAYS SPECIFIED
+
+`MountingBoss_M2_NPTH`'s own description says *"the moulded boss OD is 4.0 mm, so
+the reserved component-and-copper keep-out is Ø4.5 mm"*.  The board expressed it
+as a 4.500 mm SQUARE, which both **over**-constrains — its corners reach
+`3.182 mm`, `0.932 mm` beyond anything specified — and, as drawn, **under**-
+constrained where it was offset.  Three of the four nets the corrected square
+would have evicted sit in those corners and are outside the Ø4.500 mm entirely.
+
+Both areas are re-cut as a **128-gon covering Ø4.500 mm** — inradius
+`2.250499 mm`, circumradius `2.251178 mm`, so it covers the required circle
+everywhere and exceeds it by at most `0.002 mm`.  **This board has made exactly
+this move before and recorded why**: `NFC_METAL_D58` superseded a 58 × 51
+rectangle with the circle the requirement states, *"the circle is inscribed in
+it, so only the four corners are reclaimed"*.
+
+Result, measured on the promoted board (`evidence/d758-boss-clearance.json`):
+
+                         BOSS1                          BOSS2
+    nearest copper       2.3000 mm  F.Cu /SD_CS_N       none within 3.200 mm
+    nearest pour fill    2.2505 mm  (was 1.3505)        2.2505 mm
+    nearest component    2.5250 mm  J3 courtyard        2.6950 mm  C11 courtyard
+    pour to NPTH edge    1.1505 mm  (was 0.2505)        1.1505 mm
+
+**The pour now stands 1.1505 mm off a 2.200 mm non-plated hole where it stood
+0.2505 mm — against this board's own published 0.200 mm NPTH-to-copper figure,
+that is 5.75× the margin instead of 1.25×.**
+
+`/SX1262_RXEN` is the only conductor the correction evicted.  Its barrel was
+swept for legal sites (`screen_barrel_move.py`, 3.5 mm radius, 0.1 mm step) and
+moved **1.000 mm** to `(37.600, 134.200)`, whose edge stands `2.700 mm` from the
+boss centre — `0.450 mm` clear of the requirement — with its `B.Cu` and `In2.Cu`
+legs re-laid to it.
+
+### 4. THE GATE HAD NO WORD FOR RE-CENTRING A KEEP-OUT, SO IT WAS TAUGHT ONE
+
+`verify_promotion` admits a rule area that **widened** (`D-617`) or **narrowed
+wholly inside itself** (`D-684`); everything else that moved is `rmoved` and a
+refusal, *"because a polygon that merely moved could protect somewhere new while
+abandoning somewhere old"*.  That is exactly right, and it is exactly the act a
+MISPLACED keep-out needs.  **The answer is to teach the contract the missing
+declaration, not to override it.**
+
+`--rule-area-recentred NAME:REF:DIA_MM` is admitted only where it MEASURES true:
+
+  * every other field of the area is identical — owner, name, copper layer set,
+    all four disallow flags;
+  * the NEW outline wholly COVERS the `DIA_MM` disc on footprint `REF`'s own
+    position, by real polygon boolean;
+  * **the OLD outline did NOT** — so it cannot be spent on an area that was
+    already right;
+  * and the new outline is **not larger in area** than the old one, so
+    "re-centring" can never be a way to grow a keep-out into new ground.
+
+**FOUR LIVE NEGATIVE CONTROLS, all refused**
+(`evidence/d758-recentred-declaration-controls.json`):
+
+    no claim at all                        REFUSED  (both areas read rmoved)
+    a diameter the polygon does not cover  REFUSED  (Ø6.0 on a Ø4.5 area)
+    the wrong footprint                    REFUSED  (BOSS1_KEEPOUT:BOSS2)
+    an area that was ALREADY right         REFUSED  (Ø1.0, old square covered it)
+
+### 5. WHAT THE FIVE OFF-CENTRE VIA JOINS TURNED OUT TO BE
+
+`track_not_centered_on_via` names four `USB_VBUS_CHG` joins and one `Q3_CS`.
+Measured, **every one lands its track end inside the via pad AND over the
+barrel** — endpoint offsets `0.0232`–`0.2486 mm` against pad radii of `0.450`
+and `0.175 mm` — so each is annular-ring copper, not a tangency, and none
+appears in `connection_width_contract`'s `pairs_below_strict` set.  **Recorded,
+not repaired**: moving copper on a 1.1 A rail for an etch-cosmetic reason is a
+worse trade than leaving it, and the measurement is now on the record so the
+question is not re-opened.
+
+### 6. RELEASE-GRADE VERIFICATION, WHOLE, ON `f66c7896`
+
+    connectivity     174 retained multi-pad nets, 173 connected, 1 open
+                     approved_unrouted 1 (U11.3, owner decision D-742)
+                     unapproved_open_edges 0
+    approved NC      EXACTLY the 8 J5 positions Demo scope allows
+    KiCad DRC 10.0.5 199 lib_footprint_issues, EVERY ONE severity WARNING
+                     ZERO of every other class
+    parity           246 warnings, 0 ERRORS
+    promotion        16 of 16, with --rule-area-recentred on both keep-outs and
+                     --evicted /SX1262_RXEN; 4 declaration controls refused
+    protected copper 15 nets IDENTICAL, differences {}
+    ampacity         all_ok; stackup self-check PASS
+    features         F1-F6 PASS
+    FAB1..FAB13      ALL PASS, 11 live negative controls refused
+    contracts        17 run, 17 pass, 13 IDENTICAL to d757 apart from the board
+                     digest; the four that moved moved by exactly what changed
+    package          of the shipped artwork, 15 files are byte-identical; the 10
+                     that moved are the six copper layers, both masks and both
+                     drills -- BOM, CPL, paste, silk, outline unchanged
+    firmware         H1-H6 PASS, 4 PlatformIO environments built
+    hardware/beta-v2 UNTOUCHED
+
+**There is no open owner decision and no unresolved Demo fabrication blocker,
+and `DEVICE_SPEC`'s mechanical UNRESOLVED list is one item shorter than it has
+been since `D-226`.**
+
+### 7. THE LESSON, STATED ONCE
+
+`D-757` said *"a dimension between two pieces of copper is not an access
+statement."*  This one is its neighbour: **a keep-out is a claim about a PLACE,
+and nothing on this board had ever checked that it was the right place.**  The
+rule area existed, was correctly flagged on all six layers, forbade tracks, vias
+and pour, passed DRC on every run for the whole programme — and protected
+1.000 mm of board that needed nothing while leaving unprotected the ground the
+screw actually goes through.  A keep-out that is not on the thing it protects is
+indistinguishable, to every instrument this repository owns, from one that is.
+
 ## D-757 — **THE FIRST-ARTICLE TUNE D-755 MEASURED WAS PRINTED OVER.** A GEOMETRY THAT IS RIGHT AND A TERMINAL THAT IS INACCESSIBLE LOOK THE SAME TO EVERY GATE ON THIS BOARD
 
     authority  78a68921   (was 6f2fc8b6; NO COPPER -- 3552 tracks, 918 vias,

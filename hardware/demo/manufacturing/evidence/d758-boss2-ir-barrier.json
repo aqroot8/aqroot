@@ -1,0 +1,50 @@
+{
+ "IR_BARRIER_x_mm": [
+  56.5,
+  61.5
+ ],
+ "IR_RX_OPTICAL_x_mm": [
+  61.5,
+  70.0
+ ],
+ "IR_TX_OPTICAL_x_mm": [
+  48.0,
+  56.5
+ ],
+ "board_sha256": "b687c59a664b23f589d3c3bdce0b6d520f67abde4b80d6b2ad1d9ebf34236c20",
+ "cases": {
+  "P1_001_withdrawn": {
+   "boss_x_mm": 59.5,
+   "inside_IR_BARRIER": false,
+   "keepout_x_mm": [
+    57.25,
+    61.75
+   ],
+   "overlap_into_IR_RX_OPTICAL_mm": 0.25,
+   "overlap_into_IR_TX_OPTICAL_mm": 0.0
+  },
+  "as_built_D756": {
+   "boss_x_mm": 60.0,
+   "inside_IR_BARRIER": false,
+   "keepout_x_mm": [
+    57.75,
+    62.25
+   ],
+   "overlap_into_IR_RX_OPTICAL_mm": 0.75,
+   "overlap_into_IR_TX_OPTICAL_mm": 0.0
+  },
+  "locked_D226_D232": {
+   "boss_x_mm": 59.0,
+   "inside_IR_BARRIER": true,
+   "keepout_x_mm": [
+    56.75,
+    61.25
+   ],
+   "overlap_into_IR_RX_OPTICAL_mm": 0.0,
+   "overlap_into_IR_TX_OPTICAL_mm": 0.0
+  }
+ },
+ "note": "doc X and KiCad X are the same axis; doc Y = 148 - KiCad Y",
+ "schema": 1,
+ "what": "BOSS2's \u00d84.5 mm keep-out against the mandatory opaque IR barrier that D-226 widened 3.0 -> 5.0 mm specifically to carry it."
+}

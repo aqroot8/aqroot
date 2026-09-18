@@ -1,0 +1,212 @@
+{
+ "board_sha256": "f66c789667b6eb97fbe733ca94d9fbda8214fd11418afd7452590a906f59cca2",
+ "findings": [
+  {
+   "at": [
+    [
+     40.0,
+     136.0
+    ]
+   ],
+   "items": [
+    "Footprint BOSS1"
+   ],
+   "type": "missing_courtyard"
+  },
+  {
+   "at": [
+    [
+     59.0,
+     3.0
+    ]
+   ],
+   "items": [
+    "Footprint BOSS2"
+   ],
+   "type": "missing_courtyard"
+  },
+  {
+   "at": [
+    [
+     7.9,
+     17.275
+    ],
+    [
+     7.9,
+     17.2982
+    ]
+   ],
+   "items": [
+    "Track [/01_POWER_TREE/USB_VBUS_CHG] on In2.Cu, length 3.9953 mm",
+    "Via [/01_POWER_TREE/USB_VBUS_CHG] on F.Cu - B.Cu"
+   ],
+   "type": "track_not_centered_on_via"
+  },
+  {
+   "at": [
+    [
+     7.9,
+     17.25
+    ],
+    [
+     7.9,
+     17.2982
+    ]
+   ],
+   "items": [
+    "Track [/01_POWER_TREE/USB_VBUS_CHG] on In2.Cu, length 0.2121 mm",
+    "Via [/01_POWER_TREE/USB_VBUS_CHG] on F.Cu - B.Cu"
+   ],
+   "type": "track_not_centered_on_via"
+  },
+  {
+   "at": [
+    [
+     7.9,
+     17.275
+    ],
+    [
+     7.9,
+     17.2982
+    ]
+   ],
+   "items": [
+    "Track [/01_POWER_TREE/USB_VBUS_CHG] on In2.Cu, length 3.8908 mm",
+    "Via [/01_POWER_TREE/USB_VBUS_CHG] on F.Cu - B.Cu"
+   ],
+   "type": "track_not_centered_on_via"
+  },
+  {
+   "at": [
+    [
+     8.05,
+     17.1
+    ],
+    [
+     7.9,
+     17.2982
+    ]
+   ],
+   "items": [
+    "Track [/01_POWER_TREE/USB_VBUS_CHG] on In2.Cu, length 3.3000 mm",
+    "Via [/01_POWER_TREE/USB_VBUS_CHG] on F.Cu - B.Cu"
+   ],
+   "type": "track_not_centered_on_via"
+  },
+  {
+   "at": [
+    [
+     3.15,
+     59.25
+    ],
+    [
+     3.165,
+     59.275
+    ]
+   ],
+   "items": [
+    "Track [/01_POWER_TREE/Q3_CS] on In2.Cu, length 2.0506 mm",
+    "Via [/01_POWER_TREE/Q3_CS] on F.Cu - B.Cu"
+   ],
+   "type": "track_not_centered_on_via"
+  }
+ ],
+ "joins": [
+  {
+   "drill_radius_mm": 0.2,
+   "endpoint_offset_mm": 0.0232,
+   "net": "/01_POWER_TREE/USB_VBUS_CHG",
+   "track_end_covers_the_barrel": true,
+   "track_end_mm": [
+    7.9,
+    17.275
+   ],
+   "via_mm": [
+    7.9,
+    17.2982
+   ],
+   "via_pad_radius_mm": 0.45,
+   "wholly_inside_the_via_pad": true
+  },
+  {
+   "drill_radius_mm": 0.2,
+   "endpoint_offset_mm": 0.0482,
+   "net": "/01_POWER_TREE/USB_VBUS_CHG",
+   "track_end_covers_the_barrel": true,
+   "track_end_mm": [
+    7.9,
+    17.25
+   ],
+   "via_mm": [
+    7.9,
+    17.2982
+   ],
+   "via_pad_radius_mm": 0.45,
+   "wholly_inside_the_via_pad": true
+  },
+  {
+   "drill_radius_mm": 0.2,
+   "endpoint_offset_mm": 0.0232,
+   "net": "/01_POWER_TREE/USB_VBUS_CHG",
+   "track_end_covers_the_barrel": true,
+   "track_end_mm": [
+    7.9,
+    17.275
+   ],
+   "via_mm": [
+    7.9,
+    17.2982
+   ],
+   "via_pad_radius_mm": 0.45,
+   "wholly_inside_the_via_pad": true
+  },
+  {
+   "drill_radius_mm": 0.2,
+   "endpoint_offset_mm": 0.2486,
+   "net": "/01_POWER_TREE/USB_VBUS_CHG",
+   "track_end_covers_the_barrel": true,
+   "track_end_mm": [
+    8.05,
+    17.1
+   ],
+   "via_mm": [
+    7.9,
+    17.2982
+   ],
+   "via_pad_radius_mm": 0.45,
+   "wholly_inside_the_via_pad": true
+  },
+  {
+   "drill_radius_mm": 0.1,
+   "endpoint_offset_mm": 0.0292,
+   "net": "/01_POWER_TREE/Q3_CS",
+   "track_end_covers_the_barrel": true,
+   "track_end_mm": [
+    3.15,
+    59.25
+   ],
+   "via_mm": [
+    3.165,
+    59.275
+   ],
+   "via_pad_radius_mm": 0.175,
+   "wholly_inside_the_via_pad": true
+  }
+ ],
+ "missing_courtyard_verdict": "BOSS1 and BOSS2 are enclosure mounting bosses and carry no courtyard, so every courtyard-based check on this board -- the placement contract, apply_part_shift's own vetting -- has always been blind to them.  D-758 measures the boss keep-outs directly instead (d758-boss-clearance.json).  The footprints are library masters and a courtyard is not added here: doing so would raise lib_footprint_mismatch, a class this programme drove to zero (D-233).",
+ "probe_counts": {
+  "lib_footprint_issues": 199,
+  "missing_courtyard": 2,
+  "track_not_centered_on_via": 5
+ },
+ "schema": 1,
+ "tests_set_to_ignore": [
+  "footprint_filters_mismatch",
+  "footprint_type_mismatch",
+  "missing_courtyard",
+  "track_not_centered_on_via",
+  "tuning_profile_track_geometries"
+ ],
+ "track_not_centered_on_via_verdict": "five joins, four on USB_VBUS_CHG and one on Q3_CS.  Every one of them lands its track end INSIDE the via pad and over the barrel, so the connection is annular-ring copper and not a tangency; connection_width_contract's pairs_below_strict set does not contain any of them.  Recorded, not repaired -- repairing would move copper on a 1.1 A rail for an etch-cosmetic reason.",
+ "what": "the DRC tests this board's setup sets to 'ignore', PROBED in a scratch copy at severity warning.  A switched-off test is an absent test, not a passing one (D-738, D-744); this is the same reading applied to severity rather than to a zeroed threshold."
+}

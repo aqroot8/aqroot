@@ -124,14 +124,52 @@ controls proving none of them is vacuous.
 | run | result |
 |---|---|
 | `--severity-all --schematic-parity` | 199 `lib_footprint_issues` — **every one severity WARNING** — 17 unconnected, 246 parity warnings, **0 parity errors**, and **zero** of every other violation class |
-| all five IGNORED rules promoted to error | 2 `missing_courtyard` (`BOSS1`/`BOSS2` mounting bosses), 5 `track_not_centered_on_via`, **zero new** |
-| `connection_width`, probed at 0.20 mm | 81 distinct pairs, 74 benign acute throats, 7 below 0.15 mm, **none load-bearing** |
+| all five IGNORED rules promoted to error | 2 `missing_courtyard` (`BOSS1`/`BOSS2` mounting bosses), 5 `track_not_centered_on_via`, **zero new**. **D-758 ASKED WHAT THOSE TWO MEANT** and the answer was two real mechanical defects — see §5a. The five off-centre joins are measured: every one lands its track end inside the via pad and over the barrel, so each is annular-ring copper and not a tangency; none appears in `connection_width`'s below-strict set. `evidence/d758-switched-off-drc-tests.json` |
+| `connection_width`, probed at 0.20 mm | 85 distinct pairs, 76 benign acute throats, 9 below 0.15 mm, **none load-bearing** |
 | pour islands | 95 filled islands over six layers, **zero orphans** |
 
 `min_connection` is 0.000 mm in board setup, so KiCad never runs
 `connection_width` — the same defect class D-738 found in
 `solder_mask_min_width`. It is probed in a scratch copy and the board setup is
 deliberately left alone; the measurement is the deliverable.
+
+## 5a. Mechanical retention — the two M2 bosses (D-758)
+
+Both mounting bosses were out of position by exactly 1.000 mm, in the same
+direction, and both are corrected on the fabrication candidate.
+
+| | as declared at D-756 | now |
+|---|---|---|
+| `BOSS1` hole | doc (40.000, 12.000) — correct | unchanged |
+| `BOSS1_KEEPOUT` | 4.500 mm square centred on **41.000** | **Ø4.500 mm circle on the boss** |
+| `BOSS2` hole | doc **(60.000, 145.000)** | doc **(59.000, 145.000)** — the `D-226`/`D-232` locked value |
+| `BOSS2_KEEPOUT` | 4.500 mm square centred on 60.000 | **Ø4.500 mm circle on the boss** |
+
+**Why `BOSS2` had to move.** `D-226` widened the mandatory opaque `IR_BARRIER`
+**3.0 → 5.0 mm (X 56.500 … 61.500) specifically so that it would carry `BOSS2`**,
+and withdrew P1-001's (59.500, 145.000) as *"never legal"* because its Ø4.500 mm
+keep-out ran 0.250 mm into `IR_RX_OPTICAL`. At the as-built 60.000 that overlap
+was **0.750 mm**. At the locked 59.000 it is **0.000 mm** and the keep-out lies
+wholly inside the barrier. The correction cost **no copper**: nothing was inside
+the corrected region.
+
+**What `BOSS1`'s misplaced keep-out had let in.** Four pour fills reached
+**1.3505 mm from the boss centre — 0.2505 mm from the edge of a 2.200 mm
+non-plated hole**, against this board's own published 0.200 mm NPTH-to-copper
+figure, and `/SX1262_RXEN` had a via 1.7591 mm from it. On the corrected board:
+
+| | `BOSS1` | `BOSS2` |
+|---|---|---|
+| nearest routed copper | 2.3000 mm (`F.Cu` `/SD_CS_N`) | none within 3.200 mm |
+| nearest pour fill | **2.2505 mm** (was 1.3505) | 2.2505 mm |
+| nearest component | 2.5250 mm (`J3` courtyard) | 2.6950 mm (`C11` courtyard) |
+| pour to NPTH hole edge | **1.1505 mm** (was 0.2505) | 1.1505 mm |
+
+**FIRST ARTICLE:** confirm both Ø2.2 mm NPTH positions against the enclosure CAD
+before tooling the bosses — the enclosure is designed from these coordinates, and
+`BOSS2`'s moulded boss must land inside the opaque IR barrier, not beside it.
+Evidence: `evidence/d758-boss-clearance.json`,
+`evidence/d758-boss2-ir-barrier.json`.
 
 ## 5. Safety and power
 

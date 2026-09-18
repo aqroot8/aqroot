@@ -89,7 +89,11 @@ FPC consumed of the 29.5 mm worst case 14.94 mm                       <= 29.5   
 
 -- retention ---------------------------------------------------------------------------------------------------------
 BOSS1                                  doc (40.000, 12.000)   Oe4.5 mm keep-out, Oe2.2 NPTH
-BOSS2                                  doc (60.000, 145.000)   Oe4.5 mm keep-out, Oe2.2 NPTH
+BOSS2                                  doc (59.000, 145.000)   Oe4.5 mm keep-out, Oe2.2 NPTH
+   [D-758 CORRECTION: this line read (60.000, 145.000) and the BOARD was built from it.
+    D-226/D-232 lock 59.000 and FBV2_P1_KEEPOUTS.md always said 59.000; at 60.000 the
+    Oe4.5 keep-out runs 0.750 mm into IR_RX_OPTICAL instead of sitting inside the 5.0 mm
+    IR barrier that carries it.  The board is corrected; this line is corrected with it.]
 SEARCH RESULT                          Oe6.0: 0 legal sites   Oe4.5: 2 legal sites
 SUPPORT REGIONS (User.3, no copper)    RIB_R1 RIB_R2 RIB_R3 RIB_B1
 

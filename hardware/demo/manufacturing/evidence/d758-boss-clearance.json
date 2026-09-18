@@ -1,0 +1,110 @@
+{
+ "board_sha256": "f66c789667b6eb97fbe733ca94d9fbda8214fd11418afd7452590a906f59cca2",
+ "bosses": {
+  "BOSS1": {
+   "boss_mm": [
+    40.0,
+    136.0
+   ],
+   "covers_the_required_diameter_4_500_mm": true,
+   "keepout_circumradius_mm": 2.251178,
+   "keepout_inradius_mm": 2.250499,
+   "keepout_vertices": 128,
+   "nearest_component": [
+    [
+     2.525,
+     "J3 courtyard"
+    ],
+    [
+     2.525,
+     "R35 courtyard"
+    ],
+    [
+     2.525,
+     "R74 courtyard"
+    ]
+   ],
+   "nearest_pour_fill": [
+    [
+     2.2505,
+     "B.Cu",
+     "GND"
+    ],
+    [
+     2.2505,
+     "In1.Cu",
+     "GND"
+    ],
+    [
+     2.2505,
+     "In3.Cu",
+     "+3V3"
+    ]
+   ],
+   "nearest_routed_copper": [
+    [
+     2.3,
+     "F.Cu",
+     "/SD_CS_N"
+    ],
+    [
+     2.3083,
+     "F.Cu",
+     "/SD_CS_N"
+    ],
+    [
+     2.612,
+     "via",
+     "/I2C_SDA_INT"
+    ]
+   ],
+   "npth_drill_mm": 2.2,
+   "pour_to_npth_hole_edge_mm": 1.1505
+  },
+  "BOSS2": {
+   "boss_mm": [
+    59.0,
+    3.0
+   ],
+   "covers_the_required_diameter_4_500_mm": true,
+   "keepout_circumradius_mm": 2.251178,
+   "keepout_inradius_mm": 2.250499,
+   "keepout_vertices": 128,
+   "nearest_component": [
+    [
+     2.695,
+     "C11 courtyard"
+    ],
+    [
+     2.7931,
+     "D1 courtyard"
+    ],
+    [
+     2.9583,
+     "C11.1"
+    ]
+   ],
+   "nearest_pour_fill": [
+    [
+     2.2505,
+     "B.Cu",
+     "GND"
+    ],
+    [
+     2.2505,
+     "F.Cu",
+     "+3V3"
+    ],
+    [
+     2.2505,
+     "In1.Cu",
+     "GND"
+    ]
+   ],
+   "nearest_routed_copper": [],
+   "npth_drill_mm": 2.2,
+   "pour_to_npth_hole_edge_mm": 1.1505
+  }
+ },
+ "schema": 1
+}
