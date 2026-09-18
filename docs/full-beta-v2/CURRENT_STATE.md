@@ -104,6 +104,21 @@
 > application -- UI, protocol stacks, the BMI270 configuration file, the
 > EastRising gamma tables -- is work that continues DURING fabrication and is not
 > a fabrication blocker.
+>
+> **D-749 CTO RECHECK (2026-09-18): readiness stands; one stale governance
+> sentence was corrected, with NO hardware or firmware change.**  An independent
+> re-run at board authority `c7f5c618` reconfirmed routing at **171/172 retained
+> nets, 1 owner-approved U11.3 edge, 0 unapproved edges**, KiCad DRC at **199
+> `lib_footprint_issues` only**, schematic parity at **0 errors**, `FAB1..FAB11`
+> PASS, the firmware/hardware-map contract PASS, and the `aqroot-demo` PlatformIO
+> target SUCCESS.  `routing_ledger.py` still carried the pre-D-742 inverted-table
+> sentence saying a charger fault could not be directly observed.  That metadata
+> is now aligned with SLUSF65B Table 6-2 and D-742: **STAT1 LOW directly observes
+> a fault; charging-versus-complete and recoverable-versus-non-recoverable remain
+> unavailable without STAT2.**  A matching technical clarification was appended
+> to the durable owner-decision file; the owner's approved decision to leave
+> `U11.3` unconnected, preserve `R128`/`TP7`, and revisit STAT2 next revision is
+> unchanged.  Evidence: `evidence/d749-routing-ledger.json`.
 
 > **D-748: A DISCIPLINE THAT ONLY EXISTS IN A COMMENT CANNOT REFUSE
 > (2026-09-18).**  `authority c7f5c618` UNCHANGED, no copper -- 69 tracked

@@ -60,8 +60,11 @@ APPROVED_UNROUTED = {
             "Charger STATUS OBSERVABILITY only.  BQ25185 protection behaviour is "
             "unchanged; STAT1 is routed, and the MAX17048 fuel gauge reports pack "
             "voltage and state-of-charge.  Full STAT1+STAT2 charge-state decode is "
-            "UNAVAILABLE on this Demo revision and firmware must not report a "
-            "charger fault as directly observed."
+            "UNAVAILABLE on this Demo revision.  Per SLUSF65B Table 6-2 and D-742's "
+            "technical correction, STAT1 LOW is a directly observed charger fault; "
+            "without STAT2, recoverable vs non-recoverable fault and charging vs "
+            "charge-complete/sleep/disabled are not distinguishable.  Any charging "
+            "claim must therefore be labelled an inference."
         ),
     },
 }
