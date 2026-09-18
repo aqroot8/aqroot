@@ -199,8 +199,8 @@ D-742…D-745 entries below are retained as the history of the previous cycle.
    VIN; this panel is **2.9–3.2 V on a 3.3 V rail**, so the shutdown DC path
    converged at **≈ 25 mA** — a fifth of full brightness and 82 mW, with no
    firmware mitigation because `+3V3` is switched by the `SW9` slide switch.
-   One `AO3400A` (same BOM line as `Q1`, LCSC `C20917`) in the panel cathode
-   return.  Outside the regulation loop by construction, so the 109 mA setpoint
+   One **`AO3422`** (LCSC `C37130`, **55 V** `BVDSS`; D-766 re-rated it from the
+   30 V `AO3400A`, which `Q1` still carries) in the panel cathode return.  Outside the regulation loop by construction, so the 109 mA setpoint
    is unchanged.  **D-751 routed its three nets** — D-750 had fitted it and left
    them open — and **D-752 took its gate off `DISP_BL_CTL`**, where a PWM low
    phase would have opened the string under an actively switching converter
@@ -658,13 +658,27 @@ can only be confirmed by eye. `MK1` and `U5` share one `/I2S_BCLK` and one
    than `tSD`, 2.5 ms max. The state that must never occur is *converter
    switching with `Q11` off*: `FB` collapses under the 30 mV open-LED
    threshold, `SW` ramps to `VOVP_SW` (36 / 37.5 / 39 V), and the panel cathode
-   — `Q11`'s drain — follows the anode to ≈ 36 V across a **30 V** `AO3400A`.
+   — `Q11`'s drain — follows the anode to the **39 V** this board's own
+   `.kicad_dru` publishes for `LED_BOOST`.
    `D14`/`C85`/`R132` make that unreachable by construction: the gate follows
    the ENVELOPE of `DISP_BL_CTL` with **τ = 22 ms**, so `Q11` cannot open
-   before **11.4 ms** at worst-case tolerance while `U17` is in shutdown by
-   2.5 ms — **4.6× margin, waveform-independent, no firmware sequencing**.
+   before **5.14 ms** at worst-case tolerance while `U17` is in shutdown by
+   2.5 ms — **2.06× margin, waveform-independent, no firmware sequencing**.
+   **AND D-766 RE-RATED THE SILICON, WHICH IS WHY 2.06× IS ENOUGH.** D-752 wrote
+   *"the `AO3400A` is a 30 V part"* and left the 30 V part fitted; a single
+   component failure — an unfitted `C85`, an open `D14`, a shorted `R132` —
+   re-creates the forbidden state, and a protection element has to survive the
+   fault it exists to prevent. `Q11` is now the **`AO3422`**, `BVDSS` **55 V**
+   min, **41 % margin** over the published 39 V, same SOT-23 and same
+   1 = G / 2 = S / 3 = D. Its higher `VGS(th)` max (2.00 V against 1.45 V) is
+   what moves the ordering margin 4.6× → 2.06×, and that is accepted
+   deliberately: with a 55 V part, losing the ordering costs a **recoverable**
+   `U17` open-LED latch instead of avalanche in an under-rated FET.
    `demo_feature_contract.py` **F5** refuses any board that collapses the two
-   nets, drops `C85`, substitutes a Schottky for `D14`, or retunes `R132`.
+   nets, drops `C85`, substitutes a Schottky for `D14`, or retunes `R132` — and,
+   since D-766, any board whose disconnect FET has no published rating, is rated
+   under the ceiling **parsed out of the `.kicad_dru`**, is not enhanced by the
+   held gate, or would open before `U17`'s `tSD`.
    **A revision that wants to PWM `Q11` independently must re-rate it to at
    least 40 V `VDS` first.**
 

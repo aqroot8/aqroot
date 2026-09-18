@@ -118,7 +118,7 @@ GPIO19/20); there is **no USB-UART bridge IC** (by design). See §9, §16.
 | Touch panel | EastRising **ER-TPC035-6** capacitive | LOCKED · FITTED · INTERNAL | OFF_BOARD_BOM.md |
 | Touch controller | **FocalTech FT6236** @ I²C **0x38** | LOCKED (interface); **silicon identity CAD-TO-VERIFY** | `architecture/I2C_ADDRESS_REGISTRY.md`; ARCHITECTURE.md |
 | Backlight driver | `U17` **TPS61169DCKR** (WLED boost) | FITTED | `03_spi_a_display_sd.kicad_sch:U17` |
-| Backlight **true-off disconnect** | `Q11` **AO3400A** (LCSC C20917) in the panel cathode return, gate on its OWN net `BL_DISC_G` | FITTED (added D-750, re-controlled D-752) | `03_spi_a_display_sd.kicad_sch:Q11`; D-750 item 7; D-752 |
+| Backlight **true-off disconnect** | `Q11` **AO3422** (LCSC C37130, **55 V** `BVDSS`) in the panel cathode return, gate on its OWN net `BL_DISC_G` | FITTED (added D-750, re-controlled D-752, **re-rated D-766**) | `03_spi_a_display_sd.kicad_sch:Q11`; D-750 item 7; D-752; D-766 |
 | Backlight disconnect **gate hold** | `D14` **1N4148WS** (LCSC C2128) + `C85` 100 nF + `R132` 220 k — charges from `DISP_BL_CTL`, decays with τ = 22 ms | FITTED (added D-752) | `03_spi_a_display_sd.kicad_sch:D14/R132/C85`; D-752 |
 | Display SDO isolation | `R112` 0 Ω = **DNP** | DNP | population matrix |
 
@@ -183,6 +183,55 @@ GPIO19/20); there is **no USB-UART bridge IC** (by design). See §9, §16.
 >   `R132.1`/`C85.1`, `D14.2` to sit with `U17.4`, both hold legs to return to
 >   `GND`, and the `220k`/`100nF`/`1N4148` identities to hold — with **four
 >   live negative controls**, including one that puts the shared gate back.
+>
+> **AND THE SILICON ITSELF WAS STILL UNDER-RATED, UNTIL D-766.**  Everything
+> above is about SEQUENCING, and the sentence *"the `AO3400A` is a 30 V part"*
+> sat in this document, in `CTO_DECISIONS.md` and in the schematic note for four
+> decisions **with a 30 V part still fitted**.  This board's own `.kicad_dru`
+> publishes the ceiling for that node in its own words — *"an open-LED fault
+> puts up to **39 V** on `LED_BOOST`"* — so `Q11` was rated **30 % below a limit
+> this repository prints for its own drain node**.  The sequencing argument is
+> sound, but a single-component failure re-creates the forbidden state: an
+> unfitted `C85`, an open `D14` or a shorted `R132` each put the gate back on
+> `CTRL`'s instantaneous level.  **A protection element must survive the fault
+> it exists to prevent.**
+>
+> `Q11` is now the **`AO3422`** (AOS rev 2.1, March 2024, archived at
+> `vendor/AOS/AO3422-rev2p1-2024-03.pdf`): **`BVDSS` 55 V min** at `ID` = 10 mA
+> and `VDS` abs-max 55 V — **41 % margin** over the published 39 V — `ID` 2.1 A
+> at `VGS` 4.5 V, `IGSS` ±100 nA, **the same SOT-23 with the same
+> 1 = G / 2 = S / 3 = D**, so no land pattern and no footprint verification
+> changed.  LCSC `C37130`, 84 244 in stock, confirmed live under D-096.
+>
+> * **conduction is guaranteed by the threshold spec, not assumed.**
+>   `VGS(th)` is **0.6 / 1.3 / 2.0 V at `ID` = 250 mA**, and this circuit needs
+>   **109 mA — less than half the threshold test current** — so at the held gate
+>   of ≥ 2.60 V (`VGS` ≥ **2.396 V** over `R69`'s 0.204 V) the worst-case part is
+>   already passing more than twice what is asked of it.  **`RDS(on)` cannot move
+>   the LED current**: `U17`'s `FB` senses `LED_K`, which is `Q11`'s SOURCE, so
+>   `R69` alone fixes the setpoint and the channel only costs boost headroom —
+>   a worst-case square-law estimate at 0.396 V of overdrive is ≈ 1 Ω, i.e.
+>   **0.11 V and 12 mW** against roughly 10 V of spare headroom.
+> * **the true-off floor is unchanged.**  `IGSS` is the same ±100 nA, so D-752's
+>   **0.242 V** floor now stands against `VGS(th)` min **0.60 V** — **2.48×**.
+> * **one number gets worse, and it is named.**  `VGS(th)` max rises
+>   1.45 V → 2.00 V, so the worst-case decay-to-threshold falls
+>   **11.4 ms → 5.14 ms** and D-752's ordering margin falls **4.6× → 2.06×**.
+>   **That is accepted deliberately, because the part change de-escalates what a
+>   violation costs**: with a 30 V part, losing the ordering meant 36–39 V across
+>   silicon rated for 30 V — avalanche and cumulative degradation.  With a 55 V
+>   part it means only that `U17` enters its open-LED latch and the backlight
+>   stays dark until `CTRL` is cycled — recoverable, non-destructive and visible.
+>   Raising `C85` to 220 nF would restore 4.5× for a cent and was declined only
+>   because it opens a new single-piece BOM line for a margin that no longer
+>   guards silicon.
+> * **mechanised, and non-vacuously.**  **F5** now also parses the **39 V**
+>   ceiling **out of the `.kicad_dru`** rather than restating it, refuses a FET
+>   this contract has no published rating for, and requires the fitted part's
+>   `VDS` to cover the ceiling, the held gate to enhance **that** part past
+>   **its own** worst-case `VGS(th)`, and the gate not to reach that threshold
+>   before `U17`'s 2.5 ms `tSD`.  **Four more live controls**, one of which is
+>   the 30 V `AO3400A` D-752 left fitted — refused by the rating clause alone.
 
 **Conflicts flagged (do not carry stale values into public copy):**
 - **Display driver:** ARCHITECTURE/OFF_BOARD_BOM lock **ILI9488** (320×480); the KiCad

@@ -50,6 +50,7 @@ exact MPN — 0 missing** (six were added at FBV2-S2-001, see §4).
 | **XFL4020-152MEC** | `L1` | **B** | LCSC **C3033018**; Coilcraft doc 745-1 rev 03/10/26 |
 | ~~**TPS22950CDDCR**~~ | ~~`U20`, `U22`~~ | **B/D** | **SUPERSEDED BY D-765.** The `C` variant's own specified `ILIM` range is 0.5-3.5 A (`SLVSFJ2B` s.5) and this board programs 0.407 A. |
 | **TPS22950CQDDCRQ1** (TPS22950-Q1) | `U20`, `U22` | **B/D** | **D-765.** LCSC `C17349276`, 4 050 in stock 2026-09-18; TI orderable addendum `SLVSGP6A`: **Active / Production**, RoHS, MSL-1-260C-UNLIM, -40..125 C, marking `950Q`. Same **DDC0006A** SOT-23-THN 6-pin land pattern and pinout; `ILIM` specified **0.05-3.5 A**; AEC-Q100 grade 1. |
+| **AO3422** | `Q11` | **B/D** | **D-766.** LCSC `C37130`, Alpha & Omega Semiconductor, **84 244 in stock 2026-09-18** via the JLCPCB parts API per D-096 (`evidence/jlc-live/ao3422-23047af3.json`): SOT-23, **Drain-Source Voltage 55 V**, `ID` 2.1 A, `RDS(on)` 160 mΩ @ 4.5 V, `VGS(th)` 2 V. AOS datasheet rev 2.1 March 2024 archived at `vendor/AOS/AO3422-rev2p1-2024-03.pdf`: `BVDSS` **55 V min** at `ID` = 10 mA, `VDS` abs-max 55 V, `VGS(th)` 0.6/1.3/**2.0** V at `ID` = 250 mA, `RDS(on)` ≤ 200 mΩ at `VGS` = 2.5 V, `IGSS` ±100 nA. **Replaces the 30 V `AO3400A` on the backlight true-off disconnect only**, whose drain node this board's own `.kicad_dru` bounds at **39 V** under `TPS61169` open-LED protection. SAME `SOT-23`, SAME 1 = G / 2 = S / 3 = D, so no land pattern changed. `Q1`, the IR driver, KEEPS the `AO3400A`. |
 | **PTS645SM43SMTR92LFS** | `SW1`–`SW7` | **B** | Littelfuse/C&K PTS645 datasheet orderable table: 1.6 N ±0.3, 100 000 ops, 0.30 mm travel |
 | **TSOP38238** | `U6` | **B** | Vishay doc 82491 Rev 2.1; **TSOP38438 retained as a same-footprint fallback** (D-163) |
 | **74438357010** | `L4` (`L2` DNP) | **B** | Würth datasheet rev 003.001: 1 µH ±20 %, **Isat 6.2 A / 12.5 A**, RDC 11.6 mΩ |
@@ -73,7 +74,7 @@ each needs an LCSC code or an explicit external-purchase decision.**
 `ESP32-S3-WROOM-1-N16R8` · `PCAL9535APW,118` (×3) · `BQ25185DLHR` · `TPS63020DSJR` ·
 `TPS61023DRLR` (×2) · `MAX17048G+T10` · `LTC4368IDD-1#PBF` · `TLV7032DDFR` · `TPS61169DCKR` ·
 `MAX98357AETE+T` · `BMI270` · `USBLC6-2SC6` · `TPD4E1B06DRLR` (×4) · `NTMD4820NR2G` (×2) ·
-`AO3400A` · `AO3401A` · `2N7002` · `BSS138LT1G` (×5) · `PMEG2010AEH,115` ·
+`AO3400A` (now `Q1` only — `Q11` moved to `AO3422` at D-766, §2) · `AO3401A` · `2N7002` · `BSS138LT1G` (×5) · `PMEG2010AEH,115` ·
 `NSR0240HT1G` · `TSAL6100` · `USB4105-GF-A-120` · `B2B-PH-K-S(LF)(SN)` ·
 `B2B-PH-K-S` · `BM02B-ACHSS-GAN-ETF` · `JS102011SAQN` · `DMM-4026-B-I2S-R` ·
 `AS02008MR-LW152-R` · `FH69-50S-0.5SH` · `XFL4020-472MEC` · `GRM188R61E106KA73D`

@@ -66,7 +66,92 @@
 > `verify_promotion` PASS and `protected_copper` showing exactly one protected
 > net moved.  `U14.7` is on the bus.  This board has **no open owner decision**.
 
-> # **READINESS IS WITHDRAWN AND ONE OF ITS TWO CAUSES IS CLOSED (2026-09-18, D-765).**
+> # **BOTH CAUSES OF THE ROUND-2 WITHDRAWAL ARE NOW CLOSED (2026-09-18, D-766).**
+>
+> **Board authority `5849b658`.  D-765 closed the first (the unsupported `TPS22950C`
+> `ILIM` setting).  D-766 closes the second (firmware fault / warm-reset handling)
+> AND, while doing it, found two more defects every release gate on this board had
+> passed over — one of them a part rating this repository had written down in bold,
+> in three files, and shipped anyway.**
+>
+> **A 30 V PART ON A 39 V NODE THIS BOARD PUBLISHES ITSELF.**  D-752's own text
+> says *"THE `AO3400A` IS A 30 V PART"*, and the `.kicad_dru` says *"an open-LED
+> fault puts up to **39 V** on `LED_BOOST`"* — the sentence the entire `LED_BOOST`
+> clearance regime is built on.  `Q11`'s drain is the panel cathode.  D-752's
+> `D14`/`C85`/`R132` ordering is correct and is retained in full, but **any one of
+> those three parts failing re-creates the state it removed**, and a protection
+> element has to survive the fault it exists to prevent.  `Q11` is now the
+> **`AO3422`** — `BVDSS` **55 V** min, **41 %** margin, same SOT-23, same
+> 1 = G / 2 = S / 3 = D, so no land pattern and no footprint verification moved.
+> Conduction is guaranteed by the threshold spec itself (`VGS(th)` is specified at
+> **250 mA**; this circuit needs **109 mA**), and `RDS(on)` cannot move the LED
+> current because `U17`'s `FB` senses `Q11`'s **source**.  **The one number that
+> gets worse is named, not buried**: `VGS(th)` max 1.45 → 2.00 V cuts D-752's
+> ordering margin **4.6× → 2.06×**, accepted deliberately because the 55 V part
+> turns a violation from avalanche in under-rated silicon into a **recoverable**
+> `U17` open-LED latch.  `F5` gained the clause it never had: it **parses the
+> 39 V ceiling out of the `.kicad_dru`** rather than restating it, refuses a FET
+> with no published rating, and measures `VDS`, held-gate enhancement and
+> decay-to-threshold against the **fitted** part — four more live controls, one of
+> which is the board D-752 shipped, refused by the rating clause **alone**.
+>
+> **A VIA WHERE THE MANUFACTURER PRINTS "NO VIAS".**  Würth `74438357010` prints
+> *"No vias and traces underneath the inductor"* under **both** recommended land
+> patterns, and the board carried a Ø0.8 mm GND barrel **0.200 mm from `L4`'s
+> centre**, dead in the hatched strip between its own pads, with 0.6 mm of track
+> feeding it.  Removed, and `LAND8` now derives the restricted strip **from `L4`'s
+> own fitted pads** and refuses the previous board by coordinate.  **The
+> relocation was measured and declined**: exactly eight sites clear every
+> applicable rule and reach In1/In4, the best comes back `via_dangling`, and
+> `U21.4`, `C65.2`, `C66.2` and three barrels already sit in **one connected
+> 161.735 mm² B.Cu GND island** — so what was deleted was a ≈ 2.6 nH stub in
+> parallel with wider pour copper, not the boost's return.
+>
+> **THE WARM RESET, WHICH IS THE ROUND-2 ITEM.**  A warm MCU reset does not reset
+> a powered `PCAL9535A`, and `setup()` used to wait up to **3 s** for USB CDC,
+> print a banner and scan the bus **before** writing the safe latches.  They now
+> run first, before any `Serial` call; I²C bus recovery runs before `Wire` owns
+> the pins and fails closed; and **losing the `U3` input read — the only
+> observation of `ACC_POWER_FAULT_N` — now forces both independent disconnects and
+> blocks re-enable until a clean read returns**, where it previously issued zero
+> shutdown writes.  A defect in that very work was caught before it shipped: the
+> new battery guard read `MAX17048` `VCELL` **16× low** and would have refused
+> accessory power forever.
+>
+> **`J4`'s trim met its 0.80 mm limit with ZERO margin, on raw battery positive.**
+> Now ≤ **0.50 mm** of conductor plus a new **`J4-T3`** ≤ 0.10 mm polyimide patch —
+> 0.60 mm against 0.80 mm — with `MK10` requiring the insulation by name and
+> refusing the old declaration.
+>
+> **THE PARALLEL `F6` REWRITE IS REFUSED AND D-765's IS KEPT.**  It deleted
+> D-753's two fault-envelope clauses and, asked directly, **accepts the D-750
+> `R97`/`R101` values D-753 measured as putting two user-reachable states over the
+> `BQ25185` `IBAT_OCP` minimum**.  A policy is not an enforcement mechanism, and
+> the cell-voltage shed D-766 adds is **firmware** — defence in depth behind the
+> limiter, never instead of it.
+>
+> **Fresh verification on `5849b658`:** promotion **16/16**, objects_added 0 and
+> objects_removed **3** (all GND, all three named, all inside the claimed
+> eviction); routing **173/174** with only owner-approved `U11.3` and **zero**
+> unapproved opens; DRC **199 `lib_footprint_issues`, all warnings, zero other
+> classes**, 17 unconnected, parity **246 warnings / 0 errors** — and the
+> violation, parity and unconnected **sets are element-for-element identical** to
+> D-765's, which is what proves the `Q11` schematic and PCB moved together;
+> protected copper **15 nets / 406 objects identical**; ampacity `all_ok` with
+> every verdict and worst-rise identical to D-765's — **and running that audit
+> twice exposed a fifth defect**: it broke maximin frontier ties on `id(m)`, a
+> **memory address**, so on an unchanged board it reported `USB_VBUS_RAW` as
+> 23.876 / 19.876 / 23.876 mm across three runs.  The bottleneck and every
+> verdict were always right; the tie-break is now a deterministic node index and
+> four consecutive runs are byte-identical; **F1–F6**, **FAB1–FAB15**, **LAND1–LAND8**
+> PASS; sourcing **252/252**; 19 standing contracts run with none failing;
+> firmware map **H1–H6 PASS**, host tests PASS including the new **T10f**, and all
+> four PlatformIO builds SUCCESS; `hardware/beta-v2` untouched.  **There is no
+> open owner decision.**
+>
+> # **D-765's ENTRY STANDS BELOW AS HISTORY.**
+>
+> # **READINESS WAS WITHDRAWN AND ONE OF ITS TWO CAUSES WAS CLOSED (2026-09-18, D-765).**
 >
 > **D-764's `DEMO_READY_FOR_FAB` WAS WITHDRAWN BY EXTERNAL REVIEW ROUND 2 FOR TWO
 > ITEMS: an unsupported `TPS22950C` `ILIM` setting, and firmware fault /

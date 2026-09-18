@@ -29,13 +29,15 @@ something a backer was promised.
 
     python3 checks/demo_feature_contract.py [-o OUT.json]
 """
-import argparse, json, re, sys
+import argparse, json, math, re, sys
 from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
 MFG = HERE.parent
 sys.path.insert(0, str(MFG))
 import routing_ledger as rl                                  # noqa: E402
+
+DRU = rl.PROJECT / "aqroot-Beta-v2.kicad_dru"
 
 # --------------------------------------------------------------------------
 # `AQROOT_DEMO_SCOPE.md` -> board.  `refs` must be FITTED; `nets` must be whole.
@@ -251,6 +253,108 @@ BL_HOLD = {"Q11.1", "D14.1", "R132.1", "C85.1"}
 BL_CTRL = {"U17.4", "D14.2", "R109.2"}
 
 
+# --------------------------------------------------------------------------
+# D-766 -- THE DISCONNECT FET MUST SURVIVE THE FAULT IT IS THERE TO SURVIVE.
+#
+# D-752 wrote the number down and left the part fitted: with Q11 open while
+# U17 regulates, "the panel cathode, which is Q11's DRAIN, follows the anode to
+# ~36 V while R69 holds its SOURCE at 0 V.  THE AO3400A IS A 30 V PART".  The
+# .kicad_dru is blunter still, and it is this board's OWN published ceiling for
+# that node: "an open-LED fault puts up to 39 V on LED_BOOST".  Every clause in
+# F5 measured the SEQUENCING that normally keeps the board out of that state --
+# and not one of them could say that the silicon holding the state off was rated
+# BELOW it.  An unfitted C85, an open D14 or a shorted R132 each re-create the
+# state D-752 removed; a protection element has to survive its own failure mode.
+#
+# So the ceiling is READ OUT OF THE .kicad_dru rather than restated here, and
+# compared against a per-part table of PUBLISHED ratings.  A FET this contract
+# has no published rating for is refused rather than assumed.  The same judge
+# also measures the two numbers D-752 argued in prose: that the held gate
+# actually enhances the FITTED part, and that the gate cannot decay below the
+# FITTED part's worst-case threshold before the TPS61169 is guaranteed to have
+# shut down.  Swapping a FET with a different VGS(th) silently moves both.
+BL_FET = "Q11"
+
+
+def led_boost_fault_ceiling_V(dru_text):
+    """The board's OWN published open-LED ceiling, parsed from its rules file."""
+    m = re.search(r"open-LED fault puts up to\s*([\d.]+)\s*V on LED_BOOST",
+                  dru_text or "")
+    return float(m.group(1)) if m else None
+
+
+# Published figures, each from a datasheet this repository has actually read.
+# (VDS absolute-maximum / BVDSS minimum, and VGS(th) MAXIMUM at the datasheet's
+# own threshold test current.)
+FET_PUBLISHED = {
+    "AO3422":  dict(vds_V=55.0, vgs_th_max_V=2.00,
+                    source="AOS AO3422 rev 2.1 2024-03, archived at "
+                           "vendor/AOS/AO3422-rev2p1-2024-03.pdf: VDS abs-max "
+                           "55 V, BVDSS 55 V min at ID=10 mA VGS=0, VGS(th) "
+                           "0.6/1.3/2.0 V at ID=250 mA"),
+    "AO3400A": dict(vds_V=30.0, vgs_th_max_V=1.45,
+                    source="AOS AO3400A rev 3.1 2023-07 as read by D-159: "
+                           "VDS 30 V, VGS(th) 0.65/1.05/1.45 V"),
+    "2N7002":  dict(vds_V=60.0, vgs_th_max_V=2.50,
+                    source="onsemi 2N7002 as read by D-187: VDSS 60 V, "
+                           "VGS(th) max 2.5 V"),
+}
+# D-752's derived held gate, and the source voltage R69 sits at while U17
+# regulates 109 mA through 1.87 ohm to the TPS61169's 204 mV feedback point.
+BL_HELD_GATE_V = 2.60
+BL_SOURCE_V = 0.204
+# TI SNVSA40B EC table: CTRL low to shutdown, MAXIMUM.
+BL_TSD_MS = 2.5
+# D-752's published tolerance band on tau: 19.6 ms worst case, 22.0 ms nominal.
+BL_TAU_WORST_RATIO = 19.6 / 22.0
+
+
+def judge_backlight_fet(values, dru_text):
+    """Pure over {ref: value} and the .kicad_dru text; returns (ok, detail)."""
+    part = (values.get(BL_FET) or "").strip()
+    pub = FET_PUBLISHED.get(part)
+    ceiling = led_boost_fault_ceiling_V(dru_text)
+    r132 = _ohms(values.get("R132"))
+    c85 = _farads(values.get("C85"))
+    tau_s = r132 * c85 if (r132 and c85) else None
+    tau_worst_s = tau_s * BL_TAU_WORST_RATIO if tau_s else None
+    vgs_held = BL_HELD_GATE_V - BL_SOURCE_V
+    f = dict(
+        fet=BL_FET, fitted_part=part, published=dict(pub) if pub else None,
+        dru_published_fault_ceiling_V=ceiling,
+        held_gate_V=BL_HELD_GATE_V, source_V=BL_SOURCE_V,
+        vgs_held_V=round(vgs_held, 4),
+        tau_nominal_ms=round(tau_s * 1e3, 4) if tau_s else None,
+        tau_worst_ms=round(tau_worst_s * 1e3, 4) if tau_worst_s else None,
+        tsd_max_ms=BL_TSD_MS,
+        fet_is_a_part_with_published_ratings=pub is not None,
+        board_publishes_a_fault_ceiling=ceiling is not None,
+        vds_margin_V=None, vds_margin_ratio=None, vgs_overdrive_V=None,
+        earliest_disconnect_ms=None, ordering_margin_ratio=None,
+        fet_vds_covers_the_published_fault_ceiling=False,
+        gate_hold_enhances_the_fitted_fet=False,
+        u17_shuts_down_before_q11_opens=False)
+    if pub and ceiling:
+        f["vds_margin_V"] = round(pub["vds_V"] - ceiling, 4)
+        f["vds_margin_ratio"] = round(pub["vds_V"] / ceiling, 4)
+        f["fet_vds_covers_the_published_fault_ceiling"] = pub["vds_V"] >= ceiling
+        f["vgs_overdrive_V"] = round(vgs_held - pub["vgs_th_max_V"], 4)
+        f["gate_hold_enhances_the_fitted_fet"] = vgs_held > pub["vgs_th_max_V"]
+        if tau_worst_s and BL_HELD_GATE_V > pub["vgs_th_max_V"]:
+            t_open_ms = tau_worst_s * 1e3 * math.log(
+                BL_HELD_GATE_V / pub["vgs_th_max_V"])
+            f["earliest_disconnect_ms"] = round(t_open_ms, 4)
+            f["ordering_margin_ratio"] = round(t_open_ms / BL_TSD_MS, 4)
+            f["u17_shuts_down_before_q11_opens"] = t_open_ms > BL_TSD_MS
+    f["ok"] = all(bool(f[k]) for k in (
+        "fet_is_a_part_with_published_ratings",
+        "board_publishes_a_fault_ceiling",
+        "fet_vds_covers_the_published_fault_ceiling",
+        "gate_hold_enhances_the_fitted_fet",
+        "u17_shuts_down_before_q11_opens"))
+    return f["ok"], f
+
+
 def judge_backlight(nets_by_contact, values):
     """Pure over {contact: netname} and {ref: value}; returns (ok, detail)."""
     gate = nets_by_contact.get(BL_GATE)
@@ -337,6 +441,14 @@ I_INTERNAL = 1.0                       # the published internal +3V3 budget
 IBAT_OCP_MIN = 3.125 * 0.82            # BQ25185 SLUSF65B, 3.125 A typ +/-18 %
 LTC4368_TRIP = 0.050 / 0.015           # 50 mV across R75 15 mOhm
 FUSE_A = 5.0                           # F1 0466005 one-shot
+
+
+def _farads(value):
+    m = re.match(r"\s*([\d.]+)\s*([munp]?)F", value or "")
+    if not m:
+        return None
+    return float(m.group(1)) * {"": 1.0, "m": 1e-3, "u": 1e-6,
+                                "n": 1e-9, "p": 1e-12}[m.group(2)]
 
 
 def _ohms(value):
@@ -584,6 +696,37 @@ def main():
         _control("f5c_refuses_a_schottky_in_the_charge_path", _schottky),
         _control("f5d_refuses_a_silently_retuned_hold", _wrong_tau)))
 
+    # ---- D-766: and the FET itself, against the ceiling THIS board publishes
+    dru_text = DRU.read_text(encoding="utf-8", errors="replace") if DRU.exists() \
+        else ""
+    fet_ok, fet = judge_backlight_fet(values, dru_text)
+
+    def _fet_control(name, mutate):
+        v2 = dict(values)
+        mutate(v2)
+        ok, _ = judge_backlight_fet(v2, dru_text)
+        return name, not ok
+
+    def _fet_control_dru(name, text):
+        ok, _ = judge_backlight_fet(values, text)
+        return name, not ok
+
+    fet_controls = dict(x for x in (
+        # THE LOAD-BEARING ONE: the board D-752 shipped.  Nothing changes but
+        # the silicon, every sequencing clause above still passes, and the
+        # 30 V rating alone refuses it against the 39 V this board publishes.
+        _fet_control("f5e_refuses_the_30V_ao3400a_d752_left_fitted",
+                     lambda v: v.__setitem__(BL_FET, "AO3400A")),
+        _fet_control("f5f_refuses_a_fet_with_no_published_rating",
+                     lambda v: v.__setitem__(BL_FET, "SOME-FET-1234")),
+        # a hold capacitor small enough to let the gate reach the FITTED part's
+        # worst-case threshold before the TPS61169's 2.5 ms tSD
+        _fet_control("f5g_refuses_a_hold_that_opens_before_u17_shuts_down",
+                     lambda v: v.__setitem__("C85", "1nF X7R")),
+        # and the ceiling must come from the rules file, not from this contract
+        _fet_control_dru("f5h_refuses_a_dru_that_no_longer_publishes_a_ceiling",
+                         "no ceiling is stated anywhere in this text")))
+
     # ---- F6: the accessory envelope, and four live controls ---------------
     env_ok, env = judge_accessory_envelope(values)
 
@@ -640,13 +783,25 @@ def main():
                  "rejected a TVS on either rail because the part's 5.5 V VRWM "
                  "leaves no working margin against a 5.0 V nominal rail"),
         "F5_backlight_disconnect_control_is_independent": dict(
-            ok=bl_ok and all(bl_controls.values()),
+            ok=(bl_ok and all(bl_controls.values())
+                and fet_ok and all(fet_controls.values())),
             method="TI SNVSA40B 6.3.5 makes CTRL an ANALOG dimming input: the "
                    "converter keeps switching through every PWM low phase, so "
                    "Q11's gate may not share it.  The D-752 hold network is "
                    "what keeps the ordering, and four live controls put each "
-                   "way of losing it back",
+                   "way of losing it back.  D-766: AND THE SILICON.  Q11's "
+                   "drain is the panel cathode, which under open-LED "
+                   "protection follows the anode to the ceiling this board's "
+                   "OWN .kicad_dru publishes for LED_BOOST -- parsed from that "
+                   "file, not restated here -- so the fitted FET's PUBLISHED "
+                   "VDS rating must cover it, the held gate must enhance the "
+                   "FITTED part past its own worst-case VGS(th), and the gate "
+                   "may not decay below that threshold before the TPS61169 is "
+                   "guaranteed to be in shutdown.  Four more live controls, "
+                   "one of which is the 30 V AO3400A D-752 left fitted",
             controls_refused=bl_controls,
+            fet_controls_refused=fet_controls,
+            fet=fet,
             **{k: v for k, v in bl.items() if k != "ok"}),
         "F6_accessory_envelope_is_bounded_by_hardware": dict(
             ok=env_ok and all(env_controls.values()),

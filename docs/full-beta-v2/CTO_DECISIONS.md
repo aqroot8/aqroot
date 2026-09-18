@@ -1,3 +1,377 @@
+## D-766 — **FIVE DEFECTS THE RELEASE GATES COULD NOT SEE: A 30 V PART ON A 39 V NODE THIS BOARD ITSELF PUBLISHES, A VIA WHERE THE MANUFACTURER PRINTS "NO VIAS", A WARM RESET THAT OUTLIVED ITS OWN SAFE STATE, AND A TRIM THAT MET ITS LIMIT EXACTLY**
+
+    authority  9e4728ae -> 5849b658   objects_added 0, objects_removed 3 (all GND,
+               all under L4, claimed as an eviction)
+    board      174 retained nets, 173 connected, 1 owner-approved open (U11.3),
+               0 unapproved open edges, raw ratsnest 17
+    changed    aqroot-Beta-v2.kicad_pcb (Q11 Value/descr; the GND via at
+               (58.900, 36.000) and its two feed segments REMOVED),
+               03_spi_a_display_sd.kicad_sch (Q11 identity + D-766 notes on
+               Q11/D14/R132/C85 -- D-752's text RETAINED, not replaced),
+               checks/demo_feature_contract.py (F5: the FET clause, four new
+               controls), checks/land_parity_contract.py (LAND8),
+               checks/mechanical_keepout_contract.py (MK10 insulation),
+               assembly/THT_LEAD_TRIM.md (J4-T1 retightened, J4-T3 NEW),
+               evidence/d750-critical-identity.json (Q11 repinned),
+               export_fab_package.py (ASSEMBLY_RELEASE),
+               audit_rail_ampacity.py (DETERMINISM -- see section 8a),
+               Firmware/src/demo,
+               Firmware/src/hw, Firmware/test, DEVICE_SPEC, FAB_HANDOFF,
+               SOURCING_LEDGER, FIRST_FIVE_ASSEMBLY_PLAN,
+               MECHANICAL_INTERFACE_SPEC
+    vendor     AO3422-rev2p1-2024-03.pdf ARCHIVED -- the datasheet for the part
+               that replaces a part this repository had called under-rated in
+               writing for four decisions
+    evidence   d766-{verify-promotion,routing-ledger,protected-copper,
+               rail-ampacity,demo-feature-contract,fab-package-contract,
+               contract-regression,kicad-drc-parity}.json,
+               evidence/jlc-live/ao3422-23047af3.json
+
+### 1. THE ONE THAT MATTERS MOST: THIS REPOSITORY HAD WRITTEN THE DEFECT DOWN AND LEFT IT FITTED
+
+D-752 is correct engineering and every word of it is retained. It found that
+`TPS61169` `CTRL` is an **analog** dimming input, that the converter keeps
+switching through every PWM low phase, and that the shared gate therefore opened
+the LED string under an actively regulating converter on **every dimmed frame**.
+It fixed the ordering in hardware with `D14`/`C85`/`R132`.
+
+**And in the middle of that argument it wrote, in bold, in three separate files:
+"THE `AO3400A` IS A 30 V PART".** It then shipped the 30 V part. D-752, D-753,
+D-763, D-764 and D-765 all passed over that sentence.
+
+The ceiling is not an outside number either. **This board's own `.kicad_dru`
+publishes it, in its own words**, in the comment above the `LED_BOOST`
+separation rules:
+
+> *"TI `SNVSA40B` gives `V_OVP_SW` = 36 / 37.5 / 39 V before the `TPS61169`
+> latches off, so **an open-LED fault puts up to 39 V on `LED_BOOST`**."*
+
+`Q11`'s **drain is the panel cathode**, `R69` holds its **source at 0 V**, and
+the whole `LED_BOOST` clearance regime — 0.50 mm to `USB_D`, 0.50 mm to `I2C`,
+0.30 mm routed — exists **because of that 39 V**. So the board was routed to a
+39 V fault case around a switch rated for 30 V: **a 30 % under-rating on the one
+element whose job is to hold the fault off.**
+
+**AND THE SEQUENCING ARGUMENT DOES NOT COVER IT.** D-752's invariant is a
+property of `D14`/`C85`/`R132`. **Any one of those three failing re-creates
+exactly the state D-752 removed** — an unfitted `C85` or an open `D14` puts the
+gate back on `CTRL`'s instantaneous level; a shorted `R132` holds it low while
+`U17` regulates. A protection element must survive the fault it exists to
+prevent, *including* when the mechanism that normally prevents it has failed.
+That is the difference between a design that is correct and a design that is
+correct **only while nothing else is broken**.
+
+### 2. THE FIX, AND THE ONE NUMBER IT MAKES WORSE
+
+`Q11` is now the **`AO3422`** — AOS rev 2.1, March 2024, now archived at
+`vendor/AOS/AO3422-rev2p1-2024-03.pdf`; LCSC **`C37130`**, Alpha & Omega,
+**84 244 in stock**, confirmed live under D-096.
+
+| | AO3400A (was) | AO3422 (now) |
+|---|---|---|
+| package / land | SOT-23, 1=G 2=S 3=D | **identical — no footprint or land change** |
+| **`VDS` abs-max / `BVDSS` min** | **30 V** | **55 V** |
+| margin to the published 39 V | **−23 %** | **+41 %** |
+| `ID` at `VGS` 4.5 V | 5.7 A | 2.1 A (109 mA used) |
+| `VGS(th)` min / max | 0.65 / **1.45** V | 0.60 / **2.00** V |
+| `IGSS` | ±100 nA | **±100 nA, unchanged** |
+| `RDS(on)` at `VGS` 2.5 V | ≤ 48 mΩ | ≤ 200 mΩ |
+
+**Conduction is guaranteed by the threshold spec itself, not assumed.**
+`VGS(th)` is specified **at `ID` = 250 mA**, and this circuit needs **109 mA —
+less than half that current** — so at the worst-case 2.00 V threshold against a
+held gate of ≥ 2.60 V (`VGS` ≥ **2.396 V** over `R69`'s 0.204 V) the device is
+already passing more than twice what is asked of it. **`RDS(on)` cannot move the
+LED current**: `U17`'s `FB` senses `LED_K`, which is `Q11`'s **source**, so
+`R69` alone fixes the setpoint and the channel costs only boost headroom — a
+worst-case square-law estimate at 0.396 V of overdrive is ≈ 1 Ω, i.e. **0.11 V
+and 12 mW** against roughly 10 V of spare headroom. **The true-off floor is
+untouched**: the same ±100 nA `IGSS` keeps D-752's **0.242 V** floor, now against
+`VGS(th)` min 0.60 V — **2.48×**.
+
+**THE ORDERING MARGIN FALLS, AND IT IS NAMED RATHER THAN BURIED.** Because
+`VGS(th)` max rises 1.45 → 2.00 V, the worst-case decay from 2.60 V to threshold
+falls `τ·ln(2.60/2.00)` = 19.6 ms × 0.2624 = **5.14 ms**, so D-752's margin over
+the `TPS61169`'s 2.5 ms `tSD` falls **4.6× → 2.06×**.
+
+**That is accepted deliberately, because the part change changes what a
+violation COSTS.** With a 30 V part, losing the ordering meant 36–39 V across
+silicon rated for 30 V — avalanche, cumulative degradation, a dead backlight
+driver. With a 55 V part it means only that `U17` enters its open-LED latch and
+the backlight stays dark until `CTRL` is cycled: **recoverable,
+non-destructive, and visible on the first bring-up**. A 2× margin on a
+recoverable invariant is worth more than a 4.6× margin on a destructive one.
+Raising `C85` 100 nF → 220 nF restores **4.5×** for about a cent and was
+**considered and declined**: it opens a new single-piece BOM line, and the margin
+no longer guards silicon. It is recorded here so a later revision can take it.
+
+**`Q1` KEEPS THE `AO3400A`.** Its drain is the IR LED cathode and never leaves
+the 5 V domain; 30 V is correct there. The BOM line simply goes from two pieces
+to one.
+
+### 3. AND F5 NOW HAS THE WORDS — THE SAME DEFECT CLASS D-765 CLOSED ON F6
+
+`F5` had **four** clauses and **four** controls, and every one of them measured
+the **sequencing**. Not one could say *"the part holding this off is rated below
+the node."* So `F5` gained a second judge, and it **parses the ceiling out of the
+`.kicad_dru` instead of restating it** — the same primary-source discipline the
+`.kicad_dru` section-5 table already gets:
+
+* `fet_is_a_part_with_published_ratings` — a FET this contract has no archived
+  datasheet figures for is **refused**, not assumed;
+* `board_publishes_a_fault_ceiling` — if the rules file stops publishing one,
+  the clause fails rather than falling back to a constant;
+* `fet_vds_covers_the_published_fault_ceiling` — 55.0 V against 39.0 V,
+  margin **16.0 V / 1.41×**;
+* `gate_hold_enhances_the_fitted_fet` — `VGS` 2.396 V against **that part's**
+  own `VGS(th)` max, overdrive **0.396 V**;
+* `u17_shuts_down_before_q11_opens` — **5.142 ms** earliest disconnect against
+  `tSD` 2.5 ms, ratio **2.057×**, recomputed from `R132`×`C85` every run.
+
+**Four new live controls, all refused.** `f5e` is the load-bearing one: it
+changes **nothing but the silicon**, leaves every D-752 sequencing clause
+passing, and is refused **by the rating clause alone**. `f5e` is the board D-752
+shipped and D-753..D-765 re-verified. `f5g` shrinks `C85` until the gate reaches
+threshold before `tSD`; `f5h` removes the ceiling from the rules file.
+
+### 4. "NO VIAS AND TRACES UNDERNEATH THE INDUCTOR" — PRINTED TWICE, OBEYED NEVER
+
+`L4` is the `ACC_5V` boost inductor, Würth **74438357010**. Its datasheet, rev
+003.002 dated 2026-09-01 and already archived in this repository, prints the same
+sentence under **both** recommended land patterns:
+
+> **"No vias and traces underneath the inductor"**
+
+The board carried, dead centre of the hatched solder-resist strip **between
+`L4`'s own two pads**, 0.200 mm from the component centre:
+
+    via      (58.900, 36.000)  Ø0.800 / drill 0.400  F.Cu-B.Cu  GND
+    segment  (58.900, 38.400) -> (58.900, 36.000)  0.600 mm  B.Cu  GND
+    segment  (58.600, 39.300) -> (58.900, 38.400)  0.400 mm  B.Cu  GND
+
+A 0.4 mm drilled barrel under a molded power inductor, 0.695 mm from each pad's
+inner edge with only solder mask between: the classic wicking and reflow-voiding
+site the instruction exists to prevent. All three objects are removed.
+
+**AND THE REPLACEMENT WAS MEASURED, NOT ASSUMED.** The stub started **inside
+`U21`'s GND pad**, so deleting it deletes the `TPS61023`'s dedicated drop to the
+inner planes — that is exactly the kind of silent degradation this project
+refuses. A relocated barrel was therefore searched for and **priced**:
+
+* Every site within 5.0 mm of `U21.4` was swept at 0.05 mm against each
+  neighbour's **own** netclass clearance (`SYS_MAIN`/`ACC_5V` 0.25 mm,
+  `SWITCH_NODE`/`LED_BOOST` 0.30 mm, otherwise 0.20 mm) and against `L4`'s
+  restricted strip and body box. **Exactly eight sites** clear every rule *and*
+  have GND fill on B.Cu **and** In1 **and** In4 — all of them 0.70–0.73 mm from
+  the pad, all bound by `ACC_5V_RAW` at 0.25 mm, best slack **0.106 mm**.
+* The best one, `(58.4125, 38.700)`, was **built and DRC'd**. With a feed track
+  it produces a `clearance` error and a `shorting_items` error against `XGPIO4`.
+  Via-only it is clearance-clean — **and comes back `via_dangling`**: the GND
+  ribbon there is thin enough that the barrel's own clearance erodes it away.
+  **A relocated via in that pocket is worse than no via.**
+* **So the question became whether the return needs one, and it does not.**
+  `U21.4`, `C65.2` (output-cap ground), `C66.2` (input-cap ground) and three GND
+  stitch barrels all sit in **ONE connected 161.735 mm² B.Cu GND fill island**.
+  The boost's high-frequency loop was always in that pour, and the capacitors
+  that carry it keep their own drops at **0.678 mm** and **0.971 mm**. What was
+  deleted was a **3.4 mm run of 0.4–0.6 mm track** to a barrel — an estimated
+  ≈ 2.1 nH stub plus ≈ 0.5 nH of barrel, i.e. **higher** inductance than the
+  wide pour path it paralleled. `U21.4`'s nearest GND barrel moves 3.42 mm ->
+  3.51 mm, **0.09 mm**, and it moves from a narrow stub to plane copper.
+
+**`LAND8` makes it a contract.** The restricted strip is **derived from `L4`'s
+own two fitted pads**, not hard-coded, so it follows the land if the footprint is
+ever revised; through vias are judged whatever layer pair they name because they
+pierce the assembly surface. Its live control puts the retired barrel back at its
+own recorded seat and must be refused — and run against the board this repository
+shipped yesterday it **fails, naming the via and the 0.6 mm segment by
+coordinate**. Copper under the wider 4.1 mm body overhang is **reported, not
+failed**, because the strip is what the drawing hatches and the overhang is
+inferred; the one item that report names is the `EXT_SDA_BUF` barrel at
+`(58.680, 34.000)`, **0.35 mm clear of the restricted strip** and overlapping the
+nominal body box by ≈ 0.10 mm. Named, not moved: moving a barrel on a
+release-verified board to cure a 0.1 mm overlap of an inferred boundary is a
+worse trade than recording it.
+
+### 5. THE WARM RESET THAT OUTLIVED THE SAFE STATE — THE OPEN EXTERNAL-REVIEW ITEM
+
+This is the second of the two items external review round 2 held
+`DEMO_READY_FOR_FAB` for. D-765 closed the first.
+
+* **A WARM MCU RESET DOES NOT RESET A POWERED `PCAL9535A`.** `setup()` used to
+  open `Serial`, wait up to **3 s** for USB CDC, print a banner, scan the whole
+  I²C bus and only *then* write the safe latches. After a warm reset with an
+  accessory rail already enabled, **the rail stayed enabled through all of it**,
+  and the expander's outputs held whatever the pre-reset firmware left. The two
+  `g_bus.begin()` / `g_expanders.begin()` transactions now run **as the first
+  thing after `parkAllPins()`, before any `Serial` call at all**, and a failure
+  aborts `setup()` instead of continuing.
+* **A RESET MID-TRANSACTION CAN LEAVE A SLAVE HOLDING `SDA` LOW**, which would
+  make those very writes fail. `ArduinoI2cBus::begin()` now recovers the bus
+  **before `Wire` owns the pins** — release both lines, clock up to nine bits
+  while `SDA` is low, emit a STOP — and **fails closed** if either line is still
+  stuck.
+* **LOSING THE FAULT READ IS ITSELF A LOSS OF SAFETY.** `ACC_POWER_FAULT_N`
+  lives in `U3`'s input register. The old `service()` returned `false` on a
+  failed input read and **issued zero shutdown writes**, so an accessory rail
+  could stay on indefinitely while the caller merely knew that service failed.
+  It now drops both independent disconnects, latches
+  `faultObservabilityLost()`, and **refuses re-enable until a later clean `U3`
+  read restores observability**. Test **T10f** proves all six halves of that,
+  including the recovery.
+* **AND A DEFECT WAS FOUND IN THE IN-FLIGHT WORK ITSELF, BEFORE IT SHIPPED.**
+  The new accessory battery guard read `MAX17048` `VCELL` as
+  `(hi << 4) | (lo >> 4)` and applied the 78.125 µV scale, **dividing the answer
+  by sixteen**: a 4.05 V cell reads 0.253 V, so the guard would have refused both
+  accessory rails **forever** and shed any rail already on. The full sixteen bits
+  are the value, and that is provable here **without the datasheet in hand** —
+  78.125 µV × 65536 = **5.12 V** full scale, the right span for one Li-ion cell,
+  against 78.125 µV × 4096 = **0.32 V**, which cannot represent a charged cell at
+  all. It also agrees with this file's own D-750 finding that every `MAX17048`
+  register is sixteen bits, MSB first. The ADI datasheet is **not reachable from
+  this worker** (`analog.com` times out, the LCSC mirror serves an anti-bot page),
+  so **no citation was written for a document that was not read**; the
+  self-consistency proof is recorded in the source instead, and first-article
+  bring-up must still read it back against a metered cell.
+* **THE 3.50 V ACCESSORY FLOOR IS LABELLED FOR WHAT IT IS.** It is a *firmware
+  policy*, a second and independent reduction of exposure — **not** a hardware
+  gate, and explicitly **not** a licence to weaken `F6`. That distinction is the
+  whole of section 6 below.
+
+### 6. THE PARALLEL `F6` REWRITE IS REFUSED, AND D-765's IS KEPT
+
+A concurrent line of work reached the same `TPS22950-Q1` conclusion as D-765 and
+also produced a **different** `F6`. That version **deleted D-753's two
+fault-envelope clauses** — `no_reachable_state_trips_the_pack` and
+`double_fault_stays_inside_the_protection_chain` — and replaced them with a fixed
+250 mA per-rail budget at an assumed 3.50 V shed floor, plus an
+`upstream_protection_is_ordered` clause that compares three constants and
+**cannot fail**. Loaded and asked directly, it **accepts `R97` = 1.5 kΩ and
+`R101` = 1.65 kΩ** — the exact D-750 values D-753 measured as putting two
+user-reachable states over the `BQ25185` `IBAT_OCP` minimum.
+
+**D-765's `F6` is kept in full and that rewrite is discarded**, for the reason
+D-753 stated and D-765 re-stated: *a policy is not an enforcement mechanism*.
+Nothing on this board measures accessory current, and the cell-voltage shed now
+added in firmware is **software**, which is precisely the kind of promise the
+hardware clause exists to be independent of. The useful number that rewrite
+computed survives as D-765's `normal_operation_screen_REPORT_ONLY`. The firmware
+floor is implemented, and it is defence in depth *behind* the limiter, not
+instead of it.
+
+### 7. `J4`'s TRIM MET ITS LIMIT EXACTLY, ON RAW BATTERY POSITIVE
+
+D-763 declared `J4`'s lead trim at **0.80 mm** under a **0.80 mm**
+`DISPLAY_SHADOW` allowance — a declaration that is satisfied with **zero
+margin**, on a contact carrying **raw battery positive**, whose shadow is the
+display's rear structure. `MK10` accepted it because it only asked
+`trim_to_mm <= allowance_mm`.
+
+`J4-T1` now requires **≤ 0.50 mm** of conductor, `J4-T2` adds inspect-and-rework
+after cutting, and **`J4-T3` is new**: both inspected joints are covered together
+with a **≤ 0.10 mm polyimide** patch before the display is fitted. **0.60 mm
+against 0.80 mm.** `MK10` now requires the insulation requirement and material to
+be named **in the normative document**, and requires
+`trim + insulation < allowance` **strictly** — so the old zero-margin declaration
+is refused, and so is a declaration that keeps the trim but drops the insulation.
+Both are live controls.
+
+### 8. VERIFICATION
+
+On board `5849b658`:
+
+    promotion        verify_promotion 16 of 16 clauses PASS; objects_added 0,
+                     objects_removed 3 -- all GND, all three named in
+                     removed_sample, all inside the claimed --evicted net;
+                     unconnected_not_increased; pour_partition_intact;
+                     fill_stable (converged on pass 1, stable through 4);
+                     beta_v2_untouched; drc_zero_attributable
+    connectivity     174 retained nets, 173 connected, 1 owner-approved open
+                     (U11.3 /BQ25185_STAT2), 0 unapproved open edges,
+                     raw ratsnest 17 -- IDENTICAL to D-765
+    KiCad DRC        199 violations, ALL lib_footprint_issues, ALL WARNING,
+                     ZERO of every other class; 17 unconnected; parity 246
+                     warnings / 0 ERRORS.  The violation, parity and
+                     unconnected SETS are proven ELEMENT-FOR-ELEMENT IDENTICAL
+                     to D-765's -- 0 new, 0 gone -- which is what proves the
+                     Q11 schematic and PCB were changed together
+    protected copper 15 nets / 406 objects IDENTICAL, differences {}
+    ampacity         all_ok; every verdict and every worst_rise_K identical to
+                     D-765's.  ONE reported figure moves and it is a TOOL fix,
+                     not copper: USB_VBUS_RAW's named path 23.876 -> 19.876 mm
+                     / 22.820 -> 18.866 mOhm, the same bottleneck, the same
+                     5.4 K, the same OK -- see section 8a
+    features         F1-F6 PASS.  F5 now runs EIGHT controls -- four sequencing,
+                     four silicon -- all refused; F6 unchanged with its eight
+    fab package      29 files (24 deterministic); FAB1-FAB15 PASS, verdict PASS;
+                     sourcing 252/252, coverage 1.0; assembly PDFs print
+                     RELEASE D-766 and the full board SHA, four FAB14 controls
+                     refused.  FAB12 CAUGHT THE Q11 REPIN AND WAS RIGHT TO:
+                     d750-critical-identity.json still said AO3400A, and the
+                     footprint field is UNCHANGED, which is exactly why that pin
+                     carries Value and MPN as well
+    contracts        19 standing contracts run against the d765 baseline,
+                     19 ran, NONE failing
+    land chain       LAND1-LAND8 PASS; LAND8 refuses the PREVIOUS board and
+                     names the via and the 0.6 mm segment by coordinate
+    firmware         firmware_hw_map H1-H6 PASS with controls PASS; host test
+                     suite PASS including the new T10f; all FOUR PlatformIO
+                     environments SUCCESS (aqroot-demo 321 293 B flash /
+                     19 396 B RAM, +1 512 B / +8 B for the round-2 work)
+    hardware/beta-v2 UNTOUCHED
+
+### 8a. A FIFTH DEFECT, FOUND BY RUNNING THE GATE TWICE
+
+Final verification ran `audit_rail_ampacity.py` twice on the **same unchanged
+board** and got **two different answers**. Three consecutive runs returned
+`USB_VBUS_RAW` **23.876 / 19.876 / 23.876 mm** and **22.820 / 18.866 /
+22.820 mΩ**, and `BAT_PROTECTED_P` **81.709 / 80.922 / 81.709 mm`.
+
+The cause is one expression. The maximin frontier was pushed as
+`(-c, id(m), m)` — **`id()` is a memory address**. The maximin VALUE is unique,
+so the bottleneck, `worst_rise_K` and every verdict were always right; but
+whenever two frontier nodes carried the **same** capacity, which one was
+expanded first depended on where CPython had happened to allocate the tuple,
+and that decides `prev` and therefore **which of several equally-wide paths is
+reported** — its length, its resistance, its IR drop.
+
+**Release evidence that changes between runs on an unchanged board is not
+evidence.** This is the same defect class D-744 fixed for `connection_width`,
+in *"the first ABSOLUTE power audit this board has had"* (D-743). Node keys mix
+types by position, so they cannot be compared directly; they are now indexed in
+a deterministic order — sources first, then every edge endpoint in `edges` list
+order, which is board-iteration order — and ties break on that index. **Four
+consecutive runs are now byte-identical apart from the timestamp.**
+
+It settles on `USB_VBUS_RAW` = 19.876 mm / 18.866 mΩ, which is one of the two
+equally-wide candidates; `BAT_PROTECTED_P` returns to D-765's 81.709 mm. **No
+copper changed and no verdict changed.** The residual is written into the
+function's own docstring rather than left implicit: **the bottleneck is exact,
+the path is a choice**, so `series_resistance_mohm` / `ir_drop_mV` /
+`path_length_mm` are one sample of a tie and are not guaranteed to be the most
+resistive of the equally-wide candidates. The thermal ruling never depended on
+them — 20.75 mV against 25.10 mV is 0.4 % versus 0.5 % of a 5 V rail.
+
+### 9. WHAT IS NOT CLOSED BY THIS DECISION
+
+* **`C85` at 220 nF** would restore the 4.5× ordering margin for about a cent.
+  Declined here for a BOM line; recorded so a later revision can take it.
+* **The `EXT_SDA_BUF` barrel** at `(58.680, 34.000)` overlaps `L4`'s *inferred*
+  4.1 mm body box by ≈ 0.10 mm while clearing the drawing's restricted strip by
+  0.35 mm. Reported by `LAND8`, deliberately not moved.
+* **`MAX17048` `VCELL` scaling** is proven self-consistent, not cited. First
+  articles must read it back against a metered cell.
+* **First-article scope work on the backlight** still stands: confirm `U17`
+  enters shutdown before `Q11` opens on the real board, and that the open-LED
+  latch is reached and recovered as described.
+* **`audit_rail_ampacity` reports ONE of possibly several equally-wide paths.**
+  Deterministic since section 8a, but not proven to be the most resistive of
+  them. Making the tie-break conservative rather than merely reproducible is a
+  real improvement and is deliberately NOT taken here, because it would change
+  published IR figures on five rails for a second-order number that no verdict
+  depends on.
+
+
 ## D-765 — **THE ACCESSORY ENVELOPE WAS RIGHT AND THE SILICON COULD NOT LEGALLY HOLD IT: THREE PLACES IN THIS REPOSITORY HAD THE NUMBER**
 
     authority  1a06b058 -> 9e4728ae   U20/U22 TPS22950C -> TPS22950-Q1; NO copper,

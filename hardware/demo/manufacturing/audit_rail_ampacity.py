@@ -456,7 +456,17 @@ def build_graph(board, net):
 
 
 def widest_bottleneck(nodes, edges, sources, sinks, amps):
-    """Maximin search: the path whose WORST conductor is the best available."""
+    """Maximin search: the path whose WORST conductor is the best available.
+
+    THE BOTTLENECK IS EXACT; THE PATH IS A CHOICE.  The maximin VALUE is unique,
+    so `worst_rise_K` and the verdict are properties of the board.  When several
+    paths share that same worst conductor, `series_resistance_mohm`,
+    `ir_drop_mV`, `dissipation_W` and `path_length_mm` describe WHICHEVER of
+    them this search reports.  Since D-766 that choice is DETERMINISTIC (see the
+    ordering note below) but it is not necessarily the most resistive of the
+    equally-wide candidates, so treat the IR figures as one sample of a tie
+    rather than as the worst case.  The thermal ruling never depended on it.
+    """
     adj = defaultdict(list)
     for ed in edges:
         adj[ed["a"]].append((ed["b"], ed))
@@ -467,13 +477,39 @@ def widest_bottleneck(nodes, edges, sources, sinks, amps):
             return float("inf")
         return ampacity(ed["area_mm2"], DT_REF, ed["external"])
 
+    # D-766 DETERMINISM FIX.  The heap tie-breaker used to be `id(m)` -- a
+    # MEMORY ADDRESS.  The maximin VALUE is unique, so the bottleneck and the
+    # verdict were always right; but whenever two frontier nodes carried the
+    # same capacity, which one was expanded first depended on where CPython had
+    # happened to allocate the tuple, and that decides `prev` and therefore
+    # WHICH of several equally-wide paths is reported.  Measured on the D-766
+    # board: three consecutive runs of this file on ONE unchanged board
+    # returned USB_VBUS_RAW 23.876 / 19.876 / 23.876 mm and 22.820 / 18.866 /
+    # 22.820 mOhm, and BAT_PROTECTED_P 81.709 / 80.922 / 81.709 mm.  Release
+    # evidence that changes between runs on an unchanged board is not evidence
+    # -- the same defect class D-744 fixed for connection_width.
+    #
+    # Node keys mix types by position (("PAD", ref, num, x, y) against
+    # ("PT", x, y, layer)), so they cannot be compared directly.  Index them in
+    # a DETERMINISTIC order instead -- sources first, then every edge endpoint
+    # in `edges` list order, which is board-iteration order -- and break ties on
+    # that index.  Nothing about the search changes except reproducibility.
+    order = {}
+    for s in sources:
+        order.setdefault(s, len(order))
+    for ed in edges:
+        order.setdefault(ed["a"], len(order))
+        order.setdefault(ed["b"], len(order))
+    for n in sorted(nodes, key=lambda k: (str(type(k)), repr(k))):
+        order.setdefault(n, len(order))
+
     best = {n: 0.0 for n in nodes}
     prev = {}
     import heapq
     heap = []
     for s in sources:
         best[s] = float("inf")
-        heapq.heappush(heap, (-float("inf"), id(s), s))
+        heapq.heappush(heap, (-float("inf"), order[s], s))
     seen = set()
     while heap:
         negc, _, n = heapq.heappop(heap)
@@ -485,7 +521,7 @@ def widest_bottleneck(nodes, edges, sources, sinks, amps):
             if c > best.get(m, 0.0):
                 best[m] = c
                 prev[m] = (n, ed)
-                heapq.heappush(heap, (-c, id(m), m))
+                heapq.heappush(heap, (-c, order[m], m))
     reached = [k for k in sinks if best.get(k, 0.0) > 0.0]
     if not reached:
         return None, None

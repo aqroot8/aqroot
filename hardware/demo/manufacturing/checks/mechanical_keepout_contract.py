@@ -598,7 +598,9 @@ TRIM_DOC = ROOT / "docs/full-beta-v2/assembly/THT_LEAD_TRIM.md"
 # the normative assembly document, with a trim that meets the allowance.
 DECLARED_LEAD_TRIM = {
     ("J4", "DISPLAY_SHADOW"): dict(
-        requirement="J4-T1", trim_to_mm=0.80,
+        requirement="J4-T1", trim_to_mm=0.50,
+        insulation_requirement="J4-T3", insulation="polyimide",
+        insulation_max_mm=0.10,
         doc="docs/full-beta-v2/assembly/THT_LEAD_TRIM.md"),
 }
 
@@ -662,8 +664,15 @@ def mk10(board, reg=None, board_path=None):
                 if not d:
                     undeclared.append([ref, name, row["over_mm"]])
                 elif (d["trim_to_mm"] > spec["allowance_mm"] + 1e-9
-                      or d["requirement"] not in doc or ref not in doc):
-                    bad_trim.append([ref, name, d["requirement"]])
+                      or d["requirement"] not in doc or ref not in doc
+                      or not d.get("insulation_requirement")
+                      or d["insulation_requirement"] not in doc
+                      or not d.get("insulation")
+                      or d["insulation"].lower() not in doc.lower()
+                      or d["trim_to_mm"] + d.get("insulation_max_mm", 0.0)
+                         >= spec["allowance_mm"] - 1e-9):
+                    bad_trim.append([ref, name, d["requirement"],
+                                     d.get("insulation_requirement")])
                 else:
                     row["declared"] = d
             findings.append(row)
@@ -865,7 +874,27 @@ def mk7(board):
         not mk10(board, reg)["ok"])
     THT_LEAD_MM["JST_PH_B2B-PH-K_1x02_P2.00mm_Vertical"] = saved4
 
-    # 4. MEMBERSHIP IS LIVE, NOT A HARD-CODED REFERENCE.  Move J4 clear of
+    # 4. the old zero-margin D-763 declaration (0.80 mm under a 0.80 mm
+    #    allowance) is no longer acceptable once insulation is required.
+    DECLARED_LEAD_TRIM[("J4", "DISPLAY_SHADOW")] = dict(
+        saved3[("J4", "DISPLAY_SHADOW")], trim_to_mm=0.80,
+        insulation_max_mm=0.0)
+    ctl["the_old_zero_margin_0_80_mm_trim_is_refused"] = not mk10(board, reg)["ok"]
+    DECLARED_LEAD_TRIM.clear()
+    DECLARED_LEAD_TRIM.update(saved3)
+
+    # 5. losing the insulation declaration must be refused even when the
+    #    conductor trim itself is good.
+    no_ins = dict(saved3[("J4", "DISPLAY_SHADOW")])
+    no_ins.pop("insulation_requirement", None)
+    no_ins.pop("insulation", None)
+    no_ins.pop("insulation_max_mm", None)
+    DECLARED_LEAD_TRIM[("J4", "DISPLAY_SHADOW")] = no_ins
+    ctl["missing_J4_polyimide_insulation_is_refused"] = not mk10(board, reg)["ok"]
+    DECLARED_LEAD_TRIM.clear()
+    DECLARED_LEAD_TRIM.update(saved3)
+
+    # 6. MEMBERSHIP IS LIVE, NOT A HARD-CODED REFERENCE.  Move J4 clear of
     #    DISPLAY_SHADOW and the finding must DISAPPEAR -- otherwise the clause
     #    is asserting J4 rather than measuring it.
     j4 = board.FindFootprintByReference("J4")

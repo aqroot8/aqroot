@@ -1,6 +1,6 @@
 {
   "board": "aqroot-Beta-v2.kicad_pcb",
-  "board_sha256": "9e4728aebc8d449b32fe0d45f1fb81d4e00bf91baf1f61924048763168b7b7fd",
+  "board_sha256": "5849b6587f92b296083ad8f9f23c295e5c7edb8afda85184aeea7334d4132028",
   "expanders": {
     "U2": {
       "addr": 32,

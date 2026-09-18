@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""AQROOT Demo -- the LAND CHAIN contract (LAND1-LAND7).
+"""AQROOT Demo -- the LAND CHAIN contract (LAND1-LAND8).
 
 A land pattern is right when two links both hold:
 
@@ -41,6 +41,14 @@ nothing has ever compared.
            ledger's own prose -- and that list is an EQUALITY, so it may shrink
            and a new row may not join it; and every `drawing_file` a row names
            is present in the repository and hashes to its recorded sha256
+    LAND8  manufacturer underside restrictions that are load-bearing are
+           physical contracts, not prose: Würth 74438357010's recommended land
+           says "No vias and traces underneath the inductor", so L4 has NO B.Cu
+           trace and NO via intersecting the restricted strip BETWEEN ITS OWN
+           FITTED PADS -- derived from the footprint, not hard-coded -- and a
+           live control puts the retired under-inductor via back and must be
+           refused.  Copper under the wider body overhang is REPORTED, because
+           the strip is what the drawing hatches and the overhang is inferred
 
 LAND6 is why the index cannot be a rubber stamp: deleting a ledger row breaks
 the gate, and an identity whose drawing was not read has to say so in the file
@@ -78,7 +86,10 @@ import subprocess
 import sys
 import tempfile
 import shutil
+import math
 from pathlib import Path
+
+import pcbnew
 
 ROOT = Path(__file__).resolve().parents[4]
 MANUF = ROOT / "hardware/demo/manufacturing"
@@ -140,6 +151,134 @@ def resolved_fp_lib_table():
         '  (lib (name "%s")(type "KiCad")(uri "%s")(options "")(descr ""))'
         % (nick, path) for nick, path in sorted(libs.items()))
     return "(fp_lib_table\n  (version 7)\n%s\n)\n" % rows
+
+
+def _segment_hits_rect(x1, y1, x2, y2, xmin, ymin, xmax, ymax, radius=0.0):
+    """Centreline segment against an axis-aligned rectangle expanded by radius."""
+    xmin -= radius; ymin -= radius; xmax += radius; ymax += radius
+    dx, dy = x2 - x1, y2 - y1
+    t0, t1 = 0.0, 1.0
+    for p, q in ((-dx, x1 - xmin), (dx, xmax - x1),
+                 (-dy, y1 - ymin), (dy, ymax - y1)):
+        if abs(p) < 1e-12:
+            if q < 0:
+                return False
+            continue
+        t = q / p
+        if p < 0:
+            t0 = max(t0, t)
+        else:
+            t1 = min(t1, t)
+        if t0 > t1:
+            return False
+    return True
+
+
+def _circle_hits_rect(x, y, radius, xmin, ymin, xmax, ymax):
+    qx = min(max(x, xmin), xmax)
+    qy = min(max(y, ymin), ymax)
+    return math.hypot(x - qx, y - qy) <= radius + 1e-12
+
+
+def l4_restricted_area():
+    """D-766: enforce Wurth 74438357010's recommended-land instruction
+    "No vias and traces underneath the inductor", printed on BOTH recommended
+    land patterns of drawing rev 003.002 (2026-09-01), archived at
+    vendor/Wurth/wurth-74438357010-WE-MAPI-4030.pdf.
+
+    THE RESTRICTED AREA IS DERIVED FROM THE FITTED FOOTPRINT, NOT HARD-CODED.
+    The drawing annotates the central SOLDER-RESIST strip between the two
+    recommended pads; the fitted land implements Recommended Land Pattern 1,
+    so that strip is exactly the gap between the two pad rectangles: it spans
+    the pads' inner x edges and their full y height.  Deriving it means the
+    clause follows the footprint if the land is ever revised, instead of
+    asserting a pair of numbers that could silently stop describing the part.
+
+    Through vias are checked whatever layer pair they name, because they
+    physically pierce the assembly surface; B.Cu tracks are checked because
+    this L4 is flipped and B.Cu is its assembly surface.
+
+    The wider inductor BODY box is measured too and REPORTED, not failed:
+    copper outside the pads but under the 4.1 mm body overhang is a weaker
+    finding than copper in the strip the manufacturer actually hatches, and
+    calling it a failure would make the clause about an inferred boundary
+    rather than a printed one.
+    """
+    board = pcbnew.LoadBoard(str(BOARD))
+    fp = board.FindFootprintByReference("L4")
+    if not fp:
+        return {"ok": False, "error": "L4 missing"}
+    if "74438357010" not in fp.GetFPIDAsString():
+        return {"ok": False, "error": "L4 is not the 74438357010 land: %s"
+                                      % fp.GetFPIDAsString()}
+    pads = []
+    for pad in fp.Pads():
+        pos, size = pad.GetPosition(), pad.GetSize()
+        pads.append((pos.x / 1e6 - size.x / 2e6, pos.y / 1e6 - size.y / 2e6,
+                     pos.x / 1e6 + size.x / 2e6, pos.y / 1e6 + size.y / 2e6))
+    if len(pads) != 2:
+        return {"ok": False, "error": "expected 2 L4 pads, found %d" % len(pads)}
+    left, right = sorted(pads, key=lambda r: r[0])
+    xmin, xmax = left[2], right[0]                 # between the pads' inner edges
+    ymin = max(left[1], right[1])
+    ymax = min(left[3], right[3])
+    if not (xmax > xmin and ymax > ymin):
+        return {"ok": False, "error": "degenerate L4 restricted strip"}
+
+    cx = fp.GetPosition().x / 1e6
+    cy = fp.GetPosition().y / 1e6
+    body = (cx - 2.1, cy - 2.1, cx + 2.1, cy + 2.1)
+
+    def scan(rect):
+        found = []
+        for item in board.GetTracks():
+            if isinstance(item, pcbnew.PCB_VIA):
+                pos = item.GetPosition()
+                x, y = pos.x / 1e6, pos.y / 1e6
+                radius = item.GetWidth(pcbnew.B_Cu) / 2e6
+                if _circle_hits_rect(x, y, radius, *rect):
+                    found.append({"kind": "via", "net": item.GetNetname(),
+                                  "at_mm": [round(x, 6), round(y, 6)],
+                                  "diameter_mm": round(radius * 2, 6)})
+            elif item.GetLayer() == pcbnew.B_Cu:
+                a, z = item.GetStart(), item.GetEnd()
+                x1, y1 = a.x / 1e6, a.y / 1e6
+                x2, y2 = z.x / 1e6, z.y / 1e6
+                radius = item.GetWidth() / 2e6
+                if _segment_hits_rect(x1, y1, x2, y2, *rect, radius=radius):
+                    found.append({"kind": "B.Cu track", "net": item.GetNetname(),
+                                  "start_mm": [round(x1, 6), round(y1, 6)],
+                                  "end_mm": [round(x2, 6), round(y2, 6)],
+                                  "width_mm": round(radius * 2, 6)})
+        return found
+
+    strip = (xmin, ymin, xmax, ymax)
+    offenders = scan(strip)
+
+    # LIVE CONTROL.  Put the retired D-766 via back at its own recorded seat --
+    # 0.8 mm at (58.900, 36.000), 0.2 mm off the L4 centre -- and the clause
+    # must refuse it.  The seat is expressed relative to the footprint so the
+    # control follows L4 if it ever moves.
+    control_refused = _circle_hits_rect(cx, cy - 0.2, 0.4, *strip)
+
+    body_hits = [h for h in scan(body) if h not in offenders]
+    return {
+        "ok": bool(not offenders and control_refused),
+        "reference": "L4",
+        "footprint": fp.GetFPIDAsString(),
+        "drawing": ("Wurth 74438357010 rev 003.002 2026-09-01, both Recommended "
+                    "Land Patterns: 'No vias and traces underneath the inductor'"),
+        "drawing_file": "hardware/demo/kicad/aqroot-demo/vendor/Wurth/"
+                        "wurth-74438357010-WE-MAPI-4030.pdf",
+        "centre_mm": [round(cx, 6), round(cy, 6)],
+        "restricted_strip_mm": [round(v, 6) for v in strip],
+        "restricted_strip_size_mm": [round(xmax - xmin, 6), round(ymax - ymin, 6)],
+        "derived_from": "gap between the two fitted L4 pad rectangles",
+        "offenders": offenders,
+        "control_retired_underbody_via_refused": control_refused,
+        "body_box_mm": [round(v, 6) for v in body],
+        "body_box_copper_REPORT_ONLY": body_hits,
+    }
 
 
 def main():
@@ -207,6 +346,7 @@ def main():
             filed_bad.append([i, "SHA256", rel, want, got])
 
     drc_counts, drc_detail = ({}, []) if a.skip_drc else kicad_drc()
+    l4_restriction = l4_restricted_area()
     declared = index.get("declared_master_divergences", {})
     mismatch_refs = sorted({
         i["description"].split()[-1]
@@ -228,6 +368,7 @@ def main():
         "LAND7_no_open_identity_and_every_read_drawing_is_cited": (
             not open_ids and not uncited and not unconfirmed
             and not pending_drifted and not filed_bad),
+        "LAND8_l4_underside_restriction": l4_restriction["ok"],
     }
 
     report = {
@@ -246,6 +387,7 @@ def main():
                     "diffs": control_row.get("diffs")},
         "drc_counts": drc_counts,
         "drc_land_violations": drc_detail,
+        "l4_underside_restriction": l4_restriction,
         "index_missing": missing, "index_dead_rows": dead,
         "index_bad_tier": bad_tier,
         "ledger_unwritten": unwritten,

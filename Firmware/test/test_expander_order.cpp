@@ -539,6 +539,43 @@ int main() {
           good.service(clean) && good.faultShutdownSeen() &&
               good.faultShutdownOk());
   }
+  {
+    // T10f / D-766: Astra round-2 reproduced the missing case.  U3's input
+    // register is the ONLY observation of ACC_POWER_FAULT_N.  If that read
+    // fails while output writes still work, loss of observability must itself
+    // force both accessory rails down and block re-enable until a good read.
+    RecordingBus hurt;
+    DemoExpanders local;
+    local.begin(hurt);
+    check("lost-fault-read setup: 3.3 V can be enabled",
+          local.setAccessory3v3(hurt, true));
+    check("lost-fault-read setup: 5 V can be enabled",
+          local.setAccessory5v(hurt, true));
+    const size_t mark = hurt.log.size();
+    hurt.fail_address = AQROOT_EXP_U3_ADDR;
+    hurt.fail_reg = Pcal9535a::kRegInput0;
+    hurt.fail_once = true;
+    check("lost U3 fault-input read is REPORTED", !local.service(hurt));
+    check("lost U3 fault-input read is LATCHED as unknown",
+          local.faultObservabilityLost());
+    check("lost U3 fault-input read ATTEMPTS shutdown writes",
+          hurt.countWrites(AQROOT_EXP_U3_ADDR, Pcal9535a::kRegOutput0, mark) >= 2);
+    check("lost U3 fault-input read leaves all accessory enables LOW",
+          !(hurt.u3_output & bitmask(AQROOT_U3_ACC_3V3_EN)) &&
+          !(hurt.u3_output & bitmask(AQROOT_U3_ACC_5V_SW_EN)) &&
+          !(hurt.u3_output & bitmask(AQROOT_U3_ACC_5V_BOOST_EN)));
+    check("re-enable is REFUSED while fault observability is lost",
+          !local.setAccessory3v3(hurt, true) &&
+          !local.setAccessory5v(hurt, true));
+
+    hurt.fail_address = -1;
+    hurt.fail_reg = -1;
+    hurt.fail_once = false;
+    check("a later clean U3 read restores fault observability",
+          local.service(hurt) && !local.faultObservabilityLost());
+    check("accessory re-enable is allowed only after recovery",
+          local.setAccessory3v3(hurt, true));
+  }
 
   std::printf("\n%s -- %d failure(s)\n", g_failures ? "FAIL" : "PASS", g_failures);
   return g_failures == 0 ? 0 : 1;

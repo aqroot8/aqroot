@@ -43,15 +43,26 @@ Between those two clauses, one part fell through.
 
 ### REQUIREMENT J4-T1
 
-> **After soldering `J4`, trim both leads and their fillets to ≤ 0.80 mm above
-> the `F.Cu` surface.**  Inspect against the 0.80 mm `DISPLAY_SHADOW`
-> allowance before fitting the display.  A flush cut is preferred.
+> **After soldering `J4`, trim both leads to a verified conductive-profile
+> height ≤ 0.50 mm above the `F.Cu` surface.**  This leaves 0.30 mm geometric
+> margin to the 0.80 mm `DISPLAY_SHADOW` limit before the insulation below.
+> No sharp clipped lead or loose fragment may remain.
 
 ### REQUIREMENT J4-T2
 
 > `J4` is soldered from the **FRONT** face (the leads enter from the rear and
-> emerge on the front).  Solder, then trim, then inspect — **in that order**.
-> Trimming before soldering leaves too little lead to wet reliably.
+> emerge on the front).  Solder, trim, clean, then inspect — **in that order**.
+> Do not pre-cut the leads before soldering.  Inspect both joints after cutting;
+> if the cutter cracked, lifted or removed the required fillet, rework/reflow
+> the joint to a sound low-profile fillet and re-measure the ≤ 0.50 mm profile.
+
+### REQUIREMENT J4-T3
+
+> **Before the display is fitted, cover both inspected J4 joints together with
+> a high-temperature polyimide electrical-insulation patch ≤ 0.10 mm thick.**
+> The patch must fully isolate J4.1 (raw battery positive) and J4.2 (GND) from
+> the display rear structure, contain no metal debris, and remain bonded after
+> cleaning.  Trimmed conductor + insulation must remain < 0.80 mm total.
 
 ### Why the part was not changed instead
 
@@ -60,7 +71,7 @@ would remove the protrusion entirely.  It was **considered and declined**:
 
 * `J4` is the **battery** connector, the one connector on this product a user
   or a repairer will plug and unplug.  A through-hole header's retention comes
-  from four soldered leads in plated barrels; an SMT header's comes from its
+  from its two soldered leads in plated barrels; an SMT header's comes from its
   pads.  **Mechanical retention on a repeatedly-mated power connector is worth
   more than avoiding one assembly operation.**
 * Substituting it changes a land pattern on a **battery-path** connector and
