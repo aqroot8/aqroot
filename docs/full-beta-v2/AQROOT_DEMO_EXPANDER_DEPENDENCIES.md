@@ -61,7 +61,7 @@ and no earlier one.**
 | `P02` | 6 | `/NFC_5V_EN` | OUT | optional NFC 5 V boost enable -- DNP path on Demo |
 | `P03` | 7 | `/AMP_SD_MODE` | OUT | class-D amplifier shutdown / mode |
 | `P04` | 8 | `/DISP_RST_N` | OUT | display reset (active low) |
-| `P05` | 9 | `/SX1262_DIO1` | IN | LoRa interrupt -- **UNROUTED, see D-735** |
+| `P05` | 9 | `/SX1262_DIO1` | IN | LoRa interrupt -- **ROUTED, D-740** (82.428 mm, 2 vias, `U2.9 -> U8.13`) |
 | `P06` | 10 | `/TOUCH_INT_N` | IN | touch interrupt, FT6236 (active low) |
 | `P07` | 11 | `/SD_CARD_DETECT_N` | IN | microSD card detect, R113 100 k pull-up |
 | `P10` | 13 | `/08_BUTTONS_EXPANDERS/BTN_A_N` | IN | A / Select, R4 10 k pull-up |
@@ -70,7 +70,7 @@ and no earlier one.**
 | `P13` | 16 | `/08_BUTTONS_EXPANDERS/BTN_LEFT_N` | IN | D-pad Left, R7 10 k pull-up |
 | `P14` | 17 | `/08_BUTTONS_EXPANDERS/BTN_RIGHT_N` | IN | D-pad Right, R8 10 k pull-up |
 | `P15` | 18 | `/08_BUTTONS_EXPANDERS/BTN_B_N` | IN | B / Back, R9 10 k pull-up |
-| `P16` | 19 | `/BQ25185_STAT2` | IN | charger status 2 -- R128 10 k pull-up; **`U11.3` UNROUTABLE, see D-734** |
+| `P16` | 19 | `/BQ25185_STAT2` | IN | charger status 2 -- **`U2.19` ROUTED to R128 / TP7, D-741**, so the pin is held HIGH by R128's 10 k; **`U11.3` remains UNROUTABLE (D-734), so the charger does not drive it** |
 | `P17` | 20 | `/ACC_PWR_EN` | OUT | `U16` TCA4307 community-port I2C buffer enable, R17 100 k pull-down |
 
 ### `U3` — front RGB, accessory power, public XGPIO, I2C `0x21` (A0=+3V3)
@@ -100,10 +100,10 @@ Both `/INT` pins are open-drain and wire-OR onto `WAKE_INT_N` (R3 10 k to
 `+3V3`, into `GPIO21`).  The PCAL9535A powers up with **every interrupt masked**
 (`4Ah`/`4Bh` = `FFh`).
 
-- **UNMASKED on `U2`:** the six buttons (`P10`–`P15`), `TOUCH_INT_N` (`P06`)
-  and `SD_CARD_DETECT_N` (`P07`).  `SX1262_DIO1` (`P05`) is unmaskable in
-  principle and is what the schematic note lists, but see fact 1 below — while
-  the net is unrouted it must stay MASKED and internally pulled.
+- **UNMASKED on `U2`:** the six buttons (`P10`–`P15`), `TOUCH_INT_N` (`P06`),
+  `SD_CARD_DETECT_N` (`P07`) **and `SX1262_DIO1` (`P05`) — D-740 ROUTED that net,
+  so it is unmasked and must NOT carry the internal pull** (the SX1262 drives
+  DIO1 and a pull fights it).  See fact 1 below.
 - **UNMASKED on `U3`:** `ACC_DETECT_N` (`P14`) and `ACC_POWER_FAULT_N` (`P15`).
 - **MASKED, deliberately:** `BQ25185_STAT2` — it is **`4Bh` bit 6 (`P16`)**, not
   `4Ah` bit 6 — because SLUSF65A §7.3.10 says it toggles continuously with no
@@ -112,24 +112,29 @@ Both `/INT` pins are open-drain and wire-OR onto `WAKE_INT_N` (R3 10 k to
 
 ### Two as-built facts firmware must not assume away
 
-1. **`/SX1262_DIO1` (`U2.P05`) is NOT ROUTED.**  D-735 measured the corridor as
-   four to five conductors over capacity and the residual is an owner /
-   industrial-design decision.  Until it is closed, the LoRa driver must poll
-   `GetIrqStatus()` over SPI rather than wait on this bit, and the bit must be
-   treated as undefined.  **`/SX1262_DIO1` carries exactly two pads — `U2.9` and
-   `U8.13` — and NO pull resistor**, so with the net unrouted `U2.P05` is a
-   FLOATING CMOS input.  Firmware must therefore enable the PCAL9535A's own
-   **internal 100 k pull-up** on that bit (pull-enable `46h`, pull-selection
-   `48h`) and keep its interrupt masked.  The same applies to `U3`'s four
-   NC-DEMO channels `P06`, `P07`, `P10` and `P11`, which have no external part
-   at all.  This capability is one of the reasons D-061 made the PCAL9535A
-   load-bearing; the TCA9535 it replaced has no internal pulls.
-2. **`/BQ25185_STAT2` reaches `U2.P16` only through `R128`'s pull-up.**  D-734
-   proved `U11.3` cannot be escaped at any manufacturable width — the pocket is
-   topologically closed by the package's own geometry — so the charger does not
-   drive this bit.  Charge-state decode must use `STAT1` (`U3.P17`) and the
-   **MAX17048 fuel gauge** on the same internal bus, and must NOT infer a fault
-   from `STAT2`.
+1. **`/SX1262_DIO1` (`U2.P05`) IS ROUTED — D-740.**  `U2.9 -> U8.13`, 82.428 mm
+   with 2 vias, DRC-clean.  This SUPERSEDES D-735's conclusion and D-738's
+   firmware note, both of which were written while the net was open: **the LoRa
+   driver takes the interrupt and does NOT have to poll `GetIrqStatus()`**, the
+   bit is unmasked, and the PCAL9535A's internal 100 k pull-up must **NOT** be
+   enabled on `P05` — the SX1262 drives DIO1 as a push-pull output and an
+   internal pull only fights it.  D-738's own text set this condition
+   explicitly (*"if `SX1262_DIO1` is ever routed, unmask it and drop the
+   pull"*).  The internal-pull requirement **still stands for `U3`'s four
+   NC-DEMO channels `P06`, `P07`, `P10` and `P11`**, which have no external part
+   at all; that capability is one of the reasons D-061 made the PCAL9535A
+   load-bearing.
+2. **`/BQ25185_STAT2` reaches `U2.P16` through `R128` — D-741 — but the charger
+   still does not drive it.**  Before D-741 `U2.19` was an ISLAND and `P16` was a
+   second floating input; it is now routed to `R128` and `TP7` (23.266 mm, 4
+   vias) and reads a deterministic HIGH.  `U11.3` is unchanged: D-734 proved the
+   charger's `STAT2` land cannot be escaped at any manufacturable width, and
+   D-741's addendum re-measured the window as **exactly 0.100 mm** between
+   D-269's clearance to `U11.2`'s `BAT` escape and `U11.4`'s `GND` land.  **Keep
+   `P16` MASKED** — not because it chatters (it cannot, with nothing driving it)
+   but because it carries no information.  Charge-state decode must use `STAT1`
+   (`U3.P17`) and the **MAX17048 fuel gauge** on the same internal bus, and must
+   NOT infer a fault from `STAT2`.
 
 ---
 
