@@ -157,9 +157,7 @@ against a need of five is a build with **one** spare; **buy spares independently
 
 ## 7. Class F — off-board
 
-Speaker `LS1` (`AS02008MR-LW152-R`, `C3311653`, stock 0 — consign or buy direct), display module,
-battery pack, both antennas, the AMC→SMA pigtail and the 915 MHz whip. All in
-[`OFF_BOARD_BOM.md`](OFF_BOARD_BOM.md).
+Speaker `LS1` (`AS02008MR-LW152-R`, `C3311653`, stock 0 — consign or buy direct), display module, **Adafruit Product 328 2500 mAh protected battery (CTO-BAT-01)**, both antennas, the AMC→SMA pigtail and the 915 MHz whip. All in [`OFF_BOARD_BOM.md`](OFF_BOARD_BOM.md). The battery is an exact first-five supplier SKU now; do not replace it by a generic `LP785060` family-name match because published current ratings vary by sold variant.
 
 ---
 

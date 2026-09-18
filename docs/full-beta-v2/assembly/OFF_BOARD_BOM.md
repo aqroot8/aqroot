@@ -25,8 +25,8 @@ not capture reliably, because they are not placed on the board. Authority:
 
 | item | spec | qty | notes |
 |---|---|---|---|
-| Li-ion pouch cell with JST-PH-2 lead | **57 × 75 × 8.0 mm MAX, ≈ 2500–3000 mAh**, 1S | 1 | Envelope **57 mm** by **D-239 / D-243** — this row read 60 mm until **D-760** and 60 mm is the SUPERSEDED figure; the 3 mm is the price of the `J5` right-angle side header. It is a MAXIMUM reserved envelope, not a minimum cell width: both named candidates are 50 mm wide. Capacity target frozen by **D-071**; **SKU chosen at procurement (M-04)**. Must mate `J4` `B2B-PH-K-S`. **Protection-circuit-module cells are acceptable and preferred**; the board's own reverse-polarity path does not replace a cell PCM |
-| **Pack barrier sheet — NEW at D-760** | **0.5 mm compliant insulating sheet** (polyester film + closed-cell PE foam, or 3M 9448A-backed PET), cut to the `BATTERY_SHADOW` footprint **57 × 75 mm**, adhesive side to the PCB | 1 | **REQUIRED.** The rear face inside `BATTERY_SHADOW` presents a **1.80 mm** maximum component profile against a register rule of **1.20 mm** — three 1206 bulk capacitors (`C26`, `C29`, `C30`) at 1.6 ± 0.2 mm, plus `C33`, `C64` and `D9`. Those are HARD POINTS against a soft pouch. The sheet spreads them and insulates the pack from rear copper; it is not a substitute for closing the 0.60 mm gap in CAD. Measured by `mechanical_keepout_contract` **MK8**; see `AQROOT_DEMO_FAB_HANDOFF.md` §5b |
+| **First-five LiPo pack** | **Adafruit Product 328 — 3.7 V / 2500 mAh**, genuine 2-pin JST-PH, protection circuitry | 1 | **SELECTED CTO-BAT-01.** Supplier page is the purchasing identity; its linked `785060` specification is archived at `hardware/demo/kicad/aqroot-demo/vendor/BATTERY/adafruit-328-785060-specification.pdf` (SHA-256 `826149da…ecd3`). Datasheet max pack is 7.9 × 50.5 × 60.5 mm, inside the **57 × 75 × 8.0 mm MAX** D-239/D-243 reservation, and permits discharge current ≤2C; supplier recommends ≤1.2 A charging. **Meter-verify JST polarity before J4 connection; do not substitute a generic LP785060 solely by family name.** |
+| **Pack barrier sheet — D-760** | **0.5 mm compliant insulating sheet** (polyester film + closed-cell PE foam, or 3M 9448A-backed PET), cut to the `BATTERY_SHADOW` footprint **57 × 75 mm**, adhesive side to the PCB | 1 | **REQUIRED.** The rear face inside `BATTERY_SHADOW` presents a **1.80 mm** maximum component profile against the retained 1.20 mm heuristic; three 1206 bulk capacitors are hard points against the pouch. The sheet spreads them and insulates the pack; it does not replace enclosure CAD clearance. Measured by `mechanical_keepout_contract` **MK8**. |
 
 ---
 
@@ -124,5 +124,5 @@ Mates `J7` **`BM02B-ACHSS-GAN-ETF`** on the board.
 | # | item |
 |---|---|
 | ~~**O-8**~~ | **CLOSED 2026-08-23 (FBV2-S2-002).** Taoglas **`TI.92.2113`** locked by CTO ruling and verified live against the manufacturer data sheet. **No hardware or schematic change was required** — the panel connector is SMA **female** on the Amphenol pigtail and the antenna is SMA **male**, so the interface was already correct |
-| **M-04** | Battery SKU — envelope frozen, SKU at procurement |
+| ~~**M-04**~~ | **CLOSED CTO-BAT-01 — Adafruit Product 328 selected for first five; incoming pack must pass `battery_pack_contract.py` identity/spec envelope and polarity QC.** |
 | — | Enclosure-side hardware beyond the SMA nut is **mechanical CAD scope**, deliberately not listed here |

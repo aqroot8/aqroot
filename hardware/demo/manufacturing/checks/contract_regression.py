@@ -266,6 +266,14 @@ CONTRACTS = (
     # before any other clause is allowed to ask its question.
     ("mechanical_keepout", "checks/mechanical_keepout_contract.py", (),
      "mechanical_keepout-contract", "all_pass"),
+    # CTO-BAT-01. THE NINETEENTH, AND THE FIRST THAT BINDS THE OFF-BOARD ENERGY
+    # SOURCE TO THE LOAD THE BOARD CAN ACTUALLY ASK OF IT.  D-753 made the
+    # Community-Port envelope a hardware current limit, but M-04 still allowed
+    # procurement to choose a pack by capacity/geometry alone.  LP785060 is a
+    # family name sold with materially different current ratings; a 1.5 A pack
+    # can fit perfectly and still fail a user-reachable 2.229 A board state.
+    ("battery_pack", "checks/battery_pack_contract.py", (),
+     "battery-pack-contract", "all_pass"),
 )
 BY_BASENAME = ("board", "schematic", "guard", "pre_board")
 
