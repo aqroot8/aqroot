@@ -44957,7 +44957,7 @@
 				(justify mirror)
 			)
 		)
-		(property "Value" "JST-PH-2 BATTERY"
+		(property "Value" "BATTERY PIGTAIL 26AWG"
 			(at 1 -4 270)
 			(layer "B.Fab")
 			(hide yes)
@@ -45007,7 +45007,7 @@
 				(justify mirror)
 			)
 		)
-		(attr through_hole)
+		(attr through_hole exclude_from_pos_files exclude_from_bom)
 		(duplicate_pad_numbers_are_jumpers no)
 		(fp_line
 			(start 3.45 -2.3)
@@ -46831,7 +46831,7 @@
 				(justify mirror)
 			)
 		)
-		(property "Value" "AO3422"
+		(property "Value" "SQ2364EES-T1_BE3"
 			(at 0 -2.4 0)
 			(layer "B.Fab")
 			(hide yes)

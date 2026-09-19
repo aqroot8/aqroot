@@ -133,6 +133,18 @@ Two GND vias are intentional **solderable tuning terminals** for optional 0402 p
 
 Assembly tuning is optional; **manufacturing access is not**. The board must arrive with both capped GND terminals solderable even if no parallel capacitor is fitted initially.
 
+## J4 battery pigtail -- MANUAL ASSEMBLY, NO PCB HEADER
+
+`J4` is a 2-hole manual wire land in this release. **Do not fit the old JST-PH board header.**
+The authoritative detachable-harness record is `aqroot-Demo-BATTERY-HARNESS.json` in this package.
+
+- Board side: **26 AWG**; exact pre-crimps `2175012101` / `2175011101`; housing `5055700201`.
+- Battery side: Adafruit 328 factory lead **26 AWG**; Micro-Lock plug `2137192021`, male terminal `2137201000`.
+- Controlling mated-harness rating: **2.6 A at AWG26**.
+- Polarity: cavity 1 = **BAT+ / red / J4.1**; cavity 2 = **GND / black / J4.2**.
+- Solder wires through J4 from B.Cu; front conductive profile **<=0.50 mm**, then **<=0.10 mm polyimide** before display fit. Follow `THT_LEAD_TRIM.md` J4-T1..T4.
+- First article: verify conductor/hole fit, strain relief, DMM polarity, terminal retention/pull acceptance, and worst-case load temperature rise per the packaged harness record.
+
 ## Stackup, finish and required process -- NOT SUBSTITUTABLE
 
 Everything below is read out of the board file's own stackup block and is also carried machine-readably in `aqroot-Beta-v2-job.gbrjob` (Gerber X2 `MaterialStackup`).  It is repeated here because a quote taken against a house default would be wrong in ways nothing downstream catches.
@@ -164,13 +176,13 @@ Everything below is read out of the board file's own stackup block and is also c
 
 `aqroot-Demo-pos-fitted.csv` is the file to place from; `aqroot-Demo-pos-all.csv` additionally carries the DNP references and must NOT be used as the placement list.
 
-- **252 fitted placements: 169 bottom, 83 top.**  The majority of this board is on the BOTTOM side; confirm the panel orientation before the first unit.
+- **251 fitted placements: 168 bottom, 83 top.**  The majority of this board is on the BOTTOM side; confirm the panel orientation before the first unit.
 - **Origin** is the KiCad page origin, NOT an auxiliary axis: no `aux_axis_origin` is set on this board.  The `Edge_Cuts` outline occupies X -0.050 .. 77.050 mm and Y -0.050 .. 148.050 mm in that frame.
 - **`PosX` is millimetres, increasing to the RIGHT.**  Observed range 2.125 .. 74.100 mm.
 - **`PosY` is millimetres, increasing UPWARD, and is therefore NEGATIVE across this whole board** (KiCad's internal Y axis points down and the exporter negates it).  Observed range -146.000 .. -2.250 mm.  A toolchain that expects Y-down must negate this column; one that expects Y-up must not.
 - **`Rot` is degrees COUNTER-CLOCKWISE**, 0 to 360 normalised to (-180, 180].  Values present on this board: -90 deg, 0 deg, 90 deg, 180 deg.
-- **`Rot` for a BOTTOM-side part is given as seen from the TOP of the board, through it** -- the KiCad convention.  An assembler whose process expects bottom-side angles as seen from BELOW must mirror them (negate, or equivalently subtract from 360).  **This is the single most common way this file is misread and it affects 169 of the 252 placements here.**
+- **`Rot` for a BOTTOM-side part is given as seen from the TOP of the board, through it** -- the KiCad convention.  An assembler whose process expects bottom-side angles as seen from BELOW must mirror them (negate, or equivalently subtract from 360).  **This is the single most common way this file is misread and it affects 168 of the 251 placements here.**
 - **`Side` is the authority on which face a part goes to**; do not infer it from the sign of any coordinate.
 - Polarised and pin-1 references are called out individually in `docs/full-beta-v2/assembly/FIRST_FIVE_ASSEMBLY_PLAN.md`, which is normative for the first five units.
 
-> **A placement preview is REQUIRED before the first unit is built.**  Render the loaded CPL against the assembly drawings (`aqroot-Demo-assembly-top.pdf`, `aqroot-Demo-assembly-bottom.pdf`) and confirm side and rotation for at least `U1`, `J1`, `J4`, `J5`, `U11`, `U12` and `U21` before release to the line.
+> **A placement preview is REQUIRED before the first unit is built.**  Render the loaded CPL against the assembly drawings (`aqroot-Demo-assembly-top.pdf`, `aqroot-Demo-assembly-bottom.pdf`) and confirm side and rotation for at least `U1`, `J1`, `J5`, `U11`, `U12` and `U21` before release to the line. **`J4` is intentionally absent from the CPL at D-781 because it is a manual wire land, not a placed component; verify J4 polarity, rear-wire entry, joint height and strain relief against the battery-harness work instruction instead.**

@@ -142,17 +142,14 @@ for interface freeze and must be replaced by vendor drawings at CAD time.
 
 ### 2.1 Height census — **REWRITTEN AT D-763.  THE PREVIOUS TABLE NAMED THE WRONG PART ON THE WRONG FACE.**
 
-> **WHAT IT SAID, AND WHY IT WAS WRONG.**  The row read
-> `| **Bottom** | Molex microSD | **1.85 mm** |`.
-> **The microSD is on the TOP face** — `J2` is an `F.Cu` footprint on the
-> board — and the rear's tallest fitted part is **`J4`, the battery connector,
-> at 6.0 mm**.  The top row read **4.7 mm** for the IR receiver while **§2 of
-> this same document, two rows above, states `J5` at 8.50 mm tall** and `J6`
-> is the same 6.0 mm JST PH header as `J4`.  Neither face figure had ever been
-> held up against the board.  Machine-checked from here on by
-> `mechanical_keepout_contract` **MK8** (component bodies inside the three
-> height-limited regions) and **MK10** (through-hole leads on the face they
-> emerge on).
+> **D-781 SUPERSEDES THE OLD REAR-J4 HEIGHT ASSUMPTION.**  The microSD remains
+> on the TOP face and `J5` remains the tallest rigid TOP component at 8.50 mm,
+> but **J4 no longer carries a 6.0 mm JST header body**.  It is a manual 26-AWG
+> pigtail land: flexible wires leave the REAR and the FRONT solder profile is
+> controlled separately by `THT_LEAD_TRIM.md` and MK10.  Among the rigid rear
+> components in this census, `L4` at **3.1 mm max** is now the controlling height.
+> Enclosure CAD must provide a strain-relieved wire exit/service-loop volume at
+> J4 rather than a fixed 6.0 mm connector-body cavity.
 
 | side | tallest fitted part | height | source | constraint |
 |---|---|---|---|---|
@@ -162,9 +159,9 @@ for interface freeze and must be replaced by vendor drawings at CAD time.
 | TOP (control area) | PTS645 tact switch | **4.3 mm** | carried (§2, C&K part code `…43…`) | needs ~1.0 mm of plunger stack |
 | TOP, next | **`U1`** ESP32-S3-WROOM-1 | **3.1 mm** | **vendor** — Espressif datasheet §10.1, archived `vendor/Espressif/` | 18.0 × 25.5 × 3.1 |
 | TOP, next | `J3` USB-C · `J8` Qwiic | **3.26 / 2.90 mm** | carried (§2) · **vendor** (JST `eSH.pdf`, D-762) | bottom edge · right wall |
-| TOP (display shadow) | passives, `D2`/`D4`/`D5` SOT-563 | **0.60 mm measured** against a **≤0.8 mm** retained limit | **MK8** | 0.20 mm spare. **`J4`'s LEADS are the exception — see MK10 and `assembly/THT_LEAD_TRIM.md`** |
-| **BOTTOM (`B.Cu`)** | **`J4`** JST `B2B-PH-K-S` battery header | **6.00 mm** | **vendor** — JST `ePH.pdf`, archived `vendor/JST/` | doc (7.000, 113.000), **north of the battery shadow**, 0.7 mm clear of the 915 coax (D-241) |
-| BOTTOM, next | **`L4`** Würth WE-MAPI 4030 `74438357010` | **3.1 mm max** | **vendor** — Würth datasheet, archived `vendor/Wurth/` | boost inductor |
+| TOP (display shadow) | passives, `D2`/`D4`/`D5` SOT-563 | **0.60 mm measured** against a **≤0.8 mm** retained limit | **MK8** | 0.20 mm spare. **J4 pigtail solder profiles are a separate manual-assembly item — ≤0.50 mm conductor + ≤0.10 mm polyimide, see MK10 and `assembly/THT_LEAD_TRIM.md`** |
+| **BOTTOM (`B.Cu`)** | **`L4`** Würth WE-MAPI 4030 `74438357010` | **3.1 mm max** | **vendor** — Würth datasheet, archived `vendor/Wurth/` | tallest rigid rear component in the current census; J4 is now a flexible manual pigtail, not a 6 mm header |
+| BOTTOM, J4 manual interface | **`J4`** D-781 26-AWG pigtail | **flexible wire; no rigid connector body** | `assembly/BATTERY_HARNESS.json` + `THT_LEAD_TRIM.md` | rear strain relief/service loop required; front joint profile ≤0.50 mm + ≤0.10 mm insulation |
 | BOTTOM, next | **`U7`**, **`U8`** Ebyte radio modules | **3.00 ± 0.10 mm** | **vendor** — D-762, archived `vendor/Ebyte/` | lower rear band |
 | BOTTOM, next | `L1`, `L3` Coilcraft XFL4020 | **~2.1 mm** | **CARRIED, not re-read** | converter inductors |
 | BOTTOM (battery shadow) | `C26`/`C29`/`C30` 1206 bulk MLCC | **1.80 mm measured** against a **≤1.2 mm** retained limit | **MK8**; Murata `GRM31C` | **+0.60 mm — OPEN CAD ITEM (D-760)**, mitigated by the 0.5 mm compliant sheet |
@@ -172,15 +169,17 @@ for interface freeze and must be replaced by vendor drawings at CAD time.
 
 **WHAT CAD MUST TAKE FROM THIS.**  The **front** cavity must clear **8.50 mm at
 the right wall** (`J5`) and **6.00 mm in the bottom band** (`J6`), not 4.7 mm.
-The **rear** cavity must clear **6.00 mm at doc (7.000, 113.000)** (`J4`), not
-1.85 mm — and that is *outside* the 8.0 mm battery reserve, in the band the 915
-coax runs through, so it is additive to nothing but must not be ribbed over.
+On the **rear**, there is no longer a 6.00 mm J4 header body; rigid component
+height is led by `L4` at **3.1 mm max**.  CAD must instead reserve a strain-
+relieved **26-AWG pigtail bend/service-loop volume at doc (7.000, 113.000)**,
+kept out of the 915 coax and NFC routing volumes.  Do not place a support rib
+across that wire-exit path.
 
 **STILL CARRIED, NOT RE-READ — an enumerated open item, not silence:** `J5`
 8.50, `U6` 4.7, PTS645 4.3, `J3` 3.26, `J1` 2.3, `SW9` 2.0 + actuator, `D13`
 1.85, `J2` 1.85, `L1`/`L3` 2.1.  Each is plausible and each comes from a §2 row
 that names its vendor; none has been held against the vendor drawing the way
-`J4`, `J6`, `U1`, `U7`, `U8`, `L4`, `J7`, `J8` and the 1206 bulk now have been.
+`J6`, `U1`, `U7`, `U8`, `L4`, `J7`, `J8` and the 1206 bulk now have been; J4 is now governed by the D-781 harness/assembly documents rather than a header drawing.
 
 ---
 

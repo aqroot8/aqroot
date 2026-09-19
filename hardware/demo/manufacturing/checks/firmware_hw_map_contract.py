@@ -108,21 +108,6 @@ POWER_POLICY_CONTROLS = [
                ? AccessoryBatteryAction::Shed5v
                : AccessoryBatteryAction::ShedAll;""",
      "    return AccessoryBatteryAction::ShedAll;"),
-    # D-777.  The internal reserve that holds J4 inside JST's published 2 A.
-    # The first control is the board EXACTLY as D-775/D-776 shipped it -- no
-    # reserve, the whole 1.0632 A internal budget live beside both accessory
-    # rails at their published budgets.  The second is the edit that is much
-    # more likely than deleting the feature: the reserve SURVIVING but losing
-    # one of its three lines, which puts the demand back over the rating while
-    # every other clause still reads as if the reserve were intact.
-    ("the dual-rail internal ceiling returns to the full +3V3 budget",
-     "aqroot_accessory_power_policy.h",
-     "constexpr float kDualRailInternalCeilingA = 0.7732f;",
-     "constexpr float kDualRailInternalCeilingA = 1.0632f;"),
-    ("the reserve keeps its name but stops holding the IR transmitter off",
-     "aqroot_accessory_power_policy.h",
-     "  return InternalReserve{both, both, both};",
-     "  return InternalReserve{both, both, false};"),
     # D-779.  The plausibility band is what stops an all-ones VCELL read from
     # authorising the second accessory rail.  The control widens it just far
     # enough to let 5.1199 V back in -- which is how the defect actually looked
@@ -147,14 +132,6 @@ BUS_CONTROLS = [
      "aqroot_spi_bus_b.h",
      "    ~Hold() { if (ok_) bus_.release(); }",
      "    ~Hold() {}"),
-    # D-777.  The reserve rule is the one that keeps J4 inside its own
-    # published 2 A rating, and it is enforced HERE because two of the three
-    # reserved budget lines are transmitters on this bus.  The control is the
-    # edit that reads as a tidy-up: the flag kept, the refusal dropped.
-    ("a radio may key while the accessory reserve is engaged",
-     "aqroot_spi_bus_b.h",
-     "    if (internal_reserve_) return false;",
-     "    if (false) return false;"),
 ]
 
 ORDER_CONTROLS = [

@@ -20,6 +20,7 @@ BOARD = PROJECT / "aqroot-Beta-v2.kicad_pcb"
 SCHEMATIC = PROJECT / "aqroot-Beta-v2.kicad_sch"
 # The only legitimate asymmetries between the schematic and the board.
 BOARD_ONLY_REFS = {"BOSS1", "BOSS2"}        # mechanical bosses, no symbol
+MANUAL_FITTED_REFS = {"J4"}                    # D-781 manual pigtail land: electrically fitted, intentionally absent from purchased BOM
 SCHEMATIC_ONLY_REFS = {"LS1"}               # off-board wired speaker, no footprint
 APPROVED_NC = {"J5.9", "J5.10", "J5.11", "J5.12", "J5.15", "J5.16", "J5.17", "J5.18"}
 
@@ -116,6 +117,11 @@ def schematic_population() -> tuple[set[str], set[str]]:
         rows = list(csv.DictReader(bom.open(newline="", encoding="utf-8-sig")))
     fitted = set().union(*(expand_refs(row["Refs"]) for row in rows if not row["DNP"].strip()))
     dnp = set().union(*(expand_refs(row["Refs"]) for row in rows if row["DNP"].strip()))
+    # KiCad omits in_bom=no symbols from its BOM export. J4 is nevertheless an
+    # electrically fitted PCB land in D-781: wires are soldered to both pads.
+    # Keep it in every connectivity/feature contract while FAB12c separately
+    # proves it stays OUT of the purchased BOM/CPL.
+    fitted |= MANUAL_FITTED_REFS
     return fitted, dnp
 
 

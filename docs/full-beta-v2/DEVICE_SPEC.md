@@ -118,8 +118,8 @@ GPIO19/20); there is **no USB-UART bridge IC** (by design). See §9, §16.
 | Touch panel | EastRising **ER-TPC035-6** capacitive | LOCKED · FITTED · INTERNAL | OFF_BOARD_BOM.md |
 | Touch controller | **FocalTech FT6236** @ I²C **0x38** | LOCKED (interface); **silicon identity CAD-TO-VERIFY** | `architecture/I2C_ADDRESS_REGISTRY.md`; ARCHITECTURE.md |
 | Backlight driver | `U17` **TPS61169DCKR** (WLED boost) | FITTED | `03_spi_a_display_sd.kicad_sch:U17` |
-| Backlight **true-off disconnect** | `Q11` **AO3422** (LCSC C37130, **55 V** `BVDSS`) in the panel cathode return, gate on its OWN net `BL_DISC_G` | FITTED (added D-750, re-controlled D-752, **re-rated D-766**) | `03_spi_a_display_sd.kicad_sch:Q11`; D-750 item 7; D-752; D-766 |
-| Backlight disconnect **gate hold** | `D14` **1N4148WS** (LCSC C2128) + `C85` 100 nF + `R132` 220 k — charges from `DISP_BL_CTL`, decays with τ = 22 ms | FITTED (added D-752) | `03_spi_a_display_sd.kicad_sch:D14/R132/C85`; D-752 |
+| Backlight **true-off disconnect** | `Q11` **Vishay SQ2364EES-T1_BE3** (LCSC C5758702, **60 V**) in the panel cathode return, gate on its OWN net `BL_DISC_G` | FITTED (added D-750, re-controlled D-752, **re-rated D-780**) | `03_spi_a_display_sd.kicad_sch:Q11`; D-750; D-752; D-780 |
+| Backlight disconnect **gate hold** | `D14` **1N4148WS** (LCSC C2128) + `C85` **1 µF** + `R132` 220 k — nominal RC 220 ms; release proof uses **147 ms** worst retained τ including tolerance/DC-bias allowance | FITTED (D-752, C85 resized D-779) | `03_spi_a_display_sd.kicad_sch:D14/R132/C85`; D-752; D-779; D-780 |
 | Display SDO isolation | `R112` 0 Ω = **DNP** | DNP | population matrix |
 
 > **WHY `Q11` EXISTS (D-750, external first-spin review item 7).**  TI states
@@ -196,55 +196,26 @@ GPIO19/20); there is **no USB-UART bridge IC** (by design). See §9, §16.
 > `CTRL`'s instantaneous level.  **A protection element must survive the fault
 > it exists to prevent.**
 >
-> `Q11` is now the **`AO3422`** (AOS rev 2.1, March 2024, archived at
-> `vendor/AOS/AO3422-rev2p1-2024-03.pdf`): **`BVDSS` 55 V min** at `ID` = 10 mA
-> and `VDS` abs-max 55 V — **41 % margin** over the published 39 V — `ID` 2.1 A
-> at `VGS` 4.5 V, `IGSS` ±100 nA, **the same SOT-23 with the same
-> 1 = G / 2 = S / 3 = D**, so no land pattern and no footprint verification
-> changed.  LCSC `C37130`, 84 244 in stock, confirmed live under D-096.
+> **D-780 SUPERSEDES THE AO3422 CONDUCTION ARGUMENT.**  D-779 corrected the
+> extracted-datasheet unit error (`VGS(th)` is specified at **250 µA**, not
+> 250 mA) but still had to bridge an unpublished AO3422 conduction band with
+> typical transconductance.  That is not a production guarantee.  `Q11` is now
+> **Vishay `SQ2364EES-T1_BE3`**, same SOT-23 and same 1=G / 2=S / 3=D pinout,
+> with **60 V `VDS`** against the board's 39 V fault ceiling and a published
+> **`RDS(on)` MAX 0.245 Ω at `VGS = 1.5 V`, `ID = 2 A`**.  AQROOT holds
+> `VGS = 2.396 V`, **0.896 V above** that characterized low-gate point; with
+> `C85 = 1 µF`, the worst retained RC envelope remains above 1.5 V for
+> **≈62 ms**, versus the TPS61169's **2.5 ms max** shutdown time.  F5 directly
+> gates these facts and includes a negative control that puts the D-779 AO3422
+> back and requires it to fail.
 >
-> * **conduction is guaranteed by the threshold spec, not assumed.**
->   `VGS(th)` is **0.6 / 1.3 / 2.0 V at `ID` = 250 mA**, and this circuit needs
->   **109 mA — less than half the threshold test current** — so at the held gate
->   of ≥ 2.60 V (`VGS` ≥ **2.396 V** over `R69`'s 0.204 V) the worst-case part is
->   already passing more than twice what is asked of it.  **`RDS(on)` cannot move
->   the LED current**: `U17`'s `FB` senses `LED_K`, which is `Q11`'s SOURCE, so
->   `R69` alone fixes the setpoint and the channel drop is simply regulated out.
->   **D-767 corrected the arithmetic D-766 first published here.**  `LED_BOOST`
->   is **not** a high-voltage node in normal operation — the `.kicad_dru` records
->   it at **3.884–4.484 V**, because this backlight is six LEDs **in parallel** at
->   2.9–3.2 V — so there is no fixed "spare headroom" to spend.  What absorbs the
->   drop is that `LED_BOOST` is a **regulated** node: `U17` raises it until `R69`
->   sees 204 mV, and its range runs to the 36 V OVP threshold.  The bound is now
->   anchored on a published figure rather than a square-law guess: `RDS(on)`
->   ≤ 200 mΩ is published **at `VGS` 2.5 V**, i.e. 0.5 V of overdrive for the
->   worst-case 2.0 V threshold part, so scaling first-order by 1/overdrive to our
->   0.396 V gives ≈ **253 mΩ** — **27.6 mV and 3.0 mW** at 109 mA, moving
->   `LED_BOOST`'s normal band up by ≈ 22 mV against the `AO3400A`'s 5.2 mV.  And
->   the design is insensitive even if that estimate is badly wrong: at a
->   pessimistic 10 Ω the drop is 1.09 V, which `U17` regulates out, and `Q11`
->   dissipates 0.119 W for an 18 °C rise on the datasheet's 150 °C/W.
-> * **the true-off floor is unchanged.**  `IGSS` is the same ±100 nA, so D-752's
->   **0.242 V** floor now stands against `VGS(th)` min **0.60 V** — **2.48×**.
-> * **one number gets worse, and it is named.**  `VGS(th)` max rises
->   1.45 V → 2.00 V, so the worst-case decay-to-threshold falls
->   **11.4 ms → 5.14 ms** and D-752's ordering margin falls **4.6× → 2.06×**.
->   **That is accepted deliberately, because the part change de-escalates what a
->   violation costs**: with a 30 V part, losing the ordering meant 36–39 V across
->   silicon rated for 30 V — avalanche and cumulative degradation.  With a 55 V
->   part it means only that `U17` enters its open-LED latch and the backlight
->   stays dark until `CTRL` is cycled — recoverable, non-destructive and visible.
->   Raising `C85` to 220 nF would restore 4.5× for a cent and was declined only
->   because it opens a new single-piece BOM line for a margin that no longer
->   guards silicon.
-> * **mechanised, and non-vacuously.**  **F5** now also parses the **39 V**
->   ceiling **out of the `.kicad_dru`** rather than restating it, refuses a FET
->   this contract has no published rating for, and requires the fitted part's
->   `VDS` to cover the ceiling, the held gate to enhance **that** part past
->   **its own** worst-case `VGS(th)`, and the gate not to reach that threshold
->   before `U17`'s 2.5 ms `tSD`.  **Four more live controls**, one of which is
->   the 30 V `AO3400A` D-752 left fitted — refused by the rating clause alone.
-
+> The 1.5 V `RDS(on)` row is specified at **25 °C unless otherwise noted**.
+> For the first five prototypes AQROOT therefore makes no unsupported all-temp
+> low-gate claim: assembly acceptance `Q11-TEMP-01` requires backlight operation
+> and true-off validation at **0 °C, 25 °C and 40 °C**.  `Q11` is a reworkable
+> SOT-23 and failure blocks the affected prototype from Demo use.  This is a
+> first-article qualification residual, not a hidden production guarantee.
+>
 **Conflicts flagged (do not carry stale values into public copy):**
 - **Display driver:** ARCHITECTURE/OFF_BOARD_BOM lock **ILI9488** (320×480); the KiCad
   symbol carries stale placeholder text (`ILI9341` / a CH280QV10 pin-table). The
@@ -320,9 +291,9 @@ sockets); the only on-board RF network is the 13.56 MHz NFC differential front e
 | Item | Value | Label | Evidence |
 |---|---|---|---|
 | Cell | 1S Li-ion / LiPo pouch | LOCKED (chemistry) · INTERNAL | `01_power_tree.kicad_sch`; OFF_BOARD_BOM.md |
-| Battery connector | `J4` **JST-PH-2** (B2B-PH-K-S(LF)(SN)) | FITTED · INTERNAL | `01_power_tree.kicad_sch:J4` |
+| Battery connection | `J4` **manual 26-AWG pigtail land** → Molex Micro-Lock Plus 2.0 (`5055700201` board-side housing); **no PCB header fitted** | FITTED MANUAL · INTERNAL | `01_power_tree.kicad_sch:J4`; `assembly/BATTERY_HARNESS.json` |
 | Envelope | ≈ **2500–3000 mAh** target; cell envelope 57 × 75 × 8.0 mm MAX (D-243) | TARGET · CAD-TO-VERIFY | CTO_DECISIONS D-071/D-243; OFF_BOARD_BOM.md |
-| **Exact fitted capacity** | **2500 mAh — Adafruit Product 328 selected for the first five (CTO-BAT-01).** Current supplier page specifies a protected pack with genuine JST-PH; its linked `785060` pack specification is pinned in-repo at SHA-256 `826149da…ecd3`, max pack 7.9 × 50.5 × 60.5 mm, max charge 1C and operating discharge current ≤2C. The supplier's conservative charge recommendation is 1.2 A, above this board's 0.855 A worst programmed envelope. Incoming polarity must be meter-verified before J4 connection. | **SELECTED · ENGINEERING-ONLY** | `assembly/SELECTED_BATTERY.json`; `checks/battery_pack_contract.py` |
+| **Exact fitted capacity** | **2500 mAh — Adafruit Product 328 selected for the first five (CTO-BAT-01).** Current supplier page specifies a protected pack with genuine JST-PH; its linked `785060` pack specification is pinned in-repo at SHA-256 `826149da…ecd3`, max pack 7.9 × 50.5 × 60.5 mm, max charge 1C and operating discharge current ≤2C. The supplier's conservative charge recommendation is 1.2 A, above this board's 0.855 A worst programmed envelope. Incoming polarity must be meter-verified before D-781 retermination/mating. | **SELECTED · ENGINEERING-ONLY** | `assembly/SELECTED_BATTERY.json`; `checks/battery_pack_contract.py` |
 | Charger | `U11` **BQ25185DLHR** (1S Li-ion linear charger) | FITTED · INTERNAL | `01_power_tree.kicad_sch:U11` |
 | Charge current (ICHG) | **769 mA** — `R37` 390 Ω on ISET, `ICHG = KISET / RISET` with `KISET` 300 AΩ (SLUSF65B §6.1.1.4).  Input limit **1100 mA** and `VBATREG` **4.2 V** from `R36` 13 kΩ (Table 6-1).  Full cycle ≈ 240–290 min against the part's **360 min** `tMAXCHG` safety timer | **RESOLVED at D-743** · ENGINEERING-ONLY | `01_power_tree.kicad_sch:R36,R37`; CTO_DECISIONS D-743; `evidence/d743-rail-ampacity.json` |
 | Charge source requirement | **1 A or better.**  The USB-C port is a plain 5.1 kΩ Rd sink and does not read the source's Rp advertisement; a 500 mA-class port is folded back by the charger's VINDPM and will not complete a cycle inside `tMAXCHG` | MARKETING-SAFE (state it as "charge from a 1 A USB adapter") | D-743 |
@@ -379,21 +350,20 @@ power/NFC review, and CTO decisions.
 > BQ25185 `IBAT_OCP` hiccup on a low pack, which is worse for an accessory than a
 > deterministic refusal.
 >
-> **D-777 ADDS THE SECOND MANDATORY CONDITION, AND IT IS A CONNECTOR CONDITION.**
-> `J4` is a JST `B2B-PH-K-S(LF)(SN)` and JST publishes the PH series at **2 A
-> AC/DC (AWG #24)** — **the lowest number in the whole battery path**, below the
-> `BQ25185`'s 2.5625 A `IBAT_OCP` minimum, D-771's 3.960 A breaker and `F1`'s 5 A
-> fuse, so nothing on this board acts between 2 A and 2.5625 A.  At the full
-> internal +3V3 budget the simultaneous case carried **2.2715 A**, 13.6 % over.
-> Holding it under 2 A by VCELL alone would need a **4.16 V** pack, so the
-> bounded term is the **internal** one: while BOTH accessory rails are enabled
-> firmware **reserves** the sub-GHz transmit path, the NFC field and the IR
-> transmitter, bringing the connection to **1.8797 A — 6.0 % inside its published
-> rating**.  Accessory-facing documentation must carry this condition too:
-> *"While both switched accessory rails are enabled, the sub-GHz radio, the NFC
-> field and the IR transmitter are unavailable.  Each rail on its own leaves all
-> three available."*  **Neither published budget changes**, and the connector
-> upgrade (JST `B2B-XH-A`, 3 A) is a costed REV-B item — CTO_DECISIONS D-777 §6.
+> **D-781 SUPERSEDES D-777'S CONNECTOR RESTRICTION.**  D-777 correctly found
+> that the fitted JST-PH board header was only a 2 A path, but its firmware
+> workaround disabled sub-GHz TX, NFC field and IR whenever both accessory rails
+> were enabled.  D-781 rejects that engineering workaround.  It keeps the
+> existing J4 PTH pair as a manual 26-AWG pigtail land and moves the detachable
+> interface to Molex Micro-Lock Plus 2.0.  With 26-AWG conductors on both sides,
+> the frozen harness controlling rating is **2.6 A**, above the live full-feature
+> modeled battery current (~2.27 A).  **The D-777 internal-feature reservation is
+> retired:** sub-GHz, NFC and IR remain available with both accessory rails,
+> subject only to the existing internal-TX mutual-exclusion rules.  The D-775
+> **3.80 V** simultaneous 3.3 V + 5 V accessory floor remains in force because it
+> protects the battery/charger envelope independently of connector rating.
+> Exact parts, polarity and first-article acceptance are frozen in
+> `assembly/BATTERY_HARNESS.json`.
 >
 > **D-771 MADE IT A GUARANTEE RATHER THAN A HOPE.**  Every clause D-753 and D-765
 > wrote asked whether an accessory could pull TOO MUCH; none asked whether the

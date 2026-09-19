@@ -53,20 +53,16 @@ PRE-REBASE positions -- correcting a real defect into a different one.
          on `B.Cu` is not an `F.Cu` component -- so between them the two
          clauses left `J4` unexamined for the whole programme.
 
-         `J4`, the BATTERY CONNECTOR, is the ONLY through-hole part on this
-         board whose body is on `B.Cu`.  It is a JST `B2B-PH-K-S`: JST's own
-         `ePH.pdf` gives the body **6.0 mm** and the lead **(3.4) mm** below
-         the seating plane.  The board's OWN stackup totals **1.5744 mm**, so
-         the lead stands **1.826 mm proud of `F.Cu`** -- and both of `J4`'s
-         pads are inside `DISPLAY_SHADOW`, where the register's rule is
-         **F.Cu height <= 0.80 mm**.  That is **1.026 mm over**, directly
-         under the 3.5-inch panel, and untrimmed it stops the display seating.
+         `J4` is now the D-781 MANUAL 26-AWG battery-pigtail land, not a fitted
+         JST header.  The wire enters from `B.Cu`, is soldered on `F.Cu`, and
+         both joints are inside `DISPLAY_SHADOW`, whose allowance is **0.80 mm**.
+         J4-T1 therefore defines the finished conductive profile as **<=0.50 mm**
+         and J4-T3 adds **<=0.10 mm** polyimide, leaving 0.20 mm geometric spare.
 
-         So MK10 asks it for EVERY height-limited region, on the board's own
-         stackup thickness rather than a constant: a lead over the region's
-         allowance must be DECLARED in `assembly/THT_LEAD_TRIM.md` with a trim
-         that meets the allowance, and a through-hole part inside a region
-         with NO vendor lead figure is REFUSED rather than skipped.
+         So MK10 asks the opposite-face question for EVERY height-limited region.
+         Vendor lead lengths still apply to real fitted THT parts such as J6;
+         reference-specific manual lands such as J4 must carry an explicit
+         assembly profile and normative declaration.  Missing either is refused.
 
 
     MK11 EXTERNAL INTERFACE AUTHORITY.  D-764 found that DEVICE_SPEC still
@@ -118,7 +114,7 @@ THT_LEAD_MM = {
     "JST_PH_B2B-PH-K_1x02_P2.00mm_Vertical":
         (3.4, "vendor", "JST ePH, Header (Through-hole type), top entry, "
                         "2 circuits: body 6.0 mm, lead (3.4) mm below the "
-                        "seating plane"),
+                        "seating plane; this applies to fitted J6, NOT D-781 J4"),
     # Lead-formed 90 degrees at assembly under assembly/IR_LEAD_FORMING.md,
     # which is NORMATIVE and specifies the trim; the unformed lead length is
     # not what reaches the board.
@@ -143,6 +139,17 @@ THT_LEAD_MM = {
                          "an SMD switch; the terminals are surface-mount"),
     "PUI_DMM-4026-B-I2S_4.0x3.0mm":
         (0.0, "no_lead", "the NPTH entry is the microphone's acoustic port"),
+}
+
+# D-781. J4 reuses the existing plated-hole pair as a MANUAL WIRE LAND.  There
+# is no connector seating plane and therefore no vendor "lead length" to subtract
+# from board thickness.  Its opposite-face geometry is an ASSEMBLY requirement:
+# after soldering from F.Cu, each conductor is trimmed to <=0.50 mm and insulated.
+# Keep this reference-specific so J6 can continue using the real JST header row.
+MANUAL_THT_PROTRUSION_MM = {
+    "J4": (0.50, "assembly",
+           "D-781 manual 26-AWG battery-pigtail conductor; J4-T1 requires "
+           "the post-solder conductive profile <=0.50 mm above F.Cu"),
 }
 
 
@@ -648,19 +655,26 @@ def mk10(board, reg=None, board_path=None):
                 continue
             ref = f.GetReference()
             fid = f.GetFPIDAsString().split(":")[-1]
-            lead = THT_LEAD_MM.get(fid)
+            manual = MANUAL_THT_PROTRUSION_MM.get(ref)
+            lead = manual or THT_LEAD_MM.get(fid)
             if lead is None:
                 unknown.append([ref, fid, name])
                 continue
-            proud = round(max(0.0, lead[0] - thick), 4)
+            proud = round(lead[0] if manual else max(0.0, lead[0] - thick), 4)
             row = dict(ref=ref, footprint=fid, region=name, region_face=side,
                        body_face=body, pads=sorted(q.GetNumber() for q in inside),
-                       lead_mm=lead[0], lead_source=lead[1], lead_basis=lead[2],
+                       lead_mm=None if manual else lead[0],
+                       manual_protrusion_mm=lead[0] if manual else None,
+                       lead_source=lead[1], lead_basis=lead[2],
                        board_thickness_mm=thick, protrusion_mm=proud,
                        allowance_mm=spec["allowance_mm"],
                        over_mm=round(max(0.0, proud - spec["allowance_mm"]), 4))
-            if row["over_mm"] > 1e-9:
-                d = DECLARED_LEAD_TRIM.get((ref, name))
+            d = DECLARED_LEAD_TRIM.get((ref, name))
+            # A reference-specific manual profile is itself a manufacturing
+            # mitigation, so its declaration/document/insulation must be proved
+            # even though the finished 0.50 mm conductor is already below 0.80 mm.
+            needs_declaration = bool(manual) or row["over_mm"] > 1e-9
+            if needs_declaration:
                 if not d:
                     undeclared.append([ref, name, row["over_mm"]])
                 elif (d["trim_to_mm"] > spec["allowance_mm"] + 1e-9
@@ -868,11 +882,14 @@ def mk7(board):
     DECLARED_LEAD_TRIM.clear()
     DECLARED_LEAD_TRIM.update(saved3)
 
-    # 3. a through-hole part in a limited region with NO vendor lead figure
-    saved4 = THT_LEAD_MM.pop("JST_PH_B2B-PH-K_1x02_P2.00mm_Vertical")
-    ctl["a_through_hole_part_with_no_lead_figure_is_refused"] = (
-        not mk10(board, reg)["ok"])
-    THT_LEAD_MM["JST_PH_B2B-PH-K_1x02_P2.00mm_Vertical"] = saved4
+    # 3. J4 is a manual pigtail land.  If its reference-specific assembly
+    #    protrusion declaration disappears, the old JST footprint identity must
+    #    NOT silently make it look like a fitted header again.
+    saved4 = MANUAL_THT_PROTRUSION_MM.pop("J4")
+    saved_hdr = THT_LEAD_MM.pop("JST_PH_B2B-PH-K_1x02_P2.00mm_Vertical")
+    ctl["a_manual_J4_with_no_profile_is_refused"] = not mk10(board, reg)["ok"]
+    THT_LEAD_MM["JST_PH_B2B-PH-K_1x02_P2.00mm_Vertical"] = saved_hdr
+    MANUAL_THT_PROTRUSION_MM["J4"] = saved4
 
     # 4. the old zero-margin D-763 declaration (0.80 mm under a 0.80 mm
     #    allowance) is no longer acceptable once insulation is required.

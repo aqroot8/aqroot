@@ -68,10 +68,12 @@ PRO = PROJECT / "aqroot-Beta-v2.kicad_pro"
 SCHEMATIC = PROJECT / "aqroot-Beta-v2.kicad_sch"
 OUT = ROOT / "hardware/demo/fab"
 ASSEMBLY_SHEET = HERE / "aqroot_assembly.kicad_wks"
+BATTERY_HARNESS = ROOT / "docs/full-beta-v2/assembly/BATTERY_HARNESS.json"
+BATTERY_HARNESS_PACKAGE = "aqroot-Demo-BATTERY-HARNESS.json"
 # The assembly drawing is a RELEASE ARTIFACT, not a generic KiCad plot.  The
 # revision is intentionally explicit so a regenerated PDF cannot silently look
 # current while carrying an older review authority.
-ASSEMBLY_RELEASE = "D-773"
+ASSEMBLY_RELEASE = "D-781"
 
 # The board's own enabled copper layers, in stackup order, plus every
 # non-copper layer a fabricator and an assembler actually need.  The contract
@@ -518,8 +520,35 @@ def placement_convention_notes(out, board):
         "> **A placement preview is REQUIRED before the first unit is built.**  "
         "Render the loaded CPL against the assembly drawings "
         "(`aqroot-Demo-assembly-top.pdf`, `aqroot-Demo-assembly-bottom.pdf`) "
-        "and confirm side and rotation for at least `U1`, `J1`, `J4`, `J5`, "
-        "`U11`, `U12` and `U21` before release to the line.",
+        "and confirm side and rotation for at least `U1`, `J1`, `J5`, `U11`, "
+        "`U12` and `U21` before release to the line. **`J4` is intentionally "
+        "absent from the CPL at D-781 because it is a manual wire land, not a "
+        "placed component; verify J4 polarity, rear-wire entry, joint height "
+        "and strain relief against the battery-harness work instruction instead.**",
+        "",
+    ]
+
+
+def battery_harness_notes():
+    """D-781 manual J4 pigtail instructions, derived from the frozen harness."""
+    h = json.loads(BATTERY_HARNESS.read_text(encoding="utf-8"))
+    b = h["board_side"]; p = h["battery_side"]; r = h["controlling_rating"]
+    pol = h["polarity"]
+    return [
+        "## J4 battery pigtail -- MANUAL ASSEMBLY, NO PCB HEADER", "",
+        "`J4` is a 2-hole manual wire land in this release. **Do not fit the old JST-PH board header.**",
+        "The authoritative detachable-harness record is `%s` in this package." % BATTERY_HARNESS_PACKAGE,
+        "",
+        "- Board side: **%d AWG**; exact pre-crimps `%s` / `%s`; housing `%s`."
+        % (b["wire_AWG"], b["precrimp_red"].split(",")[0].split()[-1],
+           b["precrimp_black"].split(",")[0].split()[-1], b["receptacle_housing"]),
+        "- Battery side: Adafruit 328 factory lead **%d AWG**; Micro-Lock plug `%s`, male terminal `%s`."
+        % (p["factory_lead_AWG"], p["plug_housing"], p["male_terminal"]),
+        "- Controlling mated-harness rating: **%.1f A at AWG%d**."
+        % (r["rated_current_A"], r["wire_AWG"]),
+        "- Polarity: cavity 1 = **%s**; cavity 2 = **%s**." % (pol["cavity_1"], pol["cavity_2"]),
+        "- Solder wires through J4 from B.Cu; front conductive profile **<=0.50 mm**, then **<=0.10 mm polyimide** before display fit. Follow `THT_LEAD_TRIM.md` J4-T1..T4.",
+        "- First article: verify conductor/hole fit, strain relief, DMM polarity, terminal retention/pull acceptance, and worst-case load temperature rise per the packaged harness record.",
         "",
     ]
 
@@ -573,6 +602,7 @@ def export_fab_notes(out):
     lines += mlines
     nlines, nrows = nfc_tuning_access_notes(board)
     lines += nlines
+    lines += battery_harness_notes()
     lines += stackup_process_notes(board)
     lines += placement_convention_notes(out, board)
     (out / "aqroot-Demo-FAB-NOTES.md").write_text("\n".join(lines),
@@ -1231,6 +1261,9 @@ def main():
     export_positions(out)
     bom = export_bom(out)
     assembly = export_assembly(out)
+    if not BATTERY_HARNESS.is_file():
+        raise SystemExit("missing frozen D-781 battery harness: %s" % BATTERY_HARNESS)
+    shutil.copy2(BATTERY_HARNESS, out / BATTERY_HARNESS_PACKAGE)
     notes, via_in_pad, sub_floor_vias, mask_dams, nfc_tune = export_fab_notes(out)
 
     fitted, dnp = rl.schematic_population()
@@ -1270,6 +1303,12 @@ def main():
             measured=True,
             required_process="resin-filled, planarized, copper-capped; B.Mask exposed",
             sites=nfc_tune),
+        battery_harness=dict(
+            file=BATTERY_HARNESS_PACKAGE,
+            source=str(BATTERY_HARNESS.relative_to(ROOT)),
+            sha256=sha256(BATTERY_HARNESS),
+            status=json.loads(BATTERY_HARNESS.read_text(encoding="utf-8")).get("status"),
+            decision=json.loads(BATTERY_HARNESS.read_text(encoding="utf-8")).get("decision")),
         fabrication_notes=dict(
             file="aqroot-Demo-FAB-NOTES.md",
             hole_clearance_rules=notes,

@@ -1,0 +1,83 @@
+{
+ "endpoint": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
+ "exhausted": true,
+ "fetched_utc": "2026-09-19T09:39:57Z",
+ "keyword": "2137201000",
+ "page_size": 25,
+ "pages": 1,
+ "records": [
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Contact Plating",
+     "attribute_value_name": "Tin"
+    },
+    {
+     "attribute_name_en": "Contact Material",
+     "attribute_value_name": "Copper alloy"
+    },
+    {
+     "attribute_name_en": "Wire Gauge - AWG",
+     "attribute_value_name": "22~26"
+    },
+    {
+     "attribute_name_en": "Insulation OD",
+     "attribute_value_name": "0.9mm~1.5mm"
+    }
+   ],
+   "componentBrandEn": "MOLEX",
+   "componentCode": "C5486584",
+   "componentLibraryType": "expand",
+   "componentModelEn": "2137201000",
+   "componentPrices": [
+    {
+     "endNumber": 49,
+     "productPrice": 0.1115,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 149,
+     "productPrice": 0.0884,
+     "startNumber": 50
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.0769,
+     "startNumber": 150
+    },
+    {
+     "endNumber": 2499,
+     "productPrice": 0.0682,
+     "startNumber": 500
+    },
+    {
+     "endNumber": 4999,
+     "productPrice": 0.0612,
+     "startNumber": 2500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0578,
+     "startNumber": 5000
+    }
+   ],
+   "componentSpecificationEn": "-",
+   "componentTypeEn": "Housing Contact",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2404151324_MOLEX-2137201000_C5486584.pdf",
+   "describe": "0.9mm~1.5mm 22~26 Copper alloy Tin - Housing Contact ROHS",
+   "erpComponentName": "2137201000",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/housing-contact_molex-2137201000_C5486584.html",
+   "leastPatchNumber": 5,
+   "lossNumber": 5,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 10259
+  }
+ ],
+ "returned": 1,
+ "schema": 1,
+ "total_matches": 1
+}

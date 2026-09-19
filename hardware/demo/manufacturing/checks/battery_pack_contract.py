@@ -22,6 +22,7 @@ import demo_feature_contract as dfc
 
 BOARD = ROOT / "hardware/demo/kicad/aqroot-demo/aqroot-Beta-v2.kicad_pcb"
 SELECTED = ROOT / "docs/full-beta-v2/assembly/SELECTED_BATTERY.json"
+HARNESS = ROOT / "docs/full-beta-v2/assembly/BATTERY_HARNESS.json"
 DIMENSION_LIMITS = {"thickness": 8.0, "width": 57.0, "length": 75.0}
 DISCHARGE_MARGIN = 1.20
 
@@ -145,6 +146,36 @@ def evaluate(rec, req, actual_pdf_hash):
         thermistor_present=rec.get("thermistor_present"),
         supervised=rec.get("prototype_charging_supervised"),
         permitted_charge_temp_C=charge_temp)
+    harness = rec.get("_harness", {})
+    board = harness.get("board_side", {})
+    pack = harness.get("battery_side", {})
+    rating = harness.get("controlling_rating", {})
+    polarity = harness.get("polarity", {})
+    checks["B9_D781_board_harness_identity_is_frozen"] = dict(
+        ok=(rec.get("board_harness") == "docs/full-beta-v2/assembly/BATTERY_HARNESS.json"
+            and rec.get("board_connector") ==
+                "J4 D-781 manual pigtail -> Molex Micro-Lock Plus 2.0 5055700201"
+            and harness.get("status") == "FROZEN_FOR_FIRST_FIVE"
+            and board.get("wire_AWG") == 26
+            and board.get("receptacle_housing") == "5055700201"
+            and "2175012101" in board.get("precrimp_red", "")
+            and "2175011101" in board.get("precrimp_black", "")
+            and pack.get("factory_lead_AWG") == 26
+            and pack.get("plug_housing") == "2137192021"
+            and pack.get("male_terminal") == "2137201000"),
+        status=harness.get("status"), board_connector=rec.get("board_connector"),
+        board_wire_AWG=board.get("wire_AWG"), board_housing=board.get("receptacle_housing"),
+        battery_wire_AWG=pack.get("factory_lead_AWG"), battery_plug=pack.get("plug_housing"))
+    rated = float(rating.get("rated_current_A", 0) or 0)
+    live = float(req["max_user_reachable_battery_A"])
+    checks["B10_D781_harness_rating_and_polarity_cover_live_board"] = dict(
+        ok=(rating.get("wire_AWG") == 26 and rated >= live
+            and polarity.get("cavity_1") == "BAT+ / red / J4.1"
+            and polarity.get("cavity_2") == "GND / black / J4.2"),
+        controlling_rating_A=rated, live_max_battery_A=live,
+        current_margin_A=round(rated-live, 4),
+        current_margin_pct=round((rated/live-1.0)*100.0, 2) if live else None,
+        cavity_1=polarity.get("cavity_1"), cavity_2=polarity.get("cavity_2"))
     return checks
 
 
@@ -153,6 +184,8 @@ def main():
     ap.add_argument("-o", "--out", type=Path)
     a = ap.parse_args()
     rec = json.loads(SELECTED.read_text())
+    harness = json.loads(HARNESS.read_text())
+    rec["_harness"] = harness
     pdf = ROOT / rec["datasheet_path"]
     actual_pdf_hash = sha256(pdf) if pdf.exists() else None
     req = board_requirements()
@@ -179,6 +212,24 @@ def main():
     for name, field, value, clause in mutations:
         m = copy.deepcopy(rec)
         m[field] = value
+        got = evaluate(m, req, actual_pdf_hash)
+        controls[name] = not got[clause]["ok"]
+    for name, mutate, clause in (
+        ("old_JST_board_header_refused",
+         lambda m: m.__setitem__("board_connector", "J4 B2B-PH-K-S(LF)(SN)"),
+         "B9_D781_board_harness_identity_is_frozen"),
+        ("24AWG_harness_mismatch_refused",
+         lambda m: m["_harness"]["board_side"].__setitem__("wire_AWG", 24),
+         "B9_D781_board_harness_identity_is_frozen"),
+        ("2A_connector_rating_refused",
+         lambda m: m["_harness"]["controlling_rating"].__setitem__("rated_current_A", 2.0),
+         "B10_D781_harness_rating_and_polarity_cover_live_board"),
+        ("reversed_harness_polarity_refused",
+         lambda m: m["_harness"]["polarity"].__setitem__("cavity_1", "GND / black / J4.2"),
+         "B10_D781_harness_rating_and_polarity_cover_live_board"),
+    ):
+        m = copy.deepcopy(rec)
+        mutate(m)
         got = evaluate(m, req, actual_pdf_hash)
         controls[name] = not got[clause]["ok"]
 

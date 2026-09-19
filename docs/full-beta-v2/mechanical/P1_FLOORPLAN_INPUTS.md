@@ -173,7 +173,7 @@ Authority: [`MECHANICAL_INTERFACE_SPEC.md`](MECHANICAL_INTERFACE_SPEC.md) and
 | N-12 | **Battery envelope** | **60 × 75 × 8.0 mm**, ~2500–3000 mAh, 1S Li-ion/LiPo pouch | **LOCKED** (D-071) |
 | N-13 | Battery location | **rear lower two-thirds**, behind the controls | **TARGET** |
 | N-14 | Battery retention | **adhesive pad plus a moulded rib pocket. NO compression against the shell** | **TARGET** |
-| N-15 | Battery connector | JST-PH 2-pin `J4`; **service loop routed away from the NFC zone** | **LOCKED** |
+| N-15 | Battery connection | D-781 **manual 26-AWG J4 pigtail** to Molex Micro-Lock Plus 2.0; provide strain relief and **service loop routed away from the NFC zone**; no PCB header fitted | **LOCKED** |
 | N-16 | **Speaker** | `LS1` PUI **`AS02008MR-LW152-R`**, **Ø20 ± 0.2 × 3 ± 0.2 mm**, 8 Ω, 0.5 W rated / 0.8 W max, metal housing, **Nd-Fe-B magnet**, 2.4 g | **LOCKED** (D-148) |
 | N-17 | Speaker location | **rear, lower-right**, diagonally opposite the microphone, **rear-firing** | **TARGET** — see §9 O-2 |
 | N-18 | **Speaker rear cavity** | **1.5–2.0 cm³ SEALED behind the driver.** Without it, low-mid output collapses and speech sounds thin | **LOCKED** (requirement), volume **TARGET** |

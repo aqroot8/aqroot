@@ -1,0 +1,222 @@
+{
+  "board_only_identities": {
+    "J4": {
+      "Footprint": "Connector_JST:JST_PH_B2B-PH-K_1x02_P2.00mm_Vertical",
+      "Value": "BATTERY PIGTAIL 26AWG",
+      "exclude_from_bom": true,
+      "exclude_from_pos": true,
+      "why": "D-781 manual battery-pigtail solder land; exact harness frozen by BATTERY_HARNESS.json and F6"
+    }
+  },
+  "decision": "D-781",
+  "identities": {
+    "D1": {
+      "Footprint": "LED_THT:LED_D5.0mm",
+      "MPN": "TSAL6100",
+      "Value": "TSAL6100"
+    },
+    "D2": {
+      "Footprint": "Package_TO_SOT_SMD:SOT-563",
+      "MPN": "TPD4E1B06DRLR",
+      "Value": "TPD4E1B06DRLR"
+    },
+    "D8": {
+      "Footprint": "Diode_SMD:D_SOD-323",
+      "MPN": "NSR0240HT1G",
+      "Value": "NSR0240"
+    },
+    "F1": {
+      "Footprint": "Fuse:Fuse_1206_3216Metric",
+      "MPN": "0466005.NRHF",
+      "Value": "5A one-shot 1206"
+    },
+    "J1": {
+      "Footprint": "AQROOT_Beta:Hirose_FH69-50S-0.5SH",
+      "MPN": "FH69-50S-0.5SH",
+      "Value": "FH69-50S-0.5SH"
+    },
+    "J2": {
+      "Footprint": "AQROOT_Beta:Molex_5025700893",
+      "MPN": "5025700893",
+      "Value": "Molex_5025700893"
+    },
+    "J3": {
+      "Footprint": "Connector_USB:USB_C_Receptacle_GCT_USB4105-xx-A_16P_TopMnt_Horizontal",
+      "MPN": "USB4105-GF-A-120",
+      "Value": "USB_C_Receptacle_USB2.0_16P"
+    },
+    "J5": {
+      "Footprint": "AQROOT_Beta:Samtec_SSQ-124-02-G-S-RA",
+      "MPN": "SSQ-124-02-G-S-RA",
+      "Value": "COMMUNITY_PORT_1x24"
+    },
+    "J6": {
+      "Footprint": "Connector_JST:JST_PH_B2B-PH-K_1x02_P2.00mm_Vertical",
+      "MPN": "B2B-PH-K-S(LF)(SN)",
+      "Value": "JST-PH-2 SPEAKER"
+    },
+    "J7": {
+      "Footprint": "Connector_JST:JST_ACH_BM02B-ACHSS-GAN-ETF_1x02-1MP_P1.20mm_Vertical",
+      "MPN": "BM02B-ACHSS-GAN-ETF(LF)(SN)",
+      "Value": "BM02B-ACHSS-GAN-ETF"
+    },
+    "L1": {
+      "Footprint": "AQROOT_Beta:Coilcraft_XFL4020",
+      "MPN": "XFL4020-152MEC",
+      "Value": "1.5uH"
+    },
+    "L2": {
+      "Footprint": "AQROOT_Beta:Wurth_WE-MAPI_4030_74438357010",
+      "MPN": "74438357010",
+      "Value": "1uH"
+    },
+    "L3": {
+      "Footprint": "AQROOT_Beta:Coilcraft_XFL4020",
+      "MPN": "XFL4020-472MEC",
+      "Value": "4.7uH"
+    },
+    "L4": {
+      "Footprint": "AQROOT_Beta:Wurth_WE-MAPI_4030_74438357010",
+      "MPN": "74438357010",
+      "Value": "1uH"
+    },
+    "MK1": {
+      "Footprint": "AQROOT_Beta:PUI_DMM-4026-B-I2S_4.0x3.0mm",
+      "MPN": "DMM-4026-B-I2S-R",
+      "Value": "DMM-4026-B-I2S"
+    },
+    "Q1": {
+      "Footprint": "Package_TO_SOT_SMD:SOT-23",
+      "MPN": "AO3400A",
+      "Value": "AO3400A"
+    },
+    "Q11": {
+      "Footprint": "Package_TO_SOT_SMD:SOT-23",
+      "MPN": "SQ2364EES-T1_BE3",
+      "Value": "SQ2364EES-T1_BE3"
+    },
+    "Q2": {
+      "Footprint": "Package_SO:SOIC-8_3.9x4.9mm_P1.27mm",
+      "MPN": "NTMD4820NR2G",
+      "Value": "NTMD4820N"
+    },
+    "Q3": {
+      "Footprint": "Package_SO:SOIC-8_3.9x4.9mm_P1.27mm",
+      "MPN": "NTMD4820NR2G",
+      "Value": "NTMD4820N"
+    },
+    "SW1": {
+      "Footprint": "Button_Switch_SMD:SW_SPST_PTS645Sx43SMTR92",
+      "MPN": "PTS645SM43SMTR92LFS",
+      "Value": "BOOT"
+    },
+    "SW9": {
+      "Footprint": "Button_Switch_SMD:SW_SPDT_CK_JS102011SAQN",
+      "MPN": "JS102011SAQN",
+      "Value": "SW_SPDT"
+    },
+    "U1": {
+      "Footprint": "RF_Module:ESP32-S3-WROOM-1",
+      "MPN": "ESP32-S3-WROOM-1-N16R8",
+      "Value": "ESP32-S3-WROOM-1"
+    },
+    "U10": {
+      "Footprint": "Package_TO_SOT_SMD:SOT-23-6",
+      "MPN": "USBLC6-2SC6",
+      "Value": "USBLC6-2SC6"
+    },
+    "U11": {
+      "Footprint": "Package_DFN_QFN:Texas_DLH0010A_WSON-10-1EP_2.2x2mm_P0.4mm_EP0.9x1.5mm",
+      "MPN": "BQ25185DLHR",
+      "Value": "BQ25185"
+    },
+    "U12": {
+      "Footprint": "AQROOT_Beta:TI_TPS63020_DSJ",
+      "MPN": "TPS63020DSJR",
+      "Value": "TPS63020"
+    },
+    "U13": {
+      "Footprint": "Package_TO_SOT_SMD:SOT-563",
+      "MPN": "TPS61023DRLR",
+      "Value": "TPS61023"
+    },
+    "U14": {
+      "Footprint": "AQROOT_Beta:MAX17048_T822",
+      "MPN": "MAX17048G+T10",
+      "Value": "MAX17048"
+    },
+    "U16": {
+      "Footprint": "Package_SO:VSSOP-8_3x3mm_P0.65mm",
+      "MPN": "TCA4307DGKR",
+      "Value": "TCA4307DGKR"
+    },
+    "U17": {
+      "Footprint": "Package_TO_SOT_SMD:SOT-353_SC-70-5",
+      "MPN": "TPS61169DCKR",
+      "Value": "TPS61169DCKR"
+    },
+    "U18": {
+      "Footprint": "Package_SO:MSOP-10_3x3mm_P0.5mm",
+      "MPN": "LTC4368IMS-1#TRPBF",
+      "Value": "LTC4368-1"
+    },
+    "U2": {
+      "Footprint": "Package_SO:TSSOP-24_4.4x7.8mm_P0.65mm",
+      "MPN": "PCAL9535APW,118",
+      "Value": "PCAL9535APW"
+    },
+    "U20": {
+      "Footprint": "Package_TO_SOT_SMD:SOT-23-6",
+      "MPN": "TPS22950CQDDCRQ1",
+      "Value": "TPS22950-Q1"
+    },
+    "U21": {
+      "Footprint": "Package_TO_SOT_SMD:SOT-563",
+      "MPN": "TPS61023DRLR",
+      "Value": "TPS61023"
+    },
+    "U22": {
+      "Footprint": "Package_TO_SOT_SMD:SOT-23-6",
+      "MPN": "TPS22950CQDDCRQ1",
+      "Value": "TPS22950-Q1"
+    },
+    "U3": {
+      "Footprint": "Package_SO:TSSOP-24_4.4x7.8mm_P0.65mm",
+      "MPN": "PCAL9535APW,118",
+      "Value": "PCAL9535APW"
+    },
+    "U4": {
+      "Footprint": "AQROOT_Beta:Bosch_LGA-14_2.5x3.0mm_P0.5mm_BMI270",
+      "MPN": "BMI270",
+      "Value": "BMI270"
+    },
+    "U5": {
+      "Footprint": "Package_DFN_QFN:TQFN-16-1EP_3x3mm_P0.5mm_EP1.23x1.23mm",
+      "MPN": "MAX98357AETE+T",
+      "Value": "MAX98357A"
+    },
+    "U7": {
+      "Footprint": "AQROOT_Beta:Ebyte_E07-400M10S",
+      "MPN": "E07-400M10S",
+      "Value": "E07-400M10S"
+    },
+    "U8": {
+      "Footprint": "AQROOT_Beta:Ebyte_E22-900M22S",
+      "MPN": "E22-900M22S",
+      "Value": "E22-900M22S"
+    },
+    "U9": {
+      "Footprint": "AQROOT_Beta:ST25R3916_AQET",
+      "MPN": "ST25R3916-AQET",
+      "Value": "ST25R3916-AQET"
+    },
+    "Y1": {
+      "Footprint": "Crystal:Crystal_SMD_3225-4Pin_3.2x2.5mm",
+      "MPN": "TXM27.12M0004322DBBDO00T",
+      "Value": "27.12MHz 10pF 3225-4P"
+    }
+  },
+  "schema": 1,
+  "source": "current authoritative schematic/PCB instance properties, D-781",
+  "why": "FAB12b.  The references whose PACKAGE IDENTITY is load-bearing: every connector, every converter, every radio, the charger, the fuel gauge, the microphone, the protection FETs and the crystal.  Pinned here so a later regeneration cannot silently change one, which is the defect D-750 found on J5: D-237 moved the footprint and the datasheet URL to the 1x24 SSQ-124-02-G-S-RA and left the MPN, the LCSC code and the description on the superseded 2x12 BCS-112-S-D-HE, and every release BOM carried the wrong purchasing identity for eight months of decisions.  A pin is a REGRESSION instrument and cannot find an identity that was already wrong when it was written -- FAB12a, which reads the row's own words against the footprint's own pads, is the one that finds those. D-765: U22 was pinned and U20 -- THE OTHER HALF OF THE SAME ONE-MPN ACCESSORY PAIR -- was not, so a divergence between the two accessory limiters could not be seen here at all.  Both are pinned now, on the TPS22950-Q1 that replaced the TPS22950C.  D-766 REPINNED Q11 AO3400A -> AO3422 and NOTHING ELSE: the backlight true-off disconnect's drain reaches the 39 V this board's own .kicad_dru publishes for LED_BOOST under TPS61169 open-LED protection, and the AO3400A is a 30 V part.  SAME SOT-23 footprint, SAME 1=G/2=S/3=D pinout, so the Footprint field is unchanged -- which is exactly why this pin has to carry Value and MPN as well.  Q1, the IR driver, KEEPS the AO3400A: its drain never leaves the 5 V domain. D-780 repins Q11 to SQ2364EES-T1_BE3. D-781 moves J4 from purchased identity to an explicitly pinned board-only manual solder land; historical D-750 evidence remains untouched."
+}

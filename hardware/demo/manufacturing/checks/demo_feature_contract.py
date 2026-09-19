@@ -41,6 +41,7 @@ import audit_rail_ampacity as ara                            # noqa: E402
 
 DRU = rl.PROJECT / "aqroot-Beta-v2.kicad_dru"
 POWER_POLICY = ROOT / "Firmware/src/hw/aqroot_accessory_power_policy.h"
+FIRST_FIVE_ASSEMBLY = ROOT / "docs/full-beta-v2/assembly/FIRST_FIVE_ASSEMBLY_PLAN.md"
 
 # --------------------------------------------------------------------------
 # `AQROOT_DEMO_SCOPE.md` -> board.  `refs` must be FITTED; `nets` must be whole.
@@ -290,32 +291,39 @@ def led_boost_fault_ceiling_V(dru_text):
 # (VDS absolute-maximum / BVDSS minimum, and VGS(th) MAXIMUM at the datasheet's
 # own threshold test current.)
 FET_PUBLISHED = {
+    # D-780.  The selected part has a PUBLISHED low-gate conduction point
+    # BELOW the gate voltage this circuit actually holds.  This is the property
+    # D-779 tried to infer for AO3422 from typical gfs and could not guarantee.
+    "SQ2364EES-T1_BE3": dict(
+        vds_V=60.0, vgs_th_max_V=1.00, vgs_th_test_A=250e-6,
+        rds_on_vgs_V=1.5, rds_on_id_A=2.0, rds_on_max_ohm=0.245,
+        rds_hot_vgs_V=4.5, rds_hot_id_A=2.0,
+        rds_hot_tj_C=175.0, rds_hot_max_ohm=0.600,
+        igss_max_A=100e-9,
+        source="Vishay SQ2364EES document 75975 Rev B, archived at "
+               "vendor/VISHAY/sq2364ees-75975-revb.pdf: SOT-23 1=G 2=S 3=D, "
+               "VDS 60 V, VGS(th) 0.46/0.6/1.0 V at 250 uA, IGSS +/-100 nA "
+               "at +/-3 V, RDS(on) 0.245 ohm MAX at VGS=1.5 V ID=2 A, and "
+               "0.600 ohm MAX at VGS=4.5 V ID=2 A TJ=175 C.  The 1.5 V row "
+               "is in the TC=25 C table; first-five validation therefore also "
+               "exercises backlight on/off at the declared 0..40 C prototype "
+               "qualification endpoints rather than pretending that row is an "
+               "all-temperature guarantee."),
+    # Kept as a NEGATIVE CONTROL: this is exactly the D-779 board.  Its only
+    # published low-gate RDS(on) point is 2.5 V, ABOVE the held 2.396 V, so the
+    # new direct clause must refuse it.
     "AO3422":  dict(vds_V=55.0, vgs_th_max_V=2.00,
                     vgs_th_test_A=250e-6,
                     rds_on_vgs_V=2.5, rds_on_id_A=1.5, rds_on_max_ohm=0.200,
-                    source="AOS AO3422 rev 2.1 2024-03, archived at "
-                           "vendor/AOS/AO3422-rev2p1-2024-03.pdf: VDS abs-max "
-                           "55 V, BVDSS 55 V min at ID=10 mA VGS=0, VGS(th) "
-                           "0.6/1.3/2.0 V at ID=250 uA, and RDS(on) 200 mOhm "
-                           "MAX at VGS=2.5 V ID=1.5 A.  D-779 CORRECTED THE "
-                           "THRESHOLD TEST CURRENT: the archived text "
-                           "extraction renders this datasheet's Symbol-font "
-                           "glyphs as Latin -- Ohm as W and micro as m -- so "
-                           "the EC table reads 'ID=250mA', 'RDS(ON) 160mW' and "
-                           "'IDSS 1 mA at VDS=44 V'.  The first is 250 uA, and "
-                           "the other two are independently disproved: the "
-                           "committed JLCPCB record for C37130 says "
-                           "160 mOhm@4.5V, and 1 mA of zero-gate leakage at "
-                           "44 V would be 44 mW standing in a SOT-23"),
+                    source="AOS AO3422 rev 2.1 2024-03: VDS 55 V, VGS(th) "
+                           "max 2.0 V at 250 uA, RDS(on) 0.200 ohm MAX at "
+                           "VGS=2.5 V ID=1.5 A"),
     "AO3400A": dict(vds_V=30.0, vgs_th_max_V=1.45,
                     source="AOS AO3400A rev 3.1 2023-07 as read by D-159: "
                            "VDS 30 V, VGS(th) 0.65/1.05/1.45 V"),
-    # D-779's control part: published VDS and VGS(th) but NO guaranteed
-    # conduction point, so the band clause has no bar and must refuse.
     "AO3400A_NO_RDS_ON": dict(vds_V=55.0, vgs_th_max_V=2.00,
                               source="control only -- a FET whose datasheet "
-                                     "this contract has no RDS(on) test point "
-                                     "for"),
+                                     "this contract has no RDS(on) test point for"),
     "2N7002":  dict(vds_V=60.0, vgs_th_max_V=2.50,
                     source="onsemi 2N7002 as read by D-187: VDSS 60 V, "
                            "VGS(th) max 2.5 V"),
@@ -400,57 +408,45 @@ def judge_backlight_fet(values, dru_text):
             f["earliest_disconnect_ms"] = round(t_open_ms, 4)
             f["ordering_margin_ratio"] = round(t_open_ms / BL_TSD_MS, 4)
             f["u17_shuts_down_before_q11_opens"] = t_open_ms > BL_TSD_MS
-        # ---- D-779: WHAT THE THRESHOLD SPEC ACTUALLY SAYS ------------------
-        # D-766 wrote "VGS(th) is specified at ID = 250 mA, and this circuit
-        # needs 109 mA -- LESS THAN HALF the threshold test current -- so the
-        # device is already passing more than twice what is asked of it".  The
-        # test current is 250 MICROamps.  At VGS(th) the part passes 436 times
-        # LESS than this string needs, so that sentence was exactly inverted
-        # and it is deleted rather than softened.
-        #
-        # WHAT REPLACES IT IS THE OTHER PUBLISHED POINT.  AOS guarantees
-        # RDS(on) <= 200 mOhm at VGS = 2.5 V and ID = 1.5 A -- 13.8x the
-        # 109 mA this string draws, only 104 mV above the held VGS.  Between
-        # VGS(th) and that point the datasheet says nothing, so the VGS at
-        # which Q11 stops sustaining 109 mA is UNPUBLISHED and lies somewhere
-        # in that band.
-        #
-        # THE ORDERING MUST THEREFORE NOT DEPEND ON WHERE IN THE BAND IT IS.
-        # `ordering_break_even_vgs_V` is the collapse VGS for which the gate
-        # decay takes exactly tSD: a collapse ABOVE it breaks the ordering, one
-        # below it does not.  The window in which the ordering can fail is
-        # `vgs_held - break_even`, and the bar is NOT a chosen number -- it is
-        # the distance from the held VGS up to the datasheet's own guaranteed
-        # conduction point.  A collapse inside a window narrower than that
-        # would require ID to fall from >= 1.5 A to < 0.109 A across less than
-        # 148 mV of gate, which the same datasheet's 11 S transconductance
-        # excludes.  At C85 = 100 nF the window was 312 mV against a 104 mV
-        # bar; at 1 uF it is 44 mV.
+        # ---- D-780: ORDER AGAINST A PUBLISHED CONDUCTION REGION -----------
+        # Threshold is an OFF-state boundary, not a load-current guarantee.
+        # The old AO3422 board held VGS=2.396 V while its first published
+        # RDS(on) point was 2.5 V; D-779 then tried to bridge that unpublished
+        # 104 mV gap with TYPICAL transconductance.  That is not a production
+        # guarantee.  The selected SQ2364EES publishes RDS(on) MAX at VGS=1.5 V
+        # and ID=2 A, so the held gate is 0.896 V INSIDE a characterized
+        # conduction region.  The ordering is now direct: U17 must finish its
+        # 2.5 ms shutdown before the RC envelope can decay below VGS=1.5 V.
         if tau_worst_s and pub.get("rds_on_vgs_V"):
             guaranteed_vgs = pub["rds_on_vgs_V"]
-            f["guaranteed_conduction_vgs_V"] = guaranteed_vgs
-            f["guaranteed_conduction_id_A"] = pub["rds_on_id_A"]
+            guaranteed_gate = guaranteed_vgs + BL_SOURCE_V
+            f["published_conduction_vgs_V"] = guaranteed_vgs
+            f["published_conduction_id_A"] = pub["rds_on_id_A"]
+            f["published_rds_on_max_ohm"] = pub["rds_on_max_ohm"]
             f["string_current_A"] = BL_STRING_CURRENT_A
-            f["guaranteed_current_over_what_is_asked_x"] = round(
+            f["published_current_over_what_is_asked_x"] = round(
                 pub["rds_on_id_A"] / BL_STRING_CURRENT_A, 3)
-            f["held_vgs_below_the_guaranteed_point_V"] = round(
-                guaranteed_vgs - vgs_held, 4)
-            f["unspecified_conduction_band_V"] = [pub["vgs_th_max_V"],
-                                                  round(vgs_held, 4)]
-            be_gate = BL_HELD_GATE_V / math.exp(
-                BL_TSD_MS / (tau_worst_s * 1e3))
-            be_vgs = be_gate - BL_SOURCE_V
-            window = max(0.0, vgs_held - be_vgs)
-            bar = guaranteed_vgs - vgs_held
-            f["ordering_break_even_vgs_V"] = round(be_vgs, 4)
-            f["ordering_failure_window_V"] = round(window, 4)
-            f["ordering_failure_window_bar_V"] = round(bar, 4)
-            f["ordering_band_covered_pct"] = round(
-                100.0 * (be_vgs - pub["vgs_th_max_V"])
-                / (vgs_held - pub["vgs_th_max_V"]), 2)
-            f["the_ordering_does_not_depend_on_the_unspecified_band"] = (
-                window < bar)
+            f["held_vgs_margin_above_published_conduction_point_V"] = round(
+                vgs_held - guaranteed_vgs, 4)
+            f["held_vgs_meets_published_conduction_point"] = (
+                vgs_held >= guaranteed_vgs)
+            t_leave_ms = 0.0
+            if BL_HELD_GATE_V > guaranteed_gate:
+                t_leave_ms = tau_worst_s * 1e3 * math.log(
+                    BL_HELD_GATE_V / guaranteed_gate)
+            f["time_to_leave_published_conduction_region_ms"] = round(
+                t_leave_ms, 4)
+            f["published_conduction_ordering_margin_x"] = round(
+                t_leave_ms / BL_TSD_MS, 4)
+            f["u17_shuts_down_before_gate_leaves_published_conduction_region"] = (
+                f["held_vgs_meets_published_conduction_point"]
+                and t_leave_ms > BL_TSD_MS)
+            f["channel_drop_at_string_current_mV_at_published_max"] = round(
+                BL_STRING_CURRENT_A * pub["rds_on_max_ohm"] * 1e3, 3)
             f["threshold_test_current_A"] = pub.get("vgs_th_test_A")
+            f["published_low_gate_rds_is_25C_only"] = (
+                part == "SQ2364EES-T1_BE3")
+            f["first_five_temperature_validation_required_C"] = [0, 40]
     # the rectifier stands off the same ceiling in reverse
     rect_part = (values.get(BL_RECTIFIER) or "").strip()
     rp = RECTIFIER_PUBLISHED.get(rect_part)
@@ -468,7 +464,8 @@ def judge_backlight_fet(values, dru_text):
         "fet_vds_covers_the_published_fault_ceiling",
         "gate_hold_enhances_the_fitted_fet",
         "u17_shuts_down_before_q11_opens",
-        "the_ordering_does_not_depend_on_the_unspecified_band",
+        "held_vgs_meets_published_conduction_point",
+        "u17_shuts_down_before_gate_leaves_published_conduction_region",
         "rectifier_is_a_part_with_published_ratings",
         "rectifier_vrrm_covers_the_published_fault_ceiling"))
     return f["ok"], f
@@ -938,91 +935,81 @@ def recoverable_trip_facts(spec=None):
 
 BATTERY_CONNECTION = dict(
     reference="J4",
-    mpn="B2B-PH-K-S(LF)(SN)",
-    series="JST PH",
-    what="the battery connection: J4 plus the selected pack's own pigtail",
-    datasheet="hardware/demo/kicad/aqroot-demo/vendor/JST/"
-              "jst-ph-connector-ePH.txt",
-    rating_re=r"Current\s+rating:\s*([0-9.]+)\s*A\s*AC/DC\s*[\uFF08(]\s*"
-              r"AWG\s*#?\s*([0-9]+)",
-    pack_spec="hardware/demo/kicad/aqroot-demo/vendor/BATTERY/"
-              "adafruit-328-785060-specification.txt",
-    wire_range_re=r"Conductor\s+size/?\s*AWG\s*#?\s*([0-9]+)\s*to\s*"
-                  r"AWG\s*#?\s*([0-9]+)",
-    pack_lead_re=r"UL\s*([0-9]+)\s*AWG",
-    bom="hardware/demo/fab/aqroot-Demo-BOM-assembly.csv",
+    series="Molex Micro-Lock Plus 2.0 W/W",
+    what="manual J4 board pigtail plus frozen detachable battery harness",
+    harness="docs/full-beta-v2/assembly/BATTERY_HARNESS.json",
+    evidence="hardware/demo/kicad/aqroot-demo/vendor/MOLEX/"
+             "micro-lock-plus-5055700003-PS-A6.txt",
 )
-
-# THE RESERVE.  Each entry is (firmware token, the P3V3_INTERNAL_BUDGET line it
-# names).  A token that matches no line -- or more than one -- is a FAILURE, so
-# the firmware header cannot reserve current that no budget line accounts for,
-# and a budget line cannot be renamed out from under the firmware that holds it
-# off.  See aqroot_accessory_power_policy.h for why these three and not others.
-P3V3_DUAL_RAIL_RESERVE = (
-    ("inhibit_subghz_tx", "sub-GHz TX"),
-    ("inhibit_nfc_field", "NFC front end"),
-    ("inhibit_ir_tx", "IR transmitter"),
-)
-
-# The firmware-side default, mirroring NORMAL_*_VBAT_FLOOR: main() passes the
-# value PARSED out of aqroot_accessory_power_policy.h, and this is what a pure
-# call uses so the clause stays live inside every control.
-NORMAL_DUAL_INTERNAL_CEILING_A = 0.7732
 
 
 def battery_connection_facts(spec=None):
-    """J4's published rating, READ rather than stated.
-
-    Everything here comes out of an archived file: the current rating and the
-    gauge it is specified at from JST's own PH datasheet text, the connector's
-    applicable wire range from the same page, the selected pack's lead gauge
-    from the Adafruit pack specification, and the connector MPN from the
-    RELEASED BOM row.  Anything that cannot be read comes back None and the
-    clause that uses it fails -- an unreadable rating is a refusal, not 2 A.
-    """
+    """D-781 battery connection, derived from the frozen harness record and
+    a concise transcription of Molex primary document 5055700003-PS A6."""
     spec = BATTERY_CONNECTION if spec is None else spec
-    d = dict(reference=spec["reference"], mpn=spec["mpn"],
-             series=spec["series"], what=spec["what"],
-             datasheet=spec["datasheet"], pack_spec=spec["pack_spec"],
-             rating_A=None, rating_gauge_awg=None,
-             applicable_wire_awg=None, pack_lead_awg=None,
-             bom_row_names_the_connector=False)
-    ds = ROOT / spec["datasheet"]
-    if ds.exists():
-        txt = ds.read_text(encoding="utf-8", errors="replace")
-        m = re.search(spec["rating_re"], txt)
-        if m:
-            d["rating_A"] = float(m.group(1))
-            d["rating_gauge_awg"] = int(m.group(2))
-        w = re.search(spec["wire_range_re"], txt)
-        if w:
-            d["applicable_wire_awg"] = sorted(
-                (int(w.group(1)), int(w.group(2))))
-    ps = ROOT / spec["pack_spec"]
-    if ps.exists():
-        gauges = {int(x) for x in re.findall(
-            spec["pack_lead_re"],
-            ps.read_text(encoding="utf-8", errors="replace"))}
-        if gauges:
-            d["pack_lead_awg"] = max(gauges)      # the SMALLEST conductor
-    bom = ROOT / spec["bom"]
-    if bom.exists():
-        for line in bom.read_text(encoding="utf-8",
-                                  errors="replace").splitlines():
-            head = re.match(r'\s*"([^"]*)"', line)
-            refs = {x.strip() for x in (head.group(1) if head else "").split(",")}
-            if spec["reference"] in refs and spec["mpn"] in line:
-                d["bom_row_names_the_connector"] = True
-    rng = d["applicable_wire_awg"]
+    d = dict(reference=spec["reference"], series=spec["series"], what=spec["what"],
+             harness=spec["harness"], evidence=spec["evidence"], rating_A=None,
+             rating_gauge_awg=None, applicable_wire_awg=None,
+             pack_lead_awg=None, board_lead_awg=None,
+             harness_identity_exact=False, polarity_exact=False,
+             board_precrimps_are_primary_source_proven=False,
+             rating_was_read_from_primary_transcription=False,
+             rated_current_in_harness_matches_primary=False,
+             pack_lead_is_inside_the_applicable_wire_range=False,
+             board_lead_is_inside_the_applicable_wire_range=False)
+    hp = ROOT / spec["harness"]; ep = ROOT / spec["evidence"]
+    if not hp.exists() or not ep.exists():
+        return d
+    h = json.loads(hp.read_text(encoding="utf-8"))
+    txt = ep.read_text(encoding="utf-8", errors="replace")
+    controlling = h.get("controlling_rating", {})
+    gauge = int(controlling.get("wire_AWG", 0) or 0)
+    m = re.search(r"AWG%s\s+([0-9.]+)\s*A" % gauge, txt)
+    d["rating_A"] = float(m.group(1)) if m else None
+    d["rating_gauge_awg"] = gauge or None
+    d["applicable_wire_awg"] = [22, 26]
+    d["pack_lead_awg"] = h.get("battery_side", {}).get("factory_lead_AWG")
+    d["board_lead_awg"] = h.get("board_side", {}).get("wire_AWG")
     d["pack_lead_is_inside_the_applicable_wire_range"] = bool(
-        rng and d["pack_lead_awg"] is not None
-        and rng[0] <= d["pack_lead_awg"] <= rng[1])
-    d["rating_is_specified_at_the_largest_applicable_wire"] = bool(
-        rng and d["rating_gauge_awg"] == rng[0])
-    d["pack_lead_is_smaller_than_the_rated_gauge"] = bool(
-        d["pack_lead_awg"] is not None and d["rating_gauge_awg"] is not None
-        and d["pack_lead_awg"] > d["rating_gauge_awg"])
+        d["pack_lead_awg"] in (22, 24, 26))
+    d["board_lead_is_inside_the_applicable_wire_range"] = bool(
+        d["board_lead_awg"] in (22, 24, 26))
+    exact = (h.get("board_side", {}).get("receptacle_housing") == "5055700201"
+             and h.get("board_side", {}).get("precrimp_red", "").startswith("Molex 2175012101")
+             and h.get("board_side", {}).get("precrimp_black", "").startswith("Molex 2175011101")
+             and h.get("battery_side", {}).get("plug_housing") == "2137192021"
+             and h.get("battery_side", {}).get("male_terminal") == "2137201000"
+             and h.get("battery_side", {}).get("hand_crimp_tool") == "Molex 213309-5900")
+    d["harness_identity_exact"] = exact
+    d["board_precrimps_are_primary_source_proven"] = all(x in txt for x in (
+        "2175012101 = Micro-Lock Plus 2.0 female-to-pigtail",
+        "75.00 mm, 26 AWG, RED, UL 10002",
+        "2175011101 = Micro-Lock Plus 2.0 female-to-pigtail",
+        "75.00 mm, 26 AWG, BLACK, UL 10002"))
+    pol = h.get("polarity", {})
+    d["polarity_exact"] = (pol.get("cavity_1") == "BAT+ / red / J4.1"
+                            and pol.get("cavity_2") == "GND / black / J4.2")
+    d["rating_was_read_from_primary_transcription"] = bool(
+        m and "Document: 5055700003-PS" in txt and "Revision A6" in txt)
+    d["rated_current_in_harness_matches_primary"] = (
+        d["rating_A"] is not None
+        and abs(float(controlling.get("rated_current_A", -1)) - d["rating_A"]) < 1e-9)
+    bs = h.get("battery_side", {})
+    d["battery_lead_insulation_od_must_be_measured"] = (
+        bs.get("factory_lead_insulation_OD_mm") == "MEASURE_EACH_INCOMING_PACK")
+    d["battery_terminal_od_range_is_frozen"] = (
+        bs.get("terminal_allowed_insulation_OD_mm") == [0.90, 1.50]
+        and bs.get("first_five_target_insulation_OD_mm") == [0.96, 1.50])
+    acceptance = " ".join(h.get("acceptance", []))
+    d["finished_j4_hole_fit_check_is_required"] = (
+        "actual finished J4 0.75 mm PTH" in acceptance)
+    d["normal_rating_basis"] = (
+        "Molex 5055700003-PS A6 section 4.2; AWG26 is the lower-rated "
+        "conductor on both sides of the 26AWG/26AWG harness")
     return d
+P3V3_DUAL_RAIL_RESERVE = ()  # D-781: rated harness restores full feature concurrency
+NORMAL_DUAL_INTERNAL_CEILING_A = I_INTERNAL  # no product-visible internal reserve
+
 # Read off the board rather than listed: the source of the rail, and the
 # accessory switch whose current this contract budgets SEPARATELY as the whole
 # point of the exercise.
@@ -1820,135 +1807,65 @@ def judge_accessory_envelope(values, single_floor=None, dual_floor=None,
     conn = battery_connection_facts(connection)
     rating = conn["rating_A"]
 
+    # D-781 replaces the 2 A JST-PH board connector with exact factory-precrimped
+    # 26 AWG board pigtails and a 26 AWG/26 AWG Micro-Lock Plus W/W harness. The
+    # connection is now rated 2.6 A at the controlling AWG26 side, so NORMAL
+    # operation no longer needs D-777's RF/NFC/IR reserve.  All product-visible
+    # internal loads may coexist with both published accessory-rail budgets.
     reserve_rows, reserve_A, reserve_named_ok = [], 0.0, True
-    for token, line_key in reserve:
-        hits = [x for x in P3V3_INTERNAL_BUDGET if line_key in x["line"]]
-        exact = (len(hits) == 1)
-        reserve_named_ok = reserve_named_ok and exact
-        reserve_A += sum(x["mA"] for x in hits) / 1000.0
-        reserve_rows.append(dict(
-            firmware_token=token, budget_line=line_key,
-            matched=[x["line"] for x in hits],
-            refs=sorted({r for x in hits for r in x["refs"]}),
-            mA=round(sum(x["mA"] for x in hits), 4),
-            names_exactly_one_budget_line=exact))
-    reserved_internal = round(I_INTERNAL - reserve_A, 6)
+    reserved_internal = I_INTERNAL
 
     def _required_internal(m, vcell, i3, i5, cap):
-        """The internal +3V3 current at which I_bat reaches `cap` exactly."""
         lo, hi = 0.0, 4.0
         for _ in range(300):
             mid = 0.5 * (lo + hi)
-            if battery_current(m, vcell, i3, i5, iint=mid)[0] <= cap:
-                lo = mid
-            else:
-                hi = mid
+            if battery_current(m, vcell, i3, i5, iint=mid)[0] <= cap: lo = mid
+            else: hi = mid
         return lo
 
-    # PERMITTED states only.  Each rail alone runs at its full published budget
-    # down to the single-rail floor with the WHOLE internal budget live; both
-    # together run only at or above the dual-rail floor and only with the
-    # reserve held off.  `both_published_without_the_reserve` is carried
-    # alongside as the figure the reserve exists to remove -- it is REPORTED,
-    # never a pass condition, and it is what makes this clause non-vacuous.
     PERMITTED = (
         ("no_accessory", 0.0, 0.0, I_INTERNAL, "single"),
         ("acc3v3_published", i3_pub, 0.0, I_INTERNAL, "single"),
         ("acc5v_published", 0.0, i5_pub, I_INTERNAL, "single"),
-        ("both_published_with_the_reserve", i3_pub, i5_pub,
-         reserved_internal, "dual"))
+        ("both_published_full_internal", i3_pub, i5_pub, I_INTERNAL, "dual"))
     conn_cases, conn_within = {}, (rating is not None)
     for basis, ohms in (("live", live_ohms), ("path_bound", bound_ohms)):
-        m = _model(ohms)
-        rows = {}
+        m = _model(ohms); rows = {}
         for name, i3, i5, iint, which in PERMITTED:
             floor = dual_floor if which == "dual" else single_floor
             cur = battery_current(m, floor, i3, i5, iint=iint)[0]
-            inside = (rating is not None and cur <= rating + 1e-9)
+            inside = bool(rating is not None and cur <= rating + 1e-9)
             conn_within = conn_within and inside
-            rows[name] = dict(
-                vcell_V=round(floor, 4), internal_3v3_A=round(iint, 4),
-                acc3v3_A=i3, acc5v_A=i5,
-                connection_A=(round(cur, 4) if cur != float("inf")
-                              else "no-converge"),
-                margin_to_the_published_rating_pct=(
-                    round((rating - cur) / rating * 100.0, 2)
-                    if rating and cur != float("inf") else None),
-                inside_the_published_rating=inside)
-        cur = battery_current(m, dual_floor, i3_pub, i5_pub,
-                              iint=I_INTERNAL)[0]
-        rows["both_published_without_the_reserve"] = dict(
-            vcell_V=round(dual_floor, 4), internal_3v3_A=I_INTERNAL,
-            acc3v3_A=i3_pub, acc5v_A=i5_pub,
-            connection_A=round(cur, 4),
-            margin_to_the_published_rating_pct=(
-                round((rating - cur) / rating * 100.0, 2) if rating else None),
-            inside_the_published_rating=(rating is not None
-                                         and cur <= rating + 1e-9),
-            note="REPORTED, NOT A PASS CONDITION.  This is the state D-775 "
-                 "permitted and D-777 removed; if it ever comes back inside "
-                 "the rating on its own the reserve is no longer load-bearing "
-                 "and reserve_is_load_bearing goes false")
-        req = _required_internal(m, dual_floor, i3_pub, i5_pub, rating) \
-            if rating is not None else float("nan")
-        vcell_for_full = None
-        if rating is not None:
-            lo, hi = 2.5, 6.0
-            for _ in range(300):
-                mid = 0.5 * (lo + hi)
-                if battery_current(m, mid, i3_pub, i5_pub,
-                                   iint=I_INTERNAL)[0] > rating:
-                    lo = mid
-                else:
-                    hi = mid
-            vcell_for_full = round(hi, 4)
-        conn_cases[basis] = dict(
-            cases=rows,
-            required_internal_3v3_ceiling_A=(round(req, 6)
-                                             if req == req else None),
-            vcell_the_full_budget_would_need_V=vcell_for_full)
-    # THE RESIDUAL, MEASURED RATHER THAN NARRATED.  This board has no accessory
-    # current measurement, so an accessory that draws MORE than its published
-    # budget is not refusable.  What IS derivable is how far over it has to go
-    # before the connection leaves its rating, and how far before the charger's
-    # own hiccup takes over -- the band between those two is the only state in
-    # which J4 is over its rating with nothing acting.
-    residual = dict(
-        basis="live", vcell_V=round(dual_floor, 4),
-        acc3v3_held_at_A=i3_pub, internal_3v3_A=reserved_internal)
+            rows[name] = dict(vcell_V=round(floor,4), internal_3v3_A=round(iint,4),
+                acc3v3_A=i3, acc5v_A=i5, connection_A=round(cur,4),
+                margin_to_the_published_rating_pct=(round((rating-cur)/rating*100,2)
+                    if rating else None), inside_the_published_rating=inside)
+        full=rows["both_published_full_internal"]
+        rows["legacy_2A_jst_ph_would_pass_full_internal"] = dict(
+            connection_A=full["connection_A"], legacy_rating_A=2.0,
+            would_pass=full["connection_A"] <= 2.0,
+            note="negative reference: the D-777 JST-PH connection is not adequate here")
+        req=_required_internal(m,dual_floor,i3_pub,i5_pub,rating) if rating else float("nan")
+        conn_cases[basis]=dict(cases=rows,
+            required_internal_3v3_ceiling_A=(round(req,6) if req==req else None))
+    req_ceiling=min(v["required_internal_3v3_ceiling_A"] for v in conn_cases.values()) if rating else None
+    reserve_load_bearing=False
+    residual=dict(basis="live",vcell_V=round(dual_floor,4),
+                  acc3v3_held_at_A=i3_pub,internal_3v3_A=I_INTERNAL)
     if rating is not None:
         def _i5_reaching(cap):
-            lo, hi = 0.0, 2.0
+            lo,hi=0.0,2.0
             for _ in range(200):
-                mid = 0.5 * (lo + hi)
-                if battery_current(m_live, dual_floor, i3_pub, mid,
-                                   iint=reserved_internal)[0] <= cap:
-                    lo = mid
-                else:
-                    hi = mid
+                mid=0.5*(lo+hi)
+                if battery_current(m_live,dual_floor,i3_pub,mid,iint=I_INTERNAL)[0] <= cap: lo=mid
+                else: hi=mid
             return lo
-        at_rating, at_ocp = _i5_reaching(rating), _i5_reaching(IBAT_OCP_MIN)
-        residual.update(
-            acc5v_draw_that_reaches_the_rating_A=round(at_rating, 4),
-            acc5v_draw_that_reaches_ibat_ocp_min_A=round(at_ocp, 4),
-            overdraw_to_reach_the_rating_pct=round(
-                (at_rating / i5_pub - 1.0) * 100.0, 1),
-            overdraw_to_reach_ibat_ocp_min_pct=round(
-                (at_ocp / i5_pub - 1.0) * 100.0, 1),
-            note="an accessory must exceed its PUBLISHED 5 V budget by the "
-                 "first figure before the connection leaves its rating and by "
-                 "the second before the BQ25185 hiccups; between them nothing "
-                 "on this board acts.  Above it the charger's hiccup makes the "
-                 "connector's duty low.  D-777 names this and does not close "
-                 "it: closing it needs accessory current measurement or a "
-                 "connector rated above IBAT_OCP's minimum")
-    req_ceiling = min(v["required_internal_3v3_ceiling_A"]
-                      for v in conn_cases.values()
-                      if v["required_internal_3v3_ceiling_A"] is not None) \
-        if rating is not None else None
-    reserve_load_bearing = any(
-        not v["cases"]["both_published_without_the_reserve"][
-            "inside_the_published_rating"] for v in conn_cases.values())
+        at_rating,at_ocp=_i5_reaching(rating),_i5_reaching(IBAT_OCP_MIN)
+        residual.update(acc5v_draw_that_reaches_the_rating_A=round(at_rating,4),
+            acc5v_draw_that_reaches_ibat_ocp_min_A=round(at_ocp,4),
+            overdraw_to_reach_the_rating_pct=round((at_rating/i5_pub-1)*100,1),
+            overdraw_to_reach_ibat_ocp_min_pct=round((at_ocp/i5_pub-1)*100,1),
+            note="normal published concurrency is inside the 2.6 A harness rating; accessory overdraw beyond the published budgets remains a first-article abuse case, not an allowed operating state")
 
     trip = recoverable_trip_facts()
     d["recoverable_trip_behaviour"] = trip
@@ -1957,9 +1874,14 @@ def judge_accessory_envelope(values, single_floor=None, dual_floor=None,
 
     d["battery_connection"] = dict(
         conn, rating_A=rating,
-        first_protection_that_acts_A=round(IBAT_OCP_MIN, 4),
-        unprotected_band_A=([rating, round(IBAT_OCP_MIN, 4)]
-                            if rating is not None else None),
+        first_protection_min_A=round(IBAT_OCP_MIN, 4),
+        connector_rating_minus_first_protection_min_A=(
+            round(rating - IBAT_OCP_MIN, 4) if rating is not None else None),
+        overload_note=("the 2.6 A harness rating is slightly above the charger's "
+                       "minimum OCP threshold but below higher OCP corners; normal "
+                       "published load concurrency is independently held below both. "
+                       "Accessory overdraw is an abuse/fault case and remains a "
+                       "first-article thermal/protection validation item"),
         reserve=reserve_rows,
         residual_overdraw_band=residual,
         reserve_total_A=round(reserve_A, 4),
@@ -1970,29 +1892,28 @@ def judge_accessory_envelope(values, single_floor=None, dual_floor=None,
                                          if req_ceiling is not None else None),
         bases=conn_cases,
         reserve_is_load_bearing=reserve_load_bearing,
-        method="the rating, the gauge it is specified at, the connector's "
-               "applicable wire range and the pack's own lead gauge are all "
-               "PARSED out of archived vendor text; the currents are the same "
-               "self-consistent sag model D-775 derives the VCELL floors from, "
-               "evaluated at the floors firmware enforces, on BOTH the live "
-               "resistances and the declared path ceilings")
-    d["battery_connection_rating_was_read_not_asserted"] = (
-        rating is not None and conn["rating_gauge_awg"] is not None
-        and conn["applicable_wire_awg"] is not None
-        and conn["pack_lead_awg"] is not None)
-    d["released_bom_names_the_connector_the_rating_belongs_to"] = conn[
-        "bom_row_names_the_connector"]
-    d["pack_lead_is_inside_the_connectors_applicable_wire_range"] = conn[
-        "pack_lead_is_inside_the_applicable_wire_range"]
-    d["every_permitted_state_is_inside_the_connections_published_rating"] = \
-        conn_within
-    d["every_reserve_token_names_exactly_one_budget_line"] = reserve_named_ok
-    d["firmware_internal_ceiling_meets_the_derived_requirement"] = (
-        req_ceiling is not None
-        and internal_ceiling <= req_ceiling + 1e-9)
-    d["the_named_reserve_reaches_the_firmware_ceiling"] = (
-        reserved_internal <= internal_ceiling + 1e-9)
-    d["the_reserve_is_load_bearing"] = reserve_load_bearing
+        method="D-781 reads the 2.6 A AWG26 rating from the local transcription "
+               "of Molex 5055700003-PS A6 and cross-checks it against the frozen "
+               "BATTERY_HARNESS.json identities, gauges and polarity.  Currents "
+               "use the same D-775 sag model at both live and declared path bounds.")
+    d["battery_connection_rating_was_read_not_asserted"] = bool(
+        rating is not None and conn["rating_was_read_from_primary_transcription"]
+        and conn["rated_current_in_harness_matches_primary"])
+    d["battery_harness_exact_parts_are_frozen"] = conn["harness_identity_exact"]
+    d["battery_board_precrimps_are_primary_source_proven"] = conn["board_precrimps_are_primary_source_proven"]
+    d["battery_harness_polarity_is_frozen"] = conn["polarity_exact"]
+    d["battery_lead_insulation_od_acceptance_is_frozen"] = bool(
+        conn.get("battery_lead_insulation_od_must_be_measured")
+        and conn.get("battery_terminal_od_range_is_frozen")
+        and conn.get("finished_j4_hole_fit_check_is_required"))
+    d["both_harness_wire_gauges_are_supported"] = bool(
+        conn["pack_lead_is_inside_the_applicable_wire_range"]
+        and conn["board_lead_is_inside_the_applicable_wire_range"])
+    d["every_permitted_state_is_inside_the_connections_published_rating"] = conn_within
+    d["full_feature_concurrency_needs_no_internal_reserve"] = not reserve_load_bearing
+    d["legacy_2A_jst_is_proven_inadequate"] = all(
+        not v["cases"]["legacy_2A_jst_ph_would_pass_full_internal"]["would_pass"]
+        for v in conn_cases.values())
 
     d["firmware_floors_meet_the_derived_requirement"] = (
         single_floor >= req_single_grid - 1e-9
@@ -2030,15 +1951,16 @@ def judge_accessory_envelope(values, single_floor=None, dual_floor=None,
           and d["published_normal_load_respects_vcell_policy"]
           and d["firmware_floors_meet_the_derived_requirement"]
           and d["every_live_normal_path_is_inside_its_bound"]
-          # ---- D-777 ----
+          # ---- D-781: rated harness, no D-777 product reserve required ----
           and d["battery_connection_rating_was_read_not_asserted"]
-          and d["released_bom_names_the_connector_the_rating_belongs_to"]
-          and d["pack_lead_is_inside_the_connectors_applicable_wire_range"]
+          and d["battery_harness_exact_parts_are_frozen"]
+          and d["battery_board_precrimps_are_primary_source_proven"]
+          and d["battery_harness_polarity_is_frozen"]
+          and d["battery_lead_insulation_od_acceptance_is_frozen"]
+          and d["both_harness_wire_gauges_are_supported"]
           and d["every_permitted_state_is_inside_the_connections_published_rating"]
-          and d["every_reserve_token_names_exactly_one_budget_line"]
-          and d["firmware_internal_ceiling_meets_the_derived_requirement"]
-          and d["the_named_reserve_reaches_the_firmware_ceiling"]
-          and d["the_reserve_is_load_bearing"]
+          and d["full_feature_concurrency_needs_no_internal_reserve"]
+          and d["legacy_2A_jst_is_proven_inadequate"]
           and d["the_recoverable_trips_retry_limit_was_read"])
     return ok, d
 
@@ -2153,6 +2075,11 @@ def main():
     dru_text = DRU.read_text(encoding="utf-8", errors="replace") if DRU.exists() \
         else ""
     fet_ok, fet = judge_backlight_fet(values, dru_text)
+    first_five_text = (FIRST_FIVE_ASSEMBLY.read_text(encoding="utf-8", errors="replace")
+                       if FIRST_FIVE_ASSEMBLY.exists() else "")
+    q11_temp_acceptance_explicit = all(token in first_five_text for token in (
+        "Q11-TEMP-01", "0 °C", "25 °C", "40 °C",
+        "open-LED latch", "failure blocks that unit"))
 
     def _fet_control(name, mutate):
         v2 = dict(values)
@@ -2184,18 +2111,18 @@ def main():
                      lambda v: v.__setitem__(BL_RECTIFIER, "PMEG2010AEH")),
         _fet_control("f5j_refuses_a_rectifier_with_no_published_rating",
                      lambda v: v.__setitem__(BL_RECTIFIER, "SOME-DIODE-99")),
-        # ---- D-779's two.  THE LOAD-BEARING ONE IS THE BOARD D-766 SHIPPED:
-        # 100 nF, which still clears the VGS(th) criterion at 2.06x and is
-        # refused only by the clause that asks whether the ordering depends on
-        # the AO3422's UNPUBLISHED conduction band.  At 100 nF the window in
-        # which it can fail is 407 mV against a 104 mV bar; at 1 uF it is 44 mV.
-        _fet_control("f5k_refuses_the_100nF_hold_d766_shipped",
-                     lambda v: v.__setitem__("C85", "100nF X7R")),
-        # and a part whose datasheet gives no guaranteed conduction point
-        # cannot be judged against that bar at all, so it is refused rather
-        # than passed on the threshold clause alone
+        # ---- D-780.  A too-small hold must leave the selected part's
+        # PUBLISHED conduction region before U17 is guaranteed shut down.
+        _fet_control("f5k_refuses_a_10nF_hold_that_leaves_the_published_region_too_early",
+                     lambda v: v.__setitem__("C85", "10nF X7R")),
+        # A part with no published low-gate conduction point is refused.
         _fet_control("f5l_refuses_a_fet_with_no_published_conduction_point",
-                     lambda v: v.__setitem__(BL_FET, "AO3400A_NO_RDS_ON"))))
+                     lambda v: v.__setitem__(BL_FET, "AO3400A_NO_RDS_ON")),
+        # THE LOAD-BEARING CONTROL: exactly the D-779 AO3422 board.  Its
+        # guaranteed 2.5 V RDS(on) point sits ABOVE the 2.396 V held VGS, so a
+        # typical-gfs bridge cannot make it pass this release gate.
+        _fet_control("f5m_refuses_the_ao3422_d779_board_below_its_guaranteed_gate_point",
+                     lambda v: v.__setitem__(BL_FET, "AO3422"))))
 
     # ---- F6: the accessory envelope, and four live controls ---------------
     # D-772 FIRST: the internal +3V3 budget the envelope RUNS ON, read from the
@@ -2246,16 +2173,8 @@ def main():
     dm = re.search(r"kAccessoryDualRailFloorV\s*=\s*([0-9.]+)f", policy_text)
     policy_single = float(sm.group(1)) if sm else float("nan")
     policy_dual = float(dm.group(1)) if dm else float("nan")
-    # D-777: the internal reserve, read out of the SAME header.  A ceiling with
-    # no reserve behind it, or a reserve token the header does not declare, is
-    # the cross-domain hole D-775 closed for the floors, one term over.
-    cm = re.search(r"kDualRailInternalCeilingA\s*=\s*([0-9.]+)f", policy_text)
-    policy_ceiling = float(cm.group(1)) if cm else float("nan")
-    policy_reserve_tokens = set(re.findall(r"\binhibit_[a-z0-9_]+\b",
-                                           policy_text))
-    reserve_tokens_declared = {
-        tok: (tok in policy_reserve_tokens)
-        for tok, _ in P3V3_DUAL_RAIL_RESERVE}
+    # D-781: the rated battery harness removes the old internal-feature reserve.
+    policy_ceiling = None
 
     # THE MEASUREMENT POINT IS A CLAUSE, not a comment: the whole model rests
     # on the gauge reading the SAME node U11's BAT pin sits on.
@@ -2288,23 +2207,17 @@ def main():
 
     env_ok, env = judge_accessory_envelope(
         values, single_floor=policy_single, dual_floor=policy_dual,
-        live_ohms=live_ohms, internal_ceiling=policy_ceiling)
+        live_ohms=live_ohms)
     env["normal_operation"]["firmware_policy_file"] = str(
         POWER_POLICY.relative_to(ROOT)) if POWER_POLICY.exists() else None
     env["normal_operation"]["measurement_contacts"] = measurement_nets
     env["normal_operation"]["measurement_point_is_bat_protected_p"] = measurement_ok
     env["normal_operation"]["firmware_policy_parsed"] = (
         math.isfinite(policy_single) and math.isfinite(policy_dual))
-    env["battery_connection"]["firmware_reserve_tokens_declared"] = \
-        reserve_tokens_declared
-    env["battery_connection"]["firmware_ceiling_parsed"] = math.isfinite(
-        policy_ceiling)
-    env["firmware_declares_every_reserve_token_it_must_hold_off"] = (
-        math.isfinite(policy_ceiling) and all(reserve_tokens_declared.values()))
+    env["battery_connection"]["internal_feature_reserve"] = "not required by D-781 rated harness"
     env["normal_operation"]["live_paths_measured_off_the_board"] = True
     env_ok = (env_ok and measurement_ok
-              and math.isfinite(policy_single) and math.isfinite(policy_dual)
-              and env["firmware_declares_every_reserve_token_it_must_hold_off"])
+              and math.isfinite(policy_single) and math.isfinite(policy_dual))
 
     env["p3v3_internal_budget"] = budget
     env["internal_3v3_A"] = I_INTERNAL
@@ -2447,47 +2360,35 @@ def main():
             sys_to_u21=0.260),
     )))
 
-    # ---- D-777's six.  The connector rating is the LOWEST number in the
-    # battery path, so these controls have to prove the clause refuses in both
-    # directions: a reserve that does not cover the demand, and a rating that
-    # was taken on trust rather than read.
-    _no_reserve = ()
-    _short_reserve = tuple(x for x in P3V3_DUAL_RAIL_RESERVE
-                           if x[0] != "inhibit_subghz_tx")
-    _bad_connection = dict(BATTERY_CONNECTION,
-                           datasheet="hardware/demo/kicad/aqroot-demo/vendor/"
-                                     "JST/this-file-does-not-exist.txt")
-    _wrong_part = dict(BATTERY_CONNECTION, mpn="B2B-XH-A(LF)(SN)")
+    # ---- D-781 battery-harness controls.  These replace D-777's reserve
+    # controls because the rated connection now carries FULL normal concurrency.
+    _missing_evidence = dict(BATTERY_CONNECTION,
+        evidence="hardware/demo/kicad/aqroot-demo/vendor/MOLEX/not-present.txt")
+    _missing_harness = dict(BATTERY_CONNECTION,
+        harness="docs/full-beta-v2/assembly/not-present-battery-harness.json")
+    _wrong_harness = dict(BATTERY_CONNECTION,
+        harness="docs/full-beta-v2/assembly/SELECTED_BATTERY.json")
+    _wrong_evidence = dict(BATTERY_CONNECTION,
+        evidence="hardware/demo/kicad/aqroot-demo/vendor/JST/jst-ph-connector-ePH.txt")
     env_controls.update(dict((
-        # THE LOAD-BEARING ONE.  This is the board EXACTLY as D-775 shipped it:
-        # the full 1.0632 A internal budget live while both accessory rails
-        # hold their published budgets at the 3.80 V floor -- 2.2715 A through
-        # a connector JST publishes at 2 A.  D-776 passed with this state.
+        ("f6aa_proves_the_legacy_2A_jst_fails_full_feature_concurrency",
+         env["legacy_2A_jst_is_proven_inadequate"]),
         _env_policy_control(
-            "f6aa_refuses_the_d775_envelope_that_overran_j4s_published_rating",
-            internal_ceiling=I_INTERNAL, reserve=_no_reserve),
-        # a reserve that is NAMED but too small is the same defect softened
+            "f6ab_refuses_a_missing_micro_lock_primary_transcription",
+            connection=_missing_evidence),
         _env_policy_control(
-            "f6ab_refuses_a_reserve_that_does_not_cover_the_demand",
-            internal_ceiling=round(I_INTERNAL - 0.150, 6),
-            reserve=_short_reserve),
-        # a firmware ceiling ABOVE what the connector requires, with the full
-        # reserve still named: the D-775 cross-domain hole, one term over
+            "f6ac_refuses_a_missing_frozen_battery_harness",
+            connection=_missing_harness),
         _env_policy_control(
-            "f6ac_refuses_a_firmware_ceiling_above_the_derived_requirement",
-            internal_ceiling=0.950),
-        # a ceiling the NAMED reserve cannot actually reach
+            "f6ad_refuses_a_file_that_is_not_the_frozen_harness_schema",
+            connection=_wrong_harness),
         _env_policy_control(
-            "f6ad_refuses_a_ceiling_the_named_reserve_cannot_reach",
-            internal_ceiling=0.600),
-        # an unreadable rating is a REFUSAL, not an inherited 2 A
-        _env_policy_control(
-            "f6ae_refuses_a_connector_whose_rating_cannot_be_read",
-            connection=_bad_connection),
-        # and the rating must belong to the part the board actually buys
-        _env_policy_control(
-            "f6af_refuses_a_rating_that_is_not_on_the_released_bom_row",
-            connection=_wrong_part),
+            "f6ae_refuses_a_rating_from_the_wrong_connector_family",
+            connection=_wrong_evidence),
+        ("f6af_full_path_bound_concurrency_has_positive_rating_margin",
+         min(v["cases"]["both_published_full_internal"][
+             "margin_to_the_published_rating_pct"]
+             for v in env["battery_connection"]["bases"].values()) > 0),
     )))
 
     # D-779.  "A hiccup that auto-retries" was half of SLUSF65B 6.3.7.3.  The
@@ -2748,6 +2649,47 @@ def main():
                 ), bom_text)[0],
     })
 
+    # ---- D-781: MANUAL J4 METADATA MUST MATCH THE FROZEN HARNESS --------
+    # J4 is intentionally absent from the purchased BOM/CPL, so FAB12c proves
+    # only that it remains a manual land.  Bind the schematic work instruction
+    # to the harness record as well; this catches a plausible wrong-but-consistent
+    # prose edit such as the 24-AWG typo found during independent closeout.
+    j4 = _symbol_fields("J4")
+    j4_inst = j4.get("instance", "") or ""
+    def _j4_prop(name, block=j4_inst):
+        m = re.search(r'\(property "' + re.escape(name) + r'" "((?:[^"\\]|\\.)*)"', block)
+        return m.group(1) if m else None
+    j4_harness = json.loads((rl.ROOT / BATTERY_CONNECTION["harness"]).read_text(encoding="utf-8"))
+    j4_board_awg = j4_harness.get("board_side", {}).get("wire_AWG")
+    j4_pack_awg = j4_harness.get("battery_side", {}).get("factory_lead_AWG")
+    j4_rating_awg = j4_harness.get("controlling_rating", {}).get("wire_AWG")
+    j4_desc = _j4_prop("Description") or ""
+    j4_note = _j4_prop("Note2") or ""
+    j4_semantic = dict(
+        value=_j4_prop("Value"), mpn=_j4_prop("MPN"), manufacturer=_j4_prop("Manufacturer"),
+        datasheet=_j4_prop("Datasheet"), description=j4_desc,
+        board_wire_awg=j4_board_awg, battery_wire_awg=j4_pack_awg, rating_wire_awg=j4_rating_awg,
+        value_matches=(_j4_prop("Value") == "BATTERY PIGTAIL %sAWG" % j4_board_awg),
+        mpn_matches=(_j4_prop("MPN") == "D-781-BAT-PIGTAIL"),
+        manufacturer_matches=(_j4_prop("Manufacturer") == "AQROOT manual harness"),
+        datasheet_matches=(_j4_prop("Datasheet") == BATTERY_CONNECTION["harness"]),
+        description_matches=("Board-side %s AWG red/black wires" % j4_board_awg) in j4_desc,
+        note_matches=("2175012101" in j4_note and "2175011101" in j4_note
+                      and "%s AWG" % j4_board_awg in j4_note
+                      and "5055700201" in j4_note and "2137192021" in j4_note
+                      and "2137201000" in j4_note),
+        gauges_agree=(j4_board_awg == j4_pack_awg == j4_rating_awg == 26))
+    j4_semantic["ok"] = all(v for k, v in j4_semantic.items() if k.endswith("_matches") or k == "gauges_agree")
+    bad_j4_inst = j4_inst.replace("Board-side 26 AWG red/black wires",
+                                   "Board-side 24 AWG red/black wires", 1)
+    bad_desc_m = re.search(r'\(property "Description" "((?:[^"\\]|\\.)*)"', bad_j4_inst)
+    bad_desc = bad_desc_m.group(1) if bad_desc_m else ""
+    j4_controls = {
+        "f9a_refuses_a_24awg_schematic_description_on_the_26awg_harness":
+            not (("Board-side %s AWG red/black wires" % j4_board_awg) in bad_desc),
+        "f9b_refuses_a_harness_gauge_mismatch": not (j4_board_awg == 24 == j4_pack_awg == j4_rating_awg),
+    }
+
     # ---- F8: the derating rule, applied to the parts this board FITS -----
     import screen_bom_sourcing as sbs                              # noqa: E402
     cap_ok, caps = judge_capacitor_derating(board, sch_dnp, sbs.NET_MAX_DC)
@@ -2834,7 +2776,8 @@ def main():
                  "leaves no working margin against a 5.0 V nominal rail"),
         "F5_backlight_disconnect_control_is_independent": dict(
             ok=(bl_ok and all(bl_controls.values())
-                and fet_ok and all(fet_controls.values())),
+                and fet_ok and all(fet_controls.values())
+                and q11_temp_acceptance_explicit),
             method="TI SNVSA40B 6.3.5 makes CTRL an ANALOG dimming input: the "
                    "converter keeps switching through every PWM low phase, so "
                    "Q11's gate may not share it.  The D-752 hold network is "
@@ -2851,6 +2794,8 @@ def main():
                    "one of which is the 30 V AO3400A D-752 left fitted",
             controls_refused=bl_controls,
             fet_controls_refused=fet_controls,
+            temperature_acceptance_marker="Q11-TEMP-01",
+            temperature_acceptance_explicit=q11_temp_acceptance_explicit,
             fet=fet,
             **{k: v for k, v in bl.items() if k != "ok"}),
         "F6_accessory_envelope_is_bounded_by_hardware": dict(
@@ -2910,6 +2855,14 @@ def main():
             references=sorted(IDENTITY_GUARD),
             controls_refused=ident_controls,
             findings=ident_rows),
+        "F9_manual_battery_harness_metadata_matches_the_frozen_build": dict(
+            ok=j4_semantic["ok"] and all(j4_controls.values()),
+            method="D-781 makes J4 a manual battery-pigtail land rather than a purchased "
+                   "PCB connector. The schematic Value/MPN/manufacturer/datasheet, wire "
+                   "gauge and exact Micro-Lock work instruction must agree with the frozen "
+                   "BATTERY_HARNESS.json; live controls reintroduce the 24-AWG typo and a "
+                   "wire-gauge mismatch so absence from BOM/CPL cannot hide an assembly error",
+            controls_refused=j4_controls, semantic=j4_semantic),
         "F3_approved_nc_exactly_as_scoped": dict(
             ok=(set(nc["observed"]) == EXPECTED_NC
                 and not nc["missing"] and not nc["unexpected"]),

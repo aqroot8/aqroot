@@ -66,6 +66,29 @@
 > `verify_promotion` PASS and `protected_copper` showing exactly one protected
 > net moved.  `U14.7` is on the bus.  This board has **no open owner decision**.
 
+> # **D-780 / D-781 SUPERSEDE D-777/D-779: FROZEN CANDIDATE FOR EXTERNAL RE-REVIEW**
+>
+> **Authority board SHA-256: `cef458b92c6e92462bea250b434a481b3e8454a991eb13b2b66623ca1f4a880e`.**
+> The D-777 product-behaviour restriction and D-779 AO3422 conduction argument
+> are superseded. The design remains on **EXTERNAL_REVIEW_HOLD** until Astra/Fable
+> independently review this exact frozen target; older readiness text below is history.
+>
+> **D-780 — Q11 is now Vishay `SQ2364EES-T1_BE3`, 60 V, same SOT-23 pinout.**
+> Its published 0.245 ohm MAX point at `VGS=1.5 V`, `ID=2 A` sits 0.896 V below
+> AQROOT's held `VGS=2.396 V`; the 1 uF hold remains above that region for about
+> 62 ms versus 2.5 ms TPS61169 shutdown. F5 directly refuses the D-779 AO3422 board.
+> `Q11-TEMP-01` makes 0/25/40 C validation an explicit first-five residual.
+>
+> **D-781 — J4 is no longer a 2 A JST-PH board header.** The existing protected
+> copper and 0.75 mm PTH pair remain a manual 26-AWG pigtail land into a frozen
+> Molex Micro-Lock Plus 2.0 W/W harness. Both sides are 26 AWG; Molex A6 rates
+> that gauge at **2.6 A**. Path-bound full-feature 400 mA + 300 mA accessory
+> concurrency is **2.2718 A** at the enforced 3.80 V floor, so the D-777 RF/NFC/IR
+> reserve is removed and full feature concurrency is restored. Exact housings,
+> terminals/pre-crimps, polarity, insulation-OD measurement, J4 hole-fit, crimp
+> pull and first-article temperature-rise checks are frozen in
+> `assembly/BATTERY_HARNESS.json`.
+>
 > # **THE ROUND-3 EXTERNAL REVIEW HOLD IS CLOSED ON BOARD `880a2ece` (2026-09-19, D-777 · D-778 · D-779).**
 >
 > **D-776's readiness was withdrawn by round-3 external review for six items.

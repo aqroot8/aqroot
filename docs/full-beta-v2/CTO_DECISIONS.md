@@ -1,3 +1,57 @@
+## D-781 — **THE 2 A BATTERY CONNECTOR WORKAROUND IS RETIRED; THE FIRST-FIVE HARNESS IS RATED FOR THE LOAD**
+
+    authority  board cef458b9; protected battery copper unchanged
+    supersedes D-777 product-behaviour reserve
+    result     J4 is a manual 26-AWG pigtail land; detachable interface is
+               Molex Micro-Lock Plus 2.0 W/W, 26 AWG both sides, 2.6 A rated
+
+The old JST-PH board connector was the wrong limiting element: D-775's full
+published dual-rail concurrency is 2.2499 A live / 2.2718 A path-bound at the
+3.80 V policy floor, above JST-PH's 2 A rating. D-777 made that electrically
+safe by suppressing internal RF/NFC/IR activity, but at the cost of product
+behaviour. D-781 fixes the hardware interface without moving protected copper.
+
+`BATTERY_HARNESS.json` freezes the exact board housing, factory pre-crimped
+26-AWG board leads, battery plug/terminal, cavity polarity and acceptance work.
+The primary Molex A6 product spec gives 2.6 A at AWG26. F6 runs both the live
+and declared path-bound sag models and refuses the legacy 2 A connector. The
+published 400 mA + 300 mA load with the full 1.0632 A internal budget remains
+inside the 2.6 A harness rating; firmware therefore deletes the D-777 reserve
+and restores normal sub-GHz, NFC and IR availability.
+
+The residual is physical first-article workmanship, not hidden copper: measure
+each incoming pack lead insulation OD before retermination, prove one factory
+26-AWG pigtail conductor passes an actual finished 0.75 mm J4 hole without
+strand shaving, DMM-check cavity polarity, inspect/pull-test the crimp, strain
+relieve the pigtail and record connector/lead temperature rise at worst normal
+Demo concurrency.
+
+The release-document audit also removed the last two stale J4 assumptions:
+`AQROOT_DEMO_FAB_HANDOFF.md` no longer instructs assembly to fit/trim the retired
+JST-PH header, and the generated fab-note CPL preview no longer asks the
+assembler to rotate a J4 component that is intentionally absent from the CPL.
+J4 is verified against the harness work instruction instead.
+
+## D-780 — **Q11 IS NOW ORDERED AGAINST A PUBLISHED LOW-GATE CONDUCTION POINT**
+
+    authority  board cef458b9; Q11 -> SQ2364EES-T1_BE3, same SOT-23 pinout
+    supersedes D-779 AO3422 typical-gFS bridge
+    result     VDS 60 V; RDS(on) 0.245 ohm MAX at VGS=1.5 V / ID=2 A
+
+D-779 correctly fixed the 250-uA extraction error and enlarged C85 to 1 uF,
+but its last conduction bridge still used typical AO3422 transconductance while
+the held VGS=2.396 V sat below AO3422's guaranteed 2.5 V RDS(on) point. D-780
+removes that unsupported interval. SQ2364EES-T1_BE3 publishes a low-gate point
+at 1.5 V, leaving 0.896 V of held-gate margin and about 62 ms before the RC
+envelope leaves that characterized region, versus TPS61169 tSD=2.5 ms. F5 has
+a load-bearing control that reinstates the D-779 AO3422 board and requires fail.
+
+The 1.5 V EC row is a 25 C point. For the first five, `Q11-TEMP-01` explicitly
+requires backlight ON/PWM/OFF/restart qualification after 0/25/40 C soak and
+blocks a failing unit from Demo use. This is deliberately recorded as a
+reworkable first-article residual rather than an invented all-temperature
+production guarantee.
+
 ## D-779 — **AN EXTRACTED DATASHEET CHANGED A UNIT, AND THREE PROOFS WERE BUILT ON IT; PLUS THE HALF-SENTENCE, THE STALE INSTRUCTION AND THE UNSTATED CONVENTION**
 
     authority  board 880a2ece (was 8c548ece); every copper Gerber, both drill

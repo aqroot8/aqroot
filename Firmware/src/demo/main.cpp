@@ -121,10 +121,6 @@ static bool accessoryBatteryAllows(bool other_rail_on, float *volts = nullptr,
 // every shadow flag if it did, or the UI and the next toggle are wrong about
 // the board.
 //
-// The same function pushes the D-777 reserve into the SPI bus B arbiter,
-// because "both accessory rails enabled" is exactly the condition under which
-// J4 has no room for a sub-GHz key or the NFC field.  Keeping both in one
-// place is what stops a future rail edit from moving one and not the other.
 static void forceAccessoriesOff(const char *why);
 static void afterAccessoryChange();
 static void applyAccessoryRetention(const char *ctx);
@@ -137,7 +133,6 @@ static void afterAccessoryChange() {
     g_accessory_i2c = false;
     Serial.println("ACCESSORY SAFE STATE APPLIED: all accessory outputs off");
   }
-  g_spi_b.setInternalReserve(internalReserveEngaged(g_acc3v3, g_acc5v));
 }
 
 // The retention rule, in ONE place, so the periodic guard and D-779's

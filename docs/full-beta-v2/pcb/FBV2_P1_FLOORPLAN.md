@@ -400,7 +400,7 @@ Only the rows that changed at FBV2-P1-002 are marked. Full data:
 | **`U7`** | **Ebyte E07-400M10S (433)** | **26.000** | **12.000** | **SWAPPED** — IPEX at (26.00, 16.60), still rear-facing and serviceable (A-6) |
 | `U9`, `Y1` | ST25R3916-AQET + 27.12 MHz | 30.000, 36.500 | 112.000 | inside the NFC clear region, ≤ 1.0 mm, matching network short |
 | `J7` | JST BM02B-ACHSS (NFC) | 52.000 | 102.000 | outside both circles, top-entry clearance in the rear cavity |
-| **`J4`** | **JST B2B-PH-K-S (battery)** | **7.000** | **113.000** | **ADDED HERE AT D-763**, where D-241 actually put it. **6.00 mm tall (JST `ePH.pdf`) — the tallest part on the rear face**, north of `BATTERY_SHADOW`, 0.7 mm clear of the 915 coax. **Its 3.4 mm leads emerge inside `DISPLAY_SHADOW` and MUST be trimmed — `assembly/THT_LEAD_TRIM.md`, gated by `mechanical_keepout_contract` MK10** |
+| **`J4`** | **D-781 manual 26-AWG battery pigtail land** | **7.000** | **113.000** | Existing 0.75 mm PTH pair retained; **no JST board header fitted**. Wires enter from rear, are strain-relieved away from the 915 coax/NFC zone, and solder on F.Cu. Front conductive profile **≤0.50 mm + ≤0.10 mm polyimide** per `assembly/THT_LEAD_TRIM.md`; exact Micro-Lock harness is `assembly/BATTERY_HARNESS.json`. |
 | `U12`, `U14` | TPS63020, MAX17048 | 12.000, 26.000 | 96.000 | main rail cluster above the battery |
 | `U11` | BQ25185 charger | 56.000 | 32.000 | near the USB input |
 | `U2`, `U3`, `U23` | PCAL9535A × 3 | 56.000 | 60 / 70 / 50 | 0x20 / 0x21 / 0x22 |

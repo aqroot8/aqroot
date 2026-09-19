@@ -1,7 +1,17 @@
 # AQROOT Demo — FABRICATION HANDOFF
 
 
-> # **STATUS: READY FOR FABRICATION — BOARD AUTHORITY `8c548ece` (through D-776, 2026-09-19).**
+> # **STATUS: FROZEN FOR ASTRA/FABLE RE-REVIEW — BOARD AUTHORITY `cef458b9` (D-780/D-781, 2026-09-19).**
+>
+> **D-780/D-781 are the current correction cycle.** D-780 replaces Q11's AO3422
+> proof with Vishay `SQ2364EES-T1_BE3`: 60 V and a published 0.245 ohm MAX
+> conduction point at VGS=1.5 V / ID=2 A, below AQROOT's held VGS=2.396 V.
+> `Q11-TEMP-01` explicitly qualifies the first five at 0/25/40 C because that
+> low-gate EC row is a 25 C point. D-781 removes the D-777 product restriction:
+> J4 becomes a manual 26-AWG pigtail land into a frozen 2.6 A Micro-Lock Plus
+> harness, restoring RF/NFC/IR concurrency with both published accessory rails.
+> Protected battery copper is unchanged. This package is frozen for independent
+> re-review; it is **not an order authorization until that review is accepted**.
 >
 > **This banner supersedes every status block below it.**  D-765's banner, which
 > stood here unchanged through D-766…D-770, is retained as history.
@@ -543,13 +553,18 @@ D-742…D-745 entries below are retained as the history of the previous cycle.
    VIN; this panel is **2.9–3.2 V on a 3.3 V rail**, so the shutdown DC path
    converged at **≈ 25 mA** — a fifth of full brightness and 82 mW, with no
    firmware mitigation because `+3V3` is switched by the `SW9` slide switch.
-   One **`AO3422`** (LCSC `C37130`, **55 V** `BVDSS`; D-766 re-rated it from the
-   30 V `AO3400A`, which `Q1` still carries) in the panel cathode return.  Outside the regulation loop by construction, so the 109 mA setpoint
-   is unchanged.  **D-751 routed its three nets** — D-750 had fitted it and left
-   them open — and **D-752 took its gate off `DISP_BL_CTL`**, where a PWM low
-   phase would have opened the string under an actively switching converter
-   (§8 risk 10).  The gate now sits on its own `BL_DISC_G`, held up through
-   every low phase by `D14` + `C85` and pulled down by `R132` (τ = 22 ms).
+   D-780 fits Vishay **`SQ2364EES-T1_BE3`** in the panel cathode return: same
+   SOT-23 1=G / 2=S / 3=D land as the earlier D-766 AO3422, but **60 V** and
+   with a published **0.245 ohm MAX at VGS=1.5 V / ID=2 A**.  The held gate's
+   worst-case **2.396 V** therefore sits above a guaranteed conduction point;
+   first-five `Q11-TEMP-01` qualifies operation at 0/25/40 C because that
+   low-gate EC row is a 25 C specification.  Q11 remains outside the regulation
+   loop by construction, so the 109 mA setpoint is unchanged. **D-751 routed its
+   three nets** — D-750 had fitted it and left them open — and **D-752 took its
+   gate off `DISP_BL_CTL`**, where a PWM low phase would have opened the string
+   under an actively switching converter (§8 risk 10).  The gate sits on
+   `BL_DISC_G`, held up through every low phase by `D14` + D-779's **1 uF C85**
+   and pulled down by `R132`.
 
 1. **The charger could not complete a charge, and now can.** `R37` 1 kΩ → **390 Ω**
    (`ICHG` 300 mA → **769 mA**) and `R36` 18 kΩ → **13 kΩ** (input limit ILIM500 →
@@ -817,10 +832,10 @@ bit 6 believing it was `BQ25185_STAT2` when it is `TOUCH_INT_N`.
 
 | claim | result |
 |---|---|
-| `firmware_hw_map` contract, H1–H6 | **all PASS**, 11 policy controls all REFUSED |
-| expander safe-ordering host test | **59 claims PASS**, **6** controls all caught |
-| SPI-B arbiter host test | **22 claims PASS**, 3 controls all caught |
-| `pio run` over all four environments | **4 SUCCESS** |
+| `firmware_hw_map` contract, H1–H6 | **all PASS** on board `cef458b9` |
+| host ordering/policy suites | **142 claims PASS** across expander, SPI-B and accessory-policy tests; **17 destructive controls all caught** |
+| generated hardware map | **fresh**, board digest matches `cef458b9`, owner-approved NC/unrouted policy machine-checked |
+| `pio run` over all four environments | **4 SUCCESS** (re-run on the D-781 candidate) |
 
 **D-750 AND D-751 CHANGED THE FIRMWARE'S FAULT BEHAVIOUR, AND THE SECOND ONE
 FOUND A BUG THE FIRST HAD LEFT HALF-FIXED.** An external review observed that
@@ -904,27 +919,26 @@ can only be confirmed by eye. `MK1` and `U5` share one `/I2S_BCLK` and one
    concession, the `MK1` acoustic mask opening, the POFV process for 136 lands,
    the 38 sub-floor via rings and the 21 sub-0.125 mm mask dams are all declared
    in the fab notes and must be confirmed in writing before the order is placed.
-8b. **The battery connection is inside its rating by 6.0 %, not by margin to
-   spare** (D-777).  `J4`'s published 2 A is the lowest number in the battery
-   path and the board has **no accessory current measurement**, so an accessory
-   drawing MORE than its published budget is not refusable: it must exceed the
-   published 5 V budget by **+19.4 %** before the connection leaves its rating
-   and by **+89.6 %** before the charger acts.  Between those nothing on this
-   board objects.  Closing it needs accessory current sensing or the **JST
-   `B2B-XH-A` 3 A** connector — both REV-B, costed in CTO_DECISIONS D-777 §6.
-   **A first-article temperature-rise measurement on `J4` at the worst
-   permitted sustained load is required at bring-up.**
-8c. **Sub-GHz TX, the NFC field and the IR transmitter are unavailable while
-   BOTH switched accessory rails are enabled** (D-777).  A concurrency
-   condition, not a capability removal: each rail alone leaves all three
-   available, and both published budgets are unchanged.  In DEVICE_SPEC §6.3a's
-   mandatory accessory-facing wording.
-8d. **`Q11`'s conduction at the held gate rests on an extrapolation, and the
-   design is insensitive to it** (D-779).  `VGS` at the hold is 2.396 V, 104 mV
-   below the AO3422's nearest guaranteed `RDS(on)` point — where it is
-   guaranteed to pass 1.5 A, 13.8× what this string asks.  `U17` regulates
-   `LED_BOOST` until `R69` sees 204 mV, so even a pessimistic 10 Ω channel
-   costs 1.09 V and 0.119 W and does not move the LED setpoint.
+8b. **The first-five battery harness is now rated above the full-feature
+   modeled load** (D-781).  `J4` is a manual 26-AWG pigtail land; the detachable
+   interface is Molex Micro-Lock Plus 2.0, rated **2.6 A at AWG26**.  The
+   path-bound simultaneous 400 mA + 300 mA accessory case with the full internal
+   budget is **2.2718 A at the 3.80 V floor**, leaving about **12.6 %** to the
+   harness rating.  The board still has no accessory current measurement, so
+   first-article conductor/hole fit, polarity, crimp retention, strain relief
+   and worst-normal-load connector/lead temperature rise remain mandatory per
+   `assembly/BATTERY_HARNESS.json`.
+8c. **D-777's RF/NFC/IR concurrency restriction is RETIRED by D-781.**  The
+   rated 26-AWG Micro-Lock harness restores normal sub-GHz TX, NFC field and IR
+   transmitter availability while both switched accessory rails are enabled;
+   neither published accessory budget is reduced.
+8d. **`Q11` no longer relies on AO3422 typical-transconductance extrapolation**
+   (D-780).  The fitted Vishay `SQ2364EES-T1_BE3` publishes **0.245 ohm MAX at
+   VGS=1.5 V / ID=2 A**, below AQROOT's held **VGS=2.396 V**.  Because that
+   low-gate electrical-characteristics row is specified at 25 C, the first five
+   carry explicit `Q11-TEMP-01` qualification at **0/25/40 C**; failure blocks
+   the unit and requires rework rather than silently broadening the temperature
+   claim.
 8a. **THE DISPLAY TAIL'S PIN-1 END IS NOW PROVED FROM THE VENDOR DRAWING**
    (first-spin review item 5 — **CLOSED**, superseding the "must be settled
    before the panel is mated" text this entry used to carry). Earlier sessions
@@ -1034,24 +1048,20 @@ can only be confirmed by eye. `MK1` and `U5` share one `/I2S_BCLK` and one
    — `Q11`'s drain — follows the anode to the **39 V** this board's own
    `.kicad_dru` publishes for `LED_BOOST`.
    `D14`/`C85`/`R132` make that unreachable by construction: the gate follows
-   the ENVELOPE of `DISP_BL_CTL` with **τ = 22 ms**, so `Q11` cannot open
-   before **5.14 ms** at worst-case tolerance while `U17` is in shutdown by
-   2.5 ms — **2.06× margin, waveform-independent, no firmware sequencing**.
-   **AND D-766 RE-RATED THE SILICON, WHICH IS WHY 2.06× IS ENOUGH.** D-752 wrote
-   *"the `AO3400A` is a 30 V part"* and left the 30 V part fitted; a single
-   component failure — an unfitted `C85`, an open `D14`, a shorted `R132` —
-   re-creates the forbidden state, and a protection element has to survive the
-   fault it exists to prevent. `Q11` is now the **`AO3422`**, `BVDSS` **55 V**
-   min, **41 % margin** over the published 39 V, same SOT-23 and same
-   1 = G / 2 = S / 3 = D. Its higher `VGS(th)` max (2.00 V against 1.45 V) is
-   what moves the ordering margin 4.6× → 2.06×, and that is accepted
-   deliberately: with a 55 V part, losing the ordering costs a **recoverable**
-   `U17` open-LED latch instead of avalanche in an under-rated FET.
-   `demo_feature_contract.py` **F5** refuses any board that collapses the two
-   nets, drops `C85`, substitutes a Schottky for `D14`, or retunes `R132` — and,
-   since D-766, any board whose disconnect FET has no published rating, is rated
-   under the ceiling **parsed out of the `.kicad_dru`**, is not enhanced by the
-   held gate, or would open before `U17`'s `tSD`.
+   the ENVELOPE of `DISP_BL_CTL`. D-779 enlarged `C85` to **1 uF**, and D-780
+   replaces the old threshold/typical-transconductance argument with the fitted
+   `SQ2364EES-T1_BE3`'s published **VGS=1.5 V** conduction point.  At worst-case
+   tolerance the gate remains above 1.5 V for about **62 ms**, versus `U17`'s
+   **2.5 ms max** shutdown time — more than **24×**, waveform-independent and
+   with no firmware sequencing.  The FET is **60 V**, above the board's own
+   published **39 V** open-LED ceiling, same SOT-23 and same 1=G / 2=S / 3=D.
+   `demo_feature_contract.py` **F5** refuses a board that collapses the two nets,
+   drops/retunes the gate-hold network, restores the D-779 AO3422 case, lacks a
+   published fault-voltage rating, or cannot keep the fitted disconnect in its
+   guaranteed conduction region through `U17` shutdown.  `Q11-TEMP-01` separately
+   qualifies the first-five units at 0/25/40 C rather than extrapolating the
+   datasheet's 25 C low-gate `RDS(on)` row into an undocumented all-temperature
+   guarantee.
    **A revision that wants to PWM `Q11` independently must re-rate it to at
    least 40 V `VDS` first.**
 
@@ -1136,23 +1146,19 @@ can only be confirmed by eye. `MK1` and `U5` share one `/I2S_BCLK` and one
    boost's own setpoint band** (4.742 V − 49 mV of track + `RON` drop) against a
    4.95 V typical.
 
-12. **`J4` BATTERY-CONNECTOR LEAD TRIM IS A RELEASE ASSEMBLY REQUIREMENT,
-   NOT AN OPTIONAL REWORK** (D-763).  `J4` is the only through-hole part whose
-   body is on `B.Cu`.  JST's `ePH.pdf` gives a 3.4 mm lead below the seating
-   plane; the board is 1.5744 mm thick, leaving **1.8256 mm** above `F.Cu` under
-   the display where the `DISPLAY_SHADOW` allowance is **0.80 mm**.  On every
-   first-five unit: solder `J4` from the FRONT, trim both leads/fillets to a
-   verified conductive profile **≤0.50 mm above the F.Cu surface** (`J4-T1`),
-   inspect the profile AFTER cutting and rework any fillet the cutter cracked,
-   lifted or removed (`J4-T2`), then cover both inspected joints with a
-   high-temperature polyimide patch **≤0.10 mm thick** (`J4-T3`) before the
-   display goes on.  Conductor plus insulation must remain under the 0.80 mm
-   allowance.  **The 0.80 mm figure is the ALLOWANCE, never the trim target**:
-   D-770 retightened the requirement to 0.50 mm because meeting an 0.80 mm limit
-   with 0.80 mm of conductor is zero margin, and D-779 corrects the two places
-   in this handoff that had gone on quoting the allowance as the instruction.
-   The governing instruction is `assembly/THT_LEAD_TRIM.md`; `MK10` refuses an
-   undeclared or insufficient trim.  This is an assembly closure, not a PCB ECO.
+12. **`J4` PIGTAIL JOINT HEIGHT AND HARNESS ACCEPTANCE ARE RELEASE
+   ASSEMBLY REQUIREMENTS, NOT OPTIONAL REWORK** (D-781).  The old JST-PH board
+   header is **not fitted**.  Exact 26-AWG Molex pre-crimp conductors enter the
+   existing 0.75 mm J4 PTH pair from `B.Cu` and are soldered on `F.Cu` beneath
+   the display.  On every first-five unit: solder, then trim each finished
+   conductive profile to **≤0.50 mm above F.Cu** (`J4-T1`); inspect/rework after
+   cutting (`J4-T2`); cover both inspected joints with a high-temperature
+   polyimide patch **≤0.10 mm thick** while keeping conductor plus insulation
+   under the **0.80 mm DISPLAY_SHADOW allowance** (`J4-T3`); and complete the
+   conductor/hole-fit, DMM-polarity, crimp-retention, strain-relief and thermal
+   acceptance in `assembly/BATTERY_HARNESS.json` (`J4-T4`).  The governing
+   instruction is `assembly/THT_LEAD_TRIM.md`; `MK10` refuses an undeclared or
+   insufficient trim.  This is an assembly closure, not a protected-copper ECO.
 
 ## 9. Recommended post-Kickstarter improvements
 
@@ -1171,13 +1177,16 @@ can only be confirmed by eye. `MK1` and `U5` share one `/I2S_BCLK` and one
 
 ## 10. What a reviewer should read, in order
 
-1. `CTO_DECISIONS.md` — **D-763 through D-750** at the top; these entries are
-   the external-review closure and the later mechanical/manufacturing re-checks.
-2. `CURRENT_STATE.md` §1.
-3. `hardware/demo/manufacturing/evidence/d763-release-verification.json` — the
-   current connectivity, DRC/parity, `FAB1`–`FAB13`, 19-contract regression,
-   battery, firmware and mechanical release summary.  Read the referenced
-   `d763-*` contract artifacts beside it for the live negative controls.
+1. `CTO_DECISIONS.md` — start with **D-781, D-780 and D-779**; these are the
+   current Round-3 correction decisions, followed by the earlier external-review
+   closure history.
+2. `CURRENT_STATE.md` §1 — the topmost D-780/D-781 block is the current authority.
+3. `hardware/demo/manufacturing/evidence/d781-contract-regression.json`,
+   `d781-demo-feature-contract.json`, `d781-kicad-drc.json`,
+   `d781-protected-copper.json`, `d781-rail-ampacity.json`,
+   `d781-battery-pack-contract.json`, `d781-fab-package-contract.json`, and
+   `d781-firmware-hw-map-contract.json` — the current release evidence and live
+   negative controls for this exact candidate.
 3a. `Firmware/src/hw/aqroot_demo_board.h` — the generated as-built map, and the
    only pin map that describes this board.
 4. `hardware/demo/kicad/aqroot-demo/aqroot-Beta-v2.kicad_dru` **section 5a** — the

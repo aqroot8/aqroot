@@ -222,7 +222,7 @@ def board_facts():
             distinct_x=len(xs), distinct_y=len(ys),
             rows=min(len(xs), len(ys)), cols=max(len(xs), len(ys)),
             pitch_mm=(round(pitch, 4) if pitch else None),
-            footprint=fp.GetFPIDAsString())
+            footprint=fp.GetFPIDAsString(), value=fp.GetValue())
 
     return dict(copper=copper, holes=holes, placeable=placeable,
                 bom_excluded=bom_excluded, dnp_attr=dnp_attr,
@@ -654,7 +654,7 @@ def fab5(pkg, board, fitted, dnp):
 #           beside it.
 # --------------------------------------------------------------------------
 CRITICAL_IDENTITY = Path(__file__).resolve().parent.parent / \
-    "evidence/d750-critical-identity.json"
+    "evidence/d781-critical-identity.json"
 
 _GEOM = re.compile(r"(?<![\d.])(\d{1,3})\s*[xX\u00d7]\s*(\d{1,3})(?![\d.])")
 _COUNT = re.compile(r"(?<![\d.])(\d{1,3})[\s-]*(?:contact|position|pos\b|pin)",
@@ -733,16 +733,38 @@ def _fab12b_drift(views, lands, pinned):
     return drift
 
 
+def _fab12c_board_only_drift(board, pinned):
+    """D-781: critical manual lands intentionally absent from BOM/CPL stay so."""
+    drift = []
+    for ref, want in sorted(pinned.items()):
+        land = board["lands"].get(ref)
+        if land is None:
+            drift.append(dict(ref=ref, why="board-only critical land is absent"))
+            continue
+        if want.get("Footprint") is not None and land["footprint"] != want["Footprint"]:
+            drift.append(dict(ref=ref, field="board_footprint", pinned=want["Footprint"], board=land["footprint"]))
+        if want.get("Value") is not None and land.get("value") != want["Value"]:
+            drift.append(dict(ref=ref, field="board_value", pinned=want["Value"], board=land.get("value")))
+        if want.get("exclude_from_bom") is True and ref not in board["bom_excluded"]:
+            drift.append(dict(ref=ref, field="exclude_from_bom", pinned=True, board=False))
+        if want.get("exclude_from_pos") is True and ref in board["placeable"]:
+            drift.append(dict(ref=ref, field="exclude_from_pos", pinned=True, board=False))
+    return drift
+
+
 def fab12(pkg, board):
     views = {name: read_csv(pkg / ("aqroot-Demo-%s.csv" % name))
              for name in ("BOM-assembly", "BOM-full", "DO-NOT-POPULATE",
                           "NON-PURCHASED", "OFF-BOARD")}
     lands = board["lands"]
     contradictions, examined = _fab12a_scan(views, lands)
-    pinned, drift, unpinned = {}, [], []
+    pinned, board_only, drift, board_only_drift, unpinned = {}, {}, [], [], []
     if CRITICAL_IDENTITY.exists():
-        pinned = json.loads(CRITICAL_IDENTITY.read_text())["identities"]
+        pin_doc = json.loads(CRITICAL_IDENTITY.read_text())
+        pinned = pin_doc["identities"]
+        board_only = pin_doc.get("board_only_identities", {})
         drift = _fab12b_drift(views, lands, pinned)
+        board_only_drift = _fab12c_board_only_drift(board, board_only)
     else:
         unpinned.append(str(CRITICAL_IDENTITY))
 
@@ -777,21 +799,29 @@ def fab12(pkg, board):
         bad = mutate("Footprint", "AQROOT_Beta:Samtec_BCS-112-S-D-HE")
         controls["fab12b_refuses_footprint_the_board_does_not_carry"] = \
             bool(_fab12b_drift(bad, lands, pinned))
+    if board_only and "J4" in board_only:
+        bad_board = dict(board)
+        bad_board["bom_excluded"] = set(board["bom_excluded"]) - {"J4"}
+        controls["fab12c_refuses_manual_j4_becoming_a_purchased_bom_part"] = bool(
+            _fab12c_board_only_drift(bad_board, board_only))
 
-    return dict(ok=(not contradictions and not drift and not unpinned
-                    and bool(controls) and all(controls.values())),
+    return dict(ok=(not contradictions and not drift and not board_only_drift
+                    and not unpinned and bool(controls) and all(controls.values())),
                 rows_examined=examined,
                 critical_identities=len(pinned),
+                board_only_critical_identities=len(board_only),
                 contradictions=contradictions[:30],
                 contradiction_count=len(contradictions),
                 identity_drift=drift[:30],
+                board_only_identity_drift=board_only_drift[:30],
                 missing_pin_file=unpinned,
                 controls_refused=controls,
                 method="FAB12a: the row's stated geometry/contact-count/pitch "
                        "against the footprint's own pads.  FAB12b: a curated "
                        "pin of the identities whose package is load-bearing "
-                       "(D-750); three live negative controls that put the J5 "
-                       "defect back (D-751)")
+                       "(D-750/D-780), plus board-only critical manual lands "
+                       "(D-781); live controls restore the J5 defect and make "
+                       "manual J4 re-enter the purchased BOM path")
 
 def fab6(pkg, board, fitted, dnp):
     """The four BOM views must PARTITION the schematic, exactly once each."""
@@ -809,8 +839,14 @@ def fab6(pkg, board, fitted, dnp):
 
     duplicated = sorted(r for r, n in counted.items() if n > 1)
     every = fitted | dnp
-    unpartitioned = sorted(every - set().union(*refs.values()))
-    invented = sorted(set().union(*refs.values()) - every)
+    manual_fitted = set(getattr(rl, "MANUAL_FITTED_REFS", set()))
+    in_views = set().union(*refs.values())
+    # D-781 J4 is intentionally in_bom=no but still electrically fitted: its
+    # purchasing/assembly authority is the packaged BATTERY_HARNESS artifact,
+    # not any KiCad BOM view.  Every other symbol still partitions exactly once.
+    unpartitioned = sorted((every - manual_fitted) - in_views)
+    manual_in_bom_view = sorted(manual_fitted & in_views)
+    invented = sorted(in_views - every)
 
     assembly = refs["BOM-assembly"]
     built = {r for r in board["refs"] if r not in board["dnp_attr"]}
@@ -821,7 +857,7 @@ def fab6(pkg, board, fitted, dnp):
     # The board's own "not a purchased part" attribute must EXPLAIN the
     # non-purchased view exactly; a new divergence fails here.
     mismatched_non_purchased = sorted(
-        refs["NON-PURCHASED"] ^ (board["bom_excluded"] & every))
+        refs["NON-PURCHASED"] ^ ((board["bom_excluded"] & every) - manual_fitted))
     wrong_dnp = sorted(refs["DO-NOT-POPULATE"] ^ dnp)
 
     # One orderable identity, one footprint.  Reusing a part number across two
@@ -836,14 +872,16 @@ def fab6(pkg, board, fitted, dnp):
     collisions = sorted(("%s=%s" % (k, v), sorted(fps))
                         for (k, v), fps in identity.items() if len(fps) > 1)
 
-    return dict(ok=(not duplicated and not unpartitioned and not invented
-                    and not not_built and not missing and not wrong_dnp
+    return dict(ok=(not duplicated and not unpartitioned and not manual_in_bom_view
+                    and not invented and not not_built and not missing and not wrong_dnp
                     and not mismatched_non_purchased and not collisions),
                 view_lines={k: len(v) for k, v in views.items()},
                 view_refs={k: len(v) for k, v in refs.items()},
                 schematic_symbols=len(every),
                 references_in_two_views=duplicated,
                 schematic_refs_in_no_view=unpartitioned,
+                manual_fitted_refs_intentionally_out_of_bom_views=sorted(manual_fitted),
+                manual_fitted_refs_wrongly_in_a_bom_view=manual_in_bom_view,
                 view_refs_not_in_schematic=invented,
                 assembly_ref_not_built=not_built,
                 built_purchased_ref_without_line=missing,
@@ -1312,7 +1350,7 @@ def _fab14_survey(pkg, manifest, text_override=None):
             "side_printed": ("AQROOT DEMO ASSEMBLY - %s" % side.upper()) in text,
             "pin1_polarity_printed": "PIN-1/POLARITY" in text,
             "j1_orientation_printed": "J1 PIN1 RIGHT FROM DISPLAY FRONT" in text,
-            "manual_note_printed": "J4 LEADS <=0.80 mm BEFORE DISPLAY" in text,
+            "manual_note_printed": "J4 PIGTAIL SOLDER <=0.50 mm + POLYIMIDE BEFORE DISPLAY" in text,
             "view_is_explicit": ("TOP=FRONT/F.Cu NOT MIRRORED" in text
                                  and "BOTTOM=REAR/B.Cu MIRRORED AS ASSEMBLER SEES IT" in text),
             # Every critical reference is also named once in the worksheet note.
@@ -1410,10 +1448,16 @@ def _fab15_survey(board, text):
     for token in ("BCS-112-S-D-HE`** Samtec | `J5` | `C5575816`",
                   "24 × Ø0.71 mm",
                   "how many hand-soldered per board? | **2**",
-                  "how many parts machine-placed? | **all but two"):
+                  "how many parts machine-placed? | **all but two",
+                  "| `B2B-PH-K-S(LF)(SN)` JST PH (`C131337`) | **`J4`**",
+                  "`J4` and `J6` are the same JST PH 2-pin header"):
         if token in text:
             stale.append(token)
 
+    j4_live = ("D-781 manual battery pigtail" in manual
+               and "2175012101" in manual and "2175011101" in manual
+               and "5055700201" in manual and "no PCB header fitted" in manual
+               and "Do not install JST `C131337` at J4" in manual)
     j5 = board.FindFootprintByReference("J5")
     j5_drills = sorted({round(p.GetDrillSize().x / 1e6, 3) for p in j5.Pads()}) if j5 else []
     j5_live = (j5 is not None and j5.GetFPIDAsString() == mech.J5_FPID
@@ -1421,12 +1465,17 @@ def _fab15_survey(board, text):
                and "24 × Ø1.02 mm PTH" in manual)
     return dict(ok=(leaded == {"J4", "J5", "J6", "D1", "U6"}
                     and not missing_manual and not in_machine and not stale
-                    and j5_live),
+                    and j4_live and j5_live),
                 board_leaded_tHT=sorted(leaded),
                 class_E_refs_seen=in_manual,
                 leaded_refs_in_machine_classes=in_machine,
                 missing_from_class_E=missing_manual,
                 stale_release_phrases=stale,
+                j4=dict(ok=j4_live, manual_D781_pigtail=("D-781 manual battery pigtail" in manual),
+                        exact_board_precrimps=("2175012101" in manual and "2175011101" in manual),
+                        exact_housing=("5055700201" in manual), old_header_absent=(not any(
+                            t in manual for t in ("| `B2B-PH-K-S(LF)(SN)` JST PH (`C131337`) | **`J4`**",
+                                                 "`J4` and `J6` are the same JST PH 2-pin header")))),
                 j5=dict(ok=j5_live, footprint=j5.GetFPIDAsString() if j5 else None,
                         drill_mm=j5_drills,
                         current_drill_written_in_class_E="24 × Ø1.02 mm PTH" in manual))
@@ -1449,9 +1498,65 @@ def fab15(board_facts_unused):
         # Remove one manual ref so the table cannot undercount leaded work.
         bad = text.replace("| `TSOP38238` (`C141632`) | `U6` |", "| `TSOP38238` (`C141632`) | `U6X` |", 1)
         controls["a_missing_THT_manual_route_is_refused"] = not _fab15_survey(board, bad)["ok"]
+        # Put the old purchased JST header back at J4; the plan must refuse it.
+        bad = text.replace("**D-781 manual battery pigtail**", "`B2B-PH-K-S(LF)(SN)` JST PH (`C131337`)", 1)
+        controls["old_J4_JST_header_route_is_refused"] = not _fab15_survey(board, bad)["ok"]
     return dict(ok=(row["ok"] and bool(controls) and all(controls.values())),
                 plan=str(plan.relative_to(ROOT)), survey=row,
                 controls_refused=controls)
+
+
+# D-781. The manual battery harness is a RELEASE ARTIFACT, not repository-only prose.
+def _fab16_semantics(rec):
+    b = rec.get("board_side", {}); p = rec.get("battery_side", {})
+    r = rec.get("controlling_rating", {}); pol = rec.get("polarity", {})
+    return (rec.get("decision") == "D-781" and rec.get("status") == "FROZEN_FOR_FIRST_FIVE"
+            and b.get("wire_AWG") == 26 and "2175012101" in b.get("precrimp_red", "")
+            and "2175011101" in b.get("precrimp_black", "")
+            and b.get("receptacle_housing") == "5055700201"
+            and "NO JST header fitted" in b.get("board_land", "")
+            and p.get("factory_lead_AWG") == 26 and p.get("plug_housing") == "2137192021"
+            and p.get("male_terminal") == "2137201000"
+            and r.get("wire_AWG") == 26 and float(r.get("rated_current_A", 0)) == 2.6
+            and pol.get("cavity_1") == "BAT+ / red / J4.1"
+            and pol.get("cavity_2") == "GND / black / J4.2")
+
+
+def fab16(pkg, manifest):
+    src = ROOT / "docs/full-beta-v2/assembly/BATTERY_HARNESS.json"
+    dst = pkg / "aqroot-Demo-BATTERY-HARNESS.json"
+    meta = manifest.get("battery_harness") or {}
+    rec = json.loads(dst.read_text(encoding="utf-8")) if dst.is_file() else {}
+    files = {x.get("path"): x for x in manifest.get("files", [])}
+    file_row = files.get("aqroot-Demo-BATTERY-HARNESS.json") or {}
+    src_hash = sha256(src) if src.is_file() else None
+    dst_hash = sha256(dst) if dst.is_file() else None
+    notes = (pkg / "aqroot-Demo-FAB-NOTES.md").read_text(encoding="utf-8") if (pkg / "aqroot-Demo-FAB-NOTES.md").is_file() else ""
+    checks = dict(
+        source_and_package_exist=src.is_file() and dst.is_file(),
+        package_is_exact_source=(src_hash is not None and src_hash == dst_hash),
+        manifest_binds_harness=(meta.get("file") == "aqroot-Demo-BATTERY-HARNESS.json"
+                                and meta.get("source") == "docs/full-beta-v2/assembly/BATTERY_HARNESS.json"
+                                and meta.get("sha256") == src_hash
+                                and meta.get("status") == "FROZEN_FOR_FIRST_FIVE"
+                                and meta.get("decision") == "D-781"),
+        file_hash_is_in_manifest=(file_row.get("sha256") == dst_hash),
+        exact_D781_semantics=_fab16_semantics(rec),
+        fab_notes_point_to_packaged_harness=("aqroot-Demo-BATTERY-HARNESS.json" in notes
+                                             and "Do not fit the old JST-PH board header" in notes
+                                             and "2.6 A" in notes))
+    controls = {}
+    if rec:
+        m = json.loads(json.dumps(rec)); m["controlling_rating"]["rated_current_A"] = 2.0
+        controls["a_2A_harness_is_refused"] = not _fab16_semantics(m)
+        m = json.loads(json.dumps(rec)); m["board_side"]["wire_AWG"] = 24
+        controls["a_24AWG_board_side_mismatch_is_refused"] = not _fab16_semantics(m)
+        m = json.loads(json.dumps(rec)); m["polarity"]["cavity_1"] = "GND / black / J4.2"
+        controls["reversed_polarity_is_refused"] = not _fab16_semantics(m)
+    return dict(ok=(all(checks.values()) and bool(controls) and all(controls.values())),
+                source_sha256=src_hash, package_sha256=dst_hash, checks=checks,
+                controls_refused=controls)
+
 
 def main():
     ap = argparse.ArgumentParser()
@@ -1506,6 +1611,7 @@ def main():
             "FAB13_nfc_tuning_access": fab13(pkg, manifest),
             "FAB14_assembly_drawing_identity": fab14(pkg, manifest),
             "FAB15_manual_THT_route": fab15(board),
+            "FAB16_battery_harness_release": fab16(pkg, manifest),
         }
     doc = dict(schema=1, package=str(pkg.relative_to(ROOT))
                if pkg.is_relative_to(ROOT) else str(pkg),

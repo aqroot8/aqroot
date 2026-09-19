@@ -23,67 +23,62 @@ Between those two clauses, one part fell through.
 
 ---
 
-## 2. `J4` — THE BATTERY CONNECTOR.  ITS LEADS MUST BE TRIMMED.
+## 2. `J4` — D-781 MANUAL BATTERY PIGTAIL.  ITS FRONT-SIDE JOINTS MUST STAY LOW.
 
-`J4` is the **only through-hole part on this board whose body is on `B.Cu`**.
+D-781 removed the fitted JST-PH board header. `J4` now reuses the existing two
+0.75 mm plated holes as a **manual 26-AWG wire land**.  The exact detachable
+harness, wire identities, polarity and acceptance criteria are frozen in
+[`BATTERY_HARNESS.json`](BATTERY_HARNESS.json).  The red/black board-side wires
+enter from the **rear (`B.Cu`)**, are soldered on the **front (`F.Cu`)**, and the
+two solder joints lie inside `DISPLAY_SHADOW` beneath the panel.
 
 | | |
 |---|---|
-| Part | **JST `B2B-PH-K-S(LF)(SN)`**, PH series, 2.00 mm pitch, 2 circuits, top entry, through-hole |
-| Body | **6.0 mm** above the rear face (JST `ePH.pdf`, *Header (Through-hole type)*, top entry, 2 circuits) |
-| Lead below the seating plane | **(3.4) mm** — same drawing |
-| Board thickness | **1.5744 mm** — this board's own stackup, not a nominal |
-| **Untrimmed protrusion above `F.Cu`** | **1.826 mm**, plus the solder fillet |
-| Where the leads land | `J4.1` at KiCad `(7.000, 35.000)`, `J4.2` at `(7.000, 33.000)` — **both inside `DISPLAY_SHADOW`** (KiCad `x 4.390 … 60.930`, `y 8.000 … 92.960`) |
-| Allowance there | **0.80 mm** (`FBV2_P1_KEEPOUTS.md` §2 row A) |
-| **Overshoot** | **1.026 mm** |
-
-`J4.2` also lies **0.82 mm inside the west edge of `DISPLAY_ACTIVE`**
-(doc `X 7.18 … 56.14`, `Y 60.80 … 134.24`).  The panel is over it.
+| Board-side conductors | **26 AWG** red/black pre-crimps: Molex `2175012101` / `2175011101` |
+| Detachable housing | Molex Micro-Lock Plus 2.0 `5055700201`, 2 circuits |
+| Board land | existing `J4.1/J4.2` 0.75 mm PTH pair; **no board connector is fitted** |
+| Polarity | cavity 1 = BAT+ / red / `J4.1`; cavity 2 = GND / black / `J4.2` |
+| Where solder emerges | `J4.1` and `J4.2`, both inside `DISPLAY_SHADOW` |
+| Display-shadow allowance | **0.80 mm** above `F.Cu` |
 
 ### REQUIREMENT J4-T1
 
-> **After soldering `J4`, trim both leads to a verified conductive-profile
-> height ≤ 0.50 mm above the `F.Cu` surface.**  This leaves 0.30 mm geometric
-> margin to the 0.80 mm `DISPLAY_SHADOW` limit before the insulation below.
-> No sharp clipped lead or loose fragment may remain.
+> Insert the stripped 26-AWG conductors from the **rear**, solder on `F.Cu`, then
+> trim each finished conductive profile to **≤ 0.50 mm above the `F.Cu` surface**.
+> No sharp conductor, loose strand or clipped fragment may remain.  The 0.50 mm
+> limit is an assembly requirement, not a vendor lead-length calculation.
 
 ### REQUIREMENT J4-T2
 
-> `J4` is soldered from the **FRONT** face (the leads enter from the rear and
-> emerge on the front).  Solder, trim, clean, then inspect — **in that order**.
-> Do not pre-cut the leads before soldering.  Inspect both joints after cutting;
-> if the cutter cracked, lifted or removed the required fillet, rework/reflow
-> the joint to a sound low-profile fillet and re-measure the ≤ 0.50 mm profile.
+> Solder, trim, clean, then inspect — **in that order**.  Do not pre-cut to a
+> guessed insertion depth.  After cutting, inspect both barrels and fillets; if
+> cutting disturbed a joint, rework/reflow it and re-measure the ≤0.50 mm profile.
+> Provide strain relief on the rear pigtail so mating/unmating force is not taken
+> by the two soldered conductors.
 
 ### REQUIREMENT J4-T3
 
 > **Before the display is fitted, cover both inspected J4 joints together with
 > a high-temperature polyimide electrical-insulation patch ≤ 0.10 mm thick.**
-> The patch must fully isolate J4.1 (raw battery positive) and J4.2 (GND) from
-> the display rear structure, contain no metal debris, and remain bonded after
-> cleaning.  Trimmed conductor + insulation must remain < 0.80 mm total.
+> It must fully isolate raw BAT+ (`J4.1`) and GND (`J4.2`) from the display rear
+> structure, contain no metal debris, and remain bonded after cleaning.  Trimmed
+> conductor + insulation must stay **< 0.80 mm total**.
 
-### Why the part was not changed instead
+### REQUIREMENT J4-T4
 
-JST's PH series also has an **SMT** top-entry header (`B2B-PH-SM4-TB`) that
-would remove the protrusion entirely.  It was **considered and declined**:
+> Build and inspect the pigtail exactly to `BATTERY_HARNESS.json`: verify cavity
+> polarity by DMM before battery connection, verify conductor/hole fit on the
+> first article, perform the specified terminal pull/retention check and strain-
+> relief inspection, and record the first-article worst-case thermal-rise result.
 
-* `J4` is the **battery** connector, the one connector on this product a user
-  or a repairer will plug and unplug.  A through-hole header's retention comes
-  from its two soldered leads in plated barrels; an SMT header's comes from its
-  pads.  **Mechanical retention on a repeatedly-mated power connector is worth
-  more than avoiding one assembly operation.**
-* Substituting it changes a land pattern on a **battery-path** connector and
-  would require the full release suite on a board that is otherwise frozen.
-* A lead trim is a routine, inspectable, zero-cost operation, and this board
-  already carries a normative assembly-forming document
-  (`IR_LEAD_FORMING.md`) for `D1` and `U6`.
+### Why a manual pigtail is used
 
-`J4`'s position is **not** available to change either: D-241 placed it at doc
-`(7.000, 113.000)` as the one part of the battery-protection chain that could
-not join the column, *"north of the coax's western excursion, 8.59 mm from
-`F1` and 0.7 mm clear of the cable"*.
+The prior `B2B-PH-K-S(LF)(SN)` board header is rated below the board's modeled
+full-feature worst-case battery current.  D-781 therefore keeps the proven J4
+copper and hole locations but moves the detachable interface off-board to a
+**2.6 A-rated 26-AWG Molex Micro-Lock Plus harness**.  This avoids disabling
+sub-GHz, NFC or IR merely to protect an underspecified connector and makes the
+current rating explicit in the assembly artifact.  No protected copper moved.
 
 ---
 

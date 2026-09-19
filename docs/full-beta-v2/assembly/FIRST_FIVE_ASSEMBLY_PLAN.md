@@ -102,11 +102,12 @@ it. **JLC carries the genuine Hirose `FH69-50S-0.5SH` with 1,072 in stock.** `J1
 
 **D-764 corrects a category error that survived D-763:** catalog availability does not turn a
 through-hole part into an SMT placement. `U6`, `J4` and `J6` were still listed in Class B even
-though the same file's Class E correctly requires all three to be hand-soldered after reflow.
-They are now Class E only. Their LCSC identities remain useful for purchasing (`U6` `C141632`;
-`J4`/`J6` `C131337`), but **the route to the board is hand soldering, not pick-and-place**.
-Likewise the stale Class-C `BCS-112-S-D-HE / C5575816` line is deleted: that is the superseded
-2x12 part. Current `J5` is `SSQ-124-02-G-S-RA / C3323671` and is Class E only.
+though Class E requires manual work after reflow. **D-781 further changes J4 itself:** no JST-PH
+board header is fitted. The existing J4 PTH pair is a manual 26-AWG pigtail land feeding a
+2-circuit Molex Micro-Lock Plus detachable harness. `J6` remains the genuine JST PH header
+`C131337`; do not buy or install `C131337` at J4. The exact J4 wire/housing/terminal identities
+and acceptance tests are frozen in `BATTERY_HARNESS.json`. Current `J5` is
+`SSQ-124-02-G-S-RA / C3323671` and is Class E only.
 
 ---
 
@@ -126,6 +127,7 @@ broadline distributor and **consigned to JLC**, so it stays machine-placed.
 | **`LTC4368IDD-1#PBF`** ADI | `U18` | `C688397` | **4** | 5 | **−1** |
 | **`ST25R3916-AQET`** ST | `U9` | `C5267441` | **6** | 5 | +1 spare only |
 | **`NSR0240HT1G`** onsemi | `D8` | `C152519` | **7** | 5 | +2 spare only |
+| **`SQ2364EES-T1_BE3`** Vishay | `Q11` | `C5758702` | **0** | 5 | **−5 — buy broadline + CONSIGN** |
 
 **`U2`/`U3`/`U23` is the headline.** Three PCAL9535A per board is **fifteen TSSOP-24 at 0.65 mm
 pitch** for the first five, against **one** in stock. That is precisely the case the CTO ruling
@@ -163,7 +165,7 @@ against a need of five is a build with **one** spare; **buy spares independently
 | **`SSQ-124-02-G-S-RA` Samtec** (`C3323671`; ***~~`BCS-112-S-D-HE`~~ SUPERSEDED D-237/D-240, corrected D-750***) | `J5` | **24 × Ø1.02 mm PTH** | 1 × 24 right-angle community header. **Hand-solder after reflow.** The current board land is 1.60 mm pad / **1.02 mm drill** at 2.54 mm pitch; the old 0.71 mm figure belonged to the superseded BCS footprint. RA tail `(2.54) .100 in` |
 | `TSAL6100` | `D1` | 2 leads | 5 mm through-hole IR emitter, `C111836`. **LEAD-FORMED 90° AND TRIMMED — [`IR_LEAD_FORMING.md`](IR_LEAD_FORMING.md), NORMATIVE** |
 | `TSOP38238` (`C141632`) | `U6` | 3 leads | minicast IR receiver. **Hand-solder after reflow; LEAD-FORMED 90° AND TRIMMED — [`IR_LEAD_FORMING.md`](IR_LEAD_FORMING.md), NORMATIVE.** Was incorrectly also listed as machine-placed Class B until D-764 |
-| `B2B-PH-K-S(LF)(SN)` JST PH (`C131337`) | **`J4`** | 2 leads, **body on the REAR** | **BATTERY connector. THE ONLY THROUGH-HOLE PART MOUNTED ON `B.Cu`.** Its 3.4 mm leads emerge on `F.Cu` **1.826 mm proud** and both pads are inside `DISPLAY_SHADOW`, allowance **0.80 mm**. **TRIM AND INSULATION REQUIRED — [`THT_LEAD_TRIM.md`](THT_LEAD_TRIM.md) J4-T1/J4-T2/**J4-T3**, NORMATIVE**, gated by `mechanical_keepout_contract` MK10. **D-766 retired the old zero-margin declaration**: the trim is now **≤ 0.50 mm** of conductor and both joints are covered by a **≤ 0.10 mm polyimide** patch, so conductor + insulation is **0.60 mm against a 0.80 mm allowance** instead of exactly meeting it. `J4.1` is RAW BATTERY POSITIVE and its shadow is the display rear structure. Was missing from this table |
+| **D-781 manual battery pigtail** — 26-AWG Molex pre-crimps `2175012101` red / `2175011101` black into housing `5055700201`; **no PCB header fitted** | **`J4`** | 2 conductors through the existing 0.75 mm PTH pair, wires enter from **REAR**, solder on **FRONT** | Exact detachable harness is [`BATTERY_HARNESS.json`](BATTERY_HARNESS.json). Cavity 1 = BAT+ / red / `J4.1`; cavity 2 = GND / black / `J4.2`. **J4-T1/T2/T3/T4 are NORMATIVE**: trim each front conductive profile to **≤0.50 mm**, cover both inspected joints with **≤0.10 mm polyimide**, provide rear strain relief, DMM-check polarity, and complete the first-article harness acceptance tests. **Do not install JST `C131337` at J4.** |
 | `B2B-PH-K-S(LF)(SN)` JST PH (`C131337`) | `J6` | 2 leads | SPEAKER connector, body on `F.Cu`; its leads emerge on the rear **3.5 mm clear of `BATTERY_SHADOW`**, so no trim requirement. Was missing from this table |
 
 **FIVE through-hole parts per board, all five hand-soldered after reflow; three of them have a NORMATIVE forming/trim operation beyond soldering.** That is the manual scope.
@@ -181,6 +183,16 @@ omission.
 ## 7. Class F — off-board
 
 Speaker `LS1` (`AS02008MR-LW152-R`, `C3311653`, stock 0 — consign or buy direct), display module, **Adafruit Product 328 2500 mAh protected battery (CTO-BAT-01)**, both antennas, the AMC→SMA pigtail and the 915 MHz whip. All in [`OFF_BOARD_BOM.md`](OFF_BOARD_BOM.md). The battery is an exact first-five supplier SKU now; do not replace it by a generic `LP785060` family-name match because published current ratings vary by sold variant.
+
+---
+
+## 7a. D-780 Q11 first-five temperature acceptance — `Q11-TEMP-01`
+
+`Q11` is now Vishay **SQ2364EES-T1_BE3**. Its 60 V rating covers the board's 39 V open-LED fault ceiling, and its published **0.245 Ω MAX at VGS = 1.5 V, ID = 2 A** gives a direct low-gate conduction point below AQROOT's held **VGS = 2.396 V**. The vendor electrical-characteristics table states **TC = 25 °C unless otherwise noted**, so that 1.5 V row is not being misrepresented as an all-temperature guarantee. For these five Kickstarter prototypes this is a **reworkable first-article qualification item, not a production-temperature claim**.
+
+Before a first-five unit is accepted for Demo use, validate the backlight at **0 °C, 25 °C and 40 °C** after thermal soak: full-on, the normal firmware PWM range, commanded OFF for at least 30 s, and repeated ON→OFF→ON transitions. Acceptance: no visible dropout/flicker at full-on or normal PWM, no TPS61169 open-LED latch during normal operation, commanded OFF remains dark, and restart is repeatable. Record the unit ID and result. A failure blocks that unit and requires `Q11`/gate-drive rework before Demo use; it does **not** authorize widening the temperature claim.
+
+The release gate must preserve this exact acceptance marker (`Q11-TEMP-01`) while the fitted Q11 relies on the 25 °C low-gate `RDS(on)` row.
 
 ---
 
@@ -208,10 +220,10 @@ design instead of living only in this file.
 Both were found by cross-checking the BOM against live listings rather than by reading the
 schematic.
 
-- **`J4` and `J6` are the same JST PH 2-pin header but carried two different MPN strings** — `J4`
-  the `(LF)(SN)` plating suffix, `J6` the bare order code. That is **not cosmetic**: the bare code
-  resolves to `C20504437` with **stock 0**, while **`B2B-PH-K-S(LF)(SN)` is `C131337` with 378,913
-  in stock.** Both are now the stocked string.
+- **SUPERSEDED AT D-781:** J4 and J6 once shared the JST PH header footprint/identity, but only
+  **J6** now receives `B2B-PH-K-S(LF)(SN)` / `C131337`. **J4 receives no PCB header**; it is the
+  manual 26-AWG Micro-Lock pigtail land defined by `BATTERY_HARNESS.json`. A BOM or work order
+  that assigns `C131337` to J4 is now a release defect and is refused by the fabrication gate.
 - **`J7` had the same problem.** `BM02B-ACHSS-GAN-ETF` → `C20088622`, **stock 0**;
   **`BM02B-ACHSS-GAN-ETF(LF)(SN)` → `C5118738`, 16,260 in stock.** Corrected.
 
@@ -225,10 +237,10 @@ the quote stage. **`L2`/`L4` also carried two spellings of "Würth"** and were n
 | question | answer |
 |---|---|
 | how many distinct MPNs? | **46** (43 after the two duplicate-string merges and one manufacturer-spelling merge) |
-| how many parts machine-placed? | **all fitted parts except the five Class-E through-hole parts per board** |
-| how many hand-soldered per board? | **5** — `J4`, `J5`, `J6`, `D1`, `U6`; `J4`/`D1`/`U6` also have normative trim/forming instructions |
+| how many parts machine-placed? | **all fitted SMT parts; Class E covers five manual references (`J4`,`J5`,`J6`,`D1`,`U6`)** |
+| how many manual solder operations per board? | **5** — `J4`, `J5`, `J6`, `D1`, `U6`; J4 is a wire pigtail land, while the other four are fitted THT parts; `J4`/`D1`/`U6` also have normative trim/forming instructions |
 | how many fine-pitch/QFN parts hand-placed? | **zero** |
-| how many part identities need consignment? | **8 (class C) + 0 (class D)** after deleting the superseded J5/BCS line at D-764. **Class D is empty.** Re-check stock at order time. |
+| how many part identities need consignment? | **9 (class C) + 0 (class D)** after deleting the superseded J5/BCS line at D-764. **Class D is empty.** Re-check stock at order time. |
 | DNP parts with no recorded reason | **zero** — eight were still undocumented at the start of FBV2-S2-002 and all eight now carry one |
 | does the build close today? | **Yes, via consignment.** It does **not** close as a pure LCSC turnkey order |
 

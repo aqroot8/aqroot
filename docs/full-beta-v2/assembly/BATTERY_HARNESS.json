@@ -1,0 +1,73 @@
+{
+  "decision": "D-781",
+  "status": "FROZEN_FOR_FIRST_FIVE",
+  "interface": "Molex Micro-Lock Plus 2.0 wire-to-wire, single-row tin, 2 circuits",
+  "product_spec": {
+    "document": "5055700003-PS",
+    "revision": "A6",
+    "approved_date": "2025-04-25",
+    "source_url": "https://www.molex.com/content/dam/molex/molex-dot-com/products/automated/en-us/productspecificationpdf/505/505570/5055700003-PS-000.pdf",
+    "rated_current_A_by_AWG": {
+      "22": 3.4,
+      "24": 3.0,
+      "26": 2.6
+    },
+    "temperature_rise_limit_C": 30,
+    "ambient_C": [
+      -40,
+      105
+    ],
+    "free_wire_before_bundling_min_mm": 35
+  },
+  "board_side": {
+    "wire_AWG": 26,
+    "wire_type": "UL 10002",
+    "precrimp_red": "Molex 2175012101, 75 mm, 26 AWG, female-to-pigtail",
+    "precrimp_black": "Molex 2175011101, 75 mm, 26 AWG, female-to-pigtail",
+    "receptacle_housing": "5055700201",
+    "board_land": "J4 legacy 2.00 mm PTH pair; NO JST header fitted",
+    "solder_pads": {
+      "J4.1": "BAT_CONNECTOR_P / red",
+      "J4.2": "GND / black"
+    },
+    "assembly": "insert the factory pre-crimped female contacts into 5055700201, cut pigtails to final service length only after fit check, strip/tin the free ends and solder through J4 from B.Cu; front-side conductor trimmed flush"
+  },
+  "battery_side": {
+    "battery": "Adafruit Product 328, 3.7 V 2500 mAh",
+    "factory_lead_AWG": 26,
+    "factory_lead_insulation_OD_mm": "MEASURE_EACH_INCOMING_PACK",
+    "terminal_allowed_insulation_OD_mm": [
+      0.9,
+      1.5
+    ],
+    "first_five_target_insulation_OD_mm": [
+      0.96,
+      1.5
+    ],
+    "plug_housing": "2137192021",
+    "male_terminal": "2137201000",
+    "hand_crimp_tool": "Molex 213309-5900",
+    "retermination": "replace factory JST-PH housing/contacts with Micro-Lock Plus plug; one conductor at a time; preserve red=BAT+ and black=GND; measure insulation OD before stripping and reject/rework the connector plan if outside the terminal/tool range"
+  },
+  "controlling_rating": {
+    "wire_AWG": 26,
+    "rated_current_A": 2.6,
+    "basis": "5055700003-PS A6 section 4.2; both sides are 26 AWG, so the mated harness rating is 2.6 A"
+  },
+  "polarity": {
+    "cavity_1": "BAT+ / red / J4.1",
+    "cavity_2": "GND / black / J4.2"
+  },
+  "acceptance": [
+    "board side uses exact Molex factory pre-crimped leads 2175012101 red and 2175011101 black, 75 mm, 26 AWG UL 10002; no hand-crimped board-side contact",
+    "before soldering all five boards, verify the stripped conductor of one 217501 26 AWG lead passes freely through an actual finished J4 0.75 mm PTH without strand shaving or force",
+    "measure both battery lead insulation ODs on every incoming Adafruit 328 pack before retermination; terminal specification is 0.90-1.50 mm and the 213309-5900 tool IPC-optimum range is 0.96-1.50 mm; do not crimp an out-of-range lead",
+    "battery-side 2137201000 crimps use Molex 213309-5900 or an equivalently qualified production process and are visually inspected for conductor/insulation capture",
+    "minimum battery-side crimp pull-out: AWG26 19.6 N per Molex product/application tooling specification",
+    "verify cavity polarity with DMM before first mate and after every battery retermination",
+    "strain-relieve board pigtail; maintain >=35 mm free wire before tie/bundle",
+    "front-side J4 conductor is trimmed flush and insulated under the display per the existing display-shadow rule",
+    "first article: run published worst-case concurrent Demo load and record connector/lead temperature rise; target <30 C rise"
+  ],
+  "design_intent": "Restores full internal RF/NFC/IR availability with both accessory rails enabled; no protected battery copper moved. Factory pre-crimped board leads remove a first-five hand-crimp variable."
+}

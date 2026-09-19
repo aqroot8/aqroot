@@ -1,0 +1,19 @@
+MOLEX PRIMARY-SOURCE TRANSCRIPTION FOR AQROOT D-781
+Document: 5055700003-PS, Revision A6, approved 2025-04-25
+Title: Micro-Lock Plus 2.0 Wire to Wire Connector System, single row tin plating
+Source: https://www.molex.com/content/dam/molex/molex-dot-com/products/automated/en-us/productspecificationpdf/505/505570/5055700003-PS-000.pdf
+Section 4.2 rated current and applicable wires:
+AWG22 3.4 A
+AWG24 3.0 A
+AWG26 2.6 A
+Section 4.3 reference derating, 2 circuits: AWG22 4.7 A; AWG24 3.9 A; AWG26 2.9 A. Reference values only; AQROOT uses section 4.2 rated current, not the derating reference value.
+Section 4.4 ambient range: -40 C to +105 C, including terminal temperature rise.
+Section 6.1.5 temperature rise at maximum rated current: 30 C MAX.
+Section 6.2.2 crimp pull-out: AWG22 39.2 N MIN; AWG24 29.4 N MIN; AWG26 19.6 N MIN.
+Series identities: receptacle terminal 505572; receptacle housing 505570; plug terminal 213720; plug housing 213719.
+Exact AQROOT parts checked on Molex product/drawing pages 2026-09-19: 5055700201 2-circuit receptacle housing; 5055721000 female terminal 22/24/26 AWG; 2137192021 2-circuit black plug housing; 2137201000 male terminal 22/24/26 AWG.
+Section 10: 2-9 circuit harnesses recommend at least 35 mm free wire before bundling/twisting.
+This file is a concise engineering transcription, not a replacement for the vendor PDF. Re-check the linked primary document at procurement.
+Molex series chart 217501, checked 2026-09-19: 2175012101 = Micro-Lock Plus 2.0 female-to-pigtail, matte tin, 75.00 mm, 26 AWG, RED, UL 10002.
+Molex series chart 217501, checked 2026-09-19: 2175011101 = Micro-Lock Plus 2.0 female-to-pigtail, matte tin, 75.00 mm, 26 AWG, BLACK, UL 10002.
+Source: https://www.molex.com/en-us/products/series-chart/217501

@@ -12,18 +12,29 @@
   "linked_datasheet_model": "785060 2500mAh",
   "capacity_mAh": 2500,
   "nominal_voltage_V": 3.7,
-  "max_pack_dimensions_mm": {"thickness": 7.9, "width": 50.5, "length": 60.5},
+  "max_pack_dimensions_mm": {
+    "thickness": 7.9,
+    "width": 50.5,
+    "length": 60.5
+  },
   "supplier_recommended_max_charge_A": 1.2,
   "linked_datasheet_max_charge_A": 2.5,
   "linked_datasheet_max_discharge_A": 5.0,
-  "linked_datasheet_charge_temp_C": [0, 40],
-  "linked_datasheet_discharge_temp_C": [0, 60],
+  "linked_datasheet_charge_temp_C": [
+    0,
+    40
+  ],
+  "linked_datasheet_discharge_temp_C": [
+    0,
+    60
+  ],
   "pcm_protection": true,
   "connector": "genuine 2-pin JST-PH",
-  "board_connector": "J4 B2B-PH-K-S(LF)(SN)",
+  "board_connector": "J4 D-781 manual pigtail -> Molex Micro-Lock Plus 2.0 5055700201",
   "board_positive_pin": "J4.1",
   "incoming_polarity_verification_required": true,
   "thermistor_present": false,
   "prototype_charging_supervised": true,
-  "notes": "First-five procurement is Adafruit Product 328, not a generic LP785060 family name. Accept incoming packs only if they match the supplier-linked datasheet envelope and polarity is meter-verified before connection."
+  "notes": "First-five procurement is Adafruit Product 328, not a generic LP785060 family name. Accept incoming packs only if they match the supplier-linked datasheet envelope and polarity is meter-verified before cutting/reterminating the factory JST-PH lead into the frozen D-781 Micro-Lock harness.",
+  "board_harness": "docs/full-beta-v2/assembly/BATTERY_HARNESS.json"
 }

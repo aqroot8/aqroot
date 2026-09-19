@@ -1,0 +1,115 @@
+{
+ "all_pass": true,
+ "board": "/home/aqroot8/aqroot-demo/hardware/demo/kicad/aqroot-demo/aqroot-Beta-v2.kicad_pcb",
+ "board_sha256": "cef458b92c6e92462bea250b434a481b3e8454a991eb13b2b66623ca1f4a880e",
+ "checks": {
+  "B10_D781_harness_rating_and_polarity_cover_live_board": {
+   "cavity_1": "BAT+ / red / J4.1",
+   "cavity_2": "GND / black / J4.2",
+   "controlling_rating_A": 2.6,
+   "current_margin_A": 0.079,
+   "current_margin_pct": 3.13,
+   "live_max_battery_A": 2.521,
+   "ok": true
+  },
+  "B1_exact_first_five_identity": {
+   "ok": true,
+   "supplier": "Adafruit Industries",
+   "supplier_sku": "328"
+  },
+  "B2_datasheet_is_pinned": {
+   "actual_sha256": "826149daa4aa9ba3ab7b635993a022d6521572a44d1d0588171468507b58ecd3",
+   "expected_sha256": "826149daa4aa9ba3ab7b635993a022d6521572a44d1d0588171468507b58ecd3",
+   "ok": true
+  },
+  "B3_capacity_is_the_selected_low_timer_margin_option": {
+   "capacity_mAh": 2500,
+   "ok": true
+  },
+  "B4_pack_fits_reserved_envelope": {
+   "dimensions_mm": {
+    "length": 60.5,
+    "thickness": 7.9,
+    "width": 50.5
+   },
+   "limits_mm": {
+    "length": 75.0,
+    "thickness": 8.0,
+    "width": 57.0
+   },
+   "ok": true
+  },
+  "B5_pack_discharge_covers_live_D753_envelope": {
+   "margin_ratio": 1.2,
+   "max_user_reachable_battery_A": 2.521,
+   "ok": true,
+   "pack_max_discharge_A": 5.0,
+   "required_with_margin_A": 3.0252
+  },
+  "B6_pack_charge_rating_covers_BQ25185_envelope": {
+   "board_required_A": 0.8547,
+   "ok": true,
+   "supplier_max_charge_A": 1.2
+  },
+  "B7_protection_connector_and_polarity_are_explicit": {
+   "board_positive_pin": "J4.1",
+   "connector": "genuine 2-pin JST-PH",
+   "incoming_polarity_check": true,
+   "ok": true,
+   "pcm": true
+  },
+  "B8_no_thermistor_requires_supervised_prototype_charging": {
+   "ok": true,
+   "permitted_charge_temp_C": [
+    0,
+    40
+   ],
+   "supervised": true,
+   "thermistor_present": false
+  },
+  "B9_D781_board_harness_identity_is_frozen": {
+   "battery_plug": "2137192021",
+   "battery_wire_AWG": 26,
+   "board_connector": "J4 D-781 manual pigtail -> Molex Micro-Lock Plus 2.0 5055700201",
+   "board_housing": "5055700201",
+   "board_wire_AWG": 26,
+   "ok": true,
+   "status": "FROZEN_FOR_FIRST_FIVE"
+  }
+ },
+ "contract": "battery_pack",
+ "controls_refused": {
+  "1p5A_discharge_variant_refused": true,
+  "24AWG_harness_mismatch_refused": true,
+  "2A_connector_rating_refused": true,
+  "700mA_charge_variant_refused": true,
+  "8p1mm_thick_variant_refused": true,
+  "datasheet_hash_tamper_refused": true,
+  "old_JST_board_header_refused": true,
+  "reversed_harness_polarity_refused": true,
+  "skipped_polarity_check_refused": true,
+  "unprotected_pack_refused": true,
+  "unsupervised_no_thermistor_refused": true,
+  "wrong_connector_refused": true
+ },
+ "decision": "CTO-BAT-01",
+ "requirements": {
+  "accessory_modes_A": {
+   "acc3v3_alone_at_its_limiter": 2.3366,
+   "acc5v_alone_at_its_limiter": 2.521,
+   "both_at_their_guaranteed_currents": 2.4383,
+   "both_at_their_published_budgets": 2.3753,
+   "both_limiters_in_fault": 3.5581
+  },
+  "board_sha256": "cef458b92c6e92462bea250b434a481b3e8454a991eb13b2b66623ca1f4a880e",
+  "discharge_margin_ratio": 1.2,
+  "ichg_nominal_A": 0.7692307692307693,
+  "max_user_reachable_battery_A": 2.521,
+  "r37_ohm": 390.0,
+  "required_pack_charge_A": 0.8547008547008548,
+  "required_pack_discharge_A": 3.0252
+ },
+ "schema": 1,
+ "selected_record": "docs/full-beta-v2/assembly/SELECTED_BATTERY.json",
+ "verdict": "PASS"
+}

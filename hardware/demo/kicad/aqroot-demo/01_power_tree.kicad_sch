@@ -10722,9 +10722,9 @@
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
-		(in_bom yes)
+		(in_bom no)
 		(on_board yes)
-		(in_pos_files yes)
+		(in_pos_files no)
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "423c9ce8-33e9-4d9f-a772-570198fe5cb1")
@@ -10739,7 +10739,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "JST-PH-2 BATTERY"
+		(property "Value" "BATTERY PIGTAIL 26AWG"
 			(at 255.27 134.6199 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -10761,7 +10761,7 @@
 				)
 			)
 		)
-		(property "Datasheet" ""
+		(property "Datasheet" "docs/full-beta-v2/assembly/BATTERY_HARNESS.json"
 			(at 252.73 132.08 0)
 			(hide yes)
 			(show_name no)
@@ -10772,7 +10772,7 @@
 				)
 			)
 		)
-		(property "Description" "Generic connector, single row, 01x02, script generated (kicad-library-utils/schlib/autogen/connector/)"
+		(property "Description" "Manual battery pigtail land: two 0.75 mm PTH pads at 2.00 mm pitch; no JST header fitted. Board-side 26 AWG red/black wires terminate in frozen Molex Micro-Lock Plus 2.0 W/W harness per D-781."
 			(at 252.73 132.08 0)
 			(hide yes)
 			(show_name no)
@@ -10783,7 +10783,7 @@
 				)
 			)
 		)
-		(property "Note2" "SOURCING 2026-08-23 (FBV2-S2-002) (B-71). B2B-PH-K-S(LF)(SN) = LCSC C131337, stock 378913. J6 was normalised to this same string. LCSC/JLC library state verified live on 2026-08-23 through the JLCPCB parts API (D-096). Stock is a snapshot, not a guarantee."
+		(property "Note2" "D-781 2026-09-19. J4 is NOT a purchased PCB connector and is excluded from BOM/CPL. Reuse the existing two plated holes without moving protected battery copper. Use Molex 2175012101 red and 2175011101 black factory pre-crimped 26 AWG pigtails in 5055700201; solder red to J4.1 BAT_CONNECTOR_P and black to J4.2 GND after a stripped-conductor fit check in an actual finished 0.75 mm J4 PTH. Battery side is 2137192021 + 2137201000 after incoming lead-OD qualification; final detachable interface is Micro-Lock Plus 2.0 W/W. See assembly/BATTERY_HARNESS.json and THT_LEAD_TRIM.md."
 			(at 252.73 132.08 0)
 			(hide yes)
 			(show_name no)
@@ -10794,7 +10794,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C131337"
+		(property "LCSC" ""
 			(at 252.73 132.08 0)
 			(hide yes)
 			(show_name no)
@@ -10805,7 +10805,7 @@
 				)
 			)
 		)
-		(property "Manufacturer" "JST"
+		(property "Manufacturer" "AQROOT manual harness"
 			(at 252.73 132.08 0)
 			(hide yes)
 			(show_name no)
@@ -10816,7 +10816,7 @@
 				)
 			)
 		)
-		(property "MPN" "B2B-PH-K-S(LF)(SN)"
+		(property "MPN" "D-781-BAT-PIGTAIL"
 			(at 252.73 132.08 0)
 			(hide yes)
 			(show_name no)
