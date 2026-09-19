@@ -20,6 +20,9 @@
   "supplier_recommended_max_charge_A": 1.2,
   "linked_datasheet_max_charge_A": 2.5,
   "linked_datasheet_max_discharge_A": 5.0,
+  "linked_datasheet_max_discharge_notation": "2C5A",
+  "linked_datasheet_max_discharge_C5_multiplier": 2.0,
+  "linked_datasheet_max_discharge_basis": "785060 specification section 8.3.2: discharge current <=2C5A; with rated C5 capacity 2500 mAh, 2C5 = 5.0 A. This is a derived current from the datasheet C-rate notation, not a literal row labelled 5 A max discharge.",
   "linked_datasheet_charge_temp_C": [
     0,
     40

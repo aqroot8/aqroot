@@ -4,6 +4,7 @@
 // 400 mA / 300 mA budgets; this test pins the BEHAVIOUR those numbers drive.
 #include <cstdio>
 #include "aqroot_accessory_power_policy.h"
+#include "max17048_guard.h"
 
 using aqroot::AccessoryBatteryAction;
 using aqroot::accessoryEnableAllowed;
@@ -21,6 +22,39 @@ static void claim(const char *name, bool ok) {
   std::printf("[%s] %s\n", ok ? "PASS" : "FAIL", name);
   if (!ok) ++failures;
 }
+
+class GaugeBus : public aqroot::I2cBus {
+ public:
+  bool write_ok = true;
+  bool hibrt_read_ok = true;
+  bool vcell_read_ok = true;
+  bool ignore_hibrt_write = false;
+  uint16_t hibrt = 0x8030;
+  uint16_t vcell = 0xC000;
+
+  bool write(uint8_t, const uint8_t *data, size_t length) override {
+    if (!write_ok) return false;
+    if (length == 3 && data[0] == aqroot::Max17048Guard::kRegHibrt &&
+        !ignore_hibrt_write)
+      hibrt = uint16_t(data[1]) << 8 | data[2];
+    return true;
+  }
+
+  bool readRegister(uint8_t, uint8_t reg, uint8_t *data, size_t length) override {
+    if (length != 2) return false;
+    if (reg == aqroot::Max17048Guard::kRegHibrt) {
+      if (!hibrt_read_ok) return false;
+      data[0] = uint8_t(hibrt >> 8); data[1] = uint8_t(hibrt); return true;
+    }
+    if (reg == aqroot::Max17048Guard::kRegVcell) {
+      if (!vcell_read_ok) return false;
+      data[0] = uint8_t(vcell >> 8); data[1] = uint8_t(vcell); return true;
+    }
+    return false;
+  }
+
+  bool probe(uint8_t) override { return true; }
+};
 
 int main() {
   claim("single floor is D-766's retained 3.50 V",
@@ -109,5 +143,51 @@ int main() {
   claim("a plausible reading at the dual floor is still retained",
         accessoryRetentionAction(true, 3.80f, true, true)
             == AccessoryBatteryAction::Keep);
+
+  // ---- Round 4: active-mode configuration is part of measurement validity -
+  {
+    GaugeBus bus;
+    aqroot::Max17048Guard gauge(0x36);
+    float v = 0.0f;
+    claim("VCELL is refused before active-mode configuration is verified",
+          !gauge.readVcell(bus, &v));
+
+    bus.write_ok = false;
+    claim("failed HIBRT write makes gauge configuration fail",
+          !gauge.configureActiveMode(bus));
+    claim("plausible stale VCELL remains unusable after failed HIBRT write",
+          !gauge.readVcell(bus, &v));
+
+    bus.write_ok = true;
+    bus.hibrt_read_ok = false;
+    claim("HIBRT write without a successful readback is not configuration proof",
+          !gauge.configureActiveMode(bus) && !gauge.activeReady());
+
+    bus.hibrt_read_ok = true;
+    bus.ignore_hibrt_write = true;
+    bus.hibrt = 0x8030;
+    claim("a successful HIBRT transaction with nonzero readback is rejected",
+          !gauge.configureActiveMode(bus) && !gauge.activeReady());
+
+    bus.ignore_hibrt_write = false;
+    bus.hibrt = 0x8030;
+    bus.vcell = 0xC300;
+    claim("HIBRT=0 write plus exact readback establishes active mode",
+          gauge.configureActiveMode(bus) && gauge.activeReady());
+    claim("verified active-mode gauge permits a VCELL read",
+          gauge.readVcell(bus, &v) && vcellIsPlausible(v));
+
+    bus.hibrt = 0x8030;  // emulate gauge reset / configuration loss
+    claim("later HIBRT configuration loss invalidates VCELL permission",
+          !gauge.readVcell(bus, &v) && !gauge.activeReady());
+
+    bus.hibrt = 0;
+    claim("active mode can be re-established only by the explicit configure path",
+          gauge.configureActiveMode(bus));
+    bus.hibrt_read_ok = false;
+    claim("failed HIBRT supervision read fails closed before VCELL",
+          !gauge.readVcell(bus, &v) && !gauge.activeReady());
+  }
+
   return failures ? 1 : 0;
 }

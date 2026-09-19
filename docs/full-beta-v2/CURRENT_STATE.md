@@ -72,6 +72,15 @@
 > `verify_promotion` PASS and `protected_copper` showing exactly one protected
 > net moved.  `U14.7` is on the bus.  This board has **no open owner decision**.
 
+> # **D-782 ROUND-4 CORRECTION CANDIDATE — NO COPPER RESPIN; EXTERNAL RE-REVIEW STILL REQUIRED**
+>
+> **Authority board SHA-256 remains `cef458b92c6e92462bea250b434a481b3e8454a991eb13b2b66623ca1f4a880e`; no PCB copper/geometry changed.**
+> Astra's Round-4 executable counterexamples were reproduced and closed in the firmware/verifier/package layers: partial/lost-ACK enables now enter pending-safe recovery; software state comes from confirmed PCAL output latches rather than a stale one-shot event; runtime safe shutdown no longer blanket-resets U2 display/touch/LoRa lines; failed boot-safe establishment is retried after bus recovery; MAX17048 HIBRT=0 is write/readback-qualified and reverified before safety VCELL use; F8 binds voltage evidence to exact manufacturer/MPN and requires a bounded DC or named non-DC proof for every fitted capacitor; assembly drawings/package semantics are machine-checked.
+>
+> Fable's additional findings are dispositioned too: the pinned 785060 spec really says discharge <=2C5A, which derives to 5.0 A from the 2500 mAh C5 capacity and is now documented as a derivation; backlight PWM primes at 100% for 2 ms before low-duty operation; J4 strain relief is frozen to DOWSIL 3145 with exact finished-hole/tinned-tip/service-loop rules; and DEVICE_SPEC states that the 3.80 V dual-rail threshold is a **loaded protected-node floor**, so full simultaneous budgets are not promised at every battery state.
+>
+> The design remains **`EXTERNAL_REVIEW_HOLD`**. D-782 may become the next Astra/Fable review target only after the transaction is fully regenerated, all standing contracts/builds pass, and the resulting HEAD is committed/pushed clean. Manufacturer/CAM acceptance and named first-article tests remain separate gates; no owner decision is open.
+>
 > # **D-780 / D-781 SUPERSEDE D-777/D-779: FROZEN CANDIDATE FOR EXTERNAL RE-REVIEW**
 >
 > **Authority board SHA-256: `cef458b92c6e92462bea250b434a481b3e8454a991eb13b2b66623ca1f4a880e`.**

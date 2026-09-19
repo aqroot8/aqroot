@@ -53,8 +53,8 @@ Date: 2026-08-22 (updated **2026-08-24 by FBV2-P1-002 — circular NFC geometry 
 > the USB shell, the 915 MHz bulkhead and pigtail, and the IR structures. **The `U7` IPEX
 > socket must remain reachable with the shell open** so the flex can be swapped for an
 > external pigtail without a respin. Record as an antenna keepout for FBV2-P1.
-> **915 MHz:** an **SMA female bulkhead on the top panel**, fed by a 100–150 mm pigtail
-> from the `U8` IPEX socket. **≥ 8 mm edge-to-edge between the SMA body and either IR
+> **915 MHz:** an **SMA female bulkhead on the top panel**, fed by the locked **200 mm RF Solutions `CBA-UFLSMA20IP`** RG-178 pigtail
+> from the `U8` IPEX/MHF1 socket. **≥ 8 mm edge-to-edge between the SMA body and either IR
 > aperture**, and the pigtail must not cross the IR optical path (**B-52** — spacing is
 > recorded, **no CAD was created**). Nothing dimensional elsewhere in this document changed.
 
@@ -65,9 +65,9 @@ Date: 2026-08-22 (updated **2026-08-24 by FBV2-P1-002 — circular NFC geometry 
 > **not** performed, because full footprint and mechanical equivalence was not
 > demonstrated from both Hirose drawings (**B-47**). The 2.3 mm connector height and the
 > B-33 placement constraint are unchanged. **Nothing dimensional in this document changed.**
-Task: FBV2-MECH-001
+Task: FBV2-MECH-001 (historical origin; subsequently implemented through FBV2-P1/P2)
 Gate: **FBV2-A2**
-Status: interface freeze. **No CAD exists yet. No PCB outline has been drawn.**
+Status: **implemented/consumed as a pre-CAD source.** The authoritative Demo PCB/floorplan now exists; current enclosure execution items remain CAD-to-verify where explicitly named below.
 
 > This document supersedes, for Full Beta v2 only, the dimensional content of
 > *Enclosure Field Slate v3/v4/v5*. Those remain the historical record and the
@@ -104,17 +104,17 @@ value is TARGET, however confident the arithmetic.
 | 9 | **NFC_ZONE** | **48 × 48 mm** minimum clear region, metal-free, rear upper third | **LOCKED** | **D-127 / D-128 / D-131** (FBV2-S1-004B/C) — 46 mm `FXC.46.52.0075X.B.dg` plus installation tolerance. ***The 45 × 45 mm figure carried here until FBV2-MECH-002 was STALE and is SUPERSEDED.*** §6 |
 | 10 | **SPEAKER_ENVELOPE** | **Ø20 × 3.0 mm** + **1.5–2.0 cm³** rear cavity | **LOCKED** | **D-148.** Fitted part **PUI `AS02008MR-LW152-R`**, Ø20 ± 0.2 × 3 ± 0.2 mm. Supersedes the Ø20 × 4.0 / 15 × 11 × 3.5 targets and **releases 1 mm of Z** in the speaker column. The rear-cavity requirement is unchanged |
 | 11 | **COMMUNITY_CONNECTOR_ENVELOPE** | **61.47 mm long body, 6.53 mm tail-row → mating face, 8.50 mm tall**; **1 × 24 @ 2.54 mm**, FEMALE, right-angle, right wall. Samtec **`SSQ-124-02-G-S-RA`** — the part actually on the board.  ***~~30.48 × 8.13 × 5.33 mm, 2×12, `BCS-112-S-D-HE`~~ SUPERSEDED 2026-08-24 by D-237/D-240 and left standing HERE, unmarked, until D-738.***  Dimensions are the footprint master's own, from the Sullins 1-row right-angle recommended layout it is drawn to | **REVISED** D-237/D-240 | §5 (which already carried the supersession banner); footprint `AQROOT_Beta:Samtec_SSQ-124-02-G-S-RA`. Harwin `M20-7881242` **REJECTED as obsolete** |
-| 12 | **ANTENNA_CONNECTOR_LOCATION** | top edge, **left half**; **Ø6.5 mm bulkhead clearance hole**; ***P1 FINDING (D-218): with `U8` at the bottom rear the routed coax run is ≈ 190 mm, so neither the 100 mm nor the 150 mm assembly reaches, and a top-LEFT SMA forces the coax across the NFC zone. OPEN for CTO ruling.***; **≥15 mm centre-to-centre from either IR window** *and* **≥8 mm edge-to-edge between the SMA body and either IR aperture**. **Both rules are current — see §8.1** | **LOCKED** (both rules) | **§8.1.** 15 mm: FBV2-MECH-001. 8 mm: **D-120**, restated by **M-13** (FBV2-S2-001) |
+| 12 | **ANTENNA_CONNECTOR_LOCATION** | top edge, **left half**; **Ø6.5 mm bulkhead clearance hole**; locked **RF Solutions `CBA-UFLSMA20IP` 200 mm** pigtail has a measured **138.48 mm** routed run plus ≥15 mm service loop, leaving **46.52 mm spare**; **≥15 mm centre-to-centre from either IR window** *and* **≥8 mm edge-to-edge between the SMA body and either IR aperture** | **LOCKED** | D-223; FBV2-P1-002; §8.1 / M-13 |
 | 13 | **USB_LOCATION** | bottom edge, centred ±5 mm | **TARGET** | CTO layout |
 | 14 | **MICROSD_LOCATION** | bottom edge, left of USB-C, ≥8 mm centre-to-centre clearance | **TARGET** | CTO layout |
 | 15 | **IR_ZONE** | top edge, **right half**; emitter and receiver ≥**15 mm** apart with an opaque barrier | **TARGET** | §8 |
-| 16 | **MOUNTING_BOSSES** | **6 × M2**, Ø6.0 mm keepout, 4 corners + 2 mid-span | **TARGET** | §4 |
+| 16 | **MOUNTING_BOSSES** | **2 × M2**, Ø2.2 mm NPTH with Ø4.5 mm keepout, plus moulded edge-capture rails / non-metallic support ribs / J5 backing load path | **LOCKED** | D-226/D-232; current PCB/mechanical keepout contract |
 | 17 | **REQUIRED_CLEARANCES** | PCB edge→cavity wall **≥1.5 mm**; component→shell **≥0.5 mm**; connector→wall **≥0.3 mm** | **TARGET** | §3, §4 |
 | 18 | Device orientation | **portrait** — **85** wide × 160 tall (***~~80~~ SUPERSEDED D-738 with item 1***) | **LOCKED** | Implied by the CTO face assignment and confirmed by the Beta-DM 74 × 155 outline mapping |
 | 19 | Display size | **3.5 inch** | **LOCKED** | **D-072** |
 | 20 | Display panel MPN / FPC | **`ER-TFT035IPS-6` + `ER-TPC035-6`** — one **50-pin, 0.50 mm pitch, bottom-contact** FPC, **0.30 ± 0.03 mm** thick, 25.5 ± 0.15 mm wide, 30 ± 0.5 mm free length; CTP **FT6236 @ 0x38** on pins 44–47 of the same tail | **LOCKED** | **D-074 / D-075.** M-06 closed |
 | 21 | J1 mating connector | **Hirose `FH69-50S-0.5SH`** — 0.5 mm, 50 pos, **top *and* bottom contact**, FPC **0.30 ± 0.05 mm**, height **2.3 mm**, right-angle, backflip ZIF. **`J1` sits on a DEDICATED FH69 LAND PATTERN. There is NO drop-in second source: `FH52E-50S-0.5SH` does NOT share the FH69 land pattern and is NOT a second source. Single-source connector architecture.** **JLC stocks the genuine Hirose part and `J1` is MACHINE-PLACEABLE — re-check stock before ordering.** | **LOCKED** | **D-076.** ***D-077's "FH12 / FH52E standard land pattern, second source FH52E-50S-0.5SH, mating proven from both drawings" is SUPERSEDED — B-47 resolved NOT COMPATIBLE (D-194); machine-placement per D-206 / D-207.*** |
-| 22 | Battery SKU | — | **TBD** | envelope LOCKED instead (row 7) |
+| 22 | Battery SKU | **Adafruit Product 328 / linked 785060, protected 2500 mAh**; D-781 reterminates to the frozen Micro-Lock harness | **SELECTED first-five** | CTO-BAT-01; `assembly/SELECTED_BATTERY.json` / `BATTERY_HARNESS.json` |
 
 ---
 
@@ -489,7 +489,9 @@ REVISION B, FIG 3 (`BCS-1XX-XXX-D-HE-XXX`)** — the horizontal dual-row figure 
 **A vertical 2 × 12 pattern is NOT a substitute — its rows sit 2.54 mm apart, not
 7.87 mm.** B-29 is closed.
 
-**PCB envelope required, for FBV2-P1 floorplanning:**
+**HISTORICAL BCS GEOMETRY — RETIRED; DO NOT USE FOR CURRENT `J5`.** The table below is retained only to explain the superseded 2×12 layout. Current `J5` authority is M-12 and the D-745 geometry in §3.3.
+
+**Retired PCB envelope:**
 
 | item | value |
 |---|---|
@@ -504,12 +506,12 @@ REVISION B, FIG 3 (`BCS-1XX-XXX-D-HE-XXX`)** — the horizontal dual-row figure 
 > row B; pad 1 is rectangular with a silkscreen tick and a `PIN 1` legend; the
 > F.Fab layer carries a `MATES ->` direction mark.
 
-**Assembly — CURRENT TRUTH (D-206 / D-207, confirmed FBV2-MECH-002):** `J5` **IS** a
-**manual / secondary assembly operation for the first five boards** — it is one of
-**exactly two** hand-soldered parts per board, the other being `D1` (5 mm THT IR emitter).
-*(The earlier conditional phrasing — "if the JLC service cannot place this…" — is resolved:
-it cannot, and the part is class E.)* The connector architecture is not compromised for SMT
-convenience.
+**Assembly — CURRENT TRUTH (D-782):** `J5` remains a **manual / secondary
+assembly operation** for the first five boards. It is **not** one of only two
+manual operations: the current plan also includes the `J4` battery pigtail and
+the formed/trimmed `D1`/`U6` THT operations (plus `J6` as a THT speaker header).
+The exact sequence is governed by `assembly/FIRST_FIVE_ASSEMBLY_PLAN.md`; this
+historical section must not be used to count hand operations.
 
 **HISTORICAL BCS wall aperture:** 34 × 10 mm nominal, with 0.3 mm clearance to the accessory shell on all sides, plus the keying rib. **SUPERSEDED — current SSQ uses the 62.5 mm closed-end recess and x=72.430 mating-face contract above.**
 
@@ -591,7 +593,7 @@ natural home for the NFC loop, and it costs nothing.
 | Chemistry / SKU | **TBD** — envelope frozen instead |
 | Retention | adhesive pad plus a moulded rib pocket; **no compression against the shell** |
 | PCB features under the battery | **≤1.2 mm** (measured Beta-DM limit, retained) |
-| Connector | JST-PH 2-pin, service loop routed away from the NFC zone |
+| Connector | **D-781 manual 26-AWG J4 pigtail → Molex Micro-Lock Plus 2.0 W/W**, with frozen service loop/strain relief; no PCB JST header fitted |
 
 This raises the assumed pack from the 2000 mAh used in the power budget
 ([[13 - Power Budget and Battery Runtime v0.1]]) to the 2500–3000 mAh class, which
@@ -712,10 +714,7 @@ neither figure previously said what it was measured between.**
 9.5 mm across flats / ~11 mm across corners, and an IR aperture for the Ø5 mm `TSAL6100` or the
 `TSOP38238` lens is roughly Ø5.5–6.0 mm. On those figures, **8 mm edge-to-edge implies ≈ 15.5–16.5 mm
 centre-to-centre**, i.e. the two rules are mutually consistent and **8 mm edge-to-edge is the binding
-one**. **The Amphenol `095-902-568-150` body OD is NOT measured here** — confirm it against the
-manufacturer drawing at FBV2-P1 / enclosure CAD. If the real body proves smaller than assumed, the
-15 mm centre rule becomes the binding one instead; **satisfy whichever is larger.** **B-52 stays OPEN**
-— spacing is recorded, **no CAD exists**.
+one**. **The current RF Solutions `CBA-UFLSMA20IP` SMA(F) bulkhead envelope must be confirmed in enclosure CAD/sample**, not inferred from the superseded Amphenol body. Satisfy **both** locked spacing rules; whichever produces the larger physical separation is binding. The PCB/floorplan route itself is closed by D-223/FBV2-P1-002; enclosure execution remains CAD-to-verify.
 
 ---
 
@@ -725,7 +724,7 @@ manufacturer drawing at FBV2-P1 / enclosure CAD. If the real body proves smaller
 |---|---|
 | **Front** | Display/touch (upper), D-pad (lower left), A + B (lower right), microphone aperture (bottom, opposite the speaker), **RGB status light (position deliberately not locked — see M-11)** |
 | **Top** | Antenna bulkhead connector (left half), IR TX + IR RX windows (right half) with an opaque barrier |
-| **Left** | Antenna storage channel, terminating below Y = 100 mm |
+| **Left** | **No antenna-storage channel (D-219).** Internal 433 MHz flex + service access / 915 coax routing only |
 | **Right** | **24-contact 1×24 `SSQ-124-02-G-S-RA` Community Port** in the **62.5 mm closed-end recess** following the current wall step — Power `SW9` at doc (66.700, 61.500) — Qwiic/STEMMA QT. **BOOT is not on this wall.** |
 | **Bottom** | USB-C (centre), microSD (left of USB-C) |
 | **Rear** | NFC loop zone (upper third), battery (lower two-thirds), speaker opening (lower right), branding |
@@ -743,13 +742,13 @@ manufacturer drawing at FBV2-P1 / enclosure CAD. If the real body proves smaller
 | ~~M-06~~ | ~~Display MPN and FPC interface~~ | **CLOSED 2026-08-23 by D-074…D-078.** `ER-TFT035IPS-6` + `ER-TPC035-6`; 50-pin 0.5 mm bottom contact, 0.30 ± 0.03 mm; `J1` = `FH69-50S-0.5SH` |
 | ~~M-07~~ | ~~Backlight driver re-derivation~~ | **CLOSED 2026-08-23 by D-079.** TPS61169 retained from `+3V3`; `R69` = 1.87 R, `R70`–`R73` = 4 × 33 R |
 | **M-08** | **Connector placement below the display** | The 2.3 mm `J1` competes with the D-pad, A/B and the mic aperture for the 70.04 mm of cavity height under the panel. **Blocks nothing before FBV2-P1** (B-33) |
-| ~~M-03~~ | ~~Community connector MPN~~ | **CLOSED 2026-08-23 by D-093** — Samtec `BCS-112-S-D-HE`. *(The D-083 Harwin selection was rejected as obsolete and replaced.)* |
+| ~~M-03~~ | ~~Community connector MPN~~ | **CLOSED, CURRENT IDENTITY D-738:** Samtec **`SSQ-124-02-G-S-RA`**, 1×24 right-angle female socket. The earlier `BCS-112-S-D-HE` 2×12 selection is retired historical context only; M-12 carries the current board/enclosure geometry. |
 | ~~**M-09**~~ | ~~Confirm the connector body height~~ | **CLOSED AS A CONSERVATIVE BOUND (D-744; arithmetic/source clarified D-764).** Samtec's current SSW/SSQ sheet gives **8.51 mm as the largest body dimension**. Whatever its exact orientation in the right-angle part, the dimension normal to the PCB cannot exceed that largest dimension. Using the full 8.51 mm therefore bounds the stack at `2.0 + 8.51 + 1.6 + 8.0 + 0.6 + 2.0 =` **22.71 mm of 23.0**, leaving **≥0.29 mm**. **Exact CAD/sample clearance remains mandatory before enclosure tooling, but it is no longer an unresolved PCB-fit question.** |
 | **M-10** | **Insertion load path** | **~33 N average** (24 contacts × 1.39 N avg), **peak higher** — Samtec publishes averages, and its own note states the peak occurs during the spreading stage. The enclosure must carry it on a boss or rib (D-097) |
 | **M-11** | **Front RGB status-light aperture — NEW 2026-08-23 (FBV2-S1-008)** | **The requirement is FRONT-FACING and visible; the exact front position is deliberately NOT locked.** Upper bezel, lower bezel, beside the display or near the controls are all acceptable. **It is NOT a top-edge part** — the top crown is the IR and antenna region. `D13` is a **surface-mount PLCC-4, 3.50 × 2.80 × 1.85 mm, 120° emission, water-clear lens** on the **front-facing PCB surface**, so the enclosure must provide a **diffuser or light pipe: no protruding bare LED, and no direct line of sight to the die.** A water-clear 120° source behind a bare hole is a point glare source; the diffuser is what makes it read as a status light. **Delivered output is roughly 80 / 87 / 42 mcd (R/G/B)** at 1.0–1.7 mA per channel, so the optical path must not be lossy — budget for a short pipe or a thin diffuser, not a deep light guide. **Placement and CAD own the final position.** Does not block FBV2-A2 |
 | **M-12** | **Current Community connector land / enclosure interface** | **CLOSED ON THE PCB.** Current `J5` is the 1×24 `SSQ-124-02-G-S-RA`: **24 × Ø1.02 mm PTH**, 1.60 mm pads, 2.54 mm pitch, **58.420 mm** pin span. The enclosure still owns the 62.5 mm closed-end recess and M-10 load path. The old 24 × Ø0.71 mm / 27.94 × 7.87 mm field was the superseded 2×12 BCS footprint and is historical only. |
 | **M-14** | **Microphone acoustic port — NEW 2026-08-23 (FBV2-S2-002, D-203/B-63)** | `MK1` is a **BOTTOM-PORT** MEMS microphone. It sits on the **TOP** of the PCB and listens **THROUGH** the board, so **the acoustic path leaves on the BOTTOM face**. The board now carries a **Ø1.05 mm non-plated hole** concentric with pad 4 — the diameter is the PUI drawing's own pad-4 GND-ring inner diameter, i.e. the part's port aperture. **The enclosure aperture and any acoustic gasket belong on the BOTTOM face, not the component face.** The region marked by the dashed `B.Fab` circle in the footprint must stay free of copper pours, traces, vias, silkscreen and mask steps **on both faces** so the port can be sealed. Does not block FBV2-A2; **input to FBV2-P1 and to the enclosure CAD** |
-| **M-13** | **Manual-assembly and panel-hardware consequences — current Demo** | **D-763/D-764 CURRENT TRUTH: five leaded THT parts are hand-soldered after reflow — `J4`, `J5`, `J6`, `D1`, `U6`.** `J4` must be trimmed to **≤0.50 mm** of conductor above F.Cu and then covered, both joints together, by a **≤0.10 mm polyimide** insulation patch before the display (D-766, `THT_LEAD_TRIM.md` J4-T1/J4-T3) — 0.60 mm total against the 0.80 mm `DISPLAY_SHADOW` allowance, where the previous 0.80 mm declaration met the limit with zero margin and no insulation on a RAW BATTERY POSITIVE contact; `D1`/`U6` are lead-formed and trimmed per the normative assembly docs. `J1` remains machine-placed. The 915 MHz interface remains Amphenol `095-902-568-150` with Ø6.5 mm top-edge bulkhead hole, ≥15 mm from either IR centre and ≥8 mm edge-to-edge from either IR aperture. |
+| **M-13** | **Manual-assembly and panel-hardware consequences — current Demo** | **D-781/D-782 CURRENT TRUTH:** `J4` is **not a fitted connector**; it is the manual 26-AWG battery-pigtail solder interface. `J5` remains a manual/secondary Samtec operation, `J6` is the speaker THT header, and `D1`/`U6` are formed/trimmed THT operations after reflow. For `J4`, solder the pigtail from B.Cu, keep the **front conductive profile ≤0.50 mm**, then apply the **≤0.10 mm polyimide** patch before fitting the display; strain-relieve the rear pigtail with the frozen DOWSIL 3145 process in `BATTERY_HARNESS.json`, preserve the service loop, and disconnect the Micro-Lock pair by the housings only. `J1` remains machine-placed. The 915 MHz interface is the locked **RF Solutions `CBA-UFLSMA20IP` 200 mm** U.FL/MHF1-to-SMA(F) bulkhead pigtail with Ø6.5 mm top-edge panel hole, ≥15 mm centre-to-centre from either IR window and ≥8 mm edge-to-edge from either IR aperture. |
 | ~~M-04~~ | **Battery SKU CLOSED CTO-BAT-01** | **First five: Adafruit Product 328, protected 2500 mAh LiPo.** Max linked-spec pack 7.9 × 50.5 × 60.5 mm is inside the 57 × 75 × 8.0 mm reservation; electrical qualification is machine-checked by `battery_pack_contract.py`. |
 | M-05 | Cosmetic surfacing, radii, texture, branding | **Does not block FBV2-A2** |
 

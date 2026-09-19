@@ -1345,6 +1345,8 @@ def _fab14_survey(pkg, manifest, text_override=None):
             "file_present": path.is_file(),
             "layer_matches": meta.get("layer") == want["layer"],
             "mirror_matches": meta.get("mirrored") is want["mirrored"],
+            "framed_scale_centered": (meta.get("scale") == "0.60"
+                                      and meta.get("centered") is True),
             "release_printed": bool(release and ("RELEASE %s" % release) in text),
             "board_sha_printed": board_sha in text,
             "side_printed": ("AQROOT DEMO ASSEMBLY - %s" % side.upper()) in text,
@@ -1402,6 +1404,11 @@ def fab14(pkg, manifest):
                                bad["bottom"], count=1)
         controls["critical_ref_missing_from_drawing_is_refused"] = bool(
             _fab14_survey(pkg, manifest, bad)[1])
+        bad_manifest = json.loads(json.dumps(manifest))
+        bad_manifest["assembly_drawings"]["sides"]["top"]["scale"] = "1.0"
+        bad_manifest["assembly_drawings"]["sides"]["top"]["centered"] = False
+        controls["unsafe_assembly_plot_scale_is_refused"] = bool(
+            _fab14_survey(pkg, bad_manifest)[1])
     return dict(ok=(not problems and bool(controls) and all(controls.values())),
                 release=(manifest.get("assembly_drawings") or {}).get("release"),
                 board_sha256=sha256(BOARD), drawings=rows,
@@ -1454,7 +1461,7 @@ def _fab15_survey(board, text):
         if token in text:
             stale.append(token)
 
-    j4_live = ("D-781 manual battery pigtail" in manual
+    j4_live = ("manual battery pigtail" in manual
                and "2175012101" in manual and "2175011101" in manual
                and "5055700201" in manual and "no PCB header fitted" in manual
                and "Do not install JST `C131337` at J4" in manual)
@@ -1471,7 +1478,7 @@ def _fab15_survey(board, text):
                 leaded_refs_in_machine_classes=in_machine,
                 missing_from_class_E=missing_manual,
                 stale_release_phrases=stale,
-                j4=dict(ok=j4_live, manual_D781_pigtail=("D-781 manual battery pigtail" in manual),
+                j4=dict(ok=j4_live, manual_current_pigtail=("manual battery pigtail" in manual),
                         exact_board_precrimps=("2175012101" in manual and "2175011101" in manual),
                         exact_housing=("5055700201" in manual), old_header_absent=(not any(
                             t in manual for t in ("| `B2B-PH-K-S(LF)(SN)` JST PH (`C131337`) | **`J4`**",
@@ -1499,7 +1506,7 @@ def fab15(board_facts_unused):
         bad = text.replace("| `TSOP38238` (`C141632`) | `U6` |", "| `TSOP38238` (`C141632`) | `U6X` |", 1)
         controls["a_missing_THT_manual_route_is_refused"] = not _fab15_survey(board, bad)["ok"]
         # Put the old purchased JST header back at J4; the plan must refuse it.
-        bad = text.replace("**D-781 manual battery pigtail**", "`B2B-PH-K-S(LF)(SN)` JST PH (`C131337`)", 1)
+        bad = text.replace("**D-781/D-782 manual battery pigtail**", "`B2B-PH-K-S(LF)(SN)` JST PH (`C131337`)", 1)
         controls["old_J4_JST_header_route_is_refused"] = not _fab15_survey(board, bad)["ok"]
     return dict(ok=(row["ok"] and bool(controls) and all(controls.values())),
                 plan=str(plan.relative_to(ROOT)), survey=row,
@@ -1510,14 +1517,26 @@ def fab15(board_facts_unused):
 def _fab16_semantics(rec):
     b = rec.get("board_side", {}); p = rec.get("battery_side", {})
     r = rec.get("controlling_rating", {}); pol = rec.get("polarity", {})
+    relief = rec.get("strain_relief", {})
     return (rec.get("decision") == "D-781" and rec.get("status") == "FROZEN_FOR_FIRST_FIVE"
             and b.get("wire_AWG") == 26 and "2175012101" in b.get("precrimp_red", "")
             and "2175011101" in b.get("precrimp_black", "")
             and b.get("receptacle_housing") == "5055700201"
+            and float(b.get("nominal_drill_mm", 0)) == 0.75
+            and float(b.get("required_finished_hole_min_mm", 0)) == 0.70
+            and float(b.get("factory_tinned_tip_max_mm", 99)) <= 0.65
+            and "do NOT cut/re-strip/re-tin" in b.get("assembly", "")
             and "NO JST header fitted" in b.get("board_land", "")
             and p.get("factory_lead_AWG") == 26 and p.get("plug_housing") == "2137192021"
             and p.get("male_terminal") == "2137201000"
             and r.get("wire_AWG") == 26 and float(r.get("rated_current_A", 0)) == 2.6
+            and relief.get("material") == "DOWSIL 3145 RTV MIL-A-46146 Adhesive/Sealant, gray"
+            and relief.get("manufacturer") == "Dow"
+            and relief.get("primary_source_url") ==
+                "https://www.dow.com/en-us/pdp.dowsil-3145-rtv-mil-a-46146-adhesive-sealant.01059548z.html"
+            and "non-flow" in relief.get("primary_source_basis", "").lower()
+            and ">=35 mm" in relief.get("service_loop", "")
+            and "never disconnect by pulling" in relief.get("disconnect_instruction", "")
             and pol.get("cavity_1") == "BAT+ / red / J4.1"
             and pol.get("cavity_2") == "GND / black / J4.2")
 
@@ -1544,13 +1563,21 @@ def fab16(pkg, manifest):
         exact_D781_semantics=_fab16_semantics(rec),
         fab_notes_point_to_packaged_harness=("aqroot-Demo-BATTERY-HARNESS.json" in notes
                                              and "Do not fit the old JST-PH board header" in notes
-                                             and "2.6 A" in notes))
+                                             and "2.6 A" in notes
+                                             and ">=0.70 mm finished plated-hole diameter" in notes
+                                             and "DOWSIL 3145" in notes
+                                             and ">=35 mm" in notes
+                                             and "never unplug by pulling wires" in notes))
     controls = {}
     if rec:
         m = json.loads(json.dumps(rec)); m["controlling_rating"]["rated_current_A"] = 2.0
         controls["a_2A_harness_is_refused"] = not _fab16_semantics(m)
         m = json.loads(json.dumps(rec)); m["board_side"]["wire_AWG"] = 24
         controls["a_24AWG_board_side_mismatch_is_refused"] = not _fab16_semantics(m)
+        m = json.loads(json.dumps(rec)); m["board_side"]["required_finished_hole_min_mm"] = 0.60
+        controls["an_undersized_finished_J4_hole_process_is_refused"] = not _fab16_semantics(m)
+        m = json.loads(json.dumps(rec)); m["strain_relief"]["material"] = "generic RTV"
+        controls["an_unqualified_strain_relief_material_is_refused"] = not _fab16_semantics(m)
         m = json.loads(json.dumps(rec)); m["polarity"]["cavity_1"] = "GND / black / J4.2"
         controls["reversed_polarity_is_refused"] = not _fab16_semantics(m)
     return dict(ok=(all(checks.values()) and bool(controls) and all(controls.values())),

@@ -15,14 +15,15 @@
 Authority: [`MECHANICAL_INTERFACE_SPEC.md`](MECHANICAL_INTERFACE_SPEC.md) and
 [`../CTO_DECISIONS.md`](../CTO_DECISIONS.md).
 
-> **This file contains ONLY current physical constraints.** It carries no rationale, no history
-> and no superseded value. Where the interface spec still shows a struck or superseded figure,
-> **the value here is the current one**. If the two ever disagree, the interface spec is the
-> authority and this file is the defect.
+> **HISTORICAL / CONSUMED INPUT SET — NOT CURRENT RELEASE AUTHORITY.** This file records the
+> constraints that entered FBV2-P1 and is retained for traceability. Later D-22x through D-782
+> decisions supersede several rows. For the current Demo use the authoritative PCB plus
+> `MECHANICAL_INTERFACE_SPEC.md`, `FBV2_P1_FLOORPLAN.md`, `FBV2_P1_KEEPOUTS.md`, current assembly
+> records and `CTO_DECISIONS.md`. A stale row here must never override those sources.
 >
-> **NO COORDINATES ARE INVENTED HERE.** No CAD exists, no PCB outline has been drawn, and nothing
-> in this file assigns an X/Y position to any part. It states envelopes, clearances, keepouts and
-> relationships — the inputs a floorplan consumes, not the floorplan itself.
+> **NO NEW COORDINATES ARE AUTHORIZED HERE.** The current built geometry is recorded in the
+> floorplan/keepout documents and authoritative PCB; this file must not be used to reconstruct or
+> alter it.
 
 **Status key**
 
@@ -130,7 +131,7 @@ Authority: [`MECHANICAL_INTERFACE_SPEC.md`](MECHANICAL_INTERFACE_SPEC.md) and
 | R-16 | Marking | pin-1 triangle; **"COMMUNITY PORT — 3V3 LOGIC ONLY"** and **"5V PIN IS POWER OUTPUT ONLY"** | **LOCKED** (D-090) |
 | R-17 | Power switch | `SW9` **`JS102011SAQN`** SPDT slide, ~**4.7 × 2.9 × 2.0 mm** body plus actuator. **Right wall, lower third** | **LOCKED (part)**, position **TARGET** |
 | R-18 | **Hidden BOOT access** | **recessed BOOT access on the right wall** — reachable with a tool, **not** by a bare finger, and not a visible user control | **TARGET** |
-| R-19 | Assembly | `J5` is **hand-soldered after reflow** — one of exactly **two** manual parts per board | **LOCKED** (D-206/D-207) |
+| R-19 | Assembly | `J5` is **hand-soldered after reflow**. Current D-782 manual/post-reflow set is **five references: `J4`, `J5`, `J6`, `D1`, `U6`**; `J4` is the manual 26-AWG battery pigtail rather than a fitted connector. | **LOCKED** (D-781/D-782; current assembly plan) |
 
 ---
 
@@ -138,7 +139,7 @@ Authority: [`MECHANICAL_INTERFACE_SPEC.md`](MECHANICAL_INTERFACE_SPEC.md) and
 
 | # | constraint | value | status |
 |---|---|---|---|
-| T-1 | **915 MHz SMA bulkhead** | Amphenol **`095-902-568-150`** — one assembly: AMC right-angle plug → RG-178 → **SMA female straight bulkhead jack, IP67**. Ships with **its own nut and washer** | **LOCKED** |
+| T-1 | **915 MHz SMA bulkhead** | RF Solutions **`CBA-UFLSMA20IP`**, **200 mm RG-178**, U.FL/MHF1 right-angle plug → **SMA female waterproof bulkhead**. FBV2-P1-002 measures a 138.48 mm routed run; with the ≥15 mm service loop, 46.52 mm remains. | **LOCKED** (D-223; current off-board BOM) |
 | T-2 | Panel hole | **Ø6.5 mm clearance hole**, top edge, **left half** | **LOCKED** |
 | T-3 | **SMA ↔ IR spacing, rule 1** | **≥ 15 mm CENTRE-TO-CENTRE**, bulkhead hole ↔ either IR window | **LOCKED** |
 | T-4 | **SMA ↔ IR spacing, rule 2** | **≥ 8 mm EDGE-TO-EDGE**, SMA **body** ↔ either IR **aperture** | **LOCKED** |
@@ -151,7 +152,7 @@ Authority: [`MECHANICAL_INTERFACE_SPEC.md`](MECHANICAL_INTERFACE_SPEC.md) and
 | T-11 | **Opaque IR barrier** | **MANDATORY. Full height between the two windows, bonded to BOTH shells.** It blocks the internal reflection path, which is the path that actually causes self-blinding | **LOCKED** |
 | T-12 | IR windows | IR-transmissive (visibly opaque acceptable), **recessed 0.5 mm** | **TARGET** |
 | T-13 | Top-side height | IR receiver at 4.7 mm **must sit outside the display shadow** — top edge only | **LOCKED** |
-| T-14 | `D1` assembly | **hand-soldered after reflow** (through-hole) — the second of exactly two manual parts | **LOCKED** |
+| T-14 | `D1` assembly | **hand-soldered after reflow** (through-hole), one of the current five manual/post-reflow references `J4/J5/J6/D1/U6` | **LOCKED** |
 
 ---
 
@@ -222,18 +223,9 @@ Authority: [`MECHANICAL_INTERFACE_SPEC.md`](MECHANICAL_INTERFACE_SPEC.md) and
 
 ---
 
-## 9. Items that BLOCK a clean floorplan and need a CTO ruling
+## 9. Former pre-P1 blockers — all resolved
 
-**These are surfaced, not decided.** No design change was made for any of them.
-
-| # | item | why it blocks P1 |
-|---|---|---|
-| **O-1** | **Microphone board-face assignment** | F-15/F-21: the enclosure aperture is on the **FRONT** face, but M-14 says the acoustic path leaves the **PCB's bottom** face. Both are satisfiable **only** if `MK1` is placed on the copper face pointing away from the front shell. **No floorplan exists, so that side has never been assigned.** P1 cannot place `MK1` until it is. |
-| **O-2** | **The rear face is over-constrained by ≈ 8 mm** | The rear must simultaneously hold, in Y: battery **75** + NFC clear zone **48** + speaker **Ø20** + the **≥ 20 mm** speaker-to-loop separation = **163 mm** against a **155 mm** cavity. Moving the speaker beside the battery in X does not help: the 60 mm battery in a 75.0 mm cavity leaves **7.5 mm per side** against a Ø20 driver. This is before the 5 mm NFC metal keepout, the shell lip and the bosses. **At least one of {speaker↔loop separation, speaker location/face, battery Y, NFC zone position} must give.** All four are currently recorded as binding. |
-| **O-3** | **Mid-span boss at Y ≈ 100 collides with the grown NFC zone** | The zone grew 45 → 48 mm and carries a **5 mm metal keepout**. A boss nominally at Y ≈ 100 now sits on or inside the zone's lower keepout boundary. The boss must move down, or the zone must move up — and the zone is **LOCKED** while the boss is **TARGET**. Confirm the boss may move to **Y ≤ ~95**. |
-| **O-4** | **The microSD ↔ USB-C separation figure is not physically achievable** | Recorded as **"≥ 8 mm centre-to-centre"**. The two bodies are ~**14.0 mm** and ~**9.2 mm** wide, so their centres cannot be closer than **≈ 11.6 mm** before they touch, and a wall rib between the apertures pushes that to **≈ 13.6 mm**. The 8 mm figure reads as an **edge-to-edge** number written into a centre-to-centre row. Ruling needed on which it is. |
-| **O-5** | **The 915 MHz pigtail is longer than the cavity wants** | `095-902-568-150` is a **150 mm** assembly in a **155 mm** cavity, with a **≥ 5 mm** bend radius and a **≥ 15 mm** service loop, and it **must not cross the IR path**. Roughly 150 mm of RG-178 has to be parked somewhere that is already claimed by the 433 flex, the NFC pair and the battery. **A shorter length in the same Amphenol series would remove a routing problem for no electrical cost** (loss is already negligible at ≈ 0.4 dB). **No substitution is proposed here** — D-195 locked this exact MPN, and changing it is a CTO call. |
-| **O-6** | **The internal "antenna storage channel" cannot hold the locked 915 antenna** | §8 of the interface spec reserves a **left-wall storage channel "sized for the stowed whip"**. The locked whip is the Taoglas **`TI.92.2113`, 198 ± 3.3 mm × Ø13 mm**. The cavity is **75 × 155 × 18.5 mm** — its longest internal diagonal is ≈ **172 mm**. **The whip does not fit inside the device in any orientation.** The same left wall is also the **LOCKED** mount region for the 433 MHz flex (A-2). Either the storage requirement is **withdrawn** (the whip is an external accessory on a hinged SMA and is carried separately) or a different antenna is chosen. **Withdrawing it would free the entire left wall for the 433 flex and the cable runs** — the single largest simplification available before floorplanning. |
+This input file is **consumed/closed**. The six O-items originally carried here are not current blockers and must not be used as current design inputs: O-1 closed D-214, O-2 closed D-215, O-3 superseded D-226, O-4 closed D-217, O-5 closed D-222/D-223 with the current **RF Solutions `CBA-UFLSMA20IP` 200 mm** pigtail, and O-6 closed D-219. Current geometry and residuals live in `FBV2_P1_FLOORPLAN.md`, `FBV2_P1_KEEPOUTS.md`, `MECHANICAL_INTERFACE_SPEC.md`, and the current assembly/off-board BOM records.
 
 ---
 

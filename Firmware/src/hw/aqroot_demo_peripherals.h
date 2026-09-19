@@ -110,11 +110,12 @@ inline SdProbeResult probeSdCard() {
 // a 3.3 V rail; D-750).  If it opened on the PWM low phase the converter would
 // be regulating into an open string, ramp SW to its 36-39 V overvoltage clamp
 // and stress a 30 V AO3400A.  D-752 gives it its own hold network -- D14
-// charges C85 from this net, R132 discharges it with tau = 22 ms -- so the gate
-// follows the ENVELOPE of CTRL and Q11 cannot open until well after U17 has
-// shut down.  Nothing here has to sequence that, and nothing here may assume
-// it can defeat it: switching the backlight OFF means holding this pin LOW,
-// and the panel goes truly dark about 40 ms later.
+// charges C85 from this net, R132 discharges it with nominal tau = 220 ms --
+// so the gate follows the ENVELOPE of CTRL and Q11 cannot open until well after
+// U17 has shut down.  The larger D-779 capacitor also means startup must not
+// begin at a tiny PWM duty from a discharged gate: prime CTRL at 100 % long
+// enough to charge Q11, then apply PWM.  Switching OFF still means holding this
+// pin LOW; exact fade/hold timing is a first-article waveform measurement.
 //
 // kBacklightPwmHz stays inside TI's recommended 5-100 kHz window; below 5 kHz
 // the internal low-pass no longer smooths the chopped reference and the output
@@ -126,7 +127,12 @@ static_assert(kBacklightPwmHz >= 5000 && kBacklightPwmHz <= 100000,
 inline void backlightRamp(uint8_t channel = 0) {
   ledcSetup(channel, kBacklightPwmHz, 8);
   ledcAttachPin(AQROOT_PIN_DISP_BL_PWM, channel);
-  for (int duty = 0; duty <= 255; duty += 5) {
+  // D-782 / Round-4: C85 is 1 uF.  From a discharged gate, very-low-duty
+  // PWM can leave Q11 poorly enhanced while U17 starts.  Prime for 2 ms at
+  // 100 % (10 cycles at 5 kHz), then enter the requested PWM ramp.
+  ledcWrite(channel, 255);
+  delay(2);
+  for (int duty = 5; duty <= 255; duty += 5) {
     ledcWrite(channel, duty);
     delay(8);
   }

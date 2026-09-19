@@ -118,10 +118,28 @@ def evaluate(rec, req, actual_pdf_hash):
     checks["B4_pack_fits_reserved_envelope"] = dict(
         ok=all(float(dims.get(k, 1e9)) <= v for k, v in DIMENSION_LIMITS.items()),
         dimensions_mm=dims, limits_mm=DIMENSION_LIMITS)
+    # Sounddon 785060 s8.3.2 expresses the discharge limit as <=2C5A rather
+    # than as a literal amperes row.  C5 is the rated five-hour capacity; for
+    # this exact 2500 mAh pack, 2C5 derives to 5.0 A.  Bind the stored ampere
+    # figure to that notation so a PDF-text/OCR ambiguity cannot invent a
+    # current rating (Round-4 Fable T2).
+    c5_Ah = float(rec.get("capacity_mAh", 0)) / 1000.0
+    c5_mult = float(rec.get("linked_datasheet_max_discharge_C5_multiplier", 0) or 0)
+    derived_discharge_A = c5_Ah * c5_mult
+    declared_discharge_A = float(rec.get("linked_datasheet_max_discharge_A", 0) or 0)
+    discharge_basis_ok = (
+        rec.get("linked_datasheet_max_discharge_notation") == "2C5A"
+        and c5_mult == 2.0
+        and abs(declared_discharge_A - derived_discharge_A) <= 1e-9
+        and "section 8.3.2" in (rec.get("linked_datasheet_max_discharge_basis") or ""))
     checks["B5_pack_discharge_covers_live_D753_envelope"] = dict(
-        ok=float(rec.get("linked_datasheet_max_discharge_A", 0))
-           >= req["required_pack_discharge_A"],
-        pack_max_discharge_A=rec.get("linked_datasheet_max_discharge_A"),
+        ok=(discharge_basis_ok and
+            derived_discharge_A >= req["required_pack_discharge_A"]),
+        datasheet_notation=rec.get("linked_datasheet_max_discharge_notation"),
+        c5_capacity_Ah=c5_Ah, c5_multiplier=c5_mult,
+        derived_pack_max_discharge_A=derived_discharge_A,
+        stored_pack_max_discharge_A=declared_discharge_A,
+        derivation_is_pinned=discharge_basis_ok,
         max_user_reachable_battery_A=req["max_user_reachable_battery_A"],
         required_with_margin_A=round(req["required_pack_discharge_A"], 4),
         margin_ratio=DISCHARGE_MARGIN)
@@ -151,6 +169,12 @@ def evaluate(rec, req, actual_pdf_hash):
     pack = harness.get("battery_side", {})
     rating = harness.get("controlling_rating", {})
     polarity = harness.get("polarity", {})
+    relief = harness.get("strain_relief", {})
+    relief_tds_rel = relief.get("archived_tds", "")
+    relief_tds = ROOT / relief_tds_rel if relief_tds_rel else None
+    relief_tds_actual_sha256 = (sha256(relief_tds)
+                                if relief_tds and relief_tds.is_file() else None)
+    relief_tds_expected_sha256 = relief.get("archived_tds_sha256")
     checks["B9_D781_board_harness_identity_is_frozen"] = dict(
         ok=(rec.get("board_harness") == "docs/full-beta-v2/assembly/BATTERY_HARNESS.json"
             and rec.get("board_connector") ==
@@ -158,14 +182,32 @@ def evaluate(rec, req, actual_pdf_hash):
             and harness.get("status") == "FROZEN_FOR_FIRST_FIVE"
             and board.get("wire_AWG") == 26
             and board.get("receptacle_housing") == "5055700201"
+            and float(board.get("nominal_drill_mm", 0)) == 0.75
+            and float(board.get("required_finished_hole_min_mm", 0)) == 0.70
+            and float(board.get("factory_tinned_tip_max_mm", 99)) <= 0.65
+            and "do NOT cut/re-strip/re-tin" in board.get("assembly", "")
             and "2175012101" in board.get("precrimp_red", "")
             and "2175011101" in board.get("precrimp_black", "")
             and pack.get("factory_lead_AWG") == 26
             and pack.get("plug_housing") == "2137192021"
-            and pack.get("male_terminal") == "2137201000"),
+            and pack.get("male_terminal") == "2137201000"
+            and relief.get("material") ==
+                "DOWSIL 3145 RTV MIL-A-46146 Adhesive/Sealant, gray"
+            and relief.get("manufacturer") == "Dow"
+            and relief.get("primary_source_url") ==
+                "https://www.dow.com/en-us/pdp.dowsil-3145-rtv-mil-a-46146-adhesive-sealant.01059548z.html"
+            and relief_tds_expected_sha256 ==
+                "905af2ec4eafd4fe54fe748cab36450a121b4b04cedc375120299baefb38e115"
+            and relief_tds_actual_sha256 == relief_tds_expected_sha256
+            and "non-flow" in relief.get("primary_source_basis", "").lower()
+            and ">=35 mm" in relief.get("service_loop", "")
+            and "never disconnect by pulling" in relief.get("disconnect_instruction", "")),
         status=harness.get("status"), board_connector=rec.get("board_connector"),
         board_wire_AWG=board.get("wire_AWG"), board_housing=board.get("receptacle_housing"),
-        battery_wire_AWG=pack.get("factory_lead_AWG"), battery_plug=pack.get("plug_housing"))
+        battery_wire_AWG=pack.get("factory_lead_AWG"), battery_plug=pack.get("plug_housing"),
+        strain_relief_tds=relief_tds_rel,
+        strain_relief_tds_expected_sha256=relief_tds_expected_sha256,
+        strain_relief_tds_actual_sha256=relief_tds_actual_sha256)
     rated = float(rating.get("rated_current_A", 0) or 0)
     live = float(req["max_user_reachable_battery_A"])
     checks["B10_D781_harness_rating_and_polarity_cover_live_board"] = dict(
@@ -220,6 +262,22 @@ def main():
          "B9_D781_board_harness_identity_is_frozen"),
         ("24AWG_harness_mismatch_refused",
          lambda m: m["_harness"]["board_side"].__setitem__("wire_AWG", 24),
+         "B9_D781_board_harness_identity_is_frozen"),
+        ("undersized_finished_J4_hole_process_refused",
+         lambda m: m["_harness"]["board_side"].__setitem__(
+             "required_finished_hole_min_mm", 0.60),
+         "B9_D781_board_harness_identity_is_frozen"),
+        ("retinning_factory_board_pigtail_without_requalification_refused",
+         lambda m: m["_harness"]["board_side"].__setitem__(
+             "assembly", "cut and re-tin the pigtail before fit"),
+         "B9_D781_board_harness_identity_is_frozen"),
+        ("unqualified_strain_relief_material_refused",
+         lambda m: m["_harness"]["strain_relief"].__setitem__(
+             "material", "generic RTV"),
+         "B9_D781_board_harness_identity_is_frozen"),
+        ("strain_relief_tds_hash_tamper_refused",
+         lambda m: m["_harness"]["strain_relief"].__setitem__(
+             "archived_tds_sha256", "0" * 64),
          "B9_D781_board_harness_identity_is_frozen"),
         ("2A_connector_rating_refused",
          lambda m: m["_harness"]["controlling_rating"].__setitem__("rated_current_A", 2.0),

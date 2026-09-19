@@ -73,7 +73,7 @@ BATTERY_HARNESS_PACKAGE = "aqroot-Demo-BATTERY-HARNESS.json"
 # The assembly drawing is a RELEASE ARTIFACT, not a generic KiCad plot.  The
 # revision is intentionally explicit so a regenerated PDF cannot silently look
 # current while carrying an older review authority.
-ASSEMBLY_RELEASE = "D-781"
+ASSEMBLY_RELEASE = "D-782"
 
 # The board's own enabled copper layers, in stackup order, plus every
 # non-copper layer a fabricator and an assembler actually need.  The contract
@@ -296,6 +296,12 @@ def export_assembly(out):
                "--layers", "%s,Edge.Cuts" % layer,
                "--crossout-DNP-footprints-on-fab-layers",
                "--sketch-pads-on-fab-layers", "--black-and-white",
+               # D-782/R4-06: KiCad's autoscale places Edge.Cuts against the
+               # title-block boundary, but Fab reference text/pads extend below
+               # Edge.Cuts and visibly overlap the release/title block.  A
+               # visually checked 0.60 scale leaves a real white margin on BOTH
+               # top and mirrored-bottom drawings while preserving vector text.
+               "--scale", "0.60",
                "--include-border-title", "--drawing-sheet", ASSEMBLY_SHEET,
                "--define-var", "ASSEMBLY_SIDE=%s" % side.upper(),
                "--define-var", "RELEASE=%s" % ASSEMBLY_RELEASE,
@@ -304,7 +310,8 @@ def export_assembly(out):
             cmd.append("--mirror")
         pdf = out / ("aqroot-Demo-assembly-%s.pdf" % side)
         run(cmd + ["-o", pdf, BOARD])
-        rows[side] = dict(file=pdf.name, layer=layer, mirrored=mirror)
+        rows[side] = dict(file=pdf.name, layer=layer, mirrored=mirror,
+                          scale="0.60", centered=True)
     return dict(release=ASSEMBLY_RELEASE,
                 board_sha256=board_sha,
                 drawing_sheet=str(ASSEMBLY_SHEET.relative_to(ROOT)),
@@ -426,20 +433,25 @@ def stackup_process_notes(board):
         "lighter inner foil INVALIDATES that model and the ampacity audit must "
         "be re-run before the order is placed."
         % (inner[0] if inner else 0.0),
-        "- **Total declared stack %.4f mm.**  The `J4` lead-trim requirement "
-        "in `assembly/THT_LEAD_TRIM.md` is computed from this figure and NOT "
-        "from a nominal 1.6 mm; a different finished thickness changes it."
-        % total,
+        "- **Total declared stack %.4f mm; required finished thickness "
+        "%.4f +/- 0.10 mm.**  Do not substitute a house-default thickness "
+        "without written engineering approval.  `J4` is now a manual pigtail "
+        "land: its front conductive profile is MEASURED <=0.50 mm after "
+        "soldering, not inferred from board thickness.  Finished thickness "
+        "still affects enclosure stack and PTH process capability."
+        % (total, total),
         "- **Surface finish: %s -- not substitutable.**  HASL coplanarity is "
         "incompatible with the fine-pitch lands on this board and with the "
         "0.000 mm solder-mask expansion it is drawn with."
         % (finish or "AS DECLARED IN THE BOARD STACKUP"),
         "- **Solder-mask expansion is 0.000 mm board-wide** -- a pad's mask "
         "aperture IS its copper.  Do not apply a house expansion.",
-        "- **BARE-BOARD ELECTRICAL TEST (flying probe or fixture) IS REQUIRED "
-        "ON EVERY PANEL.**  This is a 6-layer board with resin-filled, "
-        "cap-plated via-in-pad under fine-pitch parts: an open in a filled "
-        "barrel is not findable at assembly and not repairable after it.",
+        "- **100% BARE-BOARD ELECTRICAL TEST (flying probe or fixture) IS "
+        "REQUIRED ON EVERY DELIVERED PCB CIRCUIT, against the final accepted "
+        "netlist; panel-level sampling is not sufficient.**  This is a 6-layer "
+        "board with resin-filled, cap-plated via-in-pad under fine-pitch parts: "
+        "an open in a filled barrel is not findable at assembly and not "
+        "repairable after it.  Provide traceable test confirmation with the lot.",
         "",
     ]
     return lines
@@ -533,7 +545,7 @@ def battery_harness_notes():
     """D-781 manual J4 pigtail instructions, derived from the frozen harness."""
     h = json.loads(BATTERY_HARNESS.read_text(encoding="utf-8"))
     b = h["board_side"]; p = h["battery_side"]; r = h["controlling_rating"]
-    pol = h["polarity"]
+    pol = h["polarity"]; relief = h["strain_relief"]
     return [
         "## J4 battery pigtail -- MANUAL ASSEMBLY, NO PCB HEADER", "",
         "`J4` is a 2-hole manual wire land in this release. **Do not fit the old JST-PH board header.**",
@@ -547,8 +559,10 @@ def battery_harness_notes():
         "- Controlling mated-harness rating: **%.1f A at AWG%d**."
         % (r["rated_current_A"], r["wire_AWG"]),
         "- Polarity: cavity 1 = **%s**; cavity 2 = **%s**." % (pol["cavity_1"], pol["cavity_2"]),
+        "- J4 is drilled **0.75 mm nominal**. Supplier/assembler must guarantee a **>=0.70 mm finished plated-hole diameter** for both J4 barrels; verify one exact 217501 AWG26 tinned lead passes freely before soldering all five boards -- no force and no strand shaving.",
         "- Solder wires through J4 from B.Cu; front conductive profile **<=0.50 mm**, then **<=0.10 mm polyimide** before display fit. Follow `THT_LEAD_TRIM.md` J4-T1..T4.",
-        "- First article: verify conductor/hole fit, strain relief, DMM polarity, terminal retention/pull acceptance, and worst-case load temperature rise per the packaged harness record.",
+        "- Rear strain relief: **%s**. After joint/profile inspection and cleaning, apply the frozen adhesive fillet to the insulated pigtail, preserve the >=35 mm housing free-wire/service-loop rule, and never unplug by pulling wires." % relief["material"],
+        "- First article: verify finished-hole/conductor fit, cured strain relief, DMM polarity, terminal retention/pull acceptance, housing-only disconnect, enclosure route, and worst-case load temperature rise per the packaged harness record.",
         "",
     ]
 

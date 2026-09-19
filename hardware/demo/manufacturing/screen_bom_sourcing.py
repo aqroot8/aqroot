@@ -146,13 +146,15 @@ NET_MAX_DC = {
                  " as 4.742 / 4.950 / 5.165 V, and the ABSOLUTE is the"
                  " TPS61023's own VOVP maximum of 6.0 V -- the highest this"
                  " node can reach before the converter protects."),
-    "LED_BOOST": (4.5, 38.0,
+    "LED_BOOST": (4.5, 39.0,
                   "U17 TPS61169 WLED boost output.  ARCHITECTURE D-079: the panel"
                   " backlight is SIX LEDs IN PARALLEL, one anode, 2.9-3.2 V, at"
                   " I_LED 109 mA typ -- so the node runs at Vf 3.2 V + 109 mA"
                   " through R70-R73 (4x33R = 8.25R, 0.90 V) + the R69 1.87R sense"
                   " (0.20 V) = 4.3 V.  The FAULT ceiling is the TPS61169 open-LED"
-                  " OVP, and D8 NSR0240 is a 40 V catch diode."),
+                  " OVP maximum of 39 V, and D8 NSR0240 is a 40 V catch diode."),
+    "BL_DISC_G": (3.3, 3.6, "Q11 gate-hold node charged from ESP32 GPIO46 through D14;"
+                             " bounded by the +3V3/GPIO domain"),
 
     # ---- established by D-615, so that a POWER gate has a number to work
     # from.  Every entry below names the supply or the part limit that bounds

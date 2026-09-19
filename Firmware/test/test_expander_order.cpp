@@ -61,11 +61,18 @@ class RecordingBus : public I2cBus {
   int fail_address = -1;         // -1 = never fail
   int fail_reg = -1;             // -1 = any register at that address
   bool fail_once = false;        // fail only the FIRST match, then behave
+  bool fail_applies_low_byte = false;  // emulate port0 accepted, port1/ACK lost
+  bool fail_applies_full_write = false; // emulate hardware changed, final ACK lost
+  int skip_matching_failures = 0;
   int failures_injected = 0;
 
   bool shouldFail(uint8_t address, uint8_t reg) {
     if (fail_address < 0 || int(address) != fail_address) return false;
     if (fail_reg >= 0 && int(reg) != fail_reg) return false;
+    if (skip_matching_failures > 0) {
+      --skip_matching_failures;
+      return false;
+    }
     if (fail_once && failures_injected > 0) return false;
     ++failures_injected;
     return true;
@@ -81,7 +88,17 @@ class RecordingBus : public I2cBus {
     const bool nack = shouldFail(address, txn.reg);
     txn.nacked = nack;
     log.push_back(txn);
-    if (nack) return false;
+    if (nack) {
+      if (txn.reg == Pcal9535a::kRegOutput0 && length == 3) {
+        uint16_t &physical = (address == AQROOT_EXP_U2_ADDR ? u2_output : u3_output);
+        if (fail_applies_full_write) {
+          physical = txn.value;
+        } else if (fail_applies_low_byte) {
+          physical = uint16_t((physical & 0xFF00u) | uint16_t(data[1]));
+        }
+      }
+      return false;
+    }
     if (txn.reg == Pcal9535a::kRegConfig0) {
       (address == AQROOT_EXP_U2_ADDR ? u2_config : u3_config) = txn.value;
     } else if (txn.reg == Pcal9535a::kRegOutput0) {
@@ -473,12 +490,10 @@ int main() {
     hurt.fail_once = true;
     const bool ok = local.setAccessory5v(hurt, false);
     check("5 V down: a NACK on the first write reaches a safe final state", ok);
-    // D-779: reaching it THROUGH the blanket safe latch also took down the
-    // 3.3 V rail and the I2C buffer, so the caller has to be told.
-    check("5 V down: the broader safe state is REPORTED to the caller",
-          local.consumeSafeStateApplied());
-    check("5 V down: the report is consumed exactly once",
-          !local.consumeSafeStateApplied());
+    bool rail3 = true, rail5 = true, buffer_on = true;
+    check("5 V down: final accessory latch state is directly queryable",
+          local.accessoryState(&rail3, &rail5, &buffer_on));
+    check("5 V down: the 5 V path is confirmed OFF", !rail5);
 
     check("5 V down: the SECOND write is attempted anyway",
           hurt.countWrites(AQROOT_EXP_U3_ADDR, Pcal9535a::kRegOutput0, mark) >= 2);
@@ -621,6 +636,112 @@ int main() {
           local.service(hurt) && !local.faultObservabilityLost());
     check("accessory re-enable is allowed only after recovery",
           local.setAccessory3v3(hurt, true));
+  }
+
+  // ---- T11: Round-4 Astra fault-injection regressions -------------------
+  {
+    RecordingBus hurt;
+    DemoExpanders local;
+    local.begin(hurt);
+    hurt.fail_address = AQROOT_EXP_U3_ADDR;
+    hurt.fail_reg = Pcal9535a::kRegOutput0;
+    hurt.skip_matching_failures = 1;  // boost write succeeds; switch write fails
+    hurt.fail_once = true;
+    hurt.fail_applies_low_byte = true;
+    check("partial 5 V enable is REPORTED as failed",
+          !local.setAccessory5v(hurt, true));
+    bool r3 = true, r5 = true, buf = true;
+    check("partial 5 V enable is physically repaired to a known safe state",
+          local.accessoryState(&r3, &r5, &buf) && !r5 &&
+          !(hurt.u3_output & bitmask(AQROOT_U3_ACC_5V_SW_EN)) &&
+          !(hurt.u3_output & bitmask(AQROOT_U3_ACC_5V_BOOST_EN)));
+  }
+  {
+    RecordingBus hurt;
+    DemoExpanders local;
+    local.begin(hurt);
+    hurt.fail_address = AQROOT_EXP_U3_ADDR;
+    hurt.fail_reg = Pcal9535a::kRegOutput0;
+    hurt.fail_once = true;
+    hurt.fail_applies_full_write = true;  // output changed; ACK/result lost
+    check("lost-ACK 3.3 V enable is REPORTED as failed",
+          !local.setAccessory3v3(hurt, true));
+    bool r3 = true, r5 = true, buf = true;
+    check("lost-ACK 3.3 V enable is repaired before state is trusted",
+          local.accessoryState(&r3, &r5, &buf) && !r3 &&
+          !(hurt.u3_output & bitmask(AQROOT_U3_ACC_3V3_EN)));
+  }
+  {
+    RecordingBus state;
+    DemoExpanders local;
+    local.begin(state);
+    check("explicit safe-state request completes", local.applyAccessorySafeState(state));
+    check("new enable after a safe state is not erased by stale notification",
+          local.setAccessory3v3(state, true));
+    bool r3 = false, r5 = true, buf = true;
+    check("new enable is directly reflected by current latch state",
+          local.accessoryState(&r3, &r5, &buf) && r3 && !r5);
+  }
+  {
+    RecordingBus reset;
+    reset.u3_output = uint16_t(kU3SafeLatch |
+        bitmask(AQROOT_U3_ACC_3V3_EN) |
+        bitmask(AQROOT_U3_ACC_5V_SW_EN) |
+        bitmask(AQROOT_U3_ACC_5V_BOOST_EN));
+    DemoExpanders local;
+    reset.fail_address = AQROOT_EXP_U3_ADDR;
+    reset.fail_reg = Pcal9535a::kRegOutput0;
+    check("warm-reset U3 bus fault makes begin fail", !local.begin(reset));
+    check("warm-reset failed safe write remains pending", local.safeShutdownPending());
+    reset.fail_address = -1;
+    reset.fail_reg = -1;
+    check("retry after bus recovery completes boot-safe initialization",
+          local.begin(reset));
+    check("retry after bus recovery physically clears retained accessory rails",
+          (reset.u3_output & kU3AccessoryMask) == 0);
+  }
+  {
+    RecordingBus caller;
+    DemoExpanders local;
+    local.begin(caller);
+    bool r3 = false, r5 = false, buf = false;
+    check("caller reconciliation starts from the known boot-safe state",
+          reconcileAccessoryFlags(local, &r3, &r5, &buf) &&
+          !r3 && !r5 && !buf);
+    check("caller setup: 3.3 V enable succeeds", local.setAccessory3v3(caller, true));
+    check("caller reconciliation observes the current enable, not a stale event",
+          reconcileAccessoryFlags(local, &r3, &r5, &buf) && r3 && !r5);
+    caller.fail_address = AQROOT_EXP_U3_ADDR;
+    caller.fail_reg = Pcal9535a::kRegOutput0;
+    check("caller setup: an uncertain safe-state write fails",
+          !local.applyAccessorySafeState(caller));
+    check("UNKNOWN caller state is pessimistically ACTIVE, never falsely OFF",
+          !reconcileAccessoryFlags(local, &r3, &r5, &buf) && r3 && r5 && buf);
+    caller.fail_address = -1;
+    caller.fail_reg = -1;
+    check("caller recovery completes pending safe state", local.service(caller));
+    check("caller flags reconcile to OFF only after safe recovery is confirmed",
+          reconcileAccessoryFlags(local, &r3, &r5, &buf) && !r3 && !r5 && !buf);
+  }
+  {
+    RecordingBus runtime;
+    DemoExpanders local;
+    local.begin(runtime);
+    // Prove a runtime U3-input fault does not blanket-reset U2's display/touch/
+    // LoRa reset outputs.  First release those three reset lines.
+    local.setDisplayReset(runtime, false);
+    local.setTouchReset(runtime, false);
+    local.setLoraReset(runtime, false);
+    const uint16_t before = runtime.u2_output;
+    runtime.fail_address = AQROOT_EXP_U3_ADDR;
+    runtime.fail_reg = Pcal9535a::kRegInput0;
+    runtime.fail_once = true;
+    check("runtime loss of U3 observability is reported", !local.service(runtime));
+    const uint16_t reset_mask = uint16_t(bitmask(AQROOT_U2_DISP_RST_N) |
+                                         bitmask(AQROOT_U2_TOUCH_RST_N) |
+                                         bitmask(AQROOT_U2_SX1262_RST_N));
+    check("runtime accessory fail-safe preserves released reset lines",
+          (runtime.u2_output & reset_mask) == (before & reset_mask));
   }
 
   std::printf("\n%s -- %d failure(s)\n", g_failures ? "FAIL" : "PASS", g_failures);

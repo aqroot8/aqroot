@@ -145,6 +145,17 @@ class Pcal9535a {
     return true;
   }
 
+  bool syncOutputShadow(I2cBus &bus) {
+    uint8_t raw[2] = {0, 0};
+    if (!bus.readRegister(address_, kRegOutput0, raw, sizeof(raw))) {
+      shadow_valid_ = false;
+      return false;
+    }
+    shadow_ = uint16_t(raw[0]) | uint16_t(uint16_t(raw[1]) << 8);
+    shadow_valid_ = true;
+    return true;
+  }
+
   bool writeOutputs(I2cBus &bus, uint16_t value) {
     if (!writePortPair(bus, address_, kRegOutput0, value)) {
       shadow_valid_ = false;

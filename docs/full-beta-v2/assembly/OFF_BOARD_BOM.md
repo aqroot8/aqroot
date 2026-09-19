@@ -27,6 +27,7 @@ not capture reliably, because they are not placed on the board. Authority:
 |---|---|---|---|
 | **First-five LiPo pack** | **Adafruit Product 328 — 3.7 V / 2500 mAh**, genuine 2-pin JST-PH, protection circuitry | 1 | **SELECTED CTO-BAT-01.** Supplier page is the purchasing identity; its linked `785060` specification is archived at `hardware/demo/kicad/aqroot-demo/vendor/BATTERY/adafruit-328-785060-specification.pdf` (SHA-256 `826149da…ecd3`). Datasheet max pack is 7.9 × 50.5 × 60.5 mm, inside the **57 × 75 × 8.0 mm MAX** D-239/D-243 reservation, and permits discharge current ≤2C; supplier recommends ≤1.2 A charging. **Meter-verify polarity before cutting/reterminating the factory JST-PH lead into the D-781 Micro-Lock harness; do not substitute a generic LP785060 solely by family name.** |
 | **D-781 detachable battery harness** | Board side: Molex `2175012101` red + `2175011101` black 26-AWG pre-crimps in `5055700201`; battery side: factory Adafruit 26-AWG leads reterminated into `2137192021` with `2137201000` male terminals | 1 | **FROZEN FOR FIRST FIVE.** Full work instruction, polarity, crimp/tool range, pull/thermal acceptance and first-article checks are in `BATTERY_HARNESS.json`. `J4` is only the manual PCB wire land; **do not fit the retired JST-PH board header.** |
+| **Board-pigtail strain-relief adhesive** | **DOWSIL `3145 RTV MIL-A-46146` Adhesive/Sealant, gray** | as needed | **FROZEN D-782 PROCESS.** Non-flowing electronics RTV used to bond the insulated J4 pigtail to B.Cu after solder/profile inspection; preserve the relaxed service loop and ≥35 mm free wire from the Micro-Lock housing. Vendor TDS archived under `vendor/DOW/`; disconnect the harness by the housings, never the wires. |
 | **Pack barrier sheet — D-760** | **0.5 mm compliant insulating sheet** (polyester film + closed-cell PE foam, or 3M 9448A-backed PET), cut to the `BATTERY_SHADOW` footprint **57 × 75 mm**, adhesive side to the PCB | 1 | **REQUIRED.** The rear face inside `BATTERY_SHADOW` presents a **1.80 mm** maximum component profile against the retained 1.20 mm heuristic; three 1206 bulk capacitors are hard points against the pouch. The sheet spreads them and insulates the pack; it does not replace enclosure CAD clearance. Measured by `mechanical_keepout_contract` **MK8**. |
 
 ---
@@ -101,10 +102,11 @@ Mates `J7` **`BM02B-ACHSS-GAN-ETF`** on the board.
 
 ## 7. Battery harness
 
-| item | MPN | qty | notes |
-|---|---|---|---|
-| Battery mating housing | **JST `PHR-2`** | 1 | Only if the cell is supplied without a lead |
-| Battery crimp contacts | **JST `SPH-002T-P0.5S`** | 2 | As above |
+**D-781 RETIRED THE JST-PH BATTERY MATING HARDWARE.** Do not buy `PHR-2` or
+`SPH-002T-P0.5S` for the battery path. The exact first-five Micro-Lock Plus
+wire-to-wire parts and factory pre-crimped board leads are already listed in
+§2 and frozen by `BATTERY_HARNESS.json`. The JST parts in §6 are for the
+**speaker J6 only** and must not be reused for J4.
 
 ---
 

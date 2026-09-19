@@ -37,8 +37,8 @@ WHAT IS PROVED
   H5  the firmware layer implements what it was given: every role the generator
       emits is referenced by the C++ under `Firmware/src/hw/`, and the C++
       names no `AQROOT_` symbol the generator did not emit.
-  H6  TWO HOST TESTS compile under `-Wall -Wextra -Werror` and pass, and six
-      controls -- three each -- must make them FAIL.
+  H6  FOUR HOST TESTS compile under `-Wall -Wextra -Werror` and pass.  Each
+      carries load-bearing destructive controls that must make it FAIL.
         * the EXPANDER SAFE-ORDERING test.  The PCAL9535A resets to all-inputs
           with its output latches at 0x00, and six of this board's expander
           outputs are safe at 0 while three are safe at 1, so the order
@@ -79,6 +79,7 @@ HOST_TESTS = [
     ROOT / "Firmware/test/test_expander_order.cpp",
     ROOT / "Firmware/test/test_spi_bus_b.cpp",
     ROOT / "Firmware/test/test_accessory_power_policy.cpp",
+    ROOT / "Firmware/test/test_fuel_gauge_safety.cpp",
 ]
 
 # Each control is (name, file under src/hw, exact text, replacement).  The
@@ -99,23 +100,63 @@ POWER_POLICY_CONTROLS = [
      "constexpr float kAccessoryDualRailFloorV = 3.50f;"),
     ("unreadable VCELL fails open instead of shedding active rails",
      "aqroot_accessory_power_policy.h",
-     "if (!vcell_valid) return AccessoryBatteryAction::ShedAll;",
-     "if (!vcell_valid) return AccessoryBatteryAction::Keep;"),
-    ("a dual-rail load below the dual floor sheds everything instead of the "
-     "5 V rail alone",
+     """  if (!vcell_valid || !vcellIsPlausible(vcell))
+    return AccessoryBatteryAction::ShedAll;""",
+     """  if (!vcell_valid || !vcellIsPlausible(vcell))
+    return AccessoryBatteryAction::Keep;"""),
+    ("a dual-rail load below the dual floor sheds everything instead of the 5 V rail alone",
      "aqroot_accessory_power_policy.h",
      """    return vcell >= kAccessorySingleRailFloorV
                ? AccessoryBatteryAction::Shed5v
                : AccessoryBatteryAction::ShedAll;""",
      "    return AccessoryBatteryAction::ShedAll;"),
-    # D-779.  The plausibility band is what stops an all-ones VCELL read from
-    # authorising the second accessory rail.  The control widens it just far
-    # enough to let 5.1199 V back in -- which is how the defect actually looked
-    # before it was named: a band that exists but does not exclude the code.
     ("the VCELL plausibility band stops excluding the all-ones code",
      "aqroot_accessory_power_policy.h",
      "constexpr float kVcellPlausibleMaxV = 4.50f;",
      "constexpr float kVcellPlausibleMaxV = 5.50f;"),
+]
+
+# Round-4 R4-04: active-mode configuration/readiness is part of VCELL validity.
+# Each mutation is realistic enough to compile and must be rejected by the
+# dedicated MAX17048 host test.
+FUEL_GAUGE_CONTROLS = [
+    ("HIBRT write success is trusted without exact configuration readback",
+     "max17048_guard.h",
+     "active_ready_ = readback && verify[0] == 0x00 && verify[1] == 0x00;",
+     "active_ready_ = wrote && readback;"),
+    ("later HIBRT/reset state is no longer re-verified before VCELL",
+     "max17048_guard.h",
+     """  bool verifyActiveMode(I2cBus &bus) {
+    if (!active_ready_) return false;
+    uint8_t verify[2] = {0xFF, 0xFF};
+    if (!bus.readRegister(address_, kRegHibrt, verify, sizeof(verify)) ||
+        verify[0] != 0x00 || verify[1] != 0x00) {
+      active_ready_ = false;
+      return false;
+    }
+    return true;
+  }""",
+     """  bool verifyActiveMode(I2cBus &) {
+    return active_ready_;
+  }"""),
+    ("VCELL bus failure leaves gauge readiness trusted",
+     "max17048_guard.h",
+     """    if (!bus.readRegister(address_, kRegVcell, raw, sizeof(raw))) {
+      active_ready_ = false;
+      return false;
+    }""",
+     """    if (!bus.readRegister(address_, kRegVcell, raw, sizeof(raw))) {
+      return false;
+    }"""),
+    ("implausible VCELL does not invalidate gauge readiness",
+     "max17048_guard.h",
+     """    if (counts == 0x0000 || counts == 0xFFFF || !vcellIsPlausible(v)) {
+      active_ready_ = false;
+      return false;
+    }""",
+     """    if (counts == 0x0000 || counts == 0xFFFF || !vcellIsPlausible(v)) {
+      return false;
+    }"""),
 ]
 
 
@@ -135,13 +176,20 @@ BUS_CONTROLS = [
 ]
 
 ORDER_CONTROLS = [
-    # D-779.  The blanket safe-state fallback is broader than any single caller
-    # asked for; if it stops reporting itself, main() keeps shadow flags that
-    # the hardware no longer matches.
-    ("the broader safe state stops reporting itself to the caller",
+    ("UNKNOWN accessory latch state is falsely reported OFF to the caller",
      "aqroot_demo_expanders.h",
-     "    if (u2_ok || u3_ok) safe_state_applied_ = true;",
-     "    if (false) safe_state_applied_ = true;"),
+     "  if (!known) r3 = r5 = buf = true;",
+     "  if (!known) r3 = r5 = buf = false;"),
+    # Round 4: a runtime accessory fail-safe must not assert the display,
+    # touch, and LoRa reset lines merely because they share U2 with ACC_PWR_EN.
+    ("runtime accessory fail-safe blanket-writes U2's full boot-safe latch",
+     "aqroot_demo_expanders.h",
+     """    if (u2_known) {
+      u2_ok = u2_.clearBits(bus, kU2AccessoryMask);
+    }""",
+     """    if (u2_known) {
+      u2_ok = u2_.writeOutputs(bus, kU2SafeLatch);
+    }"""),
     ("direction is written before the output latch",
      "pcal9535a.h",
      """    shadow_valid_ = false;
@@ -167,22 +215,28 @@ ORDER_CONTROLS = [
      "constexpr uint16_t kU3SafeLatch = 0x0000;"),
     ("the 5 V load switch is closed before the boost is enabled",
      "aqroot_demo_expanders.h",
-     """      if (!u3_.writeBit(bus, AQROOT_U3_ACC_5V_BOOST_EN, true)) return false;
-      return u3_.writeBit(bus, AQROOT_U3_ACC_5V_SW_EN, true);""",
-     """      if (!u3_.writeBit(bus, AQROOT_U3_ACC_5V_SW_EN, true)) return false;
-      return u3_.writeBit(bus, AQROOT_U3_ACC_5V_BOOST_EN, true);"""),
-    # D-751 -- THE THREE INDEPENDENT-FAILURE CONTROLS.  D-750 repaired three
-    # `||` short circuits that an external review named, and nothing proved the
-    # repair: a bus that always ACKs cannot tell an independent sequence from a
-    # short-circuiting one, which is exactly why the bug lived so long.  These
-    # put each short circuit BACK; the host test's T10 must refuse all three.
-    ("a U2 bus failure leaves U3 unconfigured (begin short-circuits)",
+     """      if (!u3_.writeBit(bus, AQROOT_U3_ACC_5V_BOOST_EN, true)) {
+        (void)applyAccessorySafeState(bus);
+        return false;
+      }
+      if (!u3_.writeBit(bus, AQROOT_U3_ACC_5V_SW_EN, true)) {
+        (void)applyAccessorySafeState(bus);
+        return false;
+      }""",
+     """      if (!u3_.writeBit(bus, AQROOT_U3_ACC_5V_SW_EN, true)) {
+        (void)applyAccessorySafeState(bus);
+        return false;
+      }
+      if (!u3_.writeBit(bus, AQROOT_U3_ACC_5V_BOOST_EN, true)) {
+        (void)applyAccessorySafeState(bus);
+        return false;
+      }"""),
+    ("a U2 configuration failure short-circuits the independent U3 configuration",
      "aqroot_demo_expanders.h",
      """    const bool u2_ok = u2_.apply(bus, u2);
-    const bool u3_ok = u3_.apply(bus, u3);
-    if (!u2_safe || !u3_safe || !u2_ok || !u3_ok) return false;""",
-     """    if (!u2_safe || !u3_safe) return false;
-    if (!u2_.apply(bus, u2) || !u3_.apply(bus, u3)) return false;"""),
+    const bool u3_ok = u3_.apply(bus, u3);""",
+     """    const bool u2_ok = u2_.apply(bus, u2);
+    const bool u3_ok = u2_ok && u3_.apply(bus, u3);"""),
     ("a U2 read error stops U3 being serviced (service short-circuits)",
      "aqroot_demo_expanders.h",
      """    const bool a = u2_.readInterruptStatus(bus, &u2_irq_);
@@ -194,16 +248,6 @@ ORDER_CONTROLS = [
     if (!u2_.readInputs(bus, &u2_inputs_)) return false;
     if (!u3_.readInputs(bus, &u3_inputs_)) return false;
     const bool a = true, b = true, c = true, d = true;"""),
-    # D-751's control was `clearBits(SW|BOOST)` -> `writeBit(BOOST, false)`,
-    # the edit that let a NACKed load-switch write be followed by a single-bit
-    # write that re-commanded the switch ON.  D-779 RETIRES IT AS VACUOUS AND
-    # SAYS SO RATHER THAN DELETING IT QUIETLY: `Pcal9535a::writeOutputs` now
-    # invalidates the shadow when a write NACKs, and both `writeBit` and
-    # `clearBits` refuse a blind read-modify-write, so that mutation can no
-    # longer re-assert anything -- the host test stops catching it because the
-    # defect stopped being reachable.  The guard that actually carries the
-    # property is the invalidation itself, so THAT is what this control now
-    # mutates, one layer down.
     ("a failed output write leaves the shadow trusted",
      "pcal9535a.h",
      """    if (!writePortPair(bus, address_, kRegOutput0, value)) {
@@ -211,7 +255,35 @@ ORDER_CONTROLS = [
       return false;
     }""",
      """    if (!writePortPair(bus, address_, kRegOutput0, value)) return false;"""),
+    ("partial 5 V enable failure no longer enters safety recovery",
+     "aqroot_demo_expanders.h",
+     """      if (!u3_.writeBit(bus, AQROOT_U3_ACC_5V_SW_EN, true)) {
+        (void)applyAccessorySafeState(bus);
+        return false;
+      }""",
+     """      if (!u3_.writeBit(bus, AQROOT_U3_ACC_5V_SW_EN, true)) {
+        return false;
+      }"""),
+    ("lost-ACK 3.3 V enable failure no longer enters safety recovery",
+     "aqroot_demo_expanders.h",
+     """      if (!u3_.writeBit(bus, AQROOT_U3_ACC_3V3_EN, true)) {
+        (void)applyAccessorySafeState(bus);
+        return false;
+      }""",
+     """      if (!u3_.writeBit(bus, AQROOT_U3_ACC_3V3_EN, true)) {
+        return false;
+      }"""),
+    ("failed boot-safe latch write is forgotten instead of staying pending",
+     "aqroot_demo_expanders.h",
+     """    if (!u2_safe || !u3_safe || !u2_ok || !u3_ok) {
+      if (!u2_safe || !u3_safe) safe_shutdown_pending_ = true;
+      return false;
+    }""",
+     """    if (!u2_safe || !u3_safe || !u2_ok || !u3_ok) {
+      return false;
+    }"""),
 ]
+
 
 
 def run_host_test(test, mutation=None):
@@ -449,7 +521,9 @@ def main():
     # ---- H6 -------------------------------------------------------------
     h6 = {"tests": [], "verdict": "PASS"}
     for test, controls in zip(
-            HOST_TESTS, (ORDER_CONTROLS, BUS_CONTROLS, POWER_POLICY_CONTROLS)):
+            HOST_TESTS,
+            (ORDER_CONTROLS, BUS_CONTROLS, POWER_POLICY_CONTROLS,
+             FUEL_GAUGE_CONTROLS)):
         compiled, code, output = run_host_test(test)
         claims = [line for line in output.splitlines() if line.startswith("[")]
         entry = {
@@ -466,7 +540,7 @@ def main():
                         if line.startswith("[FAIL")]
             entry["controls"].append(dict(
                 control=control[0], compiled=c_compiled, exit_code=c_code,
-                caught=(c_code != 0),
+                caught=(c_compiled and c_code != 0 and bool(c_claims)),
                 first_failed_claim=c_claims[0] if c_claims else None))
         entry["verdict"] = ("PASS" if compiled and code == 0 and claims
                             and all(c["caught"] for c in entry["controls"])

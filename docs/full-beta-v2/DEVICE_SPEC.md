@@ -113,7 +113,7 @@ GPIO19/20); there is **no USB-UART bridge IC** (by design). See §9, §16.
 | Resolution | **320 × 480** | LOCKED · MARKETING-SAFE | OFF_BOARD_BOM.md; ARCHITECTURE.md |
 | Display driver | **ILI9488** (COG) | LOCKED (per ARCH/BOM & D-074…D-078) | ARCHITECTURE.md; OFF_BOARD_BOM.md — see conflict note |
 | Interface | 4-wire **SPI** (SPI-A bus) | LOCKED | `03_spi_a_display_sd.kicad_sch` |
-| On-board FPC connector | `J1` **Hirose FH69-50S-0.5SH** (50-pin, 0.5 mm) | FITTED · MANUAL ASSEMBLY | `03_spi_a_display_sd.kicad_sch:J1` |
+| On-board FPC connector | `J1` **Hirose FH69-50S-0.5SH** (50-pin, 0.5 mm) | FITTED · **MACHINE-PLACED** (D-206/D-207; placement preview still mandatory) | `03_spi_a_display_sd.kicad_sch:J1`; current assembly plan |
 | Tail **pin-1 end** | **RIGHT-hand end viewed from the display face, tail down** — and `J1` pin 1 is the right-hand end of its row (`x = 44.910`, `F.Cu`). **Pin 1 meets pin 1; no mirror** | **RESOLVED at D-754** from the vendor outline drawing | `evidence/d754-display-tail-orientation.json` |
 | Touch panel | EastRising **ER-TPC035-6** capacitive | LOCKED · FITTED · INTERNAL | OFF_BOARD_BOM.md |
 | Touch controller | **FocalTech FT6236** @ I²C **0x38** | LOCKED (interface); **silicon identity CAD-TO-VERIFY** | `architecture/I2C_ADDRESS_REGISTRY.md`; ARCHITECTURE.md |
@@ -153,36 +153,21 @@ GPIO19/20); there is **no USB-UART bridge IC** (by design). See §9, §16.
 > have latched its backlight off and over-stressed `Q11` on the first
 > brightness ramp.
 >
-> **THE REPAIR IS STRUCTURAL, NOT PROCEDURAL (D-752).**  `Q11`'s gate moved to
-> its own net `/03_SPI_A_DISPLAY_SD/BL_DISC_G`, driven by an ENVELOPE of
-> `DISP_BL_CTL`: `D14` (1N4148WS) charges `C85` (100 nF) from it in
-> microseconds, `R132` (220 k) discharges it with **τ = 22 ms**.  The invariant
-> is waveform-independent — *`Q11` cannot open until the gate has decayed below
-> `VGS(th)`, which takes at least **11.4 ms** at worst-case tolerance, and
-> `U17` is guaranteed to be in shutdown by **2.5 ms***.  The converter
-> therefore always stops first, for ANY `CTRL` waveform, including an
-> out-of-spec PWM frequency or a firmware crash.  **Margin 4.6×**, and no
-> firmware sequencing is relied upon.
->
-> * **worst-case hold.**  `Vf` ≤ 0.7 V at the 12.5 µA hold current gives a
->   2.60 V gate; τ at tolerance extremes is 19.6–24.4 ms; `VGS` at 2.5 ms is
->   **2.29 V**, above the `RDS(on)` spec point.  Droop over the longest low
->   phase the part specifies (5 kHz at 1 % duty = 199 µs) is **26 mV**.
-> * **turn-on.**  `C85` charges through `D14` from the GPIO in ≈ 25 µs against
->   `U17`'s **6.5 ms** soft-start, so `Q11` is fully on before the converter
->   delivers current.
-> * **why silicon and not a Schottky.**  The OFF state is held by `R132`:
->   `D14`'s worst PUBLISHED reverse leakage (1 µA at 75 V; ours is 2.7 V) plus
->   the `AO3400A`'s 100 nA `IGSS` across 220 k is **0.242 V**, against
->   `VGS(th)` min **0.65 V**.  A `BAT54WS` would have rested that floor on an
->   unpublished leakage curve at temperature.
-> * **cost.**  `RDS(on)` ≤ 48 mΩ at `VGS` 2.5 V is **5.2 mV** at 109 mA; the
->   109 mA setpoint and its 100.5–117.6 mA band are unchanged.
-> * **mechanised.**  `checks/demo_feature_contract.py` **F5** requires the two
->   nets to be distinct, the gate net to carry exactly `Q11.1`/`D14.1`/
->   `R132.1`/`C85.1`, `D14.2` to sit with `U17.4`, both hold legs to return to
->   `GND`, and the `220k`/`100nF`/`1N4148` identities to hold — with **four
->   live negative controls**, including one that puts the shared gate back.
+> **D-752 STRUCTURAL REPAIR, UPDATED THROUGH D-782.** `Q11`'s gate is on its own
+> `/03_SPI_A_DISPLAY_SD/BL_DISC_G` net. `D14` charges **C85 = 1 µF** from
+> `DISP_BL_CTL`; `R132 = 220 kΩ` discharges it. D-779 enlarged C85 tenfold, so
+> the old D-752 `100 nF` / `τ = 22 ms` figures are historical and MUST NOT be
+> used. The current nominal RC is **220 ms**; the release proof uses a **147 ms
+> worst retained τ** after tolerance/DC-bias allowance. D-780 then replaced the
+> AO3422 with Vishay `SQ2364EES-T1_BE3`, whose guaranteed `RDS(on)` point at
+> `VGS = 1.5 V` closes the conduction proof without threshold/transconductance
+> extrapolation. D-782 additionally **primes `DISP_BL_CTL` at 100% for 2 ms
+> before low-duty PWM**, so the 1 µF hold capacitor is charged before dimming.
+> `F5` gates the exact fitted Q11/C85/R132/D14 identities and timing; first-five
+> `Q11-TEMP-01` still measures startup, PWM, reset and true-off at 0/25/40 °C.
+> The safety invariant remains: the cathode disconnect must stay enhanced until
+> TPS61169 has ceased switching; firmware brightness control is not allowed to
+> momentarily create an open-LED fault.
 >
 > **AND THE SILICON ITSELF WAS STILL UNDER-RATED, UNTIL D-766.**  Everything
 > above is about SEQUENCING, and the sentence *"the `AO3400A` is a 30 V part"*
@@ -293,7 +278,7 @@ sockets); the only on-board RF network is the 13.56 MHz NFC differential front e
 | Cell | 1S Li-ion / LiPo pouch | LOCKED (chemistry) · INTERNAL | `01_power_tree.kicad_sch`; OFF_BOARD_BOM.md |
 | Battery connection | `J4` **manual 26-AWG pigtail land** → Molex Micro-Lock Plus 2.0 (`5055700201` board-side housing); **no PCB header fitted** | FITTED MANUAL · INTERNAL | `01_power_tree.kicad_sch:J4`; `assembly/BATTERY_HARNESS.json` |
 | Envelope | ≈ **2500–3000 mAh** target; cell envelope 57 × 75 × 8.0 mm MAX (D-243) | TARGET · CAD-TO-VERIFY | CTO_DECISIONS D-071/D-243; OFF_BOARD_BOM.md |
-| **Exact fitted capacity** | **2500 mAh — Adafruit Product 328 selected for the first five (CTO-BAT-01).** Current supplier page specifies a protected pack with genuine JST-PH; its linked `785060` pack specification is pinned in-repo at SHA-256 `826149da…ecd3`, max pack 7.9 × 50.5 × 60.5 mm, max charge 1C and operating discharge current ≤2C. The supplier's conservative charge recommendation is 1.2 A, above this board's 0.855 A worst programmed envelope. Incoming polarity must be meter-verified before D-781 retermination/mating. | **SELECTED · ENGINEERING-ONLY** | `assembly/SELECTED_BATTERY.json`; `checks/battery_pack_contract.py` |
+| **Exact fitted capacity** | **2500 mAh — Adafruit Product 328 selected for the first five (CTO-BAT-01).** Current supplier page specifies a protected pack with genuine JST-PH; its linked `785060` pack specification is pinned in-repo at SHA-256 `826149da…ecd3`, max pack 7.9 × 50.5 × 60.5 mm and max charge 1C. The primary pack specification §8.3.2 states discharge current **≤2C5A**; its own nominal-capacity row defines the C5 capacity as **2500 mAh**, so the derived limit is **2 × 2.5 Ah = 5.0 A**. That 5.0 A is a C-rate derivation, not a literal table row labelled “5 A max discharge.” The supplier's conservative charge recommendation is 1.2 A, above this board's 0.855 A worst programmed envelope. Incoming polarity must be meter-verified before D-781 retermination/mating. | **SELECTED · ENGINEERING-ONLY** | `assembly/SELECTED_BATTERY.json`; `checks/battery_pack_contract.py` |
 | Charger | `U11` **BQ25185DLHR** (1S Li-ion linear charger) | FITTED · INTERNAL | `01_power_tree.kicad_sch:U11` |
 | Charge current (ICHG) | **769 mA** — `R37` 390 Ω on ISET, `ICHG = KISET / RISET` with `KISET` 300 AΩ (SLUSF65B §6.1.1.4).  Input limit **1100 mA** and `VBATREG` **4.2 V** from `R36` 13 kΩ (Table 6-1).  Full cycle ≈ 240–290 min against the part's **360 min** `tMAXCHG` safety timer | **RESOLVED at D-743** · ENGINEERING-ONLY | `01_power_tree.kicad_sch:R36,R37`; CTO_DECISIONS D-743; `evidence/d743-rail-ampacity.json` |
 | Charge source requirement | **1 A or better.**  The USB-C port is a plain 5.1 kΩ Rd sink and does not read the source's Rp advertisement; a 500 mA-class port is folded back by the charger's VINDPM and will not complete a cycle inside `tMAXCHG` | MARKETING-SAFE (state it as "charge from a 1 A USB adapter") | D-743 |
@@ -337,18 +322,25 @@ power/NFC review, and CTO decisions.
 > **This wording is D-098's own and is MANDATORY in accessory-facing
 > documentation.**
 >
-> **D-775 ADDS ONE MANDATORY CONDITION TO THE SAME WORDING, AND IT IS A PACK-STATE
-> CONDITION, NOT A SMALLER NUMBER.**  Both budgets remain guaranteed by the
-> limiters (+7.0 % / +4.9 %, below), and each rail on its own is available down to
-> a **3.50 V** cell.  What is bounded is drawing BOTH at full budget **at the same
-> time**: that requires `VCELL >= 3.80 V`, the floor `F6` derives from the live
-> board (§ D-775 below).  Below it, firmware sheds the **5 V rail first** and the
-> 3.3 V rail keeps its full published 400 mA.  Accessory-facing documentation must
-> carry this condition: *"400 mA on 3.3 V and 300 mA on 5 V simultaneously
-> requires a battery at or above 3.80 V; below that the 5 V accessory rail is
-> switched off and the 3.3 V rail keeps its full budget."*  The alternative is a
-> BQ25185 `IBAT_OCP` hiccup on a low pack, which is worse for an accessory than a
-> deterministic refusal.
+> **D-775 ADDS ONE MANDATORY CONDITION TO THE SAME WORDING, AND IT IS A LOADED
+> PROTECTED-NODE CONDITION, NOT A SMALLER CURRENT BUDGET.** Both budgets remain
+> guaranteed by the limiters (+7.0 % / +4.9 %, below). `MAX17048 VCELL` is measured
+> on **BAT_PROTECTED_P**, downstream of the cell leads, harness, fuse, Q2/Q3 and
+> R75; therefore the firmware thresholds are **loaded gauge-node voltages, not
+> open-circuit cell/SOC thresholds**. Each rail alone may be retained while a fresh
+> active-mode VCELL sample is at or above **3.50 V**. Drawing BOTH at full budget
+> at the same time requires the **post-load, settled VCELL sample to remain at or
+> above 3.80 V**. Firmware first checks before enable, then rechecks after the load
+> step; if the loaded node falls below 3.80 V it sheds the **5 V rail first**, and
+> if gauge configuration/readiness is not verified it fails closed. A pack whose
+> resting voltage is above 3.80 V can still sag below the loaded floor; full dual-
+> rail battery operation is therefore expected mainly at high state of charge or
+> lighter-than-maximum simultaneous load. USB supplement can improve that operating
+> window. Accessory-facing documentation must say: *"400 mA on 3.3 V and 300 mA
+> on 5 V are the rail limits. Using both at once requires the loaded protected-
+> battery node to remain >=3.80 V after the second rail turns on; otherwise the
+> 5 V accessory rail is shed while 3.3 V remains available."* This is deterministic
+> load management, not a promise that every battery state can sustain both maxima.
 >
 > **D-781 SUPERSEDES D-777'S CONNECTOR RESTRICTION.**  D-777 correctly found
 > that the fitted JST-PH board header was only a 2 A path, but its firmware

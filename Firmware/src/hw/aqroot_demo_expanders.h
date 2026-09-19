@@ -85,6 +85,10 @@ constexpr uint16_t kRgbMask =
 // anode is +3V3, so a 1 is a dark LED.  Every accessory enable is safe at 0 and
 // externally pulled there (R98, R102, R131, R74).
 constexpr uint16_t kU3SafeLatch = kRgbMask;
+constexpr uint16_t kU3AccessoryMask =
+    bitmask(AQROOT_U3_ACC_5V_SW_EN) | bitmask(AQROOT_U3_ACC_3V3_EN) |
+    bitmask(AQROOT_U3_ACC_5V_BOOST_EN);
+constexpr uint16_t kU2AccessoryMask = bitmask(AQROOT_U2_ACC_PWR_EN);
 
 // The two public XGPIO and the four NC-DEMO spares have no external part, so
 // the internal 100k is what stops six CMOS inputs from floating.
@@ -147,8 +151,7 @@ class DemoExpanders {
         u2_inputs_(0xFFFF), u3_inputs_(0xFFFF),
         u2_irq_(0), u3_irq_(0), ready_(false),
         fault_shutdown_seen_(false), fault_shutdown_ok_(false),
-        fault_observability_lost_(false), safe_shutdown_pending_(false),
-        safe_state_applied_(false) {}
+        fault_observability_lost_(false), safe_shutdown_pending_(false) {}
 
   // Probe both devices, drive both into their safe state, then take the first
   // input snapshot -- which also deasserts /INT on both, so WAKE_INT_N is
@@ -177,7 +180,10 @@ class DemoExpanders {
     // attempted, in order, and the verdict is taken afterwards.
     const bool u2_ok = u2_.apply(bus, u2);
     const bool u3_ok = u3_.apply(bus, u3);
-    if (!u2_safe || !u3_safe || !u2_ok || !u3_ok) return false;
+    if (!u2_safe || !u3_safe || !u2_ok || !u3_ok) {
+      if (!u2_safe || !u3_safe) safe_shutdown_pending_ = true;
+      return false;
+    }
 
     // Read the direction back.  A PCAL9535A that NACKed a write mid-sequence
     // would otherwise leave half this board's control lines as inputs and every
@@ -191,6 +197,7 @@ class DemoExpanders {
     u2_irq_ = 0;
     u3_irq_ = 0;
     fault_observability_lost_ = false;
+    safe_shutdown_pending_ = false;
     ready_ = true;
     return true;
   }
@@ -198,33 +205,58 @@ class DemoExpanders {
   bool ready() const { return ready_; }
   bool safeShutdownPending() const { return safe_shutdown_pending_; }
 
-  // D-779.  THE FALLBACK IS BROADER THAN ITS CALLER ASKED FOR, AND THE CALLER
-  // HAS TO BE TOLD.  `applyAccessorySafeState` writes BOTH complete safe
-  // latches, so it takes down the 3.3 V rail, the 5 V rail AND the accessory
-  // I2C buffer -- whatever the caller was actually trying to switch.  A
-  // `setAccessory5v(false)` that reaches its safe final state THROUGH this
-  // path therefore returns true while having also dropped the other two, and
-  // a caller that only clears its own shadow flag is then wrong about the
-  // hardware.  This latch is how it finds out; `consumeSafeStateApplied` reads
-  // and clears it, so one application is reported exactly once.
-  bool consumeSafeStateApplied() {
-    const bool applied = safe_state_applied_;
-    safe_state_applied_ = false;
-    return applied;
+  // Round-4 state reconciliation.  No delayed event flag is used: the caller
+  // derives its software state directly from the expander output-latch shadow.
+  // If either shadow is unknown or a safety shutdown is pending, the state is
+  // UNKNOWN and callers must remain pessimistic until recovery completes.
+  bool accessoryState(bool *rail3v3, bool *rail5v, bool *i2c_buffer) const {
+    if (safe_shutdown_pending_ || !u2_.outputShadowValid() ||
+        !u3_.outputShadowValid()) return false;
+    if (rail3v3) {
+      *rail3v3 = Pcal9535a::bitOf(u3_.outputShadow(), AQROOT_U3_ACC_3V3_EN);
+    }
+    if (rail5v) {
+      const bool boost = Pcal9535a::bitOf(
+          u3_.outputShadow(), AQROOT_U3_ACC_5V_BOOST_EN);
+      const bool sw = Pcal9535a::bitOf(
+          u3_.outputShadow(), AQROOT_U3_ACC_5V_SW_EN);
+      *rail5v = boost || sw;
+    }
+    if (i2c_buffer) {
+      *i2c_buffer = Pcal9535a::bitOf(
+          u2_.outputShadow(), AQROOT_U2_ACC_PWR_EN);
+    }
+    return true;
   }
 
   bool applyAccessorySafeState(I2cBus &bus) {
     safe_shutdown_pending_ = true;
-    const bool u2_ok = u2_.writeOutputs(bus, kU2SafeLatch);
-    const bool u3_ok = u3_.writeOutputs(bus, kU3SafeLatch);
-    const bool ok = u2_ok && u3_ok;
+
+    // U3 owns every actual accessory POWER enable.  If its shadow is unknown,
+    // first try to read the hardware latch.  If even that fails, a complete U3
+    // safe word is appropriate: the only collateral outputs are RGB-dark and
+    // SX1262_RXEN-low; no display/touch/radio reset is asserted.
+    bool u3_known = u3_.outputShadowValid() || u3_.syncOutputShadow(bus);
+    bool u3_ok = false;
+    if (u3_known) {
+      u3_ok = u3_.clearBits(bus, kU3AccessoryMask);
+    } else {
+      u3_ok = u3_.writeOutputs(bus, kU3SafeLatch);
+    }
+
+    // U2 owns only the accessory I2C-buffer enable for this safety action.
+    // Never blanket-write kU2SafeLatch during a runtime fault: that word also
+    // asserts DISP_RST_N, TOUCH_RST_N and SX1262_RST_N and caused Fable R4 T1.
+    bool u2_known = u2_.outputShadowValid() || u2_.syncOutputShadow(bus);
+    bool u2_ok = false;
+    if (u2_known) {
+      u2_ok = u2_.clearBits(bus, kU2AccessoryMask);
+    }
+
+    const bool ok = u3_ok && u2_ok;
     safe_shutdown_pending_ = !ok;
     fault_shutdown_seen_ = true;
     fault_shutdown_ok_ = ok;
-    // Either device reaching its safe latch has already dropped part of the
-    // accessory state, so the caller is told even when the pair did not both
-    // succeed -- the pessimistic direction is the safe one here.
-    if (u2_ok || u3_ok) safe_state_applied_ = true;
     return ok;
   }
 
@@ -360,8 +392,15 @@ class DemoExpanders {
   bool setAccessory5v(I2cBus &bus, bool on) {
     if (on) {
       if (!ready_ || fault_observability_lost_ || safe_shutdown_pending_ || accessoryFault()) return false;
-      if (!u3_.writeBit(bus, AQROOT_U3_ACC_5V_BOOST_EN, true)) return false;
-      return u3_.writeBit(bus, AQROOT_U3_ACC_5V_SW_EN, true);
+      if (!u3_.writeBit(bus, AQROOT_U3_ACC_5V_BOOST_EN, true)) {
+        (void)applyAccessorySafeState(bus);
+        return false;
+      }
+      if (!u3_.writeBit(bus, AQROOT_U3_ACC_5V_SW_EN, true)) {
+        (void)applyAccessorySafeState(bus);
+        return false;
+      }
+      return true;
     }
     // The SAFE ORDER is still switch-then-boost, so the first write clears
     // ACC_5V_SW_EN alone.  The second clears BOTH (D-751 `clearBits`): if the
@@ -386,7 +425,11 @@ class DemoExpanders {
   bool setAccessory3v3(I2cBus &bus, bool on) {
     if (on) {
       if (!ready_ || fault_observability_lost_ || safe_shutdown_pending_ || accessoryFault()) return false;
-      return u3_.writeBit(bus, AQROOT_U3_ACC_3V3_EN, true);
+      if (!u3_.writeBit(bus, AQROOT_U3_ACC_3V3_EN, true)) {
+        (void)applyAccessorySafeState(bus);
+        return false;
+      }
+      return true;
     }
     // Same rule as setAccessory5v, and here the two writes are on DIFFERENT
     // DEVICES: a U2 bus error must not leave U3's switched 3.3 V rail on.
@@ -400,7 +443,11 @@ class DemoExpanders {
     if (on && !Pcal9535a::bitOf(u3_.outputShadow(), AQROOT_U3_ACC_3V3_EN)) {
       return false;  // U16 is powered from ACC_3V3_SW; bring that up first
     }
-    return u2_.writeBit(bus, AQROOT_U2_ACC_PWR_EN, on);
+    if (!u2_.writeBit(bus, AQROOT_U2_ACC_PWR_EN, on)) {
+      if (on) (void)applyAccessorySafeState(bus);
+      return false;
+    }
+    return true;
   }
 
   Pcal9535a &u2() { return u2_; }
@@ -429,7 +476,22 @@ class DemoExpanders {
   bool fault_shutdown_ok_;
   bool fault_observability_lost_;
   bool safe_shutdown_pending_;
-  bool safe_state_applied_;
 };
+
+// Caller-side state reconciliation is deliberately part of the hardware layer
+// so the exact policy used by demo/main.cpp is host-testable.  UNKNOWN is not
+// OFF: if the expander shadows cannot prove the current latch state, software
+// remains pessimistically active and keeps safety/VCELL servicing alive.
+inline bool reconcileAccessoryFlags(const DemoExpanders &expanders,
+                                    bool *rail3v3, bool *rail5v,
+                                    bool *i2c_buffer) {
+  bool r3 = false, r5 = false, buf = false;
+  const bool known = expanders.accessoryState(&r3, &r5, &buf);
+  if (!known) r3 = r5 = buf = true;
+  if (rail3v3) *rail3v3 = r3;
+  if (rail5v) *rail5v = r5;
+  if (i2c_buffer) *i2c_buffer = buf;
+  return known;
+}
 
 }  // namespace aqroot

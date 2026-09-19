@@ -1,0 +1,159 @@
+{
+  "board_sha256": "cef458b92c6e92462bea250b434a481b3e8454a991eb13b2b66623ca1f4a880e",
+  "checks": {
+    "LAND1_every_footprint_resolves_a_master": true,
+    "LAND2_board_land_equals_master": true,
+    "LAND3_comparison_not_vacuous": true,
+    "LAND4_kicad_agrees": true,
+    "LAND5_index_covers_the_board": true,
+    "LAND6_every_identity_is_in_the_ledger": true,
+    "LAND7_no_open_identity_and_every_read_drawing_is_cited": true,
+    "LAND8_manufacturer_underside_restrictions": true
+  },
+  "cited_files_missing_or_changed": [],
+  "control": {
+    "diffs": [
+      {
+        "board": 1226000,
+        "issue": "size_x_nm",
+        "land": 0,
+        "master": 1225000,
+        "pad": "1"
+      }
+    ],
+    "ref": "R75",
+    "verdict": "MISMATCH"
+  },
+  "declared_master_divergences": [],
+  "distinct_identities": 49,
+  "drc_counts": {},
+  "drc_land_violations": [],
+  "footprints": 315,
+  "index_bad_tier": [],
+  "index_dead_rows": [],
+  "index_missing": [],
+  "kicad_mismatch_refs": [],
+  "kicad_share": "/usr/share/kicad",
+  "ledger_unwritten": [],
+  "mismatches": [],
+  "no_master": [],
+  "open_items": [],
+  "open_not_marked": [],
+  "schema": 1,
+  "tier1_figures_in_the_ledger_not_this_index": [
+    "AQROOT_Beta:Bosch_LGA-14_2.5x3.0mm_P0.5mm_BMI270",
+    "AQROOT_Beta:Coilcraft_XFL4020",
+    "AQROOT_Beta:Hirose_FH69-50S-0.5SH",
+    "AQROOT_Beta:MAX17048_T822",
+    "AQROOT_Beta:MEIHUA_MHPA3528RGBCT_PLCC4_3.5x2.8mm",
+    "AQROOT_Beta:Molex_5025700893",
+    "AQROOT_Beta:MountingBoss_M2_NPTH",
+    "AQROOT_Beta:PUI_DMM-4026-B-I2S_4.0x3.0mm",
+    "AQROOT_Beta:ST25R3916_AQET",
+    "AQROOT_Beta:Samtec_SSQ-124-02-G-S-RA",
+    "AQROOT_Beta:TI_TPS63020_DSJ",
+    "AQROOT_Beta:Vishay_TSOP382xx_Minicast_3Pin_P2.54mm",
+    "Package_DFN_QFN:Texas_DLH0010A_WSON-10-1EP_2.2x2mm_P0.4mm_EP0.9x1.5mm"
+  ],
+  "tier1_pending_list_drifted": false,
+  "tier1_rows_without_confirmed_dimensions": [],
+  "tier_census": {
+    "1": 25,
+    "2A": 15,
+    "2_OPEN": 0,
+    "3": 275
+  },
+  "tier_rows_without_a_drawing": [],
+  "underside_restrictions": {
+    "control_retired_underbody_via_refused": true,
+    "control_rotated_instance_gap_is_measured_on_the_right_axis": true,
+    "coverage_note": "only footprints whose ARCHIVED vendor drawing was read and carries an underside instruction are in scope; no restriction is inferred for any other part",
+    "dnp_instances_with_offenders_REPORT_ONLY": [
+      "L2"
+    ],
+    "fitted_instances_with_offenders": [],
+    "instances": [
+      {
+        "derived_from": "bounding boxes of this instance's own two pads",
+        "dnp": true,
+        "drawing": "Wurth 74438357010 rev 003.002 2026-09-01, both Recommended Land Patterns: 'No vias and traces underneath the inductor'",
+        "drawing_file": "hardware/demo/kicad/aqroot-demo/vendor/Wurth/wurth-74438357010-WE-MAPI-4030.pdf",
+        "footprint": "AQROOT_Beta:Wurth_WE-MAPI_4030_74438357010",
+        "gap_axis": "x",
+        "offenders": [
+          {
+            "end_mm": [
+              58.6,
+              17.0
+            ],
+            "kind": "track",
+            "net": "/NFC_5V_EN",
+            "start_mm": [
+              60.6,
+              15.0
+            ],
+            "width_mm": 0.2
+          },
+          {
+            "end_mm": [
+              58.6,
+              20.5
+            ],
+            "kind": "track",
+            "net": "/NFC_5V_EN",
+            "start_mm": [
+              58.6,
+              17.0
+            ],
+            "width_mm": 0.2
+          }
+        ],
+        "ok": true,
+        "orientation_deg": 0.0,
+        "ref": "L2",
+        "restricted_strip_mm": [
+          58.205,
+          16.55,
+          59.595,
+          20.25
+        ],
+        "restricted_strip_size_mm": [
+          1.39,
+          3.7
+        ],
+        "side": "B.Cu"
+      },
+      {
+        "derived_from": "bounding boxes of this instance's own two pads",
+        "dnp": false,
+        "drawing": "Wurth 74438357010 rev 003.002 2026-09-01, both Recommended Land Patterns: 'No vias and traces underneath the inductor'",
+        "drawing_file": "hardware/demo/kicad/aqroot-demo/vendor/Wurth/wurth-74438357010-WE-MAPI-4030.pdf",
+        "footprint": "AQROOT_Beta:Wurth_WE-MAPI_4030_74438357010",
+        "gap_axis": "x",
+        "offenders": [],
+        "ok": true,
+        "orientation_deg": 0.0,
+        "ref": "L4",
+        "restricted_strip_mm": [
+          58.205,
+          34.35,
+          59.595,
+          38.05
+        ],
+        "restricted_strip_size_mm": [
+          1.39,
+          3.7
+        ],
+        "side": "B.Cu"
+      }
+    ],
+    "ok": true,
+    "restricted_footprints": [
+      "AQROOT_Beta:Wurth_WE-MAPI_4030_74438357010"
+    ]
+  },
+  "verdict": "PASS",
+  "verdicts": {
+    "MATCH": 315
+  }
+}

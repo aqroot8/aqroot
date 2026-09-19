@@ -32,6 +32,7 @@
 #include "../hw/aqroot_demo_board.h"
 #include "../hw/aqroot_demo_display.h"
 #include "../hw/aqroot_demo_expanders.h"
+#include "../hw/max17048_guard.h"
 #include "../hw/aqroot_demo_peripherals.h"
 #include "../hw/aqroot_demo_pins.h"
 #include "../hw/aqroot_demo_radios.h"
@@ -53,6 +54,7 @@ static bool g_acc3v3 = false;
 static bool g_acc5v = false;
 static bool g_accessory_i2c = false;
 static uint32_t g_last_battery_guard_ms = 0;
+static Max17048Guard g_fuel_gauge(AQROOT_I2C_ADDR_FUEL_GAUGE);
 
 // D-775 FIRMWARE POLICY.  Hardware current limiting remains the absolute
 // safety boundary.  This separate VCELL policy enforces the NORMAL D-098 load
@@ -78,6 +80,12 @@ static bool i2cReadByte(uint8_t address, uint8_t reg, uint8_t *value) {
   return g_bus.readRegister(address, reg, value, 1);
 }
 
+static bool configureFuelGaugeActiveMode() {
+  const bool ready = g_fuel_gauge.configureActiveMode(g_bus);
+  if (ready) delay(300);  // at least one active-mode VCELL update
+  return ready;
+}
+
 // MAX17048 VCELL, register 0x02.  D-766 CORRECTED AN OFF-BY-SIXTEEN.  The read
 // below used to take only the TOP TWELVE BITS -- (raw[0] << 4) | (raw[1] >> 4)
 // -- and then apply the 78.125 uV/cell scale, which divides the answer by 16: a
@@ -92,13 +100,7 @@ static bool i2cReadByte(uint8_t address, uint8_t reg, uint8_t *value) {
 // READ THIS BACK against a metered cell voltage; it is printed on every refusal
 // and on every shed so that a wrong scale cannot hide.
 static bool readFuelCellVoltage(float *volts) {
-  uint8_t raw[2] = {0, 0};
-  if (!volts || !g_bus.readRegister(AQROOT_I2C_ADDR_FUEL_GAUGE, 0x02, raw, 2)) {
-    return false;
-  }
-  const uint16_t counts = (uint16_t(raw[0]) << 8) | uint16_t(raw[1]);
-  *volts = float(counts) * 0.000078125f;
-  return true;
+  return g_fuel_gauge.readVcell(g_bus, volts);
 }
 
 static bool accessoryBatteryAllows(bool other_rail_on, float *volts = nullptr,
@@ -111,28 +113,31 @@ static bool accessoryBatteryAllows(bool other_rail_on, float *volts = nullptr,
   return accessoryEnableAllowed(read, v, other_rail_on);
 }
 
-// D-779.  ONE PLACE THAT RECONCILES THE SHADOW FLAGS WITH THE HARDWARE, AND
-// ONE PLACE THAT ENGAGES THE BATTERY-CONNECTION RESERVE.
-//
-// `DemoExpanders::applyAccessorySafeState` is the fallback every accessory
-// write path drops to, and it writes BOTH complete safe latches -- so a call
-// that only asked about the 5 V rail can take down all three outputs.  Any
-// accessory operation therefore has to ask whether that happened and drop
-// every shadow flag if it did, or the UI and the next toggle are wrong about
-// the board.
+// D-782.  ONE PLACE RECONCILES SOFTWARE FLAGS WITH THE CURRENT EXPANDER
+// OUTPUT-LATCH STATE.  A failed/partial I2C transaction makes the state UNKNOWN,
+// never falsely OFF; `reconcileAccessoryFlags` keeps the caller pessimistically
+// active until the pending accessory-only safe state is confirmed.  Runtime
+// recovery no longer blanket-writes U2's display/touch/LoRa reset outputs.
 //
 static void forceAccessoriesOff(const char *why);
 static void afterAccessoryChange();
 static void applyAccessoryRetention(const char *ctx);
 static void settledAccessoryRecheck(const char *what);
+static bool blockingDemoTestAllowed(const char *what);
 
 static void afterAccessoryChange() {
-  if (g_expanders.consumeSafeStateApplied()) {
-    g_acc3v3 = false;
-    g_acc5v = false;
-    g_accessory_i2c = false;
-    Serial.println("ACCESSORY SAFE STATE APPLIED: all accessory outputs off");
+  (void)reconcileAccessoryFlags(g_expanders, &g_acc3v3, &g_acc5v,
+                                &g_accessory_i2c);
+}
+
+static bool blockingDemoTestAllowed(const char *what) {
+  afterAccessoryChange();
+  if (g_expanders.safeShutdownPending() || g_acc3v3 || g_acc5v) {
+    Serial.printf("%s REFUSED: turn both accessory rails off and wait for a confirmed safe state first\n",
+                  what);
+    return false;
   }
+  return true;
 }
 
 // The retention rule, in ONE place, so the periodic guard and D-779's
@@ -392,13 +397,10 @@ void setup() {
   // asserted: a gauge that refuses this write still fails closed everywhere
   // else, and the operator is told which case they are in.
   {
-    static const uint8_t kHibrtAlwaysActive[3] = {0x0A, 0x00, 0x00};
-    const bool wrote = g_bus.write(AQROOT_I2C_ADDR_FUEL_GAUGE,
-                                   kHibrtAlwaysActive,
-                                   sizeof(kHibrtAlwaysActive));
-    report("MAX17048 U14 hibernate disabled (HIBRT = 0x0000)", wrote,
-           wrote ? "active-mode VCELL, ~250 ms updates"
-                 : "HIBRT write FAILED -- VCELL may be a hibernate-rate value");
+    const bool active = configureFuelGaugeActiveMode();
+    report("MAX17048 U14 hibernate disabled + read back", active,
+           active ? "HIBRT=0x0000 verified; fresh active-mode VCELL required"
+                  : "gauge NOT READY -- accessory enable remains fail-closed");
   }
   // Only reachable once TOUCH_RST_N is released, which bringUpExpanders() did.
   probeI2cDevice("touch controller (J1 FPC)", AQROOT_I2C_ADDR_TOUCH, 0xA3, 0x00,
@@ -464,7 +466,24 @@ static void printStatus() {
 
 void loop() {
   if (!g_expanders.ready()) {
-    delay(1000);
+    // Round-4 R4-03: an MCU reset must not turn one failed safe-latch write
+    // into an indefinite energized rail.  Re-open/recover the bus and retry
+    // the complete boot-safe expander initialization until it is confirmed.
+    static uint32_t last_recovery_ms = 0;
+    if (millis() - last_recovery_ms >= 250) {
+      last_recovery_ms = millis();
+      const bool bus_open = g_bus.reopen(AQROOT_I2C_BRINGUP_HZ);
+      const bool recovered = bus_open && g_expanders.begin(g_bus);
+      if (recovered) {
+        afterAccessoryChange();
+        releaseExpanderResetLines();
+        g_bus.setClock(AQROOT_I2C_RUN_HZ);
+        g_display_up = false;
+        (void)configureFuelGaugeActiveMode();
+        Serial.println("I2C/expander safety state RECOVERED after incomplete boot");
+      }
+    }
+    delay(10);
     return;
   }
 
@@ -476,12 +495,7 @@ void loop() {
   if (asserted || millis() - last_poll > 200) {
     last_poll = millis();
     if (g_expanders.service(g_bus)) {
-      if (g_expanders.accessoryFault()) {
-        g_acc3v3 = false;
-        g_acc5v = false;
-        g_accessory_i2c = false;
-        afterAccessoryChange();
-      }
+      afterAccessoryChange();
       if (g_expanders.u2Inputs() != g_last_u2 ||
           g_expanders.u3Inputs() != g_last_u3) {
         g_last_u2 = g_expanders.u2Inputs();
@@ -493,12 +507,7 @@ void loop() {
       }
     } else {
       static uint32_t last_service_error = 0;
-      if (g_expanders.faultObservabilityLost() && !g_expanders.safeShutdownPending()) {
-        g_acc3v3 = false;
-        g_acc5v = false;
-        g_accessory_i2c = false;
-        afterAccessoryChange();
-      }
+      afterAccessoryChange();
       if (millis() - last_service_error > 1000) {
         last_service_error = millis();
         Serial.printf("I2C service FAILED; accessory fault observability=%s\n",
@@ -562,6 +571,7 @@ void loop() {
         break;
       }
       case 'm': {
+        if (!blockingDemoTestAllowed("microphone test")) break;
         const MicCapture mic = captureMicrophone();
         Serial.printf("mic  %s, %lu frames, peak L=%ld R=%ld (24-bit)\n",
                       mic.installed ? "I2S RX up" : "I2S RX FAILED",
@@ -575,6 +585,7 @@ void loop() {
       }
       case 's': printStatus(); break;
       case 'd': {
+        if (!blockingDemoTestAllowed("microSD test")) break;
         // The ONLY test on this board that proves SPI-A MISO: R112 is DNP, so
         // the display SDO never reaches the MCU and the card is the sole reader.
         const SdProbeResult sd = probeSdCard();
@@ -586,10 +597,12 @@ void loop() {
         break;
       }
       case 'l':
+        if (!blockingDemoTestAllowed("backlight ramp")) break;
         Serial.println("backlight ramp on GPIO46 (U17 TPS61169)");
         backlightRamp();
         break;
       case 'p': {
+        if (!blockingDemoTestAllowed("display test")) break;
         // RESET IS NOT AN MCU PIN.  U2.P04 owns it, so the pulse goes through
         // the expander before a single SPI byte is sent.
         Serial.println("display: pulsing DISP_RST_N via U2.P04, then ILI9488 init");
@@ -611,6 +624,7 @@ void loop() {
         break;
       }
       case 'x': {
+        if (!blockingDemoTestAllowed("IR test")) break;
         const IrSelfTest ir = irSelfTest();
         Serial.printf("IR  %u/%u samples low during a 38 kHz burst -- %s\n",
                       ir.low_samples, ir.total_samples,
@@ -619,6 +633,7 @@ void loop() {
         break;
       }
       case 't':
+        if (!blockingDemoTestAllowed("audio tone")) break;
         // Leaving shutdown is what makes AMP_SD_MODE observable at all.
         Serial.println("1 kHz tone -- amplifier leaving shutdown");
         g_expanders.setAmplifier(g_bus, true);

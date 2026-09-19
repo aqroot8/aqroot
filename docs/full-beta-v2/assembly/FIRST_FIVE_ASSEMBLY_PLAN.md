@@ -118,7 +118,7 @@ broadline distributor and **consigned to JLC**, so it stays machine-placed.
 
 | part | ref | LCSC | stock | need | shortfall |
 |---|---|---|---|---|---|
-| **`PCAL9535APW,118`** NXP | `U2`, `U3`, `U23` | `C2669683` | **1** | **15** | **−14** |
+| **`PCAL9535APW,118`** NXP | `U2`, `U3` | `C2669683` | **1** | **10** | **−9** |
 | ~~`0466005.NR` Littelfuse~~ `F1` | — | — | — | — | **LEFT CLASS C at FBV2-MECH-002 — now `0466005.NRHF` `C57525`, class B** |
 | **`NTMD4820NR2G`** onsemi | `Q2`, `Q3` | `C905372` | **0** | 10 | −10 |
 | **`TLV7032DDFR`** TI | `U19` | `C2871498` | **0** | 5 | −5 |
@@ -129,10 +129,9 @@ broadline distributor and **consigned to JLC**, so it stays machine-placed.
 | **`NSR0240HT1G`** onsemi | `D8` | `C152519` | **7** | 5 | +2 spare only |
 | **`SQ2364EES-T1_BE3`** Vishay | `Q11` | `C5758702` | **0** | 5 | **−5 — buy broadline + CONSIGN** |
 
-**`U2`/`U3`/`U23` is the headline.** Three PCAL9535A per board is **fifteen TSSOP-24 at 0.65 mm
-pitch** for the first five, against **one** in stock. That is precisely the case the CTO ruling
+**`U2`/`U3` is the headline.** Demo removed `U23`; there are **two PCAL9535A per board, ten TSSOP-24 at 0.65 mm pitch** for the first five, against **one** in the archived stock snapshot. That is precisely the case the CTO ruling
 names: *"if the result would require manually installing dozens of fine-pitch parts per board,
-that is NOT acceptable."* **It does not, because consignment exists.** Fifteen plus spares from
+that is NOT acceptable."* **It does not, because consignment exists.** Ten plus spares from
 Digi-Key/Mouser, shipped to JLC with the order, machine-placed.
 
 **`U9` is the one that genuinely could not be hand-built.** A UFQFPN-32 5 × 5 with an exposed pad
@@ -165,10 +164,10 @@ against a need of five is a build with **one** spare; **buy spares independently
 | **`SSQ-124-02-G-S-RA` Samtec** (`C3323671`; ***~~`BCS-112-S-D-HE`~~ SUPERSEDED D-237/D-240, corrected D-750***) | `J5` | **24 × Ø1.02 mm PTH** | 1 × 24 right-angle community header. **Hand-solder after reflow.** The current board land is 1.60 mm pad / **1.02 mm drill** at 2.54 mm pitch; the old 0.71 mm figure belonged to the superseded BCS footprint. RA tail `(2.54) .100 in` |
 | `TSAL6100` | `D1` | 2 leads | 5 mm through-hole IR emitter, `C111836`. **LEAD-FORMED 90° AND TRIMMED — [`IR_LEAD_FORMING.md`](IR_LEAD_FORMING.md), NORMATIVE** |
 | `TSOP38238` (`C141632`) | `U6` | 3 leads | minicast IR receiver. **Hand-solder after reflow; LEAD-FORMED 90° AND TRIMMED — [`IR_LEAD_FORMING.md`](IR_LEAD_FORMING.md), NORMATIVE.** Was incorrectly also listed as machine-placed Class B until D-764 |
-| **D-781 manual battery pigtail** — 26-AWG Molex pre-crimps `2175012101` red / `2175011101` black into housing `5055700201`; **no PCB header fitted** | **`J4`** | 2 conductors through the existing 0.75 mm PTH pair, wires enter from **REAR**, solder on **FRONT** | Exact detachable harness is [`BATTERY_HARNESS.json`](BATTERY_HARNESS.json). Cavity 1 = BAT+ / red / `J4.1`; cavity 2 = GND / black / `J4.2`. **J4-T1/T2/T3/T4 are NORMATIVE**: trim each front conductive profile to **≤0.50 mm**, cover both inspected joints with **≤0.10 mm polyimide**, provide rear strain relief, DMM-check polarity, and complete the first-article harness acceptance tests. **Do not install JST `C131337` at J4.** |
+| **D-781/D-782 manual battery pigtail** — 26-AWG Molex pre-crimps `2175012101` red / `2175011101` black into housing `5055700201`; **no PCB header fitted** | **`J4`** | 2 conductors through the existing 0.75 mm nominal PTH pair, wires enter from **REAR**, solder on **FRONT** | Exact detachable harness is [`BATTERY_HARNESS.json`](BATTERY_HARNESS.json). Supplier/assembler must guarantee **≥0.70 mm finished plated-hole diameter** and prove one exact tinned lead passes freely before all five boards — no strand shaving. Cavity 1 = BAT+ / red / `J4.1`; cavity 2 = GND / black / `J4.2`. **J4-T1/T2/T3/T4 are NORMATIVE**: front conductive profile **≤0.50 mm**, both inspected joints covered with **≤0.10 mm polyimide**. Rear strain relief is now frozen to **DOWSIL 3145 RTV MIL-A-46146 gray**, applied to the insulated pigtail after joint inspection with the specified service loop; disconnect Micro-Lock by the housings only, never by pulling wires. DMM-check polarity and complete the first-article fit/pull/thermal acceptance tests. **Do not install JST `C131337` at J4.** |
 | `B2B-PH-K-S(LF)(SN)` JST PH (`C131337`) | `J6` | 2 leads | SPEAKER connector, body on `F.Cu`; its leads emerge on the rear **3.5 mm clear of `BATTERY_SHADOW`**, so no trim requirement. Was missing from this table |
 
-**FIVE through-hole parts per board, all five hand-soldered after reflow; three of them have a NORMATIVE forming/trim operation beyond soldering.** That is the manual scope.
+**FIVE through-hole references per board require manual post-reflow work: `J4`, `J5`, `J6`, `D1`, `U6`.** `J4` is a wire pigtail rather than a fitted connector. `J4`, `D1` and `U6` have NORMATIVE trim/forming requirements, and D-782 additionally freezes J4 rear strain relief using DOWSIL 3145 plus the Micro-Lock service-loop/housing-only disconnect rules in `BATTERY_HARNESS.json`.
 
 **Also PTH but not a lead:** `J3`'s four `SH` shell stakes (GCT USB4105 is a
 top-mount SMT receptacle — the stakes are mechanical anchors, pin-in-paste or
@@ -182,7 +181,7 @@ omission.
 
 ## 7. Class F — off-board
 
-Speaker `LS1` (`AS02008MR-LW152-R`, `C3311653`, stock 0 — consign or buy direct), display module, **Adafruit Product 328 2500 mAh protected battery (CTO-BAT-01)**, both antennas, the AMC→SMA pigtail and the 915 MHz whip. All in [`OFF_BOARD_BOM.md`](OFF_BOARD_BOM.md). The battery is an exact first-five supplier SKU now; do not replace it by a generic `LP785060` family-name match because published current ratings vary by sold variant.
+Speaker `LS1` (`AS02008MR-LW152-R`, `C3311653`, stock 0 — consign or buy direct), display module, **Adafruit Product 328 2500 mAh protected battery (CTO-BAT-01)**, both antennas, the locked **RF Solutions `CBA-UFLSMA20IP` 200 mm U.FL/MHF1-to-SMA(F) bulkhead pigtail**, and the Taoglas `TI.92.2113` 915 MHz whip. All in [`OFF_BOARD_BOM.md`](OFF_BOARD_BOM.md). The battery is an exact first-five supplier SKU now; do not replace it by a generic `LP785060` family-name match because published current ratings vary by sold variant.
 
 ---
 
@@ -190,7 +189,7 @@ Speaker `LS1` (`AS02008MR-LW152-R`, `C3311653`, stock 0 — consign or buy direc
 
 `Q11` is now Vishay **SQ2364EES-T1_BE3**. Its 60 V rating covers the board's 39 V open-LED fault ceiling, and its published **0.245 Ω MAX at VGS = 1.5 V, ID = 2 A** gives a direct low-gate conduction point below AQROOT's held **VGS = 2.396 V**. The vendor electrical-characteristics table states **TC = 25 °C unless otherwise noted**, so that 1.5 V row is not being misrepresented as an all-temperature guarantee. For these five Kickstarter prototypes this is a **reworkable first-article qualification item, not a production-temperature claim**.
 
-Before a first-five unit is accepted for Demo use, validate the backlight at **0 °C, 25 °C and 40 °C** after thermal soak: full-on, the normal firmware PWM range, commanded OFF for at least 30 s, and repeated ON→OFF→ON transitions. Acceptance: no visible dropout/flicker at full-on or normal PWM, no TPS61169 open-LED latch during normal operation, commanded OFF remains dark, and restart is repeatable. Record the unit ID and result. A failure blocks that unit and requires `Q11`/gate-drive rework before Demo use; it does **not** authorize widening the temperature claim.
+Before a first-five unit is accepted for Demo use, validate the backlight at **0 °C, 25 °C and 40 °C** after thermal soak: full-on, the normal firmware PWM range, commanded OFF for at least 30 s, and repeated ON→OFF→ON transitions. **D-782 startup rule:** from a discharged `C85`, firmware must first drive `DISP_BL_CTL` at **100% duty for at least 2 ms** before entering low-duty PWM; do not start directly at 1% duty. Scope `DISP_BL_CTL`, **Q11 VGS**, `LED_BOOST`, Q11 VDS and LED current during startup/OFF/restart. Acceptance: no visible dropout/flicker at full-on or normal PWM, no TPS61169 open-LED latch during normal operation, commanded OFF remains dark, and restart is repeatable. Record the unit ID and result. The TPS61169 primary datasheet is archived at `hardware/demo/kicad/aqroot-demo/vendor/TI/tps61169.pdf` (SHA-256 `7d0b8ace2459a9fd22fe7145086cbad4ccb3bb43219247459313fcba75230151`). A failure blocks that unit and requires `Q11`/gate-drive rework before Demo use; it does **not** authorize widening the temperature claim.
 
 The release gate must preserve this exact acceptance marker (`Q11-TEMP-01`) while the fitted Q11 relies on the 25 °C low-gate `RDS(on)` row.
 
@@ -240,11 +239,11 @@ the quote stage. **`L2`/`L4` also carried two spellings of "Würth"** and were n
 | how many parts machine-placed? | **all fitted SMT parts; Class E covers five manual references (`J4`,`J5`,`J6`,`D1`,`U6`)** |
 | how many manual solder operations per board? | **5** — `J4`, `J5`, `J6`, `D1`, `U6`; J4 is a wire pigtail land, while the other four are fitted THT parts; `J4`/`D1`/`U6` also have normative trim/forming instructions |
 | how many fine-pitch/QFN parts hand-placed? | **zero** |
-| how many part identities need consignment? | **9 (class C) + 0 (class D)** after deleting the superseded J5/BCS line at D-764. **Class D is empty.** Re-check stock at order time. |
+| how many part identities need consignment? | **9 class-C identities in this archived snapshot** (`PCAL9535APW,118`, `NTMD4820NR2G`, `TLV7032DDFR`, `74438357010`, `DMM-4026-B-I2S-R`, `LTC4368IDD-1#PBF`, `ST25R3916-AQET`, `NSR0240HT1G`, `SQ2364EES-T1_BE3`) + 0 class D. **Re-check all stock immediately before order; any additional exact-source item whose live stock no longer covers first-five need also moves to consignment. Archived counts are not purchasing authority.** |
 | DNP parts with no recorded reason | **zero** — eight were still undocumented at the start of FBV2-S2-002 and all eight now carry one |
 | does the build close today? | **Yes, via consignment.** It does **not** close as a pure LCSC turnkey order |
 
-**Do not optimise cents. Optimise first-build success.** The consignment fee on the current eight Class-C part identities is trivial against one failed board or one wrong-part respin.
+**Do not optimise cents. Optimise first-build success.** Consignment cost is trivial against one failed board or one wrong-part respin; the exact count must be recomputed from live stock at order time rather than inherited from this archived snapshot.
 
 ---
 

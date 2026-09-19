@@ -26,11 +26,26 @@
     "precrimp_black": "Molex 2175011101, 75 mm, 26 AWG, female-to-pigtail",
     "receptacle_housing": "5055700201",
     "board_land": "J4 legacy 2.00 mm PTH pair; NO JST header fitted",
+    "nominal_drill_mm": 0.75,
+    "required_finished_hole_min_mm": 0.7,
+    "factory_tinned_tip_max_mm": 0.65,
     "solder_pads": {
       "J4.1": "BAT_CONNECTOR_P / red",
       "J4.2": "GND / black"
     },
-    "assembly": "insert the factory pre-crimped female contacts into 5055700201, cut pigtails to final service length only after fit check, strip/tin the free ends and solder through J4 from B.Cu; front-side conductor trimmed flush"
+    "assembly": "insert the factory pre-crimped female contacts into 5055700201 and retain the factory 75 mm pigtail/free-tip preparation for the first five; do NOT cut/re-strip/re-tin before the J4 fit check because that would void the drawing's free-tip diameter basis. Verify one exact factory tinned tip passes freely through an actual >=0.70 mm finished J4 barrel with no strand shaving or force, then solder from B.Cu and keep the front-side conductive profile <=0.50 mm. If shortening is ever required, the new stripped/tinned end becomes a new workmanship qualification and must re-pass diameter/free-fit/strand inspection before use."
+  },
+  "strain_relief": {
+    "material": "DOWSIL 3145 RTV MIL-A-46146 Adhesive/Sealant, gray",
+    "process": "after solder joints pass visual/profile inspection and cleaning, form a relaxed rear-side service loop and apply a non-flowing fillet over the insulated red/black pigtails onto clean B.Cu solder mask; begin the adhesive beyond the inspected solder fillets so joints remain inspectable, bond both insulated leads to the PCB for at least 8 mm of length, and do not allow cured adhesive, wire or hard solder-wick transition to bear on the LiPo pouch or coax",
+    "cure": "AQROOT process: hold at room conditions for >=24 h before enclosure retention/closure testing; this is a conservative process hold, not a claim of full manufacturer cure. Adhesive must at minimum be tack-free and pass the finished harness retention inspection before use.",
+    "disconnect_instruction": "release and grip the two Micro-Lock housings; never disconnect by pulling either wire bundle",
+    "service_loop": "preserve >=35 mm free wire from each housing before tie/bundle per Molex product specification and leave enough relaxed board-side loop that mating force is not transferred into J4 solder barrels",
+    "manufacturer": "Dow",
+    "primary_source_url": "https://www.dow.com/en-us/pdp.dowsil-3145-rtv-mil-a-46146-adhesive-sealant.01059548z.html",
+    "primary_source_basis": "Dow product page: one-part moisture RTV, non-flow, PWB/wired-lead use, room-temperature alkoxy/condensation/methoxy cure; tack-free 55 min at 50% RH.",
+    "archived_tds": "hardware/demo/kicad/aqroot-demo/vendor/DOW/dowsil-3145-rtv-mil-a-46146-gray-11-1832-01-0323.pdf",
+    "archived_tds_sha256": "905af2ec4eafd4fe54fe748cab36450a121b4b04cedc375120299baefb38e115"
   },
   "battery_side": {
     "battery": "Adafruit Product 328, 3.7 V 2500 mAh",
@@ -65,7 +80,7 @@
     "battery-side 2137201000 crimps use Molex 213309-5900 or an equivalently qualified production process and are visually inspected for conductor/insulation capture",
     "minimum battery-side crimp pull-out: AWG26 19.6 N per Molex product/application tooling specification",
     "verify cavity polarity with DMM before first mate and after every battery retermination",
-    "strain-relieve board pigtail; maintain >=35 mm free wire before tie/bundle",
+    "strain-relieve the board pigtail exactly per the frozen DOWSIL 3145 process above; maintain >=35 mm free wire from each housing before tie/bundle; disconnect by gripping/releasing housings only, never by pulling wires",
     "front-side J4 conductor is trimmed flush and insulated under the display per the existing display-shadow rule",
     "first article: run published worst-case concurrent Demo load and record connector/lead temperature rise; target <30 C rise"
   ],

@@ -1,3 +1,85 @@
+## D-782 — **ROUND-4 COUNTEREXAMPLES CLOSED WITHOUT A COPPER RESPIN; STATE IS NOW FAIL-CLOSED BY CONFIRMED OUTPUT LATCH, GAUGE READINESS IS VERIFIED, AND THE RELEASE PACKAGE PROVES ITS OWN SEMANTICS**
+
+    authority  board cef458b92c6e92462bea250b434a481b3e8454a991eb13b2b66623ca1f4a880e
+    copper     unchanged from D-781; protected-copper authority unchanged
+    closes     Astra R4-01..R4-06 and Fable T1/T2/T4; Fable T3 is documented
+               as a loaded-battery operating-window limitation, not hidden
+               as guaranteed full-budget operation at every state of charge
+    order      REMAINS EXTERNAL_REVIEW_HOLD until Astra/Fable independently
+               recheck this corrected clean/pushed release target
+
+Round-4 produced executable counterexamples against the D-781 firmware and
+release package. They were real. No PCB geometry defect was demonstrated, so
+the correction stays in firmware, verification, manufacturing instructions and
+first-five workmanship controls.
+
+**R4-01/R4-02/R4-03 + Fable T1 — output state is no longer inferred from a
+command or a delayed notification.** `Pcal9535a` can re-read the real output
+latch after an uncertain transaction. `DemoExpanders` reconciles accessory
+state from confirmed U2/U3 output shadows, represents unknown as UNKNOWN rather
+than OFF, and makes every failed enable enter a pending safe-state repair. The
+runtime safe action clears only the accessory bits: it does **not** blanket-write
+`kU2SafeLatch`, so a transient U3 fault-read NACK no longer leaves display,
+touch and SX1262 reset asserted. A warm MCU reset that cannot establish the
+safe latches is retried after bus recovery instead of returning forever with
+retained PCAL outputs. Host fault injection now mechanises partial-write,
+lost-ACK, stale-notification, runtime-full-latch and failed-boot recovery cases.
+
+**R4-04 — a successful VCELL transfer is not permission unless gauge mode is
+verified.** `max17048_guard.h` writes HIBRT=0, reads it back exactly, waits for
+an active conversion, verifies the configuration before each safety VCELL read,
+and invalidates readiness on configuration/read/implausible-value failure. The
+all-zero/all-ones cases remain refused. Long demo-only blocking exercises are
+refused while accessory power is active/pending so the cooperative safety loop
+cannot silently violate its own service interval.
+
+**R4-05 — F8 now binds the voltage evidence to the exact purchased identity.**
+A rating record must agree with BOM manufacturer/MPN, not merely LCSC. An
+MPN-only downgrade of C44 is a live negative control and now fails. Every
+fitted capacitor must also have either a bounded DC node or a named non-DC/RF
+proof; the NFC/crystal population can no longer disappear under an 'unknown
+node' omission. The frozen fitted population still passes; this corrects the
+verifier, not the capacitor selection.
+
+**R4-06 + first-five workmanship — the package is human-usable and explicit.**
+A visual recheck found that KiCad's nominal autoscale still let Fab-layer text/pads
+cross into the title block even though the old gate called the drawing centered.
+That green-but-bad output is retired: top and mirrored-bottom drawings are now
+pinned at **0.60 plot scale**, visually checked with a white separation margin,
+and FAB14 refuses a different scale while still checking board hash, side/view,
+mirror convention, pin-1/polarity, manual notes and critical references. The fab notes specify 1.5744 +/-0.10 mm finished thickness, 15.2 um
+inner copper, ENIG, 100% bare-board electrical test on **every delivered PCB
+circuit**, J4 >=0.70 mm finished plated hole, and the existing POFV/small-via/
+mask/J3/MK1/outline conditions. J4 rear strain relief is frozen to DOWSIL 3145
+RTV MIL-A-46146 gray with archived primary TDS, service-loop/housing-only
+disconnect rules and exact finished-hole/tinned-tip acceptance.
+
+**Fable T2 — the 5 A battery figure is not invented, but its provenance is now
+written so the notation cannot be misread again.** The pinned 785060 primary
+specification §8.3.2 says discharge current <=2C5A; its nominal-capacity row is
+2500 mAh at 0.2C5A. Therefore 2C5 = 2 * 2.5 A = **5.0 A**. The 5.0 A number is
+a C-rate derivation, not a literal row labelled '5 A max discharge'. The battery
+contract derives it from the pinned notation/capacity and refuses a mismatched
+stored value.
+
+**Fable T4 — C85 startup now has a deliberate prime.** Before low-duty PWM, the
+TPS61169 CTRL path is driven at full duty for 2 ms (ten 5 kHz cycles), allowing
+the 1 uF Q11 gate-hold capacitor to charge before dimming begins. The exact TI
+TPS61169 datasheet is archived/hash-gated and the first-five backlight waveform
+and 0/25/40 C qualification remains mandatory.
+
+**Fable T3 is a product-operating-window statement, not a PCB correction.** The
+3.80 V threshold is a **loaded BAT_PROTECTED_P/MAX17048 node**, downstream of
+cell/harness/protection resistance. A resting battery above 3.80 V can sag below
+that floor when both rails are loaded; the post-enable check then sheds 5 V.
+DEVICE_SPEC now says this explicitly and does not promise simultaneous maximum
+budgets at every battery state.
+
+The historical `P1_FLOORPLAN_INPUTS.md` also falsely labelled superseded
+Amphenol/manual-assembly rows as current. It is now explicitly marked consumed
+/ non-authoritative, and its active-summary rows point at the current 200 mm RF
+Solutions pigtail and five manual/post-reflow references.
+
 ## D-781 — **THE 2 A BATTERY CONNECTOR WORKAROUND IS RETIRED; THE FIRST-FIVE HARNESS IS RATED FOR THE LOAD**
 
     authority  board cef458b9; protected battery copper unchanged

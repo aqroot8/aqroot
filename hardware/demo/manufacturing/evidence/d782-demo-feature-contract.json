@@ -1,0 +1,4279 @@
+{
+ "all_pass": true,
+ "approved_unrouted": [
+  "U11.3"
+ ],
+ "board": "/home/aqroot8/aqroot-demo/hardware/demo/kicad/aqroot-demo/aqroot-Beta-v2.kicad_pcb",
+ "board_sha256": "cef458b92c6e92462bea250b434a481b3e8454a991eb13b2b66623ca1f4a880e",
+ "checks": {
+  "F1_every_scope_part_fitted": {
+   "features": 41,
+   "missing_from_board": [],
+   "ok": true,
+   "populated_as_dnp": [],
+   "references": 90
+  },
+  "F2_every_scope_net_whole": {
+   "failures": [],
+   "nets": 110,
+   "ok": true
+  },
+  "F3_approved_nc_exactly_as_scoped": {
+   "expected": [
+    "J5.10",
+    "J5.11",
+    "J5.12",
+    "J5.15",
+    "J5.16",
+    "J5.17",
+    "J5.18",
+    "J5.9"
+   ],
+   "missing": [],
+   "observed": [
+    "J5.10",
+    "J5.11",
+    "J5.12",
+    "J5.15",
+    "J5.16",
+    "J5.17",
+    "J5.18",
+    "J5.9"
+   ],
+   "ok": true,
+   "unexpected": []
+  },
+  "F4_every_exposed_signal_contact_has_esd": {
+   "arrays": [
+    "D2",
+    "D4",
+    "D5"
+   ],
+   "j5_contacts": [
+    {
+     "contact": "J5.1",
+     "esd": false,
+     "kind": "power or ground",
+     "net": "/ACC_5V_SW"
+    },
+    {
+     "contact": "J5.2",
+     "esd": false,
+     "kind": "power or ground",
+     "net": "GND"
+    },
+    {
+     "contact": "J5.3",
+     "esd": false,
+     "kind": "power or ground",
+     "net": "/ACC_3V3_SW"
+    },
+    {
+     "contact": "J5.4",
+     "esd": true,
+     "kind": "signal",
+     "net": "/09_COMMUNITY_HEADER/EXT_SDA"
+    },
+    {
+     "contact": "J5.5",
+     "esd": true,
+     "kind": "signal",
+     "net": "/09_COMMUNITY_HEADER/EXT_SCL"
+    },
+    {
+     "contact": "J5.6",
+     "esd": false,
+     "kind": "power or ground",
+     "net": "GND"
+    },
+    {
+     "contact": "J5.7",
+     "esd": true,
+     "kind": "signal",
+     "net": "/09_COMMUNITY_HEADER/NATIVE_A_HDR"
+    },
+    {
+     "contact": "J5.8",
+     "esd": true,
+     "kind": "signal",
+     "net": "/09_COMMUNITY_HEADER/NATIVE_B_HDR"
+    },
+    {
+     "contact": "J5.9",
+     "esd": false,
+     "kind": "approved NC",
+     "net": "unconnected-(J5-Pin_9-Pad9)"
+    },
+    {
+     "contact": "J5.10",
+     "esd": false,
+     "kind": "approved NC",
+     "net": "unconnected-(J5-Pin_10-Pad10)"
+    },
+    {
+     "contact": "J5.11",
+     "esd": false,
+     "kind": "approved NC",
+     "net": "unconnected-(J5-Pin_11-Pad11)"
+    },
+    {
+     "contact": "J5.12",
+     "esd": false,
+     "kind": "approved NC",
+     "net": "unconnected-(J5-Pin_12-Pad12)"
+    },
+    {
+     "contact": "J5.13",
+     "esd": true,
+     "kind": "signal",
+     "net": "/09_COMMUNITY_HEADER/XGPIO4_HDR"
+    },
+    {
+     "contact": "J5.14",
+     "esd": true,
+     "kind": "signal",
+     "net": "/09_COMMUNITY_HEADER/XGPIO5_HDR"
+    },
+    {
+     "contact": "J5.15",
+     "esd": false,
+     "kind": "approved NC",
+     "net": "unconnected-(J5-Pin_15-Pad15)"
+    },
+    {
+     "contact": "J5.16",
+     "esd": false,
+     "kind": "approved NC",
+     "net": "unconnected-(J5-Pin_16-Pad16)"
+    },
+    {
+     "contact": "J5.17",
+     "esd": false,
+     "kind": "approved NC",
+     "net": "unconnected-(J5-Pin_17-Pad17)"
+    },
+    {
+     "contact": "J5.18",
+     "esd": false,
+     "kind": "approved NC",
+     "net": "unconnected-(J5-Pin_18-Pad18)"
+    },
+    {
+     "contact": "J5.19",
+     "esd": false,
+     "kind": "power or ground",
+     "net": "GND"
+    },
+    {
+     "contact": "J5.20",
+     "esd": true,
+     "kind": "signal",
+     "net": "/09_COMMUNITY_HEADER/WAKE_ATTN_N_HDR"
+    },
+    {
+     "contact": "J5.21",
+     "esd": true,
+     "kind": "signal",
+     "net": "/09_COMMUNITY_HEADER/ACC_DETECT_N_HDR"
+    },
+    {
+     "contact": "J5.22",
+     "esd": false,
+     "kind": "power or ground",
+     "net": "/ACC_3V3_SW"
+    },
+    {
+     "contact": "J5.23",
+     "esd": false,
+     "kind": "power or ground",
+     "net": "GND"
+    },
+    {
+     "contact": "J5.24",
+     "esd": false,
+     "kind": "power or ground",
+     "net": "/ACC_5V_SW"
+    }
+   ],
+   "note": "power and ground contacts are deliberately excluded -- D-188 rejected a TVS on either rail because the part's 5.5 V VRWM leaves no working margin against a 5.0 V nominal rail",
+   "ok": true,
+   "protected_nets": [
+    "/09_COMMUNITY_HEADER/ACC_DETECT_N_HDR",
+    "/09_COMMUNITY_HEADER/EXT_SCL",
+    "/09_COMMUNITY_HEADER/EXT_SDA",
+    "/09_COMMUNITY_HEADER/NATIVE_A_HDR",
+    "/09_COMMUNITY_HEADER/NATIVE_B_HDR",
+    "/09_COMMUNITY_HEADER/WAKE_ATTN_N_HDR",
+    "/09_COMMUNITY_HEADER/XGPIO4_HDR",
+    "/09_COMMUNITY_HEADER/XGPIO5_HDR"
+   ],
+   "unprotected_signal_contacts": []
+  },
+  "F5_backlight_disconnect_control_is_independent": {
+   "c85_value_is_1uF": true,
+   "controls_refused": {
+    "f5a_refuses_the_gate_collapsed_onto_u17_ctrl": true,
+    "f5b_refuses_the_hold_capacitor_dropped": true,
+    "f5c_refuses_a_schottky_in_the_charge_path": true,
+    "f5d_refuses_a_silently_retuned_hold": true
+   },
+   "ctrl_contacts": [
+    "D14.2",
+    "R109.2",
+    "U17.4"
+   ],
+   "ctrl_net": "/DISP_BL_CTL",
+   "ctrl_net_carries_the_diode_anode": true,
+   "d14_is_a_silicon_switching_diode": true,
+   "fet": {
+    "board_publishes_a_fault_ceiling": true,
+    "channel_drop_at_string_current_mV_at_published_max": 26.705,
+    "dru_published_fault_ceiling_V": 39.0,
+    "earliest_disconnect_ms": 140.4602,
+    "fet": "Q11",
+    "fet_is_a_part_with_published_ratings": true,
+    "fet_vds_covers_the_published_fault_ceiling": true,
+    "first_five_temperature_validation_required_C": [
+     0,
+     40
+    ],
+    "fitted_part": "SQ2364EES-T1_BE3",
+    "gate_hold_enhances_the_fitted_fet": true,
+    "held_gate_V": 2.6,
+    "held_vgs_margin_above_published_conduction_point_V": 0.896,
+    "held_vgs_meets_published_conduction_point": true,
+    "ok": true,
+    "ordering_margin_ratio": 56.1841,
+    "published": {
+     "igss_max_A": 1e-07,
+     "rds_hot_id_A": 2.0,
+     "rds_hot_max_ohm": 0.6,
+     "rds_hot_tj_C": 175.0,
+     "rds_hot_vgs_V": 4.5,
+     "rds_on_id_A": 2.0,
+     "rds_on_max_ohm": 0.245,
+     "rds_on_vgs_V": 1.5,
+     "source": "Vishay SQ2364EES document 75975 Rev B, archived at vendor/VISHAY/sq2364ees-75975-revb.pdf: SOT-23 1=G 2=S 3=D, VDS 60 V, VGS(th) 0.46/0.6/1.0 V at 250 uA, IGSS +/-100 nA at +/-3 V, RDS(on) 0.245 ohm MAX at VGS=1.5 V ID=2 A, and 0.600 ohm MAX at VGS=4.5 V ID=2 A TJ=175 C.  The 1.5 V row is in the TC=25 C table; first-five validation therefore also exercises backlight on/off at the declared 0..40 C prototype qualification endpoints rather than pretending that row is an all-temperature guarantee.",
+     "vds_V": 60.0,
+     "vgs_th_max_V": 1.0,
+     "vgs_th_test_A": 0.00025
+    },
+    "published_conduction_id_A": 2.0,
+    "published_conduction_ordering_margin_x": 24.8449,
+    "published_conduction_vgs_V": 1.5,
+    "published_current_over_what_is_asked_x": 18.349,
+    "published_low_gate_rds_is_25C_only": true,
+    "published_rds_on_max_ohm": 0.245,
+    "rectifier": "D8",
+    "rectifier_fitted_part": "NSR0240",
+    "rectifier_is_a_part_with_published_ratings": true,
+    "rectifier_margin_V": 1.0,
+    "rectifier_published": {
+     "source": "onsemi NSR0240HT1G: VRRM 40 V, IF(AV) 250 mA, SOD-323; named for the TPS61169 by TI SNVSA40B section 7.2.2.2",
+     "vrrm_V": 40.0
+    },
+    "rectifier_vrrm_covers_the_published_fault_ceiling": true,
+    "source_V": 0.204,
+    "string_current_A": 0.109,
+    "tau_nominal_ms": 220.0,
+    "tau_worst_ms": 147.0,
+    "threshold_test_current_A": 0.00025,
+    "time_to_leave_published_conduction_region_ms": 62.1124,
+    "tsd_max_ms": 2.5,
+    "u17_shuts_down_before_gate_leaves_published_conduction_region": true,
+    "u17_shuts_down_before_q11_opens": true,
+    "vds_margin_V": 21.0,
+    "vds_margin_ratio": 1.5385,
+    "vgs_held_V": 2.396,
+    "vgs_overdrive_V": 1.396
+   },
+   "fet_controls_refused": {
+    "f5e_refuses_the_30V_ao3400a_d752_left_fitted": true,
+    "f5f_refuses_a_fet_with_no_published_rating": true,
+    "f5g_refuses_a_hold_that_opens_before_u17_shuts_down": true,
+    "f5h_refuses_a_dru_that_no_longer_publishes_a_ceiling": true,
+    "f5i_refuses_a_20V_schottky_on_the_boost_rectifier": true,
+    "f5j_refuses_a_rectifier_with_no_published_rating": true,
+    "f5k_refuses_a_10nF_hold_that_leaves_the_published_region_too_early": true,
+    "f5l_refuses_a_fet_with_no_published_conduction_point": true,
+    "f5m_refuses_the_ao3422_d779_board_below_its_guaranteed_gate_point": true
+   },
+   "gate_contacts": [
+    "C85.1",
+    "D14.1",
+    "Q11.1",
+    "R132.1"
+   ],
+   "gate_is_not_ctrl": true,
+   "gate_net": "/03_SPI_A_DISPLAY_SD/BL_DISC_G",
+   "gate_net_is_exactly_the_hold": true,
+   "hold_returns_to_ground": true,
+   "method": "TI SNVSA40B 6.3.5 makes CTRL an ANALOG dimming input: the converter keeps switching through every PWM low phase, so Q11's gate may not share it.  The D-752 hold network is what keeps the ordering, and four live controls put each way of losing it back.  D-766: AND THE SILICON.  Q11's drain is the panel cathode, which under open-LED protection follows the anode to the ceiling this board's OWN .kicad_dru publishes for LED_BOOST -- parsed from that file, not restated here -- so the fitted FET's PUBLISHED VDS rating must cover it, the held gate must enhance the FITTED part past its own worst-case VGS(th), and the gate may not decay below that threshold before the TPS61169 is guaranteed to be in shutdown.  Four more live controls, one of which is the 30 V AO3400A D-752 left fitted",
+   "ok": true,
+   "r132_value_is_220k": true,
+   "temperature_acceptance_explicit": true,
+   "temperature_acceptance_marker": "Q11-TEMP-01"
+  },
+  "F6_accessory_envelope_is_bounded_by_hardware": {
+   "battery_board_precrimps_are_primary_source_proven": true,
+   "battery_connection": {
+    "applicable_wire_awg": [
+     22,
+     26
+    ],
+    "bases": {
+     "live": {
+      "cases": {
+       "acc3v3_published": {
+        "acc3v3_A": 0.4,
+        "acc5v_A": 0.0,
+        "connection_A": 1.7761,
+        "inside_the_published_rating": true,
+        "internal_3v3_A": 1.0632,
+        "margin_to_the_published_rating_pct": 31.69,
+        "vcell_V": 3.5
+       },
+       "acc5v_published": {
+        "acc3v3_A": 0.0,
+        "acc5v_A": 0.3,
+        "connection_A": 1.9078,
+        "inside_the_published_rating": true,
+        "internal_3v3_A": 1.0632,
+        "margin_to_the_published_rating_pct": 26.62,
+        "vcell_V": 3.5
+       },
+       "both_published_full_internal": {
+        "acc3v3_A": 0.4,
+        "acc5v_A": 0.3,
+        "connection_A": 2.2499,
+        "inside_the_published_rating": true,
+        "internal_3v3_A": 1.0632,
+        "margin_to_the_published_rating_pct": 13.46,
+        "vcell_V": 3.8
+       },
+       "legacy_2A_jst_ph_would_pass_full_internal": {
+        "connection_A": 2.2499,
+        "legacy_rating_A": 2.0,
+        "note": "negative reference: the D-777 JST-PH connection is not adequate here",
+        "would_pass": false
+       },
+       "no_accessory": {
+        "acc3v3_A": 0.0,
+        "acc5v_A": 0.0,
+        "connection_A": 1.2202,
+        "inside_the_published_rating": true,
+        "internal_3v3_A": 1.0632,
+        "margin_to_the_published_rating_pct": 53.07,
+        "vcell_V": 3.5
+       }
+      },
+      "required_internal_3v3_ceiling_A": 1.308895
+     },
+     "path_bound": {
+      "cases": {
+       "acc3v3_published": {
+        "acc3v3_A": 0.4,
+        "acc5v_A": 0.0,
+        "connection_A": 1.788,
+        "inside_the_published_rating": true,
+        "internal_3v3_A": 1.0632,
+        "margin_to_the_published_rating_pct": 31.23,
+        "vcell_V": 3.5
+       },
+       "acc5v_published": {
+        "acc3v3_A": 0.0,
+        "acc5v_A": 0.3,
+        "connection_A": 1.9251,
+        "inside_the_published_rating": true,
+        "internal_3v3_A": 1.0632,
+        "margin_to_the_published_rating_pct": 25.96,
+        "vcell_V": 3.5
+       },
+       "both_published_full_internal": {
+        "acc3v3_A": 0.4,
+        "acc5v_A": 0.3,
+        "connection_A": 2.2718,
+        "inside_the_published_rating": true,
+        "internal_3v3_A": 1.0632,
+        "margin_to_the_published_rating_pct": 12.62,
+        "vcell_V": 3.8
+       },
+       "legacy_2A_jst_ph_would_pass_full_internal": {
+        "connection_A": 2.2718,
+        "legacy_rating_A": 2.0,
+        "note": "negative reference: the D-777 JST-PH connection is not adequate here",
+        "would_pass": false
+       },
+       "no_accessory": {
+        "acc3v3_A": 0.0,
+        "acc5v_A": 0.0,
+        "connection_A": 1.2247,
+        "inside_the_published_rating": true,
+        "internal_3v3_A": 1.0632,
+        "margin_to_the_published_rating_pct": 52.9,
+        "vcell_V": 3.5
+       }
+      },
+      "required_internal_3v3_ceiling_A": 1.28906
+     }
+    },
+    "battery_lead_insulation_od_must_be_measured": true,
+    "battery_terminal_od_range_is_frozen": true,
+    "board_lead_awg": 26,
+    "board_lead_is_inside_the_applicable_wire_range": true,
+    "board_precrimps_are_primary_source_proven": true,
+    "connector_rating_minus_first_protection_min_A": 0.0375,
+    "evidence": "hardware/demo/kicad/aqroot-demo/vendor/MOLEX/micro-lock-plus-5055700003-PS-A6.txt",
+    "finished_j4_hole_fit_check_is_required": true,
+    "firmware_internal_ceiling_A": 1.0632,
+    "first_protection_min_A": 2.5625,
+    "full_internal_3v3_A": 1.0632,
+    "harness": "docs/full-beta-v2/assembly/BATTERY_HARNESS.json",
+    "harness_identity_exact": true,
+    "internal_feature_reserve": "not required by D-781 rated harness",
+    "method": "D-781 reads the 2.6 A AWG26 rating from the local transcription of Molex 5055700003-PS A6 and cross-checks it against the frozen BATTERY_HARNESS.json identities, gauges and polarity.  Currents use the same D-775 sag model at both live and declared path bounds.",
+    "normal_rating_basis": "Molex 5055700003-PS A6 section 4.2; AWG26 is the lower-rated conductor on both sides of the 26AWG/26AWG harness",
+    "overload_note": "the 2.6 A harness rating is slightly above the charger's minimum OCP threshold but below higher OCP corners; normal published load concurrency is independently held below both. Accessory overdraw is an abuse/fault case and remains a first-article thermal/protection validation item",
+    "pack_lead_awg": 26,
+    "pack_lead_is_inside_the_applicable_wire_range": true,
+    "polarity_exact": true,
+    "rated_current_in_harness_matches_primary": true,
+    "rating_A": 2.6,
+    "rating_gauge_awg": 26,
+    "rating_was_read_from_primary_transcription": true,
+    "reference": "J4",
+    "required_internal_3v3_ceiling_A": 1.28906,
+    "reserve": [],
+    "reserve_is_load_bearing": false,
+    "reserve_total_A": 0.0,
+    "reserved_internal_3v3_A": 1.0632,
+    "residual_overdraw_band": {
+     "acc3v3_held_at_A": 0.4,
+     "acc5v_draw_that_reaches_ibat_ocp_min_A": 0.42,
+     "acc5v_draw_that_reaches_the_rating_A": 0.4334,
+     "basis": "live",
+     "internal_3v3_A": 1.0632,
+     "note": "normal published concurrency is inside the 2.6 A harness rating; accessory overdraw beyond the published budgets remains a first-article abuse case, not an allowed operating state",
+     "overdraw_to_reach_ibat_ocp_min_pct": 40.0,
+     "overdraw_to_reach_the_rating_pct": 44.5,
+     "vcell_V": 3.8
+    },
+    "series": "Molex Micro-Lock Plus 2.0 W/W",
+    "what": "manual J4 board pigtail plus frozen detachable battery harness"
+   },
+   "battery_connection_rating_was_read_not_asserted": true,
+   "battery_harness_exact_parts_are_frozen": true,
+   "battery_harness_polarity_is_frozen": true,
+   "battery_lead_insulation_od_acceptance_is_frozen": true,
+   "boost_setpoint": {
+    "bottom": "R100",
+    "bottom_ohms": 100000.0,
+    "clear_of_its_own_ovp": true,
+    "method": "TI SLVSF14B equation 4 over the board's own R99/R100 and their 1 %% bands, with the part's OWN published VREF band (580/595/610 mV PWM) -- NOT the 0.6 V both this contract's old 4.95 constant and ARCHITECTURE's published 4.99 V were derived from",
+    "ovp_margin_pct": 6.08,
+    "part": "TPS61023",
+    "ref": "U21",
+    "setpoint_V": [
+     4.7415,
+     4.9504,
+     5.1654
+    ],
+    "setpoint_used_by_the_envelope_V": 5.1654,
+    "superseded_constant_V": 4.95,
+    "top": "R99",
+    "top_ohms": 732000.0,
+    "vovp_V": [
+     5.5,
+     5.7,
+     6.0
+    ],
+    "vref_mV": [
+     580.0,
+     595.0,
+     610.0
+    ]
+   },
+   "boost_setpoint_is_clear_of_its_own_ovp": true,
+   "both_harness_wire_gauges_are_supported": true,
+   "breaker": {
+    "hard_short_row_is_reported_not_ordered_against": "VIN = 12 V, VOUT = 0 V describes a COLLAPSED output; the ordering clause asks about an OVERLOAD, where VOUT tracks VIN and the 40/50/60 mV row applies.  On a dead short both protections fire and latching is the wanted behaviour",
+    "hard_short_threshold_mV": [
+     30.0,
+     50.0,
+     70.0
+    ],
+    "hard_short_trip_min_A": 2.9703,
+    "part": "LTC4368-1",
+    "ref": "U18",
+    "response": "LATCH-OFF (RETRY grounded); cleared only by toggling SHDN",
+    "sense_ohms": 0.01,
+    "sense_ref": "R75",
+    "sense_tol": 0.01,
+    "threshold_mV": [
+     40.0,
+     50.0,
+     60.0
+    ],
+    "trip_max_A": 6.0606,
+    "trip_min_A": 3.9604,
+    "trip_typ_A": 5.0
+   },
+   "controls_refused": {
+    "f6a_refuses_the_d750_acc3v3_ilim_u12_cannot_source": true,
+    "f6aa_proves_the_legacy_2A_jst_fails_full_feature_concurrency": true,
+    "f6ab_refuses_a_missing_micro_lock_primary_transcription": true,
+    "f6ac_refuses_a_missing_frozen_battery_harness": true,
+    "f6ad_refuses_a_file_that_is_not_the_frozen_harness_schema": true,
+    "f6ae_refuses_a_rating_from_the_wrong_connector_family": true,
+    "f6af_full_path_bound_concurrency_has_positive_rating_margin": true,
+    "f6ag_refuses_an_unreadable_ibat_ocp_retry_limit": true,
+    "f6ah_refuses_an_unreadable_recovery_condition": true,
+    "f6ai_refuses_a_missing_datasheet": true,
+    "f6b_refuses_the_d750_acc5v_ilim": true,
+    "f6c_refuses_a_1k_ilim_on_either_rail": true,
+    "f6d_refuses_an_unreadable_ilim_value": true,
+    "f6e_refuses_the_board_d753_actually_shipped": true,
+    "f6f_refuses_two_different_limiter_mpns": true,
+    "f6g_refuses_a_limiter_with_no_published_ilim_range": true,
+    "f6h_refuses_an_ilim_under_the_parts_own_floor": true,
+    "f6i_refuses_the_board_d765_actually_shipped": true,
+    "f6j_refuses_the_15mOhm_sense_that_overlapped_the_charger": true,
+    "f6k_refuses_an_acc5v_ilim_below_the_published_300mA": true,
+    "f6l_refuses_an_unreadable_sense_resistor": true,
+    "f6m_refuses_a_breaker_with_no_published_threshold": true,
+    "f6n_refuses_an_acc3v3_ilim_past_both_bounds": true,
+    "f6o_refuses_the_budget_with_the_nfc_line_missing": true,
+    "f6p_refuses_a_budget_that_forgets_the_microsd": true,
+    "f6q_refuses_a_budget_that_forgets_the_audio_amp": true,
+    "f6r_refuses_a_budget_line_with_no_live_reference": true,
+    "f6s_refuses_an_acc5v_ilim_past_the_pack_bound": true,
+    "f6t_refuses_a_boost_with_no_published_vref_band": true,
+    "f6u_refuses_a_divider_that_sets_into_its_own_ovp": true,
+    "f6v_refuses_the_old_single_3p50V_floor_for_both_D098_rails": true,
+    "f6w_refuses_the_asserted_3p75V_floor_the_first_draft_carried": true,
+    "f6x_refuses_a_single_rail_floor_under_its_own_requirement": true,
+    "f6y_refuses_bat_protected_p_copper_past_its_ceiling": true,
+    "f6z_refuses_a_sys_to_u21_trunk_past_its_ceiling": true
+   },
+   "converter_capability_A": {
+    "method": "U12 from SLVSAA7's own Features figure at VIN > 2.5 V; U21 from SLVSF14B equation 1 with ILIM_SW at its EC MINIMUM and L4 at its -20 % corner",
+    "u12_ok": true,
+    "u12_part": "TPS63020",
+    "u12_rated_A": 2.0,
+    "u12_vin_floor_V": 2.5,
+    "u12_worst_case_load_A": 1.9118,
+    "u21_capability_A": 0.9114,
+    "u21_duty": 0.4889,
+    "u21_ok": true,
+    "u21_part": "TPS61023",
+    "u21_ripple_A": 1.8334,
+    "u21_worst_case_load_A": 0.6243
+   },
+   "converters_can_source_their_worst_case_rail": true,
+   "double_fault_stays_inside_the_protection_chain": true,
+   "each_rail_guarantees_its_published_accessory_budget": true,
+   "every_fitted_p3v3_consumer_is_budgeted": true,
+   "every_live_normal_path_is_inside_its_bound": true,
+   "every_p3v3_budget_line_has_a_live_reference": true,
+   "every_permitted_state_is_inside_the_connections_published_rating": true,
+   "firmware_floors_meet_the_derived_requirement": true,
+   "first_trip_min_A": 2.5625,
+   "full_feature_concurrency_needs_no_internal_reserve": true,
+   "fuse_A": 5.0,
+   "ibat_ocp_A": [
+    2.5625,
+    3.125,
+    3.6875
+   ],
+   "ibat_ocp_min_A": 2.5625,
+   "ilim_band_is_inside_ul2367_recognition": true,
+   "ilim_resistors": {
+    "ACC_3V3": "R97",
+    "ACC_5V": "R101"
+   },
+   "ilim_setting_is_inside_the_parts_own_spec_range": true,
+   "internal_3v3_A": 1.0632,
+   "legacy_2A_jst_is_proven_inadequate": true,
+   "limiter_parts": {
+    "ACC_3V3": {
+     "known_part": true,
+     "ref": "U20",
+     "setting_band_A": [
+      0.6292,
+      0.6429
+     ],
+     "setting_inside_spec_range": true,
+     "spec_range_A": [
+      0.05,
+      3.5
+     ],
+     "value": "TPS22950-Q1"
+    },
+    "ACC_5V": {
+     "known_part": true,
+     "ref": "U22",
+     "setting_band_A": [
+      0.4629,
+      0.473
+     ],
+     "setting_inside_spec_range": true,
+     "spec_range_A": [
+      0.05,
+      3.5
+     ],
+     "value": "TPS22950-Q1"
+    }
+   },
+   "limiter_silicon_is_a_part_with_a_published_range": true,
+   "ltc4368_trip_A": 3.3333,
+   "margin_to_first_trip_pct": 1.62,
+   "margin_to_ocp_min_pct": 1.62,
+   "method": "TI equation 1 over the two ILIM resistors AND the two limiter part numbers the board actually carries.  D-753: no state a user can reach may exceed the BQ25185 IBAT_OCP MINIMUM, and the double limiter fault must stay inside the protection chain, because the board has no accessory current measurement and a policy cannot bound what an external accessory draws.  D-765: the setting must ALSO sit inside the fitted part's OWN specified ILIM range over the programming resistor's tolerance band -- TPS22950-Q1 is specified 0.05-3.5 A (SLVSGP6A), the TPS22950C it replaces only 0.5-3.5 A (SLVSFJ2B s.5).  D-771: the envelope is now checked from BELOW as well -- each rail must GUARANTEE the budget D-098 publishes (ACC_3V3_SW 400 mA total, ACC_5V_SW 300 mA total), which the 2.7 kOhm setting did not; the protection chain is read from R75 and U18 over the LTC4368's own guaranteed 40/50/60 mV threshold band instead of its 50 mV typical, so the LATCHING breaker must sit entirely above the RECOVERABLE charger trip; both converters must be able to source what their load switch is allowed to pass; and D-775 binds D-098 normal 400/300 mA operation to the firmware VCELL policy with a sag-aware model from the MAX17048 BAT_PROTECTED_P measurement point",
+   "modes_I_bat_A": {
+    "acc3v3_alone_at_its_limiter": 2.3366,
+    "acc5v_alone_at_its_limiter": 2.521,
+    "both_at_their_guaranteed_currents": 2.4383,
+    "both_at_their_published_budgets": 2.3753,
+    "both_limiters_in_fault": 3.5581
+   },
+   "modes_at_typical_setpoint_A_REPORT_ONLY": {
+    "acc3v3_alone_at_its_limiter": 2.3366,
+    "acc5v_alone_at_its_limiter": 2.4702,
+    "both_at_their_guaranteed_currents": 2.4127,
+    "both_at_their_published_budgets": 2.3509,
+    "both_limiters_in_fault": 3.5073
+   },
+   "no_reachable_state_trips_the_pack": true,
+   "normal_operation": {
+    "accessory_switch_ron_ohm": {
+     "ACC_3V3": 0.068,
+     "ACC_5V": 0.054
+    },
+    "bases": {
+     "live": {
+      "required_dual_rail_floor_V": 3.7368,
+      "required_single_rail_floor_V": 3.0968,
+      "series_ohm": {
+       "a3": 0.349754,
+       "a5": 0.192812,
+       "bat": 0.25013,
+       "trunk": 0.230137
+      },
+      "zero_margin_dual_rail_floor_V": 3.4929,
+      "zero_margin_single_rail_floor_V": 2.9227
+     },
+     "path_bound": {
+      "required_dual_rail_floor_V": 3.7622,
+      "required_single_rail_floor_V": 3.1232,
+      "series_ohm": {
+       "a3": 0.369308,
+       "a5": 0.204654,
+       "bat": 0.258773,
+       "trunk": 0.25109
+      },
+      "zero_margin_dual_rail_floor_V": 3.5207,
+      "zero_margin_single_rail_floor_V": 2.9522
+     }
+    },
+    "batfet_breakeven_ohm": {
+     "as_a_multiple_of_the_datasheet_max": {
+      "at_the_ibat_ocp_minimum": 2.256,
+      "at_the_margin_convention": 1.596
+     },
+     "at_the_ibat_ocp_minimum": 0.315862,
+     "at_the_margin_convention": 0.223392
+    },
+    "batfet_max_ohm": 0.14,
+    "batfet_modelled_ohm": 0.196,
+    "batfet_vbat_allowance": 1.4,
+    "cases": {
+     "acc3v3_published": {
+      "battery_A": 1.7761,
+      "delivered_W": 5.4272,
+      "margin_at_least_the_convention": true,
+      "margin_to_ibat_ocp_min_pct": 30.69,
+      "sys_V_at_the_floor": 3.0558,
+      "vcell_floor_V": 3.5
+     },
+     "acc5v_published": {
+      "battery_A": 1.9078,
+      "delivered_W": 5.767,
+      "margin_at_least_the_convention": true,
+      "margin_to_ibat_ocp_min_pct": 25.55,
+      "sys_V_at_the_floor": 3.0228,
+      "vcell_floor_V": 3.5
+     },
+     "both_published": {
+      "battery_A": 2.2499,
+      "delivered_W": 7.2836,
+      "margin_at_least_the_convention": true,
+      "margin_to_ibat_ocp_min_pct": 12.2,
+      "sys_V_at_the_floor": 3.2372,
+      "vcell_floor_V": 3.8
+     }
+    },
+    "copper_hot_factor": 1.2554,
+    "copper_hot_rise_K": 65.0,
+    "every_live_path_inside_its_bound": true,
+    "firmware_dual_rail_floor_V": 3.8,
+    "firmware_policy_file": "Firmware/src/hw/aqroot_accessory_power_policy.h",
+    "firmware_policy_parsed": true,
+    "firmware_single_rail_floor_V": 3.5,
+    "floor_grid_V": 0.05,
+    "ibat_ocp_min_A": 2.5625,
+    "live_path_ohm": {
+     "acc_3v3_sw": 0.224425,
+     "acc_5v_sw": 0.110567,
+     "bat_protected_p": 0.043116,
+     "sys_to_u21": 0.18331
+    },
+    "live_paths_measured_off_the_board": true,
+    "measurement_contacts": {
+     "U11.2": "/01_POWER_TREE/BAT_PROTECTED_P",
+     "U14.2": "/01_POWER_TREE/BAT_PROTECTED_P",
+     "U14.3": "/01_POWER_TREE/BAT_PROTECTED_P"
+    },
+    "measurement_node": "BAT_PROTECTED_P (MAX17048 U14.2/U14.3 and BQ25185 U11.2)",
+    "measurement_point_is_bat_protected_p": true,
+    "method": "the floor is SOLVED FOR, not checked at: I_bat is found self-consistently from the MAX17048 BAT_PROTECTED_P node through the live hot copper and the BQ25185 BATFET maximum, with the U21 boost's input current taken through the live SYS->U21 trunk and each accessory rail paying for its own copper and its load switch's RON; required_*_floor_V is the VCELL at which that current reaches IBAT_OCP's minimum less the margin convention, derived on BOTH the live resistances and the declared path ceilings, and the firmware constants must satisfy the worse of the two",
+    "path_bound_ohm": {
+     "acc_3v3_sw": 0.24,
+     "acc_5v_sw": 0.12,
+     "bat_protected_p": 0.05,
+     "sys_to_u21": 0.2
+    },
+    "required_dual_rail_floor_V": 3.7622,
+    "required_dual_rail_floor_gridded_V": 3.8,
+    "required_margin_to_ibat_ocp_min_pct": 10.0,
+    "required_single_rail_floor_V": 3.1232,
+    "required_single_rail_floor_gridded_V": 3.15
+   },
+   "ok": true,
+   "one_limiter_mpn_on_both_rails": true,
+   "ordering_margin_pct": 6.89,
+   "p3v3_internal_budget": {
+    "budget_lines_with_no_live_reference": [],
+    "every_budget_line_has_a_live_reference": true,
+    "every_fitted_p3v3_consumer_is_budgeted": true,
+    "fitted_p3v3_consumers": [
+     "D13",
+     "J1",
+     "J2",
+     "U1",
+     "U17",
+     "U2",
+     "U3",
+     "U4",
+     "U5",
+     "U7",
+     "U8",
+     "U9"
+    ],
+    "lines": [
+     {
+      "cite": "Espressif ESP32-S3-WROOM-1 datasheet v1.8 Table 6-4, archived at vendor/Espressif/: 355 mA PEAK, 802.11b 1 Mbps @20.5 dBm, and the table states TX current is rated at 100 % duty.  Table 6-5's worst BLE row is 344 mA and is NOT added -- one radio inside one module cannot transmit twice at once",
+      "line": "Wi-Fi / BLE TX, the worst RF condition the module publishes",
+      "line_has_a_live_reference": true,
+      "mA": 355.0,
+      "on_the_p3v3_net": [
+       "U1"
+      ],
+      "refs": [
+       "U1"
+      ]
+     },
+     {
+      "cite": "Ebyte E22-M series user manual, archived at vendor/Ebyte/: emission current 100-140 mA instantaneous @22 dBm for the fitted E22-900M22S.  The E07-400M10S CC1101 is 35 mA (its own manual v1.3).  ONLY THE WORSE OF THE TWO is counted, because the Demo scope holds them to one TX at a time on the shared SPI-B bus -- but it is ADDED TO the Wi-Fi line and not substituted for it",
+      "line": "sub-GHz TX, the worse of the two shared-bus radios",
+      "line_has_a_live_reference": true,
+      "mA": 140.0,
+      "on_the_p3v3_net": [
+       "U7",
+       "U8"
+      ],
+      "refs": [
+       "U7",
+       "U8"
+      ]
+     },
+     {
+      "cite": "FBV2-COMM-001 internal subtotal, retained",
+      "line": "display logic + backlight at maximum",
+      "line_has_a_live_reference": true,
+      "mA": 181.0,
+      "on_the_p3v3_net": [
+       "J1",
+       "U17"
+      ],
+      "refs": [
+       "J1",
+       "U17",
+       "L3"
+      ]
+     },
+     {
+      "cite": "FBV2-COMM-001 internal subtotal, retained; D-161 records the MAX98357A's 230 mA PEAKS separately as locally supplied",
+      "line": "audio at the capped level",
+      "line_has_a_live_reference": true,
+      "mA": 120.0,
+      "on_the_p3v3_net": [
+       "U5"
+      ],
+      "refs": [
+       "U5"
+      ]
+     },
+     {
+      "cite": "FBV2-COMM-001 internal subtotal, retained",
+      "line": "microSD write",
+      "line_has_a_live_reference": true,
+      "mA": 100.0,
+      "on_the_p3v3_net": [
+       "J2"
+      ],
+      "refs": [
+       "J2"
+      ]
+     },
+     {
+      "cite": "D-205: DS12484 Rev 3 Table 121 gives I_AL-AM = 26 mA MAX for the IC with all blocks active and D-134's first-build network draws about 60 mA at the driver, so the +3V3 allocation with the field on is 100 mA.  THIS LINE IS THE ONE THE 823 mA FIGURE WAS MISSING: U9 was DNP when FBV2-COMM-001 was written and D-192 fitted it.  D-205's own guard rail stands -- a C_s move to 270 pF would draw about 257 mA and requires this budget to be re-run",
+      "line": "NFC front end, field on",
+      "line_has_a_live_reference": true,
+      "mA": 100.0,
+      "on_the_p3v3_net": [
+       "U9"
+      ],
+      "refs": [
+       "U9"
+      ]
+     },
+     {
+      "cite": "D-155 / FBV2-S1-007: the 150 mA peaks are supplied by C12 22 uF and not by the rail, so the rail sees the burst average",
+      "line": "IR transmitter, burst average",
+      "line_has_a_live_reference": true,
+      "mA": 50.0,
+      "on_the_p3v3_net": [],
+      "refs": [
+       "D1",
+       "Q1",
+       "R24"
+      ]
+     },
+     {
+      "cite": "FBV2-COMM-001 internal subtotal, retained",
+      "line": "touch + housekeeping (both expanders and the IMU)",
+      "line_has_a_live_reference": true,
+      "mA": 13.0,
+      "on_the_p3v3_net": [
+       "U2",
+       "U3",
+       "U4"
+      ],
+      "refs": [
+       "U2",
+       "U3",
+       "U4"
+      ]
+     },
+     {
+      "cite": "FBV2-S1-008 / D-184's re-derivation",
+      "line": "front RGB at white",
+      "line_has_a_live_reference": true,
+      "mA": 4.2,
+      "on_the_p3v3_net": [
+       "D13"
+      ],
+      "refs": [
+       "D13"
+      ]
+     }
+    ],
+    "method": "the board's own +3V3 net, minus passives and minus the rail's source (U12) and the accessory switch (U20) whose current this contract budgets separately; every remaining FITTED reference must be named by a budget line, and the envelope runs on the SUM of the lines rather than on a constant",
+    "ok": true,
+    "superseded_published_A": 1.0,
+    "total_A": 1.0632,
+    "unbudgeted_consumers": []
+   },
+   "protection_chain_A": {
+    "latching_breaker": [
+     3.960396039603961,
+     5.0,
+     6.06060606060606
+    ],
+    "one_shot_fuse": 5.0,
+    "recoverable_ibat_ocp": [
+     2.5625,
+     3.125,
+     3.6875
+    ]
+   },
+   "published_normal_load_respects_vcell_policy": true,
+   "published_rail_budget_A": {
+    "ACC_3V3": 0.4,
+    "ACC_5V": 0.3
+   },
+   "rails_A": {
+    "ACC_3V3": {
+     "guarantees_published_budget": true,
+     "headroom_over_published_pct": 6.97,
+     "ilim_max": 0.8486,
+     "ilim_min": 0.4279,
+     "ilim_typ": 0.636,
+     "published_budget_A": 0.4,
+     "r_ohms": 1780.0,
+     "r_tol": 0.01
+    },
+    "ACC_5V": {
+     "guarantees_published_budget": true,
+     "headroom_over_published_pct": 4.93,
+     "ilim_max": 0.6243,
+     "ilim_min": 0.3148,
+     "ilim_typ": 0.4679,
+     "published_budget_A": 0.3,
+     "r_ohms": 2370.0,
+     "r_tol": 0.01
+    }
+   },
+   "recoverable_trip_behaviour": {
+    "consequence": "IBAT_OCP hiccups and re-enables the BATFET after tREC_SC, but 4-7 consecutive trips inside a 2 s window leave the BATFET OFF until a valid VIN is connected -- a sustained accessory overcurrent is a battery-only dead stop that needs USB to clear, NOT an indefinite auto-retry",
+    "datasheet": "hardware/demo/kicad/aqroot-demo/vendor/BQ25185/ti-bq25185-slusf65b-2026-08.txt",
+    "part": "BQ25185",
+    "recovers_only_on_vin": true,
+    "retries_before_latch": [
+     4,
+     7
+    ],
+    "section": "6.3.7.3 Battery Overcurrent Protection",
+    "the_retry_limit_was_read": true,
+    "window_s": 2
+   },
+   "recoverable_trip_is_ordered_below_the_latching_breaker": true,
+   "the_recoverable_trips_retry_limit_was_read": true,
+   "ul2367_ilim_range_A": [
+    0.066,
+    2.46
+   ],
+   "vbat_corner_V": 3.0
+  },
+  "F7_no_retired_part_name_survives_on_the_part_that_replaced_it": {
+   "controls_refused": {
+    "f7a_refuses_the_retired_panel_name_in_the_symbol": true,
+    "f7b_refuses_the_retired_panel_symbol_being_placed": true,
+    "f7c_refuses_the_retired_panel_name_on_the_released_bom": true,
+    "f7d_refuses_the_superseded_fxp890_antenna_on_u8": true,
+    "f7e_refuses_the_superseded_15mOhm_sense_mpn_on_r75": true,
+    "f7f_refuses_the_superseded_2k7_ilim_value_on_r97": true,
+    "f7g_refuses_the_superseded_ilim_part_on_a_GROUPED_released_bom_row": true,
+    "f7h_refuses_the_superseded_sense_part_on_the_released_bom": true,
+    "f7i_refuses_a_released_bom_with_no_row_for_the_locked_part": true,
+    "f7j_refuses_a_symbol_that_does_not_name_the_locked_part": true
+   },
+   "findings": {
+    "J1": {
+     "lib_id": "AQROOT_Beta:ER-TFT035IPS-6_50P",
+     "locked": "ER-TFT035IPS-6",
+     "no_retired_name_in_the_symbol": true,
+     "no_retired_name_on_the_released_bom_row": true,
+     "offending_bom_tokens": [],
+     "offending_fields": [],
+     "ok": true,
+     "reference": "J1",
+     "symbol_is_the_locked_part": true,
+     "why": "D-074 locked the 3.5in 320x480 ILI9488 panel; D-112 replaced the 2.8in CH280QV10-CT pin table because it is DEAD ON ARRIVAL here -- LEDA/LEDK reversed, WRX/D-CX swapped"
+    },
+    "R101": {
+     "bom_row_names_the_locked_part": true,
+     "lib_id": "Device:R",
+     "locked": "0603WAF2371T5E",
+     "no_retired_name_in_the_symbol": true,
+     "no_retired_name_on_the_released_bom_row": true,
+     "offending_bom_tokens": [],
+     "offending_fields": [],
+     "ok": true,
+     "reference": "R101",
+     "symbol_is_the_locked_part": true,
+     "symbol_mpn": "0603WAF2371T5E",
+     "symbol_names_the_locked_part": true,
+     "why": "D-771 moved the ACC_5V limiter setting 2.7 -> 2.32 kOhm so the rail GUARANTEES the 300 mA TOTAL D-098 publishes for it, and D-773 moved it again to 2.37 kOhm once the 5 V setpoint was derived from the board rather than taken from a 0.6 V VREF that is not what TI publishes"
+    },
+    "R75": {
+     "bom_row_names_the_locked_part": true,
+     "lib_id": "Device:R",
+     "locked": "CRA2512-FZ-R010ELF",
+     "no_retired_name_in_the_symbol": true,
+     "no_retired_name_on_the_released_bom_row": true,
+     "offending_bom_tokens": [],
+     "offending_fields": [],
+     "ok": true,
+     "reference": "R75",
+     "symbol_is_the_locked_part": true,
+     "symbol_mpn": "CRA2512-FZ-R010ELF",
+     "symbol_names_the_locked_part": true,
+     "why": "D-771 moved the LTC4368 current sense 15 -> 10 mOhm because ADI guarantees dVSENSE,F as 40/50/60 mV, so at 15 mOhm the LATCHING breaker band (2.640-4.040 A) OVERLAPPED the BQ25185's RECOVERABLE IBAT_OCP band (2.5625-3.6875 A)"
+    },
+    "R97": {
+     "bom_row_names_the_locked_part": true,
+     "lib_id": "Device:R",
+     "locked": "0603WAF1781T5E",
+     "no_retired_name_in_the_symbol": true,
+     "no_retired_name_on_the_released_bom_row": true,
+     "offending_bom_tokens": [],
+     "offending_fields": [],
+     "ok": true,
+     "reference": "R97",
+     "symbol_is_the_locked_part": true,
+     "symbol_mpn": "0603WAF1781T5E",
+     "symbol_names_the_locked_part": true,
+     "why": "D-771 moved the ACC_3V3 limiter setting 2.7 -> 1.78 kOhm so the rail GUARANTEES the 400 mA TOTAL D-098 publishes for it; 2.7 kOhm guaranteed only 0.277 A"
+    },
+    "U8": {
+     "lib_id": "AQROOT_Beta:E22-900M22S",
+     "locked": "TI.92.2113",
+     "no_retired_name_in_the_symbol": true,
+     "no_retired_name_on_the_released_bom_row": true,
+     "offending_bom_tokens": [],
+     "offending_fields": [],
+     "ok": true,
+     "reference": "U8",
+     "symbol_is_the_locked_part": true,
+     "why": "D-198 superseded the internal Taoglas FXP890 flex with the EXTERNAL TI.92.2113 SMA dipole on a top-panel bulkhead; DEVICE_SPEC has flagged the schematic text STALE since"
+    }
+   },
+   "method": "D-768 found 'CH280QV10-CT Rev.D 2.8in 240x320' on J1's row of the RELEASED BOM, and the ER-TFT035IPS-6 symbol's own Package field crediting the retired panel's datasheet for a pin table D-112 had transcribed from a different one -- on the connector whose pin table had ALREADY been dead on arrival for exactly that reason. D-769 generalised it: every entry in the registry is a supersession this repository has already recorded, and the clause asserts the locked identity in the placed symbol, in its library definition AND on the released BOM row. Checking the schematic alone would pass a board whose shipped BOM is wrong",
+   "ok": true,
+   "references": [
+    "J1",
+    "R101",
+    "R75",
+    "R97",
+    "U8"
+   ]
+  },
+  "F8_the_derating_rule_is_applied_to_the_parts_this_board_fits": {
+   "clause": "D-774.  screen_bom_sourcing states the project's rule -- 2x the node's OPERATING maximum AND survival against its ABSOLUTE maximum -- and applies it ONLY while proposing a part for an UNSOURCED line.  This BOM has had none since D-615, so the rule had never once been run against a part this board actually fits.  It is now, over the SAME NET_MAX_DC table, read live.  Survival against the absolute maximum is never excused; a shortfall against the 2x CONVENTION must be a named, reasoned exception, and an exception that is no longer needed is itself refused",
+   "controls_refused": {
+    "f8a_refuses_a_capacitor_under_its_nodes_absolute_maximum": true,
+    "f8b_refuses_the_board_with_the_exception_list_emptied": true,
+    "f8c_refuses_an_exception_that_is_no_longer_needed": true,
+    "f8e_refuses_d774s_stale_c20_c38_c67_exceptions": true,
+    "f8f_refuses_a_capacitor_with_no_purchased_record": true,
+    "f8g_refuses_a_purchased_part_under_its_nodes_absolute": true,
+    "f8h_refuses_a_value_string_that_overstates_the_part": true,
+    "f8i_refuses_an_mpn_only_identity_downgrade": true,
+    "f8j_refuses_unbounded_non_dc_capacitor_nodes": true
+   },
+   "derating_x": 2.0,
+   "every_exception_is_still_needed": true,
+   "every_fitted_capacitor_has_a_dc_or_named_non_dc_voltage_bound": true,
+   "every_fitted_capacitor_has_a_purchased_voltage_rating": true,
+   "every_fitted_capacitor_survives_its_nodes_absolute_maximum": true,
+   "every_purchased_rating_record_matches_the_bom_mpn": true,
+   "every_shortfall_against_the_derating_rule_is_a_named_exception": true,
+   "every_value_string_rating_survives_its_nodes_absolute_maximum": true,
+   "fails_absolute_maximum": [],
+   "fitted_capacitors": 76,
+   "method": "screen_bom_sourcing.NET_MAX_DC supplies established DC bounds. RATINGS COME FROM THE EXACT PART THE BOM BUYS -- reference -> LCSC -> committed distributor record -- and the BOM MPN must match that record before its voltage rating is usable.  A fitted capacitor on an otherwise unestablished RF/crystal node is now REFUSED unless CAP_NON_DC_PROOFS gives an explicit differential/peak bound; the NFC bounds derive from the ST25R3916 350 mArms regulated-TX ceiling and 3 Vpp RFI limit and remain subject to first-article waveform verification.",
+   "named_exceptions": {
+    "C65": "boost output capacitance, measured against D-773's DERIVED worst-case setpoint of 5.165 V.  D-186 sizes this rail at 44 uF NOMINAL across C65+C66 because a 10 V X7R at 5 V bias retains about half; a 22 uF 16 V X7R is a 1206 part and does not fit the 0805 land.  Survives the 6.0 V absolute at 1.67x.  THIS ONE IS REAL: the BOM buys a 10 V part and the value string says 10 V",
+    "C66": "the other half of the same 44 uF nominal pair; see C65"
+   },
+   "no_value_string_overstates_the_part_the_bom_buys": true,
+   "ok": true,
+   "on_a_node_with_no_established_voltage": [],
+   "purchased_record_identity_mismatches": [],
+   "rows": [
+    {
+     "absolute_V": 3.6,
+     "derate_x": 15.152,
+     "excused_by_a_named_exception": false,
+     "lcsc": "C15849",
+     "meets_derating": true,
+     "mpn": "CL10A105KB8NNNC",
+     "operating_V": 3.3,
+     "rating_V": 50.0,
+     "rating_read_from": "Voltage Rating attribute",
+     "rating_record": "c15849-bc9e4d94.json",
+     "ref": "C1",
+     "specification_survives_absolute": true,
+     "specified_V": null,
+     "survives_absolute": true,
+     "value": "1uF"
+    },
+    {
+     "absolute_V": 3.6,
+     "derate_x": 15.152,
+     "excused_by_a_named_exception": false,
+     "lcsc": "C14663",
+     "meets_derating": true,
+     "mpn": "CC0603KRX7R9BB104",
+     "operating_V": 3.3,
+     "rating_V": 50.0,
+     "rating_read_from": "Voltage Rating attribute",
+     "rating_record": "4-7nf-0603-x7r-yageo-2a1b2dc7.json",
+     "ref": "C2",
+     "specification_survives_absolute": true,
+     "specified_V": null,
+     "survives_absolute": true,
+     "value": "100nF"
+    },
+    {
+     "absolute_V": 3.6,
+     "derate_x": 15.152,
+     "excused_by_a_named_exception": false,
+     "lcsc": "C440198",
+     "meets_derating": true,
+     "mpn": "GRM21BR61H106KE43L",
+     "operating_V": 3.3,
+     "rating_V": 50.0,
+     "rating_read_from": "Voltage Rating attribute",
+     "rating_record": "c440198-650021ca.json",
+     "ref": "C3",
+     "specification_survives_absolute": true,
+     "specified_V": null,
+     "survives_absolute": true,
+     "value": "10uF"
+    },
+    {
+     "absolute_V": 3.6,
+     "derate_x": 15.152,
+     "excused_by_a_named_exception": false,
+     "lcsc": "C14663",
+     "meets_derating": true,
+     "mpn": "CC0603KRX7R9BB104",
+     "operating_V": 3.3,
+     "rating_V": 50.0,
+     "rating_read_from": "Voltage Rating attribute",
+     "rating_record": "4-7nf-0603-x7r-yageo-2a1b2dc7.json",
+     "ref": "C4",
+     "specification_survives_absolute": true,
+     "specified_V": null,
+     "survives_absolute": true,
+     "value": "100nF"
+    },
+    {
+     "absolute_V": 3.6,
+     "derate_x": 15.152,
+     "excused_by_a_named_exception": false,
+     "lcsc": "C14663",
+     "meets_derating": true,
+     "mpn": "CC0603KRX7R9BB104",
+     "operating_V": 3.3,
+     "rating_V": 50.0,
+     "rating_read_from": "Voltage Rating attribute",
+     "rating_record": "4-7nf-0603-x7r-yageo-2a1b2dc7.json",
+     "ref": "C5",
+     "specification_survives_absolute": true,
+     "specified_V": null,
+     "survives_absolute": true,
+     "value": "100nF"
+    },
+    {
+     "absolute_V": 3.6,
+     "derate_x": 15.152,
+     "excused_by_a_named_exception": false,
+     "lcsc": "C14663",
+     "meets_derating": true,
+     "mpn": "CC0603KRX7R9BB104",
+     "operating_V": 3.3,
+     "rating_V": 50.0,
+     "rating_read_from": "Voltage Rating attribute",
+     "rating_record": "4-7nf-0603-x7r-yageo-2a1b2dc7.json",
+     "ref": "C6",
+     "specification_survives_absolute": true,
+     "specified_V": null,
+     "survives_absolute": true,
+     "value": "100nF"
+    },
+    {
+     "absolute_V": 3.6,
+     "derate_x": 15.152,
+     "excused_by_a_named_exception": false,
+     "lcsc": "C14663",
+     "meets_derating": true,
+     "mpn": "CC0603KRX7R9BB104",
+     "operating_V": 3.3,
+     "rating_V": 50.0,
+     "rating_read_from": "Voltage Rating attribute",
+     "rating_record": "4-7nf-0603-x7r-yageo-2a1b2dc7.json",
+     "ref": "C7",
+     "specification_survives_absolute": true,
+     "specified_V": null,
+     "survives_absolute": true,
+     "value": "100nF"
+    },
+    {
+     "absolute_V": 3.6,
+     "derate_x": 15.152,
+     "excused_by_a_named_exception": false,
+     "lcsc": "C14663",
+     "meets_derating": true,
+     "mpn": "CC0603KRX7R9BB104",
+     "operating_V": 3.3,
+     "rating_V": 50.0,
+     "rating_read_from": "Voltage Rating attribute",
+     "rating_record": "4-7nf-0603-x7r-yageo-2a1b2dc7.json",
+     "ref": "C8",
+     "specification_survives_absolute": true,
+     "specified_V": null,
+     "survives_absolute": true,
+     "value": "100nF"
+    },
+    {
+     "absolute_V": 3.6,
+     "derate_x": 15.152,
+     "excused_by_a_named_exception": false,
+     "lcsc": "C14663",
+     "meets_derating": true,
+     "mpn": "CC0603KRX7R9BB104",
+     "operating_V": 3.3,
+     "rating_V": 50.0,
+     "rating_read_from": "Voltage Rating attribute",
+     "rating_record": "4-7nf-0603-x7r-yageo-2a1b2dc7.json",
+     "ref": "C9",
+     "specification_survives_absolute": true,
+     "specified_V": null,
+     "survives_absolute": true,
+     "value": "100nF"
+    },
+    {
+     "absolute_V": 3.6,
+     "derate_x": 15.152,
+     "excused_by_a_named_exception": false,
+     "lcsc": "C440198",
+     "meets_derating": true,
+     "mpn": "GRM21BR61H106KE43L",
+     "operating_V": 3.3,
+     "rating_V": 50.0,
+     "rating_read_from": "Voltage Rating attribute",
+     "rating_record": "c440198-650021ca.json",
+     "ref": "C10",
+     "specification_survives_absolute": true,
+     "specified_V": null,
+     "survives_absolute": true,
+     "value": "10uf"
+    },
+    {
+     "absolute_V": 3.6,
+     "derate_x": 7.576,
+     "excused_by_a_named_exception": false,
+     "lcsc": "C1779",
+     "meets_derating": true,
+     "mpn": "CL21A475KAQNNNE",
+     "operating_V": 3.3,
+     "rating_V": 25.0,
+     "rating_read_from": "Voltage Rating attribute",
+     "rating_record": "c1779-dd925212.json",
+     "ref": "C11",
+     "specification_survives_absolute": true,
+     "specified_V": null,
+     "survives_absolute": true,
+     "value": "4.7uF"
+    },
+    {
+     "absolute_V": 3.6,
+     "derate_x": 7.576,
+     "excused_by_a_named_exception": false,
+     "lcsc": "C309062",
+     "meets_derating": true,
+     "mpn": "CL32B226KAJNNNE",
+     "operating_V": 3.3,
+     "rating_V": 25.0,
+     "rating_read_from": "Voltage Rating attribute",
+     "rating_record": "22uf-1210-capacitor-2208ee63.json",
+     "ref": "C12",
+     "specification_survives_absolute": true,
+     "specified_V": null,
+     "survives_absolute": true,
+     "value": "22uF"
+    },
+    {
+     "absolute_V": 3.6,
+     "derate_x": 15.152,
+     "excused_by_a_named_exception": false,
+     "lcsc": "C14663",
+     "meets_derating": true,
+     "mpn": "CC0603KRX7R9BB104",
+     "operating_V": 3.3,
+     "rating_V": 50.0,
+     "rating_read_from": "Voltage Rating attribute",
+     "rating_record": "4-7nf-0603-x7r-yageo-2a1b2dc7.json",
+     "ref": "C13",
+     "specification_survives_absolute": true,
+     "specified_V": null,
+     "survives_absolute": true,
+     "value": "100nF"
+    },
+    {
+     "absolute_V": 3.6,
+     "derate_x": 15.152,
+     "excused_by_a_named_exception": false,
+     "lcsc": "C14663",
+     "meets_derating": true,
+     "mpn": "CC0603KRX7R9BB104",
+     "operating_V": 3.3,
+     "rating_V": 50.0,
+     "rating_read_from": "Voltage Rating attribute",
+     "rating_record": "4-7nf-0603-x7r-yageo-2a1b2dc7.json",
+     "ref": "C14",
+     "specification_survives_absolute": true,
+     "specified_V": null,
+     "survives_absolute": true,
+     "value": "100nF"
+    },
+    {
+     "absolute_V": 3.6,
+     "derate_x": 15.152,
+     "excused_by_a_named_exception": false,
+     "lcsc": "C440198",
+     "meets_derating": true,
+     "mpn": "GRM21BR61H106KE43L",
+     "operating_V": 3.3,
+     "rating_V": 50.0,
+     "rating_read_from": "Voltage Rating attribute",
+     "rating_record": "c440198-650021ca.json",
+     "ref": "C15",
+     "specification_survives_absolute": true,
+     "specified_V": null,
+     "survives_absolute": true,
+     "value": "10uF"
+    },
+    {
+     "absolute_V": 3.6,
+     "derate_x": 15.152,
+     "excused_by_a_named_exception": false,
+     "lcsc": "C14663",
+     "meets_derating": true,
+     "mpn": "CC0603KRX7R9BB104",
+     "operating_V": 3.3,
+     "rating_V": 50.0,
+     "rating_read_from": "Voltage Rating attribute",
+     "rating_record": "4-7nf-0603-x7r-yageo-2a1b2dc7.json",
+     "ref": "C16",
+     "specification_survives_absolute": true,
+     "specified_V": null,
+     "survives_absolute": true,
+     "value": "100nF"
+    },
+    {
+     "absolute_V": 3.6,
+     "derate_x": 15.152,
+     "excused_by_a_named_exception": false,
+     "lcsc": "C14663",
+     "meets_derating": true,
+     "mpn": "CC0603KRX7R9BB104",
+     "operating_V": 3.3,
+     "rating_V": 50.0,
+     "rating_read_from": "Voltage Rating attribute",
+     "rating_record": "4-7nf-0603-x7r-yageo-2a1b2dc7.json",
+     "ref": "C17",
+     "specification_survives_absolute": true,
+     "specified_V": null,
+     "survives_absolute": true,
+     "value": "100nF"
+    },
+    {
+     "absolute_V": 3.6,
+     "derate_x": 7.576,
+     "excused_by_a_named_exception": false,
+     "lcsc": "C105883",
+     "meets_derating": true,
+     "mpn": "CC0402KRX7R8BB104",
+     "operating_V": 3.3,
+     "rating_V": 25.0,
+     "rating_read_from": "Voltage Rating attribute",
+     "rating_record": "c105883-12bde5a2.json",
+     "ref": "C18",
+     "specification_survives_absolute": true,
+     "specified_V": null,
+     "survives_absolute": true,
+     "value": "100nF"
+    },
+    {
+     "absolute_V": 3.6,
+     "derate_x": 7.576,
+     "excused_by_a_named_exception": false,
+     "lcsc": "C105883",
+     "meets_derating": true,
+     "mpn": "CC0402KRX7R8BB104",
+     "operating_V": 3.3,
+     "rating_V": 25.0,
+     "rating_read_from": "Voltage Rating attribute",
+     "rating_record": "c105883-12bde5a2.json",
+     "ref": "C19",
+     "specification_survives_absolute": true,
+     "specified_V": null,
+     "survives_absolute": true,
+     "value": "100nF"
+    },
+    {
+     "absolute_V": 5.5,
+     "derate_x": 4.762,
+     "excused_by_a_named_exception": false,
+     "lcsc": "C354262",
+     "meets_derating": true,
+     "mpn": "CC0805KKX7R8BB475",
+     "operating_V": 5.25,
+     "rating_V": 25.0,
+     "rating_read_from": "Voltage Rating attribute",
+     "rating_record": "c354262-ee6f20f2.json",
+     "ref": "C20",
+     "specification_survives_absolute": true,
+     "specified_V": 10.0,
+     "survives_absolute": true,
+     "value": "4.7uF 10V X7R"
+    },
+    {
+     "absolute_V": 5.5,
+     "derate_x": 4.762,
+     "excused_by_a_named_exception": false,
+     "lcsc": "C106858",
+     "meets_derating": true,
+     "mpn": "CC0603KRX7R8BB105",
+     "operating_V": 5.25,
+     "rating_V": 25.0,
+     "rating_read_from": "Voltage Rating attribute",
+     "rating_record": "4-7nf-0603-x7r-yageo-2a1b2dc7.json",
+     "ref": "C23",
+     "specification_survives_absolute": true,
+     "specified_V": 25.0,
+     "survives_absolute": true,
+     "value": "1uF 25V X7R"
+    },
+    {
+     "absolute_V": 5.5,
+     "derate_x": 5.556,
+     "excused_by_a_named_exception": false,
+     "lcsc": "C344022",
+     "meets_derating": true,
+     "mpn": "GRM188R61E106KA73D",
+     "operating_V": 4.5,
+     "rating_V": 25.0,
+     "rating_read_from": "Voltage Rating attribute",
+     "rating_record": "c344022-3e824a04.json",
+     "ref": "C24",
+     "specification_survives_absolute": true,
+     "specified_V": 25.0,
+     "survives_absolute": true,
+     "value": "10uF 25V X5R"
+    },
+    {
+     "absolute_V": 4.35,
+     "derate_x": 5.952,
+     "excused_by_a_named_exception": false,
+     "lcsc": "C106858",
+     "meets_derating": true,
+     "mpn": "CC0603KRX7R8BB105",
+     "operating_V": 4.2,
+     "rating_V": 25.0,
+     "rating_read_from": "Voltage Rating attribute",
+     "rating_record": "4-7nf-0603-x7r-yageo-2a1b2dc7.json",
+     "ref": "C25",
+     "specification_survives_absolute": true,
+     "specified_V": 10.0,
+     "survives_absolute": true,
+     "value": "1uF 10V X7R"
+    },
+    {
+     "absolute_V": 5.5,
+     "derate_x": 5.556,
+     "excused_by_a_named_exception": false,
+     "lcsc": "C77093",
+     "meets_derating": true,
+     "mpn": "GRM31CR71E106KA12L",
+     "operating_V": 4.5,
+     "rating_V": 25.0,
+     "rating_read_from": "Voltage Rating attribute",
+     "rating_record": "c77093-a9d7d124.json",
+     "ref": "C26",
+     "specification_survives_absolute": true,
+     "specified_V": 10.0,
+     "survives_absolute": true,
+     "value": "10uF 10V X7R"
+    },
+    {
+     "absolute_V": 5.5,
+     "derate_x": 5.556,
+     "excused_by_a_named_exception": false,
+     "lcsc": "C77093",
+     "meets_derating": true,
+     "mpn": "GRM31CR71E106KA12L",
+     "operating_V": 4.5,
+     "rating_V": 25.0,
+     "rating_read_from": "Voltage Rating attribute",
+     "rating_record": "c77093-a9d7d124.json",
+     "ref": "C27",
+     "specification_survives_absolute": true,
+     "specified_V": 10.0,
+     "survives_absolute": true,
+     "value": "10uF 10V X7R"
+    },
+    {
+     "absolute_V": 5.5,
+     "derate_x": 11.111,
+     "excused_by_a_named_exception": false,
+     "lcsc": "C14663",
+     "meets_derating": true,
+     "mpn": "CC0603KRX7R9BB104",
+     "operating_V": 4.5,
+     "rating_V": 50.0,
+     "rating_read_from": "Voltage Rating attribute",
+     "rating_record": "4-7nf-0603-x7r-yageo-2a1b2dc7.json",
+     "ref": "C28",
+     "specification_survives_absolute": true,
+     "specified_V": null,
+     "survives_absolute": true,
+     "value": "100nF X7R"
+    },
+    {
+     "absolute_V": 3.6,
+     "derate_x": 4.848,
+     "excused_by_a_named_exception": false,
+     "lcsc": "C22392398",
+     "meets_derating": true,
+     "mpn": "TCC1206X7R226K160HT",
+     "operating_V": 3.3,
+     "rating_V": 16.0,
+     "rating_read_from": "Voltage Rating attribute",
+     "rating_record": "c22392398-860394d3.json",
+     "ref": "C29",
+     "specification_survives_absolute": true,
+     "specified_V": 10.0,
+     "survives_absolute": true,
+     "value": "22uF 10V X7R"
+    },
+    {
+     "absolute_V": 3.6,
+     "derate_x": 4.848,
+     "excused_by_a_named_exception": false,
+     "lcsc": "C22392398",
+     "meets_derating": true,
+     "mpn": "TCC1206X7R226K160HT",
+     "operating_V": 3.3,
+     "rating_V": 16.0,
+     "rating_read_from": "Voltage Rating attribute",
+     "rating_record": "c22392398-860394d3.json",
+     "ref": "C30",
+     "specification_survives_absolute": true,
+     "specified_V": 10.0,
+     "survives_absolute": true,
+     "value": "22uF 10V X7R"
+    },
+    {
+     "absolute_V": 3.6,
+     "derate_x": 4.848,
+     "excused_by_a_named_exception": false,
+     "lcsc": "C22392398",
+     "meets_derating": true,
+     "mpn": "TCC1206X7R226K160HT",
+     "operating_V": 3.3,
+     "rating_V": 16.0,
+     "rating_read_from": "Voltage Rating attribute",
+     "rating_record": "c22392398-860394d3.json",
+     "ref": "C31",
+     "specification_survives_absolute": true,
+     "specified_V": 10.0,
+     "survives_absolute": true,
+     "value": "22uF 10V X7R"
+    },
+    {
+     "absolute_V": 3.6,
+     "derate_x": 4.848,
+     "excused_by_a_named_exception": false,
+     "lcsc": "C22392398",
+     "meets_derating": true,
+     "mpn": "TCC1206X7R226K160HT",
+     "operating_V": 3.3,
+     "rating_V": 16.0,
+     "rating_read_from": "Voltage Rating attribute",
+     "rating_record": "c22392398-860394d3.json",
+     "ref": "C32",
+     "specification_survives_absolute": true,
+     "specified_V": 10.0,
+     "survives_absolute": true,
+     "value": "22uF 10V X7R"
+    },
+    {
+     "absolute_V": 5.5,
+     "derate_x": 3.556,
+     "excused_by_a_named_exception": false,
+     "lcsc": "C326595",
+     "meets_derating": true,
+     "mpn": "CC0805KKX7R7BB106",
+     "operating_V": 4.5,
+     "rating_V": 16.0,
+     "rating_read_from": "Voltage Rating attribute",
+     "rating_record": "c326595-ccf6abc7.json",
+     "ref": "C33",
+     "specification_survives_absolute": true,
+     "specified_V": 10.0,
+     "survives_absolute": true,
+     "value": "10uF 10V X7R"
+    },
+    {
+     "absolute_V": 4.35,
+     "derate_x": 11.905,
+     "excused_by_a_named_exception": false,
+     "lcsc": "C14663",
+     "meets_derating": true,
+     "mpn": "CC0603KRX7R9BB104",
+     "operating_V": 4.2,
+     "rating_V": 50.0,
+     "rating_read_from": "Voltage Rating attribute",
+     "rating_record": "4-7nf-0603-x7r-yageo-2a1b2dc7.json",
+     "ref": "C36",
+     "specification_survives_absolute": true,
+     "specified_V": null,
+     "survives_absolute": true,
+     "value": "100nF X7R"
+    },
+    {
+     "absolute_V": 3.6,
+     "derate_x": 7.576,
+     "excused_by_a_named_exception": false,
+     "lcsc": "C106858",
+     "meets_derating": true,
+     "mpn": "CC0603KRX7R8BB105",
+     "operating_V": 3.3,
+     "rating_V": 25.0,
+     "rating_read_from": "Voltage Rating attribute",
+     "rating_record": "4-7nf-0603-x7r-yageo-2a1b2dc7.json",
+     "ref": "C37",
+     "specification_survives_absolute": true,
+     "specified_V": 10.0,
+     "survives_absolute": true,
+     "value": "1uF 10V X7R"
+    },
+    {
+     "absolute_V": 6.0,
+     "derate_x": 4.84,
+     "excused_by_a_named_exception": false,
+     "lcsc": "C106858",
+     "meets_derating": true,
+     "mpn": "CC0603KRX7R8BB105",
+     "operating_V": 5.165,
+     "rating_V": 25.0,
+     "rating_read_from": "Voltage Rating attribute",
+     "rating_record": "4-7nf-0603-x7r-yageo-2a1b2dc7.json",
+     "ref": "C38",
+     "specification_survives_absolute": true,
+     "specified_V": 10.0,
+     "survives_absolute": true,
+     "value": "1uF 10V X7R"
+    },
+    {
+     "absolute_V": 3.6,
+     "derate_x": 15.152,
+     "excused_by_a_named_exception": false,
+     "lcsc": "C14663",
+     "meets_derating": true,
+     "mpn": "CC0603KRX7R9BB104",
+     "operating_V": 3.3,
+     "rating_V": 50.0,
+     "rating_read_from": "Voltage Rating attribute",
+     "rating_record": "4-7nf-0603-x7r-yageo-2a1b2dc7.json",
+     "ref": "C39",
+     "specification_survives_absolute": true,
+     "specified_V": null,
+     "survives_absolute": true,
+     "value": "100nF X7R"
+    },
+    {
+     "absolute_V": 3.6,
+     "derate_x": 7.576,
+     "excused_by_a_named_exception": false,
+     "lcsc": "C1779",
+     "meets_derating": true,
+     "mpn": "CL21A475KAQNNNE",
+     "operating_V": 3.3,
+     "rating_V": 25.0,
+     "rating_read_from": "Voltage Rating attribute",
+     "rating_record": "c1779-dd925212.json",
+     "ref": "C43",
+     "specification_survives_absolute": true,
+     "specified_V": 10.0,
+     "survives_absolute": true,
+     "value": "4.7uF 10V X5R"
+    },
+    {
+     "absolute_V": 39.0,
+     "derate_x": 11.111,
+     "excused_by_a_named_exception": false,
+     "lcsc": "C28323",
+     "meets_derating": true,
+     "mpn": "CL21B105KBFNNNE",
+     "operating_V": 4.5,
+     "rating_V": 50.0,
+     "rating_read_from": "Voltage Rating attribute",
+     "rating_record": "c28323-2a17e3c8.json",
+     "ref": "C44",
+     "specification_survives_absolute": true,
+     "specified_V": null,
+     "survives_absolute": true,
+     "value": "1uF"
+    },
+    {
+     "absolute_V": 3.6,
+     "derate_x": 15.152,
+     "excused_by_a_named_exception": false,
+     "lcsc": "C125847",
+     "meets_derating": true,
+     "mpn": "CC0805KKX7R9BB225",
+     "operating_V": 3.3,
+     "rating_V": 50.0,
+     "rating_read_from": "Voltage Rating attribute",
+     "rating_record": "2-2uf-0805-capacitor-43ff4d91.json",
+     "ref": "C45",
+     "specification_survives_absolute": true,
+     "specified_V": null,
+     "survives_absolute": true,
+     "value": "2.2uF"
+    },
+    {
+     "absolute_V": 3.6,
+     "derate_x": 15.152,
+     "excused_by_a_named_exception": false,
+     "lcsc": "C57112",
+     "meets_derating": true,
+     "mpn": "0603B103K500NT",
+     "operating_V": 3.3,
+     "rating_V": 50.0,
+     "rating_read_from": "Voltage Rating attribute",
+     "rating_record": "10nf-0603-capacitor-cd700aec.json",
+     "ref": "C46",
+     "specification_survives_absolute": true,
+     "specified_V": null,
+     "survives_absolute": true,
+     "value": "10nF"
+    },
+    {
+     "absolute_V": 3.6,
+     "derate_x": 15.152,
+     "excused_by_a_named_exception": false,
+     "lcsc": "C125847",
+     "meets_derating": true,
+     "mpn": "CC0805KKX7R9BB225",
+     "operating_V": 3.3,
+     "rating_V": 50.0,
+     "rating_read_from": "Voltage Rating attribute",
+     "rating_record": "2-2uf-0805-capacitor-43ff4d91.json",
+     "ref": "C47",
+     "specification_survives_absolute": true,
+     "specified_V": null,
+     "survives_absolute": true,
+     "value": "2.2uF"
+    },
+    {
+     "absolute_V": 3.6,
+     "derate_x": 15.152,
+     "excused_by_a_named_exception": false,
+     "lcsc": "C57112",
+     "meets_derating": true,
+     "mpn": "0603B103K500NT",
+     "operating_V": 3.3,
+     "rating_V": 50.0,
+     "rating_read_from": "Voltage Rating attribute",
+     "rating_record": "10nf-0603-capacitor-cd700aec.json",
+     "ref": "C48",
+     "specification_survives_absolute": true,
+     "specified_V": null,
+     "survives_absolute": true,
+     "value": "10nF"
+    },
+    {
+     "absolute_V": 3.6,
+     "derate_x": 15.152,
+     "excused_by_a_named_exception": false,
+     "lcsc": "C125847",
+     "meets_derating": true,
+     "mpn": "CC0805KKX7R9BB225",
+     "operating_V": 3.3,
+     "rating_V": 50.0,
+     "rating_read_from": "Voltage Rating attribute",
+     "rating_record": "2-2uf-0805-capacitor-43ff4d91.json",
+     "ref": "C49",
+     "specification_survives_absolute": true,
+     "specified_V": null,
+     "survives_absolute": true,
+     "value": "2.2uF"
+    },
+    {
+     "absolute_V": 3.6,
+     "derate_x": 15.152,
+     "excused_by_a_named_exception": false,
+     "lcsc": "C57112",
+     "meets_derating": true,
+     "mpn": "0603B103K500NT",
+     "operating_V": 3.3,
+     "rating_V": 50.0,
+     "rating_read_from": "Voltage Rating attribute",
+     "rating_record": "10nf-0603-capacitor-cd700aec.json",
+     "ref": "C50",
+     "specification_survives_absolute": true,
+     "specified_V": null,
+     "survives_absolute": true,
+     "value": "10nF"
+    },
+    {
+     "absolute_V": 3.6,
+     "derate_x": 15.152,
+     "excused_by_a_named_exception": false,
+     "lcsc": "C125847",
+     "meets_derating": true,
+     "mpn": "CC0805KKX7R9BB225",
+     "operating_V": 3.3,
+     "rating_V": 50.0,
+     "rating_read_from": "Voltage Rating attribute",
+     "rating_record": "2-2uf-0805-capacitor-43ff4d91.json",
+     "ref": "C51",
+     "specification_survives_absolute": true,
+     "specified_V": null,
+     "survives_absolute": true,
+     "value": "2.2uF"
+    },
+    {
+     "absolute_V": 3.6,
+     "derate_x": 15.152,
+     "excused_by_a_named_exception": false,
+     "lcsc": "C1588",
+     "meets_derating": true,
+     "mpn": "CL10B102KB8NNNC",
+     "operating_V": 3.3,
+     "rating_V": 50.0,
+     "rating_read_from": "Voltage Rating attribute",
+     "rating_record": "1nf-0603-capacitor-05b82e98.json",
+     "ref": "C52",
+     "specification_survives_absolute": true,
+     "specified_V": null,
+     "survives_absolute": true,
+     "value": "1nF"
+    },
+    {
+     "absolute_V": 3.6,
+     "derate_x": 15.152,
+     "excused_by_a_named_exception": false,
+     "lcsc": "C15849",
+     "meets_derating": true,
+     "mpn": "CL10A105KB8NNNC",
+     "operating_V": 3.3,
+     "rating_V": 50.0,
+     "rating_read_from": "Voltage Rating attribute",
+     "rating_record": "c15849-bc9e4d94.json",
+     "ref": "C53",
+     "specification_survives_absolute": true,
+     "specified_V": null,
+     "survives_absolute": true,
+     "value": "1uF"
+    },
+    {
+     "absolute_V": 3.6,
+     "derate_x": 15.152,
+     "excused_by_a_named_exception": false,
+     "lcsc": "C57112",
+     "meets_derating": true,
+     "mpn": "0603B103K500NT",
+     "operating_V": 3.3,
+     "rating_V": 50.0,
+     "rating_read_from": "Voltage Rating attribute",
+     "rating_record": "10nf-0603-capacitor-cd700aec.json",
+     "ref": "C54",
+     "specification_survives_absolute": true,
+     "specified_V": null,
+     "survives_absolute": true,
+     "value": "10nF"
+    },
+    {
+     "absolute_V": 3.6,
+     "derate_x": 4.848,
+     "excused_by_a_named_exception": false,
+     "lcsc": "C23630",
+     "meets_derating": true,
+     "mpn": "CL10A225KO8NNNC",
+     "operating_V": 3.3,
+     "rating_V": 16.0,
+     "rating_read_from": "Voltage Rating attribute",
+     "rating_record": "2-2uf-0603-capacitor-21cdb57b.json",
+     "ref": "C55",
+     "specification_survives_absolute": true,
+     "specified_V": null,
+     "survives_absolute": true,
+     "value": "2.2uF"
+    },
+    {
+     "absolute_V": 3.6,
+     "derate_x": 15.152,
+     "excused_by_a_named_exception": false,
+     "lcsc": "C15849",
+     "meets_derating": true,
+     "mpn": "CL10A105KB8NNNC",
+     "operating_V": 3.3,
+     "rating_V": 50.0,
+     "rating_read_from": "Voltage Rating attribute",
+     "rating_record": "c15849-bc9e4d94.json",
+     "ref": "C56",
+     "specification_survives_absolute": true,
+     "specified_V": null,
+     "survives_absolute": true,
+     "value": "1uF"
+    },
+    {
+     "absolute_V": 17.5,
+     "derate_x": 2.857,
+     "excused_by_a_named_exception": false,
+     "lcsc": "C53987",
+     "meets_derating": true,
+     "mpn": "0603B472K500NT",
+     "operating_V": 17.5,
+     "rating_V": 50.0,
+     "rating_read_from": "Voltage Rating attribute",
+     "rating_record": "4-7nf-0603-capacitor-083b64bb.json",
+     "ref": "C57",
+     "specification_survives_absolute": true,
+     "specified_V": 50.0,
+     "survives_absolute": true,
+     "value": "4.7nF 50V X7R"
+    },
+    {
+     "absolute_V": 4.35,
+     "derate_x": 5.952,
+     "excused_by_a_named_exception": false,
+     "lcsc": "C106858",
+     "meets_derating": true,
+     "mpn": "CC0603KRX7R8BB105",
+     "operating_V": 4.2,
+     "rating_V": 25.0,
+     "rating_read_from": "Voltage Rating attribute",
+     "rating_record": "4-7nf-0603-x7r-yageo-2a1b2dc7.json",
+     "ref": "C58",
+     "specification_survives_absolute": true,
+     "specified_V": 25.0,
+     "survives_absolute": true,
+     "value": "1uF 25V X7R"
+    },
+    {
+     "absolute_V": 4.35,
+     "derate_x": 5.952,
+     "excused_by_a_named_exception": false,
+     "lcsc": "C106858",
+     "meets_derating": true,
+     "mpn": "CC0603KRX7R8BB105",
+     "operating_V": 4.2,
+     "rating_V": 25.0,
+     "rating_read_from": "Voltage Rating attribute",
+     "rating_record": "4-7nf-0603-x7r-yageo-2a1b2dc7.json",
+     "ref": "C59",
+     "specification_survives_absolute": true,
+     "specified_V": 25.0,
+     "survives_absolute": true,
+     "value": "1uF 25V X7R"
+    },
+    {
+     "absolute_V": 5.5,
+     "derate_x": 9.524,
+     "excused_by_a_named_exception": false,
+     "lcsc": "C14663",
+     "meets_derating": true,
+     "mpn": "CC0603KRX7R9BB104",
+     "operating_V": 5.25,
+     "rating_V": 50.0,
+     "rating_read_from": "Voltage Rating attribute",
+     "rating_record": "4-7nf-0603-x7r-yageo-2a1b2dc7.json",
+     "ref": "C60",
+     "specification_survives_absolute": true,
+     "specified_V": null,
+     "survives_absolute": true,
+     "value": "100nF X7R"
+    },
+    {
+     "absolute_V": 4.35,
+     "derate_x": 11.905,
+     "excused_by_a_named_exception": false,
+     "lcsc": "C14663",
+     "meets_derating": true,
+     "mpn": "CC0603KRX7R9BB104",
+     "operating_V": 4.2,
+     "rating_V": 50.0,
+     "rating_read_from": "Voltage Rating attribute",
+     "rating_record": "4-7nf-0603-x7r-yageo-2a1b2dc7.json",
+     "ref": "C61",
+     "specification_survives_absolute": true,
+     "specified_V": null,
+     "survives_absolute": true,
+     "value": "100nF X7R"
+    },
+    {
+     "absolute_V": 3.6,
+     "derate_x": 7.576,
+     "excused_by_a_named_exception": false,
+     "lcsc": "C106858",
+     "meets_derating": true,
+     "mpn": "CC0603KRX7R8BB105",
+     "operating_V": 3.3,
+     "rating_V": 25.0,
+     "rating_read_from": "Voltage Rating attribute",
+     "rating_record": "4-7nf-0603-x7r-yageo-2a1b2dc7.json",
+     "ref": "C62",
+     "specification_survives_absolute": true,
+     "specified_V": 10.0,
+     "survives_absolute": true,
+     "value": "1uF 10V X7R"
+    },
+    {
+     "absolute_V": 3.6,
+     "derate_x": 7.576,
+     "excused_by_a_named_exception": false,
+     "lcsc": "C106858",
+     "meets_derating": true,
+     "mpn": "CC0603KRX7R8BB105",
+     "operating_V": 3.3,
+     "rating_V": 25.0,
+     "rating_read_from": "Voltage Rating attribute",
+     "rating_record": "4-7nf-0603-x7r-yageo-2a1b2dc7.json",
+     "ref": "C63",
+     "specification_survives_absolute": true,
+     "specified_V": 10.0,
+     "survives_absolute": true,
+     "value": "1uF 10V X7R"
+    },
+    {
+     "absolute_V": 5.5,
+     "derate_x": 3.556,
+     "excused_by_a_named_exception": false,
+     "lcsc": "C326595",
+     "meets_derating": true,
+     "mpn": "CC0805KKX7R7BB106",
+     "operating_V": 4.5,
+     "rating_V": 16.0,
+     "rating_read_from": "Voltage Rating attribute",
+     "rating_record": "c326595-ccf6abc7.json",
+     "ref": "C64",
+     "specification_survives_absolute": true,
+     "specified_V": 10.0,
+     "survives_absolute": true,
+     "value": "10uF 10V X7R"
+    },
+    {
+     "absolute_V": 6.0,
+     "derate_x": 1.936,
+     "excused_by_a_named_exception": true,
+     "lcsc": "C907991",
+     "meets_derating": false,
+     "mpn": "GRM21BZ71A226ME15L",
+     "operating_V": 5.165,
+     "rating_V": 10.0,
+     "rating_read_from": "Voltage Rating attribute",
+     "rating_record": "22uf-0805-x7r-murata-ccdbc43c.json",
+     "ref": "C65",
+     "specification_survives_absolute": true,
+     "specified_V": 10.0,
+     "survives_absolute": true,
+     "value": "22uF 10V X7R"
+    },
+    {
+     "absolute_V": 6.0,
+     "derate_x": 1.936,
+     "excused_by_a_named_exception": true,
+     "lcsc": "C907991",
+     "meets_derating": false,
+     "mpn": "GRM21BZ71A226ME15L",
+     "operating_V": 5.165,
+     "rating_V": 10.0,
+     "rating_read_from": "Voltage Rating attribute",
+     "rating_record": "22uf-0805-x7r-murata-ccdbc43c.json",
+     "ref": "C66",
+     "specification_survives_absolute": true,
+     "specified_V": 10.0,
+     "survives_absolute": true,
+     "value": "22uF 10V X7R"
+    },
+    {
+     "absolute_V": 6.0,
+     "derate_x": 4.84,
+     "excused_by_a_named_exception": false,
+     "lcsc": "C106858",
+     "meets_derating": true,
+     "mpn": "CC0603KRX7R8BB105",
+     "operating_V": 5.165,
+     "rating_V": 25.0,
+     "rating_read_from": "Voltage Rating attribute",
+     "rating_record": "4-7nf-0603-x7r-yageo-2a1b2dc7.json",
+     "ref": "C67",
+     "specification_survives_absolute": true,
+     "specified_V": 10.0,
+     "survives_absolute": true,
+     "value": "1uF 10V X7R"
+    },
+    {
+     "absolute_V": 5.5,
+     "derate_x": 9.524,
+     "excused_by_a_named_exception": false,
+     "lcsc": "C14663",
+     "meets_derating": true,
+     "mpn": "CC0603KRX7R9BB104",
+     "operating_V": 5.25,
+     "rating_V": 50.0,
+     "rating_read_from": "Voltage Rating attribute",
+     "rating_record": "4-7nf-0603-x7r-yageo-2a1b2dc7.json",
+     "ref": "C68",
+     "specification_survives_absolute": true,
+     "specified_V": null,
+     "survives_absolute": true,
+     "value": "100nF X7R"
+    },
+    {
+     "excused_by_a_named_exception": false,
+     "lcsc": "C14858",
+     "meets_derating": null,
+     "mpn": "CL10C101JB8NNNC",
+     "non_dc_absolute_V": 4.0,
+     "non_dc_basis": "ST25R3916 <=350 mArms regulated TX ceiling; 1.6 nF EMC shunt at 13.56 MHz gives <=3.63 Vpk; first-article scope",
+     "non_dc_nodes": [
+      "NFC_EMCA"
+     ],
+     "rating_V": 50.0,
+     "rating_read_from": "Voltage Rating attribute",
+     "rating_record": "100pf-0603-capacitor-6fa4d2b3.json",
+     "ref": "C69",
+     "specification_survives_absolute": true,
+     "specified_V": 50.0,
+     "survives_absolute": true,
+     "value": "100pF 50V C0G TUNE"
+    },
+    {
+     "excused_by_a_named_exception": false,
+     "lcsc": "C14858",
+     "meets_derating": null,
+     "mpn": "CL10C101JB8NNNC",
+     "non_dc_absolute_V": 4.0,
+     "non_dc_basis": "ST25R3916 <=350 mArms regulated TX ceiling; 1.6 nF EMC shunt at 13.56 MHz gives <=3.63 Vpk; first-article scope",
+     "non_dc_nodes": [
+      "NFC_EMCB"
+     ],
+     "rating_V": 50.0,
+     "rating_read_from": "Voltage Rating attribute",
+     "rating_record": "100pf-0603-capacitor-6fa4d2b3.json",
+     "ref": "C70",
+     "specification_survives_absolute": true,
+     "specified_V": 50.0,
+     "survives_absolute": true,
+     "value": "100pF 50V C0G TUNE"
+    },
+    {
+     "excused_by_a_named_exception": false,
+     "lcsc": "C3837533",
+     "meets_derating": null,
+     "mpn": "GCM1885C2A301FA16J",
+     "non_dc_absolute_V": 20.0,
+     "non_dc_basis": "ST25R3916 <=350 mArms regulated TX ceiling through 300 pF at 13.56 MHz gives <=19.37 Vpk; first-article scope",
+     "non_dc_nodes": [
+      "NFC_EMCA",
+      "NFC_MATCH_A"
+     ],
+     "rating_V": 100.0,
+     "rating_read_from": "Voltage Rating attribute",
+     "rating_record": "300pf-0603-capacitor-d4a5bedb.json",
+     "ref": "C71",
+     "specification_survives_absolute": true,
+     "specified_V": 50.0,
+     "survives_absolute": true,
+     "value": "300pF 50V C0G TUNE"
+    },
+    {
+     "excused_by_a_named_exception": false,
+     "lcsc": "C3837533",
+     "meets_derating": null,
+     "mpn": "GCM1885C2A301FA16J",
+     "non_dc_absolute_V": 20.0,
+     "non_dc_basis": "ST25R3916 <=350 mArms regulated TX ceiling through 300 pF at 13.56 MHz gives <=19.37 Vpk; first-article scope",
+     "non_dc_nodes": [
+      "NFC_EMCB",
+      "NFC_MATCH_B"
+     ],
+     "rating_V": 100.0,
+     "rating_read_from": "Voltage Rating attribute",
+     "rating_record": "300pf-0603-capacitor-d4a5bedb.json",
+     "ref": "C72",
+     "specification_survives_absolute": true,
+     "specified_V": 50.0,
+     "survives_absolute": true,
+     "value": "300pF 50V C0G TUNE"
+    },
+    {
+     "excused_by_a_named_exception": false,
+     "lcsc": "C388906",
+     "meets_derating": null,
+     "mpn": "GCM1885C2A152JA16D",
+     "non_dc_absolute_V": 4.0,
+     "non_dc_basis": "ST25R3916 <=350 mArms regulated TX ceiling; 1.6 nF EMC shunt at 13.56 MHz gives <=3.63 Vpk; first-article scope",
+     "non_dc_nodes": [
+      "NFC_EMCA"
+     ],
+     "rating_V": 100.0,
+     "rating_read_from": "Voltage Rating attribute",
+     "rating_record": "1-5nf-0603-capacitor-10bab94e.json",
+     "ref": "C73",
+     "specification_survives_absolute": true,
+     "specified_V": 50.0,
+     "survives_absolute": true,
+     "value": "1.5nF 50V C0G TUNE"
+    },
+    {
+     "excused_by_a_named_exception": false,
+     "lcsc": "C388906",
+     "meets_derating": null,
+     "mpn": "GCM1885C2A152JA16D",
+     "non_dc_absolute_V": 4.0,
+     "non_dc_basis": "ST25R3916 <=350 mArms regulated TX ceiling; 1.6 nF EMC shunt at 13.56 MHz gives <=3.63 Vpk; first-article scope",
+     "non_dc_nodes": [
+      "NFC_EMCB"
+     ],
+     "rating_V": 100.0,
+     "rating_read_from": "Voltage Rating attribute",
+     "rating_record": "1-5nf-0603-capacitor-10bab94e.json",
+     "ref": "C74",
+     "specification_survives_absolute": true,
+     "specified_V": 50.0,
+     "survives_absolute": true,
+     "value": "1.5nF 50V C0G TUNE"
+    },
+    {
+     "excused_by_a_named_exception": false,
+     "lcsc": "C2360423",
+     "meets_derating": null,
+     "mpn": "GQM1875C2E270FB12D",
+     "non_dc_absolute_V": 26.0,
+     "non_dc_basis": "receive-series bound: <=4.0 Vpk EMC node + <=19.37 Vpk 300 pF match + <=0.55 Vpk 1.1R damping + <=1.5 Vpk RFI (3 Vpp operating max); first-article scope",
+     "non_dc_nodes": [
+      "NFC_ANT_A",
+      "NFC_RXA"
+     ],
+     "rating_V": 250.0,
+     "rating_read_from": "Voltage Rating attribute",
+     "rating_record": "27pf-0603-capacitor-9d3617ae.json",
+     "ref": "C75",
+     "specification_survives_absolute": true,
+     "specified_V": 50.0,
+     "survives_absolute": true,
+     "value": "27pF 50V C0G TUNE"
+    },
+    {
+     "excused_by_a_named_exception": false,
+     "lcsc": "C325470",
+     "meets_derating": null,
+     "mpn": "CC0603JRNPO9BN621",
+     "non_dc_absolute_V": 1.5,
+     "non_dc_basis": "ST25R3916 RFI operating amplitude <=3 Vpp = 1.5 Vpk; first-article scope",
+     "non_dc_nodes": [
+      "NFC_RXA"
+     ],
+     "rating_V": 50.0,
+     "rating_read_from": "Voltage Rating attribute",
+     "rating_record": "620pf-0603-c0g-capacitor-8998098c.json",
+     "ref": "C76",
+     "specification_survives_absolute": true,
+     "specified_V": 50.0,
+     "survives_absolute": true,
+     "value": "620pF 50V C0G TUNE"
+    },
+    {
+     "excused_by_a_named_exception": false,
+     "lcsc": "C2360423",
+     "meets_derating": null,
+     "mpn": "GQM1875C2E270FB12D",
+     "non_dc_absolute_V": 26.0,
+     "non_dc_basis": "receive-series bound: <=4.0 Vpk EMC node + <=19.37 Vpk 300 pF match + <=0.55 Vpk 1.1R damping + <=1.5 Vpk RFI (3 Vpp operating max); first-article scope",
+     "non_dc_nodes": [
+      "NFC_ANT_B",
+      "NFC_RXB"
+     ],
+     "rating_V": 250.0,
+     "rating_read_from": "Voltage Rating attribute",
+     "rating_record": "27pf-0603-capacitor-9d3617ae.json",
+     "ref": "C77",
+     "specification_survives_absolute": true,
+     "specified_V": 50.0,
+     "survives_absolute": true,
+     "value": "27pF 50V C0G TUNE"
+    },
+    {
+     "excused_by_a_named_exception": false,
+     "lcsc": "C325470",
+     "meets_derating": null,
+     "mpn": "CC0603JRNPO9BN621",
+     "non_dc_absolute_V": 1.5,
+     "non_dc_basis": "ST25R3916 RFI operating amplitude <=3 Vpp = 1.5 Vpk; first-article scope",
+     "non_dc_nodes": [
+      "NFC_RXB"
+     ],
+     "rating_V": 50.0,
+     "rating_read_from": "Voltage Rating attribute",
+     "rating_record": "620pf-0603-c0g-capacitor-8998098c.json",
+     "ref": "C78",
+     "specification_survives_absolute": true,
+     "specified_V": 50.0,
+     "survives_absolute": true,
+     "value": "620pF 50V C0G TUNE"
+    },
+    {
+     "excused_by_a_named_exception": false,
+     "lcsc": "C1634",
+     "meets_derating": null,
+     "mpn": "CL10C100JB8NNNC",
+     "non_dc_absolute_V": 3.6,
+     "non_dc_basis": "27.12 MHz crystal load on ST25R3916 3.3 V domain",
+     "non_dc_nodes": [
+      "NFC_XOUT"
+     ],
+     "rating_V": 50.0,
+     "rating_read_from": "Voltage Rating attribute",
+     "rating_record": "10pf-0603-capacitor-8bd969e8.json",
+     "ref": "C79",
+     "specification_survives_absolute": true,
+     "specified_V": 50.0,
+     "survives_absolute": true,
+     "value": "10pF 50V C0G TUNE"
+    },
+    {
+     "excused_by_a_named_exception": false,
+     "lcsc": "C1634",
+     "meets_derating": null,
+     "mpn": "CL10C100JB8NNNC",
+     "non_dc_absolute_V": 3.6,
+     "non_dc_basis": "27.12 MHz crystal load on ST25R3916 3.3 V domain",
+     "non_dc_nodes": [
+      "NFC_XIN"
+     ],
+     "rating_V": 50.0,
+     "rating_read_from": "Voltage Rating attribute",
+     "rating_record": "10pf-0603-capacitor-8bd969e8.json",
+     "ref": "C80",
+     "specification_survives_absolute": true,
+     "specified_V": 50.0,
+     "survives_absolute": true,
+     "value": "10pF 50V C0G TUNE"
+    },
+    {
+     "absolute_V": 5.5,
+     "derate_x": 3.556,
+     "excused_by_a_named_exception": false,
+     "lcsc": "C326595",
+     "meets_derating": true,
+     "mpn": "CC0805KKX7R7BB106",
+     "operating_V": 4.5,
+     "rating_V": 16.0,
+     "rating_read_from": "Voltage Rating attribute",
+     "rating_record": "c326595-ccf6abc7.json",
+     "ref": "C83",
+     "specification_survives_absolute": true,
+     "specified_V": 10.0,
+     "survives_absolute": true,
+     "value": "10uF 10V X7R"
+    },
+    {
+     "absolute_V": 5.5,
+     "derate_x": 3.556,
+     "excused_by_a_named_exception": false,
+     "lcsc": "C326595",
+     "meets_derating": true,
+     "mpn": "CC0805KKX7R7BB106",
+     "operating_V": 4.5,
+     "rating_V": 16.0,
+     "rating_read_from": "Voltage Rating attribute",
+     "rating_record": "c326595-ccf6abc7.json",
+     "ref": "C84",
+     "specification_survives_absolute": true,
+     "specified_V": 10.0,
+     "survives_absolute": true,
+     "value": "10uF 10V X7R"
+    },
+    {
+     "absolute_V": 3.6,
+     "derate_x": 7.576,
+     "excused_by_a_named_exception": false,
+     "lcsc": "C106858",
+     "meets_derating": true,
+     "mpn": "CC0603KRX7R8BB105",
+     "operating_V": 3.3,
+     "rating_V": 25.0,
+     "rating_read_from": "Voltage Rating attribute",
+     "rating_record": "4-7nf-0603-x7r-yageo-2a1b2dc7.json",
+     "ref": "C85",
+     "specification_survives_absolute": true,
+     "specified_V": 10.0,
+     "survives_absolute": true,
+     "value": "1uF 10V X7R"
+    }
+   ],
+   "specification_fails_absolute_maximum": [],
+   "specification_overstates_the_purchased_part": [],
+   "specification_understates_the_purchased_part": [
+    [
+     "C20",
+     "4.7uF 10V X7R",
+     10.0,
+     "CC0805KKX7R8BB475",
+     25.0
+    ],
+    [
+     "C25",
+     "1uF 10V X7R",
+     10.0,
+     "CC0603KRX7R8BB105",
+     25.0
+    ],
+    [
+     "C26",
+     "10uF 10V X7R",
+     10.0,
+     "GRM31CR71E106KA12L",
+     25.0
+    ],
+    [
+     "C27",
+     "10uF 10V X7R",
+     10.0,
+     "GRM31CR71E106KA12L",
+     25.0
+    ],
+    [
+     "C29",
+     "22uF 10V X7R",
+     10.0,
+     "TCC1206X7R226K160HT",
+     16.0
+    ],
+    [
+     "C30",
+     "22uF 10V X7R",
+     10.0,
+     "TCC1206X7R226K160HT",
+     16.0
+    ],
+    [
+     "C31",
+     "22uF 10V X7R",
+     10.0,
+     "TCC1206X7R226K160HT",
+     16.0
+    ],
+    [
+     "C32",
+     "22uF 10V X7R",
+     10.0,
+     "TCC1206X7R226K160HT",
+     16.0
+    ],
+    [
+     "C33",
+     "10uF 10V X7R",
+     10.0,
+     "CC0805KKX7R7BB106",
+     16.0
+    ],
+    [
+     "C37",
+     "1uF 10V X7R",
+     10.0,
+     "CC0603KRX7R8BB105",
+     25.0
+    ],
+    [
+     "C38",
+     "1uF 10V X7R",
+     10.0,
+     "CC0603KRX7R8BB105",
+     25.0
+    ],
+    [
+     "C43",
+     "4.7uF 10V X5R",
+     10.0,
+     "CL21A475KAQNNNE",
+     25.0
+    ],
+    [
+     "C62",
+     "1uF 10V X7R",
+     10.0,
+     "CC0603KRX7R8BB105",
+     25.0
+    ],
+    [
+     "C63",
+     "1uF 10V X7R",
+     10.0,
+     "CC0603KRX7R8BB105",
+     25.0
+    ],
+    [
+     "C64",
+     "10uF 10V X7R",
+     10.0,
+     "CC0805KKX7R7BB106",
+     16.0
+    ],
+    [
+     "C67",
+     "1uF 10V X7R",
+     10.0,
+     "CC0603KRX7R8BB105",
+     25.0
+    ],
+    [
+     "C83",
+     "10uF 10V X7R",
+     10.0,
+     "CC0805KKX7R7BB106",
+     16.0
+    ],
+    [
+     "C84",
+     "10uF 10V X7R",
+     10.0,
+     "CC0805KKX7R7BB106",
+     16.0
+    ],
+    [
+     "C85",
+     "1uF 10V X7R",
+     10.0,
+     "CC0603KRX7R8BB105",
+     25.0
+    ]
+   ],
+   "under_derating_without_an_exception": [],
+   "with_a_purchased_voltage_rating": 76,
+   "with_a_rating_in_the_value_string": 38,
+   "without_a_purchased_record": []
+  },
+  "F9_manual_battery_harness_metadata_matches_the_frozen_build": {
+   "controls_refused": {
+    "f9a_refuses_a_24awg_schematic_description_on_the_26awg_harness": true,
+    "f9b_refuses_a_harness_gauge_mismatch": true
+   },
+   "method": "D-781 makes J4 a manual battery-pigtail land rather than a purchased PCB connector. The schematic Value/MPN/manufacturer/datasheet, wire gauge and exact Micro-Lock work instruction must agree with the frozen BATTERY_HARNESS.json; live controls reintroduce the 24-AWG typo and a wire-gauge mismatch so absence from BOM/CPL cannot hide an assembly error",
+   "ok": true,
+   "semantic": {
+    "battery_wire_awg": 26,
+    "board_wire_awg": 26,
+    "datasheet": "docs/full-beta-v2/assembly/BATTERY_HARNESS.json",
+    "datasheet_matches": true,
+    "description": "Manual battery pigtail land: two 0.75 mm PTH pads at 2.00 mm pitch; no JST header fitted. Board-side 26 AWG red/black wires terminate in frozen Molex Micro-Lock Plus 2.0 W/W harness per D-781.",
+    "description_matches": true,
+    "gauges_agree": true,
+    "manufacturer": "AQROOT manual harness",
+    "manufacturer_matches": true,
+    "mpn": "D-781-BAT-PIGTAIL",
+    "mpn_matches": true,
+    "note_matches": true,
+    "ok": true,
+    "rating_wire_awg": 26,
+    "value": "BATTERY PIGTAIL 26AWG",
+    "value_matches": true
+   }
+  }
+ },
+ "connectivity": {
+  "approved_unrouted_edges": 1,
+  "connected_retained_nets": 173,
+  "open_retained_nets": 1,
+  "raw_board_ratsnest": 17,
+  "retained_multi_pad_nets": 174,
+  "retained_open_edges": 1,
+  "unapproved_open_edges": 0,
+  "unapproved_open_retained_nets": 0
+ },
+ "features": [
+  {
+   "dnp_refs": [],
+   "missing_refs": [],
+   "nets": [
+    {
+     "approved_unrouted_edges": 0,
+     "net": "/02_MCU_CORE/BOOT_N",
+     "ok": true,
+     "open_edges": 0,
+     "pads": 4,
+     "present": true,
+     "unapproved_open_edges": 0
+    }
+   ],
+   "note": null,
+   "ok": true,
+   "refs": [
+    "U1"
+   ],
+   "scope": "ESP32-S3 main computer"
+  },
+  {
+   "dnp_refs": [],
+   "missing_refs": [],
+   "nets": [],
+   "note": "in-module on the ESP32-S3-WROOM-1 variant; no separate part",
+   "ok": true,
+   "refs": [
+    "U1"
+   ],
+   "scope": "16 MB flash / 8 MB PSRAM"
+  },
+  {
+   "dnp_refs": [],
+   "missing_refs": [],
+   "nets": [
+    {
+     "approved_unrouted_edges": 0,
+     "net": "/DISP_CS_N",
+     "ok": true,
+     "open_edges": 0,
+     "pads": 3,
+     "present": true,
+     "unapproved_open_edges": 0
+    },
+    {
+     "approved_unrouted_edges": 0,
+     "net": "/DISP_DC",
+     "ok": true,
+     "open_edges": 0,
+     "pads": 2,
+     "present": true,
+     "unapproved_open_edges": 0
+    },
+    {
+     "approved_unrouted_edges": 0,
+     "net": "/DISP_RST_N",
+     "ok": true,
+     "open_edges": 0,
+     "pads": 3,
+     "present": true,
+     "unapproved_open_edges": 0
+    },
+    {
+     "approved_unrouted_edges": 0,
+     "net": "/SPI_A_SCK",
+     "ok": true,
+     "open_edges": 0,
+     "pads": 3,
+     "present": true,
+     "unapproved_open_edges": 0
+    },
+    {
+     "approved_unrouted_edges": 0,
+     "net": "/SPI_A_MOSI",
+     "ok": true,
+     "open_edges": 0,
+     "pads": 3,
+     "present": true,
+     "unapproved_open_edges": 0
+    },
+    {
+     "approved_unrouted_edges": 0,
+     "net": "/SPI_A_MISO",
+     "ok": true,
+     "open_edges": 0,
+     "pads": 2,
+     "present": true,
+     "unapproved_open_edges": 0
+    },
+    {
+     "approved_unrouted_edges": 0,
+     "net": "/TOUCH_INT_N",
+     "ok": true,
+     "open_edges": 0,
+     "pads": 2,
+     "present": true,
+     "unapproved_open_edges": 0
+    },
+    {
+     "approved_unrouted_edges": 0,
+     "net": "/TOUCH_RST_N",
+     "ok": true,
+     "open_edges": 0,
+     "pads": 3,
+     "present": true,
+     "unapproved_open_edges": 0
+    },
+    {
+     "approved_unrouted_edges": 0,
+     "net": "/03_SPI_A_DISPLAY_SD/LED_A",
+     "ok": true,
+     "open_edges": 0,
+     "pads": 5,
+     "present": true,
+     "unapproved_open_edges": 0
+    },
+    {
+     "approved_unrouted_edges": 0,
+     "net": "/03_SPI_A_DISPLAY_SD/LED_K",
+     "ok": true,
+     "open_edges": 0,
+     "pads": 3,
+     "present": true,
+     "unapproved_open_edges": 0
+    },
+    {
+     "approved_unrouted_edges": 0,
+     "net": "/DISP_BL_CTL",
+     "ok": true,
+     "open_edges": 0,
+     "pads": 3,
+     "present": true,
+     "unapproved_open_edges": 0
+    }
+   ],
+   "note": null,
+   "ok": true,
+   "refs": [
+    "J1"
+   ],
+   "scope": "3.5-inch touchscreen"
+  },
+  {
+   "dnp_refs": [],
+   "missing_refs": [],
+   "nets": [
+    {
+     "approved_unrouted_edges": 0,
+     "net": "/DISP_BL_CTL",
+     "ok": true,
+     "open_edges": 0,
+     "pads": 3,
+     "present": true,
+     "unapproved_open_edges": 0
+    },
+    {
+     "approved_unrouted_edges": 0,
+     "net": "/03_SPI_A_DISPLAY_SD/BL_DISC_G",
+     "ok": true,
+     "open_edges": 0,
+     "pads": 4,
+     "present": true,
+     "unapproved_open_edges": 0
+    },
+    {
+     "approved_unrouted_edges": 0,
+     "net": "/03_SPI_A_DISPLAY_SD/BL_SW",
+     "ok": true,
+     "open_edges": 0,
+     "pads": 3,
+     "present": true,
+     "unapproved_open_edges": 0
+    },
+    {
+     "approved_unrouted_edges": 0,
+     "net": "/03_SPI_A_DISPLAY_SD/LED_BOOST",
+     "ok": true,
+     "open_edges": 0,
+     "pads": 6,
+     "present": true,
+     "unapproved_open_edges": 0
+    },
+    {
+     "approved_unrouted_edges": 0,
+     "net": "/03_SPI_A_DISPLAY_SD/LED_A",
+     "ok": true,
+     "open_edges": 0,
+     "pads": 5,
+     "present": true,
+     "unapproved_open_edges": 0
+    },
+    {
+     "approved_unrouted_edges": 0,
+     "net": "/03_SPI_A_DISPLAY_SD/LED_K_PANEL",
+     "ok": true,
+     "open_edges": 0,
+     "pads": 3,
+     "present": true,
+     "unapproved_open_edges": 0
+    },
+    {
+     "approved_unrouted_edges": 0,
+     "net": "/03_SPI_A_DISPLAY_SD/LED_K",
+     "ok": true,
+     "open_edges": 0,
+     "pads": 3,
+     "present": true,
+     "unapproved_open_edges": 0
+    }
+   ],
+   "note": "TI SNVSA40B 6.3.3: the TPS61169 keeps a DC path from VIN through L3 and D8 to the LEDs in shutdown, and guarantees OFF only when the array's minimum Vf exceeds the maximum VIN.  This panel is 2.9-3.2 V on a 3.3 V rail, so the screen glows at about 25 mA whenever SW9 is on -- and SW9 is a slide switch, so there is no firmware mitigation.  Q11 breaks the panel cathode return; F5 below is what holds its CONTROL apart from U17's.",
+   "ok": true,
+   "refs": [
+    "U17",
+    "Q11",
+    "D14",
+    "R132",
+    "C85",
+    "L3",
+    "D8",
+    "C44",
+    "R69",
+    "R70",
+    "R71",
+    "R72",
+    "R73",
+    "R108",
+    "R109"
+   ],
+   "scope": "display backlight true-off disconnect and its gate hold (D-750 fitted it, D-752 made it safe)"
+  },
+  {
+   "dnp_refs": [],
+   "missing_refs": [],
+   "nets": [
+    {
+     "approved_unrouted_edges": 0,
+     "net": "/08_BUTTONS_EXPANDERS/BTN_UP_N",
+     "ok": true,
+     "open_edges": 0,
+     "pads": 4,
+     "present": true,
+     "unapproved_open_edges": 0
+    },
+    {
+     "approved_unrouted_edges": 0,
+     "net": "/08_BUTTONS_EXPANDERS/BTN_DOWN_N",
+     "ok": true,
+     "open_edges": 0,
+     "pads": 4,
+     "present": true,
+     "unapproved_open_edges": 0
+    },
+    {
+     "approved_unrouted_edges": 0,
+     "net": "/08_BUTTONS_EXPANDERS/BTN_LEFT_N",
+     "ok": true,
+     "open_edges": 0,
+     "pads": 4,
+     "present": true,
+     "unapproved_open_edges": 0
+    },
+    {
+     "approved_unrouted_edges": 0,
+     "net": "/08_BUTTONS_EXPANDERS/BTN_RIGHT_N",
+     "ok": true,
+     "open_edges": 0,
+     "pads": 4,
+     "present": true,
+     "unapproved_open_edges": 0
+    },
+    {
+     "approved_unrouted_edges": 0,
+     "net": "/08_BUTTONS_EXPANDERS/BTN_A_N",
+     "ok": true,
+     "open_edges": 0,
+     "pads": 4,
+     "present": true,
+     "unapproved_open_edges": 0
+    },
+    {
+     "approved_unrouted_edges": 0,
+     "net": "/08_BUTTONS_EXPANDERS/BTN_B_N",
+     "ok": true,
+     "open_edges": 0,
+     "pads": 4,
+     "present": true,
+     "unapproved_open_edges": 0
+    }
+   ],
+   "note": null,
+   "ok": true,
+   "refs": [
+    "SW2",
+    "SW3",
+    "SW4",
+    "SW5",
+    "SW6",
+    "SW7"
+   ],
+   "scope": "D-pad + A/B controls"
+  },
+  {
+   "dnp_refs": [],
+   "missing_refs": [],
+   "nets": [],
+   "note": null,
+   "ok": true,
+   "refs": [
+    "SW9"
+   ],
+   "scope": "physical power switch"
+  },
+  {
+   "dnp_refs": [],
+   "missing_refs": [],
+   "nets": [
+    {
+     "approved_unrouted_edges": 0,
+     "net": "/02_MCU_CORE/BOOT_N",
+     "ok": true,
+     "open_edges": 0,
+     "pads": 4,
+     "present": true,
+     "unapproved_open_edges": 0
+    }
+   ],
+   "note": null,
+   "ok": true,
+   "refs": [
+    "SW1"
+   ],
+   "scope": "recessed BOOT / recovery"
+  },
+  {
+   "dnp_refs": [],
+   "missing_refs": [],
+   "nets": [
+    {
+     "approved_unrouted_edges": 0,
+     "net": "/08_BUTTONS_EXPANDERS/FRONT_RGB_R_N",
+     "ok": true,
+     "open_edges": 0,
+     "pads": 2,
+     "present": true,
+     "unapproved_open_edges": 0
+    },
+    {
+     "approved_unrouted_edges": 0,
+     "net": "/08_BUTTONS_EXPANDERS/FRONT_RGB_G_N",
+     "ok": true,
+     "open_edges": 0,
+     "pads": 2,
+     "present": true,
+     "unapproved_open_edges": 0
+    },
+    {
+     "approved_unrouted_edges": 0,
+     "net": "/08_BUTTONS_EXPANDERS/FRONT_RGB_B_N",
+     "ok": true,
+     "open_edges": 0,
+     "pads": 2,
+     "present": true,
+     "unapproved_open_edges": 0
+    }
+   ],
+   "note": "the three RGB replacement nets the charter names explicitly",
+   "ok": true,
+   "refs": [
+    "D13",
+    "R124",
+    "R125",
+    "R126"
+   ],
+   "scope": "RGB status indicator"
+  },
+  {
+   "dnp_refs": [],
+   "missing_refs": [],
+   "nets": [],
+   "note": "in-module radio and antenna on the ESP32-S3-WROOM-1",
+   "ok": true,
+   "refs": [
+    "U1"
+   ],
+   "scope": "Wi-Fi / Bluetooth / BLE"
+  },
+  {
+   "dnp_refs": [],
+   "missing_refs": [],
+   "nets": [
+    {
+     "approved_unrouted_edges": 0,
+     "net": "/CC1101_CS_N",
+     "ok": true,
+     "open_edges": 0,
+     "pads": 3,
+     "present": true,
+     "unapproved_open_edges": 0
+    },
+    {
+     "approved_unrouted_edges": 0,
+     "net": "/CC1101_GDO0",
+     "ok": true,
+     "open_edges": 0,
+     "pads": 2,
+     "present": true,
+     "unapproved_open_edges": 0
+    },
+    {
+     "approved_unrouted_edges": 0,
+     "net": "/SPI_B_SCK",
+     "ok": true,
+     "open_edges": 0,
+     "pads": 4,
+     "present": true,
+     "unapproved_open_edges": 0
+    },
+    {
+     "approved_unrouted_edges": 0,
+     "net": "/SPI_B_MOSI",
+     "ok": true,
+     "open_edges": 0,
+     "pads": 4,
+     "present": true,
+     "unapproved_open_edges": 0
+    },
+    {
+     "approved_unrouted_edges": 0,
+     "net": "/SPI_B_MISO",
+     "ok": true,
+     "open_edges": 0,
+     "pads": 4,
+     "present": true,
+     "unapproved_open_edges": 0
+    }
+   ],
+   "note": null,
+   "ok": true,
+   "refs": [
+    "U7"
+   ],
+   "scope": "433 MHz radio + internal 433 antenna"
+  },
+  {
+   "dnp_refs": [],
+   "missing_refs": [],
+   "nets": [
+    {
+     "approved_unrouted_edges": 0,
+     "net": "/SX1262_CS_N",
+     "ok": true,
+     "open_edges": 0,
+     "pads": 3,
+     "present": true,
+     "unapproved_open_edges": 0
+    },
+    {
+     "approved_unrouted_edges": 0,
+     "net": "/SX1262_BUSY",
+     "ok": true,
+     "open_edges": 0,
+     "pads": 2,
+     "present": true,
+     "unapproved_open_edges": 0
+    },
+    {
+     "approved_unrouted_edges": 0,
+     "net": "/SX1262_RST_N",
+     "ok": true,
+     "open_edges": 0,
+     "pads": 3,
+     "present": true,
+     "unapproved_open_edges": 0
+    },
+    {
+     "approved_unrouted_edges": 0,
+     "net": "/SX1262_RXEN",
+     "ok": true,
+     "open_edges": 0,
+     "pads": 3,
+     "present": true,
+     "unapproved_open_edges": 0
+    },
+    {
+     "approved_unrouted_edges": 0,
+     "net": "/SX1262_DIO1",
+     "ok": true,
+     "open_edges": 0,
+     "pads": 2,
+     "present": true,
+     "unapproved_open_edges": 0
+    },
+    {
+     "approved_unrouted_edges": 0,
+     "net": "/04_SPI_B_RADIOS_NFC/DIO2_TXEN",
+     "ok": true,
+     "open_edges": 0,
+     "pads": 2,
+     "present": true,
+     "unapproved_open_edges": 0
+    }
+   ],
+   "note": null,
+   "ok": true,
+   "refs": [
+    "U8"
+   ],
+   "scope": "915 MHz LoRa + one external 915 antenna"
+  },
+  {
+   "dnp_refs": [],
+   "missing_refs": [],
+   "nets": [
+    {
+     "approved_unrouted_edges": 0,
+     "net": "/NFC_SUPPLY",
+     "ok": true,
+     "open_edges": 0,
+     "pads": 6,
+     "present": true,
+     "unapproved_open_edges": 0
+    },
+    {
+     "approved_unrouted_edges": 0,
+     "net": "/NFC_IRQ",
+     "ok": true,
+     "open_edges": 0,
+     "pads": 2,
+     "present": true,
+     "unapproved_open_edges": 0
+    },
+    {
+     "approved_unrouted_edges": 0,
+     "net": "/NFC_CS_N",
+     "ok": true,
+     "open_edges": 0,
+     "pads": 3,
+     "present": true,
+     "unapproved_open_edges": 0
+    },
+    {
+     "approved_unrouted_edges": 0,
+     "net": "/04_SPI_B_RADIOS_NFC/NFC_ANT_A",
+     "ok": true,
+     "open_edges": 0,
+     "pads": 4,
+     "present": true,
+     "unapproved_open_edges": 0
+    },
+    {
+     "approved_unrouted_edges": 0,
+     "net": "/04_SPI_B_RADIOS_NFC/NFC_ANT_B",
+     "ok": true,
+     "open_edges": 0,
+     "pads": 4,
+     "present": true,
+     "unapproved_open_edges": 0
+    },
+    {
+     "approved_unrouted_edges": 0,
+     "net": "/04_SPI_B_RADIOS_NFC/NFC_VDD_RF",
+     "ok": true,
+     "open_edges": 0,
+     "pads": 4,
+     "present": true,
+     "unapproved_open_edges": 0
+    },
+    {
+     "approved_unrouted_edges": 0,
+     "net": "/04_SPI_B_RADIOS_NFC/NFC_VDD_AM",
+     "ok": true,
+     "open_edges": 0,
+     "pads": 3,
+     "present": true,
+     "unapproved_open_edges": 0
+    },
+    {
+     "approved_unrouted_edges": 0,
+     "net": "/04_SPI_B_RADIOS_NFC/NFC_VDD_A",
+     "ok": true,
+     "open_edges": 0,
+     "pads": 3,
+     "present": true,
+     "unapproved_open_edges": 0
+    },
+    {
+     "approved_unrouted_edges": 0,
+     "net": "/04_SPI_B_RADIOS_NFC/NFC_VDD_D",
+     "ok": true,
+     "open_edges": 0,
+     "pads": 3,
+     "present": true,
+     "unapproved_open_edges": 0
+    }
+   ],
+   "note": "U13, the optional NFC 5 V PA boost, is DNP by Demo scope and is deliberately NOT required here",
+   "ok": true,
+   "refs": [
+    "U9",
+    "Y1",
+    "L5",
+    "L6"
+   ],
+   "scope": "NFC operating from the 3.3 V path + internal NFC antenna"
+  },
+  {
+   "dnp_refs": [],
+   "missing_refs": [],
+   "nets": [
+    {
+     "approved_unrouted_edges": 0,
+     "net": "/IR_TX_GPIO16",
+     "ok": true,
+     "open_edges": 0,
+     "pads": 2,
+     "present": true,
+     "unapproved_open_edges": 0
+    },
+    {
+     "approved_unrouted_edges": 0,
+     "net": "/07_IR/IR_LED_A",
+     "ok": true,
+     "open_edges": 0,
+     "pads": 3,
+     "present": true,
+     "unapproved_open_edges": 0
+    },
+    {
+     "approved_unrouted_edges": 0,
+     "net": "/07_IR/IR_LED_K",
+     "ok": true,
+     "open_edges": 0,
+     "pads": 2,
+     "present": true,
+     "unapproved_open_edges": 0
+    },
+    {
+     "approved_unrouted_edges": 0,
+     "net": "/07_IR/IR_GATE",
+     "ok": true,
+     "open_edges": 0,
+     "pads": 3,
+     "present": true,
+     "unapproved_open_edges": 0
+    }
+   ],
+   "note": "D-752 CORRECTED THIS ROW.  It named `U17`, which is the display BACKLIGHT boost converter and has nothing to do with the IR path; `U17` exists and is fitted, so F1 passed while requiring none of the parts that actually emit.  The emitter is `D1` (TSAL6100), its low-side switch `Q1`, the gate series/pull-down pair `R22`/`R23` and the ballast `R24`.  `R123` is the DNP second ballast and is deliberately NOT required.",
+   "ok": true,
+   "refs": [
+    "D1",
+    "Q1",
+    "R22",
+    "R23",
+    "R24"
+   ],
+   "scope": "IR transmitter"
+  },
+  {
+   "dnp_refs": [],
+   "missing_refs": [],
+   "nets": [
+    {
+     "approved_unrouted_edges": 0,
+     "net": "/IR_RX_GPIO44",
+     "ok": true,
+     "open_edges": 0,
+     "pads": 3,
+     "present": true,
+     "unapproved_open_edges": 0
+    },
+    {
+     "approved_unrouted_edges": 0,
+     "net": "/07_IR/IR_RX_VS_LOCAL",
+     "ok": true,
+     "open_edges": 0,
+     "pads": 3,
+     "present": true,
+     "unapproved_open_edges": 0
+    }
+   ],
+   "note": null,
+   "ok": true,
+   "refs": [
+    "U6"
+   ],
+   "scope": "IR receiver"
+  },
+  {
+   "dnp_refs": [],
+   "missing_refs": [],
+   "nets": [
+    {
+     "approved_unrouted_edges": 0,
+     "net": "/I2S_BCLK",
+     "ok": true,
+     "open_edges": 0,
+     "pads": 3,
+     "present": true,
+     "unapproved_open_edges": 0
+    },
+    {
+     "approved_unrouted_edges": 0,
+     "net": "/I2S_LRCLK",
+     "ok": true,
+     "open_edges": 0,
+     "pads": 3,
+     "present": true,
+     "unapproved_open_edges": 0
+    },
+    {
+     "approved_unrouted_edges": 0,
+     "net": "/I2S_SPK_DOUT",
+     "ok": true,
+     "open_edges": 0,
+     "pads": 2,
+     "present": true,
+     "unapproved_open_edges": 0
+    },
+    {
+     "approved_unrouted_edges": 0,
+     "net": "/AMP_SD_MODE",
+     "ok": true,
+     "open_edges": 0,
+     "pads": 3,
+     "present": true,
+     "unapproved_open_edges": 0
+    },
+    {
+     "approved_unrouted_edges": 0,
+     "net": "/06_AUDIO/SPK_P",
+     "ok": true,
+     "open_edges": 0,
+     "pads": 2,
+     "present": true,
+     "unapproved_open_edges": 0
+    },
+    {
+     "approved_unrouted_edges": 0,
+     "net": "/06_AUDIO/SPK_N",
+     "ok": true,
+     "open_edges": 0,
+     "pads": 2,
+     "present": true,
+     "unapproved_open_edges": 0
+    }
+   ],
+   "note": "LS1 itself is OFF-BOARD on flying leads -- aqroot-Demo-OFF-BOARD.csv",
+   "ok": true,
+   "refs": [
+    "U5"
+   ],
+   "scope": "speaker"
+  },
+  {
+   "dnp_refs": [],
+   "missing_refs": [],
+   "nets": [
+    {
+     "approved_unrouted_edges": 0,
+     "net": "/I2S_MIC_DIN",
+     "ok": true,
+     "open_edges": 0,
+     "pads": 3,
+     "present": true,
+     "unapproved_open_edges": 0
+    },
+    {
+     "approved_unrouted_edges": 0,
+     "net": "/I2S_BCLK",
+     "ok": true,
+     "open_edges": 0,
+     "pads": 3,
+     "present": true,
+     "unapproved_open_edges": 0
+    },
+    {
+     "approved_unrouted_edges": 0,
+     "net": "/I2S_LRCLK",
+     "ok": true,
+     "open_edges": 0,
+     "pads": 3,
+     "present": true,
+     "unapproved_open_edges": 0
+    }
+   ],
+   "note": null,
+   "ok": true,
+   "refs": [
+    "MK1"
+   ],
+   "scope": "microphone"
+  },
+  {
+   "dnp_refs": [],
+   "missing_refs": [],
+   "nets": [
+    {
+     "approved_unrouted_edges": 0,
+     "net": "/I2C_SDA_INT",
+     "ok": true,
+     "open_edges": 0,
+     "pads": 9,
+     "present": true,
+     "unapproved_open_edges": 0
+    },
+    {
+     "approved_unrouted_edges": 0,
+     "net": "/I2C_SCL_INT",
+     "ok": true,
+     "open_edges": 0,
+     "pads": 9,
+     "present": true,
+     "unapproved_open_edges": 0
+    },
+    {
+     "approved_unrouted_edges": 0,
+     "net": "/05_I2C_DEVICES/BMI270_SDO_ADDR",
+     "ok": true,
+     "open_edges": 0,
+     "pads": 2,
+     "present": true,
+     "unapproved_open_edges": 0
+    }
+   ],
+   "note": null,
+   "ok": true,
+   "refs": [
+    "U4"
+   ],
+   "scope": "BMI270 6-axis IMU"
+  },
+  {
+   "dnp_refs": [],
+   "missing_refs": [],
+   "nets": [
+    {
+     "approved_unrouted_edges": 0,
+     "net": "/SD_CS_N",
+     "ok": true,
+     "open_edges": 0,
+     "pads": 3,
+     "present": true,
+     "unapproved_open_edges": 0
+    },
+    {
+     "approved_unrouted_edges": 0,
+     "net": "/SD_CARD_DETECT_N",
+     "ok": true,
+     "open_edges": 0,
+     "pads": 3,
+     "present": true,
+     "unapproved_open_edges": 0
+    },
+    {
+     "approved_unrouted_edges": 0,
+     "net": "/SPI_A_SCK",
+     "ok": true,
+     "open_edges": 0,
+     "pads": 3,
+     "present": true,
+     "unapproved_open_edges": 0
+    },
+    {
+     "approved_unrouted_edges": 0,
+     "net": "/SPI_A_MOSI",
+     "ok": true,
+     "open_edges": 0,
+     "pads": 3,
+     "present": true,
+     "unapproved_open_edges": 0
+    },
+    {
+     "approved_unrouted_edges": 0,
+     "net": "/SPI_A_MISO",
+     "ok": true,
+     "open_edges": 0,
+     "pads": 2,
+     "present": true,
+     "unapproved_open_edges": 0
+    }
+   ],
+   "note": null,
+   "ok": true,
+   "refs": [
+    "J2"
+   ],
+   "scope": "microSD"
+  },
+  {
+   "dnp_refs": [],
+   "missing_refs": [],
+   "nets": [
+    {
+     "approved_unrouted_edges": 0,
+     "net": "/01_POWER_TREE/USB_D_CONN_P",
+     "ok": true,
+     "open_edges": 0,
+     "pads": 3,
+     "present": true,
+     "unapproved_open_edges": 0
+    },
+    {
+     "approved_unrouted_edges": 0,
+     "net": "/01_POWER_TREE/USB_D_CONN_N",
+     "ok": true,
+     "open_edges": 0,
+     "pads": 3,
+     "present": true,
+     "unapproved_open_edges": 0
+    },
+    {
+     "approved_unrouted_edges": 0,
+     "net": "/01_POWER_TREE/USB_D_ESD_P",
+     "ok": true,
+     "open_edges": 0,
+     "pads": 2,
+     "present": true,
+     "unapproved_open_edges": 0
+    },
+    {
+     "approved_unrouted_edges": 0,
+     "net": "/01_POWER_TREE/USB_D_ESD_N",
+     "ok": true,
+     "open_edges": 0,
+     "pads": 2,
+     "present": true,
+     "unapproved_open_edges": 0
+    },
+    {
+     "approved_unrouted_edges": 0,
+     "net": "/USB_D_MCU_P",
+     "ok": true,
+     "open_edges": 0,
+     "pads": 2,
+     "present": true,
+     "unapproved_open_edges": 0
+    },
+    {
+     "approved_unrouted_edges": 0,
+     "net": "/USB_D_MCU_N",
+     "ok": true,
+     "open_edges": 0,
+     "pads": 2,
+     "present": true,
+     "unapproved_open_edges": 0
+    }
+   ],
+   "note": null,
+   "ok": true,
+   "refs": [
+    "J3",
+    "U10"
+   ],
+   "scope": "USB-C data / programming"
+  },
+  {
+   "dnp_refs": [],
+   "missing_refs": [],
+   "nets": [
+    {
+     "approved_unrouted_edges": 0,
+     "net": "/01_POWER_TREE/USB_VBUS_RAW",
+     "ok": true,
+     "open_edges": 0,
+     "pads": 7,
+     "present": true,
+     "unapproved_open_edges": 0
+    },
+    {
+     "approved_unrouted_edges": 0,
+     "net": "/01_POWER_TREE/USB_VBUS_CHG",
+     "ok": true,
+     "open_edges": 0,
+     "pads": 11,
+     "present": true,
+     "unapproved_open_edges": 0
+    },
+    {
+     "approved_unrouted_edges": 0,
+     "net": "/01_POWER_TREE/VBUS_PRESENT",
+     "ok": true,
+     "open_edges": 0,
+     "pads": 4,
+     "present": true,
+     "unapproved_open_edges": 0
+    }
+   ],
+   "note": null,
+   "ok": true,
+   "refs": [
+    "J3",
+    "R30",
+    "R31",
+    "R35"
+   ],
+   "scope": "USB-C charging"
+  },
+  {
+   "dnp_refs": [],
+   "missing_refs": [],
+   "nets": [
+    {
+     "approved_unrouted_edges": 0,
+     "net": "/01_POWER_TREE/BAT_PROTECTED_P",
+     "ok": true,
+     "open_edges": 0,
+     "pads": 10,
+     "present": true,
+     "unapproved_open_edges": 0
+    }
+   ],
+   "note": null,
+   "ok": true,
+   "refs": [
+    "J4",
+    "F1"
+   ],
+   "scope": "battery + connector"
+  },
+  {
+   "dnp_refs": [],
+   "missing_refs": [],
+   "nets": [
+    {
+     "approved_unrouted_edges": 0,
+     "net": "/01_POWER_TREE/BQ25185_SYS",
+     "ok": true,
+     "open_edges": 0,
+     "pads": 15,
+     "present": true,
+     "unapproved_open_edges": 0
+    },
+    {
+     "approved_unrouted_edges": 0,
+     "net": "/01_POWER_TREE/ISET",
+     "ok": true,
+     "open_edges": 0,
+     "pads": 2,
+     "present": true,
+     "unapproved_open_edges": 0
+    },
+    {
+     "approved_unrouted_edges": 0,
+     "net": "/01_POWER_TREE/ILIM_VSET",
+     "ok": true,
+     "open_edges": 0,
+     "pads": 2,
+     "present": true,
+     "unapproved_open_edges": 0
+    },
+    {
+     "approved_unrouted_edges": 0,
+     "net": "/BQ25185_STAT1",
+     "ok": true,
+     "open_edges": 0,
+     "pads": 4,
+     "present": true,
+     "unapproved_open_edges": 0
+    }
+   ],
+   "note": "/BQ25185_STAT2 is required too and is listed separately below, because its U11.3 edge is the one an owner decision covers",
+   "ok": true,
+   "refs": [
+    "U11",
+    "R36",
+    "R37",
+    "R38"
+   ],
+   "scope": "charger"
+  },
+  {
+   "dnp_refs": [],
+   "missing_refs": [],
+   "nets": [
+    {
+     "approved_unrouted_edges": 1,
+     "net": "/BQ25185_STAT2",
+     "ok": true,
+     "open_edges": 1,
+     "pads": 4,
+     "present": true,
+     "unapproved_open_edges": 0
+    }
+   ],
+   "note": "U11.3 ships unconnected; R128 and TP7 are retained so the net stays benchable, and THIS contract is what fails if they are ever depopulated",
+   "ok": true,
+   "refs": [
+    "R127",
+    "R128",
+    "TP6",
+    "TP7"
+   ],
+   "scope": "charger status observability (D-742 owner decision)"
+  },
+  {
+   "dnp_refs": [],
+   "missing_refs": [],
+   "nets": [
+    {
+     "approved_unrouted_edges": 0,
+     "net": "/01_POWER_TREE/BAT_RAW",
+     "ok": true,
+     "open_edges": 0,
+     "pads": 12,
+     "present": true,
+     "unapproved_open_edges": 0
+    },
+    {
+     "approved_unrouted_edges": 0,
+     "net": "/01_POWER_TREE/BAT_MID",
+     "ok": true,
+     "open_edges": 0,
+     "pads": 4,
+     "present": true,
+     "unapproved_open_edges": 0
+    },
+    {
+     "approved_unrouted_edges": 0,
+     "net": "/01_POWER_TREE/BAT_SENSE",
+     "ok": true,
+     "open_edges": 0,
+     "pads": 5,
+     "present": true,
+     "unapproved_open_edges": 0
+    },
+    {
+     "approved_unrouted_edges": 0,
+     "net": "/01_POWER_TREE/LTC4368_FAULT_N",
+     "ok": true,
+     "open_edges": 0,
+     "pads": 5,
+     "present": true,
+     "unapproved_open_edges": 0
+    }
+   ],
+   "note": null,
+   "ok": true,
+   "refs": [
+    "U18",
+    "Q2",
+    "Q3",
+    "R75",
+    "D9",
+    "U19"
+   ],
+   "scope": "required battery/power safety architecture (D-269, D-186)"
+  },
+  {
+   "dnp_refs": [],
+   "missing_refs": [],
+   "nets": [
+    {
+     "approved_unrouted_edges": 0,
+     "net": "/I2C_SDA_INT",
+     "ok": true,
+     "open_edges": 0,
+     "pads": 9,
+     "present": true,
+     "unapproved_open_edges": 0
+    },
+    {
+     "approved_unrouted_edges": 0,
+     "net": "/I2C_SCL_INT",
+     "ok": true,
+     "open_edges": 0,
+     "pads": 9,
+     "present": true,
+     "unapproved_open_edges": 0
+    }
+   ],
+   "note": null,
+   "ok": true,
+   "refs": [
+    "U14"
+   ],
+   "scope": "battery fuel gauge"
+  },
+  {
+   "dnp_refs": [],
+   "missing_refs": [],
+   "nets": [
+    {
+     "approved_unrouted_edges": 0,
+     "net": "+3V3",
+     "ok": true,
+     "open_edges": 0,
+     "pads": 80,
+     "present": true,
+     "unapproved_open_edges": 0
+    }
+   ],
+   "note": null,
+   "ok": true,
+   "refs": [
+    "U12",
+    "L1"
+   ],
+   "scope": "main +3V3 rail"
+  },
+  {
+   "dnp_refs": [],
+   "missing_refs": [],
+   "nets": [
+    {
+     "approved_unrouted_edges": 0,
+     "net": "/09_COMMUNITY_HEADER/EXT_SDA",
+     "ok": true,
+     "open_edges": 0,
+     "pads": 5,
+     "present": true,
+     "unapproved_open_edges": 0
+    },
+    {
+     "approved_unrouted_edges": 0,
+     "net": "/09_COMMUNITY_HEADER/EXT_SCL",
+     "ok": true,
+     "open_edges": 0,
+     "pads": 5,
+     "present": true,
+     "unapproved_open_edges": 0
+    }
+   ],
+   "note": null,
+   "ok": true,
+   "refs": [
+    "J8"
+   ],
+   "scope": "Qwiic / STEMMA QT connector"
+  },
+  {
+   "dnp_refs": [],
+   "missing_refs": [],
+   "nets": [],
+   "note": null,
+   "ok": true,
+   "refs": [
+    "J5"
+   ],
+   "scope": "Community Port: the physical 1x24 connector"
+  },
+  {
+   "dnp_refs": [],
+   "missing_refs": [],
+   "nets": [
+    {
+     "approved_unrouted_edges": 0,
+     "net": "/ACC_3V3_SW",
+     "ok": true,
+     "open_edges": 0,
+     "pads": 15,
+     "present": true,
+     "unapproved_open_edges": 0
+    },
+    {
+     "approved_unrouted_edges": 0,
+     "net": "/ACC_3V3_EN",
+     "ok": true,
+     "open_edges": 0,
+     "pads": 4,
+     "present": true,
+     "unapproved_open_edges": 0
+    },
+    {
+     "approved_unrouted_edges": 0,
+     "net": "/01_POWER_TREE/ACC_3V3_ILIM",
+     "ok": true,
+     "open_edges": 0,
+     "pads": 2,
+     "present": true,
+     "unapproved_open_edges": 0
+    }
+   ],
+   "note": null,
+   "ok": true,
+   "refs": [
+    "U20"
+   ],
+   "scope": "Community Port: 3.3 V accessory power"
+  },
+  {
+   "dnp_refs": [],
+   "missing_refs": [],
+   "nets": [
+    {
+     "approved_unrouted_edges": 0,
+     "net": "/ACC_5V_SW",
+     "ok": true,
+     "open_edges": 0,
+     "pads": 7,
+     "present": true,
+     "unapproved_open_edges": 0
+    },
+    {
+     "approved_unrouted_edges": 0,
+     "net": "/01_POWER_TREE/ACC_5V_RAW",
+     "ok": true,
+     "open_edges": 0,
+     "pads": 6,
+     "present": true,
+     "unapproved_open_edges": 0
+    },
+    {
+     "approved_unrouted_edges": 0,
+     "net": "/01_POWER_TREE/ACC_5V_ILIM",
+     "ok": true,
+     "open_edges": 0,
+     "pads": 2,
+     "present": true,
+     "unapproved_open_edges": 0
+    },
+    {
+     "approved_unrouted_edges": 0,
+     "net": "/01_POWER_TREE/ACC_5V_FB",
+     "ok": true,
+     "open_edges": 0,
+     "pads": 3,
+     "present": true,
+     "unapproved_open_edges": 0
+    }
+   ],
+   "note": null,
+   "ok": true,
+   "refs": [
+    "U21",
+    "U22",
+    "L4"
+   ],
+   "scope": "Community Port: ONE usable 5 V accessory output"
+  },
+  {
+   "dnp_refs": [],
+   "missing_refs": [],
+   "nets": [
+    {
+     "approved_unrouted_edges": 0,
+     "net": "/ACC_3V3_EN",
+     "ok": true,
+     "open_edges": 0,
+     "pads": 4,
+     "present": true,
+     "unapproved_open_edges": 0
+    }
+   ],
+   "note": null,
+   "ok": true,
+   "refs": [
+    "U20"
+   ],
+   "scope": "Community Port: software-switched 3.3 V accessory power"
+  },
+  {
+   "dnp_refs": [],
+   "missing_refs": [],
+   "nets": [
+    {
+     "approved_unrouted_edges": 0,
+     "net": "/ACC_5V_SW_EN",
+     "ok": true,
+     "open_edges": 0,
+     "pads": 4,
+     "present": true,
+     "unapproved_open_edges": 0
+    },
+    {
+     "approved_unrouted_edges": 0,
+     "net": "/ACC_5V_BOOST_EN",
+     "ok": true,
+     "open_edges": 0,
+     "pads": 4,
+     "present": true,
+     "unapproved_open_edges": 0
+    }
+   ],
+   "note": "ACC_5V_SW_EN connectivity is a named Demo requirement.  D-186 SPLIT the single ACC_5V_EN into two independent series disconnects -- ACC_5V_BOOST_EN to U21's EN and ACC_5V_SW_EN to U22's ON -- each with its OWN external pull-down, because SLVSFJ2B specifies a 500 kOhm smart pull-down inside the part AND STILL REQUIRES AN EXTERNAL ONE while the PCAL powers up high-impedance.  R102 and R131 are therefore MANDATORY, not a convenience, and this row is what fails if either is ever dropped.  On Demo the ACC_5V_SW_EN bit sits on U3 P03 rather than the U23 P04 of D-186, because U23 is removed by scope; the SPLIT and the pull-downs are what D-186 requires, not the bit.",
+   "ok": true,
+   "refs": [
+    "U21",
+    "U22",
+    "R102",
+    "R131",
+    "TP47"
+   ],
+   "scope": "Community Port: software-switched 5 V accessory power"
+  },
+  {
+   "dnp_refs": [],
+   "missing_refs": [],
+   "nets": [
+    {
+     "approved_unrouted_edges": 0,
+     "net": "/09_COMMUNITY_HEADER/EXT_SDA",
+     "ok": true,
+     "open_edges": 0,
+     "pads": 5,
+     "present": true,
+     "unapproved_open_edges": 0
+    },
+    {
+     "approved_unrouted_edges": 0,
+     "net": "/09_COMMUNITY_HEADER/EXT_SCL",
+     "ok": true,
+     "open_edges": 0,
+     "pads": 5,
+     "present": true,
+     "unapproved_open_edges": 0
+    },
+    {
+     "approved_unrouted_edges": 0,
+     "net": "/ACC_PWR_EN",
+     "ok": true,
+     "open_edges": 0,
+     "pads": 3,
+     "present": true,
+     "unapproved_open_edges": 0
+    }
+   ],
+   "note": null,
+   "ok": true,
+   "refs": [
+    "U16"
+   ],
+   "scope": "Community Port: SDA and SCL"
+  },
+  {
+   "dnp_refs": [],
+   "missing_refs": [],
+   "nets": [
+    {
+     "approved_unrouted_edges": 0,
+     "net": "/NATIVE_A",
+     "ok": true,
+     "open_edges": 0,
+     "pads": 2,
+     "present": true,
+     "unapproved_open_edges": 0
+    },
+    {
+     "approved_unrouted_edges": 0,
+     "net": "/NATIVE_B",
+     "ok": true,
+     "open_edges": 0,
+     "pads": 2,
+     "present": true,
+     "unapproved_open_edges": 0
+    },
+    {
+     "approved_unrouted_edges": 0,
+     "net": "/09_COMMUNITY_HEADER/NATIVE_A_HDR",
+     "ok": true,
+     "open_edges": 0,
+     "pads": 3,
+     "present": true,
+     "unapproved_open_edges": 0
+    },
+    {
+     "approved_unrouted_edges": 0,
+     "net": "/09_COMMUNITY_HEADER/NATIVE_B_HDR",
+     "ok": true,
+     "open_edges": 0,
+     "pads": 3,
+     "present": true,
+     "unapproved_open_edges": 0
+    }
+   ],
+   "note": null,
+   "ok": true,
+   "refs": [
+    "J5"
+   ],
+   "scope": "Community Port: Native GPIO A and B"
+  },
+  {
+   "dnp_refs": [],
+   "missing_refs": [],
+   "nets": [
+    {
+     "approved_unrouted_edges": 0,
+     "net": "/ACC_DETECT_N",
+     "ok": true,
+     "open_edges": 0,
+     "pads": 3,
+     "present": true,
+     "unapproved_open_edges": 0
+    },
+    {
+     "approved_unrouted_edges": 0,
+     "net": "/09_COMMUNITY_HEADER/ACC_DETECT_N_HDR",
+     "ok": true,
+     "open_edges": 0,
+     "pads": 4,
+     "present": true,
+     "unapproved_open_edges": 0
+    }
+   ],
+   "note": null,
+   "ok": true,
+   "refs": [
+    "J5"
+   ],
+   "scope": "Community Port: Accessory Detect"
+  },
+  {
+   "dnp_refs": [],
+   "missing_refs": [],
+   "nets": [
+    {
+     "approved_unrouted_edges": 0,
+     "net": "/XGPIO4",
+     "ok": true,
+     "open_edges": 0,
+     "pads": 2,
+     "present": true,
+     "unapproved_open_edges": 0
+    },
+    {
+     "approved_unrouted_edges": 0,
+     "net": "/XGPIO5",
+     "ok": true,
+     "open_edges": 0,
+     "pads": 2,
+     "present": true,
+     "unapproved_open_edges": 0
+    },
+    {
+     "approved_unrouted_edges": 0,
+     "net": "/09_COMMUNITY_HEADER/XGPIO4_HDR",
+     "ok": true,
+     "open_edges": 0,
+     "pads": 3,
+     "present": true,
+     "unapproved_open_edges": 0
+    },
+    {
+     "approved_unrouted_edges": 0,
+     "net": "/09_COMMUNITY_HEADER/XGPIO5_HDR",
+     "ok": true,
+     "open_edges": 0,
+     "pads": 3,
+     "present": true,
+     "unapproved_open_edges": 0
+    }
+   ],
+   "note": "Demo scope keeps XGPIO4 and XGPIO5 public and only those two",
+   "ok": true,
+   "refs": [
+    "U3"
+   ],
+   "scope": "Community Port: the two retained public XGPIO"
+  },
+  {
+   "dnp_refs": [],
+   "missing_refs": [],
+   "nets": [
+    {
+     "approved_unrouted_edges": 0,
+     "net": "/ACC_POWER_FAULT_N",
+     "ok": true,
+     "open_edges": 0,
+     "pads": 6,
+     "present": true,
+     "unapproved_open_edges": 0
+    }
+   ],
+   "note": null,
+   "ok": true,
+   "refs": [
+    "U3"
+   ],
+   "scope": "Community Port: accessory fault telemetry"
+  },
+  {
+   "dnp_refs": [],
+   "missing_refs": [],
+   "nets": [
+    {
+     "approved_unrouted_edges": 0,
+     "net": "/WAKE_INT_N",
+     "ok": true,
+     "open_edges": 0,
+     "pads": 5,
+     "present": true,
+     "unapproved_open_edges": 0
+    }
+   ],
+   "note": "U23 is REMOVED on Demo by scope; it is deliberately not required",
+   "ok": true,
+   "refs": [
+    "U2",
+    "U3"
+   ],
+   "scope": "GPIO expanders retained by the dependency analysis"
+  },
+  {
+   "dnp_refs": [],
+   "missing_refs": [],
+   "nets": [
+    {
+     "approved_unrouted_edges": 0,
+     "net": "/ACC_PWR_EN",
+     "ok": true,
+     "open_edges": 0,
+     "pads": 3,
+     "present": true,
+     "unapproved_open_edges": 0
+    },
+    {
+     "approved_unrouted_edges": 0,
+     "net": "/NFC_5V_EN",
+     "ok": true,
+     "open_edges": 0,
+     "pads": 3,
+     "present": true,
+     "unapproved_open_edges": 0
+    },
+    {
+     "approved_unrouted_edges": 0,
+     "net": "/WAKE_INT_N",
+     "ok": true,
+     "open_edges": 0,
+     "pads": 5,
+     "present": true,
+     "unapproved_open_edges": 0
+    }
+   ],
+   "note": "R17 100k holds the TCA4307 buffer DISABLED until firmware drives it; R14 100k holds NFC_5V_EN low, which matters precisely BECAUSE U13 is DNP -- nothing else defines that node; R3 10k is the mandatory wire-OR pull-up on WAKE_INT_N and is what makes the line deterministic before any register is written; R63 pulls the accessory side of D-187's isolation FET to ACC_3V3_SW and NOT to +3V3, or the contact stays live with the rail off.",
+   "ok": true,
+   "refs": [
+    "R17",
+    "R14",
+    "R3",
+    "R63"
+   ],
+   "scope": "safe states that hold while the expanders are high-impedance"
+  },
+  {
+   "dnp_refs": [],
+   "missing_refs": [],
+   "nets": [
+    {
+     "approved_unrouted_edges": 0,
+     "net": "/09_COMMUNITY_HEADER/WAKE_ATTN_N_HDR",
+     "ok": true,
+     "open_edges": 0,
+     "pads": 3,
+     "present": true,
+     "unapproved_open_edges": 0
+    },
+    {
+     "approved_unrouted_edges": 0,
+     "net": "/09_COMMUNITY_HEADER/WAKE_GATE_S",
+     "ok": true,
+     "open_edges": 0,
+     "pads": 3,
+     "present": true,
+     "unapproved_open_edges": 0
+    },
+    {
+     "approved_unrouted_edges": 0,
+     "net": "/WAKE_INT_N",
+     "ok": true,
+     "open_edges": 0,
+     "pads": 5,
+     "present": true,
+     "unapproved_open_edges": 0
+    }
+   ],
+   "note": "a hostile accessory must not be able to hold the shared wake line low and starve the internal buttons",
+   "ok": true,
+   "refs": [
+    "Q10",
+    "R63",
+    "R66"
+   ],
+   "scope": "accessory wake isolation (D-187, B-08)"
+  },
+  {
+   "dnp_refs": [],
+   "missing_refs": [],
+   "nets": [],
+   "note": "TPD4E1B06DRLR arrays, inherited as DNP and fitted by D-188.  D-188 named FOUR arrays for a ten-XGPIO port; Demo retains two XGPIO, so three arrays cover every remaining signal contact.  F4 derives that coverage from J5 rather than trusting this list",
+   "ok": true,
+   "refs": [
+    "D2",
+    "D4",
+    "D5"
+   ],
+   "scope": "Community Port ESD protection (D-188)"
+  }
+ ],
+ "schema": 1,
+ "source": "docs/full-beta-v2/AQROOT_DEMO_SCOPE.md"
+}

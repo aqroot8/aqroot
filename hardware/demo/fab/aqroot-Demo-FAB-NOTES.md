@@ -142,8 +142,10 @@ The authoritative detachable-harness record is `aqroot-Demo-BATTERY-HARNESS.json
 - Battery side: Adafruit 328 factory lead **26 AWG**; Micro-Lock plug `2137192021`, male terminal `2137201000`.
 - Controlling mated-harness rating: **2.6 A at AWG26**.
 - Polarity: cavity 1 = **BAT+ / red / J4.1**; cavity 2 = **GND / black / J4.2**.
+- J4 is drilled **0.75 mm nominal**. Supplier/assembler must guarantee a **>=0.70 mm finished plated-hole diameter** for both J4 barrels; verify one exact 217501 AWG26 tinned lead passes freely before soldering all five boards -- no force and no strand shaving.
 - Solder wires through J4 from B.Cu; front conductive profile **<=0.50 mm**, then **<=0.10 mm polyimide** before display fit. Follow `THT_LEAD_TRIM.md` J4-T1..T4.
-- First article: verify conductor/hole fit, strain relief, DMM polarity, terminal retention/pull acceptance, and worst-case load temperature rise per the packaged harness record.
+- Rear strain relief: **DOWSIL 3145 RTV MIL-A-46146 Adhesive/Sealant, gray**. After joint/profile inspection and cleaning, apply the frozen adhesive fillet to the insulated pigtail, preserve the >=35 mm housing free-wire/service-loop rule, and never unplug by pulling wires.
+- First article: verify finished-hole/conductor fit, cured strain relief, DMM polarity, terminal retention/pull acceptance, housing-only disconnect, enclosure route, and worst-case load temperature rise per the packaged harness record.
 
 ## Stackup, finish and required process -- NOT SUBSTITUTABLE
 
@@ -167,10 +169,10 @@ Everything below is read out of the board file's own stackup block and is also c
 
 - **6 copper layers.**  Finished outer copper **0.0350 mm**; **inner copper 0.0152 mm on all 4 inner layers.**
 - **THE INNER COPPER THICKNESS IS LOAD-BEARING, NOT INCIDENTAL.**  `audit_rail_ampacity` sizes every power rail on this board against **0.0152 mm** of inner foil.  A build substituted to a heavier or lighter inner foil INVALIDATES that model and the ampacity audit must be re-run before the order is placed.
-- **Total declared stack 1.5744 mm.**  The `J4` lead-trim requirement in `assembly/THT_LEAD_TRIM.md` is computed from this figure and NOT from a nominal 1.6 mm; a different finished thickness changes it.
+- **Total declared stack 1.5744 mm; required finished thickness 1.5744 +/- 0.10 mm.**  Do not substitute a house-default thickness without written engineering approval.  `J4` is now a manual pigtail land: its front conductive profile is MEASURED <=0.50 mm after soldering, not inferred from board thickness.  Finished thickness still affects enclosure stack and PTH process capability.
 - **Surface finish: ENIG -- not substitutable.**  HASL coplanarity is incompatible with the fine-pitch lands on this board and with the 0.000 mm solder-mask expansion it is drawn with.
 - **Solder-mask expansion is 0.000 mm board-wide** -- a pad's mask aperture IS its copper.  Do not apply a house expansion.
-- **BARE-BOARD ELECTRICAL TEST (flying probe or fixture) IS REQUIRED ON EVERY PANEL.**  This is a 6-layer board with resin-filled, cap-plated via-in-pad under fine-pitch parts: an open in a filled barrel is not findable at assembly and not repairable after it.
+- **100% BARE-BOARD ELECTRICAL TEST (flying probe or fixture) IS REQUIRED ON EVERY DELIVERED PCB CIRCUIT, against the final accepted netlist; panel-level sampling is not sufficient.**  This is a 6-layer board with resin-filled, cap-plated via-in-pad under fine-pitch parts: an open in a filled barrel is not findable at assembly and not repairable after it.  Provide traceable test confirmation with the lot.
 
 ## Component placement (CPL) convention -- READ BEFORE PROGRAMMING THE PLACER
 

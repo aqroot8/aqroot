@@ -1,17 +1,18 @@
 # AQROOT Demo — FABRICATION HANDOFF
 
 
-> # **STATUS: FROZEN FOR ASTRA/FABLE RE-REVIEW — BOARD AUTHORITY `cef458b9` (D-780/D-781, 2026-09-19).**
+> # **STATUS: D-782 CORRECTION CANDIDATE — EXTERNAL_REVIEW_HOLD, BOARD AUTHORITY `cef458b9` (2026-09-19).**
 >
-> **D-780/D-781 are the current correction cycle.** D-780 replaces Q11's AO3422
-> proof with Vishay `SQ2364EES-T1_BE3`: 60 V and a published 0.245 ohm MAX
-> conduction point at VGS=1.5 V / ID=2 A, below AQROOT's held VGS=2.396 V.
-> `Q11-TEMP-01` explicitly qualifies the first five at 0/25/40 C because that
-> low-gate EC row is a 25 C point. D-781 removes the D-777 product restriction:
-> J4 becomes a manual 26-AWG pigtail land into a frozen 2.6 A Micro-Lock Plus
-> harness, restoring RF/NFC/IR concurrency with both published accessory rails.
-> Protected battery copper is unchanged. This package is frozen for independent
-> re-review; it is **not an order authorization until that review is accepted**.
+> **D-782 closes the Round-4 executable counterexamples without changing PCB copper or geometry.**
+> Accessory state is reconciled from confirmed PCAL output latches; failed/partial enables enter
+> pending-safe recovery; runtime fail-closed handling clears only accessory controls instead of
+> asserting display/touch/LoRa resets; failed warm-reset safety initialization is retried after bus
+> recovery. MAX17048 HIBRT=0 is written, read back and reverified before VCELL can authorize load.
+> F8 binds capacitor voltage evidence to exact manufacturer/MPN and refuses unbounded fitted nodes.
+> The release package now freezes the J4 strain-relief/finished-hole process, 100% bare-board E-test
+> on every delivered circuit, centered release-identified assembly drawings, and the D-782 backlight
+> 2 ms full-duty startup prime. **No order is authorized until Astra/Fable independently recheck the
+> final clean/pushed D-782 target and the named manufacturer/CAM conditions are accepted.**
 >
 > **This banner supersedes every status block below it.**  D-765's banner, which
 > stood here unchanged through D-766…D-770, is retained as history.
@@ -206,7 +207,7 @@
 > stackup, finish or test requirement** in anything a human reads, and
 > **nothing required a bare-board electrical test**: ampacity is sized on
 > **0.0152 mm** inner foil and `J4`'s trim on the **1.5744 mm** declared stack,
-> both now named as not substitutable, with **E-test required on every panel**.
+> both now named as not substitutable, with **100% bare-board E-test required on every delivered PCB circuit; panel-level sampling is not sufficient**.
 >
 >     connectivity     174 retained, 173 connected, 1 owner-approved open
 >                      (U11.3), 0 UNAPPROVED open edges, ratsnest 17

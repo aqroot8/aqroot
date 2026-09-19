@@ -29,7 +29,7 @@ something a backer was promised.
 
     python3 checks/demo_feature_contract.py [-o OUT.json]
 """
-import argparse, json, math, re, sys
+import argparse, hashlib, json, math, re, sys
 from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
@@ -42,6 +42,8 @@ import audit_rail_ampacity as ara                            # noqa: E402
 DRU = rl.PROJECT / "aqroot-Beta-v2.kicad_dru"
 POWER_POLICY = ROOT / "Firmware/src/hw/aqroot_accessory_power_policy.h"
 FIRST_FIVE_ASSEMBLY = ROOT / "docs/full-beta-v2/assembly/FIRST_FIVE_ASSEMBLY_PLAN.md"
+DEMO_PERIPHERALS = ROOT / "Firmware/src/hw/aqroot_demo_peripherals.h"
+TPS61169_PRIMARY = ROOT / "hardware/demo/kicad/aqroot-demo/vendor/TI/tps61169.pdf"
 
 # --------------------------------------------------------------------------
 # `AQROOT_DEMO_SCOPE.md` -> board.  `refs` must be FITTED; `nets` must be whole.
@@ -1156,6 +1158,35 @@ CAP_PURCHASED = dict(
     bom="hardware/demo/fab/aqroot-Demo-BOM-assembly.csv",
     live_cache="hardware/demo/manufacturing/evidence/jlc-live",
 )
+# Round-4 R4-05: RF/crystal capacitors need explicit differential-voltage
+# bounds, not a silent "unknown DC node" exemption.  For the ST25R3916 path,
+# use the part's 350 mArms internal VDD_RF-regulator current limit as a
+# deliberately conservative per-arm ceiling.  At 13.56 MHz: the parallel
+# C69+C73 (and C70+C74) shunt is 1.6 nF -> 3.63 Vpk at 350 mArms; each 300 pF
+# series match C71/C72 is 19.37 Vpk.  Adding the EMC-node bound, 1.1-ohm
+# damping drop, and the <=3 Vpp RFI operating limit bounds the 27 pF receive
+# series parts below 25.5 Vpk.  All are fitted 50 V C0G.  First-article NFC
+# tuning must still scope RFI <=3 Vpp and record the differential waveforms.
+CAP_NON_DC_PROOFS = {
+    **{ref: dict(absolute_V=4.0,
+                 basis="ST25R3916 <=350 mArms regulated TX ceiling; 1.6 nF EMC shunt at 13.56 MHz gives <=3.63 Vpk; first-article scope")
+       for ref in ("C69", "C70", "C73", "C74")},
+    **{ref: dict(absolute_V=20.0,
+                 basis="ST25R3916 <=350 mArms regulated TX ceiling through 300 pF at 13.56 MHz gives <=19.37 Vpk; first-article scope")
+       for ref in ("C71", "C72")},
+    **{ref: dict(absolute_V=26.0,
+                 basis="receive-series bound: <=4.0 Vpk EMC node + <=19.37 Vpk 300 pF match + <=0.55 Vpk 1.1R damping + <=1.5 Vpk RFI (3 Vpp operating max); first-article scope")
+       for ref in ("C75", "C77")},
+    **{ref: dict(absolute_V=1.5,
+                 basis="ST25R3916 RFI operating amplitude <=3 Vpp = 1.5 Vpk; first-article scope")
+       for ref in ("C76", "C78")},
+    "C79": dict(absolute_V=3.6,
+                 basis="27.12 MHz crystal load on ST25R3916 3.3 V domain"),
+    "C80": dict(absolute_V=3.6,
+                 basis="27.12 MHz crystal load on ST25R3916 3.3 V domain"),
+}
+
+
 CAP_DERATE_EXCEPTIONS = {
     "C65": "boost output capacitance, measured against D-773's DERIVED "
            "worst-case setpoint of 5.165 V.  D-186 sizes this rail at 44 uF "
@@ -1222,14 +1253,23 @@ def purchased_capacitor_ratings(spec=None):
                 rating, how = float(m.group(1)), "record description"
         if rating is None:
             continue
-        out[ref] = dict(lcsc=code, mpn=(row.get("MPN") or "").strip(),
-                        rating_V=rating, read_from=how, record=name,
-                        describe=rec.get("describe") or "")
+        bom_mpn = (row.get("MPN") or "").strip()
+        bom_mfr = (row.get("Manufacturer") or "").strip()
+        record_mpn = (rec.get("componentModelEn") or "").strip()
+        record_mfr = (rec.get("componentBrandEn") or "").strip()
+        out[ref] = dict(
+            lcsc=code, mpn=bom_mpn, manufacturer=bom_mfr,
+            record_mpn=record_mpn, record_manufacturer=record_mfr,
+            record_package=(rec.get("componentSpecificationEn") or "").strip(),
+            identity_matches=bool(bom_mpn and record_mpn and
+                                  bom_mpn.casefold() == record_mpn.casefold()),
+            rating_V=rating, read_from=how, record=name,
+            describe=rec.get("describe") or "")
     return out
 
 
 def judge_capacitor_derating(board, dnp_refs, net_max_dc, exceptions=None,
-                             purchased=None):
+                             purchased=None, non_dc_proofs=None):
     """D-774, rebuilt at D-778.  The derating rule over the parts this board
     actually BUYS, and the specification a re-source would read.
 
@@ -1245,7 +1285,8 @@ def judge_capacitor_derating(board, dnp_refs, net_max_dc, exceptions=None,
     """
     exceptions = CAP_DERATE_EXCEPTIONS if exceptions is None else exceptions
     purchased = purchased_capacitor_ratings() if purchased is None else purchased
-    rows, no_record, understated = [], [], []
+    non_dc_proofs = CAP_NON_DC_PROOFS if non_dc_proofs is None else non_dc_proofs
+    rows, no_record, identity_mismatch, understated = [], [], [], []
     fails_absolute, under_derate, unestablished = [], [], []
     spec_fails_absolute, spec_overstates = [], []
     rx = re.compile(r"(\d+(?:\.\d+)?)\s*V\b", re.I)
@@ -1262,6 +1303,18 @@ def judge_capacitor_derating(board, dnp_refs, net_max_dc, exceptions=None,
             rows.append(dict(ref=ref, value=value,
                              no_purchased_record=True))
             continue
+        if ((buy.get("mpn") or "").casefold() !=
+                (buy.get("record_mpn") or "").casefold()):
+            identity_mismatch.append([
+                ref, buy.get("lcsc"), buy.get("mpn"), buy.get("record_mpn"),
+                buy.get("manufacturer"), buy.get("record_manufacturer")])
+            rows.append(dict(
+                ref=ref, value=value, lcsc=buy.get("lcsc"), mpn=buy.get("mpn"),
+                record_mpn=buy.get("record_mpn"),
+                manufacturer=buy.get("manufacturer"),
+                record_manufacturer=buy.get("record_manufacturer"),
+                purchased_record_identity_mismatch=True))
+            continue
         rating = buy["rating_V"]
         op = ab = 0.0
         unknown = []
@@ -1276,10 +1329,25 @@ def judge_capacitor_derating(board, dnp_refs, net_max_dc, exceptions=None,
             else:
                 unknown.append(key)
         if unknown and op == 0.0:
-            unestablished.append([ref, sorted(set(unknown))])
-            rows.append(dict(ref=ref, value=value, rating_V=rating,
-                             mpn=buy["mpn"], lcsc=buy["lcsc"],
-                             nodes_not_established=sorted(set(unknown))))
+            proof = non_dc_proofs.get(ref)
+            if not proof:
+                unestablished.append([ref, sorted(set(unknown))])
+                rows.append(dict(ref=ref, value=value, rating_V=rating,
+                                 mpn=buy["mpn"], lcsc=buy["lcsc"],
+                                 nodes_not_established=sorted(set(unknown))))
+                continue
+            ab = float(proof["absolute_V"])
+            ok_abs = rating >= ab
+            if not ok_abs:
+                fails_absolute.append([ref, buy["mpn"], rating, ab])
+            rows.append(dict(
+                ref=ref, value=value, mpn=buy["mpn"], lcsc=buy["lcsc"],
+                rating_V=rating, rating_read_from=buy["read_from"],
+                rating_record=buy["record"], specified_V=spec_V,
+                non_dc_nodes=sorted(set(unknown)), non_dc_absolute_V=ab,
+                non_dc_basis=proof["basis"], survives_absolute=ok_abs,
+                meets_derating=None, specification_survives_absolute=True,
+                excused_by_a_named_exception=False))
             continue
         ok_abs = rating >= ab
         ok_der = rating >= CAP_DERATE_X * op
@@ -1314,6 +1382,7 @@ def judge_capacitor_derating(board, dnp_refs, net_max_dc, exceptions=None,
         fitted_capacitors=fitted,
         with_a_purchased_voltage_rating=fitted - len(no_record),
         without_a_purchased_record=sorted(no_record),
+        purchased_record_identity_mismatches=sorted(identity_mismatch),
         with_a_rating_in_the_value_string=sum(
             1 for r in rows if r.get("specified_V") is not None),
         derating_x=CAP_DERATE_X,
@@ -1325,20 +1394,18 @@ def judge_capacitor_derating(board, dnp_refs, net_max_dc, exceptions=None,
         specification_overstates_the_purchased_part=sorted(spec_overstates),
         specification_understates_the_purchased_part=sorted(understated),
         on_a_node_with_no_established_voltage=sorted(unestablished),
-        method="screen_bom_sourcing.NET_MAX_DC, the SAME table net_gate uses, "
-               "read live rather than transcribed.  RATINGS COME FROM THE PART "
-               "THE BOM BUYS -- reference -> LCSC -> the committed "
-               "evidence/jlc-live record, replayed not re-queried -- and the "
-               "VALUE STRING is judged separately as the specification a "
-               "re-source would read.  A capacitor on a node the table has no "
-               "entry for is REPORTED, not refused: those that land there are "
-               "the NFC matching and crystal network, C0G TUNE parts on a "
-               "13.56 MHz node whose governing rating is RF PEAK and not a DC "
-               "rail voltage, and inventing a DC figure for them would be the "
-               "guess this table exists to avoid.  `net_gate` still REFUSES a "
-               "new part grafted onto an unestablished node, which is the "
-               "right answer for a part nobody has chosen yet")
+        method="screen_bom_sourcing.NET_MAX_DC supplies established DC bounds. "
+               "RATINGS COME FROM THE EXACT PART THE BOM BUYS -- reference -> "
+               "LCSC -> committed distributor record -- and the BOM MPN must "
+               "match that record before its voltage rating is usable.  A "
+               "fitted capacitor on an otherwise unestablished RF/crystal node "
+               "is now REFUSED unless CAP_NON_DC_PROOFS gives an explicit "
+               "differential/peak bound; the NFC bounds derive from the "
+               "ST25R3916 350 mArms regulated-TX ceiling and 3 Vpp RFI limit "
+               "and remain subject to first-article waveform verification.")
     d["every_fitted_capacitor_has_a_purchased_voltage_rating"] = not no_record
+    d["every_fitted_capacitor_has_a_dc_or_named_non_dc_voltage_bound"] = not unestablished
+    d["every_purchased_rating_record_matches_the_bom_mpn"] = not identity_mismatch
     d["every_fitted_capacitor_survives_its_nodes_absolute_maximum"] = \
         not fails_absolute
     d["every_shortfall_against_the_derating_rule_is_a_named_exception"] = \
@@ -1350,6 +1417,8 @@ def judge_capacitor_derating(board, dnp_refs, net_max_dc, exceptions=None,
         k for k in exceptions
         if any(r["ref"] == k and r.get("meets_derating") for r in rows)) == []
     d["ok"] = (d["every_fitted_capacitor_has_a_purchased_voltage_rating"]
+               and d["every_fitted_capacitor_has_a_dc_or_named_non_dc_voltage_bound"]
+               and d["every_purchased_rating_record_matches_the_bom_mpn"]
                and d["every_fitted_capacitor_survives_its_nodes_absolute_maximum"]
                and d["every_shortfall_against_the_derating_rule_is_a_named_exception"]
                and d["every_value_string_rating_survives_its_nodes_absolute_maximum"]
@@ -2080,6 +2149,14 @@ def main():
     q11_temp_acceptance_explicit = all(token in first_five_text for token in (
         "Q11-TEMP-01", "0 °C", "25 °C", "40 °C",
         "open-LED latch", "failure blocks that unit"))
+    periph_text = (DEMO_PERIPHERALS.read_text(encoding="utf-8", errors="replace")
+                   if DEMO_PERIPHERALS.exists() else "")
+    backlight_startup_prime_explicit = all(token in periph_text for token in (
+        "ledcWrite(channel, 255);", "delay(2);",
+        "for (int duty = 5; duty <= 255; duty += 5)"))
+    tps61169_primary_archived = (TPS61169_PRIMARY.exists() and
+        hashlib.sha256(TPS61169_PRIMARY.read_bytes()).hexdigest() ==
+        "7d0b8ace2459a9fd22fe7145086cbad4ccb3bb43219247459313fcba75230151")
 
     def _fet_control(name, mutate):
         v2 = dict(values)
@@ -2750,7 +2827,21 @@ def main():
                      purchased=dict(
                          purchased_capacitor_ratings(),
                          C29=dict(purchased_capacitor_ratings()["C29"],
-                                  rating_V=6.3)))))
+                                  rating_V=6.3))),
+        # Round-4 Astra R4-05: changing ONLY the BOM MPN while leaving its
+        # LCSC code/value behind must not inherit the old record's rating.
+        _cap_control("f8i_refuses_an_mpn_only_identity_downgrade",
+                     net_max_dc=sbs.NET_MAX_DC,
+                     purchased=dict(
+                         purchased_capacitor_ratings(),
+                         C44=dict(purchased_capacitor_ratings()["C44"],
+                                  mpn="CL21B105KAFNNNE"))),
+        # A fitted RF/unknown node is accepted only through the explicit
+        # non-DC proof registry.  Remove those proofs and the frozen board must
+        # itself fail instead of merely reporting the omission.
+        _cap_control("f8j_refuses_unbounded_non_dc_capacitor_nodes",
+                     net_max_dc=sbs.NET_MAX_DC,
+                     non_dc_proofs={})))
 
     nc = ledger["approved_demo_nc"]
     checks = {
@@ -2777,7 +2868,9 @@ def main():
         "F5_backlight_disconnect_control_is_independent": dict(
             ok=(bl_ok and all(bl_controls.values())
                 and fet_ok and all(fet_controls.values())
-                and q11_temp_acceptance_explicit),
+                and q11_temp_acceptance_explicit
+            and backlight_startup_prime_explicit
+            and tps61169_primary_archived),
             method="TI SNVSA40B 6.3.5 makes CTRL an ANALOG dimming input: the "
                    "converter keeps switching through every PWM low phase, so "
                    "Q11's gate may not share it.  The D-752 hold network is "

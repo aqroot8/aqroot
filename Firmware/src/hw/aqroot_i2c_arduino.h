@@ -58,6 +58,11 @@ class ArduinoI2cBus : public I2cBus {
     return Wire.begin(AQROOT_I2C_SDA_GPIO, AQROOT_I2C_SCL_GPIO, hz);
   }
 
+  bool reopen(uint32_t hz = AQROOT_I2C_BRINGUP_HZ) {
+    Wire.end();
+    return begin(hz);
+  }
+
   void setClock(uint32_t hz) { Wire.setClock(hz); }
 
   bool write(uint8_t address, const uint8_t *data, size_t length) override {

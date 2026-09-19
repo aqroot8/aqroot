@@ -36,7 +36,7 @@ two solder joints lie inside `DISPLAY_SHADOW` beneath the panel.
 |---|---|
 | Board-side conductors | **26 AWG** red/black pre-crimps: Molex `2175012101` / `2175011101` |
 | Detachable housing | Molex Micro-Lock Plus 2.0 `5055700201`, 2 circuits |
-| Board land | existing `J4.1/J4.2` 0.75 mm PTH pair; **no board connector is fitted** |
+| Board land | existing `J4.1/J4.2` 0.75 mm nominal PTH pair; **no board connector is fitted**. Supplier/assembler acceptance requires **≥0.70 mm finished plated-hole diameter** and one exact pre-crimp lead must pass freely before all five units. |
 | Polarity | cavity 1 = BAT+ / red / `J4.1`; cavity 2 = GND / black / `J4.2` |
 | Where solder emerges | `J4.1` and `J4.2`, both inside `DISPLAY_SHADOW` |
 | Display-shadow allowance | **0.80 mm** above `F.Cu` |
@@ -53,8 +53,7 @@ two solder joints lie inside `DISPLAY_SHADOW` beneath the panel.
 > Solder, trim, clean, then inspect — **in that order**.  Do not pre-cut to a
 > guessed insertion depth.  After cutting, inspect both barrels and fillets; if
 > cutting disturbed a joint, rework/reflow it and re-measure the ≤0.50 mm profile.
-> Provide strain relief on the rear pigtail so mating/unmating force is not taken
-> by the two soldered conductors.
+> After the joint/profile inspection and cleaning, form the relaxed rear service loop and apply **DOWSIL 3145 RTV MIL-A-46146 gray** to the **insulated** red/black pigtails over clean B.Cu solder mask, beginning beyond the inspected solder fillets. Bond both insulated leads to the PCB for at least **8 mm** and preserve **≥35 mm free wire from the Micro-Lock housing before bundling**. Cure at least 24 h before enclosure retention/closure checks. Do not allow cured adhesive, wire, or the hard solder-wick transition to bear on the LiPo pouch or coax. Disconnect by releasing/gripping the two connector housings — **never pull the wires**.
 
 ### REQUIREMENT J4-T3
 
@@ -67,9 +66,7 @@ two solder joints lie inside `DISPLAY_SHADOW` beneath the panel.
 ### REQUIREMENT J4-T4
 
 > Build and inspect the pigtail exactly to `BATTERY_HARNESS.json`: verify cavity
-> polarity by DMM before battery connection, verify conductor/hole fit on the
-> first article, perform the specified terminal pull/retention check and strain-
-> relief inspection, and record the first-article worst-case thermal-rise result.
+> polarity by DMM before battery connection; verify an exact `217501` 26-AWG tinned lead passes a **≥0.70 mm finished J4 hole** freely with no strand shaving before soldering all five boards; perform the specified terminal pull/retention check and the frozen DOWSIL-3145 strain-relief/service-loop inspection; verify the Micro-Lock can be disconnected by the housings without loading the PCB joints; and record the first-article worst-case thermal-rise result.
 
 ### Why a manual pigtail is used
 
