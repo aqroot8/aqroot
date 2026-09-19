@@ -1,7 +1,7 @@
 # AQROOT Demo — FABRICATION HANDOFF
 
 
-> # **STATUS: READY FOR FABRICATION — BOARD AUTHORITY `8c548ece` (through D-775, 2026-09-19).**
+> # **STATUS: READY FOR FABRICATION — BOARD AUTHORITY `8c548ece` (through D-776, 2026-09-19).**
 >
 > **This banner supersedes every status block below it.**  D-765's banner, which
 > stood here unchanged through D-766…D-770, is retained as history.
@@ -103,7 +103,19 @@
 
 ---
 
-## ENGINEERING HANDOFF — D-775, board `8c548ece`, 2026-09-19
+> **D-776 corrected a false as-built instruction and made the class computable.**
+> The generated map told firmware to infer charging state from *VBUS presence*,
+> and `/01_POWER_TREE/VBUS_PRESENT` — a fitted 150k/220k divider with an RC
+> filter — reaches `TP31` and nothing else.  Two more of the same shape were
+> undeclared: the `LTC4368`'s latching FAULT output and the `TPS63020`'s POWER
+> GOOD.  The list of probed-but-unreadable nets is now **derived off the copper**
+> and the generator refuses to emit on a gap in either direction.  **Firmware
+> must display state-of-charge, not a charging state.**  The board fix — moving
+> `R104`/`R105`/`C68`/`TP31` beside `U3`, zero BOM change — is measured and is a
+> **REV-B** item; no promised capability is missing.  No copper moved.
+>
+
+## ENGINEERING HANDOFF — D-776, board `8c548ece`, 2026-09-19
 
 ### Final board status
 
@@ -125,6 +137,7 @@ D-775**, and the fabrication package remains the D-773 package bound to board
 | **D-773** | the 5 V setpoint was **4.95 V here and 4.99 V there, both from a `VREF` TI does not publish** | setpoint **derived** (4.742 / 4.950 / 5.165 V); `R101` → **2.37 kΩ**, the E96 value nearest the centre of its computed legal window |
 | **D-774** | the **2× capacitor derating rule had never once been run** against a fitted part | `F8`; five named, reasoned exceptions; two node declarations corrected |
 | **D-775** | D-098 normal 400/300 mA concurrency was still an ideal-source calculation and firmware had one 3.50 V floor | live-board/path-bound solver + **3.50 V single / 3.80 V dual** firmware policy; fail-closed/5V-first shedding host tests and F6 controls |
+| **D-776** | the as-built limits told firmware to infer charging state from **VBUS presence**, and no VBUS-present signal reaches firmware; two more unreadable signals were undeclared | the probed-but-unreadable list is **computed off the copper** (28 nets, 7 signals) and the generator refuses to emit on a gap in either direction; four new controls; board fix measured and deferred to Rev-B |
 
 ### Connectivity
 

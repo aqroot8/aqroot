@@ -51,11 +51,31 @@
 > all accessory power sheds.  The serial console's `3` and `5` keys are refused
 > with the floor they missed printed beside the reading.
 >
-> **STAT2 IS NOT AVAILABLE ON THIS REVISION** (owner-approved, `U11.3` NC):
+> ### WHAT THIS BOARD CANNOT TELL YOU — D-776
+>
+> The generated map's **PROBED BUT NOT READABLE** block is **computed off the
+> copper**, not remembered: every net that touches a test point and touches no
+> pad of `U1`, `U2` or `U3` is enumerated there, and the generator **refuses to
+> emit** if one of them is undeclared or if a declaration names a net that has
+> since been wired.  Read it before you write anything that reports hardware
+> state.  The three that will surprise you:
+>
+> * `AQROOT_VBUS_PRESENT_UNREADABLE` — **there is no USB-present signal.**  The
+>   `R104`/`R105` divider and `C68` are fitted and correct and the node reaches
+>   `TP31` and nothing else.  The native USB CDC link detects a USB **host**, not
+>   a charger; a dumb 5 V supply charges this board invisibly.
+> * `AQROOT_BREAKER_FAULT_UNREADABLE` — the `LTC4368`'s latching FAULT output
+>   reaches `TP18` and `Q9`'s gate only.  **You cannot observe that the battery
+>   breaker tripped.**
+> * `AQROOT_MAIN_RAIL_PG_UNREADABLE` — the `TPS63020`'s POWER GOOD reaches `TP8`
+>   only.
+>
+> **STAT2 IS NOT AVAILABLE ON THIS REVISION** either (owner-approved, `U11.3` NC):
 > `STAT1` LOW directly observes a charger fault, `STAT1` HIGH is non-faulted but
 > **ambiguous between charging and charge-complete/sleep/disabled**, and fault
-> SUBTYPE is unavailable.  Anything the firmware says about charging-versus-
-> complete state must be labelled **inference**.
+> SUBTYPE is unavailable.  Combined with the missing VBUS signal that leaves the
+> MAX17048 voltage/SOC trend as the only input, which is weak and slow — so **do
+> not display a charging state on this revision; display state-of-charge.**
 
 
 Full working firmware stack for the AQROOT handheld: driver abstraction layer + an

@@ -66,7 +66,49 @@
 > `verify_promotion` PASS and `protected_copper` showing exactly one protected
 > net moved.  `U14.7` is on the bus.  This board has **no open owner decision**.
 
-> # **`DEMO_READY_FOR_FAB` IS RE-DECLARED ON BOARD `8c548ece` (2026-09-19, D-771 · D-772 · D-773 · D-774 · D-775).**
+> # **`DEMO_READY_FOR_FAB` IS RE-DECLARED ON BOARD `8c548ece` (2026-09-19, D-771 · D-772 · D-773 · D-774 · D-775 · D-776).**
+>
+> **D-776 — THE AS-BUILT LIMITS NAMED A SIGNAL THAT DOES NOT EXIST, AND THE
+> LIST OF SIGNALS THAT DO NOT EXIST IS NOW COMPUTED.**  The generated firmware
+> map's own `AQROOT_CHARGER_STAT2_UNCONNECTED` limit — in a block headed *"facts
+> firmware cannot discover and must not get wrong"* — told firmware to infer
+> charging state *"from **VBUS presence** plus the MAX17048 trend"*.  **There is
+> no VBUS-presence signal on this board.**  `R104` 150 kΩ / `R105` 220 kΩ divide
+> `USB_VBUS_CHG` to **2.973 V**, `C68` filters it, all three are FITTED — and
+> `/01_POWER_TREE/VBUS_PRESENT` reaches **`TP31` and nothing else**.  The same
+> sentence stood in two schematic sheets and in `Firmware/README.md`.
+>
+> **TWO MORE OF THE SAME SHAPE WERE UNDECLARED BESIDE IT**: the `LTC4368`'s own
+> **latching FAULT output** (`R81`/`R82`/`TP18` and `Q9`'s gate, whose drain
+> disappears into the autonomous recovery chain — *firmware cannot observe that
+> the battery breaker tripped*) and the `TPS63020`'s **POWER GOOD** (`R41`/`TP8`).
+>
+> **THE REAL DEFECT WAS THAT THE LIST WAS REMEMBERED.**  `limits` already carried
+> two entries of exactly that pattern, added by hand.  It is now **DERIVED**: a
+> net is firmware-reachable iff it touches a pad of `U1`, `U2` or `U3`; bench-
+> probed iff it touches a `TP` pad; and the generator **REFUSES TO EMIT** if any
+> probed-and-unreachable net is undeclared **or** if a declaration names a net
+> that has since been wired.  **28** such nets, **7 signals** in the header,
+> 21 rails/analog listed so the set is fully accounted for.  The new gate refused
+> its own author three times on its first run.
+>
+> **THE BOARD FIX IS MEASURED AND DEFERRED.**  `VBUS_PRESENT` → a spare `U3`
+> input is electrically sound (2.973 V against a 2.31 V `VIH`, four free
+> channels) but does **not route** from where the divider sits: 0.00 mm widest
+> corridor on all four candidate layers with a *different* named blocker each,
+> and `NO_PATH` at 0.200 mm from the all-layer maze router at both 0.10 and
+> 0.05 mm lattices with both ends launching.  `USB_VBUS_CHG` already runs within
+> ~3 mm of `U3`'s west column, so the fix is to **MOVE** `R104`/`R105`/`C68`/`TP31`
+> beside `U3` — zero BOM change — and that is a **REV-B** item: DEVICE_SPEC §15
+> promises *fuel-gauge telemetry*, which works, and **no promised capability is
+> missing**.  **Firmware must not display a charging state on this revision; it
+> must display state-of-charge.**
+>
+> **NO COPPER MOVED.**  Two schematic sheets were edited, so `FAB1` FAILED
+> naming exactly those two and the package was re-exported: every copper Gerber,
+> both drill files and `Edge_Cuts` are byte-identical apart from timestamps, and
+> BOM/CPL are untouched.
+>
 >
 > **The CTO withdrew D-770 for one item.  Closing it exposed a chain of three
 > defects of the same shape — *a number this repository states and nothing
@@ -124,7 +166,11 @@
 >                      sourcing 252/252, coverage 1.0
 >     contracts        19 standing contracts, all ran, NONE failing
 >     firmware         H1-H6 PASS; host policy test 23/23 and all three destructive
->                      policy controls caught; four builds SUCCESS
+>                      policy controls caught; FIFTEEN generator controls, all
+>                      refusing (D-776 adds four, two in EACH direction);
+>                      four builds SUCCESS
+>     firmware map     PROBED-BUT-NOT-READABLE is computed off the copper: 28
+>                      nets, 7 signals defined, 21 rails/analog accounted for
 >     hardware/beta-v2 UNTOUCHED
 >
 > **THE THINNEST MARGIN ON THIS BOARD IS 1.6 %, AND IT IS NAMED RATHER THAN
@@ -182,7 +228,7 @@
 > the 3.0 V corner with both accessory rails loaded.
 >
 > **There is no open owner decision and no unresolved Demo fabrication blocker.**
-> Residual risks are `CTO_DECISIONS.md` **D-775 §6**, **D-773 §7**, **D-772 §8**,
+> Residual risks are `CTO_DECISIONS.md` **D-776 §7**, **D-775 §6**, **D-773 §7**, **D-772 §8**,
 > **D-771 §10** and **D-770 §5**.  Independent CTO review follows.
 >
 > # **THE D-771, D-772 AND D-770 ENTRIES BELOW STAND AS HISTORY.**

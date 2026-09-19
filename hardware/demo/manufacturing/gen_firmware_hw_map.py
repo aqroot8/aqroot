@@ -496,6 +496,130 @@ def pcal_address(ref, pads):
     return addr, detail
 
 
+# ---- D-776: EVERYTHING YOU CAN PROBE BUT CANNOT READ ------------------
+# WHY THIS EXISTS.  `limits` above is a CURATED list, and a curated list of
+# "facts firmware must not get wrong" is only as good as whoever last
+# remembered to add to it.  D-776 found what that costs: the
+# CHARGER_STAT2_UNCONNECTED limit told firmware to infer charging state
+# "from VBUS presence plus the MAX17048 trend", and
+# /01_POWER_TREE/VBUS_PRESENT -- a real, fitted 150k/220k divider with an
+# RC filter -- reaches TP31 AND NOTHING ELSE.  The instruction named a
+# signal no firmware on this board can read.  Two more of the same shape
+# were undeclared beside it: the LTC4368's own latching FAULT output and
+# the TPS63020's POWER GOOD.
+#
+# SO THE LIST IS COMPUTED, NOT REMEMBERED.  A net is FIRMWARE-REACHABLE if
+# it touches a pad of U1, U2 or U3 -- the MCU and the two expanders are the
+# only things on this board firmware can read or drive.  A net is
+# BENCH-PROBED if it touches a TP pad.  Every net that is probed and NOT
+# reachable is enumerated off the copper below, and `build()` REFUSES TO
+# EMIT if any of them has no entry here, or if an entry here names a net
+# that is no longer in that set -- so a signal that later gets wired cannot
+# leave a stale "unreadable" declaration standing, which is the D-768/D-769
+# defect class one domain over.
+#
+# `kind` is the only judgement in the rule: `signal` means a firmware author
+# could plausibly expect to read it and must not; `rail` and `analog` mean
+# the answer is obvious and the entry exists for completeness.  Only
+# `signal` reaches the emitted header.
+FIRMWARE_REACHABLE_REFS = ("U1", "U2", "U3")
+BENCH_ONLY = {
+    # ---- signals: a firmware author could expect these and must not -----
+    "/01_POWER_TREE/VBUS_PRESENT": dict(
+        kind="signal", key="VBUS_PRESENT_UNREADABLE",
+        why="R104 150k / R105 220k divide USB_VBUS_CHG to 2.973 V at VBUS "
+            "5.0 V, C68 filters it, and the node reaches TP31 ONLY -- no MCU "
+            "pin and no expander bit.  THERE IS NO USB-PRESENT SIGNAL ON "
+            "THIS REVISION.  Do not infer 'charging' from VBUS: the native "
+            "USB CDC link detects a USB HOST, not a charger, and a dumb 5 V "
+            "supply charges this board invisibly.  D-776 measured the fix "
+            "and deferred it: the divider must MOVE beside U3 (USB_VBUS_CHG "
+            "already runs within ~3 mm of U3's west column) and land on U3 "
+            "P06; hauling it from where it sits is NO_PATH at 0.200 mm on "
+            "all three routable layers at both 0.10 and 0.05 mm lattices."),
+    "/01_POWER_TREE/LTC4368_FAULT_N": dict(
+        kind="signal", key="BREAKER_FAULT_UNREADABLE",
+        why="the LTC4368's own FAULT output reaches R81 100k to +3V3, R82 "
+            "1M to GND, TP18 and Q9's GATE.  Q9's drain is REC_FAULT_B, "
+            "which goes to Q8 and R96 inside the autonomous dead-cell "
+            "recovery chain and to no readable pin.  FIRMWARE CANNOT OBSERVE "
+            "THAT THE LATCHING BATTERY BREAKER HAS TRIPPED.  On a trip the "
+            "pack is disconnected and the board runs only if VIN is present; "
+            "do not report a battery-protection state, and do not attribute "
+            "a vanished battery to the gauge."),
+    "Net-(U12-PG)": dict(
+        kind="signal", key="MAIN_RAIL_PG_UNREADABLE",
+        why="the TPS63020's POWER GOOD reaches R41 1M to +3V3 and TP8 only.  "
+            "There is no main-rail power-good input.  A +3V3 droop is not "
+            "observable; the MCU's own brown-out is the only indication."),
+    "/03_SPI_A_DISPLAY_SD/DISP_SDO": dict(
+        kind="signal", key="DISPLAY_SDO_UNREADABLE",
+        why="see AQROOT_DISPLAY_SDO_ISOLATED -- R112 0R is DNP, so the "
+            "panel's SDO reaches J1 and TP36 only."),
+    "/01_POWER_TREE/MAX17048_ALRT_N": dict(
+        kind="signal", key="FUEL_GAUGE_ALRT_UNREADABLE",
+        why="see AQROOT_FUEL_GAUGE_ALRT_NOT_WIRED -- U14.5 and TP11 only.  "
+            "Poll the gauge."),
+    "/09_COMMUNITY_HEADER/TCA4307_READY": dict(
+        kind="signal", key="ACC_BUS_READY_UNREADABLE",
+        why="see AQROOT_ACC_BUS_READY_NOT_WIRED -- U16.5, R46 and TP44 only.  "
+            "Confirm the accessory bus by addressing it."),
+    "/01_POWER_TREE/BAT_PROT_SHDN_CTL": dict(
+        kind="signal", key="BAT_PROT_SHDN_UNREADABLE",
+        why="the battery-protection SHDN control is driven by Q4/R83 from "
+            "the autonomous recovery logic and reaches TP19.  It is neither "
+            "readable nor firmware-drivable, by design -- protection must "
+            "not depend on software."),
+    # ---- rails and analog nodes: the answer is obvious, listed for
+    # ---- completeness so the computed set is fully accounted for --------
+    "/01_POWER_TREE/ACC_5V_RAW": dict(kind="rail", key=None,
+        why="boost output ahead of U22; TP28 is a rail probe"),
+    "/01_POWER_TREE/BAT_CONNECTOR_P": dict(kind="rail", key=None,
+        why="J4 pack terminal ahead of F1; TP34 is a rail probe"),
+    "/01_POWER_TREE/BAT_PROTECTED_P": dict(kind="rail", key=None,
+        why="the pack rail the MAX17048 measures; TP15 is a rail probe"),
+    "/01_POWER_TREE/BAT_RAW": dict(kind="rail", key=None,
+        why="pack rail ahead of the protection FETs; TP16 is a rail probe"),
+    "/01_POWER_TREE/BAT_SENSE": dict(kind="analog", key=None,
+        why="LTC4368 Kelvin sense node across R75"),
+    "/01_POWER_TREE/LTC_GATE": dict(kind="analog", key=None,
+        why="LTC4368 gate drive to Q2/Q3"),
+    "/01_POWER_TREE/N_POL": dict(kind="analog", key=None,
+        why="U19 comparator input in the dead-cell recovery divider"),
+    "/01_POWER_TREE/REF_POL": dict(kind="analog", key=None,
+        why="U19 comparator reference in the dead-cell recovery divider"),
+    "/01_POWER_TREE/REC_DIODE_IN": dict(kind="analog", key=None,
+        why="dead-cell recovery steering node at D12/R95"),
+    "/01_POWER_TREE/REC_GATE_N": dict(kind="analog", key=None,
+        why="dead-cell recovery gate drive at Q5/Q6/R94"),
+    "/01_POWER_TREE/NFC_5V_PA_PENDING": dict(kind="rail", key=None,
+        why="the DNP 5 V NFC PA rail; U13/R107 are not fitted"),
+    "/04_SPI_B_RADIOS_NFC/NFC_ANT_A": dict(kind="analog", key=None,
+        why="NFC antenna terminal; an RF node, probed for tuning (FAB13)"),
+    "/04_SPI_B_RADIOS_NFC/NFC_ANT_B": dict(kind="analog", key=None,
+        why="NFC antenna terminal; an RF node, probed for tuning (FAB13)"),
+    "/07_IR/IR_LED_A": dict(kind="analog", key=None,
+        why="IR LED anode, driven by Q1; a current node, not a logic level"),
+    "/09_COMMUNITY_HEADER/ACC_DETECT_N_HDR": dict(kind="analog", key=None,
+        why="the header side of ACC_DETECT_N; R64 100R passes it to "
+            "/ACC_DETECT_N, which IS readable on U3 P12"),
+    "/09_COMMUNITY_HEADER/EXT_SCL": dict(kind="rail", key=None,
+        why="accessory-side I2C clock; reaches firmware through the U16 "
+            "TCA4307 buffer as /I2C_SCL_INT"),
+    "/09_COMMUNITY_HEADER/EXT_SDA": dict(kind="rail", key=None,
+        why="accessory-side I2C data; reaches firmware through the U16 "
+            "TCA4307 buffer as /I2C_SDA_INT"),
+    "/ACC_3V3_SW": dict(kind="rail", key=None,
+        why="switched accessory 3.3 V rail; TP12/TP25 are rail probes"),
+    "/ACC_5V_SW": dict(kind="rail", key=None,
+        why="switched accessory 5 V rail; TP29/TP42 are rail probes"),
+    "/NFC_SUPPLY": dict(kind="rail", key=None,
+        why="the NFC front end's supply; see AQROOT_NFC_ON_3V3"),
+    "Net-(SW9-A)": dict(kind="analog", key=None,
+        why="the SW9 physical power switch's EN network into U12; a "
+            "hard-off control, deliberately not software-visible"),
+}
+
 def build():
     pads, values = load_board()
     fitted, dnp = fitted_refs()
@@ -650,13 +774,44 @@ def build():
             row["addr"] = expanders[row["ref"]]["addr"]
         devices.append(row)
 
+    reachable, probed = set(), {}
+    for ref, table in pads.items():
+        for number, net in table.items():
+            if not net:
+                continue
+            if ref in FIRMWARE_REACHABLE_REFS:
+                reachable.add(net)
+            if ref.startswith("TP"):
+                probed.setdefault(net, []).append("%s.%s" % (ref, number))
+    bench_only = sorted(n for n in probed if n not in reachable)
+    for net in bench_only:
+        if net not in BENCH_ONLY:
+            problems.append(
+                "%s is bench-probed (%s) and reaches no U1/U2/U3 pad, and no "
+                "BENCH_ONLY entry declares it" % (net, ",".join(probed[net])))
+    for net in BENCH_ONLY:
+        if net not in bench_only:
+            problems.append(
+                "BENCH_ONLY declares %s unreadable, but the board does not put "
+                "it in the probed-and-unreachable set -- a stale declaration"
+                % net)
+    unreadable = [dict(net=n, kind=BENCH_ONLY[n]["kind"],
+                       key=BENCH_ONLY[n]["key"], why=BENCH_ONLY[n]["why"],
+                       probes=sorted(probed[n]))
+                  for n in bench_only if n in BENCH_ONLY]
+
     limits = [
         dict(key="CHARGER_STAT2_UNCONNECTED", value=True,
              evidence="U11.3 carries /BQ25185_STAT2 and is UNROUTED "
                       "(owner decision 2026-09-17, D-742)",
              firmware="STAT1 LOW is a directly observed charger fault.  STAT1 HIGH is "
-                      "AMBIGUOUS.  Any charging-versus-complete claim must be labelled "
-                      "an INFERENCE from VBUS presence plus the MAX17048 trend."),
+                      "AMBIGUOUS between charging and charge-complete / sleep / "
+                      "disabled.  D-776 CORRECTED WHAT THIS LINE USED TO SAY: it named "
+                      "'an INFERENCE from VBUS presence plus the MAX17048 trend', and "
+                      "THERE IS NO VBUS-PRESENT SIGNAL ON THIS BOARD -- see "
+                      "AQROOT_VBUS_PRESENT_UNREADABLE.  The only input left is the "
+                      "MAX17048 voltage and SOC TREND, which is weak and slow.  Do not "
+                      "display a charging state; display state-of-charge."),
         dict(key="DISPLAY_SDO_ISOLATED", value=True,
              evidence="R112 0R is DNP, so /03_SPI_A_DISPLAY_SD/DISP_SDO never reaches "
                       "/SPI_A_MISO",
@@ -706,6 +861,7 @@ def build():
         expanders=expanders,
         i2c=dict(sda_gpio=seen_gpio and None, devices=devices),
         limits=limits,
+        unreadable=unreadable,
     )
     # sda/scl come from the MCU table so they cannot be typed twice
     doc["i2c"]["sda_gpio"] = next(r["gpio"] for r in mcu if r["role"] == "I2C_SDA")
@@ -821,6 +977,33 @@ def emit_header(doc):
         for line in wrap("FIRMWARE: " + limit["firmware"], 92, "//   "):
             a(line)
         a("#define AQROOT_%-34s %d" % (limit["key"], 1 if limit["value"] else 0))
+    a("")
+    a("// " + "=" * 84)
+    a("// PROBED BUT NOT READABLE -- computed off the copper, not remembered (D-776)")
+    a("// " + "=" * 84)
+    a("//")
+    a("// Every net below touches a TP pad and touches NO pad of U1, U2 or U3, so no")
+    a("// firmware on this board can read it.  The LIST is derived from the board file;")
+    a("// the generator REFUSES TO EMIT if a net in that set is undeclared, or if a")
+    a("// declaration names a net that has since been wired.  Rails and analog nodes are")
+    a("// accounted for in the generator and in the JSON; only SIGNALS appear here.")
+    for row in doc["unreadable"]:
+        if row["kind"] != "signal":
+            continue
+        a("")
+        a("//   %s  (probes: %s)" % (row["net"], ", ".join(row["probes"])))
+        for line in wrap(row["why"], 92, "//   "):
+            a(line)
+        a("#define AQROOT_%-34s %d" % (row["key"], 1))
+    a("")
+    a("// " + "=" * 84)
+    a("// RAILS AND ANALOG NODES also probed and unreadable, listed so the computed set")
+    a("// above is fully accounted for.  No #define: firmware has no use for them.")
+    a("// " + "=" * 84)
+    for row in doc["unreadable"]:
+        if row["kind"] == "signal":
+            continue
+        a("//   %-46s %-7s %s" % (row["net"], row["kind"], row["why"].split(";")[0]))
     a("")
     return "\n".join(out)
 

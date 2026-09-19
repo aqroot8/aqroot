@@ -1,3 +1,161 @@
+## D-776 — **THE AS-BUILT LIMITS TOLD FIRMWARE TO USE A SIGNAL THAT DOES NOT EXIST, AND THE LIST OF SIGNALS THAT DO NOT EXIST IS NOW COMPUTED**
+
+    authority  board 8c548ece, UNCHANGED; copper Gerbers, drills and outline
+               byte-identical apart from timestamps; BOM/CPL untouched
+    closes     a false instruction in the generated firmware map, in two
+               schematic sheets and in `Firmware/README.md`; and the reason it
+               survived, which is that the list it belonged to was CURATED
+    changed    gen_firmware_hw_map.py; Firmware/src/hw/aqroot_demo_board.h/.json
+               (regenerated); checks/firmware_hw_map_contract.py;
+               01_power_tree.kicad_sch; 08_buttons_expanders.kicad_sch;
+               Firmware/README.md; hardware/demo/fab (re-exported for FAB1);
+               release evidence and docs
+
+### 1. WHAT WAS WRONG
+
+`AQROOT_CHARGER_STAT2_UNCONNECTED` is an **AS-BUILT LIMIT** — the generated map's
+own words are *"facts firmware cannot discover and must not get wrong"*.  Its
+`FIRMWARE:` line read:
+
+> *"Any charging-versus-complete claim must be labelled an INFERENCE from **VBUS
+> presence** plus the MAX17048 trend."*
+
+**There is no VBUS-presence signal on this board.**  `R104` 150 kΩ and `R105`
+220 kΩ divide `USB_VBUS_CHG` to **2.973 V** at `VBUS` = 5.0 V, `C68` filters it,
+all three are **FITTED**, and the node `/01_POWER_TREE/VBUS_PRESENT` reaches
+**`TP31` and nothing else** — no `U1` pin, no `U2`/`U3` bit.  The same sentence
+was in D-742's `U11` symbol note, in the `U2` expander note, and in the sheet-01
+telemetry note, which additionally said *"raw VBUS **never** reaches the
+expander"* — phrasing that reads as though the divided level does.
+
+A firmware author following the as-built limits would have gone looking for a
+signal that is not there.
+
+### 2. AND TWO MORE OF THE SAME SHAPE WERE UNDECLARED BESIDE IT
+
+Asking the question of the whole board rather than of one note:
+
+| net | reaches | consequence |
+|---|---|---|
+| `/01_POWER_TREE/VBUS_PRESENT` | `TP31`, `R104.2`, `R105.1`, `C68.1` | **no USB-present signal at all** |
+| `/01_POWER_TREE/LTC4368_FAULT_N` | `R81`, `R82`, `TP18`, `Q9`'s **gate** (drain → `REC_FAULT_B` → `Q8`/`R96`, inside the autonomous recovery chain) | **firmware cannot observe that the LATCHING battery breaker tripped** |
+| `Net-(U12-PG)` | `R41` 1 M to `+3V3`, `TP8` | no main-rail POWER GOOD; a `+3V3` droop is not observable |
+
+The breaker one matters most after VBUS: on an `LTC4368` trip the pack is
+disconnected and the board runs only if `VIN` is present, so firmware can be
+alive and unable to say why the battery vanished.
+
+### 3. THE REAL DEFECT IS THAT THE LIST WAS REMEMBERED
+
+`limits` already carried `FUEL_GAUGE_ALRT_NOT_WIRED` (*"reaches TP11 and U14.5
+only"*) and `ACC_BUS_READY_NOT_WIRED` (*"reaches TP44 and U16.5 only"*).  The
+PATTERN was right and had been applied twice.  It was applied **by memory**, so
+three nets of exactly that shape were never added — and one of them was named by
+another limit as though it were readable.
+
+**SO THE LIST IS DERIVED.**  A net is FIRMWARE-REACHABLE if it touches a pad of
+`U1`, `U2` or `U3` — on this board nothing else can be read or driven by
+software.  A net is BENCH-PROBED if it touches a `TP` pad.  The generator
+enumerates **every net that is probed and not reachable off the copper** and
+**REFUSES TO EMIT** if
+
+* a net in that set has no `BENCH_ONLY` entry, **or**
+* a `BENCH_ONLY` entry names a net that is no longer in that set.
+
+The second direction is the one D-768/D-769 taught: a one-directional guard lets
+a retired statement stand.  A signal that gets wired in Rev-B cannot leave an
+"unreadable" declaration behind it.
+
+**IT CAUGHT ITS OWN AUTHOR IMMEDIATELY.**  The first run of the new gate refused
+three times: two net names written with a spurious leading slash
+(`Net-(U12-PG)`, `Net-(SW9-A)`) and a placeholder entry left in the registry by
+mistake.  That is what the gate is for.
+
+The board has **28** probed-and-unreachable nets.  Seven are `signal` kind and
+reach the emitted header with a `#define`; twenty-one are `rail` or `analog`,
+where the answer is obvious, and they are listed anyway so the computed set is
+**fully accounted for** rather than filtered by a heuristic.
+
+### 4. THE BOARD FIX IS MEASURED AND DEFERRED, AND SAYS WHY
+
+The wanted connection is `VBUS_PRESENT` → a spare `U3` input.  It is
+electrically sound: 2.973 V is a valid `PCAL9535A` logic HIGH on `+3V3`
+(`VIH` = 0.7 × 3.3 = 2.31 V) at an 89.2 kΩ source impedance, and `U3` has **four**
+unused channels (`P06`, `P07`, `P10`, `P11`).
+
+**IT DOES NOT ROUTE FROM WHERE THE DIVIDER SITS.**  The divider is in the far
+south-west (`x` ≈ 1–5 mm, `y` ≈ 86–90 mm, all on `B.Cu`); `U3` is at
+(57.000, 78.000).  Measured, on a scratch board with `U3.10` assigned to the net:
+
+* `screen_widest_corridor` on all four candidate layers: **0.00 mm**, with a
+  DIFFERENT named blocker on each (`B.Cu` a `GND` track at (2.15, 83.425);
+  `In2.Cu` `USB_VBUS_CHG` at (13.15, 72.725); `F.Cu` `BAT_PROTECTED_P` at
+  (2.6, 72.725); `In3.Cu` `TCA4307_READY` at (52.15, 73.725)) — so it is not one
+  wall being re-measured four times;
+* the all-layer maze router: **`NO_PATH`** at 0.200 mm, at both a 0.10 mm and a
+  0.05 mm lattice, with **both ends launching** (44 and 7 escapes).  The
+  contract the router built is the real one: `Default` class, 0.200 mm, and only
+  **three** routable layers, because `In1`/`In4` carry `GND` pours and `In3`
+  carries `+3V3`.
+
+**THE FIX THAT WOULD WORK IS A FLOORPLAN MOVE, NOT A HAUL.**  `USB_VBUS_CHG`
+already runs within about 3 mm of `U3`'s west column — `F.Cu`
+(58.98, 80.45) → (56.12, 79.90) → (52.85, 76.62).  So `R104`/`R105`/`C68`/`TP31`
+should MOVE beside `U3` and be fed locally, with **zero BOM change**.
+
+**IT IS A REV-B ITEM, and the reason is scope, not difficulty.**  DEVICE_SPEC
+§15's MARKETING-SAFE capability list promises *"battery fuel-gauge telemetry
+(MAX17048)"* — which is fitted, routed and working.  It does **not** promise a
+charging indicator or USB-attach detection.  **No promised capability is
+missing.**  Against that, the move rebuilds placement and local routing in one of
+this board's congested pockets on a package that is fabrication-ready.  The
+engineering call is to declare the limitation truthfully now, gate it so it
+cannot drift, and make the move in the revision that can absorb it.
+
+### 5. WHAT FIRMWARE MUST DO INSTEAD
+
+**Do not display a charging state on this revision.  Display state-of-charge.**
+`STAT1` LOW remains a directly observed charger fault (D-742).  `STAT1` HIGH is
+ambiguous, and with no VBUS input the only remaining discriminator is the
+MAX17048 voltage/SOC **trend**, which is weak and slow.  The native USB CDC link
+detects a USB **host**, not a charger.  This is stated in the generated map, in
+both schematic sheets and in `Firmware/README.md`.
+
+### 6. VERIFICATION
+
+    board            8c548ece, UNCHANGED -- no copper object moved
+    fab package      RE-EXPORTED, because FAB1 hashes the schematic sheets and
+                     two of them were edited.  FAB1 FAILED FIRST, naming exactly
+                     those two sheets, then PASSED.  Every copper Gerber, both
+                     drill files and Edge_Cuts are byte-identical apart from
+                     timestamps (0 non-timestamp diff lines on F/B/In1-In4/PTH/
+                     NPTH/Edge_Cuts); BOM and CPL untouched
+    KiCad DRC        199 lib_footprint_issues ALL WARNING, zero other classes;
+                     17 unconnected; parity 246 warn / 0 ERRORS -- byte-for-byte
+                     the same class counts as before the schematic edit
+    FAB1-FAB15       PASS
+    firmware map     regenerated; H1 fresh, H2 digest, H3-H6 PASS
+    controls         15, all refusing -- D-776 adds four, TWO IN EACH DIRECTION
+    firmware         four PlatformIO environments SUCCESS (aqroot-demo clean)
+    contracts        19 standing contracts re-run against d775
+    beta-v2          UNTOUCHED
+
+### 7. RESIDUAL RISKS
+
+1. **`kind` is the one judgement left in the rule.**  The LIST is computed; the
+   `signal` / `rail` / `analog` label and the `why` text are human.  A net
+   mislabelled `rail` would be honest about being unreadable but would not reach
+   the header.  Both directions of staleness are gated; the label is not.
+2. **The REV-B move is unproven.**  The corridor evidence says the haul is
+   impossible and that `USB_VBUS_CHG` passes close to `U3`; it does **not** prove
+   four parts fit beside `U3` or that the local connections route.  That is the
+   first thing to measure in Rev-B, not an assumption to inherit.
+3. **`FIRMWARE_REACHABLE_REFS` is `U1`/`U2`/`U3` by declaration.**  It is true of
+   this board and the generator would have to be told if a fourth readable
+   device were ever fitted.  A net reaching such a device would then be reported
+   as bench-only and the gate would refuse until the list was corrected — which
+   is the safe direction.
+
 ## D-775 — **D-098 NORMAL CONCURRENCY IS NOW DERIVED FROM THE LIVE BOARD AND ENFORCED BY FIRMWARE**
 
     authority  board 8c548ece, UNCHANGED; no schematic/PCB/BOM/CPL/Gerber/drill change

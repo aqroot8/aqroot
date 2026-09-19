@@ -227,6 +227,47 @@ def with_policy(mutate):
         gen.EXPANDER_POLICY.update(saved[1])
 
 
+def with_bench_only(mutate):
+    """Run `gen.build()` against a mutated copy of the D-776 BENCH_ONLY registry.
+
+    The registry's WHOLE POINT is that it cannot be stale in either direction --
+    an undeclared probed-and-unreachable net refuses, and a declaration for a
+    net that has since been wired refuses too.  Both directions are controlled
+    here, because a one-directional guard is how D-768/D-769's retired-name
+    defects survived.
+    """
+    saved = copy.deepcopy(gen.BENCH_ONLY)
+    try:
+        mutate(gen.BENCH_ONLY)
+        _, problems = gen.build()
+        return problems
+    finally:
+        gen.BENCH_ONLY.clear()
+        gen.BENCH_ONLY.update(saved)
+
+
+def _drop(net):
+    return lambda registry: registry.pop(net)
+
+
+def _declare(net):
+    return lambda registry: registry.__setitem__(
+        net, dict(kind="signal", key="CONTROL_ONLY",
+                  why="a control; this net is readable and must be refused"))
+
+
+BENCH_ONLY_CONTROLS = [
+    ("the VBUS_PRESENT declaration is dropped",
+     _drop("/01_POWER_TREE/VBUS_PRESENT")),
+    ("the breaker-fault declaration is dropped",
+     _drop("/01_POWER_TREE/LTC4368_FAULT_N")),
+    ("a net that IS readable is declared unreadable",
+     _declare("/WAKE_INT_N")),
+    ("a net that is not on the board at all is declared",
+     _declare("/01_POWER_TREE/NO_SUCH_NET")),
+]
+
+
 def strip_comments(text):
     """Drop // and /* */ comments so only code is scanned for symbols."""
     text = re.sub(r"/\*.*?\*/", " ", text, flags=re.S)
@@ -413,6 +454,12 @@ def main():
     controls = []
     for name, mutate in CONTROLS:
         refused = with_policy(mutate)
+        controls.append(dict(control=name, refused=bool(refused),
+                             first_reason=refused[0] if refused else None))
+    # D-776's four.  These prove the PROBED-BUT-NOT-READABLE registry refuses
+    # in both directions rather than merely existing.
+    for name, mutate in BENCH_ONLY_CONTROLS:
+        refused = with_bench_only(mutate)
         controls.append(dict(control=name, refused=bool(refused),
                              first_reason=refused[0] if refused else None))
     report["controls"] = controls

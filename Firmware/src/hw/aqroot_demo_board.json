@@ -616,7 +616,7 @@
   "limits": [
     {
       "evidence": "U11.3 carries /BQ25185_STAT2 and is UNROUTED (owner decision 2026-09-17, D-742)",
-      "firmware": "STAT1 LOW is a directly observed charger fault.  STAT1 HIGH is AMBIGUOUS.  Any charging-versus-complete claim must be labelled an INFERENCE from VBUS presence plus the MAX17048 trend.",
+      "firmware": "STAT1 LOW is a directly observed charger fault.  STAT1 HIGH is AMBIGUOUS between charging and charge-complete / sleep / disabled.  D-776 CORRECTED WHAT THIS LINE USED TO SAY: it named 'an INFERENCE from VBUS presence plus the MAX17048 trend', and THERE IS NO VBUS-PRESENT SIGNAL ON THIS BOARD -- see AQROOT_VBUS_PRESENT_UNREADABLE.  The only input left is the MAX17048 voltage and SOC TREND, which is weak and slow.  Do not display a charging state; display state-of-charge.",
       "key": "CHARGER_STAT2_UNCONNECTED",
       "value": true
     },
@@ -1053,5 +1053,261 @@
       }
     ],
     "ref": "U1"
-  }
+  },
+  "unreadable": [
+    {
+      "key": null,
+      "kind": "rail",
+      "net": "/01_POWER_TREE/ACC_5V_RAW",
+      "probes": [
+        "TP28.1"
+      ],
+      "why": "boost output ahead of U22; TP28 is a rail probe"
+    },
+    {
+      "key": null,
+      "kind": "rail",
+      "net": "/01_POWER_TREE/BAT_CONNECTOR_P",
+      "probes": [
+        "TP34.1"
+      ],
+      "why": "J4 pack terminal ahead of F1; TP34 is a rail probe"
+    },
+    {
+      "key": null,
+      "kind": "rail",
+      "net": "/01_POWER_TREE/BAT_PROTECTED_P",
+      "probes": [
+        "TP15.1"
+      ],
+      "why": "the pack rail the MAX17048 measures; TP15 is a rail probe"
+    },
+    {
+      "key": "BAT_PROT_SHDN_UNREADABLE",
+      "kind": "signal",
+      "net": "/01_POWER_TREE/BAT_PROT_SHDN_CTL",
+      "probes": [
+        "TP19.1"
+      ],
+      "why": "the battery-protection SHDN control is driven by Q4/R83 from the autonomous recovery logic and reaches TP19.  It is neither readable nor firmware-drivable, by design -- protection must not depend on software."
+    },
+    {
+      "key": null,
+      "kind": "rail",
+      "net": "/01_POWER_TREE/BAT_RAW",
+      "probes": [
+        "TP16.1"
+      ],
+      "why": "pack rail ahead of the protection FETs; TP16 is a rail probe"
+    },
+    {
+      "key": null,
+      "kind": "analog",
+      "net": "/01_POWER_TREE/BAT_SENSE",
+      "probes": [
+        "TP20.1"
+      ],
+      "why": "LTC4368 Kelvin sense node across R75"
+    },
+    {
+      "key": "BREAKER_FAULT_UNREADABLE",
+      "kind": "signal",
+      "net": "/01_POWER_TREE/LTC4368_FAULT_N",
+      "probes": [
+        "TP18.1"
+      ],
+      "why": "the LTC4368's own FAULT output reaches R81 100k to +3V3, R82 1M to GND, TP18 and Q9's GATE.  Q9's drain is REC_FAULT_B, which goes to Q8 and R96 inside the autonomous dead-cell recovery chain and to no readable pin.  FIRMWARE CANNOT OBSERVE THAT THE LATCHING BATTERY BREAKER HAS TRIPPED.  On a trip the pack is disconnected and the board runs only if VIN is present; do not report a battery-protection state, and do not attribute a vanished battery to the gauge."
+    },
+    {
+      "key": null,
+      "kind": "analog",
+      "net": "/01_POWER_TREE/LTC_GATE",
+      "probes": [
+        "TP17.1"
+      ],
+      "why": "LTC4368 gate drive to Q2/Q3"
+    },
+    {
+      "key": "FUEL_GAUGE_ALRT_UNREADABLE",
+      "kind": "signal",
+      "net": "/01_POWER_TREE/MAX17048_ALRT_N",
+      "probes": [
+        "TP11.1"
+      ],
+      "why": "see AQROOT_FUEL_GAUGE_ALRT_NOT_WIRED -- U14.5 and TP11 only.  Poll the gauge."
+    },
+    {
+      "key": null,
+      "kind": "rail",
+      "net": "/01_POWER_TREE/NFC_5V_PA_PENDING",
+      "probes": [
+        "TP9.1"
+      ],
+      "why": "the DNP 5 V NFC PA rail; U13/R107 are not fitted"
+    },
+    {
+      "key": null,
+      "kind": "analog",
+      "net": "/01_POWER_TREE/N_POL",
+      "probes": [
+        "TP23.1"
+      ],
+      "why": "U19 comparator input in the dead-cell recovery divider"
+    },
+    {
+      "key": null,
+      "kind": "analog",
+      "net": "/01_POWER_TREE/REC_DIODE_IN",
+      "probes": [
+        "TP22.1"
+      ],
+      "why": "dead-cell recovery steering node at D12/R95"
+    },
+    {
+      "key": null,
+      "kind": "analog",
+      "net": "/01_POWER_TREE/REC_GATE_N",
+      "probes": [
+        "TP21.1"
+      ],
+      "why": "dead-cell recovery gate drive at Q5/Q6/R94"
+    },
+    {
+      "key": null,
+      "kind": "analog",
+      "net": "/01_POWER_TREE/REF_POL",
+      "probes": [
+        "TP24.1"
+      ],
+      "why": "U19 comparator reference in the dead-cell recovery divider"
+    },
+    {
+      "key": "VBUS_PRESENT_UNREADABLE",
+      "kind": "signal",
+      "net": "/01_POWER_TREE/VBUS_PRESENT",
+      "probes": [
+        "TP31.1"
+      ],
+      "why": "R104 150k / R105 220k divide USB_VBUS_CHG to 2.973 V at VBUS 5.0 V, C68 filters it, and the node reaches TP31 ONLY -- no MCU pin and no expander bit.  THERE IS NO USB-PRESENT SIGNAL ON THIS REVISION.  Do not infer 'charging' from VBUS: the native USB CDC link detects a USB HOST, not a charger, and a dumb 5 V supply charges this board invisibly.  D-776 measured the fix and deferred it: the divider must MOVE beside U3 (USB_VBUS_CHG already runs within ~3 mm of U3's west column) and land on U3 P06; hauling it from where it sits is NO_PATH at 0.200 mm on all three routable layers at both 0.10 and 0.05 mm lattices."
+    },
+    {
+      "key": "DISPLAY_SDO_UNREADABLE",
+      "kind": "signal",
+      "net": "/03_SPI_A_DISPLAY_SD/DISP_SDO",
+      "probes": [
+        "TP36.1"
+      ],
+      "why": "see AQROOT_DISPLAY_SDO_ISOLATED -- R112 0R is DNP, so the panel's SDO reaches J1 and TP36 only."
+    },
+    {
+      "key": null,
+      "kind": "analog",
+      "net": "/04_SPI_B_RADIOS_NFC/NFC_ANT_A",
+      "probes": [
+        "TP37.1"
+      ],
+      "why": "NFC antenna terminal; an RF node, probed for tuning (FAB13)"
+    },
+    {
+      "key": null,
+      "kind": "analog",
+      "net": "/04_SPI_B_RADIOS_NFC/NFC_ANT_B",
+      "probes": [
+        "TP38.1"
+      ],
+      "why": "NFC antenna terminal; an RF node, probed for tuning (FAB13)"
+    },
+    {
+      "key": null,
+      "kind": "analog",
+      "net": "/07_IR/IR_LED_A",
+      "probes": [
+        "TP39.1"
+      ],
+      "why": "IR LED anode, driven by Q1; a current node, not a logic level"
+    },
+    {
+      "key": null,
+      "kind": "analog",
+      "net": "/09_COMMUNITY_HEADER/ACC_DETECT_N_HDR",
+      "probes": [
+        "TP43.1"
+      ],
+      "why": "the header side of ACC_DETECT_N; R64 100R passes it to /ACC_DETECT_N, which IS readable on U3 P12"
+    },
+    {
+      "key": null,
+      "kind": "rail",
+      "net": "/09_COMMUNITY_HEADER/EXT_SCL",
+      "probes": [
+        "TP46.1"
+      ],
+      "why": "accessory-side I2C clock; reaches firmware through the U16 TCA4307 buffer as /I2C_SCL_INT"
+    },
+    {
+      "key": null,
+      "kind": "rail",
+      "net": "/09_COMMUNITY_HEADER/EXT_SDA",
+      "probes": [
+        "TP45.1"
+      ],
+      "why": "accessory-side I2C data; reaches firmware through the U16 TCA4307 buffer as /I2C_SDA_INT"
+    },
+    {
+      "key": "ACC_BUS_READY_UNREADABLE",
+      "kind": "signal",
+      "net": "/09_COMMUNITY_HEADER/TCA4307_READY",
+      "probes": [
+        "TP44.1"
+      ],
+      "why": "see AQROOT_ACC_BUS_READY_NOT_WIRED -- U16.5, R46 and TP44 only.  Confirm the accessory bus by addressing it."
+    },
+    {
+      "key": null,
+      "kind": "rail",
+      "net": "/ACC_3V3_SW",
+      "probes": [
+        "TP12.1",
+        "TP25.1"
+      ],
+      "why": "switched accessory 3.3 V rail; TP12/TP25 are rail probes"
+    },
+    {
+      "key": null,
+      "kind": "rail",
+      "net": "/ACC_5V_SW",
+      "probes": [
+        "TP29.1",
+        "TP42.1"
+      ],
+      "why": "switched accessory 5 V rail; TP29/TP42 are rail probes"
+    },
+    {
+      "key": null,
+      "kind": "rail",
+      "net": "/NFC_SUPPLY",
+      "probes": [
+        "TP32.1"
+      ],
+      "why": "the NFC front end's supply; see AQROOT_NFC_ON_3V3"
+    },
+    {
+      "key": null,
+      "kind": "analog",
+      "net": "Net-(SW9-A)",
+      "probes": [
+        "TP13.1"
+      ],
+      "why": "the SW9 physical power switch's EN network into U12; a hard-off control, deliberately not software-visible"
+    },
+    {
+      "key": "MAIN_RAIL_PG_UNREADABLE",
+      "kind": "signal",
+      "net": "Net-(U12-PG)",
+      "probes": [
+        "TP8.1"
+      ],
+      "why": "the TPS63020's POWER GOOD reaches R41 1M to +3V3 and TP8 only.  There is no main-rail power-good input.  A +3V3 droop is not observable; the MCU's own brown-out is the only indication."
+    }
+  ]
 }

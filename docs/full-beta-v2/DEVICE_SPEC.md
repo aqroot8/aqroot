@@ -947,6 +947,22 @@ USB-C data/console; battery fuel-gauge telemetry (MAX17048); a 24-line community
 expansion port (I²C + 2 native GPIO + 10 expander GPIO + switched 3V3/5V) and a
 Qwiic/STEMMA QT I²C accessory port; RGB status indicator.
 
+> **NOT ON THIS LIST, AND NOT ON THIS REVISION — D-776.**  **There is no
+> USB-present / charging indication.**  `/01_POWER_TREE/VBUS_PRESENT` is a
+> fitted `R104` 150 kΩ / `R105` 220 kΩ divider with a `C68` filter that reaches
+> **`TP31` and nothing else** — no MCU pin and no expander bit — and the
+> generated firmware map's as-built limits had told firmware to infer charging
+> state from exactly that signal.  Two more of the same shape are also
+> unreadable: the **`LTC4368` latching FAULT output** and the **`TPS63020`
+> POWER GOOD**.  What the product DOES have is what is promised above:
+> state-of-charge and pack voltage from the MAX17048, and a directly observed
+> charger FAULT from `STAT1` LOW.  **Do not claim a charging indicator.**  The
+> Rev-B fix is measured — move `R104`/`R105`/`C68`/`TP31` beside `U3` and land on
+> `U3` P06, zero BOM change; the haul from the present location is `NO_PATH` on
+> all three routable layers.  The full list of probed-but-unreadable nets is
+> **computed off the copper** by `gen_firmware_hw_map.py`, which refuses to emit
+> if any of them is undeclared or if a declaration goes stale.
+
 ---
 
 ## 16. Known UNRESOLVED items (verify or omit before any public claim)
@@ -954,6 +970,7 @@ Qwiic/STEMMA QT I²C accessory port; RGB status indicator.
 1. ~~**Battery fitted capacity (mAh)** — envelope 2500–3000 mAh only; SKU deferred (M-04).~~ **CLOSED at CTO-BAT-01:** first-five pack is Adafruit Product 328, 2500 mAh, protected, genuine JST-PH; exact supplier-linked battery specification and electrical/load-margin contract are pinned in `assembly/SELECTED_BATTERY.json`.
 2. ~~**Charge current (ICHG)** — programmed value not fixed.~~  **CLOSED at D-743:** 769 mA from `R37` 390 Ω, input limit 1100 mA and `VBATREG` 4.2 V from `R36` 13 kΩ.  The old 1 kΩ / 18 kΩ pair programmed 300 mA against a 360 min safety timer and could not complete a charge.
 3. **microSD max card capacity** — not stated.
+3a. ~~**Charging / USB-attach indication** — assumed available.~~ **RESOLVED at D-776 as a LIMITATION, not a capability:** it is not available on this revision and was never promised.  `VBUS_PRESENT` reaches `TP31` only; the as-built limits had named it as a firmware input and have been corrected in the generated map, both schematic sheets and `Firmware/README.md`.  The list of unreadable signals is now derived from the copper and gated in both directions.  Rev-B fix measured (move the divider beside `U3`; zero BOM change).
 4. **Touch controller silicon** — FT6236 vs CST026 (interface locked; PO must specify).
 5. ~~**Display driver symbol metadata** — stale ILI9341/CH280QV10 text vs locked ILI9488.~~ **CLOSED at D-768.**  It was worse than metadata: the stale string was on the `J1` **instance**, so *"CH280QV10-CT Rev.D 2.8in 240x320 IPS TFT + CTP"* was a column in the **released BOM**, and the `ER-TFT035IPS-6_50P` symbol's own `Package` field still credited *"SPEC-CH280QV10-CT_Rev.D pages 6-7. TFT driver ILI9341V"* for a pin table D-112 had transcribed from a different datasheet — on the one connector whose pin table had already been **dead on arrival** for exactly that reason (LEDA/LEDK reversed, WRX/D-CX swapped).  The board was and is correct; every place that names the panel now says `ER-TFT035IPS-6` / ILI9488, the two retired display symbols are annotated `RETIRED -- DO NOT INSTANTIATE`, and **`F7`** asserts the locked identity in the placed symbol, its library definition **and the released BOM row**, with three live controls.
 6. ~~**915 antenna doc residue** — stale FXP890 vs locked external TI.92.2113 SMA.~~ **CLOSED at D-769.**  `U8`'s `Package` field, the sheet-level module note and the `ARCHITECTURE.md` row all named the internal `Taoglas FXP890.07.0100C` flex that D-198 superseded; all three now name the **external `TI.92.2113` SMA(M) dipole** reached through the module IPEX → `CBA-UFLSMA20IP` pigtail → top-panel SMA(F) bulkhead.  **`F7`** — generalised from D-768's display clause into a registry of recorded supersessions — now refuses a retired part name anywhere in the fields of the part that replaced it, `J1` and `U8` alike, with four live controls.

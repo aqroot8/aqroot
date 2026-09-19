@@ -364,9 +364,12 @@
 
 //   EVIDENCE: U11.3 carries /BQ25185_STAT2 and is UNROUTED (owner decision 2026-09-17,
 //   D-742)
-//   FIRMWARE: STAT1 LOW is a directly observed charger fault. STAT1 HIGH is AMBIGUOUS. Any
-//   charging-versus-complete claim must be labelled an INFERENCE from VBUS presence plus
-//   the MAX17048 trend.
+//   FIRMWARE: STAT1 LOW is a directly observed charger fault. STAT1 HIGH is AMBIGUOUS
+//   between charging and charge-complete / sleep / disabled. D-776 CORRECTED WHAT THIS LINE
+//   USED TO SAY: it named 'an INFERENCE from VBUS presence plus the MAX17048 trend', and
+//   THERE IS NO VBUS-PRESENT SIGNAL ON THIS BOARD -- see AQROOT_VBUS_PRESENT_UNREADABLE.
+//   The only input left is the MAX17048 voltage and SOC TREND, which is weak and slow. Do
+//   not display a charging state; display state-of-charge.
 #define AQROOT_CHARGER_STAT2_UNCONNECTED          1
 
 //   EVIDENCE: R112 0R is DNP, so /03_SPI_A_DISPLAY_SD/DISP_SDO never reaches /SPI_A_MISO
@@ -414,3 +417,85 @@
 //   FIRMWARE: The charger does not measure pack temperature. Do not report a battery
 //   temperature, and do not expect TS faults.
 #define AQROOT_NO_BATTERY_NTC                     1
+
+// ====================================================================================
+// PROBED BUT NOT READABLE -- computed off the copper, not remembered (D-776)
+// ====================================================================================
+//
+// Every net below touches a TP pad and touches NO pad of U1, U2 or U3, so no
+// firmware on this board can read it.  The LIST is derived from the board file;
+// the generator REFUSES TO EMIT if a net in that set is undeclared, or if a
+// declaration names a net that has since been wired.  Rails and analog nodes are
+// accounted for in the generator and in the JSON; only SIGNALS appear here.
+
+//   /01_POWER_TREE/BAT_PROT_SHDN_CTL  (probes: TP19.1)
+//   the battery-protection SHDN control is driven by Q4/R83 from the autonomous recovery
+//   logic and reaches TP19. It is neither readable nor firmware-drivable, by design --
+//   protection must not depend on software.
+#define AQROOT_BAT_PROT_SHDN_UNREADABLE           1
+
+//   /01_POWER_TREE/LTC4368_FAULT_N  (probes: TP18.1)
+//   the LTC4368's own FAULT output reaches R81 100k to +3V3, R82 1M to GND, TP18 and Q9's
+//   GATE. Q9's drain is REC_FAULT_B, which goes to Q8 and R96 inside the autonomous
+//   dead-cell recovery chain and to no readable pin. FIRMWARE CANNOT OBSERVE THAT THE
+//   LATCHING BATTERY BREAKER HAS TRIPPED. On a trip the pack is disconnected and the board
+//   runs only if VIN is present; do not report a battery-protection state, and do not
+//   attribute a vanished battery to the gauge.
+#define AQROOT_BREAKER_FAULT_UNREADABLE           1
+
+//   /01_POWER_TREE/MAX17048_ALRT_N  (probes: TP11.1)
+//   see AQROOT_FUEL_GAUGE_ALRT_NOT_WIRED -- U14.5 and TP11 only. Poll the gauge.
+#define AQROOT_FUEL_GAUGE_ALRT_UNREADABLE         1
+
+//   /01_POWER_TREE/VBUS_PRESENT  (probes: TP31.1)
+//   R104 150k / R105 220k divide USB_VBUS_CHG to 2.973 V at VBUS 5.0 V, C68 filters it, and
+//   the node reaches TP31 ONLY -- no MCU pin and no expander bit. THERE IS NO USB-PRESENT
+//   SIGNAL ON THIS REVISION. Do not infer 'charging' from VBUS: the native USB CDC link
+//   detects a USB HOST, not a charger, and a dumb 5 V supply charges this board invisibly.
+//   D-776 measured the fix and deferred it: the divider must MOVE beside U3 (USB_VBUS_CHG
+//   already runs within ~3 mm of U3's west column) and land on U3 P06; hauling it from
+//   where it sits is NO_PATH at 0.200 mm on all three routable layers at both 0.10 and 0.05
+//   mm lattices.
+#define AQROOT_VBUS_PRESENT_UNREADABLE            1
+
+//   /03_SPI_A_DISPLAY_SD/DISP_SDO  (probes: TP36.1)
+//   see AQROOT_DISPLAY_SDO_ISOLATED -- R112 0R is DNP, so the panel's SDO reaches J1 and
+//   TP36 only.
+#define AQROOT_DISPLAY_SDO_UNREADABLE             1
+
+//   /09_COMMUNITY_HEADER/TCA4307_READY  (probes: TP44.1)
+//   see AQROOT_ACC_BUS_READY_NOT_WIRED -- U16.5, R46 and TP44 only. Confirm the accessory
+//   bus by addressing it.
+#define AQROOT_ACC_BUS_READY_UNREADABLE           1
+
+//   Net-(U12-PG)  (probes: TP8.1)
+//   the TPS63020's POWER GOOD reaches R41 1M to +3V3 and TP8 only. There is no main-rail
+//   power-good input. A +3V3 droop is not observable; the MCU's own brown-out is the only
+//   indication.
+#define AQROOT_MAIN_RAIL_PG_UNREADABLE            1
+
+// ====================================================================================
+// RAILS AND ANALOG NODES also probed and unreadable, listed so the computed set
+// above is fully accounted for.  No #define: firmware has no use for them.
+// ====================================================================================
+//   /01_POWER_TREE/ACC_5V_RAW                      rail    boost output ahead of U22
+//   /01_POWER_TREE/BAT_CONNECTOR_P                 rail    J4 pack terminal ahead of F1
+//   /01_POWER_TREE/BAT_PROTECTED_P                 rail    the pack rail the MAX17048 measures
+//   /01_POWER_TREE/BAT_RAW                         rail    pack rail ahead of the protection FETs
+//   /01_POWER_TREE/BAT_SENSE                       analog  LTC4368 Kelvin sense node across R75
+//   /01_POWER_TREE/LTC_GATE                        analog  LTC4368 gate drive to Q2/Q3
+//   /01_POWER_TREE/NFC_5V_PA_PENDING               rail    the DNP 5 V NFC PA rail
+//   /01_POWER_TREE/N_POL                           analog  U19 comparator input in the dead-cell recovery divider
+//   /01_POWER_TREE/REC_DIODE_IN                    analog  dead-cell recovery steering node at D12/R95
+//   /01_POWER_TREE/REC_GATE_N                      analog  dead-cell recovery gate drive at Q5/Q6/R94
+//   /01_POWER_TREE/REF_POL                         analog  U19 comparator reference in the dead-cell recovery divider
+//   /04_SPI_B_RADIOS_NFC/NFC_ANT_A                 analog  NFC antenna terminal
+//   /04_SPI_B_RADIOS_NFC/NFC_ANT_B                 analog  NFC antenna terminal
+//   /07_IR/IR_LED_A                                analog  IR LED anode, driven by Q1
+//   /09_COMMUNITY_HEADER/ACC_DETECT_N_HDR          analog  the header side of ACC_DETECT_N
+//   /09_COMMUNITY_HEADER/EXT_SCL                   rail    accessory-side I2C clock
+//   /09_COMMUNITY_HEADER/EXT_SDA                   rail    accessory-side I2C data
+//   /ACC_3V3_SW                                    rail    switched accessory 3.3 V rail
+//   /ACC_5V_SW                                     rail    switched accessory 5 V rail
+//   /NFC_SUPPLY                                    rail    the NFC front end's supply
+//   Net-(SW9-A)                                    analog  the SW9 physical power switch's EN network into U12
